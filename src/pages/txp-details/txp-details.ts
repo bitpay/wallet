@@ -1,5 +1,10 @@
 import { Component } from '@angular/core';
-import { NavParams, Events, ViewController, ModalController } from 'ionic-angular';
+import {
+  NavParams,
+  Events,
+  ViewController,
+  ModalController
+} from 'ionic-angular';
 import { TranslateService } from '@ngx-translate/core';
 
 //providers
@@ -62,7 +67,9 @@ export class TxpDetailsPage {
   ) {
     let config = this.configProvider.get().wallet;
     this.tx = this.navParams.data.tx;
-    this.wallet = this.tx.wallet ? this.tx.wallet : this.profileProvider.getWallet(this.tx.walletId);
+    this.wallet = this.tx.wallet
+      ? this.tx.wallet
+      : this.profileProvider.getWallet(this.tx.walletId);
     this.tx = this.txFormatProvider.processTx(this.wallet.coin, this.tx);
     if (!this.tx.toAddress) this.tx.toAddress = this.tx.outputs[0].toAddress;
     this.isGlidera = this.navParams.data.isGlidera;
@@ -70,7 +77,8 @@ export class TxpDetailsPage {
     this.currentSpendUnconfirmed = config.spendUnconfirmed;
     this.loading = false;
     this.isCordova = this.platformProvider.isCordova;
-    this.isWindowsPhoneApp = this.platformProvider.isCordova && this.platformProvider.isWP;
+    this.isWindowsPhoneApp =
+      this.platformProvider.isCordova && this.platformProvider.isWP;
     this.copayers = this.wallet.status.wallet.copayers;
     this.copayerId = this.wallet.credentials.copayerId;
     this.isShared = this.wallet.credentials.n > 1;
@@ -88,39 +96,53 @@ export class TxpDetailsPage {
     if (this.tx.message === 'Glidera transaction' && this.isGlidera) {
       this.tx.isGlidera = true;
       if (this.tx.canBeRemoved) {
-        this.tx.canBeRemoved = (Date.now() / 1000 - (this.tx.ts || this.tx.createdOn)) > this.GLIDERA_LOCK_TIME;
+        this.tx.canBeRemoved =
+          Date.now() / 1000 - (this.tx.ts || this.tx.createdOn) >
+          this.GLIDERA_LOCK_TIME;
       }
     }
     this.events.subscribe('accepted', () => {
       this.sign();
     });
 
-    this.events.subscribe('bwsEvent', (walletId: string, type: string, n: number) => {
-      _.each([
-        'TxProposalRejectedBy',
-        'TxProposalAcceptedBy',
-        'transactionProposalRemoved',
-        'TxProposalRemoved',
-        'NewOutgoingTx',
-        'UpdateTx'
-      ], (eventName: string) => {
-        if (walletId == this.wallet.id && type == eventName) {
-          this.updateTxInfo(eventName);
-        }
-      });
-    });
+    this.events.subscribe(
+      'bwsEvent',
+      (walletId: string, type: string, n: number) => {
+        _.each(
+          [
+            'TxProposalRejectedBy',
+            'TxProposalAcceptedBy',
+            'transactionProposalRemoved',
+            'TxProposalRemoved',
+            'NewOutgoingTx',
+            'UpdateTx'
+          ],
+          (eventName: string) => {
+            if (walletId == this.wallet.id && type == eventName) {
+              this.updateTxInfo(eventName);
+            }
+          }
+        );
+      }
+    );
   }
 
   private displayFeeValues(): void {
-    this.tx.feeFiatStr = this.txFormatProvider.formatAlternativeStr(this.wallet.coin, this.tx.fee);
-    this.tx.feeRateStr = (this.tx.fee / (this.tx.amount + this.tx.fee) * 100).toFixed(2) + '%';
+    this.tx.feeFiatStr = this.txFormatProvider.formatAlternativeStr(
+      this.wallet.coin,
+      this.tx.fee
+    );
+    this.tx.feeRateStr =
+      (this.tx.fee / (this.tx.amount + this.tx.fee) * 100).toFixed(2) + '%';
     this.tx.feeLevelStr = this.feeProvider.feeOpts[this.tx.feeLevel];
   }
 
   private applyButtonText(): void {
-    var lastSigner = _.filter(this.tx.actions, {
-      type: 'accept'
-    }).length == this.tx.requiredSignatures - 1;
+    var lastSigner =
+      _.filter(this.tx.actions, {
+        type: 'accept'
+      }).length ==
+      this.tx.requiredSignatures - 1;
 
     if (lastSigner) {
       if (this.isCordova && !this.isWindowsPhoneApp) {
@@ -148,7 +170,7 @@ export class TxpDetailsPage {
       created: this.translate.instant('Proposal Created'),
       accept: this.translate.instant('Accepted'),
       reject: this.translate.instant('Rejected'),
-      broadcasted: this.translate.instant('Broadcasted'),
+      broadcasted: this.translate.instant('Broadcasted')
     };
 
     this.actionList.push({
@@ -174,18 +196,20 @@ export class TxpDetailsPage {
 
   private checkPaypro() {
     if (this.tx.payProUrl) {
-      this.wallet.fetchPayPro({
-        payProUrl: this.tx.payProUrl,
-      }, (err, paypro) => {
-        if (err) return;
-        this.tx.paypro = paypro;
-        this.paymentTimeControl(this.tx.paypro.expires);
-      });
+      this.wallet.fetchPayPro(
+        {
+          payProUrl: this.tx.payProUrl
+        },
+        (err, paypro) => {
+          if (err) return;
+          this.tx.paypro = paypro;
+          this.paymentTimeControl(this.tx.paypro.expires);
+        }
+      );
     }
   }
 
   private paymentTimeControl(expirationTime) {
-
     let setExpirationTime = (): void => {
       let now = Math.floor(Date.now() / 1000);
       if (now > expirationTime) {
@@ -196,7 +220,7 @@ export class TxpDetailsPage {
       let totalSecs = expirationTime - now;
       let m = Math.floor(totalSecs / 60);
       let s = totalSecs % 60;
-      this.expires = ('0' + m).slice(-2) + ":" + ('0' + s).slice(-2);
+      this.expires = ('0' + m).slice(-2) + ':' + ('0' + s).slice(-2);
     };
 
     this.paymentExpired = false;
@@ -209,62 +233,91 @@ export class TxpDetailsPage {
 
   private setError(err: any, prefix: string): void {
     this.loading = false;
-    this.popupProvider.ionicAlert(this.translate.instant('Error'), this.bwcError.msg(err, prefix));
+    this.popupProvider.ionicAlert(
+      this.translate.instant('Error'),
+      this.bwcError.msg(err, prefix)
+    );
   }
 
   public sign(): void {
     this.loading = true;
-    this.walletProvider.publishAndSign(this.wallet, this.tx).then((txp: any) => {
-      this.events.publish('UpdateTx');
-      this.openSuccessModal();
-    }).catch((err: any) => {
-      this.setError(err, ('Could not send payment'));
-    });
+    this.walletProvider
+      .publishAndSign(this.wallet, this.tx)
+      .then((txp: any) => {
+        this.events.publish('UpdateTx');
+        this.openSuccessModal();
+      })
+      .catch((err: any) => {
+        this.setError(err, 'Could not send payment');
+      });
   }
 
   public reject(txp: any): void {
     let title = this.translate.instant('Warning!');
-    let msg = this.translate.instant('Are you sure you want to reject this transaction?');
-    this.popupProvider.ionicConfirm(title, msg, null, null).then((res: boolean) => {
-      if (!res) return
-      this.loading = true;
-      this.walletProvider.reject(this.wallet, this.tx).then((txpr) => {
-        this.close();
-      }).catch((err: any) => {
-        this.setError(err, this.translate.instant('Could not reject payment'));
+    let msg = this.translate.instant(
+      'Are you sure you want to reject this transaction?'
+    );
+    this.popupProvider
+      .ionicConfirm(title, msg, null, null)
+      .then((res: boolean) => {
+        if (!res) return;
+        this.loading = true;
+        this.walletProvider
+          .reject(this.wallet, this.tx)
+          .then(txpr => {
+            this.close();
+          })
+          .catch((err: any) => {
+            this.setError(
+              err,
+              this.translate.instant('Could not reject payment')
+            );
+          });
       });
-    });
   }
 
   public remove(): void {
     let title = this.translate.instant('Warning!');
-    let msg = this.translate.instant('Are you sure you want to remove this transaction?');
-    this.popupProvider.ionicConfirm(title, msg, null, null).then((res: boolean) => {
-      if (!res) return;
-      this.onGoingProcessProvider.set('removeTx', true);
-      this.walletProvider.removeTx(this.wallet, this.tx).then(() => {
-        this.onGoingProcessProvider.set('removeTx', false);
-        this.close();
-      }).catch((err: any) => {
-        this.onGoingProcessProvider.set('removeTx', false);
-        if (err && !(err.message && err.message.match(/Unexpected/))) {
-          this.events.publish('UpdateTx');
-          this.setError(err, this.translate.instant('Could not delete payment proposal'));
-        }
+    let msg = this.translate.instant(
+      'Are you sure you want to remove this transaction?'
+    );
+    this.popupProvider
+      .ionicConfirm(title, msg, null, null)
+      .then((res: boolean) => {
+        if (!res) return;
+        this.onGoingProcessProvider.set('removeTx', true);
+        this.walletProvider
+          .removeTx(this.wallet, this.tx)
+          .then(() => {
+            this.onGoingProcessProvider.set('removeTx', false);
+            this.close();
+          })
+          .catch((err: any) => {
+            this.onGoingProcessProvider.set('removeTx', false);
+            if (err && !(err.message && err.message.match(/Unexpected/))) {
+              this.events.publish('UpdateTx');
+              this.setError(
+                err,
+                this.translate.instant('Could not delete payment proposal')
+              );
+            }
+          });
       });
-    });
   }
 
   public broadcast(txp: any): void {
     this.loading = true;
     this.onGoingProcessProvider.set('broadcastingTx', true);
-    this.walletProvider.broadcastTx(this.wallet, this.tx).then((txpb: any) => {
-      this.onGoingProcessProvider.set('broadcastingTx', false);
-      this.openSuccessModal();
-    }).catch((err: any) => {
-      this.onGoingProcessProvider.set('broadcastingTx', false);
-      this.setError(err, 'Could not broadcast payment');
-    });
+    this.walletProvider
+      .broadcastTx(this.wallet, this.tx)
+      .then((txpb: any) => {
+        this.onGoingProcessProvider.set('broadcastingTx', false);
+        this.openSuccessModal();
+      })
+      .catch((err: any) => {
+        this.onGoingProcessProvider.set('broadcastingTx', false);
+        this.setError(err, 'Could not broadcast payment');
+      });
   }
 
   public getShortNetworkName(): string {
@@ -272,25 +325,32 @@ export class TxpDetailsPage {
   }
 
   private updateTxInfo(eventName: string): void {
-    this.walletProvider.getTxp(this.wallet, this.tx.id).then((tx: any) => {
-      let action = _.find(tx.actions, {
-        copayerId: this.wallet.credentials.copayerId
+    this.walletProvider
+      .getTxp(this.wallet, this.tx.id)
+      .then((tx: any) => {
+        let action = _.find(tx.actions, {
+          copayerId: this.wallet.credentials.copayerId
+        });
+
+        this.tx = this.txFormatProvider.processTx(this.wallet.coin, tx);
+
+        if (!action && tx.status == 'pending') this.tx.pendingForUs = true;
+
+        this.updateCopayerList();
+        this.initActionList();
+      })
+      .catch(err => {
+        if (
+          err.message &&
+          err.message == 'Transaction proposal not found' &&
+          (eventName == 'transactionProposalRemoved' ||
+            eventName == 'TxProposalRemoved')
+        ) {
+          this.tx.removed = true;
+          this.tx.canBeRemoved = false;
+          this.tx.pendingForUs = false;
+        }
       });
-
-      this.tx = this.txFormatProvider.processTx(this.wallet.coin, tx);
-
-      if (!action && tx.status == 'pending') this.tx.pendingForUs = true;
-
-      this.updateCopayerList();
-      this.initActionList();
-    }).catch((err) => {
-      if (err.message && err.message == 'Transaction proposal not found' &&
-        (eventName == 'transactionProposalRemoved' || eventName == 'TxProposalRemoved')) {
-        this.tx.removed = true;
-        this.tx.canBeRemoved = false;
-        this.tx.pendingForUs = false;
-      }
-    });
   }
 
   public updateCopayerList(): void {
@@ -305,7 +365,7 @@ export class TxpDetailsPage {
 
   public onConfirm(): void {
     this.sign();
-  };
+  }
 
   public close(): void {
     this.events.unsubscribe('bwsEvent');
@@ -314,11 +374,14 @@ export class TxpDetailsPage {
   }
 
   public openSuccessModal() {
-    let modal = this.modalCtrl.create(SuccessModalPage, {}, { showBackdrop: true, enableBackdropDismiss: false });
+    let modal = this.modalCtrl.create(
+      SuccessModalPage,
+      {},
+      { showBackdrop: true, enableBackdropDismiss: false }
+    );
     modal.present();
     modal.onDidDismiss(() => {
       this.close();
-    })
+    });
   }
-
 }

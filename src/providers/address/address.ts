@@ -9,17 +9,15 @@ export class AddressProvider {
   private bitcoreCash: any;
   private Bitcore: any;
 
-  constructor(
-    private bwcProvider: BwcProvider,
-  ) {
+  constructor(private bwcProvider: BwcProvider) {
     this.bitcore = this.bwcProvider.getBitcore();
     this.bitcoreCash = this.bwcProvider.getBitcoreCash();
     this.Bitcore = {
-      'btc': {
+      btc: {
         lib: this.bitcore,
         translateTo: 'bch'
       },
-      'bch': {
+      bch: {
         lib: this.bitcoreCash,
         translateTo: 'btc'
       }
@@ -38,7 +36,7 @@ export class AddressProvider {
         return null;
       }
     }
-  };
+  }
 
   translateAddress(address: string) {
     var origCoin = this.getCoin(address);
@@ -48,14 +46,16 @@ export class AddressProvider {
     var origObj = origAddress.toObject();
 
     var resultCoin = this.Bitcore[origCoin].translateTo;
-    var resultAddress = this.Bitcore[resultCoin].lib.Address.fromObject(origObj);
+    var resultAddress = this.Bitcore[resultCoin].lib.Address.fromObject(
+      origObj
+    );
     return {
       origCoin: origCoin,
       origAddress: address,
       resultCoin: resultCoin,
       resultAddress: resultAddress.toString()
     };
-  };
+  }
 
   validateAddress(address: string) {
     let Address = this.bitcore.Address;
@@ -68,7 +68,7 @@ export class AddressProvider {
       isValid: isLivenet || isTestnet || isLivenetCash,
       network: isTestnet ? 'testnet' : 'livenet',
       coin: this.getCoin(address),
-      translation: this.translateAddress(address),
+      translation: this.translateAddress(address)
     };
   }
 }

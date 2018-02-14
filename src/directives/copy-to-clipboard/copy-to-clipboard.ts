@@ -1,4 +1,4 @@
-import { DOCUMENT } from "@angular/platform-browser";
+import { DOCUMENT } from '@angular/platform-browser';
 import { Directive, Inject } from '@angular/core';
 import { ToastController } from 'ionic-angular';
 import { Clipboard } from '@ionic-native/clipboard';
@@ -13,7 +13,6 @@ import { Logger } from '../../providers/logger/logger';
   }
 })
 export class CopyToClipboard {
-
   public value: string;
   private dom: Document;
   private isCordova: boolean;
@@ -53,9 +52,8 @@ export class CopyToClipboard {
     }
     let showSuccess = this.toastCtrl.create({
       message: 'Copied to clipboard',
-      duration: 1000,
+      duration: 1000
     });
     showSuccess.present();
   }
-
 }

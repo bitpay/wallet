@@ -29,7 +29,6 @@ import { DisclaimerPage } from '../pages/onboarding/disclaimer/disclaimer';
   providers: [TouchIdProvider]
 })
 export class CopayApp {
-
   public rootPage: any;
   private onResumeSubscription: Subscription;
   private isModalOpen: boolean;
@@ -54,48 +53,57 @@ export class CopayApp {
   }
 
   initializeApp() {
-    this.platform.ready().then((readySource) => {
-      this.app.load().then(() => {
-        this.logger.info(
-          'Platform ready (' + readySource + '): ' +
-          this.app.info.nameCase +
-          ' - v' + this.app.info.version +
-          ' #' + this.app.info.commitHash);
+    this.platform.ready().then(readySource => {
+      this.app
+        .load()
+        .then(() => {
+          this.logger.info(
+            'Platform ready (' +
+              readySource +
+              '): ' +
+              this.app.info.nameCase +
+              ' - v' +
+              this.app.info.version +
+              ' #' +
+              this.app.info.commitHash
+          );
 
-        if (this.platform.is('cordova')) {
-          this.statusBar.show();
+          if (this.platform.is('cordova')) {
+            this.statusBar.show();
 
-          // Only overlay for iOS
-          if (this.platform.is('ios')) this.statusBar.overlaysWebView(true);
+            // Only overlay for iOS
+            if (this.platform.is('ios')) this.statusBar.overlaysWebView(true);
 
-          this.statusBar.styleLightContent();
-          this.splashScreen.hide();
-        }
-        //Check PIN or Fingerprint
-        this.onResumeSubscription = this.platform.resume.subscribe(() => {
+            this.statusBar.styleLightContent();
+            this.splashScreen.hide();
+          }
+          //Check PIN or Fingerprint
+          this.onResumeSubscription = this.platform.resume.subscribe(() => {
+            this.openLockModal();
+          });
           this.openLockModal();
+          // Check Profile
+          this.profile
+            .loadAndBindProfile()
+            .then((profile: any) => {
+              this.registerIntegrations();
+              if (profile) {
+                this.logger.info('Profile exists.');
+                this.rootPage = TabsPage;
+              } else {
+                this.logger.info('No profile exists.');
+                this.profile.createProfile();
+                this.rootPage = OnboardingPage;
+              }
+            })
+            .catch((err: any) => {
+              this.logger.warn(err);
+              this.rootPage = DisclaimerPage;
+            });
+        })
+        .catch(err => {
+          this.logger.error('Could not initialize the app');
         });
-        this.openLockModal();
-        // Check Profile
-        this.profile.loadAndBindProfile().then((profile: any) => {
-          this.registerIntegrations();
-          if (profile) {
-            this.logger.info('Profile exists.');
-            this.rootPage = TabsPage;
-          }
-          else {
-            this.logger.info('No profile exists.');
-            this.profile.createProfile();
-            this.rootPage = OnboardingPage;
-          }
-        }).catch((err: any) => {
-          this.logger.warn(err);
-          this.rootPage = DisclaimerPage;
-        });
-      }).catch((err) => {
-        this.logger.error('Could not initialize the app');
-      });
-
     });
   }
 
@@ -114,7 +122,11 @@ export class CopayApp {
 
   private openPINModal(action): void {
     this.isModalOpen = true;
-    let modal = this.modalCtrl.create(PinModalPage, { action }, { showBackdrop: false, enableBackdropDismiss: false });
+    let modal = this.modalCtrl.create(
+      PinModalPage,
+      { action },
+      { showBackdrop: false, enableBackdropDismiss: false }
+    );
     modal.present();
     modal.onDidDismiss(() => {
       this.isModalOpen = false;
@@ -123,7 +135,11 @@ export class CopayApp {
 
   private openFingerprintModal(): void {
     this.isModalOpen = true;
-    let modal = this.modalCtrl.create(FingerprintModalPage, {}, { showBackdrop: false, enableBackdropDismiss: false });
+    let modal = this.modalCtrl.create(
+      FingerprintModalPage,
+      {},
+      { showBackdrop: false, enableBackdropDismiss: false }
+    );
     modal.present();
     modal.onDidDismiss(() => {
       this.isModalOpen = false;
@@ -131,15 +147,16 @@ export class CopayApp {
   }
 
   private registerIntegrations(): void {
-
     // Mercado Libre
-    if (this.app.info._enabledExtensions.mercadolibre) this.mercadoLibreProvider.register();
+    if (this.app.info._enabledExtensions.mercadolibre)
+      this.mercadoLibreProvider.register();
 
     // Amazon Gift Cards
     if (this.app.info._enabledExtensions.amazon) this.amazonProvider.register();
 
     // ShapeShift
-    if (this.app.info._enabledExtensions.shapeshift) this.shapeshiftProvider.register();
+    if (this.app.info._enabledExtensions.shapeshift)
+      this.shapeshiftProvider.register();
 
     // Glidera
     if (this.app.info._enabledExtensions.glidera) {
@@ -154,6 +171,7 @@ export class CopayApp {
     }
 
     // BitPay Card
-    if (this.app.info._enabledExtensions.debitcard) this.bitPayCardProvider.register();
+    if (this.app.info._enabledExtensions.debitcard)
+      this.bitPayCardProvider.register();
   }
 }

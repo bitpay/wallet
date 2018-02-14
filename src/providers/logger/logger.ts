@@ -1,22 +1,15 @@
 import { Injectable } from '@angular/core';
 import { Logger as Log } from '@nsalaun/ng-logger';
 
-//providers
-import { PlatformProvider } from '../../providers/platform/platform';
-
 import * as _ from 'lodash';
 
 @Injectable()
 export class Logger {
-
   public levels: any;
   public weight: any;
   public logs: Array<any>;
 
-  constructor(
-    private logger: Log,
-    private platformProvider: PlatformProvider
-  ) {
+  constructor(private logger: Log) {
     this.logger.info('Logger initialized.');
     this.logs = [];
     this.levels = [
@@ -32,7 +25,6 @@ export class Logger {
       this.weight[this.levels[i].level] = this.levels[i].weight;
     }
   }
-
 
   public error(message?: any, ...optionalParams: Array<any>): void {
     this.logger.error(message, ...optionalParams);
@@ -60,57 +52,48 @@ export class Logger {
 
   public getLevels(): void {
     return this.levels;
-  };
+  }
 
   public getWeight(weight): any {
-    return _.find(this.levels, (l) => {
+    return _.find(this.levels, l => {
       return l.weight == weight;
     });
-  };
+  }
 
   public getDefaultWeight(): any {
-    return _.find(this.levels, (l) => {
+    return _.find(this.levels, l => {
       return l.default;
     });
-  };
+  }
 
   public add(level, msg): any {
     msg = msg.replace('/xpriv.*/', 'xpriv[Hidden]');
     this.logs.push({
       timestamp: new Date().toISOString(),
       level: level,
-      msg: msg,
+      msg: msg
     });
-  };
+  }
 
   public get(filterWeight?: number): any {
     let filteredLogs = this.logs;
     if (filterWeight != undefined) {
-      filteredLogs = _.filter(this.logs, (l) => {
+      filteredLogs = _.filter(this.logs, l => {
         return this.weight[l.level] <= filterWeight;
       });
     }
     return filteredLogs;
-  };
+  }
 
   public processingArgs(argsValues: any) {
     var args = Array.prototype.slice.call(argsValues);
-    args = args.map((v) => {
+    args = args.map(v => {
       try {
         if (typeof v == 'undefined') v = 'undefined';
         if (!v) v = 'null';
         if (typeof v == 'object') {
-          if (v.message)
-            v = v.message;
-          else
-            v = JSON.stringify(v);
-        }
-        // Trim output in mobile
-        if (this.platformProvider.isCordova) {
-          v = v.toString();
-          if (v.length > 3000) {
-            v = v.substr(0, 2997) + '...';
-          }
+          if (v.message) v = v.message;
+          else v = JSON.stringify(v);
         }
       } catch (e) {
         console.log('Error at log decorator:', e);

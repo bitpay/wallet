@@ -1,9 +1,9 @@
-import { Component, Input } from "@angular/core";
+import { Component, Input } from '@angular/core';
 import { TimeProvider } from '../../../providers/time/time';
 
 @Component({
   selector: 'page-card-item',
-  templateUrl: 'card-item.html',
+  templateUrl: 'card-item.html'
 })
 export class CardItemPage {
   private _currencySymbol: string;
@@ -12,10 +12,7 @@ export class CardItemPage {
   public received: boolean = false;
   public pending: boolean = false;
 
-  constructor(
-    private timeProvider: TimeProvider
-  ) {
-  }
+  constructor(private timeProvider: TimeProvider) {}
 
   @Input()
   set card(card: any) {

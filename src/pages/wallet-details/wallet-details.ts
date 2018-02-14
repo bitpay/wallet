@@ -66,23 +66,24 @@ export class WalletDetailsPage {
 
     this.requiresMultipleSignatures = this.wallet.credentials.m > 1;
 
-    this.addressbookProvider.list().then((ab) => {
-      this.addressbook = ab;
-    }).catch((err) => {
-      this.logger.error(err);
-    });
+    this.addressbookProvider
+      .list()
+      .then(ab => {
+        this.addressbook = ab;
+      })
+      .catch(err => {
+        this.logger.error(err);
+      });
   }
 
   ionViewDidEnter() {
     this.updateAll();
 
     this.events.subscribe('bwsEvent', (walletId, type, n) => {
-      if (walletId == this.wallet.id && type != 'NewAddress')
-        this.updateAll();
+      if (walletId == this.wallet.id && type != 'NewAddress') this.updateAll();
     });
-    this.events.subscribe('Local/TxAction', (walletId) => {
-      if (walletId == this.wallet.id)
-        this.updateAll();
+    this.events.subscribe('Local/TxAction', walletId => {
+      if (walletId == this.wallet.id) this.updateAll();
     });
   }
 
@@ -98,12 +99,14 @@ export class WalletDetailsPage {
   }
 
   private showHistory() {
-    this.history = this.wallet.completeHistory.slice(0, (this.currentPage + 1) * HISTORY_SHOW_LIMIT);
+    this.history = this.wallet.completeHistory.slice(
+      0,
+      (this.currentPage + 1) * HISTORY_SHOW_LIMIT
+    );
     this.currentPage++;
   }
 
   private setPendingTxps(txps: Array<any>) {
-
     /* Uncomment to test multiple outputs */
 
     // var txp = {
@@ -136,27 +139,30 @@ export class WalletDetailsPage {
     this.updateTxHistoryError = false;
     this.updatingTxHistoryProgress = 0;
 
-    let progressFn = (function (txs, newTxs) {
+    let progressFn = function(txs, newTxs) {
       if (newTxs > 5) this.thistory = null;
       this.updatingTxHistoryProgress = newTxs;
-    }).bind(this);
+    }.bind(this);
 
-    this.walletProvider.getTxHistory(this.wallet, {
-      progressFn: progressFn
-    }).then((txHistory) => {
-      this.updatingTxHistory = false;
+    this.walletProvider
+      .getTxHistory(this.wallet, {
+        progressFn: progressFn
+      })
+      .then(txHistory => {
+        this.updatingTxHistory = false;
 
-      let hasTx = txHistory[0];
-      if (hasTx) this.showNoTransactionsYetMsg = false;
-      else this.showNoTransactionsYetMsg = true;
+        let hasTx = txHistory[0];
+        if (hasTx) this.showNoTransactionsYetMsg = false;
+        else this.showNoTransactionsYetMsg = true;
 
-      this.wallet.completeHistory = txHistory;
-      this.showHistory();
-    }).catch((err) => {
-      this.updatingTxHistory = false;
-      this.clearData();
-      this.updateTxHistoryError = true;
-    });
+        this.wallet.completeHistory = txHistory;
+        this.showHistory();
+      })
+      .catch(err => {
+        this.updatingTxHistory = false;
+        this.clearData();
+        this.updateTxHistoryError = true;
+      });
   }
 
   private updateAll(force?) {
@@ -165,7 +171,9 @@ export class WalletDetailsPage {
   }
 
   public toggleBalance() {
-    this.profileProvider.toggleHideBalanceFlag(this.wallet.credentials.walletId);
+    this.profileProvider.toggleHideBalanceFlag(
+      this.wallet.credentials.walletId
+    );
   }
 
   public loadHistory(loading) {
@@ -185,21 +193,29 @@ export class WalletDetailsPage {
     this.walletNotRegistered = false;
     this.showBalanceButton = false;
 
-    this.walletProvider.getStatus(this.wallet, { force: !!force }).then((status: any) => {
-      this.updatingStatus = false;
-      this.setPendingTxps(status.pendingTxps);
-      this.wallet.status = status;
-      this.showBalanceButton = (this.wallet.status.totalBalanceSat != this.wallet.status.spendableAmount);
-    }).catch((err) => {
-      this.updatingStatus = false;
-      if (err === 'WALLET_NOT_REGISTERED') {
-        this.walletNotRegistered = true;
-      } else {
-        this.updateStatusError = this.bwcError.msg(err, this.translate.instant('Could not update wallet'));
-      }
-      this.wallet.status = null;
-    });
-  };
+    this.walletProvider
+      .getStatus(this.wallet, { force: !!force })
+      .then((status: any) => {
+        this.updatingStatus = false;
+        this.setPendingTxps(status.pendingTxps);
+        this.wallet.status = status;
+        this.showBalanceButton =
+          this.wallet.status.totalBalanceSat !=
+          this.wallet.status.spendableAmount;
+      })
+      .catch(err => {
+        this.updatingStatus = false;
+        if (err === 'WALLET_NOT_REGISTERED') {
+          this.walletNotRegistered = true;
+        } else {
+          this.updateStatusError = this.bwcError.msg(
+            err,
+            this.translate.instant('Could not update wallet')
+          );
+        }
+        this.wallet.status = null;
+      });
+  }
 
   public recreate() {
     this.walletProvider.recreate(this.wallet).then(() => {
@@ -209,28 +225,35 @@ export class WalletDetailsPage {
         });
       });
     });
-  };
+  }
 
   public goToTxDetails(tx: any) {
-    this.navCtrl.push(TxDetailsPage, { walletId: this.wallet.credentials.walletId, txid: tx.txid });
+    this.navCtrl.push(TxDetailsPage, {
+      walletId: this.wallet.credentials.walletId,
+      txid: tx.txid
+    });
   }
 
   public openBackup() {
-    this.navCtrl.push(BackupWarningPage, { walletId: this.wallet.credentials.walletId });
+    this.navCtrl.push(BackupWarningPage, {
+      walletId: this.wallet.credentials.walletId
+    });
   }
 
   public openAddresses() {
-    this.navCtrl.push(WalletAddressesPage, { walletId: this.wallet.credentials.walletId });
+    this.navCtrl.push(WalletAddressesPage, {
+      walletId: this.wallet.credentials.walletId
+    });
   }
 
   public getDate(txCreated) {
     let date = new Date(txCreated * 1000);
     return date;
-  };
+  }
 
   public trackByFn(index, tx) {
     return index;
-  };
+  }
 
   public isFirstInGroup(index) {
     if (index === 0) {
@@ -239,26 +262,28 @@ export class WalletDetailsPage {
     let curTx = this.history[index];
     let prevTx = this.history[index - 1];
     return !this.createdDuringSameMonth(curTx, prevTx);
-  };
+  }
 
   private createdDuringSameMonth(curTx, prevTx) {
-    return this.timeProvider.withinSameMonth(curTx.time * 1000, prevTx.time * 1000);
-  };
+    return this.timeProvider.withinSameMonth(
+      curTx.time * 1000,
+      prevTx.time * 1000
+    );
+  }
 
   public isDateInCurrentMonth(date) {
     return this.timeProvider.isDateInCurrentMonth(date);
-  };
+  }
 
   public createdWithinPastDay(time) {
     return this.timeProvider.withinPastDay(time);
-  };
+  }
 
   public isUnconfirmed(tx) {
     return !tx.confirmations || tx.confirmations === 0;
-  };
+  }
 
   public openBalanceDetails(): void {
     this.navCtrl.push(WalletBalancePage, { status: this.wallet.status });
   }
-
 }

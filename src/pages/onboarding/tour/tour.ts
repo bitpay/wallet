@@ -1,5 +1,10 @@
 import { Component, ViewChild } from '@angular/core';
-import { NavController, LoadingController, Slides, Navbar } from 'ionic-angular';
+import {
+  NavController,
+  LoadingController,
+  Slides,
+  Navbar
+} from 'ionic-angular';
 import { Logger } from '../../../providers/logger/logger';
 
 //pages
@@ -13,7 +18,7 @@ import { OnGoingProcessProvider } from '../../../providers/on-going-process/on-g
 
 @Component({
   selector: 'page-tour',
-  templateUrl: 'tour.html',
+  templateUrl: 'tour.html'
 })
 export class TourPage {
   @ViewChild(Slides) slides: Slides;
@@ -35,8 +40,11 @@ export class TourPage {
     this.currentIndex = 0;
     this.rateProvider.whenRatesAvailable().then(() => {
       let btcAmount = 1;
-      this.localCurrencySymbol = '$'
-      this.localCurrencyPerBtc = this.txFormatProvider.formatAlternativeStr('btc', btcAmount * 1e8);
+      this.localCurrencySymbol = '$';
+      this.localCurrencyPerBtc = this.txFormatProvider.formatAlternativeStr(
+        'btc',
+        btcAmount * 1e8
+      );
     });
   }
 
@@ -47,7 +55,7 @@ export class TourPage {
   ionViewWillEnter() {
     this.navBar.backButtonClick = (e: UIEvent) => {
       this.slidePrev();
-    }
+    };
   }
 
   public slideChanged(): void {
@@ -67,10 +75,9 @@ export class TourPage {
 
   public createDefaultWallet(): void {
     this.onGoingProcessProvider.set('creatingWallet', true);
-    this.profileProvider.createDefaultWallet().then((wallet) => {
+    this.profileProvider.createDefaultWallet().then(wallet => {
       this.onGoingProcessProvider.set('creatingWallet', false);
       this.navCtrl.push(CollectEmailPage, { walletId: wallet.id });
-    })
+    });
   }
-
 }

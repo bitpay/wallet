@@ -9,9 +9,7 @@ export class BwcProvider {
   public buildTx = BWC.buildTx;
   public parseSecret = BWC.parseSecret;
   public Client = BWC;
-  constructor(
-    private logger: Logger
-  ) {
+  constructor(private logger: Logger) {
     this.logger.info('BwcProvider initialized.');
   }
   public getBitcore(): any {
@@ -42,11 +40,9 @@ export class BwcProvider {
       baseUrl: opts.bwsurl || 'https://bws.bitpay.com/bws/api',
       verbose: opts.verbose,
       timeout: 100000,
-      transports: ['polling'],
+      transports: ['polling']
     });
-    if (walletData)
-      bwc.import(walletData, opts);
+    if (walletData) bwc.import(walletData, opts);
     return bwc;
   }
-
 }

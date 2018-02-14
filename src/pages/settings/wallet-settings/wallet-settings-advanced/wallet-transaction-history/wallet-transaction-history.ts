@@ -16,7 +16,7 @@ import { WalletDetailsPage } from '../../../../../pages/wallet-details/wallet-de
 
 @Component({
   selector: 'page-wallet-transaction-history',
-  templateUrl: 'wallet-transaction-history.html',
+  templateUrl: 'wallet-transaction-history.html'
 })
 export class WalletTransactionHistoryPage {
   public wallet: any;
@@ -70,85 +70,103 @@ export class WalletTransactionHistoryPage {
     var dateObj = new Date(date);
     if (!dateObj) {
       this.logger.debug('Error formating a date');
-      return 'DateError'
+      return 'DateError';
     }
     if (!dateObj.toJSON()) {
       return '';
     }
     return dateObj.toJSON();
-  };
+  }
 
   // TODO : move this to walletService.
   public csvHistory() {
     this.logger.debug('Generating CSV from History');
-    this.walletProvider.getTxHistory(this.wallet, {}).then((txs: any) => {
-      if (_.isEmpty(txs)) {
-        this.logger.warn('Failed to generate CSV: no transactions');
-        this.err = 'no transactions';
-        return;
-      }
+    this.walletProvider
+      .getTxHistory(this.wallet, {})
+      .then((txs: any) => {
+        if (_.isEmpty(txs)) {
+          this.logger.warn('Failed to generate CSV: no transactions');
+          this.err = 'no transactions';
+          return;
+        }
 
-      this.logger.debug('Wallet Transaction History Length:', txs.length);
+        this.logger.debug('Wallet Transaction History Length:', txs.length);
 
-      var data = txs;
-      this.csvFilename = this.appName + '-' + this.wallet.name + '.csv';
-      this.csvHeader = ['Date', 'Destination', 'Description', 'Amount', 'Currency', 'Txid', 'Creator', 'Copayers', 'Comment'];
+        var data = txs;
+        this.csvFilename = this.appName + '-' + this.wallet.name + '.csv';
+        this.csvHeader = [
+          'Date',
+          'Destination',
+          'Description',
+          'Amount',
+          'Currency',
+          'Txid',
+          'Creator',
+          'Copayers',
+          'Comment'
+        ];
 
-      var _amount, _note, _copayers, _creator, _comment;
+        var _amount, _note, _copayers, _creator, _comment;
 
-      data.forEach((it, index) => {
-        var amount = it.amount;
+        data.forEach((it, index) => {
+          var amount = it.amount;
 
-        if (it.action == 'moved')
-          amount = 0;
+          if (it.action == 'moved') amount = 0;
 
-        _copayers = '';
-        _creator = '';
+          _copayers = '';
+          _creator = '';
 
-        if (it.actions && it.actions.length > 1) {
-          for (var i = 0; i < it.actions.length; i++) {
-            _copayers += it.actions[i].copayerName + ':' + it.actions[i].type + ' - ';
+          if (it.actions && it.actions.length > 1) {
+            for (var i = 0; i < it.actions.length; i++) {
+              _copayers +=
+                it.actions[i].copayerName + ':' + it.actions[i].type + ' - ';
+            }
+            _creator =
+              it.creatorName && it.creatorName != 'undefined'
+                ? it.creatorName
+                : '';
           }
-          _creator = (it.creatorName && it.creatorName != 'undefined') ? it.creatorName : '';
-        }
-        _amount = (it.action == 'sent' ? '-' : '') + (amount * this.satToBtc).toFixed(8);
-        _note = it.message || '';
-        _comment = it.note ? it.note.body : '';
+          _amount =
+            (it.action == 'sent' ? '-' : '') +
+            (amount * this.satToBtc).toFixed(8);
+          _note = it.message || '';
+          _comment = it.note ? it.note.body : '';
 
-        if (it.action == 'moved')
-          _note += ' Moved:' + (it.amount * this.satToBtc).toFixed(8)
+          if (it.action == 'moved')
+            _note += ' Moved:' + (it.amount * this.satToBtc).toFixed(8);
 
-        this.csvContent.push({
-          'Date': this.formatDate(it.time * 1000),
-          'Destination': it.addressTo || '',
-          'Description': _note,
-          'Amount': _amount,
-          'Currency': this.currency,
-          'Txid': it.txid,
-          'Creator': _creator,
-          'Copayers': _copayers,
-          'Comment': _comment
-        });
-
-        if (it.fees && (it.action == 'moved' || it.action == 'sent')) {
-          var _fee = (it.fees * this.satToBtc).toFixed(8)
           this.csvContent.push({
-            'Date': this.formatDate(it.time * 1000),
-            'Destination': 'Bitcoin Network Fees',
-            'Description': '',
-            'Amount': '-' + _fee,
-            'Currency': this.currency,
-            'Txid': '',
-            'Creator': '',
-            'Copayers': ''
+            Date: this.formatDate(it.time * 1000),
+            Destination: it.addressTo || '',
+            Description: _note,
+            Amount: _amount,
+            Currency: this.currency,
+            Txid: it.txid,
+            Creator: _creator,
+            Copayers: _copayers,
+            Comment: _comment
           });
-        }
+
+          if (it.fees && (it.action == 'moved' || it.action == 'sent')) {
+            var _fee = (it.fees * this.satToBtc).toFixed(8);
+            this.csvContent.push({
+              Date: this.formatDate(it.time * 1000),
+              Destination: 'Bitcoin Network Fees',
+              Description: '',
+              Amount: '-' + _fee,
+              Currency: this.currency,
+              Txid: '',
+              Creator: '',
+              Copayers: ''
+            });
+          }
+        });
+        this.csvReady = true;
+      })
+      .catch(err => {
+        this.logger.warn('Failed to generate CSV:', err);
+        this.err = err;
       });
-      this.csvReady = true;
-    }).catch((err) => {
-      this.logger.warn('Failed to generate CSV:', err);
-      this.err = err;
-    });
   }
 
   public downloadCSV() {
@@ -158,7 +176,7 @@ export class WalletTransactionHistoryPage {
     });
 
     var blob = new Blob([csv]);
-    var a = window.document.createElement("a");
+    var a = window.document.createElement('a');
     a.href = window.URL.createObjectURL(blob);
     a.download = this.csvFilename;
     document.body.appendChild(a);
@@ -175,7 +193,9 @@ export class WalletTransactionHistoryPage {
 
     this.navCtrl.popToRoot();
     this.navCtrl.parent.select(0);
-    this.navCtrl.push(WalletDetailsPage, { walletId: this.wallet.credentials.walletId, clearCache: true });
+    this.navCtrl.push(WalletDetailsPage, {
+      walletId: this.wallet.credentials.walletId,
+      clearCache: true
+    });
   }
-
 }

@@ -4,10 +4,9 @@ import { TouchIdProvider } from '../../providers/touchid/touchid';
 
 @Component({
   selector: 'page-fingerprint',
-  templateUrl: 'fingerprint.html',
+  templateUrl: 'fingerprint.html'
 })
 export class FingerprintModalPage {
-
   public unregister: any;
 
   constructor(
@@ -15,7 +14,7 @@ export class FingerprintModalPage {
     private viewCtrl: ViewController,
     private platform: Platform
   ) {
-    this.unregister = this.platform.registerBackButtonAction(() => { });
+    this.unregister = this.platform.registerBackButtonAction(() => {});
     this.checkFingerprint();
   }
 

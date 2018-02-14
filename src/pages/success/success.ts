@@ -4,10 +4,9 @@ import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'page-success',
-  templateUrl: 'success.html',
+  templateUrl: 'success.html'
 })
 export class SuccessModalPage {
-
   public successText: string;
   public successComment: string;
 
@@ -16,8 +15,12 @@ export class SuccessModalPage {
     private navParams: NavParams,
     private translate: TranslateService
   ) {
-    this.successText = this.navParams.data.successText ? this.navParams.data.successText : this.translate.instant('Payment Sent');
-    this.successComment = this.navParams.data.successComment ? this.navParams.data.successComment : '';
+    this.successText = this.navParams.data.successText
+      ? this.navParams.data.successText
+      : this.translate.instant('Payment Sent');
+    this.successComment = this.navParams.data.successComment
+      ? this.navParams.data.successComment
+      : '';
   }
 
   public close(): void {

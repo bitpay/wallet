@@ -7,10 +7,8 @@ import * as _ from 'lodash';
 import { HomeIntegrationsProvider } from '../home-integrations/home-integrations';
 import { PersistenceProvider } from '../persistence/persistence';
 
-
 @Injectable()
 export class AmazonProvider {
-
   public credentials: any;
   public limitPerDay: number;
   public homeItem: any;
@@ -30,26 +28,26 @@ export class AmazonProvider {
     this.credentials.NETWORK = 'livenet';
     //this.credentials.NETWORK = 'testnet';
     if (this.credentials.NETWORK == 'testnet') {
-      this.credentials.BITPAY_API_URL = "https://test.bitpay.com";
+      this.credentials.BITPAY_API_URL = 'https://test.bitpay.com';
     } else {
-      this.credentials.BITPAY_API_URL = "https://bitpay.com";
-    };
+      this.credentials.BITPAY_API_URL = 'https://bitpay.com';
+    }
     this.limitPerDay = 2000;
     this.homeItem = {
       name: 'amazon',
       title: 'Amazon.com Gift Cards',
       icon: 'assets/img/amazon/icon-amazon.svg',
-      page: 'AmazonPage',
+      page: 'AmazonPage'
     };
   }
 
   public getNetwork() {
     return this.credentials.NETWORK;
-  };
+  }
 
   public savePendingGiftCard(gc, opts, cb) {
     var network = this.getNetwork();
-    this.persistenceProvider.getAmazonGiftCards(network).then((oldGiftCards) => {
+    this.persistenceProvider.getAmazonGiftCards(network).then(oldGiftCards => {
       if (_.isString(oldGiftCards)) {
         oldGiftCards = JSON.parse(oldGiftCards);
       }
@@ -62,7 +60,7 @@ export class AmazonProvider {
         inv[gc.invoiceId] = _.assign(inv[gc.invoiceId], opts);
       }
       if (opts && opts.remove) {
-        delete (inv[gc.invoiceId]);
+        delete inv[gc.invoiceId];
       }
 
       inv = JSON.stringify(inv);
@@ -74,17 +72,18 @@ export class AmazonProvider {
 
   public getPendingGiftCards(cb) {
     var network = this.getNetwork();
-    this.persistenceProvider.getAmazonGiftCards(network).then((giftCards) => {
-      var _gcds = giftCards ? giftCards : null;
-      return cb(null, _gcds);
-    }).catch((err) => {
-      return cb(err);
-
-    });
-  };
+    this.persistenceProvider
+      .getAmazonGiftCards(network)
+      .then(giftCards => {
+        var _gcds = giftCards ? giftCards : null;
+        return cb(null, _gcds);
+      })
+      .catch(err => {
+        return cb(err);
+      });
+  }
 
   public createBitPayInvoice(data, cb) {
-
     var dataSrc = {
       currency: data.currency,
       amount: data.amount,
@@ -92,63 +91,87 @@ export class AmazonProvider {
       email: data.email
     };
 
-    this.http.post(this.credentials.BITPAY_API_URL + '/amazon-gift/pay', dataSrc).subscribe((data: any) => {
-      this.logger.info('BitPay Create Invoice: SUCCESS');
-      return cb(null, data);
-    }, (data) => {
-      this.logger.error('BitPay Create Invoice: ERROR ' + data.error.message);
-      return cb(data.error);
-    });
-  };
+    this.http
+      .post(this.credentials.BITPAY_API_URL + '/amazon-gift/pay', dataSrc)
+      .subscribe(
+        (data: any) => {
+          this.logger.info('BitPay Create Invoice: SUCCESS');
+          return cb(null, data);
+        },
+        data => {
+          this.logger.error(
+            'BitPay Create Invoice: ERROR ' + data.error.message
+          );
+          return cb(data.error);
+        }
+      );
+  }
 
   public getBitPayInvoice(id, cb) {
-    this.http.get(this.credentials.BITPAY_API_URL + '/invoices/' + id).subscribe((data: any) => {
-      this.logger.info('BitPay Get Invoice: SUCCESS');
-      return cb(null, data.data);
-    }, (data: any) => {
-      this.logger.error('BitPay Get Invoice: ERROR ' + data.error.message);
-      return cb(data.error.message);
-    });
-  };
+    this.http
+      .get(this.credentials.BITPAY_API_URL + '/invoices/' + id)
+      .subscribe(
+        (data: any) => {
+          this.logger.info('BitPay Get Invoice: SUCCESS');
+          return cb(null, data.data);
+        },
+        (data: any) => {
+          this.logger.error('BitPay Get Invoice: ERROR ' + data.error.message);
+          return cb(data.error.message);
+        }
+      );
+  }
 
   public createGiftCard(data, cb) {
-
     var dataSrc = {
-      "clientId": data.uuid,
-      "invoiceId": data.invoiceId,
-      "accessKey": data.accessKey
+      clientId: data.uuid,
+      invoiceId: data.invoiceId,
+      accessKey: data.accessKey
     };
 
-    this.http.post(this.credentials.BITPAY_API_URL + '/amazon-gift/redeem', dataSrc).subscribe((data: any) => {
-      var status = data.status == 'new' ? 'PENDING' : (data.status == 'paid') ? 'PENDING' : data.status;
-      data.status = status;
-      this.logger.info('Amazon.com Gift Card Create/Update: ' + status);
-      return cb(null, data);
-    }, (data: any) => {
-      this.logger.error('Amazon.com Gift Card Create/Update: ' + data.message);
-      return cb(data);
-    });
-  };
+    this.http
+      .post(this.credentials.BITPAY_API_URL + '/amazon-gift/redeem', dataSrc)
+      .subscribe(
+        (data: any) => {
+          var status =
+            data.status == 'new'
+              ? 'PENDING'
+              : data.status == 'paid' ? 'PENDING' : data.status;
+          data.status = status;
+          this.logger.info('Amazon.com Gift Card Create/Update: ' + status);
+          return cb(null, data);
+        },
+        (data: any) => {
+          this.logger.error(
+            'Amazon.com Gift Card Create/Update: ' + data.message
+          );
+          return cb(data);
+        }
+      );
+  }
 
   public cancelGiftCard(data, cb) {
-
     var dataSrc = {
-      "clientId": data.uuid,
-      "invoiceId": data.invoiceId,
-      "accessKey": data.accessKey
+      clientId: data.uuid,
+      invoiceId: data.invoiceId,
+      accessKey: data.accessKey
     };
 
-    this.http.post(this.credentials.BITPAY_API_URL + '/amazon-gift/cancel', dataSrc).subscribe((data: any) => {
-      this.logger.info('Amazon.com Gift Card Cancel: SUCCESS');
-      return cb(null, data);
-    }, (data: any) => {
-      this.logger.error('Amazon.com Gift Card Cancel: ' + data.message);
-      return cb(data);
-    });
-  };
+    this.http
+      .post(this.credentials.BITPAY_API_URL + '/amazon-gift/cancel', dataSrc)
+      .subscribe(
+        (data: any) => {
+          this.logger.info('Amazon.com Gift Card Cancel: SUCCESS');
+          return cb(null, data);
+        },
+        (data: any) => {
+          this.logger.error('Amazon.com Gift Card Cancel: ' + data.message);
+          return cb(data);
+        }
+      );
+  }
 
   public register() {
     this.homeIntegrationsProvider.register(this.homeItem);
-  };
-
+  }
 }

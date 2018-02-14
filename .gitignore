@@ -12,9 +12,6 @@ log.txt
 .vscode/
 npm-debug.log*
 
-# No package-lock
-package-lock.json
-
 # Firebase
 /GoogleService-Info.plist
 /google-services.json
@@ -45,10 +42,12 @@ node_modules/
 tmp/
 temp/
 hooks/
+junitresults.xml
 platforms/
 plugins/
 plugins/android.json
 plugins/ios.json
+screenshots/
 www/
 $RECYCLE.BIN/
 

@@ -5,7 +5,6 @@ import * as _ from 'lodash';
 
 @Injectable()
 export class RateProvider {
-
   private rates: any;
   private alternatives: Array<any>;
   private ratesBCH: any;
@@ -17,10 +16,7 @@ export class RateProvider {
   private rateServiceUrl = 'https://bitpay.com/api/rates';
   private bchRateServiceUrl = 'https://bitpay.com/api/rates/bch';
 
-  constructor(
-    private http: HttpClient,
-    private logger: Logger
-  ) {
+  constructor(private http: HttpClient, private logger: Logger) {
     this.logger.info('RateProvider initialized.');
     this.rates = {};
     this.alternatives = [];
@@ -34,36 +30,39 @@ export class RateProvider {
 
   private updateRatesBtc(): Promise<any> {
     return new Promise((resolve, reject) => {
-      this.getBTC().then((dataBTC: any) => {
-
-        _.each(dataBTC, (currency: any) => {
-          this.rates[currency.code] = currency.rate;
-          this.alternatives.push({
-            name: currency.name,
-            isoCode: currency.code,
-            rate: currency.rate
+      this.getBTC()
+        .then((dataBTC: any) => {
+          _.each(dataBTC, (currency: any) => {
+            this.rates[currency.code] = currency.rate;
+            this.alternatives.push({
+              name: currency.name,
+              isoCode: currency.code,
+              rate: currency.rate
+            });
           });
+          this.ratesAvailable = true;
+          resolve();
+        })
+        .catch((errorBTC: any) => {
+          this.logger.error(errorBTC);
+          reject(errorBTC);
         });
-        this.ratesAvailable = true;
-        resolve();
-      }).catch((errorBTC: any) => {
-        this.logger.error(errorBTC);
-        reject(errorBTC);
-      });
     });
   }
 
   private updateRatesBch(): Promise<any> {
     return new Promise((resolve, reject) => {
-      this.getBCH().then((dataBCH: any) => {
-        _.each(dataBCH, (currency: any) => {
-          this.ratesBCH[currency.code] = currency.rate;
+      this.getBCH()
+        .then((dataBCH: any) => {
+          _.each(dataBCH, (currency: any) => {
+            this.ratesBCH[currency.code] = currency.rate;
+          });
+          resolve();
+        })
+        .catch((errorBCH: any) => {
+          this.logger.error(errorBCH);
+          reject(errorBCH);
         });
-        resolve();
-      }).catch((errorBCH: any) => {
-        this.logger.error(errorBCH);
-        reject(errorBCH);
-      });
     });
   }
 
@@ -84,10 +83,8 @@ export class RateProvider {
   }
 
   private getRate(code: string, chain?: string): number {
-    if (chain == 'bch')
-      return this.ratesBCH[code];
-    else
-      return this.rates[code];
+    if (chain == 'bch') return this.ratesBCH[code];
+    else return this.rates[code];
   }
 
   public getAlternatives(): Array<any> {
@@ -117,7 +114,7 @@ export class RateProvider {
       return {
         name: item.name,
         isoCode: item.isoCode
-      }
+      };
     });
     if (sort) {
       alternatives.sort((a: any, b: any) => {
@@ -137,5 +134,4 @@ export class RateProvider {
       }
     });
   }
-
 }

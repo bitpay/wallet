@@ -1,5 +1,10 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, Events, ModalController } from 'ionic-angular';
+import {
+  NavController,
+  NavParams,
+  Events,
+  ModalController
+} from 'ionic-angular';
 import { Logger } from '../../../../providers/logger/logger';
 
 //pages
@@ -18,10 +23,9 @@ import * as _ from 'lodash';
 
 @Component({
   selector: 'page-buy-glidera',
-  templateUrl: 'buy-glidera.html',
+  templateUrl: 'buy-glidera.html'
 })
 export class BuyGlideraPage {
-
   public isCordova: boolean;
   public token: string;
   public isFiat: boolean;
@@ -122,9 +126,10 @@ export class BuyGlideraPage {
       } else if (mode == 'AUTHENTICATOR') {
         message = 'Use an authenticator app (Authy or Google Authenticator).';
       } else {
-        message = 'A SMS containing a confirmation code was sent to your phone.';
+        message =
+          'A SMS containing a confirmation code was sent to your phone.';
       }
-      this.popupProvider.ionicPrompt(title, message).then((twoFaCode) => {
+      this.popupProvider.ionicPrompt(title, message).then(twoFaCode => {
         if (typeof twoFaCode == 'undefined') return cb();
         return cb(twoFaCode);
       });
@@ -137,48 +142,63 @@ export class BuyGlideraPage {
     let message = 'Buy bitcoin for ' + this.amount + ' ' + this.currency;
     let okText = 'Confirm';
     let cancelText = 'Cancel';
-    this.popupProvider.ionicConfirm(null, message, okText, cancelText).then((ok) => {
-      if (!ok) return;
-      this.onGoingProcessProvider.set('buyingBitcoin', true);
-      this.glideraProvider.get2faCode(this.token, (err, tfa) => {
-        if (err) {
-          this.onGoingProcessProvider.set('buyingBitcoin', false);
-          this.showError(err);
-          return;
-        }
-        this.ask2FaCode(tfa.mode, (twoFaCode) => {
-          if (tfa.mode != 'NONE' && _.isEmpty(twoFaCode)) {
-            this.onGoingProcessProvider.set('buyingBitcoin', false);
-            this.showError('No code entered');
-            return;
-          }
-
-          this.walletProvider.getAddress(this.wallet, false).then((walletAddr) => {
-            let data = {
-              destinationAddress: walletAddr,
-              qty: this.buyInfo.qty,
-              priceUuid: this.buyInfo.priceUuid,
-              useCurrentPrice: false,
-              ip: null
-            };
-            this.glideraProvider.buy(this.token, twoFaCode, data, (err, data) => {
-              this.onGoingProcessProvider.set('buyingBitcoin', false);
-              if (err) return this.showError(err);
-              this.logger.info(data);
-              this.openSuccessModal();
-            });
-          }).catch(() => {
+    this.popupProvider
+      .ionicConfirm(null, message, okText, cancelText)
+      .then(ok => {
+        if (!ok) return;
+        this.onGoingProcessProvider.set('buyingBitcoin', true);
+        this.glideraProvider.get2faCode(this.token, (err, tfa) => {
+          if (err) {
             this.onGoingProcessProvider.set('buyingBitcoin', false);
             this.showError(err);
+            return;
+          }
+          this.ask2FaCode(tfa.mode, twoFaCode => {
+            if (tfa.mode != 'NONE' && _.isEmpty(twoFaCode)) {
+              this.onGoingProcessProvider.set('buyingBitcoin', false);
+              this.showError('No code entered');
+              return;
+            }
+
+            this.walletProvider
+              .getAddress(this.wallet, false)
+              .then(walletAddr => {
+                let data = {
+                  destinationAddress: walletAddr,
+                  qty: this.buyInfo.qty,
+                  priceUuid: this.buyInfo.priceUuid,
+                  useCurrentPrice: false,
+                  ip: null
+                };
+                this.glideraProvider.buy(
+                  this.token,
+                  twoFaCode,
+                  data,
+                  (err, data) => {
+                    this.onGoingProcessProvider.set('buyingBitcoin', false);
+                    if (err) return this.showError(err);
+                    this.logger.info(data);
+                    this.openSuccessModal();
+                  }
+                );
+              })
+              .catch(() => {
+                this.onGoingProcessProvider.set('buyingBitcoin', false);
+                this.showError(err);
+              });
           });
         });
       });
-    });
   }
 
   public showWallets(): void {
     let id = this.wallet ? this.wallet.credentials.walletId : null;
-    this.events.publish('showWalletsSelectorEvent', this.wallets, id, 'Receive in');
+    this.events.publish(
+      'showWalletsSelectorEvent',
+      this.wallets,
+      id,
+      'Receive in'
+    );
     this.events.subscribe('selectWalletEvent', (wallet: any) => {
       if (!_.isEmpty(wallet)) this.onWalletSelect(wallet);
       this.events.unsubscribe('selectWalletEvent');
@@ -190,7 +210,8 @@ export class BuyGlideraPage {
     let parsedAmount = this.txFormatProvider.parseAmount(
       this.coin,
       this.amount,
-      this.currency);
+      this.currency
+    );
 
     this.amount = parsedAmount.amount;
     this.currency = parsedAmount.currency;
@@ -200,12 +221,17 @@ export class BuyGlideraPage {
 
   public openSuccessModal(): void {
     let successText = 'Bought';
-    let successComment = 'A transfer has been initiated from your bank account. Your bitcoins should arrive to your wallet in 2-4 business day';
-    let modal = this.modalCtrl.create(SuccessModalPage, { successText: successText, successComment: successComment }, { showBackdrop: true, enableBackdropDismiss: false });
+    let successComment =
+      'A transfer has been initiated from your bank account. Your bitcoins should arrive to your wallet in 2-4 business day';
+    let modal = this.modalCtrl.create(
+      SuccessModalPage,
+      { successText: successText, successComment: successComment },
+      { showBackdrop: true, enableBackdropDismiss: false }
+    );
     modal.present();
     modal.onDidDismiss(() => {
       this.navCtrl.remove(3, 1);
       this.navCtrl.pop();
-    })
+    });
   }
 }

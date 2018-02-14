@@ -1,5 +1,10 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, Events, ModalController } from 'ionic-angular';
+import {
+  NavController,
+  NavParams,
+  Events,
+  ModalController
+} from 'ionic-angular';
 import { Logger } from '../../../../providers/logger/logger';
 import * as _ from 'lodash';
 
@@ -18,10 +23,9 @@ import { SuccessModalPage } from '../../../success/success';
 
 @Component({
   selector: 'page-buy-coinbase',
-  templateUrl: 'buy-coinbase.html',
+  templateUrl: 'buy-coinbase.html'
 })
 export class BuyCoinbasePage {
-
   private amount: string;
   private currency: string;
   private coin: string;
@@ -101,47 +105,58 @@ export class BuyCoinbasePage {
       }
       let accessToken = res.accessToken;
 
-      this.coinbaseProvider.buyPrice(accessToken, this.coinbaseProvider.getAvailableCurrency(), (err: any, b: any) => {
-        this.buyPrice = b.data || null;
-      });
+      this.coinbaseProvider.buyPrice(
+        accessToken,
+        this.coinbaseProvider.getAvailableCurrency(),
+        (err: any, b: any) => {
+          this.buyPrice = b.data || null;
+        }
+      );
 
       this.paymentMethods = [];
       this.selectedPaymentMethodId = null;
-      this.coinbaseProvider.getPaymentMethods(accessToken, (err: any, p: any) => {
-        if (err) {
-          this.onGoingProcessProvider.set('connectingCoinbase', false);
-          this.showErrorAndBack(err);
-          return;
-        }
+      this.coinbaseProvider.getPaymentMethods(
+        accessToken,
+        (err: any, p: any) => {
+          if (err) {
+            this.onGoingProcessProvider.set('connectingCoinbase', false);
+            this.showErrorAndBack(err);
+            return;
+          }
 
-        let hasPrimary;
-        let pm;
-        for (let i = 0; i < p.data.length; i++) {
-          pm = p.data[i];
-          if (pm.allow_buy) {
-            this.paymentMethods.push(pm);
+          let hasPrimary;
+          let pm;
+          for (let i = 0; i < p.data.length; i++) {
+            pm = p.data[i];
+            if (pm.allow_buy) {
+              this.paymentMethods.push(pm);
+            }
+            if (pm.allow_buy && pm.primary_buy) {
+              hasPrimary = true;
+              this.selectedPaymentMethodId = pm.id;
+            }
           }
-          if (pm.allow_buy && pm.primary_buy) {
-            hasPrimary = true;
-            this.selectedPaymentMethodId = pm.id;
+          if (_.isEmpty(this.paymentMethods)) {
+            this.onGoingProcessProvider.set('connectingCoinbase', false);
+            let url =
+              'https://support.coinbase.com/customer/portal/articles/1148716-payment-methods-for-us-customers';
+            let msg = 'No payment method available to buy';
+            let okText = 'More info';
+            let cancelText = 'Go Back';
+            this.popupProvider
+              .ionicConfirm(null, msg, okText, cancelText)
+              .then(res => {
+                if (res) this.externalLinkProvider.open(url);
+                this.navCtrl.remove(3, 1);
+                this.navCtrl.pop();
+              });
+            return;
           }
+          if (!hasPrimary)
+            this.selectedPaymentMethodId = this.paymentMethods[0].id;
+          this.buyRequest();
         }
-        if (_.isEmpty(this.paymentMethods)) {
-          this.onGoingProcessProvider.set('connectingCoinbase', false);
-          let url = 'https://support.coinbase.com/customer/portal/articles/1148716-payment-methods-for-us-customers';
-          let msg = 'No payment method available to buy';
-          let okText = 'More info';
-          let cancelText = 'Go Back';
-          this.popupProvider.ionicConfirm(null, msg, okText, cancelText).then((res) => {
-            if (res) this.externalLinkProvider.open(url);
-            this.navCtrl.remove(3, 1);
-            this.navCtrl.pop();
-          });
-          return;
-        }
-        if (!hasPrimary) this.selectedPaymentMethodId = this.paymentMethods[0].id;
-        this.buyRequest();
-      });
+      );
     });
   }
 
@@ -161,14 +176,19 @@ export class BuyCoinbasePage {
         payment_method: this.selectedPaymentMethodId,
         quote: true
       };
-      this.coinbaseProvider.buyRequest(accessToken, accountId, dataSrc, (err: any, data: any) => {
-        this.onGoingProcessProvider.set('connectingCoinbase', false);
-        if (err) {
-          this.showErrorAndBack(err);
-          return;
+      this.coinbaseProvider.buyRequest(
+        accessToken,
+        accountId,
+        dataSrc,
+        (err: any, data: any) => {
+          this.onGoingProcessProvider.set('connectingCoinbase', false);
+          if (err) {
+            this.showErrorAndBack(err);
+            return;
+          }
+          this.buyRequestInfo = data.data;
         }
-        this.buyRequestInfo = data.data;
-      });
+      );
     });
   }
 
@@ -176,43 +196,49 @@ export class BuyCoinbasePage {
     let message = 'Buy bitcoin for ' + this.amountUnitStr;
     let okText = 'Confirm';
     let cancelText = 'Cancel';
-    this.popupProvider.ionicConfirm(null, message, okText, cancelText).then((ok: boolean) => {
-      if (!ok) return;
+    this.popupProvider
+      .ionicConfirm(null, message, okText, cancelText)
+      .then((ok: boolean) => {
+        if (!ok) return;
 
-      this.onGoingProcessProvider.set('buyingBitcoin', true);
-      this.coinbaseProvider.init((err: any, res: any) => {
-        if (err) {
-          this.onGoingProcessProvider.set('buyingBitcoin', false);
-          this.showError(err);
-          return;
-        }
-        let accessToken = res.accessToken;
-        let accountId = res.accountId;
-        let dataSrc = {
-          amount: this.amount,
-          currency: this.currency,
-          payment_method: this.selectedPaymentMethodId,
-          commit: true
-        };
-        this.coinbaseProvider.buyRequest(accessToken, accountId, dataSrc, (err: any, b: any) => {
+        this.onGoingProcessProvider.set('buyingBitcoin', true);
+        this.coinbaseProvider.init((err: any, res: any) => {
           if (err) {
             this.onGoingProcessProvider.set('buyingBitcoin', false);
             this.showError(err);
             return;
           }
-          setTimeout(() => {
-            let tx = b.data ? b.data.transaction : null;
-            if (tx && tx.id) {
-              this.processBuyTx(tx);
+          let accessToken = res.accessToken;
+          let accountId = res.accountId;
+          let dataSrc = {
+            amount: this.amount,
+            currency: this.currency,
+            payment_method: this.selectedPaymentMethodId,
+            commit: true
+          };
+          this.coinbaseProvider.buyRequest(
+            accessToken,
+            accountId,
+            dataSrc,
+            (err: any, b: any) => {
+              if (err) {
+                this.onGoingProcessProvider.set('buyingBitcoin', false);
+                this.showError(err);
+                return;
+              }
+              setTimeout(() => {
+                let tx = b.data ? b.data.transaction : null;
+                if (tx && tx.id) {
+                  this.processBuyTx(tx);
+                } else {
+                  this._processBuyOrder(b);
+                }
+              }, 8000);
             }
-            else {
-              this._processBuyOrder(b);
-            }
-          }, 8000);
+          );
         });
       });
-    });
-  };
+  }
 
   private processBuyTx(tx: any): void {
     if (!tx) {
@@ -221,51 +247,72 @@ export class BuyCoinbasePage {
       return;
     }
 
-    this.coinbaseProvider.getTransaction(this.accessToken, this.accountId, tx.id, (err: any, updatedTx: any) => {
-      if (err) {
-        this.onGoingProcessProvider.set('buyingBitcoin', false);
-        this.showError(err);
-        return;
-      }
-      this.walletProvider.getAddress(this.wallet, false).then((walletAddr: string) => {
-
-        updatedTx.data['toAddr'] = walletAddr;
-        updatedTx.data['status'] = 'pending'; // Forcing "pending" status to process later
-
-        this.logger.debug('Saving transaction to process later...');
-        this.coinbaseProvider.savePendingTransaction(updatedTx.data, {}, (err: any) => {
+    this.coinbaseProvider.getTransaction(
+      this.accessToken,
+      this.accountId,
+      tx.id,
+      (err: any, updatedTx: any) => {
+        if (err) {
           this.onGoingProcessProvider.set('buyingBitcoin', false);
-          if (err) this.logger.debug(err);
-          this.openSuccessModal();
-        });
-      }).catch((err) => {
-        this.onGoingProcessProvider.set('buyingBitcoin', false);
-        this.showError(err);
-      });
-    });
+          this.showError(err);
+          return;
+        }
+        this.walletProvider
+          .getAddress(this.wallet, false)
+          .then((walletAddr: string) => {
+            updatedTx.data['toAddr'] = walletAddr;
+            updatedTx.data['status'] = 'pending'; // Forcing "pending" status to process later
+
+            this.logger.debug('Saving transaction to process later...');
+            this.coinbaseProvider.savePendingTransaction(
+              updatedTx.data,
+              {},
+              (err: any) => {
+                this.onGoingProcessProvider.set('buyingBitcoin', false);
+                if (err) this.logger.debug(err);
+                this.openSuccessModal();
+              }
+            );
+          })
+          .catch(err => {
+            this.onGoingProcessProvider.set('buyingBitcoin', false);
+            this.showError(err);
+          });
+      }
+    );
   }
 
   private _processBuyOrder(b: any): void {
-    this.coinbaseProvider.getBuyOrder(this.accessToken, this.accountId, b.data.id, (err: any, buyResp: any) => {
-      if (err) {
-        this.onGoingProcessProvider.set('buyingBitcoin', false);
-        this.showError(err);
-        return;
+    this.coinbaseProvider.getBuyOrder(
+      this.accessToken,
+      this.accountId,
+      b.data.id,
+      (err: any, buyResp: any) => {
+        if (err) {
+          this.onGoingProcessProvider.set('buyingBitcoin', false);
+          this.showError(err);
+          return;
+        }
+        let tx = buyResp.data ? buyResp.data.transaction : null;
+        if (tx && tx.id) {
+          this.processBuyTx(tx);
+        } else {
+          setTimeout(() => {
+            this._processBuyOrder(b);
+          }, 5000);
+        }
       }
-      let tx = buyResp.data ? buyResp.data.transaction : null;
-      if (tx && tx.id) {
-        this.processBuyTx(tx);
-      } else {
-        setTimeout(() => {
-          this._processBuyOrder(b);
-        }, 5000);
-      }
-    });
+    );
   }
 
   public showWallets(): void {
     let id = this.wallet ? this.wallet.credentials.walletId : null;
-    this.events.publish('showWalletsSelectorEvent', this.wallets, id, 'Receive in');
+    this.events.publish(
+      'showWalletsSelectorEvent',
+      this.wallets,
+      id,
+      'Receive in'
+    );
     this.events.subscribe('selectWalletEvent', (wallet: any) => {
       if (!_.isEmpty(wallet)) this.onWalletSelect(wallet);
       this.events.unsubscribe('selectWalletEvent');
@@ -274,7 +321,11 @@ export class BuyCoinbasePage {
 
   public onWalletSelect(wallet: any) {
     this.wallet = wallet;
-    let parsedAmount = this.txFormatProvider.parseAmount(this.coin, this.amount, this.currency);
+    let parsedAmount = this.txFormatProvider.parseAmount(
+      this.coin,
+      this.amount,
+      this.currency
+    );
 
     // Buy always in BTC
     this.amount = (parsedAmount.amountSat / 100000000).toFixed(8);
@@ -294,8 +345,13 @@ export class BuyCoinbasePage {
 
   public openSuccessModal(): void {
     let successText = 'Bought';
-    let successComment = 'Bitcoin purchase completed. Coinbase has queued the transfer to your selected wallet';
-    let modal = this.modalCtrl.create(SuccessModalPage, { successText: successText, successComment: successComment }, { showBackdrop: true, enableBackdropDismiss: false });
+    let successComment =
+      'Bitcoin purchase completed. Coinbase has queued the transfer to your selected wallet';
+    let modal = this.modalCtrl.create(
+      SuccessModalPage,
+      { successText: successText, successComment: successComment },
+      { showBackdrop: true, enableBackdropDismiss: false }
+    );
     modal.present();
     modal.onDidDismiss(() => {
       this.navCtrl.remove(3, 1);
@@ -303,5 +359,4 @@ export class BuyCoinbasePage {
       this.navCtrl.push(CoinbasePage, { coin: 'btc' });
     });
   }
-
 }

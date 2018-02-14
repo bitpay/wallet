@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { DOCUMENT } from "@angular/platform-browser";
+import { DOCUMENT } from '@angular/platform-browser';
 import { Inject } from '@angular/core';
 import { ActionSheetController, ToastController } from 'ionic-angular';
 import { TranslateService } from '@ngx-translate/core';
@@ -16,10 +16,9 @@ import * as _ from 'lodash';
 
 @Component({
   selector: 'page-session-log',
-  templateUrl: 'session-log.html',
+  templateUrl: 'session-log.html'
 })
 export class SessionLogPage {
-
   private config: any;
   private dom: Document;
 
@@ -50,7 +49,9 @@ export class SessionLogPage {
   }
 
   ionViewWillEnter() {
-    let selectedLevel: any = _.has(this.config, 'log.weight') ? this.logger.getWeight(this.config.log.weight) : this.logger.getDefaultWeight();
+    let selectedLevel: any = _.has(this.config, 'log.weight')
+      ? this.logger.getWeight(this.config.log.weight)
+      : this.logger.getDefaultWeight();
     this.filterValue = selectedLevel.weight;
     this.setOptionSelected(selectedLevel.weight);
     this.filterLogs(selectedLevel.weight);
@@ -71,11 +72,15 @@ export class SessionLogPage {
   }
 
   public prepareLogs(): any {
-    let log = 'Copay Session Logs\n Be careful, this could contain sensitive private data\n\n';
+    let log =
+      'Copay Session Logs\n Be careful, this could contain sensitive private data\n\n';
     log += '\n\n';
-    log += this.logger.get().map((v) => {
-      return '[' + v.timestamp + '][' + v.level + ']' + v.msg;
-    }).join('\n');
+    log += this.logger
+      .get()
+      .map(v => {
+        return '[' + v.timestamp + '][' + v.level + ']' + v.msg;
+      })
+      .join('\n');
 
     return log;
   }
@@ -89,7 +94,7 @@ export class SessionLogPage {
     let message = this.translate.instant('Copied to clipboard');
     let showSuccess = this.toastCtrl.create({
       message: message,
-      duration: 1000,
+      duration: 1000
     });
     showSuccess.present();
   }
@@ -103,31 +108,33 @@ export class SessionLogPage {
       null, // TO: must be null or an array
       null, // CC: must be null or an array
       null, // BCC: must be null or an array
-      null, // FILES: can be null, a string, or an array
+      null // FILES: can be null, a string, or an array
     );
   }
 
   public showOptionsMenu(): void {
-
     let copyText = this.translate.instant('Copy to clipboard');
     let emailText = this.translate.instant('Send by email');
     let button = [];
 
     if (this.isCordova) {
-      button = [{
-        text: emailText,
-        handler: () => {
-          this.sendLogs()
+      button = [
+        {
+          text: emailText,
+          handler: () => {
+            this.sendLogs();
+          }
         }
-      }];
-    }
-    else {
-      button = [{
-        text: copyText,
-        handler: () => {
-          this.copyToClipboard();
+      ];
+    } else {
+      button = [
+        {
+          text: copyText,
+          handler: () => {
+            this.copyToClipboard();
+          }
         }
-      }];
+      ];
     }
 
     let actionSheet = this.actionSheetCtrl.create({

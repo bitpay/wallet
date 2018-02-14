@@ -2,7 +2,6 @@ import { FormControl } from '@angular/forms';
 import { BwcProvider } from '../providers/bwc/bwc';
 
 export class AddressValidator {
-
   static bitcore: BwcProvider;
 
   constructor(bwc: BwcProvider) {
@@ -10,7 +9,6 @@ export class AddressValidator {
   }
 
   isValid(control: FormControl): any {
-
     let b = AddressValidator.bitcore.getBitcore();
     let c = AddressValidator.bitcore.getBitcoreCash();
 
@@ -30,8 +28,14 @@ export class AddressValidator {
       let isUriValid = URI.isValid(control.value);
       if (isUriValid) {
         uri = new URI(control.value);
-        isAddressValidLivenet = Address.isValid(uri.address.toString(), 'livenet')
-        isAddressValidTestnet = Address.isValid(uri.address.toString(), 'testnet')
+        isAddressValidLivenet = Address.isValid(
+          uri.address.toString(),
+          'livenet'
+        );
+        isAddressValidTestnet = Address.isValid(
+          uri.address.toString(),
+          'testnet'
+        );
       }
       if (isUriValid && (isAddressValidLivenet || isAddressValidTestnet)) {
         return null;
@@ -40,7 +44,10 @@ export class AddressValidator {
       let isUriValid = URICash.isValid(control.value);
       if (isUriValid) {
         uri = new URICash(control.value);
-        isAddressValidLivenet = AddressCash.isValid(uri.address.toString(), 'livenet')
+        isAddressValidLivenet = AddressCash.isValid(
+          uri.address.toString(),
+          'livenet'
+        );
       }
       if (isUriValid && isAddressValidLivenet) {
         return null;
@@ -50,13 +57,20 @@ export class AddressValidator {
     // Regular Address: try Bitcoin and Bitcoin Cash
     let regularAddressLivenet = Address.isValid(control.value, 'livenet');
     let regularAddressTestnet = Address.isValid(control.value, 'testnet');
-    let regularAddressCashLivenet = AddressCash.isValid(control.value, 'livenet');
-    if (regularAddressLivenet || regularAddressTestnet || regularAddressCashLivenet) {
+    let regularAddressCashLivenet = AddressCash.isValid(
+      control.value,
+      'livenet'
+    );
+    if (
+      regularAddressLivenet ||
+      regularAddressTestnet ||
+      regularAddressCashLivenet
+    ) {
       return null;
     }
 
     return {
-      "Invalid Address": true
+      'Invalid Address': true
     };
   }
 }

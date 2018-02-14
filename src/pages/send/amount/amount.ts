@@ -22,7 +22,7 @@ import { BitPayCardTopUpPage } from '../../integrations/bitpay-card/bitpay-card-
 
 @Component({
   selector: 'page-amount',
-  templateUrl: 'amount.html',
+  templateUrl: 'amount.html'
 })
 export class AmountPage {
   private LENGTH_EXPRESSION_LIMIT: number;
@@ -66,7 +66,7 @@ export class AmountPage {
     private platformProvider: PlatformProvider,
     private nodeWebkitProvider: NodeWebkitProvider,
     private configProvider: ConfigProvider,
-    private rateProvider: RateProvider,
+    private rateProvider: RateProvider
   ) {
     this.showSendMax = false;
     this.config = this.configProvider.get();
@@ -104,7 +104,9 @@ export class AmountPage {
       this.itemSelectorLabel = 'Send ShapeShift Maximum: ' + this.shiftMax;
     }
 
-    let unit = this.navParams.data.currency ? this.navParams.data.currency : this.config.wallet.settings.alternativeIsoCode;
+    let unit = this.navParams.data.currency
+      ? this.navParams.data.currency
+      : this.config.wallet.settings.alternativeIsoCode;
     this.availableUnits.push(this.coin.toUpperCase());
     this.availableUnits.push(unit);
 
@@ -121,7 +123,8 @@ export class AmountPage {
     this.processAmount();
   }
 
-  @HostListener('document:keydown', ['$event']) handleKeyboardEvent(event: KeyboardEvent) {
+  @HostListener('document:keydown', ['$event'])
+  handleKeyboardEvent(event: KeyboardEvent) {
     if (this.navCtrl.getActive().name != 'AmountPage') return;
     if (!event.key) return;
     if (event.which === 8) {
@@ -194,8 +197,7 @@ export class AmountPage {
 
     let value = this.nodeWebkitProvider.readFromClipboard();
 
-    if (value && this.evaluate(value) > 0)
-      this.paste(this.evaluate(value));
+    if (value && this.evaluate(value) > 0) this.paste(this.evaluate(value));
   }
 
   public showSendMaxMenu(): void {
@@ -207,7 +209,7 @@ export class AmountPage {
       handler: () => {
         this.sendMax();
       }
-    }
+    };
     buttons.push(sendMaxButton);
 
     const actionSheet = this.actionSheetCtrl.create({
@@ -223,7 +225,11 @@ export class AmountPage {
   }
 
   public pushDigit(digit: string): void {
-    if (this.expression && this.expression.length >= this.LENGTH_EXPRESSION_LIMIT) return;
+    if (
+      this.expression &&
+      this.expression.length >= this.LENGTH_EXPRESSION_LIMIT
+    )
+      return;
     this.expression = (this.expression + digit).replace('..', '.');
     this.processAmount();
   }
@@ -272,8 +278,7 @@ export class AmountPage {
 
     var result = val.toString();
 
-    if (this.isOperator(_.last(val)))
-      result = result.slice(0, -1);
+    if (this.isOperator(_.last(val))) result = result.slice(0, -1);
 
     return result.replace('x', '*');
   }
@@ -296,11 +301,14 @@ export class AmountPage {
     if (this.isFiatAmount) {
       let altIsoCode: string = this.config.wallet.settings.alternativeIsoCode;
       let unitCode: string = this.config.wallet.settings.unitCode;
-      let value: any = this.rateProvider.fromFiat(this.amount, altIsoCode, unitCode);
+      let value: any = this.rateProvider.fromFiat(
+        this.amount,
+        altIsoCode,
+        unitCode
+      );
       amount_ = parseInt(value);
       amountFiat = this.amount;
-    } else
-      amount_ = +((this.amount * 1e8).toFixed(0));
+    } else amount_ = +(this.amount * 1e8).toFixed(0);
 
     let data: any = {
       recipientType: this.recipientType,
@@ -317,7 +325,7 @@ export class AmountPage {
       walletId: this.walletId,
       toWalletId: this.toWalletId ? this.toWalletId : null,
       id: this.cardId
-    }
+    };
     this.navCtrl.push(this.nextView, data);
   }
 

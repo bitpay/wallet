@@ -7,15 +7,10 @@ import { ImportWalletPage } from '../add/import-wallet/import-wallet';
 
 @Component({
   selector: 'page-onboarding',
-  templateUrl: 'onboarding.html',
+  templateUrl: 'onboarding.html'
 })
 export class OnboardingPage {
-
-  constructor(
-    public navCtrl: NavController,
-    private logger: Logger
-  ) {
-  }
+  constructor(public navCtrl: NavController, private logger: Logger) {}
 
   ionViewDidLoad() {
     this.logger.info('ionViewDidLoad OnboardingPage');
@@ -28,5 +23,4 @@ export class OnboardingPage {
   restoreFromBackup() {
     this.navCtrl.push(ImportWalletPage, { fromOnboarding: true });
   }
-
 }

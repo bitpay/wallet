@@ -46,7 +46,7 @@ export class IncomingDataProvider {
     //TODO Injecting NavController in constructor of service fails with no provider error
     this.navCtrl = this.app.getActiveNav();
     // data extensions for Payment Protocol with non-backwards-compatible request
-    if ((/^bitcoin(cash)?:\?r=[\w+]/).exec(data)) {
+    if (/^bitcoin(cash)?:\?r=[\w+]/.exec(data)) {
       data = decodeURIComponent(data.replace(/bitcoin(cash)?:\?r=/, ''));
       this.navCtrl.push(ConfirmPage, { paypro: data });
       return true;
@@ -69,12 +69,19 @@ export class IncomingDataProvider {
       amount = parsed.amount ? parsed.amount : '';
 
       if (parsed.r) {
-        this.payproProvider.getPayProDetails(parsed.r).then((details) => {
-          this.handlePayPro(details, coin);
-        }).catch((err: string) => {
-          if (addr && amount) this.goSend(addr, amount, message, coin);
-          else this.popupProvider.ionicAlert(this.translate.instant('Error'), err);
-        });
+        this.payproProvider
+          .getPayProDetails(parsed.r)
+          .then(details => {
+            this.handlePayPro(details, coin);
+          })
+          .catch((err: string) => {
+            if (addr && amount) this.goSend(addr, amount, message, coin);
+            else
+              this.popupProvider.ionicAlert(
+                this.translate.instant('Error'),
+                err
+              );
+          });
       } else {
         this.goSend(addr, amount, message, coin);
       }
@@ -89,44 +96,64 @@ export class IncomingDataProvider {
       // keep address in original format
       if (parsed.address && data.indexOf(addr) < 0) {
         addr = parsed.address.toCashAddress();
-      };
+      }
 
       message = parsed.message;
       amount = parsed.amount ? parsed.amount : '';
 
       // paypro not yet supported on cash
       if (parsed.r) {
-        this.payproProvider.getPayProDetails(parsed.r).then((details: any) => {
-          this.handlePayPro(details, coin);
-        }).catch((err: string) => {
-          if (addr && amount)
-            this.goSend(addr, amount, message, coin);
-          else
-            this.popupProvider.ionicAlert(this.translate.instant('Error'), err);
-        });
+        this.payproProvider
+          .getPayProDetails(parsed.r)
+          .then((details: any) => {
+            this.handlePayPro(details, coin);
+          })
+          .catch((err: string) => {
+            if (addr && amount) this.goSend(addr, amount, message, coin);
+            else
+              this.popupProvider.ionicAlert(
+                this.translate.instant('Error'),
+                err
+              );
+          });
       } else {
         this.goSend(addr, amount, message, coin);
       }
       return true;
 
       // Cash URI with bitcoin core address version number?
-    } else if (this.bwcProvider.getBitcore().URI.isValid(data.replace(/^bitcoincash:/, 'bitcoin:'))) {
+    } else if (
+      this.bwcProvider
+        .getBitcore()
+        .URI.isValid(data.replace(/^bitcoincash:/, 'bitcoin:'))
+    ) {
       this.logger.debug('Handling bitcoincash URI with legacy address');
       coin = 'bch';
-      parsed = this.bwcProvider.getBitcore().URI(data.replace(/^bitcoincash:/, 'bitcoin:'));
+      parsed = this.bwcProvider
+        .getBitcore()
+        .URI(data.replace(/^bitcoincash:/, 'bitcoin:'));
 
       let oldAddr = parsed.address ? parsed.address.toString() : '';
       if (!oldAddr) return false;
 
       addr = '';
 
-      let a = this.bwcProvider.getBitcore().Address(oldAddr).toObject();
-      addr = this.bwcProvider.getBitcoreCash().Address.fromObject(a).toString();
+      let a = this.bwcProvider
+        .getBitcore()
+        .Address(oldAddr)
+        .toObject();
+      addr = this.bwcProvider
+        .getBitcoreCash()
+        .Address.fromObject(a)
+        .toString();
 
       // Translate address
       this.logger.debug('address transalated to:' + addr);
       let title = this.translate.instant('Bitcoin cash Payment');
-      let msg = this.translate.instant('Payment address was translated to new Bitcoin Cash address format: {{addr}}', { addr: addr });
+      let msg = this.translate.instant(
+        'Payment address was translated to new Bitcoin Cash address format: {{addr}}',
+        { addr: addr }
+      );
       this.popupProvider.ionicConfirm(title, msg).then((res: boolean) => {
         if (!res) return false;
 
@@ -135,14 +162,19 @@ export class IncomingDataProvider {
 
         // paypro not yet supported on cash
         if (parsed.r) {
-          this.payproProvider.getPayProDetails(parsed.r).then((details) => {
-            this.handlePayPro(details, coin);
-          }).catch((err) => {
-            if (addr && amount)
-              this.goSend(addr, amount, message, coin);
-            else
-              this.popupProvider.ionicAlert(this.translate.instant('Error'), err);
-          });
+          this.payproProvider
+            .getPayProDetails(parsed.r)
+            .then(details => {
+              this.handlePayPro(details, coin);
+            })
+            .catch(err => {
+              if (addr && amount) this.goSend(addr, amount, message, coin);
+              else
+                this.popupProvider.ionicAlert(
+                  this.translate.instant('Error'),
+                  err
+                );
+            });
         } else {
           this.goSend(addr, amount, message, coin);
         }
@@ -152,19 +184,25 @@ export class IncomingDataProvider {
     } else if (/^https?:\/\//.test(data)) {
       this.logger.debug('Handling Plain URL');
 
-      this.payproProvider.getPayProDetails(data).then((details) => {
-        //TODO review
-        this.handlePayPro(details, 'btc');
-        return true;
-      }).catch(() => {
-        this.showMenu({
-          data: data,
-          type: 'url'
+      this.payproProvider
+        .getPayProDetails(data)
+        .then(details => {
+          //TODO review
+          this.handlePayPro(details, 'btc');
+          return true;
+        })
+        .catch(() => {
+          this.showMenu({
+            data: data,
+            type: 'url'
+          });
+          return;
         });
-        return;
-      });
       // Plain Address
-    } else if (this.bwcProvider.getBitcore().Address.isValid(data, 'livenet') || this.bwcProvider.getBitcore().Address.isValid(data, 'testnet')) {
+    } else if (
+      this.bwcProvider.getBitcore().Address.isValid(data, 'livenet') ||
+      this.bwcProvider.getBitcore().Address.isValid(data, 'testnet')
+    ) {
       this.logger.debug('Handling Bitcoin Plain Address');
       if (this.navCtrl.getActive().name === 'ScanPage') {
         this.showMenu({
@@ -177,28 +215,34 @@ export class IncomingDataProvider {
         let network = this.addressProvider.validateAddress(data).network;
         this.goToAmountPage(data, coin, network);
       }
-    } else if (this.bwcProvider.getBitcoreCash().Address.isValid(data, 'livenet')) {
+    } else if (
+      this.bwcProvider.getBitcoreCash().Address.isValid(data, 'livenet')
+    ) {
       this.logger.debug('Handling Bitcoin Cash Plain Address');
       if (this.navCtrl.getActive().name === 'ScanPage') {
         this.showMenu({
           data: data,
           type: 'bitcoinAddress',
-          coin: 'bch',
+          coin: 'bch'
         });
       } else {
         let coin = 'bch';
         let network = this.addressProvider.validateAddress(data).network;
         this.goToAmountPage(data, coin, network);
       }
-    } else if (data && data.indexOf(this.appProvider.info.name + '://glidera') === 0) {
-
+    } else if (
+      data &&
+      data.indexOf(this.appProvider.info.name + '://glidera') === 0
+    ) {
       let code = this.getParameterByName('code', data);
       this.navCtrl.push(GlideraPage, { code: code });
 
       this.logger.debug('Glidera TODO');
       return true;
-    } else if (data && data.indexOf(this.appProvider.info.name + '://coinbase') === 0) {
-
+    } else if (
+      data &&
+      data.indexOf(this.appProvider.info.name + '://coinbase') === 0
+    ) {
       let code = this.getParameterByName('code', data);
       this.navCtrl.push(CoinbasePage, { code: code });
 
@@ -206,7 +250,6 @@ export class IncomingDataProvider {
       return true;
       // BitPayCard Authentication
     } else if (data && data.indexOf(this.appProvider.info.name + '://') === 0) {
-
       // Disable BitPay Card
       if (!this.appProvider.info._enabledExtensions.debitcard) return false;
 
@@ -220,31 +263,41 @@ export class IncomingDataProvider {
         case '0':
           /* For BitPay card binding */
           this.navCtrl.parent.select(0);
-          this.navCtrl.push(BitPayCardIntroPage, { secret: secret, email: email, otp: otp });
+          this.navCtrl.push(BitPayCardIntroPage, {
+            secret: secret,
+            email: email,
+            otp: otp
+          });
           break;
       }
       return true;
 
       // Join
     } else if (data && data.match(/^copay:[0-9A-HJ-NP-Za-km-z]{70,80}$/)) {
-      this.navCtrl.push(JoinWalletPage, { url: data, fromScan: true })
+      this.navCtrl.push(JoinWalletPage, { url: data, fromScan: true });
       return true;
       // Old join
     } else if (data && data.match(/^[0-9A-HJ-NP-Za-km-z]{70,80}$/)) {
-      this.navCtrl.push(JoinWalletPage, { url: data, fromScan: true })
+      this.navCtrl.push(JoinWalletPage, { url: data, fromScan: true });
       return true;
-    } else if (data && (data.substring(0, 2) == '6P' || this.checkPrivateKey(data))) {
+    } else if (
+      data &&
+      (data.substring(0, 2) == '6P' || this.checkPrivateKey(data))
+    ) {
       this.logger.debug('Handling private key');
       this.showMenu({
         data: data,
         type: 'privateKey'
       });
-    } else if (data && ((data.substring(0, 2) == '1|') || (data.substring(0, 2) == '2|') || (data.substring(0, 2) == '3|'))) {
-      this.navCtrl.push(ImportWalletPage, { code: data, fromScan: true })
+    } else if (
+      data &&
+      (data.substring(0, 2) == '1|' ||
+        data.substring(0, 2) == '2|' ||
+        data.substring(0, 2) == '3|')
+    ) {
+      this.navCtrl.push(ImportWalletPage, { code: data, fromScan: true });
       return true;
-
     } else {
-
       if (this.navCtrl.getActive().name === 'ScanPage') {
         this.logger.debug('Handling plain text');
         this.showMenu({
@@ -274,12 +327,12 @@ export class IncomingDataProvider {
 
   private getParameterByName(name: string, url: string): string {
     if (!url) return;
-    name = name.replace(/[\[\]]/g, "\\$&");
-    let regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+    name = name.replace(/[\[\]]/g, '\\$&');
+    let regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
       results = regex.exec(url);
     if (!results) return null;
     if (!results[2]) return '';
-    return decodeURIComponent(results[2].replace(/\+/g, " "));
+    return decodeURIComponent(results[2].replace(/\+/g, ' '));
   }
 
   private checkPrivateKey(privateKey: string): boolean {
@@ -291,7 +344,12 @@ export class IncomingDataProvider {
     return true;
   }
 
-  private goSend(addr: string, amount: string, message: string, coin: string): void {
+  private goSend(
+    addr: string,
+    amount: string,
+    message: string,
+    coin: string
+  ): void {
     if (amount) {
       this.navCtrl.push(ConfirmPage, {
         amount: amount,
@@ -324,10 +382,10 @@ export class IncomingDataProvider {
       description: payProDetails.memo,
       paypro: payProDetails,
       coin: coin,
-      network: this.addressProvider.validateAddress(payProDetails.toAddress).network
+      network: this.addressProvider.validateAddress(payProDetails.toAddress)
+        .network
     };
     this.scanProvider.pausePreview();
     this.navCtrl.push(ConfirmPage, stateParams);
   }
-
 }

@@ -2,9 +2,7 @@ import { Injectable } from '@angular/core';
 
 @Injectable()
 export class TimeProvider {
-
-  constructor(
-  ) { }
+  constructor() {}
 
   public withinSameMonth(time1: any, time2: any): any {
     if (!time1 || !time2) return false;
@@ -16,16 +14,15 @@ export class TimeProvider {
   public withinPastDay(time: any): any {
     let now = new Date();
     let date = new Date(time);
-    return (now.getTime() - date.getTime()) < (1000 * 60 * 60 * 24);
+    return now.getTime() - date.getTime() < 1000 * 60 * 60 * 24;
   }
 
   public isDateInCurrentMonth(date: any): any {
     let now = new Date();
     return this.getMonthYear(now) === this.getMonthYear(date);
-  };
+  }
 
   public getMonthYear(date: any): any {
     return date.getMonth() + date.getFullYear();
   }
-
 }

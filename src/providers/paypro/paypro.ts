@@ -19,7 +19,6 @@ export class PayproProvider {
 
   public getPayProDetails(uri: string, disableLoader?: boolean): Promise<any> {
     return new Promise((resolve, reject) => {
-
       let wallet: any = this.profileProvider.getWallets({
         onlyComplete: true
       })[0];
@@ -28,19 +27,24 @@ export class PayproProvider {
 
       this.logger.debug('Fetch PayPro Request...', uri);
 
-      if (!disableLoader) this.onGoingProcessProvider.set('fetchingPayPro', true);
+      if (!disableLoader)
+        this.onGoingProcessProvider.set('fetchingPayPro', true);
 
-      wallet.fetchPayPro({
-        payProUrl: uri,
-      }, (err, paypro) => {
-        if (!disableLoader) this.onGoingProcessProvider.set('fetchingPayPro', false);
-        if (err) return reject(err);
-        else if (!paypro.verified) {
-          this.logger.warn('Failed to verify payment protocol signatures');
-          return reject(this.translate.instant('Payment Protocol Invalid'));
+      wallet.fetchPayPro(
+        {
+          payProUrl: uri
+        },
+        (err, paypro) => {
+          if (!disableLoader)
+            this.onGoingProcessProvider.set('fetchingPayPro', false);
+          if (err) return reject(err);
+          else if (!paypro.verified) {
+            this.logger.warn('Failed to verify payment protocol signatures');
+            return reject(this.translate.instant('Payment Protocol Invalid'));
+          }
+          return resolve(paypro);
         }
-        return resolve(paypro);
-      });
+      );
     });
   }
 }

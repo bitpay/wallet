@@ -23,7 +23,6 @@ import { PaperWalletPage } from '../paper-wallet/paper-wallet';
   providers: [ScanProvider]
 })
 export class ScanPage {
-
   private modalIsOpen: boolean;
   private scannerIsAvailable: boolean;
   private scannerHasPermission: boolean;
@@ -82,19 +81,21 @@ export class ScanPage {
   ionViewWillEnter() {
     //TODO support for browser
     if (!this.platform.isCordova) {
-      this.notSupportedMessage = this.translate.instant("Scanner not supported");
+      this.notSupportedMessage = this.translate.instant(
+        'Scanner not supported'
+      );
       return;
     }
     // try initializing and refreshing status any time the view is entered
     this.scanProvider.gentleInitialize();
     this.activate();
 
-    this.events.subscribe('incomingDataMenu.showMenu', (data) => {
+    this.events.subscribe('incomingDataMenu.showMenu', data => {
       if (!this.modalIsOpen) {
         this.modalIsOpen = true;
         let modal = this.modalCtrl.create(IncomingDataMenuPage, data);
         modal.present();
-        modal.onDidDismiss((data) => {
+        modal.onDidDismiss(data => {
           this.modalIsOpen = false;
           switch (data.redirTo) {
             case 'AmountPage':
@@ -117,10 +118,11 @@ export class ScanPage {
     });
 
     this.events.subscribe('scannerServiceInitialized', () => {
-      this.logger.debug('Scanner initialization finished, reinitializing scan view...');
+      this.logger.debug(
+        'Scanner initialization finished, reinitializing scan view...'
+      );
       this._refreshScanView();
     });
-
   }
 
   private goToUrl(url: string): void {
@@ -203,23 +205,24 @@ export class ScanPage {
   }
 
   public toggleLight(): void {
-    this.scanProvider.toggleLight()
+    this.scanProvider
+      .toggleLight()
       .then(resp => {
         this.lightActive = resp;
       })
       .catch(error => {
-        this.logger.warn("scanner error: " + error);
+        this.logger.warn('scanner error: ' + error);
       });
   }
 
   public toggleCamera(): void {
-    this.scanProvider.toggleCamera()
+    this.scanProvider
+      .toggleCamera()
       .then(resp => {
         this.cameraToggleActive = resp;
       })
       .catch(error => {
-        this.logger.warn("scanner error: " + error);
+        this.logger.warn('scanner error: ' + error);
       });
   }
-
 }

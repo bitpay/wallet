@@ -13,10 +13,9 @@ import { ExternalLinkProvider } from '../../../providers/external-link/external-
 
 @Component({
   selector: 'page-shapeshift',
-  templateUrl: 'shapeshift.html',
+  templateUrl: 'shapeshift.html'
 })
 export class ShapeshiftPage {
-
   public shifts: any;
   public network: string;
 
@@ -38,9 +37,12 @@ export class ShapeshiftPage {
   }
 
   ionViewWillEnter() {
-    this.events.subscribe('bwsEvent', (walletId: string, type: string, n: any) => {
-      if (type == 'NewBlock') this.updateShift(this.shifts);
-    });
+    this.events.subscribe(
+      'bwsEvent',
+      (walletId: string, type: string, n: any) => {
+        if (type == 'NewBlock') this.updateShift(this.shifts);
+      }
+    );
   }
 
   ionViewWillLeave() {
@@ -51,26 +53,37 @@ export class ShapeshiftPage {
     this.externalLinkProvider.open(url);
   }
 
-  private updateShift = _.debounce((shifts: any) => {
-    if (_.isEmpty(shifts.data)) return;
-    _.forEach(shifts.data, (dataFromStorage: any) => {
-      this.shapeshiftProvider.getStatus(dataFromStorage.address, (err: any, st: any) => {
-        if (err) return;
+  private updateShift = _.debounce(
+    (shifts: any) => {
+      if (_.isEmpty(shifts.data)) return;
+      _.forEach(shifts.data, (dataFromStorage: any) => {
+        this.shapeshiftProvider.getStatus(
+          dataFromStorage.address,
+          (err: any, st: any) => {
+            if (err) return;
 
-        this.shifts.data[st.address].status = st.status;
-        this.shifts.data[st.address].transaction = st.transaction || null;
-        this.shifts.data[st.address].incomingCoin = st.incomingCoin || null;
-        this.shifts.data[st.address].incomingType = st.incomingType || null;
-        this.shifts.data[st.address].outgoingCoin = st.outgoingCoin || null;
-        this.shifts.data[st.address].outgoingType = st.outgoingType || null;
-        this.shapeshiftProvider.saveShapeshift(this.shifts.data[st.address], null, (err: any) => {
-          this.logger.debug("Saved shift with status: " + st.status);
-        });
+            this.shifts.data[st.address].status = st.status;
+            this.shifts.data[st.address].transaction = st.transaction || null;
+            this.shifts.data[st.address].incomingCoin = st.incomingCoin || null;
+            this.shifts.data[st.address].incomingType = st.incomingType || null;
+            this.shifts.data[st.address].outgoingCoin = st.outgoingCoin || null;
+            this.shifts.data[st.address].outgoingType = st.outgoingType || null;
+            this.shapeshiftProvider.saveShapeshift(
+              this.shifts.data[st.address],
+              null,
+              (err: any) => {
+                this.logger.debug('Saved shift with status: ' + st.status);
+              }
+            );
+          }
+        );
       });
-    });
-  }, 1000, {
-      'leading': true
-    });
+    },
+    1000,
+    {
+      leading: true
+    }
+  );
 
   private init(): void {
     this.shapeshiftProvider.getShapeshift((err: any, ss: any) => {
@@ -85,11 +98,13 @@ export class ShapeshiftPage {
   }
 
   public openShiftModal(ssData: any) {
-    let modal = this.modalCtrl.create(ShapeshiftDetailsPage, { ssData: ssData });
+    let modal = this.modalCtrl.create(ShapeshiftDetailsPage, {
+      ssData: ssData
+    });
 
     modal.present();
 
-    modal.onDidDismiss((data) => {
+    modal.onDidDismiss(data => {
       this.init();
     });
   }
@@ -101,5 +116,4 @@ export class ShapeshiftPage {
         break;
     }
   }
-
 }

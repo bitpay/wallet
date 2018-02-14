@@ -13,10 +13,9 @@ import * as _ from 'lodash';
 
 @Component({
   selector: 'page-wallet-information',
-  templateUrl: 'wallet-information.html',
+  templateUrl: 'wallet-information.html'
 })
 export class WalletInformationPage {
-
   public wallet: any;
   public walletId: string;
   public walletName: string;
@@ -45,9 +44,7 @@ export class WalletInformationPage {
     private navCtrl: NavController,
     private events: Events,
     private logger: Logger
-  ) {
-
-  }
+  ) {}
 
   ionViewDidLoad() {
     this.logger.info('ionViewDidLoad WalletInformationPage');
@@ -66,8 +63,9 @@ export class WalletInformationPage {
     this.account = this.wallet.credentials.account;
     this.network = this.wallet.credentials.network;
     this.addressType = this.wallet.credentials.addressType || 'P2SH';
-    this.derivationStrategy = this.wallet.credentials.derivationStrategy || 'BIP45';
-    this.basePath = this.wallet.credentials.getBaseAddressDerivationPath();;
+    this.derivationStrategy =
+      this.wallet.credentials.derivationStrategy || 'BIP45';
+    this.basePath = this.wallet.credentials.getBaseAddressDerivationPath();
     this.pubKeys = _.map(this.wallet.credentials.publicKeyRing, 'xPubKey');
     this.externalSource = null;
     this.canSign = this.wallet.canSign();
@@ -80,7 +78,7 @@ export class WalletInformationPage {
       return;
     }
     this.save(this.BLACK_WALLET_COLOR);
-  };
+  }
 
   private save(color): void {
     let opts = {
@@ -91,9 +89,11 @@ export class WalletInformationPage {
     this.events.publish('wallet:updated', this.wallet.credentials.walletId);
     this.navCtrl.popToRoot();
     this.navCtrl.parent.select(0);
-  };
+  }
 
   public openWalletExtendedPrivateKey(): void {
-    this.navCtrl.push(WalletExtendedPrivateKeyPage, { walletId: this.wallet.credentials.walletId });
+    this.navCtrl.push(WalletExtendedPrivateKeyPage, {
+      walletId: this.wallet.credentials.walletId
+    });
   }
 }

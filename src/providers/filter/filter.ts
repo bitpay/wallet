@@ -4,19 +4,15 @@ import { Logger } from '../../providers/logger/logger';
 
 @Injectable()
 export class FilterProvider {
-
   public formats: any;
 
-  constructor(
-    private decimalPipe: DecimalPipe,
-    private logger: Logger
-  ) {
+  constructor(private decimalPipe: DecimalPipe, private logger: Logger) {
     this.logger.info('FilterProvider initialized');
     this.formats = {
-      CURRENCY_SYM: "$",
-      DECIMAL_SEP: ".",
-      GROUP_SEP: ","
-    }
+      CURRENCY_SYM: '$',
+      DECIMAL_SEP: '.',
+      GROUP_SEP: ','
+    };
   }
 
   formatFiatAmount(amount: number) {
@@ -50,5 +46,4 @@ export class FilterProvider {
     }
     return 0;
   }
-
 }

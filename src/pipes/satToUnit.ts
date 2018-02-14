@@ -6,12 +6,12 @@ import { DecimalPipe } from '@angular/common';
   pure: false
 })
 export class SatToUnitPipe implements PipeTransform {
-
-  constructor(
-    private decimalPipe: DecimalPipe,
-  ) {
-  }
+  constructor(private decimalPipe: DecimalPipe) {}
   transform(amount: number, coin: string): any {
-    return this.decimalPipe.transform(amount / 1e8, '1.2-6') + ' ' + coin.toUpperCase();
+    return (
+      this.decimalPipe.transform(amount / 1e8, '1.2-6') +
+      ' ' +
+      coin.toUpperCase()
+    );
   }
 }

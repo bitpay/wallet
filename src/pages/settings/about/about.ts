@@ -13,7 +13,7 @@ import { ExternalLinkProvider } from '../../../providers/external-link/external-
 
 @Component({
   selector: 'page-about',
-  templateUrl: 'about.html',
+  templateUrl: 'about.html'
 })
 export class AboutPage {
   public version: string;
@@ -26,7 +26,7 @@ export class AboutPage {
     private logger: Logger,
     private externalLinkProvider: ExternalLinkProvider,
     private translate: TranslateService
-  ) { }
+  ) {}
 
   ionViewDidLoad() {
     this.logger.debug('ionViewDidLoad AboutPage');
@@ -40,18 +40,30 @@ export class AboutPage {
   }
 
   public openExternalLink(): void {
-    let url = 'https://github.com/bitpay/' + this.app.info.gitHubRepoName + '/tree/' + this.app.info.commitHash + '';
+    let url =
+      'https://github.com/bitpay/' +
+      this.app.info.gitHubRepoName +
+      '/tree/' +
+      this.app.info.commitHash +
+      '';
     let optIn = true;
     let title = this.translate.instant('Open GitHub Project');
-    let message = this.translate.instant('You can see the latest developments and contribute to this open source app by visiting our project on GitHub.');
+    let message = this.translate.instant(
+      'You can see the latest developments and contribute to this open source app by visiting our project on GitHub.'
+    );
     let okText = this.translate.instant('Open GitHub');
     let cancelText = this.translate.instant('Go Back');
-    this.externalLinkProvider.open(url, optIn, title, message, okText, cancelText);
+    this.externalLinkProvider.open(
+      url,
+      optIn,
+      title,
+      message,
+      okText,
+      cancelText
+    );
   }
 
   public openSessionLog(): void {
     this.navCtrl.push(SessionLogPage);
   }
-
-
 }

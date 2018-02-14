@@ -5,10 +5,9 @@ import { Logger } from '../../providers/logger/logger';
 
 @Component({
   selector: 'page-pin',
-  templateUrl: 'pin.html',
+  templateUrl: 'pin.html'
 })
 export class PinModalPage {
-
   private ATTEMPT_LIMIT: number = 3;
   private ATTEMPT_LOCK_OUT_TIME: number = 5 * 60;
   public currentAttempts: number = 0;
@@ -28,8 +27,7 @@ export class PinModalPage {
     private viewCtrl: ViewController,
     private platform: Platform
   ) {
-
-    this.unregister = this.platform.registerBackButtonAction(() => { });
+    this.unregister = this.platform.registerBackButtonAction(() => {});
 
     switch (this.navParams.get('action')) {
       case 'checkPin':
@@ -39,7 +37,7 @@ export class PinModalPage {
         this.action = 'pinSetUp';
         break;
       case 'removeLock':
-        this.action = 'removeLock'
+        this.action = 'removeLock';
     }
 
     if (this.action === 'checkPin' || this.action === 'removeLock') {
@@ -65,14 +63,14 @@ export class PinModalPage {
     this.incorrect = false;
     this.currentPin = this.currentPin + value;
     if (!this.isComplete()) return;
-    if (this.action === 'checkPin' || this.action === 'removeLock') this.checkIfCorrect();
+    if (this.action === 'checkPin' || this.action === 'removeLock')
+      this.checkIfCorrect();
     if (this.action === 'pinSetUp') {
       if (!this.confirmingPin) {
         this.confirmingPin = true;
         this.firstPinEntered = this.currentPin;
         this.currentPin = '';
-      }
-      else if (this.firstPinEntered === this.currentPin) this.save();
+      } else if (this.firstPinEntered === this.currentPin) this.save();
       else {
         this.firstPinEntered = this.currentPin = '';
         this.incorrect = true;
@@ -87,7 +85,8 @@ export class PinModalPage {
     this.incorrect = true;
     if (this.currentAttempts == this.ATTEMPT_LIMIT) {
       this.currentAttempts = 0;
-      let bannedUntil = Math.floor(Date.now() / 1000) + this.ATTEMPT_LOCK_OUT_TIME;
+      let bannedUntil =
+        Math.floor(Date.now() / 1000) + this.ATTEMPT_LOCK_OUT_TIME;
       this.saveFailedAttempt(bannedUntil);
       this.lockTimeControl(bannedUntil);
     }
@@ -109,7 +108,7 @@ export class PinModalPage {
       let totalSecs = bannedUntil - now;
       let m = Math.floor(totalSecs / 60);
       let s = totalSecs % 60;
-      this.expires = ('0' + m).slice(-2) + ":" + ('0' + s).slice(-2);
+      this.expires = ('0' + m).slice(-2) + ':' + ('0' + s).slice(-2);
     }
   }
 
@@ -150,8 +149,7 @@ export class PinModalPage {
         this.unregister();
         this.viewCtrl.dismiss();
       }
-    }
-    else {
+    } else {
       this.currentPin = '';
       this.checkAttempts();
     }
@@ -165,5 +163,4 @@ export class PinModalPage {
     let lock = { bannedUntil: bannedUntil };
     this.configProvider.set({ lock });
   }
-
 }

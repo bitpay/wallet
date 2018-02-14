@@ -10,7 +10,7 @@ import { CopayersPage } from '../copayers/copayers';
 // Providers
 import { ConfigProvider } from '../../../providers/config/config';
 import { DerivationPathHelperProvider } from '../../../providers/derivation-path-helper/derivation-path-helper';
-import { OnGoingProcessProvider } from "../../../providers/on-going-process/on-going-process";
+import { OnGoingProcessProvider } from '../../../providers/on-going-process/on-going-process';
 import { PopupProvider } from '../../../providers/popup/popup';
 import { ProfileProvider } from '../../../providers/profile/profile';
 import { WalletProvider } from '../../../providers/wallet/wallet';
@@ -20,7 +20,6 @@ import { WalletProvider } from '../../../providers/wallet/wallet';
   templateUrl: 'join-wallet.html'
 })
 export class JoinWalletPage {
-
   private defaults: any;
   public showAdvOpts: boolean;
   public seedOptions: any;
@@ -59,15 +58,18 @@ export class JoinWalletPage {
       coin: [this.navParams.data.coin ? this.navParams.data.coin : 'btc']
     });
 
-    this.seedOptions = [{
-      id: 'new',
-      label: 'Random',
-      supportsTestnet: true
-    }, {
-      id: 'set',
-      label: 'Specify Recovery Phrase',
-      supportsTestnet: false
-    }];
+    this.seedOptions = [
+      {
+        id: 'new',
+        label: 'Random',
+        supportsTestnet: true
+      },
+      {
+        id: 'set',
+        label: 'Specify Recovery Phrase',
+        supportsTestnet: false
+      }
+    ];
   }
 
   ionViewDidLoad() {
@@ -82,7 +84,8 @@ export class JoinWalletPage {
     }
   }
 
-  public onQrCodeScannedJoin(data: string): void { // TODO
+  public onQrCodeScannedJoin(data: string): void {
+    // TODO
     this.joinForm.controls['invitationCode'].setValue(data);
   }
 
@@ -94,33 +97,42 @@ export class JoinWalletPage {
     }
     this.joinForm.controls['selectedSeed'].setValue(seed);
     this.joinForm.controls['testnet'].setValue(false);
-    this.joinForm.controls['derivationPath'].setValue(this.derivationPathByDefault);
+    this.joinForm.controls['derivationPath'].setValue(
+      this.derivationPathByDefault
+    );
   }
 
   setDerivationPath() {
-    let path: string = this.joinForm.value.testnet ? this.derivationPathForTestnet : this.derivationPathByDefault;
+    let path: string = this.joinForm.value.testnet
+      ? this.derivationPathForTestnet
+      : this.derivationPathByDefault;
     this.joinForm.controls['derivationPath'].setValue(path);
   }
 
   public setOptsAndJoin(): void {
-
     let opts: any = {
       secret: this.joinForm.value.invitationCode,
       myName: this.joinForm.value.myName,
       bwsurl: this.joinForm.value.bwsurl,
       coin: this.joinForm.value.coin
-    }
+    };
 
     let setSeed = this.joinForm.value.selectedSeed == 'set';
     if (setSeed) {
       let words = this.joinForm.value.recoveryPhrase;
-      if (words.indexOf(' ') == -1 && words.indexOf('prv') == 1 && words.length > 108) {
+      if (
+        words.indexOf(' ') == -1 &&
+        words.indexOf('prv') == 1 &&
+        words.length > 108
+      ) {
         opts.extendedPrivateKey = words;
       } else {
         opts.mnemonic = words;
       }
 
-      let pathData = this.derivationPathHelperProvider.parse(this.joinForm.value.derivationPath);
+      let pathData = this.derivationPathHelperProvider.parse(
+        this.joinForm.value.derivationPath
+      );
       if (!pathData) {
         let title = this.translate.instant('Error');
         let subtitle = this.translate.instant('Invalid derivation path');
@@ -134,7 +146,9 @@ export class JoinWalletPage {
 
     if (setSeed && !opts.mnemonic && !opts.extendedPrivateKey) {
       let title = this.translate.instant('Error');
-      let subtitle = this.translate.instant('Please enter the wallet recovery phrase');
+      let subtitle = this.translate.instant(
+        'Please enter the wallet recovery phrase'
+      );
       this.popupProvider.ionicAlert(title, subtitle);
       return;
     }
@@ -145,22 +159,27 @@ export class JoinWalletPage {
   private join(opts: any): void {
     this.onGoingProcessProvider.set('joiningWallet', true);
 
-    this.profileProvider.joinWallet(opts).then((wallet: any) => {
-      this.onGoingProcessProvider.set('joiningWallet', false);
-      this.walletProvider.updateRemotePreferences(wallet);
+    this.profileProvider
+      .joinWallet(opts)
+      .then((wallet: any) => {
+        this.onGoingProcessProvider.set('joiningWallet', false);
+        this.walletProvider.updateRemotePreferences(wallet);
 
-      if (!wallet.isComplete()) {
-        this.navCtrl.popToRoot();
-        this.navCtrl.push(CopayersPage, { walletId: wallet.credentials.walletId });
-      } else {
-        this.navCtrl.popToRoot();
-      }
-    }).catch((err: any) => {
-      this.onGoingProcessProvider.set('joiningWallet', false);
-      let title = this.translate.instant('Error');
-      this.popupProvider.ionicAlert(title, err);
-      return;
-    });
+        if (!wallet.isComplete()) {
+          this.navCtrl.popToRoot();
+          this.navCtrl.push(CopayersPage, {
+            walletId: wallet.credentials.walletId
+          });
+        } else {
+          this.navCtrl.popToRoot();
+        }
+      })
+      .catch((err: any) => {
+        this.onGoingProcessProvider.set('joiningWallet', false);
+        let title = this.translate.instant('Error');
+        this.popupProvider.ionicAlert(title, err);
+        return;
+      });
   }
 
   public openScanner(): void {
@@ -171,5 +190,4 @@ export class JoinWalletPage {
       this.navCtrl.parent.select(2);
     }
   }
-
 }

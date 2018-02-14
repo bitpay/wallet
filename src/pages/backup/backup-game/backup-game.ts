@@ -1,5 +1,11 @@
 import { Component, ViewChild } from '@angular/core';
-import { NavController, Slides, Navbar, AlertController, NavParams } from 'ionic-angular';
+import {
+  NavController,
+  Slides,
+  Navbar,
+  AlertController,
+  NavParams
+} from 'ionic-angular';
 import { Logger } from '../../../providers/logger/logger';
 import * as _ from 'lodash';
 
@@ -14,7 +20,7 @@ import { OnGoingProcessProvider } from '../../../providers/on-going-process/on-g
 
 @Component({
   selector: 'page-backup-game',
-  templateUrl: 'backup-game.html',
+  templateUrl: 'backup-game.html'
 })
 export class BackupGamePage {
   @ViewChild(Slides) slides: Slides;
@@ -59,17 +65,20 @@ export class BackupGamePage {
       return;
     }
 
-    this.walletProvider.getKeys(this.wallet).then((keys) => {
-      if (_.isEmpty(keys)) {
-        this.logger.error('Empty keys');
-      }
-      this.credentialsEncrypted = false;
-      this.keys = keys;
-      this.setFlow();
-    }).catch((err) => {
-      this.logger.error('Could not get keys: ', err);
-      this.navCtrl.pop();
-    });
+    this.walletProvider
+      .getKeys(this.wallet)
+      .then(keys => {
+        if (_.isEmpty(keys)) {
+          this.logger.error('Empty keys');
+        }
+        this.credentialsEncrypted = false;
+        this.keys = keys;
+        this.setFlow();
+      })
+      .catch(err => {
+        this.logger.error('Could not get keys: ', err);
+        this.navCtrl.pop();
+      });
   }
 
   ngOnInit() {
@@ -77,7 +86,7 @@ export class BackupGamePage {
     this.navBar.backButtonClick = (e: UIEvent) => {
       if (this.slides) this.slidePrev();
       else this.navCtrl.pop();
-    }
+    };
   }
 
   ionViewDidLoad() {
@@ -87,13 +96,13 @@ export class BackupGamePage {
   private shuffledWords(words: Array<String>) {
     var sort = _.sortBy(words);
 
-    return _.map(sort, (w) => {
+    return _.map(sort, w => {
       return {
         word: w,
         selected: false
       };
     });
-  };
+  }
 
   public addButton(index: number, item: any): void {
     var newWord = {
@@ -103,57 +112,65 @@ export class BackupGamePage {
     this.customWords.push(newWord);
     this.shuffledMnemonicWords[index].selected = true;
     this.shouldContinue();
-  };
+  }
 
   public removeButton(index: number, item: any): void {
     // if ($scope.loading) return;
     this.customWords.splice(index, 1);
     this.shuffledMnemonicWords[item.prevIndex].selected = false;
     this.shouldContinue();
-  };
+  }
 
   private shouldContinue(): void {
     if (this.customWords.length == this.shuffledMnemonicWords.length)
       this.selectComplete = true;
-    else
-      this.selectComplete = false;
-  };
+    else this.selectComplete = false;
+  }
 
   private showBackupResult(): void {
     if (this.error) {
       let alert = this.alertCtrl.create({
-        title: "Uh oh...",
-        subTitle: "It's important that you write your backup phrase down correctly. If something happens to your wallet, you'll need this backup to recover your money. Please review your backup and try again.",
-        buttons: [{
-          text: 'Ok',
-          role: 'cancel',
-          handler: () => {
-            this.setFlow();
+        title: 'Uh oh...',
+        subTitle:
+          "It's important that you write your backup phrase down correctly. If something happens to your wallet, you'll need this backup to recover your money. Please review your backup and try again.",
+        buttons: [
+          {
+            text: 'Ok',
+            role: 'cancel',
+            handler: () => {
+              this.setFlow();
+            }
           }
-        }]
+        ]
       });
       alert.present();
     } else {
       let opts = {
         title: 'Your bitcoin wallet is backed up!',
-        message: 'Be sure to store your recovery phrase in a secure place. If this app is deleted, your money cannot be recovered without it.',
-        buttons: [{
-          text: 'Got it',
-          handler: () => {
-            if (this.fromOnboarding) {
-              this.navCtrl.push(DisclaimerPage);
-            } else {
-              this.navCtrl.popToRoot();
+        message:
+          'Be sure to store your recovery phrase in a secure place. If this app is deleted, your money cannot be recovered without it.',
+        buttons: [
+          {
+            text: 'Got it',
+            handler: () => {
+              if (this.fromOnboarding) {
+                this.navCtrl.push(DisclaimerPage);
+              } else {
+                this.navCtrl.popToRoot();
+              }
             }
           }
-        }],
-      }
+        ]
+      };
       this.alertCtrl.create(opts).present();
     }
-  };
+  }
 
   private isDeletedSeed(): boolean {
-    if (!this.wallet.credentials.mnemonic && !this.wallet.credentials.mnemonicEncrypted)
+    if (
+      !this.wallet.credentials.mnemonic &&
+      !this.wallet.credentials.mnemonicEncrypted
+    )
       return true;
 
     return false;
@@ -170,8 +187,7 @@ export class BackupGamePage {
   }
 
   public slideNext(): void {
-    if (this.currentIndex == 1 && !this.mnemonicHasPassphrase)
-      this.finalStep();
+    if (this.currentIndex == 1 && !this.mnemonicHasPassphrase) this.finalStep();
     else {
       this.slides.lockSwipes(false);
       this.slides.slideNext();
@@ -189,7 +205,7 @@ export class BackupGamePage {
     this.mnemonicWords = words.split(/[\u3000\s]+/);
     this.shuffledMnemonicWords = this.shuffledWords(this.mnemonicWords);
     this.mnemonicHasPassphrase = this.wallet.mnemonicHasPassphrase();
-    this.useIdeograms = words.indexOf("\u3000") >= 0;
+    this.useIdeograms = words.indexOf('\u3000') >= 0;
     this.password = '';
     this.customWords = [];
     this.selectComplete = false;
@@ -198,8 +214,7 @@ export class BackupGamePage {
     words = _.repeat('x', 300);
 
     if (this.currentIndex == 2) this.slidePrev();
-
-  };
+  }
 
   public copyRecoveryPhrase(): string {
     if (this.wallet.network == 'livenet') return null;
@@ -234,7 +249,11 @@ export class BackupGamePage {
           return reject(err);
         }
 
-        if (walletClient.credentials.xPrivKey.substr(walletClient.credentials.xPrivKey) != this.keys.xPrivKey) {
+        if (
+          walletClient.credentials.xPrivKey.substr(
+            walletClient.credentials.xPrivKey
+          ) != this.keys.xPrivKey
+        ) {
           delete walletClient.credentials;
           return reject('Private key mismatch');
         }
@@ -243,30 +262,33 @@ export class BackupGamePage {
       this.profileProvider.setBackupFlag(this.wallet.credentials.walletId);
       return resolve();
     });
-  };
+  }
 
   private finalStep(): void {
     this.onGoingProcessProvider.set('validatingWords', true);
-    this.confirm().then(() => {
-      this.onGoingProcessProvider.set('validatingWords', false);
-      this.showBackupResult();
-    }).catch((err) => {
-      this.onGoingProcessProvider.set('validatingWords', false);
-      this.logger.error('Failed to verify backup: ', err);
-      this.error = true;
-      let showError = this.alertCtrl.create({
-        title: "Failed to verify backup",
-        subTitle: err,
-        buttons: [{
-          text: 'Try again',
-          role: 'cancel',
-          handler: () => {
-            this.setFlow();
-          }
-        }]
+    this.confirm()
+      .then(() => {
+        this.onGoingProcessProvider.set('validatingWords', false);
+        this.showBackupResult();
+      })
+      .catch(err => {
+        this.onGoingProcessProvider.set('validatingWords', false);
+        this.logger.error('Failed to verify backup: ', err);
+        this.error = true;
+        let showError = this.alertCtrl.create({
+          title: 'Failed to verify backup',
+          subTitle: err,
+          buttons: [
+            {
+              text: 'Try again',
+              role: 'cancel',
+              handler: () => {
+                this.setFlow();
+              }
+            }
+          ]
+        });
+        showError.present();
       });
-      showError.present();
-    });
-  };
-
+  }
 }
