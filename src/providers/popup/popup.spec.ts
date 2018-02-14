@@ -36,14 +36,13 @@ describe('PopupProvider', () => {
     });
   });
 
-  xit('should exist', inject([PopupProvider], (popupProvider: PopupProvider) => {
+  it('should exist', inject([PopupProvider], (popupProvider: PopupProvider) => {
     expect(popupProvider).not.toBeUndefined();
   }));
 
-  xit('should have an alert', inject([PopupProvider], (popupProvider: PopupProvider) => {
-    spyOn(popupProvider, 'ionicAlert');
-    expect(popupProvider).not.toBeUndefined();
-    popupProvider.ionicAlert('title', 'subtitle', 'ok text');
-    expect(popupProvider.ionicAlert).toHaveBeenCalledWith('title', 'subtitle', 'ok text');
-  }));
+  it('should have an alert', inject([PopupProvider], (popupProvider: PopupProvider) => {
+      spyOn(popupProvider, 'ionicAlert');
+      popupProvider.ionicAlert('title', 'subtitle', 'ok text');
+      expect(popupProvider.ionicAlert).toHaveBeenCalledWith('title', 'subtitle', 'ok text');
+  });
 });
