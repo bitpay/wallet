@@ -120,16 +120,14 @@ export class HomePage {
       return homeIntegrations.show == true;
     });
 
-    this.events.subscribe('bwsEvent', (walletId, type, n) => {
-      let wallet = this.profileProvider.getWallet(walletId);
-      this.updateWallet(wallet);
-      if (this.recentTransactionsEnabled) this.getNotifications();
+    this.events.subscribe('bwsEvent', (walletId: string) => {
+      this.update(walletId);
     });
-    this.events.subscribe('Local/TxAction', (walletId) => {
-      this.logger.debug('Got action for wallet ' + walletId);
-      var wallet = this.profileProvider.getWallet(walletId);
-      this.updateWallet(wallet);
-      if (this.recentTransactionsEnabled) this.getNotifications();
+    this.events.subscribe('Local/TxAction', (walletId: string) => {
+      this.update(walletId);
+    });
+    this.events.subscribe('Local/WalletAction', (walletId: string) => {
+      this.update(walletId);
     });
     this.events.subscribe('feedback:hide', () => {
       this.showRateCard = false;
@@ -159,6 +157,13 @@ export class HomePage {
   ionViewDidLoad() {
     this.logger.info('ionViewDidLoad HomePage');
     this.updateAllWallets();
+  }
+
+  private update(walletId: string): void {
+    this.logger.debug('Got action for wallet ' + walletId);
+    let wallet = this.profileProvider.getWallet(walletId);
+    this.updateWallet(wallet);
+    if (this.recentTransactionsEnabled) this.getNotifications();
   }
 
   private setWallets(): void {
