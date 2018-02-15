@@ -160,6 +160,7 @@
     "karma-coverage-istanbul-reporter": "^1.4.1",
     "karma-jasmine": "^1.1.1",
     "karma-jasmine-html-reporter": "^0.2.2",
+    "karma-junit-reporter": "^1.2.0",
     "karma-mocha-reporter": "^2.2.5",
     "karma-phantomjs-launcher": "^1.0.4",
     "karma-remap-istanbul": "^0.6.0",

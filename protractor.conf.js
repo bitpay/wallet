@@ -114,5 +114,12 @@ exports.config = {
         showStack: true
       })
     );
+    jasmine.getEnv().addReporter(
+      new jasmineReporters.JUnitXmlReporter({
+        savePath: process.env.JUNIT_REPORT_PATH || './test/',
+        outputFile: process.env.JUNIT_REPORT_NAME || 'junitresults.xml',
+        consolidateAll: true
+      })
+    );
   }
 };

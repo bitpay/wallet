@@ -24,7 +24,9 @@ jobs:
       - run: npm run e2e
       - run: npm run test:visual
       - store_artifacts:
-          path: ~/copay/test
+          path: ./test
+      - store_test_results:
+          path: ./test
 
   bitpay:
     docker:
@@ -46,7 +48,9 @@ jobs:
       - run: npm run e2e
       - run: npm run test:visual
       - store_artifacts:
-          path: ~/copay/test
+          path: ./test
+      - store_test_results:
+          path: ./test
           
 workflows:
   version: 2
