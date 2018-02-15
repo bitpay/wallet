@@ -65,6 +65,7 @@ export class OnGoingProcessProvider {
   public clear() {
     this.ongoingProcess = {};
     this.loading.dismiss();
+    this.loading = null;
     this.logger.debug('ongoingProcess clear');
   }
 
@@ -74,28 +75,30 @@ export class OnGoingProcessProvider {
   }
 
   public resume(): void {
+    this.ongoingProcess = this.pausedOngoingProcess;
     _.forEach(this.pausedOngoingProcess, (v, k) => {
       this.set(k, v);
+      return;
     });
     this.pausedOngoingProcess = {};
   }
 
-  public set(processName: string, isOn: boolean): string {
+  public set(processName: string, isOn: boolean): void {
     this.logger.debug('ongoingProcess', processName, isOn);
     this.ongoingProcess[processName] = isOn;
     let showName = this.processNames[processName] || processName;
     if (!isOn) {
-      delete this.ongoingProcess[processName];
-      this.loading.dismiss();
-      return;
-    }
-    if (!this.loading) {
-      this.loading = this.loadingCtrl.create();
-      this.loading.onDidDismiss(() => {
+      delete (this.ongoingProcess[processName]);
+      if (_.isEmpty(this.ongoingProcess)) {
+        this.loading.dismiss();
         this.loading = null;
-      });
+      }
+    } else {
+      if (!this.loading) {
+        this.loading = this.loadingCtrl.create();
+      }
+      this.loading.setContent(showName);
+      this.loading.present();
     }
-    this.loading.setContent(showName);
-    this.loading.present();
   }
 }
