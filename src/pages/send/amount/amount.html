@@ -1,5 +1,4 @@
 <ion-header>
-
   <ion-navbar>
     <ion-title>{{'Amount' | translate}}</ion-title>
     <ion-buttons end *ngIf="showSendMax">
@@ -8,7 +7,6 @@
       </button>
     </ion-buttons>
   </ion-navbar>
-
 </ion-header>
 
 <ion-content no-bounce>
@@ -17,18 +15,16 @@
       <span translate>Recipient</span>
     </ion-item-divider>
     <ion-item>
-      <ion-icon *ngIf="recipientType == 'wallet'" item-left>
-        <ion-icon item-start>
-          <img *ngIf="network == 'testnet'" [ngStyle]="{'background-color': color}" src="assets/img/icon-wallet-testnet.svg" class="icon-wallet"
-          />
-          <img *ngIf="network != 'testnet'" [ngStyle]="{'background-color': color}" src="assets/img/icon-wallet.svg" class="icon-wallet"
-          />
-        </ion-icon>
+      <ion-icon *ngIf="recipientType == 'wallet'" item-start>
+        <img *ngIf="network == 'testnet'" [ngStyle]="{'background-color': color}" src="assets/img/icon-wallet-testnet.svg" class="icon-wallet"
+        />
+        <img *ngIf="network != 'testnet'" [ngStyle]="{'background-color': color}" src="assets/img/icon-wallet.svg" class="icon-wallet"
+        />
       </ion-icon>
-      <ion-icon *ngIf="recipientType == 'contact'" item-left>
+      <ion-icon *ngIf="recipientType == 'contact'" item-start>
         <gravatar [name]="name" [height]="30" [width]="30" [email]="email"></gravatar>
       </ion-icon>
-      <ion-icon *ngIf="!recipientType" item-left>
+      <ion-icon *ngIf="!recipientType" item-start>
         <img src="assets/img/contact-placeholder.svg" class="icon-contact">
       </ion-icon>
       <span>{{name || toAddress}}</span>
@@ -37,18 +33,15 @@
   <div>
     <div class="amount-pane">
 
-      <div class="title">
-        <span translate>Amount</span>
-      </div>
-
       <div *ngIf="shiftMin && shiftMax" class="shapeshift-values">
         <div>Min: {{shiftMin}}</div>
         <div>Max: {{shiftMax}}</div>
       </div>
 
       <div class="amount-content">
-        <div class="expression">{{expression || '0.00'}}
-          <a class="unit-button" (click)="changeUnit()">{{unit}}</a>
+        <div class="expression-container">
+          <span class="expression">{{expression || '0.00'}}</span>
+          <span class="unit-button" (click)="changeUnit()">{{unit}}</span>
         </div>
         <div class="amount" [hidden]="!globalResult">{{globalResult}} {{unit}}</div>
         <div class="result" *ngIf="alternativeAmount">&asymp; {{alternativeAmount || '0.00'}} {{alternativeUnit}}</div>

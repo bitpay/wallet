@@ -28,9 +28,7 @@
         <strong translate>[Scanning Funds]</strong>
       </div>
 
-      <div class="balance-spendable"
-        (click)="openBalanceDetails()"
-        *ngIf="!wallet.balanceHidden && !wallet.scanning && showBalanceButton && wallet.status">
+      <div class="balance-spendable" (click)="openBalanceDetails()" *ngIf="!wallet.balanceHidden && !wallet.scanning && showBalanceButton && wallet.status">
         <ion-icon ios="ios-timer-outline" md="md-timer"></ion-icon>
         <strong>
           {{wallet.status.spendableBalanceStr}}
