@@ -37,7 +37,6 @@ export class AmountPage {
   private nextView: any;
   private fixedUnit: boolean;
   private itemSelectorLabel: string;
-  private walletId: any;
   private fiatCode: string;
   private altUnitIndex: number;
   private unitIndex: number;
@@ -60,13 +59,11 @@ export class AmountPage {
   public name: string;
   public email: string;
   public color: string;
-  public coin: string;
-  public network: string;
   public useSendMax: boolean;
   public config: any;
   public showRecipient: boolean;
   public toWalletId: string;
-  public cardId: string;
+  private _id: string;
 
   constructor(
     private actionSheetCtrl: ActionSheetController,
@@ -84,12 +81,9 @@ export class AmountPage {
     this.config = this.configProvider.get();
     this.recipientType = this.navParams.data.recipientType;
     this.toAddress = this.navParams.data.toAddress;
-    this.walletId = this.navParams.data.walletId;
-    this.network = this.navParams.data.network;
     this.name = this.navParams.data.name;
     this.email = this.navParams.data.email;
     this.color = this.navParams.data.color;
-    this.coin = this.navParams.data.coin;
     this.fixedUnit = this.navParams.data.fixedUnit;
 
     this.showRecipient = true;
@@ -115,8 +109,8 @@ export class AmountPage {
     this.satToUnit = 1 / this.unitToSatoshi;
     this.unitDecimals = this.config.wallet.settings.unitDecimals;
 
-    // BitPay Card ID
-    this.cardId = this.navParams.data.id;
+    // BitPay Card ID or Wallet ID
+    this._id = this.navParams.data.id;
 
     // Use only with ShapeShift
     this.toWalletId = this.navParams.data.toWalletId;
@@ -238,6 +232,7 @@ export class AmountPage {
     switch (this.navParams.data.nextPage) {
       case 'BitPayCardTopUpPage':
         this.showRecipient = false;
+        this.showSendMax = true;
         nextPage = BitPayCardTopUpPage;
         break;
       case 'BuyAmazonPage':
@@ -414,36 +409,42 @@ export class AmountPage {
     let unit = this.availableUnits[this.unitIndex];
     let _amount = this.evaluate(this.format(this.expression));
     let coin = unit.id;
+    let data: any;
 
     if (unit.isFiat) {
       coin = this.availableUnits[this.altUnitIndex].id;
     }
 
-    let amount = _amount;
-
-    if (unit.isFiat) {
-      amount = (this.fromFiat(amount) * this.unitToSatoshi).toFixed(0);
+    if (this.navParams.data.nextPage) {
+      data = {
+        id: this._id,
+        amount: this.useSendMax ? null : _amount,
+        currency: unit.id.toUpperCase(),
+        coin: coin,
+        useSendMax: this.useSendMax,
+        toWalletId: this.toWalletId
+      };
     } else {
-      amount = (amount * this.unitToSatoshi).toFixed(0);
-    }
+      let amount = _amount;
 
-    let data: any = {
-      recipientType: this.recipientType,
-      toAddress: this.toAddress,
-      amount: this.useSendMax ? 0 : parseInt(amount),
-      amountFiat: this.useSendMax ? 0 : this.toFiat(amount * this.satToUnit),
-      name: this.name,
-      email: this.email,
-      color: this.color,
-      currency: unit.id.toUpperCase(),
-      coin: this.coin ? this.coin : coin,
-      network: this.network,
-      useSendMax: this.useSendMax,
-      walletId: this.walletId,
-      toWalletId: this.toWalletId ? this.toWalletId : null,
-      id: this.cardId
-    }
+      if (unit.isFiat) {
+        amount = (this.fromFiat(amount) * this.unitToSatoshi).toFixed(0);
+      } else {
+        amount = (amount * this.unitToSatoshi).toFixed(0);
+      }
 
+      data = {
+        recipientType: this.recipientType,
+        amount: amount,
+        toAddress: this.toAddress,
+        name: this.name,
+        email: this.email,
+        color: this.color,
+        coin: coin,
+        useSendMax: this.useSendMax
+      };
+    }
+    this.useSendMax = null;
     this.navCtrl.push(this.nextView, data);
   };
 

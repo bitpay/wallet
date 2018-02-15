@@ -79,8 +79,8 @@ export class BuyMercadoLibrePage {
   }
 
   ionViewWillEnter() {
-    this.amount = this.navParams.data.amountFiat;
-    this.currency = this.navParams.data.currency.toUpperCase();
+    this.amount = this.navParams.data.amount;
+    this.currency = this.navParams.data.currency;
 
     if (this.amount > 2000 || this.amount < 50) {
       this.showErrorAndBack(null, this.translate.instant('Purchase amount must be a value between 50 and 2000'));
@@ -114,7 +114,7 @@ export class BuyMercadoLibrePage {
   }
 
   private _resetValues() {
-    this.totalAmountStr = this.amount = this.invoiceFee = this.networkFee = this.totalAmount = this.wallet = null;
+    this.totalAmountStr = this.invoiceFee = this.networkFee = this.totalAmount = this.wallet = null;
     this.createdTx = this.message = this.invoiceId = null;
   }
 
@@ -316,6 +316,7 @@ export class BuyMercadoLibrePage {
       uuid: wallet.id,
       email: email
     };
+      console.log('[buy-mercado-libre.ts:313]',dataSrc); /* TODO */
     this.onGoingProcessProvider.set('loadingTxInfo', true);
     this.createInvoice(dataSrc).then((data: any) => {
       let invoice = data.invoice;

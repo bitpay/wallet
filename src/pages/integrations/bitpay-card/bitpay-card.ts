@@ -192,9 +192,7 @@ export class BitPayCardPage {
       id: this.cardId,
       nextPage: 'BitPayCardTopUpPage',
       currency: 'USD',
-      coin: 'btc',
-      fixedUnit: true,
-
+      coin: 'btc'
     });
   }
 }

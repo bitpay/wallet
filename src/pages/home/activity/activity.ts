@@ -21,7 +21,6 @@ import * as _ from 'lodash';
 })
 export class ActivityPage {
 
-  public fetchingNotifications: boolean;
   public addressbook: any;
   public txps: any;
   public notifications: any;
@@ -36,12 +35,13 @@ export class ActivityPage {
     private popupProvider: PopupProvider,
     private translate: TranslateService
   ) {
-    this.fetchingNotifications = true;
   }
 
-  ionViewDidEnter() {
+  ionViewWillEnter() {
+    let loading = this.translate.instant('Updating... Please stand by');
+    this.onGoingProcessProvider.set(loading, true);
     this.profileProvider.getNotifications(50).then((nData: any) => {
-      this.fetchingNotifications = false;
+      this.onGoingProcessProvider.set(loading, false);
       this.notifications = nData.notifications;
       this.profileProvider.getTxps({}).then((txpsData: any) => {
         this.txps = txpsData.txps;

@@ -45,33 +45,37 @@
     <button ion-item *ngFor="let item of (giftCards | keys : 'date') | orderBy : ['-order']" (click)="openCardModal(item.value)">
       <div class="amazon-card">
         <img src="assets/img/amazon/a-smile_color_btn.png" alt="" class="avatar">
-        <ion-spinner *ngIf="updatingPending[item.value.invoiceId]" name="crescent"></ion-spinner>
         <div class="card-info">
           <h2 *ngIf="item.value.amount">
             {{item.value.amount | currency : '$ ' : 2}} {{item.value.currency}}
           </h2>
           <p>
-            <span class="assertive" *ngIf="item.value.status == 'FAILURE' || item.value.status == 'RESEND'">Error</span>
-            <span class="assertive" *ngIf="item.value.status == 'expired'">Expired</span>
-            <span class="assertive" *ngIf="item.value.status == 'invalid'">Still waiting confirmation
-              <br> (Use higher fees setting to faster delivery)</span>
-            <span class="text-gray" *ngIf="item.value.status == 'PENDING'">Pending to confirmation</span>
-            <span class="assertive" *ngIf="item.value.status == 'SUCCESS' && item.value.cardStatus == 'Canceled'">Canceled</span>
             <span class="text-gray">{{item.value.date | amTimeAgo}}</span>
+            <span *ngIf="updatingPending[item.value.invoiceId]">...</span>
+            <span *ngIf="!updatingPending[item.value.invoiceId]">
+              <span class="assertive" *ngIf="item.value.status == 'FAILURE' || item.value.status == 'RESEND'">Error</span>
+              <span class="assertive" *ngIf="item.value.status == 'expired'">Expired</span>
+              <span class="assertive" *ngIf="item.value.status == 'invalid'">Still waiting confirmation
+                (Use higher fees setting to faster delivery)
+              </span>
+              <span class="text-gray" *ngIf="item.value.status == 'PENDING'">Pending to confirmation</span>
+              <span class="assertive" *ngIf="item.value.status == 'SUCCESS' && item.value.cardStatus == 'Canceled'">Canceled</span>
+            </span>
           </p>
         </div>
       </div>
     </button>
+    <ion-item-divider></ion-item-divider>
   </ion-list>
+  <div *ngIf="giftCards" class="integration-giftCard-info">
+    *
+    <a (click)="openExternalLink('http://amazon.com')">Amazon.com</a> is not a sponsor of this promotion. Except as required by law,
+    <a (click)="openExternalLink('http://amazon.com')">Amazon.com</a> Gift Cards ("GCs") cannot be transferred for value or redeemed for cash. GCs may be used only for purchases
+    of eligible goods at
+    <a (click)="openExternalLink('http://amazon.com')">Amazon.com</a> or certain of its affiliated websites. For complete terms and conditions, see
+    <a (click)="openExternalLink('https://www.amazon.com/gc-legal')">www.amazon.com/gc-legal</a>. GCs are issued by ACI Gift Cards, Inc., a Washington corporation. All Amazon &reg;, &trade;
+    &amp; &copy; are IP of
+    <a (click)="openExternalLink('http://amazon.com')">Amazon.com</a>, Inc. or its affiliates. No expiration date or service fees.
+  </div>
 </ion-content>
 
-<ion-footer *ngIf="giftCards" class="integration-giftCard-info">
-  *
-  <a (click)="openExternalLink('http://amazon.com')">Amazon.com</a> is not a sponsor of this promotion. Except as required by law,
-  <a (click)="openExternalLink('http://amazon.com')">Amazon.com</a> Gift Cards ("GCs") cannot be transferred for value or redeemed for cash. GCs may be used only for purchases
-  of eligible goods at
-  <a (click)="openExternalLink('http://amazon.com')">Amazon.com</a> or certain of its affiliated websites. For complete terms and conditions, see
-  <a (click)="openExternalLink('https://www.amazon.com/gc-legal')">www.amazon.com/gc-legal</a>. GCs are issued by ACI Gift Cards, Inc., a Washington corporation. All Amazon &reg;, &trade;
-  &amp; &copy; are IP of
-  <a (click)="openExternalLink('http://amazon.com')">Amazon.com</a>, Inc. or its affiliates. No expiration date or service fees.
-</ion-footer>

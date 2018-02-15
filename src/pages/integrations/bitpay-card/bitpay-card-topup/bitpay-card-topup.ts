@@ -87,8 +87,8 @@ export class BitPayCardTopUpPage {
   ionViewWillEnter() {
     this.cardId = this.navParams.data.id;
     this.useSendMax = this.navParams.data.useSendMax;
-    this.currency = this.navParams.data.currency.toUpperCase();
-    this.amount = this.navParams.data.amountFiat;
+    this.currency = this.navParams.data.currency;
+    this.amount = this.navParams.data.amount;
 
     this.bitPayCardProvider.get({
       cardId: this.cardId,
@@ -347,7 +347,7 @@ export class BitPayCardTopUpPage {
       });
 
       this.createTx(wallet, invoice, this.message).then((ctxp) => {
-        this.onGoingProcessProvider.set('loadingTxInfo', false);
+        this.onGoingProcessProvider.clear();
 
         // Save TX in memory
         this.createdTx = ctxp;
@@ -360,12 +360,12 @@ export class BitPayCardTopUpPage {
         this.setTotalAmount(parsedAmount.amountSat, Number(invoiceFeeSat), ctxp.fee);
 
       }).catch((err) => {
-        this.onGoingProcessProvider.set('loadingTxInfo', false);
+        this.onGoingProcessProvider.clear();
         this._resetValues();
         this.showError(err.title, err.message);
       });
     }).catch((err) => {
-      this.onGoingProcessProvider.set('loadingTxInfo', false);
+      this.onGoingProcessProvider.clear();
       this.showErrorAndBack(err.title, err.message);
     });
   };
@@ -402,10 +402,10 @@ export class BitPayCardTopUpPage {
     this.wallet = wallet;
     this.onGoingProcessProvider.set('retrievingInputs', true);
     this.calculateAmount(this.wallet).then((val: any) => {
-      this.onGoingProcessProvider.set('retrievingInputs', false);
       let parsedAmount = this.txFormatProvider.parseAmount(this.coin, val.amount, val.currency);
       this.initializeTopUp(this.wallet, parsedAmount);
     }).catch((err) => {
+      this.onGoingProcessProvider.set('retrievingInputs', false);
       this._resetValues();
       this.showError(err.title, err.message).then(() => {
         this.showWallets();

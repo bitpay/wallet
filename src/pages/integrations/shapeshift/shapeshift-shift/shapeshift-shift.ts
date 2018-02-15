@@ -71,6 +71,7 @@ export class ShapeshiftShiftPage {
 
     this.fromWallets = _.filter(this.walletsBtc.concat(this.walletsBch), (w: any) => {
       // Available cached funds
+      if (!w.cachedBalance) return null;
       let hasCachedFunds = w.cachedBalance.match(/0\.00 /gi) ? false : true;
       return hasCachedFunds;
     });
@@ -112,9 +113,18 @@ export class ShapeshiftShiftPage {
     let pair = this.fromWallet.coin + '_' + this.toWallet.coin;
     this.shapeshiftProvider.getRate(pair, (err: any, rate: number) => {
       this.rate = rate;
-    });
-    this.shapeshiftProvider.getMarketInfo(pair, (err: any, limit: any) => {
-      this.limit = limit;
+
+      this.shapeshiftProvider.getMarketInfo(pair, (err: any, limit: any) => {
+        this.limit = limit;
+
+        if (this.limit['rate'] == 0 || this.rate['rate'] == 0) {
+          let msg = this.translate.instant('ShapeShift is not available at this moment. Please, try again later.');
+          this.popupProvider.ionicAlert(null, msg).then(() => {
+            this.navCtrl.pop();
+          });
+          return;
+        }
+      });
     });
   }
 
@@ -135,7 +145,7 @@ export class ShapeshiftShiftPage {
       nextPage: 'ShapeshiftConfirmPage',
       fixedUnit: true,
       coin: this.fromWallet.coin,
-      walletId: this.fromWallet.id,
+      id: this.fromWallet.id,
       toWalletId: this.toWallet.id,
       shiftMax: this.limit.limit + ' ' + this.fromWallet.coin.toUpperCase(),
       shiftMin: this.limit.minimum + ' ' + this.fromWallet.coin.toUpperCase()

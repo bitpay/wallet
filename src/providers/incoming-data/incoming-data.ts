@@ -9,7 +9,6 @@ import { PayproProvider } from '../paypro/paypro';
 import { ScanProvider } from '../scan/scan';
 import { PopupProvider } from '../popup/popup';
 import { AppProvider } from '../app/app';
-import { AddressProvider } from '../address/address';
 
 //pages
 import { ConfirmPage } from '../../pages/send/confirm/confirm';
@@ -32,7 +31,6 @@ export class IncomingDataProvider {
     private popupProvider: PopupProvider,
     private logger: Logger,
     private appProvider: AppProvider,
-    private addressProvider: AddressProvider,
     private translate: TranslateService
   ) {
     this.logger.info('IncomingDataProvider initialized.');
@@ -174,8 +172,7 @@ export class IncomingDataProvider {
         });
       } else {
         let coin = 'btc';
-        let network = this.addressProvider.validateAddress(data).network;
-        this.goToAmountPage(data, coin, network);
+        this.goToAmountPage(data, coin);
       }
     } else if (this.bwcProvider.getBitcoreCash().Address.isValid(data, 'livenet')) {
       this.logger.debug('Handling Bitcoin Cash Plain Address');
@@ -187,8 +184,7 @@ export class IncomingDataProvider {
         });
       } else {
         let coin = 'bch';
-        let network = this.addressProvider.validateAddress(data).network;
-        this.goToAmountPage(data, coin, network);
+        this.goToAmountPage(data, coin);
       }
     } else if (data && data.indexOf(this.appProvider.info.name + '://glidera') === 0) {
 
@@ -297,23 +293,20 @@ export class IncomingDataProvider {
         amount: amount,
         toAddress: addr,
         description: message,
-        coin: coin,
-        network: this.addressProvider.validateAddress(addr).network
+        coin: coin
       });
     } else {
       this.navCtrl.push(AmountPage, {
         toAddress: addr,
-        coin: coin,
-        network: this.addressProvider.validateAddress(addr).network
+        coin: coin
       });
     }
   }
 
-  private goToAmountPage(toAddress: string, coin: string, network: string) {
+  private goToAmountPage(toAddress: string, coin: string) {
     this.navCtrl.push(AmountPage, {
       toAddress: toAddress,
-      coin: coin,
-      network: network
+      coin: coin
     });
   }
 
@@ -323,8 +316,7 @@ export class IncomingDataProvider {
       toAddress: payProDetails.toAddress,
       description: payProDetails.memo,
       paypro: payProDetails,
-      coin: coin,
-      network: this.addressProvider.validateAddress(payProDetails.toAddress).network
+      coin: coin
     };
     this.scanProvider.pausePreview();
     this.navCtrl.push(ConfirmPage, stateParams);
