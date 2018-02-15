@@ -74,12 +74,11 @@ export class ReceivePage {
   public requestSpecificAmount(): void {
     this.navCtrl.push(AmountPage, {
       toAddress: this.address,
-      walletId: this.wallet.credentials.walletId,
+      id: this.wallet.credentials.walletId,
       recipientType: 'wallet',
       name: this.wallet.name,
       color: this.wallet.color,
       coin: this.wallet.coin,
-      network: this.wallet.network,
       nextPage: 'CustomAmountPage',
     });
   }

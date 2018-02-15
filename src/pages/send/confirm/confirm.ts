@@ -22,6 +22,7 @@ import { OnGoingProcessProvider } from '../../../providers/on-going-process/on-g
 import { FeeProvider } from '../../../providers/fee/fee';
 import { TxConfirmNotificationProvider } from '../../../providers/tx-confirm-notification/tx-confirm-notification';
 import { TxFormatProvider } from '../../../providers/tx-format/tx-format';
+import { ExternalLinkProvider } from '../../../providers/external-link/external-link';
 
 @Component({
   selector: 'page-confirm',
@@ -29,6 +30,7 @@ import { TxFormatProvider } from '../../../providers/tx-format/tx-format';
 })
 export class ConfirmPage {
 
+  private bitcore: any;
   private bitcoreCash: any;
 
   public countDown = null;
@@ -74,8 +76,10 @@ export class ConfirmPage {
     private modalCtrl: ModalController,
     private txFormatProvider: TxFormatProvider,
     private events: Events,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private externalLinkProvider: ExternalLinkProvider
   ) {
+    this.bitcore = this.bwcProvider.getBitcore();
     this.bitcoreCash = this.bwcProvider.getBitcoreCash();
     this.CONFIRM_LIMIT_USD = 20;
     this.FEE_TOO_HIGH_LIMIT_PER = 15;
@@ -83,9 +87,28 @@ export class ConfirmPage {
     this.configFeeLevel = this.config.wallet.settings.feeLevel ? this.config.wallet.settings.feeLevel : 'normal';
     this.isCordova = this.platformProvider.isCordova;
     this.isWindowsPhoneApp = this.platformProvider.isCordova && this.platformProvider.isWP;
+
+    let B = this.navParams.data.coin == 'bch' ? this.bitcoreCash : this.bitcore;
+    let networkName;
+    try {
+      networkName = (new B.Address(this.navParams.data.toAddress)).network.name;
+    } catch (e) {
+      var message = this.translate.instant('Copay only supports Bitcoin Cash using new version numbers addresses');
+      var backText = this.translate.instant('Go back');
+      var learnText = this.translate.instant('Learn more');
+      this.popupProvider.ionicConfirm(null, message, backText, learnText).then((back) => {
+        if (!back) {
+          var url = 'https://support.bitpay.com/hc/en-us/articles/115004671663';
+          this.externalLinkProvider.open(url);
+        }
+        this.navCtrl.pop();
+      });
+      return;
+    }
+
     this.tx = {
       toAddress: this.navParams.data.toAddress,
-      amount: this.navParams.data.amount,
+      amount: parseInt(this.navParams.data.amount),
       sendMax: this.navParams.data.useSendMax ? true : false,
       description: this.navParams.data.description,
       paypro: this.navParams.data.paypro,
@@ -97,7 +120,7 @@ export class ConfirmPage {
       name: this.navParams.data.name,
       email: this.navParams.data.email,
       color: this.navParams.data.color,
-      network: this.navParams.data.network,
+      network: networkName,
       coin: this.navParams.data.coin,
       txp: {},
     };

@@ -85,9 +85,9 @@ export class ShapeshiftConfirmPage {
 
     this.useSendMax = this.navParams.data.useSendMax ? true : false;
 
-    this.amount = this.navParams.data.amount / 1e8;
+    this.amount = this.navParams.data.amount;
     this.currency = this.navParams.data.currency;
-    this.fromWalletId = this.navParams.data.walletId;
+    this.fromWalletId = this.navParams.data.id;
     this.toWalletId = this.navParams.data.toWalletId;
 
     this.network = this.shapeshiftProvider.getNetwork();

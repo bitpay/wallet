@@ -79,8 +79,8 @@ export class BuyAmazonPage {
   }
 
   ionViewWillEnter() {
-    this.amount = this.navParams.data.amountFiat;
-    this.currency = this.navParams.data.currency.toUpperCase();
+    this.amount = this.navParams.data.amount;
+    this.currency = this.navParams.data.currency;
 
     let limitPerDay = this.amazonProvider.limitPerDay;
 
@@ -119,7 +119,7 @@ export class BuyAmazonPage {
   }
 
   private _resetValues() {
-    this.totalAmountStr = this.amount = this.invoiceFee = this.networkFee = this.totalAmount = this.wallet = null;
+    this.totalAmountStr = this.invoiceFee = this.networkFee = this.totalAmount = this.wallet = null;
     this.createdTx = this.message = this.invoiceId = null;
   }
 

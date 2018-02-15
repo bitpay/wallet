@@ -7,16 +7,11 @@
 </ion-header>
 
 <ion-content>
-  <div *ngIf="fetchingProposals">
-    <ion-spinner></ion-spinner>
-    <span translate>Updating pending proposals. Please stand by</span>
-  </div>
-
-  <ion-list *ngIf="txps && txps[0] && !fetchingProposals">
+  <ion-list *ngIf="txps && txps[0]">
     <page-txp *ngFor="let txp of txps" [tx]="txp" [addressbook]="addressbook"></page-txp>
   </ion-list>
 
-  <ion-list *ngIf="txps && !txps[0] && !fetchingProposals">
+  <ion-list *ngIf="txps && !txps[0]">
     <ion-item>
       <span translate>No pending proposals</span>
     </ion-item>

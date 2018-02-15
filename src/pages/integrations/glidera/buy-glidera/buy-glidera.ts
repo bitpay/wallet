@@ -55,8 +55,8 @@ export class BuyGlideraPage {
 
   ionViewWillEnter() {
     this.isFiat = this.navParams.data.currency != 'BTC' ? true : false;
-    this.amount = this.navParams.data.amountFiat;
-    this.currency = this.navParams.data.currency.toUpperCase();
+    this.amount = this.navParams.data.amount;
+    this.currency = this.navParams.data.currency;
 
     this.network = this.glideraProvider.getNetwork();
     this.wallets = this.profileProvider.getWallets({
