@@ -93,7 +93,7 @@ export class BitcoinCashPage {
 		});
 	}
 
-	openRecoveryToolLink(): void {
+	public openRecoveryToolLink(): void {
 		let url = 'https://bitpay.github.io/copay-recovery/';
 		let optIn = true;
 		let title = this.translate.instant('Open the recovery tool');
@@ -102,8 +102,8 @@ export class BitcoinCashPage {
 		this.externalLinkProvider.open(url, optIn, title, null, okText, cancelText);
 	}
 
-	duplicate(wallet: any) {
-		this.logger.debug('Duplicating wallet for BCH:' + wallet.id + ':' + wallet.name);
+	public duplicate(wallet: any) {
+		this.logger.debug('Duplicating wallet for BCH: ' + wallet.id + ': ' + wallet.name);
 
 		let opts: any = {
 			name: wallet.name + '[BCH]',
@@ -140,8 +140,6 @@ export class BitcoinCashPage {
 						this.profileProvider.createWallet(opts).then((newWallet) => {
 							return resolve({ newWallet: newWallet, isNew: true });
 						});
-					}).catch((err) => {
-						return reject(err);
 					});
 				}).catch((err) => {
 					return reject(err);
@@ -189,7 +187,6 @@ export class BitcoinCashPage {
 				setErr(err);
 			});
 		}).catch((err) => {
-			this.onGoingProcessProvider.set('duplicatingWallet', false);
 			setErr(err);
 		});
 	}
