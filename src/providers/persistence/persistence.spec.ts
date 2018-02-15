@@ -39,6 +39,43 @@ describe('Persistence Provider', () => {
       expect(persistenceProvider.storage.constructor.name).toBe('FileStorage');
     });
   });
+
+  describe('without local storage', () => {
+    let localStorageBackup;
+
+    beforeEach(() => {
+      // remove window.localStorage
+      localStorageBackup = window.localStorage;
+      console.log('before clearing', window.localStorage);
+      Object.defineProperties(window, {
+        localStorage: {
+          value: null,
+          writable: true
+        }
+      });
+      console.log('after clearing', window.localStorage);
+    });
+
+    afterEach(() => {
+      // restore window.localStorage
+      console.log('before restoring', window.localStorage);
+      Object.defineProperties(window, {
+        localStorage: {
+          value: localStorageBackup,
+          writable: false
+        }
+      });
+      console.log('after restoring', window.localStorage);
+    });
+
+    it('should throw an error if local storage is not available', () => {
+      expect(() => {
+        platformMock.isCordova = false;
+        createAndLoad();
+      } ).toThrow(new Error('localstorage not available'));
+    });
+  });
+
   describe('When platform is not Cordova', () => {
     beforeEach(() => {
       platformMock.isCordova = false;
