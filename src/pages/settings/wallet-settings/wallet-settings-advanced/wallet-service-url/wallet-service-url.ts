@@ -90,7 +90,7 @@ export class WalletServiceUrlPage {
     this.configProvider.set(opts);
     this.persistenceProvider.setCleanAndScanAddresses(this.wallet.credentials.walletId);
     this.events.publish('wallet:updated', this.wallet.credentials.walletId);
-    this.navCtrl.popToRoot();
+    this.navCtrl.popToRoot({ animate: false });
     this.navCtrl.parent.select(0);
     this.reload();
   };

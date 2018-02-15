@@ -203,10 +203,10 @@ export class CreateWalletPage implements OnInit {
       }
 
       if (!wallet.isComplete()) {
-        this.navCtrl.popToRoot();
+        this.navCtrl.popToRoot({ animate: false });
         this.navCtrl.push(CopayersPage, { walletId: wallet.credentials.walletId });
       } else {
-        this.navCtrl.popToRoot();
+        this.navCtrl.popToRoot({ animate: false });
       }
     }).catch((err: any) => {
       this.onGoingProcessProvider.set('creatingWallet', false);

@@ -53,7 +53,7 @@ export class WalletDeletePage {
     this.profileProvider.deleteWalletClient(this.wallet).then(() => {
       this.onGoingProcessProvider.set('deletingWallet', false);
       this.pushNotificationsProvider.unsubscribe(this.wallet);
-      this.navCtrl.popToRoot();
+      this.navCtrl.popToRoot({ animate: false });
       this.navCtrl.parent.select(0);
     }).catch((err) => {
       this.popupProvider.ionicAlert(this.translate.instant('Error'), err.message || err);

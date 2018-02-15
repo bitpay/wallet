@@ -150,10 +150,10 @@ export class JoinWalletPage {
       this.walletProvider.updateRemotePreferences(wallet);
 
       if (!wallet.isComplete()) {
-        this.navCtrl.popToRoot();
+        this.navCtrl.popToRoot({ animate: false });
         this.navCtrl.push(CopayersPage, { walletId: wallet.credentials.walletId });
       } else {
-        this.navCtrl.popToRoot();
+        this.navCtrl.popToRoot({ animate: false });
       }
     }).catch((err: any) => {
       this.onGoingProcessProvider.set('joiningWallet', false);
@@ -165,9 +165,9 @@ export class JoinWalletPage {
 
   public openScanner(): void {
     if (this.navParams.data.fromScan) {
-      this.navCtrl.popToRoot();
+      this.navCtrl.popToRoot({ animate: false });
     } else {
-      this.navCtrl.popToRoot();
+      this.navCtrl.popToRoot({ animate: false });
       this.navCtrl.parent.select(2);
     }
   }

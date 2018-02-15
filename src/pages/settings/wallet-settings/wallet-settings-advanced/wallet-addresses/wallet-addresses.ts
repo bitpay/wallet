@@ -155,7 +155,7 @@ export class WalletAddressesPage {
 
   public scan(): void {
     this.walletProvider.startScan(this.wallet);
-    this.navCtrl.popToRoot();
+    this.navCtrl.popToRoot({ animate: false });
     this.navCtrl.parent.select(0);
     this.navCtrl.push(WalletDetailsPage, { walletId: this.wallet.credentials.walletId })
   }

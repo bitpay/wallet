@@ -153,7 +153,7 @@ export class PushNotificationsProvider {
     if (!wallet) return;
 
     this.navCtrl = this.app.getActiveNav();
-    this.navCtrl.popToRoot();
+    this.navCtrl.popToRoot({ animate: false });
     this.navCtrl.parent.select(0);
     if (!wallet.isComplete()) {
       this.navCtrl.push(CopayersPage, { walletId: wallet.credentials.walletId });

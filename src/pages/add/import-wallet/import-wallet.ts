@@ -208,10 +208,10 @@ export class ImportWalletPage {
           this.logger.error(err);
         });
         this.navCtrl.setRoot(TabsPage);
-        this.navCtrl.popToRoot();
+        this.navCtrl.popToRoot({ animate: false });
       }
       else {
-        this.navCtrl.popToRoot();
+        this.navCtrl.popToRoot({ animate: false });
         this.navCtrl.parent.select(0);
       }
     }).catch((err: any) => {
@@ -369,9 +369,9 @@ export class ImportWalletPage {
 
   public openScanner(): void {
     if (this.navParams.data.fromScan) {
-      this.navCtrl.popToRoot();
+      this.navCtrl.popToRoot({ animate: false });
     } else {
-      this.navCtrl.popToRoot();
+      this.navCtrl.popToRoot({ animate: false });
       this.navCtrl.parent.select(2);
     }
   }
