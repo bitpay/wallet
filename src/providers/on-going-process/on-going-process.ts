@@ -37,7 +37,7 @@ export class OnGoingProcessProvider {
       'recreating': this.translate.instant('Recreating Wallet...'),
       'rejectTx': this.translate.instant('Rejecting payment proposal...'),
       'removeTx': this.translate.instant('Deleting payment proposal...'),
-      'retrievingInputs': this.translate.instant('Retrieving inputs information'),
+      'retrievingInputs': this.translate.instant('Retrieving inputs information...'),
       'scanning': this.translate.instant('Scanning Wallet funds...'),
       'sendingTx': this.translate.instant('Sending transaction...'),
       'signingTx': this.translate.instant('Signing transaction...'),
@@ -65,6 +65,7 @@ export class OnGoingProcessProvider {
   public clear() {
     this.ongoingProcess = {};
     this.loading.dismiss();
+    this.logger.debug('ongoingProcess clear');
   }
 
   public pause(): void {

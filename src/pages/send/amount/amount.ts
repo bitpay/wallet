@@ -43,7 +43,6 @@ export class AmountPage {
   private unitIndex: number;
   private unitToSatoshi: number;
   private satToUnit: number;
-  //private satToBtc: number;
   private unitDecimals: number;
 
   public alternativeUnit: string;
@@ -114,7 +113,6 @@ export class AmountPage {
 
     this.unitToSatoshi = this.config.wallet.settings.unitToSatoshi;
     this.satToUnit = 1 / this.unitToSatoshi;
-    //this.satToBtc = 1 / 100000000;
     this.unitDecimals = this.config.wallet.settings.unitDecimals;
 
     // BitPay Card ID
@@ -135,6 +133,7 @@ export class AmountPage {
 
   ionViewWillEnter() {
     this.expression = '';
+    this.useSendMax = false;
     this.processAmount();
   }
 
