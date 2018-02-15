@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { NavController, Events, NavParams } from 'ionic-angular';
 import { Validators, FormBuilder, FormGroup } from '@angular/forms';
 import { Logger } from '../../../providers/logger/logger';
 import { TranslateService } from '@ngx-translate/core';
@@ -63,7 +63,8 @@ export class CreateWalletPage implements OnInit {
     private onGoingProcessProvider: OnGoingProcessProvider,
     private logger: Logger,
     private walletProvider: WalletProvider,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private events: Events
   ) {
 
     this.isShared = this.navParams.get('isShared');
@@ -195,6 +196,7 @@ export class CreateWalletPage implements OnInit {
 
     this.profileProvider.createWallet(opts).then((wallet: any) => {
       this.onGoingProcessProvider.set('creatingWallet', false);
+      this.events.publish('Local/WalletAction', wallet.credentials.walletId);
       this.walletProvider.updateRemotePreferences(wallet);
       // TODO: this.pushNotificationsService.updateSubscription(wallet);
 

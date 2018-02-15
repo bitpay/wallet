@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { NavController, Events, NavParams } from 'ionic-angular';
 import { Validators, FormBuilder, FormGroup } from '@angular/forms';
 import { Logger } from '../../../providers/logger/logger';
 import { TranslateService } from '@ngx-translate/core';
@@ -40,7 +40,8 @@ export class JoinWalletPage {
     private profileProvider: ProfileProvider,
     private walletProvider: WalletProvider,
     private logger: Logger,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private events: Events
   ) {
     this.defaults = this.configProvider.getDefaults();
 
@@ -147,6 +148,7 @@ export class JoinWalletPage {
 
     this.profileProvider.joinWallet(opts).then((wallet: any) => {
       this.onGoingProcessProvider.set('joiningWallet', false);
+      this.events.publish('Local/WalletAction', wallet.credentials.walletId);
       this.walletProvider.updateRemotePreferences(wallet);
 
       if (!wallet.isComplete()) {

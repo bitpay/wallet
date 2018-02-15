@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { NavController, Events, NavParams } from 'ionic-angular';
 import { Validators, FormBuilder, FormGroup } from '@angular/forms';
 import { Logger } from '../../../providers/logger/logger';
 import { TranslateService } from '@ngx-translate/core';
@@ -54,7 +54,8 @@ export class ImportWalletPage {
     private logger: Logger,
     private onGoingProcessProvider: OnGoingProcessProvider,
     private profileProvider: ProfileProvider,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private events: Events
   ) {
     this.reader = new FileReader();
     this.defaults = this.configProvider.getDefaults();
@@ -203,6 +204,7 @@ export class ImportWalletPage {
   private finish(wallet: any): void {
     this.walletProvider.updateRemotePreferences(wallet).then(() => {
       this.profileProvider.setBackupFlag(wallet.credentials.walletId);
+      this.events.publish('Local/WalletAction', wallet.credentials.walletId);
       if (this.fromOnboarding) {
         this.profileProvider.setDisclaimerAccepted().catch((err: any) => {
           this.logger.error(err);
