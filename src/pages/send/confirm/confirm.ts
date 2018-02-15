@@ -291,7 +291,6 @@ export class ConfirmPage {
 
       this.onGoingProcessProvider.set('calculatingFee', true);
       this.feeProvider.getFeeRate(wallet.coin, tx.network, tx.feeLevel).then((feeRate: any) => {
-        this.onGoingProcessProvider.set('calculatingFee', false);
         if (!this.usingCustomFee) tx.feeRate = feeRate;
 
         // call getSendMaxInfo if was selected from amount view
@@ -304,16 +303,20 @@ export class ConfirmPage {
         } else {
           // txp already generated for this wallet?
           if (tx.txp[wallet.id]) {
+            this.onGoingProcessProvider.clear();
             return resolve();
           }
 
           this.buildTxp(tx, wallet, opts).then(() => {
+            this.onGoingProcessProvider.clear();
             return resolve();
           }).catch((err: any) => {
+            this.onGoingProcessProvider.clear();
             return reject(err);
           });
         }
       }).catch((err: any) => {
+        this.onGoingProcessProvider.clear();
         return reject(err);
       });
     });
@@ -392,11 +395,12 @@ export class ConfirmPage {
         excludeUnconfirmedUtxos: !tx.spendUnconfirmed,
         returnInputs: true,
       }).then((res: any) => {
-        this.onGoingProcessProvider.set('retrievingInputs', false);
-        resolve(res);
+        this.onGoingProcessProvider.clear();
+        return resolve(res);
       }).catch((err: any) => {
-        this.onGoingProcessProvider.set('retrievingInputs', false);
+        this.onGoingProcessProvider.clear();
         this.logger.warn(err);
+        return reject(err);
       });
     });
   }

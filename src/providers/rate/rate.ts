@@ -83,7 +83,7 @@ export class RateProvider {
     });
   }
 
-  private getRate(code: string, chain?: string): number {
+  public getRate(code: string, chain?: string): number {
     if (chain == 'bch')
       return this.ratesBCH[code];
     else

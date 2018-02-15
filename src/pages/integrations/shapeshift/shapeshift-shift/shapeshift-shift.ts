@@ -137,7 +137,6 @@ export class ShapeshiftShiftPage {
       coin: this.fromWallet.coin,
       walletId: this.fromWallet.id,
       toWalletId: this.toWallet.id,
-      currency: this.fromWallet.coin.toUpperCase(),
       shiftMax: this.limit.limit + ' ' + this.fromWallet.coin.toUpperCase(),
       shiftMin: this.limit.minimum + ' ' + this.fromWallet.coin.toUpperCase()
     });
