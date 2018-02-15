@@ -14,6 +14,7 @@ import { DerivationPathHelperProvider } from '../../../providers/derivation-path
 import { PopupProvider } from '../../../providers/popup/popup';
 import { OnGoingProcessProvider } from "../../../providers/on-going-process/on-going-process";
 import { WalletProvider } from '../../../providers/wallet/wallet';
+import { PushNotificationsProvider } from '../../../providers/push-notifications/push-notifications';
 
 import * as _ from 'lodash';
 
@@ -64,7 +65,8 @@ export class CreateWalletPage implements OnInit {
     private logger: Logger,
     private walletProvider: WalletProvider,
     private translate: TranslateService,
-    private events: Events
+    private events: Events,
+    private pushNotificationsProvider: PushNotificationsProvider
   ) {
 
     this.isShared = this.navParams.get('isShared');
@@ -125,7 +127,7 @@ export class CreateWalletPage implements OnInit {
       label: 'Specify Recovery Phrase',
       supportsTestnet: false
     }];
-    this.createForm.controls['selectedSeed'].setValue(this.seedOptions[0].id); // new or set    
+    this.createForm.controls['selectedSeed'].setValue(this.seedOptions[0].id); // new or set
   };
 
   public seedOptionsChange(seed: any): void {
@@ -198,7 +200,7 @@ export class CreateWalletPage implements OnInit {
       this.onGoingProcessProvider.set('creatingWallet', false);
       this.events.publish('Local/WalletAction', wallet.credentials.walletId);
       this.walletProvider.updateRemotePreferences(wallet);
-      // TODO: this.pushNotificationsService.updateSubscription(wallet);
+      this.pushNotificationsProvider.updateSubscription(wallet);
 
       if (this.createForm.value.selectedSeed == 'set') {
         this.profileProvider.setBackupFlag(wallet.credentials.walletId);
