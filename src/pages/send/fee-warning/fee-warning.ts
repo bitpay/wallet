@@ -1,4 +1,4 @@
-import { Component } from "@angular/core";
+import { Component } from '@angular/core';
 import { ViewController } from 'ionic-angular';
 
 @Component({
@@ -6,11 +6,9 @@ import { ViewController } from 'ionic-angular';
   templateUrl: 'fee-warning.html'
 })
 export class FeeWarningPage {
-  constructor(
-    private viewCtrl: ViewController
-  ) {}
+  constructor(private viewCtrl: ViewController) {}
 
-  close() {
+  public close() {
     this.viewCtrl.dismiss();
   }
 }

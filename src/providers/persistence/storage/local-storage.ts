@@ -5,17 +5,24 @@ import { IStorage, KeyAlreadyExistsError } from './istorage';
 
 @Injectable()
 export class LocalStorage implements IStorage {
-  ls: Storage;
+  public ls: Storage;
   constructor() {
-    this.ls = (typeof window.localStorage !== "undefined") ? window.localStorage : null;
-    if (!this.ls) throw new Error('localstorage not available');
+    this.ls =
+      typeof window.localStorage !== 'undefined' ? window.localStorage : null;
+    if (!this.ls) {
+      throw new Error('localstorage not available');
+    }
   }
 
-  get(k: string): Promise<any> {
+  public get(k: string): Promise<any> {
     return new Promise(resolve => {
-      let v = this.ls.getItem(k);
-      if (!v) return resolve(null);
-      if (!_.isString(v)) return resolve(v);
+      const v = this.ls.getItem(k);
+      if (!v) {
+        return resolve(null);
+      }
+      if (!_.isString(v)) {
+        return resolve(v);
+      }
       let parsed: any;
       try {
         parsed = JSON.parse(v);
@@ -26,7 +33,7 @@ export class LocalStorage implements IStorage {
     });
   }
 
-  set(k: string, v: any): Promise<void> {
+  public set(k: string, v: any): Promise<void> {
     return new Promise<void>(resolve => {
       if (_.isObject(v)) {
         v = JSON.stringify(v);
@@ -40,16 +47,18 @@ export class LocalStorage implements IStorage {
     });
   }
 
-  remove(k: string): Promise<void> {
+  public remove(k: string): Promise<void> {
     return new Promise<void>(resolve => {
       this.ls.removeItem(k);
       resolve();
     });
   }
 
-  create(k: string, v: any): Promise<void> {
-    return this.get(k).then((data) => {
-      if (data) throw new KeyAlreadyExistsError();
+  public create(k: string, v: any): Promise<void> {
+    return this.get(k).then(data => {
+      if (data) {
+        throw new KeyAlreadyExistsError();
+      }
       this.set(k, v);
     });
   }

@@ -1,22 +1,27 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, ModalController, Events } from 'ionic-angular';
-import { Logger } from '../../../../providers/logger/logger';
 import { TranslateService } from '@ngx-translate/core';
+import {
+  Events,
+  ModalController,
+  NavController,
+  NavParams
+} from 'ionic-angular';
 import * as _ from 'lodash';
 import * as moment from 'moment';
+import { Logger } from '../../../../providers/logger/logger';
 
 // Pages
 import { FeeWarningPage } from '../../../send/fee-warning/fee-warning';
-import { MercadoLibrePage } from '../mercado-libre';
 import { SuccessModalPage } from '../../../success/success';
+import { MercadoLibrePage } from '../mercado-libre';
 
 // Provider
-import { MercadoLibreProvider } from '../../../../providers/mercado-libre/mercado-libre';
 import { BwcErrorProvider } from '../../../../providers/bwc-error/bwc-error';
 import { ConfigProvider } from '../../../../providers/config/config';
 import { EmailNotificationsProvider } from '../../../../providers/email-notifications/email-notifications';
 import { ExternalLinkProvider } from '../../../../providers/external-link/external-link';
-import { OnGoingProcessProvider } from "../../../../providers/on-going-process/on-going-process";
+import { MercadoLibreProvider } from '../../../../providers/mercado-libre/mercado-libre';
+import { OnGoingProcessProvider } from '../../../../providers/on-going-process/on-going-process';
 import { PopupProvider } from '../../../../providers/popup/popup';
 import { ProfileProvider } from '../../../../providers/profile/profile';
 import { TxFormatProvider } from '../../../../providers/tx-format/tx-format';
@@ -24,10 +29,9 @@ import { WalletProvider } from '../../../../providers/wallet/wallet';
 
 @Component({
   selector: 'page-buy-mercado-libre',
-  templateUrl: 'buy-mercado-libre.html',
+  templateUrl: 'buy-mercado-libre.html'
 })
 export class BuyMercadoLibrePage {
-
   private coin: string;
   private amount: number;
   private currency: string;
@@ -74,16 +78,21 @@ export class BuyMercadoLibrePage {
     this.mlGiftCard = null;
   }
 
-  ionViewDidLoad() {
+  public ionViewDidLoad() {
     this.logger.info('ionViewDidLoad BuyMercadoLibrePage');
   }
 
-  ionViewWillEnter() {
+  public ionViewWillEnter() {
     this.amount = this.navParams.data.amountFiat;
     this.currency = this.navParams.data.currency.toUpperCase();
 
     if (this.amount > 2000 || this.amount < 50) {
-      this.showErrorAndBack(null, this.translate.instant('Purchase amount must be a value between 50 and 2000'));
+      this.showErrorAndBack(
+        null,
+        this.translate.instant(
+          'Purchase amount must be a value between 50 and 2000'
+        )
+      );
       return;
     }
 
@@ -94,17 +103,24 @@ export class BuyMercadoLibrePage {
       coin: this.coin
     });
     if (_.isEmpty(this.wallets)) {
-      this.showErrorAndBack(null, this.translate.instant('No wallets available'));
+      this.showErrorAndBack(
+        null,
+        this.translate.instant('No wallets available')
+      );
       return;
     }
     this.onWalletSelect(this.wallets[0]); // Default first wallet
   }
 
   private checkFeeHigh(amount: number, fee: number) {
-    let per = fee / (amount + fee) * 100;
+    const per = fee / (amount + fee) * 100;
 
     if (per > this.FEE_TOO_HIGH_LIMIT_PER) {
-      let feeWarningModal = this.modalCtrl.create(FeeWarningPage, {}, { showBackdrop: false, enableBackdropDismiss: false });
+      const feeWarningModal = this.modalCtrl.create(
+        FeeWarningPage,
+        {},
+        { showBackdrop: false, enableBackdropDismiss: false }
+      );
       feeWarningModal.present();
     }
   }
@@ -121,48 +137,59 @@ export class BuyMercadoLibrePage {
   private showErrorAndBack(title: string, msg: any) {
     title = title ? title : this.translate.instant('Error');
     this.logger.error(msg);
-    msg = (msg && msg.errors) ? msg.errors[0].message : msg;
+    msg = msg && msg.errors ? msg.errors[0].message : msg;
     this.popupProvider.ionicAlert(title, msg).then(() => {
       this.navCtrl.pop();
     });
   }
 
-  private showError = function (title: string, msg: any): Promise<any> {
+  private showError = function(title: string, msg: any): Promise<any> {
     return new Promise((resolve, reject) => {
       title = title || this.translate.instant('Error');
       this.logger.error(msg);
-      msg = (msg && msg.errors) ? msg.errors[0].message : msg;
+      msg = msg && msg.errors ? msg.errors[0].message : msg;
       this.popupProvider.ionicAlert(title, msg).then(() => {
         return resolve();
       });
     });
-  }
+  };
 
   private publishAndSign(wallet: any, txp: any): Promise<any> {
     return new Promise((resolve, reject) => {
       if (!wallet.canSign() && !wallet.isPrivKeyExternal()) {
-        let err = this.translate.instant('No signing proposal: No private key');
+        const err = this.translate.instant(
+          'No signing proposal: No private key'
+        );
         this.logger.info(err);
         return reject(err);
       }
 
-      this.walletProvider.publishAndSign(wallet, txp).then((txp: any) => {
-        return resolve(txp);
-      }).catch((err: any) => {
-        return reject(err);
-      });
+      this.walletProvider
+        .publishAndSign(wallet, txp)
+        .then((txp: any) => {
+          return resolve(txp);
+        })
+        .catch((err: any) => {
+          return reject(err);
+        });
     });
   }
 
   private satToFiat(sat: number): Promise<any> {
     return new Promise((resolve, reject) => {
-      this.txFormatProvider.toFiat(this.coin, sat, this.currencyIsoCode).then((value: string) => {
-        return resolve(value);
-      });
+      this.txFormatProvider
+        .toFiat(this.coin, sat, this.currencyIsoCode)
+        .then((value: string) => {
+          return resolve(value);
+        });
     });
   }
 
-  private setTotalAmount(amountSat: number, invoiceFeeSat: number, networkFeeSat: number) {
+  private setTotalAmount(
+    amountSat: number,
+    invoiceFeeSat: number,
+    networkFeeSat: number
+  ) {
     this.satToFiat(amountSat).then((a: string) => {
       this.amount = Number(a);
 
@@ -179,49 +206,62 @@ export class BuyMercadoLibrePage {
 
   private createInvoice(data: any): Promise<any> {
     return new Promise((resolve, reject) => {
-      this.mercadoLibreProvider.createBitPayInvoice(data, (err: any, dataInvoice: any) => {
-        if (err) {
-          let err_title = this.translate.instant('Error creating the invoice');
-          let err_msg;
-          if (err && err.message && err.message.match(/suspended/i)) {
-            err_title = this.translate.instant('Service not available');
-            err_msg = this.translate.instant('Mercadolibre Gift Card Service is not available at this moment. Please try back later.');
-          } else if (err && err.message) {
-            err_msg = err.message;
-          } else {
-            err_msg = this.translate.instant('Could not access Gift Card Service');
-          };
-
-          return reject({
-            title: err_title,
-            message: err_msg
-          });
-        }
-
-        let accessKey = dataInvoice ? dataInvoice.accessKey : null;
-
-        if (!accessKey) {
-          return reject({
-            message: this.translate.instant('No access key defined')
-          });
-        }
-
-        this.mercadoLibreProvider.getBitPayInvoice(dataInvoice.invoiceId, (err: any, invoice: any) => {
+      this.mercadoLibreProvider.createBitPayInvoice(
+        data,
+        (err: any, dataInvoice: any) => {
           if (err) {
+            let err_title = this.translate.instant(
+              'Error creating the invoice'
+            );
+            let err_msg;
+            if (err && err.message && err.message.match(/suspended/i)) {
+              err_title = this.translate.instant('Service not available');
+              err_msg = this.translate.instant(
+                'Mercadolibre Gift Card Service is not available at this moment. Please try back later.'
+              );
+            } else if (err && err.message) {
+              err_msg = err.message;
+            } else {
+              err_msg = this.translate.instant(
+                'Could not access Gift Card Service'
+              );
+            }
+
             return reject({
-              message: this.translate.instant('Could not get the invoice')
+              title: err_title,
+              message: err_msg
             });
           }
 
-          return resolve({ invoice: invoice, accessKey: accessKey });
-        });
-      });
+          const accessKey = dataInvoice ? dataInvoice.accessKey : null;
+
+          if (!accessKey) {
+            return reject({
+              message: this.translate.instant('No access key defined')
+            });
+          }
+
+          this.mercadoLibreProvider.getBitPayInvoice(
+            dataInvoice.invoiceId,
+            (err: any, invoice: any) => {
+              if (err) {
+                return reject({
+                  message: this.translate.instant('Could not get the invoice')
+                });
+              }
+
+              return resolve({ invoice, accessKey });
+            }
+          );
+        }
+      );
     });
   }
 
   private createTx(wallet: any, invoice: any, message: string): Promise<any> {
     return new Promise((resolve, reject) => {
-      let payProUrl = (invoice && invoice.paymentUrls) ? invoice.paymentUrls.BIP73 : null;
+      const payProUrl =
+        invoice && invoice.paymentUrls ? invoice.paymentUrls.BIP73 : null;
 
       if (!payProUrl) {
         return reject({
@@ -230,158 +270,215 @@ export class BuyMercadoLibrePage {
         });
       }
 
-      let outputs = [];
-      let toAddress = invoice.bitcoinAddress;
-      let amountSat = parseInt((invoice.btcDue * 100000000).toFixed(0)); // BTC to Satoshi
+      const outputs = [];
+      const toAddress = invoice.bitcoinAddress;
+      const amountSat = parseInt((invoice.btcDue * 100000000).toFixed(0)); // BTC to Satoshi
 
       outputs.push({
-        'toAddress': toAddress,
-        'amount': amountSat,
-        'message': message
+        toAddress,
+        amount: amountSat,
+        message
       });
 
-      let txp = {
-        toAddress: toAddress,
+      const txp = {
+        toAddress,
         amount: amountSat,
-        outputs: outputs,
-        message: message,
-        payProUrl: payProUrl,
-        excludeUnconfirmedUtxos: this.configWallet.spendUnconfirmed ? false : true,
-        feeLevel: this.configWallet.settings.feeLevel ? this.configWallet.settings.feeLevel : 'normal'
+        outputs,
+        message,
+        payProUrl,
+        excludeUnconfirmedUtxos: this.configWallet.spendUnconfirmed
+          ? false
+          : true,
+        feeLevel: this.configWallet.settings.feeLevel
+          ? this.configWallet.settings.feeLevel
+          : 'normal'
       };
 
-      this.walletProvider.createTx(wallet, txp).then((ctxp: any) => {
-        return resolve(ctxp);
-      }).catch((err: any) => {
-        return reject({
-          title: this.translate.instant('Could not create transaction'),
-          message: this.bwcErrorProvider.msg(err)
+      this.walletProvider
+        .createTx(wallet, txp)
+        .then((ctxp: any) => {
+          return resolve(ctxp);
+        })
+        .catch((err: any) => {
+          return reject({
+            title: this.translate.instant('Could not create transaction'),
+            message: this.bwcErrorProvider.msg(err)
+          });
         });
-      });
     });
   }
 
-  private checkTransaction = _.throttle((count: number, dataSrc: any) => {
-    this.mercadoLibreProvider.createGiftCard(dataSrc, (err, giftCard) => {
-      this.logger.debug("creating gift card " + count);
-      if (err) {
-        giftCard = giftCard || {};
-        giftCard['status'] = 'FAILURE';
-      }
+  private checkTransaction = _.throttle(
+    (count: number, dataSrc: any) => {
+      this.mercadoLibreProvider.createGiftCard(dataSrc, (err, giftCard) => {
+        this.logger.debug('creating gift card ' + count);
+        if (err) {
+          giftCard = giftCard || {};
+          giftCard.status = 'FAILURE';
+        }
 
-      if (giftCard && giftCard.cardStatus && (giftCard.cardStatus != 'active' && giftCard.cardStatus != 'inactive' && giftCard.cardStatus != 'expired')) {
-        giftCard = giftCard || {};
-        giftCard['status'] = 'FAILURE';
-      }
+        if (
+          giftCard &&
+          giftCard.cardStatus &&
+          (giftCard.cardStatus != 'active' &&
+            giftCard.cardStatus != 'inactive' &&
+            giftCard.cardStatus != 'expired')
+        ) {
+          giftCard = giftCard || {};
+          giftCard.status = 'FAILURE';
+        }
 
-      var now = moment().unix() * 1000;
+        const now = moment().unix() * 1000;
 
-      var newData = giftCard;
-      newData.invoiceId = dataSrc.invoiceId;
-      newData.accessKey = dataSrc.accessKey;
-      newData.invoiceUrl = dataSrc.invoiceUrl;
-      newData.currency = dataSrc.currency;
-      newData.amount = dataSrc.amount;
-      newData.date = dataSrc.invoiceTime || now;
-      newData.uuid = dataSrc.uuid;
+        const newData = giftCard;
+        newData.invoiceId = dataSrc.invoiceId;
+        newData.accessKey = dataSrc.accessKey;
+        newData.invoiceUrl = dataSrc.invoiceUrl;
+        newData.currency = dataSrc.currency;
+        newData.amount = dataSrc.amount;
+        newData.date = dataSrc.invoiceTime || now;
+        newData.uuid = dataSrc.uuid;
 
-      if (giftCard.status == 'PENDING' && count < 3) {
-        this.logger.debug("Waiting for payment confirmation");
-        this.mercadoLibreProvider.savePendingGiftCard(newData, null, (err: any) => {
-          this.logger.debug("Saving new gift card with status: " + newData.status);
-        });
-        this.checkTransaction(count + 1, dataSrc);
-        return;
-      }
+        if (giftCard.status == 'PENDING' && count < 3) {
+          this.logger.debug('Waiting for payment confirmation');
+          this.mercadoLibreProvider.savePendingGiftCard(
+            newData,
+            null,
+            (err: any) => {
+              this.logger.debug(
+                'Saving new gift card with status: ' + newData.status
+              );
+            }
+          );
+          this.checkTransaction(count + 1, dataSrc);
+          return;
+        }
 
-      this.mercadoLibreProvider.savePendingGiftCard(newData, null, (err: any) => {
-        this.onGoingProcessProvider.set('Comprando Vale-Presente', false);
-        this.logger.debug("Saved new gift card with status: " + newData.status);
-        this.mlGiftCard = newData;
-        this.openSuccessModal();
+        this.mercadoLibreProvider.savePendingGiftCard(
+          newData,
+          null,
+          (err: any) => {
+            this.onGoingProcessProvider.set('Comprando Vale-Presente', false);
+            this.logger.debug(
+              'Saved new gift card with status: ' + newData.status
+            );
+            this.mlGiftCard = newData;
+            this.openSuccessModal();
+          }
+        );
       });
-    });
-  }, 8000, {
-      'leading': true
-    });
+    },
+    8000,
+    {
+      leading: true
+    }
+  );
 
   private initialize(wallet: any): void {
-    let email = this.emailNotificationsProvider.getEmailIfEnabled();
-    let parsedAmount = this.txFormatProvider.parseAmount(this.coin, this.amount, this.currency);
+    const email = this.emailNotificationsProvider.getEmailIfEnabled();
+    const parsedAmount = this.txFormatProvider.parseAmount(
+      this.coin,
+      this.amount,
+      this.currency
+    );
     this.currencyIsoCode = parsedAmount.currency;
     this.amountUnitStr = parsedAmount.amountUnitStr;
-    let dataSrc = {
+    const dataSrc = {
       amount: parsedAmount.amount,
       currency: parsedAmount.currency,
       uuid: wallet.id,
-      email: email
+      email
     };
     this.onGoingProcessProvider.set('loadingTxInfo', true);
-    this.createInvoice(dataSrc).then((data: any) => {
-      let invoice = data.invoice;
-      let accessKey = data.accessKey;
+    this.createInvoice(dataSrc)
+      .then((data: any) => {
+        const invoice = data.invoice;
+        const accessKey = data.accessKey;
 
-      // Sometimes API does not return this element;
-      invoice['buyerPaidBtcMinerFee'] = invoice.buyerPaidBtcMinerFee || 0;
-      let invoiceFeeSat = parseInt((invoice.buyerPaidBtcMinerFee * 100000000).toFixed());
+        // Sometimes API does not return this element;
+        invoice.buyerPaidBtcMinerFee = invoice.buyerPaidBtcMinerFee || 0;
+        const invoiceFeeSat = parseInt(
+          (invoice.buyerPaidBtcMinerFee * 100000000).toFixed()
+        );
 
-      this.message = this.amountUnitStr + " for Mercado Livre Brazil Gift Card"; // TODO: translate
+        this.message =
+          this.amountUnitStr + ' for Mercado Livre Brazil Gift Card'; // TODO: translate
 
-      this.createTx(wallet, invoice, this.message).then((ctxp: any) => {
+        this.createTx(wallet, invoice, this.message)
+          .then((ctxp: any) => {
+            this.onGoingProcessProvider.set('loadingTxInfo', false);
+
+            // Save in memory
+            this.createdTx = ctxp;
+            this.invoiceId = invoice.id;
+
+            this.createdTx.giftData = {
+              currency: dataSrc.currency,
+              amount: dataSrc.amount,
+              uuid: dataSrc.uuid,
+              accessKey,
+              invoiceId: invoice.id,
+              invoiceUrl: invoice.url,
+              invoiceTime: invoice.invoiceTime
+            };
+            this.totalAmountStr = this.txFormatProvider.formatAmountStr(
+              this.coin,
+              ctxp.amount
+            );
+
+            // Warn: fee too high
+            this.checkFeeHigh(
+              Number(parsedAmount.amountSat),
+              Number(invoiceFeeSat) + Number(ctxp.fee)
+            );
+
+            this.setTotalAmount(
+              parsedAmount.amountSat,
+              invoiceFeeSat,
+              ctxp.fee
+            );
+          })
+          .catch((err: any) => {
+            this.onGoingProcessProvider.set('loadingTxInfo', false);
+            this._resetValues();
+            this.showError(err.title, err.message);
+            return;
+          });
+      })
+      .catch((err: any) => {
         this.onGoingProcessProvider.set('loadingTxInfo', false);
-
-
-        // Save in memory
-        this.createdTx = ctxp;
-        this.invoiceId = invoice.id;
-
-        this.createdTx.giftData = {
-          currency: dataSrc.currency,
-          amount: dataSrc.amount,
-          uuid: dataSrc.uuid,
-          accessKey: accessKey,
-          invoiceId: invoice.id,
-          invoiceUrl: invoice.url,
-          invoiceTime: invoice.invoiceTime
-        };
-        this.totalAmountStr = this.txFormatProvider.formatAmountStr(this.coin, ctxp.amount);
-
-        // Warn: fee too high
-        this.checkFeeHigh(Number(parsedAmount.amountSat), Number(invoiceFeeSat) + Number(ctxp.fee));
-
-        this.setTotalAmount(parsedAmount.amountSat, invoiceFeeSat, ctxp.fee);
-      }).catch((err: any) => {
-        this.onGoingProcessProvider.set('loadingTxInfo', false);
-        this._resetValues();
-        this.showError(err.title, err.message);
+        this.showErrorAndBack(err.title, err.message);
         return;
       });
-    }).catch((err: any) => {
-      this.onGoingProcessProvider.set('loadingTxInfo', false);
-      this.showErrorAndBack(err.title, err.message);
-      return;
-    });
   }
 
   public buyConfirm() {
     if (!this.createdTx) {
-      this.showError(null, this.translate.instant('Transaction has not been created'));
+      this.showError(
+        null,
+        this.translate.instant('Transaction has not been created')
+      );
       return;
     }
-    var title = this.translate.instant('Confirm');
-    this.popupProvider.ionicConfirm(title, this.message).then((ok) => {
+    const title = this.translate.instant('Confirm');
+    this.popupProvider.ionicConfirm(title, this.message).then(ok => {
       if (!ok) {
         return;
       }
 
-      this.publishAndSign(this.wallet, this.createdTx).then((txSent) => {
-        this.onGoingProcessProvider.set('Comprando Vale-Presente', true);
-        this.checkTransaction(1, this.createdTx.giftData);
-      }).catch((err: any) => {
-        this._resetValues();
-        this.showError(this.translate.instant('Could not send transaction'), err);
-        return;
-      });
+      this.publishAndSign(this.wallet, this.createdTx)
+        .then(txSent => {
+          this.onGoingProcessProvider.set('Comprando Vale-Presente', true);
+          this.checkTransaction(1, this.createdTx.giftData);
+        })
+        .catch((err: any) => {
+          this._resetValues();
+          this.showError(
+            this.translate.instant('Could not send transaction'),
+            err
+          );
+          return;
+        });
     });
   }
 
@@ -391,10 +488,17 @@ export class BuyMercadoLibrePage {
   }
 
   public showWallets(): void {
-    let id = this.wallet ? this.wallet.credentials.walletId : null;
-    this.events.publish('showWalletsSelectorEvent', this.wallets, id, 'Buy from');
+    const id = this.wallet ? this.wallet.credentials.walletId : null;
+    this.events.publish(
+      'showWalletsSelectorEvent',
+      this.wallets,
+      id,
+      'Buy from'
+    );
     this.events.subscribe('selectWalletEvent', (wallet: any) => {
-      if (!_.isEmpty(wallet)) this.onWalletSelect(wallet);
+      if (!_.isEmpty(wallet)) {
+        this.onWalletSelect(wallet);
+      }
       this.events.unsubscribe('selectWalletEvent');
     });
   }
@@ -407,11 +511,18 @@ export class BuyMercadoLibrePage {
     if (this.mlGiftCard.status == 'PENDING') {
       successComment = 'Sua compra foi adicionada à lista de pendentes';
     }
-    if (this.mlGiftCard.status == 'SUCCESS' || this.mlGiftCard.cardStatus == 'active') {
+    if (
+      this.mlGiftCard.status == 'SUCCESS' ||
+      this.mlGiftCard.cardStatus == 'active'
+    ) {
       successComment = 'Vale-Presente gerado e pronto para usar';
     }
-    let successText = '';
-    let modal = this.modalCtrl.create(SuccessModalPage, { successText: successText, successComment: successComment }, { showBackdrop: true, enableBackdropDismiss: false });
+    const successText = '';
+    const modal = this.modalCtrl.create(
+      SuccessModalPage,
+      { successText, successComment },
+      { showBackdrop: true, enableBackdropDismiss: false }
+    );
     modal.present();
     modal.onDidDismiss(() => {
       this.navCtrl.remove(2, 2);
@@ -419,5 +530,4 @@ export class BuyMercadoLibrePage {
       this.navCtrl.push(MercadoLibrePage, { invoiceId: this.invoiceId });
     });
   }
-
 }

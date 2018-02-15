@@ -1,46 +1,55 @@
 import { Injectable } from '@angular/core';
-import { Logger } from '../../providers/logger/logger';
 import { TranslateService } from '@ngx-translate/core';
+import { Logger } from '../../providers/logger/logger';
 
 import { ConfigProvider } from '../config/config';
 
-import * as _ from "lodash";
+import * as _ from 'lodash';
 
 @Injectable()
 export class LanguageProvider {
-  private languages: Array<any> = [
+  private languages: any[] = [
     {
       name: 'English',
       isoCode: 'en'
-    }, {
+    },
+    {
       name: 'Español',
       isoCode: 'es'
-    }, {
+    },
+    {
       name: 'Français',
-      isoCode: 'fr',
-    }, {
+      isoCode: 'fr'
+    },
+    {
       name: 'Italiano',
-      isoCode: 'it',
-    }, {
+      isoCode: 'it'
+    },
+    {
       name: 'Polski',
-      isoCode: 'pl',
-    }, {
+      isoCode: 'pl'
+    },
+    {
       name: 'Deutsch',
-      isoCode: 'de',
-    }, {
+      isoCode: 'de'
+    },
+    {
       name: '日本語',
       isoCode: 'ja',
-      useIdeograms: true,
-    }, {
+      useIdeograms: true
+    },
+    {
       name: '中文（简体）',
       isoCode: 'zh',
-      useIdeograms: true,
-    }, {
+      useIdeograms: true
+    },
+    {
       name: 'Pусский',
-      isoCode: 'ru',
-    }, {
+      isoCode: 'ru'
+    },
+    {
       name: 'Português',
-      isoCode: 'pt',
+      isoCode: 'pt'
     }
   ];
   private current: string;
@@ -51,20 +60,24 @@ export class LanguageProvider {
     private configProvider: ConfigProvider
   ) {
     this.logger.info('LanguageProvider initialized.');
-    this.translate.onLangChange.subscribe((event) => {
+    this.translate.onLangChange.subscribe(event => {
       this.logger.info('Setting new default language to: ' + event.lang);
     });
   }
 
   public load() {
-    let lang = this.configProvider.get().wallet.settings.defaultLanguage;
-    if (!_.isEmpty(lang)) this.current = lang;
-    else {
+    const lang = this.configProvider.get().wallet.settings.defaultLanguage;
+    if (!_.isEmpty(lang)) {
+      this.current = lang;
+    } else {
       // Get from browser
-      let browserLang = this.translate.getBrowserLang();
-      let validBrowserLang = this.getName(browserLang) ? true : false;
-      if (validBrowserLang) this.current = browserLang;
-      else this.current = this.getDefault();
+      const browserLang = this.translate.getBrowserLang();
+      const validBrowserLang = this.getName(browserLang) ? true : false;
+      if (validBrowserLang) {
+        this.current = browserLang;
+      } else {
+        this.current = this.getDefault();
+      }
     }
     this.logger.info('Default language: ' + this.current);
     this.translate.setDefaultLang(this.current);
@@ -73,17 +86,22 @@ export class LanguageProvider {
   public set(lang: string): void {
     this.current = lang;
     this.translate.use(lang);
-    this.configProvider.set({ wallet: { settings: { defaultLanguage: lang } } });
+    this.configProvider.set({
+      wallet: { settings: { defaultLanguage: lang } }
+    });
   }
 
   public getName(lang: string): string {
-    return _.result(_.find(this.languages, {
-      'isoCode': lang
-    }), 'name');
+    return _.result(
+      _.find(this.languages, {
+        isoCode: lang
+      }),
+      'name'
+    );
   }
 
   private getDefault(): string {
-    return this.languages[0]['isoCode'];
+    return this.languages[0].isoCode;
   }
 
   public getCurrent(): any {
@@ -93,5 +111,4 @@ export class LanguageProvider {
   public getAvailables(): any {
     return this.languages;
   }
-
 }

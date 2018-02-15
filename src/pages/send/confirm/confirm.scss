@@ -69,8 +69,10 @@ page-confirm {
     margin-top: 1rem;
   }
 
-  .container-to, .container-from {
-    .wallet, .payment-proposal-to {
+  .container-to,
+  .container-from {
+    .wallet,
+    .payment-proposal-to {
       @include row-flex;
       .icon-wallet {
         margin-right: 1rem;

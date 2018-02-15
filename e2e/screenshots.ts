@@ -1,11 +1,11 @@
-import { browser } from 'protractor';
 import { readFileSync, writeFile } from 'fs';
-import { join } from 'path';
 import * as mkdirp from 'mkdirp';
+import { join } from 'path';
+import { browser } from 'protractor';
 
 const distribution: string = JSON.parse(
   readFileSync('src/assets/appConfig.json', 'utf8')
-)['packageName'];
+).packageName;
 
 const dir = join('test', 'latest', distribution);
 // create dir if it doesn't exist
@@ -25,7 +25,7 @@ document.body.appendChild(elem);
 export async function takeScreenshot(name: string) {
   browser.executeScript(jsToInjectCSSHack);
   const config = await browser.getProcessedConfig();
-  const deviceName = config['capabilities']['name'];
+  const deviceName = config.capabilities.name;
   const pngData = await browser.takeScreenshot();
   const path = join(dir, `${name}_${deviceName}.png`);
   writeFile(path, pngData, { encoding: 'base64' }, err => {

@@ -1,34 +1,34 @@
 import { Component } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
 import { NavController } from 'ionic-angular';
 import { Logger } from '../../providers/logger/logger';
-import { TranslateService } from '@ngx-translate/core';
 
 //providers
 import { AppProvider } from '../../providers/app/app';
 import { ConfigProvider } from '../../providers/config/config';
-import { LanguageProvider } from '../../providers/language/language';
 import { ExternalLinkProvider } from '../../providers/external-link/external-link';
-import { ProfileProvider } from '../../providers/profile/profile';
-import { PlatformProvider } from '../../providers/platform/platform';
 import { HomeIntegrationsProvider } from '../../providers/home-integrations/home-integrations';
+import { LanguageProvider } from '../../providers/language/language';
+import { PlatformProvider } from '../../providers/platform/platform';
+import { ProfileProvider } from '../../providers/profile/profile';
 
 //pages
-import { AltCurrencyPage } from './alt-currency/alt-currency';
-import { BitcoinCashPage } from './bitcoin-cash/bitcoin-cash';
-import { LockPage } from './lock/lock';
-import { AboutPage } from './about/about';
-import { AdvancedPage } from './advanced/advanced';
-import { AddressbookPage } from './addressbook/addressbook';
-import { WalletSettingsPage } from './wallet-settings/wallet-settings';
-import { NotificationsPage } from './notifications/notifications';
-import { FeePolicyPage } from './fee-policy/fee-policy';
-import { LanguagePage } from './language/language';
 import { FeedbackCompletePage } from '../feedback/feedback-complete/feedback-complete';
 import { SendFeedbackPage } from '../feedback/send-feedback/send-feedback';
-import { GlideraSettingsPage } from '../integrations/glidera/glidera-settings/glidera-settings';
-import { CoinbaseSettingsPage } from '../integrations/coinbase/coinbase-settings/coinbase-settings';
-import { EnabledServicesPage } from './enabled-services/enabled-services';
 import { BitPaySettingsPage } from '../integrations/bitpay-card/bitpay-settings/bitpay-settings';
+import { CoinbaseSettingsPage } from '../integrations/coinbase/coinbase-settings/coinbase-settings';
+import { GlideraSettingsPage } from '../integrations/glidera/glidera-settings/glidera-settings';
+import { AboutPage } from './about/about';
+import { AddressbookPage } from './addressbook/addressbook';
+import { AdvancedPage } from './advanced/advanced';
+import { AltCurrencyPage } from './alt-currency/alt-currency';
+import { BitcoinCashPage } from './bitcoin-cash/bitcoin-cash';
+import { EnabledServicesPage } from './enabled-services/enabled-services';
+import { FeePolicyPage } from './fee-policy/fee-policy';
+import { LanguagePage } from './language/language';
+import { LockPage } from './lock/lock';
+import { NotificationsPage } from './notifications/notifications';
+import { WalletSettingsPage } from './wallet-settings/wallet-settings';
 
 @Component({
   selector: 'page-settings',
@@ -37,15 +37,15 @@ import { BitPaySettingsPage } from '../integrations/bitpay-card/bitpay-settings/
 export class SettingsPage {
   public appName: string;
   public currentLanguageName: string;
-  public languages: Array<any>;
-  public walletsBtc: Array<any>;
-  public walletsBch: Array<any>;
+  public languages: any[];
+  public walletsBtc: any[];
+  public walletsBch: any[];
   public config: any;
   public selectedAlternative: any;
   public isCordova: boolean;
   public isWindowsPhoneApp: boolean;
   public lockMethod: string;
-  public exchangeServices: Array<any> = [];
+  public exchangeServices: any[] = [];
   public bitpayCardEnabled: boolean = false;
 
   constructor(
@@ -61,18 +61,20 @@ export class SettingsPage {
     private translate: TranslateService
   ) {
     this.appName = this.app.info.nameCase;
-    this.currentLanguageName = this.language.getName(this.language.getCurrent());
+    this.currentLanguageName = this.language.getName(
+      this.language.getCurrent()
+    );
     this.walletsBch = [];
     this.walletsBtc = [];
     this.isCordova = this.platformProvider.isCordova;
     this.isWindowsPhoneApp = this.platformProvider.isWP;
   }
 
-  ionViewDidLoad() {
+  public ionViewDidLoad() {
     this.logger.info('ionViewDidLoad SettingsPage');
   }
 
-  ionViewWillEnter() {
+  public ionViewWillEnter() {
     this.walletsBtc = this.profileProvider.getWallets({
       coin: 'btc'
     });
@@ -83,7 +85,7 @@ export class SettingsPage {
     this.selectedAlternative = {
       name: this.config.wallet.settings.alternativeName,
       isoCode: this.config.wallet.settings.alternativeIsoCode
-    }
+    };
     this.lockMethod = this.config.lock.method;
     this.exchangeServices = this.homeIntegrationsProvider.getAvailableExchange();
 
@@ -129,7 +131,7 @@ export class SettingsPage {
   }
 
   public openWalletSettingsPage(walletId: string): void {
-    this.navCtrl.push(WalletSettingsPage, { walletId: walletId });
+    this.navCtrl.push(WalletSettingsPage, { walletId });
   }
 
   public openSendFeedbackPage(): void {
@@ -137,7 +139,11 @@ export class SettingsPage {
   }
 
   public openFeedbackCompletePage(): void {
-    this.navCtrl.push(FeedbackCompletePage, { score: 4, skipped: true, fromSettings: true });
+    this.navCtrl.push(FeedbackCompletePage, {
+      score: 4,
+      skipped: true,
+      fromSettings: true
+    });
   }
 
   public openEnabledServicesPage(): void {
@@ -160,12 +166,24 @@ export class SettingsPage {
   }
 
   public openHelpExternalLink(): void {
-    let url = this.appName == 'Copay' ? 'https://github.com/bitpay/copay/issues' : 'https://help.bitpay.com/bitpay-app';
-    let optIn = true;
-    let title = null;
-    let message = this.translate.instant('Help and support information is available at the website.');
-    let okText = this.translate.instant('Open');
-    let cancelText = this.translate.instant('Go Back');
-    this.externalLinkProvider.open(url, optIn, title, message, okText, cancelText);
+    const url =
+      this.appName == 'Copay'
+        ? 'https://github.com/bitpay/copay/issues'
+        : 'https://help.bitpay.com/bitpay-app';
+    const optIn = true;
+    const title = null;
+    const message = this.translate.instant(
+      'Help and support information is available at the website.'
+    );
+    const okText = this.translate.instant('Open');
+    const cancelText = this.translate.instant('Go Back');
+    this.externalLinkProvider.open(
+      url,
+      optIn,
+      title,
+      message,
+      okText,
+      cancelText
+    );
   }
 }

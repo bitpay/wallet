@@ -1,7 +1,7 @@
 page-tx-details {
-  $item-border-color: #EFEFEF;
+  $item-border-color: #efefef;
   $item-lateral-padding: 20px;
-  $item-label-color: #6C6C6E;
+  $item-label-color: #6c6c6e;
 
   span.label {
     color: color($colors, grey);
@@ -31,7 +31,8 @@ page-tx-details {
     }
   }
 
-  .payment-proposal-to, .wallet {
+  .payment-proposal-to,
+  .wallet {
     display: flex;
     align-items: center;
     margin-top: 1rem;
@@ -88,7 +89,7 @@ page-tx-details {
       min-width: 40px;
       padding-right: 1rem;
       padding-left: 1rem;
-      margin-right: .5rem;
+      margin-right: 0.5rem;
       position: relative;
 
       .line::before {
@@ -118,10 +119,10 @@ page-tx-details {
         z-index: 10;
 
         &.rejected {
-          background: #E15061;
-          border-color: #E15061;
-          color: #FFFFFF;
-          font-family: "Roboto-Bold";
+          background: #e15061;
+          border-color: #e15061;
+          color: #ffffff;
+          font-family: 'Roboto-Bold';
           font-size: 19px;
         }
       }

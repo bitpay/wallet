@@ -1,15 +1,20 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, Events, ModalController } from 'ionic-angular';
+import {
+  Events,
+  ModalController,
+  NavController,
+  NavParams
+} from 'ionic-angular';
 import { Logger } from '../../../../providers/logger/logger';
 
 //pages
 import { SuccessModalPage } from '../../../success/success';
 
 //providers
+import { GlideraProvider } from '../../../../providers/glidera/glidera';
+import { OnGoingProcessProvider } from '../../../../providers/on-going-process/on-going-process';
 import { PlatformProvider } from '../../../../providers/platform/platform';
 import { PopupProvider } from '../../../../providers/popup/popup';
-import { OnGoingProcessProvider } from '../../../../providers/on-going-process/on-going-process';
-import { GlideraProvider } from '../../../../providers/glidera/glidera';
 import { ProfileProvider } from '../../../../providers/profile/profile';
 import { TxFormatProvider } from '../../../../providers/tx-format/tx-format';
 import { WalletProvider } from '../../../../providers/wallet/wallet';
@@ -18,10 +23,9 @@ import * as _ from 'lodash';
 
 @Component({
   selector: 'page-buy-glidera',
-  templateUrl: 'buy-glidera.html',
+  templateUrl: 'buy-glidera.html'
 })
 export class BuyGlideraPage {
-
   public isCordova: boolean;
   public token: string;
   public isFiat: boolean;
@@ -53,7 +57,7 @@ export class BuyGlideraPage {
     this.isCordova = this.platformProvider.isCordova;
   }
 
-  ionViewWillEnter() {
+  public ionViewWillEnter() {
     this.isFiat = this.navParams.data.currency != 'BTC' ? true : false;
     this.amount = this.navParams.data.amountFiat;
     this.currency = this.navParams.data.currency.toUpperCase();
@@ -95,7 +99,7 @@ export class BuyGlideraPage {
         return;
       }
       this.token = data.token;
-      var price: any = {};
+      const price: any = {};
       if (this.isFiat) {
         price.fiat = this.amount;
       } else {
@@ -115,17 +119,20 @@ export class BuyGlideraPage {
   private ask2FaCode(mode, cb): Function {
     if (mode != 'NONE') {
       // SHOW PROMPT
-      var title = 'Please, enter the code below';
-      var message;
+      const title = 'Please, enter the code below';
+      let message;
       if (mode == 'PIN') {
         message = 'You have enabled PIN based two-factor authentication.';
       } else if (mode == 'AUTHENTICATOR') {
         message = 'Use an authenticator app (Authy or Google Authenticator).';
       } else {
-        message = 'A SMS containing a confirmation code was sent to your phone.';
+        message =
+          'A SMS containing a confirmation code was sent to your phone.';
       }
-      this.popupProvider.ionicPrompt(title, message).then((twoFaCode) => {
-        if (typeof twoFaCode == 'undefined') return cb();
+      this.popupProvider.ionicPrompt(title, message).then(twoFaCode => {
+        if (typeof twoFaCode == 'undefined') {
+          return cb();
+        }
         return cb(twoFaCode);
       });
     } else {
@@ -134,63 +141,85 @@ export class BuyGlideraPage {
   }
 
   public buyConfirm(): void {
-    let message = 'Buy bitcoin for ' + this.amount + ' ' + this.currency;
-    let okText = 'Confirm';
-    let cancelText = 'Cancel';
-    this.popupProvider.ionicConfirm(null, message, okText, cancelText).then((ok) => {
-      if (!ok) return;
-      this.onGoingProcessProvider.set('buyingBitcoin', true);
-      this.glideraProvider.get2faCode(this.token, (err, tfa) => {
-        if (err) {
-          this.onGoingProcessProvider.set('buyingBitcoin', false);
-          this.showError(err);
+    const message = 'Buy bitcoin for ' + this.amount + ' ' + this.currency;
+    const okText = 'Confirm';
+    const cancelText = 'Cancel';
+    this.popupProvider
+      .ionicConfirm(null, message, okText, cancelText)
+      .then(ok => {
+        if (!ok) {
           return;
         }
-        this.ask2FaCode(tfa.mode, (twoFaCode) => {
-          if (tfa.mode != 'NONE' && _.isEmpty(twoFaCode)) {
-            this.onGoingProcessProvider.set('buyingBitcoin', false);
-            this.showError('No code entered');
-            return;
-          }
-
-          this.walletProvider.getAddress(this.wallet, false).then((walletAddr) => {
-            let data = {
-              destinationAddress: walletAddr,
-              qty: this.buyInfo.qty,
-              priceUuid: this.buyInfo.priceUuid,
-              useCurrentPrice: false,
-              ip: null
-            };
-            this.glideraProvider.buy(this.token, twoFaCode, data, (err, data) => {
-              this.onGoingProcessProvider.set('buyingBitcoin', false);
-              if (err) return this.showError(err);
-              this.logger.info(data);
-              this.openSuccessModal();
-            });
-          }).catch(() => {
+        this.onGoingProcessProvider.set('buyingBitcoin', true);
+        this.glideraProvider.get2faCode(this.token, (err, tfa) => {
+          if (err) {
             this.onGoingProcessProvider.set('buyingBitcoin', false);
             this.showError(err);
+            return;
+          }
+          this.ask2FaCode(tfa.mode, twoFaCode => {
+            if (tfa.mode != 'NONE' && _.isEmpty(twoFaCode)) {
+              this.onGoingProcessProvider.set('buyingBitcoin', false);
+              this.showError('No code entered');
+              return;
+            }
+
+            this.walletProvider
+              .getAddress(this.wallet, false)
+              .then(walletAddr => {
+                const data = {
+                  destinationAddress: walletAddr,
+                  qty: this.buyInfo.qty,
+                  priceUuid: this.buyInfo.priceUuid,
+                  useCurrentPrice: false,
+                  ip: null
+                };
+                this.glideraProvider.buy(
+                  this.token,
+                  twoFaCode,
+                  data,
+                  (err, data) => {
+                    this.onGoingProcessProvider.set('buyingBitcoin', false);
+                    if (err) {
+                      return this.showError(err);
+                    }
+                    this.logger.info(data);
+                    this.openSuccessModal();
+                  }
+                );
+              })
+              .catch(() => {
+                this.onGoingProcessProvider.set('buyingBitcoin', false);
+                this.showError(err);
+              });
           });
         });
       });
-    });
   }
 
   public showWallets(): void {
-    let id = this.wallet ? this.wallet.credentials.walletId : null;
-    this.events.publish('showWalletsSelectorEvent', this.wallets, id, 'Receive in');
+    const id = this.wallet ? this.wallet.credentials.walletId : null;
+    this.events.publish(
+      'showWalletsSelectorEvent',
+      this.wallets,
+      id,
+      'Receive in'
+    );
     this.events.subscribe('selectWalletEvent', (wallet: any) => {
-      if (!_.isEmpty(wallet)) this.onWalletSelect(wallet);
+      if (!_.isEmpty(wallet)) {
+        this.onWalletSelect(wallet);
+      }
       this.events.unsubscribe('selectWalletEvent');
     });
   }
 
   public onWalletSelect(wallet): void {
     this.wallet = wallet;
-    let parsedAmount = this.txFormatProvider.parseAmount(
+    const parsedAmount = this.txFormatProvider.parseAmount(
       this.coin,
       this.amount,
-      this.currency);
+      this.currency
+    );
 
     this.amount = parsedAmount.amount;
     this.currency = parsedAmount.currency;
@@ -199,13 +228,18 @@ export class BuyGlideraPage {
   }
 
   public openSuccessModal(): void {
-    let successText = 'Bought';
-    let successComment = 'A transfer has been initiated from your bank account. Your bitcoins should arrive to your wallet in 2-4 business day';
-    let modal = this.modalCtrl.create(SuccessModalPage, { successText: successText, successComment: successComment }, { showBackdrop: true, enableBackdropDismiss: false });
+    const successText = 'Bought';
+    const successComment =
+      'A transfer has been initiated from your bank account. Your bitcoins should arrive to your wallet in 2-4 business day';
+    const modal = this.modalCtrl.create(
+      SuccessModalPage,
+      { successText, successComment },
+      { showBackdrop: true, enableBackdropDismiss: false }
+    );
     modal.present();
     modal.onDidDismiss(() => {
       this.navCtrl.remove(3, 1);
       this.navCtrl.pop();
-    })
+    });
   }
 }

@@ -126,7 +126,8 @@ page-wallet-details {
   .total-locked-amount {
     color: color($colors, dark);
   }
-  .total-alt-locked-amount, .double-spend {
+  .total-alt-locked-amount,
+  .double-spend {
     font-size: 12.5px;
   }
 }

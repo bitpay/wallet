@@ -3,18 +3,18 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Logger } from '../../../providers/logger/logger';
 
 //providers
-import { ConfigProvider } from '../../../providers/config/config';
 import { AppProvider } from '../../../providers/app/app';
+import { ConfigProvider } from '../../../providers/config/config';
+import { EmailNotificationsProvider } from '../../../providers/email-notifications/email-notifications';
 import { PlatformProvider } from '../../../providers/platform/platform';
 import { PushNotificationsProvider } from '../../../providers/push-notifications/push-notifications';
-import { EmailNotificationsProvider } from '../../../providers/email-notifications/email-notifications';
 
 //validators
 import { EmailValidator } from '../../../validators/email';
 
 @Component({
   selector: 'page-notifications',
-  templateUrl: 'notifications.html',
+  templateUrl: 'notifications.html'
 })
 export class NotificationsPage {
   public emailForm: FormGroup;
@@ -38,67 +38,77 @@ export class NotificationsPage {
     private logger: Logger
   ) {
     this.emailForm = this.formBuilder.group({
-      email: ['', Validators.compose([Validators.required, new EmailValidator(configProvider, emailProvider).isValid])]
+      email: [
+        '',
+        Validators.compose([
+          Validators.required,
+          new EmailValidator(configProvider, emailProvider).isValid
+        ])
+      ]
     });
   }
 
-  ionViewDidLoad() {
+  public ionViewDidLoad() {
     this.logger.info('ionViewDidLoad NotificationsPage');
     this.updateConfig();
   }
 
   private updateConfig() {
-    let config = this.configProvider.get();
+    const config = this.configProvider.get();
     this.appName = this.appProvider.info.nameCase;
     this.usePushNotifications = this.platformProvider.isCordova;
-    this.isIOSApp = this.platformProvider.isIOS && this.platformProvider.isCordova;
+    this.isIOSApp =
+      this.platformProvider.isIOS && this.platformProvider.isCordova;
 
     this.pushNotifications = config.pushNotificationsEnabled;
-    this.confirmedTxsNotifications = config.confirmedTxsNotifications ? config.confirmedTxsNotifications.enabled : false;
+    this.confirmedTxsNotifications = config.confirmedTxsNotifications
+      ? config.confirmedTxsNotifications.enabled
+      : false;
 
     this.emailForm.setValue({
       email: this.emailProvider.getEmailIfEnabled(config) || ''
     });
 
-    this.emailNotifications = config.emailNotifications ? config.emailNotifications.enabled : false;
-  };
+    this.emailNotifications = config.emailNotifications
+      ? config.emailNotifications.enabled
+      : false;
+  }
 
   public pushNotificationsChange() {
-    let opts = {
+    const opts = {
       pushNotificationsEnabled: this.pushNotifications
     };
 
     this.configProvider.set(opts);
 
-    if (opts.pushNotificationsEnabled)
+    if (opts.pushNotificationsEnabled) {
       this.pushProvider.init();
-    else
+    } else {
       this.pushProvider.disable();
-  };
+    }
+  }
 
   public confirmedTxsNotificationsChange() {
-    let opts = {
+    const opts = {
       confirmedTxsNotifications: {
         enabled: this.confirmedTxsNotifications
       }
     };
     this.configProvider.set(opts);
-  };
+  }
 
   public emailNotificationsChange() {
-    let opts = {
+    const opts = {
       enabled: this.emailNotifications,
       email: this.emailForm.value.email
     };
     this.emailProvider.updateEmail(opts);
-  };
+  }
 
   public saveEmail() {
     this.emailProvider.updateEmail({
       enabled: this.emailNotifications,
       email: this.emailForm.value.email
     });
-
-  };
-
+  }
 }

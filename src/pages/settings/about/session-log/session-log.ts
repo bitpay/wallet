@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
-import { DOCUMENT } from "@angular/platform-browser";
 import { Inject } from '@angular/core';
-import { ActionSheetController, ToastController } from 'ionic-angular';
+import { DOCUMENT } from '@angular/platform-browser';
 import { TranslateService } from '@ngx-translate/core';
+import { ActionSheetController, ToastController } from 'ionic-angular';
 
 //native
 import { SocialSharing } from '@ionic-native/social-sharing';
@@ -16,15 +16,14 @@ import * as _ from 'lodash';
 
 @Component({
   selector: 'page-session-log',
-  templateUrl: 'session-log.html',
+  templateUrl: 'session-log.html'
 })
 export class SessionLogPage {
-
   private config: any;
   private dom: Document;
 
   public logOptions: any;
-  public filteredLogs: Array<any>;
+  public filteredLogs: any[];
   public filterValue: number;
   public isCordova: boolean;
 
@@ -41,16 +40,18 @@ export class SessionLogPage {
     this.dom = dom;
     this.config = this.configProvider.get();
     this.isCordova = this.platformProvider.isCordova;
-    let logLevels: any = this.logger.getLevels();
+    const logLevels: any = this.logger.getLevels();
     this.logOptions = _.keyBy(logLevels, 'weight');
   }
 
-  ionViewDidLoad() {
+  public ionViewDidLoad() {
     this.logger.info('ionViewDidLoad SessionLogPage');
   }
 
-  ionViewWillEnter() {
-    let selectedLevel: any = _.has(this.config, 'log.weight') ? this.logger.getWeight(this.config.log.weight) : this.logger.getDefaultWeight();
+  public ionViewWillEnter() {
+    const selectedLevel: any = _.has(this.config, 'log.weight')
+      ? this.logger.getWeight(this.config.log.weight)
+      : this.logger.getDefaultWeight();
     this.filterValue = selectedLevel.weight;
     this.setOptionSelected(selectedLevel.weight);
     this.filterLogs(selectedLevel.weight);
@@ -62,40 +63,44 @@ export class SessionLogPage {
 
   public setOptionSelected(weight: number): void {
     this.filterLogs(weight);
-    let opts = {
+    const opts = {
       log: {
-        weight: weight
+        weight
       }
     };
     this.configProvider.set(opts);
   }
 
   public prepareLogs(): any {
-    let log = 'Copay Session Logs\n Be careful, this could contain sensitive private data\n\n';
+    let log =
+      'Copay Session Logs\n Be careful, this could contain sensitive private data\n\n';
     log += '\n\n';
-    log += this.logger.get().map((v) => {
-      return '[' + v.timestamp + '][' + v.level + ']' + v.msg;
-    }).join('\n');
+    log += this.logger
+      .get()
+      .map(v => {
+        return '[' + v.timestamp + '][' + v.level + ']' + v.msg;
+      })
+      .join('\n');
 
     return log;
   }
 
   private copyToClipboard() {
-    let textarea = this.dom.createElement('textarea');
+    const textarea = this.dom.createElement('textarea');
     this.dom.body.appendChild(textarea);
     textarea.value = this.prepareLogs();
     textarea.select();
     this.dom.execCommand('copy');
-    let message = this.translate.instant('Copied to clipboard');
-    let showSuccess = this.toastCtrl.create({
-      message: message,
-      duration: 1000,
+    const message = this.translate.instant('Copied to clipboard');
+    const showSuccess = this.toastCtrl.create({
+      message,
+      duration: 1000
     });
     showSuccess.present();
   }
 
   public sendLogs(): void {
-    let body = this.prepareLogs();
+    const body = this.prepareLogs();
 
     this.socialSharing.shareViaEmail(
       body,
@@ -103,34 +108,36 @@ export class SessionLogPage {
       null, // TO: must be null or an array
       null, // CC: must be null or an array
       null, // BCC: must be null or an array
-      null, // FILES: can be null, a string, or an array
+      null // FILES: can be null, a string, or an array
     );
   }
 
   public showOptionsMenu(): void {
-
-    let copyText = this.translate.instant('Copy to clipboard');
-    let emailText = this.translate.instant('Send by email');
+    const copyText = this.translate.instant('Copy to clipboard');
+    const emailText = this.translate.instant('Send by email');
     let button = [];
 
     if (this.isCordova) {
-      button = [{
-        text: emailText,
-        handler: () => {
-          this.sendLogs()
+      button = [
+        {
+          text: emailText,
+          handler: () => {
+            this.sendLogs();
+          }
         }
-      }];
-    }
-    else {
-      button = [{
-        text: copyText,
-        handler: () => {
-          this.copyToClipboard();
+      ];
+    } else {
+      button = [
+        {
+          text: copyText,
+          handler: () => {
+            this.copyToClipboard();
+          }
         }
-      }];
+      ];
     }
 
-    let actionSheet = this.actionSheetCtrl.create({
+    const actionSheet = this.actionSheetCtrl.create({
       title: '',
       buttons: button
     });

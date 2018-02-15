@@ -1,4 +1,4 @@
-page-wallet-item{
+page-wallet-item {
   text-align: center;
   .card {
     border: none;
@@ -6,12 +6,12 @@ page-wallet-item{
   .wallet-item {
     padding: 2rem 0;
   }
-  .wallet-name{
-    padding:10px;
+  .wallet-name {
+    padding: 10px;
     font-size: 18px;
     color: color($colors, dark);
   }
-  .wallet-icon{
+  .wallet-icon {
     img {
       width: 70px;
       height: 70px;

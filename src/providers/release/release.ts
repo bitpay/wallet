@@ -1,5 +1,5 @@
-import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
 import { AppProvider } from '../../providers/app/app';
 
 @Injectable()
@@ -18,16 +18,16 @@ export class ReleaseProvider {
   }
 
   public getLatestAppVersion() {
-    return this.http.get(this.LATEST_RELEASE_URL).map(x => x['tag_name']);
+    return this.http.get(this.LATEST_RELEASE_URL).map(x => x.tag_name);
   }
 
   private verifyTagFormat(tag: string) {
-    var regex = /^v?\d+\.\d+\.\d+$/i;
+    const regex = /^v?\d+\.\d+\.\d+$/i;
     return regex.exec(tag);
   }
 
   private formatTagNumber(tag: string) {
-    var formattedNumber = tag.replace(/^v/i, '').split('.');
+    const formattedNumber = tag.replace(/^v/i, '').split('.');
     return {
       major: +formattedNumber[0],
       minor: +formattedNumber[1],
@@ -36,30 +36,34 @@ export class ReleaseProvider {
   }
 
   public checkForUpdates(latestVersion: string, currentVersion?: string) {
-    if (!currentVersion) currentVersion = this.appVersion;
+    if (!currentVersion) {
+      currentVersion = this.appVersion;
+    }
 
-    let result = {
+    const result = {
       updateAvailable: null,
       availabeVersion: null,
       error: null
     };
 
-    if (!this.verifyTagFormat(currentVersion))
+    if (!this.verifyTagFormat(currentVersion)) {
       result.error =
         'Cannot verify the format of version tag: ' + currentVersion;
-    if (!this.verifyTagFormat(latestVersion))
+    }
+    if (!this.verifyTagFormat(latestVersion)) {
       result.error =
         'Cannot verify the format of latest release tag: ' + latestVersion;
+    }
 
-    let current: any = this.formatTagNumber(currentVersion);
-    let latest: any = this.formatTagNumber(latestVersion);
+    const current: any = this.formatTagNumber(currentVersion);
+    const latest: any = this.formatTagNumber(latestVersion);
 
     if (
       latest.major < current.major ||
       (latest.major == current.major && latest.minor <= current.minor)
-    )
+    ) {
       return result;
-    else {
+    } else {
       result.updateAvailable = true;
       result.availabeVersion = latestVersion;
       return result;

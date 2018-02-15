@@ -6,26 +6,21 @@ import { ConfigProvider } from '../../../providers/config/config';
 
 @Component({
   selector: 'page-advanced',
-  templateUrl: 'advanced.html',
+  templateUrl: 'advanced.html'
 })
 export class AdvancedPage {
-
   public spendUnconfirmed: boolean;
   public recentTransactionsEnabled: boolean;
   public useLegacyAddress: boolean;
 
-  constructor(
-    private configProvider: ConfigProvider,
-    private logger: Logger
-  ) {
-  }
+  constructor(private configProvider: ConfigProvider, private logger: Logger) {}
 
-  ionViewDidLoad() {
+  public ionViewDidLoad() {
     this.logger.info('ionViewDidLoad AdvancedPage');
   }
 
-  ionViewWillEnter() {
-    let config: any = this.configProvider.get();
+  public ionViewWillEnter() {
+    const config: any = this.configProvider.get();
 
     this.spendUnconfirmed = config.wallet.spendUnconfirmed;
     this.recentTransactionsEnabled = config.recentTransactions.enabled;
@@ -33,7 +28,7 @@ export class AdvancedPage {
   }
 
   public spendUnconfirmedChange(): void {
-    let opts = {
+    const opts = {
       wallet: {
         spendUnconfirmed: this.spendUnconfirmed
       }
@@ -42,7 +37,7 @@ export class AdvancedPage {
   }
 
   public recentTransactionsChange(): void {
-    let opts = {
+    const opts = {
       recentTransactions: {
         enabled: this.recentTransactionsEnabled
       }
@@ -51,7 +46,7 @@ export class AdvancedPage {
   }
 
   public useLegacyAddressChange(): void {
-    let opts = {
+    const opts = {
       wallet: {
         useLegacyAddress: this.useLegacyAddress
       }

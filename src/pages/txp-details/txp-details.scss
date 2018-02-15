@@ -1,5 +1,5 @@
 page-txp-details {
-  $item-border-color: #EFEFEF;
+  $item-border-color: #efefef;
   $item-lateral-padding: 20px;
 
   span.label {
@@ -36,8 +36,10 @@ page-txp-details {
     font-size: 12.5px;
   }
 
-  .container-to, .container-from {
-    .wallet, .payment-proposal-to {
+  .container-to,
+  .container-from {
+    .wallet,
+    .payment-proposal-to {
       display: flex;
       align-items: center;
       margin-top: 1rem;
@@ -85,7 +87,7 @@ page-txp-details {
       min-width: 40px;
       padding-right: 1rem;
       padding-left: 1rem;
-      margin-right: .5rem;
+      margin-right: 0.5rem;
       position: relative;
 
       .line::before {
@@ -115,10 +117,10 @@ page-txp-details {
         z-index: 10;
 
         &.rejected {
-          background: #E15061;
-          border-color: #E15061;
-          color: #FFFFFF;
-          font-family: "Roboto-Bold";
+          background: #e15061;
+          border-color: #e15061;
+          color: #ffffff;
+          font-family: 'Roboto-Bold';
           font-size: 19px;
         }
       }
@@ -144,4 +146,3 @@ page-txp-details {
     color: color($colors, primary);
   }
 }
-

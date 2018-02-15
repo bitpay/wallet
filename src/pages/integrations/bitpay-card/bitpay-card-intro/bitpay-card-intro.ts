@@ -1,24 +1,23 @@
 import { Component } from '@angular/core';
-import { NavParams, NavController, ActionSheetController } from 'ionic-angular';
 import { TranslateService } from '@ngx-translate/core';
+import { ActionSheetController, NavController, NavParams } from 'ionic-angular';
 
 import * as _ from 'lodash';
 
 //providers
 import { BitPayAccountProvider } from '../../../../providers/bitpay-account/bitpay-account';
-import { PopupProvider } from '../../../../providers/popup/popup';
 import { BitPayCardProvider } from '../../../../providers/bitpay-card/bitpay-card';
 import { ExternalLinkProvider } from '../../../../providers/external-link/external-link';
+import { PopupProvider } from '../../../../providers/popup/popup';
 
 //pages
 import { BitPayCardPage } from '../bitpay-card';
 
 @Component({
   selector: 'page-bitpay-card-intro',
-  templateUrl: 'bitpay-card-intro.html',
+  templateUrl: 'bitpay-card-intro.html'
 })
 export class BitPayCardIntroPage {
-
   public accounts: any;
 
   constructor(
@@ -30,33 +29,46 @@ export class BitPayCardIntroPage {
     private bitPayCardProvider: BitPayCardProvider,
     private navCtrl: NavController,
     private externalLinkProvider: ExternalLinkProvider
-  ) {
-  }
+  ) {}
 
-  ionViewWillEnter() {
+  public ionViewWillEnter() {
     if (this.navParams.data.secret) {
-      let pairData = {
+      const pairData = {
         secret: this.navParams.data.secret,
         email: this.navParams.data.email,
         otp: this.navParams.data.otp
       };
-      let pairingReason = this.translate.instant('add your BitPay Visa card(s)');
-      this.bitPayAccountProvider.pair(pairData, pairingReason, (err: string, paired: boolean, apiContext: any) => {
-        if (err) {
-          this.popupProvider.ionicAlert(this.translate.instant('Error pairing BitPay Account'), err);
-          return;
+      const pairingReason = this.translate.instant(
+        'add your BitPay Visa card(s)'
+      );
+      this.bitPayAccountProvider.pair(
+        pairData,
+        pairingReason,
+        (err: string, paired: boolean, apiContext: any) => {
+          if (err) {
+            this.popupProvider.ionicAlert(
+              this.translate.instant('Error pairing BitPay Account'),
+              err
+            );
+            return;
+          }
+          if (paired) {
+            this.bitPayCardProvider.sync(apiContext, (err, cards) => {
+              if (err) {
+                this.popupProvider.ionicAlert(
+                  this.translate.instant('Error updating Debit Cards'),
+                  err
+                );
+                return;
+              }
+              this.navCtrl.pop();
+              if (cards[0]) {
+                this.navCtrl.push(BitPayCardPage, { id: cards[0].id });
+              }
+            });
+          }
         }
-        if (paired) {
-          this.bitPayCardProvider.sync(apiContext, (err, cards) => {
-            if (err) {
-              this.popupProvider.ionicAlert(this.translate.instant('Error updating Debit Cards'), err);
-              return;
-            }
-            this.navCtrl.pop();
-            if (cards[0]) this.navCtrl.push(BitPayCardPage, { id: cards[0].id });
-          });
-        }
-      });
+      );
     }
 
     this.bitPayAccountProvider.getAccounts((err, accounts) => {
@@ -68,14 +80,13 @@ export class BitPayCardIntroPage {
     });
   }
 
-
   public bitPayCardInfo() {
-    let url = 'https://bitpay.com/visa/faq';
+    const url = 'https://bitpay.com/visa/faq';
     this.externalLinkProvider.open(url);
   }
 
   public orderBitPayCard() {
-    let url = 'https://bitpay.com/visa/get-started';
+    const url = 'https://bitpay.com/visa/get-started';
     this.externalLinkProvider.open(url);
   }
 
@@ -88,36 +99,37 @@ export class BitPayCardIntroPage {
   }
 
   private startPairBitPayAccount() {
-    let url = 'https://bitpay.com/visa/dashboard/add-to-bitpay-wallet-confirm';
+    const url =
+      'https://bitpay.com/visa/dashboard/add-to-bitpay-wallet-confirm';
     this.externalLinkProvider.open(url);
   }
 
   private showAccountSelector() {
-    let options:Array<any> = [];
+    const options: any[] = [];
 
     _.forEach(this.accounts, (account: any) => {
-      options.push(
-        {
-          text: (account.givenName || account.familyName) + ' (' + account.email + ')',
-          handler: () => {
-            this.onAccountSelect(account);
-          }
+      options.push({
+        text:
+          (account.givenName || account.familyName) +
+          ' (' +
+          account.email +
+          ')',
+        handler: () => {
+          this.onAccountSelect(account);
         }
-      );
+      });
     });
 
     // Cancel
-    options.push(
-      {
-        text: this.translate.instant('Cancel'),
-        role: 'cancel',
-        handler: () => {
-          this.navCtrl.pop();
-        }
+    options.push({
+      text: this.translate.instant('Cancel'),
+      role: 'cancel',
+      handler: () => {
+        this.navCtrl.pop();
       }
-    );
+    });
 
-    let actionSheet = this.actionSheetCtrl.create({
+    const actionSheet = this.actionSheetCtrl.create({
       title: this.translate.instant('From BitPay account'),
       buttons: options
     });
@@ -137,5 +149,4 @@ export class BitPayCardIntroPage {
       });
     }
   }
-
 }

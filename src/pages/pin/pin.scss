@@ -11,19 +11,19 @@ page-pin {
   }
   .block-buttons {
     .row {
-        font-size: 1.7rem;
-        cursor: pointer;
-        display: flex;
-        justify-content: space-around;
-        div {
-          padding: 40px;
-        }
+      font-size: 1.7rem;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-around;
+      div {
+        padding: 40px;
+      }
     }
   }
   .circle {
     border-radius: 50%;
     box-shadow: 0 0 3px 0px #5b5b5b;
-    transition: background-color .2s ease-in-out;
+    transition: background-color 0.2s ease-in-out;
     width: 4rem;
     height: 4rem;
     margin: 10px;

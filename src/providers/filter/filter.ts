@@ -1,25 +1,21 @@
-import { Injectable } from '@angular/core';
 import { DecimalPipe } from '@angular/common';
+import { Injectable } from '@angular/core';
 import { Logger } from '../../providers/logger/logger';
 
 @Injectable()
 export class FilterProvider {
-
   public formats: any;
 
-  constructor(
-    private decimalPipe: DecimalPipe,
-    private logger: Logger
-  ) {
+  constructor(private decimalPipe: DecimalPipe, private logger: Logger) {
     this.logger.info('FilterProvider initialized');
     this.formats = {
-      CURRENCY_SYM: "$",
-      DECIMAL_SEP: ".",
-      GROUP_SEP: ","
-    }
+      CURRENCY_SYM: '$',
+      DECIMAL_SEP: '.',
+      GROUP_SEP: ','
+    };
   }
 
-  formatFiatAmount(amount: number) {
+  public formatFiatAmount(amount: number) {
     let value: any;
     let sep: any;
     let group: any;
@@ -28,7 +24,9 @@ export class FilterProvider {
     let finalValue: any;
 
     value = this.decimalPipe.transform(amount);
-    if (!value) return 0;
+    if (!value) {
+      return 0;
+    }
     sep = value.indexOf(this.formats.DECIMAL_SEP);
     group = value.indexOf(this.formats.GROUP_SEP);
 
@@ -50,5 +48,4 @@ export class FilterProvider {
     }
     return 0;
   }
-
 }

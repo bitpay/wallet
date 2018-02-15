@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
 import { NavController } from 'ionic-angular';
 import { Logger } from '../../../providers/logger/logger';
-import { TranslateService } from '@ngx-translate/core';
 
 //pages
-import { TermsOfUsePage } from './terms-of-use/terms-of-use';
 import { SessionLogPage } from './session-log/session-log';
+import { TermsOfUsePage } from './terms-of-use/terms-of-use';
 
 //providers
 import { AppProvider } from '../../../providers/app/app';
@@ -13,7 +13,7 @@ import { ExternalLinkProvider } from '../../../providers/external-link/external-
 
 @Component({
   selector: 'page-about',
-  templateUrl: 'about.html',
+  templateUrl: 'about.html'
 })
 export class AboutPage {
   public version: string;
@@ -26,9 +26,9 @@ export class AboutPage {
     private logger: Logger,
     private externalLinkProvider: ExternalLinkProvider,
     private translate: TranslateService
-  ) { }
+  ) {}
 
-  ionViewDidLoad() {
+  public ionViewDidLoad() {
     this.logger.debug('ionViewDidLoad AboutPage');
     this.commitHash = this.app.info.commitHash;
     this.version = this.app.info.version;
@@ -40,18 +40,30 @@ export class AboutPage {
   }
 
   public openExternalLink(): void {
-    let url = 'https://github.com/bitpay/' + this.app.info.gitHubRepoName + '/tree/' + this.app.info.commitHash + '';
-    let optIn = true;
-    let title = this.translate.instant('Open GitHub Project');
-    let message = this.translate.instant('You can see the latest developments and contribute to this open source app by visiting our project on GitHub.');
-    let okText = this.translate.instant('Open GitHub');
-    let cancelText = this.translate.instant('Go Back');
-    this.externalLinkProvider.open(url, optIn, title, message, okText, cancelText);
+    const url =
+      'https://github.com/bitpay/' +
+      this.app.info.gitHubRepoName +
+      '/tree/' +
+      this.app.info.commitHash +
+      '';
+    const optIn = true;
+    const title = this.translate.instant('Open GitHub Project');
+    const message = this.translate.instant(
+      'You can see the latest developments and contribute to this open source app by visiting our project on GitHub.'
+    );
+    const okText = this.translate.instant('Open GitHub');
+    const cancelText = this.translate.instant('Go Back');
+    this.externalLinkProvider.open(
+      url,
+      optIn,
+      title,
+      message,
+      okText,
+      cancelText
+    );
   }
 
   public openSessionLog(): void {
     this.navCtrl.push(SessionLogPage);
   }
-
-
 }

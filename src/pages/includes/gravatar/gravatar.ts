@@ -4,27 +4,22 @@ import { Logger } from '../../../providers/logger/logger';
 
 @Component({
   selector: 'gravatar',
-  templateUrl: 'gravatar.html',
+  templateUrl: 'gravatar.html'
 })
 export class GravatarPage {
-
   public emailHash: any;
 
-  @Input() email: string;
-  @Input() name: string;
-  @Input() height: number;
-  @Input() width: number;
+  @Input() public email: string;
+  @Input() public name: string;
+  @Input() public height: number;
+  @Input() public width: number;
 
-  constructor(
-    private logger: Logger
-  ) {
-  }
+  constructor(private logger: Logger) {}
 
-  ngOnInit() {
+  public ngOnInit() {
     this.logger.info('ionViewDidLoad GravatarPage');
-    if (typeof this.email === "string") {
+    if (typeof this.email === 'string') {
       this.emailHash = Md5.hashStr(this.email.toLowerCase() || '');
     }
   }
-
 }

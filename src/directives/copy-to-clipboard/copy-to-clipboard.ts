@@ -1,9 +1,9 @@
-import { DOCUMENT } from "@angular/platform-browser";
 import { Directive, Inject } from '@angular/core';
-import { ToastController } from 'ionic-angular';
+import { DOCUMENT } from '@angular/platform-browser';
 import { Clipboard } from '@ionic-native/clipboard';
-import { PlatformProvider } from '../../providers/platform/platform';
+import { ToastController } from 'ionic-angular';
 import { Logger } from '../../providers/logger/logger';
+import { PlatformProvider } from '../../providers/platform/platform';
 
 @Directive({
   selector: '[copy-to-clipboard]', // Attribute selector
@@ -13,7 +13,6 @@ import { Logger } from '../../providers/logger/logger';
   }
 })
 export class CopyToClipboard {
-
   public value: string;
   private dom: Document;
   private isCordova: boolean;
@@ -33,7 +32,7 @@ export class CopyToClipboard {
   }
 
   private copyBrowser() {
-    let textarea = this.dom.createElement('textarea');
+    const textarea = this.dom.createElement('textarea');
     this.dom.body.appendChild(textarea);
     textarea.value = this.value;
     textarea.select();
@@ -51,11 +50,10 @@ export class CopyToClipboard {
     } else {
       this.copyBrowser();
     }
-    let showSuccess = this.toastCtrl.create({
+    const showSuccess = this.toastCtrl.create({
       message: 'Copied to clipboard',
-      duration: 1000,
+      duration: 1000
     });
     showSuccess.present();
   }
-
 }

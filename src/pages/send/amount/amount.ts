@@ -1,32 +1,32 @@
 import { Component, HostListener } from '@angular/core';
-import { NavController, NavParams, ActionSheetController } from 'ionic-angular';
+import { ActionSheetController, NavController, NavParams } from 'ionic-angular';
 import * as _ from 'lodash';
 
 //providers
-import { PlatformProvider } from '../../../providers/platform/platform';
 import { ConfigProvider } from '../../../providers/config/config';
 import { NodeWebkitProvider } from '../../../providers/node-webkit/node-webkit';
+import { PlatformProvider } from '../../../providers/platform/platform';
 import { RateProvider } from '../../../providers/rate/rate';
 
 //pages
 import { BuyAmazonPage } from '../../integrations/amazon/buy-amazon/buy-amazon';
-import { BuyGlideraPage } from '../../integrations/glidera/buy-glidera/buy-glidera';
-import { SellGlideraPage } from '../../integrations/glidera/sell-glidera/sell-glidera';
+import { BitPayCardTopUpPage } from '../../integrations/bitpay-card/bitpay-card-topup/bitpay-card-topup';
 import { BuyCoinbasePage } from '../../integrations/coinbase/buy-coinbase/buy-coinbase';
 import { SellCoinbasePage } from '../../integrations/coinbase/sell-coinbase/sell-coinbase';
-import { ConfirmPage } from '../confirm/confirm';
-import { CustomAmountPage } from '../../receive/custom-amount/custom-amount';
+import { BuyGlideraPage } from '../../integrations/glidera/buy-glidera/buy-glidera';
+import { SellGlideraPage } from '../../integrations/glidera/sell-glidera/sell-glidera';
 import { BuyMercadoLibrePage } from '../../integrations/mercado-libre/buy-mercado-libre/buy-mercado-libre';
 import { ShapeshiftConfirmPage } from '../../integrations/shapeshift/shapeshift-confirm/shapeshift-confirm';
-import { BitPayCardTopUpPage } from '../../integrations/bitpay-card/bitpay-card-topup/bitpay-card-topup';
+import { CustomAmountPage } from '../../receive/custom-amount/custom-amount';
+import { ConfirmPage } from '../confirm/confirm';
 
 @Component({
   selector: 'page-amount',
-  templateUrl: 'amount.html',
+  templateUrl: 'amount.html'
 })
 export class AmountPage {
   private LENGTH_EXPRESSION_LIMIT: number;
-  private availableUnits: Array<any>;
+  private availableUnits: any[];
   private unit: string;
   private reNr: RegExp;
   private reOp: RegExp;
@@ -66,7 +66,7 @@ export class AmountPage {
     private platformProvider: PlatformProvider,
     private nodeWebkitProvider: NodeWebkitProvider,
     private configProvider: ConfigProvider,
-    private rateProvider: RateProvider,
+    private rateProvider: RateProvider
   ) {
     this.showSendMax = false;
     this.config = this.configProvider.get();
@@ -104,7 +104,9 @@ export class AmountPage {
       this.itemSelectorLabel = 'Send ShapeShift Maximum: ' + this.shiftMax;
     }
 
-    let unit = this.navParams.data.currency ? this.navParams.data.currency : this.config.wallet.settings.alternativeIsoCode;
+    const unit = this.navParams.data.currency
+      ? this.navParams.data.currency
+      : this.config.wallet.settings.alternativeIsoCode;
     this.availableUnits.push(this.coin.toUpperCase());
     this.availableUnits.push(unit);
 
@@ -116,14 +118,19 @@ export class AmountPage {
     this.isFiatAmount = this.unit != 'BCH' && this.unit != 'BTC' ? true : false;
   }
 
-  ionViewWillEnter() {
+  public ionViewWillEnter() {
     this.expression = '';
     this.processAmount();
   }
 
-  @HostListener('document:keydown', ['$event']) handleKeyboardEvent(event: KeyboardEvent) {
-    if (this.navCtrl.getActive().name != 'AmountPage') return;
-    if (!event.key) return;
+  @HostListener('document:keydown', ['$event'])
+  public handleKeyboardEvent(event: KeyboardEvent) {
+    if (this.navCtrl.getActive().name != 'AmountPage') {
+      return;
+    }
+    if (!event.key) {
+      return;
+    }
     if (event.which === 8) {
       event.preventDefault();
       this.removeDigit();
@@ -134,8 +141,12 @@ export class AmountPage {
     } else if (event.key.match(this.reOp)) {
       this.pushOperator(event.key);
     } else if (event.keyCode === 86) {
-      if (event.ctrlKey || event.metaKey) this.processClipboard();
-    } else if (event.keyCode === 13) this.finish();
+      if (event.ctrlKey || event.metaKey) {
+        this.processClipboard();
+      }
+    } else if (event.keyCode === 13) {
+      this.finish();
+    }
   }
 
   private paste(value: string): void {
@@ -190,28 +201,31 @@ export class AmountPage {
   }
 
   public processClipboard(): void {
-    if (!this.platformProvider.isNW) return;
+    if (!this.platformProvider.isNW) {
+      return;
+    }
 
-    let value = this.nodeWebkitProvider.readFromClipboard();
+    const value = this.nodeWebkitProvider.readFromClipboard();
 
-    if (value && this.evaluate(value) > 0)
+    if (value && this.evaluate(value) > 0) {
       this.paste(this.evaluate(value));
+    }
   }
 
   public showSendMaxMenu(): void {
-    let buttons: Array<any> = [];
+    const buttons: any[] = [];
 
-    let sendMaxButton: Object = {
+    const sendMaxButton: Object = {
       text: this.itemSelectorLabel,
       icon: 'speedometer',
       handler: () => {
         this.sendMax();
       }
-    }
+    };
     buttons.push(sendMaxButton);
 
     const actionSheet = this.actionSheetCtrl.create({
-      buttons: buttons
+      buttons
     });
 
     actionSheet.present();
@@ -223,7 +237,12 @@ export class AmountPage {
   }
 
   public pushDigit(digit: string): void {
-    if (this.expression && this.expression.length >= this.LENGTH_EXPRESSION_LIMIT) return;
+    if (
+      this.expression &&
+      this.expression.length >= this.LENGTH_EXPRESSION_LIMIT
+    ) {
+      return;
+    }
     this.expression = (this.expression + digit).replace('..', '.');
     this.processAmount();
   }
@@ -234,7 +253,9 @@ export class AmountPage {
   }
 
   public pushOperator(operator: string): void {
-    if (!this.expression || this.expression.length == 0) return;
+    if (!this.expression || this.expression.length == 0) {
+      return;
+    }
     this.expression = this._pushOperator(this.expression, operator);
   }
 
@@ -257,8 +278,8 @@ export class AmountPage {
   }
 
   private processAmount(): void {
-    let formatedValue = this.format(this.expression);
-    let result = this.evaluate(formatedValue);
+    const formatedValue = this.format(this.expression);
+    const result = this.evaluate(formatedValue);
     this.allowSend = _.isNumber(result) && +result > 0;
 
     if (_.isNumber(result)) {
@@ -268,24 +289,29 @@ export class AmountPage {
   }
 
   private format(val: string) {
-    if (!val) return;
+    if (!val) {
+      return;
+    }
 
-    var result = val.toString();
+    let result = val.toString();
 
-    if (this.isOperator(_.last(val)))
+    if (this.isOperator(_.last(val))) {
       result = result.slice(0, -1);
+    }
 
     return result.replace('x', '*');
   }
 
   private evaluate(val: string) {
-    var result;
+    let result;
     try {
       result = eval(val);
     } catch (e) {
       return 0;
     }
-    if (!_.isFinite(result)) return 0;
+    if (!_.isFinite(result)) {
+      return 0;
+    }
     return result;
   }
 
@@ -294,15 +320,20 @@ export class AmountPage {
     let amountFiat: number;
 
     if (this.isFiatAmount) {
-      let altIsoCode: string = this.config.wallet.settings.alternativeIsoCode;
-      let unitCode: string = this.config.wallet.settings.unitCode;
-      let value: any = this.rateProvider.fromFiat(this.amount, altIsoCode, unitCode);
+      const altIsoCode: string = this.config.wallet.settings.alternativeIsoCode;
+      const unitCode: string = this.config.wallet.settings.unitCode;
+      const value: any = this.rateProvider.fromFiat(
+        this.amount,
+        altIsoCode,
+        unitCode
+      );
       amount_ = parseInt(value);
       amountFiat = this.amount;
-    } else
-      amount_ = +((this.amount * 1e8).toFixed(0));
+    } else {
+      amount_ = +(this.amount * 1e8).toFixed(0);
+    }
 
-    let data: any = {
+    const data: any = {
       recipientType: this.recipientType,
       toAddress: this.toAddress,
       amount: this.useSendMax ? 0 : amount_,
@@ -317,12 +348,14 @@ export class AmountPage {
       walletId: this.walletId,
       toWalletId: this.toWalletId ? this.toWalletId : null,
       id: this.cardId
-    }
+    };
     this.navCtrl.push(this.nextView, data);
   }
 
   public updateUnit(): void {
-    if (this.fixedUnit) return;
+    if (this.fixedUnit) {
+      return;
+    }
 
     this.availableUnits.slice(0, this.availableUnits.length).join(',');
     this.availableUnits.push(this.availableUnits.shift());

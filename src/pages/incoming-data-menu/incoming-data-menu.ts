@@ -3,7 +3,7 @@ import { NavParams, ViewController } from 'ionic-angular';
 
 @Component({
   selector: 'page-incoming-data-menu',
-  templateUrl: 'incoming-data-menu.html',
+  templateUrl: 'incoming-data-menu.html'
 })
 export class IncomingDataMenuPage {
   public https: boolean;
@@ -12,14 +12,11 @@ export class IncomingDataMenuPage {
   public type: string;
   public coin: string;
 
-  constructor(
-    private viewCtrl: ViewController,
-    private navParams: NavParams,
-  ) {
+  constructor(private viewCtrl: ViewController, private navParams: NavParams) {
     this.https = false;
   }
 
-  ionViewDidLoad() {
+  public ionViewDidLoad() {
     this.data = this.navParams.data.data;
     this.type = this.navParams.data.type;
     this.coin = this.navParams.data.coin;
@@ -32,10 +29,10 @@ export class IncomingDataMenuPage {
 
   public close(redirTo: string, value: string) {
     if (redirTo == 'AmountPage') {
-      let coin = this.coin ? this.coin : 'btc';
-      this.viewCtrl.dismiss({ redirTo: redirTo, value: value, coin: coin });
+      const coin = this.coin ? this.coin : 'btc';
+      this.viewCtrl.dismiss({ redirTo, value, coin });
       return;
     }
-    this.viewCtrl.dismiss({ redirTo: redirTo, value: value });
+    this.viewCtrl.dismiss({ redirTo, value });
   }
 }

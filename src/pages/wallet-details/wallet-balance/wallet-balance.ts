@@ -4,20 +4,16 @@ import { Logger } from '../../../providers/logger/logger';
 
 @Component({
   selector: 'page-wallet-balance',
-  templateUrl: 'wallet-balance.html',
+  templateUrl: 'wallet-balance.html'
 })
 export class WalletBalancePage {
-
   public status: any;
 
-  constructor(
-    private logger: Logger,
-    private navParams: NavParams
-  ) {
+  constructor(private logger: Logger, private navParams: NavParams) {
     this.status = this.navParams.data.status;
   }
 
-  ionViewDidLoad() {
+  public ionViewDidLoad() {
     this.logger.info('ionViewDidLoad WalletBalancePage');
   }
 }

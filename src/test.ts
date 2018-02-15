@@ -1,14 +1,14 @@
 // This file is required by karma.conf.js and loads recursively all the .spec and framework files
 
+import 'zone.js/dist/async-test';
+import 'zone.js/dist/fake-async-test';
+import 'zone.js/dist/jasmine-patch';
 import 'zone.js/dist/long-stack-trace-zone';
 import 'zone.js/dist/proxy.js';
 import 'zone.js/dist/sync-test';
-import 'zone.js/dist/jasmine-patch';
-import 'zone.js/dist/async-test';
-import 'zone.js/dist/fake-async-test';
 
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { getTestBed, TestBed } from '@angular/core/testing';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {
   BrowserDynamicTestingModule,
   platformBrowserDynamicTesting
@@ -18,10 +18,10 @@ import {
   App,
   Config,
   DeepLinker,
+  DomController,
   Form,
   IonicModule,
   Keyboard,
-  DomController,
   MenuController,
   NavController,
   Platform
@@ -42,22 +42,20 @@ context.keys().map(context);
 
 export class TestUtils {
   public static beforeEachCompiler(
-    components: Array<any>
+    components: any[]
   ): Promise<{ fixture: any; instance: any }> {
     return TestUtils.configureIonicTestingModule(components)
       .compileComponents()
       .then(() => {
-        let fixture: any = TestBed.createComponent(components[0]);
+        const fixture: any = TestBed.createComponent(components[0]);
         return {
-          fixture: fixture,
+          fixture,
           instance: fixture.debugElement.componentInstance
         };
       });
   }
 
-  public static configureIonicTestingModule(
-    components: Array<any>
-  ): typeof TestBed {
+  public static configureIonicTestingModule(components: any[]): typeof TestBed {
     return TestBed.configureTestingModule({
       declarations: [...components],
       providers: [
@@ -80,7 +78,7 @@ export class TestUtils {
     if (el.fireEvent) {
       el.fireEvent('on' + etype);
     } else {
-      let evObj: any = document.createEvent('Events');
+      const evObj: any = document.createEvent('Events');
       evObj.initEvent(etype, true, false);
       el.dispatchEvent(evObj);
     }

@@ -1,4 +1,4 @@
-import { Component } from "@angular/core";
+import { Component } from '@angular/core';
 import { Logger } from '../../../providers/logger/logger';
 
 //providers
@@ -7,10 +7,9 @@ import { ProfileProvider } from '../../../providers/profile/profile';
 
 @Component({
   selector: 'page-proposals',
-  templateUrl: 'proposals.html',
+  templateUrl: 'proposals.html'
 })
 export class ProposalsPage {
-
   public fetchingProposals: boolean;
   public addressbook: any;
   public txps: any;
@@ -23,20 +22,25 @@ export class ProposalsPage {
     this.fetchingProposals = true;
   }
 
-  ionViewDidEnter() {
-    this.addressBookProvider.list().then((ab: any) => {
-      this.addressbook = ab || {};
+  public ionViewDidEnter() {
+    this.addressBookProvider
+      .list()
+      .then((ab: any) => {
+        this.addressbook = ab || {};
 
-      this.profileProvider.getTxps(50).then((txpsData) => {
-        this.fetchingProposals = false;
-        this.txps = txpsData.txps;
-      }).catch((err: any) => {
-        this.fetchingProposals = false;
+        this.profileProvider
+          .getTxps(50)
+          .then(txpsData => {
+            this.fetchingProposals = false;
+            this.txps = txpsData.txps;
+          })
+          .catch((err: any) => {
+            this.fetchingProposals = false;
+            this.logger.error(err);
+          });
+      })
+      .catch((err: any) => {
         this.logger.error(err);
       });
-    }).catch((err: any) => {
-      this.logger.error(err);
-    });
   }
-
 }

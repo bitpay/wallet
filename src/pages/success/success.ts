@@ -1,13 +1,12 @@
 import { Component } from '@angular/core';
-import { ViewController, NavParams } from 'ionic-angular';
 import { TranslateService } from '@ngx-translate/core';
+import { NavParams, ViewController } from 'ionic-angular';
 
 @Component({
   selector: 'page-success',
-  templateUrl: 'success.html',
+  templateUrl: 'success.html'
 })
 export class SuccessModalPage {
-
   public successText: string;
   public successComment: string;
 
@@ -16,8 +15,12 @@ export class SuccessModalPage {
     private navParams: NavParams,
     private translate: TranslateService
   ) {
-    this.successText = this.navParams.data.successText ? this.navParams.data.successText : this.translate.instant('Payment Sent');
-    this.successComment = this.navParams.data.successComment ? this.navParams.data.successComment : '';
+    this.successText = this.navParams.data.successText
+      ? this.navParams.data.successText
+      : this.translate.instant('Payment Sent');
+    this.successComment = this.navParams.data.successComment
+      ? this.navParams.data.successComment
+      : '';
   }
 
   public close(): void {

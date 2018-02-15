@@ -10,16 +10,17 @@ export class DerivationPathHelperProvider {
     this.defaultTestnet = "m/44'/1'/0'";
   }
 
-  parse(str: string) {
-    var arr = str.split('/');
-    var ret = {
+  public parse(str: string) {
+    const arr = str.split('/');
+    const ret = {
       derivationStrategy: '',
       networkName: '',
       account: 0
     };
 
-    if (arr[0] != 'm')
+    if (arr[0] != 'm') {
       return false;
+    }
 
     switch (arr[1]) {
       case "44'":
@@ -29,14 +30,14 @@ export class DerivationPathHelperProvider {
         return {
           derivationStrategy: 'BIP45',
           networkName: 'livenet',
-          account: 0,
-        }
+          account: 0
+        };
       case "48'":
         ret.derivationStrategy = 'BIP48';
         break;
       default:
         return false;
-    };
+    }
 
     switch (arr[2]) {
       case "0'":
@@ -47,13 +48,14 @@ export class DerivationPathHelperProvider {
         break;
       default:
         return false;
-    };
+    }
 
-    var match = arr[3].match(/(\d+)'/);
-    if (!match)
+    const match = arr[3].match(/(\d+)'/);
+    if (!match) {
       return false;
-    ret.account = +match[1]
+    }
+    ret.account = +match[1];
 
     return ret;
-  };
+  }
 }

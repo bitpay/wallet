@@ -1,12 +1,12 @@
 import { Component } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ModalController, NavController, NavParams } from 'ionic-angular';
 import { Logger } from '../../../providers/logger/logger';
-import { NavController, NavParams, ModalController } from 'ionic-angular';
-import { Validators, FormBuilder, FormGroup } from '@angular/forms';
 
 //providers
 import { ExternalLinkProvider } from '../../../providers/external-link/external-link';
-import { OnGoingProcessProvider } from '../../../providers/on-going-process/on-going-process';
 import { GlideraProvider } from '../../../providers/glidera/glidera';
+import { OnGoingProcessProvider } from '../../../providers/on-going-process/on-going-process';
 import { PopupProvider } from '../../../providers/popup/popup';
 //pages
 import { AmountPage } from '../../send/amount/amount';
@@ -14,10 +14,9 @@ import { GlideraTxDetailsPage } from './glidera-tx-details/glidera-tx-details';
 
 @Component({
   selector: 'page-glidera',
-  templateUrl: 'glidera.html',
+  templateUrl: 'glidera.html'
 })
 export class GlideraPage {
-
   public account: any;
   public tx: any;
   public showOauthForm: boolean;
@@ -37,7 +36,10 @@ export class GlideraPage {
     private modalCtrl: ModalController
   ) {
     this.oauthCodeForm = this.formBuilder.group({
-      code: ['', Validators.compose([Validators.minLength(1), Validators.required])]
+      code: [
+        '',
+        Validators.compose([Validators.minLength(1), Validators.required])
+      ]
     });
     this.network = this.glideraProvider.getNetwork();
     this.currency = this.glideraProvider.getCurrency();
@@ -45,9 +47,12 @@ export class GlideraPage {
     this.account = {};
   }
 
-  ionViewDidEnter() {
-    if (this.navParams.data && this.navParams.data.code) this.submitOauthCode(this.navParams.data.code);
-    else this.init();
+  public ionViewDidEnter() {
+    if (this.navParams.data && this.navParams.data.code) {
+      this.submitOauthCode(this.navParams.data.code);
+    } else {
+      this.init();
+    }
   }
 
   public openExternalLink(url: string): void {
@@ -59,10 +64,15 @@ export class GlideraPage {
     this.glideraProvider.init((err, data) => {
       this.onGoingProcessProvider.set('connectingGlidera', false);
       if (err) {
-        this.popupProvider.ionicAlert('Error connecting Glidera', err + '. Please re-connect to Glidera');
+        this.popupProvider.ionicAlert(
+          'Error connecting Glidera',
+          err + '. Please re-connect to Glidera'
+        );
         return;
       }
-      if (!data || (data && !data.token)) return;
+      if (!data || (data && !data.token)) {
+        return;
+      }
 
       this.account.token = data.token;
       this.account.status = data.status;
@@ -92,41 +102,59 @@ export class GlideraPage {
       this.account.status = data.status;
       this.init();
     });
-  };
+  }
 
   public openTxModal(tx) {
     this.tx = tx;
 
-    let modal = this.modalCtrl.create(GlideraTxDetailsPage, { tx: this.tx });
+    const modal = this.modalCtrl.create(GlideraTxDetailsPage, { tx: this.tx });
     modal.present();
 
-    this.glideraProvider.getTransaction(this.account.token, tx.transactionUuid, (err, tx) => {
-      if (err) {
-        this.popupProvider.ionicAlert('Error getting transaction', 'Could not get transactions');
-        return;
+    this.glideraProvider.getTransaction(
+      this.account.token,
+      tx.transactionUuid,
+      (err, tx) => {
+        if (err) {
+          this.popupProvider.ionicAlert(
+            'Error getting transaction',
+            'Could not get transactions'
+          );
+          return;
+        }
+        this.tx = tx;
       }
-      this.tx = tx;
-    });
+    );
   }
 
   public openAuthenticateWindow(): void {
     this.openExternalLink(this.getAuthenticateUrl());
-    this.showOauthForm = true
+    this.showOauthForm = true;
   }
 
   public openLoginWindow() {
-    let glideraUrl = (this.network === 'testnet') ? 'https://sandbox.glidera.io/login' : 'https://glidera.io/login';
+    const glideraUrl =
+      this.network === 'testnet'
+        ? 'https://sandbox.glidera.io/login'
+        : 'https://glidera.io/login';
     this.openExternalLink(glideraUrl);
   }
 
   public openSupportWindow(): void {
-    var url = this.glideraProvider.getSupportUrl();
-    var optIn = true;
-    var title = 'Glidera Support';
-    var message = 'You can email glidera at support@glidera.io for direct support, or you can contact Glidera on Twitter.';
-    var okText = 'Tweet @GlideraInc';
-    var cancelText = 'Go Back';
-    this.externalLinkProvider.open(url, optIn, title, message, okText, cancelText);
+    const url = this.glideraProvider.getSupportUrl();
+    const optIn = true;
+    const title = 'Glidera Support';
+    const message =
+      'You can email glidera at support@glidera.io for direct support, or you can contact Glidera on Twitter.';
+    const okText = 'Tweet @GlideraInc';
+    const cancelText = 'Go Back';
+    this.externalLinkProvider.open(
+      url,
+      optIn,
+      title,
+      message,
+      okText,
+      cancelText
+    );
   }
 
   public toggleOauthForm(): void {
@@ -134,10 +162,20 @@ export class GlideraPage {
   }
 
   public goToBuyGlideraPage(): void {
-    this.navCtrl.push(AmountPage, { nextPage: 'BuyGlideraPage', currency: this.currency, coin: 'btc', fixedUnit: true });
+    this.navCtrl.push(AmountPage, {
+      nextPage: 'BuyGlideraPage',
+      currency: this.currency,
+      coin: 'btc',
+      fixedUnit: true
+    });
   }
 
   public goToSellGlideraPage(): void {
-    this.navCtrl.push(AmountPage, { nextPage: 'SellGlideraPage', currency: this.currency, coin: 'btc', fixedUnit: true })
+    this.navCtrl.push(AmountPage, {
+      nextPage: 'SellGlideraPage',
+      currency: this.currency,
+      coin: 'btc',
+      fixedUnit: true
+    });
   }
 }
