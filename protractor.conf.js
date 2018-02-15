@@ -10,7 +10,7 @@ exports.config = {
   allScriptsTimeout: 11000,
   jasmineNodeOpts: { defaultTimeoutInterval: 1000 * 60 * 10 },
   maxSessions: 4,
-  specs: ['./e2e/**/*.e2e-spec.ts'],
+  specs: ['test/e2e/**/*.e2e-spec.ts'],
   // Available deviceNames for mobileEmulation: https://chromium.googlesource.com/chromium/src/+/master/third_party/WebKit/Source/devtools/front_end/emulated_devices/module.json
   multiCapabilities: [
     {
@@ -104,7 +104,7 @@ exports.config = {
   },
   onPrepare() {
     require('ts-node').register({
-      project: 'e2e/tsconfig.e2e.json'
+      project: 'test/e2e/tsconfig.e2e.json'
     });
     var jasmineReporters = require('jasmine-reporters');
     jasmine.getEnv().addReporter(

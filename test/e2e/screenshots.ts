@@ -5,9 +5,9 @@ import * as mkdirp from 'mkdirp';
 
 const distribution: string = JSON.parse(
   readFileSync('src/assets/appConfig.json', 'utf8')
-)['packageName'];
+).packageName;
 
-const dir = join('test', 'latest', distribution);
+const dir = join('test', 'visual', 'latest', distribution);
 // create dir if it doesn't exist
 mkdirp(dir);
 
@@ -25,7 +25,7 @@ document.body.appendChild(elem);
 export async function takeScreenshot(name: string) {
   browser.executeScript(jsToInjectCSSHack);
   const config = await browser.getProcessedConfig();
-  const deviceName = config['capabilities']['name'];
+  const deviceName = config['capabilities'].name;
   const pngData = await browser.takeScreenshot();
   const path = join(dir, `${name}_${deviceName}.png`);
   writeFile(path, pngData, { encoding: 'base64' }, err => {

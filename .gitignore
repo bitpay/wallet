@@ -31,10 +31,10 @@ src/assets/i18n/crowdin_api_key.txt
 src/index.html
 src/manifest.json
 
-test/latest
-test/diffs
-test/report.html
-test/report.json
+test/visual/latest
+test/visual/diffs
+test/visual/report.html
+test/visual/report.json
 junitresults.xml
 
 .sourcemaps/

@@ -12,7 +12,7 @@
       "main": "app/main.ts",
       "polyfills": "polyfills.ts",
       "test": "test.ts",
-      "tsconfig": "../tsconfig.json",
+      "tsconfig": "./tsconfig.json",
       "testTsconfig": "tsconfig.spec.json",
       "prefix": "app",
       "scripts": [],
@@ -25,7 +25,7 @@
   ],
   "e2e": {
     "protractor": {
-      "config": "./protractor.conf.js"
+      "config": "test/protractor.conf.js"
     }
   },
   "lint": [
@@ -34,13 +34,13 @@
       "exclude": "**/node_modules/**"
     },
     {
-      "project": "e2e/tsconfig.e2e.json",
+      "project": "test/e2e/tsconfig.e2e.json",
       "exclude": "**/node_modules/**"
     }
   ],
   "test": {
     "karma": {
-      "config": "./karma.conf.js"
+      "config": "test/karma.conf.js"
     },
     "codeCoverage": {
       "exclude": [
