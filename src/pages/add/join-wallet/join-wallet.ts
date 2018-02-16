@@ -148,7 +148,7 @@ export class JoinWalletPage {
 
     this.profileProvider.joinWallet(opts).then((wallet: any) => {
       this.onGoingProcessProvider.set('joiningWallet', false);
-      this.events.publish('Local/WalletAction', wallet.credentials.walletId);
+      this.events.publish('status:updated');
       this.walletProvider.updateRemotePreferences(wallet);
 
       if (!wallet.isComplete()) {

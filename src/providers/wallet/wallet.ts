@@ -376,8 +376,10 @@ export class WalletProvider {
             return setTimeout(() => {
               this.createAddress(wallet);
             }, 5000);
-          } else if (err instanceof this.errors.MAIN_ADDRESS_GAP_REACHED || (err.message && err.message == 'MAIN_ADDRESS_GAP_REACHED')) {
-            this.logger.warn(err);
+          } else if (
+            err instanceof this.errors.MAIN_ADDRESS_GAP_REACHED || (err.message && err.message == 'MAIN_ADDRESS_GAP_REACHED')
+          ) {
+            this.logger.warn(this.bwcErrorProvider.msg(err, 'Server Error'));
             prefix = null;
             wallet.getMainAddresses({
               reverse: true,
@@ -386,10 +388,11 @@ export class WalletProvider {
               if (err) return reject(err);
               return resolve(addr[0].address);
             });
-          };
-          this.bwcErrorProvider.cb(err, prefix).then((msg) => {
-            return reject(msg);
-          });
+          } else {
+            this.bwcErrorProvider.cb(err, prefix).then((msg) => {
+              return reject(msg);
+            });
+          }
         } else
           return resolve(addr.address);
       });
@@ -534,7 +537,6 @@ export class WalletProvider {
 
               });
             }).catch((err) => {
-              this.logger.warn(this.bwcErrorProvider.msg(err, 'Server Error')); //TODO
               if (err instanceof this.errors.CONNECTION_ERROR || (err.message && err.message.match(/5../))) {
                 this.logger.info('Retrying history download in 5 secs...');
                 return reject(setTimeout(() => {

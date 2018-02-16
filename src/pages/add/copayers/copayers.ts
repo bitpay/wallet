@@ -60,10 +60,6 @@ export class CopayersPage {
     });
   }
 
-  ionViewWillLeave() {
-    this.events.unsubscribe('bwsEvent');
-  }
-
   private updateWallet(): void {
     this.logger.debug('Updating wallet:' + this.wallet.name)
     this.walletProvider.getStatus(this.wallet, {}).then((status: any) => {

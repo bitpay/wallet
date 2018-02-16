@@ -91,9 +91,6 @@ export class TxpDetailsPage {
         this.tx.canBeRemoved = (Date.now() / 1000 - (this.tx.ts || this.tx.createdOn)) > this.GLIDERA_LOCK_TIME;
       }
     }
-    this.events.subscribe('accepted', () => {
-      this.sign();
-    });
 
     this.events.subscribe('bwsEvent', (walletId: string, type: string, n: number) => {
       _.each([
@@ -215,7 +212,6 @@ export class TxpDetailsPage {
   public sign(): void {
     this.loading = true;
     this.walletProvider.publishAndSign(this.wallet, this.tx).then((txp: any) => {
-      this.events.publish('UpdateTx');
       this.openSuccessModal();
     }).catch((err: any) => {
       this.setError(err, ('Could not send payment'));
@@ -248,7 +244,6 @@ export class TxpDetailsPage {
       }).catch((err: any) => {
         this.onGoingProcessProvider.set('removeTx', false);
         if (err && !(err.message && err.message.match(/Unexpected/))) {
-          this.events.publish('UpdateTx');
           this.setError(err, this.translate.instant('Could not delete payment proposal'));
         }
       });
@@ -308,7 +303,6 @@ export class TxpDetailsPage {
   };
 
   public close(): void {
-    this.events.unsubscribe('bwsEvent');
     this.loading = false;
     this.viewCtrl.dismiss();
   }

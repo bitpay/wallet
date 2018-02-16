@@ -70,6 +70,7 @@ export class HomePage {
 
   private isNW: boolean;
   private isWindowsPhoneApp: boolean;
+  private updatingWalletId: object;
 
   constructor(
     private navCtrl: NavController,
@@ -94,18 +95,16 @@ export class HomePage {
     private bitPayCardProvider: BitPayCardProvider,
     private translate: TranslateService
   ) {
+    this.updatingWalletId = {};
     this.cachedBalanceUpdateOn = '';
     this.isNW = this.platformProvider.isNW;
     this.isWindowsPhoneApp = this.platformProvider.isWP;
     this.showReorderBtc = false;
     this.showReorderBch = false;
-    this.setWallets();
   }
 
   ionViewWillEnter() {
     this.config = this.configProvider.get();
-
-    this.setWallets();
 
     this.recentTransactionsEnabled = this.config.recentTransactions.enabled;
     if (this.recentTransactionsEnabled) this.getNotifications();
@@ -120,15 +119,19 @@ export class HomePage {
       return homeIntegrations.show == true;
     });
 
+    // BWS Events: Update Status per Wallet
+    // NewBlock, NewCopayer, NewAddress, NewTxProposal, TxProposalAcceptedBy, TxProposalRejectedBy, txProposalFinallyRejected,
+    // txProposalFinallyAccepted, TxProposalRemoved, NewIncomingTx, NewOutgoingTx
     this.events.subscribe('bwsEvent', (walletId: string) => {
       this.update(walletId);
     });
-    this.events.subscribe('Local/TxAction', (walletId: string) => {
-      this.update(walletId);
+
+    // Create, Join, Import and Delete -> Get Wallets -> Update Status for All Wallets
+    this.events.subscribe('status:updated', () => {
+      this.setWallets();
     });
-    this.events.subscribe('Local/WalletAction', (walletId: string) => {
-      this.update(walletId);
-    });
+
+    // Hide stars to rate
     this.events.subscribe('feedback:hide', () => {
       this.showRateCard = false;
     });
@@ -156,21 +159,32 @@ export class HomePage {
 
   ionViewDidLoad() {
     this.logger.info('ionViewDidLoad HomePage');
-    this.updateAllWallets();
+    this.setWallets();
   }
 
-  private update(walletId: string): void {
-    this.logger.debug('Got action for wallet ' + walletId);
-    let wallet = this.profileProvider.getWallet(walletId);
-    this.updateWallet(wallet);
+  private startUpdatingWalletId(walletId: string) {
+    this.updatingWalletId[walletId] = true;
+  }
+  
+  private stopUpdatingWalletId(walletId: string) {
+    setTimeout(() => {
+      this.updatingWalletId[walletId] = false;
+    }, 10000);
+  }
+
+  private update(walletId: string) {
     if (this.recentTransactionsEnabled) this.getNotifications();
+    this.updateWallet(walletId);
   }
 
-  private setWallets(): void {
+  private setWallets = _.debounce(() => {
     this.wallets = this.profileProvider.getWallets();
     this.walletsBtc = this.profileProvider.getWallets({ coin: 'btc' });
     this.walletsBch = this.profileProvider.getWallets({ coin: 'bch' });
-  }
+    this.updateAllWallets();
+  }, 10000, {
+    'leading': true
+  });
 
   public checkHomeTip(): void {
     this.persistenceProvider.getHomeTipAccepted().then((value: string) => {
@@ -217,24 +231,34 @@ export class HomePage {
     this.persistenceProvider.setFeedbackInfo(feedbackInfo);
   }
 
-  private updateWallet(wallet: any): void {
-    this.logger.debug('Updating wallet:' + wallet.name)
+  private updateWallet(walletId: string): void {
+    if (this.updatingWalletId[walletId]) return;
+    this.startUpdatingWalletId(walletId);
+    let wallet = this.profileProvider.getWallet(walletId);
     this.walletProvider.getStatus(wallet, {}).then((status: any) => {
       wallet.status = status;
+      wallet.error = null;
+      this.profileProvider.setLastKnownBalance(wallet.id, wallet.status.availableBalanceStr);
+      
+      //this.setWallets();
       this.updateTxps();
+      this.stopUpdatingWalletId(walletId);
     }).catch((err: any) => {
       this.logger.error(err);
+      this.stopUpdatingWalletId(walletId);
     });
   }
 
-  private updateTxps(): void {
+  private updateTxps = _.debounce(() => {
     this.profileProvider.getTxps({ limit: 3 }).then((data: any) => {
       this.txps = data.txps;
       this.txpsN = data.n;
     }).catch((err: any) => {
       this.logger.error(err);
     });
-  }
+  }, 5000, {
+    'leading': true
+  });
 
   private getNotifications = _.debounce(() => {
     this.profileProvider.getNotifications({ limit: 3 }).then((data: any) => {
@@ -243,9 +267,9 @@ export class HomePage {
     }).catch((err: any) => {
       this.logger.error(err);
     });
-  }, 2000, {
-      'leading': true
-    });
+  }, 5000, {
+    'leading': true
+  });
 
   private updateAllWallets(): void {
     let wallets: Array<any> = [];

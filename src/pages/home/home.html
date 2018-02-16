@@ -65,7 +65,7 @@
       <div item-start>
         <span translate>Payment Proposals</span>
       </div>
-      <ion-badge item-end (click)="openProposalsPage()" *ngIf="txpsN>3">{{txpsN}}</ion-badge>
+      <ion-badge item-end (click)="openProposalsPage()">{{txpsN}}</ion-badge>
     </ion-item-divider>
     <page-txp *ngFor="let txp of txps" [tx]="txp" [addressbook]="addressbook"></page-txp>
   </ion-list>
