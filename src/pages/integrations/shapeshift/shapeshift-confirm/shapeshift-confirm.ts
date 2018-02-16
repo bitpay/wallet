@@ -11,7 +11,6 @@ import { SuccessModalPage } from '../../../success/success';
 import { ShapeshiftPage } from '../shapeshift';
 
 // Providers
-import { ModalController } from 'ionic-angular/components/modal/modal-controller';
 import { BwcErrorProvider } from '../../../../providers/bwc-error/bwc-error';
 import { BwcProvider } from '../../../../providers/bwc/bwc';
 import { ConfigProvider } from '../../../../providers/config/config';
