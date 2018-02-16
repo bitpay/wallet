@@ -30,7 +30,6 @@
     "prefer-const": false,
     "ban-types": false,
     "no-unused-expression": false,
-    "only-arrow-functions": false,
     "no-eval": false,
     "no-object-literal-type-assertion": false,
     "max-classes-per-file": false,
