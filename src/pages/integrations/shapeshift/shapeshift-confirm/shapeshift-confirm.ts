@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
+
 import { TranslateService } from '@ngx-translate/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { ModalController, NavController , NavParams } from 'ionic-angular';
 import * as _ from 'lodash';
 import * as moment from 'moment';
 import { Logger } from '../../../../providers/logger/logger';
