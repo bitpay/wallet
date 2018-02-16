@@ -40,7 +40,6 @@
     "curly": false,
     "object-literal-shorthand": false,
     "member-access": false,
-    "no-string-throw": false,
     "arrow-return-shorthand": false,
     "array-type": false
   }

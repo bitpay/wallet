@@ -32,7 +32,7 @@ export class Profile {
     x.checkedUA = obj.checkedUA || {};
 
     if (x.credentials[0] && typeof x.credentials[0] != 'object')
-      throw ("credentials should be an object");
+      throw new Error("credentials should be an object");
     return x;
   };
 
@@ -74,7 +74,7 @@ export class Profile {
 
   public addWallet(credentials: any): boolean {
     if (!credentials.walletId)
-      throw 'credentials must have .walletId';
+      throw new Error('credentials must have .walletId');
 
     if (this.hasWallet(credentials.walletId))
       return false;
@@ -86,7 +86,7 @@ export class Profile {
 
   public updateWallet(credentials: any): boolean {
     if (!credentials.walletId)
-      throw 'credentials must have .walletId';
+      throw new Error('credentials must have .walletId');
 
     if (!this.hasWallet(credentials.walletId))
       return false;

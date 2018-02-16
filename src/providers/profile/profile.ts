@@ -937,7 +937,7 @@ export class ProfileProvider {
 
   public getWallets(opts?: any) {
 
-    if (opts && !_.isObject(opts)) throw "bad argument";
+    if (opts && !_.isObject(opts)) throw new Error("bad argument");
 
     opts = opts || {};
 
