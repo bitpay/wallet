@@ -30,7 +30,6 @@
     "prefer-const": false,
     "ban-types": false,
     "no-unused-expression": false,
-    "only-arrow-functions": false,
     "no-eval": false,
     "ban-comma-operator": false,
     "no-object-literal-type-assertion": false,

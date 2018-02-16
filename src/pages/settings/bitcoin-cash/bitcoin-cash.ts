@@ -62,7 +62,7 @@ export class BitcoinCashPage {
 
 		let xPubKeyIndex = lodash.keyBy(this.walletsBCH, "credentials.xPubKey");
 
-		this.walletsBTC = lodash.filter(this.walletsBTC, function (w) {
+		this.walletsBTC = lodash.filter(this.walletsBTC, w => {
 			return !xPubKeyIndex[w.credentials.xPubKey];
 		});
 
