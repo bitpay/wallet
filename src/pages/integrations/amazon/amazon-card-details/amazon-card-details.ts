@@ -55,7 +55,7 @@ export class AmazonCardDetailsPage {
     this.amazonProvider.savePendingGiftCard(this.card, {
       remove: true
     }, (err: any) => {
-      this.cancel();
+      this.close();
     });
   }
 
@@ -84,7 +84,7 @@ export class AmazonCardDetailsPage {
                 this.amazonProvider.savePendingGiftCard(newData, {
                   remove: true
                 }, (err: any) => {
-                  this.cancel();
+                  this.close();
                 });
                 return;
               }
@@ -100,7 +100,7 @@ export class AmazonCardDetailsPage {
     });
   }
 
-  public cancel(): void {
+  public close(): void {
     this.viewCtrl.dismiss();
   }
 

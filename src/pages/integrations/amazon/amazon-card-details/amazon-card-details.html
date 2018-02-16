@@ -1,16 +1,13 @@
 <ion-header>
-
   <ion-navbar>
     <ion-title>Details</ion-title>
     <ion-buttons start>
-      <button (click)="cancel()" ion-button>
+      <button (click)="close()" ion-button>
         {{'Close' | translate}}
       </button>
     </ion-buttons>
   </ion-navbar>
-
 </ion-header>
-
 
 <ion-content>
   <div class="header-modal">
@@ -69,11 +66,11 @@
     </div>
   </div>
 
-  <div class="box-notification warning" *ngIf="card.status == 'FAILURE' || card.status == 'RESEND'">
+  <div class="box-notification assertive" *ngIf="card.status == 'FAILURE' || card.status == 'RESEND'">
     There was a failure to the create gift card. Please, contact BitPay support.
   </div>
 
-  <ion-list class="steps" *ngIf="card.claimCode && card.cardStatus == 'Fulfilled'">
+  <ion-list *ngIf="card.claimCode && card.cardStatus == 'Fulfilled'" class="steps">
     <ion-item-divider>To redeem your gift card, follow these steps:</ion-item-divider>
 
     <ion-item>
@@ -97,26 +94,20 @@
           <a (click)="openExternalLink('https://www.amazon.com/gc-redeem')">www.amazon.com/gc-redeem</a>. If you have questions regarding the BitPay Introductory offer, please contact BitPay.
         </p>
       </div>
-
-      <div class="steps-info">
-        *
-        <a (click)="openExternalLink('http://amazon.com')">Amazon.com</a> is not a sponsor of this promotion. Except as required by law,
-        <a (click)="openExternalLink('http://amazon.com')">Amazon.com</a> Gift Cards ("GCs") cannot be transferred for value or redeemed for cash. GCs may be used only for
-        purchases of eligible goods at
-        <a (click)="openExternalLink('http://amazon.com')">Amazon.com</a> or certain of its affiliated websites. For complete terms and conditions, see
-        <a (click)="openExternalLink('https://www.amazon.com/gc-legal')">www.amazon.com/gc-legal</a>. GCs are issued by ACI Gift Cards, Inc., a Washington corporation. All Amazon &reg;,
-        &trade; &amp; &copy; are IP of
-        <a (click)="openExternalLink('http://amazon.com')">Amazon.com</a>, Inc. or its affiliates. No expiration date or service fees.
-      </div>
     </ion-item>
-
-    <button ion-item block *ngIf="card.status == 'FAILURE' || card.cardStatus == 'Canceled' || card.cardStatus == 'Expired' || card.status == 'expired'"
-      class="button-footer assertive" (click)="remove()">Remove</button>
-    <button ion-item block *ngIf="card.status == 'SUCCESS' && card.cardStatus == 'Fulfilled'" class="assertive"
-      (click)="cancelGiftCard()">Cancel</button>
-
-
   </ion-list>
+  <div padding class="steps-info">
+    *
+    <a (click)="openExternalLink('http://amazon.com')">Amazon.com</a> is not a sponsor of this promotion. Except as required by law,
+    <a (click)="openExternalLink('http://amazon.com')">Amazon.com</a> Gift Cards ("GCs") cannot be transferred for value or redeemed for cash. GCs may be used only for purchases
+    of eligible goods at
+    <a (click)="openExternalLink('http://amazon.com')">Amazon.com</a> or certain of its affiliated websites. For complete terms and conditions, see
+    <a (click)="openExternalLink('https://www.amazon.com/gc-legal')">www.amazon.com/gc-legal</a>. GCs are issued by ACI Gift Cards, Inc., a Washington corporation. All Amazon &reg;, &trade;
+    &amp; &copy; are IP of
+    <a (click)="openExternalLink('http://amazon.com')">Amazon.com</a>, Inc. or its affiliates. No expiration date or service fees.
+  </div>
 
-
+  <button ion-item block text-center *ngIf="card.status == 'FAILURE' || card.cardStatus == 'Canceled' || card.cardStatus == 'Expired' || card.status == 'expired'"
+    class="button-footer assertive" (click)="remove()">Remove</button>
+  <button ion-item block text-center *ngIf="card.status == 'SUCCESS' && card.cardStatus == 'Fulfilled'" class="assertive" (click)="cancelGiftCard()">Cancel</button>
 </ion-content>
