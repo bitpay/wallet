@@ -355,7 +355,7 @@ export class ShapeshiftConfirmPage {
     let modal = this.modalCtrl.create(SuccessModalPage, { successText: successText }, { showBackdrop: true, enableBackdropDismiss: false });
     modal.present();
     modal.onDidDismiss(() => {
-      this.navCtrl.popToRoot();
+      this.navCtrl.popToRoot({ animate: false });
       this.navCtrl.push(ShapeshiftPage);
     });
   }
