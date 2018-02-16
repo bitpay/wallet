@@ -32,7 +32,7 @@ export class ShapeshiftDetailsPage {
     this.shapeshiftProvider.saveShapeshift(this.ssData, {
       remove: true
     }, function (err) {
-      this.cancel();
+      this.close();
     });
   }
 
