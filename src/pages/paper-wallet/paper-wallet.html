@@ -9,7 +9,7 @@
     <span translate>No wallets available to receive funds</span>
   </div>
   <div *ngIf="!noMatchingWallet">
-    <h4 class="header" translate>
+    <h4 class="title" translate>
       <span translate>Funds found: </span>
       <span *ngIf="balanceSat">{{balanceSat | satToUnit: wallet.coin}}</span>
       <span *ngIf="!balanceSat">...</span>
