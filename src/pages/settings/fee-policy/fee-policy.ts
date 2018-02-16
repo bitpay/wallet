@@ -29,7 +29,7 @@ export class FeePolicyPage {
     private configProvider: ConfigProvider
   ) {
     this.feeOpts = this.feeProvider.feeOpts;
-    delete this.feeOpts.custom; // Remove custom level
+    delete this.feeOpts['custom']; // Remove custom level
     this.currentFeeLevel = this.feeProvider.getCurrentFeeLevel();
   }
 

@@ -117,7 +117,7 @@ export class ShapeshiftShiftPage {
       this.shapeshiftProvider.getMarketInfo(pair, (err: any, limit: any) => {
         this.limit = limit;
 
-        if (this.limit.rate == 0 || this.rate.rate == 0) {
+        if (this.limit.rate == 0 || this.rate['rate'] == 0) {
           let msg = this.translate.instant('ShapeShift is not available at this moment. Please, try again later.');
           this.popupProvider.ionicAlert(null, msg).then(() => {
             this.navCtrl.pop();

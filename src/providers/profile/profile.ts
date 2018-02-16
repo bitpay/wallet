@@ -852,7 +852,7 @@ export class ProfileProvider {
       this.logger.debug('Joining Wallet:', opts);
 
       try {
-        let walletData = this.bwcProvider.parseSecret(opts.secret);
+        var walletData = this.bwcProvider.parseSecret(opts.secret);
 
         // check if exist
         if (_.find(this.profile.credentials, {

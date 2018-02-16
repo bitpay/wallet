@@ -35,6 +35,7 @@
     "ban-comma-operator": false,
     "no-object-literal-type-assertion": false,
     "max-classes-per-file": false,
-    "no-string-literals": false
+    "no-string-literal": false,
+    "no-var-keyword": false
   }
 }

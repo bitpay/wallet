@@ -18,7 +18,7 @@ export class ReleaseProvider {
   }
 
   public getLatestAppVersion() {
-    return this.http.get(this.LATEST_RELEASE_URL).map(x => x.tag_name);
+    return this.http.get(this.LATEST_RELEASE_URL).map(x => x['tag_name']);
   }
 
   private verifyTagFormat(tag: string) {
