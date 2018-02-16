@@ -1,5 +1,12 @@
-import { TestBed, inject, async } from '@angular/core/testing';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { async, inject, TestBed } from '@angular/core/testing';
+import {
+  TranslateFakeLoader,
+  TranslateLoader,
+  TranslateModule,
+  TranslateService
+} from '@ngx-translate/core';
+import { Level, NgLoggerModule } from '@nsalaun/ng-logger';
 import {
   AlertController,
   App,
@@ -9,27 +16,20 @@ import {
   Platform
 } from 'ionic-angular';
 import * as _ from 'lodash';
-import {
-  TranslateModule,
-  TranslateService,
-  TranslateLoader,
-  TranslateFakeLoader
-} from '@ngx-translate/core';
-import { NgLoggerModule, Level } from '@nsalaun/ng-logger';
 
-import { Logger } from '../../providers/logger/logger';
-import { WalletProvider } from '../wallet/wallet';
-import { ProfileProvider } from './profile';
-import { PersistenceProvider } from '../persistence/persistence';
-import { ConfigProvider } from '../config/config';
-import { BwcProvider } from '../bwc/bwc';
-import { BwcErrorProvider } from '../bwc-error/bwc-error';
-import { PlatformProvider } from '../platform/platform';
 import { AppProvider } from '../../providers/app/app';
 import { LanguageProvider } from '../../providers/language/language';
+import { Logger } from '../../providers/logger/logger';
 import { TxFormatProvider } from '../../providers/tx-format/tx-format';
-import { PopupProvider } from '../popup/popup';
+import { BwcErrorProvider } from '../bwc-error/bwc-error';
+import { BwcProvider } from '../bwc/bwc';
+import { ConfigProvider } from '../config/config';
 import { OnGoingProcessProvider } from '../on-going-process/on-going-process';
+import { PersistenceProvider } from '../persistence/persistence';
+import { PlatformProvider } from '../platform/platform';
+import { PopupProvider } from '../popup/popup';
+import { WalletProvider } from '../wallet/wallet';
+import { ProfileProvider } from './profile';
 
 describe('Profile Provider', () => {
   let profileProvider: ProfileProvider;

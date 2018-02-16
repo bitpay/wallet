@@ -1,7 +1,7 @@
-import { browser } from 'protractor';
 import { readFileSync, writeFile } from 'fs';
-import { join } from 'path';
 import * as mkdirp from 'mkdirp';
+import { join } from 'path';
+import { browser } from 'protractor';
 
 const distribution: string = JSON.parse(
   readFileSync('src/assets/appConfig.json', 'utf8')
