@@ -14,7 +14,7 @@ import { PopupProvider } from '../../../providers/popup/popup';
 import { ProfileProvider } from '../../../providers/profile/profile';
 import { WalletProvider } from '../../../providers/wallet/wallet';
 import { Logger } from '../../../providers/logger/logger';
-
+import { PushNotificationsProvider } from '../../../providers/push-notifications/push-notifications';
 
 @Component({
   selector: 'page-copayers',
@@ -42,7 +42,8 @@ export class CopayersPage {
     private profileProvider: ProfileProvider,
     private onGoingProcessProvider: OnGoingProcessProvider,
     private walletProvider: WalletProvider,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private pushNotificationsProvider: PushNotificationsProvider
   ) {
     this.secret = null;
   }
@@ -98,7 +99,7 @@ export class CopayersPage {
     this.profileProvider.deleteWalletClient(this.wallet).then(() => {
       this.onGoingProcessProvider.set('deletingWallet', false);
 
-      // TODO: pushNotificationsService.unsubscribe(this.wallet);
+      this.pushNotificationsProvider.unsubscribe(this.wallet);
       this.navCtrl.popToRoot();
       this.navCtrl.parent.select(0);
     }).catch((err: any) => {
