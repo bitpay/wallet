@@ -208,10 +208,10 @@ export class ImportWalletPage {
           this.logger.error(err);
         });
         this.navCtrl.setRoot(TabsPage);
-        this.navCtrl.popToRoot({ animate: false });
+        this.navCtrl.popToRoot();
       }
       else {
-        this.navCtrl.popToRoot({ animate: false });
+        this.navCtrl.popToRoot();
         this.navCtrl.parent.select(0);
       }
     }).catch((err: any) => {
