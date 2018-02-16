@@ -174,7 +174,7 @@ export class SellGlideraPage {
                 this.showError(err);
                 return;
               }
-              let amount = parseInt((this.sellInfo.qty * 100000000).toFixed(0));
+              let amount = parseInt((this.sellInfo.qty * 100000000).toFixed(0), 10);
               let comment = 'Glidera transaction';
 
               outputs.push({

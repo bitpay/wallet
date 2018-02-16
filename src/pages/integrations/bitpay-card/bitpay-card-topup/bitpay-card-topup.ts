@@ -224,7 +224,7 @@ export class BitPayCardTopUpPage {
 
       let outputs = [];
       let toAddress = invoice.bitcoinAddress;
-      let amountSat = parseInt((invoice.btcDue * 100000000).toFixed(0)); // BTC to Satoshi
+      let amountSat = parseInt((invoice.btcDue * 100000000).toFixed(0), 10); // BTC to Satoshi
 
       outputs.push({
         'toAddress': toAddress,
@@ -297,7 +297,7 @@ export class BitPayCardTopUpPage {
             amount: maxAmountBtc,
             currency: 'BTC'
           }).then((inv) => {
-            let invoiceFeeSat = parseInt((inv.buyerPaidBtcMinerFee * 100000000).toFixed());
+            let invoiceFeeSat = parseInt((inv.buyerPaidBtcMinerFee * 100000000).toFixed(), 10);
             let newAmountSat = maxValues.amount - invoiceFeeSat;
 
             if (newAmountSat <= 0) {

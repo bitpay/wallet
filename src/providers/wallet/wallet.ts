@@ -702,7 +702,7 @@ export class WalletProvider {
         });
         let lowLevelRate: string = (normalLevelRate.feePerKb / 1000).toFixed(0);
         let size = this.getEstimatedTxSize(wallet, nbOutputs);
-        return resolve(size * parseInt(lowLevelRate));
+        return resolve(size * parseInt(lowLevelRate, 10));
       }).catch((err) => {
         return reject(err);
       });
@@ -731,7 +731,7 @@ export class WalletProvider {
     let nbInputs = 1; //Assume 1 input
 
     let size = overhead + inputSize * nbInputs + outputSize * nbOutputs;
-    return parseInt((size * (1 + safetyMargin)).toFixed(0));
+    return parseInt((size * (1 + safetyMargin)).toFixed(0), 10);
   }
 
   public getTxNote(wallet: any, txid: string): Promise<any> {

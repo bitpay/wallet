@@ -56,7 +56,7 @@ export class WalletColorPage {
 
   private getColorCount() {
     let count = window.getComputedStyle(document.getElementsByClassName('wallet-color-count')[0]).content;
-    return parseInt(count.replace(/[^0-9]/g, ''));
+    return parseInt(count.replace(/[^0-9]/g, ''), 10);
   };
 
   private getColorDefault(): string {
