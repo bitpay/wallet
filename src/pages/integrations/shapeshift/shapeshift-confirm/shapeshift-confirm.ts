@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { NavController, NavParams, ModalController } from 'ionic-angular';
 import { Logger } from '../../../../providers/logger/logger';
 import * as moment from 'moment';
 import * as _ from 'lodash';
@@ -21,7 +21,6 @@ import { ProfileProvider } from '../../../../providers/profile/profile';
 import { ShapeshiftProvider } from '../../../../providers/shapeshift/shapeshift';
 import { TxFormatProvider } from '../../../../providers/tx-format/tx-format';
 import { WalletProvider } from '../../../../providers/wallet/wallet';
-import { ModalController } from 'ionic-angular/components/modal/modal-controller';
 
 @Component({
   selector: 'page-shapeshift-confirm',
