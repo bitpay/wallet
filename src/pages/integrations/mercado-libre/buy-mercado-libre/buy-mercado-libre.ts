@@ -91,7 +91,8 @@ export class BuyMercadoLibrePage {
     this.wallets = this.profileProvider.getWallets({
       onlyComplete: true,
       network: this.network,
-      coin: this.coin
+      coin: this.coin,
+      m: 1
     });
     if (_.isEmpty(this.wallets)) {
       this.showErrorAndBack(null, this.translate.instant('No wallets available'));
@@ -301,7 +302,7 @@ export class BuyMercadoLibrePage {
         this.openSuccessModal();
       });
     });
-  }, 8000, {
+  }, 15000, {
       'leading': true
     });
 
@@ -316,7 +317,6 @@ export class BuyMercadoLibrePage {
       uuid: wallet.id,
       email: email
     };
-      console.log('[buy-mercado-libre.ts:313]',dataSrc); /* TODO */
     this.onGoingProcessProvider.set('loadingTxInfo', true);
     this.createInvoice(dataSrc).then((data: any) => {
       let invoice = data.invoice;
@@ -402,17 +402,20 @@ export class BuyMercadoLibrePage {
 
   public openSuccessModal(): void {
     let successComment: string;
+    let cssClass: string;
     if (this.mlGiftCard.status == 'FAILURE') {
       successComment = 'Sua compra não pôde ser concluída';
+      cssClass = 'danger';
     }
     if (this.mlGiftCard.status == 'PENDING') {
       successComment = 'Sua compra foi adicionada à lista de pendentes';
+      cssClass = 'warning';
     }
     if (this.mlGiftCard.status == 'SUCCESS' || this.mlGiftCard.cardStatus == 'active') {
       successComment = 'Vale-Presente gerado e pronto para usar';
     }
     let successText = '';
-    let modal = this.modalCtrl.create(SuccessModalPage, { successText: successText, successComment: successComment }, { showBackdrop: true, enableBackdropDismiss: false });
+    let modal = this.modalCtrl.create(SuccessModalPage, { successText: successText, successComment: successComment, cssClass: cssClass }, { showBackdrop: true, enableBackdropDismiss: false });
     modal.present();
     modal.onDidDismiss(() => {
       this.navCtrl.remove(2, 2);

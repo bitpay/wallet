@@ -1,11 +1,12 @@
 <div class="container">
-  <div class="content">
-    <div class="success">
-      <img class="success-img" src="assets/img/onboarding-success.svg">
-      <div class="success-text">
+  <div class="content" [ngClass]="{'success': cssClass == 'success', 'warning': cssClass == 'warning', 'danger': cssClass == 'danger'}">
+    <div class="body">
+      <img class="body-img" *ngIf="cssClass == 'success'" src="assets/img/onboarding-success.svg">
+      <img class="body-img" *ngIf="cssClass != 'success'" src="assets/img/icon-important.svg">
+      <div class="body-text">
         {{successText}}
       </div>
-      <div class="success-comment">
+      <div class="body-comment">
         {{successComment}}
       </div>
     </div>
