@@ -26,11 +26,11 @@ export class WalletExtendedPrivateKeyPage {
 
   }
 
-  ionViewDidLoad() {
+  public ionViewDidLoad() {
     this.logger.info('ionViewDidLoad WalletExtendedPrivateKeyPage');
   }
 
-  ionViewDidEnter() {
+  public ionViewDidEnter() {
     this.wallet = this.profileProvider.getWallet(this.navParams.data.walletId);
     this.credentialsEncrypted = this.wallet.isPrivKeyEncrypted();
     this.walletProvider.getKeys(this.wallet).then((k) => {

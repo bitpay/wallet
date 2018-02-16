@@ -2,9 +2,9 @@ import { Injectable } from '@angular/core';
 import { Logger } from '../../providers/logger/logger';
 
 //providers
-import { PopupProvider } from '../popup/popup';
-import { PlatformProvider } from '../platform/platform';
 import { NodeWebkitProvider } from '../node-webkit/node-webkit';
+import { PlatformProvider } from '../platform/platform';
+import { PopupProvider } from '../popup/popup';
 
 @Injectable()
 export class ExternalLinkProvider {
@@ -27,7 +27,7 @@ export class ExternalLinkProvider {
 
   public open(url: string, optIn?: boolean, title?: string, message?: string, okText?: string, cancelText?: string): Promise<any> {
     return new Promise((resolve, reject) => {
-      let old = (window as any).handleOpenURL;
+      const old = (window as any).handleOpenURL;
 
       (window as any).handleOpenURL = (url) => {
         // Ignore external URLs
@@ -39,8 +39,8 @@ export class ExternalLinkProvider {
         this.restoreHandleOpenURL(old);
       } else {
         if (optIn) {
-          let openBrowser = (res) => {
-            if (res) window.open(url, '_system');
+          const openBrowser = (res) => {
+            if (res) { window.open(url, '_system'); }
             this.restoreHandleOpenURL(old);
           };
           this.popupProvider.ionicConfirm(title, message, okText, cancelText).then((res: boolean) => {

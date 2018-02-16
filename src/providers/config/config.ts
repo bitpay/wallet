@@ -236,7 +236,7 @@ export class ConfigProvider {
   }
 
   public set(newOpts: object) {
-    let config = _.cloneDeep(configDefault);
+    const config = _.cloneDeep(configDefault);
 
     if (_.isString(newOpts)) {
       newOpts = JSON.parse(newOpts);

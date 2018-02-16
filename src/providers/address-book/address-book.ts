@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { BwcProvider } from '../bwc/bwc';
 import { Logger } from '../../providers/logger/logger';
 import { PersistenceProvider } from '../../providers/persistence/persistence';
+import { BwcProvider } from '../bwc/bwc';
 
 import * as _ from 'lodash';
 
@@ -30,12 +30,12 @@ export class AddressBookProvider {
   public get(addr: string): Promise<any> {
     return new Promise((resolve, reject) => {
       this.persistenceProvider.getAddressbook('testnet').then((ab: any) => {
-        if (ab && _.isString(ab)) ab = JSON.parse(ab);
-        if (ab && ab[addr]) return resolve(ab[addr]);
+        if (ab && _.isString(ab)) { ab = JSON.parse(ab); }
+        if (ab && ab[addr]) { return resolve(ab[addr]); }
 
         this.persistenceProvider.getAddressbook('livenet').then((ab: any) => {
-          if (ab && _.isString(ab)) ab = JSON.parse(ab);
-          if (ab && ab[addr]) return resolve(ab[addr]);
+          if (ab && _.isString(ab)) { ab = JSON.parse(ab); }
+          if (ab && ab[addr]) { return resolve(ab[addr]); }
           return resolve();
         }).catch((err: any) => {
           return reject();
@@ -49,11 +49,11 @@ export class AddressBookProvider {
   public list(): Promise<any> {
     return new Promise((resolve, reject) => {
       this.persistenceProvider.getAddressbook('testnet').then((ab: any) => {
-        if (ab && _.isString(ab)) ab = JSON.parse(ab);
+        if (ab && _.isString(ab)) { ab = JSON.parse(ab); }
 
         ab = ab || {};
         this.persistenceProvider.getAddressbook('livenet').then((ab2: any) => {
-          if (ab2 && _.isString(ab)) ab2 = JSON.parse(ab2);
+          if (ab2 && _.isString(ab)) { ab2 = JSON.parse(ab2); }
 
           ab2 = ab2 || {};
           return resolve(_.defaults(ab2, ab));
@@ -68,13 +68,13 @@ export class AddressBookProvider {
 
   public add(entry: any): Promise<any> {
     return new Promise((resolve, reject) => {
-      var network = this.getNetwork(entry.address);
-      if (_.isEmpty(network)) return reject('Not valid bitcoin address');
+      const network = this.getNetwork(entry.address);
+      if (_.isEmpty(network)) { return reject('Not valid bitcoin address'); }
       this.persistenceProvider.getAddressbook(network).then((ab: any) => {
-        if (ab && _.isString(ab)) ab = JSON.parse(ab);
+        if (ab && _.isString(ab)) { ab = JSON.parse(ab); }
         ab = ab || {};
-        if (_.isArray(ab)) ab = {}; // No array
-        if (ab[entry.address]) return reject('Entry already exist');
+        if (_.isArray(ab)) { ab = {}; } // No array
+        if (ab[entry.address]) { return reject('Entry already exist'); }
         ab[entry.address] = entry;
         this.persistenceProvider.setAddressbook(network, JSON.stringify(ab)).then((ab: any) => {
           this.list().then((ab: any) => {
@@ -93,13 +93,13 @@ export class AddressBookProvider {
 
   public remove(addr: any): Promise<any> {
     return new Promise((resolve, reject) => {
-      var network = this.getNetwork(addr);
-      if (_.isEmpty(network)) return reject('Not valid bitcoin address');
+      const network = this.getNetwork(addr);
+      if (_.isEmpty(network)) { return reject('Not valid bitcoin address'); }
       this.persistenceProvider.getAddressbook(network).then((ab: any) => {
-        if (ab && _.isString(ab)) ab = JSON.parse(ab);
+        if (ab && _.isString(ab)) { ab = JSON.parse(ab); }
         ab = ab || {};
-        if (_.isEmpty(ab)) return reject('Addressbook is empty');
-        if (!ab[addr]) return reject('Entry does not exist');
+        if (_.isEmpty(ab)) { return reject('Addressbook is empty'); }
+        if (!ab[addr]) { return reject('Entry does not exist'); }
         delete ab[addr];
         this.persistenceProvider.setAddressbook(network, JSON.stringify(ab)).then(() => {
           this.list().then((ab: any) => {

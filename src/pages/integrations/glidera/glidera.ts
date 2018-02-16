@@ -1,12 +1,12 @@
 import { Component } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ModalController, NavController, NavParams } from 'ionic-angular';
 import { Logger } from '../../../providers/logger/logger';
-import { NavController, NavParams, ModalController } from 'ionic-angular';
-import { Validators, FormBuilder, FormGroup } from '@angular/forms';
 
 //providers
 import { ExternalLinkProvider } from '../../../providers/external-link/external-link';
-import { OnGoingProcessProvider } from '../../../providers/on-going-process/on-going-process';
 import { GlideraProvider } from '../../../providers/glidera/glidera';
+import { OnGoingProcessProvider } from '../../../providers/on-going-process/on-going-process';
 import { PopupProvider } from '../../../providers/popup/popup';
 //pages
 import { AmountPage } from '../../send/amount/amount';
@@ -45,9 +45,9 @@ export class GlideraPage {
     this.account = {};
   }
 
-  ionViewDidEnter() {
-    if (this.navParams.data && this.navParams.data.code) this.submitOauthCode(this.navParams.data.code);
-    else this.init();
+  public ionViewDidEnter() {
+    if (this.navParams.data && this.navParams.data.code) { this.submitOauthCode(this.navParams.data.code); }
+    else { this.init(); }
   }
 
   public openExternalLink(url: string): void {
@@ -62,7 +62,7 @@ export class GlideraPage {
         this.popupProvider.ionicAlert('Error connecting Glidera', err + '. Please re-connect to Glidera');
         return;
       }
-      if (!data || (data && !data.token)) return;
+      if (!data || (data && !data.token)) { return; }
 
       this.account.token = data.token;
       this.account.status = data.status;
@@ -97,7 +97,7 @@ export class GlideraPage {
   public openTxModal(tx) {
     this.tx = tx;
 
-    let modal = this.modalCtrl.create(GlideraTxDetailsPage, { tx: this.tx });
+    const modal = this.modalCtrl.create(GlideraTxDetailsPage, { tx: this.tx });
     modal.present();
 
     this.glideraProvider.getTransaction(this.account.token, tx.transactionUuid, (err, tx) => {
@@ -115,17 +115,17 @@ export class GlideraPage {
   }
 
   public openLoginWindow() {
-    let glideraUrl = (this.network === 'testnet') ? 'https://sandbox.glidera.io/login' : 'https://glidera.io/login';
+    const glideraUrl = (this.network === 'testnet') ? 'https://sandbox.glidera.io/login' : 'https://glidera.io/login';
     this.openExternalLink(glideraUrl);
   }
 
   public openSupportWindow(): void {
-    var url = this.glideraProvider.getSupportUrl();
-    var optIn = true;
-    var title = 'Glidera Support';
-    var message = 'You can email glidera at support@glidera.io for direct support, or you can contact Glidera on Twitter.';
-    var okText = 'Tweet @GlideraInc';
-    var cancelText = 'Go Back';
+    const url = this.glideraProvider.getSupportUrl();
+    const optIn = true;
+    const title = 'Glidera Support';
+    const message = 'You can email glidera at support@glidera.io for direct support, or you can contact Glidera on Twitter.';
+    const okText = 'Tweet @GlideraInc';
+    const cancelText = 'Go Back';
     this.externalLinkProvider.open(url, optIn, title, message, okText, cancelText);
   }
 

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Logger } from '../../providers/logger/logger';
 import { TranslateService } from '@ngx-translate/core';
+import { Logger } from '../../providers/logger/logger';
 
 import { ConfigProvider } from '../config/config';
 
@@ -8,7 +8,7 @@ import * as _ from "lodash";
 
 @Injectable()
 export class LanguageProvider {
-  private languages: Array<any> = [
+  private languages: any[] = [
     {
       name: 'English',
       isoCode: 'en'
@@ -57,14 +57,14 @@ export class LanguageProvider {
   }
 
   public load() {
-    let lang = this.configProvider.get().wallet.settings.defaultLanguage;
-    if (!_.isEmpty(lang)) this.current = lang;
+    const lang = this.configProvider.get().wallet.settings.defaultLanguage;
+    if (!_.isEmpty(lang)) { this.current = lang; }
     else {
       // Get from browser
-      let browserLang = this.translate.getBrowserLang();
-      let validBrowserLang = this.getName(browserLang) ? true : false;
-      if (validBrowserLang) this.current = browserLang;
-      else this.current = this.getDefault();
+      const browserLang = this.translate.getBrowserLang();
+      const validBrowserLang = this.getName(browserLang) ? true : false;
+      if (validBrowserLang) { this.current = browserLang; }
+      else { this.current = this.getDefault(); }
     }
     this.logger.info('Default language: ' + this.current);
     this.translate.setDefaultLang(this.current);
@@ -83,7 +83,7 @@ export class LanguageProvider {
   }
 
   private getDefault(): string {
-    return this.languages[0]['isoCode'];
+    return this.languages[0].isoCode;
   }
 
   public getCurrent(): any {

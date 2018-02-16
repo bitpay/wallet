@@ -2,12 +2,12 @@ import { Injectable } from '@angular/core';
 import { Logger } from '@nsalaun/ng-logger';
 
 //providers
-import { PlatformProvider } from '../platform/platform';
-import { BitPayProvider } from '../bitpay/bitpay';
-import { PopupProvider } from '../popup/popup';
-import { PersistenceProvider } from '../persistence/persistence';
 import { AppIdentityProvider } from '../app-identity/app-identity';
 import { BitPayCardProvider } from '../bitpay-card/bitpay-card';
+import { BitPayProvider } from '../bitpay/bitpay';
+import { PersistenceProvider } from '../persistence/persistence';
+import { PlatformProvider } from '../platform/platform';
+import { PopupProvider } from '../popup/popup';
 
 import * as _ from 'lodash';
 
@@ -67,12 +67,12 @@ export class BitPayAccountProvider {
         //TODO deviceName = this.platformProvider.device.model;
         deviceName = '';
       }
-      let json = {
+      const json = {
         method: 'createToken',
         params: {
           secret: pairData.secret,
           version: 2,
-          deviceName: deviceName,
+          deviceName,
           code: pairData.otp
         }
       };
@@ -81,33 +81,33 @@ export class BitPayAccountProvider {
         if (data && data.error) {
           return cb(data.error);
         }
-        let apiContext = {
+        const apiContext = {
           token: data.data,
-          pairData: pairData,
+          pairData,
           appIdentity: data.appIdentity
         };
         this.logger.info('BitPay service BitAuth create token: SUCCESS');
 
         this.fetchBasicInfo(apiContext, (err, basicInfo) => {
-          if (err) return cb(err);
-          let title = 'Add BitPay Account?'; //TODO gettextcatalog
+          if (err) { return cb(err); }
+          const title = 'Add BitPay Account?'; //TODO gettextcatalog
           let msg;
 
           if (pairingReason) {
-            let reason = pairingReason;
-            let email = pairData.email;
+            const reason = pairingReason;
+            const email = pairData.email;
 
             msg = 'To ' + reason + ' you must first add your BitPay account - ' + email; //TODO gettextcatalog
           } else {
-            let email = pairData.email;
+            const email = pairData.email;
             msg = 'Add this BitPay account ' + '(' + email + ')?'; //TODO gettextcatalog
           }
 
-          let ok = 'Add Account'; //TODO gettextcatalog
-          let cancel = 'Go back'; //TODO gettextcatalog
+          const ok = 'Add Account'; //TODO gettextcatalog
+          const cancel = 'Go back'; //TODO gettextcatalog
           this.popupProvider.ionicConfirm(title, msg, ok, cancel).then((res) => {
             if (res) {
-              let acctData = {
+              const acctData = {
                 token: apiContext.token,
                 email: pairData.email,
                 givenName: basicInfo.givenName,
@@ -129,7 +129,7 @@ export class BitPayAccountProvider {
 
   private checkOtp(pairData: any, cb: Function) {
     if (pairData.otp) {
-      let msg = 'Enter Two Factor for your BitPay account'; //TODO gettextcatalog
+      const msg = 'Enter Two Factor for your BitPay account'; //TODO gettextcatalog
       this.popupProvider.ionicPrompt(null, msg, null).then((res) => {
         cb(res);
       });
@@ -139,12 +139,12 @@ export class BitPayAccountProvider {
   }
 
   private fetchBasicInfo(apiContext: any, cb: Function) {
-    let json = {
+    const json = {
       method: 'getBasicInfo'
     };
     // Get basic account information
     this.bitPayProvider.post('/api/v2/' + apiContext.token, json, (data) => {
-      if (data && data.error) return cb(data.error);
+      if (data && data.error) { return cb(data.error); }
       this.logger.info('BitPay Account Get Basic Info: SUCCESS');
       return cb(null, data.data);
     }, (data) => {
@@ -173,7 +173,7 @@ export class BitPayAccountProvider {
           return cb(err);
         }
 
-        let accountsArray = [];
+        const accountsArray = [];
         _.forEach(Object.keys(accounts), (key) => {
           accounts[key].cards = accounts[key].cards;
           accounts[key].email = key;
@@ -184,7 +184,7 @@ export class BitPayAccountProvider {
             pairData: {
               email: key
             },
-            appIdentity: appIdentity
+            appIdentity
           };
 
           accountsArray.push(accounts[key]);
@@ -207,7 +207,7 @@ export class BitPayAccountProvider {
 
   private _setError(msg: string, e: any): string {
     this.logger.error(msg);
-    let error = (e && e.data && e.data.error) ? e.data.error : msg;
+    const error = (e && e.data && e.data.error) ? e.data.error : msg;
     return error;
   };
 

@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, Events } from 'ionic-angular';
+import { Events, NavController, NavParams } from 'ionic-angular';
 import { Logger } from '../../../../../providers/logger/logger';
 
 //providers
-import { ProfileProvider } from '../../../../../providers/profile/profile';
 import { ConfigProvider } from '../../../../../providers/config/config';
+import { ProfileProvider } from '../../../../../providers/profile/profile';
 
 //pages
 import { WalletExtendedPrivateKeyPage } from './wallet-extended-private-key/wallet-extended-private-key';
@@ -31,7 +31,7 @@ export class WalletInformationPage {
   public addressType: string;
   public derivationStrategy: string;
   public basePath: string;
-  public pubKeys: Array<any>;
+  public pubKeys: any[];
   public externalSource: string;
   public canSign: boolean;
   public needsBackup: boolean;
@@ -49,11 +49,11 @@ export class WalletInformationPage {
 
   }
 
-  ionViewDidLoad() {
+  public ionViewDidLoad() {
     this.logger.info('ionViewDidLoad WalletInformationPage');
   }
 
-  ionViewWillEnter() {
+  public ionViewWillEnter() {
     this.wallet = this.profileProvider.getWallet(this.navParams.data.walletId);
     this.walletName = this.wallet.credentials.walletName;
     this.coin = this.wallet.coin;
@@ -83,7 +83,7 @@ export class WalletInformationPage {
   };
 
   private save(color): void {
-    let opts = {
+    const opts = {
       colorFor: {}
     };
     opts.colorFor[this.wallet.credentials.walletId] = color;

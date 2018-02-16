@@ -1,17 +1,17 @@
 import { Component } from "@angular/core";
-import { Logger } from '../../../providers/logger/logger';
-import { ModalController, NavController } from 'ionic-angular';
 import { TranslateService } from '@ngx-translate/core';
+import { ModalController, NavController } from 'ionic-angular';
+import { Logger } from '../../../providers/logger/logger';
 
 //providers
-import { ProfileProvider } from '../../../providers/profile/profile';
 import { OnGoingProcessProvider } from '../../../providers/on-going-process/on-going-process';
-import { WalletProvider } from '../../../providers/wallet/wallet';
 import { PopupProvider } from '../../../providers/popup/popup';
+import { ProfileProvider } from '../../../providers/profile/profile';
+import { WalletProvider } from '../../../providers/wallet/wallet';
 
 //pages
-import { TxpDetailsPage } from '../../txp-details/txp-details';
 import { TxDetailsPage } from '../../tx-details/tx-details';
+import { TxpDetailsPage } from '../../txp-details/txp-details';
 
 import * as _ from 'lodash';
 
@@ -37,8 +37,8 @@ export class ActivityPage {
   ) {
   }
 
-  ionViewWillEnter() {
-    let loading = this.translate.instant('Updating... Please stand by');
+  public ionViewWillEnter() {
+    const loading = this.translate.instant('Updating... Please stand by');
     this.onGoingProcessProvider.set(loading, true);
     this.profileProvider.getNotifications(50).then((nData: any) => {
       this.onGoingProcessProvider.set(loading, false);
@@ -54,29 +54,29 @@ export class ActivityPage {
   }
 
   public openNotificationModal(n: any): void {
-    let wallet = this.profileProvider.getWallet(n.walletId);
+    const wallet = this.profileProvider.getWallet(n.walletId);
 
     if (n.txid) {
       this.navCtrl.push(TxDetailsPage, { txid: n.txid, walletId: n.walletId });
     } else {
-      let txp = _.find(this.txps, {
+      const txp = _.find(this.txps, {
         id: n.txpId
       });
       if (txp) {
-        let modal = this.modalCtrl.create(TxpDetailsPage, { tx: txp }, { showBackdrop: false, enableBackdropDismiss: false });
+        const modal = this.modalCtrl.create(TxpDetailsPage, { tx: txp }, { showBackdrop: false, enableBackdropDismiss: false });
         modal.present();
       }
       else {
         this.onGoingProcessProvider.set('loadingTxInfo', true);
         this.walletProvider.getTxp(wallet, n.txpId).then((txp) => {
-          let _txp = txp;
+          const _txp = txp;
           this.onGoingProcessProvider.set('loadingTxInfo', false);
-          let modal = this.modalCtrl.create(TxpDetailsPage, { tx: _txp }, { showBackdrop: false, enableBackdropDismiss: false });
+          const modal = this.modalCtrl.create(TxpDetailsPage, { tx: _txp }, { showBackdrop: false, enableBackdropDismiss: false });
           modal.present();
         }).catch((err) => {
           this.logger.warn('No txp found');
-          let title = this.translate.instant('Error');
-          let subtitle = this.translate.instant('Transaction not found');
+          const title = this.translate.instant('Error');
+          const subtitle = this.translate.instant('Transaction not found');
           this.popupProvider.ionicAlert(title, subtitle);
         });
       }

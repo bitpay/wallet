@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, Events } from 'ionic-angular';
-import { Validators, FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Events, NavController, NavParams } from 'ionic-angular';
 import { Logger } from '../../../../providers/logger/logger';
 
 //providers
-import { ProfileProvider } from '../../../../providers/profile/profile';
 import { ConfigProvider } from '../../../../providers/config/config';
+import { ProfileProvider } from '../../../../providers/profile/profile';
 
 @Component({
   selector: 'page-wallet-name',
@@ -32,20 +32,20 @@ export class WalletNamePage {
     });
   }
 
-  ionViewDidLoad() {
+  public ionViewDidLoad() {
     this.logger.info('ionViewDidLoad WalletNamePage');
   }
 
-  ionViewWillEnter() {
+  public ionViewWillEnter() {
     this.wallet = this.profileProvider.getWallet(this.navParams.data.walletId);
     this.config = this.configProvider.get();
-    let alias = this.config.aliasFor && this.config.aliasFor[this.wallet.credentials.walletId];
+    const alias = this.config.aliasFor && this.config.aliasFor[this.wallet.credentials.walletId];
     this.walletNameForm.value.walletName = alias ? alias : this.wallet.credentials.walletName;
     this.walletName = this.wallet.credentials.walletName;
   }
 
   public save(): void {
-    let opts = {
+    const opts = {
       aliasFor: {}
     };
     opts.aliasFor[this.wallet.credentials.walletId] = this.walletNameForm.value.walletName;

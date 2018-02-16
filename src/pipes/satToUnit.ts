@@ -1,5 +1,5 @@
-import { Pipe, PipeTransform } from '@angular/core';
 import { DecimalPipe } from '@angular/common';
+import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
   name: 'satToUnit',
@@ -11,7 +11,7 @@ export class SatToUnitPipe implements PipeTransform {
     private decimalPipe: DecimalPipe,
   ) {
   }
-  transform(amount: number, coin: string): any {
+  public transform(amount: number, coin: string): any {
     return this.decimalPipe.transform(amount / 1e8, '1.2-6') + ' ' + coin.toUpperCase();
   }
 }

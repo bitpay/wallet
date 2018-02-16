@@ -1,10 +1,10 @@
-import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
 import { Logger } from '../../providers/logger/logger';
 
 import * as _ from 'lodash';
 
-const exchangeList:Array<object> = [{ 'name' : 'coinbase' }, { 'name' : 'glidera' }];
+const exchangeList:object[] = [{ 'name' : 'coinbase' }, { 'name' : 'glidera' }];
 
 @Injectable()
 export class HomeIntegrationsProvider {
@@ -19,7 +19,7 @@ export class HomeIntegrationsProvider {
 
   public register(serviceInfo) {
     // Check if already exists
-    if (_.find(this.services, { 'name': serviceInfo.name })) return;
+    if (_.find(this.services, { 'name': serviceInfo.name })) { return; }
     this.logger.info('Adding home Integrations entry:' + serviceInfo.name);
     this.services.push(serviceInfo);
   }
@@ -32,7 +32,7 @@ export class HomeIntegrationsProvider {
 
   public update(serviceName, token) {
     this.services = _.filter(this.services, (x) => {
-      if (x.name == serviceName) x.linked = !!token;
+      if (x.name == serviceName) { x.linked = !!token; }
       return x;
     });
   }
@@ -42,7 +42,7 @@ export class HomeIntegrationsProvider {
   }
 
   public getAvailableExchange() {
-    let exchangeServices = _.intersectionBy(this.services, exchangeList, 'name');
+    const exchangeServices = _.intersectionBy(this.services, exchangeList, 'name');
     return _.filter(exchangeServices, { 'linked':true, 'show':true });
   }
 

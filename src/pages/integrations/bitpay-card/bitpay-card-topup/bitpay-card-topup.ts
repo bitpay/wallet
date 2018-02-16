@@ -1,13 +1,13 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, ModalController, Events } from 'ionic-angular';
-import { Logger } from '../../../../providers/logger/logger';
 import { TranslateService } from '@ngx-translate/core';
+import { Events, ModalController, NavController, NavParams } from 'ionic-angular';
 import * as _ from 'lodash';
+import { Logger } from '../../../../providers/logger/logger';
 
 // Pages
-import { BitPayCardPage } from '../bitpay-card';
 import { FeeWarningPage } from '../../../send/fee-warning/fee-warning';
 import { SuccessModalPage } from '../../../success/success';
+import { BitPayCardPage } from '../bitpay-card';
 
 // Provider
 import { BitPayCardProvider } from '../../../../providers/bitpay-card/bitpay-card';
@@ -15,13 +15,13 @@ import { BitPayProvider } from '../../../../providers/bitpay/bitpay';
 import { BwcErrorProvider } from '../../../../providers/bwc-error/bwc-error';
 import { ConfigProvider } from '../../../../providers/config/config';
 import { ExternalLinkProvider } from '../../../../providers/external-link/external-link';
+import { FeeProvider } from '../../../../providers/fee/fee';
 import { OnGoingProcessProvider } from "../../../../providers/on-going-process/on-going-process";
+import { PlatformProvider } from '../../../../providers/platform/platform';
 import { PopupProvider } from '../../../../providers/popup/popup';
 import { ProfileProvider } from '../../../../providers/profile/profile';
 import { TxFormatProvider } from '../../../../providers/tx-format/tx-format';
 import { WalletProvider } from '../../../../providers/wallet/wallet';
-import { PlatformProvider } from '../../../../providers/platform/platform';
-import { FeeProvider } from '../../../../providers/fee/fee';
 
 const FEE_TOO_HIGH_LIMIT_PER = 15;
 
@@ -80,11 +80,11 @@ export class BitPayCardTopUpPage {
     this.isCordova = this.platformProvider.isCordova;
   }
 
-  ionViewDidLoad() {
+  public ionViewDidLoad() {
     this.logger.info('ionViewDidLoad BitPayCardTopUpPage');
   }
 
-  ionViewWillEnter() {
+  public ionViewWillEnter() {
     this.cardId = this.navParams.data.id;
     this.useSendMax = this.navParams.data.useSendMax;
     this.currency = this.navParams.data.currency;
@@ -116,7 +116,7 @@ export class BitPayCardTopUpPage {
       }
 
       this.bitPayCardProvider.getRates(this.currencyIsoCode, (err, r) => {
-        if (err) this.logger.error(err);
+        if (err) { this.logger.error(err); }
         this.rate = r.rate;
       });
 
@@ -160,7 +160,7 @@ export class BitPayCardTopUpPage {
   private publishAndSign(wallet: any, txp: any): Promise<any> {
     return new Promise((resolve, reject) => {
       if (!wallet.canSign() && !wallet.isPrivKeyExternal()) {
-        let err = this.translate.instant('No signing proposal: No private key');
+        const err = this.translate.instant('No signing proposal: No private key');
         this.logger.info(err);
         return reject(err);
       }
@@ -213,7 +213,7 @@ export class BitPayCardTopUpPage {
 
   private createTx(wallet: any, invoice: any, message: string): Promise<any> {
     return new Promise((resolve, reject) => {
-      let payProUrl = (invoice && invoice.paymentUrls) ? invoice.paymentUrls.BIP73 : null;
+      const payProUrl = (invoice && invoice.paymentUrls) ? invoice.paymentUrls.BIP73 : null;
 
       if (!payProUrl) {
         return reject({
@@ -222,9 +222,9 @@ export class BitPayCardTopUpPage {
         });
       }
 
-      let outputs = [];
-      let toAddress = invoice.bitcoinAddress;
-      let amountSat = parseInt((invoice.btcDue * 100000000).toFixed(0)); // BTC to Satoshi
+      const outputs = [];
+      const toAddress = invoice.bitcoinAddress;
+      const amountSat = parseInt((invoice.btcDue * 100000000).toFixed(0)); // BTC to Satoshi
 
       outputs.push({
         'toAddress': toAddress,
@@ -232,12 +232,12 @@ export class BitPayCardTopUpPage {
         'message': message
       });
 
-      let txp = {
-        toAddress: toAddress,
+      const txp = {
+        toAddress,
         amount: amountSat,
-        outputs: outputs,
-        message: message,
-        payProUrl: payProUrl,
+        outputs,
+        message,
+        payProUrl,
         excludeUnconfirmedUtxos: this.configWallet.spendUnconfirmed ? false : true,
         feeLevel: this.configWallet.settings.feeLevel ? this.configWallet.settings.feeLevel : 'normal'
       };
@@ -257,7 +257,7 @@ export class BitPayCardTopUpPage {
     return new Promise((resolve, reject) => {
       this.feeProvider.getCurrentFeeRate(wallet.coin, wallet.credentials.network).then((feePerKb) => {
         this.walletProvider.getSendMaxInfo(wallet, {
-          feePerKb: feePerKb,
+          feePerKb,
           excludeUnconfirmedUtxos: !this.configWallet.spendUnconfirmed,
           returnInputs: true
         }).then((resp) => {
@@ -266,7 +266,7 @@ export class BitPayCardTopUpPage {
             amount: resp.amount,
             inputs: resp.inputs,
             fee: resp.fee,
-            feePerKb: feePerKb,
+            feePerKb,
           });
         }).catch((err) => {
           return reject(err);
@@ -280,8 +280,8 @@ export class BitPayCardTopUpPage {
   private calculateAmount(wallet: any): Promise<any> {
     return new Promise((resolve, reject) => {
       // Global variables defined beforeEnter
-      let a = this.amount;
-      let c = this.currency;
+      const a = this.amount;
+      const c = this.currency;
 
       if (this.useSendMax) {
         this.getSendMaxInfo(wallet).then((maxValues) => {
@@ -291,14 +291,14 @@ export class BitPayCardTopUpPage {
             });
           }
 
-          let maxAmountBtc = Number((maxValues.amount / 100000000).toFixed(8));
+          const maxAmountBtc = Number((maxValues.amount / 100000000).toFixed(8));
 
           this.createInvoice({
             amount: maxAmountBtc,
             currency: 'BTC'
           }).then((inv) => {
-            let invoiceFeeSat = parseInt((inv.buyerPaidBtcMinerFee * 100000000).toFixed());
-            let newAmountSat = maxValues.amount - invoiceFeeSat;
+            const invoiceFeeSat = parseInt((inv.buyerPaidBtcMinerFee * 100000000).toFixed());
+            const newAmountSat = maxValues.amount - invoiceFeeSat;
 
             if (newAmountSat <= 0) {
               return reject({
@@ -321,25 +321,25 @@ export class BitPayCardTopUpPage {
   }
 
   private checkFeeHigh(amount: number, fee: number) {
-    let per = fee / (amount + fee) * 100;
+    const per = fee / (amount + fee) * 100;
 
     if (per > FEE_TOO_HIGH_LIMIT_PER) {
-      let feeWarningModal = this.modalCtrl.create(FeeWarningPage, {}, { showBackdrop: false, enableBackdropDismiss: false });
+      const feeWarningModal = this.modalCtrl.create(FeeWarningPage, {}, { showBackdrop: false, enableBackdropDismiss: false });
       feeWarningModal.present();
     }
   }
 
   private initializeTopUp(wallet: any, parsedAmount: any): void {
     this.amountUnitStr = parsedAmount.amountUnitStr;
-    var dataSrc = {
+    const dataSrc = {
       amount: parsedAmount.amount,
       currency: parsedAmount.currency
     };
     this.onGoingProcessProvider.set('loadingTxInfo', true);
     this.createInvoice(dataSrc).then((invoice) => {
       // Sometimes API does not return this element;
-      invoice['buyerPaidBtcMinerFee'] = invoice.buyerPaidBtcMinerFee || 0;
-      let invoiceFeeSat = (invoice.buyerPaidBtcMinerFee * 100000000).toFixed();
+      invoice.buyerPaidBtcMinerFee = invoice.buyerPaidBtcMinerFee || 0;
+      const invoiceFeeSat = (invoice.buyerPaidBtcMinerFee * 100000000).toFixed();
 
       this.message = this.translate.instant("Top up {{amountStr}} to debit card ({{cardLastNumber}})", {
         amountStr: this.amountUnitStr,
@@ -377,9 +377,9 @@ export class BitPayCardTopUpPage {
       return;
     }
 
-    let title = this.translate.instant('Confirm');
-    let okText = this.translate.instant('OK');
-    let cancelText = this.translate.instant('Cancel');
+    const title = this.translate.instant('Confirm');
+    const okText = this.translate.instant('OK');
+    const cancelText = this.translate.instant('Cancel');
     this.popupProvider.ionicConfirm(title, this.message, okText, cancelText).then((ok) => {
       if (!ok) {
         this.sendStatus = '';
@@ -402,7 +402,7 @@ export class BitPayCardTopUpPage {
     this.wallet = wallet;
     this.onGoingProcessProvider.set('retrievingInputs', true);
     this.calculateAmount(this.wallet).then((val: any) => {
-      let parsedAmount = this.txFormatProvider.parseAmount(this.coin, val.amount, val.currency);
+      const parsedAmount = this.txFormatProvider.parseAmount(this.coin, val.amount, val.currency);
       this.initializeTopUp(this.wallet, parsedAmount);
     }).catch((err) => {
       this.onGoingProcessProvider.set('retrievingInputs', false);
@@ -414,10 +414,10 @@ export class BitPayCardTopUpPage {
   }
 
   public showWallets(): void {
-    let id = this.wallet ? this.wallet.credentials.walletId : null;
+    const id = this.wallet ? this.wallet.credentials.walletId : null;
     this.events.publish('showWalletsSelectorEvent', this.wallets, id, 'From');
     this.events.subscribe('selectWalletEvent', (wallet: any) => {
-      if (!_.isEmpty(wallet)) this.onWalletSelect(wallet);
+      if (!_.isEmpty(wallet)) { this.onWalletSelect(wallet); }
       this.events.unsubscribe('selectWalletEvent');
     });
   }
@@ -425,13 +425,15 @@ export class BitPayCardTopUpPage {
   public openSuccessModal(): void {
     let successComment: string;
     if (this.sendStatus == 'success') {
-      if (this.wallet.credentials.m == 1)
+      if (this.wallet.credentials.m == 1) {
         successComment = this.translate.instant('Funds were added to debit card');
-      else
+      }
+      else {
         successComment = this.translate.instant('Transaction initiated');
+      }
     }
-    let successText = '';
-    let modal = this.modalCtrl.create(SuccessModalPage, { successText: successText, successComment: successComment }, { showBackdrop: true, enableBackdropDismiss: false });
+    const successText = '';
+    const modal = this.modalCtrl.create(SuccessModalPage, { successText, successComment }, { showBackdrop: true, enableBackdropDismiss: false });
     modal.present();
     modal.onDidDismiss(() => {
       this.navCtrl.popToRoot({ animate: false });

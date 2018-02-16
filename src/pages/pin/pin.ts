@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavParams, ViewController, Platform } from 'ionic-angular';
+import { NavParams, Platform, ViewController } from 'ionic-angular';
 import { ConfigProvider } from '../../providers/config/config';
 import { Logger } from '../../providers/logger/logger';
 
@@ -43,10 +43,10 @@ export class PinModalPage {
     }
 
     if (this.action === 'checkPin' || this.action === 'removeLock') {
-      let config = this.configProvider.get();
-      let bannedUntil = config.lock.bannedUntil;
+      const config = this.configProvider.get();
+      const bannedUntil = config.lock.bannedUntil;
       if (bannedUntil) {
-        let now = Math.floor(Date.now() / 1000);
+        const now = Math.floor(Date.now() / 1000);
         if (now < bannedUntil) {
           this.disableButtons = true;
           this.lockTimeControl(bannedUntil);
@@ -61,18 +61,18 @@ export class PinModalPage {
   }
 
   public newEntry(value: string): void {
-    if (this.disableButtons) return;
+    if (this.disableButtons) { return; }
     this.incorrect = false;
     this.currentPin = this.currentPin + value;
-    if (!this.isComplete()) return;
-    if (this.action === 'checkPin' || this.action === 'removeLock') this.checkIfCorrect();
+    if (!this.isComplete()) { return; }
+    if (this.action === 'checkPin' || this.action === 'removeLock') { this.checkIfCorrect(); }
     if (this.action === 'pinSetUp') {
       if (!this.confirmingPin) {
         this.confirmingPin = true;
         this.firstPinEntered = this.currentPin;
         this.currentPin = '';
       }
-      else if (this.firstPinEntered === this.currentPin) this.save();
+      else if (this.firstPinEntered === this.currentPin) { this.save(); }
       else {
         this.firstPinEntered = this.currentPin = '';
         this.incorrect = true;
@@ -87,7 +87,7 @@ export class PinModalPage {
     this.incorrect = true;
     if (this.currentAttempts == this.ATTEMPT_LIMIT) {
       this.currentAttempts = 0;
-      let bannedUntil = Math.floor(Date.now() / 1000) + this.ATTEMPT_LOCK_OUT_TIME;
+      const bannedUntil = Math.floor(Date.now() / 1000) + this.ATTEMPT_LOCK_OUT_TIME;
       this.saveFailedAttempt(bannedUntil);
       this.lockTimeControl(bannedUntil);
     }
@@ -95,20 +95,20 @@ export class PinModalPage {
 
   private lockTimeControl(bannedUntil): void {
     this.setExpirationTime(bannedUntil, null);
-    var countDown = setInterval(() => {
+    const countDown = setInterval(() => {
       this.setExpirationTime(bannedUntil, countDown);
     }, 1000);
   }
 
   private setExpirationTime(bannedUntil, countDown) {
-    let now = Math.floor(Date.now() / 1000);
+    const now = Math.floor(Date.now() / 1000);
     if (now > bannedUntil) {
-      if (countDown) this.reset(countDown);
+      if (countDown) { this.reset(countDown); }
     } else {
       this.disableButtons = true;
-      let totalSecs = bannedUntil - now;
-      let m = Math.floor(totalSecs / 60);
-      let s = totalSecs % 60;
+      const totalSecs = bannedUntil - now;
+      const m = Math.floor(totalSecs / 60);
+      const s = totalSecs % 60;
       this.expires = ('0' + m).slice(-2) + ":" + ('0' + s).slice(-2);
     }
   }
@@ -120,28 +120,28 @@ export class PinModalPage {
   }
 
   public delete(): void {
-    if (this.disableButtons) return;
+    if (this.disableButtons) { return; }
     this.currentPin = this.currentPin.substring(0, this.currentPin.length - 1);
   }
 
   private isComplete(): boolean {
-    if (this.currentPin.length < 4) return false;
-    else return true;
+    if (this.currentPin.length < 4) { return false; }
+    else { return true; }
   }
 
   public save(): void {
-    let lock = { method: 'PIN', value: this.currentPin, bannedUntil: null };
+    const lock = { method: 'PIN', value: this.currentPin, bannedUntil: null };
     this.configProvider.set({ lock });
     this.unregister();
     this.viewCtrl.dismiss();
   }
 
   private checkIfCorrect(): void {
-    let config = this.configProvider.get();
-    let pinValue = config.lock && config.lock.value;
+    const config = this.configProvider.get();
+    const pinValue = config.lock && config.lock.value;
     if (pinValue == this.currentPin) {
       if (this.action === 'removeLock') {
-        let lock = { method: 'Disabled', value: null, bannedUntil: null };
+        const lock = { method: 'Disabled', value: null, bannedUntil: null };
         this.configProvider.set({ lock });
         this.unregister();
         this.viewCtrl.dismiss();
@@ -162,7 +162,7 @@ export class PinModalPage {
   }
 
   private saveFailedAttempt(bannedUntil) {
-    let lock = { bannedUntil: bannedUntil };
+    const lock = { bannedUntil };
     this.configProvider.set({ lock });
   }
 

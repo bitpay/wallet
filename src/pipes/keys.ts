@@ -10,10 +10,10 @@ import { Pipe, PipeTransform } from '@angular/core';
   name: 'keys',
 })
 export class KeysPipe implements PipeTransform {
-  transform(value, orderBy?: string): any {
-    let keys = [];
-    for (let key in value) {
-      keys.push({ key: key, value: value[key], order: orderBy ? (value[key])[orderBy] : null });
+  public transform(value, orderBy?: string): any {
+    const keys = [];
+    for (const key in value) {
+      keys.push({ key, value: value[key], order: orderBy ? (value[key])[orderBy] : null });
     }
     return keys;
   }

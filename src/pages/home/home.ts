@@ -1,41 +1,41 @@
 import { Component } from '@angular/core';
-import { NavController, Events, ModalController } from 'ionic-angular';
-import { Logger } from '../../providers/logger/logger';
 import { TranslateService } from '@ngx-translate/core';
+import { Events, ModalController, NavController } from 'ionic-angular';
+import { Logger } from '../../providers/logger/logger';
 
 // Pages
-import { ActivityPage } from './activity/activity';
 import { AddPage } from "../add/add";
-import { AmazonPage } from '../integrations/amazon/amazon';
 import { CopayersPage } from '../add/copayers/copayers';
-import { GlideraPage } from '../integrations/glidera/glidera';
+import { AmazonPage } from '../integrations/amazon/amazon';
+import { BitPayCardPage } from '../integrations/bitpay-card/bitpay-card';
+import { BitPayCardIntroPage } from '../integrations/bitpay-card/bitpay-card-intro/bitpay-card-intro';
 import { CoinbasePage } from '../integrations/coinbase/coinbase';
+import { GlideraPage } from '../integrations/glidera/glidera';
 import { MercadoLibrePage } from '../integrations/mercado-libre/mercado-libre';
-import { ProposalsPage } from './proposals/proposals';
 import { ShapeshiftPage } from '../integrations/shapeshift/shapeshift';
 import { TxDetailsPage } from '../tx-details/tx-details';
 import { TxpDetailsPage } from '../txp-details/txp-details';
 import { WalletDetailsPage } from '../wallet-details/wallet-details';
-import { BitPayCardIntroPage } from '../integrations/bitpay-card/bitpay-card-intro/bitpay-card-intro';
-import { BitPayCardPage } from '../integrations/bitpay-card/bitpay-card';
+import { ActivityPage } from './activity/activity';
+import { ProposalsPage } from './proposals/proposals';
 
 // Providers
-import { BwcErrorProvider } from '../../providers/bwc-error/bwc-error';
-import { ProfileProvider } from '../../providers/profile/profile';
-import { ReleaseProvider } from '../../providers/release/release';
-import { WalletProvider } from '../../providers/wallet/wallet';
-import { ConfigProvider } from '../../providers/config/config';
-import { PushNotificationsProvider } from '../../providers/push-notifications/push-notifications';
-import { ExternalLinkProvider } from '../../providers/external-link/external-link';
-import { OnGoingProcessProvider } from '../../providers/on-going-process/on-going-process';
-import { PopupProvider } from '../../providers/popup/popup';
 import { AddressBookProvider } from '../../providers/address-book/address-book';
 import { AppProvider } from '../../providers/app/app';
-import { PlatformProvider } from '../../providers/platform/platform';
-import { HomeIntegrationsProvider } from '../../providers/home-integrations/home-integrations';
-import { PersistenceProvider } from '../../providers/persistence/persistence';
-import { FeedbackProvider } from '../../providers/feedback/feedback';
 import { BitPayCardProvider } from '../../providers/bitpay-card/bitpay-card';
+import { BwcErrorProvider } from '../../providers/bwc-error/bwc-error';
+import { ConfigProvider } from '../../providers/config/config';
+import { ExternalLinkProvider } from '../../providers/external-link/external-link';
+import { FeedbackProvider } from '../../providers/feedback/feedback';
+import { HomeIntegrationsProvider } from '../../providers/home-integrations/home-integrations';
+import { OnGoingProcessProvider } from '../../providers/on-going-process/on-going-process';
+import { PersistenceProvider } from '../../providers/persistence/persistence';
+import { PlatformProvider } from '../../providers/platform/platform';
+import { PopupProvider } from '../../providers/popup/popup';
+import { ProfileProvider } from '../../providers/profile/profile';
+import { PushNotificationsProvider } from '../../providers/push-notifications/push-notifications';
+import { ReleaseProvider } from '../../providers/release/release';
+import { WalletProvider } from '../../providers/wallet/wallet';
 
 import * as _ from 'lodash';
 import * as moment from 'moment';
@@ -59,7 +59,7 @@ export class HomePage {
   public addressbook: any;
   public newRelease: boolean;
   public updateText: string;
-  public homeIntegrations: Array<any>;
+  public homeIntegrations: any[];
   public bitpayCardItems: any;
 
   public showRateCard: boolean;
@@ -102,13 +102,13 @@ export class HomePage {
     this.setWallets();
   }
 
-  ionViewWillEnter() {
+  public ionViewWillEnter() {
     this.config = this.configProvider.get();
 
     this.setWallets();
 
     this.recentTransactionsEnabled = this.config.recentTransactions.enabled;
-    if (this.recentTransactionsEnabled) this.getNotifications();
+    if (this.recentTransactionsEnabled) { this.getNotifications(); }
 
     this.pushNotificationsProvider.init();
     this.homeIntegrations = this.homeIntegrationsProvider.get();
@@ -138,8 +138,8 @@ export class HomePage {
     });
   }
 
-  ionViewDidEnter() {
-    if (this.isNW) this.checkUpdate();
+  public ionViewDidEnter() {
+    if (this.isNW) { this.checkUpdate(); }
     this.checkHomeTip();
     this.checkFeedbackInfo();
 
@@ -150,20 +150,20 @@ export class HomePage {
     });
   }
 
-  ionViewWillLeave() {
+  public ionViewWillLeave() {
     this.events.unsubscribe('feedback:hide');
   }
 
-  ionViewDidLoad() {
+  public ionViewDidLoad() {
     this.logger.info('ionViewDidLoad HomePage');
     this.updateAllWallets();
   }
 
   private update(walletId: string): void {
     this.logger.debug('Got action for wallet ' + walletId);
-    let wallet = this.profileProvider.getWallet(walletId);
+    const wallet = this.profileProvider.getWallet(walletId);
     this.updateWallet(wallet);
-    if (this.recentTransactionsEnabled) this.getNotifications();
+    if (this.recentTransactionsEnabled) { this.getNotifications(); }
   }
 
   private setWallets(): void {
@@ -192,24 +192,24 @@ export class HomePage {
       if (!info) {
         this.initFeedBackInfo();
       } else {
-        let feedbackInfo = info;
+        const feedbackInfo = info;
         //Check if current version is greater than saved version
-        let currentVersion = this.releaseProvider.getCurrentAppVersion();
-        let savedVersion = feedbackInfo.version;
-        let isVersionUpdated = this.feedbackProvider.isVersionUpdated(currentVersion, savedVersion);
+        const currentVersion = this.releaseProvider.getCurrentAppVersion();
+        const savedVersion = feedbackInfo.version;
+        const isVersionUpdated = this.feedbackProvider.isVersionUpdated(currentVersion, savedVersion);
         if (!isVersionUpdated) {
           this.initFeedBackInfo();
           return;
         }
-        let now = moment().unix();
-        let timeExceeded = (now - feedbackInfo.time) >= 24 * 7 * 60 * 60;
+        const now = moment().unix();
+        const timeExceeded = (now - feedbackInfo.time) >= 24 * 7 * 60 * 60;
         this.showRateCard = timeExceeded && !feedbackInfo.sent;
       }
     });
   }
 
   private initFeedBackInfo() {
-    let feedbackInfo: any = {};
+    const feedbackInfo: any = {};
     feedbackInfo.time = moment().unix();
     feedbackInfo.version = this.releaseProvider.getCurrentAppVersion();
     feedbackInfo.sent = false;
@@ -248,7 +248,7 @@ export class HomePage {
     });
 
   private updateAllWallets(): void {
-    let wallets: Array<any> = [];
+    const wallets: any[] = [];
     let foundMessage = false
 
     _.each(this.walletsBtc, (wBtc) => {
@@ -259,12 +259,12 @@ export class HomePage {
       wallets.push(wBch);
     });
 
-    if (_.isEmpty(wallets)) return;
+    if (_.isEmpty(wallets)) { return; }
 
-    let i = wallets.length;
+    const i = wallets.length;
     let j = 0;
 
-    let pr = ((wallet, cb) => {
+    const pr = ((wallet, cb) => {
       this.walletProvider.getStatus(wallet, {}).then((status: any) => {
         wallet.status = status;
         wallet.error = null;
@@ -297,7 +297,7 @@ export class HomePage {
     this.releaseProvider.getLatestAppVersion().toPromise()
       .then((version) => {
         this.logger.debug('Current app version:', version);
-        var result = this.releaseProvider.checkForUpdates(version);
+        const result = this.releaseProvider.checkForUpdates(version);
         this.logger.debug('Update available:', result.updateAvailable);
         if (result.updateAvailable) {
           this.newRelease = true;
@@ -310,16 +310,16 @@ export class HomePage {
   }
 
   public openServerMessageLink(): void {
-    let url = this.serverMessage.link;
+    const url = this.serverMessage.link;
     this.externalLinkProvider.open(url);
   }
 
   public goToAddView(coin?: string): void {
-    this.navCtrl.push(AddPage, { coin: coin });
+    this.navCtrl.push(AddPage, { coin });
   }
 
   public goToWalletDetails(wallet: any): void {
-    if (this.showReorderBtc || this.showReorderBch) return;
+    if (this.showReorderBtc || this.showReorderBch) { return; }
     if (!wallet.isComplete()) {
       this.navCtrl.push(CopayersPage, { walletId: wallet.credentials.walletId });
       return;
@@ -328,12 +328,12 @@ export class HomePage {
   }
 
   public openNotificationModal(n: any) {
-    let wallet = this.profileProvider.getWallet(n.walletId);
+    const wallet = this.profileProvider.getWallet(n.walletId);
 
     if (n.txid) {
       this.navCtrl.push(TxDetailsPage, { walletId: n.walletId, txid: n.txid });
     } else {
-      var txp = _.find(this.txps, {
+      const txp = _.find(this.txps, {
         id: n.txpId
       });
       if (txp) {
@@ -341,13 +341,13 @@ export class HomePage {
       } else {
         this.onGoingProcessProvider.set('loadingTxInfo', true);
         this.walletProvider.getTxp(wallet, n.txpId).then((txp: any) => {
-          var _txp = txp;
+          const _txp = txp;
           this.onGoingProcessProvider.set('loadingTxInfo', false);
           this.openTxpModal(_txp);
         }).catch((err: any) => {
           this.logger.warn('No txp found');
-          let title = this.translate.instant('Error');
-          let subtitle = this.translate.instant('Transaction not found');
+          const title = this.translate.instant('Error');
+          const subtitle = this.translate.instant('Transaction not found');
           return this.popupProvider.ionicAlert(title, subtitle);
         });
       }
@@ -363,7 +363,7 @@ export class HomePage {
   }
 
   public reorderWalletsBtc(indexes): void {
-    let element = this.walletsBtc[indexes.from];
+    const element = this.walletsBtc[indexes.from];
     this.walletsBtc.splice(indexes.from, 1);
     this.walletsBtc.splice(indexes.to, 0, element);
     _.each(this.walletsBtc, (wallet: any, index: number) => {
@@ -372,7 +372,7 @@ export class HomePage {
   };
 
   public reorderWalletsBch(indexes): void {
-    let element = this.walletsBch[indexes.from];
+    const element = this.walletsBch[indexes.from];
     this.walletsBch.splice(indexes.from, 1);
     this.walletsBch.splice(indexes.to, 0, element);
     _.each(this.walletsBch, (wallet: any, index: number) => {
@@ -381,17 +381,17 @@ export class HomePage {
   };
 
   public goToDownload(): void {
-    let url = 'https://github.com/bitpay/copay/releases/latest';
-    let optIn = true;
-    let title = this.translate.instant('Update Available');
-    let message = this.translate.instant('An update to this app is available. For your security, please update to the latest version.');
-    let okText = this.translate.instant('View Update');
-    let cancelText = this.translate.instant('Go Back');
+    const url = 'https://github.com/bitpay/copay/releases/latest';
+    const optIn = true;
+    const title = this.translate.instant('Update Available');
+    const message = this.translate.instant('An update to this app is available. For your security, please update to the latest version.');
+    const okText = this.translate.instant('View Update');
+    const cancelText = this.translate.instant('Go Back');
     this.externalLinkProvider.open(url, optIn, title, message, okText, cancelText);
   }
 
   public openTxpModal(tx: any): void {
-    let modal = this.modalCtrl.create(TxpDetailsPage, { tx: tx }, { showBackdrop: false, enableBackdropDismiss: false });
+    const modal = this.modalCtrl.create(TxpDetailsPage, { tx }, { showBackdrop: false, enableBackdropDismiss: false });
     modal.present();
   }
 

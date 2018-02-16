@@ -1,7 +1,7 @@
 import { Component } from "@angular/core";
-import { NavController, Events } from 'ionic-angular';
-import { Logger } from '../../../providers/logger/logger';
 import { TranslateService } from '@ngx-translate/core';
+import { Events, NavController } from 'ionic-angular';
+import { Logger } from '../../../providers/logger/logger';
 
 //providers
 import { AppProvider } from '../../../providers/app/app';
@@ -36,7 +36,7 @@ export class FeedbackCardPage {
   public hideCard(): void {
     this.logger.debug('Feedback card dismissed.')
     this.persistenceProvider.getFeedbackInfo().then((info: any) => {
-      let feedbackInfo = info;
+      const feedbackInfo = info;
       feedbackInfo.sent = true;
       this.persistenceProvider.setFeedbackInfo((feedbackInfo))
       this.events.publish('feedback:hide');

@@ -1,13 +1,13 @@
 import { Component } from '@angular/core';
-import { NavParams, NavController, Platform } from 'ionic-angular';
+import { NavController, NavParams, Platform } from 'ionic-angular';
 import { Logger } from '../../../providers/logger/logger';
 
 //providers
-import { PlatformProvider } from '../../../providers/platform/platform';
 import { AppProvider } from '../../../providers/app/app';
 import { ConfigProvider } from '../../../providers/config/config';
-import { FeedbackProvider } from '../../../providers/feedback/feedback';
 import { ExternalLinkProvider } from '../../../providers/external-link/external-link';
+import { FeedbackProvider } from '../../../providers/feedback/feedback';
+import { PlatformProvider } from '../../../providers/platform/platform';
 
 //pages
 import { FeedbackCompletePage } from '../feedback-complete/feedback-complete';
@@ -48,13 +48,13 @@ export class FeedbackPage {
 
 
   public skip(): void {
-    let platform = this.platform.platforms().join("");
+    const platform = this.platform.platforms().join("");
     let versions: any = this.platform.versions();
     versions = _.values(_.pickBy(versions, _.identity)) //remove undefined and get array of versions
-    let version: any = versions && versions[0] ? versions[0] : null;
-    let versionStr = version ? version.str : '';
+    const version: any = versions && versions[0] ? versions[0] : null;
+    const versionStr = version ? version.str : '';
 
-    let dataSrc = {
+    const dataSrc = {
       "Email": _.values(this.config.emailFor)[0] || ' ',
       "Feedback": ' ',
       "Score": this.score,
@@ -75,12 +75,14 @@ export class FeedbackPage {
   }
 
   public goAppStore(): void {
-    let defaults = this.configProvider.getDefaults();
+    const defaults = this.configProvider.getDefaults();
     let url;
-    if (this.isAndroid)
+    if (this.isAndroid) {
       url = this.appName == 'Copay' ? defaults.rateApp.copay.android : defaults.rateApp.bitpay.android;
-    if (this.isIOS)
+    }
+    if (this.isIOS) {
       url = this.appName == 'Copay' ? defaults.rateApp.copay.ios : defaults.rateApp.bitpay.ios;
+    }
 
     this.externalLinkProvider.open(url);
     this.navCtrl.push(FeedbackCompletePage, { score: this.score, skipped: true, rated: true })

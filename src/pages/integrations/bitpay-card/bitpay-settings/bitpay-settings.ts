@@ -23,13 +23,13 @@ export class BitPaySettingsPage {
 
   }
 
-  ionViewWillEnter() {
+  public ionViewWillEnter() {
     this.init();
   }
 
   private init(): void {
     this.bitpayAccountProvider.getAccounts((err, accounts) => {
-      if (err) return;
+      if (err) { return; }
       this.bitpayAccounts = accounts;
 
       this.bitPayCardProvider.getCards((cards) => {
@@ -39,8 +39,8 @@ export class BitPaySettingsPage {
   }
 
   public unlinkAccount(account: any, slidingItem: ItemSliding) {
-    let title = 'Unlink BitPay Account?';
-    let msg = 'Removing your BitPay account will remove all associated BitPay account data from this device. Are you sure you would like to remove your BitPay Account (' + account.email + ') from this device?';
+    const title = 'Unlink BitPay Account?';
+    const msg = 'Removing your BitPay account will remove all associated BitPay account data from this device. Are you sure you would like to remove your BitPay Account (' + account.email + ') from this device?';
     this.popupProvider.ionicConfirm(title, msg).then((res) => {
       slidingItem.close();
       if (res) {
@@ -52,8 +52,8 @@ export class BitPaySettingsPage {
   }
 
   public unlinkCard(card: any, slidingItem: ItemSliding) {
-    let title = 'Unlink BitPay Card?';
-    let msg = 'Are you sure you would like to remove your BitPay Card (' + card.lastFourDigits + ') from this device?';
+    const title = 'Unlink BitPay Card?';
+    const msg = 'Are you sure you would like to remove your BitPay Card (' + card.lastFourDigits + ') from this device?';
     this.popupProvider.ionicConfirm(title, msg).then((res) => {
       slidingItem.close();
       if (res) {

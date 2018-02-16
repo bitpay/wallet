@@ -21,13 +21,13 @@ export class BackupProvider {
   
   public walletDownload(password, opts, walletId: string): Promise<any> {
     return new Promise((resolve, reject) => {
-      let wallet = this.profileProvider.getWallet(walletId);
-      let ew = this.walletExport(password, opts, walletId);
-      if (!ew) return reject('Could not create backup');
+      const wallet = this.profileProvider.getWallet(walletId);
+      const ew = this.walletExport(password, opts, walletId);
+      if (!ew) { return reject('Could not create backup'); }
 
       let walletName = (wallet.alias || '') + (wallet.alias ? '-' : '') + wallet.credentials.walletName;
-      if (opts.noSign) walletName = walletName + '-noSign'
-      let filename = walletName + '-' + this.appProvider.info.nameCase + 'backup.aes.json';
+      if (opts.noSign) { walletName = walletName + '-noSign' }
+      const filename = walletName + '-' + this.appProvider.info.nameCase + 'backup.aes.json';
       this._download(ew, filename).then(() => {
         return resolve();
       });
@@ -38,13 +38,13 @@ export class BackupProvider {
     if (!password) {
       return null;
     }
-    let wallet: any = this.profileProvider.getWallet(walletId);
+    const wallet: any = this.profileProvider.getWallet(walletId);
     try {
       opts = opts ? opts : {};
       let b = wallet.export(opts);
-      if (opts.addressBook) b = this.addMetadata(b, opts);
+      if (opts.addressBook) { b = this.addMetadata(b, opts); }
 
-      let e = this.bwcProvider.getSJCL().encrypt(password, b, {
+      const e = this.bwcProvider.getSJCL().encrypt(password, b, {
         iter: 10000
       });
       return e;
@@ -56,15 +56,15 @@ export class BackupProvider {
 
   private addMetadata(b: any, opts: any): string {
     b = JSON.parse(b);
-    if (opts.addressBook) b.addressBook = opts.addressBook;
+    if (opts.addressBook) { b.addressBook = opts.addressBook; }
     return JSON.stringify(b);
   }
 
   private _download(ew: any, fileName: string): Promise<any> {
     return new Promise((resolve, reject) => {
-      let a = document.createElement("a");
-      let blob = this.NewBlob(ew, 'text/plain;charset=utf-8');
-      let url = window.URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      const blob = this.NewBlob(ew, 'text/plain;charset=utf-8');
+      const url = window.URL.createObjectURL(blob);
 
       document.body.appendChild(a);
 

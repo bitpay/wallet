@@ -29,19 +29,19 @@ export class DisclaimerPage {
     }
   }
 
-  ionViewDidLoad() {
+  public ionViewDidLoad() {
     this.logger.info('ionViewDidLoad DisclaimerPage');
   }
 
-  selectTerms() {
+  public selectTerms() {
     this.terms.accepted = !this.terms.accepted;
   }
 
-  openDisclaimer() {
+  public openDisclaimer() {
     this.navCtrl.push(TermsOfUsePage);
   }
 
-  confirm() {
+  public confirm() {
     this.persistenceProvider.setDisclaimerAccepted();
     this.navCtrl.setRoot(TabsPage);
     this.navCtrl.popToRoot({ animate: false });

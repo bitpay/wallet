@@ -1,31 +1,31 @@
 import { Component } from "@angular/core";
-import { NavController } from 'ionic-angular';
-import { Logger } from "../../../providers/logger/logger";
-import * as lodash from 'lodash';
 import { TranslateService } from '@ngx-translate/core';
+import { NavController } from 'ionic-angular';
+import * as lodash from 'lodash';
+import { Logger } from "../../../providers/logger/logger";
 
 // Providers
-import { WalletProvider } from "../../../providers/wallet/wallet";
-import { ProfileProvider } from '../../../providers/profile/profile';
 import { BwcErrorProvider } from "../../../providers/bwc-error/bwc-error";
-import { TxFormatProvider } from "../../../providers/tx-format/tx-format";
 import { BwcProvider } from "../../../providers/bwc/bwc";
-import { OnGoingProcessProvider } from "../../../providers/on-going-process/on-going-process";
-import { PushNotificationsProvider } from "../../../providers/push-notifications/push-notifications";
 import { ExternalLinkProvider } from "../../../providers/external-link/external-link";
+import { OnGoingProcessProvider } from "../../../providers/on-going-process/on-going-process";
 import { PopupProvider } from "../../../providers/popup/popup";
+import { ProfileProvider } from '../../../providers/profile/profile';
+import { PushNotificationsProvider } from "../../../providers/push-notifications/push-notifications";
+import { TxFormatProvider } from "../../../providers/tx-format/tx-format";
+import { WalletProvider } from "../../../providers/wallet/wallet";
 
 @Component({
 	selector: 'page-bitcoin-cash',
 	templateUrl: 'bitcoin-cash.html',
 })
 export class BitcoinCashPage {
-	private walletsBTC: Array<any>;
-	private walletsBCH: Array<any>;
+	private walletsBTC: any[];
+	private walletsBCH: any[];
 	private errors: any;
 
-	public availableWallets: Array<any>;
-	public nonEligibleWallets: Array<any>;
+	public availableWallets: any[];
+	public nonEligibleWallets: any[];
 	public error: any;
 
 	constructor(
@@ -53,14 +53,14 @@ export class BitcoinCashPage {
 		this.errors = this.bwcProvider.getErrors();
 	}
 
-	ionViewWillEnter() {
+	public ionViewWillEnter() {
 		// Filter out already duplicated wallets
 		this.walletsBCH = this.profileProvider.getWallets({
 			coin: 'bch',
 			network: 'livenet'
 		});
 
-		let xPubKeyIndex = lodash.keyBy(this.walletsBCH, "credentials.xPubKey");
+		const xPubKeyIndex = lodash.keyBy(this.walletsBCH, "credentials.xPubKey");
 
 		this.walletsBTC = lodash.filter(this.walletsBTC, function (w) {
 			return !xPubKeyIndex[w.credentials.xPubKey];
@@ -94,18 +94,18 @@ export class BitcoinCashPage {
 	}
 
 	public openRecoveryToolLink(): void {
-		let url = 'https://bitpay.github.io/copay-recovery/';
-		let optIn = true;
-		let title = this.translate.instant('Open the recovery tool');
-		let okText = this.translate.instant('Open');
-		let cancelText = this.translate.instant('Go Back');
+		const url = 'https://bitpay.github.io/copay-recovery/';
+		const optIn = true;
+		const title = this.translate.instant('Open the recovery tool');
+		const okText = this.translate.instant('Open');
+		const cancelText = this.translate.instant('Go Back');
 		this.externalLinkProvider.open(url, optIn, title, null, okText, cancelText);
 	}
 
 	public duplicate(wallet: any) {
 		this.logger.debug('Duplicating wallet for BCH: ' + wallet.id + ': ' + wallet.name);
 
-		let opts: any = {
+		const opts: any = {
 			name: wallet.name + '[BCH]',
 			m: wallet.m,
 			n: wallet.n,
@@ -116,7 +116,7 @@ export class BitcoinCashPage {
 			compliantDerivation: wallet.credentials.compliantDerivation,
 		};
 
-		let setErr = (err) => {
+		const setErr = (err) => {
 			this.bwcErrorProvider.cb(err, 'Could not duplicate').then((errorMsg) => {
 				this.logger.warn(errorMsg);
 				this.popupProvider.ionicAlert(errorMsg, null, 'OK');
@@ -124,21 +124,21 @@ export class BitcoinCashPage {
 			});
 		}
 
-		let importOrCreate = () => {
+		const importOrCreate = () => {
 			return new Promise((resolve, reject) => {
 				this.walletProvider.getStatus(wallet, {}).then((status: any) => {
 					opts.singleAddress = status.wallet.singleAddress;
 
 					// first try to import
 					this.profileProvider.importExtendedPrivateKey(opts.extendedPrivateKey, opts).then((newWallet) => {
-						return resolve({ newWallet: newWallet });
+						return resolve({ newWallet });
 					}).catch((err) => {
 						if (!(err instanceof this.errors.NOT_AUTHORIZED)) {
 							return reject(err);
 						}
 						// create and store a wallet
 						this.profileProvider.createWallet(opts).then((newWallet) => {
-							return resolve({ newWallet: newWallet, isNew: true });
+							return resolve({ newWallet, isNew: true });
 						});
 					});
 				}).catch((err) => {
@@ -149,8 +149,8 @@ export class BitcoinCashPage {
 
 		// Multisig wallets? add Copayers
 		function addCopayers(newWallet, isNew, cb) {
-			if (!isNew) return cb();
-			if (wallet.n == 1) return cb();
+			if (!isNew) { return cb(); }
+			if (wallet.n == 1) { return cb(); }
 
 			this.logger.info('Adding copayers for BCH wallet config:' + wallet.m + '-' + wallet.n);
 
@@ -166,18 +166,19 @@ export class BitcoinCashPage {
 			opts.extendedPrivateKey = keys.xPrivKey;
 			this.onGoingProcessProvider.set('duplicatingWallet', true);
 			importOrCreate().then((result: any) => {
-				let newWallet = result.newWallet;
-				let isNew = result.isNew;
+				const newWallet = result.newWallet;
+				const isNew = result.isNew;
 
 				this.walletProvider.updateRemotePreferences(newWallet);
 				this.pushNotificationsProvider.updateSubscription(newWallet);
 
 				addCopayers(newWallet, isNew, (err) => {
 					this.onGoingProcessProvider.set('duplicatingWallet', false);
-					if (err) return setErr(err);
+					if (err) { return setErr(err); }
 
-					if (isNew)
+					if (isNew) {
 						this.walletProvider.startScan(newWallet);
+					}
 
 					this.navCtrl.popToRoot({ animate: false });
 					this.navCtrl.parent.select(0);

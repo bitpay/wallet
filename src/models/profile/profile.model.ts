@@ -2,7 +2,7 @@ export class Profile {
 
   public version: string;
   public createdOn: Number;
-  public credentials: Array<any>;
+  public credentials: any[];
   public disclaimerAccepted: boolean;
   public checked: Object;
   public checkedUA?: any;
@@ -14,7 +14,7 @@ export class Profile {
 
   public create(opts?: any): Profile {
     opts = opts ? opts : {};
-    let x = new Profile();
+    const x = new Profile();
     x.createdOn = Date.now();
     x.credentials = opts.credentials || [];
     x.disclaimerAccepted = false;
@@ -23,7 +23,7 @@ export class Profile {
   };
 
   public fromObj(obj: any): Profile {
-    let x = new Profile();
+    const x = new Profile();
 
     x.createdOn = obj.createdOn;
     x.credentials = obj.credentials;
@@ -31,8 +31,9 @@ export class Profile {
     x.checked = obj.checked || {};
     x.checkedUA = obj.checkedUA || {};
 
-    if (x.credentials[0] && typeof x.credentials[0] != 'object')
-      throw ("credentials should be an object");
+    if (x.credentials[0] && typeof x.credentials[0] != 'object') {
+      throw new Error(("credentials should be an object"));
+    }
     return x;
   };
 
@@ -46,9 +47,9 @@ export class Profile {
   };
 
   public hasWallet(walletId: string): boolean {
-    for (let i in this.credentials) {
-      let c = this.credentials[i];
-      if (c.walletId == walletId) return true;
+    for (const i in this.credentials) {
+      const c = this.credentials[i];
+      if (c.walletId == walletId) { return true; }
     };
     return false;
   };
@@ -73,11 +74,13 @@ export class Profile {
   };
 
   public addWallet(credentials: any): boolean {
-    if (!credentials.walletId)
-      throw 'credentials must have .walletId';
+    if (!credentials.walletId) {
+      throw new Error('credentials must have .walletId');
+    }
 
-    if (this.hasWallet(credentials.walletId))
+    if (this.hasWallet(credentials.walletId)) {
       return false;
+    }
 
     this.credentials.push(credentials);
     this.dirty = true;
@@ -85,11 +88,13 @@ export class Profile {
   };
 
   public updateWallet(credentials: any): boolean {
-    if (!credentials.walletId)
-      throw 'credentials must have .walletId';
+    if (!credentials.walletId) {
+      throw new Error('credentials must have .walletId');
+    }
 
-    if (!this.hasWallet(credentials.walletId))
+    if (!this.hasWallet(credentials.walletId)) {
       return false;
+    }
 
     this.credentials = this.credentials.map((c: any) => {
       if (c.walletId != credentials.walletId) {
@@ -104,8 +109,9 @@ export class Profile {
   };
 
   public deleteWallet(walletId: string): boolean {
-    if (!this.hasWallet(walletId))
+    if (!this.hasWallet(walletId)) {
       return false;
+    }
 
     this.credentials = this.credentials.filter((c) => {
       return c.walletId != walletId;

@@ -1,17 +1,18 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
-import { Logger } from '../../../../providers/logger/logger';
-import * as moment from 'moment';
-import * as _ from 'lodash';
 import { TranslateService } from '@ngx-translate/core';
+import { NavController, NavParams } from 'ionic-angular';
+import * as _ from 'lodash';
+import * as moment from 'moment';
+import { Logger } from '../../../../providers/logger/logger';
 
 // Pages
-import { ShapeshiftPage } from '../shapeshift';
 import { SuccessModalPage } from '../../../success/success';
+import { ShapeshiftPage } from '../shapeshift';
 
 // Providers
-import { BwcProvider } from '../../../../providers/bwc/bwc';
+import { ModalController } from 'ionic-angular/components/modal/modal-controller';
 import { BwcErrorProvider } from '../../../../providers/bwc-error/bwc-error';
+import { BwcProvider } from '../../../../providers/bwc/bwc';
 import { ConfigProvider } from '../../../../providers/config/config';
 import { ExternalLinkProvider } from '../../../../providers/external-link/external-link';
 import { OnGoingProcessProvider } from "../../../../providers/on-going-process/on-going-process";
@@ -21,7 +22,6 @@ import { ProfileProvider } from '../../../../providers/profile/profile';
 import { ShapeshiftProvider } from '../../../../providers/shapeshift/shapeshift';
 import { TxFormatProvider } from '../../../../providers/tx-format/tx-format';
 import { WalletProvider } from '../../../../providers/wallet/wallet';
-import { ModalController } from 'ionic-angular/components/modal/modal-controller';
 
 @Component({
   selector: 'page-shapeshift-confirm',
@@ -100,20 +100,20 @@ export class ShapeshiftConfirmPage {
     }
 
     this.shapeshiftProvider.getLimit(this.getCoinPair(), (err: any, lim: any) => {
-      let min = Number(lim.min);
-      let max = Number(lim.limit);
+      const min = Number(lim.min);
+      const max = Number(lim.limit);
 
-      if (this.useSendMax) this.amount = max;
+      if (this.useSendMax) { this.amount = max; }
 
-      let amountNumber = Number(this.amount);
+      const amountNumber = Number(this.amount);
 
       if (amountNumber < min) {
-        let message = 'Minimum amount required is ' + min; // TODO: translate
+        const message = 'Minimum amount required is ' + min; // TODO: translate
         this.showErrorAndBack(null, message);
         return;
       }
       if (amountNumber > max) {
-        let message = 'Maximum amount allowed is ' + max; // TODO: translate
+        const message = 'Maximum amount allowed is ' + max; // TODO: translate
         this.showErrorAndBack(null, message);
         return;
       }
@@ -121,7 +121,7 @@ export class ShapeshiftConfirmPage {
     });
   }
 
-  ionViewDidLoad() {
+  public ionViewDidLoad() {
     this.logger.info('ionViewDidLoad ShapeshiftConfirmPage');
   }
 
@@ -141,7 +141,7 @@ export class ShapeshiftConfirmPage {
   private publishAndSign(wallet: any, txp: any): Promise<any> {
     return new Promise((resolve, reject) => {
       if (!wallet.canSign() && !wallet.isPrivKeyExternal()) {
-        let err = this.translate.instant('No signing proposal: No private key');
+        const err = this.translate.instant('No signing proposal: No private key');
         this.logger.info(err);
         return reject(err);
       }
@@ -179,14 +179,14 @@ export class ShapeshiftConfirmPage {
   }
 
   private saveShapeshiftData(): void {
-    let address = this.shapeInfo.deposit;
-    let withdrawal = this.shapeInfo.withdrawal;
-    let now = moment().unix() * 1000;
+    const address = this.shapeInfo.deposit;
+    const withdrawal = this.shapeInfo.withdrawal;
+    const now = moment().unix() * 1000;
 
     this.shapeshiftProvider.getStatus(address, (err: any, st: any) => {
-      let newData = {
-        address: address,
-        withdrawal: withdrawal,
+      const newData = {
+        address,
+        withdrawal,
         date: now,
         amount: this.amountStr,
         rate: this.rateUnit + ' ' + this.toWallet.coin.toUpperCase() + ' per ' + this.fromWallet.coin.toUpperCase(),
@@ -209,11 +209,11 @@ export class ShapeshiftConfirmPage {
 
   private createTx(wallet: any, toAddress: string): Promise<any> {
     return new Promise((resolve, reject) => {
-      let parsedAmount = this.txFormatProvider.parseAmount(wallet.coin, this.amount, this.currency);
+      const parsedAmount = this.txFormatProvider.parseAmount(wallet.coin, this.amount, this.currency);
       this.amountUnitStr = parsedAmount.amountUnitStr;
 
       this.message = 'ShapeShift: ' + this.fromWallet.coin.toUpperCase() + ' to ' + this.toWallet.coin.toUpperCase();
-      let outputs = [];
+      const outputs = [];
 
       outputs.push({
         'toAddress': toAddress,
@@ -221,10 +221,10 @@ export class ShapeshiftConfirmPage {
         'message': this.message
       });
 
-      let txp = {
-        toAddress: toAddress,
+      const txp = {
+        toAddress,
         amount: parsedAmount.amountSat,
-        outputs: outputs,
+        outputs,
         message: this.message,
         excludeUnconfirmedUtxos: this.configWallet.spendUnconfirmed ? false : true,
         feeLevel: this.configWallet.settings.feeLevel || 'normal',
@@ -245,14 +245,14 @@ export class ShapeshiftConfirmPage {
   }
 
   private getLegacyAddressFormat(addr: string, coin: string): string {
-    if (coin == 'btc') return addr;
-    let a = this.bitcoreCash.Address(addr).toObject();
+    if (coin == 'btc') { return addr; }
+    const a = this.bitcoreCash.Address(addr).toObject();
     return this.bitcore.Address.fromObject(a).toString();
   }
 
   private getNewAddressFormat(addr: string, coin: string): string {
-    if (coin == 'btc') return addr;
-    let a = this.bitcore.Address(addr).toObject();
+    if (coin == 'btc') { return addr; }
+    const a = this.bitcore.Address(addr).toObject();
     return this.bitcoreCash.Address.fromObject(a).toString();
   }
 
@@ -269,10 +269,10 @@ export class ShapeshiftConfirmPage {
       this.walletProvider.getAddress(this.fromWallet, false).then((returnAddress: string) => {
         returnAddress = this.getLegacyAddressFormat(returnAddress, this.fromWallet.coin);
 
-        let data = {
+        const data = {
           withdrawal: withdrawalAddress,
           pair: this.getCoinPair(),
-          returnAddress: returnAddress
+          returnAddress
         }
         this.shapeshiftProvider.shift(data, (err: any, shapeData: any) => {
           if (err || shapeData.error) {
@@ -281,7 +281,7 @@ export class ShapeshiftConfirmPage {
             return;
           }
 
-          let toAddress = this.getNewAddressFormat(shapeData.deposit, this.fromWallet.coin);
+          const toAddress = this.getNewAddressFormat(shapeData.deposit, this.fromWallet.coin);
 
           this.createTx(this.fromWallet, toAddress).then((ctxp: any) => {
             // Save in memory
@@ -291,11 +291,11 @@ export class ShapeshiftConfirmPage {
             this.shapeshiftProvider.getRate(this.getCoinPair(), (err: any, r: any) => {
               this.onGoingProcessProvider.set('connectingShapeshift', false);
               this.rateUnit = r.rate;
-              let amountUnit = this.txFormatProvider.satToUnit(ctxp.amount);
-              let withdrawalSat = Number((this.rateUnit * amountUnit * 100000000).toFixed());
+              const amountUnit = this.txFormatProvider.satToUnit(ctxp.amount);
+              const withdrawalSat = Number((this.rateUnit * amountUnit * 100000000).toFixed());
 
               // Fee rate
-              let per = (ctxp.fee / (ctxp.amount + ctxp.fee) * 100);
+              const per = (ctxp.fee / (ctxp.amount + ctxp.fee) * 100);
               this.feeRatePerStr = per.toFixed(2) + '%';
 
               // Amount + Unit
@@ -330,11 +330,11 @@ export class ShapeshiftConfirmPage {
       this.showErrorAndBack(null, this.translate.instant('Transaction has not been created'));
       return;
     }
-    let fromCoin = this.fromWallet.coin.toUpperCase();
-    let toCoin = this.toWallet.coin.toUpperCase();
-    let title = 'Confirm to shift ' + fromCoin + ' to ' + toCoin; // TODO: translate
-    let okText = this.translate.instant('OK');
-    let cancelText = this.translate.instant('Cancel');
+    const fromCoin = this.fromWallet.coin.toUpperCase();
+    const toCoin = this.toWallet.coin.toUpperCase();
+    const title = 'Confirm to shift ' + fromCoin + ' to ' + toCoin; // TODO: translate
+    const okText = this.translate.instant('OK');
+    const cancelText = this.translate.instant('Cancel');
     this.popupProvider.ionicConfirm(title, '', okText, cancelText).then((ok: any) => {
       if (!ok) {
         return;
@@ -351,8 +351,8 @@ export class ShapeshiftConfirmPage {
   };
 
   public openSuccessModal(): void {
-    let successText = 'Transaction Sent';
-    let modal = this.modalCtrl.create(SuccessModalPage, { successText: successText }, { showBackdrop: true, enableBackdropDismiss: false });
+    const successText = 'Transaction Sent';
+    const modal = this.modalCtrl.create(SuccessModalPage, { successText }, { showBackdrop: true, enableBackdropDismiss: false });
     modal.present();
     modal.onDidDismiss(() => {
       this.navCtrl.popToRoot({ animate: false });

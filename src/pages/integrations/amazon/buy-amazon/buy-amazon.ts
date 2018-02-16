@@ -1,14 +1,14 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, ModalController, Events } from 'ionic-angular';
-import { Logger } from '../../../../providers/logger/logger';
 import { TranslateService } from '@ngx-translate/core';
+import { Events, ModalController, NavController, NavParams } from 'ionic-angular';
 import * as _ from 'lodash';
 import * as moment from 'moment';
+import { Logger } from '../../../../providers/logger/logger';
 
 // Pages
-import { AmazonPage } from '../amazon';
 import { FeeWarningPage } from '../../../send/fee-warning/fee-warning';
 import { SuccessModalPage } from '../../../success/success';
+import { AmazonPage } from '../amazon';
 
 // Provider
 import { AmazonProvider } from '../../../../providers/amazon/amazon';
@@ -74,15 +74,15 @@ export class BuyAmazonPage {
     this.amazonGiftCard = null;
   }
 
-  ionViewDidLoad() {
+  public ionViewDidLoad() {
     this.logger.info('ionViewDidLoad BuyAmazonPage');
   }
 
-  ionViewWillEnter() {
+  public ionViewWillEnter() {
     this.amount = this.navParams.data.amount;
     this.currency = this.navParams.data.currency;
 
-    let limitPerDay = this.amazonProvider.limitPerDay;
+    const limitPerDay = this.amazonProvider.limitPerDay;
 
     this.limitPerDayMessage = "Purchase Amount is limited to " + limitPerDay + " " + this.currency + " per day"; // TODO: translate
 
@@ -106,10 +106,10 @@ export class BuyAmazonPage {
   }
 
   private checkFeeHigh(amount: number, fee: number) {
-    let per = fee / (amount + fee) * 100;
+    const per = fee / (amount + fee) * 100;
 
     if (per > this.FEE_TOO_HIGH_LIMIT_PER) {
-      let feeWarningModal = this.modalCtrl.create(FeeWarningPage, {}, { showBackdrop: false, enableBackdropDismiss: false });
+      const feeWarningModal = this.modalCtrl.create(FeeWarningPage, {}, { showBackdrop: false, enableBackdropDismiss: false });
       feeWarningModal.present();
     }
   }
@@ -146,7 +146,7 @@ export class BuyAmazonPage {
   private publishAndSign(wallet: any, txp: any): Promise<any> {
     return new Promise((resolve, reject) => {
       if (!wallet.canSign() && !wallet.isPrivKeyExternal()) {
-        let err = this.translate.instant('No signing proposal: No private key');
+        const err = this.translate.instant('No signing proposal: No private key');
         this.logger.info(err);
         return reject(err);
       }
@@ -203,7 +203,7 @@ export class BuyAmazonPage {
           });
         }
 
-        let accessKey = dataInvoice ? dataInvoice.accessKey : null;
+        const accessKey = dataInvoice ? dataInvoice.accessKey : null;
 
         if (!accessKey) {
           return reject({
@@ -218,7 +218,7 @@ export class BuyAmazonPage {
             });
           }
 
-          return resolve({ invoice: invoice, accessKey: accessKey });
+          return resolve({ invoice, accessKey });
         });
       });
     });
@@ -226,7 +226,7 @@ export class BuyAmazonPage {
 
   private createTx(wallet: any, invoice: any, message: string): Promise<any> {
     return new Promise((resolve, reject) => {
-      let payProUrl = (invoice && invoice.paymentUrls) ? invoice.paymentUrls.BIP73 : null;
+      const payProUrl = (invoice && invoice.paymentUrls) ? invoice.paymentUrls.BIP73 : null;
 
       if (!payProUrl) {
         return reject({
@@ -235,9 +235,9 @@ export class BuyAmazonPage {
         });
       }
 
-      let outputs = [];
-      let toAddress = invoice.bitcoinAddress;
-      let amountSat = parseInt((invoice.btcDue * 100000000).toFixed(0)); // BTC to Satoshi
+      const outputs = [];
+      const toAddress = invoice.bitcoinAddress;
+      const amountSat = parseInt((invoice.btcDue * 100000000).toFixed(0)); // BTC to Satoshi
 
       outputs.push({
         'toAddress': toAddress,
@@ -245,12 +245,12 @@ export class BuyAmazonPage {
         'message': message
       });
 
-      let txp = {
-        toAddress: toAddress,
+      const txp = {
+        toAddress,
         amount: amountSat,
-        outputs: outputs,
-        message: message,
-        payProUrl: payProUrl,
+        outputs,
+        message,
+        payProUrl,
         excludeUnconfirmedUtxos: this.configWallet.spendUnconfirmed ? false : true,
         feeLevel: this.configWallet.settings.feeLevel ? this.configWallet.settings.feeLevel : 'normal'
       };
@@ -271,12 +271,12 @@ export class BuyAmazonPage {
       this.logger.debug("creating gift card " + count);
       if (err) {
         giftCard = giftCard || {};
-        giftCard['status'] = 'FAILURE';
+        giftCard.status = 'FAILURE';
       }
 
-      var now = moment().unix() * 1000;
+      const now = moment().unix() * 1000;
 
-      var newData = giftCard;
+      const newData = giftCard;
       newData.invoiceId = dataSrc.invoiceId;
       newData.accessKey = dataSrc.accessKey;
       newData.invoiceUrl = dataSrc.invoiceUrl;
@@ -316,25 +316,25 @@ export class BuyAmazonPage {
     });
 
   private initialize(wallet: any): void {
-    let email = this.emailNotificationsProvider.getEmailIfEnabled();
-    let parsedAmount = this.txFormatProvider.parseAmount(this.coin, this.amount, this.currency);
+    const email = this.emailNotificationsProvider.getEmailIfEnabled();
+    const parsedAmount = this.txFormatProvider.parseAmount(this.coin, this.amount, this.currency);
     this.currencyIsoCode = parsedAmount.currency;
     this.amountUnitStr = parsedAmount.amountUnitStr;
-    let dataSrc = {
+    const dataSrc = {
       amount: parsedAmount.amount,
       currency: parsedAmount.currency,
       uuid: wallet.id,
-      email: email
+      email
     };
     this.onGoingProcessProvider.set('loadingTxInfo', true);
 
     this.createInvoice(dataSrc).then((data: any) => {
-      let invoice = data.invoice;
-      let accessKey = data.accessKey;
+      const invoice = data.invoice;
+      const accessKey = data.accessKey;
 
       // Sometimes API does not return this element;
-      invoice['buyerPaidBtcMinerFee'] = invoice.buyerPaidBtcMinerFee || 0;
-      let invoiceFeeSat = parseInt((invoice.buyerPaidBtcMinerFee * 100000000).toFixed());
+      invoice.buyerPaidBtcMinerFee = invoice.buyerPaidBtcMinerFee || 0;
+      const invoiceFeeSat = parseInt((invoice.buyerPaidBtcMinerFee * 100000000).toFixed());
 
       this.message = this.amountUnitStr + " for Amazon.com Gift Card"; // TODO: translate
 
@@ -350,7 +350,7 @@ export class BuyAmazonPage {
           currency: dataSrc.currency,
           amount: dataSrc.amount,
           uuid: dataSrc.uuid,
-          accessKey: accessKey,
+          accessKey,
           invoiceId: invoice.id,
           invoiceUrl: invoice.url,
           invoiceTime: invoice.invoiceTime
@@ -379,9 +379,9 @@ export class BuyAmazonPage {
       this.showError(null, this.translate.instant('Transaction has not been created'));
       return;
     }
-    var title = this.translate.instant('Confirm');
-    var okText = this.translate.instant('OK');
-    var cancelText = this.translate.instant('Cancel');
+    const title = this.translate.instant('Confirm');
+    const okText = this.translate.instant('OK');
+    const cancelText = this.translate.instant('Cancel');
     this.popupProvider.ionicConfirm(title, this.message, okText, cancelText).then((ok) => {
       if (!ok) {
         return;
@@ -404,10 +404,10 @@ export class BuyAmazonPage {
   }
 
   public showWallets(): void {
-    let id = this.wallet ? this.wallet.credentials.walletId : null;
+    const id = this.wallet ? this.wallet.credentials.walletId : null;
     this.events.publish('showWalletsSelectorEvent', this.wallets, id, 'Buy from');
     this.events.subscribe('selectWalletEvent', (wallet: any) => {
-      if (!_.isEmpty(wallet)) this.onWalletSelect(wallet);
+      if (!_.isEmpty(wallet)) { this.onWalletSelect(wallet); }
       this.events.unsubscribe('selectWalletEvent');
     });
   }
@@ -426,8 +426,8 @@ export class BuyAmazonPage {
     if (this.amazonGiftCard.status == 'SUCCESS') {
       successComment = 'Gift card generated and ready to use.';
     }
-    let successText = '';
-    let modal = this.modalCtrl.create(SuccessModalPage, { successText: successText, successComment: successComment }, { showBackdrop: true, enableBackdropDismiss: false });
+    const successText = '';
+    const modal = this.modalCtrl.create(SuccessModalPage, { successText, successComment }, { showBackdrop: true, enableBackdropDismiss: false });
     modal.present();
     modal.onDidDismiss(() => {
       this.navCtrl.remove(2, 2);

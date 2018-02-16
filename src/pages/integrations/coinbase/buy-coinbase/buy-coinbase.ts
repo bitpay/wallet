@@ -1,20 +1,20 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, Events, ModalController } from 'ionic-angular';
-import { Logger } from '../../../../providers/logger/logger';
+import { Events, ModalController, NavController, NavParams } from 'ionic-angular';
 import * as _ from 'lodash';
+import { Logger } from '../../../../providers/logger/logger';
 
 //providers
 import { CoinbaseProvider } from '../../../../providers/coinbase/coinbase';
-import { PopupProvider } from '../../../../providers/popup/popup';
 import { ExternalLinkProvider } from '../../../../providers/external-link/external-link';
 import { OnGoingProcessProvider } from '../../../../providers/on-going-process/on-going-process';
-import { WalletProvider } from '../../../../providers/wallet/wallet';
-import { TxFormatProvider } from '../../../../providers/tx-format/tx-format';
+import { PopupProvider } from '../../../../providers/popup/popup';
 import { ProfileProvider } from '../../../../providers/profile/profile';
+import { TxFormatProvider } from '../../../../providers/tx-format/tx-format';
+import { WalletProvider } from '../../../../providers/wallet/wallet';
 
 //pages
-import { CoinbasePage } from '../coinbase';
 import { SuccessModalPage } from '../../../success/success';
+import { CoinbasePage } from '../coinbase';
 
 @Component({
   selector: 'page-buy-coinbase',
@@ -27,7 +27,7 @@ export class BuyCoinbasePage {
   private coin: string;
   private wallets: any;
 
-  public paymentMethods: Array<any>;
+  public paymentMethods: any[];
   public selectedPaymentMethodId: any;
   public buyPrice: string;
   public buyRequestInfo: any;
@@ -59,11 +59,11 @@ export class BuyCoinbasePage {
     this.network = this.coinbaseProvider.getNetwork();
   }
 
-  ionViewDidLoad() {
+  public ionViewDidLoad() {
     this.logger.info('ionViewDidLoad BuyCoinbasePage');
   }
 
-  ionViewWillEnter() {
+  public ionViewWillEnter() {
     this.wallets = this.profileProvider.getWallets({
       onlyComplete: true,
       network: this.network,
@@ -99,7 +99,7 @@ export class BuyCoinbasePage {
         this.showErrorAndBack(err);
         return;
       }
-      let accessToken = res.accessToken;
+      const accessToken = res.accessToken;
 
       this.coinbaseProvider.buyPrice(accessToken, this.coinbaseProvider.getAvailableCurrency(), (err: any, b: any) => {
         this.buyPrice = b.data || null;
@@ -128,18 +128,18 @@ export class BuyCoinbasePage {
         }
         if (_.isEmpty(this.paymentMethods)) {
           this.onGoingProcessProvider.set('connectingCoinbase', false);
-          let url = 'https://support.coinbase.com/customer/portal/articles/1148716-payment-methods-for-us-customers';
-          let msg = 'No payment method available to buy';
-          let okText = 'More info';
-          let cancelText = 'Go Back';
+          const url = 'https://support.coinbase.com/customer/portal/articles/1148716-payment-methods-for-us-customers';
+          const msg = 'No payment method available to buy';
+          const okText = 'More info';
+          const cancelText = 'Go Back';
           this.popupProvider.ionicConfirm(null, msg, okText, cancelText).then((res) => {
-            if (res) this.externalLinkProvider.open(url);
+            if (res) { this.externalLinkProvider.open(url); }
             this.navCtrl.remove(3, 1);
             this.navCtrl.pop();
           });
           return;
         }
-        if (!hasPrimary) this.selectedPaymentMethodId = this.paymentMethods[0].id;
+        if (!hasPrimary) { this.selectedPaymentMethodId = this.paymentMethods[0].id; }
         this.buyRequest();
       });
     });
@@ -153,9 +153,9 @@ export class BuyCoinbasePage {
         this.showErrorAndBack(err);
         return;
       }
-      let accessToken = res.accessToken;
-      let accountId = res.accountId;
-      let dataSrc = {
+      const accessToken = res.accessToken;
+      const accountId = res.accountId;
+      const dataSrc = {
         amount: this.amount,
         currency: this.currency,
         payment_method: this.selectedPaymentMethodId,
@@ -173,11 +173,11 @@ export class BuyCoinbasePage {
   }
 
   public buyConfirm() {
-    let message = 'Buy bitcoin for ' + this.amountUnitStr;
-    let okText = 'Confirm';
-    let cancelText = 'Cancel';
+    const message = 'Buy bitcoin for ' + this.amountUnitStr;
+    const okText = 'Confirm';
+    const cancelText = 'Cancel';
     this.popupProvider.ionicConfirm(null, message, okText, cancelText).then((ok: boolean) => {
-      if (!ok) return;
+      if (!ok) { return; }
 
       this.onGoingProcessProvider.set('buyingBitcoin', true);
       this.coinbaseProvider.init((err: any, res: any) => {
@@ -186,9 +186,9 @@ export class BuyCoinbasePage {
           this.showError(err);
           return;
         }
-        let accessToken = res.accessToken;
-        let accountId = res.accountId;
-        let dataSrc = {
+        const accessToken = res.accessToken;
+        const accountId = res.accountId;
+        const dataSrc = {
           amount: this.amount,
           currency: this.currency,
           payment_method: this.selectedPaymentMethodId,
@@ -201,7 +201,7 @@ export class BuyCoinbasePage {
             return;
           }
           setTimeout(() => {
-            let tx = b.data ? b.data.transaction : null;
+            const tx = b.data ? b.data.transaction : null;
             if (tx && tx.id) {
               this.processBuyTx(tx);
             }
@@ -229,13 +229,13 @@ export class BuyCoinbasePage {
       }
       this.walletProvider.getAddress(this.wallet, false).then((walletAddr: string) => {
 
-        updatedTx.data['toAddr'] = walletAddr;
-        updatedTx.data['status'] = 'pending'; // Forcing "pending" status to process later
+        updatedTx.data.toAddr = walletAddr;
+        updatedTx.data.status = 'pending'; // Forcing "pending" status to process later
 
         this.logger.debug('Saving transaction to process later...');
         this.coinbaseProvider.savePendingTransaction(updatedTx.data, {}, (err: any) => {
           this.onGoingProcessProvider.set('buyingBitcoin', false);
-          if (err) this.logger.debug(err);
+          if (err) { this.logger.debug(err); }
           this.openSuccessModal();
         });
       }).catch((err) => {
@@ -252,7 +252,7 @@ export class BuyCoinbasePage {
         this.showError(err);
         return;
       }
-      let tx = buyResp.data ? buyResp.data.transaction : null;
+      const tx = buyResp.data ? buyResp.data.transaction : null;
       if (tx && tx.id) {
         this.processBuyTx(tx);
       } else {
@@ -264,17 +264,17 @@ export class BuyCoinbasePage {
   }
 
   public showWallets(): void {
-    let id = this.wallet ? this.wallet.credentials.walletId : null;
+    const id = this.wallet ? this.wallet.credentials.walletId : null;
     this.events.publish('showWalletsSelectorEvent', this.wallets, id, 'Receive in');
     this.events.subscribe('selectWalletEvent', (wallet: any) => {
-      if (!_.isEmpty(wallet)) this.onWalletSelect(wallet);
+      if (!_.isEmpty(wallet)) { this.onWalletSelect(wallet); }
       this.events.unsubscribe('selectWalletEvent');
     });
   }
 
   public onWalletSelect(wallet: any) {
     this.wallet = wallet;
-    let parsedAmount = this.txFormatProvider.parseAmount(this.coin, this.amount, this.currency);
+    const parsedAmount = this.txFormatProvider.parseAmount(this.coin, this.amount, this.currency);
 
     // Buy always in BTC
     this.amount = (parsedAmount.amountSat / 100000000).toFixed(8);
@@ -293,9 +293,9 @@ export class BuyCoinbasePage {
   }
 
   public openSuccessModal(): void {
-    let successText = 'Bought';
-    let successComment = 'Bitcoin purchase completed. Coinbase has queued the transfer to your selected wallet';
-    let modal = this.modalCtrl.create(SuccessModalPage, { successText: successText, successComment: successComment }, { showBackdrop: true, enableBackdropDismiss: false });
+    const successText = 'Bought';
+    const successComment = 'Bitcoin purchase completed. Coinbase has queued the transfer to your selected wallet';
+    const modal = this.modalCtrl.create(SuccessModalPage, { successText, successComment }, { showBackdrop: true, enableBackdropDismiss: false });
     modal.present();
     modal.onDidDismiss(() => {
       this.navCtrl.remove(3, 1);

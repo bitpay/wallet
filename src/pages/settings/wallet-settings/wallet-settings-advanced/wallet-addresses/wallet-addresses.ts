@@ -1,19 +1,19 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, ModalController } from 'ionic-angular';
-import { Logger } from '../../../../../providers/logger/logger';
 import { TranslateService } from '@ngx-translate/core';
+import { ModalController, NavController, NavParams } from 'ionic-angular';
+import { Logger } from '../../../../../providers/logger/logger';
 
 //providers
-import { ProfileProvider } from '../../../../../providers/profile/profile';
-import { WalletProvider } from '../../../../../providers/wallet/wallet';
 import { BwcErrorProvider } from '../../../../../providers/bwc-error/bwc-error';
-import { PopupProvider } from '../../../../../providers/popup/popup';
 import { OnGoingProcessProvider } from '../../../../../providers/on-going-process/on-going-process';
+import { PopupProvider } from '../../../../../providers/popup/popup';
+import { ProfileProvider } from '../../../../../providers/profile/profile';
 import { TxFormatProvider } from '../../../../../providers/tx-format/tx-format';
+import { WalletProvider } from '../../../../../providers/wallet/wallet';
 
 //pages
-import { AllAddressesPage } from './all-addresses/all-addresses';
 import { WalletDetailsPage } from '../../../../../pages/wallet-details/wallet-details';
+import { AllAddressesPage } from './all-addresses/all-addresses';
 
 import * as _ from 'lodash';
 
@@ -61,13 +61,13 @@ export class WalletAddressesPage {
     this.noBalance = null;
   }
 
-  ionViewWillEnter() {
+  public ionViewWillEnter() {
     this.loading = true;
     this.walletProvider.getMainAddresses(this.wallet, {}).then((allAddresses: any) => {
       this.walletProvider.getBalance(this.wallet, {}).then((resp: any) => {
         this.withBalance = resp.byAddress;
 
-        var idx = _.keyBy(this.withBalance, 'address');
+        const idx = _.keyBy(this.withBalance, 'address');
         this.noBalance = _.reject(allAddresses, (x) => {
           return idx[x.address];
         });
@@ -95,8 +95,8 @@ export class WalletAddressesPage {
 
       if (resp && resp.allUtxos && resp.allUtxos.length) {
 
-        let allSum = _.sumBy(resp.allUtxos || 0, 'satoshis');
-        let per = (resp.minFee / allSum) * 100;
+        const allSum = _.sumBy(resp.allUtxos || 0, 'satoshis');
+        const per = (resp.minFee / allSum) * 100;
 
         this.lowUtxosNb = resp.lowUtxos.length;
         this.allUtxosNb = resp.allUtxos.length;
@@ -119,7 +119,7 @@ export class WalletAddressesPage {
   }
 
   public newAddress(): void {
-    if (this.gapReached) return;
+    if (this.gapReached) { return; }
 
     this.onGoingProcessProvider.set('generatingNewAddress', true);
     this.walletProvider.getAddress(this.wallet, true).then((addr: string) => {
@@ -149,7 +149,7 @@ export class WalletAddressesPage {
   }
 
   public viewAllAddresses(): void {
-    let modal = this.modalCtrl.create(AllAddressesPage, { noBalance: this.noBalance, withBalance: this.withBalance, coin: this.wallet.coin, walletName: this.wallet.name });
+    const modal = this.modalCtrl.create(AllAddressesPage, { noBalance: this.noBalance, withBalance: this.withBalance, coin: this.wallet.coin, walletName: this.wallet.name });
     modal.present();
   }
 

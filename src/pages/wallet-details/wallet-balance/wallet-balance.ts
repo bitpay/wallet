@@ -17,7 +17,7 @@ export class WalletBalancePage {
     this.status = this.navParams.data.status;
   }
 
-  ionViewDidLoad() {
+  public ionViewDidLoad() {
     this.logger.info('ionViewDidLoad WalletBalancePage');
   }
 }

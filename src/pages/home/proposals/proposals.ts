@@ -1,11 +1,11 @@
 import { Component } from "@angular/core";
-import { Logger } from '../../../providers/logger/logger';
 import { TranslateService } from '@ngx-translate/core';
+import { Logger } from '../../../providers/logger/logger';
 
 //providers
 import { AddressBookProvider } from '../../../providers/address-book/address-book';
-import { ProfileProvider } from '../../../providers/profile/profile';
 import { OnGoingProcessProvider } from '../../../providers/on-going-process/on-going-process';
+import { ProfileProvider } from '../../../providers/profile/profile';
 
 @Component({
   selector: 'page-proposals',
@@ -25,11 +25,11 @@ export class ProposalsPage {
   ) {
   }
 
-  ionViewWillEnter() {
+  public ionViewWillEnter() {
     this.addressBookProvider.list().then((ab: any) => {
       this.addressbook = ab || {};
 
-      let loading = this.translate.instant('Updating pending proposals... Please stand by');
+      const loading = this.translate.instant('Updating pending proposals... Please stand by');
       this.onGoingProcessProvider.set(loading, true);
       this.profileProvider.getTxps(50).then((txpsData) => {
         this.onGoingProcessProvider.set(loading, false);
