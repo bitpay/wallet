@@ -1,30 +1,30 @@
-import { HttpClientModule } from '@angular/common/http';
-import { NgLoggerModule, Level } from '@nsalaun/ng-logger';
 import { DecimalPipe } from '@angular/common';
-import { TestBed, async } from '@angular/core/testing';
+import { HttpClientModule } from '@angular/common/http';
+import { async, TestBed } from '@angular/core/testing';
+import { AndroidFingerprintAuth } from '@ionic-native/android-fingerprint-auth';
+import { TouchID } from '@ionic-native/touch-id';
+import {
+  TranslateFakeLoader,
+  TranslateLoader,
+  TranslateModule,
+  TranslateService
+} from '@ngx-translate/core';
+import { Level, NgLoggerModule } from '@nsalaun/ng-logger';
 import {
   AlertController,
-  Events,
   App,
   Config,
-  Platform,
-  LoadingController
+  Events,
+  LoadingController,
+  Platform
 } from 'ionic-angular';
-import {
-  TranslateModule,
-  TranslateService,
-  TranslateLoader,
-  TranslateFakeLoader
-} from '@ngx-translate/core';
-import { TouchID } from '@ionic-native/touch-id';
-import { AndroidFingerprintAuth } from '@ionic-native/android-fingerprint-auth';
 
+import { Logger } from '../../providers/logger/logger';
 import { BwcErrorProvider } from '../bwc-error/bwc-error';
 import { BwcProvider } from '../bwc/bwc';
 import { ConfigProvider } from '../config/config';
 import { FeeProvider } from '../fee/fee';
 import { FilterProvider } from '../filter/filter';
-import { Logger } from '../../providers/logger/logger';
 import { OnGoingProcessProvider } from '../on-going-process/on-going-process';
 import { PersistenceProvider } from '../persistence/persistence';
 import { PlatformProvider } from '../platform/platform';
@@ -39,29 +39,29 @@ describe('Provider: Wallet Provider', () => {
 
   class BwcProviderMock {
     constructor() {}
-    getErrors() {
+    public getErrors() {
       return 'error';
     }
-    getBitcoreCash() {}
+    public getBitcoreCash() {}
   }
 
   class PersistenceProviderMock {
     constructor() {}
-    getLastAddress(walletId: any) {
+    public getLastAddress(walletId: any) {
       return Promise.resolve('storedAddress');
     }
-    storeLastAddress(walletId: any, address: any) {
+    public storeLastAddress(walletId: any, address: any) {
       return Promise.resolve(address);
     }
   }
 
   class LoggerMock {
-    infoLogs = [];
-    debugLogs = [];
-    info(data) {
+    public infoLogs = [];
+    public debugLogs = [];
+    public info(data) {
       this.infoLogs.push(data);
     }
-    debug(data) {
+    public debug(data) {
       this.debugLogs.push(data);
     }
   }
@@ -107,39 +107,39 @@ describe('Provider: Wallet Provider', () => {
 
   describe('Function: Get Address Function', () => {
     it('should get the last address stored', () => {
-      let wallet = {
-        isComplete: function() {
+      const wallet = {
+        isComplete() {
           return true;
         }
       };
-      let force = false;
+      const force = false;
       walletProvider.getAddress(wallet, force).then(address => {
         expect(address).toEqual('storedAddress');
       });
     });
 
     it('should reject to generate new address if wallet is not complete', () => {
-      let wallet = {
-        isComplete: function() {
+      const wallet = {
+        isComplete() {
           return false;
         }
       };
-      let force = true;
+      const force = true;
       walletProvider.getAddress(wallet, force).catch(err => {
         expect(err).toEqual('WALLET_NOT_COMPLETE');
       });
     });
 
     it('should force to generate new address', () => {
-      let wallet = {
-        isComplete: function() {
+      const wallet = {
+        isComplete() {
           return true;
         },
-        createAddress: function({}, cb) {
+        createAddress({}, cb) {
           return cb(null, { address: 'newAddress' });
         }
       };
-      let force = true;
+      const force = true;
       walletProvider.getAddress(wallet, force).then(address => {
         expect(address).toEqual('newAddress');
       });
@@ -148,14 +148,14 @@ describe('Provider: Wallet Provider', () => {
 
   describe('Function: Get Protocol Handler Function', () => {
     it('should return bitcoincash if coin is bch', () => {
-      let coin = 'bch';
-      let protocol = walletProvider.getProtocolHandler(coin);
+      const coin = 'bch';
+      const protocol = walletProvider.getProtocolHandler(coin);
       expect(protocol).toEqual('bitcoincash');
     });
 
     it('should return bitcoin if coin is btc', () => {
-      let coin = 'btc';
-      let protocol = walletProvider.getProtocolHandler(coin);
+      const coin = 'btc';
+      const protocol = walletProvider.getProtocolHandler(coin);
       expect(protocol).toEqual('bitcoin');
     });
   });
