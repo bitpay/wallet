@@ -36,6 +36,8 @@ $colors: (
 
 // Refresh color
 $refresher-icon-color: color($colors, primary);
+$refresher-icon-font-size: 12.5px;
+$refresher-height: 60px;
 
 // Toolbar
 $toolbar-text-color: color($colors, light);

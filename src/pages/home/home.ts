@@ -431,6 +431,7 @@ export class HomePage {
   }
 
   public doRefresh(refresher) {
+    refresher.pullMin = 90;
     this.updateAllWallets();
     setTimeout(() => {
       refresher.complete();
