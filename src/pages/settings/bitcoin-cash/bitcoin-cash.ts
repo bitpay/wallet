@@ -179,7 +179,7 @@ export class BitcoinCashPage {
 					if (isNew)
 						this.walletProvider.startScan(newWallet);
 
-					this.navCtrl.popToRoot();
+					this.navCtrl.popToRoot({ animate: false });
 					this.navCtrl.parent.select(0);
 				});
 			}).catch((err) => {

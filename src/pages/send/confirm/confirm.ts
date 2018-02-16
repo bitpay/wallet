@@ -224,7 +224,7 @@ export class ConfirmPage {
   private exitWithError(err: any) {
     this.logger.info('Error setting wallet selector:' + err);
     this.popupProvider.ionicAlert("", this.bwcErrorProvider.msg(err)).then(() => {
-      this.navCtrl.popToRoot();
+      this.navCtrl.popToRoot({ animate: false });
     });
   };
 
@@ -616,7 +616,7 @@ export class ConfirmPage {
     let modal = this.modalCtrl.create(SuccessModalPage, params, { showBackdrop: true, enableBackdropDismiss: false });
     modal.present();
     modal.onDidDismiss(() => {
-      this.navCtrl.popToRoot();
+      this.navCtrl.popToRoot({ animate: false });
       this.navCtrl.parent.select(0);
     })
   }

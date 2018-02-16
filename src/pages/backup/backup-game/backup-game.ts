@@ -143,7 +143,7 @@ export class BackupGamePage {
             if (this.fromOnboarding) {
               this.navCtrl.push(DisclaimerPage);
             } else {
-              this.navCtrl.popToRoot();
+              this.navCtrl.popToRoot({ animate: false });
             }
           }
         }],

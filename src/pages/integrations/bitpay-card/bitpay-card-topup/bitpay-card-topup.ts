@@ -272,7 +272,7 @@ export class BitPayCardTopUpPage {
           return reject(err);
         });
       }).catch((err) => {
-        return reject (err);
+        return reject(err);
       });
     });
   }
@@ -434,7 +434,7 @@ export class BitPayCardTopUpPage {
     let modal = this.modalCtrl.create(SuccessModalPage, { successText: successText, successComment: successComment }, { showBackdrop: true, enableBackdropDismiss: false });
     modal.present();
     modal.onDidDismiss(() => {
-      this.navCtrl.popToRoot();
+      this.navCtrl.popToRoot({ animate: false });
       this.navCtrl.push(BitPayCardPage, { id: this.cardId });
     });
   }

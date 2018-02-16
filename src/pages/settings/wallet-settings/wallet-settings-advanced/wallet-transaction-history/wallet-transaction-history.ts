@@ -173,7 +173,7 @@ export class WalletTransactionHistoryPage {
 
     this.logger.info('Transaction history cleared for :' + this.wallet.id);
 
-    this.navCtrl.popToRoot();
+    this.navCtrl.popToRoot({ animate: false });
     this.navCtrl.parent.select(0);
     this.navCtrl.push(WalletDetailsPage, { walletId: this.wallet.credentials.walletId, clearCache: true });
   }

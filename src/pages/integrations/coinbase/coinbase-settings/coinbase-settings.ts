@@ -37,7 +37,7 @@ export class CoinbaseSettingsPage {
           this.popupProvider.ionicAlert('Error connecting to Coinbase', err).then(() => {
             if (errorId == 'revoked_token') {
               this.coinbaseProvider.logout();
-              this.navCtrl.popToRoot();
+              this.navCtrl.popToRoot({ animate: false });
             }
           });
         }
@@ -62,7 +62,7 @@ export class CoinbaseSettingsPage {
     ).then((res) => {
       if (res) {
         this.coinbaseProvider.logout();
-        this.navCtrl.popToRoot();
+        this.navCtrl.popToRoot({ animate: false });
         this.navCtrl.parent.select(0);
       }
     });
