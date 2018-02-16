@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, Events } from 'ionic-angular';
+import { Events, NavController, NavParams } from 'ionic-angular';
 import { Logger } from '../../../../../providers/logger/logger';
 
 //providers
-import { ProfileProvider } from '../../../../../providers/profile/profile';
 import { ConfigProvider } from '../../../../../providers/config/config';
+import { ProfileProvider } from '../../../../../providers/profile/profile';
 
 //pages
 import { WalletExtendedPrivateKeyPage } from './wallet-extended-private-key/wallet-extended-private-key';

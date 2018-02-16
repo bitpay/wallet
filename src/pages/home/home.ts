@@ -1,41 +1,41 @@
 import { Component } from '@angular/core';
-import { NavController, Events, ModalController } from 'ionic-angular';
-import { Logger } from '../../providers/logger/logger';
 import { TranslateService } from '@ngx-translate/core';
+import { Events, ModalController, NavController } from 'ionic-angular';
+import { Logger } from '../../providers/logger/logger';
 
 // Pages
-import { ActivityPage } from './activity/activity';
 import { AddPage } from "../add/add";
-import { AmazonPage } from '../integrations/amazon/amazon';
 import { CopayersPage } from '../add/copayers/copayers';
-import { GlideraPage } from '../integrations/glidera/glidera';
+import { AmazonPage } from '../integrations/amazon/amazon';
+import { BitPayCardPage } from '../integrations/bitpay-card/bitpay-card';
+import { BitPayCardIntroPage } from '../integrations/bitpay-card/bitpay-card-intro/bitpay-card-intro';
 import { CoinbasePage } from '../integrations/coinbase/coinbase';
+import { GlideraPage } from '../integrations/glidera/glidera';
 import { MercadoLibrePage } from '../integrations/mercado-libre/mercado-libre';
-import { ProposalsPage } from './proposals/proposals';
 import { ShapeshiftPage } from '../integrations/shapeshift/shapeshift';
 import { TxDetailsPage } from '../tx-details/tx-details';
 import { TxpDetailsPage } from '../txp-details/txp-details';
 import { WalletDetailsPage } from '../wallet-details/wallet-details';
-import { BitPayCardIntroPage } from '../integrations/bitpay-card/bitpay-card-intro/bitpay-card-intro';
-import { BitPayCardPage } from '../integrations/bitpay-card/bitpay-card';
+import { ActivityPage } from './activity/activity';
+import { ProposalsPage } from './proposals/proposals';
 
 // Providers
-import { BwcErrorProvider } from '../../providers/bwc-error/bwc-error';
-import { ProfileProvider } from '../../providers/profile/profile';
-import { ReleaseProvider } from '../../providers/release/release';
-import { WalletProvider } from '../../providers/wallet/wallet';
-import { ConfigProvider } from '../../providers/config/config';
-import { PushNotificationsProvider } from '../../providers/push-notifications/push-notifications';
-import { ExternalLinkProvider } from '../../providers/external-link/external-link';
-import { OnGoingProcessProvider } from '../../providers/on-going-process/on-going-process';
-import { PopupProvider } from '../../providers/popup/popup';
 import { AddressBookProvider } from '../../providers/address-book/address-book';
 import { AppProvider } from '../../providers/app/app';
-import { PlatformProvider } from '../../providers/platform/platform';
-import { HomeIntegrationsProvider } from '../../providers/home-integrations/home-integrations';
-import { PersistenceProvider } from '../../providers/persistence/persistence';
-import { FeedbackProvider } from '../../providers/feedback/feedback';
 import { BitPayCardProvider } from '../../providers/bitpay-card/bitpay-card';
+import { BwcErrorProvider } from '../../providers/bwc-error/bwc-error';
+import { ConfigProvider } from '../../providers/config/config';
+import { ExternalLinkProvider } from '../../providers/external-link/external-link';
+import { FeedbackProvider } from '../../providers/feedback/feedback';
+import { HomeIntegrationsProvider } from '../../providers/home-integrations/home-integrations';
+import { OnGoingProcessProvider } from '../../providers/on-going-process/on-going-process';
+import { PersistenceProvider } from '../../providers/persistence/persistence';
+import { PlatformProvider } from '../../providers/platform/platform';
+import { PopupProvider } from '../../providers/popup/popup';
+import { ProfileProvider } from '../../providers/profile/profile';
+import { PushNotificationsProvider } from '../../providers/push-notifications/push-notifications';
+import { ReleaseProvider } from '../../providers/release/release';
+import { WalletProvider } from '../../providers/wallet/wallet';
 
 import * as _ from 'lodash';
 import * as moment from 'moment';

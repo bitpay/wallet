@@ -1,19 +1,19 @@
-import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Logger } from '../../providers/logger/logger';
-import { NavController, App } from 'ionic-angular';
+import { Injectable } from '@angular/core';
 import { FCM } from '@ionic-native/fcm';
+import { App, NavController } from 'ionic-angular';
+import { Logger } from '../../providers/logger/logger';
 
 //providers
-import { ProfileProvider } from '../profile/profile';
-import { PlatformProvider } from '../platform/platform';
-import { ConfigProvider } from '../config/config';
 import { AppProvider } from '../app/app';
 import { BwcProvider } from '../bwc/bwc';
+import { ConfigProvider } from '../config/config';
+import { PlatformProvider } from '../platform/platform';
+import { ProfileProvider } from '../profile/profile';
 
 //pages
-import { WalletDetailsPage } from '../../pages/wallet-details/wallet-details';
 import { CopayersPage } from '../../pages/add/copayers/copayers';
+import { WalletDetailsPage } from '../../pages/wallet-details/wallet-details';
 
 import * as _ from 'lodash';
 

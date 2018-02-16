@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { Logger } from '../../../providers/logger/logger';
+import { DirectoryEntry, File, FileSystem } from '@ionic-native/file';
 import * as _ from 'lodash';
-import { File, DirectoryEntry, FileSystem } from '@ionic-native/file';
+import { Logger } from '../../../providers/logger/logger';
 import { IStorage, KeyAlreadyExistsError } from './istorage';
 
 @Injectable()

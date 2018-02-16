@@ -1,103 +1,103 @@
-import { BrowserModule } from '@angular/platform-browser';
-import { ErrorHandler, NgModule } from '@angular/core';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
-import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 import { DecimalPipe } from '@angular/common';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { ErrorHandler, NgModule } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
 import { File } from '@ionic-native/file';
+import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 
 /* Native modules */
 import { AndroidFingerprintAuth } from '@ionic-native/android-fingerprint-auth';
 import { Clipboard } from '@ionic-native/clipboard';
+import { FCM } from '@ionic-native/fcm';
 import { QRScanner } from '@ionic-native/qr-scanner';
-import { StatusBar } from '@ionic-native/status-bar';
-import { SplashScreen } from '@ionic-native/splash-screen';
 import { SocialSharing } from '@ionic-native/social-sharing';
+import { SplashScreen } from '@ionic-native/splash-screen';
+import { StatusBar } from '@ionic-native/status-bar';
 import { Toast } from '@ionic-native/toast';
 import { TouchID } from '@ionic-native/touch-id';
-import { FCM } from '@ionic-native/fcm';
 
 /* Modules */
-import { MomentModule } from 'angular2-moment';
-import { NgLoggerModule, Level } from '@nsalaun/ng-logger';
-import { NgxQRCodeModule } from 'ngx-qrcode2';
-import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslatePoHttpLoader } from '@biesbjerg/ngx-translate-po-http-loader';
+import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { Level, NgLoggerModule } from '@nsalaun/ng-logger';
+import { MomentModule } from 'angular2-moment';
+import { NgxQRCodeModule } from 'ngx-qrcode2';
 
 /* Copay App */
 import { CopayApp } from './app.component';
 
 /* Pages */
-import { TabsPage } from '../pages/tabs/tabs';
 import { AddPage } from '../pages/add/add';
-import { BitcoinCashPage } from '../pages/settings/bitcoin-cash/bitcoin-cash';
-import { BackupRequestPage } from '../pages/onboarding/backup-request/backup-request';
-import { BackupWarningPage } from '../pages/backup/backup-warning/backup-warning';
-import { BackupGamePage } from '../pages/backup/backup-game/backup-game';
-import { CreateWalletPage } from '../pages/add/create-wallet/create-wallet';
 import { CopayersPage } from '../pages/add/copayers/copayers';
-import { DisclaimerPage } from '../pages/onboarding/disclaimer/disclaimer';
-import { CollectEmailPage } from '../pages/onboarding/collect-email/collect-email';
-import { FeeWarningPage } from '../pages/send/fee-warning/fee-warning';
-import { IncomingDataMenuPage } from '../pages/incoming-data-menu/incoming-data-menu';
+import { CreateWalletPage } from '../pages/add/create-wallet/create-wallet';
 import { ImportWalletPage } from '../pages/add/import-wallet/import-wallet';
 import { JoinWalletPage } from '../pages/add/join-wallet/join-wallet';
+import { BackupGamePage } from '../pages/backup/backup-game/backup-game';
+import { BackupWarningPage } from '../pages/backup/backup-warning/backup-warning';
+import { FeedbackCompletePage } from '../pages/feedback/feedback-complete/feedback-complete';
+import { FeedbackPage } from '../pages/feedback/feedback/feedback';
+import { SendFeedbackPage } from '../pages/feedback/send-feedback/send-feedback';
+import { IncomingDataMenuPage } from '../pages/incoming-data-menu/incoming-data-menu';
+import { BackupRequestPage } from '../pages/onboarding/backup-request/backup-request';
+import { CollectEmailPage } from '../pages/onboarding/collect-email/collect-email';
+import { DisclaimerPage } from '../pages/onboarding/disclaimer/disclaimer';
 import { OnboardingPage } from '../pages/onboarding/onboarding';
+import { TourPage } from '../pages/onboarding/tour/tour';
 import { PaperWalletPage } from '../pages/paper-wallet/paper-wallet';
 import { PayProPage } from '../pages/paypro/paypro';
-import { FeedbackPage } from '../pages/feedback/feedback/feedback';
-import { FeedbackCompletePage } from '../pages/feedback/feedback-complete/feedback-complete';
-import { TourPage } from '../pages/onboarding/tour/tour';
-import { WalletDetailsPage } from '../pages/wallet-details/wallet-details';
-import { WalletBalancePage } from '../pages/wallet-details/wallet-balance/wallet-balance';
+import { FeeWarningPage } from '../pages/send/fee-warning/fee-warning';
+import { BitcoinCashPage } from '../pages/settings/bitcoin-cash/bitcoin-cash';
+import { SuccessModalPage } from '../pages/success/success';
+import { TabsPage } from '../pages/tabs/tabs';
 import { TxDetailsPage } from '../pages/tx-details/tx-details';
 import { TxpDetailsPage } from '../pages/txp-details/txp-details';
-import { SendFeedbackPage } from '../pages/feedback/send-feedback/send-feedback';
-import { SuccessModalPage } from '../pages/success/success';
+import { WalletBalancePage } from '../pages/wallet-details/wallet-balance/wallet-balance';
+import { WalletDetailsPage } from '../pages/wallet-details/wallet-details';
 
 // Integrations: Amazon
-import { AmazonCardDetailsPage } from '../pages/integrations/amazon/amazon-card-details/amazon-card-details';
 import { AmazonPage } from '../pages/integrations/amazon/amazon';
+import { AmazonCardDetailsPage } from '../pages/integrations/amazon/amazon-card-details/amazon-card-details';
 import { BuyAmazonPage } from '../pages/integrations/amazon/buy-amazon/buy-amazon';
 
 // Integrations: Coinbase
 import { BuyCoinbasePage } from '../pages/integrations/coinbase/buy-coinbase/buy-coinbase';
 import { CoinbasePage } from '../pages/integrations/coinbase/coinbase';
+import { CoinbaseSettingsPage } from '../pages/integrations/coinbase/coinbase-settings/coinbase-settings';
 import { CoinbaseTxDetailsPage } from '../pages/integrations/coinbase/coinbase-tx-details/coinbase-tx-details';
 import { SellCoinbasePage } from '../pages/integrations/coinbase/sell-coinbase/sell-coinbase';
-import { CoinbaseSettingsPage } from '../pages/integrations/coinbase/coinbase-settings/coinbase-settings';
 
 // Integrations: Glidera
 import { BuyGlideraPage } from '../pages/integrations/glidera/buy-glidera/buy-glidera';
 import { GlideraPage } from '../pages/integrations/glidera/glidera';
+import { GlideraSettingsPage } from '../pages/integrations/glidera/glidera-settings/glidera-settings';
 import { GlideraTxDetailsPage } from '../pages/integrations/glidera/glidera-tx-details/glidera-tx-details';
 import { SellGlideraPage } from '../pages/integrations/glidera/sell-glidera/sell-glidera';
-import { GlideraSettingsPage } from '../pages/integrations/glidera/glidera-settings/glidera-settings';
 
 // Integrations: Mercado Libre
 import { BuyMercadoLibrePage } from '../pages/integrations/mercado-libre/buy-mercado-libre/buy-mercado-libre';
-import { MercadoLibreCardDetailsPage } from '../pages/integrations/mercado-libre/mercado-libre-card-details/mercado-libre-card-details';
 import { MercadoLibrePage } from '../pages/integrations/mercado-libre/mercado-libre';
+import { MercadoLibreCardDetailsPage } from '../pages/integrations/mercado-libre/mercado-libre-card-details/mercado-libre-card-details';
 
 // Integrations: ShapeShift
+import { ShapeshiftPage } from '../pages/integrations/shapeshift/shapeshift';
 import { ShapeshiftConfirmPage } from '../pages/integrations/shapeshift/shapeshift-confirm/shapeshift-confirm';
 import { ShapeshiftDetailsPage } from '../pages/integrations/shapeshift/shapeshift-details/shapeshift-details';
-import { ShapeshiftPage } from '../pages/integrations/shapeshift/shapeshift';
 import { ShapeshiftShiftPage } from '../pages/integrations/shapeshift/shapeshift-shift/shapeshift-shift';
 
 // Integrations: BitPayCard
-import { BitPayCardIntroPage } from '../pages/integrations/bitpay-card/bitpay-card-intro/bitpay-card-intro';
 import { BitPayCardPage } from '../pages/integrations/bitpay-card/bitpay-card';
-import { BitPaySettingsPage } from '../pages/integrations/bitpay-card/bitpay-settings/bitpay-settings';
+import { BitPayCardIntroPage } from '../pages/integrations/bitpay-card/bitpay-card-intro/bitpay-card-intro';
 import { BitPayCardTopUpPage } from '../pages/integrations/bitpay-card/bitpay-card-topup/bitpay-card-topup';
+import { BitPaySettingsPage } from '../pages/integrations/bitpay-card/bitpay-settings/bitpay-settings';
 
 /*Includes */
+import { CardItemPage } from '../pages/includes/card-item/card-item';
 import { FeedbackCardPage } from '../pages/includes/feedback-card/feedback-card';
 import { GravatarPage } from '../pages/includes/gravatar/gravatar';
 import { TxpPage } from '../pages/includes/txp/txp';
-import { WalletItemPage } from '../pages/includes/wallet-item/wallet-item';
 import { WalletActivityPage } from '../pages/includes/wallet-activity/wallet-activity';
+import { WalletItemPage } from '../pages/includes/wallet-item/wallet-item';
 import { WalletSelectorPage } from '../pages/includes/wallet-selector/wallet-selector';
-import { CardItemPage } from '../pages/includes/card-item/card-item';
 
 /* Tabs */
 import { HomePage } from '../pages/home/home';
@@ -111,71 +111,73 @@ import { ActivityPage } from '../pages/home/activity/activity';
 import { ProposalsPage } from '../pages/home/proposals/proposals';
 
 /* Settings */
+import { FingerprintModalPage } from '../pages/fingerprint/fingerprint';
+import { PinModalPage } from '../pages/pin/pin';
 import { AboutPage } from '../pages/settings/about/about';
-import { AddressbookPage } from '../pages/settings/addressbook/addressbook';
+import { SessionLogPage } from '../pages/settings/about/session-log/session-log';
+import { TermsOfUsePage } from '../pages/settings/about/terms-of-use/terms-of-use';
 import { AddressbookAddPage } from '../pages/settings/addressbook/add/add';
+import { AddressbookPage } from '../pages/settings/addressbook/addressbook';
 import { AddressbookViewPage } from '../pages/settings/addressbook/view/view';
 import { AdvancedPage } from '../pages/settings/advanced/advanced';
 import { AltCurrencyPage } from '../pages/settings/alt-currency/alt-currency';
 import { EnabledServicesPage } from '../pages/settings/enabled-services/enabled-services';
-import { FingerprintModalPage } from '../pages/fingerprint/fingerprint';
+import { FeePolicyPage } from '../pages/settings/fee-policy/fee-policy';
 import { LanguagePage } from '../pages/settings/language/language';
 import { LockPage } from '../pages/settings/lock/lock';
-import { PinModalPage } from '../pages/pin/pin';
-import { TermsOfUsePage } from '../pages/settings/about/terms-of-use/terms-of-use';
 import { NotificationsPage } from '../pages/settings/notifications/notifications';
-import { FeePolicyPage } from '../pages/settings/fee-policy/fee-policy';
-import { SessionLogPage } from '../pages/settings/about/session-log/session-log';
 
 /* Wallet Settings */
-import { WalletSettingsPage } from '../pages/settings/wallet-settings/wallet-settings';
-import { WalletNamePage } from '../pages/settings/wallet-settings/wallet-name/wallet-name';
 import { WalletColorPage } from '../pages/settings/wallet-settings/wallet-color/wallet-color';
+import { WalletNamePage } from '../pages/settings/wallet-settings/wallet-name/wallet-name';
+import { WalletSettingsPage } from '../pages/settings/wallet-settings/wallet-settings';
 
 /* Wallet Advanced Settings */
-import { WalletSettingsAdvancedPage } from '../pages/settings/wallet-settings/wallet-settings-advanced/wallet-settings-advanced';
-import { WalletInformationPage } from '../pages/settings/wallet-settings/wallet-settings-advanced/wallet-information/wallet-information';
-import { WalletAddressesPage } from '../pages/settings/wallet-settings/wallet-settings-advanced/wallet-addresses/wallet-addresses';
-import { WalletExportPage } from '../pages/settings/wallet-settings/wallet-settings-advanced/wallet-export/wallet-export';
-import { WalletServiceUrlPage } from '../pages/settings/wallet-settings/wallet-settings-advanced/wallet-service-url/wallet-service-url';
-import { WalletTransactionHistoryPage } from '../pages/settings/wallet-settings/wallet-settings-advanced/wallet-transaction-history/wallet-transaction-history';
-import { WalletDeletePage } from '../pages/settings/wallet-settings/wallet-settings-advanced/wallet-delete/wallet-delete';
-import { WalletExtendedPrivateKeyPage } from '../pages/settings/wallet-settings/wallet-settings-advanced/wallet-information/wallet-extended-private-key/wallet-extended-private-key';
 import { AllAddressesPage } from '../pages/settings/wallet-settings/wallet-settings-advanced/wallet-addresses/all-addresses/all-addresses';
+import { WalletAddressesPage } from '../pages/settings/wallet-settings/wallet-settings-advanced/wallet-addresses/wallet-addresses';
+import { WalletDeletePage } from '../pages/settings/wallet-settings/wallet-settings-advanced/wallet-delete/wallet-delete';
+import { WalletExportPage } from '../pages/settings/wallet-settings/wallet-settings-advanced/wallet-export/wallet-export';
+import { WalletExtendedPrivateKeyPage } from '../pages/settings/wallet-settings/wallet-settings-advanced/wallet-information/wallet-extended-private-key/wallet-extended-private-key';
+import { WalletInformationPage } from '../pages/settings/wallet-settings/wallet-settings-advanced/wallet-information/wallet-information';
+import { WalletServiceUrlPage } from '../pages/settings/wallet-settings/wallet-settings-advanced/wallet-service-url/wallet-service-url';
+import { WalletSettingsAdvancedPage } from '../pages/settings/wallet-settings/wallet-settings-advanced/wallet-settings-advanced';
+import { WalletTransactionHistoryPage } from '../pages/settings/wallet-settings/wallet-settings-advanced/wallet-transaction-history/wallet-transaction-history';
 
 /* Send */
 import { AmountPage } from '../pages/send/amount/amount';
-import { ConfirmPage } from '../pages/send/confirm/confirm';
 import { ChooseFeeLevelPage } from '../pages/send/choose-fee-level/choose-fee-level';
+import { ConfirmPage } from '../pages/send/confirm/confirm';
 
 /* Receive */
 import { CustomAmountPage } from '../pages/receive/custom-amount/custom-amount';
 
 /* Pipes */
-import { SatToUnitPipe } from '../pipes/satToUnit';
-import { SatToFiatPipe } from '../pipes/satToFiat';
 import { FiatToUnitPipe } from '../pipes/fiatToUnit';
 import { KeysPipe } from '../pipes/keys';
 import { OrderByPipe } from '../pipes/order-by';
+import { SatToFiatPipe } from '../pipes/satToFiat';
+import { SatToUnitPipe } from '../pipes/satToUnit';
 
 /* Providers */
-import { AddressProvider } from '../providers/address/address';
 import { AddressBookProvider } from '../providers/address-book/address-book';
-import { AppProvider } from '../providers/app/app';
-import { AppIdentityProvider } from '../providers/app-identity/app-identity';
+import { AddressProvider } from '../providers/address/address';
 import { AmazonProvider } from '../providers/amazon/amazon';
+import { AppIdentityProvider } from '../providers/app-identity/app-identity';
+import { AppProvider } from '../providers/app/app';
 import { BackupProvider } from '../providers/backup/backup';
 import { BitPayAccountProvider } from '../providers/bitpay-account/bitpay-account';
-import { BitPayProvider } from '../providers/bitpay/bitpay';
 import { BitPayCardProvider } from '../providers/bitpay-card/bitpay-card';
-import { BwcProvider } from '../providers/bwc/bwc';
+import { BitPayProvider } from '../providers/bitpay/bitpay';
 import { BwcErrorProvider } from '../providers/bwc-error/bwc-error';
-import { ConfigProvider } from '../providers/config/config';
+import { BwcProvider } from '../providers/bwc/bwc';
 import { CoinbaseProvider } from '../providers/coinbase/coinbase';
+import { ConfigProvider } from '../providers/config/config';
 import { DerivationPathHelperProvider } from '../providers/derivation-path-helper/derivation-path-helper';
+import { EmailNotificationsProvider } from '../providers/email-notifications/email-notifications';
 import { ExternalLinkProvider } from '../providers/external-link/external-link';
-import { FeedbackProvider } from '../providers/feedback/feedback';
 import { FeeProvider } from '../providers/fee/fee';
+import { FeedbackProvider } from '../providers/feedback/feedback';
+import { FilterProvider } from '../providers/filter/filter';
 import { GlideraProvider } from '../providers/glidera/glidera';
 import { HomeIntegrationsProvider } from '../providers/home-integrations/home-integrations';
 import { IncomingDataProvider } from '../providers/incoming-data/incoming-data';
@@ -192,15 +194,13 @@ import { ProfileProvider } from '../providers/profile/profile';
 import { PushNotificationsProvider } from '../providers/push-notifications/push-notifications';
 import { RateProvider } from '../providers/rate/rate';
 import { ReleaseProvider } from '../providers/release/release';
-import { ShapeshiftProvider } from '../providers/shapeshift/shapeshift';
 import { ScanProvider } from '../providers/scan/scan';
+import { ShapeshiftProvider } from '../providers/shapeshift/shapeshift';
 import { TimeProvider } from '../providers/time/time';
 import { TouchIdProvider } from '../providers/touchid/touchid';
 import { TxConfirmNotificationProvider } from '../providers/tx-confirm-notification/tx-confirm-notification';
 import { TxFormatProvider } from '../providers/tx-format/tx-format';
-import { FilterProvider } from '../providers/filter/filter';
 import { WalletProvider } from '../providers/wallet/wallet';
-import { EmailNotificationsProvider } from '../providers/email-notifications/email-notifications';
 
 /* Directives */
 import { CopyToClipboard } from '../directives/copy-to-clipboard/copy-to-clipboard';

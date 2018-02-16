@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Logger } from '../../providers/logger/logger';
 import * as _ from 'lodash';
+import { Logger } from '../../providers/logger/logger';
 
 //providers
 import { AppProvider } from '../app/app';

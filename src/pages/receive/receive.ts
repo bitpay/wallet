@@ -1,20 +1,20 @@
 import { Component } from '@angular/core';
+import { AlertController, Events, NavController } from 'ionic-angular';
 import { Logger } from '../../providers/logger/logger';
-import { NavController, Events, AlertController } from 'ionic-angular';
 
 // Native
 import { SocialSharing } from '@ionic-native/social-sharing';
 
 // Pages
+import { BackupGamePage } from '../backup/backup-game/backup-game';
 import { AmountPage } from '../send/amount/amount';
 import { CopayersPage } from './../add/copayers/copayers';
-import { BackupGamePage } from '../backup/backup-game/backup-game';
 
 // Providers
-import { WalletProvider } from '../../providers/wallet/wallet';
-import { ProfileProvider } from '../../providers/profile/profile';
-import { PlatformProvider } from '../../providers/platform/platform';
 import { BwcErrorProvider } from '../../providers/bwc-error/bwc-error';
+import { PlatformProvider } from '../../providers/platform/platform';
+import { ProfileProvider } from '../../providers/profile/profile';
+import { WalletProvider } from '../../providers/wallet/wallet';
 
 import * as _ from 'lodash';
 

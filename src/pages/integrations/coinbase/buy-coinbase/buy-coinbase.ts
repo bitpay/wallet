@@ -1,20 +1,20 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, Events, ModalController } from 'ionic-angular';
-import { Logger } from '../../../../providers/logger/logger';
+import { Events, ModalController, NavController, NavParams } from 'ionic-angular';
 import * as _ from 'lodash';
+import { Logger } from '../../../../providers/logger/logger';
 
 //providers
 import { CoinbaseProvider } from '../../../../providers/coinbase/coinbase';
-import { PopupProvider } from '../../../../providers/popup/popup';
 import { ExternalLinkProvider } from '../../../../providers/external-link/external-link';
 import { OnGoingProcessProvider } from '../../../../providers/on-going-process/on-going-process';
-import { WalletProvider } from '../../../../providers/wallet/wallet';
-import { TxFormatProvider } from '../../../../providers/tx-format/tx-format';
+import { PopupProvider } from '../../../../providers/popup/popup';
 import { ProfileProvider } from '../../../../providers/profile/profile';
+import { TxFormatProvider } from '../../../../providers/tx-format/tx-format';
+import { WalletProvider } from '../../../../providers/wallet/wallet';
 
 //pages
-import { CoinbasePage } from '../coinbase';
 import { SuccessModalPage } from '../../../success/success';
+import { CoinbasePage } from '../coinbase';
 
 @Component({
   selector: 'page-buy-coinbase',

@@ -1,15 +1,15 @@
 import { Component } from '@angular/core';
-import { ModalController, NavController, Events } from 'ionic-angular';
-import { Logger } from '../../../providers/logger/logger';
+import { Events, ModalController, NavController } from 'ionic-angular';
 import * as _ from 'lodash';
+import { Logger } from '../../../providers/logger/logger';
 
 // Pages
 import { ShapeshiftDetailsPage } from './shapeshift-details/shapeshift-details';
 import { ShapeshiftShiftPage } from './shapeshift-shift/shapeshift-shift';
 
 // Providers
-import { ShapeshiftProvider } from '../../../providers/shapeshift/shapeshift';
 import { ExternalLinkProvider } from '../../../providers/external-link/external-link';
+import { ShapeshiftProvider } from '../../../providers/shapeshift/shapeshift';
 
 @Component({
   selector: 'page-shapeshift',

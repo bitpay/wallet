@@ -4,8 +4,8 @@ import { Logger } from '../../providers/logger/logger';
 //providers
 import { PersistenceProvider } from '../persistence/persistence';
 
-import * as _ from 'lodash';
 import * as bitauthService from 'bitauth';
+import * as _ from 'lodash';
 
 @Injectable()
 export class AppIdentityProvider {

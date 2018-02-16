@@ -1,16 +1,16 @@
 
-import { Injectable } from '@angular/core';
-import { Logger } from '../../providers/logger/logger';
 import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
 import { Events } from 'ionic-angular';
+import { Logger } from '../../providers/logger/logger';
 
 //providers
-import { PlatformProvider } from '../platform/platform';
-import { PersistenceProvider } from '../persistence/persistence';
-import { HomeIntegrationsProvider } from '../home-integrations/home-integrations';
+import { AppProvider } from '../app/app';
 import { ConfigProvider } from '../config/config';
 import { FeeProvider } from '../fee/fee';
-import { AppProvider } from '../app/app';
+import { HomeIntegrationsProvider } from '../home-integrations/home-integrations';
+import { PersistenceProvider } from '../persistence/persistence';
+import { PlatformProvider } from '../platform/platform';
 
 import * as _ from "lodash";
 

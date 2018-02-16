@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { AlertController } from 'ionic-angular';
 import { TranslateService } from '@ngx-translate/core';
+import { AlertController } from 'ionic-angular';
 import { Logger } from '../../providers/logger/logger';
 
 @Injectable()

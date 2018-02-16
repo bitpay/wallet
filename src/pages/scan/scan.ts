@@ -1,19 +1,19 @@
 import { Component } from '@angular/core';
-import { NavController, Events, ModalController } from 'ionic-angular';
-import { Logger } from '../../providers/logger/logger';
 import { TranslateService } from '@ngx-translate/core';
+import { Events, ModalController, NavController } from 'ionic-angular';
+import { Logger } from '../../providers/logger/logger';
 
 //providers
+import { ExternalLinkProvider } from '../../providers/external-link/external-link';
+import { IncomingDataProvider } from '../../providers/incoming-data/incoming-data';
 import { PlatformProvider } from '../../providers/platform/platform';
 import { ScanProvider } from '../../providers/scan/scan';
-import { IncomingDataProvider } from '../../providers/incoming-data/incoming-data';
-import { ExternalLinkProvider } from '../../providers/external-link/external-link';
 
 //pages
-import { AmountPage } from '../send/amount/amount';
 import { IncomingDataMenuPage } from '../incoming-data-menu/incoming-data-menu';
-import { AddressbookAddPage } from '../settings/addressbook/add/add';
 import { PaperWalletPage } from '../paper-wallet/paper-wallet';
+import { AmountPage } from '../send/amount/amount';
+import { AddressbookAddPage } from '../settings/addressbook/add/add';
 
 //import { QRScanner as QRScannerBrowser } from 'cordova-plugin-qrscanner/src/browser/src/library'
 

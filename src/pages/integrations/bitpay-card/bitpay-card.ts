@@ -1,20 +1,20 @@
 import { Component } from '@angular/core';
-import { NavParams, NavController } from 'ionic-angular';
-import { Logger } from '@nsalaun/ng-logger';
 import { TranslateService } from '@ngx-translate/core';
+import { Logger } from '@nsalaun/ng-logger';
+import { NavController, NavParams } from 'ionic-angular';
 
 // Pages
 import { AmountPage } from '../../send/amount/amount';
 
 //providers
-import { BitPayProvider } from '../../../providers/bitpay/bitpay';
 import { BitPayCardProvider } from '../../../providers/bitpay-card/bitpay-card';
+import { BitPayProvider } from '../../../providers/bitpay/bitpay';
+import { ExternalLinkProvider } from '../../../providers/external-link/external-link';
 import { PopupProvider } from '../../../providers/popup/popup';
 import { TimeProvider } from '../../../providers/time/time';
-import { ExternalLinkProvider } from '../../../providers/external-link/external-link';
 
-import * as moment from 'moment';
 import * as _ from 'lodash';
+import * as moment from 'moment';
 
 @Component({
   selector: 'page-bitpay-card',

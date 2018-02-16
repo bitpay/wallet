@@ -1,8 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, Inject } from '@angular/core';
 import { DOCUMENT } from "@angular/platform-browser";
-import { Inject } from '@angular/core';
-import { ActionSheetController, ToastController } from 'ionic-angular';
 import { TranslateService } from '@ngx-translate/core';
+import { ActionSheetController, ToastController } from 'ionic-angular';
 
 //native
 import { SocialSharing } from '@ionic-native/social-sharing';

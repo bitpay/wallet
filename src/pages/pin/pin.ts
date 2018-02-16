@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavParams, ViewController, Platform } from 'ionic-angular';
+import { NavParams, Platform, ViewController } from 'ionic-angular';
 import { ConfigProvider } from '../../providers/config/config';
 import { Logger } from '../../providers/logger/logger';
 

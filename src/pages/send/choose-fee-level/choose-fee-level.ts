@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
-import { ViewController } from 'ionic-angular';
-import { Logger } from '../../../providers/logger/logger';
-import * as _ from 'lodash';
 import { TranslateService } from '@ngx-translate/core';
+import { ViewController } from 'ionic-angular';
+import * as _ from 'lodash';
+import { Logger } from '../../../providers/logger/logger';
 
 // Providers
 import { FeeProvider } from '../../../providers/fee/fee';

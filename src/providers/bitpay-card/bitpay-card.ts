@@ -2,10 +2,10 @@ import { Injectable } from '@angular/core';
 import { Logger } from '../../providers/logger/logger';
 
 //providers
-import { BitPayProvider } from '../bitpay/bitpay';
 import { AppIdentityProvider } from '../app-identity/app-identity';
-import { PersistenceProvider } from '../persistence/persistence';
+import { BitPayProvider } from '../bitpay/bitpay';
 import { HomeIntegrationsProvider } from '../home-integrations/home-integrations';
+import { PersistenceProvider } from '../persistence/persistence';
 
 import * as _ from 'lodash';
 import * as moment from 'moment';

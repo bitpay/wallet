@@ -1,23 +1,23 @@
 import { Injectable } from '@angular/core';
-import { Events, NavController, App } from 'ionic-angular';
-import { Logger } from '../../providers/logger/logger';
 import { TranslateService } from '@ngx-translate/core';
+import { App, Events, NavController } from 'ionic-angular';
+import { Logger } from '../../providers/logger/logger';
 
 //providers
+import { AppProvider } from '../app/app';
 import { BwcProvider } from '../bwc/bwc';
 import { PayproProvider } from '../paypro/paypro';
-import { ScanProvider } from '../scan/scan';
 import { PopupProvider } from '../popup/popup';
-import { AppProvider } from '../app/app';
+import { ScanProvider } from '../scan/scan';
 
 //pages
-import { ConfirmPage } from '../../pages/send/confirm/confirm';
-import { AmountPage } from '../../pages/send/amount/amount';
-import { JoinWalletPage } from '../../pages/add/join-wallet/join-wallet';
 import { ImportWalletPage } from '../../pages/add/import-wallet/import-wallet';
-import { GlideraPage } from '../../pages/integrations/glidera/glidera';
-import { CoinbasePage } from '../../pages/integrations/coinbase/coinbase';
+import { JoinWalletPage } from '../../pages/add/join-wallet/join-wallet';
 import { BitPayCardIntroPage } from '../../pages/integrations/bitpay-card/bitpay-card-intro/bitpay-card-intro';
+import { CoinbasePage } from '../../pages/integrations/coinbase/coinbase';
+import { GlideraPage } from '../../pages/integrations/glidera/glidera';
+import { AmountPage } from '../../pages/send/amount/amount';
+import { ConfirmPage } from '../../pages/send/confirm/confirm';
 
 @Injectable()
 export class IncomingDataProvider {

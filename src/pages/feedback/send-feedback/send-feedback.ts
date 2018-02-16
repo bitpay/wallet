@@ -1,19 +1,19 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, Platform } from 'ionic-angular';
-import { Validators, FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
+import { NavController, NavParams, Platform } from 'ionic-angular';
 import * as _ from "lodash";
 
 //providers
-import { ConfigProvider } from '../../../providers/config/config';
 import { AppProvider } from '../../../providers/app/app';
-import { OnGoingProcessProvider } from '../../../providers/on-going-process/on-going-process';
+import { ConfigProvider } from '../../../providers/config/config';
 import { FeedbackProvider } from '../../../providers/feedback/feedback';
+import { OnGoingProcessProvider } from '../../../providers/on-going-process/on-going-process';
 import { PopupProvider } from '../../../providers/popup/popup';
 
 //pages
-import { FeedbackCompletePage } from '../feedback-complete/feedback-complete';
 import { HomePage } from '../../home/home';
+import { FeedbackCompletePage } from '../feedback-complete/feedback-complete';
 
 
 @Component({

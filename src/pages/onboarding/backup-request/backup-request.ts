@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, AlertController } from 'ionic-angular';
+import { AlertController, NavController, NavParams } from 'ionic-angular';
 import { Logger } from '../../../providers/logger/logger';
 
-import { DisclaimerPage } from '../disclaimer/disclaimer';
 import { BackupWarningPage } from '../../backup/backup-warning/backup-warning';
+import { DisclaimerPage } from '../disclaimer/disclaimer';
 
 @Component({
   selector: 'page-backup-request',

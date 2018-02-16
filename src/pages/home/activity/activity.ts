@@ -1,17 +1,17 @@
 import { Component } from "@angular/core";
-import { Logger } from '../../../providers/logger/logger';
-import { ModalController, NavController } from 'ionic-angular';
 import { TranslateService } from '@ngx-translate/core';
+import { ModalController, NavController } from 'ionic-angular';
+import { Logger } from '../../../providers/logger/logger';
 
 //providers
-import { ProfileProvider } from '../../../providers/profile/profile';
 import { OnGoingProcessProvider } from '../../../providers/on-going-process/on-going-process';
-import { WalletProvider } from '../../../providers/wallet/wallet';
 import { PopupProvider } from '../../../providers/popup/popup';
+import { ProfileProvider } from '../../../providers/profile/profile';
+import { WalletProvider } from '../../../providers/wallet/wallet';
 
 //pages
-import { TxpDetailsPage } from '../../txp-details/txp-details';
 import { TxDetailsPage } from '../../tx-details/tx-details';
+import { TxpDetailsPage } from '../../txp-details/txp-details';
 
 import * as _ from 'lodash';
 

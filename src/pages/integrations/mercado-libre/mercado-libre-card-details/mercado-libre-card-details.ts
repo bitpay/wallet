@@ -3,8 +3,8 @@ import { NavParams, ViewController } from 'ionic-angular';
 import { Logger } from '../../../../providers/logger/logger';
 
 // Provider
-import { MercadoLibreProvider } from '../../../../providers/mercado-libre/mercado-libre';
 import { ExternalLinkProvider } from '../../../../providers/external-link/external-link';
+import { MercadoLibreProvider } from '../../../../providers/mercado-libre/mercado-libre';
 
 @Component({
   selector: 'page-mercado-libre-card-details',

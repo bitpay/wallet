@@ -6,8 +6,8 @@ import { Logger } from '../../../../../../providers/logger/logger';
 import { SocialSharing } from '@ionic-native/social-sharing';
 
 //providers
-import { OnGoingProcessProvider } from '../../../../../../providers/on-going-process/on-going-process';
 import { AppProvider } from '../../../../../../providers/app/app';
+import { OnGoingProcessProvider } from '../../../../../../providers/on-going-process/on-going-process';
 import { PlatformProvider } from '../../../../../../providers/platform/platform';
 
 @Component({

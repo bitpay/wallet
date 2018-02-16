@@ -1,16 +1,16 @@
 import { Component, ViewChild } from '@angular/core';
-import { NavController, Slides, Navbar, AlertController, NavParams } from 'ionic-angular';
-import { Logger } from '../../../providers/logger/logger';
+import { AlertController, Navbar, NavController, NavParams, Slides } from 'ionic-angular';
 import * as _ from 'lodash';
+import { Logger } from '../../../providers/logger/logger';
 
 //pahes
 import { DisclaimerPage } from '../../onboarding/disclaimer/disclaimer';
 
 //providers
-import { ProfileProvider } from '../../../providers/profile/profile';
-import { WalletProvider } from '../../../providers/wallet/wallet';
 import { BwcProvider } from '../../../providers/bwc/bwc';
 import { OnGoingProcessProvider } from '../../../providers/on-going-process/on-going-process';
+import { ProfileProvider } from '../../../providers/profile/profile';
+import { WalletProvider } from '../../../providers/wallet/wallet';
 
 @Component({
   selector: 'page-backup-game',

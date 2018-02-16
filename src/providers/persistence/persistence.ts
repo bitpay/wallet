@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
-import { Logger } from '../../providers/logger/logger';
 import { File } from '@ionic-native/file';
 import * as _ from 'lodash';
+import { Logger } from '../../providers/logger/logger';
 
 import { PlatformProvider } from '../platform/platform';
-import { LocalStorage } from './storage/local-storage';
 import { FileStorage } from './storage/file-storage';
+import { LocalStorage } from './storage/local-storage';
 //import { RamStorage } from './storage/ram-storage';
 
 const Keys = {

@@ -1,14 +1,14 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
-import { Logger } from '../../../../../providers/logger/logger';
 import * as _ from 'lodash';
 import * as papa from 'papaparse';
+import { Logger } from '../../../../../providers/logger/logger';
 
 // Providers
-import { ProfileProvider } from '../../../../../providers/profile/profile';
+import { AppProvider } from '../../../../../providers/app/app';
 import { ConfigProvider } from '../../../../../providers/config/config';
 import { PlatformProvider } from '../../../../../providers/platform/platform';
-import { AppProvider } from '../../../../../providers/app/app';
+import { ProfileProvider } from '../../../../../providers/profile/profile';
 import { WalletProvider } from '../../../../../providers/wallet/wallet';
 
 // Pages

@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
+import { Logger } from '../../providers/logger/logger';
 import { BwcProvider } from '../bwc/bwc';
-import { RateProvider } from '../rate/rate';
 import { ConfigProvider } from '../config/config';
 import { FilterProvider } from '../filter/filter';
-import { Logger } from '../../providers/logger/logger';
+import { RateProvider } from '../rate/rate';
 
 import * as _ from "lodash";
 

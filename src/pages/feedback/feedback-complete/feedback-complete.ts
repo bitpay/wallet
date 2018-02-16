@@ -6,10 +6,10 @@ import { Logger } from '../../../providers/logger/logger';
 import { SocialSharing } from '@ionic-native/social-sharing';
 
 //providers
-import { PersistenceProvider } from '../../../providers/persistence/persistence';
-import { PlatformProvider } from '../../../providers/platform/platform';
 import { AppProvider } from '../../../providers/app/app';
 import { ConfigProvider } from '../../../providers/config/config';
+import { PersistenceProvider } from '../../../providers/persistence/persistence';
+import { PlatformProvider } from '../../../providers/platform/platform';
 
 //pages
 import { HomePage } from '../../home/home';

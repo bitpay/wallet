@@ -1,8 +1,8 @@
 import { Component } from "@angular/core";
-import { NavController, NavParams, Events } from 'ionic-angular';
-import { Logger } from '../../providers/logger/logger';
-import * as _ from "lodash";
 import { TranslateService } from '@ngx-translate/core';
+import { Events, NavController, NavParams } from 'ionic-angular';
+import * as _ from "lodash";
+import { Logger } from '../../providers/logger/logger';
 
 // Providers
 import { AddressBookProvider } from '../../providers/address-book/address-book';

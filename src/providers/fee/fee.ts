@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
-import { Logger } from '../../providers/logger/logger';
 import { TranslateService } from '@ngx-translate/core';
+import { Logger } from '../../providers/logger/logger';
 
 //providers
-import { ConfigProvider } from '../../providers/config/config';
 import { BwcProvider } from '../../providers/bwc/bwc';
+import { ConfigProvider } from '../../providers/config/config';
 
 import * as _ from 'lodash';
 

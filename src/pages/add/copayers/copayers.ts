@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, Events } from 'ionic-angular';
 import { TranslateService } from '@ngx-translate/core';
+import { Events, NavController, NavParams } from 'ionic-angular';
 
 // Pages
 import { WalletDetailsPage } from '../../../pages/wallet-details/wallet-details';
@@ -8,13 +8,13 @@ import { WalletDetailsPage } from '../../../pages/wallet-details/wallet-details'
 // Providers
 import { AppProvider } from '../../../providers/app/app';
 import { BwcErrorProvider } from '../../../providers/bwc-error/bwc-error';
+import { Logger } from '../../../providers/logger/logger';
 import { OnGoingProcessProvider } from "../../../providers/on-going-process/on-going-process";
 import { PlatformProvider } from '../../../providers/platform/platform';
 import { PopupProvider } from '../../../providers/popup/popup';
 import { ProfileProvider } from '../../../providers/profile/profile';
-import { WalletProvider } from '../../../providers/wallet/wallet';
-import { Logger } from '../../../providers/logger/logger';
 import { PushNotificationsProvider } from '../../../providers/push-notifications/push-notifications';
+import { WalletProvider } from '../../../providers/wallet/wallet';
 
 @Component({
   selector: 'page-copayers',

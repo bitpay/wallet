@@ -1,17 +1,17 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, ModalController } from 'ionic-angular';
-import { Logger } from '../../../../providers/logger/logger';
-import * as moment from 'moment';
-import * as _ from 'lodash';
 import { TranslateService } from '@ngx-translate/core';
+import { ModalController, NavController, NavParams } from 'ionic-angular';
+import * as _ from 'lodash';
+import * as moment from 'moment';
+import { Logger } from '../../../../providers/logger/logger';
 
 // Pages
-import { ShapeshiftPage } from '../shapeshift';
 import { SuccessModalPage } from '../../../success/success';
+import { ShapeshiftPage } from '../shapeshift';
 
 // Providers
-import { BwcProvider } from '../../../../providers/bwc/bwc';
 import { BwcErrorProvider } from '../../../../providers/bwc-error/bwc-error';
+import { BwcProvider } from '../../../../providers/bwc/bwc';
 import { ConfigProvider } from '../../../../providers/config/config';
 import { ExternalLinkProvider } from '../../../../providers/external-link/external-link';
 import { OnGoingProcessProvider } from "../../../../providers/on-going-process/on-going-process";
