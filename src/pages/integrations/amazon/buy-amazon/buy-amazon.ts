@@ -311,7 +311,7 @@ export class BuyAmazonPage {
         this.openSuccessModal();
       });
     });
-  }, 8000, {
+  }, 15000, {
       'leading': true
     });
 
@@ -414,11 +414,14 @@ export class BuyAmazonPage {
 
   public openSuccessModal(): void {
     let successComment: string;
+    let cssClass: string;
     if (this.amazonGiftCard.status == 'FAILURE') {
-      successComment = 'Bitcoin purchase completed. Coinbase has queued the transfer to your selected wallet';
+      successComment = 'Your purchase could not be completed';
+      cssClass = 'danger';
     }
     if (this.amazonGiftCard.status == 'PENDING') {
-      successComment = 'Your purchase was added to the list of pending'
+      successComment = 'Your purchase was added to the list of pending';
+      cssClass = 'warning';
     }
     if (this.amazonGiftCard.status == 'SUCCESS') {
       successComment = 'Bought ' + this.amountUnitStr;
@@ -427,7 +430,7 @@ export class BuyAmazonPage {
       successComment = 'Gift card generated and ready to use.';
     }
     let successText = '';
-    let modal = this.modalCtrl.create(SuccessModalPage, { successText: successText, successComment: successComment }, { showBackdrop: true, enableBackdropDismiss: false });
+    let modal = this.modalCtrl.create(SuccessModalPage, { successText: successText, successComment: successComment, cssClass: cssClass }, { showBackdrop: true, enableBackdropDismiss: false });
     modal.present();
     modal.onDidDismiss(() => {
       this.navCtrl.remove(2, 2);

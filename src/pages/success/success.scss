@@ -1,6 +1,5 @@
 page-success{
   .container {
-    background-color: #11D1A6;
     height: 100%;
     position: relative;
     .content {
@@ -8,7 +7,7 @@ page-success{
       display: flex;
       justify-content: center;
       align-items: center;
-      .success {
+      .body {
         margin-top: -20vh;
         text-align: center;
         &-img {
@@ -40,5 +39,14 @@ page-success{
       font-weight: 600;
       cursor: pointer;
     }
+  }
+  .success {
+    background-color: #11D1A6;
+  }
+  .warning {
+    background-color: color($colors, warning);
+  }
+  .danger {
+    background-color: color($colors, danger);
   }
 }

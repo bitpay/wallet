@@ -171,7 +171,7 @@
         <ion-label>
           {{'Merchant Message'|translate}}
         </ion-label>
-        <ion-note item-end>
+        <ion-note *ngIf="tx.paypro.pr && tx.paypro.pr.pd" item-end>
           {{tx.paypro.pr.pd.memo}}
         </ion-note>
       </ion-item>
