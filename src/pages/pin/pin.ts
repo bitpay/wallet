@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavParams, ViewController, Platform } from 'ionic-angular';
+import { NavParams, Platform, ViewController } from 'ionic-angular';
 import { ConfigProvider } from '../../providers/config/config';
 import { Logger } from '../../providers/logger/logger';
 
@@ -61,18 +61,18 @@ export class PinModalPage {
   }
 
   public newEntry(value: string): void {
-    if (this.disableButtons) return;
+    if (this.disableButtons) { return; }
     this.incorrect = false;
     this.currentPin = this.currentPin + value;
-    if (!this.isComplete()) return;
-    if (this.action === 'checkPin' || this.action === 'removeLock') this.checkIfCorrect();
+    if (!this.isComplete()) { return; }
+    if (this.action === 'checkPin' || this.action === 'removeLock') { this.checkIfCorrect(); }
     if (this.action === 'pinSetUp') {
       if (!this.confirmingPin) {
         this.confirmingPin = true;
         this.firstPinEntered = this.currentPin;
         this.currentPin = '';
       }
-      else if (this.firstPinEntered === this.currentPin) this.save();
+      else if (this.firstPinEntered === this.currentPin) { this.save(); }
       else {
         this.firstPinEntered = this.currentPin = '';
         this.incorrect = true;
@@ -95,7 +95,7 @@ export class PinModalPage {
 
   private lockTimeControl(bannedUntil): void {
     this.setExpirationTime(bannedUntil, null);
-    var countDown = setInterval(() => {
+    let countDown = setInterval(() => {
       this.setExpirationTime(bannedUntil, countDown);
     }, 1000);
   }
@@ -103,7 +103,7 @@ export class PinModalPage {
   private setExpirationTime(bannedUntil, countDown) {
     let now = Math.floor(Date.now() / 1000);
     if (now > bannedUntil) {
-      if (countDown) this.reset(countDown);
+      if (countDown) { this.reset(countDown); }
     } else {
       this.disableButtons = true;
       let totalSecs = bannedUntil - now;
@@ -120,13 +120,13 @@ export class PinModalPage {
   }
 
   public delete(): void {
-    if (this.disableButtons) return;
+    if (this.disableButtons) { return; }
     this.currentPin = this.currentPin.substring(0, this.currentPin.length - 1);
   }
 
   private isComplete(): boolean {
-    if (this.currentPin.length < 4) return false;
-    else return true;
+    if (this.currentPin.length < 4) { return false; }
+    else { return true; }
   }
 
   public save(): void {
@@ -162,7 +162,7 @@ export class PinModalPage {
   }
 
   private saveFailedAttempt(bannedUntil) {
-    let lock = { bannedUntil: bannedUntil };
+    let lock = { bannedUntil };
     this.configProvider.set({ lock });
   }
 

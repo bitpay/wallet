@@ -1,18 +1,18 @@
 import { Component } from '@angular/core';
-import { NavController, ModalController, NavParams } from 'ionic-angular';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ModalController, NavController, NavParams } from 'ionic-angular';
 import { Logger } from '../../../providers/logger/logger';
-import { Validators, FormBuilder, FormGroup } from '@angular/forms';
 
 //providers
 import { CoinbaseProvider } from '../../../providers/coinbase/coinbase';
-import { PopupProvider } from '../../../providers/popup/popup';
 import { ExternalLinkProvider } from '../../../providers/external-link/external-link';
-import { PlatformProvider } from '../../../providers/platform/platform';
 import { OnGoingProcessProvider } from '../../../providers/on-going-process/on-going-process';
+import { PlatformProvider } from '../../../providers/platform/platform';
+import { PopupProvider } from '../../../providers/popup/popup';
 
 //pages
-import { CoinbaseTxDetailsPage } from './coinbase-tx-details/coinbase-tx-details';
 import { AmountPage } from '../../send/amount/amount';
+import { CoinbaseTxDetailsPage } from './coinbase-tx-details/coinbase-tx-details';
 
 import * as _ from 'lodash';
 
@@ -58,10 +58,10 @@ export class CoinbasePage {
     this.showOauthForm = false;
   }
 
-  ionViewWillEnter() {
+  public ionViewWillEnter() {
     if (this.navParams.data.code) {
       this.coinbaseProvider.getStoredToken((at: string) => {
-        if (!at) this.submitOauthCode(this.navParams.data.code);
+        if (!at) { this.submitOauthCode(this.navParams.data.code); }
       });
     } else {
       this.init();
@@ -186,7 +186,7 @@ export class CoinbasePage {
     let modal = this.modalCtrl.create(CoinbaseTxDetailsPage, { tx: this.tx });
     modal.present();
     modal.onDidDismiss((data) => {
-      if (data.updateRequired) this.updateTransactions();
+      if (data.updateRequired) { this.updateTransactions(); }
     })
   }
 

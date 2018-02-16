@@ -6,10 +6,10 @@ import { Logger } from '../../../providers/logger/logger';
 import { SocialSharing } from '@ionic-native/social-sharing';
 
 //providers
-import { ProfileProvider } from '../../../providers/profile/profile';
 import { PlatformProvider } from '../../../providers/platform/platform';
-import { WalletProvider } from '../../../providers/wallet/wallet';
+import { ProfileProvider } from '../../../providers/profile/profile';
 import { TxFormatProvider } from '../../../providers/tx-format/tx-format';
+import { WalletProvider } from '../../../providers/wallet/wallet';
 
 @Component({
   selector: 'page-custom-amount',
@@ -57,7 +57,7 @@ export class CustomAmountPage {
       if (_currency != 'BTC' && _currency != 'BCH') {
         // Convert to BTC or BCH
         let amountUnit = this.txFormatProvider.satToUnit(parsedAmount.amountSat);
-        var btcParsedAmount = this.txFormatProvider.parseAmount(this.wallet.coin, amountUnit, this.wallet.coin.toUpperCase());
+        let btcParsedAmount = this.txFormatProvider.parseAmount(this.wallet.coin, amountUnit, this.wallet.coin.toUpperCase());
 
         this.amountCoin = btcParsedAmount.amount;
         this.altAmountStr = btcParsedAmount.amountUnitStr;
@@ -70,7 +70,7 @@ export class CustomAmountPage {
     });
   }
 
-  ionViewDidLoad() {
+  public ionViewDidLoad() {
     this.logger.info('ionViewDidLoad CustomAmountPage');
   }
 

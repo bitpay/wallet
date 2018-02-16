@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, Events } from 'ionic-angular';
 import { TranslateService } from '@ngx-translate/core';
+import { Events, NavController, NavParams } from 'ionic-angular';
 
 // Pages
 import { WalletDetailsPage } from '../../../pages/wallet-details/wallet-details';
@@ -8,13 +8,13 @@ import { WalletDetailsPage } from '../../../pages/wallet-details/wallet-details'
 // Providers
 import { AppProvider } from '../../../providers/app/app';
 import { BwcErrorProvider } from '../../../providers/bwc-error/bwc-error';
+import { Logger } from '../../../providers/logger/logger';
 import { OnGoingProcessProvider } from "../../../providers/on-going-process/on-going-process";
 import { PlatformProvider } from '../../../providers/platform/platform';
 import { PopupProvider } from '../../../providers/popup/popup';
 import { ProfileProvider } from '../../../providers/profile/profile';
-import { WalletProvider } from '../../../providers/wallet/wallet';
-import { Logger } from '../../../providers/logger/logger';
 import { PushNotificationsProvider } from '../../../providers/push-notifications/push-notifications';
+import { WalletProvider } from '../../../providers/wallet/wallet';
 
 @Component({
   selector: 'page-copayers',
@@ -48,7 +48,7 @@ export class CopayersPage {
     this.secret = null;
   }
 
-  ionViewDidLoad() {
+  public ionViewDidLoad() {
     this.logger.info('ionViewDidLoad CopayersPage');
     this.wallet = this.profileProvider.getWallet(this.navParams.data.walletId);
     this.updateWallet();
@@ -60,7 +60,7 @@ export class CopayersPage {
     });
   }
 
-  ionViewWillLeave() {
+  public ionViewWillLeave() {
     this.events.unsubscribe('bwsEvent');
   }
 
@@ -72,8 +72,9 @@ export class CopayersPage {
       this.secret = this.wallet.status.wallet.secret;
       if (status.wallet.status == 'complete') {
         this.wallet.openWallet((err: any, status: any) => {
-          if (err)
+          if (err) {
             this.logger.error(err);
+          }
 
           this.navCtrl.popToRoot();
           this.navCtrl.push(WalletDetailsPage, { walletId: this.wallet.credentials.walletId });
@@ -90,7 +91,7 @@ export class CopayersPage {
     let title = this.translate.instant('Confirm');
     let msg = this.translate.instant('Are you sure you want to cancel and delete this wallet?');
     this.popupProvider.ionicConfirm(title, msg).then((res: any) => {
-      if (res) this.deleteWallet();
+      if (res) { this.deleteWallet(); }
     });
   }
 

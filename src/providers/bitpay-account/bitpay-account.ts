@@ -2,12 +2,12 @@ import { Injectable } from '@angular/core';
 import { Logger } from '@nsalaun/ng-logger';
 
 //providers
-import { PlatformProvider } from '../platform/platform';
-import { BitPayProvider } from '../bitpay/bitpay';
-import { PopupProvider } from '../popup/popup';
-import { PersistenceProvider } from '../persistence/persistence';
 import { AppIdentityProvider } from '../app-identity/app-identity';
 import { BitPayCardProvider } from '../bitpay-card/bitpay-card';
+import { BitPayProvider } from '../bitpay/bitpay';
+import { PersistenceProvider } from '../persistence/persistence';
+import { PlatformProvider } from '../platform/platform';
+import { PopupProvider } from '../popup/popup';
 
 import * as _ from 'lodash';
 
@@ -72,7 +72,7 @@ export class BitPayAccountProvider {
         params: {
           secret: pairData.secret,
           version: 2,
-          deviceName: deviceName,
+          deviceName,
           code: pairData.otp
         }
       };
@@ -83,13 +83,13 @@ export class BitPayAccountProvider {
         }
         let apiContext = {
           token: data.data,
-          pairData: pairData,
+          pairData,
           appIdentity: data.appIdentity
         };
         this.logger.info('BitPay service BitAuth create token: SUCCESS');
 
         this.fetchBasicInfo(apiContext, (err, basicInfo) => {
-          if (err) return cb(err);
+          if (err) { return cb(err); }
           let title = 'Add BitPay Account?'; //TODO gettextcatalog
           let msg;
 
@@ -144,7 +144,7 @@ export class BitPayAccountProvider {
     };
     // Get basic account information
     this.bitPayProvider.post('/api/v2/' + apiContext.token, json, (data) => {
-      if (data && data.error) return cb(data.error);
+      if (data && data.error) { return cb(data.error); }
       this.logger.info('BitPay Account Get Basic Info: SUCCESS');
       return cb(null, data.data);
     }, (data) => {
@@ -184,7 +184,7 @@ export class BitPayAccountProvider {
             pairData: {
               email: key
             },
-            appIdentity: appIdentity
+            appIdentity
           };
 
           accountsArray.push(accounts[key]);

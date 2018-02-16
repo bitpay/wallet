@@ -1,19 +1,19 @@
 import { Component } from '@angular/core';
-import { NavController, Events, ModalController } from 'ionic-angular';
-import { Logger } from '../../providers/logger/logger';
 import { TranslateService } from '@ngx-translate/core';
+import { Events, ModalController, NavController } from 'ionic-angular';
+import { Logger } from '../../providers/logger/logger';
 
 //providers
+import { ExternalLinkProvider } from '../../providers/external-link/external-link';
+import { IncomingDataProvider } from '../../providers/incoming-data/incoming-data';
 import { PlatformProvider } from '../../providers/platform/platform';
 import { ScanProvider } from '../../providers/scan/scan';
-import { IncomingDataProvider } from '../../providers/incoming-data/incoming-data';
-import { ExternalLinkProvider } from '../../providers/external-link/external-link';
 
 //pages
-import { AmountPage } from '../send/amount/amount';
 import { IncomingDataMenuPage } from '../incoming-data-menu/incoming-data-menu';
-import { AddressbookAddPage } from '../settings/addressbook/add/add';
 import { PaperWalletPage } from '../paper-wallet/paper-wallet';
+import { AmountPage } from '../send/amount/amount';
+import { AddressbookAddPage } from '../settings/addressbook/add/add';
 
 //import { QRScanner as QRScannerBrowser } from 'cordova-plugin-qrscanner/src/browser/src/library'
 
@@ -66,13 +66,13 @@ export class ScanPage {
     this.canOpenSettings = false;
   }
 
-  ionViewDidLoad() {
+  public ionViewDidLoad() {
     this.logger.info('ionViewDidLoad ScanPage');
   }
 
-  ionViewWillLeave() {
+  public ionViewWillLeave() {
     //TODO support for browser
-    if (!this.platform.isCordova) return;
+    if (!this.platform.isCordova) { return; }
     this.cameraToggleActive = false;
     this.lightActive = false;
     this.scanProvider.frontCameraEnabled = false;
@@ -81,7 +81,7 @@ export class ScanPage {
     this.events.unsubscribe('scannerServiceInitialized');
   }
 
-  ionViewWillEnter() {
+  public ionViewWillEnter() {
     //TODO support for browser
     if (!this.platform.isCordova) {
       this.notSupportedMessage = this.translate.instant("Scanner not supported");
@@ -141,7 +141,7 @@ export class ScanPage {
   }
 
   private sendPaymentToAddress(bitcoinAddress: string, coin: string): void {
-    this.navCtrl.push(AmountPage, { toAddress: bitcoinAddress, coin: coin });
+    this.navCtrl.push(AmountPage, { toAddress: bitcoinAddress, coin });
   }
 
   private addToAddressBook(bitcoinAddress: string): void {
@@ -149,7 +149,7 @@ export class ScanPage {
   }
 
   private scanPaperWallet(privateKey: string) {
-    this.navCtrl.push(PaperWalletPage, { privateKey: privateKey });
+    this.navCtrl.push(PaperWalletPage, { privateKey });
   }
 
   private updateCapabilities(): void {

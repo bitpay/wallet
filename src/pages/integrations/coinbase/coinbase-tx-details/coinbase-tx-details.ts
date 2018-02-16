@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ViewController, NavParams } from 'ionic-angular';
+import { NavParams, ViewController } from 'ionic-angular';
 
 //providers
 import { CoinbaseProvider } from '../../../../providers/coinbase/coinbase';
@@ -26,7 +26,7 @@ export class CoinbaseTxDetailsPage {
   public remove() {
     this.coinbaseProvider.setCredentials();
     this.updateRequired = false;
-    var message = 'Are you sure you want to remove this transaction?';
+    let message = 'Are you sure you want to remove this transaction?';
     this.popupProvider.ionicConfirm(null, message, null, null).then((ok: boolean) => {
       if (!ok) {
         return;

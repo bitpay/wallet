@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
 import { TranslateService } from '@ngx-translate/core';
+import { NavController, NavParams } from 'ionic-angular';
 
 // Pages
 import { AmountPage } from '../../../../pages/send/amount/amount';
@@ -40,7 +40,7 @@ export class AddressbookViewPage {
     this.name = this.navParams.data.contact.name;
     this.email = this.navParams.data.contact.email;
 
-    var cashAddress = this.bitcoreCash.Address.isValid(this.address, 'livenet');
+    let cashAddress = this.bitcoreCash.Address.isValid(this.address, 'livenet');
     if (cashAddress) {
       this.coin = 'bch';
     } else {
@@ -48,7 +48,7 @@ export class AddressbookViewPage {
     }
   }
 
-  ionViewDidLoad() {
+  public ionViewDidLoad() {
   }
 
   public sendTo(): void {
@@ -63,10 +63,10 @@ export class AddressbookViewPage {
   }
 
   public remove(addr: string): void {
-    var title = this.translate.instant('Warning!');
-    var message = this.translate.instant('Are you sure you want to delete this contact?');
+    let title = this.translate.instant('Warning!');
+    let message = this.translate.instant('Are you sure you want to delete this contact?');
     this.popupProvider.ionicConfirm(title, message, null, null).then((res: any) => {
-      if (!res) return;
+      if (!res) { return; }
       this.addressBookProvider.remove(addr).then((ab) => {
         this.navCtrl.pop();
       }).catch((err: any) => {

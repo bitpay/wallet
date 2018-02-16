@@ -1,8 +1,8 @@
 import { Component } from "@angular/core";
-import { NavController, NavParams, Events } from 'ionic-angular';
-import { Logger } from '../../providers/logger/logger';
-import * as _ from "lodash";
 import { TranslateService } from '@ngx-translate/core';
+import { Events, NavController, NavParams } from 'ionic-angular';
+import * as _ from "lodash";
+import { Logger } from '../../providers/logger/logger';
 
 // Providers
 import { AddressBookProvider } from '../../providers/address-book/address-book';
@@ -26,7 +26,7 @@ export class TxDetailsPage {
 
   public wallet: any;
   public btx: any;
-  public actionList: Array<any>;
+  public actionList: any[];
   public isShared: boolean;
   public title: string;
   public alternativeIsoCode: string;
@@ -80,13 +80,13 @@ export class TxDetailsPage {
     this.updateTx();
   }
 
-  ionViewWillEnter() {
+  public ionViewWillEnter() {
     this.events.subscribe('bwsEvent', (walletId: string, type: string, n: any) => {
-      if (type == 'NewBlock' && n && n.data && n.data.network == 'livenet') this.updateTxDebounced({ hideLoading: true });
+      if (type == 'NewBlock' && n && n.data && n.data.network == 'livenet') { this.updateTxDebounced({ hideLoading: true }); }
     });
   }
 
-  ionViewWillLeave() {
+  public ionViewWillLeave() {
     this.events.unsubscribe('bwsEvent');
   }
 
@@ -102,7 +102,7 @@ export class TxDetailsPage {
 
   private updateMemo(): void {
     this.walletProvider.getTxNote(this.wallet, this.btx.txid).then((note: any) => {
-      if (!note || note.body == "") return;
+      if (!note || note.body == "") { return; }
       this.btx.note = note;
     }).catch((err: any) => {
       this.logger.warn('Could not fetch transaction note: ' + err);
@@ -112,7 +112,7 @@ export class TxDetailsPage {
 
   private initActionList(): void {
     this.actionList = [];
-    if (this.btx.action != 'sent' && this.btx.action != 'moved' || !this.isShared) return;
+    if (this.btx.action != 'sent' && this.btx.action != 'moved' || !this.isShared) { return; }
 
     let actionDescriptions = {
       created: this.translate.instant('Proposal Created'),
@@ -152,9 +152,9 @@ export class TxDetailsPage {
 
   private updateTx(opts?: any): void {
     opts = opts ? opts : {};
-    if (!opts.hideLoading) this.onGoingProcess.set('loadingTxInfo', true);
+    if (!opts.hideLoading) { this.onGoingProcess.set('loadingTxInfo', true); }
     this.walletProvider.getTx(this.wallet, this.txId).then((tx: any) => {
-      if (!opts.hideLoading) this.onGoingProcess.set('loadingTxInfo', false);
+      if (!opts.hideLoading) { this.onGoingProcess.set('loadingTxInfo', false); }
 
       this.btx = this.txFormatProvider.processTx(this.wallet.coin, tx, this.walletProvider.useLegacyAddress());
       let v: string = this.txFormatProvider.formatAlternativeStr(this.wallet.coin, tx.fees);
@@ -162,9 +162,9 @@ export class TxDetailsPage {
       this.btx.feeRateStr = (this.btx.fees / (this.btx.amount + this.btx.fees) * 100).toFixed(2) + '%';
 
       if (this.btx.action != 'invalid') {
-        if (this.btx.action == 'sent') this.title = this.translate.instant('Sent Funds');
-        if (this.btx.action == 'received') this.title = this.translate.instant('Received Funds');
-        if (this.btx.action == 'moved') this.title = this.translate.instant('Moved Funds');
+        if (this.btx.action == 'sent') { this.title = this.translate.instant('Sent Funds'); }
+        if (this.btx.action == 'received') { this.title = this.translate.instant('Received Funds'); }
+        if (this.btx.action == 'moved') { this.title = this.translate.instant('Moved Funds'); }
       }
 
       this.updateMemo();
@@ -179,7 +179,7 @@ export class TxDetailsPage {
         return;
       });
     }).catch((err: any) => {
-      if (!opts.hideLoading) this.onGoingProcess.set('loadingTxInfo', false);
+      if (!opts.hideLoading) { this.onGoingProcess.set('loadingTxInfo', false); }
       this.logger.warn('Error getting transaction: ' + err);
       this.navCtrl.pop();
       return this.popupProvider.ionicAlert('Error', this.translate.instant('Transaction not available at this time'));
@@ -191,10 +191,10 @@ export class TxDetailsPage {
     if (this.btx.message) {
       opts.defaultText = this.btx.message;
     }
-    if (this.btx.note && this.btx.note.body) opts.defaultText = this.btx.note.body;
+    if (this.btx.note && this.btx.note.body) { opts.defaultText = this.btx.note.body; }
 
     this.popupProvider.ionicPrompt(this.wallet.name, this.translate.instant('Memo'), opts).then((text: string) => {
-      if (text == null) return;
+      if (text == null) { return; }
 
       this.btx.note = {
         body: text

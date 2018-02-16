@@ -9,18 +9,22 @@ export class BwcErrorProvider {
   ) { }
 
   public msg(err: any, prefix?: string): string {
-    if (!err)
+    if (!err) {
       return 'Unknown error';
+    }
 
     let name;
 
     if (err.name) {
-      if (err.name == 'Error')
+      if (err.name == 'Error') {
         name = err.message
-      else
+      }
+      else {
         name = err.name.replace(/^bwc.Error/g, '');
-    } else
+      }
+    } else {
       name = err;
+    }
 
     let body = '';
     prefix = prefix || '';
@@ -161,7 +165,7 @@ export class BwcErrorProvider {
       body = err;
     }
 
-    var msg = prefix + (body ? (prefix ? ': ' : '') + body : '');
+    let msg = prefix + (body ? (prefix ? ': ' : '') + body : '');
     return msg;
   }
 

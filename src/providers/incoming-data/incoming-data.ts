@@ -1,23 +1,23 @@
 import { Injectable } from '@angular/core';
-import { Events, NavController, App } from 'ionic-angular';
-import { Logger } from '../../providers/logger/logger';
 import { TranslateService } from '@ngx-translate/core';
+import { App, Events, NavController } from 'ionic-angular';
+import { Logger } from '../../providers/logger/logger';
 
 //providers
+import { AppProvider } from '../app/app';
 import { BwcProvider } from '../bwc/bwc';
 import { PayproProvider } from '../paypro/paypro';
-import { ScanProvider } from '../scan/scan';
 import { PopupProvider } from '../popup/popup';
-import { AppProvider } from '../app/app';
+import { ScanProvider } from '../scan/scan';
 
 //pages
-import { ConfirmPage } from '../../pages/send/confirm/confirm';
-import { AmountPage } from '../../pages/send/amount/amount';
-import { JoinWalletPage } from '../../pages/add/join-wallet/join-wallet';
 import { ImportWalletPage } from '../../pages/add/import-wallet/import-wallet';
-import { GlideraPage } from '../../pages/integrations/glidera/glidera';
-import { CoinbasePage } from '../../pages/integrations/coinbase/coinbase';
+import { JoinWalletPage } from '../../pages/add/join-wallet/join-wallet';
 import { BitPayCardIntroPage } from '../../pages/integrations/bitpay-card/bitpay-card-intro/bitpay-card-intro';
+import { CoinbasePage } from '../../pages/integrations/coinbase/coinbase';
+import { GlideraPage } from '../../pages/integrations/glidera/glidera';
+import { AmountPage } from '../../pages/send/amount/amount';
+import { ConfirmPage } from '../../pages/send/confirm/confirm';
 
 @Injectable()
 export class IncomingDataProvider {
@@ -70,8 +70,8 @@ export class IncomingDataProvider {
         this.payproProvider.getPayProDetails(parsed.r).then((details) => {
           this.handlePayPro(details, coin);
         }).catch((err: string) => {
-          if (addr && amount) this.goSend(addr, amount, message, coin);
-          else this.popupProvider.ionicAlert(this.translate.instant('Error'), err);
+          if (addr && amount) { this.goSend(addr, amount, message, coin); }
+          else { this.popupProvider.ionicAlert(this.translate.instant('Error'), err); }
         });
       } else {
         this.goSend(addr, amount, message, coin);
@@ -97,10 +97,12 @@ export class IncomingDataProvider {
         this.payproProvider.getPayProDetails(parsed.r).then((details: any) => {
           this.handlePayPro(details, coin);
         }).catch((err: string) => {
-          if (addr && amount)
+          if (addr && amount) {
             this.goSend(addr, amount, message, coin);
-          else
+          }
+          else {
             this.popupProvider.ionicAlert(this.translate.instant('Error'), err);
+          }
         });
       } else {
         this.goSend(addr, amount, message, coin);
@@ -114,7 +116,7 @@ export class IncomingDataProvider {
       parsed = this.bwcProvider.getBitcore().URI(data.replace(/^bitcoincash:/, 'bitcoin:'));
 
       let oldAddr = parsed.address ? parsed.address.toString() : '';
-      if (!oldAddr) return false;
+      if (!oldAddr) { return false; }
 
       addr = '';
 
@@ -124,9 +126,9 @@ export class IncomingDataProvider {
       // Translate address
       this.logger.debug('address transalated to:' + addr);
       let title = this.translate.instant('Bitcoin cash Payment');
-      let msg = this.translate.instant('Payment address was translated to new Bitcoin Cash address format: {{addr}}', { addr: addr });
+      let msg = this.translate.instant('Payment address was translated to new Bitcoin Cash address format: {{addr}}', { addr });
       this.popupProvider.ionicConfirm(title, msg).then((res: boolean) => {
-        if (!res) return false;
+        if (!res) { return false; }
 
         message = parsed.message;
         amount = parsed.amount ? parsed.amount : '';
@@ -136,10 +138,12 @@ export class IncomingDataProvider {
           this.payproProvider.getPayProDetails(parsed.r).then((details) => {
             this.handlePayPro(details, coin);
           }).catch((err) => {
-            if (addr && amount)
+            if (addr && amount) {
               this.goSend(addr, amount, message, coin);
-            else
+            }
+            else {
               this.popupProvider.ionicAlert(this.translate.instant('Error'), err);
+            }
           });
         } else {
           this.goSend(addr, amount, message, coin);
@@ -156,7 +160,7 @@ export class IncomingDataProvider {
         return true;
       }).catch(() => {
         this.showMenu({
-          data: data,
+          data,
           type: 'url'
         });
         return;
@@ -166,7 +170,7 @@ export class IncomingDataProvider {
       this.logger.debug('Handling Bitcoin Plain Address');
       if (this.navCtrl.getActive().name === 'ScanPage') {
         this.showMenu({
-          data: data,
+          data,
           type: 'bitcoinAddress',
           coin: 'btc'
         });
@@ -178,7 +182,7 @@ export class IncomingDataProvider {
       this.logger.debug('Handling Bitcoin Cash Plain Address');
       if (this.navCtrl.getActive().name === 'ScanPage') {
         this.showMenu({
-          data: data,
+          data,
           type: 'bitcoinAddress',
           coin: 'bch',
         });
@@ -189,14 +193,14 @@ export class IncomingDataProvider {
     } else if (data && data.indexOf(this.appProvider.info.name + '://glidera') === 0) {
 
       let code = this.getParameterByName('code', data);
-      this.navCtrl.push(GlideraPage, { code: code });
+      this.navCtrl.push(GlideraPage, { code });
 
       this.logger.debug('Glidera TODO');
       return true;
     } else if (data && data.indexOf(this.appProvider.info.name + '://coinbase') === 0) {
 
       let code = this.getParameterByName('code', data);
-      this.navCtrl.push(CoinbasePage, { code: code });
+      this.navCtrl.push(CoinbasePage, { code });
 
       this.logger.debug('Coinbase TODO');
       return true;
@@ -204,7 +208,7 @@ export class IncomingDataProvider {
     } else if (data && data.indexOf(this.appProvider.info.name + '://') === 0) {
 
       // Disable BitPay Card
-      if (!this.appProvider.info._enabledExtensions.debitcard) return false;
+      if (!this.appProvider.info._enabledExtensions.debitcard) { return false; }
 
       // For BitPay card binding
       let secret = this.getParameterByName('secret', data);
@@ -216,7 +220,7 @@ export class IncomingDataProvider {
         case '0':
           /* For BitPay card binding */
           this.navCtrl.parent.select(0);
-          this.navCtrl.push(BitPayCardIntroPage, { secret: secret, email: email, otp: otp });
+          this.navCtrl.push(BitPayCardIntroPage, { secret, email, otp });
           break;
       }
       return true;
@@ -232,7 +236,7 @@ export class IncomingDataProvider {
     } else if (data && (data.substring(0, 2) == '6P' || this.checkPrivateKey(data))) {
       this.logger.debug('Handling private key');
       this.showMenu({
-        data: data,
+        data,
         type: 'privateKey'
       });
     } else if (data && ((data.substring(0, 2) == '1|') || (data.substring(0, 2) == '2|') || (data.substring(0, 2) == '3|'))) {
@@ -244,7 +248,7 @@ export class IncomingDataProvider {
       if (this.navCtrl.getActive().name === 'ScanPage') {
         this.logger.debug('Handling plain text');
         this.showMenu({
-          data: data,
+          data,
           type: 'text'
         });
       }
@@ -269,12 +273,12 @@ export class IncomingDataProvider {
   }
 
   private getParameterByName(name: string, url: string): string {
-    if (!url) return;
+    if (!url) { return; }
     name = name.replace(/[\[\]]/g, "\\$&");
     let regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
       results = regex.exec(url);
-    if (!results) return null;
-    if (!results[2]) return '';
+    if (!results) { return null; }
+    if (!results[2]) { return ''; }
     return decodeURIComponent(results[2].replace(/\+/g, " "));
   }
 
@@ -290,23 +294,23 @@ export class IncomingDataProvider {
   private goSend(addr: string, amount: string, message: string, coin: string): void {
     if (amount) {
       this.navCtrl.push(ConfirmPage, {
-        amount: amount,
+        amount,
         toAddress: addr,
         description: message,
-        coin: coin
+        coin
       });
     } else {
       this.navCtrl.push(AmountPage, {
         toAddress: addr,
-        coin: coin
+        coin
       });
     }
   }
 
   private goToAmountPage(toAddress: string, coin: string) {
     this.navCtrl.push(AmountPage, {
-      toAddress: toAddress,
-      coin: coin
+      toAddress,
+      coin
     });
   }
 
@@ -316,7 +320,7 @@ export class IncomingDataProvider {
       toAddress: payProDetails.toAddress,
       description: payProDetails.memo,
       paypro: payProDetails,
-      coin: coin
+      coin
     };
     this.scanProvider.pausePreview();
     this.navCtrl.push(ConfirmPage, stateParams);

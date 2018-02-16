@@ -1,4 +1,4 @@
-import { Directive, ElementRef, OnInit, OnDestroy, Output, EventEmitter } from '@angular/core';
+import { Directive, ElementRef, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
 import { Gesture } from 'ionic-angular/gestures/gesture';
 declare var Hammer: any;
 
@@ -8,11 +8,11 @@ import { ProfileProvider } from '../../providers/profile/profile';
   selector: '[longPress]'
 })
 export class LongPress implements OnInit, OnDestroy {
-  el: HTMLElement;
-  pressGesture: Gesture;
+  public el: HTMLElement;
+  public pressGesture: Gesture;
 
   @Output()
-  longPress: EventEmitter<any> = new EventEmitter();
+  public longPress: EventEmitter<any> = new EventEmitter();
 
   constructor(
     el: ElementRef, 
@@ -21,7 +21,7 @@ export class LongPress implements OnInit, OnDestroy {
     this.el = el.nativeElement;
   }
 
-  ngOnInit() {
+  public ngOnInit() {
     this.pressGesture = new Gesture(this.el, {
       recognizers: [
         [Hammer.Press, { time: 1000 }]
@@ -33,7 +33,7 @@ export class LongPress implements OnInit, OnDestroy {
     })
   }
 
-  ngOnDestroy() {
+  public ngOnDestroy() {
     this.pressGesture.destroy();
   }
 }

@@ -6,12 +6,12 @@ import { Logger } from '../../../../providers/logger/logger';
 import { ProfileProvider } from '../../../../providers/profile/profile';
 
 //pages
-import { WalletInformationPage } from './wallet-information/wallet-information';
 import { WalletAddressesPage } from './wallet-addresses/wallet-addresses';
+import { WalletDeletePage } from './wallet-delete/wallet-delete';
 import { WalletExportPage } from './wallet-export/wallet-export';
+import { WalletInformationPage } from './wallet-information/wallet-information';
 import { WalletServiceUrlPage } from './wallet-service-url/wallet-service-url';
 import { WalletTransactionHistoryPage } from './wallet-transaction-history/wallet-transaction-history';
-import { WalletDeletePage } from './wallet-delete/wallet-delete';
 
 @Component({
   selector: 'page-wallet-settings-advanced',
@@ -28,11 +28,11 @@ export class WalletSettingsAdvancedPage {
   ) {
   }
 
-  ionViewDidLoad() {
+  public ionViewDidLoad() {
     this.logger.info('ionViewDidLoad WalletSettingsAdvancedPage');
   }
 
-  ionViewWillEnter() {
+  public ionViewWillEnter() {
     this.wallet = this.profileProvider.getWallet(this.navParams.data.walletId);
   }
 

@@ -1,19 +1,19 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, Platform } from 'ionic-angular';
-import { Validators, FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
+import { NavController, NavParams, Platform } from 'ionic-angular';
 import * as _ from "lodash";
 
 //providers
-import { ConfigProvider } from '../../../providers/config/config';
 import { AppProvider } from '../../../providers/app/app';
-import { OnGoingProcessProvider } from '../../../providers/on-going-process/on-going-process';
+import { ConfigProvider } from '../../../providers/config/config';
 import { FeedbackProvider } from '../../../providers/feedback/feedback';
+import { OnGoingProcessProvider } from '../../../providers/on-going-process/on-going-process';
 import { PopupProvider } from '../../../providers/popup/popup';
 
 //pages
-import { FeedbackCompletePage } from '../feedback-complete/feedback-complete';
 import { HomePage } from '../../home/home';
+import { FeedbackCompletePage } from '../feedback-complete/feedback-complete';
 
 
 @Component({
@@ -49,7 +49,7 @@ export class SendFeedbackPage {
     this.appName = this.appProvider.info.nameCase;
   }
 
-  ionViewWillEnter() {
+  public ionViewWillEnter() {
 
     switch (this.score) {
       case 1:
@@ -98,9 +98,9 @@ export class SendFeedbackPage {
       "deviceVersion": versionStr
     };
 
-    if (!goHome) this.onGoingProcessProvider.set('sendingFeedback', true);
+    if (!goHome) { this.onGoingProcessProvider.set('sendingFeedback', true); }
     this.feedbackProvider.send(dataSrc).then(() => {
-      if (goHome) return;
+      if (goHome) { return; }
       this.onGoingProcessProvider.set('sendingFeedback', false);
       if (!this.score) {
         let title = this.translate.instant('Thank you!');
@@ -115,13 +115,13 @@ export class SendFeedbackPage {
         this.navCtrl.push(FeedbackCompletePage, { score: this.score })
       }
     }).catch((err) => {
-      if (goHome) return;
+      if (goHome) { return; }
       this.onGoingProcessProvider.set('sendingFeedback', false);
       let title = this.translate.instant('Error');
       let subtitle = this.translate.instant('Feedback could not be submitted. Please try again later.');
       this.popupProvider.ionicAlert(title, subtitle);
     });
-    if (goHome) this.navCtrl.push(HomePage);
+    if (goHome) { this.navCtrl.push(HomePage); }
   }
 
   public goBack(): void {

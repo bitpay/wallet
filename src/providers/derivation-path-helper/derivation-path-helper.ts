@@ -10,16 +10,17 @@ export class DerivationPathHelperProvider {
     this.defaultTestnet = "m/44'/1'/0'";
   }
 
-  parse(str: string) {
-    var arr = str.split('/');
-    var ret = {
+  public parse(str: string) {
+    let arr = str.split('/');
+    let ret = {
       derivationStrategy: '',
       networkName: '',
       account: 0
     };
 
-    if (arr[0] != 'm')
+    if (arr[0] != 'm') {
       return false;
+    }
 
     switch (arr[1]) {
       case "44'":
@@ -49,9 +50,10 @@ export class DerivationPathHelperProvider {
         return false;
     };
 
-    var match = arr[3].match(/(\d+)'/);
-    if (!match)
+    let match = arr[3].match(/(\d+)'/);
+    if (!match) {
       return false;
+    }
     ret.account = +match[1]
 
     return ret;

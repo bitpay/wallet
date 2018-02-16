@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import { LoadingController } from 'ionic-angular';
-import { Logger } from '../../providers/logger/logger';
-import * as _ from 'lodash';
 import { TranslateService } from '@ngx-translate/core';
+import { LoadingController } from 'ionic-angular';
+import * as _ from 'lodash';
+import { Logger } from '../../providers/logger/logger';
 
 @Injectable()
 export class OnGoingProcessProvider {

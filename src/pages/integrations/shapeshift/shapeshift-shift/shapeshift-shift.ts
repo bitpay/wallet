@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
-import { NavController, Events } from 'ionic-angular';
-import { Logger } from '../../../../providers/logger/logger';
-import * as _ from 'lodash';
 import { TranslateService } from '@ngx-translate/core';
+import { Events, NavController } from 'ionic-angular';
+import * as _ from 'lodash';
+import { Logger } from '../../../../providers/logger/logger';
 
 // Pages
 import { AmountPage } from './../../../send/amount/amount';
@@ -19,11 +19,11 @@ import { ShapeshiftProvider } from '../../../../providers/shapeshift/shapeshift'
 })
 export class ShapeshiftShiftPage {
 
-  private walletsBtc: Array<any>;
-  private walletsBch: Array<any>;
+  private walletsBtc: any[];
+  private walletsBch: any[];
 
-  public toWallets: Array<any>;
-  public fromWallets: Array<any>;
+  public toWallets: any[];
+  public fromWallets: any[];
   public fromWallet: any;
   public toWallet: any;
   public rate: number;
@@ -71,7 +71,7 @@ export class ShapeshiftShiftPage {
 
     this.fromWallets = _.filter(this.walletsBtc.concat(this.walletsBch), (w: any) => {
       // Available cached funds
-      if (!w.cachedBalance) return null;
+      if (!w.cachedBalance) { return null; }
       let hasCachedFunds = w.cachedBalance.match(/0\.00 /gi) ? false : true;
       return hasCachedFunds;
     });
@@ -84,11 +84,11 @@ export class ShapeshiftShiftPage {
     this.onFromWalletSelect(this.fromWallets[0]);
   }
 
-  ionViewDidLoad() {
+  public ionViewDidLoad() {
     this.logger.info('ionViewDidLoad ShapeshiftShiftPage');
   }
 
-  ionViewDidEnter() {
+  public ionViewDidEnter() {
     this.termsAccepted = false;
   }
 
@@ -117,7 +117,7 @@ export class ShapeshiftShiftPage {
       this.shapeshiftProvider.getMarketInfo(pair, (err: any, limit: any) => {
         this.limit = limit;
 
-        if (this.limit['rate'] == 0 || this.rate['rate'] == 0) {
+        if (this.limit.rate == 0 || this.rate['rate'] == 0) {
           let msg = this.translate.instant('ShapeShift is not available at this moment. Please, try again later.');
           this.popupProvider.ionicAlert(null, msg).then(() => {
             this.navCtrl.pop();
@@ -153,7 +153,7 @@ export class ShapeshiftShiftPage {
   }
 
   public showWallets(selector: string): void {
-    let walletsForActionSheet: Array<any> = [];
+    let walletsForActionSheet: any[] = [];
     let selectedWalletId: string;
     let title: string = selector == 'from' ? this.fromWalletSelectorTitle : this.toWalletSelectorTitle
     if (selector == 'from') {
@@ -165,7 +165,7 @@ export class ShapeshiftShiftPage {
     }
     this.events.publish('showWalletsSelectorEvent', walletsForActionSheet, selectedWalletId, title);
     this.events.subscribe('selectWalletEvent', (wallet: any) => {
-      if (!_.isEmpty(wallet)) this.onWalletSelect(wallet, selector);
+      if (!_.isEmpty(wallet)) { this.onWalletSelect(wallet, selector); }
       this.events.unsubscribe('selectWalletEvent');
     });
   }

@@ -1,22 +1,22 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, Events, ModalController } from 'ionic-angular';
-import { Logger } from '../../../../providers/logger/logger';
+import { Events, ModalController, NavController, NavParams } from 'ionic-angular';
 import * as _ from 'lodash';
+import { Logger } from '../../../../providers/logger/logger';
 
 //pages
-import { CoinbasePage } from '../coinbase';
 import { SuccessModalPage } from '../../../success/success';
+import { CoinbasePage } from '../coinbase';
 
 //providers
 import { AppProvider } from '../../../../providers/app/app';
 import { CoinbaseProvider } from '../../../../providers/coinbase/coinbase';
 import { ConfigProvider } from '../../../../providers/config/config';
-import { PopupProvider } from '../../../../providers/popup/popup';
 import { ExternalLinkProvider } from '../../../../providers/external-link/external-link';
 import { OnGoingProcessProvider } from '../../../../providers/on-going-process/on-going-process';
-import { WalletProvider } from '../../../../providers/wallet/wallet';
-import { TxFormatProvider } from '../../../../providers/tx-format/tx-format';
+import { PopupProvider } from '../../../../providers/popup/popup';
 import { ProfileProvider } from '../../../../providers/profile/profile';
+import { TxFormatProvider } from '../../../../providers/tx-format/tx-format';
+import { WalletProvider } from '../../../../providers/wallet/wallet';
 
 @Component({
   selector: 'page-sell-coinbase',
@@ -29,7 +29,7 @@ export class SellCoinbasePage {
   private currency: string;
   private wallets: any;
 
-  public paymentMethods: Array<any>;
+  public paymentMethods: any[];
   public selectedPaymentMethodId: any;
   public selectedPriceSensitivity: any;
   public sellPrice: string;
@@ -66,11 +66,11 @@ export class SellCoinbasePage {
     this.network = this.coinbaseProvider.getNetwork();
   }
 
-  ionViewDidLoad() {
+  public ionViewDidLoad() {
     this.logger.info('ionViewDidLoad SellCoinbasePage');
   }
 
-  ionViewWillEnter() {
+  public ionViewWillEnter() {
     this.wallets = this.profileProvider.getWallets({
       m: 1, // Only 1-signature wallet
       onlyComplete: true,
@@ -158,13 +158,13 @@ export class SellCoinbasePage {
           let okText = 'More info';
           let cancelText = 'Go Back';
           this.popupProvider.ionicConfirm(null, msg, okText, cancelText).then((res) => {
-            if (res) this.externalLinkProvider.open(url);
+            if (res) { this.externalLinkProvider.open(url); }
             this.navCtrl.remove(3, 1);
             this.navCtrl.pop();
           });
           return;
         }
-        if (!hasPrimary) this.selectedPaymentMethodId = this.paymentMethods[0].id;
+        if (!hasPrimary) { this.selectedPaymentMethodId = this.paymentMethods[0].id; }
         this.sellRequest();
       });
     });
@@ -218,7 +218,7 @@ export class SellCoinbasePage {
               this.coinbaseProvider.savePendingTransaction(ctx, null, (err: any) => {
                 this.onGoingProcessProvider.set('sellingBitcoin', false);
                 this.openSuccessModal();
-                if (err) this.logger.debug(this.coinbaseProvider.getErrorsAsString(err.errors));
+                if (err) { this.logger.debug(this.coinbaseProvider.getErrorsAsString(err.errors)); }
               });
               return;
             }
@@ -277,7 +277,7 @@ export class SellCoinbasePage {
     let okText = 'Confirm';
     let cancelText = 'Cancel';
     this.popupProvider.ionicConfirm(null, message, okText, cancelText).then((ok: any) => {
-      if (!ok) return;
+      if (!ok) { return; }
 
       this.onGoingProcessProvider.set('sellingBitcoin', true);
       this.coinbaseProvider.init((err: any, res: any) => {
@@ -310,9 +310,9 @@ export class SellCoinbasePage {
           });
 
           let txp = {
-            toAddress: toAddress,
+            toAddress,
             amount: amountSat,
-            outputs: outputs,
+            outputs,
             message: comment,
             payProUrl: null,
             excludeUnconfirmedUtxos: configWallet.spendUnconfirmed ? false : true,
@@ -343,7 +343,7 @@ export class SellCoinbasePage {
     let id = this.wallet ? this.wallet.credentials.walletId : null;
     this.events.publish('showWalletsSelectorEvent', this.wallets, id, 'Sell from');
     this.events.subscribe('selectWalletEvent', (wallet: any) => {
-      if (!_.isEmpty(wallet)) this.onWalletSelect(wallet);
+      if (!_.isEmpty(wallet)) { this.onWalletSelect(wallet); }
       this.events.unsubscribe('selectWalletEvent');
     });
   }
@@ -361,7 +361,7 @@ export class SellCoinbasePage {
   public openSuccessModal(): void {
     let successText = 'Funds sent to Coinbase Account';
     let successComment = 'The transaction is not yet confirmed, and will show as "Pending" in your Activity. The bitcoin sale will be completed automatically once it is confirmed by Coinbase';
-    let modal = this.modalCtrl.create(SuccessModalPage, { successText: successText, successComment: successComment }, { showBackdrop: true, enableBackdropDismiss: false });
+    let modal = this.modalCtrl.create(SuccessModalPage, { successText, successComment }, { showBackdrop: true, enableBackdropDismiss: false });
     modal.present();
     modal.onDidDismiss(() => {
       this.navCtrl.remove(3, 1);

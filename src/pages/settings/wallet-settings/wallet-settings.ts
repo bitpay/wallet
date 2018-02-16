@@ -1,20 +1,20 @@
 import { Component } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
 import { NavController, NavParams } from 'ionic-angular';
 import { Logger } from '../../../providers/logger/logger';
-import { TranslateService } from '@ngx-translate/core';
 
 //providers
-import { ProfileProvider } from '../../../providers/profile/profile';
-import { WalletProvider } from '../../../providers/wallet/wallet';
-import { ExternalLinkProvider } from '../../../providers/external-link/external-link';
 import { ConfigProvider } from '../../../providers/config/config';
+import { ExternalLinkProvider } from '../../../providers/external-link/external-link';
+import { ProfileProvider } from '../../../providers/profile/profile';
 import { TouchIdProvider } from '../../../providers/touchid/touchid';
+import { WalletProvider } from '../../../providers/wallet/wallet';
 
 //pages
-import { WalletSettingsAdvancedPage } from './wallet-settings-advanced/wallet-settings-advanced';
+import { BackupWarningPage } from '../../backup/backup-warning/backup-warning';
 import { WalletColorPage } from './wallet-color/wallet-color';
 import { WalletNamePage } from './wallet-name/wallet-name';
-import { BackupWarningPage } from '../../backup/backup-warning/backup-warning';
+import { WalletSettingsAdvancedPage } from './wallet-settings-advanced/wallet-settings-advanced';
 
 @Component({
   selector: 'page-wallet-settings',
@@ -47,11 +47,11 @@ export class WalletSettingsPage {
   ) {
   }
 
-  ionViewDidLoad() {
+  public ionViewDidLoad() {
     this.logger.info('ionViewDidLoad WalletSettingsPage');
   }
 
-  ionViewWillEnter() {
+  public ionViewWillEnter() {
     this.wallet = this.profileProvider.getWallet(this.navParams.data.walletId);
     this.walletName = this.wallet.name;
     this.canSign = this.wallet.canSign();
@@ -64,8 +64,9 @@ export class WalletSettingsPage {
     this.config = this.configProvider.get();
     this.touchIdEnabled = this.config.touchIdFor ? this.config.touchIdFor[this.wallet.credentials.walletId] : null;
     this.touchIdPrevValue = this.touchIdEnabled;
-    if (this.wallet.credentials && !this.wallet.credentials.mnemonicEncrypted && !this.wallet.credentials.mnemonic)
+    if (this.wallet.credentials && !this.wallet.credentials.mnemonicEncrypted && !this.wallet.credentials.mnemonic) {
       this.deleted = true;
+    }
   }
 
   public hiddenBalanceChange(): void {
@@ -73,7 +74,7 @@ export class WalletSettingsPage {
   }
 
   public encryptChange(): void {
-    if (!this.wallet) return;
+    if (!this.wallet) { return; }
     let val = this.encryptEnabled;
 
     if (val && !this.walletProvider.isEncrypted(this.wallet)) {
@@ -107,7 +108,7 @@ export class WalletSettingsPage {
   }
 
   public touchIdChange(): void {
-    if (this.touchIdPrevValue == this.touchIdEnabled) return;
+    if (this.touchIdPrevValue == this.touchIdEnabled) { return; }
     let newStatus = this.touchIdEnabled;
     this.walletProvider.setTouchId(this.wallet, newStatus).then(() => {
       this.touchIdPrevValue = this.touchIdEnabled;

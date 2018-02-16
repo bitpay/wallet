@@ -1,16 +1,16 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, Events, ModalController } from 'ionic-angular';
-import { Logger } from '../../providers/logger/logger';
-import * as _ from 'lodash';
 import { TranslateService } from '@ngx-translate/core';
+import { Events, ModalController, NavController, NavParams } from 'ionic-angular';
+import * as _ from 'lodash';
+import { Logger } from '../../providers/logger/logger';
 
 //providers
 import { BwcProvider } from '../../providers/bwc/bwc';
+import { FeeProvider } from '../../providers/fee/fee';
 import { OnGoingProcessProvider } from '../../providers/on-going-process/on-going-process';
 import { PopupProvider } from '../../providers/popup/popup';
-import { WalletProvider } from '../../providers/wallet/wallet';
-import { FeeProvider } from '../../providers/fee/fee';
 import { ProfileProvider } from '../../providers/profile/profile';
+import { WalletProvider } from '../../providers/wallet/wallet';
 import { SuccessModalPage } from '../success/success';
 
 @Component({
@@ -54,7 +54,7 @@ export class PaperWalletPage {
     this.bitcore = this.bwcProvider.getBitcore();
   }
 
-  ionViewWillEnter() {
+  public ionViewWillEnter() {
     this.scannedKey = this.navParams.data.privateKey;
     this.isPkEncrypted = this.scannedKey ? (this.scannedKey.substring(0, 2) == '6P') : null;
     this.error = false;
@@ -70,8 +70,8 @@ export class PaperWalletPage {
     }
 
     this.wallet = this.wallets[0];
-    if (!this.wallet) return;
-    if (!this.isPkEncrypted) this.scanFunds();
+    if (!this.wallet) { return; }
+    if (!this.isPkEncrypted) { this.scanFunds(); }
     else {
       let message = this.translate.instant('Private key encrypted. Enter password');
       this.popupProvider.ionicPrompt(null, message, null).then((res) => {
@@ -82,7 +82,7 @@ export class PaperWalletPage {
   }
 
   private getPrivateKey(scannedKey: string, isPkEncrypted: boolean, passphrase: string, cb: Function): Function {
-    if (!isPkEncrypted) return cb(null, scannedKey);
+    if (!isPkEncrypted) { return cb(null, scannedKey); }
     this.wallet.decryptBIP38PrivateKey(scannedKey, passphrase, null, cb);
   }
 
@@ -102,12 +102,12 @@ export class PaperWalletPage {
   private _scanFunds(): Promise<any> {
     return new Promise((resolve, reject) => {
       this.getPrivateKey(this.scannedKey, this.isPkEncrypted, this.passphrase, (err: any, privateKey: string) => {
-        if (err) return reject(err);
-        if (!this.checkPrivateKey(privateKey)) return reject(new Error('Invalid private key'));
+        if (err) { return reject(err); }
+        if (!this.checkPrivateKey(privateKey)) { return reject(new Error('Invalid private key')); }
 
         this.getBalance(privateKey, (err: any, balance: number) => {
-          if (err) return reject(err);
-          return resolve({ privateKey: privateKey, balance: balance });
+          if (err) { return reject(err); }
+          return resolve({ privateKey, balance });
         });
       });
     });
@@ -135,19 +135,19 @@ export class PaperWalletPage {
     return new Promise((resolve, reject) => {
       this.walletProvider.getAddress(this.wallet, true).then((destinationAddress: string) => {
         this.wallet.buildTxFromPrivateKey(this.privateKey, destinationAddress, null, (err: any, testTx: any) => {
-          if (err) return reject(err);
+          if (err) { return reject(err); }
           let rawTxLength = testTx.serialize().length;
           this.feeProvider.getCurrentFeeRate('btc', 'livenet').then((feePerKb: number) => {
             let opts: any = {};
             opts.fee = Math.round((feePerKb * rawTxLength) / 2000);
             this.wallet.buildTxFromPrivateKey(this.privateKey, destinationAddress, opts, (err: any, tx: any) => {
-              if (err) return reject(err);
+              if (err) { return reject(err); }
               this.wallet.broadcastRawTx({
                 rawTx: tx.serialize(),
                 network: 'livenet'
               }, (err, txid) => {
-                if (err) return reject(err);
-                return resolve({ destinationAddress: destinationAddress, txid: txid });
+                if (err) { return reject(err); }
+                return resolve({ destinationAddress, txid });
               });
             });
           });
@@ -178,7 +178,7 @@ export class PaperWalletPage {
     let id = this.wallet ? this.wallet.credentials.walletId : null;
     this.events.publish('showWalletsSelectorEvent', this.wallets, id, 'Select a wallet');
     this.events.subscribe('selectWalletEvent', (wallet: any) => {
-      if (!_.isEmpty(wallet)) this.onWalletSelect(wallet);
+      if (!_.isEmpty(wallet)) { this.onWalletSelect(wallet); }
       this.events.unsubscribe('selectWalletEvent');
     });
   }
@@ -186,7 +186,7 @@ export class PaperWalletPage {
   public openSuccessModal(): void {
     let successComment = this.translate.instant("Check the transaction on your wallet details");
     let successText = this.translate.instant('Sweep Completed');
-    let modal = this.modalCtrl.create(SuccessModalPage, { successText: successText, successComment: successComment }, { showBackdrop: true, enableBackdropDismiss: false });
+    let modal = this.modalCtrl.create(SuccessModalPage, { successText, successComment }, { showBackdrop: true, enableBackdropDismiss: false });
     modal.present();
     modal.onDidDismiss(() => {
       this.navCtrl.pop();

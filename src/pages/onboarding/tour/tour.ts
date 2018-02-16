@@ -1,23 +1,23 @@
 import { Component, ViewChild } from '@angular/core';
-import { NavController, LoadingController, Slides, Navbar } from 'ionic-angular';
+import { LoadingController, Navbar, NavController, Slides } from 'ionic-angular';
 import { Logger } from '../../../providers/logger/logger';
 
 //pages
 import { CollectEmailPage } from '../collect-email/collect-email';
 
 //providers
+import { OnGoingProcessProvider } from '../../../providers/on-going-process/on-going-process';
 import { ProfileProvider } from '../../../providers/profile/profile';
 import { RateProvider } from '../../../providers/rate/rate';
 import { TxFormatProvider } from '../../../providers/tx-format/tx-format';
-import { OnGoingProcessProvider } from '../../../providers/on-going-process/on-going-process';
 
 @Component({
   selector: 'page-tour',
   templateUrl: 'tour.html',
 })
 export class TourPage {
-  @ViewChild(Slides) slides: Slides;
-  @ViewChild(Navbar) navBar: Navbar;
+  @ViewChild(Slides) public slides: Slides;
+  @ViewChild(Navbar) public navBar: Navbar;
 
   public localCurrencySymbol: string;
   public localCurrencyPerBtc: string;
@@ -40,11 +40,11 @@ export class TourPage {
     });
   }
 
-  ionViewDidLoad() {
+  public ionViewDidLoad() {
     this.logger.info('ionViewDidLoad TourPage');
   }
 
-  ionViewWillEnter() {
+  public ionViewWillEnter() {
     this.navBar.backButtonClick = (e: UIEvent) => {
       this.slidePrev();
     }
@@ -55,7 +55,7 @@ export class TourPage {
   }
 
   public slidePrev(): void {
-    if (this.currentIndex == 0) this.navCtrl.pop();
+    if (this.currentIndex == 0) { this.navCtrl.pop(); }
     else {
       this.slides.slidePrev();
     }

@@ -4,15 +4,15 @@ import { EmailNotificationsProvider } from '../providers/email-notifications/ema
 
 export class EmailValidator {
 
-  static cnf: ConfigProvider;
-  static eml: EmailNotificationsProvider;
+  public static cnf: ConfigProvider;
+  public static eml: EmailNotificationsProvider;
 
   constructor(cnf: ConfigProvider, eml: EmailNotificationsProvider) {
     EmailValidator.cnf = cnf;
     EmailValidator.eml = eml;
   }
 
-  isValid(control: FormControl): any {
+  public isValid(control: FormControl): any {
 
     let config = EmailValidator.cnf.get();
     let latestEmail = EmailValidator.eml.getEmailIfEnabled(config);

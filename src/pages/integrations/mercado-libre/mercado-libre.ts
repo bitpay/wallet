@@ -1,15 +1,15 @@
 import { Component } from '@angular/core';
 import { ModalController, NavController, NavParams } from 'ionic-angular';
-import { Logger } from '../../../providers/logger/logger';
 import * as _ from 'lodash';
+import { Logger } from '../../../providers/logger/logger';
 
 // Pages
 import { AmountPage } from '../../send/amount/amount';
 import { MercadoLibreCardDetailsPage } from './mercado-libre-card-details/mercado-libre-card-details';
 
 // Providers
-import { MercadoLibreProvider } from '../../../providers/mercado-libre/mercado-libre';
 import { ExternalLinkProvider } from '../../../providers/external-link/external-link';
+import { MercadoLibreProvider } from '../../../providers/mercado-libre/mercado-libre';
 import { PopupProvider } from '../../../providers/popup/popup';
 import { TimeProvider } from '../../../providers/time/time';
 
@@ -39,7 +39,7 @@ export class MercadoLibrePage {
   ) {
   }
 
-  ionViewDidLoad() {
+  public ionViewDidLoad() {
     this.logger.info('ionViewDidLoad MercadoLibrePage');
     this.network = this.mercadoLibreProvider.getNetwork();
     this.init().then(() => {
@@ -49,7 +49,7 @@ export class MercadoLibrePage {
     });
   }
 
-  ionViewWillEnter() {
+  public ionViewWillEnter() {
     if (this.giftCards) {
       this.invoiceId = this.navParams.data.invoiceId;
       this.updateGiftCards().then(() => {
@@ -78,7 +78,7 @@ export class MercadoLibrePage {
   private init(): Promise<any> {
     return new Promise((resolve, reject) => {
       this.mercadoLibreProvider.getPendingGiftCards((err: any, gcds: any) => {
-        if (err) this.logger.error(err);
+        if (err) { this.logger.error(err); }
         this.giftCards = gcds;
       });
     });
@@ -138,17 +138,18 @@ export class MercadoLibrePage {
             if (err) {
               this.logger.error('Error creating gift card:', err);
               giftCard = giftCard || {};
-              giftCard['status'] = 'FAILURE';
+              giftCard.status = 'FAILURE';
             }
 
             if (giftCard.status != 'PENDING') {
               let newData: any = {};
 
-              if (!giftCard.status) dataFromStorage.status = null; // Fix error from server
+              if (!giftCard.status) { dataFromStorage.status = null; } // Fix error from server
 
               let cardStatus = giftCard.cardStatus;
-              if (cardStatus && (cardStatus != 'active' && cardStatus != 'inactive' && cardStatus != 'expired'))
+              if (cardStatus && (cardStatus != 'active' && cardStatus != 'inactive' && cardStatus != 'expired')) {
                 giftCard.status = 'FAILURE';
+              }
 
               _.merge(newData, dataFromStorage, giftCard);
 

@@ -12,7 +12,7 @@ export class TermsOfUsePage {
   ) {
   }
 
-  ionViewDidLoad() {
+  public ionViewDidLoad() {
     this.logger.info('ionViewDidLoad TermsOfUsePage');
   }
 

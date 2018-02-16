@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
+import { Logger } from '../../providers/logger/logger';
 import { BwcProvider } from '../bwc/bwc';
-import { RateProvider } from '../rate/rate';
 import { ConfigProvider } from '../config/config';
 import { FilterProvider } from '../filter/filter';
-import { Logger } from '../../providers/logger/logger';
+import { RateProvider } from '../rate/rate';
 
 import * as _ from "lodash";
 
@@ -39,27 +39,27 @@ export class TxFormatProvider {
   public formatAmount(satoshis: number, fullPrecision?: boolean): number {
     let settings = this.configProvider.get().wallet.settings;
 
-    if (settings.unitCode == 'sat') return satoshis;
+    if (settings.unitCode == 'sat') { return satoshis; }
 
     //TODO : now only works for english, specify opts to change thousand separator and decimal separator
-    var opts = {
+    let opts = {
       fullPrecision: !!fullPrecision
     };
     return this.bwcProvider.getUtils().formatAmount(satoshis, settings.unitCode, opts);
   }
 
   public formatAmountStr(coin: string, satoshis: number): string {
-    if (isNaN(satoshis)) return;
+    if (isNaN(satoshis)) { return; }
     return (this.formatAmount(satoshis) + ' ' + coin.toUpperCase());
   }
 
   public toFiat(coin: string, satoshis: number, code: string): Promise<any> {
     //TODO not a promise
     return new Promise((resolve, reject) => {
-      if (isNaN(satoshis)) return resolve();
-      var v1;
+      if (isNaN(satoshis)) { return resolve(); }
+      let v1;
       v1 = this.rate.toFiat(satoshis, code, coin);
-      if (!v1) return resolve(null);
+      if (!v1) { return resolve(null); }
       return resolve(v1.toFixed(2));
     });
   }
@@ -68,37 +68,38 @@ export class TxFormatProvider {
     //TODO not a promise
     return new Promise((resolve, reject) => {
       let v1: number;
-      if (isNaN(satoshis)) return resolve();
+      if (isNaN(satoshis)) { return resolve(); }
       v1 = this.rate.toFiat(satoshis, 'USD', coin);
-      if (!v1) return resolve(null);
+      if (!v1) { return resolve(null); }
       return resolve(v1.toFixed(2));
     });
   };
 
   public formatAlternativeStr(coin: string, satoshis: number): string {
-    if (isNaN(satoshis)) return;
+    if (isNaN(satoshis)) { return; }
     let settings = this.configProvider.get().wallet.settings;
 
     let val = (() => {
-      var v1 = parseFloat((this.rate.toFiat(satoshis, settings.alternativeIsoCode, coin)).toFixed(2));
+      let v1 = parseFloat((this.rate.toFiat(satoshis, settings.alternativeIsoCode, coin)).toFixed(2));
       v1 = this.filter.formatFiatAmount(v1);
-      if (!v1) return null;
+      if (!v1) { return null; }
 
       return v1 + ' ' + settings.alternativeIsoCode;
     }).bind(this);
 
-    if (!this.rate.isAvailable()) return null;
+    if (!this.rate.isAvailable()) { return null; }
     return val();
   };
 
   public processTx(coin: string, tx: any, useLegacyAddress?: boolean): any {
-    if (!tx || tx.action == 'invalid')
+    if (!tx || tx.action == 'invalid') {
       return tx;
+    }
 
     // New transaction output format
     if (tx.outputs && tx.outputs.length) {
 
-      var outputsNr = tx.outputs.length;
+      let outputsNr = tx.outputs.length;
 
       if (tx.action != 'received') {
         if (outputsNr > 1) {
@@ -137,7 +138,7 @@ export class TxFormatProvider {
 
   public formatPendingTxps(txps): any {
     this.pendingTxProposalsCountForUs = 0;
-    var now = Math.floor(Date.now() / 1000);
+    let now = Math.floor(Date.now() / 1000);
 
     /* To test multiple outputs...
     var txp = {
@@ -160,8 +161,9 @@ export class TxFormatProvider {
     _.each(txps, function (tx) {
 
       // no future transactions...
-      if (tx.createdOn > now)
+      if (tx.createdOn > now) {
         tx.createdOn = now;
+      }
 
       // TODO: implement profileService.getWallet(tx.walletId)
       //tx.wallet = profileService.getWallet(tx.walletId);
@@ -178,7 +180,7 @@ export class TxFormatProvider {
 
       tx = this.processTx(tx.wallet.coin, tx);
 
-      var action: any = _.find(tx.actions, {
+      let action: any = _.find(tx.actions, {
         copayerId: tx.wallet.copayerId
       });
 
@@ -194,8 +196,9 @@ export class TxFormatProvider {
         tx.statusForUs = 'pending';
       }
 
-      if (!tx.deleteLockTime)
+      if (!tx.deleteLockTime) {
         tx.canBeRemoved = true;
+      }
     });
 
     return txps;
@@ -203,11 +206,11 @@ export class TxFormatProvider {
 
   public parseAmount(coin: string, amount: any, currency: string): any {
     let settings = this.configProvider.get().wallet.settings;
-    var satToBtc = 1 / 100000000;
-    var unitToSatoshi = settings.unitToSatoshi;
-    var amountUnitStr;
-    var amountSat;
-    var alternativeIsoCode = settings.alternativeIsoCode;
+    let satToBtc = 1 / 100000000;
+    let unitToSatoshi = settings.unitToSatoshi;
+    let amountUnitStr;
+    let amountSat;
+    let alternativeIsoCode = settings.alternativeIsoCode;
 
     // If fiat currency
     if (currency != 'BCH' && currency != 'BTC' && currency != 'sat') {
@@ -228,19 +231,19 @@ export class TxFormatProvider {
     }
 
     return {
-      amount: amount,
-      currency: currency,
-      alternativeIsoCode: alternativeIsoCode,
-      amountSat: amountSat,
-      amountUnitStr: amountUnitStr
+      amount,
+      currency,
+      alternativeIsoCode,
+      amountSat,
+      amountUnitStr
     };
   };
 
   public satToUnit(amount: any): number {
     let settings = this.configProvider.get().wallet.settings;
-    var unitToSatoshi = settings.unitToSatoshi;
-    var satToUnit = 1 / unitToSatoshi;
-    var unitDecimals = settings.unitDecimals;
+    let unitToSatoshi = settings.unitToSatoshi;
+    let satToUnit = 1 / unitToSatoshi;
+    let unitDecimals = settings.unitDecimals;
     return parseFloat((amount * satToUnit).toFixed(unitDecimals));
   };
 

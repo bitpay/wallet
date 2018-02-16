@@ -1,21 +1,21 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, ModalController, Events } from 'ionic-angular';
-import { Logger } from '../../../../providers/logger/logger';
 import { TranslateService } from '@ngx-translate/core';
+import { Events, ModalController, NavController, NavParams } from 'ionic-angular';
 import * as _ from 'lodash';
 import * as moment from 'moment';
+import { Logger } from '../../../../providers/logger/logger';
 
 // Pages
 import { FeeWarningPage } from '../../../send/fee-warning/fee-warning';
-import { MercadoLibrePage } from '../mercado-libre';
 import { SuccessModalPage } from '../../../success/success';
+import { MercadoLibrePage } from '../mercado-libre';
 
 // Provider
-import { MercadoLibreProvider } from '../../../../providers/mercado-libre/mercado-libre';
 import { BwcErrorProvider } from '../../../../providers/bwc-error/bwc-error';
 import { ConfigProvider } from '../../../../providers/config/config';
 import { EmailNotificationsProvider } from '../../../../providers/email-notifications/email-notifications';
 import { ExternalLinkProvider } from '../../../../providers/external-link/external-link';
+import { MercadoLibreProvider } from '../../../../providers/mercado-libre/mercado-libre';
 import { OnGoingProcessProvider } from "../../../../providers/on-going-process/on-going-process";
 import { PopupProvider } from '../../../../providers/popup/popup';
 import { ProfileProvider } from '../../../../providers/profile/profile';
@@ -74,11 +74,11 @@ export class BuyMercadoLibrePage {
     this.mlGiftCard = null;
   }
 
-  ionViewDidLoad() {
+  public ionViewDidLoad() {
     this.logger.info('ionViewDidLoad BuyMercadoLibrePage');
   }
 
-  ionViewWillEnter() {
+  public ionViewWillEnter() {
     this.amount = this.navParams.data.amount;
     this.currency = this.navParams.data.currency;
 
@@ -213,7 +213,7 @@ export class BuyMercadoLibrePage {
             });
           }
 
-          return resolve({ invoice: invoice, accessKey: accessKey });
+          return resolve({ invoice, accessKey });
         });
       });
     });
@@ -241,11 +241,11 @@ export class BuyMercadoLibrePage {
       });
 
       let txp = {
-        toAddress: toAddress,
+        toAddress,
         amount: amountSat,
-        outputs: outputs,
-        message: message,
-        payProUrl: payProUrl,
+        outputs,
+        message,
+        payProUrl,
         excludeUnconfirmedUtxos: this.configWallet.spendUnconfirmed ? false : true,
         feeLevel: this.configWallet.settings.feeLevel ? this.configWallet.settings.feeLevel : 'normal'
       };
@@ -266,17 +266,17 @@ export class BuyMercadoLibrePage {
       this.logger.debug("creating gift card " + count);
       if (err) {
         giftCard = giftCard || {};
-        giftCard['status'] = 'FAILURE';
+        giftCard.status = 'FAILURE';
       }
 
       if (giftCard && giftCard.cardStatus && (giftCard.cardStatus != 'active' && giftCard.cardStatus != 'inactive' && giftCard.cardStatus != 'expired')) {
         giftCard = giftCard || {};
-        giftCard['status'] = 'FAILURE';
+        giftCard.status = 'FAILURE';
       }
 
-      var now = moment().unix() * 1000;
+      let now = moment().unix() * 1000;
 
-      var newData = giftCard;
+      let newData = giftCard;
       newData.invoiceId = dataSrc.invoiceId;
       newData.accessKey = dataSrc.accessKey;
       newData.invoiceUrl = dataSrc.invoiceUrl;
@@ -314,7 +314,7 @@ export class BuyMercadoLibrePage {
       amount: parsedAmount.amount,
       currency: parsedAmount.currency,
       uuid: wallet.id,
-      email: email
+      email
     };
       console.log('[buy-mercado-libre.ts:313]',dataSrc); /* TODO */
     this.onGoingProcessProvider.set('loadingTxInfo', true);
@@ -323,7 +323,7 @@ export class BuyMercadoLibrePage {
       let accessKey = data.accessKey;
 
       // Sometimes API does not return this element;
-      invoice['buyerPaidBtcMinerFee'] = invoice.buyerPaidBtcMinerFee || 0;
+      invoice.buyerPaidBtcMinerFee = invoice.buyerPaidBtcMinerFee || 0;
       let invoiceFeeSat = parseInt((invoice.buyerPaidBtcMinerFee * 100000000).toFixed());
 
       this.message = this.amountUnitStr + " for Mercado Livre Brazil Gift Card"; // TODO: translate
@@ -340,7 +340,7 @@ export class BuyMercadoLibrePage {
           currency: dataSrc.currency,
           amount: dataSrc.amount,
           uuid: dataSrc.uuid,
-          accessKey: accessKey,
+          accessKey,
           invoiceId: invoice.id,
           invoiceUrl: invoice.url,
           invoiceTime: invoice.invoiceTime
@@ -369,7 +369,7 @@ export class BuyMercadoLibrePage {
       this.showError(null, this.translate.instant('Transaction has not been created'));
       return;
     }
-    var title = this.translate.instant('Confirm');
+    let title = this.translate.instant('Confirm');
     this.popupProvider.ionicConfirm(title, this.message).then((ok) => {
       if (!ok) {
         return;
@@ -395,7 +395,7 @@ export class BuyMercadoLibrePage {
     let id = this.wallet ? this.wallet.credentials.walletId : null;
     this.events.publish('showWalletsSelectorEvent', this.wallets, id, 'Buy from');
     this.events.subscribe('selectWalletEvent', (wallet: any) => {
-      if (!_.isEmpty(wallet)) this.onWalletSelect(wallet);
+      if (!_.isEmpty(wallet)) { this.onWalletSelect(wallet); }
       this.events.unsubscribe('selectWalletEvent');
     });
   }
@@ -412,7 +412,7 @@ export class BuyMercadoLibrePage {
       successComment = 'Vale-Presente gerado e pronto para usar';
     }
     let successText = '';
-    let modal = this.modalCtrl.create(SuccessModalPage, { successText: successText, successComment: successComment }, { showBackdrop: true, enableBackdropDismiss: false });
+    let modal = this.modalCtrl.create(SuccessModalPage, { successText, successComment }, { showBackdrop: true, enableBackdropDismiss: false });
     modal.present();
     modal.onDidDismiss(() => {
       this.navCtrl.remove(2, 2);

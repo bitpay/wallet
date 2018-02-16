@@ -7,7 +7,7 @@ export class TimeProvider {
   ) { }
 
   public withinSameMonth(time1: any, time2: any): any {
-    if (!time1 || !time2) return false;
+    if (!time1 || !time2) { return false; }
     let date1 = new Date(time1);
     let date2 = new Date(time2);
     return this.getMonthYear(date1) === this.getMonthYear(date2);

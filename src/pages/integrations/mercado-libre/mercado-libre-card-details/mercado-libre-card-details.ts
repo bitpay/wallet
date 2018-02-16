@@ -3,8 +3,8 @@ import { NavParams, ViewController } from 'ionic-angular';
 import { Logger } from '../../../../providers/logger/logger';
 
 // Provider
-import { MercadoLibreProvider } from '../../../../providers/mercado-libre/mercado-libre';
 import { ExternalLinkProvider } from '../../../../providers/external-link/external-link';
+import { MercadoLibreProvider } from '../../../../providers/mercado-libre/mercado-libre';
 
 @Component({
   selector: 'page-mercado-libre-card-details',
@@ -24,7 +24,7 @@ export class MercadoLibreCardDetailsPage {
     this.card = this.navParams.data.card;
   }
 
-  ionViewDidLoad() {
+  public ionViewDidLoad() {
     this.logger.info('ionViewDidLoad MercadoLibreCardDetailsPage');
   }
 
@@ -47,8 +47,8 @@ export class MercadoLibreCardDetailsPage {
   public openRedeemLink() {
     let url;
     let isSandbox = this.mercadoLibreProvider.getNetwork() == 'testnet' ? true : false;
-    if (isSandbox) url = 'https://beta.mercadolivre.com.br/vale-presente/resgate';
-    else url = 'https://www.mercadolivre.com.br/vale-presente/resgate';
+    if (isSandbox) { url = 'https://beta.mercadolivre.com.br/vale-presente/resgate'; }
+    else { url = 'https://www.mercadolivre.com.br/vale-presente/resgate'; }
     this.openExternalLink(url);
   }
 

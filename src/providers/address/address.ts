@@ -26,13 +26,13 @@ export class AddressProvider {
     };
   }
 
-  getCoin(address: string) {
+  public getCoin(address: string) {
     try {
-      new this.Bitcore['btc'].lib.Address(address);
+      new this.Bitcore.btc.lib.Address(address);
       return 'btc';
     } catch (e) {
       try {
-        new this.Bitcore['bch'].lib.Address(address);
+        new this.Bitcore.bch.lib.Address(address);
         return 'bch';
       } catch (e) {
         return null;
@@ -40,31 +40,31 @@ export class AddressProvider {
     }
   };
 
-  translateAddress(address: string) {
-    var origCoin = this.getCoin(address);
-    if (!origCoin) return;
+  public translateAddress(address: string) {
+    let origCoin = this.getCoin(address);
+    if (!origCoin) { return; }
 
-    var origAddress = new this.Bitcore[origCoin].lib.Address(address);
-    var origObj = origAddress.toObject();
+    let origAddress = new this.Bitcore[origCoin].lib.Address(address);
+    let origObj = origAddress.toObject();
 
-    var resultCoin = this.Bitcore[origCoin].translateTo;
-    var resultAddress = this.Bitcore[resultCoin].lib.Address.fromObject(origObj);
+    let resultCoin = this.Bitcore[origCoin].translateTo;
+    let resultAddress = this.Bitcore[resultCoin].lib.Address.fromObject(origObj);
     return {
-      origCoin: origCoin,
+      origCoin,
       origAddress: address,
-      resultCoin: resultCoin,
+      resultCoin,
       resultAddress: resultAddress.toString()
     };
   };
 
-  validateAddress(address: string) {
+  public validateAddress(address: string) {
     let Address = this.bitcore.Address;
     let AddressCash = this.bitcoreCash.Address;
     let isLivenet = Address.isValid(address, 'livenet');
     let isTestnet = Address.isValid(address, 'testnet');
     let isLivenetCash = AddressCash.isValid(address, 'livenet');
     return {
-      address: address,
+      address,
       isValid: isLivenet || isTestnet || isLivenetCash,
       network: isTestnet ? 'testnet' : 'livenet',
       coin: this.getCoin(address),

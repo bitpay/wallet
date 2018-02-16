@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import { ViewController, NavParams } from 'ionic-angular';
 import { TranslateService } from '@ngx-translate/core';
+import { NavParams, ViewController } from 'ionic-angular';
 
 @Component({
   selector: 'page-success',

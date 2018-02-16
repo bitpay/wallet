@@ -1,14 +1,14 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
-import { Logger } from '../../../../../providers/logger/logger';
 import * as _ from 'lodash';
 import * as papa from 'papaparse';
+import { Logger } from '../../../../../providers/logger/logger';
 
 // Providers
-import { ProfileProvider } from '../../../../../providers/profile/profile';
+import { AppProvider } from '../../../../../providers/app/app';
 import { ConfigProvider } from '../../../../../providers/config/config';
 import { PlatformProvider } from '../../../../../providers/platform/platform';
-import { AppProvider } from '../../../../../providers/app/app';
+import { ProfileProvider } from '../../../../../providers/profile/profile';
 import { WalletProvider } from '../../../../../providers/wallet/wallet';
 
 // Pages
@@ -25,9 +25,9 @@ export class WalletTransactionHistoryPage {
   public isCordova: boolean;
   public err: any;
   public config: any;
-  public csvContent: Array<any>;
+  public csvContent: any[];
   public csvFilename: any;
-  public csvHeader: Array<string>;
+  public csvHeader: string[];
   public unitToSatoshi: number;
   public unitDecimals: number;
   public satToUnit: number;
@@ -49,11 +49,11 @@ export class WalletTransactionHistoryPage {
     this.csvContent = [];
   }
 
-  ionViewDidLoad() {
+  public ionViewDidLoad() {
     this.logger.info('ionViewDidLoad WalletTransactionHistoryPage');
   }
 
-  ionViewWillEnter() {
+  public ionViewWillEnter() {
     this.wallet = this.profileProvider.getWallet(this.navParams.data.walletId);
     this.currency = this.wallet.coin.toUpperCase();
     this.isCordova = this.platformProvider.isCordova;
@@ -67,7 +67,7 @@ export class WalletTransactionHistoryPage {
   }
 
   private formatDate(date: any): string {
-    var dateObj = new Date(date);
+    let dateObj = new Date(date);
     if (!dateObj) {
       this.logger.debug('Error formating a date');
       return 'DateError'
@@ -90,23 +90,24 @@ export class WalletTransactionHistoryPage {
 
       this.logger.debug('Wallet Transaction History Length:', txs.length);
 
-      var data = txs;
+      let data = txs;
       this.csvFilename = this.appName + '-' + this.wallet.name + '.csv';
       this.csvHeader = ['Date', 'Destination', 'Description', 'Amount', 'Currency', 'Txid', 'Creator', 'Copayers', 'Comment'];
 
-      var _amount, _note, _copayers, _creator, _comment;
+      let _amount, _note, _copayers, _creator, _comment;
 
       data.forEach((it, index) => {
-        var amount = it.amount;
+        let amount = it.amount;
 
-        if (it.action == 'moved')
+        if (it.action == 'moved') {
           amount = 0;
+        }
 
         _copayers = '';
         _creator = '';
 
         if (it.actions && it.actions.length > 1) {
-          for (var i = 0; i < it.actions.length; i++) {
+          for (let i = 0; i < it.actions.length; i++) {
             _copayers += it.actions[i].copayerName + ':' + it.actions[i].type + ' - ';
           }
           _creator = (it.creatorName && it.creatorName != 'undefined') ? it.creatorName : '';
@@ -115,8 +116,9 @@ export class WalletTransactionHistoryPage {
         _note = it.message || '';
         _comment = it.note ? it.note.body : '';
 
-        if (it.action == 'moved')
+        if (it.action == 'moved') {
           _note += ' Moved:' + (it.amount * this.satToBtc).toFixed(8)
+        }
 
         this.csvContent.push({
           'Date': this.formatDate(it.time * 1000),
@@ -131,7 +133,7 @@ export class WalletTransactionHistoryPage {
         });
 
         if (it.fees && (it.action == 'moved' || it.action == 'sent')) {
-          var _fee = (it.fees * this.satToBtc).toFixed(8)
+          let _fee = (it.fees * this.satToBtc).toFixed(8)
           this.csvContent.push({
             'Date': this.formatDate(it.time * 1000),
             'Destination': 'Bitcoin Network Fees',
@@ -157,8 +159,8 @@ export class WalletTransactionHistoryPage {
       data: this.csvContent
     });
 
-    var blob = new Blob([csv]);
-    var a = window.document.createElement("a");
+    let blob = new Blob([csv]);
+    let a = window.document.createElement("a");
     a.href = window.URL.createObjectURL(blob);
     a.download = this.csvFilename;
     document.body.appendChild(a);
