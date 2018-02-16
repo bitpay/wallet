@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
-import { PlatformProvider } from '../platform/platform';
-import { ConfigProvider } from '../config/config';
 import { Logger } from '../../providers/logger/logger';
+import { ConfigProvider } from '../config/config';
+import { PlatformProvider } from '../platform/platform';
 
-import { TouchID } from '@ionic-native/touch-id';
 import { AndroidFingerprintAuth } from '@ionic-native/android-fingerprint-auth';
+import { TouchID } from '@ionic-native/touch-id';
 
 @Injectable()
 export class TouchIdProvider {
@@ -55,7 +55,7 @@ export class TouchIdProvider {
       this.androidFingerprintAuth.isAvailable()
         .then(
         res => {
-          if (res.isAvailable) return resolve(true);
+          if (res.isAvailable) { return resolve(true); }
           else {
             this.logger.debug("Fingerprint is not available");
             return resolve(false);
@@ -84,7 +84,7 @@ export class TouchIdProvider {
           } else if (result.withBackup) {
             this.logger.debug('Successfully authenticated with backup password!');
             resolve();
-          } else this.logger.debug('Didn\'t authenticate!');
+          } else { this.logger.debug('Didn\'t authenticate!'); }
         }).catch(error => {
           if (error === this.androidFingerprintAuth.ERRORS.FINGERPRINT_CANCELLED) {
             this.logger.debug('Fingerprint authentication cancelled');
@@ -129,7 +129,7 @@ export class TouchIdProvider {
   public checkWallet(wallet: any): Promise<any> {
     return new Promise((resolve, reject) => {
       this.isAvailable().then((isAvailable: boolean) => {
-        if (!isAvailable) return resolve();
+        if (!isAvailable) { return resolve(); }
         if (this.isNeeded(wallet)) {
           this.check().then(() => {
             return resolve();

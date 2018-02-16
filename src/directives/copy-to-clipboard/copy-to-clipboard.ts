@@ -1,9 +1,9 @@
-import { DOCUMENT } from "@angular/platform-browser";
 import { Directive, Inject } from '@angular/core';
-import { ToastController } from 'ionic-angular';
+import { DOCUMENT } from "@angular/platform-browser";
 import { Clipboard } from '@ionic-native/clipboard';
-import { PlatformProvider } from '../../providers/platform/platform';
+import { ToastController } from 'ionic-angular';
 import { Logger } from '../../providers/logger/logger';
+import { PlatformProvider } from '../../providers/platform/platform';
 
 @Directive({
   selector: '[copy-to-clipboard]', // Attribute selector

@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, Events } from 'ionic-angular';
+import { Events, NavController, NavParams } from 'ionic-angular';
 import { Logger } from '../../../../providers/logger/logger';
 
 //providers
-import { ProfileProvider } from '../../../../providers/profile/profile';
 import { ConfigProvider } from '../../../../providers/config/config';
+import { ProfileProvider } from '../../../../providers/profile/profile';
 
 @Component({
   selector: 'page-wallet-color',
@@ -13,7 +13,7 @@ import { ConfigProvider } from '../../../../providers/config/config';
 export class WalletColorPage {
 
   public wallet: any;
-  public colorCount: Array<number>;
+  public colorCount: number[];
   public currentColorIndex: number;
   private config: any;
   private retries: number = 3;
@@ -29,11 +29,11 @@ export class WalletColorPage {
 
   }
 
-  ionViewDidLoad() {
+  public ionViewDidLoad() {
     this.logger.info('ionViewDidLoad WalletColorPage');
   }
 
-  ionViewWillEnter() {
+  public ionViewWillEnter() {
     this.wallet = this.profileProvider.getWallet(this.navParams.data.walletId);
     this.config = this.configProvider.get();
     this.colorCount = Array(this.getColorCount()).fill(0).map((x, i) => i);
@@ -42,7 +42,7 @@ export class WalletColorPage {
 
   public save(i): void {
     let color = this.indexToColor(i);
-    if (!color) return;
+    if (!color) { return; }
 
     let opts = {
       colorFor: {}

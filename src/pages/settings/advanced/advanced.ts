@@ -20,11 +20,11 @@ export class AdvancedPage {
   ) {
   }
 
-  ionViewDidLoad() {
+  public ionViewDidLoad() {
     this.logger.info('ionViewDidLoad AdvancedPage');
   }
 
-  ionViewWillEnter() {
+  public ionViewWillEnter() {
     let config: any = this.configProvider.get();
 
     this.spendUnconfirmed = config.wallet.spendUnconfirmed;

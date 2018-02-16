@@ -1,5 +1,5 @@
-import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Injectable } from '@angular/core';
 import { Logger } from '../../providers/logger/logger';
 
 //providers
@@ -32,7 +32,7 @@ export class BitPayProvider {
     let headers: any = {
       'Content-Type': 'application/json'
     };
-    this.http.get(url, { headers: headers }).subscribe((data) => {
+    this.http.get(url, { headers }).subscribe((data) => {
       successCallback(data);
     }, (data) => {
       errorCallback(data);
@@ -54,7 +54,7 @@ export class BitPayProvider {
       headers = headers.append('x-identity', appIdentity.pub);
       headers = headers.append('x-signature', signedData);
 
-      this.http.post(url, json, { headers: headers }).subscribe((data) => {
+      this.http.post(url, json, { headers }).subscribe((data) => {
         successCallback(data);
       }, (data) => {
         errorCallback(data);
@@ -68,15 +68,15 @@ export class BitPayProvider {
         return errorCallback(err);
       }
 
-      json['params'].signature = bitauthService.sign(JSON.stringify(json.params), appIdentity.priv);
-      json['params'].pubkey = appIdentity.pub;
-      json['params'] = JSON.stringify(json.params);
+      json.params.signature = bitauthService.sign(JSON.stringify(json.params), appIdentity.priv);
+      json.params.pubkey = appIdentity.pub;
+      json.params = JSON.stringify(json.params);
       let url = this.BITPAY_API_URL + '/api/v2/';
       let headers: any = {
         'Content-Type': 'application/json'
       };
       this.logger.debug('post auth:' + JSON.stringify(json));
-      this.http.post(url, json, { headers: headers }).subscribe((data: any) => {
+      this.http.post(url, json, { headers }).subscribe((data: any) => {
         data.appIdentity = appIdentity;
         successCallback(data);
       }, (data) => {

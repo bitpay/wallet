@@ -23,13 +23,13 @@ export class BitPaySettingsPage {
 
   }
 
-  ionViewWillEnter() {
+  public ionViewWillEnter() {
     this.init();
   }
 
   private init(): void {
     this.bitpayAccountProvider.getAccounts((err, accounts) => {
-      if (err) return;
+      if (err) { return; }
       this.bitpayAccounts = accounts;
 
       this.bitPayCardProvider.getCards((cards) => {

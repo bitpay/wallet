@@ -1,15 +1,15 @@
 import { Component } from '@angular/core';
-import { ModalController, NavController, Events } from 'ionic-angular';
-import { Logger } from '../../../providers/logger/logger';
+import { Events, ModalController, NavController } from 'ionic-angular';
 import * as _ from 'lodash';
+import { Logger } from '../../../providers/logger/logger';
 
 // Pages
 import { ShapeshiftDetailsPage } from './shapeshift-details/shapeshift-details';
 import { ShapeshiftShiftPage } from './shapeshift-shift/shapeshift-shift';
 
 // Providers
-import { ShapeshiftProvider } from '../../../providers/shapeshift/shapeshift';
 import { ExternalLinkProvider } from '../../../providers/external-link/external-link';
+import { ShapeshiftProvider } from '../../../providers/shapeshift/shapeshift';
 
 @Component({
   selector: 'page-shapeshift',
@@ -33,17 +33,17 @@ export class ShapeshiftPage {
     this.init();
   }
 
-  ionViewDidLoad() {
+  public ionViewDidLoad() {
     this.logger.info('ionViewDidLoad ShapeshiftPage');
   }
 
-  ionViewWillEnter() {
+  public ionViewWillEnter() {
     this.events.subscribe('bwsEvent', (walletId: string, type: string, n: any) => {
-      if (type == 'NewBlock') this.updateShift(this.shifts);
+      if (type == 'NewBlock') { this.updateShift(this.shifts); }
     });
   }
 
-  ionViewWillLeave() {
+  public ionViewWillLeave() {
     this.events.unsubscribe('bwsEvent');
   }
 
@@ -52,10 +52,10 @@ export class ShapeshiftPage {
   }
 
   private updateShift = _.debounce((shifts: any) => {
-    if (_.isEmpty(shifts.data)) return;
+    if (_.isEmpty(shifts.data)) { return; }
     _.forEach(shifts.data, (dataFromStorage: any) => {
       this.shapeshiftProvider.getStatus(dataFromStorage.address, (err: any, st: any) => {
-        if (err) return;
+        if (err) { return; }
 
         this.shifts.data[st.address].status = st.status;
         this.shifts.data[st.address].transaction = st.transaction || null;
@@ -74,7 +74,7 @@ export class ShapeshiftPage {
 
   private init(): void {
     this.shapeshiftProvider.getShapeshift((err: any, ss: any) => {
-      if (err) this.logger.error(err);
+      if (err) { this.logger.error(err); }
       this.shifts = { data: ss };
       this.updateShift(this.shifts);
     });
@@ -85,7 +85,7 @@ export class ShapeshiftPage {
   }
 
   public openShiftModal(ssData: any) {
-    let modal = this.modalCtrl.create(ShapeshiftDetailsPage, { ssData: ssData });
+    let modal = this.modalCtrl.create(ShapeshiftDetailsPage, { ssData });
 
     modal.present();
 

@@ -24,7 +24,7 @@ export class ShapeshiftDetailsPage {
     this.ssData = this.navParams.data.ssData;
   }
 
-  ionViewDidLoad() {
+  public ionViewDidLoad() {
     this.logger.info('ionViewDidLoad ShapeshiftDetailsPage');
   }
 
@@ -41,7 +41,7 @@ export class ShapeshiftDetailsPage {
   }
 
   public openTransaction(id: string) {
-    var url;
+    let url;
     if (this.ssData.outgoingType.toUpperCase() == 'BTC') {
       url = "https://insight.bitpay.com/tx/" + id;
     } else if (this.ssData.outgoingType.toUpperCase() == 'BCH') {

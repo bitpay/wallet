@@ -1,20 +1,20 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, Events, ModalController } from 'ionic-angular';
-import { Logger } from '../../../../providers/logger/logger';
+import { Events, ModalController, NavController, NavParams } from 'ionic-angular';
 import * as _ from 'lodash';
+import { Logger } from '../../../../providers/logger/logger';
 
 //pages
 import { SuccessModalPage } from '../../../success/success';
 
 //providers
+import { ConfigProvider } from '../../../../providers/config/config';
+import { GlideraProvider } from '../../../../providers/glidera/glidera';
+import { OnGoingProcessProvider } from '../../../../providers/on-going-process/on-going-process';
 import { PlatformProvider } from '../../../../providers/platform/platform';
 import { PopupProvider } from '../../../../providers/popup/popup';
-import { OnGoingProcessProvider } from '../../../../providers/on-going-process/on-going-process';
-import { GlideraProvider } from '../../../../providers/glidera/glidera';
 import { ProfileProvider } from '../../../../providers/profile/profile';
 import { TxFormatProvider } from '../../../../providers/tx-format/tx-format';
 import { WalletProvider } from '../../../../providers/wallet/wallet';
-import { ConfigProvider } from '../../../../providers/config/config';
 
 @Component({
   selector: 'page-sell-glidera',
@@ -54,7 +54,7 @@ export class SellGlideraPage {
     this.isCordova = this.platformProvider.isCordova;
   }
 
-  ionViewWillEnter() {
+  public ionViewWillEnter() {
 
     this.isFiat = this.navParams.data.currency != 'BTC' ? true : false;
     this.amount = this.navParams.data.amount;
@@ -129,7 +129,7 @@ export class SellGlideraPage {
         message = 'A SMS containing a confirmation code was sent to your phone.';
       }
       this.popupProvider.ionicPrompt(title, message).then((twoFaCode) => {
-        if (typeof twoFaCode == 'undefined') return cb();
+        if (typeof twoFaCode == 'undefined') { return cb(); }
         return cb(twoFaCode);
       });
     } else {
@@ -142,7 +142,7 @@ export class SellGlideraPage {
     let okText = 'Confirm';
     let cancelText = 'Cancel';
     this.popupProvider.ionicConfirm(null, message, okText, cancelText).then((ok) => {
-      if (!ok) return;
+      if (!ok) { return; }
       this.onGoingProcessProvider.set('sellingBitcoin', true);
       this.glideraProvider.get2faCode(this.token, (err, tfa) => {
         if (err) {
@@ -185,8 +185,8 @@ export class SellGlideraPage {
 
               let txp = {
                 toAddress: sellAddress,
-                amount: amount,
-                outputs: outputs,
+                amount,
+                outputs,
                 message: comment,
                 payProUrl: null,
                 excludeUnconfirmedUtxos: configWallet.spendUnconfirmed ? false : true,
@@ -206,7 +206,7 @@ export class SellGlideraPage {
 
                       let rawTx = signedTxp.raw;
                       let data = {
-                        refundAddress: refundAddress,
+                        refundAddress,
                         signedTransaction: rawTx,
                         priceUuid: this.sellInfo.priceUuid,
                         useCurrentPrice: this.sellInfo.priceUuid ? false : true,
@@ -214,7 +214,7 @@ export class SellGlideraPage {
                       };
                       this.glideraProvider.sell(this.token, twoFaCode, data, (err, data) => {
                         this.onGoingProcessProvider.set('sellingBitcoin', false);
-                        if (err) return this.showError(err);
+                        if (err) { return this.showError(err); }
                         this.logger.info(data);
                         this.openSuccessModal();
                       });
@@ -222,7 +222,7 @@ export class SellGlideraPage {
                       this.onGoingProcessProvider.set('sellingBitcoin', false);
                       this.showError(err);
                       this.walletProvider.removeTx(this.wallet, publishedTxp).catch((err) => { // TODO in the original code use signedTxp on this function
-                        if (err) this.logger.debug(err);
+                        if (err) { this.logger.debug(err); }
                       });
                     });
                   }).catch((err) => {
@@ -261,7 +261,7 @@ export class SellGlideraPage {
     let id = this.wallet ? this.wallet.credentials.walletId : null;
     this.events.publish('showWalletsSelectorEvent', this.wallets, id, 'Sell From');
     this.events.subscribe('selectWalletEvent', (wallet: any) => {
-      if (!_.isEmpty(wallet)) this.onWalletSelect(wallet);
+      if (!_.isEmpty(wallet)) { this.onWalletSelect(wallet); }
       this.events.unsubscribe('selectWalletEvent');
     });
   }
@@ -269,7 +269,7 @@ export class SellGlideraPage {
   public openSuccessModal(): void {
     let successText = 'Funds sent to Glidera Account';
     let successComment = 'The transaction is not yet confirmed, and will show as "Pending" in your Activity. The bitcoin sale will be completed automatically once it is confirmed by Glidera';
-    let modal = this.modalCtrl.create(SuccessModalPage, { successText: successText, successComment: successComment }, { showBackdrop: true, enableBackdropDismiss: false });
+    let modal = this.modalCtrl.create(SuccessModalPage, { successText, successComment }, { showBackdrop: true, enableBackdropDismiss: false });
     modal.present();
     modal.onDidDismiss(() => {
       this.navCtrl.remove(3, 1);

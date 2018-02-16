@@ -1,25 +1,25 @@
 import { Injectable } from '@angular/core';
-import { Logger } from '../../../providers/logger/logger';
+import { DirectoryEntry, File, FileSystem } from '@ionic-native/file';
 import * as _ from 'lodash';
-import { File, DirectoryEntry, FileSystem } from '@ionic-native/file';
+import { Logger } from '../../../providers/logger/logger';
 import { IStorage, KeyAlreadyExistsError } from './istorage';
 
 @Injectable()
 export class FileStorage implements IStorage {
-  fs: FileSystem;
-  dir: DirectoryEntry;
+  public fs: FileSystem;
+  public dir: DirectoryEntry;
 
   constructor(private file: File, private log: Logger) {}
 
-  init(): Promise<any> {
+  public init(): Promise<any> {
     return new Promise((resolve, reject) => {
-      if (this.fs && this.dir) return resolve();
+      if (this.fs && this.dir) { return resolve(); }
 
       let onSuccess = (fs: FileSystem): Promise<any> => {
         this.log.debug('File system started: ', fs.name, fs.root.name);
         this.fs = fs;
         return this.getDir().then(dir => {
-          if (!dir.nativeURL) return reject();
+          if (!dir.nativeURL) { return reject(); }
           this.dir = dir;
           this.log.debug('Got main dir:', dir.nativeURL);
           return resolve();
@@ -36,12 +36,12 @@ export class FileStorage implements IStorage {
   }
 
   // See https://github.com/apache/cordova-plugin-file/#where-to-store-files
-  getDir(): Promise<DirectoryEntry> {
+  public getDir(): Promise<DirectoryEntry> {
     if (!this.file) {
       return Promise.reject(new Error('Could not write on device storage'));
     }
 
-    var url = this.file.dataDirectory;
+    let url = this.file.dataDirectory;
     return this.file.resolveDirectoryUrl(url).catch(err => {
       let msg = 'Could not resolve filesystem ' + url;
       this.log.warn(msg, err);
@@ -49,10 +49,10 @@ export class FileStorage implements IStorage {
     });
   }
 
-  get(k: string): Promise<any> {
+  public get(k: string): Promise<any> {
     let parseResult = (v: any): any => {
-      if (!v) return null;
-      if (!_.isString(v)) return v;
+      if (!v) { return null; }
+      if (!_.isString(v)) { return v; }
       let parsed: any;
       try {
         parsed = JSON.parse(v);
@@ -70,10 +70,10 @@ export class FileStorage implements IStorage {
           );
         })
         .then(fileEntry => {
-          if (!fileEntry) return;
+          if (!fileEntry) { return; }
           return new Promise(resolve => {
             fileEntry.file(file => {
-              var reader = new FileReader();
+              let reader = new FileReader();
               reader.onloadend = () => {
                 resolve(parseResult(reader.result));
               };
@@ -83,13 +83,13 @@ export class FileStorage implements IStorage {
         })
         .catch(err => {
           // Not found
-          if (err.code == 1) return;
-          else throw err;
+          if (err.code == 1) { return; }
+          else { throw err; }
         })
     );
   }
 
-  set(k: string, v: any): Promise<void> {
+  public set(k: string, v: any): Promise<void> {
     return this.init()
       .then(() => {
         return this.file.getFile(this.dir, k, { create: true });
@@ -109,7 +109,7 @@ export class FileStorage implements IStorage {
                 reject(e);
               };
 
-              if (_.isObject(v)) v = JSON.stringify(v);
+              if (_.isObject(v)) { v = JSON.stringify(v); }
 
               if (v && !_.isString(v)) {
                 v = v.toString();
@@ -126,13 +126,13 @@ export class FileStorage implements IStorage {
       });
   }
 
-  remove(k: string): Promise<void> {
+  public remove(k: string): Promise<void> {
     return Promise.resolve();
   }
 
-  create(k: string, v: any): Promise<void> {
+  public create(k: string, v: any): Promise<void> {
     return this.get(k).then(data => {
-      if (data) throw new KeyAlreadyExistsError();
+      if (data) { throw new KeyAlreadyExistsError(); }
       this.set(k, v);
     });
   }

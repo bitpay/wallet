@@ -1,20 +1,20 @@
 import { Component } from '@angular/core';
+import { AlertController, Events, NavController } from 'ionic-angular';
 import { Logger } from '../../providers/logger/logger';
-import { NavController, Events, AlertController } from 'ionic-angular';
 
 // Native
 import { SocialSharing } from '@ionic-native/social-sharing';
 
 // Pages
+import { BackupGamePage } from '../backup/backup-game/backup-game';
 import { AmountPage } from '../send/amount/amount';
 import { CopayersPage } from './../add/copayers/copayers';
-import { BackupGamePage } from '../backup/backup-game/backup-game';
 
 // Providers
-import { WalletProvider } from '../../providers/wallet/wallet';
-import { ProfileProvider } from '../../providers/profile/profile';
-import { PlatformProvider } from '../../providers/platform/platform';
 import { BwcErrorProvider } from '../../providers/bwc-error/bwc-error';
+import { PlatformProvider } from '../../providers/platform/platform';
+import { ProfileProvider } from '../../providers/profile/profile';
+import { WalletProvider } from '../../providers/wallet/wallet';
 
 import * as _ from 'lodash';
 
@@ -27,7 +27,7 @@ export class ReceivePage {
   public protocolHandler: string;
   public address: string;
   public qrAddress: string;
-  public wallets: Array<any> = [];
+  public wallets: any[] = [];
   public wallet: any;
   public showShareButton: boolean;
   public loading: boolean;
@@ -46,12 +46,12 @@ export class ReceivePage {
     this.showShareButton = this.platformProvider.isCordova;
   }
 
-  ionViewWillEnter() {
+  public ionViewWillEnter() {
     this.wallets = this.profileProvider.getWallets();
     this.onWalletSelect(this.checkSelectedWallet(this.wallet, this.wallets));
     this.events.subscribe('bwsEvent', (walletId, type, n) => {
       // Update current address
-      if (this.wallet && walletId == this.wallet.id && type == 'NewIncomingTx') this.setAddress(true);
+      if (this.wallet && walletId == this.wallet.id && type == 'NewIncomingTx') { this.setAddress(true); }
     });
   }
 
@@ -63,11 +63,11 @@ export class ReceivePage {
   }
 
   private checkSelectedWallet(wallet: any, wallets: any): any {
-    if (!wallet) return wallets[0];
+    if (!wallet) { return wallets[0]; }
     let w = _.find(wallets, (w: any) => {
       return w.id == wallet.id;
     });
-    if (!w) return wallets[0];
+    if (!w) { return wallets[0]; }
     return wallet;
   }
 
@@ -102,7 +102,7 @@ export class ReceivePage {
   }
 
   public shareAddress(): void {
-    if (!this.showShareButton) return;
+    if (!this.showShareButton) { return; }
     this.socialSharing.share(this.address);
   }
 
@@ -110,7 +110,7 @@ export class ReceivePage {
     let id = this.wallet ? this.wallet.credentials.walletId : null;
     this.events.publish('showWalletsSelectorEvent', this.wallets, id);
     this.events.subscribe('selectWalletEvent', (wallet: any) => {
-      if (!_.isEmpty(wallet)) this.onWalletSelect(wallet);
+      if (!_.isEmpty(wallet)) { this.onWalletSelect(wallet); }
       this.events.unsubscribe('selectWalletEvent');
     });
   }

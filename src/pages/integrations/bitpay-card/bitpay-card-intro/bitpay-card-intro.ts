@@ -1,14 +1,14 @@
 import { Component } from '@angular/core';
-import { NavParams, NavController, ActionSheetController } from 'ionic-angular';
 import { TranslateService } from '@ngx-translate/core';
+import { ActionSheetController, NavController, NavParams } from 'ionic-angular';
 
 import * as _ from 'lodash';
 
 //providers
 import { BitPayAccountProvider } from '../../../../providers/bitpay-account/bitpay-account';
-import { PopupProvider } from '../../../../providers/popup/popup';
 import { BitPayCardProvider } from '../../../../providers/bitpay-card/bitpay-card';
 import { ExternalLinkProvider } from '../../../../providers/external-link/external-link';
+import { PopupProvider } from '../../../../providers/popup/popup';
 
 //pages
 import { BitPayCardPage } from '../bitpay-card';
@@ -33,7 +33,7 @@ export class BitPayCardIntroPage {
   ) {
   }
 
-  ionViewWillEnter() {
+  public ionViewWillEnter() {
     if (this.navParams.data.secret) {
       let pairData = {
         secret: this.navParams.data.secret,
@@ -53,7 +53,7 @@ export class BitPayCardIntroPage {
               return;
             }
             this.navCtrl.pop();
-            if (cards[0]) this.navCtrl.push(BitPayCardPage, { id: cards[0].id });
+            if (cards[0]) { this.navCtrl.push(BitPayCardPage, { id: cards[0].id }); }
           });
         }
       });
@@ -93,7 +93,7 @@ export class BitPayCardIntroPage {
   }
 
   private showAccountSelector() {
-    let options:Array<any> = [];
+    let options:any[] = [];
 
     _.forEach(this.accounts, (account: any) => {
       options.push(

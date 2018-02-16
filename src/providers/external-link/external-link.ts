@@ -2,9 +2,9 @@ import { Injectable } from '@angular/core';
 import { Logger } from '../../providers/logger/logger';
 
 //providers
-import { PopupProvider } from '../popup/popup';
-import { PlatformProvider } from '../platform/platform';
 import { NodeWebkitProvider } from '../node-webkit/node-webkit';
+import { PlatformProvider } from '../platform/platform';
+import { PopupProvider } from '../popup/popup';
 
 @Injectable()
 export class ExternalLinkProvider {
@@ -40,7 +40,7 @@ export class ExternalLinkProvider {
       } else {
         if (optIn) {
           let openBrowser = (res) => {
-            if (res) window.open(url, '_system');
+            if (res) { window.open(url, '_system'); }
             this.restoreHandleOpenURL(old);
           };
           this.popupProvider.ionicConfirm(title, message, okText, cancelText).then((res: boolean) => {

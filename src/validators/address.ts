@@ -3,13 +3,13 @@ import { BwcProvider } from '../providers/bwc/bwc';
 
 export class AddressValidator {
 
-  static bitcore: BwcProvider;
+  public static bitcore: BwcProvider;
 
   constructor(bwc: BwcProvider) {
     AddressValidator.bitcore = bwc;
   }
 
-  isValid(control: FormControl): any {
+  public isValid(control: FormControl): any {
 
     let b = AddressValidator.bitcore.getBitcore();
     let c = AddressValidator.bitcore.getBitcoreCash();

@@ -23,10 +23,10 @@ export class BackupProvider {
     return new Promise((resolve, reject) => {
       let wallet = this.profileProvider.getWallet(walletId);
       let ew = this.walletExport(password, opts, walletId);
-      if (!ew) return reject('Could not create backup');
+      if (!ew) { return reject('Could not create backup'); }
 
       let walletName = (wallet.alias || '') + (wallet.alias ? '-' : '') + wallet.credentials.walletName;
-      if (opts.noSign) walletName = walletName + '-noSign'
+      if (opts.noSign) { walletName = walletName + '-noSign' }
       let filename = walletName + '-' + this.appProvider.info.nameCase + 'backup.aes.json';
       this._download(ew, filename).then(() => {
         return resolve();
@@ -42,7 +42,7 @@ export class BackupProvider {
     try {
       opts = opts ? opts : {};
       let b = wallet.export(opts);
-      if (opts.addressBook) b = this.addMetadata(b, opts);
+      if (opts.addressBook) { b = this.addMetadata(b, opts); }
 
       let e = this.bwcProvider.getSJCL().encrypt(password, b, {
         iter: 10000
@@ -56,7 +56,7 @@ export class BackupProvider {
 
   private addMetadata(b: any, opts: any): string {
     b = JSON.parse(b);
-    if (opts.addressBook) b.addressBook = opts.addressBook;
+    if (opts.addressBook) { b.addressBook = opts.addressBook; }
     return JSON.stringify(b);
   }
 

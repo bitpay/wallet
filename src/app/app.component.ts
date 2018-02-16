@@ -1,28 +1,28 @@
 import { Component } from '@angular/core';
-import { Platform, ModalController } from 'ionic-angular';
-import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
+import { StatusBar } from '@ionic-native/status-bar';
+import { ModalController, Platform } from 'ionic-angular';
 import { Subscription } from 'rxjs';
 
 //providers
-import { Logger } from '../providers/logger/logger';
-import { AppProvider } from '../providers/app/app';
-import { ProfileProvider } from '../providers/profile/profile';
-import { ConfigProvider } from '../providers/config/config';
-import { TouchIdProvider } from '../providers/touchid/touchid';
-import { GlideraProvider } from '../providers/glidera/glidera';
-import { CoinbaseProvider } from '../providers/coinbase/coinbase';
 import { AmazonProvider } from '../providers/amazon/amazon';
+import { AppProvider } from '../providers/app/app';
 import { BitPayCardProvider } from '../providers/bitpay-card/bitpay-card';
+import { CoinbaseProvider } from '../providers/coinbase/coinbase';
+import { ConfigProvider } from '../providers/config/config';
+import { GlideraProvider } from '../providers/glidera/glidera';
+import { Logger } from '../providers/logger/logger';
 import { MercadoLibreProvider } from '../providers/mercado-libre/mercado-libre';
+import { ProfileProvider } from '../providers/profile/profile';
 import { ShapeshiftProvider } from '../providers/shapeshift/shapeshift';
+import { TouchIdProvider } from '../providers/touchid/touchid';
 
 //pages
-import { TabsPage } from '../pages/tabs/tabs';
-import { OnboardingPage } from '../pages/onboarding/onboarding';
-import { PinModalPage } from '../pages/pin/pin';
 import { FingerprintModalPage } from '../pages/fingerprint/fingerprint';
 import { DisclaimerPage } from '../pages/onboarding/disclaimer/disclaimer';
+import { OnboardingPage } from '../pages/onboarding/onboarding';
+import { PinModalPage } from '../pages/pin/pin';
+import { TabsPage } from '../pages/tabs/tabs';
 
 @Component({
   templateUrl: 'app.html',
@@ -53,7 +53,7 @@ export class CopayApp {
     this.initializeApp();
   }
 
-  initializeApp() {
+  public initializeApp() {
     this.platform.ready().then((readySource) => {
       this.app.load().then(() => {
         this.logger.info(
@@ -66,7 +66,7 @@ export class CopayApp {
           this.statusBar.show();
 
           // Only overlay for iOS
-          if (this.platform.is('ios')) this.statusBar.overlaysWebView(true);
+          if (this.platform.is('ios')) { this.statusBar.overlaysWebView(true); }
 
           this.statusBar.styleLightContent();
           this.splashScreen.hide();
@@ -99,17 +99,17 @@ export class CopayApp {
     });
   }
 
-  ngOnDestroy() {
+  public ngOnDestroy() {
     this.onResumeSubscription.unsubscribe();
   }
 
   private openLockModal(): void {
-    if (this.isModalOpen) return;
+    if (this.isModalOpen) { return; }
     let config: any = this.configProvider.get();
     let lockMethod = config.lock.method;
-    if (!lockMethod) return;
-    if (lockMethod == 'PIN') this.openPINModal('checkPin');
-    if (lockMethod == 'Fingerprint') this.openFingerprintModal();
+    if (!lockMethod) { return; }
+    if (lockMethod == 'PIN') { this.openPINModal('checkPin'); }
+    if (lockMethod == 'Fingerprint') { this.openFingerprintModal(); }
   }
 
   private openPINModal(action): void {
@@ -133,13 +133,13 @@ export class CopayApp {
   private registerIntegrations(): void {
 
     // Mercado Libre
-    if (this.app.info._enabledExtensions.mercadolibre) this.mercadoLibreProvider.register();
+    if (this.app.info._enabledExtensions.mercadolibre) { this.mercadoLibreProvider.register(); }
 
     // Amazon Gift Cards
-    if (this.app.info._enabledExtensions.amazon) this.amazonProvider.register();
+    if (this.app.info._enabledExtensions.amazon) { this.amazonProvider.register(); }
 
     // ShapeShift
-    if (this.app.info._enabledExtensions.shapeshift) this.shapeshiftProvider.register();
+    if (this.app.info._enabledExtensions.shapeshift) { this.shapeshiftProvider.register(); }
 
     // Glidera
     if (this.app.info._enabledExtensions.glidera) {
@@ -154,6 +154,6 @@ export class CopayApp {
     }
 
     // BitPay Card
-    if (this.app.info._enabledExtensions.debitcard) this.bitPayCardProvider.register();
+    if (this.app.info._enabledExtensions.debitcard) { this.bitPayCardProvider.register(); }
   }
 }

@@ -1,17 +1,17 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, ModalController } from 'ionic-angular';
-import { Logger } from '../../../../providers/logger/logger';
-import * as moment from 'moment';
-import * as _ from 'lodash';
 import { TranslateService } from '@ngx-translate/core';
+import { ModalController, NavController, NavParams } from 'ionic-angular';
+import * as _ from 'lodash';
+import * as moment from 'moment';
+import { Logger } from '../../../../providers/logger/logger';
 
 // Pages
-import { ShapeshiftPage } from '../shapeshift';
 import { SuccessModalPage } from '../../../success/success';
+import { ShapeshiftPage } from '../shapeshift';
 
 // Providers
-import { BwcProvider } from '../../../../providers/bwc/bwc';
 import { BwcErrorProvider } from '../../../../providers/bwc-error/bwc-error';
+import { BwcProvider } from '../../../../providers/bwc/bwc';
 import { ConfigProvider } from '../../../../providers/config/config';
 import { ExternalLinkProvider } from '../../../../providers/external-link/external-link';
 import { OnGoingProcessProvider } from "../../../../providers/on-going-process/on-going-process";
@@ -102,7 +102,7 @@ export class ShapeshiftConfirmPage {
       let min = Number(lim.min);
       let max = Number(lim.limit);
 
-      if (this.useSendMax) this.amount = max;
+      if (this.useSendMax) { this.amount = max; }
 
       let amountNumber = Number(this.amount);
 
@@ -120,7 +120,7 @@ export class ShapeshiftConfirmPage {
     });
   }
 
-  ionViewDidLoad() {
+  public ionViewDidLoad() {
     this.logger.info('ionViewDidLoad ShapeshiftConfirmPage');
   }
 
@@ -184,8 +184,8 @@ export class ShapeshiftConfirmPage {
 
     this.shapeshiftProvider.getStatus(address, (err: any, st: any) => {
       let newData = {
-        address: address,
-        withdrawal: withdrawal,
+        address,
+        withdrawal,
         date: now,
         amount: this.amountStr,
         rate: this.rateUnit + ' ' + this.toWallet.coin.toUpperCase() + ' per ' + this.fromWallet.coin.toUpperCase(),
@@ -221,9 +221,9 @@ export class ShapeshiftConfirmPage {
       });
 
       let txp = {
-        toAddress: toAddress,
+        toAddress,
         amount: parsedAmount.amountSat,
-        outputs: outputs,
+        outputs,
         message: this.message,
         excludeUnconfirmedUtxos: this.configWallet.spendUnconfirmed ? false : true,
         feeLevel: this.configWallet.settings.feeLevel || 'normal',
@@ -244,13 +244,13 @@ export class ShapeshiftConfirmPage {
   }
 
   private getLegacyAddressFormat(addr: string, coin: string): string {
-    if (coin == 'btc') return addr;
+    if (coin == 'btc') { return addr; }
     let a = this.bitcoreCash.Address(addr).toObject();
     return this.bitcore.Address.fromObject(a).toString();
   }
 
   private getNewAddressFormat(addr: string, coin: string): string {
-    if (coin == 'btc') return addr;
+    if (coin == 'btc') { return addr; }
     let a = this.bitcore.Address(addr).toObject();
     return this.bitcoreCash.Address.fromObject(a).toString();
   }
@@ -271,7 +271,7 @@ export class ShapeshiftConfirmPage {
         let data = {
           withdrawal: withdrawalAddress,
           pair: this.getCoinPair(),
-          returnAddress: returnAddress
+          returnAddress
         }
         this.shapeshiftProvider.shift(data, (err: any, shapeData: any) => {
           if (err || shapeData.error) {
@@ -351,7 +351,7 @@ export class ShapeshiftConfirmPage {
 
   public openSuccessModal(): void {
     let successText = 'Transaction Sent';
-    let modal = this.modalCtrl.create(SuccessModalPage, { successText: successText }, { showBackdrop: true, enableBackdropDismiss: false });
+    let modal = this.modalCtrl.create(SuccessModalPage, { successText }, { showBackdrop: true, enableBackdropDismiss: false });
     modal.present();
     modal.onDidDismiss(() => {
       this.navCtrl.popToRoot({ animate: false });

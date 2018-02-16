@@ -1,5 +1,5 @@
-import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { Injectable } from '@angular/core';
 import { Logger } from '../../providers/logger/logger';
 
 @Injectable()
@@ -28,7 +28,7 @@ export class FeedbackProvider {
 
       this.http.post(this.URL, null, {
         params: urlSearchParams,
-        headers: headers
+        headers
       }).subscribe(() => {
         this.logger.info("SUCCESS: Feedback sent");
         return resolve();
@@ -55,15 +55,18 @@ export class FeedbackProvider {
       };
     }
 
-    if (!verifyTagFormat(currentVersion))
+    if (!verifyTagFormat(currentVersion)) {
       return 'Cannot verify the format of version tag: ' + currentVersion;
-    if (!verifyTagFormat(savedVersion))
+    }
+    if (!verifyTagFormat(savedVersion)) {
       return 'Cannot verify the format of the saved version tag: ' + savedVersion;
+    }
 
     let current = formatTagNumber(currentVersion);
     let saved = formatTagNumber(savedVersion);
-    if (saved.major > current.major || (saved.major == current.major && saved.minor > current.minor))
+    if (saved.major > current.major || (saved.major == current.major && saved.minor > current.minor)) {
       return false;
+    }
 
     return true;
   }

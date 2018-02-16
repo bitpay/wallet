@@ -1,9 +1,9 @@
-import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
 import { Logger } from '@nsalaun/ng-logger';
 
-import { LanguageProvider } from '../../providers/language/language';
 import { ConfigProvider } from '../../providers/config/config';
+import { LanguageProvider } from '../../providers/language/language';
 import { PersistenceProvider } from '../../providers/persistence/persistence';
 
 /* TODO: implement interface propertly

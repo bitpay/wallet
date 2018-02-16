@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
-import { NavController, Events, NavParams } from 'ionic-angular';
-import { Validators, FormBuilder, FormGroup } from '@angular/forms';
-import { Logger } from '../../../providers/logger/logger';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
+import { Events, NavController, NavParams } from 'ionic-angular';
+import { Logger } from '../../../providers/logger/logger';
 
 // Pages
 import { TabsPage } from '../../tabs/tabs';
@@ -13,8 +13,8 @@ import { ConfigProvider } from '../../../providers/config/config';
 import { DerivationPathHelperProvider } from '../../../providers/derivation-path-helper/derivation-path-helper';
 import { OnGoingProcessProvider } from '../../../providers/on-going-process/on-going-process';
 import { PlatformProvider } from '../../../providers/platform/platform';
-import { ProfileProvider } from '../../../providers/profile/profile';
 import { PopupProvider } from '../../../providers/popup/popup';
+import { ProfileProvider } from '../../../providers/profile/profile';
 import { WalletProvider } from '../../../providers/wallet/wallet';
 
 @Component({
@@ -85,13 +85,13 @@ export class ImportWalletPage {
     });
   }
 
-  ionViewWillEnter() {
+  public ionViewWillEnter() {
     if (this.navParams.data.code) {
       this.processWalletInfo(this.navParams.data.code);
     }
   }
 
-  selectTab(tab: string) {
+  public selectTab(tab: string) {
     this.selectedTab = tab;
 
     switch (tab) {
@@ -100,12 +100,12 @@ export class ImportWalletPage {
         this.formFile = null;
         this.importForm.get('words').setValidators([Validators.required]);
         this.importForm.get('filePassword').clearValidators();
-        if (this.isCordova || this.isSafari) this.importForm.get('backupText').clearValidators();
-        else this.importForm.get('file').clearValidators();
+        if (this.isCordova || this.isSafari) { this.importForm.get('backupText').clearValidators(); }
+        else { this.importForm.get('file').clearValidators(); }
         break;
       case 'file':
-        if (this.isCordova || this.isSafari) this.importForm.get('backupText').setValidators([Validators.required]);
-        else this.importForm.get('file').setValidators([Validators.required]);
+        if (this.isCordova || this.isSafari) { this.importForm.get('backupText').setValidators([Validators.required]); }
+        else { this.importForm.get('file').setValidators([Validators.required]); }
         this.importForm.get('filePassword').setValidators([Validators.required]);
         this.importForm.get('words').clearValidators();
         break;
@@ -122,16 +122,16 @@ export class ImportWalletPage {
     this.importForm.get('backupText').updateValueAndValidity();
   }
 
-  normalizeMnemonic(words: string) {
-    if (!words || !words.indexOf) return words;
-    var isJA = words.indexOf('\u3000') > -1;
-    var wordList = words.split(/[\u3000\s]+/);
+  public normalizeMnemonic(words: string) {
+    if (!words || !words.indexOf) { return words; }
+    let isJA = words.indexOf('\u3000') > -1;
+    let wordList = words.split(/[\u3000\s]+/);
 
     return wordList.join(isJA ? '\u3000' : ' ');
   }
 
   private processWalletInfo(code: string): void {
-    if (!code) return;
+    if (!code) { return; }
 
     this.importErr = false;
     let parsedCode = code.split('|');
@@ -159,13 +159,13 @@ export class ImportWalletPage {
     }
 
     this.testnetEnabled = info.network == 'testnet' ? true : false;
-    this.importForm.controls['derivationPath'].setValue(info.derivationPath);
-    this.importForm.controls['words'].setValue(info.data);
+    this.importForm.controls.derivationPath.setValue(info.derivationPath);
+    this.importForm.controls.words.setValue(info.data);
   }
 
   public setDerivationPath(): void {
     let path = this.testnetEnabled ? this.derivationPathForTestnet : this.derivationPathByDefault;
-    this.importForm.controls['derivationPath'].setValue(path);
+    this.importForm.controls.derivationPath.setValue(path);
   }
 
   private importBlob(str: string, opts: any): void {
@@ -260,7 +260,7 @@ export class ImportWalletPage {
   }
 
 
-  import() {
+  public import() {
     if (this.selectedTab === 'file') {
       this.importFromFile();
     } else {
@@ -306,8 +306,9 @@ export class ImportWalletPage {
 
     let opts: any = {};
 
-    if (this.importForm.value.bwsurl)
+    if (this.importForm.value.bwsurl) {
       opts.bwsurl = this.importForm.value.bwsurl;
+    }
 
     let pathData: any = this.derivationPathHelperProvider.parse(this.importForm.value.derivationPath);
 
@@ -333,7 +334,7 @@ export class ImportWalletPage {
     } else if (words.indexOf('xprv') == 0 || words.indexOf('tprv') == 0) {
       return this.importExtendedPrivateKey(words, opts);
     } else {
-      let wordList: Array<any> = words.split(/[\u3000\s]+/);
+      let wordList: any[] = words.split(/[\u3000\s]+/);
 
       if ((wordList.length % 3) != 0) {
         let title = this.translate.instant('Error');

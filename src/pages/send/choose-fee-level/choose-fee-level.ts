@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
-import { ViewController } from 'ionic-angular';
-import { Logger } from '../../../providers/logger/logger';
-import * as _ from 'lodash';
 import { TranslateService } from '@ngx-translate/core';
+import { ViewController } from 'ionic-angular';
+import * as _ from 'lodash';
+import { Logger } from '../../../providers/logger/logger';
 
 // Providers
 import { FeeProvider } from '../../../providers/fee/fee';
@@ -26,7 +26,7 @@ export class ChooseFeeLevelPage {
   public customFeePerKB: string;
   public feePerSatByte: string;
   public selectedFee: string;
-  public feeOpts: Array<any>;
+  public feeOpts: any[];
   public loadingFee: boolean;
   public feeLevels: any;
   public coin: string;
@@ -53,7 +53,7 @@ export class ChooseFeeLevelPage {
     this.customFeePerKB = this.viewCtrl.data.customFeePerKB ? this.viewCtrl.data.customFeePerKB : null;
     this.feePerSatByte = this.viewCtrl.data.feePerSatByte ? this.viewCtrl.data.feePerSatByte : null;
 
-    if (_.isEmpty(this.feeLevel)) this.showErrorAndClose(null, this.translate.instant('Fee level is not defined'));
+    if (_.isEmpty(this.feeLevel)) { this.showErrorAndClose(null, this.translate.instant('Fee level is not defined')); }
     this.selectedFee = this.feeLevel;
 
     this.feeOpts = Object.keys(this.feeProvider.feeOpts);
@@ -133,14 +133,14 @@ export class ChooseFeeLevelPage {
     let fee = Number(feePerSatByte);
 
 
-    if (fee <= this.minFeeAllowed) this.showError = true;
-    else this.showError = false;
+    if (fee <= this.minFeeAllowed) { this.showError = true; }
+    else { this.showError = false; }
 
-    if (fee > this.minFeeAllowed && fee < this.minFeeRecommended) this.showMinWarning = true;
-    else this.showMinWarning = false;
+    if (fee > this.minFeeAllowed && fee < this.minFeeRecommended) { this.showMinWarning = true; }
+    else { this.showMinWarning = false; }
 
-    if (fee < this.maxFeeAllowed && fee > this.maxFeeRecommended) this.showMaxWarning = true;
-    else this.showMaxWarning = false;
+    if (fee < this.maxFeeAllowed && fee > this.maxFeeRecommended) { this.showMaxWarning = true; }
+    else { this.showMaxWarning = false; }
   }
 
   public ok(): void {

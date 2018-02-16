@@ -44,8 +44,9 @@ export class BwcProvider {
       timeout: 100000,
       transports: ['polling'],
     });
-    if (walletData)
+    if (walletData) {
       bwc.import(walletData, opts);
+    }
     return bwc;
   }
 

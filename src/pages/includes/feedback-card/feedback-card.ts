@@ -1,7 +1,7 @@
 import { Component } from "@angular/core";
-import { NavController, Events } from 'ionic-angular';
-import { Logger } from '../../../providers/logger/logger';
 import { TranslateService } from '@ngx-translate/core';
+import { Events, NavController } from 'ionic-angular';
+import { Logger } from '../../../providers/logger/logger';
 
 //providers
 import { AppProvider } from '../../../providers/app/app';

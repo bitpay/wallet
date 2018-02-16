@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, ModalController, AlertController } from 'ionic-angular';
+import { AlertController, ModalController, NavController, NavParams } from 'ionic-angular';
 import { BackupGamePage } from '../backup-game/backup-game';
 
 @Component({
@@ -21,7 +21,7 @@ export class BackupWarningPage {
     this.fromOnboarding = this.navParams.get('fromOnboarding');
   }
 
-  openWarningModal() {
+  public openWarningModal() {
 
     let opts = {
       title: 'Screenshots are not secure',

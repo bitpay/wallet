@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
-import { DOCUMENT } from "@angular/platform-browser";
 import { Inject } from '@angular/core';
-import { ActionSheetController, ToastController } from 'ionic-angular';
+import { DOCUMENT } from "@angular/platform-browser";
 import { TranslateService } from '@ngx-translate/core';
+import { ActionSheetController, ToastController } from 'ionic-angular';
 
 //native
 import { SocialSharing } from '@ionic-native/social-sharing';
@@ -24,7 +24,7 @@ export class SessionLogPage {
   private dom: Document;
 
   public logOptions: any;
-  public filteredLogs: Array<any>;
+  public filteredLogs: any[];
   public filterValue: number;
   public isCordova: boolean;
 
@@ -45,11 +45,11 @@ export class SessionLogPage {
     this.logOptions = _.keyBy(logLevels, 'weight');
   }
 
-  ionViewDidLoad() {
+  public ionViewDidLoad() {
     this.logger.info('ionViewDidLoad SessionLogPage');
   }
 
-  ionViewWillEnter() {
+  public ionViewWillEnter() {
     let selectedLevel: any = _.has(this.config, 'log.weight') ? this.logger.getWeight(this.config.log.weight) : this.logger.getDefaultWeight();
     this.filterValue = selectedLevel.weight;
     this.setOptionSelected(selectedLevel.weight);
@@ -64,7 +64,7 @@ export class SessionLogPage {
     this.filterLogs(weight);
     let opts = {
       log: {
-        weight: weight
+        weight
       }
     };
     this.configProvider.set(opts);
@@ -88,7 +88,7 @@ export class SessionLogPage {
     this.dom.execCommand('copy');
     let message = this.translate.instant('Copied to clipboard');
     let showSuccess = this.toastCtrl.create({
-      message: message,
+      message,
       duration: 1000,
     });
     showSuccess.present();

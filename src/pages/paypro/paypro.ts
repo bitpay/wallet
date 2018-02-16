@@ -12,7 +12,7 @@ export class PayProPage {
 
   }
 
-  close() {
+  public close() {
     this.viewCtrl.dismiss();
   }
 }

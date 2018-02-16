@@ -1,19 +1,19 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, Events } from 'ionic-angular';
-import { Logger } from '../../providers/logger/logger';
 import { TranslateService } from '@ngx-translate/core';
+import { Events, NavController, NavParams } from 'ionic-angular';
+import { Logger } from '../../providers/logger/logger';
 
 //providers
-import { WalletProvider } from '../../providers/wallet/wallet';
-import { ProfileProvider } from '../../providers/profile/profile';
 import { AddressBookProvider } from '../../providers/address-book/address-book';
 import { BwcErrorProvider } from '../../providers/bwc-error/bwc-error';
+import { ProfileProvider } from '../../providers/profile/profile';
 import { TimeProvider } from '../../providers/time/time';
+import { WalletProvider } from '../../providers/wallet/wallet';
 
 //pages
-import { TxDetailsPage } from '../../pages/tx-details/tx-details';
 import { BackupWarningPage } from '../../pages/backup/backup-warning/backup-warning';
 import { WalletAddressesPage } from '../../pages/settings/wallet-settings/wallet-settings-advanced/wallet-addresses/wallet-addresses';
+import { TxDetailsPage } from '../../pages/tx-details/tx-details';
 import { WalletBalancePage } from './wallet-balance/wallet-balance';
 
 import * as _ from 'lodash';
@@ -40,7 +40,7 @@ export class WalletDetailsPage {
   public showNoTransactionsYetMsg: boolean;
   public showBalanceButton: boolean = false;
   public addressbook: any = {};
-  public txps: Array<any> = [];
+  public txps: any[] = [];
 
   constructor(
     private navCtrl: NavController,
@@ -61,7 +61,7 @@ export class WalletDetailsPage {
       this.clearData();
     } else {
       this.wallet.status = this.wallet.cachedStatus;
-      if (this.wallet.completeHistory) this.showHistory();
+      if (this.wallet.completeHistory) { this.showHistory(); }
     }
 
     this.requiresMultipleSignatures = this.wallet.credentials.m > 1;
@@ -73,20 +73,22 @@ export class WalletDetailsPage {
     });
   }
 
-  ionViewDidEnter() {
+  public ionViewDidEnter() {
     this.updateAll();
 
     this.events.subscribe('bwsEvent', (walletId, type, n) => {
-      if (walletId == this.wallet.id && type != 'NewAddress')
+      if (walletId == this.wallet.id && type != 'NewAddress') {
         this.updateAll();
+      }
     });
     this.events.subscribe('Local/TxAction', (walletId) => {
-      if (walletId == this.wallet.id)
+      if (walletId == this.wallet.id) {
         this.updateAll();
+      }
     });
   }
 
-  ionViewWillLeave() {
+  public ionViewWillLeave() {
     this.events.unsubscribe('bwsEvent');
     this.events.unsubscribe('Local/TxAction');
   }
@@ -102,7 +104,7 @@ export class WalletDetailsPage {
     this.currentPage++;
   }
 
-  private setPendingTxps(txps: Array<any>) {
+  private setPendingTxps(txps: any[]) {
 
     /* Uncomment to test multiple outputs */
 
@@ -137,18 +139,18 @@ export class WalletDetailsPage {
     this.updatingTxHistoryProgress = 0;
 
     let progressFn = (function (txs, newTxs) {
-      if (newTxs > 5) this.thistory = null;
+      if (newTxs > 5) { this.thistory = null; }
       this.updatingTxHistoryProgress = newTxs;
     }).bind(this);
 
     this.walletProvider.getTxHistory(this.wallet, {
-      progressFn: progressFn
+      progressFn
     }).then((txHistory) => {
       this.updatingTxHistory = false;
 
       let hasTx = txHistory[0];
-      if (hasTx) this.showNoTransactionsYetMsg = false;
-      else this.showNoTransactionsYetMsg = true;
+      if (hasTx) { this.showNoTransactionsYetMsg = false; }
+      else { this.showNoTransactionsYetMsg = true; }
 
       this.wallet.completeHistory = txHistory;
       this.showHistory();

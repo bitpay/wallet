@@ -1,7 +1,7 @@
-import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Logger } from '../../providers/logger/logger';
+import { Injectable } from '@angular/core';
 import * as _ from 'lodash';
+import { Logger } from '../../providers/logger/logger';
 
 //providers
 import { HomeIntegrationsProvider } from '../home-integrations/home-integrations';
@@ -48,7 +48,7 @@ export class AmazonProvider {
   };
 
   public savePendingGiftCard(gc, opts, cb) {
-    var network = this.getNetwork();
+    let network = this.getNetwork();
     this.persistenceProvider.getAmazonGiftCards(network).then((oldGiftCards) => {
       if (_.isString(oldGiftCards)) {
         oldGiftCards = JSON.parse(oldGiftCards);
@@ -56,7 +56,7 @@ export class AmazonProvider {
       if (_.isString(gc)) {
         gc = JSON.parse(gc);
       }
-      var inv = oldGiftCards || {};
+      let inv = oldGiftCards || {};
       inv[gc.invoiceId] = gc;
       if (opts && (opts.error || opts.status)) {
         inv[gc.invoiceId] = _.assign(inv[gc.invoiceId], opts);
@@ -73,9 +73,9 @@ export class AmazonProvider {
   }
 
   public getPendingGiftCards(cb) {
-    var network = this.getNetwork();
+    let network = this.getNetwork();
     this.persistenceProvider.getAmazonGiftCards(network).then((giftCards) => {
-      var _gcds = giftCards ? giftCards : null;
+      let _gcds = giftCards ? giftCards : null;
       return cb(null, _gcds);
     }).catch((err) => {
       return cb(err);
@@ -85,7 +85,7 @@ export class AmazonProvider {
 
   public createBitPayInvoice(data, cb) {
 
-    var dataSrc = {
+    let dataSrc = {
       currency: data.currency,
       amount: data.amount,
       clientId: data.uuid,
@@ -113,14 +113,14 @@ export class AmazonProvider {
 
   public createGiftCard(data, cb) {
 
-    var dataSrc = {
+    let dataSrc = {
       "clientId": data.uuid,
       "invoiceId": data.invoiceId,
       "accessKey": data.accessKey
     };
 
     this.http.post(this.credentials.BITPAY_API_URL + '/amazon-gift/redeem', dataSrc).subscribe((data: any) => {
-      var status = data.status == 'new' ? 'PENDING' : (data.status == 'paid') ? 'PENDING' : data.status;
+      let status = data.status == 'new' ? 'PENDING' : (data.status == 'paid') ? 'PENDING' : data.status;
       data.status = status;
       this.logger.info('Amazon.com Gift Card Create/Update: ' + status);
       return cb(null, data);
@@ -132,7 +132,7 @@ export class AmazonProvider {
 
   public cancelGiftCard(data, cb) {
 
-    var dataSrc = {
+    let dataSrc = {
       "clientId": data.uuid,
       "invoiceId": data.invoiceId,
       "accessKey": data.accessKey

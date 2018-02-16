@@ -10,7 +10,7 @@ export class FeeWarningPage {
     private viewCtrl: ViewController
   ) {}
 
-  close() {
+  public close() {
     this.viewCtrl.dismiss();
   }
 }

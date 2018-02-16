@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
-import { NavController, Events, NavParams } from 'ionic-angular';
-import { Validators, FormBuilder, FormGroup } from '@angular/forms';
-import { Logger } from '../../../providers/logger/logger';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
+import { Events, NavController, NavParams } from 'ionic-angular';
+import { Logger } from '../../../providers/logger/logger';
 
 // Pages
 import { CopayersPage } from '../copayers/copayers';
@@ -71,11 +71,11 @@ export class JoinWalletPage {
     }];
   }
 
-  ionViewDidLoad() {
+  public ionViewDidLoad() {
     this.logger.info('ionViewDidLoad JoinWalletPage');
   }
 
-  ionViewWillEnter() {
+  public ionViewWillEnter() {
     if (this.navParams.data.url) {
       let data: string = this.navParams.data.url;
       data = data.replace('copay:', '');
@@ -84,7 +84,7 @@ export class JoinWalletPage {
   }
 
   public onQrCodeScannedJoin(data: string): void { // TODO
-    this.joinForm.controls['invitationCode'].setValue(data);
+    this.joinForm.controls.invitationCode.setValue(data);
   }
 
   public seedOptionsChange(seed: any): void {
@@ -93,14 +93,14 @@ export class JoinWalletPage {
     } else {
       this.joinForm.get('recoveryPhrase').setValidators(null);
     }
-    this.joinForm.controls['selectedSeed'].setValue(seed);
-    this.joinForm.controls['testnet'].setValue(false);
-    this.joinForm.controls['derivationPath'].setValue(this.derivationPathByDefault);
+    this.joinForm.controls.selectedSeed.setValue(seed);
+    this.joinForm.controls.testnet.setValue(false);
+    this.joinForm.controls.derivationPath.setValue(this.derivationPathByDefault);
   }
 
-  setDerivationPath() {
+  public setDerivationPath() {
     let path: string = this.joinForm.value.testnet ? this.derivationPathForTestnet : this.derivationPathByDefault;
-    this.joinForm.controls['derivationPath'].setValue(path);
+    this.joinForm.controls.derivationPath.setValue(path);
   }
 
   public setOptsAndJoin(): void {

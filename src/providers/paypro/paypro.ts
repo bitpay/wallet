@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
-import { Logger } from '../../providers/logger/logger';
 import { TranslateService } from '@ngx-translate/core';
+import { Logger } from '../../providers/logger/logger';
 
 //providers
-import { ProfileProvider } from '../profile/profile';
 import { OnGoingProcessProvider } from '../on-going-process/on-going-process';
+import { ProfileProvider } from '../profile/profile';
 
 @Injectable()
 export class PayproProvider {
@@ -24,17 +24,17 @@ export class PayproProvider {
         onlyComplete: true
       })[0];
 
-      if (!wallet) return resolve();
+      if (!wallet) { return resolve(); }
 
       this.logger.debug('Fetch PayPro Request...', uri);
 
-      if (!disableLoader) this.onGoingProcessProvider.set('fetchingPayPro', true);
+      if (!disableLoader) { this.onGoingProcessProvider.set('fetchingPayPro', true); }
 
       wallet.fetchPayPro({
         payProUrl: uri,
       }, (err, paypro) => {
-        if (!disableLoader) this.onGoingProcessProvider.set('fetchingPayPro', false);
-        if (err) return reject(err);
+        if (!disableLoader) { this.onGoingProcessProvider.set('fetchingPayPro', false); }
+        if (err) { return reject(err); }
         else if (!paypro.verified) {
           this.logger.warn('Failed to verify payment protocol signatures');
           return reject(this.translate.instant('Payment Protocol Invalid'));
