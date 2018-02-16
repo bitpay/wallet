@@ -108,7 +108,7 @@ export class ConfirmPage {
 
     this.tx = {
       toAddress: this.navParams.data.toAddress,
-      amount: parseInt(this.navParams.data.amount),
+      amount: parseInt(this.navParams.data.amount, 10),
       sendMax: this.navParams.data.useSendMax ? true : false,
       description: this.navParams.data.description,
       paypro: this.navParams.data.paypro,
@@ -661,7 +661,7 @@ export class ConfirmPage {
 
       this.tx.feeLevel = data.newFeeLevel;
       this.tx.feeLevelName = this.feeProvider.feeOpts[this.tx.feeLevel];
-      if (this.usingCustomFee) this.tx.feeRate = parseInt(data.customFeePerKB);
+      if (this.usingCustomFee) this.tx.feeRate = parseInt(data.customFeePerKB, 10);
 
       this.updateTx(this.tx, this.wallet, { clearCache: true, dryRun: true }).catch((err: any) => {
         this.logger.warn(err);

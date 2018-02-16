@@ -300,7 +300,7 @@ export class SellCoinbasePage {
           }
           let outputs = [];
           let toAddress = data.data.address;
-          let amountSat = parseInt((this.sellRequestInfo.amount.amount * 100000000).toFixed(0));
+          let amountSat = parseInt((this.sellRequestInfo.amount.amount * 100000000).toFixed(0), 10);
           let comment = 'Sell bitcoin (Coinbase)';
 
           outputs.push({

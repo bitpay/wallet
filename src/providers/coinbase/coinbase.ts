@@ -219,7 +219,7 @@ export class CoinbaseProvider {
     this.feeProvider.getFeeRate('btc', 'livenet', 'normal').then((feePerKb) => {
       var feeBTC = (feePerKb * txNormalFeeKB / 100000000).toFixed(8);
 
-      return cb(null, amount - parseInt(feeBTC), parseInt(feeBTC));
+      return cb(null, amount - parseInt(feeBTC, 10), parseInt(feeBTC, 10));
     }).catch((err) => {
       return cb('Could not get fee rate');
     });

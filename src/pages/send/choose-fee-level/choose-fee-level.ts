@@ -119,14 +119,14 @@ export class ChooseFeeLevelPage {
     let value: any = _.find(this.feeLevels.levels[this.network], (feeLevel: any) => {
       return feeLevel.level == 'superEconomy';
     });
-    return parseInt((value.feePerKb / 1000).toFixed());
+    return parseInt((value.feePerKb / 1000).toFixed(), 10);
   }
 
   private getMaxRecommended(): number {
     let value: any = _.find(this.feeLevels.levels[this.network], (feeLevel: any) => {
       return feeLevel.level == 'urgent';
     });
-    return parseInt((value.feePerKb / 1000).toFixed());
+    return parseInt((value.feePerKb / 1000).toFixed(), 10);
   }
 
   public checkFees(feePerSatByte: string): void {

@@ -21,7 +21,6 @@
     "no-implicit-dependencies": false,
     "jsdoc-format": false,
     "object-literal-sort-keys": false,
-    "radix": false,
     "interface-name": false,
     "prefer-conditional-expression": false,
     "prefer-for-of": false,

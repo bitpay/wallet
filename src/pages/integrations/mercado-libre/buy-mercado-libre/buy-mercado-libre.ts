@@ -232,7 +232,7 @@ export class BuyMercadoLibrePage {
 
       let outputs = [];
       let toAddress = invoice.bitcoinAddress;
-      let amountSat = parseInt((invoice.btcDue * 100000000).toFixed(0)); // BTC to Satoshi
+      let amountSat = parseInt((invoice.btcDue * 100000000).toFixed(0), 10); // BTC to Satoshi
 
       outputs.push({
         'toAddress': toAddress,
@@ -324,7 +324,7 @@ export class BuyMercadoLibrePage {
 
       // Sometimes API does not return this element;
       invoice['buyerPaidBtcMinerFee'] = invoice.buyerPaidBtcMinerFee || 0;
-      let invoiceFeeSat = parseInt((invoice.buyerPaidBtcMinerFee * 100000000).toFixed());
+      let invoiceFeeSat = parseInt((invoice.buyerPaidBtcMinerFee * 100000000).toFixed(), 10);
 
       this.message = this.amountUnitStr + " for Mercado Livre Brazil Gift Card"; // TODO: translate
 
