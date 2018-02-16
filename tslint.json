@@ -32,7 +32,6 @@
     "no-unused-expression": false,
     "only-arrow-functions": false,
     "no-eval": false,
-    "ban-comma-operator": false,
     "no-object-literal-type-assertion": false,
     "max-classes-per-file": false,
     "no-string-literal": false,
