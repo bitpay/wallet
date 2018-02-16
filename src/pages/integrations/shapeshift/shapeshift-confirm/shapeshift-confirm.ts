@@ -343,7 +343,8 @@ export class ShapeshiftConfirmPage {
         this.txSent = txSent;
         this.saveShapeshiftData();
       }).catch((err: any) => {
-        this.showErrorAndBack(null, this.translate.instant('Could not send transaction')), err;
+        this.logger.error(err);
+        this.showErrorAndBack(null, this.translate.instant('Could not send transaction'));
         return;
       });
     });
