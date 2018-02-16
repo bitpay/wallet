@@ -294,7 +294,7 @@ export class HomePage {
 
   private checkUpdate(): void {
     //TODO check if new update
-    this.releaseProvider.getLatestAppVersion()
+    this.releaseProvider.getLatestAppVersion().toPromise()
       .then((version) => {
         this.logger.debug('Current app version:', version);
         var result = this.releaseProvider.checkForUpdates(version);

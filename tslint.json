@@ -1,11 +1,7 @@
 {
+  "extends": ["tslint:latest", "tslint-config-prettier"],
   "rules": {
-    "no-duplicate-variable": true,
-    "no-unused-variable": [
-      true
-    ]
-  },
-  "rulesDirectory": [
-    "node_modules/tslint-eslint-rules/dist/rules"
-  ]
+    "interface-name": [true, "never-prefix"],
+    "no-submodule-imports": [true, "zone.js", "@angular"]
+  }
 }

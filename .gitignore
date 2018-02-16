@@ -12,9 +12,6 @@ log.txt
 .vscode/
 npm-debug.log*
 
-# No package-lock
-package-lock.json
-
 # Firebase
 /GoogleService-Info.plist
 /google-services.json
@@ -34,6 +31,12 @@ src/assets/i18n/crowdin_api_key.txt
 src/index.html
 src/manifest.json
 
+test/visual/latest
+test/visual/diffs
+test/visual/report.html
+test/visual/report.json
+junitresults.xml
+
 .sourcemaps/
 .idea/
 .sass-cache/
@@ -49,6 +52,7 @@ platforms/
 plugins/
 plugins/android.json
 plugins/ios.json
+screenshots/
 www/
 $RECYCLE.BIN/
 

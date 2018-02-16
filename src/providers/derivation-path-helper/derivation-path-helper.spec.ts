@@ -1,20 +1,11 @@
-import { TestBed, inject } from '@angular/core/testing';
 import { DerivationPathHelperProvider } from './derivation-path-helper';
 
 describe('Derivation Path Helper Provider', () => {
   let service: DerivationPathHelperProvider;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      providers: [
-        DerivationPathHelperProvider
-      ]
-    });
+    service = new DerivationPathHelperProvider();
   });
-
-  beforeEach(inject([DerivationPathHelperProvider], (pathHelper: DerivationPathHelperProvider) => {
-    service = pathHelper;
-  }));
 
   /* default paths */
   it('should get successfully the default derivation paths for livenet and testnet networks', () => {
