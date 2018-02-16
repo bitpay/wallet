@@ -1,9 +1,9 @@
-import { TestBed, inject, async } from '@angular/core/testing';
+import { HttpClient } from '@angular/common/http';
 import {
   HttpClientTestingModule,
   HttpTestingController
 } from '@angular/common/http/testing';
-import { HttpClient } from '@angular/common/http';
+import { async, inject, TestBed } from '@angular/core/testing';
 import { AppProvider } from '../../providers/app/app';
 import { ReleaseProvider } from './release';
 

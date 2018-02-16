@@ -6,10 +6,10 @@ import { Logger } from '../../../providers/logger/logger';
 import { SocialSharing } from '@ionic-native/social-sharing';
 
 //providers
-import { ProfileProvider } from '../../../providers/profile/profile';
 import { PlatformProvider } from '../../../providers/platform/platform';
-import { WalletProvider } from '../../../providers/wallet/wallet';
+import { ProfileProvider } from '../../../providers/profile/profile';
 import { TxFormatProvider } from '../../../providers/tx-format/tx-format';
+import { WalletProvider } from '../../../providers/wallet/wallet';
 
 @Component({
   selector: 'page-custom-amount',
@@ -35,7 +35,7 @@ export class CustomAmountPage {
     private socialSharing: SocialSharing,
     private txFormatProvider: TxFormatProvider
   ) {
-    let walletId = this.navParams.data.id;
+    const walletId = this.navParams.data.id;
     this.showShareButton = this.platformProvider.isCordova;
 
     this.wallet = this.profileProvider.getWallet(walletId);
@@ -43,21 +43,21 @@ export class CustomAmountPage {
     this.walletProvider.getAddress(this.wallet, false).then((addr) => {
       this.address = this.walletProvider.getAddressView(this.wallet, addr);
 
-      let parsedAmount = this.txFormatProvider.parseAmount(
+      const parsedAmount = this.txFormatProvider.parseAmount(
         this.wallet.coin,
         this.navParams.data.amount,
         this.navParams.data.currency
       );
 
       // Amount in USD or BTC
-      let _amount = parsedAmount.amount;
-      let _currency = parsedAmount.currency;
+      const _amount = parsedAmount.amount;
+      const _currency = parsedAmount.currency;
       this.amountUnitStr = parsedAmount.amountUnitStr;
 
       if (_currency != 'BTC' && _currency != 'BCH') {
         // Convert to BTC or BCH
-        let amountUnit = this.txFormatProvider.satToUnit(parsedAmount.amountSat);
-        var btcParsedAmount = this.txFormatProvider.parseAmount(this.wallet.coin, amountUnit, this.wallet.coin.toUpperCase());
+        const amountUnit = this.txFormatProvider.satToUnit(parsedAmount.amountSat);
+        const btcParsedAmount = this.txFormatProvider.parseAmount(this.wallet.coin, amountUnit, this.wallet.coin.toUpperCase());
 
         this.amountCoin = btcParsedAmount.amount;
         this.altAmountStr = btcParsedAmount.amountUnitStr;
@@ -70,7 +70,7 @@ export class CustomAmountPage {
     });
   }
 
-  ionViewDidLoad() {
+  public ionViewDidLoad() {
     this.logger.info('ionViewDidLoad CustomAmountPage');
   }
 

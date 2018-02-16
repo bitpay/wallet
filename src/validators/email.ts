@@ -4,20 +4,20 @@ import { EmailNotificationsProvider } from '../providers/email-notifications/ema
 
 export class EmailValidator {
 
-  static cnf: ConfigProvider;
-  static eml: EmailNotificationsProvider;
+  public static cnf: ConfigProvider;
+  public static eml: EmailNotificationsProvider;
 
   constructor(cnf: ConfigProvider, eml: EmailNotificationsProvider) {
     EmailValidator.cnf = cnf;
     EmailValidator.eml = eml;
   }
 
-  isValid(control: FormControl): any {
+  public isValid(control: FormControl): any {
 
-    let config = EmailValidator.cnf.get();
-    let latestEmail = EmailValidator.eml.getEmailIfEnabled(config);
+    const config = EmailValidator.cnf.get();
+    const latestEmail = EmailValidator.eml.getEmailIfEnabled(config);
 
-    let validEmail = (/^[a-zA-Z0-9.!#$%&*+=?^_{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/).test(control.value);
+    const validEmail = (/^[a-zA-Z0-9.!#$%&*+=?^_{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/).test(control.value);
     if (validEmail && control.value != latestEmail) {
       return null;
     }

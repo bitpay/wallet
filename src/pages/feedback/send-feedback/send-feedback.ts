@@ -1,19 +1,19 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, Platform } from 'ionic-angular';
-import { Validators, FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
+import { NavController, NavParams, Platform } from 'ionic-angular';
 import * as _ from "lodash";
 
 //providers
-import { ConfigProvider } from '../../../providers/config/config';
 import { AppProvider } from '../../../providers/app/app';
-import { OnGoingProcessProvider } from '../../../providers/on-going-process/on-going-process';
+import { ConfigProvider } from '../../../providers/config/config';
 import { FeedbackProvider } from '../../../providers/feedback/feedback';
+import { OnGoingProcessProvider } from '../../../providers/on-going-process/on-going-process';
 import { PopupProvider } from '../../../providers/popup/popup';
 
 //pages
-import { FeedbackCompletePage } from '../feedback-complete/feedback-complete';
 import { HomePage } from '../../home/home';
+import { FeedbackCompletePage } from '../feedback-complete/feedback-complete';
 
 
 @Component({
@@ -49,7 +49,7 @@ export class SendFeedbackPage {
     this.appName = this.appProvider.info.nameCase;
   }
 
-  ionViewWillEnter() {
+  public ionViewWillEnter() {
 
     switch (this.score) {
       case 1:
@@ -81,15 +81,15 @@ export class SendFeedbackPage {
 
   public sendFeedback(feedback: string, goHome: boolean): void {
 
-    let config: any = this.configProvider.get();
+    const config: any = this.configProvider.get();
 
-    let platform = this.platform.platforms().join("");
+    const platform = this.platform.platforms().join("");
     let versions: any = this.platform.versions();
     versions = _.values(_.pickBy(versions, _.identity)) //remove undefined and get array of versions
-    let version: any = versions && versions[0] ? versions[0] : null;
-    let versionStr = version ? version.str : '';
+    const version: any = versions && versions[0] ? versions[0] : null;
+    const versionStr = version ? version.str : '';
 
-    let dataSrc = {
+    const dataSrc = {
       "email": _.values(config.emailFor)[0] || ' ',
       "feedback": goHome ? ' ' : feedback,
       "score": this.score || ' ',
@@ -98,14 +98,14 @@ export class SendFeedbackPage {
       "deviceVersion": versionStr
     };
 
-    if (!goHome) this.onGoingProcessProvider.set('sendingFeedback', true);
+    if (!goHome) { this.onGoingProcessProvider.set('sendingFeedback', true); }
     this.feedbackProvider.send(dataSrc).then(() => {
-      if (goHome) return;
+      if (goHome) { return; }
       this.onGoingProcessProvider.set('sendingFeedback', false);
       if (!this.score) {
-        let title = this.translate.instant('Thank you!');
-        let message = this.translate.instant('A member of the team will review your feedback as soon as possible.');
-        let okText = this.translate.instant('Finish');
+        const title = this.translate.instant('Thank you!');
+        const message = this.translate.instant('A member of the team will review your feedback as soon as possible.');
+        const okText = this.translate.instant('Finish');
         this.popupProvider.ionicAlert(title, message, okText).then(() => {
           this.feedback = '';
           this.navCtrl.pop();
@@ -115,13 +115,13 @@ export class SendFeedbackPage {
         this.navCtrl.push(FeedbackCompletePage, { score: this.score })
       }
     }).catch((err) => {
-      if (goHome) return;
+      if (goHome) { return; }
       this.onGoingProcessProvider.set('sendingFeedback', false);
-      let title = this.translate.instant('Error');
-      let subtitle = this.translate.instant('Feedback could not be submitted. Please try again later.');
+      const title = this.translate.instant('Error');
+      const subtitle = this.translate.instant('Feedback could not be submitted. Please try again later.');
       this.popupProvider.ionicAlert(title, subtitle);
     });
-    if (goHome) this.navCtrl.push(HomePage);
+    if (goHome) { this.navCtrl.push(HomePage); }
   }
 
   public goBack(): void {

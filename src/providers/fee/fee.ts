@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
-import { Logger } from '../../providers/logger/logger';
 import { TranslateService } from '@ngx-translate/core';
+import { Logger } from '../../providers/logger/logger';
 
 //providers
-import { ConfigProvider } from '../../providers/config/config';
 import { BwcProvider } from '../../providers/bwc/bwc';
+import { ConfigProvider } from '../../providers/config/config';
 
 import * as _ from 'lodash';
 
@@ -41,7 +41,7 @@ export class FeeProvider {
 
   public getFeeRate(coin: string, network: string, feeLevel: string): Promise<any> {
     return new Promise((resolve, reject) => {
-      if (feeLevel == 'custom') return resolve();
+      if (feeLevel == 'custom') { return resolve(); }
       network = network || 'livenet';
       this.getFeeLevels(coin).then((response: any) => {
         let feeLevelRate: any;
@@ -56,12 +56,12 @@ export class FeeProvider {
           });
         }
         if (!feeLevelRate || !feeLevelRate.feePerKb) {
-          let msg = this.translate.instant('Could not get dynamic fee for level:') + ' ' + feeLevel;
+          const msg = this.translate.instant('Could not get dynamic fee for level:') + ' ' + feeLevel;
           return reject(msg);
         }
 
-        let feeRate = feeLevelRate.feePerKb;
-        if (!response.fromCache) this.logger.debug('Dynamic fee: ' + feeLevel + '/' + network + ' ' + (feeLevelRate.feePerKb / 1000).toFixed() + ' SAT/B');
+        const feeRate = feeLevelRate.feePerKb;
+        if (!response.fromCache) { this.logger.debug('Dynamic fee: ' + feeLevel + '/' + network + ' ' + (feeLevelRate.feePerKb / 1000).toFixed() + ' SAT/B'); }
         return resolve(feeRate);
       }).catch((err) => {
         return reject(err);
@@ -87,7 +87,7 @@ export class FeeProvider {
         return resolve({ levels: this.cache.data, fromCache: true });
       }
 
-      let walletClient = this.bwcProvider.getClient(null, {});
+      const walletClient = this.bwcProvider.getClient(null, {});
 
       walletClient.getFeeLevels(coin, 'livenet', (errLivenet, levelsLivenet) => {
         if (errLivenet) {

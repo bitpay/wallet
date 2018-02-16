@@ -1,7 +1,40 @@
 {
   "extends": ["tslint:latest", "tslint-config-prettier"],
   "rules": {
-    "interface-name": [true, "never-prefix"],
-    "no-submodule-imports": [true, "zone.js", "@angular"]
+    // "interface-name": [true, "never-prefix"],
+    "no-submodule-imports": [
+      true,
+      "zone.js",
+      "@angular",
+      "ts-md5/dist/md5",
+      "ionic-angular/gestures/gesture",
+      "ionic-angular/components/modal/modal-controller"
+    ],
+
+    // Temporarily relax rules
+    "member-ordering": false,
+    "variable-name": false,
+    "comment-format": false,
+    "no-empty": false,
+    "no-shadowed-variable": false,
+    "one-variable-per-declaration": false,
+    "triple-equals": false,
+    "no-implicit-dependencies": false,
+    "jsdoc-format": false,
+    "object-literal-sort-keys": false,
+    "radix": false,
+    "interface-name": false,
+    "prefer-conditional-expression": false,
+    "prefer-for-of": false,
+    "no-console": false,
+    "forin": false,
+    "prefer-const": false,
+    "ban-types": false,
+    "no-unused-expression": false,
+    "only-arrow-functions": false,
+    "no-eval": false,
+    "ban-comma-operator": false,
+    "no-object-literal-type-assertion": false,
+    "max-classes-per-file": false
   }
 }

@@ -1,8 +1,8 @@
 import { Component } from "@angular/core";
-import { NavController, NavParams, Events } from 'ionic-angular';
-import { Logger } from '../../providers/logger/logger';
-import * as _ from "lodash";
 import { TranslateService } from '@ngx-translate/core';
+import { Events, NavController, NavParams } from 'ionic-angular';
+import * as _ from "lodash";
+import { Logger } from '../../providers/logger/logger';
 
 // Providers
 import { AddressBookProvider } from '../../providers/address-book/address-book';
@@ -26,7 +26,7 @@ export class TxDetailsPage {
 
   public wallet: any;
   public btx: any;
-  public actionList: Array<any>;
+  public actionList: any[];
   public isShared: boolean;
   public title: string;
   public alternativeIsoCode: string;
@@ -64,7 +64,7 @@ export class TxDetailsPage {
     this.isShared = this.wallet.credentials.n > 1;
     this.txsUnsubscribedForNotifications = this.config.confirmedTxsNotifications ? !this.config.confirmedTxsNotifications.enabled : true;
 
-    let defaults = this.configProvider.getDefaults();
+    const defaults = this.configProvider.getDefaults();
     if (this.wallet.coin == 'bch') {
       this.blockexplorerUrl = defaults.blockExplorerUrl.bch;
     } else {
@@ -80,29 +80,29 @@ export class TxDetailsPage {
     this.updateTx();
   }
 
-  ionViewWillEnter() {
+  public ionViewWillEnter() {
     this.events.subscribe('bwsEvent', (walletId: string, type: string, n: any) => {
-      if (type == 'NewBlock' && n && n.data && n.data.network == 'livenet') this.updateTxDebounced({ hideLoading: true });
+      if (type == 'NewBlock' && n && n.data && n.data.network == 'livenet') { this.updateTxDebounced({ hideLoading: true }); }
     });
   }
 
-  ionViewWillLeave() {
+  public ionViewWillLeave() {
     this.events.unsubscribe('bwsEvent');
   }
 
   public readMore(): void {
-    let url = 'https://github.com/bitpay/copay/wiki/COPAY---FAQ#amount-too-low-to-spend';
-    let optIn = true;
-    let title = null;
-    let message = this.translate.instant('Read more in our Wiki');
-    let okText = this.translate.instant('Open');
-    let cancelText = this.translate.instant('Go Back');
+    const url = 'https://github.com/bitpay/copay/wiki/COPAY---FAQ#amount-too-low-to-spend';
+    const optIn = true;
+    const title = null;
+    const message = this.translate.instant('Read more in our Wiki');
+    const okText = this.translate.instant('Open');
+    const cancelText = this.translate.instant('Go Back');
     this.externalLinkProvider.open(url, optIn, title, message, okText, cancelText);
   }
 
   private updateMemo(): void {
     this.walletProvider.getTxNote(this.wallet, this.btx.txid).then((note: any) => {
-      if (!note || note.body == "") return;
+      if (!note || note.body == "") { return; }
       this.btx.note = note;
     }).catch((err: any) => {
       this.logger.warn('Could not fetch transaction note: ' + err);
@@ -112,9 +112,9 @@ export class TxDetailsPage {
 
   private initActionList(): void {
     this.actionList = [];
-    if (this.btx.action != 'sent' && this.btx.action != 'moved' || !this.isShared) return;
+    if (this.btx.action != 'sent' && this.btx.action != 'moved' || !this.isShared) { return; }
 
-    let actionDescriptions = {
+    const actionDescriptions = {
       created: this.translate.instant('Proposal Created'),
       accept: this.translate.instant('Accepted'),
       reject: this.translate.instant('Rejected'),
@@ -152,19 +152,19 @@ export class TxDetailsPage {
 
   private updateTx(opts?: any): void {
     opts = opts ? opts : {};
-    if (!opts.hideLoading) this.onGoingProcess.set('loadingTxInfo', true);
+    if (!opts.hideLoading) { this.onGoingProcess.set('loadingTxInfo', true); }
     this.walletProvider.getTx(this.wallet, this.txId).then((tx: any) => {
-      if (!opts.hideLoading) this.onGoingProcess.set('loadingTxInfo', false);
+      if (!opts.hideLoading) { this.onGoingProcess.set('loadingTxInfo', false); }
 
       this.btx = this.txFormatProvider.processTx(this.wallet.coin, tx, this.walletProvider.useLegacyAddress());
-      let v: string = this.txFormatProvider.formatAlternativeStr(this.wallet.coin, tx.fees);
+      const v: string = this.txFormatProvider.formatAlternativeStr(this.wallet.coin, tx.fees);
       this.btx.feeFiatStr = v;
       this.btx.feeRateStr = (this.btx.fees / (this.btx.amount + this.btx.fees) * 100).toFixed(2) + '%';
 
       if (this.btx.action != 'invalid') {
-        if (this.btx.action == 'sent') this.title = this.translate.instant('Sent Funds');
-        if (this.btx.action == 'received') this.title = this.translate.instant('Received Funds');
-        if (this.btx.action == 'moved') this.title = this.translate.instant('Moved Funds');
+        if (this.btx.action == 'sent') { this.title = this.translate.instant('Sent Funds'); }
+        if (this.btx.action == 'received') { this.title = this.translate.instant('Received Funds'); }
+        if (this.btx.action == 'moved') { this.title = this.translate.instant('Moved Funds'); }
       }
 
       this.updateMemo();
@@ -179,7 +179,7 @@ export class TxDetailsPage {
         return;
       });
     }).catch((err: any) => {
-      if (!opts.hideLoading) this.onGoingProcess.set('loadingTxInfo', false);
+      if (!opts.hideLoading) { this.onGoingProcess.set('loadingTxInfo', false); }
       this.logger.warn('Error getting transaction: ' + err);
       this.navCtrl.pop();
       return this.popupProvider.ionicAlert('Error', this.translate.instant('Transaction not available at this time'));
@@ -187,21 +187,21 @@ export class TxDetailsPage {
   }
 
   public showCommentPopup(): void {
-    let opts: any = {};
+    const opts: any = {};
     if (this.btx.message) {
       opts.defaultText = this.btx.message;
     }
-    if (this.btx.note && this.btx.note.body) opts.defaultText = this.btx.note.body;
+    if (this.btx.note && this.btx.note.body) { opts.defaultText = this.btx.note.body; }
 
     this.popupProvider.ionicPrompt(this.wallet.name, this.translate.instant('Memo'), opts).then((text: string) => {
-      if (text == null) return;
+      if (text == null) { return; }
 
       this.btx.note = {
         body: text
       };
       this.logger.debug('Saving memo');
 
-      let args = {
+      const args = {
         txid: this.btx.txid,
         body: text
       };
@@ -215,18 +215,18 @@ export class TxDetailsPage {
   }
 
   public viewOnBlockchain(): void {
-    let btx = this.btx;
-    let url = 'https://' + (this.getShortNetworkName() == 'test' ? 'test-' : '') + this.blockexplorerUrl + '/tx/' + btx.txid;
-    let optIn = true;
-    let title = null;
-    let message = this.translate.instant('View Transaction on Insight');
-    let okText = this.translate.instant('Open Insight');
-    let cancelText = this.translate.instant('Go Back');
+    const btx = this.btx;
+    const url = 'https://' + (this.getShortNetworkName() == 'test' ? 'test-' : '') + this.blockexplorerUrl + '/tx/' + btx.txid;
+    const optIn = true;
+    const title = null;
+    const message = this.translate.instant('View Transaction on Insight');
+    const okText = this.translate.instant('Open Insight');
+    const cancelText = this.translate.instant('Go Back');
     this.externalLinkProvider.open(url, optIn, title, message, okText, cancelText);
   }
 
   public getShortNetworkName(): string {
-    let n: string = this.wallet.credentials.network;
+    const n: string = this.wallet.credentials.network;
     return n.substring(0, 4);
   }
 
@@ -258,10 +258,10 @@ export class TxDetailsPage {
   }
 
   private contact(): void {
-    let addr = this.btx.addressTo;
+    const addr = this.btx.addressTo;
     this.addressBookProvider.get(addr).then((ab: any) => {
       if (ab) {
-        let name = _.isObject(ab) ? ab.name : ab;
+        const name = _.isObject(ab) ? ab.name : ab;
         this.toName = name;
       } else {
         this.toName = addr;

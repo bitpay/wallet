@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import { LoadingController } from 'ionic-angular';
-import { Logger } from '../../providers/logger/logger';
-import * as _ from 'lodash';
 import { TranslateService } from '@ngx-translate/core';
+import { LoadingController } from 'ionic-angular';
+import * as _ from 'lodash';
+import { Logger } from '../../providers/logger/logger';
 
 @Injectable()
 export class OnGoingProcessProvider {
@@ -86,7 +86,7 @@ export class OnGoingProcessProvider {
   public set(processName: string, isOn: boolean): void {
     this.logger.debug('ongoingProcess', processName, isOn);
     this.ongoingProcess[processName] = isOn;
-    let showName = this.processNames[processName] || processName;
+    const showName = this.processNames[processName] || processName;
     if (!isOn) {
       delete (this.ongoingProcess[processName]);
       if (_.isEmpty(this.ongoingProcess)) {

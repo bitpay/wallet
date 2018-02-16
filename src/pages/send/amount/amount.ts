@@ -1,5 +1,5 @@
 import { Component, HostListener } from '@angular/core';
-import { NavController, NavParams, ActionSheetController } from 'ionic-angular';
+import { ActionSheetController, NavController, NavParams } from 'ionic-angular';
 import * as _ from 'lodash';
 
 // Providers
@@ -13,16 +13,16 @@ import { RateProvider } from '../../../providers/rate/rate';
 import { TxFormatProvider } from '../../../providers/tx-format/tx-format';
 
 // Pages
-import { BitPayCardTopUpPage } from '../../integrations/bitpay-card/bitpay-card-topup/bitpay-card-topup';
 import { BuyAmazonPage } from '../../integrations/amazon/buy-amazon/buy-amazon';
+import { BitPayCardTopUpPage } from '../../integrations/bitpay-card/bitpay-card-topup/bitpay-card-topup';
 import { BuyCoinbasePage } from '../../integrations/coinbase/buy-coinbase/buy-coinbase';
-import { BuyGlideraPage } from '../../integrations/glidera/buy-glidera/buy-glidera';
-import { BuyMercadoLibrePage } from '../../integrations/mercado-libre/buy-mercado-libre/buy-mercado-libre';
-import { ConfirmPage } from '../confirm/confirm';
-import { CustomAmountPage } from '../../receive/custom-amount/custom-amount';
 import { SellCoinbasePage } from '../../integrations/coinbase/sell-coinbase/sell-coinbase';
+import { BuyGlideraPage } from '../../integrations/glidera/buy-glidera/buy-glidera';
 import { SellGlideraPage } from '../../integrations/glidera/sell-glidera/sell-glidera';
+import { BuyMercadoLibrePage } from '../../integrations/mercado-libre/buy-mercado-libre/buy-mercado-libre';
 import { ShapeshiftConfirmPage } from '../../integrations/shapeshift/shapeshift-confirm/shapeshift-confirm';
+import { CustomAmountPage } from '../../receive/custom-amount/custom-amount';
+import { ConfirmPage } from '../confirm/confirm';
 
 @Component({
   selector: 'page-amount',
@@ -30,7 +30,7 @@ import { ShapeshiftConfirmPage } from '../../integrations/shapeshift/shapeshift-
 })
 export class AmountPage {
   private LENGTH_EXPRESSION_LIMIT: number;
-  private availableUnits: Array<any>;
+  private availableUnits: any[];
   private unit: string;
   private reNr: RegExp;
   private reOp: RegExp;
@@ -125,15 +125,15 @@ export class AmountPage {
     this.updateUnitUI();
   }
 
-  ionViewWillEnter() {
+  public ionViewWillEnter() {
     this.expression = '';
     this.useSendMax = false;
     this.processAmount();
   }
 
-  @HostListener('document:keydown', ['$event']) handleKeyboardEvent(event: KeyboardEvent) {
-    if (this.navCtrl.getActive().name != 'AmountPage') return;
-    if (!event.key) return;
+  @HostListener('document:keydown', ['$event']) public handleKeyboardEvent(event: KeyboardEvent) {
+    if (this.navCtrl.getActive().name != 'AmountPage') { return; }
+    if (!event.key) { return; }
     if (event.which === 8) {
       event.preventDefault();
       this.removeDigit();
@@ -144,14 +144,14 @@ export class AmountPage {
     } else if (event.key.match(this.reOp)) {
       this.pushOperator(event.key);
     } else if (event.keyCode === 86) {
-      if (event.ctrlKey || event.metaKey) this.processClipboard();
-    } else if (event.keyCode === 13) this.finish();
+      if (event.ctrlKey || event.metaKey) { this.processClipboard(); }
+    } else if (event.keyCode === 13) { this.finish(); }
   }
 
   private setAvailableUnits(): void {
     this.availableUnits = [];
 
-    let hasBTCWallets = this.profileProvider.getWallets({
+    const hasBTCWallets = this.profileProvider.getWallets({
       coin: 'btc'
     }).length;
 
@@ -163,7 +163,7 @@ export class AmountPage {
       });
     }
 
-    let hasBCHWallets = this.profileProvider.getWallets({
+    const hasBCHWallets = this.profileProvider.getWallets({
       coin: 'bch'
     }).length;
 
@@ -178,11 +178,11 @@ export class AmountPage {
     this.unitIndex = 0;
 
     if (this.navParams.data.coin) {
-      let coins = this.navParams.data.coin.split(',');
-      let newAvailableUnits = [];
+      const coins = this.navParams.data.coin.split(',');
+      const newAvailableUnits = [];
 
       _.each(coins, (c: string) => {
-        let coin = _.find(this.availableUnits, {
+        const coin = _.find(this.availableUnits, {
           id: c
         });
         if (!coin) {
@@ -275,18 +275,19 @@ export class AmountPage {
   }
 
   public processClipboard(): void {
-    if (!this.platformProvider.isNW) return;
+    if (!this.platformProvider.isNW) { return; }
 
-    let value = this.nodeWebkitProvider.readFromClipboard();
+    const value = this.nodeWebkitProvider.readFromClipboard();
 
-    if (value && this.evaluate(value) > 0)
+    if (value && this.evaluate(value) > 0) {
       this.paste(this.evaluate(value));
+    }
   }
 
   public showSendMaxMenu(): void {
-    let buttons: Array<any> = [];
+    const buttons: any[] = [];
 
-    let sendMaxButton: Object = {
+    const sendMaxButton: Object = {
       text: this.itemSelectorLabel,
       icon: 'speedometer',
       handler: () => {
@@ -296,7 +297,7 @@ export class AmountPage {
     buttons.push(sendMaxButton);
 
     const actionSheet = this.actionSheetCtrl.create({
-      buttons: buttons
+      buttons
     });
 
     actionSheet.present();
@@ -308,7 +309,7 @@ export class AmountPage {
   }
 
   public pushDigit(digit: string): void {
-    if (this.expression && this.expression.length >= this.LENGTH_EXPRESSION_LIMIT) return;
+    if (this.expression && this.expression.length >= this.LENGTH_EXPRESSION_LIMIT) { return; }
     this.expression = (this.expression + digit).replace('..', '.');
     this.processAmount();
   }
@@ -319,7 +320,7 @@ export class AmountPage {
   }
 
   public pushOperator(operator: string): void {
-    if (!this.expression || this.expression.length == 0) return;
+    if (!this.expression || this.expression.length == 0) { return; }
     this.expression = this._pushOperator(this.expression, operator);
   }
 
@@ -342,8 +343,8 @@ export class AmountPage {
   }
 
   private processAmount(): void {
-    let formatedValue = this.format(this.expression);
-    let result = this.evaluate(formatedValue);
+    const formatedValue = this.format(this.expression);
+    const result = this.evaluate(formatedValue);
     this.allowSend = _.isNumber(result) && +result > 0;
 
     if (_.isNumber(result)) {
@@ -351,7 +352,7 @@ export class AmountPage {
 
       if (this.availableUnits[this.unitIndex].isFiat) {
 
-        let a = this.fromFiat(result);
+        const a = this.fromFiat(result);
         if (a) {
           this.alternativeAmount = this.txFormatProvider.formatAmount(a * this.unitToSatoshi, true);
         } else {
@@ -369,8 +370,8 @@ export class AmountPage {
   }
 
   private processResult(val: any): number {
-    if (this.availableUnits[this.unitIndex].isFiat) return this.filterProvider.formatFiatAmount(val);
-    else return this.txFormatProvider.formatAmount(val.toFixed(this.unitDecimals) * this.unitToSatoshi, true);
+    if (this.availableUnits[this.unitIndex].isFiat) { return this.filterProvider.formatFiatAmount(val); }
+    else { return this.txFormatProvider.formatAmount(val.toFixed(this.unitDecimals) * this.unitToSatoshi, true); }
   }
 
   private fromFiat(val: any): number {
@@ -378,18 +379,19 @@ export class AmountPage {
   }
 
   private toFiat(val: number): number {
-    if (!this.rateProvider.getRate(this.fiatCode)) return;
+    if (!this.rateProvider.getRate(this.fiatCode)) { return; }
 
     return parseFloat((this.rateProvider.toFiat(val * this.unitToSatoshi, this.fiatCode, this.availableUnits[this.unitIndex].id)).toFixed(2));
   }
 
   private format(val: string): string {
-    if (!val) return;
+    if (!val) { return; }
 
     let result = val.toString();
 
-    if (this.isOperator(_.last(val)))
+    if (this.isOperator(_.last(val))) {
       result = result.slice(0, -1);
+    }
 
     return result.replace('x', '*');
   }
@@ -401,13 +403,13 @@ export class AmountPage {
     } catch (e) {
       return 0;
     }
-    if (!_.isFinite(result)) return 0;
+    if (!_.isFinite(result)) { return 0; }
     return result;
   }
 
   public finish(): void {
-    let unit = this.availableUnits[this.unitIndex];
-    let _amount = this.evaluate(this.format(this.expression));
+    const unit = this.availableUnits[this.unitIndex];
+    const _amount = this.evaluate(this.format(this.expression));
     let coin = unit.id;
     let data: any;
 
@@ -420,7 +422,7 @@ export class AmountPage {
         id: this._id,
         amount: this.useSendMax ? null : _amount,
         currency: unit.id.toUpperCase(),
-        coin: coin,
+        coin,
         useSendMax: this.useSendMax,
         toWalletId: this.toWalletId
       };
@@ -435,12 +437,12 @@ export class AmountPage {
 
       data = {
         recipientType: this.recipientType,
-        amount: amount,
+        amount,
         toAddress: this.toAddress,
         name: this.name,
         email: this.email,
         color: this.color,
-        coin: coin,
+        coin,
         useSendMax: this.useSendMax
       };
     }
@@ -457,10 +459,10 @@ export class AmountPage {
   }
 
   public changeUnit(): void {
-    if (this.fixedUnit) return;
+    if (this.fixedUnit) { return; }
 
     this.unitIndex++;
-    if (this.unitIndex >= this.availableUnits.length) this.unitIndex = 0;
+    if (this.unitIndex >= this.availableUnits.length) { this.unitIndex = 0; }
 
     if (this.availableUnits[this.unitIndex].isFiat) {
       // Always return to BTC... TODO?

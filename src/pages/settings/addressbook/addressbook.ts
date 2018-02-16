@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, AlertController } from 'ionic-angular';
-import { AddressbookAddPage } from './add/add';
-import { AddressbookViewPage } from './view/view';
+import { AlertController, NavController, NavParams } from 'ionic-angular';
+import * as _ from 'lodash';
 import { AddressBookProvider } from '../../../providers/address-book/address-book';
 import { Logger } from '../../../providers/logger/logger';
-import * as _ from 'lodash';
+import { AddressbookAddPage } from './add/add';
+import { AddressbookViewPage } from './view/view';
 
 @Component({
   selector: 'page-addressbook',
@@ -13,8 +13,8 @@ import * as _ from 'lodash';
 export class AddressbookPage {
 
   private cache: boolean = false;
-  public addressbook: Array<object> = [];
-  public filteredAddressbook: Array<object> = [];
+  public addressbook: object[] = [];
+  public filteredAddressbook: object[] = [];
 
   public isEmptyList: boolean;
 
@@ -28,8 +28,8 @@ export class AddressbookPage {
     this.initAddressbook();
   }
 
-  ionViewDidEnter() {
-    if (this.cache) this.initAddressbook();
+  public ionViewDidEnter() {
+    if (this.cache) { this.initAddressbook(); }
     this.cache = true;
   }
 
@@ -37,7 +37,7 @@ export class AddressbookPage {
     this.addressbookProvider.list().then((addressBook: any) => {
       this.isEmptyList = _.isEmpty(addressBook);
 
-      let contacts: Array<object> = [];
+      const contacts: object[] = [];
       _.each(addressBook, (contact: any, k: string) => {
         contacts.push({
           name: _.isObject(contact) ? contact.name : contact,
@@ -49,7 +49,7 @@ export class AddressbookPage {
       this.filteredAddressbook = _.clone(this.addressbook);
     }).catch((err: any) => {
       this.logger.error(err);
-      let alertError = this.alertCtrl.create({
+      const alertError = this.alertCtrl.create({
         title: err,
         buttons: [
           {
@@ -69,18 +69,18 @@ export class AddressbookPage {
   };
 
   public viewEntry(contact: any): void {
-    this.navCtrl.push(AddressbookViewPage, { contact: contact });
+    this.navCtrl.push(AddressbookViewPage, { contact });
   }
 
   public getItems(event: any): void {
 
     // set val to the value of the searchbar
-    let val = event.target.value;
+    const val = event.target.value;
 
     // if the value is an empty string don't filter the items
     if (val && val.trim() != '') {
-      let result = _.filter(this.addressbook, (item: any) => {
-        let name = item['name'];
+      const result = _.filter(this.addressbook, (item: any) => {
+        const name = item.name;
         return _.includes(name.toLowerCase(), val.toLowerCase());
       });
       this.filteredAddressbook = result;

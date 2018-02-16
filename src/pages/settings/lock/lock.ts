@@ -1,14 +1,14 @@
 import { Component } from '@angular/core';
-import { ModalController } from 'ionic-angular';
 import { TranslateService } from '@ngx-translate/core';
+import { ModalController } from 'ionic-angular';
 
 //pages
 import { PinModalPage } from '../../pin/pin';
 
 //providers
 import { ConfigProvider } from '../../../providers/config/config';
-import { TouchIdProvider } from '../../../providers/touchid/touchid';
 import { ProfileProvider } from '../../../providers/profile/profile';
+import { TouchIdProvider } from '../../../providers/touchid/touchid';
 
 import * as _ from 'lodash';
 
@@ -35,7 +35,7 @@ export class LockPage {
   private checkLockOptions() {
     this.lockOptions = this.configProvider.get().lock;
     this.touchIdProvider.isAvailable().then((isAvailable: boolean) => {
-      let needsBackup = this.needsBackup();
+      const needsBackup = this.needsBackup();
       this.options = [
         {
           method: 'Disabled',
@@ -62,8 +62,8 @@ export class LockPage {
         this.openPinModal('pinSetUp');
         break;
       case 'Disabled':
-        if (this.lockOptions.method && this.lockOptions.method == 'PIN') this.openPinModal('removeLock');
-        if (this.lockOptions.method && this.lockOptions.method == 'Fingerprint') this.removeFingerprint();
+        if (this.lockOptions.method && this.lockOptions.method == 'PIN') { this.openPinModal('removeLock'); }
+        if (this.lockOptions.method && this.lockOptions.method == 'Fingerprint') { this.removeFingerprint(); }
         break;
       case 'Fingerprint':
         this.lockByFingerprint();
@@ -72,7 +72,7 @@ export class LockPage {
   }
 
   private openPinModal(action): void {
-    let modal = this.modalCtrl.create(PinModalPage, { action });
+    const modal = this.modalCtrl.create(PinModalPage, { action });
     modal.present();
     modal.onDidDismiss(() => {
       this.checkLockOptions();
@@ -81,7 +81,7 @@ export class LockPage {
 
   private removeFingerprint(): void {
     this.touchIdProvider.check().then(() => {
-      let lock = { method: 'Disabled', value: null, bannedUntil: null };
+      const lock = { method: 'Disabled', value: null, bannedUntil: null };
       this.configProvider.set({ lock });
       this.checkLockOptions();
     }).catch(() => {
@@ -90,15 +90,15 @@ export class LockPage {
   }
 
   public lockByFingerprint(): void {
-    let lock = { method: 'Fingerprint', value: null, bannedUntil: null };
+    const lock = { method: 'Fingerprint', value: null, bannedUntil: null };
     this.configProvider.set({ lock });
     this.checkLockOptions();
   }
 
   private needsBackup() {
-    let wallets = this.profileProvider.getWallets();
-    let singleLivenetWallet = wallets.length == 1 && wallets[0].network == 'livenet' && wallets[0].needsBackup;
-    let atLeastOneLivenetWallet = _.find(wallets, (w) => {
+    const wallets = this.profileProvider.getWallets();
+    const singleLivenetWallet = wallets.length == 1 && wallets[0].network == 'livenet' && wallets[0].needsBackup;
+    const atLeastOneLivenetWallet = _.find(wallets, (w) => {
       return w.network == 'livenet' && w.needsBackup;
     });
 

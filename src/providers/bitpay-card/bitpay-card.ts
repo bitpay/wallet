@@ -2,10 +2,10 @@ import { Injectable } from '@angular/core';
 import { Logger } from '../../providers/logger/logger';
 
 //providers
-import { BitPayProvider } from '../bitpay/bitpay';
 import { AppIdentityProvider } from '../app-identity/app-identity';
-import { PersistenceProvider } from '../persistence/persistence';
+import { BitPayProvider } from '../bitpay/bitpay';
 import { HomeIntegrationsProvider } from '../home-integrations/home-integrations';
+import { PersistenceProvider } from '../persistence/persistence';
 
 import * as _ from 'lodash';
 import * as moment from 'moment';
@@ -34,14 +34,14 @@ export class BitPayCardProvider {
 
   private _setError(msg, e?) {
     this.logger.error(msg);
-    var error = (e && e.data && e.data.error) ? e.data.error : msg;
+    const error = (e && e.data && e.data.error) ? e.data.error : msg;
     return error;
   };
 
   private _buildDate(date, time) {
     date = date.match(/(\d{2})\/(\d{2})\/(\d{4})/);
     time = time.match(/(\d{2})(\d{2})(\d{2})/);
-    var newDate = new Date(date[1] + '/' + date[2] + '/' + date[3]);
+    const newDate = new Date(date[1] + '/' + date[2] + '/' + date[3]);
     newDate.setHours(time[1], time[2], time[3]);
     return newDate;
   }
@@ -58,7 +58,7 @@ export class BitPayCardProvider {
   };
 
   private _getMerchantInfo(tx) {
-    var bpTranCodesTemp = bpTranCodes;
+    const bpTranCodesTemp = bpTranCodes;
     _.keys(bpTranCodesTemp).forEach((code) => {
       if (tx.type.indexOf(code) === 0) {
         _.assign(tx, bpTranCodesTemp[code]);
@@ -68,8 +68,8 @@ export class BitPayCardProvider {
   };
 
   private _getIconName(tx) {
-    var icon = tx.mcc || tx.category || null;
-    if (!icon || iconMap[icon] == undefined) return 'default';
+    const icon = tx.mcc || tx.category || null;
+    if (!icon || iconMap[icon] == undefined) { return 'default'; }
     return iconMap[icon];
   };
 
@@ -89,24 +89,24 @@ export class BitPayCardProvider {
   };
 
   public _fromTransaction(txn, runningBalance) {
-    var dateTime = this._buildDate(txn.date, txn.time);
-    var merchant = this._lowercaseMerchant(txn.merchant);
+    const dateTime = this._buildDate(txn.date, txn.time);
+    const merchant = this._lowercaseMerchant(txn.merchant);
     return this._getMerchantInfo({
       date: txn.timestamp || dateTime,
       category: txn.mcc,
-      merchant: merchant,
+      merchant,
       description: txn.description[0],
       price: parseFloat(txn.amount) + parseFloat(txn.fee),
       type: txn.type,
-      runningBalance: runningBalance
+      runningBalance
     });
   };
 
   public _processTransactions(invoices, history) {
 
-    var balance = history.endingBalance || history.currentCardBalance;
-    var runningBalance = parseFloat(balance);
-    var activityList = [];
+    const balance = history.endingBalance || history.currentCardBalance;
+    let runningBalance = parseFloat(balance);
+    const activityList = [];
 
     if (history && history.transactionList) {
       for (let j = 0; j < history.transactionList.length; j++) {
@@ -119,9 +119,9 @@ export class BitPayCardProvider {
 
       invoices = invoices || [];
       for (let i = 0; i < invoices.length; i++) {
-        var matched = false;
+        let matched = false;
         for (let j = 0; j < history.transactionList.length; j++) {
-          var description = history.transactionList[j].description;
+          const description = history.transactionList[j].description;
           for (let k = 0; k < description.length; k++) {
             if (description[k] && description[k].indexOf(invoices[i].id) > -1) {
               matched = true;
@@ -129,10 +129,10 @@ export class BitPayCardProvider {
           }
         }
 
-        var isInvoiceLessThanOneDayOld = moment() < moment(new Date(invoices[i].invoiceTime)).add(1, 'day');
+        const isInvoiceLessThanOneDayOld = moment() < moment(new Date(invoices[i].invoiceTime)).add(1, 'day');
 
         if (!matched && isInvoiceLessThanOneDayOld) {
-          var isInvoiceUnderpaid = invoices[i].exceptionStatus === 'paidPartial';
+          const isInvoiceUnderpaid = invoices[i].exceptionStatus === 'paidPartial';
 
           if (['paid', 'confirmed', 'complete'].indexOf(invoices[i].status) >= 0 ||
             (invoices[i].status === 'invalid' || isInvoiceUnderpaid)) {
@@ -155,13 +155,13 @@ export class BitPayCardProvider {
     for (let i = 0; i < activityList.length; i++) {
       activityList[i].icon = this._getIconName(activityList[i]);
       activityList[i].desc = this._processDescription(activityList[i]);
-      activityList[i].merchant['location'] = this._processLocation(activityList[i]);
+      activityList[i].merchant.location = this._processLocation(activityList[i]);
     }
     return activityList;
   };
 
   public filterTransactions(type, txns) {
-    var list,
+    let list,
       getPreAuth = _.filter(txns, (txn) => {
         return txn.type.indexOf('93') > -1;
       }),
@@ -190,18 +190,18 @@ export class BitPayCardProvider {
   }
 
   public sync(apiContext, cb) {
-    var json = {
+    const json = {
       method: 'getDebitCards'
     };
     // Get Debit Cards
     this.bitPayProvider.post('/api/v2/' + apiContext.token, json, (data) => {
-      if (data && data.error) return cb(data.error);
+      if (data && data.error) { return cb(data.error); }
       this.logger.info('BitPay Get Debit Cards: SUCCESS');
 
-      var cards = [];
+      const cards = [];
 
       _.each(data.data, (x) => {
-        var n: any = {};
+        const n: any = {};
 
         if (!x.eid || !x.id || !x.lastFourDigits || !x.token) {
           this.logger.warn('BAD data from BitPay card' + JSON.stringify(x));
@@ -239,31 +239,33 @@ export class BitPayCardProvider {
 
   // opts: range
   public getHistory(cardId, opts, cb) {
-    var invoices, history;
+    let invoices, history;
     opts = opts || {};
 
-    var json: any = {
+    let json: any = {
       method: 'getInvoiceHistory'
     };
 
     this.appIdentityProvider.getIdentity(this.bitPayProvider.getEnvironment().network, (err, appIdentity) => {
-      if (err) return cb(err);
+      if (err) { return cb(err); }
 
       this.getCards((data) => {
-        var card: any = _.find(data, {
+        const card: any = _.find(data, {
           id: cardId
         });
 
-        if (!card)
+        if (!card) {
           return cb(this._setError('Card not found'));
+        }
 
         // Get invoices
         this.bitPayProvider.post('/api/v2/' + card.token, json, (data) => {
           this.logger.info('BitPay Get Invoices: SUCCESS');
           invoices = data.data || [];
 
-          if (_.isEmpty(invoices))
+          if (_.isEmpty(invoices)) {
             this.logger.info('No invoices');
+          }
 
           json = {
             method: 'getTransactionHistory',
@@ -273,7 +275,7 @@ export class BitPayCardProvider {
           this.bitPayProvider.post('/api/v2/' + card.token, json, (data) => {
             this.logger.info('BitPay Get History: SUCCESS');
             history = data.data || {};
-            history['txs'] = this._processTransactions(invoices, history);
+            history.txs = this._processTransactions(invoices, history);
 
             this.setLastKnownBalance(cardId, history.currentCardBalance);
 
@@ -290,21 +292,22 @@ export class BitPayCardProvider {
 
   public topUp(cardId, opts, cb) {
     opts = opts || {};
-    var json = {
+    const json = {
       method: 'generateTopUpInvoice',
       params: JSON.stringify(opts)
     };
     this.appIdentityProvider.getIdentity(this.bitPayProvider.getEnvironment().network, (err, appIdentity) => {
-      if (err) return cb(err);
+      if (err) { return cb(err); }
 
       this.getCards((data) => {
 
-        var card: any = _.find(data, {
+        const card: any = _.find(data, {
           id: cardId
         });
 
-        if (!card)
+        if (!card) {
           return cb(this._setError('Card not found'));
+        }
 
         this.bitPayProvider.post('/api/v2/' + card.token, json, (data) => {
           this.logger.info('BitPay TopUp: SUCCESS');
@@ -343,8 +346,8 @@ export class BitPayCardProvider {
   };
 
   public addLastKnownBalance(card, cb) {
-    var now = Math.floor(Date.now() / 1000);
-    var showRange = 600; // 10min;
+    const now = Math.floor(Date.now() / 1000);
+    const showRange = 600; // 10min;
 
     this.getLastKnownBalance(card.eid, (err, data) => {
       if (data) {
@@ -359,7 +362,7 @@ export class BitPayCardProvider {
   public setLastKnownBalance(cardId, balance) {
 
     this.persistenceProvider.setBalanceCache(cardId, {
-      balance: balance,
+      balance,
       updatedOn: Math.floor(Date.now() / 1000),
     });
   };
@@ -407,7 +410,7 @@ export class BitPayCardProvider {
         // async refresh
         if (!opts.noRefresh) {
           this.getHistory(x.id, {}, (err, data) => {
-            if (err) return;
+            if (err) { return; }
             this.addLastKnownBalance(x, () => { });
           });
         }
@@ -420,8 +423,8 @@ export class BitPayCardProvider {
 
   public register() {
     this.persistenceProvider.getBitpayDebitCards(this.bitPayProvider.getEnvironment().network).then((cards) => {
-      if (_.isEmpty(cards)) this.homeIntegrationsProvider.register(this.homeItem);
-      else this.homeIntegrationsProvider.unregister(this.homeItem);
+      if (_.isEmpty(cards)) { this.homeIntegrationsProvider.register(this.homeItem); }
+      else { this.homeIntegrationsProvider.unregister(this.homeItem); }
     });
   }
 }

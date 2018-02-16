@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { QRScanner } from '@ionic-native/qr-scanner';
-import { PlatformProvider } from '../platform/platform';
-import { Logger } from '../../providers/logger/logger';
 import { Events } from 'ionic-angular';
+import { Logger } from '../../providers/logger/logger';
+import { PlatformProvider } from '../platform/platform';
 
 @Injectable()
 export class ScanProvider {
@@ -53,10 +53,10 @@ export class ScanProvider {
   private logCapabilities() {
 
     this.logger.debug('A camera is ' + this.orIsNot(this.isAvailable) + 'available to this app.');
-    var access = 'not authorized';
-    if (this.hasPermission) access = 'authorized';
-    if (this.isDenied) access = 'denied';
-    if (this.isRestricted) access = 'restricted';
+    let access = 'not authorized';
+    if (this.hasPermission) { access = 'authorized'; }
+    if (this.isDenied) { access = 'denied'; }
+    if (this.isRestricted) { access = 'restricted'; }
     this.logger.debug('Camera access is ' + access + '.');
     this.logger.debug('Support for opening device settings is ' + this.orIsNot(this.canOpenSettings) + 'available on this platform.');
     this.logger.debug('A light is ' + this.orIsNot(this.canEnableLight) + 'available on this platform.');
@@ -177,7 +177,7 @@ export class ScanProvider {
   public scan(): Promise<any> {
     return new Promise((resolve, reject) => {
       this.logger.debug('Scanning...');
-      let scanSub = this.qrScanner.scan().subscribe((text: string) => {
+      const scanSub = this.qrScanner.scan().subscribe((text: string) => {
         this.logger.debug('Scanned something', text);
         this.qrScanner.hide(); // hide camera preview
         scanSub.unsubscribe(); // stop scanning

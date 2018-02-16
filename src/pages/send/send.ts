@@ -3,12 +3,12 @@ import { NavController } from 'ionic-angular';
 import { Logger } from '../../providers/logger/logger';
 
 //providers
-import { ProfileProvider } from '../../providers/profile/profile';
-import { WalletProvider } from '../../providers/wallet/wallet';
 import { AddressBookProvider } from '../../providers/address-book/address-book';
+import { AddressProvider } from '../../providers/address/address';
 import { IncomingDataProvider } from '../../providers/incoming-data/incoming-data';
 import { PopupProvider } from '../../providers/popup/popup';
-import { AddressProvider } from '../../providers/address/address';
+import { ProfileProvider } from '../../providers/profile/profile';
+import { WalletProvider } from '../../providers/wallet/wallet';
 
 //pages
 import { AmountPage } from './amount/amount';
@@ -25,8 +25,8 @@ export class SendPage {
   public walletsBch: any;
   public walletBchList: any;
   public walletBtcList: any;
-  public contactsList: Array<object> = [];
-  public filteredContactsList: Array<object> = [];
+  public contactsList: object[] = [];
+  public filteredContactsList: object[] = [];
   public hasBtcWallets: boolean;
   public hasBchWallets: boolean;
   public hasContacts: boolean;
@@ -46,11 +46,11 @@ export class SendPage {
     private addressProvider: AddressProvider
   ) { }
 
-  ionViewDidLoad() {
+  public ionViewDidLoad() {
     this.logger.info('ionViewDidLoad SendPage');
   }
 
-  ionViewWillEnter() {
+  public ionViewWillEnter() {
     this.search = '';
     this.walletsBtc = this.profileProvider.getWallets({ coin: 'btc' });
     this.walletsBch = this.profileProvider.getWallets({ coin: 'bch' });
@@ -64,7 +64,7 @@ export class SendPage {
   private updateBchWalletsList(): void {
     this.walletBchList = [];
 
-    if (!this.hasBchWallets) return;
+    if (!this.hasBchWallets) { return; }
 
     _.each(this.walletsBch, (v: any) => {
       this.walletBchList.push({
@@ -91,7 +91,7 @@ export class SendPage {
   private updateBtcWalletsList(): void {
     this.walletBtcList = [];
 
-    if (!this.hasBtcWallets) return;
+    if (!this.hasBtcWallets) { return; }
 
     _.each(this.walletsBtc, (v: any) => {
       this.walletBtcList.push({
@@ -119,7 +119,7 @@ export class SendPage {
     this.addressBookProvider.list().then((ab: any) => {
 
       this.hasContacts = _.isEmpty(ab) ? false : true;
-      if (!this.hasContacts) return;
+      if (!this.hasContacts) { return; }
 
       this.contactsList = [];
       _.each(ab, (v: any, k: string) => {
@@ -137,7 +137,7 @@ export class SendPage {
           }
         });
       });
-      let shortContactsList = _.clone(this.contactsList.slice(0, (this.currentContactsPage + 1) * this.CONTACTS_SHOW_LIMIT));
+      const shortContactsList = _.clone(this.contactsList.slice(0, (this.currentContactsPage + 1) * this.CONTACTS_SHOW_LIMIT));
       this.filteredContactsList = _.clone(shortContactsList);
       this.contactsShowMore = this.contactsList.length > shortContactsList.length;
     });
@@ -159,10 +159,10 @@ export class SendPage {
   }
 
   public findContact(search: string): void {
-    if (this.incomingDataProvider.redir(search)) return;
+    if (this.incomingDataProvider.redir(search)) { return; }
     if (search && search.trim() != '') {
-      let result = _.filter(this.contactsList, (item: any) => {
-        let val = item.name;
+      const result = _.filter(this.contactsList, (item: any) => {
+        const val = item.name;
         return _.includes(val.toLowerCase(), search.toLowerCase());
       });
       this.filteredContactsList = result;

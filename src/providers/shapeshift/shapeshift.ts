@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Logger } from '../../providers/logger/logger';
 import * as _ from 'lodash';
+import { Logger } from '../../providers/logger/logger';
 
 //providers
 import { AppProvider } from '../app/app';
@@ -57,7 +57,7 @@ export class ShapeshiftProvider {
 
   public shift(data: any, cb): any {
 
-    let dataSrc = {
+    const dataSrc = {
       withdrawal: data.withdrawal,
       pair: data.pair,
       returnAddress: data.returnAddress,
@@ -74,7 +74,7 @@ export class ShapeshiftProvider {
   }
 
   public saveShapeshift(data: any, opts: any, cb): void {
-    let network = this.getNetwork();
+    const network = this.getNetwork();
     this.persistenceProvider.getShapeshift(network).then((oldData: any) => {
       if (_.isString(oldData)) {
         oldData = JSON.parse(oldData);
@@ -101,7 +101,7 @@ export class ShapeshiftProvider {
   }
 
   public getShapeshift(cb) {
-    let network = this.getNetwork();
+    const network = this.getNetwork();
     this.persistenceProvider.getShapeshift(network).then((ss: any) => {
       return cb(null, ss);
     }).catch((err: any) => {

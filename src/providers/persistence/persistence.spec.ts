@@ -1,6 +1,6 @@
+import { File } from '@ionic-native/file';
 import { Logger } from '../../providers/logger/logger';
 import { PlatformProvider } from '../platform/platform';
-import { File } from '@ionic-native/file';
 import { PersistenceProvider } from './persistence';
 
 class FileMock extends File {}
@@ -48,7 +48,7 @@ describe('Persistence Provider', () => {
       expect(persistenceProvider.storage.constructor.name).toBe('LocalStorage');
     });
     it('should correctly perform a profile roundtrip', done => {
-      let p = { name: 'My profile' };
+      const p = { name: 'My profile' };
       persistenceProvider
         .storeNewProfile(p)
         .catch(err => expect(err).toBeNull)
@@ -63,7 +63,7 @@ describe('Persistence Provider', () => {
     });
 
     it('should fail to create a profile when one already exists', () => {
-      let p = { name: 'My profile' };
+      const p = { name: 'My profile' };
       persistenceProvider
         .storeNewProfile(p)
         .then(() => {

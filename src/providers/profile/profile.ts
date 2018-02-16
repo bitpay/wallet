@@ -1,19 +1,19 @@
 import { Injectable } from '@angular/core';
-import { Events } from 'ionic-angular';
-import { Logger } from '../../providers/logger/logger';
 import { TranslateService } from '@ngx-translate/core';
+import { Events } from 'ionic-angular';
 import * as _ from 'lodash';
+import { Logger } from '../../providers/logger/logger';
 
 //providers
-import { PersistenceProvider } from '../persistence/persistence';
-import { ConfigProvider } from '../config/config';
-import { BwcProvider } from '../bwc/bwc';
-import { BwcErrorProvider } from '../bwc-error/bwc-error';
-import { PlatformProvider } from '../platform/platform';
 import { AppProvider } from '../../providers/app/app';
 import { LanguageProvider } from '../../providers/language/language';
-import { PopupProvider } from '../popup/popup';
+import { BwcErrorProvider } from '../bwc-error/bwc-error';
+import { BwcProvider } from '../bwc/bwc';
+import { ConfigProvider } from '../config/config';
 import { OnGoingProcessProvider } from '../on-going-process/on-going-process';
+import { PersistenceProvider } from '../persistence/persistence';
+import { PlatformProvider } from '../platform/platform';
+import { PopupProvider } from '../popup/popup';
 
 //models
 import { Profile } from '../../models/profile/profile.model';
@@ -48,8 +48,8 @@ export class ProfileProvider {
   }
 
   private updateWalletSettings(wallet: any): void {
-    let config: any = this.configProvider.get();
-    let defaults: any = this.configProvider.getDefaults();
+    const config: any = this.configProvider.get();
+    const defaults: any = this.configProvider.getDefaults();
     // this.config.whenAvailable( (config) => { TODO
     wallet.usingCustomBWS = config.bwsFor && config.bwsFor[wallet.id] && (config.bwsFor[wallet.id] != defaults.bws.url);
     wallet.name = (config.aliasFor && config.aliasFor[wallet.id]) || wallet.credentials.walletName;
@@ -79,9 +79,9 @@ export class ProfileProvider {
   }
 
   private requiresBackup(wallet: any): boolean {
-    if (wallet.isPrivKeyExternal()) return false;
-    if (!wallet.credentials.mnemonic && !wallet.credentials.mnemonicEncrypted) return false;
-    if (wallet.credentials.network == 'testnet') return false;
+    if (wallet.isPrivKeyExternal()) { return false; }
+    if (!wallet.credentials.mnemonic && !wallet.credentials.mnemonicEncrypted) { return false; }
+    if (wallet.credentials.network == 'testnet') { return false; }
 
     return true;
   }
@@ -106,7 +106,7 @@ export class ProfileProvider {
   private isBalanceHidden(wallet: any): Promise<boolean> {
     return new Promise((resolve, reject) => {
       this.persistenceProvider.getHideBalanceFlag(wallet.credentials.walletId).then((shouldHideBalance) => {
-        let isHidden = shouldHideBalance && shouldHideBalance.toString() == 'true' ? true : false;
+        const isHidden = shouldHideBalance && shouldHideBalance.toString() == 'true' ? true : false;
         return resolve(isHidden);
       }).catch((err) => {
         this.logger.error(err);
@@ -116,9 +116,9 @@ export class ProfileProvider {
 
   private bindWalletClient(wallet: any, opts?: any): boolean {
     opts = opts ? opts : {};
-    let walletId = wallet.credentials.walletId;
+    const walletId = wallet.credentials.walletId;
 
-    if ((this.wallet[walletId] && this.wallet[walletId].started) && !opts.force) return false;
+    if ((this.wallet[walletId] && this.wallet[walletId].started) && !opts.force) { return false; }
 
     // INIT WALLET VIEWMODEL
     wallet.id = walletId;
@@ -156,7 +156,7 @@ export class ProfileProvider {
 
       if (n.type == "NewBlock" && n.data.network == "testnet") {
         this.throttledBwsEvent(n, wallet);
-      } else this.newBwsEvent(n, wallet);
+      } else { this.newBwsEvent(n, wallet); }
     });
 
     wallet.on('walletCompleted', () => {
@@ -175,8 +175,9 @@ export class ProfileProvider {
       }
       wallet.setNotificationsInterval(this.UPDATE_PERIOD);
       wallet.openWallet((err: any) => {
-        if (wallet.status !== true)
+        if (wallet.status !== true) {
           this.logger.debug('Wallet + ' + walletId + ' status:' + JSON.stringify(wallet.status));
+        }
       });
     });
     this.events.subscribe('wallet:updated', (walletId: string) => {
@@ -190,17 +191,21 @@ export class ProfileProvider {
   }
 
   private newBwsEvent(n: any, wallet: any): void {
-    if (wallet.cachedStatus)
+    if (wallet.cachedStatus) {
       wallet.cachedStatus.isValid = false;
+    }
 
-    if (wallet.completeHistory)
+    if (wallet.completeHistory) {
       wallet.completeHistory.isValid = false;
+    }
 
-    if (wallet.cachedActivity)
+    if (wallet.cachedActivity) {
       wallet.cachedActivity.isValid = false;
+    }
 
-    if (wallet.cachedTxps)
+    if (wallet.cachedTxps) {
       wallet.cachedTxps.isValid = false;
+    }
 
     this.events.publish('bwsEvent', wallet.id, n.type, n);
   }
@@ -222,12 +227,12 @@ export class ProfileProvider {
 
   private addLastKnownBalance(wallet: any): Promise<any> {
     return new Promise((resolve, reject) => {
-      let now = Math.floor(Date.now() / 1000);
-      let showRange = 600; // 10min;
+      const now = Math.floor(Date.now() / 1000);
+      const showRange = 600; // 10min;
 
       this.getLastKnownBalance(wallet.id).then((data: any) => {
         if (data) {
-          let parseData: any = data;
+          const parseData: any = data;
           wallet.cachedBalance = parseData.balance;
           wallet.cachedBalanceUpdatedOn = (parseData.updatedOn < now - showRange) ? parseData.updatedOn : null;
         }
@@ -239,7 +244,7 @@ export class ProfileProvider {
   }
 
   public setLastKnownBalance(wid: string, balance: number): void {
-    this.persistenceProvider.setBalanceCache(wid, { balance: balance, updatedOn: Math.floor(Date.now() / 1000) });
+    this.persistenceProvider.setBalanceCache(wid, { balance, updatedOn: Math.floor(Date.now() / 1000) });
   }
 
   private runValidation(wallet: any, delay?: number, retryDelay?: number) {
@@ -256,13 +261,13 @@ export class ProfileProvider {
     this.validationLock = true;
 
     // IOS devices are already checked
-    let skipDeviceValidation = this.platformProvider.isIOS || this.profile.isDeviceChecked(this.platformProvider.ua);
-    let walletId = wallet.credentials.walletId;
+    const skipDeviceValidation = this.platformProvider.isIOS || this.profile.isDeviceChecked(this.platformProvider.ua);
+    const walletId = wallet.credentials.walletId;
 
     this.logger.debug('ValidatingWallet: ' + walletId + ' skip Device:' + skipDeviceValidation);
     setTimeout(() => {
       wallet.validateKeyDerivation({
-        skipDeviceValidation: skipDeviceValidation,
+        skipDeviceValidation,
       }, (err: any, isOK: any) => {
         this.validationLock = false;
 
@@ -293,12 +298,12 @@ export class ProfileProvider {
 
   public importWallet(str: string, opts: any): Promise<any> {
     return new Promise((resolve, reject) => {
-      let walletClient = this.bwcProvider.getClient(null, opts);
+      const walletClient = this.bwcProvider.getClient(null, opts);
 
       this.logger.debug('Importing Wallet:', opts);
 
       try {
-        let c = JSON.parse(str);
+        const c = JSON.parse(str);
 
         if (c.xPrivKey && c.xPrivKeyEncrypted) {
           this.logger.warn('Found both encrypted and decrypted key. Deleting the encrypted version');
@@ -316,13 +321,13 @@ export class ProfileProvider {
         return reject(this.translate.instant('Could not import. Check input file and spending password'));
       }
 
-      let strParsed: any = JSON.parse(str);
+      const strParsed: any = JSON.parse(str);
 
       if (!strParsed.n) {
         return reject("Backup format not recognized. If you are using a Copay Beta backup and version is older than 0.10, please see: https://github.com/bitpay/copay/issues/4730#issuecomment-244522614");
       }
 
-      let addressBook = strParsed.addressBook ? strParsed.addressBook : {};
+      const addressBook = strParsed.addressBook ? strParsed.addressBook : {};
 
       this.addAndBindWalletClient(walletClient, {
         bwsurl: opts.bwsurl
@@ -342,7 +347,7 @@ export class ProfileProvider {
   // An alert dialog
   private askPassword(name: string, title: string): Promise<any> {
     return new Promise((resolve, reject) => {
-      let opts = {
+      const opts = {
         type: 'password'
       }
       this.popupProvider.ionicPrompt(title, name, opts).then((res: any) => {
@@ -353,10 +358,10 @@ export class ProfileProvider {
 
   private showWarningNoEncrypt(): Promise<any> {
     return new Promise((resolve, reject) => {
-      let title = this.translate.instant('Are you sure?');
-      let msg = this.translate.instant('Without encryption, a thief or another application on this device may be able to access your funds.');
-      let okText = this.translate.instant('I\'m sure');
-      let cancelText = this.translate.instant('Go Back');
+      const title = this.translate.instant('Are you sure?');
+      const msg = this.translate.instant('Without encryption, a thief or another application on this device may be able to access your funds.');
+      const okText = this.translate.instant('I\'m sure');
+      const cancelText = this.translate.instant('Go Back');
       this.popupProvider.ionicConfirm(title, msg, okText, cancelText).then((res: any) => {
         return resolve(res);
       });
@@ -365,14 +370,14 @@ export class ProfileProvider {
 
   private askToEncryptWallet(wallet: any): Promise<any> {
     return new Promise((resolve, reject) => {
-      var title = this.translate.instant('Would you like to protect this wallet with a password?');
-      var message = this.translate.instant('Encryption can protect your funds if this device is stolen or compromised by malicious software.');
-      var okText = this.translate.instant('Yes');
-      var cancelText = this.translate.instant('No');
+      const title = this.translate.instant('Would you like to protect this wallet with a password?');
+      const message = this.translate.instant('Encryption can protect your funds if this device is stolen or compromised by malicious software.');
+      const okText = this.translate.instant('Yes');
+      const cancelText = this.translate.instant('No');
       this.popupProvider.ionicConfirm(title, message, okText, cancelText).then((res: any) => {
         if (!res) {
           return this.showWarningNoEncrypt().then((res) => {
-            if (res) return resolve()
+            if (res) { return resolve() }
             return this.encrypt(wallet).then(() => {
               return resolve();
             });
@@ -388,11 +393,11 @@ export class ProfileProvider {
   private encrypt(wallet: any): Promise<any> {
     return new Promise((resolve, reject) => {
       let title = this.translate.instant('Enter a password to encrypt your wallet');
-      let warnMsg = this.translate.instant('This password is only for this device, and it cannot be recovered. To avoid losing funds, write your password down.');
+      const warnMsg = this.translate.instant('This password is only for this device, and it cannot be recovered. To avoid losing funds, write your password down.');
       this.askPassword(warnMsg, title).then((password: string) => {
         if (!password) {
           this.showWarningNoEncrypt().then((res: any) => {
-            if (res) return resolve();
+            if (res) { return resolve(); }
             this.encrypt(wallet).then(() => {
               return resolve();
             });
@@ -427,23 +432,24 @@ export class ProfileProvider {
       this.askToEncryptWallet(wallet).then(() => {
         this.onGoingProcessProvider.resume();
 
-        let walletId: string = wallet.credentials.walletId
+        const walletId: string = wallet.credentials.walletId
 
         if (!this.profile.addWallet(JSON.parse(wallet.export()))) {
-          let message = "Wallet already in " + this.appProvider.info.nameCase; // TODO: translate
+          const message = "Wallet already in " + this.appProvider.info.nameCase; // TODO: translate
           return reject(message);
         }
 
-        let skipKeyValidation: boolean = this.shouldSkipValidation(walletId);
-        if (!skipKeyValidation)
+        const skipKeyValidation: boolean = this.shouldSkipValidation(walletId);
+        if (!skipKeyValidation) {
           this.runValidation(wallet);
+        }
 
         this.bindWalletClient(wallet);
 
-        let saveBwsUrl = (): Promise<any> => {
+        const saveBwsUrl = (): Promise<any> => {
           return new Promise((resolve, reject) => {
-            let defaults: any = this.configProvider.getDefaults();
-            let bwsFor: any = {};
+            const defaults: any = this.configProvider.getDefaults();
+            const bwsFor: any = {};
             bwsFor[walletId] = opts.bwsurl || defaults.bws.url;
 
             // Dont save the default
@@ -451,7 +457,7 @@ export class ProfileProvider {
               return resolve();
             }
 
-            this.configProvider.set({ bwsFor: bwsFor });
+            this.configProvider.set({ bwsFor });
             return resolve();
           });
         };
@@ -480,7 +486,7 @@ export class ProfileProvider {
         } catch (ex) {
           this.logger.warn(ex);
         }
-        let mergeAddressBook = _.merge(addressBook, localAddressBook1);
+        const mergeAddressBook = _.merge(addressBook, localAddressBook1);
         this.persistenceProvider.setAddressbook(wallet.credentials.network, JSON.stringify(mergeAddressBook)).then(() => {
           return resolve();
         }).catch((err: any) => {
@@ -495,12 +501,12 @@ export class ProfileProvider {
   public importExtendedPrivateKey(xPrivKey: string, opts: any): Promise<any> {
     return new Promise((resolve, reject) => {
 
-      let walletClient = this.bwcProvider.getClient(null, opts);
+      const walletClient = this.bwcProvider.getClient(null, opts);
       this.logger.debug('Importing Wallet xPrivKey');
 
       walletClient.importFromExtendedPrivateKey(xPrivKey, opts, (err: any) => {
         if (err) {
-          if (err instanceof this.errors.NOT_AUTHORIZED) return reject(err);
+          if (err instanceof this.errors.NOT_AUTHORIZED) { return reject(err); }
           this.bwcErrorProvider.cb(err, this.translate.instant('Could not import')).then((msg: string) => {
             return reject(msg);
           });
@@ -518,9 +524,9 @@ export class ProfileProvider {
   }
 
   private normalizeMnemonic(words: string): string {
-    if (!words || !words.indexOf) return words;
-    let isJA = words.indexOf('\u3000') > -1;
-    let wordList = words.split(/[\u3000\s]+/);
+    if (!words || !words.indexOf) { return words; }
+    const isJA = words.indexOf('\u3000') > -1;
+    const wordList = words.split(/[\u3000\s]+/);
 
     return wordList.join(isJA ? '\u3000' : ' ');
   };
@@ -528,7 +534,7 @@ export class ProfileProvider {
   public importMnemonic(words: string, opts: any): Promise<any> {
     return new Promise((resolve, reject) => {
 
-      let walletClient = this.bwcProvider.getClient(null, opts);
+      const walletClient = this.bwcProvider.getClient(null, opts);
 
       this.logger.debug('Importing Wallet Mnemonic');
 
@@ -566,7 +572,7 @@ export class ProfileProvider {
   public importExtendedPublicKey(opts: any): Promise<any> {
     return new Promise((resolve, reject) => {
 
-      let walletClient = this.bwcProvider.getClient(null, opts);
+      const walletClient = this.bwcProvider.getClient(null, opts);
       this.logger.debug('Importing Wallet XPubKey');
 
       walletClient.importFromExtendedPublicKey(opts.extendedPublicKey, opts.externalSource, opts.entropySource, {
@@ -577,8 +583,9 @@ export class ProfileProvider {
         if (err) {
 
           // in HW wallets, req key is always the same. They can't addAccess.
-          if (err instanceof this.errors.NOT_AUTHORIZED)
+          if (err instanceof this.errors.NOT_AUTHORIZED) {
             err.name = 'WALLET_DOES_NOT_EXIST';
+          }
 
           this.bwcErrorProvider.cb(err, this.translate.instant('Could not import')).then((msg: string) => {
             return reject(msg);
@@ -606,10 +613,10 @@ export class ProfileProvider {
 
   public bindProfile(profile: any): Promise<any> {
     return new Promise((resolve, reject) => {
-      let bindWallets = (): Promise<any> => {
+      const bindWallets = (): Promise<any> => {
         return new Promise((resolve, reject) => {
 
-          let l = profile.credentials.length;
+          const l = profile.credentials.length;
           let i = 0;
           let totalBound = 0;
 
@@ -648,8 +655,8 @@ export class ProfileProvider {
   public isDisclaimerAccepted(): Promise<any> {
     return new Promise((resolve, reject) => {
 
-      let disclaimerAccepted = this.profile && this.profile.disclaimerAccepted;
-      if (disclaimerAccepted) return resolve();
+      const disclaimerAccepted = this.profile && this.profile.disclaimerAccepted;
+      if (disclaimerAccepted) { return resolve(); }
 
       // OLD flag
       this.persistenceProvider.getCopayDisclaimerFlag().then((val) => {
@@ -672,18 +679,18 @@ export class ProfileProvider {
       }
 
       // Create the client
-      let getBWSURL = (walletId: string) => {
-        let config: any = this.configProvider.get();
-        let defaults: any = this.configProvider.getDefaults();
+      const getBWSURL = (walletId: string) => {
+        const config: any = this.configProvider.get();
+        const defaults: any = this.configProvider.getDefaults();
         return ((config.bwsFor && config.bwsFor[walletId]) || defaults.bws.url);
       };
 
-      let walletClient = this.bwcProvider.getClient(JSON.stringify(credentials), {
+      const walletClient = this.bwcProvider.getClient(JSON.stringify(credentials), {
         bwsurl: getBWSURL(credentials.walletId),
       });
 
-      let skipKeyValidation = this.shouldSkipValidation(credentials.walletId);
-      if (!skipKeyValidation) this.runValidation(walletClient, 500);
+      const skipKeyValidation = this.shouldSkipValidation(credentials.walletId);
+      if (!skipKeyValidation) { this.runValidation(walletClient, 500); }
 
       this.logger.info('Binding wallet:' + credentials.walletId + ' Validating?:' + !skipKeyValidation);
       return resolve(this.bindWalletClient(walletClient));
@@ -717,14 +724,14 @@ export class ProfileProvider {
     return new Promise((resolve, reject) => {
 
       opts = opts ? opts : {};
-      let walletClient = this.bwcProvider.getClient(null, opts);
-      let network = opts.networkName || 'livenet';
+      const walletClient = this.bwcProvider.getClient(null, opts);
+      const network = opts.networkName || 'livenet';
 
       if (opts.mnemonic) {
         try {
           opts.mnemonic = this.normalizeMnemonic(opts.mnemonic);
           walletClient.seedFromMnemonic(opts.mnemonic, {
-            network: network,
+            network,
             passphrase: opts.passphrase,
             account: opts.account || 0,
             derivationStrategy: opts.derivationStrategy || 'BIP44',
@@ -738,7 +745,7 @@ export class ProfileProvider {
       } else if (opts.extendedPrivateKey) {
         try {
           walletClient.seedFromExtendedPrivateKey(opts.extendedPrivateKey, {
-            network: network,
+            network,
             account: opts.account || 0,
             derivationStrategy: opts.derivationStrategy || 'BIP44',
             coin: opts.coin,
@@ -760,10 +767,10 @@ export class ProfileProvider {
           return reject(this.translate.instant('Could not create using the specified extended public key'));
         }
       } else {
-        let lang = this.languageProvider.getCurrent();
+        const lang = this.languageProvider.getCurrent();
         try {
           walletClient.seedFromRandomWithMnemonic({
-            network: network,
+            network,
             passphrase: opts.passphrase,
             language: lang,
             account: 0,
@@ -774,7 +781,7 @@ export class ProfileProvider {
           if (e.message.indexOf('language') > 0) {
             this.logger.info('Using default language for recovery phrase');
             walletClient.seedFromRandomWithMnemonic({
-              network: network,
+              network,
               passphrase: opts.passphrase,
               account: 0,
               coin: opts.coin
@@ -792,16 +799,16 @@ export class ProfileProvider {
   private doCreateWallet(opts: any): Promise<any> {
     return new Promise((resolve, reject) => {
 
-      let showOpts = _.clone(opts);
-      if (showOpts.extendedPrivateKey) showOpts.extendedPrivateKey = '[hidden]';
-      if (showOpts.mnemonic) showOpts.mnemonic = '[hidden]';
+      const showOpts = _.clone(opts);
+      if (showOpts.extendedPrivateKey) { showOpts.extendedPrivateKey = '[hidden]'; }
+      if (showOpts.mnemonic) { showOpts.mnemonic = '[hidden]'; }
 
       this.logger.debug('Creating Wallet:', JSON.stringify(showOpts));
       setTimeout(() => {
         this.seedWallet(opts).then((walletClient: any) => {
 
-          let name = opts.name || this.translate.instant('Personal Wallet');
-          let myName = opts.myName || this.translate.instant('me');
+          const name = opts.name || this.translate.instant('Personal Wallet');
+          const myName = opts.myName || this.translate.instant('me');
 
           walletClient.createWallet(name, myName, opts.m, opts.n, {
             network: opts.networkName,
@@ -845,7 +852,7 @@ export class ProfileProvider {
       this.logger.debug('Joining Wallet:', opts);
 
       try {
-        var walletData = this.bwcProvider.parseSecret(opts.secret);
+        const walletData = this.bwcProvider.parseSecret(opts.secret);
 
         // check if exist
         if (_.find(this.profile.credentials, {
@@ -888,7 +895,7 @@ export class ProfileProvider {
 
   public deleteWalletClient(wallet: any): Promise<any> {
     return new Promise((resolve, reject) => {
-      let walletId = wallet.credentials.walletId;
+      const walletId = wallet.credentials.walletId;
 
       this.logger.debug('Deleting Wallet:', wallet.credentials.walletName);
       wallet.removeAllListeners();
@@ -911,7 +918,7 @@ export class ProfileProvider {
 
   public createDefaultWallet(): Promise<any> {
     return new Promise((resolve, reject) => {
-      let opts: any = {};
+      const opts: any = {};
       opts.m = 1;
       opts.n = 1;
       opts.networkName = 'livenet';
@@ -937,7 +944,7 @@ export class ProfileProvider {
 
   public getWallets(opts?: any) {
 
-    if (opts && !_.isObject(opts)) throw "bad argument";
+    if (opts && !_.isObject(opts)) { throw new Error("bad argument"); }
 
     opts = opts || {};
 
@@ -969,14 +976,14 @@ export class ProfileProvider {
 
     if (opts.hasFunds) {
       ret = _.filter(ret, (w: any) => {
-        if (!w.status) return;
+        if (!w.status) { return; }
         return (w.status.availableBalanceSat > 0);
       });
     }
 
     if (opts.minAmount) {
       ret = _.filter(ret, (w: any) => {
-        if (!w.status) return;
+        if (!w.status) { return; }
         return (w.status.availableBalanceSat > opts.minAmount);
       });
     }
@@ -1004,28 +1011,28 @@ export class ProfileProvider {
     return new Promise((resolve, reject) => {
       opts = opts ? opts : {};
 
-      let TIME_STAMP = 60 * 60 * 6;
-      let MAX = 30;
+      const TIME_STAMP = 60 * 60 * 6;
+      const MAX = 30;
 
-      let typeFilter = {
+      const typeFilter = {
         'NewOutgoingTx': 1,
         'NewIncomingTx': 1
       };
 
-      let w = this.getWallets();
-      if (_.isEmpty(w)) return reject('Could not find any wallet');
+      const w = this.getWallets();
+      if (_.isEmpty(w)) { return reject('Could not find any wallet'); }
 
-      let l = w.length;
+      const l = w.length;
       let j = 0;
       let notifications = [];
 
 
-      let isActivityCached = (wallet: any): boolean => {
+      const isActivityCached = (wallet: any): boolean => {
         return wallet.cachedActivity && wallet.cachedActivity.isValid;
       }
 
 
-      let updateNotifications = (wallet: any): Promise<any> => {
+      const updateNotifications = (wallet: any): Promise<any> => {
         return new Promise((resolve, reject) => {
 
           if (isActivityCached(wallet) && !opts.force) {
@@ -1049,8 +1056,8 @@ export class ProfileProvider {
         });
       }
 
-      let process = (notifications: any): Array<any> => {
-        if (!notifications) return [];
+      const process = (notifications: any): any[] => {
+        if (!notifications) { return []; }
 
         let shown = _.sortBy(notifications, 'createdOn').reverse();
 
@@ -1073,7 +1080,7 @@ export class ProfileProvider {
 
         // let finale = shown; GROUPING DISABLED!
 
-        let finale = [];
+        const finale = [];
         let prev: any;
 
 
@@ -1092,7 +1099,7 @@ export class ProfileProvider {
           }
         });
 
-        let u = this.bwcProvider.getUtils();
+        const u = this.bwcProvider.getUtils();
         _.each(finale, (x: any) => {
           if (x.data && x.data.message && x.wallet && x.wallet.credentials.sharedEncryptingKey) {
             // TODO TODO TODO => BWC
@@ -1103,13 +1110,13 @@ export class ProfileProvider {
         return finale;
       }
 
-      let pr = (wallet, cb) => {
+      const pr = (wallet, cb) => {
         updateNotifications(wallet).then(() => {
-          let n = _.filter(wallet.cachedActivity.n, (x: any) => {
+          const n = _.filter(wallet.cachedActivity.n, (x: any) => {
             return typeFilter[x.type];
           });
 
-          let idToName = {};
+          const idToName = {};
           if (wallet.cachedStatus) {
             _.each(wallet.cachedStatus.wallet.copayers, (c: any) => {
               idToName[c.id] = c.name;
@@ -1132,14 +1139,15 @@ export class ProfileProvider {
 
       _.each(w, (wallet: any) => {
         pr(wallet, (err) => {
-          if (err)
+          if (err) {
             this.logger.warn(this.bwcErrorProvider.msg(err, 'Error updating notifications for ' + wallet.name));
+          }
           if (++j == l) {
             notifications = _.sortBy(notifications, 'createdOn');
             notifications = _.compact(_.flatten(notifications)).slice(0, MAX);
-            let total = notifications.length;
-            let processArray = process(notifications);
-            return resolve({ notifications: processArray, total: total });
+            const total = notifications.length;
+            const processArray = process(notifications);
+            return resolve({ notifications: processArray, total });
           }
         });
       });
@@ -1148,10 +1156,10 @@ export class ProfileProvider {
 
   public getTxps(opts: any): Promise<any> {
     return new Promise((resolve, reject) => {
-      let MAX = 100;
+      const MAX = 100;
       opts = opts ? opts : {};
 
-      let w = this.getWallets();
+      const w = this.getWallets();
       if (_.isEmpty(w)) {
         return reject('No wallets available');
       }
@@ -1159,13 +1167,14 @@ export class ProfileProvider {
       let txps = [];
 
       _.each(w, (x: any) => {
-        if (x.pendingTxps)
+        if (x.pendingTxps) {
           txps = txps.concat(x.pendingTxps);
+        }
       });
-      let n = txps.length;
+      const n = txps.length;
       txps = _.sortBy(txps, 'pendingForUs', 'createdOn');
       txps = _.compact(_.flatten(txps)).slice(0, opts.limit || MAX);
-      return resolve({ txps: txps, n: n });
+      return resolve({ txps, n });
     });
   };
 

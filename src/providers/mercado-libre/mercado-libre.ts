@@ -1,10 +1,10 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Logger } from '../../providers/logger/logger';
-import { HttpClient } from '@angular/common/http';
 
 //providers
-import { PersistenceProvider } from '../persistence/persistence';
 import { HomeIntegrationsProvider } from '../home-integrations/home-integrations';
+import { PersistenceProvider } from '../persistence/persistence';
 
 import * as _ from 'lodash';
 
@@ -56,7 +56,7 @@ export class MercadoLibreProvider {
   }
 
   public savePendingGiftCard(gc, opts, cb) {
-    var network = this.getNetwork();
+    const network = this.getNetwork();
     this.persistenceProvider.getMercadoLibreGiftCards(network).then((oldGiftCards) => {
       if (_.isString(oldGiftCards)) {
         oldGiftCards = oldGiftCards;
@@ -64,7 +64,7 @@ export class MercadoLibreProvider {
       if (_.isString(gc)) {
         gc = JSON.parse(gc);
       }
-      var inv = oldGiftCards || {};
+      let inv = oldGiftCards || {};
       inv[gc.invoiceId] = gc;
       if (opts && (opts.error || opts.status)) {
         inv[gc.invoiceId] = _.assign(inv[gc.invoiceId], opts);
@@ -82,22 +82,22 @@ export class MercadoLibreProvider {
   }
 
   public getPendingGiftCards(cb) {
-    var network = this.getNetwork();
+    const network = this.getNetwork();
     this.persistenceProvider.getMercadoLibreGiftCards(network).then((giftCards) => {
-      var _gcds = giftCards ? giftCards : null;
+      const _gcds = giftCards ? giftCards : null;
       return cb(null, _gcds);
     });
   }
 
   public createBitPayInvoice(data, cb) {
-    let dataSrc = {
+    const dataSrc = {
       currency: data.currency,
       amount: data.amount,
       clientId: data.uuid,
       email: data.email
     };
-    let url = this.credentials.BITPAY_API_URL + '/mercado-libre-gift/pay';
-    let headers: any = {
+    const url = this.credentials.BITPAY_API_URL + '/mercado-libre-gift/pay';
+    const headers: any = {
       'content-type': 'application/json'
     };
     this.http.post(url, dataSrc, headers).subscribe((data: any) => {
@@ -110,8 +110,8 @@ export class MercadoLibreProvider {
   }
 
   public getBitPayInvoice(id, cb) {
-    let url = this.credentials.BITPAY_API_URL + '/invoices/' + id;
-    let headers: any = {
+    const url = this.credentials.BITPAY_API_URL + '/invoices/' + id;
+    const headers: any = {
       'content-type': 'application/json'
     };
 
@@ -125,19 +125,19 @@ export class MercadoLibreProvider {
   }
 
   public createGiftCard(data, cb) {
-    var dataSrc = {
+    const dataSrc = {
       "clientId": data.uuid,
       "invoiceId": data.invoiceId,
       "accessKey": data.accessKey
     };
 
-    let url = this.credentials.BITPAY_API_URL + '/mercado-libre-gift/redeem';
-    let headers: any = {
+    const url = this.credentials.BITPAY_API_URL + '/mercado-libre-gift/redeem';
+    const headers: any = {
       'content-type': 'application/json'
     };
 
     this.http.post(url, dataSrc, headers).subscribe((data: any) => {
-      var status = data.status == 'new' ? 'PENDING' : (data.status == 'paid') ? 'PENDING' : data.status;
+      const status = data.status == 'new' ? 'PENDING' : (data.status == 'paid') ? 'PENDING' : data.status;
       data.status = status;
       this.logger.info('Mercado Libre Gift Card Create/Update: ' + status);
       return cb(null, data);

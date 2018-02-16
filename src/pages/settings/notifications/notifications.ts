@@ -3,11 +3,11 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Logger } from '../../../providers/logger/logger';
 
 //providers
-import { ConfigProvider } from '../../../providers/config/config';
 import { AppProvider } from '../../../providers/app/app';
+import { ConfigProvider } from '../../../providers/config/config';
+import { EmailNotificationsProvider } from '../../../providers/email-notifications/email-notifications';
 import { PlatformProvider } from '../../../providers/platform/platform';
 import { PushNotificationsProvider } from '../../../providers/push-notifications/push-notifications';
-import { EmailNotificationsProvider } from '../../../providers/email-notifications/email-notifications';
 
 //validators
 import { EmailValidator } from '../../../validators/email';
@@ -42,13 +42,13 @@ export class NotificationsPage {
     });
   }
 
-  ionViewDidLoad() {
+  public ionViewDidLoad() {
     this.logger.info('ionViewDidLoad NotificationsPage');
     this.updateConfig();
   }
 
   private updateConfig() {
-    let config = this.configProvider.get();
+    const config = this.configProvider.get();
     this.appName = this.appProvider.info.nameCase;
     this.usePushNotifications = this.platformProvider.isCordova;
     this.isIOSApp = this.platformProvider.isIOS && this.platformProvider.isCordova;
@@ -64,20 +64,22 @@ export class NotificationsPage {
   };
 
   public pushNotificationsChange() {
-    let opts = {
+    const opts = {
       pushNotificationsEnabled: this.pushNotifications
     };
 
     this.configProvider.set(opts);
 
-    if (opts.pushNotificationsEnabled)
+    if (opts.pushNotificationsEnabled) {
       this.pushProvider.init();
-    else
+    }
+    else {
       this.pushProvider.disable();
+    }
   };
 
   public confirmedTxsNotificationsChange() {
-    let opts = {
+    const opts = {
       confirmedTxsNotifications: {
         enabled: this.confirmedTxsNotifications
       }
@@ -86,7 +88,7 @@ export class NotificationsPage {
   };
 
   public emailNotificationsChange() {
-    let opts = {
+    const opts = {
       enabled: this.emailNotifications,
       email: this.emailForm.value.email
     };

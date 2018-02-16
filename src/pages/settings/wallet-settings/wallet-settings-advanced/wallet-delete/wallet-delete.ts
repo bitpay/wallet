@@ -1,12 +1,12 @@
 import { Component } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
 import { NavController, NavParams } from 'ionic-angular';
 import { Logger } from '../../../../../providers/logger/logger';
-import { TranslateService } from '@ngx-translate/core';
 
 //providers
-import { ProfileProvider } from '../../../../../providers/profile/profile';
-import { PopupProvider } from '../../../../../providers/popup/popup';
 import { OnGoingProcessProvider } from '../../../../../providers/on-going-process/on-going-process';
+import { PopupProvider } from '../../../../../providers/popup/popup';
+import { ProfileProvider } from '../../../../../providers/profile/profile';
 import { PushNotificationsProvider } from '../../../../../providers/push-notifications/push-notifications';
 
 @Component({
@@ -31,20 +31,20 @@ export class WalletDeletePage {
 
   }
 
-  ionViewDidLoad() {
+  public ionViewDidLoad() {
     this.logger.info('ionViewDidLoad WalletDeletePage');
   }
 
-  ionViewWillEnter() {
+  public ionViewWillEnter() {
     this.wallet = this.profileProvider.getWallet(this.navParams.data.walletId);
     this.walletName = this.wallet.name;
   }
 
   public showDeletePopup(): void {
-    let title = this.translate.instant('Warning!');
-    let message = this.translate.instant('Are you sure you want to delete this wallet?');
+    const title = this.translate.instant('Warning!');
+    const message = this.translate.instant('Are you sure you want to delete this wallet?');
     this.popupProvider.ionicConfirm(title, message, null, null).then((res) => {
-      if (res) this.deleteWallet();
+      if (res) { this.deleteWallet(); }
     });
   };
 

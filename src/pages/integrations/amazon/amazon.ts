@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, ModalController } from 'ionic-angular';
-import { Logger } from '../../../providers/logger/logger';
+import { ModalController, NavController, NavParams } from 'ionic-angular';
 import * as _ from 'lodash';
+import { Logger } from '../../../providers/logger/logger';
 
 // Pages
 import { AmountPage } from '../../send/amount/amount';
@@ -39,7 +39,7 @@ export class AmazonPage {
   ) {
   }
 
-  ionViewDidLoad() {
+  public ionViewDidLoad() {
     this.logger.info('ionViewDidLoad AmazonPage');
     this.network = this.amazonProvider.getNetwork();
     this.initAmazon().then(() => {
@@ -49,12 +49,12 @@ export class AmazonPage {
     });
   }
 
-  ionViewWillEnter() {
+  public ionViewWillEnter() {
     if (this.giftCards) {
       this.invoiceId = this.navParams.data.invoiceId;
       this.updateGiftCards().then(() => {
         if (this.invoiceId) {
-          let card = _.find(this.giftCards, {
+          const card = _.find(this.giftCards, {
             invoiceId: this.invoiceId
           });
           if (_.isEmpty(card)) {
@@ -74,7 +74,7 @@ export class AmazonPage {
   private initAmazon(): Promise<any> {
     return new Promise((resolve, reject) => {
       this.amazonProvider.getPendingGiftCards((err: any, gcds: any) => {
-        if (err) this.logger.error(err);
+        if (err) { this.logger.error(err); }
         this.giftCards = gcds;
         return resolve();
       });
@@ -110,7 +110,7 @@ export class AmazonPage {
   public updatePendingGiftCards = _.debounce(() => {
     this.updatingPending = {};
     this.updateGiftCards().then(() => {
-      let gcds = this.giftCards;
+      const gcds = this.giftCards;
       _.forEach(gcds, (dataFromStorage: any) => {
 
         this.updateGiftCard = this.checkIfCardNeedsUpdate(dataFromStorage);
@@ -125,11 +125,11 @@ export class AmazonPage {
             if (err) {
               this.logger.error('Error creating gift card:', err);
               giftCard = giftCard || {};
-              giftCard['status'] = 'FAILURE';
+              giftCard.status = 'FAILURE';
             }
 
             if (giftCard.status != 'PENDING') {
-              let newData: any = {};
+              const newData: any = {};
 
               _.merge(newData, dataFromStorage, giftCard);
 
@@ -161,7 +161,7 @@ export class AmazonPage {
   public openCardModal(card: any): void {
     this.card = card;
 
-    let modal = this.modalCtrl.create(AmazonCardDetailsPage, { card: this.card, updateGiftCard: this.updateGiftCard });
+    const modal = this.modalCtrl.create(AmazonCardDetailsPage, { card: this.card, updateGiftCard: this.updateGiftCard });
     modal.present();
 
     modal.onDidDismiss(() => {

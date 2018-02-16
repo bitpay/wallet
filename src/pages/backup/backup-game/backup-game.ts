@@ -1,33 +1,33 @@
 import { Component, ViewChild } from '@angular/core';
-import { NavController, Slides, Navbar, AlertController, NavParams } from 'ionic-angular';
-import { Logger } from '../../../providers/logger/logger';
+import { AlertController, Navbar, NavController, NavParams, Slides } from 'ionic-angular';
 import * as _ from 'lodash';
+import { Logger } from '../../../providers/logger/logger';
 
 //pahes
 import { DisclaimerPage } from '../../onboarding/disclaimer/disclaimer';
 
 //providers
-import { ProfileProvider } from '../../../providers/profile/profile';
-import { WalletProvider } from '../../../providers/wallet/wallet';
 import { BwcProvider } from '../../../providers/bwc/bwc';
 import { OnGoingProcessProvider } from '../../../providers/on-going-process/on-going-process';
+import { ProfileProvider } from '../../../providers/profile/profile';
+import { WalletProvider } from '../../../providers/wallet/wallet';
 
 @Component({
   selector: 'page-backup-game',
   templateUrl: 'backup-game.html',
 })
 export class BackupGamePage {
-  @ViewChild(Slides) slides: Slides;
-  @ViewChild(Navbar) navBar: Navbar;
+  @ViewChild(Slides) public slides: Slides;
+  @ViewChild(Navbar) public navBar: Navbar;
 
   private fromOnboarding: boolean;
 
   public currentIndex: number;
   public deleted: boolean;
-  public mnemonicWords: Array<String>;
-  public shuffledMnemonicWords: Array<any>;
+  public mnemonicWords: String[];
+  public shuffledMnemonicWords: any[];
   public password: String;
-  public customWords: Array<any>;
+  public customWords: any[];
   public selectComplete: boolean;
   public error: boolean;
   public credentialsEncrypted: boolean;
@@ -72,20 +72,20 @@ export class BackupGamePage {
     });
   }
 
-  ngOnInit() {
+  public ngOnInit() {
     this.currentIndex = 0;
     this.navBar.backButtonClick = (e: UIEvent) => {
-      if (this.slides) this.slidePrev();
-      else this.navCtrl.pop();
+      if (this.slides) { this.slidePrev(); }
+      else { this.navCtrl.pop(); }
     }
   }
 
-  ionViewDidLoad() {
-    if (this.slides) this.slides.lockSwipes(true);
+  public ionViewDidLoad() {
+    if (this.slides) { this.slides.lockSwipes(true); }
   }
 
-  private shuffledWords(words: Array<String>) {
-    var sort = _.sortBy(words);
+  private shuffledWords(words: String[]) {
+    const sort = _.sortBy(words);
 
     return _.map(sort, (w) => {
       return {
@@ -96,7 +96,7 @@ export class BackupGamePage {
   };
 
   public addButton(index: number, item: any): void {
-    var newWord = {
+    const newWord = {
       word: item.word,
       prevIndex: index
     };
@@ -113,15 +113,17 @@ export class BackupGamePage {
   };
 
   private shouldContinue(): void {
-    if (this.customWords.length == this.shuffledMnemonicWords.length)
+    if (this.customWords.length == this.shuffledMnemonicWords.length) {
       this.selectComplete = true;
-    else
+    }
+    else {
       this.selectComplete = false;
+    }
   };
 
   private showBackupResult(): void {
     if (this.error) {
-      let alert = this.alertCtrl.create({
+      const alert = this.alertCtrl.create({
         title: "Uh oh...",
         subTitle: "It's important that you write your backup phrase down correctly. If something happens to your wallet, you'll need this backup to recover your money. Please review your backup and try again.",
         buttons: [{
@@ -134,7 +136,7 @@ export class BackupGamePage {
       });
       alert.present();
     } else {
-      let opts = {
+      const opts = {
         title: 'Your bitcoin wallet is backed up!',
         message: 'Be sure to store your recovery phrase in a secure place. If this app is deleted, your money cannot be recovered without it.',
         buttons: [{
@@ -153,15 +155,16 @@ export class BackupGamePage {
   };
 
   private isDeletedSeed(): boolean {
-    if (!this.wallet.credentials.mnemonic && !this.wallet.credentials.mnemonicEncrypted)
+    if (!this.wallet.credentials.mnemonic && !this.wallet.credentials.mnemonicEncrypted) {
       return true;
+    }
 
     return false;
   }
 
   private slidePrev(): void {
     this.slides.lockSwipes(false);
-    if (this.currentIndex == 0) this.navCtrl.pop();
+    if (this.currentIndex == 0) { this.navCtrl.pop(); }
     else {
       this.slides.slidePrev();
       this.currentIndex = this.slides.getActiveIndex();
@@ -170,8 +173,9 @@ export class BackupGamePage {
   }
 
   public slideNext(): void {
-    if (this.currentIndex == 1 && !this.mnemonicHasPassphrase)
+    if (this.currentIndex == 1 && !this.mnemonicHasPassphrase) {
       this.finalStep();
+    }
     else {
       this.slides.lockSwipes(false);
       this.slides.slideNext();
@@ -182,7 +186,7 @@ export class BackupGamePage {
   }
 
   private setFlow(): void {
-    if (!this.keys) return;
+    if (!this.keys) { return; }
 
     let words = this.keys.mnemonic;
 
@@ -197,36 +201,36 @@ export class BackupGamePage {
 
     words = _.repeat('x', 300);
 
-    if (this.currentIndex == 2) this.slidePrev();
+    if (this.currentIndex == 2) { this.slidePrev(); }
 
   };
 
   public copyRecoveryPhrase(): string {
-    if (this.wallet.network == 'livenet') return null;
-    else if (!this.wallet.credentials.mnemonic) return null;
-    else return this.wallet.credentials.mnemonic;
+    if (this.wallet.network == 'livenet') { return null; }
+    else if (!this.wallet.credentials.mnemonic) { return null; }
+    else { return this.wallet.credentials.mnemonic; }
   }
 
   private confirm(): Promise<any> {
     return new Promise((resolve, reject) => {
       this.error = false;
 
-      let customWordList = _.map(this.customWords, 'word');
+      const customWordList = _.map(this.customWords, 'word');
 
       if (!_.isEqual(this.mnemonicWords, customWordList)) {
         return reject('Mnemonic string mismatch');
       }
 
       if (this.mnemonicHasPassphrase) {
-        let walletClient = this.bwcProvider.getClient();
-        let separator = this.useIdeograms ? '\u3000' : ' ';
-        let customSentence = customWordList.join(separator);
-        let password = this.password || '';
+        const walletClient = this.bwcProvider.getClient();
+        const separator = this.useIdeograms ? '\u3000' : ' ';
+        const customSentence = customWordList.join(separator);
+        const password = this.password || '';
 
         try {
           walletClient.seedFromMnemonic(customSentence, {
             network: this.wallet.credentials.network,
-            password: password,
+            password,
             account: this.wallet.credentials.account
           });
         } catch (err) {
@@ -254,7 +258,7 @@ export class BackupGamePage {
       this.onGoingProcessProvider.set('validatingWords', false);
       this.logger.error('Failed to verify backup: ', err);
       this.error = true;
-      let showError = this.alertCtrl.create({
+      const showError = this.alertCtrl.create({
         title: "Failed to verify backup",
         subTitle: err,
         buttons: [{

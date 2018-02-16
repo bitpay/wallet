@@ -1,8 +1,7 @@
-import { Component } from '@angular/core';
-import { DOCUMENT } from "@angular/platform-browser";
-import { Inject } from '@angular/core';
-import { ActionSheetController, ToastController } from 'ionic-angular';
+import { Component, Inject } from '@angular/core';
+import { DOCUMENT } from '@angular/platform-browser';
 import { TranslateService } from '@ngx-translate/core';
+import { ActionSheetController, ToastController } from 'ionic-angular';
 
 //native
 import { SocialSharing } from '@ionic-native/social-sharing';
@@ -24,7 +23,7 @@ export class SessionLogPage {
   private dom: Document;
 
   public logOptions: any;
-  public filteredLogs: Array<any>;
+  public filteredLogs: any[];
   public filterValue: number;
   public isCordova: boolean;
 
@@ -41,16 +40,16 @@ export class SessionLogPage {
     this.dom = dom;
     this.config = this.configProvider.get();
     this.isCordova = this.platformProvider.isCordova;
-    let logLevels: any = this.logger.getLevels();
+    const logLevels: any = this.logger.getLevels();
     this.logOptions = _.keyBy(logLevels, 'weight');
   }
 
-  ionViewDidLoad() {
+  public ionViewDidLoad() {
     this.logger.info('ionViewDidLoad SessionLogPage');
   }
 
-  ionViewWillEnter() {
-    let selectedLevel: any = _.has(this.config, 'log.weight') ? this.logger.getWeight(this.config.log.weight) : this.logger.getDefaultWeight();
+  public ionViewWillEnter() {
+    const selectedLevel: any = _.has(this.config, 'log.weight') ? this.logger.getWeight(this.config.log.weight) : this.logger.getDefaultWeight();
     this.filterValue = selectedLevel.weight;
     this.setOptionSelected(selectedLevel.weight);
     this.filterLogs(selectedLevel.weight);
@@ -62,9 +61,9 @@ export class SessionLogPage {
 
   public setOptionSelected(weight: number): void {
     this.filterLogs(weight);
-    let opts = {
+    const opts = {
       log: {
-        weight: weight
+        weight
       }
     };
     this.configProvider.set(opts);
@@ -81,21 +80,21 @@ export class SessionLogPage {
   }
 
   private copyToClipboard() {
-    let textarea = this.dom.createElement('textarea');
+    const textarea = this.dom.createElement('textarea');
     this.dom.body.appendChild(textarea);
     textarea.value = this.prepareLogs();
     textarea.select();
     this.dom.execCommand('copy');
-    let message = this.translate.instant('Copied to clipboard');
-    let showSuccess = this.toastCtrl.create({
-      message: message,
+    const message = this.translate.instant('Copied to clipboard');
+    const showSuccess = this.toastCtrl.create({
+      message,
       duration: 1000,
     });
     showSuccess.present();
   }
 
   public sendLogs(): void {
-    let body = this.prepareLogs();
+    const body = this.prepareLogs();
 
     this.socialSharing.shareViaEmail(
       body,
@@ -109,8 +108,8 @@ export class SessionLogPage {
 
   public showOptionsMenu(): void {
 
-    let copyText = this.translate.instant('Copy to clipboard');
-    let emailText = this.translate.instant('Send by email');
+    const copyText = this.translate.instant('Copy to clipboard');
+    const emailText = this.translate.instant('Send by email');
     let button = [];
 
     if (this.isCordova) {
@@ -130,7 +129,7 @@ export class SessionLogPage {
       }];
     }
 
-    let actionSheet = this.actionSheetCtrl.create({
+    const actionSheet = this.actionSheetCtrl.create({
       title: '',
       buttons: button
     });

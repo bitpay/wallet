@@ -1,17 +1,17 @@
 import { Component } from '@angular/core';
-import { NavParams, Events, ViewController, ModalController } from 'ionic-angular';
 import { TranslateService } from '@ngx-translate/core';
+import { Events, ModalController, NavParams, ViewController } from 'ionic-angular';
 
 //providers
-import { PlatformProvider } from '../../providers/platform/platform';
-import { FeeProvider } from '../../providers/fee/fee';
-import { PopupProvider } from '../../providers/popup/popup';
 import { BwcErrorProvider } from '../../providers/bwc-error/bwc-error';
-import { WalletProvider } from '../../providers/wallet/wallet';
-import { OnGoingProcessProvider } from '../../providers/on-going-process/on-going-process';
 import { ConfigProvider } from '../../providers/config/config';
+import { FeeProvider } from '../../providers/fee/fee';
+import { OnGoingProcessProvider } from '../../providers/on-going-process/on-going-process';
+import { PlatformProvider } from '../../providers/platform/platform';
+import { PopupProvider } from '../../providers/popup/popup';
 import { ProfileProvider } from '../../providers/profile/profile';
 import { TxFormatProvider } from '../../providers/tx-format/tx-format';
+import { WalletProvider } from '../../providers/wallet/wallet';
 
 //pages
 import { SuccessModalPage } from '../success/success';
@@ -32,7 +32,7 @@ export class TxpDetailsPage {
   public color: string;
   public buttonText: string;
   public successText: string;
-  public actionList: Array<any>;
+  public actionList: any[];
   public paymentExpired: boolean;
   public expires: string;
   public currentSpendUnconfirmed: boolean;
@@ -60,11 +60,11 @@ export class TxpDetailsPage {
     private translate: TranslateService,
     private modalCtrl: ModalController
   ) {
-    let config = this.configProvider.get().wallet;
+    const config = this.configProvider.get().wallet;
     this.tx = this.navParams.data.tx;
     this.wallet = this.tx.wallet ? this.tx.wallet : this.profileProvider.getWallet(this.tx.walletId);
     this.tx = this.txFormatProvider.processTx(this.wallet.coin, this.tx);
-    if (!this.tx.toAddress) this.tx.toAddress = this.tx.outputs[0].toAddress;
+    if (!this.tx.toAddress) { this.tx.toAddress = this.tx.outputs[0].toAddress; }
     this.isGlidera = this.navParams.data.isGlidera;
     this.GLIDERA_LOCK_TIME = 6 * 60 * 60;
     this.currentSpendUnconfirmed = config.spendUnconfirmed;
@@ -78,7 +78,7 @@ export class TxpDetailsPage {
     this.color = this.wallet.color;
   }
 
-  ionViewWillEnter() {
+  public ionViewWillEnter() {
     this.displayFeeValues();
     this.initActionList();
     this.checkPaypro();
@@ -118,7 +118,7 @@ export class TxpDetailsPage {
   }
 
   private applyButtonText(): void {
-    var lastSigner = _.filter(this.tx.actions, {
+    const lastSigner = _.filter(this.tx.actions, {
       type: 'accept'
     }).length == this.tx.requiredSignatures - 1;
 
@@ -142,9 +142,9 @@ export class TxpDetailsPage {
   private initActionList(): void {
     this.actionList = [];
 
-    if (!this.isShared) return;
+    if (!this.isShared) { return; }
 
-    var actionDescriptions = {
+    const actionDescriptions = {
       created: this.translate.instant('Proposal Created'),
       accept: this.translate.instant('Accepted'),
       reject: this.translate.instant('Rejected'),
@@ -154,7 +154,7 @@ export class TxpDetailsPage {
     this.actionList.push({
       type: 'created',
       time: this.tx.createdOn,
-      description: actionDescriptions['created'],
+      description: actionDescriptions.created,
       by: this.tx.creatorName
     });
 
@@ -177,7 +177,7 @@ export class TxpDetailsPage {
       this.wallet.fetchPayPro({
         payProUrl: this.tx.payProUrl,
       }, (err, paypro) => {
-        if (err) return;
+        if (err) { return; }
         this.tx.paypro = paypro;
         this.paymentTimeControl(this.tx.paypro.expires);
       });
@@ -186,16 +186,16 @@ export class TxpDetailsPage {
 
   private paymentTimeControl(expirationTime) {
 
-    let setExpirationTime = (): void => {
-      let now = Math.floor(Date.now() / 1000);
+    const setExpirationTime = (): void => {
+      const now = Math.floor(Date.now() / 1000);
       if (now > expirationTime) {
         this.paymentExpired = true;
-        if (this.countDown) clearInterval(this.countDown);
+        if (this.countDown) { clearInterval(this.countDown); }
         return;
       }
-      let totalSecs = expirationTime - now;
-      let m = Math.floor(totalSecs / 60);
-      let s = totalSecs % 60;
+      const totalSecs = expirationTime - now;
+      const m = Math.floor(totalSecs / 60);
+      const s = totalSecs % 60;
       this.expires = ('0' + m).slice(-2) + ":" + ('0' + s).slice(-2);
     };
 
@@ -223,10 +223,10 @@ export class TxpDetailsPage {
   }
 
   public reject(txp: any): void {
-    let title = this.translate.instant('Warning!');
-    let msg = this.translate.instant('Are you sure you want to reject this transaction?');
+    const title = this.translate.instant('Warning!');
+    const msg = this.translate.instant('Are you sure you want to reject this transaction?');
     this.popupProvider.ionicConfirm(title, msg, null, null).then((res: boolean) => {
-      if (!res) return
+      if (!res) { return }
       this.loading = true;
       this.walletProvider.reject(this.wallet, this.tx).then((txpr) => {
         this.close();
@@ -237,10 +237,10 @@ export class TxpDetailsPage {
   }
 
   public remove(): void {
-    let title = this.translate.instant('Warning!');
-    let msg = this.translate.instant('Are you sure you want to remove this transaction?');
+    const title = this.translate.instant('Warning!');
+    const msg = this.translate.instant('Are you sure you want to remove this transaction?');
     this.popupProvider.ionicConfirm(title, msg, null, null).then((res: boolean) => {
-      if (!res) return;
+      if (!res) { return; }
       this.onGoingProcessProvider.set('removeTx', true);
       this.walletProvider.removeTx(this.wallet, this.tx).then(() => {
         this.onGoingProcessProvider.set('removeTx', false);
@@ -273,13 +273,13 @@ export class TxpDetailsPage {
 
   private updateTxInfo(eventName: string): void {
     this.walletProvider.getTxp(this.wallet, this.tx.id).then((tx: any) => {
-      let action = _.find(tx.actions, {
+      const action = _.find(tx.actions, {
         copayerId: this.wallet.credentials.copayerId
       });
 
       this.tx = this.txFormatProvider.processTx(this.wallet.coin, tx);
 
-      if (!action && tx.status == 'pending') this.tx.pendingForUs = true;
+      if (!action && tx.status == 'pending') { this.tx.pendingForUs = true; }
 
       this.updateCopayerList();
       this.initActionList();
@@ -314,7 +314,7 @@ export class TxpDetailsPage {
   }
 
   public openSuccessModal() {
-    let modal = this.modalCtrl.create(SuccessModalPage, {}, { showBackdrop: true, enableBackdropDismiss: false });
+    const modal = this.modalCtrl.create(SuccessModalPage, {}, { showBackdrop: true, enableBackdropDismiss: false });
     modal.present();
     modal.onDidDismiss(() => {
       this.close();

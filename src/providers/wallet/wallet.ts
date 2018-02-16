@@ -1,21 +1,21 @@
 import { Injectable } from '@angular/core';
-import { Events } from 'ionic-angular';
-import { Logger } from '../../providers/logger/logger';
-import * as lodash from 'lodash';
 import { TranslateService } from '@ngx-translate/core';
+import { Events } from 'ionic-angular';
+import * as lodash from 'lodash';
+import { Logger } from '../../providers/logger/logger';
 
 // Providers
-import { ConfigProvider } from '../config/config';
-import { BwcProvider } from '../bwc/bwc';
-import { TxFormatProvider } from '../tx-format/tx-format';
-import { PersistenceProvider } from '../persistence/persistence';
 import { BwcErrorProvider } from '../bwc-error/bwc-error';
-import { RateProvider } from '../rate/rate';
-import { FilterProvider } from '../filter/filter';
-import { PopupProvider } from '../popup/popup';
-import { OnGoingProcessProvider } from '../on-going-process/on-going-process';
-import { TouchIdProvider } from '../touchid/touchid';
+import { BwcProvider } from '../bwc/bwc';
+import { ConfigProvider } from '../config/config';
 import { FeeProvider } from '../fee/fee';
+import { FilterProvider } from '../filter/filter';
+import { OnGoingProcessProvider } from '../on-going-process/on-going-process';
+import { PersistenceProvider } from '../persistence/persistence';
+import { PopupProvider } from '../popup/popup';
+import { RateProvider } from '../rate/rate';
+import { TouchIdProvider } from '../touchid/touchid';
+import { TxFormatProvider } from '../tx-format/tx-format';
 
 @Injectable()
 export class WalletProvider {
@@ -61,27 +61,31 @@ export class WalletProvider {
 
 
   private invalidateCache(wallet: any) {
-    if (wallet.cachedStatus)
+    if (wallet.cachedStatus) {
       wallet.cachedStatus.isValid = false;
+    }
 
-    if (wallet.completeHistory)
+    if (wallet.completeHistory) {
       wallet.completeHistory.isValid = false;
+    }
 
-    if (wallet.cachedActivity)
+    if (wallet.cachedActivity) {
       wallet.cachedActivity.isValid = false;
+    }
 
-    if (wallet.cachedTxps)
+    if (wallet.cachedTxps) {
       wallet.cachedTxps.isValid = false;
+    }
   }
 
   public getStatus(wallet: any, opts: any): Promise<any> {
     return new Promise((resolve, reject) => {
       opts = opts || {};
-      var walletId = wallet.id;
+      const walletId = wallet.id;
 
-      let processPendingTxps = (status: any) => {
-        let txps = status.pendingTxps;
-        let now = Math.floor(Date.now() / 1000);
+      const processPendingTxps = (status: any) => {
+        const txps = status.pendingTxps;
+        const now = Math.floor(Date.now() / 1000);
 
         /* To test multiple outputs...
         var txp = {
@@ -106,8 +110,9 @@ export class WalletProvider {
           tx = this.txFormatProvider.processTx(wallet.coin, tx);
 
           // no future transactions...
-          if (tx.createdOn > now)
+          if (tx.createdOn > now) {
             tx.createdOn = now;
+          }
 
           tx.wallet = wallet;
 
@@ -116,7 +121,7 @@ export class WalletProvider {
             return;
           }
 
-          let action: any = lodash.find(tx.actions, {
+          const action: any = lodash.find(tx.actions, {
             copayerId: tx.wallet.copayerId
           });
 
@@ -132,14 +137,15 @@ export class WalletProvider {
             tx.statusForUs = 'pending';
           }
 
-          if (!tx.deleteLockTime)
+          if (!tx.deleteLockTime) {
             tx.canBeRemoved = true;
+          }
         });
         wallet.pendingTxps = txps;
       };
 
 
-      let get = (): Promise<any> => {
+      const get = (): Promise<any> => {
         return new Promise((resolve, reject) => {
           wallet.getStatus({
             twoStep: true
@@ -155,13 +161,13 @@ export class WalletProvider {
         })
       };
 
-      let cacheBalance = (wallet: any, balance: any): void => {
-        if (!balance) return;
+      const cacheBalance = (wallet: any, balance: any): void => {
+        if (!balance) { return; }
 
-        let configGet: any = this.configProvider.get();
-        let config: any = configGet.wallet;
+        const configGet: any = this.configProvider.get();
+        const config: any = configGet.wallet;
 
-        let cache = wallet.cachedStatus;
+        const cache = wallet.cachedStatus;
 
         // Address with Balance
         cache.balanceByAddress = balance.byAddress;
@@ -216,11 +222,11 @@ export class WalletProvider {
 
         this.rateProvider.whenRatesAvailable().then(() => {
 
-          let totalBalanceAlternative = this.rateProvider.toFiat(cache.totalBalanceSat, cache.alternativeIsoCode, wallet.coin);
-          let pendingBalanceAlternative = this.rateProvider.toFiat(cache.pendingAmount, cache.alternativeIsoCode, wallet.coin);
-          let lockedBalanceAlternative = this.rateProvider.toFiat(cache.lockedBalanceSat, cache.alternativeIsoCode, wallet.coin);
-          let spendableBalanceAlternative = this.rateProvider.toFiat(cache.spendableAmount, cache.alternativeIsoCode, wallet.coin);
-          let alternativeConversionRate = this.rateProvider.toFiat(100000000, cache.alternativeIsoCode, wallet.coin);
+          const totalBalanceAlternative = this.rateProvider.toFiat(cache.totalBalanceSat, cache.alternativeIsoCode, wallet.coin);
+          const pendingBalanceAlternative = this.rateProvider.toFiat(cache.pendingAmount, cache.alternativeIsoCode, wallet.coin);
+          const lockedBalanceAlternative = this.rateProvider.toFiat(cache.lockedBalanceSat, cache.alternativeIsoCode, wallet.coin);
+          const spendableBalanceAlternative = this.rateProvider.toFiat(cache.spendableAmount, cache.alternativeIsoCode, wallet.coin);
+          const alternativeConversionRate = this.rateProvider.toFiat(100000000, cache.alternativeIsoCode, wallet.coin);
 
           cache.totalBalanceAlternative = this.filter.formatFiatAmount(totalBalanceAlternative);
           cache.pendingBalanceAlternative = this.filter.formatFiatAmount(pendingBalanceAlternative);
@@ -235,26 +241,26 @@ export class WalletProvider {
         });
       };
 
-      let isStatusCached = (): any => {
+      const isStatusCached = (): any => {
         return wallet.cachedStatus && wallet.cachedStatus.isValid;
       };
 
-      let cacheStatus = (status: any): void => {
-        if (status.wallet && status.wallet.scanStatus == 'running') return;
+      const cacheStatus = (status: any): void => {
+        if (status.wallet && status.wallet.scanStatus == 'running') { return; }
 
         wallet.cachedStatus = status || {};
-        let cache = wallet.cachedStatus;
+        const cache = wallet.cachedStatus;
         cache.statusUpdatedOn = Date.now();
         cache.isValid = true;
         cache.email = status.preferences ? status.preferences.email : null;
         cacheBalance(wallet, status.balance);
       };
 
-      let walletStatusHash = (status: any): any => {
+      const walletStatusHash = (status: any): any => {
         return status ? status.balance.totalAmount : wallet.totalBalanceSat;
       };
 
-      let _getStatus = (initStatusHash: any, tries: number): Promise<any> => {
+      const _getStatus = (initStatusHash: any, tries: number): Promise<any> => {
 
         return new Promise((resolve, reject) => {
           if (isStatusCached() && !opts.force) {
@@ -270,7 +276,7 @@ export class WalletProvider {
           this.logger.debug('Updating Status:', wallet.credentials.walletName, tries);
           get().then((status) => {
 
-            let currentStatusHash = walletStatusHash(status);
+            const currentStatusHash = walletStatusHash(status);
             this.logger.debug('Status update. hash:' + currentStatusHash + ' Try:' + tries);
             if (opts.untilItChanges && initStatusHash == currentStatusHash && tries < this.WALLET_STATUS_MAX_TRIES && walletId == wallet.credentials.walletId) {
               return setTimeout(() => {
@@ -305,10 +311,10 @@ export class WalletProvider {
   }
 
   // Check address
-  private isAddressUsed(wallet: any, byAddress: Array<any>): Promise<any> {
+  private isAddressUsed(wallet: any, byAddress: any[]): Promise<any> {
     return new Promise((resolve, reject) => {
       this.persistenceProvider.getLastAddress(wallet.id).then((addr) => {
-        let used = lodash.find(byAddress, {
+        const used = lodash.find(byAddress, {
           address: addr
         });
         return resolve(used);
@@ -319,20 +325,20 @@ export class WalletProvider {
   }
 
   public useLegacyAddress(): boolean {
-    let config = this.configProvider.get();
-    let walletSettings = config.wallet;
+    const config = this.configProvider.get();
+    const walletSettings = config.wallet;
 
     return walletSettings.useLegacyAddress;
   }
 
   public getAddressView(wallet: any, address: string): string {
-    if (wallet.coin != 'bch' || this.useLegacyAddress()) return address;
+    if (wallet.coin != 'bch' || this.useLegacyAddress()) { return address; }
     return this.txFormatProvider.toCashAddress(address);
   }
 
   public getProtoAddress(wallet: any, address: string) {
-    let proto: string = this.getProtocolHandler(wallet.coin);
-    let protoAddr: string = proto + ':' + address;
+    const proto: string = this.getProtocolHandler(wallet.coin);
+    const protoAddr: string = proto + ':' + address;
 
     if (wallet.coin != 'bch' || this.useLegacyAddress()) {
       return protoAddr;
@@ -344,10 +350,11 @@ export class WalletProvider {
   public getAddress(wallet: any, forceNew: boolean): Promise<any> {
     return new Promise((resolve, reject) => {
       this.persistenceProvider.getLastAddress(wallet.id).then((addr) => {
-        if (!forceNew && addr) return resolve(addr);
+        if (!forceNew && addr) { return resolve(addr); }
 
-        if (!wallet.isComplete())
+        if (!wallet.isComplete()) {
           return reject('WALLET_NOT_COMPLETE');
+        }
 
         this.createAddress(wallet).then((_addr) => {
           this.persistenceProvider.storeLastAddress(wallet.id, _addr).then(() => {
@@ -383,15 +390,16 @@ export class WalletProvider {
               reverse: true,
               limit: 1
             }, (err, addr) => {
-              if (err) return reject(err);
+              if (err) { return reject(err); }
               return resolve(addr[0].address);
             });
           };
           this.bwcErrorProvider.cb(err, prefix).then((msg) => {
             return reject(msg);
           });
-        } else
+        } else {
           return resolve(addr.address);
+        }
       });
     });
   }
@@ -421,19 +429,20 @@ export class WalletProvider {
     return new Promise((resolve, reject) => {
       let res = [];
 
-      let result = {
-        res: res,
+      const result = {
+        res,
         shouldContinue: res.length >= limit
       };
 
       wallet.getTxHistory({
-        skip: skip,
-        limit: limit
-      }, (err: Error, txsFromServer: Array<any>) => {
-        if (err) return reject(err);
+        skip,
+        limit
+      }, (err: Error, txsFromServer: any[]) => {
+        if (err) { return reject(err); }
 
-        if (lodash.isEmpty(txsFromServer))
+        if (lodash.isEmpty(txsFromServer)) {
           return resolve(result);
+        }
 
         res = lodash.takeWhile(txsFromServer, (tx) => {
           return tx.txid != endingTxid;
@@ -450,17 +459,17 @@ export class WalletProvider {
   private updateLocalTxHistory(wallet: any, opts: any): Promise<any> {
     return new Promise((resolve, reject) => {
       opts = opts ? opts : {};
-      let FIRST_LIMIT = 5;
-      let LIMIT = 50;
+      const FIRST_LIMIT = 5;
+      const LIMIT = 50;
       let requestLimit = FIRST_LIMIT;
-      let walletId = wallet.credentials.walletId;
+      const walletId = wallet.credentials.walletId;
       this.progressFn[walletId] = opts.progressFn || (() => { });
       let foundLimitTx = [];
 
-      let fixTxsUnit = (txs: any): void => {
-        if (!txs || !txs[0] || !txs[0].amountStr) return;
+      const fixTxsUnit = (txs: any): void => {
+        if (!txs || !txs[0] || !txs[0].amountStr) { return; }
 
-        let cacheCoin: string = txs[0].amountStr.split(' ')[1];
+        const cacheCoin: string = txs[0].amountStr.split(' ')[1];
 
         if (cacheCoin == 'bits') {
 
@@ -491,20 +500,20 @@ export class WalletProvider {
 
         fixTxsUnit(txsFromLocal);
 
-        let confirmedTxs = this.removeAndMarkSoftConfirmedTx(txsFromLocal);
-        let endingTxid = confirmedTxs[0] ? confirmedTxs[0].txid : null;
-        let endingTs = confirmedTxs[0] ? confirmedTxs[0].time : null;
+        const confirmedTxs = this.removeAndMarkSoftConfirmedTx(txsFromLocal);
+        const endingTxid = confirmedTxs[0] ? confirmedTxs[0].txid : null;
+        const endingTs = confirmedTxs[0] ? confirmedTxs[0].time : null;
 
         // First update
         this.progressFn[walletId](txsFromLocal, 0);
         wallet.completeHistory = txsFromLocal;
 
-        let getNewTxs = (newTxs: Array<any>, skip: number): Promise<any> => {
+        const getNewTxs = (newTxs: any[], skip: number): Promise<any> => {
           return new Promise((resolve, reject) => {
             this.getTxsFromServer(wallet, skip, endingTxid, requestLimit).then((result: any) => {
 
-              let res = result.res;
-              let shouldContinue = result.shouldContinue ? result.shouldContinue : false;
+              const res = result.res;
+              const shouldContinue = result.shouldContinue ? result.shouldContinue : false;
 
               newTxs = newTxs.concat(this.processNewTxs(wallet, lodash.compact(res)));
               this.progressFn[walletId](newTxs.concat(txsFromLocal), newTxs.length);
@@ -548,14 +557,14 @@ export class WalletProvider {
 
         getNewTxs([], 0).then((txs: any) => {
 
-          let array: Array<any> = lodash.compact(txs.concat(confirmedTxs));
-          let newHistory = lodash.uniqBy(array, (x: any) => {
+          const array: any[] = lodash.compact(txs.concat(confirmedTxs));
+          const newHistory = lodash.uniqBy(array, (x: any) => {
             return x.txid;
           });
 
-          let updateNotes = (): Promise<any> => {
+          const updateNotes = (): Promise<any> => {
             return new Promise((resolve, reject) => {
-              if (!endingTs) return resolve();
+              if (!endingTs) { return resolve(); }
 
               this.logger.debug('Syncing notes from: ' + endingTs);
               wallet.getTxNotes({
@@ -579,8 +588,8 @@ export class WalletProvider {
             });
           };
 
-          let updateLowAmount = (txs: any) => {
-            if (!opts.lowAmount) return;
+          const updateLowAmount = (txs: any) => {
+            if (!opts.lowAmount) { return; }
 
             lodash.each(txs, (tx: any) => {
               tx.lowAmount = tx.amount < opts.lowAmount;
@@ -602,7 +611,7 @@ export class WalletProvider {
             }
             // </HACK>
 
-            var historyToSave = JSON.stringify(newHistory);
+            const historyToSave = JSON.stringify(newHistory);
             lodash.each(txs, (tx: any) => {
               tx.recent = true;
             });
@@ -637,18 +646,19 @@ export class WalletProvider {
     });
   }
 
-  private processNewTxs(wallet: any, txs: any): Array<any> {
-    let now = Math.floor(Date.now() / 1000);
-    let txHistoryUnique = {};
-    let ret = [];
+  private processNewTxs(wallet: any, txs: any): any[] {
+    const now = Math.floor(Date.now() / 1000);
+    const txHistoryUnique = {};
+    const ret = [];
     wallet.hasUnsafeConfirmed = false;
 
     lodash.each(txs, (tx: any) => {
       tx = this.txFormatProvider.processTx(wallet.coin, tx);
 
       // no future transactions...
-      if (tx.time > now)
+      if (tx.time > now) {
         tx.time = now;
+      }
 
       if (tx.confirmations >= this.SAFE_CONFIRMATIONS) {
         tx.safeConfirmed = this.SAFE_CONFIRMATIONS + '+';
@@ -673,10 +683,11 @@ export class WalletProvider {
     return ret;
   }
 
-  public removeAndMarkSoftConfirmedTx(txs: any): Array<any> {
+  public removeAndMarkSoftConfirmedTx(txs: any): any[] {
     return lodash.filter(txs, (tx: any) => {
-      if (tx.confirmations >= this.SOFT_CONFIRMATION_LIMIT)
+      if (tx.confirmations >= this.SOFT_CONFIRMATION_LIMIT) {
         return tx;
+      }
       tx.recent = true;
     });
   }
@@ -685,7 +696,7 @@ export class WalletProvider {
   public getLowAmount(wallet: any): Promise<any> {
     return new Promise((resolve, reject) => {
       this.getMinFee(wallet).then((fee) => {
-        let minFee: number = fee;
+        const minFee: number = fee;
         return resolve(minFee / this.LOW_AMOUNT_RATIO);
       }).catch((err) => {
         return reject(err);
@@ -697,11 +708,11 @@ export class WalletProvider {
   public getMinFee(wallet: any, nbOutputs?: number): Promise<any> {
     return new Promise((resolve, reject) => {
       this.feeProvider.getFeeLevels(wallet.coin).then((data: any) => {
-        let normalLevelRate: any = lodash.find(data.levels[wallet.network], (level: any) => {
+        const normalLevelRate: any = lodash.find(data.levels[wallet.network], (level: any) => {
           return level.level === 'normal';
         });
-        let lowLevelRate: string = (normalLevelRate.feePerKb / 1000).toFixed(0);
-        let size = this.getEstimatedTxSize(wallet, nbOutputs);
+        const lowLevelRate: string = (normalLevelRate.feePerKb / 1000).toFixed(0);
+        const size = this.getEstimatedTxSize(wallet, nbOutputs);
         return resolve(size * parseInt(lowLevelRate));
       }).catch((err) => {
         return reject(err);
@@ -724,22 +735,22 @@ export class WalletProvider {
   private getEstimatedTxSize(wallet: any, nbOutputs?: number): number {
     // Note: found empirically based on all multisig P2SH inputs and within m & n allowed limits.
     nbOutputs = nbOutputs ? nbOutputs : 2; // Assume 2 outputs
-    let safetyMargin = 0.02;
-    let overhead = 4 + 4 + 9 + 9;
-    let inputSize = this.getEstimatedSizeForSingleInput(wallet);
-    let outputSize = 34;
-    let nbInputs = 1; //Assume 1 input
+    const safetyMargin = 0.02;
+    const overhead = 4 + 4 + 9 + 9;
+    const inputSize = this.getEstimatedSizeForSingleInput(wallet);
+    const outputSize = 34;
+    const nbInputs = 1; //Assume 1 input
 
-    let size = overhead + inputSize * nbInputs + outputSize * nbOutputs;
+    const size = overhead + inputSize * nbInputs + outputSize * nbOutputs;
     return parseInt((size * (1 + safetyMargin)).toFixed(0));
   }
 
   public getTxNote(wallet: any, txid: string): Promise<any> {
     return new Promise((resolve, reject) => {
       wallet.getTxNote({
-        txid: txid
+        txid
       }, (err: any, note: any) => {
-        if (err) return reject(err);
+        if (err) { return reject(err); }
         return resolve(note);
       });
     });
@@ -748,7 +759,7 @@ export class WalletProvider {
   public editTxNote(wallet: any, args: any): Promise<any> {
     return new Promise((resolve, reject) => {
       wallet.editTxNote(args, (err: any, res: any) => {
-        if (err) return reject(err);
+        if (err) { return reject(err); }
         return resolve(res);
       });
     });
@@ -757,7 +768,7 @@ export class WalletProvider {
   public getTxp(wallet: any, txpid: string): Promise<any> {
     return new Promise((resolve, reject) => {
       wallet.getTx(txpid, (err: any, txp: any) => {
-        if (err) return reject(err);
+        if (err) { return reject(err); }
         return resolve(txp);
       });
     });
@@ -765,24 +776,24 @@ export class WalletProvider {
 
   public getTx(wallet: any, txid: string) {
     return new Promise((resolve, reject) => {
-      let finish = (list: any): any => {
-        let tx = lodash.find(list, {
-          txid: txid
+      const finish = (list: any): any => {
+        const tx = lodash.find(list, {
+          txid
         });
 
-        if (!tx) return reject('Could not get transaction');
+        if (!tx) { return reject('Could not get transaction'); }
         return tx;
       };
 
       if (wallet.completeHistory && wallet.completeHistory.isValid) {
-        let tx = finish(wallet.completeHistory);
+        const tx = finish(wallet.completeHistory);
         return resolve(tx);
       } else {
-        let opts = {
+        const opts = {
           force: true
         };
         this.getTxHistory(wallet, opts).then((txHistory: any) => {
-          let tx = finish(txHistory);
+          const tx = finish(txHistory);
           return resolve(tx);
         }).catch((err) => {
           return reject(err);
@@ -795,13 +806,13 @@ export class WalletProvider {
     return new Promise((resolve, reject) => {
       opts = opts ? opts : {};
 
-      if (!wallet.isComplete()) return resolve();
+      if (!wallet.isComplete()) { return resolve(); }
 
-      let isHistoryCached = () => {
+      const isHistoryCached = () => {
         return wallet.completeHistory && wallet.completeHistory.isValid;
       };
 
-      if (isHistoryCached() && !opts.force) return resolve(wallet.completeHistory);
+      if (isHistoryCached() && !opts.force) { return resolve(wallet.completeHistory); }
 
       this.logger.debug('Updating Transaction History');
       this.updateLocalTxHistory(wallet, opts).then((txs: any) => {
@@ -818,19 +829,20 @@ export class WalletProvider {
   }
 
   public isEncrypted(wallet: any): boolean {
-    if (lodash.isEmpty(wallet)) return;
-    let isEncrypted = wallet.isPrivKeyEncrypted();
-    if (isEncrypted) this.logger.debug('Wallet is encrypted');
+    if (lodash.isEmpty(wallet)) { return; }
+    const isEncrypted = wallet.isPrivKeyEncrypted();
+    if (isEncrypted) { this.logger.debug('Wallet is encrypted'); }
     return isEncrypted;
   }
 
   public createTx(wallet: any, txp: any) {
     return new Promise((resolve, reject) => {
-      if (lodash.isEmpty(txp) || lodash.isEmpty(wallet))
+      if (lodash.isEmpty(txp) || lodash.isEmpty(wallet)) {
         return reject('MISSING_PARAMETER');
+      }
 
       wallet.createTxProposal(txp, (err: any, createdTxp: any) => {
-        if (err) return reject(err);
+        if (err) { return reject(err); }
         else {
           this.logger.debug('Transaction created');
           return resolve(createdTxp);
@@ -841,12 +853,13 @@ export class WalletProvider {
 
   public publishTx(wallet: any, txp: any): Promise<any> {
     return new Promise((resolve, reject) => {
-      if (lodash.isEmpty(txp) || lodash.isEmpty(wallet))
+      if (lodash.isEmpty(txp) || lodash.isEmpty(wallet)) {
         return reject('MISSING_PARAMETER');
+      }
       wallet.publishTxProposal({
-        txp: txp
+        txp
       }, (err: any, publishedTx: any) => {
-        if (err) return reject(err);
+        if (err) { return reject(err); }
         else {
           this.logger.debug('Transaction published');
           return resolve(publishedTx);
@@ -855,15 +868,16 @@ export class WalletProvider {
     });
   }
 
-  signTx(wallet: any, txp: any, password: string): Promise<any> {
+  public signTx(wallet: any, txp: any, password: string): Promise<any> {
     return new Promise((resolve, reject) => {
-      if (!wallet || !txp)
+      if (!wallet || !txp) {
         return reject('MISSING_PARAMETER');
+      }
 
       try {
         wallet.signTxProposal(txp, password, (err: any, signedTxp: any) => {
           this.logger.debug('Transaction signed err:' + err);
-          if (err) return reject(err);
+          if (err) { return reject(err); }
           return resolve(signedTxp);
         });
       } catch (e) {
@@ -875,18 +889,21 @@ export class WalletProvider {
 
   public broadcastTx(wallet: any, txp: any): Promise<any> {
     return new Promise((resolve, reject) => {
-      if (lodash.isEmpty(txp) || lodash.isEmpty(wallet))
+      if (lodash.isEmpty(txp) || lodash.isEmpty(wallet)) {
         return reject('MISSING_PARAMETER');
+      }
 
-      if (txp.status != 'accepted')
+      if (txp.status != 'accepted') {
         return reject('TX_NOT_ACCEPTED');
+      }
 
       wallet.broadcastTxProposal(txp, (err: any, broadcastedTxp: any, memo: any) => {
-        if (err)
+        if (err) {
           return reject(err);
+        }
 
         this.logger.debug('Transaction broadcasted');
-        if (memo) this.logger.info(memo);
+        if (memo) { this.logger.info(memo); }
 
         return resolve(broadcastedTxp);
       });
@@ -895,12 +912,14 @@ export class WalletProvider {
 
   public rejectTx(wallet: any, txp: any): Promise<any> {
     return new Promise((resolve, reject) => {
-      if (lodash.isEmpty(txp) || lodash.isEmpty(wallet))
+      if (lodash.isEmpty(txp) || lodash.isEmpty(wallet)) {
         return reject('MISSING_PARAMETER');
+      }
 
       wallet.rejectTxProposal(txp, null, (err: any, rejectedTxp: any) => {
-        if (err)
+        if (err) {
           return reject(err);
+        }
         this.logger.debug('Transaction rejected');
         return resolve(rejectedTxp);
       });
@@ -909,8 +928,9 @@ export class WalletProvider {
 
   public removeTx(wallet: any, txp: any): Promise<any> {
     return new Promise((resolve, reject) => {
-      if (lodash.isEmpty(txp) || lodash.isEmpty(wallet))
+      if (lodash.isEmpty(txp) || lodash.isEmpty(wallet)) {
         return reject('MISSING_PARAMETER');
+      }
 
       wallet.removeTxProposal(txp, (err: any) => {
         this.logger.debug('Transaction removed');
@@ -926,13 +946,14 @@ export class WalletProvider {
     return new Promise((resolve, reject) => {
       prefs = prefs ? prefs : {};
 
-      if (!lodash.isArray(clients))
+      if (!lodash.isArray(clients)) {
         clients = [clients];
+      }
 
-      let updateRemotePreferencesFor = (clients: any, prefs: any): Promise<any> => {
+      const updateRemotePreferencesFor = (clients: any, prefs: any): Promise<any> => {
         return new Promise((resolve, reject) => {
-          let wallet = clients.shift();
-          if (!wallet) return resolve();
+          const wallet = clients.shift();
+          if (!wallet) { return resolve(); }
           this.logger.debug('Saving remote preferences', wallet.credentials.walletName, prefs);
 
           wallet.savePreferences(prefs, (err: any) => {
@@ -951,7 +972,7 @@ export class WalletProvider {
       };
 
       // Update this JIC.
-      let config: any = this.configProvider.get();
+      const config: any = this.configProvider.get();
 
       //prefs.email  (may come from arguments)
       prefs.email = config.emailNotifications.email;
@@ -981,7 +1002,7 @@ export class WalletProvider {
       wallet.recreateWallet((err: any) => {
         wallet.notAuthorized = false;
         this.ongoingProcessProvider.set('recreating', false);
-        if (err) return reject(err);
+        if (err) { return reject(err); }
         return resolve();
       });
     });
@@ -990,13 +1011,13 @@ export class WalletProvider {
   public startScan(wallet: any): Promise<any> {
     return new Promise((resolve, reject) => {
       this.logger.debug('Scanning wallet ' + wallet.id);
-      if (!wallet.isComplete()) return reject();
+      if (!wallet.isComplete()) { return reject(); }
 
       wallet.scanning = true;
       wallet.startScan({
         includeCopayerBranches: true,
       }, (err: any) => {
-        if (err) return reject(err);
+        if (err) { return reject(err); }
         return resolve();
       });
     });
@@ -1023,7 +1044,7 @@ export class WalletProvider {
       opts = opts || {};
       opts.reverse = true;
       wallet.getMainAddresses(opts, (err, addresses) => {
-        if (err) return reject(err);
+        if (err) { return reject(err); }
         return resolve(addresses);
       });
     });
@@ -1033,7 +1054,7 @@ export class WalletProvider {
     return new Promise((resolve, reject) => {
       opts = opts || {};
       wallet.getBalance(opts, (err, resp) => {
-        if (err) return reject(err);
+        if (err) { return reject(err); }
         return resolve(resp);
       });
     });
@@ -1044,26 +1065,26 @@ export class WalletProvider {
       wallet.getUtxos({
         coin: wallet.coin
       }, (err, resp) => {
-        if (err || !resp || !resp.length) return reject(err);
+        if (err || !resp || !resp.length) { return reject(err); }
 
         this.getMinFee(wallet, resp.length).then((fee) => {
-          let minFee = fee;
-          let balance = lodash.sumBy(resp, 'satoshis');
+          const minFee = fee;
+          const balance = lodash.sumBy(resp, 'satoshis');
 
           // for 2 outputs
           this.getLowAmount(wallet).then((fee) => {
-            let lowAmount = fee;
-            let lowUtxos = lodash.filter(resp, (x: any) => {
+            const lowAmount = fee;
+            const lowUtxos = lodash.filter(resp, (x: any) => {
               return x.satoshis < lowAmount;
             });
 
-            let totalLow = lodash.sumBy(lowUtxos, 'satoshis');
+            const totalLow = lodash.sumBy(lowUtxos, 'satoshis');
             return resolve({
               allUtxos: resp || [],
               lowUtxos: lowUtxos || [],
-              totalLow: totalLow,
+              totalLow,
               warning: minFee / balance > this.TOTAL_LOW_WARNING_RATIO,
-              minFee: minFee,
+              minFee,
             });
           });
         });
@@ -1072,17 +1093,19 @@ export class WalletProvider {
   }
 
   public isReady(wallet: any): string {
-    if (!wallet.isComplete())
+    if (!wallet.isComplete()) {
       return 'WALLET_NOT_COMPLETE';
-    if (wallet.needsBackup)
+    }
+    if (wallet.needsBackup) {
       return 'WALLET_NEEDS_BACKUP';
+    }
     return null;
   }
 
   // An alert dialog
   private askPassword(name: string, title: string): Promise<any> {
     return new Promise((resolve, reject) => {
-      let opts = {
+      const opts = {
         type: 'password'
       }
       this.popupProvider.ionicPrompt(title, name, opts).then((res: any) => {
@@ -1093,13 +1116,13 @@ export class WalletProvider {
 
   public encrypt(wallet: any): Promise<any> {
     return new Promise((resolve, reject) => {
-      var title = this.translate.instant('Enter new spending password');
-      var warnMsg = this.translate.instant('Your wallet key will be encrypted. The Spending Password cannot be recovered. Be sure to write it down.');
+      let title = this.translate.instant('Enter new spending password');
+      const warnMsg = this.translate.instant('Your wallet key will be encrypted. The Spending Password cannot be recovered. Be sure to write it down.');
       this.askPassword(warnMsg, title).then((password: string) => {
-        if (!password) return reject(this.translate.instant('no password'));
+        if (!password) { return reject(this.translate.instant('no password')); }
         title = this.translate.instant('Confirm your new spending password');
         this.askPassword(warnMsg, title).then((password2: string) => {
-          if (!password2 || password != password2) return reject(this.translate.instant('password mismatch'));
+          if (!password2 || password != password2) { return reject(this.translate.instant('password mismatch')); }
           wallet.encryptPrivateKey(password);
           return resolve();
         }).catch((err) => {
@@ -1115,7 +1138,7 @@ export class WalletProvider {
     return new Promise((resolve, reject) => {
       this.logger.debug('Disabling private key encryption for' + wallet.name);
       this.askPassword(null, this.translate.instant('Enter Spending Password')).then((password: string) => {
-        if (!password) return reject(this.translate.instant('no password'));
+        if (!password) { return reject(this.translate.instant('no password')); }
         try {
           wallet.decryptPrivateKey(password);
         } catch (e) {
@@ -1128,10 +1151,10 @@ export class WalletProvider {
 
   public handleEncryptedWallet(wallet: any): Promise<any> {
     return new Promise((resolve, reject) => {
-      if (!this.isEncrypted(wallet)) return resolve();
+      if (!this.isEncrypted(wallet)) { return resolve(); }
       this.askPassword(wallet.name, this.translate.instant('Enter Spending Password')).then((password: string) => {
-        if (!password) return reject(this.translate.instant('No password'));
-        if (!wallet.checkPassword(password)) return reject(this.translate.instant('Wrong password'));
+        if (!password) { return reject(this.translate.instant('No password')); }
+        if (!wallet.checkPassword(password)) { return reject(this.translate.instant('Wrong password')); }
         return resolve(password);
       });
     });
@@ -1205,7 +1228,7 @@ export class WalletProvider {
       }).catch((err) => {
         this.ongoingProcessProvider.clear();
         this.logger.warn('sign error:' + err);
-        let msg = err && err.message ? err.message : this.translate.instant('The payment was created but could not be completed. Please try again from home screen');
+        const msg = err && err.message ? err.message : this.translate.instant('The payment was created but could not be completed. Please try again from home screen');
         this.events.publish('Local/TxAction', wallet.id);
         return reject(msg);
       });
@@ -1247,8 +1270,8 @@ export class WalletProvider {
 
   public getEncodedWalletInfo(wallet: any, password?: string): Promise<any> {
     return new Promise((resolve, reject) => {
-      let derivationPath = wallet.credentials.getBaseAddressDerivationPath();
-      let encodingType = {
+      const derivationPath = wallet.credentials.getBaseAddressDerivationPath();
+      const encodingType = {
         mnemonic: 1,
         xpriv: 2,
         xpub: 3
@@ -1256,10 +1279,11 @@ export class WalletProvider {
       let info: any = {};
 
       // not supported yet
-      if (wallet.credentials.derivationStrategy != 'BIP44' || !wallet.canSign())
+      if (wallet.credentials.derivationStrategy != 'BIP44' || !wallet.canSign()) {
         return reject(this.translate.instant('Exporting via QR not supported for this wallet'));
+      }
 
-      var keys = this.getKeysWithPassword(wallet, password);
+      const keys = this.getKeysWithPassword(wallet, password);
 
       if (keys.mnemonic) {
         info = {
@@ -1287,7 +1311,7 @@ export class WalletProvider {
 
   public setTouchId(wallet: any, enabled: boolean): Promise<any> {
     return new Promise((resolve, reject) => {
-      let opts = {
+      const opts = {
         touchIdFor: {}
       };
       opts.touchIdFor[wallet.id] = enabled;
@@ -1324,7 +1348,7 @@ export class WalletProvider {
     return new Promise((resolve, reject) => {
       opts = opts || {};
       wallet.getSendMaxInfo(opts, (err: any, res: any) => {
-        if (err) return reject(err);
+        if (err) { return reject(err); }
         return resolve(res);
       });
     });
@@ -1340,18 +1364,18 @@ export class WalletProvider {
 
   public copyCopayers(wallet: any, newWallet: any): Promise<any> {
     return new Promise((resolve, reject) => {
-      let walletPrivKey = this.bwcProvider.getBitcore().PrivateKey.fromString(wallet.credentials.walletPrivKey);
+      const walletPrivKey = this.bwcProvider.getBitcore().PrivateKey.fromString(wallet.credentials.walletPrivKey);
       let copayer = 1;
       let i = 0;
 
       lodash.each(wallet.credentials.publicKeyRing, (item) => {
-        let name = item.copayerName || ('copayer ' + copayer++);
+        const name = item.copayerName || ('copayer ' + copayer++);
         newWallet._doJoinWallet(newWallet.credentials.walletId, walletPrivKey, item.xPubKey, item.requestPubKey, name, {
           coin: newWallet.credentials.coin,
         }, (err: any) => {
           //Ignore error is copayer already in wallet
-          if (err && !(err instanceof this.errors.COPAYER_IN_WALLET)) return reject(err);
-          if (++i == wallet.credentials.publicKeyRing.length) return resolve();
+          if (err && !(err instanceof this.errors.COPAYER_IN_WALLET)) { return reject(err); }
+          if (++i == wallet.credentials.publicKeyRing.length) { return resolve(); }
         });
       });
     });

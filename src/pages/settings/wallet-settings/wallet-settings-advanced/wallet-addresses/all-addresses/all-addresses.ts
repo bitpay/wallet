@@ -6,8 +6,8 @@ import { Logger } from '../../../../../../providers/logger/logger';
 import { SocialSharing } from '@ionic-native/social-sharing';
 
 //providers
-import { OnGoingProcessProvider } from '../../../../../../providers/on-going-process/on-going-process';
 import { AppProvider } from '../../../../../../providers/app/app';
+import { OnGoingProcessProvider } from '../../../../../../providers/on-going-process/on-going-process';
 import { PlatformProvider } from '../../../../../../providers/platform/platform';
 
 @Component({
@@ -40,12 +40,12 @@ export class AllAddressesPage {
     this.isCordova = this.platformProvider.isCordova;
   }
 
-  dismiss() {
+  public dismiss() {
     this.viewCtrl.dismiss();
   }
 
   private formatDate(ts: number): any {
-    var dateObj = new Date(ts * 1000);
+    const dateObj = new Date(ts * 1000);
     if (!dateObj) {
       this.logger.debug('Error formating a date');
       return 'DateError';
@@ -60,7 +60,7 @@ export class AllAddressesPage {
     this.onGoingProcessProvider.set('sendingByEmail', true);
     setTimeout(() => {
       this.onGoingProcessProvider.set('sendingByEmail', false);
-      let appName = this.appProvider.info.nameCase;
+      const appName = this.appProvider.info.nameCase;
 
       let body: string = appName + ' Wallet "' + this.walletName + '" Addresses\n  Only Main Addresses are  shown.\n\n';
       body += "\n";

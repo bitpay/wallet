@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { NavParams, ViewController } from 'ionic-angular';
-import { Logger } from '../../../../providers/logger/logger';
 import * as _ from 'lodash';
+import { Logger } from '../../../../providers/logger/logger';
 
 // Provider
 import { AmazonProvider } from '../../../../providers/amazon/amazon';
@@ -32,7 +32,7 @@ export class AmazonCardDetailsPage {
     this.card = this.navParams.data.card;
   }
 
-  ionViewDidLoad() {
+  public ionViewDidLoad() {
     this.logger.info('ionViewDidLoad AmazonCardDetailsPage');
   }
 
@@ -60,7 +60,7 @@ export class AmazonCardDetailsPage {
   }
 
   public refreshGiftCard(): void {
-    if (!this.updateGiftCard) return;
+    if (!this.updateGiftCard) { return; }
     this.onGoingProcessProvider.set('updatingGiftCard', true);
     this.amazonProvider.getPendingGiftCards((err: any, gcds: any) => {
       this.onGoingProcessProvider.set('updatingGiftCard', false);
@@ -77,7 +77,7 @@ export class AmazonCardDetailsPage {
               return;
             }
             if (!_.isEmpty(giftCard) && giftCard.status != 'PENDING') {
-              var newData: any = {};
+              const newData: any = {};
               _.merge(newData, dataFromStorage, giftCard);
 
               if (newData.status == 'expired') {
@@ -93,7 +93,7 @@ export class AmazonCardDetailsPage {
                 this.logger.debug("Amazon gift card updated");
                 this.card = newData;
               });
-            } else this.logger.debug("Pending gift card not available yet");
+            } else { this.logger.debug("Pending gift card not available yet"); }
           });
         }
       });

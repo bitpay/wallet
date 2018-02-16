@@ -22,10 +22,10 @@ export class GlideraSettingsPage {
     this.account = {};
   }
 
-  ionViewDidEnter() {
+  public ionViewDidEnter() {
     this.glideraProvider.init((err, glidera) => {
       if (err || !glidera) {
-        if (err) this.showErrorAndBack('Error connecting Glidera', err);
+        if (err) { this.showErrorAndBack('Error connecting Glidera', err); }
         return;
       }
       this.account.token = glidera.token;

@@ -41,7 +41,7 @@ export class TxpPage {
   }
 
   public openTxpModal(txp: any): void {
-    let modal = this.modalCtrl.create(TxpDetailsPage, { tx: txp }, { showBackdrop: false, enableBackdropDismiss: false });
+    const modal = this.modalCtrl.create(TxpDetailsPage, { tx: txp }, { showBackdrop: false, enableBackdropDismiss: false });
     modal.present();
   }
 }

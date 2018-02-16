@@ -38,14 +38,15 @@ export class BwcProvider {
     opts = opts || {};
 
     //note opts use `bwsurl` all lowercase;
-    let bwc = new BWC({
+    const bwc = new BWC({
       baseUrl: opts.bwsurl || 'https://bws.bitpay.com/bws/api',
       verbose: opts.verbose,
       timeout: 100000,
       transports: ['polling'],
     });
-    if (walletData)
+    if (walletData) {
       bwc.import(walletData, opts);
+    }
     return bwc;
   }
 

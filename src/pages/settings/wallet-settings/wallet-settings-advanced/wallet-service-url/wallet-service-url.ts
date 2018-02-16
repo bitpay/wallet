@@ -1,17 +1,17 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, Events } from 'ionic-angular';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Events, NavController, NavParams } from 'ionic-angular';
 import { Logger } from '../../../../../providers/logger/logger';
-import { Validators, FormBuilder, FormGroup } from '@angular/forms';
 
 //native
 import { SplashScreen } from '@ionic-native/splash-screen';
 
 //providers
-import { ProfileProvider } from '../../../../../providers/profile/profile';
-import { ConfigProvider } from '../../../../../providers/config/config';
 import { AppProvider } from '../../../../../providers/app/app';
+import { ConfigProvider } from '../../../../../providers/config/config';
 import { PersistenceProvider } from '../../../../../providers/persistence/persistence';
 import { PlatformProvider } from '../../../../../providers/platform/platform';
+import { ProfileProvider } from '../../../../../providers/profile/profile';
 
 @Component({
   selector: 'page-wallet-service-url',
@@ -44,11 +44,11 @@ export class WalletServiceUrlPage {
     });
   }
 
-  ionViewDidLoad() {
+  public ionViewDidLoad() {
     this.logger.info('ionViewDidLoad WalletServiceUrlPage');
   }
 
-  ionViewWillEnter() {
+  public ionViewWillEnter() {
     this.wallet = this.profileProvider.getWallet(this.navParams.data.walletId);
     this.defaults = this.configProvider.getDefaults();
     this.config = this.configProvider.get();
@@ -82,7 +82,7 @@ export class WalletServiceUrlPage {
       this.walletServiceForm.value.bwsurl = bws;
     }
 
-    let opts = {
+    const opts = {
       bwsFor: {}
     };
     opts.bwsFor[this.wallet.credentials.walletId] = this.walletServiceForm.value.bwsurl;
@@ -97,7 +97,7 @@ export class WalletServiceUrlPage {
 
   private reload(): void {
     window.location.reload();
-    if (this.platformProvider.isCordova) this.splashScreen.show();
+    if (this.platformProvider.isCordova) { this.splashScreen.show(); }
   }
 
 }

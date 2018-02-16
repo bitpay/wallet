@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, ModalController, AlertController } from 'ionic-angular';
+import { AlertController, ModalController, NavController, NavParams } from 'ionic-angular';
 import { BackupGamePage } from '../backup-game/backup-game';
 
 @Component({
@@ -21,9 +21,9 @@ export class BackupWarningPage {
     this.fromOnboarding = this.navParams.get('fromOnboarding');
   }
 
-  openWarningModal() {
+  public openWarningModal() {
 
-    let opts = {
+    const opts = {
       title: 'Screenshots are not secure',
       message: 'If you take a screenshot, your backup may be viewed by other apps. You can make a safe backup with physical paper and a pen',
       buttons: [{

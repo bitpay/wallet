@@ -27,7 +27,7 @@ export class TxConfirmNotificationProvider {
 
   public subscribe(client: any, opts: any): void {
     client.txConfirmationSubscribe(opts, (err: any, res: any) => {
-      if (err) this.logger.error(err);
+      if (err) { this.logger.error(err); }
       this.persistenceProvider.setTxConfirmNotification(opts.txid, true).catch((err: any) => {
         this.logger.error(err);
         return;
@@ -37,7 +37,7 @@ export class TxConfirmNotificationProvider {
 
   public unsubscribe(client: any, txId: string): void {
     client.txConfirmationUnsubscribe(txId, (err: any, res: any) => {
-      if (err) this.logger.error(err);
+      if (err) { this.logger.error(err); }
       this.persistenceProvider.removeTxConfirmNotification(txId).catch((err: any) => {
         this.logger.error(err);
         return;

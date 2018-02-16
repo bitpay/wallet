@@ -22,9 +22,9 @@ export class EmailNotificationsProvider {
 
   public updateEmail(opts: any) {
     opts = opts || {};
-    if (!opts.email) return;
+    if (!opts.email) { return; }
 
-    let wallets = this.profileProvider.getWallets();
+    const wallets = this.profileProvider.getWallets();
 
     this.configProvider.set({
       emailFor: null, // Backward compatibility
@@ -41,17 +41,18 @@ export class EmailNotificationsProvider {
     config = config ? config : this.configProvider.get();
 
     if (config.emailNotifications) {
-      if (!config.emailNotifications.enabled) return;
+      if (!config.emailNotifications.enabled) { return; }
 
-      if (config.emailNotifications.email)
+      if (config.emailNotifications.email) {
         return config.emailNotifications.email;
+      }
     }
 
-    if (_.isEmpty(config.emailFor)) return;
+    if (_.isEmpty(config.emailFor)) { return; }
 
     // Backward compatibility
-    let emails = _.values(config.emailFor);
-    for (var i = 0; i < emails.length; i++) {
+    const emails = _.values(config.emailFor);
+    for (let i = 0; i < emails.length; i++) {
       if (emails[i] !== null && typeof emails[i] !== 'undefined') {
         return emails[i];
       }
@@ -59,14 +60,14 @@ export class EmailNotificationsProvider {
   };
 
   public init() {
-    let config = this.configProvider.get();
+    const config = this.configProvider.get();
 
     if (config.emailNotifications && config.emailNotifications.enabled) {
 
       // If email already set
-      if (config.emailNotifications.email) return;
+      if (config.emailNotifications.email) { return; }
 
-      var currentEmail = this.getEmailIfEnabled(config);
+      const currentEmail = this.getEmailIfEnabled(config);
 
       this.updateEmail({
         enabled: currentEmail ? true : false,

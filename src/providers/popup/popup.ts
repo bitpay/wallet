@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { AlertController } from 'ionic-angular';
 import { TranslateService } from '@ngx-translate/core';
+import { AlertController } from 'ionic-angular';
 import { Logger } from '../../providers/logger/logger';
 
 @Injectable()
@@ -14,9 +14,9 @@ export class PopupProvider {
 
   public ionicAlert(title: string, subTitle?: string, okText?: string): Promise<any> {
     return new Promise((resolve, reject) => {
-      let alert = this.alertCtrl.create({
-        title: title,
-        subTitle: subTitle,
+      const alert = this.alertCtrl.create({
+        title,
+        subTitle,
         enableBackdropDismiss: false,
         buttons: [
           {
@@ -34,9 +34,9 @@ export class PopupProvider {
 
   public ionicConfirm(title: string, message: string, okText?: string, cancelText?: string): Promise<any> {
     return new Promise((resolve, reject) => {
-      let confirm = this.alertCtrl.create({
-        title: title,
-        message: message,
+      const confirm = this.alertCtrl.create({
+        title,
+        message,
         buttons: [
           {
             text: cancelText ? cancelText : this.translate.instant('Cancel'),
@@ -60,17 +60,17 @@ export class PopupProvider {
 
   public ionicPrompt(title: string, message: string, opts?: any, okText?: string, cancelText?: string): Promise<any> {
     return new Promise((resolve, reject) => {
-      let defaultText = opts && opts.defaultText ? opts.defaultText : null;
-      let placeholder = opts && opts.placeholder ? opts.placeholder : null;
-      let inputType = opts && opts.type ? opts.type : 'text';
+      const defaultText = opts && opts.defaultText ? opts.defaultText : null;
+      const placeholder = opts && opts.placeholder ? opts.placeholder : null;
+      const inputType = opts && opts.type ? opts.type : 'text';
 
-      let prompt = this.alertCtrl.create({
-        title: title,
-        message: message,
+      const prompt = this.alertCtrl.create({
+        title,
+        message,
         inputs: [
           {
             value: defaultText,
-            placeholder: placeholder,
+            placeholder,
             type: inputType
           },
         ],

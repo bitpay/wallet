@@ -1,20 +1,20 @@
 import { Component } from '@angular/core';
-import { NavParams, NavController } from 'ionic-angular';
-import { Logger } from '@nsalaun/ng-logger';
 import { TranslateService } from '@ngx-translate/core';
+import { Logger } from '@nsalaun/ng-logger';
+import { NavController, NavParams } from 'ionic-angular';
 
 // Pages
 import { AmountPage } from '../../send/amount/amount';
 
 //providers
-import { BitPayProvider } from '../../../providers/bitpay/bitpay';
 import { BitPayCardProvider } from '../../../providers/bitpay-card/bitpay-card';
+import { BitPayProvider } from '../../../providers/bitpay/bitpay';
+import { ExternalLinkProvider } from '../../../providers/external-link/external-link';
 import { PopupProvider } from '../../../providers/popup/popup';
 import { TimeProvider } from '../../../providers/time/time';
-import { ExternalLinkProvider } from '../../../providers/external-link/external-link';
 
-import * as moment from 'moment';
 import * as _ from 'lodash';
+import * as moment from 'moment';
 
 @Component({
   selector: 'page-bitpay-card',
@@ -53,7 +53,7 @@ export class BitPayCardPage {
     this.network = this.bitPayProvider.getEnvironment().network;
     this.cardId = this.navParams.data.id;
 
-    if (!this.cardId) this.navCtrl.pop();
+    if (!this.cardId) { this.navCtrl.pop(); }
 
     this.bitPayCardProvider.get({
       cardId: this.cardId,
@@ -93,29 +93,31 @@ export class BitPayCardPage {
         return;
     }
     return {
-      startDate: startDate,
-      endDate: endDate
+      startDate,
+      endDate
     };
   }
 
   private setGetStarted(history: any, cb: Function) {
 
     // Is the card new?
-    if (!_.isEmpty(history.transactionList))
+    if (!_.isEmpty(history.transactionList)) {
       return cb();
+    }
 
-    let dateRange = this.setDateRange('all');
+    const dateRange = this.setDateRange('all');
     this.bitPayCardProvider.getHistory(this.cardId, dateRange, (err, history) => {
 
-      if (!err && _.isEmpty(history.transactionList))
+      if (!err && _.isEmpty(history.transactionList)) {
         this.getStarted = true;
+      }
 
       return cb();
     });
   }
 
   public update() {
-    let dateRange = this.setDateRange(this.dateRange.value);
+    const dateRange = this.setDateRange(this.dateRange.value);
 
     this.loadingHistory = true;
     this.bitPayCardProvider.getHistory(this.cardId, dateRange, (err, history) => {
@@ -134,7 +136,7 @@ export class BitPayCardPage {
 
       this.setGetStarted(history, () => {
 
-        let txs = _.clone(history.txs);
+        const txs = _.clone(history.txs);
 
         this.bitpayCardTransactionHistoryConfirming = this.bitPayCardProvider.filterTransactions('confirming', txs);
         this.bitpayCardTransactionHistoryCompleted = this.bitPayCardProvider.filterTransactions('completed', txs);
@@ -169,21 +171,21 @@ export class BitPayCardPage {
   }
 
   public openExternalLink(url: string) {
-    let optIn = true;
-    let title = null;
-    let message = this.translate.instant('Help and support information is available at the website.');
-    let okText = this.translate.instant('Open');
-    let cancelText = this.translate.instant('Go Back');
+    const optIn = true;
+    const title = null;
+    const message = this.translate.instant('Help and support information is available at the website.');
+    const okText = this.translate.instant('Open');
+    const cancelText = this.translate.instant('Go Back');
     this.externalLinkProvider.open(url, optIn, title, message, okText, cancelText);
   }
 
   public viewOnBlockchain(transactionId: string) {
-    let url = 'https://insight.bitpay.com/tx/' + transactionId;
-    let optIn = true;
-    let title = null;
-    let message = this.translate.instant('View Transaction on Insight');
-    let okText = this.translate.instant('Open Insight');
-    let cancelText = this.translate.instant('Go Back');
+    const url = 'https://insight.bitpay.com/tx/' + transactionId;
+    const optIn = true;
+    const title = null;
+    const message = this.translate.instant('View Transaction on Insight');
+    const okText = this.translate.instant('Open Insight');
+    const cancelText = this.translate.instant('Go Back');
     this.externalLinkProvider.open(url, optIn, title, message, okText, cancelText);
   }
 
