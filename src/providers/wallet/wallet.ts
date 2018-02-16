@@ -1,21 +1,21 @@
 import { Injectable } from '@angular/core';
-import { Events } from 'ionic-angular';
-import { Logger } from '../../providers/logger/logger';
-import * as lodash from 'lodash';
 import { TranslateService } from '@ngx-translate/core';
+import { Events } from 'ionic-angular';
+import * as lodash from 'lodash';
+import { Logger } from '../../providers/logger/logger';
 
 // Providers
-import { ConfigProvider } from '../config/config';
-import { BwcProvider } from '../bwc/bwc';
-import { TxFormatProvider } from '../tx-format/tx-format';
-import { PersistenceProvider } from '../persistence/persistence';
 import { BwcErrorProvider } from '../bwc-error/bwc-error';
-import { RateProvider } from '../rate/rate';
-import { FilterProvider } from '../filter/filter';
-import { PopupProvider } from '../popup/popup';
-import { OnGoingProcessProvider } from '../on-going-process/on-going-process';
-import { TouchIdProvider } from '../touchid/touchid';
+import { BwcProvider } from '../bwc/bwc';
+import { ConfigProvider } from '../config/config';
 import { FeeProvider } from '../fee/fee';
+import { FilterProvider } from '../filter/filter';
+import { OnGoingProcessProvider } from '../on-going-process/on-going-process';
+import { PersistenceProvider } from '../persistence/persistence';
+import { PopupProvider } from '../popup/popup';
+import { RateProvider } from '../rate/rate';
+import { TouchIdProvider } from '../touchid/touchid';
+import { TxFormatProvider } from '../tx-format/tx-format';
 
 @Injectable()
 export class WalletProvider {

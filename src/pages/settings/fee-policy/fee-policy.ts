@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
-import { Logger } from '../../../providers/logger/logger';
 import * as _ from 'lodash';
+import { Logger } from '../../../providers/logger/logger';
 
 // Providers
-import { FeeProvider } from '../../../providers/fee/fee';
 import { ConfigProvider } from '../../../providers/config/config';
+import { FeeProvider } from '../../../providers/fee/fee';
 
 const COIN = 'btc';
 const NETWORK = 'livenet';

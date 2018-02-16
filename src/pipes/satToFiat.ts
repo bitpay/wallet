@@ -1,7 +1,7 @@
-import { Pipe, PipeTransform } from '@angular/core';
-import { RateProvider } from '../providers/rate/rate';
-import { ConfigProvider } from '../providers/config/config';
 import { DecimalPipe } from '@angular/common';
+import { Pipe, PipeTransform } from '@angular/core';
+import { ConfigProvider } from '../providers/config/config';
+import { RateProvider } from '../providers/rate/rate';
 
 @Pipe({
   name: 'satToFiat',

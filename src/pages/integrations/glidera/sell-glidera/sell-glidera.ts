@@ -1,20 +1,20 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, Events, ModalController } from 'ionic-angular';
-import { Logger } from '../../../../providers/logger/logger';
+import { Events, ModalController, NavController, NavParams } from 'ionic-angular';
 import * as _ from 'lodash';
+import { Logger } from '../../../../providers/logger/logger';
 
 //pages
 import { SuccessModalPage } from '../../../success/success';
 
 //providers
+import { ConfigProvider } from '../../../../providers/config/config';
+import { GlideraProvider } from '../../../../providers/glidera/glidera';
+import { OnGoingProcessProvider } from '../../../../providers/on-going-process/on-going-process';
 import { PlatformProvider } from '../../../../providers/platform/platform';
 import { PopupProvider } from '../../../../providers/popup/popup';
-import { OnGoingProcessProvider } from '../../../../providers/on-going-process/on-going-process';
-import { GlideraProvider } from '../../../../providers/glidera/glidera';
 import { ProfileProvider } from '../../../../providers/profile/profile';
 import { TxFormatProvider } from '../../../../providers/tx-format/tx-format';
 import { WalletProvider } from '../../../../providers/wallet/wallet';
-import { ConfigProvider } from '../../../../providers/config/config';
 
 @Component({
   selector: 'page-sell-glidera',

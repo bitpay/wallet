@@ -1,14 +1,14 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, ModalController, Events } from 'ionic-angular';
-import { Logger } from '../../../../providers/logger/logger';
 import { TranslateService } from '@ngx-translate/core';
+import { Events, ModalController, NavController, NavParams } from 'ionic-angular';
 import * as _ from 'lodash';
 import * as moment from 'moment';
+import { Logger } from '../../../../providers/logger/logger';
 
 // Pages
-import { AmazonPage } from '../amazon';
 import { FeeWarningPage } from '../../../send/fee-warning/fee-warning';
 import { SuccessModalPage } from '../../../success/success';
+import { AmazonPage } from '../amazon';
 
 // Provider
 import { AmazonProvider } from '../../../../providers/amazon/amazon';

@@ -1,5 +1,5 @@
 import { Component, HostListener } from '@angular/core';
-import { NavController, NavParams, ActionSheetController } from 'ionic-angular';
+import { ActionSheetController, NavController, NavParams } from 'ionic-angular';
 import * as _ from 'lodash';
 
 // Providers
@@ -13,16 +13,16 @@ import { RateProvider } from '../../../providers/rate/rate';
 import { TxFormatProvider } from '../../../providers/tx-format/tx-format';
 
 // Pages
-import { BitPayCardTopUpPage } from '../../integrations/bitpay-card/bitpay-card-topup/bitpay-card-topup';
 import { BuyAmazonPage } from '../../integrations/amazon/buy-amazon/buy-amazon';
+import { BitPayCardTopUpPage } from '../../integrations/bitpay-card/bitpay-card-topup/bitpay-card-topup';
 import { BuyCoinbasePage } from '../../integrations/coinbase/buy-coinbase/buy-coinbase';
-import { BuyGlideraPage } from '../../integrations/glidera/buy-glidera/buy-glidera';
-import { BuyMercadoLibrePage } from '../../integrations/mercado-libre/buy-mercado-libre/buy-mercado-libre';
-import { ConfirmPage } from '../confirm/confirm';
-import { CustomAmountPage } from '../../receive/custom-amount/custom-amount';
 import { SellCoinbasePage } from '../../integrations/coinbase/sell-coinbase/sell-coinbase';
+import { BuyGlideraPage } from '../../integrations/glidera/buy-glidera/buy-glidera';
 import { SellGlideraPage } from '../../integrations/glidera/sell-glidera/sell-glidera';
+import { BuyMercadoLibrePage } from '../../integrations/mercado-libre/buy-mercado-libre/buy-mercado-libre';
 import { ShapeshiftConfirmPage } from '../../integrations/shapeshift/shapeshift-confirm/shapeshift-confirm';
+import { CustomAmountPage } from '../../receive/custom-amount/custom-amount';
+import { ConfirmPage } from '../confirm/confirm';
 
 @Component({
   selector: 'page-amount',

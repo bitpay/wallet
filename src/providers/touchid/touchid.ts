@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
-import { PlatformProvider } from '../platform/platform';
-import { ConfigProvider } from '../config/config';
 import { Logger } from '../../providers/logger/logger';
+import { ConfigProvider } from '../config/config';
+import { PlatformProvider } from '../platform/platform';
 
-import { TouchID } from '@ionic-native/touch-id';
 import { AndroidFingerprintAuth } from '@ionic-native/android-fingerprint-auth';
+import { TouchID } from '@ionic-native/touch-id';
 
 @Injectable()
 export class TouchIdProvider {

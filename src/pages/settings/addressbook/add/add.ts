@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
-import { NavController, NavParams, AlertController } from 'ionic-angular';
-import { BwcProvider } from '../../../../providers/bwc/bwc';
+import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
+import { AlertController, NavController, NavParams } from 'ionic-angular';
 import { AddressBookProvider } from '../../../../providers/address-book/address-book';
-import { AddressValidator } from '../../../../validators/address';
+import { BwcProvider } from '../../../../providers/bwc/bwc';
 import { Logger } from '../../../../providers/logger/logger';
+import { AddressValidator } from '../../../../validators/address';
 
 @Component({
   selector: 'page-addressbook-add',

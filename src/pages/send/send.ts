@@ -3,12 +3,12 @@ import { NavController } from 'ionic-angular';
 import { Logger } from '../../providers/logger/logger';
 
 //providers
-import { ProfileProvider } from '../../providers/profile/profile';
-import { WalletProvider } from '../../providers/wallet/wallet';
 import { AddressBookProvider } from '../../providers/address-book/address-book';
+import { AddressProvider } from '../../providers/address/address';
 import { IncomingDataProvider } from '../../providers/incoming-data/incoming-data';
 import { PopupProvider } from '../../providers/popup/popup';
-import { AddressProvider } from '../../providers/address/address';
+import { ProfileProvider } from '../../providers/profile/profile';
+import { WalletProvider } from '../../providers/wallet/wallet';
 
 //pages
 import { AmountPage } from './amount/amount';

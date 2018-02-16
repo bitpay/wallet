@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, ModalController } from 'ionic-angular';
-import { Logger } from '../../../providers/logger/logger';
+import { ModalController, NavController, NavParams } from 'ionic-angular';
 import * as _ from 'lodash';
+import { Logger } from '../../../providers/logger/logger';
 
 // Pages
 import { AmountPage } from '../../send/amount/amount';

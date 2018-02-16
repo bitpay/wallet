@@ -1,16 +1,16 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, Events, ModalController } from 'ionic-angular';
-import { Logger } from '../../providers/logger/logger';
-import * as _ from 'lodash';
 import { TranslateService } from '@ngx-translate/core';
+import { Events, ModalController, NavController, NavParams } from 'ionic-angular';
+import * as _ from 'lodash';
+import { Logger } from '../../providers/logger/logger';
 
 //providers
 import { BwcProvider } from '../../providers/bwc/bwc';
+import { FeeProvider } from '../../providers/fee/fee';
 import { OnGoingProcessProvider } from '../../providers/on-going-process/on-going-process';
 import { PopupProvider } from '../../providers/popup/popup';
-import { WalletProvider } from '../../providers/wallet/wallet';
-import { FeeProvider } from '../../providers/fee/fee';
 import { ProfileProvider } from '../../providers/profile/profile';
+import { WalletProvider } from '../../providers/wallet/wallet';
 import { SuccessModalPage } from '../success/success';
 
 @Component({

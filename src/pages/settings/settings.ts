@@ -1,34 +1,34 @@
 import { Component } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
 import { NavController } from 'ionic-angular';
 import { Logger } from '../../providers/logger/logger';
-import { TranslateService } from '@ngx-translate/core';
 
 //providers
 import { AppProvider } from '../../providers/app/app';
 import { ConfigProvider } from '../../providers/config/config';
-import { LanguageProvider } from '../../providers/language/language';
 import { ExternalLinkProvider } from '../../providers/external-link/external-link';
-import { ProfileProvider } from '../../providers/profile/profile';
-import { PlatformProvider } from '../../providers/platform/platform';
 import { HomeIntegrationsProvider } from '../../providers/home-integrations/home-integrations';
+import { LanguageProvider } from '../../providers/language/language';
+import { PlatformProvider } from '../../providers/platform/platform';
+import { ProfileProvider } from '../../providers/profile/profile';
 
 //pages
-import { AltCurrencyPage } from './alt-currency/alt-currency';
-import { BitcoinCashPage } from './bitcoin-cash/bitcoin-cash';
-import { LockPage } from './lock/lock';
-import { AboutPage } from './about/about';
-import { AdvancedPage } from './advanced/advanced';
-import { AddressbookPage } from './addressbook/addressbook';
-import { WalletSettingsPage } from './wallet-settings/wallet-settings';
-import { NotificationsPage } from './notifications/notifications';
-import { FeePolicyPage } from './fee-policy/fee-policy';
-import { LanguagePage } from './language/language';
 import { FeedbackCompletePage } from '../feedback/feedback-complete/feedback-complete';
 import { SendFeedbackPage } from '../feedback/send-feedback/send-feedback';
-import { GlideraSettingsPage } from '../integrations/glidera/glidera-settings/glidera-settings';
-import { CoinbaseSettingsPage } from '../integrations/coinbase/coinbase-settings/coinbase-settings';
-import { EnabledServicesPage } from './enabled-services/enabled-services';
 import { BitPaySettingsPage } from '../integrations/bitpay-card/bitpay-settings/bitpay-settings';
+import { CoinbaseSettingsPage } from '../integrations/coinbase/coinbase-settings/coinbase-settings';
+import { GlideraSettingsPage } from '../integrations/glidera/glidera-settings/glidera-settings';
+import { AboutPage } from './about/about';
+import { AddressbookPage } from './addressbook/addressbook';
+import { AdvancedPage } from './advanced/advanced';
+import { AltCurrencyPage } from './alt-currency/alt-currency';
+import { BitcoinCashPage } from './bitcoin-cash/bitcoin-cash';
+import { EnabledServicesPage } from './enabled-services/enabled-services';
+import { FeePolicyPage } from './fee-policy/fee-policy';
+import { LanguagePage } from './language/language';
+import { LockPage } from './lock/lock';
+import { NotificationsPage } from './notifications/notifications';
+import { WalletSettingsPage } from './wallet-settings/wallet-settings';
 
 @Component({
   selector: 'page-settings',

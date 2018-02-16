@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, AlertController } from 'ionic-angular';
-import { AddressbookAddPage } from './add/add';
-import { AddressbookViewPage } from './view/view';
+import { AlertController, NavController, NavParams } from 'ionic-angular';
+import * as _ from 'lodash';
 import { AddressBookProvider } from '../../../providers/address-book/address-book';
 import { Logger } from '../../../providers/logger/logger';
-import * as _ from 'lodash';
+import { AddressbookAddPage } from './add/add';
+import { AddressbookViewPage } from './view/view';
 
 @Component({
   selector: 'page-addressbook',

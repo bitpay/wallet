@@ -1,17 +1,17 @@
 import { Component } from '@angular/core';
-import { NavParams, Events, ViewController, ModalController } from 'ionic-angular';
 import { TranslateService } from '@ngx-translate/core';
+import { Events, ModalController, NavParams, ViewController } from 'ionic-angular';
 
 //providers
-import { PlatformProvider } from '../../providers/platform/platform';
-import { FeeProvider } from '../../providers/fee/fee';
-import { PopupProvider } from '../../providers/popup/popup';
 import { BwcErrorProvider } from '../../providers/bwc-error/bwc-error';
-import { WalletProvider } from '../../providers/wallet/wallet';
-import { OnGoingProcessProvider } from '../../providers/on-going-process/on-going-process';
 import { ConfigProvider } from '../../providers/config/config';
+import { FeeProvider } from '../../providers/fee/fee';
+import { OnGoingProcessProvider } from '../../providers/on-going-process/on-going-process';
+import { PlatformProvider } from '../../providers/platform/platform';
+import { PopupProvider } from '../../providers/popup/popup';
 import { ProfileProvider } from '../../providers/profile/profile';
 import { TxFormatProvider } from '../../providers/tx-format/tx-format';
+import { WalletProvider } from '../../providers/wallet/wallet';
 
 //pages
 import { SuccessModalPage } from '../success/success';

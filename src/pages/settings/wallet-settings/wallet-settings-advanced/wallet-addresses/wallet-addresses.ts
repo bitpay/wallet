@@ -1,19 +1,19 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, ModalController } from 'ionic-angular';
-import { Logger } from '../../../../../providers/logger/logger';
 import { TranslateService } from '@ngx-translate/core';
+import { ModalController, NavController, NavParams } from 'ionic-angular';
+import { Logger } from '../../../../../providers/logger/logger';
 
 //providers
-import { ProfileProvider } from '../../../../../providers/profile/profile';
-import { WalletProvider } from '../../../../../providers/wallet/wallet';
 import { BwcErrorProvider } from '../../../../../providers/bwc-error/bwc-error';
-import { PopupProvider } from '../../../../../providers/popup/popup';
 import { OnGoingProcessProvider } from '../../../../../providers/on-going-process/on-going-process';
+import { PopupProvider } from '../../../../../providers/popup/popup';
+import { ProfileProvider } from '../../../../../providers/profile/profile';
 import { TxFormatProvider } from '../../../../../providers/tx-format/tx-format';
+import { WalletProvider } from '../../../../../providers/wallet/wallet';
 
 //pages
-import { AllAddressesPage } from './all-addresses/all-addresses';
 import { WalletDetailsPage } from '../../../../../pages/wallet-details/wallet-details';
+import { AllAddressesPage } from './all-addresses/all-addresses';
 
 import * as _ from 'lodash';
 

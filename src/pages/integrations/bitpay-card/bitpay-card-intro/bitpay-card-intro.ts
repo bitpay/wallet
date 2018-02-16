@@ -1,14 +1,14 @@
 import { Component } from '@angular/core';
-import { NavParams, NavController, ActionSheetController } from 'ionic-angular';
 import { TranslateService } from '@ngx-translate/core';
+import { ActionSheetController, NavController, NavParams } from 'ionic-angular';
 
 import * as _ from 'lodash';
 
 //providers
 import { BitPayAccountProvider } from '../../../../providers/bitpay-account/bitpay-account';
-import { PopupProvider } from '../../../../providers/popup/popup';
 import { BitPayCardProvider } from '../../../../providers/bitpay-card/bitpay-card';
 import { ExternalLinkProvider } from '../../../../providers/external-link/external-link';
+import { PopupProvider } from '../../../../providers/popup/popup';
 
 //pages
 import { BitPayCardPage } from '../bitpay-card';

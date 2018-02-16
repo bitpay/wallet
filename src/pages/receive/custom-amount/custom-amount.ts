@@ -6,10 +6,10 @@ import { Logger } from '../../../providers/logger/logger';
 import { SocialSharing } from '@ionic-native/social-sharing';
 
 //providers
-import { ProfileProvider } from '../../../providers/profile/profile';
 import { PlatformProvider } from '../../../providers/platform/platform';
-import { WalletProvider } from '../../../providers/wallet/wallet';
+import { ProfileProvider } from '../../../providers/profile/profile';
 import { TxFormatProvider } from '../../../providers/tx-format/tx-format';
+import { WalletProvider } from '../../../providers/wallet/wallet';
 
 @Component({
   selector: 'page-custom-amount',

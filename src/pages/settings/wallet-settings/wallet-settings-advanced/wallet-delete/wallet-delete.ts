@@ -1,12 +1,12 @@
 import { Component } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
 import { NavController, NavParams } from 'ionic-angular';
 import { Logger } from '../../../../../providers/logger/logger';
-import { TranslateService } from '@ngx-translate/core';
 
 //providers
-import { ProfileProvider } from '../../../../../providers/profile/profile';
-import { PopupProvider } from '../../../../../providers/popup/popup';
 import { OnGoingProcessProvider } from '../../../../../providers/on-going-process/on-going-process';
+import { PopupProvider } from '../../../../../providers/popup/popup';
+import { ProfileProvider } from '../../../../../providers/profile/profile';
 import { PushNotificationsProvider } from '../../../../../providers/push-notifications/push-notifications';
 
 @Component({

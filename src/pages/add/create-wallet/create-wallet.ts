@@ -1,20 +1,20 @@
 import { Component, OnInit } from '@angular/core';
-import { NavController, Events, NavParams } from 'ionic-angular';
-import { Validators, FormBuilder, FormGroup } from '@angular/forms';
-import { Logger } from '../../../providers/logger/logger';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
+import { Events, NavController, NavParams } from 'ionic-angular';
+import { Logger } from '../../../providers/logger/logger';
 
 // Pages
 import { CopayersPage } from '../copayers/copayers';
 
 // Providers
 import { ConfigProvider } from '../../../providers/config/config';
-import { ProfileProvider } from '../../../providers/profile/profile';
 import { DerivationPathHelperProvider } from '../../../providers/derivation-path-helper/derivation-path-helper';
-import { PopupProvider } from '../../../providers/popup/popup';
 import { OnGoingProcessProvider } from "../../../providers/on-going-process/on-going-process";
-import { WalletProvider } from '../../../providers/wallet/wallet';
+import { PopupProvider } from '../../../providers/popup/popup';
+import { ProfileProvider } from '../../../providers/profile/profile';
 import { PushNotificationsProvider } from '../../../providers/push-notifications/push-notifications';
+import { WalletProvider } from '../../../providers/wallet/wallet';
 
 import * as _ from 'lodash';
 

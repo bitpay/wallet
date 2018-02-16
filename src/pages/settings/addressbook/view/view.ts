@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
 import { TranslateService } from '@ngx-translate/core';
+import { NavController, NavParams } from 'ionic-angular';
 
 // Pages
 import { AmountPage } from '../../../../pages/send/amount/amount';

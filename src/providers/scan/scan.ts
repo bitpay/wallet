@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { QRScanner } from '@ionic-native/qr-scanner';
-import { PlatformProvider } from '../platform/platform';
-import { Logger } from '../../providers/logger/logger';
 import { Events } from 'ionic-angular';
+import { Logger } from '../../providers/logger/logger';
+import { PlatformProvider } from '../platform/platform';
 
 @Injectable()
 export class ScanProvider {

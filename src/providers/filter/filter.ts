@@ -1,5 +1,5 @@
-import { Injectable } from '@angular/core';
 import { DecimalPipe } from '@angular/common';
+import { Injectable } from '@angular/core';
 import { Logger } from '../../providers/logger/logger';
 
 @Injectable()

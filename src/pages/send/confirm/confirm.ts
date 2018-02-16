@@ -1,28 +1,28 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, ModalController, Events } from 'ionic-angular';
-import { Logger } from '../../../providers/logger/logger';
-import * as _ from 'lodash';
 import { TranslateService } from '@ngx-translate/core';
+import { Events, ModalController, NavController, NavParams } from 'ionic-angular';
+import * as _ from 'lodash';
+import { Logger } from '../../../providers/logger/logger';
 
 // Pages
 import { PayProPage } from '../../paypro/paypro';
+import { SuccessModalPage } from '../../success/success';
 import { ChooseFeeLevelPage } from '../choose-fee-level/choose-fee-level';
 import { FeeWarningPage } from '../fee-warning/fee-warning';
-import { SuccessModalPage } from '../../success/success';
 
 // Providers
+import { BwcErrorProvider } from '../../../providers/bwc-error/bwc-error';
 import { BwcProvider } from '../../../providers/bwc/bwc';
 import { ConfigProvider } from '../../../providers/config/config';
-import { PlatformProvider } from '../../../providers/platform/platform';
-import { ProfileProvider } from '../../../providers/profile/profile';
-import { WalletProvider } from '../../../providers/wallet/wallet';
-import { PopupProvider } from '../../../providers/popup/popup';
-import { BwcErrorProvider } from '../../../providers/bwc-error/bwc-error';
-import { OnGoingProcessProvider } from '../../../providers/on-going-process/on-going-process';
+import { ExternalLinkProvider } from '../../../providers/external-link/external-link';
 import { FeeProvider } from '../../../providers/fee/fee';
+import { OnGoingProcessProvider } from '../../../providers/on-going-process/on-going-process';
+import { PlatformProvider } from '../../../providers/platform/platform';
+import { PopupProvider } from '../../../providers/popup/popup';
+import { ProfileProvider } from '../../../providers/profile/profile';
 import { TxConfirmNotificationProvider } from '../../../providers/tx-confirm-notification/tx-confirm-notification';
 import { TxFormatProvider } from '../../../providers/tx-format/tx-format';
-import { ExternalLinkProvider } from '../../../providers/external-link/external-link';
+import { WalletProvider } from '../../../providers/wallet/wallet';
 
 @Component({
   selector: 'page-confirm',

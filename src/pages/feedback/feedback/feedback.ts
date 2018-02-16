@@ -1,13 +1,13 @@
 import { Component } from '@angular/core';
-import { NavParams, NavController, Platform } from 'ionic-angular';
+import { NavController, NavParams, Platform } from 'ionic-angular';
 import { Logger } from '../../../providers/logger/logger';
 
 //providers
-import { PlatformProvider } from '../../../providers/platform/platform';
 import { AppProvider } from '../../../providers/app/app';
 import { ConfigProvider } from '../../../providers/config/config';
-import { FeedbackProvider } from '../../../providers/feedback/feedback';
 import { ExternalLinkProvider } from '../../../providers/external-link/external-link';
+import { FeedbackProvider } from '../../../providers/feedback/feedback';
+import { PlatformProvider } from '../../../providers/platform/platform';
 
 //pages
 import { FeedbackCompletePage } from '../feedback-complete/feedback-complete';

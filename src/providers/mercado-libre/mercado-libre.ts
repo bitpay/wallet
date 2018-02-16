@@ -1,10 +1,10 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Logger } from '../../providers/logger/logger';
-import { HttpClient } from '@angular/common/http';
 
 //providers
-import { PersistenceProvider } from '../persistence/persistence';
 import { HomeIntegrationsProvider } from '../home-integrations/home-integrations';
+import { PersistenceProvider } from '../persistence/persistence';
 
 import * as _ from 'lodash';
 

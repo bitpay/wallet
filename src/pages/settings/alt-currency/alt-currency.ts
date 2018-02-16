@@ -4,9 +4,9 @@ import { Logger } from '../../../providers/logger/logger';
 
 // Providers
 import { ConfigProvider } from '../../../providers/config/config';
-import { RateProvider } from '../../../providers/rate/rate';
 import { PersistenceProvider } from '../../../providers/persistence/persistence';
 import { ProfileProvider } from '../../../providers/profile/profile';
+import { RateProvider } from '../../../providers/rate/rate';
 import { WalletProvider } from '../../../providers/wallet/wallet';
 
 import * as _ from 'lodash';
