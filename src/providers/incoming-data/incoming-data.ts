@@ -43,10 +43,20 @@ export class IncomingDataProvider {
   public redir(data: string): boolean {
     //TODO Injecting NavController in constructor of service fails with no provider error
     this.navCtrl = this.app.getActiveNav();
+
     // data extensions for Payment Protocol with non-backwards-compatible request
     if ((/^bitcoin(cash)?:\?r=[\w+]/).exec(data)) {
+      let coin = 'btc';
+      if (data.indexOf('bitcoincash') === 0) coin = 'bch';
+
       data = decodeURIComponent(data.replace(/bitcoin(cash)?:\?r=/, ''));
-      this.navCtrl.push(ConfirmPage, { paypro: data });
+
+      this.payproProvider.getPayProDetails(data).then((details) => {
+        this.handlePayPro(details, coin);
+      }).catch((err) => {
+        this.popupProvider.ionicAlert(this.translate.instant('Error'), err);
+      });
+
       return true;
     }
 

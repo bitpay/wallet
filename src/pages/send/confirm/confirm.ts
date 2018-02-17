@@ -86,8 +86,10 @@ export class ConfirmPage {
     this.config = this.configProvider.get();
     this.configFeeLevel = this.config.wallet.settings.feeLevel ? this.config.wallet.settings.feeLevel : 'normal';
     this.isCordova = this.platformProvider.isCordova;
-    this.isWindowsPhoneApp = this.platformProvider.isCordova && this.platformProvider.isWP;
+    this.isWindowsPhoneApp = this.platformProvider.isCordova && this.platformProvider.isWP; 
+  }
 
+  ionViewWillEnter() {
     let B = this.navParams.data.coin == 'bch' ? this.bitcoreCash : this.bitcore;
     let networkName;
     try {
@@ -136,10 +138,7 @@ export class ConfirmPage {
     this.tx.feeLevelName = this.feeProvider.feeOpts[this.tx.feeLevel];
     this.showAddress = false;
     this.walletSelectorTitle = this.translate.instant('Send from');
-  }
 
-  ionViewDidLoad() {
-    this.logger.info('ionViewDidLoad ConfirmPage');
     this.setWalletSelector(this.tx.coin, this.tx.network, this.tx.amount).then(() => {
       if (this.wallets.length > 1) {
         this.showWallets();
@@ -150,6 +149,10 @@ export class ConfirmPage {
       this.logger.error(err);
       return this.exitWithError(err);
     });
+  }
+
+  ionViewDidLoad() {
+    this.logger.info('ionViewDidLoad ConfirmPage');
   }
 
   private setWalletSelector(coin: string, network: string, minAmount: number): Promise<any> {
