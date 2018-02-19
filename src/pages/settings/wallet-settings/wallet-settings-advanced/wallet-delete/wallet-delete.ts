@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { Events, NavController, NavParams } from 'ionic-angular';
 import { Logger } from '../../../../../providers/logger/logger';
 
 //providers
@@ -26,6 +26,7 @@ export class WalletDeletePage {
     private onGoingProcessProvider: OnGoingProcessProvider,
     private pushNotificationsProvider: PushNotificationsProvider,
     private logger: Logger,
+    private events: Events,
     private translate: TranslateService
   ) {
 
@@ -51,6 +52,7 @@ export class WalletDeletePage {
   public deleteWallet(): void {
     this.onGoingProcessProvider.set('deletingWallet', true);
     this.profileProvider.deleteWalletClient(this.wallet).then(() => {
+      this.events.publish('status:updated');
       this.onGoingProcessProvider.set('deletingWallet', false);
       this.pushNotificationsProvider.unsubscribe(this.wallet);
       this.navCtrl.popToRoot({ animate: false });

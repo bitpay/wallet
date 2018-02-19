@@ -87,7 +87,6 @@ export class WalletDetailsPage {
   }
 
   ionViewWillLeave() {
-    this.events.unsubscribe('bwsEvent');
     this.events.unsubscribe('Local/TxAction');
   }
 

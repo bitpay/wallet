@@ -198,7 +198,7 @@ export class CreateWalletPage implements OnInit {
 
     this.profileProvider.createWallet(opts).then((wallet: any) => {
       this.onGoingProcessProvider.set('creatingWallet', false);
-      this.events.publish('Local/WalletAction', wallet.credentials.walletId);
+      this.events.publish('status:updated');
       this.walletProvider.updateRemotePreferences(wallet);
       this.pushNotificationsProvider.updateSubscription(wallet);
 

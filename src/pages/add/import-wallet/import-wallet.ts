@@ -204,7 +204,7 @@ export class ImportWalletPage {
   private finish(wallet: any): void {
     this.walletProvider.updateRemotePreferences(wallet).then(() => {
       this.profileProvider.setBackupFlag(wallet.credentials.walletId);
-      this.events.publish('Local/WalletAction', wallet.credentials.walletId);
+      this.events.publish('status:updated');
       if (this.fromOnboarding) {
         this.profileProvider.setDisclaimerAccepted().catch((err: any) => {
           this.logger.error(err);

@@ -86,10 +86,6 @@ export class TxDetailsPage {
     });
   }
 
-  ionViewWillLeave() {
-    this.events.unsubscribe('bwsEvent');
-  }
-
   public readMore(): void {
     let url = 'https://github.com/bitpay/copay/wiki/COPAY---FAQ#amount-too-low-to-spend';
     let optIn = true;

@@ -162,8 +162,7 @@ export class ProfileProvider {
     wallet.on('walletCompleted', () => {
       this.logger.debug('Wallet completed');
       this.updateCredentials(JSON.parse(wallet.export()))
-      // TODO: never used
-      //this.events.publish('wallet:completed', walletId);
+      this.events.publish('status:updated');
     });
 
     wallet.initialize({
@@ -707,7 +706,6 @@ export class ProfileProvider {
           return reject(err);
         });
       }).catch((err: any) => {
-        this.events.publish('Local/DeviceError', err);
         return reject(err);
       });
     });
