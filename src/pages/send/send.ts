@@ -25,8 +25,8 @@ export class SendPage {
   public walletsBch: any;
   public walletBchList: any;
   public walletBtcList: any;
-  public contactsList: Array<object> = [];
-  public filteredContactsList: Array<object> = [];
+  public contactsList: object[] = [];
+  public filteredContactsList: object[] = [];
   public hasBtcWallets: boolean;
   public hasBchWallets: boolean;
   public hasContacts: boolean;

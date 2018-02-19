@@ -31,7 +31,7 @@ export class WalletInformationPage {
   public addressType: string;
   public derivationStrategy: string;
   public basePath: string;
-  public pubKeys: Array<any>;
+  public pubKeys: any[];
   public externalSource: string;
   public canSign: boolean;
   public needsBackup: boolean;

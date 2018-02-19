@@ -27,7 +27,7 @@ export class BuyCoinbasePage {
   private coin: string;
   private wallets: any;
 
-  public paymentMethods: Array<any>;
+  public paymentMethods: any[];
   public selectedPaymentMethodId: any;
   public buyPrice: string;
   public buyRequestInfo: any;

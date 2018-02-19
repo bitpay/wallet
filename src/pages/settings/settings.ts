@@ -37,15 +37,15 @@ import { WalletSettingsPage } from './wallet-settings/wallet-settings';
 export class SettingsPage {
   public appName: string;
   public currentLanguageName: string;
-  public languages: Array<any>;
-  public walletsBtc: Array<any>;
-  public walletsBch: Array<any>;
+  public languages: any[];
+  public walletsBtc: any[];
+  public walletsBch: any[];
   public config: any;
   public selectedAlternative: any;
   public isCordova: boolean;
   public isWindowsPhoneApp: boolean;
   public lockMethod: string;
-  public exchangeServices: Array<any> = [];
+  public exchangeServices: any[] = [];
   public bitpayCardEnabled: boolean = false;
 
   constructor(

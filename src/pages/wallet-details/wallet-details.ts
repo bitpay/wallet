@@ -40,7 +40,7 @@ export class WalletDetailsPage {
   public showNoTransactionsYetMsg: boolean;
   public showBalanceButton: boolean = false;
   public addressbook: any = {};
-  public txps: Array<any> = [];
+  public txps: any[] = [];
 
   constructor(
     private navCtrl: NavController,
@@ -101,7 +101,7 @@ export class WalletDetailsPage {
     this.currentPage++;
   }
 
-  private setPendingTxps(txps: Array<any>) {
+  private setPendingTxps(txps: any[]) {
 
     /* Uncomment to test multiple outputs */
 

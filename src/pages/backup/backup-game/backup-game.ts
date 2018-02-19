@@ -24,10 +24,10 @@ export class BackupGamePage {
 
   public currentIndex: number;
   public deleted: boolean;
-  public mnemonicWords: Array<String>;
-  public shuffledMnemonicWords: Array<any>;
+  public mnemonicWords: String[];
+  public shuffledMnemonicWords: any[];
   public password: String;
-  public customWords: Array<any>;
+  public customWords: any[];
   public selectComplete: boolean;
   public error: boolean;
   public credentialsEncrypted: boolean;
@@ -84,7 +84,7 @@ export class BackupGamePage {
     if (this.slides) this.slides.lockSwipes(true);
   }
 
-  private shuffledWords(words: Array<String>) {
+  private shuffledWords(words: String[]) {
     var sort = _.sortBy(words);
 
     return _.map(sort, (w) => {

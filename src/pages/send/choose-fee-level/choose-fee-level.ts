@@ -26,7 +26,7 @@ export class ChooseFeeLevelPage {
   public customFeePerKB: string;
   public feePerSatByte: string;
   public selectedFee: string;
-  public feeOpts: Array<any>;
+  public feeOpts: any[];
   public loadingFee: boolean;
   public feeLevels: any;
   public coin: string;

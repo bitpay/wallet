@@ -1047,7 +1047,7 @@ export class ProfileProvider {
         });
       }
 
-      let process = (notifications: any): Array<any> => {
+      let process = (notifications: any): any[] => {
         if (!notifications) return [];
 
         let shown = _.sortBy(notifications, 'createdOn').reverse();

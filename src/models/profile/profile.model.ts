@@ -2,7 +2,7 @@ export class Profile {
 
   public version: string;
   public createdOn: Number;
-  public credentials: Array<any>;
+  public credentials: any[];
   public disclaimerAccepted: boolean;
   public checked: Object;
   public checkedUA?: any;

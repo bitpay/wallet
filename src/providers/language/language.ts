@@ -8,7 +8,7 @@ import * as _ from "lodash";
 
 @Injectable()
 export class LanguageProvider {
-  private languages: Array<any> = [
+  private languages: any[] = [
     {
       name: 'English',
       isoCode: 'en'

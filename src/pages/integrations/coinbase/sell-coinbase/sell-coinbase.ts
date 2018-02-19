@@ -29,7 +29,7 @@ export class SellCoinbasePage {
   private currency: string;
   private wallets: any;
 
-  public paymentMethods: Array<any>;
+  public paymentMethods: any[];
   public selectedPaymentMethodId: any;
   public selectedPriceSensitivity: any;
   public sellPrice: string;

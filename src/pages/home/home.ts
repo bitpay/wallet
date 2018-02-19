@@ -59,7 +59,7 @@ export class HomePage {
   public addressbook: any;
   public newRelease: boolean;
   public updateText: string;
-  public homeIntegrations: Array<any>;
+  public homeIntegrations: any[];
   public bitpayCardItems: any;
 
   public showRateCard: boolean;
@@ -272,7 +272,7 @@ export class HomePage {
   });
 
   private updateAllWallets(): void {
-    let wallets: Array<any> = [];
+    let wallets: any[] = [];
     let foundMessage = false
 
     _.each(this.walletsBtc, (wBtc) => {

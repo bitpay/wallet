@@ -20,12 +20,12 @@ import { WalletProvider } from "../../../providers/wallet/wallet";
 	templateUrl: 'bitcoin-cash.html',
 })
 export class BitcoinCashPage {
-	private walletsBTC: Array<any>;
-	private walletsBCH: Array<any>;
+	private walletsBTC: any[];
+	private walletsBCH: any[];
 	private errors: any;
 
-	public availableWallets: Array<any>;
-	public nonEligibleWallets: Array<any>;
+	public availableWallets: any[];
+	public nonEligibleWallets: any[];
 	public error: any;
 
 	constructor(

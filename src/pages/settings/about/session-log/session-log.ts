@@ -23,7 +23,7 @@ export class SessionLogPage {
   private dom: Document;
 
   public logOptions: any;
-  public filteredLogs: Array<any>;
+  public filteredLogs: any[];
   public filterValue: number;
   public isCordova: boolean;
 

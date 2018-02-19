@@ -305,7 +305,7 @@ export class WalletProvider {
   }
 
   // Check address
-  private isAddressUsed(wallet: any, byAddress: Array<any>): Promise<any> {
+  private isAddressUsed(wallet: any, byAddress: any[]): Promise<any> {
     return new Promise((resolve, reject) => {
       this.persistenceProvider.getLastAddress(wallet.id).then((addr) => {
         let used = lodash.find(byAddress, {
@@ -432,7 +432,7 @@ export class WalletProvider {
       wallet.getTxHistory({
         skip,
         limit
-      }, (err: Error, txsFromServer: Array<any>) => {
+      }, (err: Error, txsFromServer: any[]) => {
         if (err) return reject(err);
 
         if (lodash.isEmpty(txsFromServer))
@@ -502,7 +502,7 @@ export class WalletProvider {
         this.progressFn[walletId](txsFromLocal, 0);
         wallet.completeHistory = txsFromLocal;
 
-        let getNewTxs = (newTxs: Array<any>, skip: number): Promise<any> => {
+        let getNewTxs = (newTxs: any[], skip: number): Promise<any> => {
           return new Promise((resolve, reject) => {
             this.getTxsFromServer(wallet, skip, endingTxid, requestLimit).then((result: any) => {
 
@@ -550,7 +550,7 @@ export class WalletProvider {
 
         getNewTxs([], 0).then((txs: any) => {
 
-          let array: Array<any> = lodash.compact(txs.concat(confirmedTxs));
+          let array: any[] = lodash.compact(txs.concat(confirmedTxs));
           let newHistory = lodash.uniqBy(array, (x: any) => {
             return x.txid;
           });
@@ -639,7 +639,7 @@ export class WalletProvider {
     });
   }
 
-  private processNewTxs(wallet: any, txs: any): Array<any> {
+  private processNewTxs(wallet: any, txs: any): any[] {
     let now = Math.floor(Date.now() / 1000);
     let txHistoryUnique = {};
     let ret = [];
@@ -675,7 +675,7 @@ export class WalletProvider {
     return ret;
   }
 
-  public removeAndMarkSoftConfirmedTx(txs: any): Array<any> {
+  public removeAndMarkSoftConfirmedTx(txs: any): any[] {
     return lodash.filter(txs, (tx: any) => {
       if (tx.confirmations >= this.SOFT_CONFIRMATION_LIMIT)
         return tx;

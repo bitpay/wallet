@@ -93,7 +93,7 @@ export class BitPayCardIntroPage {
   }
 
   private showAccountSelector() {
-    let options:Array<any> = [];
+    let options:any[] = [];
 
     _.forEach(this.accounts, (account: any) => {
       options.push(

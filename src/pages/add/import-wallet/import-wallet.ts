@@ -334,7 +334,7 @@ export class ImportWalletPage {
     } else if (words.indexOf('xprv') == 0 || words.indexOf('tprv') == 0) {
       return this.importExtendedPrivateKey(words, opts);
     } else {
-      let wordList: Array<any> = words.split(/[\u3000\s]+/);
+      let wordList: any[] = words.split(/[\u3000\s]+/);
 
       if ((wordList.length % 3) != 0) {
         let title = this.translate.instant('Error');

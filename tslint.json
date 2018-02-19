@@ -33,7 +33,6 @@
     "no-var-keyword": false,
     "curly": false,
     "member-access": false,
-    "arrow-return-shorthand": false,
-    "array-type": false
+    "arrow-return-shorthand": false
   }
 }

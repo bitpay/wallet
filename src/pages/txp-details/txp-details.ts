@@ -32,7 +32,7 @@ export class TxpDetailsPage {
   public color: string;
   public buttonText: string;
   public successText: string;
-  public actionList: Array<any>;
+  public actionList: any[];
   public paymentExpired: boolean;
   public expires: string;
   public currentSpendUnconfirmed: boolean;

@@ -13,7 +13,7 @@ import { ProfileProvider } from '../../../../providers/profile/profile';
 export class WalletColorPage {
 
   public wallet: any;
-  public colorCount: Array<number>;
+  public colorCount: number[];
   public currentColorIndex: number;
   private config: any;
   private retries: number = 3;

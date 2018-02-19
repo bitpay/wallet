@@ -160,7 +160,7 @@ export class ConfirmPage {
 
       // no min amount? (sendMax) => look for no empty wallets
       minAmount = minAmount ? minAmount : 1;
-      let filteredWallets: Array<any> = [];
+      let filteredWallets: any[] = [];
       let index: number = 0;
       let walletsUpdated: number = 0;
 

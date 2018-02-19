@@ -30,7 +30,7 @@ import { ConfirmPage } from '../confirm/confirm';
 })
 export class AmountPage {
   private LENGTH_EXPRESSION_LIMIT: number;
-  private availableUnits: Array<any>;
+  private availableUnits: any[];
   private unit: string;
   private reNr: RegExp;
   private reOp: RegExp;
@@ -284,7 +284,7 @@ export class AmountPage {
   }
 
   public showSendMaxMenu(): void {
-    let buttons: Array<any> = [];
+    let buttons: any[] = [];
 
     let sendMaxButton: Object = {
       text: this.itemSelectorLabel,

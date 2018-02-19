@@ -25,9 +25,9 @@ export class WalletTransactionHistoryPage {
   public isCordova: boolean;
   public err: any;
   public config: any;
-  public csvContent: Array<any>;
+  public csvContent: any[];
   public csvFilename: any;
-  public csvHeader: Array<string>;
+  public csvHeader: string[];
   public unitToSatoshi: number;
   public unitDecimals: number;
   public satToUnit: number;

@@ -27,7 +27,7 @@ export class ReceivePage {
   public protocolHandler: string;
   public address: string;
   public qrAddress: string;
-  public wallets: Array<any> = [];
+  public wallets: any[] = [];
   public wallet: any;
   public showShareButton: boolean;
   public loading: boolean;

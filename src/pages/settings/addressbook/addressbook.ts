@@ -13,8 +13,8 @@ import { AddressbookViewPage } from './view/view';
 export class AddressbookPage {
 
   private cache: boolean = false;
-  public addressbook: Array<object> = [];
-  public filteredAddressbook: Array<object> = [];
+  public addressbook: object[] = [];
+  public filteredAddressbook: object[] = [];
 
   public isEmptyList: boolean;
 
@@ -37,7 +37,7 @@ export class AddressbookPage {
     this.addressbookProvider.list().then((addressBook: any) => {
       this.isEmptyList = _.isEmpty(addressBook);
 
-      let contacts: Array<object> = [];
+      let contacts: object[] = [];
       _.each(addressBook, (contact: any, k: string) => {
         contacts.push({
           name: _.isObject(contact) ? contact.name : contact,
