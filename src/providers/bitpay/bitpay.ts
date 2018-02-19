@@ -2,7 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Logger } from '../../providers/logger/logger';
 
-//providers
+// providers
 import { AppIdentityProvider } from '../app-identity/app-identity';
 
 import * as bitauthService from 'bitauth';

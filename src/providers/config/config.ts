@@ -257,7 +257,7 @@ export class ConfigProvider {
   }
 
   private backwardCompatibility() {
-    //these ifs are to avoid migration problems
+    // these ifs are to avoid migration problems
     if (this.configCache.bws) {
       this.configCache.bws = configDefault.bws;
     }

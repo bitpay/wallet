@@ -56,7 +56,7 @@ export class ConfirmPage {
   public isCordova: boolean;
   public isWindowsPhoneApp: boolean;
 
-  //custom fee flag
+  // custom fee flag
   public usingCustomFee: boolean = false;
 
   constructor(

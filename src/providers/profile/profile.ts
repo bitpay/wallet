@@ -4,7 +4,7 @@ import { Events } from 'ionic-angular';
 import * as _ from 'lodash';
 import { Logger } from '../../providers/logger/logger';
 
-//providers
+// providers
 import { AppProvider } from '../../providers/app/app';
 import { LanguageProvider } from '../../providers/language/language';
 import { BwcErrorProvider } from '../bwc-error/bwc-error';
@@ -15,7 +15,7 @@ import { PersistenceProvider } from '../persistence/persistence';
 import { PlatformProvider } from '../platform/platform';
 import { PopupProvider } from '../popup/popup';
 
-//models
+// models
 import { Profile } from '../../models/profile/profile.model';
 
 @Injectable()
@@ -55,7 +55,7 @@ export class ProfileProvider {
     wallet.name = (config.aliasFor && config.aliasFor[wallet.id]) || wallet.credentials.walletName;
     wallet.color = (config.colorFor && config.colorFor[wallet.id]) ? config.colorFor[wallet.id] : null;
     wallet.email = config.emailFor && config.emailFor[wallet.id];
-    //});
+    // });
   }
 
   public setWalletOrder(walletId: string, index: number): void {

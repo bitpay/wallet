@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Logger } from '../../providers/logger/logger';
 
-//providers
+// providers
 import { AppIdentityProvider } from '../app-identity/app-identity';
 import { BitPayProvider } from '../bitpay/bitpay';
 import { HomeIntegrationsProvider } from '../home-integrations/home-integrations';

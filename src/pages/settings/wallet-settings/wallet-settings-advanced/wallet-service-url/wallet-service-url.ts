@@ -3,10 +3,10 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Events, NavController, NavParams } from 'ionic-angular';
 import { Logger } from '../../../../../providers/logger/logger';
 
-//native
+// native
 import { SplashScreen } from '@ionic-native/splash-screen';
 
-//providers
+// providers
 import { AppProvider } from '../../../../../providers/app/app';
 import { ConfigProvider } from '../../../../../providers/config/config';
 import { PersistenceProvider } from '../../../../../providers/persistence/persistence';

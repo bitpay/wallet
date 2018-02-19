@@ -3,11 +3,11 @@ import { TranslateService } from '@ngx-translate/core';
 import { NavController } from 'ionic-angular';
 import { Logger } from '../../../providers/logger/logger';
 
-//pages
+// pages
 import { SessionLogPage } from './session-log/session-log';
 import { TermsOfUsePage } from './terms-of-use/terms-of-use';
 
-//providers
+// providers
 import { AppProvider } from '../../../providers/app/app';
 import { ExternalLinkProvider } from '../../../providers/external-link/external-link';
 

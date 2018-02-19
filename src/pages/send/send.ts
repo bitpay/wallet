@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
 import { Logger } from '../../providers/logger/logger';
 
-//providers
+// providers
 import { AddressBookProvider } from '../../providers/address-book/address-book';
 import { AddressProvider } from '../../providers/address/address';
 import { IncomingDataProvider } from '../../providers/incoming-data/incoming-data';
@@ -10,7 +10,7 @@ import { PopupProvider } from '../../providers/popup/popup';
 import { ProfileProvider } from '../../providers/profile/profile';
 import { WalletProvider } from '../../providers/wallet/wallet';
 
-//pages
+// pages
 import { AmountPage } from './amount/amount';
 
 import * as _ from 'lodash';
@@ -177,7 +177,7 @@ export class SendPage {
   public goToAmount(item: any): void {
     item.getAddress().then((addr: string) => {
       if (!addr) {
-        //Error is already formated
+        // Error is already formated
         this.popupProvider.ionicAlert('Error - no address');
         return;
       }

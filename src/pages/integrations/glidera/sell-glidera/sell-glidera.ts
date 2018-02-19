@@ -3,10 +3,10 @@ import { Events, ModalController, NavController, NavParams } from 'ionic-angular
 import * as _ from 'lodash';
 import { Logger } from '../../../../providers/logger/logger';
 
-//pages
+// pages
 import { SuccessModalPage } from '../../../success/success';
 
-//providers
+// providers
 import { ConfigProvider } from '../../../../providers/config/config';
 import { GlideraProvider } from '../../../../providers/glidera/glidera';
 import { OnGoingProcessProvider } from '../../../../providers/on-going-process/on-going-process';

@@ -3,7 +3,7 @@ import { Events, ModalController, NavController, NavParams } from 'ionic-angular
 import * as _ from 'lodash';
 import { Logger } from '../../../../providers/logger/logger';
 
-//providers
+// providers
 import { CoinbaseProvider } from '../../../../providers/coinbase/coinbase';
 import { ExternalLinkProvider } from '../../../../providers/external-link/external-link';
 import { OnGoingProcessProvider } from '../../../../providers/on-going-process/on-going-process';
@@ -12,7 +12,7 @@ import { ProfileProvider } from '../../../../providers/profile/profile';
 import { TxFormatProvider } from '../../../../providers/tx-format/tx-format';
 import { WalletProvider } from '../../../../providers/wallet/wallet';
 
-//pages
+// pages
 import { SuccessModalPage } from '../../../success/success';
 import { CoinbasePage } from '../coinbase';
 

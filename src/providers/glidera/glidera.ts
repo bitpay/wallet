@@ -3,7 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Logger } from '../../providers/logger/logger';
 
-//providers
+// providers
 import { AppProvider } from '../app/app';
 import { HomeIntegrationsProvider } from '../home-integrations/home-integrations';
 import { PersistenceProvider } from '../persistence/persistence';
@@ -42,7 +42,7 @@ export class GlideraProvider {
      * Production: 'livenet'
      */
     this.credentials.NETWORK = 'livenet';
-    //this.credentials.NETWORK = 'testnet';
+    // TODO this.credentials.NETWORK = 'testnet';
 
     if (this.credentials.NETWORK == 'testnet') {
       this.credentials.HOST = glidera.sandbox.host;

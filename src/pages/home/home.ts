@@ -207,7 +207,7 @@ export class HomePage {
         this.initFeedBackInfo();
       } else {
         let feedbackInfo = info;
-        //Check if current version is greater than saved version
+        // Check if current version is greater than saved version
         let currentVersion = this.releaseProvider.getCurrentAppVersion();
         let savedVersion = feedbackInfo.version;
         let isVersionUpdated = this.feedbackProvider.isVersionUpdated(currentVersion, savedVersion);
@@ -240,7 +240,7 @@ export class HomePage {
       wallet.error = null;
       this.profileProvider.setLastKnownBalance(wallet.id, wallet.status.availableBalanceStr);
       
-      //this.setWallets();
+      // TODO this.setWallets();
       this.updateTxps();
       this.stopUpdatingWalletId(walletId);
     }).catch((err: any) => {
@@ -317,7 +317,7 @@ export class HomePage {
   }
 
   private checkUpdate(): void {
-    //TODO check if new update
+    // TODO check if new update
     this.releaseProvider.getLatestAppVersion().toPromise()
       .then((version) => {
         this.logger.debug('Current app version:', version);

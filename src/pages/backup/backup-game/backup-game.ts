@@ -3,10 +3,10 @@ import { AlertController, Navbar, NavController, NavParams, Slides } from 'ionic
 import * as _ from 'lodash';
 import { Logger } from '../../../providers/logger/logger';
 
-//pahes
+// pages
 import { DisclaimerPage } from '../../onboarding/disclaimer/disclaimer';
 
-//providers
+// providers
 import { BwcProvider } from '../../../providers/bwc/bwc';
 import { OnGoingProcessProvider } from '../../../providers/on-going-process/on-going-process';
 import { ProfileProvider } from '../../../providers/profile/profile';

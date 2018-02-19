@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Events, ModalController, NavParams, ViewController } from 'ionic-angular';
 
-//providers
+// providers
 import { BwcErrorProvider } from '../../providers/bwc-error/bwc-error';
 import { ConfigProvider } from '../../providers/config/config';
 import { FeeProvider } from '../../providers/fee/fee';
@@ -13,7 +13,7 @@ import { ProfileProvider } from '../../providers/profile/profile';
 import { TxFormatProvider } from '../../providers/tx-format/tx-format';
 import { WalletProvider } from '../../providers/wallet/wallet';
 
-//pages
+// pages
 import { SuccessModalPage } from '../success/success';
 
 import * as _ from 'lodash';

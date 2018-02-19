@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Events, NavController, NavParams } from 'ionic-angular';
 import { Logger } from '../../../../providers/logger/logger';
 
-//providers
+// providers
 import { ConfigProvider } from '../../../../providers/config/config';
 import { ProfileProvider } from '../../../../providers/profile/profile';
 

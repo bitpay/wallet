@@ -3,7 +3,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { ModalController, NavController, NavParams } from 'ionic-angular';
 import { Logger } from '../../../../../providers/logger/logger';
 
-//providers
+// providers
 import { BwcErrorProvider } from '../../../../../providers/bwc-error/bwc-error';
 import { OnGoingProcessProvider } from '../../../../../providers/on-going-process/on-going-process';
 import { PopupProvider } from '../../../../../providers/popup/popup';
@@ -11,7 +11,7 @@ import { ProfileProvider } from '../../../../../providers/profile/profile';
 import { TxFormatProvider } from '../../../../../providers/tx-format/tx-format';
 import { WalletProvider } from '../../../../../providers/wallet/wallet';
 
-//pages
+// pages
 import { WalletDetailsPage } from '../../../../../pages/wallet-details/wallet-details';
 import { AllAddressesPage } from './all-addresses/all-addresses';
 

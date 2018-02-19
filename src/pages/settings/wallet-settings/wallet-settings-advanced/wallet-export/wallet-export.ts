@@ -4,11 +4,11 @@ import { TranslateService } from '@ngx-translate/core';
 import { NavController, NavParams, ToastController } from 'ionic-angular';
 import { Logger } from '../../../../../providers/logger/logger';
 
-//native
+// native
 import { Clipboard } from '@ionic-native/clipboard';
 import { SocialSharing } from '@ionic-native/social-sharing';
 
-//providers
+// providers
 import { AppProvider } from '../../../../../providers/app/app';
 import { BackupProvider } from '../../../../../providers/backup/backup';
 import { PersistenceProvider } from '../../../../../providers/persistence/persistence';

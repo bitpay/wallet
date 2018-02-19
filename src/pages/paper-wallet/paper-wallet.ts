@@ -4,7 +4,7 @@ import { Events, ModalController, NavController, NavParams } from 'ionic-angular
 import * as _ from 'lodash';
 import { Logger } from '../../providers/logger/logger';
 
-//providers
+// providers
 import { BwcProvider } from '../../providers/bwc/bwc';
 import { FeeProvider } from '../../providers/fee/fee';
 import { OnGoingProcessProvider } from '../../providers/on-going-process/on-going-process';

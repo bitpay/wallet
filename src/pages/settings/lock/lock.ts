@@ -2,10 +2,10 @@ import { Component } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { ModalController } from 'ionic-angular';
 
-//pages
+// pages
 import { PinModalPage } from '../../pin/pin';
 
-//providers
+// providers
 import { ConfigProvider } from '../../../providers/config/config';
 import { ProfileProvider } from '../../../providers/profile/profile';
 import { TouchIdProvider } from '../../../providers/touchid/touchid';

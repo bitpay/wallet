@@ -6,7 +6,7 @@ import { NavController, NavParams } from 'ionic-angular';
 // Pages
 import { AmountPage } from '../../send/amount/amount';
 
-//providers
+// providers
 import { BitPayCardProvider } from '../../../providers/bitpay-card/bitpay-card';
 import { BitPayProvider } from '../../../providers/bitpay/bitpay';
 import { ExternalLinkProvider } from '../../../providers/external-link/external-link';

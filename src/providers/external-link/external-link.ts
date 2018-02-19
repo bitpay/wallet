@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Logger } from '../../providers/logger/logger';
 
-//providers
+// providers
 import { NodeWebkitProvider } from '../node-webkit/node-webkit';
 import { PlatformProvider } from '../platform/platform';
 import { PopupProvider } from '../popup/popup';

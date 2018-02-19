@@ -3,11 +3,11 @@ import { Events, ModalController, NavController, NavParams } from 'ionic-angular
 import * as _ from 'lodash';
 import { Logger } from '../../../../providers/logger/logger';
 
-//pages
+// pages
 import { SuccessModalPage } from '../../../success/success';
 import { CoinbasePage } from '../coinbase';
 
-//providers
+// providers
 import { AppProvider } from '../../../../providers/app/app';
 import { CoinbaseProvider } from '../../../../providers/coinbase/coinbase';
 import { ConfigProvider } from '../../../../providers/config/config';

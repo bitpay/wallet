@@ -3,14 +3,14 @@ import { TranslateService } from '@ngx-translate/core';
 import { Events, NavController, NavParams } from 'ionic-angular';
 import { Logger } from '../../providers/logger/logger';
 
-//providers
+// providers
 import { AddressBookProvider } from '../../providers/address-book/address-book';
 import { BwcErrorProvider } from '../../providers/bwc-error/bwc-error';
 import { ProfileProvider } from '../../providers/profile/profile';
 import { TimeProvider } from '../../providers/time/time';
 import { WalletProvider } from '../../providers/wallet/wallet';
 
-//pages
+// pages
 import { BackupWarningPage } from '../../pages/backup/backup-warning/backup-warning';
 import { WalletAddressesPage } from '../../pages/settings/wallet-settings/wallet-settings-advanced/wallet-addresses/wallet-addresses';
 import { TxDetailsPage } from '../../pages/tx-details/tx-details';

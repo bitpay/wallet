@@ -4,14 +4,14 @@ import { TranslateService } from '@ngx-translate/core';
 import { NavController, NavParams, Platform } from 'ionic-angular';
 import * as _ from "lodash";
 
-//providers
+// providers
 import { AppProvider } from '../../../providers/app/app';
 import { ConfigProvider } from '../../../providers/config/config';
 import { FeedbackProvider } from '../../../providers/feedback/feedback';
 import { OnGoingProcessProvider } from '../../../providers/on-going-process/on-going-process';
 import { PopupProvider } from '../../../providers/popup/popup';
 
-//pages
+// pages
 import { HomePage } from '../../home/home';
 import { FeedbackCompletePage } from '../feedback-complete/feedback-complete';
 
@@ -85,7 +85,7 @@ export class SendFeedbackPage {
 
     let platform = this.platform.platforms().join("");
     let versions: any = this.platform.versions();
-    versions = _.values(_.pickBy(versions, _.identity)) //remove undefined and get array of versions
+    versions = _.values(_.pickBy(versions, _.identity)) // remove undefined and get array of versions
     let version: any = versions && versions[0] ? versions[0] : null;
     let versionStr = version ? version.str : '';
 

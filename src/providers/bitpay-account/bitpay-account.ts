@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Logger } from '@nsalaun/ng-logger';
 
-//providers
+// providers
 import { AppIdentityProvider } from '../app-identity/app-identity';
 import { BitPayCardProvider } from '../bitpay-card/bitpay-card';
 import { BitPayProvider } from '../bitpay/bitpay';
@@ -64,7 +64,7 @@ export class BitPayAccountProvider {
       if (this.platformProvider.isNW) {
         deviceName = require('os').platform();
       } else if (this.platformProvider.isCordova) {
-        //TODO deviceName = this.platformProvider.device.model;
+        // TODO deviceName = this.platformProvider.device.model;
         deviceName = '';
       }
       let json = {
@@ -90,21 +90,21 @@ export class BitPayAccountProvider {
 
         this.fetchBasicInfo(apiContext, (err, basicInfo) => {
           if (err) return cb(err);
-          let title = 'Add BitPay Account?'; //TODO gettextcatalog
+          let title = 'Add BitPay Account?'; // TODO gettextcatalog
           let msg;
 
           if (pairingReason) {
             let reason = pairingReason;
             let email = pairData.email;
 
-            msg = 'To ' + reason + ' you must first add your BitPay account - ' + email; //TODO gettextcatalog
+            msg = 'To ' + reason + ' you must first add your BitPay account - ' + email; // TODO gettextcatalog
           } else {
             let email = pairData.email;
-            msg = 'Add this BitPay account ' + '(' + email + ')?'; //TODO gettextcatalog
+            msg = 'Add this BitPay account ' + '(' + email + ')?'; // TODO gettextcatalog
           }
 
-          let ok = 'Add Account'; //TODO gettextcatalog
-          let cancel = 'Go back'; //TODO gettextcatalog
+          let ok = 'Add Account'; // TODO gettextcatalog
+          let cancel = 'Go back'; // TODO gettextcatalog
           this.popupProvider.ionicConfirm(title, msg, ok, cancel).then((res) => {
             if (res) {
               let acctData = {
@@ -129,7 +129,7 @@ export class BitPayAccountProvider {
 
   private checkOtp(pairData: any, cb: Function) {
     if (pairData.otp) {
-      let msg = 'Enter Two Factor for your BitPay account'; //TODO gettextcatalog
+      let msg = 'Enter Two Factor for your BitPay account'; // TODO gettextcatalog
       this.popupProvider.ionicPrompt(null, msg, null).then((res) => {
         cb(res);
       });

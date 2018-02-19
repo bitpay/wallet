@@ -4,7 +4,7 @@ import { Injectable } from '@angular/core';
 import { Events } from 'ionic-angular';
 import { Logger } from '../../providers/logger/logger';
 
-//providers
+// providers
 import { AppProvider } from '../app/app';
 import { ConfigProvider } from '../config/config';
 import { FeeProvider } from '../fee/fee';

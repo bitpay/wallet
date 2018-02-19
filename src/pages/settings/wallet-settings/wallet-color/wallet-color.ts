@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { Events, NavController, NavParams } from 'ionic-angular';
 import { Logger } from '../../../../providers/logger/logger';
 
-//providers
+// providers
 import { ConfigProvider } from '../../../../providers/config/config';
 import { ProfileProvider } from '../../../../providers/profile/profile';
 

@@ -13,7 +13,6 @@
     // Temporarily relax rules
     "member-ordering": false,
     "variable-name": false,
-    "comment-format": false,
     "no-empty": false,
     "no-shadowed-variable": false,
     "one-variable-per-declaration": false,

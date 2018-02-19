@@ -3,10 +3,10 @@ import { DOCUMENT } from "@angular/platform-browser";
 import { TranslateService } from '@ngx-translate/core';
 import { ActionSheetController, ToastController } from 'ionic-angular';
 
-//native
+// native
 import { SocialSharing } from '@ionic-native/social-sharing';
 
-//providers
+// providers
 import { ConfigProvider } from '../../../../providers/config/config';
 import { Logger } from '../../../../providers/logger/logger';
 import { PlatformProvider } from '../../../../providers/platform/platform';

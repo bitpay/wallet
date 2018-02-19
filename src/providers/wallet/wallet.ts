@@ -189,7 +189,7 @@ export class WalletProvider {
         cache.satToUnit = 1 / cache.unitToSatoshi;
 
 
-        //STR
+        // STR
         cache.totalBalanceStr = this.txFormatProvider.formatAmountStr(wallet.coin, cache.totalBalanceSat);
         cache.lockedBalanceStr = this.txFormatProvider.formatAmountStr(wallet.coin, cache.lockedBalanceSat);
         cache.availableBalanceStr = this.txFormatProvider.formatAmountStr(wallet.coin, cache.availableBalanceSat);
@@ -730,7 +730,7 @@ export class WalletProvider {
     let overhead = 4 + 4 + 9 + 9;
     let inputSize = this.getEstimatedSizeForSingleInput(wallet);
     let outputSize = 34;
-    let nbInputs = 1; //Assume 1 input
+    let nbInputs = 1; // Assume 1 input
 
     let size = overhead + inputSize * nbInputs + outputSize * nbOutputs;
     return parseInt((size * (1 + safetyMargin)).toFixed(0), 10);
@@ -955,10 +955,10 @@ export class WalletProvider {
       // Update this JIC.
       let config: any = this.configProvider.get();
 
-      //prefs.email  (may come from arguments)
+      // TODO prefs.email  (may come from arguments)
       prefs.email = config.emailNotifications.email;
       prefs.language = "en" // This line was hardcoded - TODO: prefs.language = uxLanguage.getCurrentLanguage();
-      //let walletSettings = config.wallet.settings;
+      // TODO let walletSettings = config.wallet.settings;
       // prefs.unit = walletSettings.unitCode; // TODO: remove, not used
 
       updateRemotePreferencesFor(lodash.clone(clients), prefs).then(() => {
@@ -1351,7 +1351,7 @@ export class WalletProvider {
         newWallet._doJoinWallet(newWallet.credentials.walletId, walletPrivKey, item.xPubKey, item.requestPubKey, name, {
           coin: newWallet.credentials.coin,
         }, (err: any) => {
-          //Ignore error is copayer already in wallet
+          // Ignore error is copayer already in wallet
           if (err && !(err instanceof this.errors.COPAYER_IN_WALLET)) return reject(err);
           if (++i == wallet.credentials.publicKeyRing.length) return resolve();
         });

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Logger } from '../../providers/logger/logger';
 
-//providers
+// providers
 import { ConfigProvider } from '../config/config';
 import { ProfileProvider } from '../profile/profile';
 import { WalletProvider } from '../wallet/wallet';

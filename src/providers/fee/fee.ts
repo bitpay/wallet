@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Logger } from '../../providers/logger/logger';
 
-//providers
+// providers
 import { BwcProvider } from '../../providers/bwc/bwc';
 import { ConfigProvider } from '../../providers/config/config';
 

@@ -3,19 +3,19 @@ import { TranslateService } from '@ngx-translate/core';
 import { Events, ModalController, NavController } from 'ionic-angular';
 import { Logger } from '../../providers/logger/logger';
 
-//providers
+// providers
 import { ExternalLinkProvider } from '../../providers/external-link/external-link';
 import { IncomingDataProvider } from '../../providers/incoming-data/incoming-data';
 import { PlatformProvider } from '../../providers/platform/platform';
 import { ScanProvider } from '../../providers/scan/scan';
 
-//pages
+// pages
 import { IncomingDataMenuPage } from '../incoming-data-menu/incoming-data-menu';
 import { PaperWalletPage } from '../paper-wallet/paper-wallet';
 import { AmountPage } from '../send/amount/amount';
 import { AddressbookAddPage } from '../settings/addressbook/add/add';
 
-//import { QRScanner as QRScannerBrowser } from 'cordova-plugin-qrscanner/src/browser/src/library'
+// import { QRScanner as QRScannerBrowser } from 'cordova-plugin-qrscanner/src/browser/src/library'
 
 @Component({
   selector: 'page-scan',
@@ -71,7 +71,7 @@ export class ScanPage {
   }
 
   ionViewWillLeave() {
-    //TODO support for browser
+    // TODO support for browser
     if (!this.platform.isCordova) return;
     this.cameraToggleActive = false;
     this.lightActive = false;
@@ -82,7 +82,7 @@ export class ScanPage {
   }
 
   ionViewWillEnter() {
-    //TODO support for browser
+    // TODO support for browser
     if (!this.platform.isCordova) {
       this.notSupportedMessage = this.translate.instant("Scanner not supported");
       return;

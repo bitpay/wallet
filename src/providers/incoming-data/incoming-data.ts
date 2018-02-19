@@ -3,14 +3,14 @@ import { TranslateService } from '@ngx-translate/core';
 import { App, Events, NavController } from 'ionic-angular';
 import { Logger } from '../../providers/logger/logger';
 
-//providers
+// providers
 import { AppProvider } from '../app/app';
 import { BwcProvider } from '../bwc/bwc';
 import { PayproProvider } from '../paypro/paypro';
 import { PopupProvider } from '../popup/popup';
 import { ScanProvider } from '../scan/scan';
 
-//pages
+// pages
 import { ImportWalletPage } from '../../pages/add/import-wallet/import-wallet';
 import { JoinWalletPage } from '../../pages/add/join-wallet/join-wallet';
 import { BitPayCardIntroPage } from '../../pages/integrations/bitpay-card/bitpay-card-intro/bitpay-card-intro';
@@ -41,7 +41,7 @@ export class IncomingDataProvider {
   }
 
   public redir(data: string): boolean {
-    //TODO Injecting NavController in constructor of service fails with no provider error
+    // TODO Injecting NavController in constructor of service fails with no provider error
     this.navCtrl = this.app.getActiveNav();
 
     // data extensions for Payment Protocol with non-backwards-compatible request
@@ -161,7 +161,7 @@ export class IncomingDataProvider {
       this.logger.debug('Handling Plain URL');
 
       this.payproProvider.getPayProDetails(data).then((details) => {
-        //TODO review
+        // TODO review
         this.handlePayPro(details, 'btc');
         return true;
       }).catch(() => {

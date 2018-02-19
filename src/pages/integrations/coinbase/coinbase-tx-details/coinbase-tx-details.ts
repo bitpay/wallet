@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { NavParams, ViewController } from 'ionic-angular';
 
-//providers
+// providers
 import { CoinbaseProvider } from '../../../../providers/coinbase/coinbase';
 import { PopupProvider } from '../../../../providers/popup/popup';
 

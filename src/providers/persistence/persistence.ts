@@ -6,7 +6,7 @@ import { Logger } from '../../providers/logger/logger';
 import { PlatformProvider } from '../platform/platform';
 import { FileStorage } from './storage/file-storage';
 import { LocalStorage } from './storage/local-storage';
-//import { RamStorage } from './storage/ram-storage';
+// TODO import { RamStorage } from './storage/ram-storage';
 
 const Keys = {
   ADDRESS_BOOK: network => 'addressbook-' + network,
@@ -169,7 +169,7 @@ export class PersistenceProvider {
     return this.storage.set(Keys.AGREE_DISCLAIMER, true);
   }
 
-  //for compatibility
+  // for compatibility
   getCopayDisclaimerFlag(): Promise<any> {
     return this.storage.get(Keys.AGREE_DISCLAIMER);
   };

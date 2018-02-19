@@ -5,7 +5,7 @@ import { Logger } from '../../../providers/logger/logger';
 // Native
 import { SocialSharing } from '@ionic-native/social-sharing';
 
-//providers
+// providers
 import { PlatformProvider } from '../../../providers/platform/platform';
 import { ProfileProvider } from '../../../providers/profile/profile';
 import { TxFormatProvider } from '../../../providers/tx-format/tx-format';

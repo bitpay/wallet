@@ -2,10 +2,10 @@ import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 import { Logger } from '../../../../providers/logger/logger';
 
-//providers
+// providers
 import { ProfileProvider } from '../../../../providers/profile/profile';
 
-//pages
+// pages
 import { WalletAddressesPage } from './wallet-addresses/wallet-addresses';
 import { WalletDeletePage } from './wallet-delete/wallet-delete';
 import { WalletExportPage } from './wallet-export/wallet-export';

@@ -5,10 +5,10 @@ import { NavController, NavParams, Platform } from 'ionic-angular';
 import * as _ from 'lodash';
 import { Logger } from '../../../providers/logger/logger';
 
-//providers
+// providers
 import { AppProvider } from '../../../providers/app/app';
 
-//pages
+// pages
 import { EmailNotificationsProvider } from '../../../providers/email-notifications/email-notifications';
 import { BackupRequestPage } from '../backup-request/backup-request';
 
@@ -76,7 +76,7 @@ export class CollectEmailPage {
   private collectEmail(): void {
     let platform = this.platform.platforms().join("");
     let versions: any = this.platform.versions();
-    versions = _.values(_.pickBy(versions, _.identity)) //remove undefined and get array of versions
+    versions = _.values(_.pickBy(versions, _.identity)) // remove undefined and get array of versions
     let version: any = versions && versions[0] ? versions[0] : null;
     let versionStr = version ? version.str : '';
 

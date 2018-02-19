@@ -2,10 +2,10 @@ import { Component } from '@angular/core';
 import { Events, ModalController, NavController, NavParams } from 'ionic-angular';
 import { Logger } from '../../../../providers/logger/logger';
 
-//pages
+// pages
 import { SuccessModalPage } from '../../../success/success';
 
-//providers
+// providers
 import { GlideraProvider } from '../../../../providers/glidera/glidera';
 import { OnGoingProcessProvider } from '../../../../providers/on-going-process/on-going-process';
 import { PlatformProvider } from '../../../../providers/platform/platform';

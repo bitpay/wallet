@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import * as _ from 'lodash';
 import { Logger } from '../../providers/logger/logger';
 
-//providers
+// providers
 import { HomeIntegrationsProvider } from '../home-integrations/home-integrations';
 import { PersistenceProvider } from '../persistence/persistence';
 
@@ -28,7 +28,7 @@ export class AmazonProvider {
     * Production: 'livenet'
     */
     this.credentials.NETWORK = 'livenet';
-    //this.credentials.NETWORK = 'testnet';
+    // TODO this.credentials.NETWORK = 'testnet';
     if (this.credentials.NETWORK == 'testnet') {
       this.credentials.BITPAY_API_URL = "https://test.bitpay.com";
     } else {
