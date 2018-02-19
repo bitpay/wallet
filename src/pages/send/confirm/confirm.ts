@@ -597,13 +597,10 @@ export class ConfirmPage {
 
       confirmTx().then((nok: boolean) => {
         if (nok) {
+          this.onGoingProcessProvider.clear();
           return;
         }
         publishAndSign();
-      }).catch((err: any) => {
-        this.onGoingProcessProvider.clear();
-        this.logger.warn(err);
-        return;
       });
     }).catch((err: any) => {
       this.onGoingProcessProvider.clear();
