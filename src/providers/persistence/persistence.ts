@@ -338,8 +338,8 @@ export class PersistenceProvider {
 
   removeAllWalletData(walletId: string): Promise<void> {
     return this.clearLastAddress(walletId)
-      .then(() => { return this.removeTxHistory(walletId); })
-      .then(() => { return this.clearBackupFlag(walletId); });
+      .then(() => this.removeTxHistory(walletId))
+      .then(() => this.clearBackupFlag(walletId));
   };
 
   setAmazonGiftCards(network: string, gcs: any): Promise<void> {
