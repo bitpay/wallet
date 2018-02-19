@@ -36,8 +36,8 @@
   </div>
 
   <ion-list *ngIf="btx">
+    <ion-item-divider *ngIf="btx.action === 'sent'">{{'To' | translate}}</ion-item-divider>
     <ion-item *ngIf="btx.action === 'sent'">
-      <span class="label" translate>To</span>
       <span class="payment-proposal-to">
         <img class="icon-bitcoin" *ngIf="!cardId" src="assets/img/icon-bitcoin-small.svg">
         <img class="icon-bitcoin" *ngIf="cardId" src="assets/img/icon-card.svg" width="34">
@@ -48,19 +48,17 @@
       </span>
     </ion-item>
 
+    <ion-item-divider *ngIf="btx.action === 'sent'">{{'From' | translate}}</ion-item-divider>
+    <ion-item-divider *ngIf="btx.action !== 'sent'">{{'To' | translate}}</ion-item-divider>
     <ion-item>
-      <span class="label" *ngIf="btx.action === 'sent'" translate>From</span>
-      <span class="label" *ngIf="btx.action !== 'sent'" translate>To</span>
-      <div class="wallet">
-        <ion-icon item-start>
-          <img *ngIf="wallet.network == 'testnet'" [ngStyle]="{'background-color': wallet.color}" src="assets/img/icon-wallet-testnet.svg"
-            class="icon-wallet" />
-          <img *ngIf="wallet.network != 'testnet'" [ngStyle]="{'background-color': wallet.color}" src="assets/img/icon-wallet.svg"
-            class="icon-wallet" />
-        </ion-icon>
+      <div class="wallet" *ngIf="wallet">
+        <img *ngIf="wallet.network == 'testnet'" [ngStyle]="{'background-color': wallet.color}" src="assets/img/icon-wallet-testnet.svg" class="icon-wallet" />
+        <img *ngIf="wallet.network != 'testnet'" [ngStyle]="{'background-color': wallet.color}" src="assets/img/icon-wallet.svg" class="icon-wallet" />
         <div>{{wallet.name}}</div>
       </div>
     </ion-item>
+    
+    <ion-item-divider></ion-item-divider>
 
     <ion-item *ngIf="btx.action != 'received' && isShared">
       <ion-label translate>Created by</ion-label>
@@ -74,18 +72,12 @@
       <ion-note item-end>
         <time>{{ (btx.ts || btx.createdOn || btx.time) * 1000 | amDateFormat:'MM/DD/YYYY hh:mm a'}}</time>
       </ion-note>
-    </ion-item>
-
-    <button ion-item (click)="showCommentPopup()">
-      <ion-label>{{'Memo' | translate}}</ion-label>
-      <ion-note item-end>
-        <span *ngIf="btx.note && btx.note.body">{{btx.note.body}}</span>
-        <span *ngIf="(!btx.note || !btx.note.body) && btx.message">{{btx.message}}</span>
-      </ion-note>
-    </button>
+    </ion-item> 
 
     <ion-item *ngIf="btx.action != 'received'">
-      <ion-label>{{'Fee' | translate}}</ion-label>
+      <ion-label>
+        <div class="item-title">{{'Fee' | translate}}</div>
+      </ion-label>
       <ion-note item-end>
         <span>{{btx.feeStr}}</span>
         <div>
@@ -93,7 +85,7 @@
           <span *ngIf="btx.feeRateStr">({{btx.feeRateStr}})</span>
         </div>
       </ion-note>
-    </ion-item>
+    </ion-item> 
 
     <ion-item-divider text-wrap class="low-fees" *ngIf="btx.action == 'received' && btx.lowFees">
       <img src="assets/img/icon-warning.png" width="20">
@@ -124,6 +116,22 @@
       </ion-note>
     </ion-item>
 
+    <ion-item-divider>
+      <div item-start>
+        {{'Memo' | translate}}
+      </div>
+      <div item-end>
+        <button ion-button clear icon-only color="grey" (click)="showCommentPopup()">
+          <ion-icon *ngIf="(!btx.note || !btx.note.body) && !btx.message" name="add"></ion-icon>
+          <span *ngIf="(btx.note && btx.note.body) || btx.message">{{'Edit' | translate}}</span>
+        </button>
+      </div>
+    </ion-item-divider>
+    <ion-item *ngIf="(btx.note && btx.note.body) || btx.message" text-wrap>
+      <span *ngIf="btx.note && btx.note.body">{{btx.note.body}}</span>
+      <span *ngIf="(!btx.note || !btx.note.body) && btx.message">{{btx.message}}</span>
+    </ion-item>
+
     <ion-item *ngIf="txsUnsubscribedForNotifications">
       <ion-label>{{'Notify me if confirmed' | translate}}</ion-label>
       <ion-toggle checked="false" *ngIf="!btx.confirmations || btx.confirmations == 0" [(ngModel)]="txNotification.value" (ionChange)="txConfirmNotificationChange()"></ion-toggle>
@@ -150,11 +158,9 @@
       </div>
     </div>
 
-    <div *ngIf="btx">
-      <ion-item-divider></ion-item-divider>
-      <button ion-item class="btn-view" (click)="viewOnBlockchain()" translate>View on blockchain</button>
-      <ion-item-divider></ion-item-divider>
-    </div>
+    <ion-item-divider *ngIf="(btx.note && btx.note.body) || btx.message"></ion-item-divider>
+    <button ion-item class="btn-view" (click)="viewOnBlockchain()" translate>View on blockchain</button>
+    <ion-item-divider></ion-item-divider>
 
   </ion-list>
 
