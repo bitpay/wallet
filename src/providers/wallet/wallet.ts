@@ -1159,11 +1159,11 @@ export class WalletProvider {
       this.ongoingProcessProvider.set('sendingTx', true);
       this.publishTx(wallet, txp).then((publishedTxp) => {
         this.invalidateCache(wallet);
-        this.ongoingProcessProvider.set('sendingTx', false);
+        this.ongoingProcessProvider.clear();
         this.events.publish('Local/TxAction', wallet.id);
         return resolve();
       }).catch((err) => {
-        this.ongoingProcessProvider.set('sendingTx', false);
+        this.ongoingProcessProvider.clear();
         return reject(this.bwcErrorProvider.msg(err));
       });
     });
