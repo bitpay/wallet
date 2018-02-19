@@ -212,7 +212,6 @@ export class ScanProvider {
     }
     this.hide();
     this.destroy();
-    console.log("#################################");
   }
 
   // Natively hide the QRScanner's preview
