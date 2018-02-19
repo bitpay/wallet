@@ -575,6 +575,7 @@ export class ConfirmPage {
           this.walletProvider.onlyPublish(wallet, txp).then(() => {
             this.openSuccessModal(true);
           }).catch((err: any) => {
+            this.onGoingProcessProvider.clear();
             this.setSendError(err);
           });
           return;
@@ -588,6 +589,7 @@ export class ConfirmPage {
           }
           this.openSuccessModal();
         }).catch((err: any) => {
+          this.onGoingProcessProvider.clear();
           this.setSendError(err);
           return;
         });
@@ -599,11 +601,12 @@ export class ConfirmPage {
         }
         publishAndSign();
       }).catch((err: any) => {
+        this.onGoingProcessProvider.clear();
         this.logger.warn(err);
         return;
       });
     }).catch((err: any) => {
-      this.onGoingProcessProvider.set('creatingTx', false);
+      this.onGoingProcessProvider.clear();
       this.logger.warn(err);
       return;
     });
