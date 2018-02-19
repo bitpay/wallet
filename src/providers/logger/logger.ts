@@ -96,6 +96,7 @@ export class Logger {
           else v = JSON.stringify(v);
         }
       } catch (e) {
+        // tslint:disable-next-line:no-console
         console.log('Error at log decorator:', e);
         v = 'undefined';
       }

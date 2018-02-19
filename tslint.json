@@ -24,7 +24,6 @@
     "interface-name": false,
     "prefer-conditional-expression": false,
     "prefer-for-of": false,
-    "no-console": false,
     "forin": false,
     "prefer-const": false,
     "ban-types": false,
