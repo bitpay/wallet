@@ -3,9 +3,11 @@ page-tx-details {
   $item-lateral-padding: 20px;
   $item-label-color: #6C6C6E;
 
-  span.label {
-    color: color($colors, grey);
+  // Small font size for ion-note
+  ion-note {
+    font-size: 1.3rem;
   }
+
   .sending-label {
     display: flex;
     align-items: center;
@@ -32,9 +34,10 @@ page-tx-details {
   }
 
   .payment-proposal-to, .wallet {
+    color: color($colors, grey);
+    font-size: 1.4rem;
     display: flex;
     align-items: center;
-    margin-top: 1rem;
     .icon-wallet {
       width: 25px;
       height: 25px;
@@ -44,7 +47,7 @@ page-tx-details {
       }
     }
     .icon-bitcoin {
-      margin: 9px 2rem 9px 0;
+      margin: 0 9px 0 0;
       width: 25px;
       height: 25px;
       padding: 5px;
