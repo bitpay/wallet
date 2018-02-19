@@ -153,12 +153,13 @@ export class PushNotificationsProvider {
     if (!wallet) return;
 
     this.navCtrl = this.app.getActiveNav();
-    this.navCtrl.popToRoot({ animate: false });
-    this.navCtrl.parent.select(0);
-    if (!wallet.isComplete()) {
-      this.navCtrl.push(CopayersPage, { walletId: wallet.credentials.walletId });
-      return;
-    }
-    this.navCtrl.push(WalletDetailsPage, { walletId: wallet.credentials.walletId });
+    this.navCtrl.popToRoot({ animate: false }).then(() => {
+      this.navCtrl.parent.select(0);
+      if (!wallet.isComplete()) {
+        this.navCtrl.push(CopayersPage, { walletId: wallet.credentials.walletId });
+        return;
+      }
+      this.navCtrl.push(WalletDetailsPage, { walletId: wallet.credentials.walletId });
+    });
   }
 }

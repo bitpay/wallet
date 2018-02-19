@@ -64,9 +64,12 @@ export class ScanPage {
     this.scannerIsDenied = false;
     this.scannerIsRestricted = false;
     this.canOpenSettings = false;
+    console.log("#########################################CONSTRUCTOR");
+
   }
 
   ionViewDidLoad() {
+    console.log("#########################################VIEWDIDLOAD");
     this.logger.info('ionViewDidLoad ScanPage');
   }
 
@@ -76,12 +79,14 @@ export class ScanPage {
     this.cameraToggleActive = false;
     this.lightActive = false;
     this.scanProvider.frontCameraEnabled = false;
+    console.log("#########################################VIEWWILLLEAVE");
     this.scanProvider.deactivate();
     this.events.unsubscribe('incomingDataMenu.showMenu');
     this.events.unsubscribe('scannerServiceInitialized');
   }
 
   ionViewWillEnter() {
+    console.log("#########################################VIEWWILLENTER");
     //TODO support for browser
     if (!this.platform.isCordova) {
       this.notSupportedMessage = this.translate.instant("Scanner not supported");

@@ -213,8 +213,9 @@ export class ImportWalletPage {
         this.navCtrl.popToRoot();
       }
       else {
-        this.navCtrl.popToRoot();
-        this.navCtrl.parent.select(0);
+        this.navCtrl.popToRoot().then(() => {
+          this.navCtrl.parent.select(0);
+        });
       }
     }).catch((err: any) => {
       this.logger.warn(err);
@@ -373,8 +374,9 @@ export class ImportWalletPage {
     if (this.navParams.data.fromScan) {
       this.navCtrl.popToRoot({ animate: false });
     } else {
-      this.navCtrl.popToRoot({ animate: false });
-      this.navCtrl.parent.select(2);
+      this.navCtrl.popToRoot({ animate: false }).then(() => {
+        this.navCtrl.parent.select(2);
+      });
     }
   }
 

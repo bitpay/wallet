@@ -169,8 +169,9 @@ export class JoinWalletPage {
     if (this.navParams.data.fromScan) {
       this.navCtrl.popToRoot({ animate: false });
     } else {
-      this.navCtrl.popToRoot({ animate: false });
-      this.navCtrl.parent.select(2);
+      this.navCtrl.popToRoot({ animate: false }).then(() => {
+        this.navCtrl.parent.select(2);
+      });
     }
   }
 

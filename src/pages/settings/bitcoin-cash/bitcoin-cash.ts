@@ -179,8 +179,9 @@ export class BitcoinCashPage {
 					if (isNew)
 						this.walletProvider.startScan(newWallet);
 
-					this.navCtrl.popToRoot({ animate: false });
-					this.navCtrl.parent.select(0);
+					this.navCtrl.popToRoot({ animate: false }).then(() => {
+						this.navCtrl.parent.select(0);
+					});
 				});
 			}).catch((err) => {
 				this.onGoingProcessProvider.set('duplicatingWallet', false);

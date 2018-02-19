@@ -96,8 +96,9 @@ export class CopayersPage {
       this.onGoingProcessProvider.set('deletingWallet', false);
 
       this.pushNotificationsProvider.unsubscribe(this.wallet);
-      this.navCtrl.popToRoot();
-      this.navCtrl.parent.select(0);
+      this.navCtrl.popToRoot().then(() => {
+        this.navCtrl.parent.select(0);
+      });
     }).catch((err: any) => {
       this.onGoingProcessProvider.set('deletingWallet', false);
       let errorText = this.translate.instant('Error');
