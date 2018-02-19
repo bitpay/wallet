@@ -81,12 +81,12 @@ export class PaperWalletPage {
     }
   }
 
-  private getPrivateKey(scannedKey: string, isPkEncrypted: boolean, passphrase: string, cb: Function): Function {
+  private getPrivateKey(scannedKey: string, isPkEncrypted: boolean, passphrase: string, cb: (err, scannedKey) => any): () => any {
     if (!isPkEncrypted) return cb(null, scannedKey);
     this.wallet.decryptBIP38PrivateKey(scannedKey, passphrase, null, cb);
   }
 
-  private getBalance(privateKey: string, cb: Function): void {
+  private getBalance(privateKey: string, cb: (err: any, balance: number) => any): void {
     this.wallet.getBalanceFromPrivateKey(privateKey, cb);
   }
 

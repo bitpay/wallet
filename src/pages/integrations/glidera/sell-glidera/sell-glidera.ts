@@ -116,7 +116,7 @@ export class SellGlideraPage {
     });
   }
 
-  private ask2FaCode(mode, cb): Function {
+  private ask2FaCode(mode, cb): () => any {
     if (mode != 'NONE') {
       // SHOW PROMPT
       let title = 'Please, enter the code below';

@@ -57,7 +57,7 @@ export class BitPayAccountProvider {
   ) {
   }
 
-  public pair(pairData: any, pairingReason: string, cb: Function) {
+  public pair(pairData: any, pairingReason: string, cb: (err: string, paired?: boolean, apiContext?: any) => any) {
     this.checkOtp(pairData, (otp) => {
       pairData.otp = otp;
       let deviceName = 'Unknown device';
@@ -127,7 +127,7 @@ export class BitPayAccountProvider {
     });
   }
 
-  private checkOtp(pairData: any, cb: Function) {
+  private checkOtp(pairData: any, cb: (otp?) => any) {
     if (pairData.otp) {
       let msg = 'Enter Two Factor for your BitPay account'; // TODO gettextcatalog
       this.popupProvider.ionicPrompt(null, msg, null).then((res) => {
@@ -138,7 +138,7 @@ export class BitPayAccountProvider {
     }
   }
 
-  private fetchBasicInfo(apiContext: any, cb: Function) {
+  private fetchBasicInfo(apiContext: any, cb: (err, basicInfo?) => any) {
     let json = {
       method: 'getBasicInfo'
     };
@@ -153,7 +153,7 @@ export class BitPayAccountProvider {
   };
 
   // Returns account objects as stored.
-  public getAccountsAsStored(cb: Function) {
+  public getAccountsAsStored(cb: (err, accounts) => any) {
     this.persistenceProvider.getBitpayAccounts(this.bitPayProvider.getEnvironment().network).then((accounts) => {
       return cb(null, accounts);
     }).catch((err) => {
@@ -163,7 +163,7 @@ export class BitPayAccountProvider {
 
   // Returns an array where each element represents an account including all information required for fetching data
   // from the server for each account (apiContext).
-  public getAccounts(cb: Function) {
+  public getAccounts(cb: (err, accounts?) => any) {
     this.getAccountsAsStored((err, accounts) => {
       if (err || _.isEmpty(accounts)) {
         return cb(err, []);
@@ -198,7 +198,7 @@ export class BitPayAccountProvider {
     this.persistenceProvider.setBitpayAccount(this.bitPayProvider.getEnvironment().network, account);
   };
 
-  public removeAccount(email: string, cb: Function) {
+  public removeAccount(email: string, cb: () => any) {
     this.persistenceProvider.removeBitpayAccount(this.bitPayProvider.getEnvironment().network, email).then(() => {
       this.bitPayCardProvider.register();
       return cb();

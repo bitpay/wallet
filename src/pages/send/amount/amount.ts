@@ -286,7 +286,7 @@ export class AmountPage {
   public showSendMaxMenu(): void {
     let buttons: any[] = [];
 
-    let sendMaxButton: Object = {
+    let sendMaxButton = {
       text: this.itemSelectorLabel,
       icon: 'speedometer',
       handler: () => {

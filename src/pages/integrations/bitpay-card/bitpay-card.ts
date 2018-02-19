@@ -98,7 +98,7 @@ export class BitPayCardPage {
     };
   }
 
-  private setGetStarted(history: any, cb: Function) {
+  private setGetStarted(history: any, cb: () => any) {
 
     // Is the card new?
     if (!_.isEmpty(history.transactionList))

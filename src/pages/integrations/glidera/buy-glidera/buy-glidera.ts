@@ -112,7 +112,7 @@ export class BuyGlideraPage {
     });
   }
 
-  private ask2FaCode(mode, cb): Function {
+  private ask2FaCode(mode, cb): () => any {
     if (mode != 'NONE') {
       // SHOW PROMPT
       var title = 'Please, enter the code below';
