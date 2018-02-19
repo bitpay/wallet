@@ -28,7 +28,7 @@ export class FeedbackProvider {
 
       this.http.post(this.URL, null, {
         params: urlSearchParams,
-        headers: headers
+        headers
       }).subscribe(() => {
         this.logger.info("SUCCESS: Feedback sent");
         return resolve();

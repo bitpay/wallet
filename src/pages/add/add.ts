@@ -28,7 +28,7 @@ export class AddPage {
   }
 
   public goToCreateWallet(isShared: boolean): void {
-    this.navCtrl.push(CreateWalletPage, { isShared: isShared, coin: this.coin });
+    this.navCtrl.push(CreateWalletPage, { isShared, coin: this.coin });
   }
 
   public goToJoinWallet(): void {

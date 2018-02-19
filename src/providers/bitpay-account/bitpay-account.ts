@@ -72,7 +72,7 @@ export class BitPayAccountProvider {
         params: {
           secret: pairData.secret,
           version: 2,
-          deviceName: deviceName,
+          deviceName,
           code: pairData.otp
         }
       };
@@ -83,7 +83,7 @@ export class BitPayAccountProvider {
         }
         let apiContext = {
           token: data.data,
-          pairData: pairData,
+          pairData,
           appIdentity: data.appIdentity
         };
         this.logger.info('BitPay service BitAuth create token: SUCCESS');
@@ -184,7 +184,7 @@ export class BitPayAccountProvider {
             pairData: {
               email: key
             },
-            appIdentity: appIdentity
+            appIdentity
           };
 
           accountsArray.push(accounts[key]);

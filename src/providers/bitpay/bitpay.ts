@@ -32,7 +32,7 @@ export class BitPayProvider {
     let headers: any = {
       'Content-Type': 'application/json'
     };
-    this.http.get(url, { headers: headers }).subscribe((data) => {
+    this.http.get(url, { headers }).subscribe((data) => {
       successCallback(data);
     }, (data) => {
       errorCallback(data);
@@ -54,7 +54,7 @@ export class BitPayProvider {
       headers = headers.append('x-identity', appIdentity.pub);
       headers = headers.append('x-signature', signedData);
 
-      this.http.post(url, json, { headers: headers }).subscribe((data) => {
+      this.http.post(url, json, { headers }).subscribe((data) => {
         successCallback(data);
       }, (data) => {
         errorCallback(data);
@@ -76,7 +76,7 @@ export class BitPayProvider {
         'Content-Type': 'application/json'
       };
       this.logger.debug('post auth:' + JSON.stringify(json));
-      this.http.post(url, json, { headers: headers }).subscribe((data: any) => {
+      this.http.post(url, json, { headers }).subscribe((data: any) => {
         data.appIdentity = appIdentity;
         successCallback(data);
       }, (data) => {

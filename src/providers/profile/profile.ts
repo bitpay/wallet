@@ -238,7 +238,7 @@ export class ProfileProvider {
   }
 
   public setLastKnownBalance(wid: string, balance: number): void {
-    this.persistenceProvider.setBalanceCache(wid, { balance: balance, updatedOn: Math.floor(Date.now() / 1000) });
+    this.persistenceProvider.setBalanceCache(wid, { balance, updatedOn: Math.floor(Date.now() / 1000) });
   }
 
   private runValidation(wallet: any, delay?: number, retryDelay?: number) {
@@ -261,7 +261,7 @@ export class ProfileProvider {
     this.logger.debug('ValidatingWallet: ' + walletId + ' skip Device:' + skipDeviceValidation);
     setTimeout(() => {
       wallet.validateKeyDerivation({
-        skipDeviceValidation: skipDeviceValidation,
+        skipDeviceValidation,
       }, (err: any, isOK: any) => {
         this.validationLock = false;
 
@@ -450,7 +450,7 @@ export class ProfileProvider {
               return resolve();
             }
 
-            this.configProvider.set({ bwsFor: bwsFor });
+            this.configProvider.set({ bwsFor });
             return resolve();
           });
         };
@@ -722,7 +722,7 @@ export class ProfileProvider {
         try {
           opts.mnemonic = this.normalizeMnemonic(opts.mnemonic);
           walletClient.seedFromMnemonic(opts.mnemonic, {
-            network: network,
+            network,
             passphrase: opts.passphrase,
             account: opts.account || 0,
             derivationStrategy: opts.derivationStrategy || 'BIP44',
@@ -736,7 +736,7 @@ export class ProfileProvider {
       } else if (opts.extendedPrivateKey) {
         try {
           walletClient.seedFromExtendedPrivateKey(opts.extendedPrivateKey, {
-            network: network,
+            network,
             account: opts.account || 0,
             derivationStrategy: opts.derivationStrategy || 'BIP44',
             coin: opts.coin,
@@ -761,7 +761,7 @@ export class ProfileProvider {
         let lang = this.languageProvider.getCurrent();
         try {
           walletClient.seedFromRandomWithMnemonic({
-            network: network,
+            network,
             passphrase: opts.passphrase,
             language: lang,
             account: 0,
@@ -772,7 +772,7 @@ export class ProfileProvider {
           if (e.message.indexOf('language') > 0) {
             this.logger.info('Using default language for recovery phrase');
             walletClient.seedFromRandomWithMnemonic({
-              network: network,
+              network,
               passphrase: opts.passphrase,
               account: 0,
               coin: opts.coin
@@ -1137,7 +1137,7 @@ export class ProfileProvider {
             notifications = _.compact(_.flatten(notifications)).slice(0, MAX);
             let total = notifications.length;
             let processArray = process(notifications);
-            return resolve({ notifications: processArray, total: total });
+            return resolve({ notifications: processArray, total });
           }
         });
       });
@@ -1163,7 +1163,7 @@ export class ProfileProvider {
       let n = txps.length;
       txps = _.sortBy(txps, 'pendingForUs', 'createdOn');
       txps = _.compact(_.flatten(txps)).slice(0, opts.limit || MAX);
-      return resolve({ txps: txps, n: n });
+      return resolve({ txps, n });
     });
   };
 

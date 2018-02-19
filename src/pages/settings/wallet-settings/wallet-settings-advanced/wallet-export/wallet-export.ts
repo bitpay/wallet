@@ -153,7 +153,7 @@ export class WalletExportPage {
         let opts = {
           noSign: this.exportWalletForm.value.noSignEnabled,
           addressBook: localAddressBook,
-          password: password
+          password
         };
 
         this.backupProvider.walletDownload(this.exportWalletForm.value.password, opts, this.navParams.data.walletId).then(() => {
@@ -195,7 +195,7 @@ export class WalletExportPage {
           let opts = {
             noSign: this.exportWalletForm.value.noSignEnabled,
             addressBook: localAddressBook,
-            password: password
+            password
           };
 
           var ew = this.backupProvider.walletExport(this.exportWalletForm.value.password, opts, this.navParams.data.walletId);

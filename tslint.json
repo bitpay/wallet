@@ -34,7 +34,6 @@
     "no-string-literal": false,
     "no-var-keyword": false,
     "curly": false,
-    "object-literal-shorthand": false,
     "member-access": false,
     "arrow-return-shorthand": false,
     "array-type": false

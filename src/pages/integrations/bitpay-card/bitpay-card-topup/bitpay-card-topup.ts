@@ -233,11 +233,11 @@ export class BitPayCardTopUpPage {
       });
 
       let txp = {
-        toAddress: toAddress,
+        toAddress,
         amount: amountSat,
-        outputs: outputs,
-        message: message,
-        payProUrl: payProUrl,
+        outputs,
+        message,
+        payProUrl,
         excludeUnconfirmedUtxos: this.configWallet.spendUnconfirmed ? false : true,
         feeLevel: this.configWallet.settings.feeLevel ? this.configWallet.settings.feeLevel : 'normal'
       };
@@ -257,7 +257,7 @@ export class BitPayCardTopUpPage {
     return new Promise((resolve, reject) => {
       this.feeProvider.getCurrentFeeRate(wallet.coin, wallet.credentials.network).then((feePerKb) => {
         this.walletProvider.getSendMaxInfo(wallet, {
-          feePerKb: feePerKb,
+          feePerKb,
           excludeUnconfirmedUtxos: !this.configWallet.spendUnconfirmed,
           returnInputs: true
         }).then((resp) => {
@@ -266,7 +266,7 @@ export class BitPayCardTopUpPage {
             amount: resp.amount,
             inputs: resp.inputs,
             fee: resp.fee,
-            feePerKb: feePerKb,
+            feePerKb,
           });
         }).catch((err) => {
           return reject(err);
@@ -431,7 +431,7 @@ export class BitPayCardTopUpPage {
         successComment = this.translate.instant('Transaction initiated');
     }
     let successText = '';
-    let modal = this.modalCtrl.create(SuccessModalPage, { successText: successText, successComment: successComment }, { showBackdrop: true, enableBackdropDismiss: false });
+    let modal = this.modalCtrl.create(SuccessModalPage, { successText, successComment }, { showBackdrop: true, enableBackdropDismiss: false });
     modal.present();
     modal.onDidDismiss(() => {
       this.navCtrl.popToRoot({ animate: false });

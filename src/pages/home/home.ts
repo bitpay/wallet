@@ -339,7 +339,7 @@ export class HomePage {
   }
 
   public goToAddView(coin?: string): void {
-    this.navCtrl.push(AddPage, { coin: coin });
+    this.navCtrl.push(AddPage, { coin });
   }
 
   public goToWalletDetails(wallet: any): void {
@@ -415,7 +415,7 @@ export class HomePage {
   }
 
   public openTxpModal(tx: any): void {
-    let modal = this.modalCtrl.create(TxpDetailsPage, { tx: tx }, { showBackdrop: false, enableBackdropDismiss: false });
+    let modal = this.modalCtrl.create(TxpDetailsPage, { tx }, { showBackdrop: false, enableBackdropDismiss: false });
     modal.present();
   }
 

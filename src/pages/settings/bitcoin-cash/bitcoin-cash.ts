@@ -131,14 +131,14 @@ export class BitcoinCashPage {
 
 					// first try to import
 					this.profileProvider.importExtendedPrivateKey(opts.extendedPrivateKey, opts).then((newWallet) => {
-						return resolve({ newWallet: newWallet });
+						return resolve({ newWallet });
 					}).catch((err) => {
 						if (!(err instanceof this.errors.NOT_AUTHORIZED)) {
 							return reject(err);
 						}
 						// create and store a wallet
 						this.profileProvider.createWallet(opts).then((newWallet) => {
-							return resolve({ newWallet: newWallet, isNew: true });
+							return resolve({ newWallet, isNew: true });
 						});
 					});
 				}).catch((err) => {

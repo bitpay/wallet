@@ -310,9 +310,9 @@ export class SellCoinbasePage {
           });
 
           let txp = {
-            toAddress: toAddress,
+            toAddress,
             amount: amountSat,
-            outputs: outputs,
+            outputs,
             message: comment,
             payProUrl: null,
             excludeUnconfirmedUtxos: configWallet.spendUnconfirmed ? false : true,
@@ -361,7 +361,7 @@ export class SellCoinbasePage {
   public openSuccessModal(): void {
     let successText = 'Funds sent to Coinbase Account';
     let successComment = 'The transaction is not yet confirmed, and will show as "Pending" in your Activity. The bitcoin sale will be completed automatically once it is confirmed by Coinbase';
-    let modal = this.modalCtrl.create(SuccessModalPage, { successText: successText, successComment: successComment }, { showBackdrop: true, enableBackdropDismiss: false });
+    let modal = this.modalCtrl.create(SuccessModalPage, { successText, successComment }, { showBackdrop: true, enableBackdropDismiss: false });
     modal.present();
     modal.onDidDismiss(() => {
       this.navCtrl.remove(3, 1);

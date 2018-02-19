@@ -15,8 +15,8 @@ export class PopupProvider {
   public ionicAlert(title: string, subTitle?: string, okText?: string): Promise<any> {
     return new Promise((resolve, reject) => {
       let alert = this.alertCtrl.create({
-        title: title,
-        subTitle: subTitle,
+        title,
+        subTitle,
         enableBackdropDismiss: false,
         buttons: [
           {
@@ -35,8 +35,8 @@ export class PopupProvider {
   public ionicConfirm(title: string, message: string, okText?: string, cancelText?: string): Promise<any> {
     return new Promise((resolve, reject) => {
       let confirm = this.alertCtrl.create({
-        title: title,
-        message: message,
+        title,
+        message,
         buttons: [
           {
             text: cancelText ? cancelText : this.translate.instant('Cancel'),
@@ -65,12 +65,12 @@ export class PopupProvider {
       let inputType = opts && opts.type ? opts.type : 'text';
 
       let prompt = this.alertCtrl.create({
-        title: title,
-        message: message,
+        title,
+        message,
         inputs: [
           {
             value: defaultText,
-            placeholder: placeholder,
+            placeholder,
             type: inputType
           },
         ],

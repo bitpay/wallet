@@ -94,11 +94,11 @@ export class BitPayCardProvider {
     return this._getMerchantInfo({
       date: txn.timestamp || dateTime,
       category: txn.mcc,
-      merchant: merchant,
+      merchant,
       description: txn.description[0],
       price: parseFloat(txn.amount) + parseFloat(txn.fee),
       type: txn.type,
-      runningBalance: runningBalance
+      runningBalance
     });
   };
 
@@ -359,7 +359,7 @@ export class BitPayCardProvider {
   public setLastKnownBalance(cardId, balance) {
 
     this.persistenceProvider.setBalanceCache(cardId, {
-      balance: balance,
+      balance,
       updatedOn: Math.floor(Date.now() / 1000),
     });
   };

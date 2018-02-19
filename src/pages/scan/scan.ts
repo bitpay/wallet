@@ -141,7 +141,7 @@ export class ScanPage {
   }
 
   private sendPaymentToAddress(bitcoinAddress: string, coin: string): void {
-    this.navCtrl.push(AmountPage, { toAddress: bitcoinAddress, coin: coin });
+    this.navCtrl.push(AmountPage, { toAddress: bitcoinAddress, coin });
   }
 
   private addToAddressBook(bitcoinAddress: string): void {
@@ -149,7 +149,7 @@ export class ScanPage {
   }
 
   private scanPaperWallet(privateKey: string) {
-    this.navCtrl.push(PaperWalletPage, { privateKey: privateKey });
+    this.navCtrl.push(PaperWalletPage, { privateKey });
   }
 
   private updateCapabilities(): void {

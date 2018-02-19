@@ -141,7 +141,7 @@ export class WalletDetailsPage {
     }).bind(this);
 
     this.walletProvider.getTxHistory(this.wallet, {
-      progressFn: progressFn
+      progressFn
     }).then((txHistory) => {
       this.updatingTxHistory = false;
 

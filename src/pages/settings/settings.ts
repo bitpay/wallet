@@ -129,7 +129,7 @@ export class SettingsPage {
   }
 
   public openWalletSettingsPage(walletId: string): void {
-    this.navCtrl.push(WalletSettingsPage, { walletId: walletId });
+    this.navCtrl.push(WalletSettingsPage, { walletId });
   }
 
   public openSendFeedbackPage(): void {

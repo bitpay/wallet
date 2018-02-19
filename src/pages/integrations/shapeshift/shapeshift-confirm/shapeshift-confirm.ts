@@ -184,8 +184,8 @@ export class ShapeshiftConfirmPage {
 
     this.shapeshiftProvider.getStatus(address, (err: any, st: any) => {
       let newData = {
-        address: address,
-        withdrawal: withdrawal,
+        address,
+        withdrawal,
         date: now,
         amount: this.amountStr,
         rate: this.rateUnit + ' ' + this.toWallet.coin.toUpperCase() + ' per ' + this.fromWallet.coin.toUpperCase(),
@@ -221,9 +221,9 @@ export class ShapeshiftConfirmPage {
       });
 
       let txp = {
-        toAddress: toAddress,
+        toAddress,
         amount: parsedAmount.amountSat,
-        outputs: outputs,
+        outputs,
         message: this.message,
         excludeUnconfirmedUtxos: this.configWallet.spendUnconfirmed ? false : true,
         feeLevel: this.configWallet.settings.feeLevel || 'normal',
@@ -271,7 +271,7 @@ export class ShapeshiftConfirmPage {
         let data = {
           withdrawal: withdrawalAddress,
           pair: this.getCoinPair(),
-          returnAddress: returnAddress
+          returnAddress
         }
         this.shapeshiftProvider.shift(data, (err: any, shapeData: any) => {
           if (err || shapeData.error) {
@@ -352,7 +352,7 @@ export class ShapeshiftConfirmPage {
 
   public openSuccessModal(): void {
     let successText = 'Transaction Sent';
-    let modal = this.modalCtrl.create(SuccessModalPage, { successText: successText }, { showBackdrop: true, enableBackdropDismiss: false });
+    let modal = this.modalCtrl.create(SuccessModalPage, { successText }, { showBackdrop: true, enableBackdropDismiss: false });
     modal.present();
     modal.onDidDismiss(() => {
       this.navCtrl.popToRoot({ animate: false });

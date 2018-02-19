@@ -63,7 +63,7 @@ export class SessionLogPage {
     this.filterLogs(weight);
     let opts = {
       log: {
-        weight: weight
+        weight
       }
     };
     this.configProvider.set(opts);
@@ -87,7 +87,7 @@ export class SessionLogPage {
     this.dom.execCommand('copy');
     let message = this.translate.instant('Copied to clipboard');
     let showSuccess = this.toastCtrl.create({
-      message: message,
+      message,
       duration: 1000,
     });
     showSuccess.present();

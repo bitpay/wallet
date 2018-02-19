@@ -228,11 +228,11 @@ export class TxFormatProvider {
     }
 
     return {
-      amount: amount,
-      currency: currency,
-      alternativeIsoCode: alternativeIsoCode,
-      amountSat: amountSat,
-      amountUnitStr: amountUnitStr
+      amount,
+      currency,
+      alternativeIsoCode,
+      amountSat,
+      amountUnitStr
     };
   };
 

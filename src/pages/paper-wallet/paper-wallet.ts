@@ -107,7 +107,7 @@ export class PaperWalletPage {
 
         this.getBalance(privateKey, (err: any, balance: number) => {
           if (err) return reject(err);
-          return resolve({ privateKey: privateKey, balance: balance });
+          return resolve({ privateKey, balance });
         });
       });
     });
@@ -147,7 +147,7 @@ export class PaperWalletPage {
                 network: 'livenet'
               }, (err, txid) => {
                 if (err) return reject(err);
-                return resolve({ destinationAddress: destinationAddress, txid: txid });
+                return resolve({ destinationAddress, txid });
               });
             });
           });
@@ -186,7 +186,7 @@ export class PaperWalletPage {
   public openSuccessModal(): void {
     let successComment = this.translate.instant("Check the transaction on your wallet details");
     let successText = this.translate.instant('Sweep Completed');
-    let modal = this.modalCtrl.create(SuccessModalPage, { successText: successText, successComment: successComment }, { showBackdrop: true, enableBackdropDismiss: false });
+    let modal = this.modalCtrl.create(SuccessModalPage, { successText, successComment }, { showBackdrop: true, enableBackdropDismiss: false });
     modal.present();
     modal.onDidDismiss(() => {
       this.navCtrl.pop();

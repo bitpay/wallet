@@ -70,8 +70,8 @@ export class Logger {
     msg = msg.replace('/xpriv.*/', 'xpriv[Hidden]');
     this.logs.push({
       timestamp: new Date().toISOString(),
-      level: level,
-      msg: msg
+      level,
+      msg
     });
   }
 

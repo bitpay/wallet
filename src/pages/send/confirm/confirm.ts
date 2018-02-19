@@ -166,8 +166,8 @@ export class ConfirmPage {
 
       this.wallets = this.profileProvider.getWallets({
         onlyComplete: true,
-        network: network,
-        coin: coin
+        network,
+        coin
       });
 
       if (!this.wallets || !this.wallets.length) {
@@ -614,7 +614,7 @@ export class ConfirmPage {
     if (onlyPublish) {
       let successText = this.translate.instant('Payment Published');
       let successComment = this.translate.instant('You could sign the transaction later in your wallet details');
-      params = { successText: successText, successComment: successComment };
+      params = { successText, successComment };
     }
     let modal = this.modalCtrl.create(SuccessModalPage, params, { showBackdrop: true, enableBackdropDismiss: false });
     modal.present();

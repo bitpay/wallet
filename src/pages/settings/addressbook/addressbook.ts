@@ -69,7 +69,7 @@ export class AddressbookPage {
   };
 
   public viewEntry(contact: any): void {
-    this.navCtrl.push(AddressbookViewPage, { contact: contact });
+    this.navCtrl.push(AddressbookViewPage, { contact });
   }
 
   public getItems(event: any): void {

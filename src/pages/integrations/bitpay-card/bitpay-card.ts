@@ -93,8 +93,8 @@ export class BitPayCardPage {
         return;
     }
     return {
-      startDate: startDate,
-      endDate: endDate
+      startDate,
+      endDate
     };
   }
 

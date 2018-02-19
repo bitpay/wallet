@@ -89,7 +89,7 @@ export class CollectEmailPage {
 
     this.http.post(this.URL, null, {
       params: urlSearchParams,
-      headers: headers
+      headers
     }).subscribe(() => {
       this.logger.info("SUCCESS: Email collected");
     }, (err) => {

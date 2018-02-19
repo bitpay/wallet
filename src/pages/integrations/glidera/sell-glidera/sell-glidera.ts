@@ -185,8 +185,8 @@ export class SellGlideraPage {
 
               let txp = {
                 toAddress: sellAddress,
-                amount: amount,
-                outputs: outputs,
+                amount,
+                outputs,
                 message: comment,
                 payProUrl: null,
                 excludeUnconfirmedUtxos: configWallet.spendUnconfirmed ? false : true,
@@ -206,7 +206,7 @@ export class SellGlideraPage {
 
                       let rawTx = signedTxp.raw;
                       let data = {
-                        refundAddress: refundAddress,
+                        refundAddress,
                         signedTransaction: rawTx,
                         priceUuid: this.sellInfo.priceUuid,
                         useCurrentPrice: this.sellInfo.priceUuid ? false : true,
@@ -269,7 +269,7 @@ export class SellGlideraPage {
   public openSuccessModal(): void {
     let successText = 'Funds sent to Glidera Account';
     let successComment = 'The transaction is not yet confirmed, and will show as "Pending" in your Activity. The bitcoin sale will be completed automatically once it is confirmed by Glidera';
-    let modal = this.modalCtrl.create(SuccessModalPage, { successText: successText, successComment: successComment }, { showBackdrop: true, enableBackdropDismiss: false });
+    let modal = this.modalCtrl.create(SuccessModalPage, { successText, successComment }, { showBackdrop: true, enableBackdropDismiss: false });
     modal.present();
     modal.onDidDismiss(() => {
       this.navCtrl.remove(3, 1);

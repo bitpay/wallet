@@ -425,13 +425,13 @@ export class WalletProvider {
       let res = [];
 
       let result = {
-        res: res,
+        res,
         shouldContinue: res.length >= limit
       };
 
       wallet.getTxHistory({
-        skip: skip,
-        limit: limit
+        skip,
+        limit
       }, (err: Error, txsFromServer: Array<any>) => {
         if (err) return reject(err);
 
@@ -739,7 +739,7 @@ export class WalletProvider {
   public getTxNote(wallet: any, txid: string): Promise<any> {
     return new Promise((resolve, reject) => {
       wallet.getTxNote({
-        txid: txid
+        txid
       }, (err: any, note: any) => {
         if (err) return reject(err);
         return resolve(note);
@@ -769,7 +769,7 @@ export class WalletProvider {
     return new Promise((resolve, reject) => {
       let finish = (list: any): any => {
         let tx = lodash.find(list, {
-          txid: txid
+          txid
         });
 
         if (!tx) return reject('Could not get transaction');
@@ -846,7 +846,7 @@ export class WalletProvider {
       if (lodash.isEmpty(txp) || lodash.isEmpty(wallet))
         return reject('MISSING_PARAMETER');
       wallet.publishTxProposal({
-        txp: txp
+        txp
       }, (err: any, publishedTx: any) => {
         if (err) return reject(err);
         else {
@@ -1063,9 +1063,9 @@ export class WalletProvider {
             return resolve({
               allUtxos: resp || [],
               lowUtxos: lowUtxos || [],
-              totalLow: totalLow,
+              totalLow,
               warning: minFee / balance > this.TOTAL_LOW_WARNING_RATIO,
-              minFee: minFee,
+              minFee,
             });
           });
         });

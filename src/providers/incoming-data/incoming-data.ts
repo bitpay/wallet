@@ -134,7 +134,7 @@ export class IncomingDataProvider {
       // Translate address
       this.logger.debug('address transalated to:' + addr);
       let title = this.translate.instant('Bitcoin cash Payment');
-      let msg = this.translate.instant('Payment address was translated to new Bitcoin Cash address format: {{addr}}', { addr: addr });
+      let msg = this.translate.instant('Payment address was translated to new Bitcoin Cash address format: {{addr}}', { addr });
       this.popupProvider.ionicConfirm(title, msg).then((res: boolean) => {
         if (!res) return false;
 
@@ -166,7 +166,7 @@ export class IncomingDataProvider {
         return true;
       }).catch(() => {
         this.showMenu({
-          data: data,
+          data,
           type: 'url'
         });
         return;
@@ -176,7 +176,7 @@ export class IncomingDataProvider {
       this.logger.debug('Handling Bitcoin Plain Address');
       if (this.navCtrl.getActive().name === 'ScanPage') {
         this.showMenu({
-          data: data,
+          data,
           type: 'bitcoinAddress',
           coin: 'btc'
         });
@@ -188,7 +188,7 @@ export class IncomingDataProvider {
       this.logger.debug('Handling Bitcoin Cash Plain Address');
       if (this.navCtrl.getActive().name === 'ScanPage') {
         this.showMenu({
-          data: data,
+          data,
           type: 'bitcoinAddress',
           coin: 'bch',
         });
@@ -199,14 +199,14 @@ export class IncomingDataProvider {
     } else if (data && data.indexOf(this.appProvider.info.name + '://glidera') === 0) {
 
       let code = this.getParameterByName('code', data);
-      this.navCtrl.push(GlideraPage, { code: code });
+      this.navCtrl.push(GlideraPage, { code });
 
       this.logger.debug('Glidera TODO');
       return true;
     } else if (data && data.indexOf(this.appProvider.info.name + '://coinbase') === 0) {
 
       let code = this.getParameterByName('code', data);
-      this.navCtrl.push(CoinbasePage, { code: code });
+      this.navCtrl.push(CoinbasePage, { code });
 
       this.logger.debug('Coinbase TODO');
       return true;
@@ -226,7 +226,7 @@ export class IncomingDataProvider {
         case '0':
           /* For BitPay card binding */
           this.navCtrl.parent.select(0);
-          this.navCtrl.push(BitPayCardIntroPage, { secret: secret, email: email, otp: otp });
+          this.navCtrl.push(BitPayCardIntroPage, { secret, email, otp });
           break;
       }
       return true;
@@ -242,7 +242,7 @@ export class IncomingDataProvider {
     } else if (data && (data.substring(0, 2) == '6P' || this.checkPrivateKey(data))) {
       this.logger.debug('Handling private key');
       this.showMenu({
-        data: data,
+        data,
         type: 'privateKey'
       });
     } else if (data && ((data.substring(0, 2) == '1|') || (data.substring(0, 2) == '2|') || (data.substring(0, 2) == '3|'))) {
@@ -254,7 +254,7 @@ export class IncomingDataProvider {
       if (this.navCtrl.getActive().name === 'ScanPage') {
         this.logger.debug('Handling plain text');
         this.showMenu({
-          data: data,
+          data,
           type: 'text'
         });
       }
@@ -300,23 +300,23 @@ export class IncomingDataProvider {
   private goSend(addr: string, amount: string, message: string, coin: string): void {
     if (amount) {
       this.navCtrl.push(ConfirmPage, {
-        amount: amount,
+        amount,
         toAddress: addr,
         description: message,
-        coin: coin
+        coin
       });
     } else {
       this.navCtrl.push(AmountPage, {
         toAddress: addr,
-        coin: coin
+        coin
       });
     }
   }
 
   private goToAmountPage(toAddress: string, coin: string) {
     this.navCtrl.push(AmountPage, {
-      toAddress: toAddress,
-      coin: coin
+      toAddress,
+      coin
     });
   }
 
@@ -326,7 +326,7 @@ export class IncomingDataProvider {
       toAddress: payProDetails.toAddress,
       description: payProDetails.memo,
       paypro: payProDetails,
-      coin: coin
+      coin
     };
     this.scanProvider.pausePreview();
     this.navCtrl.push(ConfirmPage, stateParams);
