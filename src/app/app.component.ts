@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
-import { ModalController, Platform } from 'ionic-angular';
+import { Events, ModalController, Platform } from 'ionic-angular';
 import { Subscription } from 'rxjs';
 
 //providers
@@ -38,6 +38,7 @@ export class CopayApp {
     private platform: Platform,
     private statusBar: StatusBar,
     private splashScreen: SplashScreen,
+    private events: Events,
     private logger: Logger,
     private app: AppProvider,
     private profile: ProfileProvider,
@@ -70,11 +71,18 @@ export class CopayApp {
 
           this.statusBar.styleLightContent();
           this.splashScreen.hide();
-        }
-        //Check PIN or Fingerprint
-        this.onResumeSubscription = this.platform.resume.subscribe(() => {
-          this.openLockModal();
-        });
+
+          // Subscribe Resume
+          this.onResumeSubscription = this.platform.resume.subscribe(() => {
+
+            // Update Wallet Status
+            this.events.publish('status:updated');
+
+            // Check PIN or Fingerprint
+            this.openLockModal();
+          });
+        
+        } 
         this.openLockModal();
         // Check Profile
         this.profile.loadAndBindProfile().then((profile: any) => {
