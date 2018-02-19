@@ -51,8 +51,9 @@ export class GlideraSettingsPage {
     ).then((res) => {
       if (res) {
         this.glideraProvider.remove();
-        this.navCtrl.popToRoot({ animate: false });
-        this.navCtrl.parent.select(0);
+        this.navCtrl.popToRoot({ animate: false }).then(() => {
+          this.navCtrl.parent.select(0);
+        });
       }
     });
   }

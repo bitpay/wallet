@@ -86,7 +86,7 @@ export class ConfirmPage {
     this.config = this.configProvider.get();
     this.configFeeLevel = this.config.wallet.settings.feeLevel ? this.config.wallet.settings.feeLevel : 'normal';
     this.isCordova = this.platformProvider.isCordova;
-    this.isWindowsPhoneApp = this.platformProvider.isCordova && this.platformProvider.isWP; 
+    this.isWindowsPhoneApp = this.platformProvider.isCordova && this.platformProvider.isWP;
   }
 
   ionViewWillEnter() {
@@ -619,8 +619,9 @@ export class ConfirmPage {
     let modal = this.modalCtrl.create(SuccessModalPage, params, { showBackdrop: true, enableBackdropDismiss: false });
     modal.present();
     modal.onDidDismiss(() => {
-      this.navCtrl.popToRoot({ animate: false });
-      this.navCtrl.parent.select(0);
+      this.navCtrl.popToRoot({ animate: false }).then(() => {
+        this.navCtrl.parent.select(0);
+      });
     })
   }
 

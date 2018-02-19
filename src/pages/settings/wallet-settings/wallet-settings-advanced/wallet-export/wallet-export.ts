@@ -157,8 +157,9 @@ export class WalletExportPage {
         };
 
         this.backupProvider.walletDownload(this.exportWalletForm.value.password, opts, this.navParams.data.walletId).then(() => {
-          this.navCtrl.popToRoot({ animate: false });
-          this.navCtrl.parent.select(0);
+          this.navCtrl.popToRoot({ animate: false }).then(() => {
+            this.navCtrl.parent.select(0);
+          });
         }).catch((err: string) => {
           this.popupProvider.ionicAlert(this.translate.instant('Error'), this.translate.instant('Failed to export'));
         });

@@ -90,9 +90,10 @@ export class WalletServiceUrlPage {
     this.configProvider.set(opts);
     this.persistenceProvider.setCleanAndScanAddresses(this.wallet.credentials.walletId);
     this.events.publish('wallet:updated', this.wallet.credentials.walletId);
-    this.navCtrl.popToRoot({ animate: false });
-    this.navCtrl.parent.select(0);
-    this.reload();
+    this.navCtrl.popToRoot({ animate: false }).then(() => {
+      this.navCtrl.parent.select(0);
+      this.reload();
+    });
   };
 
   private reload(): void {

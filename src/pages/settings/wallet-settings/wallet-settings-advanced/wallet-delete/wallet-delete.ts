@@ -55,8 +55,9 @@ export class WalletDeletePage {
       this.events.publish('status:updated');
       this.onGoingProcessProvider.set('deletingWallet', false);
       this.pushNotificationsProvider.unsubscribe(this.wallet);
-      this.navCtrl.popToRoot({ animate: false });
-      this.navCtrl.parent.select(0);
+      this.navCtrl.popToRoot({ animate: false }).then(() => {
+        this.navCtrl.parent.select(0);
+      });
     }).catch((err) => {
       this.popupProvider.ionicAlert(this.translate.instant('Error'), err.message || err);
     });

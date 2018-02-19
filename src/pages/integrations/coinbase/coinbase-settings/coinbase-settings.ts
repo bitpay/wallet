@@ -62,8 +62,9 @@ export class CoinbaseSettingsPage {
     ).then((res) => {
       if (res) {
         this.coinbaseProvider.logout();
-        this.navCtrl.popToRoot({ animate: false });
-        this.navCtrl.parent.select(0);
+        this.navCtrl.popToRoot({ animate: false }).then(() => {
+          this.navCtrl.parent.select(0);
+        });
       }
     });
   };
