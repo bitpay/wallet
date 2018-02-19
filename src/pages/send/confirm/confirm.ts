@@ -573,8 +573,10 @@ export class ConfirmPage {
         if (!wallet.canSign() && !wallet.isPrivKeyExternal()) {
           this.logger.info('No signing proposal: No private key');
           this.walletProvider.onlyPublish(wallet, txp).then(() => {
+            this.onGoingProcessProvider.clear();
             this.openSuccessModal(true);
           }).catch((err: any) => {
+            this.onGoingProcessProvider.clear();
             this.setSendError(err);
           });
           return;
@@ -595,15 +597,13 @@ export class ConfirmPage {
 
       confirmTx().then((nok: boolean) => {
         if (nok) {
+          this.onGoingProcessProvider.clear();
           return;
         }
         publishAndSign();
-      }).catch((err: any) => {
-        this.logger.warn(err);
-        return;
       });
     }).catch((err: any) => {
-      this.onGoingProcessProvider.set('creatingTx', false);
+      this.onGoingProcessProvider.clear();
       this.logger.warn(err);
       return;
     });

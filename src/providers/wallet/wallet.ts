@@ -1159,11 +1159,9 @@ export class WalletProvider {
       this.ongoingProcessProvider.set('sendingTx', true);
       this.publishTx(wallet, txp).then((publishedTxp) => {
         this.invalidateCache(wallet);
-        this.ongoingProcessProvider.set('sendingTx', false);
         this.events.publish('Local/TxAction', wallet.id);
         return resolve();
       }).catch((err) => {
-        this.ongoingProcessProvider.set('sendingTx', false);
         return reject(this.bwcErrorProvider.msg(err));
       });
     });
@@ -1225,6 +1223,7 @@ export class WalletProvider {
             return reject(err);
           });
         }).catch((err) => {
+          this.ongoingProcessProvider.clear();
           return reject(this.bwcErrorProvider.msg(err));
         });
       } else {
@@ -1241,6 +1240,7 @@ export class WalletProvider {
             return reject(this.bwcErrorProvider.msg(err));
           });
         }).catch((err) => {
+          this.ongoingProcessProvider.clear();
           return reject(this.bwcErrorProvider.msg(err));
         });
       };
