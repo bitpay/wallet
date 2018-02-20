@@ -47,7 +47,7 @@ import { PaperWalletPage } from '../pages/paper-wallet/paper-wallet';
 import { PayProPage } from '../pages/paypro/paypro';
 import { FeeWarningPage } from '../pages/send/fee-warning/fee-warning';
 import { BitcoinCashPage } from '../pages/settings/bitcoin-cash/bitcoin-cash';
-import { SuccessModalPage } from '../pages/success/success';
+import { FinishModalPage } from '../pages/finish/finish';
 import { TabsPage } from '../pages/tabs/tabs';
 import { TxDetailsPage } from '../pages/tx-details/tx-details';
 import { TxpDetailsPage } from '../pages/txp-details/txp-details';
@@ -287,7 +287,7 @@ export function createTranslateLoader(http: HttpClient) {
     FeePolicyPage,
     SessionLogPage,
     SendFeedbackPage,
-    SuccessModalPage,
+    FinishModalPage,
     TourPage,
     TabsPage,
     TxpDetailsPage,
@@ -415,7 +415,7 @@ export function createTranslateLoader(http: HttpClient) {
     FeePolicyPage,
     SessionLogPage,
     SendFeedbackPage,
-    SuccessModalPage,
+    FinishModalPage,
     TourPage,
     TabsPage,
     TxpDetailsPage,

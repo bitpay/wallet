@@ -7,7 +7,7 @@ import { Logger } from '../../../../providers/logger/logger';
 
 // Pages
 import { FeeWarningPage } from '../../../send/fee-warning/fee-warning';
-import { SuccessModalPage } from '../../../success/success';
+import { FinishModalPage } from '../../../finish/finish';
 import { AmazonPage } from '../amazon';
 
 // Provider
@@ -308,7 +308,7 @@ export class BuyAmazonPage {
         this.onGoingProcessProvider.set('buyingGiftCard', false);
         this.logger.debug("Saved new gift card with status: " + newData.status);
         this.amazonGiftCard = newData;
-        this.openSuccessModal();
+        this.openFinishModal();
       });
     });
   }, 15000, {
@@ -412,25 +412,25 @@ export class BuyAmazonPage {
     });
   }
 
-  public openSuccessModal(): void {
-    let successComment: string;
+  public openFinishModal(): void {
+    let finishComment: string;
     let cssClass: string;
     if (this.amazonGiftCard.status == 'FAILURE') {
-      successComment = 'Your purchase could not be completed';
+      finishComment = 'Your purchase could not be completed';
       cssClass = 'danger';
     }
     if (this.amazonGiftCard.status == 'PENDING') {
-      successComment = 'Your purchase was added to the list of pending';
+      finishComment = 'Your purchase was added to the list of pending';
       cssClass = 'warning';
     }
     if (this.amazonGiftCard.status == 'SUCCESS') {
-      successComment = 'Bought ' + this.amountUnitStr;
+      finishComment = 'Bought ' + this.amountUnitStr;
     }
     if (this.amazonGiftCard.status == 'SUCCESS') {
-      successComment = 'Gift card generated and ready to use.';
+      finishComment = 'Gift card generated and ready to use.';
     }
-    let successText = '';
-    let modal = this.modalCtrl.create(SuccessModalPage, { successText: successText, successComment: successComment, cssClass: cssClass }, { showBackdrop: true, enableBackdropDismiss: false });
+    let finishText = '';
+    let modal = this.modalCtrl.create(FinishModalPage, { finishText: finishText, finishComment: finishComment, cssClass: cssClass }, { showBackdrop: true, enableBackdropDismiss: false });
     modal.present();
     modal.onDidDismiss(() => {
       this.navCtrl.remove(2, 2);

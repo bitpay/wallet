@@ -11,7 +11,7 @@ import { OnGoingProcessProvider } from '../../providers/on-going-process/on-goin
 import { PopupProvider } from '../../providers/popup/popup';
 import { ProfileProvider } from '../../providers/profile/profile';
 import { WalletProvider } from '../../providers/wallet/wallet';
-import { SuccessModalPage } from '../success/success';
+import { FinishModalPage } from '../finish/finish';
 
 @Component({
   selector: 'page-paper-wallet',
@@ -163,7 +163,7 @@ export class PaperWalletPage {
     this._sweepWallet().then((data: any) => {
       this.onGoingProcessProvider.set('sweepingWallet', false);
       this.logger.debug('Success sweep. Destination address:' + data.destinationAddress + ' - transaction id: ' + data.txid);
-      this.openSuccessModal();
+      this.openFinishModal();
     }).catch((err: any) => {
       this.logger.error(err);
       this.popupProvider.ionicAlert(this.translate.instant('Error sweeping wallet:'), err || err.toString());
@@ -183,10 +183,10 @@ export class PaperWalletPage {
     });
   }
 
-  public openSuccessModal(): void {
-    let successComment = this.translate.instant("Check the transaction on your wallet details");
-    let successText = this.translate.instant('Sweep Completed');
-    let modal = this.modalCtrl.create(SuccessModalPage, { successText: successText, successComment: successComment }, { showBackdrop: true, enableBackdropDismiss: false });
+  public openFinishModal(): void {
+    let finishComment = this.translate.instant("Check the transaction on your wallet details");
+    let finishText = this.translate.instant('Sweep Completed');
+    let modal = this.modalCtrl.create(FinishModalPage, { finishText: finishText, finishComment: finishComment }, { showBackdrop: true, enableBackdropDismiss: false });
     modal.present();
     modal.onDidDismiss(() => {
       this.navCtrl.pop();
