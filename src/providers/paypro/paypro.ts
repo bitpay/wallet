@@ -28,12 +28,12 @@ export class PayproProvider {
 
       this.logger.debug('Fetch PayPro Request...', uri);
 
-      if (!disableLoader) this.onGoingProcessProvider.set('fetchingPayPro', true);
+      if (!disableLoader) this.onGoingProcessProvider.set('fetchingPayPro');
 
       wallet.fetchPayPro({
         payProUrl: uri,
       }, (err, paypro) => {
-        if (!disableLoader) this.onGoingProcessProvider.set('fetchingPayPro', false);
+        if (!disableLoader) this.onGoingProcessProvider.clear();
         if (err) return reject(err);
         else if (!paypro.verified) {
           this.logger.warn('Failed to verify payment protocol signatures');

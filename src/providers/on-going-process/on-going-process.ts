@@ -59,11 +59,11 @@ export class OnGoingProcessProvider {
       'topup': this.translate.instant('Top up in progress...'),
       'duplicatingWallet': this.translate.instant('Duplicating wallet...'),
     };
-    this.ongoingProcess = {};
+    this.ongoingProcess = [];
   }
 
   public clear() {
-    this.ongoingProcess = {};
+    this.ongoingProcess = [];
     this.loading.dismiss();
     this.loading = null;
     this.logger.debug('ongoingProcess clear');
@@ -76,29 +76,21 @@ export class OnGoingProcessProvider {
 
   public resume(): void {
     this.ongoingProcess = this.pausedOngoingProcess;
-    _.forEach(this.pausedOngoingProcess, (v, k) => {
-      this.set(k, v);
+    _.forEach(this.pausedOngoingProcess, (v) => {
+      this.set(v);
       return;
     });
-    this.pausedOngoingProcess = {};
+    this.pausedOngoingProcess = [];
   }
 
-  public set(processName: string, isOn: boolean): void {
-    this.logger.debug('ongoingProcess', processName, isOn);
-    this.ongoingProcess[processName] = isOn;
+  public set(processName: string): void {
+    this.logger.debug('ongoingProcess active: ', processName);
+    this.ongoingProcess.push(processName);
     let showName = this.processNames[processName] || processName;
-    if (!isOn) {
-      delete (this.ongoingProcess[processName]);
-      if (_.isEmpty(this.ongoingProcess)) {
-        this.loading.dismiss();
-        this.loading = null;
-      }
-    } else {
-      if (!this.loading) {
-        this.loading = this.loadingCtrl.create();
-      }
-      this.loading.setContent(showName);
-      this.loading.present();
+    if (!this.loading) {
+      this.loading = this.loadingCtrl.create();
     }
+    this.loading.setContent(showName);
+    this.loading.present();
   }
 }

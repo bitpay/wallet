@@ -121,10 +121,10 @@ export class WalletAddressesPage {
   public newAddress(): void {
     if (this.gapReached) return;
 
-    this.onGoingProcessProvider.set('generatingNewAddress', true);
+    this.onGoingProcessProvider.set('generatingNewAddress');
     this.walletProvider.getAddress(this.wallet, true).then((addr: string) => {
       this.walletProvider.getMainAddresses(this.wallet, { limit: 1 }).then((_addr: any) => {
-        this.onGoingProcessProvider.set('generatingNewAddress', false);
+        this.onGoingProcessProvider.clear();
         if (addr != _addr[0].address) {
           this.popupProvider.ionicAlert(this.translate.instant('Error'), this.translate.instant('New address could not be generated. Please try again.'));
           return;
@@ -134,12 +134,12 @@ export class WalletAddressesPage {
         this.viewAll = this.noBalance.length > this.UNUSED_ADDRESS_LIMIT;
       }).catch((err) => {
         this.logger.error(err);
-        this.onGoingProcessProvider.set('generatingNewAddress', false);
+        this.onGoingProcessProvider.clear();
         this.popupProvider.ionicAlert(this.translate.instant('Error'), err);
       });
     }).catch((err) => {
       this.logger.error(err);
-      this.onGoingProcessProvider.set('generatingNewAddress', false);
+      this.onGoingProcessProvider.clear();
       if (err.toString().match('MAIN_ADDRESS_GAP_REACHED')) {
         this.gapReached = true;
       } else {

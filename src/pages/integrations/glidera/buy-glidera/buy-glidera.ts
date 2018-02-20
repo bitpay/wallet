@@ -87,10 +87,10 @@ export class BuyGlideraPage {
   }
 
   private processPaymentInfo(): void {
-    this.onGoingProcessProvider.set('connectingGlidera', true);
+    this.onGoingProcessProvider.set('connectingGlidera');
     this.glideraProvider.init((err, data) => {
       if (err) {
-        this.onGoingProcessProvider.set('connectingGlidera', false);
+        this.onGoingProcessProvider.clear();
         this.showErrorAndBack(err);
         return;
       }
@@ -102,7 +102,7 @@ export class BuyGlideraPage {
         price.qty = this.amount;
       }
       this.glideraProvider.buyPrice(this.token, price, (err, buy) => {
-        this.onGoingProcessProvider.set('connectingGlidera', false);
+        this.onGoingProcessProvider.clear();
         if (err) {
           this.showErrorAndBack(err);
           return;
@@ -139,16 +139,16 @@ export class BuyGlideraPage {
     let cancelText = 'Cancel';
     this.popupProvider.ionicConfirm(null, message, okText, cancelText).then((ok) => {
       if (!ok) return;
-      this.onGoingProcessProvider.set('buyingBitcoin', true);
+      this.onGoingProcessProvider.set('buyingBitcoin');
       this.glideraProvider.get2faCode(this.token, (err, tfa) => {
         if (err) {
-          this.onGoingProcessProvider.set('buyingBitcoin', false);
+          this.onGoingProcessProvider.clear();
           this.showError(err);
           return;
         }
         this.ask2FaCode(tfa.mode, (twoFaCode) => {
           if (tfa.mode != 'NONE' && _.isEmpty(twoFaCode)) {
-            this.onGoingProcessProvider.set('buyingBitcoin', false);
+            this.onGoingProcessProvider.clear();
             this.showError('No code entered');
             return;
           }
@@ -162,13 +162,13 @@ export class BuyGlideraPage {
               ip: null
             };
             this.glideraProvider.buy(this.token, twoFaCode, data, (err, data) => {
-              this.onGoingProcessProvider.set('buyingBitcoin', false);
+              this.onGoingProcessProvider.clear();
               if (err) return this.showError(err);
               this.logger.info(data);
               this.openFinishModal();
             });
           }).catch(() => {
-            this.onGoingProcessProvider.set('buyingBitcoin', false);
+            this.onGoingProcessProvider.clear();
             this.showError(err);
           });
         });

@@ -146,10 +146,11 @@ export class BuyMercadoLibrePage {
         this.logger.info(err);
         return reject(err);
       }
-
       this.walletProvider.publishAndSign(wallet, txp).then((txp: any) => {
+        this.onGoingProcessProvider.clear();
         return resolve(txp);
       }).catch((err: any) => {
+        this.onGoingProcessProvider.clear();
         return reject(err);
       });
     });
@@ -296,7 +297,7 @@ export class BuyMercadoLibrePage {
       }
 
       this.mercadoLibreProvider.savePendingGiftCard(newData, null, (err: any) => {
-        this.onGoingProcessProvider.set('Comprando Vale-Presente', false);
+        this.onGoingProcessProvider.clear();
         this.logger.debug("Saved new gift card with status: " + newData.status);
         this.mlGiftCard = newData;
         this.openFinishModal();
@@ -317,7 +318,7 @@ export class BuyMercadoLibrePage {
       uuid: wallet.id,
       email: email
     };
-    this.onGoingProcessProvider.set('loadingTxInfo', true);
+    this.onGoingProcessProvider.set('loadingTxInfo');
     this.createInvoice(dataSrc).then((data: any) => {
       let invoice = data.invoice;
       let accessKey = data.accessKey;
@@ -329,7 +330,7 @@ export class BuyMercadoLibrePage {
       this.message = this.amountUnitStr + " for Mercado Livre Brazil Gift Card"; // TODO: translate
 
       this.createTx(wallet, invoice, this.message).then((ctxp: any) => {
-        this.onGoingProcessProvider.set('loadingTxInfo', false);
+        this.onGoingProcessProvider.clear();
 
 
         // Save in memory
@@ -352,13 +353,13 @@ export class BuyMercadoLibrePage {
 
         this.setTotalAmount(parsedAmount.amountSat, invoiceFeeSat, ctxp.fee);
       }).catch((err: any) => {
-        this.onGoingProcessProvider.set('loadingTxInfo', false);
+        this.onGoingProcessProvider.clear();
         this._resetValues();
         this.showError(err.title, err.message);
         return;
       });
     }).catch((err: any) => {
-      this.onGoingProcessProvider.set('loadingTxInfo', false);
+      this.onGoingProcessProvider.clear();
       this.showErrorAndBack(err.title, err.message);
       return;
     });
@@ -376,7 +377,7 @@ export class BuyMercadoLibrePage {
       }
 
       this.publishAndSign(this.wallet, this.createdTx).then((txSent) => {
-        this.onGoingProcessProvider.set('Comprando Vale-Presente', true);
+        this.onGoingProcessProvider.set('Comprando Vale-Presente');
         this.checkTransaction(1, this.createdTx.giftData);
       }).catch((err: any) => {
         this._resetValues();

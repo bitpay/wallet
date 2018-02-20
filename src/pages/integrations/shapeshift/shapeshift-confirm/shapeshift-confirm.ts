@@ -146,8 +146,11 @@ export class ShapeshiftConfirmPage {
       }
 
       this.walletProvider.publishAndSign(wallet, txp).then((txp: any) => {
+        this.onGoingProcessProvider.clear();
         return resolve(txp);
       }).catch((err: any) => {
+        this.onGoingProcessProvider.clear();
+
         return reject(err);
       });
     });
@@ -260,7 +263,7 @@ export class ShapeshiftConfirmPage {
   }
 
   private createShift(): void {
-    this.onGoingProcessProvider.set('connectingShapeshift', true);
+    this.onGoingProcessProvider.set('connectingShapeshift');
 
     this.walletProvider.getAddress(this.toWallet, false).then((withdrawalAddress: string) => {
       withdrawalAddress = this.getLegacyAddressFormat(withdrawalAddress, this.toWallet.coin);
@@ -275,7 +278,7 @@ export class ShapeshiftConfirmPage {
         }
         this.shapeshiftProvider.shift(data, (err: any, shapeData: any) => {
           if (err || shapeData.error) {
-            this.onGoingProcessProvider.set('connectingShapeshift', false);
+            this.onGoingProcessProvider.clear();
             this.showErrorAndBack(null, err || shapeData.error);
             return;
           }
@@ -288,7 +291,7 @@ export class ShapeshiftConfirmPage {
             this.shapeInfo = shapeData;
 
             this.shapeshiftProvider.getRate(this.getCoinPair(), (err: any, r: any) => {
-              this.onGoingProcessProvider.set('connectingShapeshift', false);
+              this.onGoingProcessProvider.clear();
               this.rateUnit = r.rate;
               let amountUnit = this.txFormatProvider.satToUnit(ctxp.amount);
               let withdrawalSat = Number((this.rateUnit * amountUnit * 100000000).toFixed());
@@ -307,18 +310,18 @@ export class ShapeshiftConfirmPage {
               this.setFiatTotalAmount(ctxp.amount, ctxp.fee, withdrawalSat);
             });
           }).catch((err: any) => {
-            this.onGoingProcessProvider.set('connectingShapeshift', false);
+            this.onGoingProcessProvider.clear();
             this.showErrorAndBack(err.title, err.message);
             return;
           });
         });
       }).catch((err: any) => {
-        this.onGoingProcessProvider.set('connectingShapeshift', false);
+        this.onGoingProcessProvider.clear();
         this.showErrorAndBack(null, 'Could not get address');
         return;
       });
     }).catch((err: any) => {
-      this.onGoingProcessProvider.set('connectingShapeshift', false);
+      this.onGoingProcessProvider.clear();
       this.showErrorAndBack(null, 'Could not get address');
       return;
     });

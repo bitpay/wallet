@@ -92,10 +92,10 @@ export class BuyCoinbasePage {
   }
 
   private processPaymentInfo(): void {
-    this.onGoingProcessProvider.set('connectingCoinbase', true);
+    this.onGoingProcessProvider.set('connectingCoinbase');
     this.coinbaseProvider.init((err: any, res: any) => {
       if (err) {
-        this.onGoingProcessProvider.set('connectingCoinbase', false);
+        this.onGoingProcessProvider.clear();
         this.showErrorAndBack(err);
         return;
       }
@@ -109,7 +109,7 @@ export class BuyCoinbasePage {
       this.selectedPaymentMethodId = null;
       this.coinbaseProvider.getPaymentMethods(accessToken, (err: any, p: any) => {
         if (err) {
-          this.onGoingProcessProvider.set('connectingCoinbase', false);
+          this.onGoingProcessProvider.clear();
           this.showErrorAndBack(err);
           return;
         }
@@ -127,7 +127,7 @@ export class BuyCoinbasePage {
           }
         }
         if (_.isEmpty(this.paymentMethods)) {
-          this.onGoingProcessProvider.set('connectingCoinbase', false);
+          this.onGoingProcessProvider.clear();
           let url = 'https://support.coinbase.com/customer/portal/articles/1148716-payment-methods-for-us-customers';
           let msg = 'No payment method available to buy';
           let okText = 'More info';
@@ -146,10 +146,9 @@ export class BuyCoinbasePage {
   }
 
   public buyRequest(): void {
-    this.onGoingProcessProvider.set('connectingCoinbase', true);
     this.coinbaseProvider.init((err, res) => {
       if (err) {
-        this.onGoingProcessProvider.set('connectingCoinbase', false);
+        this.onGoingProcessProvider.clear();
         this.showErrorAndBack(err);
         return;
       }
@@ -162,7 +161,7 @@ export class BuyCoinbasePage {
         quote: true
       };
       this.coinbaseProvider.buyRequest(accessToken, accountId, dataSrc, (err: any, data: any) => {
-        this.onGoingProcessProvider.set('connectingCoinbase', false);
+        this.onGoingProcessProvider.clear();
         if (err) {
           this.showErrorAndBack(err);
           return;
@@ -179,10 +178,10 @@ export class BuyCoinbasePage {
     this.popupProvider.ionicConfirm(null, message, okText, cancelText).then((ok: boolean) => {
       if (!ok) return;
 
-      this.onGoingProcessProvider.set('buyingBitcoin', true);
+      this.onGoingProcessProvider.set('buyingBitcoin');
       this.coinbaseProvider.init((err: any, res: any) => {
         if (err) {
-          this.onGoingProcessProvider.set('buyingBitcoin', false);
+          this.onGoingProcessProvider.clear();
           this.showError(err);
           return;
         }
@@ -196,7 +195,7 @@ export class BuyCoinbasePage {
         };
         this.coinbaseProvider.buyRequest(accessToken, accountId, dataSrc, (err: any, b: any) => {
           if (err) {
-            this.onGoingProcessProvider.set('buyingBitcoin', false);
+            this.onGoingProcessProvider.clear();
             this.showError(err);
             return;
           }
@@ -216,14 +215,14 @@ export class BuyCoinbasePage {
 
   private processBuyTx(tx: any): void {
     if (!tx) {
-      this.onGoingProcessProvider.set('buyingBitcoin', false);
+      this.onGoingProcessProvider.clear();
       this.showError('Transaction not found');
       return;
     }
 
     this.coinbaseProvider.getTransaction(this.accessToken, this.accountId, tx.id, (err: any, updatedTx: any) => {
       if (err) {
-        this.onGoingProcessProvider.set('buyingBitcoin', false);
+        this.onGoingProcessProvider.clear();
         this.showError(err);
         return;
       }
@@ -234,12 +233,12 @@ export class BuyCoinbasePage {
 
         this.logger.debug('Saving transaction to process later...');
         this.coinbaseProvider.savePendingTransaction(updatedTx.data, {}, (err: any) => {
-          this.onGoingProcessProvider.set('buyingBitcoin', false);
+          this.onGoingProcessProvider.clear();
           if (err) this.logger.debug(err);
           this.openFinishModal();
         });
       }).catch((err) => {
-        this.onGoingProcessProvider.set('buyingBitcoin', false);
+        this.onGoingProcessProvider.clear();
         this.showError(err);
       });
     });
@@ -248,7 +247,7 @@ export class BuyCoinbasePage {
   private _processBuyOrder(b: any): void {
     this.coinbaseProvider.getBuyOrder(this.accessToken, this.accountId, b.data.id, (err: any, buyResp: any) => {
       if (err) {
-        this.onGoingProcessProvider.set('buyingBitcoin', false);
+        this.onGoingProcessProvider.clear();
         this.showError(err);
         return;
       }
@@ -281,9 +280,9 @@ export class BuyCoinbasePage {
     this.currency = 'BTC';
 
     this.amountUnitStr = parsedAmount.amountUnitStr;
-    this.onGoingProcessProvider.set('calculatingFee', true);
+    this.onGoingProcessProvider.set('calculatingFee');
     this.coinbaseProvider.checkEnoughFundsForFee(this.amount, (err: any) => {
-      this.onGoingProcessProvider.set('calculatingFee', false);
+      this.onGoingProcessProvider.clear();
       if (err) {
         this.showErrorAndBack(err);
         return;

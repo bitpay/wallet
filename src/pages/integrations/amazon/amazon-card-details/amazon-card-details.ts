@@ -37,9 +37,9 @@ export class AmazonCardDetailsPage {
   }
 
   public cancelGiftCard(): void {
-    this.onGoingProcessProvider.set('cancelingGiftCard', true);
+    this.onGoingProcessProvider.set('cancelingGiftCard');
     this.amazonProvider.cancelGiftCard(this.card, (err: any, data: any) => {
-      this.onGoingProcessProvider.set('cancelingGiftCard', false);
+      this.onGoingProcessProvider.clear();
       if (err) {
         this.popupProvider.ionicAlert('Error canceling gift card', this.bwcErrorProvider.msg(err));
         return;
@@ -61,9 +61,9 @@ export class AmazonCardDetailsPage {
 
   public refreshGiftCard(): void {
     if (!this.updateGiftCard) return;
-    this.onGoingProcessProvider.set('updatingGiftCard', true);
+    this.onGoingProcessProvider.set('updatingGiftCard');
     this.amazonProvider.getPendingGiftCards((err: any, gcds: any) => {
-      this.onGoingProcessProvider.set('updatingGiftCard', false);
+      this.onGoingProcessProvider.clear();
       if (err) {
         this.popupProvider.ionicAlert('Error', err);
         return;

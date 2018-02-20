@@ -164,7 +164,7 @@ export class BitcoinCashPage {
 
 		this.walletProvider.getKeys(wallet).then((keys) => {
 			opts.extendedPrivateKey = keys.xPrivKey;
-			this.onGoingProcessProvider.set('duplicatingWallet', true);
+			this.onGoingProcessProvider.set('duplicatingWallet');
 			importOrCreate().then((result: any) => {
 				let newWallet = result.newWallet;
 				let isNew = result.isNew;
@@ -173,7 +173,7 @@ export class BitcoinCashPage {
 				this.pushNotificationsProvider.updateSubscription(newWallet);
 
 				addCopayers(newWallet, isNew, (err) => {
-					this.onGoingProcessProvider.set('duplicatingWallet', false);
+					this.onGoingProcessProvider.clear();
 					if (err) return setErr(err);
 
 					if (isNew)
@@ -184,7 +184,7 @@ export class BitcoinCashPage {
 					});
 				});
 			}).catch((err) => {
-				this.onGoingProcessProvider.set('duplicatingWallet', false);
+				this.onGoingProcessProvider.clear();
 				setErr(err);
 			});
 		}).catch((err) => {

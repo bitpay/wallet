@@ -91,10 +91,10 @@ export class SellGlideraPage {
   }
 
   private processPaymentInfo(): void {
-    this.onGoingProcessProvider.set('connectingGlidera', true);
+    this.onGoingProcessProvider.set('connectingGlidera');
     this.glideraProvider.init((err, data) => {
       if (err) {
-        this.onGoingProcessProvider.set('connectingGlidera', false);
+        this.onGoingProcessProvider.clear();
         this.showErrorAndBack(err);
         return;
       }
@@ -106,7 +106,7 @@ export class SellGlideraPage {
         price.qty = this.amount;
       }
       this.glideraProvider.sellPrice(this.token, price, (err, sell) => {
-        this.onGoingProcessProvider.set('connectingGlidera', false);
+        this.onGoingProcessProvider.clear();
         if (err) {
           this.showErrorAndBack(err);
           return;
@@ -143,16 +143,16 @@ export class SellGlideraPage {
     let cancelText = 'Cancel';
     this.popupProvider.ionicConfirm(null, message, okText, cancelText).then((ok) => {
       if (!ok) return;
-      this.onGoingProcessProvider.set('sellingBitcoin', true);
+      this.onGoingProcessProvider.set('sellingBitcoin');
       this.glideraProvider.get2faCode(this.token, (err, tfa) => {
         if (err) {
-          this.onGoingProcessProvider.set('sellingBitcoin', false);
+          this.onGoingProcessProvider.clear();
           this.showError(err);
           return;
         }
         this.ask2FaCode(tfa.mode, (twoFaCode) => {
           if (tfa.mode != 'NONE' && _.isEmpty(twoFaCode)) {
-            this.onGoingProcessProvider.set('sellingBitcoin', false);
+            this.onGoingProcessProvider.clear();
             this.showError('No code entered');
             return;
           }
@@ -164,13 +164,13 @@ export class SellGlideraPage {
 
           this.walletProvider.getAddress(this.wallet, false).then((refundAddress) => {
             if (!refundAddress) {
-              this.onGoingProcessProvider.set('sellingBitcoin', false);
+              this.onGoingProcessProvider.clear();
               this.showError('Could not create address');
               return;
             }
             this.glideraProvider.getSellAddress(this.token, (err, sellAddress) => {
               if (!sellAddress || err) {
-                this.onGoingProcessProvider.set('sellingBitcoin', false);
+                this.onGoingProcessProvider.clear();
                 this.showError(err);
                 return;
               }
@@ -213,28 +213,28 @@ export class SellGlideraPage {
                         ip: null
                       };
                       this.glideraProvider.sell(this.token, twoFaCode, data, (err, data) => {
-                        this.onGoingProcessProvider.set('sellingBitcoin', false);
+                        this.onGoingProcessProvider.clear();
                         if (err) return this.showError(err);
                         this.logger.info(data);
                         this.openFinishModal();
                       });
                     }).catch((err) => {
-                      this.onGoingProcessProvider.set('sellingBitcoin', false);
+                      this.onGoingProcessProvider.clear();
                       this.showError(err);
                       this.walletProvider.removeTx(this.wallet, publishedTxp).catch((err) => { // TODO in the original code use signedTxp on this function
                         if (err) this.logger.debug(err);
                       });
                     });
                   }).catch((err) => {
-                    this.onGoingProcessProvider.set('sellingBitcoin', false);
+                    this.onGoingProcessProvider.clear();
                     this.showError(err);
                   });
                 }).catch((err) => {
-                  this.onGoingProcessProvider.set('sellingBitcoin', false);
+                  this.onGoingProcessProvider.clear();
                   this.showError(err);
                 });
               }).catch((err) => {
-                this.onGoingProcessProvider.set('sellingBitcoin', false);
+                this.onGoingProcessProvider.clear();
                 this.showError(err);
               });
             });

@@ -50,10 +50,10 @@ export class WalletDeletePage {
   };
 
   public deleteWallet(): void {
-    this.onGoingProcessProvider.set('deletingWallet', true);
+    this.onGoingProcessProvider.set('deletingWallet');
     this.profileProvider.deleteWalletClient(this.wallet).then(() => {
       this.events.publish('status:updated');
-      this.onGoingProcessProvider.set('deletingWallet', false);
+      this.onGoingProcessProvider.clear();
       this.pushNotificationsProvider.unsubscribe(this.wallet);
       this.navCtrl.popToRoot({ animate: false }).then(() => {
         this.navCtrl.parent.select(0);

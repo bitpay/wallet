@@ -194,10 +194,10 @@ export class CreateWalletPage implements OnInit {
   }
 
   private create(opts: any): void {
-    this.onGoingProcessProvider.set('creatingWallet', true);
+    this.onGoingProcessProvider.set('creatingWallet');
 
     this.profileProvider.createWallet(opts).then((wallet: any) => {
-      this.onGoingProcessProvider.set('creatingWallet', false);
+      this.onGoingProcessProvider.clear();
       this.events.publish('status:updated');
       this.walletProvider.updateRemotePreferences(wallet);
       this.pushNotificationsProvider.updateSubscription(wallet);
@@ -213,7 +213,7 @@ export class CreateWalletPage implements OnInit {
         this.navCtrl.popToRoot();
       }
     }).catch((err: any) => {
-      this.onGoingProcessProvider.set('creatingWallet', false);
+      this.onGoingProcessProvider.clear();
       this.logger.warn(err);
       let title = this.translate.instant('Error');
       this.popupProvider.ionicAlert(title, err);

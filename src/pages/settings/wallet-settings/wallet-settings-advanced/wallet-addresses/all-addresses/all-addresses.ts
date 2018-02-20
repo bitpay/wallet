@@ -57,9 +57,9 @@ export class AllAddressesPage {
   }
 
   public sendByEmail(): any {
-    this.onGoingProcessProvider.set('sendingByEmail', true);
+    this.onGoingProcessProvider.set('sendingByEmail');
     setTimeout(() => {
-      this.onGoingProcessProvider.set('sendingByEmail', false);
+      this.onGoingProcessProvider.clear();
       let appName = this.appProvider.info.nameCase;
 
       let body: string = appName + ' Wallet "' + this.walletName + '" Addresses\n  Only Main Addresses are  shown.\n\n';

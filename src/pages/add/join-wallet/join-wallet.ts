@@ -144,10 +144,10 @@ export class JoinWalletPage {
   }
 
   private join(opts: any): void {
-    this.onGoingProcessProvider.set('joiningWallet', true);
+    this.onGoingProcessProvider.set('joiningWallet');
 
     this.profileProvider.joinWallet(opts).then((wallet: any) => {
-      this.onGoingProcessProvider.set('joiningWallet', false);
+      this.onGoingProcessProvider.clear();
       this.events.publish('status:updated');
       this.walletProvider.updateRemotePreferences(wallet);
 
@@ -158,7 +158,7 @@ export class JoinWalletPage {
         this.navCtrl.popToRoot();
       }
     }).catch((err: any) => {
-      this.onGoingProcessProvider.set('joiningWallet', false);
+      this.onGoingProcessProvider.clear();
       let title = this.translate.instant('Error');
       this.popupProvider.ionicAlert(title, err);
       return;

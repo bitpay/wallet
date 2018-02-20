@@ -66,9 +66,9 @@ export class TourPage {
   }
 
   public createDefaultWallet(): void {
-    this.onGoingProcessProvider.set('creatingWallet', true);
+    this.onGoingProcessProvider.set('creatingWallet');
     this.profileProvider.createDefaultWallet().then((wallet) => {
-      this.onGoingProcessProvider.set('creatingWallet', false);
+      this.onGoingProcessProvider.clear();
       this.navCtrl.push(CollectEmailPage, { walletId: wallet.id });
     })
   }

@@ -26,10 +26,10 @@ export class CoinbaseSettingsPage {
   }
 
   ionViewDidLoad() {
-    this.onGoingProcessProvider.set('connectingCoinbase', true);
+    this.onGoingProcessProvider.set('connectingCoinbase');
     this.coinbaseProvider.init((err, data) => {
       if (err || _.isEmpty(data)) {
-        this.onGoingProcessProvider.set('connectingCoinbase', false);
+        this.onGoingProcessProvider.clear();
         if (err) {
           this.logger.error(err);
           let errorId = err.errors ? err.errors[0].id : null;
@@ -46,7 +46,7 @@ export class CoinbaseSettingsPage {
       let accessToken = data.accessToken;
       let accountId = data.accountId;
       this.coinbaseProvider.getAccount(accessToken, accountId, (err, account) => {
-        this.onGoingProcessProvider.set('connectingCoinbase', false);
+        this.onGoingProcessProvider.clear();
         this.coinbaseAccount = account.data[0];
       });
       this.coinbaseProvider.getCurrentUser(accessToken, (err, user) => {
