@@ -21,7 +21,6 @@
     "no-implicit-dependencies": false,
     "object-literal-sort-keys": false,
     "interface-name": false,
-    "prefer-conditional-expression": false,
     "prefer-for-of": false,
     "forin": false,
     "prefer-const": false,

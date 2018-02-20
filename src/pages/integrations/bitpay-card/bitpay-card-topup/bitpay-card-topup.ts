@@ -421,13 +421,9 @@ export class BitPayCardTopUpPage {
   }
 
   private openFinishModal(): void {
-    let finishComment: string;
-    if (this.wallet.credentials.m == 1) {
-      finishComment = this.translate.instant('Funds were added to debit card');
-    }
-    else {
-      finishComment = this.translate.instant('Transaction initiated');
-    }
+    const finishComment = this.wallet.credentials.m === 1
+      ? this.translate.instant('Funds were added to debit card')
+      : this.translate.instant('Transaction initiated');
     let finishText = '';
     let modal = this.modalCtrl.create(FinishModalPage, { finishText, finishComment }, { showBackdrop: true, enableBackdropDismiss: false });
     modal.present();

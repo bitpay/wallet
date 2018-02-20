@@ -113,10 +113,10 @@ export class BackupGamePage {
   };
 
   private shouldContinue(): void {
-    if (this.customWords.length == this.shuffledMnemonicWords.length)
-      this.selectComplete = true;
-    else
-      this.selectComplete = false;
+    this.selectComplete =
+      this.customWords.length === this.shuffledMnemonicWords.length
+        ? true
+        : false;
   };
 
   private showBackupResult(): void {

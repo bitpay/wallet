@@ -61,10 +61,8 @@ export class LanguageProvider {
     if (!_.isEmpty(lang)) this.current = lang;
     else {
       // Get from browser
-      let browserLang = this.translate.getBrowserLang();
-      let validBrowserLang = this.getName(browserLang) ? true : false;
-      if (validBrowserLang) this.current = browserLang;
-      else this.current = this.getDefault();
+      const browserLang = this.translate.getBrowserLang();
+      this.current = this.getName(browserLang) ? browserLang : this.getDefault();
     }
     this.logger.info('Default language: ' + this.current);
     this.translate.setDefaultLang(this.current);

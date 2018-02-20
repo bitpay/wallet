@@ -45,10 +45,9 @@ export class MercadoLibreCardDetailsPage {
   }
 
   public openRedeemLink() {
-    let url;
-    let isSandbox = this.mercadoLibreProvider.getNetwork() == 'testnet' ? true : false;
-    if (isSandbox) url = 'https://beta.mercadolivre.com.br/vale-presente/resgate';
-    else url = 'https://www.mercadolivre.com.br/vale-presente/resgate';
+    const url = this.mercadoLibreProvider.getNetwork() === 'testnet'
+      ? 'https://beta.mercadolivre.com.br/vale-presente/resgate'
+      : 'https://www.mercadolivre.com.br/vale-presente/resgate';
     this.openExternalLink(url);
   }
 

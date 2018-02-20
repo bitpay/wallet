@@ -92,8 +92,7 @@ export class Logger {
         if (typeof v == 'undefined') v = 'undefined';
         if (!v) v = 'null';
         if (typeof v == 'object') {
-          if (v.message) v = v.message;
-          else v = JSON.stringify(v);
+          v = v.message ? v.message : JSON.stringify(v);
         }
       } catch (e) {
         // tslint:disable-next-line:no-console
