@@ -122,11 +122,7 @@ export class WalletDetailsPage {
     // };
     // lodash.times(15, addOutput);
     // txps.push(txp);
-    if (!txps) {
-      this.txps = [];
-    } else {
-      this.txps = _.sortBy(txps, 'createdOn').reverse();
-    }
+    this.txps = !txps ? [] : _.sortBy(txps, 'createdOn').reverse();
   }
 
   private updateTxHistory() {
@@ -146,8 +142,7 @@ export class WalletDetailsPage {
       this.updatingTxHistory = false;
 
       let hasTx = txHistory[0];
-      if (hasTx) this.showNoTransactionsYetMsg = false;
-      else this.showNoTransactionsYetMsg = true;
+      this.showNoTransactionsYetMsg = hasTx ? false : true;
 
       this.wallet.completeHistory = txHistory;
       this.showHistory();

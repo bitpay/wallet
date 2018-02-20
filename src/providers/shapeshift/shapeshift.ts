@@ -34,14 +34,10 @@ export class ShapeshiftProvider {
     * Production: 'livenet'
     */
     this.credentials.NETWORK = 'livenet';
-    // TODO this.credentials.NETWORK = 'testnet';
-
-    if (this.credentials.NETWORK == 'testnet') {
-      this.credentials.API_URL = "";
-    } else {
+    this.credentials.API_URL = this.credentials.NETWORK === 'testnet'
+      ? ""
       // CORS: cors.shapeshift.io
-      this.credentials.API_URL = "https://shapeshift.io";
-    }
+      : "https://shapeshift.io";
 
     this.homeItem = {
       name: 'shapeshift',

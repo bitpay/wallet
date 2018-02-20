@@ -100,11 +100,9 @@ export class CoinbaseProvider {
       'wallet:payment-methods:read';
 
     // NW has a bug with Window Object
-    if (this.isCordova) {
-      this.credentials.REDIRECT_URI = coinbase.redirect_uri.mobile;
-    } else {
-      this.credentials.REDIRECT_URI = coinbase.redirect_uri.desktop;
-    }
+    this.credentials.REDIRECT_URI = this.isCordova
+      ? coinbase.redirect_uri.mobile
+      : coinbase.redirect_uri.desktop;
 
     if (this.credentials.NETWORK == 'testnet') {
       this.credentials.HOST = coinbase.sandbox.host;

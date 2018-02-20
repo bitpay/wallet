@@ -58,11 +58,9 @@ export class PersistenceProvider {
   };
 
   public load() {
-    if (this.platform.isCordova) {
-      this.storage = new FileStorage(this.file, this.logger);
-    } else {
-      this.storage = new LocalStorage();
-    }
+    this.storage = this.platform.isCordova
+      ? new FileStorage(this.file, this.logger)
+      : new LocalStorage();
   }
 
   storeNewProfile(profile): Promise<void> {

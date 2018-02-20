@@ -131,16 +131,11 @@ export class ChooseFeeLevelPage {
 
   public checkFees(feePerSatByte: string): void {
     let fee = Number(feePerSatByte);
-
-
-    if (fee <= this.minFeeAllowed) this.showError = true;
-    else this.showError = false;
-
-    if (fee > this.minFeeAllowed && fee < this.minFeeRecommended) this.showMinWarning = true;
-    else this.showMinWarning = false;
-
-    if (fee < this.maxFeeAllowed && fee > this.maxFeeRecommended) this.showMaxWarning = true;
-    else this.showMaxWarning = false;
+    this.showError = fee <= this.minFeeAllowed ? true : false;
+    this.showMinWarning =
+      fee > this.minFeeAllowed && fee < this.minFeeRecommended ? true : false;
+    this.showMaxWarning =
+      fee < this.maxFeeAllowed && fee > this.maxFeeRecommended ? true : false;
   }
 
   public ok(): void {

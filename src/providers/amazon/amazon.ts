@@ -28,12 +28,9 @@ export class AmazonProvider {
     * Production: 'livenet'
     */
     this.credentials.NETWORK = 'livenet';
-    // TODO this.credentials.NETWORK = 'testnet';
-    if (this.credentials.NETWORK == 'testnet') {
-      this.credentials.BITPAY_API_URL = "https://test.bitpay.com";
-    } else {
-      this.credentials.BITPAY_API_URL = "https://bitpay.com";
-    };
+    this.credentials.BITPAY_API_URL = this.credentials.NETWORK === 'testnet'
+      ? "https://test.bitpay.com"
+      : "https://bitpay.com";
     this.limitPerDay = 2000;
     this.homeItem = {
       name: 'amazon',

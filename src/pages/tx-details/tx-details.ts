@@ -65,11 +65,9 @@ export class TxDetailsPage {
     this.txsUnsubscribedForNotifications = this.config.confirmedTxsNotifications ? !this.config.confirmedTxsNotifications.enabled : true;
 
     let defaults = this.configProvider.getDefaults();
-    if (this.wallet.coin == 'bch') {
-      this.blockexplorerUrl = defaults.blockExplorerUrl.bch;
-    } else {
-      this.blockexplorerUrl = defaults.blockExplorerUrl.btc;
-    }
+    this.blockexplorerUrl = this.wallet.coin === 'bch'
+      ? defaults.blockExplorerUrl.bch
+      : defaults.blockExplorerUrl.btc;
 
     this.txConfirmNotificationProvider.checkIfEnabled(this.txId).then((res: any) => {
       this.txNotification = {

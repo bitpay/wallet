@@ -355,11 +355,7 @@ export class AmountPage {
         if (a) {
           this.alternativeAmount = this.txFormatProvider.formatAmount(a * this.unitToSatoshi, true);
         } else {
-          if (result) {
-            this.alternativeAmount = 'N/A';
-          } else {
-            this.alternativeAmount = null;
-          }
+          this.alternativeAmount = result ? 'N/A' : null;
           this.allowSend = false;
         }
       } else {
@@ -426,13 +422,9 @@ export class AmountPage {
       };
     } else {
       let amount = _amount;
-
-      if (unit.isFiat) {
-        amount = (this.fromFiat(amount) * this.unitToSatoshi).toFixed(0);
-      } else {
-        amount = (amount * this.unitToSatoshi).toFixed(0);
-      }
-
+      amount = unit.isFiat
+        ? (this.fromFiat(amount) * this.unitToSatoshi).toFixed(0)
+        : (amount * this.unitToSatoshi).toFixed(0);
       data = {
         recipientType: this.recipientType,
         amount,

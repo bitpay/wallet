@@ -40,12 +40,8 @@ export class AddressbookViewPage {
     this.name = this.navParams.data.contact.name;
     this.email = this.navParams.data.contact.email;
 
-    var cashAddress = this.bitcoreCash.Address.isValid(this.address, 'livenet');
-    if (cashAddress) {
-      this.coin = 'bch';
-    } else {
-      this.coin = 'btc';
-    }
+    const cashAddress = this.bitcoreCash.Address.isValid(this.address, 'livenet');
+    this.coin = cashAddress ? 'bch' : 'btc';
   }
 
   ionViewDidLoad() {
