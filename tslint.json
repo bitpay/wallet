@@ -5,6 +5,7 @@
     "no-submodule-imports": [
       true,
       "zone.js",
+      "rxjs",
       "@angular",
       "ts-md5/dist/md5",
       "ionic-angular/gestures/gesture"

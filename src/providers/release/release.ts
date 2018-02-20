@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { map } from 'rxjs/operators';
 import { AppProvider } from '../../providers/app/app';
 
 @Injectable()
@@ -18,7 +19,7 @@ export class ReleaseProvider {
   }
 
   public getLatestAppVersion() {
-    return this.http.get(this.LATEST_RELEASE_URL).map(x => x['tag_name']);
+    return this.http.get(this.LATEST_RELEASE_URL).pipe(map(x => x['tag_name']));
   }
 
   private verifyTagFormat(tag: string) {
