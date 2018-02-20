@@ -4,7 +4,7 @@ import * as _ from 'lodash';
 import { Logger } from '../../../../providers/logger/logger';
 
 // pages
-import { SuccessModalPage } from '../../../success/success';
+import { FinishModalPage } from '../../../finish/finish';
 import { CoinbasePage } from '../coinbase';
 
 // providers
@@ -217,7 +217,7 @@ export class SellCoinbasePage {
               ctx.description = this.appProvider.info.nameCase + ' Wallet: ' + this.wallet.name;
               this.coinbaseProvider.savePendingTransaction(ctx, null, (err: any) => {
                 this.onGoingProcessProvider.set('sellingBitcoin', false);
-                this.openSuccessModal();
+                this.openFinishModal();
                 if (err) this.logger.debug(this.coinbaseProvider.getErrorsAsString(err.errors));
               });
               return;
@@ -358,10 +358,10 @@ export class SellCoinbasePage {
     this.processPaymentInfo();
   }
 
-  public openSuccessModal(): void {
-    let successText = 'Funds sent to Coinbase Account';
-    let successComment = 'The transaction is not yet confirmed, and will show as "Pending" in your Activity. The bitcoin sale will be completed automatically once it is confirmed by Coinbase';
-    let modal = this.modalCtrl.create(SuccessModalPage, { successText, successComment }, { showBackdrop: true, enableBackdropDismiss: false });
+  private openFinishModal(): void {
+    let finishText = 'Funds sent to Coinbase Account';
+    let finishComment = 'The transaction is not yet confirmed, and will show as "Pending" in your Activity. The bitcoin sale will be completed automatically once it is confirmed by Coinbase';
+    let modal = this.modalCtrl.create(FinishModalPage, { finishText, finishComment }, { showBackdrop: true, enableBackdropDismiss: false });
     modal.present();
     modal.onDidDismiss(() => {
       this.navCtrl.remove(3, 1);

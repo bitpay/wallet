@@ -5,8 +5,8 @@ import * as _ from 'lodash';
 import { Logger } from '../../../providers/logger/logger';
 
 // Pages
+import { FinishModalPage } from '../../finish/finish';
 import { PayProPage } from '../../paypro/paypro';
-import { SuccessModalPage } from '../../success/success';
 import { ChooseFeeLevelPage } from '../choose-fee-level/choose-fee-level';
 import { FeeWarningPage } from '../fee-warning/fee-warning';
 
@@ -253,23 +253,23 @@ export class ConfirmPage {
 
   private setButtonText(isMultisig: boolean, isPayPro: boolean): void {
     if (isPayPro) {
-      if (this.isCordova && !this.isWindowsPhoneApp) {
-        this.buttonText = this.translate.instant('Slide to pay');
-      } else {
-        this.buttonText = this.translate.instant('Click to pay');
-      }
+      // if (this.isCordova && !this.isWindowsPhoneApp) {
+      //  this.buttonText = this.translate.instant('Slide to pay');
+      // } else {
+      this.buttonText = this.translate.instant('Click to pay');
+      // }
     } else if (isMultisig) {
-      if (this.isCordova && !this.isWindowsPhoneApp) {
-        this.buttonText = this.translate.instant('Slide to accept');
-      } else {
-        this.buttonText = this.translate.instant('Click to accept');
-      }
+      // if (this.isCordova && !this.isWindowsPhoneApp) {
+      //  this.buttonText = this.translate.instant('Slide to accept');
+      // } else {
+      this.buttonText = this.translate.instant('Click to accept');
+      // }
     } else {
-      if (this.isCordova && !this.isWindowsPhoneApp) {
-        this.buttonText = this.translate.instant('Slide to send');
-      } else {
-        this.buttonText = this.translate.instant('Click to send');
-      }
+      // if (this.isCordova && !this.isWindowsPhoneApp) {
+      // this.buttonText = this.translate.instant('Slide to send');
+      // } else {
+      this.buttonText = this.translate.instant('Click to send');
+      // }
     }
   }
 
@@ -573,8 +573,10 @@ export class ConfirmPage {
         if (!wallet.canSign() && !wallet.isPrivKeyExternal()) {
           this.logger.info('No signing proposal: No private key');
           this.walletProvider.onlyPublish(wallet, txp).then(() => {
-            this.openSuccessModal(true);
+            this.onGoingProcessProvider.clear();
+            this.openFinishModal(true);
           }).catch((err: any) => {
+            this.onGoingProcessProvider.clear();
             this.setSendError(err);
           });
           return;
@@ -586,7 +588,7 @@ export class ConfirmPage {
               txid: txp.txid
             });
           }
-          this.openSuccessModal();
+          this.openFinishModal();
         }).catch((err: any) => {
           this.setSendError(err);
           return;
@@ -595,28 +597,26 @@ export class ConfirmPage {
 
       confirmTx().then((nok: boolean) => {
         if (nok) {
+          this.onGoingProcessProvider.clear();
           return;
         }
         publishAndSign();
-      }).catch((err: any) => {
-        this.logger.warn(err);
-        return;
       });
     }).catch((err: any) => {
-      this.onGoingProcessProvider.set('creatingTx', false);
+      this.onGoingProcessProvider.clear();
       this.logger.warn(err);
       return;
     });
   }
 
-  public openSuccessModal(onlyPublish?: boolean) {
+  private openFinishModal(onlyPublish?: boolean) {
     let params = {};
     if (onlyPublish) {
-      let successText = this.translate.instant('Payment Published');
-      let successComment = this.translate.instant('You could sign the transaction later in your wallet details');
-      params = { successText, successComment };
+      let finishText = this.translate.instant('Payment Published');
+      let finishComment = this.translate.instant('You could sign the transaction later in your wallet details');
+      params = { finishText, finishComment };
     }
-    let modal = this.modalCtrl.create(SuccessModalPage, params, { showBackdrop: true, enableBackdropDismiss: false });
+    let modal = this.modalCtrl.create(FinishModalPage, params, { showBackdrop: true, enableBackdropDismiss: false });
     modal.present();
     modal.onDidDismiss(() => {
       this.navCtrl.popToRoot({ animate: false }).then(() => {

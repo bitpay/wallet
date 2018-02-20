@@ -13,7 +13,7 @@ import { TxFormatProvider } from '../../../../providers/tx-format/tx-format';
 import { WalletProvider } from '../../../../providers/wallet/wallet';
 
 // pages
-import { SuccessModalPage } from '../../../success/success';
+import { FinishModalPage } from '../../../finish/finish';
 import { CoinbasePage } from '../coinbase';
 
 @Component({
@@ -236,7 +236,7 @@ export class BuyCoinbasePage {
         this.coinbaseProvider.savePendingTransaction(updatedTx.data, {}, (err: any) => {
           this.onGoingProcessProvider.set('buyingBitcoin', false);
           if (err) this.logger.debug(err);
-          this.openSuccessModal();
+          this.openFinishModal();
         });
       }).catch((err) => {
         this.onGoingProcessProvider.set('buyingBitcoin', false);
@@ -292,10 +292,10 @@ export class BuyCoinbasePage {
     });
   }
 
-  public openSuccessModal(): void {
-    let successText = 'Bought';
-    let successComment = 'Bitcoin purchase completed. Coinbase has queued the transfer to your selected wallet';
-    let modal = this.modalCtrl.create(SuccessModalPage, { successText, successComment }, { showBackdrop: true, enableBackdropDismiss: false });
+  private openFinishModal(): void {
+    let finishText = 'Bought';
+    let finishComment = 'Bitcoin purchase completed. Coinbase has queued the transfer to your selected wallet';
+    let modal = this.modalCtrl.create(FinishModalPage, { finishText, finishComment }, { showBackdrop: true, enableBackdropDismiss: false });
     modal.present();
     modal.onDidDismiss(() => {
       this.navCtrl.remove(3, 1);

@@ -6,8 +6,8 @@ import * as moment from 'moment';
 import { Logger } from '../../../../providers/logger/logger';
 
 // Pages
+import { FinishModalPage } from '../../../finish/finish';
 import { FeeWarningPage } from '../../../send/fee-warning/fee-warning';
-import { SuccessModalPage } from '../../../success/success';
 import { AmazonPage } from '../amazon';
 
 // Provider
@@ -308,7 +308,7 @@ export class BuyAmazonPage {
         this.onGoingProcessProvider.set('buyingGiftCard', false);
         this.logger.debug("Saved new gift card with status: " + newData.status);
         this.amazonGiftCard = newData;
-        this.openSuccessModal();
+        this.openFinishModal();
       });
     });
   }, 15000, {
@@ -412,29 +412,28 @@ export class BuyAmazonPage {
     });
   }
 
-  public openSuccessModal(): void {
-    let successComment: string;
+  private openFinishModal(): void {
+    let finishComment: string;
     let cssClass: string;
     if (this.amazonGiftCard.status == 'FAILURE') {
-      successComment = 'Your purchase could not be completed';
+      finishComment = 'Your purchase could not be completed';
       cssClass = 'danger';
     }
     if (this.amazonGiftCard.status == 'PENDING') {
-      successComment = 'Your purchase was added to the list of pending';
+      finishComment = 'Your purchase was added to the list of pending';
       cssClass = 'warning';
     }
     if (this.amazonGiftCard.status == 'SUCCESS') {
-      successComment = 'Bought ' + this.amountUnitStr;
+      finishComment = 'Bought ' + this.amountUnitStr;
     }
     if (this.amazonGiftCard.status == 'SUCCESS') {
-      successComment = 'Gift card generated and ready to use.';
+      finishComment = 'Gift card generated and ready to use.';
     }
-    let successText = '';
-    let modal = this.modalCtrl.create(SuccessModalPage, { successText, successComment, cssClass }, { showBackdrop: true, enableBackdropDismiss: false });
+    let finishText = '';
+    let modal = this.modalCtrl.create(FinishModalPage, { finishText, finishComment, cssClass }, { showBackdrop: true, enableBackdropDismiss: false });
     modal.present();
     modal.onDidDismiss(() => {
-      this.navCtrl.remove(2, 2);
-      this.navCtrl.pop();
+      this.navCtrl.popToRoot({ animate: false });
       this.navCtrl.push(AmazonPage, { invoiceId: this.invoiceId });
     });
   }

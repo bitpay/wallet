@@ -3,7 +3,7 @@ import { Events, ModalController, NavController, NavParams } from 'ionic-angular
 import { Logger } from '../../../../providers/logger/logger';
 
 // pages
-import { SuccessModalPage } from '../../../success/success';
+import { FinishModalPage } from '../../../finish/finish';
 
 // providers
 import { GlideraProvider } from '../../../../providers/glidera/glidera';
@@ -165,7 +165,7 @@ export class BuyGlideraPage {
               this.onGoingProcessProvider.set('buyingBitcoin', false);
               if (err) return this.showError(err);
               this.logger.info(data);
-              this.openSuccessModal();
+              this.openFinishModal();
             });
           }).catch(() => {
             this.onGoingProcessProvider.set('buyingBitcoin', false);
@@ -198,10 +198,10 @@ export class BuyGlideraPage {
     this.processPaymentInfo();
   }
 
-  public openSuccessModal(): void {
-    let successText = 'Bought';
-    let successComment = 'A transfer has been initiated from your bank account. Your bitcoins should arrive to your wallet in 2-4 business day';
-    let modal = this.modalCtrl.create(SuccessModalPage, { successText, successComment }, { showBackdrop: true, enableBackdropDismiss: false });
+  private openFinishModal(): void {
+    let finishText = 'Bought';
+    let finishComment = 'A transfer has been initiated from your bank account. Your bitcoins should arrive to your wallet in 2-4 business day';
+    let modal = this.modalCtrl.create(FinishModalPage, { finishText, finishComment }, { showBackdrop: true, enableBackdropDismiss: false });
     modal.present();
     modal.onDidDismiss(() => {
       this.navCtrl.remove(3, 1);

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, NgZone } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Events, ModalController, NavController } from 'ionic-angular';
 import { Logger } from '../../providers/logger/logger';
@@ -71,6 +71,7 @@ export class HomePage {
   private isNW: boolean;
   private isWindowsPhoneApp: boolean;
   private updatingWalletId: object;
+  private zone: any;
 
   constructor(
     private navCtrl: NavController,
@@ -101,14 +102,11 @@ export class HomePage {
     this.isWindowsPhoneApp = this.platformProvider.isWP;
     this.showReorderBtc = false;
     this.showReorderBch = false;
+    this.zone = new NgZone({ enableLongStackTrace: false });
   }
 
-  ionViewWillEnter() {
+  ionViewWillEnter() { 
     this.config = this.configProvider.get();
-
-    this.recentTransactionsEnabled = this.config.recentTransactions.enabled;
-    if (this.recentTransactionsEnabled) this.getNotifications();
-
     this.pushNotificationsProvider.init();
     this.homeIntegrations = this.homeIntegrationsProvider.get();
     this.showIntegration = this.config.showIntegration;
@@ -119,11 +117,16 @@ export class HomePage {
       return homeIntegrations.show == true;
     });
 
+    // Update Tx Notifications
+    this.recentTransactionsEnabled = this.config.recentTransactions.enabled;
+    if (this.recentTransactionsEnabled) this.getNotifications();
+
     // BWS Events: Update Status per Wallet
     // NewBlock, NewCopayer, NewAddress, NewTxProposal, TxProposalAcceptedBy, TxProposalRejectedBy, txProposalFinallyRejected,
     // txProposalFinallyAccepted, TxProposalRemoved, NewIncomingTx, NewOutgoingTx
     this.events.subscribe('bwsEvent', (walletId: string) => {
-      this.update(walletId);
+      if (this.recentTransactionsEnabled) this.getNotifications();
+      this.updateWallet(walletId);
     });
 
     // Create, Join, Import and Delete -> Get Wallets -> Update Status for All Wallets
@@ -170,11 +173,6 @@ export class HomePage {
     setTimeout(() => {
       this.updatingWalletId[walletId] = false;
     }, 10000);
-  }
-
-  private update(walletId: string) {
-    if (this.recentTransactionsEnabled) this.getNotifications();
-    this.updateWallet(walletId);
   }
 
   private setWallets = _.debounce(() => {
@@ -238,9 +236,7 @@ export class HomePage {
     this.walletProvider.getStatus(wallet, {}).then((status: any) => {
       wallet.status = status;
       wallet.error = null;
-      this.profileProvider.setLastKnownBalance(wallet.id, wallet.status.availableBalanceStr);
-      
-      // TODO this.setWallets();
+      this.profileProvider.setLastKnownBalance(wallet.id, wallet.status.availableBalanceStr); 
       this.updateTxps();
       this.stopUpdatingWalletId(walletId);
     }).catch((err: any) => {
@@ -251,8 +247,10 @@ export class HomePage {
 
   private updateTxps = _.debounce(() => {
     this.profileProvider.getTxps({ limit: 3 }).then((data: any) => {
-      this.txps = data.txps;
-      this.txpsN = data.n;
+      this.zone.run(() => {
+        this.txps = data.txps;
+        this.txpsN = data.n;  
+      });
     }).catch((err: any) => {
       this.logger.error(err);
     });
@@ -262,8 +260,10 @@ export class HomePage {
 
   private getNotifications = _.debounce(() => {
     this.profileProvider.getNotifications({ limit: 3 }).then((data: any) => {
-      this.notifications = data.notifications;
-      this.notificationsN = data.total;
+      this.zone.run(() => {
+        this.notifications = data.notifications;
+        this.notificationsN = data.total;  
+      });
     }).catch((err: any) => {
       this.logger.error(err);
     });

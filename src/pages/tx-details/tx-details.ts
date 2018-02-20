@@ -203,7 +203,7 @@ export class TxDetailsPage {
       };
 
       this.walletProvider.editTxNote(this.wallet, args).then((res: any) => {
-        this.logger.info('Tx Note edited: ', res);
+        this.logger.info('Tx Note edited');
       }).catch((err: any) => {
         this.logger.debug('Could not save tx comment ' + err);
       });

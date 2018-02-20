@@ -6,7 +6,7 @@ import * as moment from 'moment';
 import { Logger } from '../../../../providers/logger/logger';
 
 // Pages
-import { SuccessModalPage } from '../../../success/success';
+import { FinishModalPage } from '../../../finish/finish';
 import { ShapeshiftPage } from '../shapeshift';
 
 // Providers
@@ -201,7 +201,7 @@ export class ShapeshiftConfirmPage {
 
       this.shapeshiftProvider.saveShapeshift(newData, null, (err: any) => {
         this.logger.debug("Saved shift with status: " + newData.status);
-        this.openSuccessModal();
+        this.openFinishModal();
       });
     });
   }
@@ -350,9 +350,9 @@ export class ShapeshiftConfirmPage {
     });
   };
 
-  public openSuccessModal(): void {
-    let successText = 'Transaction Sent';
-    let modal = this.modalCtrl.create(SuccessModalPage, { successText }, { showBackdrop: true, enableBackdropDismiss: false });
+  private openFinishModal(): void {
+    let finishText = 'Transaction Sent';
+    let modal = this.modalCtrl.create(FinishModalPage, { finishText }, { showBackdrop: true, enableBackdropDismiss: false });
     modal.present();
     modal.onDidDismiss(() => {
       this.navCtrl.popToRoot({ animate: false });

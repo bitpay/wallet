@@ -6,8 +6,8 @@ import * as moment from 'moment';
 import { Logger } from '../../../../providers/logger/logger';
 
 // Pages
+import { FinishModalPage } from '../../../finish/finish';
 import { FeeWarningPage } from '../../../send/fee-warning/fee-warning';
-import { SuccessModalPage } from '../../../success/success';
 import { MercadoLibrePage } from '../mercado-libre';
 
 // Provider
@@ -299,7 +299,7 @@ export class BuyMercadoLibrePage {
         this.onGoingProcessProvider.set('Comprando Vale-Presente', false);
         this.logger.debug("Saved new gift card with status: " + newData.status);
         this.mlGiftCard = newData;
-        this.openSuccessModal();
+        this.openFinishModal();
       });
     });
   }, 15000, {
@@ -400,26 +400,25 @@ export class BuyMercadoLibrePage {
     });
   }
 
-  public openSuccessModal(): void {
-    let successComment: string;
+  private openFinishModal(): void {
+    let finishComment: string;
     let cssClass: string;
     if (this.mlGiftCard.status == 'FAILURE') {
-      successComment = 'Sua compra não pôde ser concluída';
+      finishComment = 'Sua compra não pôde ser concluída';
       cssClass = 'danger';
     }
     if (this.mlGiftCard.status == 'PENDING') {
-      successComment = 'Sua compra foi adicionada à lista de pendentes';
+      finishComment = 'Sua compra foi adicionada à lista de pendentes';
       cssClass = 'warning';
     }
     if (this.mlGiftCard.status == 'SUCCESS' || this.mlGiftCard.cardStatus == 'active') {
-      successComment = 'Vale-Presente gerado e pronto para usar';
+      finishComment = 'Vale-Presente gerado e pronto para usar';
     }
-    let successText = '';
-    let modal = this.modalCtrl.create(SuccessModalPage, { successText, successComment, cssClass }, { showBackdrop: true, enableBackdropDismiss: false });
+    let finishText = '';
+    let modal = this.modalCtrl.create(FinishModalPage, { finishText, finishComment, cssClass }, { showBackdrop: true, enableBackdropDismiss: false });
     modal.present();
     modal.onDidDismiss(() => {
-      this.navCtrl.remove(2, 2);
-      this.navCtrl.pop();
+      this.navCtrl.popToRoot({ animate: false });
       this.navCtrl.push(MercadoLibrePage, { invoiceId: this.invoiceId });
     });
   }

@@ -4,7 +4,7 @@ import * as _ from 'lodash';
 import { Logger } from '../../../../providers/logger/logger';
 
 // pages
-import { SuccessModalPage } from '../../../success/success';
+import { FinishModalPage } from '../../../finish/finish';
 
 // providers
 import { ConfigProvider } from '../../../../providers/config/config';
@@ -216,7 +216,7 @@ export class SellGlideraPage {
                         this.onGoingProcessProvider.set('sellingBitcoin', false);
                         if (err) return this.showError(err);
                         this.logger.info(data);
-                        this.openSuccessModal();
+                        this.openFinishModal();
                       });
                     }).catch((err) => {
                       this.onGoingProcessProvider.set('sellingBitcoin', false);
@@ -266,10 +266,10 @@ export class SellGlideraPage {
     });
   }
 
-  public openSuccessModal(): void {
-    let successText = 'Funds sent to Glidera Account';
-    let successComment = 'The transaction is not yet confirmed, and will show as "Pending" in your Activity. The bitcoin sale will be completed automatically once it is confirmed by Glidera';
-    let modal = this.modalCtrl.create(SuccessModalPage, { successText, successComment }, { showBackdrop: true, enableBackdropDismiss: false });
+  private openFinishModal(): void {
+    let finishText = 'Funds sent to Glidera Account';
+    let finishComment = 'The transaction is not yet confirmed, and will show as "Pending" in your Activity. The bitcoin sale will be completed automatically once it is confirmed by Glidera';
+    let modal = this.modalCtrl.create(FinishModalPage, { finishText, finishComment }, { showBackdrop: true, enableBackdropDismiss: false });
     modal.present();
     modal.onDidDismiss(() => {
       this.navCtrl.remove(3, 1);
