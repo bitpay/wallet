@@ -82,7 +82,7 @@ var getCommitHash = function() {
 
   var hash = shell.exec('git rev-parse HEAD', {
     silent: true
-  }).output.trim().substr(0, 7);
+  }).stdout.trim().substr(0, 7);
   return hash;
 }
 
