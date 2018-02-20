@@ -120,18 +120,18 @@ export class TxpDetailsPage {
     }).length == this.tx.requiredSignatures - 1;
 
     if (lastSigner) {
-      if (this.isCordova && !this.isWindowsPhoneApp) {
-        this.buttonText = this.translate.instant('Slide to send');
-      } else {
-        this.buttonText = this.translate.instant('Click to send');
-      }
+      //if (this.isCordova && !this.isWindowsPhoneApp) {
+      //  this.buttonText = this.translate.instant('Slide to send');
+      //} else {
+      this.buttonText = this.translate.instant('Click to send');
+      //}
       this.successText = this.translate.instant('Payment Sent');
     } else {
-      if (this.isCordova && !this.isWindowsPhoneApp) {
-        this.buttonText = this.translate.instant('Slide to accept');
-      } else {
-        this.buttonText = this.translate.instant('Click to accept');
-      }
+      //if (this.isCordova && !this.isWindowsPhoneApp) {
+      // this.buttonText = this.translate.instant('Slide to accept');
+      //} else {
+      this.buttonText = this.translate.instant('Click to accept');
+      //}
       this.successText = this.translate.instant('Payment Accepted');
     }
   }

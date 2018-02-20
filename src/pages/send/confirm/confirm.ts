@@ -253,23 +253,23 @@ export class ConfirmPage {
 
   private setButtonText(isMultisig: boolean, isPayPro: boolean): void {
     if (isPayPro) {
-      if (this.isCordova && !this.isWindowsPhoneApp) {
-        this.buttonText = this.translate.instant('Slide to pay');
-      } else {
-        this.buttonText = this.translate.instant('Click to pay');
-      }
+      //if (this.isCordova && !this.isWindowsPhoneApp) {
+      //  this.buttonText = this.translate.instant('Slide to pay');
+      // } else {
+      this.buttonText = this.translate.instant('Click to pay');
+      // }
     } else if (isMultisig) {
-      if (this.isCordova && !this.isWindowsPhoneApp) {
-        this.buttonText = this.translate.instant('Slide to accept');
-      } else {
-        this.buttonText = this.translate.instant('Click to accept');
-      }
+      //if (this.isCordova && !this.isWindowsPhoneApp) {
+      //  this.buttonText = this.translate.instant('Slide to accept');
+      //} else {
+      this.buttonText = this.translate.instant('Click to accept');
+      //}
     } else {
-      if (this.isCordova && !this.isWindowsPhoneApp) {
-        this.buttonText = this.translate.instant('Slide to send');
-      } else {
-        this.buttonText = this.translate.instant('Click to send');
-      }
+      //if (this.isCordova && !this.isWindowsPhoneApp) {
+      // this.buttonText = this.translate.instant('Slide to send');
+      //} else {
+      this.buttonText = this.translate.instant('Click to send');
+      //}
     }
   }
 
