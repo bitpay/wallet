@@ -108,7 +108,7 @@ describe('Provider: Wallet Provider', () => {
   describe('Function: Get Address Function', () => {
     it('should get the last address stored', () => {
       let wallet = {
-        isComplete: function() {
+        isComplete() {
           return true;
         }
       };
@@ -120,7 +120,7 @@ describe('Provider: Wallet Provider', () => {
 
     it('should reject to generate new address if wallet is not complete', () => {
       let wallet = {
-        isComplete: function() {
+        isComplete() {
           return false;
         }
       };
@@ -132,10 +132,10 @@ describe('Provider: Wallet Provider', () => {
 
     it('should force to generate new address', () => {
       let wallet = {
-        isComplete: function() {
+        isComplete() {
           return true;
         },
-        createAddress: function({}, cb) {
+        createAddress({}, cb) {
           return cb(null, { address: 'newAddress' });
         }
       };

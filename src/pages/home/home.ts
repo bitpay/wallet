@@ -59,7 +59,7 @@ export class HomePage {
   public addressbook: any;
   public newRelease: boolean;
   public updateText: string;
-  public homeIntegrations: Array<any>;
+  public homeIntegrations: any[];
   public bitpayCardItems: any;
 
   public showRateCard: boolean;
@@ -205,7 +205,7 @@ export class HomePage {
         this.initFeedBackInfo();
       } else {
         let feedbackInfo = info;
-        //Check if current version is greater than saved version
+        // Check if current version is greater than saved version
         let currentVersion = this.releaseProvider.getCurrentAppVersion();
         let savedVersion = feedbackInfo.version;
         let isVersionUpdated = this.feedbackProvider.isVersionUpdated(currentVersion, savedVersion);
@@ -272,7 +272,7 @@ export class HomePage {
   });
 
   private updateAllWallets(): void {
-    let wallets: Array<any> = [];
+    let wallets: any[] = [];
     let foundMessage = false
 
     _.each(this.walletsBtc, (wBtc) => {
@@ -317,7 +317,7 @@ export class HomePage {
   }
 
   private checkUpdate(): void {
-    //TODO check if new update
+    // TODO check if new update
     this.releaseProvider.getLatestAppVersion().toPromise()
       .then((version) => {
         this.logger.debug('Current app version:', version);
@@ -339,7 +339,7 @@ export class HomePage {
   }
 
   public goToAddView(coin?: string): void {
-    this.navCtrl.push(AddPage, { coin: coin });
+    this.navCtrl.push(AddPage, { coin });
   }
 
   public goToWalletDetails(wallet: any): void {
@@ -415,7 +415,7 @@ export class HomePage {
   }
 
   public openTxpModal(tx: any): void {
-    let modal = this.modalCtrl.create(TxpDetailsPage, { tx: tx }, { showBackdrop: false, enableBackdropDismiss: false });
+    let modal = this.modalCtrl.create(TxpDetailsPage, { tx }, { showBackdrop: false, enableBackdropDismiss: false });
     modal.present();
   }
 

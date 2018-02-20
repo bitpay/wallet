@@ -6,7 +6,7 @@ import { NavController, NavParams } from 'ionic-angular';
 // Pages
 import { AmountPage } from '../../send/amount/amount';
 
-//providers
+// providers
 import { BitPayCardProvider } from '../../../providers/bitpay-card/bitpay-card';
 import { BitPayProvider } from '../../../providers/bitpay/bitpay';
 import { ExternalLinkProvider } from '../../../providers/external-link/external-link';
@@ -93,12 +93,12 @@ export class BitPayCardPage {
         return;
     }
     return {
-      startDate: startDate,
-      endDate: endDate
+      startDate,
+      endDate
     };
   }
 
-  private setGetStarted(history: any, cb: Function) {
+  private setGetStarted(history: any, cb: () => any) {
 
     // Is the card new?
     if (!_.isEmpty(history.transactionList))

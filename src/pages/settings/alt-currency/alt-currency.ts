@@ -17,12 +17,12 @@ import * as _ from 'lodash';
 })
 export class AltCurrencyPage {
 
-  public completeAlternativeList: Array<any>;
+  public completeAlternativeList: any[];
   public searchedAltCurrency: string;
-  public altCurrencyList: Array<any>;
+  public altCurrencyList: any[];
   public loading: any;
   public currentCurrency: any;
-  public lastUsedAltCurrencyList: Array<any>;
+  public lastUsedAltCurrencyList: any[];
 
   private PAGE_COUNTER: number = 3;
   private SHOW_LIMIT: number = 10;

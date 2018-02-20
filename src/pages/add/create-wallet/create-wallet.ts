@@ -46,8 +46,8 @@ export class CreateWalletPage implements OnInit {
   private derivationPathByDefault: string;
   private derivationPathForTestnet: string;
 
-  public copayers: Array<number>;
-  public signatures: Array<number>;
+  public copayers: number[];
+  public signatures: number[];
   public showAdvOpts: boolean;
   public seedOptions: any;
   public isShared: boolean;

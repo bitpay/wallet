@@ -3,10 +3,10 @@ import { DOCUMENT } from "@angular/platform-browser";
 import { TranslateService } from '@ngx-translate/core';
 import { ActionSheetController, ToastController } from 'ionic-angular';
 
-//native
+// native
 import { SocialSharing } from '@ionic-native/social-sharing';
 
-//providers
+// providers
 import { ConfigProvider } from '../../../../providers/config/config';
 import { Logger } from '../../../../providers/logger/logger';
 import { PlatformProvider } from '../../../../providers/platform/platform';
@@ -23,7 +23,7 @@ export class SessionLogPage {
   private dom: Document;
 
   public logOptions: any;
-  public filteredLogs: Array<any>;
+  public filteredLogs: any[];
   public filterValue: number;
   public isCordova: boolean;
 
@@ -63,7 +63,7 @@ export class SessionLogPage {
     this.filterLogs(weight);
     let opts = {
       log: {
-        weight: weight
+        weight
       }
     };
     this.configProvider.set(opts);
@@ -87,7 +87,7 @@ export class SessionLogPage {
     this.dom.execCommand('copy');
     let message = this.translate.instant('Copied to clipboard');
     let showSuccess = this.toastCtrl.create({
-      message: message,
+      message,
       duration: 1000,
     });
     showSuccess.present();

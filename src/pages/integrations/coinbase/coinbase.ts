@@ -3,14 +3,14 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ModalController, NavController, NavParams } from 'ionic-angular';
 import { Logger } from '../../../providers/logger/logger';
 
-//providers
+// providers
 import { CoinbaseProvider } from '../../../providers/coinbase/coinbase';
 import { ExternalLinkProvider } from '../../../providers/external-link/external-link';
 import { OnGoingProcessProvider } from '../../../providers/on-going-process/on-going-process';
 import { PlatformProvider } from '../../../providers/platform/platform';
 import { PopupProvider } from '../../../providers/popup/popup';
 
-//pages
+// pages
 import { AmountPage } from '../../send/amount/amount';
 import { CoinbaseTxDetailsPage } from './coinbase-tx-details/coinbase-tx-details';
 
@@ -53,7 +53,7 @@ export class CoinbasePage {
       code: ['', Validators.compose([Validators.minLength(1), Validators.required])]
     });
     // TODO: desktop
-    //this.isNW = this.platformProvider.isNW;
+    // this.isNW = this.platformProvider.isNW;
     this.isCordova = this.platformProvider.isCordova;
     this.showOauthForm = false;
   }

@@ -26,7 +26,7 @@ export class TxDetailsPage {
 
   public wallet: any;
   public btx: any;
-  public actionList: Array<any>;
+  public actionList: any[];
   public isShared: boolean;
   public title: string;
   public alternativeIsoCode: string;

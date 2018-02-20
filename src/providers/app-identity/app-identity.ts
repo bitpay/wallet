@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Logger } from '../../providers/logger/logger';
 
-//providers
+// providers
 import { PersistenceProvider } from '../persistence/persistence';
 
 import * as bitauthService from 'bitauth';

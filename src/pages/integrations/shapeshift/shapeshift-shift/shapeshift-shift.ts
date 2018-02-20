@@ -19,11 +19,11 @@ import { ShapeshiftProvider } from '../../../../providers/shapeshift/shapeshift'
 })
 export class ShapeshiftShiftPage {
 
-  private walletsBtc: Array<any>;
-  private walletsBch: Array<any>;
+  private walletsBtc: any[];
+  private walletsBch: any[];
 
-  public toWallets: Array<any>;
-  public fromWallets: Array<any>;
+  public toWallets: any[];
+  public fromWallets: any[];
   public fromWallet: any;
   public toWallet: any;
   public rate: number;
@@ -153,7 +153,7 @@ export class ShapeshiftShiftPage {
   }
 
   public showWallets(selector: string): void {
-    let walletsForActionSheet: Array<any> = [];
+    let walletsForActionSheet: any[] = [];
     let selectedWalletId: string;
     let title: string = selector == 'from' ? this.fromWalletSelectorTitle : this.toWalletSelectorTitle
     if (selector == 'from') {

@@ -37,7 +37,7 @@ export class BwcProvider {
   public getClient(walletData?, opts?): any {
     opts = opts || {};
 
-    //note opts use `bwsurl` all lowercase;
+    // note opts use `bwsurl` all lowercase;
     let bwc = new BWC({
       baseUrl: opts.bwsurl || 'https://bws.bitpay.com/bws/api',
       verbose: opts.verbose,

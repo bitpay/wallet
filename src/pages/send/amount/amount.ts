@@ -30,7 +30,7 @@ import { ConfirmPage } from '../confirm/confirm';
 })
 export class AmountPage {
   private LENGTH_EXPRESSION_LIMIT: number;
-  private availableUnits: Array<any>;
+  private availableUnits: any[];
   private unit: string;
   private reNr: RegExp;
   private reOp: RegExp;
@@ -284,9 +284,9 @@ export class AmountPage {
   }
 
   public showSendMaxMenu(): void {
-    let buttons: Array<any> = [];
+    let buttons: any[] = [];
 
-    let sendMaxButton: Object = {
+    let sendMaxButton = {
       text: this.itemSelectorLabel,
       icon: 'speedometer',
       handler: () => {
@@ -296,7 +296,7 @@ export class AmountPage {
     buttons.push(sendMaxButton);
 
     const actionSheet = this.actionSheetCtrl.create({
-      buttons: buttons
+      buttons
     });
 
     actionSheet.present();
@@ -420,7 +420,7 @@ export class AmountPage {
         id: this._id,
         amount: this.useSendMax ? null : _amount,
         currency: unit.id.toUpperCase(),
-        coin: coin,
+        coin,
         useSendMax: this.useSendMax,
         toWalletId: this.toWalletId
       };
@@ -435,12 +435,12 @@ export class AmountPage {
 
       data = {
         recipientType: this.recipientType,
-        amount: amount,
+        amount,
         toAddress: this.toAddress,
         name: this.name,
         email: this.email,
         color: this.color,
-        coin: coin,
+        coin,
         useSendMax: this.useSendMax
       };
     }

@@ -3,7 +3,7 @@ import { Events, ModalController, NavController, NavParams } from 'ionic-angular
 import * as _ from 'lodash';
 import { Logger } from '../../../../providers/logger/logger';
 
-//providers
+// providers
 import { CoinbaseProvider } from '../../../../providers/coinbase/coinbase';
 import { ExternalLinkProvider } from '../../../../providers/external-link/external-link';
 import { OnGoingProcessProvider } from '../../../../providers/on-going-process/on-going-process';
@@ -12,7 +12,7 @@ import { ProfileProvider } from '../../../../providers/profile/profile';
 import { TxFormatProvider } from '../../../../providers/tx-format/tx-format';
 import { WalletProvider } from '../../../../providers/wallet/wallet';
 
-//pages
+// pages
 import { FinishModalPage } from '../../../finish/finish';
 import { CoinbasePage } from '../coinbase';
 
@@ -27,7 +27,7 @@ export class BuyCoinbasePage {
   private coin: string;
   private wallets: any;
 
-  public paymentMethods: Array<any>;
+  public paymentMethods: any[];
   public selectedPaymentMethodId: any;
   public buyPrice: string;
   public buyRequestInfo: any;
@@ -295,7 +295,7 @@ export class BuyCoinbasePage {
   private openFinishModal(): void {
     let finishText = 'Bought';
     let finishComment = 'Bitcoin purchase completed. Coinbase has queued the transfer to your selected wallet';
-    let modal = this.modalCtrl.create(FinishModalPage, { finishText: finishText, finishComment: finishComment }, { showBackdrop: true, enableBackdropDismiss: false });
+    let modal = this.modalCtrl.create(FinishModalPage, { finishText, finishComment }, { showBackdrop: true, enableBackdropDismiss: false });
     modal.present();
     modal.onDidDismiss(() => {
       this.navCtrl.remove(3, 1);

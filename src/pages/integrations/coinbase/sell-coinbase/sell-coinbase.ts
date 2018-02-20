@@ -3,11 +3,11 @@ import { Events, ModalController, NavController, NavParams } from 'ionic-angular
 import * as _ from 'lodash';
 import { Logger } from '../../../../providers/logger/logger';
 
-//pages
+// pages
 import { FinishModalPage } from '../../../finish/finish';
 import { CoinbasePage } from '../coinbase';
 
-//providers
+// providers
 import { AppProvider } from '../../../../providers/app/app';
 import { CoinbaseProvider } from '../../../../providers/coinbase/coinbase';
 import { ConfigProvider } from '../../../../providers/config/config';
@@ -29,7 +29,7 @@ export class SellCoinbasePage {
   private currency: string;
   private wallets: any;
 
-  public paymentMethods: Array<any>;
+  public paymentMethods: any[];
   public selectedPaymentMethodId: any;
   public selectedPriceSensitivity: any;
   public sellPrice: string;
@@ -310,9 +310,9 @@ export class SellCoinbasePage {
           });
 
           let txp = {
-            toAddress: toAddress,
+            toAddress,
             amount: amountSat,
-            outputs: outputs,
+            outputs,
             message: comment,
             payProUrl: null,
             excludeUnconfirmedUtxos: configWallet.spendUnconfirmed ? false : true,
@@ -361,7 +361,7 @@ export class SellCoinbasePage {
   private openFinishModal(): void {
     let finishText = 'Funds sent to Coinbase Account';
     let finishComment = 'The transaction is not yet confirmed, and will show as "Pending" in your Activity. The bitcoin sale will be completed automatically once it is confirmed by Coinbase';
-    let modal = this.modalCtrl.create(FinishModalPage, { finishText: finishText, finishComment: finishComment }, { showBackdrop: true, enableBackdropDismiss: false });
+    let modal = this.modalCtrl.create(FinishModalPage, { finishText, finishComment }, { showBackdrop: true, enableBackdropDismiss: false });
     modal.present();
     modal.onDidDismiss(() => {
       this.navCtrl.remove(3, 1);

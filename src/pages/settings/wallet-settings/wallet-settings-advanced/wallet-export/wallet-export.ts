@@ -4,11 +4,11 @@ import { TranslateService } from '@ngx-translate/core';
 import { NavController, NavParams, ToastController } from 'ionic-angular';
 import { Logger } from '../../../../../providers/logger/logger';
 
-//native
+// native
 import { Clipboard } from '@ionic-native/clipboard';
 import { SocialSharing } from '@ionic-native/social-sharing';
 
-//providers
+// providers
 import { AppProvider } from '../../../../../providers/app/app';
 import { BackupProvider } from '../../../../../providers/backup/backup';
 import { PersistenceProvider } from '../../../../../providers/persistence/persistence';
@@ -153,7 +153,7 @@ export class WalletExportPage {
         let opts = {
           noSign: this.exportWalletForm.value.noSignEnabled,
           addressBook: localAddressBook,
-          password: password
+          password
         };
 
         this.backupProvider.walletDownload(this.exportWalletForm.value.password, opts, this.navParams.data.walletId).then(() => {
@@ -195,7 +195,7 @@ export class WalletExportPage {
           let opts = {
             noSign: this.exportWalletForm.value.noSignEnabled,
             addressBook: localAddressBook,
-            password: password
+            password
           };
 
           var ew = this.backupProvider.walletExport(this.exportWalletForm.value.password, opts, this.navParams.data.walletId);

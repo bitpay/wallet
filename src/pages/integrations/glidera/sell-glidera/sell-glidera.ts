@@ -3,10 +3,10 @@ import { Events, ModalController, NavController, NavParams } from 'ionic-angular
 import * as _ from 'lodash';
 import { Logger } from '../../../../providers/logger/logger';
 
-//pages
+// pages
 import { FinishModalPage } from '../../../finish/finish';
 
-//providers
+// providers
 import { ConfigProvider } from '../../../../providers/config/config';
 import { GlideraProvider } from '../../../../providers/glidera/glidera';
 import { OnGoingProcessProvider } from '../../../../providers/on-going-process/on-going-process';
@@ -116,7 +116,7 @@ export class SellGlideraPage {
     });
   }
 
-  private ask2FaCode(mode, cb): Function {
+  private ask2FaCode(mode, cb): () => any {
     if (mode != 'NONE') {
       // SHOW PROMPT
       let title = 'Please, enter the code below';
@@ -185,8 +185,8 @@ export class SellGlideraPage {
 
               let txp = {
                 toAddress: sellAddress,
-                amount: amount,
-                outputs: outputs,
+                amount,
+                outputs,
                 message: comment,
                 payProUrl: null,
                 excludeUnconfirmedUtxos: configWallet.spendUnconfirmed ? false : true,
@@ -206,7 +206,7 @@ export class SellGlideraPage {
 
                       let rawTx = signedTxp.raw;
                       let data = {
-                        refundAddress: refundAddress,
+                        refundAddress,
                         signedTransaction: rawTx,
                         priceUuid: this.sellInfo.priceUuid,
                         useCurrentPrice: this.sellInfo.priceUuid ? false : true,
@@ -269,7 +269,7 @@ export class SellGlideraPage {
   private openFinishModal(): void {
     let finishText = 'Funds sent to Glidera Account';
     let finishComment = 'The transaction is not yet confirmed, and will show as "Pending" in your Activity. The bitcoin sale will be completed automatically once it is confirmed by Glidera';
-    let modal = this.modalCtrl.create(FinishModalPage, { finishText: finishText, finishComment: finishComment }, { showBackdrop: true, enableBackdropDismiss: false });
+    let modal = this.modalCtrl.create(FinishModalPage, { finishText, finishComment }, { showBackdrop: true, enableBackdropDismiss: false });
     modal.present();
     modal.onDidDismiss(() => {
       this.navCtrl.remove(3, 1);

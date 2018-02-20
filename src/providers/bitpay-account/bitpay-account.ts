@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Logger } from '@nsalaun/ng-logger';
 
-//providers
+// providers
 import { AppIdentityProvider } from '../app-identity/app-identity';
 import { BitPayCardProvider } from '../bitpay-card/bitpay-card';
 import { BitPayProvider } from '../bitpay/bitpay';
@@ -57,14 +57,14 @@ export class BitPayAccountProvider {
   ) {
   }
 
-  public pair(pairData: any, pairingReason: string, cb: Function) {
+  public pair(pairData: any, pairingReason: string, cb: (err: string, paired?: boolean, apiContext?: any) => any) {
     this.checkOtp(pairData, (otp) => {
       pairData.otp = otp;
       let deviceName = 'Unknown device';
       if (this.platformProvider.isNW) {
         deviceName = require('os').platform();
       } else if (this.platformProvider.isCordova) {
-        //TODO deviceName = this.platformProvider.device.model;
+        // TODO deviceName = this.platformProvider.device.model;
         deviceName = '';
       }
       let json = {
@@ -72,7 +72,7 @@ export class BitPayAccountProvider {
         params: {
           secret: pairData.secret,
           version: 2,
-          deviceName: deviceName,
+          deviceName,
           code: pairData.otp
         }
       };
@@ -83,28 +83,28 @@ export class BitPayAccountProvider {
         }
         let apiContext = {
           token: data.data,
-          pairData: pairData,
+          pairData,
           appIdentity: data.appIdentity
         };
         this.logger.info('BitPay service BitAuth create token: SUCCESS');
 
         this.fetchBasicInfo(apiContext, (err, basicInfo) => {
           if (err) return cb(err);
-          let title = 'Add BitPay Account?'; //TODO gettextcatalog
+          let title = 'Add BitPay Account?'; // TODO gettextcatalog
           let msg;
 
           if (pairingReason) {
             let reason = pairingReason;
             let email = pairData.email;
 
-            msg = 'To ' + reason + ' you must first add your BitPay account - ' + email; //TODO gettextcatalog
+            msg = 'To ' + reason + ' you must first add your BitPay account - ' + email; // TODO gettextcatalog
           } else {
             let email = pairData.email;
-            msg = 'Add this BitPay account ' + '(' + email + ')?'; //TODO gettextcatalog
+            msg = 'Add this BitPay account ' + '(' + email + ')?'; // TODO gettextcatalog
           }
 
-          let ok = 'Add Account'; //TODO gettextcatalog
-          let cancel = 'Go back'; //TODO gettextcatalog
+          let ok = 'Add Account'; // TODO gettextcatalog
+          let cancel = 'Go back'; // TODO gettextcatalog
           this.popupProvider.ionicConfirm(title, msg, ok, cancel).then((res) => {
             if (res) {
               let acctData = {
@@ -127,9 +127,9 @@ export class BitPayAccountProvider {
     });
   }
 
-  private checkOtp(pairData: any, cb: Function) {
+  private checkOtp(pairData: any, cb: (otp?) => any) {
     if (pairData.otp) {
-      let msg = 'Enter Two Factor for your BitPay account'; //TODO gettextcatalog
+      let msg = 'Enter Two Factor for your BitPay account'; // TODO gettextcatalog
       this.popupProvider.ionicPrompt(null, msg, null).then((res) => {
         cb(res);
       });
@@ -138,7 +138,7 @@ export class BitPayAccountProvider {
     }
   }
 
-  private fetchBasicInfo(apiContext: any, cb: Function) {
+  private fetchBasicInfo(apiContext: any, cb: (err, basicInfo?) => any) {
     let json = {
       method: 'getBasicInfo'
     };
@@ -153,7 +153,7 @@ export class BitPayAccountProvider {
   };
 
   // Returns account objects as stored.
-  public getAccountsAsStored(cb: Function) {
+  public getAccountsAsStored(cb: (err, accounts) => any) {
     this.persistenceProvider.getBitpayAccounts(this.bitPayProvider.getEnvironment().network).then((accounts) => {
       return cb(null, accounts);
     }).catch((err) => {
@@ -163,7 +163,7 @@ export class BitPayAccountProvider {
 
   // Returns an array where each element represents an account including all information required for fetching data
   // from the server for each account (apiContext).
-  public getAccounts(cb: Function) {
+  public getAccounts(cb: (err, accounts?) => any) {
     this.getAccountsAsStored((err, accounts) => {
       if (err || _.isEmpty(accounts)) {
         return cb(err, []);
@@ -184,7 +184,7 @@ export class BitPayAccountProvider {
             pairData: {
               email: key
             },
-            appIdentity: appIdentity
+            appIdentity
           };
 
           accountsArray.push(accounts[key]);
@@ -198,7 +198,7 @@ export class BitPayAccountProvider {
     this.persistenceProvider.setBitpayAccount(this.bitPayProvider.getEnvironment().network, account);
   };
 
-  public removeAccount(email: string, cb: Function) {
+  public removeAccount(email: string, cb: () => any) {
     this.persistenceProvider.removeBitpayAccount(this.bitPayProvider.getEnvironment().network, email).then(() => {
       this.bitPayCardProvider.register();
       return cb();

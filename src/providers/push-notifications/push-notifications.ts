@@ -4,14 +4,14 @@ import { FCM } from '@ionic-native/fcm';
 import { App, NavController } from 'ionic-angular';
 import { Logger } from '../../providers/logger/logger';
 
-//providers
+// providers
 import { AppProvider } from '../app/app';
 import { BwcProvider } from '../bwc/bwc';
 import { ConfigProvider } from '../config/config';
 import { PlatformProvider } from '../platform/platform';
 import { ProfileProvider } from '../profile/profile';
 
-//pages
+// pages
 import { CopayersPage } from '../../pages/add/copayers/copayers';
 import { WalletDetailsPage } from '../../pages/wallet-details/wallet-details';
 
@@ -74,7 +74,7 @@ export class PushNotificationsProvider {
 
       this.logger.debug('Starting push notification registration...');
 
-      //Keep in mind the function will return null if the token has not been established yet.
+      // Keep in mind the function will return null if the token has not been established yet.
       this.FCMPlugin.getToken().then((token: any) => {
         this.logger.debug('Get token for push notifications: ' + token);
         this._token = token;

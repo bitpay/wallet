@@ -4,7 +4,7 @@ import { Events, ModalController, NavController, NavParams } from 'ionic-angular
 import * as _ from 'lodash';
 import { Logger } from '../../providers/logger/logger';
 
-//providers
+// providers
 import { BwcProvider } from '../../providers/bwc/bwc';
 import { FeeProvider } from '../../providers/fee/fee';
 import { OnGoingProcessProvider } from '../../providers/on-going-process/on-going-process';
@@ -81,12 +81,12 @@ export class PaperWalletPage {
     }
   }
 
-  private getPrivateKey(scannedKey: string, isPkEncrypted: boolean, passphrase: string, cb: Function): Function {
+  private getPrivateKey(scannedKey: string, isPkEncrypted: boolean, passphrase: string, cb: (err, scannedKey) => any): () => any {
     if (!isPkEncrypted) return cb(null, scannedKey);
     this.wallet.decryptBIP38PrivateKey(scannedKey, passphrase, null, cb);
   }
 
-  private getBalance(privateKey: string, cb: Function): void {
+  private getBalance(privateKey: string, cb: (err: any, balance: number) => any): void {
     this.wallet.getBalanceFromPrivateKey(privateKey, cb);
   }
 
@@ -107,7 +107,7 @@ export class PaperWalletPage {
 
         this.getBalance(privateKey, (err: any, balance: number) => {
           if (err) return reject(err);
-          return resolve({ privateKey: privateKey, balance: balance });
+          return resolve({ privateKey, balance });
         });
       });
     });
@@ -147,7 +147,7 @@ export class PaperWalletPage {
                 network: 'livenet'
               }, (err, txid) => {
                 if (err) return reject(err);
-                return resolve({ destinationAddress: destinationAddress, txid: txid });
+                return resolve({ destinationAddress, txid });
               });
             });
           });
@@ -186,7 +186,7 @@ export class PaperWalletPage {
   private openFinishModal(): void {
     let finishComment = this.translate.instant("Check the transaction on your wallet details");
     let finishText = this.translate.instant('Sweep Completed');
-    let modal = this.modalCtrl.create(FinishModalPage, { finishText: finishText, finishComment: finishComment }, { showBackdrop: true, enableBackdropDismiss: false });
+    let modal = this.modalCtrl.create(FinishModalPage, { finishText, finishComment }, { showBackdrop: true, enableBackdropDismiss: false });
     modal.present();
     modal.onDidDismiss(() => {
       this.navCtrl.pop();

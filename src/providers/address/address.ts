@@ -50,9 +50,9 @@ export class AddressProvider {
     var resultCoin = this.Bitcore[origCoin].translateTo;
     var resultAddress = this.Bitcore[resultCoin].lib.Address.fromObject(origObj);
     return {
-      origCoin: origCoin,
+      origCoin,
       origAddress: address,
-      resultCoin: resultCoin,
+      resultCoin,
       resultAddress: resultAddress.toString()
     };
   };
@@ -64,7 +64,7 @@ export class AddressProvider {
     let isTestnet = Address.isValid(address, 'testnet');
     let isLivenetCash = AddressCash.isValid(address, 'livenet');
     return {
-      address: address,
+      address,
       isValid: isLivenet || isTestnet || isLivenetCash,
       network: isTestnet ? 'testnet' : 'livenet',
       coin: this.getCoin(address),

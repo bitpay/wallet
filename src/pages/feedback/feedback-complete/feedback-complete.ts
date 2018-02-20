@@ -2,16 +2,16 @@ import { Component } from '@angular/core';
 import { NavController, NavParams, ViewController } from 'ionic-angular';
 import { Logger } from '../../../providers/logger/logger';
 
-//native
+// native
 import { SocialSharing } from '@ionic-native/social-sharing';
 
-//providers
+// providers
 import { AppProvider } from '../../../providers/app/app';
 import { ConfigProvider } from '../../../providers/config/config';
 import { PersistenceProvider } from '../../../providers/persistence/persistence';
 import { PlatformProvider } from '../../../providers/platform/platform';
 
-//pages
+// pages
 import { HomePage } from '../../home/home';
 
 @Component({

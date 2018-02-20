@@ -214,7 +214,7 @@ export class BuyMercadoLibrePage {
             });
           }
 
-          return resolve({ invoice: invoice, accessKey: accessKey });
+          return resolve({ invoice, accessKey });
         });
       });
     });
@@ -242,11 +242,11 @@ export class BuyMercadoLibrePage {
       });
 
       let txp = {
-        toAddress: toAddress,
+        toAddress,
         amount: amountSat,
-        outputs: outputs,
-        message: message,
-        payProUrl: payProUrl,
+        outputs,
+        message,
+        payProUrl,
         excludeUnconfirmedUtxos: this.configWallet.spendUnconfirmed ? false : true,
         feeLevel: this.configWallet.settings.feeLevel ? this.configWallet.settings.feeLevel : 'normal'
       };
@@ -315,7 +315,7 @@ export class BuyMercadoLibrePage {
       amount: parsedAmount.amount,
       currency: parsedAmount.currency,
       uuid: wallet.id,
-      email: email
+      email
     };
     this.onGoingProcessProvider.set('loadingTxInfo', true);
     this.createInvoice(dataSrc).then((data: any) => {
@@ -340,7 +340,7 @@ export class BuyMercadoLibrePage {
           currency: dataSrc.currency,
           amount: dataSrc.amount,
           uuid: dataSrc.uuid,
-          accessKey: accessKey,
+          accessKey,
           invoiceId: invoice.id,
           invoiceUrl: invoice.url,
           invoiceTime: invoice.invoiceTime
@@ -415,7 +415,7 @@ export class BuyMercadoLibrePage {
       finishComment = 'Vale-Presente gerado e pronto para usar';
     }
     let finishText = '';
-    let modal = this.modalCtrl.create(FinishModalPage, { finishText: finishText, finishComment: finishComment, cssClass: cssClass }, { showBackdrop: true, enableBackdropDismiss: false });
+    let modal = this.modalCtrl.create(FinishModalPage, { finishText, finishComment, cssClass }, { showBackdrop: true, enableBackdropDismiss: false });
     modal.present();
     modal.onDidDismiss(() => {
       this.navCtrl.popToRoot({ animate: false });

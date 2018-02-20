@@ -57,7 +57,7 @@ export class FileStorage implements IStorage {
       try {
         parsed = JSON.parse(v);
       } catch (e) {
-        //TODO parse is not necessary
+        // TODO parse is not necessary
       }
       return parsed || v;
     };

@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { NavController } from 'ionic-angular';
 
-//providers
+// providers
 import { ExternalLinkProvider } from '../../../providers/external-link/external-link';
 import { LanguageProvider } from '../../../providers/language/language';
 

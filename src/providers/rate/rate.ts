@@ -7,7 +7,7 @@ import { Logger } from '../../providers/logger/logger';
 export class RateProvider {
 
   private rates: any;
-  private alternatives: Array<any>;
+  private alternatives: any[];
   private ratesBCH: any;
   private ratesAvailable: boolean;
 
@@ -90,7 +90,7 @@ export class RateProvider {
       return this.rates[code];
   }
 
-  public getAlternatives(): Array<any> {
+  public getAlternatives(): any[] {
     return this.alternatives;
   }
 

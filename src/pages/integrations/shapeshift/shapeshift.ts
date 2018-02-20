@@ -81,7 +81,7 @@ export class ShapeshiftPage {
   }
 
   public openShiftModal(ssData: any) {
-    let modal = this.modalCtrl.create(ShapeshiftDetailsPage, { ssData: ssData });
+    let modal = this.modalCtrl.create(ShapeshiftDetailsPage, { ssData });
 
     modal.present();
 

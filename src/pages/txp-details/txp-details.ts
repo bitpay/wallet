@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Events, ModalController, NavParams, ViewController } from 'ionic-angular';
 
-//providers
+// providers
 import { BwcErrorProvider } from '../../providers/bwc-error/bwc-error';
 import { ConfigProvider } from '../../providers/config/config';
 import { FeeProvider } from '../../providers/fee/fee';
@@ -13,7 +13,7 @@ import { ProfileProvider } from '../../providers/profile/profile';
 import { TxFormatProvider } from '../../providers/tx-format/tx-format';
 import { WalletProvider } from '../../providers/wallet/wallet';
 
-//pages
+// pages
 import { FinishModalPage } from '../finish/finish';
 
 import * as _ from 'lodash';
@@ -32,7 +32,7 @@ export class TxpDetailsPage {
   public color: string;
   public buttonText: string;
   public successText: string;
-  public actionList: Array<any>;
+  public actionList: any[];
   public paymentExpired: boolean;
   public expires: string;
   public currentSpendUnconfirmed: boolean;
@@ -120,18 +120,18 @@ export class TxpDetailsPage {
     }).length == this.tx.requiredSignatures - 1;
 
     if (lastSigner) {
-      //if (this.isCordova && !this.isWindowsPhoneApp) {
+      // if (this.isCordova && !this.isWindowsPhoneApp) {
       //  this.buttonText = this.translate.instant('Slide to send');
-      //} else {
+      // } else {
       this.buttonText = this.translate.instant('Click to send');
-      //}
+      // }
       this.successText = this.translate.instant('Payment Sent');
     } else {
-      //if (this.isCordova && !this.isWindowsPhoneApp) {
+      // if (this.isCordova && !this.isWindowsPhoneApp) {
       // this.buttonText = this.translate.instant('Slide to accept');
-      //} else {
+      // } else {
       this.buttonText = this.translate.instant('Click to accept');
-      //}
+      // }
       this.successText = this.translate.instant('Payment Accepted');
     }
   }

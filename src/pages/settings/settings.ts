@@ -3,7 +3,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { NavController } from 'ionic-angular';
 import { Logger } from '../../providers/logger/logger';
 
-//providers
+// providers
 import { AppProvider } from '../../providers/app/app';
 import { ConfigProvider } from '../../providers/config/config';
 import { ExternalLinkProvider } from '../../providers/external-link/external-link';
@@ -12,7 +12,7 @@ import { LanguageProvider } from '../../providers/language/language';
 import { PlatformProvider } from '../../providers/platform/platform';
 import { ProfileProvider } from '../../providers/profile/profile';
 
-//pages
+// pages
 import { FeedbackCompletePage } from '../feedback/feedback-complete/feedback-complete';
 import { SendFeedbackPage } from '../feedback/send-feedback/send-feedback';
 import { BitPaySettingsPage } from '../integrations/bitpay-card/bitpay-settings/bitpay-settings';
@@ -37,15 +37,15 @@ import { WalletSettingsPage } from './wallet-settings/wallet-settings';
 export class SettingsPage {
   public appName: string;
   public currentLanguageName: string;
-  public languages: Array<any>;
-  public walletsBtc: Array<any>;
-  public walletsBch: Array<any>;
+  public languages: any[];
+  public walletsBtc: any[];
+  public walletsBch: any[];
   public config: any;
   public selectedAlternative: any;
   public isCordova: boolean;
   public isWindowsPhoneApp: boolean;
   public lockMethod: string;
-  public exchangeServices: Array<any> = [];
+  public exchangeServices: any[] = [];
   public bitpayCardEnabled: boolean = false;
 
   constructor(
@@ -129,7 +129,7 @@ export class SettingsPage {
   }
 
   public openWalletSettingsPage(walletId: string): void {
-    this.navCtrl.push(WalletSettingsPage, { walletId: walletId });
+    this.navCtrl.push(WalletSettingsPage, { walletId });
   }
 
   public openSendFeedbackPage(): void {

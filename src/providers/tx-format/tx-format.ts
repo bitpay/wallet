@@ -41,7 +41,7 @@ export class TxFormatProvider {
 
     if (settings.unitCode == 'sat') return satoshis;
 
-    //TODO : now only works for english, specify opts to change thousand separator and decimal separator
+    // TODO : now only works for english, specify opts to change thousand separator and decimal separator
     var opts = {
       fullPrecision: !!fullPrecision
     };
@@ -54,7 +54,7 @@ export class TxFormatProvider {
   }
 
   public toFiat(coin: string, satoshis: number, code: string): Promise<any> {
-    //TODO not a promise
+    // TODO not a promise
     return new Promise((resolve, reject) => {
       if (isNaN(satoshis)) return resolve();
       var v1;
@@ -65,7 +65,7 @@ export class TxFormatProvider {
   }
 
   public formatToUSD(coin: string, satoshis: number): Promise<any> {
-    //TODO not a promise
+    // TODO not a promise
     return new Promise((resolve, reject) => {
       let v1: number;
       if (isNaN(satoshis)) return resolve();
@@ -164,7 +164,7 @@ export class TxFormatProvider {
         tx.createdOn = now;
 
       // TODO: implement profileService.getWallet(tx.walletId)
-      //tx.wallet = profileService.getWallet(tx.walletId);
+      // TODO tx.wallet = profileService.getWallet(tx.walletId);
       tx.wallet = {
         coin: "btc",
         copayerId: "asdasdasdasd"
@@ -228,11 +228,11 @@ export class TxFormatProvider {
     }
 
     return {
-      amount: amount,
-      currency: currency,
-      alternativeIsoCode: alternativeIsoCode,
-      amountSat: amountSat,
-      amountUnitStr: amountUnitStr
+      amount,
+      currency,
+      alternativeIsoCode,
+      amountSat,
+      amountUnitStr
     };
   };
 

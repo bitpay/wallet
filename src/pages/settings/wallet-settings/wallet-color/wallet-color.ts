@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { Events, NavController, NavParams } from 'ionic-angular';
 import { Logger } from '../../../../providers/logger/logger';
 
-//providers
+// providers
 import { ConfigProvider } from '../../../../providers/config/config';
 import { ProfileProvider } from '../../../../providers/profile/profile';
 
@@ -13,7 +13,7 @@ import { ProfileProvider } from '../../../../providers/profile/profile';
 export class WalletColorPage {
 
   public wallet: any;
-  public colorCount: Array<number>;
+  public colorCount: number[];
   public currentColorIndex: number;
   private config: any;
   private retries: number = 3;

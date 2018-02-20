@@ -4,7 +4,7 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { Events, ModalController, Platform } from 'ionic-angular';
 import { Subscription } from 'rxjs';
 
-//providers
+// providers
 import { AmazonProvider } from '../providers/amazon/amazon';
 import { AppProvider } from '../providers/app/app';
 import { BitPayCardProvider } from '../providers/bitpay-card/bitpay-card';
@@ -17,7 +17,7 @@ import { ProfileProvider } from '../providers/profile/profile';
 import { ShapeshiftProvider } from '../providers/shapeshift/shapeshift';
 import { TouchIdProvider } from '../providers/touchid/touchid';
 
-//pages
+// pages
 import { FingerprintModalPage } from '../pages/fingerprint/fingerprint';
 import { DisclaimerPage } from '../pages/onboarding/disclaimer/disclaimer';
 import { OnboardingPage } from '../pages/onboarding/onboarding';

@@ -3,10 +3,10 @@ import { AlertController, Navbar, NavController, NavParams, Slides } from 'ionic
 import * as _ from 'lodash';
 import { Logger } from '../../../providers/logger/logger';
 
-//pahes
+// pages
 import { DisclaimerPage } from '../../onboarding/disclaimer/disclaimer';
 
-//providers
+// providers
 import { BwcProvider } from '../../../providers/bwc/bwc';
 import { OnGoingProcessProvider } from '../../../providers/on-going-process/on-going-process';
 import { ProfileProvider } from '../../../providers/profile/profile';
@@ -24,10 +24,10 @@ export class BackupGamePage {
 
   public currentIndex: number;
   public deleted: boolean;
-  public mnemonicWords: Array<String>;
-  public shuffledMnemonicWords: Array<any>;
-  public password: String;
-  public customWords: Array<any>;
+  public mnemonicWords: string[];
+  public shuffledMnemonicWords: any[];
+  public password: string;
+  public customWords: any[];
   public selectComplete: boolean;
   public error: boolean;
   public credentialsEncrypted: boolean;
@@ -84,7 +84,7 @@ export class BackupGamePage {
     if (this.slides) this.slides.lockSwipes(true);
   }
 
-  private shuffledWords(words: Array<String>) {
+  private shuffledWords(words: string[]) {
     var sort = _.sortBy(words);
 
     return _.map(sort, (w) => {
@@ -226,7 +226,7 @@ export class BackupGamePage {
         try {
           walletClient.seedFromMnemonic(customSentence, {
             network: this.wallet.credentials.network,
-            password: password,
+            password,
             account: this.wallet.credentials.account
           });
         } catch (err) {

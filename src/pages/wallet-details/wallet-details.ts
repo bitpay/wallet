@@ -3,14 +3,14 @@ import { TranslateService } from '@ngx-translate/core';
 import { Events, NavController, NavParams } from 'ionic-angular';
 import { Logger } from '../../providers/logger/logger';
 
-//providers
+// providers
 import { AddressBookProvider } from '../../providers/address-book/address-book';
 import { BwcErrorProvider } from '../../providers/bwc-error/bwc-error';
 import { ProfileProvider } from '../../providers/profile/profile';
 import { TimeProvider } from '../../providers/time/time';
 import { WalletProvider } from '../../providers/wallet/wallet';
 
-//pages
+// pages
 import { BackupWarningPage } from '../../pages/backup/backup-warning/backup-warning';
 import { WalletAddressesPage } from '../../pages/settings/wallet-settings/wallet-settings-advanced/wallet-addresses/wallet-addresses';
 import { TxDetailsPage } from '../../pages/tx-details/tx-details';
@@ -40,7 +40,7 @@ export class WalletDetailsPage {
   public showNoTransactionsYetMsg: boolean;
   public showBalanceButton: boolean = false;
   public addressbook: any = {};
-  public txps: Array<any> = [];
+  public txps: any[] = [];
 
   constructor(
     private navCtrl: NavController,
@@ -101,7 +101,7 @@ export class WalletDetailsPage {
     this.currentPage++;
   }
 
-  private setPendingTxps(txps: Array<any>) {
+  private setPendingTxps(txps: any[]) {
 
     /* Uncomment to test multiple outputs */
 
@@ -141,7 +141,7 @@ export class WalletDetailsPage {
     }).bind(this);
 
     this.walletProvider.getTxHistory(this.wallet, {
-      progressFn: progressFn
+      progressFn
     }).then((txHistory) => {
       this.updatingTxHistory = false;
 

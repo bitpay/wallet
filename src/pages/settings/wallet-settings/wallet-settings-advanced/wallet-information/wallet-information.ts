@@ -2,11 +2,11 @@ import { Component } from '@angular/core';
 import { Events, NavController, NavParams } from 'ionic-angular';
 import { Logger } from '../../../../../providers/logger/logger';
 
-//providers
+// providers
 import { ConfigProvider } from '../../../../../providers/config/config';
 import { ProfileProvider } from '../../../../../providers/profile/profile';
 
-//pages
+// pages
 import { WalletExtendedPrivateKeyPage } from './wallet-extended-private-key/wallet-extended-private-key';
 
 import * as _ from 'lodash';
@@ -31,7 +31,7 @@ export class WalletInformationPage {
   public addressType: string;
   public derivationStrategy: string;
   public basePath: string;
-  public pubKeys: Array<any>;
+  public pubKeys: any[];
   public externalSource: string;
   public canSign: boolean;
   public needsBackup: boolean;

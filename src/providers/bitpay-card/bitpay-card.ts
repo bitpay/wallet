@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Logger } from '../../providers/logger/logger';
 
-//providers
+// providers
 import { AppIdentityProvider } from '../app-identity/app-identity';
 import { BitPayProvider } from '../bitpay/bitpay';
 import { HomeIntegrationsProvider } from '../home-integrations/home-integrations';
@@ -94,11 +94,11 @@ export class BitPayCardProvider {
     return this._getMerchantInfo({
       date: txn.timestamp || dateTime,
       category: txn.mcc,
-      merchant: merchant,
+      merchant,
       description: txn.description[0],
       price: parseFloat(txn.amount) + parseFloat(txn.fee),
       type: txn.type,
-      runningBalance: runningBalance
+      runningBalance
     });
   };
 
@@ -359,7 +359,7 @@ export class BitPayCardProvider {
   public setLastKnownBalance(cardId, balance) {
 
     this.persistenceProvider.setBalanceCache(cardId, {
-      balance: balance,
+      balance,
       updatedOn: Math.floor(Date.now() / 1000),
     });
   };

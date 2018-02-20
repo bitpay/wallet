@@ -29,6 +29,7 @@ export async function takeScreenshot(name: string) {
   const pngData = await browser.takeScreenshot();
   const path = join(dir, `${name}_${deviceName}.png`);
   writeFile(path, pngData, { encoding: 'base64' }, err => {
+    // tslint:disable-next-line:no-console
     err ? console.error(err) : console.log(`File written: ${path}`);
   });
 }

@@ -56,7 +56,7 @@ export class ConfirmPage {
   public isCordova: boolean;
   public isWindowsPhoneApp: boolean;
 
-  //custom fee flag
+  // custom fee flag
   public usingCustomFee: boolean = false;
 
   constructor(
@@ -160,14 +160,14 @@ export class ConfirmPage {
 
       // no min amount? (sendMax) => look for no empty wallets
       minAmount = minAmount ? minAmount : 1;
-      let filteredWallets: Array<any> = [];
+      let filteredWallets: any[] = [];
       let index: number = 0;
       let walletsUpdated: number = 0;
 
       this.wallets = this.profileProvider.getWallets({
         onlyComplete: true,
-        network: network,
-        coin: coin
+        network,
+        coin
       });
 
       if (!this.wallets || !this.wallets.length) {
@@ -253,23 +253,23 @@ export class ConfirmPage {
 
   private setButtonText(isMultisig: boolean, isPayPro: boolean): void {
     if (isPayPro) {
-      //if (this.isCordova && !this.isWindowsPhoneApp) {
+      // if (this.isCordova && !this.isWindowsPhoneApp) {
       //  this.buttonText = this.translate.instant('Slide to pay');
       // } else {
       this.buttonText = this.translate.instant('Click to pay');
       // }
     } else if (isMultisig) {
-      //if (this.isCordova && !this.isWindowsPhoneApp) {
+      // if (this.isCordova && !this.isWindowsPhoneApp) {
       //  this.buttonText = this.translate.instant('Slide to accept');
-      //} else {
+      // } else {
       this.buttonText = this.translate.instant('Click to accept');
-      //}
+      // }
     } else {
-      //if (this.isCordova && !this.isWindowsPhoneApp) {
+      // if (this.isCordova && !this.isWindowsPhoneApp) {
       // this.buttonText = this.translate.instant('Slide to send');
-      //} else {
+      // } else {
       this.buttonText = this.translate.instant('Click to send');
-      //}
+      // }
     }
   }
 
@@ -614,7 +614,7 @@ export class ConfirmPage {
     if (onlyPublish) {
       let finishText = this.translate.instant('Payment Published');
       let finishComment = this.translate.instant('You could sign the transaction later in your wallet details');
-      params = { finishText: finishText, finishComment: finishComment };
+      params = { finishText, finishComment };
     }
     let modal = this.modalCtrl.create(FinishModalPage, params, { showBackdrop: true, enableBackdropDismiss: false });
     modal.present();

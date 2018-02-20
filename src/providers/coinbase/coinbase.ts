@@ -4,7 +4,7 @@ import { Injectable } from '@angular/core';
 import { Events } from 'ionic-angular';
 import { Logger } from '../../providers/logger/logger';
 
-//providers
+// providers
 import { AppProvider } from '../app/app';
 import { ConfigProvider } from '../config/config';
 import { FeeProvider } from '../fee/fee';
@@ -229,7 +229,7 @@ export class CoinbaseProvider {
     let url = this.credentials.HOST + '/oauth/token';
     let data = {
       grant_type: 'authorization_code',
-      code: code,
+      code,
       client_id: this.credentials.CLIENT_ID,
       client_secret: this.credentials.CLIENT_SECRET,
       redirect_uri: this.credentials.REDIRECT_URI
@@ -350,7 +350,7 @@ export class CoinbaseProvider {
                   if (err) return cb(err);
                   return cb(null, {
                     accessToken: newToken,
-                    accountId: accountId
+                    accountId
                   });
                 });
               });
@@ -362,8 +362,8 @@ export class CoinbaseProvider {
           }
         } else {
           return cb(null, {
-            accessToken: accessToken,
-            accountId: accountId
+            accessToken,
+            accountId
           });
         }
       });

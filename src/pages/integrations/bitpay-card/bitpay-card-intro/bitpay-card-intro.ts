@@ -4,13 +4,13 @@ import { ActionSheetController, NavController, NavParams } from 'ionic-angular';
 
 import * as _ from 'lodash';
 
-//providers
+// providers
 import { BitPayAccountProvider } from '../../../../providers/bitpay-account/bitpay-account';
 import { BitPayCardProvider } from '../../../../providers/bitpay-card/bitpay-card';
 import { ExternalLinkProvider } from '../../../../providers/external-link/external-link';
 import { PopupProvider } from '../../../../providers/popup/popup';
 
-//pages
+// pages
 import { BitPayCardPage } from '../bitpay-card';
 
 @Component({
@@ -93,7 +93,7 @@ export class BitPayCardIntroPage {
   }
 
   private showAccountSelector() {
-    let options:Array<any> = [];
+    let options:any[] = [];
 
     _.forEach(this.accounts, (account: any) => {
       options.push(

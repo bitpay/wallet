@@ -63,7 +63,7 @@ export class ScanProvider {
     this.logger.debug('A second camera is ' + this.orIsNot(this.canChangeCamera) + 'available on this platform.');
   }
 
-  /**
+/**
  * Immediately return known capabilities of the current platform.
  */
   public getCapabilities(): any {
@@ -169,11 +169,9 @@ export class ScanProvider {
       });
     });
   }
-
-  /**
-  * Start a new scan.
-  *
-  */
+/**
+ * Start a new scan.
+ */
   public scan(): Promise<any> {
     return new Promise((resolve, reject) => {
       this.logger.debug('Scanning...');
@@ -195,7 +193,7 @@ export class ScanProvider {
   }
 
 
-  /**
+/**
  * Deactivate the QRScanner. To balance user-perceived performance and power
  * consumption, this kicks off a countdown which will "sleep" the scanner
  * after a certain amount of time.
@@ -226,7 +224,7 @@ export class ScanProvider {
     this.qrScanner.destroy();
   }
 
-  /**
+/**
  * Toggle the device light (if available).
  *
  * The callback receives a boolean which is `true` if the light is enabled.

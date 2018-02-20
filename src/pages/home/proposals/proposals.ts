@@ -2,7 +2,7 @@ import { Component } from "@angular/core";
 import { TranslateService } from '@ngx-translate/core';
 import { Logger } from '../../../providers/logger/logger';
 
-//providers
+// providers
 import { AddressBookProvider } from '../../../providers/address-book/address-book';
 import { OnGoingProcessProvider } from '../../../providers/on-going-process/on-going-process';
 import { ProfileProvider } from '../../../providers/profile/profile';

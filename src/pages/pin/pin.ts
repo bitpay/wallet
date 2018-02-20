@@ -162,7 +162,7 @@ export class PinModalPage {
   }
 
   private saveFailedAttempt(bannedUntil) {
-    let lock = { bannedUntil: bannedUntil };
+    let lock = { bannedUntil };
     this.configProvider.set({ lock });
   }
 

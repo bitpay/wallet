@@ -2,10 +2,10 @@ import { Component } from '@angular/core';
 import { NavParams, ViewController } from 'ionic-angular';
 import { Logger } from '../../../../../../providers/logger/logger';
 
-//native
+// native
 import { SocialSharing } from '@ionic-native/social-sharing';
 
-//providers
+// providers
 import { AppProvider } from '../../../../../../providers/app/app';
 import { OnGoingProcessProvider } from '../../../../../../providers/on-going-process/on-going-process';
 import { PlatformProvider } from '../../../../../../providers/platform/platform';

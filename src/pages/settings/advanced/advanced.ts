@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Logger } from '../../../providers/logger/logger';
 
-//providers
+// providers
 import { ConfigProvider } from '../../../providers/config/config';
 
 @Component({

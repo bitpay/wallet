@@ -1,10 +1,10 @@
 export class Profile {
 
   public version: string;
-  public createdOn: Number;
-  public credentials: Array<any>;
+  public createdOn: number;
+  public credentials: any[];
   public disclaimerAccepted: boolean;
-  public checked: Object;
+  public checked: any;
   public checkedUA?: any;
   public dirty: boolean;
 
