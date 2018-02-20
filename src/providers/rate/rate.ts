@@ -32,10 +32,9 @@ export class RateProvider {
     this.updateRatesBch();
   }
 
-  private updateRatesBtc(): Promise<any> {
+  public updateRatesBtc(): Promise<any> {
     return new Promise((resolve, reject) => {
       this.getBTC().then((dataBTC: any) => {
-
         _.each(dataBTC, (currency: any) => {
           this.rates[currency.code] = currency.rate;
           this.alternatives.push({
@@ -53,7 +52,7 @@ export class RateProvider {
     });
   }
 
-  private updateRatesBch(): Promise<any> {
+  public updateRatesBch(): Promise<any> {
     return new Promise((resolve, reject) => {
       this.getBCH().then((dataBCH: any) => {
         _.each(dataBCH, (currency: any) => {
@@ -67,7 +66,7 @@ export class RateProvider {
     });
   }
 
-  private getBTC(): Promise<any> {
+  public getBTC(): Promise<any> {
     return new Promise((resolve, reject) => {
       this.http.get(this.rateServiceUrl).subscribe((data: any) => {
         resolve(data);
@@ -75,7 +74,7 @@ export class RateProvider {
     });
   }
 
-  private getBCH(): Promise<any> {
+  public getBCH(): Promise<any> {
     return new Promise((resolve, reject) => {
       this.http.get(this.bchRateServiceUrl).subscribe((data: any) => {
         resolve(data);
@@ -83,7 +82,7 @@ export class RateProvider {
     });
   }
 
-  private getRate(code: string, chain?: string): number {
+  public getRate(code: string, chain?: string): number {
     if (chain == 'bch')
       return this.ratesBCH[code];
     else
@@ -94,7 +93,7 @@ export class RateProvider {
     return this.alternatives;
   }
 
-  public isAvailable() {
+  public isAvailable(): boolean {
     return this.ratesAvailable;
   }
 
