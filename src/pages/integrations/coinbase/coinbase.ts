@@ -1,18 +1,18 @@
 import { Component } from '@angular/core';
-import { NavController, ModalController, NavParams } from 'ionic-angular';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ModalController, NavController, NavParams } from 'ionic-angular';
 import { Logger } from '../../../providers/logger/logger';
-import { Validators, FormBuilder, FormGroup } from '@angular/forms';
 
-//providers
+// providers
 import { CoinbaseProvider } from '../../../providers/coinbase/coinbase';
-import { PopupProvider } from '../../../providers/popup/popup';
 import { ExternalLinkProvider } from '../../../providers/external-link/external-link';
-import { PlatformProvider } from '../../../providers/platform/platform';
 import { OnGoingProcessProvider } from '../../../providers/on-going-process/on-going-process';
+import { PlatformProvider } from '../../../providers/platform/platform';
+import { PopupProvider } from '../../../providers/popup/popup';
 
-//pages
-import { CoinbaseTxDetailsPage } from './coinbase-tx-details/coinbase-tx-details';
+// pages
 import { AmountPage } from '../../send/amount/amount';
+import { CoinbaseTxDetailsPage } from './coinbase-tx-details/coinbase-tx-details';
 
 import * as _ from 'lodash';
 
@@ -53,7 +53,7 @@ export class CoinbasePage {
       code: ['', Validators.compose([Validators.minLength(1), Validators.required])]
     });
     // TODO: desktop
-    //this.isNW = this.platformProvider.isNW;
+    // this.isNW = this.platformProvider.isNW;
     this.isCordova = this.platformProvider.isCordova;
     this.showOauthForm = false;
   }

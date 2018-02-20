@@ -1,14 +1,14 @@
 import { Component } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ModalController, NavController, NavParams } from 'ionic-angular';
 import { Logger } from '../../../providers/logger/logger';
-import { NavController, NavParams, ModalController } from 'ionic-angular';
-import { Validators, FormBuilder, FormGroup } from '@angular/forms';
 
-//providers
+// providers
 import { ExternalLinkProvider } from '../../../providers/external-link/external-link';
-import { OnGoingProcessProvider } from '../../../providers/on-going-process/on-going-process';
 import { GlideraProvider } from '../../../providers/glidera/glidera';
+import { OnGoingProcessProvider } from '../../../providers/on-going-process/on-going-process';
 import { PopupProvider } from '../../../providers/popup/popup';
-//pages
+// pages
 import { AmountPage } from '../../send/amount/amount';
 import { GlideraTxDetailsPage } from './glidera-tx-details/glidera-tx-details';
 

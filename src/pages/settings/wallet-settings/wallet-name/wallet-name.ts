@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, Events } from 'ionic-angular';
-import { Validators, FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Events, NavController, NavParams } from 'ionic-angular';
 import { Logger } from '../../../../providers/logger/logger';
 
-//providers
-import { ProfileProvider } from '../../../../providers/profile/profile';
+// providers
 import { ConfigProvider } from '../../../../providers/config/config';
+import { ProfileProvider } from '../../../../providers/profile/profile';
 
 @Component({
   selector: 'page-wallet-name',

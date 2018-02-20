@@ -1,0 +1,52 @@
+page-finish{
+  .container {
+    height: 100%;
+    position: relative;
+    .content {
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      .body {
+        margin-top: -20vh;
+        text-align: center;
+        &-img {
+          padding: 3rem;
+        }
+        &-text {
+          font-size: 2.8rem;
+          color: #ffffff;
+        }
+        &-comment {
+          padding: 2rem;
+          font-size: 2rem;
+          color: #ffffff;
+        }
+      }
+    }
+    .footer {
+      padding: 2rem;
+      margin: 0 1.75rem;
+      border-top: 0.1rem solid rgba(255, 255, 255, 0.45);
+      position: absolute;
+      bottom: 0rem;
+      left: 0rem;
+      right: 0rem;
+      text-align: center;
+      color: #ffffff;
+      font-size: 2rem;
+      letter-spacing: 2.86px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+  }
+  .success {
+    background-color: #11D1A6;
+  }
+  .warning {
+    background-color: color($colors, warning);
+  }
+  .danger {
+    background-color: color($colors, danger);
+  }
+}

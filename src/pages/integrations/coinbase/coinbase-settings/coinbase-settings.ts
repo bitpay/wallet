@@ -2,10 +2,10 @@ import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
 import * as _ from 'lodash';
 
+import { CoinbaseProvider } from '../../../../providers/coinbase/coinbase';
 import { Logger } from '../../../../providers/logger/logger';
 import { OnGoingProcessProvider } from '../../../../providers/on-going-process/on-going-process';
 import { PopupProvider } from '../../../../providers/popup/popup';
-import { CoinbaseProvider } from '../../../../providers/coinbase/coinbase';
 
 @Component({
   selector: 'page-coinbase-settings',
@@ -37,7 +37,7 @@ export class CoinbaseSettingsPage {
           this.popupProvider.ionicAlert('Error connecting to Coinbase', err).then(() => {
             if (errorId == 'revoked_token') {
               this.coinbaseProvider.logout();
-              this.navCtrl.popToRoot();
+              this.navCtrl.popToRoot({ animate: false });
             }
           });
         }
@@ -62,8 +62,9 @@ export class CoinbaseSettingsPage {
     ).then((res) => {
       if (res) {
         this.coinbaseProvider.logout();
-        this.navCtrl.popToRoot();
-        this.navCtrl.parent.select(0);
+        this.navCtrl.popToRoot({ animate: false }).then(() => {
+          this.navCtrl.parent.select(0);
+        });
       }
     });
   };

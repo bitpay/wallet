@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, AlertController } from 'ionic-angular';
-import { AddressbookAddPage } from './add/add';
-import { AddressbookViewPage } from './view/view';
+import { AlertController, NavController, NavParams } from 'ionic-angular';
+import * as _ from 'lodash';
 import { AddressBookProvider } from '../../../providers/address-book/address-book';
 import { Logger } from '../../../providers/logger/logger';
-import * as _ from 'lodash';
+import { AddressbookAddPage } from './add/add';
+import { AddressbookViewPage } from './view/view';
 
 @Component({
   selector: 'page-addressbook',
@@ -13,8 +13,8 @@ import * as _ from 'lodash';
 export class AddressbookPage {
 
   private cache: boolean = false;
-  public addressbook: Array<object> = [];
-  public filteredAddressbook: Array<object> = [];
+  public addressbook: object[] = [];
+  public filteredAddressbook: object[] = [];
 
   public isEmptyList: boolean;
 
@@ -37,7 +37,7 @@ export class AddressbookPage {
     this.addressbookProvider.list().then((addressBook: any) => {
       this.isEmptyList = _.isEmpty(addressBook);
 
-      let contacts: Array<object> = [];
+      let contacts: object[] = [];
       _.each(addressBook, (contact: any, k: string) => {
         contacts.push({
           name: _.isObject(contact) ? contact.name : contact,
@@ -69,7 +69,7 @@ export class AddressbookPage {
   };
 
   public viewEntry(contact: any): void {
-    this.navCtrl.push(AddressbookViewPage, { contact: contact });
+    this.navCtrl.push(AddressbookViewPage, { contact });
   }
 
   public getItems(event: any): void {

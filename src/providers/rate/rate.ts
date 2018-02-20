@@ -1,13 +1,13 @@
-import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Logger } from '../../providers/logger/logger';
+import { Injectable } from '@angular/core';
 import * as _ from 'lodash';
+import { Logger } from '../../providers/logger/logger';
 
 @Injectable()
 export class RateProvider {
 
   private rates: any;
-  private alternatives: Array<any>;
+  private alternatives: any[];
   private ratesBCH: any;
   private ratesAvailable: boolean;
 
@@ -89,7 +89,7 @@ export class RateProvider {
       return this.rates[code];
   }
 
-  public getAlternatives(): Array<any> {
+  public getAlternatives(): any[] {
     return this.alternatives;
   }
 

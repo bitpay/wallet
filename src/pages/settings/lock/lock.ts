@@ -1,14 +1,14 @@
 import { Component } from '@angular/core';
-import { ModalController } from 'ionic-angular';
 import { TranslateService } from '@ngx-translate/core';
+import { ModalController } from 'ionic-angular';
 
-//pages
+// pages
 import { PinModalPage } from '../../pin/pin';
 
-//providers
+// providers
 import { ConfigProvider } from '../../../providers/config/config';
-import { TouchIdProvider } from '../../../providers/touchid/touchid';
 import { ProfileProvider } from '../../../providers/profile/profile';
+import { TouchIdProvider } from '../../../providers/touchid/touchid';
 
 import * as _ from 'lodash';
 

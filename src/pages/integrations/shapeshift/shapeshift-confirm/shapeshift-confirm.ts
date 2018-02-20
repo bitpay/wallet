@@ -1,17 +1,17 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
-import { Logger } from '../../../../providers/logger/logger';
-import * as moment from 'moment';
-import * as _ from 'lodash';
 import { TranslateService } from '@ngx-translate/core';
+import { ModalController, NavController, NavParams } from 'ionic-angular';
+import * as _ from 'lodash';
+import * as moment from 'moment';
+import { Logger } from '../../../../providers/logger/logger';
 
 // Pages
+import { FinishModalPage } from '../../../finish/finish';
 import { ShapeshiftPage } from '../shapeshift';
-import { SuccessModalPage } from '../../../success/success';
 
 // Providers
-import { BwcProvider } from '../../../../providers/bwc/bwc';
 import { BwcErrorProvider } from '../../../../providers/bwc-error/bwc-error';
+import { BwcProvider } from '../../../../providers/bwc/bwc';
 import { ConfigProvider } from '../../../../providers/config/config';
 import { ExternalLinkProvider } from '../../../../providers/external-link/external-link';
 import { OnGoingProcessProvider } from "../../../../providers/on-going-process/on-going-process";
@@ -21,7 +21,6 @@ import { ProfileProvider } from '../../../../providers/profile/profile';
 import { ShapeshiftProvider } from '../../../../providers/shapeshift/shapeshift';
 import { TxFormatProvider } from '../../../../providers/tx-format/tx-format';
 import { WalletProvider } from '../../../../providers/wallet/wallet';
-import { ModalController } from 'ionic-angular/components/modal/modal-controller';
 
 @Component({
   selector: 'page-shapeshift-confirm',
@@ -85,9 +84,9 @@ export class ShapeshiftConfirmPage {
 
     this.useSendMax = this.navParams.data.useSendMax ? true : false;
 
-    this.amount = this.navParams.data.amount / 1e8;
+    this.amount = this.navParams.data.amount;
     this.currency = this.navParams.data.currency;
-    this.fromWalletId = this.navParams.data.walletId;
+    this.fromWalletId = this.navParams.data.id;
     this.toWalletId = this.navParams.data.toWalletId;
 
     this.network = this.shapeshiftProvider.getNetwork();
@@ -185,8 +184,8 @@ export class ShapeshiftConfirmPage {
 
     this.shapeshiftProvider.getStatus(address, (err: any, st: any) => {
       let newData = {
-        address: address,
-        withdrawal: withdrawal,
+        address,
+        withdrawal,
         date: now,
         amount: this.amountStr,
         rate: this.rateUnit + ' ' + this.toWallet.coin.toUpperCase() + ' per ' + this.fromWallet.coin.toUpperCase(),
@@ -202,7 +201,7 @@ export class ShapeshiftConfirmPage {
 
       this.shapeshiftProvider.saveShapeshift(newData, null, (err: any) => {
         this.logger.debug("Saved shift with status: " + newData.status);
-        this.openSuccessModal();
+        this.openFinishModal();
       });
     });
   }
@@ -222,9 +221,9 @@ export class ShapeshiftConfirmPage {
       });
 
       let txp = {
-        toAddress: toAddress,
+        toAddress,
         amount: parsedAmount.amountSat,
-        outputs: outputs,
+        outputs,
         message: this.message,
         excludeUnconfirmedUtxos: this.configWallet.spendUnconfirmed ? false : true,
         feeLevel: this.configWallet.settings.feeLevel || 'normal',
@@ -272,7 +271,7 @@ export class ShapeshiftConfirmPage {
         let data = {
           withdrawal: withdrawalAddress,
           pair: this.getCoinPair(),
-          returnAddress: returnAddress
+          returnAddress
         }
         this.shapeshiftProvider.shift(data, (err: any, shapeData: any) => {
           if (err || shapeData.error) {
@@ -344,19 +343,19 @@ export class ShapeshiftConfirmPage {
         this.txSent = txSent;
         this.saveShapeshiftData();
       }).catch((err: any) => {
-        this.showErrorAndBack(null, this.translate.instant('Could not send transaction')), err;
+        this.logger.error(err);
+        this.showErrorAndBack(null, this.translate.instant('Could not send transaction'));
         return;
       });
     });
   };
 
-  public openSuccessModal(): void {
-    let successText = 'Transaction Sent';
-    let modal = this.modalCtrl.create(SuccessModalPage, { successText: successText }, { showBackdrop: true, enableBackdropDismiss: false });
+  private openFinishModal(): void {
+    let finishText = 'Transaction Sent';
+    let modal = this.modalCtrl.create(FinishModalPage, { finishText }, { showBackdrop: true, enableBackdropDismiss: false });
     modal.present();
     modal.onDidDismiss(() => {
-      this.navCtrl.remove(3, 1);
-      this.navCtrl.pop();
+      this.navCtrl.popToRoot({ animate: false });
       this.navCtrl.push(ShapeshiftPage);
     });
   }

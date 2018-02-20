@@ -1,5 +1,5 @@
-import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { Injectable } from '@angular/core';
 import { Logger } from '../../providers/logger/logger';
 
 @Injectable()
@@ -28,7 +28,7 @@ export class FeedbackProvider {
 
       this.http.post(this.URL, null, {
         params: urlSearchParams,
-        headers: headers
+        headers
       }).subscribe(() => {
         this.logger.info("SUCCESS: Feedback sent");
         return resolve();

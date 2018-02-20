@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import { LoadingController } from 'ionic-angular';
-import { Logger } from '../../providers/logger/logger';
-import * as _ from 'lodash';
 import { TranslateService } from '@ngx-translate/core';
+import { LoadingController } from 'ionic-angular';
+import * as _ from 'lodash';
+import { Logger } from '../../providers/logger/logger';
 
 @Injectable()
 export class OnGoingProcessProvider {
@@ -37,7 +37,7 @@ export class OnGoingProcessProvider {
       'recreating': this.translate.instant('Recreating Wallet...'),
       'rejectTx': this.translate.instant('Rejecting payment proposal...'),
       'removeTx': this.translate.instant('Deleting payment proposal...'),
-      'retrievingInputs': this.translate.instant('Retrieving inputs information'),
+      'retrievingInputs': this.translate.instant('Retrieving inputs information...'),
       'scanning': this.translate.instant('Scanning Wallet funds...'),
       'sendingTx': this.translate.instant('Sending transaction...'),
       'signingTx': this.translate.instant('Signing transaction...'),
@@ -65,6 +65,8 @@ export class OnGoingProcessProvider {
   public clear() {
     this.ongoingProcess = {};
     this.loading.dismiss();
+    this.loading = null;
+    this.logger.debug('ongoingProcess clear');
   }
 
   public pause(): void {
@@ -73,28 +75,30 @@ export class OnGoingProcessProvider {
   }
 
   public resume(): void {
+    this.ongoingProcess = this.pausedOngoingProcess;
     _.forEach(this.pausedOngoingProcess, (v, k) => {
       this.set(k, v);
+      return;
     });
     this.pausedOngoingProcess = {};
   }
 
-  public set(processName: string, isOn: boolean): string {
+  public set(processName: string, isOn: boolean): void {
     this.logger.debug('ongoingProcess', processName, isOn);
     this.ongoingProcess[processName] = isOn;
     let showName = this.processNames[processName] || processName;
     if (!isOn) {
-      delete this.ongoingProcess[processName];
-      this.loading.dismiss();
-      return;
-    }
-    if (!this.loading) {
-      this.loading = this.loadingCtrl.create();
-      this.loading.onDidDismiss(() => {
+      delete (this.ongoingProcess[processName]);
+      if (_.isEmpty(this.ongoingProcess)) {
+        this.loading.dismiss();
         this.loading = null;
-      });
+      }
+    } else {
+      if (!this.loading) {
+        this.loading = this.loadingCtrl.create();
+      }
+      this.loading.setContent(showName);
+      this.loading.present();
     }
-    this.loading.setContent(showName);
-    this.loading.present();
   }
 }

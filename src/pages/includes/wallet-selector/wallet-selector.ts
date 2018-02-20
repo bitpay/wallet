@@ -8,9 +8,9 @@ import { Events } from 'ionic-angular';
 export class WalletSelectorPage {
 
   public showWalletsSelector: boolean;
-  public wallets: Array<any>;
-  public walletsBtc: Array<any>;
-  public walletsBch: Array<any>;
+  public wallets: any[];
+  public walletsBtc: any[];
+  public walletsBch: any[];
   public showSlideEffect: boolean;
   public title: string;
   public selectedWalletId: string;
@@ -21,7 +21,7 @@ export class WalletSelectorPage {
     this.showWalletsSelector = false;
     this.showSlideEffect = false;
     this.wallets = [];
-    this.events.subscribe('showWalletsSelectorEvent', (wallets: Array<any>, selectedWalletId: string, title?: string) => {
+    this.events.subscribe('showWalletsSelectorEvent', (wallets: any[], selectedWalletId: string, title?: string) => {
       this.title = title ? title : null;
       this.showWalletsSelector = true;
       this.selectedWalletId = selectedWalletId;

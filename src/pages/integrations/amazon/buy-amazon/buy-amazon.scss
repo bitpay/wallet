@@ -5,8 +5,9 @@ page-buy-amazon {
     margin-bottom: 2rem;
     img {
       width: 3.5rem;
-      margin-right: 1.5rem; 
-      box-shadow: 0px 6px 12px 0px rgba(0, 0, 0, 0.3);
+      margin-right: 1.5rem;
+      box-shadow: 0px 4px 10px 0px rgba(0, 0, 0, 0.3);
+      border-radius: $icon-border-radius;
     }
   }
   .amount-label {

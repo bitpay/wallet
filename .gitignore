@@ -31,6 +31,12 @@ src/assets/i18n/crowdin_api_key.txt
 src/index.html
 src/manifest.json
 
+test/visual/latest
+test/visual/diffs
+test/visual/report.html
+test/visual/report.json
+junitresults.xml
+
 .sourcemaps/
 .idea/
 .sass-cache/
@@ -42,7 +48,6 @@ node_modules/
 tmp/
 temp/
 hooks/
-junitresults.xml
 platforms/
 plugins/
 plugins/android.json

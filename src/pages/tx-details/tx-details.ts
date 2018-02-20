@@ -1,8 +1,8 @@
 import { Component } from "@angular/core";
-import { NavController, NavParams, Events } from 'ionic-angular';
-import { Logger } from '../../providers/logger/logger';
-import * as _ from "lodash";
 import { TranslateService } from '@ngx-translate/core';
+import { Events, NavController, NavParams } from 'ionic-angular';
+import * as _ from "lodash";
+import { Logger } from '../../providers/logger/logger';
 
 // Providers
 import { AddressBookProvider } from '../../providers/address-book/address-book';
@@ -26,7 +26,7 @@ export class TxDetailsPage {
 
   public wallet: any;
   public btx: any;
-  public actionList: Array<any>;
+  public actionList: any[];
   public isShared: boolean;
   public title: string;
   public alternativeIsoCode: string;
@@ -84,10 +84,6 @@ export class TxDetailsPage {
     this.events.subscribe('bwsEvent', (walletId: string, type: string, n: any) => {
       if (type == 'NewBlock' && n && n.data && n.data.network == 'livenet') this.updateTxDebounced({ hideLoading: true });
     });
-  }
-
-  ionViewWillLeave() {
-    this.events.unsubscribe('bwsEvent');
   }
 
   public readMore(): void {
@@ -207,7 +203,7 @@ export class TxDetailsPage {
       };
 
       this.walletProvider.editTxNote(this.wallet, args).then((res: any) => {
-        this.logger.info('Tx Note edited: ', res);
+        this.logger.info('Tx Note edited');
       }).catch((err: any) => {
         this.logger.debug('Could not save tx comment ' + err);
       });

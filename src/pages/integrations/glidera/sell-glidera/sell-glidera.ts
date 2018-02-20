@@ -1,20 +1,20 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, Events, ModalController } from 'ionic-angular';
-import { Logger } from '../../../../providers/logger/logger';
+import { Events, ModalController, NavController, NavParams } from 'ionic-angular';
 import * as _ from 'lodash';
+import { Logger } from '../../../../providers/logger/logger';
 
-//pages
-import { SuccessModalPage } from '../../../success/success';
+// pages
+import { FinishModalPage } from '../../../finish/finish';
 
-//providers
+// providers
+import { ConfigProvider } from '../../../../providers/config/config';
+import { GlideraProvider } from '../../../../providers/glidera/glidera';
+import { OnGoingProcessProvider } from '../../../../providers/on-going-process/on-going-process';
 import { PlatformProvider } from '../../../../providers/platform/platform';
 import { PopupProvider } from '../../../../providers/popup/popup';
-import { OnGoingProcessProvider } from '../../../../providers/on-going-process/on-going-process';
-import { GlideraProvider } from '../../../../providers/glidera/glidera';
 import { ProfileProvider } from '../../../../providers/profile/profile';
 import { TxFormatProvider } from '../../../../providers/tx-format/tx-format';
 import { WalletProvider } from '../../../../providers/wallet/wallet';
-import { ConfigProvider } from '../../../../providers/config/config';
 
 @Component({
   selector: 'page-sell-glidera',
@@ -57,7 +57,7 @@ export class SellGlideraPage {
   ionViewWillEnter() {
 
     this.isFiat = this.navParams.data.currency != 'BTC' ? true : false;
-    this.amount = this.navParams.data.amountFiat;
+    this.amount = this.navParams.data.amount;
     this.currency = this.navParams.data.currency;
 
     this.network = this.glideraProvider.getNetwork();
@@ -116,7 +116,7 @@ export class SellGlideraPage {
     });
   }
 
-  private ask2FaCode(mode, cb): Function {
+  private ask2FaCode(mode, cb): () => any {
     if (mode != 'NONE') {
       // SHOW PROMPT
       let title = 'Please, enter the code below';
@@ -174,7 +174,7 @@ export class SellGlideraPage {
                 this.showError(err);
                 return;
               }
-              let amount = parseInt((this.sellInfo.qty * 100000000).toFixed(0));
+              let amount = parseInt((this.sellInfo.qty * 100000000).toFixed(0), 10);
               let comment = 'Glidera transaction';
 
               outputs.push({
@@ -185,8 +185,8 @@ export class SellGlideraPage {
 
               let txp = {
                 toAddress: sellAddress,
-                amount: amount,
-                outputs: outputs,
+                amount,
+                outputs,
                 message: comment,
                 payProUrl: null,
                 excludeUnconfirmedUtxos: configWallet.spendUnconfirmed ? false : true,
@@ -206,7 +206,7 @@ export class SellGlideraPage {
 
                       let rawTx = signedTxp.raw;
                       let data = {
-                        refundAddress: refundAddress,
+                        refundAddress,
                         signedTransaction: rawTx,
                         priceUuid: this.sellInfo.priceUuid,
                         useCurrentPrice: this.sellInfo.priceUuid ? false : true,
@@ -216,7 +216,7 @@ export class SellGlideraPage {
                         this.onGoingProcessProvider.set('sellingBitcoin', false);
                         if (err) return this.showError(err);
                         this.logger.info(data);
-                        this.openSuccessModal();
+                        this.openFinishModal();
                       });
                     }).catch((err) => {
                       this.onGoingProcessProvider.set('sellingBitcoin', false);
@@ -266,10 +266,10 @@ export class SellGlideraPage {
     });
   }
 
-  public openSuccessModal(): void {
-    let successText = 'Funds sent to Glidera Account';
-    let successComment = 'The transaction is not yet confirmed, and will show as "Pending" in your Activity. The bitcoin sale will be completed automatically once it is confirmed by Glidera';
-    let modal = this.modalCtrl.create(SuccessModalPage, { successText: successText, successComment: successComment }, { showBackdrop: true, enableBackdropDismiss: false });
+  private openFinishModal(): void {
+    let finishText = 'Funds sent to Glidera Account';
+    let finishComment = 'The transaction is not yet confirmed, and will show as "Pending" in your Activity. The bitcoin sale will be completed automatically once it is confirmed by Glidera';
+    let modal = this.modalCtrl.create(FinishModalPage, { finishText, finishComment }, { showBackdrop: true, enableBackdropDismiss: false });
     modal.present();
     modal.onDidDismiss(() => {
       this.navCtrl.remove(3, 1);

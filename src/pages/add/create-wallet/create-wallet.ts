@@ -1,18 +1,19 @@
 import { Component, OnInit } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
-import { Validators, FormBuilder, FormGroup } from '@angular/forms';
-import { Logger } from '../../../providers/logger/logger';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
+import { Events, NavController, NavParams } from 'ionic-angular';
+import { Logger } from '../../../providers/logger/logger';
 
 // Pages
 import { CopayersPage } from '../copayers/copayers';
 
 // Providers
 import { ConfigProvider } from '../../../providers/config/config';
-import { ProfileProvider } from '../../../providers/profile/profile';
 import { DerivationPathHelperProvider } from '../../../providers/derivation-path-helper/derivation-path-helper';
-import { PopupProvider } from '../../../providers/popup/popup';
 import { OnGoingProcessProvider } from "../../../providers/on-going-process/on-going-process";
+import { PopupProvider } from '../../../providers/popup/popup';
+import { ProfileProvider } from '../../../providers/profile/profile';
+import { PushNotificationsProvider } from '../../../providers/push-notifications/push-notifications';
 import { WalletProvider } from '../../../providers/wallet/wallet';
 
 import * as _ from 'lodash';
@@ -45,8 +46,8 @@ export class CreateWalletPage implements OnInit {
   private derivationPathByDefault: string;
   private derivationPathForTestnet: string;
 
-  public copayers: Array<number>;
-  public signatures: Array<number>;
+  public copayers: number[];
+  public signatures: number[];
   public showAdvOpts: boolean;
   public seedOptions: any;
   public isShared: boolean;
@@ -63,7 +64,9 @@ export class CreateWalletPage implements OnInit {
     private onGoingProcessProvider: OnGoingProcessProvider,
     private logger: Logger,
     private walletProvider: WalletProvider,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private events: Events,
+    private pushNotificationsProvider: PushNotificationsProvider
   ) {
 
     this.isShared = this.navParams.get('isShared');
@@ -124,7 +127,7 @@ export class CreateWalletPage implements OnInit {
       label: 'Specify Recovery Phrase',
       supportsTestnet: false
     }];
-    this.createForm.controls['selectedSeed'].setValue(this.seedOptions[0].id); // new or set    
+    this.createForm.controls['selectedSeed'].setValue(this.seedOptions[0].id); // new or set
   };
 
   public seedOptionsChange(seed: any): void {
@@ -195,8 +198,9 @@ export class CreateWalletPage implements OnInit {
 
     this.profileProvider.createWallet(opts).then((wallet: any) => {
       this.onGoingProcessProvider.set('creatingWallet', false);
+      this.events.publish('status:updated');
       this.walletProvider.updateRemotePreferences(wallet);
-      // TODO: this.pushNotificationsService.updateSubscription(wallet);
+      this.pushNotificationsProvider.updateSubscription(wallet);
 
       if (this.createForm.value.selectedSeed == 'set') {
         this.profileProvider.setBackupFlag(wallet.credentials.walletId);

@@ -1,0 +1,17 @@
+<div class="container">
+  <div class="content" [ngClass]="{'success': cssClass == 'success', 'warning': cssClass == 'warning', 'danger': cssClass == 'danger'}">
+    <div class="body">
+      <img class="body-img" *ngIf="cssClass == 'success'" src="assets/img/onboarding-success.svg">
+      <img class="body-img" *ngIf="cssClass != 'success'" src="assets/img/icon-important.svg">
+      <div class="body-text">
+        {{finishText}}
+      </div>
+      <div class="body-comment">
+        {{finishComment}}
+      </div>
+    </div>
+  </div>
+  <div class="footer" (click)="close()">
+    OK
+  </div>
+</div>

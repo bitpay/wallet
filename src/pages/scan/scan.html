@@ -4,22 +4,30 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content class="back-transparent">
-  <!--<div class="page-scan-has-problems" *ngIf="currentState === scannerStates.unauthorized || currentState === scannerStates.denied || currentState === scannerStates.unavailable">
-    <ion-icon>
-      <img src="img/tab-icons/ico-receive.svg" />
-    </ion-icon>
-    <div translate>Scan QR Codes</div>
-    <div translate>You can scan bitcoin addresses, payment requests, paper wallets, and more.</div>
-    <div *ngIf="currentState === scannerStates.unauthorized" translate>Enable the camera to get started.</div>
-    <div *ngIf="currentState === scannerStates.denied" translate>Enable camera access in your device settings to get started.</div>
-    <div *ngIf="currentState === scannerStates.unavailable" translate>Please connect a camera to get started.</div>
-    <button ion-button block *ngIf="currentState === scannerStates.unauthorized" (click)="authorize()" translate>Allow Camera Access</button>
-    <button ion-button block *ngIf="currentState === scannerStates.denied && canOpenSettings" (click)="openSettings()" translate>Open Settings</button>
-    <button ion-button block *ngIf="currentState === scannerStates.unavailable" (click)="attemptToReactivate()" translate>Retry Camera</button>
+<ion-content class="back-transparent" no-bounce>
+  <div class="page-scan-has-problems" *ngIf="(currentState == scannerStates.unauthorized || currentState == scannerStates.denied || currentState == scannerStates.unavailable) && !notSupportedMessage">
+    <div class="header" padding>
+      <div class="image-container">
+        <img src="assets/img/ico-receive.svg" />
+      </div>
+      <div class="title" padding translate>Scan QR Codes</div>
+    </div>
+    <div class="subtitle" translate>You can scan bitcoin addresses, payment requests, paper wallets, and more.</div>
+    <div class="body">
+      <div padding>
+        <div *ngIf="currentState == scannerStates.unauthorized" translate>Enable the camera to get started.</div>
+        <div *ngIf="currentState == scannerStates.denied" translate>Enable camera access in your device settings to get started.</div>
+        <div *ngIf="currentState == scannerStates.unavailable" translate>Please connect a camera to get started.</div>
+      </div>
+      <div>
+        <button ion-button outline *ngIf="currentState == scannerStates.unauthorized" (click)="authorize()" translate>Allow Camera Access</button>
+        <button ion-button outline *ngIf="currentState == scannerStates.denied && canOpenSettings" (click)="openSettings()" translate>Open Settings</button>
+        <button ion-button outline *ngIf="currentState == scannerStates.unavailable" (click)="attemptToReactivate()" translate>Retry Camera</button>
+      </div>
+    </div>
   </div>
-  <div class="page-scan-loading-camera" *ngIf="currentState === scannerStates.loading"></div>-->
-  <div class="page-scan-camera-ready" *ngIf="currentState === scannerStates.visible">
+  <div class="page-scan-loading-camera" *ngIf="currentState == scannerStates.loading"></div>
+  <div class="page-scan-camera-ready" *ngIf="currentState == scannerStates.visible">
     <div class="guides">
       <img class="svg qr-scan-guides" src="assets/img/bitpay-wallet-qr-scan-guides.svg">
     </div>
@@ -28,7 +36,7 @@
       <span *ngIf="canChangeCamera" class="icon-camera-toggle" [ngClass]="{'active': cameraToggleActive}" (click)="toggleCamera()"></span>
     </div>
   </div>
-  <div class="not-supported-message" *ngIf="notSupportedMessage">
+  <div class="page-scan-has-problems not-supported-message" *ngIf="notSupportedMessage">
     {{notSupportedMessage}}
   </div>
 </ion-content>

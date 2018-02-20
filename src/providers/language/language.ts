@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Logger } from '../../providers/logger/logger';
 import { TranslateService } from '@ngx-translate/core';
+import { Logger } from '../../providers/logger/logger';
 
 import { ConfigProvider } from '../config/config';
 
@@ -8,7 +8,7 @@ import * as _ from "lodash";
 
 @Injectable()
 export class LanguageProvider {
-  private languages: Array<any> = [
+  private languages: any[] = [
     {
       name: 'English',
       isoCode: 'en'

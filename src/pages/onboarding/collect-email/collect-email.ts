@@ -1,16 +1,16 @@
-import { Component } from '@angular/core';
-import { NavController, NavParams, Platform } from 'ionic-angular';
-import { Validators, FormBuilder, FormGroup } from '@angular/forms';
-import { Logger } from '../../../providers/logger/logger';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { Component } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { NavController, NavParams, Platform } from 'ionic-angular';
 import * as _ from 'lodash';
+import { Logger } from '../../../providers/logger/logger';
 
-//providers
+// providers
 import { AppProvider } from '../../../providers/app/app';
 
-//pages
-import { BackupRequestPage } from '../backup-request/backup-request';
+// pages
 import { EmailNotificationsProvider } from '../../../providers/email-notifications/email-notifications';
+import { BackupRequestPage } from '../backup-request/backup-request';
 
 @Component({
   selector: 'page-collect-email',
@@ -76,7 +76,7 @@ export class CollectEmailPage {
   private collectEmail(): void {
     let platform = this.platform.platforms().join("");
     let versions: any = this.platform.versions();
-    versions = _.values(_.pickBy(versions, _.identity)) //remove undefined and get array of versions
+    versions = _.values(_.pickBy(versions, _.identity)) // remove undefined and get array of versions
     let version: any = versions && versions[0] ? versions[0] : null;
     let versionStr = version ? version.str : '';
 
@@ -89,7 +89,7 @@ export class CollectEmailPage {
 
     this.http.post(this.URL, null, {
       params: urlSearchParams,
-      headers: headers
+      headers
     }).subscribe(() => {
       this.logger.info("SUCCESS: Email collected");
     }, (err) => {

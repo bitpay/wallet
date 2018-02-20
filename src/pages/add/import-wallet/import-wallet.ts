@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
-import { Validators, FormBuilder, FormGroup } from '@angular/forms';
-import { Logger } from '../../../providers/logger/logger';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
+import { Events, NavController, NavParams } from 'ionic-angular';
+import { Logger } from '../../../providers/logger/logger';
 
 // Pages
 import { TabsPage } from '../../tabs/tabs';
@@ -13,8 +13,8 @@ import { ConfigProvider } from '../../../providers/config/config';
 import { DerivationPathHelperProvider } from '../../../providers/derivation-path-helper/derivation-path-helper';
 import { OnGoingProcessProvider } from '../../../providers/on-going-process/on-going-process';
 import { PlatformProvider } from '../../../providers/platform/platform';
-import { ProfileProvider } from '../../../providers/profile/profile';
 import { PopupProvider } from '../../../providers/popup/popup';
+import { ProfileProvider } from '../../../providers/profile/profile';
 import { WalletProvider } from '../../../providers/wallet/wallet';
 
 @Component({
@@ -54,7 +54,8 @@ export class ImportWalletPage {
     private logger: Logger,
     private onGoingProcessProvider: OnGoingProcessProvider,
     private profileProvider: ProfileProvider,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private events: Events
   ) {
     this.reader = new FileReader();
     this.defaults = this.configProvider.getDefaults();
@@ -203,6 +204,7 @@ export class ImportWalletPage {
   private finish(wallet: any): void {
     this.walletProvider.updateRemotePreferences(wallet).then(() => {
       this.profileProvider.setBackupFlag(wallet.credentials.walletId);
+      this.events.publish('status:updated');
       if (this.fromOnboarding) {
         this.profileProvider.setDisclaimerAccepted().catch((err: any) => {
           this.logger.error(err);
@@ -211,8 +213,9 @@ export class ImportWalletPage {
         this.navCtrl.popToRoot();
       }
       else {
-        this.navCtrl.popToRoot();
-        this.navCtrl.parent.select(0);
+        this.navCtrl.popToRoot().then(() => {
+          this.navCtrl.parent.select(0);
+        });
       }
     }).catch((err: any) => {
       this.logger.warn(err);
@@ -331,7 +334,7 @@ export class ImportWalletPage {
     } else if (words.indexOf('xprv') == 0 || words.indexOf('tprv') == 0) {
       return this.importExtendedPrivateKey(words, opts);
     } else {
-      let wordList: Array<any> = words.split(/[\u3000\s]+/);
+      let wordList: any[] = words.split(/[\u3000\s]+/);
 
       if ((wordList.length % 3) != 0) {
         let title = this.translate.instant('Error');
@@ -369,10 +372,11 @@ export class ImportWalletPage {
 
   public openScanner(): void {
     if (this.navParams.data.fromScan) {
-      this.navCtrl.popToRoot();
+      this.navCtrl.popToRoot({ animate: false });
     } else {
-      this.navCtrl.popToRoot();
-      this.navCtrl.parent.select(2);
+      this.navCtrl.popToRoot({ animate: false }).then(() => {
+        this.navCtrl.parent.select(2);
+      });
     }
   }
 

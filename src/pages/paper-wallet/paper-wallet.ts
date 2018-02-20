@@ -1,17 +1,17 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, Events, ModalController } from 'ionic-angular';
-import { Logger } from '../../providers/logger/logger';
-import * as _ from 'lodash';
 import { TranslateService } from '@ngx-translate/core';
+import { Events, ModalController, NavController, NavParams } from 'ionic-angular';
+import * as _ from 'lodash';
+import { Logger } from '../../providers/logger/logger';
 
-//providers
+// providers
 import { BwcProvider } from '../../providers/bwc/bwc';
+import { FeeProvider } from '../../providers/fee/fee';
 import { OnGoingProcessProvider } from '../../providers/on-going-process/on-going-process';
 import { PopupProvider } from '../../providers/popup/popup';
-import { WalletProvider } from '../../providers/wallet/wallet';
-import { FeeProvider } from '../../providers/fee/fee';
 import { ProfileProvider } from '../../providers/profile/profile';
-import { SuccessModalPage } from '../success/success';
+import { WalletProvider } from '../../providers/wallet/wallet';
+import { FinishModalPage } from '../finish/finish';
 
 @Component({
   selector: 'page-paper-wallet',
@@ -81,12 +81,12 @@ export class PaperWalletPage {
     }
   }
 
-  private getPrivateKey(scannedKey: string, isPkEncrypted: boolean, passphrase: string, cb: Function): Function {
+  private getPrivateKey(scannedKey: string, isPkEncrypted: boolean, passphrase: string, cb: (err, scannedKey) => any): () => any {
     if (!isPkEncrypted) return cb(null, scannedKey);
     this.wallet.decryptBIP38PrivateKey(scannedKey, passphrase, null, cb);
   }
 
-  private getBalance(privateKey: string, cb: Function): void {
+  private getBalance(privateKey: string, cb: (err: any, balance: number) => any): void {
     this.wallet.getBalanceFromPrivateKey(privateKey, cb);
   }
 
@@ -107,7 +107,7 @@ export class PaperWalletPage {
 
         this.getBalance(privateKey, (err: any, balance: number) => {
           if (err) return reject(err);
-          return resolve({ privateKey: privateKey, balance: balance });
+          return resolve({ privateKey, balance });
         });
       });
     });
@@ -147,7 +147,7 @@ export class PaperWalletPage {
                 network: 'livenet'
               }, (err, txid) => {
                 if (err) return reject(err);
-                return resolve({ destinationAddress: destinationAddress, txid: txid });
+                return resolve({ destinationAddress, txid });
               });
             });
           });
@@ -163,7 +163,7 @@ export class PaperWalletPage {
     this._sweepWallet().then((data: any) => {
       this.onGoingProcessProvider.set('sweepingWallet', false);
       this.logger.debug('Success sweep. Destination address:' + data.destinationAddress + ' - transaction id: ' + data.txid);
-      this.openSuccessModal();
+      this.openFinishModal();
     }).catch((err: any) => {
       this.logger.error(err);
       this.popupProvider.ionicAlert(this.translate.instant('Error sweeping wallet:'), err || err.toString());
@@ -183,10 +183,10 @@ export class PaperWalletPage {
     });
   }
 
-  public openSuccessModal(): void {
-    let successComment = this.translate.instant("Check the transaction on your wallet details");
-    let successText = this.translate.instant('Sweep Completed');
-    let modal = this.modalCtrl.create(SuccessModalPage, { successText: successText, successComment: successComment }, { showBackdrop: true, enableBackdropDismiss: false });
+  private openFinishModal(): void {
+    let finishComment = this.translate.instant("Check the transaction on your wallet details");
+    let finishText = this.translate.instant('Sweep Completed');
+    let modal = this.modalCtrl.create(FinishModalPage, { finishText, finishComment }, { showBackdrop: true, enableBackdropDismiss: false });
     modal.present();
     modal.onDidDismiss(() => {
       this.navCtrl.pop();

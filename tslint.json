@@ -1,11 +1,36 @@
 {
+  "extends": ["tslint:latest", "tslint-config-prettier"],
   "rules": {
-    "no-duplicate-variable": true,
-    "no-unused-variable": [
-      true
-    ]
-  },
-  "rulesDirectory": [
-    "node_modules/tslint-eslint-rules/dist/rules"
-  ]
+    // "interface-name": [true, "never-prefix"],
+    "no-submodule-imports": [
+      true,
+      "zone.js",
+      "@angular",
+      "ts-md5/dist/md5",
+      "ionic-angular/gestures/gesture"
+    ],
+
+    // Temporarily relax rules
+    "member-ordering": false,
+    "variable-name": false,
+    "no-empty": false,
+    "no-shadowed-variable": false,
+    "one-variable-per-declaration": false,
+    "triple-equals": false,
+    "no-implicit-dependencies": false,
+    "object-literal-sort-keys": false,
+    "interface-name": false,
+    "prefer-conditional-expression": false,
+    "prefer-for-of": false,
+    "forin": false,
+    "prefer-const": false,
+    "no-unused-expression": false,
+    "no-eval": false,
+    "no-object-literal-type-assertion": false,
+    "max-classes-per-file": false,
+    "no-string-literal": false,
+    "no-var-keyword": false,
+    "curly": false,
+    "member-access": false
+  }
 }

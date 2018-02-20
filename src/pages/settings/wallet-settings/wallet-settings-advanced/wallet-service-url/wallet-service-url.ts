@@ -1,17 +1,17 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, Events } from 'ionic-angular';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Events, NavController, NavParams } from 'ionic-angular';
 import { Logger } from '../../../../../providers/logger/logger';
-import { Validators, FormBuilder, FormGroup } from '@angular/forms';
 
-//native
+// native
 import { SplashScreen } from '@ionic-native/splash-screen';
 
-//providers
-import { ProfileProvider } from '../../../../../providers/profile/profile';
-import { ConfigProvider } from '../../../../../providers/config/config';
+// providers
 import { AppProvider } from '../../../../../providers/app/app';
+import { ConfigProvider } from '../../../../../providers/config/config';
 import { PersistenceProvider } from '../../../../../providers/persistence/persistence';
 import { PlatformProvider } from '../../../../../providers/platform/platform';
+import { ProfileProvider } from '../../../../../providers/profile/profile';
 
 @Component({
   selector: 'page-wallet-service-url',
@@ -90,9 +90,10 @@ export class WalletServiceUrlPage {
     this.configProvider.set(opts);
     this.persistenceProvider.setCleanAndScanAddresses(this.wallet.credentials.walletId);
     this.events.publish('wallet:updated', this.wallet.credentials.walletId);
-    this.navCtrl.popToRoot();
-    this.navCtrl.parent.select(0);
-    this.reload();
+    this.navCtrl.popToRoot({ animate: false }).then(() => {
+      this.navCtrl.parent.select(0);
+      this.reload();
+    });
   };
 
   private reload(): void {

@@ -65,10 +65,6 @@ interface Config {
     enabled: boolean;
   };
 
-  showIntegrations: {
-    enabled: boolean;
-  };
-
   showIntegration: {
     coinbase: boolean,
     glidera: boolean,
@@ -172,10 +168,6 @@ const configDefault: Config = {
     enabled: true
   },
 
-  showIntegrations: {
-    enabled: true
-  },
-
   showIntegration: {
     coinbase: true,
     glidera: true,
@@ -268,7 +260,7 @@ export class ConfigProvider {
   }
 
   private backwardCompatibility() {
-    //these ifs are to avoid migration problems
+    // these ifs are to avoid migration problems
     if (this.configCache.bws) {
       this.configCache.bws = configDefault.bws;
     }
@@ -277,10 +269,6 @@ export class ConfigProvider {
     }
     if (!this.configCache.wallet.settings.unitCode) {
       this.configCache.wallet.settings.unitCode = configDefault.wallet.settings.unitCode;
-    }
-
-    if (!this.configCache.showIntegrations) {
-      this.configCache.showIntegrations = configDefault.showIntegrations;
     }
 
     if (!this.configCache.showIntegration) {

@@ -2,14 +2,14 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Logger } from '../../../providers/logger/logger';
 
-//providers
-import { ConfigProvider } from '../../../providers/config/config';
+// providers
 import { AppProvider } from '../../../providers/app/app';
+import { ConfigProvider } from '../../../providers/config/config';
+import { EmailNotificationsProvider } from '../../../providers/email-notifications/email-notifications';
 import { PlatformProvider } from '../../../providers/platform/platform';
 import { PushNotificationsProvider } from '../../../providers/push-notifications/push-notifications';
-import { EmailNotificationsProvider } from '../../../providers/email-notifications/email-notifications';
 
-//validators
+// validators
 import { EmailValidator } from '../../../validators/email';
 
 @Component({

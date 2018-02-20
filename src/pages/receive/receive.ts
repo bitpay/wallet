@@ -1,20 +1,20 @@
 import { Component } from '@angular/core';
+import { AlertController, Events, NavController } from 'ionic-angular';
 import { Logger } from '../../providers/logger/logger';
-import { NavController, Events, AlertController } from 'ionic-angular';
 
 // Native
 import { SocialSharing } from '@ionic-native/social-sharing';
 
 // Pages
+import { BackupGamePage } from '../backup/backup-game/backup-game';
 import { AmountPage } from '../send/amount/amount';
 import { CopayersPage } from './../add/copayers/copayers';
-import { BackupGamePage } from '../backup/backup-game/backup-game';
 
 // Providers
-import { WalletProvider } from '../../providers/wallet/wallet';
-import { ProfileProvider } from '../../providers/profile/profile';
-import { PlatformProvider } from '../../providers/platform/platform';
 import { BwcErrorProvider } from '../../providers/bwc-error/bwc-error';
+import { PlatformProvider } from '../../providers/platform/platform';
+import { ProfileProvider } from '../../providers/profile/profile';
+import { WalletProvider } from '../../providers/wallet/wallet';
 
 import * as _ from 'lodash';
 
@@ -27,7 +27,7 @@ export class ReceivePage {
   public protocolHandler: string;
   public address: string;
   public qrAddress: string;
-  public wallets: Array<any> = [];
+  public wallets: any[] = [];
   public wallet: any;
   public showShareButton: boolean;
   public loading: boolean;
@@ -55,10 +55,6 @@ export class ReceivePage {
     });
   }
 
-  ionViewWillLeave() {
-    this.events.unsubscribe('bwsEvent');
-  }
-
   private onWalletSelect(wallet: any): any {
     this.wallet = wallet;
     if (this.wallet) {
@@ -78,12 +74,11 @@ export class ReceivePage {
   public requestSpecificAmount(): void {
     this.navCtrl.push(AmountPage, {
       toAddress: this.address,
-      walletId: this.wallet.credentials.walletId,
+      id: this.wallet.credentials.walletId,
       recipientType: 'wallet',
       name: this.wallet.name,
       color: this.wallet.color,
       coin: this.wallet.coin,
-      network: this.wallet.network,
       nextPage: 'CustomAmountPage',
     });
   }

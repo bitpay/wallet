@@ -1,19 +1,19 @@
-import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Logger } from '../../providers/logger/logger';
-import { NavController, App } from 'ionic-angular';
+import { Injectable } from '@angular/core';
 import { FCM } from '@ionic-native/fcm';
+import { App, NavController } from 'ionic-angular';
+import { Logger } from '../../providers/logger/logger';
 
-//providers
-import { ProfileProvider } from '../profile/profile';
-import { PlatformProvider } from '../platform/platform';
-import { ConfigProvider } from '../config/config';
+// providers
 import { AppProvider } from '../app/app';
 import { BwcProvider } from '../bwc/bwc';
+import { ConfigProvider } from '../config/config';
+import { PlatformProvider } from '../platform/platform';
+import { ProfileProvider } from '../profile/profile';
 
-//pages
-import { WalletDetailsPage } from '../../pages/wallet-details/wallet-details';
+// pages
 import { CopayersPage } from '../../pages/add/copayers/copayers';
+import { WalletDetailsPage } from '../../pages/wallet-details/wallet-details';
 
 import * as _ from 'lodash';
 
@@ -52,14 +52,11 @@ export class PushNotificationsProvider {
 
       this.FCMPlugin.onNotification().subscribe((data: any) => {
         if (!this._token) return;
-        this.navCtrl = this.app.getActiveNav(); //TODO TEST THIS
         this.logger.debug('New Event Push onNotification: ' + JSON.stringify(data));
         if (data.wasTapped) {
           // Notification was received on device tray and tapped by the user.
           var walletIdHashed = data.walletId;
           if (!walletIdHashed) return;
-          this.navCtrl.popToRoot();
-          this.navCtrl.parent.select(0);
           this._openWallet(walletIdHashed);
         } else {
           // TODO
@@ -77,7 +74,7 @@ export class PushNotificationsProvider {
 
       this.logger.debug('Starting push notification registration...');
 
-      //Keep in mind the function will return null if the token has not been established yet.
+      // Keep in mind the function will return null if the token has not been established yet.
       this.FCMPlugin.getToken().then((token: any) => {
         this.logger.debug('Get token for push notifications: ' + token);
         this._token = token;
@@ -144,18 +141,25 @@ export class PushNotificationsProvider {
   }
 
   private _openWallet(walletIdHashed: any): void {
+    let walletIdHash;
+    let sjcl = this.bwcProvider.getSJCL();
+
     let wallets = this.profileProvider.getWallets();
     let wallet: any = _.find(wallets, (w: any) => {
-      let walletIdHash = this.bwcProvider.getSJCL().hash.sha256.hash(parseInt(w.credentials.walletId));
-      return _.isEqual(walletIdHashed, this.bwcProvider.getSJCL().codec.hex.fromBits(walletIdHash));
+      walletIdHash = sjcl.hash.sha256.hash(w.credentials.walletId);
+      return _.isEqual(walletIdHashed, sjcl.codec.hex.fromBits(walletIdHash));
     });
 
     if (!wallet) return;
 
-    if (!wallet.isComplete()) {
-      this.navCtrl.push(CopayersPage, { walletId: wallet.credentials.walletId });
-      return;
-    }
-    this.navCtrl.push(WalletDetailsPage, { walletId: wallet.credentials.walletId });
+    this.navCtrl = this.app.getActiveNav();
+    this.navCtrl.popToRoot({ animate: false }).then(() => {
+      this.navCtrl.parent.select(0);
+      if (!wallet.isComplete()) {
+        this.navCtrl.push(CopayersPage, { walletId: wallet.credentials.walletId });
+        return;
+      }
+      this.navCtrl.push(WalletDetailsPage, { walletId: wallet.credentials.walletId });
+    });
   }
 }

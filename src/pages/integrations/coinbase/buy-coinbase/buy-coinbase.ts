@@ -1,20 +1,20 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, Events, ModalController } from 'ionic-angular';
-import { Logger } from '../../../../providers/logger/logger';
+import { Events, ModalController, NavController, NavParams } from 'ionic-angular';
 import * as _ from 'lodash';
+import { Logger } from '../../../../providers/logger/logger';
 
-//providers
+// providers
 import { CoinbaseProvider } from '../../../../providers/coinbase/coinbase';
-import { PopupProvider } from '../../../../providers/popup/popup';
 import { ExternalLinkProvider } from '../../../../providers/external-link/external-link';
 import { OnGoingProcessProvider } from '../../../../providers/on-going-process/on-going-process';
-import { WalletProvider } from '../../../../providers/wallet/wallet';
-import { TxFormatProvider } from '../../../../providers/tx-format/tx-format';
+import { PopupProvider } from '../../../../providers/popup/popup';
 import { ProfileProvider } from '../../../../providers/profile/profile';
+import { TxFormatProvider } from '../../../../providers/tx-format/tx-format';
+import { WalletProvider } from '../../../../providers/wallet/wallet';
 
-//pages
+// pages
+import { FinishModalPage } from '../../../finish/finish';
 import { CoinbasePage } from '../coinbase';
-import { SuccessModalPage } from '../../../success/success';
 
 @Component({
   selector: 'page-buy-coinbase',
@@ -27,7 +27,7 @@ export class BuyCoinbasePage {
   private coin: string;
   private wallets: any;
 
-  public paymentMethods: Array<any>;
+  public paymentMethods: any[];
   public selectedPaymentMethodId: any;
   public buyPrice: string;
   public buyRequestInfo: any;
@@ -236,7 +236,7 @@ export class BuyCoinbasePage {
         this.coinbaseProvider.savePendingTransaction(updatedTx.data, {}, (err: any) => {
           this.onGoingProcessProvider.set('buyingBitcoin', false);
           if (err) this.logger.debug(err);
-          this.openSuccessModal();
+          this.openFinishModal();
         });
       }).catch((err) => {
         this.onGoingProcessProvider.set('buyingBitcoin', false);
@@ -292,10 +292,10 @@ export class BuyCoinbasePage {
     });
   }
 
-  public openSuccessModal(): void {
-    let successText = 'Bought';
-    let successComment = 'Bitcoin purchase completed. Coinbase has queued the transfer to your selected wallet';
-    let modal = this.modalCtrl.create(SuccessModalPage, { successText: successText, successComment: successComment }, { showBackdrop: true, enableBackdropDismiss: false });
+  private openFinishModal(): void {
+    let finishText = 'Bought';
+    let finishComment = 'Bitcoin purchase completed. Coinbase has queued the transfer to your selected wallet';
+    let modal = this.modalCtrl.create(FinishModalPage, { finishText, finishComment }, { showBackdrop: true, enableBackdropDismiss: false });
     modal.present();
     modal.onDidDismiss(() => {
       this.navCtrl.remove(3, 1);

@@ -65,13 +65,10 @@
       </ion-note>
     </ion-item>
 
-    <ion-item>
+    <ion-item *ngIf="ssData.incomingCoin">
       Amount
       <ion-note item-end>
-        <span *ngIf="!ssData.incomingCoin">...</span>
-        <span *ngIf="ssData.incomingCoin">
-          {{ssData.incomingCoin}} {{ssData.incomingType}}
-        </span>
+        {{ssData.incomingCoin}} {{ssData.incomingType}}
       </ion-note>
     </ion-item>
 
@@ -87,13 +84,10 @@
       </ion-note>
     </ion-item>
 
-    <ion-item>
+    <ion-item *ngIf="ssData.outgoingCoin">
       Amount
       <ion-note item-end>
-        <span *ngIf="!ssData.outgoingCoin">...</span>
-        <span *ngIf="ssData.outgoingCoin">
-          {{ssData.outgoingCoin}} {{ssData.outgoingType}}
-        </span>
+        {{ssData.outgoingCoin}} {{ssData.outgoingType}}
       </ion-note>
     </ion-item>
 

@@ -1,0 +1,23 @@
+<ion-item *ngIf="card">
+  <ion-icon class="card-icon" item-start>
+    <div class="houston">
+      <img src="assets/img/mcc-icons/{{card.icon}}.svg" class="svg" />
+    </div>
+  </ion-icon>
+  <h4 text-wrap>
+    {{card.merchant.name || 'Unknown Merchant'}}
+    <span *ngIf="card.pending && card.transactionId">
+      View Confirmation Status
+    </span>
+  </h4>
+  <p>
+    {{card.merchant.location}}
+  </p>
+  <ion-note class="amount" item-end text-end>
+    <div [ngClass]="{'amount--sent': sent, 'amount--received': received, 'amount--pending': pending}">
+      {{card.price | currency:currencySymbol:2 }}
+    </div>
+    <span *ngIf="createdWithinPastDay(card)">{{card.date | amTimeAgo}}</span>
+    <span *ngIf="!createdWithinPastDay(card)">{{card.date | amDateFormat:'MMM D, YYYY'}}</span>
+  </ion-note>
+</ion-item>

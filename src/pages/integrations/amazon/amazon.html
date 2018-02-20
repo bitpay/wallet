@@ -1,77 +1,78 @@
 <ion-header>
-
   <ion-navbar>
     <ion-title>Amazon.com Gift Cards</ion-title>
   </ion-navbar>
-
 </ion-header>
 
-<ion-content *ngIf="!giftCards" no-bounce>
-  <div class="box-notification warning" *ngIf="network == 'testnet'">
-    Sandbox version. Only for testing purpose.
-  </div>
-  <div class="center-header">
-    <div class="logo">
-      <img src="assets/img/amazon/GCs-logo-cllb.png" alt="Amazon.com Gift Card">
+<ion-content no-bounce>
+  <div class="container" *ngIf="!giftCards">
+    <div class="box-notification warning" *ngIf="network == 'testnet'">
+      Sandbox version. Only for testing purpose.
     </div>
-    <div class="description" padding>Gift Cards are only redeemable on Amazon.com (US website). Cards never expire and can be redeemed towards millions of
-      items.
-    </div>
-    <div *ngIf="!showOauthForm">
-      <button ion-button outline block (click)="goTo('Amount')" no-low-fee>Buy a Gift Card</button>
-      <button ion-button clear small block color="dark" (click)="openExternalLink('https://www.amazon.com')">Visit Amazon.com &rarr;</button>
-    </div>
-  </div>
-</ion-content>
-
-<ion-content *ngIf="giftCards" no-bounce>
-  <div class="box-notification warning" *ngIf="network == 'testnet'">
-    Sandbox version. Only for testing purpose.
-  </div>
-
-  <div class="integration-giftCard-logo">
-    <img src="assets/img/amazon/GCs-logo-cllb.png" alt="Amazon.com Gift Card">
-    <div class="subtitle">
-      <b>Only</b> redeemable on www.amazon.com (US website).
-    </div>
-    <button color="dark" ion-button clear icon-right no-low-fee (click)="goTo('Amount')">
-      Buy Gift Card
-      <ion-icon name="arrow-forward"></ion-icon>
-    </button>
-  </div>
-
-  <ion-list>
-    <ion-item-divider>Your cards</ion-item-divider>
-    <button ion-item *ngFor="let item of (giftCards | keys : 'date') | orderBy : ['-order']" (click)="openCardModal(item.value)">
-      <div class="amazon-card">
-        <img src="assets/img/amazon/a-smile_color_btn.png" alt="" class="avatar">
-        <ion-spinner *ngIf="updatingPending[item.value.invoiceId]" name="crescent"></ion-spinner>
-        <div class="card-info">
-          <h2 *ngIf="item.value.amount">
-            {{item.value.amount | currency : '$ ' : 2}} {{item.value.currency}}
-          </h2>
-          <p>
-            <span class="assertive" *ngIf="item.value.status == 'FAILURE' || item.value.status == 'RESEND'">Error</span>
-            <span class="assertive" *ngIf="item.value.status == 'expired'">Expired</span>
-            <span class="assertive" *ngIf="item.value.status == 'invalid'">Still waiting confirmation
-              <br> (Use higher fees setting to faster delivery)</span>
-            <span class="text-gray" *ngIf="item.value.status == 'PENDING'">Pending to confirmation</span>
-            <span class="assertive" *ngIf="item.value.status == 'SUCCESS' && item.value.cardStatus == 'Canceled'">Canceled</span>
-            <span class="text-gray">{{item.value.date | amTimeAgo}}</span>
-          </p>
-        </div>
+    <div class="center-header">
+      <div class="logo">
+        <img src="assets/img/amazon/GCs-logo-cllb.png" alt="Amazon.com Gift Card">
       </div>
-    </button>
-  </ion-list>
-</ion-content>
+      <div class="description" padding>Gift Cards are only redeemable on Amazon.com (US website). Cards never expire and can be redeemed towards millions
+        of items.
+      </div>
+      <div *ngIf="!showOauthForm">
+        <button ion-button outline block (click)="goTo('Amount')" no-low-fee>Buy a Gift Card</button>
+        <button ion-button clear small block color="dark" (click)="openExternalLink('https://www.amazon.com')">Visit Amazon.com &rarr;</button>
+      </div>
+    </div>
+  </div>
+  <div class="container" *ngIf="giftCards">
+    <div class="box-notification warning" *ngIf="network == 'testnet'">
+      Sandbox version. Only for testing purpose.
+    </div>
 
-<ion-footer *ngIf="giftCards" class="integration-giftCard-info">
-  *
-  <a (click)="openExternalLink('http://amazon.com')">Amazon.com</a> is not a sponsor of this promotion. Except as required by law,
-  <a (click)="openExternalLink('http://amazon.com')">Amazon.com</a> Gift Cards ("GCs") cannot be transferred for value or redeemed for cash. GCs may be used only for purchases
-  of eligible goods at
-  <a (click)="openExternalLink('http://amazon.com')">Amazon.com</a> or certain of its affiliated websites. For complete terms and conditions, see
-  <a (click)="openExternalLink('https://www.amazon.com/gc-legal')">www.amazon.com/gc-legal</a>. GCs are issued by ACI Gift Cards, Inc., a Washington corporation. All Amazon &reg;, &trade;
-  &amp; &copy; are IP of
-  <a (click)="openExternalLink('http://amazon.com')">Amazon.com</a>, Inc. or its affiliates. No expiration date or service fees.
-</ion-footer>
+    <div class="integration-giftCard-logo">
+      <img src="assets/img/amazon/GCs-logo-cllb.png" alt="Amazon.com Gift Card">
+      <div class="subtitle">
+        <b>Only</b> redeemable on www.amazon.com (US website).
+      </div>
+      <button color="dark" ion-button clear icon-right no-low-fee (click)="goTo('Amount')">
+        Buy Gift Card
+        <ion-icon name="arrow-forward"></ion-icon>
+      </button>
+    </div>
+
+    <ion-list>
+      <ion-item-divider>Your cards</ion-item-divider>
+      <button ion-item *ngFor="let item of (giftCards | keys : 'date') | orderBy : ['-order']" (click)="openCardModal(item.value)">
+        <div class="amazon-card">
+          <img src="assets/img/amazon/a-smile_color_btn.png" alt="" class="avatar">
+          <div class="card-info">
+            <h2 *ngIf="item.value.amount">
+              {{item.value.amount | currency : '$ ' : 2}} {{item.value.currency}}
+            </h2>
+            <p>
+              <span class="text-gray">{{item.value.date | amTimeAgo}}</span>
+              <span *ngIf="updatingPending[item.value.invoiceId]">...</span>
+              <span *ngIf="!updatingPending[item.value.invoiceId]">
+                <span class="assertive" *ngIf="item.value.status == 'FAILURE' || item.value.status == 'RESEND'">Error</span>
+                <span class="assertive" *ngIf="item.value.status == 'expired'">Expired</span>
+                <span class="assertive" *ngIf="item.value.status == 'invalid'">Still waiting confirmation (Use higher fees setting to faster delivery)
+                </span>
+                <span class="text-gray" *ngIf="item.value.status == 'PENDING'">Pending to confirmation</span>
+                <span class="assertive" *ngIf="item.value.status == 'SUCCESS' && item.value.cardStatus == 'Canceled'">Canceled</span>
+              </span>
+            </p>
+          </div>
+        </div>
+      </button>
+      <ion-item-divider></ion-item-divider>
+    </ion-list>
+    <div *ngIf="giftCards" class="integration-giftCard-info">
+      *
+      <a (click)="openExternalLink('http://amazon.com')">Amazon.com</a> is not a sponsor of this promotion. Except as required by law,
+      <a (click)="openExternalLink('http://amazon.com')">Amazon.com</a> Gift Cards ("GCs") cannot be transferred for value or redeemed for cash. GCs may be used only for purchases
+      of eligible goods at
+      <a (click)="openExternalLink('http://amazon.com')">Amazon.com</a> or certain of its affiliated websites. For complete terms and conditions, see
+      <a (click)="openExternalLink('https://www.amazon.com/gc-legal')">www.amazon.com/gc-legal</a>. GCs are issued by ACI Gift Cards, Inc., a Washington corporation. All Amazon &reg;, &trade;
+      &amp; &copy; are IP of
+      <a (click)="openExternalLink('http://amazon.com')">Amazon.com</a>, Inc. or its affiliates. No expiration date or service fees.
+    </div>
+  </div>
+</ion-content>

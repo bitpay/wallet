@@ -1,16 +1,16 @@
 
-import { Injectable } from '@angular/core';
-import { Logger } from '../../providers/logger/logger';
 import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
 import { Events } from 'ionic-angular';
+import { Logger } from '../../providers/logger/logger';
 
-//providers
-import { PlatformProvider } from '../platform/platform';
-import { PersistenceProvider } from '../persistence/persistence';
-import { HomeIntegrationsProvider } from '../home-integrations/home-integrations';
+// providers
+import { AppProvider } from '../app/app';
 import { ConfigProvider } from '../config/config';
 import { FeeProvider } from '../fee/fee';
-import { AppProvider } from '../app/app';
+import { HomeIntegrationsProvider } from '../home-integrations/home-integrations';
+import { PersistenceProvider } from '../persistence/persistence';
+import { PlatformProvider } from '../platform/platform';
 
 import * as _ from "lodash";
 
@@ -219,7 +219,7 @@ export class CoinbaseProvider {
     this.feeProvider.getFeeRate('btc', 'livenet', 'normal').then((feePerKb) => {
       var feeBTC = (feePerKb * txNormalFeeKB / 100000000).toFixed(8);
 
-      return cb(null, amount - parseInt(feeBTC), parseInt(feeBTC));
+      return cb(null, amount - parseInt(feeBTC, 10), parseInt(feeBTC, 10));
     }).catch((err) => {
       return cb('Could not get fee rate');
     });
@@ -229,7 +229,7 @@ export class CoinbaseProvider {
     let url = this.credentials.HOST + '/oauth/token';
     let data = {
       grant_type: 'authorization_code',
-      code: code,
+      code,
       client_id: this.credentials.CLIENT_ID,
       client_secret: this.credentials.CLIENT_SECRET,
       redirect_uri: this.credentials.REDIRECT_URI
@@ -350,7 +350,7 @@ export class CoinbaseProvider {
                   if (err) return cb(err);
                   return cb(null, {
                     accessToken: newToken,
-                    accountId: accountId
+                    accountId
                   });
                 });
               });
@@ -362,8 +362,8 @@ export class CoinbaseProvider {
           }
         } else {
           return cb(null, {
-            accessToken: accessToken,
-            accountId: accountId
+            accessToken,
+            accountId
           });
         }
       });

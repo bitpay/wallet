@@ -1,22 +1,22 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, Events, ModalController } from 'ionic-angular';
-import { Logger } from '../../../../providers/logger/logger';
+import { Events, ModalController, NavController, NavParams } from 'ionic-angular';
 import * as _ from 'lodash';
+import { Logger } from '../../../../providers/logger/logger';
 
-//pages
+// pages
+import { FinishModalPage } from '../../../finish/finish';
 import { CoinbasePage } from '../coinbase';
-import { SuccessModalPage } from '../../../success/success';
 
-//providers
+// providers
 import { AppProvider } from '../../../../providers/app/app';
 import { CoinbaseProvider } from '../../../../providers/coinbase/coinbase';
 import { ConfigProvider } from '../../../../providers/config/config';
-import { PopupProvider } from '../../../../providers/popup/popup';
 import { ExternalLinkProvider } from '../../../../providers/external-link/external-link';
 import { OnGoingProcessProvider } from '../../../../providers/on-going-process/on-going-process';
-import { WalletProvider } from '../../../../providers/wallet/wallet';
-import { TxFormatProvider } from '../../../../providers/tx-format/tx-format';
+import { PopupProvider } from '../../../../providers/popup/popup';
 import { ProfileProvider } from '../../../../providers/profile/profile';
+import { TxFormatProvider } from '../../../../providers/tx-format/tx-format';
+import { WalletProvider } from '../../../../providers/wallet/wallet';
 
 @Component({
   selector: 'page-sell-coinbase',
@@ -29,7 +29,7 @@ export class SellCoinbasePage {
   private currency: string;
   private wallets: any;
 
-  public paymentMethods: Array<any>;
+  public paymentMethods: any[];
   public selectedPaymentMethodId: any;
   public selectedPriceSensitivity: any;
   public sellPrice: string;
@@ -217,7 +217,7 @@ export class SellCoinbasePage {
               ctx.description = this.appProvider.info.nameCase + ' Wallet: ' + this.wallet.name;
               this.coinbaseProvider.savePendingTransaction(ctx, null, (err: any) => {
                 this.onGoingProcessProvider.set('sellingBitcoin', false);
-                this.openSuccessModal();
+                this.openFinishModal();
                 if (err) this.logger.debug(this.coinbaseProvider.getErrorsAsString(err.errors));
               });
               return;
@@ -300,7 +300,7 @@ export class SellCoinbasePage {
           }
           let outputs = [];
           let toAddress = data.data.address;
-          let amountSat = parseInt((this.sellRequestInfo.amount.amount * 100000000).toFixed(0));
+          let amountSat = parseInt((this.sellRequestInfo.amount.amount * 100000000).toFixed(0), 10);
           let comment = 'Sell bitcoin (Coinbase)';
 
           outputs.push({
@@ -310,9 +310,9 @@ export class SellCoinbasePage {
           });
 
           let txp = {
-            toAddress: toAddress,
+            toAddress,
             amount: amountSat,
-            outputs: outputs,
+            outputs,
             message: comment,
             payProUrl: null,
             excludeUnconfirmedUtxos: configWallet.spendUnconfirmed ? false : true,
@@ -358,10 +358,10 @@ export class SellCoinbasePage {
     this.processPaymentInfo();
   }
 
-  public openSuccessModal(): void {
-    let successText = 'Funds sent to Coinbase Account';
-    let successComment = 'The transaction is not yet confirmed, and will show as "Pending" in your Activity. The bitcoin sale will be completed automatically once it is confirmed by Coinbase';
-    let modal = this.modalCtrl.create(SuccessModalPage, { successText: successText, successComment: successComment }, { showBackdrop: true, enableBackdropDismiss: false });
+  private openFinishModal(): void {
+    let finishText = 'Funds sent to Coinbase Account';
+    let finishComment = 'The transaction is not yet confirmed, and will show as "Pending" in your Activity. The bitcoin sale will be completed automatically once it is confirmed by Coinbase';
+    let modal = this.modalCtrl.create(FinishModalPage, { finishText, finishComment }, { showBackdrop: true, enableBackdropDismiss: false });
     modal.present();
     modal.onDidDismiss(() => {
       this.navCtrl.remove(3, 1);

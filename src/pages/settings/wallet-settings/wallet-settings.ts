@@ -1,20 +1,20 @@
 import { Component } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
 import { NavController, NavParams } from 'ionic-angular';
 import { Logger } from '../../../providers/logger/logger';
-import { TranslateService } from '@ngx-translate/core';
 
-//providers
-import { ProfileProvider } from '../../../providers/profile/profile';
-import { WalletProvider } from '../../../providers/wallet/wallet';
-import { ExternalLinkProvider } from '../../../providers/external-link/external-link';
+// providers
 import { ConfigProvider } from '../../../providers/config/config';
+import { ExternalLinkProvider } from '../../../providers/external-link/external-link';
+import { ProfileProvider } from '../../../providers/profile/profile';
 import { TouchIdProvider } from '../../../providers/touchid/touchid';
+import { WalletProvider } from '../../../providers/wallet/wallet';
 
-//pages
-import { WalletSettingsAdvancedPage } from './wallet-settings-advanced/wallet-settings-advanced';
+// pages
+import { BackupWarningPage } from '../../backup/backup-warning/backup-warning';
 import { WalletColorPage } from './wallet-color/wallet-color';
 import { WalletNamePage } from './wallet-name/wallet-name';
-import { BackupWarningPage } from '../../backup/backup-warning/backup-warning';
+import { WalletSettingsAdvancedPage } from './wallet-settings-advanced/wallet-settings-advanced';
 
 @Component({
   selector: 'page-wallet-settings',

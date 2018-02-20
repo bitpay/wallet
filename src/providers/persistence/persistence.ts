@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
-import { Logger } from '../../providers/logger/logger';
 import { File } from '@ionic-native/file';
 import * as _ from 'lodash';
+import { Logger } from '../../providers/logger/logger';
 
 import { PlatformProvider } from '../platform/platform';
-import { LocalStorage } from './storage/local-storage';
 import { FileStorage } from './storage/file-storage';
-//import { RamStorage } from './storage/ram-storage';
+import { LocalStorage } from './storage/local-storage';
+// TODO import { RamStorage } from './storage/ram-storage';
 
 const Keys = {
   ADDRESS_BOOK: network => 'addressbook-' + network,
@@ -169,7 +169,7 @@ export class PersistenceProvider {
     return this.storage.set(Keys.AGREE_DISCLAIMER, true);
   }
 
-  //for compatibility
+  // for compatibility
   getCopayDisclaimerFlag(): Promise<any> {
     return this.storage.get(Keys.AGREE_DISCLAIMER);
   };
@@ -338,8 +338,8 @@ export class PersistenceProvider {
 
   removeAllWalletData(walletId: string): Promise<void> {
     return this.clearLastAddress(walletId)
-      .then(() => { return this.removeTxHistory(walletId); })
-      .then(() => { return this.clearBackupFlag(walletId); });
+      .then(() => this.removeTxHistory(walletId))
+      .then(() => this.clearBackupFlag(walletId));
   };
 
   setAmazonGiftCards(network: string, gcs: any): Promise<void> {

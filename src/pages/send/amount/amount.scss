@@ -1,9 +1,5 @@
 page-amount {
   .amount-pane {
-    .title {
-      padding: 18px 16px 0;
-      font-size: 18px;
-    }
     .shapeshift-values {
       padding: 1.7rem;
     }
@@ -19,34 +15,39 @@ page-amount {
       @media(max-height: 500px) {
         padding-top: 5%;
       }
-      .expression{
-        font-size: 40px;
-        @media(max-height: 640px) {
-          font-size: 35px;
-        }
-        @media(max-height: 500px) {
-          font-size: 25px;
-        }
+      .expression-container {
         display: flex;
-        a.unit-button {
-          font-size: 19px;
+        align-items: center;
+        .expression{
+          font-size: 40px;
+          @media(max-height: 640px) {
+            font-size: 35px;
+          }
+          @media(max-height: 500px) {
+            font-size: 25px;
+          }
+        }
+        .unit-button {
+          cursor: pointer;
           color: color($colors, grey);
           border: 1px solid color($colors, grey);
           padding: 0 5px;
-          margin: 14px 0 8px 10px;
-          cursor: pointer;
+          margin: 0 0 0 1.5rem;
+          font-size: 19px;
           @media(max-height: 500px) {
-            font-size: 16px;
-          }
+              font-size: 16px;
+            }
         }
       }
       .amount {
         color: #A5A4A4;
         margin-left: 5px;
+        margin-top: 5px;
       }
       .result {
         color: gray;
         margin-left: 5px;
+        margin-top: 5px;
       }
     }
   }
@@ -68,23 +69,36 @@ page-amount {
     }
     .operator {
       cursor: pointer;
+      background: color($colors, light);
+      &:active {
+        color: white;
+        background-color: color($colors, dark);
+      }
     }
     .operator-row {
       width: 25%;
       margin-left: 75%;
       .operator-send {
         color: color($colors, light);
+        opacity: 0.7;
         background-color: color($colors, primary);
         font-size: 16px;
         cursor: pointer;
+        padding: 0.4rem;
         &:active {
           color: color($colors, primary);
           background-color: #fff;
+          border: 1px solid color($colors, primary);
+          border-radius: 2px;
         }
       }
     }
     .digit{
       cursor: pointer;
+      border: 1px solid color($colors, light);
+      &:active {
+        background: color($colors, light);
+      }
     }
     @media(max-height: 500px) {
       font-size: 12px;

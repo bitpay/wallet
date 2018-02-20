@@ -1,21 +1,21 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, ModalController, Events } from 'ionic-angular';
-import { Logger } from '../../../../providers/logger/logger';
 import { TranslateService } from '@ngx-translate/core';
+import { Events, ModalController, NavController, NavParams } from 'ionic-angular';
 import * as _ from 'lodash';
 import * as moment from 'moment';
+import { Logger } from '../../../../providers/logger/logger';
 
 // Pages
+import { FinishModalPage } from '../../../finish/finish';
 import { FeeWarningPage } from '../../../send/fee-warning/fee-warning';
 import { MercadoLibrePage } from '../mercado-libre';
-import { SuccessModalPage } from '../../../success/success';
 
 // Provider
-import { MercadoLibreProvider } from '../../../../providers/mercado-libre/mercado-libre';
 import { BwcErrorProvider } from '../../../../providers/bwc-error/bwc-error';
 import { ConfigProvider } from '../../../../providers/config/config';
 import { EmailNotificationsProvider } from '../../../../providers/email-notifications/email-notifications';
 import { ExternalLinkProvider } from '../../../../providers/external-link/external-link';
+import { MercadoLibreProvider } from '../../../../providers/mercado-libre/mercado-libre';
 import { OnGoingProcessProvider } from "../../../../providers/on-going-process/on-going-process";
 import { PopupProvider } from '../../../../providers/popup/popup';
 import { ProfileProvider } from '../../../../providers/profile/profile';
@@ -79,8 +79,8 @@ export class BuyMercadoLibrePage {
   }
 
   ionViewWillEnter() {
-    this.amount = this.navParams.data.amountFiat;
-    this.currency = this.navParams.data.currency.toUpperCase();
+    this.amount = this.navParams.data.amount;
+    this.currency = this.navParams.data.currency;
 
     if (this.amount > 2000 || this.amount < 50) {
       this.showErrorAndBack(null, this.translate.instant('Purchase amount must be a value between 50 and 2000'));
@@ -91,7 +91,8 @@ export class BuyMercadoLibrePage {
     this.wallets = this.profileProvider.getWallets({
       onlyComplete: true,
       network: this.network,
-      coin: this.coin
+      coin: this.coin,
+      m: 1
     });
     if (_.isEmpty(this.wallets)) {
       this.showErrorAndBack(null, this.translate.instant('No wallets available'));
@@ -114,7 +115,7 @@ export class BuyMercadoLibrePage {
   }
 
   private _resetValues() {
-    this.totalAmountStr = this.amount = this.invoiceFee = this.networkFee = this.totalAmount = this.wallet = null;
+    this.totalAmountStr = this.invoiceFee = this.networkFee = this.totalAmount = this.wallet = null;
     this.createdTx = this.message = this.invoiceId = null;
   }
 
@@ -213,7 +214,7 @@ export class BuyMercadoLibrePage {
             });
           }
 
-          return resolve({ invoice: invoice, accessKey: accessKey });
+          return resolve({ invoice, accessKey });
         });
       });
     });
@@ -232,7 +233,7 @@ export class BuyMercadoLibrePage {
 
       let outputs = [];
       let toAddress = invoice.bitcoinAddress;
-      let amountSat = parseInt((invoice.btcDue * 100000000).toFixed(0)); // BTC to Satoshi
+      let amountSat = parseInt((invoice.btcDue * 100000000).toFixed(0), 10); // BTC to Satoshi
 
       outputs.push({
         'toAddress': toAddress,
@@ -241,11 +242,11 @@ export class BuyMercadoLibrePage {
       });
 
       let txp = {
-        toAddress: toAddress,
+        toAddress,
         amount: amountSat,
-        outputs: outputs,
-        message: message,
-        payProUrl: payProUrl,
+        outputs,
+        message,
+        payProUrl,
         excludeUnconfirmedUtxos: this.configWallet.spendUnconfirmed ? false : true,
         feeLevel: this.configWallet.settings.feeLevel ? this.configWallet.settings.feeLevel : 'normal'
       };
@@ -298,10 +299,10 @@ export class BuyMercadoLibrePage {
         this.onGoingProcessProvider.set('Comprando Vale-Presente', false);
         this.logger.debug("Saved new gift card with status: " + newData.status);
         this.mlGiftCard = newData;
-        this.openSuccessModal();
+        this.openFinishModal();
       });
     });
-  }, 8000, {
+  }, 15000, {
       'leading': true
     });
 
@@ -314,7 +315,7 @@ export class BuyMercadoLibrePage {
       amount: parsedAmount.amount,
       currency: parsedAmount.currency,
       uuid: wallet.id,
-      email: email
+      email
     };
     this.onGoingProcessProvider.set('loadingTxInfo', true);
     this.createInvoice(dataSrc).then((data: any) => {
@@ -323,7 +324,7 @@ export class BuyMercadoLibrePage {
 
       // Sometimes API does not return this element;
       invoice['buyerPaidBtcMinerFee'] = invoice.buyerPaidBtcMinerFee || 0;
-      let invoiceFeeSat = parseInt((invoice.buyerPaidBtcMinerFee * 100000000).toFixed());
+      let invoiceFeeSat = parseInt((invoice.buyerPaidBtcMinerFee * 100000000).toFixed(), 10);
 
       this.message = this.amountUnitStr + " for Mercado Livre Brazil Gift Card"; // TODO: translate
 
@@ -339,7 +340,7 @@ export class BuyMercadoLibrePage {
           currency: dataSrc.currency,
           amount: dataSrc.amount,
           uuid: dataSrc.uuid,
-          accessKey: accessKey,
+          accessKey,
           invoiceId: invoice.id,
           invoiceUrl: invoice.url,
           invoiceTime: invoice.invoiceTime
@@ -399,23 +400,25 @@ export class BuyMercadoLibrePage {
     });
   }
 
-  public openSuccessModal(): void {
-    let successComment: string;
+  private openFinishModal(): void {
+    let finishComment: string;
+    let cssClass: string;
     if (this.mlGiftCard.status == 'FAILURE') {
-      successComment = 'Sua compra não pôde ser concluída';
+      finishComment = 'Sua compra não pôde ser concluída';
+      cssClass = 'danger';
     }
     if (this.mlGiftCard.status == 'PENDING') {
-      successComment = 'Sua compra foi adicionada à lista de pendentes';
+      finishComment = 'Sua compra foi adicionada à lista de pendentes';
+      cssClass = 'warning';
     }
     if (this.mlGiftCard.status == 'SUCCESS' || this.mlGiftCard.cardStatus == 'active') {
-      successComment = 'Vale-Presente gerado e pronto para usar';
+      finishComment = 'Vale-Presente gerado e pronto para usar';
     }
-    let successText = '';
-    let modal = this.modalCtrl.create(SuccessModalPage, { successText: successText, successComment: successComment }, { showBackdrop: true, enableBackdropDismiss: false });
+    let finishText = '';
+    let modal = this.modalCtrl.create(FinishModalPage, { finishText, finishComment, cssClass }, { showBackdrop: true, enableBackdropDismiss: false });
     modal.present();
     modal.onDidDismiss(() => {
-      this.navCtrl.remove(2, 2);
-      this.navCtrl.pop();
+      this.navCtrl.popToRoot({ animate: false });
       this.navCtrl.push(MercadoLibrePage, { invoiceId: this.invoiceId });
     });
   }

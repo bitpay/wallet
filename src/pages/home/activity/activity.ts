@@ -1,17 +1,17 @@
 import { Component } from "@angular/core";
-import { Logger } from '../../../providers/logger/logger';
-import { ModalController, NavController } from 'ionic-angular';
 import { TranslateService } from '@ngx-translate/core';
+import { ModalController, NavController } from 'ionic-angular';
+import { Logger } from '../../../providers/logger/logger';
 
-//providers
-import { ProfileProvider } from '../../../providers/profile/profile';
+// providers
 import { OnGoingProcessProvider } from '../../../providers/on-going-process/on-going-process';
-import { WalletProvider } from '../../../providers/wallet/wallet';
 import { PopupProvider } from '../../../providers/popup/popup';
+import { ProfileProvider } from '../../../providers/profile/profile';
+import { WalletProvider } from '../../../providers/wallet/wallet';
 
-//pages
-import { TxpDetailsPage } from '../../txp-details/txp-details';
+// pages
 import { TxDetailsPage } from '../../tx-details/tx-details';
+import { TxpDetailsPage } from '../../txp-details/txp-details';
 
 import * as _ from 'lodash';
 
@@ -21,7 +21,6 @@ import * as _ from 'lodash';
 })
 export class ActivityPage {
 
-  public fetchingNotifications: boolean;
   public addressbook: any;
   public txps: any;
   public notifications: any;
@@ -36,12 +35,13 @@ export class ActivityPage {
     private popupProvider: PopupProvider,
     private translate: TranslateService
   ) {
-    this.fetchingNotifications = true;
   }
 
-  ionViewDidEnter() {
+  ionViewWillEnter() {
+    let loading = this.translate.instant('Updating... Please stand by');
+    this.onGoingProcessProvider.set(loading, true);
     this.profileProvider.getNotifications(50).then((nData: any) => {
-      this.fetchingNotifications = false;
+      this.onGoingProcessProvider.set(loading, false);
       this.notifications = nData.notifications;
       this.profileProvider.getTxps({}).then((txpsData: any) => {
         this.txps = txpsData.txps;

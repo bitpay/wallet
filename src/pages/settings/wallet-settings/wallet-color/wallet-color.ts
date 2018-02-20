@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, Events } from 'ionic-angular';
+import { Events, NavController, NavParams } from 'ionic-angular';
 import { Logger } from '../../../../providers/logger/logger';
 
-//providers
-import { ProfileProvider } from '../../../../providers/profile/profile';
+// providers
 import { ConfigProvider } from '../../../../providers/config/config';
+import { ProfileProvider } from '../../../../providers/profile/profile';
 
 @Component({
   selector: 'page-wallet-color',
@@ -13,7 +13,7 @@ import { ConfigProvider } from '../../../../providers/config/config';
 export class WalletColorPage {
 
   public wallet: any;
-  public colorCount: Array<number>;
+  public colorCount: number[];
   public currentColorIndex: number;
   private config: any;
   private retries: number = 3;
@@ -56,7 +56,7 @@ export class WalletColorPage {
 
   private getColorCount() {
     let count = window.getComputedStyle(document.getElementsByClassName('wallet-color-count')[0]).content;
-    return parseInt(count.replace(/[^0-9]/g, ''));
+    return parseInt(count.replace(/[^0-9]/g, ''), 10);
   };
 
   private getColorDefault(): string {

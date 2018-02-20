@@ -1,0 +1,34 @@
+page-card-item{
+  text-align: center;
+  .amount {
+    font-size: 12.5px;
+    &--received {
+      color: #09C286;
+    }
+    &--sent {
+      color: color($colors, dark);
+    }
+    &--pending {
+      color: color($colors, grey);
+    }
+  }
+  .card-icon {
+    .houston {
+      width: 36px;
+      height: 36px;
+      border-radius: 40px;
+      border: 1px solid;
+      color: #9b9bab;
+      .svg {
+        width: 22px;
+        height: 22px;
+        display: block;
+        margin: 0 auto;
+        position: relative;
+        top: 50%;
+        -webkit-transform: translateY(-50%);
+        transform: translateY(-50%);
+      }
+    }
+  }
+}

@@ -7,7 +7,7 @@ import * as _ from 'lodash';
 export class Logger {
   public levels: any;
   public weight: any;
-  public logs: Array<any>;
+  public logs: any[];
 
   constructor(private logger: Log) {
     this.logger.info('Logger initialized.');
@@ -26,25 +26,25 @@ export class Logger {
     }
   }
 
-  public error(message?: any, ...optionalParams: Array<any>): void {
+  public error(message?: any, ...optionalParams: any[]): void {
     this.logger.error(message, ...optionalParams);
     let args = this.processingArgs(arguments);
     this.add('error', args);
   }
 
-  public debug(message?: any, ...optionalParams: Array<any>): void {
+  public debug(message?: any, ...optionalParams: any[]): void {
     this.logger.debug(message, ...optionalParams);
     let args = this.processingArgs(arguments);
     this.add('debug', args);
   }
 
-  public info(message?: any, ...optionalParams: Array<any>): void {
+  public info(message?: any, ...optionalParams: any[]): void {
     this.logger.info(message, ...optionalParams);
     let args = this.processingArgs(arguments);
     this.add('info', args);
   }
 
-  public warn(message?: any, ...optionalParams: Array<any>): void {
+  public warn(message?: any, ...optionalParams: any[]): void {
     this.logger.warn(message, ...optionalParams);
     let args = this.processingArgs(arguments);
     this.add('warn', args);
@@ -70,8 +70,8 @@ export class Logger {
     msg = msg.replace('/xpriv.*/', 'xpriv[Hidden]');
     this.logs.push({
       timestamp: new Date().toISOString(),
-      level: level,
-      msg: msg
+      level,
+      msg
     });
   }
 
@@ -96,6 +96,7 @@ export class Logger {
           else v = JSON.stringify(v);
         }
       } catch (e) {
+        // tslint:disable-next-line:no-console
         console.log('Error at log decorator:', e);
         v = 'undefined';
       }

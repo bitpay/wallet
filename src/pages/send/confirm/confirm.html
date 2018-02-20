@@ -5,7 +5,7 @@
 </ion-header>
 
 <ion-content no-bounce>
-  <ion-list>
+  <ion-list *ngIf="tx">
     <ion-item>
       <div class="sending-label">
         <img class="sending-img" src="assets/img/icon-tx-sent-outline.svg">
@@ -33,7 +33,7 @@
         <div class="fee-details">
           {{tx.txp[wallet.id].fee | satToFiat: tx.coin}}
           <span *ngIf="tx.txp[wallet.id].feeRatePerStr" [ngClass]="{'warn':tx.txp[wallet.id].feeTooHigh}" translate>
-            {{tx.txp[wallet.id].feeRatePerStr}} of sending amount
+            {{tx.txp[wallet.id].feeRatePerStr}} of total amount
           </span>
         </div>
       </div>
@@ -122,5 +122,5 @@
 </ion-content>
 
 <ion-footer>
-  <button ion-button full class="button-footer" (click)="approve(tx, wallet)" [disabled]="!wallet || noWalletMessage || critialError || !tx.txp[wallet.id]" translate>Click to send</button>
+  <button ion-button full class="button-footer" (click)="approve(tx, wallet)" [disabled]="!wallet || noWalletMessage || critialError || !tx.txp[wallet.id]">{{buttonText}}</button>
 </ion-footer>

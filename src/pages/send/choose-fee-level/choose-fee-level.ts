@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
-import { ViewController } from 'ionic-angular';
-import { Logger } from '../../../providers/logger/logger';
-import * as _ from 'lodash';
 import { TranslateService } from '@ngx-translate/core';
+import { ViewController } from 'ionic-angular';
+import * as _ from 'lodash';
+import { Logger } from '../../../providers/logger/logger';
 
 // Providers
 import { FeeProvider } from '../../../providers/fee/fee';
@@ -26,7 +26,7 @@ export class ChooseFeeLevelPage {
   public customFeePerKB: string;
   public feePerSatByte: string;
   public selectedFee: string;
-  public feeOpts: Array<any>;
+  public feeOpts: any[];
   public loadingFee: boolean;
   public feeLevels: any;
   public coin: string;
@@ -119,14 +119,14 @@ export class ChooseFeeLevelPage {
     let value: any = _.find(this.feeLevels.levels[this.network], (feeLevel: any) => {
       return feeLevel.level == 'superEconomy';
     });
-    return parseInt((value.feePerKb / 1000).toFixed());
+    return parseInt((value.feePerKb / 1000).toFixed(), 10);
   }
 
   private getMaxRecommended(): number {
     let value: any = _.find(this.feeLevels.levels[this.network], (feeLevel: any) => {
       return feeLevel.level == 'urgent';
     });
-    return parseInt((value.feePerKb / 1000).toFixed());
+    return parseInt((value.feePerKb / 1000).toFixed(), 10);
   }
 
   public checkFees(feePerSatByte: string): void {

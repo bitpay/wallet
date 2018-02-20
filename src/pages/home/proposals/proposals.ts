@@ -1,8 +1,10 @@
 import { Component } from "@angular/core";
+import { TranslateService } from '@ngx-translate/core';
 import { Logger } from '../../../providers/logger/logger';
 
-//providers
+// providers
 import { AddressBookProvider } from '../../../providers/address-book/address-book';
+import { OnGoingProcessProvider } from '../../../providers/on-going-process/on-going-process';
 import { ProfileProvider } from '../../../providers/profile/profile';
 
 @Component({
@@ -11,27 +13,29 @@ import { ProfileProvider } from '../../../providers/profile/profile';
 })
 export class ProposalsPage {
 
-  public fetchingProposals: boolean;
   public addressbook: any;
   public txps: any;
 
   constructor(
+    private onGoingProcessProvider: OnGoingProcessProvider,
     private addressBookProvider: AddressBookProvider,
     private logger: Logger,
-    private profileProvider: ProfileProvider
+    private profileProvider: ProfileProvider,
+    private translate: TranslateService
   ) {
-    this.fetchingProposals = true;
   }
 
-  ionViewDidEnter() {
+  ionViewWillEnter() {
     this.addressBookProvider.list().then((ab: any) => {
       this.addressbook = ab || {};
 
+      let loading = this.translate.instant('Updating pending proposals... Please stand by');
+      this.onGoingProcessProvider.set(loading, true);
       this.profileProvider.getTxps(50).then((txpsData) => {
-        this.fetchingProposals = false;
+        this.onGoingProcessProvider.set(loading, false);
         this.txps = txpsData.txps;
       }).catch((err: any) => {
-        this.fetchingProposals = false;
+        this.onGoingProcessProvider.set(loading, false);
         this.logger.error(err);
       });
     }).catch((err: any) => {

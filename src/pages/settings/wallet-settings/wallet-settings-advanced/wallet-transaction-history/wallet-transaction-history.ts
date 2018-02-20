@@ -1,14 +1,14 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
-import { Logger } from '../../../../../providers/logger/logger';
 import * as _ from 'lodash';
 import * as papa from 'papaparse';
+import { Logger } from '../../../../../providers/logger/logger';
 
 // Providers
-import { ProfileProvider } from '../../../../../providers/profile/profile';
+import { AppProvider } from '../../../../../providers/app/app';
 import { ConfigProvider } from '../../../../../providers/config/config';
 import { PlatformProvider } from '../../../../../providers/platform/platform';
-import { AppProvider } from '../../../../../providers/app/app';
+import { ProfileProvider } from '../../../../../providers/profile/profile';
 import { WalletProvider } from '../../../../../providers/wallet/wallet';
 
 // Pages
@@ -25,13 +25,15 @@ export class WalletTransactionHistoryPage {
   public isCordova: boolean;
   public err: any;
   public config: any;
-  public csvContent: Array<any>;
+  public csvContent: any[];
   public csvFilename: any;
-  public csvHeader: Array<string>;
+  public csvHeader: string[];
   public unitToSatoshi: number;
   public unitDecimals: number;
   public satToUnit: number;
   public satToBtc: number;
+
+  private currency: string;
 
   constructor(
     private profileProvider: ProfileProvider,
@@ -53,6 +55,7 @@ export class WalletTransactionHistoryPage {
 
   ionViewWillEnter() {
     this.wallet = this.profileProvider.getWallet(this.navParams.data.walletId);
+    this.currency = this.wallet.coin.toUpperCase();
     this.isCordova = this.platformProvider.isCordova;
     this.appName = this.appProvider.info.nameCase;
     this.config = this.configProvider.get();
@@ -120,7 +123,7 @@ export class WalletTransactionHistoryPage {
           'Destination': it.addressTo || '',
           'Description': _note,
           'Amount': _amount,
-          'Currency': 'BTC',
+          'Currency': this.currency,
           'Txid': it.txid,
           'Creator': _creator,
           'Copayers': _copayers,
@@ -134,7 +137,7 @@ export class WalletTransactionHistoryPage {
             'Destination': 'Bitcoin Network Fees',
             'Description': '',
             'Amount': '-' + _fee,
-            'Currency': 'BTC',
+            'Currency': this.currency,
             'Txid': '',
             'Creator': '',
             'Copayers': ''
@@ -170,9 +173,10 @@ export class WalletTransactionHistoryPage {
 
     this.logger.info('Transaction history cleared for :' + this.wallet.id);
 
-    this.navCtrl.popToRoot();
-    this.navCtrl.parent.select(0);
-    this.navCtrl.push(WalletDetailsPage, { walletId: this.wallet.credentials.walletId, clearCache: true });
+    this.navCtrl.popToRoot({ animate: false }).then(() => {
+      this.navCtrl.parent.select(0);
+      this.navCtrl.push(WalletDetailsPage, { walletId: this.wallet.credentials.walletId, clearCache: true });
+    });
   }
 
 }

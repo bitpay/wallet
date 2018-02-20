@@ -90,9 +90,9 @@
         <img *ngIf="wallet.network != 'testnet'" [ngStyle]="{'background-color': wallet.color}" src="assets/img/icon-wallet.svg"
           class="icon-wallet" />
       </ion-icon>
-      <h2>{{wallet.name}}
+      <div class="item-title">{{wallet.name}}
         <span *ngIf="wallet.credentials.m > 1">{{wallet.credentials.m}}-{{wallet.credentials.n}}</span>
-      </h2>
+      </div>
       <ion-note class="wallet-warning" *ngIf="!wallet.isComplete()" item-end>
         {{'Incomplete' | translate}}
       </ion-note>
@@ -110,9 +110,9 @@
         <img *ngIf="wallet.network != 'testnet'" [ngStyle]="{'background-color': wallet.color}" src="assets/img/icon-wallet.svg"
           class="icon-wallet" />
       </ion-icon>
-      <h2>{{wallet.name}}
+      <div class="item-title">{{wallet.name}}
         <span *ngIf="wallet.credentials.m > 1">{{wallet.credentials.m}}-{{wallet.credentials.n}}</span>
-      </h2>
+      </div>
       <ion-note class="wallet-warning" *ngIf="!wallet.isComplete()" item-end>
         {{'Incomplete' | translate}}
       </ion-note>
@@ -121,15 +121,29 @@
       </ion-note>
     </button>
 
-    <ion-item-divider *ngIf="exchangeServices && exchangeServices.length > 0">
+    <ion-item-divider *ngIf="bitpayCardEnabled || (exchangeServices && exchangeServices.length > 0)">
       {{'Integrations' | translate}}
     </ion-item-divider>
 
+    <button ion-item *ngIf="bitpayCardEnabled" (click)="openBitPaySettings()">
+      <ion-icon item-start>
+        <img src="assets/img/bitpay-card/icon-bitpay.svg" class="icon-services" />
+      </ion-icon>
+      <span translate>BitPay</span>
+    </button>
+
     <button ion-item *ngFor="let service of exchangeServices" (click)="openIntegrationSettings(service.name)">
       <ion-icon item-start>
-          <img src="{{service.icon}}" class="icon-services" />
+        <img src="{{service.icon}}" class="icon-services" />
       </ion-icon>
       <span>{{service.title || service.name}}</span>
+    </button>
+
+    <ion-item-divider></ion-item-divider>
+
+    <button ion-item (click)="openEnabledServicesPage()">
+      <ion-icon name="ios-list-outline" item-start></ion-icon>
+      {{'Enabled services' | translate}}
     </button>
 
     <ion-item-divider>More</ion-item-divider>

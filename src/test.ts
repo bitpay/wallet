@@ -1,14 +1,16 @@
 // This file is required by karma.conf.js and loads recursively all the .spec and framework files
 
+// tslint:disable:ordered-imports
 import 'zone.js/dist/long-stack-trace-zone';
 import 'zone.js/dist/proxy.js';
 import 'zone.js/dist/sync-test';
 import 'zone.js/dist/jasmine-patch';
 import 'zone.js/dist/async-test';
 import 'zone.js/dist/fake-async-test';
+// tslint:enable:ordered-imports
 
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { getTestBed, TestBed } from '@angular/core/testing';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {
   BrowserDynamicTestingModule,
   platformBrowserDynamicTesting
@@ -18,10 +20,10 @@ import {
   App,
   Config,
   DeepLinker,
+  DomController,
   Form,
   IonicModule,
   Keyboard,
-  DomController,
   MenuController,
   NavController,
   Platform
@@ -42,24 +44,23 @@ context.keys().map(context);
 
 export class TestUtils {
   public static beforeEachCompiler(
-    components: Array<any>
+    components: any[]
   ): Promise<{ fixture: any; instance: any }> {
     return TestUtils.configureIonicTestingModule(components)
       .compileComponents()
       .then(() => {
-        let fixture: any = TestBed.createComponent(components[0]);
+        const fixture: any = TestBed.createComponent(components[0]);
         return {
-          fixture: fixture,
+          fixture,
           instance: fixture.debugElement.componentInstance
         };
       });
   }
 
-  public static configureIonicTestingModule(
-    components: Array<any>
-  ): typeof TestBed {
+  public static configureIonicTestingModule(components: any[]): typeof TestBed {
     return TestBed.configureTestingModule({
       declarations: [...components],
+      imports: [FormsModule, IonicModule, ReactiveFormsModule, TranslateModule],
       providers: [
         App,
         Form,
@@ -70,8 +71,7 @@ export class TestUtils {
         { provide: Platform, useFactory: () => PlatformMock.instance() },
         { provide: Config, useFactory: () => ConfigMock.instance() },
         { provide: DeepLinker, useFactory: () => ConfigMock.instance() }
-      ],
-      imports: [FormsModule, IonicModule, ReactiveFormsModule, TranslateModule]
+      ]
     });
   }
 
@@ -80,7 +80,7 @@ export class TestUtils {
     if (el.fireEvent) {
       el.fireEvent('on' + etype);
     } else {
-      let evObj: any = document.createEvent('Events');
+      const evObj: any = document.createEvent('Events');
       evObj.initEvent(etype, true, false);
       el.dispatchEvent(evObj);
     }

@@ -31,8 +31,8 @@
         <ion-label [ngClass]="{'disabled': needsBackup}" translate>Request Spending Password</ion-label>
         <ion-toggle [(ngModel)]="encryptEnabled" (ionChange)="encryptChange()" [disabled]="needsBackup"></ion-toggle>
       </ion-item>
-      <ion-item-divider class="item-text" text-wrap>
-        <span translate>
+      <ion-item-divider text-wrap>
+        <span class="item-text" translate>
           If enabled, all sensitive information (private key and recovery phrase) and actions (spending and exporting) associated with
           this wallet will be protected.
         </span>

@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
-import { Validators, FormBuilder, FormGroup } from '@angular/forms';
-import { Logger } from '../../../providers/logger/logger';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
+import { Events, NavController, NavParams } from 'ionic-angular';
+import { Logger } from '../../../providers/logger/logger';
 
 // Pages
 import { CopayersPage } from '../copayers/copayers';
@@ -40,7 +40,8 @@ export class JoinWalletPage {
     private profileProvider: ProfileProvider,
     private walletProvider: WalletProvider,
     private logger: Logger,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private events: Events
   ) {
     this.defaults = this.configProvider.getDefaults();
 
@@ -147,6 +148,7 @@ export class JoinWalletPage {
 
     this.profileProvider.joinWallet(opts).then((wallet: any) => {
       this.onGoingProcessProvider.set('joiningWallet', false);
+      this.events.publish('status:updated');
       this.walletProvider.updateRemotePreferences(wallet);
 
       if (!wallet.isComplete()) {
@@ -165,10 +167,11 @@ export class JoinWalletPage {
 
   public openScanner(): void {
     if (this.navParams.data.fromScan) {
-      this.navCtrl.popToRoot();
+      this.navCtrl.popToRoot({ animate: false });
     } else {
-      this.navCtrl.popToRoot();
-      this.navCtrl.parent.select(2);
+      this.navCtrl.popToRoot({ animate: false }).then(() => {
+        this.navCtrl.parent.select(2);
+      });
     }
   }
 

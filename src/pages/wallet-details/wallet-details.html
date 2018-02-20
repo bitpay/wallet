@@ -28,8 +28,8 @@
         <strong translate>[Scanning Funds]</strong>
       </div>
 
-      <div class="balance-spendable" *ngIf="!wallet.balanceHidden && !wallet.scanning && showBalanceButton && wallet.status">
-        <div translate>Spendable</div>
+      <div class="balance-spendable" (click)="openBalanceDetails()" *ngIf="!wallet.balanceHidden && !wallet.scanning && showBalanceButton && wallet.status">
+        <ion-icon ios="ios-timer-outline" md="md-timer"></ion-icon>
         <strong>
           {{wallet.status.spendableBalanceStr}}
         </strong>
@@ -37,6 +37,7 @@
         <span>
           ({{wallet.status.spendableBalanceAlternative}} {{wallet.status.alternativeIsoCode}})
         </span>
+        &rarr;
       </div>
 
       <div class="balance-error" *ngIf="updateStatusError" (tap)="updateAll(true)">
@@ -172,7 +173,7 @@
           <span class="assertive" *ngIf="!tx.message && !tx.note">{{'Invalid' | translate}}</span>
         </div>
 
-        <ion-note item-end>
+        <ion-note item-end text-end>
           <div class="amount">
             <span [ngClass]="{'received': tx.action == 'received'}" *ngIf="tx.action != 'invalid'">{{tx.amount | satToUnit: wallet.coin}}</span>
             <span class="double-spend" *ngIf="tx.action == 'invalid'" translate>(possible double spend)</span>

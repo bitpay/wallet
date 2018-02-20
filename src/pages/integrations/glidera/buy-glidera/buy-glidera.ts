@@ -1,15 +1,15 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, Events, ModalController } from 'ionic-angular';
+import { Events, ModalController, NavController, NavParams } from 'ionic-angular';
 import { Logger } from '../../../../providers/logger/logger';
 
-//pages
-import { SuccessModalPage } from '../../../success/success';
+// pages
+import { FinishModalPage } from '../../../finish/finish';
 
-//providers
+// providers
+import { GlideraProvider } from '../../../../providers/glidera/glidera';
+import { OnGoingProcessProvider } from '../../../../providers/on-going-process/on-going-process';
 import { PlatformProvider } from '../../../../providers/platform/platform';
 import { PopupProvider } from '../../../../providers/popup/popup';
-import { OnGoingProcessProvider } from '../../../../providers/on-going-process/on-going-process';
-import { GlideraProvider } from '../../../../providers/glidera/glidera';
 import { ProfileProvider } from '../../../../providers/profile/profile';
 import { TxFormatProvider } from '../../../../providers/tx-format/tx-format';
 import { WalletProvider } from '../../../../providers/wallet/wallet';
@@ -55,8 +55,8 @@ export class BuyGlideraPage {
 
   ionViewWillEnter() {
     this.isFiat = this.navParams.data.currency != 'BTC' ? true : false;
-    this.amount = this.navParams.data.amountFiat;
-    this.currency = this.navParams.data.currency.toUpperCase();
+    this.amount = this.navParams.data.amount;
+    this.currency = this.navParams.data.currency;
 
     this.network = this.glideraProvider.getNetwork();
     this.wallets = this.profileProvider.getWallets({
@@ -112,7 +112,7 @@ export class BuyGlideraPage {
     });
   }
 
-  private ask2FaCode(mode, cb): Function {
+  private ask2FaCode(mode, cb): () => any {
     if (mode != 'NONE') {
       // SHOW PROMPT
       var title = 'Please, enter the code below';
@@ -165,7 +165,7 @@ export class BuyGlideraPage {
               this.onGoingProcessProvider.set('buyingBitcoin', false);
               if (err) return this.showError(err);
               this.logger.info(data);
-              this.openSuccessModal();
+              this.openFinishModal();
             });
           }).catch(() => {
             this.onGoingProcessProvider.set('buyingBitcoin', false);
@@ -198,10 +198,10 @@ export class BuyGlideraPage {
     this.processPaymentInfo();
   }
 
-  public openSuccessModal(): void {
-    let successText = 'Bought';
-    let successComment = 'A transfer has been initiated from your bank account. Your bitcoins should arrive to your wallet in 2-4 business day';
-    let modal = this.modalCtrl.create(SuccessModalPage, { successText: successText, successComment: successComment }, { showBackdrop: true, enableBackdropDismiss: false });
+  private openFinishModal(): void {
+    let finishText = 'Bought';
+    let finishComment = 'A transfer has been initiated from your bank account. Your bitcoins should arrive to your wallet in 2-4 business day';
+    let modal = this.modalCtrl.create(FinishModalPage, { finishText, finishComment }, { showBackdrop: true, enableBackdropDismiss: false });
     modal.present();
     modal.onDidDismiss(() => {
       this.navCtrl.remove(3, 1);

@@ -2,15 +2,15 @@ import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
 import { Logger } from '../../providers/logger/logger';
 
-//providers
-import { ProfileProvider } from '../../providers/profile/profile';
-import { WalletProvider } from '../../providers/wallet/wallet';
+// providers
 import { AddressBookProvider } from '../../providers/address-book/address-book';
+import { AddressProvider } from '../../providers/address/address';
 import { IncomingDataProvider } from '../../providers/incoming-data/incoming-data';
 import { PopupProvider } from '../../providers/popup/popup';
-import { AddressProvider } from '../../providers/address/address';
+import { ProfileProvider } from '../../providers/profile/profile';
+import { WalletProvider } from '../../providers/wallet/wallet';
 
-//pages
+// pages
 import { AmountPage } from './amount/amount';
 
 import * as _ from 'lodash';
@@ -25,8 +25,8 @@ export class SendPage {
   public walletsBch: any;
   public walletBchList: any;
   public walletBtcList: any;
-  public contactsList: Array<object> = [];
-  public filteredContactsList: Array<object> = [];
+  public contactsList: object[] = [];
+  public filteredContactsList: object[] = [];
   public hasBtcWallets: boolean;
   public hasBchWallets: boolean;
   public hasContacts: boolean;
@@ -177,7 +177,7 @@ export class SendPage {
   public goToAmount(item: any): void {
     item.getAddress().then((addr: string) => {
       if (!addr) {
-        //Error is already formated
+        // Error is already formated
         this.popupProvider.ionicAlert('Error - no address');
         return;
       }

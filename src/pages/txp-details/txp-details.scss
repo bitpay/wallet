@@ -1,11 +1,12 @@
 page-txp-details {
   $item-border-color: #EFEFEF;
   $item-lateral-padding: 20px;
-  $item-label-color: #6C6C6E;
 
-  span.label {
-    color: color($colors, grey);
+  // Small font size for ion-note
+  ion-note {
+    font-size: 1.3rem;
   }
+
   .sending-label {
     display: flex;
     align-items: center;
@@ -32,15 +33,17 @@ page-txp-details {
   }
 
   .proposal-deletion-help {
-    color: $item-label-color;
+    color: color($colors, grey);
     padding: 1rem 2rem;
+    font-size: 12.5px;
   }
 
   .container-to, .container-from {
     .wallet, .payment-proposal-to {
+      color: color($colors, grey);
+      font-size: 1.4rem;
       display: flex;
       align-items: center;
-      margin-top: 1rem;
       .icon-wallet {
         width: 25px;
         height: 25px;
@@ -50,7 +53,7 @@ page-txp-details {
         }
       }
       .icon-bitcoin {
-        margin: 9px 12px 9px 0;
+        margin: 0 9px 0 0;
         width: 25px;
         height: 25px;
         padding: 5px;
@@ -138,7 +141,11 @@ page-txp-details {
     }
   }
   .btn-remove {
+    font-size: 1.2rem;
     color: color($colors, danger);
+  }
+  .btn-broadcast {
+    color: color($colors, primary);
   }
 }
 

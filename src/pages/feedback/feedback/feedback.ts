@@ -1,15 +1,15 @@
 import { Component } from '@angular/core';
-import { NavParams, NavController, Platform } from 'ionic-angular';
+import { NavController, NavParams, Platform } from 'ionic-angular';
 import { Logger } from '../../../providers/logger/logger';
 
-//providers
-import { PlatformProvider } from '../../../providers/platform/platform';
+// providers
 import { AppProvider } from '../../../providers/app/app';
 import { ConfigProvider } from '../../../providers/config/config';
-import { FeedbackProvider } from '../../../providers/feedback/feedback';
 import { ExternalLinkProvider } from '../../../providers/external-link/external-link';
+import { FeedbackProvider } from '../../../providers/feedback/feedback';
+import { PlatformProvider } from '../../../providers/platform/platform';
 
-//pages
+// pages
 import { FeedbackCompletePage } from '../feedback-complete/feedback-complete';
 import { SendFeedbackPage } from '../send-feedback/send-feedback';
 
@@ -50,7 +50,7 @@ export class FeedbackPage {
   public skip(): void {
     let platform = this.platform.platforms().join("");
     let versions: any = this.platform.versions();
-    versions = _.values(_.pickBy(versions, _.identity)) //remove undefined and get array of versions
+    versions = _.values(_.pickBy(versions, _.identity)) // remove undefined and get array of versions
     let version: any = versions && versions[0] ? versions[0] : null;
     let versionStr = version ? version.str : '';
 

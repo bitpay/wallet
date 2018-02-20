@@ -1,39 +1,41 @@
-import { Component } from '@angular/core';
-import { NavController, Events, ModalController } from 'ionic-angular';
-import { Logger } from '../../providers/logger/logger';
+import { Component, NgZone } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
+import { Events, ModalController, NavController } from 'ionic-angular';
+import { Logger } from '../../providers/logger/logger';
 
 // Pages
-import { ActivityPage } from './activity/activity';
 import { AddPage } from "../add/add";
-import { AmazonPage } from '../integrations/amazon/amazon';
 import { CopayersPage } from '../add/copayers/copayers';
-import { GlideraPage } from '../integrations/glidera/glidera';
+import { AmazonPage } from '../integrations/amazon/amazon';
+import { BitPayCardPage } from '../integrations/bitpay-card/bitpay-card';
+import { BitPayCardIntroPage } from '../integrations/bitpay-card/bitpay-card-intro/bitpay-card-intro';
 import { CoinbasePage } from '../integrations/coinbase/coinbase';
+import { GlideraPage } from '../integrations/glidera/glidera';
 import { MercadoLibrePage } from '../integrations/mercado-libre/mercado-libre';
-import { ProposalsPage } from './proposals/proposals';
 import { ShapeshiftPage } from '../integrations/shapeshift/shapeshift';
 import { TxDetailsPage } from '../tx-details/tx-details';
 import { TxpDetailsPage } from '../txp-details/txp-details';
 import { WalletDetailsPage } from '../wallet-details/wallet-details';
-import { BitPayCardIntroPage } from '../integrations/bitpay-card/bitpay-card-intro/bitpay-card-intro';
+import { ActivityPage } from './activity/activity';
+import { ProposalsPage } from './proposals/proposals';
 
 // Providers
-import { BwcErrorProvider } from '../../providers/bwc-error/bwc-error';
-import { ProfileProvider } from '../../providers/profile/profile';
-import { ReleaseProvider } from '../../providers/release/release';
-import { WalletProvider } from '../../providers/wallet/wallet';
-import { ConfigProvider } from '../../providers/config/config';
-import { PushNotificationsProvider } from '../../providers/push-notifications/push-notifications';
-import { ExternalLinkProvider } from '../../providers/external-link/external-link';
-import { OnGoingProcessProvider } from '../../providers/on-going-process/on-going-process';
-import { PopupProvider } from '../../providers/popup/popup';
 import { AddressBookProvider } from '../../providers/address-book/address-book';
 import { AppProvider } from '../../providers/app/app';
-import { PlatformProvider } from '../../providers/platform/platform';
-import { HomeIntegrationsProvider } from '../../providers/home-integrations/home-integrations';
-import { PersistenceProvider } from '../../providers/persistence/persistence';
+import { BitPayCardProvider } from '../../providers/bitpay-card/bitpay-card';
+import { BwcErrorProvider } from '../../providers/bwc-error/bwc-error';
+import { ConfigProvider } from '../../providers/config/config';
+import { ExternalLinkProvider } from '../../providers/external-link/external-link';
 import { FeedbackProvider } from '../../providers/feedback/feedback';
+import { HomeIntegrationsProvider } from '../../providers/home-integrations/home-integrations';
+import { OnGoingProcessProvider } from '../../providers/on-going-process/on-going-process';
+import { PersistenceProvider } from '../../providers/persistence/persistence';
+import { PlatformProvider } from '../../providers/platform/platform';
+import { PopupProvider } from '../../providers/popup/popup';
+import { ProfileProvider } from '../../providers/profile/profile';
+import { PushNotificationsProvider } from '../../providers/push-notifications/push-notifications';
+import { ReleaseProvider } from '../../providers/release/release';
+import { WalletProvider } from '../../providers/wallet/wallet';
 
 import * as _ from 'lodash';
 import * as moment from 'moment';
@@ -57,7 +59,8 @@ export class HomePage {
   public addressbook: any;
   public newRelease: boolean;
   public updateText: string;
-  public homeIntegrations: Array<any>;
+  public homeIntegrations: any[];
+  public bitpayCardItems: any;
 
   public showRateCard: boolean;
   public homeTip: boolean;
@@ -67,6 +70,8 @@ export class HomePage {
 
   private isNW: boolean;
   private isWindowsPhoneApp: boolean;
+  private updatingWalletId: object;
+  private zone: any;
 
   constructor(
     private navCtrl: NavController,
@@ -88,51 +93,54 @@ export class HomePage {
     private homeIntegrationsProvider: HomeIntegrationsProvider,
     private persistenceProvider: PersistenceProvider,
     private feedbackProvider: FeedbackProvider,
+    private bitPayCardProvider: BitPayCardProvider,
     private translate: TranslateService
   ) {
+    this.updatingWalletId = {};
     this.cachedBalanceUpdateOn = '';
     this.isNW = this.platformProvider.isNW;
     this.isWindowsPhoneApp = this.platformProvider.isWP;
     this.showReorderBtc = false;
     this.showReorderBch = false;
+    this.zone = new NgZone({ enableLongStackTrace: false });
   }
 
-  ionViewWillEnter() {
+  ionViewWillEnter() { 
     this.config = this.configProvider.get();
-    this.wallets = this.profileProvider.getWallets();
-    this.walletsBtc = this.profileProvider.getWallets({ coin: 'btc' });
-    this.walletsBch = this.profileProvider.getWallets({ coin: 'bch' });
+    this.pushNotificationsProvider.init();
+    this.homeIntegrations = this.homeIntegrationsProvider.get();
+    this.showIntegration = this.config.showIntegration;
+    this.homeIntegrations.forEach((integration: any) => {
+      integration.show = this.showIntegration[integration.name];
+    });
+    this.homeIntegrations = _.filter(this.homeIntegrations, (homeIntegrations) => {
+      return homeIntegrations.show == true;
+    });
 
+    // Update Tx Notifications
     this.recentTransactionsEnabled = this.config.recentTransactions.enabled;
     if (this.recentTransactionsEnabled) this.getNotifications();
 
-    this.pushNotificationsProvider.init();
-    if (this.config.showIntegrations.enabled) {
-      this.homeIntegrations = this.homeIntegrationsProvider.get();
-      this.showIntegration = this.config.showIntegration;
-      this.homeIntegrations.forEach((integration: any) => {
-        integration.show = this.showIntegration[integration.name];
-      });
-      this.homeIntegrations = _.filter(this.homeIntegrations, (homeIntegrations) => {
-        return homeIntegrations.show == true;
-      });
-    } else {
-      this.homeIntegrations = null;
-    }
+    // BWS Events: Update Status per Wallet
+    // NewBlock, NewCopayer, NewAddress, NewTxProposal, TxProposalAcceptedBy, TxProposalRejectedBy, txProposalFinallyRejected,
+    // txProposalFinallyAccepted, TxProposalRemoved, NewIncomingTx, NewOutgoingTx
+    this.events.subscribe('bwsEvent', (walletId: string) => {
+      if (this.recentTransactionsEnabled) this.getNotifications();
+      this.updateWallet(walletId);
+    });
 
-    this.events.subscribe('bwsEvent', (walletId, type, n) => {
-      let wallet = this.profileProvider.getWallet(walletId);
-      this.updateWallet(wallet);
-      if (this.recentTransactionsEnabled) this.getNotifications();
+    // Create, Join, Import and Delete -> Get Wallets -> Update Status for All Wallets
+    this.events.subscribe('status:updated', () => {
+      this.setWallets();
     });
-    this.events.subscribe('Local/TxAction', (walletId) => {
-      this.logger.debug('Got action for wallet ' + walletId);
-      var wallet = this.profileProvider.getWallet(walletId);
-      this.updateWallet(wallet);
-      if (this.recentTransactionsEnabled) this.getNotifications();
-    });
+
+    // Hide stars to rate
     this.events.subscribe('feedback:hide', () => {
       this.showRateCard = false;
+    });
+
+    this.bitPayCardProvider.get({}, (err, cards) => {
+      this.bitpayCardItems = cards;
     });
   }
 
@@ -149,15 +157,32 @@ export class HomePage {
   }
 
   ionViewWillLeave() {
-    this.events.unsubscribe('bwsEvent');
-    this.events.unsubscribe('Local/TxAction');
     this.events.unsubscribe('feedback:hide');
   }
 
   ionViewDidLoad() {
     this.logger.info('ionViewDidLoad HomePage');
-    this.updateAllWallets();
+    this.setWallets();
   }
+
+  private startUpdatingWalletId(walletId: string) {
+    this.updatingWalletId[walletId] = true;
+  }
+  
+  private stopUpdatingWalletId(walletId: string) {
+    setTimeout(() => {
+      this.updatingWalletId[walletId] = false;
+    }, 10000);
+  }
+
+  private setWallets = _.debounce(() => {
+    this.wallets = this.profileProvider.getWallets();
+    this.walletsBtc = this.profileProvider.getWallets({ coin: 'btc' });
+    this.walletsBch = this.profileProvider.getWallets({ coin: 'bch' });
+    this.updateAllWallets();
+  }, 10000, {
+    'leading': true
+  });
 
   public checkHomeTip(): void {
     this.persistenceProvider.getHomeTipAccepted().then((value: string) => {
@@ -180,7 +205,7 @@ export class HomePage {
         this.initFeedBackInfo();
       } else {
         let feedbackInfo = info;
-        //Check if current version is greater than saved version
+        // Check if current version is greater than saved version
         let currentVersion = this.releaseProvider.getCurrentAppVersion();
         let savedVersion = feedbackInfo.version;
         let isVersionUpdated = this.feedbackProvider.isVersionUpdated(currentVersion, savedVersion);
@@ -204,38 +229,50 @@ export class HomePage {
     this.persistenceProvider.setFeedbackInfo(feedbackInfo);
   }
 
-  private updateWallet(wallet: any): void {
-    this.logger.debug('Updating wallet:' + wallet.name)
+  private updateWallet(walletId: string): void {
+    if (this.updatingWalletId[walletId]) return;
+    this.startUpdatingWalletId(walletId);
+    let wallet = this.profileProvider.getWallet(walletId);
     this.walletProvider.getStatus(wallet, {}).then((status: any) => {
       wallet.status = status;
+      wallet.error = null;
+      this.profileProvider.setLastKnownBalance(wallet.id, wallet.status.availableBalanceStr); 
       this.updateTxps();
+      this.stopUpdatingWalletId(walletId);
     }).catch((err: any) => {
       this.logger.error(err);
+      this.stopUpdatingWalletId(walletId);
     });
   }
 
-  private updateTxps(): void {
+  private updateTxps = _.debounce(() => {
     this.profileProvider.getTxps({ limit: 3 }).then((data: any) => {
-      this.txps = data.txps;
-      this.txpsN = data.n;
+      this.zone.run(() => {
+        this.txps = data.txps;
+        this.txpsN = data.n;  
+      });
     }).catch((err: any) => {
       this.logger.error(err);
     });
-  }
+  }, 5000, {
+    'leading': true
+  });
 
   private getNotifications = _.debounce(() => {
     this.profileProvider.getNotifications({ limit: 3 }).then((data: any) => {
-      this.notifications = data.notifications;
-      this.notificationsN = data.total;
+      this.zone.run(() => {
+        this.notifications = data.notifications;
+        this.notificationsN = data.total;  
+      });
     }).catch((err: any) => {
       this.logger.error(err);
     });
-  }, 2000, {
-      'leading': true
-    });
+  }, 5000, {
+    'leading': true
+  });
 
   private updateAllWallets(): void {
-    let wallets: Array<any> = [];
+    let wallets: any[] = [];
     let foundMessage = false
 
     _.each(this.walletsBtc, (wBtc) => {
@@ -280,7 +317,7 @@ export class HomePage {
   }
 
   private checkUpdate(): void {
-    //TODO check if new update
+    // TODO check if new update
     this.releaseProvider.getLatestAppVersion().toPromise()
       .then((version) => {
         this.logger.debug('Current app version:', version);
@@ -302,7 +339,7 @@ export class HomePage {
   }
 
   public goToAddView(coin?: string): void {
-    this.navCtrl.push(AddPage, { coin: coin });
+    this.navCtrl.push(AddPage, { coin });
   }
 
   public goToWalletDetails(wallet: any): void {
@@ -378,7 +415,7 @@ export class HomePage {
   }
 
   public openTxpModal(tx: any): void {
-    let modal = this.modalCtrl.create(TxpDetailsPage, { tx: tx }, { showBackdrop: false, enableBackdropDismiss: false });
+    let modal = this.modalCtrl.create(TxpDetailsPage, { tx }, { showBackdrop: false, enableBackdropDismiss: false });
     modal.present();
   }
 
@@ -413,7 +450,12 @@ export class HomePage {
     }
   }
 
+  public goToCard(cardId): void {
+    this.navCtrl.push(BitPayCardPage, { id: cardId });
+  }
+
   public doRefresh(refresher) {
+    refresher.pullMin = 90;
     this.updateAllWallets();
     setTimeout(() => {
       refresher.complete();

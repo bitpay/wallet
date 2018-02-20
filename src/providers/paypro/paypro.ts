@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
-import { Logger } from '../../providers/logger/logger';
 import { TranslateService } from '@ngx-translate/core';
+import { Logger } from '../../providers/logger/logger';
 
-//providers
-import { ProfileProvider } from '../profile/profile';
+// providers
 import { OnGoingProcessProvider } from '../on-going-process/on-going-process';
+import { ProfileProvider } from '../profile/profile';
 
 @Injectable()
 export class PayproProvider {

@@ -1,15 +1,15 @@
 import { Component } from '@angular/core';
 import { ModalController, NavController, NavParams } from 'ionic-angular';
-import { Logger } from '../../../providers/logger/logger';
 import * as _ from 'lodash';
+import { Logger } from '../../../providers/logger/logger';
 
 // Pages
 import { AmountPage } from '../../send/amount/amount';
 import { MercadoLibreCardDetailsPage } from './mercado-libre-card-details/mercado-libre-card-details';
 
 // Providers
-import { MercadoLibreProvider } from '../../../providers/mercado-libre/mercado-libre';
 import { ExternalLinkProvider } from '../../../providers/external-link/external-link';
+import { MercadoLibreProvider } from '../../../providers/mercado-libre/mercado-libre';
 import { PopupProvider } from '../../../providers/popup/popup';
 import { TimeProvider } from '../../../providers/time/time';
 

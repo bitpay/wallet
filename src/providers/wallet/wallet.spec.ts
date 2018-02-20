@@ -1,30 +1,30 @@
-import { HttpClientModule } from '@angular/common/http';
-import { NgLoggerModule, Level } from '@nsalaun/ng-logger';
 import { DecimalPipe } from '@angular/common';
-import { TestBed, async } from '@angular/core/testing';
+import { HttpClientModule } from '@angular/common/http';
+import { async, TestBed } from '@angular/core/testing';
+import { AndroidFingerprintAuth } from '@ionic-native/android-fingerprint-auth';
+import { TouchID } from '@ionic-native/touch-id';
+import {
+  TranslateFakeLoader,
+  TranslateLoader,
+  TranslateModule,
+  TranslateService
+} from '@ngx-translate/core';
+import { Level, NgLoggerModule } from '@nsalaun/ng-logger';
 import {
   AlertController,
-  Events,
   App,
   Config,
-  Platform,
-  LoadingController
+  Events,
+  LoadingController,
+  Platform
 } from 'ionic-angular';
-import {
-  TranslateModule,
-  TranslateService,
-  TranslateLoader,
-  TranslateFakeLoader
-} from '@ngx-translate/core';
-import { TouchID } from '@ionic-native/touch-id';
-import { AndroidFingerprintAuth } from '@ionic-native/android-fingerprint-auth';
 
+import { Logger } from '../../providers/logger/logger';
 import { BwcErrorProvider } from '../bwc-error/bwc-error';
 import { BwcProvider } from '../bwc/bwc';
 import { ConfigProvider } from '../config/config';
 import { FeeProvider } from '../fee/fee';
 import { FilterProvider } from '../filter/filter';
-import { Logger } from '../../providers/logger/logger';
 import { OnGoingProcessProvider } from '../on-going-process/on-going-process';
 import { PersistenceProvider } from '../persistence/persistence';
 import { PlatformProvider } from '../platform/platform';
@@ -108,7 +108,7 @@ describe('Provider: Wallet Provider', () => {
   describe('Function: Get Address Function', () => {
     it('should get the last address stored', () => {
       let wallet = {
-        isComplete: function() {
+        isComplete() {
           return true;
         }
       };
@@ -120,7 +120,7 @@ describe('Provider: Wallet Provider', () => {
 
     it('should reject to generate new address if wallet is not complete', () => {
       let wallet = {
-        isComplete: function() {
+        isComplete() {
           return false;
         }
       };
@@ -132,10 +132,10 @@ describe('Provider: Wallet Provider', () => {
 
     it('should force to generate new address', () => {
       let wallet = {
-        isComplete: function() {
+        isComplete() {
           return true;
         },
-        createAddress: function({}, cb) {
+        createAddress({}, cb) {
           return cb(null, { address: 'newAddress' });
         }
       };
