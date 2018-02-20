@@ -350,7 +350,7 @@ export class ShapeshiftConfirmPage {
     });
   };
 
-  public openFinishModal(): void {
+  private openFinishModal(): void {
     let finishText = 'Transaction Sent';
     let modal = this.modalCtrl.create(FinishModalPage, { finishText: finishText }, { showBackdrop: true, enableBackdropDismiss: false });
     modal.present();

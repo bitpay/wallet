@@ -5,8 +5,8 @@ import * as _ from 'lodash';
 import { Logger } from '../../../providers/logger/logger';
 
 // Pages
-import { PayProPage } from '../../paypro/paypro';
 import { FinishModalPage } from '../../finish/finish';
+import { PayProPage } from '../../paypro/paypro';
 import { ChooseFeeLevelPage } from '../choose-fee-level/choose-fee-level';
 import { FeeWarningPage } from '../fee-warning/fee-warning';
 
@@ -609,7 +609,7 @@ export class ConfirmPage {
     });
   }
 
-  public openFinishModal(onlyPublish?: boolean) {
+  private openFinishModal(onlyPublish?: boolean) {
     let params = {};
     if (onlyPublish) {
       let finishText = this.translate.instant('Payment Published');

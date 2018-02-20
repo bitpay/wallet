@@ -6,8 +6,8 @@ import * as moment from 'moment';
 import { Logger } from '../../../../providers/logger/logger';
 
 // Pages
-import { FeeWarningPage } from '../../../send/fee-warning/fee-warning';
 import { FinishModalPage } from '../../../finish/finish';
+import { FeeWarningPage } from '../../../send/fee-warning/fee-warning';
 import { MercadoLibrePage } from '../mercado-libre';
 
 // Provider
@@ -400,7 +400,7 @@ export class BuyMercadoLibrePage {
     });
   }
 
-  public openFinishModal(): void {
+  private openFinishModal(): void {
     let finishComment: string;
     let cssClass: string;
     if (this.mlGiftCard.status == 'FAILURE') {

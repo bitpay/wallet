@@ -6,8 +6,8 @@ import * as moment from 'moment';
 import { Logger } from '../../../../providers/logger/logger';
 
 // Pages
-import { FeeWarningPage } from '../../../send/fee-warning/fee-warning';
 import { FinishModalPage } from '../../../finish/finish';
+import { FeeWarningPage } from '../../../send/fee-warning/fee-warning';
 import { AmazonPage } from '../amazon';
 
 // Provider
@@ -412,7 +412,7 @@ export class BuyAmazonPage {
     });
   }
 
-  public openFinishModal(): void {
+  private openFinishModal(): void {
     let finishComment: string;
     let cssClass: string;
     if (this.amazonGiftCard.status == 'FAILURE') {

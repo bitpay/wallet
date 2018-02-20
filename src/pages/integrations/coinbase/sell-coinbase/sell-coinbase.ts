@@ -358,7 +358,7 @@ export class SellCoinbasePage {
     this.processPaymentInfo();
   }
 
-  public openFinishModal(): void {
+  private openFinishModal(): void {
     let finishText = 'Funds sent to Coinbase Account';
     let finishComment = 'The transaction is not yet confirmed, and will show as "Pending" in your Activity. The bitcoin sale will be completed automatically once it is confirmed by Coinbase';
     let modal = this.modalCtrl.create(FinishModalPage, { finishText: finishText, finishComment: finishComment }, { showBackdrop: true, enableBackdropDismiss: false });
