@@ -6,7 +6,6 @@ import { Platform } from 'ionic-angular';
 export class PlatformProvider {
   public isAndroid: boolean;
   public isIOS: boolean;
-  public isWP: boolean;
   public isSafari: boolean;
   public isCordova: boolean;
   public isNW: boolean;
@@ -30,7 +29,6 @@ export class PlatformProvider {
 
     this.isAndroid = this.platform.is('android');
     this.isIOS = this.platform.is('ios');
-    this.isWP = this.platform.is('windows') && this.platform.is('mobile');
     this.ua = ua;
     this.isCordova = this.platform.is('cordova');
     this.isNW = this.isNodeWebkit();
@@ -54,13 +52,10 @@ export class PlatformProvider {
   }
 
   public isNodeWebkit(): boolean {
-    let isNode = (typeof process !== "undefined" && typeof require !== "undefined");
-    if (isNode) {
-      try {
-        return (typeof require('nw.gui') !== "undefined");
-      } catch (e) {
-        return false;
-      }
+    try {
+      return (typeof require('nw.gui') !== "undefined");
+    } catch (e) {
+      return false;
     }
   }
 }
