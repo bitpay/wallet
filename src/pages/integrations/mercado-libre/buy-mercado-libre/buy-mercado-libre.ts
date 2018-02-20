@@ -7,7 +7,7 @@ import { Logger } from '../../../../providers/logger/logger';
 
 // Pages
 import { FeeWarningPage } from '../../../send/fee-warning/fee-warning';
-import { SuccessModalPage } from '../../../success/success';
+import { FinishModalPage } from '../../../finish/finish';
 import { MercadoLibrePage } from '../mercado-libre';
 
 // Provider
@@ -299,7 +299,7 @@ export class BuyMercadoLibrePage {
         this.onGoingProcessProvider.set('Comprando Vale-Presente', false);
         this.logger.debug("Saved new gift card with status: " + newData.status);
         this.mlGiftCard = newData;
-        this.openSuccessModal();
+        this.openFinishModal();
       });
     });
   }, 15000, {
@@ -400,22 +400,22 @@ export class BuyMercadoLibrePage {
     });
   }
 
-  public openSuccessModal(): void {
-    let successComment: string;
+  public openFinishModal(): void {
+    let finishComment: string;
     let cssClass: string;
     if (this.mlGiftCard.status == 'FAILURE') {
-      successComment = 'Sua compra não pôde ser concluída';
+      finishComment = 'Sua compra não pôde ser concluída';
       cssClass = 'danger';
     }
     if (this.mlGiftCard.status == 'PENDING') {
-      successComment = 'Sua compra foi adicionada à lista de pendentes';
+      finishComment = 'Sua compra foi adicionada à lista de pendentes';
       cssClass = 'warning';
     }
     if (this.mlGiftCard.status == 'SUCCESS' || this.mlGiftCard.cardStatus == 'active') {
-      successComment = 'Vale-Presente gerado e pronto para usar';
+      finishComment = 'Vale-Presente gerado e pronto para usar';
     }
-    let successText = '';
-    let modal = this.modalCtrl.create(SuccessModalPage, { successText: successText, successComment: successComment, cssClass: cssClass }, { showBackdrop: true, enableBackdropDismiss: false });
+    let finishText = '';
+    let modal = this.modalCtrl.create(FinishModalPage, { finishText: finishText, finishComment: finishComment, cssClass: cssClass }, { showBackdrop: true, enableBackdropDismiss: false });
     modal.present();
     modal.onDidDismiss(() => {
       this.navCtrl.popToRoot({ animate: false });

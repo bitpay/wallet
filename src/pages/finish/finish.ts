@@ -3,13 +3,13 @@ import { TranslateService } from '@ngx-translate/core';
 import { NavParams, ViewController } from 'ionic-angular';
 
 @Component({
-  selector: 'page-success',
-  templateUrl: 'success.html',
+  selector: 'page-finish',
+  templateUrl: 'finish.html',
 })
-export class SuccessModalPage {
+export class FinishModalPage {
 
-  public successText: string;
-  public successComment: string;
+  public finishText: string;
+  public finishComment: string;
   public cssClass: string; // success, warning, danger
 
   constructor(
@@ -17,8 +17,8 @@ export class SuccessModalPage {
     private navParams: NavParams,
     private translate: TranslateService
   ) {
-    this.successText = (this.navParams.data.successText || this.navParams.data.successText == '') ? this.navParams.data.successText : this.translate.instant('Payment Sent');
-    this.successComment = this.navParams.data.successComment ? this.navParams.data.successComment : '';
+    this.finishText = (this.navParams.data.finishText || this.navParams.data.finishText == '') ? this.navParams.data.finishText : this.translate.instant('Payment Sent');
+    this.finishComment = this.navParams.data.finishComment ? this.navParams.data.finishComment : '';
     this.cssClass = this.navParams.data.cssClass ? this.navParams.data.cssClass : 'success';
   }
 

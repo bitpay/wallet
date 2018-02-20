@@ -6,7 +6,7 @@ import { Logger } from '../../../providers/logger/logger';
 
 // Pages
 import { PayProPage } from '../../paypro/paypro';
-import { SuccessModalPage } from '../../success/success';
+import { FinishModalPage } from '../../finish/finish';
 import { ChooseFeeLevelPage } from '../choose-fee-level/choose-fee-level';
 import { FeeWarningPage } from '../fee-warning/fee-warning';
 
@@ -574,7 +574,7 @@ export class ConfirmPage {
           this.logger.info('No signing proposal: No private key');
           this.walletProvider.onlyPublish(wallet, txp).then(() => {
             this.onGoingProcessProvider.clear();
-            this.openSuccessModal(true);
+            this.openFinishModal(true);
           }).catch((err: any) => {
             this.onGoingProcessProvider.clear();
             this.setSendError(err);
@@ -588,7 +588,7 @@ export class ConfirmPage {
               txid: txp.txid
             });
           }
-          this.openSuccessModal();
+          this.openFinishModal();
         }).catch((err: any) => {
           this.setSendError(err);
           return;
@@ -609,14 +609,14 @@ export class ConfirmPage {
     });
   }
 
-  public openSuccessModal(onlyPublish?: boolean) {
+  public openFinishModal(onlyPublish?: boolean) {
     let params = {};
     if (onlyPublish) {
-      let successText = this.translate.instant('Payment Published');
-      let successComment = this.translate.instant('You could sign the transaction later in your wallet details');
-      params = { successText: successText, successComment: successComment };
+      let finishText = this.translate.instant('Payment Published');
+      let finishComment = this.translate.instant('You could sign the transaction later in your wallet details');
+      params = { finishText: finishText, finishComment: finishComment };
     }
-    let modal = this.modalCtrl.create(SuccessModalPage, params, { showBackdrop: true, enableBackdropDismiss: false });
+    let modal = this.modalCtrl.create(FinishModalPage, params, { showBackdrop: true, enableBackdropDismiss: false });
     modal.present();
     modal.onDidDismiss(() => {
       this.navCtrl.popToRoot({ animate: false }).then(() => {

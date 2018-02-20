@@ -14,7 +14,7 @@ import { TxFormatProvider } from '../../providers/tx-format/tx-format';
 import { WalletProvider } from '../../providers/wallet/wallet';
 
 //pages
-import { SuccessModalPage } from '../success/success';
+import { FinishModalPage } from '../finish/finish';
 
 import * as _ from 'lodash';
 
@@ -212,7 +212,7 @@ export class TxpDetailsPage {
   public sign(): void {
     this.loading = true;
     this.walletProvider.publishAndSign(this.wallet, this.tx).then((txp: any) => {
-      this.openSuccessModal();
+      this.openFinishModal();
     }).catch((err: any) => {
       this.setError(err, ('Could not send payment'));
     });
@@ -255,7 +255,7 @@ export class TxpDetailsPage {
     this.onGoingProcessProvider.set('broadcastingTx', true);
     this.walletProvider.broadcastTx(this.wallet, this.tx).then((txpb: any) => {
       this.onGoingProcessProvider.set('broadcastingTx', false);
-      this.openSuccessModal();
+      this.openFinishModal();
     }).catch((err: any) => {
       this.onGoingProcessProvider.set('broadcastingTx', false);
       this.setError(err, 'Could not broadcast payment');
@@ -307,8 +307,8 @@ export class TxpDetailsPage {
     this.viewCtrl.dismiss();
   }
 
-  public openSuccessModal() {
-    let modal = this.modalCtrl.create(SuccessModalPage, {}, { showBackdrop: true, enableBackdropDismiss: false });
+  public openFinishModal() {
+    let modal = this.modalCtrl.create(FinishModalPage, { finishText: this.successText }, { showBackdrop: true, enableBackdropDismiss: false });
     modal.present();
     modal.onDidDismiss(() => {
       this.close();

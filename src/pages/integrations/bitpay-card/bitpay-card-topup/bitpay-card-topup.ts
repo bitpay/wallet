@@ -6,7 +6,7 @@ import { Logger } from '../../../../providers/logger/logger';
 
 // Pages
 import { FeeWarningPage } from '../../../send/fee-warning/fee-warning';
-import { SuccessModalPage } from '../../../success/success';
+import { FinishModalPage } from '../../../finish/finish';
 import { BitPayCardPage } from '../bitpay-card';
 
 // Provider
@@ -422,16 +422,16 @@ export class BitPayCardTopUpPage {
     });
   }
 
-  public openSuccessModal(): void {
-    let successComment: string;
+  public openFinishModal(): void {
+    let finishComment: string;
     if (this.sendStatus == 'success') {
       if (this.wallet.credentials.m == 1)
-        successComment = this.translate.instant('Funds were added to debit card');
+        finishComment = this.translate.instant('Funds were added to debit card');
       else
-        successComment = this.translate.instant('Transaction initiated');
+        finishComment = this.translate.instant('Transaction initiated');
     }
-    let successText = '';
-    let modal = this.modalCtrl.create(SuccessModalPage, { successText: successText, successComment: successComment }, { showBackdrop: true, enableBackdropDismiss: false });
+    let finishText = '';
+    let modal = this.modalCtrl.create(FinishModalPage, { finishText: finishText, finishComment: finishComment }, { showBackdrop: true, enableBackdropDismiss: false });
     modal.present();
     modal.onDidDismiss(() => {
       this.navCtrl.popToRoot({ animate: false });
