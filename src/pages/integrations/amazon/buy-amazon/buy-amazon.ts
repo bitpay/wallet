@@ -433,8 +433,7 @@ export class BuyAmazonPage {
     let modal = this.modalCtrl.create(SuccessModalPage, { successText: successText, successComment: successComment, cssClass: cssClass }, { showBackdrop: true, enableBackdropDismiss: false });
     modal.present();
     modal.onDidDismiss(() => {
-      this.navCtrl.remove(2, 2);
-      this.navCtrl.pop();
+      this.navCtrl.popToRoot({ animate: false });
       this.navCtrl.push(AmazonPage, { invoiceId: this.invoiceId });
     });
   }
