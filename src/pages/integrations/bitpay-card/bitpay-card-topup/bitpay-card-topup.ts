@@ -5,8 +5,8 @@ import * as _ from 'lodash';
 import { Logger } from '../../../../providers/logger/logger';
 
 // Pages
-import { FeeWarningPage } from '../../../send/fee-warning/fee-warning';
 import { FinishModalPage } from '../../../finish/finish';
+import { FeeWarningPage } from '../../../send/fee-warning/fee-warning';
 import { BitPayCardPage } from '../bitpay-card';
 
 // Provider
@@ -45,7 +45,6 @@ export class BitPayCardTopUpPage {
   public networkFee;
   public totalAmount;
   public wallet;
-  public sendStatus;
   public currencyIsoCode;
   public amountUnitStr;
   public lastFourDigits;
@@ -382,14 +381,13 @@ export class BitPayCardTopUpPage {
     let cancelText = this.translate.instant('Cancel');
     this.popupProvider.ionicConfirm(title, this.message, okText, cancelText).then((ok) => {
       if (!ok) {
-        this.sendStatus = '';
         return;
       }
 
       this.onGoingProcessProvider.set('topup', true);
       this.publishAndSign(this.wallet, this.createdTx).then((txSent) => {
         this.onGoingProcessProvider.set('topup', false);
-        this.sendStatus = 'success';
+        this.openFinishModal();
       }).catch((err) => {
         this.onGoingProcessProvider.set('topup', false);
         this._resetValues();
@@ -422,13 +420,13 @@ export class BitPayCardTopUpPage {
     });
   }
 
-  public openFinishModal(): void {
+  private openFinishModal(): void {
     let finishComment: string;
-    if (this.sendStatus == 'success') {
-      if (this.wallet.credentials.m == 1)
-        finishComment = this.translate.instant('Funds were added to debit card');
-      else
-        finishComment = this.translate.instant('Transaction initiated');
+    if (this.wallet.credentials.m == 1) {
+      finishComment = this.translate.instant('Funds were added to debit card');
+    }
+    else {
+      finishComment = this.translate.instant('Transaction initiated');
     }
     let finishText = '';
     let modal = this.modalCtrl.create(FinishModalPage, { finishText: finishText, finishComment: finishComment }, { showBackdrop: true, enableBackdropDismiss: false });

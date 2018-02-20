@@ -183,7 +183,7 @@ export class PaperWalletPage {
     });
   }
 
-  public openFinishModal(): void {
+  private openFinishModal(): void {
     let finishComment = this.translate.instant("Check the transaction on your wallet details");
     let finishText = this.translate.instant('Sweep Completed');
     let modal = this.modalCtrl.create(FinishModalPage, { finishText: finishText, finishComment: finishComment }, { showBackdrop: true, enableBackdropDismiss: false });

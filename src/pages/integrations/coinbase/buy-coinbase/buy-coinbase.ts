@@ -292,7 +292,7 @@ export class BuyCoinbasePage {
     });
   }
 
-  public openFinishModal(): void {
+  private openFinishModal(): void {
     let finishText = 'Bought';
     let finishComment = 'Bitcoin purchase completed. Coinbase has queued the transfer to your selected wallet';
     let modal = this.modalCtrl.create(FinishModalPage, { finishText: finishText, finishComment: finishComment }, { showBackdrop: true, enableBackdropDismiss: false });

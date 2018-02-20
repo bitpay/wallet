@@ -198,7 +198,7 @@ export class BuyGlideraPage {
     this.processPaymentInfo();
   }
 
-  public openFinishModal(): void {
+  private openFinishModal(): void {
     let finishText = 'Bought';
     let finishComment = 'A transfer has been initiated from your bank account. Your bitcoins should arrive to your wallet in 2-4 business day';
     let modal = this.modalCtrl.create(FinishModalPage, { finishText: finishText, finishComment: finishComment }, { showBackdrop: true, enableBackdropDismiss: false });

@@ -307,7 +307,7 @@ export class TxpDetailsPage {
     this.viewCtrl.dismiss();
   }
 
-  public openFinishModal() {
+  private openFinishModal() {
     let modal = this.modalCtrl.create(FinishModalPage, { finishText: this.successText }, { showBackdrop: true, enableBackdropDismiss: false });
     modal.present();
     modal.onDidDismiss(() => {
