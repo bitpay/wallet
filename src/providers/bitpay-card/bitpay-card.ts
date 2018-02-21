@@ -306,26 +306,26 @@ export class BitPayCardProvider {
         if (!card)
           return cb(this._setError('Card not found'));
 
-        this.bitPayProvider.post('/api/v2/' + card.token, json, (data) => {
+        this.bitPayProvider.post('/api/v2/' + card.token, json, (res) => {
           this.logger.info('BitPay TopUp: SUCCESS');
-          if (data.error) {
-            return cb(data.error);
+          if (res.error) {
+            return cb(res.error);
           } else {
-            return cb(null, data.invoice);
+            return cb(null, res.data.invoice);
           }
-        }, (data) => {
-          return cb(this._setError('BitPay Card Error: TopUp', data));
+        }, (res) => {
+          return cb(this._setError('BitPay Card Error: TopUp', res));
         });
       });
     });
   };
 
   public getInvoice(id, cb) {
-    this.bitPayProvider.get('/invoices/' + id, (data) => {
+    this.bitPayProvider.get('/invoices/' + id, (res) => {
       this.logger.info('BitPay Get Invoice: SUCCESS');
-      return cb(data.error, data.data);
-    }, (data) => {
-      return cb(this._setError('BitPay Card Error: Get Invoice', data));
+      return cb(res.error, res.data);
+    }, (res) => {
+      return cb(this._setError('BitPay Card Error: Get Invoice', res));
     });
   };
 

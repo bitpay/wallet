@@ -31,7 +31,6 @@ const FEE_TOO_HIGH_LIMIT_PER = 15;
 })
 export class BitPayCardTopUpPage {
 
-  public coin: string;
   public cardId;
   public useSendMax: boolean;
   public amount;
@@ -74,7 +73,6 @@ export class BitPayCardTopUpPage {
     private platformProvider: PlatformProvider,
     private feeProvider: FeeProvider
   ) {
-    this.coin = 'btc';
     this.configWallet = this.configProvider.get().wallet;
     this.isCordova = this.platformProvider.isCordova;
   }
@@ -84,6 +82,8 @@ export class BitPayCardTopUpPage {
   }
 
   ionViewWillEnter() {
+    let coin = this.navParams.data.coin;
+    
     this.cardId = this.navParams.data.id;
     this.useSendMax = this.navParams.data.useSendMax;
     this.currency = this.navParams.data.currency;
@@ -106,7 +106,7 @@ export class BitPayCardTopUpPage {
         onlyComplete: true,
         network: this.bitPayProvider.getEnvironment().network,
         hasFunds: true,
-        coin: this.coin
+        coin
       });
 
       if (_.isEmpty(this.wallets)) {
@@ -148,9 +148,9 @@ export class BitPayCardTopUpPage {
     });
   }
 
-  private satToFiat(sat: number): Promise<any> {
+  private satToFiat(coin: string, sat: number): Promise<any> {
     return new Promise((resolve, reject) => {
-      this.txFormatProvider.toFiat(this.coin, sat, this.currencyIsoCode).then((value: string) => {
+      this.txFormatProvider.toFiat(coin, sat, this.currencyIsoCode).then((value: string) => {
         return resolve(value);
       });
     });
@@ -174,14 +174,14 @@ export class BitPayCardTopUpPage {
     });
   }
 
-  private setTotalAmount(amountSat: number, invoiceFeeSat: number, networkFeeSat: number) {
-    this.satToFiat(amountSat).then((a: string) => {
+  private setTotalAmount(wallet: any, amountSat: number, invoiceFeeSat: number, networkFeeSat: number) {
+    this.satToFiat(wallet.coin, amountSat).then((a: string) => {
       this.amount = Number(a);
 
-      this.satToFiat(invoiceFeeSat).then((i: string) => {
+      this.satToFiat(wallet.coin, invoiceFeeSat).then((i: string) => {
         this.invoiceFee = Number(i);
 
-        this.satToFiat(networkFeeSat).then((n: string) => {
+        this.satToFiat(wallet.coin, networkFeeSat).then((n: string) => {
           this.networkFee = Number(n);
           this.totalAmount = this.amount + this.invoiceFee + this.networkFee;
         });
@@ -334,7 +334,8 @@ export class BitPayCardTopUpPage {
     this.amountUnitStr = parsedAmount.amountUnitStr;
     var dataSrc = {
       amount: parsedAmount.amount,
-      currency: parsedAmount.currency
+      currency: parsedAmount.currency,
+      buyerSelectedTransactionCurrency: wallet.coin.toUpperCase()
     };
     this.onGoingProcessProvider.set('loadingTxInfo');
     this.createInvoice(dataSrc).then((invoice) => {
@@ -353,12 +354,12 @@ export class BitPayCardTopUpPage {
         // Save TX in memory
         this.createdTx = ctxp;
 
-        this.totalAmountStr = this.txFormatProvider.formatAmountStr(this.coin, ctxp.amount);
+        this.totalAmountStr = this.txFormatProvider.formatAmountStr(wallet.coin, ctxp.amount);
 
         // Warn: fee too high
         this.checkFeeHigh(Number(parsedAmount.amountSat), Number(invoiceFeeSat) + Number(ctxp.fee));
 
-        this.setTotalAmount(parsedAmount.amountSat, Number(invoiceFeeSat), ctxp.fee);
+        this.setTotalAmount(wallet, parsedAmount.amountSat, Number(invoiceFeeSat), ctxp.fee);
 
       }).catch((err) => {
         this.onGoingProcessProvider.clear();
@@ -401,9 +402,9 @@ export class BitPayCardTopUpPage {
   public onWalletSelect(wallet: any): void {
     this.wallet = wallet;
     this.onGoingProcessProvider.set('retrievingInputs');
-    this.calculateAmount(this.wallet).then((val: any) => {
-      let parsedAmount = this.txFormatProvider.parseAmount(this.coin, val.amount, val.currency);
-      this.initializeTopUp(this.wallet, parsedAmount);
+    this.calculateAmount(wallet).then((val: any) => {
+      let parsedAmount = this.txFormatProvider.parseAmount(wallet.coin, val.amount, val.currency);
+      this.initializeTopUp(wallet, parsedAmount);
     }).catch((err) => {
       this.onGoingProcessProvider.clear();
       this._resetValues();

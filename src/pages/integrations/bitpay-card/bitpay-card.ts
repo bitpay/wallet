@@ -191,8 +191,8 @@ export class BitPayCardPage {
     this.navCtrl.push(AmountPage, {
       id: this.cardId,
       nextPage: 'BitPayCardTopUpPage',
-      currency: 'USD',
-      coin: 'btc'
+      currency: this.currency,
+      coin: 'btc' // Force BTC for now
     });
   }
 }
