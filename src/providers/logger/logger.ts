@@ -50,7 +50,7 @@ export class Logger {
     this.add('warn', args);
   }
 
-  public getLevels(): void {
+  public getLevels(): any {
     return this.levels;
   }
 
