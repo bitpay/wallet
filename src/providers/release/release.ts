@@ -35,7 +35,7 @@ export class ReleaseProvider {
     };
   }
 
-  public checkForUpdates(latestVersion: string, currentVersion?: string): any {
+  public checkForUpdates(latestVersion: string, currentVersion?: string): object {
     if (!currentVersion) currentVersion = this.appVersion;
 
     let result = {
