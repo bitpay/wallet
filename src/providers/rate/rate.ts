@@ -93,7 +93,7 @@ export class RateProvider {
     return this.alternatives;
   }
 
-  public isAvailable(): boolean {
+  public isAvailable() {
     return this.ratesAvailable;
   }
 
