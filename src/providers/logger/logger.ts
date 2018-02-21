@@ -75,6 +75,10 @@ export class Logger {
     });
   }
 
+  /**
+   * Returns logs of <= to filteredWeight
+   * @param {number} filteredWeight Weight (1-4) to use when filtering logs. optional
+   */
   public get(filterWeight?: number): any {
     let filteredLogs = this.logs;
     if (filterWeight != undefined) {

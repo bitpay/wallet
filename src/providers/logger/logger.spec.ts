@@ -78,4 +78,71 @@ fdescribe('LoggerProvider', () => {
       { level: 'debug', weight: 4, label: 'Debug' }
     );
   });
+
+  it('should get the defaul weight', () => {
+    let defaultWeight = service.getDefaultWeight();
+    expect(defaultWeight).toEqual(
+      { level: 'info', weight: 3, label: 'Info', default: true }
+    );
+  });
+
+  it('should get logs by filtered weight', () => {
+    let filteredLogs;
+
+    service.debug('Heart of Gold');
+    service.debug('Volgon ship');
+    filteredLogs = service.get(4);
+    expect(filteredLogs.length).toBe(2);
+
+    service.info("Don't panic");
+    service.info("Take peanuts");
+    service.info("Don't forget a towel");
+    filteredLogs = service.get(3);
+    expect(filteredLogs.length).toBe(3);
+    console.log(filteredLogs);
+
+    service.error('Planet not found');
+    filteredLogs = service.get(1);
+    expect(filteredLogs.length).toBe(1);
+  });
+
+  it('should get logs when not filtered by weight', () => {
+    service.warn('Beware the Bugblatter Beast of Traal');
+    service.error('Heart of Gold has been stolen');
+    service.info('Zaphod is President');
+    service.debug('Marvin is depressed');
+
+    let logs = service.get();
+
+    expect(logs[0].msg).toEqual('Beware the Bugblatter Beast of Traal');
+    expect(logs[1].msg).toEqual('Heart of Gold has been stolen');
+    expect(logs[2].msg).toEqual('Zaphod is President');
+    expect(logs[3].msg).toEqual('Marvin is depressed');
+  });
+
+  it('should process args', () => {
+    let processedArgs = service.processingArgs(['bulldozer', 'bathrobe', 'satchel']);
+    expect(processedArgs).toEqual('bulldozer bathrobe satchel');
+
+    processedArgs = service.processingArgs('babel fish');
+    expect(processedArgs).toEqual('b a b e l   f i s h');
+
+    processedArgs = service.processingArgs(['babel', undefined, 'fish']);
+    expect(processedArgs).toEqual('babel undefined fish');
+
+    processedArgs = service.processingArgs(['babel', false, 'fish']);
+    expect(processedArgs).toEqual('babel null fish');
+
+    processedArgs = service.processingArgs(['babel', { message: 'Save the Humans' }, 'fish']);
+    expect(processedArgs).toEqual('babel Save the Humans fish');
+
+    processedArgs = service.processingArgs(['babel', { 'improbability': 'infinite' }, 'fish']);
+    expect(processedArgs).toEqual('babel {"improbability":"infinite"} fish');
+
+    // cyclical reference; yeah, baby! to break JSON.stringify
+    let a = { b: { a: { } } };
+    a.b.a = a;
+    processedArgs = service.processingArgs(['babel', a, 'fish']);
+    expect(processedArgs).toEqual('babel undefined fish');
+  });
 });
