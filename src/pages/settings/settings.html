@@ -24,7 +24,7 @@
       Send feedback
     </ion-item>
 
-    <ion-item *ngIf="isCordova && !isWindowsPhoneApp" (click)="openFeedbackCompletePage()">
+    <ion-item *ngIf="isCordova" (click)="openFeedbackCompletePage()">
       <ion-icon name="ios-heart-outline" item-start></ion-icon>
       Share {{ appName }}
     </ion-item>

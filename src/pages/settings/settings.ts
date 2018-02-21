@@ -43,7 +43,6 @@ export class SettingsPage {
   public config: any;
   public selectedAlternative: any;
   public isCordova: boolean;
-  public isWindowsPhoneApp: boolean;
   public lockMethod: string;
   public exchangeServices: any[] = [];
   public bitpayCardEnabled: boolean = false;
@@ -65,7 +64,6 @@ export class SettingsPage {
     this.walletsBch = [];
     this.walletsBtc = [];
     this.isCordova = this.platformProvider.isCordova;
-    this.isWindowsPhoneApp = this.platformProvider.isWP;
   }
 
   ionViewDidLoad() {

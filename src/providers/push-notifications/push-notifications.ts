@@ -39,7 +39,7 @@ export class PushNotificationsProvider {
     this.logger.info('PushNotificationsProvider initialized.');
     this.isIOS = this.platformProvider.isIOS;
     this.isAndroid = this.platformProvider.isAndroid;
-    this.usePushNotifications = this.platformProvider.isCordova && !this.platformProvider.isWP;
+    this.usePushNotifications = this.platformProvider.isCordova;
 
     if (this.usePushNotifications) {
 

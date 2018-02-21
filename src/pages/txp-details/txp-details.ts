@@ -42,7 +42,6 @@ export class TxpDetailsPage {
   private GLIDERA_LOCK_TIME: number;
   private countDown: any;
   private isCordova: boolean;
-  private isWindowsPhoneApp: boolean;
 
   constructor(
     private navParams: NavParams,
@@ -70,7 +69,6 @@ export class TxpDetailsPage {
     this.currentSpendUnconfirmed = config.spendUnconfirmed;
     this.loading = false;
     this.isCordova = this.platformProvider.isCordova;
-    this.isWindowsPhoneApp = this.platformProvider.isCordova && this.platformProvider.isWP;
     this.copayers = this.wallet.status.wallet.copayers;
     this.copayerId = this.wallet.credentials.copayerId;
     this.isShared = this.wallet.credentials.n > 1;
@@ -120,18 +118,10 @@ export class TxpDetailsPage {
     }).length == this.tx.requiredSignatures - 1;
 
     if (lastSigner) {
-      // if (this.isCordova && !this.isWindowsPhoneApp) {
-      //  this.buttonText = this.translate.instant('Slide to send');
-      // } else {
       this.buttonText = this.translate.instant('Click to send');
-      // }
       this.successText = this.translate.instant('Payment Sent');
     } else {
-      // if (this.isCordova && !this.isWindowsPhoneApp) {
-      // this.buttonText = this.translate.instant('Slide to accept');
-      // } else {
       this.buttonText = this.translate.instant('Click to accept');
-      // }
       this.successText = this.translate.instant('Payment Accepted');
     }
   }
