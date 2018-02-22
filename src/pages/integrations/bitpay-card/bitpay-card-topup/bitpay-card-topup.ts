@@ -343,10 +343,7 @@ export class BitPayCardTopUpPage {
       invoice['buyerPaidBtcMinerFee'] = invoice.buyerPaidBtcMinerFee || 0;
       let invoiceFeeSat = (invoice.buyerPaidBtcMinerFee * 100000000).toFixed();
 
-      this.message = this.translate.instant("Top up {{amountStr}} to debit card ({{cardLastNumber}})", {
-        amountStr: this.amountUnitStr,
-        cardLastNumber: this.lastFourDigits
-      });
+      this.message = 'Top up ' + this.amountUnitStr + ' to debit card (' + this.lastFourDigits + ')';
 
       this.createTx(wallet, invoice, this.message).then((ctxp) => {
         this.onGoingProcessProvider.clear();
