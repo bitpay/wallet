@@ -81,7 +81,7 @@
     "shelljs": "^0.3.0"
   },
   "scripts": {
-    "postinstall": "sed -i  -e \"s/.*require(...\\/...);//g\" node_modules/asn1.js-rfc5280/index.js;   bower install",
+   "postinstall": "sed -i  -e \"s/.*require(...\\/...);//g\" node_modules/asn1.js-rfc5280/index.js;   bower install",
     "start":                  "npm run build:www && ionic serve --no-livereload --nogulp -s --address 0.0.0.0",
     "start:ios":              "npm run build:www && npm run build:ios && npm run open:ios",
     "start:android":          "npm run build:www && npm run build:android && npm run run:android",
@@ -108,7 +108,7 @@
     "run:android":            "cordova run android --device",
     "run:android-release":            "cordova run android --device --release",
     "log:android":            "adb logcat | grep chromium",
-    "sign:android":           "rm -f platforms/android/build/outputs/apk/release/*PACKAGENAME*-release-signed-aligned.apk; jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore ../copay.keystore -signedjar platforms/android/build/outputs/apk/release/android-release-signed.apk  platforms/android/build/outputs/apk/release/apk/android-release-unsigned.apk copay_play && $ANDROID_HOME/build-tools/26.0.1/zipalign -v 4 platforms/android/build/outputs/apk/release/android-release-signed.apk platforms/android/build/outputs/apk/*PACKAGENAME*-release-signed-aligned.apk",
+    "sign:android":           "rm -f platforms/android/build/outputs/apk/release/*PACKAGENAME*-release-signed-aligned.apk; jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore ../copay.keystore -signedjar platforms/android/build/outputs/apk/release/android-release-signed.apk  platforms/android/build/outputs/apk/release/android-release-unsigned.apk copay_play && $ANDROID_HOME/build-tools/26.0.1/zipalign -v 4 platforms/android/build/outputs/apk/release/android-release-signed.apk platforms/android/build/outputs/apk/*PACKAGENAME*-release-signed-aligned.apk",
     "apply:copay":            "npm i fs-extra && cd app-template && node apply.js copay && npm i && cordova prepare",
     "apply:bitpay":           "npm i fs-extra && cd app-template && node apply.js bitpay && npm i && cordova prepare",
     "test":                   "echo \"no package tests configured\"",
