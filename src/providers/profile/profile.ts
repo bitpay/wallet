@@ -1133,7 +1133,7 @@ export class ProfileProvider {
           if (err)
             this.logger.warn(this.bwcErrorProvider.msg(err, 'Error updating notifications for ' + wallet.name));
           if (++j == l) {
-            notifications = _.sortBy(notifications, 'createdOn');
+            notifications = _.sortBy(notifications, 'createdOn').reverse();
             notifications = _.compact(_.flatten(notifications)).slice(0, MAX);
             let total = notifications.length;
             let processArray = process(notifications);
@@ -1161,7 +1161,7 @@ export class ProfileProvider {
           txps = txps.concat(x.pendingTxps);
       });
       let n = txps.length;
-      txps = _.sortBy(txps, 'pendingForUs', 'createdOn');
+      txps = _.sortBy(txps, 'createdOn').reverse();
       txps = _.compact(_.flatten(txps)).slice(0, opts.limit || MAX);
       return resolve({ txps, n });
     });
