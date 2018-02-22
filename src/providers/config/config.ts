@@ -235,7 +235,10 @@ export class ConfigProvider {
     });
   }
 
-  public set(newOpts: object) {
+  /**
+   * @param newOpts object or string (JSON)
+   */
+  public set(newOpts: any) {
     let config = _.cloneDeep(configDefault);
 
     if (_.isString(newOpts)) {

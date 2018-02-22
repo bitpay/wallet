@@ -63,8 +63,16 @@ describe('Derivation Path Helper Provider', () => {
 
   /* Unsupported paths */
   it('should fail trying to parse an unsupported derivation path', () => {
-    const result: any = service.parse("p/145'/0'/0'");
-    expect(result).toBeDefined();
-    expect(result).toBeFalsy;
+    let result: any = service.parse("p/145'/0'/0'");
+    expect(result).toBe(false);
+
+    result = service.parse("m/145'/0'/0'");
+    expect(result).toBe(false);
+
+    result = service.parse("m/44'/9'/0'");
+    expect(result).toBe(false);
+
+    result = service.parse("m/44'/0'/a'");
+    expect(result).toBe(false);
   });
 });

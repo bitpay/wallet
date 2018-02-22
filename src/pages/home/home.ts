@@ -69,7 +69,6 @@ export class HomePage {
   public showIntegration: any;
 
   private isNW: boolean;
-  private isWindowsPhoneApp: boolean;
   private updatingWalletId: object;
   private zone: any;
 
@@ -99,7 +98,6 @@ export class HomePage {
     this.updatingWalletId = {};
     this.cachedBalanceUpdateOn = '';
     this.isNW = this.platformProvider.isNW;
-    this.isWindowsPhoneApp = this.platformProvider.isWP;
     this.showReorderBtc = false;
     this.showReorderBch = false;
     this.zone = new NgZone({ enableLongStackTrace: false });
@@ -197,10 +195,6 @@ export class HomePage {
 
   private checkFeedbackInfo() {
     this.persistenceProvider.getFeedbackInfo().then((info: any) => {
-      if (this.isWindowsPhoneApp) {
-        this.showRateCard = false;
-        return;
-      }
       if (!info) {
         this.initFeedBackInfo();
       } else {

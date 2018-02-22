@@ -36,12 +36,16 @@ export class ReleaseProvider {
     };
   }
 
-  public checkForUpdates(latestVersion: string, currentVersion?: string) {
+  public checkForUpdates(latestVersion: string, currentVersion?: string): {
+    updateAvailable: boolean | null,
+      availableVersion: string | null,
+      error: string | null
+  } {
     if (!currentVersion) currentVersion = this.appVersion;
 
     let result = {
       updateAvailable: null,
-      availabeVersion: null,
+      availableVersion: null,
       error: null
     };
 
@@ -62,7 +66,7 @@ export class ReleaseProvider {
       return result;
     else {
       result.updateAvailable = true;
-      result.availabeVersion = latestVersion;
+      result.availableVersion = latestVersion;
       return result;
     }
   }
