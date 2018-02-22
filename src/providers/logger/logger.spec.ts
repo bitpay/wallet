@@ -10,7 +10,7 @@ import {
 } from '@ngx-translate/core';
 import { Platform } from 'ionic-angular';
 
-fdescribe('LoggerProvider', () => {
+describe('LoggerProvider', () => {
   let injector: TestBed;
   let service: Logger;
   let httpMock: HttpTestingController;
@@ -29,6 +29,7 @@ fdescribe('LoggerProvider', () => {
         Platform
       ]
     });
+
     injector = getTestBed();
     service = injector.get(Logger);
     httpMock = injector.get(HttpTestingController);
@@ -99,7 +100,6 @@ fdescribe('LoggerProvider', () => {
     service.info("Don't forget a towel");
     filteredLogs = service.get(3);
     expect(filteredLogs.length).toBe(3);
-    console.log(filteredLogs);
 
     service.error('Planet not found');
     filteredLogs = service.get(1);

@@ -13,6 +13,7 @@ export class PlatformProvider {
   public isMobile: boolean;
   public isDevel: boolean;
 
+
   constructor(
     private platform: Platform,
     private logger: Logger

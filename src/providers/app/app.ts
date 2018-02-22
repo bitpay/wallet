@@ -50,7 +50,7 @@ export class AppProvider {
     public http: HttpClient,
     private logger: Logger,
     private language: LanguageProvider,
-    private config: ConfigProvider,
+    public config: ConfigProvider,
     private persistence: PersistenceProvider,
   ) {
     this.logger.info('AppProvider initialized.');
@@ -78,8 +78,8 @@ export class AppProvider {
   private getInfo() {
     return this.http.get(this.jsonPathApp);
   }
+
   private getServicesInfo() {
     return this.http.get(this.jsonPathServices);
   }
-
 }
