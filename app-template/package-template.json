@@ -56,7 +56,7 @@
     "bezier-easing": "^2.0.3",
     "bhttp": "1.2.1",
     "bitauth": "^0.2.1",
-    "bitcore-wallet-client": "6.6.2",
+    "bitcore-wallet-client": "6.6.3",
     "bower": "^1.8.2",
     "cordova-ios": "4.5.3",
     "cordova-android": "6.4.0",
