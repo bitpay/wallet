@@ -156,15 +156,14 @@ export class IncomingDataProvider {
         }
       });
       return true;
-      // Plain URL
     } else if (/^https?:\/\//.test(data)) {
+      // Plain URL
       this.logger.debug('Handling Plain URL');
 
-      let coin = 'btc';
+      let coin = 'btc'; // Assume BTC
 
       this.payproProvider.getPayProDetails(data, coin).then((details) => {
-        // TODO review
-        this.handlePayPro(details, 'btc');
+        this.handlePayPro(details, coin);
         return true;
       }).catch(() => {
         this.showMenu({

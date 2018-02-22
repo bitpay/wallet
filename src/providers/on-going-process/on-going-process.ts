@@ -63,8 +63,17 @@ export class OnGoingProcessProvider {
   }
 
   public clear() {
+<<<<<<< HEAD
     this.ongoingProcess = [];
     this.loading.dismiss();
+=======
+    this.ongoingProcess = {};
+    try {
+      this.loading.dismiss();
+    } catch(e) {
+      this.logger.warn(e);
+    };
+>>>>>>> Fix paypro plain URL. Fix outgoingprocess
     this.loading = null;
     this.logger.debug('ongoingProcess clear');
   }
@@ -87,8 +96,27 @@ export class OnGoingProcessProvider {
     this.logger.debug('ongoingProcess active: ', processName);
     this.ongoingProcess.push(processName);
     let showName = this.processNames[processName] || processName;
+<<<<<<< HEAD
     if (!this.loading) {
       this.loading = this.loadingCtrl.create();
+=======
+    if (!isOn) {
+      delete (this.ongoingProcess[processName]);
+      if (_.isEmpty(this.ongoingProcess)) {
+        try {
+          this.loading.dismiss();
+        } catch(e) {
+          this.logger.warn(e);
+        };
+        this.loading = null;
+      }
+    } else {
+      if (!this.loading) {
+        this.loading = this.loadingCtrl.create();
+      }
+      this.loading.setContent(showName);
+      this.loading.present();
+>>>>>>> Fix paypro plain URL. Fix outgoingprocess
     }
     this.loading.setContent(showName);
     this.loading.present();
