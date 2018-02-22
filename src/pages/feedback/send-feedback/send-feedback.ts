@@ -98,10 +98,10 @@ export class SendFeedbackPage {
       "deviceVersion": versionStr
     };
 
-    if (!goHome) this.onGoingProcessProvider.set('sendingFeedback', true);
+    if (!goHome) this.onGoingProcessProvider.set('sendingFeedback');
     this.feedbackProvider.send(dataSrc).then(() => {
       if (goHome) return;
-      this.onGoingProcessProvider.set('sendingFeedback', false);
+      this.onGoingProcessProvider.clear();
       if (!this.score) {
         let title = this.translate.instant('Thank you!');
         let message = this.translate.instant('A member of the team will review your feedback as soon as possible.');
@@ -116,7 +116,7 @@ export class SendFeedbackPage {
       }
     }).catch((err) => {
       if (goHome) return;
-      this.onGoingProcessProvider.set('sendingFeedback', false);
+      this.onGoingProcessProvider.clear();
       let title = this.translate.instant('Error');
       let subtitle = this.translate.instant('Feedback could not be submitted. Please try again later.');
       this.popupProvider.ionicAlert(title, subtitle);

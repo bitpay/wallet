@@ -184,16 +184,16 @@ export class ImportWalletPage {
       return;
     }
 
-    this.onGoingProcessProvider.set('importingWallet', true);
+    this.onGoingProcessProvider.set('importingWallet');
     opts.compressed = null;
     opts.password = null;
 
     setTimeout(() => {
       this.profileProvider.importWallet(str2, opts).then((wallet: any) => {
-        this.onGoingProcessProvider.set('importingWallet', false);
+        this.onGoingProcessProvider.clear();
         this.finish(wallet);
       }).catch((err: any) => {
-        this.onGoingProcessProvider.set('importingWallet', false);
+        this.onGoingProcessProvider.clear();
         let title = this.translate.instant('Error');
         this.popupProvider.ionicAlert(title, err);
         return;
@@ -223,10 +223,10 @@ export class ImportWalletPage {
   }
 
   private importExtendedPrivateKey(xPrivKey, opts) {
-    this.onGoingProcessProvider.set('importingWallet', true);
+    this.onGoingProcessProvider.set('importingWallet');
     setTimeout(() => {
       this.profileProvider.importExtendedPrivateKey(xPrivKey, opts).then((wallet: any) => {
-        this.onGoingProcessProvider.set('importingWallet', false);
+        this.onGoingProcessProvider.clear();
         this.finish(wallet);
       }).catch((err: any) => {
         if (err instanceof this.errors.NOT_AUTHORIZED) {
@@ -235,17 +235,17 @@ export class ImportWalletPage {
           let title = this.translate.instant('Error');
           this.popupProvider.ionicAlert(title, err);
         }
-        this.onGoingProcessProvider.set('importingWallet', false);
+        this.onGoingProcessProvider.clear();
         return;
       });
     }, 100);
   }
 
   private importMnemonic(words: string, opts: any): void {
-    this.onGoingProcessProvider.set('importingWallet', true);
+    this.onGoingProcessProvider.set('importingWallet');
     setTimeout(() => {
       this.profileProvider.importMnemonic(words, opts).then((wallet: any) => {
-        this.onGoingProcessProvider.set('importingWallet', false);
+        this.onGoingProcessProvider.clear();
         this.finish(wallet);
       }).catch((err: any) => {
         if (err instanceof this.errors.NOT_AUTHORIZED) {
@@ -254,7 +254,7 @@ export class ImportWalletPage {
           let title = this.translate.instant('Error');
           this.popupProvider.ionicAlert(title, err);
         }
-        this.onGoingProcessProvider.set('importingWallet', false);
+        this.onGoingProcessProvider.clear();
         return;
       });
     }, 100);

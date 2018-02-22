@@ -39,9 +39,9 @@ export class ActivityPage {
 
   ionViewWillEnter() {
     let loading = this.translate.instant('Updating... Please stand by');
-    this.onGoingProcessProvider.set(loading, true);
+    this.onGoingProcessProvider.set(loading);
     this.profileProvider.getNotifications(50).then((nData: any) => {
-      this.onGoingProcessProvider.set(loading, false);
+      this.onGoingProcessProvider.clear();
       this.notifications = nData.notifications;
       this.profileProvider.getTxps({}).then((txpsData: any) => {
         this.txps = txpsData.txps;
@@ -49,6 +49,7 @@ export class ActivityPage {
         this.logger.error(err);
       });
     }).catch((err) => {
+      this.onGoingProcessProvider.clear();
       this.logger.error(err);
     });
   }
@@ -67,13 +68,14 @@ export class ActivityPage {
         modal.present();
       }
       else {
-        this.onGoingProcessProvider.set('loadingTxInfo', true);
+        this.onGoingProcessProvider.set('loadingTxInfo');
         this.walletProvider.getTxp(wallet, n.txpId).then((txp) => {
           let _txp = txp;
-          this.onGoingProcessProvider.set('loadingTxInfo', false);
+          this.onGoingProcessProvider.clear();
           let modal = this.modalCtrl.create(TxpDetailsPage, { tx: _txp }, { showBackdrop: false, enableBackdropDismiss: false });
           modal.present();
         }).catch((err) => {
+          this.onGoingProcessProvider.clear();
           this.logger.warn('No txp found');
           let title = this.translate.instant('Error');
           let subtitle = this.translate.instant('Transaction not found');

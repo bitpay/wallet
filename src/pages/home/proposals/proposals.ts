@@ -30,12 +30,12 @@ export class ProposalsPage {
       this.addressbook = ab || {};
 
       let loading = this.translate.instant('Updating pending proposals... Please stand by');
-      this.onGoingProcessProvider.set(loading, true);
+      this.onGoingProcessProvider.set(loading);
       this.profileProvider.getTxps(50).then((txpsData) => {
-        this.onGoingProcessProvider.set(loading, false);
+        this.onGoingProcessProvider.clear();
         this.txps = txpsData.txps;
       }).catch((err: any) => {
-        this.onGoingProcessProvider.set(loading, false);
+        this.onGoingProcessProvider.clear();
         this.logger.error(err);
       });
     }).catch((err: any) => {

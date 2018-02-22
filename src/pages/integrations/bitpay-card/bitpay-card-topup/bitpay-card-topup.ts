@@ -165,8 +165,10 @@ export class BitPayCardTopUpPage {
       }
 
       this.walletProvider.publishAndSign(wallet, txp).then((txp: any) => {
+        this.onGoingProcessProvider.clear();
         return resolve(txp);
       }).catch((err: any) => {
+        this.onGoingProcessProvider.clear();
         return reject(err);
       });
     });
@@ -334,7 +336,7 @@ export class BitPayCardTopUpPage {
       amount: parsedAmount.amount,
       currency: parsedAmount.currency
     };
-    this.onGoingProcessProvider.set('loadingTxInfo', true);
+    this.onGoingProcessProvider.set('loadingTxInfo');
     this.createInvoice(dataSrc).then((invoice) => {
       // Sometimes API does not return this element;
       invoice['buyerPaidBtcMinerFee'] = invoice.buyerPaidBtcMinerFee || 0;
@@ -384,12 +386,12 @@ export class BitPayCardTopUpPage {
         return;
       }
 
-      this.onGoingProcessProvider.set('topup', true);
+      this.onGoingProcessProvider.set('topup');
       this.publishAndSign(this.wallet, this.createdTx).then((txSent) => {
-        this.onGoingProcessProvider.set('topup', false);
+        this.onGoingProcessProvider.clear();
         this.openFinishModal();
       }).catch((err) => {
-        this.onGoingProcessProvider.set('topup', false);
+        this.onGoingProcessProvider.clear();
         this._resetValues();
         this.showError(this.translate.instant('Could not send transaction'), err);
       });
@@ -398,12 +400,12 @@ export class BitPayCardTopUpPage {
 
   public onWalletSelect(wallet: any): void {
     this.wallet = wallet;
-    this.onGoingProcessProvider.set('retrievingInputs', true);
+    this.onGoingProcessProvider.set('retrievingInputs');
     this.calculateAmount(this.wallet).then((val: any) => {
       let parsedAmount = this.txFormatProvider.parseAmount(this.coin, val.amount, val.currency);
       this.initializeTopUp(this.wallet, parsedAmount);
     }).catch((err) => {
-      this.onGoingProcessProvider.set('retrievingInputs', false);
+      this.onGoingProcessProvider.clear();
       this._resetValues();
       this.showError(err.title, err.message).then(() => {
         this.showWallets();

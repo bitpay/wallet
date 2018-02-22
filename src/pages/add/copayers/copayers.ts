@@ -91,16 +91,16 @@ export class CopayersPage {
   }
 
   private deleteWallet(): void {
-    this.onGoingProcessProvider.set('deletingWallet', true);
+    this.onGoingProcessProvider.set('deletingWallet');
     this.profileProvider.deleteWalletClient(this.wallet).then(() => {
-      this.onGoingProcessProvider.set('deletingWallet', false);
+      this.onGoingProcessProvider.clear();
 
       this.pushNotificationsProvider.unsubscribe(this.wallet);
       this.navCtrl.popToRoot().then(() => {
         this.navCtrl.parent.select(0);
       });
     }).catch((err: any) => {
-      this.onGoingProcessProvider.set('deletingWallet', false);
+      this.onGoingProcessProvider.clear();
       let errorText = this.translate.instant('Error');
       this.popupProvider.ionicAlert(errorText, err.message || err);
     });

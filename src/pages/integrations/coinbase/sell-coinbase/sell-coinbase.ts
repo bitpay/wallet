@@ -107,20 +107,21 @@ export class SellCoinbasePage {
         this.logger.info(err);
         return reject(err);
       }
-
       this.walletProvider.publishAndSign(wallet, txp).then((txp: any) => {
+        this.onGoingProcessProvider.clear();
         return resolve(txp);
       }).catch((err: any) => {
+        this.onGoingProcessProvider.clear();
         return reject(err);
       });
     });
   }
 
   private processPaymentInfo(): void {
-    this.onGoingProcessProvider.set('connectingCoinbase', true);
+    this.onGoingProcessProvider.set('connectingCoinbase');
     this.coinbaseProvider.init((err: any, res: any) => {
       if (err) {
-        this.onGoingProcessProvider.set('connectingCoinbase', false);
+        this.onGoingProcessProvider.clear();
         this.showErrorAndBack(this.coinbaseProvider.getErrorsAsString(err.errors));
         return;
       }
@@ -134,7 +135,7 @@ export class SellCoinbasePage {
       this.selectedPaymentMethodId = null;
       this.coinbaseProvider.getPaymentMethods(accessToken, (err: any, p: any) => {
         if (err) {
-          this.onGoingProcessProvider.set('connectingCoinbase', false);
+          this.onGoingProcessProvider.clear();
           this.showErrorAndBack(this.coinbaseProvider.getErrorsAsString(err.errors));
           return;
         }
@@ -152,7 +153,7 @@ export class SellCoinbasePage {
           }
         }
         if (_.isEmpty(this.paymentMethods)) {
-          this.onGoingProcessProvider.set('connectingCoinbase', false);
+          this.onGoingProcessProvider.clear();
           let url = 'https://support.coinbase.com/customer/portal/articles/1148716-payment-methods-for-us-customers';
           let msg = 'No payment method available to buy';
           let okText = 'More info';
@@ -216,7 +217,7 @@ export class SellCoinbasePage {
               ctx.sell_price_currency = sellPrice ? sellPrice.currency : 'USD';
               ctx.description = this.appProvider.info.nameCase + ' Wallet: ' + this.wallet.name;
               this.coinbaseProvider.savePendingTransaction(ctx, null, (err: any) => {
-                this.onGoingProcessProvider.set('sellingBitcoin', false);
+                this.onGoingProcessProvider.clear();
                 this.openFinishModal();
                 if (err) this.logger.debug(this.coinbaseProvider.getErrorsAsString(err.errors));
               });
@@ -229,7 +230,7 @@ export class SellCoinbasePage {
             if (count < 5) {
               this.checkTransaction(count + 1, txp);
             } else {
-              this.onGoingProcessProvider.set('sellingBitcoin', false);
+              this.onGoingProcessProvider.clear();
               this.showError('No transaction found');
               return;
             }
@@ -242,10 +243,9 @@ export class SellCoinbasePage {
     });
 
   public sellRequest(): void {
-    this.onGoingProcessProvider.set('connectingCoinbase', true);
     this.coinbaseProvider.init((err: any, res: any) => {
       if (err) {
-        this.onGoingProcessProvider.set('connectingCoinbase', false);
+        this.onGoingProcessProvider.clear();
         this.showErrorAndBack(this.coinbaseProvider.getErrorsAsString(err.errors));
         return;
       }
@@ -258,7 +258,7 @@ export class SellCoinbasePage {
         quote: true
       };
       this.coinbaseProvider.sellRequest(accessToken, accountId, dataSrc, (err: any, data: any) => {
-        this.onGoingProcessProvider.set('connectingCoinbase', false);
+        this.onGoingProcessProvider.clear();
         if (err) {
           this.showErrorAndBack(this.coinbaseProvider.getErrorsAsString(err.errors));
           return;
@@ -279,10 +279,10 @@ export class SellCoinbasePage {
     this.popupProvider.ionicConfirm(null, message, okText, cancelText).then((ok: any) => {
       if (!ok) return;
 
-      this.onGoingProcessProvider.set('sellingBitcoin', true);
+      this.onGoingProcessProvider.set('sellingBitcoin');
       this.coinbaseProvider.init((err: any, res: any) => {
         if (err) {
-          this.onGoingProcessProvider.set('sellingBitcoin', false);
+          this.onGoingProcessProvider.clear();
           this.showError(this.coinbaseProvider.getErrorsAsString(err.errors));
           return;
         }
@@ -294,7 +294,7 @@ export class SellCoinbasePage {
         };
         this.coinbaseProvider.createAddress(accessToken, accountId, dataSrc, (err: any, data: any) => {
           if (err) {
-            this.onGoingProcessProvider.set('sellingBitcoin', false);
+            this.onGoingProcessProvider.clear();
             this.showError(this.coinbaseProvider.getErrorsAsString(err.errors));
             return;
           }
@@ -325,12 +325,12 @@ export class SellCoinbasePage {
               this.logger.debug('Transaction broadcasted. Wait for Coinbase confirmation...');
               this.checkTransaction(1, txSent);
             }).catch((err: any) => {
-              this.onGoingProcessProvider.set('sellingBitcoin', false);
+              this.onGoingProcessProvider.clear();
               this.showError(err);
               return;
             });
           }).catch((err: any) => {
-            this.onGoingProcessProvider.set('sellingBitcoin', false);
+            this.onGoingProcessProvider.clear();
             this.showError(err);
             return;
           });

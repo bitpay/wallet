@@ -301,7 +301,7 @@ export class ConfirmPage {
         return resolve();
       }
 
-      this.onGoingProcessProvider.set('calculatingFee', true);
+      this.onGoingProcessProvider.set('calculatingFee');
       this.feeProvider.getFeeRate(wallet.coin, tx.network, tx.feeLevel).then((feeRate: any) => {
         if (!this.usingCustomFee) tx.feeRate = feeRate;
 
@@ -401,7 +401,7 @@ export class ConfirmPage {
 
       if (!tx.sendMax) return resolve();
 
-      this.onGoingProcessProvider.set('retrievingInputs', true);
+      this.onGoingProcessProvider.set('retrievingInputs');
       this.walletProvider.getSendMaxInfo(wallet, {
         feePerKb: tx.feeRate,
         excludeUnconfirmedUtxos: !tx.spendUnconfirmed,
@@ -528,7 +528,7 @@ export class ConfirmPage {
       return;
     }
 
-    this.onGoingProcessProvider.set('creatingTx', true);
+    this.onGoingProcessProvider.set('creatingTx');
     this.getTxp(_.clone(tx), wallet, false).then((txp: any) => {
 
       // confirm txs for more that 20usd, if not spending/touchid is enabled
@@ -558,6 +558,7 @@ export class ConfirmPage {
       let publishAndSign = (): void => {
         if (!wallet.canSign() && !wallet.isPrivKeyExternal()) {
           this.logger.info('No signing proposal: No private key');
+          this.onGoingProcessProvider.set('sendingTx');
           this.walletProvider.onlyPublish(wallet, txp).then(() => {
             this.onGoingProcessProvider.clear();
             this.openFinishModal(true);
@@ -569,6 +570,7 @@ export class ConfirmPage {
         }
 
         this.walletProvider.publishAndSign(wallet, txp).then((txp: any) => {
+          this.onGoingProcessProvider.clear();
           if (this.config.confirmedTxsNotifications && this.config.confirmedTxsNotifications.enabled) {
             this.txConfirmNotificationProvider.subscribe(wallet, {
               txid: txp.txid
@@ -576,6 +578,7 @@ export class ConfirmPage {
           }
           this.openFinishModal();
         }).catch((err: any) => {
+          this.onGoingProcessProvider.clear();
           this.setSendError(err);
           return;
         });

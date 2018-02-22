@@ -202,8 +202,10 @@ export class TxpDetailsPage {
   public sign(): void {
     this.loading = true;
     this.walletProvider.publishAndSign(this.wallet, this.tx).then((txp: any) => {
+      this.onGoingProcessProvider.clear();
       this.openFinishModal();
     }).catch((err: any) => {
+      this.onGoingProcessProvider.clear();
       this.setError(err, ('Could not send payment'));
     });
   }
@@ -214,9 +216,12 @@ export class TxpDetailsPage {
     this.popupProvider.ionicConfirm(title, msg, null, null).then((res: boolean) => {
       if (!res) return
       this.loading = true;
+      this.onGoingProcessProvider.set('rejectTx');
       this.walletProvider.reject(this.wallet, this.tx).then((txpr) => {
+        this.onGoingProcessProvider.clear();
         this.close();
       }).catch((err: any) => {
+        this.onGoingProcessProvider.clear();
         this.setError(err, this.translate.instant('Could not reject payment'));
       });
     });
@@ -227,12 +232,12 @@ export class TxpDetailsPage {
     let msg = this.translate.instant('Are you sure you want to remove this transaction?');
     this.popupProvider.ionicConfirm(title, msg, null, null).then((res: boolean) => {
       if (!res) return;
-      this.onGoingProcessProvider.set('removeTx', true);
+      this.onGoingProcessProvider.set('removeTx');
       this.walletProvider.removeTx(this.wallet, this.tx).then(() => {
-        this.onGoingProcessProvider.set('removeTx', false);
+        this.onGoingProcessProvider.clear();
         this.close();
       }).catch((err: any) => {
-        this.onGoingProcessProvider.set('removeTx', false);
+        this.onGoingProcessProvider.clear();
         if (err && !(err.message && err.message.match(/Unexpected/))) {
           this.setError(err, this.translate.instant('Could not delete payment proposal'));
         }
@@ -242,12 +247,12 @@ export class TxpDetailsPage {
 
   public broadcast(txp: any): void {
     this.loading = true;
-    this.onGoingProcessProvider.set('broadcastingTx', true);
+    this.onGoingProcessProvider.set('broadcastingTx');
     this.walletProvider.broadcastTx(this.wallet, this.tx).then((txpb: any) => {
-      this.onGoingProcessProvider.set('broadcastingTx', false);
+      this.onGoingProcessProvider.clear();
       this.openFinishModal();
     }).catch((err: any) => {
-      this.onGoingProcessProvider.set('broadcastingTx', false);
+      this.onGoingProcessProvider.clear();
       this.setError(err, 'Could not broadcast payment');
     });
   }

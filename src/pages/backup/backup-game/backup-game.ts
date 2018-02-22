@@ -246,12 +246,12 @@ export class BackupGamePage {
   };
 
   private finalStep(): void {
-    this.onGoingProcessProvider.set('validatingWords', true);
+    this.onGoingProcessProvider.set('validatingWords');
     this.confirm().then(() => {
-      this.onGoingProcessProvider.set('validatingWords', false);
+      this.onGoingProcessProvider.clear();
       this.showBackupResult();
     }).catch((err) => {
-      this.onGoingProcessProvider.set('validatingWords', false);
+      this.onGoingProcessProvider.clear();
       this.logger.error('Failed to verify backup: ', err);
       this.error = true;
       let showError = this.alertCtrl.create({

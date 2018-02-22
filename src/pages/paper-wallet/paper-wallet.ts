@@ -114,9 +114,9 @@ export class PaperWalletPage {
   }
 
   public scanFunds() {
-    this.onGoingProcessProvider.set('scanning', true);
+    this.onGoingProcessProvider.set('scanning');
     this._scanFunds().then((data) => {
-      this.onGoingProcessProvider.set('scanning', false);
+      this.onGoingProcessProvider.clear();
       this.privateKey = data.privateKey;
       this.balanceSat = data.balance;
       if (this.balanceSat <= 0) {
@@ -124,7 +124,7 @@ export class PaperWalletPage {
         this.navCtrl.pop();
       }
     }).catch((err: any) => {
-      this.onGoingProcessProvider.set('scanning', false);
+      this.onGoingProcessProvider.clear();
       this.logger.error(err);
       this.popupProvider.ionicAlert(this.translate.instant('Error scanning funds:'), err || err.toString());
       this.navCtrl.pop();
@@ -159,9 +159,9 @@ export class PaperWalletPage {
   }
 
   public sweepWallet(): void {
-    this.onGoingProcessProvider.set('sweepingWallet', true);
+    this.onGoingProcessProvider.set('sweepingWallet');
     this._sweepWallet().then((data: any) => {
-      this.onGoingProcessProvider.set('sweepingWallet', false);
+      this.onGoingProcessProvider.clear();
       this.logger.debug('Success sweep. Destination address:' + data.destinationAddress + ' - transaction id: ' + data.txid);
       this.openFinishModal();
     }).catch((err: any) => {

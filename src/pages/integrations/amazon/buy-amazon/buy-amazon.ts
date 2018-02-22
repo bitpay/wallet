@@ -152,8 +152,10 @@ export class BuyAmazonPage {
       }
 
       this.walletProvider.publishAndSign(wallet, txp).then((txp: any) => {
+        this.onGoingProcessProvider.clear();
         return resolve(txp);
       }).catch((err: any) => {
+        this.onGoingProcessProvider.clear();
         return reject(err);
       });
     });
@@ -289,7 +291,7 @@ export class BuyAmazonPage {
           remove: true
         }, (err: any) => {
           this.logger.error(err);
-          this.onGoingProcessProvider.set('buyingGiftCard', false);
+          this.onGoingProcessProvider.clear();
           this.showError(null, this.translate.instant('Gift card expired'));
         });
         return;
@@ -305,7 +307,7 @@ export class BuyAmazonPage {
       }
 
       this.amazonProvider.savePendingGiftCard(newData, null, (err: any) => {
-        this.onGoingProcessProvider.set('buyingGiftCard', false);
+        this.onGoingProcessProvider.clear();
         this.logger.debug("Saved new gift card with status: " + newData.status);
         this.amazonGiftCard = newData;
         this.openFinishModal();
@@ -326,7 +328,7 @@ export class BuyAmazonPage {
       uuid: wallet.id,
       email
     };
-    this.onGoingProcessProvider.set('loadingTxInfo', true);
+    this.onGoingProcessProvider.set('loadingTxInfo');
 
     this.createInvoice(dataSrc).then((data: any) => {
       let invoice = data.invoice;
@@ -339,7 +341,7 @@ export class BuyAmazonPage {
       this.message = this.amountUnitStr + " for Amazon.com Gift Card"; // TODO: translate
 
       this.createTx(wallet, invoice, this.message).then((ctxp: any) => {
-        this.onGoingProcessProvider.set('loadingTxInfo', false);
+        this.onGoingProcessProvider.clear();
 
 
         // Save in memory
@@ -362,13 +364,13 @@ export class BuyAmazonPage {
 
         this.setTotalAmount(parsedAmount.amountSat, invoiceFeeSat, ctxp.fee);
       }).catch((err: any) => {
-        this.onGoingProcessProvider.set('loadingTxInfo', false);
+        this.onGoingProcessProvider.clear();
         this._resetValues();
         this.showError(err.title, err.message);
         return;
       });
     }).catch((err: any) => {
-      this.onGoingProcessProvider.set('loadingTxInfo', false);
+      this.onGoingProcessProvider.clear();
       this.showErrorAndBack(err.title, err.message);
       return;
     });
@@ -388,7 +390,7 @@ export class BuyAmazonPage {
       }
 
       this.publishAndSign(this.wallet, this.createdTx).then((txSent) => {
-        this.onGoingProcessProvider.set('buyingGiftCard', true);
+        this.onGoingProcessProvider.set('buyingGiftCard');
         this.checkTransaction(1, this.createdTx.giftData);
       }).catch((err: any) => {
         this._resetValues();

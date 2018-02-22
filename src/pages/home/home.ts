@@ -103,7 +103,7 @@ export class HomePage {
     this.zone = new NgZone({ enableLongStackTrace: false });
   }
 
-  ionViewWillEnter() { 
+  ionViewWillEnter() {
     this.config = this.configProvider.get();
     this.pushNotificationsProvider.init();
     this.homeIntegrations = this.homeIntegrationsProvider.get();
@@ -166,7 +166,7 @@ export class HomePage {
   private startUpdatingWalletId(walletId: string) {
     this.updatingWalletId[walletId] = true;
   }
-  
+
   private stopUpdatingWalletId(walletId: string) {
     setTimeout(() => {
       this.updatingWalletId[walletId] = false;
@@ -179,8 +179,8 @@ export class HomePage {
     this.walletsBch = this.profileProvider.getWallets({ coin: 'bch' });
     this.updateAllWallets();
   }, 10000, {
-    'leading': true
-  });
+      'leading': true
+    });
 
   public checkHomeTip(): void {
     this.persistenceProvider.getHomeTipAccepted().then((value: string) => {
@@ -230,7 +230,7 @@ export class HomePage {
     this.walletProvider.getStatus(wallet, {}).then((status: any) => {
       wallet.status = status;
       wallet.error = null;
-      this.profileProvider.setLastKnownBalance(wallet.id, wallet.status.availableBalanceStr); 
+      this.profileProvider.setLastKnownBalance(wallet.id, wallet.status.availableBalanceStr);
       this.updateTxps();
       this.stopUpdatingWalletId(walletId);
     }).catch((err: any) => {
@@ -243,27 +243,27 @@ export class HomePage {
     this.profileProvider.getTxps({ limit: 3 }).then((data: any) => {
       this.zone.run(() => {
         this.txps = data.txps;
-        this.txpsN = data.n;  
+        this.txpsN = data.n;
       });
     }).catch((err: any) => {
       this.logger.error(err);
     });
   }, 5000, {
-    'leading': true
-  });
+      'leading': true
+    });
 
   private getNotifications = _.debounce(() => {
     this.profileProvider.getNotifications({ limit: 3 }).then((data: any) => {
       this.zone.run(() => {
         this.notifications = data.notifications;
-        this.notificationsN = data.total;  
+        this.notificationsN = data.total;
       });
     }).catch((err: any) => {
       this.logger.error(err);
     });
   }, 5000, {
-    'leading': true
-  });
+      'leading': true
+    });
 
   private updateAllWallets(): void {
     let wallets: any[] = [];
@@ -357,12 +357,13 @@ export class HomePage {
       if (txp) {
         this.openTxpModal(txp);
       } else {
-        this.onGoingProcessProvider.set('loadingTxInfo', true);
+        this.onGoingProcessProvider.set('loadingTxInfo');
         this.walletProvider.getTxp(wallet, n.txpId).then((txp: any) => {
           var _txp = txp;
-          this.onGoingProcessProvider.set('loadingTxInfo', false);
+          this.onGoingProcessProvider.clear();
           this.openTxpModal(_txp);
         }).catch((err: any) => {
+          this.onGoingProcessProvider.clear();
           this.logger.warn('No txp found');
           let title = this.translate.instant('Error');
           let subtitle = this.translate.instant('Transaction not found');

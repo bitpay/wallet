@@ -146,9 +146,9 @@ export class TxDetailsPage {
 
   private updateTx(opts?: any): void {
     opts = opts ? opts : {};
-    if (!opts.hideLoading) this.onGoingProcess.set('loadingTxInfo', true);
+    if (!opts.hideLoading) this.onGoingProcess.set('loadingTxInfo');
     this.walletProvider.getTx(this.wallet, this.txId).then((tx: any) => {
-      if (!opts.hideLoading) this.onGoingProcess.set('loadingTxInfo', false);
+      if (!opts.hideLoading) this.onGoingProcess.clear();
 
       this.btx = this.txFormatProvider.processTx(this.wallet.coin, tx, this.walletProvider.useLegacyAddress());
       let v: string = this.txFormatProvider.formatAlternativeStr(this.wallet.coin, tx.fees);
@@ -173,7 +173,7 @@ export class TxDetailsPage {
         return;
       });
     }).catch((err: any) => {
-      if (!opts.hideLoading) this.onGoingProcess.set('loadingTxInfo', false);
+      if (!opts.hideLoading) this.onGoingProcess.clear();
       this.logger.warn('Error getting transaction: ' + err);
       this.navCtrl.pop();
       return this.popupProvider.ionicAlert('Error', this.translate.instant('Transaction not available at this time'));
