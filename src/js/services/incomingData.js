@@ -185,10 +185,10 @@ angular.module('copayApp.services').factory('incomingData', function($log, $stat
           }
         );
       return true;
-      // Plain URL
     } else if (/^https?:\/\//.test(data)) {
+      // Plain URL
 
-      var coin = 'btc';
+      var coin = 'btc'; // Assume BTC
       payproService.getPayProDetails(data, coin, function(err, details) {
         if (err) {
           root.showMenu({
