@@ -28,6 +28,7 @@ import { ConfigProvider } from '../../providers/config/config';
 import { ExternalLinkProvider } from '../../providers/external-link/external-link';
 import { FeedbackProvider } from '../../providers/feedback/feedback';
 import { HomeIntegrationsProvider } from '../../providers/home-integrations/home-integrations';
+import { IncomingDataProvider } from '../../providers/incoming-data/incoming-data';
 import { OnGoingProcessProvider } from '../../providers/on-going-process/on-going-process';
 import { PersistenceProvider } from '../../providers/persistence/persistence';
 import { PlatformProvider } from '../../providers/platform/platform';
@@ -94,7 +95,8 @@ export class HomePage {
     private persistenceProvider: PersistenceProvider,
     private feedbackProvider: FeedbackProvider,
     private bitPayCardProvider: BitPayCardProvider,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private incomingDataProvider: IncomingDataProvider
   ) {
     this.updatingWalletId = {};
     this.cachedBalanceUpdateOn = '';
@@ -105,7 +107,7 @@ export class HomePage {
     this.zone = new NgZone({ enableLongStackTrace: false });
   }
 
-  ionViewWillEnter() { 
+  ionViewWillEnter() {
     this.config = this.configProvider.get();
     this.pushNotificationsProvider.init();
     this.homeIntegrations = this.homeIntegrationsProvider.get();
@@ -154,6 +156,10 @@ export class HomePage {
     }).catch((err) => {
       this.logger.error(err);
     });
+
+    if (this.platformProvider.isCordova) {
+      this.handleDeepLinks();
+    }
   }
 
   ionViewWillLeave() {
@@ -165,10 +171,39 @@ export class HomePage {
     this.setWallets();
   }
 
+  private handleDeepLinks() {
+
+    // Check if app was resume by custom url scheme
+    (window as any).handleOpenURL = (url: string) => {
+      setTimeout(() => {
+        this.zone.run(() => {
+          this.logger.info("App was resumed by custom url scheme");
+          this.handleOpenUrl(url);
+        });
+      }, 0);
+    };
+
+    // Check if app was opened by custom url scheme
+    const lastUrl: string = (window as any).handleOpenURL_LastURL || "";
+    if (lastUrl && lastUrl !== "") {
+      delete (window as any).handleOpenURL_LastURL;
+      setTimeout(() => {
+        this.logger.info("App was opened by custom url scheme");
+        this.handleOpenUrl(lastUrl);
+      }, 0)
+    }
+  }
+
+  private handleOpenUrl(url: string) {
+    if (!this.incomingDataProvider.redir(url)) {
+      this.logger.warn('Unknown URL! : ' + url);
+    }
+  }
+
   private startUpdatingWalletId(walletId: string) {
     this.updatingWalletId[walletId] = true;
   }
-  
+
   private stopUpdatingWalletId(walletId: string) {
     setTimeout(() => {
       this.updatingWalletId[walletId] = false;
@@ -181,8 +216,8 @@ export class HomePage {
     this.walletsBch = this.profileProvider.getWallets({ coin: 'bch' });
     this.updateAllWallets();
   }, 10000, {
-    'leading': true
-  });
+      'leading': true
+    });
 
   public checkHomeTip(): void {
     this.persistenceProvider.getHomeTipAccepted().then((value: string) => {
@@ -236,7 +271,7 @@ export class HomePage {
     this.walletProvider.getStatus(wallet, {}).then((status: any) => {
       wallet.status = status;
       wallet.error = null;
-      this.profileProvider.setLastKnownBalance(wallet.id, wallet.status.availableBalanceStr); 
+      this.profileProvider.setLastKnownBalance(wallet.id, wallet.status.availableBalanceStr);
       this.updateTxps();
       this.stopUpdatingWalletId(walletId);
     }).catch((err: any) => {
@@ -249,27 +284,27 @@ export class HomePage {
     this.profileProvider.getTxps({ limit: 3 }).then((data: any) => {
       this.zone.run(() => {
         this.txps = data.txps;
-        this.txpsN = data.n;  
+        this.txpsN = data.n;
       });
     }).catch((err: any) => {
       this.logger.error(err);
     });
   }, 5000, {
-    'leading': true
-  });
+      'leading': true
+    });
 
   private getNotifications = _.debounce(() => {
     this.profileProvider.getNotifications({ limit: 3 }).then((data: any) => {
       this.zone.run(() => {
         this.notifications = data.notifications;
-        this.notificationsN = data.total;  
+        this.notificationsN = data.total;
       });
     }).catch((err: any) => {
       this.logger.error(err);
     });
   }, 5000, {
-    'leading': true
-  });
+      'leading': true
+    });
 
   private updateAllWallets(): void {
     let wallets: any[] = [];
