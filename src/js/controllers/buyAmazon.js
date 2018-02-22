@@ -230,7 +230,8 @@ angular.module('copayApp.controllers').controller('buyAmazonController', functio
       amount: parsedAmount.amount,
       currency: parsedAmount.currency,
       uuid: wallet.id,
-      email: email
+      email: email,
+      buyerSelectedTransactionCurrency: coin.toUpperCase()
     };
     ongoingProcess.set('loadingTxInfo', true);
     createInvoice(dataSrc, function(err, invoice, accessKey) {

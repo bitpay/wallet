@@ -90,7 +90,12 @@ angular.module('copayApp.controllers').controller('txpDetailsController', functi
       $scope.wallet.fetchPayPro({
         payProUrl: $scope.tx.payProUrl,
       }, function(err, paypro) {
-        if (err) return;
+        if (err) {
+          $scope.paymentExpired = true;
+          $log.error(err);
+          popupService.showAlert(gettextCatalog.getString('Error'), gettextCatalog.getString('Could not fetch the invoice'));
+          return;
+        }
         $scope.tx.paypro = paypro;
         paymentTimeControl($scope.tx.paypro.expires);
         $timeout(function() {

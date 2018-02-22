@@ -5,11 +5,12 @@ angular.module('copayApp.services').factory('payproService',
 
     var ret = {};
 
-    ret.getPayProDetails = function(uri, cb, disableLoader) {
+    ret.getPayProDetails = function(uri, coin, cb, disableLoader) {
       if (!cb) cb = function() {};
 
       var wallet = profileService.getWallets({
-        onlyComplete: true
+        onlyComplete: true,
+        coin: coin
       })[0];
 
       if (!wallet) return cb();

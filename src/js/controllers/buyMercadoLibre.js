@@ -228,7 +228,8 @@ angular.module('copayApp.controllers').controller('buyMercadoLibreController', f
       amount: parsedAmount.amount,
       currency: parsedAmount.currency,
       uuid: wallet.id,
-      email: email
+      email: email,
+      buyerSelectedTransactionCurrency: coin.toUpperCase()
     };
     ongoingProcess.set('loadingTxInfo', true);
     createInvoice(dataSrc, function(err, invoice, accessKey) {

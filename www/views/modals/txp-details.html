@@ -6,7 +6,7 @@
     <div class="title" translate>
       Payment Proposal
     </div>
-    <button class="button button-clear" ng-click="reject()" ng-disabled="loading" ng-if="isShared && tx.pendingForUs">
+    <button class="button button-clear" ng-click="reject()" ng-disabled="loading" ng-if="isShared && tx.pendingForUs && !paymentExpired">
       Reject
     </button>
   </ion-header-bar>
@@ -108,16 +108,14 @@
           <div class="item">
             {{'To'|translate}}
             <span class="item-note">
-              <span>
-                <span ng-show="tx.merchant.pr.ca"><i class="fi-lock"></i> {{tx.paypro.domain}}</span>
-                <span ng-show="!tx.merchant.pr.ca"><i class="fi-unlock"></i> {{tx.paypro.domain}}</span>
-              </span>
-              <contact address="{{tx.toAddress}}" ng-hide="tx.merchant"></contact>
+              <span ng-show="tx.paypro.verified && tx.paypro.caTrusted"><i class="icon ion-locked trusted"></i></span>
+              <span ng-show="!tx.paypro.caTrusted"><i class="icon ion-unlocked untrusted"></i></span>
+              {{tx.paypro.domain}}
             </span>
           </div>
           <div class="item" ng-if="paymentExpired">
             {{'Expired'|translate}}
-            <span class="item-note">
+            <span class="item-note assertive">
               <time>{{tx.paypro.expires * 1000 | amTimeAgo }}</time>
             </span>
           </div>
@@ -129,7 +127,7 @@
           </div>
           <div class="item">
             {{'Merchant Message'|translate}}
-            <span class="item-note">{{tx.paypro.pr.pd.memo}}</span>
+            <span class="item-note">{{tx.paypro.memo}}</span>
           </div>
         </div>
         <div ng-if="actionList[0]">
