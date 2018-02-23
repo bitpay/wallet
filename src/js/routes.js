@@ -1176,13 +1176,11 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         },
         params: {
           id: null,
-          currency: 'USD',
-          coin: 'btc',
           useSendMax: null
         }
       })
       .state('tabs.bitpayCard.amount', {
-        url: '/amount/:nextStep',
+        url: '/amount/:currency/:nextStep',
         views: {
           'tab-home@tabs': {
             controller: 'amountController',
@@ -1191,7 +1189,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         }
       })
       .state('tabs.bitpayCard.topup', {
-        url: '/topup/:amount',
+        url: '/topup/:amount/:currency',
         views: {
           'tab-home@tabs': {
             controller: 'topUpController',

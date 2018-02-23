@@ -353,6 +353,14 @@ angular.module('copayApp.services').factory('bitpayCardService', function($log, 
     });
   };
 
+  root.getRatesFromCoin = function(coin, currency, cb) {
+    bitpayService.get('/rates/' + coin + '/' + currency, function(data) {
+      $log.info('BitPay Get Rates From Coin: SUCCESS');
+      return cb(data.data.error, data.data.data);
+    }, function(data) {
+      return cb(_setError('BitPay Error: Get Rates From Coin', data));
+    });
+  };
 
   root.get = function(opts, cb) {
     root.getCards(function(err, cards) {
