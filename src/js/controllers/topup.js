@@ -87,6 +87,7 @@ angular.module('copayApp.controllers').controller('topUpController', function($s
 
   var isCryptoCurrencySupported = function(wallet, invoice) {
     var COIN = wallet.coin.toUpperCase();
+    if (!invoice['supportedTransactionCurrencies'][COIN]) return false;
     return invoice['supportedTransactionCurrencies'][COIN].enabled;
   };
 
@@ -254,6 +255,7 @@ angular.module('copayApp.controllers').controller('topUpController', function($s
 
       // Check if BTC or BCH is enabled in this account
       if (!isCryptoCurrencySupported(wallet, invoice)) {
+        ongoingProcess.set('loadingTxInfo', false);
         var msg = gettextCatalog.getString('Top-up with this cryptocurrency is not enabled');
         showErrorAndBack(null, msg);
         return;
