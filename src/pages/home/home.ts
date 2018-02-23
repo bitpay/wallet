@@ -213,7 +213,7 @@ export class HomePage {
     this.walletsBtc = this.profileProvider.getWallets({ coin: 'btc' });
     this.walletsBch = this.profileProvider.getWallets({ coin: 'bch' });
     this.updateAllWallets();
-  }, 10000, {
+  }, 5000, {
       'leading': true
     });
 
