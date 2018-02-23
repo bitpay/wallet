@@ -1135,9 +1135,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         },
         params: {
           nextStep: 'tabs.giftcards.amazon.buy',
-          currency: 'USD',
-          coin: 'btc',
-          fixedUnit: true,
+          currency: 'USD'
         }
       })
       .state('tabs.giftcards.amazon.buy', {
