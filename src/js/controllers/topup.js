@@ -1,10 +1,9 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('topUpController', function($scope, $log, $state, $timeout, $ionicHistory, $ionicConfig, $ionicModal, lodash, popupService, profileService, ongoingProcess, walletService, configService, platformInfo, bitpayService, bitpayCardService, payproService, bwcError, txFormatService, sendMaxService, gettextCatalog, externalLinkService) {
+angular.module('copayApp.controllers').controller('topUpController', function($scope, $log, $state, $timeout, $ionicHistory, $ionicConfig, $ionicModal, lodash, popupService, profileService, ongoingProcess, walletService, configService, platformInfo, bitpayService, bitpayCardService, payproService, bwcError, txFormatService, sendMaxService, gettextCatalog, externalLinkService, bitcoreCash) {
 
   var FEE_TOO_HIGH_LIMIT_PER = 15;
   $scope.isCordova = platformInfo.isCordova;
-  var coin = 'btc';
   var cardId;
   var useSendMax;
   var amount;
@@ -37,7 +36,7 @@ angular.module('copayApp.controllers').controller('topUpController', function($s
     popupService.showAlert(title, msg, cb);
   };
 
-  var satToFiat = function(sat, cb) {
+  var satToFiat = function(coin, sat, cb) {
     txFormatService.toFiat(coin, sat, $scope.currencyIsoCode, function(value) {
       return cb(value);
     });
@@ -68,14 +67,14 @@ angular.module('copayApp.controllers').controller('topUpController', function($s
     }
   };
 
-  var setTotalAmount = function(amountSat, invoiceFeeSat, networkFeeSat) {
-    satToFiat(amountSat, function(a) {
+  var setTotalAmount = function(wallet, amountSat, invoiceFeeSat, networkFeeSat) {
+    satToFiat(wallet.coin, amountSat, function(a) {
       $scope.amount = Number(a);
 
-      satToFiat(invoiceFeeSat, function(i) {
+      satToFiat(wallet.coin, invoiceFeeSat, function(i) {
         $scope.invoiceFee = Number(i);
 
-        satToFiat(networkFeeSat, function(n) {
+        satToFiat(wallet.coin, networkFeeSat, function(n) {
           $scope.networkFee = Number(n);
           $scope.totalAmount = $scope.amount + $scope.invoiceFee + $scope.networkFee;
           $timeout(function() {
@@ -84,6 +83,11 @@ angular.module('copayApp.controllers').controller('topUpController', function($s
         });
       });
     });
+  };
+
+  var isCryptoCurrencySupported = function(wallet, invoice) {
+    var COIN = wallet.coin.toUpperCase();
+    return invoice['supportedTransactionCurrencies'][COIN].enabled;
   };
 
   var createInvoice = function(data, cb) {
@@ -108,7 +112,8 @@ angular.module('copayApp.controllers').controller('topUpController', function($s
   };
 
   var createTx = function(wallet, invoice, message, cb) {
-    var payProUrl = (invoice && invoice.paymentUrls) ? invoice.paymentUrls.BIP73 : null;
+    var COIN = wallet.coin.toUpperCase();
+    var payProUrl = (invoice && invoice.paymentCodes) ? invoice.paymentCodes[COIN].BIP73 : null;
 
     if (!payProUrl) {
       return cb({
@@ -118,8 +123,8 @@ angular.module('copayApp.controllers').controller('topUpController', function($s
     }
 
     var outputs = [];
-    var toAddress = invoice.bitcoinAddress;
-    var amountSat = parseInt((invoice.btcDue * 100000000).toFixed(0)); // BTC to Satoshi
+    var toAddress = invoice.addresses[COIN];
+    var amountSat = invoice.paymentTotals[COIN];
 
     outputs.push({
       'toAddress': toAddress,
@@ -137,6 +142,14 @@ angular.module('copayApp.controllers').controller('topUpController', function($s
       feeLevel: configWallet.settings.feeLevel || 'normal'
     };
 
+    txp['origToAddress'] = txp.toAddress;
+
+    if (wallet.coin && wallet.coin == 'bch') {
+      // Use legacy address
+      txp.toAddress = new bitcoreCash.Address(txp.toAddress).toString();
+      txp.outputs[0].toAddress = txp.toAddress;
+    };
+
     walletService.createTx(wallet, txp, function(err, ctxp) {
       if (err) {
         return cb({
@@ -149,6 +162,8 @@ angular.module('copayApp.controllers').controller('topUpController', function($s
   };
 
   var calculateAmount = function(wallet, cb) {
+    var COIN = wallet.coin.toUpperCase();
+    
     // Global variables defined beforeEnter
     var a = amount;
     var c = currency;
@@ -168,15 +183,25 @@ angular.module('copayApp.controllers').controller('topUpController', function($s
           });
         }
 
-        var maxAmountBtc = Number((maxValues.amount / 100000000).toFixed(8));
+        var maxAmount = Number((maxValues.amount / 100000000).toFixed(8));
 
         createInvoice({
-          amount: maxAmountBtc,
-          currency: 'BTC'
+          amount: maxAmount,
+          currency: wallet.coin.toUpperCase()
         }, function(err, inv) {
           if (err) return cb(err);
 
-          var invoiceFeeSat = parseInt((inv.buyerPaidBtcMinerFee * 100000000).toFixed());
+          // Check if BTC or BCH is enabled in this account
+          if (!isCryptoCurrencySupported(wallet, inv)) {
+            var msg = gettextCatalog.getString('Top-up with this cryptocurrency is not enabled');
+            showErrorAndBack(null, msg);
+            return cb({
+              message: msg
+            });
+          }
+
+          inv['minerFees'][COIN]['totalFee'] = inv.minerFees[COIN].totalFee || 0;
+          var invoiceFeeSat = inv.minerFees[COIN].totalFee;
           var newAmountSat = maxValues.amount - invoiceFeeSat;
 
           if (newAmountSat <= 0) {
@@ -211,11 +236,12 @@ angular.module('copayApp.controllers').controller('topUpController', function($s
   }
 
   var initializeTopUp = function(wallet, parsedAmount) {
+    var COIN = wallet.coin.toUpperCase();
     $scope.amountUnitStr = parsedAmount.amountUnitStr;
     var dataSrc = {
       amount: parsedAmount.amount,
       currency: parsedAmount.currency,
-      buyerSelectedTransactionCurrency: coin.toUpperCase()
+      buyerSelectedTransactionCurrency: wallet.coin.toUpperCase()
     };
     ongoingProcess.set('loadingTxInfo', true);
     createInvoice(dataSrc, function(err, invoice) {
@@ -225,9 +251,16 @@ angular.module('copayApp.controllers').controller('topUpController', function($s
         return;
       }
 
+      // Check if BTC or BCH is enabled in this account
+      if (!isCryptoCurrencySupported(wallet, invoice)) {
+        var msg = gettextCatalog.getString('Top-up with this cryptocurrency is not enabled');
+        showErrorAndBack(null, msg);
+        return;
+      }
+
       // Sometimes API does not return this element;
-      invoice['buyerPaidBtcMinerFee'] = invoice.buyerPaidBtcMinerFee || 0;
-      var invoiceFeeSat = (invoice.buyerPaidBtcMinerFee * 100000000).toFixed();
+      invoice['minerFees'][COIN]['totalFee'] = invoice.minerFees[COIN].totalFee || 0;
+      var invoiceFeeSat = invoice.minerFees[COIN].totalFee;
 
       message = gettextCatalog.getString("Top up {{amountStr}} to debit card ({{cardLastNumber}})", {
         amountStr: $scope.amountUnitStr,
@@ -245,17 +278,24 @@ angular.module('copayApp.controllers').controller('topUpController', function($s
         // Save TX in memory
         createdTx = ctxp;
 
-        $scope.totalAmountStr = txFormatService.formatAmountStr(coin, ctxp.amount);
+        $scope.totalAmountStr = txFormatService.formatAmountStr(wallet.coin, ctxp.amount);
 
         // Warn: fee too high
         checkFeeHigh(Number(parsedAmount.amountSat), Number(invoiceFeeSat) + Number(ctxp.fee));
 
-        setTotalAmount(parsedAmount.amountSat, invoiceFeeSat, ctxp.fee);
+        setTotalAmount(wallet, parsedAmount.amountSat, invoiceFeeSat, ctxp.fee);
 
       });
 
     });
 
+  };
+
+  var updateRates = function(coin) {
+    bitpayCardService.getRatesFromCoin(coin.toUpperCase(), $scope.currencyIsoCode, function(err, r) {
+      if (err) $log.error(err);
+      $scope.rate = r.rate;
+    });
   };
 
   $scope.$on("$ionicView.beforeLeave", function(event, data) {
@@ -272,6 +312,10 @@ angular.module('copayApp.controllers').controller('topUpController', function($s
     useSendMax = data.stateParams.useSendMax;
     amount = data.stateParams.amount;
     currency = data.stateParams.currency;
+
+    var coin;
+    if (currency == 'BTC') coin = 'btc';
+    if (currency == 'BCH') coin = 'bch';
 
     bitpayCardService.get({
       cardId: cardId,
@@ -298,12 +342,7 @@ angular.module('copayApp.controllers').controller('topUpController', function($s
         return;
       }
 
-      bitpayCardService.getRates($scope.currencyIsoCode, function(err, r) {
-        if (err) $log.error(err);
-        $scope.rate = r.rate;
-      });
-
-      $scope.onWalletSelect($scope.wallets[0]); // Default first wallet
+      $scope.showWalletSelector(); // Show wallet selector
     });
   });
 
@@ -343,6 +382,10 @@ angular.module('copayApp.controllers').controller('topUpController', function($s
 
   $scope.onWalletSelect = function(wallet) {
     $scope.wallet = wallet;
+    
+    // Update Rates
+    updateRates(wallet.coin);
+    
     ongoingProcess.set('retrievingInputs', true);
     calculateAmount(wallet, function(err, a, c) {
       ongoingProcess.set('retrievingInputs', false);
@@ -353,7 +396,7 @@ angular.module('copayApp.controllers').controller('topUpController', function($s
         });
         return;
       }
-      var parsedAmount = txFormatService.parseAmount(coin, a, c);
+      var parsedAmount = txFormatService.parseAmount(wallet.coin, a, c);
       initializeTopUp(wallet, parsedAmount);
     });
   };
