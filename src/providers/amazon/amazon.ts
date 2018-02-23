@@ -86,7 +86,8 @@ export class AmazonProvider {
       currency: data.currency,
       amount: data.amount,
       clientId: data.uuid,
-      email: data.email
+      email: data.email,
+      buyerSelectedTransactionCurrency: data.buyerSelectedTransactionCurrency
     };
 
     this.http.post(this.credentials.BITPAY_API_URL + '/amazon-gift/pay', dataSrc).subscribe((data: any) => {

@@ -86,13 +86,12 @@ export class BitPayCardTopUpPage {
   }
 
   ionViewWillEnter() {
-    let coin = this.navParams.data.coin;
-    
     this.cardId = this.navParams.data.id;
     this.useSendMax = this.navParams.data.useSendMax;
     this.currency = this.navParams.data.currency;
     this.amount = this.navParams.data.amount; 
 
+    let coin;
     if (this.currency == 'BTC') coin = 'btc';
     else if (this.currency == 'BCH') coin = 'bch';
     else coin = null;
@@ -201,6 +200,7 @@ export class BitPayCardTopUpPage {
 
   private isCryptoCurrencySupported(wallet: any, invoice: any) {
     let COIN = wallet.coin.toUpperCase();
+    if (!invoice['supportedTransactionCurrencies'][COIN]) return false;
     return invoice['supportedTransactionCurrencies'][COIN].enabled;
   }
 
