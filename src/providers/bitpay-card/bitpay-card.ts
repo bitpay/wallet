@@ -346,10 +346,9 @@ export class BitPayCardProvider {
     var now = Math.floor(Date.now() / 1000);
     var showRange = 600; // 10min;
 
-    this.getLastKnownBalance(card.eid, (err, data) => {
+    this.getLastKnownBalance(card.eid, (data) => {
       if (data) {
-        data = JSON.parse(data);
-        card.balance = data.balance;
+        card.balance = Number(data.balance);
         card.updatedOn = (data.updatedOn < now - showRange) ? data.updatedOn : null;
       }
       return cb();
@@ -377,6 +376,15 @@ export class BitPayCardProvider {
 
   public getRates(currency, cb) {
     this.bitPayProvider.get('/rates/' + currency, (data) => {
+      this.logger.info('BitPay Get Rates: SUCCESS');
+      return cb(data.error, data.data);
+    }, (data) => {
+      return cb(this._setError('BitPay Error: Get Rates', data));
+    });
+  };
+
+  public getRatesFromCoin(coin, currency, cb) {
+    this.bitPayProvider.get('/rates/' + coin + '/' + currency, (data) => {
       this.logger.info('BitPay Get Rates: SUCCESS');
       return cb(data.error, data.data);
     }, (data) => {

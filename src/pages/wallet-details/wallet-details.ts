@@ -6,10 +6,10 @@ import { Logger } from '../../providers/logger/logger';
 // providers
 import { AddressBookProvider } from '../../providers/address-book/address-book';
 import { BwcErrorProvider } from '../../providers/bwc-error/bwc-error';
+import { OnGoingProcessProvider } from '../../providers/on-going-process/on-going-process';
 import { ProfileProvider } from '../../providers/profile/profile';
 import { TimeProvider } from '../../providers/time/time';
 import { WalletProvider } from '../../providers/wallet/wallet';
-import { OnGoingProcessProvider } from '../../providers/on-going-process/on-going-process';
 
 // pages
 import { BackupWarningPage } from '../../pages/backup/backup-warning/backup-warning';

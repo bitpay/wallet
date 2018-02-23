@@ -15,9 +15,9 @@
       </div>
       <div class="amount-label">
         <div class="amount">{{amountUnitStr}}</div>
-        <div class="alternative">
+        <div class="alternative" *ngIf="wallet">
           <span *ngIf="rate">
-            @ {{rate | currency:currencySymbol:2}} {{currencyIsoCode}} per BTC
+            @ {{rate | currency:currencySymbol:2}} {{currencyIsoCode}} per {{wallet.coin.toUpperCase()}}
           </span>
           <span *ngIf="!rate">...</span>
         </div>
@@ -51,15 +51,13 @@
         <ion-item>
           <span translate>Network Cost</span>
           <ion-note item-end>
-            <span *ngIf="invoiceFee">{{invoiceFee | currency:currencySymbol:2}} {{currencyIsoCode}}</span>
-            <span *ngIf="!invoiceFee">...</span>
+            <span>{{invoiceFee | currency:currencySymbol:2}} {{currencyIsoCode}}</span>
           </ion-note>
         </ion-item>
         <ion-item>
           <span translate>Miner Fee</span>
           <ion-note item-end>
-            <span *ngIf="networkFee">{{networkFee | currency:currencySymbol:2}} {{currencyIsoCode}}</span>
-            <span *ngIf="!networkFee">...</span>
+            <span>{{networkFee | currency:currencySymbol:2}} {{currencyIsoCode}}</span>
           </ion-note>
         </ion-item>
         <ion-item>
