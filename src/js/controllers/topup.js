@@ -187,7 +187,8 @@ angular.module('copayApp.controllers').controller('topUpController', function($s
 
         createInvoice({
           amount: maxAmount,
-          currency: wallet.coin.toUpperCase()
+          currency: wallet.coin.toUpperCase(),
+          buyerSelectedTransactionCurrency: wallet.coin.toUpperCase()
         }, function(err, inv) {
           if (err) return cb(err);
 
