@@ -106,7 +106,8 @@ angular.module('copayApp.services').factory('mercadoLibreService', function($htt
       currency: data.currency,
       amount: data.amount,
       clientId: data.uuid,
-      email: data.email
+      email: data.email,
+      buyerSelectedTransactionCurrency: data.buyerSelectedTransactionCurrency
     };
 
     $http(_postBitPay('/mercado-libre-gift/pay', dataSrc)).then(function(data) {
