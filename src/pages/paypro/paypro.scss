@@ -1,0 +1,30 @@
+page-payrpo {
+  .amount-label {
+    padding-top: 1rem;
+    .amount {
+      font-size: 3.5rem;
+    }
+    .alternative {
+      margin-top: 0.5rem;
+      color: color($colors, grey);
+    }
+  }
+  .memo, .certified {
+    margin-top: 1rem;
+    color: color($colors, grey);
+  }
+  ion-icon {
+    padding-right: 0.5rem;
+  }
+  .danger {
+    ion-icon {
+      color: color($colors, danger);
+    }
+  }
+  .warning {
+    ion-icon, span {
+      color: color($colors, warning);
+    }
+  }
+
+}
