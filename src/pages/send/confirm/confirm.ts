@@ -45,6 +45,7 @@ export class ConfirmPage {
   public showAddress: boolean;
   public walletSelectorTitle: string;
   public buttonText: string;
+  public successText: string;
   public paymentExpired: boolean;
   public remainingTimeStr: string;
 
@@ -254,8 +255,10 @@ export class ConfirmPage {
       this.buttonText = this.translate.instant('Click to pay');
     } else if (isMultisig) {
       this.buttonText = this.translate.instant('Click to accept');
+      this.successText = this.wallet.credentials.n == 1 ? this.translate.instant('Payment Sent') : this.translate.instant('Proposal created');
     } else {
       this.buttonText = this.translate.instant('Click to send');
+      this.successText = this.translate.instant('Payment Sent');
     }
   }
 
@@ -599,7 +602,7 @@ export class ConfirmPage {
   }
 
   private openFinishModal(onlyPublish?: boolean) {
-    let params = {};
+    let params: any = { finishText: this.successText };
     if (onlyPublish) {
       let finishText = this.translate.instant('Payment Published');
       let finishComment = this.translate.instant('You could sign the transaction later in your wallet details');
