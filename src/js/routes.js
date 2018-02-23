@@ -1084,8 +1084,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         params: {
           nextStep: 'tabs.giftcards.mercadoLibre.buy',
           currency: 'BRL',
-          coin: 'btc',
-          fixedUnit: 1,
+          fixedUnit: true
         }
       })
       .state('tabs.giftcards.mercadoLibre.buy', {
@@ -1135,7 +1134,8 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         },
         params: {
           nextStep: 'tabs.giftcards.amazon.buy',
-          currency: 'USD'
+          currency: 'USD',
+          fixedUnit: true
         }
       })
       .state('tabs.giftcards.amazon.buy', {
