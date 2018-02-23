@@ -534,7 +534,7 @@ angular.module('copayApp.services')
       var okText = gettextCatalog.getString('Yes');
       var cancelText = gettextCatalog.getString('No');
       popupService.showConfirm(title, message, okText, cancelText, function(res) {
-        if (!res) return showWarningNoEncrypt(function() {
+        if (!res) return showWarningNoEncrypt(function(res) {
           if (res) return cb()
           return encryptWallet(wallet, cb);
         });
