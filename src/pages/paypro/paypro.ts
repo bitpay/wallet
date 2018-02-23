@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ViewController } from 'ionic-angular';
+import { NavParams, ViewController } from 'ionic-angular';
 
 @Component({
   selector: 'page-payrpo',
@@ -7,9 +7,13 @@ import { ViewController } from 'ionic-angular';
 })
 export class PayProPage {
 
+  public tx: any;
 
-  constructor(public viewCtrl: ViewController) {
-
+  constructor(
+    private navParams: NavParams,
+    private viewCtrl: ViewController
+  ) {
+    this.tx = this.navParams.data.tx;
   }
 
   close() {

@@ -1,15 +1,70 @@
 <ion-header>
-
   <ion-navbar>
+    <ion-title>{{'Payment request' | translate}}</ion-title>
     <ion-buttons start>
       <button (click)="close()" ion-button>
         {{'Close' | translate}}
       </button>
     </ion-buttons>
   </ion-navbar>
-
 </ion-header>
 
-<ion-content padding>
+<ion-content no-bounce>
+  <ion-list>
+    <ion-item class="item head">
+      <div class="amount-label">
+        <div class="amount">{{tx.amount | satToUnit: tx.coin}}</div>
+        <div class="alternative">{{tx.amount | satToFiat: tx.coin}}</div>
+      </div>
+    </ion-item>
+    <ion-item *ngIf="tx.paypro.domain">
 
+      <span>{{'Pay To'|translate}}</span>
+      <ion-note item-end>
+        {{tx.paypro.domain}}
+      </ion-note>
+
+    </ion-item>
+
+    <ion-item *ngIf="tx.paypro.toAddress" copy-to-clipboard="{{tx.paypro.toAddress}}">
+      <span>{{'Address'|translate}}</span>
+      <ion-note item-end>
+        {{tx.paypro.toAddress}}
+      </ion-note>
+    </ion-item>
+
+    <ion-item>
+      <div>{{'Certified by'|translate}}</div>
+      <div class="certified" text-wrap *ngIf="tx.paypro.caTrusted">
+        <span>
+          <ion-icon name="lock" [ngStyle]="{'color': 'green'}"></ion-icon>
+          {{tx.paypro.caName}} {{'(Trusted)' | translate}}</span>
+      </div>
+      <div class="certified" text-wrap *ngIf="!tx.paypro.caTrusted">
+        <span class="danger" *ngIf="tx.paypro.selfSigned">
+          <ion-icon name="unlock"></ion-icon>
+          <span translate>Self-signed Certificate</span>
+        </span>
+        <span class="warning" *ngIf="!tx.paypro.selfSigned">
+          <ion-icon name="unlock"></ion-icon>{{tx.paypro.caName}}
+          <br>
+          <span translate>WARNING: UNTRUSTED CERTIFICATE</span>
+        </span>
+      </div>
+    </ion-item>
+
+    <ion-item *ngIf="tx.paypro.memo">
+      <div>{{'Memo'|translate}}</div>
+      <div class="memo" text-wrap>
+        {{tx.paypro.memo}}
+      </div>
+    </ion-item>
+
+    <ion-item *ngIf="tx.paypro.expires">
+      <span>{{'Expires'|translate}}</span>
+      <ion-note item-end>
+        {{tx.paypro.expires * 1000 | amTimeAgo }}
+      </ion-note>
+    </ion-item>
+  </ion-list>
 </ion-content>

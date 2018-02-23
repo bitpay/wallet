@@ -615,10 +615,11 @@ export class ConfirmPage {
   }
 
   public openPPModal(): void {
-    this.modalCtrl.create(PayProPage, {}, {
+    let modal = this.modalCtrl.create(PayProPage, { tx: this.tx }, {
       showBackdrop: true,
       enableBackdropDismiss: true,
     });
+    modal.present();
   };
 
   public chooseFeeLevel(): void {
