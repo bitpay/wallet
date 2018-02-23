@@ -321,7 +321,8 @@ export class BitPayCardTopUpPage {
 
           this.createInvoice({
             amount: maxAmount,
-            currency: wallet.coin.toUpperCase()
+            currency: wallet.coin.toUpperCase(),
+            buyerSelectedTransactionCurrency: wallet.coin.toUpperCase()
           }).then((inv) => {
 
             // Check if BTC or BCH is enabled in this account
