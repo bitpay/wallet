@@ -17,11 +17,7 @@ angular.module('copayApp.controllers').controller('txDetailsController', functio
     $scope.txsUnsubscribedForNotifications = config.confirmedTxsNotifications ? !config.confirmedTxsNotifications.enabled : true;
 
     if ($scope.wallet.coin == 'bch') {
-      if (walletService.useLegacyAddress()) {
-        blockexplorerUrl = 'bch-insight.bitpay.com';
-      } else {
-        blockexplorerUrl = 'blockdozer.com/insight';
-      }
+      blockexplorerUrl = 'bch-insight.bitpay.com';
     } else {
       blockexplorerUrl = 'insight.bitpay.com';
     }
