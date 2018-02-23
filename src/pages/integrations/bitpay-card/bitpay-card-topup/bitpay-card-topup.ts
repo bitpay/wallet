@@ -264,6 +264,7 @@ export class BitPayCardTopUpPage {
       if (wallet.coin && wallet.coin == 'bch') {
         // Use legacy address
         txp.toAddress = this.bitcoreCash.Address(txp.toAddress).toString();
+        txp.outputs[0].toAddress = txp.toAddress;
       }
 
       this.walletProvider.createTx(wallet, txp).then((ctxp: any) => {
