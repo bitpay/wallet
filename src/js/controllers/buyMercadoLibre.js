@@ -339,7 +339,8 @@ angular.module('copayApp.controllers').controller('buyMercadoLibreController', f
     $scope.wallets = profileService.getWallets({
       onlyComplete: true,
       network: $scope.network,
-      hasFunds: true
+      hasFunds: true,
+      m: 1
     });
     if (lodash.isEmpty($scope.wallets)) {
       showErrorAndBack(null, gettextCatalog.getString('No wallets available'));
