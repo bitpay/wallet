@@ -64,7 +64,12 @@ export class OnGoingProcessProvider {
 
   public clear() {
     this.ongoingProcess = [];
-    this.loading.dismiss();
+    try {
+      this.loading.dismiss();
+    } catch(e) {
+      // No problem
+      this.logger.warn(e);
+    };
     this.loading = null;
     this.logger.debug('ongoingProcess clear');
   }

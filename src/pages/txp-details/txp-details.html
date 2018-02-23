@@ -143,21 +143,20 @@
           {{'To'|translate}}
         </ion-label>
         <ion-note icon-start item-end>
-          <span *ngIf="tx.paypro.merchant && tx.paypro.merchant.caTrusted">
-            <ion-icon name="lock"></ion-icon>
+          <span *ngIf="tx.paypro.verified && tx.paypro.caTrusted">
+            <ion-icon color="success" name="lock"></ion-icon>
           </span>
-          <span *ngIf="tx.paypro.merchant && !tx.paypro.merchant.caTrusted">
-            <ion-icon name="unlock"></ion-icon>
+          <span *ngIf="!tx.paypro.caTrusted">
+            <ion-icon color="danger" name="unlock"></ion-icon>
           </span>
           <span>{{tx.paypro.domain}}</span>
         </ion-note>
-        <!--  <contact address="{{tx.toAddress}}" ng-hide="tx.merchant"></contact> -->
       </ion-item>
       <ion-item *ngIf="paymentExpired">
         <ion-label>
           {{'Expired'|translate}}
         </ion-label>
-        <ion-note item-end>
+        <ion-note color="danger" item-end>
           <time>{{tx.paypro.expires * 1000 | amTimeAgo }}</time>
         </ion-note>
       </ion-item>
@@ -210,10 +209,10 @@
   </ion-list>
 </ion-content>
 
-<ion-footer *ngIf="(isShared && tx && tx.pendingForUs) || (tx && tx.pendingForUs && canSign && !paymentExpired)">
+<ion-footer *ngIf="(isShared && tx && tx.pendingForUs && !paymentExpired) || (tx && tx.pendingForUs && canSign && !paymentExpired)">
   <ion-toolbar>
     <ion-buttons left>
-      <button ion-button icon-left (click)="reject()" [disabled]="loading" color="warning" *ngIf="isShared && tx.pendingForUs">
+      <button ion-button icon-left (click)="reject()" [disabled]="loading" color="warning" *ngIf="isShared && tx.pendingForUs && !paymentExpired">
         <ion-icon name="close"></ion-icon>
         {{'Reject'| translate}}
       </button>

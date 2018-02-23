@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Events, ModalController, NavParams, ViewController } from 'ionic-angular';
+import { Logger } from '../../providers/logger/logger';
 
 // providers
 import { BwcErrorProvider } from '../../providers/bwc-error/bwc-error';
@@ -48,6 +49,7 @@ export class TxpDetailsPage {
     private platformProvider: PlatformProvider,
     private feeProvider: FeeProvider,
     private events: Events,
+    private logger: Logger,
     private popupProvider: PopupProvider,
     private bwcError: BwcErrorProvider,
     private walletProvider: WalletProvider,
@@ -164,7 +166,12 @@ export class TxpDetailsPage {
       this.wallet.fetchPayPro({
         payProUrl: this.tx.payProUrl,
       }, (err, paypro) => {
-        if (err) return;
+        if (err) {
+          this.logger.error(err);
+          this.paymentExpired = true;
+          this.popupProvider.ionicAlert(null, this.translate.instant('Could not fetch the invoice'));
+          return;
+        }
         this.tx.paypro = paypro;
         this.paymentTimeControl(this.tx.paypro.expires);
       });

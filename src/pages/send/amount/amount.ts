@@ -369,8 +369,9 @@ export class AmountPage {
     else return this.txFormatProvider.formatAmount(val.toFixed(this.unitDecimals) * this.unitToSatoshi, true);
   }
 
-  private fromFiat(val: any): number {
-    return parseFloat((this.rateProvider.fromFiat(val, this.fiatCode, this.availableUnits[this.altUnitIndex].id) * this.satToUnit).toFixed(this.unitDecimals));
+  private fromFiat(val: any, coin?: string): number {
+    coin = coin || this.availableUnits[this.altUnitIndex].id;
+    return parseFloat((this.rateProvider.fromFiat(val, this.fiatCode, coin) * this.satToUnit).toFixed(this.unitDecimals));
   }
 
   private toFiat(val: number): number {

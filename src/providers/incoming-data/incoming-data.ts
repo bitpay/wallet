@@ -51,7 +51,7 @@ export class IncomingDataProvider {
 
       data = decodeURIComponent(data.replace(/bitcoin(cash)?:\?r=/, ''));
 
-      this.payproProvider.getPayProDetails(data).then((details) => {
+      this.payproProvider.getPayProDetails(data, coin).then((details) => {
         this.handlePayPro(details, coin);
       }).catch((err) => {
         this.popupProvider.ionicAlert(this.translate.instant('Error'), err);
@@ -77,7 +77,7 @@ export class IncomingDataProvider {
       amount = parsed.amount ? parsed.amount : '';
 
       if (parsed.r) {
-        this.payproProvider.getPayProDetails(parsed.r).then((details) => {
+        this.payproProvider.getPayProDetails(parsed.r, coin).then((details) => {
           this.handlePayPro(details, coin);
         }).catch((err: string) => {
           if (addr && amount) this.goSend(addr, amount, message, coin);
@@ -104,7 +104,7 @@ export class IncomingDataProvider {
 
       // paypro not yet supported on cash
       if (parsed.r) {
-        this.payproProvider.getPayProDetails(parsed.r).then((details: any) => {
+        this.payproProvider.getPayProDetails(parsed.r, coin).then((details: any) => {
           this.handlePayPro(details, coin);
         }).catch((err: string) => {
           if (addr && amount)
@@ -143,7 +143,7 @@ export class IncomingDataProvider {
 
         // paypro not yet supported on cash
         if (parsed.r) {
-          this.payproProvider.getPayProDetails(parsed.r).then((details) => {
+          this.payproProvider.getPayProDetails(parsed.r, coin).then((details) => {
             this.handlePayPro(details, coin);
           }).catch((err) => {
             if (addr && amount)
@@ -156,13 +156,14 @@ export class IncomingDataProvider {
         }
       });
       return true;
-      // Plain URL
     } else if (/^https?:\/\//.test(data)) {
+      // Plain URL
       this.logger.debug('Handling Plain URL');
 
-      this.payproProvider.getPayProDetails(data).then((details) => {
-        // TODO review
-        this.handlePayPro(details, 'btc');
+      let coin = 'btc'; // Assume BTC
+
+      this.payproProvider.getPayProDetails(data, coin).then((details) => {
+        this.handlePayPro(details, coin);
         return true;
       }).catch(() => {
         this.showMenu({
