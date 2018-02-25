@@ -30,8 +30,9 @@
           <span class="label">{{'Certified by'|translate}}</span>
           <span class="item-note w100p">
             <span ng-show="tx.paypro.caTrusted">
-              <i class="ion-locked" style="color:green"></i>
-              {{tx.paypro.caName}} {{'(Trusted)' | translate}}</span>
+              <i ng-if="tx.paypro.verified" class="ion-locked" style="color:green"></i>
+              <i ng-if="!tx.paypro.verified" class="ion-unlocked" style="color:orange"></i>
+              {{tx.paypro.caName}} {{'(Trusted)' | translate}}
             </span>
             <span ng-show="!tx.paypro.caTrusted">
               <span ng-show="tx.paypro.selfSigned">
