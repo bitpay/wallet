@@ -137,19 +137,34 @@
     </ion-item>
 
     <div *ngIf="tx && tx.paypro">
-      <ion-item-divider>{{'Payment details' | translate}}</ion-item-divider>
+      <ion-item-divider>{{'Payment request' | translate}}</ion-item-divider>
       <ion-item>
         <ion-label>
-          {{'To'|translate}}
+          {{'Pay To'|translate}}
         </ion-label>
-        <ion-note icon-start item-end>
-          <span *ngIf="tx.paypro.verified && tx.paypro.caTrusted">
-            <ion-icon color="success" name="lock"></ion-icon>
-          </span>
-          <span *ngIf="!tx.paypro.caTrusted">
+        <ion-note item-end>
+          {{tx.paypro.domain}}
+        </ion-note>
+      </ion-item>
+      <ion-item>
+        <ion-label>
+          {{'Certified by'|translate}}
+        </ion-label>
+        <ion-note *ngIf="tx.paypro.caTrusted" icon-start item-end text-wrap>
+          <ion-icon *ngIf="tx.paypro.verified" color="success" name="lock"></ion-icon>
+          <ion-icon *ngIf="!tx.paypro.verified" color="warning" name="unlock"></ion-icon>
+          {{tx.paypro.caName}} {{'(Trusted)' | translate}}
+        </ion-note>
+        <ion-note *ngIf="!tx.paypro.caTrusted" icon-start item-end text-wrap>
+          <span *ngIf="tx.paypro.selfSigned">
             <ion-icon color="danger" name="unlock"></ion-icon>
+            <span translate>Self-signed Certificate</span>
           </span>
-          <span>{{tx.paypro.domain}}</span>
+          <span *ngIf="!tx.paypro.selfSigned">
+            <ion-icon color="warning" name="lock"></ion-icon>
+            {{tx.paypro.caName}}<br>
+            <span translate>WARNING: UNTRUSTED CERTIFICATE</span>
+          </span>
         </ion-note>
       </ion-item>
       <ion-item *ngIf="paymentExpired">

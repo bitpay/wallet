@@ -60,8 +60,11 @@
         </div>
 
         <div class="paypro" *ngIf="tx.paypro" (click)="openPPModal(tx.paypro)">
-          <ion-icon [hidden]="!tx.paypro.verified || !tx.paypro.caTrusted" [ngStyle]="{'color': 'green'}" ios="ios-lock" md="md-lock"></ion-icon>
-          <ion-icon [hidden]="tx.paypro.caTrusted" [ngStyle]="{'color': 'red'}" ios="ios-unlock" md="md-unlock"></ion-icon>
+
+          <ion-icon *ngIf="tx.paypro.verified && tx.paypro.caTrusted" name="lock" color="success"></ion-icon>
+          <ion-icon *ngIf="!tx.paypro.verified && tx.paypro.caTrusted" name="unlock" color="warning"></ion-icon>
+          <ion-icon *ngIf="!tx.paypro.caTrusted" name="unlock" color="danger"></ion-icon>
+
           <span [hidden]="tx.name">{{tx.paypro.domain || tx.paypro.toAddress}}</span>
           <span [hidden]="!tx.name">{{tx.name}}</span>
         </div>
