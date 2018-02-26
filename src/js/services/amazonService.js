@@ -101,7 +101,8 @@ angular.module('copayApp.services').factory('amazonService', function($http, $lo
       currency: data.currency,
       amount: data.amount,
       clientId: data.uuid,
-      email: data.email
+      email: data.email,
+      buyerSelectedTransactionCurrency: data.buyerSelectedTransactionCurrency
     };
 
     $http(_postBitPay('/amazon-gift/pay', dataSrc)).then(function(data) {
