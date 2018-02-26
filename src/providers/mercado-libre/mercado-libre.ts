@@ -91,7 +91,8 @@ export class MercadoLibreProvider {
       currency: data.currency,
       amount: data.amount,
       clientId: data.uuid,
-      email: data.email
+      email: data.email,
+      buyerSelectedTransactionCurrency: data.buyerSelectedTransactionCurrency
     };
     let url = this.credentials.BITPAY_API_URL + '/mercado-libre-gift/pay';
     let headers: any = {

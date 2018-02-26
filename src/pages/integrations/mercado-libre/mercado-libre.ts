@@ -90,7 +90,6 @@ export class MercadoLibrePage {
         this.navCtrl.push(AmountPage, {
           nextPage: 'BuyMercadoLibrePage',
           currency: 'BRL',
-          coin: 'btc',
           fixedUnit: true,
         });
         break;

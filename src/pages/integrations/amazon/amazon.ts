@@ -179,7 +179,6 @@ export class AmazonPage {
         this.navCtrl.push(AmountPage, {
           nextPage: 'BuyAmazonPage',
           currency: 'USD',
-          coin: 'btc',
           fixedUnit: true,
         });
         break;
