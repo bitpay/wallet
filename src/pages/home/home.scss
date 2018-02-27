@@ -37,4 +37,8 @@ page-home {
     justify-content: center;
     text-align: center;
   }
+  .wallet-warning {
+    font-size: 11px;
+    color: color($colors, danger);
+  }
 }
