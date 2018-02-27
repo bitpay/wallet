@@ -10,21 +10,24 @@
 </ion-header>
 
 <ion-content no-bounce>
-  <div *ngIf="wallet && wallet.isComplete() && wallet.needsBackup" (click)="goToBackup()" class="box-notification no-margin warn">
-    <ion-icon name="warning"></ion-icon>
-    <span translate>Wallet not backed up</span>
-    <ion-icon name="arrow-forward"></ion-icon>
+  <div *ngIf="wallet && wallet.isComplete() && wallet.needsBackup" class="message-container">
+    <div class="title">
+      <span translate>Wallet not backed up</span>
+    </div>
+    <div class="subtitle">
+      <span translate>Receiving funds in a no backed up wallet, might result in funds lost.</span>
+    </div>
+    <button ion-button block clear (click)="goToBackup()" translate>Backup wallet</button>
   </div>
 
-  <div *ngIf="wallet && wallet.isComplete()" class="qr-container">
+  <div *ngIf="wallet && wallet.isComplete() && !wallet.needsBackup" class="qr-container">
     <div *ngIf="loading" class="loading-address spinner">
       <ion-spinner></ion-spinner>
     </div>
     <ngx-qrcode *ngIf="!loading && address" copy-to-clipboard="{{ address }}" qrc-value="{{qrAddress}}" qrc-class="aclass" qrc-errorCorrectionLevel="M"></ngx-qrcode>
     <div *ngIf="!loading" class="text-address ellipsis" copy-to-clipboard="{{ address }}">
       <img *ngIf="wallet.coin == 'btc'" src="assets/img/icon-bitcoin.svg" alt="BTC" width="18" />
-      <img *ngIf="wallet.coin == 'bch'" src="assets/img/bitcoin-cash-logo.svg" alt="BCH" width="22" />
-      {{ address }}
+      <img *ngIf="wallet.coin == 'bch'" src="assets/img/bitcoin-cash-logo.svg" alt="BCH" width="22" /> {{ address }}
     </div>
     <div *ngIf="loading" class="text-address">...</div>
     <button ion-button clear [hidden]="!address" (click)="requestSpecificAmount()">
@@ -36,14 +39,14 @@
     </button>
   </div>
 
-  <div *ngIf="wallet && !wallet.isComplete()" class="incomplete-wallet-container">
+  <div *ngIf="wallet && !wallet.isComplete()" class="message-container">
     <div class="title">
       <span translate>Incomplete wallet</span>
     </div>
     <div class="subtitle">
       <span translate>All signing devices must be added to this multisig wallet before bitcoin addresses can be created.</span>
     </div>
-    <button ion-button (click)="goCopayers()" translate>Open wallet</button>
+    <button ion-button block clear (click)="goCopayers()" translate>Open wallet</button>
   </div>
 
   <div *ngIf="!wallet" class="no-wallet-message">

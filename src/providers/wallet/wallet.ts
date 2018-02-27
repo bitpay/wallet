@@ -347,7 +347,11 @@ export class WalletProvider {
         if (!forceNew && addr) return resolve(addr);
 
         if (!wallet.isComplete())
-          return reject('WALLET_NOT_COMPLETE');
+          return reject(this.bwcErrorProvider.msg('WALLET_NOT_COMPLETE'));
+
+        if (wallet.needsBackup) {
+          return reject(this.bwcErrorProvider.msg('WALLET_NEEDS_BACKUP'));
+        }
 
         this.createAddress(wallet).then((_addr) => {
           this.persistenceProvider.storeLastAddress(wallet.id, _addr).then(() => {
@@ -1069,14 +1073,6 @@ export class WalletProvider {
         });
       });
     });
-  }
-
-  public isReady(wallet: any): string {
-    if (!wallet.isComplete())
-      return 'WALLET_NOT_COMPLETE';
-    if (wallet.needsBackup)
-      return 'WALLET_NEEDS_BACKUP';
-    return null;
   }
 
   // An alert dialog
