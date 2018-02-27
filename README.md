@@ -187,12 +187,12 @@ The backup also contains the key `publicKeyRing` that holds the extended public 
 Depending on the key `derivationStrategy`, addresses are derived using
 [BIP44](https://github.com/bitcoin/bips/blob/master/bip-0044.mediawiki) or [BIP45](https://github.com/bitcoin/bips/blob/master/bip-0045.mediawiki). Wallets created in Copay v1.2 and forward always use BIP44, all previous wallets use BIP45. Also note that since Copay version v1.2, non-multisig wallets use address types Pay-to-PublicKeyHash (P2PKH) while multisig wallets still use Pay-to-ScriptHash (P2SH) (key `addressType` at the backup):
 
-| Copay Version  | Wallet Type   | Derivation Strategy   | Address Type  |
-|---|---|---|---|---|
-|  <1.2  | All  |  BIP45 | P2SH   |
-|  >=1.2 | Non-multisig  | BIP44  | P2PKH   |
-| >=1.2  | Multisig  |  BIP44 |  P2SH   |
-| >=1.5  | Multisig Hardware wallets  |  BIP44 (root m/48') |  P2SH   |
+| Copay Version | Wallet Type               | Derivation Strategy | Address Type |
+|---------------|---------------------------|---------------------|--------------|
+| <1.2          | All                       | BIP45               | P2SH         |
+| ≥1.2          | Non-multisig              | BIP44               | P2PKH        |
+| ≥1.2          | Multisig                  | BIP44               | P2SH         |
+| ≥1.5          | Multisig Hardware wallets | BIP44 (root m/48’)  | P2SH         |
 
 Using a tool like [Bitcore PlayGround](http://bitcore.io/playground) all wallet addresses can be generated. (TIP: Use the `Address` section for P2PKH address type wallets and `Multisig Address` for P2SH address type wallets). For multisig addresses, the required number of signatures (key `m` on the export) is also needed to recreate the addresses.
 
