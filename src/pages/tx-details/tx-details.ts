@@ -85,10 +85,10 @@ export class TxDetailsPage {
   }
 
   public readMore(): void {
-    let url = 'https://github.com/bitpay/copay/wiki/COPAY---FAQ#amount-too-low-to-spend';
+    let url = 'https://support.bitpay.com/hc/en-us/articles/115004497783-What-does-the-BitPay-wallet-s-warning-amount-too-low-to-spend-mean-';
     let optIn = true;
     let title = null;
-    let message = this.translate.instant('Read more in our Wiki');
+    let message = this.translate.instant('Read more in our support page');
     let okText = this.translate.instant('Open');
     let cancelText = this.translate.instant('Go Back');
     this.externalLinkProvider.open(url, optIn, title, message, okText, cancelText);
