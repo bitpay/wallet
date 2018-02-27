@@ -15,7 +15,8 @@
       <span translate>Wallet not backed up</span>
     </div>
     <div class="subtitle">
-      <span translate>Receiving funds in a no backed up wallet, might result in funds lost.</span>
+      <span translate>Funds received to a wallet cannot be retrieved if the wallet is not backed up.</span>
+      <a (click)="openWikiBackupNeeded()" translate>Learn more</a>
     </div>
     <button ion-button block clear (click)="goToBackup()" translate>Backup wallet</button>
   </div>
