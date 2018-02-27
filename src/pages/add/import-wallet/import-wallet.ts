@@ -206,9 +206,14 @@ export class ImportWalletPage {
       this.profileProvider.setBackupFlag(wallet.credentials.walletId);
       this.events.publish('status:updated');
       if (this.fromOnboarding) {
-        this.profileProvider.setDisclaimerAccepted().catch((err: any) => {
+        this.profileProvider.setOnboardingCompleted().then(() => {
+          this.profileProvider.setDisclaimerAccepted().catch((err: any) => {
+            this.logger.error(err);
+          });
+        }).catch((err: any) => {
           this.logger.error(err);
         });
+
         this.navCtrl.setRoot(TabsPage);
         this.navCtrl.popToRoot();
       }
