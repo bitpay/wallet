@@ -632,11 +632,22 @@ export class ProfileProvider {
       };
 
       bindWallets().then(() => {
-        this.isDisclaimerAccepted().then(() => {
-          return resolve();
+        this.isOnboardingCompleted().then(() => {
+          this.isDisclaimerAccepted().then(() => {
+            return resolve();
+          }).catch(() => {
+            return reject(new Error('NONAGREEDDISCLAIMER: Non agreed disclaimer'));
+          });
         }).catch(() => {
-          this.persistenceProvider.setHomeTipAccepted('accepted');
-          return reject(new Error('NONAGREEDDISCLAIMER: Non agreed disclaimer'));
+          this.isDisclaimerAccepted().then(() => {
+            this.setOnboardingCompleted().then(() => {
+              return resolve();
+            }).catch((err: any) => {
+              this.logger.error(err);
+            });
+          }).catch(() => {
+            return reject(new Error('ONBOARDINGNONCOMPLETED: Onboarding non completed'));
+          });
         });
       }).catch((err: any) => {
         return reject(err);
@@ -654,6 +665,23 @@ export class ProfileProvider {
       this.persistenceProvider.getCopayDisclaimerFlag().then((val) => {
         if (val) {
           this.profile.disclaimerAccepted = true;
+          return resolve();
+        } else {
+          return reject();
+        }
+      });
+    });
+  }
+
+  public isOnboardingCompleted(): Promise<any> {
+    return new Promise((resolve, reject) => {
+
+      let onboardingCompleted = this.profile && this.profile.onboardingCompleted;
+      if (onboardingCompleted) return resolve();
+
+      this.persistenceProvider.getCopayOnboardingFlag().then((val) => {
+        if (val) {
+          this.profile.onboardingCompleted = true;
           return resolve();
         } else {
           return reject();
@@ -925,6 +953,17 @@ export class ProfileProvider {
   public setDisclaimerAccepted(): Promise<any> {
     return new Promise((resolve, reject) => {
       this.profile.disclaimerAccepted = true;
+      this.persistenceProvider.storeProfile(this.profile).then(() => {
+        return resolve();
+      }).catch((err) => {
+        return reject(err);
+      });
+    });
+  }
+
+  public setOnboardingCompleted(): Promise<any> {
+    return new Promise((resolve, reject) => {
+      this.profile.onboardingCompleted = true;
       this.persistenceProvider.storeProfile(this.profile).then(() => {
         return resolve();
       }).catch((err) => {

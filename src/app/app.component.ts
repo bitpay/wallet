@@ -104,9 +104,9 @@ export class CopayApp {
             this.profile.createProfile();
             this.rootPage = OnboardingPage;
           }
-        }).catch((err: any) => {
+        }).catch((err: Error) => {
           this.logger.warn(err);
-          this.rootPage = DisclaimerPage;
+          this.rootPage = err.message == 'ONBOARDINGNONCOMPLETED: Onboarding non completed' ? OnboardingPage : DisclaimerPage;
         });
       }).catch((err) => {
         this.logger.error('Could not initialize the app');
