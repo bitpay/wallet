@@ -354,6 +354,11 @@ angular.module('copayApp.services').factory('incomingData', function($log, $stat
       paypro: payProDetails,
       coin: coin,
     };
+
+    // fee
+    if (payProDetails.requiredFeeRate)
+     stateParams.requiredFeeRate = payProDetails.requiredFeeRate * 1024;
+
     scannerService.pausePreview();
     $state.go('tabs.send', {}, {
       'reload': true,

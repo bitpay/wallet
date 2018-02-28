@@ -27,7 +27,7 @@ angular.module('copayApp.services').factory('payproService',
         payProUrl: uri,
       }, function(err, paypro) {
         if (!disableLoader) ongoingProcess.set('fetchingPayPro', false);
-        if (err) return cb(err);
+        if (err) return cb(gettextCatalog.getString('Could Not Fetch Payment: Check if it is still valid'));
         else if (!paypro.verified) {
           $log.warn('Failed to verify payment protocol signatures');
           return cb(gettextCatalog.getString('Payment Protocol Invalid'));
