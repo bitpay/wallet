@@ -22,8 +22,8 @@ angular.module('copayApp.controllers').controller('confirmController', function(
   var isCordova = platformInfo.isCordova;
   var isWindowsPhoneApp = platformInfo.isCordova && platformInfo.isWP;
 
-  //custom fee flag
-  var usingCustomFee = null;
+  var usingCustomFee = false;
+  var usingMerchantFee = false;
 
   function refresh() {
     $timeout(function() {
@@ -172,6 +172,11 @@ angular.module('copayApp.controllers').controller('confirmController', function(
     };
     tx.origToAddress = tx.toAddress;
 
+    if (data.stateParams.requiredFeeRate) {
+      usingMerchantFee = true;
+      tx.feeRate = parseInt(data.stateParams.requiredFeeRate);
+    }
+
     if (tx.coin && tx.coin == 'bch') {
       tx.feeLevel = 'normal';
 
@@ -240,7 +245,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
       txp.inputs = tx.sendMaxInfo.inputs;
       txp.fee = tx.sendMaxInfo.fee;
     } else {
-      if (usingCustomFee) {
+      if (usingCustomFee || usingMerchantFee) {
         txp.feePerKb = tx.feeRate;
       } else txp.feeLevel = tx.feeLevel;
     }
@@ -291,15 +296,32 @@ angular.module('copayApp.controllers').controller('confirmController', function(
       return cb();
     }
 
-    feeService.getFeeRate(wallet.coin, tx.network, tx.feeLevel, function(err, feeRate) {
+    // Hack to get 'urgent' fee levels in case of merchantFees, to compare.
+    feeService.getFeeRate(wallet.coin, tx.network, usingMerchantFee ? 'urgent' : tx.feeLevel, function(err, feeRate) {
       if (err) {
         ongoingProcess.set('calculatingFee', false);
         return cb(err);
       }
 
-      if (!usingCustomFee) tx.feeRate = feeRate;
-      tx.feeLevelName = feeService.feeOpts[tx.feeLevel];
+      var msg;
+      if (usingCustomFee) {
+        msg = gettextCatalog.getString('Custom');
+        tx.feeLevelName = msg;
+      }  else if (usingMerchantFee) {
 
+        $log.info('Using Merchant Fee:' + tx.feeRate + ' vs. Urgent level:' + feeRate);
+        if (tx.feeRate > feeRate) {
+          ongoingProcess.set('calculatingFee', false);
+          setNoWallet(gettextCatalog.getString('Merchant fee to high. Payment rejected'), true);
+          return cb('fee_too_high');
+        }
+
+        msg = gettextCatalog.getString('Suggested by Merchant');
+        tx.feeLevelName = msg;
+      } else {
+        tx.feeLevelName = feeService.feeOpts[tx.feeLevel];
+        tx.feeRate = feeRate;
+      }
       getSendMaxInfo(lodash.clone(tx), wallet, function(err, sendMaxInfo) {
         if (err) {
           ongoingProcess.set('calculatingFee', false);
@@ -327,17 +349,22 @@ angular.module('copayApp.controllers').controller('confirmController', function(
           }, 200);
         }
 
+
         // txp already generated for this wallet?
         if (tx.txp[wallet.id]) {
           ongoingProcess.set('calculatingFee', false);
           refresh();
           return cb();
         }
-
         getTxp(lodash.clone(tx), wallet, opts.dryRun, function(err, txp) {
           ongoingProcess.set('calculatingFee', false);
           if (err) {
-            return cb(err);
+            if (err.message == 'Insufficient funds') {
+              setNoWallet(gettextCatalog.getString('Insufficient funds'));
+              popupService.showAlert(gettextCatalog.getString('Error'), gettextCatalog.getString('Not enough funds for fee'));
+              return cb('no_funds');
+            } else
+              return cb(err);
           }
 
           txp.feeStr = txFormatService.formatAmountStr(wallet.coin, txp.fee);
@@ -497,8 +524,11 @@ angular.module('copayApp.controllers').controller('confirmController', function(
 
     // If select another wallet
     tx.coin = wallet.coin;
-    tx.feeLevel = wallet.coin == 'bch' ? 'normal' : configFeeLevel;
-    usingCustomFee = null;
+
+    if (usingCustomFee) {
+    } else {
+      tx.feeLevel = wallet.coin == 'bch' ? 'normal' : configFeeLevel;
+    }
 
     setButtonText(wallet.credentials.m > 1, !!tx.paypro);
 
@@ -642,6 +672,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
   $scope.chooseFeeLevel = function(tx, wallet) {
 
     if (wallet.coin == 'bch') return;
+    if (usingMerchantFee) return;       // ToDo: should we allow overwride?
 
     var scope = $rootScope.$new(true);
     scope.network = tx.network;
@@ -680,7 +711,8 @@ angular.module('copayApp.controllers').controller('confirmController', function(
       updateTx(tx, wallet, {
         clearCache: true,
         dryRun: true
-      }, function() {});
+      }, function() {
+      });
     };
   };
 
