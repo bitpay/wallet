@@ -162,7 +162,7 @@ angular.module('copayApp.controllers').controller('buyMercadoLibreController', f
       message: message,
       payProUrl: payProUrl,
       excludeUnconfirmedUtxos: configWallet.spendUnconfirmed ? false : true,
-      feeLevel: configWallet.settings.feeLevel || 'normal'
+      feeLevel: 'normal'
     };
 
     txp['origToAddress'] = txp.toAddress;
