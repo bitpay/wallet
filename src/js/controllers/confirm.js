@@ -158,7 +158,6 @@ angular.module('copayApp.controllers').controller('confirmController', function(
       description: data.stateParams.description,
       paypro: data.stateParams.paypro,
 
-      feeLevel: configFeeLevel,
       spendUnconfirmed: walletConfig.spendUnconfirmed,
 
       // Vanity tx info (not in the real tx)
@@ -175,11 +174,11 @@ angular.module('copayApp.controllers').controller('confirmController', function(
     if (data.stateParams.requiredFeeRate) {
       usingMerchantFee = true;
       tx.feeRate = parseInt(data.stateParams.requiredFeeRate);
+    }  else {
+      tx.feeLevel=  (tx.coin && tx.coin == 'bch') ? 'normal ' : configFeeLevel;
     }
 
     if (tx.coin && tx.coin == 'bch') {
-      tx.feeLevel = 'normal';
-
       // Use legacy address
       tx.toAddress = new bitcoreCash.Address(tx.toAddress).toString();
     };
@@ -296,9 +295,14 @@ angular.module('copayApp.controllers').controller('confirmController', function(
       return cb();
     }
 
-    // Hack to get 'urgent' fee levels in case of merchantFees, to compare.
-    feeService.getFeeRate(wallet.coin, tx.network, usingMerchantFee ? 'urgent' : tx.feeLevel, function(err, feeRate) {
+    var maxAllowedMerchantFee = {
+      btc: 'urgent',
+      bch: 'normal',
+    };
+
+    feeService.getFeeRate(wallet.coin, tx.network, usingMerchantFee ? maxAllowedMerchantFee[wallet.coin] : tx.feeLevel, function(err, feeRate) {
       if (err) {
+        $log.warn(err);
         ongoingProcess.set('calculatingFee', false);
         return cb(err);
       }
@@ -309,8 +313,9 @@ angular.module('copayApp.controllers').controller('confirmController', function(
         tx.feeLevelName = msg;
       }  else if (usingMerchantFee) {
 
-        $log.info('Using Merchant Fee:' + tx.feeRate + ' vs. Urgent level:' + feeRate);
-        if (tx.feeRate > feeRate) {
+        var maxAllowedfee = feeRate * 2;
+        $log.info('Using Merchant Fee:' + tx.feeRate + ' vs. referent level:' + maxAllowedfee);
+        if (tx.feeRate > maxAllowedfee) {
           ongoingProcess.set('calculatingFee', false);
           setNoWallet(gettextCatalog.getString('Merchant fee to high. Payment rejected'), true);
           return cb('fee_too_high');
@@ -525,11 +530,10 @@ angular.module('copayApp.controllers').controller('confirmController', function(
     // If select another wallet
     tx.coin = wallet.coin;
 
-    if (usingCustomFee) {
+    if (usingCustomFee || usingMerchantFee) {
     } else {
       tx.feeLevel = wallet.coin == 'bch' ? 'normal' : configFeeLevel;
     }
-
     setButtonText(wallet.credentials.m > 1, !!tx.paypro);
 
     if (tx.paypro)

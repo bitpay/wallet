@@ -146,41 +146,54 @@ angular.module('copayApp.controllers').controller('buyAmazonController', functio
     }
 
     var outputs = [];
-    var toAddress = invoice.addresses[COIN];
-    var amountSat = invoice.paymentTotals[COIN];
 
-    outputs.push({
-      'toAddress': toAddress,
-      'amount': amountSat,
-      'message': message
-    });
-
-    var txp = {
-      toAddress: toAddress,
-      amount: amountSat,
-      outputs: outputs,
-      message: message,
-      payProUrl: payProUrl,
-      excludeUnconfirmedUtxos: configWallet.spendUnconfirmed ? false : true,
-      feeLevel: configWallet.settings.feeLevel || 'normal'
-    };
-
-    txp['origToAddress'] = txp.toAddress;
-
-    if (wallet.coin && wallet.coin == 'bch') {
-      // Use legacy address
-      txp.toAddress = new bitcoreCash.Address(txp.toAddress).toString();
-      txp.outputs[0].toAddress = txp.toAddress;
-    };
-
-    walletService.createTx(wallet, txp, function(err, ctxp) {
+    payproService.getPayProDetails(payProUrl, wallet.coin, function(err, details) {
       if (err) {
         return cb({
-          title: gettextCatalog.getString('Could not create transaction'),
-          message: bwcError.msg(err)
+          title: gettextCatalog.getString('Error in Payment Protocol'),
+          message: gettextCatalog.getString('Invalid URL')
         });
       }
-      return cb(null, ctxp);
+ 
+      var txp = {
+        amount: details.amount,
+        toAddress: details.toAddress,
+        outputs: [{
+            'toAddress': details.toAddress,
+            'amount': details.amount,
+            'message': message
+        }],
+        message: message,
+        payProUrl: payProUrl,
+        excludeUnconfirmedUtxos: configWallet.spendUnconfirmed ? false : true,
+      };
+
+
+
+      if (details.requiredFeeRate) {
+        txp.feePerKb = parseInt(details.requiredFeeRate * 1024),
+        $log.debug('using merchant fee rate (for amazon gc):' + txp.feePerKb);
+      } else {
+        txp.feeLevel= configWallet.settings.feeLevel || 'normal';
+      }
+
+      txp['origToAddress'] = txp.toAddress;
+
+      if (wallet.coin && wallet.coin == 'bch') {
+        // Use legacy address
+        txp.toAddress = new bitcoreCash.Address(txp.toAddress).toString();
+        txp.outputs[0].toAddress = txp.toAddress;
+      };
+
+      walletService.createTx(wallet, txp, function(err, ctxp) {
+        if (err) {
+          return cb({
+            title: gettextCatalog.getString('Could not create transaction'),
+            message: bwcError.msg(err)
+          });
+        }
+        return cb(null, ctxp);
+      });
     });
   };
 
