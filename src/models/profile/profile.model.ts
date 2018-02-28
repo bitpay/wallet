@@ -4,6 +4,7 @@ export class Profile {
   public createdOn: number;
   public credentials: any[];
   public disclaimerAccepted: boolean;
+  public onboardingCompleted: boolean;
   public checked: any;
   public checkedUA?: any;
   public dirty: boolean;
@@ -18,6 +19,7 @@ export class Profile {
     x.createdOn = Date.now();
     x.credentials = opts.credentials || [];
     x.disclaimerAccepted = false;
+    x.onboardingCompleted = false;
     x.checked = {};
     return x;
   };
@@ -28,6 +30,7 @@ export class Profile {
     x.createdOn = obj.createdOn;
     x.credentials = obj.credentials;
     x.disclaimerAccepted = obj.disclaimerAccepted;
+    x.onboardingCompleted = obj.onboardingCompleted;
     x.checked = obj.checked || {};
     x.checkedUA = obj.checkedUA || {};
 

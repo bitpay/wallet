@@ -78,6 +78,8 @@ export class SendPage {
         network: v.network,
         m: v.credentials.m,
         n: v.credentials.n,
+        isComplete: v.isComplete(),
+        needsBackup: v.needsBackup,
         getAddress: (): Promise<any> => {
           return new Promise((resolve, reject) => {
             this.walletProvider.getAddress(v, false).then((addr) => {
@@ -105,6 +107,8 @@ export class SendPage {
         network: v.network,
         m: v.credentials.m,
         n: v.credentials.n,
+        isComplete: v.isComplete(),
+        needsBackup: v.needsBackup,
         getAddress: (): Promise<any> => {
           return new Promise((resolve, reject) => {
             this.walletProvider.getAddress(v, false).then((addr) => {

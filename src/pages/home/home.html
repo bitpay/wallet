@@ -121,10 +121,13 @@
         </ion-icon>
         <div class="item-title">{{wallet.credentials.walletName}}</div>
         <div class="item-subtitle">
-          <span *ngIf="!wallet.isComplete()" translate>
+          <span class="wallet-warning" *ngIf="!wallet.isComplete()" translate>
             Incomplete
           </span>
-          <span *ngIf="wallet.isComplete()">
+          <span class="wallet-warning" *ngIf="wallet.isComplete() && wallet.needsBackup" translate>
+            Backup needed
+          </span>
+          <span *ngIf="wallet.isComplete() && !wallet.needsBackup">
             <span *ngIf="!wallet.balanceHidden && !wallet.scanning">
               {{wallet.status && wallet.status.totalBalanceStr ? (wallet.status.totalBalanceStr) : ( wallet.cachedBalance ? wallet.cachedBalance
               + (wallet.cachedBalanceUpdatedOn ? ' &middot; ' + ( wallet.cachedBalanceUpdatedOn * 1000 | amTimeAgo) : '')
@@ -134,7 +137,7 @@
             <span *ngIf="wallet.balanceHidden && !wallet.scanning">[{{'Balance Hidden' | translate}}]</span>
             <span *ngIf="wallet.credentials.m > 1">{{wallet.credentials.m}}-of-{{wallet.credentials.n}}</span>
             <ion-icon *ngIf="!wallet.balanceHidden && wallet.status && (wallet.status.totalBalanceSat != wallet.status.spendableAmount)"
-               ios="ios-timer-outline" md="md-timer"></ion-icon>
+              ios="ios-timer-outline" md="md-timer"></ion-icon>
             <span *ngIf="wallet.error" class="error">{{wallet.error}}</span>
           </span>
         </div>
@@ -173,10 +176,13 @@
         </ion-icon>
         <div class="item-title">{{wallet.credentials.walletName}}</div>
         <div class="item-subtitle">
-          <span *ngIf="!wallet.isComplete()" translate>
+          <span class="wallet-warning" *ngIf="!wallet.isComplete()" translate>
             Incomplete
           </span>
-          <span *ngIf="wallet.isComplete()">
+          <span class="wallet-warning" *ngIf="wallet.isComplete() && wallet.needsBackup" translate>
+            Backup needed
+          </span>
+          <span *ngIf="wallet.isComplete() && !wallet.needsBackup">
             <span *ngIf="!wallet.balanceHidden && !wallet.scanning">
               {{wallet.status && wallet.status.totalBalanceStr ? (wallet.status.totalBalanceStr) : ( wallet.cachedBalance ? wallet.cachedBalance
               + (wallet.cachedBalanceUpdatedOn ? ' &middot; ' + ( wallet.cachedBalanceUpdatedOn * 1000 | amTimeAgo) : '')
@@ -197,7 +203,8 @@
   <div class="card" *ngIf="bitpayCardItems && bitpayCardItems[0]">
     <ion-item-divider>
       <div class="title" item-start>
-        <span translate>BitPay Visa<sup>&reg;</sup> Card</span>
+        <span translate>BitPay Visa
+          <sup>&reg;</sup> Card</span>
       </div>
       <div item-end>
         <button ion-button clear icon-only color="grey" (click)="goTo('BitPayCardIntroPage')">
@@ -211,7 +218,8 @@
           <img src="assets/img/icon-card.svg" class="icon-card" />
         </ion-icon>
         <div class="item-title">BitPay Visa&reg; Card ({{card.lastFourDigits}})</div>
-        <div class="item-subtitle">{{card.balance ? (card.balance | currency:card.currencySymbol:2) : 'Add funds to get started'|translate}} {{card.updatedOn ? (' &middot; ' + (card.updatedOn  * 1000 | amTimeAgo)) : ''}}</div>
+        <div class="item-subtitle">{{card.balance ? (card.balance | currency:card.currencySymbol:2) : 'Add funds to get started'|translate}} {{card.updatedOn
+          ? (' &middot; ' + (card.updatedOn * 1000 | amTimeAgo)) : ''}}</div>
       </button>
     </ion-list>
   </div>

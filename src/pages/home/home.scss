@@ -51,4 +51,8 @@ page-home {
     border-radius: 4px;
     background-color: #fff;
   }
+  .wallet-warning {
+    font-size: 11px;
+    color: color($colors, danger);
+  }
 }

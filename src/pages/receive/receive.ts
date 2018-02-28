@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
 import { AlertController, Events, NavController } from 'ionic-angular';
 import { Logger } from '../../providers/logger/logger';
 
@@ -12,6 +13,7 @@ import { CopayersPage } from './../add/copayers/copayers';
 
 // Providers
 import { BwcErrorProvider } from '../../providers/bwc-error/bwc-error';
+import { ExternalLinkProvider } from '../../providers/external-link/external-link';
 import { PlatformProvider } from '../../providers/platform/platform';
 import { ProfileProvider } from '../../providers/profile/profile';
 import { WalletProvider } from '../../providers/wallet/wallet';
@@ -41,7 +43,9 @@ export class ReceivePage {
     private platformProvider: PlatformProvider,
     private events: Events,
     private socialSharing: SocialSharing,
-    private bwcErrorProvider: BwcErrorProvider
+    private bwcErrorProvider: BwcErrorProvider,
+    private translate: TranslateService,
+    private externalLinkProvider: ExternalLinkProvider,
   ) {
     this.showShareButton = this.platformProvider.isCordova;
   }
@@ -131,6 +135,16 @@ export class ReceivePage {
       }],
     }
     this.alertCtrl.create(opts).present();
+  }
+
+  public openWikiBackupNeeded(): void {
+    let url = 'https://support.bitpay.com/hc/en-us/articles/115002989283-Why-don-t-I-have-an-online-account-for-my-BitPay-wallet-';
+    let optIn = true;
+    let title = null;
+    let message = this.translate.instant('Read more in our Wiki');
+    let okText = this.translate.instant('Open');
+    let cancelText = this.translate.instant('Go Back');
+    this.externalLinkProvider.open(url, optIn, title, message, okText, cancelText);
   }
 
 }

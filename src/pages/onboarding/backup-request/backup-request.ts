@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { AlertController, NavController, NavParams } from 'ionic-angular';
 import { Logger } from '../../../providers/logger/logger';
 
+// Pages
 import { BackupWarningPage } from '../../backup/backup-warning/backup-warning';
 import { DisclaimerPage } from '../disclaimer/disclaimer';
 

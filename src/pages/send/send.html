@@ -43,6 +43,12 @@
           <div class="item-title">{{wallet.name}}
             <span *ngIf="wallet.m > 1">{{wallet.m}}-{{wallet.n}}</span>
           </div>
+          <ion-note class="wallet-warning" *ngIf="!wallet.isComplete" item-end>
+            {{'Incomplete' | translate}}
+          </ion-note>
+          <ion-note class="wallet-warning" *ngIf="wallet.isComplete && wallet.needsBackup" item-end>
+            {{'Backup needed' | translate}}
+          </ion-note>
         </button>
       </ion-list>
     </div>
@@ -64,7 +70,12 @@
           <div class="item-title">{{wallet.name}}
             <span *ngIf="wallet.m > 1">{{wallet.m}}-{{wallet.n}}</span>
           </div>
-          <p></p>
+          <ion-note class="wallet-warning" *ngIf="!wallet.isComplete" item-end>
+            {{'Incomplete' | translate}}
+          </ion-note>
+          <ion-note class="wallet-warning" *ngIf="wallet.isComplete && wallet.needsBackup" item-end>
+            {{'Backup needed' | translate}}
+          </ion-note>
         </button>
       </ion-list>
     </div>
