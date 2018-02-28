@@ -146,25 +146,29 @@ angular.module('copayApp.controllers').controller('buyAmazonController', functio
     }
 
     var outputs = [];
-    var toAddress = invoice.addresses[COIN];
-    var amountSat = invoice.paymentTotals[COIN];
-
-    outputs.push({
-      'toAddress': toAddress,
-      'amount': amountSat,
-      'message': message
-    });
 
     payproService.getPayProDetails(payProUrl, wallet.coin, function(err, details) {
+      if (err) {
+        return cb({
+          title: gettextCatalog.getString('Error in Payment Protocol'),
+          message: gettextCatalog.getString('Invalid URL')
+        });
+      }
+ 
       var txp = {
         amount: details.amount,
         toAddress: details.toAddress,
-  
-        outputs: outputs,
+        outputs: [{
+            'toAddress': details.toAddress,
+            'amount': details.amount,
+            'message': message
+        }],
         message: message,
         payProUrl: payProUrl,
         excludeUnconfirmedUtxos: configWallet.spendUnconfirmed ? false : true,
       };
+
+
 
       if (details.requiredFeeRate) {
         txp.feePerKb = parseInt(details.requiredFeeRate * 1024),
