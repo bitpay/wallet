@@ -16,7 +16,9 @@
 
 // Position
 // --------------------------------------------------
-
+ion-app.app-root{
+  background-color:#F5F5F5 !important;
+}
 ion-alert.alert-top{
   align-items: center;
 }
@@ -216,4 +218,12 @@ a.royal {
 
 .pointer {
   cursor: pointer;
+}
+ion-content.content{
+  background-color: $app-bg-color;
+}
+
+// ios overrides
+.list-ios > .item-block:last-child{
+  border:0;
 }

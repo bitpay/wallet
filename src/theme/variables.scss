@@ -33,7 +33,8 @@ $colors: (
   dark: #424242,
   grey: #999
 );
-
+//App Background color
+$app-bg-color: #F5F5F5;
 // Refresh color
 $refresher-icon-color: color($colors, primary);
 $refresher-icon-font-size: 12.5px;
