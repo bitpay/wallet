@@ -8,7 +8,7 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content  no-bounce>
+<ion-content no-bounce>
   <div class="bitpayCard-illustration">
     <img class="bitpayCard-illustration-img" src="assets/img/bitpay-card/bitpay-card-visa.svg" />
   </div>
@@ -31,8 +31,8 @@
       </p>
     </ion-slide>
   </ion-slides>
+  <div padding>
+    <button ion-button block (click)="orderBitPayCard()">Order the BitPay Card</button>
+    <button ion-button clear small block (click)="connectBitPayCard()">Connect my BitPay Card</button>
+  </div>
 </ion-content>
-<ion-footer text-center padding-vertical>
-  <button ion-button (click)="orderBitPayCard()">Order the BitPay Card</button>
-  <button ion-button outline small (click)="connectBitPayCard()">Connect my BitPay Card</button>
-</ion-footer>
