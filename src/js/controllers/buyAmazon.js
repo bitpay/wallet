@@ -155,32 +155,41 @@ angular.module('copayApp.controllers').controller('buyAmazonController', functio
       'message': message
     });
 
-    var txp = {
-      toAddress: toAddress,
-      amount: amountSat,
-      outputs: outputs,
-      message: message,
-      payProUrl: payProUrl,
-      excludeUnconfirmedUtxos: configWallet.spendUnconfirmed ? false : true,
-      feeLevel: configWallet.settings.feeLevel || 'normal'
-    };
+    payproService.getPayProDetails(payProUrl, wallet.coin, function(err, details) {
+      var txp = {
+        amount: details.amount,
+        toAddress: details.toAddress,
+  
+        outputs: outputs,
+        message: message,
+        payProUrl: payProUrl,
+        excludeUnconfirmedUtxos: configWallet.spendUnconfirmed ? false : true,
+      };
 
-    txp['origToAddress'] = txp.toAddress;
-
-    if (wallet.coin && wallet.coin == 'bch') {
-      // Use legacy address
-      txp.toAddress = new bitcoreCash.Address(txp.toAddress).toString();
-      txp.outputs[0].toAddress = txp.toAddress;
-    };
-
-    walletService.createTx(wallet, txp, function(err, ctxp) {
-      if (err) {
-        return cb({
-          title: gettextCatalog.getString('Could not create transaction'),
-          message: bwcError.msg(err)
-        });
+      if (details.requiredFeeRate) {
+        txp.feePerKb = parseInt(details.requiredFeeRate * 1024),
+        $log.debug('using merchant fee rate (for amazon gc):' + txp.feePerKb);
+      } else {
+        txp.feeLevel= configWallet.settings.feeLevel || 'normal';
       }
-      return cb(null, ctxp);
+
+      txp['origToAddress'] = txp.toAddress;
+
+      if (wallet.coin && wallet.coin == 'bch') {
+        // Use legacy address
+        txp.toAddress = new bitcoreCash.Address(txp.toAddress).toString();
+        txp.outputs[0].toAddress = txp.toAddress;
+      };
+
+      walletService.createTx(wallet, txp, function(err, ctxp) {
+        if (err) {
+          return cb({
+            title: gettextCatalog.getString('Could not create transaction'),
+            message: bwcError.msg(err)
+          });
+        }
+        return cb(null, ctxp);
+      });
     });
   };
 
