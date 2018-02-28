@@ -216,7 +216,7 @@
       "cordova-custom-config": {},
       "cordova-plugin-customurlscheme": {
         "URL_SCHEME": "bitcoin",
-        "SECOND_URL_SCHEME": "copay",
+        "SECOND_URL_SCHEME": "*PACKAGENAME*",
         "THIRD_URL_SCHEME": "bitcoincash",
         "ANDROID_SCHEME": " ",
         "ANDROID_HOST": " ",
