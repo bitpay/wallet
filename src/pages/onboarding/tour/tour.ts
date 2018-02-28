@@ -7,6 +7,7 @@ import { CollectEmailPage } from '../collect-email/collect-email';
 
 // providers
 import { OnGoingProcessProvider } from '../../../providers/on-going-process/on-going-process';
+import { PersistenceProvider } from '../../../providers/persistence/persistence';
 import { ProfileProvider } from '../../../providers/profile/profile';
 import { RateProvider } from '../../../providers/rate/rate';
 import { TxFormatProvider } from '../../../providers/tx-format/tx-format';
@@ -30,7 +31,8 @@ export class TourPage {
     private profileProvider: ProfileProvider,
     private rateProvider: RateProvider,
     private txFormatProvider: TxFormatProvider,
-    private onGoingProcessProvider: OnGoingProcessProvider
+    private onGoingProcessProvider: OnGoingProcessProvider,
+    private persistenceProvider: PersistenceProvider
   ) {
     this.currentIndex = 0;
     this.rateProvider.whenRatesAvailable().then(() => {
@@ -69,6 +71,7 @@ export class TourPage {
     this.onGoingProcessProvider.set('creatingWallet');
     this.profileProvider.createDefaultWallet().then((wallet) => {
       this.onGoingProcessProvider.clear();
+      this.persistenceProvider.setOnboardingCompleted();
       this.navCtrl.push(CollectEmailPage, { walletId: wallet.id });
     })
   }

@@ -68,12 +68,12 @@ export class WalletAddressesPage {
         this.withBalance = resp.byAddress;
 
         var idx = _.keyBy(this.withBalance, 'address');
-        this.noBalance = _.reject(allAddresses, (x) => {
+        this.noBalance = _.reject(allAddresses, (x: any) => {
           return idx[x.address];
         });
 
-        this.processPaths(this.noBalance);
-        this.processPaths(this.withBalance);
+        this.processList(this.noBalance);
+        this.processList(this.withBalance);
 
         this.latestUnused = _.slice(this.noBalance, 0, this.UNUSED_ADDRESS_LIMIT);
         this.latestWithBalance = _.slice(this.withBalance, 0, this.BALANCE_ADDRESS_LIMIT);
@@ -112,9 +112,10 @@ export class WalletAddressesPage {
 
   }
 
-  private processPaths(list: any): void {
+  private processList(list: any): void {
     _.each(list, (n: any) => {
       n.path = n.path.replace(/^m/g, 'xpub');
+      n.address = this.walletProvider.getAddressView(this.wallet, n.address);
     });
   }
 

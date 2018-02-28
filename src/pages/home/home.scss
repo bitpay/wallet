@@ -37,6 +37,7 @@ page-home {
     justify-content: center;
     text-align: center;
   }
+
   .item-block:last-child{
     border:0px;
   }
@@ -50,6 +51,8 @@ page-home {
     display: block;
     border-radius: 4px;
     background-color: #fff;
-    
-  }
+}
+.wallet-warning {
+  font-size: 11px;
+  color: color($colors, danger);
 }

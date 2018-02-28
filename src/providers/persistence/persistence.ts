@@ -32,6 +32,7 @@ const Keys = {
   LAST_ADDRESS: walletId => 'lastAddress-' + walletId,
   LAST_CURRENCY_USED: 'lastCurrencyUsed',
   MERCADO_LIBRE: network => 'MercadoLibreGiftCards-' + network,
+  ONBOARDING_COMPLETED: 'onboardingCompleted',
   PROFILE: 'profile',
   REMOTE_PREF_STORED: 'remotePrefStored',
   TX_CONFIRM_NOTIF: txid => 'txConfirmNotif-' + txid,
@@ -167,9 +168,17 @@ export class PersistenceProvider {
     return this.storage.set(Keys.AGREE_DISCLAIMER, true);
   }
 
+  setOnboardingCompleted(): Promise<any> {
+    return this.storage.set(Keys.ONBOARDING_COMPLETED, true);
+  }
+
   // for compatibility
   getCopayDisclaimerFlag(): Promise<any> {
     return this.storage.get(Keys.AGREE_DISCLAIMER);
+  };
+
+  getCopayOnboardingFlag(): Promise<any> {
+    return this.storage.get(Keys.ONBOARDING_COMPLETED);
   };
 
   setRemotePrefsStoredFlag(): Promise<void> {

@@ -27,10 +27,13 @@
         </ion-icon>
         <h2 class="wallet-name">{{wallet.credentials.walletName}}</h2>
         <p>
-          <span *ngIf="!wallet.isComplete()" translate>
+          <span class="wallet-warning" *ngIf="!wallet.isComplete()" translate>
             Incomplete
           </span>
-          <span *ngIf="wallet.isComplete()">
+          <span class="wallet-warning" *ngIf="wallet.isComplete() && wallet.needsBackup" translate>
+            Backup needed
+          </span>
+          <span *ngIf="wallet.isComplete() && !wallet.needsBackup">
             <span *ngIf="!wallet.balanceHidden && !wallet.scanning">
               {{wallet.status && wallet.status.totalBalanceStr ? (wallet.status.totalBalanceStr) : ( wallet.cachedBalance ? wallet.cachedBalance
               + (wallet.cachedBalanceUpdatedOn ? ' &middot; ' + ( wallet.cachedBalanceUpdatedOn * 1000 | amTimeAgo) : '')
