@@ -10,6 +10,7 @@ import { AppProvider } from '../providers/app/app';
 import { BitPayCardProvider } from '../providers/bitpay-card/bitpay-card';
 import { CoinbaseProvider } from '../providers/coinbase/coinbase';
 import { ConfigProvider } from '../providers/config/config';
+import { EmailNotificationsProvider } from '../providers/email-notifications/email-notifications';
 import { GlideraProvider } from '../providers/glidera/glidera';
 import { Logger } from '../providers/logger/logger';
 import { MercadoLibreProvider } from '../providers/mercado-libre/mercado-libre';
@@ -58,6 +59,7 @@ export class CopayApp {
     private bitPayCardProvider: BitPayCardProvider,
     private mercadoLibreProvider: MercadoLibreProvider,
     private shapeshiftProvider: ShapeshiftProvider,
+    private emailNotificationsProvider: EmailNotificationsProvider
   ) {
     this.initializeApp();
   }
@@ -95,6 +97,7 @@ export class CopayApp {
         // Check Profile
         this.profile.loadAndBindProfile().then((profile: any) => {
           this.registerIntegrations();
+          this.emailNotificationsProvider.init(); // Update email subscription if necessary
           if (profile) {
             this.logger.info('Profile exists.');
             this.rootPage = TabsPage;
