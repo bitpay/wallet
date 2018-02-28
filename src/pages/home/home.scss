@@ -37,4 +37,19 @@ page-home {
     justify-content: center;
     text-align: center;
   }
+  .item-block:last-child{
+    border:0px;
+  }
+  .card{
+    padding-top: 1px;
+    width:92%;
+    padding-bottom: 15px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
+    overflow: hidden;
+    margin: 20px auto;
+    display: block;
+    border-radius: 4px;
+    background-color: #fff;
+    
+  }
 }
