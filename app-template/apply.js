@@ -5,6 +5,7 @@
 //
 
 var templates = {
+  'package-template.json': '/',
   'index-template.html': 'src/',
   'config-template.xml': '/',
   'ionic.config-template.json': '/',
@@ -59,6 +60,8 @@ Object.keys(templates).forEach(function(k) {
 
   if (k === 'config-template.xml') {
     k = 'config.xml';
+  } else if (k === 'package-template.json') {
+    k = 'package.json'; 
   } else if (k === 'index-template.html') {
     k = 'index.html';
   } else if (k === 'ionic.config-template.json') {
