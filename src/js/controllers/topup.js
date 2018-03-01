@@ -50,7 +50,9 @@ angular.module('copayApp.controllers').controller('topUpController', function($s
     }
 
     walletService.publishAndSign(wallet, txp, function(err, txp) {
-      if (err) return cb(err);
+      if (err) {
+        return cb(err);
+      }
       return cb(null, txp);
     }, onSendStatusChange);
   };
@@ -147,7 +149,7 @@ angular.module('copayApp.controllers').controller('topUpController', function($s
       };
 
       if (details.requiredFeeRate) {
-        txp.feePerKb = parseInt(details.requiredFeeRate * 1024);
+        txp.feePerKb = Math.ceil(details.requiredFeeRate * 1024);
         $log.debug('Using merchant fee rate (for debit card): ' + txp.feePerKb);
       } else {
         txp.feeLevel = configWallet.settings.feeLevel || 'normal';
