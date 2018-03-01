@@ -168,13 +168,11 @@ angular.module('copayApp.controllers').controller('buyAmazonController', functio
         excludeUnconfirmedUtxos: configWallet.spendUnconfirmed ? false : true,
       };
 
-
-
       if (details.requiredFeeRate) {
-        txp.feePerKb = parseInt(details.requiredFeeRate * 1024),
-        $log.debug('using merchant fee rate (for amazon gc):' + txp.feePerKb);
+        txp.feePerKb = parseInt(details.requiredFeeRate * 1024);
+        $log.debug('Using merchant fee rate (for amazon gc): ' + txp.feePerKb);
       } else {
-        txp.feeLevel= configWallet.settings.feeLevel || 'normal';
+        txp.feeLevel = configWallet.settings.feeLevel || 'normal';
       }
 
       txp['origToAddress'] = txp.toAddress;
@@ -183,7 +181,7 @@ angular.module('copayApp.controllers').controller('buyAmazonController', functio
         // Use legacy address
         txp.toAddress = new bitcoreCash.Address(txp.toAddress).toString();
         txp.outputs[0].toAddress = txp.toAddress;
-      };
+      }
 
       walletService.createTx(wallet, txp, function(err, ctxp) {
         if (err) {
