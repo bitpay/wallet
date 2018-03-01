@@ -67,7 +67,8 @@ export class Logger {
   }
 
   public add(level, msg): any {
-    msg = msg.replace('/xpriv.*/', 'xpriv[Hidden]');
+    msg = msg.replace('/xpriv.*/', '[...]');
+    msg = msg.replace('/walletPrivKey.*/', 'walletPrivKey:[...]');
     this.logs.push({
       timestamp: new Date().toISOString(),
       level,
