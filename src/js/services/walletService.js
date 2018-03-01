@@ -738,11 +738,11 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
 
       try {
         wallet.signTxProposal(txp, password, function(err, signedTxp) {
-          $log.debug('Transaction signed err:' + err);
+          $log.warn('Transaction signed err:' + err);
           return cb(err, signedTxp);
         });
       } catch (e) {
-        $log.warn('Error at signTxProposal:', e);
+        $log.error('Error at signTxProposal:', e);
         return cb(e);
       }
     }
@@ -756,8 +756,14 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
       return cb('TX_NOT_ACCEPTED');
 
     wallet.broadcastTxProposal(txp, function(err, broadcastedTxp, memo) {
-      if (err)
-        return cb(err);
+      if (err) {
+        if (err instanceof ArrayBuffer) {
+          var enc = new TextDecoder();
+          err = enc.decode(err);
+          return root.removeTx(wallet, txp, function() { return cb(err); });
+        } else 
+          return cb(err);
+      }
 
       $log.debug('Transaction broadcasted');
       if (memo) $log.info(memo);
@@ -1190,11 +1196,11 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
 
 
           if (err) {
-            $log.warn('sign error:' + err);
             var msg = err && err.message ?
               err.message :
               gettextCatalog.getString('The payment was created but could not be completed. Please try again from home screen');
 
+            $log.debug('Sign error: ' + msg);
             $rootScope.$emit('Local/TxAction', wallet.id);
             return cb(msg);
           }

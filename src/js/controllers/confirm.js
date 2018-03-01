@@ -173,7 +173,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
 
     if (data.stateParams.requiredFeeRate) {
       usingMerchantFee = true;
-      tx.feeRate = parseInt(data.stateParams.requiredFeeRate);
+      tx.feeRate = data.stateParams.requiredFeeRate;
     }  else {
       tx.feeLevel=  (tx.coin && tx.coin == 'bch') ? 'normal ' : configFeeLevel;
     }

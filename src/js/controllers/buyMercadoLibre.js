@@ -47,7 +47,9 @@ angular.module('copayApp.controllers').controller('buyMercadoLibreController', f
     }
 
     walletService.publishAndSign(wallet, txp, function(err, txp) {
-      if (err) return cb(err);
+      if (err) {
+        return cb(err);
+      }
       return cb(null, txp);
     }, onSendStatusChange);
   };
