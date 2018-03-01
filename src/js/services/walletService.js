@@ -756,7 +756,14 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
       return cb('TX_NOT_ACCEPTED');
 
     wallet.broadcastTxProposal(txp, function(err, broadcastedTxp, memo) {
-      if (err) return cb(err);
+      if (err) {
+        if (err instanceof ArrayBuffer) {
+          var enc = new TextDecoder();
+          err = enc.decode(err);
+          return root.removeTx(wallet, txp, function() { return cb(err); });
+        } else 
+          return cb(err);
+      }
 
       $log.debug('Transaction broadcasted');
       if (memo) $log.info(memo);
