@@ -37,9 +37,6 @@ page-home {
     justify-content: center;
     text-align: center;
   }
-  .item-block:last-child{
-    border:0px;
-  }
   .card{
     padding-top: 1px;
     width:92%;
@@ -54,5 +51,8 @@ page-home {
   .wallet-warning {
     font-size: 11px;
     color: color($colors, danger);
+  }
+  .item-divider-md {
+    background-color:#ffffff;
   }
 }
