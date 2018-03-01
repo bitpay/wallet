@@ -14,7 +14,7 @@
   },
   "license": "MIT",
   "repository": {
-    "url": "git://github.com/bitpay/bitpay-wallet.git",
+    "url": "git://github.com/bitpay/copay.git",
     "type": "git"
   }
 }
