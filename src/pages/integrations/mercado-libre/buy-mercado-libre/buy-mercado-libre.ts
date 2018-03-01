@@ -258,7 +258,7 @@ export class BuyMercadoLibrePage {
         message,
         payProUrl,
         excludeUnconfirmedUtxos: this.configWallet.spendUnconfirmed ? false : true,
-        feeLevel: this.configWallet.settings.feeLevel ? this.configWallet.settings.feeLevel : 'normal'
+        feeLevel: 'normal'
       };
 
       txp['origToAddress'] = txp.toAddress;
