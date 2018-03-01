@@ -114,7 +114,6 @@ export class ConfirmPage {
       sendMax: this.navParams.data.useSendMax ? true : false,
       description: this.navParams.data.description,
       paypro: this.navParams.data.paypro,
-      feeLevel: this.configFeeLevel,
       spendUnconfirmed: this.config.wallet.spendUnconfirmed,
 
       // Vanity tx info (not in the real tx)
@@ -136,8 +135,6 @@ export class ConfirmPage {
     }
 
     if (this.tx.coin && this.tx.coin == 'bch') {
-      this.tx.feeLevel = 'normal';
-
       // Use legacy address
       this.tx.toAddress = this.bitcoreCash.Address(this.tx.toAddress).toString();
     }
@@ -367,6 +364,7 @@ export class ConfirmPage {
           });
         }
       }).catch((err: any) => {
+        this.logger.warn(err);
         this.onGoingProcessProvider.clear();
         return reject(err);
       });
