@@ -330,7 +330,7 @@ export class ConfirmPage {
           this.logger.info('Using Merchant Fee:' + tx.feeRate + ' vs. referent level:' + maxAllowedfee);
           if (tx.feeRate > maxAllowedfee) {
             this.onGoingProcessProvider.set('calculatingFee');
-            this.setNoWallet(this.translate.instant('Merchant fee to high. Payment rejected'), true);
+            this.setNoWallet(this.translate.instant('Merchant fee too high. Payment rejected'), true);
             return reject('fee_too_high');
           }
 
