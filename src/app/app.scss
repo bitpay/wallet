@@ -220,7 +220,12 @@ ion-content.content{
   background-color: $app-bg-color;
 }
 
+
 // ios overrides
-.list-ios > .item-block:last-child{
+.list-ios .item-block:last-child{
   border:0;
+
+  & .item-inner {
+    border:0;
+  }
 }

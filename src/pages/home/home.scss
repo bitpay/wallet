@@ -46,13 +46,16 @@ page-home {
     margin: 20px auto;
     display: block;
     border-radius: 4px;
-    background-color: #fff;
-  }
+    background-color: #ffffff;
+
+      .item-divider{
+        background-color:#ffffff;
+      }
+    }
+  
   .wallet-warning {
     font-size: 11px;
     color: color($colors, danger);
   }
-  .item-divider-md {
-    background-color:#ffffff;
-  }
 }
+  
