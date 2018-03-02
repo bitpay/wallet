@@ -229,3 +229,8 @@ ion-content.content{
     border:0;
   }
 }
+
+.wallet-warning {
+  font-size: 11px;
+  color: color($colors, danger);
+}

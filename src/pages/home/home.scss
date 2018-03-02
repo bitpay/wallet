@@ -37,7 +37,7 @@ page-home {
     justify-content: center;
     text-align: center;
   }
-  .card{
+  .card {
     padding-top: 1px;
     width:92%;
     padding-bottom: 15px;
@@ -47,15 +47,9 @@ page-home {
     display: block;
     border-radius: 4px;
     background-color: #ffffff;
-
-      .item-divider{
-        background-color:#ffffff;
-      }
+    .item-divider{
+      background-color:#ffffff;
     }
-  
-  .wallet-warning {
-    font-size: 11px;
-    color: color($colors, danger);
   }
 }
   
