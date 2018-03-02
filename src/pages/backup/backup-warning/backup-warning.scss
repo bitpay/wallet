@@ -14,4 +14,18 @@ page-backup-warning {
     margin-right: 10px;
     margin-left: 10px;
   }
+
+  @extend %onboarding;
+  & > ion-content {
+    background: $onboarding-welcome-bg;
+    background-position: center center;
+    background-size: contain;
+    background-repeat: no-repeat;
+  }
+
+  .description {
+    font-size: 16px;
+    color: rgba(255, 255, 255, 0.5);
+  }
 }
+
