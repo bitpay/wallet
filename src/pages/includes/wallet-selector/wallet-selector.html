@@ -31,7 +31,7 @@
             Incomplete
           </span>
           <span class="wallet-warning" *ngIf="wallet.isComplete() && wallet.needsBackup" translate>
-            Backup needed
+            Needs backup recovery
           </span>
           <span *ngIf="wallet.isComplete() && !wallet.needsBackup">
             <span *ngIf="!wallet.balanceHidden && !wallet.scanning">
@@ -41,7 +41,7 @@
             </span>
             <span *ngIf="wallet.scanning" translate>Scanning funds</span>
             <span *ngIf="wallet.balanceHidden && !wallet.scanning">[{{'Balance Hidden' | translate}}]</span>
-            <span *ngIf="wallet.credentials.m > 1">{{wallet.credentials.m}}-of-{{wallet.credentials.n}}</span>
+            <span class="text-gray" *ngIf="wallet.credentials.m > 1">{{wallet.credentials.m}}-of-{{wallet.credentials.n}}</span>
             <ion-icon *ngIf="!wallet.balanceHidden && wallet.status && (wallet.status.totalBalanceSat != wallet.status.spendableAmount)"
               name="timer"></ion-icon>
             <span *ngIf="wallet.error" class="error">{{wallet.error}}</span>
@@ -83,7 +83,7 @@
             </span>
             <span *ngIf="wallet.scanning" translate>Scanning funds</span>
             <span *ngIf="wallet.balanceHidden && !wallet.scanning">[{{'Balance Hidden' | translate}}]</span>
-            <span *ngIf="wallet.credentials.m > 1">{{wallet.credentials.m}}-of-{{wallet.credentials.n}}</span>
+            <span class="text-gray" *ngIf="wallet.credentials.m > 1">{{wallet.credentials.m}}-of-{{wallet.credentials.n}}</span>
             <ion-icon *ngIf="!wallet.balanceHidden && wallet.status && (wallet.status.totalBalanceSat != wallet.status.spendableAmount)"
               name="timer"></ion-icon>
             <span *ngIf="wallet.error" class="error">{{wallet.error}}</span>
