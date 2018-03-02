@@ -20,6 +20,10 @@ page-tour {
       min-height: 300px;
     }
   }
+  .description {
+    font-size: 16px;
+    color: rgba(255, 255, 255, 0.5);
+  }
   /* pagination bullets */
   .swiper-pagination-bullet-active {
     background: color($colors, primary);
