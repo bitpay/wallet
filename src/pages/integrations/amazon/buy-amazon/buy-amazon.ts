@@ -264,8 +264,8 @@ export class BuyAmazonPage {
         };
 
         if (details.requiredFeeRate) {
-          txp.feePerKb = parseInt(details.requiredFeeRate, 10) * 1024;
-          this.logger.debug('using merchant fee rate (for amazon gc):' + txp.feePerKb);
+          txp.feePerKb = Math.ceil(details.requiredFeeRate * 1024);
+          this.logger.debug('Using merchant fee rate (for amazon gc):' + txp.feePerKb);
         } else {
           txp.feeLevel = this.configWallet.settings.feeLevel || 'normal';
         }
@@ -276,7 +276,7 @@ export class BuyAmazonPage {
           // Use legacy address
           txp.toAddress = this.bitcoreCash.Address(txp.toAddress).toString();
           txp.outputs[0].toAddress = txp.toAddress;
-        };
+        }
 
         this.walletProvider.createTx(wallet, txp).then((ctxp: any) => {
           return resolve(ctxp);

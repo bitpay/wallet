@@ -331,7 +331,7 @@ export class IncomingDataProvider {
     };
     // fee
     if (payProDetails.requiredFeeRate) {
-      stateParams.requiredFeeRate = payProDetails.requiredFeeRate * 1024;
+      stateParams.requiredFeeRate = Math.ceil(payProDetails.requiredFeeRate * 1024);
     }
     this.scanProvider.pausePreview();
     this.navCtrl.push(ConfirmPage, stateParams);

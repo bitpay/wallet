@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Events } from 'ionic-angular';
 import * as lodash from 'lodash';
+import encoding from 'text-encoding';
 import { Logger } from '../../providers/logger/logger';
 
 // Providers
@@ -868,12 +869,12 @@ export class WalletProvider {
 
       try {
         wallet.signTxProposal(txp, password, (err: any, signedTxp: any) => {
-          this.logger.debug('Transaction signed err:' + err);
+          this.logger.warn('Transaction signed err:' + err);
           if (err) return reject(err);
           return resolve(signedTxp);
         });
       } catch (e) {
-        this.logger.warn('Error at signTxProposal:', e);
+        this.logger.error('Error at signTxProposal:', e);
         return reject(e);
       };
     });
@@ -888,8 +889,17 @@ export class WalletProvider {
         return reject('TX_NOT_ACCEPTED');
 
       wallet.broadcastTxProposal(txp, (err: any, broadcastedTxp: any, memo: any) => {
-        if (err)
-          return reject(err);
+        if (err) {
+          if (lodash.isArrayBuffer(err)) {
+            const enc = new encoding.TextDecoder();
+            err = enc.decode(err);
+            this.removeTx(wallet, txp).then(() => {
+              return reject(err);
+            });
+          } else {
+            return reject(err);
+          }
+        }
 
         this.logger.debug('Transaction broadcasted');
         if (memo) this.logger.info(memo);
@@ -1190,8 +1200,8 @@ export class WalletProvider {
           return resolve(signedTxp);
         };
       }).catch((err) => {
-        this.logger.warn('sign error:' + err);
         let msg = err && err.message ? err.message : this.translate.instant('The payment was created but could not be completed. Please try again from home screen');
+        this.logger.debug('Sign error: ' + msg);
         this.events.publish('Local/TxAction', wallet.id);
         return reject(msg);
       });
