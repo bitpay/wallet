@@ -893,9 +893,8 @@ export class WalletProvider {
           if (lodash.isArrayBuffer(err)) {
             const enc = new encoding.TextDecoder();
             err = enc.decode(err);
-            this.removeTx(wallet, txp).then(() => {
-              return reject(err);
-            });
+            this.removeTx(wallet, txp);
+            return reject(err);
           } else {
             return reject(err);
           }
