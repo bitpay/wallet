@@ -36,7 +36,7 @@
           <i ng-if="wallet.coin == 'btc'" class="icon bp-arrow-right"></i>
         </div>
 
-        <div class="item single-line" ng-if="tx.paypro">
+        <div class="item single-line" ng-if="tx.paypro && !criticalError">
           <span class="label" translate>Payment Expires:</span>
           <span class="item-note" ng-if="!paymentExpired">{{remainingTimeStr}}</span>
           <span class="item-note" ng-if="paymentExpired" ng-style="{'color': 'red'}" translate>Expired</span>
