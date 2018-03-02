@@ -322,13 +322,17 @@ export class IncomingDataProvider {
   }
 
   private handlePayPro(payProDetails: any, coin?: string): void {
-    let stateParams = {
+    let stateParams: any = {
       amount: payProDetails.amount,
       toAddress: payProDetails.toAddress,
       description: payProDetails.memo,
       paypro: payProDetails,
       coin
     };
+    // fee
+    if (payProDetails.requiredFeeRate) {
+      stateParams.requiredFeeRate = payProDetails.requiredFeeRate * 1024;
+    }
     this.scanProvider.pausePreview();
     this.navCtrl.push(ConfirmPage, stateParams);
   }

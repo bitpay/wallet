@@ -35,7 +35,7 @@ export class PayproProvider {
         payProUrl: uri,
       }, (err, paypro) => {
         if (!disableLoader) this.onGoingProcessProvider.clear();
-        if (err) return reject(err);
+        if (err) return reject(this.translate.instant('Could Not Fetch Payment: Check if it is still valid'));
         else if (!paypro.verified) {
           this.logger.warn('Failed to verify payment protocol signatures');
           return reject(this.translate.instant('Payment Protocol Invalid'));

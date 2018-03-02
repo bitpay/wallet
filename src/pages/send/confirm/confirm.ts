@@ -58,6 +58,7 @@ export class ConfirmPage {
 
   // custom fee flag
   public usingCustomFee: boolean = false;
+  public usingMerchantFee: boolean = false;
 
   constructor(
     private bwcProvider: BwcProvider,
@@ -113,7 +114,6 @@ export class ConfirmPage {
       sendMax: this.navParams.data.useSendMax ? true : false,
       description: this.navParams.data.description,
       paypro: this.navParams.data.paypro,
-      feeLevel: this.configFeeLevel,
       spendUnconfirmed: this.config.wallet.spendUnconfirmed,
 
       // Vanity tx info (not in the real tx)
@@ -127,9 +127,14 @@ export class ConfirmPage {
     };
     this.tx.origToAddress = this.tx.toAddress;
 
-    if (this.tx.coin && this.tx.coin == 'bch') {
-      this.tx.feeLevel = 'normal';
+    if (this.navParams.data.requiredFeeRate) {
+      this.usingMerchantFee = true;
+      this.tx.feeRate = parseInt(this.navParams.data.requiredFeeRate, 10);
+    } else {
+      this.tx.feeLevel = (this.tx.coin && this.tx.coin == 'bch') ? 'normal ' : this.configFeeLevel;
+    }
 
+    if (this.tx.coin && this.tx.coin == 'bch') {
       // Use legacy address
       this.tx.toAddress = this.bitcoreCash.Address(this.tx.toAddress).toString();
     }
@@ -237,7 +242,10 @@ export class ConfirmPage {
 
     // If select another wallet
     this.tx.coin = this.wallet.coin;
-    if (this.tx.coin == 'bch') this.tx.feeLevel = 'normal';
+
+    if (!this.usingCustomFee && !this.usingMerchantFee) {
+      this.tx.feeLevel = wallet.coin == 'bch' ? 'normal' : this.configFeeLevel;
+    }
 
     this.setButtonText(this.wallet.credentials.m > 1, !!this.tx.paypro);
 
@@ -304,9 +312,34 @@ export class ConfirmPage {
         return resolve();
       }
 
+      let maxAllowedMerchantFee = {
+        btc: 'urgent',
+        bch: 'normal',
+      }
+
       this.onGoingProcessProvider.set('calculatingFee');
-      this.feeProvider.getFeeRate(wallet.coin, tx.network, tx.feeLevel).then((feeRate: any) => {
-        if (!this.usingCustomFee) tx.feeRate = feeRate;
+      this.feeProvider.getFeeRate(wallet.coin, tx.network, this.usingMerchantFee ? maxAllowedMerchantFee[wallet.coin] : this.tx.feeLevel).then((feeRate: any) => {
+
+        let msg;
+        if (this.usingCustomFee) {
+          msg = this.translate.instant('Custom');
+          tx.feeLevelName = msg;
+        } else if (this.usingMerchantFee) {
+
+          let maxAllowedfee = feeRate * 2;
+          this.logger.info('Using Merchant Fee:' + tx.feeRate + ' vs. referent level:' + maxAllowedfee);
+          if (tx.feeRate > maxAllowedfee) {
+            this.onGoingProcessProvider.set('calculatingFee');
+            this.setNoWallet(this.translate.instant('Merchant fee too high. Payment rejected'), true);
+            return reject('fee_too_high');
+          }
+
+          msg = this.translate.instant('Suggested by Merchant');
+          tx.feeLevelName = msg;
+        } else {
+          tx.feeLevelName = this.feeProvider.feeOpts[tx.feeLevel];
+          tx.feeRate = feeRate;
+        }
 
         // call getSendMaxInfo if was selected from amount view
         if (tx.sendMax) {
@@ -331,6 +364,7 @@ export class ConfirmPage {
           });
         }
       }).catch((err: any) => {
+        this.logger.warn(err);
         this.onGoingProcessProvider.clear();
         return reject(err);
       });
@@ -394,7 +428,13 @@ export class ConfirmPage {
         this.logger.debug('Confirm. TX Fully Updated for wallet:' + wallet.id, JSON.stringify(tx));
         return resolve();
       }).catch((err: any) => {
-        return reject(err);
+        if (err.message == 'Insufficient funds') {
+          this.setNoWallet(this.translate.instant('Insufficient funds'));
+          this.popupProvider.ionicAlert(this.translate.instant('Error'), this.translate.instant('Not enough funds for fee'));
+          return reject('no_funds');
+        } else {
+          return reject(err);
+        }
       });
     });
   }
@@ -477,7 +517,7 @@ export class ConfirmPage {
         txp.inputs = tx.sendMaxInfo.inputs;
         txp.fee = tx.sendMaxInfo.fee;
       } else {
-        if (this.usingCustomFee) {
+        if (this.usingCustomFee || this.usingMerchantFee) {
           txp.feePerKb = tx.feeRate;
         } else txp.feeLevel = tx.feeLevel;
       }
@@ -628,6 +668,7 @@ export class ConfirmPage {
   public chooseFeeLevel(): void {
 
     if (this.tx.coin == 'bch') return;
+    if (this.usingMerchantFee) return; // ToDo: should we allow overwride?
 
     let txObject: any = {};
     txObject.network = this.tx.network;
