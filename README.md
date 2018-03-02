@@ -23,7 +23,6 @@ For a list of frequently asked questions please visit the [Copay FAQ](https://gi
 - Support for over 150 currency pricing options and unit denomination in BTC or bits
 - Mnemonic (BIP39) support for wallet backups
 - Paper wallet sweep support (BIP38)
-- Hardware wallet support (Trezor and Ledger) (only in Chrome App version)
 - Email notifications for payments and transfers
 - Push notifications (only available for ios and android versions)
 - Customizable wallet naming and background colors
@@ -45,20 +44,18 @@ Ensure you have [Node](https://nodejs.org/) installed, then install and start Co
 
 ```sh
 npm run apply:copay
-npm start
+npm run start
 ```
 
 Visit [`localhost:8100`](http://localhost:8100/) to view the app.
 
-A watch task is also available to rebuild components of the app as changes are made. This task can be run in a separate process – while the server started by `npm start` is running – to quickly test changes.
-
-```
-npm run watch
-```
-
 ## Unit Tests (Karma and Jasmine)
 
-To run the tests, run npm run test.
+To run the tests, run:
+
+```
+ npm run test
+```
 
 ## Testing on Real Devices
 
@@ -72,6 +69,7 @@ When your developement enviroment is ready, run the `start:android` npm package 
 
 ```sh
 npm run apply:copay
+npm run prepare:copay
 npm run start:android
 ```
 
@@ -83,10 +81,11 @@ When your developement enviroment is ready, run the `start:ios` npm package scri
 
 ```sh
 npm run apply:copay
+npm run prepare:copay
 npm run start:ios
 ```
 
-### Desktop (Linux, macOS, and Windows)
+<!-- ### Desktop (Linux, macOS, and Windows)
 
 The desktop version of Copay currently uses NW.js, an app runtime based on Chromium. To get started, first install NW.js on your system from [the NW.js website](https://nwjs.io/).
 
@@ -95,7 +94,7 @@ When NW.js is installed, run the `start:desktop` npm package script.
 ```sh
 npm run apply:copay
 npm run start:desktop
-```
+``` -->
 
 ## Build Copay App Bundles
 
@@ -108,6 +107,7 @@ The `final` commands build the production version of the app, and bundle it with
 ```sh
 npm run clean-all
 npm run apply:copay
+npm run prepare:copay
 npm run final:android
 ```
 
@@ -116,33 +116,17 @@ npm run final:android
 ```sh
 npm run clean-all
 npm run apply:copay
+npm run prepare:copay
 npm run final:ios
 ```
 
-### Windows Phone
-
-- Install Visual Studio 2013 (or newer)
-- Run `make wp8-prod`
-
-### Desktop (Linux, macOS, and Windows)
+<!-- ### Desktop (Linux, macOS, and Windows)
 
 ```sh
 npm run clean-all
 npm run apply:copay
 npm run final:desktop
-```
-
-### Google Chrome App
-
-> cd chrome-app/
-
-```sh
-npm run apply:copay
-grunt
-make
-```
-
-On success, the Chrome extension will be located at: `browser-extensions/chrome/copay-chrome-extension`.  To install it go to `chrome://extensions/` in your browser and ensure you have the 'developer mode' option enabled in the settings.  Then click on "Load unpacked chrome extension" and choose the directory mentioned above.
+``` -->
 
 ## Configuration
 
@@ -176,12 +160,12 @@ Information about backup and recovery procedures is available at: https://github
 
 Previous versions of Copay used files as backups. See the following section.
 
-It is possible to recover funds from a Copay Wallet without using Copay or the Wallet Service, check the [Copay Recovery Tool](https://github.com/bitpay/copay-recovery).
+It is possible to recover funds from a Copay Wallet without using Copay or the Wallet Service, check the [Copay Recovery Tool](https://github.com/bitpay/copay-recovery/tree/master).
 
 
 ## Wallet Export Format
 
-Copay encrypts the backup with the [Stanford JS Crypto Library](http://bitwiseshiftleft.github.io/sjcl/).  To extract the private key of your wallet you can use https://bitwiseshiftleft.github.io/sjcl/demo/, copy the backup to 'ciphertext' and enter your password.  The resulting JSON will have a key named: `xPrivKey`, that is the extended private key of your wallet.  That information is enough to sign any transaction from your wallet, so be careful when handling it!
+Copay encrypts the backup with the [Stanford JS Crypto Library](http://bitwiseshiftleft.github.io/sjcl/). To extract the private key of your wallet you can go to settings, choose your wallet, click in "more options", then "wallet information", scroll to the bottom and click in "Extended Private Key". That information is enough to sign any transaction from your wallet, so be careful when handling it!
 
 The backup also contains the key `publicKeyRing` that holds the extended public keys of the Copayers.
 Depending on the key `derivationStrategy`, addresses are derived using
@@ -204,34 +188,6 @@ Since version 1.5, Copay uses the root `m/48'` for hardware multisignature walle
 ## Bitcore Wallet Service
 
 Copay depends on [Bitcore Wallet Service](https://github.com/bitpay/bitcore-wallet-service) (BWS) for blockchain information, networking and Copayer synchronization.  A BWS instance can be setup and operational within minutes or you can use a public instance like `https://bws.bitpay.com`.  Switching between BWS instances is very simple and can be done with a click from within Copay.  BWS also allows Copay to interoperate with other wallets like [Bitcore Wallet CLI] (https://github.com/bitpay/bitcore-wallet).
-
-## Hardware Wallet Support
-
-Copay supports Ledger and Trezor hardware wallets. Hardware wallet support is only available through the Chrome App. Ledger support is only available on multisig wallets.
-
-To use Ledger, you need to have the Ledger Chrome App installed, available at:
-https://chrome.google.com/webstore/detail/ledger-wallet/kkdpmhnladdopljabkgpacgpliggeeaf
-
-To use Trezor, you need to have the Trezor Chrome Extension installed, available at:
-https://chrome.google.com/webstore/detail/trezor-chrome-extension/jcjjhjgimijdkoamemaghajlhegmoclj
-
-To create or join a wallet using Ledger or Trezor go to:
-
-  Add Wallet -> Create or Join -> Advanced options -> Wallet Seed -> select Trezor or Ledger
-
-Both devices support multiple accounts, so you can use them for multiple wallets. Select the account and then click on create or join.
-
-It is also possible to import a wallet from a device using:
-  Add Wallet -> Import -> Hardware wallet
-
-Here it is also necesary to select the account number.
-
-When creating or joining a wallet, Copay will ask for two public keys for the device. One public keys is used for the wallet itself and the other is used as an entropy source to create a private / public key pair for signing requests to the Wallet Service.
-
-Every time you need to sign a transaction, the device will be needed to perform the signature. Follow the on screen instructions after clicking the `send` or `accept` buttons.
-
-Finally, in case you lose the device and you have the 24 word seed for the device, you can recover access to your funds using Copay, see: https://github.com/bitpay/copay/blob/master/backupRecovery.md#hardware-wallets
-
 
 ## Translations
 Copay uses standard gettext PO files for translations and [Crowdin](https://crowdin.com/project/copay) as the front-end tool for translators.  To join our team of translators, please create an account at [Crowdin](https://crowdin.com) and translate the Copay documentation and application text into your native language.
