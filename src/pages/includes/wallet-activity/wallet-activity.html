@@ -4,38 +4,38 @@
     <div class="icon-color" [ngClass]="{'wallet-color-default': !notification.wallet.color}" [ngStyle]="{'background-color':notification.wallet.color}"></div>
   </ion-icon>
 
-  <div *ngIf="notification.type == 'NewCopayer' && notification.wallet.n>1">
+  <div class="item-title" *ngIf="notification.type == 'NewCopayer' && notification.wallet.n>1">
     <span translate>Copayer joined</span>
   </div>
 
-  <div *ngIf="notification.type == 'NewCopayer' && notification.wallet.n==1">
+  <div class="item-title" *ngIf="notification.type == 'NewCopayer' && notification.wallet.n==1">
     <span translate>Wallet created</span>
   </div>
 
-  <div *ngIf="notification.type == 'NewOutgoingTx'">
+  <div class="item-title" *ngIf="notification.type == 'NewOutgoingTx'">
     <span translate>Payment Sent</span>
   </div>
 
-  <div *ngIf="notification.type == 'NewIncomingTx'">
+  <div class="item-title" *ngIf="notification.type == 'NewIncomingTx'">
     <span translate>Payment Received</span>
   </div>
 
-  <div *ngIf="notification.type == 'TxProposalRemoved'">
+  <div class="item-title" *ngIf="notification.type == 'TxProposalRemoved'">
     <span translate>Proposal Deleted</span>:
     <b>{{notification.message}}</b>
   </div>
 
-  <div *ngIf="notification.type == 'TxProposalRejectedBy'">
+  <div class="item-title" *ngIf="notification.type == 'TxProposalRejectedBy'">
     <span translate>Proposal Rejected</span>:
     <b>{{notification.message}}</b>
   </div>
 
-  <div *ngIf="notification.type == 'NewTxProposal'">
+  <div class="item-title" *ngIf="notification.type == 'NewTxProposal'">
     <span translate>New Proposal</span>:
     <b>{{notification.message}}</b>
   </div>
 
-  <div *ngIf="notification.type == 'TxProposalAcceptedBy'">
+  <div class="item-title" *ngIf="notification.type == 'TxProposalAcceptedBy'">
     <span translate>Proposal Accepted</span>:
     <b>{{notification.message}}</b>
   </div>
@@ -45,7 +45,7 @@
     <span>{{notification.wallet.name}}</span>
   </div>
 
-  <ion-note item-end>
+  <ion-note item-right>
     <!-- {{notification.types}} -->
     <div class="amount">
       {{notification.data.amount | satToUnit: notification.wallet.coin}}
