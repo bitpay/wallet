@@ -90,7 +90,7 @@
     </button>
   </div>
 
-  <div *ngIf="walletsBtc && walletsBtc[0]">
+  <div class="card" *ngIf="walletsBtc && walletsBtc[0]">
     <ion-item-divider>
       <div class="title" item-start>
         <img src="assets/img/icon-bitcoin.svg" alt="Bitcoin Wallets" width="18" />
@@ -145,7 +145,7 @@
     </ion-list>
   </div>
 
-  <div *ngIf="walletsBch && walletsBch[0]">
+  <div class="card" *ngIf="walletsBch && walletsBch[0]">
     <ion-item-divider>
       <div class="title" item-start>
         <img src="assets/img/bitcoin-cash-logo.svg" alt="Bitcoin Cash Wallets" width="22" />
@@ -200,7 +200,7 @@
     </ion-list>
   </div>
 
-  <div *ngIf="bitpayCardItems && bitpayCardItems[0]">
+  <div class="card" *ngIf="bitpayCardItems && bitpayCardItems[0]">
     <ion-item-divider>
       <div class="title" item-start>
         <span translate>BitPay Visa
@@ -224,7 +224,7 @@
     </ion-list>
   </div>
 
-  <ion-list *ngIf="homeIntegrations && homeIntegrations.length>0">
+  <ion-list class="card"  *ngIf="homeIntegrations && homeIntegrations.length>0">
     <ion-item-divider (click)="hideHomeIntegrations = !hideHomeIntegrations">
       <div item-start translate>Services</div>
       <div item-end>
@@ -242,6 +242,6 @@
         <span>{{service.title || service.name}}</span>
       </button>
     </div>
-    <ion-item-divider></ion-item-divider>
+    
   </ion-list>
 </ion-content>
