@@ -42,7 +42,7 @@
       </ion-note>
     </button>
 
-    <ion-item *ngIf="tx.paypro">
+    <ion-item *ngIf="tx.paypro && !criticalError">
       <span translate>Payment Expires:</span>
       <ion-note *ngIf="!paymentExpired" item-end>{{remainingTimeStr}}</ion-note>
       <ion-note *ngIf="paymentExpired" [ngStyle]="{'color': 'red'}" translate item-end>Expired</ion-note>

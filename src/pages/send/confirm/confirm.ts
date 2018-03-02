@@ -129,7 +129,7 @@ export class ConfirmPage {
 
     if (this.navParams.data.requiredFeeRate) {
       this.usingMerchantFee = true;
-      this.tx.feeRate = parseInt(this.navParams.data.requiredFeeRate, 10);
+      this.tx.feeRate = +this.navParams.data.requiredFeeRate;
     } else {
       this.tx.feeLevel = (this.tx.coin && this.tx.coin == 'bch') ? 'normal ' : this.configFeeLevel;
     }
@@ -328,7 +328,7 @@ export class ConfirmPage {
 
           let maxAllowedfee = feeRate * 2;
           this.logger.info('Using Merchant Fee:' + tx.feeRate + ' vs. referent level:' + maxAllowedfee);
-          if (tx.feeRate > maxAllowedfee) {
+          if (tx.network != 'testnet' && tx.feeRate > maxAllowedfee) {
             this.onGoingProcessProvider.set('calculatingFee');
             this.setNoWallet(this.translate.instant('Merchant fee too high. Payment rejected'), true);
             return reject('fee_too_high');
