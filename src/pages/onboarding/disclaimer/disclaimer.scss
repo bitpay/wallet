@@ -14,16 +14,43 @@ page-disclaimer {
     font-size: 2vh;
     cursor: pointer;
   }
-  p {
-    line-height: 1.6;
-    font-size: 18px;
-    margin-right: 10px;
-    margin-left: 10px;
-  }
   .checkbox-list {
-    ion-item {
+    ion-item, .agree-to-terms ion-item {
+      font-size: 14px;
       background: none;
       color: #fff;
     }
+  }
+  .agree-to-terms {
+    background-color: $onboarding-welcome-bg;
+    position: relative;
+    ion-item {
+      height: 6rem;
+      .check {
+        margin: 9px 15px 9px 4px !important;
+      }
+    }
+    .terms {
+      display: flex;
+      align-items: center;
+      height: 6rem;
+      position: absolute;
+      top: 0;
+      left: 5rem;
+      padding: 0rem;
+      margin: 0rem;
+      p {
+        padding-right: 1rem;
+        font-size: 14px;
+      }
+      a {
+        font-weight: bold;
+        cursor: pointer;
+      }
+    }
+  }
+  .description {
+    font-size: 16px;
+    color: rgba(255, 255, 255, 0.5);
   }
 }
