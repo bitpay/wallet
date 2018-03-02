@@ -60,7 +60,7 @@
     </ion-card-content>
   </ion-card>
 
-  <ion-list *ngIf="txps && txps[0]">
+  <ion-list class="card" *ngIf="txps && txps[0]">
     <ion-item-divider padding-top>
       <div item-start>
         <span translate>Payment Proposals</span>
@@ -70,7 +70,7 @@
     <page-txp *ngFor="let txp of txps" [tx]="txp" [addressbook]="addressbook"></page-txp>
   </ion-list>
 
-  <ion-list *ngIf="notifications && notifications[0] && recentTransactionsEnabled">
+  <ion-list class="card" *ngIf="notifications && notifications[0] && recentTransactionsEnabled">
     <ion-item-divider padding-top>
       <div item-start>
         <span translate>Recent Transactions</span>
