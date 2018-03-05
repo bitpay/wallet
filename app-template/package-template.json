@@ -165,6 +165,7 @@
     "@types/jasmine": "^2.8.6",
     "@types/jasminewd2": "^2.0.3",
     "@types/lodash": "^4.14.104",
+    "ajv": "^6.2.0",
     "codecov": "^3.0.0",
     "connect": "^3.6.5",
     "fs-extra": "^5.0.0",
@@ -192,7 +193,7 @@
     "ts-node": "^5.0.0",
     "tslint": "^5.8.0",
     "tslint-config-prettier": "^1.7.0",
-    "typescript": "^2.6.2"
+    "typescript": "2.6.2"
   },
   "cordova": {
     "plugins": {
