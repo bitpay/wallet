@@ -68,11 +68,13 @@
       </ion-note>
     </ion-item>
     <ion-item-divider translate>Extended Public Keys</ion-item-divider>
-    <ion-item *ngFor="let pk of pubKeys" copy-to-clipboard="{{pk}}">
-      <h2 translate>Copayer {{$index}}</h2>
-      <ion-note item-end>
+    <ion-item *ngFor="let pk of pubKeys; let i=index" copy-to-clipboard="{{pk}}">
+      <div>
+        <h2 translate>Copayer {{i}}</h2>
+      </div> 
+      <div text-wrap class="pkStyle">
         {{pk}}
-      </ion-note>
+      </div>
       <span *ngIf="$index == 0">({{basePath}})</span>
     </ion-item>
     <div *ngIf="!needsBackup && canSign">
