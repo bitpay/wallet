@@ -256,3 +256,32 @@ ion-content.content{
     }
   }
 
+  ion-icon {
+    &[class*="tab-"] {
+        // Instead of using the font-based icons
+        // We're applying SVG masks
+        mask-size: contain;
+        mask-position: 50% 50%;
+        mask-repeat: no-repeat;
+        background: currentColor;
+        width: 2rem;
+        height: 2rem;
+    }
+    // custom icons
+    &[class*="tab-home"] {
+        mask-image: url(../assets/img/tab-icons/ico-home.svg);
+    }
+    &[class*="tab-receive"] {
+        mask-image: url(../assets/img/tab-icons/ico-receive.svg);
+    }
+    &[class*="tab-scan"] {
+        mask-image: url(../assets/img/tab-icons/ico-scan.svg);
+        width: 3rem;
+    }
+    &[class*="tab-send"] {
+      mask-image: url(../assets/img/tab-icons/ico-send.svg);
+  }
+    &[class*="tab-settings"] {
+      mask-image: url(../assets/img/tab-icons/ico-settings.svg);
+  }
+}
