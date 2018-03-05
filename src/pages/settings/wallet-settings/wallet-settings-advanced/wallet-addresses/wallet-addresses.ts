@@ -131,6 +131,9 @@ export class WalletAddressesPage {
           return;
         }
         this.noBalance = [_addr[0]].concat(this.noBalance);
+
+        this.processList(this.noBalance);
+
         this.latestUnused = _.slice(this.noBalance, 0, this.UNUSED_ADDRESS_LIMIT);
         this.viewAll = this.noBalance.length > this.UNUSED_ADDRESS_LIMIT;
       }).catch((err) => {
