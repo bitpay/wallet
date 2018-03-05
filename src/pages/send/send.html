@@ -7,7 +7,17 @@
 </ion-header>
 <ion-content no-bounce>
   <div *ngIf="hasBtcWallets || hasBchWallets">
-    <ion-searchbar placeholder="Search or enter bitcoin address" [(ngModel)]="search" (ngModelChange)="findContact(search)"></ion-searchbar>
+    <div class="send-header-wrapper">
+      <span class="send-heading" translate>Recipient</span>
+      <div class="search-wrapper" [ngClass]="{'focus': searchFocus}">
+        <ion-icon class="bitcoin-icon" name="search-btc"></ion-icon>
+        <ion-input placeholder="{{'Search or enter bitcoin address' | translate}}" (blur)="searchBlurred()" (focus)="searchInFocus()"
+          [(ngModel)]="search" (ngModelChange)="findContact(search)"></ion-input>
+        <ion-icon class="scan-icon" (click)="openScanner()">
+          <img src="assets/img/scan-ico.svg">
+        </ion-icon>
+      </div>
+    </div>
 
     <div class="card" *ngIf="filteredContactsList && filteredContactsList[0]">
       <ion-item-divider>

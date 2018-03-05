@@ -165,6 +165,10 @@ export class SendPage {
     }
   }
 
+  public openScanner(): void {
+    this.navCtrl.parent.select(2);
+  }
+
   public findContact(search: string): void {
     if (this.incomingDataProvider.redir(search)) return;
     if (search && search.trim() != '') {
