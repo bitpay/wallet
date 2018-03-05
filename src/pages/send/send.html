@@ -10,9 +10,7 @@
     <div class="send-header-wrapper">
       <span class="send-heading" translate>Recipient</span>
       <div class="search-wrapper" [ngClass]="{'focus': searchFocus}">
-        <ion-icon class="bitcoin-icon">
-          <img src="assets/img/icon-bitcoin-symbol.svg">
-        </ion-icon>
+        <ion-icon class="bitcoin-icon" name="search-btc"></ion-icon>
         <ion-input placeholder="{{'Search or enter bitcoin address' | translate}}" (blur)="searchBlurred()" (focus)="searchInFocus()"
           [(ngModel)]="search" (ngModelChange)="findContact(search)"></ion-input>
         <ion-icon class="scan-icon" (click)="openScanner()">

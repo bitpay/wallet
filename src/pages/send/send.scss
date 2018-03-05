@@ -46,6 +46,16 @@ page-send {
       margin-left: 1.5rem;
       margin-right: 1rem;
       width: 15px;
+      // custom icons
+      &[class*="search-btc"] {
+          mask-image: url(../assets/img/icon-bitcoin-symbol.svg);
+          mask-size: contain;
+          mask-position: 50% 50%;
+          mask-repeat: no-repeat;
+          background: #cccccc;
+          width: 2rem;
+          height: 2rem;
+      }
     }
     &.focus {
       background: none;
