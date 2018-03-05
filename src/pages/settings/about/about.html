@@ -1,24 +1,21 @@
 <ion-header>
-
   <ion-navbar>
     <ion-title>{{title}}</ion-title>
   </ion-navbar>
-
 </ion-header>
-
 
 <ion-content>
   <ion-list>
     <ion-item-divider>{{'Release information'| translate}}</ion-item-divider>
     <ion-item>
-      <ion-icon name="logo-github" item-start></ion-icon>
+      <ion-icon class="custom-icon" name="ios-download-outline" item-start></ion-icon>
       {{'Version' | translate}}
       <ion-note item-end>
         v{{version}}
       </ion-note>
     </ion-item>
     <ion-item class="commit-hash" (click)="openExternalLink()">
-      <ion-icon name="ios-git-commit-outline" item-start></ion-icon>
+      <ion-icon class="custom-icon" name="logo-github" item-start></ion-icon>
       {{'Commit hash' | translate}}
       <ion-note item-end>
         #{{commitHash}}
@@ -26,11 +23,11 @@
     </ion-item>
     <ion-item-divider>&nbsp;</ion-item-divider>
     <button ion-item (click)="openTermsOfUse()">
-      <ion-icon name="ios-contacts-outline" item-start></ion-icon>
+      <ion-icon class="custom-icon" name="ios-list-box-outline" item-start></ion-icon>
       {{'Terms of use' | translate }}
     </button>
     <button ion-item (click)="openSessionLog()">
-      <ion-icon name="ios-paper-outline" item-start></ion-icon>
+      <ion-icon class="custom-icon" name="ios-copy-outline" item-start></ion-icon>
       {{ 'Session log' | translate }}
     </button>
   </ion-list>
