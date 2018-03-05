@@ -3,8 +3,8 @@
   <ion-navbar>
     <ion-title>{{'Custom Amount' | translate}}</ion-title>
     <ion-buttons end>
-      <button *ngIf="showShareButton" ion-button icon-only (click)="shareAddress()" translate>
-        <ion-icon name="share"></ion-icon>
+      <button *ngIf="showShareButton" ion-button icon-only (click)="shareAddress()">
+        <ion-icon ios="ios-share-outline" md="md-share"></ion-icon>
       </button>
     </ion-buttons>
   </ion-navbar>
