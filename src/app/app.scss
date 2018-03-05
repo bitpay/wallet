@@ -113,13 +113,16 @@ ion-alert.alert-top{
 .icon-services {
   background-color: none;
   border-radius: $icon-border-radius;
-  padding: 3px;
-  width: 35px;
-  height: 35px;
+  width: 32px;
+  height: 32px;
   box-shadow: 0px 2px 6px 0px rgba(0, 0, 0, 0.2);
   background-repeat: no-repeat;
   background-clip: padding-box;
   background-size: 103%;
+}
+
+.custom-icon {
+  color: rgb(169, 169, 169);
 }
 
 .icon-contact {

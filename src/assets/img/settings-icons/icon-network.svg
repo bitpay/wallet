@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="17px" height="17px" viewBox="0 0 17 17" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: sketchtool 40.1 (33804) - http://www.bohemiancoding.com/sketch -->
+    <title>D1663024-9AD7-491F-B0E0-B718DFFAA258</title>
+    <desc>Created with sketchtool.</desc>
+    <defs></defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Icons" transform="translate(-634.000000, -770.000000)" stroke="#9b9bab" stroke-width="0.7">
+            <g id="icons/list-items/sync" transform="translate(634.000000, 770.000000)">
+                <g id="Group" transform="translate(0.403361, 0.403361)">
+                    <path d="M7.41176471,6.45378151 L7.41176471,9.68067227" id="Shape"></path>
+                    <polyline id="Shape" points="1.61344538 9.68067227 1.61344538 8.06722689 14.5210084 8.06722689 14.5210084 9.68067227"></polyline>
+                    <ellipse id="Oval" cx="8.06722689" cy="1.61344538" rx="1.61344538" ry="1.61344538"></ellipse>
+                    <ellipse id="Oval" cx="1.61344538" cy="14.5210084" rx="1.61344538" ry="1.61344538"></ellipse>
+                    <ellipse id="Oval" cx="8.06722689" cy="14.5210084" rx="1.61344538" ry="1.61344538"></ellipse>
+                    <ellipse id="Oval" cx="14.5210084" cy="14.5210084" rx="1.61344538" ry="1.61344538"></ellipse>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

@@ -7,27 +7,33 @@
 <ion-content no-bounce>
   <ion-list>
     <ion-item-divider></ion-item-divider>
-    <button ion-item no-lines (click)="openAddressBookPage()">
-      <ion-icon name="ios-contacts-outline" item-start></ion-icon>
+    <button ion-item (click)="openAddressBookPage()">
+      <ion-icon item-start>
+        <img src="assets/img/settings-icons/icon-address-book.svg" width="22">
+      </ion-icon>
       {{'Address book' | translate}}
     </button>
 
-    <ion-item-divider></ion-item-divider>
-
-    <ion-item (click)="openHelpExternalLink()">
-      <ion-icon name="ios-help-circle-outline" item-start></ion-icon>
+    <button ion-item (click)="openHelpExternalLink()">
+      <ion-icon item-start>
+        <img src="assets/img/settings-icons/icon-help-support.svg" width="22">
+      </ion-icon>
       {{'Help &amp; support' | translate}}
-    </ion-item>
+    </button>
 
-    <ion-item (click)="openSendFeedbackPage()">
-      <ion-icon name="ios-mail-outline" item-start></ion-icon>
+    <button ion-item (click)="openSendFeedbackPage()">
+      <ion-icon item-start>
+        <img src="assets/img/settings-icons/icon-send-feedback.svg" width="22">
+      </ion-icon>
       Send feedback
-    </ion-item>
+    </button>
 
-    <ion-item *ngIf="isCordova" (click)="openFeedbackCompletePage()">
-      <ion-icon name="ios-heart-outline" item-start></ion-icon>
+    <button ion-item *ngIf="isCordova" (click)="openFeedbackCompletePage()">
+      <ion-icon item-start>
+        <img src="assets/img/settings-icons/icon-heart.svg" width="22">
+      </ion-icon>
       Share {{ appName }}
-    </ion-item>
+    </button>
 
     <ion-item-divider>{{'Preferences' | translate}}</ion-item-divider>
 
@@ -39,12 +45,16 @@
     </button>
 
     <button ion-item (click)="openNotificationsPage()">
-      <ion-icon name="ios-notifications-outline" item-start></ion-icon>
+      <ion-icon item-start>
+        <img src="assets/img/settings-icons/icon-notifications.svg" width="22">
+      </ion-icon>
       {{'Notification' | translate}}
     </button>
 
     <button ion-item (click)="openLanguagePage()">
-      <ion-icon name="ios-globe-outline" item-start></ion-icon>
+      <ion-icon item-start>
+        <img src="assets/img/settings-icons/icon-language.svg" width="22">
+      </ion-icon>
       <ion-label>
         {{'Language' | translate}}
       </ion-label>
@@ -54,7 +64,9 @@
     </button>
 
     <button ion-item (click)="openAltCurrencyPage()">
-      <ion-icon name="ios-cash-outline" item-start></ion-icon>
+      <ion-icon item-start>
+        <img src="assets/img/settings-icons/icon-alternative-currency.svg" width="22">
+      </ion-icon>
       <ion-label>
         {{'Alternative currency' | translate}}
       </ion-label>
@@ -64,15 +76,17 @@
     </button>
 
     <button ion-item (click)="openFeePolicyPage()">
-      <ion-icon name="ios-git-network-outline" item-start></ion-icon>
+      <ion-icon item-start>
+        <img src="assets/img/settings-icons/icon-network.svg" width="22">
+      </ion-icon>
       <ion-label>
         {{'Bitcoin network fee policy' | translate}}
       </ion-label>
     </button>
 
     <button ion-item (click)="openLockPage()">
-      <ion-icon *ngIf="lockMethod != 'Disabled'" name="ios-lock-outline" item-start></ion-icon>
-      <ion-icon *ngIf="lockMethod == 'Disabled'" name="ios-unlock-outline" item-start></ion-icon>
+      <ion-icon class="custom-icon" *ngIf="lockMethod != 'Disabled'" name="ios-lock-outline" item-start></ion-icon>
+      <ion-icon class="custom-icon" *ngIf="lockMethod == 'Disabled'" name="ios-unlock-outline" item-start></ion-icon>
       <ion-label>
         {{'Lock' | translate}}
       </ion-label>
@@ -151,12 +165,16 @@
     <ion-item-divider>More</ion-item-divider>
 
     <button ion-item (click)="openAdvancedPage()">
-      <ion-icon name="ios-cog-outline" item-start></ion-icon>
+      <ion-icon item-start>
+        <img src="assets/img/settings-icons/icon-advanced.svg" width="22">
+      </ion-icon>
       {{'Advanced' | translate}}
     </button>
 
     <button ion-item (click)="openAboutPage()">
-      <ion-icon name="ios-apps-outline" item-start></ion-icon>
+      <ion-icon item-start>
+        <img src="assets/img/settings-icons/icon-about.svg" width="22">
+      </ion-icon>
       {{'About' | translate}} {{appName}}
     </button>
     <ion-item-divider></ion-item-divider>
