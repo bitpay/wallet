@@ -23,4 +23,35 @@ page-send {
       white-space: inherit;
     }
   }
+  .send-header-wrapper {
+    padding: 10px;
+    background-color: white;
+    box-shadow: 0px 5px 10px 0px #cccccc;
+  }
+  .send-heading {
+    font-size: 15px;
+    color: #858585;
+    padding: 0 0 16px 0;
+    border: none;
+  }
+  .search-wrapper {
+    margin-top: 15px;
+    background-color: #f2f2f2;
+    display: flex;
+    align-items: center;
+    .scan-icon {
+      margin: 1rem;
+    }
+    .bitcoin-icon {
+      margin-left: 1.5rem;
+      margin-right: 1rem;
+      width: 15px;
+    }
+    &.focus {
+      background: none;
+      .bitcoin-icon {
+        display: none;
+      }
+    }
+  }
 }
