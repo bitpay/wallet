@@ -89,7 +89,7 @@ angular.module('copayApp.controllers').controller('preferencesHistory',
             var _fee = (it.fees * satToBtc).toFixed(8)
             $scope.csvContent.push({
               'Date': formatDate(it.time * 1000),
-              'Destination': 'Nav Coin Network Fees',
+              'Destination': 'NavCoin Network Fees',
               'Description': '',
               'Amount': '-' + _fee,
               'Currency': 'NAV',

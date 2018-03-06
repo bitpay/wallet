@@ -13,7 +13,7 @@
                     ng-change="findContact(formData.search)"
                     ng-model-onblur ng-focus="searchInFocus()"
                     ng-blur="searchBlurred()"
-                    placeholder="{{'Enter a Nav Coin Private Key to sweep with' | translate}}"
+                    placeholder="{{'Enter a NavCoin Private Key to sweep with' | translate}}"
                     type="text"
                     class="search-input"
                     id="tab-sweep-address"  >
@@ -38,7 +38,7 @@
         <div class="item input search-wrapper" ng-class="{'focus': searchFocus}">
           <i class="icon icon-svg abs-v-center"><img class="svg" src="img/icon-bitcoin-symbol.svg"></i>
           <div class="item-icon-right">
-            <input type="text" class="search-input" id="tab-send-address" placeholder="{{'Search or enter Nav Coin address' | translate}}" ng-model="formData.search" ng-change="findContact(formData.search)" ng-model-onblur ng-focus="searchInFocus()" ng-blur="searchBlurred()">
+            <input type="text" class="search-input" id="tab-send-address" placeholder="{{'Search or enter NavCoin address' | translate}}" ng-model="formData.search" ng-change="findContact(formData.search)" ng-model-onblur ng-focus="searchInFocus()" ng-blur="searchBlurred()">
             <i class="icon icon-svg qr abs-v-center separator-left" on-tap="openScanner()"><img src="img/scan-ico.svg"></i>
           </div>
         </div>
@@ -65,15 +65,15 @@
           </i>
         </div>
         <div class="title" translate>
-          Start sending Nav Coin
+          Start sending NavCoin
         </div>
         <div class="subtitle">
-          <span ng-show="hasWallets" translate>To get started, buy Nav Coin or share your address. You can receive Nav Coin from any wallet or service.</span>
-          <span ng-show="!hasWallets" translate>To get started, you'll need to create a Nav Coin wallet and get some Nav Coin.</span>
+          <span ng-show="hasWallets" translate>To get started, buy NavCoin or share your address. You can receive NavCoin from any wallet or service.</span>
+          <span ng-show="!hasWallets" translate>To get started, you'll need to create a NavCoin wallet and get some NavCoin.</span>
           <div class="padding">
-            <a class="button button-standard button-primary" ng-show="hasWallets" ng-click="openBuyLink()" translate>Buy Nav Coin</a>
-            <button class="button button-standard button-primary" ng-click="createWallet()" ng-show="!hasWallets" translate>Create Nav Coin wallet</button>
-            <button class="button button-standard button-secondary" ui-sref="tabs.receive" ng-show="hasWallets" translate>Show Nav Coin address</button>
+            <a class="button button-standard button-primary" ng-show="hasWallets" ng-click="openBuyLink()" translate>Buy NavCoin</a>
+            <button class="button button-standard button-primary" ng-click="createWallet()" ng-show="!hasWallets" translate>Create NavCoin wallet</button>
+            <button class="button button-standard button-secondary" ui-sref="tabs.receive" ng-show="hasWallets" translate>Show NavCoin address</button>
           </div>
         </div>
       </div>
