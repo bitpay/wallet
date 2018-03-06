@@ -8,6 +8,7 @@ import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 /* Native modules */
 import { AndroidFingerprintAuth } from '@ionic-native/android-fingerprint-auth';
 import { Clipboard } from '@ionic-native/clipboard';
+import { Device } from '@ionic-native/device';
 import { FCM } from '@ionic-native/fcm';
 import { QRScanner } from '@ionic-native/qr-scanner';
 import { SocialSharing } from '@ionic-native/social-sharing';
@@ -456,6 +457,7 @@ export function createTranslateLoader(http: HttpClient) {
     CoinbaseProvider,
     Clipboard,
     DerivationPathHelperProvider,
+    Device,
     ExternalLinkProvider,
     FeedbackProvider,
     FCM,
