@@ -12,8 +12,8 @@
       <div *ngIf="showOauthForm">If you have trouble, contact Coinbase support for direct assistance.</div>
     </div>
     <div margin-bottom *ngIf="!showOauthForm">
-      <button padding margin-bottom ion-button block outline (click)="openAuthenticateWindow()">Connect Coinbase Account</button>
-      <button ion-button block clear small color="dark" (click)="openSignupWindow()">Sign Up for Coinbase &rarr;</button>
+      <button ion-button class="button-standard" (click)="openAuthenticateWindow()">Connect Coinbase Account</button>
+      <button ion-button class="button-standard" color="dark" (click)="openSignupWindow()">Sign Up for Coinbase &rarr;</button>
     </div>
     <div *ngIf="showOauthForm">
       <form [formGroup]="oauthCodeForm" (ngSubmit)="submitOauthCode(oauthCodeForm.value.code)">

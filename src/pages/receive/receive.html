@@ -18,7 +18,7 @@
       <span translate>Funds received to a wallet cannot be retrieved if the wallet is not backed up.</span>
       <a (click)="openWikiBackupNeeded()" translate>Learn more</a>
     </div>
-    <button ion-button block clear (click)="goToBackup()" translate>Backup wallet</button>
+    <button ion-button class="button-standard" (click)="goToBackup()" translate>Backup wallet</button>
   </div>
 
   <div *ngIf="wallet && wallet.isComplete() && !wallet.needsBackup" class="qr-container">
@@ -47,7 +47,7 @@
     <div class="subtitle">
       <span translate>All signing devices must be added to this multisig wallet before bitcoin addresses can be created.</span>
     </div>
-    <button ion-button block clear (click)="goCopayers()" translate>Open wallet</button>
+    <button ion-button class="button-standard" (click)="goCopayers()" translate>Open wallet</button>
   </div>
 
   <div *ngIf="!wallet" class="no-wallet-message">

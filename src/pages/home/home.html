@@ -85,7 +85,7 @@
   </ion-list>
 
   <div *ngIf="!wallets || !wallets[0]" class="no-wallets">
-    <button ion-button clear (click)="goToAddView()">
+    <button ion-button class="button-standard" (click)="goToAddView()">
       <span translate>Create a new wallet</span>
     </button>
   </div>

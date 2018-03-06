@@ -6,7 +6,11 @@ page-coinbase {
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    .button-standard{
+      display: inline-block;
+    }
   }
+
   .main-header {
     position: relative;
     padding: 20px 0;
