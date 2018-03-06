@@ -37,6 +37,7 @@ export class ScanPage {
   public canOpenSettings: boolean;
   public currentState: string;
   public notSupportedMessage: string;
+  public tabBarElement: any;
   // private qrScannerBrowser: QRScannerBrowser (inside constructor)
   constructor(
     private navCtrl: NavController,
@@ -65,6 +66,10 @@ export class ScanPage {
     this.scannerIsDenied = false;
     this.scannerIsRestricted = false;
     this.canOpenSettings = false;
+    if (this.navParams.data.fromAddressbook) {
+      this.tabBarElement = document.querySelector('.tabbar.show-tabbar');
+      this.tabBarElement.style.display = 'none';
+    }
   }
 
   ionViewDidLoad() {
@@ -80,6 +85,9 @@ export class ScanPage {
     this.scanProvider.deactivate();
     this.events.unsubscribe('incomingDataMenu.showMenu');
     this.events.unsubscribe('scannerServiceInitialized');
+    if (this.navParams.data.fromAddressbook) {
+      this.tabBarElement.style.display = 'flex';
+    }
   }
 
   ionViewWillEnter() {

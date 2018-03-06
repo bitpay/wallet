@@ -10,26 +10,21 @@
 <ion-content>
 
   <form [formGroup]="addressBookAdd">
-    <ion-list>
+    <ion-item>
+      <ion-label stacked>{{ 'Name' | translate }}</ion-label>
+      <ion-input formControlName="name" type="text"></ion-input>
+    </ion-item>
 
-      <ion-item>
-        <ion-label stacked>{{ 'Name' | translate }}</ion-label>
-        <ion-input formControlName="name" type="text"></ion-input>
-      </ion-item>
+    <ion-item>
+      <ion-label stacked>{{ 'Email' | translate }}</ion-label>
+      <ion-input formControlName="email" type="email"></ion-input>
+    </ion-item>
 
-      <ion-item>
-        <ion-label stacked>{{ 'Email' | translate }}</ion-label>
-        <ion-input formControlName="email" type="email"></ion-input>
-      </ion-item>
-
-      <ion-item>
-        <ion-label stacked>{{ 'Bitcoin Address' | translate }}</ion-label>
-        <ion-input formControlName="address" type="text" [value]="addressBookAdd.value.address" address-validator></ion-input>
-        <ion-icon *ngIf="isCordova" class="scanner-icon" name="qr-scanner" item-right (click)="openScanner()"></ion-icon>
-      </ion-item>
-
-    </ion-list>
-
+    <ion-item>
+      <ion-label stacked>{{ 'Bitcoin Address' | translate }}</ion-label>
+      <ion-input formControlName="address" type="text" [value]="addressBookAdd.value.address" address-validator></ion-input>
+      <ion-icon class="scanner-icon" name="qr-scanner" item-right (click)="openScanner()"></ion-icon>
+    </ion-item>
     <button ion-button block (click)="save()" [disabled]="addressBookAdd.invalid || submitAttempt">{{ 'Save' | translate }}</button>
   </form>
 

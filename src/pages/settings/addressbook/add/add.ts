@@ -6,7 +6,6 @@ import { AlertController, Events, NavController, NavParams } from 'ionic-angular
 import { AddressBookProvider } from '../../../../providers/address-book/address-book';
 import { BwcProvider } from '../../../../providers/bwc/bwc';
 import { Logger } from '../../../../providers/logger/logger';
-import { PlatformProvider } from '../../../../providers/platform/platform';
 
 // validators
 import { AddressValidator } from '../../../../validators/address';
@@ -31,15 +30,13 @@ export class AddressbookAddPage {
     private bwc: BwcProvider,
     private ab: AddressBookProvider,
     private formBuilder: FormBuilder,
-    private logger: Logger,
-    private platformProvider: PlatformProvider
+    private logger: Logger
   ) {
     this.addressBookAdd = this.formBuilder.group({
       name: ['', Validators.compose([Validators.required, Validators.pattern('[a-zA-Z0-9 ]*')])],
       email: ['', this.emailOrEmpty],
       address: ['', Validators.compose([Validators.required, new AddressValidator(this.bwc).isValid])]
     });
-    this.isCordova = this.platformProvider.isCordova;
   }
 
   ionViewDidLoad() {
@@ -47,9 +44,12 @@ export class AddressbookAddPage {
   }
 
   ionViewWillEnter() {
-    this.addressBookAdd.controls['address'].setValue(this.navParams.data.addressbookEntry);
+    if (this.navParams.data.addressbookEntry) {
+      this.addressBookAdd.controls['address'].setValue(this.navParams.data.addressbookEntry);
+    }
     this.events.subscribe('update:address', (data) => {
-      this.addressBookAdd.controls['address'].setValue(data.value);
+      let address = data.value.replace(/^bitcoin(cash)?:/, '');
+      this.addressBookAdd.controls['address'].setValue(address);
     });
   }
 
