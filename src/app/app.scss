@@ -147,6 +147,9 @@ ion-alert.alert-top{
   &.no-margin {
     margin: 0;
   }
+  &.success {
+    background-color: color($colors, success);
+  }
   &.notice {
     background-color: color($colors, dark);
   }

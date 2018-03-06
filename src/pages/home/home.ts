@@ -131,6 +131,7 @@ export class HomePage {
 
     // Create, Join, Import and Delete -> Get Wallets -> Update Status for All Wallets
     this.events.subscribe('status:updated', () => {
+      this.updateTxps();
       this.setWallets();
     });
 
