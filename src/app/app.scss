@@ -270,8 +270,8 @@ ion-content.content{
         mask-position: 50% 50%;
         mask-repeat: no-repeat;
         background: currentColor;
-        width: 2rem;
-        height: 2rem;
+        width: 2rem !important;
+        height: 2rem !important;
     }
     // custom icons
     &[class*="tab-home"] {
@@ -282,7 +282,7 @@ ion-content.content{
     }
     &[class*="tab-scan"] {
         mask-image: url(../assets/img/tab-icons/ico-scan.svg);
-        width: 3rem;
+        width: 3rem !important;
     }
     &[class*="tab-send"] {
       mask-image: url(../assets/img/tab-icons/ico-send.svg);
