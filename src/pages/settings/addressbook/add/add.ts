@@ -1,10 +1,16 @@
 import { Component } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
-import { AlertController, NavController, NavParams } from 'ionic-angular';
+import { AlertController, Events, NavController, NavParams } from 'ionic-angular';
+
+// providers
 import { AddressBookProvider } from '../../../../providers/address-book/address-book';
 import { BwcProvider } from '../../../../providers/bwc/bwc';
 import { Logger } from '../../../../providers/logger/logger';
+import { PlatformProvider } from '../../../../providers/platform/platform';
+
+// validators
 import { AddressValidator } from '../../../../validators/address';
+import { ScanPage } from '../../../scan/scan';
 
 @Component({
   selector: 'page-addressbook-add',
@@ -15,21 +21,25 @@ export class AddressbookAddPage {
   private addressBookAdd: FormGroup;
 
   public submitAttempt: boolean = false;
+  public isCordova: boolean;
 
   constructor(
     private navCtrl: NavController,
     private navParams: NavParams,
+    private events: Events,
     private alertCtrl: AlertController,
     private bwc: BwcProvider,
     private ab: AddressBookProvider,
     private formBuilder: FormBuilder,
-    private logger: Logger
+    private logger: Logger,
+    private platformProvider: PlatformProvider
   ) {
     this.addressBookAdd = this.formBuilder.group({
       name: ['', Validators.compose([Validators.required, Validators.pattern('[a-zA-Z0-9 ]*')])],
       email: ['', this.emailOrEmpty],
       address: ['', Validators.compose([Validators.required, new AddressValidator(this.bwc).isValid])]
     });
+    this.isCordova = this.platformProvider.isCordova;
   }
 
   ionViewDidLoad() {
@@ -37,14 +47,17 @@ export class AddressbookAddPage {
   }
 
   ionViewWillEnter() {
-    this.addressBookAdd.value.address = this.navParams.data.addressbookEntry;
+    this.addressBookAdd.controls['address'].setValue(this.navParams.data.addressbookEntry);
+    this.events.subscribe('update:address', (data) => {
+      this.addressBookAdd.controls['address'].setValue(data.value);
+    });
   }
 
   private emailOrEmpty(control: AbstractControl): ValidationErrors | null {
     return control.value === '' ? null : Validators.email(control);
   }
 
-  public save() {
+  public save(): void {
     this.submitAttempt = true;
 
     if (this.addressBookAdd.valid) {
@@ -79,4 +92,7 @@ export class AddressbookAddPage {
     }
   }
 
+  public openScanner(): void {
+    this.navCtrl.push(ScanPage, { fromAddressbook: true });
+  }
 }

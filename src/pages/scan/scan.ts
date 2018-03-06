@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { Events, ModalController, NavController } from 'ionic-angular';
+import { Events, ModalController, NavController, NavParams } from 'ionic-angular';
 import { Logger } from '../../providers/logger/logger';
 
 // providers
@@ -47,7 +47,8 @@ export class ScanPage {
     private modalCtrl: ModalController,
     private externalLinkProvider: ExternalLinkProvider,
     private logger: Logger,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private navParams: NavParams
   ) {
     this.canEnableLight = true;
     this.canChangeCamera = true;
@@ -202,7 +203,14 @@ export class ScanPage {
 
   private handleSuccessfulScan(contents: string): void {
     this.logger.debug('Scan returned: "' + contents + '"');
-    this.incomingDataProvider.redir(contents);
+    let fromAddressbook = this.navParams.data.fromAddressbook;
+    if (fromAddressbook) {
+      this.events.publish('update:address', { value: contents });
+      this.navCtrl.pop();
+    }
+    else {
+      this.incomingDataProvider.redir(contents);
+    }
   }
 
   public authorize(): void {
