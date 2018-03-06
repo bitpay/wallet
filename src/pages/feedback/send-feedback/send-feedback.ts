@@ -1,8 +1,11 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
-import { NavController, NavParams, Platform } from 'ionic-angular';
+import { NavController, NavParams } from 'ionic-angular';
 import * as _ from "lodash";
+
+// native 
+import { Device } from '@ionic-native/device';
 
 // providers
 import { AppProvider } from '../../../providers/app/app';
@@ -40,7 +43,7 @@ export class SendFeedbackPage {
     private formBuilder: FormBuilder,
     private popupProvider: PopupProvider,
     private translate: TranslateService,
-    private platform: Platform
+    private device: Device
   ) {
     this.feedbackForm = this.formBuilder.group({
       comment: ['', Validators.compose([Validators.minLength(1), Validators.required])]
@@ -83,11 +86,8 @@ export class SendFeedbackPage {
 
     let config: any = this.configProvider.get();
 
-    let platform = this.platform.platforms().join("");
-    let versions: any = this.platform.versions();
-    versions = _.values(_.pickBy(versions, _.identity)) // remove undefined and get array of versions
-    let version: any = versions && versions[0] ? versions[0] : null;
-    let versionStr = version ? version.str : '';
+    let platform = this.device.platform;
+    let version = this.device.version;
 
     let dataSrc = {
       "email": _.values(config.emailFor)[0] || ' ',
@@ -95,7 +95,7 @@ export class SendFeedbackPage {
       "score": this.score || ' ',
       "appVersion": this.appProvider.info.version,
       "platform": platform,
-      "deviceVersion": versionStr
+      "deviceVersion": version
     };
 
     if (!goHome) this.onGoingProcessProvider.set('sendingFeedback');

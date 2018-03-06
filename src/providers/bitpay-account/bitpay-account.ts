@@ -1,6 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Logger } from '@nsalaun/ng-logger';
 
+// native 
+import { Device } from '@ionic-native/device';
+
 // providers
 import { AppIdentityProvider } from '../app-identity/app-identity';
 import { BitPayCardProvider } from '../bitpay-card/bitpay-card';
@@ -53,7 +56,8 @@ export class BitPayAccountProvider {
     private popupProvider: PopupProvider,
     private persistenceProvider: PersistenceProvider,
     private appIdentityProvider: AppIdentityProvider,
-    private bitPayCardProvider: BitPayCardProvider
+    private bitPayCardProvider: BitPayCardProvider,
+    private device: Device
   ) {
   }
 
@@ -64,8 +68,7 @@ export class BitPayAccountProvider {
       if (this.platformProvider.isNW) {
         deviceName = require('os').platform();
       } else if (this.platformProvider.isCordova) {
-        // TODO deviceName = this.platformProvider.device.model;
-        deviceName = '';
+        deviceName = this.device.model;
       }
       let json = {
         method: 'createToken',

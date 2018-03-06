@@ -92,6 +92,7 @@
     "@angular/compiler": "^5.1.3",
     "@angular/compiler-cli": "^5.1.3",
     "@angular/core": "^5.1.3",
+    "@ionic-native/device": "^4.5.3",
     "@angular/forms": "^5.1.3",
     "@angular/http": "^5.1.3",
     "@angular/platform-browser": "^5.1.3",
