@@ -10,6 +10,7 @@ import { ShapeshiftShiftPage } from './shapeshift-shift/shapeshift-shift';
 // Providers
 import { ExternalLinkProvider } from '../../../providers/external-link/external-link';
 import { ShapeshiftProvider } from '../../../providers/shapeshift/shapeshift';
+import { TimeProvider } from '../../../providers/time/time';
 
 @Component({
   selector: 'page-shapeshift',
@@ -26,7 +27,8 @@ export class ShapeshiftPage {
     private logger: Logger,
     private modalCtrl: ModalController,
     private navCtrl: NavController,
-    private shapeshiftProvider: ShapeshiftProvider
+    private shapeshiftProvider: ShapeshiftProvider,
+    private timeProvider: TimeProvider
   ) {
     this.network = this.shapeshiftProvider.getNetwork();
     this.shifts = { data: {} };
@@ -50,6 +52,9 @@ export class ShapeshiftPage {
   private updateShift = _.debounce((shifts: any) => {
     if (_.isEmpty(shifts.data)) return;
     _.forEach(shifts.data, (dataFromStorage: any) => {
+
+      if (!this.checkIfShiftNeedsUpdate(dataFromStorage)) return;
+
       this.shapeshiftProvider.getStatus(dataFromStorage.address, (err: any, st: any) => {
         if (err) return;
 
@@ -67,6 +72,20 @@ export class ShapeshiftPage {
   }, 1000, {
       'leading': true
     });
+
+  private checkIfShiftNeedsUpdate(shiftData: any) {
+    // Continues normal flow (update shiftData)
+    if (shiftData.status == 'received') {
+      return true;
+    }
+    // Check if shiftData status FAILURE for 24 hours
+    if ((shiftData.status == 'failed' || shiftData.status == 'no_deposits') && this.timeProvider.withinPastDay(shiftData.date)) {
+      return true;
+    }
+    // If status is complete: do not update
+    // If status fails or do not receive deposits for more than 24 hours: do not update
+    return false;
+  };
 
   private init(): void {
     this.shapeshiftProvider.getShapeshift((err: any, ss: any) => {
