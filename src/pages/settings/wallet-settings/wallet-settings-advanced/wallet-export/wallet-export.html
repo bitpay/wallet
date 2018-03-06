@@ -57,11 +57,11 @@
               </span>
             </div>
           </ion-item-divider>
-          <button *ngIf="!isSafari && !isCordova" ion-button block clear type="submit" (click)="downloadWalletBackup()" [disabled]="(!exportWalletForm.value.password || exportWalletForm.value.password != exportWalletForm.value.confirmPassword) || !exportWalletForm.valid ">Download</button>
-          <button *ngIf="isSafari && !isCordova" ion-button block clear type="submit" (click)="viewWalletBackup()" [disabled]="(!exportWalletForm.value.password || exportWalletForm.value.password != exportWalletForm.value.confirmPassword) || !exportWalletForm.valid ">View</button>
+          <button *ngIf="!isSafari && !isCordova" ion-button class="button-standard" type="submit" (click)="downloadWalletBackup()" [disabled]="(!exportWalletForm.value.password || exportWalletForm.value.password != exportWalletForm.value.confirmPassword) || !exportWalletForm.valid ">Download</button>
+          <button *ngIf="isSafari && !isCordova" ion-button class="button-standard" (click)="viewWalletBackup()" [disabled]="(!exportWalletForm.value.password || exportWalletForm.value.password != exportWalletForm.value.confirmPassword) || !exportWalletForm.valid ">View</button>
           <div *ngIf="isCordova">
-            <button ion-button block clear type="submit" (click)="copyWalletBackup()" [disabled]="(!exportWalletForm.value.password || exportWalletForm.value.password != exportWalletForm.value.confirmPassword) || !exportWalletForm.valid ">Copy to clipboard</button>
-            <button ion-button block clear type="submit" (click)="sendWalletBackup()" [disabled]="(!exportWalletForm.value.password || exportWalletForm.value.password != exportWalletForm.value.confirmPassword) || !exportWalletForm.valid ">Send by email</button>
+            <button ion-button class="button-standard" type="submit" (click)="copyWalletBackup()" [disabled]="(!exportWalletForm.value.password || exportWalletForm.value.password != exportWalletForm.value.confirmPassword) || !exportWalletForm.valid ">Copy to clipboard</button>
+            <button ion-button class="button-standard" type="submit" (click)="sendWalletBackup()" [disabled]="(!exportWalletForm.value.password || exportWalletForm.value.password != exportWalletForm.value.confirmPassword) || !exportWalletForm.valid ">Send by email</button>
           </div>
         </form>
       </div>

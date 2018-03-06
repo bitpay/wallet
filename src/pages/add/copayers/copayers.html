@@ -23,7 +23,7 @@
             {{ secret || ('Loading...'|translate) }}
           </div>
         </div>
-        <button ion-button type="button" *ngIf="secret" (click)="showDeletePopup()" translate>Cancel invitation</button>
+        <button ion-button class="button-standard" type="button" *ngIf="secret" (click)="showDeletePopup()" translate>Cancel invitation</button>
       </ion-item>
     </ion-list>
 

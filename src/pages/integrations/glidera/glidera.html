@@ -19,7 +19,7 @@
     <div padding margin *ngIf="showOauthForm" text-wrap>If you have trouble, contact
       <a (click)="openSupportWindow()">Glidera support</a> for direct assistance.
     </div>
-    <button *ngIf="!showOauthForm" ion-button outline (click)="openAuthenticateWindow()">Connect to Glidera</button>
+    <button *ngIf="!showOauthForm" ion-button class="button-standard" (click)="openAuthenticateWindow()">Connect to Glidera</button>
     <ion-list *ngIf="showOauthForm">
       <form [formGroup]="oauthCodeForm" (ngSubmit)="submitOauthCode(oauthCodeForm.value.code)">
         <ion-item>

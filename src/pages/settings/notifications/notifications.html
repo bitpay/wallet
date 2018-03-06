@@ -48,7 +48,7 @@
           <ion-input formControlName="email" type="email"></ion-input>
         </ion-item>
 
-        <button ion-button clear block (click)="saveEmail()" [disabled]="emailForm.invalid">
+        <button ion-button class="button-standard" (click)="saveEmail()" [disabled]="emailForm.invalid">
           {{ 'Save' | translate }}
         </button>
       </form>
