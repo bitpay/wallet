@@ -60,29 +60,29 @@
     </ion-card-content>
   </ion-card>
 
-  <ion-list class="card" *ngIf="txps && txps[0]">
+  <div class="card" *ngIf="txps && txps[0]">
     <ion-item-divider padding-top>
       <div item-start>
         <span translate>Payment Proposals</span>
       </div>
       <ion-badge item-end (click)="openProposalsPage()" *ngIf="txpsN>3">{{txpsN}}</ion-badge>
     </ion-item-divider>
-    <page-txp *ngFor="let txp of txps" [tx]="txp" [addressbook]="addressbook"></page-txp>
-  </ion-list>
+    <ion-list>
+        <page-txp *ngFor="let txp of txps" [tx]="txp" [addressbook]="addressbook"></page-txp>
+    </ion-list>
+ </div>
 
-  <ion-list class="card" *ngIf="notifications && notifications[0] && recentTransactionsEnabled">
+  <div class="card" *ngIf="notifications && notifications[0] && recentTransactionsEnabled">
     <ion-item-divider padding-top>
       <div item-start>
         <span translate>Recent Transactions</span>
       </div>
       <ion-badge item-end (click)="openActivityPage()" *ngIf="notificationsN>3">{{notificationsN}}</ion-badge>
     </ion-item-divider>
-
-    <span *ngFor="let notification of notifications" (click)="openNotificationModal(notification)">
-      <page-wallet-activity [notification]="notification"></page-wallet-activity>
-    </span>
-
-  </ion-list>
+    <ion-list>
+      <page-wallet-activity *ngFor="let notification of notifications" (click)="openNotificationModal(notification)" [notification]="notification"></page-wallet-activity>
+    </ion-list>
+  </div>
 
   <div *ngIf="!wallets || !wallets[0]" class="no-wallets">
     <button ion-button clear (click)="goToAddView()">
@@ -224,7 +224,7 @@
     </ion-list>
   </div>
 
-  <ion-list class="card" *ngIf="homeIntegrations && homeIntegrations.length>0">
+  <div class="card" *ngIf="homeIntegrations && homeIntegrations.length>0">
     <ion-item-divider (click)="hideHomeIntegrations = !hideHomeIntegrations">
       <div item-start translate>Services</div>
       <div item-end>
@@ -234,14 +234,14 @@
         </button>
       </div>
     </ion-item-divider>
-    <div *ngIf="!hideHomeIntegrations">
+    <ion-list *ngIf="!hideHomeIntegrations">
       <button ion-item *ngFor="let service of homeIntegrations" (click)="goTo(service.page)">
         <ion-icon item-start>
           <img src="{{service.icon}}" class="icon-services" />
         </ion-icon>
         <span>{{service.title || service.name}}</span>
       </button>
-    </div>
+    </ion-list>
 
-  </ion-list>
+  </div>
 </ion-content>
