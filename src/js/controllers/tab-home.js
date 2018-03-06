@@ -12,7 +12,6 @@ angular.module('copayApp.controllers').controller('tabHomeController',
     $scope.homeTip = $stateParams.fromOnboarding;
     $scope.isCordova = platformInfo.isCordova;
     $scope.isAndroid = platformInfo.isAndroid;
-    $scope.isIOS = platformInfo.isIOS;
     $scope.isWindowsPhoneApp = platformInfo.isCordova && platformInfo.isWP;
     $scope.isNW = platformInfo.isNW;
     $scope.showRateCard = {};
@@ -181,17 +180,7 @@ angular.module('copayApp.controllers').controller('tabHomeController',
     };
 
     $scope.openBuyLink = function() {
-      if($scope.isIOS) {
-        var url = 'https://navcoin.org/buy-nav';
-        var optIn = true;
-        var title = gettextCatalog.getString('Open NavCoin.org/buy-nav');
-        var message = gettextCatalog.getString('You can find ways to purchase Nav Coin from this page.');
-        var okText = gettextCatalog.getString('Open');
-        var cancelText = gettextCatalog.getString('Go Back');
-        externalLinkService.open(url, optIn, title, message, okText, cancelText);
-      } else {
-        $state.go('tabs.changelly');
-      }
+      $state.go('tabs.changelly');
     };
 
     $scope.openWallet = function(wallet) {
