@@ -17,7 +17,6 @@
     <div [ngClass]="{'amount--sent': sent, 'amount--received': received, 'amount--pending': pending}">
       {{card.price | currency:currencySymbol:2 }}
     </div>
-    <span *ngIf="createdWithinPastDay(card)">{{card.date | amTimeAgo}}</span>
-    <span *ngIf="!createdWithinPastDay(card)">{{card.date | amDateFormat:'MMM D, YYYY'}}</span>
+    {{card.date}}
   </ion-note>
 </ion-item>
