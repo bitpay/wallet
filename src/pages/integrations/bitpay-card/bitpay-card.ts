@@ -169,8 +169,7 @@ export class BitPayCardPage {
       txDate = new Date(txs[i].date);
       txDateUtc = new Date(txs[i].date.replace('Z',''));
       let amTime = this.createdWithinPastDay(txs[i]);
-      if (amTime) newDate = moment(txDateUtc).fromNow();
-      else newDate = moment(txDate).utc().format('MMM D, YYYY');
+      newDate = amTime ? moment(txDateUtc).fromNow() : moment(txDate).utc().format('MMM D, YYYY');
       txs[i].date = newDate;
     }
   }
