@@ -289,6 +289,36 @@
       }
     }
   }
+  .changelly {
+    background: #fff;
+    overflow: auto;
+    height: 100%;
+    &-info {
+      padding-top: 20px;
+      padding-bottom: 15px;
+      text-align: center;
+      .changelly-label {
+        margin-top: 5%;
+        font-size: 13px;
+      }
+    }
+    .status-label {
+      font-size: 14px;
+      font-weight: 300;
+      color: #727272;
+      padding: 1rem;
+      background: #f8f8f9;
+      i {
+        position: absolute;
+        padding-left: 5px;
+      }
+    }
+  }
+
+ .changelly-padding {
+    padding: 10px;
+    padding-top: 30px;
+  }
   .backup {
     position: absolute;
     top: 0;

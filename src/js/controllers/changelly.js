@@ -158,6 +158,16 @@ angular.module('copayApp.controllers').controller('changellyController',
       return wallet;
     }
 
+
+    $scope.openExternalLink = function(url) {
+      var optIn = true;
+      var title = null;
+      var message = gettextCatalog.getString('You will now be redirected to Changelly.com to complete your purchase');
+      var okText = gettextCatalog.getString('Okay');
+      var cancelText = gettextCatalog.getString('Go Back');
+      externalLinkService.open(url, optIn, title, message, okText, cancelText);
+    };
+
     $scope.onWalletSelect = function(wallet) {
       $scope.wallet = wallet;
       $scope.setAddress();
