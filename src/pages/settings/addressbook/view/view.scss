@@ -1,24 +1,8 @@
 page-addressbook-view {
-  .toolbar {
-    background-color: #192c3a;
-    &-content {
-      margin-right: 70px;
-    }
-    &-title {
-      text-align: center;
-    }
-    .back-button, &-title {
-      color: white;
-    }
-    .back-button:hover {
-      color: white;
-    }
-  }
   .contact-view-header {
     position: relative;
     height: 70px;
-    border-color: #192c3a;
-    background-color: #192c3a;
+    background-color: $toolbar-background;
     padding-top: 20px;
     margin-bottom: 50px;
     text-align: center;
@@ -32,5 +16,9 @@ page-addressbook-view {
   }
   .btn-remove {
     color: color($colors, danger);
+  }
+  .comment {
+    color: color($colors, grey);
+    padding-top: 10px;
   }
 }
