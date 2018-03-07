@@ -28,7 +28,7 @@
 
     <ion-item *ngIf="tx.paypro.toAddress" copy-to-clipboard="{{tx.paypro.toAddress}}">
       <div>{{'Address'|translate}}</div>
-      <div class="memo" text-wrap>
+      <div class="comment" text-wrap>
         {{tx.paypro.toAddress}}
       </div>
     </ion-item>
@@ -56,7 +56,7 @@
 
     <ion-item *ngIf="tx.paypro.memo">
       <div>{{'Memo'|translate}}</div>
-      <div class="memo" text-wrap>
+      <div class="comment" text-wrap>
         {{tx.paypro.memo}}
       </div>
     </ion-item>
