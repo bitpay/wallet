@@ -33,12 +33,17 @@ $colors: (
   dark: #424242,
   grey: #999
 );
-//App Background color
-$app-bg-color: #F5F5F5;
+
+// App background color
+$background-color: #F5F5F5;
+
+// Item list background color
+$list-background-color: #ffffff;
+
 // Refresh color
 $refresher-icon-color: color($colors, primary);
-$refresher-icon-font-size: 12.5px;
-$refresher-height: 60px;
+$refresher-icon-font-size: 14px;
+$refresher-height: 80px;
 
 // Toolbar
 $toolbar-text-color: color($colors, light);
@@ -48,6 +53,12 @@ $text-color: color($colors, dark);
 
 // Border light
 $list-border-color: color($colors, light);
+
+// Toolbar
+$toolbar-ios-title-text-color: color($colors, light);
+$toolbar-md-title-text-color: color($colors, light);
+$toolbar-md-title-font-size: 1.6rem;
+$toolbar-ios-title-font-size: 1.5rem;
 
 // Onboarding colors
 $onboarding-gradient-top-color: $toolbar-background;
@@ -66,10 +77,12 @@ $onboarding-color: #fff;
 $tabs-ios-background: color($colors, blank);
 $tabs-ios-border-color: rgba(0, 0, 0, .1);
 
-//$item-ios-body-text-font-size: 1.4rem;
-$item-ios-divider-background: color($colors, blank);
+$item-ios-body-text-font-size: 1.5rem;
+$item-ios-divider-background: $background-color;
 $item-ios-padding-top: 16px;
 $item-ios-padding-bottom: 16px;
+$label-ios-margin-top: 14px;
+$label-ios-margin-bottom: 14px;
 
 $list-ios-border-color: color($colors, light);
 //$list-ios-header-font-size: 1.5rem;
@@ -85,10 +98,12 @@ $note-ios-color: color($colors, grey);
 // --------------------------------------------------
 // Material Design only Sass variables can go here
 
-//$item-md-font-size: 1.4rem;
-$item-md-divider-background: color($colors, blank);
+$item-md-font-size: 1.5rem;
+$item-md-divider-background: $background-color;
 $item-md-padding-top: 16px;
 $item-md-padding-bottom: 16px;
+$label-md-margin-top: 14px;
+$label-md-margin-bottom: 14px;
 
 $searchbar-md-padding-start: 8px;
 $searchbar-md-padding-end: 8px;
@@ -134,3 +149,4 @@ $note-md-color: color($colors, grey);
 .platform-core .scroll-content {
   overflow-y: auto;
 }
+

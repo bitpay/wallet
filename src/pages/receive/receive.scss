@@ -1,6 +1,11 @@
 page-receive {
   .message-container {
     text-align: center;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
     .title {
       padding-top: 10%;
       font-size: 25px;

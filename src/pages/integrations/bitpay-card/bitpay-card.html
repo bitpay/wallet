@@ -11,16 +11,12 @@
       <div (tap)="update()" class="balance-str" *ngIf="balance">
         {{balance | currency:currencySymbol:2 }}
       </div>
-      <button ion-button small clear color="light" (click)="topUp()" *ngIf="balance" no-low-fee>
+      <button ion-button color="primary" (click)="topUp()" *ngIf="balance" no-low-fee>
         {{'Add Funds'|translate}} &rarr;
       </button>
 
       <div class="card-info">
         <ion-spinner *ngIf="!balance || loadingHistory"></ion-spinner>
-
-        <span class="card-type" *ngIf="currency">
-          {{currency}}
-        </span>
       </div>
 
     </div>

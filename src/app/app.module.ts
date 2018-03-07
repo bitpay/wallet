@@ -325,7 +325,9 @@ export function createTranslateLoader(http: HttpClient) {
   imports: [
     IonicModule.forRoot(CopayApp, {
       tabsHideOnSubPages: true,
-      tabsPlacement: 'bottom'
+      tabsPlacement: 'bottom',
+      backButtonIcon: 'arrow-round-back',
+      backButtonText: ''
     }),
     BrowserModule,
     HttpClientModule,
