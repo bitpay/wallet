@@ -19,8 +19,8 @@ export class PayProPage {
     private walletProvider: WalletProvider,
   ) {
     this.tx = this.navParams.data.tx;
-    this.wallet = this.navParams.data.wallet;
-    this.tx.paypro.toAddress = this.walletProvider.getAddressView(this.wallet, this.tx.paypro.toAddress);
+    let wallet = this.navParams.data.wallet;
+    this.tx.paypro.toAddress = this.walletProvider.getAddressView(wallet, this.tx.paypro.toAddress);
   }
 
   close() {
