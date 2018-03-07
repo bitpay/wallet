@@ -67,7 +67,7 @@ $tabs-ios-background: color($colors, blank);
 $tabs-ios-border-color: rgba(0, 0, 0, .1);
 
 //$item-ios-body-text-font-size: 1.4rem;
-$item-ios-divider-background: color($colors, blank);
+$item-ios-divider-background: color($colors, light);
 $item-ios-padding-top: 16px;
 $item-ios-padding-bottom: 16px;
 
@@ -86,7 +86,7 @@ $note-ios-color: color($colors, grey);
 // Material Design only Sass variables can go here
 
 //$item-md-font-size: 1.4rem;
-$item-md-divider-background: color($colors, blank);
+$item-md-divider-background: color($colors, light);
 $item-md-padding-top: 16px;
 $item-md-padding-bottom: 16px;
 
