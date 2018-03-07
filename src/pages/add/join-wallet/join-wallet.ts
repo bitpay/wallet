@@ -108,7 +108,7 @@ export class JoinWalletPage {
     let opts: any = {
       secret: this.joinForm.value.invitationCode,
       myName: this.joinForm.value.myName,
-      bwsurl: this.joinForm.value.bwsurl,
+      bwsurl: this.joinForm.value.bwsURL,
       coin: this.joinForm.value.coin
     }
 
