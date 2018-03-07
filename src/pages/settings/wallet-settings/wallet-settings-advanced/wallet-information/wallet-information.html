@@ -7,62 +7,62 @@
   <page-wallet-item *ngIf="wallet" [wallet]="wallet"></page-wallet-item>
   <ion-list>
     <ion-item (click)="saveBlack()">
-      <h2 translate>Wallet Name (at creation)</h2>
+      <span translate>Wallet Name (at creation)</span>
       <ion-note item-end>
         {{walletName}}
       </ion-note>
     </ion-item>
     <ion-item>
-      <h2 translate>Coin</h2>
+      <span translate>Coin</span>
       <ion-note item-end>
         {{coin}}
       </ion-note>
     </ion-item>
     <ion-item copy-to-clipboard="{{walletId}}">
-      <h2 translate>Wallet Id</h2>
-      <p>
+      <span translate>Wallet Id</span>
+      <ion-note item-end>
         {{walletId}}
-      </p>
+      </ion-note>
     </ion-item>
     <ion-item>
-      <h2 translate>Wallet Configuration (m-n)</h2>
+      <span translate>Wallet Configuration (m-n)</span>
       <ion-note item-end>
         {{M}}-{{N}}
       </ion-note>
     </ion-item>
     <ion-item>
-      <h2 translate>Wallet Network</h2>
+      <span translate>Wallet Network</span>
       <ion-note item-end>
         {{network}}
       </ion-note>
     </ion-item>
     <ion-item>
-      <h2 translate>Address Type</h2>
+      <span translate>Address Type</span>
       <ion-note item-end>
         {{addressType}}
       </ion-note>
     </ion-item>
     <ion-item>
-      <h2 translate>Derivation Strategy</h2>
+      <span translate>Derivation Strategy</span>
       <ion-note item-end>
         {{derivationStrategy}}
       </ion-note>
     </ion-item>
     <ion-item *ngIf="!canSign">
-      <h2></h2>
+      <span></span>
       <ion-note item-end>
         <span translate>No private key</span>
       </ion-note>
     </ion-item>
     <ion-item>
-      <h2 translate>Account</h2>({{derivationStrategy}})
+      <span translate>Account</span>({{derivationStrategy}})
       <ion-note item-end>
         #{{account}}
       </ion-note>
     </ion-item>
     <ion-item-divider *ngIf="copayers">Copayers</ion-item-divider>
     <ion-item *ngFor="let copayer of copayers">
-      <h2>{{copayer.name}}</h2>
+      <span>{{copayer.name}}</span>
       <ion-note *ngIf="copayer.id == copayerId" item-end>
         ({{'Me' | translate}})
       </ion-note>
@@ -70,7 +70,7 @@
     <ion-item-divider translate>Extended Public Keys</ion-item-divider>
     <ion-item *ngFor="let pk of pubKeys; let i=index" copy-to-clipboard="{{pk}}">
       <div>
-        <h2 translate>Copayer {{i}}</h2>
+        <span translate>Copayer {{i}}</span>
       </div> 
       <div text-wrap class="pkStyle">
         {{pk}}
@@ -80,12 +80,12 @@
     <div *ngIf="!needsBackup && canSign">
       <ion-item-divider></ion-item-divider>
       <button ion-item (click)="openWalletExtendedPrivateKey()">
-        <h2 translate>Extended Private Key</h2>
+        <span translate>Extended Private Key</span>
       </button>
     </div>
     <ion-item-divider *ngIf="balanceByAddress">Balance By Address</ion-item-divider>
     <ion-item class="item" *ngFor="let a of balanceByAddress" copy-to-clipboard="{{a.address}}">
-      <h2>{{a.address}}</h2>
+      <span>{{a.address}}</span>
       <ion-note item-end>
         {{(a.amount/1e8).toFixed(8)}} BTC
       </ion-note>

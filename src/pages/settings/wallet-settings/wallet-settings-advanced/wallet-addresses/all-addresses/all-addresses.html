@@ -11,21 +11,25 @@
 
 <ion-content>
   <ion-list>
-    <ion-item-divider></ion-item-divider>
-    <button ion-item *ngIf="isCordova && allAddresses[0]" (click)="sendByEmail()">
-      <span translate>Send addresses by email</span>
-    </button>
-
     <ion-item-divider *ngIf="withBalance && withBalance[0]">{{'Addresses with balance' | translate}}</ion-item-divider>
     <ion-item *ngFor="let w of withBalance" copy-to-clipboard="{{w.address}}">
-      <h3>{{w.address}}</h3>
-      <p class="amount">{{w.amount | satToUnit: coin}}</p>
+      <div>{{w.address}}</div>
+      <ion-note>
+        {{w.amount | satToUnit: coin}}
+      </ion-note>
     </ion-item>
 
     <ion-item-divider>{{'Unused addresses' | translate}}</ion-item-divider>
     <ion-item *ngFor="let u of noBalance" copy-to-clipboard="{{u.address}}">
-      <h3>{{u.address}}</h3>
-      <p>{{u.path}} {{u.createdOn * 1000 | amDateFormat:'MMMM Do YYYY, hh:mm a'}}</p>
+      <div>{{u.address}}</div>
+      <ion-note>
+        {{u.path}} {{u.createdOn * 1000 | amDateFormat:'MMMM Do YYYY, hh:mm a'}}
+      </ion-note>
     </ion-item>
   </ion-list>
 </ion-content>
+<ion-footer>
+  <button ion-button full class="button-footer" *ngIf="isCordova && allAddresses[0]" (click)="sendByEmail()">
+    <span translate>Send addresses by email</span>
+  </button>
+</ion-footer>
