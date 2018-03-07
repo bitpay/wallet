@@ -50,9 +50,10 @@ export class JoinWalletPage {
 
     this.showAdvOpts = false;
 
+    let regex: RegExp = /^[0-9A-HJ-NP-Za-km-z]{70,80}$/; // For invitationCode
     this.joinForm = this.form.group({
       myName: [null, Validators.required],
-      invitationCode: [null, Validators.required], // invitationCode == secret
+      invitationCode: [null, [Validators.required, Validators.pattern(regex)]], // invitationCode == secret
       bwsURL: [this.defaults.bws.url],
       selectedSeed: ['new'],
       recoveryPhrase: [null],
@@ -174,5 +175,4 @@ export class JoinWalletPage {
       });
     }
   }
-
 }
