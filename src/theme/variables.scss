@@ -185,3 +185,21 @@ $note-md-color: color($colors, grey);
     }
   }
 }
+
+// Titles centered on all headers for material design
+.toolbar {
+  &.toolbar-md { //material design only
+    position: relative;
+    .back-button {
+      z-index: 999;
+    }
+    .title-md { //material design only
+        position: absolute;
+        left: 0;
+        top: 0;
+        height: 100%;
+        width: 100%;
+        text-align: center;
+    }
+  }
+}
