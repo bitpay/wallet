@@ -5,8 +5,8 @@
   <div class="action">
     <span *ngIf="!tx.merchant">
       <span *ngIf="tx.message">{{tx.message}}</span>
-      <span *ngIf="!tx.message && addressbook[tx.toAddress]">{{addressbook[tx.toAddress].name || addressbook[tx.toAddress]}}</span>
-      <span *ngIf="!tx.message && !addressbook[tx.toAddress]" translate>Sending</span>
+      <span *ngIf="!tx.message && tx.toAddress && addressbook[tx.toAddress]">{{addressbook[tx.toAddress].name || addressbook[tx.toAddress]}}</span>
+      <span *ngIf="!tx.message && tx.toAddress && !addressbook[tx.toAddress]" translate>Sending</span>
     </span>
     <span *ngIf="tx.merchant">
       <span *ngIf="tx.merchant.pr.ca"><ion-icon class="fi-lock"></ion-icon> {{tx.merchant.domain}}</span>
