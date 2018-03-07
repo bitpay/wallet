@@ -228,28 +228,16 @@ a.royal {
 .pointer {
   cursor: pointer;
 }
-ion-content.content{
-  background-color: $app-bg-color;
-}
-
-
-// ios overrides
-.list-ios .item-block:last-child{
-  border:0;
-
-  & .item-inner {
-    border:0;
-  }
-}
 
 .wallet-warning {
   font-size: 11px;
   color: color($colors, danger);
 }
+
 .card{
   padding-top: 1px;
   width:92%;
-  padding-bottom: 15px;
+  padding-bottom: 5px;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
   overflow: hidden;
   margin: 20px auto;
@@ -257,37 +245,38 @@ ion-content.content{
   border-radius: 4px;
   background-color: #ffffff;
 
-    .item-divider{
-      background-color:#ffffff;
-    }
+  .item-divider{
+    background-color: #ffffff;
+    margin-bottom: 5px;
   }
+}
 
-  ion-icon {
-    &[class*="tab-"] {
-        // Instead of using the font-based icons
-        // We're applying SVG masks
-        mask-size: contain;
-        mask-position: 50% 50%;
-        mask-repeat: no-repeat;
-        background: currentColor;
-        width: 2rem !important;
-        height: 2rem !important;
-    }
-    // custom icons
-    &[class*="tab-home"] {
-        mask-image: url(../assets/img/tab-icons/ico-home.svg);
-    }
-    &[class*="tab-receive"] {
-        mask-image: url(../assets/img/tab-icons/ico-receive.svg);
-    }
-    &[class*="tab-scan"] {
-        mask-image: url(../assets/img/tab-icons/ico-scan.svg);
-        width: 3rem !important;
-    }
-    &[class*="tab-send"] {
-      mask-image: url(../assets/img/tab-icons/ico-send.svg);
+ion-icon {
+  &[class*="tab-"] {
+    // Instead of using the font-based icons
+    // We're applying SVG masks
+    mask-size: contain;
+    mask-position: 50% 50%;
+    mask-repeat: no-repeat;
+    background: currentColor;
+    width: 2rem !important;
+    height: 2rem !important;
   }
-    &[class*="tab-settings"] {
-      mask-image: url(../assets/img/tab-icons/ico-settings.svg);
+  // custom icons
+  &[class*="tab-home"] {
+    mask-image: url(../assets/img/tab-icons/ico-home.svg);
+  }
+  &[class*="tab-receive"] {
+    mask-image: url(../assets/img/tab-icons/ico-receive.svg);
+  }
+  &[class*="tab-scan"] {
+    mask-image: url(../assets/img/tab-icons/ico-scan.svg);
+    width: 3rem !important;
+  }
+  &[class*="tab-send"] {
+    mask-image: url(../assets/img/tab-icons/ico-send.svg);
+  }
+  &[class*="tab-settings"] {
+    mask-image: url(../assets/img/tab-icons/ico-settings.svg);
   }
 }

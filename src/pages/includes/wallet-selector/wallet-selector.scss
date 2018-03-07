@@ -37,13 +37,12 @@ wallet-selector {
     width: 100%;
     text-align: center;
     font-weight: 700;
-    margin: 10px 0;
+    margin: 0 0 20px 0;
     text-transform: uppercase;
   }
   .back-button {
     display: inline-block;
     width: 100%;
-    border-bottom: 1px solid color($colors, light);
     ion-icon {
       padding: 1.5rem 20px 1.5rem 20px;
       cursor: pointer;
