@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { Events, ModalController, NavController } from 'ionic-angular';
+import { Events, ModalController, NavController, NavParams } from 'ionic-angular';
 import { Logger } from '../../providers/logger/logger';
 
 // providers
@@ -37,6 +37,7 @@ export class ScanPage {
   public canOpenSettings: boolean;
   public currentState: string;
   public notSupportedMessage: string;
+  public tabBarElement: any;
   // private qrScannerBrowser: QRScannerBrowser (inside constructor)
   constructor(
     private navCtrl: NavController,
@@ -47,7 +48,8 @@ export class ScanPage {
     private modalCtrl: ModalController,
     private externalLinkProvider: ExternalLinkProvider,
     private logger: Logger,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private navParams: NavParams
   ) {
     this.canEnableLight = true;
     this.canChangeCamera = true;
@@ -64,6 +66,10 @@ export class ScanPage {
     this.scannerIsDenied = false;
     this.scannerIsRestricted = false;
     this.canOpenSettings = false;
+    if (this.navParams.data.fromAddressbook) {
+      this.tabBarElement = document.querySelector('.tabbar.show-tabbar');
+      this.tabBarElement.style.display = 'none';
+    }
   }
 
   ionViewDidLoad() {
@@ -79,6 +85,9 @@ export class ScanPage {
     this.scanProvider.deactivate();
     this.events.unsubscribe('incomingDataMenu.showMenu');
     this.events.unsubscribe('scannerServiceInitialized');
+    if (this.navParams.data.fromAddressbook) {
+      this.tabBarElement.style.display = 'flex';
+    }
   }
 
   ionViewWillEnter() {
@@ -202,7 +211,14 @@ export class ScanPage {
 
   private handleSuccessfulScan(contents: string): void {
     this.logger.debug('Scan returned: "' + contents + '"');
-    this.incomingDataProvider.redir(contents);
+    let fromAddressbook = this.navParams.data.fromAddressbook;
+    if (fromAddressbook) {
+      this.events.publish('update:address', { value: contents });
+      this.navCtrl.pop();
+    }
+    else {
+      this.incomingDataProvider.redir(contents);
+    }
   }
 
   public authorize(): void {
