@@ -98,6 +98,7 @@ export class HomePage {
     private incomingDataProvider: IncomingDataProvider
   ) {
     this.updatingWalletId = {};
+    this.addressbook = {};
     this.cachedBalanceUpdateOn = '';
     this.isNW = this.platformProvider.isNW;
     this.showReorderBtc = false;
@@ -115,6 +116,12 @@ export class HomePage {
     });
     this.homeIntegrations = _.filter(this.homeIntegrations, (homeIntegrations) => {
       return homeIntegrations.show == true;
+    });
+
+    this.addressBookProvider.list().then((ab: any) => {
+      this.addressbook = ab || {};
+    }).catch((err) => {
+      this.logger.error(err);
     });
 
     // Update Tx Notifications
@@ -148,13 +155,7 @@ export class HomePage {
   ionViewDidEnter() {
     if (this.isNW) this.checkUpdate();
     this.checkHomeTip();
-    this.checkFeedbackInfo();
-
-    this.addressBookProvider.list().then((ab: any) => {
-      this.addressbook = ab || {};
-    }).catch((err) => {
-      this.logger.error(err);
-    });
+    this.checkFeedbackInfo(); 
 
     if (this.platformProvider.isCordova) {
       this.handleDeepLinks();
