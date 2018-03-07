@@ -169,3 +169,19 @@ $note-md-color: color($colors, grey);
 .ios ion-list > .item-wrapper:last-child .item {
     border-bottom: none;
 }
+
+// Transition between home <-> walletDetails
+.ios {
+  page-wallet-details {
+    .balance-header {
+      margin-top: 44px;
+    }
+  }
+}
+.md {
+  page-wallet-details {
+    .balance-header {
+      margin-top: 56px;
+    }
+  }
+}
