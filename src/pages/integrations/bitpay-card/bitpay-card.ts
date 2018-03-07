@@ -136,6 +136,8 @@ export class BitPayCardPage {
 
         let txs = _.clone(history.txs);
 
+        this.setDateTime(txs);
+
         this.bitpayCardTransactionHistoryConfirming = this.bitPayCardProvider.filterTransactions('confirming', txs);
         this.bitpayCardTransactionHistoryCompleted = this.bitPayCardProvider.filterTransactions('completed', txs);
         this.bitpayCardTransactionHistoryPreAuth = this.bitPayCardProvider.filterTransactions('preAuth', txs);
@@ -160,7 +162,19 @@ export class BitPayCardPage {
     });
   }
 
-  public createdWithinPastDay(tx: any) {
+  private setDateTime(txs) {
+    let txDate, txDateUtc;
+    let newDate;
+    for(let i = 0; i < txs.length; i++) {
+      txDate = new Date(txs[i].date);
+      txDateUtc = new Date(txs[i].date.replace('Z',''));
+      let amTime = this.createdWithinPastDay(txs[i]);
+      newDate = amTime ? moment(txDateUtc).fromNow() : moment(txDate).utc().format('MMM D, YYYY');
+      txs[i].date = newDate;
+    }
+  }
+
+  private createdWithinPastDay(tx: any) {
     let result = false;
     if (tx.date) {
       result = this.timeProvider.withinPastDay(tx.date);

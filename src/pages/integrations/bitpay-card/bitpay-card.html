@@ -16,7 +16,7 @@
       </button>
 
       <div class="card-info">
-        <ion-spinner *ngIf="!balance"></ion-spinner>
+        <ion-spinner *ngIf="!balance || loadingHistory"></ion-spinner>
 
         <span class="card-type" *ngIf="currency">
           {{currency}}
