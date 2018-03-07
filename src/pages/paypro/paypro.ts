@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { NavParams, ViewController } from 'ionic-angular';
 
-//providers
+// providers
 import { WalletProvider } from '../../providers/wallet/wallet';
 
 @Component({
@@ -12,6 +12,7 @@ export class PayProPage {
 
   public tx: any;
   public wallet: any;
+  public address: string;
 
   constructor(
     private navParams: NavParams,
@@ -20,7 +21,7 @@ export class PayProPage {
   ) {
     this.tx = this.navParams.data.tx;
     let wallet = this.navParams.data.wallet;
-    this.tx.paypro.toAddress = this.walletProvider.getAddressView(wallet, this.tx.paypro.toAddress);
+    this.address = this.walletProvider.getAddressView(wallet, this.tx.paypro.toAddress);
   }
 
   close() {
