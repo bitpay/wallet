@@ -37,5 +37,14 @@ page-home {
     justify-content: center;
     text-align: center;
   }
+
+  page-txp:last-child,
+  page-wallet-activity:last-child {
+    border:0;
+
+    & .item-inner {
+      border:0 !important;
+    }
+  }
 }
   
