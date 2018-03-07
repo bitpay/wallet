@@ -7,15 +7,12 @@ page-receive {
     align-items: center;
     justify-content: center;
     .title {
-      padding-top: 10%;
-      font-size: 25px;
-      color: #444;
+      color: color($colors, danger);
+      font-size: 20px;
       text-align: center;
     }
     .subtitle {
       padding: 20px;
-      color: #444;
-      margin-top: 10%;
       text-align: center;
     }
   }

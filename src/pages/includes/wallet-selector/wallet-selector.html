@@ -1,9 +1,6 @@
 <div class="backdrop" *ngIf="showWalletsSelector" (click)="backdropDismiss()">
 </div>
 <div class="wallet-selector slider" [ngClass]="{'opened': showSlideEffect, 'closed': !showSlideEffect }" [hidden]="!showWalletsSelector">
-  <div class="back-button">
-    <ion-icon (click)="backdropDismiss()" name="arrow-round-back"></ion-icon>
-  </div>
   <div class="destination-title" *ngIf="title">{{ title }}</div>
   <!--<div *ngFor="let wallet of wallets" (click)="selectWallet(wallet)">{{wallet.name}}</div>-->
   <div *ngIf="walletsBtc && walletsBtc[0]">
@@ -75,7 +72,10 @@
           <span *ngIf="!wallet.isComplete()" translate>
             Incomplete
           </span>
-          <span *ngIf="wallet.isComplete()">
+          <span class="wallet-warning" *ngIf="wallet.isComplete() && wallet.needsBackup" translate>
+            Needs backup recovery
+          </span>
+          <span *ngIf="wallet.isComplete() && !wallet.needsBackup">
             <span *ngIf="!wallet.balanceHidden && !wallet.scanning">
               {{wallet.status && wallet.status.totalBalanceStr ? (wallet.status.totalBalanceStr) : ( wallet.cachedBalance ? wallet.cachedBalance
               + (wallet.cachedBalanceUpdatedOn ? ' &middot; ' + ( wallet.cachedBalanceUpdatedOn * 1000 | amTimeAgo) : '')
