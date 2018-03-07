@@ -7,5 +7,7 @@ page-import-wallet {
   }
   .scanner-icon {
     z-index: 99;
+    font-size: 28px;
+    color: color($colors, primary);
   }
 }

@@ -1,5 +1,17 @@
 page-join-wallet {
   .scanner-icon {
     z-index: 99;
+    font-size: 28px;
+    color: color($colors, primary);
+  }
+  .check {
+    font-size: 22px;
+    padding-top: 3px;
+    &.success {
+      color: color($colors, success);
+    }
+    &.fail {
+      color: color($colors, danger);
+    }
   }
 }
