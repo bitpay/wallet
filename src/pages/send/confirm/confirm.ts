@@ -658,7 +658,10 @@ export class ConfirmPage {
   }
 
   public openPPModal(): void {
-    let modal = this.modalCtrl.create(PayProPage, { tx: this.tx }, {
+    let modal = this.modalCtrl.create(PayProPage, { 
+      tx: this.tx,
+      wallet: this.wallet
+     }, {
       showBackdrop: true,
       enableBackdropDismiss: true,
     });
