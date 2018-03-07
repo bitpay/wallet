@@ -42,6 +42,7 @@ wallet-selector {
     text-transform: uppercase;
   }
   .back-button {
+    background-color: $background-color;
     display: inline-block;
     width: 100%;
     ion-icon {

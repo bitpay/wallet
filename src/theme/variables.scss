@@ -22,6 +22,7 @@ $app-direction: ltr;
 // Override - Homogenized ionic component styles
 @import 'overrides';
 
+// Colors
 $colors: (
   primary: $color-primary,
   secondary: $color-secondary,
@@ -36,6 +37,7 @@ $colors: (
 
 // App background color
 $background-color: #F5F5F5;
+
 
 // Item list background color
 $list-background-color: #ffffff;
