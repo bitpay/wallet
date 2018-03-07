@@ -12,6 +12,7 @@ page-bitpay-card {
     background: $toolbar-background;
   }
   .balance-header {
+    position: relative;
     color: color($colors, light);
     height: 15rem;
     text-align: center;
