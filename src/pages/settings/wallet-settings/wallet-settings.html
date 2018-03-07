@@ -7,13 +7,13 @@
   <page-wallet-item [wallet]="wallet"></page-wallet-item>
   <ion-list>
     <button ion-item (click)="openWalletName()">
-      <h2 translate>Name</h2>
+      <span translate>Name</span>
       <ion-note item-end>
         {{walletName}}
       </ion-note>
     </button>
     <button ion-item (click)="openWalletColor()">
-      <h2 translate>Color</h2>
+      <span translate>Color</span>
     </button>
     <ion-item>
       <ion-label translate>Hide Balance</ion-label>
@@ -21,7 +21,7 @@
     </ion-item>
     <ion-item-divider translate>Security</ion-item-divider>
     <button ion-item (click)="openBackupSettings()">
-      <h2 translate>Backup</h2>
+      <span translate>Backup</span>
       <ion-note *ngIf="needsBackup" class="assertive" item-end translate>
         Needs backup recovery
       </ion-note>
@@ -37,7 +37,7 @@
           this wallet will be protected.
         </span>
         <a (click)="openSupportSpendingPassword()" translate>Learn more</a>
-        <div class="assertive" *ngIf="needsBackup" translate>
+        <div margin-top class="assertive item-text" *ngIf="needsBackup" translate>
           Complete the backup process to use this option
         </div>
       </ion-item-divider>
@@ -47,10 +47,10 @@
         <ion-label [ngClass]="{'disabled': needsBackup}" translate>Request Fingerprint</ion-label>
         <ion-toggle [(ngModel)]="touchIdEnabled" (ionChange)="touchIdChange()"></ion-toggle>
       </ion-item>
+      <ion-item-divider></ion-item-divider>
     </div>
-    <ion-item-divider></ion-item-divider>
     <button ion-item (click)="openAdvancedSettings()">
-      <h2 translate>More Options</h2>
+      <span translate>More Options</span>
     </button>
     <ion-item-divider></ion-item-divider>
   </ion-list>
