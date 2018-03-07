@@ -23,4 +23,13 @@ page-copayers {
   .errors-card {
     color: red;
   }
+  .gray-color{
+    color: #999;
+  }
+  .list-title{
+    padding-left: 0px;
+    .item-inner{
+      padding-left: 16px;
+    }
+  }
 }
