@@ -54,6 +54,9 @@ $text-color: color($colors, dark);
 // Border light
 $list-border-color: color($colors, light);
 
+// Font size
+$font-size-base: 1.4rem;
+
 // Toolbar
 $toolbar-ios-title-text-color: color($colors, light);
 $toolbar-md-title-text-color: color($colors, light);
@@ -77,7 +80,8 @@ $onboarding-color: #fff;
 $tabs-ios-background: color($colors, blank);
 $tabs-ios-border-color: rgba(0, 0, 0, .1);
 
-$item-ios-body-text-font-size: 1.5rem;
+$item-ios-body-text-font-size: 1.4rem;
+
 $item-ios-divider-background: $background-color;
 $item-ios-padding-top: 16px;
 $item-ios-padding-bottom: 16px;
@@ -85,8 +89,10 @@ $label-ios-margin-top: 14px;
 $label-ios-margin-bottom: 14px;
 
 $list-ios-border-color: color($colors, light);
-//$list-ios-header-font-size: 1.5rem;
+$list-ios-header-font-size: 16px;
 $list-ios-margin-bottom: 0;
+$list-ios-header-font-weight: 700;
+$list-ios-header-color: color($colors, dark);
 
 $searchbar-ios-background-color: color($colors, blank);
 $searchbar-ios-padding-vertical: 16px;
@@ -98,7 +104,9 @@ $note-ios-color: color($colors, grey);
 // --------------------------------------------------
 // Material Design only Sass variables can go here
 
-$item-md-font-size: 1.5rem;
+$item-md-body-text-font-size: 1.4rem;
+$item-md-font-size: 1.6rem;
+
 $item-md-divider-background: $background-color;
 $item-md-padding-top: 16px;
 $item-md-padding-bottom: 16px;
@@ -110,8 +118,10 @@ $searchbar-md-padding-end: 8px;
 $searchbar-md-padding-top: 16px;
 
 $list-md-border-color: color($colors, light);
+$list-md-header-font-size: 16px;
 $list-md-header-margin-bottom: 0;
 $list-md-margin-bottom: 0;
+$list-md-header-color: color($colors, dark);
 
 $note-md-color: color($colors, grey);
 
@@ -150,3 +160,10 @@ $note-md-color: color($colors, grey);
   overflow-y: auto;
 }
 
+// Removes border-bottom
+.md ion-list > .item:last-child, 
+.md ion-list > .item-wrapper:last-child .item,
+.ios ion-list > .item:last-child, 
+.ios ion-list > .item-wrapper:last-child .item {
+    border-bottom: none;
+}
