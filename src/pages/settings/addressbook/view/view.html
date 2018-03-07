@@ -1,5 +1,5 @@
 <ion-header no-border>
-  <ion-navbar transparent>
+  <ion-navbar>
     <ion-title>{{ name }}</ion-title>
   </ion-navbar>
 </ion-header>
@@ -23,9 +23,9 @@
     </ion-item>
     <ion-item copy-to-clipboard="{{ address }}">
       {{'Address' | translate}}
-      <ion-note item-end>
+      <div class="comment">
         {{ address }}
-      </ion-note>
+      </div>
     </ion-item>
     <ion-item-divider></ion-item-divider>
     <button ion-item class="btn-send" (click)="sendTo()" translate>Send Money</button>

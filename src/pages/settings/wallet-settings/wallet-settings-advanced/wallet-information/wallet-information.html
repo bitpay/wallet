@@ -69,9 +69,7 @@
     </ion-item>
     <ion-item-divider translate>Extended Public Keys</ion-item-divider>
     <ion-item *ngFor="let pk of pubKeys; let i=index" copy-to-clipboard="{{pk}}">
-      <div>
-        <span translate>Copayer {{i}}</span>
-      </div> 
+      <span translate>Copayer {{i}}</span>
       <div text-wrap class="pkStyle">
         {{pk}}
       </div>
