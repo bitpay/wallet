@@ -89,8 +89,10 @@ $label-ios-margin-top: 14px;
 $label-ios-margin-bottom: 14px;
 
 $list-ios-border-color: color($colors, light);
-//$list-ios-header-font-size: 1.5rem;
+$list-ios-header-font-size: 16px;
 $list-ios-margin-bottom: 0;
+$list-ios-header-font-weight: 700;
+$list-ios-header-color: color($colors, dark);
 
 $searchbar-ios-background-color: color($colors, blank);
 $searchbar-ios-padding-vertical: 16px;
@@ -116,8 +118,10 @@ $searchbar-md-padding-end: 8px;
 $searchbar-md-padding-top: 16px;
 
 $list-md-border-color: color($colors, light);
+$list-md-header-font-size: 16px;
 $list-md-header-margin-bottom: 0;
 $list-md-margin-bottom: 0;
+$list-md-header-color: color($colors, dark);
 
 $note-md-color: color($colors, grey);
 
