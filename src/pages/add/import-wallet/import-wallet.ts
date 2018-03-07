@@ -296,7 +296,7 @@ export class ImportWalletPage {
       this.reader.readAsBinaryString(backupFile);
     } else {
       let opts: any = {};
-      opts.bwsurl = this.importForm.value.bwsurl;
+      opts.bwsurl = this.importForm.value.bwsURL;
       opts.coin = this.importForm.value.coin;
       this.importBlob(backupText, opts);
     }
@@ -312,8 +312,8 @@ export class ImportWalletPage {
 
     let opts: any = {};
 
-    if (this.importForm.value.bwsurl)
-      opts.bwsurl = this.importForm.value.bwsurl;
+    if (this.importForm.value.bwsURL)
+      opts.bwsurl = this.importForm.value.bwsURL;
 
     let pathData: any = this.derivationPathHelperProvider.parse(this.importForm.value.derivationPath);
 
@@ -368,7 +368,7 @@ export class ImportWalletPage {
     this.reader.onloadend = (evt: any) => {
       if (evt.target.readyState == 2) { // DONE == 2
         let opts: any = {};
-        opts.bwsurl = this.importForm.value.bwsurl;
+        opts.bwsurl = this.importForm.value.bwsURL;
         opts.coin = this.importForm.value.coin;
         this.importBlob(evt.target.result, opts);
       }
