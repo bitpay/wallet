@@ -27,12 +27,12 @@
     </ion-item>
 
     <ion-item *ngIf="tx.paypro.toAddress" copy-to-clipboard="{{tx.paypro.toAddress}}">
-      <span>{{'Address'|translate}}</span>
-      <ion-note item-end>
+      <div>{{'Address'|translate}}</div>
+      <div class="memo" text-wrap>
         {{tx.paypro.toAddress}}
-      </ion-note>
+      </div>
     </ion-item>
-
+    
     <ion-item>
       <div>{{'Certified by'|translate}}</div>
       <div class="certified" text-wrap *ngIf="tx.paypro.caTrusted">
@@ -47,7 +47,8 @@
         </span>
         <span *ngIf="!tx.paypro.selfSigned">
           <ion-icon color="warning" name="lock"></ion-icon>
-          {{tx.paypro.caName}}<br>
+          {{tx.paypro.caName}}
+          <br>
           <span translate>WARNING: UNTRUSTED CERTIFICATE</span>
         </span>
       </div>
