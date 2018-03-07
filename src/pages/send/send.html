@@ -21,7 +21,7 @@
 
     <div class="card" *ngIf="filteredContactsList && filteredContactsList[0]">
       <ion-item-divider>
-        <span translate>Transfer to Contact</span>
+        <span class="title" translate>Transfer to Contact</span>
       </ion-item-divider>
       <ion-list>
         <button ion-item *ngFor="let item of filteredContactsList" (click)="goToAmount(item)">
