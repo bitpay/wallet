@@ -137,7 +137,7 @@
       </ion-note>
     </button>
 
-    <ion-item-divider *ngIf="bitpayCardEnabled || (exchangeServices && exchangeServices.length > 0)">
+    <ion-item-divider>
       {{'Integrations' | translate}}
     </ion-item-divider>
 
@@ -155,7 +155,7 @@
       <span>{{service.title || service.name}}</span>
     </button>
 
-    <ion-item-divider></ion-item-divider>
+    <ion-item-divider *ngIf="bitpayCardEnabled || (exchangeServices && exchangeServices.length > 0)"></ion-item-divider>
 
     <button ion-item (click)="openEnabledServicesPage()">
       <ion-icon name="ios-list-outline" item-start></ion-icon>
