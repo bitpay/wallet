@@ -1,21 +1,31 @@
 page-wallet-details {
-  .scroll-content {
-    margin-top: 0 !important;
-  }
-  ion-header, .toolbar-background {
-    background-color: initial !important;
-    // background-color: rgba(0,0,0,0) !important;
-
-    &:after {
-      height: 0  !important;
+  .main-header {
+    background-color: color($colors, primary);
+    overflow: hidden;
+    height: 56px;
+    padding-top: 9px;
+    position: fixed;
+    width: 100%;
+    z-index: 1000;
+    text-align: center;
+    .main-title {
+      margin-top: 9px;
+      margin-right: 47px;
+      font-size: 1.6rem;
+      font-weight: 500;
+      color: #f4f4f4;
+    }
+    button {
+      float: left;
+      margin: 0 0.2rem;
     }
   }
+  
   .balance-card {
     background: color($colors, primary);
     overflow: hidden;
   }
   .balance-header {
-    margin-top: 44px;
     height: 15rem;
     color: color($colors, light);
     text-align: center;

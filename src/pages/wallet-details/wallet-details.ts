@@ -264,4 +264,8 @@ export class WalletDetailsPage {
     this.navCtrl.push(WalletBalancePage, { status: this.wallet.status });
   }
 
+  public back(): void {
+    this.navCtrl.pop();
+  }
+
 }
