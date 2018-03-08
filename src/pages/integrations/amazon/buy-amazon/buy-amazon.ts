@@ -15,6 +15,7 @@ import { AmazonProvider } from '../../../../providers/amazon/amazon';
 import { BwcErrorProvider } from '../../../../providers/bwc-error/bwc-error';
 import { BwcProvider } from '../../../../providers/bwc/bwc';
 import { ConfigProvider } from '../../../../providers/config/config';
+import { CustomTranslateProvider } from '../../../../providers/custom-translate/custom-translate';
 import { EmailNotificationsProvider } from '../../../../providers/email-notifications/email-notifications';
 import { ExternalLinkProvider } from '../../../../providers/external-link/external-link';
 import { OnGoingProcessProvider } from "../../../../providers/on-going-process/on-going-process";
@@ -63,6 +64,7 @@ export class BuyAmazonPage {
     private bwcErrorProvider: BwcErrorProvider,
     private bwcProvider: BwcProvider,
     private configProvider: ConfigProvider,
+    private customTranslateProvider: CustomTranslateProvider,
     private emailNotificationsProvider: EmailNotificationsProvider,
     private events: Events,
     private externalLinkProvider: ExternalLinkProvider,
@@ -102,7 +104,7 @@ export class BuyAmazonPage {
 
     let limitPerDay = this.amazonProvider.limitPerDay;
 
-    this.limitPerDayMessage = "Purchase Amount is limited to " + limitPerDay + " " + this.currency + " per day"; // TODO: translate
+    this.limitPerDayMessage = this.customTranslateProvider.translate(this.translate.instant("Purchase Amount is limited to {{limitPerDay}} {{currency}} per day"), { limitPerDay, currency: this.currency });
 
     if (this.amount > this.amazonProvider.limitPerDay) {
       this.showErrorAndBack(null, this.limitPerDayMessage);
@@ -394,7 +396,7 @@ export class BuyAmazonPage {
       invoice['minerFees'][COIN]['totalFee'] = invoice.minerFees[COIN].totalFee || 0;
       let invoiceFeeSat = invoice.minerFees[COIN].totalFee;
 
-      this.message = this.amountUnitStr + ' Gift Card'; // TODO: translate
+      this.message = this.customTranslateProvider.translate(this.translate.instant('{{amountUnitStr}} Gift Card'), { amountUnitStr: this.amountUnitStr });
 
       this.createTx(wallet, invoice, this.message).then((ctxp: any) => {
         this.onGoingProcessProvider.clear();

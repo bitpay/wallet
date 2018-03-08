@@ -10,6 +10,7 @@ import { LanguageProvider } from '../../providers/language/language';
 import { BwcErrorProvider } from '../bwc-error/bwc-error';
 import { BwcProvider } from '../bwc/bwc';
 import { ConfigProvider } from '../config/config';
+import { CustomTranslateProvider } from '../custom-translate/custom-translate';
 import { OnGoingProcessProvider } from '../on-going-process/on-going-process';
 import { PersistenceProvider } from '../persistence/persistence';
 import { PlatformProvider } from '../platform/platform';
@@ -32,6 +33,7 @@ export class ProfileProvider {
     private logger: Logger,
     private persistenceProvider: PersistenceProvider,
     private configProvider: ConfigProvider,
+    private customTranslateProvider: CustomTranslateProvider,
     private bwcProvider: BwcProvider,
     private bwcErrorProvider: BwcErrorProvider,
     private platformProvider: PlatformProvider,
@@ -434,7 +436,7 @@ export class ProfileProvider {
         let walletId: string = wallet.credentials.walletId
 
         if (!this.profile.addWallet(JSON.parse(wallet.export()))) {
-          let message = "Wallet already in " + this.appProvider.info.nameCase; // TODO: translate
+          let message = this.customTranslateProvider.translate(this.translate.instant('Wallet already in {{nameCase}}'), { nameCase: this.appProvider.info.nameCase });
           return reject(message);
         }
 

@@ -181,6 +181,7 @@ import { BwcErrorProvider } from '../providers/bwc-error/bwc-error';
 import { BwcProvider } from '../providers/bwc/bwc';
 import { CoinbaseProvider } from '../providers/coinbase/coinbase';
 import { ConfigProvider } from '../providers/config/config';
+import { CustomTranslateProvider } from '../providers/custom-translate/custom-translate';
 import { DerivationPathHelperProvider } from '../providers/derivation-path-helper/derivation-path-helper';
 import { EmailNotificationsProvider } from '../providers/email-notifications/email-notifications';
 import { ExternalLinkProvider } from '../providers/external-link/external-link';
@@ -485,9 +486,10 @@ export function createTranslateLoader(http: HttpClient) {
     BitPayAccountProvider,
     BwcProvider,
     BwcErrorProvider,
+    Clipboard,
     ConfigProvider,
     CoinbaseProvider,
-    Clipboard,
+    CustomTranslateProvider,
     DerivationPathHelperProvider,
     Device,
     ExternalLinkProvider,

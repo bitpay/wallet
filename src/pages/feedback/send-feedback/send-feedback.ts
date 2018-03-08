@@ -10,6 +10,7 @@ import { Device } from '@ionic-native/device';
 // providers
 import { AppProvider } from '../../../providers/app/app';
 import { ConfigProvider } from '../../../providers/config/config';
+import { CustomTranslateProvider } from '../../../providers/custom-translate/custom-translate';
 import { FeedbackProvider } from '../../../providers/feedback/feedback';
 import { OnGoingProcessProvider } from '../../../providers/on-going-process/on-going-process';
 import { PersistenceProvider } from '../../../providers/persistence/persistence';
@@ -45,7 +46,8 @@ export class SendFeedbackPage {
     private persistenceProvider: PersistenceProvider,
     private popupProvider: PopupProvider,
     private translate: TranslateService,
-    private device: Device
+    private device: Device,
+    private customTranslateProvider: CustomTranslateProvider
   ) {
     this.feedbackForm = this.formBuilder.group({
       comment: ['', Validators.compose([Validators.minLength(1), Validators.required])]
@@ -83,11 +85,11 @@ export class SendFeedbackPage {
         break;
       case 5:
         this.reaction = this.translate.instant("Thank you!");
-        this.comment = "We're always looking for ways to improve" + " " + this.appName + ". Is there anything we could do better?"; // TODO: translate
+        this.comment = this.customTranslateProvider.translate(this.translate.instant("We're always looking for ways to improve {{appName}}. Is there anything we could do better?"), { appName: this.appName });
         break;
       default:
         this.justFeedback = true;
-        this.comment = "We're always looking for ways to improve" + " " + this.appName + ". How could we improve your experience?"; // TODO: translate
+        this.comment = this.customTranslateProvider.translate(this.translate.instant("We're always looking for ways to improve {{appName}}. How could we improve your experience?"), { appName: this.appName });
         break;
     }
   }

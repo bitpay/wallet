@@ -13,6 +13,7 @@ import { ShapeshiftPage } from '../shapeshift';
 import { BwcErrorProvider } from '../../../../providers/bwc-error/bwc-error';
 import { BwcProvider } from '../../../../providers/bwc/bwc';
 import { ConfigProvider } from '../../../../providers/config/config';
+import { CustomTranslateProvider } from '../../../../providers/custom-translate/custom-translate';
 import { ExternalLinkProvider } from '../../../../providers/external-link/external-link';
 import { FeeProvider } from '../../../../providers/fee/fee';
 import { OnGoingProcessProvider } from "../../../../providers/on-going-process/on-going-process";
@@ -64,6 +65,7 @@ export class ShapeshiftConfirmPage {
     private bwcProvider: BwcProvider,
     private bwcErrorProvider: BwcErrorProvider,
     private configProvider: ConfigProvider,
+    private customTranslateProvider: CustomTranslateProvider,
     private externalLinkProvider: ExternalLinkProvider,
     private onGoingProcessProvider: OnGoingProcessProvider,
     private logger: Logger,
@@ -116,16 +118,15 @@ export class ShapeshiftConfirmPage {
         let amountNumber = Number(this.amount);
 
         if (amountNumber < min) {
-          let message = 'Minimum amount required is ' + min; // TODO: translate
+          let message = this.customTranslateProvider.translate(this.translate.instant('Minimum amount required is {{min}}'), { min });
           this.showErrorAndBack(null, message);
           return;
         }
         if (amountNumber > max) {
-          let message = 'Maximum amount allowed is ' + max; // TODO: translate
+          let message = this.customTranslateProvider.translate(this.translate.instant('Maximum amount allowed is {{max}}'), { max });
           this.showErrorAndBack(null, message);
           return;
         }
-        this.createShift();
       }
     });
   }
@@ -446,7 +447,8 @@ export class ShapeshiftConfirmPage {
     }
     let fromCoin = this.fromWallet.coin.toUpperCase();
     let toCoin = this.toWallet.coin.toUpperCase();
-    let title = 'Confirm to shift ' + fromCoin + ' to ' + toCoin; // TODO: translate
+    let title = this.customTranslateProvider.translate(this.translate.instant('Confirm to shift {{fromCoin}} to {{toCoin}}'), { fromCoin, toCoin });
+
     let okText = this.translate.instant('OK');
     let cancelText = this.translate.instant('Cancel');
     this.popupProvider.ionicConfirm(title, '', okText, cancelText).then((ok: any) => {
