@@ -3,15 +3,19 @@
     <ion-title>{{'BitPay Settings'|translate}}</ion-title>
   </ion-navbar>
 </ion-header>
-<ion-content>
-
-  <div
-    class="no-cards"
-    *ngIf="(bitpayCards && bitpayCards.length == 0) && (bitpayAccounts && bitpayAccounts.length == 0)" translate>
-    No cards available
-  </div>
+<ion-content> 
 
   <ion-list>
+    <ion-item-divider>
+      {{'Show in Home'}}
+    </ion-item-divider>
+    <ion-item>
+      <ion-label>{{'Enable' | translate}}</ion-label>
+      <ion-toggle [(ngModel)]="showAtHome" (ionChange)="integrationChange()"></ion-toggle>
+    </ion-item>
+    <div *ngIf="(bitpayCards && bitpayCards.length == 0) && (bitpayAccounts && bitpayAccounts.length == 0)" translate>
+      <ion-item-divider>No cards available</ion-item-divider>
+    </div>
     <div *ngIf="bitpayCards && bitpayCards.length > 0">
       <ion-item-divider>
         <span translate>BitPay Visa&reg; Cards</span>

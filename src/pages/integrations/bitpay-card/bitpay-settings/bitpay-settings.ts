@@ -1,8 +1,13 @@
 import { Component } from '@angular/core';
 import { ItemSliding } from 'ionic-angular';
 
+import * as _ from 'lodash';
+
+// Providers
 import { BitPayAccountProvider } from '../../../../providers/bitpay-account/bitpay-account';
 import { BitPayCardProvider } from '../../../../providers/bitpay-card/bitpay-card';
+import { ConfigProvider } from '../../../../providers/config/config';
+import { HomeIntegrationsProvider } from '../../../../providers/home-integrations/home-integrations';
 import { PopupProvider } from '../../../../providers/popup/popup';
 
 
@@ -12,15 +17,21 @@ import { PopupProvider } from '../../../../providers/popup/popup';
 })
 export class BitPaySettingsPage {
 
+  private serviceName: string = 'debitcard';
+  public showAtHome: any;
+  public service: any;
   public bitpayAccounts: any;
   public bitpayCards: any;
 
   constructor(
     private bitpayAccountProvider: BitPayAccountProvider,
     private bitPayCardProvider: BitPayCardProvider,
-    private popupProvider: PopupProvider
+    private popupProvider: PopupProvider,
+    private configProvider: ConfigProvider,
+    private homeIntegrationsProvider: HomeIntegrationsProvider
   ) {
-
+    this.service = _.filter(this.homeIntegrationsProvider.get(), { name: this.serviceName });
+    this.showAtHome = !!this.service[0].show;
   }
 
   ionViewWillEnter() {
@@ -36,6 +47,14 @@ export class BitPaySettingsPage {
         this.bitpayCards = cards;
       });
     });
+  }
+
+  public integrationChange(): void {
+    let opts = {
+      showIntegration: { [this.serviceName] : this.showAtHome }
+    };
+    this.homeIntegrationsProvider.updateConfig(this.serviceName, this.showAtHome);
+    this.configProvider.set(opts);
   }
 
   public unlinkAccount(account: any, slidingItem: ItemSliding) {
