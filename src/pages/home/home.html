@@ -61,14 +61,15 @@
   </ion-card>
 
   <div class="card" *ngIf="txps && txps[0]">
-    <ion-item-divider>
+    <ion-item-divider (click)="openProposalsPage()">
       <span class="title" translate>Payment Proposals</span>
-      <ion-badge item-end (click)="openProposalsPage()" *ngIf="txpsN>3">{{txpsN}}</ion-badge>
+      <ion-badge item-end *ngIf="txpsN>3">{{txpsN}}</ion-badge>
+      <ion-icon item-end color="grey" ios="ios-arrow-dropright"></ion-icon>
     </ion-item-divider>
     <ion-list>
-        <page-txp *ngFor="let txp of txps" [tx]="txp" [addressbook]="addressbook"></page-txp>
+      <page-txp *ngFor="let txp of txps" [tx]="txp" [addressbook]="addressbook"></page-txp>
     </ion-list>
- </div>
+  </div>
 
   <div class="card" *ngIf="notifications && notifications[0] && recentTransactionsEnabled">
     <ion-item-divider (click)="openActivityPage()">
