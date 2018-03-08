@@ -256,6 +256,9 @@ export class BuyMercadoLibrePage {
         amount: amountSat,
         outputs,
         message,
+        customData: {
+          'service': 'mercadolibre'
+        },
         payProUrl,
         excludeUnconfirmedUtxos: this.configWallet.spendUnconfirmed ? false : true,
         feeLevel: 'normal'

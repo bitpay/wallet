@@ -253,6 +253,9 @@ export class BitPayCardTopUpPage {
             'message': message
           }],
           message,
+          customData: {
+            'service': 'debitcard'
+          },
           payProUrl,
           excludeUnconfirmedUtxos: this.configWallet.spendUnconfirmed ? false : true,
         };

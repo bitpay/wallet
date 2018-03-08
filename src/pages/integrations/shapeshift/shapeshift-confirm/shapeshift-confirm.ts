@@ -231,7 +231,8 @@ export class ShapeshiftConfirmPage {
         excludeUnconfirmedUtxos: this.configWallet.spendUnconfirmed ? false : true,
         feeLevel: this.configWallet.settings.feeLevel || 'normal',
         customData: {
-          'shapeShift': toAddress
+          'shapeShift': toAddress,
+          'service': 'shapeshift'
         }
       };
 

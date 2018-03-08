@@ -138,6 +138,15 @@ page-wallet-details {
     }
   }
 
+  .icon-services {
+    border-radius: 50%;
+    padding: 1px;
+    width: 36px;
+    height: 36px;
+    box-shadow: none;
+    border: 1px solid #d7d7d7;
+  }
+
   .total-locked-amount {
     color: color($colors, dark);
   }

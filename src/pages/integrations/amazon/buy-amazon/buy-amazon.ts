@@ -259,6 +259,9 @@ export class BuyAmazonPage {
             'message': message
           }],
           message,
+          customData: {
+            'service': 'amazon'
+          },
           payProUrl,
           excludeUnconfirmedUtxos: this.configWallet.spendUnconfirmed ? false : true,
         };
