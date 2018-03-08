@@ -259,6 +259,9 @@ export class BuyAmazonPage {
             'message': message
           }],
           message,
+          customData: {
+            'service': 'amazon'
+          },
           payProUrl,
           excludeUnconfirmedUtxos: this.configWallet.spendUnconfirmed ? false : true,
         };
@@ -374,7 +377,7 @@ export class BuyAmazonPage {
       invoice['minerFees'][COIN]['totalFee'] = invoice.minerFees[COIN].totalFee || 0;
       let invoiceFeeSat = invoice.minerFees[COIN].totalFee;
 
-      this.message = this.amountUnitStr + " for Amazon.com Gift Card"; // TODO: translate
+      this.message = this.amountUnitStr + ' Gift Card'; // TODO: translate
 
       this.createTx(wallet, invoice, this.message).then((ctxp: any) => {
         this.onGoingProcessProvider.clear();

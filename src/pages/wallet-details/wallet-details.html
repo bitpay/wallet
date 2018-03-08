@@ -1,10 +1,10 @@
-<ion-header no-border>
-  <ion-navbar>
-    <ion-title>{{wallet.name}}</ion-title>
-  </ion-navbar>
-</ion-header>
-
 <ion-content no-bounce>
+<div class="main-header" [ngStyle]="{'background-color': wallet.color}">
+  <button ion-button clear color="light" icon-only (click)="back()">
+    <ion-icon name="arrow-round-back"></ion-icon>
+  </button>
+  <div class="main-title">{{wallet.name}}</div>
+</div>
 
   <div class="balance-card" [ngStyle]="{'background': wallet.color}">
     <div class="balance-header">
@@ -138,9 +138,17 @@
             <img src="assets/img/tx-action/icon-confirming.svg" width="40">
           </div>
           <div *ngIf="tx.confirmations > 0">
-            <img src="assets/img/tx-action/icon-received.svg" *ngIf="tx.action == 'received'" width="40">
-            <img src="assets/img/tx-action/icon-sent.svg" *ngIf="tx.action == 'sent'" width="40">
-            <img src="assets/img/tx-action/icon-moved.svg" *ngIf="tx.action == 'moved'" width="40">
+            <span *ngIf="tx.customData && tx.customData.service">
+              <img class="icon-services" src="assets/img/shapeshift/icon-shapeshift.svg" *ngIf="tx.customData.service == 'shapeshift'" width="40">
+              <img class="icon-services" src="assets/img/amazon/icon-amazon.svg" *ngIf="tx.customData.service == 'amazon'" width="40">
+              <img class="icon-services" src="assets/img/mercado-libre/icon-ml.svg" *ngIf="tx.customData.service == 'mercadolibre'" width="40">
+              <img class="icon-services" src="assets/img/bitpay-card/icon-bitpay.svg" *ngIf="tx.customData.service == 'debitcard'" width="40">
+            </span>
+            <span *ngIf="!tx.customData || !tx.customData.service">
+              <img src="assets/img/tx-action/icon-received.svg" *ngIf="tx.action == 'received'" width="40">
+              <img src="assets/img/tx-action/icon-sent.svg" *ngIf="tx.action == 'sent'" width="40">
+              <img src="assets/img/tx-action/icon-moved.svg" *ngIf="tx.action == 'moved'" width="40">
+            </span>
           </div>
         </ion-icon>
 

@@ -155,10 +155,12 @@ export class WalletDetailsPage {
     });
   }
 
-  private updateAll(force?) {
+  private updateAll = _.debounce((force?) => {
     this.updateStatus(force);
     this.updateTxHistory();
-  }
+  }, 2000, {
+    'leading': true
+  });
 
   public toggleBalance() {
     this.profileProvider.toggleHideBalanceFlag(this.wallet.credentials.walletId);
@@ -260,6 +262,10 @@ export class WalletDetailsPage {
 
   public openBalanceDetails(): void {
     this.navCtrl.push(WalletBalancePage, { status: this.wallet.status });
+  }
+
+  public back(): void {
+    this.navCtrl.pop();
   }
 
 }

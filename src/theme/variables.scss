@@ -38,7 +38,6 @@ $colors: (
 // App background color
 $background-color: #F5F5F5;
 
-
 // Item list background color
 $list-background-color: #ffffff;
 
@@ -173,15 +172,29 @@ $note-md-color: color($colors, grey);
 // Transition between home <-> walletDetails
 .ios {
   page-wallet-details {
+    .main-header {
+      height: 44px;
+      padding-top: 0;
+      .main-title {
+        margin-top: 12px;
+      }
+    }
     .balance-header {
-      margin-top: 44px;
+      margin-top: 34px;
     }
   }
 }
 .md {
   page-wallet-details {
+    .main-header {
+      height: 56px;
+      padding-top: 9px;
+      .main-title {
+        margin-top: 9px;
+      }
+    }
     .balance-header {
-      margin-top: 56px;
+      margin-top: 46px;
     }
   }
 }

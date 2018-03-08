@@ -251,6 +251,11 @@ a.royal {
   }
 }
 
+// Fix Camera
+html , body, .back-transparent, ion-app, .nav-decor {
+  background: none transparent !important;
+}
+
 ion-icon {
   &[class*="tab-"] {
     // Instead of using the font-based icons

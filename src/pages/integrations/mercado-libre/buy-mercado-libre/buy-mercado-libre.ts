@@ -256,6 +256,9 @@ export class BuyMercadoLibrePage {
         amount: amountSat,
         outputs,
         message,
+        customData: {
+          'service': 'mercadolibre'
+        },
         payProUrl,
         excludeUnconfirmedUtxos: this.configWallet.spendUnconfirmed ? false : true,
         feeLevel: 'normal'
@@ -353,7 +356,7 @@ export class BuyMercadoLibrePage {
       invoice['minerFees'][COIN]['totalFee'] = invoice.minerFees[COIN].totalFee || 0;
       let invoiceFeeSat = invoice.minerFees[COIN].totalFee;
 
-      this.message = this.amountUnitStr + " for Mercado Livre Brazil Gift Card"; // TODO: translate
+      this.message = this.amountUnitStr + ' Gift Card'; // TODO: translate
 
       this.createTx(wallet, invoice, this.message).then((ctxp: any) => {
         this.onGoingProcessProvider.clear();

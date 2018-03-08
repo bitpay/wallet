@@ -214,7 +214,7 @@ export class ShapeshiftConfirmPage {
       let parsedAmount = this.txFormatProvider.parseAmount(wallet.coin, this.amount, this.currency);
       this.amountUnitStr = parsedAmount.amountUnitStr;
 
-      this.message = 'ShapeShift: ' + this.fromWallet.coin.toUpperCase() + ' to ' + this.toWallet.coin.toUpperCase();
+      this.message = this.fromWallet.coin.toUpperCase() + ' to ' + this.toWallet.coin.toUpperCase();
       let outputs = [];
 
       outputs.push({
@@ -231,7 +231,8 @@ export class ShapeshiftConfirmPage {
         excludeUnconfirmedUtxos: this.configWallet.spendUnconfirmed ? false : true,
         feeLevel: this.configWallet.settings.feeLevel || 'normal',
         customData: {
-          'shapeShift': toAddress
+          'shapeShift': toAddress,
+          'service': 'shapeshift'
         }
       };
 
