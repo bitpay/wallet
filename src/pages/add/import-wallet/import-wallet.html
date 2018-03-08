@@ -7,11 +7,11 @@
 <ion-content no-bounce>
   <div [attr.padding]="isIOS ? '' : null">
     <ion-segment [(ngModel)]="selectedTab" color="primary" (ionChange)="selectTab(selectedTab)">
-      <ion-segment-button value="words" translate>
-        Words
+      <ion-segment-button value="words">
+        {{ 'Words' | translate }}
       </ion-segment-button>
-      <ion-segment-button value="file" translate>
-        File
+      <ion-segment-button value="file">
+        {{ 'File' | translate }}
       </ion-segment-button>
     </ion-segment>
   </div>

@@ -12,7 +12,7 @@
         {{balance | currency:currencySymbol:2 }}
       </div>
       <button ion-button color="primary" (click)="topUp()" *ngIf="balance" no-low-fee>
-        {{'Add Funds'|translate}} &rarr;
+        <span translate>Add Funds</span> &rarr;
       </button>
 
       <div class="card-info">

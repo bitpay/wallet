@@ -25,11 +25,11 @@
       </ion-item>
 
       <ion-item no-lines text-wrap>
-        <ion-label translate>Get news and updates from BitPay</ion-label>
+        <ion-label>{{'Get news and updates from BitPay' | translate}}</ion-label>
         <ion-checkbox formControlName="accept" checked="true"></ion-checkbox>
       </ion-item>
 
-      <button ion-button block type="submit" [disabled]="!emailForm.valid" translate>Continue &rarr;</button>
+      <button ion-button block type="submit" [disabled]="!emailForm.valid"><span translate>Continue</span> &rarr;</button>
     </form>
   </div>
 

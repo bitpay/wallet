@@ -20,11 +20,11 @@
       <div *ngIf="!backupWalletPlainText">
         <form [formGroup]="exportWalletForm">
           <ion-item>
-            <ion-label stacked translate>Set up a password</ion-label>
+            <ion-label stacked>{{'Set up a password' | translate}}</ion-label>
             <ion-input type="password" formControlName="password" placeholder="{{'Your password'|translate}}" required></ion-input>
           </ion-item>
           <ion-item>
-            <ion-label stacked translate>Repeat the password</ion-label>
+            <ion-label stacked>{{'Repeat the password' | translate}}</ion-label>
             <ion-input type="password" formControlName="confirmPassword" placeholder="{{'Repeat password'|translate}}" required></ion-input>
           </ion-item>
           <ion-item class='form-text error' *ngIf="exportWalletForm.controls.confirmPassword.touched && exportWalletForm.hasError('mismatchedPasswords') && exportWalletForm.controls.password.valid">
@@ -58,7 +58,7 @@
             </div>
           </ion-item-divider>
         </form>
-        <button *ngIf="isCordova" ion-button block clear type="submit" (click)="copyWalletBackup()" [disabled]="(!exportWalletForm.value.password || exportWalletForm.value.password != exportWalletForm.value.confirmPassword) || !exportWalletForm.valid ">{{'Copy to clipboard' | translate}}</button>
+        <button *ngIf="isCordova" ion-button block clear type="submit" (click)="copyWalletBackup()" [disabled]="(!exportWalletForm.value.password || exportWalletForm.value.password != exportWalletForm.value.confirmPassword) || !exportWalletForm.valid " translate>Copy to clipboard</button>
       </div>
       <div *ngIf="backupWalletPlainText">
         <span translate>Backup wallet</span>
@@ -82,9 +82,9 @@
 <ion-footer>
   <div [ngSwitch]="segments">
     <div *ngSwitchCase="'file/text'">
-      <button *ngIf="!isSafari && !isCordova" ion-button full class="button-footer" (click)="downloadWalletBackup()" [disabled]="(!exportWalletForm.value.password || exportWalletForm.value.password != exportWalletForm.value.confirmPassword) || !exportWalletForm.valid ">{{ 'Download' | translate }}</button>
-      <button *ngIf="isSafari && !isCordova" ion-button full class="button-footer" (click)="viewWalletBackup()" [disabled]="(!exportWalletForm.value.password || exportWalletForm.value.password != exportWalletForm.value.confirmPassword) || !exportWalletForm.valid ">{{'View' | translate}}</button>
-      <button *ngIf="isCordova" ion-button full class="button-footer" (click)="sendWalletBackup()" [disabled]="(!exportWalletForm.value.password || exportWalletForm.value.password != exportWalletForm.value.confirmPassword) || !exportWalletForm.valid ">{{ 'Send by email' | translate }}</button>
+      <button *ngIf="!isSafari && !isCordova" ion-button full class="button-footer" (click)="downloadWalletBackup()" [disabled]="(!exportWalletForm.value.password || exportWalletForm.value.password != exportWalletForm.value.confirmPassword) || !exportWalletForm.valid " translate>Download</button>
+      <button *ngIf="isSafari && !isCordova" ion-button full class="button-footer" (click)="viewWalletBackup()" [disabled]="(!exportWalletForm.value.password || exportWalletForm.value.password != exportWalletForm.value.confirmPassword) || !exportWalletForm.valid " translate>View</button>
+      <button *ngIf="isCordova" ion-button full class="button-footer" (click)="sendWalletBackup()" [disabled]="(!exportWalletForm.value.password || exportWalletForm.value.password != exportWalletForm.value.confirmPassword) || !exportWalletForm.valid " translate>Send by email</button>
     </div>
   </div>
 </ion-footer>

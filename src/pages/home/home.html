@@ -103,8 +103,8 @@
         </button>
       </div>
       <div item-end *ngIf="showReorderBtc">
-        <button ion-button clear color="secondary" (click)="reorderBtc()">
-          {{'Done'|translate}}
+        <button ion-button clear color="secondary" (click)="reorderBtc()" translate>
+          Done
         </button>
       </div>
     </ion-item-divider>
@@ -132,7 +132,7 @@
               : '')}}
             </span>
             <span *ngIf="wallet.scanning" translate>Scanning funds</span>
-            <span *ngIf="wallet.balanceHidden && !wallet.scanning">[{{'Balance Hidden' | translate}}]</span>
+            <span *ngIf="wallet.balanceHidden && !wallet.scanning">[<span translate>Balance Hidden</span>]</span>
             <span class="text-gray" *ngIf="wallet.credentials.m > 1">{{wallet.credentials.m}}-of-{{wallet.credentials.n}}</span>
             <ion-icon *ngIf="!wallet.balanceHidden && wallet.status && (wallet.status.totalBalanceSat != wallet.status.spendableAmount)"
               ios="ios-timer-outline" md="md-timer"></ion-icon>
@@ -158,8 +158,8 @@
         </button>
       </div>
       <div item-end *ngIf="showReorderBch">
-        <button ion-button clear color="secondary" (click)="reorderBch()">
-          {{'Done'|translate}}
+        <button ion-button clear color="secondary" (click)="reorderBch()" translate>
+          Done
         </button>
       </div>
     </ion-item-divider>
@@ -187,7 +187,7 @@
               : '')}}
             </span>
             <span *ngIf="wallet.scanning" translate>Scanning funds</span>
-            <span *ngIf="wallet.balanceHidden && !wallet.scanning">[{{'Balance Hidden' | translate}}]</span>
+            <span *ngIf="wallet.balanceHidden && !wallet.scanning">[<span translate>Balance Hidden</span>]</span>
             <span *ngIf="wallet.credentials.m > 1">{{wallet.credentials.m}}-of-{{wallet.credentials.n}}</span>
             <ion-icon *ngIf="!wallet.balanceHidden && wallet.status && (wallet.status.totalBalanceSat != wallet.status.spendableAmount)"
               name="timer"></ion-icon>

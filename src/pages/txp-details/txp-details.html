@@ -4,8 +4,8 @@
       {{'Payment Proposal' | translate}}
     </ion-title>
     <ion-buttons start>
-      <button (click)="close()" ion-button>
-        {{'Close' | translate}}
+      <button (click)="close()" ion-button translate>
+        Close
       </button>
     </ion-buttons>
   </ion-toolbar>
@@ -128,8 +128,8 @@
 
     <ion-item *ngIf="tx && tx.feeStr">
       <ion-label>
-        <div class="item-title">{{'Fee' | translate}}</div>
-        <div class="item-subtitle">{{tx.feelevelstr | translate}}</div>
+        <div class="item-title" translate>Fee</div>
+        <div class="item-subtitle">{{tx.feelevelstr}}</div>
       </ion-label>
       <ion-note item-end text-end>
         <span>{{tx.feeStr}}</span>

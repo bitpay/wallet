@@ -11,28 +11,28 @@
       <ion-icon item-start>
         <img src="assets/img/settings-icons/icon-address-book.svg" width="22">
       </ion-icon>
-      {{'Address book' | translate}}
+      <span translate>Address book</span>
     </button>
 
     <button ion-item (click)="openHelpExternalLink()">
       <ion-icon item-start>
         <img src="assets/img/settings-icons/icon-help-support.svg" width="22">
       </ion-icon>
-      {{'Help &amp; support' | translate}}
+      <span translate>Help &amp; support</span>
     </button>
 
     <button ion-item (click)="openSendFeedbackPage()">
       <ion-icon item-start>
         <img src="assets/img/settings-icons/icon-send-feedback.svg" width="22">
       </ion-icon>
-      Send feedback
+      <span translate>Send feedback</span>
     </button>
 
     <button ion-item *ngIf="isCordova" (click)="openFeedbackCompletePage()">
       <ion-icon item-start>
         <img src="assets/img/settings-icons/icon-heart.svg" width="22">
       </ion-icon>
-      Share {{ appName }}
+      <span translate>Share</span> {{ appName }}
     </button>
 
     <ion-item-divider>{{'Preferences' | translate}}</ion-item-divider>
@@ -48,7 +48,7 @@
       <ion-icon item-start>
         <img src="assets/img/settings-icons/icon-notifications.svg" width="22">
       </ion-icon>
-      {{'Notification' | translate}}
+      <span translate>Notification</span>
     </button>
 
     <button ion-item (click)="openLanguagePage()">
@@ -56,7 +56,7 @@
         <img src="assets/img/settings-icons/icon-language.svg" width="22">
       </ion-icon>
       <ion-label>
-        {{'Language' | translate}}
+        <span translate>Language</span>
       </ion-label>
       <ion-note *ngIf="currentLanguageName" item-end>
         {{ currentLanguageName }}
@@ -145,7 +145,7 @@
       <ion-icon item-start>
         <img src="assets/img/bitpay-card/icon-bitpay.svg" class="icon-services" />
       </ion-icon>
-      <span translate>BitPay</span>
+      BitPay
     </button>
 
     <button ion-item *ngFor="let service of exchangeServices" (click)="openIntegrationSettings(service.name)">
@@ -159,7 +159,7 @@
 
     <button ion-item (click)="openEnabledServicesPage()">
       <ion-icon name="ios-list-outline" item-start></ion-icon>
-      {{'Enabled services' | translate}}
+      <span translate>Enabled services</span>
     </button>
 
     <ion-item-divider>More</ion-item-divider>
@@ -168,14 +168,14 @@
       <ion-icon item-start>
         <img src="assets/img/settings-icons/icon-advanced.svg" width="22">
       </ion-icon>
-      {{'Advanced' | translate}}
+      <span translate>Advanced</span>
     </button>
 
     <button ion-item (click)="openAboutPage()">
       <ion-icon item-start>
         <img src="assets/img/settings-icons/icon-about.svg" width="22">
       </ion-icon>
-      {{'About' | translate}} {{appName}}
+      <span translate>About</span> {{appName}}
     </button>
     <ion-item-divider></ion-item-divider>
   </ion-list>

@@ -8,7 +8,7 @@
   <ion-list>
     <form [formGroup]="walletServiceForm">
       <ion-item>
-        <ion-label stacked translate>Wallet Service URL</ion-label>
+        <ion-label stacked>{{'Wallet Service URL' | translate}}</ion-label>
         <ion-input type="text" formControlName="bwsurl" [value]="walletServiceForm.value.bwsurl" required></ion-input>
       </ion-item>
       <ion-item-divider text-wrap>
@@ -22,5 +22,5 @@
   </ion-list>
 </ion-content>
 <ion-footer>
-  <button ion-button full class="button-footer" (click)="save()" [disabled]="!walletServiceForm.valid">{{ 'Save' | translate }}</button>
+  <button ion-button full class="button-footer" (click)="save()" [disabled]="!walletServiceForm.valid" translate>Save</button>
 </ion-footer>
