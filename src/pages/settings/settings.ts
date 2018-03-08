@@ -21,6 +21,8 @@ import { AmazonSettingsPage } from '../integrations/amazon/amazon-settings/amazo
 import { BitPaySettingsPage } from '../integrations/bitpay-card/bitpay-settings/bitpay-settings';
 import { CoinbaseSettingsPage } from '../integrations/coinbase/coinbase-settings/coinbase-settings';
 import { GlideraSettingsPage } from '../integrations/glidera/glidera-settings/glidera-settings';
+import { MercadoLibreSettingsPage } from '../integrations/mercado-libre/mercado-libre-settings/mercado-libre-settings';
+import { ShapeshiftSettingsPage } from '../integrations/shapeshift/shapeshift-settings/shapeshift-settings';
 import { AboutPage } from './about/about';
 import { AddressbookPage } from './addressbook/addressbook';
 import { AdvancedPage } from './advanced/advanced';
@@ -149,6 +151,12 @@ export class SettingsPage {
         break;
       case 'amazon':
         this.navCtrl.push(AmazonSettingsPage);
+        break;
+      case 'mercadolibre':
+        this.navCtrl.push(MercadoLibreSettingsPage);
+        break;
+      case 'shapeshift':
+        this.navCtrl.push(ShapeshiftSettingsPage);
         break;
     }
   }
