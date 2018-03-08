@@ -106,3 +106,5 @@ www/index.html
 /GoogleService-Info.plist
 /google-services.json
 
+# package lock removed
+package-lock.json
