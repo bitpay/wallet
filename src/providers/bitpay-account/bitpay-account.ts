@@ -7,6 +7,7 @@ import { Device } from '@ionic-native/device';
 // providers
 import { AppIdentityProvider } from '../app-identity/app-identity';
 import { BitPayProvider } from '../bitpay/bitpay';
+import { ConfigProvider } from '../config/config';
 import { HomeIntegrationsProvider } from '../home-integrations/home-integrations';
 import { PersistenceProvider } from '../persistence/persistence';
 import { PlatformProvider } from '../platform/platform';
@@ -49,8 +50,6 @@ export class BitPayAccountProvider {
    *   }
    */
   
-  private homeItem: any;
-
   constructor(
     private platformProvider: PlatformProvider,
     private bitPayProvider: BitPayProvider,
@@ -59,15 +58,16 @@ export class BitPayAccountProvider {
     private persistenceProvider: PersistenceProvider,
     private appIdentityProvider: AppIdentityProvider,
     private device: Device,
+    private configProvider: ConfigProvider,
     private homeIntegrationsProvider: HomeIntegrationsProvider
   ) {
     this.logger.info('BitPayAccountProvider initialized');
-    this.homeItem = {
-      name: 'debitcard',
-      title: 'BitPay Visa® Card',
-      icon: 'assets/img/bitpay-card/icon-bitpay.svg',
-      page: 'BitPayCardIntroPage',
-    }
+  }
+
+  private isActive(cb): void {
+    this.getAccountsAsStored((err, accounts) => {
+      return cb(!!accounts);
+    });
   }
 
   public pair(pairData: any, pairingReason: string, cb: (err: string, paired?: boolean, apiContext?: any) => any) {
@@ -223,7 +223,16 @@ export class BitPayAccountProvider {
   };
 
   public register() {
-    this.homeIntegrationsProvider.register(this.homeItem);
+    this.isActive((isActive) => {
+      this.homeIntegrationsProvider.register({
+        name: 'debitcard',
+        title: 'BitPay Visa® Card',
+        icon: 'assets/img/bitpay-card/icon-bitpay.svg',
+        page: 'BitPayCardIntroPage',
+        show: !!this.configProvider.get().showIntegration['debitcard'],
+        linked: !!isActive
+      });
+    });
   }
 
 }

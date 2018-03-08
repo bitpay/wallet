@@ -4,6 +4,7 @@ import * as _ from 'lodash';
 import { Logger } from '../../providers/logger/logger';
 
 // providers
+import { ConfigProvider } from '../config/config';
 import { HomeIntegrationsProvider } from '../home-integrations/home-integrations';
 import { PersistenceProvider } from '../persistence/persistence';
 
@@ -13,13 +14,13 @@ export class AmazonProvider {
 
   public credentials: any;
   public limitPerDay: number;
-  public homeItem: any;
 
   constructor(
     private http: HttpClient,
     private logger: Logger,
     private persistenceProvider: PersistenceProvider,
-    private homeIntegrationsProvider: HomeIntegrationsProvider
+    private homeIntegrationsProvider: HomeIntegrationsProvider,
+    private configProvider: ConfigProvider
   ) {
     this.logger.info('AmazonProvider initialized.');
     this.credentials = {};
@@ -32,12 +33,13 @@ export class AmazonProvider {
       ? "https://test.bitpay.com"
       : "https://bitpay.com";
     this.limitPerDay = 2000;
-    this.homeItem = {
-      name: 'amazon',
-      title: 'Amazon.com Gift Cards',
-      icon: 'assets/img/amazon/icon-amazon.svg',
-      page: 'AmazonPage',
-    };
+  }
+
+  private isActive(cb): void {
+    var network = this.getNetwork();
+    this.persistenceProvider.getAmazonGiftCards(network).then((gcs) => {
+      return cb(!!gcs);
+    });
   }
 
   public getNetwork() {
@@ -64,7 +66,6 @@ export class AmazonProvider {
 
       inv = JSON.stringify(inv);
       this.persistenceProvider.setAmazonGiftCards(network, inv);
-      this.homeIntegrationsProvider.register(this.homeItem);
       return cb(null);
     });
   }
@@ -146,7 +147,16 @@ export class AmazonProvider {
   };
 
   public register() {
-    this.homeIntegrationsProvider.register(this.homeItem);
-  };
+    this.isActive((isActive) => {
+      this.homeIntegrationsProvider.register({
+        name: 'amazon',
+        title: 'Amazon.com Gift Cards',
+        icon: 'assets/img/amazon/icon-amazon.svg',
+        page: 'AmazonPage',
+        show: !!this.configProvider.get().showIntegration['amazon'],
+        linked: !!isActive
+      });
+    });
+  }
 
 }

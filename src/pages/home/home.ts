@@ -109,13 +109,13 @@ export class HomePage {
   ionViewWillEnter() {
     this.config = this.configProvider.get();
     this.pushNotificationsProvider.init();
-    this.homeIntegrations = this.homeIntegrationsProvider.get();
-    this.showIntegration = this.config.showIntegration;
-    this.homeIntegrations.forEach((integration: any) => {
-      integration.show = this.showIntegration[integration.name];
-    });
-    this.homeIntegrations = _.filter(this.homeIntegrations, (homeIntegrations) => {
-      return homeIntegrations.show == true;
+
+    // Show integrations
+    this.homeIntegrations = _.filter(this.homeIntegrationsProvider.get(), { 'show': true });
+    // Hide BitPay if linked
+    this.homeIntegrations = _.remove(this.homeIntegrations, (x) => {
+      if (x.name == 'debitcard' && x.linked) return;
+      else return x;
     });
 
     this.addressBookProvider.list().then((ab: any) => {

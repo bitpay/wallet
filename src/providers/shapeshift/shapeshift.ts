@@ -5,6 +5,7 @@ import { Logger } from '../../providers/logger/logger';
 
 // providers
 import { AppProvider } from '../app/app';
+import { ConfigProvider } from '../config/config';
 import { HomeIntegrationsProvider } from '../home-integrations/home-integrations';
 import { PersistenceProvider } from '../persistence/persistence';
 
@@ -12,13 +13,13 @@ import { PersistenceProvider } from '../persistence/persistence';
 export class ShapeshiftProvider {
 
   private credentials: any;
-  private homeItem: any;
 
   constructor(
     private appProvider: AppProvider,
     private homeIntegrationsProvider: HomeIntegrationsProvider,
     private http: HttpClient,
     private logger: Logger,
+    private configProvider: ConfigProvider,
     private persistenceProvider: PersistenceProvider
   ) {
     this.logger.info('Hello ShapeshiftProvider Provider');
@@ -38,13 +39,13 @@ export class ShapeshiftProvider {
       ? ""
       // CORS: cors.shapeshift.io
       : "https://shapeshift.io";
+  }
 
-    this.homeItem = {
-      name: 'shapeshift',
-      title: 'ShapeShift',
-      icon: 'assets/img/shapeshift/icon-shapeshift.svg',
-      page: 'ShapeshiftPage',
-    };
+  private isActive(cb): void {
+    var network = this.getNetwork();
+    this.persistenceProvider.getShapeshift(network).then((ss) => {
+      return cb(!!ss);
+    });
   }
 
   public getNetwork() {
@@ -146,7 +147,16 @@ export class ShapeshiftProvider {
   }
 
   public register(): void {
-    this.homeIntegrationsProvider.register(this.homeItem);
+    this.isActive((isActive) => {
+      this.homeIntegrationsProvider.register({
+        name: 'shapeshift',
+        title: 'ShapeShift',
+        icon: 'assets/img/shapeshift/icon-shapeshift.svg',
+        page: 'ShapeshiftPage',
+        show: !!this.configProvider.get().showIntegration['shapeshift'],
+        linked: !!isActive
+      });
+    });
   }
 
 }

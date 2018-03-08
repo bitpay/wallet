@@ -984,7 +984,8 @@ export class CoinbaseProvider {
         icon: 'assets/img/coinbase/coinbase-icon.png',
         location: '33 Countries',
         page: 'CoinbasePage',
-        linked: !!isActive,
+        show: !!this.configProvider.get().showIntegration['coinbase'],
+        linked: !!isActive
       });
     });
   }

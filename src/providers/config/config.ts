@@ -70,7 +70,7 @@ interface Config {
     glidera: boolean,
     debitcard: boolean,
     amazon: boolean,
-    mercadoLibre: boolean,
+    mercadolibre: boolean,
     shapeshift: boolean
   };
 
@@ -173,7 +173,7 @@ const configDefault: Config = {
     glidera: true,
     debitcard: true,
     amazon: true,
-    mercadoLibre: true,
+    mercadolibre: true,
     shapeshift: true
   },
 

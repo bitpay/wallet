@@ -5,6 +5,7 @@ import { Logger } from '../../providers/logger/logger';
 
 // providers
 import { AppProvider } from '../app/app';
+import { ConfigProvider } from '../config/config';
 import { HomeIntegrationsProvider } from '../home-integrations/home-integrations';
 import { PersistenceProvider } from '../persistence/persistence';
 import { PlatformProvider } from '../platform/platform';
@@ -23,6 +24,7 @@ export class GlideraProvider {
     private platformProvider: PlatformProvider,
     private persistenceProvider: PersistenceProvider,
     private homeIntegrationsProvider: HomeIntegrationsProvider,
+    private configProvider: ConfigProvider,
     private appProvider: AppProvider
   ) {
     this.logger.info('GlideraProvider initialized');
@@ -473,7 +475,8 @@ export class GlideraProvider {
         icon: 'assets/img/glidera/glidera-icon.png',
         location: 'US Only',
         page: 'GlideraPage',
-        linked: !!token,
+        show: !!this.configProvider.get().showIntegration['glidera'],
+        linked: !!token
       });
     });
   }
