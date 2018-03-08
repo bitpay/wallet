@@ -30,7 +30,9 @@
 
       <ion-icon class="scanner-icon" name="qr-scanner" item-right (click)="openScanner()"></ion-icon>
     </ion-item>
-    <button ion-button block (click)="save()" [disabled]="addressBookAdd.invalid || submitAttempt">{{ 'Save' | translate }}</button>
   </form>
 
 </ion-content>
+<ion-footer>
+  <button ion-button full class="button-footer" (click)="save()" [disabled]="addressBookAdd.invalid || submitAttempt">{{ 'Save' | translate }}</button>
+</ion-footer>
