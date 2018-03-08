@@ -2,7 +2,12 @@ import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
 import { Logger } from '../../../../providers/logger/logger';
 
+import * as _ from 'lodash';
+
+// Providers
+import { ConfigProvider } from '../../../../providers/config/config';
 import { GlideraProvider } from '../../../../providers/glidera/glidera';
+import { HomeIntegrationsProvider } from '../../../../providers/home-integrations/home-integrations';
 import { PopupProvider } from '../../../../providers/popup/popup';
 
 @Component({
@@ -11,15 +16,22 @@ import { PopupProvider } from '../../../../providers/popup/popup';
 })
 export class GlideraSettingsPage {
 
+  private serviceName: string = 'glidera';
+  public showAtHome: any;
+  public service: any;
   public account: any;
 
   constructor(
     private navCtrl: NavController,
     private popupProvider: PopupProvider,
     private logger: Logger,
-    private glideraProvider: GlideraProvider
+    private glideraProvider: GlideraProvider,
+    private configProvider: ConfigProvider,
+    private homeIntegrationsProvider: HomeIntegrationsProvider
   ) {
     this.account = {};
+    this.service = _.filter(this.homeIntegrationsProvider.get(), { name: this.serviceName });
+    this.showAtHome = !!this.service[0].show;
   }
 
   ionViewDidEnter() {
@@ -42,6 +54,14 @@ export class GlideraSettingsPage {
     this.popupProvider.ionicAlert(title, msg).then(() => {
       this.navCtrl.pop();
     });
+  }
+
+  public integrationChange(): void {
+    let opts = {
+      showIntegration: { [this.serviceName] : this.showAtHome }
+    };
+    this.homeIntegrationsProvider.updateConfig(this.serviceName, this.showAtHome);
+    this.configProvider.set(opts);
   }
 
   public revokeToken() {
