@@ -10,9 +10,9 @@
       <img class="sending-img" src="assets/img/tx-action/icon-sent.svg" width="40" *ngIf="btx.action === 'sent'">
       <img class="sending-img" src="assets/img/tx-action/icon-received.svg" width="40" *ngIf="btx.action === 'received'">
       <img class="sending-img" src="assets/img/tx-action/icon-moved.svg" width="40" *ngIf="btx.action === 'moved'">
-      <span *ngIf="btx.action === 'sent'">{{'Sent' | translate}}</span>
-      <span *ngIf="btx.action === 'received'">{{'Received' | translate}}</span>
-      <span *ngIf="btx.action === 'moved'">{{'Moved' | translate}}</span>
+      <span *ngIf="btx.action === 'sent'" translate>Sent</span>
+      <span *ngIf="btx.action === 'received'" translate>Received</span>
+      <span *ngIf="btx.action === 'moved'" translate>Moved</span>
     </div>
     <div class="sending-label" *ngIf="btx.confirmations === 0">
       <img class="sending-img" src="assets/img/tx-action/icon-confirming.svg">
@@ -61,14 +61,14 @@
     <ion-item-divider></ion-item-divider>
 
     <ion-item *ngIf="btx.action != 'received' && isShared">
-      <ion-label translate>Created by</ion-label>
+      <ion-label>{{'Created by' | translate}}</ion-label>
       <ion-note item-end>
         {{btx.creatorName}}
       </ion-note>
     </ion-item>
 
     <ion-item *ngIf="btx.ts || btx.createdOn || btx.time">
-      <ion-label translate>Date</ion-label>
+      <ion-label>{{'Date' | translate}}</ion-label>
       <ion-note item-end>
         <time>{{ (btx.ts || btx.createdOn || btx.time) * 1000 | amDateFormat:'MM/DD/YYYY hh:mm a'}}</time>
       </ion-note>
@@ -76,7 +76,7 @@
 
     <ion-item *ngIf="btx.action != 'received'">
       <ion-label>
-        <div class="item-title">{{'Fee' | translate}}</div>
+        <div class="item-title" translate>Fee</div>
       </ion-label>
       <ion-note item-end>
         <span>{{btx.feeStr}}</span>
@@ -117,13 +117,13 @@
     </ion-item>
 
     <ion-item-divider>
-      <div item-start>
-        {{'Memo' | translate}}
+      <div item-start translate>
+        Memo
       </div>
       <div item-end>
         <button ion-button clear icon-only color="grey" (click)="showCommentPopup()">
           <ion-icon *ngIf="(!btx.note || !btx.note.body) && !btx.message" name="add"></ion-icon>
-          <span *ngIf="(btx.note && btx.note.body) || btx.message">{{'Edit' | translate}}</span>
+          <span *ngIf="(btx.note && btx.note.body) || btx.message" translate>Edit</span>
         </button>
       </div>
     </ion-item-divider>

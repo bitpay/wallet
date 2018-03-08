@@ -2,8 +2,8 @@
   <ion-navbar hideBackButton="true">
     <ion-title>{{'Bitcoin Network Fee Policy'|translate}}</ion-title>
     <ion-buttons start>
-      <button [disabled]="customSatPerByte >= maxFeeAllowed || showError" (click)="ok()" ion-button>
-        {{'Done'|translate}}
+      <button [disabled]="customSatPerByte >= maxFeeAllowed || showError" (click)="ok()" ion-button translate>
+        Done
       </button>
     </ion-buttons>
   </ion-navbar>

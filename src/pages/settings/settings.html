@@ -7,28 +7,28 @@
 <ion-content no-bounce>
   <ion-list>
     <ion-item-divider></ion-item-divider>
-    <button ion-item (click)="openAddressBookPage()">
+    <button ion-item (click)="openAddressBookPage()" translate>
       <ion-icon item-start>
         <img src="assets/img/settings-icons/icon-address-book.svg" width="22">
       </ion-icon>
-      {{'Address book' | translate}}
+      Address book
     </button>
 
-    <button ion-item (click)="openHelpExternalLink()">
+    <button ion-item (click)="openHelpExternalLink()" translate>
       <ion-icon item-start>
         <img src="assets/img/settings-icons/icon-help-support.svg" width="22">
       </ion-icon>
-      {{'Help &amp; support' | translate}}
+      Help &amp; support
     </button>
 
-    <button ion-item (click)="openSendFeedbackPage()">
+    <button ion-item (click)="openSendFeedbackPage()" translate>
       <ion-icon item-start>
         <img src="assets/img/settings-icons/icon-send-feedback.svg" width="22">
       </ion-icon>
       Send feedback
     </button>
 
-    <button ion-item *ngIf="isCordova" (click)="openFeedbackCompletePage()">
+    <button ion-item *ngIf="isCordova" (click)="openFeedbackCompletePage()" translate>
       <ion-icon item-start>
         <img src="assets/img/settings-icons/icon-heart.svg" width="22">
       </ion-icon>
@@ -44,11 +44,11 @@
       Bitcoin Cash
     </button>
 
-    <button ion-item (click)="openNotificationsPage()">
+    <button ion-item (click)="openNotificationsPage()" translate>
       <ion-icon item-start>
         <img src="assets/img/settings-icons/icon-notifications.svg" width="22">
       </ion-icon>
-      {{'Notification' | translate}}
+      Notification
     </button>
 
     <button ion-item (click)="openLanguagePage()">
@@ -157,25 +157,25 @@
 
     <ion-item-divider *ngIf="bitpayCardEnabled || (exchangeServices && exchangeServices.length > 0)"></ion-item-divider>
 
-    <button ion-item (click)="openEnabledServicesPage()">
+    <button ion-item (click)="openEnabledServicesPage()" translate>
       <ion-icon name="ios-list-outline" item-start></ion-icon>
-      {{'Enabled services' | translate}}
+      Enabled services
     </button>
 
     <ion-item-divider>More</ion-item-divider>
 
-    <button ion-item (click)="openAdvancedPage()">
+    <button ion-item (click)="openAdvancedPage()" translate>
       <ion-icon item-start>
         <img src="assets/img/settings-icons/icon-advanced.svg" width="22">
       </ion-icon>
-      {{'Advanced' | translate}}
+      Advanced
     </button>
 
-    <button ion-item (click)="openAboutPage()">
+    <button ion-item (click)="openAboutPage()" translate>
       <ion-icon item-start>
         <img src="assets/img/settings-icons/icon-about.svg" width="22">
       </ion-icon>
-      {{'About' | translate}} {{appName}}
+      About {{appName}}
     </button>
     <ion-item-divider></ion-item-divider>
   </ion-list>

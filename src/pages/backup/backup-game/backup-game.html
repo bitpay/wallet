@@ -9,7 +9,7 @@
 
 <ion-content no-bounce>
   <div *ngIf="deleted">
-    <h1 class="deleted-title">{{'Wallet recovery phrase not available' |translate}}</h1>
+    <h1 class="deleted-title" translate>Wallet recovery phrase not available</h1>
     <ion-item-divider text-wrap>
       {{'You can still export it from Advanced &gt; Export.' |translate}}
       <span *ngIf="wallet.coin == 'bch'" translate>

@@ -16,19 +16,19 @@
       <span translate>Color</span>
     </button>
     <ion-item>
-      <ion-label translate>Hide Balance</ion-label>
+      <ion-label>{{'Hide Balance' | translate}}</ion-label>
       <ion-toggle [(ngModel)]="hiddenBalance" (ionChange)="hiddenBalanceChange()"></ion-toggle>
     </ion-item>
-    <ion-item-divider translate>Security</ion-item-divider>
+    <ion-item-divider>{{'Security' | translate}}</ion-item-divider>
     <button ion-item (click)="openBackupSettings()">
       <span translate>Backup</span>
-      <ion-note *ngIf="needsBackup" class="assertive" item-end translate>
-        Needs backup recovery
+      <ion-note *ngIf="needsBackup" class="assertive" item-end>
+        {{'Needs backup recovery' | translate}}
       </ion-note>
     </button>
     <div *ngIf="canSign">
       <ion-item>
-        <ion-label [ngClass]="{'disabled': needsBackup}" translate>Request Spending Password</ion-label>
+        <ion-label [ngClass]="{'disabled': needsBackup}">{{'Request Spending Password' | translate}}</ion-label>
         <ion-toggle [(ngModel)]="encryptEnabled" (ionChange)="encryptChange()" [disabled]="needsBackup"></ion-toggle>
       </ion-item>
       <ion-item-divider text-wrap>
@@ -44,7 +44,7 @@
     </div>
     <div *ngIf="canSign && touchIdAvailable">
       <ion-item>
-        <ion-label [ngClass]="{'disabled': needsBackup}" translate>Request Fingerprint</ion-label>
+        <ion-label [ngClass]="{'disabled': needsBackup}">{{'Request Fingerprint'| translate}}</ion-label>
         <ion-toggle [(ngModel)]="touchIdEnabled" (ionChange)="touchIdChange()"></ion-toggle>
       </ion-item>
       <ion-item-divider></ion-item-divider>

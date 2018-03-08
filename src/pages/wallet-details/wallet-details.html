@@ -105,12 +105,12 @@
 
   <!-- Transactions -->
 
-  <div class="middle-message" *ngIf="showNoTransactionsYetMsg && !updateStatusError">
-    {{'No transactions yet' | translate}}
+  <div class="middle-message" *ngIf="showNoTransactionsYetMsg && !updateStatusError" translate>
+    No transactions yet
   </div>
 
-  <div class="middle-message" *ngIf="txHistory && !txHistory[0] && updateTxHistoryError">
-    {{'Could not update transaction history' | translate}}
+  <div class="middle-message" *ngIf="txHistory && !txHistory[0] && updateTxHistoryError" translate>
+    Could not update transaction history
   </div>
 
   <div class="middle-message" *ngIf="updatingTxHistory && updatingTxHistoryProgress>5">
@@ -173,12 +173,12 @@
         </div>
 
         <div class="action" *ngIf="tx.confirmations > 0 && tx.action == 'moved'">
-          <span *ngIf="(!tx.note || (tx.note && tx.note.body == ''))">{{'Moved' | translate}}</span>
+          <span *ngIf="(!tx.note || (tx.note && tx.note.body == ''))" translate>Moved</span>
           <span *ngIf="tx.note && tx.note.body != ''">{{tx.note.body}}</span>
         </div>
 
         <div class="action" *ngIf="tx.confirmations > 0 && tx.action == 'invalid'">
-          <span class="assertive" *ngIf="!tx.message && !tx.note">{{'Invalid' | translate}}</span>
+          <span class="assertive" *ngIf="!tx.message && !tx.note" translate>Invalid</span>
         </div>
 
         <ion-note item-end text-end>

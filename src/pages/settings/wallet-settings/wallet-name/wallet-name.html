@@ -15,7 +15,7 @@
     </ion-item-divider>
     <form [formGroup]="walletNameForm">
       <ion-item>
-        <ion-label stacked translate>Name</ion-label>
+        <ion-label stacked>{{'Name' | translate}}</ion-label>
         <ion-input type="text" formControlName="walletName" [value]="walletNameForm.value.walletName" required></ion-input>
       </ion-item>
     </form>

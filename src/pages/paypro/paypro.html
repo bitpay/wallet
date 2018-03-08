@@ -2,8 +2,8 @@
   <ion-navbar>
     <ion-title>{{'Payment request' | translate}}</ion-title>
     <ion-buttons start>
-      <button (click)="close()" ion-button>
-        {{'Close' | translate}}
+      <button (click)="close()" ion-button translate>
+        Close
       </button>
     </ion-buttons>
   </ion-navbar>
@@ -19,7 +19,7 @@
     </ion-item>
     <ion-item *ngIf="tx.paypro.domain">
 
-      <span>{{'Pay To'|translate}}</span>
+      <span translate>Pay To</span>
       <ion-note item-end>
         {{tx.paypro.domain}}
       </ion-note>
@@ -27,14 +27,14 @@
     </ion-item>
 
     <ion-item *ngIf="tx.paypro.toAddress" copy-to-clipboard="{{tx.paypro.toAddress}}">
-      <div>{{'Address'|translate}}</div>
+      <div translate>Address</div>
       <div class="comment" text-wrap>
         {{address}}
       </div>
     </ion-item>
     
     <ion-item>
-      <div>{{'Certified by'|translate}}</div>
+      <div translate>Certified by</div>
       <div class="certified" text-wrap *ngIf="tx.paypro.caTrusted">
         <ion-icon *ngIf="tx.paypro.verified" color="success" name="lock"></ion-icon>
         <ion-icon *ngIf="!tx.paypro.verified" color="warning" name="unlock"></ion-icon>
@@ -62,7 +62,7 @@
     </ion-item>
 
     <ion-item *ngIf="tx.paypro.expires">
-      <span>{{'Expires'|translate}}</span>
+      <span translate>Expires</span>
       <ion-note item-end>
         {{tx.paypro.expires * 1000 | amTimeAgo }}
       </ion-note>

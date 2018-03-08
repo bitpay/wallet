@@ -20,11 +20,11 @@
       <div *ngIf="!backupWalletPlainText">
         <form [formGroup]="exportWalletForm">
           <ion-item>
-            <ion-label stacked translate>Set up a password</ion-label>
+            <ion-label stacked>{{'Set up a password' | translate}}</ion-label>
             <ion-input type="password" formControlName="password" placeholder="{{'Your password'|translate}}" required></ion-input>
           </ion-item>
           <ion-item>
-            <ion-label stacked translate>Repeat the password</ion-label>
+            <ion-label stacked>{{'Repeat the password' | translate}}</ion-label>
             <ion-input type="password" formControlName="confirmPassword" placeholder="{{'Repeat password'|translate}}" required></ion-input>
           </ion-item>
           <ion-item class='form-text error' *ngIf="exportWalletForm.controls.confirmPassword.touched && exportWalletForm.hasError('mismatchedPasswords') && exportWalletForm.controls.password.valid">
