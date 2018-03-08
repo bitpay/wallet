@@ -6,7 +6,7 @@
 <ion-content>
   <page-wallet-item [wallet]="wallet"></page-wallet-item>
   <ion-list>
-    <form [formGroup]="walletServiceForm" (ngSubmit)="save()">
+    <form [formGroup]="walletServiceForm">
       <ion-item>
         <ion-label stacked translate>Wallet Service URL</ion-label>
         <ion-input type="text" formControlName="bwsurl" [value]="walletServiceForm.value.bwsurl" required></ion-input>
@@ -18,7 +18,9 @@
           Use default url
         </a>
       </ion-item-divider>
-      <button ion-button block clear type="submit" [disabled]="!walletServiceForm.valid">Save</button>
     </form>
   </ion-list>
 </ion-content>
+<ion-footer>
+  <button ion-button full class="button-footer" (click)="save()" [disabled]="!walletServiceForm.valid">{{ 'Save' | translate }}</button>
+</ion-footer>

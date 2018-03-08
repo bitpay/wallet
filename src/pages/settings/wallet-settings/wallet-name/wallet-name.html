@@ -9,16 +9,18 @@
   <ion-list>
     <ion-item-divider text-wrap class="settings-explanation">
       <div class="settings-heading" translate>What do you call this wallet?</div>
-      <div class="settings-description" translate>When this wallet was created, it was called &ldquo;{{walletName}}&rdquo;. You can change the name displayed on this device
-        below.
+      <div class="settings-description" translate>When this wallet was created, it was called &ldquo;{{walletName}}&rdquo;. You can change the name displayed on this
+        device below.
       </div>
     </ion-item-divider>
-    <form [formGroup]="walletNameForm" (ngSubmit)="save()">
+    <form [formGroup]="walletNameForm">
       <ion-item>
         <ion-label stacked translate>Name</ion-label>
         <ion-input type="text" formControlName="walletName" [value]="walletNameForm.value.walletName" required></ion-input>
       </ion-item>
-      <button ion-button block clear type="submit" [disabled]="!walletNameForm.valid">Save</button>
     </form>
   </ion-list>
 </ion-content>
+<ion-footer>
+  <button ion-button full class="button-footer" (click)="save()" [disabled]="!walletNameForm.valid">{{ 'Save' | translate }}</button>
+</ion-footer>
