@@ -396,7 +396,7 @@ export class BitPayCardTopUpPage {
       invoice['minerFees'][COIN]['totalFee'] = invoice.minerFees[COIN].totalFee || 0;
       let invoiceFeeSat = invoice.minerFees[COIN].totalFee;
 
-      this.message = 'Top up ' + this.amountUnitStr + ' to debit card (' + this.lastFourDigits + ')';
+      this.message = this.amountUnitStr + ' to ' + this.lastFourDigits;
 
       this.createTx(wallet, invoice, this.message).then((ctxp) => {
         this.onGoingProcessProvider.clear();
