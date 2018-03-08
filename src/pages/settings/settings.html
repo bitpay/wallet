@@ -137,7 +137,7 @@
       </ion-note>
     </button>
 
-    <ion-item-divider *ngIf="bitpayCardEnabled || (exchangeServices && exchangeServices.length > 0)">
+    <ion-item-divider>
       {{'Integrations' | translate}}
     </ion-item-divider>
 
@@ -145,7 +145,7 @@
       <ion-icon item-start>
         <img src="assets/img/bitpay-card/icon-bitpay.svg" class="icon-services" />
       </ion-icon>
-      <span translate>BitPay</span>
+      BitPay
     </button>
 
     <button ion-item *ngFor="let service of exchangeServices" (click)="openIntegrationSettings(service.name)">
@@ -155,7 +155,7 @@
       <span>{{service.title || service.name}}</span>
     </button>
 
-    <ion-item-divider></ion-item-divider>
+    <ion-item-divider *ngIf="bitpayCardEnabled || (exchangeServices && exchangeServices.length > 0)"></ion-item-divider>
 
     <button ion-item (click)="openEnabledServicesPage()">
       <ion-icon name="ios-list-outline" item-start></ion-icon>
