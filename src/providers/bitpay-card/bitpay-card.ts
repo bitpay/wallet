@@ -4,7 +4,6 @@ import { Logger } from '../../providers/logger/logger';
 // providers
 import { AppIdentityProvider } from '../app-identity/app-identity';
 import { BitPayProvider } from '../bitpay/bitpay';
-import { HomeIntegrationsProvider } from '../home-integrations/home-integrations';
 import { PersistenceProvider } from '../persistence/persistence';
 
 import * as _ from 'lodash';
@@ -13,23 +12,13 @@ import * as moment from 'moment';
 @Injectable()
 export class BitPayCardProvider {
 
-  public homeItem: any;
-
   constructor(
     private logger: Logger,
     private bitPayProvider: BitPayProvider,
     private appIdentityProvider: AppIdentityProvider,
-    private persistenceProvider: PersistenceProvider,
-    private homeIntegrationsProvider: HomeIntegrationsProvider
+    private persistenceProvider: PersistenceProvider
   ) {
     this.logger.info('BitPayCardProvider initialized');
-
-    this.homeItem = {
-      name: 'debitcard',
-      title: 'BitPay Visa® Card',
-      icon: 'assets/img/bitpay-card/icon-bitpay.svg',
-      page: 'BitPayCardIntroPage',
-    }
   }
 
   private _setError(msg, e?) {
@@ -424,11 +413,6 @@ export class BitPayCardProvider {
       return cb(null, cards);
     });
   };
-
-
-  public register() {
-    this.homeIntegrationsProvider.register(this.homeItem);
-  }
 }
 
 /*

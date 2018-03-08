@@ -6,8 +6,8 @@ import { Device } from '@ionic-native/device';
 
 // providers
 import { AppIdentityProvider } from '../app-identity/app-identity';
-import { BitPayCardProvider } from '../bitpay-card/bitpay-card';
 import { BitPayProvider } from '../bitpay/bitpay';
+import { HomeIntegrationsProvider } from '../home-integrations/home-integrations';
 import { PersistenceProvider } from '../persistence/persistence';
 import { PlatformProvider } from '../platform/platform';
 import { PopupProvider } from '../popup/popup';
@@ -48,6 +48,8 @@ export class BitPayAccountProvider {
    *     appIdentity: the identity of this app
    *   }
    */
+  
+  private homeItem: any;
 
   constructor(
     private platformProvider: PlatformProvider,
@@ -56,9 +58,16 @@ export class BitPayAccountProvider {
     private popupProvider: PopupProvider,
     private persistenceProvider: PersistenceProvider,
     private appIdentityProvider: AppIdentityProvider,
-    private bitPayCardProvider: BitPayCardProvider,
-    private device: Device
+    private device: Device,
+    private homeIntegrationsProvider: HomeIntegrationsProvider
   ) {
+    this.logger.info('BitPayAccountProvider initialized');
+    this.homeItem = {
+      name: 'debitcard',
+      title: 'BitPay Visa® Card',
+      icon: 'assets/img/bitpay-card/icon-bitpay.svg',
+      page: 'BitPayCardIntroPage',
+    }
   }
 
   public pair(pairData: any, pairingReason: string, cb: (err: string, paired?: boolean, apiContext?: any) => any) {
@@ -203,7 +212,6 @@ export class BitPayAccountProvider {
 
   public removeAccount(email: string, cb: () => any) {
     this.persistenceProvider.removeBitpayAccount(this.bitPayProvider.getEnvironment().network, email).then(() => {
-      this.bitPayCardProvider.register();
       return cb();
     });
   };
@@ -213,5 +221,9 @@ export class BitPayAccountProvider {
     let error = (e && e.data && e.data.error) ? e.data.error : msg;
     return error;
   };
+
+  public register() {
+    this.homeIntegrationsProvider.register(this.homeItem);
+  }
 
 }
