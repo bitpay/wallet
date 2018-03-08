@@ -57,6 +57,7 @@ import { WalletDetailsPage } from '../pages/wallet-details/wallet-details';
 
 // Integrations: Amazon
 import { AmazonPage } from '../pages/integrations/amazon/amazon';
+import { AmazonSettingsPage } from '../pages/integrations/amazon/amazon-settings/amazon-settings';
 import { AmazonCardDetailsPage } from '../pages/integrations/amazon/amazon-card-details/amazon-card-details';
 import { BuyAmazonPage } from '../pages/integrations/amazon/buy-amazon/buy-amazon';
 
@@ -122,7 +123,6 @@ import { AddressbookPage } from '../pages/settings/addressbook/addressbook';
 import { AddressbookViewPage } from '../pages/settings/addressbook/view/view';
 import { AdvancedPage } from '../pages/settings/advanced/advanced';
 import { AltCurrencyPage } from '../pages/settings/alt-currency/alt-currency';
-import { EnabledServicesPage } from '../pages/settings/enabled-services/enabled-services';
 import { FeePolicyPage } from '../pages/settings/fee-policy/fee-policy';
 import { LanguagePage } from '../pages/settings/language/language';
 import { LockPage } from '../pages/settings/lock/lock';
@@ -219,6 +219,7 @@ export function createTranslateLoader(http: HttpClient) {
     AddPage,
     AmazonCardDetailsPage,
     AmazonPage,
+    AmazonSettingsPage,
     AmountPage,
     AddressbookPage,
     AddressbookAddPage,
@@ -242,7 +243,6 @@ export function createTranslateLoader(http: HttpClient) {
     CoinbasePage,
     CoinbaseTxDetailsPage,
     CopayersPage,
-    EnabledServicesPage,
     FeedbackCardPage,
     FeedbackPage,
     FeedbackCompletePage,
@@ -349,6 +349,7 @@ export function createTranslateLoader(http: HttpClient) {
     AddPage,
     AmazonCardDetailsPage,
     AmazonPage,
+    AmazonSettingsPage,
     AmountPage,
     AddressbookPage,
     AddressbookAddPage,
@@ -372,7 +373,6 @@ export function createTranslateLoader(http: HttpClient) {
     CoinbasePage,
     CoinbaseTxDetailsPage,
     CopayersPage,
-    EnabledServicesPage,
     FeedbackCardPage,
     FeedbackPage,
     FeedbackCompletePage,

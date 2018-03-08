@@ -7,7 +7,6 @@ import * as _ from 'lodash';
 
 // providers
 import { AppProvider } from '../../providers/app/app';
-import { BitPayAccountProvider } from '../../providers/bitpay-account/bitpay-account';
 import { ConfigProvider } from '../../providers/config/config';
 import { ExternalLinkProvider } from '../../providers/external-link/external-link';
 import { HomeIntegrationsProvider } from '../../providers/home-integrations/home-integrations';
@@ -18,6 +17,7 @@ import { ProfileProvider } from '../../providers/profile/profile';
 // pages
 import { FeedbackCompletePage } from '../feedback/feedback-complete/feedback-complete';
 import { SendFeedbackPage } from '../feedback/send-feedback/send-feedback';
+import { AmazonSettingsPage } from '../integrations/amazon/amazon-settings/amazon-settings';
 import { BitPaySettingsPage } from '../integrations/bitpay-card/bitpay-settings/bitpay-settings';
 import { CoinbaseSettingsPage } from '../integrations/coinbase/coinbase-settings/coinbase-settings';
 import { GlideraSettingsPage } from '../integrations/glidera/glidera-settings/glidera-settings';
@@ -26,7 +26,6 @@ import { AddressbookPage } from './addressbook/addressbook';
 import { AdvancedPage } from './advanced/advanced';
 import { AltCurrencyPage } from './alt-currency/alt-currency';
 import { BitcoinCashPage } from './bitcoin-cash/bitcoin-cash';
-import { EnabledServicesPage } from './enabled-services/enabled-services';
 import { FeePolicyPage } from './fee-policy/fee-policy';
 import { LanguagePage } from './language/language';
 import { LockPage } from './lock/lock';
@@ -47,8 +46,7 @@ export class SettingsPage {
   public selectedAlternative: any;
   public isCordova: boolean;
   public lockMethod: string;
-  public exchangeServices: any[] = [];
-  public bitpayCardEnabled: boolean = false;
+  public integrationServices: any[] = [];
 
   constructor(
     private navCtrl: NavController,
@@ -60,8 +58,7 @@ export class SettingsPage {
     private logger: Logger,
     private homeIntegrationsProvider: HomeIntegrationsProvider,
     private platformProvider: PlatformProvider,
-    private translate: TranslateService,
-    private bitpayAccountProvider: BitPayAccountProvider
+    private translate: TranslateService
   ) {
     this.appName = this.app.info.nameCase;
     this.currentLanguageName = this.language.getName(this.language.getCurrent());
@@ -87,12 +84,8 @@ export class SettingsPage {
       isoCode: this.config.wallet.settings.alternativeIsoCode
     }
     this.lockMethod = this.config.lock.method;
-    this.exchangeServices = this.homeIntegrationsProvider.getAvailableExchange();
-
-    this.bitpayAccountProvider.getAccounts((err, accounts) => {
-      if (err) this.logger.warn(err);
-      this.bitpayCardEnabled = _.isEmpty(accounts) ? false : true;
-    });
+    
+    this.integrationServices = this.homeIntegrationsProvider.get();
   }
 
   public openBitcoinCashPage(): void {
@@ -143,21 +136,19 @@ export class SettingsPage {
     this.navCtrl.push(FeedbackCompletePage, { score: 4, skipped: true, fromSettings: true });
   }
 
-  public openEnabledServicesPage(): void {
-    this.navCtrl.push(EnabledServicesPage);
-  }
-
-  public openBitPaySettings(): void {
-    this.navCtrl.push(BitPaySettingsPage);
-  }
-
-  public openIntegrationSettings(name: string): void {
+  public openSettingIntegration(name: string): void {
     switch (name) {
       case 'coinbase':
         this.navCtrl.push(CoinbaseSettingsPage);
         break;
       case 'glidera':
         this.navCtrl.push(GlideraSettingsPage);
+        break;
+      case 'debitcard':
+        this.navCtrl.push(BitPaySettingsPage);
+        break;
+      case 'amazon':
+        this.navCtrl.push(AmazonSettingsPage);
         break;
     }
   }

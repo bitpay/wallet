@@ -96,7 +96,7 @@ export class GlideraProvider {
     this.persistenceProvider.removeGlideraPermissions(this.credentials.NETWORK);
     this.persistenceProvider.removeGlideraStatus(this.credentials.NETWORK);
     this.persistenceProvider.removeGlideraTxs(this.credentials.NETWORK);
-    this.homeIntegrationsProvider.update('glidera', null); // Name, Token
+    this.homeIntegrationsProvider.updateLink('glidera', null); // Name, Token
   }
 
   public getToken(code, cb) {
@@ -132,7 +132,7 @@ export class GlideraProvider {
           this.persistenceProvider.setGlideraToken(this.credentials.NETWORK, accessToken);
           this.persistenceProvider.setGlideraPermissions(this.credentials.NETWORK, p);
           this.persistenceProvider.setGlideraStatus(this.credentials.NETWORK, status);
-          this.homeIntegrationsProvider.update('glidera', accessToken); // Name, Token
+          this.homeIntegrationsProvider.updateLink('glidera', accessToken); // Name, Token
           return cb(null, {
             token: accessToken,
             permissions: p,

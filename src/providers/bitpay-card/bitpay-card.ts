@@ -207,7 +207,6 @@ export class BitPayCardProvider {
       });
 
       this.persistenceProvider.setBitpayDebitCards(this.bitPayProvider.getEnvironment().network, apiContext.pairData.email, cards).then(() => {
-        this.register();
         return cb(null, cards);
       });
     }, (data) => {
@@ -354,7 +353,6 @@ export class BitPayCardProvider {
 
   public remove(cardId, cb) {
     this.persistenceProvider.removeBitpayDebitCard(this.bitPayProvider.getEnvironment().network, cardId).then(() => {
-      this.register();
       this.persistenceProvider.removeBalanceCache(cardId);
       return cb();
     }).catch((err) => {

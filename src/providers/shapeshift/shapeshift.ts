@@ -41,13 +41,6 @@ export class ShapeshiftProvider {
       : "https://shapeshift.io";
   }
 
-  private isActive(cb): void {
-    var network = this.getNetwork();
-    this.persistenceProvider.getShapeshift(network).then((ss) => {
-      return cb(!!ss);
-    });
-  }
-
   public getNetwork() {
     return this.credentials.NETWORK;
   }
@@ -147,15 +140,12 @@ export class ShapeshiftProvider {
   }
 
   public register(): void {
-    this.isActive((isActive) => {
-      this.homeIntegrationsProvider.register({
-        name: 'shapeshift',
-        title: 'ShapeShift',
-        icon: 'assets/img/shapeshift/icon-shapeshift.svg',
-        page: 'ShapeshiftPage',
-        show: !!this.configProvider.get().showIntegration['shapeshift'],
-        linked: !!isActive
-      });
+    this.homeIntegrationsProvider.register({
+      name: 'shapeshift',
+      title: 'ShapeShift',
+      icon: 'assets/img/shapeshift/icon-shapeshift.svg',
+      page: 'ShapeshiftPage',
+      show: !!this.configProvider.get().showIntegration['shapeshift']
     });
   }
 

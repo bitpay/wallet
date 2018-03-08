@@ -35,13 +35,6 @@ export class AmazonProvider {
     this.limitPerDay = 2000;
   }
 
-  private isActive(cb): void {
-    var network = this.getNetwork();
-    this.persistenceProvider.getAmazonGiftCards(network).then((gcs) => {
-      return cb(!!gcs);
-    });
-  }
-
   public getNetwork() {
     return this.credentials.NETWORK;
   };
@@ -147,15 +140,12 @@ export class AmazonProvider {
   };
 
   public register() {
-    this.isActive((isActive) => {
-      this.homeIntegrationsProvider.register({
-        name: 'amazon',
-        title: 'Amazon.com Gift Cards',
-        icon: 'assets/img/amazon/icon-amazon.svg',
-        page: 'AmazonPage',
-        show: !!this.configProvider.get().showIntegration['amazon'],
-        linked: !!isActive
-      });
+    this.homeIntegrationsProvider.register({
+      name: 'amazon',
+      title: 'Amazon.com Gift Cards',
+      icon: 'assets/img/amazon/icon-amazon.svg',
+      page: 'AmazonPage',
+      show: !!this.configProvider.get().showIntegration['amazon']
     });
   }
 

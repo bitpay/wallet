@@ -124,7 +124,7 @@ export class CoinbaseProvider {
     if (data && data.access_token && data.refresh_token) {
       this.persistenceProvider.setCoinbaseToken(this.credentials.NETWORK, data.access_token)
       this.persistenceProvider.setCoinbaseRefreshToken(this.credentials.NETWORK, data.refresh_token)
-      this.homeIntegrationsProvider.update('coinbase', data.access_token); // Name, Token
+      this.homeIntegrationsProvider.updateLink('coinbase', data.access_token); // Name, Token
       return cb(null, data.access_token);
     } else {
       return cb('Could not get the access token');
@@ -308,7 +308,7 @@ export class CoinbaseProvider {
     this.persistenceProvider.removeCoinbaseToken(this.credentials.NETWORK);
     this.persistenceProvider.removeCoinbaseRefreshToken(this.credentials.NETWORK);
     this.persistenceProvider.removeCoinbaseTxs(this.credentials.NETWORK);
-    this.homeIntegrationsProvider.update('coinbase', null); // Name, Token
+    this.homeIntegrationsProvider.updateLink('coinbase', null); // Name, Token
   }
 
 

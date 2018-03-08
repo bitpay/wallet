@@ -42,13 +42,6 @@ export class MercadoLibreProvider {
       : "https://bitpay.com";
   }
 
-  private isActive(cb): void {
-    var network = this.getNetwork();
-    this.persistenceProvider.getMercadoLibreGiftCards(network).then((gcs) => {
-      return cb(!!gcs);
-    });
-  }
-
   public getNetwork() {
     return this.credentials.NETWORK;
   }
@@ -172,15 +165,12 @@ export class MercadoLibreProvider {
   */
 
   public register() {
-    this.isActive((isActive) => {
-      this.homeIntegrationsProvider.register({
-        name: 'mercadolibre',
-        title: 'Mercado Livre Brazil Gift Cards',
-        icon: 'assets/img/mercado-libre/icon-ml.svg',
-        page: 'MercadoLibrePage',
-        show: !!this.configProvider.get().showIntegration['mercadolibre'],
-        linked: !!isActive
-      });
+    this.homeIntegrationsProvider.register({
+      name: 'mercadolibre',
+      title: 'Mercado Livre Brazil Gift Cards',
+      icon: 'assets/img/mercado-libre/icon-ml.svg',
+      page: 'MercadoLibrePage',
+      show: !!this.configProvider.get().showIntegration['mercadolibre']
     });
   }
 }
