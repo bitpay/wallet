@@ -27,7 +27,7 @@
   </div>
 
   <div *ngIf="!isEmptyList">
-    <ion-searchbar (ionInput)="getItems($event)"></ion-searchbar>
+    <ion-searchbar placeholder="{{'Search a contact' | translate}}" (ionInput)="getItems($event)"></ion-searchbar>
     <ion-list>
       <button class="contact" ion-item *ngFor="let entry of filteredAddressbook" (click)="viewEntry(entry)">
         <gravatar [name]="entry.name" [height]="30" [width]="30" [email]="entry.email"></gravatar>
