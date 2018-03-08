@@ -2,9 +2,11 @@ import { Component } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { NavController } from 'ionic-angular';
 import { Logger } from '../../providers/logger/logger';
+import * as _ from 'lodash';
 
 // providers
 import { AppProvider } from '../../providers/app/app';
+import { BitPayAccountProvider } from '../../providers/bitpay-account/bitpay-account';
 import { ConfigProvider } from '../../providers/config/config';
 import { ExternalLinkProvider } from '../../providers/external-link/external-link';
 import { HomeIntegrationsProvider } from '../../providers/home-integrations/home-integrations';
@@ -57,7 +59,8 @@ export class SettingsPage {
     private logger: Logger,
     private homeIntegrationsProvider: HomeIntegrationsProvider,
     private platformProvider: PlatformProvider,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private bitpayAccountProvider: BitPayAccountProvider
   ) {
     this.appName = this.app.info.nameCase;
     this.currentLanguageName = this.language.getName(this.language.getCurrent());
@@ -85,9 +88,10 @@ export class SettingsPage {
     this.lockMethod = this.config.lock.method;
     this.exchangeServices = this.homeIntegrationsProvider.getAvailableExchange();
 
-    if (this.app.info._enabledExtensions.debitcard) {
-      this.bitpayCardEnabled = true;
-    }
+    this.bitpayAccountProvider.getAccounts((err, accounts) => {
+      if (err) this.logger.warn(err);
+      this.bitpayCardEnabled = _.isEmpty(accounts) ? false : true;
+    });
   }
 
   public openBitcoinCashPage(): void {

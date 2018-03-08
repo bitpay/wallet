@@ -25,7 +25,7 @@ export class BitPayCardProvider {
     this.logger.info('BitPayCardProvider initialized');
 
     this.homeItem = {
-      name: 'bitpaycard',
+      name: 'debitcard',
       title: 'BitPay Visa® Card',
       icon: 'assets/img/bitpay-card/icon-bitpay.svg',
       page: 'BitPayCardIntroPage',
@@ -427,10 +427,7 @@ export class BitPayCardProvider {
 
 
   public register() {
-    this.persistenceProvider.getBitpayDebitCards(this.bitPayProvider.getEnvironment().network).then((cards) => {
-      if (_.isEmpty(cards)) this.homeIntegrationsProvider.register(this.homeItem);
-      else this.homeIntegrationsProvider.unregister(this.homeItem);
-    });
+    this.homeIntegrationsProvider.register(this.homeItem);
   }
 }
 
