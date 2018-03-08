@@ -71,9 +71,10 @@
  </div>
 
   <div class="card" *ngIf="notifications && notifications[0] && recentTransactionsEnabled">
-    <ion-item-divider>
+    <ion-item-divider (click)="openActivityPage()">
       <span class="title" translate>Recent Transactions</span>
-      <ion-badge item-end (click)="openActivityPage()" *ngIf="notificationsN>3">{{notificationsN}}</ion-badge>
+      <ion-badge item-end *ngIf="notificationsN>3">{{notificationsN}}</ion-badge>
+      <ion-icon item-end color="grey" ios="ios-arrow-dropright"></ion-icon>
     </ion-item-divider>
     <ion-list>
       <page-wallet-activity *ngFor="let notification of notifications" (click)="openNotificationModal(notification)" [notification]="notification"></page-wallet-activity>
