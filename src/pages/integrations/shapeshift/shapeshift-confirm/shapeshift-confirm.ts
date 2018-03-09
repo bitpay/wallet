@@ -149,7 +149,6 @@ export class ShapeshiftConfirmPage {
 
           let maxSat = parseInt((max * this.configWallet.settings.unitToSatoshi).toFixed(0), 10);
           if (this.amount > maxSat) {
-            // TODO: translate
             this.popupProvider.ionicAlert(this.translate.instant('ShapeShift max limit reached'), 'Maximum amount allowed is ' + max).then(() => {
               this.amount = max;
               this.useSendMax = false;
