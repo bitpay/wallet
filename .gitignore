@@ -91,7 +91,7 @@ www/lib/*
 www/js/*
 www/fonts
 
-## templates
+# templates
 /config.xml
 /ionic.config.json
 /appConfig.json
@@ -102,9 +102,12 @@ src/js/externalServices.js
 chrome-app/manifest.json
 www/index.html
 
-## Firebase
+# Firebase
 /GoogleService-Info.plist
 /google-services.json
 
 # package lock removed
 package-lock.json
+
+# Dist folder
+dist

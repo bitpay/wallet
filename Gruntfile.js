@@ -14,8 +14,14 @@ module.exports = function(grunt) {
       externalServices: {
         command: 'node ./util/buildExternalServices.js'
       },
+      addManifest: {
+        command: 'node ./util/addManifest.js'
+      },
       clean: {
         command: 'rm -Rf bower_components node_modules'
+      },
+      removeDist: {
+        command: 'rm -Rf dist'
       },
       cordovaclean: {
         command: 'make -C cordova clean'
@@ -220,7 +226,8 @@ module.exports = function(grunt) {
           flatten: true,
           filter: 'isFile'
         }],
-      }
+      },
+      dist: {expand: true, src: ['www/**'], dest: 'dist/'},
     },
     nwjs: {
       options: {
@@ -263,7 +270,7 @@ module.exports = function(grunt) {
   });
 
   grunt.registerTask('default', ['nggettext_compile', 'exec:appConfig', 'exec:externalServices', 'browserify', 'sass', 'concat', 'copy:ionic_fonts', 'copy:ionic_js']);
-  grunt.registerTask('prod', ['default', 'uglify']);
+  grunt.registerTask('prod', ['default', 'uglify', 'exec:removeDist', 'copy:dist', 'exec:addManifest']);
   grunt.registerTask('translate', ['nggettext_extract']);
   grunt.registerTask('desktop', ['prod', 'nwjs', 'copy:linux', 'compress:linux']);
   grunt.registerTask('osx', ['prod', 'nwjs', 'exec:macos', 'exec:osxsign']);
