@@ -7,12 +7,10 @@
 <ion-content>
 
   <ion-list>
-    <ion-item-divider>
-      {{'Show in Home'}}
-    </ion-item-divider>
+    <ion-item-divider></ion-item-divider>
     <ion-item>
-      <ion-label>{{'Enable' | translate}}</ion-label>
-      <ion-toggle [(ngModel)]="showAtHome" (ionChange)="integrationChange()"></ion-toggle>
+      <ion-label>{{'Show in tab Home' | translate}}</ion-label>
+      <ion-toggle [(ngModel)]="showInHome" (ionChange)="showInHomeSwitch()"></ion-toggle>
     </ion-item>
   </ion-list>
 

@@ -17,7 +17,7 @@ import { PopupProvider } from '../../../../providers/popup/popup';
 export class GlideraSettingsPage {
 
   private serviceName: string = 'glidera';
-  public showAtHome: any;
+  public showInHome: any;
   public service: any;
   public account: any;
 
@@ -31,7 +31,7 @@ export class GlideraSettingsPage {
   ) {
     this.account = {};
     this.service = _.filter(this.homeIntegrationsProvider.get(), { name: this.serviceName });
-    this.showAtHome = !!this.service[0].show;
+    this.showInHome = !!this.service[0].show;
   }
 
   ionViewDidEnter() {
@@ -56,11 +56,11 @@ export class GlideraSettingsPage {
     });
   }
 
-  public integrationChange(): void {
+  public showInHomeSwitch(): void {
     let opts = {
-      showIntegration: { [this.serviceName] : this.showAtHome }
+      showIntegration: { [this.serviceName] : this.showInHome }
     };
-    this.homeIntegrationsProvider.updateConfig(this.serviceName, this.showAtHome);
+    this.homeIntegrationsProvider.updateConfig(this.serviceName, this.showInHome);
     this.configProvider.set(opts);
   }
 

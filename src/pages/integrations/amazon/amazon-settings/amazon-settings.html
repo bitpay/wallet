@@ -7,12 +7,20 @@
 
 <ion-content>
   <ion-list>
-    <ion-item-divider>
-      {{'Show in Home'}}
-    </ion-item-divider>
+    <ion-item-divider></ion-item-divider>
     <ion-item>
-      <ion-label>{{'Enable' | translate}}</ion-label>
-      <ion-toggle [(ngModel)]="showAtHome" (ionChange)="integrationChange()"></ion-toggle>
+      <ion-label>{{'Show in tab Home' | translate}}</ion-label>
+      <ion-toggle [(ngModel)]="showInHome" (ionChange)="showInHomeSwitch()"></ion-toggle>
     </ion-item>
+    <ion-item-divider class="integration-giftCard-info" text-wrap>
+      *
+      <a (click)="openExternalLink('http://amazon.com')">Amazon.com</a> is not a sponsor of this promotion. Except as required by law,
+      <a (click)="openExternalLink('http://amazon.com')">Amazon.com</a> Gift Cards ("GCs") cannot be transferred for value or redeemed for cash. GCs may be used only for purchases
+      of eligible goods at
+      <a (click)="openExternalLink('http://amazon.com')">Amazon.com</a> or certain of its affiliated websites. For complete terms and conditions, see
+      <a (click)="openExternalLink('https://www.amazon.com/gc-legal')">www.amazon.com/gc-legal</a>. GCs are issued by ACI Gift Cards, Inc., a Washington corporation. All Amazon &reg;, &trade;
+      &amp; &copy; are IP of
+      <a (click)="openExternalLink('http://amazon.com')">Amazon.com</a>, Inc. or its affiliates. No expiration date or service fees.
+    </ion-item-divider>
   </ion-list>
 </ion-content>

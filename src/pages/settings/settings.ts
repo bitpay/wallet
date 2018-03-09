@@ -7,6 +7,7 @@ import * as _ from 'lodash';
 
 // providers
 import { AppProvider } from '../../providers/app/app';
+import { BitPayCardProvider } from '../../providers/bitpay-card/bitpay-card';
 import { ConfigProvider } from '../../providers/config/config';
 import { ExternalLinkProvider } from '../../providers/external-link/external-link';
 import { HomeIntegrationsProvider } from '../../providers/home-integrations/home-integrations';
@@ -49,6 +50,7 @@ export class SettingsPage {
   public isCordova: boolean;
   public lockMethod: string;
   public integrationServices: any[] = [];
+  public bitpayCardItems: any[] = [];
 
   constructor(
     private navCtrl: NavController,
@@ -59,6 +61,7 @@ export class SettingsPage {
     private configProvider: ConfigProvider,
     private logger: Logger,
     private homeIntegrationsProvider: HomeIntegrationsProvider,
+    private bitPayCardProvider: BitPayCardProvider,
     private platformProvider: PlatformProvider,
     private translate: TranslateService
   ) {

@@ -13,7 +13,7 @@ import { HomeIntegrationsProvider } from '../../../../providers/home-integration
 export class AmazonSettingsPage {
 
   private serviceName: string = 'amazon';
-  public showAtHome: any;
+  public showInHome: any;
   public service: any;
 
   constructor(
@@ -21,14 +21,14 @@ export class AmazonSettingsPage {
     private homeIntegrationsProvider: HomeIntegrationsProvider
   ) {
     this.service = _.filter(this.homeIntegrationsProvider.get(), { name: this.serviceName });
-    this.showAtHome = !!this.service[0].show;
+    this.showInHome = !!this.service[0].show;
   }
 
-  public integrationChange(): void {
+  public showInHomeSwitch(): void {
     let opts = {
-      showIntegration: { [this.serviceName] : this.showAtHome }
+      showIntegration: { [this.serviceName] : this.showInHome }
     };
-    this.homeIntegrationsProvider.updateConfig(this.serviceName, this.showAtHome);
+    this.homeIntegrationsProvider.updateConfig(this.serviceName, this.showInHome);
     this.configProvider.set(opts);
   }
 }

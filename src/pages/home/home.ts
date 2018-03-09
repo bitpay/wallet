@@ -112,12 +112,7 @@ export class HomePage {
 
     // Show integrations
     this.homeIntegrations = _.filter(this.homeIntegrationsProvider.get(), { 'show': true });
-    // Hide BitPay if linked
-    this.homeIntegrations = _.remove(this.homeIntegrations, (x) => {
-      if (x.name == 'debitcard' && x.linked) return;
-      else return x;
-    });
-
+    
     this.addressBookProvider.list().then((ab: any) => {
       this.addressbook = ab || {};
     }).catch((err) => {
