@@ -1,11 +1,10 @@
-<ion-content no-bounce>
-<div class="main-header" [ngStyle]="{'background-color': wallet.color}">
-  <button ion-button clear color="light" icon-only (click)="back()">
-    <ion-icon name="arrow-round-back"></ion-icon>
-  </button>
-  <div class="main-title">{{wallet.name}}</div>
-</div>
+<ion-header no-border>
+  <ion-navbar>
+    <ion-title>{{wallet.name}}</ion-title>
+  </ion-navbar>
+</ion-header>
 
+<ion-content no-bounce>
   <div class="balance-card" [ngStyle]="{'background': wallet.color}">
     <div class="balance-header">
       <div (longPress)="toggleBalance()">
