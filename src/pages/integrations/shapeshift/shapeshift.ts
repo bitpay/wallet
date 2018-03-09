@@ -90,7 +90,7 @@ export class ShapeshiftPage {
   private init(): void {
     this.shapeshiftProvider.getShapeshift((err: any, ss: any) => {
       if (err) this.logger.error(err);
-      this.shifts = { data: ss };
+      if (ss) this.shifts = { data: ss };
       this.updateShift(this.shifts);
     });
   }
