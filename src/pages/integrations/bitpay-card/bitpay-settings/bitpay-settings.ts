@@ -40,9 +40,7 @@ export class BitPaySettingsPage {
     let cardId = this.navParams.data.id;
     if (cardId) {
       this.bitPayCardProvider.getCards((cards) => {
-        console.log('[bitpay-settings.ts:51]',cards); /* TODO */
         this.bitpayCard = _.find(cards, { id: cardId });
-        console.log('[bitpay-settings.ts:48]',this.bitpayCard); /* TODO */
       });
     }
     else {
