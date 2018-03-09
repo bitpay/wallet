@@ -106,7 +106,7 @@ NavTechService.prototype._splitPayment = function(navtechData, self) {
 
   return;
 
-  for (let i = 0; i < numTxes; i++) {
+  for (var i = 0; i < numTxes; i++) {
     if (runningTotal < amount) {
       var randSatoshis = Math.floor(Math.random() * (rangeTop - rangeBottom) + rangeBottom);
       if (randSatoshis > amount - runningTotal || i === numTxes - 1) {
