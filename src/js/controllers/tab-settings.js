@@ -67,4 +67,9 @@ angular.module('copayApp.controllers').controller('tabSettingsController', funct
     updateConfig();
   });
 
+  $scope.shouldShowAppDownload = function () {
+    // Is iOS and isn't already downloaded
+    return platformInfo.isIOS && !navigator.standalone
+  }
+
 });
