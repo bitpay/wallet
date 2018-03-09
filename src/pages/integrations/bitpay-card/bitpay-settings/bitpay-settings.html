@@ -1,6 +1,6 @@
 <ion-header>
   <ion-navbar>
-    <ion-title>{{'BitPay Settings'|translate}}</ion-title>
+    <ion-title>{{'Card Settings'|translate}}</ion-title>
   </ion-navbar>
 </ion-header>
 <ion-content> 
@@ -18,22 +18,18 @@
       <ion-item-divider>
         <span translate>BitPay Visa&reg; Cards</span>
       </ion-item-divider>
-      <ion-item-sliding #slidingCard>
-        <ion-item>
-          <div>
-            xxxx-xxxx-xxxx-{{bitpayCard.lastFourDigits}}
-          </div>
-          <ion-note>
-            {{bitpayCard.email}}
-          </ion-note>
-        </ion-item>
-        <ion-item-options side="right">
-          <button ion-button color="warning" (click)="unlinkCard(bitpayCard, slidingCard)">
-            <ion-icon name="close"></ion-icon>
-            <span translate>Unlink</span>
-          </button>
-        </ion-item-options>
-      </ion-item-sliding>
+      <ion-item>
+        <div>
+          xxxx-xxxx-xxxx-{{bitpayCard.lastFourDigits}}
+        </div>
+        <ion-note>
+          {{bitpayCard.email}}
+        </ion-note>
+      </ion-item>
+      <ion-item-divider></ion-item-divider>
+      <button class="remove-card" ion-item (click)="unlinkCard(bitpayCard)">
+        <span translate>Remove</span>
+      </button>
     </div>
   </ion-list>
 </ion-content>
