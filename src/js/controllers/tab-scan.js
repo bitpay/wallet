@@ -1,6 +1,21 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('tabScanController', function($scope, $log, $timeout, scannerService, incomingData, $state, $ionicHistory, $rootScope) {
+angular.module('copayApp.controllers').controller('tabScanController', function($scope, $log, $timeout, scannerService, incomingData, $state, $ionicHistory, $rootScope, platformInfo) {
+  // ios camera / web scanner
+  $scope.startedWebCamera = false
+  $scope.canChangeWebScannerCamera = false
+  $scope.webScannerCameraNumber = 0
+  $scope.scannerStates = scannerStates;
+  $scope.usingWebScanner = false
+  var isSafari = navigator.vendor && navigator.vendor.indexOf('Apple') > -1
+  var webScanner
+  if (platformInfo.isIOS || isSafari) {
+    $scope.usingWebScanner = true
+    webScanner = new Instascan.Scanner({ video: document.getElementById('webScanner') })
+    webScanner.addListener('scan', function (content) {
+      handleSuccessfulScan(content)
+    });
+  }
 
   var scannerStates = {
     unauthorized: 'unauthorized',
@@ -57,16 +72,11 @@ angular.module('copayApp.controllers').controller('tabScanController', function(
 
 
   $scope.$on("$ionicView.beforeEnter", function(event, data) {
-    console.log('tab-scan $ionicView.beforeEnter');
-    console.log('data', data.stateParams.returnRoute);
     _handleCapabilities();
-    $timeout(() => {
+    $timeout(function() {
         _refreshScanView()
-        if (isSafari() !== "SAFARI") {
-          $scope.cameraIssue = true
-        }
       },
-    5000);
+      5000);
     $scope.returnRoute = data.stateParams.returnRoute || false;
   });
 
@@ -91,34 +101,50 @@ angular.module('copayApp.controllers').controller('tabScanController', function(
   }
 
   function activate(){
+    $log.debug('Scanner activated, setting to visible...');
+    console.log('activate() ran', $scope.currentState === scannerStates.visible, $scope.currentState)
 
-    if (isSafari() === "SAFARI") {
-      $scope.isSafari = true;
-      return;
-    }
-
-    scannerService.activate(function(){
-      _updateCapabilities();
-      _handleCapabilities();
-      $log.debug('Scanner activated, setting to visible...');
-      $scope.currentState = scannerStates.visible;
+    if ($scope.usingWebScanner) {
+      Instascan.Camera.getCameras().then(function (cameras) {
+        if (cameras.length > 0) {
+          if (cameras.length > 1) { $scope.canChangeWebScannerCamera = true }
+          $scope.startedWebCamera = true
+          $scope.currentState = scannerStates.visible;
+          $scope.webScannerCameraNumber = 0
+          webScanner.start(cameras[0]);
+        } else {
+          console.error('No cameras found.');
+          $scope.usingWebScanner = false
+        }
+      }).catch(function (e) {
+        $scope.usingWebScanner = false
+        console.error(e);
+      });
+    } else {
+      scannerService.activate(function(){
+        _updateCapabilities();
+        _handleCapabilities();
+        $log.debug('Scanner activated, setting to visible...');
+        $scope.currentState = scannerStates.visible;
         // pause to update the view
         $timeout(function(){
           scannerService.scan(function(err, contents){
-          if(err){
-            $log.debug('Scan canceled.');
-          } else if ($state.params.passthroughMode) {
-            $rootScope.scanResult = contents;
-            goBack();
-          } else {
-            handleSuccessfulScan(contents);
-          }
+            if(err){
+              $log.debug('Scan canceled.');
+            } else if ($state.params.passthroughMode) {
+              $rootScope.scanResult = contents;
+              goBack();
+            } else {
+              handleSuccessfulScan(contents);
+            }
           });
           // resume preview if paused
           scannerService.resumePreview();
         });
-    });
+      })
+    }
   }
+
   $scope.activate = activate;
 
   $scope.authorize = function(){
@@ -135,7 +161,6 @@ angular.module('copayApp.controllers').controller('tabScanController', function(
     $log.debug('Scan returned: "' + contents + '"');
     scannerService.pausePreview();
     var trimmedContents = contents.replace('navcoin:', '');
-    console.log('trimmedContents', trimmedContents);
     if ($scope.returnRoute) {
       $state.go($scope.returnRoute, { address: trimmedContents });
     } else {
@@ -164,13 +189,25 @@ angular.module('copayApp.controllers').controller('tabScanController', function(
 
   $scope.toggleCamera = function(){
     $scope.cameraToggleActive = true;
-    scannerService.toggleCamera(function(status){
+
+    if ($scope.startedWebCamera) {
+      // Set to opposite camera
+      $scope.webScannerCameraNumber = $scope.webScannerCameraNumber === 0 ? 1 : 0
+      Instascan.Camera.getCameras().then(function (cameras) {
+        webScanner.start(cameras[$scope.webScannerCameraNumber]);
+      }).catch(function (e) {
+        $log.debug(JSON.stringify(e));
+      });
+    } else {
+      scannerService.toggleCamera();
+    }
+
     // (a short delay for the user to see the visual feedback)
-      $timeout(function(){
-        $scope.cameraToggleActive = false;
-        $log.debug('Camera toggle control deactivated.');
-      }, 200);
-    });
+    $timeout(function(){
+      $scope.cameraToggleActive = false;
+      $log.debug('Camera toggle control deactivated.');
+    }, 200);
+
   };
 
   $scope.canGoBack = function(){

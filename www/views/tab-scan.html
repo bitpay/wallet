@@ -8,6 +8,7 @@
     </ion-nav-buttons>
   </ion-nav-bar>
   <ion-content scroll="false">
+    <video ng-show="usingWebScanner" id="webScanner"></video>
     <div class="ng-hide zero-state" id="tab-scan-has-problems" ng-show="currentState === scannerStates.unauthorized || currentState === scannerStates.denied || currentState === scannerStates.unavailable">
       <i class="icon zero-state-icon">
         <img src="img/tab-icons/ico-receive.svg"/>
@@ -23,13 +24,9 @@
         <button ng-show="currentState === scannerStates.unavailable" class="ng-hide button button-standard button-primary" ng-click="attemptToReactivate()" translate>Retry Camera</button>
       </div>
     </div>
-    <div class="ng-show" id="tab-scan-loading-camera" ng-show="currentState === scannerStates.loading && !isSafari" translate>Attempting to load the camera, please wait.</div>
-    <div class="ng-show" id="tab-scan-loading-camera" ng-show="currentState === scannerStates.loading && cameraIssue" translate>Your camera may be disabled or you may have no camera connected. In either case the scan function will not work.</div>
-    <div class="ng-show" id="tab-scan-loading-camera" ng-show="isSafari" translate>
-      Your browser is not supported, please try Google Chrome. <br />
-      <a href="https://www.google.com/chrome" target="e" class="button button-standard button-primary" id="get-chrome">Get Google Chrome</a>
-    </div>
-    <div class="ng-hide" id="tab-scan-camera-ready" ng-show="currentState === scannerStates.visible">
+    <div class="ng-show" id="tab-scan-loading-camera" ng-show="currentState === scannerStates.loading" translate>Attempting to load the camera, please wait.</div>
+    <div class="ng-show" id="tab-scan-loading-camera2" ng-show="currentState === scannerStates.loading && cameraIssue" translate>Your camera may be disabled or you may have no camera connected. In either case the scan function will not work.</div>
+    <div class="ng-hide" id="tab-scan-camera-ready" ng-show="startedWebCamera || currentState === scannerStates.visible">
       <div class="guides">
         <img class="svg qr-scan-guides" src="img/bitpay-wallet-qr-scan-guides.svg">
       </div>
@@ -39,7 +36,7 @@
             <div class="icon-flash" ng-class="{'active': lightActive}"></div>
           </i>
         </a>
-        <a ng-click="toggleCamera()" ng-show="canChangeCamera">
+        <a ng-click="toggleCamera()" ng-show="canChangeCamera || canChangeWebScannerCamera">
           <i class="icon">
             <div class="icon-camera-toggle" ng-class="{'active': cameraToggleActive}"></div>
           </i>
