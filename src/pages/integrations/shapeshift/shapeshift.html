@@ -5,7 +5,7 @@
 </ion-header>
 
 <ion-content no-bounce>
-  <div class="container" *ngIf="!shifts.data">
+  <div class="container" *ngIf="(shifts.data | json) == '{}'">
     <div class="center-header">
       <img src="assets/img/shapeshift/logo-shapeshift.svg" width="200" alt="Shapeshift">
       <div padding>
@@ -17,7 +17,7 @@
     </div>
   </div>
 
-  <div class="container" *ngIf="shifts.data">
+  <div class="container" *ngIf="(shifts.data | json) != '{}'">
     <div class="main-header">
       <img src="assets/img/shapeshift/logo-shapeshift.svg" width="180" (click)="update()">
       <button ion-button clear icon-right color="light" no-low-fee (click)="goTo('Shift')">
