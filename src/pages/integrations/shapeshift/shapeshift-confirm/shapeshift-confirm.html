@@ -50,11 +50,12 @@
 
     <ion-item-divider></ion-item-divider>
 
-    <ion-item *ngIf="fiatFee && feeRatePerStr">
+    <ion-item *ngIf="feeRatePerStr">
       {{'Fee'|translate}}
       <ion-note item-end>
         <span>
-          {{feeStr}} ({{fiatFee | currency}} {{currencyIsoCode}}, {{feeRatePerStr}})
+          {{feeStr}} (
+          <span *ngIf="fiatFee && fiatFee > 0">{{fiatFee | currency}} {{currencyIsoCode}}, </span>{{feeRatePerStr}} )
         </span>
       </ion-note>
     </ion-item>
@@ -63,7 +64,7 @@
       {{'Total'|translate}}
       <ion-note item-end>
         <span>
-          {{totalAmountStr}} ({{fiatTotalAmount | currency}} {{currencyIsoCode}})
+          {{totalAmountStr}} ( {{fiatTotalAmount | currency}} {{currencyIsoCode}} )
         </span>
       </ion-note>
     </ion-item>
@@ -72,6 +73,7 @@
       A total of {{amountStr}} ({{fiatAmount | currency}} {{currencyIsoCode}}) will be exchanged for {{withdrawalStr}} ({{fiatWithdrawal
       | currency}} {{currencyIsoCode}}). Would you like to proceed?
     </ion-item-divider>
+    <!-- TODO: Translate -->
   </ion-list>
 
 </ion-content>

@@ -31,7 +31,7 @@ export class ShapeshiftDetailsPage {
   public remove() {
     this.shapeshiftProvider.saveShapeshift(this.ssData, {
       remove: true
-    }, function (err) {
+    }, (err) => {
       this.close();
     });
   }

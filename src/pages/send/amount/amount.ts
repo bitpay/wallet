@@ -117,10 +117,6 @@ export class AmountPage {
     this.shiftMax = this.navParams.data.shiftMax;
     this.shiftMin = this.navParams.data.shiftMin;
 
-    if (this.shiftMax) {
-      this.itemSelectorLabel = 'Send ShapeShift Maximum: ' + this.shiftMax;
-    }
-
     this.setAvailableUnits();
     this.updateUnitUI();
   }
