@@ -172,29 +172,15 @@ $note-md-color: color($colors, grey);
 // Transition between home <-> walletDetails
 .ios {
   page-wallet-details {
-    .main-header {
-      height: 44px;
-      padding-top: 0;
-      .main-title {
-        margin-top: 12px;
-      }
-    }
     .balance-header {
-      margin-top: 34px;
+      margin-top: 44px;
     }
   }
 }
 .md {
   page-wallet-details {
-    .main-header {
-      height: 56px;
-      padding-top: 9px;
-      .main-title {
-        margin-top: 9px;
-      }
-    }
     .balance-header {
-      margin-top: 46px;
+      margin-top: 56px;
     }
   }
 }
