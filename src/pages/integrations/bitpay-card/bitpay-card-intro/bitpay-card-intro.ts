@@ -52,8 +52,10 @@ export class BitPayCardIntroPage {
               this.popupProvider.ionicAlert(this.translate.instant('Error updating Debit Cards'), err);
               return;
             }
-            this.navCtrl.pop();
-            if (cards[0]) this.navCtrl.push(BitPayCardPage, { id: cards[0].id });
+            this.navCtrl.popToRoot({ animate: false }).then(() => {
+              this.navCtrl.parent.select(0);
+              if (cards[0]) this.navCtrl.push(BitPayCardPage, { id: cards[0].id });
+            });
           });
         }
       });

@@ -7,7 +7,7 @@ import { Subscription } from 'rxjs';
 // providers
 import { AmazonProvider } from '../providers/amazon/amazon';
 import { AppProvider } from '../providers/app/app';
-import { BitPayAccountProvider } from '../providers/bitpay-account/bitpay-account';
+import { BitPayCardProvider } from '../providers/bitpay-card/bitpay-card';
 import { CoinbaseProvider } from '../providers/coinbase/coinbase';
 import { ConfigProvider } from '../providers/config/config';
 import { EmailNotificationsProvider } from '../providers/email-notifications/email-notifications';
@@ -56,7 +56,7 @@ export class CopayApp {
     private glideraProvider: GlideraProvider,
     private coinbaseProvider: CoinbaseProvider,
     private amazonProvider: AmazonProvider,
-    private bitPayAccountProvider: BitPayAccountProvider,
+    private bitPayCardProvider: BitPayCardProvider,
     private mercadoLibreProvider: MercadoLibreProvider,
     private shapeshiftProvider: ShapeshiftProvider,
     private emailNotificationsProvider: EmailNotificationsProvider
@@ -173,6 +173,6 @@ export class CopayApp {
     }
 
     // BitPay Card
-    if (this.appProvider.info._enabledExtensions.debitcard) this.bitPayAccountProvider.register();
+    if (this.appProvider.info._enabledExtensions.debitcard) this.bitPayCardProvider.register();
   }
 }

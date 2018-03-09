@@ -62,6 +62,7 @@ export class HomePage {
   public updateText: string;
   public homeIntegrations: any[];
   public bitpayCardItems: any;
+  public showBitPayCard: boolean = false;
 
   public showRateCard: boolean;
   public homeTip: boolean;
@@ -108,10 +109,7 @@ export class HomePage {
 
   ionViewWillEnter() {
     this.config = this.configProvider.get();
-    this.pushNotificationsProvider.init();
-
-    // Show integrations
-    this.homeIntegrations = _.filter(this.homeIntegrationsProvider.get(), { 'show': true });
+    this.pushNotificationsProvider.init(); 
     
     this.addressBookProvider.list().then((ab: any) => {
       this.addressbook = ab || {};
@@ -140,11 +138,7 @@ export class HomePage {
     // Hide stars to rate
     this.events.subscribe('feedback:hide', () => {
       this.showRateCard = false;
-    });
-
-    this.bitPayCardProvider.get({}, (err, cards) => {
-      this.bitpayCardItems = cards;
-    });
+    }); 
   }
 
   ionViewDidEnter() {
@@ -155,6 +149,23 @@ export class HomePage {
     if (this.platformProvider.isCordova) {
       this.handleDeepLinks();
     }
+
+    // Show integrations
+    let integrations = _.filter(this.homeIntegrationsProvider.get(), { 'show': true });
+
+    // Hide BitPay if linked
+    this.homeIntegrations = _.remove(_.clone(integrations), (x) => {
+      if (x.name == 'debitcard' && x.linked) return;
+      else return x;
+    });
+
+    // Only BitPay Wallet
+    this.bitPayCardProvider.get({}, (err, cards) => {
+      this.zone.run(() => {
+        this.showBitPayCard = this.app.info._enabledExtensions.debitcard ? true : false;
+        this.bitpayCardItems = cards;
+      });
+    });
   }
 
   ionViewWillLeave() {

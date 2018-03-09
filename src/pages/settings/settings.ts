@@ -51,6 +51,7 @@ export class SettingsPage {
   public lockMethod: string;
   public integrationServices: any[] = [];
   public bitpayCardItems: any[] = [];
+  public showBitPayCard: boolean = false;
 
   constructor(
     private navCtrl: NavController,
@@ -89,8 +90,23 @@ export class SettingsPage {
       isoCode: this.config.wallet.settings.alternativeIsoCode
     }
     this.lockMethod = this.config.lock.method;
-    
-    this.integrationServices = this.homeIntegrationsProvider.get();
+  }
+
+  ionViewDidEnter() {
+    // Show integrations
+    let integrations = this.homeIntegrationsProvider.get();
+
+    // Hide BitPay if linked
+    this.integrationServices = _.remove(_.clone(integrations), (x) => {
+      if (x.name == 'debitcard' && x.linked) return;
+      else return x;
+    });
+
+    // Only BitPay Wallet
+    this.bitPayCardProvider.get({}, (err, cards) => {
+      this.showBitPayCard = this.app.info._enabledExtensions.debitcard ? true : false;
+      this.bitpayCardItems = cards;
+    });
   }
 
   public openBitcoinCashPage(): void {
@@ -162,6 +178,10 @@ export class SettingsPage {
         this.navCtrl.push(ShapeshiftSettingsPage);
         break;
     }
+  }
+
+  public openCardSettings(id): void {
+    this.navCtrl.push(BitPaySettingsPage, { id: id });
   }
 
   public openHelpExternalLink(): void {

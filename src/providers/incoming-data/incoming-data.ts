@@ -226,7 +226,6 @@ export class IncomingDataProvider {
         default:
         case '0':
           /* For BitPay card binding */
-          this.navCtrl.parent.select(0);
           this.navCtrl.push(BitPayCardIntroPage, { secret, email, otp });
           break;
       }

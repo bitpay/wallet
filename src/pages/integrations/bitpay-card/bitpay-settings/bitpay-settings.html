@@ -6,52 +6,29 @@
 <ion-content> 
 
   <ion-list>
-    <ion-item-divider>
-      {{'Show in Home'}}
-    </ion-item-divider>
-    <ion-item>
-      <ion-label>{{'Enable' | translate}}</ion-label>
-      <ion-toggle [(ngModel)]="showAtHome" (ionChange)="integrationChange()"></ion-toggle>
-    </ion-item>
-    <div *ngIf="(bitpayCards && bitpayCards.length == 0) && (bitpayAccounts && bitpayAccounts.length == 0)" translate>
-      <ion-item-divider>No cards available</ion-item-divider>
+    <div *ngIf="!bitpayCard">
+      <ion-item-divider></ion-item-divider>
+      <ion-item>
+        <ion-label>{{'Show in tab Home' | translate}}</ion-label>
+        <ion-toggle [(ngModel)]="showAtHome" (ionChange)="integrationChange()"></ion-toggle>
+      </ion-item>
     </div>
-    <div *ngIf="bitpayCards && bitpayCards.length > 0">
+    
+    <div *ngIf="bitpayCard">
       <ion-item-divider>
         <span translate>BitPay Visa&reg; Cards</span>
       </ion-item-divider>
-      <ion-item-sliding *ngFor="let card of bitpayCards" #slidingCard>
+      <ion-item-sliding #slidingCard>
         <ion-item>
           <div>
-            xxxx-xxxx-xxxx-{{card.lastFourDigits}}
+            xxxx-xxxx-xxxx-{{bitpayCard.lastFourDigits}}
           </div>
           <ion-note>
-            {{card.email}}
+            {{bitpayCard.email}}
           </ion-note>
         </ion-item>
         <ion-item-options side="right">
-          <button ion-button color="warning" (click)="unlinkCard(card, slidingCard)">
-            <ion-icon name="close"></ion-icon>
-            <span translate>Unlink</span>
-          </button>
-        </ion-item-options>
-      </ion-item-sliding>
-    </div>
-    <div *ngIf="bitpayAccounts && bitpayAccounts.length > 0">
-      <ion-item-divider>
-        <span translate>Accounts</span>
-      </ion-item-divider>
-      <ion-item-sliding *ngFor="let account of bitpayAccounts" #slidingAccount>
-        <ion-item>
-          <div>
-            {{account.givenName}} {{account.familyName}}
-          </div>
-          <ion-note>
-            {{account.email}}
-          </ion-note>
-        </ion-item>
-        <ion-item-options side="right">
-          <button ion-button color="warning" (click)="unlinkAccount(account, slidingAccount)">
+          <button ion-button color="warning" (click)="unlinkCard(bitpayCard, slidingCard)">
             <ion-icon name="close"></ion-icon>
             <span translate>Unlink</span>
           </button>

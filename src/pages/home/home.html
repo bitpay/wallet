@@ -198,11 +198,10 @@
     </ion-list>
   </div>
 
-  <div class="card" *ngIf="bitpayCardItems && bitpayCardItems[0]">
+  <div class="card" *ngIf="showBitPayCard && bitpayCardItems && bitpayCardItems[0]">
     <ion-item-divider>
       <div class="title" item-start>
-        <span translate>BitPay Visa
-          <sup>&reg;</sup> Card</span>
+        <span>BitPay Visa<sup>&reg;</sup> Card</span>
       </div>
       <div item-end>
         <button ion-button clear icon-only color="grey" (click)="goTo('BitPayCardIntroPage')">

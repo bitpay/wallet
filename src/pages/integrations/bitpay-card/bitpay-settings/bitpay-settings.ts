@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { NavController, NavParams } from 'ionic-angular';
 import { ItemSliding } from 'ionic-angular';
 
 import * as _ from 'lodash';
@@ -20,10 +21,11 @@ export class BitPaySettingsPage {
   private serviceName: string = 'debitcard';
   public showAtHome: any;
   public service: any;
-  public bitpayAccounts: any;
-  public bitpayCards: any;
+  public bitpayCard: any;
 
   constructor(
+    private navParams: NavParams,
+    private navCtrl: NavController,
     private bitpayAccountProvider: BitPayAccountProvider,
     private bitPayCardProvider: BitPayCardProvider,
     private popupProvider: PopupProvider,
@@ -35,18 +37,18 @@ export class BitPaySettingsPage {
   }
 
   ionViewWillEnter() {
-    this.init();
-  }
-
-  private init(): void {
-    this.bitpayAccountProvider.getAccounts((err, accounts) => {
-      if (err) return;
-      this.bitpayAccounts = accounts;
-
+    let cardId = this.navParams.data.id;
+    if (cardId) {
       this.bitPayCardProvider.getCards((cards) => {
-        this.bitpayCards = cards;
+        console.log('[bitpay-settings.ts:51]',cards); /* TODO */
+        this.bitpayCard = _.find(cards, { id: cardId });
+        console.log('[bitpay-settings.ts:48]',this.bitpayCard); /* TODO */
       });
-    });
+    }
+    else {
+      this.service = _.filter(this.homeIntegrationsProvider.get(), { name: this.serviceName });
+      this.showAtHome = !!this.service[0].show;
+    }
   }
 
   public integrationChange(): void {
@@ -55,19 +57,6 @@ export class BitPaySettingsPage {
     };
     this.homeIntegrationsProvider.updateConfig(this.serviceName, this.showAtHome);
     this.configProvider.set(opts);
-  }
-
-  public unlinkAccount(account: any, slidingItem: ItemSliding) {
-    let title = 'Unlink BitPay Account?';
-    let msg = 'Removing your BitPay account will remove all associated BitPay account data from this device. Are you sure you would like to remove your BitPay Account (' + account.email + ') from this device?';
-    this.popupProvider.ionicConfirm(title, msg).then((res) => {
-      slidingItem.close();
-      if (res) {
-        this.bitpayAccountProvider.removeAccount(account.email, () => {
-          this.init();
-        });
-      }
-    });
   }
 
   public unlinkCard(card: any, slidingItem: ItemSliding) {
@@ -81,7 +70,7 @@ export class BitPaySettingsPage {
             this.popupProvider.ionicAlert('Error', 'Could not remove the card');
             return;
           }
-          this.init();
+          this.navCtrl.pop();
         });
       }
     });
