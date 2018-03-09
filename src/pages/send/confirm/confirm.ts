@@ -462,7 +462,7 @@ export class ConfirmPage {
 
   private showSendMaxWarning(wallet: any, sendMaxInfo: any): void {
     let fee = (sendMaxInfo.fee / 1e8);
-    let msg = fee + " " + this.tx.coin.toUpperCase() + " will be deducted for bitcoin networking fees."; //TODO: translate
+    let msg = fee + " " + this.tx.coin.toUpperCase() + " will be deducted for bitcoin networking fees."; // TODO: translate
     let warningMsg = this.verifyExcludedUtxos(wallet, sendMaxInfo);
 
     if (!_.isEmpty(warningMsg))
