@@ -63,7 +63,6 @@ export class SettingsPage {
     private bitpayAccountProvider: BitPayAccountProvider
   ) {
     this.appName = this.app.info.nameCase;
-    this.currentLanguageName = this.language.getName(this.language.getCurrent());
     this.walletsBch = [];
     this.walletsBtc = [];
     this.isCordova = this.platformProvider.isCordova;
@@ -74,6 +73,7 @@ export class SettingsPage {
   }
 
   ionViewWillEnter() {
+    this.currentLanguageName = this.language.getName(this.language.getCurrent());
     this.walletsBtc = this.profileProvider.getWallets({
       coin: 'btc'
     });
