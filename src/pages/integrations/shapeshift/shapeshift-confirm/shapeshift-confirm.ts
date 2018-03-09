@@ -231,13 +231,13 @@ export class ShapeshiftConfirmPage {
   }
 
   private setFiatTotalAmount(amountSat: number, feeSat: number, withdrawalSat: number) {
-    this.satToFiat(this.toWallet.coin, withdrawalSat, this.currencyIsoCode, ).then((w: any) => {
+    this.satToFiat(this.toWallet.coin, withdrawalSat, this.currencyIsoCode).then((w: any) => {
       this.fiatWithdrawal = Number(w);
 
-      this.satToFiat(this.fromWallet.coin, amountSat, this.currencyIsoCode, ).then((a: any) => {
+      this.satToFiat(this.fromWallet.coin, amountSat, this.currencyIsoCode).then((a: any) => {
         this.fiatAmount = Number(a);
 
-        this.satToFiat(this.fromWallet.coin, feeSat, this.currencyIsoCode, ).then((i: any) => {
+        this.satToFiat(this.fromWallet.coin, feeSat, this.currencyIsoCode).then((i: any) => {
           this.fiatFee = Number(i);
 
           this.fiatTotalAmount = this.fiatAmount + this.fiatFee;
