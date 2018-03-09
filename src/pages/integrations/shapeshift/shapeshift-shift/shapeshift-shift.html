@@ -30,7 +30,7 @@
                 : '') : '' ) }} </span>
               <span *ngIf="fromWallet.scanning" translate> Scanning funds... </span>
 
-              <span *ngIf="fromWallet.balanceHidden && !fromWallet.scanning" translate>[Balance Hidden]</span>
+              <span *ngIf="fromWallet.balanceHidden && !fromWallet.scanning">[<span translate>Balance Hidden</span>]</span>
               <span *ngIf="fromWallet.n > 1">
                 {{fromWallet.m}}-of-{{fromWallet.n}}
               </span>
@@ -65,7 +65,7 @@
                 : '') : '' ) }} </span>
               <span *ngIf="toWallet.scanning" translate> Scanning funds... </span>
 
-              <span *ngIf="toWallet.balanceHidden && !toWallet.scanning" translate>[Balance Hidden]</span>
+              <span *ngIf="toWallet.balanceHidden && !toWallet.scanning">[<span translate>Balance Hidden</span>]</span>
               <span class="tab-home__wallet__multisig-number" *ngIf="toWallet.n > 1">
                 {{toWallet.m}}-of-{{toWallet.n}}
               </span>
@@ -81,7 +81,7 @@
     <ion-item-divider></ion-item-divider>
 
     <ion-item>
-      Rate
+      {{'Rate' | translate}}
       <ion-note item-end>
         <span *ngIf="!rate">...</span>
         <span *ngIf="rate">
@@ -91,7 +91,7 @@
     </ion-item>
 
     <ion-item>
-      Deposit Min
+      {{'Deposit Min' | translate}}
       <ion-note item-end>
         <span *ngIf="!limit">...</span>
         <span *ngIf="limit">
@@ -101,7 +101,7 @@
     </ion-item>
 
     <ion-item>
-      Deposit Max
+      {{'Deposit Max' | translate}}
       <ion-note item-end>
         <span *ngIf="!limit">...</span>
         <span *ngIf="limit">
@@ -111,7 +111,7 @@
     </ion-item>
 
     <ion-item>
-      Miner fee
+      {{'Miner fee' | translate}}
       <ion-note item-end>
         <span *ngIf="!limit">...</span>
         <span *ngIf="limit">
@@ -138,7 +138,7 @@
 
 <ion-footer>
   <button ion-button full class="button-footer" no-low-fee type="button" *ngIf="fromWallets.length > 0 && toWallets.length > 0"
-    [disabled]="!fromWallet || !toWallet || !termsAccepted" (click)="setAmount()">
+    [disabled]="!fromWallet || !toWallet || !termsAccepted" (click)="setAmount()" translate>
     Continue
   </button>
 </ion-footer>
