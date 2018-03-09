@@ -154,10 +154,12 @@ export class HomePage {
     let integrations = _.filter(this.homeIntegrationsProvider.get(), { 'show': true });
 
     // Hide BitPay if linked
-    this.homeIntegrations = _.remove(_.clone(integrations), (x) => {
-      if (x.name == 'debitcard' && x.linked) return;
-      else return x;
-    });
+    setTimeout(() => {
+      this.homeIntegrations = _.remove(_.clone(integrations), (x) => {
+        if (x.name == 'debitcard' && x.linked) return;
+        else return x;
+      });
+    }, 200);
 
     // Only BitPay Wallet
     this.bitPayCardProvider.get({}, (err, cards) => {
