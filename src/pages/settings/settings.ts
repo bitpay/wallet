@@ -183,7 +183,7 @@ export class SettingsPage {
   }
 
   public openCardSettings(id): void {
-    this.navCtrl.push(BitPaySettingsPage, { id: id });
+    this.navCtrl.push(BitPaySettingsPage, { id });
   }
 
   public openHelpExternalLink(): void {

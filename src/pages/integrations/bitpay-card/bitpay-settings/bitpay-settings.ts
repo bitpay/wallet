@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
-import { ItemSliding } from 'ionic-angular';
+import { NavController, NavParams, ItemSliding } from 'ionic-angular';
 
 import * as _ from 'lodash';
 
@@ -51,7 +50,7 @@ export class BitPaySettingsPage {
 
   public integrationChange(): void {
     let opts = {
-      showIntegration: { [this.serviceName] : this.showAtHome }
+      showIntegration: { [this.serviceName]: this.showAtHome }
     };
     this.homeIntegrationsProvider.updateConfig(this.serviceName, this.showAtHome);
     this.configProvider.set(opts);
