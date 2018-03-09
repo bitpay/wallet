@@ -380,7 +380,7 @@ export class ConfirmPage {
 
           if (sendMaxInfo.amount == 0) {
             this.setNoWallet(this.translate.instant('Insufficient funds for fee'), false);
-            this.popupProvider.ionicAlert('Error', 'Not enough funds for fee').then(() => {
+            this.popupProvider.ionicAlert(this.translate.instant('Error'), this.translate.instant('Not enough funds for fee')).then(() => {
               return resolve('no_funds');
             });
           }
@@ -462,7 +462,7 @@ export class ConfirmPage {
 
   private showSendMaxWarning(wallet: any, sendMaxInfo: any): void {
     let fee = (sendMaxInfo.fee / 1e8);
-    let msg = fee + " " + this.tx.coin.toUpperCase() + " will be deducted for bitcoin networking fees.";
+    let msg = fee + " " + this.tx.coin.toUpperCase() + " will be deducted for bitcoin networking fees."; //TODO: translate
     let warningMsg = this.verifyExcludedUtxos(wallet, sendMaxInfo);
 
     if (!_.isEmpty(warningMsg))
@@ -658,13 +658,13 @@ export class ConfirmPage {
   }
 
   public openPPModal(): void {
-    let modal = this.modalCtrl.create(PayProPage, { 
+    let modal = this.modalCtrl.create(PayProPage, {
       tx: this.tx,
       wallet: this.wallet
-     }, {
-      showBackdrop: true,
-      enableBackdropDismiss: true,
-    });
+    }, {
+        showBackdrop: true,
+        enableBackdropDismiss: true,
+      });
     modal.present();
   };
 

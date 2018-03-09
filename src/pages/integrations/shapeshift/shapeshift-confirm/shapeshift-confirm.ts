@@ -14,6 +14,7 @@ import { BwcErrorProvider } from '../../../../providers/bwc-error/bwc-error';
 import { BwcProvider } from '../../../../providers/bwc/bwc';
 import { ConfigProvider } from '../../../../providers/config/config';
 import { ExternalLinkProvider } from '../../../../providers/external-link/external-link';
+import { FeeProvider } from '../../../../providers/fee/fee';
 import { OnGoingProcessProvider } from "../../../../providers/on-going-process/on-going-process";
 import { PlatformProvider } from '../../../../providers/platform/platform';
 import { PopupProvider } from '../../../../providers/popup/popup';
@@ -39,6 +40,7 @@ export class ShapeshiftConfirmPage {
   private bitcore: any;
   private bitcoreCash: any;
   private useSendMax: boolean;
+  private sendMaxInfo: any;
 
   public currencyIsoCode: string;
   public isCordova: boolean;
@@ -49,7 +51,6 @@ export class ShapeshiftConfirmPage {
   public fiatFee: number;
   public fiatTotalAmount: number;
   public shapeInfo: any;
-  public amountUnitStr: string;
   public feeRatePerStr: string;
   public amountStr: string;
   public withdrawalStr: string;
@@ -74,7 +75,8 @@ export class ShapeshiftConfirmPage {
     private txFormatProvider: TxFormatProvider,
     private walletProvider: WalletProvider,
     private modalCtrl: ModalController,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private feeProvider: FeeProvider
   ) {
     this.configWallet = this.configProvider.get().wallet;
     this.currencyIsoCode = 'USD';  // Only USD
@@ -102,26 +104,90 @@ export class ShapeshiftConfirmPage {
       let min = Number(lim.min);
       let max = Number(lim.limit);
 
-      if (this.useSendMax) this.amount = max;
+      if (this.useSendMax) {
+        this.getMaxInfo(max).then(() => {
+          this.createShift();
+        }).catch((err: any) => {
+          this.logger.error(err);
+          this.showErrorAndBack(null, err);
+        });
+      } else {
+        let amountNumber = Number(this.amount);
 
-      let amountNumber = Number(this.amount);
-
-      if (amountNumber < min) {
-        let message = 'Minimum amount required is ' + min; // TODO: translate
-        this.showErrorAndBack(null, message);
-        return;
+        if (amountNumber < min) {
+          let message = 'Minimum amount required is ' + min; // TODO: translate
+          this.showErrorAndBack(null, message);
+          return;
+        }
+        if (amountNumber > max) {
+          let message = 'Maximum amount allowed is ' + max; // TODO: translate
+          this.showErrorAndBack(null, message);
+          return;
+        }
+        this.createShift();
       }
-      if (amountNumber > max) {
-        let message = 'Maximum amount allowed is ' + max; // TODO: translate
-        this.showErrorAndBack(null, message);
-        return;
-      }
-      this.createShift();
     });
   }
 
   ionViewDidLoad() {
     this.logger.info('ionViewDidLoad ShapeshiftConfirmPage');
+  }
+
+  private getMaxInfo(max: number): Promise<any> {
+    return new Promise((resolve, reject) => {
+      this.getSendMaxInfo().then((sendMaxInfo: any) => {
+        if (sendMaxInfo) {
+          this.logger.debug('Send max info', sendMaxInfo);
+
+          if (sendMaxInfo.amount == 0) {
+            let msg = this.translate.instant('Not enough funds for fee');
+            return reject(msg);
+          }
+
+          this.sendMaxInfo = sendMaxInfo;
+          this.amount = sendMaxInfo.amount;
+
+          let maxSat = parseInt((max * this.configWallet.settings.unitToSatoshi).toFixed(0), 10);
+          if (this.amount > maxSat) {
+            // TODO: translate
+            this.popupProvider.ionicAlert(this.translate.instant('ShapeShift max limit reached'), 'Maximum amount allowed is ' + max).then(() => {
+              this.amount = max;
+              this.useSendMax = false;
+              return resolve();
+            });
+          } else {
+            this.showSendMaxWarning().then(() => {
+              return resolve();
+            });
+          }
+        }
+      }).catch((err: any) => {
+        this.logger.warn(err);
+        let msg = this.translate.instant('Error getting SendMax information');
+        return reject(msg);
+      });
+    });
+  }
+
+  private getSendMaxInfo(): Promise<any> {
+    return new Promise((resolve, reject) => {
+
+      this.feeProvider.getFeeRate(this.fromWallet.coin, this.network, this.configWallet.settings.feeLevel || 'normal').then((feeRate: any) => {
+
+        this.onGoingProcessProvider.set('retrievingInputs');
+        this.walletProvider.getSendMaxInfo(this.fromWallet, {
+          feePerKb: feeRate,
+          excludeUnconfirmedUtxos: !this.configWallet.spendUnconfirmed,
+          returnInputs: true,
+        }).then((res: any) => {
+          this.onGoingProcessProvider.clear();
+          return resolve(res);
+        }).catch((err: any) => {
+          this.onGoingProcessProvider.clear();
+          return reject(err);
+        });
+      });
+    });
   }
 
   public openExternalLink(url: string) {
@@ -211,30 +277,35 @@ export class ShapeshiftConfirmPage {
 
   private createTx(wallet: any, toAddress: string): Promise<any> {
     return new Promise((resolve, reject) => {
-      let parsedAmount = this.txFormatProvider.parseAmount(wallet.coin, this.amount, this.currency);
-      this.amountUnitStr = parsedAmount.amountUnitStr;
+      let amount = this.useSendMax ? this.amount : parseInt((this.amount * this.configWallet.settings.unitToSatoshi).toFixed(0), 10);
 
       this.message = this.fromWallet.coin.toUpperCase() + ' to ' + this.toWallet.coin.toUpperCase();
       let outputs = [];
 
       outputs.push({
         'toAddress': toAddress,
-        'amount': parsedAmount.amountSat,
+        'amount': amount,
         'message': this.message
       });
 
-      let txp = {
+      let txp: any = {
         toAddress,
-        amount: parsedAmount.amountSat,
+        amount,
         outputs,
         message: this.message,
         excludeUnconfirmedUtxos: this.configWallet.spendUnconfirmed ? false : true,
-        feeLevel: this.configWallet.settings.feeLevel || 'normal',
         customData: {
           'shapeShift': toAddress,
           'service': 'shapeshift'
         }
       };
+
+      if (this.sendMaxInfo) {
+        txp.inputs = this.sendMaxInfo.inputs;
+        txp.fee = this.sendMaxInfo.fee;
+      } else {
+        txp.feeLevel = this.configWallet.settings.feeLevel || 'normal';
+      }
 
       this.walletProvider.createTx(wallet, txp).then((ctxp: any) => {
         return resolve(ctxp);
@@ -246,6 +317,37 @@ export class ShapeshiftConfirmPage {
       });
     });
   }
+
+  private showSendMaxWarning(): Promise<any> {
+    return new Promise((resolve, reject) => {
+      let fee = (this.sendMaxInfo.fee / 1e8);
+      let msg = fee + " " + this.fromWallet.coin.toUpperCase() + " will be deducted for bitcoin networking fees."; // TODO: translate
+      let warningMsg = this.verifyExcludedUtxos();
+
+      if (!_.isEmpty(warningMsg))
+        msg += '\n' + warningMsg;
+
+      this.popupProvider.ionicAlert(null, msg).then(() => {
+        resolve();
+      });
+    });
+  }
+
+  private verifyExcludedUtxos(): any {
+    let warningMsg = [];
+    if (this.sendMaxInfo.utxosBelowFee > 0) {
+      let amountBelowFeeStr = (this.sendMaxInfo.amountBelowFee / 1e8);
+      let message = "A total of " + amountBelowFeeStr + " " + this.fromWallet.coin.toUpperCase() + " were excluded. These funds come from UTXOs smaller than the network fee provided."; // TODO: translate
+      warningMsg.push(message);
+    }
+
+    if (this.sendMaxInfo.utxosAboveMaxSize > 0) {
+      let amountAboveMaxSizeStr = (this.sendMaxInfo.amountAboveMaxSize / 1e8);
+      let message = "A total of " + amountAboveMaxSizeStr + " " + this.fromWallet.coin.toUpperCase() + " were excluded. The maximum size allowed for a transaction was exceeded."; // TODO: translate
+      warningMsg.push(message);
+    }
+    return warningMsg.join('\n');
+  };
 
   private getLegacyAddressFormat(addr: string, coin: string): string {
     if (coin == 'btc') return addr;
