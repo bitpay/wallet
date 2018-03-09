@@ -16,46 +16,6 @@
       </div>
     </div>
 
-    <div class="list card homeTip" ng-if="homeTip">
-      <div class="item item-icon-right item-heading">
-        <a ng-click="hideHomeTip()"><i class="icon ion-ios-close-empty close-home-tip"></i></a>
-      </div>
-      <div>
-        <i class="icon big-icon-svg">
-          <img src="img/check-white.svg" class="bg green"/>
-        </i>
-      </div>
-      <div class="title" translate>
-        Your NavCoin wallet is ready!
-      </div>
-      <div class="subtitle" translate>
-        On this screen you can see all your wallets, accounts, and assets.
-      </div>
-    </div>
-
-    <div class="list card" ng-hide="!txps[0]">
-      <a class="item item-icon-right item-heading" ui-sref="tabs.proposals">
-        {{'Payment Proposals'|translate}}
-        <i class="icon bp-arrow-right"></i>
-        <span class="badge badge-assertive m5t m10r" ng-show="txpsN>3"> {{txpsN}}</span>
-      </a>
-
-      <div ng-repeat="tx in txps" ng-click="openTxpModal(tx)">
-        <a class="wallet-details__item item item-sub" ng-include="'views/includes/txp.html'"></a>
-      </div>
-    </div>
-
-    <div class="list card" ng-if="notifications[0] && recentTransactionsEnabled">
-      <a class="item item-icon-right item-heading" ui-sref="tabs.activity">
-        <span translate>Recent Notifications</span>
-        <i class="icon bp-arrow-right"></i>
-        <span class="badge badge-assertive m5t m10r" ng-show="notificationsN>3"> {{notificationsN}}</span>
-      </a>
-      <a class="item item-sub activity" ng-repeat="notification in notifications" ng-click="openNotificationModal(notification)">
-        <span ng-include="'views/includes/walletActivity.html'"></span>
-      </a>
-    </div>
-
     <div class="list card">
       <div class="item item-icon-right item-heading">
         <span translate>Wallets (Offline)</span>
@@ -81,12 +41,11 @@
               {{wallet.m}}-of-{{wallet.n}}
             </span>
             <i ng-if="!wallet.balanceHidden && (wallet.status.totalBalanceSat != wallet.status.spendableAmount)" class="tab-home__wallet__status-icon ion-ios-timer-outline"></i>
-            <span class="assertive" ng-if="wallet.error">{{wallet.error}}</span>
+              <span class="assertive" ng-if="wallet.error"><span ng-if="wallet.error !== 'Network error'">{{wallet.error}}</span></span>
             <span>(Last known balance)</span>
           </span>
             &nbsp;
           </p>
-          <i class="icon bp-arrow-right"></i>
         </div>
       </div>
     </div>

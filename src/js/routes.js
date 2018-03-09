@@ -1288,10 +1288,19 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
               disableAnimate: true,
               historyRoot: true
             });
-            $state.transitionTo('tabs.home').then(function() {
-              // Clear history
-              $ionicHistory.clearHistory();
-            });
+            if (navigator.onLine === false) {
+              $log.debug('We are now offline. Changing to route "offline"')
+              $state.transitionTo('offline').then(function() {
+                // Clear history
+                $ionicHistory.clearHistory();
+              });
+            } else {
+              $state.transitionTo('tabs.home').then(function() {
+                // Clear history
+                $ionicHistory.clearHistory();
+              });
+            }
+
             applicationService.appLockModal('check');
           });
         };
@@ -1318,6 +1327,16 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
     }
 
     $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
+      $log.debug('Route change from:', fromState.name || '-', ' to:', toState.name);
+
+      if (toState.name !== 'offline' && navigator.onLine === false) {
+        event.preventDefault()
+        $log.debug('We are now offline. navigator.onLine:', navigator.onLine, 'Changing to route "offline"')
+        $state.transitionTo('offline').then(function() {
+          // Clear history
+          $ionicHistory.clearHistory();
+        });
+      }
       $log.debug('Route change from:', fromState.name || '-', ' to:', toState.name);
       $log.debug('            toParams:' + JSON.stringify(toParams || {}));
       $log.debug('            fromParams:' + JSON.stringify(fromParams || {}));

@@ -21,6 +21,11 @@ angular.module('copayApp.controllers').controller('tabHomeController',
     });
 
     $scope.$on("$ionicView.beforeEnter", function(event, data) {
+      if(navigator.onLine === false) {
+        // We shouldn't reach here. But just encase.
+        $state.go('offline');
+      }
+
       if (!$scope.homeTip) {
         storageService.getHomeTipAccepted(function(error, value) {
           $scope.homeTip = (value == 'accepted') ? false : true;
