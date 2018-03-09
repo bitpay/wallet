@@ -7,4 +7,9 @@ page-bitpay-settings {
     justify-content: center;
     text-align: center;
   }
+  .remove-card {
+    text-align: center;
+    font-size: 12.5px;
+    color: color($colors, danger);
+  }
 }

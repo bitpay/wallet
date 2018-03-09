@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
-import { ItemSliding } from 'ionic-angular';
 
 import * as _ from 'lodash';
 
@@ -57,11 +56,10 @@ export class BitPaySettingsPage {
     this.configProvider.set(opts);
   }
 
-  public unlinkCard(card: any, slidingItem: ItemSliding) {
+  public unlinkCard(card: any) {
     let title = 'Unlink BitPay Card?';
     let msg = 'Are you sure you would like to remove your BitPay Card (' + card.lastFourDigits + ') from this device?';
     this.popupProvider.ionicConfirm(title, msg).then((res) => {
-      slidingItem.close();
       if (res) {
         this.bitPayCardProvider.remove(card.id, (err) => {
           if (err) {
