@@ -19,10 +19,10 @@ import { TouchID } from '@ionic-native/touch-id';
 
 /* Modules */
 import { TranslatePoHttpLoader } from '@biesbjerg/ngx-translate-po-http-loader';
-import { NgxQRCodeModule } from '@cmgustavo/ngx-qrcode';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { Level, NgLoggerModule } from '@nsalaun/ng-logger';
 import { MomentModule } from 'angular2-moment';
+import { NgxQRCodeModule } from 'ngx-qrcode2';
 
 /* Copay App */
 import { CopayApp } from './app.component';
