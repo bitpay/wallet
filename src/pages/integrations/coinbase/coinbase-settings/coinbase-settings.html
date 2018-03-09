@@ -6,6 +6,14 @@
 
 <ion-content>
 
+  <ion-list>
+    <ion-item-divider></ion-item-divider>
+    <ion-item>
+      <ion-label>{{'Show in tab Home' | translate}}</ion-label>
+      <ion-toggle [(ngModel)]="showInHome" (ionChange)="showInHomeSwitch()"></ion-toggle>
+    </ion-item>
+  </ion-list>
+
   <ion-list *ngIf="coinbaseAccount && coinbaseAccount.balance">
     <ion-item-divider>Account</ion-item-divider>
     <ion-item>

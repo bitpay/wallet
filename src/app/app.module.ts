@@ -58,6 +58,7 @@ import { WalletDetailsPage } from '../pages/wallet-details/wallet-details';
 // Integrations: Amazon
 import { AmazonPage } from '../pages/integrations/amazon/amazon';
 import { AmazonCardDetailsPage } from '../pages/integrations/amazon/amazon-card-details/amazon-card-details';
+import { AmazonSettingsPage } from '../pages/integrations/amazon/amazon-settings/amazon-settings';
 import { BuyAmazonPage } from '../pages/integrations/amazon/buy-amazon/buy-amazon';
 
 // Integrations: Coinbase
@@ -78,11 +79,13 @@ import { SellGlideraPage } from '../pages/integrations/glidera/sell-glidera/sell
 import { BuyMercadoLibrePage } from '../pages/integrations/mercado-libre/buy-mercado-libre/buy-mercado-libre';
 import { MercadoLibrePage } from '../pages/integrations/mercado-libre/mercado-libre';
 import { MercadoLibreCardDetailsPage } from '../pages/integrations/mercado-libre/mercado-libre-card-details/mercado-libre-card-details';
+import { MercadoLibreSettingsPage } from '../pages/integrations/mercado-libre/mercado-libre-settings/mercado-libre-settings';
 
 // Integrations: ShapeShift
 import { ShapeshiftPage } from '../pages/integrations/shapeshift/shapeshift';
 import { ShapeshiftConfirmPage } from '../pages/integrations/shapeshift/shapeshift-confirm/shapeshift-confirm';
 import { ShapeshiftDetailsPage } from '../pages/integrations/shapeshift/shapeshift-details/shapeshift-details';
+import { ShapeshiftSettingsPage } from '../pages/integrations/shapeshift/shapeshift-settings/shapeshift-settings';
 import { ShapeshiftShiftPage } from '../pages/integrations/shapeshift/shapeshift-shift/shapeshift-shift';
 
 // Integrations: BitPayCard
@@ -122,7 +125,6 @@ import { AddressbookPage } from '../pages/settings/addressbook/addressbook';
 import { AddressbookViewPage } from '../pages/settings/addressbook/view/view';
 import { AdvancedPage } from '../pages/settings/advanced/advanced';
 import { AltCurrencyPage } from '../pages/settings/alt-currency/alt-currency';
-import { EnabledServicesPage } from '../pages/settings/enabled-services/enabled-services';
 import { FeePolicyPage } from '../pages/settings/fee-policy/fee-policy';
 import { LanguagePage } from '../pages/settings/language/language';
 import { LockPage } from '../pages/settings/lock/lock';
@@ -219,6 +221,7 @@ export function createTranslateLoader(http: HttpClient) {
     AddPage,
     AmazonCardDetailsPage,
     AmazonPage,
+    AmazonSettingsPage,
     AmountPage,
     AddressbookPage,
     AddressbookAddPage,
@@ -242,7 +245,6 @@ export function createTranslateLoader(http: HttpClient) {
     CoinbasePage,
     CoinbaseTxDetailsPage,
     CopayersPage,
-    EnabledServicesPage,
     FeedbackCardPage,
     FeedbackPage,
     FeedbackCompletePage,
@@ -264,6 +266,7 @@ export function createTranslateLoader(http: HttpClient) {
     LanguagePage,
     LockPage,
     MercadoLibrePage,
+    MercadoLibreSettingsPage,
     OnboardingPage,
     PaperWalletPage,
     PayProPage,
@@ -280,6 +283,7 @@ export function createTranslateLoader(http: HttpClient) {
     CoinbaseSettingsPage,
     ShapeshiftConfirmPage,
     ShapeshiftDetailsPage,
+    ShapeshiftSettingsPage,
     ShapeshiftPage,
     ShapeshiftShiftPage,
     TermsOfUsePage,
@@ -349,6 +353,7 @@ export function createTranslateLoader(http: HttpClient) {
     AddPage,
     AmazonCardDetailsPage,
     AmazonPage,
+    AmazonSettingsPage,
     AmountPage,
     AddressbookPage,
     AddressbookAddPage,
@@ -372,7 +377,6 @@ export function createTranslateLoader(http: HttpClient) {
     CoinbasePage,
     CoinbaseTxDetailsPage,
     CopayersPage,
-    EnabledServicesPage,
     FeedbackCardPage,
     FeedbackPage,
     FeedbackCompletePage,
@@ -394,6 +398,7 @@ export function createTranslateLoader(http: HttpClient) {
     LanguagePage,
     LockPage,
     MercadoLibrePage,
+    MercadoLibreSettingsPage,
     OnboardingPage,
     PaperWalletPage,
     PayProPage,
@@ -410,6 +415,7 @@ export function createTranslateLoader(http: HttpClient) {
     CoinbaseSettingsPage,
     ShapeshiftConfirmPage,
     ShapeshiftDetailsPage,
+    ShapeshiftSettingsPage,
     ShapeshiftPage,
     ShapeshiftShiftPage,
     TermsOfUsePage,

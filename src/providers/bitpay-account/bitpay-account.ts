@@ -6,7 +6,6 @@ import { Device } from '@ionic-native/device';
 
 // providers
 import { AppIdentityProvider } from '../app-identity/app-identity';
-import { BitPayCardProvider } from '../bitpay-card/bitpay-card';
 import { BitPayProvider } from '../bitpay/bitpay';
 import { PersistenceProvider } from '../persistence/persistence';
 import { PlatformProvider } from '../platform/platform';
@@ -48,7 +47,7 @@ export class BitPayAccountProvider {
    *     appIdentity: the identity of this app
    *   }
    */
-
+  
   constructor(
     private platformProvider: PlatformProvider,
     private bitPayProvider: BitPayProvider,
@@ -56,9 +55,9 @@ export class BitPayAccountProvider {
     private popupProvider: PopupProvider,
     private persistenceProvider: PersistenceProvider,
     private appIdentityProvider: AppIdentityProvider,
-    private bitPayCardProvider: BitPayCardProvider,
     private device: Device
   ) {
+    this.logger.info('BitPayAccountProvider initialized');
   }
 
   public pair(pairData: any, pairingReason: string, cb: (err: string, paired?: boolean, apiContext?: any) => any) {
@@ -203,7 +202,6 @@ export class BitPayAccountProvider {
 
   public removeAccount(email: string, cb: () => any) {
     this.persistenceProvider.removeBitpayAccount(this.bitPayProvider.getEnvironment().network, email).then(() => {
-      this.bitPayCardProvider.register();
       return cb();
     });
   };

@@ -4,6 +4,7 @@ import { Logger } from '../../providers/logger/logger';
 // providers
 import { AppIdentityProvider } from '../app-identity/app-identity';
 import { BitPayProvider } from '../bitpay/bitpay';
+import { ConfigProvider } from '../config/config';
 import { HomeIntegrationsProvider } from '../home-integrations/home-integrations';
 import { PersistenceProvider } from '../persistence/persistence';
 
@@ -13,23 +14,21 @@ import * as moment from 'moment';
 @Injectable()
 export class BitPayCardProvider {
 
-  public homeItem: any;
-
   constructor(
     private logger: Logger,
     private bitPayProvider: BitPayProvider,
     private appIdentityProvider: AppIdentityProvider,
     private persistenceProvider: PersistenceProvider,
+    private configProvider: ConfigProvider,
     private homeIntegrationsProvider: HomeIntegrationsProvider
   ) {
     this.logger.info('BitPayCardProvider initialized');
+  }
 
-    this.homeItem = {
-      name: 'debitcard',
-      title: 'BitPay Visa® Card',
-      icon: 'assets/img/bitpay-card/icon-bitpay.svg',
-      page: 'BitPayCardIntroPage',
-    }
+  private isActive(cb): void {
+    this.getCards((cards) => {
+      return cb(!_.isEmpty(cards));
+    });
   }
 
   private _setError(msg, e?) {
@@ -218,7 +217,6 @@ export class BitPayCardProvider {
       });
 
       this.persistenceProvider.setBitpayDebitCards(this.bitPayProvider.getEnvironment().network, apiContext.pairData.email, cards).then(() => {
-        this.register();
         return cb(null, cards);
       });
     }, (data) => {
@@ -365,7 +363,6 @@ export class BitPayCardProvider {
 
   public remove(cardId, cb) {
     this.persistenceProvider.removeBitpayDebitCard(this.bitPayProvider.getEnvironment().network, cardId).then(() => {
-      this.register();
       this.persistenceProvider.removeBalanceCache(cardId);
       return cb();
     }).catch((err) => {
@@ -397,8 +394,10 @@ export class BitPayCardProvider {
     this.getCards((cards) => {
 
       if (_.isEmpty(cards)) {
+        this.homeIntegrationsProvider.updateLink('debitcard', null); // Name, linked
         return cb();
       }
+      this.homeIntegrationsProvider.updateLink('debitcard', true); // Name, linked
 
       if (opts.cardId) {
         cards = _.filter(cards, (x) => {
@@ -425,9 +424,17 @@ export class BitPayCardProvider {
     });
   };
 
-
   public register() {
-    this.homeIntegrationsProvider.register(this.homeItem);
+    this.isActive((isActive) => {
+      this.homeIntegrationsProvider.register({
+        name: 'debitcard',
+        title: 'BitPay Visa® Card',
+        icon: 'assets/img/bitpay-card/icon-bitpay.svg',
+        page: 'BitPayCardIntroPage',
+        show: !!this.configProvider.get().showIntegration['debitcard'],
+        linked: !!isActive
+      });
+    });
   }
 }
 

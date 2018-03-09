@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Logger } from '../../providers/logger/logger';
 
 // providers
+import { ConfigProvider } from '../config/config';
 import { HomeIntegrationsProvider } from '../home-integrations/home-integrations';
 import { PersistenceProvider } from '../persistence/persistence';
 
@@ -13,13 +14,13 @@ export class MercadoLibreProvider {
 
   private credentials: any;
   // private availableCountries: any;
-  private homeItem: any;
 
   constructor(
     private persistenceProvider: PersistenceProvider,
     private homeIntegrationsProvider: HomeIntegrationsProvider,
     private http: HttpClient,
-    private logger: Logger
+    private logger: Logger,
+    private configProvider: ConfigProvider
   ) {
     this.logger.info('MercadoLibreProvider initialized');
     // Not used yet
@@ -39,13 +40,6 @@ export class MercadoLibreProvider {
     this.credentials.BITPAY_API_URL = this.credentials.NETWORK === 'testnet'
       ? "https://test.bitpay.com"
       : "https://bitpay.com";
-
-    this.homeItem = {
-      name: 'mercadoLibre',
-      title: 'Mercado Livre Brazil Gift Cards',
-      icon: 'assets/img/mercado-libre/icon-ml.svg',
-      page: 'MercadoLibrePage',
-    };
   }
 
   public getNetwork() {
@@ -171,7 +165,13 @@ export class MercadoLibreProvider {
   */
 
   public register() {
-    this.homeIntegrationsProvider.register(this.homeItem);
+    this.homeIntegrationsProvider.register({
+      name: 'mercadolibre',
+      title: 'Mercado Livre Brazil Gift Cards',
+      icon: 'assets/img/mercado-libre/icon-ml.svg',
+      page: 'MercadoLibrePage',
+      show: !!this.configProvider.get().showIntegration['mercadolibre']
+    });
   }
 }
 

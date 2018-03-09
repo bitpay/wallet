@@ -30,9 +30,16 @@ export class HomeIntegrationsProvider {
     });
   }
 
-  public update(serviceName, token) {
+  public updateLink(serviceName, token) {
     this.services = _.filter(this.services, (x) => {
       if (x.name == serviceName) x.linked = !!token;
+      return x;
+    });
+  }
+
+  public updateConfig(serviceName, show) {
+    this.services = _.filter(this.services, (x) => {
+      if (x.name == serviceName) x.show = !!show;
       return x;
     });
   }

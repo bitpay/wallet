@@ -1,8 +1,14 @@
 import { Component } from '@angular/core';
+import { NavController, NavParams } from 'ionic-angular';
 import { ItemSliding } from 'ionic-angular';
 
+import * as _ from 'lodash';
+
+// Providers
 import { BitPayAccountProvider } from '../../../../providers/bitpay-account/bitpay-account';
 import { BitPayCardProvider } from '../../../../providers/bitpay-card/bitpay-card';
+import { ConfigProvider } from '../../../../providers/config/config';
+import { HomeIntegrationsProvider } from '../../../../providers/home-integrations/home-integrations';
 import { PopupProvider } from '../../../../providers/popup/popup';
 
 
@@ -12,43 +18,43 @@ import { PopupProvider } from '../../../../providers/popup/popup';
 })
 export class BitPaySettingsPage {
 
-  public bitpayAccounts: any;
-  public bitpayCards: any;
+  private serviceName: string = 'debitcard';
+  public showAtHome: any;
+  public service: any;
+  public bitpayCard: any;
 
   constructor(
+    private navParams: NavParams,
+    private navCtrl: NavController,
     private bitpayAccountProvider: BitPayAccountProvider,
     private bitPayCardProvider: BitPayCardProvider,
-    private popupProvider: PopupProvider
+    private popupProvider: PopupProvider,
+    private configProvider: ConfigProvider,
+    private homeIntegrationsProvider: HomeIntegrationsProvider
   ) {
-
+    this.service = _.filter(this.homeIntegrationsProvider.get(), { name: this.serviceName });
+    this.showAtHome = !!this.service[0].show;
   }
 
   ionViewWillEnter() {
-    this.init();
-  }
-
-  private init(): void {
-    this.bitpayAccountProvider.getAccounts((err, accounts) => {
-      if (err) return;
-      this.bitpayAccounts = accounts;
-
+    let cardId = this.navParams.data.id;
+    if (cardId) {
       this.bitPayCardProvider.getCards((cards) => {
-        this.bitpayCards = cards;
+        this.bitpayCard = _.find(cards, { id: cardId });
       });
-    });
+    }
+    else {
+      this.service = _.filter(this.homeIntegrationsProvider.get(), { name: this.serviceName });
+      this.showAtHome = !!this.service[0].show;
+    }
   }
 
-  public unlinkAccount(account: any, slidingItem: ItemSliding) {
-    let title = 'Unlink BitPay Account?';
-    let msg = 'Removing your BitPay account will remove all associated BitPay account data from this device. Are you sure you would like to remove your BitPay Account (' + account.email + ') from this device?';
-    this.popupProvider.ionicConfirm(title, msg).then((res) => {
-      slidingItem.close();
-      if (res) {
-        this.bitpayAccountProvider.removeAccount(account.email, () => {
-          this.init();
-        });
-      }
-    });
+  public integrationChange(): void {
+    let opts = {
+      showIntegration: { [this.serviceName] : this.showAtHome }
+    };
+    this.homeIntegrationsProvider.updateConfig(this.serviceName, this.showAtHome);
+    this.configProvider.set(opts);
   }
 
   public unlinkCard(card: any, slidingItem: ItemSliding) {
@@ -62,7 +68,7 @@ export class BitPaySettingsPage {
             this.popupProvider.ionicAlert('Error', 'Could not remove the card');
             return;
           }
-          this.init();
+          this.navCtrl.pop();
         });
       }
     });

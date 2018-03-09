@@ -1,10 +1,13 @@
 import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
+
 import * as _ from 'lodash';
 
+// Providers
 import { CoinbaseProvider } from '../../../../providers/coinbase/coinbase';
+import { ConfigProvider } from '../../../../providers/config/config';
+import { HomeIntegrationsProvider } from '../../../../providers/home-integrations/home-integrations';
 import { Logger } from '../../../../providers/logger/logger';
-import { OnGoingProcessProvider } from '../../../../providers/on-going-process/on-going-process';
 import { PopupProvider } from '../../../../providers/popup/popup';
 
 @Component({
@@ -13,23 +16,27 @@ import { PopupProvider } from '../../../../providers/popup/popup';
 })
 export class CoinbaseSettingsPage {
 
+  private serviceName: string = 'coinbase';
+  public showInHome: any;
+  public service: any;
   public coinbaseAccount: any;
   public coinbaseUser: any;
 
   constructor(
     private navCtrl: NavController,
-    private onGoingProcessProvider: OnGoingProcessProvider,
     private popupProvider: PopupProvider,
     private logger: Logger,
-    private coinbaseProvider: CoinbaseProvider
+    private coinbaseProvider: CoinbaseProvider,
+    private configProvider: ConfigProvider,
+    private homeIntegrationsProvider: HomeIntegrationsProvider
   ) {
+    this.service = _.filter(this.homeIntegrationsProvider.get(), { name: this.serviceName });
+    this.showInHome = !!this.service[0].show;
   }
 
   ionViewDidLoad() {
-    this.onGoingProcessProvider.set('connectingCoinbase');
     this.coinbaseProvider.init((err, data) => {
       if (err || _.isEmpty(data)) {
-        this.onGoingProcessProvider.clear();
         if (err) {
           this.logger.error(err);
           let errorId = err.errors ? err.errors[0].id : null;
@@ -46,13 +53,20 @@ export class CoinbaseSettingsPage {
       let accessToken = data.accessToken;
       let accountId = data.accountId;
       this.coinbaseProvider.getAccount(accessToken, accountId, (err, account) => {
-        this.onGoingProcessProvider.clear();
         this.coinbaseAccount = account.data[0];
       });
       this.coinbaseProvider.getCurrentUser(accessToken, (err, user) => {
         this.coinbaseUser = user.data;
       });
     });
+  }
+
+  public showInHomeSwitch(): void {
+    let opts = {
+      showIntegration: { [this.serviceName] : this.showInHome }
+    };
+    this.homeIntegrationsProvider.updateConfig(this.serviceName, this.showInHome);
+    this.configProvider.set(opts);
   }
 
   public revokeToken() {

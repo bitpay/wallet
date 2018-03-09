@@ -137,29 +137,37 @@
       </ion-note>
     </button>
 
+    <div *ngIf="showBitPayCard && bitpayCardItems && bitpayCardItems[0]">
+      <ion-item-divider>
+        BitPay Visa<sup>&reg;</sup> Card
+      </ion-item-divider>
+      <ion-list>
+        <button ion-item *ngFor="let card of bitpayCardItems" (click)="openCardSettings(card.id)">
+          <ion-icon item-start>
+            <img src="assets/img/icon-card.svg" class="icon-card" />
+          </ion-icon>
+          <div class="item-title">BitPay Visa&reg; Card ({{card.lastFourDigits}})</div>
+          <div class="item-subtitle">{{card.balance ? (card.balance | currency:card.currencySymbol:2) : 'Add funds to get started'|translate}} {{card.updatedOn
+            ? (' &middot; ' + (card.updatedOn * 1000 | amTimeAgo)) : ''}}</div>
+        </button>
+      </ion-list>
+    </div>
+
     <ion-item-divider>
-      {{'Integrations' | translate}}
+      {{'Services' | translate}}
     </ion-item-divider>
 
-    <button ion-item *ngIf="bitpayCardEnabled" (click)="openBitPaySettings()">
+    <button ion-item *ngFor="let integration of integrationServices" (click)="openSettingIntegration(integration.name)">
       <ion-icon item-start>
-        <img src="assets/img/bitpay-card/icon-bitpay.svg" class="icon-services" />
+        <img src="{{integration.icon}}" class="icon-services" />
       </ion-icon>
-      BitPay
-    </button>
-
-    <button ion-item *ngFor="let service of exchangeServices" (click)="openIntegrationSettings(service.name)">
-      <ion-icon item-start>
-        <img src="{{service.icon}}" class="icon-services" />
-      </ion-icon>
-      <span>{{service.title || service.name}}</span>
-    </button>
-
-    <ion-item-divider *ngIf="bitpayCardEnabled || (exchangeServices && exchangeServices.length > 0)"></ion-item-divider>
-
-    <button ion-item (click)="openEnabledServicesPage()">
-      <ion-icon name="ios-list-outline" item-start></ion-icon>
-      <span translate>Enabled services</span>
+      <span>{{integration.title}}</span>
+      <ion-note item-end>
+        <span *ngIf="integration.linked" translate>Linked</span>
+        <span *ngIf="!integration.linked">
+          {{integration.show ? ('On'|translate) : ('Off'|translate)}}
+        </span>
+      </ion-note>
     </button>
 
     <ion-item-divider>More</ion-item-divider>
