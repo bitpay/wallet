@@ -15,6 +15,7 @@ angular.module('copayApp.controllers').controller('changellyController',
     $scope.homeTip = $stateParams.fromOnboarding;
     $scope.isCordova = platformInfo.isCordova;
     $scope.isAndroid = platformInfo.isAndroid;
+    $scope.isIOS = platformInfo.isIOS;
     $scope.isWindowsPhoneApp = platformInfo.isCordova && platformInfo.isWP;
     $scope.isNW = platformInfo.isNW;
     $scope.showRateCard = {};
@@ -157,6 +158,16 @@ angular.module('copayApp.controllers').controller('changellyController',
       if (!w) return wallets[0];
       return wallet;
     }
+
+
+    $scope.openExternalLink = function(url) {
+      var optIn = true;
+      var title = null;
+      var message = gettextCatalog.getString('You will now be redirected to Changelly.com to complete your purchase');
+      var okText = gettextCatalog.getString('Okay');
+      var cancelText = gettextCatalog.getString('Go Back');
+      externalLinkService.open(url, optIn, title, message, okText, cancelText);
+    };
 
     $scope.onWalletSelect = function(wallet) {
       $scope.wallet = wallet;

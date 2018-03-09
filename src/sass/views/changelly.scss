@@ -289,6 +289,22 @@
       }
     }
   }
+  .mobile-only {
+    background: #fff;
+    overflow: auto;
+    height: 100%;
+    text-align: center;
+    .text {
+      margin-top: 5%;
+      margin-bottom: 3%;
+      font-size: 12px;
+    }
+    .link {
+      padding-left: 5px;
+      padding-right: 5px;
+    }
+  }
+
   .backup {
     position: absolute;
     top: 0;
