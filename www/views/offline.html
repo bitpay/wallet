@@ -1,0 +1,94 @@
+<ion-view id="tab-home" show-tabs>
+  <ion-nav-bar class="bar-royal">
+    <ion-nav-title><img class="tab-home__logo" src="img/app/logo-simple.svg"></ion-nav-title>
+  </ion-nav-bar>
+
+  <ion-content>
+    <div>
+      <div class="list card homeTip" id="home-changelly">
+        <img src="img/icon-offline.svg" style="height: 100px; padding-top: 10px;"/>
+        <div class="title" translate>Offline</div>
+        <div class="subtitle">
+          <span translate>You are currently offline. You must be online to user your wallet.</span>
+          <br />
+          <span translate>Showing the last known wallet balances.</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="list card homeTip" ng-if="homeTip">
+      <div class="item item-icon-right item-heading">
+        <a ng-click="hideHomeTip()"><i class="icon ion-ios-close-empty close-home-tip"></i></a>
+      </div>
+      <div>
+        <i class="icon big-icon-svg">
+          <img src="img/check-white.svg" class="bg green"/>
+        </i>
+      </div>
+      <div class="title" translate>
+        Your NavCoin wallet is ready!
+      </div>
+      <div class="subtitle" translate>
+        On this screen you can see all your wallets, accounts, and assets.
+      </div>
+    </div>
+
+    <div class="list card" ng-hide="!txps[0]">
+      <a class="item item-icon-right item-heading" ui-sref="tabs.proposals">
+        {{'Payment Proposals'|translate}}
+        <i class="icon bp-arrow-right"></i>
+        <span class="badge badge-assertive m5t m10r" ng-show="txpsN>3"> {{txpsN}}</span>
+      </a>
+
+      <div ng-repeat="tx in txps" ng-click="openTxpModal(tx)">
+        <a class="wallet-details__item item item-sub" ng-include="'views/includes/txp.html'"></a>
+      </div>
+    </div>
+
+    <div class="list card" ng-if="notifications[0] && recentTransactionsEnabled">
+      <a class="item item-icon-right item-heading" ui-sref="tabs.activity">
+        <span translate>Recent Notifications</span>
+        <i class="icon bp-arrow-right"></i>
+        <span class="badge badge-assertive m5t m10r" ng-show="notificationsN>3"> {{notificationsN}}</span>
+      </a>
+      <a class="item item-sub activity" ng-repeat="notification in notifications" ng-click="openNotificationModal(notification)">
+        <span ng-include="'views/includes/walletActivity.html'"></span>
+      </a>
+    </div>
+
+    <div class="list card">
+      <div class="item item-icon-right item-heading">
+        <span translate>Wallets (Offline)</span>
+      </div>
+      <div>
+        <div ng-repeat="wallet in wallets track by $index"
+          class="item item-sub item-icon-left item-big-icon-left item-icon-right wallet">
+          <i class="icon big-icon-svg">
+            <img src="img/icon-wallet.svg" ng-class="{'wallet-background-color-default': !wallet.color}" ng-style="{'background-color': wallet.color}" class="bg wallet"/>
+          </i>
+          <span>
+            {{wallet.name || wallet.id}}
+          </span>
+          <p>
+          <span ng-if="!wallet.isComplete()" class="assertive" translate>
+            Incomplete
+          </span>
+            <span ng-if="wallet.isComplete()">
+            <span ng-if="!wallet.balanceHidden"> {{wallet.status.totalBalanceStr ? wallet.status.totalBalanceStr : ( wallet.cachedBalance ? wallet.cachedBalance   + (wallet.cachedBalanceUpdatedOn ? ' &middot; ' + ( wallet.cachedBalanceUpdatedOn  * 1000 | amTimeAgo) : '') : ''  ) }} </span>
+
+            <span ng-if="wallet.balanceHidden" translate>[Balance Hidden]</span>
+            <span class="tab-home__wallet__multisig-number" ng-if="wallet.n > 1">
+              {{wallet.m}}-of-{{wallet.n}}
+            </span>
+            <i ng-if="!wallet.balanceHidden && (wallet.status.totalBalanceSat != wallet.status.spendableAmount)" class="tab-home__wallet__status-icon ion-ios-timer-outline"></i>
+            <span class="assertive" ng-if="wallet.error">{{wallet.error}}</span>
+            <span>(Last known balance)</span>
+          </span>
+            &nbsp;
+          </p>
+          <i class="icon bp-arrow-right"></i>
+        </div>
+      </div>
+    </div>
+  </ion-content>
+</ion-view>

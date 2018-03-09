@@ -105,6 +105,12 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
        *
        */
 
+      .state('offline', {
+        url: '/offline',
+        controller: 'offlineController',
+        templateUrl: 'views/offline.html'
+      })
+
       .state('unsupported', {
         url: '/unsupported',
         templateUrl: 'views/unsupported.html'
