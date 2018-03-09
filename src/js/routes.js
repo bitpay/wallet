@@ -111,6 +111,12 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         templateUrl: 'views/offline.html'
       })
 
+      .state('downloadApp', {
+        url: '/download',
+        templateUrl: 'views/downloadApp.html',
+        controller: 'downloadAppController'
+      })
+
       .state('unsupported', {
         url: '/unsupported',
         templateUrl: 'views/unsupported.html'
@@ -1284,7 +1290,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
             'reload': true,
             'notify': $state.current.name == 'starting' ? false : true
           }).then(function() {
-            $ionicHistory.nextViewOptions({
+          $ionicHistory.nextViewOptions({
               disableAnimate: true,
               historyRoot: true
             });

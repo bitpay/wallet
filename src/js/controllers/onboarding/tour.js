@@ -1,6 +1,6 @@
 'use strict';
 angular.module('copayApp.controllers').controller('tourController',
-  function($scope, $state, $log, $timeout, $filter, ongoingProcess, profileService, rateService, popupService, gettextCatalog) {
+  function($scope, $state, $log, $timeout, $filter, ongoingProcess, profileService, rateService, popupService, gettextCatalog, platformInfo) {
 
     $scope.data = {
       index: 0
@@ -82,7 +82,12 @@ angular.module('copayApp.controllers').controller('tourController',
     }
 
     $scope.slideNext = function() {
-      if ($scope.data.index != 2) $scope.slider.slideNext();
+      if ($scope.data.index != 3) $scope.slider.slideNext();
       else $state.go('onboarding.welcome');
+    }
+
+    $scope.shouldShowAppDownload = function () {
+      // Is iOS and isn't already downloaded
+      return platformInfo.isIOS && !navigator.standalone
     }
   });

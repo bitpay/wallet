@@ -1,0 +1,14 @@
+<svg viewBox="396 143 256 331" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <defs></defs>
+    <g id="Ios-Action" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" transform="translate(397.000000, 144.000000)">
+        <path d="M253,76 L253,326" id="Line" stroke="#FFFFFF" stroke-width="2" stroke-linecap="square"></path>
+        <path d="M126,1 L126,201" id="Line" stroke="#FFFFFF" stroke-width="2" stroke-linecap="square" transform="translate(126.000000, 101.000000) scale(-1, -1) translate(-126.000000, -101.000000) "></path>
+        <path d="M1,76 L1,326" id="Line" stroke="#FFFFFF" stroke-width="2" stroke-linecap="square"></path>
+        <path d="M253,327 L1,327" id="Line" stroke="#FFFFFF" stroke-width="2" stroke-linecap="square"></path>
+        <path d="M253,76 L163,76" id="Line" stroke="#FFFFFF" stroke-width="2" stroke-linecap="square"></path>
+        <path d="M91,75 L1,75" id="Line" stroke="#FFFFFF" stroke-width="2" stroke-linecap="square"></path>
+        <path id="Path-7" stroke="#979797"></path>
+        <path d="M197.949033,1 L126.5,55.726919" id="Line" stroke="#FFFFFF" stroke-width="2" stroke-linecap="square" transform="translate(162.224517, 28.363460) scale(-1, 1) translate(-162.224517, -28.363460) "></path>
+        <path d="M125.949033,1 L54.5,55.726919" id="Line" stroke="#FFFFFF" stroke-width="2" stroke-linecap="square"></path>
+    </g>
+</svg>
