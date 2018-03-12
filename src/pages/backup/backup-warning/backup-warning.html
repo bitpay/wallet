@@ -7,8 +7,8 @@
   <h1 translate>Are you being watched?</h1>
   <p translate class="description">Now is a perfect time to assess your surroundings. Nearby windows? Hidden cameras? Shoulder-spies?</p>
   <img src='assets/img/backup/backup-warning.svg' />
-  <div class="bottom-absolute">
-    <div translate class="description">Anyone with your backup phrase can access or spend your bitcoin.</div>
-    <button ion-button block (click)="openWarningModal()" translate>Got it</button>
-  </div>
+  <div translate class="description">Anyone with your backup phrase can access or spend your bitcoin.</div>
 </ion-content>
+<ion-footer>
+  <button ion-button full class="button-footer" (click)="openWarningModal()" translate>Got it</button>
+</ion-footer>

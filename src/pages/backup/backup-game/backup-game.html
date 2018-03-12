@@ -28,11 +28,7 @@
             <span *ngIf="useIdeograms">&#x3000;</span>
           </span>
         </div>
-
-        <div class="bottom-absolute">
-          <ion-item-divider>{{"We'll confirm on the next screen." | translate}}</ion-item-divider>
-          <button ion-button block [disabled]="credentialsEncrypted || error" (click)="slideNext()" translate>I've written it down</button>
-        </div>
+        <ion-item-divider>{{"We'll confirm on the next screen." | translate}}</ion-item-divider>
       </div>
     </ion-slide>
 
@@ -50,13 +46,9 @@
             </button>
           </div>
         </div>
-
         <div *ngIf="selectComplete">
           <ion-item-divider>{{'Is this correct?' | translate}}</ion-item-divider>
-          <div>
-            <button ion-button block (click)="slideNext();" translate>Confirm</button>
-            <button ion-button block outline (click)="setFlow();" translate>Clear</button>
-          </div>
+          <button ion-button block clear (click)="setFlow()" translate>Clear</button>
         </div>
       </div>
     </ion-slide>
@@ -79,3 +71,10 @@
     </ion-slide>
   </ion-slides>
 </ion-content>
+<ion-footer>
+  <button *ngIf="currentIndex == 0" ion-button full class="button-footer" [disabled]="credentialsEncrypted || error" (click)="slideNext()"
+    translate>I've written it down</button>
+  <button *ngIf="currentIndex == 1 && selectComplete" ion-button full class="button-footer" (click)="slideNext()" translate>Confirm</button>
+  <button *ngIf="currentIndex == 2" [disabled]="!password" ion-button full class="button-footer" (click)="finalStep()" translate>Confirm</button>
+
+</ion-footer>
