@@ -19,11 +19,6 @@
     </ion-icon>
     <div class="zero-state-heading" translate>No contacts yet</div>
     <div class="zero-state-description" translate>Get started by adding your first one.</div>
-    <div class="bottom-absolute">
-      <button ion-button block (click)="addEntry()" translate>
-        Add Contact
-      </button>
-    </div>
   </div>
 
   <div *ngIf="!isEmptyList">
@@ -40,3 +35,6 @@
   </div>
 
 </ion-content>
+<ion-footer *ngIf="isEmptyList">
+  <button ion-button full class="button-footer" (click)="addEntry()" translate>Add Contact</button>
+</ion-footer>

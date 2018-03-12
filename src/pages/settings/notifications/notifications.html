@@ -47,10 +47,11 @@
           <ion-label stacked>{{ 'Email Address' | translate }}</ion-label>
           <ion-input formControlName="email" type="email"></ion-input>
         </ion-item>
-
-        <button ion-button clear block (click)="saveEmail()" [disabled]="emailForm.invalid" translate>
-          Save
-        </button>
+        <div text-center>
+          <button ion-button (click)="saveEmail()" [disabled]="emailForm.invalid" translate>
+            Save
+          </button>
+        </div>
       </form>
     </div>
   </ion-list>
