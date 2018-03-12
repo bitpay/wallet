@@ -2,12 +2,13 @@
   <ion-navbar hideBackButton="fromOnboarding"></ion-navbar>
 </ion-header>
 
-
 <ion-content no-bounce>
   <h1 translate>Are you being watched?</h1>
   <p translate class="description">Now is a perfect time to assess your surroundings. Nearby windows? Hidden cameras? Shoulder-spies?</p>
-  <img src='assets/img/backup/backup-warning.svg' />
-  <div translate class="description">Anyone with your backup phrase can access or spend your bitcoin.</div>
+  <div class="img-container">
+    <img src='assets/img/backup/backup-warning.svg' />
+  </div>
+  <div translate class="description bottom">Anyone with your backup phrase can access or spend your bitcoin.</div>
 </ion-content>
 <ion-footer>
   <button ion-button full class="button-footer" (click)="openWarningModal()" translate>Got it</button>

@@ -1,9 +1,14 @@
 page-backup-game {
+  .slide-container {
+    height: 100%;
+  }
   .deleted-title {
     text-align: center;
   }
   .slide-title {
+    font-size: 16px;
     padding: 20px;
+    color: color($colors, grey);
   }
   .swiper-pagination {
     display: none;
@@ -15,15 +20,25 @@ page-backup-game {
     background-color: color($colors, light);
     padding: 2rem;
   }
-  .phrase {
-    display: -webkit-box;
-    background: color($colors, light);
-    margin: 0 auto;
+  .phrase-container {
+    background: white;
+    margin: auto;
+    border: 2px dashed #d9d9d9;
+    border-radius: 3px;
+    color: #192c3a;
+    text-align: center;
     max-width: 500px;
-    min-height: 12rem;
+    min-height: 9rem;
+    display: flex;
+    justify-content: center;
     align-items: center;
-    line-height: 170%;
-    word-spacing: 10px;
+    .phrase {
+    padding: 1rem;
+    font-weight: bold;
+    line-height: 2;
+    font-size: 16px;
+    letter-spacing: 1px;
+    }
   }
   .words {
     max-width: 500px;
@@ -32,9 +47,13 @@ page-backup-game {
       margin: 0.5rem;
     }
   }
-  .bottom-absolute {
-    ion-item-divider {
-      background: none;
-    }
+  .bottom {
+    font-size: 16px;    
+    color: color($colors, grey);
+    padding: 1rem;
+    position: absolute;
+    bottom: 2rem;
+    text-align: center;
+    width: 100%;
   }
 }

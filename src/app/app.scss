@@ -36,6 +36,11 @@ ion-alert.alert-top{
   height: 70px;
 }
 
+// Prevent uppercase on buttons
+.button {
+  text-transform: none;
+}
+
 // Hide border when refresh
 .has-refresher > .scroll-content {
   border-top: none !important;
