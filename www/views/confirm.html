@@ -113,14 +113,14 @@
     ng-click="approve(tx, wallet, statusChangeHandler)"
     ng-if="(!isCordova || isWindowsPhoneApp) && wallet"
     click-send-status="sendStatus"
-    is-disabled="!wallet">
+    is-disabled="!wallet || disableSendButton">
     {{buttonText}}
   </click-to-accept>
 
   <slide-to-accept
     ng-if="isCordova && !isWindowsPhoneApp && wallet"
     slide-on-confirm="approve(tx, wallet, statusChangeHandler)"
-    slide-send-status="sendStatus"
+    slide-send-status="sendStatus || disableSendButton"
     is-disabled="!wallet">
     {{buttonText}}
   </slide-to-accept>
