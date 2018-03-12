@@ -187,6 +187,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
     $scope.isCordova = isCordova;
     $scope.isWindowsPhoneApp = isWindowsPhoneApp;
     $scope.showAddress = false;
+    $scope.disableSendButton = false;
 
     $scope.walletSelectorTitle = gettextCatalog.getString('Send from');
 
@@ -254,12 +255,19 @@ angular.module('copayApp.controllers').controller('confirmController', function(
     if (tx.paypro) {
       txp.payProUrl = tx.paypro.url;
     }
-    txp.excludeUnconfirmedUtxos = !tx.spendUnconfirmed;
+    // Avoid using unconfirmed inputs for invoice payments
+    txp.excludeUnconfirmedUtxos = tx.paypro ? true : !tx.spendUnconfirmed;
     txp.dryRun = dryRun;
+
     walletService.createTx(wallet, txp, function(err, ctxp) {
       if (err) {
-        setSendError(err);
-        return cb(err);
+        if ($scope.wallet.status.availableBalanceSat > tx.toAmount) {
+          let errMsg = gettextCatalog.getString("This wallet has insufficient confirmed funds to pay this invoice. Please wait for incoming funds to confirm before trying to pay.");
+          $scope.disableSendButton = true;
+          return cb(errMsg);
+        } else {
+          return cb(err);
+        }
       }
       return cb(null, ctxp);
     });
@@ -272,6 +280,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
       tx.txp = {};
     }
 
+    $scope.disableSendButton = false;
     $scope.tx = tx;
 
     function updateAmount() {
@@ -368,8 +377,10 @@ angular.module('copayApp.controllers').controller('confirmController', function(
               setNoWallet(gettextCatalog.getString('Insufficient funds'));
               popupService.showAlert(gettextCatalog.getString('Error'), gettextCatalog.getString('Not enough funds for fee'));
               return cb('no_funds');
-            } else
+            } else {
+              setSendError(err);
               return cb(err);
+            }
           }
 
           txp.feeStr = txFormatService.formatAmountStr(wallet.coin, txp.fee);
@@ -574,7 +585,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
 
   $scope.approve = function(tx, wallet, onSendStatusChange) {
 
-    if (!tx || !wallet) return;
+    if (!tx || !wallet || $scope.disableSendButton) return;
 
     if ($scope.paymentExpired) {
       popupService.showAlert(null, gettextCatalog.getString('This bitcoin payment request has expired.'));
