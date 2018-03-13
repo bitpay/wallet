@@ -1,9 +1,15 @@
 page-tour {
   @extend %onboarding;
+  & > ion-content {
+    background-image: $onboarding-background-image !important;
+    background-position: top center;
+    background-size: contain;
+    background-repeat: no-repeat;
+  }
   ion-header {
     .toolbar-title,
     ion-icon {
-      color: color($colors, primary);
+      color: color($colors, blank);
     }
     .toolbar-background {
       background-color: transparent;
@@ -21,8 +27,8 @@ page-tour {
     }
   }
   .description {
-    font-size: 16px;
-    color: rgba(255, 255, 255, 0.5);
+    font-size: 1.4rem;
+    color: color($colors, blank);
   }
   /* pagination bullets */
   .swiper-pagination-bullet-active {
@@ -43,9 +49,7 @@ page-tour {
     display: inline-block;
     padding: 0.7em 1em;
     z-index: 1;
-    background-color: $color-secondary;
     border-radius: $icon-border-radius;
     position: relative;
-    box-shadow: 0 2px 2px rgba(0, 0, 0, 0.3);
   }
 }

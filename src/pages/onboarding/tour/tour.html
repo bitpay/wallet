@@ -2,7 +2,7 @@
 
   <ion-navbar>
     <ion-buttons end>
-      <button ion-button color="primary" (click)="createDefaultWallet()" *ngIf="currentIndex == 0" translate>
+      <button ion-button color="blank" (click)="createDefaultWallet()" *ngIf="currentIndex == 0" translate>
         Skip
       </button>
     </ion-buttons>
@@ -19,7 +19,7 @@
       <img src='assets/img/app/onboarding/tour-phone.svg' />
       <div class="bottom-absolute">
         <p translate class="description">Just scan the code to pay.</p>
-        <button ion-button block (click)="slideNext()" translate>Got it</button>
+        <button ion-button clear color="blank" class="button-standard btn-transparent" (click)="slideNext()" translate>Got it</button>
       </div>
     </ion-slide>
 
@@ -32,7 +32,7 @@
       <img src='assets/img/app/onboarding/tour-currency.svg' />
       <div class="bottom-absolute">
         <p translate class="description">The exchange rate changes with the market.</p>
-        <button ion-button block (click)="slideNext()" translate>
+        <button ion-button clear color="blank" class="button-standard btn-transparent" (click)="slideNext()" translate>
           Makes sense
         </button>
       </div>
@@ -44,7 +44,7 @@
       <img src='assets/img/app/onboarding/tour-control.svg' />
       <div class="bottom-absolute">
         <p translate class="description">Not even BitPay can access it.</p>
-        <button ion-button block (click)="createDefaultWallet()" translate>
+        <button ion-button class="button-standard" color="primary" (click)="createDefaultWallet()" translate>
           Create bitcoin wallet
         </button>
       </div>

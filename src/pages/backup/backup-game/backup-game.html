@@ -50,11 +50,11 @@
             </button>
           </div>
         </div>
-        <div *ngIf="selectComplete">
-          <ion-item-divider>{{'Is this correct?' | translate}}</ion-item-divider>
-          <button ion-button block clear (click)="setFlow()" translate>Clear</button>
-        </div>
       </div>
+      <div *ngIf="selectComplete" class="bottom-absolute">
+          <ion-item-divider>{{'Is this correct?' | translate}}</ion-item-divider>
+          <button ion-button clear class="button-footer" (click)="setFlow()" translate>Clear</button>
+        </div>
     </ion-slide>
 
     <ion-slide *ngIf="wallet.mnemonicHasPassphrase">

@@ -17,7 +17,7 @@ page-backup-warning {
 
   @extend %onboarding;
   & > ion-content {
-    background: $onboarding-welcome-bg;
+    background-image: $onboarding-background-image !important;
     background-position: center center;
     background-size: contain;
     background-repeat: no-repeat;

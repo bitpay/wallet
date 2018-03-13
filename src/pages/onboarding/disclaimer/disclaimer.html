@@ -29,6 +29,10 @@
         </p>
       </div>
     </div>
-    <button ion-button block [disabled]="!accepted.first || !accepted.second || !terms.accepted" (click)="confirm()" translate>Confirm &amp; Finish</button>
   </div>
 </ion-content>
+
+<ion-footer>
+  <button ion-button class="button-footer" [disabled]="!accepted.first || !accepted.second || !terms.accepted" (click)="confirm()"
+    translate>Confirm &amp; Finish</button>
+</ion-footer>

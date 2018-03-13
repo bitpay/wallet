@@ -56,4 +56,13 @@ page-backup-game {
     text-align: center;
     width: 100%;
   }
+  .bottom-absolute{
+    padding: 0px; 
+    .button-footer{
+      color: color($colors, primary);;
+      max-width: 100%;
+      margin:0;
+      font-size: 1.2rem;
+    }
+  }
 }
