@@ -35,7 +35,7 @@
     <ion-textarea type="text" formControlName="comment" placeholder="{{'Your ideas, feedback, or comments' | translate}}" [value]="feedbackForm.value.comment"
       required padding></ion-textarea>
   </form>
+
+  <button ion-button class="button-standard" (click)="sendFeedback(feedbackForm.value.comment)" [disabled]="!feedbackForm.valid">Send</button>
+
 </ion-content>
-<ion-footer>
-  <button ion-button full class="button-footer" (click)="sendFeedback(feedbackForm.value.comment)" [disabled]="!feedbackForm.valid">Send</button>
-</ion-footer>
