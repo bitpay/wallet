@@ -18,9 +18,7 @@
         <ion-label stacked>{{'Name' | translate}}</ion-label>
         <ion-input type="text" formControlName="walletName" [value]="walletNameForm.value.walletName" required></ion-input>
       </ion-item>
+      <button ion-button class="button-standard" (click)="save()" [disabled]="!walletNameForm.valid" translate>Save</button>
     </form>
   </ion-list>
 </ion-content>
-<ion-footer>
-  <button ion-button full class="button-footer" (click)="save()" [disabled]="!walletNameForm.valid" translate>Save</button>
-</ion-footer>

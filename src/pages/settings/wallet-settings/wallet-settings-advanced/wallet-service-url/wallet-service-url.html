@@ -18,9 +18,7 @@
           Use default url
         </a>
       </ion-item-divider>
+      <button ion-button class="button-standard" (click)="save()" [disabled]="!walletServiceForm.valid" translate>Save</button>
     </form>
   </ion-list>
 </ion-content>
-<ion-footer>
-  <button ion-button full class="button-footer" (click)="save()" [disabled]="!walletServiceForm.valid" translate>Save</button>
-</ion-footer>
