@@ -28,7 +28,7 @@
         <ion-checkbox formControlName="accept" checked="true"></ion-checkbox>
       </ion-item>
 
-      <button ion-button class="button-footer" type="submit" [disabled]="!emailForm.valid">
+      <button ion-button class="button-standard" type="submit" [disabled]="!emailForm.valid">
         <span translate>Continue</span> &rarr;</button>
     </form>
   </div>
@@ -41,10 +41,10 @@
     <div class="buttons">
       <div class="row">
         <div class="col col-50">
-          <button block ion-button class="button-footer" (click)="showConfirm()" translate>Edit</button>
+          <button block ion-button class="button-standard" (click)="showConfirm()" translate>Edit</button>
         </div>
         <div class="col col-50">
-          <button block ion-button class="button-footer" (click)="save()" translate>Confirm</button>
+          <button block ion-button class="button-standard" (click)="save()" translate>Confirm</button>
         </div>
       </div>
     </div>

@@ -22,4 +22,18 @@ page-backup-request {
     margin-right: 10px;
     margin-left: 10px;
   }
+  .description{
+    color: rgba(255, 255, 255, 0.5);
+  }
+  #arrow-down {
+    font-size: 4.2rem;
+    color: color($colors, primary);
+  }
+  .cta-buttons{
+    padding-bottom: 4vw;
+  }
+  .alert-icon {
+    margin: 20px auto 5px;
+    height: 10vh;
+  }
 }

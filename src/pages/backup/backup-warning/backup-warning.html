@@ -8,8 +8,8 @@
   <div class="img-container">
     <img src='assets/img/backup/backup-warning.svg' />
   </div>
-  <div translate class="description bottom">Anyone with your backup phrase can access or spend your bitcoin.</div>
+   <div class="bottom-absolute">
+    <p translate class="description bottom">Anyone with your backup phrase can access or spend your bitcoin.</p>
+    <button ion-button class="button-standard" (click)="openWarningModal()" translate>Got it</button>
+  </div>
 </ion-content>
-<ion-footer>
-  <button ion-button full class="button-footer" (click)="openWarningModal()" translate>Got it</button>
-</ion-footer>
