@@ -1,4 +1,4 @@
-<button ion-item (click)="openTxpModal(tx)">
+<button ion-item class="proposal-container" (click)="openTxpModal(tx)">
   <ion-icon item-start>
     <img src="assets/img/icon-proposal-pending.svg">
   </ion-icon>
@@ -9,8 +9,10 @@
       <span *ngIf="!tx.message && tx.toAddress && !addressbook[tx.toAddress]" translate>Sending</span>
     </span>
     <span *ngIf="tx.merchant">
-      <span *ngIf="tx.merchant.pr.ca"><ion-icon class="fi-lock"></ion-icon> {{tx.merchant.domain}}</span>
-      <span *ngIf="!tx.merchant.pr.ca"><ion-icon class="fion-icon-unlock"></ion-icon> {{tx.merchant.domain}}</span>
+      <span *ngIf="tx.merchant.pr.ca">
+        <ion-icon class="fi-lock"></ion-icon> {{tx.merchant.domain}}</span>
+      <span *ngIf="!tx.merchant.pr.ca">
+        <ion-icon class="fion-icon-unlock"></ion-icon> {{tx.merchant.domain}}</span>
     </span>
     <div class="copayer">
       <span *ngIf="tx.creatorName">{{ tx.creatorName}}@</span>
