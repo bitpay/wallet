@@ -3,11 +3,14 @@
 </ion-header>
 
 <ion-content no-bounce>
+  <img src="assets/img/app/onboarding/warning.svg" class="alert-icon" />
   <h3 translate>No backup, no bitcoin.</h3>
   <p class="description" translate>Since only you control your money, you’ll need to save your backup phrase in case this app is deleted.</p>
-  <div class="bottom-absolute cta-buttons">
+  <div class="bottom-absolute">
+    <ion-icon name="ios-arrow-round-down-outline" class="arrow-down"></ion-icon>
     <p class="description" translate>Your wallet is never saved to cloud storage or standard device backups.</p>
     <button class="primary" ion-button class="button-standard" (click)="initBackupFlow()" translate>Backup wallet</button>
-    <button class="secondary" ion-button clear color="blank" class="button-standard btn-transparent" (click)="doBackupLater()" translate>Do it later</button>
-   </div>
+    <button class="secondary" ion-button clear color="blank" class="button-standard btn-transparent" (click)="doBackupLater()"
+      translate>Do it later</button>
+  </div>
 </ion-content>
