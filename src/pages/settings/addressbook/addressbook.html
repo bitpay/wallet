@@ -34,7 +34,6 @@
     </ion-list>
   </div>
 
+  <button ion-button *ngIf="isEmptyList" class="button-standard" (click)="addEntry()" translate>Add Contact</button>
+
 </ion-content>
-<ion-footer *ngIf="isEmptyList">
-  <button ion-button full class="button-footer" (click)="addEntry()" translate>Add Contact</button>
-</ion-footer>
