@@ -1,5 +1,11 @@
 page-backup-request {
   @extend %onboarding;
+  & > ion-content {
+    background-image: $onboarding-background-image;
+    background-position: top center;
+    background-size: contain;
+    background-repeat: no-repeat;
+  }
   text-align: center;
   ion-header {
     .toolbar-title,

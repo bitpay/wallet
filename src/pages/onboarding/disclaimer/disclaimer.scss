@@ -1,5 +1,11 @@
 page-disclaimer {
   @extend %onboarding;
+  & > ion-content {
+    background-image: $onboarding-background-image !important;
+    background-position: center center;
+    background-size: contain;
+    background-repeat: no-repeat;
+  }
   text-align: center;
   ion-header {
     .toolbar-title,

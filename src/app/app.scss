@@ -32,8 +32,10 @@ ion-alert.alert-top{
 }
 
 .button-footer {
-  margin: 0;
+  margin: 0px;
   height: 70px;
+  width: 100%;
+  font-size: 1.6rem;
 }
 
 // Prevent uppercase on buttons
@@ -289,4 +291,13 @@ ion-icon {
   &[class*="tab-settings"] {
     mask-image: url(../assets/img/tab-icons/ico-settings.svg);
   }
+}
+
+.button-standard {
+  width: 90%;
+  max-width: 300px !important;
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+  min-height: 57px;
 }

@@ -9,9 +9,8 @@
 </ion-header>
 
 <ion-content no-bounce>
-  <h1 translate>Wallet Created</h1>
+  <h1 translate>Notifications by email</h1>
   <div *ngIf="!showConfirmForm">
-    <p class="description" translate>Notifications by email</p>
     <img src='assets/img/app/onboarding/push-notifications.svg' />
   </div>
 </ion-content>
@@ -29,7 +28,8 @@
         <ion-checkbox formControlName="accept" checked="true"></ion-checkbox>
       </ion-item>
 
-      <button ion-button block type="submit" [disabled]="!emailForm.valid"><span translate>Continue</span> &rarr;</button>
+      <button ion-button class="button-footer" type="submit" [disabled]="!emailForm.valid">
+        <span translate>Continue</span> &rarr;</button>
     </form>
   </div>
 
@@ -41,10 +41,10 @@
     <div class="buttons">
       <div class="row">
         <div class="col col-50">
-          <button block ion-button (click)="showConfirm()" translate>Edit</button>
+          <button block ion-button class="button-footer" (click)="showConfirm()" translate>Edit</button>
         </div>
         <div class="col col-50">
-          <button block ion-button (click)="save()" translate>Confirm</button>
+          <button block ion-button class="button-footer" (click)="save()" translate>Confirm</button>
         </div>
       </div>
     </div>

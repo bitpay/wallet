@@ -1,8 +1,8 @@
 page-onboarding {
   @extend %onboarding;
   & > ion-content {
-    background: $onboarding-welcome-bg;
-    background-position: center center;
+    background-image: $onboarding-welcome-bg, $onboarding-background-image;
+    background-position: top center;
     background-size: contain;
     background-repeat: no-repeat;
   }
@@ -16,6 +16,7 @@ page-onboarding {
     p {
       line-height: 1.6;
       font-size: 18px;
+      color: color($colors, blank);
     }
   }
   .onboarding-description {
@@ -26,8 +27,23 @@ page-onboarding {
 
 %onboarding {
   .content {
-    background: $onboarding-gradient-top-color;
     color: $onboarding-color;
-    background-image: $onboarding-background-image;
+  }
+}
+.btn-transparent {
+  border: 0px !important;
+  background-color: rgba(155, 155, 171, 0.1);
+  color: #ffffff;
+  -webkit-box-shadow: none;
+	-moz-box-shadow: none;
+	box-shadow: none;  
+}
+
+.bottom-absolute{
+  padding: 0px;
+  .button-footer{
+    max-width: 100%;
+    margin:0;
+    font-size: 1.2rem;
   }
 }
