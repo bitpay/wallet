@@ -1,5 +1,18 @@
 page-feedback-card {
-  img {
-    width: 40px;
+  .icon-svg {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    > img {
+      background-repeat:no-repeat;
+      background-clip: padding-box;
+      background-size: contain;
+      height: 2.5rem;
+      margin-bottom: 5px;
+    }
+  }
+  .button-standard{
+    margin-bottom: 12px;
+    margin-top: 12px;
   }
 }

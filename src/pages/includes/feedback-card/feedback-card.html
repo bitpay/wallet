@@ -1,49 +1,49 @@
-<ion-card>
-  <ion-card-header>
+<div class="card">
+  <ion-item-divider>
+    <div class="title" item-start>
+      <span translate>How do you like {{appName}}?</span>
+    </div>
+    <div item-end>
+      <button ion-button clear icon-only color="grey" (click)="hideCard()">
+        <ion-icon name="close"></ion-icon>
+      </button>
+    </div>
+  </ion-item-divider>
+  <ion-list>
     <ion-row>
-      <ion-col class="title">
-        <span translate>How do you like {{appName}}?</span>
-      </ion-col>
-      <ion-col text-right (click)="hideCard()">
-        <ion-icon name="md-close"></ion-icon>
-      </ion-col>
-    </ion-row>
-  </ion-card-header>
-  <ion-card-content>
-    <ion-row>
-      <ion-col>
-        <ion-icon (click)="setScore(1)">
+      <ion-col col-20>
+        <ion-icon class="icon-svg" (click)="setScore(1)">
           <img *ngIf="1 <= score" src="assets/img/ico-star-filled.svg" />
           <img *ngIf="1 > score" src="assets/img/ico-star.svg" />
         </ion-icon>
       </ion-col>
-      <ion-col>
-        <ion-icon (click)="setScore(2)">
+      <ion-col col-20>
+        <ion-icon class="icon-svg" (click)="setScore(2)">
           <img *ngIf="2 <= score" src="assets/img/ico-star-filled.svg" />
           <img *ngIf="2 > score" src="assets/img/ico-star.svg" />
         </ion-icon>
       </ion-col>
-      <ion-col>
-        <ion-icon (click)="setScore(3)">
+      <ion-col col-20>
+        <ion-icon class="icon-svg" (click)="setScore(3)">
           <img *ngIf="3 <= score" src="assets/img/ico-star-filled.svg" />
           <img *ngIf="3 > score" src="assets/img/ico-star.svg" />
         </ion-icon>
       </ion-col>
-      <ion-col>
-        <ion-icon (click)="setScore(4)">
+      <ion-col col-20>
+        <ion-icon class="icon-svg" (click)="setScore(4)">
           <img *ngIf="4 <= score" src="assets/img/ico-star-filled.svg" />
           <img *ngIf="4 > score" src="assets/img/ico-star.svg" />
         </ion-icon>
       </ion-col>
-      <ion-col>
-        <ion-icon (click)="setScore(5)">
+      <ion-col col-20>
+        <ion-icon class="icon-svg" (click)="setScore(5)">
           <img *ngIf="5 <= score" src="assets/img/ico-star-filled.svg" />
           <img *ngIf="5 > score" src="assets/img/ico-star.svg" />
         </ion-icon>
       </ion-col>
     </ion-row>
-    <button ion-button block outline (click)="goFeedbackFlow()" *ngIf="button_title">
+    <button ion-button class="button-standard" (click)="goFeedbackFlow()" *ngIf="button_title">
       <span>{{button_title}}</span>
     </button>
-  </ion-card-content>
-</ion-card>
+  </ion-list>
+</div>
