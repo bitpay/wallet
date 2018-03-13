@@ -15,10 +15,8 @@
         Only advanced users should handle extended private keys directly.
       </p>
     </div>
+    <div copy-to-clipboard="{{xPrivKey}}">
+      <button ion-button class="button-standard" translate>Copy to clipboard</button>
+    </div>
   </div>
 </ion-content>
-<ion-footer>
-  <div *ngIf="wallet && !credentialsEncrypted" copy-to-clipboard="{{xPrivKey}}">
-    <button ion-button full class="button-footer" translate>Copy to clipboard</button>
-  </div>
-</ion-footer>
