@@ -18,10 +18,9 @@ page-wallet-addresses {
     }
   }
   .item {
-    p {
-      &.amount {
+    .info {
         color: color($colors, primary) !important;
-      }
+        margin-top: 1px;
     }
   }
 }
