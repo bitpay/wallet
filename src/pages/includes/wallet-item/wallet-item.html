@@ -7,10 +7,10 @@
   </ion-icon>
   <div class="wallet-name">
     {{wallet.name || wallet.id}}
-    <span *ngIf="wallet.n > 1">
+    <span class="wallet-info" *ngIf="wallet.n > 1">
       {{wallet.m}}-of-{{wallet.n}}
     </span>
-    <span *ngIf="!wallet.isComplete()" translate>
+    <span class="wallet-info assertive" *ngIf="!wallet.isComplete()" translate>
       Incomplete
     </span>
   </div>

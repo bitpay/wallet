@@ -1,7 +1,7 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>{{'Lock'|translate}}</ion-title>
+    <ion-title>{{'Startup Lock'|translate}}</ion-title>
   </ion-navbar>
 
 </ion-header>
@@ -14,7 +14,7 @@
     </ion-item>
   </ion-list>
 
-  <ion-item-divider *ngIf="needsBackupMsg" text-wrap>
+  <div *ngIf="needsBackupMsg" class="msg-container" text-wrap>
     <span class="assertive">{{needsBackupMsg}}</span>
-  </ion-item-divider>
+  </div>
 </ion-content>

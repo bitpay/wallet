@@ -6,7 +6,7 @@
 
 <ion-content>
   <page-wallet-item [wallet]="wallet"></page-wallet-item>
-  <ion-item-divider text-wrap>
+  <ion-item-divider text-wrap text-center>
     <span translate>Each bitcoin wallet can generate billions of addresses from your 12-word backup. A new address is automatically generated
       and shown each time you receive a payment.
     </span>
@@ -66,7 +66,7 @@
 
       <ion-item *ngFor="let w of latestWithBalance" copy-to-clipboard="{{w.address}}">
         <h3>{{w.address}}</h3>
-        <p class="amount">{{w.amount | satToUnit: wallet.coin}}</p>
+        <p class="info">{{w.amount | satToUnit: wallet.coin}}</p>
       </ion-item>
     </div>
 
@@ -75,17 +75,17 @@
 
       <ion-item>
         <span translate>Total wallet inputs</span>
-        <div>{{allUtxosNb}} [{{allUtxosSum}}]</div>
+        <p class="info">{{allUtxosNb}} [{{allUtxosSum}}]</p>
       </ion-item>
 
       <ion-item>
         <span translate> Low amount inputs </span>
-        <div>{{lowUtxosNb}} [{{ lowUtxosSum }}]</div>
+        <p class="info">{{lowUtxosNb}} [{{ lowUtxosSum }}]</p>
       </ion-item>
 
       <ion-item text-wrap>
         <span translate> Approximate Bitcoin network fee to transfer wallet's balance (with normal priority) </span>
-        <div>{{minFeePer}} [{{minFee}}]</div>
+        <p class="info">{{minFeePer}} [{{minFee}}]</p>
       </ion-item>
     </div>
   </ion-list>

@@ -10,6 +10,9 @@ page-wallet-item{
     padding:10px;
     font-size: 18px;
     color: color($colors, dark);
+    .wallet-info{
+      font-size: 12px;
+    }
   }
   .wallet-icon{
     img {

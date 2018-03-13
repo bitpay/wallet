@@ -14,9 +14,9 @@
     <ion-item-divider *ngIf="withBalance && withBalance[0]">{{'Addresses with balance' | translate}}</ion-item-divider>
     <ion-item *ngFor="let w of withBalance" copy-to-clipboard="{{w.address}}">
       <div>{{w.address}}</div>
-      <ion-note>
+      <p class="info">
         {{w.amount | satToUnit: coin}}
-      </ion-note>
+      </p>
     </ion-item>
 
     <ion-item-divider>{{'Unused addresses' | translate}}</ion-item-divider>

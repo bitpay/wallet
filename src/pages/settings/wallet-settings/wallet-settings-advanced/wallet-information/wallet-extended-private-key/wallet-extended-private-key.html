@@ -6,7 +6,7 @@
 <ion-content>
   <page-wallet-item [wallet]="wallet"></page-wallet-item>
   <div class="container" *ngIf="wallet && !credentialsEncrypted">
-    <h1 translate>Warning!</h1>
+    <h1 class="assertive" translate>Warning!</h1>
     <div class="warning-message">
       <p translate>
         Your extended private keys are all that is needed to access your bitcoin funds. Be sure to protect your private keys and

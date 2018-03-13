@@ -32,11 +32,11 @@ $colors: (
   light: #f4f4f4,
   blank: #fafafa,
   dark: #424242,
-  grey: #999
+  grey: #667
 );
 
 // App background color
-$background-color: #F5F5F5;
+$background-color : #F5F5F5;
 
 // Item list background color
 $list-background-color: #ffffff;
@@ -84,6 +84,7 @@ $tabs-ios-border-color: rgba(0, 0, 0, .1);
 $item-ios-body-text-font-size: 1.4rem;
 
 $item-ios-divider-background: $background-color;
+$item-ios-divider-color: color($colors, dark);
 $item-ios-padding-top: 16px;
 $item-ios-padding-bottom: 16px;
 $label-ios-margin-top: 14px;
@@ -109,6 +110,7 @@ $item-md-body-text-font-size: 1.4rem;
 $item-md-font-size: 1.6rem;
 
 $item-md-divider-background: $background-color;
+$item-md-divider-color: color($colors, dark);
 $item-md-padding-top: 16px;
 $item-md-padding-bottom: 16px;
 $label-md-margin-top: 14px;
