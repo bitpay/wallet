@@ -1,17 +1,12 @@
 <ion-header no-border>
-
   <ion-navbar hideBackButton="true">
-    <ion-buttons end>
-      <button ion-button color="primary" (click)="skip()" translate>Skip</button>
-    </ion-buttons>
   </ion-navbar>
-
 </ion-header>
 
 <ion-content no-bounce>
-  <h1 translate>Notifications by email</h1>
+  <h3 translate>Notifications by email</h3>
   <div *ngIf="!showConfirmForm">
-    <img src='assets/img/app/onboarding/push-notifications.svg' />
+    <img src='assets/img/app/onboarding/push-notifications.svg' width="200" />
   </div>
 </ion-content>
 
@@ -27,9 +22,8 @@
         <ion-label>{{'Get news and updates from BitPay' | translate}}</ion-label>
         <ion-checkbox formControlName="accept" checked="true"></ion-checkbox>
       </ion-item>
-
-      <button ion-button class="button-standard" type="submit" [disabled]="!emailForm.valid">
-        <span translate>Continue</span> &rarr;</button>
+      <button ion-button class="button-standard" type="submit" [disabled]="!emailForm.valid">Continue</button>
+      <button ion-button clear color="blank" class="button-standard btn-transparent" (click)="skip()">Skip</button>
     </form>
   </div>
 
