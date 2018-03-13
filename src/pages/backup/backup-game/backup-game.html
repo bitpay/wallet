@@ -30,7 +30,11 @@
             </span>
           </div>
         </div>
-        <div translate class="bottom">We'll confirm on the next screen.</div>
+        <div class="bottom-absolute">
+          <div translate>We'll confirm on the next screen.</div>
+          <button *ngIf="currentIndex == 0" ion-button class="button-standard" [disabled]="credentialsEncrypted || error" (click)="slideNext()"
+            translate>I've written it down</button>
+        </div>
       </div>
     </ion-slide>
 
@@ -52,9 +56,10 @@
         </div>
       </div>
       <div *ngIf="selectComplete" class="bottom-absolute">
-          <ion-item-divider>{{'Is this correct?' | translate}}</ion-item-divider>
-          <button ion-button clear class="button-footer" (click)="setFlow()" translate>Clear</button>
-        </div>
+        <ion-item-divider>{{'Is this correct?' | translate}}</ion-item-divider>
+        <button ion-button clear class="button-standard" (click)="setFlow()" translate>Clear</button>
+        <button *ngIf="currentIndex == 1 && selectComplete" ion-button class="button-standard" (click)="slideNext()" translate>Confirm</button>
+      </div>
     </ion-slide>
 
     <ion-slide *ngIf="wallet.mnemonicHasPassphrase">
@@ -69,16 +74,10 @@
         | translate}}
       </ion-item-divider>
 
-      <div class="bottom">
+      <div class="bottom-absolute">
         <button ion-button block [disabled]="!password" (click)="finalStep()" translate>Confirm</button>
+        <button *ngIf="currentIndex == 2" [disabled]="!password" ion-button class="button-standard" (click)="finalStep()" translate>Confirm</button>
       </div>
     </ion-slide>
   </ion-slides>
 </ion-content>
-<ion-footer>
-  <button *ngIf="currentIndex == 0" ion-button full class="button-footer" [disabled]="credentialsEncrypted || error" (click)="slideNext()"
-    translate>I've written it down</button>
-  <button *ngIf="currentIndex == 1 && selectComplete" ion-button full class="button-footer" (click)="slideNext()" translate>Confirm</button>
-  <button *ngIf="currentIndex == 2" [disabled]="!password" ion-button full class="button-footer" (click)="finalStep()" translate>Confirm</button>
-
-</ion-footer>
