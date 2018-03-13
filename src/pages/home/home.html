@@ -62,9 +62,15 @@
 
   <div class="card" *ngIf="txps && txps[0]">
     <ion-item-divider (click)="openProposalsPage()">
-      <span class="title" translate>Payment Proposals</span>
-      <ion-badge item-end *ngIf="txpsN>3">{{txpsN}}</ion-badge>
-      <ion-icon item-end color="grey" ios="ios-arrow-dropright"></ion-icon>
+      <div class="title" item-start>
+        <span translate>Payment Proposals</span>
+      </div>
+      <div item-end>
+        <button ion-button clear icon-only color="grey">
+          <ion-badge *ngIf="txpsN>3" color="danger">{{txpsN}}</ion-badge>
+          <ion-icon ios="ios-arrow-dropright"></ion-icon>
+        </button>
+      </div>
     </ion-item-divider>
     <ion-list>
       <page-txp *ngFor="let txp of txps" [tx]="txp" [addressbook]="addressbook"></page-txp>
@@ -73,9 +79,15 @@
 
   <div class="card" *ngIf="notifications && notifications[0] && recentTransactionsEnabled">
     <ion-item-divider (click)="openActivityPage()">
-      <span class="title" translate>Recent Transactions</span>
-      <ion-badge item-end *ngIf="notificationsN>3">{{notificationsN}}</ion-badge>
-      <ion-icon item-end color="grey" ios="ios-arrow-dropright"></ion-icon>
+      <div class="title" item-start>
+        <span translate>Recent Transactions</span>
+      </div>
+      <div item-end>
+        <button ion-button clear icon-only color="grey">
+          <ion-badge *ngIf="notificationsN>3" color="danger">{{notificationsN}}</ion-badge>
+          <ion-icon ios="ios-arrow-dropright"></ion-icon>
+        </button>
+      </div>
     </ion-item-divider>
     <ion-list>
       <page-wallet-activity *ngFor="let notification of notifications" (click)="openNotificationModal(notification)" [notification]="notification"></page-wallet-activity>
@@ -132,7 +144,8 @@
               : '')}}
             </span>
             <span *ngIf="wallet.scanning" translate>Scanning funds</span>
-            <span *ngIf="wallet.balanceHidden && !wallet.scanning">[<span translate>Balance Hidden</span>]</span>
+            <span *ngIf="wallet.balanceHidden && !wallet.scanning">[
+              <span translate>Balance Hidden</span>]</span>
             <span class="text-gray" *ngIf="wallet.credentials.m > 1">{{wallet.credentials.m}}-of-{{wallet.credentials.n}}</span>
             <ion-icon *ngIf="!wallet.balanceHidden && wallet.status && (wallet.status.totalBalanceSat != wallet.status.spendableAmount)"
               ios="ios-timer-outline" md="md-timer"></ion-icon>
@@ -187,7 +200,8 @@
               : '')}}
             </span>
             <span *ngIf="wallet.scanning" translate>Scanning funds</span>
-            <span *ngIf="wallet.balanceHidden && !wallet.scanning">[<span translate>Balance Hidden</span>]</span>
+            <span *ngIf="wallet.balanceHidden && !wallet.scanning">[
+              <span translate>Balance Hidden</span>]</span>
             <span *ngIf="wallet.credentials.m > 1">{{wallet.credentials.m}}-of-{{wallet.credentials.n}}</span>
             <ion-icon *ngIf="!wallet.balanceHidden && wallet.status && (wallet.status.totalBalanceSat != wallet.status.spendableAmount)"
               name="timer"></ion-icon>
@@ -201,7 +215,8 @@
   <div class="card" *ngIf="showBitPayCard && bitpayCardItems && bitpayCardItems[0]">
     <ion-item-divider>
       <div class="title" item-start>
-        <span>BitPay Visa<sup>&reg;</sup> Card</span>
+        <span>BitPay Visa
+          <sup>&reg;</sup> Card</span>
       </div>
       <div item-end>
         <button ion-button clear icon-only color="grey" (click)="goTo('BitPayCardIntroPage')">
