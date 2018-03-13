@@ -26,7 +26,12 @@ page-tour {
       min-height: 300px;
     }
   }
-  .description {
+  .top-description {
+    font-size: 1.4rem;
+    padding: 0 4rem 0 4rem;
+    color: rgba(255, 255, 255, 0.5);
+  }
+  .bottom-description {
     font-size: 1.4rem;
     color: color($colors, blank);
   }
