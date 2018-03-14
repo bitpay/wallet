@@ -53,7 +53,7 @@ export class CollectEmailPage {
   }
 
   public skip(): void {
-    this.goToBackupRequestPage()
+    this.goToBackupRequestPage();
   }
 
   public showConfirm(): void {
