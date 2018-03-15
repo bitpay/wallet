@@ -555,10 +555,10 @@ export class ConfirmPage {
     });
   }
 
-  private setSendError(msg: string) {
+  private setSendError(msg: string, title: string = '') {
     if (this.isCordova)
       this.slideButton.isConfirmed(false);
-    this.popupProvider.ionicAlert(this.translate.instant('Error at confirm'), this.bwcErrorProvider.msg(msg));
+    this.popupProvider.ionicAlert(this.translate.instant('Error at ' + title), this.bwcErrorProvider.msg(msg));
   }
 
   public toggleAddress(): void {
@@ -604,7 +604,7 @@ export class ConfirmPage {
               return resolve();
 
             let amount = (this.tx.amount / 1e8).toFixed(8);
-            let unit = this.config.wallet.settings.unitName;
+            let unit = txp.coin.toUpperCase();
             let name = wallet.name;
             let message = 'Sending ' + amount + ' ' + unit + ' from your ' + name + ' wallet'; // TODO: translate
             let okText = this.translate.instant('Confirm');
