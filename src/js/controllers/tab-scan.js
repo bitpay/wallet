@@ -7,13 +7,19 @@ angular.module('copayApp.controllers').controller('tabScanController', function(
   $scope.webScannerCameraNumber = 0
   $scope.scannerStates = scannerStates;
   $scope.usingWebScanner = false
-  var isSafari = navigator.vendor && navigator.vendor.indexOf('Apple') > -1
+  $scope.cameraSupported = platformInfo.cameraSupported
+
   var webScanner
-  if (platformInfo.isIOS || isSafari) {
+
+  if (platformInfo.isSafari && platformInfo.cameraSupported) {
+    $log.debug("use web scanner")
+    if (!navigator.getUserMedia) {
+      navigator.getUserMedia = navigator.webkitGetUserMedia;
+    }
     $scope.usingWebScanner = true
     webScanner = new Instascan.Scanner({ video: document.getElementById('webScanner') })
     webScanner.addListener('scan', function (content) {
-      handleSuccessfulScan(content)
+      handleSuccessfulScan(content);
     });
   }
 
@@ -22,7 +28,7 @@ angular.module('copayApp.controllers').controller('tabScanController', function(
     denied: 'denied',
     unavailable: 'unavailable',
     loading: 'loading',
-    visible: 'visible'
+    visible: 'visible',
   };
   $scope.scannerStates = scannerStates;
 
@@ -88,18 +94,6 @@ angular.module('copayApp.controllers').controller('tabScanController', function(
     activate();
   });
 
-  function isSafari() {
-    var ua = navigator.userAgent.toLowerCase();
-    if (ua.indexOf('safari') != -1) {
-      if (ua.indexOf('chrome') > -1) {
-        return "CHROME";
-      } else {
-        return "SAFARI";
-      }
-    }
-    return "OTHER";
-  }
-
   function activate(){
     $log.debug('Scanner activated, setting to visible...');
     console.log('activate() ran', $scope.currentState === scannerStates.visible, $scope.currentState)
@@ -108,17 +102,19 @@ angular.module('copayApp.controllers').controller('tabScanController', function(
       Instascan.Camera.getCameras().then(function (cameras) {
         if (cameras.length > 0) {
           if (cameras.length > 1) { $scope.canChangeWebScannerCamera = true }
-          $scope.startedWebCamera = true
+          $scope.startedWebCamera = true;
           $scope.currentState = scannerStates.visible;
-          $scope.webScannerCameraNumber = 0
+          $scope.webScannerCameraNumber = 0;
           webScanner.start(cameras[0]);
         } else {
-          console.error('No cameras found.');
-          $scope.usingWebScanner = false
+          $log.debug('No cameras found.');
+          $scope.usingWebScanner = false;
+          $scope.cameraSupported = false;
         }
       }).catch(function (e) {
-        $scope.usingWebScanner = false
-        console.error(e);
+        $scope.usingWebScanner = false;
+        $scope.cameraSupported = false;
+        $log.error(e);
       });
     } else {
       scannerService.activate(function(){

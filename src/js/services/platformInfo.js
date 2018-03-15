@@ -50,7 +50,7 @@ angular.module('copayApp.services').factory('platformInfo', function($window) {
     isAndroid: ionic.Platform.isAndroid(),
     isIOS: ionic.Platform.isIOS(),
     isWP: ionic.Platform.isWindowsPhone() || ionic.Platform.platform() == 'edge',
-    isSafari: Object.prototype.toString.call(window.HTMLElement).indexOf('Constructor') > 0,
+    // isSafari: Object.prototype.toString.call(window.HTMLElement).indexOf('Constructor') > 0,
     ua: ua,
     isCordova: !!$window.cordova,
     isNW: isNodeWebkit(),
@@ -65,6 +65,16 @@ angular.module('copayApp.services').factory('platformInfo', function($window) {
 
   ret.versionIntelTEE = getVersionIntelTee();
   ret.supportsIntelTEE = ret.versionIntelTEE.length > 0;
+  ret.isSafari = navigator.vendor && navigator.vendor.indexOf('Apple') > -1
+  var iOSVesionExtracted = navigator.userAgent.match(/(iPhone OS )(\d+)_(\d+)_(\d+)/) // ['iphone', 'iphone', 'major', 'minor', 'fix'] ['', '', '11', '2', '1']
+  ret.iOSVersion = iOSVesionExtracted ? [parseInt(iOSVesionExtracted[2], 10), parseInt(iOSVesionExtracted[3], 10), parseInt(iOSVesionExtracted[4], 10)] : []
+  ret.iOSWebSupportsCamera = ret.iOSVersion.length ? ret.iOSVersion[0] >= 11 && ret.iOSVersion[1] >= 0 : false
+  ret.iOSPWASupportsCamera = ret.iOSVersion.length ? ret.iOSVersion[0] >= 11 && ret.iOSVersion[1] >= 3 : false
+  ret.isPWA = navigator.standalone || false
+  ret.cameraSupported = true
 
+  // Update if camera is unsupported
+  if (ret.isSafari && !ret.iOSWebSupportsCamera) { ret.cameraSupported = false }
+  if (ret.isSafari && ret.isPWA && !ret.iOSPWASupportsCamera) { ret.cameraSupported = false }
   return ret;
 });

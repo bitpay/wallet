@@ -8,7 +8,7 @@
     </ion-nav-buttons>
   </ion-nav-bar>
   <ion-content scroll="false">
-    <video ng-show="usingWebScanner" id="webScanner"></video>
+    <video ng-show="usingWebScanner && cameraSupported" id="webScanner"></video>
     <div class="ng-hide zero-state" id="tab-scan-has-problems" ng-show="currentState === scannerStates.unauthorized || currentState === scannerStates.denied || currentState === scannerStates.unavailable">
       <i class="icon zero-state-icon">
         <img src="img/tab-icons/ico-receive.svg"/>
@@ -24,8 +24,8 @@
         <button ng-show="currentState === scannerStates.unavailable" class="ng-hide button button-standard button-primary" ng-click="attemptToReactivate()" translate>Retry Camera</button>
       </div>
     </div>
-    <div class="ng-show" id="tab-scan-loading-camera" ng-show="currentState === scannerStates.loading" translate>Attempting to load the camera, please wait.</div>
-    <div class="ng-show" id="tab-scan-loading-camera2" ng-show="currentState === scannerStates.loading && cameraIssue" translate>Your camera may be disabled or you may have no camera connected. In either case the scan function will not work.</div>
+    <div class="ng-show zero-state-tldr" ng-show="!cameraSupported" translate>Camera is not supported on this device.</div>
+    <div class="ng-show" id="tab-scan-loading-camera" ng-show="currentState === scannerStates.loading && cameraSupported" translate>Attempting to load the camera, please wait.</div>
     <div class="ng-hide" id="tab-scan-camera-ready" ng-show="startedWebCamera || currentState === scannerStates.visible">
       <div class="guides">
         <img class="svg qr-scan-guides" src="img/bitpay-wallet-qr-scan-guides.svg">
