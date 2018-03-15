@@ -4,13 +4,15 @@
 </ion-header>
 
 <ion-content no-bounce>
-  <h3 translate>Notifications by email</h3>
-  <div *ngIf="!showConfirmForm">
-    <img src='assets/img/app/onboarding/push-notifications.svg' width="200" />
+  <div class="fixed">
+    <h3 translate>Notifications by email</h3>
+    <div *ngIf="!showConfirmForm">
+      <img src='assets/img/app/onboarding/push-notifications.svg' width="200" />
+    </div>
   </div>
 </ion-content>
 
-<ion-footer>
+<ion-footer no-border>
   <div class="email-form" *ngIf="!showConfirmForm">
     <p class="description" translate>Where would you like to receive email notifications about payments?</p>
     <form [formGroup]="emailForm" (ngSubmit)="showConfirm()">
