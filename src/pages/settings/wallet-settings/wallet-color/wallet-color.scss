@@ -16,12 +16,14 @@ page-wallet-color {
 }
 
 .settings-color-block {
-  display: inline-block;
+  display: flex;
   width: 24px;
   height: 24px;
   border-radius: 50%;
   float: left; 
   margin: 1rem;
+  box-shadow: 0px 0px 10px;
+  align-items: center;
 }
 
 /* generate classes for all colors */
