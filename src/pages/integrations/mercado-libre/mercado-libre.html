@@ -16,10 +16,8 @@
       <div class="description" translate padding>
         <b>Only</b> redeemable on Mercado Livre (Brazil)
       </div>
-      <div *ngIf="!showOauthForm">
-        <button ion-button outline block (click)="goTo('Amount')" no-low-fee translate>Buy a Gift Card</button>
-        <button margin-top ion-button clear small block color="dark" (click)="openExternalLink('https://www.mercadolivre.com.br')" translate>Visit mercadolivre.com.br &rarr;</button>
-      </div>
+      <button *ngIf="!showOauthForm" ion-button outline class="button-standard" (click)="goTo('Amount')" no-low-fee translate>Buy a Gift Card</button>
+      <button *ngIf="!showOauthForm" ion-button clear small block color="dark" (click)="openExternalLink('https://www.mercadolivre.com.br')" translate>Visit mercadolivre.com.br &rarr;</button>
     </div>
   </div>
   <div class="container" *ngIf="giftCards">

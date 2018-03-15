@@ -23,8 +23,8 @@
         <ion-checkbox formControlName="accept" checked="true"></ion-checkbox>
       </ion-item>
       <button ion-button class="button-standard" type="submit" [disabled]="!emailForm.valid">Continue</button>
-      <button ion-button clear color="blank" class="button-standard btn-transparent" (click)="skip()">Skip</button>
     </form>
+    <button ion-button clear color="blank" class="button-standard btn-transparent" (click)="skip()">Skip</button>
   </div>
 
   <div class="email-form" *ngIf="showConfirmForm">

@@ -19,23 +19,23 @@
     <div padding margin *ngIf="showOauthForm" text-wrap>If you have trouble, contact
       <a (click)="openSupportWindow()">Glidera support</a> for direct assistance.
     </div>
-    <button *ngIf="!showOauthForm" ion-button outline (click)="openAuthenticateWindow()">Connect to Glidera</button>
-    <ion-list *ngIf="showOauthForm">
-      <form [formGroup]="oauthCodeForm" (ngSubmit)="submitOauthCode(oauthCodeForm.value.code)">
+    <button *ngIf="!showOauthForm" ion-button outline class="button-standard" (click)="openAuthenticateWindow()">Connect to Glidera</button>
+    <div class="form-container">
+      <form *ngIf="showOauthForm" [formGroup]="oauthCodeForm" (ngSubmit)="submitOauthCode(oauthCodeForm.value.code)">
         <ion-item>
           <ion-label stacked>OAuth Code</ion-label>
           <ion-input type="text" formControlName="code" [value]="oauthCodeForm.value.code" placeholder="{{'Enter OAuth Code'}}" required></ion-input>
         </ion-item>
-        <button ion-button type="submit" [disabled]="!oauthCodeForm.valid">Connect Glidera Account</button>
+        <button ion-button type="submit" class="button-standard" [disabled]="!oauthCodeForm.valid">Connect Glidera Account</button>
       </form>
-    </ion-list>
+    </div>
   </div>
   <div *ngIf="account.token && account.status && !account.status.userCanTransact" class="center-header">
-    <img src="assets/img/glidera/glidera-logo.png">
-    <div>Please complete your account verification on Glidera's website. If you have trouble, contact
+    <img src="assets/img/glidera/glidera-logo.png" width="200">
+    <div padding margin text-wrap>Please complete your account verification on Glidera's website. If you have trouble, contact
       <a (click)="openSupportWindow()">Glidera support</a> for direct assistance.
     </div>
-    <button ion-button outline (click)="openLoginWindow()">Complete Glidera Setup</button>
+    <button ion-button outline class="button-standard" (click)="openLoginWindow()">Complete Glidera Setup</button>
   </div>
   <div *ngIf="account.token && account.status && account.status.userCanTransact">
     <div class="main-header">

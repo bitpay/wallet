@@ -10,9 +10,9 @@ import { DisclaimerPage } from '../../onboarding/disclaimer/disclaimer';
 // providers
 import { BwcProvider } from '../../../providers/bwc/bwc';
 import { OnGoingProcessProvider } from '../../../providers/on-going-process/on-going-process';
+import { PopupProvider } from '../../../providers/popup/popup';
 import { ProfileProvider } from '../../../providers/profile/profile';
 import { WalletProvider } from '../../../providers/wallet/wallet';
-import { PopupProvider } from '../../../providers/popup/popup';
 
 @Component({
   selector: 'page-backup-game',
