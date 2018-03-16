@@ -3,7 +3,7 @@ page-card-item{
   .amount {
     font-size: 12.5px;
     &--received {
-      color: #09C286;
+      color: color($colors, success);
     }
     &--sent {
       color: color($colors, dark);
