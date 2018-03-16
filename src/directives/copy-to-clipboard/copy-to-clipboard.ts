@@ -54,6 +54,7 @@ export class CopyToClipboard {
     let showSuccess = this.toastCtrl.create({
       message: 'Copied to clipboard',
       duration: 1000,
+      position: 'top'
     });
     showSuccess.present();
   }

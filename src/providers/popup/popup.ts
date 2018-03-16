@@ -68,7 +68,7 @@ export class PopupProvider {
       let prompt = this.alertCtrl.create({
         title,
         message,
-        cssClass: cssClass,
+        cssClass,
         inputs: [
           {
             value: defaultText,

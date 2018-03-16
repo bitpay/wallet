@@ -16,15 +16,18 @@
         </div>
 
         <div class="balance-hidden" *ngIf="!updateStatusError && wallet.balanceHidden  && !wallet.scanning">
-          <strong translate>[Balance Hidden]</strong>
-          <div class="amount-alternative" translate>
+          <span class="title" translate>[Balance Hidden]</span>
+          <div translate>
             Tap and hold to show
           </div>
         </div>
       </div>
 
       <div class="balance-scanning" *ngIf="!updateStatusError && wallet.scanning">
-        <strong translate>[Scanning Funds]</strong>
+        <span class="title" translate>[Scanning Funds]</span>
+        <div translate>
+          Please wait...
+        </div>
       </div>
 
       <div class="balance-spendable" (click)="openBalanceDetails()" *ngIf="!wallet.balanceHidden && !wallet.scanning && showBalanceButton && wallet.status">
@@ -40,12 +43,12 @@
       </div>
 
       <div class="balance-error" *ngIf="updateStatusError" (tap)="updateAll(true)">
-        <span>{{updateStatusError}}.</span>
-        <strong>Tap to retry</strong>
+        <span class="title">Tap to retry</span>
+        <div>{{updateStatusError}}.</div>
       </div>
       <div class="balance-error" *ngIf="walletNotRegistered" (tap)="recreate()">
-        <span translate>This wallet is not registered at the given Bitcore Wallet Service (BWS). You can recreate it from the local information.</span>
-        <strong>Tap to recreate</strong>
+        <span class="title">Tap to recreate</span>
+        <div translate>This wallet is not registered at the given Bitcore Wallet Service (BWS). You can recreate it from the local information.</div>
       </div>
     </div>
 
@@ -138,7 +141,8 @@
           </div>
           <div *ngIf="tx.confirmations > 0">
             <span *ngIf="tx.customData && tx.customData.service">
-              <img class="icon-services" src="assets/img/shapeshift/icon-shapeshift.svg" *ngIf="tx.customData.service == 'shapeshift'" width="40">
+              <img class="icon-services" src="assets/img/shapeshift/icon-shapeshift.svg" *ngIf="tx.customData.service == 'shapeshift'"
+                width="40">
               <img class="icon-services" src="assets/img/amazon/icon-amazon.svg" *ngIf="tx.customData.service == 'amazon'" width="40">
               <img class="icon-services" src="assets/img/mercado-libre/icon-ml.svg" *ngIf="tx.customData.service == 'mercadolibre'" width="40">
               <img class="icon-services" src="assets/img/bitpay-card/icon-bitpay.svg" *ngIf="tx.customData.service == 'debitcard'" width="40">
@@ -182,6 +186,7 @@
 
         <ion-note item-end text-end>
           <div class="amount">
+            <span *ngIf=" tx.action == 'sent'">–</span>
             <span [ngClass]="{'received': tx.action == 'received'}" *ngIf="tx.action != 'invalid'">{{tx.amount | satToUnit: wallet.coin}}</span>
             <span class="double-spend" *ngIf="tx.action == 'invalid'" translate>(possible double spend)</span>
           </div>
