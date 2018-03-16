@@ -3,65 +3,91 @@ page-tx-details {
   $item-lateral-padding: 20px;
   $item-label-color: #6C6C6E;
 
-  .sending-label {
-    display: flex;
-    align-items: center;
-    .sending-img {
-      margin-right: 2rem;
-      width: 40px;
-      height: 40px;
-    }
-    span {
-      font-size: 1.8rem;
-    }
-  }
-  .amount-label {
-    padding-top: 1rem;
-    .amount {
-      font-size: 3.5rem;
-      .unit {
-        font-weight: 100;
+  .header-container {
+    padding: 20px 0px 20px 0px;
+    .sending-label {
+      display: flex;
+      align-items: center;
+      img.sending-img {
+        margin-right: 2rem;
+        width: 40px;
+        height: 40px;
+      }
+      span {
+        font-size: 1.8rem;
       }
     }
-    .alternative {
-      color: color($colors, grey);
+    .amount-label {
+      padding-top: 1rem;
+      .amount {
+        font-size: 3.5rem;
+        .unit {
+          font-weight: 400;
+        }
+      }
+      .alternative {
+        margin-top: 0.5rem;
+        color: color($colors, light-grey);
+      }
     }
   }
 
-  .payment-proposal-to, .wallet {
-    color: color($colors, grey);
-    font-size: 1.4rem;
+  .item-fee {
+    line-height: 20px;
+    .fee-title {
+      margin-bottom: 5px;
+      color: color($colors, grey);
+    }
+    .fee-amount {
+      font-weight: 400;
+    }
+    .fee-details {
+      font-size: 12.5px;
+      color: color($colors, light-grey);
+    }
+  }
+
+  .item-memo {
+    margin-top: 10px;
+  }
+
+  @mixin row-flex {
     display: flex;
     align-items: center;
-    .icon-wallet {
-      width: 25px;
-      height: 25px;
-      margin-right: 1rem;
-      &.disabled {
-        background-color: color($colors, light);
+    margin-top: 1rem;
+  }
+
+  .container-to, .container-from {
+    .wallet, .payment-to {
+      @include row-flex;
+      .icon-wallet {
+        margin-right: 1rem;
+        &.disabled {
+          background-color: color($colors, grey);
+        }
       }
-    }
-    .icon-bitcoin {
-      margin: 0 9px 0 0;
-      width: 25px;
-      height: 25px;
-      padding: 5px;
-      border: 1px solid color($colors, grey);
-      border-radius: $icon-border-radius;
+      .icon-bitcoin {
+        margin: 9px 2rem 9px 0;
+        width: 35px;
+        height: 35px;
+        padding: 5px 10px;
+        border: 1px solid color($colors, grey);
+        border-radius: $icon-border-radius;
+      }
     }
   }
 
   .low-fees {
-    ion-label {
-      font-size: 1.3rem !important;
-    }
     img {
       margin-right: 0.1rem;
       vertical-align: sub;
     }
+    a {
+      font-size: 1.2rem;
+    }
   }
-
   .timeline-item {
+    background-color: color($colors, blank);;
     border: 0;
     &:nth-child(2) {
       border-top: 1px solid $item-border-color;
