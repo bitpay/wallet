@@ -12,4 +12,10 @@ page-wallet-export {
     margin-top: 5rem;
     text-align: center;
   }
+  .warning {
+    background: color($colors, danger);
+    color: color($colors, light);
+    padding: 1rem;
+    border-radius: 10px;
+  }
 }
