@@ -1085,13 +1085,13 @@ export class WalletProvider {
   }
 
   // An alert dialog
-  private askPassword(name: string, title: string): Promise<any> {
+  private askPassword(warnMsg: string, title: string): Promise<any> {
     return new Promise((resolve, reject) => {
       let opts = {
         type: 'password',
         useDanger: true
       }
-      this.popupProvider.ionicPrompt(title, name, opts).then((res: any) => {
+      this.popupProvider.ionicPrompt(title, warnMsg, opts).then((res: any) => {
         return resolve(res);
       });
     });
@@ -1135,7 +1135,7 @@ export class WalletProvider {
   public handleEncryptedWallet(wallet: any): Promise<any> {
     return new Promise((resolve, reject) => {
       if (!this.isEncrypted(wallet)) return resolve();
-      this.askPassword(wallet.name, this.translate.instant('Enter Spending Password')).then((password: string) => {
+      this.askPassword(null, this.translate.instant('Enter Spending Password')).then((password: string) => {
         if (!password) return reject(this.translate.instant('No password'));
         if (!wallet.checkPassword(password)) return reject(this.translate.instant('Wrong password'));
         return resolve(password);
