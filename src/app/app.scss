@@ -323,3 +323,9 @@ ion-note {
   font-size: 12px;
   color: color($colors, light-grey);
 }
+
+.alertDanger {
+  .alert-message {
+    color: color($colors, danger);
+  }
+}
