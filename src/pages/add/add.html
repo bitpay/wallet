@@ -5,30 +5,28 @@
 </ion-header>
 
 <ion-content no-bounce>
-  <ion-list>
-    <button class="list-button" ion-item (click)="goToCreateWallet(false)">
-      <ion-icon item-start>
-        <img src="assets/img/icon-wallet.svg" class="icon-wallet" />
-      </ion-icon>
-      <span translate>New personal wallet</span>
-    </button>
-    <button class="list-button" ion-item (click)="goToCreateWallet(true)">
-      <ion-icon item-start>
-        <img src="assets/img/icon-wallet.svg" class="icon-wallet" />
-      </ion-icon>
-      <span translate>Create shared wallet</span>
-    </button>
-    <button class="list-button" ion-item (click)="goToJoinWallet()">
-      <ion-icon class="join-icon" item-start>
-        <img src="assets/img/item-ico-addwallet.svg" class="icon-wallet" />
-      </ion-icon>
-      <span translate>Join shared wallet</span>
-    </button>
-    <button class="list-button" ion-item (click)="goToImportWallet()">
-      <ion-icon item-start>
-        <img src="assets/img/item-ico-import.svg" class="icon-wallet" />
-      </ion-icon>
-      <span translate>Import wallet</span>
-    </button>
-  </ion-list>
+  <button class="list-button" ion-item (click)="goToCreateWallet(false)">
+    <ion-icon item-start>
+      <img src="assets/img/icon-wallet.svg" class="icon-wallet" />
+    </ion-icon>
+    <span translate>New personal wallet</span>
+  </button>
+  <button class="list-button" ion-item (click)="goToCreateWallet(true)">
+    <ion-icon item-start>
+      <img src="assets/img/icon-wallet.svg" class="icon-wallet" />
+    </ion-icon>
+    <span translate>Create shared wallet</span>
+  </button>
+  <button class="list-button" ion-item (click)="goToJoinWallet()">
+    <ion-icon class="join-icon" item-start>
+      <img src="assets/img/item-ico-addwallet.svg" class="icon-wallet" />
+    </ion-icon>
+    <span translate>Join shared wallet</span>
+  </button>
+  <button class="list-button" ion-item (click)="goToImportWallet()">
+    <ion-icon item-start>
+      <img src="assets/img/item-ico-import.svg" class="icon-wallet" />
+    </ion-icon>
+    <span translate>Import wallet</span>
+  </button>
 </ion-content>
