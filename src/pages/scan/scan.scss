@@ -16,32 +16,40 @@ page-scan {
   .page-scan-has-problems {
     height: 100%;
     background-color: $toolbar-background;
-    .header {
-      width: 100%;
-      text-align: center;
-      .image-container {
-        background: #fff;
-        padding: 1rem;
-        width: 5rem;
-        margin: auto;
-        border-radius: 0.5rem;
-        img {
-          width: 2.5rem;
-          height: 2.5rem;
+    .header-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 223px;
+      height: 60%;
+      .header {
+        width: 100%;
+        text-align: center;
+        .image-container {
+          background: #fff;
+          padding: 1rem;
+          width: 5rem;
+          margin: auto;
+          border-radius: 0.5rem;
+          img {
+            width: 2.5rem;
+            height: 2.5rem;
+            margin-bottom: -0.5rem;
+          }
+        }
+        .title {
+          color: #fff;
+          font-size: 1.2em;
         }
       }
-      .title {
-        color: #fff;
-        font-size: 1.2em;
+      .subtitle {
+        margin: auto;
+        text-align: center;
+        max-width: 300px;
+        font-size: 0.9em;
+        opacity: .6;
+        color: #fff;   
       }
-    }
-    .subtitle {
-      margin: auto;
-      text-align: center;
-      max-width: 300px;
-      font-size: 0.9em;
-      opacity: .6;
-      color: #fff;   
     }
     .body {
       width: 100%;
