@@ -1,6 +1,5 @@
 <img src="https://raw.githubusercontent.com/mira-lab/MiraWallet/master/resources/mira/icon/mira-wallet.png" alt="Copay" width="79">
 
-Content:
 # What is MiraWallet
 # Main Features
 # Types of MiraBoxes
@@ -41,9 +40,9 @@ Available for Android devices.
 
 The core element of the Mira system is a MiraBox, an encrypted container that stores the private key. The Mira technology might be applicable to almost any cryptocurrency, where asymmetric cryptography is used.
 
-NominalBox - a container with one type of cryptocurrency included.
-MultiBox - a container with a configurable number of different supported cryptocurrencies.
-SmartBox - a MultiBox with integrated smart contracts that allow the setting of various conditions for opening/extracting (currency rate, third-party confirmation, specific date, etc).
+- NominalBox - a container with one type of cryptocurrency included.
+- MultiBox - a container with a configurable number of different supported cryptocurrencies.
+- SmartBox - a MultiBox with integrated smart contracts that allow the setting of various conditions for opening/extracting (currency rate, third-party confirmation, specific date, etc).
 
 
 # The benefit of the MiraNet blockchain
@@ -72,13 +71,14 @@ Private keys are stored with some redundancy, so even if some of the nodes are b
 
 
 # How does this work?
-■ User creates a MiraBox
-■ Type selection (specifies the smart contract that manages MiraBox)
-■ Initial settings defined by the smart contract are specified (for example, access pin can be set up in the MiraBox for the bearer).
-■ Selection of the master node for MiraBox maintenance (the choice can be made in manual or in automatic mode).
-■ MiraBox is transmitted to the receiver by any available way (IPFS, telegram, email, even on hard copy).
-■ You can track the status of MiraBox at any time.
-■ After receiving MiraBox, the recipient sends a request to a smart contract or to an autopsy, or absolutely any function specified in the smart contract algorithm. In MiraBox, a pin for the bearer can be changed. When you create a MiraBox, you can also create a smart contract that manages MiraBox's life-cycle and maintenance fee. Periodic fee is possible with the use of technology of proof with zero disclosure. And in practice it can be implemented as a periodic signing, for example, once a day, a hash from a block and sending this data to a smart contract.
+
+- User creates a MiraBox
+- Type selection (specifies the smart contract that manages MiraBox)
+- Initial settings defined by the smart contract are specified (for example, access pin can be set up in the MiraBox for the bearer).
+- Selection of the master node for MiraBox maintenance (the choice can be made in manual or in automatic mode).
+- MiraBox is transmitted to the receiver by any available way (IPFS, telegram, email, even on hard copy).
+- You can track the status of MiraBox at any time.
+- After receiving MiraBox, the recipient sends a request to a smart contract or to an autopsy, or absolutely any function specified in the smart contract algorithm. In MiraBox, a pin for the bearer can be changed. When you create a MiraBox, you can also create a smart contract that manages MiraBox's life-cycle and maintenance fee. Periodic fee is possible with the use of technology of proof with zero disclosure. And in practice it can be implemented as a periodic signing, for example, once a day, a hash from a block and sending this data to a smart contract.
 
 
 
