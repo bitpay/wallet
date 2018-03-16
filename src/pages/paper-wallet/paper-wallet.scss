@@ -1,4 +1,9 @@
 page-paper-wallet {
+  .message {
+    text-align: center;
+    background: color($colors, warning);
+    color: white;
+  }
   .title {
     padding: 10px;
   }

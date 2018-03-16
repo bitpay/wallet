@@ -212,7 +212,7 @@
     </ion-list>
   </div>
 
-  <div class="card" *ngIf="showBitPayCard && bitpayCardItems && bitpayCardItems[0]">
+  <div class="card" *ngIf="showBitPayCard && bitpayCardItems && bitpayCardItems[0] && wallets &&wallets[0]">
     <ion-item-divider>
       <div class="title" item-start>
         <span>BitPay Visa
@@ -236,7 +236,7 @@
     </ion-list>
   </div>
 
-  <div class="card" *ngIf="homeIntegrations && homeIntegrations.length>0">
+  <div class="card" *ngIf="homeIntegrations && homeIntegrations.length>0 && wallets &&wallets[0]">
     <ion-item-divider (click)="hideHomeIntegrations = !hideHomeIntegrations">
       <div class="title" item-start translate>Services</div>
       <div item-end>

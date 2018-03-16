@@ -74,7 +74,11 @@ export class PaperWalletPage {
     if (!this.isPkEncrypted) this.scanFunds();
     else {
       let message = this.translate.instant('Private key encrypted. Enter password');
-      this.popupProvider.ionicPrompt(null, message, null).then((res) => {
+      let opts = {
+        type: 'password',
+        enableBackdropDismiss: false
+      }
+      this.popupProvider.ionicPrompt(null, message, opts).then((res) => {
         this.passphrase = res;
         this.scanFunds();
       });
@@ -176,7 +180,7 @@ export class PaperWalletPage {
 
   public showWallets(): void {
     let id = this.wallet ? this.wallet.credentials.walletId : null;
-    this.events.publish('showWalletsSelectorEvent', this.wallets, id, 'Select a wallet');
+    this.events.publish('showWalletsSelectorEvent', this.wallets, id, 'Transfer to');
     this.events.subscribe('selectWalletEvent', (wallet: any) => {
       if (!_.isEmpty(wallet)) this.onWalletSelect(wallet);
       this.events.unsubscribe('selectWalletEvent');

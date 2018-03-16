@@ -64,11 +64,13 @@ export class PopupProvider {
       let placeholder = opts && opts.placeholder ? opts.placeholder : null;
       let inputType = opts && opts.type ? opts.type : 'text';
       let cssClass = opts.useDanger ? "alertDanger" : null;
+      let enableBackdropDismiss = !!opts.enableBackdropDismiss;
 
       let prompt = this.alertCtrl.create({
         title,
         message,
         cssClass,
+        enableBackdropDismiss,
         inputs: [
           {
             value: defaultText,

@@ -6,13 +6,17 @@
 
 <ion-content class="back-transparent" no-bounce>
   <div class="page-scan-has-problems" *ngIf="(currentState == scannerStates.unauthorized || currentState == scannerStates.denied || currentState == scannerStates.unavailable) && !notSupportedMessage">
-    <div class="header" padding>
-      <div class="image-container">
-        <img src="assets/img/ico-receive.svg" />
+    <div class="header-container">
+      <div>
+        <div class="header" padding>
+          <div class="image-container">
+            <img src="assets/img/ico-receive.svg" />
+          </div>
+          <div class="title" padding translate>Scan QR Codes</div>
+        </div>
+        <div class="subtitle" translate>You can scan bitcoin addresses, payment requests, paper wallets, and more.</div>
       </div>
-      <div class="title" padding translate>Scan QR Codes</div>
     </div>
-    <div class="subtitle" translate>You can scan bitcoin addresses, payment requests, paper wallets, and more.</div>
     <div class="body">
       <div padding>
         <div *ngIf="currentState == scannerStates.unauthorized" translate>Enable the camera to get started.</div>
@@ -20,9 +24,12 @@
         <div *ngIf="currentState == scannerStates.unavailable" translate>Please connect a camera to get started.</div>
       </div>
       <div>
-        <button ion-button outline *ngIf="currentState == scannerStates.unauthorized" (click)="authorize()" translate>Allow Camera Access</button>
-        <button ion-button outline *ngIf="currentState == scannerStates.denied && canOpenSettings" (click)="openSettings()" translate>Open Settings</button>
-        <button ion-button outline *ngIf="currentState == scannerStates.unavailable" (click)="attemptToReactivate()" translate>Retry Camera</button>
+        <button ion-button outline class="button-standard" *ngIf="currentState == scannerStates.unauthorized" (click)="authorize()"
+          translate>Allow Camera Access</button>
+        <button ion-button outline class="button-standard" *ngIf="currentState == scannerStates.denied && canOpenSettings" (click)="openSettings()"
+          translate>Open Settings</button>
+        <button ion-button outline class="button-standard" *ngIf="currentState == scannerStates.unavailable" (click)="attemptToReactivate()"
+          translate>Retry Camera</button>
       </div>
     </div>
   </div>

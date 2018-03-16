@@ -5,7 +5,7 @@
 </ion-header>
 
 <ion-content>
-  <div *ngIf="noMatchingWallet">
+  <div class="message" *ngIf="noMatchingWallet">
     <span translate>No wallets available to receive funds</span>
   </div>
   <div *ngIf="!noMatchingWallet">
