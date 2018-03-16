@@ -15,4 +15,7 @@ page-send-feedback {
     font-weight: bold;
     color: color($colors, dark);
   }
+  ion-textarea {
+    background-color: color($colors, blank);
+  }
 }

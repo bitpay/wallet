@@ -139,7 +139,8 @@
 
     <div *ngIf="showBitPayCard && bitpayCardItems && bitpayCardItems[0]">
       <ion-item-divider>
-        BitPay Visa<sup>&reg;</sup> Card
+        BitPay Visa
+        <sup>&reg;</sup> Card
       </ion-item-divider>
       <ion-list>
         <button ion-item *ngFor="let card of bitpayCardItems" (click)="openCardSettings(card.id)">
