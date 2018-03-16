@@ -1,6 +1,11 @@
 page-add {
   .list-button {
-      margin-top: 2rem;
+    margin-top: 1rem;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    .item-inner {
+      border: none !important;
+    }
   }
   .join-icon {
     img{
