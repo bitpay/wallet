@@ -13,6 +13,7 @@
     <a (click)="showInfo = !showInfo" *ngIf="!showInfo" translate>Why?</a>
 
     <div *ngIf="showInfo">
+      <br>
       <span translate>It's a good idea to avoid reusing addresses - this both protects your privacy and keeps your bitcoins secure against
         hypothetical attacks by quantum computers.</span>
       <a (click)="showInfo = !showInfo" translate>Hide</a>
