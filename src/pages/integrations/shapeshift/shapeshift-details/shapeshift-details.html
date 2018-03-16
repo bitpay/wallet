@@ -57,12 +57,14 @@
 
     <ion-item>
       {{'Address' | translate}}
-      <ion-note item-end text-wrap>
-        <span *ngIf="!ssData.address">...</span>
-        <span *ngIf="ssData.address" copy-to-clipboard="{{ssData.address}}">
-          {{ ssData.address }}
-        </span>
-      </ion-note>
+      <div padding-top>
+        <ion-note text-wrap>
+          <span *ngIf="!ssData.address">...</span>
+          <span *ngIf="ssData.address" copy-to-clipboard="{{ssData.address}}">
+            {{ ssData.address }}
+          </span>
+        </ion-note>
+      </div>
     </ion-item>
 
     <ion-item *ngIf="ssData.incomingCoin">
@@ -76,12 +78,14 @@
 
     <ion-item>
       {{'Address' | translate}}
-      <ion-note item-end text-wrap>
-        <span *ngIf="!ssData.withdrawal">...</span>
-        <span *ngIf="ssData.withdrawal" copy-to-clipboard="{{ssData.withdrawal}}">
-          {{ ssData.withdrawal }}
-        </span>
-      </ion-note>
+      <div padding-top>
+        <ion-note text-wrap>
+          <span *ngIf="!ssData.withdrawal">...</span>
+          <span *ngIf="ssData.withdrawal" copy-to-clipboard="{{ssData.withdrawal}}">
+            {{ ssData.withdrawal }}
+          </span>
+        </ion-note>
+      </div>
     </ion-item>
 
     <ion-item *ngIf="ssData.outgoingCoin">
@@ -96,7 +100,6 @@
     <button ion-item detail-none *ngIf="ssData.transaction" (click)="openTransaction(ssData.transaction)" translate>
       See transaction
     </button>
-    <ion-item-divider></ion-item-divider>
     <button class="assertive" ion-item detail-none (click)="remove()" translate>
       Remove
     </button>
