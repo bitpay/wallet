@@ -21,17 +21,19 @@
   <ion-slides pager="true" *ngIf="!deleted">
     <ion-slide>
       <div class="slide-container" *ngIf="mnemonicWords && mnemonicWords[0] || !credentialsEncrypted">
-        <div class="slide-title" translate>Please carefully write down this phrase.</div>
-        <div copy-to-clipboard="{{ copyRecoveryPhrase() }}" class="phrase-container">
-          <div class="phrase">
-            <span *ngFor="let word of mnemonicWords">
-              <span>{{word}}</span>
-              <span *ngIf="useIdeograms">&#x3000;</span>
-            </span>
+        <div>
+          <div class="slide-title" translate>Please carefully write down this phrase.</div>
+          <div class="phrase-container" copy-to-clipboard="{{ copyRecoveryPhrase() }}">
+            <div class="phrase">
+              <span *ngFor="let word of mnemonicWords">
+                <span>{{word}}</span>
+                <span *ngIf="useIdeograms">&#x3000;</span>
+              </span>
+            </div>
           </div>
         </div>
         <div class="bottom-absolute">
-          <div translate>We'll confirm on the next screen.</div>
+          <div translate class="footer-text">We'll confirm on the next screen.</div>
           <button *ngIf="currentIndex == 0" ion-button class="button-standard" [disabled]="credentialsEncrypted || error" (click)="slideNext()"
             translate>I've written it down</button>
         </div>
@@ -39,24 +41,28 @@
     </ion-slide>
 
     <ion-slide>
-      <div class="slide-title" translate>Let's verify your backup phrase.</div>
-      <div class="phrase-container">
-        <div class="phrase">
-          <button ion-button outline *ngFor="let customWord of customWords; let i = index" (click)="removeButton(i, customWord)">{{customWord.word}}</button>
+      <div class="slide-container">
+        <div class="slide-body">
+          <div class="slide-title" translate>Let's verify your backup phrase.</div>
+          <div class="phrase-container">
+            <div class="phrase">
+              <button ion-button outline *ngFor="let customWord of customWords; let i = index" (click)="removeButton(i, customWord)">{{customWord.word}}</button>
+            </div>
+          </div>
         </div>
-      </div>
-      <div class="bottom">
-        <div *ngIf="!selectComplete">
-          <ion-item-divider>{{'Please tap each word in the correct order.' | translate}}</ion-item-divider>
-          <div class="words">
-            <button ion-button *ngFor="let shuffledWord of shuffledMnemonicWords; let i = index" (click)="addButton(i, shuffledWord)"
-              [disabled]="shuffledWord.selected">{{shuffledWord.word}}
-            </button>
+        <div class="bottom">
+          <div *ngIf="!selectComplete">
+            <ion-item-divider>{{'Please tap each word in the correct order.' | translate}}</ion-item-divider>
+            <div class="words">
+              <button ion-button *ngFor="let shuffledWord of shuffledMnemonicWords; let i = index" (click)="addButton(i, shuffledWord)"
+                [disabled]="shuffledWord.selected">{{shuffledWord.word}}
+              </button>
+            </div>
           </div>
         </div>
       </div>
       <div *ngIf="selectComplete" class="bottom-absolute">
-        <ion-item-divider>{{'Is this correct?' | translate}}</ion-item-divider>
+        <div class="footer-text">{{'Is this correct?' | translate}}</div>
         <button *ngIf="currentIndex == 1 && selectComplete" ion-button class="button-standard" (click)="slideNext()" translate>Confirm</button>
         <button ion-button clear class="button-standard" (click)="setFlow()" translate>Clear</button>
       </div>
