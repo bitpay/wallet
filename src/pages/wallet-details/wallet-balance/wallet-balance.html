@@ -8,88 +8,98 @@
 
 <ion-content>
   <ion-list>
+
     <ion-item text-wrap>{{'All of your bitcoin wallet balance may not be available for immediate spending.' | translate}}</ion-item>
     <ion-item-divider></ion-item-divider>
-    <ion-item class="balance-container">
-      <div class="title">
-        <img src="assets/img/icon-sigma.svg" />
-        <div translate>Total</div>
-      </div>
-      <div class="balance">
-        <span class="total">
-          {{status.totalBalanceStr}}
-        </span>
-        <div>
-          <span class="fiat">
-            {{status.totalBalanceAlternative}} {{status.alternativeIsoCode}}
+    <ion-item>
+      <div class="balance-container">
+        <div class="title">
+          <img src="assets/img/icon-sigma.svg" />
+          <div translate>Total</div>
+        </div>
+        <div class="balance">
+          <span class="total">
+            {{status.totalBalanceStr}}
           </span>
+          <div>
+            <span class="fiat">
+              {{status.totalBalanceAlternative}} {{status.alternativeIsoCode}}
+            </span>
+          </div>
         </div>
       </div>
+      <div translate text-wrap class="description">The total amount of bitcoin stored in this wallet.</div>
     </ion-item>
-    <ion-item-divider>
-      <div translate text-wrap>The total amount of bitcoin stored in this wallet.</div>
-    </ion-item-divider>
 
-    <ion-item class="balance-container">
-      <div class="title">
-        <ion-icon ios="ios-checkmark" md="md-checkmark"></ion-icon>
-        <div translate>Available</div>
-      </div>
-      <div class="balance">
-        <span class="available">
-          {{status.spendableBalanceStr}}
-        </span>
-        <div>
-          <span class="fiat">
-            {{status.spendableBalanceAlternative}} {{status.alternativeIsoCode}}
-          </span>
-        </div>
-      </div>
-    </ion-item>
-    <ion-item-divider>
-      <div translate text-wrap>The amount of bitcoin immediately spendable from this wallet.</div>
-    </ion-item-divider>
+    <ion-item-divider></ion-item-divider>
 
-    <ion-item class="balance-container">
-      <div class="title">
-        <img src="assets/img/icon-confirming-clear.svg" />
-        <div translate>Confirming</div>
-      </div>
-      <div class="balance">
-        <span class="confirming">
-          {{status.pendingBalanceStr}}
-        </span>
-        <div>
-          <span class="fiat">
-            {{status.pendingBalanceAlternative}} {{status.alternativeIsoCode}}
+    <ion-item>
+      <div class="balance-container">
+        <div class="title">
+          <ion-icon ios="ios-checkmark" md="md-checkmark"></ion-icon>
+          <div translate>Available</div>
+        </div>
+        <div class="balance">
+          <span class="available">
+            {{status.spendableBalanceStr}}
           </span>
+          <div>
+            <span class="fiat">
+              {{status.spendableBalanceAlternative}} {{status.alternativeIsoCode}}
+            </span>
+          </div>
         </div>
       </div>
+      <div translate text-wrap class="description">The amount of bitcoin immediately spendable from this wallet.</div>
     </ion-item>
-    <ion-item-divider>
-      <div translate text-wrap>The amount of bitcoin stored in this wallet with less than 1 blockchain confirmation.</div>
-    </ion-item-divider>
 
-    <ion-item class="balance-container">
-      <div class="title">
-        <img src="assets/img/icon-lock.svg" />
-        <div translate>Locked</div>
-      </div>
-      <div class="balance">
-        <span class="locked">
-          {{status.lockedBalanceStr}}
-        </span>
-        <div>
-          <span class="fiat">
-            {{status.lockedBalanceAlternative}} {{status.alternativeIsoCode}}
+    <ion-item-divider></ion-item-divider>
+
+    <ion-item>
+      <div class="balance-container">
+        <div class="title">
+          <img src="assets/img/icon-confirming-clear.svg" />
+          <div translate>Confirming</div>
+        </div>
+        <div class="balance">
+          <span class="confirming">
+            {{status.pendingBalanceStr}}
           </span>
+          <div>
+            <span class="fiat">
+              {{status.pendingBalanceAlternative}} {{status.alternativeIsoCode}}
+            </span>
+          </div>
         </div>
       </div>
+      <div translate text-wrap class="description">The amount of bitcoin stored in this wallet with less than 1 blockchain confirmation.</div>
     </ion-item>
-    <ion-item-divider>
-      <div translate text-wrap>The amount of bitcoin stored in this wallet that is allocated as inputs to your pending transaction proposals. The
+
+    <ion-item-divider></ion-item-divider>
+
+    <ion-item>
+      <div class="balance-container">
+        <div class="title">
+          <img src="assets/img/icon-lock.svg" />
+          <div translate>Locked</div>
+        </div>
+        <div class="balance">
+          <span class="locked">
+            {{status.lockedBalanceStr}}
+          </span>
+          <div>
+            <span class="fiat">
+              {{status.lockedBalanceAlternative}} {{status.alternativeIsoCode}}
+            </span>
+          </div>
+        </div>
+      </div>
+      <div translate text-wrap class="description">The amount of bitcoin stored in this wallet that is allocated as inputs to your pending transaction proposals. The
         amount is determined using unspent transaction outputs associated with this wallet and may be more than the actual
         amounts associated with your pending transaction proposals.</div>
-    </ion-item-divider>
+    </ion-item>
+
+    <ion-item-divider></ion-item-divider>
+
   </ion-list>
 </ion-content>
