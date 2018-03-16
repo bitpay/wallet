@@ -1,5 +1,4 @@
 page-tour {
-  @extend %onboarding;
   & > ion-content {
     background-image: $onboarding-background-image !important;
     background-position: top center;
@@ -9,11 +8,14 @@ page-tour {
   ion-header {
     .toolbar-title,
     ion-icon {
-      color: color($colors, blank);
+      color: color($colors, primary);
     }
     .toolbar-background {
       background-color: transparent;
     }
+  }
+  .title {
+    color: color($colors, blank);
   }
   .bottom-absolute {
     padding: 15px 15px 5vh 15px;
@@ -29,7 +31,7 @@ page-tour {
   .top-description {
     font-size: 1.4rem;
     padding: 0 4rem 0 4rem;
-    color: rgba(255, 255, 255, 0.5);
+    color: $onboarding-comment-color;
   }
   .bottom-description {
     font-size: 1.4rem;
@@ -40,8 +42,6 @@ page-tour {
     background: color($colors, primary);
   }
   p {
-    line-height: 1.6;
-    font-size: 18px;
     margin-left: 1em;
     margin-right: 1em;
   }
@@ -56,5 +56,11 @@ page-tour {
     z-index: 1;
     border-radius: $icon-border-radius;
     position: relative;
+  }
+  .primary-color {
+    color: $onboarding-primary-color;
+  }
+  .back-button-icon {
+    color: $onboarding-primary-color;
   }
 }

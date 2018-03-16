@@ -1,5 +1,4 @@
 page-disclaimer {
-  @extend %onboarding;
   & > ion-content {
     background-image: $onboarding-background-image !important;
     background-position: center center;
@@ -27,37 +26,16 @@ page-disclaimer {
       color: #fff;
     }
   }
-  .agree-to-terms {
-    background-color: $onboarding-welcome-bg;
-    position: relative;
-    ion-item {
-      height: 6rem;
-      .check {
-        margin: 9px 15px 9px 4px !important;
-      }
-    }
-    .terms {
-      display: flex;
-      align-items: center;
-      height: 6rem;
-      position: absolute;
-      top: 0;
-      left: 5rem;
-      padding: 0rem;
-      margin: 0rem;
-      p {
-        padding-right: 1rem;
-        font-size: 14px;
-      }
-      a {
-        font-weight: bold;
-        cursor: pointer;
-      }
-    }
-  }
-  .description {
+  .top-description {
     font-size: 1.4rem;
-    color: rgba(255, 255, 255, 0.5);
-    margin: 1rem 4rem 1rem 4rem;
+    padding: 0 4rem 0 4rem;
+    color: $onboarding-comment-color;
+  }
+  .title {
+    color: color($colors, blank);
+  }
+  ion-footer {
+    background-color: color($colors, secondary);
+    box-shadow: 0 1px 10px rgba(0, 0, 0, 0.25);
   }
 }

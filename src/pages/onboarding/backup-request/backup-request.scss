@@ -1,5 +1,4 @@
 page-backup-request {
-  @extend %onboarding;
   & > ion-content {
     background-image: $onboarding-background-image;
     background-position: top center;
@@ -16,15 +15,18 @@ page-backup-request {
       background-color: transparent;
     }
   }
-  p {
-    line-height: 1.6;
-    font-size: 18px;
-    margin-right: 10px;
-    margin-left: 10px;
+  .title {
+    color: color($colors, blank);
   }
-  .description{
-    color: rgba(255, 255, 255, 0.5);
+  .top-description {
     font-size: 1.4rem;
+    padding: 0 4rem 0 4rem;
+    color: $onboarding-comment-color
+  }
+  .bottom-description {
+    font-size: 1.4rem;
+    color: color($colors, blank);
+    padding: 0 4rem 0 4rem;
   }
   .arrow-down {
     font-size: 8rem;
@@ -33,5 +35,8 @@ page-backup-request {
   .alert-icon {
     margin: 20px auto 5px;
     height: 10vh;
+  }
+  .primary-color {
+    color: $onboarding-primary-color
   }
 }
