@@ -8,8 +8,8 @@ page-feedback-complete {
       display: flex;
       justify-content: center;
       .share-the-love-illustration {
-        width: 60%;
-        height: 60%;
+        width: 25%;
+        height: 25%;
       }
     }  
   }
@@ -27,6 +27,8 @@ page-feedback-complete {
   .share-buttons {
     padding: 50px 10px 30px;
     text-align: center;
+    height: 100%;
+    background-color: color($colors,blank);
   }
   .share-buttons__action {
     display: inline-block;
