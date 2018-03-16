@@ -14,6 +14,7 @@
     </button>
     <button ion-item (click)="openWalletColor()">
       <span translate>Color</span>
+      <span item-end [ngStyle]="{'background-color': wallet?.color}" class="settings-color-block"></span>
     </button>
     <ion-item>
       <ion-label>{{'Hide Balance' | translate}}</ion-label>

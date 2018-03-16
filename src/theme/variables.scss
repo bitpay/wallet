@@ -32,7 +32,8 @@ $colors: (
   light: #f4f4f4,
   blank: #fafafa,
   dark: #424242,
-  grey: #667
+  grey: #667,
+  light-grey: #9b9bab
 );
 
 // App background color
@@ -100,7 +101,7 @@ $searchbar-ios-background-color: color($colors, blank);
 $searchbar-ios-padding-vertical: 16px;
 $searchbar-ios-padding-horizontal: 8px;
 
-$note-ios-color: color($colors, grey);
+$note-ios-color: color($colors, light-grey);
 
 // App Material Design Variables
 // --------------------------------------------------
@@ -126,7 +127,7 @@ $list-md-header-margin-bottom: 0;
 $list-md-margin-bottom: 0;
 $list-md-header-color: color($colors, dark);
 
-$note-md-color: color($colors, grey);
+$note-md-color: color($colors, light-grey);
 
 // App Windows Variables
 // --------------------------------------------------
