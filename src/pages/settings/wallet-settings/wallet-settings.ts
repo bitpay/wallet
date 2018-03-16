@@ -64,8 +64,9 @@ export class WalletSettingsPage {
     this.config = this.configProvider.get();
     this.touchIdEnabled = this.config.touchIdFor ? this.config.touchIdFor[this.wallet.credentials.walletId] : null;
     this.touchIdPrevValue = this.touchIdEnabled;
-    if (this.wallet.credentials && !this.wallet.credentials.mnemonicEncrypted && !this.wallet.credentials.mnemonic)
+    if (this.wallet.credentials && !this.wallet.credentials.mnemonicEncrypted && !this.wallet.credentials.mnemonic) {
       this.deleted = true;
+    }
   }
 
   public hiddenBalanceChange(): void {
