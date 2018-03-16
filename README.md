@@ -1,4 +1,4 @@
-<img src="https://raw.githubusercontent.com/mira-lab/MiraWallet/master/resources/mira/icon/mira-wallet.png" alt="Copay" width="79">
+<img src="https://raw.githubusercontent.com/mira-lab/MiraWallet/master/resources/mira/icon/mira-wallet.png" alt="MiraWallet" width="79">
 
 # What is MiraWallet
 # Main Features
@@ -50,7 +50,8 @@ The core element of the Mira system is a MiraBox, an encrypted container that st
 The network is the Ethereum sidechain, and is built on the basis of Ethereum. The main elements are the Mira nodes that maintain the system. The consensus used in the network is DPoS. But since it's a sidechain, there's a smart contract in the main Ethereum network that manages the entire Mira network. This contract provides a voting mechanism in DPoS, a payment channel between MiraNet and Ethereum network, and the anchoring of the Mira state in Ethereum. MiraBoxes managing is implemented by MasterNodes. It is intended to use sharding in MiraNet to speed up transaction processing, and, possibly, to use WebAsm as a replacement for the EVM nodes of the network.
 Users could be assured that all transactions via MiraNet are cryptographically secured and provide integrity. Nodes keep the Network maintained by confirming transactions then adding them to their copy of the ledger, constantly updating and communicating with each other. This makes the probability of any false or fraudulent transactions being accepted into the network at zero percent as incorrect ones are quickly rejected.
 
-ВСТАВИТЬ КАРТИНКУ “СХЕМА РАБОТЫ НОД
+<img src="https://raw.githubusercontent.com/mira-lab/MiraWallet/master/resources/mira/images/point-of-Mira-nodes.jpg" alt="Mira nodes schema" width="399">
+“СХЕМА РАБОТЫ НОД“
 
 Mira’s smart contract language makes it easier to apply formal verification to any smart contract running on its own blockchain. Among other advantages: cost savings, stable network, anonymity, and faster dealings.
 
