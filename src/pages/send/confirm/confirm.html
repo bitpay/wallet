@@ -7,22 +7,21 @@
 <ion-content no-bounce>
   <ion-list *ngIf="tx">
     <ion-item>
-      <div class="sending-label">
-        <img class="sending-img" src="assets/img/icon-tx-sent-outline.svg">
-        <span translate *ngIf="!tx.sendMax">Sending</span>
-        <span translate *ngIf="tx.sendMax">Sending maximum amount</span>
-      </div>
-      <div class="amount-label">
-        <div class="amount">{{tx.amount | satToUnit: tx.coin}}</div>
-        <div class="alternative">{{tx.amount | satToFiat: tx.coin}}</div>
+      <div class="header-container">
+        <div class="sending-label">
+          <img class="sending-img" src="assets/img/icon-tx-sent-outline.svg">
+          <span translate *ngIf="!tx.sendMax">Sending</span>
+          <span translate *ngIf="tx.sendMax">Sending maximum amount</span>
+        </div>
+        <div class="amount-label">
+          <div class="amount">{{tx.amount | satToUnit: tx.coin}}</div>
+          <div class="alternative">{{tx.amount | satToFiat: tx.coin}}</div>
+        </div>
       </div>
     </ion-item>
-
-    <ion-item-divider></ion-item-divider>
-
     <button ion-item class="item-fee" (click)="chooseFeeLevel()">
       <div class="fee-title" translate>
-        Bitcoin miner fee
+        Bitcoin miner fee: {{tx.feeLevelName | translate}}
       </div>
       <div class="fee-loading" *ngIf="!wallet || !tx.txp[wallet.id]">
         <div>...</div>
@@ -32,14 +31,15 @@
         <span class="fee-amount">{{tx.txp[wallet.id].fee | satToUnit: tx.coin}}</span>
         <div class="fee-details">
           {{tx.txp[wallet.id].fee | satToFiat: tx.coin}}
-          <span *ngIf="tx.txp[wallet.id].feeRatePerStr" [ngClass]="{'warn':tx.txp[wallet.id].feeTooHigh}" translate>
-            {{tx.txp[wallet.id].feeRatePerStr}} of total amount
+          <span *ngIf="tx.txp[wallet.id].feeRatePerStr">
+            &middot;
+            <span [ngClass]="{'warn':tx.txp[wallet.id].feeTooHigh}">
+              <ion-icon name="warning"></ion-icon>
+              <span translate>{{tx.txp[wallet.id].feeRatePerStr}} of total amount</span>
+            </span>
           </span>
         </div>
       </div>
-      <ion-note item-end>
-        {{tx.feeLevelName | translate}}
-      </ion-note>
     </button>
 
     <ion-item *ngIf="tx.paypro && !criticalError">
