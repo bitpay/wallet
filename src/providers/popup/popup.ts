@@ -63,10 +63,12 @@ export class PopupProvider {
       let defaultText = opts && opts.defaultText ? opts.defaultText : null;
       let placeholder = opts && opts.placeholder ? opts.placeholder : null;
       let inputType = opts && opts.type ? opts.type : 'text';
+      let cssClass = opts.useDanger ? "alertDanger" : null;
 
       let prompt = this.alertCtrl.create({
         title,
         message,
+        cssClass: cssClass,
         inputs: [
           {
             value: defaultText,

@@ -1088,7 +1088,8 @@ export class WalletProvider {
   private askPassword(name: string, title: string): Promise<any> {
     return new Promise((resolve, reject) => {
       let opts = {
-        type: 'password'
+        type: 'password',
+        useDanger: true
       }
       this.popupProvider.ionicPrompt(title, name, opts).then((res: any) => {
         return resolve(res);
