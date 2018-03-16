@@ -20,9 +20,11 @@
     </ion-item>
     <ion-item copy-to-clipboard="{{walletId}}">
       <span translate>Wallet Id</span>
-      <ion-note item-end>
-        {{walletId}}
-      </ion-note>
+      <div padding-top>
+        <ion-note text-wrap>
+          {{walletId}}
+        </ion-note>
+      </div>
     </ion-item>
     <ion-item>
       <span translate>Wallet Configuration (m-n)</span>
@@ -70,8 +72,10 @@
     <ion-item-divider>{{'Extended Public Keys' | translate}}</ion-item-divider>
     <ion-item *ngFor="let pk of pubKeys; let i=index" copy-to-clipboard="{{pk}}">
       <span translate>Copayer {{i}}</span>
-      <div text-wrap class="pkStyle">
-        {{pk}}
+      <div padding-top>
+        <ion-note text-wrap>
+          {{pk}}
+        </ion-note>
       </div>
       <span *ngIf="$index == 0">({{basePath}})</span>
     </ion-item>

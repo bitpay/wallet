@@ -35,13 +35,18 @@ page-wallet-details {
     font-weight: 400;
   }
   .balance-hidden {
-    cursor: pointer;
-    padding-top: 5rem;
-    font-size: 20px;
-    font-weight: 500;
+    .title {
+      cursor: pointer;
+      font-size: 20px;
+      font-weight: 500;
+    }
   }
   .balance-error {
-    padding: 15% 1rem 0 1rem;
+    .title {
+      cursor: pointer;
+      font-size: 20px;
+      font-weight: 500;
+    }
   }
   .balance-spendable {
     margin-top: 5px;
@@ -53,8 +58,10 @@ page-wallet-details {
     }
   }
   .balance-scanning {
-    font-size: 20px;
-    padding-top: 6rem;
+    .title {
+      font-size: 20px;
+      font-weight: 500;
+    }
   }
   .tx-history {
     img {
@@ -69,7 +76,7 @@ page-wallet-details {
     .amount {
       color: color($colors, dark);
       .received {
-        color: color($colors, primary);
+        color: color($colors, success);
       }
     }
     .date {
