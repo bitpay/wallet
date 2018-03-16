@@ -30,10 +30,14 @@ page-backup-warning {
 
   .img-container {
     height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     img {
       max-height: 100%;
-      padding-bottom: 22rem;
-      min-height: 25rem;
+      padding-bottom: 33rem;
+      min-height: 38rem;
+      z-index: -1;
     }
   }
 

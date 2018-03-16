@@ -1,12 +1,22 @@
 page-backup-game {
   .slide-container {
     height: 100%;
+    max-height: 30rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    @media (max-height: 550px) {
+      align-items: baseline;
+    }
+    .slide-body {
+      min-width: 80%;
+    }
   }
   .deleted-title {
     text-align: center;
   }
   .slide-title {
-    font-size: 16px;
+    font-size: 14px;
     padding: 20px;
     color: color($colors, grey);
   }
@@ -33,18 +43,31 @@ page-backup-game {
     justify-content: center;
     align-items: center;
     .phrase {
-    padding: 1rem;
+    padding: 2.5rem;
     font-weight: bold;
     line-height: 2;
     font-size: 16px;
     letter-spacing: 1px;
+    @media (min-width: 575px) {
+      font-size: 18px;
+      padding: 3rem;
+    }
+    @media (max-height: 550px) {
+      font-size: 16px;
+      padding: 1rem;
+    }
+    .button {
+      height: 3rem;
+      font-size: 14px;
+    }
     }
   }
   .words {
     max-width: 500px;
     margin: 0 auto;
     .button {
-      margin: 0.5rem;
+      height: 3rem;
+      font-size: 14px;
     }
   }
   .bottom {
@@ -64,5 +87,9 @@ page-backup-game {
       margin:0;
       font-size: 1.2rem;
     }
+  }
+  .footer-text {
+    font-size: 12.5px;
+    color: color($colors, grey);      
   }
 }
