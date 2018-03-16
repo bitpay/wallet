@@ -31,7 +31,6 @@ export class SendPage {
   public hasBchWallets: boolean;
   public hasContacts: boolean;
   public contactsShowMore: boolean;
-  public searchFocus: boolean;
   private CONTACTS_SHOW_LIMIT: number = 10;
   private currentContactsPage: number = 0;
 
@@ -153,16 +152,6 @@ export class SendPage {
   public showMore(): void {
     this.currentContactsPage++;
     this.updateContactsList();
-  }
-
-  public searchInFocus(): void {
-    this.searchFocus = true;
-  }
-
-  public searchBlurred(): void {
-    if (this.search == null || this.search.length == 0) {
-      this.searchFocus = false;
-    }
   }
 
   public openScanner(): void {
