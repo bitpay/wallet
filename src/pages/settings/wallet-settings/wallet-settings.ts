@@ -66,7 +66,6 @@ export class WalletSettingsPage {
     this.touchIdPrevValue = this.touchIdEnabled;
     if (this.wallet.credentials && !this.wallet.credentials.mnemonicEncrypted && !this.wallet.credentials.mnemonic)
       this.deleted = true;
-      console.log("################",this.wallet.color);
   }
 
   public hiddenBalanceChange(): void {

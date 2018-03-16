@@ -1,43 +1,35 @@
 <ion-header>
-
   <ion-navbar>
     <ion-title>{{'Advanced' | translate}}</ion-title>
   </ion-navbar>
-
 </ion-header>
-
 
 <ion-content>
   <ion-item-divider></ion-item-divider>
-  <ion-list>
-    <ion-item>
+  <div class="advanced">
+    <div class="advanced-toggle">
       <ion-label>{{'Use Unconfirmed Funds' | translate}}</ion-label>
       <ion-toggle [(ngModel)]="spendUnconfirmed" (ionChange)="spendUnconfirmedChange()"></ion-toggle>
-    </ion-item>
-    <ion-item-divider class="item-description" padding-horizontal text-wrap>
-      <span translate>If enabled, wallets will also try to spend unconfirmed funds. This option may cause transaction delays.</span>
-    </ion-item-divider>
-  </ion-list>
-
-  <ion-list>
-    <ion-item>
+    </div>
+    <span translate>If enabled, wallets will also try to spend unconfirmed funds. This option may cause transaction delays.</span>
+  </div>
+  <ion-item-divider></ion-item-divider>
+  <div class="advanced">
+    <div class="advanced-toggle">
       <ion-label>{{'Use Bitcoin Cash Copay Style Addresses' | translate}}</ion-label>
       <ion-toggle [(ngModel)]="useLegacyAddress" (ionChange)="useLegacyAddressChange()"></ion-toggle>
-    </ion-item>
-    <ion-item-divider class="item-description" padding-horizontal text-wrap>
-      <span translate>If enabled, Bitcoin Cash addresses will be shown using Copay style address, and not the new cashaddr format.</span>
-    </ion-item-divider>
-  </ion-list>
-
-  <ion-list>
-    <ion-item>
+    </div>
+    <span translate>If enabled, Bitcoin Cash addresses will be shown using Copay style address, and not the new cashaddr format.</span>
+  </div>
+  <ion-item-divider></ion-item-divider>
+  <div class="advanced">
+    <div class="advanced-toggle">
       <ion-label>{{'Recent Transaction Card' | translate}}</ion-label>
       <ion-toggle [(ngModel)]="recentTransactionsEnabled" (ionChange)="recentTransactionsChange()"></ion-toggle>
-    </ion-item>
-    <ion-item-divider class="item-description" padding-horizontal text-wrap>
-      <span translate>If enabled, the Recent Transactions card - a list of transactions occuring across all wallets - will appear in the
-        Home tab.</span>
-    </ion-item-divider>
-  </ion-list>
-
+    </div>
+    <span translate>If enabled, the Recent Transactions card - a list of transactions occuring across all wallets - will appear in the Home
+      tab.
+    </span>
+  </div>
+  <ion-item-divider></ion-item-divider>
 </ion-content>

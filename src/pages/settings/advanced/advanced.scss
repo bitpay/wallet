@@ -1,7 +1,14 @@
 page-advanced {
-  .item-description {
-    .label {
-      font-size: 12.5px;
+  .advanced {
+    background: white;
+    padding: 1rem 1rem 1.5rem 2rem;
+    &-toggle {
+      display: flex;
+      align-items: center;
+      padding-bottom: 2rem;
+    }
+    span {
+      color: color($colors, grey);
     }
   }
 }

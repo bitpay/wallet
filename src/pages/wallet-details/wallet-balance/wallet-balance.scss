@@ -1,9 +1,9 @@
 page-wallet-balance {
   .balance-container {
-    ion-label {
-      display: flex;
+    display: flex;
     justify-content: space-between;
-    }
+    align-items: center;
+    padding-bottom: 2rem;
     .title {
       display: flex;
       align-items: center;
@@ -22,9 +22,13 @@ page-wallet-balance {
         color: color($colors, warning);
       }
       .fiat {
-        color: #bbbbbb;
+        color: color($colors, light-grey);
         font-size: 12.5px;
       }
     }
+  }
+  .description {
+    font-size: 12.5px;
+    color: color($colors, grey);      
   }
 }
