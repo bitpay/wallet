@@ -37,7 +37,7 @@ export class BackupRequestPage {
   }
 
   doBackupLater(confirmed: boolean) {
-    this.opts.title = !confirmed ? '¡Watch Out!' : 'Are you sure you want to skip it?';
+    this.opts.title = !confirmed ? 'Watch Out!' : 'Are you sure you want to skip it?';
     this.opts.message = !confirmed ? 'If this device is replaced or this app is deleted, neither you nor BitPay can recover your funds without a backup.' : 'You can create a backup later from your wallet settings.';
     this.opts.buttons = [{
       text: 'Go back',

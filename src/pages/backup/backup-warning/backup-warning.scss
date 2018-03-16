@@ -14,8 +14,9 @@ page-backup-warning {
     margin-right: 10px;
     margin-left: 10px;
   }
-
-  @extend %onboarding;
+  .title {
+    color: color($colors, blank);
+  }
   & > ion-content {
     background-image: $onboarding-background-image !important;
     background-position: center center;
@@ -36,13 +37,18 @@ page-backup-warning {
     }
   }
 
-  .description {
-    font-size: 16px;
-    color: rgba(255, 255, 255, 0.5);
-    &.bottom {
-      color: color($colors, blank);
-      font-size: 18px;
-    }
+  .top-description {
+    font-size: 1.4rem;
+    padding: 0 4rem 0 4rem;
+    color: $onboarding-comment-color;
+  }
+  .bottom-description {
+    font-size: 1.4rem;
+    color: color($colors, blank);
+    padding: 0 4rem 0 4rem;
+  }
+  .back-button-icon {
+    color: $onboarding-primary-color;
   }
 }
 

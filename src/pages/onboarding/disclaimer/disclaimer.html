@@ -2,9 +2,9 @@
   <ion-navbar hideBackButton="true"></ion-navbar>
 </ion-header>
 <ion-content no-bounce>
-  <h3 *ngIf="resume" translate>Quick review!</h3>
-  <h3 *ngIf="!resume" translate>Almost done! Let's review.</h3>
-  <p translate class="description">Bitcoin is different &ndash; it cannot be safely held with a bank or web service.</p>
+  <h3 *ngIf="resume" class="title" translate>Quick review!</h3>
+  <h3 *ngIf="!resume" class="title" translate>Almost done! Let's review.</h3>
+  <p translate class="top-description">Bitcoin is different &ndash; it cannot be safely held with a bank or web service.</p>
   <ion-list class="checkbox-list" no-lines text-wrap>
     <ion-item>
       <ion-label>I understand that my funds are held securely on this device, not by a company.</ion-label>
@@ -17,19 +17,17 @@
       <ion-checkbox [(ngModel)]="accepted.second"></ion-checkbox>
     </ion-item>
   </ion-list>
-  <div class="bottom-absolute checkbox-list">
-    <div class="agree-to-terms" *ngIf="accepted.first && accepted.second">
+</ion-content>
+<ion-footer>
+  <div class="checkbox-list">
+    <div *ngIf="accepted.first && accepted.second">
       <ion-item no-lines text-wrap>
-        <ion-checkbox class="check" [(ngModel)]="terms.accepted"></ion-checkbox>
+        <ion-label>I have read, understood, and agree to the Terms of Use.</ion-label>
+        <ion-checkbox [(ngModel)]="terms.accepted"></ion-checkbox>
       </ion-item>
-      <div class="terms">
-        <p translate>
-          I have read, understood, and agree to the
-          <a (click)="openDisclaimer()" translate>Terms of Use </a>.
-        </p>
-      </div>
+      <a (click)="openDisclaimer()" translate>Terms of Use</a>
     </div>
     <button ion-button class="button-standard" [disabled]="!accepted.first || !accepted.second || !terms.accepted" (click)="confirm()"
-    translate>Confirm &amp; Finish</button>
+      translate>Confirm &amp; Finish</button>
   </div>
-</ion-content>
+</ion-footer>

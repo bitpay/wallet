@@ -1,5 +1,4 @@
 page-collect-email {
-  @extend %onboarding;
   & > ion-content {
     background-image: $onboarding-background-image !important;
     background-position: top center;
@@ -16,11 +15,12 @@ page-collect-email {
     }
   }
   text-align: center;
+  .title {
+    color: color($colors, blank);
+  }
   p {
-    line-height: 1.6;
-    font-size: 18px;
-    margin-right: 10px;
-    margin-left: 10px;
+    margin-left: 1em;
+    margin-right: 1em;
   }
   .email-form {
     p, ion-item {
@@ -32,7 +32,6 @@ page-collect-email {
   }
   .description {
     font-size: 1.4rem;
-    color: rgba(255, 255, 255, 0.5);
   }
   ion-content{
     img{
@@ -43,5 +42,8 @@ page-collect-email {
     height: 100%;
     width: 100%;
     overflow-y: hidden;
+  }
+  .primary-color {
+    color: $onboarding-primary-color
   }
 }
