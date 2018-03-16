@@ -12,48 +12,63 @@
 </ion-header>
 
 <ion-content no-bounce>
+  <ion-list *ngIf="tx">
+    <ion-item>
+      <div class="header-container">
+        <div class="sending-label">
+          <img class="sending-img" src="assets/img/icon-tx-sent-outline.svg">
+          <span translate>Sending</span>
+        </div>
+        <div class="amount-label">
+          <div class="amount">{{tx.amountStr}}</div>
+          <div class="alternative" *ngIf="tx.alternativeAmountStr">{{tx.alternativeAmountStr}}</div>
+        </div>
+      </div>
+    </ion-item>
+    <div *ngIf="tx && tx.removed" class="box-notification no-margin warn" text-wrap>
+      <span translate>The payment was removed by creator</span>
+    </div>
 
-  <div padding>
-    <div class="sending-label">
-      <img class="sending-img" src="assets/img/icon-tx-sent-outline.svg">
-      <span translate>Sending</span>
+    <div *ngIf="tx && tx.status != 'pending'">
+      <div text-center *ngIf="tx && tx.status == 'accepted' && !tx.isGlidera">
+        <div class="box-notification no-margin notice" text-wrap translate>Payment accepted, but not yet broadcasted</div>
+        <button margin ion-button outline small icon-left (click)="broadcast(tx)" [disabled]="loading">
+          <ion-icon name="cloud-upload"></ion-icon>
+          <span translate>Broadcast Payment</span>
+        </button>
+      </div>
+      <div class="box-notification no-margin notice" *ngIf="tx && tx.status == 'accepted' && tx.isGlidera" text-wrap padding>
+        <span translate>Payment accepted. It will be broadcasted by Glidera. In case there is a problem, it can be deleted 6 hours after
+          it was created.</span>
+      </div>
+      <div class="box-notification no-margin success" *ngIf="tx && tx.status == 'broadcasted'" translate>
+        Payment Sent
+      </div>
+      <div class="box-notification no-margin warn" *ngIf="tx && tx.status =='rejected'" translate>
+        Payment Rejected
+      </div>
     </div>
-    <div class="amount-label">
-      <div class="amount">{{tx.amountStr}}</div>
-      <div class="alternative" *ngIf="tx.alternativeAmountStr">{{tx.alternativeAmountStr}}</div>
-    </div>
-  </div>
 
-  <div *ngIf="tx && tx.removed" class="box-notification no-margin warn" text-wrap>
-    <span translate>The payment was removed by creator</span>
-  </div>
+    <ion-item *ngIf="!currentSpendUnconfirmed && tx && tx.hasUnconfirmedInputs">
+      <span translate>Warning: this transaction has unconfirmed inputs</span>
+    </ion-item>
 
-  <div *ngIf="tx && tx.status != 'pending'">
-    <div text-center *ngIf="tx && tx.status == 'accepted' && !tx.isGlidera">
-      <div class="box-notification no-margin notice" text-wrap translate>Payment accepted, but not yet broadcasted</div>
-      <button margin ion-button outline small icon-left (click)="broadcast(tx)" [disabled]="loading">
-        <ion-icon name="cloud-upload"></ion-icon>
-        <span translate>Broadcast Payment</span>
-      </button>
-    </div>
-    <div class="box-notification no-margin notice" *ngIf="tx && tx.status == 'accepted' && tx.isGlidera" text-wrap padding>
-      <span translate>Payment accepted. It will be broadcasted by Glidera. In case there is a problem, it can be deleted 6 hours after it was created.</span>
-    </div>
-    <div class="box-notification no-margin success" *ngIf="tx && tx.status == 'broadcasted'" translate>
-      Payment Sent
-    </div>
-    <div class="box-notification no-margin warn" *ngIf="tx && tx.status =='rejected'" translate>
-      Payment Rejected
-    </div>
-  </div>
 
-  <ion-item *ngIf="!currentSpendUnconfirmed && tx && tx.hasUnconfirmedInputs">
-    <span translate>Warning: this transaction has unconfirmed inputs</span>
-  </ion-item>
+    <ion-item class="item-fee" *ngIf="tx && tx.feeStr">
+      <div class="fee-title" translate>
+        {{'Fee:' | translate}} {{tx.feeLevelStr | translate}}
+      </div>
+      <div>
+        <span class="fee-amount">{{tx.feeStr}}</span>
+        <div class="fee-details">
+          {{tx.feeFiatStr}} &middot;
+          <span *ngIf="tx.feeRateStr">{{tx.feeRateStr}} of the total amount</span>
+        </div>
+      </div>
+    </ion-item>
 
-  <ion-list>
-    <ion-item-divider>{{'To' | translate}}</ion-item-divider>
     <ion-item class="container-to">
+      <span translate>To</span>
       <div class="payment-proposal-to" copy-to-clipboard="{{tx.toAddress}}">
         <img class="icon-bitcoin" src="assets/img/icon-bitcoin-small.svg" />
         <!-- <contact ng-if="!tx.hasMultiplesOutputs" class="ellipsis" address="{{tx.toAddress}}"></contact>  TODO -->
@@ -91,15 +106,19 @@
       </div>
     </ion-item>
 
-    <ion-item-divider>{{'From' | translate}}</ion-item-divider>
     <ion-item class="container-from">
+      <span translate>From</span>
       <div class="wallet" *ngIf="wallet">
-        <img class="icon-wallet" src="assets/img/icon-wallet.svg" />
+        <ion-icon item-start>
+          <img *ngIf="wallet.network == 'testnet'" [ngStyle]="{'background-color': wallet.color}" src="assets/img/icon-wallet-testnet.svg"
+            class="icon-wallet" />
+          <img *ngIf="wallet.network != 'testnet'" [ngStyle]="{'background-color': wallet.color}" src="assets/img/icon-wallet.svg"
+            class="icon-wallet" />
+        </ion-icon>
         <div>{{wallet.name}}</div>
       </div>
     </ion-item>
 
-    <ion-item-divider></ion-item-divider>
     <ion-item *ngIf="isShared">
       <ion-label>
         <span translate>Created by</span>
@@ -118,58 +137,42 @@
       </ion-note>
     </ion-item>
 
-    <div *ngIf="tx && tx.message">
-      <ion-item-divider>{{'Memo' | translate}}</ion-item-divider>
-      <ion-item text-wrap>
-        {{tx.message}}
-      </ion-item>
-      <ion-item-divider></ion-item-divider>
-    </div>
-
-    <ion-item *ngIf="tx && tx.feeStr">
-      <ion-label>
-        <div class="item-title" translate>Fee</div>
-        <div class="item-subtitle">{{tx.feelevelstr}}</div>
-      </ion-label>
-      <ion-note item-end text-end>
-        <span>{{tx.feeStr}}</span>
-        <div>{{tx.feeFiatStr}}
-          <span *ngIf="tx.feeRateStr">({{tx.feeRateStr}})</span>
-        </div>
-      </ion-note>
+    <ion-item *ngIf="tx && tx.message">
+      <span translate>Memo</span>
+      <div class="item-memo" text-wrap>
+        <ion-note>{{tx.message}}</ion-note>
+      </div>
     </ion-item>
 
     <div *ngIf="tx && tx.paypro">
       <ion-item-divider>{{'Payment request' | translate}}</ion-item-divider>
       <ion-item>
-        <ion-label>
-          {{'Pay To'|translate}}
-        </ion-label>
+        <span translate>{{'Pay To'|translate}}</span>
         <ion-note item-end>
           {{tx.paypro.domain}}
         </ion-note>
       </ion-item>
       <ion-item>
-        <ion-label>
-          {{'Certified by'|translate}}
-        </ion-label>
-        <ion-note *ngIf="tx.paypro.caTrusted" icon-start item-end text-wrap>
-          <ion-icon *ngIf="tx.paypro.verified" color="success" name="lock"></ion-icon>
-          <ion-icon *ngIf="!tx.paypro.verified" color="warning" name="unlock"></ion-icon>
-          {{tx.paypro.caName}} {{'(Trusted)' | translate}}
-        </ion-note>
-        <ion-note *ngIf="!tx.paypro.caTrusted" icon-start item-end text-wrap>
-          <span *ngIf="tx.paypro.selfSigned">
-            <ion-icon color="danger" name="unlock"></ion-icon>
-            <span translate>Self-signed Certificate</span>
-          </span>
-          <span *ngIf="!tx.paypro.selfSigned">
-            <ion-icon color="warning" name="lock"></ion-icon>
-            {{tx.paypro.caName}}
-            <br>
-            <span translate>WARNING: UNTRUSTED CERTIFICATE</span>
-          </span>
-        </ion-note>
+        <span translate>Certified by</span>
+        <div class="item-memo" text-wrap>
+          <ion-note *ngIf="tx.paypro.caTrusted" icon-start item-end>
+            <ion-icon *ngIf="tx.paypro.verified" color="success" name="lock"></ion-icon>
+            <ion-icon *ngIf="!tx.paypro.verified" color="warning" name="unlock"></ion-icon>
+            {{tx.paypro.caName}} {{'(Trusted)' | translate}}
+          </ion-note>
+          <ion-note *ngIf="!tx.paypro.caTrusted" icon-start item-end>
+            <span *ngIf="tx.paypro.selfSigned">
+              <ion-icon color="danger" name="unlock"></ion-icon>
+              <span translate>Self-signed Certificate</span>
+            </span>
+            <span *ngIf="!tx.paypro.selfSigned">
+              <ion-icon color="warning" name="lock"></ion-icon>
+              {{tx.paypro.caName}}
+              <br>
+              <span translate>WARNING: UNTRUSTED CERTIFICATE</span>
+            </span>
+          </ion-note>
+        </div>
       </ion-item>
       <ion-item *ngIf="paymentExpired">
         <ion-label>
@@ -187,9 +190,11 @@
           <time>{{expires}}</time>
         </ion-note>
       </ion-item>
-      <ion-item-divider *ngIf="tx.paypro.memo">{{'Merchant Message' | translate}}</ion-item-divider>
-      <ion-item *ngIf="tx.paypro.memo" text-wrap>
-        {{tx.paypro.memo}}
+      <ion-item *ngIf="tx.paypro.memo">
+        <span translate>Merchant Message</span>
+        <div class="item-memo" *ngIf="tx.paypro.memo" text-wrap>
+          <ion-note>{{tx.paypro.memo}}</ion-note>
+        </div>
       </ion-item>
     </div>
 
@@ -211,20 +216,18 @@
           </ion-note>
         </div>
       </div>
+      <ion-item-divider></ion-item-divider>
     </div>
 
     <div *ngIf="(tx && !tx.removed) && (tx && tx.canBeRemoved) || (tx && tx.status == 'accepted' && !tx.broadcastedOn)">
+      <button ion-item class="btn-remove" (click)="remove()" [disabled]="loading">
+        <span translate>Delete Payment Proposal</span>
+      </button>
       <div class="proposal-deletion-help" *ngIf="!tx.isGlidera && isShared" translate>
         * A payment proposal can be deleted if 1) you are the creator, and no other copayer has signed, or 2) 24 hours have passed
         since the proposal was created.
       </div>
-      <ion-item-divider></ion-item-divider>
-      <button ion-item icon-left class="btn-remove" (click)="remove()" [disabled]="loading">
-        <ion-icon name="trash"></ion-icon>
-        <span translate>Delete Payment Proposal</span>
-      </button>
     </div>
-    <ion-item-divider></ion-item-divider>
   </ion-list>
 </ion-content>
 
