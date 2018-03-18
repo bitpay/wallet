@@ -176,8 +176,8 @@ module.exports = function(grunt) {
       },
       prod: {
         files: {
-          'www/js/app.js': ['www/js/app.js'],
-          'www/lib/angular-components.js': ['www/lib/angular-components.js']
+          'dist/www/js/app.js': ['dist/www/js/app.js'],
+          'dist/www/lib/angular-components.js': ['dist/www/lib/angular-components.js'],
         }
       }
     },
@@ -270,7 +270,7 @@ module.exports = function(grunt) {
   });
 
   grunt.registerTask('default', ['nggettext_compile', 'exec:appConfig', 'exec:externalServices', 'browserify', 'sass', 'concat', 'copy:ionic_fonts', 'copy:ionic_js']);
-  grunt.registerTask('prod', ['default', 'exec:removeDist', 'copy:dist', 'exec:addManifest']);
+  grunt.registerTask('prod', ['default', 'exec:removeDist', 'copy:dist', 'uglify', 'exec:addManifest']);
   grunt.registerTask('translate', ['nggettext_extract']);
   grunt.registerTask('desktop', ['prod', 'nwjs', 'copy:linux', 'compress:linux']);
   grunt.registerTask('osx', ['prod', 'nwjs', 'exec:macos', 'exec:osxsign']);

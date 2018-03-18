@@ -6,6 +6,7 @@ js/app.js
 lib/ionic.bundle.min.js
 lib/angular-components.js
 lib/instascan.min.js
+lib/jsQR.min.js
 cordova.js
 css/main.css
 

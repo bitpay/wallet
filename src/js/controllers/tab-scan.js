@@ -227,7 +227,7 @@ angular.module('copayApp.controllers').controller('tabScanController', function(
   $scope.scanPhoto = function(event) {
     // Get the photo
     // Get the canvas
-    const file = event.target.files[0]
+    var file = event.target.files[0]
     var canvas = document.getElementById("hiddenCanvas");
     var ctx = canvas.getContext("2d");
 
