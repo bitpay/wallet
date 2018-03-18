@@ -27,6 +27,12 @@
         <div class="list card padding text-center" ng-if="!wallets[0]">
           <span translate>No Wallet</span>
         </div>
+        <div class="mobile-only" class="text-center" ng-if="isIOS || isAndroid">
+          <div class="text">* Credit Card purchase not available on your device</div>
+          <div class="link">
+            <a class="button button-standard button-primary" ng-show="wallets[0]" ng-click="openExternalLink('https://changelly.com/widget/v1?auth=email&from=USD&to=NAV&merchant_id=fa6a4eb25086&address=&amount=100&ref_id=6c2996558a71&color=7d59b5')" translate>Buy NAV with Credit Card</a>
+          </div>
+        </div>
         <div class="address" ng-if="wallets[0]">
           <div class="address-info" class="text-center" ng-if="wallet && !wallet.isComplete()">
             <div class="incomplete">
