@@ -219,6 +219,14 @@ angular.module('copayApp.services')
       storage.set('homeTip', val, cb);
     };
 
+    root.getBuyNavTipAccepted = function(cb) {
+      storage.get('buyNavTip', cb);
+    };
+
+    root.setBuyNavTipAccepted = function(val, cb) {
+      storage.set('buyNavTip', val, cb);
+    };
+
     root.setHideBalanceFlag = function(walletId, val, cb) {
       storage.set('hideBalance-' + walletId, val, cb);
     };

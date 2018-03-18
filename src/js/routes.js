@@ -156,7 +156,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
           'tab-home@tabs': {
             controller: 'changellyController',
             templateUrl: 'views/changelly.html'
-           }
+           },
          }
        })
        .state('tabs.changelly-send', {
@@ -168,6 +168,15 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
            }
          }
        })
+      .state('tabs.changelly-settings', {
+      url: '/changelly',
+      views: {
+        'tab-settings@tabs': {
+          controller: 'changellyController',
+          templateUrl: 'views/changelly.html'
+        }
+      }
+    })
       /*
        *
        * Wallet

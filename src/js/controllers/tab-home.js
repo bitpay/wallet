@@ -10,6 +10,7 @@ angular.module('copayApp.controllers').controller('tabHomeController',
     $scope.version = $window.version;
     $scope.name = appConfigService.nameCase;
     $scope.homeTip = $stateParams.fromOnboarding;
+    $scope.buyNavTip = true
     $scope.isCordova = platformInfo.isCordova;
     $scope.isAndroid = platformInfo.isAndroid;
     $scope.isWindowsPhoneApp = platformInfo.isCordova && platformInfo.isWP;
@@ -32,20 +33,9 @@ angular.module('copayApp.controllers').controller('tabHomeController',
         });
       }
 
-      // if ($scope.isNW) {
-      //   latestReleaseService.checkLatestRelease(function(err, newRelease) {
-      //     if (err) {
-      //       $log.warn(err);
-      //       return;
-      //     }
-      //     if (newRelease) {
-      //       $scope.newRelease = true;
-      //       $scope.updateText = gettextCatalog.getString('There is a new version of {{appName}} available', {
-      //         appName: $scope.name
-      //       });
-      //     }
-      //   });
-      // }
+      storageService.getBuyNavTipAccepted(function(error, value) {
+        $scope.buyNavTip = (value == 'accepted') ? false : true;
+      });
 
       storageService.getFeedbackInfo(function(error, info) {
 
@@ -275,6 +265,15 @@ angular.module('copayApp.controllers').controller('tabHomeController',
     $scope.hideHomeTip = function() {
       storageService.setHomeTipAccepted('accepted', function() {
         $scope.homeTip = false;
+        $timeout(function() {
+          $scope.$apply();
+        })
+      });
+    };
+
+    $scope.hideBuyNavTip = function() {
+      storageService.setBuyNavTipAccepted('accepted', function() {
+        $scope.buyNavTip = false;
         $timeout(function() {
           $scope.$apply();
         })
