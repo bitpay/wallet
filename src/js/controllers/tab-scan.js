@@ -6,18 +6,19 @@ angular.module('copayApp.controllers').controller('tabScanController', function(
   $scope.canChangeWebScannerCamera = false
   $scope.webScannerCameraNumber = 0
   $scope.scannerStates = scannerStates;
-  $scope.usingWebScanner = false
+  $scope.usingWebRtc = false
+  $scope.webRtcDenied = false
   $scope.cameraSupported = platformInfo.cameraSupported
-
+  $scope.retryPhoto = false
   var webScanner
 
-  if (platformInfo.isSafari && platformInfo.cameraSupported) {
-    $log.debug("use web scanner")
-    if (!navigator.getUserMedia) {
-      navigator.getUserMedia = navigator.webkitGetUserMedia;
-    }
-    $scope.usingWebScanner = true
-    webScanner = new Instascan.Scanner({ video: document.getElementById('webScanner') })
+  if (platformInfo.cameraType === 'webrtc') {
+    $log.debug("Using webrtc")
+    // if (!navigator.getUserMedia) {
+    //   navigator.getUserMedia = navigator.webkitGetUserMedia;
+    // }
+    $scope.usingWebRtc = true
+    webScanner = new Instascan.Scanner({ video: document.getElementById('webScanner'), scanPeriod: 5 })
     webScanner.addListener('scan', function (content) {
       handleSuccessfulScan(content);
     });
@@ -88,7 +89,7 @@ angular.module('copayApp.controllers').controller('tabScanController', function(
 
   $scope.$on("$ionicView.afterEnter", function() {
     // try initializing and refreshing status any time the view is entered
-    if(!scannerService.isInitialized()){
+    if(!scannerService.isInitialized() && platformInfo.cameraType === 'native'){
       scannerService.gentleInitialize();
     }
     activate();
@@ -96,48 +97,63 @@ angular.module('copayApp.controllers').controller('tabScanController', function(
 
   function activate(){
     $log.debug('Scanner activated, setting to visible...');
-    console.log('activate() ran', $scope.currentState === scannerStates.visible, $scope.currentState)
-
-    if ($scope.usingWebScanner) {
-      Instascan.Camera.getCameras().then(function (cameras) {
-        if (cameras.length > 0) {
-          if (cameras.length > 1) { $scope.canChangeWebScannerCamera = true }
-          $scope.startedWebCamera = true;
+    switch(platformInfo.cameraType) {
+      case 'native':
+        scannerService.activate(function(){
+          _updateCapabilities();
+          _handleCapabilities();
           $scope.currentState = scannerStates.visible;
-          $scope.webScannerCameraNumber = 0;
-          webScanner.start(cameras[0]);
-        } else {
-          $log.debug('No cameras found.');
-          $scope.usingWebScanner = false;
-          $scope.cameraSupported = false;
-        }
-      }).catch(function (e) {
-        $scope.usingWebScanner = false;
-        $scope.cameraSupported = false;
-        $log.error(e);
-      });
-    } else {
-      scannerService.activate(function(){
-        _updateCapabilities();
-        _handleCapabilities();
-        $log.debug('Scanner activated, setting to visible...');
-        $scope.currentState = scannerStates.visible;
-        // pause to update the view
-        $timeout(function(){
-          scannerService.scan(function(err, contents){
-            if(err){
-              $log.debug('Scan canceled.');
-            } else if ($state.params.passthroughMode) {
-              $rootScope.scanResult = contents;
-              goBack();
-            } else {
-              handleSuccessfulScan(contents);
-            }
+          // pause to update the view
+          $timeout(function(){
+            scannerService.scan(function(err, contents){
+              if(err){
+                $log.debug('Scan canceled.');
+              } else if ($state.params.passthroughMode) {
+                $rootScope.scanResult = contents;
+                goBack();
+              } else {
+                handleSuccessfulScan(contents);
+              }
+            });
+            // resume preview if paused
+            scannerService.resumePreview();
           });
-          // resume preview if paused
-          scannerService.resumePreview();
+        })
+        break;
+      case 'webrtc':
+        Instascan.Camera.getCameras().then(function (cameras) {
+          if (cameras.length > 0) {
+            if (cameras.length > 1) { $scope.canChangeWebScannerCamera = true }
+            $scope.startedWebCamera = true;
+            $scope.usingWebRtc = true;
+            $scope.currentState = scannerStates.visible;
+            $scope.webScannerCameraNumber = 0;
+            $scope.webRtcDenied = false;
+            webScanner.start(cameras[0]);
+            $log.debug("Webrtc active")
+          } else {
+            $log.debug('No cameras found.');
+            $scope.usingWebRtc = false;
+            $scope.cameraSupported = false;
+          }
+        }).catch(function (e) {
+          $scope.usingWebRtc = false;
+          if (e.name === 'NotAllowedError') {
+            $scope.webRtcDenied = true;
+            $scope.currentState = scannerStates.denied;
+          }
+          $scope.$apply()
+          $log.error('webRTC failed', e);
         });
-      })
+        break;
+      case 'photo':
+        $log.debug('Using photo method');
+        $scope.usingPhotoInput = true;
+        $scope.$apply()
+      default:
+        $log.debug('Cameras not supported');
+        $scope.cameraSupported = false;
+        $scope.$apply()
     }
   }
 
@@ -205,6 +221,51 @@ angular.module('copayApp.controllers').controller('tabScanController', function(
     }, 200);
 
   };
+
+  // This scans a photo taken with iOS
+  // that don't have proper support
+  $scope.scanPhoto = function(event) {
+    // Get the photo
+    // Get the canvas
+    const file = event.target.files[0]
+    var canvas = document.getElementById("hiddenCanvas");
+    var ctx = canvas.getContext("2d");
+
+    var reader  = new FileReader();
+
+    reader.onload = function (e) {
+      //Initiate the JavaScript Image object.
+      var image = new Image();
+      var maxImageHeight = 1000
+
+      // Once the image is loaded...
+      image.onload = function () {
+        // Resize image and there is big slow down on large images
+        if(image.height > maxImageHeight) {
+          image.width *= maxImageHeight / image.height;
+          image.height = maxImageHeight;
+        }
+        ctx.drawImage(image, 0, 0, image.width, image.height);
+
+        // Get the image data, and run it through jsQR
+        var imageData = ctx.getImageData(0, 0, image.width, image.height);
+        var scanResults = jsQR(imageData.data, image.width, image.height)
+
+        $log.debug('QR Code', scanResults)
+        if (scanResults) {
+          handleSuccessfulScan(scanResults.data);
+        } else {
+          // Ask user to try again
+          $scope.retryPhoto = true;
+          $scope.$apply();
+        }
+      };
+      // Load the file into the image src so we can read it
+      image.src = reader.result
+    }
+    // Create data url of the file so we can use it in a img tag
+    reader.readAsDataURL(file);
+  }
 
   $scope.canGoBack = function(){
     return $state.params.passthroughMode;

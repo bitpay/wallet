@@ -87,6 +87,6 @@ angular.module('copayApp.controllers').controller('tourController',
     }
 
     $scope.shouldShowAppDownload = function () {
-      return platformInfo.isSafari && platformInfo.iOSPWASupportsCamera && !platformInfo.isPWA
+      return platformInfo.isSafari && platformInfo.iOSPWASupport && !platformInfo.isPWA
     }
   });
