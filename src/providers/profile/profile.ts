@@ -339,13 +339,13 @@ export class ProfileProvider {
   }
 
   // An alert dialog
-  private askPassword(name: string, title: string): Promise<any> {
+  private askPassword(warnMsg: string, title: string): Promise<any> {
     return new Promise((resolve, reject) => {
       let opts = {
         type: 'password',
         useDanger: true
       }
-      this.popupProvider.ionicPrompt(title, name, opts).then((res: any) => {
+      this.popupProvider.ionicPrompt(title, warnMsg, opts).then((res: any) => {
         return resolve(res);
       });
     });
