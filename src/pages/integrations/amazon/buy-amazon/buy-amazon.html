@@ -24,7 +24,7 @@
 
     <ion-item-group class="info">
       <button ion-item (click)="showWallets()" class="wallets-list">
-        <div translate>From</div>
+        <div>From</div>
         <div class="wallet">
           <ion-icon item-start>
             <img *ngIf="network == 'testnet'" [ngStyle]="{'background-color': wallet && wallet.color}" src="assets/img/icon-wallet-testnet.svg"
@@ -40,14 +40,14 @@
           Details
         </ion-item-divider>
         <ion-item>
-          <span translate>Gift Card</span>
+          <span>Gift Card</span>
           <ion-note item-end>
             {{amount | currency:'$ ':2}}
             <span *ngIf="amount"> {{currencyIsoCode}}</span>
           </ion-note>
         </ion-item>
         <ion-item>
-          <span translate>Network cost</span>
+          <span>Network cost</span>
           <ion-note item-end>
             <span>{{invoiceFee | currency:'$ ':2}}
               <span *ngIf="invoiceFee"> {{currencyIsoCode}}</span>
@@ -55,7 +55,7 @@
           </ion-note>
         </ion-item>
         <ion-item>
-          <span translate>Miner fee</span>
+          <span>Miner fee</span>
           <ion-note item-end>
             <span>{{networkFee | currency:'$ ':2}}
               <span *ngIf="networkFee"> {{currencyIsoCode}}</span>
@@ -63,7 +63,7 @@
           </ion-note>
         </ion-item>
         <ion-item>
-          <span translate>Total</span>
+          <span>Total</span>
           <ion-note item-end>
             <span *ngIf="totalAmount">{{totalAmount | currency:'$ ':2}} {{currencyIsoCode}}</span>
             <span *ngIf="totalAmountStr">({{totalAmountStr}})</span>
@@ -86,5 +86,5 @@
 </ion-content>
 
 <ion-footer>
-  <button ion-button full class="button-footer" (click)="buyConfirm()" [disabled]="!(wallet && totalAmountStr)" translate>Confirm purchase</button>
+  <button ion-button full class="button-footer" (click)="buyConfirm()" [disabled]="!(wallet && totalAmountStr)">Confirm purchase</button>
 </ion-footer>

@@ -12,8 +12,7 @@
         <ion-input type="text" formControlName="bwsurl" [value]="walletServiceForm.value.bwsurl" required></ion-input>
       </ion-item>
       <ion-item-divider text-wrap>
-        <span translate>{{appName}} depends on Bitcore Wallet Service (BWS) for blockchain information, networking and Copayer synchronization.
-          The default configuration points to https://bws.bitpay.com (BitPay's public BWS instance).</span>
+        <span translate>{{appName}} depends on Bitcore Wallet Service (BWS) for blockchain information, networking and Copayer synchronization. The default configuration points to https://bws.bitpay.com (BitPay's public BWS instance).</span>
         <a (click)="resetDefaultUrl()" translate>
           Use default url
         </a>

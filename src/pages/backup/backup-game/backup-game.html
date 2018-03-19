@@ -33,9 +33,8 @@
           </div>
         </div>
         <div class="bottom-absolute">
-          <div translate class="footer-text">We'll confirm on the next screen.</div>
-          <button *ngIf="currentIndex == 0" ion-button class="button-standard" [disabled]="credentialsEncrypted || error" (click)="slideNext()"
-            translate>I've written it down</button>
+          <div translate class="footer-text">We will confirm on the next screen.</div>
+          <button *ngIf="currentIndex == 0" ion-button class="button-standard" [disabled]="credentialsEncrypted || error" (click)="slideNext()" translate>I've written it down</button>
         </div>
       </div>
     </ion-slide>
@@ -76,8 +75,7 @@
         <ion-input type="password" id="password" [(ngModel)]="password" autocapitalize="off" spellcheck="false"></ion-input>
       </ion-item>
       <ion-item-divider text-wrap class="assertive">
-        {{'This recovery phrase was created with a password. To recover this wallet both the recovery phrase and password are needed.'
-        | translate}}
+        {{'This recovery phrase was created with a password. To recover this wallet both the recovery phrase and password are needed.' | translate}}
       </ion-item-divider>
 
       <div class="bottom-absolute">

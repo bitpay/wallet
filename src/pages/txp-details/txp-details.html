@@ -55,7 +55,7 @@
 
     <ion-item class="item-fee" *ngIf="tx && tx.feeStr">
       <div class="fee-title">
-        {{'Fee:' | translate}} {{tx.feeLevelStr | translate}}
+        {{'Fee' | translate}} {{tx.feeLevelStr}}
       </div>
       <div>
         <span class="fee-amount">{{tx.feeStr}}</span>

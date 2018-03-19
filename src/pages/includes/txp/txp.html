@@ -23,7 +23,7 @@
   <ion-note item-right>
     <div class="amount">
       <span *ngIf="tx.action == 'sent'">–</span>
-      <span *ngIf="tx.action == 'invalid'" translate> (possible double spend) </span>
+      <span *ngIf="tx.action == 'invalid'" translate>(possible double spend)</span>
       <span *ngIf="tx.action != 'invalid'"> – {{tx.amount | satToUnit: tx.coin}}</span>
     </div>
     <div class="date">

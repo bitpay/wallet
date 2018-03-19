@@ -17,7 +17,7 @@
         {{'preparing...' | translate}}
       </ion-note>
       <ion-note *ngIf="err" item-end>
-        {{err | translate}}
+        {{err}}
       </ion-note>
     </ion-item>
 
@@ -26,8 +26,9 @@
     </button>
 
     <ion-item-divider text-wrap>
-      The transaction history and every new incoming transaction are cached in the app. This feature clean this up and synchronizes
-      again from the server
+      <span translate>
+        The transaction history and every new incoming transaction are cached in the app. This feature clean this up and synchronizes again from the server
+      </span>
     </ion-item-divider>
   </ion-list>
 </ion-content>

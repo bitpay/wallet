@@ -45,13 +45,11 @@
       <div *ngIf="gapReached">
         <h5 translate>Unused addresses limit</h5>
         <p>
-          <span translate>The maximum number of consecutive unused addresses (20) has been reached. When one of your unused addresses receives
-            a payment, a new address will be generated and shown in your Receive tab.</span>&nbsp
+          <span translate>The maximum number of consecutive unused addresses (20) has been reached. When one of your unused addresses receives a payment, a new address will be generated and shown in your Receive tab.</span>
           <a (click)="readMore()" *ngIf="!showMore" translate>Read more</a>
         </p>
         <p *ngIf="showMore">
-          <span translate>The restore process will stop when 20 addresses are generated in a row which contain no funds. To safely generate
-            more addresses, make a payment to one of the unused addresses which has already been generated.</span>&nbsp
+          <span translate>The restore process will stop when 20 addresses are generated in a row which contain no funds. To safely generate more addresses, make a payment to one of the unused addresses which has already been generated.</span> 
           <a (click)="readMore()" translate>Read less</a>
         </p>
       </div>

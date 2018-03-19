@@ -77,7 +77,7 @@
           + (wallet.cachedBalanceUpdatedOn ? ' &middot; ' + ( wallet.cachedBalanceUpdatedOn * 1000 | amTimeAgo) : '') : '')}}
         </span>
         <span *ngIf="wallet.scanning" translate>Scanning funds</span>
-        <span *ngIf="wallet.balanceHidden && !wallet.scanning">[<span translate>Balance Hidden</span>]</span>
+        <span *ngIf="wallet.balanceHidden && !wallet.scanning"><span translate>[Balance Hidden]</span></span>
         <span class="text-gray" *ngIf="wallet.credentials.m > 1">{{wallet.credentials.m}}-of-{{wallet.credentials.n}}</span>
         <ion-icon *ngIf="!wallet.balanceHidden && wallet.status && (wallet.status.totalBalanceSat != wallet.status.spendableAmount)"
           ios="ios-timer-outline" md="md-timer"></ion-icon>

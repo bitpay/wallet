@@ -59,13 +59,13 @@
 
     <ion-item class="item-fee" *ngIf="btx && btx.feeStr && btx.action != 'received'">
       <div class="fee-title">
-        {{'Fee:' | translate}}
+        {{'Fee' | translate}}
       </div>
       <div>
         <span class="fee-amount">{{btx.feeStr}}</span>
         <div class="fee-details">
           {{btx.feeFiatStr}} &middot;
-          <span *ngIf="btx.feeRateStr">{{btx.feeRateStr}} of the total amount</span>
+          <span *ngIf="btx.feeRateStr" translate>{{btx.feeRateStr}} of the total amount</span>
         </div>
       </div>
     </ion-item>

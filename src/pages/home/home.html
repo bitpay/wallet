@@ -230,8 +230,7 @@
           <img src="assets/img/icon-card.svg" class="icon-card" />
         </ion-icon>
         <div class="item-title">BitPay Visa&reg; Card ({{card.lastFourDigits}})</div>
-        <div class="item-subtitle">{{card.balance ? (card.balance | currency:card.currencySymbol:2) : 'Add funds to get started'|translate}} {{card.updatedOn
-          ? (' &middot; ' + (card.updatedOn * 1000 | amTimeAgo)) : ''}}</div>
+        <div class="item-subtitle">{{card.balance ? (card.balance | currency:card.currencySymbol:2) : 'Add funds to get started'|translate}} {{card.updatedOn ? (' &middot; ' + (card.updatedOn * 1000 | amTimeAgo)) : ''}}</div>
       </button>
     </ion-list>
   </div>

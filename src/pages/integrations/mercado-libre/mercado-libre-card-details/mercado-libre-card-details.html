@@ -65,7 +65,7 @@
 
   <ion-list>
     <button class="links" ion-item (click)="openExternalLink(card.invoiceUrl)">
-      <span translate>See invoice &rarr;</span>
+      <span translate>See invoice</span> &rarr;
     </button>
 
     <button class="links" ion-item *ngIf="card.status == 'FAILURE'" (click)="openSupportWebsite()">
@@ -73,7 +73,7 @@
     </button>
 
     <button ion-item block *ngIf="card.cardStatus == 'inactive' || card.cardStatus == 'expired' || card.status == 'expired'"
-      class="assertive" (click)="remove()">Remove</button>
+      class="assertive" (click)="remove()" translate>Remove</button>
   </ion-list>
 
 </ion-content>
