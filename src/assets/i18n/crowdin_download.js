@@ -86,7 +86,7 @@ if (no_build == false) { // Reminder: Any changes to the script below must also 
 
           for (var i in files) {
             debugger;
-            if (files[i].slice(0, 9) == 'v4appstore_' && files[i].slice(-4) == '.txt' && files[i] != 'appstore_en.txt') {
+            if (files[i].slice(0, 9) == 'appstore_' && files[i].slice(-4) == '.txt' && files[i] != 'appstore_en.txt') {
               var english_file = fs.readFileSync(local_file_name2, 'utf8');
               var compare_file = fs.readFileSync(path.join(__dirname, 'docs/' + files[i]), 'utf8')
               english_file = english_file.replace(/\r\n/g, '\n');
@@ -95,7 +95,7 @@ if (no_build == false) { // Reminder: Any changes to the script below must also 
                 fs.unlinkSync(path.join(__dirname, 'docs/' + files[i]));
               };
             };
-            if (files[i].slice(0, 11) == 'v4updateinfo_' && files[i].slice(-4) == '.txt' && files[i] != 'updateinfo_en.txt') {
+            if (files[i].slice(0, 11) == 'updateinfo_' && files[i].slice(-4) == '.txt' && files[i] != 'updateinfo_en.txt') {
               var english_file = fs.readFileSync(local_file_name3, 'utf8');
               var compare_file = fs.readFileSync(path.join(__dirname, 'docs/' + files[i]), 'utf8')
               english_file = english_file.replace(/\r\n/g, '\n');
@@ -111,7 +111,7 @@ if (no_build == false) { // Reminder: Any changes to the script below must also 
           var files = fs.readdirSync('./po');
 
           for (var i in files) {
-            if (files[i] != 'app.pot') {
+            if (files[i] != 'template.pot') {
               var po_file = fs.readFileSync(path.join(__dirname, 'po/' + files[i]), 'utf8');
               var po_array = po_file.split('\n');
               for (var j in po_array) {
@@ -179,7 +179,7 @@ if (no_build == false) { // Reminder: Any changes to the script below must also 
       var files = fs.readdirSync('./docs');
 
       for (var i in files) {
-        if (files[i].slice(0, 9) == 'v4appstore_' && files[i].slice(-4) == '.txt' && files[i] != 'appstore_en.txt') {
+        if (files[i].slice(0, 9) == 'appstore_' && files[i].slice(-4) == '.txt' && files[i] != 'appstore_en.txt') {
           var english_file = fs.readFileSync(local_file_name2, 'utf8');
           var compare_file = fs.readFileSync(path.join(__dirname, 'docs/' + files[i]), 'utf8')
           english_file = english_file.replace(/\r\n/g, '\n');
@@ -188,7 +188,7 @@ if (no_build == false) { // Reminder: Any changes to the script below must also 
             fs.unlinkSync(path.join(__dirname, 'docs/' + files[i]));
           };
         };
-        if (files[i].slice(0, 11) == 'v4updateinfo_' && files[i].slice(-4) == '.txt' && files[i] != 'updateinfo_en.txt') {
+        if (files[i].slice(0, 11) == 'updateinfo_' && files[i].slice(-4) == '.txt' && files[i] != 'updateinfo_en.txt') {
           var english_file = fs.readFileSync(local_file_name3, 'utf8');
           var compare_file = fs.readFileSync(path.join(__dirname, 'docs/' + files[i]), 'utf8')
           english_file = english_file.replace(/\r\n/g, '\n');
@@ -204,7 +204,7 @@ if (no_build == false) { // Reminder: Any changes to the script below must also 
       var files = fs.readdirSync('./po');
 
       for (var i in files) {
-        if (files[i] != 'app.pot') {
+        if (files[i] != 'template.pot') {
           var po_file = fs.readFileSync(path.join(__dirname, 'po/' + files[i]), 'utf8');
           var po_array = po_file.split('\n');
           for (var j in po_array) {
