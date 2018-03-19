@@ -38,8 +38,7 @@
         </button>
       </div>
       <div class="box-notification no-margin notice" *ngIf="tx && tx.status == 'accepted' && tx.isGlidera" text-wrap padding>
-        <span translate>Payment accepted. It will be broadcasted by Glidera. In case there is a problem, it can be deleted 6 hours after
-          it was created.</span>
+        <span translate>Payment accepted. It will be broadcasted by Glidera. In case there is a problem, it can be deleted 6 hours after it was created.</span>
       </div>
       <div class="box-notification no-margin success" *ngIf="tx && tx.status == 'broadcasted'" translate>
         Payment Sent
@@ -55,14 +54,14 @@
 
 
     <ion-item class="item-fee" *ngIf="tx && tx.feeStr">
-      <div class="fee-title" translate>
+      <div class="fee-title">
         {{'Fee:' | translate}} {{tx.feeLevelStr | translate}}
       </div>
       <div>
         <span class="fee-amount">{{tx.feeStr}}</span>
         <div class="fee-details">
           {{tx.feeFiatStr}} &middot;
-          <span *ngIf="tx.feeRateStr">{{tx.feeRateStr}} of the total amount</span>
+          <span *ngIf="tx.feeRateStr" translate>{{tx.feeRateStr}} of the total amount</span>
         </div>
       </div>
     </ion-item>
@@ -149,7 +148,7 @@
     <div *ngIf="tx && tx.paypro">
       <ion-item-divider>{{'Payment request' | translate}}</ion-item-divider>
       <ion-item>
-        <span translate>{{'Pay To'|translate}}</span>
+        <span>{{'Pay To'|translate}}</span>
         <ion-note item-end>
           {{tx.paypro.domain}}
         </ion-note>
@@ -226,8 +225,7 @@
         <span translate>Delete Payment Proposal</span>
       </button>
       <div class="proposal-deletion-help" *ngIf="!tx.isGlidera && isShared" translate>
-        * A payment proposal can be deleted if 1) you are the creator, and no other copayer has signed, or 2) 24 hours have passed
-        since the proposal was created.
+        * A payment proposal can be deleted if 1) you are the creator, and no other copayer has signed, or 2) 24 hours have passed since the proposal was created.
       </div>
     </div>
   </ion-list>
