@@ -19,10 +19,18 @@
         <ion-icon item-start>
           <img [ngStyle]="{'background-color': wallet.color}" src="assets/img/icon-wallet.svg" class="icon-wallet" />
         </ion-icon>
-        <h2>{{wallet.credentials.walletName}}</h2>
-        <p>
-          {{wallet.status && wallet.status.totalBalanceStr ? wallet.status.totalBalanceStr : wallet.cachedBalance}}
-        </p>
+        <div class="item-title">{{wallet.credentials.walletName}}</div>
+        <div class="item-subtitle">
+          <span *ngIf="!wallet.error">
+            <span class="success" *ngIf="!wallet.balanceHidden">
+              {{wallet.bchBalance || ('Checking...' | translate)}}
+            </span>
+            <span *ngIf="wallet.balanceHidden">[
+              <span translate>Balance Hidden</span>]</span>
+            <span class="text-gray" *ngIf="wallet.credentials.m > 1">{{wallet.credentials.m}}-of-{{wallet.credentials.n}}</span>
+          </span>
+          <span *ngIf="wallet.error" class="wallet-warning">{{wallet.error}}</span>
+        </div>
         <ion-note item-end>
           <button ion-button (click)="duplicate(wallet)" translate>Duplicate</button>
         </ion-note>
@@ -40,8 +48,10 @@
         <ion-icon item-start>
           <img [ngStyle]="{'background-color': 'gray'}" src="assets/img/icon-wallet.svg" class="icon-wallet" />
         </ion-icon>
-        <h2>{{wallet.credentials.walletName}}</h2>
-        <p class="text-disabled">{{wallet.excludeReason}}</p>
+        <div class="item-title text-disabled">{{wallet.credentials.walletName}}</div>
+        <div class="item-subtitle">
+          <span class="text-disabled">{{wallet.excludeReason}}</span>
+        </div>
       </ion-item>
     </ion-list>
 
