@@ -116,6 +116,7 @@
     "cordova": "^6.3.1",
     "elementtree": "^0.1.7",
     "grunt": "^1.0.1",
+    "grunt-asset-hash": "^0.1.9",
     "ionic": "^2.1.0",
     "lodash": "^4.3.0",
     "plist": "^2.1.0",

@@ -3,6 +3,7 @@
 module.exports = function(grunt) {
 
   require('load-grunt-tasks')(grunt);
+  grunt.loadNpmTasks('grunt-asset-hash');
 
   // Project Configuration
   grunt.initConfig({
@@ -266,11 +267,31 @@ module.exports = function(grunt) {
           'angular-bitauth/angular-bitauth.js': ['angular-bitauth/index.js']
         },
       }
-    }
+    },
+    asset_hash: {
+      options: {
+        preserveSourceMaps: false,  // Set to true when assets should share the same location as their source map.
+        assetMap: false,
+        hashLength: 8,             // Number of hex characters in the hash folder. (0 means no hashing is done).
+        algorithm: 'md5',           // Crypto algorithm used to hash the contents.
+        srcBasePath: 'dist/www/',            // The directory prefix to be stripped from the asset map src paths.
+        destBasePath: 'dist/www/',           // The directory prefix to be stripped from the asset map dest paths.
+        hashType: 'file',         // Defaults to `/$HASH/filename.ext`, but `'file'` will output `filename.$HASH.ext`.
+        references: ['dist/www/index.html', 'dist/www/cache.manifest']              // Files to replace references in (eg. a CSS file where `image.png` should become `image.$HASH.png`)
+      },
+      your_target: {
+        files: [
+          { src:  ['dist/www/**/*.js', 'dist/www/**/*.css'],  // A collection of assets to be hashed.
+            dest: 'dist/www/'          // A folder to contained the hashed assets. Cannot be a file.
+          }
+        ]
+      },
+    },
   });
 
   grunt.registerTask('default', ['nggettext_compile', 'exec:appConfig', 'exec:externalServices', 'browserify', 'sass', 'concat', 'copy:ionic_fonts', 'copy:ionic_js']);
-  grunt.registerTask('prod', ['default', 'exec:removeDist', 'copy:dist', 'uglify', 'exec:addManifest']);
+  // grunt.registerTask('prod', ['default', 'exec:removeDist', 'copy:dist', 'uglify', 'exec:addManifest']);
+  grunt.registerTask('prod', ['default', 'exec:removeDist', 'copy:dist', 'exec:addManifest', 'asset_hash']);
   grunt.registerTask('translate', ['nggettext_extract']);
   grunt.registerTask('desktop', ['prod', 'nwjs', 'copy:linux', 'compress:linux']);
   grunt.registerTask('osx', ['prod', 'nwjs', 'exec:macos', 'exec:osxsign']);
