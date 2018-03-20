@@ -131,8 +131,6 @@
       <ion-toggle checked="false" *ngIf="!btx.confirmations || btx.confirmations == 0" [(ngModel)]="txNotification.value" (ionChange)="txConfirmNotificationChange()"></ion-toggle>
     </ion-item>
 
-    <button ion-item class="btn-view" (click)="viewOnBlockchain()" translate>View on blockchain</button>
-
     <div *ngIf="actionList && actionList[0]">
       <ion-item-divider>{{'Timeline' | translate}}</ion-item-divider>
       <div class="timeline-item" [ngClass]="{'action-created' : a.type == 'created' || a.type == 'accept', 'action-rejected' : a.type == 'reject'}"
@@ -153,6 +151,9 @@
         </div>
       </div>
     </div>
+
+    <button ion-button full class="button-standard" (click)="viewOnBlockchain()" translate>View on blockchain</button>
+
   </ion-list>
 
 </ion-content>
