@@ -386,6 +386,7 @@ export class WalletProvider {
           ) {
             this.logger.warn(this.bwcErrorProvider.msg(err, 'Server Error'));
             prefix = null;
+            this.popupProvider.ionicAlert(null, this.bwcErrorProvider.msg('MAIN_ADDRESS_GAP_REACHED'));
             wallet.getMainAddresses({
               reverse: true,
               limit: 1
