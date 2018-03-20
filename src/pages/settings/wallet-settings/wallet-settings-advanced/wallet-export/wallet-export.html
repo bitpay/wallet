@@ -16,7 +16,7 @@
     </ion-segment>
   </div>
   <div [ngSwitch]="segments">
-    <ion-list *ngSwitchCase="'file/text'">
+    <ion-list *ngSwitchCase="'file/text'" margin-top>
       <div *ngIf="!backupWalletPlainText">
         <form [formGroup]="exportWalletForm">
           <ion-item>
@@ -74,7 +74,7 @@
         <ion-textarea rows="12">{{backupWalletPlainText}}</ion-textarea>
       </div>
     </ion-list>
-    <ion-list *ngSwitchCase="'qrCode'">
+    <ion-list *ngSwitchCase="'qr-code'">
       <div class="qrCode" *ngIf="supported">
         <ngx-qrcode qrc-value="{{exportWalletInfo}}" qrc-class="aclass" qrc-errorCorrectionLevel="M"></ngx-qrcode>
         <ion-item-divider text-wrap>
