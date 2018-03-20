@@ -9,13 +9,13 @@
   <div *ngIf="hasBtcWallets || hasBchWallets">
     <div class="send-header-wrapper">
       <span class="send-heading" translate>Recipient</span>
-      <div class="search-wrapper">
-        <ion-icon class="bitcoin-icon" name="search-btc"></ion-icon>
+      <ion-item class="search-wrapper">
+        <ion-icon item-start class="bitcoin-icon" name="search-btc"></ion-icon>
         <ion-input placeholder="{{'Search or enter bitcoin address' | translate}}" [(ngModel)]="search" (ngModelChange)="findContact(search)"></ion-input>
-        <ion-icon class="scan-icon" (click)="openScanner()">
+        <ion-icon item-end class="scan-icon" (click)="openScanner()">
           <img src="assets/img/scan-ico.svg">
         </ion-icon>
-      </div>
+      </ion-item>
     </div>
 
     <div class="card" *ngIf="filteredContactsList && filteredContactsList[0]">

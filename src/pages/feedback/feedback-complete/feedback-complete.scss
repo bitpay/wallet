@@ -27,8 +27,12 @@ page-feedback-complete {
   .share-buttons {
     padding: 50px 10px 30px;
     text-align: center;
-    height: 100%;
     background-color: color($colors,blank);
+    min-height: 200px;
+    position: absolute;
+    bottom: 0rem;
+    width: 100%;
+    height: 30%;
   }
   .share-buttons__action {
     display: inline-block;

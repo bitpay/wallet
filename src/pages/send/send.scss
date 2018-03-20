@@ -39,22 +39,29 @@ page-send {
     margin-top: 15px;
     background-color: #f2f2f2;
     display: flex;
-    align-items: center;
+    align-items: baseline;
+    .item-inner {
+      margin-left: 0rem !important;
+      border-bottom: 0px !important;
+      box-shadow: none !important;
+    }
     .scan-icon {
       margin: 1rem;
+      z-index: 999;
     }
     .bitcoin-icon {
-      margin-left: 1.5rem;
       margin-right: 1rem;
+      margin-top: 1rem;
+      margin-bottom: 1rem;
+      width: 1rem;
+      height: 1rem;
       // custom icons
       &[class*="search-btc"] {
           mask-image: url(../assets/img/icon-bitcoin-symbol.svg);
-          mask-size: contain;
+          mask-size: 16px;
           mask-position: 50% 50%;
           mask-repeat: no-repeat;
           background: #cccccc;
-          width: 2rem;
-          height: 2rem;
       }
     }
   }
