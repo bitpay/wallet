@@ -28,7 +28,7 @@
     </div>
     <div class="date">
       <time *ngIf="tx.createdOn && createdWithinPastDay(tx.createdOn * 1000)">{{tx.createdOn * 1000 | amTimeAgo}}</time>
-      <time *ngIf="tx.createdOn && !createdWithinPastDay(tx.createdOn * 1000)">{{tx.createdOn * 1000 | date:'MMMM d, y'}}</time>
+      <time *ngIf="tx.createdOn && !createdWithinPastDay(tx.createdOn * 1000)">{{tx.createdOn * 1000 | amDateFormat:'MMM D, YYYY'}}</time>
     </div>
   </ion-note>
 </button>
