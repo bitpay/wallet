@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('tabSettingsController', function($rootScope, $timeout, $scope, appConfigService, $ionicModal, $log, lodash, uxLanguage, platformInfo, profileService, feeService, configService, externalLinkService, bitpayAccountService, bitpayCardService, storageService, glideraService, gettextCatalog, buyAndSellService) {
+angular.module('copayApp.controllers').controller('tabSettingsController', function($rootScope, $state, $timeout, $scope, appConfigService, $ionicModal, $log, lodash, uxLanguage, platformInfo, profileService, feeService, configService, externalLinkService, bitpayAccountService, bitpayCardService, storageService, glideraService, gettextCatalog, buyAndSellService) {
 
   var updateConfig = function() {
     $scope.currentLanguageName = uxLanguage.getCurrentLanguageName();
@@ -66,6 +66,10 @@ angular.module('copayApp.controllers').controller('tabSettingsController', funct
   $scope.$on("$ionicView.enter", function(event, data) {
     updateConfig();
   });
+
+  $scope.openDownloadPage = function() {
+    $state.go('downloadApp', { fromSettings: true });
+  };
 
   $scope.shouldShowAppDownload = function () {
     return platformInfo.isSafari && platformInfo.iOSPWASupport && !platformInfo.isPWA

@@ -2,6 +2,7 @@
   <ion-content ng-controller="downloadAppController" scroll="false">
     <div class="onboarding-topic" translate>Download NavPay app</div>
     <div class="onboarding-illustration-app"></div>
+    <p ng-show="fromSettings">Note: You will need to re-enter your Passphere to access your wallet on the app version.</p>
     <div class="cta-buttons">
       <div class="onboarding-tldr" translate>
         To download the app click
@@ -10,9 +11,13 @@
         <br /><img style="display: inline-block; height: 30px" src='img/app/ios-add-to-homescreen-icon.png'/>
         <br />'Add to Home Screen'
       </div>
-      <button class="button button-standard button-secondary" href ui-sref="onboarding.tour" translate>
+      <button ng-hide="fromSettings" class="button button-standard button-secondary" href ui-sref="onboarding.tour" translate>
        Go back to Web App
       </button>
+      <button ng-show="fromSettings" class="button button-standard button-secondary" href ui-sref="tabs.settings" translate>
+        Cancel
+      </button>
+
     </div>
   </ion-content>
 </ion-view>

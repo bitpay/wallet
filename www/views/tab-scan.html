@@ -27,8 +27,9 @@
       </div>
     </div>
 
-    <div ng-show="usingWebRtc" style="height: 100%;  transform: scaleX(-1); -webkit-transform: scaleX(-1)">
+    <div ng-show="usingWebRtc" style="height: 100%;">
       <video id="webScanner" playsinline style="height: 100%;"></video>
+      <canvas id="hiddenCanvas" height="3000" width="4000" hidden />
     </div>
 
     <div ng-show="usingPhotoInput" id="photoContainer" >
@@ -39,7 +40,7 @@
       </label>
       <br /><br />
       <p ng-show="retryPhoto" class="retryPhoto">Failed to find QR code.<br />Please try again.</p>
-      <canvas id="hiddenCanvas" height="3000" width="4000" hidden />
+      <!--<canvas id="hiddenCanvas" height="3000" width="4000" hidden />-->
     </div>
 
     <div class="ng-hide" id="tab-scan-camera-ready" ng-show="startedWebCamera || currentState === scannerStates.visible">

@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('tabScanController', function($scope, $log, $timeout, scannerService, incomingData, $state, $ionicHistory, $rootScope, platformInfo) {
+angular.module('copayApp.controllers').controller('tabScanController', function($scope, $log, $timeout, scannerService, incomingData, $state, $ionicHistory, $rootScope, platformInfo,  $stateParams) {
   // ios camera / web scanner
   $scope.startedWebCamera = false
   $scope.canChangeWebScannerCamera = false
@@ -10,19 +10,8 @@ angular.module('copayApp.controllers').controller('tabScanController', function(
   $scope.webRtcDenied = false
   $scope.cameraSupported = platformInfo.cameraSupported
   $scope.retryPhoto = false
-  var webScanner
-
-  if (platformInfo.cameraType === 'webrtc') {
-    $log.debug("Using webrtc")
-    // if (!navigator.getUserMedia) {
-    //   navigator.getUserMedia = navigator.webkitGetUserMedia;
-    // }
-    $scope.usingWebRtc = true
-    webScanner = new Instascan.Scanner({ video: document.getElementById('webScanner'), scanPeriod: 5 })
-    webScanner.addListener('scan', function (content) {
-      handleSuccessfulScan(content);
-    });
-  }
+  $scope.videoScanInterval
+  var cameras = []
 
   var scannerStates = {
     unauthorized: 'unauthorized',
@@ -46,20 +35,22 @@ angular.module('copayApp.controllers').controller('tabScanController', function(
 
   function _handleCapabilities(){
     // always update the view
-    $timeout(function(){
-      if(!scannerService.isInitialized()){
-        $scope.currentState = scannerStates.loading;
-      } else if(!$scope.scannerIsAvailable){
-        $scope.currentState = scannerStates.unavailable;
-      } else if($scope.scannerIsDenied){
-        $scope.currentState = scannerStates.denied;
-      } else if($scope.scannerIsRestricted){
-        $scope.currentState = scannerStates.denied;
-      } else if(!$scope.scannerHasPermission){
-        $scope.currentState = scannerStates.unauthorized;
-      }
-      $log.debug('Scan view state set to: ' + $scope.currentState);
-    });
+    if (platformInfo.cameraType === 'native') {
+      $timeout(function(){
+        if(!scannerService.isInitialized()){
+          $scope.currentState = scannerStates.loading;
+        } else if(!$scope.scannerIsAvailable){
+          $scope.currentState = scannerStates.unavailable;
+        } else if($scope.scannerIsDenied){
+          $scope.currentState = scannerStates.denied;
+        } else if($scope.scannerIsRestricted){
+          $scope.currentState = scannerStates.denied;
+        } else if(!$scope.scannerHasPermission){
+          $scope.currentState = scannerStates.unauthorized;
+        }
+        $log.debug('Scan view state set to: ' + $scope.currentState);
+      });
+    }
   }
 
   function _refreshScanView(){
@@ -79,12 +70,14 @@ angular.module('copayApp.controllers').controller('tabScanController', function(
 
 
   $scope.$on("$ionicView.beforeEnter", function(event, data) {
-    _handleCapabilities();
-    $timeout(function() {
-        _refreshScanView()
-      },
-      5000);
-    $scope.returnRoute = data.stateParams.returnRoute || false;
+    if (platformInfo.cameraType === 'native') {
+      _handleCapabilities();
+      $timeout(function() {
+          _refreshScanView()
+        },
+        5000);
+    }
+    $scope.returnRoute = $state.params.returnRoute || false;
   });
 
   $scope.$on("$ionicView.afterEnter", function() {
@@ -95,18 +88,68 @@ angular.module('copayApp.controllers').controller('tabScanController', function(
     activate();
   });
 
+  $scope.$on("$ionicView.afterLeave", function() {
+    scannerService.deactivate();
+  });
+
+
+  function stopWebRTCCamera() {
+    clearInterval($scope.videoScanInterval)
+    var video = document.getElementById('webScanner')
+    if ($scope.stream) {
+      $scope.stream.getVideoTracks().forEach(function(track) {
+        console.log('stopping track', track, $scope.stream)
+        track.stop()
+      } )
+    }
+  }
+
+  function activateWebRTCCamera(camera) {
+    // debugger;
+    var video = document.getElementById('webScanner')
+    stopWebRTCCamera()
+    console.log('Using camera', camera)
+     navigator.mediaDevices.getUserMedia({ video: { deviceId: { exact: camera.deviceId } }, audio: false })
+             .then(function (stream) {
+               $scope.stream = stream
+               video.srcObject = stream;
+
+               video.onloadedmetadata = function(e) { video.play(); }
+               $scope.currentState = scannerStates.visible;
+               $scope.webRtcDenied = false;
+               $scope.startedWebCamera = true;
+               $scope.videoScanInterval = setInterval(function() {
+                 // because the leave events dont fire. We dont know when to stop this
+                 // So we have the internval check itself if ti should be stopped
+                 // need to check the dom each time not the cached video
+                 if (document.getElementById('webScanner')) {
+                   scanVideo(video);
+                 } else {
+                   stopWebRTCCamera();
+                 }
+               }, 1000)
+             }).catch(function (err) {
+                $scope.webRtcDenied = true;
+                $scope.currentState = scannerStates.denied;
+                $log.error('webRTC failed', err);
+                $scope.$apply()
+             })
+  }
+
+
   function activate(){
     $log.debug('Scanner activated, setting to visible...');
+    $log.debug('platformInfo.cameraType', platformInfo.cameraType);
     switch(platformInfo.cameraType) {
       case 'native':
-        scannerService.activate(function(){
+        scannerService.activate(function () {
           _updateCapabilities();
           _handleCapabilities();
           $scope.currentState = scannerStates.visible;
           // pause to update the view
-          $timeout(function(){
-            scannerService.scan(function(err, contents){
-              if(err){
+          $timeout(function () {
+            scannerService.scan(function (err, contents) {
+              if (err) {
                 $log.debug('Scan canceled.');
               } else if ($state.params.passthroughMode) {
                 $rootScope.scanResult = contents;
@@ -121,35 +164,32 @@ angular.module('copayApp.controllers').controller('tabScanController', function(
         })
         break;
       case 'webrtc':
-        Instascan.Camera.getCameras().then(function (cameras) {
-          if (cameras.length > 0) {
-            if (cameras.length > 1) { $scope.canChangeWebScannerCamera = true }
-            $scope.startedWebCamera = true;
-            $scope.usingWebRtc = true;
-            $scope.currentState = scannerStates.visible;
-            $scope.webScannerCameraNumber = 0;
-            $scope.webRtcDenied = false;
-            webScanner.start(cameras[0]);
-            $log.debug("Webrtc active")
-          } else {
-            $log.debug('No cameras found.');
-            $scope.usingWebRtc = false;
-            $scope.cameraSupported = false;
+        $log.debug("Using webrtc - Starting webcam")
+        $scope.currentState = scannerStates.loading;
+        $scope.usingWebRtc = true
+        var video = document.getElementById('webScanner')
+        // Check if multiple cameras
+        navigator.mediaDevices.enumerateDevices().then(function (devices) {
+          devices.map(function (device) {
+            if (device.kind === 'videoinput') { cameras.push(device) }
+          })
+
+          if (cameras.length > 1) {
+            $scope.canChangeWebScannerCamera = true
+            cameras.forEach(function (camera, i) {
+              // Check if we have a camera on the back on the device
+              if (camera.label.includes('back')) {$scope.webScannerCameraNumber = i}
+            })
           }
-        }).catch(function (e) {
-          $scope.usingWebRtc = false;
-          if (e.name === 'NotAllowedError') {
-            $scope.webRtcDenied = true;
-            $scope.currentState = scannerStates.denied;
-          }
-          $scope.$apply()
-          $log.error('webRTC failed', e);
-        });
+          // defaults to cameras[0]
+          activateWebRTCCamera(cameras[$scope.webScannerCameraNumber])
+        })
         break;
       case 'photo':
         $log.debug('Using photo method');
         $scope.usingPhotoInput = true;
         $scope.$apply()
+        break;
       default:
         $log.debug('Cameras not supported');
         $scope.cameraSupported = false;
@@ -165,13 +205,11 @@ angular.module('copayApp.controllers').controller('tabScanController', function(
     });
   };
 
-  $scope.$on("$ionicView.afterLeave", function() {
-    scannerService.deactivate();
-  });
-
   function handleSuccessfulScan(contents){
     $log.debug('Scan returned: "' + contents + '"');
     scannerService.pausePreview();
+    stopWebRTCCamera()
+
     var trimmedContents = contents.replace('navcoin:', '');
     if ($scope.returnRoute) {
       $state.go($scope.returnRoute, { address: trimmedContents });
@@ -200,27 +238,52 @@ angular.module('copayApp.controllers').controller('tabScanController', function(
   };
 
   $scope.toggleCamera = function(){
+    // This function gets fired twice on Chrome. No idea why.
+    // So we use this check to exit out.
+    if ($scope.cameraToggleActive) { return }
+
     $scope.cameraToggleActive = true;
 
     if ($scope.startedWebCamera) {
-      // Set to opposite camera
-      $scope.webScannerCameraNumber = $scope.webScannerCameraNumber === 0 ? 1 : 0
-      Instascan.Camera.getCameras().then(function (cameras) {
-        webScanner.start(cameras[$scope.webScannerCameraNumber]);
-      }).catch(function (e) {
-        $log.debug(JSON.stringify(e));
-      });
+      // switch the camera
+      // Get the next in the cameras array, if there isn't. Reset to 0.
+      $scope.webScannerCameraNumber = cameras[$scope.webScannerCameraNumber + 1] ? $scope.webScannerCameraNumber + 1 : 0
+      activateWebRTCCamera(cameras[$scope.webScannerCameraNumber])
     } else {
       scannerService.toggleCamera();
     }
 
-    // (a short delay for the user to see the visual feedback)
+    // Add a relday to stop the double firing
     $timeout(function(){
       $scope.cameraToggleActive = false;
       $log.debug('Camera toggle control deactivated.');
-    }, 200);
+    }, 1000);
 
   };
+
+  var scanVideo = function(video) {
+    window.requestAnimationFrame(function() {
+      console.log('scanning')
+      // Get the photo
+      // Get the canvas
+      var canvas = document.getElementById("hiddenCanvas");
+      var ctx = canvas.getContext("2d");
+      var height = video.videoHeight
+      var width = video.videoWidth
+
+      ctx.drawImage(video, 0, 0, width, height);
+
+      // Get the image data, and run it through jsQR
+      var imageData = ctx.getImageData(0, 0, width, height);
+      var scanResults = jsQR(imageData.data, width, height)
+
+      $log.debug('QR Code', scanResults)
+      if (scanResults && scanResults.data.includes('navcoin')) {
+        handleSuccessfulScan(scanResults.data);
+      }
+
+    })
+  }
 
   // This scans a photo taken with iOS
   // that don't have proper support

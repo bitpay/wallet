@@ -114,7 +114,10 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
       .state('downloadApp', {
         url: '/download',
         templateUrl: 'views/downloadApp.html',
-        controller: 'downloadAppController'
+        controller: 'downloadAppController',
+        params: {
+          fromSettings: false
+        }
       })
 
       .state('unsupported', {
@@ -288,12 +291,16 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         }
       })
       .state('tabs.scan', {
-        url: '/scan/:returnRoute',
+        cache: false,
+        url: '/scan/',
         views: {
           'tab-scan': {
             controller: 'tabScanController',
             templateUrl: 'views/tab-scan.html',
-          }
+          },
+        },
+        params: {
+          returnRoute: null,
         }
       })
       .state('scanner', {

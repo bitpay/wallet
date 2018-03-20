@@ -21,4 +21,6 @@ angular.module('copayApp.controllers').controller('downloadAppController', funct
     });
   };
 
+  $scope.fromSettings = $state.params.fromSettings || false
+
 });
