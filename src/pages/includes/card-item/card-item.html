@@ -6,7 +6,7 @@
   </ion-icon>
   <h4 text-wrap>
     {{card.merchant.name || 'Unknown Merchant'}}
-    <span *ngIf="card.pending && card.transactionId">
+    <span *ngIf="card.pending && card.transactionId" translate>
       View Confirmation Status
     </span>
   </h4>

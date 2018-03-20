@@ -25,10 +25,8 @@
               Incomplete
             </span>
             <span *ngIf="fromWallet.isComplete()">
-              <span *ngIf="!fromWallet.balanceHidden  && !fromWallet.scanning"> {{fromWallet.status.totalBalanceStr ? fromWallet.status.totalBalanceStr : ( fromWallet.cachedBalance ? fromWallet.cachedBalance
-                + (fromWallet.cachedBalanceUpdatedOn ? ' &middot; ' + ( fromWallet.cachedBalanceUpdatedOn * 1000 | amTimeAgo)
-                : '') : '' ) }} </span>
-              <span *ngIf="fromWallet.scanning" translate>Scanning funds...</span>
+              <span *ngIf="!fromWallet.balanceHidden && !fromWallet.scanning"> {{fromWallet.status.totalBalanceStr ? fromWallet.status.totalBalanceStr : ( fromWallet.cachedBalance ? fromWallet.cachedBalance + (fromWallet.cachedBalanceUpdatedOn ? ' &middot; ' + ( fromWallet.cachedBalanceUpdatedOn * 1000 | amTimeAgo) : '') : '' ) }} </span>
+              <span *ngIf="fromWallet.scanning" translate>Scanning funds</span>...
 
               <span *ngIf="fromWallet.balanceHidden && !fromWallet.scanning">[<span translate>Balance Hidden</span>]</span>
               <span *ngIf="fromWallet.n > 1">
@@ -60,10 +58,8 @@
               Incomplete
             </span>
             <span *ngIf="toWallet.isComplete()">
-              <span *ngIf="!toWallet.balanceHidden  && !toWallet.scanning"> {{toWallet.status.totalBalanceStr ? toWallet.status.totalBalanceStr : ( toWallet.cachedBalance ? toWallet.cachedBalance
-                + (toWallet.cachedBalanceUpdatedOn ? ' &middot; ' + ( toWallet.cachedBalanceUpdatedOn * 1000 | amTimeAgo)
-                : '') : '' ) }} </span>
-              <span *ngIf="toWallet.scanning" translate>Scanning funds...</span>
+              <span *ngIf="!toWallet.balanceHidden && !toWallet.scanning"> {{toWallet.status.totalBalanceStr ? toWallet.status.totalBalanceStr : ( toWallet.cachedBalance ? toWallet.cachedBalance + (toWallet.cachedBalanceUpdatedOn ? ' &middot; ' + ( toWallet.cachedBalanceUpdatedOn * 1000 | amTimeAgo) : '') : '' ) }} </span>
+              <span *ngIf="toWallet.scanning" translate>Scanning funds</span>...
 
               <span *ngIf="toWallet.balanceHidden && !toWallet.scanning">[<span translate>Balance Hidden</span>]</span>
               <span class="tab-home__wallet__multisig-number" *ngIf="toWallet.n > 1">
@@ -126,8 +122,9 @@
       <ion-checkbox class="check" [(ngModel)]="termsAccepted"></ion-checkbox>
     </ion-item>
     <div class="terms">
-      <p translate>
-        I agree to the <a (click)="openTerms()">Terms</a> and certify that I am the beneficial owner of the input assets and the destination address.
+      <p>
+      <span translate>I agree to the Terms and certify that I am the beneficial owner of the input assets and the destination address.</span>
+      <a (click)="openTerms()" translate>Click to open Terms</a>.
       </p>
     </div>
   </div>

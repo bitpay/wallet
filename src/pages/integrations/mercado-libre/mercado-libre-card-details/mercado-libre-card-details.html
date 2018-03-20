@@ -16,7 +16,7 @@
   <div class="header-modal">
     <img src="assets/img/mercado-libre/giftcard-pt.svg" alt="Mercado Livre Brazil Gift Card">
     <div class="header-modal-amount">
-     <span translate>Gift Card Amount:</span>
+     <span translate>Gift Card Amount</span>:
       <span class="text-bold">
         {{card.amount | currency : '$ ' : 2}} {{card.currency}}
       </span>
@@ -69,7 +69,7 @@
     </button>
 
     <button class="links" ion-item *ngIf="card.status == 'FAILURE'" (click)="openSupportWebsite()">
-      <span><span translate>Help & Support</span> &rarr;</span>
+      <span><span translate>Help &amp; Support</span> &rarr;</span>
     </button>
 
     <button ion-item block *ngIf="card.cardStatus == 'inactive' || card.cardStatus == 'expired' || card.status == 'expired'"
