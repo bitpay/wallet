@@ -30,6 +30,6 @@
 </ion-content>
 <ion-footer>
   <button ion-button block class="button-footer" (click)="sweepWallet()" [disabled]="sending || balanceSat <= 0 || noMatchingWallet">
-    {{'Sweep'translate}}
+    {{'Sweep' | translate}}
   </button>
 </ion-footer>
