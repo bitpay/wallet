@@ -56,15 +56,15 @@ export class SendFeedbackPage {
 
     switch (this.score) {
       case 1:
-        this.reaction = this.translate.instant("Ouch!");
+        this.reaction = "Ouch!";
         this.comment = this.translate.instant("There's obviously something we're doing wrong. How could we improve your experience?");
         break;
       case 2:
-        this.reaction = this.translate.instant("Oh no!");
+        this.reaction = "Oh no!";
         this.comment = this.translate.instant("There's obviously something we're doing wrong. How could we improve your experience?");
         break;
       case 3:
-        this.reaction = this.translate.instant("Hmm...");
+        this.reaction = "Hmm...";
         this.comment = this.translate.instant("We'd love to do better. How could we improve your experience?");
         break;
       case 4:

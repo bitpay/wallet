@@ -7,7 +7,7 @@
   <page-wallet-item *ngIf="wallet" [wallet]="wallet"></page-wallet-item>
   <ion-list>
     <ion-item (click)="saveBlack()">
-      <span translate>Wallet Name (at creation)</span>
+      <span translate>Name (at creation)</span>
       <ion-note item-end>
         {{walletName}}
       </ion-note>
@@ -19,7 +19,7 @@
       </ion-note>
     </ion-item>
     <ion-item copy-to-clipboard="{{walletId}}">
-      <span translate>Wallet Id</span>
+      <span>Wallet Id</span>
       <div padding-top>
         <ion-note text-wrap>
           {{walletId}}
@@ -27,13 +27,13 @@
       </div>
     </ion-item>
     <ion-item>
-      <span translate>Wallet Configuration (m-n)</span>
+      <span translate>Configuration (m-n)</span>
       <ion-note item-end>
         {{M}}-{{N}}
       </ion-note>
     </ion-item>
     <ion-item>
-      <span translate>Wallet Network</span>
+      <span translate>Network</span>
       <ion-note item-end>
         {{network}}
       </ion-note>
