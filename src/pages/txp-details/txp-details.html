@@ -72,9 +72,11 @@
       <div class="payment-proposal-to" copy-to-clipboard="{{tx.toAddress}}">
         <img class="icon-bitcoin" src="assets/img/icon-bitcoin-small.svg" />
         <!-- <contact ng-if="!tx.hasMultiplesOutputs" class="ellipsis" address="{{tx.toAddress}}"></contact>  TODO -->
-        <span *ngIf="tx && !tx.name">{{tx.toAddress}}</span>
-        <span *ngIf="tx && tx.name">{{tx.name}}</span>
-        <span *ngIf="tx && tx.hasMultiplesOutputs" translate>Multiple recipients</span>
+        <div class="ellipsis">
+          <span *ngIf="tx && !tx.name">{{tx.toAddress}}</span>
+          <span *ngIf="tx && tx.name">{{tx.name}}</span>
+          <span *ngIf="tx && tx.hasMultiplesOutputs" translate>Multiple recipients</span>
+        </div>
       </div>
 
       <div *ngIf="tx && tx.hasMultiplesOutputs" (click)="showMultiplesOutputs = !showMultiplesOutputs">
@@ -219,8 +221,8 @@
       <ion-item-divider></ion-item-divider>
     </div>
 
-    <div *ngIf="(tx && !tx.removed) && (tx && tx.canBeRemoved) || (tx && tx.status == 'accepted' && !tx.broadcastedOn)">
-      <button ion-item class="btn-remove" (click)="remove()" [disabled]="loading">
+    <div class="proposal-deletion" *ngIf="(tx && !tx.removed) && (tx && tx.canBeRemoved) || (tx && tx.status == 'accepted' && !tx.broadcastedOn)">
+      <button ion-button outline color="danger" class="button-standard" (click)="remove()" [disabled]="loading">
         <span translate>Delete Payment Proposal</span>
       </button>
       <div class="proposal-deletion-help" *ngIf="!tx.isGlidera && isShared" translate>
