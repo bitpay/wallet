@@ -1651,6 +1651,9 @@ msgstr ""
 msgid "Super Economy"
 msgstr ""
 
+msgid "Sweep"
+msgstr ""
+
 msgid "Sweep Completed"
 msgstr ""
 
