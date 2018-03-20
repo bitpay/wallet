@@ -99,10 +99,11 @@ export class BitcoinCashPage {
   public openRecoveryToolLink(): void {
     let url = 'https://bitpay.github.io/copay-recovery/';
     let optIn = true;
-    let title = this.translate.instant('Open the recovery tool');
+    let title = null;
+    let message = this.translate.instant('Open the recovery tool');
     let okText = this.translate.instant('Open');
     let cancelText = this.translate.instant('Go Back');
-    this.externalLinkProvider.open(url, optIn, title, null, okText, cancelText);
+    this.externalLinkProvider.open(url, optIn, title, message, okText, cancelText);
   }
 
   public duplicate(wallet: any) {
