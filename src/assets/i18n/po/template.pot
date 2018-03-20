@@ -16,9 +16,6 @@ msgid ""
 "created."
 msgstr ""
 
-msgid "."
-msgstr ""
-
 msgid ""
 "5-star ratings help us get {{appName}} into more hands, and more users "
 "means more resources can be committed to the app!"
@@ -189,8 +186,7 @@ msgstr ""
 
 msgid ""
 "Bitcoin (BTC) miner fees are high due to record demand for limited space on "
-"the\n"
-"      Bitcoin network. BitPay does not receive and does not control bitcoin "
+"the Bitcoin network. BitPay does not receive and does not control bitcoin "
 "miner fees."
 msgstr ""
 
@@ -217,7 +213,7 @@ msgid ""
 "service."
 msgstr ""
 
-msgid "Bitcoin is secure,"
+msgid "Bitcoin is secure, digital money."
 msgstr ""
 
 msgid "Bitcoin miner fee"
@@ -241,13 +237,7 @@ msgstr ""
 msgid "Broadcasting transaction..."
 msgstr ""
 
-msgid "Buy"
-msgstr ""
-
 msgid "Buy Gift Card"
-msgstr ""
-
-msgid "Buy a Gift Card"
 msgstr ""
 
 msgid "Buying Bitcoin..."
@@ -289,6 +279,12 @@ msgstr ""
 msgid "Click to accept"
 msgstr ""
 
+msgid "Click to open Terms"
+msgstr ""
+
+msgid "Click to open the recovery tool"
+msgstr ""
+
 msgid "Click to pay"
 msgstr ""
 
@@ -307,22 +303,19 @@ msgstr ""
 msgid "Color"
 msgstr ""
 
-msgid "Commit hash"
-msgstr ""
-
 msgid "Complete the backup process to use this option"
 msgstr ""
 
 msgid "Completed"
 msgstr ""
 
+msgid "Configuration (m-n)"
+msgstr ""
+
 msgid "Confirm"
 msgstr ""
 
 msgid "Confirm & Finish"
-msgstr ""
-
-msgid "Confirm purchase"
 msgstr ""
 
 msgid "Confirm your new spending password"
@@ -332,6 +325,9 @@ msgid "Confirmations"
 msgstr ""
 
 msgid "Confirming"
+msgstr ""
+
+msgid "Connect my BitPay Card"
 msgstr ""
 
 msgid "Connecting to Coinbase..."
@@ -576,9 +572,6 @@ msgstr ""
 msgid "Email"
 msgstr ""
 
-msgid "Email Address"
-msgstr ""
-
 msgid "Empty addresses limit reached. New addresses cannot be generated."
 msgstr ""
 
@@ -689,9 +682,6 @@ msgstr ""
 msgid "Fee level is not defined"
 msgstr ""
 
-msgid "Fee:"
-msgstr ""
-
 msgid "Feedback could not be submitted. Please try again later."
 msgstr ""
 
@@ -721,7 +711,7 @@ msgstr ""
 msgid "Funds are locked by pending spend proposals"
 msgstr ""
 
-msgid "Funds found:"
+msgid "Funds found"
 msgstr ""
 
 msgid ""
@@ -747,7 +737,9 @@ msgstr ""
 msgid "Generating new address..."
 msgstr ""
 
-msgid "Get local cash anywhere you go, from any Visa"
+msgid ""
+"Get local cash anywhere you go, from any Visa&reg; compatible ATM. ATM bank "
+"fees may apply."
 msgstr ""
 
 msgid "Get news and updates from BitPay"
@@ -765,7 +757,7 @@ msgstr ""
 msgid "Gift Card"
 msgstr ""
 
-msgid "Gift Card Amount:"
+msgid "Gift Card Amount"
 msgstr ""
 
 msgid "Gift Card is not available to use anymore"
@@ -804,19 +796,21 @@ msgstr ""
 msgid "Hide advanced options"
 msgstr ""
 
-msgid "Hmm..."
-msgstr ""
-
 msgid "Home"
 msgstr ""
 
 msgid "How do you like {{appName}}?"
 msgstr ""
 
-msgid "I agree to the"
+msgid ""
+"I agree to the Terms and certify that I am the beneficial owner of the "
+"input assets and the destination address."
 msgstr ""
 
 msgid "I don't like it"
+msgstr ""
+
+msgid "I have read, understood, and agree to the Terms of Use"
 msgstr ""
 
 msgid "I like the app"
@@ -826,6 +820,16 @@ msgid "I think this app is terrible"
 msgstr ""
 
 msgid "I understand"
+msgstr ""
+
+msgid ""
+"I understand that if this app is moved to another device or deleted, my "
+"bitcoin can only be recovered with the backup phrase"
+msgstr ""
+
+msgid ""
+"I understand that my funds are held securely on this device, not by a "
+"company"
 msgstr ""
 
 msgid "I'm sure"
@@ -1026,14 +1030,19 @@ msgstr ""
 
 msgid ""
 "NOTE: To import a wallet from a 3rd party software, please go to Add Wallet "
-"> Create Wallet, and specify the Recovery\n"
-"        Phrase there."
+"> Create Wallet, and specify the Recovery Phrase there."
 msgstr ""
 
 msgid "Name"
 msgstr ""
 
+msgid "Name (at creation)"
+msgstr ""
+
 msgid "Needs backup recovery"
+msgstr ""
+
+msgid "Network"
 msgstr ""
 
 msgid "Network cost"
@@ -1160,9 +1169,6 @@ msgstr ""
 msgid "Off"
 msgstr ""
 
-msgid "Oh no!"
-msgstr ""
-
 msgid "Ok"
 msgstr ""
 
@@ -1170,6 +1176,9 @@ msgid "On"
 msgstr ""
 
 msgid "On this screen you can see all your wallets, accounts, and assets."
+msgstr ""
+
+msgid "Only redeemable on Mercado Livre (Brazil)"
 msgstr ""
 
 msgid "Open"
@@ -1202,7 +1211,7 @@ msgstr ""
 msgid "Open website"
 msgstr ""
 
-msgid "Ouch!"
+msgid "Order the BitPay Card"
 msgstr ""
 
 msgid "Password"
@@ -1470,9 +1479,6 @@ msgstr ""
 msgid "Scanning funds"
 msgstr ""
 
-msgid "Scanning funds..."
-msgstr ""
-
 msgid "Search a contact"
 msgstr ""
 
@@ -1485,7 +1491,7 @@ msgstr ""
 msgid "Security"
 msgstr ""
 
-msgid "See invoice &rarr;"
+msgid "See invoice"
 msgstr ""
 
 msgid "See transaction"
@@ -1612,8 +1618,7 @@ msgstr ""
 
 msgid ""
 "Some of your wallets are not eligible for Bitcoin Cash support. You can try "
-"to access BCH funds from these wallets\n"
-"        using the"
+"to access BCH funds from these wallets using the recovery tool"
 msgstr ""
 
 msgid "Spend proposal is not accepted"
@@ -1646,9 +1651,6 @@ msgstr ""
 msgid "Super Economy"
 msgstr ""
 
-msgid "Sweep"
-msgstr ""
-
 msgid "Sweep Completed"
 msgstr ""
 
@@ -1661,7 +1663,7 @@ msgstr ""
 msgid "THIS ACTION CANNOT BE REVERSED"
 msgstr ""
 
-msgid "Take control of your money,"
+msgid "Take control of your money, get started with bitcoin."
 msgstr ""
 
 msgid "Tap and hold to show"
@@ -1719,9 +1721,8 @@ msgstr ""
 
 msgid ""
 "The maximum number of consecutive unused addresses (20) has been reached. "
-"When one of your unused addresses receives\n"
-"            a payment, a new address will be generated and shown in your "
-"Receive tab."
+"When one of your unused addresses receives a payment, a new address will be "
+"generated and shown in your Receive tab."
 msgstr ""
 
 msgid "The password of the recovery phrase (if set)"
@@ -1740,15 +1741,19 @@ msgstr ""
 
 msgid ""
 "The restore process will stop when 20 addresses are generated in a row "
-"which contain no funds. To safely generate\n"
-"            more addresses, make a payment to one of the unused addresses "
-"which has already been generated."
+"which contain no funds. To safely generate more addresses, make a payment "
+"to one of the unused addresses which has already been generated."
 msgstr ""
 
 msgid "The spend proposal is not pending"
 msgstr ""
 
 msgid "The total amount of bitcoin stored in this wallet."
+msgstr ""
+
+msgid ""
+"The transaction history and every new incoming transaction are cached in "
+"the app. This feature clean this up and synchronizes again from the server"
 msgstr ""
 
 msgid "The wallet service URL"
@@ -1865,7 +1870,7 @@ msgstr ""
 msgid "Try again in {{expires}}"
 msgstr ""
 
-msgid "Turn bitcoin into dollars, swipe anywhere Visa"
+msgid "Turn bitcoin into dollars, swipe anywhere Visa&reg; is accepted."
 msgstr ""
 
 msgid "Unconfirmed"
@@ -1919,6 +1924,9 @@ msgstr ""
 msgid "View"
 msgstr ""
 
+msgid "View Confirmation Status"
+msgstr ""
+
 msgid "View Transaction on Insight"
 msgstr ""
 
@@ -1944,16 +1952,16 @@ msgstr ""
 
 msgid ""
 "WARNING: Not including the private key allows to check the wallet balance, "
-"transaction history, and create spend proposals\n"
-"                from the export. However, does not allow to approve (sign) "
-"proposals, so"
+"transaction history, and create spend proposals from the export. However, "
+"does not allow to approve (sign) proposals, so funds will not be accessible "
+"from the export."
 msgstr ""
 
 msgid ""
 "WARNING: The private key of this wallet is not available. The export allows "
-"to check the wallet balance, transaction history,\n"
-"                and create spend proposals from the export. However, does "
-"not allow to approve (sign) proposals, so"
+"to check the wallet balance, transaction history, and create spend "
+"proposals from the export. However, does not allow to approve (sign) "
+"proposals, so funds will not be accessible from the export."
 msgstr ""
 
 msgid "WARNING: UNTRUSTED CERTIFICATE"
@@ -1971,12 +1979,6 @@ msgstr ""
 msgid "Wallet Color"
 msgstr ""
 
-msgid "Wallet Configuration (m-n)"
-msgstr ""
-
-msgid "Wallet Id"
-msgstr ""
-
 msgid "Wallet Information"
 msgstr ""
 
@@ -1984,12 +1986,6 @@ msgid "Wallet Inputs"
 msgstr ""
 
 msgid "Wallet Name"
-msgstr ""
-
-msgid "Wallet Name (at creation)"
-msgstr ""
-
-msgid "Wallet Network"
 msgstr ""
 
 msgid "Wallet Recovery Phrase is invalid"
@@ -2060,19 +2056,16 @@ msgstr ""
 msgid "Warning: this transaction has unconfirmed inputs"
 msgstr ""
 
-msgid "We'd love to do better. How could we improve your experience?"
-msgstr ""
-
-msgid "We'll confirm on the next screen."
-msgstr ""
-
-msgid "Website"
-msgstr ""
-
 msgid ""
-"We’re always looking for translation contributions! You can make "
-"corrections or help to make this app available in your native\n"
-"        language by joining our community on Crowdin."
+"We are always looking for translation contributions! You can make "
+"corrections or help to make this app available in your native language by "
+"joining our community on Crowdin."
+msgstr ""
+
+msgid "We will confirm on the next screen."
+msgstr ""
+
+msgid "We'd love to do better. How could we improve your experience?"
 msgstr ""
 
 msgid "What do you call this wallet?"
@@ -2203,23 +2196,6 @@ msgstr ""
 msgid "add your BitPay Visa card(s)"
 msgstr ""
 
-msgid ""
-"and certify that I am the beneficial owner of the input assets and the "
-"destination address."
-msgstr ""
-
-msgid "compatible ATM. ATM bank fees may apply."
-msgstr ""
-
-msgid "digital money."
-msgstr ""
-
-msgid "get started with bitcoin."
-msgstr ""
-
-msgid "is accepted."
-msgstr ""
-
 msgid "me"
 msgstr ""
 
@@ -2232,20 +2208,14 @@ msgstr ""
 msgid "preparing..."
 msgstr ""
 
-msgid "recovery tool."
-msgstr ""
-
-msgid "redeemable on Mercado Livre (Brazil)"
-msgstr ""
-
 msgid ""
 "{{appName}} depends on Bitcore Wallet Service (BWS) for blockchain "
-"information, networking and Copayer synchronization.\n"
-"          The default configuration points to https://bws.bitpay.com "
-"(BitPay's public BWS instance)."
+"information, networking and Copayer synchronization. The default "
+"configuration points to https://bws.bitpay.com (BitPay's public BWS "
+"instance)."
 msgstr ""
 
-msgid "{{option.value.label}}"
+msgid "{{btx.feeRateStr}} of the total amount"
 msgstr ""
 
 msgid "{{tx.feeRateStr}} of the total amount"
@@ -2255,6 +2225,9 @@ msgid "{{tx.txp[wallet.id].feeRatePerStr}} of total amount"
 msgstr ""
 
 msgid "{{updatingTxHistoryProgress}} transactions downloaded"
+msgstr ""
+
+msgid "{{wallet.credentials.m}}-of-{{wallet.credentials.n}}"
 msgstr ""
 
 msgid "{{wallet.m}}-of-{{wallet.n}}"
