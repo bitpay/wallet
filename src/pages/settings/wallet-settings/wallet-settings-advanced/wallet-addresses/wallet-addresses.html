@@ -7,15 +7,15 @@
 <ion-content>
   <page-wallet-item [wallet]="wallet"></page-wallet-item>
   <ion-item-divider text-wrap text-center>
-    <span translate>Each bitcoin wallet can generate billions of addresses from your 12-word backup. A new address is automatically generated
-      and shown each time you receive a payment.
+    <span translate>
+      Each bitcoin wallet can generate billions of addresses from your 12-word backup. A new address is automatically generated and shown each time you receive a payment.
     </span>
     <a (click)="showInfo = !showInfo" *ngIf="!showInfo" translate>Why?</a>
 
     <div *ngIf="showInfo">
       <br>
-      <span translate>It's a good idea to avoid reusing addresses - this both protects your privacy and keeps your bitcoins secure against
-        hypothetical attacks by quantum computers.</span>
+      <span translate>
+        It's a good idea to avoid reusing addresses - this both protects your privacy and keeps your bitcoins secure against hypothetical attacks by quantum computers.</span>
       <a (click)="showInfo = !showInfo" translate>Hide</a>
     </div>
   </ion-item-divider>
