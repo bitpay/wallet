@@ -2,13 +2,11 @@
 
 angular.module('copayApp.controllers').controller('tabScanController', function($scope, $log, $timeout, scannerService, incomingData, $state, $ionicHistory, $rootScope, platformInfo,  $stateParams) {
   // ios camera / web scanner
-  $scope.startedWebCamera = false
-  $scope.canChangeWebScannerCamera = false
-  $scope.webScannerCameraNumber = 0
-  $scope.scannerStates = scannerStates;
-  $scope.usingWebRtc = false
-  $scope.webRtcDenied = false
   $scope.cameraSupported = platformInfo.cameraSupported
+  $scope.webRtcCameraNumber = 0
+  $scope.usingWebRtc = false
+  $scope.webRtcStarted = false
+  $scope.webRtcDenied = false
   $scope.retryPhoto = false
   $scope.videoScanInterval
   var cameras = []
@@ -93,12 +91,11 @@ angular.module('copayApp.controllers').controller('tabScanController', function(
   });
 
 
-  function stopWebRTCCamera() {
+  function stopWebRtcCamera() {
     clearInterval($scope.videoScanInterval)
-    var video = document.getElementById('webScanner')
+    var video = document.getElementById('webRtcScanner')
     if ($scope.stream) {
       $scope.stream.getVideoTracks().forEach(function(track) {
-        console.log('stopping track', track, $scope.stream)
         track.stop()
       } )
     }
@@ -106,31 +103,32 @@ angular.module('copayApp.controllers').controller('tabScanController', function(
 
   function activateWebRTCCamera(camera) {
     // debugger;
-    var video = document.getElementById('webScanner')
-    stopWebRTCCamera()
-    console.log('Using camera', camera)
+    $scope.usingWebRtc = true;
+    var video = document.getElementById('webRtcScanner')
+    stopWebRtcCamera()
+    $log.debug('Using camera', camera)
      navigator.mediaDevices.getUserMedia({ video: { deviceId: { exact: camera.deviceId } }, audio: false })
              .then(function (stream) {
                $scope.stream = stream
                video.srcObject = stream;
-
                video.onloadedmetadata = function(e) { video.play(); }
                $scope.currentState = scannerStates.visible;
                $scope.webRtcDenied = false;
-               $scope.startedWebCamera = true;
+               $scope.webRtcStarted = true;
+               $scope.$apply()
                $scope.videoScanInterval = setInterval(function() {
                  // because the leave events dont fire. We dont know when to stop this
                  // So we have the internval check itself if ti should be stopped
                  // need to check the dom each time not the cached video
-                 if (document.getElementById('webScanner')) {
+                 if (document.getElementById('webRtcScanner')) {
                    scanVideo(video);
                  } else {
-                   stopWebRTCCamera();
+                   stopWebRtcCamera();
                  }
                }, 1000)
              }).catch(function (err) {
                 $scope.webRtcDenied = true;
-                $scope.currentState = scannerStates.denied;
+                $scope.webRtcStarted = false;
                 $log.error('webRTC failed', err);
                 $scope.$apply()
              })
@@ -165,9 +163,9 @@ angular.module('copayApp.controllers').controller('tabScanController', function(
         break;
       case 'webrtc':
         $log.debug("Using webrtc - Starting webcam")
-        $scope.currentState = scannerStates.loading;
+        // $scope.currentState = scannerStates.loading;
         $scope.usingWebRtc = true
-        var video = document.getElementById('webScanner')
+        var video = document.getElementById('webRtcScanner')
         // Check if multiple cameras
         navigator.mediaDevices.enumerateDevices().then(function (devices) {
           devices.map(function (device) {
@@ -175,14 +173,14 @@ angular.module('copayApp.controllers').controller('tabScanController', function(
           })
 
           if (cameras.length > 1) {
-            $scope.canChangeWebScannerCamera = true
+            $scope.canChangeCamera = true
             cameras.forEach(function (camera, i) {
               // Check if we have a camera on the back on the device
-              if (camera.label.includes('back')) {$scope.webScannerCameraNumber = i}
+              if (camera.label.includes('back')) {$scope.webRtcCameraNumber = i}
             })
           }
           // defaults to cameras[0]
-          activateWebRTCCamera(cameras[$scope.webScannerCameraNumber])
+          activateWebRTCCamera(cameras[$scope.webRtcCameraNumber])
         })
         break;
       case 'photo':
@@ -208,7 +206,7 @@ angular.module('copayApp.controllers').controller('tabScanController', function(
   function handleSuccessfulScan(contents){
     $log.debug('Scan returned: "' + contents + '"');
     scannerService.pausePreview();
-    stopWebRTCCamera()
+    if ($scope.usingWebRtc) { stopWebRtcCamera() }
 
     var trimmedContents = contents.replace('navcoin:', '');
     if ($scope.returnRoute) {
@@ -244,11 +242,11 @@ angular.module('copayApp.controllers').controller('tabScanController', function(
 
     $scope.cameraToggleActive = true;
 
-    if ($scope.startedWebCamera) {
+    if ($scope.usingWebRtc) {
       // switch the camera
       // Get the next in the cameras array, if there isn't. Reset to 0.
-      $scope.webScannerCameraNumber = cameras[$scope.webScannerCameraNumber + 1] ? $scope.webScannerCameraNumber + 1 : 0
-      activateWebRTCCamera(cameras[$scope.webScannerCameraNumber])
+      $scope.webRtcCameraNumber = cameras[$scope.webRtcCameraNumber + 1] ? $scope.webRtcCameraNumber + 1 : 0
+      activateWebRTCCamera(cameras[$scope.webRtcCameraNumber])
     } else {
       scannerService.toggleCamera();
     }
@@ -264,8 +262,7 @@ angular.module('copayApp.controllers').controller('tabScanController', function(
   var scanVideo = function(video) {
     window.requestAnimationFrame(function() {
       console.log('scanning')
-      // Get the photo
-      // Get the canvas
+
       var canvas = document.getElementById("hiddenCanvas");
       var ctx = canvas.getContext("2d");
       var height = video.videoHeight
@@ -315,7 +312,7 @@ angular.module('copayApp.controllers').controller('tabScanController', function(
         var scanResults = jsQR(imageData.data, image.width, image.height)
 
         $log.debug('QR Code', scanResults)
-        if (scanResults) {
+        if (scanResults && scanResults.data.includes('navcoin')) {
           handleSuccessfulScan(scanResults.data);
         } else {
           // Ask user to try again
