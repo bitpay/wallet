@@ -75,7 +75,9 @@
     "grunt-nw-builder": "^2.0.3",
     "grunt-sass": "^1.2.0",
     "load-grunt-tasks": "^3.5.0",
-    "shelljs": "^0.3.0"
+    "shelljs": "^0.3.0",
+    "cordova-ios": "~4.2.1",
+    "cordova-windows": "~5.0.0"
   },
   "scripts": {
     "postinstall": "bower install",
@@ -125,5 +127,12 @@
     "tostr": "^0.1.0",
     "trash-cli": "^1.4.0",
     "xcode": "^1.0.0"
+  },
+  "cordova": {
+    "platforms": [
+      "ios",
+      "android",
+      "windows"
+    ]
   }
 }
