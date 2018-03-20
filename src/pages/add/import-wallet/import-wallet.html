@@ -8,10 +8,10 @@
   <div [attr.padding]="isIOS ? '' : null">
     <ion-segment [(ngModel)]="selectedTab" color="primary" (ionChange)="selectTab(selectedTab)">
       <ion-segment-button value="words">
-        {{ 'Words' | translate }}
+        {{ 'Recovery Phrase' | translate }}
       </ion-segment-button>
       <ion-segment-button value="file">
-        {{ 'File' | translate }}
+        {{ 'File/Text' | translate }}
       </ion-segment-button>
     </ion-segment>
   </div>

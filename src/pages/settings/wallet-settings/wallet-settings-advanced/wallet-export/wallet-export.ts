@@ -107,7 +107,7 @@ export class WalletExportPage {
 
   public generateQrCode() {
     if (this.exportWalletInfo || !this.isEncrypted) {
-      this.segments = 'qrCode';
+      this.segments = 'qr-code';
     }
 
     this.getPassword().then((password: string) => {
@@ -121,7 +121,7 @@ export class WalletExportPage {
           this.exportWalletInfo = code;
         }
 
-        this.segments = 'qrCode';
+        this.segments = 'qr-code';
       }).catch((err: string) => {
         this.popupProvider.ionicAlert(this.translate.instant('Error'), err);
       });

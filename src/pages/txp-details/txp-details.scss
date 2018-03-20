@@ -30,14 +30,15 @@ page-txp-details {
     }
   }
 
-  .proposal-deletion-help {
-    text-align: center;
-    color: color($colors, grey);
+  .proposal-deletion {
     background-color: color($colors, blank);
     padding: 2rem;
-    font-size: 12.5px;
+    .proposal-deletion-help {
+      text-align: center;
+      color: color($colors, grey);
+      font-size: 12.5px;
+    }
   }
-
   @mixin row-flex {
     display: flex;
     align-items: center;
@@ -160,10 +161,6 @@ page-txp-details {
         font-size: 14px;
       }
     }
-  }
-  .btn-remove {
-    font-size: 1.2rem;
-    color: color($colors, danger);
   }
 }
 
