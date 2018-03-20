@@ -47,7 +47,7 @@ angular.module('copayApp.controllers').controller('tabScanController', function(
           $scope.currentState = scannerStates.unauthorized;
         }
         $log.debug('Scan view state set to: ' + $scope.currentState);
-      });
+      }, 2000);
     }
   }
 
