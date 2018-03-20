@@ -21,7 +21,7 @@
     </ion-item>
     <button ion-item class="item-fee" (click)="chooseFeeLevel()">
       <div class="fee-title">
-        <span translate>Bitcoin miner fee</span>: {{tx.feeLevelName}}
+        <span translate>Bitcoin miner fee</span>: {{tx.feeLevelName | translate}}
       </div>
       <div class="fee-loading" *ngIf="!wallet || !tx.txp[wallet.id]">
         <div>...</div>

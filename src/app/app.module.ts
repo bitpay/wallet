@@ -211,7 +211,7 @@ import { LongPress } from '../directives/long-press/long-press';
 import { NoLowFee } from '../directives/no-low-fee/no-low-fee'
 
 export function createTranslateLoader(http: HttpClient) {
-  return new TranslatePoHttpLoader(http, 'assets/i18n', '.po');
+  return new TranslatePoHttpLoader(http, 'assets/i18n/po', '.po');
 }
 
 @NgModule({
