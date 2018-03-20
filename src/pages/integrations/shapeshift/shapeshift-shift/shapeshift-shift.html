@@ -28,7 +28,7 @@
               <span *ngIf="!fromWallet.balanceHidden && !fromWallet.scanning"> {{fromWallet.status.totalBalanceStr ? fromWallet.status.totalBalanceStr : ( fromWallet.cachedBalance ? fromWallet.cachedBalance + (fromWallet.cachedBalanceUpdatedOn ? ' &middot; ' + ( fromWallet.cachedBalanceUpdatedOn * 1000 | amTimeAgo) : '') : '' ) }} </span>
               <span *ngIf="fromWallet.scanning" translate>Scanning funds</span>...
 
-              <span *ngIf="fromWallet.balanceHidden && !fromWallet.scanning">[<span translate>Balance Hidden</span>]</span>
+              <span *ngIf="fromWallet.balanceHidden && !fromWallet.scanning" translate>[Balance Hidden]</span>
               <span *ngIf="fromWallet.n > 1">
                 {{fromWallet.m}}-of-{{fromWallet.n}}
               </span>
@@ -61,7 +61,7 @@
               <span *ngIf="!toWallet.balanceHidden && !toWallet.scanning"> {{toWallet.status.totalBalanceStr ? toWallet.status.totalBalanceStr : ( toWallet.cachedBalance ? toWallet.cachedBalance + (toWallet.cachedBalanceUpdatedOn ? ' &middot; ' + ( toWallet.cachedBalanceUpdatedOn * 1000 | amTimeAgo) : '') : '' ) }} </span>
               <span *ngIf="toWallet.scanning" translate>Scanning funds</span>...
 
-              <span *ngIf="toWallet.balanceHidden && !toWallet.scanning">[<span translate>Balance Hidden</span>]</span>
+              <span *ngIf="toWallet.balanceHidden && !toWallet.scanning" translate>[Balance Hidden]</span>
               <span class="tab-home__wallet__multisig-number" *ngIf="toWallet.n > 1">
                 {{toWallet.m}}-of-{{toWallet.n}}
               </span>
