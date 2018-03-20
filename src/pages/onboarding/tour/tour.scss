@@ -56,6 +56,7 @@ page-tour {
     z-index: 1;
     border-radius: $icon-border-radius;
     position: relative;
+    color: color($colors, blank);    
   }
   .primary-color {
     color: $onboarding-primary-color;
