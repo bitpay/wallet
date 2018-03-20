@@ -279,6 +279,9 @@ msgstr ""
 msgid "Click to accept"
 msgstr ""
 
+msgid "Click to confirm"
+msgstr ""
+
 msgid "Click to open Terms"
 msgstr ""
 
@@ -289,9 +292,6 @@ msgid "Click to pay"
 msgstr ""
 
 msgid "Click to send"
-msgstr ""
-
-msgid "Click to shift"
 msgstr ""
 
 msgid "Close"
@@ -336,7 +336,7 @@ msgstr ""
 msgid "Connecting to Glidera..."
 msgstr ""
 
-msgid "Connecting to Shapeshift..."
+msgid "Connecting to ShapeShift..."
 msgstr ""
 
 msgid "Connection reset by peer"
@@ -1695,6 +1695,9 @@ msgstr ""
 msgid "The Safest, Fastest Asset Exchange on Earth"
 msgstr ""
 
+msgid "The Wallet Service URL"
+msgstr ""
+
 msgid "The amount of bitcoin immediately spendable from this wallet."
 msgstr ""
 
@@ -1757,9 +1760,6 @@ msgstr ""
 msgid ""
 "The transaction history and every new incoming transaction are cached in "
 "the app. This feature clean this up and synchronizes again from the server"
-msgstr ""
-
-msgid "The wallet service URL"
 msgstr ""
 
 msgid "There is an error in the form"
@@ -1942,7 +1942,7 @@ msgstr ""
 msgid "View on blockchain"
 msgstr ""
 
-msgid "Visit Shapeshift.io &rarr;"
+msgid "Visit ShapeShift.io &rarr;"
 msgstr ""
 
 msgid "Visit mercadolivre.com.br &rarr;"
@@ -2045,9 +2045,6 @@ msgid "Wallet recovery phrase"
 msgstr ""
 
 msgid "Wallet recovery phrase not available"
-msgstr ""
-
-msgid "Wallet service URL"
 msgstr ""
 
 msgid "Wallet service not found"
