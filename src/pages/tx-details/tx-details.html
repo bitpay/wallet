@@ -52,7 +52,7 @@
       <a (click)="readMore()" translate>Learn more</a>
     </ion-item>
 
-    <ion-item class="item-fee" *ngIf="btx && btx.feeStr">
+    <ion-item class="item-fee" *ngIf="btx && btx.feeStr && btx.action != 'received'">
       <div class="fee-title" translate>
         {{'Fee:' | translate}}
       </div>
