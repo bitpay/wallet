@@ -9,14 +9,13 @@
     <h1 class="assertive" translate>Warning!</h1>
     <div class="warning-message">
       <p translate>
-        Your extended private keys are all that is needed to access your bitcoin funds. Be sure to protect your private keys and
-        store them only on secure devices. BitPay does not have access to your private keys, so you alone are responsible
-        for your keys. If you share key access with external services, you take responsibility for the risk of theft or breach.
-        Only advanced users should handle extended private keys directly.
+        Your extended private keys are all that is needed to access your bitcoin funds. Be sure to protect your private keys and store them only on secure devices. BitPay does not have access to your private keys, so you alone are responsible for your keys. If you share key access with external services, you take responsibility for the risk of theft or breach. Only advanced users should handle extended private keys directly.
       </p>
     </div>
     <div copy-to-clipboard="{{xPrivKey}}">
-      <button ion-button class="button-standard" translate>Copy to clipboard</button>
+      <button ion-button class="button-standard">
+        {{'Copy to clipboard' | translate}}
+      </button>
     </div>
   </div>
 </ion-content>

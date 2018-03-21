@@ -36,6 +36,8 @@
       required padding></ion-textarea>
   </form>
 
-  <button ion-button class="button-standard" (click)="sendFeedback(feedbackForm.value.comment)" [disabled]="!feedbackForm.valid">Send</button>
+  <button ion-button class="button-standard" (click)="sendFeedback(feedbackForm.value.comment)" [disabled]="!feedbackForm.valid">
+    {{'Send' | translate}}
+  </button>
 
 </ion-content>

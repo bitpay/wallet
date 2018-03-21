@@ -7,25 +7,25 @@
 <ion-content>
   <page-wallet-item [wallet]="wallet"></page-wallet-item>
   <ion-item-divider text-wrap text-center>
-    <span translate>Each bitcoin wallet can generate billions of addresses from your 12-word backup. A new address is automatically generated
-      and shown each time you receive a payment.
+    <span translate>
+      Each bitcoin wallet can generate billions of addresses from your 12-word backup. A new address is automatically generated and shown each time you receive a payment.
     </span>
     <a (click)="showInfo = !showInfo" *ngIf="!showInfo" translate>Why?</a>
 
     <div *ngIf="showInfo">
       <br>
-      <span translate>It's a good idea to avoid reusing addresses - this both protects your privacy and keeps your bitcoins secure against
-        hypothetical attacks by quantum computers.</span>
+      <span translate>
+        It's a good idea to avoid reusing addresses - this both protects your privacy and keeps your bitcoins secure against hypothetical attacks by quantum computers.</span>
       <a (click)="showInfo = !showInfo" translate>Hide</a>
     </div>
   </ion-item-divider>
 
-  <button ion-item (click)="scan()" translate>
-    Scan addresses for funds
+  <button ion-item (click)="scan()">
+    {{'Scan addresses for funds' | translate}}
   </button>
 
-  <button ion-item *ngIf="viewAll" (click)="viewAllAddresses()" translate>
-    View all addresses
+  <button ion-item *ngIf="viewAll" (click)="viewAllAddresses()">
+    {{'View all addresses' | translate}}
   </button>
 
   <div class="loading" *ngIf="loading">
@@ -45,13 +45,11 @@
       <div *ngIf="gapReached">
         <h5 translate>Unused addresses limit</h5>
         <p>
-          <span translate>The maximum number of consecutive unused addresses (20) has been reached. When one of your unused addresses receives
-            a payment, a new address will be generated and shown in your Receive tab.</span>&nbsp
+          <span translate>The maximum number of consecutive unused addresses (20) has been reached. When one of your unused addresses receives a payment, a new address will be generated and shown in your Receive tab.</span>
           <a (click)="readMore()" *ngIf="!showMore" translate>Read more</a>
         </p>
         <p *ngIf="showMore">
-          <span translate>The restore process will stop when 20 addresses are generated in a row which contain no funds. To safely generate
-            more addresses, make a payment to one of the unused addresses which has already been generated.</span>&nbsp
+          <span translate>The restore process will stop when 20 addresses are generated in a row which contain no funds. To safely generate more addresses, make a payment to one of the unused addresses which has already been generated.</span> 
           <a (click)="readMore()" translate>Read less</a>
         </p>
       </div>
@@ -85,7 +83,7 @@
       </ion-item>
 
       <ion-item text-wrap>
-        <span translate> Approximate Bitcoin network fee to transfer wallet's balance (with normal priority) </span>
+        <span translate>Approximate Bitcoin network fee to transfer wallet's balance (with normal priority)</span>
         <p class="info">{{minFeePer}} [{{minFee}}]</p>
       </ion-item>
     </div>

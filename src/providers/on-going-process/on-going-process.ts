@@ -24,7 +24,7 @@ export class OnGoingProcessProvider {
       'calculatingFee': this.translate.instant('Calculating fee...'),
       'connectingCoinbase': this.translate.instant('Connecting to Coinbase...'),
       'connectingGlidera': this.translate.instant('Connecting to Glidera...'),
-      'connectingShapeshift': this.translate.instant('Connecting to Shapeshift...'),
+      'connectingShapeshift': this.translate.instant('Connecting to ShapeShift...'),
       'creatingTx': this.translate.instant('Creating transaction...'),
       'creatingWallet': this.translate.instant('Creating Wallet...'),
       'deletingWallet': this.translate.instant('Deleting Wallet...'),

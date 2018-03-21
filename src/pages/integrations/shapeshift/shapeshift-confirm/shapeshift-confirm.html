@@ -10,7 +10,7 @@
     <ion-item>
       <div class="sending-label">
         <img src="assets/img/shapeshift/icon-shapeshift.svg" alt="shapeshift">
-        <span translate>Shift</span>
+        <span>Shift</span>
       </div>
       <div class="amount-label">
         <div class="amount">{{amountStr}}</div>
@@ -71,18 +71,15 @@
 
     <ion-item-divider class="item-description" *ngIf="withdrawalStr" no-lines text-wrap>
       <span translate>
-        A total of {{amountStr}} ({{fiatAmount | currency}} {{currencyIsoCode}}) will be exchanged for {{withdrawalStr}} ({{fiatWithdrawal
-        | currency}} {{currencyIsoCode}}). Would you like to proceed?
+        A total of {{amountStr}} ({{fiatAmount | currency}} {{currencyIsoCode}}) will be exchanged for {{withdrawalStr}} ({{fiatWithdrawal | currency}} {{currencyIsoCode}}). Would you like to proceed?
       </span>
     </ion-item-divider>
-    <!-- TODO: Translate -->
   </ion-list>
 
 </ion-content>
 
 <ion-footer>
-  <button ion-button full class="button-footer" (click)="confirmTx()" [disabled]="!fromWallet || !totalAmountStr || !toWallet"
-    translate>
-    Click to shift
+  <button ion-button full class="button-footer" (click)="confirmTx()" [disabled]="!fromWallet || !totalAmountStr || !toWallet">
+    {{'Click to confirm' | translate}}
   </button>
 </ion-footer>

@@ -32,6 +32,8 @@
     </ion-item>
   </form>
 
-  <button ion-button class="button-standard" (click)="save()" [disabled]="addressBookAdd.invalid || submitAttempt" translate>Save</button>
+  <button ion-button class="button-standard" (click)="save()" [disabled]="addressBookAdd.invalid || submitAttempt">
+    {{'Save' | translate}}
+  </button>
 
 </ion-content>

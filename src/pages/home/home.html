@@ -171,8 +171,8 @@
         </button>
       </div>
       <div item-end *ngIf="showReorderBch">
-        <button ion-button clear color="secondary" (click)="reorderBch()" translate>
-          Done
+        <button ion-button clear color="secondary" (click)="reorderBch()">
+          {{'Done' | translate}}
         </button>
       </div>
     </ion-item-divider>
@@ -195,16 +195,13 @@
           </span>
           <span *ngIf="wallet.isComplete() && !wallet.needsBackup">
             <span *ngIf="!wallet.balanceHidden && !wallet.scanning">
-              {{wallet.status && wallet.status.totalBalanceStr ? (wallet.status.totalBalanceStr) : ( wallet.cachedBalance ? wallet.cachedBalance
-              + (wallet.cachedBalanceUpdatedOn ? ' &middot; ' + ( wallet.cachedBalanceUpdatedOn * 1000 | amTimeAgo) : '')
-              : '')}}
+              {{wallet.status && wallet.status.totalBalanceStr ? (wallet.status.totalBalanceStr) : ( wallet.cachedBalance ? wallet.cachedBalance + (wallet.cachedBalanceUpdatedOn ? ' &middot; ' + ( wallet.cachedBalanceUpdatedOn * 1000 | amTimeAgo) : '') : '')}}
             </span>
             <span *ngIf="wallet.scanning" translate>Scanning funds</span>
             <span *ngIf="wallet.balanceHidden && !wallet.scanning">[
               <span translate>Balance Hidden</span>]</span>
             <span *ngIf="wallet.credentials.m > 1">{{wallet.credentials.m}}-of-{{wallet.credentials.n}}</span>
-            <ion-icon *ngIf="!wallet.balanceHidden && wallet.status && (wallet.status.totalBalanceSat != wallet.status.spendableAmount)"
-              name="timer"></ion-icon>
+            <ion-icon *ngIf="!wallet.balanceHidden && wallet.status && (wallet.status.totalBalanceSat != wallet.status.spendableAmount)" name="timer"></ion-icon>
             <span *ngIf="wallet.error" class="wallet-warning">{{wallet.error}}</span>
           </span>
         </div>
@@ -230,8 +227,7 @@
           <img src="assets/img/icon-card.svg" class="icon-card" />
         </ion-icon>
         <div class="item-title">BitPay Visa&reg; Card ({{card.lastFourDigits}})</div>
-        <div class="item-subtitle">{{card.balance ? (card.balance | currency:card.currencySymbol:2) : 'Add funds to get started'|translate}} {{card.updatedOn
-          ? (' &middot; ' + (card.updatedOn * 1000 | amTimeAgo)) : ''}}</div>
+        <div class="item-subtitle">{{card.balance ? (card.balance | currency:card.currencySymbol:2) : 'Add funds to get started'|translate}} {{card.updatedOn ? (' &middot; ' + (card.updatedOn * 1000 | amTimeAgo)) : ''}}</div>
       </button>
     </ion-list>
   </div>

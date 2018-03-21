@@ -49,13 +49,13 @@
           </ion-note>
         </ion-item>
         <ion-item>
-          <span translate>Network Cost</span>
+          <span translate>Network cost</span>
           <ion-note item-end>
             <span>{{invoiceFee | currency:currencySymbol:2}} {{currencyIsoCode}}</span>
           </ion-note>
         </ion-item>
         <ion-item>
-          <span translate>Miner Fee</span>
+          <span translate>Miner fee</span>
           <ion-note item-end>
             <span>{{networkFee | currency:currencySymbol:2}} {{currencyIsoCode}}</span>
           </ion-note>
@@ -74,8 +74,8 @@
 </ion-content>
 
 <ion-footer>
-  <button ion-button full class="button-footer" (click)="topUpConfirm()" [disabled]="!(wallet && totalAmountStr)" translate>
-    Add funds
+  <button ion-button full class="button-footer" (click)="topUpConfirm()" [disabled]="!(wallet && totalAmountStr)">
+    {{'Add funds' | translate}}
   </button>
 </ion-footer>
 

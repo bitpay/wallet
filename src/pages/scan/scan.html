@@ -24,12 +24,15 @@
         <div *ngIf="currentState == scannerStates.unavailable" translate>Please connect a camera to get started.</div>
       </div>
       <div>
-        <button ion-button outline class="button-standard" *ngIf="currentState == scannerStates.unauthorized" (click)="authorize()"
-          translate>Allow Camera Access</button>
-        <button ion-button outline class="button-standard" *ngIf="currentState == scannerStates.denied && canOpenSettings" (click)="openSettings()"
-          translate>Open Settings</button>
-        <button ion-button outline class="button-standard" *ngIf="currentState == scannerStates.unavailable" (click)="attemptToReactivate()"
-          translate>Retry Camera</button>
+        <button ion-button outline class="button-standard" *ngIf="currentState == scannerStates.unauthorized" (click)="authorize()">
+          {{'Allow camera access' | translate}}
+        </button>
+        <button ion-button outline class="button-standard" *ngIf="currentState == scannerStates.denied && canOpenSettings" (click)="openSettings()">
+          {{'Open settings' | translate}}
+        </button>
+        <button ion-button outline class="button-standard" *ngIf="currentState == scannerStates.unavailable" (click)="attemptToReactivate()">
+          {{'Retry camera' | translate}}
+        </button>
       </div>
     </div>
   </div>

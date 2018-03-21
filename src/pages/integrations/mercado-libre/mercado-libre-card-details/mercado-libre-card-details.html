@@ -3,8 +3,8 @@
   <ion-navbar>
     <ion-title>Details</ion-title>
     <ion-buttons start>
-      <button (click)="close()" ion-button translate>
-        Close
+      <button (click)="close()" ion-button>
+        {{'Close' | translate}}
       </button>
     </ion-buttons>
   </ion-navbar>
@@ -16,7 +16,7 @@
   <div class="header-modal">
     <img src="assets/img/mercado-libre/giftcard-pt.svg" alt="Mercado Livre Brazil Gift Card">
     <div class="header-modal-amount">
-     <span translate>Gift Card Amount:</span>
+     <span translate>Gift Card Amount</span>:
       <span class="text-bold">
         {{card.amount | currency : '$ ' : 2}} {{card.currency}}
       </span>
@@ -31,8 +31,8 @@
           Claim code:
           <span class="text-bold" copy-to-clipboard="{{card.pin}}">{{card.pin}}</span>
         </div>
-        <button class="redeem" ion-button outline (click)="openRedeemLink()" translate>
-          Redeem Now
+        <button class="redeem" ion-button outline (click)="openRedeemLink()">
+          {{'Redeem Now' | translate}}
         </button>
       </div>
 
@@ -65,15 +65,16 @@
 
   <ion-list>
     <button class="links" ion-item (click)="openExternalLink(card.invoiceUrl)">
-      <span translate>See invoice &rarr;</span>
+      <span translate>See invoice</span> &rarr;
     </button>
 
     <button class="links" ion-item *ngIf="card.status == 'FAILURE'" (click)="openSupportWebsite()">
-      <span><span translate>Help & Support</span> &rarr;</span>
+      <span><span translate>Help &amp; Support</span> &rarr;</span>
     </button>
 
-    <button ion-item block *ngIf="card.cardStatus == 'inactive' || card.cardStatus == 'expired' || card.status == 'expired'"
-      class="assertive" (click)="remove()">Remove</button>
+    <button ion-item block *ngIf="card.cardStatus == 'inactive' || card.cardStatus == 'expired' || card.status == 'expired'" class="assertive" (click)="remove()">
+      {{'Remove' | translate}}
+    </button>
   </ion-list>
 
 </ion-content>

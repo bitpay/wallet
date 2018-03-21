@@ -8,10 +8,10 @@
   <div [attr.padding]="isIOS ? '' : null">
     <ion-segment [(ngModel)]="segments">
       <ion-segment-button value="file/text">
-        File/Text
+        {{'File/Text' | translate}}
       </ion-segment-button>
       <ion-segment-button value="qr-code" (click)="generateQrCode()">
-        QR Code
+        {{'QR Code' | translate}}
       </ion-segment-button>
     </ion-segment>
   </div>
@@ -44,19 +44,11 @@
           <ion-item-divider *ngIf="!canSign || exportWalletForm.value.noSignEnabled" text-wrap>
             <div class="warning" *ngIf="!canSign">
               <ion-icon name="ios-warning-outline"></ion-icon>
-              <span translate>
-                WARNING: The private key of this wallet is not available. The export allows to check the wallet balance, transaction history,
-                and create spend proposals from the export. However, does not allow to approve (sign) proposals, so
-                <b>funds will not be accessible from the export</b>.
-              </span>
+              <span translate>WARNING: The private key of this wallet is not available. The export allows to check the wallet balance, transaction history, and create spend proposals from the export. However, does not allow to approve (sign) proposals, so funds will not be accessible from the export.</span>
             </div>
             <div class="warning" *ngIf="exportWalletForm.value.noSignEnabled">
               <ion-icon name="ios-warning-outline"></ion-icon>
-              <span translate>
-                WARNING: Not including the private key allows to check the wallet balance, transaction history, and create spend proposals
-                from the export. However, does not allow to approve (sign) proposals, so
-                <b>funds will not be accessible from the export</b>.
-              </span>
+              <span translate>WARNING: Not including the private key allows to check the wallet balance, transaction history, and create spend proposals from the export. However, does not allow to approve (sign) proposals, so funds will not be accessible from the export.</span>
             </div>
           </ion-item-divider>
           <button *ngIf="!isSafari && !isCordova" class="button-standard" ion-button type="submit" (click)="downloadWalletBackup()"

@@ -1,9 +1,9 @@
 <ion-header>
   <ion-navbar hideBackButton="true">
-    <ion-title>{{'Bitcoin Network Fee Policy'|translate}}</ion-title>
+    <ion-title>{{'Fee level' | translate}}</ion-title>
     <ion-buttons start>
-      <button [disabled]="customSatPerByte >= maxFeeAllowed || showError" (click)="ok()" ion-button translate>
-        Done
+      <button (click)="cancel()" icon-only ion-button>
+        <ion-icon name="close"></ion-icon>
       </button>
     </ion-buttons>
   </ion-navbar>
@@ -16,9 +16,9 @@
   <ion-list [hidden]="!feeLevel">
     <ion-item-divider></ion-item-divider>
     <ion-item class="fee-level">
-      <ion-label>Fee level</ion-label>
+      <ion-label>{{'Fee level' | translate}}</ion-label>
       <ion-select [(ngModel)]="selectedFee" (ionChange)="changeSelectedFee(selectedFee)">
-        <ion-option *ngFor="let fee of feeOpts" [value]="fee">{{ feeProvider.feeOpts[fee] }}</ion-option>
+        <ion-option *ngFor="let fee of feeOpts" [value]="fee">{{ feeProvider.feeOpts[fee] | translate }}</ion-option>
       </ion-select>
     </ion-item>
     <ion-item-divider></ion-item-divider>
@@ -51,8 +51,8 @@
 
     <ion-list class="fee-custom" *ngIf="customFeePerKB">
       <ion-item>
-        <ion-label color="primary" floating>Enter custom fee in sat/byte</ion-label>
-        <ion-input type="number" placeholder="{{'Enter custom fee'|translate}}" min="minFee" max="maxFee" (ionChange)="checkFees(customSatPerByte)"
+        <ion-label color="primary" floating>{{'Enter custom fee in sat/byte' | translate}}</ion-label>
+        <ion-input type="number" min="minFee" max="maxFee" (ionChange)="checkFees(customSatPerByte)"
           [(ngModel)]="customSatPerByte" required></ion-input>
       </ion-item>
       <ion-item class="fee-error" *ngIf="showError">
@@ -64,5 +64,9 @@
         <span *ngIf="showMaxWarning" translate>You should not set a fee higher than {{maxFeeRecommended}} satoshis/byte.</span>
       </ion-item>
     </ion-list>
+
+    <button [disabled]="customSatPerByte >= maxFeeAllowed || showError" (click)="ok()" full class="button-standard" ion-button>
+      {{'Apply changes' | translate}}
+    </button>
   </div>
 </ion-content>

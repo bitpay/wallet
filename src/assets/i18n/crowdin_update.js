@@ -9,7 +9,7 @@ var bhttp = require('bhttp');
 
 var crowdin_identifier = 'copay'
 
-var local_file_name1 = path.join(__dirname, 'app.pot')
+var local_file_name1 = path.join(__dirname, 'po/template.pot')
 
 // Similar to Github, normalize all line breaks to CRLF so that different people
 // using different OSes to update does not constantly swith format back and forth.
@@ -45,7 +45,7 @@ var crowdin_api_key = fs.readFileSync(path.join(__dirname, 'crowdin_api_key.txt'
 if (crowdin_api_key != '') {
 
   var payload = {
-    'files[app.pot]': local_file1,
+    'files[template.pot]': local_file1,
     'files[appstore/appstore_en.txt]': local_file2,
     'files[appstore/updateinfo_en.txt]': local_file3
   };

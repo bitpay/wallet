@@ -7,12 +7,14 @@
   <p translate class="top-description">Bitcoin is different &ndash; it cannot be safely held with a bank or web service.</p>
   <ion-list class="checkbox-list" no-lines text-wrap>
     <ion-item>
-      <ion-label>I understand that my funds are held securely on this device, not by a company.</ion-label>
+      <ion-label>
+        {{'I understand that my funds are held securely on this device, not by a company' | translate}}.
+      </ion-label>
       <ion-checkbox [(ngModel)]="accepted.first"></ion-checkbox>
     </ion-item>
     <ion-item>
-      <ion-label>I understand that if this app is moved to another device or deleted, my bitcoin can only be recovered with the backup
-        phrase.
+      <ion-label>
+        {{'I understand that if this app is moved to another device or deleted, my bitcoin can only be recovered with the backup phrase' | translate}}.
       </ion-label>
       <ion-checkbox [(ngModel)]="accepted.second"></ion-checkbox>
     </ion-item>
@@ -22,12 +24,15 @@
   <div class="checkbox-list">
     <div *ngIf="accepted.first && accepted.second">
       <ion-item no-lines text-wrap>
-        <ion-label>I have read, understood, and agree to the Terms of Use.</ion-label>
+        <ion-label>
+          {{'I have read, understood, and agree to the Terms of Use' | translate}}.
+        </ion-label>
         <ion-checkbox [(ngModel)]="terms.accepted"></ion-checkbox>
       </ion-item>
       <a (click)="openDisclaimer()" translate>Terms of Use</a>
     </div>
-    <button ion-button class="button-standard" [disabled]="!accepted.first || !accepted.second || !terms.accepted" (click)="confirm()"
-      translate>Confirm &amp; Finish</button>
+    <button ion-button class="button-standard" [disabled]="!accepted.first || !accepted.second || !terms.accepted" (click)="confirm()">
+      {{'Confirm &amp; Finish' | translate}}
+    </button>
   </div>
 </ion-footer>

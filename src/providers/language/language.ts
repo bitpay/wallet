@@ -5,6 +5,9 @@ import { Logger } from '../../providers/logger/logger';
 import { ConfigProvider } from '../config/config';
 
 import * as _ from "lodash";
+import * as moment from 'moment';
+
+import {DateFormatPipe, MomentModule} from 'angular2-moment';
 
 @Injectable()
 export class LanguageProvider {
@@ -21,6 +24,9 @@ export class LanguageProvider {
     }, {
       name: 'Italiano',
       isoCode: 'it',
+    }, {
+      name: 'Nederlands',
+      isoCode: 'nl',
     }, {
       name: 'Polski',
       isoCode: 'pl',
@@ -66,11 +72,13 @@ export class LanguageProvider {
     }
     this.logger.info('Default language: ' + this.current);
     this.translate.setDefaultLang(this.current);
+    moment.locale(this.current);
   }
 
   public set(lang: string): void {
     this.current = lang;
     this.translate.use(lang);
+    moment.locale(lang);
     this.configProvider.set({ wallet: { settings: { defaultLanguage: lang } } });
   }
 

@@ -9,8 +9,8 @@
     <span translate>No wallets available to receive funds</span>
   </div>
   <div *ngIf="!noMatchingWallet">
-    <h4 class="title" translate>
-      <span translate>Funds found: </span>
+    <h4 class="title">
+      <span translate>Funds found</span>:
       <span *ngIf="balanceSat">{{balanceSat | satToUnit: wallet.coin}}</span>
       <span *ngIf="!balanceSat">...</span>
     </h4>
@@ -29,6 +29,7 @@
   </div>
 </ion-content>
 <ion-footer>
-  <button ion-button block class="button-footer" (click)="sweepWallet()" [disabled]="sending || balanceSat <= 0 || noMatchingWallet"
-    translate>Sweep</button>
+  <button ion-button block class="button-footer" (click)="sweepWallet()" [disabled]="sending || balanceSat <= 0 || noMatchingWallet">
+    {{'Sweep' | translate}}
+  </button>
 </ion-footer>

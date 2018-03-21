@@ -32,7 +32,9 @@
           <span *ngIf="wallet.error" class="wallet-warning">{{wallet.error}}</span>
         </div>
         <ion-note item-end>
-          <button ion-button (click)="duplicate(wallet)" translate>Duplicate</button>
+          <button ion-button (click)="duplicate(wallet)">
+            {{'Duplicate' | translate}}
+          </button>
         </ion-note>
       </ion-item>
     </ion-list>
@@ -56,10 +58,10 @@
     </ion-list>
 
     <ion-item-divider text-wrap>
-      <span translate>Some of your wallets are not eligible for Bitcoin Cash support. You can try to access BCH funds from these wallets
-        using the
-      </span>
-      <a class="pointer" (click)="openRecoveryToolLink()" translate>recovery tool.</a>
+      <span translate>
+        Some of your wallets are not eligible for Bitcoin Cash support. You can try to access BCH funds from these wallets using the recovery tool
+      </span>. 
+      <a (click)="openRecoveryToolLink()" translate>Click to open the recovery tool</a>.
     </ion-item-divider>
   </div>
 </ion-content>

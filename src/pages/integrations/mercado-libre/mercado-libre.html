@@ -14,10 +14,14 @@
         <img src="assets/img/mercado-libre/mlbr.svg" alt="Mercado Libre">
       </div>
       <div class="description" translate padding>
-        <b>Only</b> redeemable on Mercado Livre (Brazil)
+        Only redeemable on Mercado Livre (Brazil)
       </div>
-      <button *ngIf="!showOauthForm" ion-button outline class="button-standard" (click)="goTo('Amount')" no-low-fee translate>Buy a Gift Card</button>
-      <button *ngIf="!showOauthForm" ion-button clear small block color="dark" (click)="openExternalLink('https://www.mercadolivre.com.br')" translate>Visit mercadolivre.com.br &rarr;</button>
+      <button *ngIf="!showOauthForm" ion-button outline class="button-standard" (click)="goTo('Amount')" no-low-fee>
+        {{'Buy Gift Card' | translate}}
+      </button>
+      <button *ngIf="!showOauthForm" ion-button clear small block color="dark" (click)="openExternalLink('https://www.mercadolivre.com.br')">
+        {{'Visit mercadolivre.com.br' | translate}} &rarr;
+      </button>
     </div>
   </div>
   <div class="container" *ngIf="giftCards">
@@ -28,7 +32,7 @@
     <div class="integration-giftCard-logo">
       <img src="assets/img/mercado-libre/mlbr.svg" alt="Mercado Libre">
       <div class="subtitle" translate>
-        <b>Only</b> redeemable on Mercado Livre (Brazil)
+        Only redeemable on Mercado Livre (Brazil)
       </div>
       <button color="dark" ion-button clear icon-right no-low-fee (click)="goTo('Amount')">
         <span translate>Buy Gift Card</span>
@@ -47,10 +51,10 @@
                 {{item.value.amount | currency : '$ ' : 2}} {{item.value.currency}}
               </h2>
               <span>
-                <span class="assertive" *ngIf="item.value.status == 'FAILURE'">Error</span>
-                <span class="dark" *ngIf="item.value.status == 'expired'">Invoice expired</span>
-                <span class="calm" *ngIf="item.value.status == 'invalid'">Still pending</span>
-                <span class="positive" *ngIf="item.value.status == 'PENDING'">Pending</span>
+                <span class="assertive" *ngIf="item.value.status == 'FAILURE'" translate>Error</span>
+                <span class="dark" *ngIf="item.value.status == 'expired'" translate>Invoice expired</span>
+                <span class="calm" *ngIf="item.value.status == 'invalid'" translate>Still pending</span>
+                <span class="positive" *ngIf="item.value.status == 'PENDING'" translate>Pending</span>
                 <span class="assertive" *ngIf="item.value.cardStatus == 'inactive'" translate>Inactive</span>
                 <span class="assertive" *ngIf="item.value.cardStatus == 'expired'" translate>Expired</span>
               </span>
