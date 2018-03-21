@@ -694,6 +694,8 @@ export class ConfirmPage {
 
     myModal.onDidDismiss((data: any) => {
 
+      if (_.isEmpty(data)) return;
+
       this.logger.debug('New fee level choosen:' + data.newFeeLevel + ' was:' + this.tx.feeLevel);
       this.usingCustomFee = data.newFeeLevel == 'custom' ? true : false;
 

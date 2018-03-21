@@ -143,6 +143,10 @@ export class ChooseFeeLevelPage {
     this.viewCtrl.dismiss({ newFeeLevel: this.feeLevel, customFeePerKB: this.customFeePerKB });
   }
 
+  public cancel(): void {
+    this.viewCtrl.dismiss();
+  }
+
   public changeSelectedFee(newFeeLevelValue: string): void {
     if (this.feeLevel != newFeeLevelValue) {
       this.logger.debug('New fee level: ' + newFeeLevelValue);
