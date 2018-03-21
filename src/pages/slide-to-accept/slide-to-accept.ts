@@ -62,7 +62,9 @@ export class SlideToAcceptPage implements AfterViewInit {
         width: buttonConstraints.width
       };
       let containerWidth: number = this.htmlContainerElem.clientWidth;
-      this.xMax = containerWidth - origin.width - this.delta;
+      const subtract = containerWidth < 800 ? 75 : 200;
+      this.xMax = containerWidth - subtract;
+      console.log('delta: ', this.delta);
       console.log('Button width: ', origin.width);
       console.log('Container width: ', containerWidth);
       console.log('xMax: ', this.xMax);
@@ -70,13 +72,14 @@ export class SlideToAcceptPage implements AfterViewInit {
   }
 
   activateButton(event: TouchEvent) {
-    console.log('activateButton', event.touches[0].pageX);
     this.isPressed = true;
-    this.clickPosition = event.touches[0].pageX;
+    if (typeof event.touches != "undefined") {
+      this.clickPosition = event.touches[0].pageX;
+    }
   }
 
   dragButton(event: TouchEvent) {
-    if (event.touches[0]) {
+    if (typeof event.touches != "undefined") {
       let xTranslate = event.touches[0].pageX;
       let xDisplacement = (this.isPressed) ? xTranslate - this.clickPosition : 0;
       // Adjust displacement to consider the delta value

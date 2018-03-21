@@ -1,8 +1,14 @@
 page-slide-to-accept {
     
       //position: fixed;
-    button{
-        z-index: 100;
+    .button-slider{
+        z-index: 100 !important;
+        width: 105%;
+        border-bottom-right-radius: 24px;
+        border-top-right-radius: 24px;
+        margin-left: -80%;
+        background-color: $v-slider-bg-color;
+        height: 70px;        
     }   
     
       @mixin center-vertically {
@@ -19,7 +25,7 @@ page-slide-to-accept {
           overflow: hidden;
           position: relative;
           bottom: 0;
-          height: 92px;
+          height: 70px;
           width: 100%;
           background: $v-slide-bg-color;
         }
@@ -64,7 +70,7 @@ page-slide-to-accept {
         }
         &__bitcoin {
           @include center-vertically;
-          left: 20px;
+          right: 20px;
           z-index: 10;
     
           > img {

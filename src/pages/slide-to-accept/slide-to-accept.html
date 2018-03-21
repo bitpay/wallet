@@ -1,24 +1,17 @@
-
-  <div #slideButtonContainer class="slide__listener" 
-     no-margin no-padding>
-  <button #slideButton ion-button icon-right large
-    (touchstart)="activateButton($event)"
-    (touchmove)="dragButton($event)"
-    (touchend)="resetButton()"
-    (mousedown)="activateButton($event)"
-    (mousemove)="dragButton($event)"
-    (mouseup)="resetButton()"
+<div #slideButtonContainer class="slide__listener" no-margin no-padding>
+  <button class="button-slider" #slideButton ion-button icon-right large (touchstart)="activateButton($event)" (touchmove)="dragButton($event)"
+    (touchend)="resetButton()" (mousedown)="activateButton($event)" (mousemove)="dragButton($event)" (mouseup)="resetButton()"
     [disabled]="slideButtonDisabled || slideButtonDone">
     <div class="slide__bitcoin" [ngStyle]="bitcoinStyle">
-        <img src="../assets/img/icon-bitcoin-white.svg">
-      </div>
-   
+      <img src="../assets/img/icon-bitcoin-white.svg">
+    </div>
+
   </button>
   <div class="slide__button-text" [ngStyle]="textStyle">
-      <span class="justify">Slide to send</span>
-    </div>
-  
+    <span class="justify">Slide to send</span>
+  </div>
+
   <div class="slide__arrow">
-      <img src="../assets/img/icon-arrow-right.svg">
-    </div>
+    <img src="../assets/img/icon-arrow-right.svg">
+  </div>
 </div>
