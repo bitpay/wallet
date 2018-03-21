@@ -7,6 +7,10 @@
 </ion-header>
 
 <ion-content>
+<ion-card>
+
+    <page-slide-to-accept></page-slide-to-accept>
+</ion-card>
 
   <ion-refresher (ionRefresh)="doRefresh($event)" *ngIf="!showReorderBtc && !showReorderBch">
     <ion-refresher-content></ion-refresher-content>
