@@ -123,6 +123,9 @@ msgstr ""
 msgid "Anyone with your backup phrase can access or spend your bitcoin."
 msgstr ""
 
+msgid "Apply changes"
+msgstr ""
+
 msgid ""
 "Approximate Bitcoin network fee to transfer wallet's balance (with normal "
 "priority)"
@@ -604,7 +607,7 @@ msgstr ""
 msgid "Enter a password to encrypt your wallet"
 msgstr ""
 
-msgid "Enter custom fee"
+msgid "Enter custom fee in sat/byte"
 msgstr ""
 
 msgid "Enter new spending password"
