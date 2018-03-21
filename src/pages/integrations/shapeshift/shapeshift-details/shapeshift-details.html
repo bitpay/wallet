@@ -4,8 +4,8 @@
       {{'Details' | translate}}
     </ion-title>
     <ion-buttons start>
-      <button (click)="close()" ion-button translate>
-        Close
+      <button (click)="close()" ion-button>
+        {{'Close' | translate}}
       </button>
     </ion-buttons>
   </ion-navbar>
@@ -97,11 +97,11 @@
 
     <ion-item-divider></ion-item-divider>
 
-    <button ion-item detail-none *ngIf="ssData.transaction" (click)="openTransaction(ssData.transaction)" translate>
-      See transaction
+    <button ion-item detail-none *ngIf="ssData.transaction" (click)="openTransaction(ssData.transaction)">
+      {{'See transaction' | translate}}
     </button>
-    <button class="assertive" ion-item detail-none (click)="remove()" translate>
-      Remove
+    <button class="assertive" ion-item detail-none (click)="remove()">
+      {{'Remove' | translate}}
     </button>
 
   </ion-list>

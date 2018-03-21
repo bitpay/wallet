@@ -74,8 +74,8 @@
 </ion-content>
 
 <ion-footer>
-  <button ion-button full class="button-footer" (click)="topUpConfirm()" [disabled]="!(wallet && totalAmountStr)" translate>
-    Add funds
+  <button ion-button full class="button-footer" (click)="topUpConfirm()" [disabled]="!(wallet && totalAmountStr)">
+    {{'Add funds' | translate}}
   </button>
 </ion-footer>
 

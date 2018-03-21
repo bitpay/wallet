@@ -24,9 +24,13 @@
         <ion-label>{{'Get news and updates from BitPay' | translate}}</ion-label>
         <ion-checkbox formControlName="accept" checked="true"></ion-checkbox>
       </ion-item>
-      <button ion-button class="button-standard" type="submit" [disabled]="!emailForm.valid">Continue</button>
+      <button ion-button class="button-standard" type="submit" [disabled]="!emailForm.valid">
+        {{'Continue' | translate}}
+      </button>
     </form>
-    <button ion-button clear class="button-standard btn-transparent primary-color" (click)="skip()">Skip</button>
+    <button ion-button clear class="button-standard btn-transparent primary-color" (click)="skip()">
+      {{'Skip' | translate}}
+    </button>
   </div>
 
   <div class="email-form" *ngIf="showConfirmForm">
@@ -34,7 +38,11 @@
       <p translate>Is this email address correct?</p>
       <p>{{ emailForm.value.email }}</p>
     </div>
-    <button ion-button class="button-standard" (click)="save()" translate>Confirm</button>
-    <button ion-button class="button-standard btn-transparent primary-color" (click)="showConfirm()" translate>Edit</button>
+    <button ion-button class="button-standard" (click)="save()">
+      {{'Confirm' | translate}}
+    </button>
+    <button ion-button class="button-standard btn-transparent primary-color" (click)="showConfirm()">
+      {{'Edit' | translate}}
+    </button>
   </div>
 </ion-footer>

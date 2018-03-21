@@ -133,7 +133,7 @@
 
 <ion-footer>
   <button ion-button full class="button-footer" no-low-fee type="button" *ngIf="fromWallets.length > 0 && toWallets.length > 0"
-    [disabled]="!fromWallet || !toWallet || !termsAccepted" (click)="setAmount()" translate>
-    Continue
+    [disabled]="!fromWallet || !toWallet || !termsAccepted" (click)="setAmount()">
+    {{'Continue' | translate}}
   </button>
 </ion-footer>

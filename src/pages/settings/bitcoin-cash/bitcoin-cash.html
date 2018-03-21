@@ -32,7 +32,9 @@
           <span *ngIf="wallet.error" class="wallet-warning">{{wallet.error}}</span>
         </div>
         <ion-note item-end>
-          <button ion-button (click)="duplicate(wallet)" translate>Duplicate</button>
+          <button ion-button (click)="duplicate(wallet)">
+            {{'Duplicate' | translate}}
+          </button>
         </ion-note>
       </ion-item>
     </ion-list>

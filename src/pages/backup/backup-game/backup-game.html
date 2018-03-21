@@ -34,7 +34,9 @@
         </div>
         <div class="bottom-absolute">
           <div translate class="footer-text">We will confirm on the next screen.</div>
-          <button *ngIf="currentIndex == 0" ion-button class="button-standard" [disabled]="credentialsEncrypted || error" (click)="slideNext()" translate>I've written it down</button>
+          <button *ngIf="currentIndex == 0" ion-button class="button-standard" [disabled]="credentialsEncrypted || error" (click)="slideNext()">
+            {{'I have written it down' | translate}}
+          </button>
         </div>
       </div>
     </ion-slide>
@@ -62,8 +64,12 @@
       </div>
       <div *ngIf="selectComplete" class="bottom-absolute">
         <div class="footer-text">{{'Is this correct?' | translate}}</div>
-        <button *ngIf="currentIndex == 1 && selectComplete" ion-button class="button-standard" (click)="slideNext()" translate>Confirm</button>
-        <button ion-button clear class="button-standard" (click)="setFlow()" translate>Clear</button>
+        <button *ngIf="currentIndex == 1 && selectComplete" ion-button class="button-standard" (click)="slideNext()">
+          {{'Confirm' | translate}}
+        </button>
+        <button ion-button clear class="button-standard" (click)="setFlow()">
+          {{'Clear' | translate}}
+        </button>
       </div>
     </ion-slide>
 
@@ -79,8 +85,12 @@
       </ion-item-divider>
 
       <div class="bottom-absolute">
-        <button ion-button block [disabled]="!password" (click)="finalStep()" translate>Confirm</button>
-        <button *ngIf="currentIndex == 2" [disabled]="!password" ion-button class="button-standard" (click)="finalStep()" translate>Confirm</button>
+        <button ion-button block [disabled]="!password" (click)="finalStep()">
+          {{'Confirm' | translate}}
+        </button>
+        <button *ngIf="currentIndex == 2" [disabled]="!password" ion-button class="button-standard" (click)="finalStep()">
+          {{'Confirm' | translate}}
+        </button>
       </div>
     </ion-slide>
   </ion-slides>

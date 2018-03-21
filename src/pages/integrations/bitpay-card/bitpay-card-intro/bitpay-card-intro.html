@@ -30,7 +30,11 @@
     </ion-slide>
   </ion-slides>
   <div padding>
-    <button ion-button class="button-standard" (click)="orderBitPayCard()" translate>Order the BitPay Card</button>
-    <button ion-button clear color="blank" class="button-standard" (click)="connectBitPayCard()" translate>Connect my BitPay Card</button>
+    <button ion-button class="button-standard" (click)="orderBitPayCard()">
+      {{'Order the BitPay Card' | translate}}
+    </button>
+    <button ion-button clear color="blank" class="button-standard" (click)="connectBitPayCard()">
+      {{'Connect my BitPay Card' | translate}}
+    </button>
   </div>
 </ion-content>

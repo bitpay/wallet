@@ -31,8 +31,8 @@
       </ion-item>
       <a (click)="openDisclaimer()" translate>Terms of Use</a>
     </div>
-    <button ion-button class="button-standard" [disabled]="!accepted.first || !accepted.second || !terms.accepted" (click)="confirm()" translate>
-      Confirm &amp; Finish
+    <button ion-button class="button-standard" [disabled]="!accepted.first || !accepted.second || !terms.accepted" (click)="confirm()">
+      {{'Confirm &amp; Finish' | translate}}
     </button>
   </div>
 </ion-footer>

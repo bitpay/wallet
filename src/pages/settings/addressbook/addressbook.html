@@ -3,8 +3,8 @@
   <ion-navbar>
     <ion-title>{{ 'Address Book' | translate }}</ion-title>
     <ion-buttons *ngIf="!isEmptyList" end>
-      <button ion-button (click)="addEntry()" translate>
-        Add
+      <button ion-button (click)="addEntry()">
+        {{'Add' | translate}}
       </button>
     </ion-buttons>
   </ion-navbar>
@@ -19,7 +19,9 @@
     </ion-icon>
     <div class="zero-state-heading" translate>No contacts yet</div>
     <div class="zero-state-description" translate>Get started by adding your first one.</div>
-    <button ion-button class="button-standard" (click)="addEntry()" translate>Add Contact</button>
+    <button ion-button class="button-standard" (click)="addEntry()">
+      {{'Add Contact' | translate}}
+    </button>
   </div>
 
   <div *ngIf="!isEmptyList">

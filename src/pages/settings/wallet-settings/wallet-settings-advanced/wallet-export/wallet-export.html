@@ -8,10 +8,10 @@
   <div [attr.padding]="isIOS ? '' : null">
     <ion-segment [(ngModel)]="segments">
       <ion-segment-button value="file/text">
-        File/Text
+        {{'File/Text' | translate}}
       </ion-segment-button>
       <ion-segment-button value="qr-code" (click)="generateQrCode()">
-        QR Code
+        {{'QR Code' | translate}}
       </ion-segment-button>
     </ion-segment>
   </div>
