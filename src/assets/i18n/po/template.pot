@@ -51,9 +51,6 @@ msgstr ""
 msgid "Add Memo"
 msgstr ""
 
-msgid "Add Wallet"
-msgstr ""
-
 msgid "Add as a contact"
 msgstr ""
 
@@ -97,7 +94,7 @@ msgid ""
 "addresses can be created."
 msgstr ""
 
-msgid "Allow Camera Access"
+msgid "Allow camera access"
 msgstr ""
 
 msgid "Almost done! Let's review."
@@ -270,6 +267,12 @@ msgstr ""
 msgid "Check the transaction on your wallet details"
 msgstr ""
 
+msgid "Checking..."
+msgstr ""
+
+msgid "Choose a backup file from your computer"
+msgstr ""
+
 msgid "Clear"
 msgstr ""
 
@@ -315,7 +318,7 @@ msgstr ""
 msgid "Confirm"
 msgstr ""
 
-msgid "Confirm & Finish"
+msgid "Confirm &amp; Finish"
 msgstr ""
 
 msgid "Confirm your new spending password"
@@ -348,7 +351,7 @@ msgstr ""
 msgid "Continue"
 msgstr ""
 
-msgid "Contribute Translations"
+msgid "Contribute translations"
 msgstr ""
 
 msgid "Copay only supports Bitcoin Cash using new version numbers addresses"
@@ -465,6 +468,9 @@ msgstr ""
 msgid "Create bitcoin wallet"
 msgstr ""
 
+msgid "Create personal wallet"
+msgstr ""
+
 msgid "Create shared wallet"
 msgstr ""
 
@@ -559,8 +565,8 @@ msgstr ""
 
 msgid ""
 "Each bitcoin wallet can generate billions of addresses from your 12-word "
-"backup. A new address is automatically generated\n"
-"      and shown each time you receive a payment."
+"backup. A new address is automatically generated and shown each time you "
+"receive a payment."
 msgstr ""
 
 msgid "Economy"
@@ -679,6 +685,9 @@ msgstr ""
 msgid "Fee"
 msgstr ""
 
+msgid "Fee level"
+msgstr ""
+
 msgid "Fee level is not defined"
 msgstr ""
 
@@ -691,7 +700,7 @@ msgstr ""
 msgid "Fetching payment information"
 msgstr ""
 
-msgid "File"
+msgid "File/Text"
 msgstr ""
 
 msgid "Finish"
@@ -813,6 +822,9 @@ msgstr ""
 msgid "I have read, understood, and agree to the Terms of Use"
 msgstr ""
 
+msgid "I have written it down"
+msgstr ""
+
 msgid "I like the app"
 msgstr ""
 
@@ -833,9 +845,6 @@ msgid ""
 msgstr ""
 
 msgid "I'm sure"
-msgstr ""
-
-msgid "I've written it down"
 msgstr ""
 
 msgid ""
@@ -920,8 +929,8 @@ msgstr ""
 
 msgid ""
 "It's a good idea to avoid reusing addresses - this both protects your "
-"privacy and keeps your bitcoins secure against\n"
-"        hypothetical attacks by quantum computers."
+"privacy and keeps your bitcoins secure against hypothetical attacks by "
+"quantum computers."
 msgstr ""
 
 msgid ""
@@ -1057,7 +1066,7 @@ msgstr ""
 msgid "New address could not be generated. Please try again."
 msgstr ""
 
-msgid "New personal wallet"
+msgid "New wallet"
 msgstr ""
 
 msgid "No"
@@ -1196,10 +1205,10 @@ msgstr ""
 msgid "Open Insight"
 msgstr ""
 
-msgid "Open Settings"
+msgid "Open Translation Community"
 msgstr ""
 
-msgid "Open Translation Community"
+msgid "Open settings"
 msgstr ""
 
 msgid "Open the recovery tool"
@@ -1221,6 +1230,9 @@ msgid "Password required. Make sure to enter your password in advanced options"
 msgstr ""
 
 msgid "Passwords do not match"
+msgstr ""
+
+msgid "Paste the backup plain text code"
 msgstr ""
 
 msgid "Pay 0% fees to turn bitcoin into dollars."
@@ -1359,6 +1371,9 @@ msgid ""
 "the Settings app."
 msgstr ""
 
+msgid "QR Code"
+msgstr ""
+
 msgid "Quick review!"
 msgstr ""
 
@@ -1413,6 +1428,9 @@ msgstr ""
 msgid "Recipients"
 msgstr ""
 
+msgid "Recovery Phrase"
+msgstr ""
+
 msgid "Recreating Wallet..."
 msgstr ""
 
@@ -1446,13 +1464,16 @@ msgstr ""
 msgid "Request Spending Password"
 msgstr ""
 
+msgid "Required number of signatures"
+msgstr ""
+
 msgid "Restore from backup"
 msgstr ""
 
 msgid "Retrieving inputs information..."
 msgstr ""
 
-msgid "Retry Camera"
+msgid "Retry camera"
 msgstr ""
 
 msgid "Save"
@@ -1588,9 +1609,6 @@ msgid "Share the love by inviting your friends."
 msgstr ""
 
 msgid "Share this invitation with your copayers"
-msgstr ""
-
-msgid "Shift"
 msgstr ""
 
 msgid "Show advanced options"
@@ -1826,6 +1844,9 @@ msgstr ""
 msgid "Total Locked Balance"
 msgstr ""
 
+msgid "Total number of copayers"
+msgstr ""
+
 msgid "Total wallet inputs"
 msgstr ""
 
@@ -1874,6 +1895,9 @@ msgid "Try again in {{expires}}"
 msgstr ""
 
 msgid "Turn bitcoin into dollars, swipe anywhere Visa&reg; is accepted."
+msgstr ""
+
+msgid "Type the recovery phrase (usually 12 words)"
 msgstr ""
 
 msgid "Unconfirmed"
@@ -1942,10 +1966,10 @@ msgstr ""
 msgid "View on blockchain"
 msgstr ""
 
-msgid "Visit ShapeShift.io &rarr;"
+msgid "Visit ShapeShift.io"
 msgstr ""
 
-msgid "Visit mercadolivre.com.br &rarr;"
+msgid "Visit mercadolivre.com.br"
 msgstr ""
 
 msgid ""
@@ -2027,6 +2051,9 @@ msgstr ""
 msgid "Wallet key"
 msgstr ""
 
+msgid "Wallet name"
+msgstr ""
+
 msgid "Wallet needs backup"
 msgstr ""
 
@@ -2034,6 +2061,9 @@ msgid "Wallet not backed up"
 msgstr ""
 
 msgid "Wallet not found"
+msgstr ""
+
+msgid "Wallet not registered"
 msgstr ""
 
 msgid ""
@@ -2088,9 +2118,6 @@ msgstr ""
 msgid ""
 "Without encryption, a thief or another application on this device may be "
 "able to access your funds."
-msgstr ""
-
-msgid "Words"
 msgstr ""
 
 msgid "Would you be willing to rate {{appName}} in the app store?"
