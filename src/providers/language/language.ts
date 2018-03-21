@@ -25,6 +25,9 @@ export class LanguageProvider {
       name: 'Italiano',
       isoCode: 'it',
     }, {
+      name: 'Nederlands',
+      isoCode: 'nl',
+    }, {
       name: 'Polski',
       isoCode: 'pl',
     }, {
