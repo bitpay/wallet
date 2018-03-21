@@ -234,7 +234,7 @@ export class BackupGamePage {
       this.onGoingProcessProvider.clear();
       this.logger.warn('Failed to verify backup: ', err);
       this.error = true;
-      let title = 'Uh oh...';
+      let title = this.translate.instant('Uh oh...');
       let message = this.translate.instant("It's important that you write your backup phrase down correctly. If something happens to your wallet, you'll need this backup to recover your money. Please review your backup and try again.");
       this.popupProvider.ionicAlert(title, message).then(() => {
         this.setFlow();
