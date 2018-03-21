@@ -20,12 +20,12 @@
     </div>
   </ion-item-divider>
 
-  <button ion-item (click)="scan()" translate>
-    Scan addresses for funds
+  <button ion-item (click)="scan()">
+    {{'Scan addresses for funds' | translate}}
   </button>
 
-  <button ion-item *ngIf="viewAll" (click)="viewAllAddresses()" translate>
-    View all addresses
+  <button ion-item *ngIf="viewAll" (click)="viewAllAddresses()">
+    {{'View all addresses' | translate}}
   </button>
 
   <div class="loading" *ngIf="loading">
