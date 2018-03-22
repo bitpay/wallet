@@ -57,7 +57,7 @@
     "ionic:build": "ionic-app-scripts build",
     "ionic:serve": "ionic-app-scripts serve",
     "watch": "ng test --browsers=Chrome",
-    "test": "npm run test:lint && npm run test:ci",
+    "test": "npm run test:lint && npm run test:ci && npm run e2e:capture-latest && npm run test:visual",
     "test:coverage": "ng test --code-coverage",
     "test:ci": "ng test --watch=false --code-coverage --no-progress",
     "test:lint": "tslint --project . --format codeFrame && tslint '{test,electron,src}/**/*.ts' --format codeFrame",
