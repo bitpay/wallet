@@ -91,7 +91,6 @@ describe('PlatformProvider without navigator', () => {
     TestBed.configureTestingModule({
       imports: [
         HttpClientTestingModule,
-        NgLoggerModule.forRoot(Level.LOG),
         TranslateModule.forRoot({
           loader: { provide: TranslateLoader, useClass: TranslateFakeLoader }
         })
