@@ -34,6 +34,8 @@ import { ImportWalletPage } from '../pages/add/import-wallet/import-wallet';
 import { JoinWalletPage } from '../pages/add/join-wallet/join-wallet';
 import { BackupGamePage } from '../pages/backup/backup-game/backup-game';
 import { BackupWarningPage } from '../pages/backup/backup-warning/backup-warning';
+import { BackupWarningModalPage } from '../pages/backup/backup-warning-modal/backup-warning-modal';
+import { BackupNeededModalPage } from '../pages/backup/backup-needed-modal/backup-needed-modal';
 import { FeedbackCompletePage } from '../pages/feedback/feedback-complete/feedback-complete';
 import { FeedbackPage } from '../pages/feedback/feedback/feedback';
 import { SendFeedbackPage } from '../pages/feedback/send-feedback/send-feedback';
@@ -252,6 +254,8 @@ export function createTranslateLoader(http: HttpClient) {
     ImportWalletPage,
     JoinWalletPage,
     BackupWarningPage,
+    BackupWarningModalPage,
+    BackupNeededModalPage,
     BackupGamePage,
     ConfirmPage,
     CustomAmountPage,
@@ -383,6 +387,8 @@ export function createTranslateLoader(http: HttpClient) {
     ImportWalletPage,
     JoinWalletPage,
     BackupWarningPage,
+    BackupWarningModalPage,
+    BackupNeededModalPage,
     BackupGamePage,
     ConfirmPage,
     CustomAmountPage,

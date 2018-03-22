@@ -1,4 +1,4 @@
-page-fee-warning {
+page-backup-warning-modal {
   .popup-modal {
     background: #fff;
     top: 50% !important;
@@ -16,7 +16,7 @@ page-fee-warning {
     .modal-img {
       position: absolute;
       width: 100%;
-      background-color: color($colors, danger);
+      background-color: color($colors, warning);
       padding: 1rem;
       border-radius: 12px 12px 0px 0px;
       min-height: 120px;
