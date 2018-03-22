@@ -16,6 +16,7 @@ var NavTechService = function(opts) {
   var self = this;
 
   opts = opts || {};
+  self.$log = opts.$log
   self.httprequest = opts.httprequest; // || request;
   self.lodash = opts.lodash;
 
@@ -60,10 +61,10 @@ NavTechService.prototype._checkNode = function(availableServers, numAddresses, c
   var navtechServerUrl = 'https://' + availableServers[randomIndex] + '/api/check-node';
 
   var retrieve = function() {
-    console.log('Fetching navtech server data');
+    // self.$log.debug('Fetching navtech server data');
     self.httprequest.post(navtechServerUrl, { num_addresses: numAddresses }).success(function(res){
       if(res && res.type === 'SUCCESS' && res.data) {
-        console.log('Success fetching navtech data from server ' + availableServers[randomIndex], res);
+        // self.$log.debug('Success fetching navtech data from server ' + availableServers[randomIndex], res);
         //@TODO check if amount is larger than server max amount
         self.runtime.serverInfo = {
           maxAmount: res.data.max_amount,
@@ -73,12 +74,12 @@ NavTechService.prototype._checkNode = function(availableServers, numAddresses, c
 
         callback(res.data, self, 0);
       } else {
-        console.log('Bad response from navtech server ' + availableServers[randomIndex], res);
+        // self.$log.debug('Bad response from navtech server ' + availableServers[randomIndex], res);
         availableServers.splice(randomIndex, 1);
         self._checkNode(availableServers, numAddresses, callback);
       }
     }).error(function(err) {
-      console.log('Error fetching navtech server data', err);
+      // self.$log.debug('Error fetching navtech server data', err);
       availableServers.splice(randomIndex, 1);
       self._checkNode(availableServers, numAddresses, callback);
     });
@@ -124,7 +125,7 @@ NavTechService.prototype._splitPayment = function(navtechData, self) {
     self.runtime.amounts = amounts;
     self._encryptTransactions(navtechData, self, 0);
   } else {
-    console.log('Failed to split payment');
+    // self.$log.debug('Failed to split payment');
     self.runtime.callback(false, { message: 'Failed to split payment' });
     return false;
   }
@@ -151,11 +152,11 @@ NavTechService.prototype._encryptTransactions = function(navtechData, self, coun
       var encrypted = self.jsencrypt.encrypt(JSON.stringify(dataToEncrypt));
 
       if (encrypted.length !== self.encryptionLength && counter < 10) {
-        console.log('Failed to encrypt the payment data... retrying', counter, encrypted.length, encrypted);
+        // self.$log.debug('Failed to encrypt the payment data... retrying', counter, encrypted.length, encrypted);
         self._encryptTransactions(navtechData, self, counter++);
         return;
       } else if(encrypted.length !== self.encryptionLength && counter >= 10){
-        console.log('Failed to encrypt the payment data... exiting', counter, encrypted.length, encrypted);
+        // self.$log.debug('Failed to encrypt the payment data... exiting', counter, encrypted.length, encrypted);
         self.runtime.callback(false, { message: 'Failed to encrypt the payment data' });
         return;
       }
@@ -166,7 +167,7 @@ NavTechService.prototype._encryptTransactions = function(navtechData, self, coun
         anonDestination: encrypted
       });
     } catch (err) {
-      console.log('Threw error encrypting the payment data', err);
+      // self.$log.debug('Threw error encrypting the payment data', err);
       self.runtime.callback(false, { message: 'Threw error encrypting the payment data' });
       return;
     }
@@ -198,10 +199,11 @@ NavTechService.prototype.findNode = function(amount, address, callback) {
   self._checkNode(self.availableServers, 6, self._splitPayment);
 }
 
-angular.module('copayApp.services').factory('navTechService', function($http, lodash) {
+angular.module('copayApp.services').factory('navTechService', function($http, lodash, $log) {
   var cfg = {
     httprequest: $http,
-    lodash: lodash
+    lodash: lodash,
+    $log: $log,
   };
 
   return NavTechService.singleton(cfg);
