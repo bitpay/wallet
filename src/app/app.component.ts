@@ -115,6 +115,8 @@ export class CopayApp {
         this.logger.error('Could not initialize the app');
       });
 
+    }).catch((e) => {
+      this.logger.error('Could not be ready platform');
     });
   }
 

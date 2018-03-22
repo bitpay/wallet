@@ -7,8 +7,6 @@ import { ConfigProvider } from '../config/config';
 import * as _ from "lodash";
 import * as moment from 'moment';
 
-import {DateFormatPipe, MomentModule} from 'angular2-moment';
-
 @Injectable()
 export class LanguageProvider {
   private languages: any[] = [
