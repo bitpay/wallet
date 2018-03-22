@@ -49,7 +49,6 @@ angular.module('copayApp.services').factory('platformInfo', function($window) {
     isAndroid: ionic.Platform.isAndroid(),
     isIOS: ionic.Platform.isIOS(),
     isWP: ionic.Platform.isWindowsPhone() || ionic.Platform.platform() == 'edge',
-    // isSafari: Object.prototype.toString.call(window.HTMLElement).indexOf('Constructor') > 0,
     ua: ua,
     isCordova: !!$window.cordova,
     isNW: isNodeWebkit(),
