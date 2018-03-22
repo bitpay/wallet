@@ -1,7 +1,20 @@
 <ion-content>
-  <ion-item-divider class="title">Verify your identity</ion-item-divider>
-  <button class="scan-button" ion-item (click)="checkFingerprint()">
-    <ion-icon name="finger-print" item-start></ion-icon>
-    <span translate>Scan again</span>
+  <div class="fingerprint-header">
+    <div class="title">
+      <div>
+        {{'Verify your identity' | translate}}
+      </div>
+    </div>
+    <div class="icon-container">
+      <ion-icon class="app-icon" [ngClass]="{'rounded': !isCopay}">
+        <img [ngClass]="{'rounded': !isCopay}" src="assets/img/app/icon.png" />
+      </ion-icon>
+    </div>
+  </div>
+
+
+  <button class="button-standard" ion-button (click)="checkFingerprint()">
+    <span>{{'Scan again' | translate}}</span>
+    <ion-icon name="finger-print" item-end></ion-icon>
   </button>
 </ion-content>
