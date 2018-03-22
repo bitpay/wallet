@@ -6,7 +6,6 @@ import {
   TranslateModule,
   TranslateService
 } from '@ngx-translate/core';
-import { Level, NgLoggerModule } from '@nsalaun/ng-logger';
 import {
   AlertController,
   App,
@@ -105,7 +104,6 @@ describe('Profile Provider', () => {
     TestBed.configureTestingModule({
       imports: [
         HttpClientModule,
-        NgLoggerModule.forRoot(Level.LOG),
         TranslateModule.forRoot({
           loader: { provide: TranslateLoader, useClass: TranslateFakeLoader }
         })

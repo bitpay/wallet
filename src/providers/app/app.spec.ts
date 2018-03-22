@@ -3,7 +3,6 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 import { XHRBackend, Response, ResponseOptions } from '@angular/http';
 import { MockBackend, MockConnection } from '@angular/http/testing';
 import { AppProvider } from './app';
-import { NgLoggerModule, Level } from '@nsalaun/ng-logger';
 import { Logger } from '../../providers/logger/logger';
 import {
   TranslateModule,
@@ -31,7 +30,6 @@ describe('AppProvider', () => {
     TestBed.configureTestingModule({
       imports: [
         HttpClientTestingModule,
-        NgLoggerModule.forRoot(Level.LOG),
         TranslateModule.forRoot({
           loader: { provide: TranslateLoader, useClass: TranslateFakeLoader }
         })
