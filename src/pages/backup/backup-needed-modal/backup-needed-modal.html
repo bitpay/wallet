@@ -7,8 +7,11 @@
     <div class="modal-message" translate>
       Now is a good time to backup your wallet. If this device is lost, it is impossible to access your funds without a backup.
     </div>
-    <button ion-button clear color="danger" class="button-standard" (click)="close()">
+    <button ion-button clear color="danger" class="button-standard" (click)="close(true)">
       {{'Backup now' | translate}}
+    </button>
+    <button ion-button clear color="danger" (click)="close()" small>
+      {{'Do it later' | translate}}
     </button>
   </div>
 </ion-content>

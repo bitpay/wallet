@@ -129,8 +129,8 @@ export class ReceivePage {
   public goToBackup(): void {
     let BackupWarningModal = this.modalCtrl.create(BackupNeededModalPage, {}, { showBackdrop: true, enableBackdropDismiss: false });
     BackupWarningModal.present();
-    BackupWarningModal.onDidDismiss(() => {
-      this.navCtrl.push(BackupWarningPage, { walletId: this.wallet.credentials.walletId });
+    BackupWarningModal.onDidDismiss((goToBackupPage) => {
+      if (goToBackupPage) this.navCtrl.push(BackupWarningPage, { walletId: this.wallet.credentials.walletId });
     });
   }
 
