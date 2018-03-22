@@ -164,7 +164,13 @@ msgstr ""
 msgid "Backup"
 msgstr ""
 
+msgid "Backup Needed"
+msgstr ""
+
 msgid "Backup all your wallets before using this function"
+msgstr ""
+
+msgid "Backup now"
 msgstr ""
 
 msgid "Backup wallet"
@@ -309,9 +315,6 @@ msgstr ""
 msgid "Color"
 msgstr ""
 
-msgid "Complete the backup process to use this option"
-msgstr ""
-
 msgid "Completed"
 msgstr ""
 
@@ -324,7 +327,7 @@ msgstr ""
 msgid "Confirm &amp; Finish"
 msgstr ""
 
-msgid "Confirm your new spending password"
+msgid "Confirm your new encrypt password"
 msgstr ""
 
 msgid "Confirmations"
@@ -444,7 +447,7 @@ msgstr ""
 msgid "Could not import"
 msgstr ""
 
-msgid "Could not import. Check input file and spending password"
+msgid "Could not import. Check input file."
 msgstr ""
 
 msgid "Could not join wallet"
@@ -596,12 +599,15 @@ msgstr ""
 msgid "Enable the camera to get started."
 msgstr ""
 
+msgid "Encrypt password needed"
+msgstr ""
+
 msgid ""
 "Encryption can protect your funds if this device is stolen or compromised "
 "by malicious software."
 msgstr ""
 
-msgid "Enter Spending Password"
+msgid "Enter a new encrypt password"
 msgstr ""
 
 msgid "Enter a password to encrypt your wallet"
@@ -610,13 +616,13 @@ msgstr ""
 msgid "Enter custom fee in sat/byte"
 msgstr ""
 
-msgid "Enter new spending password"
+msgid "Enter encrypt password"
+msgstr ""
+
+msgid "Enter your encrypt password again to confirm"
 msgstr ""
 
 msgid "Enter your password"
-msgstr ""
-
-msgid "Enter your password again to confirm"
 msgstr ""
 
 msgid "Error"
@@ -874,6 +880,11 @@ msgstr ""
 msgid ""
 "If you have additional feedback, please let us know by tapping the \"Send "
 "feedback\" option in the Settings tab."
+msgstr ""
+
+msgid ""
+"If you take a screenshot, your backup may be viewed by other apps. You can "
+"make a safe backup with physical paper and a pen."
 msgstr ""
 
 msgid "Import wallet"
@@ -1171,6 +1182,11 @@ msgid "Notify me when transactions are confirmed"
 msgstr ""
 
 msgid ""
+"Now is a good time to backup your wallet. If this device is lost, it is "
+"impossible to access your funds without a backup."
+msgstr ""
+
+msgid ""
 "Now is a perfect time to assess your surroundings. Nearby windows? Hidden "
 "cameras? Shoulder-spies?"
 msgstr ""
@@ -1179,6 +1195,9 @@ msgid "OK"
 msgstr ""
 
 msgid "Off"
+msgstr ""
+
+msgid "Oh no!"
 msgstr ""
 
 msgid "Ok"
@@ -1224,6 +1243,9 @@ msgid "Open website"
 msgstr ""
 
 msgid "Order the BitPay Card"
+msgstr ""
+
+msgid "Ouch!"
 msgstr ""
 
 msgid "Password"
@@ -1458,13 +1480,13 @@ msgstr ""
 msgid "Repeat the password"
 msgstr ""
 
+msgid "Request Encrypt Password"
+msgstr ""
+
 msgid "Request Fingerprint"
 msgstr ""
 
 msgid "Request Specific amount"
-msgstr ""
-
-msgid "Request Spending Password"
 msgstr ""
 
 msgid "Required number of signatures"
@@ -1501,6 +1523,9 @@ msgid "Scanning Wallet funds..."
 msgstr ""
 
 msgid "Scanning funds"
+msgstr ""
+
+msgid "Screenshots are not secure"
 msgstr ""
 
 msgid "Search a contact"
@@ -1649,9 +1674,6 @@ msgid "Spend proposal not found"
 msgstr ""
 
 msgid "Spendable balance"
-msgstr ""
-
-msgid "Spending Password needed"
 msgstr ""
 
 msgid "Spending this balance will need significant Bitcoin network fees"
@@ -1903,6 +1925,9 @@ msgstr ""
 msgid "Type the recovery phrase (usually 12 words)"
 msgstr ""
 
+msgid "Uh oh..."
+msgstr ""
+
 msgid "Unconfirmed"
 msgstr ""
 
@@ -1946,6 +1971,9 @@ msgid "Use default url"
 msgstr ""
 
 msgid "Validating recovery phrase..."
+msgstr ""
+
+msgid "Verify your identity"
 msgstr ""
 
 msgid "Version"
@@ -2129,13 +2157,13 @@ msgstr ""
 msgid "Would you like to protect this wallet with a password?"
 msgstr ""
 
+msgid "Wrong encrypt password"
+msgstr ""
+
 msgid "Wrong number of recovery words:"
 msgstr ""
 
 msgid "Wrong password"
-msgstr ""
-
-msgid "Wrong spending password"
 msgstr ""
 
 msgid "Yes"
@@ -2213,7 +2241,7 @@ msgid "Your wallet is never saved to cloud storage or standard device backups."
 msgstr ""
 
 msgid ""
-"Your wallet key will be encrypted. The Spending Password cannot be "
+"Your wallet key will be encrypted. The encrypt password cannot be "
 "recovered. Be sure to write it down."
 msgstr ""
 
