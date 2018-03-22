@@ -164,7 +164,13 @@ msgstr ""
 msgid "Backup"
 msgstr ""
 
+msgid "Backup Needed"
+msgstr ""
+
 msgid "Backup all your wallets before using this function"
+msgstr ""
+
+msgid "Backup now"
 msgstr ""
 
 msgid "Backup wallet"
@@ -876,6 +882,11 @@ msgid ""
 "feedback\" option in the Settings tab."
 msgstr ""
 
+msgid ""
+"If you take a screenshot, your backup may be viewed by other apps. You can "
+"make a safe backup with physical paper and a pen."
+msgstr ""
+
 msgid "Import wallet"
 msgstr ""
 
@@ -1168,6 +1179,11 @@ msgid "Notify me if confirmed"
 msgstr ""
 
 msgid "Notify me when transactions are confirmed"
+msgstr ""
+
+msgid ""
+"Now is a good time to backup your wallet. If this device is lost, it is "
+"impossible to access your funds without a backup."
 msgstr ""
 
 msgid ""
@@ -1507,6 +1523,9 @@ msgid "Scanning Wallet funds..."
 msgstr ""
 
 msgid "Scanning funds"
+msgstr ""
+
+msgid "Screenshots are not secure"
 msgstr ""
 
 msgid "Search a contact"
