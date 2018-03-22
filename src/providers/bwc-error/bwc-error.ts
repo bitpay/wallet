@@ -13,8 +13,8 @@ export class BwcErrorProvider {
       return 'Unknown error';
 
     const name = err.name ?
-     (err.name === 'Error' ? err.message : err.name.replace(/^bwc.Error/g, ''))
-     : err;
+      (err.name === 'Error' ? err.message : err.name.replace(/^bwc.Error/g, ''))
+      : err;
 
     let body = '';
     prefix = prefix || '';
@@ -133,10 +133,10 @@ export class BwcErrorProvider {
           body = this.translate.instant('Missing parameter');
           break;
         case 'NO_PASSWORD_GIVEN':
-          body = this.translate.instant('Spending Password needed');
+          body = this.translate.instant('Encrypt password needed');
           break;
         case 'PASSWORD_INCORRECT':
-          body = this.translate.instant('Wrong spending password');
+          body = this.translate.instant('Wrong encrypt password');
           break;
         case 'EXCEEDED_DAILY_LIMIT':
           body = this.translate.instant('Exceeded daily limit of $500 per user');
