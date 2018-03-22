@@ -112,7 +112,6 @@
     "@ionic-native/touch-id": "^4.5.2",
     "@ionic/storage": "^2.1.3",
     "@ngx-translate/core": "^9.1.1",
-    "@nsalaun/ng-logger": "^5.0.0",
     "@types/papaparse": "^4.1.33",
     "angular2-moment": "^1.7.1",
     "bitauth": "git+https://github.com/bitpay/bitauth.git#copay",
