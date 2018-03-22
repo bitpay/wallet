@@ -1,10 +1,11 @@
 import { Component, ViewChild } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { AlertController, Navbar, NavController, NavParams, Slides } from 'ionic-angular';
+import { AlertController, ModalController, Navbar, NavController, NavParams, Slides } from 'ionic-angular';
 import * as _ from 'lodash';
 import { Logger } from '../../../providers/logger/logger';
 
 // pages
+import { BackupReadyModalPage } from '../backup-ready-modal/backup-ready-modal';
 import { DisclaimerPage } from '../../onboarding/disclaimer/disclaimer';
 
 // providers
@@ -50,7 +51,8 @@ export class BackupGamePage {
     private bwcProvider: BwcProvider,
     private onGoingProcessProvider: OnGoingProcessProvider,
     private popupProvider: PopupProvider,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private modalCtrl: ModalController
   ) {
     this.walletId = this.navParams.get('walletId');
     this.fromOnboarding = this.navParams.get('fromOnboarding');
@@ -220,10 +222,9 @@ export class BackupGamePage {
     this.onGoingProcessProvider.set('validatingWords');
     this.confirm().then(() => {
       this.onGoingProcessProvider.clear();
-      let title = this.translate.instant('Your bitcoin wallet is backed up!');
-      let message = this.translate.instant("Be sure to store your recovery phrase in a secure place. If this app is deleted, your money cannot be recovered without it.");
-      let okText = this.translate.instant("Got it");
-      this.popupProvider.ionicAlert(title, message, okText).then(() => {
+      let modal = this.modalCtrl.create(BackupReadyModalPage, {}, { showBackdrop: false, enableBackdropDismiss: false });
+      modal.present();
+      modal.onDidDismiss(() => {
         if (this.fromOnboarding) {
           this.navCtrl.push(DisclaimerPage);
         } else {
