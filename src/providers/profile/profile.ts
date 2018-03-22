@@ -312,7 +312,7 @@ export class ProfileProvider {
           password: opts.password
         });
       } catch (err) {
-        return reject(this.translate.instant('Could not import. Check input file and spending password'));
+        return reject(this.translate.instant('Could not import. Check input file.'));
       }
 
       let strParsed: any = JSON.parse(str);
@@ -399,7 +399,7 @@ export class ProfileProvider {
           });
         }
         else {
-          title = this.translate.instant('Enter your password again to confirm');
+          title = this.translate.instant('Enter your encrypt password again to confirm');
           this.askPassword(warnMsg, title).then((password2: string) => {
             if (!password2 || password != password2) {
               this.encrypt(wallet).then(() => {

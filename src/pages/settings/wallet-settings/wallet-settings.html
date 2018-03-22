@@ -29,17 +29,14 @@
     </button>
     <div *ngIf="canSign">
       <ion-item>
-        <ion-label [ngClass]="{'disabled': needsBackup}">{{'Request Spending Password' | translate}}</ion-label>
-        <ion-toggle [(ngModel)]="encryptEnabled" (ionChange)="encryptChange()" [disabled]="needsBackup"></ion-toggle>
+        <ion-label>{{'Request Encrypt Password' | translate}}</ion-label>
+        <ion-toggle [(ngModel)]="encryptEnabled" (ionChange)="encryptChange()"></ion-toggle>
       </ion-item>
       <ion-item-divider text-wrap>
         <span class="item-text" translate>
           If enabled, all sensitive information (private key and recovery phrase) and actions (spending and exporting) associated with this wallet will be protected.
         </span>
         <a (click)="openSupportSpendingPassword()" translate>Learn more</a>
-        <div margin-top class="assertive item-text" *ngIf="needsBackup" translate>
-          Complete the backup process to use this option
-        </div>
       </ion-item-divider>
     </div>
     <div *ngIf="canSign && touchIdAvailable">

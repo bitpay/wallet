@@ -1100,11 +1100,11 @@ export class WalletProvider {
 
   public encrypt(wallet: any): Promise<any> {
     return new Promise((resolve, reject) => {
-      var title = this.translate.instant('Enter new spending password');
-      var warnMsg = this.translate.instant('Your wallet key will be encrypted. The Spending Password cannot be recovered. Be sure to write it down.');
+      var title = this.translate.instant('Enter a new encrypt password');
+      var warnMsg = this.translate.instant('Your wallet key will be encrypted. The encrypt password cannot be recovered. Be sure to write it down.');
       this.askPassword(warnMsg, title).then((password: string) => {
         if (!password) return reject(this.translate.instant('no password'));
-        title = this.translate.instant('Confirm your new spending password');
+        title = this.translate.instant('Confirm your new encrypt password');
         this.askPassword(warnMsg, title).then((password2: string) => {
           if (!password2 || password != password2) return reject(this.translate.instant('password mismatch'));
           wallet.encryptPrivateKey(password);
@@ -1121,7 +1121,7 @@ export class WalletProvider {
   public decrypt(wallet: any): Promise<any> {
     return new Promise((resolve, reject) => {
       this.logger.debug('Disabling private key encryption for' + wallet.name);
-      this.askPassword(null, this.translate.instant('Enter Spending Password')).then((password: string) => {
+      this.askPassword(null, this.translate.instant('Enter encrypt password')).then((password: string) => {
         if (!password) return reject(this.translate.instant('no password'));
         try {
           wallet.decryptPrivateKey(password);
@@ -1136,7 +1136,7 @@ export class WalletProvider {
   public handleEncryptedWallet(wallet: any): Promise<any> {
     return new Promise((resolve, reject) => {
       if (!this.isEncrypted(wallet)) return resolve();
-      this.askPassword(null, this.translate.instant('Enter Spending Password')).then((password: string) => {
+      this.askPassword(null, this.translate.instant('Enter encrypt password')).then((password: string) => {
         if (!password) return reject(this.translate.instant('No password'));
         if (!wallet.checkPassword(password)) return reject(this.translate.instant('Wrong password'));
         return resolve(password);
