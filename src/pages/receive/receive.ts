@@ -1,13 +1,15 @@
 import { Component } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { AlertController, Events, NavController } from 'ionic-angular';
+import { AlertController, Events, ModalController, NavController } from 'ionic-angular';
 import { Logger } from '../../providers/logger/logger';
 
 // Native
 import { SocialSharing } from '@ionic-native/social-sharing';
 
 // Pages
-import { BackupGamePage } from '../backup/backup-game/backup-game';
+import { BackupNeededModalPage } from '../backup/backup-needed-modal/backup-needed-modal';
+import { BackupWarningPage } from '../backup/backup-warning/backup-warning';
+
 import { AmountPage } from '../send/amount/amount';
 import { CopayersPage } from './../add/copayers/copayers';
 
@@ -46,6 +48,7 @@ export class ReceivePage {
     private bwcErrorProvider: BwcErrorProvider,
     private translate: TranslateService,
     private externalLinkProvider: ExternalLinkProvider,
+    private modalCtrl: ModalController
   ) {
     this.showShareButton = this.platformProvider.isCordova;
   }
@@ -124,17 +127,11 @@ export class ReceivePage {
   };
 
   public goToBackup(): void {
-    let opts = {
-      title: 'Screenshots are not secure',
-      message: 'If you take a screenshot, your backup may be viewed by other apps. You can make a safe backup with physical paper and a pen',
-      buttons: [{
-        text: 'I understand',
-        handler: () => {
-          this.navCtrl.push(BackupGamePage, { walletId: this.wallet.credentials.walletId });
-        }
-      }],
-    }
-    this.alertCtrl.create(opts).present();
+    let BackupWarningModal = this.modalCtrl.create(BackupNeededModalPage, {}, { showBackdrop: true, enableBackdropDismiss: false });
+    BackupWarningModal.present();
+    BackupWarningModal.onDidDismiss(() => {
+      this.navCtrl.push(BackupWarningPage, { walletId: this.wallet.credentials.walletId });
+    });
   }
 
   public openWikiBackupNeeded(): void {

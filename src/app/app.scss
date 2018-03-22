@@ -333,3 +333,10 @@ ion-note {
 .alert-md .alert-button {
   font-size: 12.5px;
 }
+
+ion-modal {
+  background-color: rgba(0, 0, 0, 0.6);
+  .modal-wrapper {
+    box-shadow: none !important;
+  }
+}

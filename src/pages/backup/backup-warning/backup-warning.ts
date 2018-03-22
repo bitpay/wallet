@@ -1,6 +1,9 @@
 import { Component } from '@angular/core';
 import { AlertController, ModalController, NavController, NavParams } from 'ionic-angular';
+
+// pages
 import { BackupGamePage } from '../backup-game/backup-game';
+import { BackupWarningModalPage } from '../backup-warning-modal/backup-warning-modal';
 
 @Component({
   selector: 'page-backup-warning',
@@ -21,19 +24,12 @@ export class BackupWarningPage {
     this.fromOnboarding = this.navParams.get('fromOnboarding');
   }
 
-  openWarningModal() {
-
-    let opts = {
-      title: 'Screenshots are not secure',
-      message: 'If you take a screenshot, your backup may be viewed by other apps. You can make a safe backup with physical paper and a pen',
-      buttons: [{
-        text: 'I understand',
-        handler: () => {
-          this.navCtrl.push(BackupGamePage, {walletId: this.walletId, fromOnboarding: this.fromOnboarding});
-        }
-      }],
-    }
-    this.alertCtrl.create(opts).present();
+  public openWarningModal(): void {
+    let BackupWarningModal = this.modalCtrl.create(BackupWarningModalPage, {}, { showBackdrop: false, enableBackdropDismiss: false });
+    BackupWarningModal.present();
+    BackupWarningModal.onDidDismiss(() => {
+      this.navCtrl.push(BackupGamePage, { walletId: this.walletId, fromOnboarding: this.fromOnboarding });
+    });
   }
 
 }

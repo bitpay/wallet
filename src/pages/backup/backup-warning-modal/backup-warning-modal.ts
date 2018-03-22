@@ -2,10 +2,10 @@ import { Component } from "@angular/core";
 import { ViewController } from 'ionic-angular';
 
 @Component({
-  selector: 'page-fee-warning',
-  templateUrl: 'fee-warning.html'
+  selector: 'page-backup-warning-modal',
+  templateUrl: 'backup-warning-modal.html'
 })
-export class FeeWarningPage {
+export class BackupWarningModalPage {
   constructor(
     private viewCtrl: ViewController
   ) { }
