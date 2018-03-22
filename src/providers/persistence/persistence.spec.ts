@@ -1,3 +1,4 @@
+/* tslint:disable */
 import { File } from '@ionic-native/file';
 import { Logger } from '../../providers/logger/logger';
 import { PlatformProvider } from '../platform/platform';

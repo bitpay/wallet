@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
-import { Logger } from '@nsalaun/ng-logger';
 import { Platform } from 'ionic-angular';
+
+import { Logger } from '../../providers/logger/logger';
 
 @Injectable()
 export class PlatformProvider {
@@ -52,10 +53,14 @@ export class PlatformProvider {
   }
 
   public isNodeWebkit(): boolean {
+    return false;
+    // TODO: Disabled NW.js
+    /* 
     try {
       return (typeof require('nw.gui') !== "undefined");
     } catch (e) {
       return false;
     }
+    */
   }
 }

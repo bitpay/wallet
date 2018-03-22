@@ -1,6 +1,6 @@
+/* tslint:disable */
 import { TestBed, getTestBed, inject, async } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import { NgLoggerModule, Level } from '@nsalaun/ng-logger';
 import { Logger } from '../../providers/logger/logger';
 import {
   TranslateModule,
@@ -19,7 +19,6 @@ describe('LoggerProvider', () => {
     TestBed.configureTestingModule({
       imports: [
         HttpClientTestingModule,
-        NgLoggerModule.forRoot(Level.LOG),
         TranslateModule.forRoot({
           loader: { provide: TranslateLoader, useClass: TranslateFakeLoader }
         })
