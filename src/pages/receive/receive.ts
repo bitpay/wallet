@@ -1,14 +1,14 @@
 import { Component } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { AlertController, Events, NavController, ModalController } from 'ionic-angular';
+import { AlertController, Events, ModalController, NavController } from 'ionic-angular';
 import { Logger } from '../../providers/logger/logger';
 
 // Native
 import { SocialSharing } from '@ionic-native/social-sharing';
 
 // Pages
-import { BackupWarningPage } from '../backup/backup-warning/backup-warning';
 import { BackupNeededModalPage } from '../backup/backup-needed-modal/backup-needed-modal';
+import { BackupWarningPage } from '../backup/backup-warning/backup-warning';
 
 import { AmountPage } from '../send/amount/amount';
 import { CopayersPage } from './../add/copayers/copayers';
