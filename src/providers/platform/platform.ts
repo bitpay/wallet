@@ -53,10 +53,14 @@ export class PlatformProvider {
   }
 
   public isNodeWebkit(): boolean {
+    return false;
+    // TODO: Disabled NW.js
+    /* 
     try {
       return (typeof require('nw.gui') !== "undefined");
     } catch (e) {
       return false;
     }
+    */
   }
 }

@@ -1,3 +1,4 @@
+/* tslint:disable */
 import { PlatformProvider } from './platform';
 
 import { TestBed, getTestBed, inject, async } from '@angular/core/testing';

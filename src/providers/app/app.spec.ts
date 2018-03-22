@@ -1,3 +1,4 @@
+/* tslint:disable */
 import { TestBed, getTestBed, inject, async } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { XHRBackend, Response, ResponseOptions } from '@angular/http';
