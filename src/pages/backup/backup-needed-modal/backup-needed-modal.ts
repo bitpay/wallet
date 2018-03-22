@@ -10,7 +10,7 @@ export class BackupNeededModalPage {
     private viewCtrl: ViewController
   ) { }
 
-  public close(): void {
-    this.viewCtrl.dismiss();
+  public close(goToBackupPage): void {
+    this.viewCtrl.dismiss(goToBackupPage);
   }
 }
