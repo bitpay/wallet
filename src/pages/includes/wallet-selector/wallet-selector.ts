@@ -31,11 +31,13 @@ export class WalletSelectorPage {
       }, 50);
       this.wallets = wallets;
       this.separeWallets();
-    });
 
-    this.platform.registerBackButtonAction(() => {
-      this.backdropDismiss();
-    }, 0);
+      let unregisterBackButtonAction = this.platform.registerBackButtonAction(() => {
+        unregisterBackButtonAction();
+        this.backdropDismiss();
+      }, 0);
+
+    });
   }
 
   public selectWallet(wallet: any): void {
