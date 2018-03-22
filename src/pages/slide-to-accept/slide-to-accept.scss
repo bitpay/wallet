@@ -1,13 +1,18 @@
 page-slide-to-accept {
     
-      //position: fixed;
+    position: fixed;
+    bottom: 0;
+    height: 70px;
+    width: 100%;
+    background: $color-primary;
+
     .button-slider{
         z-index: 100 !important;
-        width: 105%;
-        border-bottom-right-radius: 24px;
-        border-top-right-radius: 24px;
-        margin-left: -80%;
-        background-color: $v-slider-bg-color;
+        width: 120%;
+        border-bottom-right-radius: 35px;
+        border-top-right-radius: 35px;
+        margin-left: -105%;
+        background-color: $slider-bg-color;
         height: 70px;        
     }   
     
@@ -27,24 +32,24 @@ page-slide-to-accept {
           bottom: 0;
           height: 70px;
           width: 100%;
-          background: $v-slide-bg-color;
+          background: $color-primary;
         }
         &__slider {
           @include center-vertically;
           height: 100%;
           width: 100%;
-          background: $v-slider-bg-color;
+          background: $slider-bg-color;
           -webkit-transform: translateX(100);
           transform: translateX(100);
           margin-left: -100%;
-          z-index: 2;
+          z-index: 200;
     
           &::before {
             @include center-vertically;
             content: '';
             width: 10000px;
             left: -10000px + 1;
-            background: $v-slider-bg-color;
+            background: $slider-bg-color;
           }
     
           &::after {
@@ -52,14 +57,14 @@ page-slide-to-accept {
             content: '';
             width: 150px;
             right: -10px;
-            background: $v-slider-bg-color;
+            background: $slider-bg-color;
           }
     
           &__tip {
             @include center-vertically;
             width: 124px;
             height: 116px;
-            background: $v-slider-bg-color;
+            background: $slider-bg-color;
             right: -71px;
             border-radius: 50%;
             top: 50%;
@@ -85,7 +90,7 @@ page-slide-to-accept {
           top: 0;
           left: 0;
           width: 100%;
-          color: $v-slide-text-color;
+          color: color($colors, blank);
           font-size: 18px;
           font-weight: 600;
           letter-spacing: .03rem;
@@ -100,7 +105,7 @@ page-slide-to-accept {
         &__status-text {
           @include center-vertically;
           justify-content: center;
-          color: $v-slide-text-color;
+          color: color($colors, blank);
           z-index: 4;
           width: 100%;
           font-size: 17px;
@@ -108,15 +113,17 @@ page-slide-to-accept {
           -webkit-transform: translateY(2rem);
           transform: translateY(2rem);
           opacity: 0;
+          text-align: center;
     
           &.enter {
-            transition: transform 250ms ease, opacity 250ms ease;
+            transition: transform 2500ms ease, opacity 2500ms ease;
             -webkit-transform: translateY(0);
-            transform: translateY(0);
+            transform: translateY(100);
             opacity: 1;
           }
     
-          > img {
+           img {
+            width: 17px;
             margin-right: 10px;
             animation-name: spin;
             animation-duration: 500ms;

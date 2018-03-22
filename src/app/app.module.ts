@@ -51,12 +51,12 @@ import { PaperWalletPage } from '../pages/paper-wallet/paper-wallet';
 import { PayProPage } from '../pages/paypro/paypro';
 import { FeeWarningPage } from '../pages/send/fee-warning/fee-warning';
 import { BitcoinCashPage } from '../pages/settings/bitcoin-cash/bitcoin-cash';
+import { SlideToAcceptPage } from '../pages/slide-to-accept/slide-to-accept';
 import { TabsPage } from '../pages/tabs/tabs';
 import { TxDetailsPage } from '../pages/tx-details/tx-details';
 import { TxpDetailsPage } from '../pages/txp-details/txp-details';
 import { WalletBalancePage } from '../pages/wallet-details/wallet-balance/wallet-balance';
 import { WalletDetailsPage } from '../pages/wallet-details/wallet-details';
-import { SlideToAcceptPage } from '../pages/slide-to-accept/slide-to-accept';
 
 // Integrations: Amazon
 import { AmazonPage } from '../pages/integrations/amazon/amazon';
