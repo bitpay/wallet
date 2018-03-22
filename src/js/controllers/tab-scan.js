@@ -267,6 +267,8 @@ angular.module('copayApp.controllers').controller('tabScanController', function(
       var ctx = canvas.getContext("2d");
       var height = video.videoHeight
       var width = video.videoWidth
+      ctx.canvas.height = height
+      ctx.canvas.width = width
 
       ctx.drawImage(video, 0, 0, width, height);
 
@@ -285,6 +287,7 @@ angular.module('copayApp.controllers').controller('tabScanController', function(
   // This scans a photo taken with iOS
   // that don't have proper support
   $scope.scanPhoto = function(event) {
+    $scope.retryPhoto = false;
     // Get the photo
     // Get the canvas
     var file = event.target.files[0]
@@ -302,9 +305,12 @@ angular.module('copayApp.controllers').controller('tabScanController', function(
       image.onload = function () {
         // Resize image and there is big slow down on large images
         if(image.height > maxImageHeight) {
-          image.width *= maxImageHeight / image.height;
+          image.width = image.width * maxImageHeight / image.height;
           image.height = maxImageHeight;
         }
+        ctx.canvas.height = image.height
+        ctx.canvas.width = image.width
+
         ctx.drawImage(image, 0, 0, image.width, image.height);
 
         // Get the image data, and run it through jsQR
