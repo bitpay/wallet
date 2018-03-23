@@ -17,7 +17,7 @@ page-wallet-details {
   }
   .balance-header {
     margin-top: 44px;
-    height: 15rem;
+    height: 12rem;
     color: color($colors, light);
     text-align: center;
     display: flex;
@@ -31,6 +31,7 @@ page-wallet-details {
     font-weight: 600;
   }
   .balance-alt-str {
+    padding-top: 5px;
     font-size: 14px;
     font-weight: 400;
   }
