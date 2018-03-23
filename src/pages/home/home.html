@@ -67,8 +67,8 @@
       </div>
       <div item-end>
         <button ion-button clear icon-only color="grey">
-          <ion-badge *ngIf="txpsN>3" color="danger">{{txpsN}}</ion-badge>
-          <ion-icon ios="ios-arrow-dropright"></ion-icon>
+          <ion-badge *ngIf="txpsN>3">{{txpsN}}</ion-badge>
+          <ion-icon ios="ios-arrow-forward"></ion-icon>
         </button>
       </div>
     </ion-item-divider>
@@ -84,8 +84,8 @@
       </div>
       <div item-end>
         <button ion-button clear icon-only color="grey">
-          <ion-badge *ngIf="notificationsN>3" color="danger">{{notificationsN}}</ion-badge>
-          <ion-icon ios="ios-arrow-dropright"></ion-icon>
+          <ion-badge *ngIf="notificationsN>3">{{notificationsN}}</ion-badge>
+          <ion-icon ios="ios-arrow-forward"></ion-icon>
         </button>
       </div>
     </ion-item-divider>
@@ -237,8 +237,8 @@
       <div class="title" item-start translate>Services</div>
       <div item-end>
         <button ion-button clear color="grey" icon-only>
-          <ion-icon *ngIf="hideHomeIntegrations" name="arrow-dropdown"></ion-icon>
-          <ion-icon *ngIf="!hideHomeIntegrations" name="arrow-dropup"></ion-icon>
+          <ion-icon *ngIf="hideHomeIntegrations" name="arrow-down"></ion-icon>
+          <ion-icon *ngIf="!hideHomeIntegrations" name="arrow-up"></ion-icon>
         </button>
       </div>
     </ion-item-divider>
