@@ -102,5 +102,6 @@
 </ion-content>
 
 <ion-footer>
-  <button ion-button full class="button-footer" (click)="sellConfirm()" [disabled]="!selectedPaymentMethodId || !sellRequestInfo || !wallet">Confirm sale</button>
+  <page-slide-to-accept #slideButton *ngIf="isCordova" [disabled]="!selectedPaymentMethodId || !sellRequestInfo || !wallet" buttonText="Confirm sale" (slideDone)="sellConfirm()"></page-slide-to-accept>
+  <button *ngIf="!isCordova" ion-button full class="button-footer" (click)="sellConfirm()" [disabled]="!selectedPaymentMethodId || !sellRequestInfo || !wallet">Confirm sale</button>
 </ion-footer>

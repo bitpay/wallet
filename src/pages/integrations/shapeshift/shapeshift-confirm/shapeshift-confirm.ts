@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { ModalController, NavController, NavParams } from 'ionic-angular';
 import * as _ from 'lodash';
@@ -28,6 +28,7 @@ import { WalletProvider } from '../../../../providers/wallet/wallet';
   templateUrl: 'shapeshift-confirm.html',
 })
 export class ShapeshiftConfirmPage {
+  @ViewChild('slideButton') slideButton;
 
   private amount: number;
   private currency: string;
@@ -133,6 +134,14 @@ export class ShapeshiftConfirmPage {
     this.logger.info('ionViewDidLoad ShapeshiftConfirmPage');
   }
 
+  ionViewWillLeave() {
+    this.navCtrl.swipeBackEnabled = true;
+  }
+
+  ionViewWillEnter() {
+    this.navCtrl.swipeBackEnabled = false;
+  }
+
   private getMaxInfo(max: number): Promise<any> {
     return new Promise((resolve, reject) => {
       this.getSendMaxInfo().then((sendMaxInfo: any) => {
@@ -194,6 +203,7 @@ export class ShapeshiftConfirmPage {
   };
 
   private showErrorAndBack(title: string, msg: any) {
+    this.slideButton.isConfirmed(false);
     title = title ? title : this.translate.instant('Error');
     this.logger.error(msg);
     msg = (msg && msg.errors) ? msg.errors[0].message : msg;
@@ -441,6 +451,7 @@ export class ShapeshiftConfirmPage {
     let cancelText = this.translate.instant('Cancel');
     this.popupProvider.ionicConfirm(title, '', okText, cancelText).then((ok: any) => {
       if (!ok) {
+        this.slideButton.isConfirmed(false);
         return;
       }
 

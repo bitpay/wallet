@@ -76,7 +76,8 @@
 </ion-content>
 
 <ion-footer>
-  <button ion-button block class="button-footer" (click)="buyConfirm()" [disabled]="!(wallet && totalAmountStr)">
+  <page-slide-to-accept #slideButton *ngIf="isCordova" [disabled]="!(wallet && totalAmountStr)" buttonText="Confirmar a compra" (slideDone)="buyConfirm()"></page-slide-to-accept>
+  <button *ngIf="!isCordova" ion-button block class="button-footer" (click)="buyConfirm()" [disabled]="!(wallet && totalAmountStr)">
     Confirmar a compra
   </button>
 </ion-footer>
