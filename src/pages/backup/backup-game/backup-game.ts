@@ -5,8 +5,8 @@ import * as _ from 'lodash';
 import { Logger } from '../../../providers/logger/logger';
 
 // pages
-import { BackupReadyModalPage } from '../backup-ready-modal/backup-ready-modal';
 import { DisclaimerPage } from '../../onboarding/disclaimer/disclaimer';
+import { BackupReadyModalPage } from '../backup-ready-modal/backup-ready-modal';
 
 // providers
 import { BwcProvider } from '../../../providers/bwc/bwc';
