@@ -44,7 +44,7 @@ export class LockPage {
           disabled: false
         },
         {
-          label: 'PIN',
+          label: this.translate.instant('PIN'),
           method: 'PIN',
           enabled: this.lockOptions.method == 'PIN' ? true : false,
           disabled: needsBackup || this.lockOptions.method == 'Fingerprint'
