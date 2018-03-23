@@ -75,6 +75,9 @@ msgstr ""
 msgid "Address book"
 msgstr ""
 
+msgid "Addressbook is empty"
+msgstr ""
+
 msgid "Addresses with balance"
 msgstr ""
 
@@ -327,6 +330,9 @@ msgstr ""
 msgid "Confirm &amp; Finish"
 msgstr ""
 
+msgid "Confirm your PIN"
+msgstr ""
+
 msgid "Confirm your new encrypt password"
 msgstr ""
 
@@ -436,6 +442,9 @@ msgid "Could not get dynamic fee for level:"
 msgstr ""
 
 msgid "Could not get fee levels"
+msgstr ""
+
+msgid "Could not get the Addressbook"
 msgstr ""
 
 msgid "Could not get the invoice"
@@ -549,7 +558,13 @@ msgstr ""
 msgid "Details"
 msgstr ""
 
+msgid "Disabled"
+msgstr ""
+
 msgid "Do it later"
+msgstr ""
+
+msgid "Do not include private key"
 msgstr ""
 
 msgid ""
@@ -625,7 +640,16 @@ msgstr ""
 msgid "Enter your password"
 msgstr ""
 
+msgid "Entry already exist"
+msgstr ""
+
+msgid "Entry does not exist"
+msgstr ""
+
 msgid "Error"
+msgstr ""
+
+msgid "Error adding new entry"
 msgstr ""
 
 msgid "Error at confirm"
@@ -635,6 +659,12 @@ msgid "Error creating the invoice"
 msgstr ""
 
 msgid "Error creating wallet"
+msgstr ""
+
+msgid "Error deleting addressbook"
+msgstr ""
+
+msgid "Error deleting entry"
 msgstr ""
 
 msgid "Error getting SendMax information"
@@ -710,6 +740,9 @@ msgid "Fetching payment information"
 msgstr ""
 
 msgid "File/Text"
+msgstr ""
+
+msgid "Fingerprint"
 msgstr ""
 
 msgid "Finish"
@@ -1039,6 +1072,9 @@ msgstr ""
 msgid "Missing private keys to sign"
 msgstr ""
 
+msgid "More"
+msgstr ""
+
 msgid "More Options"
 msgstr ""
 
@@ -1158,6 +1194,9 @@ msgstr ""
 msgid "Not now"
 msgstr ""
 
+msgid "Not valid bitcoin address"
+msgstr ""
+
 msgid "Note"
 msgstr ""
 
@@ -1248,6 +1287,9 @@ msgstr ""
 msgid "Ouch!"
 msgstr ""
 
+msgid "PIN"
+msgstr ""
+
 msgid "Password"
 msgstr ""
 
@@ -1331,6 +1373,9 @@ msgstr ""
 msgid "Please enter the wallet recovery phrase"
 msgstr ""
 
+msgid "Please enter your PIN"
+msgstr ""
+
 msgid "Please tap each word in the correct order."
 msgstr ""
 
@@ -1400,6 +1445,9 @@ msgid "QR Code"
 msgstr ""
 
 msgid "Quick review!"
+msgstr ""
+
+msgid "Random"
 msgstr ""
 
 msgid "Rate"
@@ -1561,6 +1609,9 @@ msgstr ""
 msgid "Send Feedback"
 msgstr ""
 
+msgid "Send Max amount"
+msgstr ""
+
 msgid "Send Money"
 msgstr ""
 
@@ -1659,12 +1710,18 @@ msgid ""
 "in case this app is deleted."
 msgstr ""
 
+msgid "Single address"
+msgstr ""
+
 msgid "Skip"
 msgstr ""
 
 msgid ""
 "Some of your wallets are not eligible for Bitcoin Cash support. You can try "
 "to access BCH funds from these wallets using the recovery tool"
+msgstr ""
+
+msgid "Specify Recovery Phrase"
 msgstr ""
 
 msgid "Spend proposal is not accepted"
