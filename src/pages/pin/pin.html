@@ -13,8 +13,8 @@
 <ion-content padding>
   <div class="messages">
     <ion-item-divider *ngIf="!disableButtons">
-      <span *ngIf="!confirmingPin && !incorrect">Please enter your PIN</span>
-      <span *ngIf="confirmingPin && !incorrect">Confirm your PIN</span>
+      <span *ngIf="!confirmingPin && !incorrect" translate>Please enter your PIN</span>
+      <span *ngIf="confirmingPin && !incorrect" translate>Confirm your PIN</span>
       <span class="assertive" *ngIf="incorrect" translate>Incorrect PIN, try again.</span>
     </ion-item-divider>
     <ion-item-divider *ngIf="disableButtons">

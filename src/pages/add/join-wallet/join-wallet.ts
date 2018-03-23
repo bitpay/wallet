@@ -63,11 +63,11 @@ export class JoinWalletPage {
 
     this.seedOptions = [{
       id: 'new',
-      label: 'Random',
+      label: this.translate.instant('Random'),
       supportsTestnet: true
     }, {
       id: 'set',
-      label: 'Specify Recovery Phrase',
+      label: this.translate.instant('Specify Recovery Phrase'),
       supportsTestnet: false
     }];
   }

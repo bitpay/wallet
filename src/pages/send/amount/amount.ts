@@ -1,4 +1,5 @@
 import { Component, HostListener } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
 import { ActionSheetController, NavController, NavParams } from 'ionic-angular';
 import * as _ from 'lodash';
 
@@ -76,7 +77,8 @@ export class AmountPage {
     private profileProvider: ProfileProvider,
     private platformProvider: PlatformProvider,
     private rateProvider: RateProvider,
-    private txFormatProvider: TxFormatProvider
+    private txFormatProvider: TxFormatProvider,
+    private translate: TranslateService
   ) {
     this.config = this.configProvider.get();
     this.recipientType = this.navParams.data.recipientType;
@@ -102,7 +104,7 @@ export class AmountPage {
     this.reNr = /^[1234567890\.]$/;
     this.reOp = /^[\*\+\-\/]$/;
     this.nextView = this.getNextView();
-    this.itemSelectorLabel = 'Send Max amount';
+    this.itemSelectorLabel = this.translate.instant('Send Max amount');
 
 
     this.unitToSatoshi = this.config.wallet.settings.unitToSatoshi;

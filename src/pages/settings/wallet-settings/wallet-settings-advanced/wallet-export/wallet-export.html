@@ -37,7 +37,7 @@
               <span translate *ngIf="showAdv">Hide advanced options</span>
             </ion-item>
             <ion-item *ngIf="showAdv">
-              <ion-label stacked>Do not include private key</ion-label>
+              <ion-label stacked>{{'Do not include private key' | translate}}</ion-label>
               <ion-checkbox formControlName="noSignEnabled" (ionChange)="noSignEnabledChange()"></ion-checkbox>
             </ion-item>
           </div>
@@ -51,8 +51,7 @@
               <span translate>WARNING: Not including the private key allows to check the wallet balance, transaction history, and create spend proposals from the export. However, does not allow to approve (sign) proposals, so funds will not be accessible from the export.</span>
             </div>
           </ion-item-divider>
-          <button *ngIf="!isSafari && !isCordova" class="button-standard" ion-button type="submit" (click)="downloadWalletBackup()"
-            [disabled]="(!exportWalletForm.value.password || exportWalletForm.value.password != exportWalletForm.value.confirmPassword) || !exportWalletForm.valid ">{{'Download' | translate}}</button>
+          <button *ngIf="!isSafari && !isCordova" class="button-standard" ion-button type="submit" (click)="downloadWalletBackup()" [disabled]="(!exportWalletForm.value.password || exportWalletForm.value.password != exportWalletForm.value.confirmPassword) || !exportWalletForm.valid ">{{'Download' | translate}}</button>
           <button *ngIf="isSafari && !isCordova" class="button-standard" ion-button type="submit" (click)="viewWalletBackup()" [disabled]="(!exportWalletForm.value.password || exportWalletForm.value.password != exportWalletForm.value.confirmPassword) || !exportWalletForm.valid ">{{'View' | translate}}</button>
           <div *ngIf="isCordova">
             <button class="button-standard" ion-button type="submit" (click)="copyWalletBackup()" [disabled]="(!exportWalletForm.value.password || exportWalletForm.value.password != exportWalletForm.value.confirmPassword) || !exportWalletForm.valid ">{{'Copy to clipboard' | translate}}</button>

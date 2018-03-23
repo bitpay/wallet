@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
 import { Logger } from '../../providers/logger/logger';
 import { PersistenceProvider } from '../../providers/persistence/persistence';
 import { BwcProvider } from '../bwc/bwc';
@@ -12,6 +13,7 @@ export class AddressBookProvider {
     private bwcProvider: BwcProvider,
     private logger: Logger,
     private persistenceProvider: PersistenceProvider,
+    private translate: TranslateService
   ) {
     this.logger.info('AddressBookProvider initialized.');
   }
@@ -61,7 +63,8 @@ export class AddressBookProvider {
           return reject(err);
         });
       }).catch((err: any) => {
-        return reject('Could not get the Addressbook');
+        let msg = this.translate.instant('Could not get the Addressbook');
+        return reject(msg);
       });
     });
   };
@@ -69,12 +72,18 @@ export class AddressBookProvider {
   public add(entry: any): Promise<any> {
     return new Promise((resolve, reject) => {
       var network = this.getNetwork(entry.address);
-      if (_.isEmpty(network)) return reject('Not valid bitcoin address');
+      if (_.isEmpty(network)) {
+        let msg = this.translate.instant('Not valid bitcoin address');
+        return reject(msg);
+      }
       this.persistenceProvider.getAddressbook(network).then((ab: any) => {
         if (ab && _.isString(ab)) ab = JSON.parse(ab);
         ab = ab || {};
         if (_.isArray(ab)) ab = {}; // No array
-        if (ab[entry.address]) return reject('Entry already exist');
+        if (ab[entry.address]) {
+          let msg = this.translate.instant('Entry already exist');
+          return reject(msg);
+        }
         ab[entry.address] = entry;
         this.persistenceProvider.setAddressbook(network, JSON.stringify(ab)).then((ab: any) => {
           this.list().then((ab: any) => {
@@ -83,7 +92,8 @@ export class AddressBookProvider {
             return reject(err);
           });
         }).catch((err: any) => {
-          return reject('Error adding new entry');
+          let msg = this.translate.instant('Error adding new entry');
+          return reject(msg);
         });
       }).catch((err: any) => {
         return reject(err);
@@ -94,12 +104,21 @@ export class AddressBookProvider {
   public remove(addr: any): Promise<any> {
     return new Promise((resolve, reject) => {
       var network = this.getNetwork(addr);
-      if (_.isEmpty(network)) return reject('Not valid bitcoin address');
+      if (_.isEmpty(network)) {
+        let msg = this.translate.instant('Not valid bitcoin address');
+        return reject(msg);
+      }
       this.persistenceProvider.getAddressbook(network).then((ab: any) => {
         if (ab && _.isString(ab)) ab = JSON.parse(ab);
         ab = ab || {};
-        if (_.isEmpty(ab)) return reject('Addressbook is empty');
-        if (!ab[addr]) return reject('Entry does not exist');
+        if (_.isEmpty(ab)) {
+          let msg = this.translate.instant('Addressbook is empty');
+          return reject(msg);
+        }
+        if (!ab[addr]) {
+          let msg = this.translate.instant('Entry does not exist');
+          return reject(msg);
+        }
         delete ab[addr];
         this.persistenceProvider.setAddressbook(network, JSON.stringify(ab)).then(() => {
           this.list().then((ab: any) => {
@@ -108,7 +127,8 @@ export class AddressBookProvider {
             return reject(err);
           });
         }).catch(() => {
-          return reject('Error deleting entry');
+          let msg = this.translate.instant('Error deleting entry');
+          return reject(msg);
         });
       }).catch((err: any) => {
         return reject(err);
@@ -123,9 +143,11 @@ export class AddressBookProvider {
           return resolve();
         });
       }).catch(() => {
-        return reject('Error deleting addressbook');
+        let msg = this.translate.instant('Error deleting addressbook');
+        return reject(msg);
       }).catch(() => {
-        return reject('Error deleting addressbook');
+        let msg = this.translate.instant('Error deleting addressbook');
+        return reject(msg);
       });
     });
   };

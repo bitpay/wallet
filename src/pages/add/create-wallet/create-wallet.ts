@@ -120,11 +120,11 @@ export class CreateWalletPage implements OnInit {
   private updateSeedSourceSelect(): void {
     this.seedOptions = [{
       id: 'new',
-      label: 'Random',
+      label: this.translate.instant('Random'),
       supportsTestnet: true
     }, {
       id: 'set',
-      label: 'Specify Recovery Phrase',
+      label: this.translate.instant('Specify Recovery Phrase'),
       supportsTestnet: false
     }];
     this.createForm.controls['selectedSeed'].setValue(this.seedOptions[0].id); // new or set
