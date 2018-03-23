@@ -7,14 +7,16 @@ page-slide-to-accept {
     background: $color-primary;
 
     .button-slider{
-        z-index: 100 !important;
-        width: 120%;
-        border-bottom-right-radius: 35px;
-        border-top-right-radius: 35px;
-        margin-left: -105%;
-        background-color: $slider-bg-color;
-        height: 70px;        
-    }   
+      z-index: 100 !important;
+      width: 120%;
+      border-bottom-right-radius: 35px;
+      border-top-right-radius: 35px;
+      margin-left: -105%;
+      background-color: $slider-bg-color !important;
+      height: 70px;
+      -webkit-box-shadow: 4px 0px 17px rgba(0, 0, 0, 0.4) !important;
+      box-shadow: 4px 0px 17px rgba(0, 0, 0, 0.4) !important;   
+    } 
     
       @mixin center-vertically {
         display: flex;
@@ -114,7 +116,10 @@ page-slide-to-accept {
           transform: translateY(2rem);
           opacity: 0;
           text-align: center;
-    
+          ion-spinner * {
+            stroke: color($colors, light) !important;
+          }
+          
           &.enter {
             transition: transform 2500ms ease, opacity 2500ms ease;
             -webkit-transform: translateY(0);
