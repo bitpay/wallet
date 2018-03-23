@@ -18,7 +18,7 @@ import * as _ from 'lodash';
 })
 export class LockPage {
 
-  public options: Array<{ method: string, enabled: boolean, disabled: boolean }> = [];
+  public options: Array<{ label: string, method: string, enabled: boolean, disabled: boolean }> = [];
   public lockOptions: any;
   public needsBackupMsg: string;
 
@@ -38,16 +38,19 @@ export class LockPage {
       let needsBackup = this.needsBackup();
       this.options = [
         {
+          label: this.translate.instant('Disabled'),
           method: 'Disabled',
           enabled: !this.lockOptions.method || this.lockOptions.method == 'Disabled' ? true : false,
           disabled: false
         },
         {
+          label: this.translate.instant('PIN'),
           method: 'PIN',
           enabled: this.lockOptions.method == 'PIN' ? true : false,
           disabled: needsBackup || this.lockOptions.method == 'Fingerprint'
         },
         {
+          label: this.translate.instant('Fingerprint'),
           method: 'Fingerprint',
           enabled: this.lockOptions.method == 'Fingerprint' ? true : false,
           disabled: !isAvailable || needsBackup || this.lockOptions.method == 'PIN'

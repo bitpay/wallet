@@ -9,7 +9,7 @@
 <ion-content>
   <ion-list radio-group>
     <ion-item *ngFor="let opt of options">
-      <ion-label>{{opt.method}}</ion-label>
+      <ion-label>{{opt.label}}</ion-label>
       <ion-radio (click)="select(opt.method)" value="{{opt.method}}" checked="{{opt.enabled}}" disabled="{{opt.disabled}}"></ion-radio>
     </ion-item>
   </ion-list>
