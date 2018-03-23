@@ -12,7 +12,7 @@ msgstr ""
 "Last-Translator: cmgustavo83\n"
 "Language-Team: Spanish\n"
 "Language: es\n"
-"PO-Revision-Date: 2018-03-21 11:17-0400\n"
+"PO-Revision-Date: 2018-03-23 08:38-0400\n"
 
 msgid "(Trusted)"
 msgstr "(De confianza)"
@@ -158,8 +158,14 @@ msgstr "Billeteras BTC"
 msgid "Backup"
 msgstr "Copia de seguridad"
 
+msgid "Backup Needed"
+msgstr "Necesita respaldar"
+
 msgid "Backup all your wallets before using this function"
 msgstr "Respalda tu billetera para utilizar esta función"
+
+msgid "Backup now"
+msgstr "Respaldar ahora"
 
 msgid "Backup wallet"
 msgstr "Respaldar"
@@ -296,9 +302,6 @@ msgstr "Moneda"
 msgid "Color"
 msgstr "Color"
 
-msgid "Complete the backup process to use this option"
-msgstr "Completar el proceso de respaldo para usar esta opción"
-
 msgid "Completed"
 msgstr "Terminadas"
 
@@ -311,8 +314,8 @@ msgstr "Confirmar"
 msgid "Confirm &amp; Finish"
 msgstr "Confirmar &amp; Finalizar"
 
-msgid "Confirm your new spending password"
-msgstr "Confirme su contraseña para enviar"
+msgid "Confirm your new encrypt password"
+msgstr "Confirme su nueva contraseña de cifrado"
 
 msgid "Confirmations"
 msgstr "Confirmaciones"
@@ -431,8 +434,8 @@ msgstr "No se pudo obtener las transacciones"
 msgid "Could not import"
 msgstr "No se pudo importar"
 
-msgid "Could not import. Check input file and spending password"
-msgstr "No se pudo importar. Verifique el archivo y la contraseña para pagos"
+msgid "Could not import. Check input file."
+msgstr "No se pudo importar. Verifique el archivo."
 
 msgid "Could not join wallet"
 msgstr "No se pudo unir a la billetera"
@@ -578,11 +581,14 @@ msgstr "Activar notificaciones push"
 msgid "Enable the camera to get started."
 msgstr "Activar la cámara empezar."
 
+msgid "Encrypt password needed"
+msgstr "Contraseña de cifrado requerida"
+
 msgid "Encryption can protect your funds if this device is stolen or compromised by malicious software."
 msgstr "El cifrado puede proteger sus fondos si este dispositivo es robado o comprometido por software malintencionado."
 
-msgid "Enter Spending Password"
-msgstr "Ingrese contraseña para pagos"
+msgid "Enter a new encrypt password"
+msgstr "Ingrese una nueva contraseña de cifrado"
 
 msgid "Enter a password to encrypt your wallet"
 msgstr "Ingresar contraseña para cifrar la billetera"
@@ -590,14 +596,14 @@ msgstr "Ingresar contraseña para cifrar la billetera"
 msgid "Enter custom fee in sat/byte"
 msgstr "Ingresar comisión en sat/byte"
 
-msgid "Enter new spending password"
-msgstr "Ingrese una nueva contraseña para pagos"
+msgid "Enter encrypt password"
+msgstr "Ingrese contraseña de cifrado"
+
+msgid "Enter your encrypt password again to confirm"
+msgstr "Ingrese su contraseña de cifrado otra vez para confirmar"
 
 msgid "Enter your password"
 msgstr "Ingrese su contraseña"
-
-msgid "Enter your password again to confirm"
-msgstr "Introduce tu contraseña otra vez para confirmar"
 
 msgid "Error"
 msgstr "Error"
@@ -832,6 +838,9 @@ msgstr "Si se habilita, las billeteras podrán gastar los fondos sin confirmar. 
 
 msgid "If you have additional feedback, please let us know by tapping the \"Send feedback\" option in the Settings tab."
 msgstr "Si tienes comentarios adicionales, por favor envíalos pulsando la opción \"Enviar comentarios\" en la pestaña de preferencias."
+
+msgid "If you take a screenshot, your backup may be viewed by other apps. You can make a safe backup with physical paper and a pen."
+msgstr "Si tomas una captura de pantalla, otras aplicaciones podrían ver tu copia de respaldo. La forma más acertada es resguardarla con tinta y papel."
 
 msgid "Import wallet"
 msgstr "Importar billetera"
@@ -1115,6 +1124,9 @@ msgstr "Notificarme si se confirma"
 msgid "Notify me when transactions are confirmed"
 msgstr "Notificarme cuando se confirmen las transacciones"
 
+msgid "Now is a good time to backup your wallet. If this device is lost, it is impossible to access your funds without a backup."
+msgstr "Es un buen momento para realizar una copia de respaldo de la billetera. Si este dispositivo se pierde, será imposible acceder a los fondos sin un respaldo."
+
 msgid "Now is a perfect time to assess your surroundings. Nearby windows? Hidden cameras? Shoulder-spies?"
 msgstr "Es el momento perfecto para mirar a tu alrededor. ¿ventanas? ¿cámaras? ¿gente curiosa?"
 
@@ -1123,6 +1135,9 @@ msgstr "OK"
 
 msgid "Off"
 msgstr "Desactivado"
+
+msgid "Oh no!"
+msgstr "¡Oh no!"
 
 msgid "Ok"
 msgstr "Correcto"
@@ -1168,6 +1183,9 @@ msgstr "Abrir página web"
 
 msgid "Order the BitPay Card"
 msgstr "Solicitar la tarjeta BitPay"
+
+msgid "Ouch!"
+msgstr "¡Ups!"
 
 msgid "Password"
 msgstr "Contraseña"
@@ -1397,14 +1415,14 @@ msgstr "Remover"
 msgid "Repeat the password"
 msgstr "Repetir la contraseña"
 
+msgid "Request Encrypt Password"
+msgstr "Solicitar Contraseña de Cifrado"
+
 msgid "Request Fingerprint"
 msgstr "Solicitar Huella Digital"
 
 msgid "Request Specific amount"
 msgstr "Solicitar importe Especifico"
-
-msgid "Request Spending Password"
-msgstr "Solicitar contraseña para pagos"
 
 msgid "Required number of signatures"
 msgstr "Número requerido de firmas"
@@ -1441,6 +1459,9 @@ msgstr "Buscando fondos en la billetera..."
 
 msgid "Scanning funds"
 msgstr "Buscando fondos"
+
+msgid "Screenshots are not secure"
+msgstr "Las capturas de pantallas no son seguras"
 
 msgid "Search a contact"
 msgstr "Buscar un contacto"
@@ -1585,9 +1606,6 @@ msgstr "La propuesta de gasto no se ha encontrado"
 
 msgid "Spendable balance"
 msgstr "Balance disponible"
-
-msgid "Spending Password needed"
-msgstr "Se necesita la contraseña para pagos"
 
 msgid "Spending this balance will need significant Bitcoin network fees"
 msgstr "Gastar este balance requiere de significativas comisiones"
@@ -1802,6 +1820,9 @@ msgstr "Convierta Bitcoin en Dólares, use en cualquier lugar que acepte Visa&re
 msgid "Type the recovery phrase (usually 12 words)"
 msgstr "Escribe la frase de recuperación (normalmente 12 palabras)"
 
+msgid "Uh oh..."
+msgstr "Uh oh..."
+
 msgid "Unconfirmed"
 msgstr "Sin confirmar"
 
@@ -1846,6 +1867,9 @@ msgstr "Utilizar URL por defecto"
 
 msgid "Validating recovery phrase..."
 msgstr "Validando la frase de recuperación..."
+
+msgid "Verify your identity"
+msgstr "Verifica tu identidad"
 
 msgid "Version"
 msgstr "Versión"
@@ -2009,14 +2033,14 @@ msgstr "¿Estaría usted dispuesto a opinar sobre {{appName}} en la app store?"
 msgid "Would you like to protect this wallet with a password?"
 msgstr "¿Quieres proteger esta billetera con una contraseña?"
 
+msgid "Wrong encrypt password"
+msgstr "Contraseña de cifrado incorrecta"
+
 msgid "Wrong number of recovery words:"
 msgstr "Número incorrecto de palabras:"
 
 msgid "Wrong password"
 msgstr "Contraseña incorrecta"
-
-msgid "Wrong spending password"
-msgstr "Contraseña para pagos incorrecta"
 
 msgid "Yes"
 msgstr "Si"
@@ -2078,8 +2102,8 @@ msgstr "Nombre"
 msgid "Your wallet is never saved to cloud storage or standard device backups."
 msgstr "Tu billetera nunca se sube a la nube ni se resguarda automáticamente en el dispositivo."
 
-msgid "Your wallet key will be encrypted. The Spending Password cannot be recovered. Be sure to write it down."
-msgstr "La clave de la billetera será cifrada. La contraseña para pagos no puede ser recuperada. Asegúrate de anotarla."
+msgid "Your wallet key will be encrypted. The encrypt password cannot be recovered. Be sure to write it down."
+msgstr "La clave de la billetera será cifrada. La contraseña de cifrado no se puede recuperar. Asegúrate de anotarla."
 
 msgid "[Balance Hidden]"
 msgstr "[Balance Oculto]"
