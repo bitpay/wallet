@@ -24,7 +24,6 @@ export class EmailNotificationsProvider {
     opts = opts || {};
     if (!opts.email) return;
 
-    let wallets = this.profileProvider.getWallets();
 
     this.configProvider.set({
       emailFor: null, // Backward compatibility
@@ -34,7 +33,10 @@ export class EmailNotificationsProvider {
       }
     });
 
-    this.walletProvider.updateRemotePreferences(wallets);
+    setTimeout(() => {
+      let wallets = this.profileProvider.getWallets();
+      this.walletProvider.updateRemotePreferences(wallets);
+    }, 1000);
   };
 
   public getEmailIfEnabled(config?: any) {

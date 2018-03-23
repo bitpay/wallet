@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { NavController } from 'ionic-angular';
 import { Logger } from '../../../providers/logger/logger';
 
 // providers
@@ -29,6 +30,7 @@ export class NotificationsPage {
   public emailNotifications: boolean;
 
   constructor(
+    private navCtrl: NavController,
     private formBuilder: FormBuilder,
     private configProvider: ConfigProvider,
     private appProvider: AppProvider,
@@ -61,7 +63,7 @@ export class NotificationsPage {
     });
 
     this.emailNotifications = config.emailNotifications ? config.emailNotifications.enabled : false;
-  };
+  }
 
   public pushNotificationsChange() {
     let opts = {
@@ -74,7 +76,7 @@ export class NotificationsPage {
       this.pushProvider.init();
     else
       this.pushProvider.disable();
-  };
+  }
 
   public confirmedTxsNotificationsChange() {
     let opts = {
@@ -83,7 +85,7 @@ export class NotificationsPage {
       }
     };
     this.configProvider.set(opts);
-  };
+  }
 
   public emailNotificationsChange() {
     let opts = {
@@ -91,14 +93,14 @@ export class NotificationsPage {
       email: this.emailForm.value.email
     };
     this.emailProvider.updateEmail(opts);
-  };
+  }
 
   public saveEmail() {
     this.emailProvider.updateEmail({
       enabled: this.emailNotifications,
       email: this.emailForm.value.email
     });
-
-  };
+    this.navCtrl.pop();
+  }
 
 }
