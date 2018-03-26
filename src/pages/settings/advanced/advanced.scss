@@ -6,6 +6,9 @@ page-advanced {
       display: flex;
       align-items: center;
       padding-bottom: 2rem;
+      ion-label {
+        white-space: normal;
+      }
     }
     span {
       color: color($colors, grey);
