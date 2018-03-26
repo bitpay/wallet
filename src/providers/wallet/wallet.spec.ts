@@ -24,6 +24,7 @@ import { BwcProvider } from '../bwc/bwc';
 import { ConfigProvider } from '../config/config';
 import { FeeProvider } from '../fee/fee';
 import { FilterProvider } from '../filter/filter';
+import { LanguageProvider } from '../language/language';
 import { OnGoingProcessProvider } from '../on-going-process/on-going-process';
 import { PersistenceProvider } from '../persistence/persistence';
 import { PlatformProvider } from '../platform/platform';
@@ -87,6 +88,7 @@ describe('Provider: Wallet Provider', () => {
         FilterProvider,
         LoadingController,
         Logger,
+        LanguageProvider,
         OnGoingProcessProvider,
         { provide: PersistenceProvider, useClass: PersistenceProviderMock },
         Platform,
