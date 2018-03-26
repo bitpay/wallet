@@ -26,9 +26,16 @@
         <img src="assets/img/illustration-send-feedback.png" />
       </div>
     </div>
-    <div class="subtitle" *ngIf="score > 3 && this.isCordova" translate>Share the love by inviting your friends.</div>
+    <div class="share-image-container" *ngIf="score > 3 && isCordova">
+      <div>
+        <div class="share-the-love">
+          <img src="assets/img/ico-positive-feedback.svg" class="share-the-love-illustration" />
+        </div>
+        <div class="subtitle" translate>Share the love by inviting your friends.</div>
+      </div>
+    </div>
   </div>
-  <div class="share-buttons" *ngIf="score > 3 && this.isCordova">
+  <div class="share-buttons" *ngIf="score > 3 && isCordova">
     <div class="share-buttons__action" *ngIf="facebook" (click)="shareFacebook()">
       <ion-icon>
         <img src="assets/img/social-icons/ico-social-facebook.svg" />
