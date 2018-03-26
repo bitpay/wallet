@@ -12,7 +12,7 @@ msgstr ""
 "Last-Translator: cmgustavo83\n"
 "Language-Team: Dutch\n"
 "Language: nl\n"
-"PO-Revision-Date: 2018-03-22 14:14-0400\n"
+"PO-Revision-Date: 2018-03-23 16:07-0400\n"
 
 msgid "(Trusted)"
 msgstr "(Vertrouwd)"
@@ -75,6 +75,9 @@ msgid "Address Type"
 msgstr "Adres Type"
 
 msgid "Address book"
+msgstr ""
+
+msgid "Addressbook is empty"
 msgstr ""
 
 msgid "Addresses with balance"
@@ -314,6 +317,9 @@ msgstr "Bevestigen"
 msgid "Confirm &amp; Finish"
 msgstr ""
 
+msgid "Confirm your PIN"
+msgstr ""
+
 msgid "Confirm your new encrypt password"
 msgstr ""
 
@@ -424,6 +430,9 @@ msgstr ""
 
 msgid "Could not get fee levels"
 msgstr "Kon niveaus transactiekosten niet opvragen"
+
+msgid "Could not get the Addressbook"
+msgstr ""
 
 msgid "Could not get the invoice"
 msgstr "Kon factuur niet opvragen"
@@ -536,8 +545,14 @@ msgstr ""
 msgid "Details"
 msgstr "Details"
 
+msgid "Disabled"
+msgstr ""
+
 msgid "Do it later"
 msgstr "Doe het later"
+
+msgid "Do not include private key"
+msgstr ""
 
 msgid "Don't see your language on Crowdin? Contact the Owner on Crowdin! We'd love to support your language."
 msgstr "Ziet u uw taal niet op Crowdin? Neem contact op met de Eigenaar op Crowdin! We willen graag uw taal ondersteunen."
@@ -605,8 +620,17 @@ msgstr ""
 msgid "Enter your password"
 msgstr "Voer uw wachtwoord in"
 
+msgid "Entry already exist"
+msgstr ""
+
+msgid "Entry does not exist"
+msgstr ""
+
 msgid "Error"
 msgstr "Fout"
+
+msgid "Error adding new entry"
+msgstr ""
 
 msgid "Error at confirm"
 msgstr "Fout bij bevestigen"
@@ -616,6 +640,12 @@ msgstr "Fout tijdens maken van de factuur"
 
 msgid "Error creating wallet"
 msgstr "Fout tijdens maken portemonnee"
+
+msgid "Error deleting addressbook"
+msgstr ""
+
+msgid "Error deleting entry"
+msgstr ""
 
 msgid "Error getting SendMax information"
 msgstr "Fout tijdens opvragen VerstuurMaximum informatie"
@@ -690,6 +720,9 @@ msgid "Fetching payment information"
 msgstr "Ophalen van betalingsgegevens"
 
 msgid "File/Text"
+msgstr ""
+
+msgid "Fingerprint"
 msgstr ""
 
 msgid "Finish"
@@ -986,6 +1019,9 @@ msgstr "Ontbrekende parameter"
 msgid "Missing private keys to sign"
 msgstr "Privé sleutels om te ondertekenen ontbreken"
 
+msgid "More"
+msgstr ""
+
 msgid "More Options"
 msgstr "Meer Opties"
 
@@ -1103,6 +1139,9 @@ msgstr "Geen saldo gevonden"
 msgid "Not now"
 msgstr "Niet nu"
 
+msgid "Not valid bitcoin address"
+msgstr ""
+
 msgid "Note"
 msgstr "Notitie"
 
@@ -1187,6 +1226,9 @@ msgstr ""
 msgid "Ouch!"
 msgstr ""
 
+msgid "PIN"
+msgstr ""
+
 msgid "Password"
 msgstr "Wachtwoord"
 
@@ -1268,6 +1310,9 @@ msgstr "Vul de herstel zin in met enkel kleine letters"
 msgid "Please enter the wallet recovery phrase"
 msgstr "Vul de herstel zin van de portemonnee in met enkel kleine letters"
 
+msgid "Please enter your PIN"
+msgstr ""
+
 msgid "Please tap each word in the correct order."
 msgstr "Druk a.u.b. op elk woord in de juiste volgorde."
 
@@ -1336,6 +1381,9 @@ msgstr ""
 
 msgid "Quick review!"
 msgstr "Kort samenvatten!"
+
+msgid "Random"
+msgstr ""
 
 msgid "Rate"
 msgstr ""
@@ -1496,6 +1544,9 @@ msgstr "Verzenden"
 msgid "Send Feedback"
 msgstr "Feedback Sturen"
 
+msgid "Send Max amount"
+msgstr ""
+
 msgid "Send Money"
 msgstr "Stuur Geld"
 
@@ -1592,10 +1643,16 @@ msgstr ""
 msgid "Since only you control your money, you’ll need to save your backup phrase in case this app is deleted."
 msgstr "Omdat u de enige bent die uw geld beheert, zult u de herstel zin moeten bewaren indien deze app verwijderd wordt."
 
+msgid "Single address"
+msgstr ""
+
 msgid "Skip"
 msgstr "Overslaan"
 
 msgid "Some of your wallets are not eligible for Bitcoin Cash support. You can try to access BCH funds from these wallets using the recovery tool"
+msgstr ""
+
+msgid "Specify Recovery Phrase"
 msgstr ""
 
 msgid "Spend proposal is not accepted"

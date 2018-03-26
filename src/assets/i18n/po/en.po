@@ -1,16 +1,16 @@
 msgid ""
 msgstr ""
-"MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
 "Project-Id-Version: \n"
 "POT-Creation-Date: \n"
 "PO-Revision-Date: \n"
-"Language-Team: \n"
-"X-Generator: Poedit 2.0.6\n"
 "Last-Translator: \n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Language-Team: \n"
 "Language: en\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 2.0.6\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 msgid "(Trusted)"
 msgstr "(Trusted)"
@@ -90,6 +90,10 @@ msgstr "Address Type"
 
 msgid "Address book"
 msgstr "Address book"
+
+#| msgid "Address book"
+msgid "Addressbook is empty"
+msgstr "Addressbook is empty"
 
 msgid "Addresses with balance"
 msgstr "Addresses with balance"
@@ -358,6 +362,10 @@ msgstr "Confirm"
 msgid "Confirm &amp; Finish"
 msgstr "Confirm &amp; Finish"
 
+#| msgid "Confirm"
+msgid "Confirm your PIN"
+msgstr "Confirm your PIN"
+
 msgid "Confirm your new encrypt password"
 msgstr "Confirm your new encrypt password"
 
@@ -468,6 +476,10 @@ msgstr "Could not get dynamic fee for level:"
 
 msgid "Could not get fee levels"
 msgstr "Could not get fee levels"
+
+#| msgid "Could not create address"
+msgid "Could not get the Addressbook"
+msgstr "Could not get the Addressbook"
 
 msgid "Could not get the invoice"
 msgstr "Could not get the invoice"
@@ -580,8 +592,15 @@ msgstr "Derivation path"
 msgid "Details"
 msgstr "Details"
 
+msgid "Disabled"
+msgstr "Disabled"
+
 msgid "Do it later"
 msgstr "Do it later"
+
+#| msgid "No private key"
+msgid "Do not include private key"
+msgstr "Do not include private key"
 
 msgid ""
 "Don't see your language on Crowdin? Contact the Owner on Crowdin! We'd love "
@@ -663,8 +682,19 @@ msgstr "Enter your encrypt password again to confirm"
 msgid "Enter your password"
 msgstr "Enter your password"
 
+#| msgid "Wallet already exists"
+msgid "Entry already exist"
+msgstr "Entry already exist"
+
+msgid "Entry does not exist"
+msgstr "Entry does not exist"
+
 msgid "Error"
 msgstr "Error"
+
+#| msgid "Error creating wallet"
+msgid "Error adding new entry"
+msgstr "Error adding new entry"
 
 msgid "Error at confirm"
 msgstr "Error at confirm"
@@ -674,6 +704,13 @@ msgstr "Error creating the invoice"
 
 msgid "Error creating wallet"
 msgstr "Error creating wallet"
+
+msgid "Error deleting addressbook"
+msgstr "Error deleting addressbook"
+
+#| msgid "Error creating wallet"
+msgid "Error deleting entry"
+msgstr "Error deleting entry"
 
 msgid "Error getting SendMax information"
 msgstr "Error getting SendMax information"
@@ -749,6 +786,10 @@ msgstr "Fetching payment information"
 
 msgid "File/Text"
 msgstr "File/Text"
+
+#| msgid "Request Fingerprint"
+msgid "Fingerprint"
+msgstr "Fingerprint"
 
 msgid "Finish"
 msgstr "Finish"
@@ -1108,6 +1149,9 @@ msgstr "Missing parameter"
 msgid "Missing private keys to sign"
 msgstr "Missing private keys to sign"
 
+msgid "More"
+msgstr "More"
+
 msgid "More Options"
 msgstr "More Options"
 
@@ -1229,6 +1273,10 @@ msgstr "Not funds found"
 msgid "Not now"
 msgstr "Not now"
 
+#| msgid "Invalid address"
+msgid "Not valid bitcoin address"
+msgstr "Not valid bitcoin address"
+
 msgid "Note"
 msgstr "Note"
 
@@ -1325,6 +1373,9 @@ msgstr "Order the BitPay Card"
 msgid "Ouch!"
 msgstr "Ouch!"
 
+msgid "PIN"
+msgstr "PIN"
+
 msgid "Password"
 msgstr "Password"
 
@@ -1413,6 +1464,10 @@ msgstr "Please enter the recovery phrase"
 msgid "Please enter the wallet recovery phrase"
 msgstr "Please enter the wallet recovery phrase"
 
+#| msgid "Please enter the recovery phrase"
+msgid "Please enter your PIN"
+msgstr "Please enter your PIN"
+
 msgid "Please tap each word in the correct order."
 msgstr "Please tap each word in the correct order."
 
@@ -1485,6 +1540,9 @@ msgstr "QR Code"
 
 msgid "Quick review!"
 msgstr "Quick review!"
+
+msgid "Random"
+msgstr "Random"
 
 msgid "Rate"
 msgstr "Rate"
@@ -1645,6 +1703,10 @@ msgstr "Send"
 msgid "Send Feedback"
 msgstr "Send Feedback"
 
+#| msgid "Sending maximum amount"
+msgid "Send Max amount"
+msgstr "Send Max amount"
+
 msgid "Send Money"
 msgstr "Send Money"
 
@@ -1745,6 +1807,10 @@ msgstr ""
 "Since only you control your money, you’ll need to save your backup phrase in "
 "case this app is deleted."
 
+#| msgid "Invalid address"
+msgid "Single address"
+msgstr "Single address"
+
 msgid "Skip"
 msgstr "Skip"
 
@@ -1754,6 +1820,10 @@ msgid ""
 msgstr ""
 "Some of your wallets are not eligible for Bitcoin Cash support. You can try "
 "to access BCH funds from these wallets using the recovery tool"
+
+#| msgid "Recovery Phrase"
+msgid "Specify Recovery Phrase"
+msgstr "Specify Recovery Phrase"
 
 msgid "Spend proposal is not accepted"
 msgstr "Spend proposal is not accepted"

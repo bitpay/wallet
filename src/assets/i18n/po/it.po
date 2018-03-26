@@ -12,7 +12,7 @@ msgstr ""
 "Last-Translator: cmgustavo83\n"
 "Language-Team: Italian\n"
 "Language: it\n"
-"PO-Revision-Date: 2018-03-23 08:38-0400\n"
+"PO-Revision-Date: 2018-03-26 08:47-0400\n"
 
 msgid "(Trusted)"
 msgstr "(Fidato)"
@@ -76,6 +76,9 @@ msgstr "Tipo di indirizzo"
 
 msgid "Address book"
 msgstr "Rubrica"
+
+msgid "Addressbook is empty"
+msgstr ""
 
 msgid "Addresses with balance"
 msgstr "Indirizzi con saldo"
@@ -159,7 +162,7 @@ msgid "Backup"
 msgstr "Backup"
 
 msgid "Backup Needed"
-msgstr ""
+msgstr "Backup necessario"
 
 msgid "Backup all your wallets before using this function"
 msgstr ""
@@ -249,7 +252,7 @@ msgid "Cancel invitation"
 msgstr "Annulla invito"
 
 msgid "Canceling Gift Card..."
-msgstr ""
+msgstr "Annullamento Carta Regalo..."
 
 msgid "Cannot join the same wallet more that once"
 msgstr "Non è possibile aggiungere un portafoglio più di una volta"
@@ -285,7 +288,7 @@ msgid "Click to open Terms"
 msgstr ""
 
 msgid "Click to open the recovery tool"
-msgstr ""
+msgstr "Clicca per aprire lo strumento di recupero"
 
 msgid "Click to pay"
 msgstr "Fai clic per pagare"
@@ -314,8 +317,11 @@ msgstr "Conferma"
 msgid "Confirm &amp; Finish"
 msgstr "Coneirma &amp; Concludi"
 
+msgid "Confirm your PIN"
+msgstr "Conferma il tuo PIN"
+
 msgid "Confirm your new encrypt password"
-msgstr ""
+msgstr "Conferma la tua nuova password di cifratura"
 
 msgid "Confirmations"
 msgstr "Conferme"
@@ -425,6 +431,9 @@ msgstr ""
 msgid "Could not get fee levels"
 msgstr "Livelli commissione non disponibile"
 
+msgid "Could not get the Addressbook"
+msgstr ""
+
 msgid "Could not get the invoice"
 msgstr "La fattura non puo essere creata"
 
@@ -486,7 +495,7 @@ msgid "Creating Wallet..."
 msgstr "Creazione Portafoglio..."
 
 msgid "Creating transaction..."
-msgstr ""
+msgstr "Creazione transazione..."
 
 msgid "Current fee rate for this policy"
 msgstr "Attuale commissione con questa politica"
@@ -536,8 +545,14 @@ msgstr ""
 msgid "Details"
 msgstr "Dettagli"
 
+msgid "Disabled"
+msgstr "Disabilitato"
+
 msgid "Do it later"
 msgstr "Farlo in seguito"
+
+msgid "Do not include private key"
+msgstr "Non includere la chiave privata"
 
 msgid "Don't see your language on Crowdin? Contact the Owner on Crowdin! We'd love to support your language."
 msgstr "Non vedi la tua lingua su Crowdin? Contatta il proprietario su Crowdin! Ci piacerebbe supportare la lingua."
@@ -605,8 +620,17 @@ msgstr ""
 msgid "Enter your password"
 msgstr "Inserisci la tua password"
 
+msgid "Entry already exist"
+msgstr "Voce già esistente"
+
+msgid "Entry does not exist"
+msgstr "Voce inesistente"
+
 msgid "Error"
 msgstr "Errore"
+
+msgid "Error adding new entry"
+msgstr "Errore nell'aggiunta di nuova voce"
 
 msgid "Error at confirm"
 msgstr "Errore di conferma"
@@ -616,6 +640,12 @@ msgstr "Errore nella creazione della fattura"
 
 msgid "Error creating wallet"
 msgstr "Errore creazione portafoglio"
+
+msgid "Error deleting addressbook"
+msgstr ""
+
+msgid "Error deleting entry"
+msgstr "Errore nella cancellazione voce"
 
 msgid "Error getting SendMax information"
 msgstr "Errore nel recupero di informazione SendMax"
@@ -675,7 +705,7 @@ msgid "Fee"
 msgstr "Tassa"
 
 msgid "Fee level"
-msgstr ""
+msgstr "Livello della commissione"
 
 msgid "Fee level is not defined"
 msgstr "Livello commissione non definito"
@@ -692,6 +722,9 @@ msgstr "Recupero informazione del pagamento"
 msgid "File/Text"
 msgstr "File/Testo"
 
+msgid "Fingerprint"
+msgstr "Impronta digitale"
+
 msgid "Finish"
 msgstr "Fine"
 
@@ -702,7 +735,7 @@ msgid "From BitPay account"
 msgstr "Dal conto BitPay"
 
 msgid "From the destination device, go to Add wallet > Import wallet and scan this QR code"
-msgstr ""
+msgstr "Dal dispositivo di destinazione, andare in Aggiungi portafoglio > Importare portafoglio e scansionare questo codice QR"
 
 msgid "Funds are locked by pending spend proposals"
 msgstr "I fondi sono bloccati in attesa della proposta di pagamento"
@@ -732,7 +765,7 @@ msgid "Generating new address..."
 msgstr "Generando un nuovo indirizzo..."
 
 msgid "Get local cash anywhere you go, from any Visa&reg; compatible ATM. ATM bank fees may apply."
-msgstr ""
+msgstr "Ottieni contante locale ovunque tu vada, da qualsiasi ATM bancomat compatibile con Visa&reg;. Possibili commissioni bancarie da ATM."
 
 msgid "Get news and updates from BitPay"
 msgstr "Ricevi notizie e aggiornamenti da BitPay"
@@ -822,7 +855,7 @@ msgid "I understand that my funds are held securely on this device, not by a com
 msgstr "Ho capito che i miei fondi sono custoditi in sicurezza in questa dispositivo, non da un'azienda"
 
 msgid "I'm sure"
-msgstr ""
+msgstr "Sono sicuro"
 
 msgid "If enabled, Bitcoin Cash addresses will be shown using Copay style address, and not the new cashaddr format."
 msgstr ""
@@ -840,7 +873,7 @@ msgid "If you have additional feedback, please let us know by tapping the \"Send
 msgstr "Se si dispone di ulteriori feedback, fatecelo sapere toccando l'opzione \"Invia feedback\" nella scheda Impostazioni."
 
 msgid "If you take a screenshot, your backup may be viewed by other apps. You can make a safe backup with physical paper and a pen."
-msgstr ""
+msgstr "Se esegui uno screenshot, il backup può essere visualizzato da altre applicazioni. Si può fare un backup sicuro con la carta fisica e una penna."
 
 msgid "Import wallet"
 msgstr "Importa un portafoglio"
@@ -897,7 +930,7 @@ msgid "Is this email address correct?"
 msgstr "Questo indirizzo email è corretto?"
 
 msgid "It's a good idea to avoid reusing addresses - this both protects your privacy and keeps your bitcoins secure against hypothetical attacks by quantum computers."
-msgstr ""
+msgstr "È una buona idea evitare di riutilizzare gli indirizzi - questo protegge la tua privacy e mantiene i Bitcoin al sicuro da ipotetici attacchi di computer quantistici."
 
 msgid "It's important that you write your backup phrase down correctly. If something happens to your wallet, you'll need this backup to recover your money. Please review your backup and try again."
 msgstr "È importante annotare la frase di recupero correttamente. Se succede qualcosa al tuo portafoglio, allora avrai bisogno di questo backup per ripristinare il tuo denaro. Si prega di rivedere il backup e riprovare."
@@ -986,6 +1019,9 @@ msgstr "Parametro mancante"
 msgid "Missing private keys to sign"
 msgstr "Chiavi private per la firma mancanti"
 
+msgid "More"
+msgstr ""
+
 msgid "More Options"
 msgstr "Altre Opzioni"
 
@@ -1044,7 +1080,7 @@ msgid "No entries for this log level"
 msgstr "Nessuna voce per questo livello di log"
 
 msgid "No password"
-msgstr ""
+msgstr "Nessuna password"
 
 msgid "No pending proposals"
 msgstr "Nessuna proposta in attesa"
@@ -1077,7 +1113,7 @@ msgid "No wallets eligible for Bitcoin Cash support"
 msgstr "Nessun portafogli idoneo al supporto di Bitcoin Cash"
 
 msgid "No wallets with funds"
-msgstr ""
+msgstr "Nessun portafoglio con fondi"
 
 msgid "Non BIP44 wallet"
 msgstr "Portafoglio non BIP44"
@@ -1102,6 +1138,9 @@ msgstr "Fondi non trovati"
 
 msgid "Not now"
 msgstr "Non ora"
+
+msgid "Not valid bitcoin address"
+msgstr "Indirizzo bitcoin non valido"
 
 msgid "Note"
 msgstr "Nota"
@@ -1187,6 +1226,9 @@ msgstr "Ordinare la carta BitPay"
 msgid "Ouch!"
 msgstr "Ahi!"
 
+msgid "PIN"
+msgstr "PIN"
+
 msgid "Password"
 msgstr "Password"
 
@@ -1268,6 +1310,9 @@ msgstr "Si prega di inserire la frase di recupero"
 msgid "Please enter the wallet recovery phrase"
 msgstr "Si prega di inserire la frase di recupero del portafoglio"
 
+msgid "Please enter your PIN"
+msgstr "Per favore inserisci il tuo PIN"
+
 msgid "Please tap each word in the correct order."
 msgstr "Si prega di toccare ogni parola nell'ordine corretto."
 
@@ -1336,6 +1381,9 @@ msgstr "Codice QR"
 
 msgid "Quick review!"
 msgstr "Breve recensione!"
+
+msgid "Random"
+msgstr "Casuale"
 
 msgid "Rate"
 msgstr "Vota"
@@ -1431,7 +1479,7 @@ msgid "Restore from backup"
 msgstr "Ripristinare da backup"
 
 msgid "Retrieving inputs information..."
-msgstr ""
+msgstr "Recupero delle informazioni di input..."
 
 msgid "Retry camera"
 msgstr "Riprova con fotocamera"
@@ -1464,7 +1512,7 @@ msgid "Screenshots are not secure"
 msgstr "Gli screenshot non sono sicuri"
 
 msgid "Search a contact"
-msgstr ""
+msgstr "Cerca un contatto"
 
 msgid "Search or enter bitcoin address"
 msgstr "Cerca o inserisci indirizzo bitcoin"
@@ -1479,7 +1527,7 @@ msgid "See invoice"
 msgstr "Vedere la fattura"
 
 msgid "See transaction"
-msgstr ""
+msgstr "Vedere la transazione"
 
 msgid "Select a wallet"
 msgstr "Selezionare un portafoglio"
@@ -1495,6 +1543,9 @@ msgstr "Invia"
 
 msgid "Send Feedback"
 msgstr "Invia Feedback"
+
+msgid "Send Max amount"
+msgstr "Inviare l'importo massimo"
 
 msgid "Send Money"
 msgstr "Invia denaro"
@@ -1530,7 +1581,7 @@ msgid "Sending maximum amount"
 msgstr "Invio dell'importo massimo"
 
 msgid "Sending transaction..."
-msgstr ""
+msgstr "Invio transazione..."
 
 msgid "Sent"
 msgstr "Inviato"
@@ -1592,11 +1643,17 @@ msgstr "Firmando la transazione..."
 msgid "Since only you control your money, you’ll need to save your backup phrase in case this app is deleted."
 msgstr "Dal momento che solo tu controlli il tuo denaro, avrai allora bisogno di salvare la tua frase di recupero nel caso in cui questa applicazione venga eliminata."
 
+msgid "Single address"
+msgstr "Singolo indirizzo"
+
 msgid "Skip"
 msgstr "Salta"
 
 msgid "Some of your wallets are not eligible for Bitcoin Cash support. You can try to access BCH funds from these wallets using the recovery tool"
 msgstr ""
+
+msgid "Specify Recovery Phrase"
+msgstr "Specificare la frase di recupero"
 
 msgid "Spend proposal is not accepted"
 msgstr "La proposta di pagamento non è accettata"
@@ -1713,7 +1770,7 @@ msgid "The total amount of bitcoin stored in this wallet."
 msgstr "La quantità totale di bitcoin depositati su questo portafoglio."
 
 msgid "The transaction history and every new incoming transaction are cached in the app. This feature clean this up and synchronizes again from the server"
-msgstr ""
+msgstr "La cronologia delle transazioni e ogni nuova transazione in entrata vengono memorizzate nella cache nell'app. Questa funzionalità la ripulisce e sincronizza nuovamente dal server"
 
 msgid "There is an error in the form"
 msgstr "C'è un errore nel form"
@@ -1767,7 +1824,7 @@ msgid "Total Locked Balance"
 msgstr "Totale Importo Bloccato"
 
 msgid "Total number of copayers"
-msgstr ""
+msgstr "Numero totale di copayer"
 
 msgid "Total wallet inputs"
 msgstr "Totale ingressi nel portafoglio"
@@ -1803,22 +1860,22 @@ msgid "Transactions without fee are not supported."
 msgstr "Non sono supportate transazioni senza commissione."
 
 msgid "Transfer to Bitcoin Cash Wallet"
-msgstr ""
+msgstr "Trasferimento a portafoglio Bitcoin Cash"
 
 msgid "Transfer to Bitcoin Wallet"
-msgstr ""
+msgstr "Trasferimento a portafoglio Bitcoin"
 
 msgid "Transfer to Contact"
-msgstr ""
+msgstr "Trasferisci a Contatto"
 
 msgid "Try again in {{expires}}"
 msgstr "Provare di nuovo in {{expires}}"
 
 msgid "Turn bitcoin into dollars, swipe anywhere Visa&reg; is accepted."
-msgstr ""
+msgstr "Trasformare i bitcoin in dollari, fai scorrere la Visa&reg; ovunque sia accettata."
 
 msgid "Type the recovery phrase (usually 12 words)"
-msgstr ""
+msgstr "Digitare la frase di recupero (di solito 12 parole)"
 
 msgid "Uh oh..."
 msgstr "Oh oh..."
@@ -1839,13 +1896,13 @@ msgid "Update Available"
 msgstr "Aggiornamento Disponibile"
 
 msgid "Updating Gift Card..."
-msgstr ""
+msgstr "Aggiornamento Carta Regalo..."
 
 msgid "Updating Gift Cards..."
 msgstr "Aggiornamento carte regalo..."
 
 msgid "Updating pending proposals... Please stand by"
-msgstr ""
+msgstr "Aggiornamento proposte in attesa. Si prega di attendere"
 
 msgid "Updating transaction history. Please stand by."
 msgstr "Aggiornamento cronologia delle transazioni. Siete pregati di attendere."
@@ -1857,7 +1914,7 @@ msgid "Urgent"
 msgstr "Urgente"
 
 msgid "Use Bitcoin Cash Copay Style Addresses"
-msgstr ""
+msgstr "Utilizzare gli indirizzi Bitcoin Cash in stile Copay"
 
 msgid "Use Unconfirmed Funds"
 msgstr "Usa i fondi non confermati"
@@ -1902,10 +1959,10 @@ msgid "WARNING: Key derivation is not working on this device/wallet. Actions can
 msgstr "ATTENZIONE: La derivazione della chiave non funziona su questo dispositivo/portafoglio. Le operazioni non possono essere eseguite su questo portafoglio."
 
 msgid "WARNING: Not including the private key allows to check the wallet balance, transaction history, and create spend proposals from the export. However, does not allow to approve (sign) proposals, so funds will not be accessible from the export."
-msgstr ""
+msgstr "AVVISO: L'esclusione della chiave privata permette di controllare il bilancio del portafoglio, la cronologia delle transazioni e creare proposte di spesa dall'esportazione. Tuttavia, non consente di approvare le proposte (firma), così fondi non saranno accessibili dall'esportazione."
 
 msgid "WARNING: The private key of this wallet is not available. The export allows to check the wallet balance, transaction history, and create spend proposals from the export. However, does not allow to approve (sign) proposals, so funds will not be accessible from the export."
-msgstr ""
+msgstr "AVVISO: La chiave privata di questo portafoglio non è disponibile. L'esportazione permette di controllare il bilancio del portafoglio, la cronologia delle transazioni e creare proposte di spesa dall'esportazione. Tuttavia, non consente di approvare le proposte (firma), così fondi non saranno accessibili dall'esportazione."
 
 msgid "WARNING: UNTRUSTED CERTIFICATE"
 msgstr "ATTENZIONE: CERTIFICATO NON ATTENDIBILE"
@@ -2007,7 +2064,7 @@ msgid "We will confirm on the next screen."
 msgstr "Confermeremo la schermata successiva."
 
 msgid "We'd love to do better. How could we improve your experience?"
-msgstr ""
+msgstr "Ci piacerebbe fare meglio. Come potremmo migliorare la tua esperienza?"
 
 msgid "What do you call this wallet?"
 msgstr "Come chiameresti questo portafoglio?"
@@ -2025,16 +2082,16 @@ msgid "Withdraw"
 msgstr "Prelievo"
 
 msgid "Without encryption, a thief or another application on this device may be able to access your funds."
-msgstr ""
+msgstr "Senza crittografia, un ladro o un'altra applicazione su questo dispositivo potrebbe essere in grado di accedere ai tuoi fondi."
 
 msgid "Would you be willing to rate {{appName}} in the app store?"
 msgstr "Sareste disposti a votare {{appName}} sull'app store?"
 
 msgid "Would you like to protect this wallet with a password?"
-msgstr ""
+msgstr "Vuoi proteggere questo portafoglio con una password?"
 
 msgid "Wrong encrypt password"
-msgstr ""
+msgstr "Password di cifratura sbagliata"
 
 msgid "Wrong number of recovery words:"
 msgstr "Numero errato delle parole di recupero:"
@@ -2130,13 +2187,13 @@ msgid "{{appName}} depends on Bitcore Wallet Service (BWS) for blockchain inform
 msgstr "{{appName}} dipende dal servizio portafoglio di Bitcore (BWS) per informazioni blockchain, networking e sincronizzazione di Copayer. La configurazione predefinita fa riferimento a https://bws.bitpay.com (istanza di BitPay BWS pubblica)."
 
 msgid "{{btx.feeRateStr}} of the total amount"
-msgstr ""
+msgstr "{{btx.feeRateStr}} dell'importo totale"
 
 msgid "{{tx.feeRateStr}} of the total amount"
-msgstr ""
+msgstr "{{tx.feeRateStr}} dell'importo totale"
 
 msgid "{{tx.txp[wallet.id].feeRatePerStr}} of total amount"
-msgstr ""
+msgstr "{{tx.txp[wallet.id].feeRatePerStr}} dell'importo totale"
 
 msgid "{{updatingTxHistoryProgress}} transactions downloaded"
 msgstr "{{updatingTxHistoryProgress}} transazioni scaricate"
