@@ -1,4 +1,5 @@
 import { Injectable, isDevMode } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
 
 import * as _ from 'lodash';
 
@@ -9,13 +10,15 @@ export class Logger {
   public weight: any;
   public logs: any[];
 
-  constructor() {
+  constructor(
+    private translate: TranslateService
+  ) {
     this.logs = [];
     this.levels = [
-      { level: 'error', weight: 1, label: 'Error' },
-      { level: 'warn', weight: 2, label: 'Warning' },
-      { level: 'info', weight: 3, label: 'Info', default: true },
-      { level: 'debug', weight: 4, label: 'Debug' }
+      { level: 'error', weight: 1, label: this.translate.instant('Error') },
+      { level: 'warn', weight: 2, label: this.translate.instant('Warning') },
+      { level: 'info', weight: 3, label: this.translate.instant('Info'), default: true },
+      { level: 'debug', weight: 4, label: this.translate.instant('Debug') }
     ];
 
     // Create an array of level weights for performant filtering.
