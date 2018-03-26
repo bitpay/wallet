@@ -99,7 +99,7 @@ export class BackupGamePage {
         selected: false
       };
     });
-  };
+  }
 
   public addButton(index: number, item: any): void {
     var newWord = {
@@ -109,21 +109,18 @@ export class BackupGamePage {
     this.customWords.push(newWord);
     this.shuffledMnemonicWords[index].selected = true;
     this.shouldContinue();
-  };
+  }
 
   public removeButton(index: number, item: any): void {
     // if ($scope.loading) return;
     this.customWords.splice(index, 1);
     this.shuffledMnemonicWords[item.prevIndex].selected = false;
     this.shouldContinue();
-  };
+  }
 
   private shouldContinue(): void {
-    this.selectComplete =
-      this.customWords.length === this.shuffledMnemonicWords.length
-        ? true
-        : false;
-  };
+    this.selectComplete = this.customWords.length === this.shuffledMnemonicWords.length ? true : false;
+  }
 
   private isDeletedSeed(): boolean {
     if (!this.wallet.credentials.mnemonic && !this.wallet.credentials.mnemonicEncrypted)
@@ -142,7 +139,11 @@ export class BackupGamePage {
     this.slides.lockSwipes(true);
   }
 
-  public slideNext(): void {
+  public slideNext(reset: boolean): void {
+    if (reset) {
+      this.resetGame();
+    }
+
     if (this.currentIndex == 1 && !this.mnemonicHasPassphrase)
       this.finalStep();
     else {
@@ -152,6 +153,14 @@ export class BackupGamePage {
 
     this.currentIndex = this.slides.getActiveIndex();
     this.slides.lockSwipes(true);
+  }
+
+  private resetGame() {
+    this.customWords = [];
+    this.shuffledMnemonicWords.forEach(word => {
+      word.selected = false;
+    });
+    this.selectComplete = false;
   }
 
   private setFlow(): void {
@@ -172,7 +181,7 @@ export class BackupGamePage {
 
     if (this.currentIndex == 2) this.slidePrev();
 
-  };
+  }
 
   public copyRecoveryPhrase(): string {
     if (this.wallet.network == 'livenet') return null;
@@ -216,7 +225,7 @@ export class BackupGamePage {
       this.profileProvider.setBackupFlag(this.wallet.credentials.walletId);
       return resolve();
     });
-  };
+  }
 
   private finalStep(): void {
     this.onGoingProcessProvider.set('validatingWords');
