@@ -1,12 +1,12 @@
 page-fingerprint {
   ion-content {
-    background-color: white !important;
+    background-color: color($colors, blank) !important;
   }
   .fingerprint-header {
     height: 140px;
     border-bottom: 1px solid #dad7d7;
     position: relative;
-    background-color: color($colors, light);;    
+    background-color: color($colors, light);    
     .title {
       height: 100%;
       display: flex;

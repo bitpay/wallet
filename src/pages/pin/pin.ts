@@ -68,15 +68,19 @@ export class PinModalPage {
     if (this.action === 'checkPin' || this.action === 'removeLock') this.checkIfCorrect();
     if (this.action === 'pinSetUp') {
       if (!this.confirmingPin) {
-        this.confirmingPin = true;
-        this.firstPinEntered = this.currentPin;
-        this.currentPin = '';
+        setTimeout(() => {
+          this.confirmingPin = true;
+          this.firstPinEntered = this.currentPin;
+          this.currentPin = '';
+        }, 200);
       }
       else if (this.firstPinEntered === this.currentPin) this.save();
       else {
-        this.firstPinEntered = this.currentPin = '';
-        this.incorrect = true;
-        this.confirmingPin = false;
+        setTimeout(() => {
+          this.firstPinEntered = this.currentPin = '';
+          this.incorrect = true;
+          this.confirmingPin = false;
+        }, 200);
       }
     }
   }
