@@ -51,6 +51,9 @@ export class FeedbackPage {
 
 
   public skip(): void {
+
+    this.navCtrl.push(FeedbackCompletePage, { score: this.score, skipped: true })
+
     let platform = this.device.platform;
     let version = this.device.version;
 
@@ -62,11 +65,8 @@ export class FeedbackPage {
       "Platform": platform,
       "DeviceVersion": version
     };
-    this.feedbackProvider.send(dataSrc).then(() => {
-      this.navCtrl.push(FeedbackCompletePage, { score: this.score, skipped: true })
-    }).catch(() => {
+    this.feedbackProvider.send(dataSrc).catch(() => {
       this.logger.warn('Could not send feedback.');
-      this.navCtrl.push(FeedbackCompletePage, { score: this.score, skipped: true })
     });
   };
 
