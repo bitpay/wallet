@@ -167,9 +167,9 @@ angular.module('copayApp.controllers').controller('confirmPrivateController', fu
           }
           if ($scope.wallets.length > 1) {
             $scope.showWalletSelector();
-            console.log('if scope.wallets > 1');
+            $log.debug('if scope.wallets > 1');
           } else if ($scope.wallets.length) {
-            console.log('$scope.wallets.length');
+            $log.debug('$scope.wallets.length');
             setWallet($scope.wallets[0], tx);
           }
         });
@@ -270,7 +270,7 @@ angular.module('copayApp.controllers').controller('confirmPrivateController', fu
       if (!wallet) return setSendError(err);
       getSendMaxInfo(lodash.clone(tx), wallet, function(err, sendMaxInfo) {
         if (err) {
-          console.log('getSendMaxInfo.err', err);
+          $log.debug('getSendMaxInfo.err', err);
           var msg = gettextCatalog.getString('Error getting SendMax information');
           return setSendError(msg);
         }
@@ -293,7 +293,7 @@ angular.module('copayApp.controllers').controller('confirmPrivateController', fu
         getEachFee(0, function(err){
           ongoingProcess.set('Calculating Fees', false);
           if (err) {
-            console.log('getEachFee.cb', err);
+            $log.debug('getEachFee.cb', err);
             return;
           }
           $scope.navtechFee = $scope.navtechFeeTemp;
@@ -656,7 +656,7 @@ angular.module('copayApp.controllers').controller('confirmPrivateController', fu
     }
 
     ongoingProcess.set('creatingTx', true, onSendStatusChange);
-    console.log("approve tx = "+tx.time + " - " + tx);
+    $log.debug("approve tx = "+tx.time + " - " + tx);
     getTxp(lodash.clone(tx), wallet, false, function(err, txp) {
       ongoingProcess.set('creatingTx', false, onSendStatusChange);
       if (err) return;

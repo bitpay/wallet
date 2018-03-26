@@ -8,7 +8,7 @@
     </ion-nav-buttons>
   </ion-nav-bar>
   <ion-content scroll="false">
-    <div class="ng-hide zero-state" id="tab-scan-has-problems" ng-show="currentState === scannerStates.unauthorized || currentState === scannerStates.denied || currentState === scannerStates.unavailable">
+    <div class="ng-hide zero-state" id="tab-scan-has-problems" ng-show="currentState === scannerStates.unauthorized || currentState === scannerStates.denied || currentState === scannerStates.unavailable || webRtcDenied || !cameraSupported">
       <i class="icon zero-state-icon">
         <img src="img/tab-icons/ico-receive.svg"/>
       </i>
@@ -18,18 +18,32 @@
         <div class="ng-hide zero-state-tldr" ng-show="currentState === scannerStates.unauthorized" translate>Enable the camera to get started.</div>
         <div class="ng-hide zero-state-tldr" ng-show="currentState === scannerStates.denied" translate>Enable camera access in your device settings to get started.</div>
         <div class="ng-hide zero-state-tldr" ng-show="currentState === scannerStates.unavailable" translate>Please connect a camera to get started.</div>
+        <div class="ng-show zero-state-tldr" ng-show="!cameraSupported" translate>Camera is not supported on this device.</div>
+        <div class="ng-show zero-state-tldr" ng-show="webRtcDenied" translate>You have disallowed camera use. It must be enabled to scan QR codes.</div>
+        <div class="ng-show zero-state-tldr" ng-show="cameraSupported && !webRtcDenied" translate>Attempting to load the camera, please wait.</div>
         <button ng-show="currentState === scannerStates.unauthorized" class="ng-hide button button-standard button-primary" ng-click="authorize()" translate>Allow Camera Access</button>
         <button ng-show="currentState === scannerStates.denied && canOpenSettings" class="ng-hide button button-standard button-primary" ng-click="openSettings()" translate>Open Settings</button>
         <button ng-show="currentState === scannerStates.unavailable" class="ng-hide button button-standard button-primary" ng-click="attemptToReactivate()" translate>Retry Camera</button>
       </div>
     </div>
-    <div class="ng-show" id="tab-scan-loading-camera" ng-show="currentState === scannerStates.loading && !isSafari" translate>Attempting to load the camera, please wait.</div>
-    <div class="ng-show" id="tab-scan-loading-camera" ng-show="currentState === scannerStates.loading && cameraIssue" translate>Your camera may be disabled or you may have no camera connected. In either case the scan function will not work.</div>
-    <div class="ng-show" id="tab-scan-loading-camera" ng-show="isSafari" translate>
-      Your browser is not supported, please try Google Chrome. <br />
-      <a href="https://www.google.com/chrome" target="e" class="button button-standard button-primary" id="get-chrome">Get Google Chrome</a>
+
+    <div ng-show="usingWebRtc" style="height: 100%;">
+      <video id="webRtcScanner" playsinline style="height: 100%;"></video>
     </div>
-    <div class="ng-hide" id="tab-scan-camera-ready" ng-show="currentState === scannerStates.visible">
+
+    <div ng-show="usingPhotoInput" id="photoContainer" >
+      <p>Please take a photo of the QR Code you would like to send NavCoin to.</p>
+      <br /><br />
+      <label for="qrphoto" class="button button-standard button-primary">Take photo
+        <input hidden id="qrphoto" type="file" accept="image/*" ng-file-on-change="scanPhoto($event)" >
+      </label>
+      <br /><br />
+      <p ng-show="retryPhoto" class="retryPhoto">Failed to find QR code.<br />Please try again.</p>
+    </div>
+
+    <canvas id="hiddenCanvas" hidden />
+
+    <div class="ng-hide" id="tab-scan-camera-ready" ng-show="webRtcStarted|| currentState === scannerStates.visible">
       <div class="guides">
         <img class="svg qr-scan-guides" src="img/bitpay-wallet-qr-scan-guides.svg">
       </div>

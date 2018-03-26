@@ -1,11 +1,4 @@
-<!-- <img src="https://raw.githubusercontent.com/navcoin/navpay/master/resources/copay/android/icon/drawable-xxxhdpi-icon.png" alt="NavPay" width="79"> -->
-
-<!-- [![Build Status](https://secure.travis-ci.org/bitpay/copay.svg)](http://travis-ci.org/bitpay/copay)
-[![Crowdin](https://d322cqt584bo4o.cloudfront.net/copay/localized.png)](https://crowdin.com/project/copay) -->
-
 NavPay is a secure Navcoin wallet platform for both desktop and mobile devices. NavPay uses [Bitcore Wallet Service](https://github.com/navcoin/bitcore-wallet-service) (BWS) for peer synchronization and network interfacing.
-
-Binary versions of NavPay are available for download at [..](https://copay.io/#download). NavPay Binaries are signed with the key `copay@bitpay.com` – See the section [`How to Verify Copay Signatures`](https://github.com/bitpay/copay#how-to-verify-copay-signatures) for details.
 
 For a list of frequently asked questions please visit the [Copay FAQ](https://github.com/bitpay/copay/wiki/COPAY---FAQ).
 
@@ -27,16 +20,15 @@ For a list of frequently asked questions please visit the [Copay FAQ](https://gi
 - Push notifications (only available for ios and android versions)
 - Customizable wallet naming and background colors
 - Multiple languages supported
-<!-- - Available for [iOS](https://itunes.apple.com/us/app/copay/id951330296), [Android](https://play.google.com/store/apps/details?id=com.bitpay.copay&hl=en), [Windows Phone](http://www.windowsphone.com/en-us/store/app/copay-wallet/4372479b-a064-4d18-8bd3-74a3bdb81c3a), [Chrome App](https://chrome.google.com/webstore/detail/copay/cnidaodnidkbaplmghlelgikaiejfhja?hl=en), [Linux](https://github.com/bitpay/copay/releases/latest), [Windows](https://github.com/bitpay/copay/releases/latest) and [OS X](https://github.com/bitpay/copay/releases/latest) devices -->
 
 ## Testing in a Browser
 
-> **Note:** This method should only be used for development purposes. When running Copay in a normal browser environment, browser extensions and other malicious code might have access to internal data and private keys. For production use, see the latest official [releases](https://github.com/bitpay/copay/releases/).
+> **Note:** This method should only be used for development purposes. When running NavPay in a normal browser environment, browser extensions and other malicious code might have access to internal data and private keys. For production use, see the latest official [releases](https://github.com/bitpay/copay/releases/).
 
 Clone the repo and open the directory:
 
 ```sh
-git clone https://github.com/bitpay/copay.git
+git clone https://github.com/NAVCoin/NavPay.git
 cd copay
 ```
 
@@ -66,10 +58,13 @@ Follow the [Cordova Android Platform Guide](https://cordova.apache.org/docs/en/l
 When your development environment is ready, run the `start:android` npm package script.
 
 ```sh
-npm run apply:copay
 npm run start:android
 ```
 
+If you run into `Error: spawn EACCES` try giving `exec` to Android Studios gradle.
+`sudo chmod 755 "/Applications/Android Studio.app/Contents/gradle/gradle-4.1/bin/gradle"`
+                 
+`
 ### iOS
 
 Follow the [Cordova iOS Platform Guide](https://cordova.apache.org/docs/en/latest/guide/platforms/android/) to set up your development environment.
@@ -77,7 +72,6 @@ Follow the [Cordova iOS Platform Guide](https://cordova.apache.org/docs/en/lates
 When your development environment is ready, run the `start:ios` npm package script.
 
 ```sh
-npm run apply:copay
 npm run start:ios
 ```
 
@@ -88,7 +82,6 @@ The desktop version of Copay currently uses NW.js, an app runtime based on Chrom
 When NW.js is installed, run the `start:desktop` npm package script.
 
 ```sh
-npm run apply:copay
 npm run start:desktop
 ```
 
@@ -101,24 +94,18 @@ The `final` commands build the production version of the app, and bundle it with
 ### Android
 
 ```sh
-npm run clean-all
-npm run apply:copay
 npm run final:android
 ```
 
 ### iOS
 
 ```sh
-npm run clean-all
-npm run apply:copay
 npm run final:ios
 ```
 
 ### Desktop (Linux, macOS, and Windows)
 
 ```sh
-npm run clean-all
-npm run apply:copay
 npm run final:desktop
 ```
 
@@ -147,7 +134,6 @@ npm run final:desktop
 > cd chrome-app/
 
 ```sh
-npm run apply:copay
 grunt
 make
 ```
@@ -245,7 +231,7 @@ Finally, in case you lose the device and you have the 24 word seed for the devic
 
 
 ## Translations
-Copay uses standard gettext PO files for translations and [Crowdin](https://crowdin.com/project/copay) as the front-end tool for translators.  To join our team of translators, please create an account at [Crowdin](https://crowdin.com) and translate the Copay documentation and application text into your native language.
+NavPay uses standard gettext PO files for translations and [Crowdin](https://crowdin.com/project/copay) as the front-end tool for translators.  To join our team of translators, please create an account at [Crowdin](https://crowdin.com) and translate the Copay documentation and application text into your native language.
 
 To download and build using the latest translations from Crowdin, please use the following commands:
 
@@ -267,7 +253,7 @@ This will download all partial and complete language translations while also cle
 *Gracias totales!*
 
 ## Release Schedules
-Copay uses the `MAJOR.MINOR.BATCH` convention for versioning.  Any release that adds features should modify the MINOR or MAJOR number.
+NavPay uses the `MAJOR.MINOR.BATCH` convention for versioning.  Any release that adds features should modify the MINOR or MAJOR number.
 
 ### Bug Fixing Releases
 

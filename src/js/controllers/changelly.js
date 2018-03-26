@@ -75,6 +75,20 @@ angular.module('copayApp.controllers').controller('changellyController',
       });
     };
 
+    var updateTxps = function() {
+      profileService.getTxps({
+        limit: 3
+      }, function(err, txps, n) {
+        if (err) $log.error(err);
+        $scope.txps = txps;
+        $scope.txpsN = n;
+        $timeout(function() {
+          $ionicScrollDelegate.resize();
+          $scope.$apply();
+        }, 10);
+      })
+    };
+
     var updateWallet = function(wallet) {
       $log.debug('Updating wallet:' + wallet.name)
       walletService.getStatus(wallet, {}, function(err, status) {

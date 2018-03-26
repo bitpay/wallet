@@ -12,7 +12,23 @@
       </button>
     </ion-nav-buttons>
   </ion-nav-bar>
+
   <ion-slides class="slides" options="options" slider="data.slider">
+    <ion-slide-page ng-if="shouldShowAppDownload()">
+      <ion-content id="onboard-tour-save-to-phone" scroll="false">
+        <div class="onboarding-topic" translate>NavPay app</div>
+        <div class="onboarding-illustration-app"></div>
+        <div class="cta-buttons">
+          <div class="onboarding-tldr" translate>You can choose to use our web wallet or our iOS app</div>
+          <button class="button button-standard button-secondary" href ui-sref="downloadApp" translate>
+            Download iOS App
+          </button>
+          <button class="button button-standard button-secondary" ng-click="slideNext()" translate>
+            Use Web wallet
+          </button>
+        </div>
+      </ion-content>
+    </ion-slide-page>
     <ion-slide-page>
       <ion-content id="onboard-tour-secure" scroll="false">
         <div class="onboarding-topic" translate>NavCoin is secure,<br/>digital money.</div>

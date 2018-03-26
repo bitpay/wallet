@@ -120,10 +120,12 @@
     "cordova": "^6.3.1",
     "elementtree": "^0.1.7",
     "grunt": "^1.0.1",
+    "grunt-asset-hash": "^0.1.9",
     "ionic": "^2.1.0",
     "lodash": "^4.3.0",
     "plist": "^2.1.0",
     "pre-commit": "^1.1.3",
+    "replace-in-file": "^3.2.0",
     "tostr": "^0.1.0",
     "trash-cli": "^1.4.0",
     "xcode": "^1.0.0"

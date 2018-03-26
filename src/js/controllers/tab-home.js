@@ -10,6 +10,7 @@ angular.module('copayApp.controllers').controller('tabHomeController',
     $scope.version = $window.version;
     $scope.name = appConfigService.nameCase;
     $scope.homeTip = $stateParams.fromOnboarding;
+    $scope.buyNavTip = true
     $scope.isCordova = platformInfo.isCordova;
     $scope.isAndroid = platformInfo.isAndroid;
     $scope.isWindowsPhoneApp = platformInfo.isCordova && platformInfo.isWP;
@@ -21,26 +22,20 @@ angular.module('copayApp.controllers').controller('tabHomeController',
     });
 
     $scope.$on("$ionicView.beforeEnter", function(event, data) {
+      if(navigator.onLine === false) {
+        // We shouldn't reach here. But just encase.
+        $state.go('offline');
+      }
+
       if (!$scope.homeTip) {
         storageService.getHomeTipAccepted(function(error, value) {
           $scope.homeTip = (value == 'accepted') ? false : true;
         });
       }
 
-      // if ($scope.isNW) {
-      //   latestReleaseService.checkLatestRelease(function(err, newRelease) {
-      //     if (err) {
-      //       $log.warn(err);
-      //       return;
-      //     }
-      //     if (newRelease) {
-      //       $scope.newRelease = true;
-      //       $scope.updateText = gettextCatalog.getString('There is a new version of {{appName}} available', {
-      //         appName: $scope.name
-      //       });
-      //     }
-      //   });
-      // }
+      storageService.getBuyNavTipAccepted(function(error, value) {
+        $scope.buyNavTip = (value == 'accepted') ? false : true;
+      });
 
       storageService.getFeedbackInfo(function(error, info) {
 
@@ -270,6 +265,15 @@ angular.module('copayApp.controllers').controller('tabHomeController',
     $scope.hideHomeTip = function() {
       storageService.setHomeTipAccepted('accepted', function() {
         $scope.homeTip = false;
+        $timeout(function() {
+          $scope.$apply();
+        })
+      });
+    };
+
+    $scope.hideBuyNavTip = function() {
+      storageService.setBuyNavTipAccepted('accepted', function() {
+        $scope.buyNavTip = false;
         $timeout(function() {
           $scope.$apply();
         })

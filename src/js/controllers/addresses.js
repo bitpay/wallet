@@ -37,7 +37,9 @@ angular.module('copayApp.controllers').controller('addressesController', functio
       var allAddresses = addresses;
 
       walletService.getBalance($scope.wallet, {}, function(err, resp) {
+        $log.debug('Loading balance', resp)
         if (err) {
+          $log.debug('Could no load wallet')
           $scope.loading = false;
           return popupService.showAlert(bwcError.msg(err, gettextCatalog.getString('Could not update wallet')));
         }
@@ -62,6 +64,8 @@ angular.module('copayApp.controllers').controller('addressesController', functio
           value: $scope.noBalance.length > UNUSED_ADDRESS_LIMIT || withBalance.length > BALANCE_ADDRESS_LIMIT
         };
         $scope.allAddresses = $scope.noBalance.concat(withBalance);
+
+        $log.debug('withBalance', withBalance)
 
         cachedWallet = $scope.wallet.id;
         $scope.loading = false;

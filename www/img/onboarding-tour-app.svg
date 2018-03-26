@@ -1,0 +1,26 @@
+<svg viewBox="0 0 247 247" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 3.8.1 (29687) - http://www.bohemiancoding.com/sketch -->
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <linearGradient x1="1.05887097%" y1="49.9370787%" x2="97.6524194%" y2="49.9370787%" id="linearGradient-1">
+            <stop stop-color="#C727B5" offset="0%"></stop>
+            <stop stop-color="#44B4EA" offset="100%"></stop>
+        </linearGradient>
+    </defs>
+    <g id="onboarding-tour-app" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Onboarding">
+            <g id="_x30_.2.3---Tour-3">
+                <g id="bg-3">
+                    <path d="M123.5,247 C191.7,247 247,191.7 247,123.5 C247,55.3 191.7,0 123.5,0 C55.3,0 0,55.3 0,123.5 C0,191.7 55.3,247 123.5,247 L123.5,247 Z" id="Oval-2" fill="#523971" opacity="0.3"></path>
+                    <g id="phone" transform="translate(74.000000, 31.000000)" stroke="#7D5AB5" stroke-width="2">
+                        <path d="M8,0 L91.8,0 C96.2,0 99.8,3.6 99.8,8 L99.8,175.9 C99.8,180.3 96.2,183.9 91.8,183.9 L8,183.9 C3.6,183.9 -7.10542736e-15,180.3 -7.10542736e-15,175.9 L-7.10542736e-15,8 C-7.10542736e-15,3.6 3.6,0 8,0 L8,0 Z" id="Combined-Shape" fill="#523971"></path>
+                        <path d="M0,156.6 L99,156.6" id="Line"></path>
+                        <path d="M36,170.3 L66,170.3" id="Line_1_"></path>
+                    </g>
+                </g>
+            </g>
+        </g>
+        <polygon id="Shape" fill="#000000" opacity="0.3" points="172.6 113 172.7 158.9 142.2 158.9 99 115.7 115.9 96.7 131.9 111.7 148.6 89"></polygon>
+        <polygon id="Shape" fill="url(#linearGradient-1)" points="138.8 89 131.2 105.2 121.9 89.1 111.1 89.1 100 115.7 110.7 115.7 117.3 100 126.2 115.7 136.5 115.7 136.9 115.7 149.6 89"></polygon>
+    </g>
+</svg>

@@ -13,7 +13,10 @@
 
     <!-- <div class="ng-hide" ng-show="showRateCard.value" ng-include="'views/feedback/rateCard.html'"></div> -->
     <div>
-      <div class="list card homeTip" id="home-changelly">
+      <div class="list card homeTip" id="home-changelly" ng-if="buyNavTip">
+        <div class="item item-icon-right item-heading">
+          <a ng-click="hideBuyNavTip()"><i class="icon ion-ios-close-empty close-home-tip"></i></a>
+        </div>
         <div class="title" translate>
           Purchase NavCoin
         </div>

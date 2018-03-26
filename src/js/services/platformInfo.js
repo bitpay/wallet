@@ -5,7 +5,6 @@ angular.module('copayApp.services').factory('platformInfo', function($window) {
   var ua = navigator ? navigator.userAgent : null;
 
   if (!ua) {
-    console.log('Could not determine navigator. Using fixed string');
     ua = 'dummy user-agent';
   }
 
@@ -50,7 +49,6 @@ angular.module('copayApp.services').factory('platformInfo', function($window) {
     isAndroid: ionic.Platform.isAndroid(),
     isIOS: ionic.Platform.isIOS(),
     isWP: ionic.Platform.isWindowsPhone() || ionic.Platform.platform() == 'edge',
-    isSafari: Object.prototype.toString.call(window.HTMLElement).indexOf('Constructor') > 0,
     ua: ua,
     isCordova: !!$window.cordova,
     isNW: isNodeWebkit(),
@@ -65,6 +63,52 @@ angular.module('copayApp.services').factory('platformInfo', function($window) {
 
   ret.versionIntelTEE = getVersionIntelTee();
   ret.supportsIntelTEE = ret.versionIntelTEE.length > 0;
+
+  // Safari / iOS
+  ret.isSafari = navigator.vendor && navigator.vendor.indexOf('Apple') > -1
+  var iOSVesionExtracted = navigator.userAgent.match(/(iPhone OS )(\d+)_(\d+)_?(\d+)?/) // ['iphone', 'iphone', 'major', 'minor', 'fix'] ['', '', '11', '2', '1']
+  ret.iOSVersion = iOSVesionExtracted ? [parseInt(iOSVesionExtracted[2], 10), parseInt(iOSVesionExtracted[3], 10), parseInt(iOSVesionExtracted[4], 10)] : []
+  ret.iOSPWASupport = ret.iOSVersion.length ? ret.iOSVersion[0] >= 11 && ret.iOSVersion[1] >= 3 : false
+  ret.isPWA = navigator.standalone || false
+
+  // Choose camera types
+  // Supported  'unsupported', 'native', 'webrtc', 'photo'
+  ret.cameraType = 'unsupported'
+  ret.cameraSupported = false
+
+  if (ret.isCordova) {
+    ret.cameraType = 'native'
+    ret.cameraSupported = true
+  } else if (checkWebRtcSupport()) {
+    ret.cameraType = 'webrtc'
+    ret.cameraSupported = true
+  } else if (checkPhotoSupport()) {
+    ret.cameraType = 'photo'
+    ret.cameraSupported = true
+  }
+
+  // Check PWA support
+  ret.supportPWA = false
+  if (ret.isSafari && ret.cameraType !== 'unsupported') {
+    ret.supportPWA = true
+  }
+
+  function checkWebRtcSupport() {
+    // Update encase its an older browser
+    if (!navigator.getUserMedia && navigator.webkitGetUserMedia) {
+      navigator.getUserMedia = navigator.webkitGetUserMedia;
+    }
+    // If we dont have access to these, then no RTC support
+    if (!navigator.mediaDevices || !navigator.getUserMedia) {
+      return false
+    }
+    return true
+  }
+
+  // PWA on iOS 10.3 started supporting button click photos
+  function checkPhotoSupport() {
+    return ret.iOSVersion.length ? ret.iOSVersion[0] >= 11 && ret.iOSVersion[1] >= 3 : false
+  }
 
   return ret;
 });
