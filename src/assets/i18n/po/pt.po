@@ -12,7 +12,7 @@ msgstr ""
 "Last-Translator: cmgustavo83\n"
 "Language-Team: Portuguese, Brazilian\n"
 "Language: pt\n"
-"PO-Revision-Date: 2018-03-22 14:15-0400\n"
+"PO-Revision-Date: 2018-03-23 16:07-0400\n"
 
 msgid "(Trusted)"
 msgstr "(Confiável)"
@@ -75,6 +75,9 @@ msgid "Address Type"
 msgstr "Tipo de Endereço"
 
 msgid "Address book"
+msgstr ""
+
+msgid "Addressbook is empty"
 msgstr ""
 
 msgid "Addresses with balance"
@@ -314,6 +317,9 @@ msgstr "Confirmar"
 msgid "Confirm &amp; Finish"
 msgstr ""
 
+msgid "Confirm your PIN"
+msgstr ""
+
 msgid "Confirm your new encrypt password"
 msgstr ""
 
@@ -424,6 +430,9 @@ msgstr ""
 
 msgid "Could not get fee levels"
 msgstr "Não foi possível obter níveis de taxa"
+
+msgid "Could not get the Addressbook"
+msgstr ""
 
 msgid "Could not get the invoice"
 msgstr "Não foi possível obter a fatura"
@@ -536,8 +545,14 @@ msgstr ""
 msgid "Details"
 msgstr "Detalhes"
 
+msgid "Disabled"
+msgstr ""
+
 msgid "Do it later"
 msgstr "Fazê-lo mais tarde"
+
+msgid "Do not include private key"
+msgstr ""
 
 msgid "Don't see your language on Crowdin? Contact the Owner on Crowdin! We'd love to support your language."
 msgstr "Não vê o seu idioma no Crowdin? Contacte o Dono no Crowdin! Nós adoraríamos suportar a sua linguagem."
@@ -605,8 +620,17 @@ msgstr ""
 msgid "Enter your password"
 msgstr "Digite sua senha"
 
+msgid "Entry already exist"
+msgstr ""
+
+msgid "Entry does not exist"
+msgstr ""
+
 msgid "Error"
 msgstr "Erro"
+
+msgid "Error adding new entry"
+msgstr ""
 
 msgid "Error at confirm"
 msgstr "Erro na confirmação"
@@ -616,6 +640,12 @@ msgstr "Erro ao criar a fatura"
 
 msgid "Error creating wallet"
 msgstr "Erro na criação da carteira"
+
+msgid "Error deleting addressbook"
+msgstr ""
+
+msgid "Error deleting entry"
+msgstr ""
 
 msgid "Error getting SendMax information"
 msgstr "Erro ao obter informações de SendMax"
@@ -690,6 +720,9 @@ msgid "Fetching payment information"
 msgstr "Buscando informação de pagamento"
 
 msgid "File/Text"
+msgstr ""
+
+msgid "Fingerprint"
 msgstr ""
 
 msgid "Finish"
@@ -986,6 +1019,9 @@ msgstr "Parâmetro em falta"
 msgid "Missing private keys to sign"
 msgstr "Faltam chaves privadas para assinar"
 
+msgid "More"
+msgstr ""
+
 msgid "More Options"
 msgstr "Mais opções"
 
@@ -1103,6 +1139,9 @@ msgstr "Nenhum fundo encontrado"
 msgid "Not now"
 msgstr "Agora não"
 
+msgid "Not valid bitcoin address"
+msgstr ""
+
 msgid "Note"
 msgstr "Nota"
 
@@ -1187,6 +1226,9 @@ msgstr ""
 msgid "Ouch!"
 msgstr ""
 
+msgid "PIN"
+msgstr ""
+
 msgid "Password"
 msgstr "Senha"
 
@@ -1268,6 +1310,9 @@ msgstr "Por favor, digite a frase de recuperação"
 msgid "Please enter the wallet recovery phrase"
 msgstr "Por favor, digite a frase de recuperação da carteira"
 
+msgid "Please enter your PIN"
+msgstr ""
+
 msgid "Please tap each word in the correct order."
 msgstr "Por favor escolhe cada palavra na ordem correta."
 
@@ -1336,6 +1381,9 @@ msgstr ""
 
 msgid "Quick review!"
 msgstr "Avaliação rápida!"
+
+msgid "Random"
+msgstr ""
 
 msgid "Rate"
 msgstr ""
@@ -1496,6 +1544,9 @@ msgstr "Enviar"
 msgid "Send Feedback"
 msgstr "Enviar Sugestão"
 
+msgid "Send Max amount"
+msgstr ""
+
 msgid "Send Money"
 msgstr "Enviar Dinheiro"
 
@@ -1592,10 +1643,16 @@ msgstr ""
 msgid "Since only you control your money, you’ll need to save your backup phrase in case this app is deleted."
 msgstr "Uma vez que só você controla o seu dinheiro, você precisará salvar sua frase de backup no caso deste app ser excluído."
 
+msgid "Single address"
+msgstr ""
+
 msgid "Skip"
 msgstr "Pular"
 
 msgid "Some of your wallets are not eligible for Bitcoin Cash support. You can try to access BCH funds from these wallets using the recovery tool"
+msgstr ""
+
+msgid "Specify Recovery Phrase"
 msgstr ""
 
 msgid "Spend proposal is not accepted"

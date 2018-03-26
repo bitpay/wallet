@@ -12,7 +12,7 @@ msgstr ""
 "Last-Translator: cmgustavo83\n"
 "Language-Team: Korean\n"
 "Language: ko\n"
-"PO-Revision-Date: 2018-03-22 14:14-0400\n"
+"PO-Revision-Date: 2018-03-23 16:07-0400\n"
 
 msgid "(Trusted)"
 msgstr "(신뢰할 수 있음)"
@@ -75,6 +75,9 @@ msgid "Address Type"
 msgstr "주소 타입"
 
 msgid "Address book"
+msgstr ""
+
+msgid "Addressbook is empty"
 msgstr ""
 
 msgid "Addresses with balance"
@@ -314,6 +317,9 @@ msgstr "확인"
 msgid "Confirm &amp; Finish"
 msgstr ""
 
+msgid "Confirm your PIN"
+msgstr ""
+
 msgid "Confirm your new encrypt password"
 msgstr ""
 
@@ -424,6 +430,9 @@ msgstr ""
 
 msgid "Could not get fee levels"
 msgstr "레벨 수수료를 받을 수 없습니다."
+
+msgid "Could not get the Addressbook"
+msgstr ""
 
 msgid "Could not get the invoice"
 msgstr "청구서를 얻을 수 없습니다"
@@ -536,8 +545,14 @@ msgstr ""
 msgid "Details"
 msgstr "세부 정보"
 
+msgid "Disabled"
+msgstr ""
+
 msgid "Do it later"
 msgstr "나중에 시도해주세요"
+
+msgid "Do not include private key"
+msgstr ""
 
 msgid "Don't see your language on Crowdin? Contact the Owner on Crowdin! We'd love to support your language."
 msgstr "Crowdin에 귀하의 언어가 없나요? Crowdin 소유자에게 문의하세요! 저희는 귀하의 언어를 지원하고 싶습니다."
@@ -605,8 +620,17 @@ msgstr ""
 msgid "Enter your password"
 msgstr "비밀번호 입력"
 
+msgid "Entry already exist"
+msgstr ""
+
+msgid "Entry does not exist"
+msgstr ""
+
 msgid "Error"
 msgstr "오류"
+
+msgid "Error adding new entry"
+msgstr ""
 
 msgid "Error at confirm"
 msgstr "확인 오류"
@@ -616,6 +640,12 @@ msgstr "인보이스 생성 오류"
 
 msgid "Error creating wallet"
 msgstr "지갑 생성 오류"
+
+msgid "Error deleting addressbook"
+msgstr ""
+
+msgid "Error deleting entry"
+msgstr ""
 
 msgid "Error getting SendMax information"
 msgstr "SendMax 정보 수신 오류"
@@ -690,6 +720,9 @@ msgid "Fetching payment information"
 msgstr "지불 정보 가져오는 중"
 
 msgid "File/Text"
+msgstr ""
+
+msgid "Fingerprint"
 msgstr ""
 
 msgid "Finish"
@@ -986,6 +1019,9 @@ msgstr "누락 된 매개 변수"
 msgid "Missing private keys to sign"
 msgstr "서명 할 누락 된 개인 키"
 
+msgid "More"
+msgstr ""
+
 msgid "More Options"
 msgstr "더 많은 옵션"
 
@@ -1103,6 +1139,9 @@ msgstr "발견된 자금이 없습니다"
 msgid "Not now"
 msgstr "나중에"
 
+msgid "Not valid bitcoin address"
+msgstr ""
+
 msgid "Note"
 msgstr "알림"
 
@@ -1187,6 +1226,9 @@ msgstr ""
 msgid "Ouch!"
 msgstr ""
 
+msgid "PIN"
+msgstr ""
+
 msgid "Password"
 msgstr "비밀번호"
 
@@ -1268,6 +1310,9 @@ msgstr "복원 문구를 입력해주세요"
 msgid "Please enter the wallet recovery phrase"
 msgstr "지갑 복원 문구를 입력해주세요"
 
+msgid "Please enter your PIN"
+msgstr ""
+
 msgid "Please tap each word in the correct order."
 msgstr "각 단어를 정확한 순서로 탭해주세요."
 
@@ -1336,6 +1381,9 @@ msgstr ""
 
 msgid "Quick review!"
 msgstr "퀵 리뷰!"
+
+msgid "Random"
+msgstr ""
 
 msgid "Rate"
 msgstr ""
@@ -1496,6 +1544,9 @@ msgstr "전송"
 msgid "Send Feedback"
 msgstr "피드백 전송"
 
+msgid "Send Max amount"
+msgstr ""
+
 msgid "Send Money"
 msgstr "화폐 전송"
 
@@ -1592,10 +1643,16 @@ msgstr ""
 msgid "Since only you control your money, you’ll need to save your backup phrase in case this app is deleted."
 msgstr "귀하의 화폐는 귀하만이 제어할 수 있으므로, 이 앱이 삭제될 경우를 대비하여 백업 문구를 저장하셔야 합니다."
 
+msgid "Single address"
+msgstr ""
+
 msgid "Skip"
 msgstr "건너뛰기"
 
 msgid "Some of your wallets are not eligible for Bitcoin Cash support. You can try to access BCH funds from these wallets using the recovery tool"
+msgstr ""
+
+msgid "Specify Recovery Phrase"
 msgstr ""
 
 msgid "Spend proposal is not accepted"

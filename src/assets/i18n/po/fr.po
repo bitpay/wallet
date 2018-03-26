@@ -12,7 +12,7 @@ msgstr ""
 "Last-Translator: cmgustavo83\n"
 "Language-Team: French\n"
 "Language: fr\n"
-"PO-Revision-Date: 2018-03-23 08:38-0400\n"
+"PO-Revision-Date: 2018-03-24 07:33-0400\n"
 
 msgid "(Trusted)"
 msgstr "(Fiable)"
@@ -76,6 +76,9 @@ msgstr "Type d'adresse"
 
 msgid "Address book"
 msgstr "Répertoire"
+
+msgid "Addressbook is empty"
+msgstr "Le répertoire est vide"
 
 msgid "Addresses with balance"
 msgstr "Adresses avec un solde"
@@ -314,6 +317,9 @@ msgstr "Confirmer"
 msgid "Confirm &amp; Finish"
 msgstr "Confirmer &amp; Terminer"
 
+msgid "Confirm your PIN"
+msgstr "Confirmez votre PIN"
+
 msgid "Confirm your new encrypt password"
 msgstr "Confirmez votre nouveau code de chiffrement"
 
@@ -424,6 +430,9 @@ msgstr "Impossible d'obtenir les frais dynamiques pour :"
 
 msgid "Could not get fee levels"
 msgstr "Impossible d'obtenir les niveaux de frais"
+
+msgid "Could not get the Addressbook"
+msgstr "Impossible d'obtenir le répertoire"
 
 msgid "Could not get the invoice"
 msgstr "Impossible d'obtenir la facture"
@@ -536,8 +545,14 @@ msgstr "Chemin de dérivation"
 msgid "Details"
 msgstr "Détails"
 
+msgid "Disabled"
+msgstr "Désactivé"
+
 msgid "Do it later"
 msgstr "La faire plus tard"
+
+msgid "Do not include private key"
+msgstr "Ne pas inclure la clé privée"
 
 msgid "Don't see your language on Crowdin? Contact the Owner on Crowdin! We'd love to support your language."
 msgstr "Vous ne voyez pas votre langue sur Crowdin ? Contactez le propriétaire sur Crowdin ! Nous serions ravis de prendre en charge votre langue."
@@ -605,8 +620,17 @@ msgstr "Ressaisissez votre code de chiffrement pour confirmer"
 msgid "Enter your password"
 msgstr "Écrivez votre mot de passe"
 
+msgid "Entry already exist"
+msgstr "L'entrée existe déjà"
+
+msgid "Entry does not exist"
+msgstr "L'entrée n'existe pas"
+
 msgid "Error"
 msgstr "Erreur"
+
+msgid "Error adding new entry"
+msgstr "Erreur lors de l’ajout d’une nouvelle entrée"
 
 msgid "Error at confirm"
 msgstr "Erreur à la confirmation"
@@ -616,6 +640,12 @@ msgstr "Erreur de création de la facture"
 
 msgid "Error creating wallet"
 msgstr "Erreur de création du portefeuille"
+
+msgid "Error deleting addressbook"
+msgstr "Erreur de suppression du répertoire"
+
+msgid "Error deleting entry"
+msgstr "Erreur de suppression d’entrée"
 
 msgid "Error getting SendMax information"
 msgstr "Erreur d’obtention de l'information SendMax"
@@ -691,6 +721,9 @@ msgstr "Récupération des informations de paiement"
 
 msgid "File/Text"
 msgstr "Fichier / Texte"
+
+msgid "Fingerprint"
+msgstr "Empreinte digitale"
 
 msgid "Finish"
 msgstr "Terminer"
@@ -986,6 +1019,9 @@ msgstr "Paramètre manquant"
 msgid "Missing private keys to sign"
 msgstr "Clés privées manquantes pour signer"
 
+msgid "More"
+msgstr "Plus"
+
 msgid "More Options"
 msgstr "Plus d'options"
 
@@ -1103,6 +1139,9 @@ msgstr "Aucun fonds trouvé"
 msgid "Not now"
 msgstr "Pas maintenant"
 
+msgid "Not valid bitcoin address"
+msgstr "Ce n'est pas une adresse bitcoin valide"
+
 msgid "Note"
 msgstr "Note"
 
@@ -1187,6 +1226,9 @@ msgstr "Commander la BitPay Card"
 msgid "Ouch!"
 msgstr "Aïe !"
 
+msgid "PIN"
+msgstr "PIN"
+
 msgid "Password"
 msgstr "Mot de passe"
 
@@ -1268,6 +1310,9 @@ msgstr "Veuillez saisir la phrase de récupération"
 msgid "Please enter the wallet recovery phrase"
 msgstr "Veuillez saisir la phrase de récupération du portefeuille"
 
+msgid "Please enter your PIN"
+msgstr "Veuillez saisir votre PIN"
+
 msgid "Please tap each word in the correct order."
 msgstr "Veuillez sélectionner chaque mot dans le bon ordre."
 
@@ -1336,6 +1381,9 @@ msgstr "Code QR"
 
 msgid "Quick review!"
 msgstr "Récapitulatif !"
+
+msgid "Random"
+msgstr "Aléatoire"
 
 msgid "Rate"
 msgstr "Noter"
@@ -1496,6 +1544,9 @@ msgstr "Envoyer"
 msgid "Send Feedback"
 msgstr "Envoyer un avis"
 
+msgid "Send Max amount"
+msgstr "Envoyer le montant maximal"
+
 msgid "Send Money"
 msgstr "Envoyer de l'argent"
 
@@ -1592,11 +1643,17 @@ msgstr "Signature de la transaction..."
 msgid "Since only you control your money, you’ll need to save your backup phrase in case this app is deleted."
 msgstr "Puisque vous seul contrôlez votre argent, vous devrez enregistrer votre phrase de sauvegarde au cas où cette appli est supprimée."
 
+msgid "Single address"
+msgstr "Adresse unique"
+
 msgid "Skip"
 msgstr "Ignorer"
 
 msgid "Some of your wallets are not eligible for Bitcoin Cash support. You can try to access BCH funds from these wallets using the recovery tool"
 msgstr "Certains de vos portefeuilles ne sont pas éligibles à Bitcoin Cash. Vous pouvez essayer d’avoir accès aux fonds BCH de ces portefeuilles à l’aide de l'outil de récupération"
+
+msgid "Specify Recovery Phrase"
+msgstr "Spécifier la phrase de récupération"
 
 msgid "Spend proposal is not accepted"
 msgstr "La proposition de dépense n'est pas acceptée"

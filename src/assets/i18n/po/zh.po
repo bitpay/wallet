@@ -12,7 +12,7 @@ msgstr ""
 "Last-Translator: cmgustavo83\n"
 "Language-Team: Chinese Simplified\n"
 "Language: zh\n"
-"PO-Revision-Date: 2018-03-22 14:14-0400\n"
+"PO-Revision-Date: 2018-03-23 16:07-0400\n"
 
 msgid "(Trusted)"
 msgstr "（可信的）"
@@ -75,6 +75,9 @@ msgid "Address Type"
 msgstr "地址类型"
 
 msgid "Address book"
+msgstr ""
+
+msgid "Addressbook is empty"
 msgstr ""
 
 msgid "Addresses with balance"
@@ -314,6 +317,9 @@ msgstr "确定"
 msgid "Confirm &amp; Finish"
 msgstr ""
 
+msgid "Confirm your PIN"
+msgstr ""
+
 msgid "Confirm your new encrypt password"
 msgstr ""
 
@@ -424,6 +430,9 @@ msgstr ""
 
 msgid "Could not get fee levels"
 msgstr "无法获取费率"
+
+msgid "Could not get the Addressbook"
+msgstr ""
 
 msgid "Could not get the invoice"
 msgstr "不能拿到发票"
@@ -536,8 +545,14 @@ msgstr ""
 msgid "Details"
 msgstr "详情"
 
+msgid "Disabled"
+msgstr ""
+
 msgid "Do it later"
 msgstr "以后再做"
+
+msgid "Do not include private key"
+msgstr ""
 
 msgid "Don't see your language on Crowdin? Contact the Owner on Crowdin! We'd love to support your language."
 msgstr "在 Crowdin 找不到你的语言？请联系 Crowdin 的所有者！我们很乐意支持你的语言。"
@@ -605,8 +620,17 @@ msgstr ""
 msgid "Enter your password"
 msgstr "请输入你的密码"
 
+msgid "Entry already exist"
+msgstr ""
+
+msgid "Entry does not exist"
+msgstr ""
+
 msgid "Error"
 msgstr "错误！"
+
+msgid "Error adding new entry"
+msgstr ""
 
 msgid "Error at confirm"
 msgstr "在确认错误"
@@ -616,6 +640,12 @@ msgstr "创建发票时出错"
 
 msgid "Error creating wallet"
 msgstr "创建钱包时出现错误"
+
+msgid "Error deleting addressbook"
+msgstr ""
+
+msgid "Error deleting entry"
+msgstr ""
 
 msgid "Error getting SendMax information"
 msgstr "获取SendMax信息时出错。"
@@ -690,6 +720,9 @@ msgid "Fetching payment information"
 msgstr "获取付款信息"
 
 msgid "File/Text"
+msgstr ""
+
+msgid "Fingerprint"
 msgstr ""
 
 msgid "Finish"
@@ -986,6 +1019,9 @@ msgstr "缺失参数"
 msgid "Missing private keys to sign"
 msgstr "遗失需要签名的私钥"
 
+msgid "More"
+msgstr ""
+
 msgid "More Options"
 msgstr "更多的选择"
 
@@ -1103,6 +1139,9 @@ msgstr "没有资金发现"
 msgid "Not now"
 msgstr "不是现在"
 
+msgid "Not valid bitcoin address"
+msgstr ""
+
 msgid "Note"
 msgstr "备注"
 
@@ -1187,6 +1226,9 @@ msgstr ""
 msgid "Ouch!"
 msgstr ""
 
+msgid "PIN"
+msgstr ""
+
 msgid "Password"
 msgstr "密码"
 
@@ -1268,6 +1310,9 @@ msgstr "请输入恢复短语"
 msgid "Please enter the wallet recovery phrase"
 msgstr "请输入钱包恢复短语"
 
+msgid "Please enter your PIN"
+msgstr ""
+
 msgid "Please tap each word in the correct order."
 msgstr "请点击每个单词按照正确的顺序。"
 
@@ -1336,6 +1381,9 @@ msgstr ""
 
 msgid "Quick review!"
 msgstr "快速审查 ！"
+
+msgid "Random"
+msgstr ""
 
 msgid "Rate"
 msgstr ""
@@ -1496,6 +1544,9 @@ msgstr "发送"
 msgid "Send Feedback"
 msgstr "发送反馈"
 
+msgid "Send Max amount"
+msgstr ""
+
 msgid "Send Money"
 msgstr "寄钱"
 
@@ -1592,10 +1643,16 @@ msgstr ""
 msgid "Since only you control your money, you’ll need to save your backup phrase in case this app is deleted."
 msgstr "因为只有你控制你的钱，你会需要删除此应用程序的情况下保存您备份的短语。"
 
+msgid "Single address"
+msgstr ""
+
 msgid "Skip"
 msgstr "跳过"
 
 msgid "Some of your wallets are not eligible for Bitcoin Cash support. You can try to access BCH funds from these wallets using the recovery tool"
+msgstr ""
+
+msgid "Specify Recovery Phrase"
 msgstr ""
 
 msgid "Spend proposal is not accepted"

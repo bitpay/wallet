@@ -12,7 +12,7 @@ msgstr ""
 "Last-Translator: cmgustavo83\n"
 "Language-Team: Japanese\n"
 "Language: ja\n"
-"PO-Revision-Date: 2018-03-22 14:14-0400\n"
+"PO-Revision-Date: 2018-03-23 16:07-0400\n"
 
 msgid "(Trusted)"
 msgstr "(信頼済み)"
@@ -75,6 +75,9 @@ msgid "Address Type"
 msgstr "アドレスの種類"
 
 msgid "Address book"
+msgstr ""
+
+msgid "Addressbook is empty"
 msgstr ""
 
 msgid "Addresses with balance"
@@ -316,6 +319,9 @@ msgstr "確認"
 msgid "Confirm &amp; Finish"
 msgstr ""
 
+msgid "Confirm your PIN"
+msgstr ""
+
 msgid "Confirm your new encrypt password"
 msgstr ""
 
@@ -426,6 +432,9 @@ msgstr ""
 
 msgid "Could not get fee levels"
 msgstr "手数料のレベルを取得できませんでした。"
+
+msgid "Could not get the Addressbook"
+msgstr ""
 
 msgid "Could not get the invoice"
 msgstr "請求の取得ができませんでした"
@@ -538,8 +547,14 @@ msgstr ""
 msgid "Details"
 msgstr "詳細"
 
+msgid "Disabled"
+msgstr ""
+
 msgid "Do it later"
 msgstr "後で行う"
+
+msgid "Do not include private key"
+msgstr ""
 
 msgid "Don't see your language on Crowdin? Contact the Owner on Crowdin! We'd love to support your language."
 msgstr "ご自分の言語はCrowdinで見当たりませんか？Crowdinの管理者に連絡とってみてください。是非とも対応したく思っております。"
@@ -607,8 +622,17 @@ msgstr ""
 msgid "Enter your password"
 msgstr "パスワードを入力して下さい。"
 
+msgid "Entry already exist"
+msgstr ""
+
+msgid "Entry does not exist"
+msgstr ""
+
 msgid "Error"
 msgstr "エラー"
+
+msgid "Error adding new entry"
+msgstr ""
 
 msgid "Error at confirm"
 msgstr "確認のエラー"
@@ -618,6 +642,12 @@ msgstr "請求の作成中にエラー"
 
 msgid "Error creating wallet"
 msgstr "ウォレット作成時にエラー"
+
+msgid "Error deleting addressbook"
+msgstr ""
+
+msgid "Error deleting entry"
+msgstr ""
 
 msgid "Error getting SendMax information"
 msgstr "全額送金データ取得時にエラー"
@@ -692,6 +722,9 @@ msgid "Fetching payment information"
 msgstr "支払い情報要求しています…"
 
 msgid "File/Text"
+msgstr ""
+
+msgid "Fingerprint"
 msgstr ""
 
 msgid "Finish"
@@ -988,6 +1021,9 @@ msgstr "不足しているパラメータ"
 msgid "Missing private keys to sign"
 msgstr "署名するための秘密鍵がありません。"
 
+msgid "More"
+msgstr ""
+
 msgid "More Options"
 msgstr "その他オプション"
 
@@ -1105,6 +1141,9 @@ msgstr "残高がありませんでした"
 msgid "Not now"
 msgstr "今はしない"
 
+msgid "Not valid bitcoin address"
+msgstr ""
+
 msgid "Note"
 msgstr "メモ"
 
@@ -1189,6 +1228,9 @@ msgstr ""
 msgid "Ouch!"
 msgstr ""
 
+msgid "PIN"
+msgstr ""
+
 msgid "Password"
 msgstr "パスワード"
 
@@ -1270,6 +1312,9 @@ msgstr "復元フレーズをご入力下さい"
 msgid "Please enter the wallet recovery phrase"
 msgstr "復元フレーズをご入力下さい"
 
+msgid "Please enter your PIN"
+msgstr ""
+
 msgid "Please tap each word in the correct order."
 msgstr "正しい順序で各単語をタップしてください。"
 
@@ -1338,6 +1383,9 @@ msgstr ""
 
 msgid "Quick review!"
 msgstr "おさらい！"
+
+msgid "Random"
+msgstr ""
 
 msgid "Rate"
 msgstr ""
@@ -1498,6 +1546,9 @@ msgstr "送信"
 msgid "Send Feedback"
 msgstr "フィードバックの送信"
 
+msgid "Send Max amount"
+msgstr ""
+
 msgid "Send Money"
 msgstr "送金する"
 
@@ -1596,10 +1647,16 @@ msgstr ""
 msgid "Since only you control your money, you’ll need to save your backup phrase in case this app is deleted."
 msgstr "ビットコインの管理は全てご自身でしていただくため、端末やアプリの不具合や削除に備えるために復元フレーズを書き留めていただきます。"
 
+msgid "Single address"
+msgstr ""
+
 msgid "Skip"
 msgstr "スキップ"
 
 msgid "Some of your wallets are not eligible for Bitcoin Cash support. You can try to access BCH funds from these wallets using the recovery tool"
+msgstr ""
+
+msgid "Specify Recovery Phrase"
 msgstr ""
 
 msgid "Spend proposal is not accepted"
