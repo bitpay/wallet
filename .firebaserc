@@ -1,0 +1,6 @@
+{
+  "projects": {
+    "default": "navpay-beta",
+    "prod": "nav-pay"
+  }
+}

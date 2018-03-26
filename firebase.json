@@ -1,0 +1,43 @@
+{
+  "hosting": {
+    "public": "dist/www",
+    "rewrites": [{
+      "source": "**",
+      "destination": "/index.html"
+    }],
+    "headers": [
+      {
+        "source" : "**/*.js",
+        "headers" : [ {
+          "key" : "Cache-Control",
+          "value" : "max-age=604800"
+        }]
+      },
+      {
+        "source" : "**/*.css",
+        "headers" : [ {
+          "key" : "Cache-Control",
+          "value" : "max-age=604800"
+        }]
+      },
+      {
+      "source" : "**/*.html",
+      "headers" : [ {
+        "key" : "Cache-Control",
+        "value" : "max-age=3600"
+      } ]
+    }, {
+      "source" : "**/*.@(jpg|jpeg|gif|png)",
+      "headers" : [ {
+      "key" : "Cache-Control",
+      "value" : "max-age=86400"
+      } ]
+    }, {
+      "source" : "cache.manifest",
+      "headers" : [ {
+        "key" : "Cache-Control",
+        "value" : "max-age=0"
+      } ]
+    } ]
+  }
+}
