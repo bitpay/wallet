@@ -89,6 +89,7 @@
     "watch": "grunt watch",
     "build:www": "grunt",
     "build:www-release": "grunt prod",
+    "build:www-beta": "grunt beta",
     "build:ios": "npm run final:www && cordova prepare ios && cordova build ios --debug",
     "build:android": "npm run final:www && cordova prepare android && cordova build android --debug",
     "build:windows": "cordova prepare windows && cordova build windows -- --arch=\"ARM\"",

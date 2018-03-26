@@ -291,6 +291,7 @@ module.exports = function(grunt) {
 
   grunt.registerTask('default', ['nggettext_compile', 'exec:appConfig', 'exec:externalServices', 'browserify', 'sass', 'concat', 'copy:ionic_fonts', 'copy:ionic_js']);
   grunt.registerTask('prod', ['default', 'exec:removeDist', 'copy:dist', 'uglify', 'exec:addManifest', 'asset_hash']);
+  grunt.registerTask('beta', ['default', 'exec:removeDist', 'copy:dist', 'exec:addManifest', 'asset_hash']);
   grunt.registerTask('translate', ['nggettext_extract']);
   grunt.registerTask('desktop', ['prod', 'nwjs', 'copy:linux', 'compress:linux']);
   grunt.registerTask('osx', ['prod', 'nwjs', 'exec:macos', 'exec:osxsign']);
