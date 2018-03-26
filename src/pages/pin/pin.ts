@@ -65,23 +65,25 @@ export class PinModalPage {
     this.incorrect = false;
     this.currentPin = this.currentPin + value;
     if (!this.isComplete()) return;
-    if (this.action === 'checkPin' || this.action === 'removeLock') this.checkIfCorrect();
+    if (this.action === 'checkPin' || this.action === 'removeLock') {
+      setTimeout(() => {
+        this.checkIfCorrect()
+      }, 100);
+    };
     if (this.action === 'pinSetUp') {
-      if (!this.confirmingPin) {
-        setTimeout(() => {
+      setTimeout(() => {
+        if (!this.confirmingPin) {
           this.confirmingPin = true;
           this.firstPinEntered = this.currentPin;
           this.currentPin = '';
-        }, 200);
-      }
-      else if (this.firstPinEntered === this.currentPin) this.save();
-      else {
-        setTimeout(() => {
+        }
+        else if (this.firstPinEntered === this.currentPin) this.save();
+        else {
           this.firstPinEntered = this.currentPin = '';
           this.incorrect = true;
           this.confirmingPin = false;
-        }, 200);
-      }
+        }
+      }, 100);
     }
   }
 
