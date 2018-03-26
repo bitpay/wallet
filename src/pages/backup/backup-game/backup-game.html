@@ -34,7 +34,7 @@
         </div>
         <div class="bottom-absolute">
           <div translate class="footer-text">We will confirm on the next screen.</div>
-          <button *ngIf="currentIndex == 0" ion-button class="button-standard" [disabled]="credentialsEncrypted || error" (click)="slideNext()">
+          <button *ngIf="currentIndex == 0" ion-button class="button-standard" [disabled]="credentialsEncrypted || error" (click)="slideNext(true)">
             {{'I have written it down' | translate}}
           </button>
         </div>
@@ -55,8 +55,7 @@
           <div *ngIf="!selectComplete">
             <ion-item-divider>{{'Please tap each word in the correct order.' | translate}}</ion-item-divider>
             <div class="words">
-              <button ion-button *ngFor="let shuffledWord of shuffledMnemonicWords; let i = index" (click)="addButton(i, shuffledWord)"
-                [disabled]="shuffledWord.selected">{{shuffledWord.word}}
+              <button ion-button *ngFor="let shuffledWord of shuffledMnemonicWords; let i = index" (click)="addButton(i, shuffledWord)" [disabled]="shuffledWord.selected">{{shuffledWord.word}}
               </button>
             </div>
           </div>
@@ -64,7 +63,7 @@
       </div>
       <div *ngIf="selectComplete" class="bottom-absolute">
         <div class="footer-text">{{'Is this correct?' | translate}}</div>
-        <button *ngIf="currentIndex == 1 && selectComplete" ion-button class="button-standard" (click)="slideNext()">
+        <button *ngIf="currentIndex == 1 && selectComplete" ion-button class="button-standard" (click)="slideNext(false)">
           {{'Confirm' | translate}}
         </button>
         <button ion-button clear class="button-standard" (click)="setFlow()">
