@@ -365,6 +365,9 @@ export class ProfileProvider {
 
   private askToEncryptWallet(wallet: any): Promise<any> {
     return new Promise((resolve, reject) => {
+
+      if(!wallet.canSign()) return resolve();
+
       var title = this.translate.instant('Would you like to protect this wallet with a password?');
       var message = this.translate.instant('Encryption can protect your funds if this device is stolen or compromised by malicious software.');
       var okText = this.translate.instant('Yes');
