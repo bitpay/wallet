@@ -7,8 +7,8 @@ const flags = [
 ];
 
 exports.config = {
-  allScriptsTimeout: 11000,
-  jasmineNodeOpts: { defaultTimeoutInterval: 1000 * 60 * 10 },
+  allScriptsTimeout: 1000 * 60 * 5,
+  jasmineNodeOpts: { defaultTimeoutInterval: 1000 * 60 * 5 },
   maxSessions: 4,
   specs: ['test/e2e/**/*.e2e-spec.ts'],
   // Available deviceNames for mobileEmulation: https://chromium.googlesource.com/chromium/src/+/master/third_party/WebKit/Source/devtools/front_end/emulated_devices/module.json
@@ -121,5 +121,6 @@ exports.config = {
         consolidateAll: true
       })
     );
-  }
+  },
+  SELENIUM_PROMISE_MANAGER: false
 };
