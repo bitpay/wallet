@@ -99,8 +99,21 @@ const changeAppleSysFont = () =>
     )
   );
 
+// Hide Chrome's scroll bar to avoid false positives from OS differences
+const hideScrollBar = () =>
+  browser.executeScript(
+    injector(
+      'scrollBarControl',
+      'style',
+      'scrollBarCtl',
+      '::-webkit-scrollbar { display: none; }',
+      'Scroll bar hidden for E2E testing.'
+    )
+  );
+
 export async function takeScreenshot(name: string) {
   await changeAppleSysFont();
+  await hideScrollBar();
   const config = await browser.getProcessedConfig();
   const deviceName = config['capabilities'].name;
   // gets set when debugging in a single instance
