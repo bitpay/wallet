@@ -51,6 +51,7 @@ export class BuyAmazonPage {
   public limitPerDayMessage: string;
   public network: string;
   public walletSelectorTitle: string;
+  public isOpenSelector: boolean;
 
   constructor(
     private amazonProvider: AmazonProvider,
@@ -83,6 +84,7 @@ export class BuyAmazonPage {
   }
 
   ionViewWillEnter() {
+    this.isOpenSelector = false;
     this.amount = this.navParams.data.amount;
     this.currency = this.navParams.data.currency;
 
@@ -445,11 +447,13 @@ export class BuyAmazonPage {
   }
 
   public showWallets(): void {
+    this.isOpenSelector = true;
     let id = this.wallet ? this.wallet.credentials.walletId : null;
     this.events.publish('showWalletsSelectorEvent', this.wallets, id, 'Buy from');
     this.events.subscribe('selectWalletEvent', (wallet: any) => {
       if (!_.isEmpty(wallet)) this.onWalletSelect(wallet);
       this.events.unsubscribe('selectWalletEvent');
+      this.isOpenSelector = false;
     });
   }
 
