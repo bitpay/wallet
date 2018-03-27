@@ -4,7 +4,6 @@ page-tx-details {
   $item-label-color: #6C6C6E;
 
   .header-container {
-    padding: 20px 0px 20px 0px;
     .sending-label {
       display: flex;
       align-items: center;
@@ -33,7 +32,6 @@ page-tx-details {
   }
 
   .item-fee {
-    line-height: 20px;
     .fee-title {
       margin-bottom: 5px;
       color: color($colors, grey);
@@ -61,16 +59,18 @@ page-tx-details {
     .wallet, .payment-to {
       @include row-flex;
       .icon-wallet {
-        margin-right: 1rem;
+        width: 25px;
+        height: 25px;
+        margin-right: 1.8rem;
         &.disabled {
           background-color: color($colors, grey);
         }
       }
       .icon-bitcoin {
         margin: 9px 2rem 9px 0;
-        width: 35px;
-        height: 35px;
-        padding: 5px 10px;
+        width: 30px;
+        height: 30px;
+        padding: 3px 8px;
         border: 1px solid color($colors, grey);
         border-radius: $icon-border-radius;
       }

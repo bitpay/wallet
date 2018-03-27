@@ -37,7 +37,7 @@ $colors: (
 );
 
 // App background color
-$background-color : #F5F5F5;
+$background-color: #F5F5F5;
 
 // Item list background color
 $list-background-color: #ffffff;
@@ -81,7 +81,7 @@ $onboarding-background-image: linear-gradient(
 $tabs-ios-background: color($colors, blank);
 $tabs-ios-border-color: rgba(0, 0, 0, .1);
 
-$item-ios-body-text-font-size: 1.4rem;
+$item-ios-body-text-font-size: 1.3rem;
 
 $item-ios-divider-background: $background-color;
 $item-ios-divider-color: color($colors, grey);
@@ -101,16 +101,13 @@ $searchbar-ios-padding-vertical: 16px;
 $searchbar-ios-padding-horizontal: 8px;
 
 $note-ios-color: color($colors, light-grey);
-$alert-md-title-font-size: 16px;
-$alert-md-sub-title-font-size: 12.5px;
-$alert-md-message-font-size: 12.5px;
 
 // App Material Design Variables
 // --------------------------------------------------
 // Material Design only Sass variables can go here
 
-$item-md-body-text-font-size: 1.4rem;
-$item-md-font-size: 1.6rem;
+$item-md-body-text-font-size: 1.3rem;
+$item-md-font-size: 1.4rem;
 
 $item-md-divider-background: $background-color;
 $item-md-divider-color: color($colors, grey);
@@ -129,7 +126,13 @@ $list-md-header-margin-bottom: 0;
 $list-md-margin-bottom: 0;
 $list-md-header-color: color($colors, dark);
 
+$alert-md-title-font-size: 16px;
+$alert-md-sub-title-font-size: 12.5px;
+$alert-md-message-font-size: 12.5px;
+
 $note-md-color: color($colors, light-grey);
+
+$button-md-text-transform: none;
 
 // App Windows Variables
 // --------------------------------------------------

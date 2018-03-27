@@ -43,11 +43,6 @@ ion-alert.alert-top{
   font-size: 1.6rem;
 }
 
-// Prevent uppercase on buttons
-.button {
-  text-transform: none;
-}
-
 // Hide border when refresh
 .has-refresher > .scroll-content {
   border-top: none !important;
@@ -319,24 +314,9 @@ ion-icon {
   box-shadow: none;  
 }
 
-ion-note {
-  font-size: 12px;
-  color: color($colors, light-grey);
-}
-
 .alertDanger {
   .alert-message {
     color: color($colors, danger);
   }
 }
 
-.alert-md .alert-button {
-  font-size: 12.5px;
-}
-
-ion-modal {
-  background-color: rgba(0, 0, 0, 0.6);
-  .modal-wrapper {
-    box-shadow: none !important;
-  }
-}
