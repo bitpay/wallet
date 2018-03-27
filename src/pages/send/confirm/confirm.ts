@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Events, ModalController, NavController, NavParams } from 'ionic-angular';
 import * as _ from 'lodash';
@@ -29,6 +29,7 @@ import { WalletProvider } from '../../../providers/wallet/wallet';
   templateUrl: 'confirm.html',
 })
 export class ConfirmPage {
+  @ViewChild('slideButton') slideButton;
 
   private bitcore: any;
   private bitcoreCash: any;
@@ -91,7 +92,12 @@ export class ConfirmPage {
     this.isCordova = this.platformProvider.isCordova;
   }
 
+  ionViewWillLeave() {
+    this.navCtrl.swipeBackEnabled = true;
+  }
+
   ionViewWillEnter() {
+    this.navCtrl.swipeBackEnabled = false;
     this.isOpenSelector = false;
     let B = this.navParams.data.coin == 'bch' ? this.bitcoreCash : this.bitcore;
     let networkName;
@@ -263,12 +269,12 @@ export class ConfirmPage {
 
   private setButtonText(isMultisig: boolean, isPayPro: boolean): void {
     if (isPayPro) {
-      this.buttonText = this.translate.instant('Click to pay');
+      this.buttonText = this.isCordova ? this.translate.instant('Slide to pay') : this.translate.instant('Click to pay');
     } else if (isMultisig) {
-      this.buttonText = this.translate.instant('Click to accept');
+      this.buttonText = this.isCordova ? this.translate.instant('Slide to accept') : this.translate.instant('Click to accept');
       this.successText = this.wallet.credentials.n == 1 ? this.translate.instant('Payment Sent') : this.translate.instant('Proposal created');
     } else {
-      this.buttonText = this.translate.instant('Click to send');
+      this.buttonText = this.isCordova ? this.translate.instant('Slide to send') : this.translate.instant('Click to send');
       this.successText = this.translate.instant('Payment Sent');
     }
   }
@@ -543,6 +549,8 @@ export class ConfirmPage {
   }
 
   private setSendError(msg: string) {
+    if (this.isCordova)
+      this.slideButton.isConfirmed(false);
     this.popupProvider.ionicAlert(this.translate.instant('Error at confirm'), this.bwcErrorProvider.msg(msg));
   }
 

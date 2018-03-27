@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Events, ModalController, NavController, NavParams } from 'ionic-angular';
 import * as _ from 'lodash';
@@ -32,6 +32,7 @@ const FEE_TOO_HIGH_LIMIT_PER = 15;
   templateUrl: 'bitpay-card-topup.html',
 })
 export class BitPayCardTopUpPage {
+  @ViewChild('slideButton') slideButton;
 
   public cardId;
   public useSendMax: boolean;
@@ -89,8 +90,14 @@ export class BitPayCardTopUpPage {
     this.logger.info('ionViewDidLoad BitPayCardTopUpPage');
   }
 
+  ionViewWillLeave() {
+    this.navCtrl.swipeBackEnabled = true;
+  }
+
   ionViewWillEnter() {
     this.isOpenSelector = false;
+    this.navCtrl.swipeBackEnabled = false;
+
     this.cardId = this.navParams.data.id;
     this.useSendMax = this.navParams.data.useSendMax;
     this.currency = this.navParams.data.currency;
@@ -143,6 +150,8 @@ export class BitPayCardTopUpPage {
   }
 
   private showErrorAndBack(title: string, msg: any) {
+    if (this.isCordova)
+      this.slideButton.isConfirmed(false);
     title = title ? title : this.translate.instant('Error');
     this.logger.error(msg);
     msg = (msg && msg.errors) ? msg.errors[0].message : msg;
@@ -153,6 +162,8 @@ export class BitPayCardTopUpPage {
 
   private showError(title: string, msg: any): Promise<any> {
     return new Promise((resolve, reject) => {
+      if (this.isCordova)
+        this.slideButton.isConfirmed(false);
       title = title || this.translate.instant('Error');
       this.logger.error(msg);
       msg = (msg && msg.errors) ? msg.errors[0].message : msg;
@@ -437,6 +448,8 @@ export class BitPayCardTopUpPage {
     let cancelText = this.translate.instant('Cancel');
     this.popupProvider.ionicConfirm(title, this.message, okText, cancelText).then((ok) => {
       if (!ok) {
+        if (this.isCordova)
+          this.slideButton.isConfirmed(false);
         return;
       }
 

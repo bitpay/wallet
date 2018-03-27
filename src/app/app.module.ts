@@ -51,6 +51,7 @@ import { PaperWalletPage } from '../pages/paper-wallet/paper-wallet';
 import { PayProPage } from '../pages/paypro/paypro';
 import { FeeWarningPage } from '../pages/send/fee-warning/fee-warning';
 import { BitcoinCashPage } from '../pages/settings/bitcoin-cash/bitcoin-cash';
+import { SlideToAcceptPage } from '../pages/slide-to-accept/slide-to-accept';
 import { TabsPage } from '../pages/tabs/tabs';
 import { TxDetailsPage } from '../pages/tx-details/tx-details';
 import { TxpDetailsPage } from '../pages/txp-details/txp-details';
@@ -321,6 +322,7 @@ export function createTranslateLoader(http: HttpClient) {
     WalletActivityPage,
     WalletSelectorPage,
     CardItemPage,
+    SlideToAcceptPage,
     /* Directives */
     CopyToClipboard,
     LongPress,
@@ -454,7 +456,8 @@ export function createTranslateLoader(http: HttpClient) {
     WalletItemPage,
     WalletActivityPage,
     WalletSelectorPage,
-    CardItemPage
+    CardItemPage,
+    SlideToAcceptPage
   ],
   providers: [
     AddressProvider,

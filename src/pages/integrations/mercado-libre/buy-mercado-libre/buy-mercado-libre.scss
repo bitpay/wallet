@@ -1,4 +1,9 @@
 page-buy-mercado-libre {
+  ion-content {
+    .fixed-content, .scroll-content {
+      margin-bottom: 70px;
+    }
+  }
   .mercado-libre-title {
     display: flex;
     align-items: center;

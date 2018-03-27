@@ -1,0 +1,184 @@
+page-slide-to-accept {    
+  position: fixed;
+  bottom: 0;
+  height: 70px;
+  width: 100%;
+  background: $color-primary;
+
+  @keyframes bounce {
+    0%, 20%, 60%, 100% {
+      -webkit-transform: translateX(0);
+      transform: translateX(0);
+    }
+  
+    40% {
+      -webkit-transform: translateX(-10px);
+      transform: translateX(-10px);
+    }
+  
+    80% {
+      -webkit-transform: translateX(-5px);
+      transform: translateX(-5px);
+    }
+  }
+
+  .animation {
+    animation: bounce 300ms;
+  }
+
+  .button-slider{
+    z-index: 100 !important;
+    width: 120%;
+    border-bottom-right-radius: 35px;
+    border-top-right-radius: 35px;
+    margin-left: -105%;
+    background-color: $slider-bg-color !important;
+    height: 70px;
+    -webkit-box-shadow: 4px 0px 17px rgba(0, 0, 0, 0.4) !important;
+    box-shadow: 4px 0px 17px rgba(0, 0, 0, 0.4) !important;   
+
+  //   -webkit-transition: width 1s; /* For Safari 3.1 to 6.0 */
+  // transition: width 1s;
+  } 
+  
+  @mixin center-vertically {
+    display: flex;
+    align-items: center;
+    height: 100%;
+    position: absolute;
+  }
+
+  .slide {
+    
+    &__listener {
+    @include center-vertically;
+      overflow: hidden;
+      position: relative;
+      bottom: 0;
+      height: 70px;
+      width: 100%;
+      background: $color-primary;
+      // &:hover, &:active, &:focus {
+      //   .button-slider {
+      //     animation: bounce 1s;
+      //   }
+      // }
+    }
+    &__slider {
+      @include center-vertically;
+      height: 100%;
+      width: 100%;
+      background: $slider-bg-color;
+      -webkit-transform: translateX(100);
+      transform: translateX(100);
+      margin-left: -100%;
+      z-index: 200;
+
+      &::before {
+        @include center-vertically;
+        content: '';
+        width: 10000px;
+        left: -10000px + 1;
+        background: $slider-bg-color;
+      }
+
+      &::after {
+        @include center-vertically;
+        content: '';
+        width: 150px;
+        right: -10px;
+        background: $slider-bg-color;
+      }
+
+      &__tip {
+        @include center-vertically;
+        width: 124px;
+        height: 116px;
+        background: $slider-bg-color;
+        right: -71px;
+        border-radius: 50%;
+        top: 50%;
+        -webkit-transform: translateY(-47%);
+        transform: translateY(-47%);
+      }
+
+    }
+    &__bitcoin {
+      @include center-vertically;
+      right: 20px;
+      z-index: 10;
+
+      > img {
+        -webkit-transform: rotateZ(-5deg);
+        transform: rotateZ(-5deg);
+      }
+    }
+    &__button-text {
+      @include center-vertically;
+
+      justify-content: center;
+      top: 0;
+      left: 0;
+      width: 100%;
+      color: color($colors, blank);
+      font-size: 18px;
+      font-weight: 600;
+      letter-spacing: .03rem;
+      z-index: 1;
+
+      .justify {
+        width: 50%;
+        text-align: center;
+      }
+    }
+
+    &__status-text {
+      @include center-vertically;
+      justify-content: center;
+      color: color($colors, blank);
+      z-index: 4;
+      width: 100%;
+      font-size: 17px;
+      letter-spacing: 0.02rem;
+      -webkit-transform: translateY(2rem);
+      transform: translateY(2rem);
+      opacity: 0;
+      text-align: center;
+      ion-spinner * {
+        stroke: color($colors, light) !important;
+      }
+      
+      &.enter {
+        transition: transform 2500ms ease, opacity 2500ms ease;
+        -webkit-transform: translateY(0);
+        transform: translateY(100);
+        opacity: 1;
+      }
+
+        img {
+        width: 17px;
+        margin-right: 10px;
+        animation-name: spin;
+        animation-duration: 500ms;
+        animation-iteration-count: infinite;
+        animation-timing-function: linear;
+      }
+    }
+
+    &__arrow {
+      @include center-vertically;
+      right: 20px;
+    }
+  }
+
+  @keyframes spin {
+    from {
+        -webkit-transform:rotate(0deg);
+        transform:rotate(0deg);
+    }
+    to {
+        -webkit-transform:rotate(360deg);
+        transform:rotate(360deg);
+    }
+  }
+}
