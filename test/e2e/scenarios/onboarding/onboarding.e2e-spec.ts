@@ -12,8 +12,7 @@ describe('Onboarding: Landing', () => {
     expect(await element(by.css('.logo-tagline')).isDisplayed()).toEqual(true);
   });
 
-  // TODO: this is a bug. Once it's fixed, change `xit` => `it`
-  xit('On restart, should return to the landing page if wallet has not been created', async () => {
+  it('On restart, should return to the landing page if wallet has not been created', async () => {
     expect(ionicPageIs('onboarding')).toBe(true);
   });
 });
