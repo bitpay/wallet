@@ -2,7 +2,6 @@ page-txp-details {
   $item-border-color: #EFEFEF;
   $item-lateral-padding: 20px;
   .header-container {
-    padding: 20px 0px 20px 0px;
     .sending-label {
       display: flex;
       align-items: center;
@@ -32,9 +31,9 @@ page-txp-details {
 
   .proposal-deletion {
     background-color: color($colors, blank);
-    padding: 2rem;
+    text-align: center;
     .proposal-deletion-help {
-      text-align: center;
+      text-align: left;
       color: color($colors, grey);
       font-size: 12.5px;
     }
@@ -50,15 +49,17 @@ page-txp-details {
       @include row-flex;
       .icon-wallet {
         margin-right: 1rem;
+        width: 25px;
+        height: 25px;
         &.disabled {
           background-color: color($colors, grey);
         }
       }
       .icon-bitcoin {
         margin: 9px 2rem 9px 0;
-        width: 35px;
-        height: 35px;
-        padding: 5px 10px;
+        width: 25px;
+        height: 25px;
+        padding: 2px 7px;
         border: 1px solid color($colors, grey);
         border-radius: $icon-border-radius;
       }
@@ -66,7 +67,6 @@ page-txp-details {
   }
   
   .item-fee {
-    line-height: 20px;
     .fee-title {
       margin-bottom: 5px;
       color: color($colors, grey);
