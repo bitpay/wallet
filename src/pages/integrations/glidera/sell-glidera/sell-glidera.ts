@@ -85,7 +85,8 @@ export class SellGlideraPage {
   }
 
   private showErrorAndBack(err: any): void {
-    this.slideButton.isConfirmed(false);
+    if (this.isCordova)
+      this.slideButton.isConfirmed(false);
     this.logger.error(err);
     err = err.errors ? err.errors[0].message : err;
     this.popupProvider.ionicAlert('Error', err).then(() => {
@@ -94,7 +95,8 @@ export class SellGlideraPage {
   }
 
   private showError(err: any): void {
-    this.slideButton.isConfirmed(false);
+    if (this.isCordova)
+      this.slideButton.isConfirmed(false);
     this.logger.error(err);
     err = err.errors ? err.errors[0].message : err;
     this.popupProvider.ionicAlert('Error', err);
@@ -153,7 +155,8 @@ export class SellGlideraPage {
     let cancelText = 'Cancel';
     this.popupProvider.ionicConfirm(null, message, okText, cancelText).then((ok) => {
       if (!ok) {
-        this.slideButton.isConfirmed(false);
+        if (this.isCordova)
+          this.slideButton.isConfirmed(false);
         return;
       }
       this.onGoingProcessProvider.set('sellingBitcoin');

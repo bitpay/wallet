@@ -92,7 +92,12 @@ export class ConfirmPage {
     this.isCordova = this.platformProvider.isCordova;
   }
 
+  ionViewWillLeave() {
+    this.navCtrl.swipeBackEnabled = true;
+  }
+
   ionViewWillEnter() {
+    this.navCtrl.swipeBackEnabled = false;
     this.isOpenSelector = false;
     let B = this.navParams.data.coin == 'bch' ? this.bitcoreCash : this.bitcore;
     let networkName;
@@ -544,7 +549,8 @@ export class ConfirmPage {
   }
 
   private setSendError(msg: string) {
-    this.slideButton.isConfirmed(false);
+    if (this.isCordova)
+      this.slideButton.isConfirmed(false);
     this.popupProvider.ionicAlert(this.translate.instant('Error at confirm'), this.bwcErrorProvider.msg(msg));
   }
 

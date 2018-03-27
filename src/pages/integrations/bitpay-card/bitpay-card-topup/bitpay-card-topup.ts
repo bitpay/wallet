@@ -150,7 +150,8 @@ export class BitPayCardTopUpPage {
   }
 
   private showErrorAndBack(title: string, msg: any) {
-    this.slideButton.isConfirmed(false);
+    if (this.isCordova)
+      this.slideButton.isConfirmed(false);
     title = title ? title : this.translate.instant('Error');
     this.logger.error(msg);
     msg = (msg && msg.errors) ? msg.errors[0].message : msg;
@@ -161,7 +162,8 @@ export class BitPayCardTopUpPage {
 
   private showError(title: string, msg: any): Promise<any> {
     return new Promise((resolve, reject) => {
-      this.slideButton.isConfirmed(false);
+      if (this.isCordova)
+        this.slideButton.isConfirmed(false);
       title = title || this.translate.instant('Error');
       this.logger.error(msg);
       msg = (msg && msg.errors) ? msg.errors[0].message : msg;
@@ -446,7 +448,8 @@ export class BitPayCardTopUpPage {
     let cancelText = this.translate.instant('Cancel');
     this.popupProvider.ionicConfirm(title, this.message, okText, cancelText).then((ok) => {
       if (!ok) {
-        this.slideButton.isConfirmed(false);
+        if (this.isCordova)
+          this.slideButton.isConfirmed(false);
         return;
       }
 
