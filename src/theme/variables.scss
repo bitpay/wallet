@@ -126,11 +126,11 @@ $list-md-header-margin-bottom: 0;
 $list-md-margin-bottom: 0;
 $list-md-header-color: color($colors, dark);
 
+$note-md-color: color($colors, light-grey);
+
 $alert-md-title-font-size: 16px;
 $alert-md-sub-title-font-size: 12.5px;
 $alert-md-message-font-size: 12.5px;
-
-$note-md-color: color($colors, light-grey);
 
 $button-md-text-transform: none;
 
@@ -186,11 +186,18 @@ $button-md-text-transform: none;
       and (device-width : 375px) 
       and (device-height : 812px) 
       and (-webkit-device-pixel-ratio : 3) { 
-        padding-top: 44px;
+        padding-top: 64px;
       }
     }
     .balance-header {
-      margin-top: 44px;
+      margin-top: 64px;
+      /* Fix iPhone X screen */
+      @media only screen 
+      and (device-width : 375px) 
+      and (device-height : 812px) 
+      and (-webkit-device-pixel-ratio : 3) { 
+        margin-top: 0;
+      }
     }
   }
 }
