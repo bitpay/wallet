@@ -37,6 +37,7 @@ export class BuyCoinbasePage {
   public wallet: any;
   public network: string;
   public isFiat: boolean;
+  public isOpenSelector: boolean;
 
   constructor(
     private coinbaseProvider: CoinbaseProvider,
@@ -64,6 +65,7 @@ export class BuyCoinbasePage {
   }
 
   ionViewWillEnter() {
+    this.isOpenSelector = false;
     this.wallets = this.profileProvider.getWallets({
       onlyComplete: true,
       network: this.network,
@@ -263,11 +265,13 @@ export class BuyCoinbasePage {
   }
 
   public showWallets(): void {
+    this.isOpenSelector = true;
     let id = this.wallet ? this.wallet.credentials.walletId : null;
     this.events.publish('showWalletsSelectorEvent', this.wallets, id, 'Receive in');
     this.events.subscribe('selectWalletEvent', (wallet: any) => {
       if (!_.isEmpty(wallet)) this.onWalletSelect(wallet);
       this.events.unsubscribe('selectWalletEvent');
+      this.isOpenSelector = false;
     });
   }
 

@@ -34,6 +34,7 @@ export class PaperWalletPage {
   public noMatchingWallet: boolean;
   public balanceHidden: boolean;
   public error: boolean;
+  public isOpenSelector: boolean;
   private bitcore: any;
 
   constructor(
@@ -54,6 +55,7 @@ export class PaperWalletPage {
   }
 
   ionViewWillEnter() {
+    this.isOpenSelector = false;
     this.scannedKey = this.navParams.data.privateKey;
     this.isPkEncrypted = this.scannedKey ? (this.scannedKey.substring(0, 2) == '6P') : null;
     this.error = false;
@@ -181,11 +183,13 @@ export class PaperWalletPage {
   }
 
   public showWallets(): void {
+    this.isOpenSelector = true;
     let id = this.wallet ? this.wallet.credentials.walletId : null;
     this.events.publish('showWalletsSelectorEvent', this.wallets, id, 'Transfer to');
     this.events.subscribe('selectWalletEvent', (wallet: any) => {
       if (!_.isEmpty(wallet)) this.onWalletSelect(wallet);
       this.events.unsubscribe('selectWalletEvent');
+      this.isOpenSelector = false;
     });
   }
 

@@ -28,6 +28,12 @@
             <img *ngIf="network != 'testnet'" [ngStyle]="{'background-color': wallet && wallet.color}" src="assets/img/icon-wallet.svg" class="icon-wallet" />
           </ion-icon>
           <div>{{wallet ? wallet.name : '...'}}</div>
+          <div class="last-item" item-end>
+            <button ion-button clear color="grey" icon-only>
+              <ion-icon *ngIf="!isOpenSelector" name="ios-arrow-down-outline"></ion-icon>
+              <ion-icon *ngIf="isOpenSelector" name="ios-arrow-up-outline"></ion-icon>
+            </button>
+          </div>
         </div>
       </button>
 
@@ -51,8 +57,7 @@
 
       <ion-item *ngIf="selectedPriceSensitivity">
         <div>
-          Coinbase has not yet implemented an immediate method to sell bitcoin from a wallet. To make this sale, funds will be sent
-          to your Coinbase account, and sold when Coinbase accepts the transaction (usually one hour).
+          Coinbase has not yet implemented an immediate method to sell bitcoin from a wallet. To make this sale, funds will be sent to your Coinbase account, and sold when Coinbase accepts the transaction (usually one hour).
         </div>
         <div *ngIf="sellRequestInfo">
           Estimated sale value:
@@ -63,8 +68,7 @@
         <div *ngIf="sellRequestInfo">
           Still sell if price fall until:
           <strong>
-            {{(sellRequestInfo.total.amount - (selectedPriceSensitivity.data.value / 100) * sellRequestInfo.total.amount) | currency
-            : '' : 2}} {{sellRequestInfo.total.currency}}
+            {{(sellRequestInfo.total.amount - (selectedPriceSensitivity.data.value / 100) * sellRequestInfo.total.amount) | currency : '' : 2}} {{sellRequestInfo.total.currency}}
           </strong>
         </div>
       </ion-item>

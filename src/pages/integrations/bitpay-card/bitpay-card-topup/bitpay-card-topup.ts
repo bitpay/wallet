@@ -56,6 +56,8 @@ export class BitPayCardTopUpPage {
   private createdTx;
   private configWallet: any;
 
+  public isOpenSelector: boolean;
+
   constructor(
     private bitPayCardProvider: BitPayCardProvider,
     private bitPayProvider: BitPayProvider,
@@ -88,10 +90,11 @@ export class BitPayCardTopUpPage {
   }
 
   ionViewWillEnter() {
+    this.isOpenSelector = false;
     this.cardId = this.navParams.data.id;
     this.useSendMax = this.navParams.data.useSendMax;
     this.currency = this.navParams.data.currency;
-    this.amount = this.navParams.data.amount; 
+    this.amount = this.navParams.data.amount;
 
     let coin;
     if (this.currency == 'BTC') coin = 'btc';
@@ -121,7 +124,7 @@ export class BitPayCardTopUpPage {
       if (_.isEmpty(this.wallets)) {
         this.showErrorAndBack(null, this.translate.instant('No wallets available'));
         return;
-      } 
+      }
 
       this.showWallets(); // Show wallet selector
     });
@@ -384,14 +387,14 @@ export class BitPayCardTopUpPage {
     };
     this.onGoingProcessProvider.set('loadingTxInfo');
     this.createInvoice(dataSrc).then((invoice) => {
-      
+
       // Check if BTC or BCH is enabled in this account
       if (!this.isCryptoCurrencySupported(wallet, invoice)) {
         let msg = this.translate.instant('Top-up with this cryptocurrency is not enabled');
         this.showErrorAndBack(null, msg);
         return;
       }
-      
+
       // Sometimes API does not return this element;
       invoice['minerFees'][COIN]['totalFee'] = invoice.minerFees[COIN].totalFee || 0;
       let invoiceFeeSat = invoice.minerFees[COIN].totalFee;
@@ -469,11 +472,13 @@ export class BitPayCardTopUpPage {
   }
 
   public showWallets(): void {
+    this.isOpenSelector = true;
     let id = this.wallet ? this.wallet.credentials.walletId : null;
     this.events.publish('showWalletsSelectorEvent', this.wallets, id, 'From');
     this.events.subscribe('selectWalletEvent', (wallet: any) => {
       if (!_.isEmpty(wallet)) this.onWalletSelect(wallet);
       this.events.unsubscribe('selectWalletEvent');
+      this.isOpenSelector = false;
     });
   }
 
