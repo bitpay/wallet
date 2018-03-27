@@ -10,4 +10,42 @@ page-import-wallet {
     font-size: 28px;
     color: color($colors, primary);
   }
+  .upload-hidden {
+    opacity: 0;
+    height: 100px;
+    z-index: 1;
+    & > input {
+      height: 100%;
+      margin: 0;
+    }
+  }
+  .ng-invalid ~ .display-file-ui,
+  .ng-valid ~ .upload-ui {
+    display: none;
+  }
+  .upload-ui,
+  .display-file-ui {
+    border-radius: 3px;
+    position: absolute;
+    padding: 16px 1em;
+    width: 96%;
+    top: 0;
+    left: 0;
+    margin: 20px 2%;
+    height: 60px;
+    color: #999;
+    font-weight: bold;
+    text-align: center;
+  }
+
+  .upload-ui {
+    border: 3px dashed #ddd;
+    color: #999;
+    font-style: italic;
+  }
+
+  .display-file-ui {
+    border: 2px solid lighten(color($colors, success), 40%);
+    color: color($colors, success);
+  }
 }
