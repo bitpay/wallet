@@ -25,6 +25,12 @@
       <span *ngIf="!wallet.balanceHidden"> {{wallet.status.totalBalanceStr}} </span>
       <span *ngIf="wallet.balanceHidden" translate>[Balance Hidden]</span>
       <span class="assertive" *ngIf="error">{{error}}</span>
+      <div item-end>
+        <button ion-button clear color="grey" icon-only>
+          <ion-icon *ngIf="!isOpenSelector" name="ios-arrow-down-outline"></ion-icon>
+          <ion-icon *ngIf="isOpenSelector" name="ios-arrow-up-outline"></ion-icon>
+        </button>
+      </div>
     </button>
   </div>
 </ion-content>

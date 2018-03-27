@@ -29,12 +29,16 @@
         <div translate>From</div>
         <div class="wallet">
           <ion-icon item-start>
-            <img *ngIf="network == 'testnet'" [ngStyle]="{'background-color': wallet && wallet.color}" src="assets/img/icon-wallet-testnet.svg"
-              class="icon-wallet" />
-            <img *ngIf="network != 'testnet'" [ngStyle]="{'background-color': wallet && wallet.color}" src="assets/img/icon-wallet.svg"
-              class="icon-wallet" />
+            <img *ngIf="network == 'testnet'" [ngStyle]="{'background-color': wallet && wallet.color}" src="assets/img/icon-wallet-testnet.svg" class="icon-wallet" />
+            <img *ngIf="network != 'testnet'" [ngStyle]="{'background-color': wallet && wallet.color}" src="assets/img/icon-wallet.svg" class="icon-wallet" />
           </ion-icon>
           <div>{{wallet ? wallet.name : '...'}}</div>
+          <div class="last-item" item-end>
+            <button ion-button clear color="grey" icon-only>
+              <ion-icon *ngIf="!isOpenSelector" name="ios-arrow-down-outline"></ion-icon>
+              <ion-icon *ngIf="isOpenSelector" name="ios-arrow-up-outline"></ion-icon>
+            </button>
+          </div>
         </div>
       </button>
       <div *ngIf="totalAmountStr">
@@ -78,4 +82,3 @@
     {{'Add funds' | translate}}
   </button>
 </ion-footer>
-

@@ -35,6 +35,7 @@ export class ReceivePage {
   public wallet: any;
   public showShareButton: boolean;
   public loading: boolean;
+  public isOpenSelector: boolean;
 
   constructor(
     private navCtrl: NavController,
@@ -54,6 +55,7 @@ export class ReceivePage {
   }
 
   ionViewWillEnter() {
+    this.isOpenSelector = false;
     this.wallets = this.profileProvider.getWallets();
     this.onWalletSelect(this.checkSelectedWallet(this.wallet, this.wallets));
     this.events.subscribe('bwsEvent', (walletId, type, n) => {
@@ -114,11 +116,13 @@ export class ReceivePage {
   }
 
   public showWallets(): void {
+    this.isOpenSelector = true;
     let id = this.wallet ? this.wallet.credentials.walletId : null;
     this.events.publish('showWalletsSelectorEvent', this.wallets, id);
     this.events.subscribe('selectWalletEvent', (wallet: any) => {
       if (!_.isEmpty(wallet)) this.onWalletSelect(wallet);
       this.events.unsubscribe('selectWalletEvent');
+      this.isOpenSelector = false;
     });
   }
 
@@ -128,7 +132,7 @@ export class ReceivePage {
 
   public goToBackup(): void {
     let BackupWarningModal = this.modalCtrl.create(BackupNeededModalPage, {}, { showBackdrop: true, enableBackdropDismiss: false });
-    BackupWarningModal.present();
+    BackupWarningModal.present({ animate: false });
     BackupWarningModal.onDidDismiss((goToBackupPage) => {
       if (goToBackupPage) this.navCtrl.push(BackupWarningPage, { walletId: this.wallet.credentials.walletId });
     });

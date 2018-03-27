@@ -30,6 +30,7 @@ export class SellGlideraPage {
   public wallets: any;
   public amountUnitStr: string;
   public sellInfo: any;
+  public isOpenSelector: boolean;
 
   private currency: string;
   private amount: number;
@@ -55,7 +56,7 @@ export class SellGlideraPage {
   }
 
   ionViewWillEnter() {
-
+    this.isOpenSelector = false;
     this.isFiat = this.navParams.data.currency != 'BTC' ? true : false;
     this.amount = this.navParams.data.amount;
     this.currency = this.navParams.data.currency;
@@ -258,11 +259,13 @@ export class SellGlideraPage {
   }
 
   public showWallets(): void {
+    this.isOpenSelector = true;
     let id = this.wallet ? this.wallet.credentials.walletId : null;
     this.events.publish('showWalletsSelectorEvent', this.wallets, id, 'Sell From');
     this.events.subscribe('selectWalletEvent', (wallet: any) => {
       if (!_.isEmpty(wallet)) this.onWalletSelect(wallet);
       this.events.unsubscribe('selectWalletEvent');
+      this.isOpenSelector = false;
     });
   }
 

@@ -34,6 +34,7 @@ export class BuyGlideraPage {
   private currency: string;
   private amount: number;
   private coin: string;
+  public isOpenSelector: boolean;
 
   constructor(
     private platformProvider: PlatformProvider,
@@ -54,6 +55,7 @@ export class BuyGlideraPage {
   }
 
   ionViewWillEnter() {
+    this.isOpenSelector = false;
     this.isFiat = this.navParams.data.currency != 'BTC' ? true : false;
     this.amount = this.navParams.data.amount;
     this.currency = this.navParams.data.currency;
@@ -177,11 +179,13 @@ export class BuyGlideraPage {
   }
 
   public showWallets(): void {
+    this.isOpenSelector = true;
     let id = this.wallet ? this.wallet.credentials.walletId : null;
     this.events.publish('showWalletsSelectorEvent', this.wallets, id, 'Receive in');
     this.events.subscribe('selectWalletEvent', (wallet: any) => {
       if (!_.isEmpty(wallet)) this.onWalletSelect(wallet);
       this.events.unsubscribe('selectWalletEvent');
+      this.isOpenSelector = false;
     });
   }
 

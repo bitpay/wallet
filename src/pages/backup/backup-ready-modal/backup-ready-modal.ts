@@ -11,6 +11,6 @@ export class BackupReadyModalPage {
   ) { }
 
   public close(): void {
-    this.viewCtrl.dismiss();
+    this.viewCtrl.dismiss(null, null, { animate: false });
   }
 }

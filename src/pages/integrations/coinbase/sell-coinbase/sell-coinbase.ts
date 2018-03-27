@@ -40,6 +40,7 @@ export class SellCoinbasePage {
   public network: string;
   public isFiat: boolean;
   public priceSensitivity: any;
+  public isOpenSelector: boolean;
 
   constructor(
     private appProvider: AppProvider,
@@ -71,6 +72,7 @@ export class SellCoinbasePage {
   }
 
   ionViewWillEnter() {
+    this.isOpenSelector = false;
     this.wallets = this.profileProvider.getWallets({
       m: 1, // Only 1-signature wallet
       onlyComplete: true,
@@ -340,11 +342,13 @@ export class SellCoinbasePage {
   }
 
   public showWallets(): void {
+    this.isOpenSelector = true;
     let id = this.wallet ? this.wallet.credentials.walletId : null;
     this.events.publish('showWalletsSelectorEvent', this.wallets, id, 'Sell from');
     this.events.subscribe('selectWalletEvent', (wallet: any) => {
       if (!_.isEmpty(wallet)) this.onWalletSelect(wallet);
       this.events.unsubscribe('selectWalletEvent');
+      this.isOpenSelector = false;
     });
   }
 

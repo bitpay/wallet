@@ -93,7 +93,7 @@
       </div>
     </ion-item>
 
-    <button class="container-from" ion-item (click)="showWallets()">
+    <button class="container-from" ion-item detail-none (click)="showWallets()">
       <span translate>From</span>
       <div class="wallet" *ngIf="wallet">
         <ion-icon item-start>
@@ -101,12 +101,24 @@
           <img *ngIf="wallet.network != 'testnet'" [ngStyle]="{'background-color': wallet.color}" src="assets/img/icon-wallet.svg" class="icon-wallet" />
         </ion-icon>
         <div>{{wallet.name}}</div>
+        <div class="last-item" item-end>
+          <button ion-button clear color="grey" icon-only>
+            <ion-icon *ngIf="!isOpenSelector" name="ios-arrow-down-outline"></ion-icon>
+            <ion-icon *ngIf="isOpenSelector" name="ios-arrow-up-outline"></ion-icon>
+          </button>
+        </div>
       </div>
       <div class="wallet" *ngIf="!wallet">
         <ion-icon item-start>
           <img class="icon-wallet disabled" src="assets/img/icon-wallet.svg" />
         </ion-icon>
         <div translate>Select a wallet</div>
+        <div class="last-item" item-end>
+          <button ion-button clear color="grey" icon-only>
+            <ion-icon *ngIf="!isOpenSelector" name="ios-arrow-down-outline"></ion-icon>
+            <ion-icon *ngIf="isOpenSelector" name="ios-arrow-up-outline"></ion-icon>
+          </button>
+        </div>
       </div>
     </button>
 

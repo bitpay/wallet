@@ -61,14 +61,16 @@
       <div class="fee-title">
         {{'Fee' | translate}}
       </div>
-      <div>
+      <ion-note>
         <span class="fee-amount">{{btx.feeStr}}</span>
         <div class="fee-details">
           {{btx.feeFiatStr}} &middot;
           <span *ngIf="btx.feeRateStr" translate>{{btx.feeRateStr}} of the total amount</span>
         </div>
-      </div>
+      </ion-note>
     </ion-item>
+
+    <ion-item-divider></ion-item-divider>
 
     <ion-item *ngIf="btx.action === 'sent'" class="container-to">
       <span translate>To</span>
@@ -157,9 +159,11 @@
       </div>
     </div>
 
-    <button ion-button full class="button-standard" (click)="viewOnBlockchain()">
-      {{'View on blockchain' | translate}}
-    </button>
+    <div text-center padding>
+      <button ion-button clear (click)="viewOnBlockchain()">
+        {{'View on blockchain' | translate}}
+      </button>
+    </div>
 
   </ion-list>
 
