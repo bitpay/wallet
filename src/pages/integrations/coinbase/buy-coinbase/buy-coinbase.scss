@@ -1,4 +1,9 @@
 page-buy-coinbase {
+  ion-content {
+    .fixed-content, .scroll-content {
+      margin-bottom: 70px;
+    }
+  }
     .buying-label {
       display: flex;
       align-items: center;

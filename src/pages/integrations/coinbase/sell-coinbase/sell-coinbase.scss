@@ -1,4 +1,9 @@
 page-sell-coinbase {
+  ion-content {
+    .fixed-content, .scroll-content {
+      margin-bottom: 70px;
+    }
+  }
   .sending-label {
     display: flex;
     align-items: center;
