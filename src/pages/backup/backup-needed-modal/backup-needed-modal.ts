@@ -11,6 +11,6 @@ export class BackupNeededModalPage {
   ) { }
 
   public close(goToBackupPage): void {
-    this.viewCtrl.dismiss(goToBackupPage);
+    this.viewCtrl.dismiss(goToBackupPage, null, { animate: false });
   }
 }

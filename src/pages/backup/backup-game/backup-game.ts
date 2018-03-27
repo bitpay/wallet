@@ -232,7 +232,7 @@ export class BackupGamePage {
     this.confirm().then(() => {
       this.onGoingProcessProvider.clear();
       let modal = this.modalCtrl.create(BackupReadyModalPage, {}, { showBackdrop: false, enableBackdropDismiss: false });
-      modal.present();
+      modal.present({ animate: false });
       modal.onDidDismiss(() => {
         if (this.fromOnboarding) {
           this.navCtrl.push(DisclaimerPage);
