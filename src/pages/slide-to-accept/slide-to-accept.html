@@ -1,10 +1,10 @@
 <div #slideButtonContainer class="slide__listener" no-margin no-padding>
-  <button class="button-slider" #slideButton ion-button icon-right large (touchstart)="activateButton($event)" (touchmove)="dragButton($event)" (touchend)="resetButton()" [disabled]="isDisabled" *ngIf="!isConfirm">
+  <button class="button-slider" [ngClass]="{'animation': animation}" #slideButton ion-button icon-right large (touchstart)="activateButton($event)" (touchmove)="dragButton($event)" (touchend)="resetButton()" [disabled]="isDisabled" *ngIf="!isConfirm">
     <div class="slide__bitcoin" [ngStyle]="bitcoinStyle">
       <img src="assets/img/icon-bitcoin-white.svg">
     </div>
   </button>
-  <div class="slide__button-text" [ngStyle]="textStyle" *ngIf="!isConfirm">
+  <div class="slide__button-text" (touchstart)="toggleAnimation()" (touchmove)="toggleAnimation()" [ngStyle]="textStyle" *ngIf="!isConfirm">
     <span class="justify" translate>{{buttonText}}</span>
   </div>
   <div class="slide__arrow " *ngIf="!isConfirm">
