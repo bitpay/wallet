@@ -48,7 +48,7 @@ page-txp-details {
     .wallet, .payment-proposal-to {
       @include row-flex;
       .icon-wallet {
-        margin-right: 1rem;
+        margin-right: 0.8rem;
         width: 25px;
         height: 25px;
         &.disabled {
