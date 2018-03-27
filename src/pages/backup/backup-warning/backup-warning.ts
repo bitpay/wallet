@@ -26,7 +26,7 @@ export class BackupWarningPage {
 
   public openWarningModal(): void {
     let BackupWarningModal = this.modalCtrl.create(BackupWarningModalPage, {}, { showBackdrop: false, enableBackdropDismiss: false });
-    BackupWarningModal.present();
+    BackupWarningModal.present({ animate: false });
     BackupWarningModal.onDidDismiss(() => {
       this.navCtrl.push(BackupGamePage, { walletId: this.walletId, fromOnboarding: this.fromOnboarding });
     });
