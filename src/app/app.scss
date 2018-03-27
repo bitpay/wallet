@@ -340,3 +340,8 @@ ion-modal {
     box-shadow: none !important;
   }
 }
+
+// https://github.com/ionic-team/ionic/pull/14241
+ion-alert .alert-message {
+  overflow-y: auto;
+}
