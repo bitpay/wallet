@@ -273,6 +273,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         templateUrl: 'views/tabs.html'
       })
       .state('tabs.home', {
+        cache: false,
         url: '/home/:fromOnboarding',
         views: {
           'tab-home': {
@@ -1301,36 +1302,32 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
           profileService.storeProfileIfDirty();
           $log.debug('Profile loaded ... Starting UX.');
           scannerService.gentleInitialize();
-          // Reload tab-home if necessary (from root path: starting)
-          $state.go('starting', {}, {
-            'reload': true,
-            'notify': $state.current.name == 'starting' ? false : true
-          }).then(function() {
           $ionicHistory.nextViewOptions({
-              disableAnimate: true,
-              historyRoot: true
+            disableAnimate: true,
+            historyRoot: true
+          });
+          if (navigator.onLine === false) {
+            $log.debug('We are now offline. Changing to route "offline"')
+            $state.transitionTo('offline').then(function() {
+              // Clear history
+              $ionicHistory.clearHistory();
             });
-            if (navigator.onLine === false) {
-              $log.debug('We are now offline. Changing to route "offline"')
-              $state.transitionTo('offline').then(function() {
-                // Clear history
-                $ionicHistory.clearHistory();
-              });
-            } else {
+          } else {
+            if ($state.current.name !== 'tabs.home') {
               $state.transitionTo('tabs.home').then(function() {
                 // Clear history
                 $ionicHistory.clearHistory();
               });
             }
+          }
 
-            applicationService.appLockModal('check');
-          });
-        };
-        // After everything have been loaded
-        $timeout(function() {
-          emailService.init(); // Update email subscription if necessary
-          openURLService.init();
-        }, 1000);
+          applicationService.appLockModal('check');
+          // After everything have been loaded
+          $timeout(function() {
+            emailService.init(); // Update email subscription if necessary
+            openURLService.init();
+          }, 1000);
+        }
       });
     });
 

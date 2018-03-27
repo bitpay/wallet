@@ -76,7 +76,14 @@
         <a ui-sref="tabs.add" ng-if="wallets[0]"><i class="icon ion-ios-plus-empty list-add-button"></i></a>
       </div>
       <div>
-        <a ng-if="!wallets[0]" ui-sref="tabs.add" class="item item-icon-left item-big-icon-left item-icon-right next-step">
+        <span ng-if="loadingWallets" class="item item-icon-left item-big-icon-left item-icon-right next-step">
+          <i class="icon big-icon-svg">
+            <img src="img/icon-wallet.svg" class="bg wallet icon-loading-wallet"/>
+          </i>
+          <span translate>Loading wallets...</span>
+          <i class="icon bp-arrow-right"></i>
+        </span>
+        <a ng-if="!wallets[0] && !loadingWallets" ui-sref="tabs.add" class="item item-icon-left item-big-icon-left item-icon-right next-step">
          <i class="icon big-icon-svg">
            <img src="img/icon-wallet.svg" class="bg wallet icon-create-wallet"/>
          </i>

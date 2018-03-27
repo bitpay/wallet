@@ -16,6 +16,7 @@ angular.module('copayApp.controllers').controller('tabHomeController',
     $scope.isWindowsPhoneApp = platformInfo.isCordova && platformInfo.isWP;
     $scope.isNW = platformInfo.isNW;
     $scope.showRateCard = {};
+    $scope.loadingWallets = true;
 
     $scope.$on("$ionicView.afterEnter", function() {
       startupService.ready();
@@ -84,6 +85,11 @@ angular.module('copayApp.controllers').controller('tabHomeController',
       });
 
       listeners = [
+        $rootScope.$on('profileBound', function(e, walletId, type, n) {
+          updateAllWallets();
+          $scope.loadingWallets = false;
+          if ($scope.recentTransactionsEnabled) getNotifications();
+        }),
         $rootScope.$on('bwsEvent', function(e, walletId, type, n) {
           var wallet = profileService.getWallet(walletId);
           updateWallet(wallet);
@@ -123,6 +129,12 @@ angular.module('copayApp.controllers').controller('tabHomeController',
           $scope.$apply();
         }, 10);
       });
+
+      $timeout(function() {
+        // If  haven't loaded wallets in 2.5s. Show create wallet.
+        // Handles issues when no wallets exist and you are navigating the app
+        $scope.loadingWallets = false;
+      }, 2500);
     });
 
     $scope.$on("$ionicView.leave", function(event, data) {
@@ -231,6 +243,7 @@ angular.module('copayApp.controllers').controller('tabHomeController',
           }
         });
       });
+      $scope.loadingWallets = false;
     };
 
     var updateWallet = function(wallet) {

@@ -281,6 +281,8 @@ angular.module('copayApp.services')
           });
         });
       });
+
+      $rootScope.$emit('profileBound');
     };
 
     root._queue = [];
