@@ -13,6 +13,6 @@ describe('Onboarding: Landing', () => {
   });
 
   it('On restart, should return to the landing page if wallet has not been created', async () => {
-    expect(ionicPageIs('onboarding')).toBe(true);
+    await ionicPageIs('onboarding');
   });
 });
