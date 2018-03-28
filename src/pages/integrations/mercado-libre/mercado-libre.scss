@@ -1,8 +1,4 @@
 page-mercado-libre {
-  .box-notification.warning {
-    background: #ffc900;
-    margin: 0rem;
-  }
   .container {
     height: 100%;
   }
@@ -28,6 +24,7 @@ page-mercado-libre {
 
   .integration-giftCard {
     &-logo {
+      background-color: #ffffff;
       width: 100%;
       display: inline-block;
       padding: 1em;
@@ -37,8 +34,9 @@ page-mercado-libre {
         margin-top: 1rem;
       }
       .subtitle {
-        margin-top: 0.5rem;
-        color: #bbbbbb;
+        font-size: 12.5px;
+        color: color($colors, grey);
+        margin: 10px 0;
       }
     }
   }
@@ -48,7 +46,7 @@ page-mercado-libre {
     align-items: center;
     .avatar {
       width: 40px;
-      border-radius: 5rem;
+      margin-right: 2rem;
     }
     .card-info {
       padding-left: 1rem;
