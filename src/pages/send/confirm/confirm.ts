@@ -640,6 +640,8 @@ export class ConfirmPage {
 
       confirmTx().then((nok: boolean) => {
         if (nok) {
+          if (this.isCordova)
+            this.slideButton.isConfirmed(false);
           this.onGoingProcessProvider.clear();
           return;
         }
