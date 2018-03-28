@@ -3,6 +3,7 @@ import { Events, ModalController, NavController, NavParams } from 'ionic-angular
 import { Logger } from '../../../../providers/logger/logger';
 
 // pages
+import { GlideraPage } from '../../../integrations/glidera/glidera';
 import { FinishModalPage } from '../../../finish/finish';
 
 // providers
@@ -223,8 +224,14 @@ export class BuyGlideraPage {
     let modal = this.modalCtrl.create(FinishModalPage, { finishText, finishComment }, { showBackdrop: true, enableBackdropDismiss: false });
     modal.present();
     modal.onDidDismiss(() => {
-      this.navCtrl.remove(3, 1);
-      this.navCtrl.pop();
-    })
+      this.navCtrl.popToRoot({ animate: false }).then(() => {
+        this.navCtrl.parent.select(0);
+
+        // Fixes mobile navigation
+        setTimeout(() => {
+          this.navCtrl.push(GlideraPage, null, { animate: false });
+        }, 200);
+      });
+    });
   }
 }

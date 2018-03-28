@@ -54,7 +54,11 @@ export class BitPayCardIntroPage {
             }
             this.navCtrl.popToRoot({ animate: false }).then(() => {
               this.navCtrl.parent.select(0);
-              if (cards[0]) this.navCtrl.push(BitPayCardPage, { id: cards[0].id });
+              
+              // Fixes mobile navigation
+              setTimeout(() => {
+                if (cards[0]) this.navCtrl.push(BitPayCardPage, { id: cards[0].id }, { animate: false });
+              }, 200);
             });
           });
         }

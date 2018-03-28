@@ -473,8 +473,14 @@ export class ShapeshiftConfirmPage {
     let modal = this.modalCtrl.create(FinishModalPage, { finishText }, { showBackdrop: true, enableBackdropDismiss: false });
     modal.present();
     modal.onDidDismiss(() => {
-      this.navCtrl.popToRoot({ animate: false });
-      this.navCtrl.push(ShapeshiftPage);
+      this.navCtrl.popToRoot({ animate: false }).then(() => {
+        this.navCtrl.parent.select(0);
+        
+        // Fixes mobile navigation
+        setTimeout(() => {
+          this.navCtrl.push(ShapeshiftPage, null, { animate: false });
+        }, 200);
+      });
     });
   }
 
