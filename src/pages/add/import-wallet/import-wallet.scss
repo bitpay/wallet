@@ -5,47 +5,55 @@ page-import-wallet {
       white-space: inherit;
     }
   }
+
+  .hide-validation .item-inner {
+    border-bottom-color: #f4f4f4 !important;
+    box-shadow: none !important;
+  }
   .scanner-icon {
     z-index: 99;
     font-size: 28px;
     color: color($colors, primary);
   }
+  $upload-box-height: 200px;
   .upload-hidden {
     opacity: 0;
-    height: 100px;
+    height: $upload-box-height;
     z-index: 1;
     & > input {
       height: 100%;
       margin: 0;
+      cursor: pointer;
     }
   }
-  .ng-invalid ~ .display-file-ui,
-  .ng-valid ~ .upload-ui {
+  .ng-invalid + .upload-ui > .filled-message,
+  .ng-valid + .upload-ui > .empty-message {
     display: none;
   }
-  .upload-ui,
-  .display-file-ui {
+  .upload-ui {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     border-radius: 3px;
     position: absolute;
-    padding: 16px 1em;
-    width: 96%;
+    padding: 18px 1em;
+    width: 92%;
     top: 0;
     left: 0;
-    margin: 20px 2%;
-    height: 60px;
+    margin: 20px 4%;
+    height: $upload-box-height - 40px;
     color: #999;
     font-weight: bold;
     text-align: center;
-  }
-
-  .upload-ui {
+    font-size: 16px;
+    line-height: 1.4;
     border: 3px dashed #ddd;
     color: #999;
     font-style: italic;
   }
-
-  .display-file-ui {
-    border: 2px solid lighten(color($colors, success), 40%);
+  .ng-valid + .upload-ui {
+    border: 3px solid lighten(color($colors, success), 20%);
     color: color($colors, success);
+    background-color: lighten(color($colors, success), 55%);
   }
 }
