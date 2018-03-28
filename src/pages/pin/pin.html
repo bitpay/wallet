@@ -1,4 +1,4 @@
-<ion-header *ngIf="action === 'pinSetUp' || action === 'removeLock'">
+<ion-header *ngIf="action === 'pinSetUp' || action === 'removeLock' && showPinModal">
 
   <ion-navbar>
     <ion-buttons start>
@@ -10,7 +10,7 @@
 
 </ion-header>
 
-<ion-content no-bounce>
+<ion-content *ngIf="showPinModal" no-bounce>
   <div class="pin-header">
     <div class="title">
       <div *ngIf="!disableButtons">

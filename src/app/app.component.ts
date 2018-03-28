@@ -135,10 +135,10 @@ export class CopayApp {
 
   private openPINModal(action): void {
     this.isModalOpen = true;
-    let modal = this.modalCtrl.create(PinModalPage, { action }, { showBackdrop: false, enableBackdropDismiss: false });
-    modal.present();
-    modal.onDidDismiss(() => {
+    this.events.publish('showPinModalEvent', action);
+    this.events.subscribe('finishPinModalEvent', (wallet: any) => {
       this.isModalOpen = false;
+      this.events.unsubscribe('finishPinModalEvent');
     });
   }
 
