@@ -136,7 +136,7 @@ export class CopayApp {
   private openPINModal(action): void {
     this.isModalOpen = true;
     this.events.publish('showPinModalEvent', action);
-    this.events.subscribe('finishPinModalEvent', (wallet: any) => {
+    this.events.subscribe('finishPinModalEvent', () => {
       this.isModalOpen = false;
       this.events.unsubscribe('finishPinModalEvent');
     });
@@ -144,10 +144,11 @@ export class CopayApp {
 
   private openFingerprintModal(): void {
     this.isModalOpen = true;
-    let modal = this.modalCtrl.create(FingerprintModalPage, {}, { showBackdrop: false, enableBackdropDismiss: false });
-    modal.present();
-    modal.onDidDismiss(() => {
+    let isCopay = this.appProvider.info.nameCase == 'Copay' ? true : false;
+    this.events.publish('showFingerprintModalEvent', isCopay);
+    this.events.subscribe('finishFingerprintModalEvent', () => {
       this.isModalOpen = false;
+      this.events.unsubscribe('finishFingerprintModalEvent');
     });
   }
 
