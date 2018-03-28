@@ -1,8 +1,4 @@
 page-amazon {
-  .box-notification.warning {
-    background: #f4a460;
-    margin: 0rem;
-  }
   .container {
     height: 100%;
   }
@@ -28,6 +24,7 @@ page-amazon {
 
   .integration-giftCard {
     &-logo {
+      background-color: #ffffff;
       width: 100%;
       display: inline-block;
       padding: 1em;
@@ -53,8 +50,8 @@ page-amazon {
     display: flex;
     align-items: center;
     .avatar {
-      width: 40px;
-      border-radius: 5rem;
+      width: 32px;
+      margin-right: 2rem;
     }
     .card-info {
       padding-left: 1rem;

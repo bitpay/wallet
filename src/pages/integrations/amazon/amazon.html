@@ -6,7 +6,7 @@
 
 <ion-content no-bounce>
   <div class="container" *ngIf="!giftCards">
-    <div class="box-notification warning" *ngIf="network == 'testnet'">
+    <div class="box-notification warn no-margin" *ngIf="network == 'testnet'">
       Sandbox version. Only for testing purpose.
     </div>
     <div class="center-header">
@@ -21,7 +21,7 @@
     </div>
   </div>
   <div class="container" *ngIf="giftCards">
-    <div class="box-notification warning" *ngIf="network == 'testnet'">
+    <div class="box-notification warn no-margin" *ngIf="network == 'testnet'">
       Sandbox version. Only for testing purpose.
     </div>
 
@@ -30,14 +30,13 @@
       <div class="subtitle">
         <b>Only</b> redeemable on www.amazon.com (US website).
       </div>
-      <button color="dark" ion-button clear icon-right no-low-fee (click)="goTo('Amount')">
+      <button ion-button no-low-fee (click)="goTo('Amount')">
         Buy Gift Card
-        <ion-icon name="arrow-forward"></ion-icon>
       </button>
     </div>
 
     <ion-list>
-      <ion-item-divider>Your cards</ion-item-divider>
+      <ion-item-divider>Your Gift Cards</ion-item-divider>
       <button ion-item *ngFor="let item of (giftCards | keys : 'date') | orderBy : ['-order']" (click)="openCardModal(item.value)">
         <div class="amazon-card">
           <img src="assets/img/amazon/a-smile_color_btn.png" alt="" class="avatar">
