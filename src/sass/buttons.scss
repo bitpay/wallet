@@ -6,6 +6,15 @@
   display: block;
 }
 
+.button-input {
+  display: flex;
+  align-items: center;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  right: 0
+}
+
 .button,
 .onboarding .button {
   &.button-primary {

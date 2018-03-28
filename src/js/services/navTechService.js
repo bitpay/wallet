@@ -1,13 +1,4 @@
 'use strict';
-
-//var util = require('util');
-//var _ = require('lodash');
-//var log = require('../util/log');
-//var preconditions = require('preconditions').singleton();
-//var request = require('request');
-
-//var ursa = require('ursa');
-
 /*
   This class lets interfaces with a NavTech Server's API.
 */
@@ -19,6 +10,7 @@ var NavTechService = function(opts) {
   self.$log = opts.$log
   self.httprequest = opts.httprequest; // || request;
   self.lodash = opts.lodash;
+  self.storageService = opts.storageService;
 
   self.SAT_TO_BTC = 1 / 1e8;
   self.BTC_TO_SAT = 1e8;
@@ -32,12 +24,13 @@ var NavTechService = function(opts) {
 
   self.jsencrypt = new JSEncrypt();
 
-  self.availableServers = [
-    'navtech1.navcoin.org:3000',
-    'navtech2.navcoin.org:3000',
-    'navtech3.navcoin.org:3000',
-    'navtech4.navcoin.org:3000'
-  ]
+  // self.availableServers = [
+  //   'navtech1.navcoin.org:3000',
+  //   'navtech2.navcoin.org:3000',
+  //   'navtech3.navcoin.org:3000',
+  //   'navtech4.navcoin.org:3000'
+  // ]
+  self.availableServers = []
 };
 
 
@@ -52,41 +45,45 @@ NavTechService.singleton = function(opts) {
 NavTechService.prototype._checkNode = function(availableServers, numAddresses, callback) {
   var self = this;
 
-  if (!self.availableServers || self.availableServers.length === 0) {
-    self.runtime.callback(false, { message: 'No valid NavTech servers found' });
-    return;
-  }
+  self.getNavTechServers(function(error, servers) {
+    self.availableServers = servers;
 
-  var randomIndex = Math.floor(Math.random() * availableServers.length)
-  var navtechServerUrl = 'https://' + availableServers[randomIndex] + '/api/check-node';
+    if (!self.availableServers || self.availableServers.length === 0) {
+      self.runtime.callback(false, { message: 'No valid NavTech servers found' });
+      return;
+    }
 
-  var retrieve = function() {
-    // self.$log.debug('Fetching navtech server data');
-    self.httprequest.post(navtechServerUrl, { num_addresses: numAddresses }).success(function(res){
-      if(res && res.type === 'SUCCESS' && res.data) {
-        // self.$log.debug('Success fetching navtech data from server ' + availableServers[randomIndex], res);
-        //@TODO check if amount is larger than server max amount
-        self.runtime.serverInfo = {
-          maxAmount: res.data.max_amount,
-          minAmount: res.data.min_amount,
-          navtechFeePercent: res.data.transaction_fee,
+    var randomIndex = Math.floor(Math.random() * availableServers.length)
+    var navtechServerUrl = 'https://' + availableServers[randomIndex] + '/api/check-node';
+
+    var retrieve = function() {
+      // self.$log.debug('Fetching navtech server data');
+      self.httprequest.post(navtechServerUrl, { num_addresses: numAddresses }).success(function(res){
+        if(res && res.type === 'SUCCESS' && res.data) {
+          // self.$log.debug('Success fetching navtech data from server ' + availableServers[randomIndex], res);
+          //@TODO check if amount is larger than server max amount
+          self.runtime.serverInfo = {
+            maxAmount: res.data.max_amount,
+            minAmount: res.data.min_amount,
+            navtechFeePercent: res.data.transaction_fee,
+          }
+
+          callback(res.data, self, 0);
+        } else {
+          // self.$log.debug('Bad response from navtech server ' + availableServers[randomIndex], res);
+          availableServers.splice(randomIndex, 1);
+          self._checkNode(availableServers, numAddresses, callback);
         }
-
-        callback(res.data, self, 0);
-      } else {
-        // self.$log.debug('Bad response from navtech server ' + availableServers[randomIndex], res);
+      }).error(function(err) {
+        // self.$log.debug('Error fetching navtech server data', err);
         availableServers.splice(randomIndex, 1);
         self._checkNode(availableServers, numAddresses, callback);
-      }
-    }).error(function(err) {
-      // self.$log.debug('Error fetching navtech server data', err);
-      availableServers.splice(randomIndex, 1);
-      self._checkNode(availableServers, numAddresses, callback);
-    });
+      });
 
-  };
+    };
 
-  retrieve();
+    retrieve();
+  })
 };
 
 NavTechService.prototype._splitPayment = function(navtechData, self) {
@@ -199,12 +196,43 @@ NavTechService.prototype.findNode = function(amount, address, callback) {
   self._checkNode(self.availableServers, 6, self._splitPayment);
 }
 
-angular.module('copayApp.services').factory('navTechService', function($http, lodash, $log) {
+NavTechService.prototype.addNode = function(newServer, callback) {
+  var self = this;
+
+  self.getNavTechServers(function(error, servers) {
+    self.availableServers = servers;
+    self.availableServers.push(newServer);
+
+    self.storageService.setNavTechServers(self.availableServers, function(error) {
+      if (error) { return callback(error) }
+      self.$log.debug('Added new NavTech Server:' + newServer, self.availableServers)
+
+      callback(false,  self.availableServers)
+    })
+  })
+}
+
+NavTechService.prototype.getNavTechServers = function(callback) {
+  var self = this;
+  if (self.availableServers.length !== 0) {
+    callback(false, self.availableServers)
+  } else {
+    self.storageService.getNavTechServers(function(error, servers) {
+      if (error) { callback(error) }
+      if (servers) { self.availableServers = JSON.parse(servers) }
+
+      callback(false, self.availableServers)
+    })
+  }
+}
+
+angular.module('copayApp.services').factory('navTechService', function($http, lodash, $log, storageService) {
   var cfg = {
     httprequest: $http,
     lodash: lodash,
     $log: $log,
+    storageService: storageService,
   };
 
-  return NavTechService.singleton(cfg);
+  return NavTechService.singleton(cfg)
 });

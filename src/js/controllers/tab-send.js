@@ -2,7 +2,7 @@
 
 angular.module('copayApp.controllers').controller('tabSendController', function($scope, $rootScope, $log, $timeout,
   $ionicScrollDelegate, addressbookService, profileService, lodash, $state, walletService, incomingData, popupService,
-   platformInfo, bwcError, gettextCatalog, scannerService, $window, externalLinkService, bitcore) {
+   platformInfo, bwcError, gettextCatalog, scannerService, $window, externalLinkService, bitcore, navTechService) {
 
   var originalList;
   var CONTACTS_SHOW_LIMIT;
@@ -10,6 +10,8 @@ angular.module('copayApp.controllers').controller('tabSendController', function(
   $scope.isSweeping = false;
   $scope.isChromeApp = platformInfo.isChromeApp;
   $scope.isIOS = platformInfo.isIOS;
+  $scope.privatePayment = false;
+  $scope.privateToggleOn = false;
 
   $scope.sweepBtnDisabled = function() {
     var isDisabled = true;
@@ -133,6 +135,10 @@ angular.module('copayApp.controllers').controller('tabSendController', function(
     }, 10);
   };
 
+  var isValidTransaction = function() {
+    return incomingData.redir($scope.formData.search, $scope.privatePayment, true)
+  }
+
   $scope.openBuyLink = function() {
     $state.go('tabs.changelly-send');
   };
@@ -163,12 +169,53 @@ angular.module('copayApp.controllers').controller('tabSendController', function(
     $scope.searchFocus = true;
   };
 
+  $scope.togglePrivatePayment = function() {
+    $scope.privateToggleOn = !$scope.privateToggleOn
+
+    // If toggle is now off
+    if (!$scope.privateToggleOn) {
+      $scope.showAddNavTech = false
+      $scope.nextDisabled = true
+      $scope.privatePayment = false
+
+      // Check if they they have a valid transaciotn
+      // if so let them press next
+      if (isValidTransaction()) {
+        $scope.nextDisabled = false
+      }
+    }
+
+    // if toggle is now on
+    if ($scope.privateToggleOn) {
+      navTechService.getNavTechServers(function(error, servers) {
+        $log.debug('NavTech Servers Found:', servers)
+        if (error) { return $log.error(error) }
+
+        if (!servers || servers.length === 0) {
+          $scope.nextDisabled = true
+          $scope.showAddNavTech = true
+        } else {
+          // Aleady have servers. Just let them do private payment
+          $scope.privatePayment = true
+        }
+      })
+    }
+  }
+
+  $scope.saveNavTechAddress = function(address) {
+    navTechService.addNode(address, function(error, result) {
+      if (error) { return $log.error(error) }
+      $scope.navTechAddressSuccess = true
+      $scope.privatePayment = true
+      if (isValidTransaction()) { $scope.nextDisabled = false }
+    })
+  }
+
   $scope.searchBlurred = function() {
     if ($scope.formData.search == null || $scope.formData.search.length == 0) {
       $scope.searchFocus = false;
     }
-    var privatePayment = $scope.formData.privatePayment || false;
-    if (incomingData.redir($scope.formData.search, privatePayment, true)) {
+    if (isValidTransaction()) {
       $scope.nextDisabled = false;
       return;
     } else {
@@ -178,7 +225,7 @@ angular.module('copayApp.controllers').controller('tabSendController', function(
   };
 
   $scope.nextClicked = function(search) {
-    var privatePayment = $scope.formData.privatePayment || false;
+    var privatePayment = $scope.privatePayment || false;
     if (incomingData.redir(search, privatePayment, false)) {
       return;
     } else if (search) {
@@ -188,7 +235,7 @@ angular.module('copayApp.controllers').controller('tabSendController', function(
   }
 
   $scope.findContact = function(search) {
-    var privatePayment = $scope.formData.privatePayment || false;
+    var privatePayment = $scope.privatePayment || false;
     if (incomingData.redir(search, privatePayment, true)) {
       $scope.nextDisabled = false;
       return;
@@ -213,7 +260,7 @@ angular.module('copayApp.controllers').controller('tabSendController', function(
   };
 
   $scope.goToAmount = function(item) {
-    console.log('goToAmount');
+    $log.debug('goToAmount');
     $timeout(function() {
       item.getAddress(function(err, addr) {
         if (err || !addr) {
@@ -246,7 +293,7 @@ angular.module('copayApp.controllers').controller('tabSendController', function(
   };
 
   $scope.sweepAddressClickHandler = function(privateKey) {
-    console.log('privateKey', privateKey);
+    $log.debug('privateKey', privateKey);
 
     $state.go('tabs.home').then(function() {
       $timeout(function() {

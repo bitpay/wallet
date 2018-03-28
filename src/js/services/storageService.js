@@ -235,6 +235,14 @@ angular.module('copayApp.services')
       storage.get('hideBalance-' + walletId, cb);
     };
 
+    root.getNavTechServers = function(cb) {
+      storage.get('navTechServers', cb);
+    };
+
+    root.setNavTechServers = function(val, cb) {
+      storage.set('navTechServers', val, cb);
+    };
+
     //for compatibility
     root.getCopayDisclaimerFlag = function(cb) {
       storage.get('agreeDisclaimer', cb);

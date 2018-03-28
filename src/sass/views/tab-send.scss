@@ -180,4 +180,17 @@
     }
   }
   .scroll{height: 100%;}
+  .navTechSuccess {
+    color: #ffffff;
+    display: flex;
+    justify-content: center;
+    margin: 10px 0 10px 0;
+    transition: all 1s;
+  }
+  .showNavTechSuccess {
+    color: $v-success-color;
+  }
+  .addNavTechIPContainer {
+    margin-bottom: 10px;
+  }
 }

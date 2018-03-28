@@ -35,7 +35,7 @@
     <div ng-if="hasFunds && !isSweeping">
       <div class="send-header-wrapper card">
         <div class="item item-heading send-heading"><span translate>Recipient</span></div>
-        <div class="item input search-wrapper" ng-class="{'focus': searchFocus}">
+        <div class="item input search-wrapper">
           <i class="icon icon-svg abs-v-center"><img class="svg" src="img/icon-bitcoin-symbol.svg"></i>
           <div class="item-icon-right">
             <input type="text" class="search-input" id="tab-send-address" placeholder="{{'Search or enter NavCoin address' | translate}}" ng-model="formData.search" ng-change="findContact(formData.search)" ng-model-onblur ng-focus="searchInFocus()" ng-blur="searchBlurred()">
@@ -43,9 +43,25 @@
           </div>
         </div>
         <div class="send-private-toggle">
-          <ion-toggle ng-model="formData.privatePayment" toggle-class="toggle-balanced">
+          <ion-toggle ng-click="togglePrivatePayment()" toggle-class="toggle-balanced">
             <span class="toggle-label" translate>Private Payment</span>
           </ion-toggle>
+        </div>
+        <div ng-show="showAddNavTech" class="addNavTechIPContainer">
+          <div ng-hide="navTechAddressSuccess">
+            <p>No NavTech servers found. Please add a NavTech server to make private payments.</p>
+            <p>See <a href="https://navtechservers.com/">navtechservers.com</a> for more details.</p>
+            <div class="item input search-wrapper">
+              <i class="icon ion-ios-cloud-upload-outline abs-v-center"></i>
+              <div class="item-icon-right">
+                <input type="text" class="search-input" placeholder="{{'Please enter NavTech URL. e.g. https://someNavTechServer.com:3000' | translate}}" ng-model="formData.navTechAddress">
+                <button class="button button-input button-primary" ng-click="saveNavTechAddress(formData.navTechAddress)">
+                  <span class="button-label" translate>Save</span>
+                </button>
+              </div>
+            </div>
+          </div>
+          <span class="navTechSuccess" ng-class="{'showNavTechSuccess': navTechAddressSuccess}">NavTech Server successfully added</span>
         </div>
         <div class="send-next-button">
           <button ng-disabled="nextDisabled" class="button button-standard button-primary"
