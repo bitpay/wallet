@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { ModalController, Events } from 'ionic-angular';
+import { Events } from 'ionic-angular';
 
 // pages
 import { PinModalPage } from '../../pin/pin';
@@ -23,7 +23,6 @@ export class LockPage {
   public needsBackupMsg: string;
 
   constructor(
-    private modalCtrl: ModalController,
     private configProvider: ConfigProvider,
     private touchIdProvider: TouchIdProvider,
     private profileProvider: ProfileProvider,

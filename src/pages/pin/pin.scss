@@ -3,10 +3,15 @@ page-pin {
     background-color: color($colors, blank) !important;
   }
   .pin-header {
-    height: 140px;
+    height: 160px;
     border-bottom: 1px solid #dad7d7;
     position: relative;
     background-color: color($colors, light);   
+    .close-button {
+      position: absolute;
+      right: 2rem;
+      top: 1rem;
+    }
     .title {
       height: 100%;
       display: flex;
