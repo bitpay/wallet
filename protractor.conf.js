@@ -14,27 +14,15 @@ exports.config = {
   // Available deviceNames for mobileEmulation: https://chromium.googlesource.com/chromium/src/+/master/third_party/WebKit/Source/devtools/front_end/emulated_devices/module.json
   multiCapabilities: [
     {
-      name: '1024x720',
+      name: '1280x800',
       browserName: 'chrome',
       chromeOptions: {
-        args: [
-          '--high-dpi-support=1',
-          '--force-device-scale-factor=2',
-          '--window-size=1024,720',
-          ...flags
-        ]
-      }
-    },
-    {
-      name: '1920x1080',
-      browserName: 'chrome',
-      chromeOptions: {
-        args: [
-          '--high-dpi-support=1',
-          '--force-device-scale-factor=2',
-          '--window-size=1920,1080',
-          ...flags
-        ]
+        mobileEmulation: {
+          width: 1280,
+          height: 800,
+          pixelRatio: 2
+        },
+        args: flags
       }
     },
     {
@@ -44,17 +32,17 @@ exports.config = {
         mobileEmulation: {
           deviceName: 'iPhone X'
         },
-        args: [...flags]
+        args: flags
       }
     },
     {
-      name: 'iPhone8',
+      name: 'Pixel2',
       browserName: 'chrome',
       chromeOptions: {
         mobileEmulation: {
-          deviceName: 'iPhone 8'
+          deviceName: 'Pixel 2'
         },
-        args: [...flags]
+        args: flags
       }
     },
     {
@@ -64,27 +52,7 @@ exports.config = {
         mobileEmulation: {
           deviceName: 'iPad'
         },
-        args: [...flags]
-      }
-    },
-    {
-      name: 'iPadPro',
-      browserName: 'chrome',
-      chromeOptions: {
-        mobileEmulation: {
-          deviceName: 'iPad Pro'
-        },
-        args: [...flags]
-      }
-    },
-    {
-      name: 'Nexus5X',
-      browserName: 'chrome',
-      chromeOptions: {
-        mobileEmulation: {
-          deviceName: 'Nexus 5X'
-        },
-        args: [...flags]
+        args: flags
       }
     }
   ],
