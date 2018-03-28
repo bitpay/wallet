@@ -603,8 +603,6 @@ export class ConfirmPage {
             let okText = this.translate.instant('Confirm');
             let cancelText = this.translate.instant('Cancel');
             this.popupProvider.ionicConfirm(null, message, okText, cancelText).then((ok: boolean) => {
-              if (!ok && this.isCordova)
-                  this.slideButton.isConfirmed(false);
               return resolve(!ok);
             });
           });
@@ -642,6 +640,8 @@ export class ConfirmPage {
 
       confirmTx().then((nok: boolean) => {
         if (nok) {
+          if (this.isCordova)
+            this.slideButton.isConfirmed(false);
           this.onGoingProcessProvider.clear();
           return;
         }
