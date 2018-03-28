@@ -217,12 +217,15 @@ $button-md-text-transform: none;
       z-index: 999;
     }
     .title-md { //material design only
-        position: absolute;
-        left: 0;
-        top: 0;
-        height: 100%;
-        width: 100%;
-        text-align: center;
+      position: absolute;
+      left: 0;
+      top: 0;
+      height: 100%;
+      width: 100%;
+      text-align: center;
+      .toolbar-title-md {
+        padding: 0px 50px 0px 50px;
+      }
     }
   }
 }
