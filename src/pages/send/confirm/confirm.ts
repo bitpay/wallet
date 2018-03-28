@@ -603,6 +603,8 @@ export class ConfirmPage {
             let okText = this.translate.instant('Confirm');
             let cancelText = this.translate.instant('Cancel');
             this.popupProvider.ionicConfirm(null, message, okText, cancelText).then((ok: boolean) => {
+              if (!ok && this.isCordova)
+                  this.slideButton.isConfirmed(false);
               return resolve(!ok);
             });
           });
