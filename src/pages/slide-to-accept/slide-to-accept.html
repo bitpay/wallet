@@ -5,7 +5,7 @@
     </div>
   </button>
   <div class="slide__button-text" (touchstart)="toggleAnimation()" (touchmove)="toggleAnimation()" [ngStyle]="textStyle" *ngIf="!isConfirm">
-    <span class="justify" translate>{{buttonText}}</span>
+    <span class="justify">{{buttonText}}</span>
   </div>
   <div class="slide__arrow " *ngIf="!isConfirm">
     <img src="assets/img/icon-arrow-right.svg">
