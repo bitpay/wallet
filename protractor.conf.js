@@ -20,9 +20,13 @@ exports.config = {
         mobileEmulation: {
           width: 1280,
           height: 800,
-          pixelRatio: 2
+          pixelRatio: 1
         },
-        args: flags
+        args: [
+          ...flags,
+          '--high-dpi-support=1',
+          '--force-device-scale-factor=2'
+        ]
       }
     },
     {
