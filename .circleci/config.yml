@@ -53,6 +53,21 @@ jobs:
           path: ./test
       - store_test_results:
           path: ./test
+
+  # Run tests using CircleCI's local CLI
+  build:
+    docker:
+      - image: circleci/node:9-browsers
+    working_directory: ~/copay
+    steps:
+      - checkout
+      - run: npm install
+      - run: npm rebuild node-sass
+      - run: npm run apply:copay
+      - run: npm run e2e
+      - run: npm run apply:bitpay
+      - run: npm run e2e
+      - run: npm run test:visual
           
 workflows:
   version: 2
