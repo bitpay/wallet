@@ -240,7 +240,12 @@ export class ConfirmPage {
   private exitWithError(err: any) {
     this.logger.info('Error setting wallet selector:' + err);
     this.popupProvider.ionicAlert("", this.bwcErrorProvider.msg(err)).then(() => {
-      this.navCtrl.popToRoot({ animate: false });
+      this.navCtrl.popToRoot({ animate: false }).then(() => {
+        // Fixes mobile navigation
+        setTimeout(() => {
+          this.navCtrl.parent.select(0);
+        });
+      });
     });
   };
 
@@ -663,11 +668,14 @@ export class ConfirmPage {
     }
     let modal = this.modalCtrl.create(FinishModalPage, params, { showBackdrop: true, enableBackdropDismiss: false });
     modal.present();
-    modal.onDidDismiss(() => {
+    setTimeout(() => {
       this.navCtrl.popToRoot({ animate: false }).then(() => {
-        this.navCtrl.parent.select(0);
+        // Fixes mobile navigation
+        setTimeout(() => {
+          this.navCtrl.parent.select(0);
+        });
       });
-    })
+    }, 200);
   }
 
   public openPPModal(): void {
