@@ -22,7 +22,7 @@ jobs:
       - run: npm run apply:copay
       - run: npm run test:ci
       - run: npm run e2e
-      - run: npm run test:visual
+      - run: npx reg-cli test/visual/latest/copay test/visual/approved/copay test/visual/diffs --report test/visual/report.html --json test/visual/report.json --enableAntialias --thresholdRate 0.005
       - run: npx codecov
       - store_artifacts:
           path: ./test
@@ -47,7 +47,7 @@ jobs:
       - run: npm run apply:bitpay
       - run: npm run test:ci
       - run: npm run e2e
-      - run: npm run test:visual
+      - run: npx reg-cli test/visual/latest/bitpay test/visual/approved/bitpay test/visual/diffs --report test/visual/report.html --json test/visual/report.json --enableAntialias --thresholdRate 0.005
       - run: npx codecov
       - store_artifacts:
           path: ./test
