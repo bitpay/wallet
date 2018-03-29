@@ -11,6 +11,7 @@ exports.config = {
   jasmineNodeOpts: { defaultTimeoutInterval: 1000 * 60 * 5 },
   maxSessions: 4,
   specs: ['test/e2e/**/*.e2e-spec.ts'],
+  directConnect: true,
   // Available deviceNames for mobileEmulation: https://chromium.googlesource.com/chromium/src/+/master/third_party/WebKit/Source/devtools/front_end/emulated_devices/module.json
   multiCapabilities: [
     {

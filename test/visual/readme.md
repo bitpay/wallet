@@ -14,8 +14,6 @@ Once you've reviewed the changes in the report, simply copy the updated images f
 
 ### Option 2: Build Screenshots Locally
 
-> Note: WIP - Chrome is breaking intermittently
-
 To capture screenshots locally, first install [Docker](https://www.docker.com/), then run:
 
 ```
