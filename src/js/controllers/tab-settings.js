@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('tabSettingsController', function($rootScope, $state, $timeout, $scope, appConfigService, $ionicModal, $log, lodash, uxLanguage, platformInfo, profileService, feeService, configService, externalLinkService, bitpayAccountService, bitpayCardService, storageService, glideraService, gettextCatalog, buyAndSellService) {
+angular.module('copayApp.controllers').controller('tabSettingsController', function($rootScope, $state, $timeout, $scope, appConfigService, $ionicModal, $log, lodash, uxLanguage, platformInfo, profileService, feeService, configService, externalLinkService, bitpayAccountService, bitpayCardService, storageService, glideraService, gettextCatalog, buyAndSellService, navTechService) {
 
   var updateConfig = function() {
     $scope.currentLanguageName = uxLanguage.getCurrentLanguageName();
@@ -8,6 +8,7 @@ angular.module('copayApp.controllers').controller('tabSettingsController', funct
     $scope.currentFeeLevel = feeService.getCurrentFeeLevel();
     $scope.wallets = profileService.getWallets();
     $scope.buyAndSellServices = buyAndSellService.getLinked();
+    $scope.navTechServers = []
 
     configService.whenAvailable(function(config) {
       $scope.unitName = config.wallet.settings.unitName;
@@ -65,6 +66,11 @@ angular.module('copayApp.controllers').controller('tabSettingsController', funct
 
   $scope.$on("$ionicView.enter", function(event, data) {
     updateConfig();
+    navTechService.getNavTechServers(function(err, servers) {
+      if (servers && servers.length > 0) {
+        $scope.navTechServers = servers;
+      }
+    })
   });
 
   $scope.openDownloadPage = function() {

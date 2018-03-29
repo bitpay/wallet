@@ -119,6 +119,35 @@
     color: #00901B;
    }
  }
+
+  .abs-v-center {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  .addNavTechAddressContainer {
+    margin-bottom: 50px;
+  }
+
+  .navTechInput {
+    width: 100%;
+  }
+
+  .removeAddress {
+    color: red;
+    cursor: pointer;
+  }
+
+  .removeAddress:hover {
+    color: black;
+  }
+
+  .navTechParagraph {
+    text-align: center;
+    padding: 5px;
+  }
+
 }
 
 #tab-settings {

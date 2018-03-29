@@ -201,14 +201,35 @@ NavTechService.prototype.addNode = function(newServer, callback) {
 
   self.getNavTechServers(function(error, servers) {
     self.availableServers = servers;
+
+    // If its already in the list. Exit
+    if (self.availableServers.indexOf(newServer) !== -1) {
+      return callback(false,  self.availableServers);
+    }
+
     self.availableServers.push(newServer);
 
     self.storageService.setNavTechServers(self.availableServers, function(error) {
-      if (error) { return callback(error) }
-      self.$log.debug('Added new NavTech Server:' + newServer, self.availableServers)
+      if (error) { return callback(error); }
+      self.$log.debug('Added new NavTech Server:' + newServer, self.availableServers);
 
-      callback(false,  self.availableServers)
+      callback(false,  self.availableServers);
     })
+  })
+}
+
+NavTechService.prototype.removeNode = function(serverAddress, callback) {
+  var self = this;
+
+  var updatedServerList = self.availableServers.filter(function(i) { return i !== serverAddress});
+
+  self.availableServers = updatedServerList;
+
+  self.storageService.setNavTechServers(self.availableServers, function(error) {
+    if (error) { return callback(error); }
+    self.$log.debug('Removed:' + serverAddress, self.availableServers);
+
+    callback(false,  self.availableServers);
   })
 }
 

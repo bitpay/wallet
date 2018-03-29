@@ -12,7 +12,10 @@
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  right: 0
+  right: 0;
+  height: 100%;
+  min-width: 100px;
+  justify-content: center;
 }
 
 .button,

@@ -1,0 +1,35 @@
+<ion-view class="settings" show-tabs>
+  <ion-nav-bar class="bar-royal">
+    <ion-nav-title>
+      {{'NavTech Servers'|translate}}
+    </ion-nav-title>
+    <ion-nav-back-button>
+    </ion-nav-back-button>
+  </ion-nav-bar>
+  <ion-content>
+    <p class="navTechParagraph">
+      Add a NavTech server to create private payments. <br />
+      See <a href="https://navtechservers.com/">navtechservers.com</a> for more details
+    </p>
+    <div class="addNavTechAddressContainer">
+      <div class="item navTechAddAdress">
+        <div>
+          <input type="text" class="navTechInput" placeholder="{{'Please enter NavTech URL. e.g. https://someNavTechServer.com:3000' | translate}}" ng-model="navTechAddress">
+          <button class="button button-input button-primary" ng-click="saveNavTechAddress(navTechAddress)">
+            <span class="button-label" translate>Add</span>
+          </button>
+        </div>
+      </div>
+      <p class="navTechParagraph" ng-show="navTechAddError">Invalid NavTech Server</p>
+    </div>
+    <p class="navTechParagraph" ng-show="navTechServers.length === 0">No NavTech servers found. Please add a server to make private payments</p>
+    <div class="list">
+      <ul>
+        <li ng-repeat="server in navTechServers" class="item item-icon-right">
+          {{server}}
+          <i class="icon ion-close-circled removeAddress" ng-click="removeNavTechAddress(server)"></i>
+        </li>
+      </ul>
+    </div>
+  </ion-content>
+</ion-view>

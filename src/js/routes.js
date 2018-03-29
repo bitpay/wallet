@@ -484,6 +484,15 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
           }
         }
       })
+      .state('tabs.navTechServers', {
+        url: '/navTechServers',
+        views: {
+          'tab-settings@tabs': {
+            controller: 'preferencesNavTechController',
+            templateUrl: 'views/preferencesNavTech.html'
+          }
+        }
+      })
       .state('tabs.about', {
         url: '/about',
         views: {
