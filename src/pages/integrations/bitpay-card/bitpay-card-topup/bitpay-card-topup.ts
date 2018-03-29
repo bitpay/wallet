@@ -503,8 +503,14 @@ export class BitPayCardTopUpPage {
     let modal = this.modalCtrl.create(FinishModalPage, { finishText, finishComment }, { showBackdrop: true, enableBackdropDismiss: false });
     modal.present();
     modal.onDidDismiss(() => {
-      this.navCtrl.popToRoot({ animate: false });
-      this.navCtrl.push(BitPayCardPage, { id: this.cardId });
+      this.navCtrl.popToRoot({ animate: false }).then(() => {
+        this.navCtrl.parent.select(0);
+
+        // Fixes mobile navigation
+        setTimeout(() => {
+          this.navCtrl.push(BitPayCardPage, { id: this.cardId }, { animate: false });
+        }, 200);
+      });
     });
   }
 

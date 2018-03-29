@@ -111,7 +111,7 @@ export class GlideraPage {
 
   public openAuthenticateWindow(): void {
     this.openExternalLink(this.getAuthenticateUrl());
-    this.showOauthForm = true
+    this.navCtrl.popToRoot();
   }
 
   public openLoginWindow() {

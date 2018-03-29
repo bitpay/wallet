@@ -44,7 +44,6 @@ export class GlideraProvider {
      * Production: 'livenet'
      */
     this.credentials.NETWORK = 'livenet';
-    // this.credentials.NETWORK = 'testnet';
 
     if (this.credentials.NETWORK == 'testnet') {
       this.credentials.HOST = glidera.sandbox.host;
@@ -372,7 +371,7 @@ export class GlideraProvider {
           if (err) {
             // Return error and remove token
             this.remove();
-            return cb(null);
+            return cb(err);
           } else {
             // Return permissions and store
             this.persistenceProvider.setGlideraPermissions(network, p);

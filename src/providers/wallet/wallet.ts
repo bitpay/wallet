@@ -872,8 +872,10 @@ export class WalletProvider {
 
       try {
         wallet.signTxProposal(txp, password, (err: any, signedTxp: any) => {
-          this.logger.warn('Transaction signed err:' + err);
-          if (err) return reject(err);
+          if (err) { 
+            this.logger.error('Transaction signed err: ', err);
+            return reject(err);
+          }
           return resolve(signedTxp);
         });
       } catch (e) {

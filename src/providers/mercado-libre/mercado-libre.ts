@@ -31,11 +31,11 @@ export class MercadoLibreProvider {
       'url': 'https://www.mercadolivre.com.br'
     }]; */
 
+    this.credentials = {};
     /*
     * Development: 'testnet'
     * Production: 'livenet'
     */
-    this.credentials = {};
     this.credentials.NETWORK = 'livenet';
     this.credentials.BITPAY_API_URL = this.credentials.NETWORK === 'testnet'
       ? "https://test.bitpay.com"

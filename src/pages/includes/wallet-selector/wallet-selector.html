@@ -22,8 +22,8 @@
         <ion-icon item-end>
           <img class="check" src="assets/img/icon-check-selected.svg" *ngIf="selectedWalletId === wallet.id">
         </ion-icon>
-        <h2 class="wallet-name">{{wallet.credentials.walletName}}</h2>
-        <p>
+        <div class="item-title">{{wallet.credentials.walletName}}</div>
+        <div class="item-subtitle">
           <span class="wallet-warning" *ngIf="!wallet.isComplete()" translate>
             Incomplete
           </span>
@@ -41,7 +41,7 @@
               name="timer"></ion-icon>
             <span *ngIf="wallet.error" class="error">{{wallet.error}}</span>
           </span>
-        </p>
+        </div>
       </button>
     </ion-list>
   </div>
@@ -65,8 +65,8 @@
         <ion-icon item-end>
           <img class="check" src="assets/img/icon-check-selected.svg" *ngIf="selectedWalletId === wallet.id">
         </ion-icon>
-        <h2 class="wallet-name">{{wallet.credentials.walletName}}</h2>
-        <p>
+        <div class="item-title">{{wallet.credentials.walletName}}</div>
+        <div class="item-subtitle">
           <span *ngIf="!wallet.isComplete()" translate>
             Incomplete
           </span>
@@ -86,7 +86,7 @@
               name="timer"></ion-icon>
             <span *ngIf="wallet.error" class="error">{{wallet.error}}</span>
           </span>
-        </p>
+        </div>
       </button>
     </ion-list>
   </div>

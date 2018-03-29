@@ -470,8 +470,14 @@ export class BuyMercadoLibrePage {
     let modal = this.modalCtrl.create(FinishModalPage, { finishText, finishComment, cssClass }, { showBackdrop: true, enableBackdropDismiss: false });
     modal.present();
     modal.onDidDismiss(() => {
-      this.navCtrl.popToRoot({ animate: false });
-      this.navCtrl.push(MercadoLibrePage, { invoiceId: this.invoiceId });
+      this.navCtrl.popToRoot({ animate: false }).then(() => {
+        this.navCtrl.parent.select(0);
+        
+        // Fixes mobile navigation
+        setTimeout(() => {
+          this.navCtrl.push(MercadoLibrePage, { invoiceId: this.invoiceId }, { animate: false });
+        }, 200);
+      });
     });
   }
 
