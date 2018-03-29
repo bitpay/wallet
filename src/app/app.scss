@@ -21,7 +21,7 @@ body {
   line-height: 22px;
 }
 
-ion-alert.alert-top{
+ion-alert.alert-top {
   align-items: center;
 }
 
@@ -56,7 +56,7 @@ ion-alert.alert-top{
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-//  font-size: 1.4rem;
+  //  font-size: 1.4rem;
 }
 .item-subtitle {
   white-space: nowrap;
@@ -94,7 +94,7 @@ ion-alert.alert-top{
   box-shadow: 0px 2px 6px 0px rgba(0, 0, 0, 0.2);
   background-repeat: no-repeat;
   background-clip: padding-box;
-  background-color: #2A3F90;
+  background-color: #2a3f90;
   background-size: 103%;
 }
 
@@ -219,7 +219,7 @@ a.royal {
 }
 
 .text-gray {
-  color: color($colors,grey);
+  color: color($colors, grey);
 }
 
 .text-bold {
@@ -242,9 +242,9 @@ a.royal {
   color: color($colors, danger);
 }
 
-.card{
+.card {
   padding-top: 1px;
-  width:92%;
+  width: 92%;
   padding-bottom: 5px;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
   overflow: hidden;
@@ -253,19 +253,23 @@ a.royal {
   border-radius: 4px;
   background-color: #ffffff;
 
-  .item-divider{
+  .item-divider {
     background-color: #ffffff;
     margin-bottom: 5px;
   }
 }
 
 // Fix Camera
-html , body, .back-transparent, ion-app, .nav-decor {
+html,
+body,
+.back-transparent,
+ion-app,
+.nav-decor {
   background: none transparent !important;
 }
 
 ion-icon {
-  &[class*="tab-"] {
+  &[class*='tab-'] {
     // Instead of using the font-based icons
     // We're applying SVG masks
     mask-size: contain;
@@ -276,20 +280,20 @@ ion-icon {
     height: 2rem !important;
   }
   // custom icons
-  &[class*="tab-home"] {
+  &[class*='tab-home'] {
     mask-image: url(../assets/img/tab-icons/ico-home.svg);
   }
-  &[class*="tab-receive"] {
+  &[class*='tab-receive'] {
     mask-image: url(../assets/img/tab-icons/ico-receive.svg);
   }
-  &[class*="tab-scan"] {
+  &[class*='tab-scan'] {
     mask-image: url(../assets/img/tab-icons/ico-scan.svg);
     width: 3rem !important;
   }
-  &[class*="tab-send"] {
+  &[class*='tab-send'] {
     mask-image: url(../assets/img/tab-icons/ico-send.svg);
   }
-  &[class*="tab-settings"] {
+  &[class*='tab-settings'] {
     mask-image: url(../assets/img/tab-icons/ico-settings.svg);
   }
 }
@@ -311,7 +315,7 @@ ion-icon {
   color: color($colors, primary);
   -webkit-box-shadow: none;
   -moz-box-shadow: none;
-  box-shadow: none;  
+  box-shadow: none;
 }
 
 .alertDanger {
@@ -320,3 +324,7 @@ ion-icon {
   }
 }
 
+// https://github.com/ionic-team/ionic/pull/14241
+ion-alert .alert-message {
+  overflow-y: auto;
+}

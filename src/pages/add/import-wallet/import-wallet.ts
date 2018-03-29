@@ -29,6 +29,7 @@ export class ImportWalletPage {
   private reader: FileReader;
   private defaults: any;
   private errors: any;
+  private prettyFileName: string;
 
   public importErr: boolean;
   public fromOnboarding: boolean;
@@ -360,6 +361,8 @@ export class ImportWalletPage {
   public fileChangeEvent($event: any) {
     this.file = $event.target ? $event.target.files[0] : $event.srcElement.files[0];
     this.formFile = $event.target.value;
+    // Most browsers return `C:\fakepath\FILENAME`
+    this.prettyFileName = this.formFile.split('\\').pop();
     this.getFile();
   }
 

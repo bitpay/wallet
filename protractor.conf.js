@@ -7,33 +7,26 @@ const flags = [
 ];
 
 exports.config = {
-  allScriptsTimeout: 11000,
-  jasmineNodeOpts: { defaultTimeoutInterval: 1000 * 60 * 10 },
+  allScriptsTimeout: 1000 * 60 * 5,
+  jasmineNodeOpts: { defaultTimeoutInterval: 1000 * 60 * 5 },
   maxSessions: 4,
   specs: ['test/e2e/**/*.e2e-spec.ts'],
+  directConnect: true,
   // Available deviceNames for mobileEmulation: https://chromium.googlesource.com/chromium/src/+/master/third_party/WebKit/Source/devtools/front_end/emulated_devices/module.json
   multiCapabilities: [
     {
-      name: '1024x720',
+      name: '1280x800',
       browserName: 'chrome',
       chromeOptions: {
+        mobileEmulation: {
+          width: 1280,
+          height: 800,
+          pixelRatio: 1
+        },
         args: [
+          ...flags,
           '--high-dpi-support=1',
-          '--force-device-scale-factor=2',
-          '--window-size=1024,720',
-          ...flags
-        ]
-      }
-    },
-    {
-      name: '1920x1080',
-      browserName: 'chrome',
-      chromeOptions: {
-        args: [
-          '--high-dpi-support=1',
-          '--force-device-scale-factor=2',
-          '--window-size=1920,1080',
-          ...flags
+          '--force-device-scale-factor=2'
         ]
       }
     },
@@ -44,17 +37,17 @@ exports.config = {
         mobileEmulation: {
           deviceName: 'iPhone X'
         },
-        args: [...flags]
+        args: flags
       }
     },
     {
-      name: 'iPhone8',
+      name: 'Pixel2',
       browserName: 'chrome',
       chromeOptions: {
         mobileEmulation: {
-          deviceName: 'iPhone 8'
+          deviceName: 'Pixel 2'
         },
-        args: [...flags]
+        args: flags
       }
     },
     {
@@ -64,27 +57,7 @@ exports.config = {
         mobileEmulation: {
           deviceName: 'iPad'
         },
-        args: [...flags]
-      }
-    },
-    {
-      name: 'iPadPro',
-      browserName: 'chrome',
-      chromeOptions: {
-        mobileEmulation: {
-          deviceName: 'iPad Pro'
-        },
-        args: [...flags]
-      }
-    },
-    {
-      name: 'Nexus5X',
-      browserName: 'chrome',
-      chromeOptions: {
-        mobileEmulation: {
-          deviceName: 'Nexus 5X'
-        },
-        args: [...flags]
+        args: flags
       }
     }
   ],
@@ -121,5 +94,6 @@ exports.config = {
         consolidateAll: true
       })
     );
-  }
+  },
+  SELENIUM_PROMISE_MANAGER: false
 };

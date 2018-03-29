@@ -38,9 +38,12 @@
     </ion-item>
 
     <div *ngIf="selectedTab == 'file'">
-      <ion-item *ngIf="!isSafari && !isCordova">
-        <ion-label stacked>{{'Choose a backup file from your computer' | translate}}</ion-label>
-        <ion-input type="file" accept="json" [(ngModel)]="formFile" (change)="fileChangeEvent($event)" formControlName="file"></ion-input>
+      <ion-item class="hide-validation" *ngIf="!isSafari && !isCordova">
+        <ion-input class="upload-hidden" type="file" accept="json" [(ngModel)]="formFile" (change)="fileChangeEvent($event)" formControlName="file"></ion-input>
+        <div item-content class="upload-ui">
+          <div class="empty-message">{{'Choose a backup file from your computer' | translate}}&hellip;</div>
+          <div class="filled-message">{{prettyFileName}}</div>
+        </div>
       </ion-item>
 
       <ion-item *ngIf="isSafari || isCordova">
