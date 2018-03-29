@@ -8,22 +8,22 @@ page-home {
   .toolbar-title-ios {
     text-align: center;
   }
-  .check{
+  .check {
     text-align: center;
     .title {
       font-weight: 500;
       font-size: 2rem;
     }
-    .subtitle{
+    .subtitle {
       padding: 10px;
     }
     .check-icon {
-      cursor: pointer;
+      margin-top: -40px;
     }
   }
   .title {
     font-weight: 500;
-    >img {
+    > img {
       vertical-align: sub;
       margin-right: 5px;
     }
@@ -42,13 +42,13 @@ page-home {
 
   page-txp:last-child,
   page-wallet-activity:last-child {
-    border:0;
+    border: 0;
 
     & .item-inner {
-      border:0 !important;
+      border: 0 !important;
     }
   }
-  .header-extend{
+  .header-extend {
     background: $toolbar-background;
     height: 222px;
     position: absolute;
@@ -56,17 +56,15 @@ page-home {
     width: 100%;
     z-index: 0;
   }
-  .wrapper{
-    background-color:$background-color;
+  .wrapper {
+    background-color: $background-color;
   }
-  .card{
+  .card {
     z-index: 1;
     position: relative;
   }
-  ion-refresher{
-    height:120px;
+  ion-refresher {
+    height: 120px;
     background: $toolbar-background;
   }
-  
 }
-  
