@@ -99,21 +99,8 @@ const changeAppleSysFont = () =>
     )
   );
 
-// Hide Chrome's scroll bar to avoid false positives from OS differences
-const hideScrollBar = () =>
-  browser.executeScript(
-    injector(
-      'scrollBarControl',
-      'style',
-      'scrollBarCtl',
-      '::-webkit-scrollbar { display: none; }',
-      'Scroll bar hidden for E2E testing.'
-    )
-  );
-
 export async function takeScreenshot(name: string) {
   await changeAppleSysFont();
-  await hideScrollBar();
   // FIXME: this avoids capturing screenshots mid-animation. This can be removed
   // once the e2e build disables Ionic animations:
   // IonicModule.forRoot(MyApp, { animate: false })
