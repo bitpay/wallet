@@ -127,7 +127,6 @@ export class FileStorage implements IStorage {
   }
 
   remove(k: string): Promise<void> {
-    console.log('[file-storage.ts:129]',this.dir.fullPath, this.dir.nativeURL); /* TODO */
     return new Promise<void>((resolve, reject) => {
       this.file.removeFile(this.dir.nativeURL, k).then( () => {
         this.log.debug('File removed: ' + k);
