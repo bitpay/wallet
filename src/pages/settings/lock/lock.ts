@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { ModalController } from 'ionic-angular';
+import { Events } from 'ionic-angular';
 
 // pages
 import { PinModalPage } from '../../pin/pin';
@@ -23,11 +23,11 @@ export class LockPage {
   public needsBackupMsg: string;
 
   constructor(
-    private modalCtrl: ModalController,
     private configProvider: ConfigProvider,
     private touchIdProvider: TouchIdProvider,
     private profileProvider: ProfileProvider,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private events: Events
   ) {
     this.checkLockOptions();
   }
@@ -75,10 +75,10 @@ export class LockPage {
   }
 
   private openPinModal(action): void {
-    let modal = this.modalCtrl.create(PinModalPage, { action });
-    modal.present();
-    modal.onDidDismiss(() => {
+    this.events.publish('showPinModalEvent', action);
+    this.events.subscribe('finishPinModalEvent', (wallet: any) => {
       this.checkLockOptions();
+      this.events.unsubscribe('finishPinModalEvent');
     });
   }
 

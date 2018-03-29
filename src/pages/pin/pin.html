@@ -1,17 +1,10 @@
-<ion-header *ngIf="action === 'pinSetUp' || action === 'removeLock'">
-
-  <ion-navbar>
-    <ion-buttons start>
-      <button (click)="close()" ion-button>
+<ion-content *ngIf="showPinModal" no-bounce>
+  <div class="pin-header">
+    <div class="close-button" *ngIf="action === 'pinSetUp' || action === 'removeLock'">
+      <button (click)="close()" ion-button clear>
         {{'Close' | translate}}
       </button>
-    </ion-buttons>
-  </ion-navbar>
-
-</ion-header>
-
-<ion-content no-bounce>
-  <div class="pin-header">
+    </div>
     <div class="title">
       <div *ngIf="!disableButtons">
         <span class="message" *ngIf="!confirmingPin && !incorrect" translate>Please enter your PIN</span>

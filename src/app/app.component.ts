@@ -135,19 +135,20 @@ export class CopayApp {
 
   private openPINModal(action): void {
     this.isModalOpen = true;
-    let modal = this.modalCtrl.create(PinModalPage, { action }, { showBackdrop: false, enableBackdropDismiss: false });
-    modal.present();
-    modal.onDidDismiss(() => {
+    this.events.publish('showPinModalEvent', action);
+    this.events.subscribe('finishPinModalEvent', () => {
       this.isModalOpen = false;
+      this.events.unsubscribe('finishPinModalEvent');
     });
   }
 
   private openFingerprintModal(): void {
     this.isModalOpen = true;
-    let modal = this.modalCtrl.create(FingerprintModalPage, {}, { showBackdrop: false, enableBackdropDismiss: false });
-    modal.present();
-    modal.onDidDismiss(() => {
+    let isCopay = this.appProvider.info.nameCase == 'Copay' ? true : false;
+    this.events.publish('showFingerprintModalEvent', isCopay);
+    this.events.subscribe('finishFingerprintModalEvent', () => {
       this.isModalOpen = false;
+      this.events.unsubscribe('finishFingerprintModalEvent');
     });
   }
 

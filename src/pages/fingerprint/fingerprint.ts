@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Platform, ViewController } from 'ionic-angular';
+import { Events, Platform } from 'ionic-angular';
 
 // Providers
 import { AppProvider } from '../../providers/app/app';
@@ -13,23 +13,29 @@ export class FingerprintModalPage {
 
   public unregister: any;
   public isCopay: boolean;
+  public showFingerprintModal: boolean;
 
   constructor(
     private touchid: TouchIdProvider,
-    private viewCtrl: ViewController,
     private platform: Platform,
-    private appProvider: AppProvider
+    private appProvider: AppProvider,
+    private events: Events
   ) {
-    this.unregister = this.platform.registerBackButtonAction(() => { });
-    this.checkFingerprint();
-    this.isCopay = this.appProvider.info.nameCase == 'Copay' ? true : false;
+
+    this.events.subscribe('showFingerprintModalEvent', (isCopay) => {
+      this.isCopay = isCopay;
+      this.showFingerprintModal = true;
+      this.unregister = this.platform.registerBackButtonAction(() => { });
+      this.checkFingerprint();
+    });
   }
 
   public checkFingerprint(): void {
     this.touchid.check().then(() => {
       setTimeout(() => {
+        this.showFingerprintModal = false;
         this.unregister();
-        this.viewCtrl.dismiss();
+        this.events.publish('finishFingerprintModalEvent');
       }, 300);
     });
   }

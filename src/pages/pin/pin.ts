@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavParams, Platform, ViewController } from 'ionic-angular';
+import { Events, Platform } from 'ionic-angular';
 import { ConfigProvider } from '../../providers/config/config';
 import { Logger } from '../../providers/logger/logger';
 
@@ -9,55 +9,62 @@ import { Logger } from '../../providers/logger/logger';
 })
 export class PinModalPage {
 
-  private ATTEMPT_LIMIT: number = 3;
-  private ATTEMPT_LOCK_OUT_TIME: number = 5 * 60;
-  public currentAttempts: number = 0;
-  public currentPin: string = '';
-  public firstPinEntered: string = '';
-  public confirmingPin: boolean = false;
-  public action: string = '';
-  public disableButtons: boolean = false;
-  public expires: string = '';
+  private ATTEMPT_LIMIT: number;
+  private ATTEMPT_LOCK_OUT_TIME: number;
+  public currentAttempts: number;
+  public currentPin: string;
+  public firstPinEntered: string;
+  public confirmingPin: boolean;
+  public action: string;
+  public disableButtons: boolean;
+  public expires: string;
   public incorrect: boolean;
   public unregister: any;
+  public showPinModal: boolean;
 
   constructor(
-    private navParams: NavParams,
     private configProvider: ConfigProvider,
     private logger: Logger,
-    private viewCtrl: ViewController,
-    private platform: Platform
+    private platform: Platform,
+    private events: Events
   ) {
 
-    this.unregister = this.platform.registerBackButtonAction(() => { });
+    this.events.subscribe('showPinModalEvent', (action: string) => {
 
-    switch (this.navParams.get('action')) {
-      case 'checkPin':
-        this.action = 'checkPin';
-        break;
-      case 'pinSetUp':
-        this.action = 'pinSetUp';
-        break;
-      case 'removeLock':
-        this.action = 'removeLock'
-    }
+      this.ATTEMPT_LIMIT = 3;
+      this.ATTEMPT_LOCK_OUT_TIME = 5 * 60;
+      this.currentAttempts = 0;
+      this.currentPin = '';
+      this.firstPinEntered = '';
+      this.confirmingPin = false;
+      this.action = '';
+      this.disableButtons = false;
+      this.expires = '';
+      this.incorrect = false;
 
-    if (this.action === 'checkPin' || this.action === 'removeLock') {
-      let config = this.configProvider.get();
-      let bannedUntil = config.lock.bannedUntil;
-      if (bannedUntil) {
-        let now = Math.floor(Date.now() / 1000);
-        if (now < bannedUntil) {
-          this.disableButtons = true;
-          this.lockTimeControl(bannedUntil);
+      this.showPinModal = true;
+      this.unregister = this.platform.registerBackButtonAction(() => { });
+
+      this.action = action;
+
+      if (this.action === 'checkPin' || this.action === 'removeLock') {
+        let config = this.configProvider.get();
+        let bannedUntil = config.lock.bannedUntil;
+        if (bannedUntil) {
+          let now = Math.floor(Date.now() / 1000);
+          if (now < bannedUntil) {
+            this.disableButtons = true;
+            this.lockTimeControl(bannedUntil);
+          }
         }
       }
-    }
+    });
   }
 
   public close(): void {
+    this.events.publish('finishPinModalEvent');
+    this.showPinModal = false;
     this.unregister();
-    this.viewCtrl.dismiss();
   }
 
   public newEntry(value: string): void {
@@ -138,8 +145,7 @@ export class PinModalPage {
   public save(): void {
     let lock = { method: 'PIN', value: this.currentPin, bannedUntil: null };
     this.configProvider.set({ lock });
-    this.unregister();
-    this.viewCtrl.dismiss();
+    this.close();
   }
 
   private checkIfCorrect(): void {
@@ -149,12 +155,10 @@ export class PinModalPage {
       if (this.action === 'removeLock') {
         let lock = { method: 'Disabled', value: null, bannedUntil: null };
         this.configProvider.set({ lock });
-        this.unregister();
-        this.viewCtrl.dismiss();
+        this.close();
       }
       if (this.action === 'checkPin') {
-        this.unregister();
-        this.viewCtrl.dismiss();
+        this.close();
       }
     }
     else {
