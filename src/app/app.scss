@@ -19,6 +19,7 @@
 
 body {
   line-height: 22px;
+  font-family: 'Roboto';
 }
 
 ion-alert.alert-top {
@@ -43,12 +44,29 @@ ion-alert.alert-top {
   font-size: 1.6rem;
 }
 
+// Prevent uppercase on buttons
+.button {
+  text-transform: none;
+}
+
 // Hide border when refresh
 .has-refresher > .scroll-content {
   border-top: none !important;
-  ion-spinner * {
-    stroke: color($colors, light);
-  }
+  background-image: linear-gradient(
+    to bottom,
+    $toolbar-background,
+    $toolbar-background 50%,
+    $background-color 50%,
+    $background-color 50%,
+    $background-color 50%
+  );
+}
+ion-spinner * {
+  stroke: color($colors, light);
+}
+
+.header-ios .toolbar-background-ios {
+  border-width: 0 !important;
 }
 
 // Item font size
@@ -74,13 +92,16 @@ ion-alert.alert-top {
 .tabbar .tab-button .tab-button-text {
   display: block;
 }
-
+// Cleans the native dropshadow on app header
+.header-md::after {
+  display: none;
+}
 .icon-wallet {
   background-color: color($colors, primary);
   border-radius: $icon-border-radius;
-  width: 35px;
-  height: 35px;
-  box-shadow: 0px 2px 6px 0px rgba(0, 0, 0, 0.2);
+  width: 40px;
+  height: 40px;
+  //box-shadow: 0px 2px 6px 0px rgba(0, 0, 0, 0.2);
   background-repeat: no-repeat;
   background-clip: padding-box;
   background-size: 103%;
@@ -245,17 +266,28 @@ a.royal {
 .card {
   padding-top: 1px;
   width: 92%;
-  padding-bottom: 5px;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
+  padding-bottom: 10px;
+  box-shadow: 0 7px 12px rgba(0, 0, 0, 0.06);
   overflow: hidden;
   margin: 20px auto;
   display: block;
-  border-radius: 4px;
+  border-radius: 3px;
   background-color: #ffffff;
 
   .item-divider {
     background-color: #ffffff;
     margin-bottom: 5px;
+  }
+  .item-block {
+    padding: 5px 0 5px 24px;
+  }
+  .item-title {
+    font-size: 18px;
+    font-weight: 500;
+  }
+  .item-subtitle {
+    font-size: 1em;
+    margin-top: 5px;
   }
 }
 
@@ -265,7 +297,7 @@ body,
 .back-transparent,
 ion-app,
 .nav-decor {
-  background: none transparent !important;
+  background: $toolbar-background !important;
 }
 
 ion-icon {
