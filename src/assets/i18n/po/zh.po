@@ -12,7 +12,7 @@ msgstr ""
 "Last-Translator: cmgustavo83\n"
 "Language-Team: Chinese Simplified\n"
 "Language: zh\n"
-"PO-Revision-Date: 2018-03-23 16:07-0400\n"
+"PO-Revision-Date: 2018-03-30 15:29-0400\n"
 
 msgid "(Trusted)"
 msgstr "（可信的）"
@@ -45,7 +45,7 @@ msgid "Activity"
 msgstr "活动"
 
 msgid "Add"
-msgstr ""
+msgstr "添加"
 
 msgid "Add Contact"
 msgstr "添加联系人"
@@ -75,19 +75,19 @@ msgid "Address Type"
 msgstr "地址类型"
 
 msgid "Address book"
-msgstr ""
+msgstr "地址簿"
 
 msgid "Addressbook is empty"
-msgstr ""
+msgstr "地址薄为空"
 
 msgid "Addresses with balance"
-msgstr ""
+msgstr "有余额的地址"
 
 msgid "Advanced"
 msgstr "進階"
 
 msgid "All addresses"
-msgstr ""
+msgstr "所有地址"
 
 msgid "All of your bitcoin wallet balance may not be available for immediate spending."
 msgstr "所有您的比特币的钱包余额可能无法用于直接支出。"
@@ -96,7 +96,7 @@ msgid "All signing devices must be added to this multisig wallet before bitcoin 
 msgstr "比特币地址可以创建之前，签名的所有设备都必须都添加到这个对数钱包。"
 
 msgid "Allow camera access"
-msgstr ""
+msgstr "允许访问相机"
 
 msgid "Almost done! Let's review."
 msgstr "差不多完成了 ！让我们回顾一下。"
@@ -123,7 +123,7 @@ msgid "Anyone with your backup phrase can access or spend your bitcoin."
 msgstr "任何人只要持有你的备份短语，就可以访问或者花掉你的比特币。"
 
 msgid "Apply changes"
-msgstr ""
+msgstr "应用更改"
 
 msgid "Approximate Bitcoin network fee to transfer wallet's balance (with normal priority)"
 msgstr "转移钱包余额大约需要的比特币网络费用（正常优先级）"
@@ -147,7 +147,7 @@ msgid "Are you sure you want to remove this transaction?"
 msgstr "确定要删除这项交易吗？"
 
 msgid "Are you sure?"
-msgstr ""
+msgstr "是否确认？"
 
 msgid "Available"
 msgstr "可用空间"
@@ -162,13 +162,13 @@ msgid "Backup"
 msgstr "备份"
 
 msgid "Backup Needed"
-msgstr ""
+msgstr "需要备份"
 
 msgid "Backup all your wallets before using this function"
-msgstr ""
+msgstr "在使用此功能之前，请备份你的钱包。"
 
 msgid "Backup now"
-msgstr ""
+msgstr "即刻备份"
 
 msgid "Backup wallet"
 msgstr "备份钱包"
@@ -180,7 +180,7 @@ msgid "Bad wallet invitation"
 msgstr "坏钱包邀请"
 
 msgid "Balance Hidden"
-msgstr ""
+msgstr "隐藏余额"
 
 msgid "Be sure to store your recovery phrase in a secure place. If this app is deleted, your money cannot be recovered without it."
 msgstr "请务必将您的恢复短语存储在一个安全的地方。如果这个程序被删除，不能没有它恢复你的钱。"
@@ -210,7 +210,7 @@ msgid "Bitcoin is different &ndash; it cannot be safely held with a bank or web 
 msgstr "比特币是不同 — — 它不能安全地举行以银行或 web 服务。"
 
 msgid "Bitcoin is secure, digital money."
-msgstr ""
+msgstr "比特币是安全的数字货币。"
 
 msgid "Bitcoin miner fee"
 msgstr ""
@@ -477,16 +477,16 @@ msgid "Create shared wallet"
 msgstr "创建共享的钱包"
 
 msgid "Create wallet"
-msgstr ""
+msgstr "创建钱包"
 
 msgid "Created"
-msgstr ""
+msgstr "已创建"
 
 msgid "Created by"
 msgstr "创建者:"
 
 msgid "Created {{card.date | amTimeAgo}}"
-msgstr ""
+msgstr "创建于 {{card.date | amTimeAgo}}"
 
 msgid "Creating Gift Card..."
 msgstr ""
@@ -696,7 +696,7 @@ msgid "Extracting Wallet information..."
 msgstr "正在提取的钱包信息..."
 
 msgid "Failed"
-msgstr ""
+msgstr "失败"
 
 msgid "Failed to export"
 msgstr "导出失败"
@@ -723,7 +723,7 @@ msgid "File/Text"
 msgstr ""
 
 msgid "Fingerprint"
-msgstr ""
+msgstr "指纹"
 
 msgid "Finish"
 msgstr "完成"
@@ -1062,7 +1062,7 @@ msgid "New address could not be generated. Please try again."
 msgstr "无法生成新的地址。请再试一次。"
 
 msgid "New wallet"
-msgstr ""
+msgstr "新建钱包"
 
 msgid "No"
 msgstr ""
@@ -1149,7 +1149,7 @@ msgid "Note: if this BCH wallet was duplicated from a BTC wallet, they share the
 msgstr "注意: 如此比特幣錢包由小比特幣复制，他們共享相同恢復短語"
 
 msgid "Notification"
-msgstr ""
+msgstr "通知"
 
 msgid "Notifications"
 msgstr "通知"
@@ -1227,7 +1227,7 @@ msgid "Ouch!"
 msgstr ""
 
 msgid "PIN"
-msgstr ""
+msgstr "PIN 码"
 
 msgid "Password"
 msgstr "密码"
@@ -1236,7 +1236,7 @@ msgid "Password required. Make sure to enter your password in advanced options"
 msgstr "需要密码。请务必在高级选项中输入你的密码"
 
 msgid "Passwords do not match"
-msgstr ""
+msgstr "密码不匹配"
 
 msgid "Paste the backup plain text code"
 msgstr ""
@@ -1446,7 +1446,7 @@ msgid "Redeem Now"
 msgstr ""
 
 msgid "Reject"
-msgstr ""
+msgstr "拒绝"
 
 msgid "Rejected"
 msgstr "拒绝"
@@ -1649,6 +1649,18 @@ msgstr ""
 msgid "Skip"
 msgstr "跳过"
 
+msgid "Slide to accept"
+msgstr ""
+
+msgid "Slide to confirm"
+msgstr ""
+
+msgid "Slide to pay"
+msgstr ""
+
+msgid "Slide to send"
+msgstr ""
+
 msgid "Some of your wallets are not eligible for Bitcoin Cash support. You can try to access BCH funds from these wallets using the recovery tool"
 msgstr ""
 
@@ -1738,6 +1750,9 @@ msgstr "比特币存储在与小于 1 blockchain 确认这个钱包中的金额�
 
 msgid "The derivation path"
 msgstr "衍生路径"
+
+msgid "The destination wallet is not backed up. Please, complete the backup process before continue."
+msgstr ""
 
 msgid "The exchange rate changes with the market."
 msgstr "与市场汇率的变化。"

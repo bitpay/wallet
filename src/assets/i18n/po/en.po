@@ -91,7 +91,6 @@ msgstr "Address Type"
 msgid "Address book"
 msgstr "Address book"
 
-#| msgid "Address book"
 msgid "Addressbook is empty"
 msgstr "Addressbook is empty"
 
@@ -362,7 +361,6 @@ msgstr "Confirm"
 msgid "Confirm &amp; Finish"
 msgstr "Confirm &amp; Finish"
 
-#| msgid "Confirm"
 msgid "Confirm your PIN"
 msgstr "Confirm your PIN"
 
@@ -477,7 +475,6 @@ msgstr "Could not get dynamic fee for level:"
 msgid "Could not get fee levels"
 msgstr "Could not get fee levels"
 
-#| msgid "Could not create address"
 msgid "Could not get the Addressbook"
 msgstr "Could not get the Addressbook"
 
@@ -598,7 +595,6 @@ msgstr "Disabled"
 msgid "Do it later"
 msgstr "Do it later"
 
-#| msgid "No private key"
 msgid "Do not include private key"
 msgstr "Do not include private key"
 
@@ -682,7 +678,6 @@ msgstr "Enter your encrypt password again to confirm"
 msgid "Enter your password"
 msgstr "Enter your password"
 
-#| msgid "Wallet already exists"
 msgid "Entry already exist"
 msgstr "Entry already exist"
 
@@ -692,7 +687,6 @@ msgstr "Entry does not exist"
 msgid "Error"
 msgstr "Error"
 
-#| msgid "Error creating wallet"
 msgid "Error adding new entry"
 msgstr "Error adding new entry"
 
@@ -708,7 +702,6 @@ msgstr "Error creating wallet"
 msgid "Error deleting addressbook"
 msgstr "Error deleting addressbook"
 
-#| msgid "Error creating wallet"
 msgid "Error deleting entry"
 msgstr "Error deleting entry"
 
@@ -787,7 +780,6 @@ msgstr "Fetching payment information"
 msgid "File/Text"
 msgstr "File/Text"
 
-#| msgid "Request Fingerprint"
 msgid "Fingerprint"
 msgstr "Fingerprint"
 
@@ -1273,7 +1265,6 @@ msgstr "Not funds found"
 msgid "Not now"
 msgstr "Not now"
 
-#| msgid "Invalid address"
 msgid "Not valid bitcoin address"
 msgstr "Not valid bitcoin address"
 
@@ -1464,7 +1455,6 @@ msgstr "Please enter the recovery phrase"
 msgid "Please enter the wallet recovery phrase"
 msgstr "Please enter the wallet recovery phrase"
 
-#| msgid "Please enter the recovery phrase"
 msgid "Please enter your PIN"
 msgstr "Please enter your PIN"
 
@@ -1703,7 +1693,6 @@ msgstr "Send"
 msgid "Send Feedback"
 msgstr "Send Feedback"
 
-#| msgid "Sending maximum amount"
 msgid "Send Max amount"
 msgstr "Send Max amount"
 
@@ -1807,12 +1796,27 @@ msgstr ""
 "Since only you control your money, you’ll need to save your backup phrase in "
 "case this app is deleted."
 
-#| msgid "Invalid address"
 msgid "Single address"
 msgstr "Single address"
 
 msgid "Skip"
 msgstr "Skip"
+
+#| msgid "Click to accept"
+msgid "Slide to accept"
+msgstr "Slide to accept"
+
+#| msgid "Click to confirm"
+msgid "Slide to confirm"
+msgstr "Slide to confirm"
+
+#| msgid "Click to pay"
+msgid "Slide to pay"
+msgstr "Slide to pay"
+
+#| msgid "Click to send"
+msgid "Slide to send"
+msgstr "Slide to send"
 
 msgid ""
 "Some of your wallets are not eligible for Bitcoin Cash support. You can try "
@@ -1821,7 +1825,6 @@ msgstr ""
 "Some of your wallets are not eligible for Bitcoin Cash support. You can try "
 "to access BCH funds from these wallets using the recovery tool"
 
-#| msgid "Recovery Phrase"
 msgid "Specify Recovery Phrase"
 msgstr "Specify Recovery Phrase"
 
@@ -1924,6 +1927,13 @@ msgstr ""
 
 msgid "The derivation path"
 msgstr "The derivation path"
+
+msgid ""
+"The destination wallet is not backed up. Please, complete the backup process "
+"before continue."
+msgstr ""
+"The destination wallet is not backed up. Please, complete the backup process "
+"before continue."
 
 msgid "The exchange rate changes with the market."
 msgstr "The exchange rate changes with the market."

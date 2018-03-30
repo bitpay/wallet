@@ -12,7 +12,7 @@ msgstr ""
 "Last-Translator: cmgustavo83\n"
 "Language-Team: Portuguese, Brazilian\n"
 "Language: pt\n"
-"PO-Revision-Date: 2018-03-23 16:07-0400\n"
+"PO-Revision-Date: 2018-03-28 11:29-0400\n"
 
 msgid "(Trusted)"
 msgstr "(Confiável)"
@@ -45,7 +45,7 @@ msgid "Activity"
 msgstr "Atividade"
 
 msgid "Add"
-msgstr ""
+msgstr "Adicionar"
 
 msgid "Add Contact"
 msgstr "Adicionar contacto"
@@ -63,7 +63,7 @@ msgid "Add funds"
 msgstr "Adicionar fundos"
 
 msgid "Add funds to get started"
-msgstr ""
+msgstr "Adicionar fundos para começar"
 
 msgid "Address"
 msgstr "Endereço"
@@ -75,19 +75,19 @@ msgid "Address Type"
 msgstr "Tipo de Endereço"
 
 msgid "Address book"
-msgstr ""
+msgstr "Catálogo de Endereços"
 
 msgid "Addressbook is empty"
-msgstr ""
+msgstr "Catálogo de endereços está vazio"
 
 msgid "Addresses with balance"
-msgstr ""
+msgstr "Endereços com valores"
 
 msgid "Advanced"
 msgstr "Avançado"
 
 msgid "All addresses"
-msgstr ""
+msgstr "Todos os endereços"
 
 msgid "All of your bitcoin wallet balance may not be available for immediate spending."
 msgstr "Todos os seus bitcoins na carteira poderão não estar disponíveis de imediato para gastar."
@@ -102,7 +102,7 @@ msgid "Almost done! Let's review."
 msgstr "Quase pronto! Vamos rever."
 
 msgid "Alternative currency"
-msgstr ""
+msgstr "Moeda Alternativa"
 
 msgid "Amazon.com is not available at this moment. Please try back later."
 msgstr "Amazon.com não está disponível neste momento. Por favor, tente mais tarde."
@@ -123,7 +123,7 @@ msgid "Anyone with your backup phrase can access or spend your bitcoin."
 msgstr "Qualquer pessoa com sua frase de segurança pode aceder ou gastar os seus bitcoins."
 
 msgid "Apply changes"
-msgstr ""
+msgstr "Aplicar as alterações"
 
 msgid "Approximate Bitcoin network fee to transfer wallet's balance (with normal priority)"
 msgstr "Taxa de rede Bitcoin aproximada para transferir o saldo da carteira (com prioridade normal)"
@@ -147,7 +147,7 @@ msgid "Are you sure you want to remove this transaction?"
 msgstr "Tem certeza que deseja remover esta transação?"
 
 msgid "Are you sure?"
-msgstr ""
+msgstr "Tem certeza?"
 
 msgid "Available"
 msgstr "Disponível"
@@ -267,7 +267,7 @@ msgid "Check the transaction on your wallet details"
 msgstr ""
 
 msgid "Checking..."
-msgstr ""
+msgstr "Verificando..."
 
 msgid "Choose a backup file from your computer"
 msgstr ""
@@ -282,7 +282,7 @@ msgid "Click to accept"
 msgstr "Clique para aceitar"
 
 msgid "Click to confirm"
-msgstr ""
+msgstr "Clique para confirmar"
 
 msgid "Click to open Terms"
 msgstr ""
@@ -477,7 +477,7 @@ msgid "Create shared wallet"
 msgstr "Criar carteira partilhada"
 
 msgid "Create wallet"
-msgstr ""
+msgstr "Criar carteira"
 
 msgid "Created"
 msgstr ""
@@ -564,13 +564,13 @@ msgid "Download"
 msgstr "Download"
 
 msgid "Duplicate"
-msgstr ""
+msgstr "Duplicar"
 
 msgid "Duplicating wallet..."
 msgstr "Duplicando carteira..."
 
 msgid "Each bitcoin wallet can generate billions of addresses from your 12-word backup. A new address is automatically generated and shown each time you receive a payment."
-msgstr ""
+msgstr "Cada carteira Bitcoin pode gerar bilhões de endereços através do seu backup de 12 palavras. Um novo endereço é gerado automaticamente e mostrado cada vez que receber um pagamento."
 
 msgid "Economy"
 msgstr "Economia"
@@ -696,7 +696,7 @@ msgid "Extracting Wallet information..."
 msgstr "Extraindo informações da Carteira..."
 
 msgid "Failed"
-msgstr ""
+msgstr "Falhou"
 
 msgid "Failed to export"
 msgstr "Falha ao exportar"
@@ -723,7 +723,7 @@ msgid "File/Text"
 msgstr ""
 
 msgid "Fingerprint"
-msgstr ""
+msgstr "Impressão digital"
 
 msgid "Finish"
 msgstr "Encerrar"
@@ -807,7 +807,7 @@ msgid "Help & Support"
 msgstr "Ajuda e suporte"
 
 msgid "Help & support"
-msgstr ""
+msgstr "Ajuda & Suporte"
 
 msgid "Help and support information is available at the website."
 msgstr "Informações de Ajuda e Suporte estão disponíveis no site."
@@ -855,7 +855,7 @@ msgid "I understand that my funds are held securely on this device, not by a com
 msgstr ""
 
 msgid "I'm sure"
-msgstr ""
+msgstr "Tenho certeza"
 
 msgid "If enabled, Bitcoin Cash addresses will be shown using Copay style address, and not the new cashaddr format."
 msgstr ""
@@ -969,7 +969,7 @@ msgid "Loading transaction info..."
 msgstr "A carregar informação da transação..."
 
 msgid "Loading..."
-msgstr ""
+msgstr "Carregando..."
 
 msgid "Lock"
 msgstr ""
@@ -1065,7 +1065,7 @@ msgid "New wallet"
 msgstr ""
 
 msgid "No"
-msgstr ""
+msgstr "Não"
 
 msgid "No access key defined"
 msgstr "Nenhuma chave de acesso definida"
@@ -1227,7 +1227,7 @@ msgid "Ouch!"
 msgstr ""
 
 msgid "PIN"
-msgstr ""
+msgstr "PIN"
 
 msgid "Password"
 msgstr "Senha"
@@ -1320,7 +1320,7 @@ msgid "Please upgrade Copay to perform this action"
 msgstr "Por favor atualize Copay para executar esta ação"
 
 msgid "Please wait..."
-msgstr ""
+msgstr "Por favor, aguarde..."
 
 msgid "Please, select your backup file"
 msgstr "Por favor, selecione seu arquivo de backup"
@@ -1377,7 +1377,7 @@ msgid "Push notifications for {{appName}} are currently disabled. Enable them in
 msgstr "Notificações de push para {{appName}} estão desativadas no momento. Habilite nas Configurações do aplicativo."
 
 msgid "QR Code"
-msgstr ""
+msgstr "QR Code"
 
 msgid "Quick review!"
 msgstr "Avaliação rápida!"
@@ -1649,6 +1649,18 @@ msgstr ""
 msgid "Skip"
 msgstr "Pular"
 
+msgid "Slide to accept"
+msgstr ""
+
+msgid "Slide to confirm"
+msgstr ""
+
+msgid "Slide to pay"
+msgstr ""
+
+msgid "Slide to send"
+msgstr ""
+
 msgid "Some of your wallets are not eligible for Bitcoin Cash support. You can try to access BCH funds from these wallets using the recovery tool"
 msgstr ""
 
@@ -1738,6 +1750,9 @@ msgstr "A quantidade de bitcoin armazenada nesta carteira com menos de 1 confirm
 
 msgid "The derivation path"
 msgstr "O caminho de derivação"
+
+msgid "The destination wallet is not backed up. Please, complete the backup process before continue."
+msgstr ""
 
 msgid "The exchange rate changes with the market."
 msgstr "A taxa de câmbio muda com o mercado."

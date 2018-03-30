@@ -12,7 +12,7 @@ msgstr ""
 "Last-Translator: cmgustavo83\n"
 "Language-Team: Japanese\n"
 "Language: ja\n"
-"PO-Revision-Date: 2018-03-23 16:07-0400\n"
+"PO-Revision-Date: 2018-03-28 11:29-0400\n"
 
 msgid "(Trusted)"
 msgstr "(信頼済み)"
@@ -1653,6 +1653,18 @@ msgstr ""
 msgid "Skip"
 msgstr "スキップ"
 
+msgid "Slide to accept"
+msgstr ""
+
+msgid "Slide to confirm"
+msgstr ""
+
+msgid "Slide to pay"
+msgstr ""
+
+msgid "Slide to send"
+msgstr ""
+
 msgid "Some of your wallets are not eligible for Bitcoin Cash support. You can try to access BCH funds from these wallets using the recovery tool"
 msgstr ""
 
@@ -1742,6 +1754,9 @@ msgstr "このウォレットの1承認未満の残高。"
 
 msgid "The derivation path"
 msgstr "派生パス"
+
+msgid "The destination wallet is not backed up. Please, complete the backup process before continue."
+msgstr ""
 
 msgid "The exchange rate changes with the market."
 msgstr "為替レートは市場と共に変動する"
