@@ -101,10 +101,6 @@ const changeAppleSysFont = () =>
 
 export async function takeScreenshot(name: string) {
   await changeAppleSysFont();
-  // FIXME: this avoids capturing screenshots mid-animation. This can be removed
-  // once the e2e build disables Ionic animations:
-  // IonicModule.forRoot(MyApp, { animate: false })
-  await browser.sleep(1000);
   const config = await browser.getProcessedConfig();
   const deviceName = config['capabilities'].name;
   // gets set when debugging in a single instance

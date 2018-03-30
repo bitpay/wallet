@@ -79,8 +79,6 @@ describe('Onboarding: Import Wallet', () => {
       // waiting forever on Angular.
       await browser.waitForAngularEnabled(false);
       await browser.wait(EC.presenceOf($('page-home')), 5000);
-      // give it a second to render before the screenshot
-      await browser.sleep(1000);
       await expectPage('home');
       await browser.waitForAngularEnabled(true);
     });

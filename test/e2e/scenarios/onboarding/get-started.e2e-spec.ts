@@ -85,8 +85,6 @@ describe('Onboarding: Get Started', () => {
     expect(await element(by.css('page-collect-email h3')).getText()).toEqual(
       'Notifications by email'
     );
-    // give it a second to render before the screenshot
-    await browser.sleep(1000);
     await expectPage('collect-email');
     await browser.waitForAngularEnabled(true);
     // TODO: complete onboarding process

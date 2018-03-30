@@ -24,6 +24,7 @@ import { MomentModule } from 'angular2-moment';
 import { NgxQRCodeModule } from 'ngx-qrcode2';
 
 /* Copay App */
+import env from '../environments';
 import { CopayApp } from './app.component';
 
 /* Pages */
@@ -211,7 +212,7 @@ import { WalletProvider } from '../providers/wallet/wallet';
 /* Directives */
 import { CopyToClipboard } from '../directives/copy-to-clipboard/copy-to-clipboard';
 import { LongPress } from '../directives/long-press/long-press';
-import { NoLowFee } from '../directives/no-low-fee/no-low-fee'
+import { NoLowFee } from '../directives/no-low-fee/no-low-fee';
 
 /* Read translation files */
 export function createTranslateLoader(http: HttpClient) {
@@ -336,6 +337,7 @@ export function createTranslateLoader(http: HttpClient) {
   ],
   imports: [
     IonicModule.forRoot(CopayApp, {
+      animate: env.enableAnimations,
       tabsHideOnSubPages: true,
       tabsPlacement: 'bottom',
       backButtonIcon: 'arrow-round-back',
@@ -348,10 +350,10 @@ export function createTranslateLoader(http: HttpClient) {
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
-        useFactory: (createTranslateLoader),
+        useFactory: createTranslateLoader,
         deps: [HttpClient]
       }
-    }),
+    })
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -520,4 +522,4 @@ export function createTranslateLoader(http: HttpClient) {
     }
   ]
 })
-export class AppModule { }
+export class AppModule {}

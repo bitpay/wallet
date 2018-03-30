@@ -4,4 +4,5 @@
  */
 export interface EnvironmentSchema {
   name: 'production' | 'development' | 'e2e';
+  enableAnimations: boolean;
 }
