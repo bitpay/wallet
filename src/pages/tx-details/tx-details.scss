@@ -62,6 +62,7 @@ page-tx-details {
         width: 25px;
         height: 25px;
         margin-right: 1.8rem;
+        box-shadow: none;
         &.disabled {
           background-color: color($colors, grey);
         }

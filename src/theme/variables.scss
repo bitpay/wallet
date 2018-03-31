@@ -57,13 +57,13 @@ $text-color: color($colors, dark);
 $list-border-color: color($colors, light);
 
 // Font size
-$font-size-base: 1.4rem;
+//$font-size-base: 1.4rem;
 
 // Toolbar
 $toolbar-ios-title-text-color: color($colors, light);
 $toolbar-md-title-text-color: color($colors, light);
-$toolbar-md-title-font-size: 1.6rem;
-$toolbar-ios-title-font-size: 1.5rem;
+//$toolbar-md-title-font-size: 1.6rem;
+//$toolbar-ios-title-font-size: 1.5rem;
 
 // Onboarding colors
 $onboarding-gradient-top-color: $toolbar-background;
@@ -81,7 +81,7 @@ $onboarding-background-image: linear-gradient(
 $tabs-ios-background: color($colors, blank);
 $tabs-ios-border-color: rgba(0, 0, 0, .1);
 
-$item-ios-body-text-font-size: 1.3rem;
+//$item-ios-body-text-font-size: 1.3rem;
 
 $item-ios-divider-background: $background-color;
 $item-ios-divider-color: color($colors, grey);
@@ -91,7 +91,7 @@ $label-ios-margin-top: 14px;
 $label-ios-margin-bottom: 14px;
 
 $list-ios-border-color: color($colors, light);
-$list-ios-header-font-size: 16px;
+//$list-ios-header-font-size: 16px;
 $list-ios-margin-bottom: 0;
 $list-ios-header-font-weight: 700;
 $list-ios-header-color: color($colors, dark);
@@ -106,8 +106,8 @@ $note-ios-color: color($colors, light-grey);
 // --------------------------------------------------
 // Material Design only Sass variables can go here
 
-$item-md-body-text-font-size: 1.3rem;
-$item-md-font-size: 1.4rem;
+//$item-md-body-text-font-size: 1.3rem;
+//$item-md-font-size: 1.4rem;
 
 $item-md-divider-background: $background-color;
 $item-md-divider-color: color($colors, grey);
@@ -121,7 +121,7 @@ $searchbar-md-padding-end: 8px;
 $searchbar-md-padding-top: 16px;
 
 $list-md-border-color: color($colors, light);
-$list-md-header-font-size: 16px;
+//$list-md-header-font-size: 16px;
 $list-md-header-margin-bottom: 0;
 $list-md-margin-bottom: 0;
 $list-md-header-color: color($colors, dark);
