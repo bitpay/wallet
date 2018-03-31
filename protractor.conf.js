@@ -10,7 +10,7 @@ exports.config = {
   allScriptsTimeout: 1000 * 60 * 5,
   jasmineNodeOpts: { defaultTimeoutInterval: 1000 * 60 * 5 },
   maxSessions: 4,
-  specs: ['test/e2e/**/*.e2e-spec.ts'],
+  specs: ['./test/e2e/**/*.e2e-spec.ts'],
   directConnect: true,
   // Available deviceNames for mobileEmulation: https://chromium.googlesource.com/chromium/src/+/master/third_party/WebKit/Source/devtools/front_end/emulated_devices/module.json
   multiCapabilities: [
@@ -69,8 +69,11 @@ exports.config = {
     defaultTimeoutInterval: 30000,
     print: function() {}
   },
-  useAllAngular2AppRoots: true,
   beforeLaunch: function() {
+    require('ts-node').register({
+      project: 'test/e2e/tsconfig.e2e.json'
+    });
+    require('./test/e2e/mockAPI');
     require('connect')()
       .use(require('serve-static')('www'))
       .listen(4200);
@@ -79,7 +82,7 @@ exports.config = {
     require('ts-node').register({
       project: 'test/e2e/tsconfig.e2e.json'
     });
-    var jasmineReporters = require('jasmine-reporters');
+    const jasmineReporters = require('jasmine-reporters');
     jasmine.getEnv().addReporter(
       new jasmineReporters.TerminalReporter({
         verbosity: 3,

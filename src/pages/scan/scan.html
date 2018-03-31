@@ -5,7 +5,7 @@
 </ion-header>
 
 <ion-content class="back-transparent" no-bounce>
-  <div class="page-scan-has-problems" *ngIf="(currentState == scannerStates.unauthorized || currentState == scannerStates.denied || currentState == scannerStates.unavailable) && !notSupportedMessage">
+  <div class="page-scan-has-problems" *ngIf="(currentState == scannerStates.unauthorized || currentState == scannerStates.denied || currentState == scannerStates.unavailable)">
     <div class="header-container">
       <div>
         <div class="header" padding>
@@ -45,8 +45,5 @@
       <span *ngIf="canEnableLight" class="icon-flash" [ngClass]="{'active': lightActive}" (click)="toggleLight()"></span>
       <span *ngIf="canChangeCamera" class="icon-camera-toggle" [ngClass]="{'active': cameraToggleActive}" (click)="toggleCamera()"></span>
     </div>
-  </div>
-  <div class="page-scan-has-problems not-supported-message" *ngIf="notSupportedMessage">
-    {{notSupportedMessage}}
   </div>
 </ion-content>

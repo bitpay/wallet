@@ -1,17 +1,9 @@
 page-scan {
   color: #fff;
   background: transparent none;
-  .navbar-transparent, .toolbar-background {
+  .navbar-transparent,
+  .toolbar-background {
     background: $toolbar-scanner;
-  }
-  .not-supported-message {
-    height: 100%;
-    color: #fff;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
   }
   .page-scan-has-problems {
     height: 100%;
@@ -47,8 +39,8 @@ page-scan {
         text-align: center;
         max-width: 300px;
         font-size: 0.9em;
-        opacity: .6;
-        color: #fff;   
+        opacity: 0.6;
+        color: #fff;
       }
     }
     .body {
@@ -64,7 +56,7 @@ page-scan {
   }
   .page-scan-loading-camera {
     height: 100%;
-    width: 100%
+    width: 100%;
   }
   .page-scan-camera-ready {
     // view background is transparent to show video preview
@@ -93,7 +85,8 @@ page-scan {
       position: absolute;
       left: 0;
       right: 0;
-      .icon-flash, .icon-camera-toggle {
+      .icon-flash,
+      .icon-camera-toggle {
         border-radius: 50%;
         width: 4em;
         height: 4em;
@@ -108,15 +101,16 @@ page-scan {
         /*body:not(.platform-cordova) &:hover {
           background-color: rgba(31, 40, 78, 0.79);
         }*/
-        &.active, &:active {
+        &.active,
+        &:active {
           background-color: rgba(100, 124, 232, 0.79);
         }
       }
       .icon-flash {
-        background-image: url("../assets/img/icon-flash.svg");
+        background-image: url('../assets/img/icon-flash.svg');
       }
       .icon-camera-toggle {
-        background-image: url("../assets/img/icon-camera-toggle.svg");
+        background-image: url('../assets/img/icon-camera-toggle.svg');
       }
     }
   }
