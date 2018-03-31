@@ -137,7 +137,7 @@ export class CreateWalletPage implements OnInit {
       this.createForm.get('recoveryPhrase').setValidators(null);
     }
     this.createForm.controls['selectedSeed'].setValue(seed); // new or set
-    this.createForm.controls['testnet'].setValue(false);
+    if (this.createForm.controls['testnet']) this.createForm.controls['testnet'].setValue(false);
     this.createForm.controls['derivationPath'].setValue(this.derivationPathByDefault);
     this.createForm.controls['recoveryPhrase'].setValue(null);
   }
