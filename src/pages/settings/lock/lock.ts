@@ -39,21 +39,21 @@ export class LockPage {
       this.options = [
         {
           label: this.translate.instant('Disabled'),
-          method: 'Disabled',
-          enabled: !this.lockOptions.method || this.lockOptions.method == 'Disabled' ? true : false,
+          method: 'disabled',
+          enabled: !this.lockOptions.method || this.lockOptions.method.toLowerCase() == 'disabled' ? true : false,
           disabled: false
         },
         {
           label: this.translate.instant('PIN'),
-          method: 'PIN',
-          enabled: this.lockOptions.method == 'PIN' ? true : false,
-          disabled: needsBackup || this.lockOptions.method == 'Fingerprint'
+          method: 'pin',
+          enabled: this.lockOptions.method && this.lockOptions.method.toLowerCase() == 'pin' ? true : false,
+          disabled: needsBackup || this.lockOptions.method.toLowerCase() == 'fingerprint'
         },
         {
           label: this.translate.instant('Fingerprint'),
-          method: 'Fingerprint',
-          enabled: this.lockOptions.method == 'Fingerprint' ? true : false,
-          disabled: !isAvailable || needsBackup || this.lockOptions.method == 'PIN'
+          method: 'fingerprint',
+          enabled: this.lockOptions.method && this.lockOptions.method.toLowerCase() == 'fingerprint' ? true : false,
+          disabled: !isAvailable || needsBackup || this.lockOptions.method.toLowerCase() == 'pin'
         }
       ];
     });
@@ -61,14 +61,14 @@ export class LockPage {
 
   public select(method): void {
     switch (method) {
-      case 'PIN':
+      case 'pin':
         this.openPinModal('pinSetUp');
         break;
-      case 'Disabled':
-        if (this.lockOptions.method && this.lockOptions.method == 'PIN') this.openPinModal('removeLock');
-        if (this.lockOptions.method && this.lockOptions.method == 'Fingerprint') this.removeFingerprint();
+      case 'disabled':
+        if (this.lockOptions.method && this.lockOptions.method.toLowerCase() == 'pin') this.openPinModal('removeLock');
+        if (this.lockOptions.method && this.lockOptions.method.toLowerCase() == 'fingerprint') this.removeFingerprint();
         break;
-      case 'Fingerprint':
+      case 'fingerprint':
         this.lockByFingerprint();
         break;
     }
@@ -84,7 +84,7 @@ export class LockPage {
 
   private removeFingerprint(): void {
     this.touchIdProvider.check().then(() => {
-      let lock = { method: 'Disabled', value: null, bannedUntil: null };
+      let lock = { method: 'disabled', value: null, bannedUntil: null };
       this.configProvider.set({ lock });
       this.checkLockOptions();
     }).catch(() => {
@@ -93,7 +93,7 @@ export class LockPage {
   }
 
   public lockByFingerprint(): void {
-    let lock = { method: 'Fingerprint', value: null, bannedUntil: null };
+    let lock = { method: 'fingerprint', value: null, bannedUntil: null };
     this.configProvider.set({ lock });
     this.checkLockOptions();
   }

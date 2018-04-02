@@ -143,7 +143,7 @@ export class PinModalPage {
   }
 
   public save(): void {
-    let lock = { method: 'PIN', value: this.currentPin, bannedUntil: null };
+    let lock = { method: 'pin', value: this.currentPin, bannedUntil: null };
     this.configProvider.set({ lock });
     this.close();
   }
@@ -153,7 +153,7 @@ export class PinModalPage {
     let pinValue = config.lock && config.lock.value;
     if (pinValue == this.currentPin) {
       if (this.action === 'removeLock') {
-        let lock = { method: 'Disabled', value: null, bannedUntil: null };
+        let lock = { method: 'disabled', value: null, bannedUntil: null };
         this.configProvider.set({ lock });
         this.close();
       }
