@@ -2,6 +2,7 @@ import { $, browser, by, element, ExpectedConditions as EC } from 'protractor';
 import {
   clearStorage,
   expectPage,
+  holdMyProtractorIAmGoingIn,
   sendKeys,
   takeScreenshot,
   waitForIonAlert,
@@ -26,6 +27,8 @@ describe('Onboarding: Import Wallet', () => {
 
   it('has file view', async () => {
     await element(by.css('ion-segment-button[value=file]')).click();
+    // Tests often catch this view mid-animation (even with animations disabled)
+    browser.sleep(1000);
     await takeScreenshot('import-wallet-file');
     await element(
       by.cssContainingText('ion-label', 'advanced options')
@@ -75,12 +78,12 @@ describe('Onboarding: Import Wallet', () => {
       await element(
         by.cssContainingText('ion-alert .alert-button', "I'm sure")
       ).click();
-      // There's something strange going on here which tricks Protractor into
-      // waiting forever on Angular.
-      await browser.waitForAngularEnabled(false);
-      await browser.wait(EC.presenceOf($('page-home')), 5000);
-      await expectPage('home');
-      await browser.waitForAngularEnabled(true);
+      await holdMyProtractorIAmGoingIn(async () => {
+        await browser.wait(EC.presenceOf($('page-home')), 5000);
+        // Since waitForAngular is disabled, give it a moment to render
+        browser.sleep(1000);
+        await expectPage('home');
+      });
     });
   });
 });

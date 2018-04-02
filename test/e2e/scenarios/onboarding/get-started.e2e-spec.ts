@@ -66,7 +66,7 @@ describe('Onboarding: Get Started', () => {
   // Our goal for this test is to click all the "Skip" buttons, and get through
   // onboarding as quickly as possible.
   it('Should allow the user to skip through much of the onboarding process', async () => {
-    await element(by.buttonText('Get started')).click();
+    await element(by.css('.e2e-get-started')).click();
     await waitForIonicPage('tour');
     await element(by.buttonText('Skip')).click();
     await waitForIonAlert();
@@ -76,9 +76,6 @@ describe('Onboarding: Get Started', () => {
     ).click();
     await holdMyProtractorIAmGoingIn(async () => {
       await browser.wait(EC.presenceOf($('page-collect-email')), 5000);
-      expect(await element(by.css('page-collect-email h3')).getText()).toEqual(
-        'Notifications by email'
-      );
       // TODO: complete onboarding process (skipping as much as possible)
     });
   });

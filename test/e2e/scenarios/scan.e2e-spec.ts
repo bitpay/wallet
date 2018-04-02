@@ -14,13 +14,13 @@ import {
 describe('Onboarding: Landing', () => {
   afterEach(clearStorage);
 
-  // FIXME
-  xit('Should not hide the QR Scanner (rendered behind the app)', async () => {
+  it('Should not hide the QR Scanner (rendered behind the app)', async () => {
     await clearAndLoadStorage(testWallets);
     await holdMyProtractorIAmGoingIn(async () => {
       await waitForIonicPage('home');
-      await waitForCss('.e2e-scan');
-      await element(by.css('.e2e-scan')).click();
+      let scanTab = '#tab-t0-2';
+      await waitForCss(scanTab);
+      await element(by.css(scanTab)).click();
       await simulateScanner();
       await expectPage('scan');
     });

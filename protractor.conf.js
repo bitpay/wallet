@@ -1,3 +1,7 @@
+require('ts-node').register({
+  project: 'test/e2e/tsconfig.e2e.json'
+});
+
 const flags = [
   '--headless',
   // Sandbox causes Chrome to crash on Travis
@@ -70,18 +74,12 @@ exports.config = {
     print: function() {}
   },
   beforeLaunch: function() {
-    require('ts-node').register({
-      project: 'test/e2e/tsconfig.e2e.json'
-    });
-    require('./test/e2e/mockAPI');
     require('connect')()
       .use(require('serve-static')('www'))
       .listen(4200);
+    require('./test/e2e/mockAPI');
   },
   onPrepare() {
-    require('ts-node').register({
-      project: 'test/e2e/tsconfig.e2e.json'
-    });
     const jasmineReporters = require('jasmine-reporters');
     jasmine.getEnv().addReporter(
       new jasmineReporters.TerminalReporter({

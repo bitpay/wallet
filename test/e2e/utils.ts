@@ -48,15 +48,15 @@ const injector = (
   elementType: string,
   globalVar: string,
   contents: string,
-  log: string
+  log?: string
 ) => `
 if (!window.${globalVar}) {
   window.${globalVar} = document.createElement("${elementType}");
   window.${globalVar}.id = "${id}";
   document.body.appendChild(window.${globalVar});
 }
-window.${globalVar}.innerHTML = "${contents}";
-console.log("${log}");
+window.${globalVar}.innerHTML = \`${contents}\`;
+${log ? `console.log("${log}")` : ''}
 `;
 
 /**
@@ -87,31 +87,37 @@ export function enableAnimations() {
   );
 }
 
-export function simulateScanner() {
-  return browser.executeScript(
+export async function simulateScanner() {
+  const script =
     injector(
-      'simulatedScanner',
+      'simulatedScannerControl',
       'style',
-      'simScanner',
+      'simScannerCtl',
       `
-html {
-    background-color: #eee;
-    background-image: linear-gradient(45deg, black 25%, transparent 25%, transparent 75%, black 75%, black), 
-linear-gradient(-45deg, black 25%, transparent 25%, transparent 75%, black 75%, black);
-    background-size:60px 60px;
+#E2ESimulatedScanner {
+  background-color: #fff;
+  background-image: linear-gradient(45deg, #ccc 25%, transparent 25%, transparent 75%, #ccc 75%, #ccc), linear-gradient(45deg, #ccc 25%, transparent 25%, transparent 75%, #ccc 75%, #cbcbcb);
+  background-size: 20px 20px;
+  background-position: 0 0, 10px 10px;
+  position: static;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
 }`,
       'E2E: Simulating scanner (rendering background pattern on <html> element)'
-    )
-  );
+    ) + injector('E2ESimulatedScanner', 'div', 'simScanner', '');
+  await browser.executeScript(script);
+  return waitForCss('#E2ESimulatedScanner');
 }
 export function destroyScanner() {
   return browser.executeScript(
     injector(
-      'simulatedScanner',
+      'simulatedScannerControl',
       'style',
-      'simScanner',
+      'simScannerCtl',
       '',
-      'E2E: Removed simulated scanner.'
+      'E2E: Hiding simulated scanner.'
     )
   );
 }
