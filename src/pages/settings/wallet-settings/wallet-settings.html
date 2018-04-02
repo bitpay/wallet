@@ -23,7 +23,7 @@
     <ion-item-divider>{{'Security' | translate}}</ion-item-divider>
     <button ion-item (click)="openBackupSettings()">
       <span translate>Backup</span>
-      <ion-note *ngIf="needsBackup" class="assertive" item-end>
+      <ion-note *ngIf="needsBackup" class="item-subtitle assertive" item-end>
         {{'Needs backup recovery' | translate}}
       </ion-note>
     </button>
