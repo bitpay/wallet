@@ -85,8 +85,8 @@
     </button>
 
     <button ion-item (click)="openLockPage()">
-      <ion-icon class="custom-icon" *ngIf="lockMethod != 'Disabled'" name="ios-lock-outline" item-start></ion-icon>
-      <ion-icon class="custom-icon" *ngIf="lockMethod == 'Disabled'" name="ios-unlock-outline" item-start></ion-icon>
+      <ion-icon class="custom-icon" *ngIf="lockMethod != 'disabled'" name="ios-lock-outline" item-start></ion-icon>
+      <ion-icon class="custom-icon" *ngIf="lockMethod == 'disabled'" name="ios-unlock-outline" item-start></ion-icon>
       <ion-label>
         {{'Lock' | translate}}
       </ion-label>
@@ -99,10 +99,8 @@
 
     <button ion-item *ngFor="let wallet of walletsBtc" (click)="openWalletSettingsPage(wallet.credentials.walletId)">
       <ion-icon item-start>
-        <img *ngIf="wallet.network == 'testnet'" [ngStyle]="{'background-color': wallet.color}" src="assets/img/icon-wallet-testnet.svg"
-          class="icon-wallet" />
-        <img *ngIf="wallet.network != 'testnet'" [ngStyle]="{'background-color': wallet.color}" src="assets/img/icon-wallet.svg"
-          class="icon-wallet" />
+        <img *ngIf="wallet.network == 'testnet'" [ngStyle]="{'background-color': wallet.color}" src="assets/img/icon-wallet-testnet.svg" class="icon-wallet" />
+        <img *ngIf="wallet.network != 'testnet'" [ngStyle]="{'background-color': wallet.color}" src="assets/img/icon-wallet.svg" class="icon-wallet" />
       </ion-icon>
       <span class="item-title">{{wallet.name}}</span>
       <ion-note class="wallet-warning" *ngIf="!wallet.isComplete()" item-end>
@@ -120,10 +118,8 @@
 
     <button ion-item *ngFor="let wallet of walletsBch" (click)="openWalletSettingsPage(wallet.credentials.walletId)">
       <ion-icon item-start>
-        <img *ngIf="wallet.network == 'testnet'" [ngStyle]="{'background-color': wallet.color}" src="assets/img/icon-wallet-testnet.svg"
-          class="icon-wallet" />
-        <img *ngIf="wallet.network != 'testnet'" [ngStyle]="{'background-color': wallet.color}" src="assets/img/icon-wallet.svg"
-          class="icon-wallet" />
+        <img *ngIf="wallet.network == 'testnet'" [ngStyle]="{'background-color': wallet.color}" src="assets/img/icon-wallet-testnet.svg" class="icon-wallet" />
+        <img *ngIf="wallet.network != 'testnet'" [ngStyle]="{'background-color': wallet.color}" src="assets/img/icon-wallet.svg" class="icon-wallet" />
       </ion-icon>
       <span class="item-title">{{wallet.name}}</span>
       <ion-note class="wallet-warning" *ngIf="!wallet.isComplete()" item-end>
