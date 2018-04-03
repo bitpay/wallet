@@ -64,6 +64,7 @@ export class PinModalPage {
   public close(): void {
     this.events.publish('finishPinModalEvent');
     this.showPinModal = false;
+    if (this.countDown) clearInterval(this.countDown);
     this.unregister();
   }
 
