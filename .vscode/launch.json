@@ -22,7 +22,8 @@
         "--multiCapabilities",
         // Reasonable window size for side-by-side debugging
         "--capabilities.chromeOptions.args=window-size=1050,800",
-        "--capabilities.chromeOptions.args=auto-open-devtools-for-tabs"
+        "--capabilities.chromeOptions.args=auto-open-devtools-for-tabs",
+        "--jasmineNodeOpts.defaultTimeoutInterval=600000"
       ],
       "skipFiles": [
         "<node_internals>/**/*.js",

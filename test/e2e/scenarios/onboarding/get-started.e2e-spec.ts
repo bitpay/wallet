@@ -2,7 +2,7 @@ import { $, browser, by, element, ExpectedConditions as EC } from 'protractor';
 import {
   clearStorage,
   clickIonAlertButton,
-  disableAnimations,
+  disableCSSAnimations,
   expectPage,
   holdMyProtractorIAmGoingIn,
   ionicPageIs,
@@ -16,7 +16,7 @@ describe('Onboarding: Get Started', () => {
   afterEach(clearStorage);
   beforeEach(async () => {
     await browser.get('');
-    await disableAnimations();
+    await disableCSSAnimations();
   });
 
   // The onboarding mega-test. Try everything:

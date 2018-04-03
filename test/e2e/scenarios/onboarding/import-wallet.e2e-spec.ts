@@ -1,6 +1,8 @@
 import { $, browser, by, element, ExpectedConditions as EC } from 'protractor';
 import {
   clearStorage,
+  clickIonAlertButton,
+  disableCSSAnimations,
   expectPage,
   holdMyProtractorIAmGoingIn,
   sendKeys,
@@ -12,23 +14,22 @@ import {
 describe('Onboarding: Import Wallet', () => {
   beforeEach(async () => {
     await browser.get('');
+    await disableCSSAnimations();
     await element(by.partialButtonText('backup')).click();
     await waitForIonicPage('import-wallet');
   });
   afterEach(clearStorage);
 
-  it('initially shows words view', async () => {
+  it('has two views, each with advanced options', async () => {
     await expectPage('import-wallet');
     await element(
       by.cssContainingText('ion-label', 'advanced options')
     ).click();
     await takeScreenshot('import-wallet-advanced');
-  });
-
-  it('has file view', async () => {
+    await element(
+      by.cssContainingText('ion-label', 'advanced options')
+    ).click();
     await element(by.css('ion-segment-button[value=file]')).click();
-    // Tests often catch this view mid-animation (even with animations disabled)
-    browser.sleep(1000);
     await takeScreenshot('import-wallet-file');
     await element(
       by.cssContainingText('ion-label', 'advanced options')
@@ -46,23 +47,13 @@ describe('Onboarding: Import Wallet', () => {
       await element(by.css('ion-footer')).click();
       await waitForIonAlert();
       await takeScreenshot('import-wallet-with-encryption');
-      await element(
-        by.cssContainingText('ion-alert .alert-button', 'Yes')
-      ).click();
-      await waitForIonAlert();
+      await clickIonAlertButton('Yes');
       const p = 'hunter2';
       await sendKeys(element(by.css('ion-alert input.alert-input')), p);
       await takeScreenshot('import-wallet-with-encryption-input');
-      await element(
-        by.cssContainingText('ion-alert .alert-button', 'Ok')
-      ).click();
-      await waitForIonAlert();
+      await clickIonAlertButton('Ok');
       await sendKeys(element(by.css('ion-alert input.alert-input')), p);
       await takeScreenshot('import-wallet-with-encryption-input-confirm');
-      // TODO: language: 'Ok' -> 'Confirm'
-      await element(
-        by.cssContainingText('ion-alert .alert-button', 'Ok')
-      ).click();
     });
     it('without encryption', async () => {
       await sendKeys(
@@ -71,15 +62,12 @@ describe('Onboarding: Import Wallet', () => {
       );
       await element(by.css('ion-footer')).click();
       await waitForIonAlert();
-      await element(
-        by.cssContainingText('ion-alert .alert-button', 'No')
-      ).click();
-      await waitForIonAlert();
+      await clickIonAlertButton('No');
       await element(
         by.cssContainingText('ion-alert .alert-button', "I'm sure")
       ).click();
       await holdMyProtractorIAmGoingIn(async () => {
-        await browser.wait(EC.presenceOf($('page-home')), 5000);
+        await waitForIonicPage('home');
         // Since waitForAngular is disabled, give it a moment to render
         browser.sleep(1000);
         await expectPage('home');

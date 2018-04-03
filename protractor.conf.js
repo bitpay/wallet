@@ -11,8 +11,8 @@ const flags = [
 ];
 
 exports.config = {
-  allScriptsTimeout: 1000 * 60 * 5,
-  jasmineNodeOpts: { defaultTimeoutInterval: 1000 * 60 * 5 },
+  allScriptsTimeout: 1000 * 10,
+  jasmineNodeOpts: { showColors: true, defaultTimeoutInterval: 1000 * 10 },
   maxSessions: 4,
   specs: ['./test/e2e/**/*.e2e-spec.ts'],
   directConnect: true,

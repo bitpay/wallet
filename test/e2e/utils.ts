@@ -64,7 +64,7 @@ ${log ? `console.log("${log}")` : ''}
  * animations to complete. It also ensures we get screenshots between
  * animations, making them easier to compare.
  */
-export function disableAnimations() {
+export function disableCSSAnimations() {
   return browser.executeScript(
     injector(
       'e2eAnimationControl',
@@ -75,7 +75,7 @@ export function disableAnimations() {
     )
   );
 }
-export function enableAnimations() {
+export function enableCSSAnimations() {
   return browser.executeScript(
     injector(
       'e2eAnimationControl',

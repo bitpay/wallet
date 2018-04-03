@@ -3,6 +3,7 @@ import { testWallets } from '../fixtures/test-wallets';
 import {
   clearAndLoadStorage,
   clearStorage,
+  disableCSSAnimations,
   expectPage,
   holdMyProtractorIAmGoingIn,
   ionicPageIs,
@@ -11,11 +12,12 @@ import {
   waitForIonicPage
 } from '../utils';
 
-describe('Onboarding: Landing', () => {
+describe('Scan', () => {
   afterEach(clearStorage);
 
   it('Should not hide the QR Scanner (rendered behind the app)', async () => {
     await clearAndLoadStorage(testWallets);
+    await disableCSSAnimations();
     await holdMyProtractorIAmGoingIn(async () => {
       await waitForIonicPage('home');
       let scanTab = '#tab-t0-2';
