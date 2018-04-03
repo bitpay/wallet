@@ -511,15 +511,15 @@ export class PersistenceProvider {
     return this.storage.get('order-' + walletId);
   };
 
-  setLockApp(locked: string): Promise<void> {
-    return this.storage.set('lockApp', locked);
+  setLockStatus(isLocked: string): Promise<void> {
+    return this.storage.set('lockStatus', isLocked);
   };
 
-  getLockApp(): Promise<string> {
-    return this.storage.get('lockApp');
+  getLockStatus(): Promise<string> {
+    return this.storage.get('lockStatus');
   };
 
-  removeLockApp(): Promise<void> {
-    return this.storage.remove('lockApp');
+  removeLockStatus(): Promise<void> {
+    return this.storage.remove('lockStatus');
   };
 }

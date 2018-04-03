@@ -13,6 +13,7 @@ export class PinModalPage {
 
   private ATTEMPT_LIMIT: number;
   private ATTEMPT_LOCK_OUT_TIME: number;
+  private countDown: any;
   public currentAttempts: number;
   public currentPin: string;
   public firstPinEntered: string;
@@ -51,9 +52,10 @@ export class PinModalPage {
       this.action = action;
 
       if (this.action === 'checkPin' || this.action === 'removeLock') {
-        this.persistenceProvider.getLockApp().then((val: string) => {
-          if (!val) return;
-          this.lockTimeControl();
+        this.persistenceProvider.getLockStatus().then((isLocked: string) => {
+          if (!isLocked) return;
+          this.showLocktimer();
+          this.setLockRelease();
         });
       }
     });
@@ -98,32 +100,35 @@ export class PinModalPage {
     this.incorrect = true;
     if (this.currentAttempts == this.ATTEMPT_LIMIT) {
       this.currentAttempts = 0;
-      this.persistenceProvider.setLockApp('locked');
-      this.lockTimeControl();
+      this.persistenceProvider.setLockStatus('locked');
+      this.showLocktimer();
+      this.setLockRelease();
     }
   }
 
-  private lockTimeControl() {
+  private showLocktimer() {
     this.disableButtons = true;
     let bannedUntil = Math.floor(Date.now() / 1000) + this.ATTEMPT_LOCK_OUT_TIME;
-    let countDown = setInterval(() => {
+    this.countDown = setInterval(() => {
       let now = Math.floor(Date.now() / 1000);
       let totalSecs = bannedUntil - now;
       let m = Math.floor(totalSecs / 60);
       let s = totalSecs % 60;
       this.expires = ('0' + m).slice(-2) + ":" + ('0' + s).slice(-2);
     }, 1000);
+  }
 
+  private setLockRelease() {
     setTimeout(() => {
-      this.reset(countDown);
+      clearInterval(this.countDown);
+      this.unlock();
     }, this.ATTEMPT_LOCK_OUT_TIME * 1000);
   }
 
-  private reset(countDown) {
+  private unlock() {
     this.expires = this.disableButtons = null;
     this.currentPin = this.firstPinEntered = '';
-    this.persistenceProvider.removeLockApp();
-    clearInterval(countDown);
+    this.persistenceProvider.removeLockStatus();
   }
 
   public delete(): void {
