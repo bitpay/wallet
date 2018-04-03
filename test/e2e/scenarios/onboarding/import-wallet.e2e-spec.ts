@@ -69,7 +69,7 @@ describe('Onboarding: Import Wallet', () => {
       await holdMyProtractorIAmGoingIn(async () => {
         await waitForIonicPage('home');
         // Since waitForAngular is disabled, give it a moment to render
-        browser.sleep(1000);
+        browser.sleep(3000);
         await expectPage('home');
       });
     });
