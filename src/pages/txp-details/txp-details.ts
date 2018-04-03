@@ -11,6 +11,7 @@ import { OnGoingProcessProvider } from '../../providers/on-going-process/on-goin
 import { PlatformProvider } from '../../providers/platform/platform';
 import { PopupProvider } from '../../providers/popup/popup';
 import { ProfileProvider } from '../../providers/profile/profile';
+import { ShapeshiftProvider } from '../../providers/shapeshift/shapeshift';
 import { TxFormatProvider } from '../../providers/tx-format/tx-format';
 import { WalletProvider } from '../../providers/wallet/wallet';
 
@@ -59,7 +60,8 @@ export class TxpDetailsPage {
     private profileProvider: ProfileProvider,
     private txFormatProvider: TxFormatProvider,
     private translate: TranslateService,
-    private modalCtrl: ModalController
+    private modalCtrl: ModalController,
+    private shapeshiftProvider: ShapeshiftProvider
   ) {
     let config = this.configProvider.get().wallet;
     this.tx = this.navParams.data.tx;
@@ -241,6 +243,13 @@ export class TxpDetailsPage {
       if (!res) return;
       this.onGoingProcessProvider.set('removeTx');
       this.walletProvider.removeTx(this.wallet, this.tx).then(() => {
+        if (this.tx.customData && this.tx.customData.shapeShift) {
+          this.shapeshiftProvider.saveShapeshift({ address: this.tx.customData.shapeShift }, {
+            remove: true
+          }, (err) => {
+            if (err) this.logger.error(err);
+          });
+        }
         this.onGoingProcessProvider.clear();
         this.close();
       }).catch((err: any) => {
