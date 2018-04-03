@@ -68,8 +68,8 @@ describe('Onboarding: Import Wallet', () => {
       ).click();
       await holdMyProtractorIAmGoingIn(async () => {
         await waitForIonicPage('home');
-        // Since waitForAngular is disabled, give it a moment to render
-        browser.sleep(3000);
+        // FIXME: mock externalServices, mock remote APIs used in home view
+        browser.sleep(8000);
         await expectPage('home');
       });
     });
