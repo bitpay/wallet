@@ -60,6 +60,9 @@
 </ion-content>
 
 <ion-footer>
+  <ion-item-divider>
+    {{'Wallet selected' | translate}}
+  </ion-item-divider>
   <button ion-item detail-none *ngIf="wallets[0]" (click)="showWallets()">
     <ion-icon item-start>
       <img *ngIf="wallet.network == 'testnet'" [ngStyle]="{'background-color': wallet.color}" src="assets/img/icon-wallet-testnet.svg" class="icon-wallet" />

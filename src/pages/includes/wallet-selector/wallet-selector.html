@@ -1,7 +1,14 @@
 <div class="backdrop" *ngIf="showWalletsSelector" (click)="backdropDismiss()">
 </div>
 <div class="wallet-selector slider" [ngClass]="{'opened': showSlideEffect, 'closed': !showSlideEffect }" [hidden]="!showWalletsSelector">
-  <div class="destination-title" *ngIf="title">{{ title }}</div>
+  <ion-row align-items-center>
+    <ion-col col-4 text-left>
+      <button ion-button clear icon-only color="grey" (click)="backdropDismiss()">
+        <ion-icon name="arrow-round-back"></ion-icon>
+      </button>
+    </ion-col>
+    <ion-col col-4 text-center class="destination-title">{{ title }}</ion-col>
+  </ion-row>
   <!--<div *ngFor="let wallet of wallets" (click)="selectWallet(wallet)">{{wallet.name}}</div>-->
   <div *ngIf="walletsBtc && walletsBtc[0]">
     <ion-item-divider>
