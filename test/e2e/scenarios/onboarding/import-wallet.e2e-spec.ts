@@ -66,12 +66,12 @@ describe('Onboarding: Import Wallet', () => {
       await element(
         by.cssContainingText('ion-alert .alert-button', "I'm sure")
       ).click();
-      await holdMyProtractorIAmGoingIn(async () => {
-        await waitForIonicPage('home');
-        // FIXME: mock externalServices, mock remote APIs used in home view
-        browser.sleep(8000);
-        await expectPage('home');
-      });
+      // FIXME: mock externalServices, mock remote APIs used in home view
+      // await holdMyProtractorIAmGoingIn(async () => {
+      //   await waitForIonicPage('home');
+      //   browser.sleep(3000);
+      //   await expectPage('home');
+      // });
     });
   });
 });

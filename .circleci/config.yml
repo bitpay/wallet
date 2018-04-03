@@ -20,7 +20,6 @@ jobs:
             - node_modules
           key: v1-dependencies-{{ checksum "package.json" }}
       - run: npm run apply:copay
-      - run: echo $externalServices > src/assets/externalServices.json
       - run: npm run test:ci
       - run: npm run e2e
       - run: npx reg-cli test/visual/latest/copay test/visual/approved/copay test/visual/diffs --report test/visual/report.html --json test/visual/report.json --enableAntialias  --pixelThreshold 20
@@ -46,7 +45,6 @@ jobs:
             - node_modules
           key: v1-dependencies-{{ checksum "package.json" }}
       - run: npm run apply:bitpay
-      - run: echo $externalServices > src/assets/externalServices.json
       - run: npm run test:ci
       - run: npm run e2e
       - run: npx reg-cli test/visual/latest/bitpay test/visual/approved/bitpay test/visual/diffs --report test/visual/report.html --json test/visual/report.json --enableAntialias  --pixelThreshold 20
