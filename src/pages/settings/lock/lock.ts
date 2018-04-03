@@ -40,20 +40,20 @@ export class LockPage {
         {
           label: this.translate.instant('Disabled'),
           method: 'disabled',
-          enabled: !this.lockOptions.method || this.lockOptions.method.toLowerCase() == 'disabled' ? true : false,
+          enabled: !this.lockOptions.method || (this.lockOptions.method && this.lockOptions.method.toLowerCase() == 'disabled' ? true : false),
           disabled: false
         },
         {
           label: this.translate.instant('PIN'),
           method: 'pin',
           enabled: this.lockOptions.method && this.lockOptions.method.toLowerCase() == 'pin' ? true : false,
-          disabled: needsBackup || this.lockOptions.method.toLowerCase() == 'fingerprint'
+          disabled: needsBackup || (this.lockOptions.method && this.lockOptions.method.toLowerCase() == 'fingerprint' ? true : false)
         },
         {
           label: this.translate.instant('Fingerprint'),
           method: 'fingerprint',
           enabled: this.lockOptions.method && this.lockOptions.method.toLowerCase() == 'fingerprint' ? true : false,
-          disabled: !isAvailable || needsBackup || this.lockOptions.method.toLowerCase() == 'pin'
+          disabled: !isAvailable || needsBackup || (this.lockOptions.method && this.lockOptions.method.toLowerCase() == 'pin' ? true : false)
         }
       ];
     });

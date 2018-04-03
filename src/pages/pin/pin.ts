@@ -3,6 +3,8 @@ import { Events, Platform } from 'ionic-angular';
 import { ConfigProvider } from '../../providers/config/config';
 import { Logger } from '../../providers/logger/logger';
 
+import { PersistenceProvider } from '../../providers/persistence/persistence';
+
 @Component({
   selector: 'page-pin',
   templateUrl: 'pin.html',
@@ -11,6 +13,7 @@ export class PinModalPage {
 
   private ATTEMPT_LIMIT: number;
   private ATTEMPT_LOCK_OUT_TIME: number;
+  private countDown: any;
   public currentAttempts: number;
   public currentPin: string;
   public firstPinEntered: string;
@@ -26,7 +29,8 @@ export class PinModalPage {
     private configProvider: ConfigProvider,
     private logger: Logger,
     private platform: Platform,
-    private events: Events
+    private events: Events,
+    private persistenceProvider: PersistenceProvider
   ) {
 
     this.events.subscribe('showPinModalEvent', (action: string) => {
@@ -48,15 +52,11 @@ export class PinModalPage {
       this.action = action;
 
       if (this.action === 'checkPin' || this.action === 'removeLock') {
-        let config = this.configProvider.get();
-        let bannedUntil = config.lock.bannedUntil;
-        if (bannedUntil) {
-          let now = Math.floor(Date.now() / 1000);
-          if (now < bannedUntil) {
-            this.disableButtons = true;
-            this.lockTimeControl(bannedUntil);
-          }
-        }
+        this.persistenceProvider.getLockStatus().then((isLocked: string) => {
+          if (!isLocked) return;
+          this.showLocktimer();
+          this.setLockRelease();
+        });
       }
     });
   }
@@ -64,6 +64,7 @@ export class PinModalPage {
   public close(): void {
     this.events.publish('finishPinModalEvent');
     this.showPinModal = false;
+    if (this.countDown) clearInterval(this.countDown);
     this.unregister();
   }
 
@@ -100,36 +101,35 @@ export class PinModalPage {
     this.incorrect = true;
     if (this.currentAttempts == this.ATTEMPT_LIMIT) {
       this.currentAttempts = 0;
-      let bannedUntil = Math.floor(Date.now() / 1000) + this.ATTEMPT_LOCK_OUT_TIME;
-      this.saveFailedAttempt(bannedUntil);
-      this.lockTimeControl(bannedUntil);
+      this.persistenceProvider.setLockStatus('locked');
+      this.showLocktimer();
+      this.setLockRelease();
     }
   }
 
-  private lockTimeControl(bannedUntil): void {
-    this.setExpirationTime(bannedUntil, null);
-    var countDown = setInterval(() => {
-      this.setExpirationTime(bannedUntil, countDown);
-    }, 1000);
-  }
-
-  private setExpirationTime(bannedUntil, countDown) {
-    let now = Math.floor(Date.now() / 1000);
-    if (now > bannedUntil) {
-      if (countDown) this.reset(countDown);
-    } else {
-      this.disableButtons = true;
+  private showLocktimer() {
+    this.disableButtons = true;
+    let bannedUntil = Math.floor(Date.now() / 1000) + this.ATTEMPT_LOCK_OUT_TIME;
+    this.countDown = setInterval(() => {
+      let now = Math.floor(Date.now() / 1000);
       let totalSecs = bannedUntil - now;
       let m = Math.floor(totalSecs / 60);
       let s = totalSecs % 60;
       this.expires = ('0' + m).slice(-2) + ":" + ('0' + s).slice(-2);
-    }
+    }, 1000);
   }
 
-  private reset(countDown) {
+  private setLockRelease() {
+    setTimeout(() => {
+      clearInterval(this.countDown);
+      this.unlock();
+    }, this.ATTEMPT_LOCK_OUT_TIME * 1000);
+  }
+
+  private unlock() {
     this.expires = this.disableButtons = null;
     this.currentPin = this.firstPinEntered = '';
-    clearInterval(countDown);
+    this.persistenceProvider.removeLockStatus();
   }
 
   public delete(): void {
@@ -169,11 +169,6 @@ export class PinModalPage {
 
   public getFilledClass(limit): string {
     return this.currentPin.length >= limit ? 'filled' : null;
-  }
-
-  private saveFailedAttempt(bannedUntil) {
-    let lock = { bannedUntil };
-    this.configProvider.set({ lock });
   }
 
 }
