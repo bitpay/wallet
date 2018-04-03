@@ -3,8 +3,8 @@ import { Events, ModalController, NavController, NavParams } from 'ionic-angular
 import { Logger } from '../../../../providers/logger/logger';
 
 // pages
-import { GlideraPage } from '../../../integrations/glidera/glidera';
 import { FinishModalPage } from '../../../finish/finish';
+import { GlideraPage } from '../../../integrations/glidera/glidera';
 
 // providers
 import { GlideraProvider } from '../../../../providers/glidera/glidera';

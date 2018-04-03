@@ -4,8 +4,8 @@ import * as _ from 'lodash';
 import { Logger } from '../../../../providers/logger/logger';
 
 // pages
-import { GlideraPage } from '../../../integrations/glidera/glidera';
 import { FinishModalPage } from '../../../finish/finish';
+import { GlideraPage } from '../../../integrations/glidera/glidera';
 
 // providers
 import { ConfigProvider } from '../../../../providers/config/config';
