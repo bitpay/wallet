@@ -419,7 +419,7 @@ export class WalletProvider {
         try {
           localTxs = JSON.parse(txs);
         } catch (ex) {
-          localTxs = txs;
+          this.logger.warn(ex);
         };
         return resolve(lodash.compact(localTxs));
       }).catch((err: Error) => {
