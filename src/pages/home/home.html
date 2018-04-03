@@ -128,7 +128,7 @@
           <img *ngIf="wallet.network == 'testnet'" [ngStyle]="{'background-color': wallet.color}" src="assets/img/icon-wallet-testnet.svg" class="icon-wallet" />
           <img *ngIf="wallet.network != 'testnet'" [ngStyle]="{'background-color': wallet.color}" src="assets/img/icon-wallet.svg" class="icon-wallet" />
         </ion-icon>
-        <div class="item-title">{{wallet.credentials.walletName}}</div>
+        <div class="item-title">{{wallet.name}}</div>
         <div class="item-subtitle">
           <span class="wallet-warning" *ngIf="!wallet.isComplete()" translate>
             Incomplete
@@ -179,7 +179,7 @@
           <img *ngIf="wallet.network == 'testnet'" [ngStyle]="{'background-color': wallet.color}" src="assets/img/icon-wallet-testnet.svg" class="icon-wallet" />
           <img *ngIf="wallet.network != 'testnet'" [ngStyle]="{'background-color': wallet.color}" src="assets/img/icon-wallet.svg" class="icon-wallet" />
         </ion-icon>
-        <div class="item-title">{{wallet.credentials.walletName}}</div>
+        <div class="item-title">{{wallet.name}}</div>
         <div class="item-subtitle">
           <span class="wallet-warning" *ngIf="!wallet.isComplete()" translate>
             Incomplete

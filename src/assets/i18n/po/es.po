@@ -12,7 +12,7 @@ msgstr ""
 "Last-Translator: cmgustavo83\n"
 "Language-Team: Spanish\n"
 "Language: es\n"
-"PO-Revision-Date: 2018-03-24 07:33-0400\n"
+"PO-Revision-Date: 2018-03-30 15:29-0400\n"
 
 msgid "(Trusted)"
 msgstr "(De confianza)"
@@ -1649,6 +1649,18 @@ msgstr "Única dirección"
 msgid "Skip"
 msgstr "Omitir"
 
+msgid "Slide to accept"
+msgstr "Deslizar para aceptar"
+
+msgid "Slide to confirm"
+msgstr "Deslizar para confirmar"
+
+msgid "Slide to pay"
+msgstr "Deslizar para pagar"
+
+msgid "Slide to send"
+msgstr "Deslizar para enviar"
+
 msgid "Some of your wallets are not eligible for Bitcoin Cash support. You can try to access BCH funds from these wallets using the recovery tool"
 msgstr "Algunas de sus billeteras no pueden ser seleccionadas para darle soporte Bitcoin Cash. Pruebe acceder a sus fondos BCH utilizando la herramienta de recuperación"
 
@@ -1738,6 +1750,9 @@ msgstr "La cantidad de bitcoins almacenados en esta billetera que poseen menos d
 
 msgid "The derivation path"
 msgstr "La ruta de derivación"
+
+msgid "The destination wallet is not backed up. Please, complete the backup process before continue."
+msgstr "La billetera de destino no está respaldada. Por favor, complete el proceso de respaldo antes de continuar."
 
 msgid "The exchange rate changes with the market."
 msgstr "La cotización varía según el mercado."

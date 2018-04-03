@@ -23,14 +23,14 @@
     <ion-item-divider>{{'Security' | translate}}</ion-item-divider>
     <button ion-item (click)="openBackupSettings()">
       <span translate>Backup</span>
-      <ion-note *ngIf="needsBackup" class="assertive" item-end>
+      <ion-note *ngIf="needsBackup" class="item-subtitle assertive" item-end>
         {{'Needs backup recovery' | translate}}
       </ion-note>
     </button>
     <div *ngIf="canSign">
       <ion-item>
         <ion-label>{{'Request Encrypt Password' | translate}}</ion-label>
-        <ion-toggle [(ngModel)]="encryptEnabled" (ionChange)="encryptChange()"></ion-toggle>
+        <ion-toggle [(ngModel)]="encryptEnabled" (ionChange)="encryptChange()" [disabled]="(needsBackup || !wallet.isComplete()) && !encryptEnabled"></ion-toggle>
       </ion-item>
       <ion-item-divider text-wrap>
         <span class="item-text" translate>

@@ -321,9 +321,14 @@ export class BuyCoinbasePage {
     let modal = this.modalCtrl.create(FinishModalPage, { finishText, finishComment }, { showBackdrop: true, enableBackdropDismiss: false });
     modal.present();
     modal.onDidDismiss(() => {
-      this.navCtrl.remove(3, 1);
-      this.navCtrl.pop();
-      this.navCtrl.push(CoinbasePage, { coin: 'btc' });
+      this.navCtrl.popToRoot({ animate: false }).then(() => {
+        this.navCtrl.parent.select(0);
+
+        // Fixes mobile navigation
+        setTimeout(() => {
+          this.navCtrl.push(CoinbasePage, { coin: 'btc' }, { animate: false });
+        }, 200);
+      });
     });
   }
 

@@ -66,7 +66,7 @@
       </ion-item>
 
       <ion-item *ngIf="createForm.value.selectedSeed == 'new' && createForm.value.coin == 'btc'">
-        <ion-label stacked>Testnet</ion-label>
+        <ion-label>Testnet</ion-label>
         <ion-toggle formControlName="testnetEnabled" (ionChange)="setDerivationPath()"></ion-toggle>
       </ion-item>
 
@@ -76,7 +76,7 @@
       </ion-item>
 
       <ion-item>
-        <ion-label stacked>{{'Single address' | translate}}</ion-label>
+        <ion-label>{{'Single address' | translate}}</ion-label>
         <ion-toggle formControlName="singleAddress"></ion-toggle>
       </ion-item>
     </div>

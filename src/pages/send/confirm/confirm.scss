@@ -1,4 +1,9 @@
 page-confirm {
+  ion-content {
+    .fixed-content, .scroll-content {
+      margin-bottom: 70px;
+    }
+  }
   .header-container {
     padding: 20px 0px 20px 0px;
     .sending-label {

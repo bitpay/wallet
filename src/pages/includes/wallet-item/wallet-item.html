@@ -10,8 +10,8 @@
     <span class="wallet-info" *ngIf="wallet.n > 1">
       {{wallet.m}}-of-{{wallet.n}}
     </span>
-    <span class="wallet-info assertive" *ngIf="!wallet.isComplete()" translate>
+    <div class="wallet-info assertive" *ngIf="!wallet.isComplete()" translate>
       Incomplete
-    </span>
+    </div>
   </div>
 </div>

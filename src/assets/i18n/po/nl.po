@@ -12,7 +12,7 @@ msgstr ""
 "Last-Translator: cmgustavo83\n"
 "Language-Team: Dutch\n"
 "Language: nl\n"
-"PO-Revision-Date: 2018-03-23 16:07-0400\n"
+"PO-Revision-Date: 2018-03-28 11:29-0400\n"
 
 msgid "(Trusted)"
 msgstr "(Vertrouwd)"
@@ -1649,6 +1649,18 @@ msgstr ""
 msgid "Skip"
 msgstr "Overslaan"
 
+msgid "Slide to accept"
+msgstr ""
+
+msgid "Slide to confirm"
+msgstr ""
+
+msgid "Slide to pay"
+msgstr ""
+
+msgid "Slide to send"
+msgstr ""
+
 msgid "Some of your wallets are not eligible for Bitcoin Cash support. You can try to access BCH funds from these wallets using the recovery tool"
 msgstr ""
 
@@ -1738,6 +1750,9 @@ msgstr "De hoeveelheid bitcoin opgeslagen in deze portemonnee met minder dan 1 b
 
 msgid "The derivation path"
 msgstr "Het derivatie pad"
+
+msgid "The destination wallet is not backed up. Please, complete the backup process before continue."
+msgstr ""
 
 msgid "The exchange rate changes with the market."
 msgstr "De wisselkoers wijzigt aan de hand van de markt."

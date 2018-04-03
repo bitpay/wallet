@@ -240,7 +240,12 @@ export class ConfirmPage {
   private exitWithError(err: any) {
     this.logger.info('Error setting wallet selector:' + err);
     this.popupProvider.ionicAlert("", this.bwcErrorProvider.msg(err)).then(() => {
-      this.navCtrl.popToRoot({ animate: false });
+      this.navCtrl.popToRoot({ animate: false }).then(() => {
+        // Fixes mobile navigation
+        setTimeout(() => {
+          this.navCtrl.parent.select(0);
+        });
+      });
     });
   };
 
@@ -393,25 +398,21 @@ export class ConfirmPage {
               return resolve('no_funds');
             });
           }
-
           tx.sendMaxInfo = sendMaxInfo;
           tx.amount = tx.sendMaxInfo.amount;
-          setTimeout(() => {
-            this.showSendMaxWarning(wallet, sendMaxInfo);
-          }, 200);
         }
+        this.showSendMaxWarning(wallet, sendMaxInfo).then(() => {
+          // txp already generated for this wallet?
+          if (tx.txp[wallet.id]) {
+            return resolve();
+          }
 
-        // txp already generated for this wallet?
-        if (tx.txp[wallet.id]) {
-          return resolve();
-        }
-
-        this.buildTxp(tx, wallet, opts).then(() => {
-          return resolve();
-        }).catch((err: any) => {
-          return reject(err);
+          this.buildTxp(tx, wallet, opts).then(() => {
+            return resolve();
+          }).catch((err: any) => {
+            return reject(err);
+          });
         });
-
       }).catch((err: any) => {
         let msg = this.translate.instant('Error getting SendMax information');
         return reject(msg);
@@ -469,15 +470,21 @@ export class ConfirmPage {
     });
   }
 
-  private showSendMaxWarning(wallet: any, sendMaxInfo: any): void {
-    let fee = (sendMaxInfo.fee / 1e8);
-    let msg = fee + " " + this.tx.coin.toUpperCase() + " will be deducted for bitcoin networking fees."; // TODO: translate
-    let warningMsg = this.verifyExcludedUtxos(wallet, sendMaxInfo);
+  private showSendMaxWarning(wallet: any, sendMaxInfo: any): Promise<any> {
+    return new Promise((resolve, reject) => {
+      if (!sendMaxInfo) return resolve();
 
-    if (!_.isEmpty(warningMsg))
-      msg += '\n' + warningMsg;
+      let fee = (sendMaxInfo.fee / 1e8);
+      let msg = fee + " " + this.tx.coin.toUpperCase() + " will be deducted for bitcoin networking fees."; // TODO: translate
+      let warningMsg = this.verifyExcludedUtxos(wallet, sendMaxInfo);
 
-    this.popupProvider.ionicAlert(null, msg);
+      if (!_.isEmpty(warningMsg))
+        msg += '\n' + warningMsg;
+
+      this.popupProvider.ionicAlert(null, msg).then(() => {
+        return resolve();
+      });
+    });
   }
 
   private verifyExcludedUtxos(wallet: any, sendMaxInfo: any): any {
@@ -663,11 +670,14 @@ export class ConfirmPage {
     }
     let modal = this.modalCtrl.create(FinishModalPage, params, { showBackdrop: true, enableBackdropDismiss: false });
     modal.present();
-    modal.onDidDismiss(() => {
+    setTimeout(() => {
       this.navCtrl.popToRoot({ animate: false }).then(() => {
-        this.navCtrl.parent.select(0);
+        // Fixes mobile navigation
+        setTimeout(() => {
+          this.navCtrl.parent.select(0);
+        });
       });
-    })
+    }, 200);
   }
 
   public openPPModal(): void {
