@@ -78,7 +78,7 @@ export class BitcoinCashPage {
         w.excludeReason = this.translate.instant('Read only wallet');
         this.nonEligibleWallets.push(w);
       } else if (w.needsBackup) {
-        w.excludeReason = this.translate.instant('Needs backup recovery');
+        w.excludeReason = this.translate.instant('Needs backup');
         this.nonEligibleWallets.push(w);
       } else {
         this.availableWallets.push(w);

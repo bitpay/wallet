@@ -25,7 +25,7 @@
       <ion-list>
         <button ion-item *ngFor="let item of filteredContactsList" (click)="goToAmount(item)">
           <ion-icon item-start>
-            <gravatar [name]="item.name" [width]="30" [email]="item.email"></gravatar>
+            <gravatar [name]="item.name" [width]="35" [height]="35" [email]="item.email"></gravatar>
           </ion-icon>
           <div class="item-title">{{item.name}}</div>
         </button>
@@ -44,17 +44,15 @@
       <ion-list>
         <button ion-item *ngFor="let wallet of walletBtcList" (click)="goToAmount(wallet)">
           <ion-icon item-start>
-            <img *ngIf="wallet.network == 'testnet'" [ngStyle]="{'background-color': wallet.color}" src="assets/img/icon-wallet-testnet.svg"
-              class="icon-wallet" />
-            <img *ngIf="wallet.network != 'testnet'" [ngStyle]="{'background-color': wallet.color}" src="assets/img/icon-wallet.svg"
-              class="icon-wallet" />
+            <img *ngIf="wallet.network == 'testnet'" [ngStyle]="{'background-color': wallet.color}" src="assets/img/icon-wallet-testnet.svg" class="icon-wallet" />
+            <img *ngIf="wallet.network != 'testnet'" [ngStyle]="{'background-color': wallet.color}" src="assets/img/icon-wallet.svg" class="icon-wallet" />
           </ion-icon>
           <span class="item-title">{{wallet.name}}</span>
           <ion-note class="wallet-warning" *ngIf="!wallet.isComplete" item-end>
             {{'Incomplete' | translate}}
           </ion-note>
           <ion-note class="wallet-warning" *ngIf="wallet.isComplete && wallet.needsBackup" item-end>
-            {{'Needs backup recovery' | translate}}
+            {{'Needs backup' | translate}}
           </ion-note>
           <ion-note *ngIf="wallet.m > 1 && wallet.isComplete && !wallet.needsBackup" item-end>
             {{wallet.m}}-{{wallet.n}}
@@ -72,17 +70,15 @@
       <ion-list>
         <button ion-item *ngFor="let wallet of walletBchList" (click)="goToAmount(wallet)">
           <ion-icon item-start>
-            <img *ngIf="wallet.network == 'testnet'" [ngStyle]="{'background-color': wallet.color}" src="assets/img/icon-wallet-testnet.svg"
-              class="icon-wallet" />
-            <img *ngIf="wallet.network != 'testnet'" [ngStyle]="{'background-color': wallet.color}" src="assets/img/icon-wallet.svg"
-              class="icon-wallet" />
+            <img *ngIf="wallet.network == 'testnet'" [ngStyle]="{'background-color': wallet.color}" src="assets/img/icon-wallet-testnet.svg" class="icon-wallet" />
+            <img *ngIf="wallet.network != 'testnet'" [ngStyle]="{'background-color': wallet.color}" src="assets/img/icon-wallet.svg" class="icon-wallet" />
           </ion-icon>
           <span class="item-title">{{wallet.name}}</span>
           <ion-note class="wallet-warning" *ngIf="!wallet.isComplete" item-end>
             {{'Incomplete' | translate}}
           </ion-note>
           <ion-note class="wallet-warning" *ngIf="wallet.isComplete && wallet.needsBackup" item-end>
-            {{'Needs backup recovery' | translate}}
+            {{'Needs backup' | translate}}
           </ion-note>
           <ion-note *ngIf="wallet.m > 1 && wallet.isComplete && !wallet.needsBackup" item-end>
             {{wallet.m}}-{{wallet.n}}

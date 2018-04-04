@@ -107,7 +107,7 @@
         {{'Incomplete' | translate}}
       </ion-note>
       <ion-note class="wallet-warning" *ngIf="wallet.isComplete() && wallet.needsBackup" item-end>
-        {{'Needs backup recovery' | translate}}
+        {{'Needs backup' | translate}}
       </ion-note>
       <ion-note *ngIf="wallet.credentials.m > 1 && wallet.isComplete() && !wallet.needsBackup" item-end>
         {{wallet.credentials.m}}-{{wallet.credentials.n}}
@@ -126,7 +126,7 @@
         {{'Incomplete' | translate}}
       </ion-note>
       <ion-note class="wallet-warning" *ngIf="wallet.isComplete() && wallet.needsBackup" item-end>
-        {{'Needs backup recovery' | translate}}
+        {{'Needs backup' | translate}}
       </ion-note>
       <ion-note *ngIf="wallet.credentials.m > 1 && wallet.isComplete() && !wallet.needsBackup" item-end>
         {{wallet.credentials.m}}-{{wallet.credentials.n}}
