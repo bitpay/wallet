@@ -8,13 +8,13 @@
   <form [formGroup]="createForm" (ngSubmit)="setOptsAndCreate()">
     <ion-item>
       <ion-label stacked>{{'Wallet name' | translate}}</ion-label>
-      <ion-input type="text" formControlName="walletName"></ion-input>
+      <ion-input type="text" formControlName="walletName" placeholder="{{'Enter wallet name'| translate}}"></ion-input>
     </ion-item>
 
     <div *ngIf="isShared">
       <ion-item>
         <ion-label stacked>{{'Your name' | translate}}</ion-label>
-        <ion-input type="text" formControlName="myName"></ion-input>
+        <ion-input type="text" formControlName="myName" placeholder="{{'Enter your name'| translate}}"></ion-input>
       </ion-item>
 
       <ion-item>
@@ -34,7 +34,7 @@
 
     <ion-item>
       <ion-label stacked>{{'Coin' | translate}}</ion-label>
-      <ion-select formControlName="coin" (ionChange)="createForm.value.testnetEnabled = false">
+      <ion-select placeholder="{{'Select a coin' | translate}}" formControlName="coin" (ionChange)="createForm.value.testnetEnabled = false">
         <ion-option value="btc">BTC</ion-option>
         <ion-option value="bch">BCH</ion-option>
       </ion-select>

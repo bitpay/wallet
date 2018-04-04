@@ -159,7 +159,7 @@
           <span translate>Bitcoin Cash Wallets</span>
         </div>
         <div item-end *ngIf="!showReorderBch">
-          <button ion-button clear icon-only color="grey" (click)="goToAddView('bch')">
+          <button ion-button clear icon-only color="grey" (click)="goToAddView()">
             <ion-icon name="add"></ion-icon>
           </button>
           <button ion-button clear icon-only color="grey" (click)="reorderBch()" *ngIf="walletsBch.length > 1">

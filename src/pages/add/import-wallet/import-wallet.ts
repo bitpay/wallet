@@ -82,7 +82,7 @@ export class ImportWalletPage {
       derivationPath: [this.derivationPathByDefault, Validators.required],
       testnet: [false],
       bwsURL: [this.defaults.bws.url],
-      coin: [this.navParams.data.coin ? this.navParams.data.coin : 'btc']
+      coin: [null]
     });
   }
 
