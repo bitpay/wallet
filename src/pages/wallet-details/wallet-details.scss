@@ -10,10 +10,16 @@ page-wallet-details {
       height: 0  !important;
     } 
   }
-  
+  .history-container {
+    margin-top: 220px;
+  }
   .balance-card {
     background: color($colors, primary);
     overflow: hidden;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 99999999;
   }
   .balance-header {
     margin-top: 44px;
@@ -24,6 +30,7 @@ page-wallet-details {
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    position: relative;
   }
   .balance-str {
     cursor: pointer;
