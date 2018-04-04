@@ -33,7 +33,7 @@
             Incomplete
           </span>
           <span class="wallet-warning" *ngIf="wallet.isComplete() && wallet.needsBackup" translate>
-            Needs backup recovery
+            Needs backup
           </span>
           <span *ngIf="wallet.isComplete() && !wallet.needsBackup">
             <span *ngIf="!wallet.balanceHidden && !wallet.scanning">
@@ -74,7 +74,7 @@
             Incomplete
           </span>
           <span class="wallet-warning" *ngIf="wallet.isComplete() && wallet.needsBackup" translate>
-            Needs backup recovery
+            Needs backup
           </span>
           <span *ngIf="wallet.isComplete() && !wallet.needsBackup">
             <span *ngIf="!wallet.balanceHidden && !wallet.scanning">

@@ -95,8 +95,8 @@ ion-spinner * {
 
 .icon-wallet,
 .icon-card {
-  width: 40px;
-  height: 40px;
+  width: 35px;
+  height: 35px;
   border-radius: $icon-border-radius;
   background-repeat: no-repeat;
   background-clip: padding-box;
@@ -135,8 +135,8 @@ ion-spinner * {
 .icon-services {
   background-color: none;
   border-radius: $icon-border-radius;
-  width: 32px;
-  height: 32px;
+  width: 35px;
+  height: 35px;
   box-shadow: 0px 2px 6px 0px rgba(0, 0, 0, 0.2);
   background-repeat: no-repeat;
   background-clip: padding-box;
@@ -252,7 +252,6 @@ a.royal {
 }
 
 .wallet-warning {
-  font-size: 11px;
   color: color($colors, danger);
 }
 
@@ -279,8 +278,8 @@ a.royal {
     font-weight: 500;
   }
   .item-subtitle {
-    font-size: 1em;
-    margin-top: 5px;
+    font-size: 0.8em;
+    margin-top: 2px;
   }
 }
 

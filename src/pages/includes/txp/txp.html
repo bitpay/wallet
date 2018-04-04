@@ -2,22 +2,22 @@
   <ion-icon item-start>
     <img src="assets/img/icon-proposal-pending.svg">
   </ion-icon>
-  <div class="action">
-    <span *ngIf="!tx.merchant">
-      <span *ngIf="tx.message">{{tx.message}}</span>
-      <span *ngIf="!tx.message && tx.toAddress && addressbook[tx.toAddress]">{{addressbook[tx.toAddress].name || addressbook[tx.toAddress]}}</span>
-      <span *ngIf="!tx.message && tx.toAddress && !addressbook[tx.toAddress]" translate>Sending</span>
+  <div *ngIf="!tx.merchant" class="item-title">
+    <span *ngIf="tx.message">{{tx.message}}</span>
+    <span *ngIf="!tx.message && tx.toAddress && addressbook[tx.toAddress]">{{addressbook[tx.toAddress].name || addressbook[tx.toAddress]}}</span>
+    <span *ngIf="!tx.message && tx.toAddress && !addressbook[tx.toAddress]" translate>Sending</span>
+  </div>
+  <span *ngIf="tx.merchant" class="item-subtitle">
+    <span *ngIf="tx.merchant.pr.ca">
+      <ion-icon class="fi-lock"></ion-icon>{{tx.merchant.domain}}
     </span>
-    <span *ngIf="tx.merchant">
-      <span *ngIf="tx.merchant.pr.ca">
-        <ion-icon class="fi-lock"></ion-icon> {{tx.merchant.domain}}</span>
-      <span *ngIf="!tx.merchant.pr.ca">
-        <ion-icon class="fion-icon-unlock"></ion-icon> {{tx.merchant.domain}}</span>
+    <span *ngIf="!tx.merchant.pr.ca">
+      <ion-icon class="fion-icon-unlock"></ion-icon>{{tx.merchant.domain}}
     </span>
-    <div class="copayer">
-      <span *ngIf="tx.creatorName">{{ tx.creatorName}}@</span>
-      <span>{{tx.wallet.name}}</span>
-    </div>
+  </span>
+  <div class="item-subtitle">
+    <span *ngIf="tx.creatorName">{{ tx.creatorName}}@</span>
+    <span>{{tx.wallet.name}}</span>
   </div>
 
   <ion-note item-right>
