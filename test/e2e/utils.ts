@@ -9,17 +9,7 @@ import {
   ElementFinder,
   ExpectedConditions as EC
 } from 'protractor';
-
-/**
- * This is much slower than `clearStorage`, since it requires reloading the browser.
- */
-export function clearStorageBefore() {
-  browser.get('');
-  browser.executeScript(
-    'window.sessionStorage.clear(); window.localStorage.clear();'
-  );
-  browser.get('');
-}
+import { LocalStorageData } from './fixtures/schema';
 
 /**
  * Clears all local storage.
@@ -34,20 +24,39 @@ export function clearStorage() {
   );
 }
 
+export async function clearAndLoadStorage(data: LocalStorageData) {
+  await browser.get('');
+  const loadingScript = `
+  window.sessionStorage.clear();
+  window.localStorage.clear();
+  ${data.reduce<string>(
+    (acc, cur) =>
+      acc +
+      `
+        window.localStorage.setItem(\`${cur.key}\`,\`${cur.value}\`);`,
+    ''
+  )}
+  console.log("E2E: Cleared and loaded data to localStorage:", \`
+  ${JSON.stringify(data)}\`)
+  `;
+  await browser.executeScript(loadingScript);
+  await browser.get('');
+}
+
 const injector = (
   id: string,
   elementType: string,
   globalVar: string,
   contents: string,
-  log: string
+  log?: string
 ) => `
 if (!window.${globalVar}) {
   window.${globalVar} = document.createElement("${elementType}");
   window.${globalVar}.id = "${id}";
   document.body.appendChild(window.${globalVar});
 }
-window.${globalVar}.innerHTML = "${contents}";
-console.log("${log}");
+window.${globalVar}.innerHTML = \`${contents}\`;
+${log ? `console.log("${log}")` : ''}
 `;
 
 /**
@@ -55,7 +64,7 @@ console.log("${log}");
  * animations to complete. It also ensures we get screenshots between
  * animations, making them easier to compare.
  */
-export function disableAnimations() {
+export function disableCSSAnimations() {
   return browser.executeScript(
     injector(
       'e2eAnimationControl',
@@ -66,7 +75,7 @@ export function disableAnimations() {
     )
   );
 }
-export function enableAnimations() {
+export function enableCSSAnimations() {
   return browser.executeScript(
     injector(
       'e2eAnimationControl',
@@ -74,6 +83,41 @@ export function enableAnimations() {
       'e2eAnimCtl',
       '',
       'E2E: Animations re-enabled.'
+    )
+  );
+}
+
+export async function simulateScanner() {
+  const script =
+    injector(
+      'simulatedScannerControl',
+      'style',
+      'simScannerCtl',
+      `
+#E2ESimulatedScanner {
+  background-color: #fff;
+  background-image: linear-gradient(45deg, #ccc 25%, transparent 25%, transparent 75%, #ccc 75%, #ccc), linear-gradient(45deg, #ccc 25%, transparent 25%, transparent 75%, #ccc 75%, #cbcbcb);
+  background-size: 20px 20px;
+  background-position: 0 0, 10px 10px;
+  position: static;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}`,
+      'E2E: Simulating scanner (rendering background pattern on <html> element)'
+    ) + injector('E2ESimulatedScanner', 'div', 'simScanner', '');
+  await browser.executeScript(script);
+  return waitForCss('#E2ESimulatedScanner');
+}
+export function destroyScanner() {
+  return browser.executeScript(
+    injector(
+      'simulatedScannerControl',
+      'style',
+      'simScannerCtl',
+      '',
+      'E2E: Hiding simulated scanner.'
     )
   );
 }
@@ -101,10 +145,6 @@ const changeAppleSysFont = () =>
 
 export async function takeScreenshot(name: string) {
   await changeAppleSysFont();
-  // FIXME: this avoids capturing screenshots mid-animation. This can be removed
-  // once the e2e build disables Ionic animations:
-  // IonicModule.forRoot(MyApp, { animate: false })
-  await browser.sleep(1000);
   const config = await browser.getProcessedConfig();
   const deviceName = config['capabilities'].name;
   // gets set when debugging in a single instance
@@ -117,6 +157,10 @@ export async function takeScreenshot(name: string) {
   });
 }
 
+export async function waitForCss(cssSelector: string) {
+  await browser.wait(EC.presenceOf($(cssSelector)), 5000);
+}
+
 export async function waitForIonicClickBlock(present: string) {
   await browser.wait(EC.presenceOf($(present)), 5000);
   await browser.wait(EC.stalenessOf($('.click-block-active')), 5000);
@@ -124,6 +168,13 @@ export async function waitForIonicClickBlock(present: string) {
 
 export async function waitForIonAlert() {
   return waitForIonicClickBlock('ion-alert');
+}
+
+export async function clickIonAlertButton(buttonText: string) {
+  await element(
+    by.cssContainingText('ion-alert .alert-button', buttonText)
+  ).click();
+  return waitForIonAlert();
 }
 
 export async function waitForIonicPage(page: string) {
@@ -159,4 +210,26 @@ export async function sendKeys(element: ElementFinder, chars: string) {
         acc.then(() => (element.sendKeys(char) as any) as Promise<void>),
       Promise.resolve()
     );
+}
+
+// There's something strange going on here which tricks Protractor into
+// waiting forever on Angular.
+/**
+ * For yet-unknown reasons, Protractor will occasionally pause and wait
+ * forever on Angular. (Something about how our app/Ionic is structured
+ * tricks Protractor into thinking the view is still loading - maybe something
+ * which isn't yet properly mocked for e2e tests.)
+ *
+ * Until we figure out the issue, we can use this function to safely wrap
+ * the disabling of Protractor's "waitForAngular" functionality.
+ *
+ * Note, re-enabling of this functionality can be unreliable, so it's best
+ * to only use the method at the end of a test.
+ */
+export async function holdMyProtractorIAmGoingIn(
+  actionsWithAngularDisabled: () => Promise<void>
+) {
+  await browser.waitForAngularEnabled(false);
+  await actionsWithAngularDisabled();
+  await browser.waitForAngularEnabled(true);
 }

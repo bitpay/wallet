@@ -1,3 +1,7 @@
+require('ts-node').register({
+  project: 'test/e2e/tsconfig.e2e.json'
+});
+
 const flags = [
   '--headless',
   // Sandbox causes Chrome to crash on Travis
@@ -7,10 +11,10 @@ const flags = [
 ];
 
 exports.config = {
-  allScriptsTimeout: 1000 * 60 * 5,
-  jasmineNodeOpts: { defaultTimeoutInterval: 1000 * 60 * 5 },
+  allScriptsTimeout: 1000 * 10,
+  jasmineNodeOpts: { showColors: true, defaultTimeoutInterval: 1000 * 10 },
   maxSessions: 4,
-  specs: ['test/e2e/**/*.e2e-spec.ts'],
+  specs: ['./test/e2e/**/*.e2e-spec.ts'],
   directConnect: true,
   // Available deviceNames for mobileEmulation: https://chromium.googlesource.com/chromium/src/+/master/third_party/WebKit/Source/devtools/front_end/emulated_devices/module.json
   multiCapabilities: [
@@ -69,17 +73,14 @@ exports.config = {
     defaultTimeoutInterval: 30000,
     print: function() {}
   },
-  useAllAngular2AppRoots: true,
   beforeLaunch: function() {
     require('connect')()
       .use(require('serve-static')('www'))
       .listen(4200);
+    require('./test/e2e/mockAPI');
   },
   onPrepare() {
-    require('ts-node').register({
-      project: 'test/e2e/tsconfig.e2e.json'
-    });
-    var jasmineReporters = require('jasmine-reporters');
+    const jasmineReporters = require('jasmine-reporters');
     jasmine.getEnv().addReporter(
       new jasmineReporters.TerminalReporter({
         verbosity: 3,

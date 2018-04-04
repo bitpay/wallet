@@ -4,7 +4,7 @@
     <p [ngClass]="{'primary-color': !isCopay, 'comment-color': isCopay}" translate>Take control of your money, get started with bitcoin.</p>
   </div>
   <div class="bottom-absolute">
-    <button ion-button class="button-standard" (click)="getStarted()">
+    <button ion-button class="button-standard e2e-get-started" (click)="getStarted()">
       {{'Get started' | translate}}
     </button>
     <button ion-button clear class="button-standard primary-color" (click)="restoreFromBackup()">

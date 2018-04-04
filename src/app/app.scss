@@ -19,6 +19,7 @@
 
 body {
   line-height: 22px;
+  font-family: 'Roboto';
 }
 
 ion-alert.alert-top {
@@ -46,9 +47,21 @@ ion-alert.alert-top {
 // Hide border when refresh
 .has-refresher > .scroll-content {
   border-top: none !important;
-  ion-spinner * {
-    stroke: color($colors, light);
-  }
+  background-image: linear-gradient(
+    to bottom,
+    $toolbar-background,
+    $toolbar-background 50%,
+    $background-color 50%,
+    $background-color 50%,
+    $background-color 50%
+  );
+}
+ion-spinner * {
+  stroke: color($colors, light);
+}
+
+.header-ios .toolbar-background-ios {
+  border-width: 0 !important;
 }
 
 // Item font size
@@ -70,32 +83,33 @@ ion-alert.alert-top {
   }
 }
 
-// This style prevents the names of the tabs from disappear
+// Prevent the names of the tabs from disappearing
 .tabbar .tab-button .tab-button-text {
   display: block;
 }
 
-.icon-wallet {
-  background-color: color($colors, primary);
+// Remove the MD drop-shadow on app header
+.header-md::after {
+  display: none;
+}
+
+.icon-wallet,
+.icon-card {
+  width: 40px;
+  height: 40px;
   border-radius: $icon-border-radius;
-  width: 35px;
-  height: 35px;
-  box-shadow: 0px 2px 6px 0px rgba(0, 0, 0, 0.2);
   background-repeat: no-repeat;
   background-clip: padding-box;
   background-size: 103%;
+}
+
+.icon-wallet {
+  background-color: color($colors, primary);
   padding: 4px;
 }
 
 .icon-card {
-  border-radius: $icon-border-radius;
-  width: 35px;
-  height: 35px;
-  box-shadow: 0px 2px 6px 0px rgba(0, 0, 0, 0.2);
-  background-repeat: no-repeat;
-  background-clip: padding-box;
   background-color: #2a3f90;
-  background-size: 103%;
 }
 
 .big-icon-svg {
@@ -245,27 +259,38 @@ a.royal {
 .card {
   padding-top: 1px;
   width: 92%;
-  padding-bottom: 5px;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
+  padding-bottom: 10px;
+  box-shadow: 0 7px 12px rgba(0, 0, 0, 0.06);
   overflow: hidden;
   margin: 20px auto;
   display: block;
-  border-radius: 4px;
+  border-radius: 3px;
   background-color: #ffffff;
 
   .item-divider {
     background-color: #ffffff;
     margin-bottom: 5px;
   }
+  .item-block {
+    padding: 5px 0 5px 24px;
+  }
+  .item-title {
+    font-size: 18px;
+    font-weight: 500;
+  }
+  .item-subtitle {
+    font-size: 1em;
+    margin-top: 5px;
+  }
 }
 
-// Fix Camera
+// Set backgrounds transparent so the QR Scanner can be seen behind the app.
 html,
 body,
 .back-transparent,
 ion-app,
 .nav-decor {
-  background: none transparent !important;
+  background: transparent !important;
 }
 
 ion-icon {
