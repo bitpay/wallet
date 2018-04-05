@@ -261,6 +261,9 @@ export class TxpDetailsPage {
     }).catch((err: any) => {
       this.onGoingProcessProvider.clear();
       this.setError(err, 'Could not broadcast payment');
+
+      console.log(this.tx);
+      this.logger.error('Could not broadcast: ', this.tx.coin, this.tx.network, this.tx.raw);
     });
   }
 
