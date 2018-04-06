@@ -75,7 +75,7 @@ export class FileStorage implements IStorage {
             fileEntry.file(file => {
               var reader = new FileReader();
               reader.onloadend = () => {
-                resolve(parseResult(reader.result));
+                return resolve(parseResult(reader.result));
               };
               reader.readAsText(file);
             });
@@ -101,7 +101,7 @@ export class FileStorage implements IStorage {
             fileWriter => {
               fileWriter.onwriteend = e => {
                 this.log.info('Write completed:' + k);
-                resolve();
+                return resolve();
               };
 
               fileWriter.onerror = e => {
