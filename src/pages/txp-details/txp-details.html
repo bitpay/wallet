@@ -16,7 +16,7 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content no-bounce>
+<ion-content no-bounce [ngClass]="{'margin-bottom':(tx && !tx.removed) && (tx && tx.pendingForUs && canSign && !paymentExpired)}">
   <ion-list *ngIf="tx">
     <ion-item>
       <div class="header-container">

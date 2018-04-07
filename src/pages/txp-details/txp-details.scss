@@ -1,4 +1,9 @@
 page-txp-details {
+  .margin-bottom {
+    .fixed-content, .scroll-content {
+      margin-bottom: 70px;
+    }
+  }
   $item-border-color: #EFEFEF;
   $item-lateral-padding: 20px;
   .header-container {
