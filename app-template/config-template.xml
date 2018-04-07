@@ -57,6 +57,7 @@
     <plugin name="cordova-plugin-x-socialsharing" spec="^5.3.2" />
     <plugin name="cordova-plugin-x-toast" spec="^2.6.0" />
     <plugin name="ionic-plugin-keyboard" spec="^2.2.1" />
+    <plugin name="cordova-plugin-screen-orientation" spec="^3.0.1" />
 
     <plugin name="cordova-plugin-spinner-dialog" spec="^2.0.1" />
     <plugin name="cordova-plugin-dialogs" spec="^2.0.1" />

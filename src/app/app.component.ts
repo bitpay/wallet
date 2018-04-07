@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { ScreenOrientation } from '@ionic-native/screen-orientation';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
 import { Events, ModalController, Platform } from 'ionic-angular';
@@ -59,7 +60,8 @@ export class CopayApp {
     private bitPayCardProvider: BitPayCardProvider,
     private mercadoLibreProvider: MercadoLibreProvider,
     private shapeshiftProvider: ShapeshiftProvider,
-    private emailNotificationsProvider: EmailNotificationsProvider
+    private emailNotificationsProvider: EmailNotificationsProvider,
+    private screenOrientation: ScreenOrientation
   ) {
     this.initializeApp();
   }
@@ -75,6 +77,9 @@ export class CopayApp {
 
         if (this.platform.is('cordova')) {
           this.statusBar.show();
+
+          // set to landscape
+          this.screenOrientation.lock(this.screenOrientation.ORIENTATIONS.PORTRAIT);
 
           // Only overlay for iOS
           if (this.platform.is('ios')) this.statusBar.overlaysWebView(true);
