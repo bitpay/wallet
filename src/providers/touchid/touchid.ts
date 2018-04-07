@@ -52,15 +52,16 @@ export class TouchIdProvider {
 
   private checkAndroid() {
     return new Promise((resolve, reject) => {
-      this.androidFingerprintAuth.isAvailable()
-        .then(
-        res => {
-          if (res.isAvailable) return resolve(true);
-          else {
-            this.logger.debug("Fingerprint is not available");
-            return resolve(false);
-          }
-        });
+      this.androidFingerprintAuth.isAvailable().then((res) => {
+        if (res.isAvailable) return resolve(true);
+        else {
+          this.logger.debug("Fingerprint is not available");
+          return resolve(false);
+        }
+      }).catch((err) => {
+        this.logger.warn(err);
+        return resolve(false);
+      });
     });
   }
 
