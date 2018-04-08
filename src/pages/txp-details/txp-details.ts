@@ -120,10 +120,10 @@ export class TxpDetailsPage {
     }).length == this.tx.requiredSignatures - 1;
 
     if (lastSigner) {
-      this.buttonText = this.translate.instant('Click to send');
+      this.buttonText = this.isCordova ? this.translate.instant('Slide to send') : this.translate.instant('Click to send');
       this.successText = this.translate.instant('Payment Sent');
     } else {
-      this.buttonText = this.translate.instant('Click to accept');
+      this.buttonText = this.isCordova ? this.translate.instant('Slide to accept') : this.translate.instant('Click to accept');
       this.successText = this.translate.instant('Payment Accepted');
     }
   }
