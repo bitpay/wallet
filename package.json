@@ -166,10 +166,10 @@
     "zone.js": "0.8.25"
   },
   "devDependencies": {
-    "@angular-devkit/core": "0.0.29",
-    "@angular/cli": "1.6.8",
+    "@angular-devkit/core": "0.3.2",
+    "@angular/cli": "1.7.4",
     "@biesbjerg/ngx-translate-extract": "2.3.4",
-    "@ionic/app-scripts": "3.0.1",
+    "@ionic/app-scripts": "3.1.0",
     "@types/cordova-plugin-qrscanner": "1.0.31",
     "@types/express": "4.11.1",
     "@types/jasmine": "2.8.6",
