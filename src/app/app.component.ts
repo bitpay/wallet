@@ -78,7 +78,7 @@ export class CopayApp {
         if (this.platform.is('cordova')) {
           this.statusBar.show();
 
-          // set to landscape
+          // Set to portrait
           this.screenOrientation.lock(this.screenOrientation.ORIENTATIONS.PORTRAIT);
 
           // Only overlay for iOS
