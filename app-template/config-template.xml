@@ -36,8 +36,8 @@
     <!-- Android Version: Marshmallow 6.0 (API Level 23) or higher -->
     <preference name="android-minSdkVersion" value="23" />
 
-    <!-- iOS 11 or higher -->
-    <preference name="deployment-target" value="11.0" />
+    <!-- iOS 10.3 or higher -->
+    <preference name="deployment-target" value="10.3" />
 
     <!-- Supported Platforms -->
     <engine name="android" spec="7.1.0" />
@@ -64,7 +64,7 @@
     <plugin name="cordova-plugin-network-information" spec="2.0.1" />
     <plugin name="cordova-plugin-uniquedeviceid" spec="1.3.2" />
     <plugin name="cordova-plugin-file" spec="6.0.1" />
-    <plugin name="cordova-custom-config" spec="4.0.2" />
+    <plugin name="cordova-custom-config" spec="5.0.2" />
     <plugin name="cordova-plugin-customurlscheme" spec="https://github.com/cmgustavo/Custom-URL-scheme.git#v4.0">
       <variable name="URL_SCHEME" value="bitcoin" />
       <variable name="SECOND_URL_SCHEME" value="*APPURI*" />
