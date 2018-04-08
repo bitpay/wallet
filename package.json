@@ -2,7 +2,7 @@
   "name": "copay",
   "description": "A Secure Bitcoin Wallet",
   "author": "BitPay",
-  "version": "4.0.13",
+  "version": "4.0.14",
   "keywords": [
     "bitcoin",
     "wallet",
@@ -167,7 +167,7 @@
   },
   "devDependencies": {
     "@angular-devkit/core": "0.0.29",
-    "@angular/cli": "1.5.5",
+    "@angular/cli": "1.6.8",
     "@biesbjerg/ngx-translate-extract": "2.3.4",
     "@ionic/app-scripts": "3.0.1",
     "@types/cordova-plugin-qrscanner": "1.0.31",
