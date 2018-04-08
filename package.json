@@ -166,6 +166,7 @@
     "zone.js": "0.8.25"
   },
   "devDependencies": {
+    "@angular-devkit/core": "0.0.29",
     "@angular/cli": "1.5.5",
     "@biesbjerg/ngx-translate-extract": "2.3.4",
     "@ionic/app-scripts": "3.0.1",
