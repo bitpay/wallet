@@ -214,6 +214,7 @@ import { WalletProvider } from '../providers/wallet/wallet';
 import { CopyToClipboard } from '../directives/copy-to-clipboard/copy-to-clipboard';
 import { LongPress } from '../directives/long-press/long-press';
 import { NoLowFee } from '../directives/no-low-fee/no-low-fee';
+import { HideHeaderDirective } from '../directives/hide-header/hide-header';
 
 /* Read translation files */
 export function createTranslateLoader(http: HttpClient) {
@@ -329,6 +330,7 @@ export function createTranslateLoader(http: HttpClient) {
     CopyToClipboard,
     LongPress,
     NoLowFee,
+    HideHeaderDirective,
     /* Pipes */
     SatToUnitPipe,
     SatToFiatPipe,
@@ -524,4 +526,4 @@ export function createTranslateLoader(http: HttpClient) {
     }
   ]
 })
-export class AppModule {}
+export class AppModule { }
