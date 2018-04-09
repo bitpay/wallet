@@ -97,14 +97,10 @@
       <icon src="resources/*PACKAGENAME*/ios/icon/icon-small@3x.png" width="87" height="87" />
       <icon src="resources/*PACKAGENAME*/ios/icon/icon-50.png" width="50" height="50" />
       <icon src="resources/*PACKAGENAME*/ios/icon/icon-50@2x.png" width="100" height="100" />
-      <icon src="resources/*PACKAGENAME*/ios/icon/icon-1024.png" width="1024" height="1024" />
+      <icon src="resources/*PACKAGENAME*/ios/app-store/icon-1024.png" width="1024" height="1024" />
 
       <splash src="resources/*PACKAGENAME*/ios/splash/Default@2x~universal~anyany.png" />
-      <splash src="resources/*PACKAGENAME*/ios/splash/Default@2x~universal~comany.png" />
-      <splash src="resources/*PACKAGENAME*/ios/splash/Default@2x~universal~comcom.png" />
       <splash src="resources/*PACKAGENAME*/ios/splash/Default@3x~universal~anyany.png" />
-      <splash src="resources/*PACKAGENAME*/ios/splash/Default@3x~universal~anycom.png" />
-      <splash src="resources/*PACKAGENAME*/ios/splash/Default@3x~universal~comany.png" />
 
       <allow-navigation href="*" />
     </platform>
