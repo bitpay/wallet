@@ -185,7 +185,7 @@ export class IncomingDataProvider {
         let coin = 'btc';
         this.goToAmountPage(data, coin);
       }
-    } else if (this.bwcProvider.getBitcoreCash().Address.isValid(data, 'livenet')) {
+    } else if (this.bwcProvider.getBitcoreCash().Address.isValid(data, 'livenet') || this.bwcProvider.getBitcoreCash().Address.isValid(data, 'testnet')) {
       this.logger.debug('Handling Bitcoin Cash Plain Address');
       if (this.navCtrl.getActive().name === 'ScanPage') {
         this.showMenu({

@@ -143,7 +143,7 @@ export class ShapeshiftShiftPage {
     }
 
     if (this.toWallet.needsBackup) {
-      let title = this.translate.instant('Needs backup recovery');
+      let title = this.translate.instant('Needs backup');
       let msg = this.translate.instant('The destination wallet is not backed up. Please, complete the backup process before continue.');
       this.popupProvider.ionicAlert(title, msg);
       return;

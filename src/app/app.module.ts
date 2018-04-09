@@ -11,6 +11,7 @@ import { Clipboard } from '@ionic-native/clipboard';
 import { Device } from '@ionic-native/device';
 import { FCM } from '@ionic-native/fcm';
 import { QRScanner } from '@ionic-native/qr-scanner';
+import { ScreenOrientation } from '@ionic-native/screen-orientation';
 import { SocialSharing } from '@ionic-native/social-sharing';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
@@ -503,6 +504,7 @@ export function createTranslateLoader(http: HttpClient) {
     StatusBar,
     SplashScreen,
     ScanProvider,
+    ScreenOrientation,
     SocialSharing,
     Toast,
     TouchID,

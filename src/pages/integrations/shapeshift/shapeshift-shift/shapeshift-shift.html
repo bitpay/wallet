@@ -58,7 +58,7 @@
               Incomplete
             </span>
             <span class="wallet-warning" *ngIf="toWallet.isComplete() && toWallet.needsBackup" translate>
-              Needs backup recovery
+              Needs backup
             </span>
             <span *ngIf="toWallet.isComplete() && !toWallet.needsBackup">
               <span *ngIf="!toWallet.balanceHidden && !toWallet.scanning"> {{toWallet.status.totalBalanceStr ? toWallet.status.totalBalanceStr : ( toWallet.cachedBalance ? toWallet.cachedBalance + (toWallet.cachedBalanceUpdatedOn ? ' &middot; ' + ( toWallet.cachedBalanceUpdatedOn * 1000 | amTimeAgo) : '') : '' ) }} </span>
