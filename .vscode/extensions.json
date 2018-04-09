@@ -1,0 +1,8 @@
+{
+  "recommendations": [
+    "msjsdiag.debugger-for-chrome",
+    "esbenp.prettier-vscode",
+    "eg2.tslint",
+    "shinnn.stylelint"
+  ]
+}
