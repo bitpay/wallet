@@ -29,15 +29,15 @@
     <preference name="ShowSplashScreenSpinner" value="false" />
     <preference name="AutoHideSplashScreen" value="false" />
     <preference name="FadeSplashScreen" value="true" />
-    <preference name="FadeSplashScreenDuration" value="200" />
+    <preference name="FadeSplashScreenDuration" value="400" />
     <preference name="SplashMaintainAspectRatio" value="true" />
     <preference name="loadUrlTimeoutValue" value="60000" />
 
     <!-- Android Version: Marshmallow 6.0 (API Level 23) or higher -->
     <preference name="android-minSdkVersion" value="23" />
 
-    <!-- iOS 10.3 or higher -->
-    <preference name="deployment-target" value="10.3" />
+    <!-- iOS 11 or higher -->
+    <preference name="deployment-target" value="11" />
 
     <!-- Supported Platforms -->
     <engine name="android" spec="7.1.0" />
