@@ -40,7 +40,26 @@ export class PushNotificationsProvider {
     this.isIOS = this.platformProvider.isIOS;
     this.isAndroid = this.platformProvider.isAndroid;
     this.usePushNotifications = this.platformProvider.isCordova;
+  }
 
+  public init(): void {
+    if (!this.usePushNotifications || this._token) return;
+    this.configProvider.load().then(() => {
+      if (!this.configProvider.get().pushNotificationsEnabled) return;
+
+      this.logger.debug('Starting push notification registration...');
+
+      // Keep in mind the function will return null if the token has not been established yet.
+      this.FCMPlugin.getToken().then((token: any) => {
+        this.logger.debug('Get token for push notifications: ' + token);
+        this._token = token;
+        this.enable();
+        this.handlePushNotifications();
+      });
+    });
+  }
+
+  public handlePushNotifications(): void {
     if (this.usePushNotifications) {
 
       this.FCMPlugin.onTokenRefresh().subscribe((token: any) => {
@@ -64,23 +83,6 @@ export class PushNotificationsProvider {
         }
       });
     }
-
-  }
-
-  public init(): void {
-    if (!this.usePushNotifications || this._token) return;
-    this.configProvider.load().then(() => {
-      if (!this.configProvider.get().pushNotificationsEnabled) return;
-
-      this.logger.debug('Starting push notification registration...');
-
-      // Keep in mind the function will return null if the token has not been established yet.
-      this.FCMPlugin.getToken().then((token: any) => {
-        this.logger.debug('Get token for push notifications: ' + token);
-        this._token = token;
-        this.enable();
-      });
-    });
   }
 
   public updateSubscription(walletClient: any): void {
