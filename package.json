@@ -179,6 +179,7 @@
     "bhttp": "1.2.4",
     "codecov": "3.0.0",
     "connect": "3.6.5",
+    "cordova": "^8.0.0",
     "express": "4.16.3",
     "fs-extra": "5.0.0",
     "html-loader": "0.5.4",
