@@ -15,6 +15,7 @@ import { OnGoingProcessProvider } from '../../../providers/on-going-process/on-g
 import { PlatformProvider } from '../../../providers/platform/platform';
 import { PopupProvider } from '../../../providers/popup/popup';
 import { ProfileProvider } from '../../../providers/profile/profile';
+import { PushNotificationsProvider } from '../../../providers/push-notifications/push-notifications';
 import { WalletProvider } from '../../../providers/wallet/wallet';
 
 @Component({
@@ -56,7 +57,8 @@ export class ImportWalletPage {
     private onGoingProcessProvider: OnGoingProcessProvider,
     private profileProvider: ProfileProvider,
     private translate: TranslateService,
-    private events: Events
+    private events: Events,
+    private pushNotificationsProvider: PushNotificationsProvider
   ) {
     this.reader = new FileReader();
     this.defaults = this.configProvider.getDefaults();
@@ -207,6 +209,7 @@ export class ImportWalletPage {
       this.profileProvider.setBackupFlag(wallet.credentials.walletId);
       this.events.publish('status:updated');
       this.profileProvider.setWalletOrder(wallet.credentials.walletId, null, wallet.coin);
+      this.pushNotificationsProvider.updateSubscription(wallet);
       if (this.fromOnboarding) {
         this.profileProvider.setOnboardingCompleted().then(() => {
           this.profileProvider.setDisclaimerAccepted().catch((err: any) => {
