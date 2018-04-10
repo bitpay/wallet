@@ -14,13 +14,19 @@
 // for the .md, .ios, or .wp mode classes. The mode class is
 // automatically applied to the <body> element in the app.
 
-// Position
-// --------------------------------------------------
+body {
+  line-height: 22px;
+}
 
+// Alert position
+// --------------------------------------------------
 
 ion-alert.alert-top {
   align-items: center;
 }
+
+// Buttons
+// --------------------------------------------------
 
 .bottom-absolute {
   width: 100%;
