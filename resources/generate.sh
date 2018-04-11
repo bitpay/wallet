@@ -3,7 +3,7 @@
 # export all slices marked for export to the proper directory
 echo "Exporting all assets from src.sketch..."
 # sketchtool is installed by install.sh
-sketchtool export layers src.sketch
+/Applications/Sketch.app/Contents/Resources/sketchtool/bin/sketchtool export layers src.sketch
 
 function postprocess {
   # $1 = distribution name
