@@ -151,6 +151,7 @@ export class JoinWalletPage {
       this.onGoingProcessProvider.clear();
       this.events.publish('status:updated');
       this.walletProvider.updateRemotePreferences(wallet);
+      this.profileProvider.setWalletOrder(wallet.credentials.walletId, null, wallet.coin);
 
       if (!wallet.isComplete()) {
         this.navCtrl.popToRoot();
