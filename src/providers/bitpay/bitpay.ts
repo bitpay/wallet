@@ -1,4 +1,4 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Http } from '@angular/http';
 import { Injectable } from '@angular/core';
 import { Logger } from '../../providers/logger/logger';
 
@@ -12,7 +12,7 @@ export class BitPayProvider {
   private NETWORK: string;
   private BITPAY_API_URL: string;
   constructor(
-    private http: HttpClient,
+    private http: Http,
     private appIdentityProvider: AppIdentityProvider,
     private logger: Logger
   ) {
@@ -50,7 +50,7 @@ export class BitPayProvider {
       let signedData = bitauthService.sign(dataToSign, appIdentity.priv);
       let url = this.BITPAY_API_URL + endpoint;
 
-      let headers: any = new HttpHeaders().set('content-type', 'application/json');
+      /*let headers: any = new HttpHeaders().set('content-type', 'application/json');
       headers = headers.append('x-identity', appIdentity.pub);
       headers = headers.append('x-signature', signedData);
 
@@ -58,7 +58,7 @@ export class BitPayProvider {
         successCallback(data);
       }, (data) => {
         errorCallback(data);
-      });
+      });*/
     });
   }
 

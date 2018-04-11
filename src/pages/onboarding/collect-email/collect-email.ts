@@ -1,4 +1,4 @@
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { Http } from '@angular/http';
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NavController, NavParams } from 'ionic-angular';
@@ -33,7 +33,7 @@ export class CollectEmailPage {
     private logger: Logger,
     private fb: FormBuilder,
     private appProvider: AppProvider,
-    private http: HttpClient,
+    private http: Http,
     private emailProvider: EmailNotificationsProvider,
     private device: Device
   ) {
@@ -80,7 +80,7 @@ export class CollectEmailPage {
     let platform = this.device.platform;
     let version = this.device.version;
 
-    const headers: any = new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' });
+    /*const headers: any = new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' });
     const urlSearchParams = new HttpParams()
       .set('App', this.appProvider.info.nameCase)
       .set('Email', this.emailForm.value.email)
@@ -94,6 +94,6 @@ export class CollectEmailPage {
       this.logger.info("SUCCESS: Email collected");
     }, (err) => {
       this.logger.error("ERROR: Could not collect email");
-    });
+    });*/
   };
 }

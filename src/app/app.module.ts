@@ -1,5 +1,5 @@
 import { DecimalPipe } from '@angular/common';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { HttpModule, Http } from '@angular/http';
 import { ErrorHandler, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { File } from '@ionic-native/file';
@@ -216,7 +216,7 @@ import { LongPress } from '../directives/long-press/long-press';
 import { NoLowFee } from '../directives/no-low-fee/no-low-fee';
 
 /* Read translation files */
-export function createTranslateLoader(http: HttpClient) {
+export function createTranslateLoader(http: Http) {
   return new TranslatePoHttpLoader(http, 'assets/i18n/po', '.po');
 }
 
@@ -345,14 +345,14 @@ export function createTranslateLoader(http: HttpClient) {
       backButtonText: ''
     }),
     BrowserModule,
-    HttpClientModule,
+    HttpModule,
     MomentModule,
     NgxQRCodeModule,
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
         useFactory: createTranslateLoader,
-        deps: [HttpClient]
+        deps: [Http]
       }
     })
   ],

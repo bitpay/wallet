@@ -71,7 +71,7 @@ export class ProfileProvider {
 
   private getWalletOrder(wallet): Promise<any> {
     return new Promise((resolve, reject) => {
-      this.persistenceProvider.getWalletOrder(wallet.credentials.walletId).then((order) => {
+      this.persistenceProvider.getWalletOrder(wallet.credentials.walletId).then((order: any) => {
         return resolve(order);
       });
     })

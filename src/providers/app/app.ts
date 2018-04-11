@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { Http, Response } from '@angular/http';
 import { Injectable } from '@angular/core';
 
 import { Logger } from '../../providers/logger/logger';
@@ -49,7 +49,7 @@ export class AppProvider {
   private jsonPathServices: string = 'assets/externalServices.json';
 
   constructor(
-    public http: HttpClient,
+    public http: Http,
     private logger: Logger,
     private language: LanguageProvider,
     public config: ConfigProvider,
@@ -78,10 +78,10 @@ export class AppProvider {
   }
 
   private getInfo() {
-    return this.http.get(this.jsonPathApp);
+    return this.http.get(this.jsonPathApp).map((res: Response) => res.json());
   }
 
   private getServicesInfo() {
-    return this.http.get(this.jsonPathServices);
+    return this.http.get(this.jsonPathServices).map((res: Response) => res.json());
   }
 }

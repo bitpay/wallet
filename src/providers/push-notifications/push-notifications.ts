@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+
 import { Injectable } from '@angular/core';
 import { FCM } from '@ionic-native/fcm';
 import { App, NavController } from 'ionic-angular';
@@ -26,7 +26,6 @@ export class PushNotificationsProvider {
   private _token = null;
 
   constructor(
-    public http: HttpClient,
     public profileProvider: ProfileProvider,
     public platformProvider: PlatformProvider,
     public configProvider: ConfigProvider,
