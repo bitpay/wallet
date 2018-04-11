@@ -177,6 +177,7 @@ export class BitcoinCashPage {
 
         this.walletProvider.updateRemotePreferences(newWallet);
         this.pushNotificationsProvider.updateSubscription(newWallet);
+        this.profileProvider.setWalletOrder(newWallet.credentials.walletId, null, newWallet.coin);
 
         addCopayers(newWallet, isNew, (err) => {
           this.onGoingProcessProvider.clear();

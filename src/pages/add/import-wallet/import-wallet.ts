@@ -206,6 +206,7 @@ export class ImportWalletPage {
     this.walletProvider.updateRemotePreferences(wallet).then(() => {
       this.profileProvider.setBackupFlag(wallet.credentials.walletId);
       this.events.publish('status:updated');
+      this.profileProvider.setWalletOrder(wallet.credentials.walletId, null, wallet.coin);
       if (this.fromOnboarding) {
         this.profileProvider.setOnboardingCompleted().then(() => {
           this.profileProvider.setDisclaimerAccepted().catch((err: any) => {
