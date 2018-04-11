@@ -1,5 +1,4 @@
-
-import { HttpClient } from '@angular/common/http';
+import { Http } from '@angular/http';
 import { Injectable } from '@angular/core';
 import { Events } from 'ionic-angular';
 import { Logger } from '../../providers/logger/logger';
@@ -24,7 +23,7 @@ export class CoinbaseProvider {
   public selectedPriceSensitivity: any;
 
   constructor(
-    private http: HttpClient,
+    private http: Http,
     private logger: Logger,
     private persistenceProvider: PersistenceProvider,
     private platformProvider: PlatformProvider,
@@ -232,7 +231,7 @@ export class CoinbaseProvider {
       client_secret: this.credentials.CLIENT_SECRET,
       redirect_uri: this.credentials.REDIRECT_URI
     };
-    let headers:any = {
+    let headers: any = {
       'Content-Type': 'application/json',
       'Accept': 'application/json'
     };
@@ -256,7 +255,7 @@ export class CoinbaseProvider {
       redirect_uri: this.credentials.REDIRECT_URI,
       refresh_token: refreshToken
     };
-    let headers:any = {
+    let headers: any = {
       'Content-Type': 'application/json',
       'Accept': 'application/json'
     };

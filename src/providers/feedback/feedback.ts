@@ -1,4 +1,4 @@
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { Http } from '@angular/http';
 import { Injectable } from '@angular/core';
 import { Logger } from '../../providers/logger/logger';
 
@@ -8,7 +8,7 @@ export class FeedbackProvider {
   private URL: any;
 
   constructor(
-    private http: HttpClient,
+    private http: Http,
     private logger: Logger,
   ) {
     this.URL = "https://script.google.com/macros/s/AKfycbybtvNSQKUfgzgXcj3jYLlvCKrcBoktjiJ1V8_cwd2yVkpUBGe3/exec";
@@ -17,7 +17,7 @@ export class FeedbackProvider {
   public send(dataSrc): Promise<any> {
     return new Promise((resolve, reject) => {
 
-      const headers: any = new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' });
+      /*const headers: any = new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' });
       const urlSearchParams = new HttpParams()
         .set('Email', dataSrc.email)
         .set('Feedback', dataSrc.feedback)
@@ -35,7 +35,7 @@ export class FeedbackProvider {
       }, (err) => {
         this.logger.info("ERROR: Feedback sent anyway.");
         return reject(err);
-      });
+      });*/
     })
   }
 

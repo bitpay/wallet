@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { Http } from '@angular/http';
 import { Injectable } from '@angular/core';
 import * as _ from 'lodash';
 import env from '../../environments';
@@ -17,7 +17,7 @@ export class RateProvider {
   private rateServiceUrl = env.ratesAPI.btc;
   private bchRateServiceUrl = env.ratesAPI.bch;
 
-  constructor(private http: HttpClient, private logger: Logger) {
+  constructor(private http: Http, private logger: Logger) {
     this.logger.info('RateProvider initialized.');
     this.rates = {};
     this.alternatives = [];
