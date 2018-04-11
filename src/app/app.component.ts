@@ -99,7 +99,7 @@ export class CopayApp {
 
         }
         this.openLockModal();
-        this.registerIntegrations();
+        //this.registerIntegrations();
         // Check Profile
         this.profile.loadAndBindProfile().then((profile: any) => {
           this.emailNotificationsProvider.init(); // Update email subscription if necessary

@@ -1,16 +1,14 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Logger } from '../../providers/logger/logger';
 
 import * as _ from 'lodash';
 
-const exchangeList:object[] = [{ 'name' : 'coinbase' }, { 'name' : 'glidera' }];
+const exchangeList: object[] = [{ 'name': 'coinbase' }, { 'name': 'glidera' }];
 
 @Injectable()
 export class HomeIntegrationsProvider {
   public services: any;
   constructor(
-    public http: HttpClient,
     private logger: Logger,
   ) {
     this.logger.info('HomeIntegrationsProviders initialized.');
@@ -50,7 +48,7 @@ export class HomeIntegrationsProvider {
 
   public getAvailableExchange() {
     let exchangeServices = _.intersectionBy(this.services, exchangeList, 'name');
-    return _.filter(exchangeServices, { 'linked':true, 'show':true });
+    return _.filter(exchangeServices, { 'linked': true, 'show': true });
   }
 
 }

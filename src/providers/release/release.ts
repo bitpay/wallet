@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { Http } from '@angular/http';
 import { Injectable } from '@angular/core';
 import { AppProvider } from '../../providers/app/app';
 
@@ -7,7 +7,7 @@ export class ReleaseProvider {
   private LATEST_RELEASE_URL: string;
   private appVersion: string;
 
-  constructor(private http: HttpClient, private app: AppProvider) {
+  constructor(private http: Http, private app: AppProvider) {
     this.LATEST_RELEASE_URL =
       'https://api.github.com/repos/bitpay/copay/releases/latest';
     this.appVersion = this.app.info.version;
@@ -37,8 +37,8 @@ export class ReleaseProvider {
 
   public checkForUpdates(latestVersion: string, currentVersion?: string): {
     updateAvailable: boolean | null,
-      availableVersion: string | null,
-      error: string | null
+    availableVersion: string | null,
+    error: string | null
   } {
     if (!currentVersion) currentVersion = this.appVersion;
 

@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { Http } from '@angular/http';
 import { Injectable } from '@angular/core';
 import * as _ from 'lodash';
 import { Logger } from '../../providers/logger/logger';
@@ -17,7 +17,7 @@ export class ShapeshiftProvider {
   constructor(
     private appProvider: AppProvider,
     private homeIntegrationsProvider: HomeIntegrationsProvider,
-    private http: HttpClient,
+    private http: Http,
     private logger: Logger,
     private configProvider: ConfigProvider,
     private persistenceProvider: PersistenceProvider

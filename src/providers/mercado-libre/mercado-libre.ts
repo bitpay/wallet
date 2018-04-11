@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { Http } from '@angular/http';
 import { Injectable } from '@angular/core';
 import { Logger } from '../../providers/logger/logger';
 
@@ -18,7 +18,7 @@ export class MercadoLibreProvider {
   constructor(
     private persistenceProvider: PersistenceProvider,
     private homeIntegrationsProvider: HomeIntegrationsProvider,
-    private http: HttpClient,
+    private http: Http,
     private logger: Logger,
     private configProvider: ConfigProvider
   ) {
