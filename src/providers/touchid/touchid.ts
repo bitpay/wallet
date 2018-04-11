@@ -1,15 +1,18 @@
 import { Injectable } from '@angular/core';
-import { Logger } from '../../providers/logger/logger';
 import { ConfigProvider } from '../config/config';
-import { PlatformProvider } from '../platform/platform';
-
 import { AndroidFingerprintAuth } from '@ionic-native/android-fingerprint-auth';
 import { TouchID } from '@ionic-native/touch-id';
+
+// Providers
+import { AppProvider } from '../../providers/app/app';
+import { PlatformProvider } from '../platform/platform';
+import { Logger } from '../../providers/logger/logger';
 
 @Injectable()
 export class TouchIdProvider {
 
   constructor(
+    private app: AppProvider,
     private touchId: TouchID,
     private androidFingerprintAuth: AndroidFingerprintAuth,
     private platform: PlatformProvider,
@@ -39,13 +42,13 @@ export class TouchIdProvider {
     return new Promise((resolve, reject) => {
       this.touchId.isAvailable()
         .then(
-        res => {
-          return resolve(true);
-        },
-        err => {
-          this.logger.debug("Fingerprint is not available");
-          return resolve(false);
-        }
+          res => {
+            return resolve(true);
+          },
+          err => {
+            this.logger.debug("Fingerprint is not available");
+            return resolve(false);
+          }
         );
     });
   }
@@ -69,30 +72,30 @@ export class TouchIdProvider {
     return new Promise((resolve, reject) => {
       this.touchId.verifyFingerprint('Scan your fingerprint please')
         .then(
-        res => resolve(),
-        err => reject()
+          res => resolve(),
+          err => reject()
         );
     });
   }
 
   private verifyAndroidFingerprint(): Promise<any> {
     return new Promise((resolve, reject) => {
-      this.androidFingerprintAuth.encrypt({ clientId: 'Copay' })
+      this.androidFingerprintAuth.encrypt({ clientId: this.app.info.nameCase })
         .then(result => {
           if (result.withFingerprint) {
             this.logger.debug('Successfully authenticated with fingerprint.');
-            resolve();
+            return resolve();
           } else if (result.withBackup) {
             this.logger.debug('Successfully authenticated with backup password!');
-            resolve();
+            return resolve();
           } else this.logger.debug('Didn\'t authenticate!');
         }).catch(error => {
           if (error === this.androidFingerprintAuth.ERRORS.FINGERPRINT_CANCELLED) {
             this.logger.debug('Fingerprint authentication cancelled');
-            reject();
+            return reject();
           } else {
             this.logger.warn(error);
-            reject();
+            return reject();
           };
         });
     });
@@ -103,19 +106,19 @@ export class TouchIdProvider {
       if (this.platform.isIOS) {
         this.verifyIOSFingerprint()
           .then(() => {
-            resolve();
+            return resolve();
           })
           .catch(() => {
-            reject();
+            return reject();
           });
       };
       if (this.platform.isAndroid) {
         this.verifyAndroidFingerprint()
           .then(() => {
-            resolve();
+            return resolve();
           })
           .catch(() => {
-            reject();
+            return reject();
           });
       };
     });
