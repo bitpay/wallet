@@ -40,16 +40,17 @@ git clone https://github.com/bitpay/copay.git
 cd copay
 ```
 
-Ensure you have [Node](https://nodejs.org/) installed, then install and start Copay:
+Ensure you have [Node](https://nodejs.org/) and [Yarn](https://yarnpkg.com/) installed, then install and start Copay:
 
 ```sh
+yarn
 npm run apply:copay
 npm run start
 ```
 
 Visit [`localhost:8100`](http://localhost:8100/) to view the app.
 
-## Unit Tests (Karma and Jasmine)
+## Unit & E2E Tests (Karma & Protractor)
 
 To run the tests, run:
 
