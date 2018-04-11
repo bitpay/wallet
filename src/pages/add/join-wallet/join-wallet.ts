@@ -13,6 +13,7 @@ import { DerivationPathHelperProvider } from '../../../providers/derivation-path
 import { OnGoingProcessProvider } from "../../../providers/on-going-process/on-going-process";
 import { PopupProvider } from '../../../providers/popup/popup';
 import { ProfileProvider } from '../../../providers/profile/profile';
+import { PushNotificationsProvider } from '../../../providers/push-notifications/push-notifications';
 import { WalletProvider } from '../../../providers/wallet/wallet';
 
 @Component({
@@ -41,7 +42,8 @@ export class JoinWalletPage {
     private walletProvider: WalletProvider,
     private logger: Logger,
     private translate: TranslateService,
-    private events: Events
+    private events: Events,
+    private pushNotificationsProvider: PushNotificationsProvider
   ) {
     this.defaults = this.configProvider.getDefaults();
 
@@ -152,7 +154,7 @@ export class JoinWalletPage {
       this.events.publish('status:updated');
       this.walletProvider.updateRemotePreferences(wallet);
       this.profileProvider.setWalletOrder(wallet.credentials.walletId, null, wallet.coin);
-
+      this.pushNotificationsProvider.updateSubscription(wallet);
       if (!wallet.isComplete()) {
         this.navCtrl.popToRoot();
         this.navCtrl.push(CopayersPage, { walletId: wallet.credentials.walletId });
