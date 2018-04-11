@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { Http } from '@angular/http';
 import { Injectable } from '@angular/core';
 import * as _ from 'lodash';
 import { Logger } from '../../providers/logger/logger';
@@ -16,7 +16,7 @@ export class AmazonProvider {
   public limitPerDay: number;
 
   constructor(
-    private http: HttpClient,
+    private http: Http,
     private logger: Logger,
     private persistenceProvider: PersistenceProvider,
     private homeIntegrationsProvider: HomeIntegrationsProvider,

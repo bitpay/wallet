@@ -36,9 +36,6 @@
     <!-- Android Version: Marshmallow 6.0 (API Level 23) or higher -->
     <preference name="android-minSdkVersion" value="23" />
 
-    <!-- iOS 10.3 or higher -->
-    <preference name="deployment-target" value="10.3" />
-
     <!-- Supported Platforms -->
     <engine name="android" spec="7.1.0" />
     <engine name="ios" spec="4.5.4" />
