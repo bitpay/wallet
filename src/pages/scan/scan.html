@@ -4,7 +4,33 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content class="back-transparent" no-bounce>
+<ion-content *ngIf="!isCordova" class="back-transparent" no-bounce>
+  <div class="" [ngClass]="{'page-scan-camera-ready': browserScanEnabled, 'browser-scanner': browserScanEnabled, 'hide-div': !browserScanEnabled }">
+    <qr-scanner [debug]="false" [canvasWidth]="640" [canvasHeight]="480" [stopAfterScan]="true" [updateTime]="500"></qr-scanner>
+    <div class="guides" *ngIf="browserScanEnabled">
+      <img class="svg qr-scan-guides" src="assets/img/bitpay-wallet-qr-scan-guides.svg">
+    </div>
+  </div>
+  <div class="" [ngClass]="{'hide-div': browserScanEnabled, 'page-scan-has-problems': !browserScanEnabled }">
+    <div class="header-container">
+      <div>
+        <div class="header" padding>
+          <div class="image-container">
+            <img src="assets/img/ico-receive.svg" />
+          </div>
+          <div class="title" padding translate>Scan QR Codes</div>
+        </div>
+        <div class="subtitle" translate>You can scan bitcoin addresses, payment requests, paper wallets, and more.</div>
+      </div>
+    </div>
+    <div class="body">
+      <div padding>
+        <div translate>Enable the camera to get started.</div>
+      </div>
+    </div>
+  </div>
+</ion-content>
+<ion-content *ngIf="isCordova" class="back-transparent" no-bounce>
   <div class="page-scan-has-problems" *ngIf="(currentState == scannerStates.unauthorized || currentState == scannerStates.denied || currentState == scannerStates.unavailable)">
     <div class="header-container">
       <div>

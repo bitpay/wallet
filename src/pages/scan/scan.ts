@@ -1,14 +1,16 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild, ViewEncapsulation } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import {
   Events,
+  LoadingController,
   ModalController,
   NavController,
-  NavParams
+  NavParams,
 } from 'ionic-angular';
 import { Logger } from '../../providers/logger/logger';
 
 // providers
+import { QrScannerComponent } from 'angular2-qrscanner';
 import { ExternalLinkProvider } from '../../providers/external-link/external-link';
 import { IncomingDataProvider } from '../../providers/incoming-data/incoming-data';
 import { PlatformProvider } from '../../providers/platform/platform';
@@ -20,14 +22,19 @@ import { PaperWalletPage } from '../paper-wallet/paper-wallet';
 import { AmountPage } from '../send/amount/amount';
 import { AddressbookAddPage } from '../settings/addressbook/add/add';
 
-// import { QRScanner as QRScannerBrowser } from 'cordova-plugin-qrscanner/src/browser/src/library'
+
 
 @Component({
   selector: 'page-scan',
   templateUrl: 'scan.html',
-  providers: [ScanProvider]
+  providers: [ScanProvider],
 })
 export class ScanPage {
+  @ViewChild(QrScannerComponent) qrScannerComponent: QrScannerComponent;
+  public videoDevices: MediaDeviceInfo[] = [];
+  public isCordova: boolean;
+  public browserScanEnabled: boolean;
+
   private modalIsOpen: boolean;
   private scannerIsAvailable: boolean;
   private scannerHasPermission: boolean;
@@ -52,8 +59,11 @@ export class ScanPage {
     private externalLinkProvider: ExternalLinkProvider,
     private logger: Logger,
     private translate: TranslateService,
-    private navParams: NavParams
+    private navParams: NavParams,
+    public loadingCtrl: LoadingController
   ) {
+    this.browserScanEnabled = false;
+    this.isCordova = this.platform.isCordova;
     this.canEnableLight = true;
     this.canChangeCamera = true;
     this.scannerStates = {
@@ -80,66 +90,120 @@ export class ScanPage {
   }
 
   ionViewWillLeave() {
-    // TODO support for browser
-    if (!this.platform.isCordova) return;
-    this.cameraToggleActive = false;
-    this.lightActive = false;
-    this.scanProvider.frontCameraEnabled = false;
-    this.scanProvider.deactivate();
-    this.events.unsubscribe('incomingDataMenu.showMenu');
-    this.events.unsubscribe('scannerServiceInitialized');
-    if (this.navParams.data.fromAddressbook) {
-      this.tabBarElement.style.display = 'flex';
+    if (!this.isCordova) {
+      this.qrScannerComponent.stopScanning();
+    } else {
+      this.cameraToggleActive = false;
+      this.lightActive = false;
+      this.scanProvider.frontCameraEnabled = false;
+      this.scanProvider.deactivate();
+      this.events.unsubscribe('incomingDataMenu.showMenu');
+      this.events.unsubscribe('scannerServiceInitialized');
+      if (this.navParams.data.fromAddressbook) {
+        this.tabBarElement.style.display = 'flex';
+      }
     }
   }
 
   ionViewWillEnter() {
-    // try initializing and refreshing status any time the view is entered
-    if (this.scannerHasPermission) {
-      this.activate();
-    } else {
-      if (!this.scanProvider.isInitialized()) {
-        this.scanProvider.gentleInitialize().then(() => {
-          this.authorize();
-        });
-      } else {
-        this.authorize();
-      }
-    }
+    if (!this.isCordova) {
+      if (navigator.getUserMedia) {
 
-    this.events.subscribe('incomingDataMenu.showMenu', data => {
-      if (!this.modalIsOpen) {
-        this.modalIsOpen = true;
-        let modal = this.modalCtrl.create(IncomingDataMenuPage, data);
-        modal.present();
-        modal.onDidDismiss(data => {
-          this.modalIsOpen = false;
-          switch (data.redirTo) {
-            case 'AmountPage':
-              this.sendPaymentToAddress(data.value, data.coin);
-              break;
-            case 'AddressBookPage':
-              this.addToAddressBook(data.value);
-              break;
-            case 'OpenExternalLink':
-              this.goToUrl(data.value);
-              break;
-            case 'PaperWalletPage':
-              this.scanPaperWallet(data.value);
-              break;
-            default:
-              this.activate();
+        let loading = this.loadingCtrl.create({});
+        loading.present();
+
+        navigator.getUserMedia({ video: true }, (localMediaStream) => {
+          this.qrScannerComponent.getMediaDevices().then(devices => {
+            for (const device of devices) {
+              if (device.kind.toString() === 'videoinput') {
+                this.videoDevices.push(device);
+              }
+            }
+
+            if (this.videoDevices.length > 0) {
+              let choosenDev;
+              for (const dev of this.videoDevices) {
+                if (dev.label.includes('front')) {
+                  choosenDev = dev;
+                  break;
+                }
+              }
+              if (choosenDev) {
+                this.qrScannerComponent.chooseCamera.next(choosenDev);
+              } else {
+                this.qrScannerComponent.chooseCamera.next(this.videoDevices[0]);
+              }
+            }
+          });
+
+          loading.dismiss();
+
+          if (!this.browserScanEnabled) {
+            this.qrScannerComponent.capturedQr.subscribe(result => {
+              this.qrScannerComponent.ngOnDestroy();
+              setTimeout(() => {
+
+                this.handleSuccessfulScan(result);
+              }, 0);
+            });
+          } else {
+            this.qrScannerComponent.startScanning(this.videoDevices[0]);
           }
+
+          this.browserScanEnabled = true;
+        }, (err) => {
+          loading.dismiss();
+          this.browserScanEnabled = false;
         });
       }
-    });
+    } else {
+      // try initializing and refreshing status any time the view is entered
+      if (this.scannerHasPermission) {
+        this.activate();
+      } else {
+        if (!this.scanProvider.isInitialized()) {
+          this.scanProvider.gentleInitialize().then(() => {
+            this.authorize();
+          });
+        } else {
+          this.authorize();
+        }
+      }
 
-    this.events.subscribe('scannerServiceInitialized', () => {
-      this.logger.debug(
-        'Scanner initialization finished, reinitializing scan view...'
-      );
-      this._refreshScanView();
-    });
+      this.events.subscribe('incomingDataMenu.showMenu', data => {
+        if (!this.modalIsOpen) {
+          this.modalIsOpen = true;
+          let modal = this.modalCtrl.create(IncomingDataMenuPage, data);
+          modal.present();
+          modal.onDidDismiss(data => {
+            this.modalIsOpen = false;
+            switch (data.redirTo) {
+              case 'AmountPage':
+                this.sendPaymentToAddress(data.value, data.coin);
+                break;
+              case 'AddressBookPage':
+                this.addToAddressBook(data.value);
+                break;
+              case 'OpenExternalLink':
+                this.goToUrl(data.value);
+                break;
+              case 'PaperWalletPage':
+                this.scanPaperWallet(data.value);
+                break;
+              default:
+                this.activate();
+            }
+          });
+        }
+      });
+
+      this.events.subscribe('scannerServiceInitialized', () => {
+        this.logger.debug(
+          'Scanner initialization finished, reinitializing scan view...'
+        );
+        this._refreshScanView();
+      });
+    }
   }
 
   private goToUrl(url: string): void {

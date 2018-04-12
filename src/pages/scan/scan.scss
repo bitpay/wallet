@@ -6,6 +6,7 @@ page-scan {
     background: $toolbar-scanner;
   }
   .page-scan-has-problems {
+    z-index: 9999;
     height: 100%;
     background-color: $toolbar-background;
     .header-container {
@@ -113,5 +114,25 @@ page-scan {
         background-image: url('../assets/img/icon-camera-toggle.svg');
       }
     }
+  }
+  .browser-scanner {
+    qr-scanner {
+      z-index: 1000;
+      div {
+        height: 100%;
+        video {
+          height: 100% !important;
+          width: inherit!important;
+          position: fixed !important;
+          top: 50% !important;
+          left: 50% !important;
+          /* bring your own prefixes */
+          transform: translate(-50%, -50%) !important;
+        }
+      }
+    }
+  }
+  .hide-div{
+    display: none;
   }
 }
