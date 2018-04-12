@@ -59,7 +59,7 @@
     <plugin name="ionic-plugin-keyboard" spec="2.2.1" />
     <plugin name="cordova-plugin-screen-orientation" spec="3.0.1" />
 
-    <plugin name="cordova-plugin-spinner-dialog" spec="2.0.1" />
+    <plugin name="cordova-plugin-spinner-dialog" spec="1.3.1" />
     <plugin name="cordova-plugin-dialogs" spec="2.0.1" />
     <plugin name="cordova-plugin-network-information" spec="2.0.1" />
     <plugin name="cordova-plugin-uniquedeviceid" spec="1.3.2" />
