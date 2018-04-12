@@ -388,8 +388,8 @@ export class HomePage {
     this.externalLinkProvider.open(url);
   }
 
-  public goToAddView(coin?: string): void {
-    this.navCtrl.push(AddPage, { coin });
+  public goToAddView(): void {
+    this.navCtrl.push(AddPage);
   }
 
   public goToWalletDetails(wallet: any): void {

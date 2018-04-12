@@ -13,14 +13,11 @@ import { JoinWalletPage } from "./join-wallet/join-wallet";
 })
 export class AddPage {
 
-  private coin: string;
-
   constructor(
     private navCtrl: NavController,
     private navParams: NavParams,
     private logger: Logger
   ) {
-    this.coin = this.navParams.data.coin ? this.navParams.data.coin : 'btc';
   }
 
   ionViewDidLoad() {
@@ -28,14 +25,14 @@ export class AddPage {
   }
 
   public goToCreateWallet(isShared: boolean): void {
-    this.navCtrl.push(CreateWalletPage, { isShared, coin: this.coin });
+    this.navCtrl.push(CreateWalletPage, { isShared });
   }
 
   public goToJoinWallet(): void {
-    this.navCtrl.push(JoinWalletPage, { coin: this.coin });
+    this.navCtrl.push(JoinWalletPage);
   }
 
   public goToImportWallet(): void {
-    this.navCtrl.push(ImportWalletPage, { coin: this.coin });
+    this.navCtrl.push(ImportWalletPage);
   }
 }
