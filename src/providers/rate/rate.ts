@@ -1,7 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import * as _ from 'lodash';
-import env from '../../environments';
 import { Logger } from '../../providers/logger/logger';
 
 @Injectable()
@@ -14,8 +13,8 @@ export class RateProvider {
   private SAT_TO_BTC: number;
   private BTC_TO_SAT: number;
 
-  private rateServiceUrl = env.ratesAPI.btc;
-  private bchRateServiceUrl = env.ratesAPI.bch;
+  private rateServiceUrl = 'https://bitpay.com/api/rates';
+  private bchRateServiceUrl = 'https://bitpay.com/api/rates/bch';
 
   constructor(private http: HttpClient, private logger: Logger) {
     this.logger.info('RateProvider initialized.');
