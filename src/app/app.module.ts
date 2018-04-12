@@ -25,7 +25,6 @@ import { MomentModule } from 'angular2-moment';
 import { NgxQRCodeModule } from 'ngx-qrcode2';
 
 /* Copay App */
-import env from '../environments';
 import { CopayApp } from './app.component';
 
 /* Pages */
@@ -338,7 +337,6 @@ export function createTranslateLoader(http: HttpClient) {
   ],
   imports: [
     IonicModule.forRoot(CopayApp, {
-      animate: env.enableAnimations,
       tabsHideOnSubPages: true,
       tabsPlacement: 'bottom',
       backButtonIcon: 'arrow-round-back',
