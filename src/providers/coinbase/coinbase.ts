@@ -1,5 +1,5 @@
 
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Events } from 'ionic-angular';
 import { Logger } from '../../providers/logger/logger';
@@ -232,12 +232,12 @@ export class CoinbaseProvider {
       client_secret: this.credentials.CLIENT_SECRET,
       redirect_uri: this.credentials.REDIRECT_URI
     };
-    let headers:any = {
+    const headers = new HttpHeaders({
       'Content-Type': 'application/json',
       'Accept': 'application/json'
-    };
+    });
 
-    this.http.post(url, data, headers).subscribe((data: any) => {
+    this.http.post(url, data, { headers }).subscribe((data: any) => {
       this.logger.info('Coinbase: GET Access Token: SUCCESS');
       // Show pending task from the UI
       this._afterTokenReceived(data, cb);
@@ -256,12 +256,12 @@ export class CoinbaseProvider {
       redirect_uri: this.credentials.REDIRECT_URI,
       refresh_token: refreshToken
     };
-    let headers:any = {
+    const headers = new HttpHeaders({
       'Content-Type': 'application/json',
       'Accept': 'application/json'
-    };
+    });
 
-    this.http.post(url, data, headers).subscribe((data: any) => {
+    this.http.post(url, data, { headers }).subscribe((data: any) => {
       this.logger.info('Coinbase: Refresh Access Token SUCCESS');
       this._afterTokenReceived(data, cb);
     }, (data) => {
@@ -605,14 +605,14 @@ export class CoinbaseProvider {
       quote: dataSrc.quote || false
     };
     let url = this.credentials.API + '/v2/accounts/' + accountId + '/sells';
-    let headers: any = {
+    const headers = new HttpHeaders({
       'Content-Type': 'application/json',
       'Accept': 'application/json',
       'CB-VERSION': this.credentials.API_VERSION,
       'Authorization': 'Bearer ' + token
-    };
+    });
 
-    this.http.post(url, data, headers).subscribe((data: any) => {
+    this.http.post(url, data, { headers }).subscribe((data: any) => {
       this.logger.info('Coinbase: Sell Request SUCCESS');
       return cb(null, data);
     }, (data) => {
@@ -623,14 +623,14 @@ export class CoinbaseProvider {
 
   public sellCommit(token, accountId, sellId, cb) {
     let url = this.credentials.API + '/v2/accounts/' + accountId + '/sells/' + sellId + '/commit';
-    let headers: any = {
+    const headers = new HttpHeaders({
       'Content-Type': 'application/json',
       'Accept': 'application/json',
       'CB-VERSION': this.credentials.API_VERSION,
       'Authorization': 'Bearer ' + token
-    };
+    });
 
-    this.http.post(url, null, headers).subscribe((data: any) => {
+    this.http.post(url, null, { headers }).subscribe((data: any) => {
       this.logger.info('Coinbase: Sell Commit SUCCESS');
       return cb(null, data);
     }, (data) => {
@@ -649,14 +649,14 @@ export class CoinbaseProvider {
       quote: dataSrc.quote || false
     };
     let url = this.credentials.API + '/v2/accounts/' + accountId + '/buys';
-    let headers: any = {
+    const headers = new HttpHeaders({
       'Content-Type': 'application/json',
       'Accept': 'application/json',
       'CB-VERSION': this.credentials.API_VERSION,
       'Authorization': 'Bearer ' + token
-    };
+    });
 
-    this.http.post(url, data, headers).subscribe((data: any) => {
+    this.http.post(url, data, { headers }).subscribe((data: any) => {
       this.logger.info('Coinbase: Buy Request SUCCESS');
       return cb(null, data);
     }, (data) => {
@@ -667,14 +667,14 @@ export class CoinbaseProvider {
 
   public buyCommit(token, accountId, buyId, cb) {
     let url = this.credentials.API + '/v2/accounts/' + accountId + '/buys/' + buyId + '/commit';
-    let headers: any = {
+    const headers = new HttpHeaders({
       'Content-Type': 'application/json',
       'Accept': 'application/json',
       'CB-VERSION': this.credentials.API_VERSION,
       'Authorization': 'Bearer ' + token
-    };
+    });
 
-    this.http.post(url, null, headers).subscribe((data: any) => {
+    this.http.post(url, null, { headers }).subscribe((data: any) => {
       this.logger.info('Coinbase: Buy Commit SUCCESS');
       return cb(null, data);
     }, (data) => {
@@ -688,14 +688,14 @@ export class CoinbaseProvider {
       name: dataSrc.name
     };
     let url = this.credentials.API + '/v2/accounts/' + accountId + '/addresses';
-    let headers: any = {
+    const headers = new HttpHeaders({
       'Content-Type': 'application/json',
       'Accept': 'application/json',
       'CB-VERSION': this.credentials.API_VERSION,
       'Authorization': 'Bearer ' + token
-    };
+    });
 
-    this.http.post(url, data, headers).subscribe((data: any) => {
+    this.http.post(url, data, { headers }).subscribe((data: any) => {
       this.logger.info('Coinbase: Create Address SUCCESS');
       return cb(null, data);
     }, (data) => {
@@ -713,14 +713,14 @@ export class CoinbaseProvider {
       description: dataSrc.description
     };
     let url = this.credentials.API + '/v2/accounts/' + accountId + '/transactions';
-    let headers: any = {
+    const headers = new HttpHeaders({
       'Content-Type': 'application/json',
       'Accept': 'application/json',
       'CB-VERSION': this.credentials.API_VERSION,
       'Authorization': 'Bearer ' + token
-    };
+    });
 
-    this.http.post(url, data, headers).subscribe((data: any) => {
+    this.http.post(url, data, { headers }).subscribe((data: any) => {
       this.logger.info('Coinbase: Create Address SUCCESS');
       return cb(null, data);
     }, (data) => {
