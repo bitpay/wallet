@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
-import { ConfigProvider } from '../config/config';
 import { AndroidFingerprintAuth } from '@ionic-native/android-fingerprint-auth';
 import { TouchID } from '@ionic-native/touch-id';
 
 // Providers
 import { AppProvider } from '../../providers/app/app';
-import { PlatformProvider } from '../platform/platform';
 import { Logger } from '../../providers/logger/logger';
+import { ConfigProvider } from '../config/config';
+import { PlatformProvider } from '../platform/platform';
 
 @Injectable()
 export class TouchIdProvider {
@@ -42,13 +42,13 @@ export class TouchIdProvider {
     return new Promise((resolve, reject) => {
       this.touchId.isAvailable()
         .then(
-          res => {
-            return resolve(true);
-          },
-          err => {
-            this.logger.debug("Fingerprint is not available");
-            return resolve(false);
-          }
+        res => {
+          return resolve(true);
+        },
+        err => {
+          this.logger.debug("Fingerprint is not available");
+          return resolve(false);
+        }
         );
     });
   }
@@ -72,8 +72,8 @@ export class TouchIdProvider {
     return new Promise((resolve, reject) => {
       this.touchId.verifyFingerprint('Scan your fingerprint please')
         .then(
-          res => resolve(),
-          err => reject()
+        res => resolve(),
+        err => reject()
         );
     });
   }
