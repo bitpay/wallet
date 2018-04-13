@@ -56,7 +56,8 @@ export class CopyToClipboard {
     let showSuccess = this.toastCtrl.create({
       message: this.translate.instant('Copied to clipboard'),
       duration: 1000,
-      position: 'top'
+      position: 'top',
+      cssClass: this.platform.isIOS ? "iosToastAfterHeader" : "mdToastAfterHeader"
     });
     showSuccess.present();
   }
