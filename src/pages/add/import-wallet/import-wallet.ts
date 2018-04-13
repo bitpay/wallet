@@ -78,13 +78,13 @@ export class ImportWalletPage {
     this.importForm = this.form.group({
       words: [null, Validators.required],
       backupText: [null],
-      mnemonicPassword: [null],
+      passphrase: [null],
       file: [null],
       filePassword: [null],
       derivationPath: [this.derivationPathByDefault, Validators.required],
       testnet: [false],
       bwsURL: [this.defaults.bws.url],
-      coin: [null]
+      coin: [null, Validators.required]
     });
   }
 
