@@ -22,6 +22,7 @@ import { TouchID } from '@ionic-native/touch-id';
 import { TranslatePoHttpLoader } from '@biesbjerg/ngx-translate-po-http-loader';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { MomentModule } from 'angular2-moment';
+import { NgQrScannerModule } from 'angular2-qrscanner';
 import { NgxQRCodeModule } from 'ngx-qrcode2';
 
 /* Copay App */
@@ -345,6 +346,7 @@ export function createTranslateLoader(http: HttpClient) {
     BrowserModule,
     HttpClientModule,
     MomentModule,
+    NgQrScannerModule,
     NgxQRCodeModule,
     TranslateModule.forRoot({
       loader: {
@@ -522,4 +524,4 @@ export function createTranslateLoader(http: HttpClient) {
     }
   ]
 })
-export class AppModule {}
+export class AppModule { }
