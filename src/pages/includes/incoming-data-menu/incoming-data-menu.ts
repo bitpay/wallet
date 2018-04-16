@@ -28,6 +28,8 @@ export class IncomingDataMenuPage {
       if (this.type === 'url') {
         if (this.data.indexOf('https://') === 0) {
           this.https = true;
+        } else {
+          this.https = false;
         }
       }
 
@@ -50,15 +52,16 @@ export class IncomingDataMenuPage {
     if (redirTo == 'AmountPage') {
       let coin = this.coin ? this.coin : 'btc';
       this.events.publish('finishIncomingDataMenuEvent', { redirTo, value, coin });
-      return;
     } else {
       this.events.publish('finishIncomingDataMenuEvent', { redirTo, value });
     }
 
-    this.showSlideEffect = false;
-    setTimeout(() => {
-      this.showIncomingDataMenu = false;
-    }, 150);
+    if (redirTo != 'OpenExternalLink') {
+      this.showSlideEffect = false;
+      setTimeout(() => {
+        this.showIncomingDataMenu = false;
+      }, 150);
+    }
   }
 
 }
