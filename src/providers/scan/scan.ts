@@ -60,18 +60,18 @@ export class ScanProvider {
     this.logger.debug('Camera access is ' + access + '.');
     this.logger.debug(
       'Support for opening device settings is ' +
-        this.orIsNot(this.canOpenSettings) +
-        'available on this platform.'
+      this.orIsNot(this.canOpenSettings) +
+      'available on this platform.'
     );
     this.logger.debug(
       'A light is ' +
-        this.orIsNot(this.canEnableLight) +
-        'available on this platform.'
+      this.orIsNot(this.canEnableLight) +
+      'available on this platform.'
     );
     this.logger.debug(
       'A second camera is ' +
-        this.orIsNot(this.canChangeCamera) +
-        'available on this platform.'
+      this.orIsNot(this.canChangeCamera) +
+      'available on this platform.'
     );
   }
 
@@ -196,7 +196,6 @@ export class ScanProvider {
       this.logger.debug('Scanning...');
       let scanSub = this.qrScanner.scan().subscribe((text: string) => {
         this.logger.debug('Scanned something', text);
-        this.qrScanner.hide(); // hide camera preview
         scanSub.unsubscribe(); // stop scanning
         return resolve(text);
       });

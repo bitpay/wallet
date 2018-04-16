@@ -63,7 +63,7 @@ export class AddressbookAddPage {
     if (this.addressBookAdd.valid) {
       this.ab.add(this.addressBookAdd.value).then((ab) => {
         this.navCtrl.pop();
-
+        this.submitAttempt = false;
       }).catch((err) => {
         let opts = {
           title: err,
@@ -75,6 +75,7 @@ export class AddressbookAddPage {
           }],
         }
         this.alertCtrl.create(opts).present();
+        this.submitAttempt = false;
       });
     }
     else {
@@ -89,6 +90,7 @@ export class AddressbookAddPage {
         }],
       }
       this.alertCtrl.create(opts).present();
+      this.submitAttempt = false;
     }
   }
 

@@ -1,0 +1,43 @@
+incoming-data-menu {
+    display: flex;
+    justify-content: center;
+    .backdrop {
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      left: 0;
+      top: 0;
+      background-color: rgba(0, 0, 0, 0.3);
+    }
+    .incoming-data-menu {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      max-height: 90vh;
+      width: calc(100% + 1px);
+      overflow-y: scroll;
+      background: white;
+      box-shadow: 0px 2px 13px 3px rgba(0, 0, 0, 0.3);
+    }
+    .slider {
+      /* only transition on transform properties which are hardware accelerated = way better performances */
+      -webkit-transition:-webkit-transform .2s ease;
+      -moz-transition:   -moz-transform .2s ease;
+      -ms-transition:    -ms-transform .2s ease;
+      transition:        transform .2s ease;
+    }
+    .opened {
+      /* visible */
+      -webkit-transform: translate(0, 0%);
+      -moz-transform: translate(0, 0%);
+      -ms-transform: translate(0, 0%);
+      transform: translate(0, 0%);
+    }
+    .closed {
+      /* completely offscreen */
+      -webkit-transform: translate(0, 100%);
+      -moz-transform: translate(0, 100%);
+      -ms-transform: translate(0, 100%);
+      transform: translate(0, 100%);
+    }
+}
