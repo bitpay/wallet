@@ -1,16 +1,8 @@
-<ion-header>
-  <ion-navbar>
-    <ion-buttons start>
-      <button (click)="close()" ion-button>
-        {{'Close' | translate}}
-      </button>
-    </ion-buttons>
-  </ion-navbar>
-</ion-header>
-<ion-content>
-
+<div class="backdrop" *ngIf="showIncomingDataMenu" (click)="backdropDismiss()">
+</div>
+<div class="incoming-data-menu slider" [ngClass]="{'opened': showSlideEffect, 'closed': !showSlideEffect }" [hidden]="!showIncomingDataMenu">
   <ion-list *ngIf="type === 'url'">
-    <ion-item-divider>Website</ion-item-divider>
+    <ion-item-divider>{{'Website' | translate}}</ion-item-divider>
     <ion-item>
       {{data}}
       <ion-icon item-start>
@@ -89,4 +81,8 @@
       <span translate>Copy to clipboard</span>
     </button>
   </ion-list>
-</ion-content>
+
+  <button ion-button clear color="danger" class="button-standard" (click)="close(null, null)">
+    {{'Cancel' | translate}}
+  </button>
+</div>

@@ -29,7 +29,7 @@ export class OnGoingProcessProvider {
       'creatingWallet': this.translate.instant('Creating Wallet...'),
       'deletingWallet': this.translate.instant('Deleting Wallet...'),
       'extractingWalletInfo': this.translate.instant('Extracting Wallet information...'),
-      'fetchingPayPro': this.translate.instant('Fetching payment information'),
+      'fetchingPayPro': this.translate.instant('Fetching payment information...'),
       'generatingCSV': this.translate.instant('Generating .csv file...'),
       'gettingFeeLevels': this.translate.instant('Getting fee levels...'),
       'importingWallet': this.translate.instant('Importing Wallet...'),
@@ -66,7 +66,7 @@ export class OnGoingProcessProvider {
     this.ongoingProcess = [];
     try {
       this.loading.dismiss();
-    } catch(e) {
+    } catch (e) {
       // No problem
       this.logger.warn(e);
     };

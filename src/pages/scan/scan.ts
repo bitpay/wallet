@@ -1,11 +1,6 @@
 import { Component } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import {
-  Events,
-  ModalController,
-  NavController,
-  NavParams
-} from 'ionic-angular';
+import { Events, ModalController, NavController, NavParams } from 'ionic-angular';
 import { Logger } from '../../providers/logger/logger';
 
 // providers
@@ -15,7 +10,6 @@ import { PlatformProvider } from '../../providers/platform/platform';
 import { ScanProvider } from '../../providers/scan/scan';
 
 // pages
-import { IncomingDataMenuPage } from '../incoming-data-menu/incoming-data-menu';
 import { PaperWalletPage } from '../paper-wallet/paper-wallet';
 import { AmountPage } from '../send/amount/amount';
 import { AddressbookAddPage } from '../settings/addressbook/add/add';
@@ -86,7 +80,7 @@ export class ScanPage {
     this.lightActive = false;
     this.scanProvider.frontCameraEnabled = false;
     this.scanProvider.deactivate();
-    this.events.unsubscribe('incomingDataMenu.showMenu');
+    this.events.unsubscribe('finishIncomingDataMenuEvent');
     this.events.unsubscribe('scannerServiceInitialized');
     if (this.navParams.data.fromAddressbook) {
       this.tabBarElement.style.display = 'flex';
@@ -107,30 +101,22 @@ export class ScanPage {
       }
     }
 
-    this.events.subscribe('incomingDataMenu.showMenu', data => {
-      if (!this.modalIsOpen) {
-        this.modalIsOpen = true;
-        let modal = this.modalCtrl.create(IncomingDataMenuPage, data);
-        modal.present();
-        modal.onDidDismiss(data => {
-          this.modalIsOpen = false;
-          switch (data.redirTo) {
-            case 'AmountPage':
-              this.sendPaymentToAddress(data.value, data.coin);
-              break;
-            case 'AddressBookPage':
-              this.addToAddressBook(data.value);
-              break;
-            case 'OpenExternalLink':
-              this.goToUrl(data.value);
-              break;
-            case 'PaperWalletPage':
-              this.scanPaperWallet(data.value);
-              break;
-            default:
-              this.activate();
-          }
-        });
+    this.events.subscribe('finishIncomingDataMenuEvent', (data) => {
+      switch (data.redirTo) {
+        case 'AmountPage':
+          this.sendPaymentToAddress(data.value, data.coin);
+          break;
+        case 'AddressBookPage':
+          this.addToAddressBook(data.value);
+          break;
+        case 'OpenExternalLink':
+          this.goToUrl(data.value);
+          break;
+        case 'PaperWalletPage':
+          this.scanPaperWallet(data.value);
+          break;
+        default:
+          this.activate();
       }
     });
 
@@ -199,6 +185,10 @@ export class ScanPage {
       this.handleCapabilities();
       this.logger.debug('Scanner activated, setting to visible...');
       this.currentState = this.scannerStates.visible;
+
+      // resume preview if paused
+      this.scanProvider.resumePreview();
+
       this.scanProvider.scan().then((contents: string) => {
         this.logger.debug('Scan returned: "' + contents + '"');
         this.handleSuccessfulScan(contents);
@@ -208,6 +198,7 @@ export class ScanPage {
 
   private handleSuccessfulScan(contents: string): void {
     this.logger.debug('Scan returned: "' + contents + '"');
+    this.scanProvider.pausePreview();
     let fromAddressbook = this.navParams.data.fromAddressbook;
     if (fromAddressbook) {
       this.events.publish('update:address', { value: contents });

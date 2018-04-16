@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { FCM } from '@ionic-native/fcm';
-import { App, NavController } from 'ionic-angular';
+import { App, NavControllerBase } from 'ionic-angular';
 import { Logger } from '../../providers/logger/logger';
 
 // providers
@@ -19,7 +19,7 @@ import * as _ from 'lodash';
 
 @Injectable()
 export class PushNotificationsProvider {
-  private navCtrl: NavController;
+  private navCtrl: NavControllerBase;
   private isIOS: boolean;
   private isAndroid: boolean;
   private usePushNotifications: boolean;
