@@ -13,9 +13,9 @@ import { ProfileProvider } from '../../providers/profile/profile';
 import { WalletProvider } from '../../providers/wallet/wallet';
 
 // Pages
+import { PaperWalletPage } from '../paper-wallet/paper-wallet';
 import { AddressbookAddPage } from '../settings/addressbook/add/add';
 import { AmountPage } from './amount/amount';
-import { PaperWalletPage } from '../paper-wallet/paper-wallet';
 
 @Component({
   selector: 'page-send',
