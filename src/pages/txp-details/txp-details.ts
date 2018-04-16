@@ -4,6 +4,7 @@ import { Events, ModalController, NavParams, ViewController } from 'ionic-angula
 import { Logger } from '../../providers/logger/logger';
 
 // providers
+import { AddressBookProvider } from '../../providers/address-book/address-book';
 import { BwcErrorProvider } from '../../providers/bwc-error/bwc-error';
 import { ConfigProvider } from '../../providers/config/config';
 import { FeeProvider } from '../../providers/fee/fee';
@@ -38,6 +39,7 @@ export class TxpDetailsPage {
   public expires: string;
   public currentSpendUnconfirmed: boolean;
   public loading: boolean;
+  public contactName: string;
 
   private isGlidera: boolean;
   private GLIDERA_LOCK_TIME: number;
@@ -59,12 +61,13 @@ export class TxpDetailsPage {
     private profileProvider: ProfileProvider,
     private txFormatProvider: TxFormatProvider,
     private translate: TranslateService,
-    private modalCtrl: ModalController
+    private modalCtrl: ModalController,
+    private addressBookProvider: AddressBookProvider
   ) {
     let config = this.configProvider.get().wallet;
     this.tx = this.navParams.data.tx;
     this.wallet = this.tx.wallet ? this.tx.wallet : this.profileProvider.getWallet(this.tx.walletId);
-    this.tx = this.txFormatProvider.processTx(this.wallet.coin, this.tx);
+    this.tx = this.txFormatProvider.processTx(this.wallet.coin, this.tx, this.walletProvider.useLegacyAddress());
     if (!this.tx.toAddress) this.tx.toAddress = this.tx.outputs[0].toAddress;
     this.isGlidera = this.navParams.data.isGlidera;
     this.GLIDERA_LOCK_TIME = 6 * 60 * 60;
@@ -76,6 +79,7 @@ export class TxpDetailsPage {
     this.isShared = this.wallet.credentials.n > 1;
     this.canSign = this.wallet.canSign() || this.wallet.isPrivKeyExternal();
     this.color = this.wallet.color;
+    this.contact();
   }
 
   ionViewWillEnter() {
@@ -276,7 +280,7 @@ export class TxpDetailsPage {
         copayerId: this.wallet.credentials.copayerId
       });
 
-      this.tx = this.txFormatProvider.processTx(this.wallet.coin, tx);
+      this.tx = this.txFormatProvider.processTx(this.wallet.coin, tx, this.walletProvider.useLegacyAddress());
 
       if (!action && tx.status == 'pending') this.tx.pendingForUs = true;
 
@@ -317,6 +321,18 @@ export class TxpDetailsPage {
     modal.onDidDismiss(() => {
       this.close();
     })
+  }
+
+  private contact(): void {
+    let addr = this.tx.toAddress;
+    this.addressBookProvider.get(addr).then((ab: any) => {
+      if (ab) {
+        let name = _.isObject(ab) ? ab.name : ab;
+        this.contactName = name;
+      }
+    }).catch((err: any) => {
+      this.logger.warn(err);
+    });
   }
 
 }

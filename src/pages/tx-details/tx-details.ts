@@ -36,7 +36,7 @@ export class TxDetailsPage {
   public color: string;
   public copayerId: string;
   public txsUnsubscribedForNotifications: boolean;
-  public toName: string;
+  public contactName: string;
 
   constructor(
     private addressBookProvider: AddressBookProvider,
@@ -256,9 +256,7 @@ export class TxDetailsPage {
     this.addressBookProvider.get(addr).then((ab: any) => {
       if (ab) {
         let name = _.isObject(ab) ? ab.name : ab;
-        this.toName = name;
-      } else {
-        this.toName = addr;
+        this.contactName = name;
       }
     }).catch((err: any) => {
       this.logger.warn(err);

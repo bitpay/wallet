@@ -106,7 +106,7 @@ export class WalletProvider {
 
         lodash.each(txps, (tx: any) => {
 
-          tx = this.txFormatProvider.processTx(wallet.coin, tx);
+          tx = this.txFormatProvider.processTx(wallet.coin, tx, this.useLegacyAddress());
 
           // no future transactions...
           if (tx.createdOn > now)
@@ -650,7 +650,7 @@ export class WalletProvider {
     wallet.hasUnsafeConfirmed = false;
 
     lodash.each(txs, (tx: any) => {
-      tx = this.txFormatProvider.processTx(wallet.coin, tx);
+      tx = this.txFormatProvider.processTx(wallet.coin, tx, this.useLegacyAddress());
 
       // no future transactions...
       if (tx.time > now)
@@ -868,7 +868,7 @@ export class WalletProvider {
 
       try {
         wallet.signTxProposal(txp, password, (err: any, signedTxp: any) => {
-          if (err) { 
+          if (err) {
             this.logger.error('Transaction signed err: ', err);
             return reject(err);
           }
@@ -974,7 +974,7 @@ export class WalletProvider {
 
       // Get current languge
       prefs.language = this.languageProvider.getCurrent();
-      
+
       // Set OLD wallet in bits to btc
       prefs.unit = 'btc'; // DEPRECATED
 
