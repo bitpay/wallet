@@ -116,7 +116,7 @@
     "@types/papaparse": "4.1.33",
     "angular2-moment": "1.7.1",
     "bitauth": "git+https://github.com/bitpay/bitauth.git#copay",
-    "bitcore-wallet-client": "6.7.3",
+    "bitcore-wallet-client": "6.7.4",
     "buffer-compare": "1.1.1",
     "cordova-android": "7.1.0",
     "cordova-clipboard": "1.1.1",
