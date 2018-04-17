@@ -26,11 +26,7 @@ export class IncomingDataMenuPage {
       this.type = data.type;
       this.coin = data.coin;
       if (this.type === 'url') {
-        if (this.data.indexOf('https://') === 0) {
-          this.https = true;
-        } else {
-          this.https = false;
-        }
+        this.https = this.data.indexOf('https://') === 0 ? true : false;
       }
 
       setTimeout(() => {

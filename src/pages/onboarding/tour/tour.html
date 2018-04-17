@@ -1,5 +1,4 @@
 <ion-header no-border>
-
   <ion-navbar>
     <ion-buttons end>
       <button ion-button class="primary-color" (click)="createDefaultWallet()" *ngIf="currentIndex == 0">
@@ -7,7 +6,6 @@
       </button>
     </ion-buttons>
   </ion-navbar>
-
 </ion-header>
 
 <ion-content no-bounce>
@@ -30,7 +28,7 @@
       <div class="ticker-container">
         <div class="ticker">1 BTC = {{localCurrencySymbol}}{{localCurrencyPerBtc}}</div>
       </div>
-      <img src='assets/img/app/onboarding/tour-currency.svg' />
+      <img class="ticker-img" src='assets/img/app/onboarding/tour-currency.svg' />
       <div class="bottom-absolute">
         <p translate class="bottom-description">The exchange rate changes with the market.</p>
         <button ion-button clear class="button-standard btn-transparent primary-color e2e-makes-sense" (click)="slideNext()">

@@ -49,14 +49,6 @@ ion-alert.alert-top {
 // Hide border when refresh
 .has-refresher > .scroll-content {
   border-top: none !important;
-  background-image: linear-gradient(
-    to bottom,
-    $toolbar-background,
-    $toolbar-background 50%,
-    $background-color 50%,
-    $background-color 50%,
-    $background-color 50%
-  );
 }
 ion-spinner * {
   stroke: color($colors, light);
