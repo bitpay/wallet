@@ -93,24 +93,26 @@ export class ScanPage {
   }
 
   ionViewWillLeave() {
+    this.events.unsubscribe('finishIncomingDataMenuEvent');
+    this.events.unsubscribe('scannerServiceInitialized');
+    if (this.navParams.data.fromAddressbook) {
+      this.tabBarElement.style.display = 'flex';
+    }
     if (!this.isCordova) {
       this.scanner.resetScan();
-    }
-    else {
+    } else {
       this.cameraToggleActive = false;
       this.lightActive = false;
       this.scanProvider.frontCameraEnabled = false;
       this.scanProvider.deactivate();
-      this.events.unsubscribe('finishIncomingDataMenuEvent');
-      this.events.unsubscribe('scannerServiceInitialized');
-      if (this.navParams.data.fromAddressbook) {
-        this.tabBarElement.style.display = 'flex';
-      }
     }
   }
 
   ionViewWillEnter() {
     this.events.subscribe('finishIncomingDataMenuEvent', (data) => {
+      if (!this.isCordova) {
+        this.scanner.resetScan();
+      }
       switch (data.redirTo) {
         case 'AmountPage':
           this.sendPaymentToAddress(data.value, data.coin);
@@ -236,8 +238,7 @@ export class ScanPage {
       this.scanProvider.resumePreview();
 
       this.scanProvider.scan().then((contents: string) => {
-        this.logger.debug('Scan returned: "' + contents + '"');
-
+        this.scanProvider.pausePreview();
         this.handleSuccessfulScan(contents);
       });
     });
@@ -245,7 +246,6 @@ export class ScanPage {
 
   private handleSuccessfulScan(contents: string): void {
     this.logger.debug('Scan returned: "' + contents + '"');
-    this.scanProvider.pausePreview();
     let fromAddressbook = this.navParams.data.fromAddressbook;
     if (fromAddressbook) {
       this.events.publish('update:address', { value: contents });
@@ -296,7 +296,7 @@ export class ScanPage {
     this.scanner.resetScan();
     setTimeout(() => {
       this.handleSuccessfulScan(resultString);
-    }, 500)
+    }, 0)
   }
 
   onDeviceSelectChange() {
