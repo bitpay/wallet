@@ -24,13 +24,21 @@ page-tour {
     height: inherit;
     img {
       height: 50%;
+      min-height: 240px;
       padding: 2em;
-      min-height: 300px;
+      @media(max-height: 560px) {
+        padding: 0em 4em 0em 4em;    
+      }
+    }
+    .ticker-img {
+      @media(max-height: 560px) {
+        padding: 0em 2em 0em 2em;
+      }
     }
   }
   .top-description {
     font-size: 1.4rem;
-    padding: 0 4rem 0 4rem;
+    padding: 0 3rem 0 3rem;
     color: $onboarding-comment-color;
   }
   .bottom-description {
@@ -42,21 +50,24 @@ page-tour {
     background: color($colors, primary);
   }
   p {
-    margin-left: 1em;
-    margin-right: 1em;
+    margin: 0em 1em 0em 1em;
   }
   .ticker-container {
     text-align: center;
     margin-bottom: -5em;
-    margin-top: 5em;
-  }
-  .ticker {
-    display: inline-block;
-    padding: 0.7em 1em;
-    z-index: 1;
-    border-radius: $icon-border-radius;
-    position: relative;
-    color: color($colors, blank);    
+    margin-top: 3em;
+    @media(max-height: 560px) {
+      margin-top: 0.5em;
+      margin-bottom: -2em;
+    }
+    .ticker {
+      display: inline-block;
+      padding: 0.7em 1em;
+      z-index: 1;
+      border-radius: $icon-border-radius;
+      position: relative;
+      color: color($colors, blank);    
+    }
   }
   .primary-color {
     color: $onboarding-primary-color;
