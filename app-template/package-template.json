@@ -162,6 +162,7 @@
   "devDependencies": {
     "@angular/cli": "1.7.4",
     "@biesbjerg/ngx-translate-extract": "2.3.4",
+    "@types/chrome": "0.0.64",
     "@ionic/app-scripts": "3.1.8",
     "@types/cordova-plugin-qrscanner": "1.0.31",
     "@types/jasmine": "2.8.6",

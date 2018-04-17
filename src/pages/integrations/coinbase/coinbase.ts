@@ -119,8 +119,7 @@ export class CoinbasePage {
     if (!this.isNW) {
       this.externalLinkProvider.open(oauthUrl);
     } else {
-      /* TODO: desktop
-      let gui = require('nw.gui');
+      let gui = (window as any).require('nw.gui');
       gui.Window.open(oauthUrl, {
         focus: true,
         position: 'center'
@@ -134,7 +133,6 @@ export class CoinbasePage {
           }
         });
       });
-       */
     }
   }
 

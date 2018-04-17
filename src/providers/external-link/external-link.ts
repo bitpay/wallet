@@ -35,8 +35,10 @@ export class ExternalLinkProvider {
       };
 
       if (this.platformProvider.isNW) {
-        this.nodeWebkitProvider.openExternalLink(url);
-        this.restoreHandleOpenURL(old);
+        this.popupProvider.ionicConfirm(title, message, okText, cancelText).then((res: boolean) => {
+          if (res) this.nodeWebkitProvider.openExternalLink(url);
+          this.restoreHandleOpenURL(old);
+        });
       } else {
         if (optIn) {
           let openBrowser = (res) => {
