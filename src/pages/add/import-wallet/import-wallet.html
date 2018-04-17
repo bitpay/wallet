@@ -59,7 +59,7 @@
 
     <ion-item *ngIf="selectedTab != 'file'">
       <ion-label stacked>{{'Coin' | translate}}</ion-label>
-      <ion-select formControlName="coin" (ionChange)="testnetEnabled = false">
+      <ion-select placeholder="{{'Select a coin' | translate}}" formControlName="coin" (ionChange)="testnetEnabled = false">
         <ion-option value="btc">BTC</ion-option>
         <ion-option value="bch">BCH</ion-option>
       </ion-select>
@@ -76,7 +76,7 @@
       <div *ngIf="selectedTab == 'words'">
         <ion-item>
           <ion-label stacked>{{'Password' | translate}}</ion-label>
-          <ion-input type="password" formControlName="mnemonicPassword"></ion-input>
+          <ion-input type="password" formControlName="passphrase"></ion-input>
         </ion-item>
 
         <ion-item>

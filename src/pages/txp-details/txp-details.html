@@ -73,12 +73,13 @@
 
     <ion-item class="container-to">
       <span translate>To</span>
-      <div class="payment-proposal-to" copy-to-clipboard="{{tx.toAddress}}">
+      <div class="payment-proposal-to">
         <img class="icon-bitcoin" src="assets/img/icon-bitcoin-small.svg" />
         <!-- <contact ng-if="!tx.hasMultiplesOutputs" class="ellipsis" address="{{tx.toAddress}}"></contact>  TODO -->
-        <div class="ellipsis">
-          <span *ngIf="tx && !tx.name">{{tx.toAddress}}</span>
-          <span *ngIf="tx && tx.name">{{tx.name}}</span>
+        <div class="ellipsis" copy-to-clipboard="{{ tx.toAddress ? tx.toAddress : tx.outputs[0].address }}">
+          <span *ngIf="!contactName && !tx.toAddress">{{ tx.outputs[0].address }}</span>
+          <span *ngIf="!contactName && tx.toAddress">{{ tx.toAddress }}</span>
+          <span *ngIf="contactName">{{ contactName }}</span>
           <span *ngIf="tx && tx.hasMultiplesOutputs" translate>Multiple recipients</span>
         </div>
       </div>

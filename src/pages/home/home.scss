@@ -1,5 +1,8 @@
 page-home {
   background: $toolbar-background;
+  ion-content .fixed-content {
+    background: $toolbar-background;
+  }
   .home-logo {
     height: 24px;
     position: relative;
@@ -31,14 +34,6 @@ page-home {
   .error {
     color: color($colors, danger);
   }
-  .no-wallets {
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-  }
 
   page-txp:last-child,
   page-wallet-activity:last-child {
@@ -55,6 +50,12 @@ page-home {
     top: -100px;
     width: 100%;
     z-index: 0;
+    display: flex;
+    justify-content: center;
+    .no-wallets {
+      position: absolute;
+      top: 50%;
+    }
   }
   .wrapper {
     background-color: $background-color;

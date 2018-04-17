@@ -21,11 +21,11 @@ import { TouchID } from '@ionic-native/touch-id';
 /* Modules */
 import { TranslatePoHttpLoader } from '@biesbjerg/ngx-translate-po-http-loader';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { ZXingScannerModule } from '@zxing/ngx-scanner';
 import { MomentModule } from 'angular2-moment';
 import { NgxQRCodeModule } from 'ngx-qrcode2';
 
 /* Copay App */
-import env from '../environments';
 import { CopayApp } from './app.component';
 
 /* Pages */
@@ -43,7 +43,6 @@ import { FeedbackCompletePage } from '../pages/feedback/feedback-complete/feedba
 import { FeedbackPage } from '../pages/feedback/feedback/feedback';
 import { SendFeedbackPage } from '../pages/feedback/send-feedback/send-feedback';
 import { FinishModalPage } from '../pages/finish/finish';
-import { IncomingDataMenuPage } from '../pages/incoming-data-menu/incoming-data-menu';
 import { BackupRequestPage } from '../pages/onboarding/backup-request/backup-request';
 import { CollectEmailPage } from '../pages/onboarding/collect-email/collect-email';
 import { DisclaimerPage } from '../pages/onboarding/disclaimer/disclaimer';
@@ -103,6 +102,7 @@ import { BitPaySettingsPage } from '../pages/integrations/bitpay-card/bitpay-set
 import { CardItemPage } from '../pages/includes/card-item/card-item';
 import { FeedbackCardPage } from '../pages/includes/feedback-card/feedback-card';
 import { GravatarPage } from '../pages/includes/gravatar/gravatar';
+import { IncomingDataMenuPage } from '../pages/includes/incoming-data-menu/incoming-data-menu';
 import { TxpPage } from '../pages/includes/txp/txp';
 import { WalletActivityPage } from '../pages/includes/wallet-activity/wallet-activity';
 import { WalletItemPage } from '../pages/includes/wallet-item/wallet-item';
@@ -338,7 +338,6 @@ export function createTranslateLoader(http: HttpClient) {
   ],
   imports: [
     IonicModule.forRoot(CopayApp, {
-      animate: env.enableAnimations,
       tabsHideOnSubPages: true,
       tabsPlacement: 'bottom',
       backButtonIcon: 'arrow-round-back',
@@ -354,7 +353,8 @@ export function createTranslateLoader(http: HttpClient) {
         useFactory: createTranslateLoader,
         deps: [HttpClient]
       }
-    })
+    }),
+    ZXingScannerModule.forRoot()
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -524,4 +524,4 @@ export function createTranslateLoader(http: HttpClient) {
     }
   ]
 })
-export class AppModule {}
+export class AppModule { }

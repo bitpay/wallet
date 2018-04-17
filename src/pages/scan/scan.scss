@@ -6,6 +6,7 @@ page-scan {
     background: $toolbar-scanner;
   }
   .page-scan-has-problems {
+    z-index: 9999;
     height: 100%;
     background-color: $toolbar-background;
     .header-container {
@@ -113,5 +114,48 @@ page-scan {
         background-image: url('../assets/img/icon-camera-toggle.svg');
       }
     }
+  }
+
+.browser-scanner {
+  z-index: 1000;
+  zxing-scanner {
+    height: 100% !important;
+        video {
+          height: 100% !important;
+          width: inherit!important;
+          position: fixed !important;
+          top: 50% !important;
+          left: 50% !important;
+          /* bring your own prefixes */
+          transform: translate(-50%, -50%) !important;
+        }
+    }
+  }
+  .hide-div{
+    display: none;
+  }
+  .cameras-list {
+    .camera {
+      display: flex;
+      align-items: center;
+      margin-top: 1rem;
+      ion-icon {
+        margin-right: 1rem;
+      }
+    }
+  }
+  .last-item{
+    margin-left: auto !important;
+  }
+  .cameraSelector{
+    width: 100%;
+      text-align: center;
+      position: absolute;
+      bottom: 0px;
+      background-color: $toolbar-background;
+      color: color($colors,blank);
+  }
+  .icon-wallet{
+    background: transparent;
   }
 }

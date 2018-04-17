@@ -36,6 +36,11 @@ export class TxFormatProvider {
     return cashAddr.split(':')[1]; // rm prefix
   }
 
+  public toLegacyAddress(address: string): string {
+    let legacyAddr: string = this.bitcoreCash.Address(address);
+    return legacyAddr;
+  }
+
   public formatAmount(satoshis: number, fullPrecision?: boolean): number {
     let settings = this.configProvider.get().wallet.settings;
 
@@ -91,7 +96,7 @@ export class TxFormatProvider {
     return val();
   };
 
-  public processTx(coin: string, tx: any, useLegacyAddress?: boolean): any {
+  public processTx(coin: string, tx: any, useLegacyAddress: boolean): any {
     if (!tx || tx.action == 'invalid')
       return tx;
 
@@ -114,8 +119,8 @@ export class TxFormatProvider {
       tx.toAddress = tx.outputs[0].toAddress;
 
       // toDo: translate all tx.outputs[x].toAddress ?
-      if (tx.toAddress && coin == 'bch' && !useLegacyAddress) {
-        tx.toAddress = this.toCashAddress(tx.toAddress);
+      if (tx.toAddress && coin == 'bch') {
+          tx.toAddress = useLegacyAddress ? this.toLegacyAddress(tx.toAddress) : this.toCashAddress(tx.toAddress);
       }
     }
 
@@ -128,8 +133,8 @@ export class TxFormatProvider {
       tx.amountUnitStr = tx.amountStr.split(' ')[1];
     }
 
-    if (tx.addressTo && coin == 'bch' && !useLegacyAddress) {
-      tx.addressTo = this.toCashAddress(tx.addressTo);
+    if (tx.addressTo && coin == 'bch' ) {
+        tx.addressTo = useLegacyAddress ? this.toLegacyAddress(tx.addressTo) : this.toCashAddress(tx.addressTo);
     }
 
     return tx;

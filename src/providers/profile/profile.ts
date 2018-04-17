@@ -58,9 +58,14 @@ export class ProfileProvider {
     // });
   }
 
-  public setWalletOrder(walletId: string, index: number): void {
+  public setWalletOrder(walletId: string, index?: number, coin?: string): void {
+    if (index === null) {
+      let wallets = this.getWallets({ coin });
+      let maxIndex = _.maxBy(wallets, 'order') ? _.maxBy(wallets, 'order').order : null;
+      index = maxIndex != null ? maxIndex + 1 : 0;
+    }
     this.persistenceProvider.setWalletOrder(walletId, index);
-    this.logger.debug('Wallet new order stored');
+    this.logger.debug('Wallet new order stored ' + this.wallet[walletId].name + ': ' + index);
     this.wallet[walletId].order = index;
   }
 
@@ -366,7 +371,7 @@ export class ProfileProvider {
   private askToEncryptWallet(wallet: any): Promise<any> {
     return new Promise((resolve, reject) => {
 
-      if(!wallet.canSign()) return resolve();
+      if (!wallet.canSign()) return resolve();
 
       var title = this.translate.instant('Would you like to protect this wallet with a password?');
       var message = this.translate.instant('Encryption can protect your funds if this device is stolen or compromised by malicious software.');

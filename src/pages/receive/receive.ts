@@ -97,7 +97,7 @@ export class ReceivePage {
     this.loading = newAddr || _.isEmpty(this.address) ? true : false;
 
     this.walletProvider.getAddress(this.wallet, newAddr).then((addr) => {
-      this.loading = false
+      this.loading = false;
       this.address = this.walletProvider.getAddressView(this.wallet, addr);
       this.updateQrAddress();
     }).catch((err) => {

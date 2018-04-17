@@ -6,37 +6,35 @@ page-backup-request {
     background-repeat: no-repeat;
   }
   text-align: center;
-  ion-header {
-    .toolbar-title,
-    ion-icon {
-      color: color($colors, primary);
-    }
-    .toolbar-background {
-      background-color: transparent;
-    }
-  }
   .title {
     color: color($colors, blank);
   }
   .top-description {
     font-size: 1.4rem;
-    padding: 0 4rem 0 4rem;
+    padding: 0 2rem 0 2rem;
     color: $onboarding-comment-color
   }
   .bottom-description {
     font-size: 1.4rem;
     color: color($colors, blank);
-    padding: 0 4rem 0 4rem;
+    padding: 0 2rem 0 2rem;
+    margin-top: 0rem;
   }
   .arrow-down {
-    font-size: 8rem;
+    font-size: 7rem;
     color: color($colors, primary);
+    @media(max-height: 560px) and (max-width: 430px) {
+      display: none;    
+    }
   }
   .alert-icon {
-    margin: 20px auto 5px;
-    height: 10vh;
+    margin: 20px auto 0px;
+    height: 15vh;
   }
   .primary-color {
     color: $onboarding-primary-color
+  }
+  .bottom-absolute {
+    padding: 15px 15px 0px 15px;
   }
 }

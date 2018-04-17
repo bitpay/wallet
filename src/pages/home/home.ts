@@ -110,8 +110,8 @@ export class HomePage {
 
   ionViewWillEnter() {
     this.config = this.configProvider.get();
-    this.pushNotificationsProvider.init(); 
-    
+    this.pushNotificationsProvider.init();
+
     this.addressBookProvider.list().then((ab: any) => {
       this.addressbook = ab || {};
     }).catch((err) => {
@@ -145,17 +145,17 @@ export class HomePage {
     // Hide stars to rate
     this.events.subscribe('feedback:hide', () => {
       this.showRateCard = false;
-    }); 
+    });
   }
 
   ionViewDidEnter() {
     if (this.isNW) this.checkUpdate();
     this.checkHomeTip();
-    this.checkFeedbackInfo(); 
+    this.checkFeedbackInfo();
 
     if (this.platformProvider.isCordova) {
       this.handleDeepLinks();
-    } 
+    }
 
     // Show integrations
     let integrations = _.filter(this.homeIntegrationsProvider.get(), { 'show': true });
@@ -388,8 +388,8 @@ export class HomePage {
     this.externalLinkProvider.open(url);
   }
 
-  public goToAddView(coin?: string): void {
-    this.navCtrl.push(AddPage, { coin });
+  public goToAddView(): void {
+    this.navCtrl.push(AddPage);
   }
 
   public goToWalletDetails(wallet: any): void {
@@ -442,7 +442,7 @@ export class HomePage {
     this.walletsBtc.splice(indexes.from, 1);
     this.walletsBtc.splice(indexes.to, 0, element);
     _.each(this.walletsBtc, (wallet: any, index: number) => {
-      this.profileProvider.setWalletOrder(wallet.id, index);
+      this.profileProvider.setWalletOrder(wallet.id, index, 'btc');
     });
   };
 
@@ -451,7 +451,7 @@ export class HomePage {
     this.walletsBch.splice(indexes.from, 1);
     this.walletsBch.splice(indexes.to, 0, element);
     _.each(this.walletsBch, (wallet: any, index: number) => {
-      this.profileProvider.setWalletOrder(wallet.id, index);
+      this.profileProvider.setWalletOrder(wallet.id, index, 'bch');
     });
   };
 

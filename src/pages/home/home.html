@@ -11,7 +11,13 @@
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
   <div class="wrapper">
-    <div class="header-extend"></div>
+    <div class="header-extend">
+      <div *ngIf="!wallets || !wallets[0]" class="no-wallets">
+        <button ion-button clear (click)="goToAddView()">
+          <span translate>Create a new wallet</span>
+        </button>
+      </div>
+    </div>
 
     <ion-card *ngIf="serverMessage">
       <ion-item>
@@ -40,7 +46,7 @@
     <page-feedback-card *ngIf="showRateCard">
     </page-feedback-card>
 
-    <ion-card *ngIf="homeTip">
+    <ion-card *ngIf="homeTip && wallets && wallets[0]">
       <ion-card-header>
         <ion-row>
           <ion-col text-right (click)="hideHomeTip()">
@@ -93,12 +99,6 @@
       <ion-list>
         <page-wallet-activity *ngFor="let notification of notifications" (click)="openNotificationModal(notification)" [notification]="notification"></page-wallet-activity>
       </ion-list>
-    </div>
-
-    <div *ngIf="!wallets || !wallets[0]" class="no-wallets">
-      <button ion-button clear (click)="goToAddView()">
-        <span translate>Create a new wallet</span>
-      </button>
     </div>
 
     <div class="card" *ngIf="walletsBtc && walletsBtc[0]">
@@ -159,7 +159,7 @@
           <span translate>Bitcoin Cash Wallets</span>
         </div>
         <div item-end *ngIf="!showReorderBch">
-          <button ion-button clear icon-only color="grey" (click)="goToAddView('bch')">
+          <button ion-button clear icon-only color="grey" (click)="goToAddView()">
             <ion-icon name="add"></ion-icon>
           </button>
           <button ion-button clear icon-only color="grey" (click)="reorderBch()" *ngIf="walletsBch.length > 1">

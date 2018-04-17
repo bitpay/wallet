@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { App, Events, NavController } from 'ionic-angular';
+import { App, Events, NavControllerBase } from 'ionic-angular';
 import { Logger } from '../../providers/logger/logger';
 
 // providers
@@ -21,7 +21,7 @@ import { ConfirmPage } from '../../pages/send/confirm/confirm';
 
 @Injectable()
 export class IncomingDataProvider {
-  private navCtrl: NavController;
+  private navCtrl: NavControllerBase;
   constructor(
     private app: App,
     private events: Events,
@@ -37,7 +37,7 @@ export class IncomingDataProvider {
   }
 
   public showMenu(data: any): void {
-    this.events.publish('incomingDataMenu.showMenu', data);
+    this.events.publish('showIncomingDataMenuEvent', data);
   }
 
   public redir(data: string): boolean {
@@ -162,7 +162,7 @@ export class IncomingDataProvider {
 
       let coin = 'btc'; // Assume BTC
 
-      this.payproProvider.getPayProDetails(data, coin).then((details) => {
+      this.payproProvider.getPayProDetails(data, coin, true).then((details) => {
         this.handlePayPro(details, coin);
         return true;
       }).catch(() => {
@@ -332,7 +332,6 @@ export class IncomingDataProvider {
     if (payProDetails.requiredFeeRate) {
       stateParams.requiredFeeRate = Math.ceil(payProDetails.requiredFeeRate * 1024);
     }
-    this.scanProvider.pausePreview();
     this.navCtrl.push(ConfirmPage, stateParams);
   }
 

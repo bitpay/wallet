@@ -15,6 +15,7 @@ import { OnGoingProcessProvider } from '../../../providers/on-going-process/on-g
 import { PlatformProvider } from '../../../providers/platform/platform';
 import { PopupProvider } from '../../../providers/popup/popup';
 import { ProfileProvider } from '../../../providers/profile/profile';
+import { PushNotificationsProvider } from '../../../providers/push-notifications/push-notifications';
 import { WalletProvider } from '../../../providers/wallet/wallet';
 
 @Component({
@@ -56,7 +57,8 @@ export class ImportWalletPage {
     private onGoingProcessProvider: OnGoingProcessProvider,
     private profileProvider: ProfileProvider,
     private translate: TranslateService,
-    private events: Events
+    private events: Events,
+    private pushNotificationsProvider: PushNotificationsProvider
   ) {
     this.reader = new FileReader();
     this.defaults = this.configProvider.getDefaults();
@@ -76,13 +78,13 @@ export class ImportWalletPage {
     this.importForm = this.form.group({
       words: [null, Validators.required],
       backupText: [null],
-      mnemonicPassword: [null],
+      passphrase: [null],
       file: [null],
       filePassword: [null],
       derivationPath: [this.derivationPathByDefault, Validators.required],
       testnet: [false],
       bwsURL: [this.defaults.bws.url],
-      coin: [this.navParams.data.coin ? this.navParams.data.coin : 'btc']
+      coin: [null, Validators.required]
     });
   }
 
@@ -206,6 +208,8 @@ export class ImportWalletPage {
     this.walletProvider.updateRemotePreferences(wallet).then(() => {
       this.profileProvider.setBackupFlag(wallet.credentials.walletId);
       this.events.publish('status:updated');
+      this.profileProvider.setWalletOrder(wallet.credentials.walletId, null, wallet.coin);
+      this.pushNotificationsProvider.updateSubscription(wallet);
       if (this.fromOnboarding) {
         this.profileProvider.setOnboardingCompleted().then(() => {
           this.profileProvider.setDisclaimerAccepted().catch((err: any) => {

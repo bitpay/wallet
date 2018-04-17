@@ -90,7 +90,7 @@ export class CreateWalletPage implements OnInit {
       derivationPath: [this.derivationPathByDefault],
       testnetEnabled: [false],
       singleAddress: [false],
-      coin: [this.navParams.data.coin]
+      coin: [null, Validators.required]
     });
 
     this.setTotalCopayers(this.tc);
@@ -201,6 +201,7 @@ export class CreateWalletPage implements OnInit {
       this.events.publish('status:updated');
       this.walletProvider.updateRemotePreferences(wallet);
       this.pushNotificationsProvider.updateSubscription(wallet);
+      this.profileProvider.setWalletOrder(wallet.credentials.walletId, null, wallet.coin);
 
       if (this.createForm.value.selectedSeed == 'set') {
         this.profileProvider.setBackupFlag(wallet.credentials.walletId);

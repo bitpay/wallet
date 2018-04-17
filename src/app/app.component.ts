@@ -113,7 +113,7 @@ export class CopayApp {
             this.rootPage = OnboardingPage;
           }
         }).catch((err: Error) => {
-          this.logger.warn(err);
+          this.logger.warn(err.message);
           this.rootPage = err.message == 'ONBOARDINGNONCOMPLETED: Onboarding non completed' ? OnboardingPage : DisclaimerPage;
         });
       }).catch((err) => {
