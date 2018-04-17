@@ -78,7 +78,7 @@
 </ion-content>
 
 <ion-footer>
-  <page-slide-to-accept #slideButton *ngIf="isCordova" [disabled]="!(wallet && totalAmountStr)" buttonText=" {{'Slide to confirm' | translate}}" (slideDone)="topUpConfirm()"></page-slide-to-accept>
+  <page-slide-to-accept #slideButton *ngIf="isCordova" [disabled]="!(wallet && totalAmountStr)" buttonText="{{'Slide to confirm' | translate}}" (slideDone)="topUpConfirm()"></page-slide-to-accept>
   <button *ngIf="!isCordova" ion-button full class="button-footer" (click)="topUpConfirm()" [disabled]="!(wallet && totalAmountStr)">
     {{'Add funds' | translate}}
   </button>
