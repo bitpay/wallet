@@ -170,7 +170,7 @@ export class ShapeshiftConfirmPage {
           }
         }
       }).catch((err: any) => {
-        this.logger.warn(err);
+        this.logger.error('ShapeShift: could not get SendMax info', err);
         let msg = this.translate.instant('Error getting SendMax information');
         return reject(msg);
       });
@@ -217,7 +217,6 @@ export class ShapeshiftConfirmPage {
     return new Promise((resolve, reject) => {
       if (!wallet.canSign() && !wallet.isPrivKeyExternal()) {
         let err = this.translate.instant('No signing proposal: No private key');
-        this.logger.info(err);
         return reject(err);
       }
 

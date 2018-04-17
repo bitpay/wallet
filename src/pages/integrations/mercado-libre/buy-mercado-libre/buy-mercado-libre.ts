@@ -163,7 +163,6 @@ export class BuyMercadoLibrePage {
     return new Promise((resolve, reject) => {
       if (!wallet.canSign() && !wallet.isPrivKeyExternal()) {
         let err = this.translate.instant('No signing proposal: No private key');
-        this.logger.info(err);
         return reject(err);
       }
       this.walletProvider.publishAndSign(wallet, txp).then((txp: any) => {

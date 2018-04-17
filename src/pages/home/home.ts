@@ -379,7 +379,7 @@ export class HomePage {
         }
       })
       .catch((err) => {
-        this.logger.warn('Error:', err);
+        this.logger.error('Error getLatestAppVersion', err);
       })
   }
 

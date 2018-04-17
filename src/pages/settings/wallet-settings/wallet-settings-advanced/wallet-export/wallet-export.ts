@@ -178,7 +178,7 @@ export class WalletExportPage {
         try {
           localAddressBook = JSON.parse(addressBook);
         } catch (ex) {
-          this.logger.warn(ex);
+          this.logger.warn('Wallet Export: JSON Parse addressBook is not necessary', ex);
         }
 
         return resolve(localAddressBook);

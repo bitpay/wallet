@@ -122,7 +122,7 @@ export class BitcoinCashPage {
 
     let setErr = (err) => {
       this.bwcErrorProvider.cb(err, 'Could not duplicate').then((errorMsg) => {
-        this.logger.warn(errorMsg);
+        this.logger.warn('Duplicate BCH', errorMsg);
         this.popupProvider.ionicAlert(errorMsg, null, 'OK');
         return;
       });

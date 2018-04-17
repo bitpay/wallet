@@ -215,7 +215,7 @@ export class CreateWalletPage implements OnInit {
       }
     }).catch((err: any) => {
       this.onGoingProcessProvider.clear();
-      this.logger.warn(err);
+      this.logger.error('Create: could not create wallet', err);
       let title = this.translate.instant('Error');
       this.popupProvider.ionicAlert(title, err);
       return;

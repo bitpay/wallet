@@ -66,7 +66,7 @@ export class MercadoLibrePage {
           this.updateGiftCard = this.checkIfCardNeedsUpdate(card);
         }
       }).catch((err: any) => {
-        this.logger.warn(err);
+        this.logger.error('Mercado Libre: could not update gift cards', err);
       });
     }
   }

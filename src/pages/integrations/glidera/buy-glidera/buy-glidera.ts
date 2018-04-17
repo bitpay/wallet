@@ -182,7 +182,7 @@ export class BuyGlideraPage {
             this.glideraProvider.buy(this.token, twoFaCode, data, (err, data) => {
               this.onGoingProcessProvider.clear();
               if (err) return this.showError(err);
-              this.logger.info(data);
+              this.logger.info('Glidera Buy Info: ', data);
               this.openFinishModal();
             });
           }).catch(() => {

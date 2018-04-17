@@ -237,7 +237,7 @@ export class ProfileProvider {
         }
         return resolve();
       }).catch((err: any) => {
-        this.logger.warn(err);
+        this.logger.warn('Could not get last known balance: ', err);
       });
     });
   }
@@ -334,7 +334,7 @@ export class ProfileProvider {
         this.setMetaData(walletClient, addressBook).then(() => {
           return resolve(walletClient);
         }).catch((err: any) => {
-          this.logger.warn(err);
+          this.logger.warn('Could not set meta data: ', err);
           return reject(err);
         });
       }).catch((err: any) => {
@@ -486,7 +486,7 @@ export class ProfileProvider {
         try {
           localAddressBook1 = JSON.parse(localAddressBook);
         } catch (ex) {
-          this.logger.warn(ex);
+          this.logger.info('Address Book: JSON.parse not neccesary.', localAddressBook);
         }
         let mergeAddressBook = _.merge(addressBook, localAddressBook1);
         this.persistenceProvider.setAddressbook(wallet.credentials.network, JSON.stringify(mergeAddressBook)).then(() => {
@@ -767,7 +767,7 @@ export class ProfileProvider {
           });
 
         } catch (ex) {
-          this.logger.info(ex);
+          this.logger.info('Invalid wallet recovery phrase: ', ex);
           return reject(this.translate.instant('Could not create: Invalid wallet recovery phrase'));
         }
       } else if (opts.extendedPrivateKey) {
@@ -779,7 +779,7 @@ export class ProfileProvider {
             coin: opts.coin,
           });
         } catch (ex) {
-          this.logger.warn(ex);
+          this.logger.warn('Could not get seed from Extended Private Key: ', ex);
           return reject(this.translate.instant('Could not create using the specified extended private key'));
         }
       } else if (opts.extendedPublicKey) {
@@ -933,7 +933,7 @@ export class ProfileProvider {
       delete this.wallet[walletId];
 
       this.persistenceProvider.removeAllWalletData(walletId).catch((err: any) => {
-        this.logger.warn(err);
+        this.logger.warn('Could not remove all wallet data: ', err);
       });
 
       this.persistenceProvider.storeProfile(this.profile).then(() => {

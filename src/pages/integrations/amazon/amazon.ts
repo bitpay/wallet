@@ -66,7 +66,7 @@ export class AmazonPage {
           this.openCardModal(card);
         }
       }).catch((err: any) => {
-        this.logger.warn(err);
+        this.logger.error('Amazon: could not update gift cards', err);
       });
     }
   }

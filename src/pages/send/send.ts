@@ -190,7 +190,7 @@ export class SendPage {
       });
       return;
     }).catch((err: any) => {
-      this.logger.warn(err);
+      this.logger.error('Send: could not getAddress', err);
     });
   };
 }
