@@ -50,6 +50,13 @@ ion-alert.alert-top {
 .has-refresher > .scroll-content {
   border-top: none !important;
 }
+
+.scroll-content {
+  .wrapper {
+    background-color: $background-color;
+  }
+}
+
 ion-spinner * {
   stroke: color($colors, light);
 }

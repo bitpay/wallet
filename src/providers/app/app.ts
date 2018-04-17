@@ -63,20 +63,23 @@ export class AppProvider {
   public load(): Promise<any> {
     return new Promise((resolve, reject) => {
       this.persistence.load();
-      this.config.load().then(() => {
-        this.language.load();
-        this.getServicesInfo().subscribe((infoServices) => {
-          this.servicesInfo = infoServices;
-          this.getInfo().subscribe((infoApp) => {
-            this.info = infoApp;
-            if (this.platformProvider.isNW) this.setCustomMenuBarNW();
-            resolve();
+      this.config
+        .load()
+        .then(() => {
+          this.language.load();
+          this.getServicesInfo().subscribe(infoServices => {
+            this.servicesInfo = infoServices;
+            this.getInfo().subscribe(infoApp => {
+              this.info = infoApp;
+              if (this.platformProvider.isNW) this.setCustomMenuBarNW();
+              resolve();
+            });
           });
+        })
+        .catch(err => {
+          this.logger.error(err);
+          reject(err);
         });
-      }).catch((err) => {
-        this.logger.error(err);
-        reject(err);
-      });
     });
   }
 
@@ -84,7 +87,7 @@ export class AppProvider {
     let gui = (window as any).require('nw.gui');
     let win = gui.Window.get();
     let nativeMenuBar = new gui.Menu({
-      type: "menubar"
+      type: 'menubar'
     });
     try {
       nativeMenuBar.createMacBuiltin(this.info.nameCase);

@@ -45,7 +45,7 @@ page-home {
   }
   .header-extend {
     background: $toolbar-background;
-    height: 222px;
+    height: 180px;
     position: absolute;
     top: -100px;
     width: 100%;
@@ -56,9 +56,6 @@ page-home {
       position: absolute;
       top: 50%;
     }
-  }
-  .wrapper {
-    background-color: $background-color;
   }
   .card {
     z-index: 1;

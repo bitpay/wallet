@@ -2,15 +2,15 @@ page-wallet-details {
   .scroll-content {
     margin-top: 0 !important;
   }
-  ion-header, .toolbar-background {
-    background-color: initial !important;
-    // background-color: rgba(0,0,0,0) !important;
+  ion-header,
+  .toolbar-background {
+    background-color: rgba(0, 0, 0, 0) !important;
 
     &:after {
-      height: 0  !important;
-    } 
+      height: 0 !important;
+    }
   }
-  
+
   .balance-card {
     background: color($colors, primary);
     overflow: hidden;
@@ -64,6 +64,10 @@ page-wallet-details {
       font-weight: 500;
     }
   }
+  .loading-spacer {
+    height: 500px;
+    width: 100%;
+  }
   .tx-history {
     img {
       width: 35px;
@@ -97,6 +101,7 @@ page-wallet-details {
   .wallet-info {
     font-weight: 400;
     color: color($colors, light);
+    display: block;
     height: 3rem;
     padding: 0 5px;
     img {
@@ -159,7 +164,8 @@ page-wallet-details {
   .total-locked-amount {
     color: color($colors, dark);
   }
-  .total-alt-locked-amount, .double-spend {
+  .total-alt-locked-amount,
+  .double-spend {
     text-align: end;
     font-size: 12.5px;
   }

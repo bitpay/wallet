@@ -53,7 +53,7 @@ export class ProfileProvider {
     // this.config.whenAvailable( (config) => { TODO
     wallet.usingCustomBWS = config.bwsFor && config.bwsFor[wallet.id] && (config.bwsFor[wallet.id] != defaults.bws.url);
     wallet.name = (config.aliasFor && config.aliasFor[wallet.id]) || wallet.credentials.walletName;
-    wallet.color = (config.colorFor && config.colorFor[wallet.id]) ? config.colorFor[wallet.id] : null;
+    wallet.color = (config.colorFor && config.colorFor[wallet.id]) ? config.colorFor[wallet.id] : '#647ce8';
     wallet.email = config.emailFor && config.emailFor[wallet.id];
     // });
   }

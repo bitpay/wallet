@@ -18,7 +18,6 @@ export class ReleaseProvider {
     return this.appVersion;
   }
 
-
   public getLatestAppVersion() {
     return this.http.get(this.LATEST_RELEASE_URL).pipe(map(x => x['tag_name']));
   }
@@ -37,10 +36,13 @@ export class ReleaseProvider {
     };
   }
 
-  public checkForUpdates(latestVersion: string, currentVersion?: string): {
-    updateAvailable: boolean | null,
-    availableVersion: string | null,
-    error: string | null
+  public checkForUpdates(
+    latestVersion: string,
+    currentVersion?: string
+  ): {
+    updateAvailable: boolean | null;
+    availableVersion: string | null;
+    error: string | null;
   } {
     if (!currentVersion) currentVersion = this.appVersion;
 
