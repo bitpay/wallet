@@ -4,7 +4,43 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content class="back-transparent" no-bounce>
+<ion-content *ngIf="!isCordova">
+
+  <div [hidden]="!this.selectedDevice || !hasPermission">
+
+    <div [hidden]="!hasPermission" class="browser-scanner page-scan-camera-ready">
+
+      <zxing-scanner #scanner class="test-class" start="true" [device]="selectedDevice" (scanSuccess)="handleQrCodeResult($event)"></zxing-scanner>
+      <div class="guides">
+        <img class="svg qr-scan-guides" src="assets/img/bitpay-wallet-qr-scan-guides.svg">
+      </div>
+
+    </div>
+  </div>
+
+  <div *ngIf="!this.selectedDevice || !hasPermission" class="page-scan-has-problems">
+    <div class="header-container">
+      <div>
+        <div class="header" padding>
+          <div class="image-container">
+            <img src="assets/img/ico-receive.svg" />
+          </div>
+          <div class="title" padding translate>Scan QR Codes</div>
+        </div>
+        <div class="subtitle" translate>You can scan bitcoin addresses, payment requests, paper wallets, and more.</div>
+      </div>
+    </div>
+    <div class="cameraSelector">
+      <div padding>
+        <div *ngIf="hasPermission === false" translate>Enable the camera to get started.</div>
+        <div *ngIf="hasPermission === undefined" translate>Waiting for permissions.</div>
+        <div *ngIf="!hasCameras && hasPermission === true" translate>Please connect a camera to get started.</div>
+      </div>
+    </div>
+  </div>
+</ion-content>
+
+<ion-content *ngIf="isCordova" class="back-transparent" no-bounce>
   <div class="page-scan-has-problems" *ngIf="(currentState == scannerStates.unauthorized || currentState == scannerStates.denied || currentState == scannerStates.unavailable)">
     <div class="header-container">
       <div>
