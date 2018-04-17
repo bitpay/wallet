@@ -107,7 +107,7 @@ export class WalletAddressesPage {
 
       }
     }).catch((err) => {
-      this.logger.warn(err);
+      this.logger.warn('GetLowUtxos', err);
     });
 
   }

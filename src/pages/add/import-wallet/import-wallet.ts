@@ -178,7 +178,7 @@ export class ImportWalletPage {
       str2 = this.bwcProvider.getSJCL().decrypt(this.importForm.value.filePassword, str);
     } catch (e) {
       err = this.translate.instant('Could not decrypt file, check your password');
-      this.logger.warn(e);
+      this.logger.error('Import: could not decrypt file', e);
     };
 
     if (err) {
@@ -228,7 +228,7 @@ export class ImportWalletPage {
         });
       }
     }).catch((err: any) => {
-      this.logger.warn(err);
+      this.logger.error('Import: could not updateRemotePreferences', err);
     });
   }
 

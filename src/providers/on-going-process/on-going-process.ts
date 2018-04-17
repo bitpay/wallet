@@ -68,7 +68,7 @@ export class OnGoingProcessProvider {
       this.loading.dismiss();
     } catch (e) {
       // No problem
-      this.logger.warn(e);
+      this.logger.warn('on-going-process is still active. No problem.', e);
     };
     this.loading = null;
     this.logger.debug('ongoingProcess clear');

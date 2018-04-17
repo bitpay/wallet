@@ -62,7 +62,7 @@ export class TouchIdProvider {
           return resolve(false);
         }
       }).catch((err) => {
-        this.logger.warn(err);
+        this.logger.warn('Touch ID (Android) is not available for this device');
         return resolve(false);
       });
     });
@@ -94,7 +94,7 @@ export class TouchIdProvider {
             this.logger.debug('Fingerprint authentication cancelled');
             return reject();
           } else {
-            this.logger.warn(error);
+            this.logger.warn('Could not get Fingerprint Authenticated', error);
             return reject();
           };
         });

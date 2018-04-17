@@ -258,7 +258,7 @@ export class ScanProvider {
             return resolve(this.lightEnabled);
           })
           .catch(err => {
-            this.logger.warn('Error: ', err);
+            this.logger.error('Scan Provider Error (disableLight)', err);
             return reject(err);
           });
       } else {
@@ -269,7 +269,7 @@ export class ScanProvider {
             return resolve(this.lightEnabled);
           })
           .catch(err => {
-            this.logger.warn('Error: ', err);
+            this.logger.error('Scan Provider Error (enableLight)', err);
             return reject(err);
           });
       }
@@ -294,7 +294,7 @@ export class ScanProvider {
             return resolve(this.frontCameraEnabled);
           })
           .catch(err => {
-            this.logger.warn('Error: ', err);
+            this.logger.error('Scan Provider Error (useBackCamera)', err);
             return reject(err);
           });
       } else {
@@ -305,7 +305,7 @@ export class ScanProvider {
             return resolve(this.frontCameraEnabled);
           })
           .catch(err => {
-            this.logger.warn('Error: ', err);
+            this.logger.error('Scan Provider Error (useFrontCamera)', err);
             return reject(err);
           });
       }

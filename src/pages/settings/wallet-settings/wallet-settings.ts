@@ -83,7 +83,7 @@ export class WalletSettingsPage {
         this.profileProvider.updateCredentials(JSON.parse(this.wallet.export()));
         this.logger.debug('Wallet encrypted');
       }).catch((err: any) => {
-        this.logger.warn(err);
+        this.logger.warn('Could not encrypt wallet', err);
         this.encryptEnabled = false;
       })
     } else if (!val && this.walletProvider.isEncrypted(this.wallet)) {
@@ -91,7 +91,7 @@ export class WalletSettingsPage {
         this.profileProvider.updateCredentials(JSON.parse(this.wallet.export()));
         this.logger.debug('Wallet decrypted');
       }).catch((err) => {
-        this.logger.warn(err);
+        this.logger.warn('Could not decrypt wallet', err);
         this.encryptEnabled = true;
       });
     }

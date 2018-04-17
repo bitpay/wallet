@@ -234,7 +234,7 @@ export class WalletProvider {
           cache.alternativeBalanceAvailable = true;
           cache.isRateAvailable = true;
         }).catch((err) => {
-          this.logger.warn(err);
+          this.logger.warn('Could not get rates: ', err);
         });
       };
 
@@ -379,7 +379,7 @@ export class WalletProvider {
         if (err) {
           let prefix = this.translate.instant('Could not create address');
           if (err instanceof this.errors.CONNECTION_ERROR || (err.message && err.message.match(/5../))) {
-            this.logger.warn(err);
+            this.logger.warn('Could not create address', err);
             return setTimeout(() => {
               this.createAddress(wallet);
             }, 5000);
@@ -568,7 +568,7 @@ export class WalletProvider {
                 minTs: endingTs
               }, (err: any, notes: any) => {
                 if (err) {
-                  this.logger.warn(err);
+                  this.logger.warn('Could not get TxNotes: ', err);
                   return reject(err);
                 };
                 lodash.each(notes, (note: any) => {
@@ -902,7 +902,7 @@ export class WalletProvider {
         }
 
         this.logger.debug('Transaction broadcasted');
-        if (memo) this.logger.info(memo);
+        if (memo) this.logger.info('Memo: ', memo);
 
         return resolve(broadcastedTxp);
       });
