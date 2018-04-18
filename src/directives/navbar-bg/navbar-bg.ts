@@ -11,18 +11,18 @@ to an aribitrary color. This directive enables this functionality.
 export class NavbarBg {
   @Input('navbar-bg') color: string;
 
-  constructor(private elem: ElementRef) {}
+  constructor(private element: ElementRef) {}
 
   ngOnChanges(changes) {
-    if (changes && changes.color.currentValue) {
-      this.setNewNavbarColor(this.color);
-    }
+    this.setNewNavbarColor(this.color);
   }
 
   setNewNavbarColor(color: string): void {
-    const toolbarBg = this.elem.nativeElement.getElementsByClassName(
+    const toolbarBg = this.element.nativeElement.getElementsByClassName(
       'toolbar-background'
     )[0];
-    toolbarBg.style.setProperty('background', color, 'important');
+    color
+      ? toolbarBg.style.setProperty('background', color, 'important')
+      : toolbarBg.style.removeProperty('background');
   }
 }

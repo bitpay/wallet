@@ -33,14 +33,15 @@ export class ExpandableHeaderComponent {
   @Input('scrollArea') scrollArea: Content;
 
   headerHeight: number;
-  newHeaderHeight: number;
   setTransformTo2dTimeout: NodeJS.Timer;
 
   constructor(public element: ElementRef, public renderer: Renderer) {}
 
   ngOnInit() {
-    this.scrollArea.ionScroll.subscribe(ev => {
-      this.resizeHeader(ev);
+    this.scrollArea.ionScroll.subscribe(event => {
+      event.domWrite(() => {
+        this.applyTransforms(event.scrollTop);
+      });
     });
   }
 
@@ -48,37 +49,40 @@ export class ExpandableHeaderComponent {
     this.headerHeight = this.element.nativeElement.offsetHeight;
   }
 
-  resizeHeader(event) {
-    event.domWrite(() => {
-      clearTimeout(this.setTransformTo2dTimeout);
+  applyTransforms(scrollTop: number): void {
+    clearTimeout(this.setTransformTo2dTimeout);
 
-      this.newHeaderHeight = this.getNewHeaderHeight(event.scrollTop);
-      const transformations = this.computeTransformations(event.scrollTop);
-      this.transformPrimaryContent(transformations, true);
-      this.transformFooterContent(transformations);
+    const transformations = this.computeTransformations(scrollTop);
+    this.transformPrimaryContent(transformations, true);
+    this.transformFooterContent(transformations);
 
-      this.setTransformTo2dTimeout = setTimeout(() => {
-        // Using 3d transforms allows us to achieve great performance. However, on iOS devices, switching to a
-        // different app and then returning back to this app causes any 3d transformed elements to dissapear
-        // initially for some reason. Scrolling again causes them to reappear. However, we can ensure the
-        // elements remain visible at all times by switching to 2d transforms once the user stops scrolling.
-        this.transformPrimaryContent(transformations, false);
-      }, 2000);
-    });
+    this.setTransformTo2dTimeout = setTimeout(() => {
+      // Using 3d transforms allows us to achieve great performance. However, on iOS devices, switching to a
+      // different app and then returning back to this app causes any 3d transformed elements to dissapear
+      // initially for some reason. Scrolling again causes them to reappear. However, we can ensure the
+      // elements remain visible at all times by switching to 2d transforms once the user stops scrolling.
+      this.transformPrimaryContent(transformations, false);
+    }, 1000);
   }
 
   getNewHeaderHeight(scrollTop: number): number {
     const newHeaderHeight = this.headerHeight - scrollTop;
-    return this.newHeaderHeight < 0 ? 0 : newHeaderHeight;
+    return newHeaderHeight < 0 ? 0 : newHeaderHeight;
   }
 
   computeTransformations(scrollTop: number): number[] {
-    const opacity =
-      Math.pow(this.newHeaderHeight, 2.5) / Math.pow(this.headerHeight, 2.5);
-    const scale =
-      Math.pow(this.newHeaderHeight, 0.5) / Math.pow(this.headerHeight, 0.5);
+    const newHeaderHeight = this.getNewHeaderHeight(scrollTop);
+    const opacity = this.getScaleValue(newHeaderHeight, 2.5);
+    const scale = this.getScaleValue(newHeaderHeight, 0.5);
     const translateY = scrollTop > 0 ? scrollTop / 1.5 : 0;
     return [opacity, scale, translateY];
+  }
+
+  getScaleValue(newHeaderHeight: number, exponent: number): number {
+    return (
+      Math.pow(newHeaderHeight, exponent) /
+      Math.pow(this.headerHeight, exponent)
+    );
   }
 
   transformPrimaryContent(transformations: number[], is3d: boolean): void {
@@ -91,19 +95,21 @@ export class ExpandableHeaderComponent {
       'opacity',
       `${opacity}`
     );
-    this.renderer.setElementStyle(
-      this.primaryContent.element.nativeElement,
-      'transform',
-      transformStr
-    );
+    this.primaryContent &&
+      this.renderer.setElementStyle(
+        this.primaryContent.element.nativeElement,
+        'transform',
+        transformStr
+      );
   }
 
   transformFooterContent(transformations: number[]): void {
     const [opacity] = transformations;
-    this.renderer.setElementStyle(
-      this.footerContent.element.nativeElement,
-      'opacity',
-      `${opacity}`
-    );
+    this.footerContent &&
+      this.renderer.setElementStyle(
+        this.footerContent.element.nativeElement,
+        'opacity',
+        `${opacity}`
+      );
   }
 }

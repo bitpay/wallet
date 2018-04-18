@@ -15,22 +15,24 @@ export class IosScrollBgColor {
   @Input('ios-scroll-bg-color') color: string;
   @Input() bottomColor: string = '#f5f5f5';
 
-  constructor(private elem: ElementRef) {}
+  constructor(private element: ElementRef) {}
 
   ngOnChanges(changes) {
-    if (changes && changes.color.currentValue) {
-      this.setScrollContentBackgroundColor(this.color);
-    }
+    this.setScrollContentBackgroundColor(this.color);
   }
 
   setScrollContentBackgroundColor(color: string): void {
-    const scrollContent = (this
-      .elem as any).nativeElement.getElementsByClassName('scroll-content')[0];
+    const scrollContent = this.element.nativeElement.getElementsByClassName(
+      'scroll-content'
+    )[0];
     const linearGradient = `linear-gradient(to bottom, ${this.color}, ${
       this.color
     } 50%, ${this.bottomColor} 50%, ${this.bottomColor} 50%, ${
       this.bottomColor
     } 50%)`;
-    scrollContent.style.setProperty('background-image', linearGradient);
+
+    color
+      ? scrollContent.style.setProperty('background-image', linearGradient)
+      : scrollContent.style.removeProperty('background-image');
   }
 }
