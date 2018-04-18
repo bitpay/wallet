@@ -268,7 +268,7 @@ export class ConfirmPage {
 
     this.tx.feeLevelName = this.feeProvider.feeOpts[this.tx.feeLevel];
     this.updateTx(this.tx, this.wallet, { dryRun: true }).catch((err: any) => {
-      this.logger.warn(err);
+      this.logger.warn('Error in updateTx: ', err);
     });
   }
 
@@ -378,7 +378,7 @@ export class ConfirmPage {
           });
         }
       }).catch((err: any) => {
-        this.logger.warn(err);
+        this.logger.warn('Error getting fee rate', err);
         this.onGoingProcessProvider.clear();
         return reject(err);
       });
@@ -464,7 +464,7 @@ export class ConfirmPage {
         return resolve(res);
       }).catch((err: any) => {
         this.onGoingProcessProvider.clear();
-        this.logger.warn(err);
+        this.logger.warn('Error getting send max info', err);
         return reject(err);
       });
     });
@@ -509,14 +509,12 @@ export class ConfirmPage {
       // ToDo: use a credential's (or fc's) function for this
       if (tx.description && !wallet.credentials.sharedEncryptingKey) {
         let msg = this.translate.instant('Could not add message to imported wallet without shared encrypting key');
-        this.logger.warn(msg);
         this.setSendError(msg);
         return reject(msg);
       }
 
       if (tx.amount > Number.MAX_SAFE_INTEGER) {
         let msg = this.translate.instant('Amount too big');
-        this.logger.warn(msg);
         this.setSendError(msg);
         return reject(msg);
       }
@@ -656,7 +654,7 @@ export class ConfirmPage {
       });
     }).catch((err: any) => {
       this.onGoingProcessProvider.clear();
-      this.logger.warn(err);
+      this.logger.warn('Error getting transaction proposal', err);
       return;
     });
   }
@@ -731,7 +729,7 @@ export class ConfirmPage {
       if (this.usingCustomFee) this.tx.feeRate = parseInt(data.customFeePerKB, 10);
 
       this.updateTx(this.tx, this.wallet, { clearCache: true, dryRun: true }).catch((err: any) => {
-        this.logger.warn(err);
+        this.logger.warn('Error updateTx', err);
       });
     });
   };

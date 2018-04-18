@@ -7,6 +7,7 @@ import { Logger } from '../../providers/logger/logger';
 import { ConfigProvider } from '../../providers/config/config';
 import { LanguageProvider } from '../../providers/language/language';
 import { PersistenceProvider } from '../../providers/persistence/persistence';
+import { PlatformProvider } from '../../providers/platform/platform';
 
 /* TODO: implement interface propertly
 interface App {
@@ -54,6 +55,7 @@ export class AppProvider {
     private language: LanguageProvider,
     public config: ConfigProvider,
     private persistence: PersistenceProvider,
+    private platformProvider: PlatformProvider
   ) {
     this.logger.info('AppProvider initialized.');
   }
@@ -67,6 +69,7 @@ export class AppProvider {
           this.servicesInfo = infoServices;
           this.getInfo().subscribe((infoApp) => {
             this.info = infoApp;
+            if (this.platformProvider.isNW) this.setCustomMenuBarNW();
             resolve();
           });
         });
@@ -75,6 +78,20 @@ export class AppProvider {
         reject(err);
       });
     });
+  }
+
+  private setCustomMenuBarNW() {
+    let gui = (window as any).require('nw.gui');
+    let win = gui.Window.get();
+    let nativeMenuBar = new gui.Menu({
+      type: "menubar"
+    });
+    try {
+      nativeMenuBar.createMacBuiltin(this.info.nameCase);
+    } catch (e) {
+      this.logger.debug('This is not OSX');
+    }
+    win.menu = nativeMenuBar;
   }
 
   private getInfo() {
