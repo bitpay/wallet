@@ -9,11 +9,11 @@ import { SocialSharing } from '@ionic-native/social-sharing';
 // Pages
 import { BackupNeededModalPage } from '../backup/backup-needed-modal/backup-needed-modal';
 import { BackupWarningPage } from '../backup/backup-warning/backup-warning';
-
 import { AmountPage } from '../send/amount/amount';
 import { CopayersPage } from './../add/copayers/copayers';
 
 // Providers
+import { AddressProvider } from '../../providers/address/address';
 import { BwcErrorProvider } from '../../providers/bwc-error/bwc-error';
 import { ExternalLinkProvider } from '../../providers/external-link/external-link';
 import { PlatformProvider } from '../../providers/platform/platform';
@@ -49,7 +49,8 @@ export class ReceivePage {
     private bwcErrorProvider: BwcErrorProvider,
     private translate: TranslateService,
     private externalLinkProvider: ExternalLinkProvider,
-    private modalCtrl: ModalController
+    private modalCtrl: ModalController,
+    private addressProvider: AddressProvider
   ) {
     this.showShareButton = this.platformProvider.isCordova;
   }
@@ -89,6 +90,7 @@ export class ReceivePage {
       color: this.wallet.color,
       coin: this.wallet.coin,
       nextPage: 'CustomAmountPage',
+      network: this.addressProvider.validateAddress(this.address).network
     });
   }
 

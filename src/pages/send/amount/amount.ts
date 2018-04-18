@@ -57,6 +57,7 @@ export class AmountPage {
   public allowSend: boolean;
   public recipientType: string;
   public toAddress: string;
+  public network: string;
   public name: string;
   public email: string;
   public color: string;
@@ -83,6 +84,7 @@ export class AmountPage {
     this.config = this.configProvider.get();
     this.recipientType = this.navParams.data.recipientType;
     this.toAddress = this.navParams.data.toAddress;
+    this.network = this.navParams.data.network;
     this.name = this.navParams.data.name;
     this.email = this.navParams.data.email;
     this.color = this.navParams.data.color;
@@ -421,9 +423,7 @@ export class AmountPage {
       };
     } else {
       let amount = _amount;
-      amount = unit.isFiat
-        ? (this.fromFiat(amount) * this.unitToSatoshi).toFixed(0)
-        : (amount * this.unitToSatoshi).toFixed(0);
+      amount = unit.isFiat ? (this.fromFiat(amount) * this.unitToSatoshi).toFixed(0) : (amount * this.unitToSatoshi).toFixed(0);
       data = {
         recipientType: this.recipientType,
         amount,
