@@ -10,14 +10,14 @@
       <expandable-header-primary class="balance-header" style="margin-top: 0;">
         <div (longPress)="toggleBalance()">
           <div (tap)="updateAll(true)" *ngIf="!updateStatusError && !wallet.balanceHidden && !wallet.scanning && wallet.status">
-            <div class="balance-str expandable-header-always-display">{{wallet.status.totalBalanceStr}}</div>
+            <div class="balance-str">{{wallet.status.totalBalanceStr}}</div>
             <div class="balance-alt-str" *ngIf="wallet.network != 'testnet'">
               {{wallet.status.totalBalanceAlternative}} {{wallet.status.alternativeIsoCode}}
             </div>
           </div>
 
           <div class="balance-hidden" *ngIf="!updateStatusError && wallet.balanceHidden  && !wallet.scanning">
-            <span class="title expandable-header-always-display" translate>[Balance Hidden]</span>
+            <span class="title" translate>[Balance Hidden]</span>
             <div translate>
               Tap and hold to show
             </div>
@@ -25,7 +25,7 @@
         </div>
 
         <div class="balance-scanning" *ngIf="!updateStatusError && wallet.scanning">
-          <span class="title expandable-header-always-display" translate>[Scanning Funds]</span>
+          <span class="title" translate>[Scanning Funds]</span>
           <div translate>
             Please wait...
           </div>
@@ -33,7 +33,7 @@
 
         <div class="balance-spendable" (click)="openBalanceDetails()" *ngIf="!wallet.balanceHidden && !wallet.scanning && showBalanceButton && wallet.status">
           <ion-icon ios="ios-timer-outline" md="md-timer"></ion-icon>
-          <strong class="expandable-header-always-display">
+          <strong>
             {{wallet.status.spendableBalanceStr}}
           </strong>
           &nbsp;
