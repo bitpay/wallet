@@ -54,7 +54,7 @@ page-home {
     justify-content: center;
     .no-wallets {
       position: absolute;
-      top: 50%;
+      top: 60%;
     }
   }
   .card {
@@ -64,5 +64,8 @@ page-home {
   ion-refresher {
     height: 120px;
     background: $toolbar-background;
+    &-content {
+      margin-top: -25px;
+    }
   }
 }
