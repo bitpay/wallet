@@ -19,6 +19,7 @@ import {
 } from 'ionic-angular';
 
 import { Logger } from '../../providers/logger/logger';
+import { AppProvider } from '../app/app';
 import { BwcErrorProvider } from '../bwc-error/bwc-error';
 import { BwcProvider } from '../bwc/bwc';
 import { ConfigProvider } from '../config/config';
@@ -38,15 +39,15 @@ describe('Provider: Wallet Provider', () => {
   let walletProvider: WalletProvider;
 
   class BwcProviderMock {
-    constructor() { }
+    constructor() {}
     getErrors() {
       return 'error';
     }
-    getBitcoreCash() { }
+    getBitcoreCash() {}
   }
 
   class PersistenceProviderMock {
-    constructor() { }
+    constructor() {}
     getLastAddress(walletId: any) {
       return Promise.resolve('storedAddress');
     }
@@ -75,6 +76,7 @@ describe('Provider: Wallet Provider', () => {
         })
       ],
       providers: [
+        AppProvider,
         AlertController,
         AndroidFingerprintAuth,
         App,
@@ -151,7 +153,7 @@ describe('Provider: Wallet Provider', () => {
           return true;
         },
         needsBackup: false,
-        createAddress({ }, cb) {
+        createAddress({}, cb) {
           return cb(null, { address: 'newAddress' });
         }
       };

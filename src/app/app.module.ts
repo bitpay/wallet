@@ -212,8 +212,13 @@ import { WalletProvider } from '../providers/wallet/wallet';
 
 /* Directives */
 import { CopyToClipboard } from '../directives/copy-to-clipboard/copy-to-clipboard';
+import { IosScrollBgColor } from '../directives/ios-scroll-bg-color/ios-scroll-bg-color';
 import { LongPress } from '../directives/long-press/long-press';
+import { NavbarBg } from '../directives/navbar-bg/navbar-bg';
 import { NoLowFee } from '../directives/no-low-fee/no-low-fee';
+
+/* Components */
+import { ComponentsModule } from './../components/components.module';
 
 /* Read translation files */
 export function createTranslateLoader(http: HttpClient) {
@@ -327,7 +332,9 @@ export function createTranslateLoader(http: HttpClient) {
     SlideToAcceptPage,
     /* Directives */
     CopyToClipboard,
+    IosScrollBgColor,
     LongPress,
+    NavbarBg,
     NoLowFee,
     /* Pipes */
     SatToUnitPipe,
@@ -344,6 +351,7 @@ export function createTranslateLoader(http: HttpClient) {
       backButtonText: ''
     }),
     BrowserModule,
+    ComponentsModule,
     HttpClientModule,
     MomentModule,
     NgxQRCodeModule,

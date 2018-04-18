@@ -1,207 +1,211 @@
 <ion-header no-border>
-  <ion-navbar>
+  <ion-navbar [navbar-bg]="wallet.color">
     <ion-title>{{wallet.name}}</ion-title>
   </ion-navbar>
 </ion-header>
 
-<ion-content no-bounce>
-  <div class="balance-card" [ngStyle]="{'background': wallet.color}">
-    <div class="balance-header">
-      <div (longPress)="toggleBalance()">
-        <div (tap)="updateAll(true)" *ngIf="!updateStatusError && !wallet.balanceHidden && !wallet.scanning && wallet.status">
-          <div class="balance-str">{{wallet.status.totalBalanceStr}}</div>
-          <div class="balance-alt-str" *ngIf="wallet.network != 'testnet'">
-            {{wallet.status.totalBalanceAlternative}} {{wallet.status.alternativeIsoCode}}
+<ion-content fullscreen no-bounce #scrollArea [ios-scroll-bg-color]="wallet.color">
+  <div class="wrapper">
+    <expandable-header class="balance-card" [scrollArea]="scrollArea" [ngStyle]="{'background': wallet.color}">
+      <expandable-header-primary class="balance-header" style="margin-top: 0;">
+        <div (longPress)="toggleBalance()">
+          <div (tap)="updateAll(true)" *ngIf="!updateStatusError && !wallet.balanceHidden && !wallet.scanning && wallet.status">
+            <div class="balance-str">{{wallet.status.totalBalanceStr}}</div>
+            <div class="balance-alt-str" *ngIf="wallet.network != 'testnet'">
+              {{wallet.status.totalBalanceAlternative}} {{wallet.status.alternativeIsoCode}}
+            </div>
+          </div>
+
+          <div class="balance-hidden" *ngIf="!updateStatusError && wallet.balanceHidden  && !wallet.scanning">
+            <span class="title" translate>[Balance Hidden]</span>
+            <div translate>
+              Tap and hold to show
+            </div>
           </div>
         </div>
 
-        <div class="balance-hidden" *ngIf="!updateStatusError && wallet.balanceHidden  && !wallet.scanning">
-          <span class="title" translate>[Balance Hidden]</span>
+        <div class="balance-scanning" *ngIf="!updateStatusError && wallet.scanning">
+          <span class="title" translate>[Scanning Funds]</span>
           <div translate>
-            Tap and hold to show
+            Please wait...
           </div>
         </div>
-      </div>
 
-      <div class="balance-scanning" *ngIf="!updateStatusError && wallet.scanning">
-        <span class="title" translate>[Scanning Funds]</span>
-        <div translate>
-          Please wait...
+        <div class="balance-spendable" (click)="openBalanceDetails()" *ngIf="!wallet.balanceHidden && !wallet.scanning && showBalanceButton && wallet.status">
+          <ion-icon ios="ios-timer-outline" md="md-timer"></ion-icon>
+          <strong>
+            {{wallet.status.spendableBalanceStr}}
+          </strong>
+          &nbsp;
+          <span>
+            ({{wallet.status.spendableBalanceAlternative}} {{wallet.status.alternativeIsoCode}})
+          </span>
+          &rarr;
         </div>
-      </div>
 
-      <div class="balance-spendable" (click)="openBalanceDetails()" *ngIf="!wallet.balanceHidden && !wallet.scanning && showBalanceButton && wallet.status">
-        <ion-icon ios="ios-timer-outline" md="md-timer"></ion-icon>
-        <strong>
-          {{wallet.status.spendableBalanceStr}}
-        </strong>
-        &nbsp;
-        <span>
-          ({{wallet.status.spendableBalanceAlternative}} {{wallet.status.alternativeIsoCode}})
+        <div class="balance-error" *ngIf="updateStatusError" (tap)="updateAll(true)">
+          <span class="title">Tap to retry</span>
+          <div>{{updateStatusError}}.</div>
+        </div>
+        <div class="balance-error" *ngIf="walletNotRegistered" (tap)="recreate()">
+          <span class="title">Tap to recreate</span>
+          <div translate>This wallet is not registered at the given Bitcore Wallet Service (BWS). You can recreate it from the local information.</div>
+        </div>
+      </expandable-header-primary>
+      <expandable-header-footer class="wallet-info" *ngIf="wallet">
+        <ion-spinner *ngIf="(updatingStatus || updatingTxHistory) && !walletNotRegistered && !updateStatusError && !updateTxHistoryError"></ion-spinner>
+
+        <img class="testnet" *ngIf="wallet.network == 'testnet'" src="assets/img/icon-wallet-testnet.svg">
+        <img class="testnet-text" *ngIf="wallet.network == 'testnet'" src="assets/img/icon-text-testnet.svg">
+        <img class="read-only" *ngIf="!wallet.canSign()" src="assets/img/icon-read-only.svg">
+        <img class="read-only-text" *ngIf="!wallet.canSign()" src="assets/img/icon-text-read-only.svg">
+        <img class="auditable-text" *ngIf="wallet.status && wallet.status.wallet.singleAddress" src="assets/img/icon-text-auditable.svg">
+        <img class="custom-bws" *ngIf="wallet.usingCustomBWS" src="assets/img/icon-bws-white.svg">
+
+        <span class="wallet-type" *ngIf="wallet.credentials.n > 1">
+          <span translate>{{wallet.m}}-of-{{wallet.n}}</span>
         </span>
-        &rarr;
-      </div>
+      </expandable-header-footer>
 
-      <div class="balance-error" *ngIf="updateStatusError" (tap)="updateAll(true)">
-        <span class="title">Tap to retry</span>
-        <div>{{updateStatusError}}.</div>
-      </div>
-      <div class="balance-error" *ngIf="walletNotRegistered" (tap)="recreate()">
-        <span class="title">Tap to recreate</span>
-        <div translate>This wallet is not registered at the given Bitcore Wallet Service (BWS). You can recreate it from the local information.</div>
-      </div>
+    </expandable-header>
+
+    <div *ngIf="wallet.needsBackup" class="box-notification no-margin warn">
+      <a (click)="openBackup()">
+        <ion-icon name="warning"></ion-icon>
+        {{'Wallet not backed up'|translate}}
+        <ion-icon name="arrow-forward"></ion-icon>
+      </a>
     </div>
 
-    <div class="wallet-info" *ngIf="wallet">
-      <ion-spinner *ngIf="(updatingStatus || updatingTxHistory) && !walletNotRegistered && !updateStatusError && !updateTxHistoryError"></ion-spinner>
-
-      <img class="testnet" *ngIf="wallet.network == 'testnet'" src="assets/img/icon-wallet-testnet.svg">
-      <img class="testnet-text" *ngIf="wallet.network == 'testnet'" src="assets/img/icon-text-testnet.svg">
-      <img class="read-only" *ngIf="!wallet.canSign()" src="assets/img/icon-read-only.svg">
-      <img class="read-only-text" *ngIf="!wallet.canSign()" src="assets/img/icon-text-read-only.svg">
-      <img class="auditable-text" *ngIf="wallet.status && wallet.status.wallet.singleAddress" src="assets/img/icon-text-auditable.svg">
-      <img class="custom-bws" *ngIf="wallet.usingCustomBWS" src="assets/img/icon-bws-white.svg">
-
-      <span class="wallet-type" *ngIf="wallet.credentials.n > 1">
-        <span translate>{{wallet.m}}-of-{{wallet.n}}</span>
-      </span>
+    <div *ngIf="lowUtxosWarning" class="box-notification no-margin warn">
+      <a (click)="openAddresses()">
+        <ion-icon name="alert"></ion-icon>
+        {{'Spending this balance will need significant Bitcoin network fees'|translate}}
+        <ion-icon name="arrow-forward"></ion-icon>
+      </a>
     </div>
 
-  </div>
-
-  <div *ngIf="wallet.needsBackup" class="box-notification no-margin warn">
-    <a (click)="openBackup()">
-      <ion-icon name="warning"></ion-icon>
-      {{'Wallet not backed up'|translate}}
-      <ion-icon name="arrow-forward"></ion-icon>
-    </a>
-  </div>
-
-  <div *ngIf="lowUtxosWarning" class="box-notification no-margin warn">
-    <a (click)="openAddresses()">
-      <ion-icon name="alert"></ion-icon>
-      {{'Spending this balance will need significant Bitcoin network fees'|translate}}
-      <ion-icon name="arrow-forward"></ion-icon>
-    </a>
-  </div>
-
-  <ion-list *ngIf="wallet && wallet.isComplete() && !walletNotRegistered && txps && txps[0]">
-    <ion-item-divider *ngIf="wallet.incorrectDerivation">
-      <span translate>
-        WARNING: Key derivation is not working on this device/wallet. Actions cannot be performed on this wallet.
-      </span>
-    </ion-item-divider>
-    <ion-item-divider>
-      <span *ngIf="requiresMultipleSignatures" translate>Proposals</span>
-      <span *ngIf="!requiresMultipleSignatures" translate>Unsent transactions</span>
-    </ion-item-divider>
-    <page-txp *ngFor="let txp of txps" [tx]="txp" [addressbook]="addressbook"></page-txp>
-    <ion-item text-wrap *ngIf="wallet.status && wallet.status.lockedBalanceSat">
-      <span translate>Total Locked Balance</span>
-      <ion-note item-end>
-        <span class="total-locked-amount">{{wallet.status.lockedBalanceStr}}</span>
-        <div class="total-alt-locked-amount">{{wallet.status.lockedBalanceAlternative}} {{wallet.status.alternativeIsoCode}}</div>
-      </ion-note>
-    </ion-item>
-  </ion-list>
-
-  <!-- Transactions -->
-
-  <div class="middle-message" *ngIf="showNoTransactionsYetMsg && !updateStatusError" translate>
-    No transactions yet
-  </div>
-
-  <div class="middle-message" *ngIf="txHistory && !txHistory[0] && updateTxHistoryError" translate>
-    Could not update transaction history
-  </div>
-
-  <div class="middle-message" *ngIf="updatingTxHistory && updatingTxHistoryProgress>5">
-    <span translate>Updating transaction history. Please stand by.</span>
-    <br>
-    <span translate>{{updatingTxHistoryProgress}} transactions downloaded</span>
-  </div>
-
-  <ion-list *ngIf="history && history[0]" class="tx-history">
-    <div *ngFor="let tx of history; trackBy: trackByFn; let i = index">
-
-      <span *ngIf="isFirstInGroup(i)">
-        <ion-item-divider *ngIf="isDateInCurrentMonth(getDate(tx.time))">
-          <span translate>Recent</span>
-        </ion-item-divider>
-
-        <ion-item-divider *ngIf="!isDateInCurrentMonth(getDate(tx.time))">
-          {{getDate(tx.time) | amDateFormat:'MMMM'}}
-        </ion-item-divider>
-      </span>
-
-      <button ion-item (click)="goToTxDetails(tx)">
-        <ion-icon item-start>
-          <div *ngIf="tx.confirmations == 0">
-            <img src="assets/img/tx-action/icon-confirming.svg" width="40">
-          </div>
-          <div *ngIf="tx.confirmations > 0">
-            <span *ngIf="tx.customData && tx.customData.service">
-              <img class="icon-services" src="assets/img/shapeshift/icon-shapeshift.svg" *ngIf="tx.customData.service == 'shapeshift'" width="40">
-              <img class="icon-services" src="assets/img/amazon/icon-amazon.svg" *ngIf="tx.customData.service == 'amazon'" width="40">
-              <img class="icon-services" src="assets/img/mercado-libre/icon-ml.svg" *ngIf="tx.customData.service == 'mercadolibre'" width="40">
-              <img class="icon-services" src="assets/img/bitpay-card/icon-bitpay.svg" *ngIf="tx.customData.service == 'debitcard'" width="40">
-            </span>
-            <span *ngIf="!tx.customData || !tx.customData.service">
-              <img src="assets/img/tx-action/icon-received.svg" *ngIf="tx.action == 'received'" width="40">
-              <img src="assets/img/tx-action/icon-sent.svg" *ngIf="tx.action == 'sent'" width="40">
-              <img src="assets/img/tx-action/icon-moved.svg" *ngIf="tx.action == 'moved'" width="40">
-            </span>
-          </div>
-        </ion-icon>
-
-        <div class="action" *ngIf="tx.confirmations == 0">
-          <span *ngIf="(tx.action == 'sent' || tx.action == 'moved') && !(addressbook && addressbook[tx.outputs[0].address])">{{'Sending' | translate}}</span>
-          <span *ngIf="(tx.action == 'sent' || tx.action == 'moved') && (addressbook && addressbook[tx.outputs[0].address])">{{addressbook[tx.outputs[0].address].name || addressbook[tx.outputs[0].address]}}</span>
-          <span *ngIf="tx.action == 'received'">{{'Receiving' | translate}}</span>
-        </div>
-
-        <div class="action" *ngIf="tx.confirmations > 0 && tx.action == 'received'">
-          <span *ngIf="(!tx.note || (tx.note && tx.note.body == '')) && (!addressbook || !addressbook[tx.outputs[0].address])">{{'Received' | translate}}</span>
-          <span *ngIf="tx.note && tx.note.body != ''">{{tx.note.body}}</span>
-          <span *ngIf="addressbook && addressbook[tx.outputs[0].address]">
-            {{addressbook[tx.outputs[0].address].name || addressbook[tx.outputs[0].address]}}
-          </span>
-        </div>
-
-        <div class="action" *ngIf="tx.confirmations > 0 && tx.action == 'sent'">
-          <span *ngIf="!tx.message && (!tx.note || (tx.note && tx.note.body == '')) && (!addressbook || !addressbook[tx.outputs[0].address])">{{'Sent' | translate}}</span>
-          <span *ngIf="tx.message">{{tx.message}}</span>
-          <span *ngIf="!tx.message && tx.note && tx.note.body != ''">{{tx.note.body}}</span>
-          <span *ngIf="!tx.message && addressbook && addressbook[tx.outputs[0].address]">
-            {{addressbook[tx.outputs[0].address].name || addressbook[tx.outputs[0].address]}}
-          </span>
-        </div>
-
-        <div class="action" *ngIf="tx.confirmations > 0 && tx.action == 'moved'">
-          <span *ngIf="(!tx.note || (tx.note && tx.note.body == ''))" translate>Moved</span>
-          <span *ngIf="tx.note && tx.note.body != ''">{{tx.note.body}}</span>
-        </div>
-
-        <div class="action" *ngIf="tx.confirmations > 0 && tx.action == 'invalid'">
-          <span class="assertive" *ngIf="!tx.message && !tx.note" translate>Invalid</span>
-        </div>
-
-        <ion-note item-end text-end>
-          <div class="amount">
-            <span *ngIf=" tx.action == 'sent'">–</span>
-            <span [ngClass]="{'received': tx.action == 'received'}" *ngIf="tx.action != 'invalid'">{{tx.amount | satToUnit: wallet.coin}}</span>
-            <span class="double-spend" *ngIf="tx.action == 'invalid'" translate>(possible double spend)</span>
-          </div>
-          <div class="date">
-            <span *ngIf="tx.time && createdWithinPastDay(tx.time * 1000)">{{tx.time * 1000 | amTimeAgo}}</span>
-            <span *ngIf="tx.time && !createdWithinPastDay(tx.time * 1000)">{{tx.time * 1000 | amDateFormat:'MMM D, YYYY'}}</span>
-          </div>
+    <ion-list *ngIf="wallet && wallet.isComplete() && !walletNotRegistered && txps && txps[0]">
+      <ion-item-divider *ngIf="wallet.incorrectDerivation">
+        <span translate>
+          WARNING: Key derivation is not working on this device/wallet. Actions cannot be performed on this wallet.
+        </span>
+      </ion-item-divider>
+      <ion-item-divider>
+        <span *ngIf="requiresMultipleSignatures" translate>Proposals</span>
+        <span *ngIf="!requiresMultipleSignatures" translate>Unsent transactions</span>
+      </ion-item-divider>
+      <page-txp *ngFor="let txp of txps" [tx]="txp" [addressbook]="addressbook"></page-txp>
+      <ion-item text-wrap *ngIf="wallet.status && wallet.status.lockedBalanceSat">
+        <span translate>Total Locked Balance</span>
+        <ion-note item-end>
+          <span class="total-locked-amount">{{wallet.status.lockedBalanceStr}}</span>
+          <div class="total-alt-locked-amount">{{wallet.status.lockedBalanceAlternative}} {{wallet.status.alternativeIsoCode}}</div>
         </ion-note>
-      </button>
-    </div>
-  </ion-list>
+      </ion-item>
+    </ion-list>
 
-  <ion-infinite-scroll (ionInfinite)="loadHistory($event)">
-    <ion-infinite-scroll-content></ion-infinite-scroll-content>
-  </ion-infinite-scroll>
+    <!-- Transactions -->
+
+    <div class="middle-message" *ngIf="showNoTransactionsYetMsg && !updateStatusError" translate>
+      No transactions yet
+    </div>
+
+    <div class="middle-message" *ngIf="txHistory && !txHistory[0] && updateTxHistoryError" translate>
+      Could not update transaction history
+    </div>
+
+    <div class="middle-message" *ngIf="updatingTxHistory && updatingTxHistoryProgress>5">
+      <span translate>Updating transaction history. Please stand by.</span>
+      <br>
+      <span translate>{{updatingTxHistoryProgress}} transactions downloaded</span>
+    </div>
+
+    <div *ngIf="!(history && history[0])" class="loading-spacer"></div>
+
+    <ion-list *ngIf="history && history[0]" class="tx-history">
+      <div *ngFor="let tx of history; trackBy: trackByFn; let i = index">
+
+        <span *ngIf="isFirstInGroup(i)">
+          <ion-item-divider *ngIf="isDateInCurrentMonth(getDate(tx.time))">
+            <span translate>Recent</span>
+          </ion-item-divider>
+
+          <ion-item-divider *ngIf="!isDateInCurrentMonth(getDate(tx.time))">
+            {{getDate(tx.time) | amDateFormat:'MMMM'}}
+          </ion-item-divider>
+        </span>
+
+        <button ion-item (click)="goToTxDetails(tx)">
+          <ion-icon item-start>
+            <div *ngIf="tx.confirmations == 0">
+              <img src="assets/img/tx-action/icon-confirming.svg" width="40">
+            </div>
+            <div *ngIf="tx.confirmations > 0">
+              <span *ngIf="tx.customData && tx.customData.service">
+                <img class="icon-services" src="assets/img/shapeshift/icon-shapeshift.svg" *ngIf="tx.customData.service == 'shapeshift'"
+                  width="40">
+                <img class="icon-services" src="assets/img/amazon/icon-amazon.svg" *ngIf="tx.customData.service == 'amazon'" width="40">
+                <img class="icon-services" src="assets/img/mercado-libre/icon-ml.svg" *ngIf="tx.customData.service == 'mercadolibre'" width="40">
+                <img class="icon-services" src="assets/img/bitpay-card/icon-bitpay.svg" *ngIf="tx.customData.service == 'debitcard'" width="40">
+              </span>
+              <span *ngIf="!tx.customData || !tx.customData.service">
+                <img src="assets/img/tx-action/icon-received.svg" *ngIf="tx.action == 'received'" width="40">
+                <img src="assets/img/tx-action/icon-sent.svg" *ngIf="tx.action == 'sent'" width="40">
+                <img src="assets/img/tx-action/icon-moved.svg" *ngIf="tx.action == 'moved'" width="40">
+              </span>
+            </div>
+          </ion-icon>
+
+          <div class="action" *ngIf="tx.confirmations == 0">
+            <span *ngIf="(tx.action == 'sent' || tx.action == 'moved') && !(addressbook && addressbook[tx.outputs[0].address])">{{'Sending' | translate}}</span>
+            <span *ngIf="(tx.action == 'sent' || tx.action == 'moved') && (addressbook && addressbook[tx.outputs[0].address])">{{addressbook[tx.outputs[0].address].name || addressbook[tx.outputs[0].address]}}</span>
+            <span *ngIf="tx.action == 'received'">{{'Receiving' | translate}}</span>
+          </div>
+
+          <div class="action" *ngIf="tx.confirmations > 0 && tx.action == 'received'">
+            <span *ngIf="(!tx.note || (tx.note && tx.note.body == '')) && (!addressbook || !addressbook[tx.outputs[0].address])">{{'Received' | translate}}</span>
+            <span *ngIf="tx.note && tx.note.body != ''">{{tx.note.body}}</span>
+            <span *ngIf="addressbook && addressbook[tx.outputs[0].address]">
+              {{addressbook[tx.outputs[0].address].name || addressbook[tx.outputs[0].address]}}
+            </span>
+          </div>
+
+          <div class="action" *ngIf="tx.confirmations > 0 && tx.action == 'sent'">
+            <span *ngIf="!tx.message && (!tx.note || (tx.note && tx.note.body == '')) && (!addressbook || !addressbook[tx.outputs[0].address])">{{'Sent' | translate}}</span>
+            <span *ngIf="tx.message">{{tx.message}}</span>
+            <span *ngIf="!tx.message && tx.note && tx.note.body != ''">{{tx.note.body}}</span>
+            <span *ngIf="!tx.message && addressbook && addressbook[tx.outputs[0].address]">
+              {{addressbook[tx.outputs[0].address].name || addressbook[tx.outputs[0].address]}}
+            </span>
+          </div>
+
+          <div class="action" *ngIf="tx.confirmations > 0 && tx.action == 'moved'">
+            <span *ngIf="(!tx.note || (tx.note && tx.note.body == ''))" translate>Moved</span>
+            <span *ngIf="tx.note && tx.note.body != ''">{{tx.note.body}}</span>
+          </div>
+
+          <div class="action" *ngIf="tx.confirmations > 0 && tx.action == 'invalid'">
+            <span class="assertive" *ngIf="!tx.message && !tx.note" translate>Invalid</span>
+          </div>
+
+          <ion-note item-end text-end>
+            <div class="amount">
+              <span *ngIf=" tx.action == 'sent'">–</span>
+              <span [ngClass]="{'received': tx.action == 'received'}" *ngIf="tx.action != 'invalid'">{{tx.amount | satToUnit: wallet.coin}}</span>
+              <span class="double-spend" *ngIf="tx.action == 'invalid'" translate>(possible double spend)</span>
+            </div>
+            <div class="date">
+              <span *ngIf="tx.time && createdWithinPastDay(tx.time * 1000)">{{tx.time * 1000 | amTimeAgo}}</span>
+              <span *ngIf="tx.time && !createdWithinPastDay(tx.time * 1000)">{{tx.time * 1000 | amDateFormat:'MMM D, YYYY'}}</span>
+            </div>
+          </ion-note>
+        </button>
+      </div>
+    </ion-list>
+
+    <ion-infinite-scroll (ionInfinite)="loadHistory($event)">
+      <ion-infinite-scroll-content></ion-infinite-scroll-content>
+    </ion-infinite-scroll>
+  </div>
 </ion-content>
