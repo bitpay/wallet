@@ -90,7 +90,11 @@
     "sign:android":           "rm -f platforms/android/app/build/outputs/apk/release/android-release-signed-aligned.apk; jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore ../copay.keystore -signedjar platforms/android/app/build/outputs/apk/release/android-release-signed.apk platforms/android/app/build/outputs/apk/release/app-release-unsigned.apk  copay_play && $ANDROID_HOME/build-tools/26.0.1/zipalign -v 4 platforms/android/app/build/outputs/apk/release/android-release-signed.apk platforms/android/app/build/outputs/apk/release/android-release-signed-aligned.apk",
     "apply:copay":            "npm i fs-extra shelljs && cd app-template && node apply.js copay && cd .. && npm i",
     "apply:bitpay":           "npm i fs-extra shelljs && cd app-template && node apply.js bitpay && cd .. && npm i",
-    "fix:fcm":                "echo platforms/ios/Copay/Resources platforms/ios/Copay/Resources/Resources platforms/ios/Bitpay/Resources platforms/ios/Bitpay/Resources/Resources | xargs -n 1 cp GoogleService-Info.plist 2>/dev/null; mkdir -p platforms/android/app/src/debug platforms/android/app/src/release; echo platforms/android/app/src/debug platforms/android/app/src/release platforms/android/app | xargs -n 1 cp google-services.json"
+    "fix:fcm":                "echo platforms/ios/Copay/Resources platforms/ios/Copay/Resources/Resources platforms/ios/Bitpay/Resources platforms/ios/Bitpay/Resources/Resources | xargs -n 1 cp GoogleService-Info.plist 2>/dev/null; mkdir -p platforms/android/app/src/debug platforms/android/app/src/release; echo platforms/android/app/src/debug platforms/android/app/src/release platforms/android/app | xargs -n 1 cp google-services.json",
+    "final:macos":            "sh desktop/build-macos.sh sign",
+    "sign:desktop":           "gpg -u 1112CFA1 --output desktop/*USERVISIBLENAME*-linux.zip.sig --detach-sig desktop/*USERVISIBLENAME*-linux.zip ; gpg -u 1112CFA1 --output desktop/*USERVISIBLENAME*.exe.sig --detach-sig desktop/*USERVISIBLENAME*.exe",
+    "sign:macos":             "gpg -u 1112CFA1 --output desktop/*USERVISIBLENAME*.dmg.sig --detach-sig desktop/*USERVISIBLENAME*.dmg",
+    "verify:desktop":         "gpg --verify desktop/*USERVISIBLENAME*-linux.zip.sig desktop/*USERVISIBLENAME*-linux.zip; gpg --verify desktop/*USERVISIBLENAME*.exe.sig desktop/*USERVISIBLENAME*.exe"
   },
   "dependencies": {
     "@angular/common": "5.2.9",
