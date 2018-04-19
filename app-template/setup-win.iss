@@ -51,6 +51,11 @@ Root: HKCR; Subkey: "bitcoin"; ValueType: "string"; ValueName: "URL Protocol"; V
 Root: HKCR; Subkey: "bitcoin\DefaultIcon"; ValueType: "string"; ValueData: "{app}\{#MyAppExeName},0"
 Root: HKCR; Subkey: "bitcoin\shell\open\command"; ValueType: "string"; ValueData: """{app}\{#MyAppExeName}"" ""%1"""
 
+Root: HKCR; Subkey: "bitcoincash"; ValueType: "string"; ValueData: "URL:Bitcoin Cash Custom Protocol"; Flags: uninsdeletekey
+Root: HKCR; Subkey: "bitcoincash"; ValueType: "string"; ValueName: "URL Cash Protocol"; ValueData: ""
+Root: HKCR; Subkey: "bitcoincash\DefaultIcon"; ValueType: "string"; ValueData: "{app}\{#MyAppExeName},0"
+Root: HKCR; Subkey: "bitcoincash\shell\open\command"; ValueType: "string"; ValueData: """{app}\{#MyAppExeName}"" ""%1"""
+
 Root: HKCR; Subkey: "*APPURI*"; ValueType: "string"; ValueData: "URL:*USERVISIBLENAME* Custom Protocol"; Flags: uninsdeletekey
 Root: HKCR; Subkey: "*APPURI*"; ValueType: "string"; ValueName: "URL Protocol"; ValueData: ""
 Root: HKCR; Subkey: "*APPURI*\DefaultIcon"; ValueType: "string"; ValueData: "{app}\{#MyAppExeName},0"
