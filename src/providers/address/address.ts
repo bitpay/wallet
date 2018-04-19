@@ -63,10 +63,11 @@ export class AddressProvider {
     let isLivenet = Address.isValid(address, 'livenet');
     let isTestnet = Address.isValid(address, 'testnet');
     let isLivenetCash = AddressCash.isValid(address, 'livenet');
+    let isTestnetCash = AddressCash.isValid(address, 'testnet');
     return {
       address,
-      isValid: isLivenet || isTestnet || isLivenetCash,
-      network: isTestnet ? 'testnet' : 'livenet',
+      isValid: isLivenet || isTestnet || isLivenetCash || isTestnetCash,
+      network: (isTestnet || isTestnetCash) ? 'testnet' : 'livenet',
       coin: this.getCoin(address),
       translation: this.translateAddress(address),
     };
