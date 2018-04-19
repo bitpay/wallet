@@ -27,33 +27,26 @@ export class ExternalLinkProvider {
 
   public open(url: string, optIn?: boolean, title?: string, message?: string, okText?: string, cancelText?: string): Promise<any> {
     return new Promise((resolve, reject) => {
-      let old = (window as any).handleOpenURL;
-
-      (window as any).handleOpenURL = (url) => {
-        // Ignore external URLs
-        this.logger.debug('Skip: ' + url);
-      };
-
-      if (this.platformProvider.isNW) {
+      if (optIn) {
         this.popupProvider.ionicConfirm(title, message, okText, cancelText).then((res: boolean) => {
-          if (res) this.nodeWebkitProvider.openExternalLink(url);
-          this.restoreHandleOpenURL(old);
+          this.openBrowser(res, url);
         });
       } else {
-        if (optIn) {
-          let openBrowser = (res) => {
-            if (res) window.open(url, '_system');
-            this.restoreHandleOpenURL(old);
-          };
-          this.popupProvider.ionicConfirm(title, message, okText, cancelText).then((res: boolean) => {
-            openBrowser(res);
-          });
-        } else {
-          window.open(url, '_system');
-          this.restoreHandleOpenURL(old);
-        }
+        this.openBrowser(true, url);
       }
     });
   }
 
+  private openBrowser(res: boolean, url: string) {
+    let old = (window as any).handleOpenURL;
+
+    (window as any).handleOpenURL = (url) => {
+      // Ignore external URLs
+      this.logger.debug('Skip: ' + url);
+    };
+
+    if (res) this.platformProvider.isNW ? this.nodeWebkitProvider.openExternalLink(url) : window.open(url, '_system');
+
+    this.restoreHandleOpenURL(old);
+  };
 }
