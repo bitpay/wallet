@@ -44,7 +44,16 @@ describe('Config Provider', () => {
   }));
 
   it('should load', inject([ConfigProvider], (configProvider: ConfigProvider) => {
-    configProvider.load();
+    configProvider.load().then(() => {
+      expect(this.configCache).not.toBeNull();
+    });
+  }));
+
+  it('should load default config if file is corrupted', inject([ConfigProvider], (configProvider: ConfigProvider) => {
+    let defaults = configProvider.getDefaults();
+    configProvider.load().then(() => {
+      expect(this.configCache).toBe(defaults);
+    });
   }));
 
   it('should set options with an object', inject([ConfigProvider], (configProvider: ConfigProvider) => {
