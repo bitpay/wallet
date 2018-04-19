@@ -229,8 +229,10 @@ export class ConfigProvider {
         }
         resolve();
       }).catch((err) => {
-        this.logger.error(err);
-        reject();
+        this.logger.error('Error Loading Config: ', err);
+        this.logger.warn('Using Default Config');
+        this.configCache = _.clone(configDefault);
+        resolve();
       });
     });
   }
