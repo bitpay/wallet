@@ -15,14 +15,14 @@ export class FileStorage implements IStorage {
   ) { }
 
   init(): Promise<any> {
-    return new Promise((resolve, reject) => {
+    return new Promise(resolve => {
       if (this.fs && this.dir) return resolve();
 
       let onSuccess = (fs: FileSystem): Promise<any> => {
         this.log.debug('File system started: ', fs.name, fs.root.name);
         this.fs = fs;
         return this.getDir().then(dir => {
-          if (!dir.nativeURL) return reject();
+          if (!dir.nativeURL) return resolve();
           this.dir = dir;
           this.log.debug('Got main dir:', dir.nativeURL);
           return resolve();
@@ -31,7 +31,7 @@ export class FileStorage implements IStorage {
 
       let onFailure = (err: Error): Promise<any> => {
         this.log.error('Could not init file system: ' + err.message);
-        return Promise.reject(err);
+        return Promise.resolve();
       };
 
       (window as any).requestFileSystem(1, 0, onSuccess, onFailure);
@@ -41,7 +41,8 @@ export class FileStorage implements IStorage {
   // See https://github.com/apache/cordova-plugin-file/#where-to-store-files
   getDir(): Promise<DirectoryEntry> {
     if (!this.file) {
-      return Promise.reject(new Error('Could not write on device storage'));
+      this.log.error('Could not write on device storage');
+      return;
     }
 
     var url = this.file.dataDirectory;
@@ -65,13 +66,13 @@ export class FileStorage implements IStorage {
   }
 
   readFileEntry(fileEntry): Promise<any> {
-    return new Promise((resolve, reject) => {
+    return new Promise(resolve => {
       fileEntry.file(file => {
         var reader = new FileReader();
 
         reader.onerror = () => {
           reader.abort();
-          return reject();
+          return resolve();
         };
 
         reader.onloadend = () => {
@@ -84,7 +85,7 @@ export class FileStorage implements IStorage {
   }
 
   get(k: string): Promise<any> {
-    return new Promise((resolve, reject) => {
+    return new Promise(resolve => {
 
       this.init().then(() => {
 
@@ -102,7 +103,7 @@ export class FileStorage implements IStorage {
           else throw err;
         })
       }).catch((err) => {
-        this.log.error(err);
+        this.log.error('Error initialize filesystem');
       })
     });
   }
@@ -112,7 +113,7 @@ export class FileStorage implements IStorage {
       this.init().then(() => {
         this.file.getFile(this.dir, k, { create: true }).then((fileEntry) => {
           // Create a FileWriter object for our FileEntry (log.txt).
-          return new Promise((resolve, reject) => {
+          return new Promise(resolve => {
 
             fileEntry.createWriter((fileWriter) => {
               fileWriter.onwriteend = e => {
@@ -122,7 +123,7 @@ export class FileStorage implements IStorage {
 
               fileWriter.onerror = e => {
                 this.log.error('Write failed', e);
-                return reject();
+                return resolve();
               };
 
               if (_.isObject(v)) v = JSON.stringify(v);
@@ -139,13 +140,13 @@ export class FileStorage implements IStorage {
   }
 
   remove(k: string): Promise<void> {
-    return new Promise<void>((resolve, reject) => {
+    return new Promise<void>(resolve => {
       this.file.removeFile(this.dir.nativeURL, k).then(() => {
         this.log.debug('File removed: ' + k);
         resolve();
       }).catch((e) => {
-        this.log.error(e);
-        reject(e);
+        this.log.error('Error removing file', e);
+        resolve();
       });
     });
   }
