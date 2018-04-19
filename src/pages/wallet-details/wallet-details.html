@@ -61,6 +61,7 @@
         <img class="read-only-text" *ngIf="!wallet.canSign()" src="assets/img/icon-text-read-only.svg">
         <img class="auditable-text" *ngIf="wallet.status && wallet.status.wallet.singleAddress" src="assets/img/icon-text-auditable.svg">
         <img class="custom-bws" *ngIf="wallet.usingCustomBWS" src="assets/img/icon-bws-white.svg">
+        <img class="encrypted" *ngIf="wallet.isPrivKeyEncrypted()" src="assets/img/icon-lock-white.svg">
 
         <span class="wallet-type" *ngIf="wallet.credentials.n > 1">
           <span translate>{{wallet.m}}-of-{{wallet.n}}</span>
@@ -143,8 +144,7 @@
             </div>
             <div *ngIf="tx.confirmations > 0">
               <span *ngIf="tx.customData && tx.customData.service">
-                <img class="icon-services" src="assets/img/shapeshift/icon-shapeshift.svg" *ngIf="tx.customData.service == 'shapeshift'"
-                  width="40">
+                <img class="icon-services" src="assets/img/shapeshift/icon-shapeshift.svg" *ngIf="tx.customData.service == 'shapeshift'" width="40">
                 <img class="icon-services" src="assets/img/amazon/icon-amazon.svg" *ngIf="tx.customData.service == 'amazon'" width="40">
                 <img class="icon-services" src="assets/img/mercado-libre/icon-ml.svg" *ngIf="tx.customData.service == 'mercadolibre'" width="40">
                 <img class="icon-services" src="assets/img/bitpay-card/icon-bitpay.svg" *ngIf="tx.customData.service == 'debitcard'" width="40">
