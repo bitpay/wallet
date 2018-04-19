@@ -151,29 +151,17 @@ export class AmountPage {
   private setAvailableUnits(): void {
     this.availableUnits = [];
 
-    let hasBTCWallets = this.profileProvider.getWallets({
-      coin: 'btc'
-    }).length;
+    this.availableUnits.push({
+      name: 'Bitcoin',
+      id: 'btc',
+      shortName: 'BTC',
+    });
 
-    if (hasBTCWallets) {
-      this.availableUnits.push({
-        name: 'Bitcoin',
-        id: 'btc',
-        shortName: 'BTC',
-      });
-    }
-
-    let hasBCHWallets = this.profileProvider.getWallets({
-      coin: 'bch'
-    }).length;
-
-    if (hasBCHWallets) {
-      this.availableUnits.push({
-        name: 'Bitcoin Cash',
-        id: 'bch',
-        shortName: 'BCH',
-      });
-    };
+    this.availableUnits.push({
+      name: 'Bitcoin Cash',
+      id: 'bch',
+      shortName: 'BCH',
+    });
 
     this.unitIndex = 0;
 

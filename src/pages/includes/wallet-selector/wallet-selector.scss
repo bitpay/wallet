@@ -32,6 +32,11 @@ wallet-selector {
       margin-right: 5px;
     }
   }
+  .no-wallets {
+    text-align: center;
+    padding: 20px;
+    color: color($colors,danger);
+  }
   .destination-title {
     width: 100%;
     text-align: center;
