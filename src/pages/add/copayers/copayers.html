@@ -56,9 +56,11 @@
         </ion-card-content>
       </ion-card>
 
-      <ion-card [hidden]="!wallet.notAuthorized" class="errors-card">
-        <h1 translate>Wallet incomplete and broken</h1>
-        <h4 translate>Delete it and create a new one</h4>
+      <ion-card [hidden]="!wallet.notAuthorized">
+        <ion-card-content>
+          <div class="errors-card" translate>Wallet incomplete and broken</div>
+          <div translate>Delete it and create a new one</div>
+        </ion-card-content>
       </ion-card>
     </div>
   </div>

@@ -11,21 +11,21 @@
       <ion-icon class="item-img" item-start>
         <img src="assets/img/settings-icons/icon-address-book.svg" width="22">
       </ion-icon>
-      <span translate>Address book</span>
+      <span translate>Address Book</span>
     </button>
 
     <button ion-item (click)="openHelpExternalLink()">
       <ion-icon class="item-img" item-start>
         <img src="assets/img/settings-icons/icon-help-support.svg" width="22">
       </ion-icon>
-      <span translate>Help &amp; support</span>
+      <span translate>Help &amp; Support</span>
     </button>
 
     <button ion-item (click)="openSendFeedbackPage()">
       <ion-icon class="item-img" item-start>
         <img src="assets/img/settings-icons/icon-send-feedback.svg" width="22">
       </ion-icon>
-      <span translate>Send feedback</span>
+      <span translate>Send Feedback</span>
     </button>
 
     <button ion-item *ngIf="isCordova" (click)="openFeedbackCompletePage()">
@@ -61,7 +61,7 @@
         <img src="assets/img/settings-icons/icon-alternative-currency.svg" width="22">
       </ion-icon>
       <ion-label>
-        {{'Alternative currency' | translate}}
+        {{'Alternative Currency' | translate}}
       </ion-label>
       <ion-note *ngIf="selectedAlternative" item-end>
         {{ selectedAlternative.name }}
@@ -73,7 +73,7 @@
         <img src="assets/img/settings-icons/icon-network.svg" width="22">
       </ion-icon>
       <ion-label>
-        {{'Bitcoin network fee policy' | translate}}
+        {{'Bitcoin Network Fee Policy' | translate}}
       </ion-label>
     </button>
 
@@ -106,7 +106,7 @@
         {{'Incomplete' | translate}}
       </ion-note>
       <ion-note class="wallet-warning" *ngIf="wallet.isComplete() && wallet.needsBackup" item-end>
-        {{'Needs backup' | translate}}
+        {{'Needs Backup' | translate}}
       </ion-note>
       <ion-note *ngIf="wallet.credentials.m > 1 && wallet.isComplete() && !wallet.needsBackup" item-end>
         {{wallet.credentials.m}}-{{wallet.credentials.n}}
@@ -125,7 +125,7 @@
         {{'Incomplete' | translate}}
       </ion-note>
       <ion-note class="wallet-warning" *ngIf="wallet.isComplete() && wallet.needsBackup" item-end>
-        {{'Needs backup' | translate}}
+        {{'Needs Backup' | translate}}
       </ion-note>
       <ion-note *ngIf="wallet.credentials.m > 1 && wallet.isComplete() && !wallet.needsBackup" item-end>
         {{wallet.credentials.m}}-{{wallet.credentials.n}}

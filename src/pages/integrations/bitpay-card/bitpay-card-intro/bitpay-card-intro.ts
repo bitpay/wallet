@@ -40,7 +40,7 @@ export class BitPayCardIntroPage {
         email: this.navParams.data.email,
         otp: this.navParams.data.otp
       };
-      let pairingReason = this.translate.instant('add your BitPay Visa card(s)');
+      let pairingReason = this.translate.instant('Add your BitPay Visa card(s)');
       this.bitPayAccountProvider.pair(pairData, pairingReason, (err: string, paired: boolean, apiContext: any) => {
         if (err) {
           this.popupProvider.ionicAlert(this.translate.instant('Error pairing BitPay Account'), err);
@@ -134,7 +134,7 @@ export class BitPayCardIntroPage {
     );
 
     let actionSheet = this.actionSheetCtrl.create({
-      title: this.translate.instant('From BitPay account'),
+      title: this.translate.instant('From BitPay Account'),
       buttons: options
     });
     actionSheet.present();

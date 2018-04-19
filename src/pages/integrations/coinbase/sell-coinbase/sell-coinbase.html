@@ -38,7 +38,7 @@
       </button>
 
       <ion-item>
-        <ion-label stacked>Deposit into</ion-label>
+        <ion-label stacked>Deposit Into</ion-label>
         <ion-select [(ngModel)]="selectedPaymentMethodId" (ionChange)="sellRequest()">
           <ion-option *ngFor="let item of paymentMethods" [value]="item.id">{{item.name}}</ion-option>
         </ion-select>
@@ -74,7 +74,7 @@
       </ion-item>
 
       <ion-item-divider>
-        Transaction details
+        Transaction Details
       </ion-item-divider>
       <ion-item>
         Amount
@@ -91,7 +91,7 @@
         </ion-note>
       </ion-item>
       <ion-item>
-        Total to receive
+        Total to Receive
         <ion-note>
           {{sellRequestInfo.total.amount}} {{sellRequestInfo.total.currency}}
         </ion-note>

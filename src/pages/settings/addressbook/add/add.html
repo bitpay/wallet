@@ -1,14 +1,10 @@
 <ion-header>
-
   <ion-navbar>
     <ion-title>{{ 'Add Contact' | translate }}</ion-title>
   </ion-navbar>
-
 </ion-header>
 
-
 <ion-content>
-
   <form [formGroup]="addressBookAdd">
     <ion-item>
       <ion-label stacked>{{ 'Name' | translate }}</ion-label>
@@ -25,8 +21,7 @@
       <ion-input formControlName="address" type="text" [value]="addressBookAdd.value.address" address-validator></ion-input>
 
       <ion-icon *ngIf="addressBookAdd.controls.address.status == 'VALID'" name="ios-checkmark-circle" class="check success" item-right></ion-icon>
-      <ion-icon *ngIf="addressBookAdd.value.address && addressBookAdd.controls.address.status == 'INVALID'" class="check fail"
-        name="ios-close-circle" item-right></ion-icon>
+      <ion-icon *ngIf="addressBookAdd.value.address && addressBookAdd.controls.address.status == 'INVALID'" class="check fail" name="ios-close-circle" item-right></ion-icon>
 
       <ion-icon class="scanner-icon" name="qr-scanner" item-right (click)="openScanner()"></ion-icon>
     </ion-item>
@@ -35,5 +30,4 @@
   <button ion-button class="button-standard" (click)="save()" [disabled]="addressBookAdd.invalid || submitAttempt">
     {{'Save' | translate}}
   </button>
-
 </ion-content>

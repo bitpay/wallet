@@ -1,6 +1,6 @@
 <ion-header>
   <ion-navbar hideBackButton="true">
-    <ion-title>{{'Fee level' | translate}}</ion-title>
+    <ion-title>{{'Fee Level' | translate}}</ion-title>
     <ion-buttons start>
       <button (click)="cancel()" icon-only ion-button>
         <ion-icon name="close"></ion-icon>
@@ -16,7 +16,7 @@
   <ion-list [hidden]="!feeLevel">
     <ion-item-divider></ion-item-divider>
     <ion-item class="fee-level">
-      <ion-label>{{'Fee level' | translate}}</ion-label>
+      <ion-label>{{'Fee Level' | translate}}</ion-label>
       <ion-select [(ngModel)]="selectedFee" (ionChange)="changeSelectedFee(selectedFee)">
         <ion-option *ngFor="let fee of feeOpts" [value]="fee">{{ feeProvider.feeOpts[fee] | translate }}</ion-option>
       </ion-select>
@@ -27,7 +27,7 @@
     <ion-list class="fee-info" *ngIf="!customFeePerKB">
       <ion-item>
         <div translate>
-          Average confirmation time
+          Average Confirmation Time
         </div>
         <ion-note item-end>
           <span *ngIf="loadingFee">...</span>
@@ -38,7 +38,7 @@
       </ion-item>
       <ion-item>
         <div translate>
-          Current fee rate for this policy
+          Current Fee Rate for this Policy
         </div>
         <ion-note item-end>
           <span *ngIf="loadingFee">...</span>
@@ -52,8 +52,7 @@
     <ion-list class="fee-custom" *ngIf="customFeePerKB">
       <ion-item>
         <ion-label color="primary" floating>{{'Enter custom fee in sat/byte' | translate}}</ion-label>
-        <ion-input type="number" min="minFee" max="maxFee" (ionChange)="checkFees(customSatPerByte)"
-          [(ngModel)]="customSatPerByte" required></ion-input>
+        <ion-input type="number" min="minFee" max="maxFee" (ionChange)="checkFees(customSatPerByte)" [(ngModel)]="customSatPerByte" required></ion-input>
       </ion-item>
       <ion-item class="fee-error" *ngIf="showError">
         <span translate>Transactions without fee are not supported.</span>

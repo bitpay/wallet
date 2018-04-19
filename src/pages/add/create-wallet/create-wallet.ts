@@ -70,7 +70,7 @@ export class CreateWalletPage implements OnInit {
   ) {
 
     this.isShared = this.navParams.get('isShared');
-    this.title = this.isShared ? this.translate.instant('Create shared wallet') : this.translate.instant('Create personal wallet');
+    this.title = this.isShared ? this.translate.instant('Create Shared wallet') : this.translate.instant('Create Personal Wallet');
     this.defaults = this.configProvider.getDefaults();
     this.tc = this.isShared ? this.defaults.wallet.totalCopayers : 1;
 
