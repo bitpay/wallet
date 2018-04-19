@@ -162,6 +162,37 @@ describe('Provider: Wallet Provider', () => {
         expect(address).toEqual('newAddress');
       });
     });
+
+    it('should reject to generate new address if connection error', () => {
+      let wallet = {
+        isComplete() {
+          return true;
+        },
+        needsBackup: false,
+        createAddress({}, cb) {
+          return cb('CONNECTION_ERROR');
+        }
+      };
+      let force = false;
+      walletProvider.getAddress(wallet, force).catch(err => {
+        expect(err).toEqual('CONNECTION_ERROR');
+      });
+    });
+    it('should reject to generate new address if gap reached', () => {
+      let wallet = {
+        isComplete() {
+          return true;
+        },
+        needsBackup: false,
+        createAddress({}, cb) {
+          return cb('MAIN_ADDRESS_GAP_REACHED');
+        }
+      };
+      let force = false;
+      walletProvider.getAddress(wallet, force).catch(err => {
+        expect(err).toEqual('MAIN_ADDRESS_GAP_REACHED');
+      });
+    });
   });
 
   describe('Function: Get Protocol Handler Function', () => {
