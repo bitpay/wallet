@@ -1,58 +1,91 @@
-/* tslint:disable */
-import { TestBed, inject, async } from '@angular/core/testing';
-import { Logger } from '../../providers/logger/logger';
-import {
-  TranslateModule,
-  TranslateService,
-  TranslateLoader,
-  TranslateFakeLoader
-} from '@ngx-translate/core';
-import { PersistenceProvider } from '../../providers/persistence/persistence';
-import { PlatformProvider } from '../platform/platform';
-import { Platform } from 'ionic-angular';
+import { async, TestBed } from '@angular/core/testing';
 import { File } from '@ionic-native/file';
-import { ConfigProvider } from './config';
+import {
+  Platform
+} from 'ionic-angular';
 
-describe('Config Provider', () => {
+import { ConfigProvider } from './config';
+import { Logger } from '../../providers/logger/logger';
+import { PersistenceProvider } from '../persistence/persistence';
+import { PlatformProvider } from '../platform/platform';
+
+import * as _ from "lodash";
+
+describe('Provider: Config Provider', () => {
+  let persistenceProvider: PersistenceProvider;
+  let configProvider: ConfigProvider;
+
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [
-        TranslateModule.forRoot({
-          loader: { provide: TranslateLoader, useClass: TranslateFakeLoader }
-        })
-      ],
       providers: [
         ConfigProvider,
-        PersistenceProvider,
-        PlatformProvider,
-        Platform,
         File,
-        Logger
+        Logger,
+        { provide: PersistenceProvider },
+        Platform,
+        PlatformProvider,
+        PersistenceProvider
       ]
+    });
+    configProvider = TestBed.get(ConfigProvider);
+    persistenceProvider = TestBed.get(PersistenceProvider);
+    persistenceProvider.load();
+  });
+
+  describe('Function: Load Function', () => {
+    it('resolves', () => {
+      return configProvider.load().then(() => {
+        expect().nothing();
+      });
+    });
+    it('should store a config', () => {
+      let newOpts = JSON.parse('{}');
+      persistenceProvider.storeConfig(newOpts).then(() => {
+        configProvider.load().then(() => {
+          expect(this.configCache).not.toBeNull();
+        });
+      });
+    });
+    it('should set default config if storage is empty', () => {
+      let defaults = configProvider.getDefaults();
+      persistenceProvider.clearConfig().then(() => {
+        configProvider.load().then(() => {
+          persistenceProvider.getConfig().then((config) => {
+            expect(config).toBeNull();
+            expect(defaults).not.toBeNull();
+          });
+        });
+      });
+    });
+    it('should set config from storage', () => {
+      persistenceProvider.getConfig().then((config) => {
+        expect(this.configCache).not.toBeNull();
+      });
+    });
+    it('should set default config if file is corrupted', async () => {
+      let promise = Promise.reject('Error');
+      let defaults = configProvider.getDefaults();
+      spyOn(persistenceProvider, 'getConfig').and.returnValue(promise);
+      await configProvider.load();
+      expect(this.configCache).not.toBeNull();
     });
   });
 
-  it('should get defaults', inject([ConfigProvider], (configProvider: ConfigProvider) => {
-    let defaults = configProvider.getDefaults();
-    expect(defaults).not.toBeNull();
-  }));
+  describe('Function: Set Function', () => {
+    it('should store a new config with options', () => {
+      let newOpts = '{}';
+      expect(newOpts).toBe('{}');
+      JSON.parse(newOpts);
+      configProvider.set(newOpts);
+      expect(this.configCache).not.toBeNull();
+    });
+  });
 
-  it('should get cache', inject([ConfigProvider], (configProvider: ConfigProvider) => {
-    let cache = configProvider.get();
-    expect(cache).not.toBeNull();
-    console.log('cache', cache);
-  }));
-
-  it('should load', inject([ConfigProvider], (configProvider: ConfigProvider) => {
-    configProvider.load();
-  }));
-
-  it('should set options with an object', inject([ConfigProvider], (configProvider: ConfigProvider) => {
-    let defaults = configProvider.getDefaults();
-    //configProvider.set(defaults);
-  }));
-
-  it('should set options with a string', inject([ConfigProvider], (configProvider: ConfigProvider) => {
-    //configProvider.set('{"option1":"a","option2":"b"}');
-  }));
+  describe('Function: Get Default Function', () => {
+    it('should get default config', () => {
+      let defaults = configProvider.getDefaults();
+      expect(defaults).not.toBeNull();
+    });
+  });
 });
+
