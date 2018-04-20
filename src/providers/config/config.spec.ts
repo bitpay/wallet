@@ -1,4 +1,3 @@
-import { DecimalPipe } from '@angular/common';
 import { async, TestBed } from '@angular/core/testing';
 import { File } from '@ionic-native/file';
 import {
