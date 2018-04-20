@@ -40,6 +40,7 @@ export class TxpDetailsPage {
   public currentSpendUnconfirmed: boolean;
   public loading: boolean;
   public contactName: string;
+  public showMultiplesOutputs: boolean;
 
   private isGlidera: boolean;
   private GLIDERA_LOCK_TIME: number;
@@ -64,6 +65,7 @@ export class TxpDetailsPage {
     private modalCtrl: ModalController,
     private addressBookProvider: AddressBookProvider
   ) {
+    this.showMultiplesOutputs = false;
     let config = this.configProvider.get().wallet;
     this.tx = this.navParams.data.tx;
     this.wallet = this.tx.wallet ? this.tx.wallet : this.profileProvider.getWallet(this.tx.walletId);
@@ -80,6 +82,26 @@ export class TxpDetailsPage {
     this.canSign = this.wallet.canSign() || this.wallet.isPrivKeyExternal();
     this.color = this.wallet.color;
     this.contact();
+
+    // To test multiple outputs...
+
+    // var txp = {
+    //   message: 'test multi-output',
+    //   fee: 1000,
+    //   createdOn: Math.floor(Date.now() / 1000),
+    //   outputs: [],
+    // };
+    // for (let i = 0; i < 15; i++) {
+
+    //   txp.outputs.push({
+    //     amountStr: "600 BTC",
+    //     toAddress: '2N8bhEwbKtMvR2jqMRcTCQqzHP6zXGToXcK',
+    //     message: 'output #' + (Number(i) + 1)
+    //   });
+    // };
+    // this.tx = _.merge(this.tx, txp);
+    // this.tx.hasMultiplesOutputs = true;
+
   }
 
   ionViewWillEnter() {
