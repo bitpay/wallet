@@ -22,7 +22,7 @@ export class FileStorage implements IStorage {
         this.log.debug('File system started: ', fs.name, fs.root.name);
         this.fs = fs;
         return this.getDir().then(dir => {
-          if (!dir.nativeURL) return reject();
+          if (!dir.nativeURL) return reject('Could not read from file-storage due nativeURL is null');
           this.dir = dir;
           this.log.debug('Got main dir:', dir.nativeURL);
           return resolve();
@@ -71,7 +71,7 @@ export class FileStorage implements IStorage {
 
         reader.onerror = () => {
           reader.abort();
-          return reject();
+          return reject('Error on readFileEntry');
         };
 
         reader.onloadend = () => {
@@ -93,17 +93,17 @@ export class FileStorage implements IStorage {
 
           this.readFileEntry(fileEntry).then((result) => {
             return resolve(result);
-          }).catch(() => {
-            this.log.error('Problem parsing input file.');
+          }).catch((err) => {
+            return reject(err);
           })
         }).catch((err) => {
           // Not found
           if (err.code == 1) return resolve();
           else throw err;
-        })
+        });
       }).catch((err) => {
-        this.log.error(err);
-      })
+        reject(err);
+      });
     });
   }
 
@@ -122,7 +122,7 @@ export class FileStorage implements IStorage {
 
               fileWriter.onerror = e => {
                 this.log.error('Write failed', e);
-                return reject();
+                return reject(e);
               };
 
               if (_.isObject(v)) v = JSON.stringify(v);
