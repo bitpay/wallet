@@ -39,6 +39,14 @@ describe('Provider: Config Provider', () => {
         expect().nothing();
       });
     });
+    it('should store a config', () => {
+      let newOpts = JSON.parse('{}');
+      persistenceProvider.storeConfig(newOpts).then(() => {
+        configProvider.load().then(() => {
+          expect(this.configCache).not.toBeNull();
+        });
+      });
+    });
     it('should set default config if storage is empty', () => {
       let defaults = configProvider.getDefaults();
       persistenceProvider.clearConfig().then(() => {
@@ -53,6 +61,12 @@ describe('Provider: Config Provider', () => {
     it('should set config from storage', () => {
       persistenceProvider.getConfig().then((config) => {
         expect(this.configCache).not.toBeNull();
+      });
+    });
+    it('should set default config if file is corrupted', () => {
+      let defaults = configProvider.getDefaults();
+      return configProvider.load().catch(() => {
+        expect(this.configCache).toBe(defaults);
       });
     });
   });
@@ -74,3 +88,4 @@ describe('Provider: Config Provider', () => {
     });
   });
 });
+
