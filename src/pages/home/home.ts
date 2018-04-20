@@ -106,6 +106,14 @@ export class HomePage {
     this.showReorderBtc = false;
     this.showReorderBch = false;
     this.zone = new NgZone({ enableLongStackTrace: false });
+
+    if (this.platformProvider.isCordova) {
+      this.handleDeepLinks();
+    }
+
+    if (this.platformProvider.isNW) {
+      this.handleDeepLinksNW();
+    }
   }
 
   ionViewWillEnter() {
@@ -153,14 +161,6 @@ export class HomePage {
     this.checkHomeTip();
     this.checkFeedbackInfo();
 
-    if (this.platformProvider.isCordova) {
-      this.handleDeepLinks();
-    }
-
-    if (this.platformProvider.isNW) {
-      this.handleDeepLinksNW();
-    }
-
     // Show integrations
     let integrations = _.filter(this.homeIntegrationsProvider.get(), { 'show': true });
 
@@ -183,12 +183,6 @@ export class HomePage {
 
   ionViewWillLeave() {
     this.events.unsubscribe('feedback:hide');
-
-    if (this.platformProvider.isNW) {
-      // Unlisten the open event
-      var gui = (window as any).require('nw.gui');
-      gui.App.removeAllListeners('open');
-    }
   }
 
   ionViewDidLoad() {
@@ -215,6 +209,9 @@ export class HomePage {
       } else if (pathData.indexOf(this.appProvider.info.name + '://') != -1) {
         this.logger.debug(this.appProvider.info.name + ' URL found');
         this.handleOpenUrl(pathData.substring(pathData.indexOf(this.appProvider.info.name + '://')));
+      } else {
+        this.logger.debug('URL found');
+        this.handleOpenUrl(pathData);
       }
     });
 
