@@ -144,7 +144,7 @@ export class FileStorage implements IStorage {
         this.log.debug('File removed: ' + k);
         resolve();
       }).catch((e) => {
-        this.log.error(e);
+        this.log.error('Error removing file', e);
         reject(e);
       });
     });
