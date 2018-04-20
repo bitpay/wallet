@@ -63,11 +63,12 @@ describe('Provider: Config Provider', () => {
         expect(this.configCache).not.toBeNull();
       });
     });
-    it('should set default config if file is corrupted', () => {
+    it('should set default config if file is corrupted', async () => {
+      let promise = Promise.reject('Error');
       let defaults = configProvider.getDefaults();
-      return configProvider.load().catch(() => {
-        expect(this.configCache).toBe(defaults);
-      });
+      spyOn(persistenceProvider, 'getConfig').and.returnValue(promise);
+      await configProvider.load();
+      expect(this.configCache).not.toBeNull();
     });
   });
 
