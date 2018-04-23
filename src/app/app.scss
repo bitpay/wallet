@@ -54,6 +54,7 @@ ion-alert.alert-top {
 .scroll-content {
   .wrapper {
     background-color: $background-color;
+    min-height: 60%;
   }
 }
 
@@ -349,6 +350,6 @@ ion-alert .alert-message {
 .mdToastAfterHeader {
   top: $toolbar-md-height;
 }
-.iosToastAfterHeader{
+.iosToastAfterHeader {
   top: $toolbar-ios-height;
 }
