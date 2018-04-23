@@ -57,8 +57,8 @@ describe('Provider: Config Provider', () => {
         expect(this.configCache).not.toBeNull();
       });
     });
-    it('should set default config if file is corrupted', () => {
-      let promise = Promise.reject('Error');
+    it('should return error if file is corrupted', () => {
+      let promise = Promise.reject('Error Loading Config');
       spyOn(persistenceProvider, 'getConfig').and.returnValue(promise);
       configProvider.load().catch(e => {
         expect(this.configCache).toBeUndefined();
