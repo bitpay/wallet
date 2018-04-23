@@ -443,12 +443,9 @@ export class AmountPage {
   };
 
   private updateUnitUI(): void {
-    this.zone.run(() => {
-      this.unit = this.availableUnits[this.unitIndex].shortName;
-      this.alternativeUnit = this.availableUnits[this.altUnitIndex].shortName;
-      this.processAmount();
-      this.changeDetectorRef.detectChanges();
-    });
+    this.unit = this.availableUnits[this.unitIndex].shortName;
+    this.alternativeUnit = this.availableUnits[this.altUnitIndex].shortName;
+    this.processAmount();
     this.logger.debug('Update unit coin @amount unit:' + this.unit + " alternativeUnit:" + this.alternativeUnit);
   }
 
@@ -467,7 +464,10 @@ export class AmountPage {
       });
     }
 
-    this.updateUnitUI();
+    this.zone.run(() => {
+      this.updateUnitUI();
+      this.changeDetectorRef.detectChanges();
+    });
   }
 
 }
