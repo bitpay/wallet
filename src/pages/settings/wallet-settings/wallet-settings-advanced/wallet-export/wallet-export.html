@@ -35,6 +35,10 @@
             <ion-item (click)="showAdvChange()">
               <span translate *ngIf="!showAdv">Show advanced options</span>
               <span translate *ngIf="showAdv">Hide advanced options</span>
+              <div item-end>
+                <ion-icon color="grey" *ngIf="!showAdv" name="ios-arrow-down-outline"></ion-icon>
+                <ion-icon color="grey" *ngIf="showAdv" name="ios-arrow-up-outline"></ion-icon>
+              </div>
             </ion-item>
             <ion-item *ngIf="showAdv">
               <ion-label stacked>{{'Do not include private key' | translate}}</ion-label>
