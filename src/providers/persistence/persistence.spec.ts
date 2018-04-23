@@ -130,5 +130,20 @@ describe('Persistence Provider', () => {
           expect(profile).toBeNull();
         }).then(done);
     });
+
+    it('should store profile', done => {
+      let p = { name: 'My profile' };
+      persistenceProvider
+        .storeProfile(p)
+        .catch(err => expect(err).toBeNull)
+        .then(() => {
+          return persistenceProvider.getProfile();
+        })
+        .then(profile => {
+          expect(typeof profile).toEqual('object');
+          expect(profile.name).toEqual('My profile');
+        })
+        .then(done);
+    });
   });
 });

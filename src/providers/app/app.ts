@@ -77,7 +77,6 @@ export class AppProvider {
           });
         })
         .catch(err => {
-          this.logger.error(err);
           reject(err);
         });
     });

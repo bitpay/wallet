@@ -15,6 +15,7 @@ import { EmailNotificationsProvider } from '../providers/email-notifications/ema
 import { GlideraProvider } from '../providers/glidera/glidera';
 import { Logger } from '../providers/logger/logger';
 import { MercadoLibreProvider } from '../providers/mercado-libre/mercado-libre';
+import { PopupProvider } from '../providers/popup/popup';
 import { ProfileProvider } from '../providers/profile/profile';
 import { ShapeshiftProvider } from '../providers/shapeshift/shapeshift';
 import { TouchIdProvider } from '../providers/touchid/touchid';
@@ -61,7 +62,8 @@ export class CopayApp {
     private mercadoLibreProvider: MercadoLibreProvider,
     private shapeshiftProvider: ShapeshiftProvider,
     private emailNotificationsProvider: EmailNotificationsProvider,
-    private screenOrientation: ScreenOrientation
+    private screenOrientation: ScreenOrientation,
+    private popupProvider: PopupProvider
   ) {
     this.initializeApp();
   }
@@ -117,11 +119,13 @@ export class CopayApp {
           this.rootPage = err.message == 'ONBOARDINGNONCOMPLETED: Onboarding non completed' ? OnboardingPage : DisclaimerPage;
         });
       }).catch((err) => {
-        this.logger.error('Could not initialize the app');
+        let title = 'Could not initialize the app';
+        let message = JSON.stringify(err);
+        this.popupProvider.ionicAlert(title, message);
       });
 
     }).catch((e) => {
-      this.logger.error('Could not be ready platform');
+      this.logger.error('Platform is not ready.', e);
     });
   }
 

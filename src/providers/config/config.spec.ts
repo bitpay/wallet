@@ -1,15 +1,13 @@
 import { async, TestBed } from '@angular/core/testing';
 import { File } from '@ionic-native/file';
-import {
-  Platform
-} from 'ionic-angular';
+import { Platform } from 'ionic-angular';
 
 import { ConfigProvider } from './config';
 import { Logger } from '../../providers/logger/logger';
 import { PersistenceProvider } from '../persistence/persistence';
 import { PlatformProvider } from '../platform/platform';
 
-import * as _ from "lodash";
+import * as _ from 'lodash';
 
 describe('Provider: Config Provider', () => {
   let persistenceProvider: PersistenceProvider;
@@ -46,28 +44,25 @@ describe('Provider: Config Provider', () => {
         });
       });
     });
-    it('should set default config if storage is empty', () => {
-      let defaults = configProvider.getDefaults();
-      persistenceProvider.clearConfig().then(() => {
-        configProvider.load().then(() => {
-          persistenceProvider.getConfig().then((config) => {
-            expect(config).toBeNull();
-            expect(defaults).not.toBeNull();
-          });
-        });
-      });
+    it('should set default config if storage is empty', async () => {
+      const defaults = configProvider.getDefaults();
+      await persistenceProvider.clearConfig();
+      await configProvider.load();
+      const config = await persistenceProvider.getConfig();
+      expect(config).toBeNull();
+      expect(defaults).not.toBeNull();
     });
     it('should set config from storage', () => {
-      persistenceProvider.getConfig().then((config) => {
+      persistenceProvider.getConfig().then(config => {
         expect(this.configCache).not.toBeNull();
       });
     });
-    it('should set default config if file is corrupted', async () => {
-      let promise = Promise.reject('Error');
-      let defaults = configProvider.getDefaults();
+    it('should return error if file is corrupted', () => {
+      let promise = Promise.reject('Error Loading Config');
       spyOn(persistenceProvider, 'getConfig').and.returnValue(promise);
-      await configProvider.load();
-      expect(this.configCache).not.toBeNull();
+      configProvider.load().catch(e => {
+        expect(this.configCache).toBeUndefined();
+      });
     });
   });
 
@@ -88,4 +83,3 @@ describe('Provider: Config Provider', () => {
     });
   });
 });
-
