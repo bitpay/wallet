@@ -68,4 +68,17 @@ page-home {
       margin-top: -25px;
     }
   }
+
+  .scroll-content {
+    // This line prevents an ugly gap from appearing between the
+    // navbar and page content when the user overscrolls on iOS
+    background-image: linear-gradient(
+      to bottom,
+      $toolbar-background,
+      $toolbar-background 50%,
+      $background-color 50%,
+      $background-color 50%,
+      $background-color 50%
+    );
+  }
 }

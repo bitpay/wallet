@@ -122,8 +122,6 @@
       <span translate>{{updatingTxHistoryProgress}} transactions downloaded</span>
     </div>
 
-    <div *ngIf="!(history && history[0])" class="loading-spacer"></div>
-
     <ion-list *ngIf="history && history[0]" class="tx-history">
       <div *ngFor="let tx of history; trackBy: trackByFn; let i = index">
 
@@ -144,7 +142,8 @@
             </div>
             <div *ngIf="tx.confirmations > 0">
               <span *ngIf="tx.customData && tx.customData.service">
-                <img class="icon-services" src="assets/img/shapeshift/icon-shapeshift.svg" *ngIf="tx.customData.service == 'shapeshift'" width="40">
+                <img class="icon-services" src="assets/img/shapeshift/icon-shapeshift.svg" *ngIf="tx.customData.service == 'shapeshift'"
+                  width="40">
                 <img class="icon-services" src="assets/img/amazon/icon-amazon.svg" *ngIf="tx.customData.service == 'amazon'" width="40">
                 <img class="icon-services" src="assets/img/mercado-libre/icon-ml.svg" *ngIf="tx.customData.service == 'mercadolibre'" width="40">
                 <img class="icon-services" src="assets/img/bitpay-card/icon-bitpay.svg" *ngIf="tx.customData.service == 'debitcard'" width="40">
