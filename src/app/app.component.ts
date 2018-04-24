@@ -136,7 +136,7 @@ export class CopayApp {
   private openLockModal(): void {
     if (this.isModalOpen) return;
     let config: any = this.configProvider.get();
-    let lockMethod = config.lock.method ? config.lock.method.toLowerCase() : null;
+    let lockMethod = (config && config.lock && config.lock.method) ? config.lock.method.toLowerCase() : null;
     if (!lockMethod) return;
     if (lockMethod == 'pin') this.openPINModal('checkPin');
     if (lockMethod == 'fingerprint') this.openFingerprintModal();
