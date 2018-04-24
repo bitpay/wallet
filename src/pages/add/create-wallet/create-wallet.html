@@ -45,6 +45,10 @@
     <ion-item (click)="showAdvOpts = !showAdvOpts">
       <ion-label *ngIf="!showAdvOpts">{{'Show advanced options' | translate}}</ion-label>
       <ion-label *ngIf="showAdvOpts">{{'Hide advanced options' | translate}}</ion-label>
+      <div item-end>
+        <ion-icon color="grey" *ngIf="!showAdvOpts" name="ios-arrow-down-outline"></ion-icon>
+        <ion-icon color="grey" *ngIf="showAdvOpts" name="ios-arrow-up-outline"></ion-icon>
+      </div>
     </ion-item>
 
     <div *ngIf="showAdvOpts">
