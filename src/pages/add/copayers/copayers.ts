@@ -48,7 +48,7 @@ export class CopayersPage {
     this.secret = null;
   }
 
-  ionViewDidLoad() {
+  ionViewWillEnter() {
     this.logger.info('ionViewDidLoad CopayersPage');
     this.wallet = this.profileProvider.getWallet(this.navParams.data.walletId);
     this.updateWallet();
@@ -58,6 +58,10 @@ export class CopayersPage {
         this.updateWallet();
       }
     });
+  }
+
+  ionViewWillLeave() {
+    this.events.unsubscribe('bwsEvent');
   }
 
   private updateWallet(): void {

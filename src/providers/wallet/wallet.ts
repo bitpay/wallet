@@ -37,6 +37,7 @@ export class WalletProvider {
 
   private progressFn = {};
 
+  private isPopupOpen: boolean;
   /* TODO: update on progress
   private updateOnProgress = {}
    */
@@ -59,6 +60,7 @@ export class WalletProvider {
     private translate: TranslateService
   ) {
     this.logger.info('WalletService initialized.');
+    this.isPopupOpen = false;
   }
 
 
@@ -387,7 +389,12 @@ export class WalletProvider {
           ) {
             this.logger.warn(this.bwcErrorProvider.msg(err, 'Server Error'));
             prefix = null;
-            this.popupProvider.ionicAlert(null, this.bwcErrorProvider.msg('MAIN_ADDRESS_GAP_REACHED'));
+            if (!this.isPopupOpen) {
+              this.isPopupOpen = true;
+              this.popupProvider.ionicAlert(null, this.bwcErrorProvider.msg('MAIN_ADDRESS_GAP_REACHED')).then(() => {
+                this.isPopupOpen = false;
+              });
+            }
             wallet.getMainAddresses({
               reverse: true,
               limit: 1

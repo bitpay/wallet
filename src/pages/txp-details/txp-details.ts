@@ -134,6 +134,10 @@ export class TxpDetailsPage {
     });
   }
 
+  ionViewWillLeave() {
+    this.events.unsubscribe('bwsEvent');
+  }
+
   private displayFeeValues(): void {
     this.tx.feeFiatStr = this.txFormatProvider.formatAlternativeStr(this.wallet.coin, this.tx.fee);
     this.tx.feeRateStr = (this.tx.fee / (this.tx.amount + this.tx.fee) * 100).toFixed(2) + '%';

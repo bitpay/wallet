@@ -45,6 +45,10 @@ export class ShapeshiftPage {
     });
   }
 
+  ionViewWillLeave() {
+    this.events.unsubscribe('bwsEvent');
+  }
+
   public openExternalLink(url: string): void {
     this.externalLinkProvider.open(url);
   }
