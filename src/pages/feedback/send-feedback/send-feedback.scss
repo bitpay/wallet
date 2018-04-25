@@ -6,7 +6,7 @@ page-send-feedback {
   .rating {
     display: flex;
     align-items: center;
-    text-align: right;
+    justify-content: flex-end;
     padding: 15px;
   }
   .feedback-title {

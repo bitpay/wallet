@@ -1,4 +1,4 @@
-import { Component, NgZone } from '@angular/core';
+import { Component, NgZone, ViewChild } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Events, ModalController, NavController, Platform } from 'ionic-angular';
 import { Logger } from '../../providers/logger/logger';
@@ -46,6 +46,7 @@ import * as moment from 'moment';
   templateUrl: 'home.html'
 })
 export class HomePage {
+  @ViewChild('showCard') showCard;
   public wallets: any;
   public walletsBtc: any;
   public walletsBch: any;
@@ -140,11 +141,6 @@ export class HomePage {
     this.events.subscribe('status:updated', () => {
       this.updateTxps();
       this.setWallets();
-    });
-
-    // Hide stars to rate
-    this.events.subscribe('feedback:hide', () => {
-      this.showRateCard = false;
     });
   }
 
@@ -292,6 +288,7 @@ export class HomePage {
         let now = moment().unix();
         let timeExceeded = (now - feedbackInfo.time) >= 24 * 7 * 60 * 60;
         this.showRateCard = timeExceeded && !feedbackInfo.sent;
+        this.showCard.setShowRateCard(this.showRateCard);
       }
     });
   }

@@ -20,6 +20,7 @@ export class FeedbackCardPage {
   public appName: string;
   public score: number;
   public button_title: string;
+  private isShowRateCard: boolean = false;
 
   constructor(
     private appProvider: AppProvider,
@@ -33,13 +34,17 @@ export class FeedbackCardPage {
     this.score = 0;
   }
 
+  public setShowRateCard(value) {
+    this.isShowRateCard = value;
+  }
+
   public hideCard(): void {
+    this.isShowRateCard = false;
     this.logger.debug('Feedback card dismissed.')
     this.persistenceProvider.getFeedbackInfo().then((info: any) => {
       let feedbackInfo = info;
       feedbackInfo.sent = true;
-      this.persistenceProvider.setFeedbackInfo((feedbackInfo))
-      this.events.publish('feedback:hide');
+      this.persistenceProvider.setFeedbackInfo((feedbackInfo));
     });
   }
 

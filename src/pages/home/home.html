@@ -43,8 +43,7 @@
       </ion-card-content>
     </ion-card>
 
-    <page-feedback-card *ngIf="showRateCard">
-    </page-feedback-card>
+    <page-feedback-card #showCard></page-feedback-card>
 
     <ion-card *ngIf="homeTip && wallets && wallets[0]">
       <ion-card-header>
