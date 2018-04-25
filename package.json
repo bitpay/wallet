@@ -1,14 +1,12 @@
 {
   "name": "distribution-not-selected",
-  "description": "Choose a distribution by running 'npm run apply:copay' or 'npm run apply:bitpay'.",
+  "description": "Choose a distribution by running 'npm run apply:TRCpay'.",
   "primary-package-json": "See the tempate in app-template/package.json",
   "pre-commit": "unstage-package",
   "changes": "changes to this file can be commited with the --no-verify option",
   "scripts": {
-    "postinstall": "npm run apply:copay && echo && echo \"Repo configured for standard Copay distribution. To switch to the BitPay distribution, run 'npm run apply:bitpay'.\" && echo",
-    "start": "echo && echo \"Choose a distribution by running 'npm run apply:copay' or 'npm run apply:bitpay'.\" && echo",
-    "apply:copay": "npm i fs-extra@0.30 && cd app-template && node apply.js copay && cd .. && npm i",
-    "apply:bitpay": "npm i fs-extra@0.30 && cd app-template && node apply.js bitpay && cd .. && npm i",
+    "postinstall": "npm run apply:TRCpay && echo && echo \"Repo configured for standard TRCpay distribution.\" && echo",
+    "start": "echo && echo \"Choose a distribution by running 'npm run apply:TRCpay'.\" && echo",
     "apply:TRCpay": "npm i fs-extra@0.30 && cd app-template && node apply.js TRCpay && cd .. && npm i",
     "unstage-package": "git reset package.json",
     "clean-all": "git clean -dfx"
@@ -18,7 +16,7 @@
   },
   "license": "MIT",
   "repository": {
-    "url": "git://github.com/bitpay/bitpay-wallet.git",
+    "url": "git://github.com/terracoin/TRCpay.git",
     "type": "git"
   }
 }
