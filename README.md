@@ -1,4 +1,4 @@
-<img src="https://raw.githubusercontent.com/terracoin/TRCpay/master/resources/TRCpay/android/icon/drawable-xxxhdpi-icon.png" alt="TRCpay" width="79">
+<img src="https://raw.githubusercontent.com/terracoin/TRCpay/master/resources/trcpay/android/icon/drawable-xxxhdpi-icon.png" alt="TRCpay" width="79">
 
 [![Build Status](https://secure.travis-ci.org/terracoin/TRCpay.svg)](http://travis-ci.org/terracoin/TRCpay)
 [![Crowdin](https://d322cqt584bo4o.cloudfront.net/trcpay/localized.png)](https://crowdin.com/project/trcpay)
