@@ -89,7 +89,7 @@ export class SettingsPage {
       name: this.config.wallet.settings.alternativeName,
       isoCode: this.config.wallet.settings.alternativeIsoCode
     }
-    this.lockMethod = this.config.lock.method ? this.config.lock.method.toLowerCase() : null;
+    this.lockMethod = (this.config && this.config.lock && this.config.lock.method) ? this.config.lock.method.toLowerCase() : null;
   }
 
   ionViewDidEnter() {
