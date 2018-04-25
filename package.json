@@ -1,13 +1,13 @@
 {
   "name": "distribution-not-selected",
-  "description": "Choose a distribution by running 'npm run apply:TRCpay'.",
+  "description": "Choose a distribution by running 'npm run apply:trcpay'.",
   "primary-package-json": "See the tempate in app-template/package.json",
   "pre-commit": "unstage-package",
   "changes": "changes to this file can be commited with the --no-verify option",
   "scripts": {
-    "postinstall": "npm run apply:TRCpay && echo && echo \"Repo configured for standard TRCpay distribution.\" && echo",
-    "start": "echo && echo \"Choose a distribution by running 'npm run apply:TRCpay'.\" && echo",
-    "apply:TRCpay": "npm i fs-extra@0.30 && cd app-template && node apply.js TRCpay && cd .. && npm i",
+    "postinstall": "npm run apply:trcpay && echo && echo \"Repo configured for standard trcpay distribution.\" && echo",
+    "start": "echo && echo \"Choose a distribution by running 'npm run apply:trcpay'.\" && echo",
+    "apply:trcpay": "npm i fs-extra@0.30 && cd app-template && node apply.js trcpay && cd .. && npm i",
     "unstage-package": "git reset package.json",
     "clean-all": "git clean -dfx"
   },
@@ -16,7 +16,7 @@
   },
   "license": "MIT",
   "repository": {
-    "url": "git://github.com/terracoin/TRCpay.git",
+    "url": "git://github.com/terracoin/trcpay.git",
     "type": "git"
   }
 }
