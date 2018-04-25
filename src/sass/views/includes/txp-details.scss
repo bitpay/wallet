@@ -9,6 +9,16 @@
     .fee-rate {
       display: inline-block;
     }
+    .icon {
+      float: left;
+      margin-right: 5px;
+    }
+    .trusted {
+      color: green;
+    }
+    .untrusted {
+      color: red;
+    }
   }
   .list {
     background: #f5f5f5;

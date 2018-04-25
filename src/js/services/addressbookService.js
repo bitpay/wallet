@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.services').factory('addressbookService', function($log, bitcore, bitcoreCash, storageService, lodash) {
+angular.module('copayApp.services').factory('addressbookService', function($log, bitcore, storageService, lodash) {
   var root = {};
 
   var getNetwork = function(address) {
@@ -8,8 +8,7 @@ angular.module('copayApp.services').factory('addressbookService', function($log,
     try {
       network = (new bitcore.Address(address)).network.name;
     } catch(e) {
-      $log.warn('No valid bitcoin address. Trying bitcoin cash...');
-      network = (new bitcoreCash.Address(address)).network.name;
+      $log.warn('No valid terracoin address.');
     }
     return network;
   };
@@ -47,7 +46,7 @@ angular.module('copayApp.services').factory('addressbookService', function($log,
 
   root.add = function(entry, cb) {
     var network = getNetwork(entry.address);
-    if (lodash.isEmpty(network)) return cb('Not valid bitcoin address');
+    if (lodash.isEmpty(network)) return cb('Not valid terracoin address');
     storageService.getAddressbook(network, function(err, ab) {
       if (err) return cb(err);
       if (ab) ab = JSON.parse(ab);
@@ -66,7 +65,7 @@ angular.module('copayApp.services').factory('addressbookService', function($log,
 
   root.remove = function(addr, cb) {
     var network = getNetwork(addr);
-    if (lodash.isEmpty(network)) return cb('Not valid bitcoin address');
+    if (lodash.isEmpty(network)) return cb('Not valid terracoin address');
     storageService.getAddressbook(network, function(err, ab) {
       if (err) return cb(err);
       if (ab) ab = JSON.parse(ab);

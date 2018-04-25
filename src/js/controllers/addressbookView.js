@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('addressbookViewController', function($scope, $state, $timeout, lodash, addressbookService, popupService, $ionicHistory, platformInfo, gettextCatalog, bitcoreCash) {
+angular.module('copayApp.controllers').controller('addressbookViewController', function($scope, $state, $timeout, lodash, addressbookService, popupService, $ionicHistory, platformInfo, gettextCatalog) {
   $scope.isChromeApp = platformInfo.isChromeApp;
   $scope.addressbookEntry = {};
   var coin;
@@ -11,12 +11,7 @@ angular.module('copayApp.controllers').controller('addressbookViewController', f
     $scope.addressbookEntry.email = data.stateParams.email;
     $scope.addressbookEntry.address = data.stateParams.address;
 
-    var cashAddress = bitcoreCash.Address.isValid($scope.addressbookEntry.address, 'livenet');
-    if (cashAddress) {
-      coin = 'bch';
-    } else {
-      coin = 'btc';
-    }
+    coin = 'trc';
   });
 
   $scope.sendTo = function() {

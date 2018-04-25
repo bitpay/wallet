@@ -90,8 +90,8 @@ msgid "Add Account"
 msgstr "アカウントを追加"
 
 #: src/js/services/bitpayAccountService.js:69
-msgid "Add BitPay Account?"
-msgstr "BitPay アカウントを追加しますか？"
+msgid "Add Terracoin Account?"
+msgstr "Terracoin アカウントを追加しますか？"
 
 #: www/views/addressbook.add.html:4
 #: www/views/addressbook.html:22
@@ -135,8 +135,8 @@ msgid "Add funds"
 msgstr "資金を追加"
 
 #: src/js/services/bitpayAccountService.js:78
-msgid "Add this BitPay account ({{email}})?"
-msgstr "このBitPayアカウント ({{email}}) を追加しますか？"
+msgid "Add this Terracoin account ({{email}})?"
+msgstr "このTerracoinアカウント ({{email}}) を追加しますか？"
 
 #: www/views/add.html:3
 msgid "Add wallet"
@@ -178,11 +178,11 @@ msgid "All Addresses"
 msgstr "全アドレス"
 
 #: www/views/modals/wallet-balance.html:18
-msgid "All of your bitcoin wallet balance may not be available for immediate spending."
+msgid "All of your terracoin wallet balance may not be available for immediate spending."
 msgstr "ビットコインのウォレットの残高の内、即座に送れないビットコインが含まれている可能性があります。"
 
 #: www/views/tab-receive.html:25
-msgid "All signing devices must be added to this multisig wallet before bitcoin addresses can be created."
+msgid "All signing devices must be added to this multisig wallet before terracoin addresses can be created."
 msgstr "この共有ウォレットの必要参加者の人数が集まるまではビットコインアドレスを発行することができません。"
 
 #: www/views/tab-scan.html:21
@@ -229,11 +229,11 @@ msgid "An update to this app is available. For your security, please update to t
 msgstr "このアプリのアップデートがあります。セキュリティーを保持するために最新版にアップデートして下さい。"
 
 #: www/views/backupWarning.html:14
-msgid "Anyone with your backup phrase can access or spend your bitcoin."
+msgid "Anyone with your backup phrase can access or spend your terracoin."
 msgstr "復元フレーズを知る者はあなたのビットコインが勝手に送れてしまいます。"
 
 #: www/views/addresses.html:94
-msgid "Approximate Bitcoin network fee to transfer wallet's balance (with normal priority)"
+msgid "Approximate Terracoin network fee to transfer wallet's balance (with normal priority)"
 msgstr "ウォレットの残高を送るために推測される必要なビットコインネットワーク手数料(優先度：普通)"
 
 #: www/views/backupWarning.html:10
@@ -241,7 +241,7 @@ msgid "Are you being watched?"
 msgstr "見られていませんか？"
 
 #: src/js/controllers/preferencesExternal.js:15
-msgid "Are you being watched? Anyone with your recovery phrase can access or spend your bitcoin."
+msgid "Are you being watched? Anyone with your recovery phrase can access or spend your terracoin."
 msgstr "見られていますか？ 復元フレーズを知る者はあなたのビットコインが勝手に送れてしまいます。"
 
 #: src/js/controllers/copayers.js:56
@@ -271,13 +271,13 @@ msgid "Are you sure you want to skip it?"
 msgstr "本当にバックアップの手順を飛ばしても良いですか？"
 
 #: www/views/modals/bitpay-card-confirmation.html:4
-msgid "Are you sure you would like to log out of your BitPay Card account?"
-msgstr "BitPayカードアカウントからログアウトしてもよろしいですか?"
+msgid "Are you sure you would like to log out of your Terracoin Card account?"
+msgstr "Terracoinカードアカウントからログアウトしてもよろしいですか?"
 
 #: src/js/controllers/preferencesBitpayCard.js:7
 #: src/js/controllers/preferencesBitpayServices.js:20
-msgid "Are you sure you would like to remove your BitPay Card ({{lastFourDigits}}) from this device?"
-msgstr "この端末から BitPay カード ({{lastFourDigits}}) を本当に削除してもよろしいですか？"
+msgid "Are you sure you would like to remove your Terracoin Card ({{lastFourDigits}}) from this device?"
+msgstr "この端末から Terracoin カード ({{lastFourDigits}}) を本当に削除してもよろしいですか？"
 
 #: www/views/includes/walletInfo.html:10
 msgid "Auditable"
@@ -304,7 +304,7 @@ msgid "BIP32 path for address derivation"
 msgstr "階級アドレス派生のパス"
 
 #: www/views/preferencesCash.html:25
-msgid "BTC wallets"
+msgid "TRC wallets"
 msgstr "ビットコインウォレット"
 
 #: www/views/preferences.html:34
@@ -351,12 +351,12 @@ msgid "Be sure to store your recovery phrase in a secure place. If this app is d
 msgstr "書き留めた復元フレーズは金庫など、安全な場所にて保管して下さい。このアプリが削除されたら、復元フレーズが必須になってきます。"
 
 #: www/views/preferencesBitpayServices.html:9
-msgid "BitPay Visa&reg; Cards"
-msgstr "BitPayのVISA&reg; カード"
+msgid "Terracoin Visa&reg; Cards"
+msgstr "TerracoinのVISA&reg; カード"
 
 #: www/views/addressbook.add.html:38
 #: www/views/includes/incomingDataMenu.html:29
-msgid "Bitcoin Address"
+msgid "Terracoin Address"
 msgstr "ビットコインアドレス"
 
 #: www/views/includes/walletSelector.html:42
@@ -368,33 +368,33 @@ msgstr "ビットコインキャッシュウォレット"
 #: www/views/modals/chooseFeeLevel.html:4
 #: www/views/preferencesFee.html:4
 #: www/views/tab-settings.html:83
-msgid "Bitcoin Network Fee Policy"
+msgid "Terracoin Network Fee Policy"
 msgstr "ビットコインネットワークの手数料設定"
 
 #: www/views/includes/walletSelector.html:11
 #: www/views/tab-home.html:97
 #: www/views/tab-settings.html:100
-msgid "Bitcoin Wallets"
+msgid "Terracoin Wallets"
 msgstr "ビットコインウォレット"
 
 #: src/js/services/incomingData.js:151
-msgid "Bitcoin cash Payment"
+msgid "Terracoin cash Payment"
 msgstr "ビットコインキャッシュペイメント"
 
 #: www/views/onboarding/tour.html:31
-msgid "Bitcoin is a currency."
+msgid "Terracoin is a currency."
 msgstr "ビットコインは通貨の一つ"
 
 #: www/views/onboarding/disclaimer.html:15
-msgid "Bitcoin is different &ndash; it cannot be safely held with a bank or web service."
+msgid "Terracoin is different &ndash; it cannot be safely held with a bank or web service."
 msgstr "ビットコインは違う &ndash; 銀行やウェブのサービスに安全に預けることはできません。"
 
 #: www/views/onboarding/tour.html:18
-msgid "Bitcoin is secure,<br>digital money."
+msgid "Terracoin is secure,<br>digital money."
 msgstr "ビットコインは世界で<br>最も安全な仮想通貨。"
 
 #: www/views/preferencesFee.html:11
-msgid "Bitcoin transactions include a fee collected by miners on the network."
+msgid "Terracoin transactions include a fee collected by miners on the network."
 msgstr "ビットコインの取引はネットワークの安全を守る「採掘者」と呼ばれる者達に送る手数料が含まれます。"
 
 #: www/views/buyAmazon.html:108
@@ -424,11 +424,11 @@ msgid "Buy"
 msgstr "購入"
 
 #: www/views/includes/buyAndSellCard.html:3
-msgid "Buy &amp; Sell Bitcoin"
+msgid "Buy &amp; Sell Terracoin"
 msgstr "ビットコインの購入&amp;売却"
 
 #: www/views/tab-send.html:40
-msgid "Buy Bitcoin"
+msgid "Buy Terracoin"
 msgstr "ビットコインを購入"
 
 #: www/views/mercadoLibre.html:22
@@ -441,7 +441,7 @@ msgid "Buy from"
 msgstr "今すぐ購入"
 
 #: src/js/services/onGoingProcess.js:40
-msgid "Buying Bitcoin..."
+msgid "Buying Terracoin..."
 msgstr "ビットコインを購入中..."
 
 #: src/js/services/onGoingProcess.js:12
@@ -595,8 +595,8 @@ msgid "Confirming"
 msgstr "承認中"
 
 #: www/views/bitpayCardIntro.html:37
-msgid "Connect my BitPay Card"
-msgstr "BitPay カードを接続"
+msgid "Connect my Terracoin Card"
+msgstr "Terracoin カードを接続"
 
 #: src/js/services/onGoingProcess.js:13
 msgid "Connecting to Coinbase..."
@@ -815,7 +815,7 @@ msgstr "共有ウォレットを作成"
 #: www/views/onboarding/tour.html:51
 #: www/views/tab-home.html:89
 #: www/views/tab-send.html:41
-msgid "Create bitcoin wallet"
+msgid "Create terracoin wallet"
 msgstr "ビットコインウォレット作成"
 
 #: www/views/tab-create-personal.html:131
@@ -941,7 +941,7 @@ msgid "Duplicating wallet..."
 msgstr "ウォレットを複製しています..."
 
 #: www/views/addresses.html:19
-msgid "Each bitcoin wallet can generate billions of addresses from your 12-word backup. A new address is automatically generated and shown each time you receive a payment."
+msgid "Each terracoin wallet can generate billions of addresses from your 12-word backup. A new address is automatically generated and shown each time you receive a payment."
 msgstr "12個の単語から無限大のアドレスを生成することができ、それをビットコインウォレットと呼びます。送金を受け取る度に新しいアドレスを生成して受取画面でお見せします。"
 
 #: src/js/services/feeService.js:13
@@ -987,8 +987,8 @@ msgid "Enter Spending Password"
 msgstr "送金時のパスワード入力して下さい。"
 
 #: src/js/services/bitpayAccountService.js:110
-msgid "Enter Two Factor for your BitPay account"
-msgstr "BitPay アカウントの2段階認証コードを入力して下さい"
+msgid "Enter Two Factor for your Terracoin account"
+msgstr "Terracoin アカウントの2段階認証コードを入力して下さい"
 
 #: www/views/amount.html:4
 msgid "Enter amount"
@@ -1123,7 +1123,7 @@ msgid "Error in Payment Protocol"
 msgstr "支払い検証のエラー"
 
 #: src/js/controllers/bitpayCardIntro.js:14
-msgid "Error pairing BitPay Account"
+msgid "Error pairing Terracoin Account"
 msgstr "Bitpayアカウントを接続中にエラー"
 
 #: src/js/controllers/paperWallet.js:41
@@ -1221,8 +1221,8 @@ msgid "Feedback could not be submitted. Please try again later."
 msgstr "フォームを送信する事ができませんでした。時間をおいて再試行ください。"
 
 #: src/js/services/onGoingProcess.js:42
-msgid "Fetching BitPay Account..."
-msgstr "BitPay アカウントを取得..."
+msgid "Fetching Terracoin Account..."
+msgstr "Terracoin アカウントを取得..."
 
 #: src/js/services/onGoingProcess.js:21
 msgid "Fetching payment information"
@@ -1263,8 +1263,8 @@ msgid "From"
 msgstr "送信者"
 
 #: src/js/controllers/bitpayCardIntro.js:71
-msgid "From BitPay account"
-msgstr " BitPayアカウントから"
+msgid "From Terracoin account"
+msgstr " Terracoinアカウントから"
 
 #: www/views/tab-import-phrase.html:57
 msgid "From Hardware Wallet"
@@ -1315,8 +1315,8 @@ msgid "Get local cash anywhere you go, from any Visa<sup>&reg;</sup> compatible 
 msgstr "Visa<sup>&reg;</sup>カード対応ATMから現地通貨をいつでも引き出せます。ATMの手数料はATMによって異なります。"
 
 #: www/views/onboarding/collectEmail.html:15
-msgid "Get news and updates from BitPay"
-msgstr "BitPay からのニュースや更新情報を受け取ります。"
+msgid "Get news and updates from Terracoin"
+msgstr "Terracoin からのニュースや更新情報を受け取ります。"
 
 #: www/views/bitpayCard.html:49
 msgid "Get started"
@@ -1478,7 +1478,7 @@ msgid "I understand"
 msgstr "承知しました"
 
 #: www/views/onboarding/disclaimer.html:21
-msgid "I understand that if this app is moved to another device or deleted, my bitcoin can only be recovered with the backup phrase."
+msgid "I understand that if this app is moved to another device or deleted, my terracoin can only be recovered with the backup phrase."
 msgstr "このアプリが別の端末に移動されたり、削除されたりした場合に、含まれたビットコインが復元フレーズからのみ復元ができることを理解しています。"
 
 #: www/views/onboarding/disclaimer.html:18
@@ -1502,8 +1502,8 @@ msgid "If enabled, wallets will also try to spend unconfirmed funds. This option
 msgstr "有効にした場合、ウォレットは未承認ビットコインも送金時の候補に含めます。これを有効にした場合、承認に時間がかかることがあります。"
 
 #: src/js/controllers/onboarding/backupRequest.js:18
-msgid "If this device is replaced or this app is deleted, neither you nor BitPay can recover your funds without a backup."
-msgstr "この端末の機種変更をしたり、アプリを削除したりした場合、端末のバックアップを取っていてもビットコインは復元されません。BitPayは復元フレーズを知らないため、お金を失ったことになります。なので、絶対に復元フレーズを書き留めて安全な場所に保管して下さい。"
+msgid "If this device is replaced or this app is deleted, neither you nor Terracoin can recover your funds without a backup."
+msgstr "この端末の機種変更をしたり、アプリを削除したりした場合、端末のバックアップを取っていてもビットコインは復元されません。Terracoinは復元フレーズを知らないため、お金を失ったことになります。なので、絶対に復元フレーズを書き留めて安全な場所に保管して下さい。"
 
 #: www/views/feedback/complete.html:23
 msgid "If you have additional feedback, please let us know by tapping the \"Send feedback\" option in the Settings tab."
@@ -1636,7 +1636,7 @@ msgid "Is this email address correct?"
 msgstr "このメールアドレスで宜しいですか？"
 
 #: www/views/addresses.html:25
-msgid "It's a good idea to avoid reusing addresses - this both protects your privacy and keeps your bitcoins secure against hypothetical attacks by quantum computers."
+msgid "It's a good idea to avoid reusing addresses - this both protects your privacy and keeps your terracoins secure against hypothetical attacks by quantum computers."
 msgstr "アドレスの再利用は避けましょう。これはプライバシーを守ることももちろんのこと、将来的にあり得るかもしれない量子コンピューターからの、ある攻撃からビットコインを守ることもできます。"
 
 #: src/js/controllers/backup.js:76
@@ -1852,7 +1852,7 @@ msgid "No access key defined"
 msgstr "アクセスキーが定義されていません"
 
 #: www/views/onboarding/backupRequest.html:5
-msgid "No backup, no bitcoin."
+msgid "No backup, no terracoin."
 msgstr "バックアップは非常に重要です！"
 
 #: www/views/addressbook.html:19
@@ -1917,7 +1917,7 @@ msgid "Non BIP44 wallet"
 msgstr "非 BIP44 ウォレット"
 
 #: www/views/preferencesCash.html:46
-msgid "Non eligible BTC wallets"
+msgid "Non eligible TRC wallets"
 msgstr "非対応ビットコインウォレット"
 
 #: src/js/services/feeService.js:12
@@ -1933,8 +1933,8 @@ msgid "Not enough funds for fee"
 msgstr "手数料含めたら残高が不足しています。"
 
 #: www/views/onboarding/tour.html:50
-msgid "Not even BitPay can access it."
-msgstr "BitPayは管理できない。"
+msgid "Not even Terracoin can access it."
+msgstr "Terracoinは管理できない。"
 
 #: src/js/controllers/paperWallet.js:47
 msgid "Not funds found"
@@ -1950,11 +1950,11 @@ msgid "Note"
 msgstr "メモ"
 
 #: www/views/backup.html:19
-msgid "Note: if this BCH wallet was duplicated from a BTC wallet, they share the same recovery phrase."
+msgid "Note: if this BCH wallet was duplicated from a TRC wallet, they share the same recovery phrase."
 msgstr "注意: このビットコインキャッシュウォレットがビットコインウォレットからの複製の場合、復元フレーズは一緒です。"
 
 #: www/views/modals/wallets.html:25
-msgid "Notice: only 1-1 (single signature) wallets can be used for sell bitcoin"
+msgid "Notice: only 1-1 (single signature) wallets can be used for sell terracoin"
 msgstr "注意： ビットコインの売却は 1-of-1 (単一署名) のウォレットからしか行えません。"
 
 #: www/views/preferencesNotifications.html:3
@@ -2067,8 +2067,8 @@ msgid "Open website"
 msgstr "サイトを開く"
 
 #: www/views/bitpayCardIntro.html:34
-msgid "Order the BitPay Card"
-msgstr "BitPay カードを申し込み"
+msgid "Order the Terracoin Card"
+msgstr "Terracoin カードを申し込み"
 
 #: www/views/join.html:105
 #: www/views/join.html:96
@@ -2094,7 +2094,7 @@ msgid "Paste the backup plain text code"
 msgstr "バックアップの文字をここに貼り付けて下さい"
 
 #: www/views/bitpayCardIntro.html:28
-msgid "Pay 0% fees to turn bitcoin into dollars."
+msgid "Pay 0% fees to turn terracoin into dollars."
 msgstr "0% 手数料でビットコインを米ドルに替える"
 
 #: www/views/modals/paypro.html:18
@@ -2406,16 +2406,16 @@ msgid "Remove"
 msgstr "削除"
 
 #: src/js/controllers/preferencesBitpayServices.js:7
-msgid "Remove BitPay Account?"
-msgstr "BitPay アカウントの接続を解除しますか？"
+msgid "Remove Terracoin Account?"
+msgstr "Terracoin アカウントの接続を解除しますか？"
 
 #: src/js/controllers/preferencesBitpayServices.js:19
-msgid "Remove BitPay Card?"
-msgstr "BitPay カードを削除しますか？"
+msgid "Remove Terracoin Card?"
+msgstr "Terracoin カードを削除しますか？"
 
 #: src/js/controllers/preferencesBitpayServices.js:8
-msgid "Removing your BitPay account will remove all associated BitPay account data from this device. Are you sure you would like to remove your BitPay Account ({{email}}) from this device?"
-msgstr "BitPay アカウントを削除すると、このデバイスからすべての関連付けられている BitPay のアカウントデータが削除されます。本当にこのデバイスから BitPay アカウント ({{email}}) を削除してもよろしいですか。"
+msgid "Removing your Terracoin account will remove all associated Terracoin account data from this device. Are you sure you would like to remove your Terracoin Account ({{email}}) from this device?"
+msgstr "Terracoin アカウントを削除すると、このデバイスからすべての関連付けられている Terracoin のアカウントデータが削除されます。本当にこのデバイスから Terracoin アカウント ({{email}}) を削除してもよろしいですか。"
 
 #: www/views/join.html:116
 #: www/views/join.html:124
@@ -2509,7 +2509,7 @@ msgid "Search Transactions"
 msgstr "取引を検索"
 
 #: www/views/tab-send.html:18
-msgid "Search or enter bitcoin address"
+msgid "Search or enter terracoin address"
 msgstr "連絡先検索かビットコインアドレスを指定"
 
 #: www/views/modals/search.html:16
@@ -2541,7 +2541,7 @@ msgid "Self-signed Certificate"
 msgstr "自己署名証明書"
 
 #: src/js/services/onGoingProcess.js:41
-msgid "Selling Bitcoin..."
+msgid "Selling Terracoin..."
 msgstr "ビットコインを売却中..."
 
 #: www/views/feedback/send.html:13
@@ -2696,7 +2696,7 @@ msgid "Show advanced options"
 msgstr "詳細設定を表示"
 
 #: www/views/tab-send.html:42
-msgid "Show bitcoin address"
+msgid "Show terracoin address"
 msgstr "ビットコインアドレスを表示"
 
 #: www/views/tab-send.html:64
@@ -2765,11 +2765,11 @@ msgid "Spending Password needed"
 msgstr "パスワードが必要"
 
 #: www/views/walletDetails.html:173
-msgid "Spending this balance will need significant Bitcoin network fees"
+msgid "Spending this balance will need significant Terracoin network fees"
 msgstr "この入力の組み合わせを送金するために膨大なビットコインネットワーク手数料を必要とします"
 
 #: www/views/tab-send.html:33
-msgid "Start sending bitcoin"
+msgid "Start sending terracoin"
 msgstr "ビットコインの送金を始めましょう"
 
 #: www/views/lockSetup.html:3
@@ -2807,7 +2807,7 @@ msgid "THIS ACTION CANNOT BE REVERSED"
 msgstr "＊＊＊注意＊＊＊ このアクションを元に戻すことはできません！！！"
 
 #: www/views/onboarding/welcome.html:5
-msgid "Take control of your money,<br>get started with bitcoin."
+msgid "Take control of your money,<br>get started with terracoin."
 msgstr "お金のコントロールを取り戻そう、<br>ビットコインをはじめよう"
 
 #: www/views/walletDetails.html:132
@@ -2863,15 +2863,15 @@ msgid "The Ledger Chrome application is not installed"
 msgstr "Ledgerのクロームアプリがインストールされていません。"
 
 #: www/views/modals/wallet-balance.html:55
-msgid "The amount of bitcoin immediately spendable from this wallet."
+msgid "The amount of terracoin immediately spendable from this wallet."
 msgstr "このウォレットからすぐに送金できる額"
 
 #: www/views/modals/wallet-balance.html:93
-msgid "The amount of bitcoin stored in this wallet that is allocated as inputs to your pending transaction proposals. The amount is determined using unspent transaction outputs associated with this wallet and may be more than the actual amounts associated with your pending transaction proposals."
+msgid "The amount of terracoin stored in this wallet that is allocated as inputs to your pending transaction proposals. The amount is determined using unspent transaction outputs associated with this wallet and may be more than the actual amounts associated with your pending transaction proposals."
 msgstr "現在協議中の送金の提案によってロックされてしまっている金額です。この金額は未使用出力の割り当てられた合計額になりますので、必ずしも送金提案の送金額だけがロックされるというものではありません。"
 
 #: www/views/modals/wallet-balance.html:74
-msgid "The amount of bitcoin stored in this wallet with less than 1 blockchain confirmation."
+msgid "The amount of terracoin stored in this wallet with less than 1 blockchain confirmation."
 msgstr "このウォレットの1承認未満の残高。"
 
 #: www/views/tab-import-phrase.html:5
@@ -2891,8 +2891,8 @@ msgid "The maximum number of consecutive unused addresses (20) has been reached.
 msgstr "連続未使用アドレスの上限(20)に達しました。どれかにアドレスにビットコインが少量でも入れば再び受取画面にて新しいアドレスを生成することができるようになります。"
 
 #: src/js/controllers/onboarding/terms.js:21
-msgid "The official English Terms of Service are available on the BitPay website."
-msgstr "英語公式の規約は BitPay のウェブサイトにてご覧いただけます。"
+msgid "The official English Terms of Service are available on the Terracoin website."
+msgstr "英語公式の規約は Terracoin のウェブサイトにてご覧いただけます。"
 
 #: www/views/tab-import-phrase.html:4
 msgid "The password of the recovery phrase (if set)"
@@ -2928,7 +2928,7 @@ msgid "The spend proposal is not pending"
 msgstr "送金の提案が協議中ではありません。"
 
 #: www/views/modals/wallet-balance.html:36
-msgid "The total amount of bitcoin stored in this wallet."
+msgid "The total amount of terracoin stored in this wallet."
 msgstr "このウォレットのビットコインの総残高"
 
 #: www/views/preferencesHistory.html:27
@@ -2959,11 +2959,11 @@ msgid "This app is fantastic!"
 msgstr "このアプリは素晴らしいです!"
 
 #: www/views/onboarding/tour.html:47
-msgid "This app stores your bitcoin with cutting-edge security."
+msgid "This app stores your terracoin with cutting-edge security."
 msgstr "このアプリは、最先端のセキュリティであなたのビットコインをお守りします。"
 
 #: src/js/controllers/confirm.js:523
-msgid "This bitcoin payment request has expired."
+msgid "This terracoin payment request has expired."
 msgstr "ビットコインペイメントの請求期限が切れています。"
 
 #: www/views/join.html:133
@@ -2977,7 +2977,7 @@ msgid "This recovery phrase was created with a password. To recover this wallet 
 msgstr "この復元フレーズにパスワードがかかっています。このウォレットを復元するためには、復元フレーズに加え、パスワードも必要です。"
 
 #: www/views/tx-details.html:91
-msgid "This transaction amount is too small compared to current Bitcoin network fees. Spending these funds will need a Bitcoin network fee cost comparable to the funds itself."
+msgid "This transaction amount is too small compared to current Terracoin network fees. Spending these funds will need a Terracoin network fee cost comparable to the funds itself."
 msgstr "この取引の金額はビットコインネットワーク手数料より低いです。送金額より大きい手数料を払ってしまうことになります。"
 
 #: www/views/tx-details.html:87
@@ -3004,16 +3004,16 @@ msgid "To"
 msgstr "宛先"
 
 #: www/views/tab-send.html:37
-msgid "To get started, buy bitcoin or share your address. You can receive bitcoin from any wallet or service."
+msgid "To get started, buy terracoin or share your address. You can receive terracoin from any wallet or service."
 msgstr "はじめるには、ビットコインを購入したり、アドレスを他の人に共有したりしましょう。どのビットコインウォレットやサービスから受け取れます。"
 
 #: www/views/tab-send.html:38
-msgid "To get started, you'll need to create a bitcoin wallet and get some bitcoin."
+msgid "To get started, you'll need to create a terracoin wallet and get some terracoin."
 msgstr "はじめに、ビットコインウォレットを作成し、ビットコインを入手する必要があります。"
 
 #: src/js/services/bitpayAccountService.js:73
-msgid "To {{reason}} you must first add your BitPay account - {{email}}"
-msgstr "{{reason}}：その前にBitPayアカウントを追加する必要があります - {{email}}"
+msgid "To {{reason}} you must first add your Terracoin account - {{email}}"
+msgstr "{{reason}}：その前にTerracoinアカウントを追加する必要があります - {{email}}"
 
 #: src/js/services/onGoingProcess.js:48
 msgid "Top up in progress..."
@@ -3100,7 +3100,7 @@ msgid "Try again in {{expires}}"
 msgstr "{{expires}} 経過後にもう一度試してください。"
 
 #: www/views/bitpayCardIntro.html:18
-msgid "Turn bitcoin into dollars, swipe anywhere Visa<sup>&reg;</sup> is accepted."
+msgid "Turn terracoin into dollars, swipe anywhere Visa<sup>&reg;</sup> is accepted."
 msgstr "瞬時にビットコインを米ドルに変換！Visa<sup>&reg;</sup>カード利用可能店舗ならどこでも！"
 
 #: www/views/tab-import-phrase.html:17
@@ -3210,8 +3210,8 @@ msgid "WARNING: UNTRUSTED CERTIFICATE"
 msgstr "警告: 信頼されていない証明書"
 
 #: www/views/preferencesPrivateKey.html:14
-msgid "WARNING: Your extended private keys are all that is needed to access your bitcoin funds. Be sure to protect your private keys and store them only on secure devices. BitPay does not have access to your private keys, so you alone are responsible for your keys. If you share key access with external services, you take responsibility for the risk of theft or breach. Only advanced users should handle extended private keys directly."
-msgstr "注意： 拡張秘密鍵だけでビットコインをすべて送金できてしまいます。秘密鍵を守り、安全な端末のみにて管理して下さい。BitPayは秘密鍵へのアクセスができないので、管理する責任は全て自己責任になります。外部のサービスにこの鍵を共有する場合、窃盗などのリスクを全て受け入れた上で宜しくお願いします。拡張秘密鍵を直接扱うのは上級者のユーザーのみです。"
+msgid "WARNING: Your extended private keys are all that is needed to access your terracoin funds. Be sure to protect your private keys and store them only on secure devices. Terracoin does not have access to your private keys, so you alone are responsible for your keys. If you share key access with external services, you take responsibility for the risk of theft or breach. Only advanced users should handle extended private keys directly."
+msgstr "注意： 拡張秘密鍵だけでビットコインをすべて送金できてしまいます。秘密鍵を守り、安全な端末のみにて管理して下さい。Terracoinは秘密鍵へのアクセスができないので、管理する責任は全て自己責任になります。外部のサービスにこの鍵を共有する場合、窃盗などのリスクを全て受け入れた上で宜しくお願いします。拡張秘密鍵を直接扱うのは上級者のユーザーのみです。"
 
 #: src/js/services/onGoingProcess.js:15
 msgid "Waiting for Ledger..."
@@ -3463,7 +3463,7 @@ msgid "You can make contributions by signing up on our Crowdin community transla
 msgstr "Crowdinのサイトにて翻訳者登録をして、今すぐに投稿をいただけます。お待ちしております。"
 
 #: www/views/tab-scan.html:16
-msgid "You can scan bitcoin addresses, payment requests, paper wallets, and more."
+msgid "You can scan terracoin addresses, payment requests, paper wallets, and more."
 msgstr "ビットコインアドレス、支払い請求、ペーパーウォレットなどをスキャンできます。"
 
 #: src/js/controllers/preferencesAbout.js:14
@@ -3471,7 +3471,7 @@ msgid "You can see the latest developments and contribute to this open source ap
 msgstr "GitHubのページにて最近の開発動向を見たり、改善案のソースコードの貢献したりすることができます。"
 
 #: www/views/onboarding/tour.html:19
-msgid "You can spend bitcoin at millions of websites and stores worldwide."
+msgid "You can spend terracoin at millions of websites and stores worldwide."
 msgstr "世界中のECサイトや店舗でビットコインを使って支払いができます。"
 
 #: www/views/backup.html:15
@@ -3483,7 +3483,7 @@ msgid "You can trade it for other currencies like US Dollars, Euros, or Pounds."
 msgstr "米ドル、ユーロ、ポンドなど他の通貨との取引ができます。"
 
 #: www/views/onboarding/tour.html:46
-msgid "You control your bitcoin."
+msgid "You control your terracoin."
 msgstr "ビットコインの自己管理"
 
 #: www/views/modals/chooseFeeLevel.html:64
@@ -3491,16 +3491,16 @@ msgid "You should not set a fee higher than {{maxFeeRecommended}} satoshis/byte.
 msgstr "{{maxFeeRecommended}} satoshis/byte より高い手数料を設定しない方が良いです。"
 
 #: www/views/modals/bitpay-card-confirmation.html:5
-msgid "You will need to log back for fill in your BitPay Card."
-msgstr "BitPayカードに入金するためにログインする必要があります。"
+msgid "You will need to log back for fill in your Terracoin Card."
+msgstr "Terracoinカードに入金するためにログインする必要があります。"
 
 #: www/views/preferencesNotifications.html:34
 msgid "You'll receive email notifications about payments sent and received from your wallets."
 msgstr "メールアドレスにウォレットへの入金や出金に関する通知が送られます。"
 
 #: www/views/bitpayCard.html:50
-msgid "Your BitPay Card is ready. Add funds to your card to start using it at stores and ATMs worldwide."
-msgstr "BitPayカードの準備が整いました。入金して全世界のお店やATMでご利用下さい。"
+msgid "Your Terracoin Card is ready. Add funds to your card to start using it at stores and ATMs worldwide."
+msgstr "Terracoinカードの準備が整いました。入金して全世界のお店やATMでご利用下さい。"
 
 #: www/views/mercadoLibre.html:57
 #: www/views/mercadoLibreCards.html:6
@@ -3508,11 +3508,11 @@ msgid "Your Gift Cards"
 msgstr "ギフトカード"
 
 #: www/views/includes/confirmBackupPopup.html:6
-msgid "Your bitcoin wallet is backed up!"
+msgid "Your terracoin wallet is backed up!"
 msgstr "ビットコインウォレットがバックアップされました!"
 
 #: www/views/tab-home.html:50
-msgid "Your bitcoin wallet is ready!"
+msgid "Your terracoin wallet is ready!"
 msgstr "ビットコインウォレットが完成しました!"
 
 #: www/views/modals/chooseFeeLevel.html:61
@@ -3568,8 +3568,8 @@ msgid "[Scanning Funds]"
 msgstr "[確認中]"
 
 #: src/js/controllers/bitpayCardIntro.js:11
-msgid "add your BitPay Visa card(s)"
-msgstr "BitPay VISAカードを追加します"
+msgid "add your Terracoin Visa card(s)"
+msgstr "Terracoin VISAカードを追加します"
 
 #: www/views/includes/available-balance.html:8
 msgid "locked by pending payments"
@@ -3600,11 +3600,11 @@ msgid "{{amountStr}} for Mercado Livre Brazil Gift Card"
 msgstr "{{amountStr}} を Mercado Livre Brazil ギフトカードに"
 
 #: www/views/preferencesBwsUrl.html:21
-msgid "{{appName}} depends on Bitcore Wallet Service (BWS) for blockchain information, networking and Copayer synchronization. The default configuration points to https://bws.bitpay.com (BitPay's public BWS instance)."
-msgstr "{{appName}}はブロックチェーンの情報を取得したり参加者を同期させたりするためにBitcore Wallet Service (BWS)に依存します。初期値としてBitPay社が提供する https://bws.bitpay.com (BitPay公式のBWSサーバー)を設定していますが、独自で運用してウォレットをそちらに接続しても構いません。"
+msgid "{{appName}} depends on Bitcore Wallet Service (BWS) for blockchain information, networking and Copayer synchronization. The default configuration points to https://bws.terracoin.io (Terracoin's public BWS instance)."
+msgstr "{{appName}}はブロックチェーンの情報を取得したり参加者を同期させたりするためにBitcore Wallet Service (BWS)に依存します。初期値としてTerracoin社が提供する https://bws.terracoin.io (Terracoin公式のBWSサーバー)を設定していますが、独自で運用してウォレットをそちらに接続しても構いません。"
 
 #: src/js/controllers/confirm.js:408
-msgid "{{fee}} will be deducted for bitcoin networking fees."
+msgid "{{fee}} will be deducted for terracoin networking fees."
 msgstr "{{fee}} のビットコインネットワーク手数料が差し引かれます。"
 
 #: www/views/confirm.html:85

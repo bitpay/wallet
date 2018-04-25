@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('tabSendController', function($scope, $rootScope, $log, $timeout, $ionicScrollDelegate, addressbookService, profileService, lodash, $state, walletService, incomingData, popupService, platformInfo, bwcError, gettextCatalog, scannerService, bitcoreCash, externalLinkService) {
+angular.module('copayApp.controllers').controller('tabSendController', function($scope, $rootScope, $log, $timeout, $ionicScrollDelegate, addressbookService, profileService, lodash, $state, walletService, incomingData, popupService, platformInfo, bwcError, gettextCatalog, scannerService, externalLinkService) {
 
   var originalList;
   var CONTACTS_SHOW_LIMIT;
@@ -94,11 +94,7 @@ angular.module('copayApp.controllers').controller('tabSendController', function(
   }
 
   var getCoin = function(address) {
-    var cashAddress = bitcoreCash.Address.isValid(address, 'livenet');
-    if (cashAddress) {
-      return 'bch';
-    }
-    return 'btc';
+    return 'trc';
   };
 
   var updateContactsList = function(cb) {

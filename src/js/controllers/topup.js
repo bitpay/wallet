@@ -4,7 +4,7 @@ angular.module('copayApp.controllers').controller('topUpController', function($s
 
   var FEE_TOO_HIGH_LIMIT_PER = 15;
   $scope.isCordova = platformInfo.isCordova;
-  var coin = 'btc';
+  var coin = 'trc';
   var cardId;
   var useSendMax;
   var amount;
@@ -118,8 +118,8 @@ angular.module('copayApp.controllers').controller('topUpController', function($s
     }
 
     var outputs = [];
-    var toAddress = invoice.bitcoinAddress;
-    var amountSat = parseInt((invoice.btcDue * 100000000).toFixed(0)); // BTC to Satoshi
+    var toAddress = invoice.terracoinAddress;
+    var amountSat = parseInt((invoice.trcDue * 100000000).toFixed(0)); // TRC to Satoshi
 
     outputs.push({
       'toAddress': toAddress,
@@ -168,15 +168,15 @@ angular.module('copayApp.controllers').controller('topUpController', function($s
           });
         }
 
-        var maxAmountBtc = Number((maxValues.amount / 100000000).toFixed(8));
+        var maxAmountTrc = Number((maxValues.amount / 100000000).toFixed(8));
 
         createInvoice({
-          amount: maxAmountBtc,
-          currency: 'BTC'
+          amount: maxAmountTrc,
+          currency: 'TRC'
         }, function(err, inv) {
           if (err) return cb(err);
 
-          var invoiceFeeSat = parseInt((inv.buyerPaidBtcMinerFee * 100000000).toFixed());
+          var invoiceFeeSat = parseInt((inv.buyerPaidTrcMinerFee * 100000000).toFixed());
           var newAmountSat = maxValues.amount - invoiceFeeSat;
 
           if (newAmountSat <= 0) {
@@ -225,8 +225,8 @@ angular.module('copayApp.controllers').controller('topUpController', function($s
       }
 
       // Sometimes API does not return this element;
-      invoice['buyerPaidBtcMinerFee'] = invoice.buyerPaidBtcMinerFee || 0;
-      var invoiceFeeSat = (invoice.buyerPaidBtcMinerFee * 100000000).toFixed();
+      invoice['buyerPaidTrcMinerFee'] = invoice.buyerPaidTrcMinerFee || 0;
+      var invoiceFeeSat = (invoice.buyerPaidTrcMinerFee * 100000000).toFixed();
 
       message = gettextCatalog.getString("Top up {{amountStr}} to debit card ({{cardLastNumber}})", {
         amountStr: $scope.amountUnitStr,

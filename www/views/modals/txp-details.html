@@ -6,7 +6,7 @@
     <div class="title" translate>
       Payment Proposal
     </div>
-    <button class="button button-clear" ng-click="reject()" ng-disabled="loading" ng-if="isShared && tx.pendingForUs">
+    <button class="button button-clear" ng-click="reject()" ng-disabled="loading" ng-if="isShared && tx.pendingForUs && !paymentExpired">
       Reject
     </button>
   </ion-header-bar>
@@ -52,7 +52,7 @@
         <div class="item">
           <span class="label" translate>To</span>
           <span class="payment-proposal-to" copy-to-clipboard="tx.toAddress">
-            <img src="img/icon-bitcoin-small.svg">
+            <img src="img/icon-terracoin-small.svg">
             <contact ng-if="!tx.hasMultiplesOutputs" class="ellipsis" address="{{tx.toAddress}}"></contact>
             <span ng-if="tx.hasMultiplesOutputs" translate>Multiple recipients</span>
           </span>
@@ -104,20 +104,35 @@
         </div>
 
         <div ng-if="tx.paypro">
-          <div class="item item-divider" translate>Payment details</div>
-          <div class="item">
-            {{'To'|translate}}
+          <div class="item item-divider" translate>Payment request</div>
+          <div class="item single-line" ng-if="tx.paypro.domain">
+            <span class="label">{{'Pay To'|translate}}</span>
             <span class="item-note">
-              <span>
-                <span ng-show="tx.merchant.pr.ca"><i class="fi-lock"></i> {{tx.paypro.domain}}</span>
-                <span ng-show="!tx.merchant.pr.ca"><i class="fi-unlock"></i> {{tx.paypro.domain}}</span>
+              {{tx.paypro.domain}}
+            </span>
+          </div>
+          <div class="item">
+            <span class="label">{{'Certified by'|translate}}</span>
+            <span class="item-note w100p">
+              <span ng-show="tx.paypro.caTrusted">
+                <i ng-if="tx.paypro.verified" class="ion-locked" style="color:green"></i>
+                <i ng-if="!tx.paypro.verified" class="ion-unlocked" style="color:orange"></i>
+                {{tx.paypro.caName}} {{'(Trusted)' | translate}}
               </span>
-              <contact address="{{tx.toAddress}}" ng-hide="tx.merchant"></contact>
+              <span ng-show="!tx.paypro.caTrusted">
+                <span ng-show="tx.paypro.selfSigned">
+                  <i class="ion-unlocked" style="color:red"></i> <span translate>Self-signed Certificate</span>
+                </span>
+                <span ng-show="!tx.paypro.selfSigned">
+                  <i class="ion-locked" style="color:yellow"></i>{{tx.paypro.caName}}<br>
+                  <span translate>WARNING: UNTRUSTED CERTIFICATE</span>
+                </span>
+              </span>
             </span>
           </div>
           <div class="item" ng-if="paymentExpired">
             {{'Expired'|translate}}
-            <span class="item-note">
+            <span class="item-note assertive">
               <time>{{tx.paypro.expires * 1000 | amTimeAgo }}</time>
             </span>
           </div>
@@ -129,7 +144,7 @@
           </div>
           <div class="item">
             {{'Merchant Message'|translate}}
-            <span class="item-note">{{tx.paypro.pr.pd.memo}}</span>
+            <span class="item-note">{{tx.paypro.memo}}</span>
           </div>
         </div>
         <div ng-if="actionList[0]">

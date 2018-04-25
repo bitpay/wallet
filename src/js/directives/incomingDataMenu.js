@@ -28,24 +28,24 @@ angular.module('copayApp.directives')
         scope.goToUrl = function(url) {
           externalLinkService.open(url);
         };
-        scope.sendPaymentToAddress = function(bitcoinAddress, coin) {
+        scope.sendPaymentToAddress = function(terracoinAddress, coin) {
           scope.showMenu = false;
           $state.go('tabs.send').then(function() {
             $timeout(function() {
               $state.transitionTo('tabs.send.amount', {
-                toAddress: bitcoinAddress,
-                coin: coin || 'btc',
+                toAddress: terracoinAddress,
+                coin: coin || 'trc',
               });
             }, 50);
           });
         };
-        scope.addToAddressBook = function(bitcoinAddress) {
+        scope.addToAddressBook = function(terracoinAddress) {
           scope.showMenu = false;
           $timeout(function() {
             $state.go('tabs.send').then(function() {
               $timeout(function() {
                 $state.transitionTo('tabs.send.addressbook', {
-                  addressbookEntry: bitcoinAddress
+                  addressbookEntry: terracoinAddress
                 });
               });
             });

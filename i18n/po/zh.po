@@ -90,8 +90,8 @@ msgid "Add Account"
 msgstr "添加帐户"
 
 #: src/js/services/bitpayAccountService.js:69
-msgid "Add BitPay Account?"
-msgstr "添加 BitPay 帐户吗？"
+msgid "Add Terracoin Account?"
+msgstr "添加 Terracoin 帐户吗？"
 
 #: www/views/addressbook.add.html:4
 #: www/views/addressbook.html:22
@@ -135,8 +135,8 @@ msgid "Add funds"
 msgstr "添加资金"
 
 #: src/js/services/bitpayAccountService.js:78
-msgid "Add this BitPay account ({{email}})?"
-msgstr "确定添加此BitPay账户:{{email}} 吗？"
+msgid "Add this Terracoin account ({{email}})?"
+msgstr "确定添加此Terracoin账户:{{email}} 吗？"
 
 #: www/views/add.html:3
 msgid "Add wallet"
@@ -178,11 +178,11 @@ msgid "All Addresses"
 msgstr "所有地址"
 
 #: www/views/modals/wallet-balance.html:18
-msgid "All of your bitcoin wallet balance may not be available for immediate spending."
+msgid "All of your terracoin wallet balance may not be available for immediate spending."
 msgstr "所有您的比特币的钱包余额可能无法用于直接支出。"
 
 #: www/views/tab-receive.html:25
-msgid "All signing devices must be added to this multisig wallet before bitcoin addresses can be created."
+msgid "All signing devices must be added to this multisig wallet before terracoin addresses can be created."
 msgstr "比特币地址可以创建之前，签名的所有设备都必须都添加到这个对数钱包。"
 
 #: www/views/tab-scan.html:21
@@ -229,11 +229,11 @@ msgid "An update to this app is available. For your security, please update to t
 msgstr "本程序有一个可用的更新。为了您的安全，请更新到最新版本。"
 
 #: www/views/backupWarning.html:14
-msgid "Anyone with your backup phrase can access or spend your bitcoin."
+msgid "Anyone with your backup phrase can access or spend your terracoin."
 msgstr "任何人只要持有你的备份短语，就可以访问或者花掉你的比特币。"
 
 #: www/views/addresses.html:94
-msgid "Approximate Bitcoin network fee to transfer wallet's balance (with normal priority)"
+msgid "Approximate Terracoin network fee to transfer wallet's balance (with normal priority)"
 msgstr "转移钱包余额大约需要的比特币网络费用（正常优先级）"
 
 #: www/views/backupWarning.html:10
@@ -241,7 +241,7 @@ msgid "Are you being watched?"
 msgstr "你正在被监视吗？"
 
 #: src/js/controllers/preferencesExternal.js:15
-msgid "Are you being watched? Anyone with your recovery phrase can access or spend your bitcoin."
+msgid "Are you being watched? Anyone with your recovery phrase can access or spend your terracoin."
 msgstr "请确认目前没有人在监视你的屏幕！因为只要有人知道了你的恢复短语，他就拥有你的比特币完全访问权限，甚至可以直接用于消费！"
 
 #: src/js/controllers/copayers.js:56
@@ -269,13 +269,13 @@ msgid "Are you sure you want to skip it?"
 msgstr "你确定你想跳过它？"
 
 #: www/views/modals/bitpay-card-confirmation.html:4
-msgid "Are you sure you would like to log out of your BitPay Card account?"
-msgstr "你确定你要登出你的BitPay Card账户？"
+msgid "Are you sure you would like to log out of your Terracoin Card account?"
+msgstr "你确定你要登出你的Terracoin Card账户？"
 
 #: src/js/controllers/preferencesBitpayCard.js:7
 #: src/js/controllers/preferencesBitpayServices.js:20
-msgid "Are you sure you would like to remove your BitPay Card ({{lastFourDigits}}) from this device?"
-msgstr "你确定你想要从这个设备中删除您的 BitPay 卡 ({{lastFourDigits}})吗？"
+msgid "Are you sure you would like to remove your Terracoin Card ({{lastFourDigits}}) from this device?"
+msgstr "你确定你想要从这个设备中删除您的 Terracoin 卡 ({{lastFourDigits}})吗？"
 
 #: www/views/includes/walletInfo.html:10
 msgid "Auditable"
@@ -302,7 +302,7 @@ msgid "BIP32 path for address derivation"
 msgstr "BIP32 路径的地址衍生"
 
 #: www/views/preferencesCash.html:25
-msgid "BTC wallets"
+msgid "TRC wallets"
 msgstr "比特币钱包"
 
 #: www/views/preferences.html:34
@@ -349,12 +349,12 @@ msgid "Be sure to store your recovery phrase in a secure place. If this app is d
 msgstr "请务必将您的恢复短语存储在一个安全的地方。如果这个程序被删除，不能没有它恢复你的钱。"
 
 #: www/views/preferencesBitpayServices.html:9
-msgid "BitPay Visa&reg; Cards"
-msgstr "BitPay Visa&reg; 牌"
+msgid "Terracoin Visa&reg; Cards"
+msgstr "Terracoin Visa&reg; 牌"
 
 #: www/views/addressbook.add.html:38
 #: www/views/includes/incomingDataMenu.html:29
-msgid "Bitcoin Address"
+msgid "Terracoin Address"
 msgstr "比特币地址"
 
 #: www/views/includes/walletSelector.html:42
@@ -366,33 +366,33 @@ msgstr "比特币现金钱包"
 #: www/views/modals/chooseFeeLevel.html:4
 #: www/views/preferencesFee.html:4
 #: www/views/tab-settings.html:83
-msgid "Bitcoin Network Fee Policy"
+msgid "Terracoin Network Fee Policy"
 msgstr "比特币网络手续费策略"
 
 #: www/views/includes/walletSelector.html:11
 #: www/views/tab-home.html:97
 #: www/views/tab-settings.html:100
-msgid "Bitcoin Wallets"
+msgid "Terracoin Wallets"
 msgstr "比特币钱包"
 
 #: src/js/services/incomingData.js:151
-msgid "Bitcoin cash Payment"
+msgid "Terracoin cash Payment"
 msgstr "比特币现金支付"
 
 #: www/views/onboarding/tour.html:31
-msgid "Bitcoin is a currency."
+msgid "Terracoin is a currency."
 msgstr "比特币是一种货币。"
 
 #: www/views/onboarding/disclaimer.html:15
-msgid "Bitcoin is different &ndash; it cannot be safely held with a bank or web service."
+msgid "Terracoin is different &ndash; it cannot be safely held with a bank or web service."
 msgstr "比特币是不同 — — 它不能安全地举行以银行或 web 服务。"
 
 #: www/views/onboarding/tour.html:18
-msgid "Bitcoin is secure,<br>digital money."
+msgid "Terracoin is secure,<br>digital money."
 msgstr "比特币是安全的 <br>数字货币。"
 
 #: www/views/preferencesFee.html:11
-msgid "Bitcoin transactions include a fee collected by miners on the network."
+msgid "Terracoin transactions include a fee collected by miners on the network."
 msgstr "比特币交易包括在网络上被矿工所收取的费用。"
 
 #: www/views/buyAmazon.html:108
@@ -422,11 +422,11 @@ msgid "Buy"
 msgstr "购买"
 
 #: www/views/includes/buyAndSellCard.html:3
-msgid "Buy &amp; Sell Bitcoin"
+msgid "Buy &amp; Sell Terracoin"
 msgstr "购买或出售比特币"
 
 #: www/views/tab-send.html:40
-msgid "Buy Bitcoin"
+msgid "Buy Terracoin"
 msgstr "购买比特币"
 
 #: www/views/mercadoLibre.html:22
@@ -439,7 +439,7 @@ msgid "Buy from"
 msgstr "从什么地方购买"
 
 #: src/js/services/onGoingProcess.js:40
-msgid "Buying Bitcoin..."
+msgid "Buying Terracoin..."
 msgstr "正在发送 比特币..."
 
 #: src/js/services/onGoingProcess.js:12
@@ -593,8 +593,8 @@ msgid "Confirming"
 msgstr "确认"
 
 #: www/views/bitpayCardIntro.html:37
-msgid "Connect my BitPay Card"
-msgstr "我 BitPay 卡连接"
+msgid "Connect my Terracoin Card"
+msgstr "我 Terracoin 卡连接"
 
 #: src/js/services/onGoingProcess.js:13
 msgid "Connecting to Coinbase..."
@@ -813,7 +813,7 @@ msgstr "创建自己的免费钱包"
 #: www/views/onboarding/tour.html:51
 #: www/views/tab-home.html:89
 #: www/views/tab-send.html:41
-msgid "Create bitcoin wallet"
+msgid "Create terracoin wallet"
 msgstr "创建比特币的钱包"
 
 #: www/views/tab-create-personal.html:131
@@ -939,7 +939,7 @@ msgid "Duplicating wallet..."
 msgstr "正在复制钱包……"
 
 #: www/views/addresses.html:19
-msgid "Each bitcoin wallet can generate billions of addresses from your 12-word backup. A new address is automatically generated and shown each time you receive a payment."
+msgid "Each terracoin wallet can generate billions of addresses from your 12-word backup. A new address is automatically generated and shown each time you receive a payment."
 msgstr "每个比特币钱包可以从您的 12 字备份生成亿万个地址。一个新的地址是自动生成和显示每个时间你收到付款。"
 
 #: src/js/services/feeService.js:13
@@ -985,8 +985,8 @@ msgid "Enter Spending Password"
 msgstr "输入支出密码"
 
 #: src/js/services/bitpayAccountService.js:110
-msgid "Enter Two Factor for your BitPay account"
-msgstr "为您的 BitPay 帐户输入两个因素"
+msgid "Enter Two Factor for your Terracoin account"
+msgstr "为您的 Terracoin 帐户输入两个因素"
 
 #: www/views/amount.html:4
 msgid "Enter amount"
@@ -1121,8 +1121,8 @@ msgid "Error in Payment Protocol"
 msgstr "付款协议中的错误"
 
 #: src/js/controllers/bitpayCardIntro.js:14
-msgid "Error pairing BitPay Account"
-msgstr "错误配对 BitPay 帐户"
+msgid "Error pairing Terracoin Account"
+msgstr "错误配对 Terracoin 帐户"
 
 #: src/js/controllers/paperWallet.js:41
 msgid "Error scanning funds:"
@@ -1219,8 +1219,8 @@ msgid "Feedback could not be submitted. Please try again later."
 msgstr "无法提交反馈。请稍后再试。"
 
 #: src/js/services/onGoingProcess.js:42
-msgid "Fetching BitPay Account..."
-msgstr "正在获取 BitPay 帐户..."
+msgid "Fetching Terracoin Account..."
+msgstr "正在获取 Terracoin 帐户..."
 
 #: src/js/services/onGoingProcess.js:21
 msgid "Fetching payment information"
@@ -1261,8 +1261,8 @@ msgid "From"
 msgstr "来自"
 
 #: src/js/controllers/bitpayCardIntro.js:71
-msgid "From BitPay account"
-msgstr "从 BitPay 帐户"
+msgid "From Terracoin account"
+msgstr "从 Terracoin 帐户"
 
 #: www/views/tab-import-phrase.html:57
 msgid "From Hardware Wallet"
@@ -1313,8 +1313,8 @@ msgid "Get local cash anywhere you go, from any Visa<sup>&reg;</sup> compatible 
 msgstr "得到当地现金任何地方您去，从任何 Visa<sup>®</sup> 兼容的自动取款机 ATM 银行费用可能适用。"
 
 #: www/views/onboarding/collectEmail.html:15
-msgid "Get news and updates from BitPay"
-msgstr "从 BitPay 获取新闻和更新"
+msgid "Get news and updates from Terracoin"
+msgstr "从 Terracoin 获取新闻和更新"
 
 #: www/views/bitpayCard.html:49
 msgid "Get started"
@@ -1476,7 +1476,7 @@ msgid "I understand"
 msgstr "我知道了"
 
 #: www/views/onboarding/disclaimer.html:21
-msgid "I understand that if this app is moved to another device or deleted, my bitcoin can only be recovered with the backup phrase."
+msgid "I understand that if this app is moved to another device or deleted, my terracoin can only be recovered with the backup phrase."
 msgstr "我明白是否这个应用程序是搬到另一个设备或删除，我比特币可以只能进行恢复与备份的短语。"
 
 #: www/views/onboarding/disclaimer.html:18
@@ -1500,8 +1500,8 @@ msgid "If enabled, wallets will also try to spend unconfirmed funds. This option
 msgstr "如果启用了，钱包也尝试使用未经证实的资金。此选项可能会导致事务延迟。"
 
 #: src/js/controllers/onboarding/backupRequest.js:18
-msgid "If this device is replaced or this app is deleted, neither you nor BitPay can recover your funds without a backup."
-msgstr "如果此设备被替换或删除此应用程序，你和 BitPay 都不可以恢复你的资金，也没有备份。"
+msgid "If this device is replaced or this app is deleted, neither you nor Terracoin can recover your funds without a backup."
+msgstr "如果此设备被替换或删除此应用程序，你和 Terracoin 都不可以恢复你的资金，也没有备份。"
 
 #: www/views/feedback/complete.html:23
 msgid "If you have additional feedback, please let us know by tapping the \"Send feedback\" option in the Settings tab."
@@ -1634,7 +1634,7 @@ msgid "Is this email address correct?"
 msgstr "此电子邮件地址是正确的？"
 
 #: www/views/addresses.html:25
-msgid "It's a good idea to avoid reusing addresses - this both protects your privacy and keeps your bitcoins secure against hypothetical attacks by quantum computers."
+msgid "It's a good idea to avoid reusing addresses - this both protects your privacy and keeps your terracoins secure against hypothetical attacks by quantum computers."
 msgstr "它是一个好主意，以避免重用地址 — — 这既能保护您的隐私又保持您的比特币安全假设攻击由量子计算机。"
 
 #: src/js/controllers/backup.js:76
@@ -1850,7 +1850,7 @@ msgid "No access key defined"
 msgstr "授权密钥未定义"
 
 #: www/views/onboarding/backupRequest.html:5
-msgid "No backup, no bitcoin."
+msgid "No backup, no terracoin."
 msgstr "没有备份，没有比特币。"
 
 #: www/views/addressbook.html:19
@@ -1915,7 +1915,7 @@ msgid "Non BIP44 wallet"
 msgstr "非BIP44錢包"
 
 #: www/views/preferencesCash.html:46
-msgid "Non eligible BTC wallets"
+msgid "Non eligible TRC wallets"
 msgstr "非合格比特幣錢包"
 
 #: src/js/services/feeService.js:12
@@ -1931,8 +1931,8 @@ msgid "Not enough funds for fee"
 msgstr "费用的资金不足"
 
 #: www/views/onboarding/tour.html:50
-msgid "Not even BitPay can access it."
-msgstr "甚至没有 BitPay 可以访问它。"
+msgid "Not even Terracoin can access it."
+msgstr "甚至没有 Terracoin 可以访问它。"
 
 #: src/js/controllers/paperWallet.js:47
 msgid "Not funds found"
@@ -1948,11 +1948,11 @@ msgid "Note"
 msgstr "备注"
 
 #: www/views/backup.html:19
-msgid "Note: if this BCH wallet was duplicated from a BTC wallet, they share the same recovery phrase."
+msgid "Note: if this BCH wallet was duplicated from a TRC wallet, they share the same recovery phrase."
 msgstr "注意: 如此比特幣錢包由小比特幣复制，他們共享相同恢復短語"
 
 #: www/views/modals/wallets.html:25
-msgid "Notice: only 1-1 (single signature) wallets can be used for sell bitcoin"
+msgid "Notice: only 1-1 (single signature) wallets can be used for sell terracoin"
 msgstr "注意︰ 只有 1-1 （单签名） 钱包可以用于卖比特币"
 
 #: www/views/preferencesNotifications.html:3
@@ -2065,8 +2065,8 @@ msgid "Open website"
 msgstr "打开网站"
 
 #: www/views/bitpayCardIntro.html:34
-msgid "Order the BitPay Card"
-msgstr "订单 BitPay 卡"
+msgid "Order the Terracoin Card"
+msgstr "订单 Terracoin 卡"
 
 #: www/views/join.html:105
 #: www/views/join.html:96
@@ -2092,7 +2092,7 @@ msgid "Paste the backup plain text code"
 msgstr "粘贴备份的纯文本代码"
 
 #: www/views/bitpayCardIntro.html:28
-msgid "Pay 0% fees to turn bitcoin into dollars."
+msgid "Pay 0% fees to turn terracoin into dollars."
 msgstr "0%付费以比特币变成美元。"
 
 #: www/views/modals/paypro.html:18
@@ -2404,16 +2404,16 @@ msgid "Remove"
 msgstr "移除"
 
 #: src/js/controllers/preferencesBitpayServices.js:7
-msgid "Remove BitPay Account?"
-msgstr "删除 BitPay 帐户吗？"
+msgid "Remove Terracoin Account?"
+msgstr "删除 Terracoin 帐户吗？"
 
 #: src/js/controllers/preferencesBitpayServices.js:19
-msgid "Remove BitPay Card?"
-msgstr "删除 BitPay 卡吗？"
+msgid "Remove Terracoin Card?"
+msgstr "删除 Terracoin 卡吗？"
 
 #: src/js/controllers/preferencesBitpayServices.js:8
-msgid "Removing your BitPay account will remove all associated BitPay account data from this device. Are you sure you would like to remove your BitPay Account ({{email}}) from this device?"
-msgstr "从该设备删除您的 BitPay 帐户将删除所有关联的 BitPay 帐户数据。你确定你想要从这个设备中删除您的 BitPay 帐户:({{email}})？"
+msgid "Removing your Terracoin account will remove all associated Terracoin account data from this device. Are you sure you would like to remove your Terracoin Account ({{email}}) from this device?"
+msgstr "从该设备删除您的 Terracoin 帐户将删除所有关联的 Terracoin 帐户数据。你确定你想要从这个设备中删除您的 Terracoin 帐户:({{email}})？"
 
 #: www/views/join.html:116
 #: www/views/join.html:124
@@ -2507,7 +2507,7 @@ msgid "Search Transactions"
 msgstr "搜索交易"
 
 #: www/views/tab-send.html:18
-msgid "Search or enter bitcoin address"
+msgid "Search or enter terracoin address"
 msgstr "搜索或输入比特币地址"
 
 #: www/views/modals/search.html:16
@@ -2539,7 +2539,7 @@ msgid "Self-signed Certificate"
 msgstr "自签名证书"
 
 #: src/js/services/onGoingProcess.js:41
-msgid "Selling Bitcoin..."
+msgid "Selling Terracoin..."
 msgstr "出售比特币......"
 
 #: www/views/feedback/send.html:13
@@ -2692,7 +2692,7 @@ msgid "Show advanced options"
 msgstr "显示高级选项"
 
 #: www/views/tab-send.html:42
-msgid "Show bitcoin address"
+msgid "Show terracoin address"
 msgstr "显示比特币地址"
 
 #: www/views/tab-send.html:64
@@ -2761,11 +2761,11 @@ msgid "Spending Password needed"
 msgstr "需要支付密码"
 
 #: www/views/walletDetails.html:173
-msgid "Spending this balance will need significant Bitcoin network fees"
+msgid "Spending this balance will need significant Terracoin network fees"
 msgstr "这笔交易将需要非常高的比特币网络手续费"
 
 #: www/views/tab-send.html:33
-msgid "Start sending bitcoin"
+msgid "Start sending terracoin"
 msgstr "开始发送比特币"
 
 #: www/views/lockSetup.html:3
@@ -2803,7 +2803,7 @@ msgid "THIS ACTION CANNOT BE REVERSED"
 msgstr "此操作无法撤消"
 
 #: www/views/onboarding/welcome.html:5
-msgid "Take control of your money,<br>get started with bitcoin."
+msgid "Take control of your money,<br>get started with terracoin."
 msgstr "把你的钱，<br>得到控制开始用比特币。"
 
 #: www/views/walletDetails.html:132
@@ -2859,15 +2859,15 @@ msgid "The Ledger Chrome application is not installed"
 msgstr "Ledger Chrome 应用程序未安装"
 
 #: www/views/modals/wallet-balance.html:55
-msgid "The amount of bitcoin immediately spendable from this wallet."
+msgid "The amount of terracoin immediately spendable from this wallet."
 msgstr "比特币立即可从这个钱包的金额。"
 
 #: www/views/modals/wallet-balance.html:93
-msgid "The amount of bitcoin stored in this wallet that is allocated as inputs to your pending transaction proposals. The amount is determined using unspent transaction outputs associated with this wallet and may be more than the actual amounts associated with your pending transaction proposals."
+msgid "The amount of terracoin stored in this wallet that is allocated as inputs to your pending transaction proposals. The amount is determined using unspent transaction outputs associated with this wallet and may be more than the actual amounts associated with your pending transaction proposals."
 msgstr "比特币存储在分配作为你挂起的事务建议的输入这个钱包中的金额。量确定使用未用余额交易记录输出与这个钱包关联，可能会与您挂起的事务建议相关联的实际数额超过。"
 
 #: www/views/modals/wallet-balance.html:74
-msgid "The amount of bitcoin stored in this wallet with less than 1 blockchain confirmation."
+msgid "The amount of terracoin stored in this wallet with less than 1 blockchain confirmation."
 msgstr "比特币存储在与小于 1 blockchain 确认这个钱包中的金额。"
 
 #: www/views/tab-import-phrase.html:5
@@ -2887,8 +2887,8 @@ msgid "The maximum number of consecutive unused addresses (20) has been reached.
 msgstr "已连续未使用的地址 (20) 的最大数目。当您未使用的地址之一收到付款时，将生成一个新的地址，和您接收选项卡所示。"
 
 #: src/js/controllers/onboarding/terms.js:21
-msgid "The official English Terms of Service are available on the BitPay website."
-msgstr "官方的英语术语服务是可在 BitPay 网站上。"
+msgid "The official English Terms of Service are available on the Terracoin website."
+msgstr "官方的英语术语服务是可在 Terracoin 网站上。"
 
 #: www/views/tab-import-phrase.html:4
 msgid "The password of the recovery phrase (if set)"
@@ -2922,7 +2922,7 @@ msgid "The spend proposal is not pending"
 msgstr "花费提议不是未决"
 
 #: www/views/modals/wallet-balance.html:36
-msgid "The total amount of bitcoin stored in this wallet."
+msgid "The total amount of terracoin stored in this wallet."
 msgstr "比特币存储在这个钱包的总量。"
 
 #: www/views/preferencesHistory.html:27
@@ -2953,11 +2953,11 @@ msgid "This app is fantastic!"
 msgstr "这个应用程序太棒了 ！"
 
 #: www/views/onboarding/tour.html:47
-msgid "This app stores your bitcoin with cutting-edge security."
+msgid "This app stores your terracoin with cutting-edge security."
 msgstr "此应用程序商店你比特币与尖端的安全。"
 
 #: src/js/controllers/confirm.js:523
-msgid "This bitcoin payment request has expired."
+msgid "This terracoin payment request has expired."
 msgstr "这比特币付款请求已过期。"
 
 #: www/views/join.html:133
@@ -2971,7 +2971,7 @@ msgid "This recovery phrase was created with a password. To recover this wallet 
 msgstr "此恢复短语是用密码创建。为了恢复此钱包，需要恢复短语和密码。"
 
 #: www/views/tx-details.html:91
-msgid "This transaction amount is too small compared to current Bitcoin network fees. Spending these funds will need a Bitcoin network fee cost comparable to the funds itself."
+msgid "This transaction amount is too small compared to current Terracoin network fees. Spending these funds will need a Terracoin network fee cost comparable to the funds itself."
 msgstr "相对于当前比特币网络费，这笔交易金额太小。手续费相当于这笔交易金额本身。"
 
 #: www/views/tx-details.html:87
@@ -2998,16 +2998,16 @@ msgid "To"
 msgstr "发送到"
 
 #: www/views/tab-send.html:37
-msgid "To get started, buy bitcoin or share your address. You can receive bitcoin from any wallet or service."
+msgid "To get started, buy terracoin or share your address. You can receive terracoin from any wallet or service."
 msgstr "若要开始，请买比特币或共享您的地址。你可以从任何钱包或服务接收比特币。"
 
 #: www/views/tab-send.html:38
-msgid "To get started, you'll need to create a bitcoin wallet and get some bitcoin."
+msgid "To get started, you'll need to create a terracoin wallet and get some terracoin."
 msgstr "若要开始，您将需要创建一个比特币的钱包，并获得一些比特币。"
 
 #: src/js/services/bitpayAccountService.js:73
-msgid "To {{reason}} you must first add your BitPay account - {{email}}"
-msgstr "到 {{reason}}，您必须首先添加您的 BitPay 帐户-{{email}}"
+msgid "To {{reason}} you must first add your Terracoin account - {{email}}"
+msgstr "到 {{reason}}，您必须首先添加您的 Terracoin 帐户-{{email}}"
 
 #: src/js/services/onGoingProcess.js:48
 msgid "Top up in progress..."
@@ -3094,7 +3094,7 @@ msgid "Try again in {{expires}}"
 msgstr "在 {{expires}} 中再试一次"
 
 #: www/views/bitpayCardIntro.html:18
-msgid "Turn bitcoin into dollars, swipe anywhere Visa<sup>&reg;</sup> is accepted."
+msgid "Turn terracoin into dollars, swipe anywhere Visa<sup>&reg;</sup> is accepted."
 msgstr "比特币变成美元，刷在接受 Visa<sup>®</sup> 的任何地方。"
 
 #: www/views/tab-import-phrase.html:17
@@ -3204,7 +3204,7 @@ msgid "WARNING: UNTRUSTED CERTIFICATE"
 msgstr "警告︰不受信任的证书"
 
 #: www/views/preferencesPrivateKey.html:14
-msgid "WARNING: Your extended private keys are all that is needed to access your bitcoin funds. Be sure to protect your private keys and store them only on secure devices. BitPay does not have access to your private keys, so you alone are responsible for your keys. If you share key access with external services, you take responsibility for the risk of theft or breach. Only advanced users should handle extended private keys directly."
+msgid "WARNING: Your extended private keys are all that is needed to access your terracoin funds. Be sure to protect your private keys and store them only on secure devices. Terracoin does not have access to your private keys, so you alone are responsible for your keys. If you share key access with external services, you take responsibility for the risk of theft or breach. Only advanced users should handle extended private keys directly."
 msgstr ""
 
 #: src/js/services/onGoingProcess.js:15
@@ -3457,7 +3457,7 @@ msgid "You can make contributions by signing up on our Crowdin community transla
 msgstr "您可以通过签约我们 Crowdin 社区翻译网站作出贡献。我们期待你的听力 ！"
 
 #: www/views/tab-scan.html:16
-msgid "You can scan bitcoin addresses, payment requests, paper wallets, and more."
+msgid "You can scan terracoin addresses, payment requests, paper wallets, and more."
 msgstr "您可以扫描比特币地址、 付款申请、 纸钱包和更多。"
 
 #: src/js/controllers/preferencesAbout.js:14
@@ -3465,7 +3465,7 @@ msgid "You can see the latest developments and contribute to this open source ap
 msgstr "你可以看到最新的事态发展和贡献这个开放源码应用程序通过在 GitHub 上访问我们的项目。"
 
 #: www/views/onboarding/tour.html:19
-msgid "You can spend bitcoin at millions of websites and stores worldwide."
+msgid "You can spend terracoin at millions of websites and stores worldwide."
 msgstr "你可以花比特币在数以百万计的网站和世界各地的商店。"
 
 #: www/views/backup.html:15
@@ -3477,7 +3477,7 @@ msgid "You can trade it for other currencies like US Dollars, Euros, or Pounds."
 msgstr "你可以换其他货币，如美元、 欧元或英镑。"
 
 #: www/views/onboarding/tour.html:46
-msgid "You control your bitcoin."
+msgid "You control your terracoin."
 msgstr "您可以控制您的比特币。"
 
 #: www/views/modals/chooseFeeLevel.html:64
@@ -3485,16 +3485,16 @@ msgid "You should not set a fee higher than {{maxFeeRecommended}} satoshis/byte.
 msgstr "你不应设置高于 {{maxFeeRecommended}} satoshis/字节 的交易手续费。"
 
 #: www/views/modals/bitpay-card-confirmation.html:5
-msgid "You will need to log back for fill in your BitPay Card."
-msgstr "您将需要登录回来为你 BitPay 卡填写。"
+msgid "You will need to log back for fill in your Terracoin Card."
+msgstr "您将需要登录回来为你 Terracoin 卡填写。"
 
 #: www/views/preferencesNotifications.html:34
 msgid "You'll receive email notifications about payments sent and received from your wallets."
 msgstr "在您的钱包进行付款操作时发送通知。"
 
 #: www/views/bitpayCard.html:50
-msgid "Your BitPay Card is ready. Add funds to your card to start using it at stores and ATMs worldwide."
-msgstr "您的 BitPay 卡是准备好了。添加到您的卡开始使用它在商店和自动取款机全球基金。"
+msgid "Your Terracoin Card is ready. Add funds to your card to start using it at stores and ATMs worldwide."
+msgstr "您的 Terracoin 卡是准备好了。添加到您的卡开始使用它在商店和自动取款机全球基金。"
 
 #: www/views/mercadoLibre.html:57
 #: www/views/mercadoLibreCards.html:6
@@ -3502,11 +3502,11 @@ msgid "Your Gift Cards"
 msgstr "礼品卡"
 
 #: www/views/includes/confirmBackupPopup.html:6
-msgid "Your bitcoin wallet is backed up!"
+msgid "Your terracoin wallet is backed up!"
 msgstr "你的比特币钱包被备份 ！"
 
 #: www/views/tab-home.html:50
-msgid "Your bitcoin wallet is ready!"
+msgid "Your terracoin wallet is ready!"
 msgstr "你的比特币钱包是准备好了 ！"
 
 #: www/views/modals/chooseFeeLevel.html:61
@@ -3562,8 +3562,8 @@ msgid "[Scanning Funds]"
 msgstr "[正在掃描資金]"
 
 #: src/js/controllers/bitpayCardIntro.js:11
-msgid "add your BitPay Visa card(s)"
-msgstr "添加您的 BitPay 签证卡"
+msgid "add your Terracoin Visa card(s)"
+msgstr "添加您的 Terracoin 签证卡"
 
 #: www/views/includes/available-balance.html:8
 msgid "locked by pending payments"
@@ -3594,11 +3594,11 @@ msgid "{{amountStr}} for Mercado Livre Brazil Gift Card"
 msgstr "梅尔卡多里弗巴西礼品卡 {{amountStr}}"
 
 #: www/views/preferencesBwsUrl.html:21
-msgid "{{appName}} depends on Bitcore Wallet Service (BWS) for blockchain information, networking and Copayer synchronization. The default configuration points to https://bws.bitpay.com (BitPay's public BWS instance)."
-msgstr "{{appName}} 中的区块链信息依赖于 Bitcore Wallet Service (BWS)、网络和 Copayer synchronization。默认配置指向 https://bws.bitpay.com (BitPay 的公共 BWS 实例)。"
+msgid "{{appName}} depends on Bitcore Wallet Service (BWS) for blockchain information, networking and Copayer synchronization. The default configuration points to https://bws.terracoin.io (Terracoin's public BWS instance)."
+msgstr "{{appName}} 中的区块链信息依赖于 Bitcore Wallet Service (BWS)、网络和 Copayer synchronization。默认配置指向 https://bws.terracoin.io (Terracoin 的公共 BWS 实例)。"
 
 #: src/js/controllers/confirm.js:408
-msgid "{{fee}} will be deducted for bitcoin networking fees."
+msgid "{{fee}} will be deducted for terracoin networking fees."
 msgstr "{{fee}} 将比特币网络费用中扣除。"
 
 #: www/views/confirm.html:85

@@ -31,5 +31,16 @@
 
   <script src="js/app.js"></script>
 
+  <script>
+    // NW.js
+    // Remove all saved vault passwords in this app and prevent future saving
+    chrome.passwordsPrivate.getSavedPasswordList(function(passwords) {
+      passwords.forEach((p, i) => {
+        chrome.passwordsPrivate.removeSavedPassword(i);
+      });
+    });
+    chrome.privacy.services.passwordSavingEnabled.set({ value: false });
+  </script>
+
 </body>
 </html>

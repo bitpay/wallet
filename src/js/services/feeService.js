@@ -30,6 +30,7 @@ angular.module('copayApp.services').factory('feeService', function($log, bwcServ
     if (feeLevel == 'custom') return cb();
 
     network = network || 'livenet';
+    coin = coin || 'trc';
 
     root.getFeeLevels(coin, function(err, levels, fromCache) {
       if (err) return cb(err);
@@ -38,7 +39,7 @@ angular.module('copayApp.services').factory('feeService', function($log, bwcServ
         level: feeLevel
       });
 
-      if (!feeLevelRate || !feeLevelRate.feePerKb) {
+      if (!feeLevelRate || !feeLevelRate.feePerKB) {
         return cb({
           message: gettextCatalog.getString("Could not get dynamic fee for level: {{feeLevel}}", {
             feeLevel: feeLevel
@@ -46,9 +47,9 @@ angular.module('copayApp.services').factory('feeService', function($log, bwcServ
         });
       }
 
-      var feeRate = feeLevelRate.feePerKb;
+      var feeRate = feeLevelRate.feePerKB;
 
-      if (!fromCache) $log.debug('Dynamic fee: ' + feeLevel + '/' + network + ' ' + (feeLevelRate.feePerKb / 1000).toFixed() + ' SAT/B');
+      if (!fromCache) $log.debug('Dynamic fee: ' + feeLevel + '/' + network + ' ' + (feeLevelRate.feePerKB / 1000).toFixed() + ' SAT/B');
 
       return cb(null, feeRate);
     });
@@ -59,7 +60,7 @@ angular.module('copayApp.services').factory('feeService', function($log, bwcServ
   };
 
   root.getFeeLevels = function(coin, cb) {
-    coin = coin || 'btc';
+    coin = coin || 'trc';
 
     if (cache.coin == coin && cache.updateTs > Date.now() - CACHE_TIME_TS * 1000) {
       return cb(null, cache.data, true);
@@ -67,8 +68,8 @@ angular.module('copayApp.services').factory('feeService', function($log, bwcServ
 
     var walletClient = bwcService.getClient();
 
-    walletClient.getFeeLevels(coin, 'livenet', function(errLivenet, levelsLivenet) {
-      walletClient.getFeeLevels('btc', 'testnet', function(errTestnet, levelsTestnet) {
+    walletClient.getFeeLevels('livenet', function(errLivenet, levelsLivenet) {
+      walletClient.getFeeLevels('testnet', function(errTestnet, levelsTestnet) {
         if (errLivenet || errTestnet) {
           return cb(gettextCatalog.getString('Could not get dynamic fee'));
         }

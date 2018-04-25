@@ -216,6 +216,7 @@
       background-color: transparent;
       border: 1px solid rgba(255,255,255,0.25);
       margin-top: 10px;
+      padding: 0;
       i.icon {
         margin-right: 7px;
         vertical-align: middle;
@@ -230,6 +231,10 @@
   }
   .no-alternative {
     padding-top: 45px;
+    // nasty iPhone X hacks
+    padding-top: calc(constant(safe-area-inset-top) + 16px);
+    // changed for iOS>=11.2
+    padding-top: calc(env(safe-area-inset-top) + 16px);
   }
   .item.item-footer {
     font-weight: lighter;

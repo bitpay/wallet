@@ -14,7 +14,7 @@ angular.module('copayApp.services').factory('configService', function(storageSer
 
     // Bitcore wallet service URL
     bws: {
-      url: 'https://bws.bitpay.com/bws/api',
+      url: 'https://bws.terracoin.io/bws/api',
     },
 
     download: {
@@ -23,7 +23,10 @@ angular.module('copayApp.services').factory('configService', function(storageSer
       },
       copay: {
         url: 'https://copay.io/#download'
-      }
+      },
+      trcpay: {
+        url: 'https://trcpay.terracoin.io/#download'
+      },
     },
 
     rateApp: {
@@ -33,6 +36,11 @@ angular.module('copayApp.services').factory('configService', function(storageSer
         wp: ''
       },
       copay: {
+        ios: 'http://itunes.apple.com/WebObjects/MZStore.woa/wa/viewContentsUserReviews?id=951330296&pageNumber=0&sortOrdering=2&type=Purple+Software&mt=8',
+        android: 'https://play.google.com/store/apps/details?id=com.bitpay.copay',
+        wp: ''
+      },
+      trcpay: {
         ios: 'http://itunes.apple.com/WebObjects/MZStore.woa/wa/viewContentsUserReviews?id=951330296&pageNumber=0&sortOrdering=2&type=Purple+Software&mt=8',
         android: 'https://play.google.com/store/apps/details?id=com.bitpay.copay',
         wp: ''
@@ -46,10 +54,10 @@ angular.module('copayApp.services').factory('configService', function(storageSer
       reconnectDelay: 5000,
       idleDurationMin: 4,
       settings: {
-        unitName: 'BTC',
+        unitName: 'TRC',
         unitToSatoshi: 100000000,
         unitDecimals: 8,
-        unitCode: 'btc',
+        unitCode: 'trc',
         alternativeName: 'US Dollar',
         alternativeIsoCode: 'USD',
       }
@@ -70,11 +78,11 @@ angular.module('copayApp.services').factory('configService', function(storageSer
     },
 
     rates: {
-      url: 'https://insight.bitpay.com:443/api/rates',
+      url: 'https://insight.terracoin.io:443/api/rates',
     },
 
     release: {
-      url: 'https://api.github.com/repos/bitpay/copay/releases/latest'
+      url: 'https://api.github.com/repos/terracoin/TRCpay/releases/latest'
     },
 
     pushNotificationsEnabled: true,

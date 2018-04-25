@@ -32,7 +32,7 @@ angular.module('copayApp.controllers').controller('preferencesFeeController', fu
   });
 
   $scope.init = function() {
-    var coin = 'btc'; // TODO: only BTC in preferences
+    var coin = 'trc'; // TODO: only TRC in preferences
     $scope.network = $scope.network || 'livenet';
     $scope.feeOpts = feeService.feeOpts;
     $scope.currentFeeLevel = $scope.feeLevel || feeService.getCurrentFeeLevel();
@@ -67,8 +67,8 @@ angular.module('copayApp.controllers').controller('preferencesFeeController', fu
       return;
     }
 
-    $scope.feePerSatByte = (value.feePerKb / 1000).toFixed();
-    $scope.avgConfirmationTime = value.nbBlocks * 10;
+    $scope.feePerSatByte = (value.feePerKB / 1000).toFixed();
+    $scope.avgConfirmationTime = value.nbBlocks * 2;
     $scope.invalidCustomFeeEntered = false;
     setMinWarning();
     setMaxWarning();
@@ -98,7 +98,7 @@ angular.module('copayApp.controllers').controller('preferencesFeeController', fu
     var value = lodash.find($scope.feeLevels[$scope.network], {
       level: 'superEconomy'
     });
-    return parseInt((value.feePerKb / 1000).toFixed());
+    return parseInt((value.feePerKB / 1000).toFixed());
   };
 
   var setMinWarning = function() {

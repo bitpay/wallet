@@ -90,8 +90,8 @@ msgid "Add Account"
 msgstr "Aggiungere Account"
 
 #: src/js/services/bitpayAccountService.js:69
-msgid "Add BitPay Account?"
-msgstr "Aggiungere il conto BitPay?"
+msgid "Add Terracoin Account?"
+msgstr "Aggiungere il conto Terracoin?"
 
 #: www/views/addressbook.add.html:4
 #: www/views/addressbook.html:22
@@ -135,8 +135,8 @@ msgid "Add funds"
 msgstr "Aggiungi fondi"
 
 #: src/js/services/bitpayAccountService.js:78
-msgid "Add this BitPay account ({{email}})?"
-msgstr "Aggiungere questo account BitPay ({{email}})?"
+msgid "Add this Terracoin account ({{email}})?"
+msgstr "Aggiungere questo account Terracoin ({{email}})?"
 
 #: www/views/add.html:3
 msgid "Add wallet"
@@ -178,12 +178,12 @@ msgid "All Addresses"
 msgstr "Tutti gli indirizzi"
 
 #: www/views/modals/wallet-balance.html:18
-msgid "All of your bitcoin wallet balance may not be available for immediate spending."
+msgid "All of your terracoin wallet balance may not be available for immediate spending."
 msgstr "Tutto il bilancio del tuo portafoglio potrebbe non essere disponibile ad essere speso nell'immediato."
 
 #: www/views/tab-receive.html:25
-msgid "All signing devices must be added to this multisig wallet before bitcoin addresses can be created."
-msgstr "Tutti i dispositivi firmanti devono essere aggiunti a questo portafoglio multisig prima che si possano creare indirizzi bitcoin."
+msgid "All signing devices must be added to this multisig wallet before terracoin addresses can be created."
+msgstr "Tutti i dispositivi firmanti devono essere aggiunti a questo portafoglio multisig prima che si possano creare indirizzi terracoin."
 
 #: www/views/tab-scan.html:21
 msgid "Allow Camera Access"
@@ -229,20 +229,20 @@ msgid "An update to this app is available. For your security, please update to t
 msgstr "Un aggiornamento dell'app è disponibile. Per la tua sicurezza è consigliato aggiornare all'ultima versione."
 
 #: www/views/backupWarning.html:14
-msgid "Anyone with your backup phrase can access or spend your bitcoin."
-msgstr "Qualcuno con la tua frase di recupero potrebbe avere accesso o spendere i tuoi bitcoin."
+msgid "Anyone with your backup phrase can access or spend your terracoin."
+msgstr "Qualcuno con la tua frase di recupero potrebbe avere accesso o spendere i tuoi terracoin."
 
 #: www/views/addresses.html:94
-msgid "Approximate Bitcoin network fee to transfer wallet's balance (with normal priority)"
-msgstr "La tariffa approssimativa della rete Bitcoin per il trasferimento del saldo del portafoglio ( con priorità normale)"
+msgid "Approximate Terracoin network fee to transfer wallet's balance (with normal priority)"
+msgstr "La tariffa approssimativa della rete Terracoin per il trasferimento del saldo del portafoglio ( con priorità normale)"
 
 #: www/views/backupWarning.html:10
 msgid "Are you being watched?"
 msgstr "Sei osservato?"
 
 #: src/js/controllers/preferencesExternal.js:15
-msgid "Are you being watched? Anyone with your recovery phrase can access or spend your bitcoin."
-msgstr "Siete osservati? Chiunque con la vostra frase di recupero può accedere o spendere i vostri bitcoin."
+msgid "Are you being watched? Anyone with your recovery phrase can access or spend your terracoin."
+msgstr "Siete osservati? Chiunque con la vostra frase di recupero può accedere o spendere i vostri terracoin."
 
 #: src/js/controllers/copayers.js:56
 msgid "Are you sure you want to cancel and delete this wallet?"
@@ -269,13 +269,13 @@ msgid "Are you sure you want to skip it?"
 msgstr "Sei sicuro di voler saltare?"
 
 #: www/views/modals/bitpay-card-confirmation.html:4
-msgid "Are you sure you would like to log out of your BitPay Card account?"
-msgstr "Sei sicuro che vuoi uscire dal tuo account BitPay Card?"
+msgid "Are you sure you would like to log out of your Terracoin Card account?"
+msgstr "Sei sicuro che vuoi uscire dal tuo account Terracoin Card?"
 
 #: src/js/controllers/preferencesBitpayCard.js:7
 #: src/js/controllers/preferencesBitpayServices.js:20
-msgid "Are you sure you would like to remove your BitPay Card ({{lastFourDigits}}) from this device?"
-msgstr "Sei certo di volere rimuovere la tua BitPay Card ({{lastFourDigits}}) da questo dispositivo?"
+msgid "Are you sure you would like to remove your Terracoin Card ({{lastFourDigits}}) from this device?"
+msgstr "Sei certo di volere rimuovere la tua Terracoin Card ({{lastFourDigits}}) da questo dispositivo?"
 
 #: www/views/includes/walletInfo.html:10
 msgid "Auditable"
@@ -302,8 +302,8 @@ msgid "BIP32 path for address derivation"
 msgstr "Percorso BIP32 per generare l'indirizzo"
 
 #: www/views/preferencesCash.html:25
-msgid "BTC wallets"
-msgstr "Portafogli BTC"
+msgid "TRC wallets"
+msgstr "Portafogli TRC"
 
 #: www/views/preferences.html:34
 msgid "Backup"
@@ -349,13 +349,13 @@ msgid "Be sure to store your recovery phrase in a secure place. If this app is d
 msgstr "Assicurati di salvare la frase di recupero in un luogo sicuro. Senza di essa, se rimuovi questa applicazione il tuo denaro non potrà essere recuperato."
 
 #: www/views/preferencesBitpayServices.html:9
-msgid "BitPay Visa&reg; Cards"
-msgstr "Carte di BitPay Visa®"
+msgid "Terracoin Visa&reg; Cards"
+msgstr "Carte di Terracoin Visa®"
 
 #: www/views/addressbook.add.html:38
 #: www/views/includes/incomingDataMenu.html:29
-msgid "Bitcoin Address"
-msgstr "Indirizzo Bitcoin"
+msgid "Terracoin Address"
+msgstr "Indirizzo Terracoin"
 
 #: www/views/includes/walletSelector.html:42
 #: www/views/tab-home.html:112
@@ -366,34 +366,34 @@ msgstr "Portafogli Bitcoin Cash"
 #: www/views/modals/chooseFeeLevel.html:4
 #: www/views/preferencesFee.html:4
 #: www/views/tab-settings.html:83
-msgid "Bitcoin Network Fee Policy"
-msgstr "Criterio delle Commissioni del Bitcoin Network"
+msgid "Terracoin Network Fee Policy"
+msgstr "Criterio delle Commissioni del Terracoin Network"
 
 #: www/views/includes/walletSelector.html:11
 #: www/views/tab-home.html:97
 #: www/views/tab-settings.html:100
-msgid "Bitcoin Wallets"
-msgstr "Portafogli Bitcoin"
+msgid "Terracoin Wallets"
+msgstr "Portafogli Terracoin"
 
 #: src/js/services/incomingData.js:151
-msgid "Bitcoin cash Payment"
+msgid "Terracoin cash Payment"
 msgstr "Pagamento Bitcoin Cash"
 
 #: www/views/onboarding/tour.html:31
-msgid "Bitcoin is a currency."
-msgstr "Bitcoin è una moneta."
+msgid "Terracoin is a currency."
+msgstr "Terracoin è una moneta."
 
 #: www/views/onboarding/disclaimer.html:15
-msgid "Bitcoin is different &ndash; it cannot be safely held with a bank or web service."
-msgstr "Bitcoin è differente e non può essere custodito in una banca o con un servizio web."
+msgid "Terracoin is different &ndash; it cannot be safely held with a bank or web service."
+msgstr "Terracoin è differente e non può essere custodito in una banca o con un servizio web."
 
 #: www/views/onboarding/tour.html:18
-msgid "Bitcoin is secure,<br>digital money."
-msgstr "Bitcoin è sicuro,<br>moneta digitale."
+msgid "Terracoin is secure,<br>digital money."
+msgstr "Terracoin è sicuro,<br>moneta digitale."
 
 #: www/views/preferencesFee.html:11
-msgid "Bitcoin transactions include a fee collected by miners on the network."
-msgstr "Le transazioni Bitcoin comprendono un supplemento che viene raccolto dai mines nella rete."
+msgid "Terracoin transactions include a fee collected by miners on the network."
+msgstr "Le transazioni Terracoin comprendono un supplemento che viene raccolto dai mines nella rete."
 
 #: www/views/buyAmazon.html:108
 msgid "Bought {{amountUnitStr}}"
@@ -422,12 +422,12 @@ msgid "Buy"
 msgstr "Acquista"
 
 #: www/views/includes/buyAndSellCard.html:3
-msgid "Buy &amp; Sell Bitcoin"
-msgstr "Comprare &amp; Vendere Bitcoin"
+msgid "Buy &amp; Sell Terracoin"
+msgstr "Comprare &amp; Vendere Terracoin"
 
 #: www/views/tab-send.html:40
-msgid "Buy Bitcoin"
-msgstr "Acquista Bitcoin"
+msgid "Buy Terracoin"
+msgstr "Acquista Terracoin"
 
 #: www/views/mercadoLibre.html:22
 #: www/views/mercadoLibre.html:50
@@ -439,8 +439,8 @@ msgid "Buy from"
 msgstr "Acquista da"
 
 #: src/js/services/onGoingProcess.js:40
-msgid "Buying Bitcoin..."
-msgstr "Comprare Bitcoin..."
+msgid "Buying Terracoin..."
+msgstr "Comprare Terracoin..."
 
 #: src/js/services/onGoingProcess.js:12
 msgid "Calculating fee"
@@ -593,8 +593,8 @@ msgid "Confirming"
 msgstr "Confermando"
 
 #: www/views/bitpayCardIntro.html:37
-msgid "Connect my BitPay Card"
-msgstr "Collegare la mia Carta BitPay"
+msgid "Connect my Terracoin Card"
+msgstr "Collegare la mia Carta Terracoin"
 
 #: src/js/services/onGoingProcess.js:13
 msgid "Connecting to Coinbase..."
@@ -813,8 +813,8 @@ msgstr "Creare portafoglio condiviso"
 #: www/views/onboarding/tour.html:51
 #: www/views/tab-home.html:89
 #: www/views/tab-send.html:41
-msgid "Create bitcoin wallet"
-msgstr "Creare portafoglio bitcoin"
+msgid "Create terracoin wallet"
+msgstr "Creare portafoglio terracoin"
 
 #: www/views/tab-create-personal.html:131
 msgid "Create new wallet"
@@ -939,8 +939,8 @@ msgid "Duplicating wallet..."
 msgstr "Duplicazione di portafoglio..."
 
 #: www/views/addresses.html:19
-msgid "Each bitcoin wallet can generate billions of addresses from your 12-word backup. A new address is automatically generated and shown each time you receive a payment."
-msgstr "Ogni portafoglio bitcoin è in grado di generare miliardi di indirizzi dal tuo backup di 12 parole. Un nuovo indirizzo verrà automaticamente generato e mostrato ogni volta che riceverai un pagamento."
+msgid "Each terracoin wallet can generate billions of addresses from your 12-word backup. A new address is automatically generated and shown each time you receive a payment."
+msgstr "Ogni portafoglio terracoin è in grado di generare miliardi di indirizzi dal tuo backup di 12 parole. Un nuovo indirizzo verrà automaticamente generato e mostrato ogni volta che riceverai un pagamento."
 
 #: src/js/services/feeService.js:13
 msgid "Economy"
@@ -985,8 +985,8 @@ msgid "Enter Spending Password"
 msgstr "Inserisci Password di spesa"
 
 #: src/js/services/bitpayAccountService.js:110
-msgid "Enter Two Factor for your BitPay account"
-msgstr "Inserisci Due Fattori per il tuo account BitPay"
+msgid "Enter Two Factor for your Terracoin account"
+msgstr "Inserisci Due Fattori per il tuo account Terracoin"
 
 #: www/views/amount.html:4
 msgid "Enter amount"
@@ -1121,8 +1121,8 @@ msgid "Error in Payment Protocol"
 msgstr "Errore nel protocollo di pagamento"
 
 #: src/js/controllers/bitpayCardIntro.js:14
-msgid "Error pairing BitPay Account"
-msgstr "Errore di accoppiamento BitPay Account"
+msgid "Error pairing Terracoin Account"
+msgstr "Errore di accoppiamento Terracoin Account"
 
 #: src/js/controllers/paperWallet.js:41
 msgid "Error scanning funds:"
@@ -1219,8 +1219,8 @@ msgid "Feedback could not be submitted. Please try again later."
 msgstr "Il feedback non può essere sottoscritto. Riprova più tardi."
 
 #: src/js/services/onGoingProcess.js:42
-msgid "Fetching BitPay Account..."
-msgstr "Recupero Account BitPay..."
+msgid "Fetching Terracoin Account..."
+msgstr "Recupero Account Terracoin..."
 
 #: src/js/services/onGoingProcess.js:21
 msgid "Fetching payment information"
@@ -1261,8 +1261,8 @@ msgid "From"
 msgstr "Da"
 
 #: src/js/controllers/bitpayCardIntro.js:71
-msgid "From BitPay account"
-msgstr "Dal conto BitPay"
+msgid "From Terracoin account"
+msgstr "Dal conto Terracoin"
 
 #: www/views/tab-import-phrase.html:57
 msgid "From Hardware Wallet"
@@ -1313,8 +1313,8 @@ msgid "Get local cash anywhere you go, from any Visa<sup>&reg;</sup> compatible 
 msgstr "Ottieni contante locale ovunque tu vada, da qualsiasi ATM bancomat compatibile con Visa<sup>&reg;</sup>. Possibili commissioni bancarie da ATM."
 
 #: www/views/onboarding/collectEmail.html:15
-msgid "Get news and updates from BitPay"
-msgstr "Ricevi notizie e aggiornamenti da BitPay"
+msgid "Get news and updates from Terracoin"
+msgstr "Ricevi notizie e aggiornamenti da Terracoin"
 
 #: www/views/bitpayCard.html:49
 msgid "Get started"
@@ -1476,8 +1476,8 @@ msgid "I understand"
 msgstr "Ho capito"
 
 #: www/views/onboarding/disclaimer.html:21
-msgid "I understand that if this app is moved to another device or deleted, my bitcoin can only be recovered with the backup phrase."
-msgstr "Ho compreso che se questa app sarà trasferita ad un altro dispositivo o cancellata, i miei bitcoin potranno essere recuperati solo tramite la tua frase di recupero."
+msgid "I understand that if this app is moved to another device or deleted, my terracoin can only be recovered with the backup phrase."
+msgstr "Ho compreso che se questa app sarà trasferita ad un altro dispositivo o cancellata, i miei terracoin potranno essere recuperati solo tramite la tua frase di recupero."
 
 #: www/views/onboarding/disclaimer.html:18
 msgid "I understand that my funds are held securely on this device, not by a company."
@@ -1500,8 +1500,8 @@ msgid "If enabled, wallets will also try to spend unconfirmed funds. This option
 msgstr "Se abilitata, i portafogli cercheranno di spendere anche fondi non ancora confermati. Questa opzione può causare ritardi delle transazioni."
 
 #: src/js/controllers/onboarding/backupRequest.js:18
-msgid "If this device is replaced or this app is deleted, neither you nor BitPay can recover your funds without a backup."
-msgstr "Se questo dispositivo viene sostituito o eliminato questa app, né tu né BitPay può recuperare i fondi senza una copia di backup."
+msgid "If this device is replaced or this app is deleted, neither you nor Terracoin can recover your funds without a backup."
+msgstr "Se questo dispositivo viene sostituito o eliminato questa app, né tu né Terracoin può recuperare i fondi senza una copia di backup."
 
 #: www/views/feedback/complete.html:23
 msgid "If you have additional feedback, please let us know by tapping the \"Send feedback\" option in the Settings tab."
@@ -1634,8 +1634,8 @@ msgid "Is this email address correct?"
 msgstr "Questo indirizzo email è corretto?"
 
 #: www/views/addresses.html:25
-msgid "It's a good idea to avoid reusing addresses - this both protects your privacy and keeps your bitcoins secure against hypothetical attacks by quantum computers."
-msgstr "È una buona idea evitare di riutilizzare gli indirizzi - questo protegge la tua privacy e mantiene i Bitcoin al sicuro da ipotetici attacchi di computer quantistici."
+msgid "It's a good idea to avoid reusing addresses - this both protects your privacy and keeps your terracoins secure against hypothetical attacks by quantum computers."
+msgstr "È una buona idea evitare di riutilizzare gli indirizzi - questo protegge la tua privacy e mantiene i Terracoin al sicuro da ipotetici attacchi di computer quantistici."
 
 #: src/js/controllers/backup.js:76
 msgid "It's important that you write your backup phrase down correctly. If something happens to your wallet, you'll need this backup to recover your money. Please review your backup and try again."
@@ -1850,8 +1850,8 @@ msgid "No access key defined"
 msgstr "Nessuna chiave di accesso definita"
 
 #: www/views/onboarding/backupRequest.html:5
-msgid "No backup, no bitcoin."
-msgstr "Nessun backup, nessun bitcoin."
+msgid "No backup, no terracoin."
+msgstr "Nessun backup, nessun terracoin."
 
 #: www/views/addressbook.html:19
 msgid "No contacts yet"
@@ -1915,8 +1915,8 @@ msgid "Non BIP44 wallet"
 msgstr "Portafoglio non BIP44"
 
 #: www/views/preferencesCash.html:46
-msgid "Non eligible BTC wallets"
-msgstr "Portafogli BTC non ammissibili"
+msgid "Non eligible TRC wallets"
+msgstr "Portafogli TRC non ammissibili"
 
 #: src/js/services/feeService.js:12
 msgid "Normal"
@@ -1931,8 +1931,8 @@ msgid "Not enough funds for fee"
 msgstr "Non ci sono abbastanza fondi per la commissione"
 
 #: www/views/onboarding/tour.html:50
-msgid "Not even BitPay can access it."
-msgstr "Nemmeno BitPay può accedervi."
+msgid "Not even Terracoin can access it."
+msgstr "Nemmeno Terracoin può accedervi."
 
 #: src/js/controllers/paperWallet.js:47
 msgid "Not funds found"
@@ -1948,12 +1948,12 @@ msgid "Note"
 msgstr "Nota"
 
 #: www/views/backup.html:19
-msgid "Note: if this BCH wallet was duplicated from a BTC wallet, they share the same recovery phrase."
-msgstr "Nota: se questo portafoglio BCH è stato duplicato da un portafoglio BTC, condividono la stessa frase di recupero."
+msgid "Note: if this BCH wallet was duplicated from a TRC wallet, they share the same recovery phrase."
+msgstr "Nota: se questo portafoglio BCH è stato duplicato da un portafoglio TRC, condividono la stessa frase di recupero."
 
 #: www/views/modals/wallets.html:25
-msgid "Notice: only 1-1 (single signature) wallets can be used for sell bitcoin"
-msgstr "Avviso: solo i portafogli 1-1 (con singola firma) possono essere utilizzati per vendere bitcoin"
+msgid "Notice: only 1-1 (single signature) wallets can be used for sell terracoin"
+msgstr "Avviso: solo i portafogli 1-1 (con singola firma) possono essere utilizzati per vendere terracoin"
 
 #: www/views/preferencesNotifications.html:3
 #: www/views/tab-settings.html:54
@@ -2065,8 +2065,8 @@ msgid "Open website"
 msgstr "Apri il sito"
 
 #: www/views/bitpayCardIntro.html:34
-msgid "Order the BitPay Card"
-msgstr "Ordinare la carta BitPay"
+msgid "Order the Terracoin Card"
+msgstr "Ordinare la carta Terracoin"
 
 #: www/views/join.html:105
 #: www/views/join.html:96
@@ -2092,8 +2092,8 @@ msgid "Paste the backup plain text code"
 msgstr "Incolla qui il codice di backup"
 
 #: www/views/bitpayCardIntro.html:28
-msgid "Pay 0% fees to turn bitcoin into dollars."
-msgstr "Pagare 0% di tasse per trasformare bitcoin in dollari."
+msgid "Pay 0% fees to turn terracoin into dollars."
+msgstr "Pagare 0% di tasse per trasformare terracoin in dollari."
 
 #: www/views/modals/paypro.html:18
 msgid "Pay To"
@@ -2404,16 +2404,16 @@ msgid "Remove"
 msgstr "Rimuovere"
 
 #: src/js/controllers/preferencesBitpayServices.js:7
-msgid "Remove BitPay Account?"
-msgstr "Rimuovere il conto BitPay?"
+msgid "Remove Terracoin Account?"
+msgstr "Rimuovere il conto Terracoin?"
 
 #: src/js/controllers/preferencesBitpayServices.js:19
-msgid "Remove BitPay Card?"
-msgstr "Rimuovere la Carta BitPay?"
+msgid "Remove Terracoin Card?"
+msgstr "Rimuovere la Carta Terracoin?"
 
 #: src/js/controllers/preferencesBitpayServices.js:8
-msgid "Removing your BitPay account will remove all associated BitPay account data from this device. Are you sure you would like to remove your BitPay Account ({{email}}) from this device?"
-msgstr "La rimozione dell'account BitPay eliminerà tutti i dati del conto BitPay associati da questo dispositivo. Sei sicuro che vuoi rimuovere il tuo conto BitPay ({{email}}) da questo dispositivo?"
+msgid "Removing your Terracoin account will remove all associated Terracoin account data from this device. Are you sure you would like to remove your Terracoin Account ({{email}}) from this device?"
+msgstr "La rimozione dell'account Terracoin eliminerà tutti i dati del conto Terracoin associati da questo dispositivo. Sei sicuro che vuoi rimuovere il tuo conto Terracoin ({{email}}) da questo dispositivo?"
 
 #: www/views/join.html:116
 #: www/views/join.html:124
@@ -2507,8 +2507,8 @@ msgid "Search Transactions"
 msgstr "Cerca Transazioni"
 
 #: www/views/tab-send.html:18
-msgid "Search or enter bitcoin address"
-msgstr "Cerca o inserisci indirizzo bitcoin"
+msgid "Search or enter terracoin address"
+msgstr "Cerca o inserisci indirizzo terracoin"
 
 #: www/views/modals/search.html:16
 msgid "Search transactions"
@@ -2539,8 +2539,8 @@ msgid "Self-signed Certificate"
 msgstr "Certificato autofirmato"
 
 #: src/js/services/onGoingProcess.js:41
-msgid "Selling Bitcoin..."
-msgstr "Vendere Bitcoin..."
+msgid "Selling Terracoin..."
+msgstr "Vendere Terracoin..."
 
 #: www/views/feedback/send.html:13
 #: www/views/feedback/send.html:43
@@ -2692,8 +2692,8 @@ msgid "Show advanced options"
 msgstr "Mostra opzioni avanzate"
 
 #: www/views/tab-send.html:42
-msgid "Show bitcoin address"
-msgstr "Visualizza indirizzo bitcoin"
+msgid "Show terracoin address"
+msgstr "Visualizza indirizzo terracoin"
 
 #: www/views/tab-send.html:64
 msgid "Show more"
@@ -2761,12 +2761,12 @@ msgid "Spending Password needed"
 msgstr "Necessaria password di spesa"
 
 #: www/views/walletDetails.html:173
-msgid "Spending this balance will need significant Bitcoin network fees"
-msgstr "Per spendere questa quantità saranno necessarie significative commissioni di rete Bitcoin"
+msgid "Spending this balance will need significant Terracoin network fees"
+msgstr "Per spendere questa quantità saranno necessarie significative commissioni di rete Terracoin"
 
 #: www/views/tab-send.html:33
-msgid "Start sending bitcoin"
-msgstr "Iniziare a inviare bitcoin"
+msgid "Start sending terracoin"
+msgstr "Iniziare a inviare terracoin"
 
 #: www/views/lockSetup.html:3
 msgid "Startup Lock"
@@ -2803,8 +2803,8 @@ msgid "THIS ACTION CANNOT BE REVERSED"
 msgstr "QUESTA AZIONE NON PUÒ ESSERE INVERTITA"
 
 #: www/views/onboarding/welcome.html:5
-msgid "Take control of your money,<br>get started with bitcoin."
-msgstr "Prendi il controllo del tuo denaro, <br>inizia con bitcoin."
+msgid "Take control of your money,<br>get started with terracoin."
+msgstr "Prendi il controllo del tuo denaro, <br>inizia con terracoin."
 
 #: www/views/walletDetails.html:132
 #: www/views/walletDetails.html:52
@@ -2859,16 +2859,16 @@ msgid "The Ledger Chrome application is not installed"
 msgstr "Non è installata l'applicazione di contabilità Chrome"
 
 #: www/views/modals/wallet-balance.html:55
-msgid "The amount of bitcoin immediately spendable from this wallet."
-msgstr "La quantità di bitcoin immediatamente spendibile da questo portafoglio."
+msgid "The amount of terracoin immediately spendable from this wallet."
+msgstr "La quantità di terracoin immediatamente spendibile da questo portafoglio."
 
 #: www/views/modals/wallet-balance.html:93
-msgid "The amount of bitcoin stored in this wallet that is allocated as inputs to your pending transaction proposals. The amount is determined using unspent transaction outputs associated with this wallet and may be more than the actual amounts associated with your pending transaction proposals."
-msgstr "La quantità di bitcoin memorizzati in questo portafoglio è allocata come input per le sue proposte di transazione in sospeso. L'importo è determinato usando le transazioni in uscita non spese associate a questo portafoglio e potrebbero essere superiori agli importi effettivi associati con le vostre proposte di transazione in sospeso."
+msgid "The amount of terracoin stored in this wallet that is allocated as inputs to your pending transaction proposals. The amount is determined using unspent transaction outputs associated with this wallet and may be more than the actual amounts associated with your pending transaction proposals."
+msgstr "La quantità di terracoin memorizzati in questo portafoglio è allocata come input per le sue proposte di transazione in sospeso. L'importo è determinato usando le transazioni in uscita non spese associate a questo portafoglio e potrebbero essere superiori agli importi effettivi associati con le vostre proposte di transazione in sospeso."
 
 #: www/views/modals/wallet-balance.html:74
-msgid "The amount of bitcoin stored in this wallet with less than 1 blockchain confirmation."
-msgstr "La quantità di bitcoin memorizzati in questo portafoglio con meno di una conferma su blockchain."
+msgid "The amount of terracoin stored in this wallet with less than 1 blockchain confirmation."
+msgstr "La quantità di terracoin memorizzati in questo portafoglio con meno di una conferma su blockchain."
 
 #: www/views/tab-import-phrase.html:5
 msgid "The derivation path"
@@ -2887,8 +2887,8 @@ msgid "The maximum number of consecutive unused addresses (20) has been reached.
 msgstr "È stato raggiunto il numero massimo di indirizzi consecutivi inutilizzati (20). Quando uno dei tuoi indirizzi inutilizzati riceve un pagamento, verrà generato un nuovo indirizzo e mostrato nella tua scheda di ricezione."
 
 #: src/js/controllers/onboarding/terms.js:21
-msgid "The official English Terms of Service are available on the BitPay website."
-msgstr "I termini di servizio ufficiali in inglese sono disponibili sul sito web di BitPay."
+msgid "The official English Terms of Service are available on the Terracoin website."
+msgstr "I termini di servizio ufficiali in inglese sono disponibili sul sito web di Terracoin."
 
 #: www/views/tab-import-phrase.html:4
 msgid "The password of the recovery phrase (if set)"
@@ -2922,8 +2922,8 @@ msgid "The spend proposal is not pending"
 msgstr "La proposta di pagamento non è in sospeso"
 
 #: www/views/modals/wallet-balance.html:36
-msgid "The total amount of bitcoin stored in this wallet."
-msgstr "La quantità totale di bitcoin depositati su questo portafoglio."
+msgid "The total amount of terracoin stored in this wallet."
+msgstr "La quantità totale di terracoin depositati su questo portafoglio."
 
 #: www/views/preferencesHistory.html:27
 msgid "The transaction history and every new incoming transaction are cached in the app. This feature clean this up and synchronizes again from the server"
@@ -2953,12 +2953,12 @@ msgid "This app is fantastic!"
 msgstr "Questa applicazione è fantastica!"
 
 #: www/views/onboarding/tour.html:47
-msgid "This app stores your bitcoin with cutting-edge security."
-msgstr "Questa app memorizza i tuoi bitcoin con sicurezza all'avanguardia."
+msgid "This app stores your terracoin with cutting-edge security."
+msgstr "Questa app memorizza i tuoi terracoin con sicurezza all'avanguardia."
 
 #: src/js/controllers/confirm.js:523
-msgid "This bitcoin payment request has expired."
-msgstr "Questa richiesta di pagamento in bitcoin è scaduta."
+msgid "This terracoin payment request has expired."
+msgstr "Questa richiesta di pagamento in terracoin è scaduta."
 
 #: www/views/join.html:133
 #: www/views/tab-create-personal.html:103
@@ -2971,8 +2971,8 @@ msgid "This recovery phrase was created with a password. To recover this wallet 
 msgstr "Questa frase di recupero è stata creata con una password. Per recuperare questo portafoglio sono necessari sia la frase di recupero e che la password."
 
 #: www/views/tx-details.html:91
-msgid "This transaction amount is too small compared to current Bitcoin network fees. Spending these funds will need a Bitcoin network fee cost comparable to the funds itself."
-msgstr "Questo importo della transazione è troppo piccolo rispetto alle attuali commissioni della rete Bitcoin. Per spendere questi fondi sarà necessaria una commissione Bitcoin paragonabile ai fondi stessi."
+msgid "This transaction amount is too small compared to current Terracoin network fees. Spending these funds will need a Terracoin network fee cost comparable to the funds itself."
+msgstr "Questo importo della transazione è troppo piccolo rispetto alle attuali commissioni della rete Terracoin. Per spendere questi fondi sarà necessaria una commissione Terracoin paragonabile ai fondi stessi."
 
 #: www/views/tx-details.html:87
 msgid "This transaction could take a long time to confirm or could be dropped due to the low fees set by the sender"
@@ -2998,16 +2998,16 @@ msgid "To"
 msgstr "A"
 
 #: www/views/tab-send.html:37
-msgid "To get started, buy bitcoin or share your address. You can receive bitcoin from any wallet or service."
-msgstr "Per iniziare, acquista bitcoin o condividi il tuo indirizzo. È possibile ricevere bitcoin da qualsiasi servizio o portafoglio."
+msgid "To get started, buy terracoin or share your address. You can receive terracoin from any wallet or service."
+msgstr "Per iniziare, acquista terracoin o condividi il tuo indirizzo. È possibile ricevere terracoin da qualsiasi servizio o portafoglio."
 
 #: www/views/tab-send.html:38
-msgid "To get started, you'll need to create a bitcoin wallet and get some bitcoin."
-msgstr "Per iniziare, è necessario che tu crei un portafoglio bitcoin e ottenerne qualcuno."
+msgid "To get started, you'll need to create a terracoin wallet and get some terracoin."
+msgstr "Per iniziare, è necessario che tu crei un portafoglio terracoin e ottenerne qualcuno."
 
 #: src/js/services/bitpayAccountService.js:73
-msgid "To {{reason}} you must first add your BitPay account - {{email}}"
-msgstr "Per {{reason}} è necessario innanzitutto aggiungere il tuo account BitPay - {{email}}"
+msgid "To {{reason}} you must first add your Terracoin account - {{email}}"
+msgstr "Per {{reason}} è necessario innanzitutto aggiungere il tuo account Terracoin - {{email}}"
 
 #: src/js/services/onGoingProcess.js:48
 msgid "Top up in progress..."
@@ -3094,8 +3094,8 @@ msgid "Try again in {{expires}}"
 msgstr "Provare di nuovo in {{expires}}"
 
 #: www/views/bitpayCardIntro.html:18
-msgid "Turn bitcoin into dollars, swipe anywhere Visa<sup>&reg;</sup> is accepted."
-msgstr "Trasformare i bitcoin in dollari, fai scorrere la Visa<sup>&reg;</sup> ovunque sia accettata."
+msgid "Turn terracoin into dollars, swipe anywhere Visa<sup>&reg;</sup> is accepted."
+msgstr "Trasformare i terracoin in dollari, fai scorrere la Visa<sup>&reg;</sup> ovunque sia accettata."
 
 #: www/views/tab-import-phrase.html:17
 msgid "Type the Recovery Phrase (usually 12 words)"
@@ -3204,8 +3204,8 @@ msgid "WARNING: UNTRUSTED CERTIFICATE"
 msgstr "ATTENZIONE: CERTIFICATO NON ATTENDIBILE"
 
 #: www/views/preferencesPrivateKey.html:14
-msgid "WARNING: Your extended private keys are all that is needed to access your bitcoin funds. Be sure to protect your private keys and store them only on secure devices. BitPay does not have access to your private keys, so you alone are responsible for your keys. If you share key access with external services, you take responsibility for the risk of theft or breach. Only advanced users should handle extended private keys directly."
-msgstr "ATTENZIONE: Le chiavi private estese sono tutto ciò che è necessario per accedere ai tuoi fondi bitcoin. Assicuratevi di proteggere le chiavi private e memorizzarle solo su dispositivi sicuri. BitPay non ha accesso alla vostre chiavi private, quindi sei l'unico responsabile per le tue chiavi. Se si condivide la tua chiave di accesso con servizi esterni, ti assumi la responsabilità per il rischio di furto o di violazione. Solo gli utenti esperti dovrebbero gestire direttamente le chiavi estese private."
+msgid "WARNING: Your extended private keys are all that is needed to access your terracoin funds. Be sure to protect your private keys and store them only on secure devices. Terracoin does not have access to your private keys, so you alone are responsible for your keys. If you share key access with external services, you take responsibility for the risk of theft or breach. Only advanced users should handle extended private keys directly."
+msgstr "ATTENZIONE: Le chiavi private estese sono tutto ciò che è necessario per accedere ai tuoi fondi terracoin. Assicuratevi di proteggere le chiavi private e memorizzarle solo su dispositivi sicuri. Terracoin non ha accesso alla vostre chiavi private, quindi sei l'unico responsabile per le tue chiavi. Se si condivide la tua chiave di accesso con servizi esterni, ti assumi la responsabilità per il rischio di furto o di violazione. Solo gli utenti esperti dovrebbero gestire direttamente le chiavi estese private."
 
 #: src/js/services/onGoingProcess.js:15
 msgid "Waiting for Ledger..."
@@ -3457,16 +3457,16 @@ msgid "You can make contributions by signing up on our Crowdin community transla
 msgstr "È possibile contribuire registrandovi sulla comunità di traduzione Crowdin. Non vediamo l'ora di sentirvi!"
 
 #: www/views/tab-scan.html:16
-msgid "You can scan bitcoin addresses, payment requests, paper wallets, and more."
-msgstr "È possibile scansionare indirizzi bitcoin, richieste di pagamento, portafogli di carta e altro ancora."
+msgid "You can scan terracoin addresses, payment requests, paper wallets, and more."
+msgstr "È possibile scansionare indirizzi terracoin, richieste di pagamento, portafogli di carta e altro ancora."
 
 #: src/js/controllers/preferencesAbout.js:14
 msgid "You can see the latest developments and contribute to this open source app by visiting our project on GitHub."
 msgstr "Potete vedere gli ultimi sviluppi e contribuire a questa applicazione open source andando al nostro progetto su GitHub."
 
 #: www/views/onboarding/tour.html:19
-msgid "You can spend bitcoin at millions of websites and stores worldwide."
-msgstr "Si può spendere bitcoin in milioni di siti web e negozi in tutto il mondo."
+msgid "You can spend terracoin at millions of websites and stores worldwide."
+msgstr "Si può spendere terracoin in milioni di siti web e negozi in tutto il mondo."
 
 #: www/views/backup.html:15
 msgid "You can still export it from Advanced &gt; Export."
@@ -3477,24 +3477,24 @@ msgid "You can trade it for other currencies like US Dollars, Euros, or Pounds."
 msgstr "È possibile scambiarlo con altre valute come i dollari USA, Euro o Sterline."
 
 #: www/views/onboarding/tour.html:46
-msgid "You control your bitcoin."
-msgstr "Controlli i tuoi bitcoin."
+msgid "You control your terracoin."
+msgstr "Controlli i tuoi terracoin."
 
 #: www/views/modals/chooseFeeLevel.html:64
 msgid "You should not set a fee higher than {{maxFeeRecommended}} satoshis/byte."
 msgstr "Non è necessario impostare una commissione maggiore di {{maxFeeRecommended}} satoshis/byte."
 
 #: www/views/modals/bitpay-card-confirmation.html:5
-msgid "You will need to log back for fill in your BitPay Card."
-msgstr "Sarà necessario accedere nuovamente per riempire la vostra carta BitPay."
+msgid "You will need to log back for fill in your Terracoin Card."
+msgstr "Sarà necessario accedere nuovamente per riempire la vostra carta Terracoin."
 
 #: www/views/preferencesNotifications.html:34
 msgid "You'll receive email notifications about payments sent and received from your wallets."
 msgstr "Riceverai notifiche e-mail per i pagamenti inviati e ricevuti dai tuoi portafogli."
 
 #: www/views/bitpayCard.html:50
-msgid "Your BitPay Card is ready. Add funds to your card to start using it at stores and ATMs worldwide."
-msgstr "La carta BitPay è pronta. Aggiungi fondi alla tua carta per iniziare ad usarla presso i negozi e gli sportelli automatici in tutto il mondo."
+msgid "Your Terracoin Card is ready. Add funds to your card to start using it at stores and ATMs worldwide."
+msgstr "La carta Terracoin è pronta. Aggiungi fondi alla tua carta per iniziare ad usarla presso i negozi e gli sportelli automatici in tutto il mondo."
 
 #: www/views/mercadoLibre.html:57
 #: www/views/mercadoLibreCards.html:6
@@ -3502,12 +3502,12 @@ msgid "Your Gift Cards"
 msgstr "Le tue carte regalo"
 
 #: www/views/includes/confirmBackupPopup.html:6
-msgid "Your bitcoin wallet is backed up!"
-msgstr "Il tuo portafoglio bitcoin ha eseguito il backup!"
+msgid "Your terracoin wallet is backed up!"
+msgstr "Il tuo portafoglio terracoin ha eseguito il backup!"
 
 #: www/views/tab-home.html:50
-msgid "Your bitcoin wallet is ready!"
-msgstr "Il tuo portafoglio bitcoin è pronto!"
+msgid "Your terracoin wallet is ready!"
+msgstr "Il tuo portafoglio terracoin è pronto!"
 
 #: www/views/modals/chooseFeeLevel.html:61
 msgid "Your fee is lower than recommended."
@@ -3562,8 +3562,8 @@ msgid "[Scanning Funds]"
 msgstr "[Scansione fondi]"
 
 #: src/js/controllers/bitpayCardIntro.js:11
-msgid "add your BitPay Visa card(s)"
-msgstr "aggiungi la tua carta(e) BitPay Visa"
+msgid "add your Terracoin Visa card(s)"
+msgstr "aggiungi la tua carta(e) Terracoin Visa"
 
 #: www/views/includes/available-balance.html:8
 msgid "locked by pending payments"
@@ -3594,11 +3594,11 @@ msgid "{{amountStr}} for Mercado Livre Brazil Gift Card"
 msgstr "{{amountStr}} per Mercado Livre Brasile Gift Card"
 
 #: www/views/preferencesBwsUrl.html:21
-msgid "{{appName}} depends on Bitcore Wallet Service (BWS) for blockchain information, networking and Copayer synchronization. The default configuration points to https://bws.bitpay.com (BitPay's public BWS instance)."
-msgstr "{{appName}} dipende dal servizio portafoglio di Bitcore (BWS) per informazioni blockchain, networking e sincronizzazione di Copayer. La configurazione predefinita fa riferimento a https://bws.bitpay.com (istanza di BitPay BWS pubblica)."
+msgid "{{appName}} depends on Bitcore Wallet Service (BWS) for blockchain information, networking and Copayer synchronization. The default configuration points to https://bws.terracoin.io (Terracoin's public BWS instance)."
+msgstr "{{appName}} dipende dal servizio portafoglio di Bitcore (BWS) per informazioni blockchain, networking e sincronizzazione di Copayer. La configurazione predefinita fa riferimento a https://bws.terracoin.io (istanza di Terracoin BWS pubblica)."
 
 #: src/js/controllers/confirm.js:408
-msgid "{{fee}} will be deducted for bitcoin networking fees."
+msgid "{{fee}} will be deducted for terracoin networking fees."
 msgstr "{{fee}} verranno detratti come commissione per il network."
 
 #: www/views/confirm.html:85

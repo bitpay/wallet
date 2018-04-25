@@ -199,7 +199,7 @@ angular.module('copayApp.services').factory('coinbaseService', function($http, $
   var _getNetAmount = function(amount, cb) {
     // Fee Normal for a single transaction (450 bytes)
     var txNormalFeeKB = 450 / 1000;
-    feeService.getFeeRate('btc', 'livenet', 'normal', function(err, feePerKb) {
+    feeService.getFeeRate('trc', 'livenet', 'normal', function(err, feePerKb) {
       if (err) return cb('Could not get fee rate');
       var feeBTC = (feePerKb * txNormalFeeKB / 100000000).toFixed(8);
 

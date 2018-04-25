@@ -213,15 +213,10 @@ angular.module('copayApp.controllers').controller('tabHomeController',
 
     var updateAllWallets = function() {
       var wallets = [];
-      $scope.walletsBtc = profileService.getWallets({coin: 'btc'});
-      $scope.walletsBch = profileService.getWallets({coin: 'bch'});
+      $scope.walletsTrc = profileService.getWallets({coin: 'trc'});
 
-      lodash.each($scope.walletsBtc, function(wBtc) {
-        wallets.push(wBtc);
-      });
-
-      lodash.each($scope.walletsBch, function(wBch) {
-        wallets.push(wBch);
+      lodash.each($scope.walletsTrc, function(wTrc) {
+        wallets.push(wTrc);
       });
 
       if (lodash.isEmpty(wallets)) return;

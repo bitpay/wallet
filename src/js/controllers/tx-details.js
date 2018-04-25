@@ -22,6 +22,8 @@ angular.module('copayApp.controllers').controller('txDetailsController', functio
       } else {
         blockexplorerUrl = 'blockdozer.com/insight';
       }
+    } else if ($scope.wallet.coin == 'trc') {
+      blockexplorerUrl = 'insight.terracoin.io';
     } else {
       blockexplorerUrl = 'insight.bitpay.com';
     }

@@ -48,7 +48,7 @@
         </i>
       </div>
       <div class="title" translate>
-        Your bitcoin wallet is ready!
+        Your terracoin wallet is ready!
       </div>
       <div class="subtitle" translate>
         On this screen you can see all your wallets, accounts, and assets.
@@ -78,7 +78,7 @@
       </a>
     </div>
 
-    <div class="list card" ng-if="!walletsBtc[0] && !walletsBch[0]">
+    <div class="list card" ng-if="!walletsTrc[0]">
       <div class="item item-icon-right item-heading">
         <span translate>Wallets</span>
       </div>
@@ -86,19 +86,19 @@
         <i class="icon big-icon-svg">
           <img src="img/icon-wallet.svg" class="bg wallet icon-create-wallet"/>
         </i>
-        <span translate>Create bitcoin wallet</span>
+        <span translate>Create terracoin wallet</span>
         <i class="icon bp-arrow-right"></i>
       </a>
     </div>
 
-    <div class="list card" ng-if="walletsBtc[0]">
+    <div class="list card" ng-if="walletsTrc[0]">
       <div class="item item-icon-right item-heading">
-        <img class="wallet-coin-logo" src="img/icon-bitcoin.svg" width="18">
-        <span translate>Bitcoin Wallets</span>
+        <img class="wallet-coin-logo" src="img/icon-terracoin.svg" width="18">
+        <span translate>Terracoin Wallets</span>
         <a ui-sref="tabs.add"><i class="icon ion-ios-plus-empty list-add-button"></i></a>
       </div>
       <div>
-        <a ng-repeat="wallet in walletsBtc track by $index"
+        <a ng-repeat="wallet in walletsTrc track by $index"
            class="item item-sub item-icon-left item-big-icon-left item-icon-right wallet"
            ng-click="openWallet(wallet)">
           <span ng-include="'views/includes/walletList.html'"></span>
@@ -106,25 +106,10 @@
       </div>
     </div>
 
-    <div class="list card" ng-if="walletsBch[0]">
-      <div class="item item-icon-right item-heading">
-        <img class="wallet-coin-logo" src="img/bitcoin-cash-logo.svg" width="22">
-        <span translate>Bitcoin Cash Wallets</span>
-        <a ui-sref="tabs.add({coin:'bch'})"><i class="icon ion-ios-plus-empty list-add-button"></i></a>
-      </div>
-      <div>
-        <a ng-repeat="wallet in walletsBch track by $index"
-           class="item item-sub item-icon-left item-big-icon-left item-icon-right wallet"
-           ng-click="openWallet(wallet)">
-          <span ng-include="'views/includes/walletList.html'"></span>
-        </a>
-      </div>
-    </div>
-
-    <div class="ng-hide list card" ng-show="walletsBtc[0] && bitpayCardItems.length>0" ng-include="'views/includes/bitpayCardsCard.html'"></div>
-    <div class="ng-hide list card" ng-show="walletsBtc[0] && buyAndSellItems.length>0" ng-include="'views/includes/buyAndSellCard.html'"></div>
+    <div class="ng-hide list card" ng-show="walletsTrc[0] && bitpayCardItems.length>0" ng-include="'views/includes/bitpayCardsCard.html'"></div>
+    <div class="ng-hide list card" ng-show="walletsTrc[0] && buyAndSellItems.length>0" ng-include="'views/includes/buyAndSellCard.html'"></div>
     <div class="ng-hide list card" ng-show="homeIntegrations.length>0" ng-include="'views/includes/homeIntegrations.html'"></div>
-    <div class="ng-hide list card" ng-show="nextStepsItems.length>0 && !isWindowsPhoneApp" ng-include="'views/includes/nextSteps.html'"></div>
+    <!-- <div class="ng-hide list card" ng-show="nextStepsItems.length>0 && !isWindowsPhoneApp" ng-include="'views/includes/nextSteps.html'"></div> -->
 
   </ion-content>
 </ion-view>

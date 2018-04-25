@@ -36,3 +36,4 @@ function iconset {
 
 postprocess copay
 postprocess bitpay
+postprocess TRCpay

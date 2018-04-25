@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.services').factory('walletService', function($log, $timeout, lodash, trezor, ledger, intelTEE, storageService, configService, rateService, uxLanguage, $filter, gettextCatalog, bwcError, $ionicPopup, fingerprintService, ongoingProcess, gettext, $rootScope, txFormatService, $ionicModal, $state, bwcService, bitcore, bitcoreCash, popupService, feeService) {
+angular.module('copayApp.services').factory('walletService', function($log, $timeout, lodash, trezor, ledger, intelTEE, storageService, configService, rateService, uxLanguage, $filter, gettextCatalog, bwcError, $ionicPopup, fingerprintService, ongoingProcess, gettext, $rootScope, txFormatService, $ionicModal, $state, bwcService, bitcore, popupService, feeService) {
 
   // Ratio low amount warning (fee/amount) in incoming TX
   var LOW_AMOUNT_RATIO = 0.15;
@@ -738,11 +738,11 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
 
       try {
         wallet.signTxProposal(txp, password, function(err, signedTxp) {
-          $log.debug('Transaction signed err:' + err);
+          $log.warn('Transaction signed err:' + err);
           return cb(err, signedTxp);
         });
       } catch (e) {
-        $log.warn('Error at signTxProposal:', e);
+        $log.error('Error at signTxProposal:', e);
         return cb(e);
       }
     }
@@ -756,8 +756,14 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
       return cb('TX_NOT_ACCEPTED');
 
     wallet.broadcastTxProposal(txp, function(err, broadcastedTxp, memo) {
-      if (err)
-        return cb(err);
+      if (err) {
+        if (err instanceof ArrayBuffer) {
+          var enc = new TextDecoder();
+          err = enc.decode(err);
+          return root.removeTx(wallet, txp, function() { return cb(err); });
+        } else 
+          return cb(err);
+      }
 
       $log.debug('Transaction broadcasted');
       if (memo) $log.info(memo);
@@ -956,7 +962,7 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
     var levels = feeService.cachedFeeLevels;
     var lowLevelRate = (lodash.find(levels[wallet.network], {
       level: 'normal',
-    }).feePerKb / 1000).toFixed(0);
+    }).feePerKB / 1000).toFixed(0);
 
     var size = root.getEstimatedTxSize(wallet, nbOutputs);
       return size * lowLevelRate;
@@ -999,7 +1005,7 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
     });
   };
 
-  root.useLegacyAddress = function(wallet) {
+  root.useLegacyAddress = function() {
     var config = configService.getSync();
     var walletSettings = config.wallet;
 
@@ -1007,21 +1013,20 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
   };
 
 
-  root.getAddressView = function(wallet, address) {
-    if (wallet.coin != 'bch' || root.useLegacyAddress(wallet)) return address;
-    return txFormatService.toCashAddress(address);
-  };
-
   root.getProtoAddress = function(wallet, address) {
-    var proto  = root.getProtocolHandler(wallet);
+    var proto  = root.getProtocolHandler();
     var protoAddr = proto + ':' + address;
 
-    if (wallet.coin != 'bch' || root.useLegacyAddress(wallet)) {
-      return protoAddr;
-    } else {
-      return protoAddr.toUpperCase() ;
-    };
+    return protoAddr;
   };
+
+  root.getAddressView = function(wallet, address) {
+    var config = configService.getSync();
+    var walletSettings = config.wallet.settings;
+
+    return address;
+  };
+
 
   root.getAddress = function(wallet, forceNew, cb) {
     storageService.getLastAddress(wallet.id, function(err, addr) {
@@ -1190,11 +1195,11 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
 
 
           if (err) {
-            $log.warn('sign error:' + err);
             var msg = err && err.message ?
               err.message :
               gettextCatalog.getString('The payment was created but could not be completed. Please try again from home screen');
 
+            $log.debug('Sign error: ' + msg);
             $rootScope.$emit('Local/TxAction', wallet.id);
             return cb(msg);
           }
@@ -1294,11 +1299,7 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
 
   root.getProtocolHandler = function(wallet) {
 
-    if (wallet.coin== 'bch') {
-      return 'bitcoincash';
-    } else {
-      return 'bitcoin';
-    }
+    return 'terracoin';
   }
 
 

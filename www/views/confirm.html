@@ -23,7 +23,7 @@
 
       <div class="info">
         <div class="item item-icon-right" ng-if="wallet" ng-click="chooseFeeLevel(tx, wallet)">
-          <span class="label">{{'Bitcoin miner fee:' | translate}} {{tx.feeLevelName | translate}}</span>
+          <span class="label">{{'Terracoin miner fee:' | translate}} {{tx.feeLevelName | translate}}</span>
             <span class="m10l">{{tx.txp[wallet.id].feeStr || '...'}}</span>
             <span class="item-note m10l">
               <span>{{tx.txp[wallet.id].alternativeFeeStr || '...'}}&nbsp;
@@ -33,7 +33,7 @@
               </span>
               </span>
             </span>
-          <i ng-if="wallet.coin == 'btc'" class="icon bp-arrow-right"></i>
+          <i ng-if="wallet.coin == 'trc'" class="icon bp-arrow-right"></i>
         </div>
 
         <div class="item single-line" ng-if="tx.paypro">
@@ -45,7 +45,7 @@
         <div class="item" ng-hide="criticalError">
           <span class="label" translate>To</span>
           <span class="payment-proposal-to" ng-if="!recipientType">
-            <img src="img/icon-bitcoin-small.svg">
+            <img src="img/icon-terracoin-small.svg">
 
             <div copy-to-clipboard="tx.origToAddress" ng-if="!tx.paypro" class="ellipsis">
               <contact ng-if="tx.origToAddress && !tx.toName" address="{{tx.origToAddress}}"></contact>
@@ -54,6 +54,7 @@
 
             <div ng-if="tx.paypro" ng-click="openPPModal(tx.paypro)" class="m15l size-14 w100p pointer">
               <i ng-show="tx.paypro.verified && tx.paypro.caTrusted" class="ion-locked" style="color:green"></i>
+              <i ng-show="!tx.paypro.verified && tx.paypro.caTrusted" class="ion-unlocked" style="color:orange"></i>
               <i ng-show="!tx.paypro.caTrusted" class="ion-unlocked" style="color:red"></i>
               <span class="ellipsis" ng-show="!tx.toName">{{tx.paypro.domain || tx.paypro.toAddress}}</span>
               <span ng-show="tx.toName">{{tx.toName}}</span>

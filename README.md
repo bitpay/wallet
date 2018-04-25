@@ -1,11 +1,11 @@
-<img src="https://raw.githubusercontent.com/bitpay/copay/master/resources/copay/android/icon/drawable-xxxhdpi-icon.png" alt="Copay" width="79">
+<img src="https://raw.githubusercontent.com/terracoin/TRCpay/master/resources/TRCpay/android/icon/drawable-xxxhdpi-icon.png" alt="TRCpay" width="79">
 
-[![Build Status](https://secure.travis-ci.org/bitpay/copay.svg)](http://travis-ci.org/bitpay/copay)
+[![Build Status](https://secure.travis-ci.org/terracoin/TRCpay.svg)](http://travis-ci.org/terracoin/TRCpay)
 [![Crowdin](https://d322cqt584bo4o.cloudfront.net/copay/localized.png)](https://crowdin.com/project/copay)
 
 Copay is a secure Bitcoin and Bitcoin Cash wallet platform for both desktop and mobile devices. Copay uses [Bitcore Wallet Service](https://github.com/bitpay/bitcore-wallet-service) (BWS) for peer synchronization and network interfacing.
 
-Binary versions of Copay are available for download at [Copay.io](https://copay.io/#download). Copay Binaries are signed with the key `copay@bitpay.com` – See the section [`How to Verify Copay Signatures`](https://github.com/bitpay/copay#how-to-verify-copay-signatures) for details.
+Binary versions of Copay are available for download at [Copay.io](https://copay.io/#download). Copay Binaries are signed with the key `copay@bitpay.com` – See the section [`How to Verify Copay Signatures`](https://github.com/terracoin/TRCpay#how-to-verify-copay-signatures) for details.
 
 For a list of frequently asked questions please visit the [Copay FAQ](https://github.com/bitpay/copay/wiki/COPAY---FAQ).
 
@@ -38,14 +38,14 @@ For a list of frequently asked questions please visit the [Copay FAQ](https://gi
 Clone the repo and open the directory:
 
 ```sh
-git clone https://github.com/bitpay/copay.git
+git clone https://github.com/terracoin/TRCpay.git
 cd copay
 ```
 
 Ensure you have [Node](https://nodejs.org/) installed, then install and start Copay:
 
 ```sh
-npm run apply:copay
+npm run apply:TRCpay
 npm start
 ```
 
@@ -68,7 +68,7 @@ Follow the [Cordova Android Platform Guide](https://cordova.apache.org/docs/en/l
 When your developement enviroment is ready, run the `start:android` npm package script.
 
 ```sh
-npm run apply:copay
+npm run apply:TRCpay
 npm run start:android
 ```
 
@@ -79,7 +79,7 @@ Follow the [Cordova iOS Platform Guide](https://cordova.apache.org/docs/en/lates
 When your developement enviroment is ready, run the `start:ios` npm package script.
 
 ```sh
-npm run apply:copay
+npm run apply:TRCpay
 npm run start:ios
 ```
 
@@ -100,7 +100,7 @@ and then enable this one:
 - Run:
 ```sh
 npm run clean-all
-npm run apply:copay
+npm run apply:TRCpay
 npm run start:windows
 ```
 - Then open the project file with VS inside cordova/platform/windows/
@@ -112,7 +112,7 @@ The desktop version of Copay currently uses NW.js, an app runtime based on Chrom
 When NW.js is installed, run the `start:desktop` npm package script.
 
 ```sh
-npm run apply:copay
+npm run apply:TRCpay
 npm run start:desktop
 ```
 
@@ -126,7 +126,7 @@ The `final` commands build the production version of the app, and bundle it with
 
 ```sh
 npm run clean-all
-npm run apply:copay
+npm run apply:TRCpay
 npm run final:android
 ```
 
@@ -134,7 +134,7 @@ npm run final:android
 
 ```sh
 npm run clean-all
-npm run apply:copay
+npm run apply:TRCpay
 npm run final:ios
 ```
 
@@ -152,7 +152,7 @@ and then enable this one:
 - Run:
 ```sh
 npm run clean-all
-npm run apply:copay
+npm run apply:TRCpay
 npm run final:windows
 ```
 - Then open the project file with VS inside cordova/platform/windows/
@@ -161,7 +161,7 @@ npm run final:windows
 
 ```sh
 npm run clean-all
-npm run apply:copay
+npm run apply:TRCpay
 npm run final:desktop
 ```
 
@@ -170,12 +170,12 @@ npm run final:desktop
 > cd chrome-app/
 
 ```sh
-npm run apply:copay
+npm run apply:TRCpay
 grunt
 make
 ```
 
-On success, the Chrome extension will be located at: `browser-extensions/chrome/copay-chrome-extension`.  To install it go to `chrome://extensions/` in your browser and ensure you have the 'developer mode' option enabled in the settings.  Then click on "Load unpacked chrome extension" and choose the directory mentioned above.
+On success, the Chrome extension will be located at: `browser-extensions/chrome/trcpay-chrome-extension`.  To install it go to `chrome://extensions/` in your browser and ensure you have the 'developer mode' option enabled in the settings.  Then click on "Load unpacked chrome extension" and choose the directory mentioned above.
 
 ## Configuration
 
@@ -184,7 +184,7 @@ On success, the Chrome extension will be located at: `browser-extensions/chrome/
 To enable external services, set the `COPAY_EXTERNAL_SERVICES_CONFIG_LOCATION` or `BITPAY_EXTERNAL_SERVICES_CONFIG_LOCATION` environment variable to the location of your configuration before running the `apply` task.
 
 ```sh
-COPAY_EXTERNAL_SERVICES_CONFIG_LOCATION="~/.copay/externalServices.json" npm run apply:copay
+COPAY_EXTERNAL_SERVICES_CONFIG_LOCATION="~/.trcpay/externalServices.json" npm run apply:TRCpay
 # or
 BITPAY_EXTERNAL_SERVICES_CONFIG_LOCATION="~/.bitpay/externalServices.json" npm run apply:bitpay
 ```
@@ -205,11 +205,11 @@ For more information regarding how addresses are generated using this procedure,
 
 Since v1.2 Copay uses BIP39 mnemonics for backing up wallets.  The BIP44 standard is used for wallet address derivation. Multisig wallets use P2SH addresses, while non-multisig wallets use P2PKH.
 
-Information about backup and recovery procedures is available at: https://github.com/bitpay/copay/blob/master/backupRecovery.md
+Information about backup and recovery procedures is available at: https://github.com/terracoin/TRCpay/blob/master/backupRecovery.md
 
 Previous versions of Copay used files as backups. See the following section.
 
-It is possible to recover funds from a Copay Wallet without using Copay or the Wallet Service, check the [Copay Recovery Tool](https://github.com/bitpay/copay-recovery).
+It is possible to recover funds from a Copay Wallet without using Copay or the Wallet Service, check the [Copay Recovery Tool](https://github.com/terracoin/TRCpay-recovery).
 
 
 ## Wallet Export Format
@@ -231,7 +231,7 @@ Using a tool like [Bitcore PlayGround](http://bitcore.io/playground) all wallet 
 
 BIP45 note: All addresses generated at BWS with BIP45 use the 'shared cosigner index' (2147483647) so Copay address indexes look like: `m/45'/2147483647/0/x` for main addresses and `m/45'/2147483647/1/y` for change addresses.
 
-Since version 1.5, Copay uses the root `m/48'` for hardware multisignature wallets. This was coordinated with Ledger and Trezor teams. While the derivation path format is still similar to BIP44, the root was in order to indicate that these wallets are not discoverable by scanning addresses for funds. Address generation for multisignature wallets requires the other copayers extended public keys.
+Since version 1.5, Copay uses the root `m/48'` for hardware multisignature wallets. This was coordinated with Ledger and Trezor teams. While the derivation path format is still similar to BIP44, the root was in order to indicate that these wallets are not discoverable by scanning addresses for funds. Address generation for multisignature wallets requires the other TRCpayers extended public keys.
 
 
 ## Bitcore Wallet Service
@@ -263,7 +263,7 @@ When creating or joining a wallet, Copay will ask for two public keys for the de
 
 Every time you need to sign a transaction, the device will be needed to perform the signature. Follow the on screen instructions after clicking the `send` or `accept` buttons.
 
-Finally, in case you lose the device and you have the 24 word seed for the device, you can recover access to your funds using Copay, see: https://github.com/bitpay/copay/blob/master/backupRecovery.md#hardware-wallets
+Finally, in case you lose the device and you have the 24 word seed for the device, you can recover access to your funds using Copay, see: https://github.com/terracoin/TRCpay/blob/master/backupRecovery.md#hardware-wallets
 
 
 ## Translations
@@ -370,4 +370,4 @@ review the [guidelines for contributing](CONTRIBUTING.md).
 
 ## License
 
-Copay is released under the MIT License.  Please refer to the [LICENSE](https://github.com/bitpay/copay/blob/master/LICENSE) file that accompanies this project for more information including complete terms and conditions.
+Copay is released under the MIT License.  Please refer to the [LICENSE](https://github.com/terracoin/TRCpay/blob/master/LICENSE) file that accompanies this project for more information including complete terms and conditions.

@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('shapeshiftConfirmController', function($scope, $log, $state, $timeout, $ionicHistory, $ionicConfig, lodash, popupService, profileService, ongoingProcess, configService, walletService, bwcError, externalLinkService, platformInfo, gettextCatalog, txFormatService, shapeshiftService, bitcore, bitcoreCash) {
+angular.module('copayApp.controllers').controller('shapeshiftConfirmController', function($scope, $log, $state, $timeout, $ionicHistory, $ionicConfig, lodash, popupService, profileService, ongoingProcess, configService, walletService, bwcError, externalLinkService, platformInfo, gettextCatalog, txFormatService, shapeshiftService, bitcore) {
 
   var amount;
   var currency;
@@ -141,15 +141,11 @@ angular.module('copayApp.controllers').controller('shapeshiftConfirmController',
   };
 
   var getLegacyAddressFormat = function(addr, coin) {
-    if (coin == 'btc') return addr;
-    var a = bitcoreCash.Address(addr).toObject();
-    return bitcore.Address.fromObject(a).toString();
+    return addr;
   };
 
   var getNewAddressFormat = function(addr, coin) {
-    if (coin == 'btc') return addr;
-    var a = bitcore.Address(addr).toObject();
-    return bitcoreCash.Address.fromObject(a).toString();
+    return addr;
   };
 
   var getCoinPair = function() {

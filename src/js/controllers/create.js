@@ -71,6 +71,24 @@ angular.module('copayApp.controllers').controller('createController',
 
       */
 
+      if (appConfigService.name == 'trcpay') {
+        if (walletService.externalSource.trezor.supported) {
+          seedOptions.push({
+            id: walletService.externalSource.trezor.id,
+            label: walletService.externalSource.trezor.longName,
+            supportsTestnet: walletService.externalSource.trezor.supportsTestnet
+          });
+        }
+
+        if (walletService.externalSource.intelTEE.supported) {
+          seedOptions.push({
+            id: walletService.externalSource.intelTEE.id,
+            label: walletService.externalSource.intelTEE.longName,
+            supportsTestnet: walletService.externalSource.intelTEE.supportsTestnet
+          });
+        }
+      }
+
       if (appConfigService.name == 'copay') {
         if (n > 1 && walletService.externalSource.ledger.supported)
           seedOptions.push({
@@ -112,7 +130,7 @@ angular.module('copayApp.controllers').controller('createController',
         m: $scope.formData.requiredCopayers,
         n: $scope.formData.totalCopayers,
         myName: $scope.formData.totalCopayers > 1 ? $scope.formData.myName : null,
-        networkName: $scope.formData.testnetEnabled && $scope.formData.coin != 'bch' ? 'testnet' : 'livenet',
+        networkName: $scope.formData.testnetEnabled && $scope.formData.coin != 'trc' ? 'testnet' : 'livenet',
         bwsurl: $scope.formData.bwsurl,
         singleAddress: $scope.formData.singleAddressEnabled,
         walletPrivKey: $scope.formData._walletPrivKey, // Only for testing

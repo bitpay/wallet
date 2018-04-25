@@ -393,7 +393,7 @@ angular.module('copayApp.controllers').controller('walletDetailsController', fun
   $scope.$on("$ionicView.afterLeave", function(event, data) {
 
     if ($window.StatusBar) {
-      var statusBarColor = appConfigService.name == 'copay' ? '#192c3a' : '#1e3186';
+      var statusBarColor = appConfigService.name == 'copay' ? '#192c3a' : appConfigService.name == 'trcpay' ? '#0e8843' : '#1e3186';
       $window.StatusBar.backgroundColorByHexString(statusBarColor);
     }
   });
@@ -407,7 +407,7 @@ angular.module('copayApp.controllers').controller('walletDetailsController', fun
   function setAndroidStatusBarColor() {
     var SUBTRACT_AMOUNT = 15;
     var walletColor;
-    if (!$scope.wallet.color) walletColor = appConfigService.name == 'copay' ? '#019477' : '#4a90e2';
+    if (!$scope.wallet.color) walletColor = appConfigService.name == 'copay' ? '#019477' : appConfigService.name == 'trcpay' ? '#0e8843' : '#4a90e2';
     else walletColor = $scope.wallet.color;
     var rgb = hexToRgb(walletColor);
     var keys = Object.keys(rgb);

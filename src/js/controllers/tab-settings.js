@@ -6,8 +6,7 @@ angular.module('copayApp.controllers').controller('tabSettingsController', funct
     $scope.currentLanguageName = uxLanguage.getCurrentLanguageName();
     $scope.feeOpts = feeService.feeOpts;
     $scope.currentFeeLevel = feeService.getCurrentFeeLevel();
-    $scope.walletsBtc = profileService.getWallets({ coin: 'btc' });
-    $scope.walletsBch = profileService.getWallets({ coin: 'bch' });
+    $scope.walletsTrc = profileService.getWallets({ coin: 'trc' });
     $scope.buyAndSellServices = buyAndSellService.getLinked();
 
     configService.whenAvailable(function(config) {
@@ -41,7 +40,7 @@ angular.module('copayApp.controllers').controller('tabSettingsController', funct
 
   $scope.openExternalLink = function() {
     var appName = appConfigService.name;
-    var url = appName == 'copay' ? 'https://github.com/bitpay/copay/issues' : 'https://help.bitpay.com/bitpay-app';
+    var url = appName == 'copay' ? 'https://github.com/bitpay/copay/issues' : appname == 'trcpay' ? 'https://github.com/terracoin/TRCpay/issues' : 'https://help.bitpay.com/bitpay-app';
     var optIn = true;
     var title = null;
     var message = gettextCatalog.getString('Help and support information is available at the website.');

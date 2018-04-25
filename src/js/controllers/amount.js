@@ -5,7 +5,7 @@ angular.module('copayApp.controllers').controller('amountController', function (
   var unitToSatoshi;
   var satToUnit;
   var unitDecimals;
-  var satToBtc;
+  var satToTrc;
   var SMALL_FONT_SIZE_LIMIT = 10;
   var LENGTH_EXPRESSION_LIMIT = 19;
   var isNW = platformInfo.isNW;
@@ -30,32 +30,18 @@ angular.module('copayApp.controllers').controller('amountController', function (
 
       availableUnits = [];
 
-      var hasBTCWallets = profileService.getWallets({
-        coin: 'btc'
+      var hasTRCWallets = profileService.getWallets({
+        coin: 'trc'
       }).length;
 
-      if (hasBTCWallets) {
+      if (hasTRCWallets) {
         availableUnits.push({
-          name: 'Bitcoin',
-          id: 'btc',
-          shortName: 'BTC',
+          name: 'Terracoin',
+          id: 'trc',
+          shortName: 'TRC',
         });
       }
 
-
-      var hasBCHWallets = profileService.getWallets({
-        coin: 'bch'
-      }).length;
-
-
-
-      if (hasBCHWallets) {
-        availableUnits.push({
-          name: 'Bitcoin Cash',
-          id: 'bch',
-          shortName: 'BCH',
-        });
-      };
 
       unitIndex = 0;
 
@@ -160,7 +146,7 @@ angular.module('copayApp.controllers').controller('amountController', function (
     $scope.isCordova = platformInfo.isCordova;
     unitToSatoshi = config.unitToSatoshi;
     satToUnit = 1 / unitToSatoshi;
-    satToBtc = 1 / 100000000;
+    satToTrc = 1 / 100000000;
     unitDecimals = config.unitDecimals;
 
     $scope.resetAmount();
