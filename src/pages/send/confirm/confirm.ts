@@ -1,6 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { Events, ModalController, NavController, NavParams } from 'ionic-angular';
+import { App, Events, ModalController, NavController, NavParams } from 'ionic-angular';
 import * as _ from 'lodash';
 import { Logger } from '../../../providers/logger/logger';
 
@@ -9,6 +9,7 @@ import { FinishModalPage } from '../../finish/finish';
 import { PayProPage } from '../../paypro/paypro';
 import { ChooseFeeLevelPage } from '../choose-fee-level/choose-fee-level';
 import { FeeWarningPage } from '../fee-warning/fee-warning';
+import { TabsPage } from '../../tabs/tabs';
 
 // Providers
 import { BwcErrorProvider } from '../../../providers/bwc-error/bwc-error';
@@ -64,6 +65,7 @@ export class ConfirmPage {
   public isOpenSelector: boolean;
 
   constructor(
+    private app: App,
     private bwcProvider: BwcProvider,
     private navCtrl: NavController,
     private navParams: NavParams,
@@ -668,14 +670,7 @@ export class ConfirmPage {
     }
     let modal = this.modalCtrl.create(FinishModalPage, params, { showBackdrop: true, enableBackdropDismiss: false });
     modal.present();
-    setTimeout(() => {
-      this.navCtrl.popToRoot({ animate: false }).then(() => {
-        // Fixes mobile navigation
-        setTimeout(() => {
-          this.navCtrl.parent.select(0);
-        });
-      });
-    }, 200);
+    this.app.getRootNavs()[0].setRoot(TabsPage);
   }
 
   public openPPModal(): void {
