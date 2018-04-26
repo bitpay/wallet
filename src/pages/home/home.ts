@@ -136,24 +136,7 @@ export class HomePage {
     // Update list of wallets and status
     this.setWallets();
 
-    // BWS Events: Update Status per Wallet
-    // NewBlock, NewCopayer, NewAddress, NewTxProposal, TxProposalAcceptedBy, TxProposalRejectedBy, txProposalFinallyRejected,
-    // txProposalFinallyAccepted, TxProposalRemoved, NewIncomingTx, NewOutgoingTx
-    this.events.subscribe('bwsEvent', (walletId: string) => {
-      if (this.recentTransactionsEnabled) this.getNotifications();
-      this.updateWallet(walletId);
-    });
-
-    // Create, Join, Import and Delete -> Get Wallets -> Update Status for All Wallets
-    this.events.subscribe('status:updated', () => {
-      this.updateTxps();
-      this.setWallets();
-    });
-
-    // Hide stars to rate
-    this.events.subscribe('feedback:hide', () => {
-      this.showRateCard = false;
-    });
+    this.listenForEvents();
   }
 
   ionViewDidEnter() {
@@ -203,6 +186,27 @@ export class HomePage {
     this.plt.resume.subscribe(e => {
       this.updateTxps();
       this.setWallets();
+    });
+  }
+
+  private listenForEvents() {
+    // BWS Events: Update Status per Wallet
+    // NewBlock, NewCopayer, NewAddress, NewTxProposal, TxProposalAcceptedBy, TxProposalRejectedBy, txProposalFinallyRejected,
+    // txProposalFinallyAccepted, TxProposalRemoved, NewIncomingTx, NewOutgoingTx
+    this.events.subscribe('bwsEvent', (walletId: string) => {
+      if (this.recentTransactionsEnabled) this.getNotifications();
+      this.updateWallet(walletId);
+    });
+
+    // Create, Join, Import and Delete -> Get Wallets -> Update Status for All Wallets
+    this.events.subscribe('status:updated', () => {
+      this.updateTxps();
+      this.setWallets();
+    });
+
+    // Hide stars to rate
+    this.events.subscribe('feedback:hide', () => {
+      this.showRateCard = false;
     });
   }
 

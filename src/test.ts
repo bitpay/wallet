@@ -120,7 +120,7 @@ export class TestUtils {
   public static async configurePageTestingModule(
     components: any[],
     otherParams: any
-  ): Promise<{ fixture: any; instance: any }> {
+  ): Promise<{ fixture: any; instance: any; testBed: typeof TestBed }> {
     await TestBed.configureTestingModule({
       declarations: [...components],
       imports: [
@@ -181,7 +181,8 @@ export class TestUtils {
     await appProvider.load();
     return {
       fixture,
-      instance: fixture.debugElement.componentInstance
+      instance: fixture.debugElement.componentInstance,
+      testBed: TestBed
     };
   }
 

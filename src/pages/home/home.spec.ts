@@ -42,6 +42,8 @@ import { ProfileProvider } from './../../providers/profile/profile';
 let fixture: ComponentFixture<HomePage>;
 let instance: any;
 
+let addressBookProvider: AddressBookProvider;
+
 describe('HomePage', () => {
   beforeEach(
     async(() =>
@@ -76,9 +78,10 @@ describe('HomePage', () => {
           TxFormatProvider,
           WalletProvider
         ]
-      }).then(compiled => {
-        fixture = compiled.fixture;
-        instance = compiled.instance;
+      }).then(testEnv => {
+        fixture = testEnv.fixture;
+        instance = testEnv.instance;
+        addressBookProvider = testEnv.testBed.get(AddressBookProvider);
         fixture.detectChanges();
       })
     )
@@ -90,6 +93,12 @@ describe('HomePage', () => {
   describe('Lifecycle Hooks', () => {
     describe('ionViewWillEnter', () => {
       it('should not break', () => {
+        instance.ionViewWillEnter();
+      });
+      it('should log an error if address book list fails', () => {
+        spyOn(addressBookProvider, 'list').and.returnValue(
+          Promise.reject('bad error')
+        );
         instance.ionViewWillEnter();
       });
     });
