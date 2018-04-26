@@ -219,7 +219,9 @@ export class HomePage {
     var argv = gui.App.argv;
     if (argv && argv[0]) {
       // The timeout waits for the components to be initialized
-      this.handleOpenUrl(argv[0]);
+      setTimeout(() => {
+        this.handleOpenUrl(argv[0]);
+      }, 1000);
     }
   }
 
