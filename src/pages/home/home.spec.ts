@@ -5,6 +5,9 @@ import {
   TestBed
 } from '@angular/core/testing';
 
+import { Platform } from 'ionic-angular';
+import { Subject } from 'rxjs';
+
 import { TestUtils } from '../../test';
 
 import { HomePage } from './home';
@@ -24,6 +27,7 @@ import { LanguageProvider } from '../../providers/language/language';
 import { NodeWebkitProvider } from '../../providers/node-webkit/node-webkit';
 import { OnGoingProcessProvider } from '../../providers/on-going-process/on-going-process';
 import { PayproProvider } from '../../providers/paypro/paypro';
+import { PlatformProvider } from '../../providers/platform/platform';
 import { PopupProvider } from '../../providers/popup/popup';
 import { PushNotificationsProvider } from '../../providers/push-notifications/push-notifications';
 import { RateProvider } from '../../providers/rate/rate';
@@ -39,12 +43,11 @@ import { Logger } from './../../providers/logger/logger';
 import { PersistenceProvider } from './../../providers/persistence/persistence';
 import { ProfileProvider } from './../../providers/profile/profile';
 
-let fixture: ComponentFixture<HomePage>;
-let instance: any;
-
-let addressBookProvider: AddressBookProvider;
-
 describe('HomePage', () => {
+  let fixture: ComponentFixture<HomePage>;
+  let instance: any;
+  let testBed: typeof TestBed;
+
   beforeEach(
     async(() =>
       TestUtils.configurePageTestingModule([HomePage], {
@@ -81,7 +84,7 @@ describe('HomePage', () => {
       }).then(testEnv => {
         fixture = testEnv.fixture;
         instance = testEnv.instance;
-        addressBookProvider = testEnv.testBed.get(AddressBookProvider);
+        testBed = testEnv.testBed;
         fixture.detectChanges();
       })
     )
@@ -92,11 +95,13 @@ describe('HomePage', () => {
 
   describe('Lifecycle Hooks', () => {
     describe('ionViewWillEnter', () => {
-      it('should not break', () => {
+      it('should get config', () => {
         instance.ionViewWillEnter();
+        const configProvider = testBed.get(ConfigProvider);
+        expect(instance.config).toEqual(configProvider.get());
       });
-      it('should log an error if address book list fails', () => {
-        spyOn(addressBookProvider, 'list').and.returnValue(
+      it('should not break if address book list call fails', () => {
+        spyOn(testBed.get(AddressBookProvider), 'list').and.returnValue(
           Promise.reject('bad error')
         );
         instance.ionViewWillEnter();
@@ -104,20 +109,45 @@ describe('HomePage', () => {
     });
 
     describe('ionViewDidEnter', () => {
-      it('should not break', () => {
+      it('should check for update if NW', () => {
+        instance.isNW = true;
+        const spy = spyOn(instance, 'checkUpdate');
         instance.ionViewDidEnter();
+        expect(spy).toHaveBeenCalled();
+      });
+      it('should handle cordova deep links', () => {
+        const platformProvider = testBed.get(PlatformProvider);
+        platformProvider.isCordova = true;
+        const spy = spyOn(instance, 'handleDeepLinks');
+        instance.ionViewDidEnter();
+        expect(spy).toHaveBeenCalled();
+      });
+      it('should handle NW deep links', () => {
+        const platformProvider = testBed.get(PlatformProvider);
+        platformProvider.isNW = true;
+        const spy = spyOn(instance, 'handleDeepLinksNW');
+        instance.ionViewDidEnter();
+        expect(spy).toHaveBeenCalled();
       });
     });
 
     describe('ionViewDidLoad', () => {
-      it('should not break', () => {
+      it('should update txps and set wallets on platform resume', () => {
+        instance.plt.resume = new Subject();
         instance.ionViewDidLoad();
+        const updateTxpsSpy = spyOn(instance, 'updateTxps');
+        const setWalletsSpy = spyOn(instance, 'setWallets');
+        instance.plt.resume.next();
+        expect(updateTxpsSpy).toHaveBeenCalled();
+        expect(setWalletsSpy).toHaveBeenCalled();
       });
     });
 
     describe('ionViewWillLeave', () => {
-      it('should not break', () => {
+      it('should unsubscribe from feedback:hide event', () => {
+        const spy = spyOn(instance.events, 'unsubscribe');
         instance.ionViewWillLeave();
+        expect(spy).toHaveBeenCalledWith('feedback:hide');
       });
     });
   });

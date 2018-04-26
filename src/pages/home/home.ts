@@ -590,26 +590,15 @@ export class HomePage {
   }
 
   public goTo(page): void {
-    switch (page) {
-      case 'AmazonPage':
-        this.navCtrl.push(AmazonPage);
-        break;
-      case 'BitPayCardIntroPage':
-        this.navCtrl.push(BitPayCardIntroPage);
-        break;
-      case 'CoinbasePage':
-        this.navCtrl.push(CoinbasePage);
-        break;
-      case 'GlideraPage':
-        this.navCtrl.push(GlideraPage);
-        break;
-      case 'MercadoLibrePage':
-        this.navCtrl.push(MercadoLibrePage);
-        break;
-      case 'ShapeshiftPage':
-        this.navCtrl.push(ShapeshiftPage);
-        break;
-    }
+    const pageMap = {
+      AmazonPage,
+      BitPayCardIntroPage,
+      CoinbasePage,
+      GlideraPage,
+      MercadoLibrePage,
+      ShapeshiftPage
+    };
+    this.navCtrl.push(pageMap[page]);
   }
 
   public goToCard(cardId): void {

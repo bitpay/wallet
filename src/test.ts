@@ -63,7 +63,6 @@ import { FCM } from '@ionic-native/fcm';
 import { File } from '@ionic-native/file';
 import { QRScanner } from '@ionic-native/qr-scanner';
 import { TouchID } from '@ionic-native/touch-id';
-import { platform } from 'os';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import { AppProvider } from './providers/app/app';
