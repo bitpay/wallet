@@ -28,6 +28,7 @@ describe('AppProvider', () => {
   let service: AppProvider;
   let httpMock: HttpTestingController;
   let urls = ['assets/appConfig.json', 'assets/externalServices.json'];
+  let platformProvider: PlatformProvider;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -54,10 +55,18 @@ describe('AppProvider', () => {
     httpMock = injector.get(HttpTestingController);
   });
 
-  it('should load', () => {
-    service.load().then();
-    httpMock.expectOne(urls[1]).flush({});
-    httpMock.expectOne(urls[0]).flush(appTemplate);
+  describe('load', () => {
+    it('should load app info and services', () => {
+      service.load();
+      httpMock.expectOne(urls[1]).flush({});
+      httpMock.expectOne(urls[0]).flush(appTemplate);
+    });
+    it('should try to set custom NW menu bar', () => {
+      const spy = spyOn(service, 'setCustomMenuBarNW');
+      service.load().then(() => {
+        expect(spy).toHaveBeenCalled();
+      });
+    });
   });
 
   it('should catch an error when loading fails', done => {

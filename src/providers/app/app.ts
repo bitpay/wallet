@@ -60,11 +60,9 @@ export class AppProvider {
     this.logger.info('AppProvider initialized.');
   }
 
-  public async load(): Promise<any> {
+  public async load() {
     await Promise.all([this.getInfo(), this.loadProviders()]);
-    if (this.platformProvider.isNW) {
-      this.setCustomMenuBarNW();
-    }
+    this.setCustomMenuBarNW();
   }
 
   private async getInfo() {
@@ -88,7 +86,10 @@ export class AppProvider {
     return this.http.get(this.jsonPathServices).toPromise();
   }
 
-  private setCustomMenuBarNW() {
+  public setCustomMenuBarNW() {
+    if (!this.platformProvider.isNW) {
+      return;
+    }
     let gui = (window as any).require('nw.gui');
     let win = gui.Window.get();
     let nativeMenuBar = new gui.Menu({
