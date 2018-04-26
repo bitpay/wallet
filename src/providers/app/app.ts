@@ -44,7 +44,7 @@ interface App {
 
 @Injectable()
 export class AppProvider {
-  public info: any;
+  public info: any = {};
   public servicesInfo: any;
   private jsonPathApp: string = 'assets/appConfig.json';
   private jsonPathServices: string = 'assets/externalServices.json';
@@ -60,26 +60,32 @@ export class AppProvider {
     this.logger.info('AppProvider initialized.');
   }
 
-  public load(): Promise<any> {
-    return new Promise((resolve, reject) => {
-      this.persistence.load();
-      this.config
-        .load()
-        .then(() => {
-          this.language.load();
-          this.getServicesInfo().subscribe(infoServices => {
-            this.servicesInfo = infoServices;
-            this.getInfo().subscribe(infoApp => {
-              this.info = infoApp;
-              if (this.platformProvider.isNW) this.setCustomMenuBarNW();
-              resolve();
-            });
-          });
-        })
-        .catch(err => {
-          reject(err);
-        });
-    });
+  public async load(): Promise<any> {
+    await Promise.all([this.getInfo(), this.loadProviders()]);
+    if (this.platformProvider.isNW) {
+      this.setCustomMenuBarNW();
+    }
+  }
+
+  private async getInfo() {
+    [this.servicesInfo, this.info] = await Promise.all([
+      this.getServicesInfo(),
+      this.getAppInfo()
+    ]);
+  }
+
+  private async loadProviders() {
+    this.persistence.load();
+    await this.config.load();
+    this.language.load();
+  }
+
+  private getAppInfo() {
+    return this.http.get(this.jsonPathApp).toPromise();
+  }
+
+  private getServicesInfo() {
+    return this.http.get(this.jsonPathServices).toPromise();
   }
 
   private setCustomMenuBarNW() {
@@ -94,13 +100,5 @@ export class AppProvider {
       this.logger.debug('This is not OSX');
     }
     win.menu = nativeMenuBar;
-  }
-
-  private getInfo() {
-    return this.http.get(this.jsonPathApp);
-  }
-
-  private getServicesInfo() {
-    return this.http.get(this.jsonPathServices);
   }
 }
