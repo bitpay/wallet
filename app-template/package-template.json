@@ -61,7 +61,7 @@
     "test:coverage":          "ng test --code-coverage",
     "test:ci":                "ng test --watch=false --code-coverage --no-progress",
     "test:lint":              "tslint --project . --format codeFrame && tslint '{test,electron,src}/**/*.ts' --format codeFrame",
-    "test:visual":            "reg-cli test/visual/latest test/visual/approved test/visual/diffs --report test/visual/report.html --json test/visual/report.json --enableAntialias --pixelThreshold 20",
+    "test:visual":            "reg-cli test/visual/latest test/visual/expected test/visual/diffs --report test/visual/report.html --json test/visual/report.json --enableAntialias --pixelThreshold 20",
     "fix:tslint":             "tslint --fix --project . && tslint --fix '{test,electron,src}/**/*.ts'",
     "fix:prettier":           "prettier --write '{*,**/*}.{js,ts,md,json,scss}'",
     "e2e":                    "run-s env:e2e ionic:build e2e:test env:dev",
