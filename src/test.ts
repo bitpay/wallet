@@ -120,6 +120,7 @@ export class TestUtils {
     components: any[],
     otherParams: any
   ): Promise<{ fixture: any; instance: any; testBed: typeof TestBed }> {
+    const providers = (otherParams && otherParams.providers) || [];
     await TestBed.configureTestingModule({
       declarations: [...components],
       imports: [
@@ -168,7 +169,7 @@ export class TestUtils {
           provide: AndroidFingerprintAuth,
           useClass: AndroidFingerprintAuthMock
         },
-        ...otherParams.providers
+        ...providers
       ]
     }).compileComponents();
     const fixture: any = TestBed.createComponent(components[0]);

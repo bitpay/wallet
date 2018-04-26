@@ -182,6 +182,7 @@
     "@types/jasmine": "2.8.6",
     "@types/jasminewd2": "2.0.3",
     "@types/lodash": "4.14.104",
+    "@types/node": "7.0.61",
     "ajv": "6.2.0",
     "bhttp": "1.2.4",
     "codecov": "3.0.0",
