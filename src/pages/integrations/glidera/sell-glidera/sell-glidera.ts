@@ -232,7 +232,7 @@ export class SellGlideraPage {
                       this.glideraProvider.sell(this.token, twoFaCode, data, (err, data) => {
                         this.onGoingProcessProvider.clear();
                         if (err) return this.showError(err);
-                        this.logger.info('Glidera Sell Info: ', data);
+                        this.logger.info('Glidera Sell Info: ', JSON.stringify(data));
                         this.openFinishModal();
                       });
                     }).catch((err) => {
