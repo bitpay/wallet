@@ -10,18 +10,8 @@ import { PayproProvider } from '../paypro/paypro';
 import { PopupProvider } from '../popup/popup';
 import { ScanProvider } from '../scan/scan';
 
-// pages
-import { ImportWalletPage } from '../../pages/add/import-wallet/import-wallet';
-import { JoinWalletPage } from '../../pages/add/join-wallet/join-wallet';
-import { BitPayCardIntroPage } from '../../pages/integrations/bitpay-card/bitpay-card-intro/bitpay-card-intro';
-import { CoinbasePage } from '../../pages/integrations/coinbase/coinbase';
-import { GlideraPage } from '../../pages/integrations/glidera/glidera';
-import { AmountPage } from '../../pages/send/amount/amount';
-import { ConfirmPage } from '../../pages/send/confirm/confirm';
-
 @Injectable()
 export class IncomingDataProvider {
-  private navCtrl: NavControllerBase;
   constructor(
     private app: App,
     private events: Events,
@@ -40,9 +30,8 @@ export class IncomingDataProvider {
     this.events.publish('showIncomingDataMenuEvent', data);
   }
 
-  public redir(data: string): boolean {
+  public redir(data: string, activePage?: string): boolean {
     // TODO Injecting NavController in constructor of service fails with no provider error
-    this.navCtrl = this.app.getActiveNav();
 
     // data extensions for Payment Protocol with non-backwards-compatible request
     if ((/^bitcoin(cash)?:\?r=[\w+]/).exec(data)) {
@@ -175,7 +164,7 @@ export class IncomingDataProvider {
       // Plain Address
     } else if (this.bwcProvider.getBitcore().Address.isValid(data, 'livenet') || this.bwcProvider.getBitcore().Address.isValid(data, 'testnet')) {
       this.logger.debug('Handling Bitcoin Plain Address');
-      if (this.navCtrl.getActive().name === 'ScanPage') {
+      if (activePage === 'ScanPage') {
         this.showMenu({
           data,
           type: 'bitcoinAddress',
@@ -187,7 +176,7 @@ export class IncomingDataProvider {
       }
     } else if (this.bwcProvider.getBitcoreCash().Address.isValid(data, 'livenet') || this.bwcProvider.getBitcoreCash().Address.isValid(data, 'testnet')) {
       this.logger.debug('Handling Bitcoin Cash Plain Address');
-      if (this.navCtrl.getActive().name === 'ScanPage') {
+      if (activePage === 'ScanPage') {
         this.showMenu({
           data,
           type: 'bitcoinAddress',
@@ -200,14 +189,24 @@ export class IncomingDataProvider {
     } else if (data && data.indexOf(this.appProvider.info.name + '://glidera') === 0) {
 
       let code = this.getParameterByName('code', data);
-      this.navCtrl.push(GlideraPage, { code });
+      let stateParams = { code };
+      let nextView = {
+        name: 'GlideraPage',
+        params: stateParams
+      }
+      this.events.publish('IncomingDataRedir', nextView);
 
       this.logger.debug('Glidera TODO');
       return true;
     } else if (data && data.indexOf(this.appProvider.info.name + '://coinbase') === 0) {
 
       let code = this.getParameterByName('code', data);
-      this.navCtrl.push(CoinbasePage, { code });
+      let stateParams = { code };
+      let nextView = {
+        name: 'CoinbasePage',
+        params: stateParams
+      }
+      this.events.publish('IncomingDataRedir', nextView);
 
       this.logger.debug('Coinbase TODO');
       return true;
@@ -217,7 +216,6 @@ export class IncomingDataProvider {
       // Disable BitPay Card
       if (!this.appProvider.info._enabledExtensions.debitcard) return false;
 
-      // For BitPay card binding
       let secret = this.getParameterByName('secret', data);
       let email = this.getParameterByName('email', data);
       let otp = this.getParameterByName('otp', data);
@@ -226,18 +224,33 @@ export class IncomingDataProvider {
         default:
         case '0':
           /* For BitPay card binding */
-          this.navCtrl.push(BitPayCardIntroPage, { secret, email, otp });
+          let stateParams = { secret, email, otp };
+          let nextView = {
+            name: 'BitPayCardIntroPage',
+            params: stateParams
+          }
+          this.events.publish('IncomingDataRedir', nextView);
           break;
       }
       return true;
 
       // Join
     } else if (data && data.match(/^copay:[0-9A-HJ-NP-Za-km-z]{70,80}$/)) {
-      this.navCtrl.push(JoinWalletPage, { url: data, fromScan: true })
+      let stateParams = { url: data, fromScan: true };
+      let nextView = {
+        name: 'JoinWalletPage',
+        params: stateParams
+      }
+      this.events.publish('IncomingDataRedir', nextView);
       return true;
       // Old join
     } else if (data && data.match(/^[0-9A-HJ-NP-Za-km-z]{70,80}$/)) {
-      this.navCtrl.push(JoinWalletPage, { url: data, fromScan: true })
+      let stateParams = { url: data, fromScan: true };
+      let nextView = {
+        name: 'JoinWalletPage',
+        params: stateParams
+      }
+      this.events.publish('IncomingDataRedir', nextView);
       return true;
     } else if (data && (data.substring(0, 2) == '6P' || this.checkPrivateKey(data))) {
       this.logger.debug('Handling private key');
@@ -246,12 +259,16 @@ export class IncomingDataProvider {
         type: 'privateKey'
       });
     } else if (data && ((data.substring(0, 2) == '1|') || (data.substring(0, 2) == '2|') || (data.substring(0, 2) == '3|'))) {
-      this.navCtrl.push(ImportWalletPage, { code: data, fromScan: true })
+      let stateParams = { code: data, fromScan: true };
+      let nextView = {
+        name: 'ImportWalletPage',
+        params: stateParams
+      }
+      this.events.publish('IncomingDataRedir', nextView);
       return true;
-
     } else {
 
-      if (this.navCtrl.getActive().name === 'ScanPage') {
+      if (activePage === 'ScanPage') {
         this.logger.debug('Handling plain text');
         this.showMenu({
           data,
@@ -299,25 +316,41 @@ export class IncomingDataProvider {
 
   private goSend(addr: string, amount: string, message: string, coin: string): void {
     if (amount) {
-      this.navCtrl.push(ConfirmPage, {
+      let stateParams = {
         amount,
         toAddress: addr,
         description: message,
         coin
-      });
+      };
+      let nextView = {
+        name: 'ConfirmPage',
+        params: stateParams
+      }
+      this.events.publish('IncomingDataRedir', nextView);
+
     } else {
-      this.navCtrl.push(AmountPage, {
+      let stateParams = {
         toAddress: addr,
         coin
-      });
+      };
+      let nextView = {
+        name: 'AmountPage',
+        params: stateParams
+      }
+      this.events.publish('IncomingDataRedir', nextView);
     }
   }
 
-  private goToAmountPage(toAddress: string, coin: string) {
-    this.navCtrl.push(AmountPage, {
+  private goToAmountPage(toAddress: string, coin: string): void {
+    let stateParams = {
       toAddress,
       coin
-    });
+    };
+    let nextView = {
+      name: 'AmountPage',
+      params: stateParams
+    }
+    this.events.publish('IncomingDataRedir', nextView);
   }
 
   private handlePayPro(payProDetails: any, coin?: string): void {
@@ -332,7 +365,11 @@ export class IncomingDataProvider {
     if (payProDetails.requiredFeeRate) {
       stateParams.requiredFeeRate = Math.ceil(payProDetails.requiredFeeRate * 1024);
     }
-    this.navCtrl.push(ConfirmPage, stateParams);
+    let nextView = {
+      name: 'ConfirmPage',
+      params: stateParams
+    }
+    this.events.publish('IncomingDataRedir', nextView);
   }
 
 }

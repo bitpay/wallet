@@ -1,8 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { ScreenOrientation } from '@ionic-native/screen-orientation';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
-import { Events, ModalController, Platform } from 'ionic-angular';
+import { Events, ModalController, NavController, Platform } from 'ionic-angular';
 import { Subscription } from 'rxjs';
 
 // providers
@@ -17,16 +17,27 @@ import { Logger } from '../providers/logger/logger';
 import { MercadoLibreProvider } from '../providers/mercado-libre/mercado-libre';
 import { PopupProvider } from '../providers/popup/popup';
 import { ProfileProvider } from '../providers/profile/profile';
+import { PushNotificationsProvider } from '../providers/push-notifications/push-notifications';
 import { ShapeshiftProvider } from '../providers/shapeshift/shapeshift';
 import { TouchIdProvider } from '../providers/touchid/touchid';
 
 // pages
+import { CopayersPage } from '../pages/add/copayers/copayers';
+import { ImportWalletPage } from '../pages/add/import-wallet/import-wallet';
+import { JoinWalletPage } from '../pages/add/join-wallet/join-wallet';
 import { FingerprintModalPage } from '../pages/fingerprint/fingerprint';
+import { BitPayCardIntroPage } from '../pages/integrations/bitpay-card/bitpay-card-intro/bitpay-card-intro';
+import { CoinbasePage } from '../pages/integrations/coinbase/coinbase';
+import { GlideraPage } from '../pages/integrations/glidera/glidera';
 import { DisclaimerPage } from '../pages/onboarding/disclaimer/disclaimer';
 import { OnboardingPage } from '../pages/onboarding/onboarding';
+import { PaperWalletPage } from '../pages/paper-wallet/paper-wallet';
 import { PinModalPage } from '../pages/pin/pin';
+import { AmountPage } from '../pages/send/amount/amount';
+import { ConfirmPage } from '../pages/send/confirm/confirm';
+import { AddressbookAddPage } from '../pages/settings/addressbook/add/add';
 import { TabsPage } from '../pages/tabs/tabs';
-
+import { WalletDetailsPage } from '../pages/wallet-details/wallet-details';
 
 // As the handleOpenURL handler kicks in before the App is started, 
 // declare the handler function at the top of app.component.ts (outside the class definition) 
@@ -40,6 +51,8 @@ import { TabsPage } from '../pages/tabs/tabs';
   providers: [TouchIdProvider]
 })
 export class CopayApp {
+
+  @ViewChild('appNav') nav: NavController;
 
   public rootPage: any;
   private onResumeSubscription: Subscription;
@@ -63,7 +76,8 @@ export class CopayApp {
     private shapeshiftProvider: ShapeshiftProvider,
     private emailNotificationsProvider: EmailNotificationsProvider,
     private screenOrientation: ScreenOrientation,
-    private popupProvider: PopupProvider
+    private popupProvider: PopupProvider,
+    private pushNotificationsProvider: PushNotificationsProvider
   ) {
     this.initializeApp();
   }
@@ -102,9 +116,12 @@ export class CopayApp {
           this.openLockModal();
         }
         this.registerIntegrations();
+        this.incomingDataRedirEvent();
         // Check Profile
         this.profile.loadAndBindProfile().then((profile: any) => {
           this.emailNotificationsProvider.init(); // Update email subscription if necessary
+          this.initPushNotifications();
+
           if (profile) {
             this.logger.info('Profile exists.');
             this.rootPage = TabsPage;
@@ -186,5 +203,36 @@ export class CopayApp {
 
     // BitPay Card
     if (this.appProvider.info._enabledExtensions.debitcard) this.bitPayCardProvider.register();
+  }
+
+  private incomingDataRedirEvent(): void {
+    this.events.subscribe('IncomingDataRedir', (nextView) => {
+      const pageMap = {
+        ImportWalletPage,
+        JoinWalletPage,
+        BitPayCardIntroPage,
+        CoinbasePage,
+        GlideraPage,
+        AmountPage,
+        ConfirmPage,
+        PaperWalletPage,
+        AddressbookAddPage
+      };
+      this.nav.push(pageMap[nextView.name], nextView.params);
+    });
+  }
+
+  private initPushNotifications() {
+    this.pushNotificationsProvider.init();
+    this.events.subscribe('OpenWalletEvent', (nextView) => {
+      this.nav.popToRoot({ animate: false }).then(() => {
+        this.nav.parent.select(0);
+        const pageMap = {
+          CopayersPage,
+          WalletDetailsPage
+        };
+        this.nav.push(pageMap[nextView.name], nextView.params);
+      });
+    });
   }
 }
