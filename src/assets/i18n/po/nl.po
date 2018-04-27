@@ -12,7 +12,7 @@ msgstr ""
 "Last-Translator: cmgustavo83\n"
 "Language-Team: Dutch\n"
 "Language: nl\n"
-"PO-Revision-Date: 2018-03-28 11:29-0400\n"
+"PO-Revision-Date: 2018-04-27 16:18-0400\n"
 
 msgid "(Trusted)"
 msgstr "(Vertrouwd)"
@@ -614,7 +614,16 @@ msgstr ""
 msgid "Enter encrypt password"
 msgstr ""
 
+msgid "Enter wallet invitation"
+msgstr ""
+
+msgid "Enter wallet name"
+msgstr ""
+
 msgid "Enter your encrypt password again to confirm"
+msgstr ""
+
+msgid "Enter your name"
 msgstr ""
 
 msgid "Enter your password"
@@ -631,9 +640,6 @@ msgstr "Fout"
 
 msgid "Error adding new entry"
 msgstr ""
-
-msgid "Error at confirm"
-msgstr "Fout bij bevestigen"
 
 msgid "Error creating the invoice"
 msgstr "Fout tijdens maken van de factuur"
@@ -716,8 +722,8 @@ msgstr "Feedback kon niet worden ingediend. Probeer het later nog eens."
 msgid "Fetching BitPay Account..."
 msgstr "Ophalen BitPay Account..."
 
-msgid "Fetching payment information"
-msgstr "Ophalen van betalingsgegevens"
+msgid "Fetching payment information..."
+msgstr ""
 
 msgid "File/Text"
 msgstr ""
@@ -1043,7 +1049,7 @@ msgstr "Naam"
 msgid "Name (at creation)"
 msgstr ""
 
-msgid "Needs backup recovery"
+msgid "Needs backup"
 msgstr ""
 
 msgid "Network"
@@ -1433,9 +1439,6 @@ msgstr "Recente Transacties"
 msgid "Recipient"
 msgstr "Ontvanger"
 
-msgid "Recipients"
-msgstr "Ontvangers"
-
 msgid "Recovery Phrase"
 msgstr ""
 
@@ -1499,9 +1502,6 @@ msgstr "Scan adressen voor saldo"
 msgid "Scan again"
 msgstr "Scan nogmaals"
 
-msgid "Scanner not supported"
-msgstr ""
-
 msgid "Scanning Wallet funds..."
 msgstr "Saldo Portemonnee scannen..."
 
@@ -1527,6 +1527,9 @@ msgid "See invoice"
 msgstr ""
 
 msgid "See transaction"
+msgstr ""
+
+msgid "Select a coin"
 msgstr ""
 
 msgid "Select a wallet"
@@ -1985,6 +1988,9 @@ msgstr "WAARSCHUWING: NIET-VERTROUWD CERTIFICAAT"
 msgid "Waiting for copayers"
 msgstr "Wachten op copayers"
 
+msgid "Waiting for permissions."
+msgstr ""
+
 msgid "Waiting..."
 msgstr "Wachten..."
 
@@ -2063,6 +2069,9 @@ msgstr ""
 msgid "Wallet recovery phrase not available"
 msgstr "Portemonnee herstel zin niet beschikbaar"
 
+msgid "Wallet selected"
+msgstr ""
+
 msgid "Wallet service not found"
 msgstr "Wallet service niet gevonden"
 
@@ -2079,6 +2088,9 @@ msgid "We will confirm on the next screen."
 msgstr ""
 
 msgid "We'd love to do better. How could we improve your experience?"
+msgstr ""
+
+msgid "Website"
 msgstr ""
 
 msgid "What do you call this wallet?"

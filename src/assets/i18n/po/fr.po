@@ -12,7 +12,7 @@ msgstr ""
 "Last-Translator: cmgustavo83\n"
 "Language-Team: French\n"
 "Language: fr\n"
-"PO-Revision-Date: 2018-03-30 15:29-0400\n"
+"PO-Revision-Date: 2018-04-27 16:18-0400\n"
 
 msgid "(Trusted)"
 msgstr "(Fiable)"
@@ -33,7 +33,7 @@ msgid "A total of {{amountStr}} ({{fiatAmount | currency}} {{currencyIsoCode}}) 
 msgstr "Un total de {{amountStr}} ({{fiatAmount | currency}} {{currencyIsoCode}}) sera échangé pour {{withdrawalStr}} ({{fiatWithdrawal | currency}} {{currencyIsoCode}}). Voulez-vous continuer ?"
 
 msgid "About"
-msgstr "À propos"
+msgstr "À propos de"
 
 msgid "Accepted"
 msgstr "Acceptée"
@@ -614,8 +614,17 @@ msgstr "Saisissez des frais personnalisés en sat/byte"
 msgid "Enter encrypt password"
 msgstr "Saisissez le code chiffrement"
 
+msgid "Enter wallet invitation"
+msgstr "Saisissez l'invitation du portefeuille"
+
+msgid "Enter wallet name"
+msgstr "Saisissez le nom du portefeuille"
+
 msgid "Enter your encrypt password again to confirm"
 msgstr "Ressaisissez votre code de chiffrement pour confirmer"
+
+msgid "Enter your name"
+msgstr "Saisissez votre nom"
 
 msgid "Enter your password"
 msgstr "Écrivez votre mot de passe"
@@ -631,9 +640,6 @@ msgstr "Erreur"
 
 msgid "Error adding new entry"
 msgstr "Erreur lors de l’ajout d’une nouvelle entrée"
-
-msgid "Error at confirm"
-msgstr "Erreur à la confirmation"
 
 msgid "Error creating the invoice"
 msgstr "Erreur de création de la facture"
@@ -716,8 +722,8 @@ msgstr "Vos commentaires n'ont pas pu être envoyés. Veuillez réessayer plus t
 msgid "Fetching BitPay Account..."
 msgstr "Récupération du compte BitPay..."
 
-msgid "Fetching payment information"
-msgstr "Récupération des informations de paiement"
+msgid "Fetching payment information..."
+msgstr "Récupération des informations de paiement..."
 
 msgid "File/Text"
 msgstr "Fichier / Texte"
@@ -1043,7 +1049,7 @@ msgstr "Nom"
 msgid "Name (at creation)"
 msgstr "Nom (à la création)"
 
-msgid "Needs backup recovery"
+msgid "Needs backup"
 msgstr "Sauvegarde requise"
 
 msgid "Network"
@@ -1433,9 +1439,6 @@ msgstr "Transactions récentes"
 msgid "Recipient"
 msgstr "Destinataire"
 
-msgid "Recipients"
-msgstr "Destinataire(s)"
-
 msgid "Recovery Phrase"
 msgstr "Phrase de récupération"
 
@@ -1499,9 +1502,6 @@ msgstr "Analyser les adresses pour des fonds"
 msgid "Scan again"
 msgstr "Réanalyser"
 
-msgid "Scanner not supported"
-msgstr "Scanner non pris en charge"
-
 msgid "Scanning Wallet funds..."
 msgstr "Analyse des fonds du portefeuille..."
 
@@ -1528,6 +1528,9 @@ msgstr "Voir la facture"
 
 msgid "See transaction"
 msgstr "Voir la transaction"
+
+msgid "Select a coin"
+msgstr "Sélectionnez une crypto-monnaie"
 
 msgid "Select a wallet"
 msgstr "Sélectionner un portefeuille"
@@ -1743,7 +1746,7 @@ msgid "The amount of bitcoin immediately spendable from this wallet."
 msgstr "Le montant des bitcoins immédiatement disponibles depuis ce portefeuille."
 
 msgid "The amount of bitcoin stored in this wallet that is allocated as inputs to your pending transaction proposals. The amount is determined using unspent transaction outputs associated with this wallet and may be more than the actual amounts associated with your pending transaction proposals."
-msgstr "Le montant des bitcoins stockés dans ce portefeuille qui est alloué en tant qu'entrées à vos propositions de transaction en attente. Le montant est déterminé en utilisant les sorties de transaction non dépensées associées à ce portefeuille et peut être plus important que les montants réels associés à vos propositions de transaction en attente."
+msgstr "Le montant des bitcoins stockés dans ce portefeuille qui sont alloués en tant qu'entrées à vos propositions de transaction en attente. Le montant est déterminé en utilisant les sorties de transaction non dépensées associées à ce portefeuille et peut être plus important que les montants réels associés à vos propositions de transaction en attente."
 
 msgid "The amount of bitcoin stored in this wallet with less than 1 blockchain confirmation."
 msgstr "Le montant des bitcoins stockés dans ce portefeuille avec moins d'une confirmation blockchain."
@@ -1985,6 +1988,9 @@ msgstr "ATTENTION : CERTIFICAT NON APPROUVÉ"
 msgid "Waiting for copayers"
 msgstr "Attente des copayers"
 
+msgid "Waiting for permissions."
+msgstr "En attente des autorisations."
+
 msgid "Waiting..."
 msgstr "Attente..."
 
@@ -2063,6 +2069,9 @@ msgstr "Phrase de récupération"
 msgid "Wallet recovery phrase not available"
 msgstr "La phrase de récupération du portefeuille n'est pas disponible"
 
+msgid "Wallet selected"
+msgstr "Portefeuille sélectionné"
+
 msgid "Wallet service not found"
 msgstr "Wallet Service introuvable"
 
@@ -2080,6 +2089,9 @@ msgstr "Nous allons la confirmer sur l’écran suivant."
 
 msgid "We'd love to do better. How could we improve your experience?"
 msgstr "Nous serions ravis de faire mieux. Comment pourrions-nous améliorer votre expérience ?"
+
+msgid "Website"
+msgstr "Site internet"
 
 msgid "What do you call this wallet?"
 msgstr "Comment voulez-vous appeler ce portefeuille ?"
