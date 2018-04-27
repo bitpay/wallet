@@ -242,12 +242,7 @@ export class ConfirmPage {
   private exitWithError(err: any) {
     this.logger.info('Error setting wallet selector:' + err);
     this.popupProvider.ionicAlert("", this.bwcErrorProvider.msg(err)).then(() => {
-      this.navCtrl.popToRoot({ animate: false }).then(() => {
-        // Fixes mobile navigation
-        setTimeout(() => {
-          this.navCtrl.parent.select(0);
-        });
-      });
+      this.app.getRootNavs()[0].setRoot(TabsPage);
     });
   };
 
