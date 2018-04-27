@@ -204,7 +204,7 @@ export class BuyCoinbasePage {
       this.coinbaseProvider.init((err: any, res: any) => {
         if (err) {
           this.onGoingProcessProvider.clear();
-          this.showError(err);
+          this.showError(this.coinbaseProvider.getErrorsAsString(err));
           return;
         }
         let accessToken = res.accessToken;
@@ -218,7 +218,7 @@ export class BuyCoinbasePage {
         this.coinbaseProvider.buyRequest(accessToken, accountId, dataSrc, (err: any, b: any) => {
           if (err) {
             this.onGoingProcessProvider.clear();
-            this.showError(err);
+            this.showError(this.coinbaseProvider.getErrorsAsString(err));
             return;
           }
           setTimeout(() => {
@@ -245,7 +245,7 @@ export class BuyCoinbasePage {
     this.coinbaseProvider.getTransaction(this.accessToken, this.accountId, tx.id, (err: any, updatedTx: any) => {
       if (err) {
         this.onGoingProcessProvider.clear();
-        this.showError(err);
+        this.showError(this.coinbaseProvider.getErrorsAsString(err));
         return;
       }
       this.walletProvider.getAddress(this.wallet, false).then((walletAddr: string) => {
@@ -270,7 +270,7 @@ export class BuyCoinbasePage {
     this.coinbaseProvider.getBuyOrder(this.accessToken, this.accountId, b.data.id, (err: any, buyResp: any) => {
       if (err) {
         this.onGoingProcessProvider.clear();
-        this.showError(err);
+        this.showError(this.coinbaseProvider.getErrorsAsString(err));
         return;
       }
       let tx = buyResp.data ? buyResp.data.transaction : null;
