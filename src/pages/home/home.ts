@@ -210,25 +210,7 @@ export class HomePage {
     var gui = (window as any).require('nw.gui');
 
     // This event is sent to an existent instance of Copay (only for standalone apps)
-<<<<<<< HEAD
     gui.App.on('open', this.onOpenNW.bind(this));
-=======
-    gui.App.on('open', (pathData) => {
-      if (pathData.indexOf('bitcoincash:/') != -1) {
-        this.logger.debug('Bitcoin Cash URL found');
-        this.handleOpenUrl(pathData.substring(pathData.indexOf('bitcoincash:/')));
-      } else if (pathData.indexOf('bitcoin:/') != -1) {
-        this.logger.debug('Bitcoin URL found');
-        this.handleOpenUrl(pathData.substring(pathData.indexOf('bitcoin:/')));
-      } else if (pathData.indexOf(this.appProvider.info.name + '://') != -1) {
-        this.logger.debug(this.appProvider.info.name + ' URL found');
-        this.handleOpenUrl(pathData.substring(pathData.indexOf(this.appProvider.info.name + '://')));
-      } else {
-        this.logger.debug('URL found');
-        this.handleOpenUrl(pathData);
-      }
-    });
->>>>>>> 6540432c8113254497032470c7a77d42ba00d1b7
 
     // Used at the startup of Copay
     var argv = gui.App.argv;
@@ -241,16 +223,20 @@ export class HomePage {
   }
 
   onOpenNW(pathData) {
-    if (pathData.indexOf(/^bitcoin(cash)?:/) != -1) {
+    if (pathData.indexOf('bitcoincash:/') != -1) {
+      this.logger.debug('Bitcoin Cash URL found');
+      this.handleOpenUrl(pathData.substring(pathData.indexOf('bitcoincash:/')));
+    } else if (pathData.indexOf('bitcoin:/') != -1) {
       this.logger.debug('Bitcoin URL found');
-      this.handleOpenUrl(
-        pathData.substring(pathData.indexOf(/^bitcoin(cash)?:/))
-      );
+      this.handleOpenUrl(pathData.substring(pathData.indexOf('bitcoin:/')));
     } else if (pathData.indexOf(this.appProvider.info.name + '://') != -1) {
       this.logger.debug(this.appProvider.info.name + ' URL found');
       this.handleOpenUrl(
         pathData.substring(pathData.indexOf(this.appProvider.info.name + '://'))
       );
+    } else {
+      this.logger.debug('URL found');
+      this.handleOpenUrl(pathData);
     }
   }
 
