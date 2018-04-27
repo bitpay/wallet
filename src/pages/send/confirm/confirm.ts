@@ -7,9 +7,9 @@ import { Logger } from '../../../providers/logger/logger';
 // Pages
 import { FinishModalPage } from '../../finish/finish';
 import { PayProPage } from '../../paypro/paypro';
+import { TabsPage } from '../../tabs/tabs';
 import { ChooseFeeLevelPage } from '../choose-fee-level/choose-fee-level';
 import { FeeWarningPage } from '../fee-warning/fee-warning';
-import { TabsPage } from '../../tabs/tabs';
 
 // Providers
 import { BwcErrorProvider } from '../../../providers/bwc-error/bwc-error';
