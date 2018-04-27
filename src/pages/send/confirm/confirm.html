@@ -84,7 +84,7 @@
 
       <div class="wallet" *ngIf="tx.recipientType == 'contact'" (longPress)="toggleAddress()">
         <ion-icon class="item-gravatar" item-left>
-          <gravatar [name]="tx.name" [height]="30" [width]="30" [email]="tx.email"></gravatar>
+          <gravatar [name]="tx.name" [height]="35" [width]="35" [email]="tx.email"></gravatar>
         </ion-icon>
         <div class="ellipsis">
           <span *ngIf="tx.name && !showAddress">{{tx.name}}</span>
