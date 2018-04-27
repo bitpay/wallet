@@ -77,7 +77,9 @@ export class WalletDetailsPage {
 
   ionViewDidEnter() {
     this.updateAll();
+  }
 
+  ionViewWillEnter() {
     this.events.subscribe('bwsEvent', (walletId, type, n) => {
       if (walletId == this.wallet.id && type != 'NewAddress')
         this.updateAll();
@@ -90,6 +92,7 @@ export class WalletDetailsPage {
 
   ionViewWillLeave() {
     this.events.unsubscribe('Local/TxAction');
+    this.events.unsubscribe('bwsEvent');
   }
 
   private clearData() {

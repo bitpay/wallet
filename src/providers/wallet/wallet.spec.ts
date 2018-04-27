@@ -38,16 +38,8 @@ import { WalletProvider } from './wallet';
 describe('Provider: Wallet Provider', () => {
   let walletProvider: WalletProvider;
 
-  class BwcProviderMock {
-    constructor() {}
-    getErrors() {
-      return 'error';
-    }
-    getBitcoreCash() {}
-  }
-
   class PersistenceProviderMock {
-    constructor() {}
+    constructor() { }
     getLastAddress(walletId: any) {
       return Promise.resolve('storedAddress');
     }
@@ -81,7 +73,7 @@ describe('Provider: Wallet Provider', () => {
         AndroidFingerprintAuth,
         App,
         BwcErrorProvider,
-        { provide: BwcProvider, useClass: BwcProviderMock },
+        BwcProvider,
         Config,
         ConfigProvider,
         DecimalPipe,
@@ -153,7 +145,7 @@ describe('Provider: Wallet Provider', () => {
           return true;
         },
         needsBackup: false,
-        createAddress({}, cb) {
+        createAddress({ }, cb) {
           return cb(null, { address: 'newAddress' });
         }
       };
@@ -169,29 +161,34 @@ describe('Provider: Wallet Provider', () => {
           return true;
         },
         needsBackup: false,
-        createAddress({}, cb) {
-          return cb('CONNECTION_ERROR');
+        createAddress({ }, cb) {
+          return cb(new Error('CONNECTION_ERROR'));
         }
       };
-      let force = false;
+      let force = true;
       walletProvider.getAddress(wallet, force).catch(err => {
-        expect(err).toEqual('CONNECTION_ERROR');
+        expect(err).toEqual('Could not create address: Network error');
       });
     });
-    it('should reject to generate new address if gap reached', () => {
+    it('should return main address if gap reached', () => {
       let wallet = {
         isComplete() {
           return true;
         },
         needsBackup: false,
-        createAddress({}, cb) {
-          return cb('MAIN_ADDRESS_GAP_REACHED');
+        createAddress({ }, cb) {
+          return cb(new Error('MAIN_ADDRESS_GAP_REACHED'));
+        },
+        getMainAddresses({ }, cb) {
+          let mainAddress = [];
+          mainAddress.push({ address: 'mainAddress' });
+          return cb(null, mainAddress);
         }
       };
-      let force = false;
-      walletProvider.getAddress(wallet, force).catch(err => {
-        expect(err).toEqual('MAIN_ADDRESS_GAP_REACHED');
-      });
+      let force = true;
+      walletProvider.getAddress(wallet, force).then((mainAddress) => {
+        expect(mainAddress).toEqual('mainAddress');
+      })
     });
   });
 

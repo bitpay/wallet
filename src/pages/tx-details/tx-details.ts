@@ -84,6 +84,10 @@ export class TxDetailsPage {
     });
   }
 
+  ionViewWillLeave() {
+    this.events.unsubscribe('bwsEvent');
+  }
+
   public readMore(): void {
     let url = 'https://support.bitpay.com/hc/en-us/articles/115004497783-What-does-the-BitPay-wallet-s-warning-amount-too-low-to-spend-mean-';
     let optIn = true;

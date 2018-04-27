@@ -120,6 +120,8 @@ export class HomePage {
     if (this.platformProvider.isNW) {
       this.handleDeepLinksNW();
     }
+
+    this.listenForEvents();
   }
 
   ionViewWillEnter() {
@@ -145,7 +147,6 @@ export class HomePage {
     // Update list of wallets and status
     this.setWallets();
 
-    this.listenForEvents();
   }
 
   ionViewDidEnter() {

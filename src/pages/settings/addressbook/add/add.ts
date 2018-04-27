@@ -53,6 +53,10 @@ export class AddressbookAddPage {
     });
   }
 
+  ionViewWillLeave() {
+    this.events.unsubscribe('update:address');
+  }
+
   private emailOrEmpty(control: AbstractControl): ValidationErrors | null {
     return control.value === '' ? null : Validators.email(control);
   }
