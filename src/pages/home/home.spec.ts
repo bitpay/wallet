@@ -17,6 +17,7 @@ import { AppIdentityProvider } from '../../providers/app-identity/app-identity';
 import { AppProvider } from '../../providers/app/app';
 import { BitPayCardProvider } from '../../providers/bitpay-card/bitpay-card';
 import { BitPayProvider } from '../../providers/bitpay/bitpay';
+import { CustomTranslateProvider } from '../../providers/custom-translate/custom-translate';
 import { ExternalLinkProvider } from '../../providers/external-link/external-link';
 import { FeeProvider } from '../../providers/fee/fee';
 import { FeedbackProvider } from '../../providers/feedback/feedback';
@@ -59,6 +60,7 @@ describe('HomePage', () => {
           BwcProvider,
           BwcErrorProvider,
           ConfigProvider,
+          CustomTranslateProvider,
           ExternalLinkProvider,
           FeedbackProvider,
           FeeProvider,

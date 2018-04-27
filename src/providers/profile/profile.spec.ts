@@ -23,6 +23,7 @@ import { TxFormatProvider } from '../../providers/tx-format/tx-format';
 import { BwcErrorProvider } from '../bwc-error/bwc-error';
 import { BwcProvider } from '../bwc/bwc';
 import { ConfigProvider } from '../config/config';
+import { CustomTranslateProvider } from '../custom-translate/custom-translate';
 import { OnGoingProcessProvider } from '../on-going-process/on-going-process';
 import { PersistenceProvider } from '../persistence/persistence';
 import { PlatformProvider } from '../platform/platform';
@@ -90,14 +91,14 @@ describe('Profile Provider', () => {
   };
 
   class BwcProviderMock {
-    constructor() {}
+    constructor() { }
     getErrors() {
       return 'error';
     }
   }
 
   class PersistenceProviderMock {
-    constructor() {}
+    constructor() { }
     getBalanceCache(walletId: any) {
       return Promise.resolve('0.00 BTC');
     }
@@ -126,6 +127,7 @@ describe('Profile Provider', () => {
         { provide: BwcProvider, useClass: BwcProviderMock },
         BwcErrorProvider,
         ConfigProvider,
+        CustomTranslateProvider,
         HttpClient,
         LanguageProvider,
         LoadingController,
