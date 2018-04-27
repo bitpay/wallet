@@ -1,7 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { Navbar, NavController, NavParams } from 'ionic-angular';
 import * as _ from "lodash";
 
 // native 
@@ -12,10 +12,10 @@ import { AppProvider } from '../../../providers/app/app';
 import { ConfigProvider } from '../../../providers/config/config';
 import { FeedbackProvider } from '../../../providers/feedback/feedback';
 import { OnGoingProcessProvider } from '../../../providers/on-going-process/on-going-process';
+import { PersistenceProvider } from '../../../providers/persistence/persistence';
 import { PopupProvider } from '../../../providers/popup/popup';
 
 // pages
-import { HomePage } from '../../home/home';
 import { FeedbackCompletePage } from '../feedback-complete/feedback-complete';
 
 
@@ -24,6 +24,7 @@ import { FeedbackCompletePage } from '../feedback-complete/feedback-complete';
   templateUrl: 'send-feedback.html',
 })
 export class SendFeedbackPage {
+  @ViewChild(Navbar) navBar: Navbar;
 
   public feedback: string;
   public score: number;
@@ -41,6 +42,7 @@ export class SendFeedbackPage {
     private onGoingProcessProvider: OnGoingProcessProvider,
     private feedbackProvider: FeedbackProvider,
     private formBuilder: FormBuilder,
+    private persistenceProvider: PersistenceProvider,
     private popupProvider: PopupProvider,
     private translate: TranslateService,
     private device: Device
@@ -53,6 +55,14 @@ export class SendFeedbackPage {
   }
 
   ionViewWillEnter() {
+    this.navBar.backButtonClick = () => {
+      this.persistenceProvider.getFeedbackInfo().then((info: any) => {
+        let feedbackInfo = info;
+        feedbackInfo.sent = false;
+        this.persistenceProvider.setFeedbackInfo((feedbackInfo));
+        this.navCtrl.pop();
+      });
+    }
 
     switch (this.score) {
       case 1:
@@ -121,10 +131,6 @@ export class SendFeedbackPage {
       let subtitle = this.translate.instant('Feedback could not be submitted. Please try again later.');
       this.popupProvider.ionicAlert(title, subtitle);
     });
-    if (goHome) this.navCtrl.push(HomePage);
-  }
-
-  public goBack(): void {
-    this.navCtrl.pop();
+    if (goHome) this.navCtrl.pop();
   }
 }
