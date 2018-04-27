@@ -171,6 +171,11 @@
   "devDependencies": {
     "@angular/cli": "1.7.4",
     "@biesbjerg/ngx-translate-extract": "2.3.4",
+    "@ionic-native-mocks/android-fingerprint-auth": "^2.0.7",
+    "@ionic-native-mocks/fcm": "^2.0.7",
+    "@ionic-native-mocks/file": "^2.0.7",
+    "@ionic-native-mocks/qr-scanner": "^2.0.7",
+    "@ionic-native-mocks/touch-id": "^2.0.7",
     "@types/chrome": "0.0.64",
     "@ionic/app-scripts": "3.1.8",
     "@types/cordova-plugin-qrscanner": "1.0.31",

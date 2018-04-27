@@ -1,10 +1,15 @@
 import { Component, NgZone, ViewChild } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { Events, ModalController, NavController, Platform } from 'ionic-angular';
+import {
+  Events,
+  ModalController,
+  NavController,
+  Platform
+} from 'ionic-angular';
 import { Logger } from '../../providers/logger/logger';
 
 // Pages
-import { AddPage } from "../add/add";
+import { AddPage } from '../add/add';
 import { CopayersPage } from '../add/copayers/copayers';
 import { AmazonPage } from '../integrations/amazon/amazon';
 import { BitPayCardPage } from '../integrations/bitpay-card/bitpay-card';
@@ -121,11 +126,14 @@ export class HomePage {
     this.config = this.configProvider.get();
     this.pushNotificationsProvider.init();
 
-    this.addressBookProvider.list().then((ab: any) => {
-      this.addressbook = ab || {};
-    }).catch((err) => {
-      this.logger.error(err);
-    });
+    this.addressBookProvider
+      .list()
+      .then((ab: any) => {
+        this.addressbook = ab || {};
+      })
+      .catch(err => {
+        this.logger.error(err);
+      });
 
     // Update Tx Notifications
     this.recentTransactionsEnabled = this.config.recentTransactions.enabled;
@@ -137,19 +145,7 @@ export class HomePage {
     // Update list of wallets and status
     this.setWallets();
 
-    // BWS Events: Update Status per Wallet
-    // NewBlock, NewCopayer, NewAddress, NewTxProposal, TxProposalAcceptedBy, TxProposalRejectedBy, txProposalFinallyRejected,
-    // txProposalFinallyAccepted, TxProposalRemoved, NewIncomingTx, NewOutgoingTx
-    this.events.subscribe('bwsEvent', (walletId: string) => {
-      if (this.recentTransactionsEnabled) this.getNotifications();
-      this.updateWallet(walletId);
-    });
-
-    // Create, Join, Import and Delete -> Get Wallets -> Update Status for All Wallets
-    this.events.subscribe('status:updated', () => {
-      this.updateTxps();
-      this.setWallets();
-    });
+    this.listenForEvents();
   }
 
   ionViewDidEnter() {
@@ -158,11 +154,13 @@ export class HomePage {
     this.checkFeedbackInfo();
 
     // Show integrations
-    let integrations = _.filter(this.homeIntegrationsProvider.get(), { 'show': true });
+    let integrations = _.filter(this.homeIntegrationsProvider.get(), {
+      show: true
+    });
 
     // Hide BitPay if linked
     setTimeout(() => {
-      this.homeIntegrations = _.remove(_.clone(integrations), (x) => {
+      this.homeIntegrations = _.remove(_.clone(integrations), x => {
         if (x.name == 'debitcard' && x.linked) return;
         else return x;
       });
@@ -171,7 +169,9 @@ export class HomePage {
     // Only BitPay Wallet
     this.bitPayCardProvider.get({}, (err, cards) => {
       this.zone.run(() => {
-        this.showBitPayCard = this.appProvider.info._enabledExtensions.debitcard ? true : false;
+        this.showBitPayCard = this.appProvider.info._enabledExtensions.debitcard
+          ? true
+          : false;
         this.bitpayCardItems = cards;
       });
     });
@@ -190,26 +190,27 @@ export class HomePage {
     });
   }
 
-  private handleDeepLinksNW() {
+  private listenForEvents() {
+    // BWS Events: Update Status per Wallet
+    // NewBlock, NewCopayer, NewAddress, NewTxProposal, TxProposalAcceptedBy, TxProposalRejectedBy, txProposalFinallyRejected,
+    // txProposalFinallyAccepted, TxProposalRemoved, NewIncomingTx, NewOutgoingTx
+    this.events.subscribe('bwsEvent', (walletId: string) => {
+      if (this.recentTransactionsEnabled) this.getNotifications();
+      this.updateWallet(walletId);
+    });
 
+    // Create, Join, Import and Delete -> Get Wallets -> Update Status for All Wallets
+    this.events.subscribe('status:updated', () => {
+      this.updateTxps();
+      this.setWallets();
+    });
+  }
+
+  private handleDeepLinksNW() {
     var gui = (window as any).require('nw.gui');
 
     // This event is sent to an existent instance of Copay (only for standalone apps)
-    gui.App.on('open', (pathData) => {
-      if (pathData.indexOf('bitcoincash:/') != -1) {
-        this.logger.debug('Bitcoin Cash URL found');
-        this.handleOpenUrl(pathData.substring(pathData.indexOf('bitcoincash:/')));
-      } else if (pathData.indexOf('bitcoin:/') != -1) {
-        this.logger.debug('Bitcoin URL found');
-        this.handleOpenUrl(pathData.substring(pathData.indexOf('bitcoin:/')));
-      } else if (pathData.indexOf(this.appProvider.info.name + '://') != -1) {
-        this.logger.debug(this.appProvider.info.name + ' URL found');
-        this.handleOpenUrl(pathData.substring(pathData.indexOf(this.appProvider.info.name + '://')));
-      } else {
-        this.logger.debug('URL found');
-        this.handleOpenUrl(pathData);
-      }
-    });
+    gui.App.on('open', this.onOpenNW.bind(this));
 
     // Used at the startup of Copay
     var argv = gui.App.argv;
@@ -221,26 +222,43 @@ export class HomePage {
     }
   }
 
-  private handleDeepLinks() {
+  onOpenNW(pathData) {
+    if (pathData.indexOf('bitcoincash:/') != -1) {
+      this.logger.debug('Bitcoin Cash URL found');
+      this.handleOpenUrl(pathData.substring(pathData.indexOf('bitcoincash:/')));
+    } else if (pathData.indexOf('bitcoin:/') != -1) {
+      this.logger.debug('Bitcoin URL found');
+      this.handleOpenUrl(pathData.substring(pathData.indexOf('bitcoin:/')));
+    } else if (pathData.indexOf(this.appProvider.info.name + '://') != -1) {
+      this.logger.debug(this.appProvider.info.name + ' URL found');
+      this.handleOpenUrl(
+        pathData.substring(pathData.indexOf(this.appProvider.info.name + '://'))
+      );
+    } else {
+      this.logger.debug('URL found');
+      this.handleOpenUrl(pathData);
+    }
+  }
 
+  private handleDeepLinks() {
     // Check if app was resume by custom url scheme
     (window as any).handleOpenURL = (url: string) => {
       setTimeout(() => {
         this.zone.run(() => {
-          this.logger.info("App was resumed by custom url scheme");
+          this.logger.info('App was resumed by custom url scheme');
           this.handleOpenUrl(url);
         });
       }, 0);
     };
 
     // Check if app was opened by custom url scheme
-    const lastUrl: string = (window as any).handleOpenURL_LastURL || "";
-    if (lastUrl && lastUrl !== "") {
+    const lastUrl: string = (window as any).handleOpenURL_LastURL || '';
+    if (lastUrl && lastUrl !== '') {
       delete (window as any).handleOpenURL_LastURL;
       setTimeout(() => {
-        this.logger.info("App was opened by custom url scheme");
+        this.logger.info('App was opened by custom url scheme');
         this.handleOpenUrl(lastUrl);
-      }, 0)
+      }, 0);
     }
   }
 
@@ -260,18 +278,22 @@ export class HomePage {
     }, 10000);
   }
 
-  private setWallets = _.debounce(() => {
-    this.wallets = this.profileProvider.getWallets();
-    this.walletsBtc = this.profileProvider.getWallets({ coin: 'btc' });
-    this.walletsBch = this.profileProvider.getWallets({ coin: 'bch' });
-    this.updateAllWallets();
-  }, 5000, {
-      'leading': true
-    });
+  private setWallets = _.debounce(
+    () => {
+      this.wallets = this.profileProvider.getWallets();
+      this.walletsBtc = this.profileProvider.getWallets({ coin: 'btc' });
+      this.walletsBch = this.profileProvider.getWallets({ coin: 'bch' });
+      this.updateAllWallets();
+    },
+    5000,
+    {
+      leading: true
+    }
+  );
 
   public checkHomeTip(): void {
     this.persistenceProvider.getHomeTipAccepted().then((value: string) => {
-      this.homeTip = (value == 'accepted') ? false : true;
+      this.homeTip = value == 'accepted' ? false : true;
     });
   }
 
@@ -289,13 +311,16 @@ export class HomePage {
         // Check if current version is greater than saved version
         let currentVersion = this.releaseProvider.getCurrentAppVersion();
         let savedVersion = feedbackInfo.version;
-        let isVersionUpdated = this.feedbackProvider.isVersionUpdated(currentVersion, savedVersion);
+        let isVersionUpdated = this.feedbackProvider.isVersionUpdated(
+          currentVersion,
+          savedVersion
+        );
         if (!isVersionUpdated) {
           this.initFeedBackInfo();
           return;
         }
         let now = moment().unix();
-        let timeExceeded = (now - feedbackInfo.time) >= 24 * 7 * 60 * 60;
+        let timeExceeded = now - feedbackInfo.time >= 24 * 7 * 60 * 60;
         this.showRateCard = timeExceeded && !feedbackInfo.sent;
         this.showCard.setShowRateCard(this.showRateCard);
       }
@@ -315,53 +340,73 @@ export class HomePage {
     if (this.updatingWalletId[walletId]) return;
     this.startUpdatingWalletId(walletId);
     let wallet = this.profileProvider.getWallet(walletId);
-    this.walletProvider.getStatus(wallet, {}).then((status: any) => {
-      wallet.status = status;
-      wallet.error = null;
-      this.profileProvider.setLastKnownBalance(wallet.id, wallet.status.availableBalanceStr);
-      this.updateTxps();
-      this.stopUpdatingWalletId(walletId);
-    }).catch((err: any) => {
-      this.logger.error(err);
-      this.stopUpdatingWalletId(walletId);
-    });
+    this.walletProvider
+      .getStatus(wallet, {})
+      .then((status: any) => {
+        wallet.status = status;
+        wallet.error = null;
+        this.profileProvider.setLastKnownBalance(
+          wallet.id,
+          wallet.status.availableBalanceStr
+        );
+        this.updateTxps();
+        this.stopUpdatingWalletId(walletId);
+      })
+      .catch((err: any) => {
+        this.logger.error(err);
+        this.stopUpdatingWalletId(walletId);
+      });
   }
 
-  private updateTxps = _.debounce(() => {
-    this.profileProvider.getTxps({ limit: 3 }).then((data: any) => {
-      this.zone.run(() => {
-        this.txps = data.txps;
-        this.txpsN = data.n;
-      });
-    }).catch((err: any) => {
-      this.logger.error(err);
-    });
-  }, 2000, {
-      'leading': true
-    });
+  private updateTxps = _.debounce(
+    () => {
+      this.profileProvider
+        .getTxps({ limit: 3 })
+        .then((data: any) => {
+          this.zone.run(() => {
+            this.txps = data.txps;
+            this.txpsN = data.n;
+          });
+        })
+        .catch((err: any) => {
+          this.logger.error(err);
+        });
+    },
+    2000,
+    {
+      leading: true
+    }
+  );
 
-  private getNotifications = _.debounce(() => {
-    this.profileProvider.getNotifications({ limit: 3 }).then((data: any) => {
-      this.zone.run(() => {
-        this.notifications = data.notifications;
-        this.notificationsN = data.total;
-      });
-    }).catch((err: any) => {
-      this.logger.error(err);
-    });
-  }, 2000, {
-      'leading': true
-    });
+  private getNotifications = _.debounce(
+    () => {
+      this.profileProvider
+        .getNotifications({ limit: 3 })
+        .then((data: any) => {
+          this.zone.run(() => {
+            this.notifications = data.notifications;
+            this.notificationsN = data.total;
+          });
+        })
+        .catch((err: any) => {
+          this.logger.error(err);
+        });
+    },
+    2000,
+    {
+      leading: true
+    }
+  );
 
   private updateAllWallets(): void {
     let wallets: any[] = [];
-    let foundMessage = false
+    let foundMessage = false;
 
-    _.each(this.walletsBtc, (wBtc) => {
+    _.each(this.walletsBtc, wBtc => {
       wallets.push(wBtc);
     });
 
-    _.each(this.walletsBch, (wBch) => {
+    _.each(this.walletsBch, wBch => {
       wallets.push(wBch);
     });
 
@@ -371,22 +416,36 @@ export class HomePage {
     let j = 0;
 
     let pr = ((wallet, cb) => {
-      this.walletProvider.getStatus(wallet, {}).then((status: any) => {
-        wallet.status = status;
-        wallet.error = null;
+      this.walletProvider
+        .getStatus(wallet, {})
+        .then((status: any) => {
+          wallet.status = status;
+          wallet.error = null;
 
-        if (!foundMessage && !_.isEmpty(status.serverMessage)) {
-          this.serverMessage = status.serverMessage;
-          foundMessage = true;
-        }
+          if (!foundMessage && !_.isEmpty(status.serverMessage)) {
+            this.serverMessage = status.serverMessage;
+            foundMessage = true;
+          }
 
-        this.profileProvider.setLastKnownBalance(wallet.id, wallet.status.availableBalanceStr);
-        return cb();
-      }).catch((err) => {
-        wallet.error = (err === 'WALLET_NOT_REGISTERED') ? 'Wallet not registered' : this.bwcErrorProvider.msg(err);
-        this.logger.warn(this.bwcErrorProvider.msg(err, 'Error updating status for ' + wallet.name));
-        return cb();
-      });
+          this.profileProvider.setLastKnownBalance(
+            wallet.id,
+            wallet.status.availableBalanceStr
+          );
+          return cb();
+        })
+        .catch(err => {
+          wallet.error =
+            err === 'WALLET_NOT_REGISTERED'
+              ? 'Wallet not registered'
+              : this.bwcErrorProvider.msg(err);
+          this.logger.warn(
+            this.bwcErrorProvider.msg(
+              err,
+              'Error updating status for ' + wallet.name
+            )
+          );
+          return cb();
+        });
     }).bind(this);
 
     _.each(wallets, (wallet: any) => {
@@ -399,19 +458,24 @@ export class HomePage {
   }
 
   private checkUpdate(): void {
-    this.releaseProvider.getLatestAppVersion().toPromise()
-      .then((version) => {
+    this.releaseProvider
+      .getLatestAppVersion()
+      .toPromise()
+      .then(version => {
         this.logger.debug('Current app version:', version);
         var result = this.releaseProvider.checkForUpdates(version);
         this.logger.debug('Update available:', result.updateAvailable);
         if (result.updateAvailable) {
           this.newRelease = true;
-          this.updateText = 'There is a new version of ' + this.appProvider.info.nameCase + ' available';
+          this.updateText =
+            'There is a new version of ' +
+            this.appProvider.info.nameCase +
+            ' available';
         }
       })
-      .catch((err) => {
+      .catch(err => {
         this.logger.error('Error getLatestAppVersion', err);
-      })
+      });
   }
 
   public openServerMessageLink(): void {
@@ -426,10 +490,14 @@ export class HomePage {
   public goToWalletDetails(wallet: any): void {
     if (this.showReorderBtc || this.showReorderBch) return;
     if (!wallet.isComplete()) {
-      this.navCtrl.push(CopayersPage, { walletId: wallet.credentials.walletId });
+      this.navCtrl.push(CopayersPage, {
+        walletId: wallet.credentials.walletId
+      });
       return;
     }
-    this.navCtrl.push(WalletDetailsPage, { walletId: wallet.credentials.walletId });
+    this.navCtrl.push(WalletDetailsPage, {
+      walletId: wallet.credentials.walletId
+    });
   }
 
   public openNotificationModal(n: any) {
@@ -445,17 +513,20 @@ export class HomePage {
         this.openTxpModal(txp);
       } else {
         this.onGoingProcessProvider.set('loadingTxInfo');
-        this.walletProvider.getTxp(wallet, n.txpId).then((txp: any) => {
-          var _txp = txp;
-          this.onGoingProcessProvider.clear();
-          this.openTxpModal(_txp);
-        }).catch((err: any) => {
-          this.onGoingProcessProvider.clear();
-          this.logger.warn('No txp found');
-          let title = this.translate.instant('Error');
-          let subtitle = this.translate.instant('Transaction not found');
-          return this.popupProvider.ionicAlert(title, subtitle);
-        });
+        this.walletProvider
+          .getTxp(wallet, n.txpId)
+          .then((txp: any) => {
+            var _txp = txp;
+            this.onGoingProcessProvider.clear();
+            this.openTxpModal(_txp);
+          })
+          .catch((err: any) => {
+            this.onGoingProcessProvider.clear();
+            this.logger.warn('No txp found');
+            let title = this.translate.instant('Error');
+            let subtitle = this.translate.instant('Transaction not found');
+            return this.popupProvider.ionicAlert(title, subtitle);
+          });
       }
     }
   }
@@ -475,7 +546,7 @@ export class HomePage {
     _.each(this.walletsBtc, (wallet: any, index: number) => {
       this.profileProvider.setWalletOrder(wallet.id, index, 'btc');
     });
-  };
+  }
 
   public reorderWalletsBch(indexes): void {
     let element = this.walletsBch[indexes.from];
@@ -484,20 +555,33 @@ export class HomePage {
     _.each(this.walletsBch, (wallet: any, index: number) => {
       this.profileProvider.setWalletOrder(wallet.id, index, 'bch');
     });
-  };
+  }
 
   public goToDownload(): void {
     let url = 'https://github.com/bitpay/copay/releases/latest';
     let optIn = true;
     let title = this.translate.instant('Update Available');
-    let message = this.translate.instant('An update to this app is available. For your security, please update to the latest version.');
+    let message = this.translate.instant(
+      'An update to this app is available. For your security, please update to the latest version.'
+    );
     let okText = this.translate.instant('View Update');
     let cancelText = this.translate.instant('Go Back');
-    this.externalLinkProvider.open(url, optIn, title, message, okText, cancelText);
+    this.externalLinkProvider.open(
+      url,
+      optIn,
+      title,
+      message,
+      okText,
+      cancelText
+    );
   }
 
   public openTxpModal(tx: any): void {
-    let modal = this.modalCtrl.create(TxpDetailsPage, { tx }, { showBackdrop: false, enableBackdropDismiss: false });
+    let modal = this.modalCtrl.create(
+      TxpDetailsPage,
+      { tx },
+      { showBackdrop: false, enableBackdropDismiss: false }
+    );
     modal.present();
   }
 
@@ -510,26 +594,15 @@ export class HomePage {
   }
 
   public goTo(page): void {
-    switch (page) {
-      case 'AmazonPage':
-        this.navCtrl.push(AmazonPage);
-        break;
-      case 'BitPayCardIntroPage':
-        this.navCtrl.push(BitPayCardIntroPage);
-        break;
-      case 'CoinbasePage':
-        this.navCtrl.push(CoinbasePage);
-        break;
-      case 'GlideraPage':
-        this.navCtrl.push(GlideraPage);
-        break;
-      case 'MercadoLibrePage':
-        this.navCtrl.push(MercadoLibrePage);
-        break;
-      case 'ShapeshiftPage':
-        this.navCtrl.push(ShapeshiftPage);
-        break;
-    }
+    const pageMap = {
+      AmazonPage,
+      BitPayCardIntroPage,
+      CoinbasePage,
+      GlideraPage,
+      MercadoLibrePage,
+      ShapeshiftPage
+    };
+    this.navCtrl.push(pageMap[page]);
   }
 
   public goToCard(cardId): void {
