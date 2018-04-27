@@ -2,7 +2,13 @@ import { Component, ViewChild } from '@angular/core';
 import { ScreenOrientation } from '@ionic-native/screen-orientation';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
-import { App, Events, ModalController, NavController, Platform } from 'ionic-angular';
+import {
+  App,
+  Events,
+  ModalController,
+  NavController,
+  Platform
+} from 'ionic-angular';
 import { Subscription } from 'rxjs';
 
 // providers
@@ -39,8 +45,8 @@ import { AddressbookAddPage } from '../pages/settings/addressbook/add/add';
 import { TabsPage } from '../pages/tabs/tabs';
 import { WalletDetailsPage } from '../pages/wallet-details/wallet-details';
 
-// As the handleOpenURL handler kicks in before the App is started, 
-// declare the handler function at the top of app.component.ts (outside the class definition) 
+// As the handleOpenURL handler kicks in before the App is started,
+// declare the handler function at the top of app.component.ts (outside the class definition)
 // to track the passed Url
 (window as any).handleOpenURL = (url: string) => {
   (window as any).handleOpenURL_LastURL = url;
@@ -51,12 +57,25 @@ import { WalletDetailsPage } from '../pages/wallet-details/wallet-details';
   providers: [TouchIdProvider]
 })
 export class CopayApp {
-
   @ViewChild('appNav') nav: NavController;
 
   public rootPage: any;
   private onResumeSubscription: Subscription;
   private isModalOpen: boolean;
+
+  private pageMap: { [name: string]: any } = {
+    AddressbookAddPage,
+    AmountPage,
+    BitPayCardIntroPage,
+    CoinbasePage,
+    ConfirmPage,
+    CopayersPage,
+    GlideraPage,
+    ImportWalletPage,
+    JoinWalletPage,
+    PaperWalletPage,
+    WalletDetailsPage
+  };
 
   constructor(
     private platform: Platform,
@@ -83,78 +102,109 @@ export class CopayApp {
     this.initializeApp();
   }
 
+  ngOnDestroy() {
+    this.onResumeSubscription.unsubscribe();
+  }
+
   initializeApp() {
-    this.platform.ready().then((readySource) => {
-      this.appProvider.load().then(() => {
-        this.logger.info(
-          'Platform ready (' + readySource + '): ' +
-          this.appProvider.info.nameCase +
-          ' - v' + this.appProvider.info.version +
-          ' #' + this.appProvider.info.commitHash);
+    this.platform
+      .ready()
+      .then(readySource => {
+        this.onPlatformReady(readySource);
+      })
+      .catch(e => {
+        this.logger.error('Platform is not ready.', e);
+      });
+  }
 
-        if (this.platform.is('cordova')) {
-          this.statusBar.show();
-
-          // Set to portrait
-          this.screenOrientation.lock(this.screenOrientation.ORIENTATIONS.PORTRAIT);
-
-          // Only overlay for iOS
-          if (this.platform.is('ios')) this.statusBar.overlaysWebView(true);
-
-          this.statusBar.styleLightContent();
-          this.splashScreen.hide();
-
-          // Subscribe Resume
-          this.onResumeSubscription = this.platform.resume.subscribe(() => {
-
-            // Update Wallet Status
-            this.events.publish('status:updated');
-
-            // Check PIN or Fingerprint
-            this.openLockModal();
-          });
-
-          this.openLockModal();
-        }
-        this.registerIntegrations();
-        this.incomingDataRedirEvent();
-        // Check Profile
-        this.profile.loadAndBindProfile().then((profile: any) => {
-          this.emailNotificationsProvider.init(); // Update email subscription if necessary
-          this.initPushNotifications();
-
-          if (profile) {
-            this.logger.info('Profile exists.');
-            this.rootPage = TabsPage;
-          }
-          else {
-            this.logger.info('No profile exists.');
-            this.profile.createProfile();
-            this.rootPage = OnboardingPage;
-          }
-        }).catch((err: Error) => {
-          this.logger.warn('LoadAndBindProfile', err.message);
-          this.rootPage = err.message == 'ONBOARDINGNONCOMPLETED: Onboarding non completed' ? OnboardingPage : DisclaimerPage;
-        });
-      }).catch((err) => {
+  private onPlatformReady(readySource): void {
+    this.appProvider
+      .load()
+      .then(() => {
+        this.onAppLoad(readySource);
+      })
+      .catch(err => {
         let title = 'Could not initialize the app';
         let message = JSON.stringify(err);
         this.popupProvider.ionicAlert(title, message);
       });
-
-    }).catch((e) => {
-      this.logger.error('Platform is not ready.', e);
-    });
   }
 
-  ngOnDestroy() {
-    this.onResumeSubscription.unsubscribe();
+  private onAppLoad(readySource) {
+    this.logger.info(
+      'Platform ready (' +
+        readySource +
+        '): ' +
+        this.appProvider.info.nameCase +
+        ' - v' +
+        this.appProvider.info.version +
+        ' #' +
+        this.appProvider.info.commitHash
+    );
+
+    if (this.platform.is('cordova')) {
+      this.statusBar.show();
+
+      // Set to portrait
+      this.screenOrientation.lock(this.screenOrientation.ORIENTATIONS.PORTRAIT);
+
+      // Only overlay for iOS
+      if (this.platform.is('ios')) this.statusBar.overlaysWebView(true);
+
+      this.statusBar.styleLightContent();
+      this.splashScreen.hide();
+
+      // Subscribe Resume
+      this.onResumeSubscription = this.platform.resume.subscribe(() => {
+        // Update Wallet Status
+        this.events.publish('status:updated');
+
+        // Check PIN or Fingerprint on Resume
+        this.openLockModal();
+      });
+
+      // Check PIN or Fingerprint
+      this.openLockModal();
+    }
+    
+    this.registerIntegrations();
+    this.incomingDataRedirEvent();
+    // Check Profile
+    this.profile
+      .loadAndBindProfile()
+      .then((profile: any) => {
+        this.onProfileLoad(profile);
+      })
+      .catch((err: Error) => {
+        this.logger.warn('LoadAndBindProfile', err.message);
+        this.rootPage =
+          err.message == 'ONBOARDINGNONCOMPLETED: Onboarding non completed'
+            ? OnboardingPage
+            : DisclaimerPage;
+      });
+  }
+
+  private onProfileLoad(profile) {
+    this.emailNotificationsProvider.init(); // Update email subscription if necessary
+    this.initPushNotifications();
+
+    if (profile) {
+      this.logger.info('Profile exists.');
+      this.rootPage = TabsPage;
+    } else {
+      this.logger.info('No profile exists.');
+      this.profile.createProfile();
+      this.rootPage = OnboardingPage;
+    }
   }
 
   private openLockModal(): void {
     if (this.isModalOpen) return;
     let config: any = this.configProvider.get();
-    let lockMethod = (config && config.lock && config.lock.method) ? config.lock.method.toLowerCase() : null;
+    let lockMethod =
+      config && config.lock && config.lock.method
+        ? config.lock.method.toLowerCase()
+        : null;
     if (!lockMethod) return;
     if (lockMethod == 'pin') this.openPINModal('checkPin');
     if (lockMethod == 'fingerprint') this.openFingerprintModal();
@@ -180,15 +230,17 @@ export class CopayApp {
   }
 
   private registerIntegrations(): void {
-
     // Mercado Libre
-    if (this.appProvider.info._enabledExtensions.mercadolibre) this.mercadoLibreProvider.register();
+    if (this.appProvider.info._enabledExtensions.mercadolibre)
+      this.mercadoLibreProvider.register();
 
     // Amazon Gift Cards
-    if (this.appProvider.info._enabledExtensions.amazon) this.amazonProvider.register();
+    if (this.appProvider.info._enabledExtensions.amazon)
+      this.amazonProvider.register();
 
     // ShapeShift
-    if (this.appProvider.info._enabledExtensions.shapeshift) this.shapeshiftProvider.register();
+    if (this.appProvider.info._enabledExtensions.shapeshift)
+      this.shapeshiftProvider.register();
 
     // Glidera
     if (this.appProvider.info._enabledExtensions.glidera) {
@@ -203,34 +255,20 @@ export class CopayApp {
     }
 
     // BitPay Card
-    if (this.appProvider.info._enabledExtensions.debitcard) this.bitPayCardProvider.register();
+    if (this.appProvider.info._enabledExtensions.debitcard)
+      this.bitPayCardProvider.register();
   }
 
   private incomingDataRedirEvent(): void {
-    this.events.subscribe('IncomingDataRedir', (nextView) => {
-      const pageMap = {
-        ImportWalletPage,
-        JoinWalletPage,
-        BitPayCardIntroPage,
-        CoinbasePage,
-        GlideraPage,
-        AmountPage,
-        ConfirmPage,
-        PaperWalletPage,
-        AddressbookAddPage
-      };
-      this.nav.push(pageMap[nextView.name], nextView.params);
+    this.events.subscribe('IncomingDataRedir', nextView => {
+      this.nav.push(this.pageMap[nextView.name], nextView.params);
     });
   }
 
   private initPushNotifications() {
-    this.events.subscribe('OpenWalletEvent', (nextView) => {
+    this.events.subscribe('OpenWalletEvent', nextView => {
       this.app.getRootNavs()[0].setRoot(TabsPage);
-      const pageMap = {
-        CopayersPage,
-        WalletDetailsPage
-      };
-      this.nav.push(pageMap[nextView.name], nextView.params);
+      this.nav.push(this.pageMap[nextView.name], nextView.params);
     });
     this.pushNotificationsProvider.init();
   }
