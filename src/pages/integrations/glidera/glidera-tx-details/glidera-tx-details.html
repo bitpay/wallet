@@ -16,10 +16,10 @@
   <ion-card>
     <ion-card-content text-center>
       <div>
-        <img src="assets/img/glidera/bought.svg" alt="bought" width="20" *ngIf="tx.type == 'BUY' && tx.status == 'COMPLETE'">
-        <img src="assets/img/glidera/bought-pending.svg" alt="bought" width="15" *ngIf="tx.type == 'BUY' && tx.status == 'PROCESSING'">
-        <img src="assets/img/glidera/sold.svg" alt="bought" width="20" *ngIf="tx.type == 'SELL' && tx.status == 'COMPLETE'">
-        <img src="assets/img/glidera/sold-pending.svg" alt="bought" width="15" *ngIf="tx.type == 'SELL' && tx.status == 'PROCESSING'">
+        <img src="assets/img/bought.svg" alt="bought" width="20" *ngIf="tx.type == 'BUY' && tx.status == 'COMPLETE'">
+        <img src="assets/img/bought-pending.svg" alt="bought" width="15" *ngIf="tx.type == 'BUY' && tx.status == 'PROCESSING'">
+        <img src="assets/img/sold.svg" alt="bought" width="20" *ngIf="tx.type == 'SELL' && tx.status == 'COMPLETE'">
+        <img src="assets/img/sold-pending.svg" alt="bought" width="15" *ngIf="tx.type == 'SELL' && tx.status == 'PROCESSING'">
       </div>
       <div class="title" padding>
         <span *ngIf="tx.type == 'BUY'">Bought</span>
