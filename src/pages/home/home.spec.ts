@@ -115,20 +115,6 @@ describe('HomePage', () => {
         instance.ionViewDidEnter();
         expect(spy).toHaveBeenCalled();
       });
-      it('should handle cordova deep links', () => {
-        const platformProvider = testBed.get(PlatformProvider);
-        platformProvider.isCordova = true;
-        const spy = spyOn(instance, 'handleDeepLinks');
-        instance.ionViewDidEnter();
-        expect(spy).toHaveBeenCalled();
-      });
-      it('should handle NW deep links', () => {
-        const platformProvider = testBed.get(PlatformProvider);
-        platformProvider.isNW = true;
-        const spy = spyOn(instance, 'handleDeepLinksNW');
-        instance.ionViewDidEnter();
-        expect(spy).toHaveBeenCalled();
-      });
     });
 
     describe('ionViewDidLoad', () => {
