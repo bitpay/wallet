@@ -6,6 +6,7 @@ import { Logger } from '../../../providers/logger/logger';
 // providers
 import { AppProvider } from '../../../providers/app/app';
 import { PersistenceProvider } from '../../../providers/persistence/persistence';
+import { PlatformProvider } from '../../../providers/platform/platform';
 
 // pages
 import { FeedbackPage } from '../../../pages/feedback/feedback/feedback';
@@ -20,7 +21,9 @@ export class FeedbackCardPage {
   public appName: string;
   public score: number;
   public button_title: string;
+
   private isShowRateCard: boolean = false;
+  private isCordova: boolean;
 
   constructor(
     private appProvider: AppProvider,
@@ -28,10 +31,12 @@ export class FeedbackCardPage {
     private logger: Logger,
     private persistenceProvider: PersistenceProvider,
     private events: Events,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private platformProvider: PlatformProvider
   ) {
     this.appName = this.appProvider.info.nameCase;
     this.score = 0;
+    this.isCordova = this.platformProvider.isCordova;
   }
 
   public setShowRateCard(value) {
@@ -71,7 +76,7 @@ export class FeedbackCardPage {
 
   public goFeedbackFlow(): void {
     this.hideCard();
-    if (this.score == 5) {
+    if (this.isCordova && this.score == 5) {
       this.navCtrl.push(FeedbackPage, { score: this.score });
     } else {
       this.navCtrl.push(SendFeedbackPage, { score: this.score });
