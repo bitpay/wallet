@@ -2,7 +2,7 @@ import { Component, ViewChild } from '@angular/core';
 import { ScreenOrientation } from '@ionic-native/screen-orientation';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
-import { Events, ModalController, NavController, Platform } from 'ionic-angular';
+import { App, Events, ModalController, NavController, Platform } from 'ionic-angular';
 import { Subscription } from 'rxjs';
 
 // providers
@@ -77,7 +77,8 @@ export class CopayApp {
     private emailNotificationsProvider: EmailNotificationsProvider,
     private screenOrientation: ScreenOrientation,
     private popupProvider: PopupProvider,
-    private pushNotificationsProvider: PushNotificationsProvider
+    private pushNotificationsProvider: PushNotificationsProvider,
+    private app: App
   ) {
     this.initializeApp();
   }
@@ -223,16 +224,14 @@ export class CopayApp {
   }
 
   private initPushNotifications() {
-    this.pushNotificationsProvider.init();
     this.events.subscribe('OpenWalletEvent', (nextView) => {
-      this.nav.popToRoot({ animate: false }).then(() => {
-        this.nav.parent.select(0);
-        const pageMap = {
-          CopayersPage,
-          WalletDetailsPage
-        };
-        this.nav.push(pageMap[nextView.name], nextView.params);
-      });
+      this.app.getRootNavs()[0].setRoot(TabsPage);
+      const pageMap = {
+        CopayersPage,
+        WalletDetailsPage
+      };
+      this.nav.push(pageMap[nextView.name], nextView.params);
     });
+    this.pushNotificationsProvider.init();
   }
 }
