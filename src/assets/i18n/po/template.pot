@@ -634,7 +634,16 @@ msgstr ""
 msgid "Enter encrypt password"
 msgstr ""
 
+msgid "Enter wallet invitation"
+msgstr ""
+
+msgid "Enter wallet name"
+msgstr ""
+
 msgid "Enter your encrypt password again to confirm"
+msgstr ""
+
+msgid "Enter your name"
 msgstr ""
 
 msgid "Enter your password"
@@ -650,9 +659,6 @@ msgid "Error"
 msgstr ""
 
 msgid "Error adding new entry"
-msgstr ""
-
-msgid "Error at confirm"
 msgstr ""
 
 msgid "Error creating the invoice"
@@ -736,7 +742,7 @@ msgstr ""
 msgid "Fetching BitPay Account..."
 msgstr ""
 
-msgid "Fetching payment information"
+msgid "Fetching payment information..."
 msgstr ""
 
 msgid "File/Text"
@@ -1098,7 +1104,7 @@ msgstr ""
 msgid "Name (at creation)"
 msgstr ""
 
-msgid "Needs backup recovery"
+msgid "Needs backup"
 msgstr ""
 
 msgid "Network"
@@ -1498,9 +1504,6 @@ msgstr ""
 msgid "Recipient"
 msgstr ""
 
-msgid "Recipients"
-msgstr ""
-
 msgid "Recovery Phrase"
 msgstr ""
 
@@ -1564,9 +1567,6 @@ msgstr ""
 msgid "Scan again"
 msgstr ""
 
-msgid "Scanner not supported"
-msgstr ""
-
 msgid "Scanning Wallet funds..."
 msgstr ""
 
@@ -1592,6 +1592,9 @@ msgid "See invoice"
 msgstr ""
 
 msgid "See transaction"
+msgstr ""
+
+msgid "Select a coin"
 msgstr ""
 
 msgid "Select a wallet"
@@ -2102,6 +2105,9 @@ msgstr ""
 msgid "Waiting for copayers"
 msgstr ""
 
+msgid "Waiting for permissions."
+msgstr ""
+
 msgid "Waiting..."
 msgstr ""
 
@@ -2182,6 +2188,9 @@ msgstr ""
 msgid "Wallet recovery phrase not available"
 msgstr ""
 
+msgid "Wallet selected"
+msgstr ""
+
 msgid "Wallet service not found"
 msgstr ""
 
@@ -2201,6 +2210,9 @@ msgid "We will confirm on the next screen."
 msgstr ""
 
 msgid "We'd love to do better. How could we improve your experience?"
+msgstr ""
+
+msgid "Website"
 msgstr ""
 
 msgid "What do you call this wallet?"
