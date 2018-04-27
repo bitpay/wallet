@@ -75,14 +75,23 @@ describe('PopupProvider', () => {
   it(
     'should have a prompt',
     inject([PopupProvider], (popupProvider: PopupProvider) => {
-      popupProvider.ionicPrompt('title', 'message').then((done) => {
-        let alert = alertCtrl.create();
-        expect(popupProvider.ionicPrompt).toHaveBeenCalledWith(
-          'title',
-          'message'
-        );
+      let opts = {
+        defaultText: null,
+        placeholder: null,
+        type: 'text',
+        useDanger: null,
+        enableBackdropDismiss: null
+      };
+      let title = 'ok text';
+      let message = 'cancel text'
+      popupProvider.ionicPrompt(title, message, opts).then(() => {
+        expect(opts && opts.useDanger).toBeNull();
+        expect(!!(opts && opts.enableBackdropDismiss)).toBe(false);
+        let alert = alertCtrl.create({
+          title,
+          message
+        });
         expect(alert.present).toHaveBeenCalled();
-        done();
       });
     }),
   );
