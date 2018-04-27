@@ -118,11 +118,14 @@ page-txp-details {
       padding-left: 1rem;
       margin-right: .5rem;
       position: relative;
+      img, .rejected {
+        z-index: 12;
+      }
 
       .line::before {
         content: '';
         background: #e8e8e8;
-        height: 42px;
+        height: 52px;
         width: 1px;
         position: absolute;
         left: 50%;
