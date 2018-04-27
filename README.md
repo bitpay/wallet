@@ -75,7 +75,7 @@ npm run start:android
 
 ### iOS
 
-Follow the [Cordova iOS Platform Guide](https://cordova.apache.org/docs/en/latest/guide/platforms/android/) to set up your development environment.
+Follow the [Cordova iOS Platform Guide](https://cordova.apache.org/docs/en/latest/guide/platforms/ios/) to set up your development environment.
 
 When your developement enviroment is ready, run the `start:ios` npm package script.
 
