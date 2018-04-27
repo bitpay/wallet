@@ -12,7 +12,7 @@ msgstr ""
 "Last-Translator: cmgustavo83\n"
 "Language-Team: Chinese Simplified\n"
 "Language: zh\n"
-"PO-Revision-Date: 2018-03-30 15:29-0400\n"
+"PO-Revision-Date: 2018-04-27 16:18-0400\n"
 
 msgid "(Trusted)"
 msgstr "（可信的）"
@@ -614,7 +614,16 @@ msgstr ""
 msgid "Enter encrypt password"
 msgstr ""
 
+msgid "Enter wallet invitation"
+msgstr ""
+
+msgid "Enter wallet name"
+msgstr ""
+
 msgid "Enter your encrypt password again to confirm"
+msgstr ""
+
+msgid "Enter your name"
 msgstr ""
 
 msgid "Enter your password"
@@ -631,9 +640,6 @@ msgstr "错误！"
 
 msgid "Error adding new entry"
 msgstr ""
-
-msgid "Error at confirm"
-msgstr "在确认错误"
 
 msgid "Error creating the invoice"
 msgstr "创建发票时出错"
@@ -716,8 +722,8 @@ msgstr "无法提交反馈。请稍后再试。"
 msgid "Fetching BitPay Account..."
 msgstr "正在获取 BitPay 帐户..."
 
-msgid "Fetching payment information"
-msgstr "获取付款信息"
+msgid "Fetching payment information..."
+msgstr ""
 
 msgid "File/Text"
 msgstr ""
@@ -1043,7 +1049,7 @@ msgstr "名称"
 msgid "Name (at creation)"
 msgstr ""
 
-msgid "Needs backup recovery"
+msgid "Needs backup"
 msgstr ""
 
 msgid "Network"
@@ -1433,9 +1439,6 @@ msgstr "最近的交易"
 msgid "Recipient"
 msgstr "收件人"
 
-msgid "Recipients"
-msgstr "接收者"
-
 msgid "Recovery Phrase"
 msgstr ""
 
@@ -1499,9 +1502,6 @@ msgstr "扫描资金的地址"
 msgid "Scan again"
 msgstr "重新扫描"
 
-msgid "Scanner not supported"
-msgstr ""
-
 msgid "Scanning Wallet funds..."
 msgstr "正在扫描钱包资金..."
 
@@ -1527,6 +1527,9 @@ msgid "See invoice"
 msgstr ""
 
 msgid "See transaction"
+msgstr ""
+
+msgid "Select a coin"
 msgstr ""
 
 msgid "Select a wallet"
@@ -1985,6 +1988,9 @@ msgstr "警告︰不受信任的证书"
 msgid "Waiting for copayers"
 msgstr "正在等待 copayers"
 
+msgid "Waiting for permissions."
+msgstr ""
+
 msgid "Waiting..."
 msgstr "等待中..."
 
@@ -2063,6 +2069,9 @@ msgstr ""
 msgid "Wallet recovery phrase not available"
 msgstr "錢包恢復短語不存在"
 
+msgid "Wallet selected"
+msgstr ""
+
 msgid "Wallet service not found"
 msgstr "找不到 Wallet Service"
 
@@ -2079,6 +2088,9 @@ msgid "We will confirm on the next screen."
 msgstr ""
 
 msgid "We'd love to do better. How could we improve your experience?"
+msgstr ""
+
+msgid "Website"
 msgstr ""
 
 msgid "What do you call this wallet?"

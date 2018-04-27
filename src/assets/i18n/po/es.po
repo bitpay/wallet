@@ -12,7 +12,7 @@ msgstr ""
 "Last-Translator: cmgustavo83\n"
 "Language-Team: Spanish\n"
 "Language: es\n"
-"PO-Revision-Date: 2018-03-30 15:29-0400\n"
+"PO-Revision-Date: 2018-04-27 16:18-0400\n"
 
 msgid "(Trusted)"
 msgstr "(De confianza)"
@@ -614,8 +614,17 @@ msgstr "Ingresar comisión en sat/byte"
 msgid "Enter encrypt password"
 msgstr "Ingrese contraseña de cifrado"
 
+msgid "Enter wallet invitation"
+msgstr "Ingresar invitación a la billetera"
+
+msgid "Enter wallet name"
+msgstr "Ingresar nombre de la billetera"
+
 msgid "Enter your encrypt password again to confirm"
 msgstr "Ingrese su contraseña de cifrado otra vez para confirmar"
+
+msgid "Enter your name"
+msgstr "Ingresar su nombre"
 
 msgid "Enter your password"
 msgstr "Ingrese su contraseña"
@@ -631,9 +640,6 @@ msgstr "Error"
 
 msgid "Error adding new entry"
 msgstr "Error al agregar nuevo elemento"
-
-msgid "Error at confirm"
-msgstr "Error al confirmar"
 
 msgid "Error creating the invoice"
 msgstr "Error al crear la factura"
@@ -716,8 +722,8 @@ msgstr "No se pudo enviar el comentario. Por favor intente nuevamente."
 msgid "Fetching BitPay Account..."
 msgstr "Buscando Cuenta de BitPay..."
 
-msgid "Fetching payment information"
-msgstr "Obteniendo información del pago"
+msgid "Fetching payment information..."
+msgstr "Obteniendo información del pago..."
 
 msgid "File/Text"
 msgstr "Archivo/Texto"
@@ -1043,7 +1049,7 @@ msgstr "Nombre"
 msgid "Name (at creation)"
 msgstr "Nombre (al crear)"
 
-msgid "Needs backup recovery"
+msgid "Needs backup"
 msgstr "Necesita respaldar"
 
 msgid "Network"
@@ -1433,9 +1439,6 @@ msgstr "Transacciones Recientes"
 msgid "Recipient"
 msgstr "Destinatario"
 
-msgid "Recipients"
-msgstr "Destinatarios"
-
 msgid "Recovery Phrase"
 msgstr "Frase de Recuperación"
 
@@ -1499,9 +1502,6 @@ msgstr "Busca direcciones con fondos"
 msgid "Scan again"
 msgstr "Escanear de nuevo"
 
-msgid "Scanner not supported"
-msgstr "Cámara no soportada"
-
 msgid "Scanning Wallet funds..."
 msgstr "Buscando fondos en la billetera..."
 
@@ -1528,6 +1528,9 @@ msgstr "Ver factura"
 
 msgid "See transaction"
 msgstr "Ver transacción"
+
+msgid "Select a coin"
+msgstr "Seleccionar una moneda"
 
 msgid "Select a wallet"
 msgstr "Seleccionar una billetera"
@@ -1985,6 +1988,9 @@ msgstr "ADVERTENCIA: EL CERTIFICADO NO ES DE CONFIANZA"
 msgid "Waiting for copayers"
 msgstr "Esperando a los demás copayers"
 
+msgid "Waiting for permissions."
+msgstr "A la espera de permisos."
+
 msgid "Waiting..."
 msgstr "Esperando..."
 
@@ -2063,6 +2069,9 @@ msgstr "Frase de recuperación de la Billetera"
 msgid "Wallet recovery phrase not available"
 msgstr "Frase de recuperación de la billetera no disponible"
 
+msgid "Wallet selected"
+msgstr "Billetera seleccionada"
+
 msgid "Wallet service not found"
 msgstr "Wallet Service no encontrado"
 
@@ -2080,6 +2089,9 @@ msgstr "Se confirmará en la siguiente pantalla."
 
 msgid "We'd love to do better. How could we improve your experience?"
 msgstr "Nos encantaría hacerlo mejor. ¿Cómo podríamos mejorar su experiencia?"
+
+msgid "Website"
+msgstr "Sitio Web"
 
 msgid "What do you call this wallet?"
 msgstr "¿Como desea llamar a esta billetera?"
