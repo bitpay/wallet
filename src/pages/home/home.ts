@@ -107,6 +107,14 @@ export class HomePage {
     this.showReorderBtc = false;
     this.showReorderBch = false;
     this.zone = new NgZone({ enableLongStackTrace: false });
+
+    if (this.platformProvider.isCordova) {
+      this.handleDeepLinks();
+    }
+
+    if (this.platformProvider.isNW) {
+      this.handleDeepLinksNW();
+    }
   }
 
   ionViewWillEnter() {
@@ -149,14 +157,6 @@ export class HomePage {
     this.checkHomeTip();
     this.checkFeedbackInfo();
 
-    if (this.platformProvider.isCordova) {
-      this.handleDeepLinks();
-    }
-
-    if (this.platformProvider.isNW) {
-      this.handleDeepLinksNW();
-    }
-
     // Show integrations
     let integrations = _.filter(this.homeIntegrationsProvider.get(), { 'show': true });
 
@@ -196,19 +196,28 @@ export class HomePage {
 
     // This event is sent to an existent instance of Copay (only for standalone apps)
     gui.App.on('open', (pathData) => {
-      if (pathData.indexOf(/^bitcoin(cash)?:/) != -1) {
+      if (pathData.indexOf('bitcoincash:/') != -1) {
+        this.logger.debug('Bitcoin Cash URL found');
+        this.handleOpenUrl(pathData.substring(pathData.indexOf('bitcoincash:/')));
+      } else if (pathData.indexOf('bitcoin:/') != -1) {
         this.logger.debug('Bitcoin URL found');
-        this.handleOpenUrl(pathData.substring(pathData.indexOf(/^bitcoin(cash)?:/)));
+        this.handleOpenUrl(pathData.substring(pathData.indexOf('bitcoin:/')));
       } else if (pathData.indexOf(this.appProvider.info.name + '://') != -1) {
         this.logger.debug(this.appProvider.info.name + ' URL found');
         this.handleOpenUrl(pathData.substring(pathData.indexOf(this.appProvider.info.name + '://')));
+      } else {
+        this.logger.debug('URL found');
+        this.handleOpenUrl(pathData);
       }
     });
 
     // Used at the startup of Copay
     var argv = gui.App.argv;
     if (argv && argv[0]) {
-      this.handleOpenUrl(argv[0]);
+      // The timeout waits for the components to be initialized
+      setTimeout(() => {
+        this.handleOpenUrl(argv[0]);
+      }, 1000);
     }
   }
 
