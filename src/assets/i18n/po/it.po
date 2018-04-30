@@ -12,7 +12,7 @@ msgstr ""
 "Last-Translator: cmgustavo83\n"
 "Language-Team: Italian\n"
 "Language: it\n"
-"PO-Revision-Date: 2018-03-30 15:29-0400\n"
+"PO-Revision-Date: 2018-04-27 16:18-0400\n"
 
 msgid "(Trusted)"
 msgstr "(Fidato)"
@@ -614,8 +614,17 @@ msgstr "Inserisci commissione personalizzata in sat/byte"
 msgid "Enter encrypt password"
 msgstr "Inserire password di cifratura"
 
+msgid "Enter wallet invitation"
+msgstr ""
+
+msgid "Enter wallet name"
+msgstr ""
+
 msgid "Enter your encrypt password again to confirm"
 msgstr "Inserire ancora la tua password di cifratura per confermare"
+
+msgid "Enter your name"
+msgstr ""
 
 msgid "Enter your password"
 msgstr "Inserisci la tua password"
@@ -631,9 +640,6 @@ msgstr "Errore"
 
 msgid "Error adding new entry"
 msgstr "Errore nell'aggiunta di nuova voce"
-
-msgid "Error at confirm"
-msgstr "Errore di conferma"
 
 msgid "Error creating the invoice"
 msgstr "Errore nella creazione della fattura"
@@ -716,8 +722,8 @@ msgstr "Il feedback non può essere sottoscritto. Riprova più tardi."
 msgid "Fetching BitPay Account..."
 msgstr "Recupero Account BitPay..."
 
-msgid "Fetching payment information"
-msgstr "Recupero informazione del pagamento"
+msgid "Fetching payment information..."
+msgstr ""
 
 msgid "File/Text"
 msgstr "File/Testo"
@@ -1043,8 +1049,8 @@ msgstr "Nome"
 msgid "Name (at creation)"
 msgstr "Nome (al momento della creazione)"
 
-msgid "Needs backup recovery"
-msgstr "C'è bisogno del recupero di backup"
+msgid "Needs backup"
+msgstr ""
 
 msgid "Network"
 msgstr "Network"
@@ -1433,9 +1439,6 @@ msgstr "Transazioni recenti"
 msgid "Recipient"
 msgstr "Destinatario"
 
-msgid "Recipients"
-msgstr "Destinatari"
-
 msgid "Recovery Phrase"
 msgstr "Frase di Recupero"
 
@@ -1499,9 +1502,6 @@ msgstr "Scansione degli indirizzi per fondi"
 msgid "Scan again"
 msgstr "Ripetere la scansione"
 
-msgid "Scanner not supported"
-msgstr "Scansione non supportata"
-
 msgid "Scanning Wallet funds..."
 msgstr "Scansione fondi Portafoglio..."
 
@@ -1528,6 +1528,9 @@ msgstr "Vedere la fattura"
 
 msgid "See transaction"
 msgstr "Vedere la transazione"
+
+msgid "Select a coin"
+msgstr ""
 
 msgid "Select a wallet"
 msgstr "Selezionare un portafoglio"
@@ -1985,6 +1988,9 @@ msgstr "ATTENZIONE: CERTIFICATO NON ATTENDIBILE"
 msgid "Waiting for copayers"
 msgstr "In attesa di copayers"
 
+msgid "Waiting for permissions."
+msgstr ""
+
 msgid "Waiting..."
 msgstr "In attesa..."
 
@@ -2063,6 +2069,9 @@ msgstr "Frase di recupero del portafoglio"
 msgid "Wallet recovery phrase not available"
 msgstr "Frase di recupero portafoglio non disponibile"
 
+msgid "Wallet selected"
+msgstr ""
+
 msgid "Wallet service not found"
 msgstr "Wallet service non trovato"
 
@@ -2080,6 +2089,9 @@ msgstr "Confermeremo la schermata successiva."
 
 msgid "We'd love to do better. How could we improve your experience?"
 msgstr "Ci piacerebbe fare meglio. Come potremmo migliorare la tua esperienza?"
+
+msgid "Website"
+msgstr ""
 
 msgid "What do you call this wallet?"
 msgstr "Come chiameresti questo portafoglio?"

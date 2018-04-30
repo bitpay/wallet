@@ -534,4 +534,4 @@ export function createTranslateLoader(http: HttpClient) {
     }
   ]
 })
-export class AppModule { }
+export class AppModule {}

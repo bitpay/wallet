@@ -12,7 +12,7 @@ msgstr ""
 "Last-Translator: cmgustavo83\n"
 "Language-Team: Japanese\n"
 "Language: ja\n"
-"PO-Revision-Date: 2018-03-28 11:29-0400\n"
+"PO-Revision-Date: 2018-04-27 16:18-0400\n"
 
 msgid "(Trusted)"
 msgstr "(信頼済み)"
@@ -30,7 +30,7 @@ msgid "A member of the team will review your feedback as soon as possible."
 msgstr "ただちに開発メンバーでいただいた評価を拝読し参考にさせていただきます。"
 
 msgid "A total of {{amountStr}} ({{fiatAmount | currency}} {{currencyIsoCode}}) will be exchanged for {{withdrawalStr}} ({{fiatWithdrawal | currency}} {{currencyIsoCode}}). Would you like to proceed?"
-msgstr ""
+msgstr "yêu anh đi"
 
 msgid "About"
 msgstr "このアプリについて"
@@ -45,7 +45,7 @@ msgid "Activity"
 msgstr "履歴"
 
 msgid "Add"
-msgstr ""
+msgstr "Viêt nam"
 
 msgid "Add Contact"
 msgstr "連絡先を追加"
@@ -616,7 +616,16 @@ msgstr ""
 msgid "Enter encrypt password"
 msgstr ""
 
+msgid "Enter wallet invitation"
+msgstr ""
+
+msgid "Enter wallet name"
+msgstr ""
+
 msgid "Enter your encrypt password again to confirm"
+msgstr ""
+
+msgid "Enter your name"
 msgstr ""
 
 msgid "Enter your password"
@@ -633,9 +642,6 @@ msgstr "エラー"
 
 msgid "Error adding new entry"
 msgstr ""
-
-msgid "Error at confirm"
-msgstr "確認のエラー"
 
 msgid "Error creating the invoice"
 msgstr "請求の作成中にエラー"
@@ -718,8 +724,8 @@ msgstr "フォームを送信する事ができませんでした。時間をお
 msgid "Fetching BitPay Account..."
 msgstr "BitPay アカウントを取得..."
 
-msgid "Fetching payment information"
-msgstr "支払い情報要求しています…"
+msgid "Fetching payment information..."
+msgstr ""
 
 msgid "File/Text"
 msgstr ""
@@ -1045,7 +1051,7 @@ msgstr "名前"
 msgid "Name (at creation)"
 msgstr ""
 
-msgid "Needs backup recovery"
+msgid "Needs backup"
 msgstr ""
 
 msgid "Network"
@@ -1435,9 +1441,6 @@ msgstr "最近の取引"
 msgid "Recipient"
 msgstr "受取人"
 
-msgid "Recipients"
-msgstr "受取人"
-
 msgid "Recovery Phrase"
 msgstr ""
 
@@ -1501,9 +1504,6 @@ msgstr "アドレスの残高照会"
 msgid "Scan again"
 msgstr "もう一度スキャンし直してください。"
 
-msgid "Scanner not supported"
-msgstr ""
-
 msgid "Scanning Wallet funds..."
 msgstr "ウォレット残高照会中…"
 
@@ -1529,6 +1529,9 @@ msgid "See invoice"
 msgstr ""
 
 msgid "See transaction"
+msgstr ""
+
+msgid "Select a coin"
 msgstr ""
 
 msgid "Select a wallet"
@@ -1989,6 +1992,9 @@ msgstr "警告: 信頼されていない証明書"
 msgid "Waiting for copayers"
 msgstr "ウォレット参加者を待っています"
 
+msgid "Waiting for permissions."
+msgstr ""
+
 msgid "Waiting..."
 msgstr "少々お待ち下さい…"
 
@@ -2067,6 +2073,9 @@ msgstr ""
 msgid "Wallet recovery phrase not available"
 msgstr "ウォレットの復元フレーズが削除されているため表示できません"
 
+msgid "Wallet selected"
+msgstr ""
+
 msgid "Wallet service not found"
 msgstr "Wallet serviceが見つかりません。"
 
@@ -2083,6 +2092,9 @@ msgid "We will confirm on the next screen."
 msgstr ""
 
 msgid "We'd love to do better. How could we improve your experience?"
+msgstr ""
+
+msgid "Website"
 msgstr ""
 
 msgid "What do you call this wallet?"

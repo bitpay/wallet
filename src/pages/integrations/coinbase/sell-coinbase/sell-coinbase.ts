@@ -139,7 +139,7 @@ export class SellCoinbasePage {
     this.coinbaseProvider.init((err: any, res: any) => {
       if (err) {
         this.onGoingProcessProvider.clear();
-        this.showErrorAndBack(this.coinbaseProvider.getErrorsAsString(err.errors));
+        this.showErrorAndBack(this.coinbaseProvider.getErrorsAsString(err));
         return;
       }
       let accessToken = res.accessToken;
@@ -153,7 +153,7 @@ export class SellCoinbasePage {
       this.coinbaseProvider.getPaymentMethods(accessToken, (err: any, p: any) => {
         if (err) {
           this.onGoingProcessProvider.clear();
-          this.showErrorAndBack(this.coinbaseProvider.getErrorsAsString(err.errors));
+          this.showErrorAndBack(this.coinbaseProvider.getErrorsAsString(err));
           return;
         }
 
@@ -205,7 +205,7 @@ export class SellCoinbasePage {
 
       this.coinbaseProvider.sellPrice(accessToken, this.coinbaseProvider.getAvailableCurrency(), (err: any, sell: any) => {
         if (err) {
-          this.logger.debug(this.coinbaseProvider.getErrorsAsString(err.errors));
+          this.logger.debug(this.coinbaseProvider.getErrorsAsString(err));
           this.checkTransaction(count, txp);
           return;
         }
@@ -213,7 +213,7 @@ export class SellCoinbasePage {
 
         this.coinbaseProvider.getTransactions(accessToken, accountId, (err: any, ctxs: any) => {
           if (err) {
-            this.logger.debug(this.coinbaseProvider.getErrorsAsString(err.errors));
+            this.logger.debug(this.coinbaseProvider.getErrorsAsString(err));
             this.checkTransaction(count, txp);
             return;
           }
@@ -236,7 +236,7 @@ export class SellCoinbasePage {
               this.coinbaseProvider.savePendingTransaction(ctx, null, (err: any) => {
                 this.onGoingProcessProvider.clear();
                 this.openFinishModal();
-                if (err) this.logger.debug(this.coinbaseProvider.getErrorsAsString(err.errors));
+                if (err) this.logger.debug(this.coinbaseProvider.getErrorsAsString(err));
               });
               return;
             }
@@ -263,7 +263,7 @@ export class SellCoinbasePage {
     this.coinbaseProvider.init((err: any, res: any) => {
       if (err) {
         this.onGoingProcessProvider.clear();
-        this.showErrorAndBack(this.coinbaseProvider.getErrorsAsString(err.errors));
+        this.showErrorAndBack(this.coinbaseProvider.getErrorsAsString(err));
         return;
       }
       let accessToken = res.accessToken;
@@ -277,7 +277,7 @@ export class SellCoinbasePage {
       this.coinbaseProvider.sellRequest(accessToken, accountId, dataSrc, (err: any, data: any) => {
         this.onGoingProcessProvider.clear();
         if (err) {
-          this.showErrorAndBack(this.coinbaseProvider.getErrorsAsString(err.errors));
+          this.showErrorAndBack(this.coinbaseProvider.getErrorsAsString(err));
           return;
         }
         this.sellRequestInfo = data.data;
@@ -304,7 +304,7 @@ export class SellCoinbasePage {
       this.coinbaseProvider.init((err: any, res: any) => {
         if (err) {
           this.onGoingProcessProvider.clear();
-          this.showError(this.coinbaseProvider.getErrorsAsString(err.errors));
+          this.showError(this.coinbaseProvider.getErrorsAsString(err));
           return;
         }
         let accessToken = res.accessToken;
@@ -316,7 +316,7 @@ export class SellCoinbasePage {
         this.coinbaseProvider.createAddress(accessToken, accountId, dataSrc, (err: any, data: any) => {
           if (err) {
             this.onGoingProcessProvider.clear();
-            this.showError(this.coinbaseProvider.getErrorsAsString(err.errors));
+            this.showError(this.coinbaseProvider.getErrorsAsString(err));
             return;
           }
           let outputs = [];

@@ -65,6 +65,10 @@ export class ReceivePage {
     });
   }
 
+  ionViewWillLeave() {
+    this.events.unsubscribe('bwsEvent');
+  }
+
   private onWalletSelect(wallet: any): any {
     this.wallet = wallet;
     if (this.wallet) {

@@ -12,7 +12,7 @@ msgstr ""
 "Last-Translator: cmgustavo83\n"
 "Language-Team: Korean\n"
 "Language: ko\n"
-"PO-Revision-Date: 2018-03-28 11:29-0400\n"
+"PO-Revision-Date: 2018-04-27 16:18-0400\n"
 
 msgid "(Trusted)"
 msgstr "(신뢰할 수 있음)"
@@ -30,7 +30,7 @@ msgid "A member of the team will review your feedback as soon as possible."
 msgstr "팀 구성원이 최대한 빨리 귀하의 피드백을 검토할 예정입니다."
 
 msgid "A total of {{amountStr}} ({{fiatAmount | currency}} {{currencyIsoCode}}) will be exchanged for {{withdrawalStr}} ({{fiatWithdrawal | currency}} {{currencyIsoCode}}). Would you like to proceed?"
-msgstr ""
+msgstr "{fiatAmount | curre{{currencyIsoCode}}ncy}"
 
 msgid "About"
 msgstr "소개"
@@ -45,7 +45,7 @@ msgid "Activity"
 msgstr "활동"
 
 msgid "Add"
-msgstr ""
+msgstr "추가"
 
 msgid "Add Contact"
 msgstr "연락처 추가"
@@ -614,7 +614,16 @@ msgstr ""
 msgid "Enter encrypt password"
 msgstr ""
 
+msgid "Enter wallet invitation"
+msgstr ""
+
+msgid "Enter wallet name"
+msgstr ""
+
 msgid "Enter your encrypt password again to confirm"
+msgstr ""
+
+msgid "Enter your name"
 msgstr ""
 
 msgid "Enter your password"
@@ -631,9 +640,6 @@ msgstr "오류"
 
 msgid "Error adding new entry"
 msgstr ""
-
-msgid "Error at confirm"
-msgstr "확인 오류"
 
 msgid "Error creating the invoice"
 msgstr "인보이스 생성 오류"
@@ -716,8 +722,8 @@ msgstr "피드백을 제출할 수 없습니다. 나중에 다시 시도해주�
 msgid "Fetching BitPay Account..."
 msgstr "BitPay 계좌 가져오는 중..."
 
-msgid "Fetching payment information"
-msgstr "지불 정보 가져오는 중"
+msgid "Fetching payment information..."
+msgstr ""
 
 msgid "File/Text"
 msgstr ""
@@ -1043,7 +1049,7 @@ msgstr "이름"
 msgid "Name (at creation)"
 msgstr ""
 
-msgid "Needs backup recovery"
+msgid "Needs backup"
 msgstr ""
 
 msgid "Network"
@@ -1433,9 +1439,6 @@ msgstr "최근 거래"
 msgid "Recipient"
 msgstr "수신자"
 
-msgid "Recipients"
-msgstr "수신자"
-
 msgid "Recovery Phrase"
 msgstr ""
 
@@ -1499,9 +1502,6 @@ msgstr "자금용 주소 스캔"
 msgid "Scan again"
 msgstr "다시 스캔"
 
-msgid "Scanner not supported"
-msgstr ""
-
 msgid "Scanning Wallet funds..."
 msgstr "지갑  스캔 중..."
 
@@ -1527,6 +1527,9 @@ msgid "See invoice"
 msgstr ""
 
 msgid "See transaction"
+msgstr ""
+
+msgid "Select a coin"
 msgstr ""
 
 msgid "Select a wallet"
@@ -1985,6 +1988,9 @@ msgstr "경고: 신뢰할 수 없는 인증서"
 msgid "Waiting for copayers"
 msgstr "코페이어 기다리는 중"
 
+msgid "Waiting for permissions."
+msgstr ""
+
 msgid "Waiting..."
 msgstr "기다리는 중..."
 
@@ -2063,6 +2069,9 @@ msgstr ""
 msgid "Wallet recovery phrase not available"
 msgstr "이용 불가능한 지갑 복원 문구입니다"
 
+msgid "Wallet selected"
+msgstr ""
+
 msgid "Wallet service not found"
 msgstr "지갑 서비스를 찾을 수 없습니다"
 
@@ -2079,6 +2088,9 @@ msgid "We will confirm on the next screen."
 msgstr ""
 
 msgid "We'd love to do better. How could we improve your experience?"
+msgstr ""
+
+msgid "Website"
 msgstr ""
 
 msgid "What do you call this wallet?"

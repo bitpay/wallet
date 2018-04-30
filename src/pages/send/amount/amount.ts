@@ -1,4 +1,4 @@
-import { Component, HostListener } from '@angular/core';
+import { ChangeDetectorRef, Component, HostListener, NgZone } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { ActionSheetController, NavController, NavParams } from 'ionic-angular';
 import * as _ from 'lodash';
@@ -44,6 +44,7 @@ export class AmountPage {
   private unitToSatoshi: number;
   private satToUnit: number;
   private unitDecimals: number;
+  private zone: any;
 
   public alternativeUnit: string;
   public globalResult: string;
@@ -79,8 +80,10 @@ export class AmountPage {
     private platformProvider: PlatformProvider,
     private rateProvider: RateProvider,
     private txFormatProvider: TxFormatProvider,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private changeDetectorRef: ChangeDetectorRef
   ) {
+    this.zone = new NgZone({ enableLongStackTrace: false });
     this.config = this.configProvider.get();
     this.recipientType = this.navParams.data.recipientType;
     this.toAddress = this.navParams.data.toAddress;
@@ -211,8 +214,11 @@ export class AmountPage {
   }
 
   private paste(value: string): void {
-    this.expression = value;
-    this.processAmount();
+    this.zone.run(() => {
+      this.expression = value;
+      this.processAmount();
+      this.changeDetectorRef.detectChanges();
+    });
   }
 
   private getNextView(): any {
@@ -297,18 +303,27 @@ export class AmountPage {
 
   public pushDigit(digit: string): void {
     if (this.expression && this.expression.length >= this.LENGTH_EXPRESSION_LIMIT) return;
-    this.expression = (this.expression + digit).replace('..', '.');
-    this.processAmount();
+    this.zone.run(() => {
+      this.expression = (this.expression + digit).replace('..', '.');
+      this.processAmount();
+      this.changeDetectorRef.detectChanges();
+    });
   }
 
   public removeDigit(): void {
-    this.expression = this.expression.slice(0, -1);
-    this.processAmount();
+    this.zone.run(() => {
+      this.expression = this.expression.slice(0, -1);
+      this.processAmount();
+      this.changeDetectorRef.detectChanges();
+    });
   }
 
   public pushOperator(operator: string): void {
     if (!this.expression || this.expression.length == 0) return;
-    this.expression = this._pushOperator(this.expression, operator);
+    this.zone.run(() => {
+      this.expression = this._pushOperator(this.expression, operator);
+      this.changeDetectorRef.detectChanges();
+    });
   }
 
   private _pushOperator(val: string, operator: string) {
@@ -430,7 +445,6 @@ export class AmountPage {
   private updateUnitUI(): void {
     this.unit = this.availableUnits[this.unitIndex].shortName;
     this.alternativeUnit = this.availableUnits[this.altUnitIndex].shortName;
-
     this.processAmount();
     this.logger.debug('Update unit coin @amount unit:' + this.unit + " alternativeUnit:" + this.alternativeUnit);
   }
@@ -450,7 +464,10 @@ export class AmountPage {
       });
     }
 
-    this.updateUnitUI();
+    this.zone.run(() => {
+      this.updateUnitUI();
+      this.changeDetectorRef.detectChanges();
+    });
   }
 
 }
