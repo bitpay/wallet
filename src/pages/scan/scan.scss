@@ -1,6 +1,9 @@
 page-scan {
   color: #fff;
   background: transparent none;
+  & > ion-content.content {
+    background: transparent none;
+  }
   .navbar-transparent,
   .toolbar-background {
     background: $toolbar-scanner;
@@ -116,22 +119,22 @@ page-scan {
     }
   }
 
-.browser-scanner {
-  z-index: 1000;
-  zxing-scanner {
-    height: 100% !important;
-        video {
-          height: 100% !important;
-          width: inherit!important;
-          position: fixed !important;
-          top: 50% !important;
-          left: 50% !important;
-          /* bring your own prefixes */
-          transform: translate(-50%, -50%) !important;
-        }
+  .browser-scanner {
+    z-index: 1000;
+    zxing-scanner {
+      height: 100% !important;
+      video {
+        height: 100% !important;
+        width: inherit !important;
+        position: fixed !important;
+        top: 50% !important;
+        left: 50% !important;
+        /* bring your own prefixes */
+        transform: translate(-50%, -50%) !important;
+      }
     }
   }
-  .hide-div{
+  .hide-div {
     display: none;
   }
   .cameras-list {
@@ -144,18 +147,18 @@ page-scan {
       }
     }
   }
-  .last-item{
+  .last-item {
     margin-left: auto !important;
   }
-  .cameraSelector{
+  .cameraSelector {
     width: 100%;
-      text-align: center;
-      position: absolute;
-      bottom: 0px;
-      background-color: $toolbar-background;
-      color: color($colors,blank);
+    text-align: center;
+    position: absolute;
+    bottom: 0px;
+    background-color: $toolbar-background;
+    color: color($colors, blank);
   }
-  .icon-wallet{
+  .icon-wallet {
     background: transparent;
   }
 }

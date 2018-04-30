@@ -2,7 +2,12 @@ import { Component, VERSION, ViewChild } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Result } from '@zxing/library';
 import { ZXingScannerComponent } from '@zxing/ngx-scanner';
-import { Events, ModalController, NavController, NavParams } from 'ionic-angular';
+import {
+  Events,
+  ModalController,
+  NavController,
+  NavParams
+} from 'ionic-angular';
 import { Logger } from '../../providers/logger/logger';
 
 // providers
@@ -16,17 +21,17 @@ import { PaperWalletPage } from '../paper-wallet/paper-wallet';
 import { AmountPage } from '../send/amount/amount';
 import { AddressbookAddPage } from '../settings/addressbook/add/add';
 
+import env from '../../environments';
+
 @Component({
   selector: 'page-scan',
   templateUrl: 'scan.html',
   providers: [ScanProvider]
 })
 export class ScanPage {
-
   ngVersion = VERSION.full;
 
-  @ViewChild('scanner')
-  scanner: ZXingScannerComponent;
+  @ViewChild('scanner') scanner: ZXingScannerComponent;
 
   hasCameras = false;
   hasPermission: boolean;
@@ -62,7 +67,7 @@ export class ScanPage {
     private externalLinkProvider: ExternalLinkProvider,
     private logger: Logger,
     private translate: TranslateService,
-    private navParams: NavParams,
+    private navParams: NavParams
   ) {
     this.isCameraSelected = false;
     this.browserScanEnabled = false;
@@ -109,7 +114,14 @@ export class ScanPage {
   }
 
   ionViewWillEnter() {
-    this.events.subscribe('finishIncomingDataMenuEvent', (data) => {
+    if (!env.activateScanner) {
+      // test scanner visibility in E2E mode
+      this.selectedDevice = true as any;
+      this.hasPermission = true;
+      return;
+    }
+
+    this.events.subscribe('finishIncomingDataMenuEvent', data => {
       if (!this.isCordova) {
         this.scanner.resetScan();
       }
@@ -149,7 +161,6 @@ export class ScanPage {
         this.scanner.permissionResponse.subscribe((answer: boolean) => {
           this.hasPermission = answer;
         });
-
       } else {
         this.scanner.startScan(this.selectedDevice);
       }
@@ -174,7 +185,6 @@ export class ScanPage {
       });
     }
   }
-
 
   private goToUrl(url: string): void {
     this.externalLinkProvider.open(url);
@@ -296,13 +306,13 @@ export class ScanPage {
     this.scanner.resetScan();
     setTimeout(() => {
       this.handleSuccessfulScan(resultString);
-    }, 0)
+    }, 0);
   }
 
   onDeviceSelectChange() {
     if (!this.isCameraSelected) {
       for (const device of this.availableDevices) {
-        if (device.kind == "videoinput") {
+        if (device.kind == 'videoinput') {
           this.selectedDevice = this.scanner.getDeviceById(device.deviceId);
           this.isCameraSelected = true;
           break;
