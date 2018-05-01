@@ -44,7 +44,7 @@ import { Logger } from './../../../providers/logger/logger';
 import { PersistenceProvider } from './../../../providers/persistence/persistence';
 import { ProfileProvider } from './../../../providers/profile/profile';
 
-fdescribe('ConfirmPage', () => {
+describe('ConfirmPage', () => {
   let fixture: ComponentFixture<ConfirmPage>;
   let instance: any;
   let testBed: typeof TestBed;
