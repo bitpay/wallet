@@ -683,7 +683,7 @@ export class ConfirmPage {
     });
   }
 
-  public approve(tx: any, wallet: any): void {
+  public approve(tx: any, wallet: any): Promise<void> {
     if (!tx || !wallet) return;
 
     if (this.paymentExpired) {
@@ -695,92 +695,86 @@ export class ConfirmPage {
     }
 
     this.onGoingProcessProvider.set('creatingTx');
-    this.getTxp(_.clone(tx), wallet, false)
+    return this.getTxp(_.clone(tx), wallet, false)
       .then((txp: any) => {
-        // confirm txs for more that 20usd, if not spending/touchid is enabled
-        let confirmTx = (): Promise<any> => {
-          return new Promise((resolve, reject) => {
-            if (this.walletProvider.isEncrypted(wallet)) return resolve();
-
-            this.txFormatProvider
-              .formatToUSD(wallet.coin, txp.amount)
-              .then(val => {
-                let amountUsd = parseFloat(val);
-                if (amountUsd <= this.CONFIRM_LIMIT_USD) return resolve();
-
-                let amount = (this.tx.amount / 1e8).toFixed(8);
-                let unit = txp.coin.toUpperCase();
-                let name = wallet.name;
-                let message =
-                  'Sending ' +
-                  amount +
-                  ' ' +
-                  unit +
-                  ' from your ' +
-                  name +
-                  ' wallet'; // TODO: translate
-                let okText = this.translate.instant('Confirm');
-                let cancelText = this.translate.instant('Cancel');
-                this.popupProvider
-                  .ionicConfirm(null, message, okText, cancelText)
-                  .then((ok: boolean) => {
-                    return resolve(!ok);
-                  });
-              });
-          });
-        };
-
-        let publishAndSign = (): void => {
-          if (!wallet.canSign() && !wallet.isPrivKeyExternal()) {
-            this.logger.info('No signing proposal: No private key');
-            this.onGoingProcessProvider.set('sendingTx');
-            this.walletProvider
-              .onlyPublish(wallet, txp)
-              .then(() => {
-                this.onGoingProcessProvider.clear();
-                this.openFinishModal(true);
-              })
-              .catch((err: any) => {
-                this.onGoingProcessProvider.clear();
-                this.setSendError(err);
-              });
-            return;
-          }
-
-          this.walletProvider
-            .publishAndSign(wallet, txp)
-            .then((txp: any) => {
-              this.onGoingProcessProvider.clear();
-              if (
-                this.config.confirmedTxsNotifications &&
-                this.config.confirmedTxsNotifications.enabled
-              ) {
-                this.txConfirmNotificationProvider.subscribe(wallet, {
-                  txid: txp.txid
-                });
-              }
-              this.openFinishModal();
-            })
-            .catch((err: any) => {
-              this.onGoingProcessProvider.clear();
-              this.setSendError(err);
-              return;
-            });
-        };
-
-        confirmTx().then((nok: boolean) => {
+        return this.confirmTx(tx, txp, wallet).then((nok: boolean) => {
           if (nok) {
             if (this.isCordova) this.slideButton.isConfirmed(false);
             this.onGoingProcessProvider.clear();
             return;
           }
-          publishAndSign();
+          this.publishAndSign(txp, wallet);
         });
       })
       .catch((err: any) => {
         this.onGoingProcessProvider.clear();
         this.logger.warn('Error getting transaction proposal', err);
         return;
+      });
+  }
+
+  private confirmTx(tx, txp, wallet): Promise<any> {
+    return new Promise((resolve, reject) => {
+      if (this.walletProvider.isEncrypted(wallet)) return resolve();
+      this.txFormatProvider.formatToUSD(wallet.coin, txp.amount).then(val => {
+        let amountUsd = parseFloat(val);
+        if (amountUsd <= this.CONFIRM_LIMIT_USD) return resolve();
+
+        let amount = (this.tx.amount / 1e8).toFixed(8);
+        let unit = txp.coin.toUpperCase();
+        let name = wallet.name;
+        let message =
+          'Sending ' + amount + ' ' + unit + ' from your ' + name + ' wallet'; // TODO: translate
+        let okText = this.translate.instant('Confirm');
+        let cancelText = this.translate.instant('Cancel');
+        this.popupProvider
+          .ionicConfirm(null, message, okText, cancelText)
+          .then((ok: boolean) => {
+            return resolve(!ok);
+          });
+      });
+    });
+  }
+
+  private publishAndSign = (txp, wallet): void => {
+    if (!wallet.canSign() && !wallet.isPrivKeyExternal()) {
+      this.onlyPublish(txp, wallet);
+      return;
+    }
+
+    this.walletProvider
+      .publishAndSign(wallet, txp)
+      .then((txp: any) => {
+        this.onGoingProcessProvider.clear();
+        if (
+          this.config.confirmedTxsNotifications &&
+          this.config.confirmedTxsNotifications.enabled
+        ) {
+          this.txConfirmNotificationProvider.subscribe(wallet, {
+            txid: txp.txid
+          });
+        }
+        this.openFinishModal();
+      })
+      .catch((err: any) => {
+        this.onGoingProcessProvider.clear();
+        this.setSendError(err);
+        return;
+      });
+  };
+
+  private onlyPublish(txp, wallet): Promise<void> {
+    this.logger.info('No signing proposal: No private key');
+    this.onGoingProcessProvider.set('sendingTx');
+    return this.walletProvider
+      .onlyPublish(wallet, txp)
+      .then(() => {
+        this.onGoingProcessProvider.clear();
+        this.openFinishModal(true);
+      })
+      .catch((err: any) => {
+        this.onGoingProcessProvider.clear();
+        this.setSendError(err);
       });
   }
 

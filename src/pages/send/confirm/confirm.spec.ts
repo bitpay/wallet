@@ -90,6 +90,7 @@ describe('ConfirmPage', () => {
         instance.navParams.data.toAddress =
           'n4VQ5YdHf7hLQ2gWQYYrcxoE5B7nWuDFNF';
         instance.tx = { coin: 'BTC' };
+        spyOn(instance.onGoingProcessProvider, 'set').and.callFake(() => {});
         fixture.detectChanges();
       })
     )
@@ -191,6 +192,71 @@ describe('ConfirmPage', () => {
         instance.onSelectWalletEvent({});
         expect(unsubscribeSpy).toHaveBeenCalled();
       });
+    });
+    describe('confirmTx', () => {
+      it('should display a confirm popup', () => {
+        const tx = {};
+        const txp = { coin: 'BTC' };
+        const wallet = {};
+        spyOn(instance.txFormatProvider, 'formatToUSD').and.returnValue(
+          Promise.resolve('100.50')
+        );
+        instance.confirmTx(tx, txp, wallet);
+      });
+    });
+    describe('approve', () => {
+      const tx = {};
+      const txp = { coin: 'BTC' };
+      const wallet = {};
+      it('should clear the ongoing process loader if user declines', async () => {
+        spyOn(instance, 'getTxp').and.returnValue(Promise.resolve(txp));
+        spyOn(instance, 'confirmTx').and.returnValue(Promise.resolve(true));
+        const clearSpy = spyOn(instance.onGoingProcessProvider, 'clear');
+        await instance.approve(tx, wallet);
+        expect(clearSpy).toHaveBeenCalled();
+      });
+      it('should publish and sign upon approval', async () => {
+        spyOn(instance, 'getTxp').and.returnValue(Promise.resolve(txp));
+        spyOn(instance, 'confirmTx').and.returnValue(Promise.resolve(false));
+        const publishSpy = spyOn(instance, 'publishAndSign');
+        await instance.approve(tx, wallet);
+        expect(publishSpy).toHaveBeenCalled();
+      });
+      it('should display a popup if the payment has expired', () => {
+        instance.paymentExpired = true;
+        const popupSpy = spyOn(instance.popupProvider, 'ionicAlert');
+        instance.approve(tx, wallet);
+        expect(popupSpy).toHaveBeenCalled();
+      });
+      it('should handle errors', async () => {
+        spyOn(instance, 'getTxp').and.returnValue(Promise.reject('bad error'));
+        const clearSpy = spyOn(instance.onGoingProcessProvider, 'clear');
+        await instance.approve(tx, wallet);
+        expect(clearSpy).toHaveBeenCalled();
+      });
+    });
+    describe('onlyPublish', () => {
+      const txp = { coin: 'BTC' };
+      const wallet = {};
+      it('should open the finish modal on success', async () => {
+        spyOn(instance.walletProvider, 'onlyPublish').and.returnValue(
+          Promise.resolve()
+        );
+        const modalSpy = spyOn(instance, 'openFinishModal');
+        await instance.onlyPublish();
+        expect(modalSpy).toHaveBeenCalled();
+      });
+      it('should set send error on failure', async () => {
+        spyOn(instance.walletProvider, 'onlyPublish').and.returnValue(
+          Promise.reject('error')
+        );
+        const setErrorSpy = spyOn(instance, 'setSendError');
+        await instance.onlyPublish();
+        expect(setErrorSpy).toHaveBeenCalled();
+      });
+    });
+    describe('publishAndSign', () => {
+      it('should work', () => {});
     });
   });
 });
