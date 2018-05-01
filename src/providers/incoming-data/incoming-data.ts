@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { App, Events, NavControllerBase } from 'ionic-angular';
+import { App, Events } from 'ionic-angular';
 import { Logger } from '../../providers/logger/logger';
 
 // providers
@@ -8,7 +8,6 @@ import { AppProvider } from '../app/app';
 import { BwcProvider } from '../bwc/bwc';
 import { PayproProvider } from '../paypro/paypro';
 import { PopupProvider } from '../popup/popup';
-import { ScanProvider } from '../scan/scan';
 
 @Injectable()
 export class IncomingDataProvider {
@@ -17,7 +16,6 @@ export class IncomingDataProvider {
     private events: Events,
     private bwcProvider: BwcProvider,
     private payproProvider: PayproProvider,
-    private scanProvider: ScanProvider,
     private popupProvider: PopupProvider,
     private logger: Logger,
     private appProvider: AppProvider,
@@ -31,12 +29,13 @@ export class IncomingDataProvider {
   }
 
   public redir(data: string, activePage?: string): boolean {
-    // TODO Injecting NavController in constructor of service fails with no provider error
 
     // data extensions for Payment Protocol with non-backwards-compatible request
     if ((/^bitcoin(cash)?:\?r=[\w+]/).exec(data)) {
-      let coin = 'btc';
-      if (data.indexOf('bitcoincash') === 0) coin = 'bch';
+
+      this.logger.debug('Handling Payment Protocol with non-backwards-compatible request');
+
+      let coin = data.indexOf('bitcoincash') === 0 ? 'bch' : 'btc';
 
       data = decodeURIComponent(data.replace(/bitcoin(cash)?:\?r=/, ''));
 
@@ -91,7 +90,6 @@ export class IncomingDataProvider {
       message = parsed.message;
       amount = parsed.amount ? parsed.amount : '';
 
-      // paypro not yet supported on cash
       if (parsed.r) {
         this.payproProvider.getPayProDetails(parsed.r, coin).then((details: any) => {
           this.handlePayPro(details, coin);
@@ -108,7 +106,7 @@ export class IncomingDataProvider {
 
       // Cash URI with bitcoin core address version number?
     } else if (this.bwcProvider.getBitcore().URI.isValid(data.replace(/^bitcoincash:/, 'bitcoin:'))) {
-      this.logger.debug('Handling bitcoincash URI with legacy address');
+      this.logger.debug('Handling Bitcoin Cash URI with legacy address');
       coin = 'bch';
       parsed = this.bwcProvider.getBitcore().URI(data.replace(/^bitcoincash:/, 'bitcoin:'));
 
@@ -130,7 +128,6 @@ export class IncomingDataProvider {
         message = parsed.message;
         amount = parsed.amount ? parsed.amount : '';
 
-        // paypro not yet supported on cash
         if (parsed.r) {
           this.payproProvider.getPayProDetails(parsed.r, coin).then((details) => {
             this.handlePayPro(details, coin);
@@ -153,14 +150,13 @@ export class IncomingDataProvider {
 
       this.payproProvider.getPayProDetails(data, coin, true).then((details) => {
         this.handlePayPro(details, coin);
-        return true;
       }).catch(() => {
         this.showMenu({
           data,
           type: 'url'
         });
-        return;
       });
+      return true
       // Plain Address
     } else if (this.bwcProvider.getBitcore().Address.isValid(data, 'livenet') || this.bwcProvider.getBitcore().Address.isValid(data, 'testnet')) {
       this.logger.debug('Handling Bitcoin Plain Address');
@@ -174,6 +170,7 @@ export class IncomingDataProvider {
         let coin = 'btc';
         this.goToAmountPage(data, coin);
       }
+      return true;
     } else if (this.bwcProvider.getBitcoreCash().Address.isValid(data, 'livenet') || this.bwcProvider.getBitcoreCash().Address.isValid(data, 'testnet')) {
       this.logger.debug('Handling Bitcoin Cash Plain Address');
       if (activePage === 'ScanPage') {
@@ -186,7 +183,9 @@ export class IncomingDataProvider {
         let coin = 'bch';
         this.goToAmountPage(data, coin);
       }
+      return true;
     } else if (data && data.indexOf(this.appProvider.info.name + '://glidera') === 0) {
+      this.logger.debug('Handling Glidera URL');
 
       let code = this.getParameterByName('code', data);
       let stateParams = { code };
@@ -196,9 +195,9 @@ export class IncomingDataProvider {
       }
       this.events.publish('IncomingDataRedir', nextView);
 
-      this.logger.debug('Glidera TODO');
       return true;
     } else if (data && data.indexOf(this.appProvider.info.name + '://coinbase') === 0) {
+      this.logger.debug('Handling Coinbase URL');
 
       let code = this.getParameterByName('code', data);
       let stateParams = { code };
@@ -208,10 +207,10 @@ export class IncomingDataProvider {
       }
       this.events.publish('IncomingDataRedir', nextView);
 
-      this.logger.debug('Coinbase TODO');
       return true;
       // BitPayCard Authentication
     } else if (data && data.indexOf(this.appProvider.info.name + '://') === 0) {
+      this.logger.debug('Handling BitPayCard URL');
 
       // Disable BitPay Card
       if (!this.appProvider.info._enabledExtensions.debitcard) return false;
@@ -236,6 +235,8 @@ export class IncomingDataProvider {
 
       // Join
     } else if (data && data.match(/^copay:[0-9A-HJ-NP-Za-km-z]{70,80}$/)) {
+      this.logger.debug('Handling Join Wallet');
+
       let stateParams = { url: data, fromScan: true };
       let nextView = {
         name: 'JoinWalletPage',
@@ -245,6 +246,8 @@ export class IncomingDataProvider {
       return true;
       // Old join
     } else if (data && data.match(/^[0-9A-HJ-NP-Za-km-z]{70,80}$/)) {
+      this.logger.debug('Handling Old Join Wallet');
+
       let stateParams = { url: data, fromScan: true };
       let nextView = {
         name: 'JoinWalletPage',
@@ -258,7 +261,10 @@ export class IncomingDataProvider {
         data,
         type: 'privateKey'
       });
+      return true;
     } else if (data && ((data.substring(0, 2) == '1|') || (data.substring(0, 2) == '2|') || (data.substring(0, 2) == '3|'))) {
+      this.logger.debug('Handling QR Code Export feature');
+
       let stateParams = { code: data, fromScan: true };
       let nextView = {
         name: 'ImportWalletPage',
@@ -267,13 +273,13 @@ export class IncomingDataProvider {
       this.events.publish('IncomingDataRedir', nextView);
       return true;
     } else {
-
       if (activePage === 'ScanPage') {
         this.logger.debug('Handling plain text');
         this.showMenu({
           data,
           type: 'text'
         });
+        return true;
       }
     }
     return false;
