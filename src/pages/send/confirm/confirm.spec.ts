@@ -44,7 +44,7 @@ import { Logger } from './../../../providers/logger/logger';
 import { PersistenceProvider } from './../../../providers/persistence/persistence';
 import { ProfileProvider } from './../../../providers/profile/profile';
 
-describe('ConfirmPage', () => {
+fdescribe('ConfirmPage', () => {
   let fixture: ComponentFixture<ConfirmPage>;
   let instance: any;
   let testBed: typeof TestBed;
@@ -87,6 +87,8 @@ describe('ConfirmPage', () => {
         fixture = testEnv.fixture;
         instance = testEnv.instance;
         testBed = testEnv.testBed;
+        instance.navParams.data.toAddress =
+          'n4VQ5YdHf7hLQ2gWQYYrcxoE5B7nWuDFNF';
         fixture.detectChanges();
       })
     )
@@ -97,10 +99,25 @@ describe('ConfirmPage', () => {
 
   describe('Lifecycle Hooks', () => {
     describe('ionViewWillEnter', () => {
-      it('should get work', () => {
-        // instance.ionViewWillEnter();
-        // const configProvider = testBed.get(ConfigProvider);
-        // expect(instance.config).toEqual(configProvider.get());
+      it('should set swipeBackEnabled to false', () => {
+        instance.ionViewWillEnter();
+        expect(instance.navCtrl.swipeBackEnabled).toBe(false);
+      });
+      it('should set the wallet selector to contain wallets that match receiving address', () => {
+        const setWalletSelectorSpy = spyOn(
+          instance,
+          'setWalletSelector'
+        ).and.returnValue(Promise.resolve());
+        instance.wallets = [{}, {}];
+        const showWalletsSpy = spyOn(instance, 'showWallets');
+        instance.ionViewWillEnter();
+        expect(setWalletSelectorSpy).toHaveBeenCalled();
+      });
+    });
+    describe('ionViewWillLeave', () => {
+      it('should reset swipeBackEnabled to true', () => {
+        instance.ionViewWillLeave();
+        expect(instance.navCtrl.swipeBackEnabled).toBe(true);
       });
     });
   });
