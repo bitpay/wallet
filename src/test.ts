@@ -43,6 +43,7 @@ import {
   MenuController,
   ModalController,
   NavController,
+  NavParams,
   Platform
 } from 'ionic-angular';
 import {
@@ -68,6 +69,9 @@ import { Subject } from 'rxjs/Subject';
 import { AppProvider } from './providers/app/app';
 import { PersistenceProvider } from './providers/persistence/persistence';
 import { PlatformProvider } from './providers/platform/platform';
+
+import { SatToFiatPipe } from './pipes/satToFiat';
+import { SatToUnitPipe } from './pipes/satToUnit';
 
 import * as appTemplate from './../app-template/bitpay/appConfig.json';
 
@@ -122,7 +126,7 @@ export class TestUtils {
   ): Promise<{ fixture: any; instance: any; testBed: typeof TestBed }> {
     const providers = (otherParams && otherParams.providers) || [];
     await TestBed.configureTestingModule({
-      declarations: [...components],
+      declarations: [...components, SatToFiatPipe, SatToUnitPipe],
       imports: [
         FormsModule,
         IonicModule,
@@ -139,6 +143,8 @@ export class TestUtils {
         App,
         AppProvider,
         DecimalPipe,
+        SatToFiatPipe,
+        SatToUnitPipe,
         Events,
         Form,
         GestureController,
@@ -148,6 +154,7 @@ export class TestUtils {
         MenuController,
         ModalController,
         NavController,
+        NavParams,
         PlatformProvider,
         TranslateService,
         {
@@ -172,13 +179,13 @@ export class TestUtils {
         ...providers
       ]
     }).compileComponents();
-    const fixture: any = TestBed.createComponent(components[0]);
     const appProvider = TestBed.get(AppProvider);
     spyOn(appProvider, 'getAppInfo').and.returnValue(
       Promise.resolve(appTemplate)
     );
     spyOn(appProvider, 'getServicesInfo').and.returnValue(Promise.resolve({}));
     await appProvider.load();
+    const fixture: any = TestBed.createComponent(components[0]);
     return {
       fixture,
       instance: fixture.debugElement.componentInstance,

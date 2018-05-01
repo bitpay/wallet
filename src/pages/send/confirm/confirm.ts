@@ -172,11 +172,7 @@ export class ConfirmPage {
 
     this.setWalletSelector(this.tx.coin, this.tx.network, this.tx.amount)
       .then(() => {
-        if (this.wallets.length > 1) {
-          this.showWallets();
-        } else if (this.wallets.length) {
-          this.setWallet(this.wallets[0]);
-        }
+        this.afterWalletSelectorSet();
       })
       .catch((err: any) => {
         this.logger.error(err);
@@ -186,6 +182,14 @@ export class ConfirmPage {
 
   ionViewDidLoad() {
     this.logger.info('ionViewDidLoad ConfirmPage');
+  }
+
+  private afterWalletSelectorSet() {
+    if (this.wallets.length > 1) {
+      return this.showWallets();
+    } else if (this.wallets.length) {
+      this.setWallet(this.wallets[0]);
+    }
   }
 
   private setWalletSelector(
@@ -269,10 +273,12 @@ export class ConfirmPage {
 
   private exitWithError(err: any) {
     this.logger.info('Error setting wallet selector:' + err);
-    this.popupProvider.ionicAlert("", this.bwcErrorProvider.msg(err)).then(() => {
-      this.app.getRootNavs()[0].setRoot(TabsPage);
-    });
-  };
+    this.popupProvider
+      .ionicAlert('', this.bwcErrorProvider.msg(err))
+      .then(() => {
+        this.app.getRootNavs()[0].setRoot(TabsPage);
+      });
+  }
 
   /* sets a wallet on the UI, creates a TXPs for that wallet */
 
