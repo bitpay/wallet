@@ -840,28 +840,32 @@ export class ConfirmPage {
     myModal.present();
 
     myModal.onDidDismiss((data: any) => {
-      if (_.isEmpty(data)) return;
+      this.onFeeModalDismiss(data);
+    });
+  }
 
-      this.logger.debug(
-        'New fee level choosen:' + data.newFeeLevel + ' was:' + this.tx.feeLevel
-      );
-      this.usingCustomFee = data.newFeeLevel == 'custom' ? true : false;
+  private onFeeModalDismiss(data: any) {
+    if (_.isEmpty(data)) return;
 
-      if (this.tx.feeLevel == data.newFeeLevel && !this.usingCustomFee) {
-        return;
-      }
+    this.logger.debug(
+      'New fee level choosen:' + data.newFeeLevel + ' was:' + this.tx.feeLevel
+    );
+    this.usingCustomFee = data.newFeeLevel == 'custom' ? true : false;
 
-      this.tx.feeLevel = data.newFeeLevel;
-      this.tx.feeLevelName = this.feeProvider.feeOpts[this.tx.feeLevel];
-      if (this.usingCustomFee)
-        this.tx.feeRate = parseInt(data.customFeePerKB, 10);
+    if (this.tx.feeLevel == data.newFeeLevel && !this.usingCustomFee) {
+      return;
+    }
 
-      this.updateTx(this.tx, this.wallet, {
-        clearCache: true,
-        dryRun: true
-      }).catch((err: any) => {
-        this.logger.warn('Error updateTx', err);
-      });
+    this.tx.feeLevel = data.newFeeLevel;
+    this.tx.feeLevelName = this.feeProvider.feeOpts[this.tx.feeLevel];
+    if (this.usingCustomFee)
+      this.tx.feeRate = parseInt(data.customFeePerKB, 10);
+
+    this.updateTx(this.tx, this.wallet, {
+      clearCache: true,
+      dryRun: true
+    }).catch((err: any) => {
+      this.logger.warn('Error updateTx', err);
     });
   }
 

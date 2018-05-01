@@ -89,6 +89,7 @@ describe('ConfirmPage', () => {
         testBed = testEnv.testBed;
         instance.navParams.data.toAddress =
           'n4VQ5YdHf7hLQ2gWQYYrcxoE5B7nWuDFNF';
+        instance.tx = { coin: 'BTC' };
         fixture.detectChanges();
       })
     )
@@ -103,7 +104,17 @@ describe('ConfirmPage', () => {
         instance.ionViewWillEnter();
         expect(instance.navCtrl.swipeBackEnabled).toBe(false);
       });
-      it('should set the wallet selector to contain wallets that match receiving address', () => {
+      it('should display an error message if attempting to send to an old bch address', () => {
+        instance.navParams.data.toAddress =
+          'CUksFGi4uVxpmV8S3JjYMSKJugT8JBvQdu1';
+        const popupSpy = spyOn(
+          instance.popupProvider,
+          'ionicConfirm'
+        ).and.returnValue(Promise.resolve());
+        instance.ionViewWillEnter();
+        expect(popupSpy).toHaveBeenCalled();
+      });
+      it('should show instantiate the wallet selector with relevant wallets', () => {
         const setWalletSelectorSpy = spyOn(
           instance,
           'setWalletSelector'
@@ -118,6 +129,53 @@ describe('ConfirmPage', () => {
       it('should reset swipeBackEnabled to true', () => {
         instance.ionViewWillLeave();
         expect(instance.navCtrl.swipeBackEnabled).toBe(true);
+      });
+    });
+    describe('ionViewDidLoad', () => {
+      it('should not break', () => {
+        instance.ionViewDidLoad();
+      });
+    });
+  });
+  describe('Methods', () => {
+    describe('setNoWallet', () => {
+      it('should set wallet to null and set the appropriate message', () => {
+        const msg = 'No wallets available';
+        const error = 'Bad error';
+        instance.setNoWallet(msg, error);
+        expect(instance.wallet).toBe(null);
+        expect(instance.noWalletMessage).toBe(msg);
+        expect(instance.criticalError).toBe(error);
+      });
+    });
+    describe('chooseFeeLevel', () => {
+      it('should display a fee modal', () => {
+        const modal = {
+          present: () => {},
+          onDidDismiss: () => {}
+        };
+        const presentSpy = spyOn(modal, 'present');
+        spyOn(instance.modalCtrl, 'create').and.returnValue(modal);
+        instance.chooseFeeLevel();
+        expect(presentSpy).toHaveBeenCalled();
+      });
+    });
+    describe('onFeeModalDismiss', () => {
+      it('should set usingCustomeFee to true if newFeeLevel is custom', () => {
+        instance.onFeeModalDismiss({ newFeeLevel: 'custom' });
+        expect(instance.usingCustomFee).toBe(true);
+      });
+    });
+    describe('setWallet', () => {
+      it('should not break', () => {
+        instance.tx = { paypro: { expires: 1000 } };
+        const wallet = {
+          coin: 'BTC',
+          credentials: {
+            m: 1
+          }
+        };
+        instance.setWallet(wallet);
       });
     });
   });
