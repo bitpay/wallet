@@ -879,9 +879,13 @@ export class ConfirmPage {
       this.walletSelectorTitle
     );
     this.events.subscribe('selectWalletEvent', (wallet: any) => {
-      if (!_.isEmpty(wallet)) this.onWalletSelect(wallet);
-      this.events.unsubscribe('selectWalletEvent');
-      this.isOpenSelector = false;
+      this.onSelectWalletEvent(wallet);
     });
+  }
+
+  private onSelectWalletEvent(wallet: any): void {
+    if (!_.isEmpty(wallet)) this.onWalletSelect(wallet);
+    this.events.unsubscribe('selectWalletEvent');
+    this.isOpenSelector = false;
   }
 }

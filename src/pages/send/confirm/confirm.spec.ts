@@ -178,5 +178,19 @@ describe('ConfirmPage', () => {
         instance.setWallet(wallet);
       });
     });
+    describe('showWallets', () => {
+      it('should subscribe to the wallet selected event', () => {
+        const subscribeSpy = spyOn(instance.events, 'subscribe');
+        instance.showWallets();
+        expect(subscribeSpy).toHaveBeenCalled();
+      });
+    });
+    describe('onSelectWalletEvent', () => {
+      it('should unsubscribe from the wallet selected event', () => {
+        const unsubscribeSpy = spyOn(instance.events, 'unsubscribe');
+        instance.onSelectWalletEvent({});
+        expect(unsubscribeSpy).toHaveBeenCalled();
+      });
+    });
   });
 });
