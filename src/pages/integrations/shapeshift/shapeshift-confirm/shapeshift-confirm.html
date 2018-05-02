@@ -4,7 +4,6 @@
   </ion-navbar>
 </ion-header>
 
-
 <ion-content no-bounce>
   <ion-list>
     <ion-item>
@@ -80,8 +79,9 @@
 
 <ion-footer>
   <page-slide-to-accept #slideButton *ngIf="isCordova" [disabled]="!fromWallet || !totalAmountStr || !toWallet" buttonText="{{'Slide to confirm' | translate}}" (slideDone)="confirmTx()"></page-slide-to-accept>
-
-  <button *ngIf="!isCordova" ion-button full class="button-footer" (click)="confirmTx()" [disabled]="!fromWallet || !totalAmountStr || !toWallet">
-    {{'Click to confirm' | translate}}
-  </button>
+  <ion-toolbar *ngIf="!isCordova">
+    <button ion-button full class="button-footer" (click)="confirmTx()" [disabled]="!fromWallet || !totalAmountStr || !toWallet">
+      {{'Click to confirm' | translate}}
+    </button>
+  </ion-toolbar>
 </ion-footer>

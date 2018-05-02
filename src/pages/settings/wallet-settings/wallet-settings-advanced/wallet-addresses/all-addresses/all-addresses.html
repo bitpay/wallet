@@ -29,7 +29,9 @@
   </ion-list>
 </ion-content>
 <ion-footer>
-  <button ion-button full class="button-footer" *ngIf="isCordova && allAddresses[0]" (click)="sendByEmail()">
-    <span translate>Send addresses by email</span>
-  </button>
+  <ion-toolbar *ngIf="isCordova && allAddresses[0]">
+    <button ion-button full class="button-footer" (click)="sendByEmail()">
+      <span translate>Send addresses by email</span>
+    </button>
+  </ion-toolbar>
 </ion-footer>

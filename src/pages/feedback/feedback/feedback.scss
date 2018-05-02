@@ -1,10 +1,13 @@
 page-feedback {
   text-align: center;
   .skip-rating {
-    position: absolute;
-    top: 5px;
-    right: 10px;
-    padding: 15px;
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    padding-top: 4rem;
+    a {
+      padding: 15px;
+    }
   }
   .icon-svg > img {
     width: 80px;
@@ -14,7 +17,7 @@ page-feedback {
   .feedback-title {
     font-size: 20px;
     font-weight: bold;
-    margin: 80px 50px 10px;
+    margin: 70px 50px 10px;
   }
   .share-the-love-illustration {
     width: 5rem;

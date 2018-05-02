@@ -36,7 +36,9 @@
 </ion-content>
 <ion-footer>
   <page-slide-to-accept #slideButton *ngIf="isCordova" [disabled]="sending || balanceSat <= 0 || noMatchingWallet" buttonText="{{'Sweep' | translate}}" (slideDone)="sweepWallet()"></page-slide-to-accept>
-  <button *ngIf="!isCordova" ion-button block class="button-footer" (click)="sweepWallet()" [disabled]="sending || balanceSat <= 0 || noMatchingWallet">
-    {{'Sweep' | translate}}
-  </button>
+  <ion-toolbar *ngIf="!isCordova">
+    <button ion-button block class="button-footer" (click)="sweepWallet()" [disabled]="sending || balanceSat <= 0 || noMatchingWallet">
+      {{'Sweep' | translate}}
+    </button>
+  </ion-toolbar>
 </ion-footer>

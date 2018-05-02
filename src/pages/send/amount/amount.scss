@@ -57,8 +57,8 @@ page-amount {
     text-align: center;
     font-size: 24px;
     font-weight: normal;
-    position: absolute;
-    bottom: 0;
+    // position: absolute;
+    // bottom: 0;
     width: 100%;
     .row {
       padding: 0 !important;
@@ -106,5 +106,8 @@ page-amount {
         line-height: 20px;
       }
     }
+  }
+  .footer::before {
+    display: none;
   }
 }

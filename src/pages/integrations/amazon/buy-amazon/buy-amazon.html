@@ -1,9 +1,7 @@
 <ion-header>
-
   <ion-navbar>
     <ion-title>Buy Gift Card</ion-title>
   </ion-navbar>
-
 </ion-header>
 
 
@@ -89,5 +87,7 @@
 
 <ion-footer>
   <page-slide-to-accept #slideButton *ngIf="isCordova" [disabled]="!(wallet && totalAmountStr)" buttonText="Slide to confirm" (slideDone)="buyConfirm()"></page-slide-to-accept>
-  <button *ngIf="!isCordova" ion-button full class="button-footer" (click)="buyConfirm()" [disabled]="!(wallet && totalAmountStr)">Confirm purchase</button>
+  <ion-toolbar *ngIf="!isCordova">
+    <button ion-button full class="button-footer" (click)="buyConfirm()" [disabled]="!(wallet && totalAmountStr)">Confirm purchase</button>
+  </ion-toolbar>
 </ion-footer>
