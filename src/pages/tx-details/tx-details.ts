@@ -29,9 +29,6 @@ export class TxDetailsPage {
   public actionList: any[];
   public isShared: boolean;
   public title: string;
-  public alternativeIsoCode: string;
-  public rateDate: any;
-  public rate: any;
   public txNotification: any;
   public color: string;
   public copayerId: string;
@@ -167,7 +164,6 @@ export class TxDetailsPage {
 
       this.updateMemo();
       this.initActionList();
-      this.getFiatRate();
       this.contact();
 
       this.walletProvider.getLowAmount(this.wallet).then((amount: number) => {
@@ -226,23 +222,6 @@ export class TxDetailsPage {
   public getShortNetworkName(): string {
     let n: string = this.wallet.credentials.network;
     return n.substring(0, 4);
-  }
-
-  private getFiatRate(): void {
-    this.alternativeIsoCode = this.wallet.status.alternativeIsoCode;
-    this.wallet.getFiatRate({
-      code: this.alternativeIsoCode,
-      ts: this.btx.time * 1000
-    }, (err, res) => {
-      if (err) {
-        this.logger.debug('Could not get historic rate');
-        return;
-      }
-      if (res && res.rate) {
-        this.rateDate = res.fetchedOn;
-        this.rate = res.rate;
-      }
-    });
   }
 
   public txConfirmNotificationChange(): void {

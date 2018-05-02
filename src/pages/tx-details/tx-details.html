@@ -25,16 +25,6 @@
           <div class="amount">{{btx.amountValueStr}}
             <span class="unit">{{btx.amountUnitStr}}</span>
           </div>
-          <!-- TODO -->
-          <!-- <div class="alternative" (click)="showRate = !showRate">
-            <span *ngIf="!showRate">{{btx.alternativeAmountStr}}</span>
-            <span *ngIf="showRate">
-              <span *ngIf="!rate">...</span>
-              <span *ngIf="rate">
-                {{rate| currency:'':2}} {{alternativeIsoCode}} ({{rateDate | amDateFormat:'MM/DD/YYYY HH:mm a'}})
-              </span>
-            </span>
-          </div> -->
           <div class="alternative">
             <span>{{btx.alternativeAmountStr}}</span>
           </div>
@@ -55,8 +45,7 @@
       <img src="assets/img/icon-warning.png" width="20">
       <ion-note>
         <span translate>
-          This transaction amount is too small compared to current Bitcoin network fees. Spending these funds will need a Bitcoin network
-          fee cost comparable to the funds itself.
+          This transaction amount is too small compared to current Bitcoin network fees. Spending these funds will need a Bitcoin network fee cost comparable to the funds itself.
         </span>
       </ion-note>
       <a (click)="readMore()" translate>Learn more</a>
@@ -94,10 +83,8 @@
       <span *ngIf="btx.action === 'sent'" translate>From</span>
       <span *ngIf="btx.action !== 'sent'" translate>To</span>
       <div class="wallet" *ngIf="wallet">
-        <img *ngIf="wallet.network == 'testnet'" [ngStyle]="{'background-color': wallet.color}" src="assets/img/icon-wallet-testnet.svg"
-          class="icon-wallet" />
-        <img *ngIf="wallet.network != 'testnet'" [ngStyle]="{'background-color': wallet.color}" src="assets/img/icon-wallet.svg"
-          class="icon-wallet" />
+        <img *ngIf="wallet.network == 'testnet'" [ngStyle]="{'background-color': wallet.color}" src="assets/img/icon-wallet-testnet.svg" class="icon-wallet" />
+        <img *ngIf="wallet.network != 'testnet'" [ngStyle]="{'background-color': wallet.color}" src="assets/img/icon-wallet.svg" class="icon-wallet" />
         <div>{{wallet.name}}</div>
       </div>
     </ion-item>
@@ -146,8 +133,7 @@
 
     <div *ngIf="actionList && actionList[0]">
       <ion-item-divider>{{'Timeline' | translate}}</ion-item-divider>
-      <div class="timeline-item" [ngClass]="{'action-created' : a.type == 'created' || a.type == 'accept', 'action-rejected' : a.type == 'reject'}"
-        *ngFor="let a of actionList; let i = index">
+      <div class="timeline-item" [ngClass]="{'action-created' : a.type == 'created' || a.type == 'accept', 'action-rejected' : a.type == 'reject'}" *ngFor="let a of actionList; let i = index">
         <div class="timeline-content">
           <div class="timeline-content-icon">
             <div class="rejected" *ngIf="a.type === 'reject'">!</div>
