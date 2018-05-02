@@ -194,7 +194,7 @@ export class BitPayCardProvider {
     var json = {
       method: 'getDebitCards'
     };
-    this.onGoingProcessProvider.set('gettingBitPayCards');
+    this.onGoingProcessProvider.set('fetchingBitPayCards');
     // Get Debit Cards
     this.bitPayProvider.post('/api/v2/' + apiContext.token, json, (data) => {
       if (data && data.error) {

@@ -51,7 +51,7 @@ export class OnGoingProcessProvider {
       'buyingBitcoin': this.translate.instant('Buying Bitcoin...'),
       'sellingBitcoin': this.translate.instant('Selling Bitcoin...'),
       'fetchingBitPayAccount': this.translate.instant('Fetching BitPay Account...'),
-      'gettingBitPayCards': this.translate.instant('Getting BitPay Cards...'),
+      'fetchingBitPayCards': this.translate.instant('Fetching BitPay Cards...'),
       'updatingGiftCards': this.translate.instant('Updating Gift Cards...'),
       'updatingGiftCard': this.translate.instant('Updating Gift Card...'),
       'cancelingGiftCard': this.translate.instant('Canceling Gift Card...'),
