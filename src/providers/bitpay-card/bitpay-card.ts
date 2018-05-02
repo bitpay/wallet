@@ -6,6 +6,7 @@ import { AppIdentityProvider } from '../app-identity/app-identity';
 import { BitPayProvider } from '../bitpay/bitpay';
 import { ConfigProvider } from '../config/config';
 import { HomeIntegrationsProvider } from '../home-integrations/home-integrations';
+import { OnGoingProcessProvider } from '../on-going-process/on-going-process';
 import { PersistenceProvider } from '../persistence/persistence';
 
 import * as _ from 'lodash';
@@ -18,6 +19,7 @@ export class BitPayCardProvider {
     private logger: Logger,
     private bitPayProvider: BitPayProvider,
     private appIdentityProvider: AppIdentityProvider,
+    private onGoingProcessProvider: OnGoingProcessProvider,
     private persistenceProvider: PersistenceProvider,
     private configProvider: ConfigProvider,
     private homeIntegrationsProvider: HomeIntegrationsProvider
@@ -192,9 +194,13 @@ export class BitPayCardProvider {
     var json = {
       method: 'getDebitCards'
     };
+    this.onGoingProcessProvider.set('gettingBitPayCards');
     // Get Debit Cards
     this.bitPayProvider.post('/api/v2/' + apiContext.token, json, (data) => {
-      if (data && data.error) return cb(data.error);
+      if (data && data.error) {
+        this.onGoingProcessProvider.clear();
+        return cb(data.error);
+      }
       this.logger.info('BitPay Get Debit Cards: SUCCESS');
 
       var cards = [];
@@ -217,9 +223,11 @@ export class BitPayCardProvider {
       });
 
       this.persistenceProvider.setBitpayDebitCards(this.bitPayProvider.getEnvironment().network, apiContext.pairData.email, cards).then(() => {
+        this.onGoingProcessProvider.clear();
         return cb(null, cards);
       });
     }, (data) => {
+      this.onGoingProcessProvider.clear();
       return cb(this._setError('BitPay Card Error: Get Debit Cards', data));
     });
   };

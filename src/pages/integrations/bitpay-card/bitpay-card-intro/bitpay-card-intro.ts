@@ -52,14 +52,16 @@ export class BitPayCardIntroPage {
               this.popupProvider.ionicAlert(this.translate.instant('Error updating Debit Cards'), err);
               return;
             }
-            this.navCtrl.popToRoot({ animate: false }).then(() => {
-              this.navCtrl.parent.select(0);
               
-              // Fixes mobile navigation
-              setTimeout(() => {
-                if (cards[0]) this.navCtrl.push(BitPayCardPage, { id: cards[0].id }, { animate: false });
-              }, 200);
-            });
+            // Fixes mobile navigation
+            setTimeout(() => {
+              if (cards[0]) {
+                this.navCtrl.push(BitPayCardPage, { id: cards[0].id }, { animate: false }).then(() => {
+                  let previousView = this.navCtrl.getPrevious();
+                  this.navCtrl.removeView(previousView);
+                });
+              }
+            }, 200);
           });
         }
       });
@@ -94,6 +96,7 @@ export class BitPayCardIntroPage {
   }
 
   private startPairBitPayAccount() {
+    this.navCtrl.popToRoot({ animate: false }); // Back to Root
     let url = 'https://bitpay.com/visa/dashboard/add-to-bitpay-wallet-confirm';
     this.externalLinkProvider.open(url);
   }
@@ -112,14 +115,21 @@ export class BitPayCardIntroPage {
       );
     });
 
+    // Add account
+    options.push(
+      {
+        text: this.translate.instant('Add account'),
+        handler: () => {
+          this.onAccountSelect();
+        }
+      }
+    );
+
     // Cancel
     options.push(
       {
         text: this.translate.instant('Cancel'),
-        role: 'cancel',
-        handler: () => {
-          this.navCtrl.pop();
-        }
+        role: 'cancel'
       }
     );
 
@@ -130,8 +140,8 @@ export class BitPayCardIntroPage {
     actionSheet.present();
   }
 
-  private onAccountSelect(account): void {
-    if (account == undefined) {
+  private onAccountSelect(account?): void {
+    if (_.isUndefined(account)) {
       this.startPairBitPayAccount();
     } else {
       this.bitPayCardProvider.sync(account.apiContext, (err, data) => {
