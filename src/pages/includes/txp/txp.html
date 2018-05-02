@@ -24,7 +24,7 @@
     <div class="amount">
       <span *ngIf="tx.action == 'sent'">–</span>
       <span *ngIf="tx.action == 'invalid'" translate>(possible double spend)</span>
-      <span *ngIf="tx.action != 'invalid'"> – {{tx.amount | satToUnit: tx.coin}}</span>
+      <span *ngIf="tx.action != 'invalid'">{{tx.amount | satToUnit: tx.coin}}</span>
     </div>
     <div class="date">
       <time *ngIf="tx.createdOn && createdWithinPastDay(tx.createdOn * 1000)">{{tx.createdOn * 1000 | amTimeAgo}}</time>
