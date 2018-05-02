@@ -19,6 +19,7 @@ import { CoinbaseProvider } from '../providers/coinbase/coinbase';
 import { ConfigProvider } from '../providers/config/config';
 import { EmailNotificationsProvider } from '../providers/email-notifications/email-notifications';
 import { GlideraProvider } from '../providers/glidera/glidera';
+import { IncomingDataProvider } from '../providers/incoming-data/incoming-data';
 import { Logger } from '../providers/logger/logger';
 import { MercadoLibreProvider } from '../providers/mercado-libre/mercado-libre';
 import { PopupProvider } from '../providers/popup/popup';
@@ -97,7 +98,8 @@ export class CopayApp {
     private screenOrientation: ScreenOrientation,
     private popupProvider: PopupProvider,
     private pushNotificationsProvider: PushNotificationsProvider,
-    private app: App
+    private app: App,
+    private incomingDataProvider: IncomingDataProvider
   ) {
     this.initializeApp();
   }
@@ -133,13 +135,13 @@ export class CopayApp {
   private onAppLoad(readySource) {
     this.logger.info(
       'Platform ready (' +
-        readySource +
-        '): ' +
-        this.appProvider.info.nameCase +
-        ' - v' +
-        this.appProvider.info.version +
-        ' #' +
-        this.appProvider.info.commitHash
+      readySource +
+      '): ' +
+      this.appProvider.info.nameCase +
+      ' - v' +
+      this.appProvider.info.version +
+      ' #' +
+      this.appProvider.info.commitHash
     );
 
     if (this.platform.is('cordova')) {
@@ -190,7 +192,17 @@ export class CopayApp {
 
     if (profile) {
       this.logger.info('Profile exists.');
+
       this.rootPage = TabsPage;
+
+      if (this.platform.is('cordova')) {
+        this.handleDeepLinks();
+      }
+
+      if (this.isNodeWebkit()) {
+        this.handleDeepLinksNW();
+      }
+
     } else {
       this.logger.info('No profile exists.');
       this.profile.createProfile();
@@ -271,5 +283,72 @@ export class CopayApp {
       this.nav.push(this.pageMap[nextView.name], nextView.params);
     });
     this.pushNotificationsProvider.init();
+  }
+
+  private handleDeepLinks() {
+    // Check if app was resume by custom url scheme
+    (window as any).handleOpenURL = (url: string) => {
+      this.logger.info('App was resumed by custom url scheme');
+      this.handleOpenUrl(url);
+    };
+
+    // Check if app was opened by custom url scheme
+    const lastUrl: string = (window as any).handleOpenURL_LastURL || '';
+    if (lastUrl && lastUrl !== '') {
+      delete (window as any).handleOpenURL_LastURL;
+      setTimeout(() => {
+        this.logger.info('App was opened by custom url scheme');
+        this.handleOpenUrl(lastUrl);
+      }, 0);
+    }
+  }
+
+  private handleOpenUrl(url: string) {
+    if (!this.incomingDataProvider.redir(url)) {
+      this.logger.warn('Unknown URL! : ' + url);
+    }
+  }
+
+
+  private handleDeepLinksNW() {
+    var gui = (window as any).require('nw.gui');
+
+    // This event is sent to an existent instance of Copay (only for standalone apps)
+    gui.App.on('open', this.onOpenNW.bind(this));
+
+    // Used at the startup of Copay
+    var argv = gui.App.argv;
+    if (argv && argv[0]) {
+      this.handleOpenUrl(argv[0]);
+    }
+  }
+
+  private onOpenNW(pathData) {
+    if (pathData.indexOf('bitcoincash:/') != -1) {
+      this.logger.debug('Bitcoin Cash URL found');
+      this.handleOpenUrl(pathData.substring(pathData.indexOf('bitcoincash:/')));
+    } else if (pathData.indexOf('bitcoin:/') != -1) {
+      this.logger.debug('Bitcoin URL found');
+      this.handleOpenUrl(pathData.substring(pathData.indexOf('bitcoin:/')));
+    } else if (pathData.indexOf(this.appProvider.info.name + '://') != -1) {
+      this.logger.debug(this.appProvider.info.name + ' URL found');
+      this.handleOpenUrl(
+        pathData.substring(pathData.indexOf(this.appProvider.info.name + '://'))
+      );
+    } else {
+      this.logger.debug('URL found');
+      this.handleOpenUrl(pathData);
+    }
+  }
+
+  private isNodeWebkit(): boolean {
+    let isNode = (typeof process !== "undefined" && typeof require !== "undefined");
+    if (isNode) {
+      try {
+        return (typeof (window as any).require('nw.gui') !== "undefined");
+      } catch (e) {
+        return false;
+      }
+    }
   }
 }

@@ -66,5 +66,22 @@ describe('CopayApp', () => {
         expect(profileProvider.createProfile).toHaveBeenCalled();
       });
     });
+    describe('handleDeepLinksNW', () => {
+      beforeEach(() => {
+        (window as any).require = () => {
+          return {
+            App: {
+              on: (event, cb) => {}
+            }
+          };
+        };
+      });
+      afterEach(() => {
+        delete (window as any).require;
+      });
+      it('should not break', () => {
+        component.handleDeepLinksNW();
+      });
+    });
   });
 });
