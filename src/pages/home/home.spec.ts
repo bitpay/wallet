@@ -144,16 +144,31 @@ describe('HomePage', () => {
         (window as any).require = () => {
           return {
             App: {
-              on: (event, cb) => {}
+              on: (event, cb) => { },
+              argv: ['URL']
             }
           };
         };
+        (window as any)._urlHandled = false;
       });
       afterEach(() => {
         delete (window as any).require;
+        delete (window as any)._urlHandled;
       });
       it('should not break', () => {
         instance.handleDeepLinksNW();
+      });
+      it('should not try to handle deeplinks if was already handled', () => {
+        jasmine.clock().install();
+        const spy = spyOn(instance, 'handleOpenUrl');
+        instance.handleDeepLinksNW();
+        jasmine.clock().tick(1001);
+
+        instance.handleDeepLinksNW();
+        jasmine.clock().tick(1001);
+
+        expect(spy).toHaveBeenCalledTimes(1);
+        jasmine.clock().uninstall();
       });
     });
   });
