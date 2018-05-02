@@ -60,7 +60,7 @@ export class WalletDetailsPage {
     this.wallet = this.profileProvider.getWallet(this.navParams.data.walletId);
     // Getting info from cache
     if (clearCache) {
-      this.clearData();
+      this.clearHistoryCache();
     } else {
       this.wallet.status = this.wallet.cachedStatus;
       if (this.wallet.completeHistory) this.showHistory();
@@ -95,10 +95,9 @@ export class WalletDetailsPage {
     this.events.unsubscribe('bwsEvent');
   }
 
-  private clearData() {
+  private clearHistoryCache() {
     this.history = [];
     this.currentPage = 0;
-    this.wallet.status = null;
   }
 
   private showHistory() {
@@ -153,7 +152,6 @@ export class WalletDetailsPage {
       this.showHistory();
     }).catch((err) => {
       this.updatingTxHistory = false;
-      this.clearData();
       this.updateTxHistoryError = true;
     });
   }
