@@ -39,11 +39,18 @@ describe('Onboarding: Import Wallet', () => {
 
   describe('Restore from 12 word backup', () => {
     const backup = 'zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo wrong';
+    let CoinBTC = '#alert-input-0-0';
+    let CoinBCH = '#alert-input-0-1';
     it('with encryption', async () => {
       await sendKeys(
         element(by.css(`textarea[formcontrolname=words]`)),
         backup
       );
+      await element(by.css(`ion-select[formcontrolname=coin]`)).click();
+      await element(by.css(CoinBTC)).click();
+      await element(
+        by.cssContainingText('ion-alert .alert-button', 'OK')
+      ).click();
       await element(by.css('ion-footer')).click();
       await waitForIonAlert();
       await takeScreenshot('import-wallet-with-encryption');
@@ -60,6 +67,12 @@ describe('Onboarding: Import Wallet', () => {
         element(by.css(`textarea[formcontrolname=words]`)),
         backup
       );
+      await element(by.css(`ion-select[formcontrolname=coin]`)).click();
+      await element(by.css(CoinBCH)).click();
+      await takeScreenshot('import-wallet-coin-bch');
+      await element(
+        by.cssContainingText('ion-alert .alert-button', 'OK')
+      ).click();
       await element(by.css('ion-footer')).click();
       await waitForIonAlert();
       await clickIonAlertButton('No');

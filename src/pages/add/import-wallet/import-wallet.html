@@ -25,7 +25,8 @@
         <li translate>The Wallet Service URL</li>
       </ul>
       <small>
-        <span translate>NOTE: To import a wallet from a 3rd party software, please go to Add Wallet &gt; Create Wallet, and specify the Recovery Phrase there.</span>
+        <span translate>NOTE: To import a wallet from a 3rd party software, please go to Add Wallet &gt; Create Wallet, and specify the Recovery
+          Phrase there.</span>
       </small>
     </ion-item>
   </ion-card>
@@ -60,8 +61,8 @@
     <ion-item *ngIf="selectedTab != 'file'">
       <ion-label stacked>{{'Coin' | translate}}</ion-label>
       <ion-select placeholder="{{'Select a coin' | translate}}" formControlName="coin">
-        <ion-option value="btc">BTC</ion-option>
-        <ion-option value="bch">BCH</ion-option>
+        <ion-option value="btc">Bitcoin (BTC)</ion-option>
+        <ion-option value="bch">Bitcoin Cash (BCH)</ion-option>
       </ion-select>
     </ion-item>
 

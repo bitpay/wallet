@@ -9,6 +9,8 @@
       "webRoot": "${workspaceFolder}/www"
     },
     {
+      // To watch and rebuild changes in the app, use `npm run ionic:serve` in
+      // an external terminal, then re-run this task as often as needed.
       "type": "node",
       "request": "launch",
       "name": "Debug E2E Tests",

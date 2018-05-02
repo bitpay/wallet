@@ -20,9 +20,11 @@ jobs:
             - node_modules
           key: v1-dependencies-{{ checksum "package.json" }}
       - run: npm run apply:copay
+      # Select correct Chromedriver version (this must run after npm install)
+      - run: npm run e2e:update-ci
       - run: npm run test:ci
-      # - run: npm run e2e
-      - run: npx reg-cli test/visual/latest/copay test/visual/approved/copay test/visual/diffs --report test/visual/report.html --json test/visual/report.json --enableAntialias  --pixelThreshold 20
+      - run: npm run e2e
+      - run: npx reg-cli test/visual/latest/copay test/visual/expected/copay test/visual/diffs --report test/visual/report.html --json test/visual/report.json --enableAntialias  --pixelThreshold 20
       - run: npx codecov
       - store_artifacts:
           path: ./test
@@ -45,29 +47,15 @@ jobs:
             - node_modules
           key: v1-dependencies-{{ checksum "package.json" }}
       - run: npm run apply:bitpay
+      - run: npm run e2e:update-ci
       - run: npm run test:ci
-      # - run: npm run e2e
-      - run: npx reg-cli test/visual/latest/bitpay test/visual/approved/bitpay test/visual/diffs --report test/visual/report.html --json test/visual/report.json --enableAntialias  --pixelThreshold 20
+      - run: npm run e2e
+      - run: npx reg-cli test/visual/latest/bitpay test/visual/expected/bitpay test/visual/diffs --report test/visual/report.html --json test/visual/report.json --enableAntialias  --pixelThreshold 20
       - run: npx codecov
       - store_artifacts:
           path: ./test
       - store_test_results:
           path: ./test
-
-  # Run tests using CircleCI's local CLI
-  build:
-    docker:
-      - image: circleci/node:9-browsers
-    working_directory: ~/copay
-    steps:
-      - checkout
-      - run: npm install
-      - run: npm rebuild node-sass
-      - run: npm run apply:copay
-      - run: npm run e2e
-      - run: npm run apply:bitpay
-      - run: npm run e2e
-      - run: npm run test:visual
           
 workflows:
   version: 2
