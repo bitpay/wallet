@@ -142,7 +142,6 @@ export class TestUtils {
       ],
       schemas: [NO_ERRORS_SCHEMA],
       providers: [
-        AlertController,
         App,
         AppProvider,
         DecimalPipe,
@@ -153,11 +152,7 @@ export class TestUtils {
         GestureController,
         Keyboard,
         DomController,
-        LoadingController,
         MenuController,
-        // ModalController,
-        // NavController,
-        // NavParams,
         PlatformProvider,
         TranslateService,
         {
