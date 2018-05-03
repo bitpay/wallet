@@ -1,16 +1,16 @@
 /* tslint:disable */
-import {TestBed, inject, async} from '@angular/core/testing';
-import {AlertController, App, Config, Platform} from 'ionic-angular';
-import {Logger} from '../../providers/logger/logger';
+import { TestBed, inject, async } from '@angular/core/testing';
+import { AlertController, App, Config, Platform } from 'ionic-angular';
+import { Logger } from '../../providers/logger/logger';
 import {
   TranslateModule,
   TranslateService,
   TranslateLoader,
-  TranslateFakeLoader,
+  TranslateFakeLoader
 } from '@ngx-translate/core';
-import {PopupProvider} from './popup';
+import { PopupProvider } from './popup';
 
-import {AlertControllerMock} from 'ionic-mocks';
+import { AlertControllerMock } from 'ionic-mocks';
 
 describe('PopupProvider', () => {
   let alertCtrl: AlertController;
@@ -18,18 +18,21 @@ describe('PopupProvider', () => {
     TestBed.configureTestingModule({
       imports: [
         TranslateModule.forRoot({
-          loader: {provide: TranslateLoader, useClass: TranslateFakeLoader},
-        }),
+          loader: { provide: TranslateLoader, useClass: TranslateFakeLoader }
+        })
       ],
       providers: [
         PopupProvider,
-        AlertController,
         App,
         Config,
         Platform,
         Logger,
         TranslateService,
-      ],
+        {
+          provide: AlertController,
+          useFactory: () => AlertControllerMock.instance()
+        }
+      ]
     });
     alertCtrl = AlertControllerMock.instance();
   });
@@ -38,29 +41,29 @@ describe('PopupProvider', () => {
     'should exist',
     inject([PopupProvider], (popupProvider: PopupProvider) => {
       expect(popupProvider).not.toBeUndefined();
-    }),
+    })
   );
 
   it(
     'should have an alert',
     inject([PopupProvider], (popupProvider: PopupProvider) => {
-      popupProvider.ionicAlert('title', 'subtitle', 'ok text').then((done) => {
+      popupProvider.ionicAlert('title', 'subtitle', 'ok text').then(done => {
         let alert = alertCtrl.create();
         expect(popupProvider.ionicAlert).toHaveBeenCalledWith(
           'title',
           'subtitle',
-          'ok text',
+          'ok text'
         );
         expect(alert.present).toHaveBeenCalled();
         done();
       });
-    }),
+    })
   );
 
   it(
     'should have a confirm',
     inject([PopupProvider], (popupProvider: PopupProvider) => {
-      popupProvider.ionicConfirm('title', 'message').then((done) => {
+      popupProvider.ionicConfirm('title', 'message').then(done => {
         let alert = alertCtrl.create();
         expect(popupProvider.ionicConfirm).toHaveBeenCalledWith(
           'title',
@@ -69,7 +72,7 @@ describe('PopupProvider', () => {
         expect(alert.present).toHaveBeenCalled();
         done();
       });
-    }),
+    })
   );
 
   it(
@@ -83,7 +86,7 @@ describe('PopupProvider', () => {
         enableBackdropDismiss: null
       };
       let title = 'ok text';
-      let message = 'cancel text'
+      let message = 'cancel text';
       popupProvider.ionicPrompt(title, message, opts).then(() => {
         expect(opts && opts.useDanger).toBeNull();
         expect(!!(opts && opts.enableBackdropDismiss)).toBe(false);
@@ -93,6 +96,6 @@ describe('PopupProvider', () => {
         });
         expect(alert.present).toHaveBeenCalled();
       });
-    }),
+    })
   );
 });

@@ -51,6 +51,9 @@ import {
   ConfigMock,
   EventsMock,
   LoadingControllerMock,
+  ModalControllerMock,
+  NavControllerMock,
+  NavParamsMock,
   PlatformMock
 } from 'ionic-mocks';
 
@@ -152,9 +155,9 @@ export class TestUtils {
         DomController,
         LoadingController,
         MenuController,
-        ModalController,
-        NavController,
-        NavParams,
+        // ModalController,
+        // NavController,
+        // NavParams,
         PlatformProvider,
         TranslateService,
         {
@@ -172,6 +175,26 @@ export class TestUtils {
         { provide: File, useClass: FileMock },
         { provide: QRScanner, useClass: QRScannerMock },
         { provide: TouchID, useClass: TouchIDMock },
+        {
+          provide: ModalController,
+          useFactory: () => ModalControllerMock.instance()
+        },
+        {
+          provide: AlertController,
+          useFactory: () => AlertControllerMock.instance()
+        },
+        {
+          provide: LoadingController,
+          useFactory: () => LoadingControllerMock.instance()
+        },
+        {
+          provide: NavController,
+          useFactory: () => NavControllerMock.instance()
+        },
+        {
+          provide: NavParams,
+          useFactory: () => NavParamsMock.instance()
+        },
         {
           provide: AndroidFingerprintAuth,
           useClass: AndroidFingerprintAuthMock

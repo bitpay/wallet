@@ -87,8 +87,11 @@ describe('ConfirmPage', () => {
         fixture = testEnv.fixture;
         instance = testEnv.instance;
         testBed = testEnv.testBed;
-        instance.navParams.data.toAddress =
-          'n4VQ5YdHf7hLQ2gWQYYrcxoE5B7nWuDFNF';
+        instance.navParams = {
+          data: {
+            toAddress: 'n4VQ5YdHf7hLQ2gWQYYrcxoE5B7nWuDFNF'
+          }
+        };
         instance.tx = { coin: 'BTC' };
         spyOn(instance.onGoingProcessProvider, 'set').and.callFake(() => {});
         fixture.detectChanges();
@@ -156,7 +159,7 @@ describe('ConfirmPage', () => {
           onDidDismiss: () => {}
         };
         const presentSpy = spyOn(modal, 'present');
-        spyOn(instance.modalCtrl, 'create').and.returnValue(modal);
+        instance.modalCtrl.create = () => modal;
         instance.chooseFeeLevel();
         expect(presentSpy).toHaveBeenCalled();
       });
