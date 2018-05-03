@@ -372,11 +372,11 @@ export class ConfirmPage {
       this.onGoingProcessProvider.set('calculatingFee');
       this.feeProvider
         .getFeeRate(
-          wallet.coin,
-          tx.network,
-          this.usingMerchantFee
-            ? maxAllowedMerchantFee[wallet.coin]
-            : this.tx.feeLevel
+        wallet.coin,
+        tx.network,
+        this.usingMerchantFee
+          ? maxAllowedMerchantFee[wallet.coin]
+          : this.tx.feeLevel
         )
         .then((feeRate: any) => {
           let msg;
@@ -387,9 +387,9 @@ export class ConfirmPage {
             let maxAllowedfee = feeRate * 2;
             this.logger.info(
               'Using Merchant Fee:' +
-                tx.feeRate +
-                ' vs. referent level:' +
-                maxAllowedfee
+              tx.feeRate +
+              ' vs. referent level:' +
+              maxAllowedfee
             );
             if (tx.network != 'testnet' && tx.feeRate > maxAllowedfee) {
               this.onGoingProcessProvider.set('calculatingFee');
@@ -458,8 +458,8 @@ export class ConfirmPage {
               );
               this.popupProvider
                 .ionicAlert(
-                  this.translate.instant('Error'),
-                  this.translate.instant('Not enough funds for fee')
+                this.translate.instant('Error'),
+                this.translate.instant('Not enough funds for fee')
                 )
                 .then(() => {
                   return resolve('no_funds');
@@ -655,10 +655,10 @@ export class ConfirmPage {
     });
   }
 
-  private setSendError(msg: string, title: string = '') {
+  private setSendError(msg: string) {
     if (this.isCordova) this.slideButton.isConfirmed(false);
     this.popupProvider.ionicAlert(
-      this.translate.instant('Error at ' + title),
+      this.translate.instant('Error'),
       this.bwcErrorProvider.msg(msg)
     );
   }
