@@ -7,6 +7,7 @@ import { Device } from '@ionic-native/device';
 // providers
 import { AppIdentityProvider } from '../app-identity/app-identity';
 import { BitPayProvider } from '../bitpay/bitpay';
+import { OnGoingProcessProvider } from '../on-going-process/on-going-process';
 import { PersistenceProvider } from '../persistence/persistence';
 import { PlatformProvider } from '../platform/platform';
 import { PopupProvider } from '../popup/popup';
@@ -52,6 +53,7 @@ export class BitPayAccountProvider {
     private platformProvider: PlatformProvider,
     private bitPayProvider: BitPayProvider,
     private logger: Logger,
+    private onGoingProcessProvider: OnGoingProcessProvider,
     private popupProvider: PopupProvider,
     private persistenceProvider: PersistenceProvider,
     private appIdentityProvider: AppIdentityProvider,
@@ -79,8 +81,10 @@ export class BitPayAccountProvider {
         }
       };
 
+      this.onGoingProcessProvider.set('fetchingBitPayAccount');
       this.bitPayProvider.postAuth(json, (data) => {
         if (data && data.error) {
+          this.onGoingProcessProvider.clear();
           return cb(data.error);
         }
         let apiContext = {
@@ -91,6 +95,7 @@ export class BitPayAccountProvider {
         this.logger.info('BitPay service BitAuth create token: SUCCESS');
 
         this.fetchBasicInfo(apiContext, (err, basicInfo) => {
+          this.onGoingProcessProvider.clear();
           if (err) return cb(err);
           let title = 'Add BitPay Account?'; // TODO gettextcatalog
           let msg;
