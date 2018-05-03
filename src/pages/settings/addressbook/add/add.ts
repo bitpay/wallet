@@ -37,13 +37,6 @@ export class AddressbookAddPage {
       email: ['', this.emailOrEmpty],
       address: ['', Validators.compose([Validators.required, new AddressValidator(this.bwc).isValid])]
     });
-  }
-
-  ionViewDidLoad() {
-    this.logger.info('ionViewDidLoad AddressbookAddPage');
-  }
-
-  ionViewWillEnter() {
     if (this.navParams.data.addressbookEntry) {
       this.addressBookAdd.controls['address'].setValue(this.navParams.data.addressbookEntry);
     }
@@ -53,8 +46,8 @@ export class AddressbookAddPage {
     });
   }
 
-  ionViewWillLeave() {
-    this.events.unsubscribe('update:address');
+  ionViewDidLoad() {
+    this.logger.info('ionViewDidLoad AddressbookAddPage');
   }
 
   private emailOrEmpty(control: AbstractControl): ValidationErrors | null {
