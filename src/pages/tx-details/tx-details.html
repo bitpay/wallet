@@ -25,14 +25,8 @@
           <div class="amount">{{btx.amountValueStr}}
             <span class="unit">{{btx.amountUnitStr}}</span>
           </div>
-          <div class="alternative" (click)="showRate = !showRate">
-            <span *ngIf="!showRate">{{btx.alternativeAmountStr}}</span>
-            <span *ngIf="showRate">
-              <span *ngIf="!rate">...</span>
-              <span *ngIf="rate">
-                {{rate| currency:'':2}} {{alternativeIsoCode}} ({{rateDate | amDateFormat:'MM/DD/YYYY HH:mm a'}})
-              </span>
-            </span>
+          <div class="alternative">
+            <span>{{btx.alternativeAmountStr}}</span>
           </div>
         </div>
       </div>
