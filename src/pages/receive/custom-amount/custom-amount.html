@@ -1,5 +1,4 @@
 <ion-header>
-
   <ion-navbar>
     <ion-title>{{'Custom Amount' | translate}}</ion-title>
     <ion-buttons end>
@@ -8,8 +7,8 @@
       </button>
     </ion-buttons>
   </ion-navbar>
-
 </ion-header>
+
 <ion-content>
   <div class="qr-container">
     <ngx-qrcode *ngIf="address" copy-to-clipboard="{{ qrAddress }}" qrc-value="{{qrAddress}}" qrc-class="aclass" qrc-errorCorrectionLevel="M"></ngx-qrcode>
@@ -31,10 +30,8 @@
       <span translate>Receive in</span>
       <ion-note class="wallet-label" item-end>
         <ion-icon item-start>
-          <img *ngIf="wallet.network == 'testnet'" [ngStyle]="{'background-color': wallet.color}" src="assets/img/icon-wallet-testnet.svg"
-            class="icon-wallet" />
-          <img *ngIf="wallet.network != 'testnet'" [ngStyle]="{'background-color': wallet.color}" src="assets/img/icon-wallet.svg"
-            class="icon-wallet" />
+          <img *ngIf="wallet.network == 'testnet'" [ngStyle]="{'background-color': wallet.color}" src="assets/img/icon-wallet-testnet.svg" class="icon-wallet" />
+          <img *ngIf="wallet.network != 'testnet'" [ngStyle]="{'background-color': wallet.color}" src="assets/img/icon-wallet.svg" class="icon-wallet" />
         </ion-icon>
         <span class="wallet-name">{{wallet.name}}</span>
       </ion-note>

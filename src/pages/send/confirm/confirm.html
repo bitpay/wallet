@@ -136,5 +136,7 @@
 
 <ion-footer>
   <page-slide-to-accept #slideButton *ngIf="isCordova" [disabled]="!wallet || noWalletMessage || criticalError || !tx?.txp[wallet.id]" [buttonText]="buttonText" (slideDone)="approve(tx, wallet)"></page-slide-to-accept>
-  <button *ngIf="!isCordova" ion-button full class="button-footer" (click)="approve(tx, wallet)" [disabled]="!wallet || noWalletMessage || criticalError || !tx.txp[wallet.id]">{{buttonText}}</button>
+  <ion-toolbar *ngIf="!isCordova">
+    <button ion-button full class="button-footer" (click)="approve(tx, wallet)" [disabled]="!wallet || noWalletMessage || criticalError || !tx.txp[wallet.id]">{{buttonText}}</button>
+  </ion-toolbar>
 </ion-footer>

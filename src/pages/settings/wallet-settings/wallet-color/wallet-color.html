@@ -1,11 +1,8 @@
 <ion-header>
-
   <ion-navbar>
     <ion-title>{{'Wallet Color' | translate}}</ion-title>
   </ion-navbar>
-
 </ion-header>
-
 
 <ion-content class="wallet-color-count wallet-color-default">
   <ion-list radio-group [(ngModel)]="currentColorIndex">
@@ -16,4 +13,5 @@
       <ion-radio (click)="save(i)" [value]="i"></ion-radio>
     </ion-item>
   </ion-list>
+  <ion-item-divider></ion-item-divider>
 </ion-content>

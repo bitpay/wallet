@@ -191,6 +191,25 @@ $button-md-text-transform: none;
   }
 }
 
+/* Fix iPhone X screen */
+ion-footer {
+  .toolbar {
+    padding-top: 0rem !important;
+    padding-right: 0rem !important;
+    padding-left: 0rem !important;  
+    .toolbar-background {
+      background: none;
+      border: 0px;
+    }
+  }
+  .toolbar-md {
+    padding-bottom: 0rem;
+  }
+  .toolbar-ios {
+    margin-bottom: -4px;
+  }
+}
+
 // Titles centered on all headers for material design
 .toolbar {
   &.toolbar-md {

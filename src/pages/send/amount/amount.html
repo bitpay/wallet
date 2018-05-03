@@ -16,10 +16,8 @@
     </ion-item-divider>
     <ion-item>
       <ion-icon *ngIf="recipientType == 'wallet'" item-start>
-        <img *ngIf="network == 'testnet'" [ngStyle]="{'background-color': color}" src="assets/img/icon-wallet-testnet.svg" class="icon-wallet"
-        />
-        <img *ngIf="network != 'testnet'" [ngStyle]="{'background-color': color}" src="assets/img/icon-wallet.svg" class="icon-wallet"
-        />
+        <img *ngIf="network == 'testnet'" [ngStyle]="{'background-color': color}" src="assets/img/icon-wallet-testnet.svg" class="icon-wallet" />
+        <img *ngIf="network != 'testnet'" [ngStyle]="{'background-color': color}" src="assets/img/icon-wallet.svg" class="icon-wallet" />
       </ion-icon>
       <ion-icon *ngIf="recipientType == 'contact'" item-start>
         <gravatar [name]="name" [height]="30" [width]="30" [email]="email"></gravatar>
@@ -48,6 +46,10 @@
         <div class="result" *ngIf="!alternativeAmount">&nbsp;</div>
       </div>
     </div>
+  </div>
+</ion-content>
+<ion-footer>
+  <ion-toolbar>
     <div class="keypad">
       <div class="operator-row">
         <div class="col operator-send" [hidden]="!allowSend" (click)="finish()">
@@ -84,5 +86,5 @@
         <div class="col operator" (click)="pushOperator('-')">&#45;</div>
       </div>
     </div>
-  </div>
-</ion-content>
+  </ion-toolbar>
+</ion-footer>

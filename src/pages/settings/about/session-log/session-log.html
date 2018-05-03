@@ -1,5 +1,4 @@
 <ion-header>
-
   <ion-navbar>
     <ion-title>{{'Session Log' | translate}}</ion-title>
     <ion-buttons end>
@@ -8,8 +7,8 @@
       </button>
     </ion-buttons>
   </ion-navbar>
-
 </ion-header>
+
 <ion-content>
   <div *ngIf="filteredLogs && filteredLogs.length == 0" class="no-entries-message">
     <span translate>No entries for this log level</span>.
@@ -28,10 +27,12 @@
   </ion-list>
 </ion-content>
 <ion-footer>
-  <div class="filter-container">
-    <div class="labels">
-      <div *ngFor="let option of logOptions | keys" [ngClass]="{'info-label': option.value.weight==3}">{{option.value.label}}</div>
+  <ion-toolbar>
+    <div class="filter-container">
+      <div class="labels">
+        <div *ngFor="let option of logOptions | keys" [ngClass]="{'info-label': option.value.weight==3}">{{option.value.label}}</div>
+      </div>
+      <ion-range min="1" max="4" step="1" snaps="true" color="secondary" [(ngModel)]="filterValue" (ionChange)="setOptionSelected(filterValue)"></ion-range>
     </div>
-    <ion-range min="1" max="4" step="1" snaps="true" color="secondary" [(ngModel)]="filterValue" (ionChange)="setOptionSelected(filterValue)"></ion-range>
-  </div>
+  </ion-toolbar>
 </ion-footer>

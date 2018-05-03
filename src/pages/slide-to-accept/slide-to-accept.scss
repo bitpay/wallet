@@ -1,7 +1,7 @@
 page-slide-to-accept {    
   position: fixed;
   bottom: 0;
-  height: 70px;
+  height: 90px;
   width: 100%;
   background: $color-primary;
 
@@ -29,11 +29,11 @@ page-slide-to-accept {
   .button-slider{
     z-index: 100 !important;
     width: 120%;
-    border-bottom-right-radius: 35px;
-    border-top-right-radius: 35px;
+    border-bottom-right-radius: 45px;
+    border-top-right-radius: 45px;
     margin-left: -105%;
     background-color: $slider-bg-color !important;
-    height: 70px;
+    height: 90px;
     -webkit-box-shadow: 4px 0px 17px rgba(0, 0, 0, 0.4) !important;
     box-shadow: 4px 0px 17px rgba(0, 0, 0, 0.4) !important;   
 
@@ -55,7 +55,7 @@ page-slide-to-accept {
       overflow: hidden;
       position: relative;
       bottom: 0;
-      height: 70px;
+      height: 90px;
       width: 100%;
       background: $color-primary;
       // &:hover, &:active, &:focus {

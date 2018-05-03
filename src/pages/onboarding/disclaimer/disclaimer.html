@@ -21,18 +21,20 @@
   </ion-list>
 </ion-content>
 <ion-footer>
-  <div class="checkbox-list">
-    <div *ngIf="accepted.first && accepted.second">
-      <ion-item no-lines text-wrap>
-        <ion-label>
-          {{'I have read, understood, and agree to the Terms of Use' | translate}}.
-        </ion-label>
-        <ion-checkbox [(ngModel)]="terms.accepted"></ion-checkbox>
-      </ion-item>
-      <a (click)="openDisclaimer()" translate>Terms of Use</a>
+  <ion-toolbar>
+    <div class="checkbox-list">
+      <div *ngIf="accepted.first && accepted.second">
+        <ion-item no-lines text-wrap>
+          <ion-label>
+            {{'I have read, understood, and agree to the Terms of Use' | translate}}.
+          </ion-label>
+          <ion-checkbox [(ngModel)]="terms.accepted"></ion-checkbox>
+        </ion-item>
+        <a (click)="openDisclaimer()" translate>Terms of Use</a>
+      </div>
+      <button ion-button class="button-standard" [disabled]="!accepted.first || !accepted.second || !terms.accepted" (click)="confirm()">
+        {{'Confirm &amp; Finish' | translate}}
+      </button>
     </div>
-    <button ion-button class="button-standard" [disabled]="!accepted.first || !accepted.second || !terms.accepted" (click)="confirm()">
-      {{'Confirm &amp; Finish' | translate}}
-    </button>
-  </div>
+  </ion-toolbar>
 </ion-footer>
