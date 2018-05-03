@@ -144,7 +144,7 @@ describe('HomePage', () => {
         (window as any).require = () => {
           return {
             App: {
-              on: (event, cb) => { },
+              on: (event, cb) => {},
               argv: ['URL']
             }
           };
@@ -154,9 +154,6 @@ describe('HomePage', () => {
       afterEach(() => {
         delete (window as any).require;
         delete (window as any)._urlHandled;
-      });
-      it('should not break', () => {
-        instance.handleDeepLinksNW();
       });
       it('should not try to handle deeplinks if was already handled', () => {
         jasmine.clock().install();
