@@ -107,4 +107,34 @@ describe('Release Provider', () => {
     expect(result.updateAvailable).toBeTruthy;
     expect(result.availableVersion).toEqual(latestAppVersion);
   });
+  it('should be a new major version available', () => {
+    const majorAppVersion = '2.0.0';
+    const result = releaseService.checkForUpdates(
+      majorAppVersion,
+      currentAppVersion
+    );
+
+    expect(result.error).toBeNull;
+    expect(result.updateAvailable).toBeTruthy;
+  });
+  it('should be a new minor version available', () => {
+    const minorAppVersion = '1.2.0';
+    const result = releaseService.checkForUpdates(
+      minorAppVersion,
+      currentAppVersion
+    );
+
+    expect(result.error).toBeNull;
+    expect(result.updateAvailable).toBeTruthy;
+  });
+  it('should be a new patch version available', () => {
+    const patchAppVersion = '1.1.2';
+    const result = releaseService.checkForUpdates(
+      patchAppVersion,
+      currentAppVersion
+    );
+
+    expect(result.error).toBeNull;
+    expect(result.updateAvailable).toBeTruthy;
+  });
 });

@@ -64,7 +64,8 @@ export class ReleaseProvider {
 
     if (
       latest.major < current.major ||
-      (latest.major == current.major && latest.minor <= current.minor)
+      (latest.major == current.major && latest.minor <= current.minor) || 
+      (latest.minor == current.minor && latest.patch <= current.patch)
     )
       return result;
     else {
