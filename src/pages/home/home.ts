@@ -469,6 +469,7 @@ export class HomePage {
         this.logger.debug('Update available:', result.updateAvailable);
         if (result.updateAvailable) {
           this.newRelease = true;
+          // TODO: translate updateText
           this.updateText =
             'There is a new version of ' +
             this.appProvider.info.nameCase +

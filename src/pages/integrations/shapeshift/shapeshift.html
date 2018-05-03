@@ -52,11 +52,13 @@
 </ion-content>
 
 <ion-footer>
-  <div *ngIf="shifts.data" class="shift-problems">
-    <span translate>Having problems with a ShapeShift?</span>
-    <br>
-    <a (click)="openExternalLink('https://shapeshift.zendesk.com/hc/en-us/requests/new')" translate>
-      Contact the ShapeShift support team.
-    </a>
-  </div>
+  <ion-toolbar *ngIf="shifts.data">
+    <div class="shift-problems">
+      <span translate>Having problems with a ShapeShift?</span>
+      <br>
+      <a (click)="openExternalLink('https://shapeshift.zendesk.com/hc/en-us/requests/new')" translate>
+        Contact the ShapeShift support team.
+      </a>
+    </div>
+  </ion-toolbar>
 </ion-footer>

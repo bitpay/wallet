@@ -88,7 +88,9 @@
 </ion-content>
 
 <ion-footer>
-  <button ion-button full class="button-footer" (click)="setOptsAndCreate()" [disabled]="!createForm.valid">
-    {{'Create wallet' | translate}}
-  </button>
+  <ion-toolbar>
+    <button ion-button full class="button-footer" (click)="setOptsAndCreate()" [disabled]="!createForm.valid">
+      {{'Create wallet' | translate}}
+    </button>
+  </ion-toolbar>
 </ion-footer>

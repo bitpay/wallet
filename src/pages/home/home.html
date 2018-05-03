@@ -29,17 +29,17 @@
       </ion-item>
     </ion-card>
 
-    <ion-card *ngIf="newRelease">
-      <ion-icon>
-        <img src="assets/img/icon-update.svg" class="bg" />
-      </ion-icon>
-      <ion-card-header>
+    <ion-card class="new-release" *ngIf="newRelease">
+      <div class="new-release-icon">
+        <img src="assets/img/icon-update.svg" />
+      </div>
+      <ion-card-header class="new-release-text">
         {{updateText}}
       </ion-card-header>
-      <ion-card-content>
-        <button ion-button (click)="goToDownload()">
+      <ion-card-content class="new-release-button">
+        <div (click)="goToDownload()">
           <span translate>Download</span>
-        </button>
+        </div>
       </ion-card-content>
     </ion-card>
 

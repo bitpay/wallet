@@ -4,7 +4,6 @@
   </ion-navbar>
 </ion-header>
 
-
 <ion-content>
   <ion-list *ngIf="fromWallets.length > 0 && toWallets.length > 0">
     <div *ngIf="fromWallets.length > 0">
@@ -137,7 +136,9 @@
 </ion-content>
 
 <ion-footer>
-  <button ion-button full class="button-footer" no-low-fee type="button" *ngIf="fromWallets.length > 0 && toWallets.length > 0" [disabled]="!fromWallet || !toWallet || !termsAccepted" (click)="setAmount()">
-    {{'Continue' | translate}}
-  </button>
+  <ion-toolbar *ngIf="fromWallets.length > 0 && toWallets.length > 0">
+    <button ion-button full class="button-footer" no-low-fee type="button" [disabled]="!fromWallet || !toWallet || !termsAccepted" (click)="setAmount()">
+      {{'Continue' | translate}}
+    </button>
+  </ion-toolbar>
 </ion-footer>

@@ -1,11 +1,8 @@
 <ion-header>
-
   <ion-navbar>
     <ion-title *ngIf="wallet">{{ wallet.name }}</ion-title>
   </ion-navbar>
-
 </ion-header>
-
 
 <ion-content no-bounce>
   <div *ngIf="wallet" [hidden]="wallet.notAuthorized">
@@ -64,6 +61,5 @@
         <h4 translate>Delete it and create a new one</h4>
       </ion-card>
     </div>
-
   </div>
 </ion-content>
