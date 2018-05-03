@@ -21,13 +21,13 @@ import { FeeWarningPage } from '../fee-warning/fee-warning';
 import { BwcErrorProvider } from '../../../providers/bwc-error/bwc-error';
 import { BwcProvider } from '../../../providers/bwc/bwc';
 import { ConfigProvider } from '../../../providers/config/config';
-import { CustomTranslateProvider } from '../../../providers/custom-translate/custom-translate';
 import { ExternalLinkProvider } from '../../../providers/external-link/external-link';
 import { FeeProvider } from '../../../providers/fee/fee';
 import { OnGoingProcessProvider } from '../../../providers/on-going-process/on-going-process';
 import { PlatformProvider } from '../../../providers/platform/platform';
 import { PopupProvider } from '../../../providers/popup/popup';
 import { ProfileProvider } from '../../../providers/profile/profile';
+import { ReplaceParametersProvider } from '../../../providers/replace-parameters/replace-parameters';
 import { TxConfirmNotificationProvider } from '../../../providers/tx-confirm-notification/tx-confirm-notification';
 import { TxFormatProvider } from '../../../providers/tx-format/tx-format';
 import { WalletProvider } from '../../../providers/wallet/wallet';
@@ -78,7 +78,7 @@ export class ConfirmPage {
     private navParams: NavParams,
     private logger: Logger,
     private configProvider: ConfigProvider,
-    private customTranslateProvider: CustomTranslateProvider,
+    private replaceParametersProvider: ReplaceParametersProvider,
     private platformProvider: PlatformProvider,
     private profileProvider: ProfileProvider,
     private walletProvider: WalletProvider,
@@ -579,13 +579,13 @@ export class ConfirmPage {
     let warningMsg = [];
     if (sendMaxInfo.utxosBelowFee > 0) {
       let amountBelowFeeStr = sendMaxInfo.amountBelowFee / 1e8;
-      let message = this.customTranslateProvider.translate(this.translate.instant('A total of {{amountBelowFeeStr}} {{coin}} were excluded. These funds come from UTXOs smaller than the network fee provided.'), { amountBelowFeeStr, coin: this.tx.coin.toUpperCase() });
+      let message = this.replaceParametersProvider.replace(this.translate.instant('A total of {{amountBelowFeeStr}} {{coin}} were excluded. These funds come from UTXOs smaller than the network fee provided.'), { amountBelowFeeStr, coin: this.tx.coin.toUpperCase() });
       warningMsg.push(message);
     }
 
     if (sendMaxInfo.utxosAboveMaxSize > 0) {
       let amountAboveMaxSizeStr = (sendMaxInfo.amountAboveMaxSize / 1e8);
-      let message = this.customTranslateProvider.translate(this.translate.instant('A total of {{amountAboveMaxSizeStr}} {{coin}} were excluded. The maximum size allowed for a transaction was exceeded.'), { amountAboveMaxSizeStr, coin: this.tx.coin.toUpperCase() });
+      let message = this.replaceParametersProvider.replace(this.translate.instant('A total of {{amountAboveMaxSizeStr}} {{coin}} were excluded. The maximum size allowed for a transaction was exceeded.'), { amountAboveMaxSizeStr, coin: this.tx.coin.toUpperCase() });
       warningMsg.push(message);
     }
     return warningMsg.join('\n');
@@ -715,7 +715,7 @@ export class ConfirmPage {
         let amount = (this.tx.amount / 1e8).toFixed(8);
         let unit = txp.coin.toUpperCase();
         let name = wallet.name;
-        let message = this.customTranslateProvider.translate(this.translate.instant('Sending {{amount}} {{unit}} from your {{name}} wallet'), { amount, unit, name });
+        let message = this.replaceParametersProvider.replace(this.translate.instant('Sending {{amount}} {{unit}} from your {{name}} wallet'), { amount, unit, name });
         let okText = this.translate.instant('Confirm');
         let cancelText = this.translate.instant('Cancel');
         this.popupProvider

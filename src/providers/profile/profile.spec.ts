@@ -23,11 +23,11 @@ import { TxFormatProvider } from '../../providers/tx-format/tx-format';
 import { BwcErrorProvider } from '../bwc-error/bwc-error';
 import { BwcProvider } from '../bwc/bwc';
 import { ConfigProvider } from '../config/config';
-import { CustomTranslateProvider } from '../custom-translate/custom-translate';
 import { OnGoingProcessProvider } from '../on-going-process/on-going-process';
 import { PersistenceProvider } from '../persistence/persistence';
 import { PlatformProvider } from '../platform/platform';
 import { PopupProvider } from '../popup/popup';
+import { ReplaceParametersProvider } from '../replace-parameters/replace-parameters';
 import { WalletProvider } from '../wallet/wallet';
 import { ProfileProvider } from './profile';
 
@@ -127,7 +127,7 @@ describe('Profile Provider', () => {
         { provide: BwcProvider, useClass: BwcProviderMock },
         BwcErrorProvider,
         ConfigProvider,
-        CustomTranslateProvider,
+        ReplaceParametersProvider,
         HttpClient,
         LanguageProvider,
         LoadingController,

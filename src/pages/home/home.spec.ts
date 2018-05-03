@@ -17,7 +17,6 @@ import { AppIdentityProvider } from '../../providers/app-identity/app-identity';
 import { AppProvider } from '../../providers/app/app';
 import { BitPayCardProvider } from '../../providers/bitpay-card/bitpay-card';
 import { BitPayProvider } from '../../providers/bitpay/bitpay';
-import { CustomTranslateProvider } from '../../providers/custom-translate/custom-translate';
 import { ExternalLinkProvider } from '../../providers/external-link/external-link';
 import { FeeProvider } from '../../providers/fee/fee';
 import { FeedbackProvider } from '../../providers/feedback/feedback';
@@ -43,6 +42,7 @@ import { ConfigProvider } from './../../providers/config/config';
 import { Logger } from './../../providers/logger/logger';
 import { PersistenceProvider } from './../../providers/persistence/persistence';
 import { ProfileProvider } from './../../providers/profile/profile';
+import { ReplaceParametersProvider } from '../../providers/replace-parameters/replace-parameters';
 
 describe('HomePage', () => {
   let fixture: ComponentFixture<HomePage>;
@@ -60,7 +60,6 @@ describe('HomePage', () => {
           BwcProvider,
           BwcErrorProvider,
           ConfigProvider,
-          CustomTranslateProvider,
           ExternalLinkProvider,
           FeedbackProvider,
           FeeProvider,
@@ -78,6 +77,7 @@ describe('HomePage', () => {
           PushNotificationsProvider,
           RateProvider,
           ReleaseProvider,
+          ReplaceParametersProvider,
           ScanProvider,
           TouchIdProvider,
           TxFormatProvider,

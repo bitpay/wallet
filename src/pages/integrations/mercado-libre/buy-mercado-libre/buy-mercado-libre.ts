@@ -14,7 +14,6 @@ import { MercadoLibrePage } from '../mercado-libre';
 import { BwcErrorProvider } from '../../../../providers/bwc-error/bwc-error';
 import { BwcProvider } from '../../../../providers/bwc/bwc';
 import { ConfigProvider } from '../../../../providers/config/config';
-import { CustomTranslateProvider } from '../../../../providers/custom-translate/custom-translate';
 import { EmailNotificationsProvider } from '../../../../providers/email-notifications/email-notifications';
 import { ExternalLinkProvider } from '../../../../providers/external-link/external-link';
 import { MercadoLibreProvider } from '../../../../providers/mercado-libre/mercado-libre';
@@ -22,6 +21,7 @@ import { OnGoingProcessProvider } from "../../../../providers/on-going-process/o
 import { PlatformProvider } from '../../../../providers/platform/platform';
 import { PopupProvider } from '../../../../providers/popup/popup';
 import { ProfileProvider } from '../../../../providers/profile/profile';
+import { ReplaceParametersProvider } from '../../../../providers/replace-parameters/replace-parameters';
 import { TxFormatProvider } from '../../../../providers/tx-format/tx-format';
 import { WalletProvider } from '../../../../providers/wallet/wallet';
 
@@ -63,7 +63,7 @@ export class BuyMercadoLibrePage {
     private bwcErrorProvider: BwcErrorProvider,
     private bwcProvider: BwcProvider,
     private configProvider: ConfigProvider,
-    private customTranslateProvider: CustomTranslateProvider,
+    private replaceParametersProvider: ReplaceParametersProvider,
     private emailNotificationsProvider: EmailNotificationsProvider,
     private events: Events,
     private externalLinkProvider: ExternalLinkProvider,
@@ -375,7 +375,7 @@ export class BuyMercadoLibrePage {
       invoice['minerFees'][COIN]['totalFee'] = invoice.minerFees[COIN].totalFee || 0;
       let invoiceFeeSat = invoice.minerFees[COIN].totalFee;
 
-      this.message = this.customTranslateProvider.translate(this.translate.instant('{{amountUnitStr}} Gift Card'), { amountUnitStr: this.amountUnitStr });
+      this.message = this.replaceParametersProvider.replace(this.translate.instant('{{amountUnitStr}} Gift Card'), { amountUnitStr: this.amountUnitStr });
 
       this.createTx(wallet, invoice, this.message).then((ctxp: any) => {
         this.onGoingProcessProvider.clear();
@@ -473,7 +473,7 @@ export class BuyMercadoLibrePage {
     modal.onDidDismiss(() => {
       this.navCtrl.popToRoot({ animate: false }).then(() => {
         this.navCtrl.parent.select(0);
-        
+
         // Fixes mobile navigation
         setTimeout(() => {
           this.navCtrl.push(MercadoLibrePage, { invoiceId: this.invoiceId }, { animate: false });

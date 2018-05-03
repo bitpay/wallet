@@ -13,13 +13,13 @@ import { ShapeshiftPage } from '../shapeshift';
 import { BwcErrorProvider } from '../../../../providers/bwc-error/bwc-error';
 import { BwcProvider } from '../../../../providers/bwc/bwc';
 import { ConfigProvider } from '../../../../providers/config/config';
-import { CustomTranslateProvider } from '../../../../providers/custom-translate/custom-translate';
 import { ExternalLinkProvider } from '../../../../providers/external-link/external-link';
 import { FeeProvider } from '../../../../providers/fee/fee';
 import { OnGoingProcessProvider } from "../../../../providers/on-going-process/on-going-process";
 import { PlatformProvider } from '../../../../providers/platform/platform';
 import { PopupProvider } from '../../../../providers/popup/popup';
 import { ProfileProvider } from '../../../../providers/profile/profile';
+import { ReplaceParametersProvider } from '../../../../providers/replace-parameters/replace-parameters';
 import { ShapeshiftProvider } from '../../../../providers/shapeshift/shapeshift';
 import { TxFormatProvider } from '../../../../providers/tx-format/tx-format';
 import { WalletProvider } from '../../../../providers/wallet/wallet';
@@ -65,7 +65,7 @@ export class ShapeshiftConfirmPage {
     private bwcProvider: BwcProvider,
     private bwcErrorProvider: BwcErrorProvider,
     private configProvider: ConfigProvider,
-    private customTranslateProvider: CustomTranslateProvider,
+    private replaceParametersProvider: ReplaceParametersProvider,
     private externalLinkProvider: ExternalLinkProvider,
     private onGoingProcessProvider: OnGoingProcessProvider,
     private logger: Logger,
@@ -118,12 +118,12 @@ export class ShapeshiftConfirmPage {
         let amountNumber = Number(this.amount);
 
         if (amountNumber < min) {
-          let message = this.customTranslateProvider.translate(this.translate.instant('Minimum amount required is {{min}}'), { min });
+          let message = this.replaceParametersProvider.replace(this.translate.instant('Minimum amount required is {{min}}'), { min });
           this.showErrorAndBack(null, message);
           return;
         }
         if (amountNumber > max) {
-          let message = this.customTranslateProvider.translate(this.translate.instant('Maximum amount allowed is {{max}}'), { max });
+          let message = this.replaceParametersProvider.replace(this.translate.instant('Maximum amount allowed is {{max}}'), { max });
           this.showErrorAndBack(null, message);
           return;
         }
@@ -447,7 +447,7 @@ export class ShapeshiftConfirmPage {
     }
     let fromCoin = this.fromWallet.coin.toUpperCase();
     let toCoin = this.toWallet.coin.toUpperCase();
-    let title = this.customTranslateProvider.translate(this.translate.instant('Confirm to shift {{fromCoin}} to {{toCoin}}'), { fromCoin, toCoin });
+    let title = this.replaceParametersProvider.replace(this.translate.instant('Confirm to shift {{fromCoin}} to {{toCoin}}'), { fromCoin, toCoin });
 
     let okText = this.translate.instant('OK');
     let cancelText = this.translate.instant('Cancel');
@@ -476,7 +476,7 @@ export class ShapeshiftConfirmPage {
     modal.onDidDismiss(() => {
       this.navCtrl.popToRoot({ animate: false }).then(() => {
         this.navCtrl.parent.select(0);
-        
+
         // Fixes mobile navigation
         setTimeout(() => {
           this.navCtrl.push(ShapeshiftPage, null, { animate: false });

@@ -181,7 +181,6 @@ import { BwcErrorProvider } from '../providers/bwc-error/bwc-error';
 import { BwcProvider } from '../providers/bwc/bwc';
 import { CoinbaseProvider } from '../providers/coinbase/coinbase';
 import { ConfigProvider } from '../providers/config/config';
-import { CustomTranslateProvider } from '../providers/custom-translate/custom-translate';
 import { DerivationPathHelperProvider } from '../providers/derivation-path-helper/derivation-path-helper';
 import { EmailNotificationsProvider } from '../providers/email-notifications/email-notifications';
 import { ExternalLinkProvider } from '../providers/external-link/external-link';
@@ -204,6 +203,7 @@ import { ProfileProvider } from '../providers/profile/profile';
 import { PushNotificationsProvider } from '../providers/push-notifications/push-notifications';
 import { RateProvider } from '../providers/rate/rate';
 import { ReleaseProvider } from '../providers/release/release';
+import { ReplaceParametersProvider } from '../providers/replace-parameters/replace-parameters';
 import { ScanProvider } from '../providers/scan/scan';
 import { ShapeshiftProvider } from '../providers/shapeshift/shapeshift';
 import { TimeProvider } from '../providers/time/time';
@@ -489,7 +489,7 @@ export function createTranslateLoader(http: HttpClient) {
     Clipboard,
     ConfigProvider,
     CoinbaseProvider,
-    CustomTranslateProvider,
+    ReplaceParametersProvider,
     DerivationPathHelperProvider,
     Device,
     ExternalLinkProvider,
