@@ -44,7 +44,7 @@ import { Logger } from './../../../providers/logger/logger';
 import { PersistenceProvider } from './../../../providers/persistence/persistence';
 import { ProfileProvider } from './../../../providers/profile/profile';
 
-xdescribe('ConfirmPage', () => {
+describe('ConfirmPage', () => {
   let fixture: ComponentFixture<ConfirmPage>;
   let instance: any;
   let testBed: typeof TestBed;
@@ -90,7 +90,7 @@ xdescribe('ConfirmPage', () => {
         instance.navParams.data.toAddress =
           'n4VQ5YdHf7hLQ2gWQYYrcxoE5B7nWuDFNF';
         instance.tx = { coin: 'BTC' };
-        spyOn(instance.onGoingProcessProvider, 'set').and.callFake(() => { });
+        spyOn(instance.onGoingProcessProvider, 'set').and.callFake(() => {});
         fixture.detectChanges();
       })
     )
@@ -152,8 +152,8 @@ xdescribe('ConfirmPage', () => {
     describe('chooseFeeLevel', () => {
       it('should display a fee modal', () => {
         const modal = {
-          present: () => { },
-          onDidDismiss: () => { }
+          present: () => {},
+          onDidDismiss: () => {}
         };
         const presentSpy = spyOn(modal, 'present');
         spyOn(instance.modalCtrl, 'create').and.returnValue(modal);
@@ -256,7 +256,7 @@ xdescribe('ConfirmPage', () => {
       });
     });
     describe('publishAndSign', () => {
-      it('should work', () => { });
+      it('should work', () => {});
     });
   });
 });
