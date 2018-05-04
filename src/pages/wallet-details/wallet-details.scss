@@ -1,7 +1,4 @@
 page-wallet-details {
-  .scroll-content {
-    margin-top: 0 !important;
-  }
   ion-header,
   .toolbar-background {
     background-color: rgba(0, 0, 0, 0) !important;
@@ -16,7 +13,7 @@ page-wallet-details {
     overflow: hidden;
   }
   .balance-header {
-    margin-top: 44px;
+    margin-top: 15px;
     height: 12rem;
     color: color($colors, light);
     text-align: center;
@@ -64,7 +61,52 @@ page-wallet-details {
       font-weight: 500;
     }
   }
+  .history-wrapper {
+    margin-top: 1.3rem;
+  }
   .tx-history {
+    .tx-history-header {
+      &--large {
+        &.item {
+          margin-bottom: 3px;
+          ion-label {
+            font-size: 15px;
+          }
+        }
+      }
+      &.item {
+        min-height: 26px;
+        ion-label {
+          margin: 0;
+          font-size: 14px;
+        }
+        .item-inner {
+          padding: 0 !important;
+        }
+      }
+    }
+    .item-wrapper {
+      &:last-child {
+        .item-inner {
+          border-bottom: 0;
+        }
+      }
+    }
+    .item {
+      font-size: 16px;
+      padding-left: 19px;
+
+      .item-icon {
+        margin-right: 15px;
+      }
+
+      .item-inner {
+        background-image: none;
+        padding: 11px 10px 11px 0;
+        margin-left: 3px;
+        border-bottom: 1px solid color($colors, light);
+      }
+    }
     img {
       width: 35px;
     }
@@ -81,7 +123,8 @@ page-wallet-details {
       }
     }
     .date {
-      font-size: 12.5px;
+      font-size: 14px;
+      margin-top: 8px;
     }
   }
 
@@ -162,6 +205,12 @@ page-wallet-details {
     border: 1px solid #d7d7d7;
   }
 
+  .locked-balance.item {
+    .item-inner {
+      padding-bottom: 5px;
+      padding-top: 5px;
+    }
+  }
   .total-locked-amount {
     color: color($colors, dark);
   }

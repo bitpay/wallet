@@ -18,6 +18,7 @@ import {
   Platform
 } from 'ionic-angular';
 
+import { AlertControllerMock } from 'ionic-mocks';
 import { Logger } from '../../providers/logger/logger';
 import { AppProvider } from '../app/app';
 import { BwcErrorProvider } from '../bwc-error/bwc-error';
@@ -39,7 +40,7 @@ describe('Provider: Wallet Provider', () => {
   let walletProvider: WalletProvider;
 
   class PersistenceProviderMock {
-    constructor() { }
+    constructor() {}
     getLastAddress(walletId: any) {
       return Promise.resolve('storedAddress');
     }
@@ -93,7 +94,11 @@ describe('Provider: Wallet Provider', () => {
         TouchIdProvider,
         TranslateService,
         TxFormatProvider,
-        WalletProvider
+        WalletProvider,
+        {
+          provide: AlertController,
+          useFactory: () => AlertControllerMock.instance()
+        }
       ]
     });
     walletProvider = TestBed.get(WalletProvider);
@@ -145,7 +150,7 @@ describe('Provider: Wallet Provider', () => {
           return true;
         },
         needsBackup: false,
-        createAddress({ }, cb) {
+        createAddress({}, cb) {
           return cb(null, { address: 'newAddress' });
         }
       };
@@ -161,7 +166,7 @@ describe('Provider: Wallet Provider', () => {
           return true;
         },
         needsBackup: false,
-        createAddress({ }, cb) {
+        createAddress({}, cb) {
           return cb(new Error('CONNECTION_ERROR'));
         }
       };
@@ -176,19 +181,19 @@ describe('Provider: Wallet Provider', () => {
           return true;
         },
         needsBackup: false,
-        createAddress({ }, cb) {
+        createAddress({}, cb) {
           return cb(new Error('MAIN_ADDRESS_GAP_REACHED'));
         },
-        getMainAddresses({ }, cb) {
+        getMainAddresses({}, cb) {
           let mainAddress = [];
           mainAddress.push({ address: 'mainAddress' });
           return cb(null, mainAddress);
         }
       };
       let force = true;
-      walletProvider.getAddress(wallet, force).then((mainAddress) => {
+      walletProvider.getAddress(wallet, force).then(mainAddress => {
         expect(mainAddress).toEqual('mainAddress');
-      })
+      });
     });
   });
 

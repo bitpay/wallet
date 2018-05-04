@@ -10,7 +10,7 @@ import { Subject } from 'rxjs';
 
 import { TestUtils } from '../../test';
 
-import { HomePage } from './home';
+import { WalletDetailsPage } from './wallet-details';
 
 import { AddressBookProvider } from '../../providers/address-book/address-book';
 import { AppIdentityProvider } from '../../providers/app-identity/app-identity';
@@ -33,6 +33,7 @@ import { PushNotificationsProvider } from '../../providers/push-notifications/pu
 import { RateProvider } from '../../providers/rate/rate';
 import { ReleaseProvider } from '../../providers/release/release';
 import { ScanProvider } from '../../providers/scan/scan';
+import { TimeProvider } from '../../providers/time/time';
 import { TouchIdProvider } from '../../providers/touchid/touchid';
 import { TxFormatProvider } from '../../providers/tx-format/tx-format';
 import { WalletProvider } from '../../providers/wallet/wallet';
@@ -43,14 +44,24 @@ import { Logger } from './../../providers/logger/logger';
 import { PersistenceProvider } from './../../providers/persistence/persistence';
 import { ProfileProvider } from './../../providers/profile/profile';
 
-describe('HomePage', () => {
-  let fixture: ComponentFixture<HomePage>;
+describe('WalletDetailsPage', () => {
+  let fixture: ComponentFixture<WalletDetailsPage>;
   let instance: any;
   let testBed: typeof TestBed;
 
   beforeEach(
-    async(() =>
-      TestUtils.configurePageTestingModule([HomePage], {
+    async(() => {
+      const mockWallet = {
+        name: 'Test Wallet',
+        cachedStatus: null,
+        credentials: { m: 1 },
+        status: {},
+        canSign: () => true,
+        isComplete: () => true,
+        isPrivKeyEncrypted: () => true
+      };
+      spyOn(ProfileProvider.prototype, 'getWallet').and.returnValue(mockWallet);
+      return TestUtils.configurePageTestingModule([WalletDetailsPage], {
         providers: [
           AddressBookProvider,
           AppIdentityProvider,
@@ -77,6 +88,7 @@ describe('HomePage', () => {
           RateProvider,
           ReleaseProvider,
           ScanProvider,
+          TimeProvider,
           TouchIdProvider,
           TxFormatProvider,
           WalletProvider
@@ -85,90 +97,73 @@ describe('HomePage', () => {
         fixture = testEnv.fixture;
         instance = testEnv.instance;
         testBed = testEnv.testBed;
-        instance.showCard = {
-          setShowRateCard: () => {}
-        };
         fixture.detectChanges();
-      })
-    )
+      });
+    })
   );
   afterEach(() => {
     fixture.destroy();
   });
-
   describe('Lifecycle Hooks', () => {
     describe('ionViewWillEnter', () => {
-      it('should get config', () => {
+      it('should subscribe to events', () => {
+        const spy = spyOn(instance.events, 'subscribe');
         instance.ionViewWillEnter();
-        const configProvider = testBed.get(ConfigProvider);
-        expect(instance.config).toEqual(configProvider.get());
-      });
-      it('should not break if address book list call fails', () => {
-        spyOn(testBed.get(AddressBookProvider), 'list').and.returnValue(
-          Promise.reject('bad error')
-        );
-        instance.ionViewWillEnter();
+        expect(spy).toHaveBeenCalledTimes(2);
       });
     });
-
+    describe('ionViewWillLeave', () => {
+      it('should unsubscribe from events', () => {
+        const spy = spyOn(instance.events, 'unsubscribe');
+        instance.ionViewWillLeave();
+        expect(spy).toHaveBeenCalledWith('Local/TxAction');
+        expect(spy).toHaveBeenCalledWith('bwsEvent');
+      });
+    });
     describe('ionViewDidEnter', () => {
-      it('should check for update if NW', () => {
-        instance.isNW = true;
-        const spy = spyOn(instance, 'checkUpdate');
+      it('should update history', () => {
+        const spy = spyOn(instance, 'updateAll');
         instance.ionViewDidEnter();
         expect(spy).toHaveBeenCalled();
       });
     });
-
-    describe('ionViewDidLoad', () => {
-      it('should update txps and set wallets on platform resume', () => {
-        instance.plt.resume = new Subject();
-        instance.ionViewDidLoad();
-        const updateTxpsSpy = spyOn(instance, 'updateTxps');
-        const setWalletsSpy = spyOn(instance, 'setWallets');
-        instance.plt.resume.next();
-        expect(updateTxpsSpy).toHaveBeenCalled();
-        expect(setWalletsSpy).toHaveBeenCalled();
-      });
-    });
-
-    describe('ionViewWillLeave', () => {
-      it('should unsubscribe from feedback:hide event', () => {
-        const spy = spyOn(instance.events, 'unsubscribe');
-        instance.ionViewWillLeave();
-        expect(spy).toHaveBeenCalledWith('feedback:hide');
-      });
-    });
   });
-
   describe('Methods', () => {
-    describe('handleDeepLinksNW', () => {
-      beforeEach(() => {
-        (window as any).require = () => {
-          return {
-            App: {
-              on: (event, cb) => {},
-              argv: ['URL']
-            }
-          };
-        };
-        (window as any)._urlHandled = false;
+    describe('clearHistoryCache', () => {
+      it('should reset history array and currentPage', () => {
+        instance.history = [{}];
+        instance.currentPage = 10;
+        instance.clearHistoryCache();
+        expect(instance.history).toEqual([]);
+        expect(instance.currentPage).toBe(0);
       });
-      afterEach(() => {
-        delete (window as any).require;
-        delete (window as any)._urlHandled;
+    });
+    describe('groupHistory', () => {
+      it('should group transactions by month', () => {
+        const getTime = (date: string) => new Date(date).getTime() / 1000;
+        const transactions = [
+          { time: getTime('Jan 1, 2018') },
+          { time: getTime('Jan 3, 2018') },
+          { time: getTime('Feb 10, 2018') }
+        ];
+        instance.history = transactions;
+        const groupedTxs = instance.groupHistory(transactions);
+        const expectedGroups = [
+          [transactions[0], transactions[1]],
+          [transactions[2]]
+        ];
+        expect(groupedTxs).toEqual(expectedGroups);
       });
-      it('should not try to handle deeplinks if was already handled', () => {
-        jasmine.clock().install();
-        const spy = spyOn(instance, 'handleOpenUrl');
-        instance.handleDeepLinksNW();
-        jasmine.clock().tick(1001);
-
-        instance.handleDeepLinksNW();
-        jasmine.clock().tick(1001);
-
-        expect(spy).toHaveBeenCalledTimes(1);
-        jasmine.clock().uninstall();
+    });
+    describe('showHistory', () => {
+      it('should add the next page of transactions to the list', () => {
+        instance.currentPage = 0;
+        instance.wallet.completeHistory = new Array(11).map(() => {});
+        const spy = spyOn(instance, 'groupHistory');
+        instance.showHistory();
+        expect(instance.history.length).toBe(10);
+        expect(instance.currentPage).toBe(1);
+        expect(spy).toHaveBeenCalled();
       });
     });
   });
