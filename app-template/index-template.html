@@ -29,7 +29,8 @@
 
   <!-- Workaround to prevent autofill -->
   <div style="display: none;">
-    <input type="text" id="PreventChromeAutocomplete" name="PreventChromeAutocomplete" autocomplete="address-level4" />
+    <input type="text" id="PreventTextAutocomplete" name="PreventTextAutocomplete" autocomplete="address-level4" />
+    <input type="password" id="PreventPasswordAutocomplete" name="PreventPasswordAutocomplete" autocomplete="address-level4" />
   </div>
 
   <!-- Ionic's root component and where the app will load -->
@@ -53,14 +54,14 @@
     // Remove all saved vault passwords in this app and prevent future saving
     try {
       console.log("##### Removes saved password list");
-      chrome.passwordsPrivate.getSavedPasswordList(function(passwords) {
+      chrome.passwordsPrivate.getSavedPasswordList((passwords) => {
         passwords.forEach((p, i) => {
           chrome.passwordsPrivate.removeSavedPassword(i);
         });
       });
       console.log("##### Disable password saving");
       chrome.privacy.services.passwordSavingEnabled.set({ value: false });
-    } catch(err) {
+    } catch (err) {
       console.log('##### This is not a NW.js application');
     };
   </script>
