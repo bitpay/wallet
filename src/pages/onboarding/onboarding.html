@@ -1,7 +1,7 @@
 <ion-content no-bounce>
   <div class="logo-tagline">
     <img src='assets/img/app/logo-negative.svg' />
-    <p padding [ngClass]="{'primary-color': !isCopay, 'comment-color': isCopay}" translate>Take control of your money, get started with bitcoin.</p>
+    <p [ngClass]="{'primary-color': !isCopay, 'comment-color': isCopay}" translate>Take control of your money, get started with bitcoin.</p>
   </div>
   <div class="bottom-absolute">
     <button ion-button class="button-standard e2e-get-started" (click)="getStarted()">
