@@ -97,12 +97,6 @@ describe('WalletDetailsPage', () => {
         fixture = testEnv.fixture;
         instance = testEnv.instance;
         testBed = testEnv.testBed;
-        instance.navParams = {
-          data: {
-            clearCache: false,
-            walletId: 'an-id'
-          }
-        };
         fixture.detectChanges();
       });
     })
@@ -110,7 +104,6 @@ describe('WalletDetailsPage', () => {
   afterEach(() => {
     fixture.destroy();
   });
-
   describe('Lifecycle Hooks', () => {
     describe('ionViewWillEnter', () => {
       it('should subscribe to events', () => {
@@ -119,8 +112,32 @@ describe('WalletDetailsPage', () => {
         expect(spy).toHaveBeenCalledTimes(2);
       });
     });
+    describe('ionViewWillLeave', () => {
+      it('should unsubscribe from events', () => {
+        const spy = spyOn(instance.events, 'unsubscribe');
+        instance.ionViewWillLeave();
+        expect(spy).toHaveBeenCalledWith('Local/TxAction');
+        expect(spy).toHaveBeenCalledWith('bwsEvent');
+      });
+    });
+    describe('ionViewDidEnter', () => {
+      it('should update history', () => {
+        const spy = spyOn(instance, 'updateAll');
+        instance.ionViewDidEnter();
+        expect(spy).toHaveBeenCalled();
+      });
+    });
   });
   describe('Methods', () => {
+    describe('clearHistoryCache', () => {
+      it('should reset history array and currentPage', () => {
+        instance.history = [{}];
+        instance.currentPage = 10;
+        instance.clearHistoryCache();
+        expect(instance.history).toEqual([]);
+        expect(instance.currentPage).toBe(0);
+      });
+    });
     describe('groupHistory', () => {
       it('should group transactions by month', () => {
         const getTime = (date: string) => new Date(date).getTime() / 1000;
@@ -136,6 +153,17 @@ describe('WalletDetailsPage', () => {
           [transactions[2]]
         ];
         expect(groupedTxs).toEqual(expectedGroups);
+      });
+    });
+    describe('showHistory', () => {
+      it('should add the next page of transactions to the list', () => {
+        instance.currentPage = 0;
+        instance.wallet.completeHistory = new Array(11).map(() => {});
+        const spy = spyOn(instance, 'groupHistory');
+        instance.showHistory();
+        expect(instance.history.length).toBe(10);
+        expect(instance.currentPage).toBe(1);
+        expect(spy).toHaveBeenCalled();
       });
     });
   });
