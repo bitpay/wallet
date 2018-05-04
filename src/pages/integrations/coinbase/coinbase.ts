@@ -52,8 +52,7 @@ export class CoinbasePage {
     this.oauthCodeForm = this.formBuilder.group({
       code: ['', Validators.compose([Validators.minLength(1), Validators.required])]
     });
-    // TODO: desktop
-    // this.isNW = this.platformProvider.isNW;
+    this.isNW = this.platformProvider.isNW;
     this.isCordova = this.platformProvider.isCordova;
     this.showOauthForm = false;
   }

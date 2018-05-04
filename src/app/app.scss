@@ -90,6 +90,11 @@ ion-spinner * {
   display: block;
 }
 
+// Remove border of icons when screen resolution is big
+.tab-button-icon{
+  overflow: unset;
+}
+
 // Remove the MD drop-shadow on app header
 .header-md::after {
   display: none;
