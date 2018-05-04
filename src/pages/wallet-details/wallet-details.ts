@@ -104,7 +104,7 @@ export class WalletDetailsPage {
 
   private groupHistory(history: any[]): any[][] {
     return history.reduce((groups, tx, txInd) => {
-      const txDate = this.getDate(tx.time * 1000);
+      const txDate = this.getDate(tx.time);
       const month = this.timeProvider.getMonthYear(txDate);
       this.isFirstInGroup(txInd)
         ? groups.push([tx])
