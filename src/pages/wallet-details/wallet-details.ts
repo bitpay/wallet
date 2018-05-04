@@ -102,7 +102,7 @@ export class WalletDetailsPage {
     this.currentPage = 0;
   }
 
-  private groupHistory(history): any[][] {
+  private groupHistory(history: any[]): any[][] {
     return history.reduce((groups, tx, txInd) => {
       const txDate = this.getDate(tx.time * 1000);
       const month = this.timeProvider.getMonthYear(txDate);

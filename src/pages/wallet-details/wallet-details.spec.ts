@@ -44,7 +44,7 @@ import { Logger } from './../../providers/logger/logger';
 import { PersistenceProvider } from './../../providers/persistence/persistence';
 import { ProfileProvider } from './../../providers/profile/profile';
 
-fdescribe('WalletDetailsPage', () => {
+describe('WalletDetailsPage', () => {
   let fixture: ComponentFixture<WalletDetailsPage>;
   let instance: any;
   let testBed: typeof TestBed;
@@ -117,6 +117,25 @@ fdescribe('WalletDetailsPage', () => {
         const spy = spyOn(instance.events, 'subscribe');
         instance.ionViewWillEnter();
         expect(spy).toHaveBeenCalledTimes(2);
+      });
+    });
+  });
+  describe('Methods', () => {
+    describe('groupHistory', () => {
+      it('should group transactions by month', () => {
+        const getTime = (date: string) => new Date(date).getTime() / 1000;
+        const transactions = [
+          { time: getTime('Jan 1, 2018') },
+          { time: getTime('Jan 3, 2018') },
+          { time: getTime('Feb 10, 2018') }
+        ];
+        instance.history = transactions;
+        const groupedTxs = instance.groupHistory(transactions);
+        const expectedGroups = [
+          [transactions[0], transactions[1]],
+          [transactions[2]]
+        ];
+        expect(groupedTxs).toEqual(expectedGroups);
       });
     });
   });
