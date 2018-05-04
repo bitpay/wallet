@@ -93,7 +93,7 @@ describe('ConfirmPage', () => {
           }
         };
         instance.tx = { coin: 'BTC' };
-        spyOn(instance.onGoingProcessProvider, 'set').and.callFake(() => {});
+        spyOn(instance.onGoingProcessProvider, 'set');
         fixture.detectChanges();
       })
     )

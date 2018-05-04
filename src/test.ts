@@ -153,6 +153,7 @@ export class TestUtils {
         Keyboard,
         DomController,
         MenuController,
+        NavParams,
         PlatformProvider,
         TranslateService,
         {
@@ -185,10 +186,6 @@ export class TestUtils {
         {
           provide: NavController,
           useFactory: () => NavControllerMock.instance()
-        },
-        {
-          provide: NavParams,
-          useFactory: () => NavParamsMock.instance()
         },
         {
           provide: AndroidFingerprintAuth,
