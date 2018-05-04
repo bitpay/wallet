@@ -547,7 +547,7 @@ export class HomePage {
     this.walletsBtc.splice(indexes.from, 1);
     this.walletsBtc.splice(indexes.to, 0, element);
     _.each(this.walletsBtc, (wallet: any, index: number) => {
-      this.profileProvider.setWalletOrder(wallet.id, index, 'btc');
+      this.profileProvider.setWalletOrder(wallet.id, index);
     });
   }
 
@@ -556,7 +556,7 @@ export class HomePage {
     this.walletsBch.splice(indexes.from, 1);
     this.walletsBch.splice(indexes.to, 0, element);
     _.each(this.walletsBch, (wallet: any, index: number) => {
-      this.profileProvider.setWalletOrder(wallet.id, index, 'bch');
+      this.profileProvider.setWalletOrder(wallet.id, index);
     });
   }
 
