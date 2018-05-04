@@ -37,6 +37,7 @@ const Keys = {
   REMOTE_PREF_STORED: 'remotePrefStored',
   TX_CONFIRM_NOTIF: txid => 'txConfirmNotif-' + txid,
   TX_HISTORY: walletId => 'txsHistory-' + walletId,
+  ORDER_WALLET: walletId => 'order-' + walletId
 };
 
 interface Storage {
@@ -346,7 +347,8 @@ export class PersistenceProvider {
   removeAllWalletData(walletId: string): Promise<void> {
     return this.clearLastAddress(walletId)
       .then(() => this.removeTxHistory(walletId))
-      .then(() => this.clearBackupFlag(walletId));
+      .then(() => this.clearBackupFlag(walletId))
+      .then(() => this.removeWalletOrder(walletId));
   };
 
   setAmazonGiftCards(network: string, gcs: any): Promise<void> {
@@ -503,12 +505,16 @@ export class PersistenceProvider {
     return this.storage.remove('shapeShift-' + network);
   };
 
-  setWalletOrder(walletId: string, index: number): Promise<void> {
-    return this.storage.set('order-' + walletId, index);
+  setWalletOrder(walletId: string, order): Promise<void> {
+    return this.storage.set(Keys.ORDER_WALLET(walletId), order);
   };
 
   getWalletOrder(walletId: string): Promise<void> {
-    return this.storage.get('order-' + walletId);
+    return this.storage.get(Keys.ORDER_WALLET(walletId));
+  };
+
+  removeWalletOrder(walletId: string): Promise<void> {
+    return this.storage.remove(Keys.ORDER_WALLET(walletId));
   };
 
   setLockStatus(isLocked: string): Promise<void> {

@@ -72,7 +72,6 @@ export class TourPage {
     this.profileProvider.createDefaultWallet().then((wallet) => {
       this.onGoingProcessProvider.clear();
       this.persistenceProvider.setOnboardingCompleted();
-      this.profileProvider.setWalletOrder(wallet.credentials.walletId, null, wallet.coin);
       this.navCtrl.push(CollectEmailPage, { walletId: wallet.id });
     })
   }

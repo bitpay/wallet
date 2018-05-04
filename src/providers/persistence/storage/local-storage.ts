@@ -79,12 +79,8 @@ export class LocalStorage implements IStorage {
 
   set(k: string, v: any): Promise<void> {
     return new Promise<void>(resolve => {
-      if (_.isObject(v)) {
-        v = JSON.stringify(v);
-      }
-      if (v && !_.isString(v)) {
-        v = v.toString();
-      }
+      if (_.isObject(v)) v = JSON.stringify(v);
+      if (!_.isString(v)) v = v.toString();
 
       if (this.platformProvider.isNW) {
         let obj = {};

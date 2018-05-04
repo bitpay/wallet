@@ -126,10 +126,7 @@ export class FileStorage implements IStorage {
               };
 
               if (_.isObject(v)) v = JSON.stringify(v);
-
-              if (v && !_.isString(v)) {
-                v = v.toString();
-              }
+              if (!_.isString(v)) v = v.toString();
               fileWriter.write(v);
             });
           });
