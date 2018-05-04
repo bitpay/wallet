@@ -62,15 +62,15 @@ export class ProfileProvider {
     this.persistenceProvider.setWalletOrder(walletId, index).then( () => {
       this.logger.debug('Wallet new order stored ' + this.wallet[walletId].name + ': ' + index);
     });
-    this.wallet[walletId].order = index;
+    if (this.wallet[walletId] && this.wallet[walletId].order) this.wallet[walletId].order = index;
   }
 
-  private getWalletOrder(wallet): Promise<any> {
-    return new Promise((resolve, reject) => {
+  public getWalletOrder(wallet): Promise<any> {
+    return new Promise(resolve => {
       this.persistenceProvider.getWalletOrder(wallet.credentials.walletId).then((order:any) => {
         return resolve(order);
       });
-    })
+    });
   }
 
   public setBackupFlag(walletId: string): void {

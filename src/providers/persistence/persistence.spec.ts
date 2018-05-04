@@ -147,8 +147,8 @@ describe('Persistence Provider', () => {
     });
 
     it('should set and get wallet order', done => {
-      let walletId:string = '647b39d8-a88c-42d5-8728-0ba898dcdd90';
-      let order:number = 1;
+      const walletId:string = '647b39d8-a88c-42d5-8728-0ba898dcdd90';
+      const order:number = 1;
       persistenceProvider
         .setWalletOrder(walletId, order)
         .catch(err => expect(err).toBeNull)
@@ -157,14 +157,13 @@ describe('Persistence Provider', () => {
         })
         .then(order => {
           expect(typeof order).toEqual('number');
-          expect(order).toEqual(1);
         })
         .then(done);
     });
 
     it('should remove wallet order', done => {
-      let walletId:string = '647b39d8-a88c-42d5-8728-0ba898dcdd90';
-      let order:number = 1;
+      const walletId:string = '647b39d8-a88c-42d5-8728-0ba898dcdd90';
+      const order:number = 1;
       persistenceProvider
         .setWalletOrder(walletId, order)
         .catch(err => expect(err).toBeNull)
