@@ -7,7 +7,7 @@
 <ion-content no-bounce #scrollArea [ios-scroll-bg-color]="wallet.color">
   <div class="wrapper">
     <expandable-header class="balance-card" [scrollArea]="scrollArea" [ngStyle]="{'background': wallet.color}">
-      <expandable-header-primary class="balance-header" style="margin-top: 0;">
+      <expandable-header-primary class="balance-header">
         <div (longPress)="toggleBalance()">
           <div (tap)="updateAll(true)" *ngIf="!updateStatusError && !wallet.balanceHidden && !wallet.scanning && wallet.status">
             <div class="balance-str">{{wallet.status.totalBalanceStr}}</div>
