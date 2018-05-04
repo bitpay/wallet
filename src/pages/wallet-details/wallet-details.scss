@@ -10,7 +10,6 @@ page-wallet-details {
 
   .balance-card {
     background: color($colors, primary);
-    margin-bottom: 1.3rem;
     overflow: hidden;
   }
   .balance-header {
@@ -61,6 +60,9 @@ page-wallet-details {
       font-size: 20px;
       font-weight: 500;
     }
+  }
+  .history-wrapper {
+    margin-top: 1.3rem;
   }
   .tx-history {
     .tx-history-header {
