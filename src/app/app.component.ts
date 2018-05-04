@@ -309,7 +309,6 @@ export class CopayApp {
     }
   }
 
-
   private handleDeepLinksNW() {
     var gui = (window as any).require('nw.gui');
 
@@ -318,7 +317,8 @@ export class CopayApp {
 
     // Used at the startup of Copay
     var argv = gui.App.argv;
-    if (argv && argv[0]) {
+    if (argv && argv[0] && !(window as any)._urlHandled) {
+      (window as any)._urlHandled = true;
       this.handleOpenUrl(argv[0]);
     }
   }
