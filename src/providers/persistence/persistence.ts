@@ -505,7 +505,7 @@ export class PersistenceProvider {
     return this.storage.remove('shapeShift-' + network);
   };
 
-  setWalletOrder(walletId: string, order): Promise<void> {
+  setWalletOrder(walletId: string, order: number): Promise<void> {
     return this.storage.set(Keys.ORDER_WALLET(walletId), order);
   };
 
