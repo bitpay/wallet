@@ -48,7 +48,8 @@ describe('Profile Provider', () => {
       },
       isComplete: () => {
         return true;
-      }
+      },
+      order: ''
     },
     api2: {
       id: 'zxccv25b-d6ab-4b11-8b76-88570d822222',
@@ -65,7 +66,8 @@ describe('Profile Provider', () => {
       },
       isComplete: () => {
         return true;
-      }
+      }, 
+      order: 2
     },
     api3: {
       id: 'qwert25b-d6ab-4b11-8b76-88570d833333',
@@ -82,7 +84,8 @@ describe('Profile Provider', () => {
       },
       isComplete: () => {
         return true;
-      }
+      },
+      order: 3
     }
   };
 
@@ -97,6 +100,12 @@ describe('Profile Provider', () => {
     constructor() {}
     getBalanceCache(walletId: any) {
       return Promise.resolve('0.00 BTC');
+    }
+    setWalletOrder(walletId: string, order: number) {
+      return Promise.resolve();
+    }
+    getWalletOrder(walletId: string) {
+      return Promise.resolve(1);
     }
   }
 
@@ -164,6 +173,23 @@ describe('Profile Provider', () => {
       };
       const wallets = profileProvider.getWallets(opts);
       expect(wallets).toEqual([]);
+    });
+  });
+
+  describe('wallet order', () => {
+    it('should get null order', () => {
+      const walletId:string = 'eabee25b-d6ab-4b11-8b76-88570d826914';
+      profileProvider.getWalletOrder(walletId).then((order) => {
+        expect(order).toBe('');
+      });
+    });
+    it('should set the order', () => { 
+      const walletId:string = 'eabee25b-d6ab-4b11-8b76-88570d826914';
+      const order:number = 2;
+      profileProvider.setWalletOrder(walletId, order);
+      expect(profileProvider.wallet.api1.order).toBeDefined();
+      profileProvider.wallet.api1.order = order;
+      expect(profileProvider.wallet.api1.order).toBe(2);
     });
   });
 });

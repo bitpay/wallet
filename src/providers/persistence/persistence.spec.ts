@@ -145,5 +145,37 @@ describe('Persistence Provider', () => {
         })
         .then(done);
     });
+
+    it('should set and get wallet order', done => {
+      const walletId:string = '647b39d8-a88c-42d5-8728-0ba898dcdd90';
+      const order:number = 1;
+      persistenceProvider
+        .setWalletOrder(walletId, order)
+        .catch(err => expect(err).toBeNull)
+        .then(() => {
+          return persistenceProvider.getWalletOrder(walletId);
+        })
+        .then(order => {
+          expect(typeof order).toEqual('number');
+        })
+        .then(done);
+    });
+
+    it('should remove wallet order', done => {
+      const walletId:string = '647b39d8-a88c-42d5-8728-0ba898dcdd90';
+      const order:number = 1;
+      persistenceProvider
+        .setWalletOrder(walletId, order)
+        .catch(err => expect(err).toBeNull)
+        .then(() => {
+          persistenceProvider.removeWalletOrder(walletId).then(() => {
+            return persistenceProvider.getWalletOrder(walletId);
+          });
+        })
+        .then(order => {
+          expect(typeof order).toEqual('undefined');
+        })
+        .then(done);
+    });
   });
 });

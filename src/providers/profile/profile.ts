@@ -58,23 +58,19 @@ export class ProfileProvider {
     // });
   }
 
-  public setWalletOrder(walletId: string, index?: number, coin?: string): void {
-    if (index === null) {
-      let wallets = this.getWallets({ coin });
-      let maxIndex = _.maxBy(wallets, 'order') ? _.maxBy(wallets, 'order').order : null;
-      index = maxIndex != null ? maxIndex + 1 : 0;
-    }
-    this.persistenceProvider.setWalletOrder(walletId, index);
-    this.logger.debug('Wallet new order stored ' + this.wallet[walletId].name + ': ' + index);
-    this.wallet[walletId].order = index;
+  public setWalletOrder(walletId: string, index: number): void {
+    this.persistenceProvider.setWalletOrder(walletId, index).then( () => {
+      this.logger.debug('Wallet new order stored ' + this.wallet[walletId].name + ': ' + index);
+    });
+    if (this.wallet[walletId] && this.wallet[walletId].order) this.wallet[walletId].order = index;
   }
 
-  private getWalletOrder(wallet): Promise<any> {
-    return new Promise((resolve, reject) => {
-      this.persistenceProvider.getWalletOrder(wallet.credentials.walletId).then((order) => {
+  public getWalletOrder(wallet): Promise<any> {
+    return new Promise(resolve => {
+      this.persistenceProvider.getWalletOrder(wallet.credentials.walletId).then((order:any) => {
         return resolve(order);
       });
-    })
+    });
   }
 
   public setBackupFlag(walletId: string): void {
