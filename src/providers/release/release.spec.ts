@@ -116,6 +116,7 @@ describe('Release Provider', () => {
 
     expect(result.error).toBeNull;
     expect(result.updateAvailable).toBeTruthy;
+    expect(result.availableVersion).toBe(majorAppVersion);
   });
   it('should be a new minor version available', () => {
     const minorAppVersion = '1.2.0';
@@ -126,6 +127,7 @@ describe('Release Provider', () => {
 
     expect(result.error).toBeNull;
     expect(result.updateAvailable).toBeTruthy;
+    expect(result.availableVersion).toBe(minorAppVersion);
   });
   it('should be a new patch version available', () => {
     const patchAppVersion = '1.1.2';
@@ -136,5 +138,6 @@ describe('Release Provider', () => {
 
     expect(result.error).toBeNull;
     expect(result.updateAvailable).toBeTruthy;
+    expect(result.availableVersion).toBe(patchAppVersion);
   });
 });
