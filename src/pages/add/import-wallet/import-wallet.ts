@@ -74,7 +74,7 @@ export class ImportWalletPage {
     this.derivationPathForTestnet = this.derivationPathHelperProvider.defaultTestnet;
     this.showAdvOpts = false;
     this.formFile = null;
-
+    
     this.importForm = this.form.group({
       words: [null, Validators.required],
       backupText: [null],
@@ -87,7 +87,7 @@ export class ImportWalletPage {
       coin: [null, Validators.required]
     });
   }
-
+  
   ionViewWillEnter() {
     if (this.navParams.data.code) {
       this.processWalletInfo(this.navParams.data.code);
@@ -142,7 +142,7 @@ export class ImportWalletPage {
     this.importErr = false;
     let parsedCode = code.split('|');
 
-    if (parsedCode.length != 5) {
+    if (parsedCode.length != 6) {
       /// Trying to import a malformed wallet export QR code
       let title = this.translate.instant('Error');
       let subtitle = this.translate.instant('Incorrect code format');
@@ -155,7 +155,8 @@ export class ImportWalletPage {
       data: parsedCode[1],
       network: parsedCode[2],
       derivationPath: parsedCode[3],
-      hasPassphrase: parsedCode[4] == 'true' ? true : false
+      hasPassphrase: parsedCode[4] == 'true' ? true : false,
+      coin: parsedCode[5]
     };
 
     if (info.type == '1' && info.hasPassphrase) {
@@ -167,6 +168,7 @@ export class ImportWalletPage {
     this.testnetEnabled = info.network == 'testnet' ? true : false;
     this.importForm.controls['derivationPath'].setValue(info.derivationPath);
     this.importForm.controls['words'].setValue(info.data);
+    this.importForm.controls['coin'].setValue(info.coin);
   }
 
   public setDerivationPath(): void {
