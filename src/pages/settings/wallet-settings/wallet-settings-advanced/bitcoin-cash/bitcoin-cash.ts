@@ -20,8 +20,7 @@ import { WalletProvider } from "../../../../../providers/wallet/wallet";
   templateUrl: 'bitcoin-cash.html',
 })
 export class BitcoinCashPage {
-  private wallet: any;
-  private walletsBCH: any[];
+
   private errors: any;
 
   public availableWallet: any;
@@ -44,36 +43,35 @@ export class BitcoinCashPage {
     private events: Events,
     private navParams: NavParams
   ) {
-    this.walletsBCH = [];
     this.errors = this.bwcProvider.getErrors();
   }
 
   ionViewWillEnter() {
 
-    this.wallet = this.profileProvider.getWallet(this.navParams.data.walletId);
+    let wallet = this.profileProvider.getWallet(this.navParams.data.walletId);
 
     // Filter out already duplicated wallets
-    this.walletsBCH = this.profileProvider.getWallets({
+    let walletsBCH = this.profileProvider.getWallets({
       coin: 'bch',
       network: 'livenet'
     });
 
-    let xPubKeyIndex = lodash.keyBy(this.walletsBCH, "credentials.xPubKey");
+    let xPubKeyIndex = lodash.keyBy(walletsBCH, "credentials.xPubKey");
 
-    if (xPubKeyIndex[this.wallet.credentials.xPubKey]) {
-      this.wallet.excludeReason = this.translate.instant('Already duplicated');
-      this.nonEligibleWallet = this.wallet;
-    } else if (this.wallet.credentials.derivationStrategy != 'BIP44') {
-      this.wallet.excludeReason = this.translate.instant('Non BIP44 wallet');
-      this.nonEligibleWallet = this.wallet;
-    } else if (!this.wallet.canSign()) {
-      this.wallet.excludeReason = this.translate.instant('Read only wallet');
-      this.nonEligibleWallet = this.wallet;
-    } else if (this.wallet.needsBackup) {
-      this.wallet.excludeReason = this.translate.instant('Needs backup');
-      this.nonEligibleWallet = this.wallet;
+    if (xPubKeyIndex[wallet.credentials.xPubKey]) {
+      wallet.excludeReason = this.translate.instant('Already duplicated');
+      this.nonEligibleWallet = wallet;
+    } else if (wallet.credentials.derivationStrategy != 'BIP44') {
+      wallet.excludeReason = this.translate.instant('Non BIP44 wallet');
+      this.nonEligibleWallet = wallet;
+    } else if (!wallet.canSign()) {
+      wallet.excludeReason = this.translate.instant('Read only wallet');
+      this.nonEligibleWallet = wallet;
+    } else if (wallet.needsBackup) {
+      wallet.excludeReason = this.translate.instant('Needs backup');
+      this.nonEligibleWallet = wallet;
     } else {
-      this.availableWallet = this.wallet;
+      this.availableWallet = wallet;
     }
 
     if (!this.availableWallet) return;

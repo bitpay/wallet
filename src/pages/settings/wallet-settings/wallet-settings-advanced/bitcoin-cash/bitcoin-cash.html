@@ -22,9 +22,9 @@
           </span>
           <span *ngIf="availableWallet.balanceHidden">[
             <span translate>Balance Hidden</span>]</span>
-          <span class="text-gray" *ngIf="availableWallet.credentials.m > 1">{{wallet.credentials.m}}-of-{{wallet.credentials.n}}</span>
+          <span class="text-gray" *ngIf="availableWallet.credentials.m > 1">{{availableWallet.credentials.m}}-of-{{availableWallet.credentials.n}}</span>
         </span>
-        <span *ngIf="availableWallet.error" class="wallet-warning">{{wallet.error}}</span>
+        <span *ngIf="availableWallet.error" class="wallet-warning">{{availableWallet.error}}</span>
       </div>
       <ion-note item-end>
         <button ion-button (click)="duplicate(availableWallet)">
