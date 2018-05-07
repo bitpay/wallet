@@ -63,15 +63,13 @@ export class ReleaseProvider {
     let latest: any = this.formatTagNumber(latestVersion);
 
     if (
-      latest.major < current.major ||
-      (latest.major == current.major && latest.minor <= current.minor) || 
-      (latest.minor == current.minor && latest.patch <= current.patch)
-    )
-      return result;
-    else {
+      latest.major > current.major ||
+      (latest.major == current.major && latest.minor > current.minor) || 
+      (latest.minor == current.minor && latest.patch > current.patch)
+    ) {
       result.updateAvailable = true;
       result.availableVersion = latestVersion;
-      return result;
     }
+    return result;
   }
 }
