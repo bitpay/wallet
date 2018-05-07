@@ -1,0 +1,58 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>Bitcoin Cash</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <div *ngIf="availableWallet">
+    <ion-item-divider>
+      <span translate>Duplicate ( Bitcoin Cash )</span>
+    </ion-item-divider>
+
+    <ion-item *ngIf="availableWallet">
+      <ion-icon item-start>
+        <img [ngStyle]="{'background-color': availableWallet.color}" src="assets/img/icon-wallet.svg" class="icon-wallet" />
+      </ion-icon>
+      <div class="item-title">{{availableWallet.name}}</div>
+      <div class="item-subtitle">
+        <span *ngIf="!availableWallet.error">
+          <span class="success" *ngIf="!availableWallet.balanceHidden">
+            {{availableWallet.bchBalance || ('Checking...' | translate)}}
+          </span>
+          <span *ngIf="availableWallet.balanceHidden">[
+            <span translate>Balance Hidden</span>]</span>
+          <span class="text-gray" *ngIf="availableWallet.credentials.m > 1">{{wallet.credentials.m}}-of-{{wallet.credentials.n}}</span>
+        </span>
+        <span *ngIf="availableWallet.error" class="wallet-warning">{{wallet.error}}</span>
+      </div>
+      <ion-note item-end>
+        <button ion-button (click)="duplicate(availableWallet)">
+          {{'Duplicate' | translate}}
+        </button>
+      </ion-note>
+    </ion-item>
+  </div>
+
+  <div *ngIf="nonEligibleWallet">
+    <ion-item-divider>
+      <span translate>Non eligible BTC wallet</span>
+    </ion-item-divider>
+
+    <ion-item *ngIf="nonEligibleWallet">
+      <ion-icon item-start>
+        <img [ngStyle]="{'background-color': 'gray'}" src="assets/img/icon-wallet.svg" class="icon-wallet" />
+      </ion-icon>
+      <div class="item-title text-disabled">{{nonEligibleWallet.name}}</div>
+      <div class="item-subtitle">
+        <span class="text-disabled">{{nonEligibleWallet.excludeReason}}</span>
+      </div>
+    </ion-item>
+  </div>
+
+  <ion-item-divider></ion-item-divider>
+
+  <button ion-item (click)="openHelpExternalLink()">
+    <span translate>Help &amp; support</span>
+  </button>
+</ion-content>
