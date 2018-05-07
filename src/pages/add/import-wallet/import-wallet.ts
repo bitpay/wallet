@@ -102,6 +102,7 @@ export class ImportWalletPage {
         this.file = null;
         this.formFile = null;
         this.importForm.get('words').setValidators([Validators.required]);
+        this.importForm.get('coin').setValidators([Validators.required]);
         this.importForm.get('filePassword').clearValidators();
         if (this.isCordova || this.isSafari) this.importForm.get('backupText').clearValidators();
         else this.importForm.get('file').clearValidators();
@@ -111,6 +112,7 @@ export class ImportWalletPage {
         else this.importForm.get('file').setValidators([Validators.required]);
         this.importForm.get('filePassword').setValidators([Validators.required]);
         this.importForm.get('words').clearValidators();
+        this.importForm.get('coin').clearValidators();
         break;
 
       default:
@@ -123,6 +125,7 @@ export class ImportWalletPage {
     this.importForm.get('file').updateValueAndValidity();
     this.importForm.get('filePassword').updateValueAndValidity();
     this.importForm.get('backupText').updateValueAndValidity();
+    this.importForm.get('coin').updateValueAndValidity();
   }
 
   normalizeMnemonic(words: string) {
