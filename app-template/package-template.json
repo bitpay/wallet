@@ -13,7 +13,7 @@
   ],
   "main": "www/index.html",
   "title": "*USERVISIBLENAME*",
-  "chromium-args": "--disable-password-generation",
+  "chromium-args": "--disable-password-generation --disable-devtools",
   "window": {
     "title": "*USERVISIBLENAME* - *PURPOSELINE*",
     "icon": "www/img/app/icon.png",
