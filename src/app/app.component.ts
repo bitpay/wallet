@@ -99,8 +99,8 @@ export class CopayApp {
             this.openLockModal();
           });
 
+          this.openLockModal();
         }
-        this.openLockModal();
         this.registerIntegrations();
         // Check Profile
         this.profile.loadAndBindProfile().then((profile: any) => {
