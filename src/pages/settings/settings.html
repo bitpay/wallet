@@ -84,7 +84,7 @@
       </ion-label>
     </button>
 
-    <button ion-item (click)="openLockPage()">
+    <button ion-item *ngIf="isCordova" (click)="openLockPage()">
       <ion-icon class="custom-icon" *ngIf="lockMethod != 'disabled'" name="ios-lock-outline" item-start></ion-icon>
       <ion-icon class="custom-icon" *ngIf="lockMethod == 'disabled'" name="ios-unlock-outline" item-start></ion-icon>
       <ion-label>
