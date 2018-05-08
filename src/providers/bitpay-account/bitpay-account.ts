@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Logger } from '../logger/logger';
+import { TranslateService } from '@ngx-translate/core';
+import * as _ from 'lodash';
 
 // native 
 import { Device } from '@ionic-native/device';
@@ -7,12 +8,12 @@ import { Device } from '@ionic-native/device';
 // providers
 import { AppIdentityProvider } from '../app-identity/app-identity';
 import { BitPayProvider } from '../bitpay/bitpay';
+import { Logger } from '../logger/logger';
 import { OnGoingProcessProvider } from '../on-going-process/on-going-process';
 import { PersistenceProvider } from '../persistence/persistence';
 import { PlatformProvider } from '../platform/platform';
 import { PopupProvider } from '../popup/popup';
-
-import * as _ from 'lodash';
+import { ReplaceParametersProvider } from '../replace-parameters/replace-parameters';
 
 @Injectable()
 export class BitPayAccountProvider {
@@ -48,16 +49,18 @@ export class BitPayAccountProvider {
    *     appIdentity: the identity of this app
    *   }
    */
-  
+
   constructor(
     private platformProvider: PlatformProvider,
+    private replaceParametersProvider: ReplaceParametersProvider,
     private bitPayProvider: BitPayProvider,
     private logger: Logger,
     private onGoingProcessProvider: OnGoingProcessProvider,
     private popupProvider: PopupProvider,
     private persistenceProvider: PersistenceProvider,
     private appIdentityProvider: AppIdentityProvider,
-    private device: Device
+    private device: Device,
+    private translate: TranslateService
   ) {
     this.logger.info('BitPayAccountProvider initialized');
   }
@@ -97,21 +100,22 @@ export class BitPayAccountProvider {
         this.fetchBasicInfo(apiContext, (err, basicInfo) => {
           this.onGoingProcessProvider.clear();
           if (err) return cb(err);
-          let title = 'Add BitPay Account?'; // TODO gettextcatalog
+          let title = this.translate.instant('Add BitPay Account?');
           let msg;
 
           if (pairingReason) {
             let reason = pairingReason;
             let email = pairData.email;
 
-            msg = 'To ' + reason + ' you must first add your BitPay account - ' + email; // TODO gettextcatalog
+            msg = this.replaceParametersProvider.replace(this.translate.instant('To {{reason}} you must first add your BitPay account - {{email}}'), { reason, email });
+
           } else {
             let email = pairData.email;
-            msg = 'Add this BitPay account ' + '(' + email + ')?'; // TODO gettextcatalog
+            msg = this.replaceParametersProvider.replace(this.translate.instant('Add this BitPay account ({{email}})?'), { email });
           }
 
-          let ok = 'Add Account'; // TODO gettextcatalog
-          let cancel = 'Go back'; // TODO gettextcatalog
+          let ok = this.translate.instant('Add Account');
+          let cancel = this.translate.instant('Go back');
           this.popupProvider.ionicConfirm(title, msg, ok, cancel).then((res) => {
             if (res) {
               let acctData = {
@@ -136,7 +140,7 @@ export class BitPayAccountProvider {
 
   private checkOtp(pairData: any, cb: (otp?) => any) {
     if (pairData.otp) {
-      let msg = 'Enter Two Factor for your BitPay account'; // TODO gettextcatalog
+      let msg = this.translate.instant('Enter Two Factor for your BitPay account');
       this.popupProvider.ionicPrompt(null, msg, null).then((res) => {
         cb(res);
       });

@@ -17,6 +17,9 @@ import { AppIdentityProvider } from '../../providers/app-identity/app-identity';
 import { AppProvider } from '../../providers/app/app';
 import { BitPayCardProvider } from '../../providers/bitpay-card/bitpay-card';
 import { BitPayProvider } from '../../providers/bitpay/bitpay';
+import { BwcErrorProvider } from '../../providers/bwc-error/bwc-error';
+import { BwcProvider } from '../../providers/bwc/bwc';
+import { ConfigProvider } from '../../providers/config/config';
 import { ExternalLinkProvider } from '../../providers/external-link/external-link';
 import { FeeProvider } from '../../providers/fee/fee';
 import { FeedbackProvider } from '../../providers/feedback/feedback';
@@ -24,24 +27,22 @@ import { FilterProvider } from '../../providers/filter/filter';
 import { HomeIntegrationsProvider } from '../../providers/home-integrations/home-integrations';
 import { IncomingDataProvider } from '../../providers/incoming-data/incoming-data';
 import { LanguageProvider } from '../../providers/language/language';
+import { Logger } from '../../providers/logger/logger';
 import { NodeWebkitProvider } from '../../providers/node-webkit/node-webkit';
 import { OnGoingProcessProvider } from '../../providers/on-going-process/on-going-process';
 import { PayproProvider } from '../../providers/paypro/paypro';
+import { PersistenceProvider } from '../../providers/persistence/persistence';
 import { PlatformProvider } from '../../providers/platform/platform';
 import { PopupProvider } from '../../providers/popup/popup';
+import { ProfileProvider } from '../../providers/profile/profile';
 import { PushNotificationsProvider } from '../../providers/push-notifications/push-notifications';
 import { RateProvider } from '../../providers/rate/rate';
 import { ReleaseProvider } from '../../providers/release/release';
+import { ReplaceParametersProvider } from '../../providers/replace-parameters/replace-parameters';
 import { ScanProvider } from '../../providers/scan/scan';
 import { TouchIdProvider } from '../../providers/touchid/touchid';
 import { TxFormatProvider } from '../../providers/tx-format/tx-format';
 import { WalletProvider } from '../../providers/wallet/wallet';
-import { BwcErrorProvider } from './../../providers/bwc-error/bwc-error';
-import { BwcProvider } from './../../providers/bwc/bwc';
-import { ConfigProvider } from './../../providers/config/config';
-import { Logger } from './../../providers/logger/logger';
-import { PersistenceProvider } from './../../providers/persistence/persistence';
-import { ProfileProvider } from './../../providers/profile/profile';
 
 describe('HomePage', () => {
   let fixture: ComponentFixture<HomePage>;
@@ -76,6 +77,7 @@ describe('HomePage', () => {
           PushNotificationsProvider,
           RateProvider,
           ReleaseProvider,
+          ReplaceParametersProvider,
           ScanProvider,
           TouchIdProvider,
           TxFormatProvider,
@@ -86,7 +88,7 @@ describe('HomePage', () => {
         instance = testEnv.instance;
         testBed = testEnv.testBed;
         instance.showCard = {
-          setShowRateCard: () => {}
+          setShowRateCard: () => { }
         };
         fixture.detectChanges();
       })
@@ -147,7 +149,7 @@ describe('HomePage', () => {
         (window as any).require = () => {
           return {
             App: {
-              on: (event, cb) => {},
+              on: (event, cb) => { },
               argv: ['URL']
             }
           };

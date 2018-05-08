@@ -27,6 +27,7 @@ import { OnGoingProcessProvider } from '../../../providers/on-going-process/on-g
 import { PlatformProvider } from '../../../providers/platform/platform';
 import { PopupProvider } from '../../../providers/popup/popup';
 import { ProfileProvider } from '../../../providers/profile/profile';
+import { ReplaceParametersProvider } from '../../../providers/replace-parameters/replace-parameters';
 import { TxConfirmNotificationProvider } from '../../../providers/tx-confirm-notification/tx-confirm-notification';
 import { TxFormatProvider } from '../../../providers/tx-format/tx-format';
 import { WalletProvider } from '../../../providers/wallet/wallet';
@@ -77,6 +78,7 @@ export class ConfirmPage {
     private navParams: NavParams,
     private logger: Logger,
     private configProvider: ConfigProvider,
+    private replaceParametersProvider: ReplaceParametersProvider,
     private platformProvider: PlatformProvider,
     private profileProvider: ProfileProvider,
     private walletProvider: WalletProvider,
@@ -558,11 +560,7 @@ export class ConfirmPage {
       if (!sendMaxInfo) return resolve();
 
       let fee = sendMaxInfo.fee / 1e8;
-      let msg =
-        fee +
-        ' ' +
-        this.tx.coin.toUpperCase() +
-        ' will be deducted for bitcoin networking fees.'; // TODO: translate
+      let msg = this.replaceParametersProvider.replace(this.translate.instant('{{fee}} {{coin}} will be deducted for bitcoin networking fees.'), { fee: sendMaxInfo.fee / 1e8, coin: this.tx.coin.toUpperCase() });
       let warningMsg = this.verifyExcludedUtxos(wallet, sendMaxInfo);
 
       if (!_.isEmpty(warningMsg)) msg += '\n' + warningMsg;
@@ -577,23 +575,13 @@ export class ConfirmPage {
     let warningMsg = [];
     if (sendMaxInfo.utxosBelowFee > 0) {
       let amountBelowFeeStr = sendMaxInfo.amountBelowFee / 1e8;
-      let message =
-        'A total of ' +
-        amountBelowFeeStr +
-        ' ' +
-        this.tx.coin.toUpperCase() +
-        ' were excluded. These funds come from UTXOs smaller than the network fee provided.'; // TODO: translate
+      let message = this.replaceParametersProvider.replace(this.translate.instant('A total of {{amountBelowFeeStr}} {{coin}} were excluded. These funds come from UTXOs smaller than the network fee provided.'), { amountBelowFeeStr, coin: this.tx.coin.toUpperCase() });
       warningMsg.push(message);
     }
 
     if (sendMaxInfo.utxosAboveMaxSize > 0) {
-      let amountAboveMaxSizeStr = sendMaxInfo.amountAboveMaxSize / 1e8;
-      let message =
-        'A total of ' +
-        amountAboveMaxSizeStr +
-        ' ' +
-        this.tx.coin.toUpperCase() +
-        ' were excluded. The maximum size allowed for a transaction was exceeded.'; // TODO: translate
+      let amountAboveMaxSizeStr = (sendMaxInfo.amountAboveMaxSize / 1e8);
+      let message = this.replaceParametersProvider.replace(this.translate.instant('A total of {{amountAboveMaxSizeStr}} {{coin}} were excluded. The maximum size allowed for a transaction was exceeded.'), { amountAboveMaxSizeStr, coin: this.tx.coin.toUpperCase() });
       warningMsg.push(message);
     }
     return warningMsg.join('\n');
@@ -723,8 +711,7 @@ export class ConfirmPage {
         let amount = (this.tx.amount / 1e8).toFixed(8);
         let unit = txp.coin.toUpperCase();
         let name = wallet.name;
-        let message =
-          'Sending ' + amount + ' ' + unit + ' from your ' + name + ' wallet'; // TODO: translate
+        let message = this.replaceParametersProvider.replace(this.translate.instant('Sending {{amount}} {{unit}} from your {{name}} wallet'), { amount, unit, name });
         let okText = this.translate.instant('Confirm');
         let cancelText = this.translate.instant('Cancel');
         this.popupProvider

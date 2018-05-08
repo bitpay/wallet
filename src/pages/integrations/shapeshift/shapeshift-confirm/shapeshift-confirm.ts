@@ -19,6 +19,7 @@ import { OnGoingProcessProvider } from "../../../../providers/on-going-process/o
 import { PlatformProvider } from '../../../../providers/platform/platform';
 import { PopupProvider } from '../../../../providers/popup/popup';
 import { ProfileProvider } from '../../../../providers/profile/profile';
+import { ReplaceParametersProvider } from '../../../../providers/replace-parameters/replace-parameters';
 import { ShapeshiftProvider } from '../../../../providers/shapeshift/shapeshift';
 import { TxFormatProvider } from '../../../../providers/tx-format/tx-format';
 import { WalletProvider } from '../../../../providers/wallet/wallet';
@@ -64,6 +65,7 @@ export class ShapeshiftConfirmPage {
     private bwcProvider: BwcProvider,
     private bwcErrorProvider: BwcErrorProvider,
     private configProvider: ConfigProvider,
+    private replaceParametersProvider: ReplaceParametersProvider,
     private externalLinkProvider: ExternalLinkProvider,
     private onGoingProcessProvider: OnGoingProcessProvider,
     private logger: Logger,
@@ -116,12 +118,12 @@ export class ShapeshiftConfirmPage {
         let amountNumber = Number(this.amount);
 
         if (amountNumber < min) {
-          let message = 'Minimum amount required is ' + min; // TODO: translate
+          let message = this.replaceParametersProvider.replace(this.translate.instant('Minimum amount required is {{min}}'), { min });
           this.showErrorAndBack(null, message);
           return;
         }
         if (amountNumber > max) {
-          let message = 'Maximum amount allowed is ' + max; // TODO: translate
+          let message = this.replaceParametersProvider.replace(this.translate.instant('Maximum amount allowed is {{max}}'), { max });
           this.showErrorAndBack(null, message);
           return;
         }
@@ -330,7 +332,7 @@ export class ShapeshiftConfirmPage {
   private showSendMaxWarning(): Promise<any> {
     return new Promise((resolve, reject) => {
       let fee = (this.sendMaxInfo.fee / 1e8);
-      let msg = fee + " " + this.fromWallet.coin.toUpperCase() + " will be deducted for bitcoin networking fees."; // TODO: translate
+      let msg = this.replaceParametersProvider.replace(this.translate.instant('{{fee}} {{coin}} will be deducted for bitcoin networking fees.'), { fee, coin: this.fromWallet.coin.toUpperCase() });
       let warningMsg = this.verifyExcludedUtxos();
 
       if (!_.isEmpty(warningMsg))
@@ -346,13 +348,13 @@ export class ShapeshiftConfirmPage {
     let warningMsg = [];
     if (this.sendMaxInfo.utxosBelowFee > 0) {
       let amountBelowFeeStr = (this.sendMaxInfo.amountBelowFee / 1e8);
-      let message = "A total of " + amountBelowFeeStr + " " + this.fromWallet.coin.toUpperCase() + " were excluded. These funds come from UTXOs smaller than the network fee provided."; // TODO: translate
+      let message = this.replaceParametersProvider.replace(this.translate.instant('A total of {{fee}} {{coin}} were excluded. These funds come from UTXOs smaller than the network fee provided.'), { fee: amountBelowFeeStr, coin: this.fromWallet.coin.toUpperCase() });
       warningMsg.push(message);
     }
 
     if (this.sendMaxInfo.utxosAboveMaxSize > 0) {
       let amountAboveMaxSizeStr = (this.sendMaxInfo.amountAboveMaxSize / 1e8);
-      let message = "A total of " + amountAboveMaxSizeStr + " " + this.fromWallet.coin.toUpperCase() + " were excluded. The maximum size allowed for a transaction was exceeded."; // TODO: translate
+      let message = this.replaceParametersProvider.replace(this.translate.instant('A total of {{fee}} {{coin}} were excluded. The maximum size allowed for a transaction was exceeded.'), { fee: amountAboveMaxSizeStr, coin: this.fromWallet.coin.toUpperCase() });
       warningMsg.push(message);
     }
     return warningMsg.join('\n');
@@ -446,7 +448,8 @@ export class ShapeshiftConfirmPage {
     }
     let fromCoin = this.fromWallet.coin.toUpperCase();
     let toCoin = this.toWallet.coin.toUpperCase();
-    let title = 'Confirm to shift ' + fromCoin + ' to ' + toCoin; // TODO: translate
+    let title = this.replaceParametersProvider.replace(this.translate.instant('Confirm to shift {{fromCoin}} to {{toCoin}}'), { fromCoin, toCoin });
+
     let okText = this.translate.instant('OK');
     let cancelText = this.translate.instant('Cancel');
     this.popupProvider.ionicConfirm(title, '', okText, cancelText).then((ok: any) => {
@@ -474,7 +477,7 @@ export class ShapeshiftConfirmPage {
     modal.onDidDismiss(() => {
       this.navCtrl.popToRoot({ animate: false }).then(() => {
         this.navCtrl.parent.select(0);
-        
+
         // Fixes mobile navigation
         setTimeout(() => {
           this.navCtrl.push(ShapeshiftPage, null, { animate: false });

@@ -14,6 +14,7 @@ import { FeedbackProvider } from '../../../providers/feedback/feedback';
 import { OnGoingProcessProvider } from '../../../providers/on-going-process/on-going-process';
 import { PersistenceProvider } from '../../../providers/persistence/persistence';
 import { PopupProvider } from '../../../providers/popup/popup';
+import { ReplaceParametersProvider } from '../../../providers/replace-parameters/replace-parameters';
 
 // pages
 import { FeedbackCompletePage } from '../feedback-complete/feedback-complete';
@@ -45,7 +46,8 @@ export class SendFeedbackPage {
     private persistenceProvider: PersistenceProvider,
     private popupProvider: PopupProvider,
     private translate: TranslateService,
-    private device: Device
+    private device: Device,
+    private replaceParametersProvider: ReplaceParametersProvider
   ) {
     this.feedbackForm = this.formBuilder.group({
       comment: ['', Validators.compose([Validators.minLength(1), Validators.required])]
@@ -83,11 +85,11 @@ export class SendFeedbackPage {
         break;
       case 5:
         this.reaction = this.translate.instant("Thank you!");
-        this.comment = "We're always looking for ways to improve" + " " + this.appName + ". Is there anything we could do better?"; // TODO: translate
+        this.comment = this.replaceParametersProvider.replace(this.translate.instant("We're always looking for ways to improve {{appName}}. Is there anything we could do better?"), { appName: this.appName });
         break;
       default:
         this.justFeedback = true;
-        this.comment = "We're always looking for ways to improve" + " " + this.appName + ". How could we improve your experience?"; // TODO: translate
+        this.comment = this.replaceParametersProvider.replace(this.translate.instant("We're always looking for ways to improve {{appName}}. How could we improve your experience?"), { appName: this.appName });
         break;
     }
   }

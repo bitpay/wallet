@@ -27,6 +27,7 @@ import { OnGoingProcessProvider } from '../on-going-process/on-going-process';
 import { PersistenceProvider } from '../persistence/persistence';
 import { PlatformProvider } from '../platform/platform';
 import { PopupProvider } from '../popup/popup';
+import { ReplaceParametersProvider } from '../replace-parameters/replace-parameters';
 import { WalletProvider } from '../wallet/wallet';
 import { ProfileProvider } from './profile';
 
@@ -90,14 +91,14 @@ describe('Profile Provider', () => {
   };
 
   class BwcProviderMock {
-    constructor() {}
+    constructor() { }
     getErrors() {
       return 'error';
     }
   }
 
   class PersistenceProviderMock {
-    constructor() {}
+    constructor() { }
     getBalanceCache(walletId: any) {
       return Promise.resolve('0.00 BTC');
     }
@@ -126,6 +127,7 @@ describe('Profile Provider', () => {
         { provide: BwcProvider, useClass: BwcProviderMock },
         BwcErrorProvider,
         ConfigProvider,
+        ReplaceParametersProvider,
         HttpClient,
         LanguageProvider,
         LoadingController,

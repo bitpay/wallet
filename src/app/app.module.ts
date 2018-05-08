@@ -203,6 +203,7 @@ import { ProfileProvider } from '../providers/profile/profile';
 import { PushNotificationsProvider } from '../providers/push-notifications/push-notifications';
 import { RateProvider } from '../providers/rate/rate';
 import { ReleaseProvider } from '../providers/release/release';
+import { ReplaceParametersProvider } from '../providers/replace-parameters/replace-parameters';
 import { ScanProvider } from '../providers/scan/scan';
 import { ShapeshiftProvider } from '../providers/shapeshift/shapeshift';
 import { TimeProvider } from '../providers/time/time';
@@ -485,9 +486,10 @@ export function createTranslateLoader(http: HttpClient) {
     BitPayAccountProvider,
     BwcProvider,
     BwcErrorProvider,
+    Clipboard,
     ConfigProvider,
     CoinbaseProvider,
-    Clipboard,
+    ReplaceParametersProvider,
     DerivationPathHelperProvider,
     Device,
     ExternalLinkProvider,
