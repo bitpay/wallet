@@ -1,6 +1,11 @@
 import { Component } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { Events, ModalController, NavController, NavParams } from 'ionic-angular';
+import {
+  Events,
+  ModalController,
+  NavController,
+  NavParams
+} from 'ionic-angular';
 import * as _ from 'lodash';
 
 // providers
@@ -152,7 +157,7 @@ export class WalletDetailsPage {
     this.updateTxHistoryError = false;
     this.updatingTxHistoryProgress = 0;
 
-    let progressFn = function (txs, newTxs) {
+    let progressFn = function(txs, newTxs) {
       if (newTxs > 5) this.thistory = null;
       this.updatingTxHistoryProgress = newTxs;
     }.bind(this);
@@ -317,7 +322,15 @@ export class WalletDetailsPage {
   }
 
   public openSearchModal(): void {
-    let modal = this.modalCtrl.create(SearchTxModalPage, { addressbook: this.addressbook, completeHistory: this.wallet.completeHistory, wallet: this.wallet }, { showBackdrop: false, enableBackdropDismiss: true });
+    let modal = this.modalCtrl.create(
+      SearchTxModalPage,
+      {
+        addressbook: this.addressbook,
+        completeHistory: this.wallet.completeHistory,
+        wallet: this.wallet
+      },
+      { showBackdrop: false, enableBackdropDismiss: true }
+    );
     modal.present();
   }
 }

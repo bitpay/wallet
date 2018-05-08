@@ -8,6 +8,7 @@ import {
 import { TestUtils } from '../../test';
 
 import { ProfileProvider } from './../../providers/profile/profile';
+import { TimeProvider } from './../../providers/time/time';
 import { WalletDetailsPage } from './wallet-details';
 
 describe('WalletDetailsPage', () => {
@@ -100,6 +101,18 @@ describe('WalletDetailsPage', () => {
         expect(instance.history.length).toBe(10);
         expect(instance.currentPage).toBe(1);
         expect(spy).toHaveBeenCalled();
+      });
+    });
+    describe('isDateInCurrentMonth', () => {
+      it('should use timeProvider.isDateInCurrentMonth', () => {
+        const spy = spyOn(
+          instance.timeProvider,
+          'isDateInCurrentMonth'
+        ).and.callThrough();
+        const date = new Date();
+        const inMonth = instance.isDateInCurrentMonth(date);
+        expect(inMonth).toBe(true);
+        expect(spy).toHaveBeenCalledWith(date);
       });
     });
   });

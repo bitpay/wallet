@@ -11,10 +11,9 @@ import { TxDetailsPage } from '../../tx-details/tx-details';
 
 @Component({
   selector: 'page-search-tx-modal',
-  templateUrl: 'search-tx-modal.html',
+  templateUrl: 'search-tx-modal.html'
 })
 export class SearchTxModalPage {
-
   private HISTORY_SHOW_LIMIT: number;
   private currentTxHistoryPage: number;
 
@@ -52,7 +51,10 @@ export class SearchTxModalPage {
   }
 
   private throttleSearch = _.throttle((search: string) => {
-    this.txHistorySearchResults = this.filter(search).slice(0, this.HISTORY_SHOW_LIMIT);
+    this.txHistorySearchResults = this.filter(search).slice(
+      0,
+      this.HISTORY_SHOW_LIMIT
+    );
   }, 1000);
 
   private filter(search: string): any[] {
@@ -64,24 +66,40 @@ export class SearchTxModalPage {
     }
 
     this.filteredTxHistory = _.filter(this.completeTxHistory, (tx: any) => {
-      if (!tx.searcheableString) tx.searcheableString = this.computeSearchableString(tx);
+      if (!tx.searcheableString)
+        tx.searcheableString = this.computeSearchableString(tx);
       return _.includes(tx.searcheableString, search.toLowerCase());
     });
 
-    this.txHistoryShowMore = this.filteredTxHistory.length > this.HISTORY_SHOW_LIMIT ? true : false;
+    this.txHistoryShowMore =
+      this.filteredTxHistory.length > this.HISTORY_SHOW_LIMIT ? true : false;
 
     return this.filteredTxHistory;
   }
 
   private computeSearchableString(tx: any): any {
     let addrbook = '';
-    if (tx.addressTo && this.addressbook && this.addressbook[tx.addressTo]) addrbook = this.addressbook[tx.addressTo].name || this.addressbook[tx.addressTo] || '';
+    if (tx.addressTo && this.addressbook && this.addressbook[tx.addressTo])
+      addrbook =
+        this.addressbook[tx.addressTo].name ||
+        this.addressbook[tx.addressTo] ||
+        '';
     let searchableDate = this.computeSearchableDate(new Date(tx.time * 1000));
     let message = tx.message ? tx.message : '';
     let comment = tx.note ? tx.note.body : '';
     let addressTo = tx.addressTo ? tx.addressTo : '';
     let txid = tx.txid ? tx.txid : '';
-    return ((tx.amountStr + message + addressTo + addrbook + searchableDate + comment + txid).toString()).toLowerCase();
+    return (
+      tx.amountStr +
+      message +
+      addressTo +
+      addrbook +
+      searchableDate +
+      comment +
+      txid
+    )
+      .toString()
+      .toLowerCase();
   }
 
   private computeSearchableDate(date: Date): string {
@@ -100,15 +118,21 @@ export class SearchTxModalPage {
   }
 
   public showHistory(): void {
-    this.txHistorySearchResults = this.filteredTxHistory ? this.filteredTxHistory.slice(0, (this.currentTxHistoryPage + 1) * this.HISTORY_SHOW_LIMIT) : [];
-    this.txHistoryShowMore = this.filteredTxHistory.length > this.txHistorySearchResults.length;
+    this.txHistorySearchResults = this.filteredTxHistory
+      ? this.filteredTxHistory.slice(
+          0,
+          (this.currentTxHistoryPage + 1) * this.HISTORY_SHOW_LIMIT
+        )
+      : [];
+    this.txHistoryShowMore =
+      this.filteredTxHistory.length > this.txHistorySearchResults.length;
   }
 
   public trackByFn(index: number, tx: any): number {
     return index;
   }
 
-  public createdWithinPastDay(time: any): void {
+  public createdWithinPastDay(time: any): boolean {
     return this.timeProvider.withinPastDay(time);
   }
 
@@ -118,5 +142,4 @@ export class SearchTxModalPage {
       txid: tx.txid
     });
   }
-
 }
