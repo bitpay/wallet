@@ -62,7 +62,7 @@ export class ProfileProvider {
     this.persistenceProvider.setWalletOrder(walletId, index).then( () => {
       this.logger.debug('Wallet new order stored ' + this.wallet[walletId].name + ': ' + index);
     });
-    if (this.wallet[walletId] && this.wallet[walletId].order) this.wallet[walletId].order = index;
+    if (this.wallet[walletId]) this.wallet[walletId]['order'] = index;
   }
 
   public getWalletOrder(wallet): Promise<any> {
