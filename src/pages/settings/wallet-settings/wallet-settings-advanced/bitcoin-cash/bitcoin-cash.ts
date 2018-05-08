@@ -1,31 +1,30 @@
 import { Component } from "@angular/core";
 import { TranslateService } from '@ngx-translate/core';
-import { Events, NavController } from 'ionic-angular';
+import { Events, NavController, NavParams } from 'ionic-angular';
 import * as lodash from 'lodash';
-import { Logger } from "../../../providers/logger/logger";
+import { Logger } from "../../../../../providers/logger/logger";
 
 // Providers
-import { BwcErrorProvider } from "../../../providers/bwc-error/bwc-error";
-import { BwcProvider } from "../../../providers/bwc/bwc";
-import { ExternalLinkProvider } from "../../../providers/external-link/external-link";
-import { OnGoingProcessProvider } from "../../../providers/on-going-process/on-going-process";
-import { PopupProvider } from "../../../providers/popup/popup";
-import { ProfileProvider } from '../../../providers/profile/profile';
-import { PushNotificationsProvider } from "../../../providers/push-notifications/push-notifications";
-import { TxFormatProvider } from "../../../providers/tx-format/tx-format";
-import { WalletProvider } from "../../../providers/wallet/wallet";
+import { BwcErrorProvider } from "../../../../../providers/bwc-error/bwc-error";
+import { BwcProvider } from "../../../../../providers/bwc/bwc";
+import { ExternalLinkProvider } from "../../../../../providers/external-link/external-link";
+import { OnGoingProcessProvider } from "../../../../../providers/on-going-process/on-going-process";
+import { PopupProvider } from "../../../../../providers/popup/popup";
+import { ProfileProvider } from '../../../../../providers/profile/profile';
+import { PushNotificationsProvider } from "../../../../../providers/push-notifications/push-notifications";
+import { TxFormatProvider } from "../../../../../providers/tx-format/tx-format";
+import { WalletProvider } from "../../../../../providers/wallet/wallet";
 
 @Component({
   selector: 'page-bitcoin-cash',
   templateUrl: 'bitcoin-cash.html',
 })
 export class BitcoinCashPage {
-  private walletsBTC: any[];
-  private walletsBCH: any[];
+
   private errors: any;
 
-  public availableWallets: any[];
-  public nonEligibleWallets: any[];
+  public availableWallet: any;
+  public nonEligibleWallet: any;
   public error: any;
 
   constructor(
@@ -41,69 +40,49 @@ export class BitcoinCashPage {
     private bwcProvider: BwcProvider,
     private logger: Logger,
     private translate: TranslateService,
-    private events: Events
+    private events: Events,
+    private navParams: NavParams
   ) {
-    this.walletsBTC = [];
-    this.walletsBCH = [];
-    this.availableWallets = [];
-    this.nonEligibleWallets = [];
     this.errors = this.bwcProvider.getErrors();
   }
 
   ionViewWillEnter() {
 
-    this.walletsBTC = this.profileProvider.getWallets({
-      coin: 'btc',
-      onlyComplete: true,
-      network: 'livenet'
-    });
+    let wallet = this.profileProvider.getWallet(this.navParams.data.walletId);
 
     // Filter out already duplicated wallets
-    this.walletsBCH = this.profileProvider.getWallets({
+    let walletsBCH = this.profileProvider.getWallets({
       coin: 'bch',
       network: 'livenet'
     });
 
-    let xPubKeyIndex = lodash.keyBy(this.walletsBCH, "credentials.xPubKey");
+    let xPubKeyIndex = lodash.keyBy(walletsBCH, "credentials.xPubKey");
 
-    this.walletsBTC = lodash.filter(this.walletsBTC, w => {
-      return !xPubKeyIndex[w.credentials.xPubKey];
+    if (xPubKeyIndex[wallet.credentials.xPubKey]) {
+      wallet.excludeReason = this.translate.instant('Already duplicated');
+      this.nonEligibleWallet = wallet;
+    } else if (wallet.credentials.derivationStrategy != 'BIP44') {
+      wallet.excludeReason = this.translate.instant('Non BIP44 wallet');
+      this.nonEligibleWallet = wallet;
+    } else if (!wallet.canSign()) {
+      wallet.excludeReason = this.translate.instant('Read only wallet');
+      this.nonEligibleWallet = wallet;
+    } else if (wallet.needsBackup) {
+      wallet.excludeReason = this.translate.instant('Needs backup');
+      this.nonEligibleWallet = wallet;
+    } else {
+      this.availableWallet = wallet;
+    }
+
+    if (!this.availableWallet) return;
+
+    this.walletProvider.getBalance(this.availableWallet, { coin: 'bch' }).then((balance) => {
+      this.availableWallet.bchBalance = this.txFormatProvider.formatAmountStr('bch', balance.availableAmount);
+      this.availableWallet.error = null;
+    }).catch((err) => {
+      this.availableWallet.error = (err === 'WALLET_NOT_REGISTERED') ? this.translate.instant('Wallet not registered') : this.bwcErrorProvider.msg(err);
+      this.logger.error(err);
     });
-
-    lodash.each(this.walletsBTC, (w) => {
-      if (w.credentials.derivationStrategy != 'BIP44') {
-        w.excludeReason = this.translate.instant('Non BIP44 wallet');
-        this.nonEligibleWallets.push(w);
-      } else if (!w.canSign()) {
-        w.excludeReason = this.translate.instant('Read only wallet');
-        this.nonEligibleWallets.push(w);
-      } else if (w.needsBackup) {
-        w.excludeReason = this.translate.instant('Needs backup');
-        this.nonEligibleWallets.push(w);
-      } else {
-        this.availableWallets.push(w);
-      }
-    });
-
-    lodash.each(this.availableWallets, (wallet) => {
-      this.walletProvider.getBalance(wallet, { coin: 'bch' }).then((balance) => {
-        wallet.bchBalance = this.txFormatProvider.formatAmountStr('bch', balance.availableAmount);
-        wallet.error = null;
-      }).catch((err) => {
-        wallet.error = (err === 'WALLET_NOT_REGISTERED') ? this.translate.instant('Wallet not registered') : this.bwcErrorProvider.msg(err);
-        this.logger.error(err);
-      });
-    });
-  }
-
-  public openRecoveryToolLink(): void {
-    let url = 'https://bitpay.github.io/copay-recovery/';
-    let optIn = true;
-    let title = null;
-    let message = this.translate.instant('Open the recovery tool');
-    let okText = this.translate.instant('Open');
-    let cancelText = this.translate.instant('Go Back');
-    this.externalLinkProvider.open(url, optIn, title, message, okText, cancelText);
   }
 
   public duplicate(wallet: any) {
@@ -199,5 +178,15 @@ export class BitcoinCashPage {
     }).catch((err) => {
       setErr(err);
     });
+  }
+
+  public openHelpExternalLink(): void {
+    let url = 'https://support.bitpay.com/hc/en-us/articles/115005019583-How-Can-I-Recover-Bitcoin-Cash-BCH-from-My-Wallet-';
+    let optIn = true;
+    let title = null;
+    let message = this.translate.instant('Help and support information is available at the website');
+    let okText = this.translate.instant('Open');
+    let cancelText = this.translate.instant('Go Back');
+    this.externalLinkProvider.open(url, optIn, title, message, okText, cancelText);
   }
 }

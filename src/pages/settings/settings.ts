@@ -28,7 +28,6 @@ import { AboutPage } from './about/about';
 import { AddressbookPage } from './addressbook/addressbook';
 import { AdvancedPage } from './advanced/advanced';
 import { AltCurrencyPage } from './alt-currency/alt-currency';
-import { BitcoinCashPage } from './bitcoin-cash/bitcoin-cash';
 import { FeePolicyPage } from './fee-policy/fee-policy';
 import { LanguagePage } from './language/language';
 import { LockPage } from './lock/lock';
@@ -109,10 +108,6 @@ export class SettingsPage {
       this.showBitPayCard = this.app.info._enabledExtensions.debitcard ? true : false;
       this.bitpayCardItems = cards;
     });
-  }
-
-  public openBitcoinCashPage(): void {
-    this.navCtrl.push(BitcoinCashPage);
   }
 
   public openAltCurrencyPage(): void {

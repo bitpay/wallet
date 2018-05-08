@@ -6,6 +6,7 @@ import { Logger } from '../../../../providers/logger/logger';
 import { ProfileProvider } from '../../../../providers/profile/profile';
 
 // pages
+import { BitcoinCashPage } from './bitcoin-cash/bitcoin-cash';
 import { WalletAddressesPage } from './wallet-addresses/wallet-addresses';
 import { WalletDeletePage } from './wallet-delete/wallet-delete';
 import { WalletExportPage } from './wallet-export/wallet-export';
@@ -53,5 +54,8 @@ export class WalletSettingsAdvancedPage {
   }
   public openDeleteWallet(): void {
     this.navCtrl.push(WalletDeletePage, { walletId: this.wallet.credentials.walletId });
+  }
+  public openBitcoinCashPage(): void {
+    this.navCtrl.push(BitcoinCashPage, { walletId: this.wallet.credentials.walletId });
   }
 }

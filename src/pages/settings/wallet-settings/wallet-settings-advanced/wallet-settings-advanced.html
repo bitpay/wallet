@@ -21,6 +21,9 @@
     <button ion-item (click)="openTransactionHistory()">
       <span translate>Transaction History</span>
     </button>
+    <button ion-item *ngIf="wallet && wallet.network == 'livenet' && wallet.isComplete() && wallet.coin == 'btc'" (click)="openBitcoinCashPage()">
+      <span translate>Duplicate ( Bitcoin Cash )</span>
+    </button>
     <button ion-item (click)="openDeleteWallet()">
       <span translate>Delete Wallet</span>
     </button>
