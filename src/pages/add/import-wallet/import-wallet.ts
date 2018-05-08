@@ -42,6 +42,7 @@ export class ImportWalletPage {
   public isIOS: boolean;
   public file: File;
   public testnetEnabled: boolean;
+  public code: any;
 
   constructor(
     private navCtrl: NavController,
@@ -69,6 +70,7 @@ export class ImportWalletPage {
     this.isIOS = this.platformProvider.isIOS;
     this.importErr = false;
     this.fromOnboarding = this.navParams.data.fromOnboarding;
+    this.code = this.navParams.data.code;
     this.selectedTab = 'words';
     this.derivationPathByDefault = this.derivationPathHelperProvider.default;
     this.derivationPathForTestnet = this.derivationPathHelperProvider.defaultTestnet;
@@ -89,8 +91,8 @@ export class ImportWalletPage {
   }
   
   ionViewWillEnter() {
-    if (this.navParams.data.code) {
-      this.processWalletInfo(this.navParams.data.code);
+    if (this.code) {
+      this.processWalletInfo(this.code);
     }
   }
 
