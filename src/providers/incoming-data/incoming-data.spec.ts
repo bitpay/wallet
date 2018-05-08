@@ -26,6 +26,7 @@ import { PersistenceProvider } from '../persistence/persistence';
 import { PlatformProvider } from '../platform/platform';
 import { PopupProvider } from '../popup/popup';
 import { ProfileProvider } from '../profile/profile';
+import { ReplaceParametersProvider } from '../replace-parameters/replace-parameters';
 import { IncomingDataProvider } from './incoming-data';
 
 describe('Provider: Incoming Data Provider', () => {
@@ -78,6 +79,7 @@ describe('Provider: Incoming Data Provider', () => {
         PayproProvider,
         PersistenceProvider,
         PlatformProvider,
+        ReplaceParametersProvider,
         { provide: PopupProvider, useClass: PopupProviderMock },
         ProfileProvider,
         Platform
