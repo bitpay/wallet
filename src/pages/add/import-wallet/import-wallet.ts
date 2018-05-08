@@ -142,14 +142,6 @@ export class ImportWalletPage {
     this.importErr = false;
     let parsedCode = code.split('|');
 
-    if (parsedCode.length != 6) {
-      /// Trying to import a malformed wallet export QR code
-      let title = this.translate.instant('Error');
-      let subtitle = this.translate.instant('Incorrect code format');
-      this.popupProvider.ionicAlert(title, subtitle);
-      return;
-    }
-
     let info = {
       type: parsedCode[0],
       data: parsedCode[1],
