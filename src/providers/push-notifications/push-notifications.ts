@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { FCM } from '@ionic-native/fcm';
-import { App, NavControllerBase } from 'ionic-angular';
+import { Events } from 'ionic-angular';
 import { Logger } from '../../providers/logger/logger';
 
 // providers
@@ -11,15 +11,10 @@ import { ConfigProvider } from '../config/config';
 import { PlatformProvider } from '../platform/platform';
 import { ProfileProvider } from '../profile/profile';
 
-// pages
-import { CopayersPage } from '../../pages/add/copayers/copayers';
-import { WalletDetailsPage } from '../../pages/wallet-details/wallet-details';
-
 import * as _ from 'lodash';
 
 @Injectable()
 export class PushNotificationsProvider {
-  private navCtrl: NavControllerBase;
   private isIOS: boolean;
   private isAndroid: boolean;
   private usePushNotifications: boolean;
@@ -32,9 +27,9 @@ export class PushNotificationsProvider {
     public configProvider: ConfigProvider,
     public logger: Logger,
     public appProvider: AppProvider,
-    private app: App,
     private bwcProvider: BwcProvider,
-    private FCMPlugin: FCM
+    private FCMPlugin: FCM,
+    private events: Events
   ) {
     this.logger.info('PushNotificationsProvider initialized.');
     this.isIOS = this.platformProvider.isIOS;
@@ -145,6 +140,8 @@ export class PushNotificationsProvider {
   private _openWallet(walletIdHashed: any): void {
     let walletIdHash;
     let sjcl = this.bwcProvider.getSJCL();
+    let nextView: any = {};
+    let params;
 
     let wallets = this.profileProvider.getWallets();
     let wallet: any = _.find(wallets, (w: any) => {
@@ -154,14 +151,14 @@ export class PushNotificationsProvider {
 
     if (!wallet) return;
 
-    this.navCtrl = this.app.getActiveNav();
-    this.navCtrl.popToRoot({ animate: false }).then(() => {
-      this.navCtrl.parent.select(0);
-      if (!wallet.isComplete()) {
-        this.navCtrl.push(CopayersPage, { walletId: wallet.credentials.walletId });
-        return;
-      }
-      this.navCtrl.push(WalletDetailsPage, { walletId: wallet.credentials.walletId });
-    });
+    if (!wallet.isComplete()) {
+      nextView.name = 'CopayersPage';
+      return;
+    } else {
+      nextView.name = 'WalletDetailsPage';
+      nextView.params = { walletId: wallet.credentials.walletId };
+    }
+    this.events.publish('OpenWalletEvent', nextView);
   }
+
 }

@@ -34,14 +34,12 @@ import { ConfigProvider } from '../../providers/config/config';
 import { ExternalLinkProvider } from '../../providers/external-link/external-link';
 import { FeedbackProvider } from '../../providers/feedback/feedback';
 import { HomeIntegrationsProvider } from '../../providers/home-integrations/home-integrations';
-import { IncomingDataProvider } from '../../providers/incoming-data/incoming-data';
 import { Logger } from '../../providers/logger/logger';
 import { OnGoingProcessProvider } from '../../providers/on-going-process/on-going-process';
 import { PersistenceProvider } from '../../providers/persistence/persistence';
 import { PlatformProvider } from '../../providers/platform/platform';
 import { PopupProvider } from '../../providers/popup/popup';
 import { ProfileProvider } from '../../providers/profile/profile';
-import { PushNotificationsProvider } from '../../providers/push-notifications/push-notifications';
 import { ReleaseProvider } from '../../providers/release/release';
 import { ReplaceParametersProvider } from '../../providers/replace-parameters/replace-parameters';
 import { WalletProvider } from '../../providers/wallet/wallet';
@@ -91,7 +89,6 @@ export class HomePage {
     private logger: Logger,
     private events: Events,
     private configProvider: ConfigProvider,
-    private pushNotificationsProvider: PushNotificationsProvider,
     private externalLinkProvider: ExternalLinkProvider,
     private onGoingProcessProvider: OnGoingProcessProvider,
     private popupProvider: PopupProvider,
@@ -104,8 +101,7 @@ export class HomePage {
     private feedbackProvider: FeedbackProvider,
     private bitPayCardProvider: BitPayCardProvider,
     private translate: TranslateService,
-    private replaceParametersProvider: ReplaceParametersProvider,
-    private incomingDataProvider: IncomingDataProvider
+    private replaceParametersProvider: ReplaceParametersProvider
   ) {
     this.updatingWalletId = {};
     this.addressbook = {};
@@ -114,21 +110,11 @@ export class HomePage {
     this.showReorderBtc = false;
     this.showReorderBch = false;
     this.zone = new NgZone({ enableLongStackTrace: false });
-
-    if (this.platformProvider.isCordova) {
-      this.handleDeepLinks();
-    }
-
-    if (this.platformProvider.isNW) {
-      this.handleDeepLinksNW();
-    }
-
     this.listenForEvents();
   }
 
   ionViewWillEnter() {
     this.config = this.configProvider.get();
-    this.pushNotificationsProvider.init();
 
     this.addressBookProvider
       .list()
@@ -207,69 +193,6 @@ export class HomePage {
       this.updateTxps();
       this.setWallets();
     });
-  }
-
-  private handleDeepLinksNW() {
-    var gui = (window as any).require('nw.gui');
-
-    // This event is sent to an existent instance of Copay (only for standalone apps)
-    gui.App.on('open', this.onOpenNW.bind(this));
-
-    // Used at the startup of Copay
-    var argv = gui.App.argv;
-    if (argv && argv[0] && !(window as any)._urlHandled) {
-      (window as any)._urlHandled = true;
-      // The timeout waits for the components to be initialized
-      setTimeout(() => {
-        this.handleOpenUrl(argv[0]);
-      }, 1000);
-    }
-  }
-
-  onOpenNW(pathData) {
-    if (pathData.indexOf('bitcoincash:/') != -1) {
-      this.logger.debug('Bitcoin Cash URL found');
-      this.handleOpenUrl(pathData.substring(pathData.indexOf('bitcoincash:/')));
-    } else if (pathData.indexOf('bitcoin:/') != -1) {
-      this.logger.debug('Bitcoin URL found');
-      this.handleOpenUrl(pathData.substring(pathData.indexOf('bitcoin:/')));
-    } else if (pathData.indexOf(this.appProvider.info.name + '://') != -1) {
-      this.logger.debug(this.appProvider.info.name + ' URL found');
-      this.handleOpenUrl(
-        pathData.substring(pathData.indexOf(this.appProvider.info.name + '://'))
-      );
-    } else {
-      this.logger.debug('URL found');
-      this.handleOpenUrl(pathData);
-    }
-  }
-
-  private handleDeepLinks() {
-    // Check if app was resume by custom url scheme
-    (window as any).handleOpenURL = (url: string) => {
-      setTimeout(() => {
-        this.zone.run(() => {
-          this.logger.info('App was resumed by custom url scheme');
-          this.handleOpenUrl(url);
-        });
-      }, 0);
-    };
-
-    // Check if app was opened by custom url scheme
-    const lastUrl: string = (window as any).handleOpenURL_LastURL || '';
-    if (lastUrl && lastUrl !== '') {
-      delete (window as any).handleOpenURL_LastURL;
-      setTimeout(() => {
-        this.logger.info('App was opened by custom url scheme');
-        this.handleOpenUrl(lastUrl);
-      }, 0);
-    }
-  }
-
-  private handleOpenUrl(url: string) {
-    if (!this.incomingDataProvider.redir(url)) {
-      this.logger.warn('Unknown URL! : ' + url);
-    }
   }
 
   private startUpdatingWalletId(walletId: string) {
