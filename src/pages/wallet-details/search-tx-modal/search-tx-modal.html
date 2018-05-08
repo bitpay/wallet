@@ -1,0 +1,95 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>{{'Search Transactions' | translate}}</ion-title>
+    <ion-buttons right>
+      <button (click)="close()" ion-button>
+        {{'Close' | translate}}
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <div>
+    <ion-searchbar placeholder="{{'Search transactions' | translate}}" [(ngModel)]="search" (ngModelChange)="updateSearchInput(search)"></ion-searchbar>
+  </div>
+
+  <ion-list *ngIf="txHistorySearchResults && txHistorySearchResults[0]" class="tx-history">
+    <div>
+      <div *ngFor="let tx of txHistorySearchResults; trackBy: trackByFn; let i = index;">
+        <button ion-item (click)="goToTxDetails(tx); close()">
+          <ion-icon item-start>
+            <div *ngIf="tx.confirmations == 0">
+              <img src="assets/img/tx-action/icon-confirming.svg" width="40">
+            </div>
+            <div *ngIf="tx.confirmations > 0">
+              <span *ngIf="tx.customData && tx.customData.service">
+                <img class="icon-services" src="assets/img/shapeshift/icon-shapeshift.svg" *ngIf="tx.customData.service == 'shapeshift'" width="40">
+                <img class="icon-services" src="assets/img/amazon/icon-amazon.svg" *ngIf="tx.customData.service == 'amazon'" width="40">
+                <img class="icon-services" src="assets/img/mercado-libre/icon-ml.svg" *ngIf="tx.customData.service == 'mercadolibre'" width="40">
+                <img class="icon-services" src="assets/img/bitpay-card/icon-bitpay.svg" *ngIf="tx.customData.service == 'debitcard'" width="40">
+              </span>
+              <span *ngIf="!tx.customData || !tx.customData.service">
+                <img src="assets/img/tx-action/icon-received.svg" *ngIf="tx.action == 'received'" width="40">
+                <img src="assets/img/tx-action/icon-sent.svg" *ngIf="tx.action == 'sent'" width="40">
+                <img src="assets/img/tx-action/icon-moved.svg" *ngIf="tx.action == 'moved'" width="40">
+              </span>
+            </div>
+          </ion-icon>
+
+          <div class="action" *ngIf="tx.confirmations == 0">
+            <span *ngIf="(tx.action == 'sent' || tx.action == 'moved') && !(addressbook && addressbook[tx.outputs[0].address])">{{'Sending' | translate}}</span>
+            <span *ngIf="(tx.action == 'sent' || tx.action == 'moved') && (addressbook && addressbook[tx.outputs[0].address])">{{addressbook[tx.outputs[0].address].name || addressbook[tx.outputs[0].address]}}</span>
+            <span *ngIf="tx.action == 'received'">{{'Receiving' | translate}}</span>
+          </div>
+
+          <div class="action" *ngIf="tx.confirmations > 0 && tx.action == 'received'">
+            <span *ngIf="(!tx.note || (tx.note && tx.note.body == '')) && (!addressbook || !addressbook[tx.outputs[0].address])">{{'Received' | translate}}</span>
+            <span *ngIf="tx.note && tx.note.body != ''">{{tx.note.body}}</span>
+            <span *ngIf="addressbook && addressbook[tx.outputs[0].address]">
+              {{addressbook[tx.outputs[0].address].name || addressbook[tx.outputs[0].address]}}
+            </span>
+          </div>
+
+          <div class="action" *ngIf="tx.confirmations > 0 && tx.action == 'sent'">
+            <span *ngIf="!tx.message && (!tx.note || (tx.note && tx.note.body == '')) && (!addressbook || !addressbook[tx.outputs[0].address])">{{'Sent' | translate}}</span>
+            <span *ngIf="tx.message">{{tx.message}}</span>
+            <span *ngIf="!tx.message && tx.note && tx.note.body != ''">{{tx.note.body}}</span>
+            <span *ngIf="!tx.message && addressbook && addressbook[tx.outputs[0].address]">
+              {{addressbook[tx.outputs[0].address].name || addressbook[tx.outputs[0].address]}}
+            </span>
+          </div>
+
+          <div class="action" *ngIf="tx.confirmations > 0 && tx.action == 'moved'">
+            <span *ngIf="(!tx.note || (tx.note && tx.note.body == ''))" translate>Moved</span>
+            <span *ngIf="tx.note && tx.note.body != ''">{{tx.note.body}}</span>
+          </div>
+
+          <div class="action" *ngIf="tx.confirmations > 0 && tx.action == 'invalid'">
+            <span class="assertive" *ngIf="!tx.message && !tx.note" translate>Invalid</span>
+          </div>
+
+          <ion-note item-end text-end>
+            <div class="amount">
+              <span [ngClass]="{'received': tx.action == 'received'}" *ngIf="tx.action != 'invalid'">{{tx.amount | satToUnit: wallet.coin}}</span>
+              <span class="double-spend" *ngIf="tx.action == 'invalid'" translate>(possible double spend)</span>
+            </div>
+            <div class="date">
+              <span *ngIf="tx.time && createdWithinPastDay(tx.time * 1000)">{{tx.time * 1000 | amTimeAgo}}</span>
+              <span *ngIf="tx.time && !createdWithinPastDay(tx.time * 1000)">{{tx.time * 1000 | amDateFormat:'MMM D, YYYY'}}</span>
+            </div>
+          </ion-note>
+        </button>
+      </div>
+    </div>
+    <div class="txs-count" *ngIf="txHistoryShowMore">
+      <span>{{filteredTxHistory.length - txHistorySearchResults.length}} more</span>
+      &nbsp;
+      <ion-icon name="arrow-down"></ion-icon>
+    </div>
+  </ion-list>
+
+  <ion-infinite-scroll *ngIf="txHistoryShowMore" (ionInfinite)="moreSearchResults($event)">
+    <ion-infinite-scroll-content></ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+</ion-content>

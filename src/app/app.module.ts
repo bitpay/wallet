@@ -56,6 +56,7 @@ import { SlideToAcceptPage } from '../pages/slide-to-accept/slide-to-accept';
 import { TabsPage } from '../pages/tabs/tabs';
 import { TxDetailsPage } from '../pages/tx-details/tx-details';
 import { TxpDetailsPage } from '../pages/txp-details/txp-details';
+import { SearchTxModalPage } from '../pages/wallet-details/search-tx-modal/search-tx-modal';
 import { WalletBalancePage } from '../pages/wallet-details/wallet-balance/wallet-balance';
 import { WalletDetailsPage } from '../pages/wallet-details/wallet-details';
 
@@ -306,6 +307,7 @@ export function createTranslateLoader(http: HttpClient) {
     MercadoLibreCardDetailsPage,
     NotificationsPage,
     FeePolicyPage,
+    SearchTxModalPage,
     SessionLogPage,
     SendFeedbackPage,
     FinishModalPage,
@@ -446,6 +448,7 @@ export function createTranslateLoader(http: HttpClient) {
     MercadoLibreCardDetailsPage,
     NotificationsPage,
     FeePolicyPage,
+    SearchTxModalPage,
     SessionLogPage,
     SendFeedbackPage,
     FinishModalPage,

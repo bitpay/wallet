@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { Events, NavController, NavParams } from 'ionic-angular';
+import { Events, ModalController, NavController, NavParams } from 'ionic-angular';
 import * as _ from 'lodash';
 
 // providers
@@ -16,8 +16,8 @@ import { WalletProvider } from '../../providers/wallet/wallet';
 import { BackupWarningPage } from '../../pages/backup/backup-warning/backup-warning';
 import { WalletAddressesPage } from '../../pages/settings/wallet-settings/wallet-settings-advanced/wallet-addresses/wallet-addresses';
 import { TxDetailsPage } from '../../pages/tx-details/tx-details';
+import { SearchTxModalPage } from './search-tx-modal/search-tx-modal';
 import { WalletBalancePage } from './wallet-balance/wallet-balance';
-
 
 const HISTORY_SHOW_LIMIT = 10;
 
@@ -55,6 +55,7 @@ export class WalletDetailsPage {
     private logger: Logger,
     private timeProvider: TimeProvider,
     private translate: TranslateService,
+    private modalCtrl: ModalController,
     private onGoingProcessProvider: OnGoingProcessProvider
   ) {
     let clearCache = this.navParams.data.clearCache;
@@ -313,5 +314,10 @@ export class WalletDetailsPage {
 
   public back(): void {
     this.navCtrl.pop();
+  }
+
+  public openSearchModal(): void {
+    let modal = this.modalCtrl.create(SearchTxModalPage, { addressbook: this.addressbook, completeHistory: this.wallet.completeHistory, wallet: this.wallet }, { showBackdrop: false, enableBackdropDismiss: true });
+    modal.present();
   }
 }
