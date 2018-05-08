@@ -18,12 +18,6 @@ describe('Provider: External Link Provider', () => {
   let externalLinkProvider: ExternalLinkProvider;
   let translate: TranslateService;
   let url = 'https://github.com/bitpay/copay/releases/latest';
-  let optIn = true;
-  let title = 'Update Available';
-  let message =
-    'An update to this app is available. For your security, please update to the latest version.';
-  let okText = 'View Update';
-  let cancelText = 'Go Back';
 
   beforeEach(() => {
     TestBed.configureTestingModule({

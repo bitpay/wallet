@@ -34,6 +34,7 @@ import { PlatformProvider } from '../platform/platform';
 import { PopupProvider } from '../popup/popup';
 import { ProfileProvider } from '../profile/profile';
 import { RateProvider } from '../rate/rate';
+import { ReplaceParametersProvider } from '../replace-parameters/replace-parameters';
 import { TouchIdProvider } from '../touchid/touchid';
 import { TxFormatProvider } from '../tx-format/tx-format';
 import { WalletProvider } from '../wallet/wallet';
@@ -84,7 +85,8 @@ describe('Provider: Wallet Provider', () => {
         TouchIdProvider,
         TranslateService,
         TxFormatProvider,
-        WalletProvider
+        WalletProvider,
+        ReplaceParametersProvider
       ]
     });
     configProvider = TestBed.get(ConfigProvider);
