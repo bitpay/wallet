@@ -32,6 +32,7 @@ import { PopupProvider } from '../../providers/popup/popup';
 import { PushNotificationsProvider } from '../../providers/push-notifications/push-notifications';
 import { RateProvider } from '../../providers/rate/rate';
 import { ReleaseProvider } from '../../providers/release/release';
+import { ReplaceParametersProvider } from '../../providers/replace-parameters/replace-parameters';
 import { ScanProvider } from '../../providers/scan/scan';
 import { TimeProvider } from '../../providers/time/time';
 import { TouchIdProvider } from '../../providers/touchid/touchid';
@@ -87,6 +88,7 @@ describe('WalletDetailsPage', () => {
           PushNotificationsProvider,
           RateProvider,
           ReleaseProvider,
+          ReplaceParametersProvider,
           ScanProvider,
           TimeProvider,
           TouchIdProvider,
@@ -158,7 +160,7 @@ describe('WalletDetailsPage', () => {
     describe('showHistory', () => {
       it('should add the next page of transactions to the list', () => {
         instance.currentPage = 0;
-        instance.wallet.completeHistory = new Array(11).map(() => {});
+        instance.wallet.completeHistory = new Array(11).map(() => { });
         const spy = spyOn(instance, 'groupHistory');
         instance.showHistory();
         expect(instance.history.length).toBe(10);

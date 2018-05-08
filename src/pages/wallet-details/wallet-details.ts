@@ -1,11 +1,12 @@
 import { Component } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Events, NavController, NavParams } from 'ionic-angular';
-import { Logger } from '../../providers/logger/logger';
+import * as _ from 'lodash';
 
 // providers
 import { AddressBookProvider } from '../../providers/address-book/address-book';
 import { BwcErrorProvider } from '../../providers/bwc-error/bwc-error';
+import { Logger } from '../../providers/logger/logger';
 import { OnGoingProcessProvider } from '../../providers/on-going-process/on-going-process';
 import { ProfileProvider } from '../../providers/profile/profile';
 import { TimeProvider } from '../../providers/time/time';
@@ -17,7 +18,6 @@ import { WalletAddressesPage } from '../../pages/settings/wallet-settings/wallet
 import { TxDetailsPage } from '../../pages/tx-details/tx-details';
 import { WalletBalancePage } from './wallet-balance/wallet-balance';
 
-import * as _ from 'lodash';
 
 const HISTORY_SHOW_LIMIT = 10;
 
@@ -151,7 +151,7 @@ export class WalletDetailsPage {
     this.updateTxHistoryError = false;
     this.updatingTxHistoryProgress = 0;
 
-    let progressFn = function(txs, newTxs) {
+    let progressFn = function (txs, newTxs) {
       if (newTxs > 5) this.thistory = null;
       this.updatingTxHistoryProgress = newTxs;
     }.bind(this);

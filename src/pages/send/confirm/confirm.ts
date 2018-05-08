@@ -374,11 +374,11 @@ export class ConfirmPage {
       this.onGoingProcessProvider.set('calculatingFee');
       this.feeProvider
         .getFeeRate(
-          wallet.coin,
-          tx.network,
-          this.usingMerchantFee
-            ? maxAllowedMerchantFee[wallet.coin]
-            : this.tx.feeLevel
+        wallet.coin,
+        tx.network,
+        this.usingMerchantFee
+          ? maxAllowedMerchantFee[wallet.coin]
+          : this.tx.feeLevel
         )
         .then((feeRate: any) => {
           let msg;
@@ -460,8 +460,8 @@ export class ConfirmPage {
               );
               this.popupProvider
                 .ionicAlert(
-                  this.translate.instant('Error'),
-                  this.translate.instant('Not enough funds for fee')
+                this.translate.instant('Error'),
+                this.translate.instant('Not enough funds for fee')
                 )
                 .then(() => {
                   return resolve('no_funds');
@@ -560,11 +560,7 @@ export class ConfirmPage {
       if (!sendMaxInfo) return resolve();
 
       let fee = sendMaxInfo.fee / 1e8;
-      let msg =
-        fee +
-        ' ' +
-        this.tx.coin.toUpperCase() +
-        ' will be deducted for bitcoin networking fees.'; // TODO: translate
+      let msg = this.replaceParametersProvider.replace(this.translate.instant('{{fee}} {{coin}} will be deducted for bitcoin networking fees.'), { fee: sendMaxInfo.fee / 1e8, coin: this.tx.coin.toUpperCase() });
       let warningMsg = this.verifyExcludedUtxos(wallet, sendMaxInfo);
 
       if (!_.isEmpty(warningMsg)) msg += '\n' + warningMsg;

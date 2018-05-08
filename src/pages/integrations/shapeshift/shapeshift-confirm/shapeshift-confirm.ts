@@ -127,6 +127,7 @@ export class ShapeshiftConfirmPage {
           this.showErrorAndBack(null, message);
           return;
         }
+        this.createShift();
       }
     });
   }
@@ -331,7 +332,7 @@ export class ShapeshiftConfirmPage {
   private showSendMaxWarning(): Promise<any> {
     return new Promise((resolve, reject) => {
       let fee = (this.sendMaxInfo.fee / 1e8);
-      let msg = fee + " " + this.fromWallet.coin.toUpperCase() + " will be deducted for bitcoin networking fees."; // TODO: translate
+      let msg = this.replaceParametersProvider.replace(this.translate.instant('{{fee}} {{coin}} will be deducted for bitcoin networking fees.'), { fee, coin: this.fromWallet.coin.toUpperCase() });
       let warningMsg = this.verifyExcludedUtxos();
 
       if (!_.isEmpty(warningMsg))
@@ -347,13 +348,13 @@ export class ShapeshiftConfirmPage {
     let warningMsg = [];
     if (this.sendMaxInfo.utxosBelowFee > 0) {
       let amountBelowFeeStr = (this.sendMaxInfo.amountBelowFee / 1e8);
-      let message = "A total of " + amountBelowFeeStr + " " + this.fromWallet.coin.toUpperCase() + " were excluded. These funds come from UTXOs smaller than the network fee provided."; // TODO: translate
+      let message = this.replaceParametersProvider.replace(this.translate.instant('A total of {{fee}} {{coin}} were excluded. These funds come from UTXOs smaller than the network fee provided.'), { fee: amountBelowFeeStr, coin: this.fromWallet.coin.toUpperCase() });
       warningMsg.push(message);
     }
 
     if (this.sendMaxInfo.utxosAboveMaxSize > 0) {
       let amountAboveMaxSizeStr = (this.sendMaxInfo.amountAboveMaxSize / 1e8);
-      let message = "A total of " + amountAboveMaxSizeStr + " " + this.fromWallet.coin.toUpperCase() + " were excluded. The maximum size allowed for a transaction was exceeded."; // TODO: translate
+      let message = this.replaceParametersProvider.replace(this.translate.instant('A total of {{fee}} {{coin}} were excluded. The maximum size allowed for a transaction was exceeded.'), { fee: amountAboveMaxSizeStr, coin: this.fromWallet.coin.toUpperCase() });
       warningMsg.push(message);
     }
     return warningMsg.join('\n');

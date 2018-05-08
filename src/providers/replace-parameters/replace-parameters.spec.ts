@@ -1,5 +1,5 @@
-import { ReplaceParametersProvider } from './replace-parameters';
 import * as _ from 'lodash';
+import { ReplaceParametersProvider } from './replace-parameters';
 
 describe('Replace Parameters Provider', () => {
   let service: ReplaceParametersProvider;

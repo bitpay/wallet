@@ -6,7 +6,8 @@ import {
   NavController,
   Platform
 } from 'ionic-angular';
-import { Logger } from '../../providers/logger/logger';
+import * as _ from 'lodash';
+import * as moment from 'moment';
 
 // Pages
 import { AddPage } from '../add/add';
@@ -34,6 +35,7 @@ import { ExternalLinkProvider } from '../../providers/external-link/external-lin
 import { FeedbackProvider } from '../../providers/feedback/feedback';
 import { HomeIntegrationsProvider } from '../../providers/home-integrations/home-integrations';
 import { IncomingDataProvider } from '../../providers/incoming-data/incoming-data';
+import { Logger } from '../../providers/logger/logger';
 import { OnGoingProcessProvider } from '../../providers/on-going-process/on-going-process';
 import { PersistenceProvider } from '../../providers/persistence/persistence';
 import { PlatformProvider } from '../../providers/platform/platform';
@@ -41,10 +43,9 @@ import { PopupProvider } from '../../providers/popup/popup';
 import { ProfileProvider } from '../../providers/profile/profile';
 import { PushNotificationsProvider } from '../../providers/push-notifications/push-notifications';
 import { ReleaseProvider } from '../../providers/release/release';
+import { ReplaceParametersProvider } from '../../providers/replace-parameters/replace-parameters';
 import { WalletProvider } from '../../providers/wallet/wallet';
 
-import * as _ from 'lodash';
-import * as moment from 'moment';
 
 @Component({
   selector: 'page-home',
@@ -103,6 +104,7 @@ export class HomePage {
     private feedbackProvider: FeedbackProvider,
     private bitPayCardProvider: BitPayCardProvider,
     private translate: TranslateService,
+    private replaceParametersProvider: ReplaceParametersProvider,
     private incomingDataProvider: IncomingDataProvider
   ) {
     this.updatingWalletId = {};
@@ -469,11 +471,7 @@ export class HomePage {
         this.logger.debug('Update available:', result.updateAvailable);
         if (result.updateAvailable) {
           this.newRelease = true;
-          // TODO: translate updateText
-          this.updateText =
-            'There is a new version of ' +
-            this.appProvider.info.nameCase +
-            ' available';
+          this.updateText = this.replaceParametersProvider.replace(this.translate.instant('There is a new version of {{nameCase}} available'), { nameCase: this.appProvider.info.nameCase });
         }
       })
       .catch(err => {

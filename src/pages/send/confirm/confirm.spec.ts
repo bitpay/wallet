@@ -32,6 +32,7 @@ import { PopupProvider } from '../../../providers/popup/popup';
 import { PushNotificationsProvider } from '../../../providers/push-notifications/push-notifications';
 import { RateProvider } from '../../../providers/rate/rate';
 import { ReleaseProvider } from '../../../providers/release/release';
+import { ReplaceParametersProvider } from '../../../providers/replace-parameters/replace-parameters';
 import { ScanProvider } from '../../../providers/scan/scan';
 import { TouchIdProvider } from '../../../providers/touchid/touchid';
 import { TxConfirmNotificationProvider } from '../../../providers/tx-confirm-notification/tx-confirm-notification';
@@ -77,6 +78,7 @@ describe('ConfirmPage', () => {
           PushNotificationsProvider,
           RateProvider,
           ReleaseProvider,
+          ReplaceParametersProvider,
           ScanProvider,
           TouchIdProvider,
           TxConfirmNotificationProvider,
@@ -155,8 +157,8 @@ describe('ConfirmPage', () => {
     describe('chooseFeeLevel', () => {
       it('should display a fee modal', () => {
         const modal = {
-          present: () => {},
-          onDidDismiss: () => {}
+          present: () => { },
+          onDidDismiss: () => { }
         };
         const presentSpy = spyOn(modal, 'present');
         instance.modalCtrl.create = () => modal;
@@ -259,7 +261,7 @@ describe('ConfirmPage', () => {
       });
     });
     describe('publishAndSign', () => {
-      it('should work', () => {});
+      it('should work', () => { });
     });
   });
 });
