@@ -5,15 +5,13 @@ import {
   TestBed
 } from '@angular/core/testing';
 
-import { Platform } from 'ionic-angular';
 import { Subject } from 'rxjs';
 
 import { TestUtils } from '../../test';
 
-import { HomePage } from './home';
-
 import { AddressBookProvider } from '../../providers/address-book/address-book';
 import { ConfigProvider } from './../../providers/config/config';
+import { HomePage } from './home';
 
 describe('HomePage', () => {
   let fixture: ComponentFixture<HomePage>;
@@ -27,7 +25,7 @@ describe('HomePage', () => {
         instance = testEnv.instance;
         testBed = testEnv.testBed;
         instance.showCard = {
-          setShowRateCard: () => { }
+          setShowRateCard: () => {}
         };
         fixture.detectChanges();
       })
@@ -81,5 +79,4 @@ describe('HomePage', () => {
       });
     });
   });
-
 });
