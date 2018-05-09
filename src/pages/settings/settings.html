@@ -83,8 +83,14 @@
       <ion-label>
         {{'Lock' | translate}}
       </ion-label>
-      <ion-note item-end>
-        {{lockMethod}}
+      <ion-note *ngIf="lockMethod === 'disabled'" item-end>
+        {{'Disabled' | translate}}
+      </ion-note>
+      <ion-note *ngIf="lockMethod === 'pin'" item-end>
+        {{'PIN' | translate}}
+      </ion-note>
+      <ion-note *ngIf="lockMethod === 'fingerprint'" item-end>
+        {{'Fingerprint' | translate}}
       </ion-note>
     </button>
 
