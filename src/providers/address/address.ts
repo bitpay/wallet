@@ -26,7 +26,7 @@ export class AddressProvider {
     };
   }
 
-  getCoin(address: string) {
+  public getCoin(address: string) {
     try {
       new this.Bitcore['btc'].lib.Address(address);
       return 'btc';
@@ -40,7 +40,7 @@ export class AddressProvider {
     }
   };
 
-  translateAddress(address: string) {
+  private translateAddress(address: string) {
     var origCoin = this.getCoin(address);
     if (!origCoin) return;
 
@@ -57,7 +57,7 @@ export class AddressProvider {
     };
   };
 
-  validateAddress(address: string) {
+  public validateAddress(address: string) {
     let Address = this.bitcore.Address;
     let AddressCash = this.bitcoreCash.Address;
     let isLivenet = Address.isValid(address, 'livenet');
