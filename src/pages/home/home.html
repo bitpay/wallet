@@ -83,7 +83,7 @@
       </ion-list>
     </div>
 
-    <div class="card" *ngIf="notifications && notifications[0] && recentTransactionsEnabled">
+    <div class="card" *ngIf="recentTransactionsEnabled && notifications && notifications[0]">
       <ion-item-divider (click)="openActivityPage()">
         <div class="title" item-start>
           <span translate>Recent Transactions</span>

@@ -60,7 +60,6 @@ export class HomePage {
   public txpsN: number;
   public notifications: any;
   public notificationsN: number;
-  public config: any;
   public serverMessage: any;
   public addressbook: any;
   public newRelease: boolean;
@@ -110,11 +109,10 @@ export class HomePage {
     this.showReorderBtc = false;
     this.showReorderBch = false;
     this.zone = new NgZone({ enableLongStackTrace: false });
-    this.listenForEvents();
   }
 
   ionViewWillEnter() {
-    this.config = this.configProvider.get();
+    this.recentTransactionsEnabled = this.configProvider.get().recentTransactions.enabled;
 
     this.addressBookProvider
       .list()
@@ -126,8 +124,7 @@ export class HomePage {
       });
 
     // Update Tx Notifications
-    this.recentTransactionsEnabled = this.config.recentTransactions.enabled;
-    if (this.recentTransactionsEnabled) this.getNotifications();
+    this.getNotifications();
 
     // Update Tx Proposals
     this.updateTxps();
@@ -141,6 +138,14 @@ export class HomePage {
     if (this.isNW) this.checkUpdate();
     this.checkHomeTip();
     this.checkFeedbackInfo();
+
+    // BWS Events: Update Status per Wallet
+    // NewBlock, NewCopayer, NewAddress, NewTxProposal, TxProposalAcceptedBy, TxProposalRejectedBy, txProposalFinallyRejected,
+    // txProposalFinallyAccepted, TxProposalRemoved, NewIncomingTx, NewOutgoingTx
+    this.events.subscribe('bwsEvent', (walletId: string) => {
+      this.getNotifications();
+      this.updateWallet(walletId);
+    });
 
     // Show integrations
     let integrations = _.filter(this.homeIntegrationsProvider.get(), {
@@ -166,12 +171,14 @@ export class HomePage {
     });
   }
 
-  ionViewWillLeave() {
-    this.events.unsubscribe('feedback:hide');
-  }
-
   ionViewDidLoad() {
-    this.logger.info('ionViewDidLoad HomePage');
+    this.logger.info('ionViewDidLoad HomePage'); 
+
+    // Create, Join, Import and Delete -> Get Wallets -> Update Status for All Wallets
+    this.events.subscribe('status:updated', () => {
+      this.updateTxps();
+      this.setWallets();
+    });
 
     this.plt.resume.subscribe(e => {
       this.updateTxps();
@@ -179,20 +186,8 @@ export class HomePage {
     });
   }
 
-  private listenForEvents() {
-    // BWS Events: Update Status per Wallet
-    // NewBlock, NewCopayer, NewAddress, NewTxProposal, TxProposalAcceptedBy, TxProposalRejectedBy, txProposalFinallyRejected,
-    // txProposalFinallyAccepted, TxProposalRemoved, NewIncomingTx, NewOutgoingTx
-    this.events.subscribe('bwsEvent', (walletId: string) => {
-      if (this.recentTransactionsEnabled) this.getNotifications();
-      this.updateWallet(walletId);
-    });
-
-    // Create, Join, Import and Delete -> Get Wallets -> Update Status for All Wallets
-    this.events.subscribe('status:updated', () => {
-      this.updateTxps();
-      this.setWallets();
-    });
+  ionViewWillLeave() {
+    this.events.unsubscribe('bwsEvent');
   }
 
   private startUpdatingWalletId(walletId: string) {
@@ -212,7 +207,7 @@ export class HomePage {
       this.walletsBch = this.profileProvider.getWallets({ coin: 'bch' });
       this.updateAllWallets();
     },
-    5000,
+    1000,
     {
       leading: true
     }
@@ -299,7 +294,7 @@ export class HomePage {
           this.logger.error(err);
         });
     },
-    2000,
+    1000,
     {
       leading: true
     }
@@ -307,6 +302,7 @@ export class HomePage {
 
   private getNotifications = _.debounce(
     () => {
+      if (!this.recentTransactionsEnabled) return;
       this.profileProvider
         .getNotifications({ limit: 3 })
         .then((data: any) => {
@@ -319,7 +315,7 @@ export class HomePage {
           this.logger.error(err);
         });
     },
-    2000,
+    1000,
     {
       leading: true
     }
