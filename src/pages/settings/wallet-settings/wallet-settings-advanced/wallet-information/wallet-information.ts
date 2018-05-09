@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Events, NavController, NavParams } from 'ionic-angular';
+import { App, Events, NavController, NavParams } from 'ionic-angular';
 import { Logger } from '../../../../../providers/logger/logger';
 
 // providers
@@ -10,6 +10,7 @@ import { ProfileProvider } from '../../../../../providers/profile/profile';
 import { WalletExtendedPrivateKeyPage } from './wallet-extended-private-key/wallet-extended-private-key';
 
 import * as _ from 'lodash';
+import { TabsPage } from '../../../../tabs/tabs';
 
 @Component({
   selector: 'page-wallet-information',
@@ -39,6 +40,7 @@ export class WalletInformationPage {
   private BLACK_WALLET_COLOR = '#202020';
 
   constructor(
+    private app: App,
     private profileProvider: ProfileProvider,
     private configProvider: ConfigProvider,
     private navParams: NavParams,
@@ -89,9 +91,7 @@ export class WalletInformationPage {
     opts.colorFor[this.wallet.credentials.walletId] = color;
     this.configProvider.set(opts);
     this.events.publish('wallet:updated', this.wallet.credentials.walletId);
-    this.navCtrl.popToRoot({ animate: false }).then(() => {
-      this.navCtrl.parent.select(0);
-    });
+    this.app.getRootNavs()[0].setRoot(TabsPage);
   };
 
   public openWalletExtendedPrivateKey(): void {

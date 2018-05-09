@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
-import { NavController, NavParams, ToastController } from 'ionic-angular';
+import { App, NavController, NavParams, ToastController } from 'ionic-angular';
 import { Logger } from '../../../../../providers/logger/logger';
 
 // native
@@ -16,6 +16,7 @@ import { PlatformProvider } from '../../../../../providers/platform/platform';
 import { PopupProvider } from '../../../../../providers/popup/popup';
 import { ProfileProvider } from '../../../../../providers/profile/profile';
 import { WalletProvider } from '../../../../../providers/wallet/wallet';
+import { TabsPage } from '../../../../tabs/tabs';
 
 @Component({
   selector: 'page-wallet-export',
@@ -40,6 +41,7 @@ export class WalletExportPage {
   public supported: boolean;
 
   constructor(
+    private app: App,
     private profileProvider: ProfileProvider,
     private walletProvider: WalletProvider,
     private navCtrl: NavController,
@@ -157,9 +159,7 @@ export class WalletExportPage {
         };
 
         this.backupProvider.walletDownload(this.exportWalletForm.value.password, opts, this.navParams.data.walletId).then(() => {
-          this.navCtrl.popToRoot({ animate: false }).then(() => {
-            this.navCtrl.parent.select(0);
-          });
+          this.app.getRootNavs()[0].setRoot(TabsPage);
         }).catch((err: string) => {
           this.popupProvider.ionicAlert(this.translate.instant('Error'), this.translate.instant('Failed to export'));
         });

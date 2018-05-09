@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController } from 'ionic-angular';
+import { App, NavController } from 'ionic-angular';
 
 import * as _ from 'lodash';
 
@@ -9,6 +9,7 @@ import { ConfigProvider } from '../../../../providers/config/config';
 import { HomeIntegrationsProvider } from '../../../../providers/home-integrations/home-integrations';
 import { Logger } from '../../../../providers/logger/logger';
 import { PopupProvider } from '../../../../providers/popup/popup';
+import { TabsPage } from '../../../tabs/tabs';
 
 @Component({
   selector: 'page-coinbase-settings',
@@ -23,6 +24,7 @@ export class CoinbaseSettingsPage {
   public coinbaseUser: any;
 
   constructor(
+    private app: App,
     private navCtrl: NavController,
     private popupProvider: PopupProvider,
     private logger: Logger,
@@ -76,9 +78,7 @@ export class CoinbaseSettingsPage {
     ).then((res) => {
       if (res) {
         this.coinbaseProvider.logout();
-        this.navCtrl.popToRoot({ animate: false }).then(() => {
-          this.navCtrl.parent.select(0);
-        });
+        this.app.getRootNavs()[0].setRoot(TabsPage);
       }
     });
   };
