@@ -62,14 +62,14 @@ export class ProfileProvider {
 
   public setWalletOrder(walletId: string, index: number): void {
     this.persistenceProvider.setWalletOrder(walletId, index).then( () => {
-      this.logger.debug('Wallet new order stored ' + this.wallet[walletId].name + ': ' + index);
+      this.logger.debug('Wallet new order stored for ' + walletId + ': ' + index);
     });
     if (this.wallet[walletId]) this.wallet[walletId]['order'] = index;
   }
 
-  public getWalletOrder(wallet): Promise<any> {
+  public getWalletOrder(walletId: string): Promise<any> {
     return new Promise(resolve => {
-      this.persistenceProvider.getWalletOrder(wallet.credentials.walletId).then((order:any) => {
+      this.persistenceProvider.getWalletOrder(walletId).then((order:any) => {
         return resolve(order);
       });
     });
@@ -144,7 +144,7 @@ export class ProfileProvider {
       wallet.balanceHidden = val;
     });
 
-    this.getWalletOrder(wallet).then((val: number) => {
+    this.getWalletOrder(wallet.id).then((val: number) => {
       wallet.order = val;
     });
 

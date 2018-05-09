@@ -106,7 +106,7 @@ describe('Profile Provider', () => {
       return Promise.resolve();
     }
     getWalletOrder(walletId: string) {
-      return Promise.resolve(1);
+      return Promise.resolve('');
     }
   }
 
