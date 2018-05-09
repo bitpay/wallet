@@ -39,10 +39,11 @@ describe('HomePage', () => {
 
   describe('Lifecycle Hooks', () => {
     describe('ionViewWillEnter', () => {
-      it('should get config', () => {
+      it('should get recentTransactions enabled', () => {
         instance.ionViewWillEnter();
         const configProvider = testBed.get(ConfigProvider);
-        expect(instance.config).toEqual(configProvider.get());
+        const recentTransactionsEnabled = configProvider.get().recentTransactions.enabled;
+        expect(recentTransactionsEnabled).toEqual(true);
       });
       it('should not break if address book list call fails', () => {
         spyOn(testBed.get(AddressBookProvider), 'list').and.returnValue(
@@ -74,10 +75,10 @@ describe('HomePage', () => {
     });
 
     describe('ionViewWillLeave', () => {
-      it('should unsubscribe from feedback:hide event', () => {
+      it('should unsubscribe from bwsEvent event', () => {
         const spy = spyOn(instance.events, 'unsubscribe');
         instance.ionViewWillLeave();
-        expect(spy).toHaveBeenCalledWith('feedback:hide');
+        expect(spy).toHaveBeenCalledWith('bwsEvent');
       });
     });
   });
