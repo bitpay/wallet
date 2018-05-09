@@ -12,7 +12,7 @@ msgstr ""
 "Last-Translator: cmgustavo83\n"
 "Language-Team: Chinese Simplified\n"
 "Language: zh\n"
-"PO-Revision-Date: 2018-04-27 16:18-0400\n"
+"PO-Revision-Date: 2018-05-08 13:35-0400\n"
 
 msgid "(Trusted)"
 msgstr "（可信的）"
@@ -29,7 +29,19 @@ msgstr "5 星评级帮助我们进入更多的人手, {{appName}} 和更多的�
 msgid "A member of the team will review your feedback as soon as possible."
 msgstr "团队的成员将尽快审查您的反馈意见。"
 
+msgid "A total of {{amountAboveMaxSizeStr}} {{coin}} were excluded. The maximum size allowed for a transaction was exceeded."
+msgstr ""
+
+msgid "A total of {{amountBelowFeeStr}} {{coin}} were excluded. These funds come from UTXOs smaller than the network fee provided."
+msgstr ""
+
 msgid "A total of {{amountStr}} ({{fiatAmount | currency}} {{currencyIsoCode}}) will be exchanged for {{withdrawalStr}} ({{fiatWithdrawal | currency}} {{currencyIsoCode}}). Would you like to proceed?"
+msgstr ""
+
+msgid "A total of {{fee}} {{coin}} were excluded. The maximum size allowed for a transaction was exceeded."
+msgstr ""
+
+msgid "A total of {{fee}} {{coin}} were excluded. These funds come from UTXOs smaller than the network fee provided."
 msgstr ""
 
 msgid "About"
@@ -47,11 +59,17 @@ msgstr "活动"
 msgid "Add"
 msgstr "添加"
 
+msgid "Add BitPay Account?"
+msgstr ""
+
 msgid "Add Contact"
 msgstr "添加联系人"
 
 msgid "Add Memo"
 msgstr "添加备注"
+
+msgid "Add account"
+msgstr ""
 
 msgid "Add as a contact"
 msgstr "添加到联系人"
@@ -63,6 +81,9 @@ msgid "Add funds"
 msgstr "添加资金"
 
 msgid "Add funds to get started"
+msgstr ""
+
+msgid "Add this BitPay account ({{email}})?"
 msgstr ""
 
 msgid "Address"
@@ -100,6 +121,9 @@ msgstr "允许访问相机"
 
 msgid "Almost done! Let's review."
 msgstr "差不多完成了 ！让我们回顾一下。"
+
+msgid "Already duplicated"
+msgstr ""
 
 msgid "Alternative currency"
 msgstr ""
@@ -154,9 +178,6 @@ msgstr "可用空间"
 
 msgid "Average confirmation time"
 msgstr "平均确认时间"
-
-msgid "BTC wallets"
-msgstr "比特币钱包"
 
 msgid "Backup"
 msgstr "备份"
@@ -287,9 +308,6 @@ msgstr ""
 msgid "Click to open Terms"
 msgstr ""
 
-msgid "Click to open the recovery tool"
-msgstr ""
-
 msgid "Click to pay"
 msgstr "点击这里支付"
 
@@ -315,6 +333,9 @@ msgid "Confirm"
 msgstr "确定"
 
 msgid "Confirm &amp; Finish"
+msgstr ""
+
+msgid "Confirm to shift {{fromCoin}} to {{toCoin}}"
 msgstr ""
 
 msgid "Confirm your PIN"
@@ -566,6 +587,9 @@ msgstr "下载"
 msgid "Duplicate"
 msgstr ""
 
+msgid "Duplicate ( Bitcoin Cash )"
+msgstr ""
+
 msgid "Duplicating wallet..."
 msgstr "正在复制钱包……"
 
@@ -600,6 +624,9 @@ msgid "Encrypt password needed"
 msgstr ""
 
 msgid "Encryption can protect your funds if this device is stolen or compromised by malicious software."
+msgstr ""
+
+msgid "Enter Two Factor for your BitPay account"
 msgstr ""
 
 msgid "Enter a new encrypt password"
@@ -722,6 +749,9 @@ msgstr "无法提交反馈。请稍后再试。"
 msgid "Fetching BitPay Account..."
 msgstr "正在获取 BitPay 帐户..."
 
+msgid "Fetching BitPay Cards..."
+msgstr ""
+
 msgid "Fetching payment information..."
 msgstr ""
 
@@ -813,6 +843,9 @@ msgid "Help & Support"
 msgstr "帮助与支持"
 
 msgid "Help & support"
+msgstr ""
+
+msgid "Help and support information is available at the website"
 msgstr ""
 
 msgid "Help and support information is available at the website."
@@ -995,6 +1028,9 @@ msgstr "低额投入"
 msgid "Makes sense"
 msgstr "有道理"
 
+msgid "Maximum amount allowed is {{max}}"
+msgstr ""
+
 msgid "Me"
 msgstr "我"
 
@@ -1019,6 +1055,9 @@ msgstr ""
 msgid "Miner fee"
 msgstr ""
 
+msgid "Minimum amount required is {{min}}"
+msgstr ""
+
 msgid "Missing parameter"
 msgstr "缺失参数"
 
@@ -1040,7 +1079,7 @@ msgstr "转移资金"
 msgid "Multiple recipients"
 msgstr "多个接收者"
 
-msgid "NOTE: To import a wallet from a 3rd party software, please go to Add Wallet > Create Wallet, and specify the Recovery Phrase there."
+msgid "NOTE: To import a wallet from a 3rd party software, please go to Add Wallet, Create Wallet, and specify the Recovery Phrase there."
 msgstr ""
 
 msgid "Name"
@@ -1115,17 +1154,14 @@ msgstr "没有可用于接收资金的钱包"
 msgid "No wallets available to use ShapeShift"
 msgstr ""
 
-msgid "No wallets eligible for Bitcoin Cash support"
-msgstr "没有錢包合乎支持小比特幣資格"
-
 msgid "No wallets with funds"
 msgstr ""
 
 msgid "Non BIP44 wallet"
 msgstr "非BIP44錢包"
 
-msgid "Non eligible BTC wallets"
-msgstr "非合格比特幣錢包"
+msgid "Non eligible BTC wallet"
+msgstr ""
 
 msgid "Normal"
 msgstr "常规"
@@ -1215,9 +1251,6 @@ msgid "Open Translation Community"
 msgstr "开放式翻译社区"
 
 msgid "Open settings"
-msgstr ""
-
-msgid "Open the recovery tool"
 msgstr ""
 
 msgid "Open wallet"
@@ -1372,6 +1405,9 @@ msgstr ""
 
 msgid "Proposals"
 msgstr "建议"
+
+msgid "Purchase Amount is limited to {{limitPerDay}} {{currency}} per day"
+msgstr ""
 
 msgid "Purchase amount must be a value between 50 and 2000"
 msgstr "采购金额必须 50 到 2000年之间的值"
@@ -1586,6 +1622,9 @@ msgstr "发送的最大金额"
 msgid "Sending transaction..."
 msgstr ""
 
+msgid "Sending {{amount}} {{unit}} from your {{name}} wallet"
+msgstr ""
+
 msgid "Sent"
 msgstr "已发送"
 
@@ -1662,9 +1701,6 @@ msgid "Slide to pay"
 msgstr ""
 
 msgid "Slide to send"
-msgstr ""
-
-msgid "Some of your wallets are not eligible for Bitcoin Cash support. You can try to access BCH funds from these wallets using the recovery tool"
 msgstr ""
 
 msgid "Specify Recovery Phrase"
@@ -1790,6 +1826,9 @@ msgstr "比特币存储在这个钱包的总量。"
 msgid "The transaction history and every new incoming transaction are cached in the app. This feature clean this up and synchronizes again from the server"
 msgstr ""
 
+msgid "There is a new version of {{nameCase}} available"
+msgstr ""
+
 msgid "There is an error in the form"
 msgstr "表格中有错误"
 
@@ -1828,6 +1867,9 @@ msgstr "发送到"
 
 msgid "To get started, you'll need to create a bitcoin wallet and get some bitcoin."
 msgstr "若要开始，您将需要创建一个比特币的钱包，并获得一些比特币。"
+
+msgid "To {{reason}} you must first add your BitPay account - {{email}}"
+msgstr ""
 
 msgid "Top up in progress..."
 msgstr "在进展充值..."
@@ -2021,6 +2063,9 @@ msgstr "钱包的设置"
 msgid "Wallet already exists"
 msgstr "钱包已存在"
 
+msgid "Wallet already in {{nameCase}}"
+msgstr ""
+
 msgid "Wallet created"
 msgstr "创建的钱包"
 
@@ -2088,6 +2133,12 @@ msgid "We will confirm on the next screen."
 msgstr ""
 
 msgid "We'd love to do better. How could we improve your experience?"
+msgstr ""
+
+msgid "We're always looking for ways to improve {{appName}}. How could we improve your experience?"
+msgstr ""
+
+msgid "We're always looking for ways to improve {{appName}}. Is there anything we could do better?"
 msgstr ""
 
 msgid "Website"
@@ -2210,10 +2261,16 @@ msgstr ""
 msgid "preparing..."
 msgstr "准备中..."
 
+msgid "{{amountUnitStr}} Gift Card"
+msgstr ""
+
 msgid "{{appName}} depends on Bitcore Wallet Service (BWS) for blockchain information, networking and Copayer synchronization. The default configuration points to https://bws.bitpay.com (BitPay's public BWS instance)."
 msgstr ""
 
 msgid "{{btx.feeRateStr}} of the total amount"
+msgstr ""
+
+msgid "{{fee}} {{coin}} will be deducted for bitcoin networking fees."
 msgstr ""
 
 msgid "{{tx.feeRateStr}} of the total amount"
