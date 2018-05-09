@@ -360,6 +360,12 @@ export class IncomingDataProvider {
   }
 
   private handlePayPro(payProDetails: any, coin?: string): void {
+
+    if (!payProDetails) {
+      this.popupProvider.ionicAlert(this.translate.instant('Error'), this.translate.instant('No wallets available'));
+      return;
+    }
+
     let stateParams: any = {
       amount: payProDetails.amount,
       toAddress: payProDetails.toAddress,
