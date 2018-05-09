@@ -18,6 +18,7 @@ import { EmailNotificationsProvider } from '../../../../providers/email-notifica
 import { ExternalLinkProvider } from '../../../../providers/external-link/external-link';
 import { MercadoLibreProvider } from '../../../../providers/mercado-libre/mercado-libre';
 import { OnGoingProcessProvider } from "../../../../providers/on-going-process/on-going-process";
+import { PayproProvider } from '../../../../providers/paypro/paypro';
 import { PlatformProvider } from '../../../../providers/platform/platform';
 import { PopupProvider } from '../../../../providers/popup/popup';
 import { ProfileProvider } from '../../../../providers/profile/profile';
@@ -77,6 +78,7 @@ export class BuyMercadoLibrePage {
     private txFormatProvider: TxFormatProvider,
     private walletProvider: WalletProvider,
     private translate: TranslateService,
+    private payproProvider: PayproProvider,
     private platformProvider: PlatformProvider,
   ) {
     this.FEE_TOO_HIGH_LIMIT_PER = 15;
@@ -261,42 +263,51 @@ export class BuyMercadoLibrePage {
       }
 
       let outputs = [];
-      let toAddress = invoice.addresses[COIN];
-      let amountSat = invoice.paymentTotals[COIN];
 
-      outputs.push({
-        'toAddress': toAddress,
-        'amount': amountSat,
-        'message': message
-      });
+      this.payproProvider.getPayProDetails(payProUrl, wallet.coin).then((details: any) => {
+        let txp: any = {
+          amount: details.amount,
+          toAddress: details.toAddress,
+          outputs: [{
+            'toAddress': details.toAddress,
+            'amount': details.amount,
+            'message': message
+          }],
+          message,
+          customData: {
+            'service': 'mercadolibre'
+          },
+          payProUrl,
+          excludeUnconfirmedUtxos: this.configWallet.spendUnconfirmed ? false : true,
+        };
 
-      let txp = {
-        toAddress,
-        amount: amountSat,
-        outputs,
-        message,
-        customData: {
-          'service': 'mercadolibre'
-        },
-        payProUrl,
-        excludeUnconfirmedUtxos: this.configWallet.spendUnconfirmed ? false : true,
-        feeLevel: 'normal'
-      };
+        if (details.requiredFeeRate) {
+          txp.feePerKb = Math.ceil(details.requiredFeeRate * 1024);
+          this.logger.debug('Using merchant fee rate (for mercadolibre gc):' + txp.feePerKb);
+        } else {
+          txp.feeLevel = this.configWallet.settings.feeLevel || 'normal';
+        }
 
-      txp['origToAddress'] = txp.toAddress;
+        txp['origToAddress'] = txp.toAddress;
 
-      if (wallet.coin && wallet.coin == 'bch') {
-        // Use legacy address
-        txp.toAddress = this.bitcoreCash.Address(txp.toAddress).toString();
-        txp.outputs[0].toAddress = txp.toAddress;
-      }
+        if (wallet.coin && wallet.coin == 'bch') {
+          // Use legacy address
+          txp.toAddress = this.bitcoreCash.Address(txp.toAddress).toString();
+          txp.outputs[0].toAddress = txp.toAddress;
+        }
 
-      this.walletProvider.createTx(wallet, txp).then((ctxp: any) => {
-        return resolve(ctxp);
+        this.walletProvider.createTx(wallet, txp).then((ctxp: any) => {
+          return resolve(ctxp);
+        }).catch((err: any) => {
+          return reject({
+            title: this.translate.instant('Could not create transaction'),
+            message: this.bwcErrorProvider.msg(err)
+          });
+        });
       }).catch((err: any) => {
         return reject({
-          title: this.translate.instant('Could not create transaction'),
-          message: this.bwcErrorProvider.msg(err)
+          title: this.translate.instant('Error in Payment Protocol'),
+          message: this.translate.instant('Invalid URL')
         });
       });
     });
