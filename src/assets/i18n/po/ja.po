@@ -12,7 +12,7 @@ msgstr ""
 "Last-Translator: cmgustavo83\n"
 "Language-Team: Japanese\n"
 "Language: ja\n"
-"PO-Revision-Date: 2018-04-27 16:18-0400\n"
+"PO-Revision-Date: 2018-05-08 13:35-0400\n"
 
 msgid "(Trusted)"
 msgstr "(信頼済み)"
@@ -29,8 +29,20 @@ msgstr "5つ星の評価をいただけると、もっとたくさんの人に�
 msgid "A member of the team will review your feedback as soon as possible."
 msgstr "ただちに開発メンバーでいただいた評価を拝読し参考にさせていただきます。"
 
+msgid "A total of {{amountAboveMaxSizeStr}} {{coin}} were excluded. The maximum size allowed for a transaction was exceeded."
+msgstr ""
+
+msgid "A total of {{amountBelowFeeStr}} {{coin}} were excluded. These funds come from UTXOs smaller than the network fee provided."
+msgstr ""
+
 msgid "A total of {{amountStr}} ({{fiatAmount | currency}} {{currencyIsoCode}}) will be exchanged for {{withdrawalStr}} ({{fiatWithdrawal | currency}} {{currencyIsoCode}}). Would you like to proceed?"
 msgstr "yêu anh đi"
+
+msgid "A total of {{fee}} {{coin}} were excluded. The maximum size allowed for a transaction was exceeded."
+msgstr ""
+
+msgid "A total of {{fee}} {{coin}} were excluded. These funds come from UTXOs smaller than the network fee provided."
+msgstr ""
 
 msgid "About"
 msgstr "このアプリについて"
@@ -47,11 +59,17 @@ msgstr "履歴"
 msgid "Add"
 msgstr "Viêt nam"
 
+msgid "Add BitPay Account?"
+msgstr ""
+
 msgid "Add Contact"
 msgstr "連絡先を追加"
 
 msgid "Add Memo"
 msgstr "メモを追加"
+
+msgid "Add account"
+msgstr ""
 
 msgid "Add as a contact"
 msgstr "連絡先に追加"
@@ -63,6 +81,9 @@ msgid "Add funds"
 msgstr "資金を追加"
 
 msgid "Add funds to get started"
+msgstr ""
+
+msgid "Add this BitPay account ({{email}})?"
 msgstr ""
 
 msgid "Address"
@@ -100,6 +121,9 @@ msgstr ""
 
 msgid "Almost done! Let's review."
 msgstr "ほぼ完了!確認してみましょう。"
+
+msgid "Already duplicated"
+msgstr ""
 
 msgid "Alternative currency"
 msgstr ""
@@ -156,9 +180,6 @@ msgstr "即座送金可能"
 
 msgid "Average confirmation time"
 msgstr "平均承認時間"
-
-msgid "BTC wallets"
-msgstr "ビットコインウォレット"
 
 msgid "Backup"
 msgstr "バックアップ"
@@ -289,9 +310,6 @@ msgstr ""
 msgid "Click to open Terms"
 msgstr ""
 
-msgid "Click to open the recovery tool"
-msgstr ""
-
 msgid "Click to pay"
 msgstr "クリックして支払う"
 
@@ -317,6 +335,9 @@ msgid "Confirm"
 msgstr "確認"
 
 msgid "Confirm &amp; Finish"
+msgstr ""
+
+msgid "Confirm to shift {{fromCoin}} to {{toCoin}}"
 msgstr ""
 
 msgid "Confirm your PIN"
@@ -568,6 +589,9 @@ msgstr "ダウンロード"
 msgid "Duplicate"
 msgstr ""
 
+msgid "Duplicate ( Bitcoin Cash )"
+msgstr ""
+
 msgid "Duplicating wallet..."
 msgstr "ウォレットを複製しています..."
 
@@ -602,6 +626,9 @@ msgid "Encrypt password needed"
 msgstr ""
 
 msgid "Encryption can protect your funds if this device is stolen or compromised by malicious software."
+msgstr ""
+
+msgid "Enter Two Factor for your BitPay account"
 msgstr ""
 
 msgid "Enter a new encrypt password"
@@ -724,6 +751,9 @@ msgstr "フォームを送信する事ができませんでした。時間をお
 msgid "Fetching BitPay Account..."
 msgstr "BitPay アカウントを取得..."
 
+msgid "Fetching BitPay Cards..."
+msgstr ""
+
 msgid "Fetching payment information..."
 msgstr ""
 
@@ -815,6 +845,9 @@ msgid "Help & Support"
 msgstr "ヘルプ＆サポート"
 
 msgid "Help & support"
+msgstr ""
+
+msgid "Help and support information is available at the website"
 msgstr ""
 
 msgid "Help and support information is available at the website."
@@ -997,6 +1030,9 @@ msgstr "少額の入力"
 msgid "Makes sense"
 msgstr "わかりました"
 
+msgid "Maximum amount allowed is {{max}}"
+msgstr ""
+
 msgid "Me"
 msgstr "自分"
 
@@ -1021,6 +1057,9 @@ msgstr ""
 msgid "Miner fee"
 msgstr ""
 
+msgid "Minimum amount required is {{min}}"
+msgstr ""
+
 msgid "Missing parameter"
 msgstr "不足しているパラメータ"
 
@@ -1042,7 +1081,7 @@ msgstr "資金を移動済み"
 msgid "Multiple recipients"
 msgstr "複数送金先"
 
-msgid "NOTE: To import a wallet from a 3rd party software, please go to Add Wallet > Create Wallet, and specify the Recovery Phrase there."
+msgid "NOTE: To import a wallet from a 3rd party software, please go to Add Wallet, Create Wallet, and specify the Recovery Phrase there."
 msgstr ""
 
 msgid "Name"
@@ -1117,17 +1156,14 @@ msgstr "ペーパーウォレットの出金を受け取るためのウォレッ
 msgid "No wallets available to use ShapeShift"
 msgstr ""
 
-msgid "No wallets eligible for Bitcoin Cash support"
-msgstr "ビットコインキャッシュ対応できるウォレットがありません。"
-
 msgid "No wallets with funds"
 msgstr ""
 
 msgid "Non BIP44 wallet"
 msgstr "非 BIP44 ウォレット"
 
-msgid "Non eligible BTC wallets"
-msgstr "非対応ビットコインウォレット"
+msgid "Non eligible BTC wallet"
+msgstr ""
 
 msgid "Normal"
 msgstr "通常"
@@ -1217,9 +1253,6 @@ msgid "Open Translation Community"
 msgstr "翻訳ページを開く"
 
 msgid "Open settings"
-msgstr ""
-
-msgid "Open the recovery tool"
 msgstr ""
 
 msgid "Open wallet"
@@ -1374,6 +1407,9 @@ msgstr ""
 
 msgid "Proposals"
 msgstr "提案"
+
+msgid "Purchase Amount is limited to {{limitPerDay}} {{currency}} per day"
+msgstr ""
 
 msgid "Purchase amount must be a value between 50 and 2000"
 msgstr "購入金額は 50〜2000 の間の値でなければなりません"
@@ -1588,6 +1624,9 @@ msgstr "全残高を送金"
 msgid "Sending transaction..."
 msgstr ""
 
+msgid "Sending {{amount}} {{unit}} from your {{name}} wallet"
+msgstr ""
+
 msgid "Sent"
 msgstr "送金済み"
 
@@ -1666,9 +1705,6 @@ msgid "Slide to pay"
 msgstr ""
 
 msgid "Slide to send"
-msgstr ""
-
-msgid "Some of your wallets are not eligible for Bitcoin Cash support. You can try to access BCH funds from these wallets using the recovery tool"
 msgstr ""
 
 msgid "Specify Recovery Phrase"
@@ -1794,6 +1830,9 @@ msgstr "このウォレットのビットコインの総残高"
 msgid "The transaction history and every new incoming transaction are cached in the app. This feature clean this up and synchronizes again from the server"
 msgstr ""
 
+msgid "There is a new version of {{nameCase}} available"
+msgstr ""
+
 msgid "There is an error in the form"
 msgstr "フォームにエラーがありました"
 
@@ -1832,6 +1871,9 @@ msgstr "宛先"
 
 msgid "To get started, you'll need to create a bitcoin wallet and get some bitcoin."
 msgstr "はじめに、ビットコインウォレットを作成し、ビットコインを入手する必要があります。"
+
+msgid "To {{reason}} you must first add your BitPay account - {{email}}"
+msgstr ""
 
 msgid "Top up in progress..."
 msgstr "残高補充処理中..."
@@ -2025,6 +2067,9 @@ msgstr "ウォレットの設定"
 msgid "Wallet already exists"
 msgstr "既存のウォレットです"
 
+msgid "Wallet already in {{nameCase}}"
+msgstr ""
+
 msgid "Wallet created"
 msgstr "ウォレットが作成されました"
 
@@ -2092,6 +2137,12 @@ msgid "We will confirm on the next screen."
 msgstr ""
 
 msgid "We'd love to do better. How could we improve your experience?"
+msgstr ""
+
+msgid "We're always looking for ways to improve {{appName}}. How could we improve your experience?"
+msgstr ""
+
+msgid "We're always looking for ways to improve {{appName}}. Is there anything we could do better?"
 msgstr ""
 
 msgid "Website"
@@ -2214,10 +2265,16 @@ msgstr ""
 msgid "preparing..."
 msgstr "準備中..."
 
+msgid "{{amountUnitStr}} Gift Card"
+msgstr ""
+
 msgid "{{appName}} depends on Bitcore Wallet Service (BWS) for blockchain information, networking and Copayer synchronization. The default configuration points to https://bws.bitpay.com (BitPay's public BWS instance)."
 msgstr ""
 
 msgid "{{btx.feeRateStr}} of the total amount"
+msgstr ""
+
+msgid "{{fee}} {{coin}} will be deducted for bitcoin networking fees."
 msgstr ""
 
 msgid "{{tx.feeRateStr}} of the total amount"
