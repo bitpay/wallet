@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { HomePage } from '../home/home';
 import { ReceivePage } from '../receive/receive';
 import { ScanPage } from '../scan/scan';
@@ -9,6 +9,7 @@ import { SettingsPage } from '../settings/settings';
   templateUrl: 'tabs.html'
 })
 export class TabsPage {
+  @ViewChild('tabs') tabs: any;
 
   homeRoot = HomePage;
   receiveRoot = ReceivePage;
@@ -16,7 +17,5 @@ export class TabsPage {
   sendRoot = SendPage;
   settingsRoot = SettingsPage;
 
-  constructor() {
-
-  }
+  constructor() {}
 }

@@ -135,13 +135,13 @@ export class CopayApp {
   private onAppLoad(readySource) {
     this.logger.info(
       'Platform ready (' +
-      readySource +
-      '): ' +
-      this.appProvider.info.nameCase +
-      ' - v' +
-      this.appProvider.info.version +
-      ' #' +
-      this.appProvider.info.commitHash
+        readySource +
+        '): ' +
+        this.appProvider.info.nameCase +
+        ' - v' +
+        this.appProvider.info.version +
+        ' #' +
+        this.appProvider.info.commitHash
     );
 
     if (this.platform.is('cordova')) {
@@ -168,7 +168,7 @@ export class CopayApp {
       // Check PIN or Fingerprint
       this.openLockModal();
     }
-    
+
     this.registerIntegrations();
     this.incomingDataRedirEvent();
     // Check Profile
@@ -202,7 +202,6 @@ export class CopayApp {
       if (this.isNodeWebkit()) {
         this.handleDeepLinksNW();
       }
-
     } else {
       this.logger.info('No profile exists.');
       this.profile.createProfile();
@@ -273,7 +272,8 @@ export class CopayApp {
 
   private incomingDataRedirEvent(): void {
     this.events.subscribe('IncomingDataRedir', nextView => {
-      this.nav.push(this.pageMap[nextView.name], nextView.params);
+      const tabNav = this.getSelectedTabNav();
+      tabNav.push(this.pageMap[nextView.name], nextView.params);
     });
   }
 
@@ -342,13 +342,20 @@ export class CopayApp {
   }
 
   private isNodeWebkit(): boolean {
-    let isNode = (typeof process !== "undefined" && typeof require !== "undefined");
+    let isNode =
+      typeof process !== 'undefined' && typeof require !== 'undefined';
     if (isNode) {
       try {
-        return (typeof (window as any).require('nw.gui') !== "undefined");
+        return typeof (window as any).require('nw.gui') !== 'undefined';
       } catch (e) {
         return false;
       }
     }
+  }
+
+  private getSelectedTabNav(): any {
+    return this.nav
+      .getActiveChildNavs()[0]
+      .viewCtrl.instance.tabs.getSelected();
   }
 }
