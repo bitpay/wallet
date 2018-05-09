@@ -55,8 +55,8 @@ page-tx-details {
     margin-top: 1rem;
   }
 
-  .container-to, .container-from {
-    .wallet, .payment-to {
+  .container-to, .container-from, .container-tx-id {
+    .wallet, .payment-to, .tx-id {
       @include row-flex;
       .icon-wallet {
         width: 25px;
@@ -74,6 +74,10 @@ page-tx-details {
         padding: 3px 8px;
         border: 1px solid color($colors, grey);
         border-radius: $icon-border-radius;
+      }
+      .id {
+        font-size: 12.5px;
+        color: color($colors, light-grey);
       }
     }
   }
