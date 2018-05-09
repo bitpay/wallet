@@ -1,36 +1,4 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { NavParams } from 'ionic-angular';
-import { AddressBookProvider } from '../../../providers/address-book/address-book';
-import { AppIdentityProvider } from '../../../providers/app-identity/app-identity';
-import { BitPayCardProvider } from '../../../providers/bitpay-card/bitpay-card';
-import { BitPayProvider } from '../../../providers/bitpay/bitpay';
-import { BwcErrorProvider } from '../../../providers/bwc-error/bwc-error';
-import { BwcProvider } from '../../../providers/bwc/bwc';
-import { ConfigProvider } from '../../../providers/config/config';
-import { DerivationPathHelperProvider } from '../../../providers/derivation-path-helper/derivation-path-helper';
-import { ExternalLinkProvider } from '../../../providers/external-link/external-link';
-import { FeeProvider } from '../../../providers/fee/fee';
-import { FeedbackProvider } from '../../../providers/feedback/feedback';
-import { FilterProvider } from '../../../providers/filter/filter';
-import { HomeIntegrationsProvider } from '../../../providers/home-integrations/home-integrations';
-import { IncomingDataProvider } from '../../../providers/incoming-data/incoming-data';
-import { LanguageProvider } from '../../../providers/language/language';
-import { Logger } from '../../../providers/logger/logger';
-import { NodeWebkitProvider } from '../../../providers/node-webkit/node-webkit';
-import { OnGoingProcessProvider } from '../../../providers/on-going-process/on-going-process';
-import { PayproProvider } from '../../../providers/paypro/paypro';
-import { PersistenceProvider } from '../../../providers/persistence/persistence';
-import { PopupProvider } from '../../../providers/popup/popup';
-import { ProfileProvider } from '../../../providers/profile/profile';
-import { PushNotificationsProvider } from '../../../providers/push-notifications/push-notifications';
-import { RateProvider } from '../../../providers/rate/rate';
-import { ReleaseProvider } from '../../../providers/release/release';
-import { ReplaceParametersProvider } from '../../../providers/replace-parameters/replace-parameters';
-import { ScanProvider } from '../../../providers/scan/scan';
-import { TimeProvider } from '../../../providers/time/time';
-import { TouchIdProvider } from '../../../providers/touchid/touchid';
-import { TxFormatProvider } from '../../../providers/tx-format/tx-format';
-import { WalletProvider } from '../../../providers/wallet/wallet';
 import { TestUtils } from '../../../test';
 import { ImportWalletPage } from './import-wallet';
 
@@ -41,51 +9,7 @@ describe('ImportWalletPage', () => {
 
   beforeEach(
     async(() => {
-      const mockWallet = {
-        name: 'Test Wallet',
-        cachedStatus: null,
-        credentials: { m: 1 },
-        status: {},
-        canSign: () => true,
-        isComplete: () => true,
-        isPrivKeyEncrypted: () => true
-      };
-      spyOn(ProfileProvider.prototype, 'getWallet').and.returnValue(mockWallet);
-      return TestUtils.configurePageTestingModule([ImportWalletPage], {
-        providers: [
-          AddressBookProvider,
-          AppIdentityProvider,
-          BitPayCardProvider,
-          BitPayProvider,
-          BwcProvider,
-          BwcErrorProvider,
-          ConfigProvider,
-          ExternalLinkProvider,
-          FeedbackProvider,
-          FeeProvider,
-          FilterProvider,
-          HomeIntegrationsProvider,
-          IncomingDataProvider,
-          LanguageProvider,
-          Logger,
-          NodeWebkitProvider,
-          OnGoingProcessProvider,
-          PayproProvider,
-          PersistenceProvider,
-          PopupProvider,
-          ProfileProvider,
-          PushNotificationsProvider,
-          RateProvider,
-          ReleaseProvider,
-          ScanProvider,
-          TimeProvider,
-          TouchIdProvider,
-          TxFormatProvider,
-          WalletProvider,
-          DerivationPathHelperProvider,
-          ReplaceParametersProvider
-        ]
-      }).then(testEnv => {
+      return TestUtils.configurePageTestingModule([ImportWalletPage]).then(testEnv => {
         fixture = testEnv.fixture;
         instance = testEnv.instance;
         testBed = testEnv.testBed;
