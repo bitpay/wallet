@@ -12,6 +12,8 @@ import { PersistenceProvider } from '../persistence/persistence';
 export class AmazonProvider {
   public credentials: any;
   public limitPerDay: number;
+  public country: string;
+  public currency: string;
 
   constructor(
     private http: HttpClient,
@@ -22,6 +24,7 @@ export class AmazonProvider {
   ) {
     this.logger.info('AmazonProvider initialized.');
     this.credentials = {};
+    this.setCountryParameters('usa');
     /*
     * Development: 'testnet'
     * Production: 'livenet'
@@ -31,16 +34,38 @@ export class AmazonProvider {
       this.credentials.NETWORK === 'testnet'
         ? 'https://test.bitpay.com'
         : 'https://bitpay.com';
-    this.limitPerDay = 2000;
   }
 
   public getNetwork() {
     return this.credentials.NETWORK;
   }
 
+  public setCountryParameters(country: string): void {
+    this.country = country;
+    switch (country) {
+      case 'japan':
+        this.currency = 'JPY';
+        this.limitPerDay = 200000;
+        break;
+      case 'usa':
+        this.currency = 'USD';
+        this.limitPerDay = 2000;
+      default:
+        break;
+    }
+  }
+
+  public getCountry(): string {
+    return this.country;
+  }
+
+  public getCurrency(): string {
+    return this.currency;
+  }
+
   public savePendingGiftCard(gc, opts, cb) {
     var network = this.getNetwork();
-    this.persistenceProvider.getAmazonGiftCards(network).then(oldGiftCards => {
+    this.persistenceProvider.getAmazonGiftCards(network, this.country).then((oldGiftCards) => {
       if (_.isString(oldGiftCards)) {
         oldGiftCards = JSON.parse(oldGiftCards);
       }
@@ -57,7 +82,7 @@ export class AmazonProvider {
       }
 
       inv = JSON.stringify(inv);
-      this.persistenceProvider.setAmazonGiftCards(network, inv);
+      this.persistenceProvider.setAmazonGiftCards(network, inv, this.country);
       return cb(null);
     });
   }
@@ -65,7 +90,7 @@ export class AmazonProvider {
   public getPendingGiftCards(cb) {
     var network = this.getNetwork();
     this.persistenceProvider
-      .getAmazonGiftCards(network)
+      .getAmazonGiftCards(network, this.country)
       .then(giftCards => {
         return cb(null, giftCards ? giftCards : null);
       })
@@ -86,16 +111,16 @@ export class AmazonProvider {
     this.http
       .post(this.credentials.BITPAY_API_URL + '/amazon-gift/pay', dataSrc)
       .subscribe(
-        (data: any) => {
-          this.logger.info('BitPay Create Invoice: SUCCESS');
-          return cb(null, data);
-        },
-        data => {
-          this.logger.error(
-            'BitPay Create Invoice: ERROR ' + data.error.message
-          );
-          return cb(data.error);
-        }
+      (data: any) => {
+        this.logger.info('BitPay Create Invoice: SUCCESS');
+        return cb(null, data);
+      },
+      data => {
+        this.logger.error(
+          'BitPay Create Invoice: ERROR ' + data.error.message
+        );
+        return cb(data.error);
+      }
       );
   }
 
@@ -103,14 +128,14 @@ export class AmazonProvider {
     this.http
       .get(this.credentials.BITPAY_API_URL + '/invoices/' + id)
       .subscribe(
-        (data: any) => {
-          this.logger.info('BitPay Get Invoice: SUCCESS');
-          return cb(null, data.data);
-        },
-        (data: any) => {
-          this.logger.error('BitPay Get Invoice: ERROR ' + data.error.message);
-          return cb(data.error.message);
-        }
+      (data: any) => {
+        this.logger.info('BitPay Get Invoice: SUCCESS');
+        return cb(null, data.data);
+      },
+      (data: any) => {
+        this.logger.error('BitPay Get Invoice: ERROR ' + data.error.message);
+        return cb(data.error.message);
+      }
       );
   }
 
@@ -124,23 +149,23 @@ export class AmazonProvider {
     this.http
       .post(this.credentials.BITPAY_API_URL + '/amazon-gift/redeem', dataSrc)
       .subscribe(
-        (data: any) => {
-          var status =
-            data.status == 'new'
+      (data: any) => {
+        var status =
+          data.status == 'new'
+            ? 'PENDING'
+            : data.status == 'paid'
               ? 'PENDING'
-              : data.status == 'paid'
-                ? 'PENDING'
-                : data.status;
-          data.status = status;
-          this.logger.info('Amazon.com Gift Card Create/Update: ' + status);
-          return cb(null, data);
-        },
-        (data: any) => {
-          this.logger.error(
-            'Amazon.com Gift Card Create/Update: ' + data.message
-          );
-          return cb(data);
-        }
+              : data.status;
+        data.status = status;
+        this.logger.info('Amazon.com Gift Card Create/Update: ' + status);
+        return cb(null, data);
+      },
+      (data: any) => {
+        this.logger.error(
+          'Amazon.com Gift Card Create/Update: ' + data.message
+        );
+        return cb(data);
+      }
       );
   }
 
@@ -154,14 +179,14 @@ export class AmazonProvider {
     this.http
       .post(this.credentials.BITPAY_API_URL + '/amazon-gift/cancel', dataSrc)
       .subscribe(
-        (data: any) => {
-          this.logger.info('Amazon.com Gift Card Cancel: SUCCESS');
-          return cb(null, data);
-        },
-        (data: any) => {
-          this.logger.error('Amazon.com Gift Card Cancel: ' + data.message);
-          return cb(data);
-        }
+      (data: any) => {
+        this.logger.info('Amazon.com Gift Card Cancel: SUCCESS');
+        return cb(null, data);
+      },
+      (data: any) => {
+        this.logger.error('Amazon.com Gift Card Cancel: ' + data.message);
+        return cb(data);
+      }
       );
   }
 
@@ -172,6 +197,13 @@ export class AmazonProvider {
       icon: 'assets/img/amazon/icon-amazon.svg',
       page: 'AmazonPage',
       show: !!this.configProvider.get().showIntegration['amazon']
+    });
+    this.homeIntegrationsProvider.register({
+      name: 'amazonJapan',
+      title: 'Amazon.co.jp Gift Cards',
+      icon: 'assets/img/amazon/icon-amazon.svg',
+      page: 'AmazonPage',
+      show: !!this.configProvider.get().showIntegration['amazonJapan']
     });
   }
 }

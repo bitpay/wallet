@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
-
+import { NavParams } from 'ionic-angular';
 import * as _ from 'lodash';
 
 // Providers
 import { ConfigProvider } from '../../../../providers/config/config';
+import { ExternalLinkProvider } from '../../../../providers/external-link/external-link';
 import { HomeIntegrationsProvider } from '../../../../providers/home-integrations/home-integrations';
 
 @Component({
@@ -11,17 +12,34 @@ import { HomeIntegrationsProvider } from '../../../../providers/home-integration
   templateUrl: 'amazon-settings.html'
 })
 export class AmazonSettingsPage {
-  private serviceName: string = 'amazon';
-  public showInHome: any;
+  private serviceName: string;
+
+  public country: string;
+  public pageTitle: string;
+  public showInHome: boolean;
   public service: any;
 
   constructor(
     private configProvider: ConfigProvider,
-    private homeIntegrationsProvider: HomeIntegrationsProvider
+    private externalLinkProvider: ExternalLinkProvider,
+    private homeIntegrationsProvider: HomeIntegrationsProvider,
+    private navParams: NavParams
   ) {
-    this.service = _.filter(this.homeIntegrationsProvider.get(), {
-      name: this.serviceName
-    });
+    // Possible countries: usa, japan
+    this.country = this.navParams.data.country ? this.navParams.data.country : 'usa';
+
+    switch (this.country) {
+      case 'usa':
+        this.serviceName = 'amazon';
+        this.pageTitle = 'Amazon.com Gift Cards';
+        break;
+      case 'japan':
+        this.serviceName = 'amazonJapan';
+        this.pageTitle = 'Amazon.co.jp Gift Cards';
+        break;
+    }
+
+    this.service = _.filter(this.homeIntegrationsProvider.get(), { name: this.serviceName });
     this.showInHome = !!this.service[0].show;
   }
 
@@ -34,5 +52,9 @@ export class AmazonSettingsPage {
       this.showInHome
     );
     this.configProvider.set(opts);
+  }
+
+  public openExternalLink(url: string) {
+    this.externalLinkProvider.open(url);
   }
 }

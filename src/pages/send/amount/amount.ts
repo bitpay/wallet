@@ -50,6 +50,7 @@ export class AmountPage {
   private unitDecimals: number;
   private zone: any;
 
+  public onlyIntegers: boolean;
   public alternativeUnit: string;
   public globalResult: string;
   public alternativeAmount: any;
@@ -95,6 +96,7 @@ export class AmountPage {
     this.email = this.navParams.data.email;
     this.color = this.navParams.data.color;
     this.fixedUnit = this.navParams.data.fixedUnit;
+    this.onlyIntegers = this.navParams.data.onlyIntegers ? this.navParams.data.onlyIntegers : false;
 
     this.showRecipient = true;
     this.showSendMax = false;
@@ -355,7 +357,7 @@ export class AmountPage {
   private processAmount(): void {
     let formatedValue = this.format(this.expression);
     let result = this.evaluate(formatedValue);
-    this.allowSend = _.isNumber(result) && +result > 0;
+    this.allowSend = this.onlyIntegers ? _.isNumber(result) && +result > 0 && Number.isInteger(+result) : _.isNumber(result) && +result > 0;
 
     if (_.isNumber(result)) {
       this.globalResult = this.isExpression(this.expression)
@@ -406,9 +408,9 @@ export class AmountPage {
     return parseFloat(
       this.rateProvider
         .toFiat(
-          val * this.unitToSatoshi,
-          this.fiatCode,
-          this.availableUnits[this.unitIndex].id
+        val * this.unitToSatoshi,
+        this.fiatCode,
+        this.availableUnits[this.unitIndex].id
         )
         .toFixed(2)
     );
@@ -480,9 +482,9 @@ export class AmountPage {
     this.processAmount();
     this.logger.debug(
       'Update unit coin @amount unit:' +
-        this.unit +
-        ' alternativeUnit:' +
-        this.alternativeUnit
+      this.unit +
+      ' alternativeUnit:' +
+      this.alternativeUnit
     );
   }
 

@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { ModalController, NavController, NavParams } from 'ionic-angular';
 import * as _ from 'lodash';
-import { Logger } from '../../../providers/logger/logger';
 
 // Pages
 import { AmountPage } from '../../send/amount/amount';
@@ -10,6 +9,7 @@ import { AmazonCardDetailsPage } from './amazon-card-details/amazon-card-details
 // Providers
 import { AmazonProvider } from '../../../providers/amazon/amazon';
 import { ExternalLinkProvider } from '../../../providers/external-link/external-link';
+import { Logger } from '../../../providers/logger/logger';
 import { PopupProvider } from '../../../providers/popup/popup';
 import { TimeProvider } from '../../../providers/time/time';
 
@@ -20,11 +20,14 @@ import { TimeProvider } from '../../../providers/time/time';
 export class AmazonPage {
   public network: string;
   public giftCards: any;
-
-  private updateGiftCard: boolean;
+  public country: string;
+  public pageTitle: string;
   public updatingPending: any;
   public card: any;
   public invoiceId: string;
+
+  private updateGiftCard: boolean;
+  private onlyIntegers: boolean;
 
   constructor(
     private amazonProvider: AmazonProvider,
@@ -35,7 +38,11 @@ export class AmazonPage {
     private navParams: NavParams,
     private popupProvider: PopupProvider,
     private timeProvider: TimeProvider
-  ) {}
+
+  ) {
+    this.country = this.navParams.data.country ? this.navParams.data.country : 'usa';
+    this.setCountryParameters(this.country);
+  }
 
   ionViewDidLoad() {
     this.logger.info('ionViewDidLoad AmazonPage');
@@ -68,6 +75,20 @@ export class AmazonPage {
         .catch((err: any) => {
           this.logger.error('Amazon: could not update gift cards', err);
         });
+    }
+  }
+
+  public setCountryParameters(country: string): void {
+    this.amazonProvider.setCountryParameters(country);
+    switch (country) {
+      case 'japan':
+        this.pageTitle = 'Amazon.co.jp Gift Cards';
+        this.onlyIntegers = true;
+        break;
+      case 'usa':
+        this.pageTitle = 'Amazon.com Gift Cards';
+        this.onlyIntegers = false;
+        break;
     }
   }
 
@@ -198,8 +219,9 @@ export class AmazonPage {
       case 'Amount':
         this.navCtrl.push(AmountPage, {
           nextPage: 'BuyAmazonPage',
-          currency: 'USD',
-          fixedUnit: true
+          currency: this.amazonProvider.getCurrency(),
+          fixedUnit: true,
+          onlyIntegers: this.onlyIntegers
         });
         break;
     }
