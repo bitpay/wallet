@@ -10,7 +10,8 @@
     <ion-item>
       <div class="amazon-title">
         <img src="assets/img/amazon/icon-amazon.svg">
-        <span>Amazon.com Gift Card</span>
+        <span *ngIf="country == 'usa'">Amazon.com Gift Card</span>
+        <span *ngIf="country == 'japan'">Amazon.co.jp Gift Card</span>
       </div>
       <div class="amount-label">
         <div class="amount">{{amountUnitStr}}</div>
@@ -73,13 +74,24 @@
         </ion-item>
       </div>
       <ion-item-divider></ion-item-divider>
-      <ion-item class="amazon-info">
+      <!-- USA -->
+      <ion-item class="amazon-info" *ngIf="country == 'usa'">
         *
         <a (click)="openExternalLink('http://amazon.com')">Amazon.com</a> is not a sponsor of this promotion. Except as required by law,
         <a (click)="openExternalLink('http://amazon.com')">Amazon.com</a> Gift Cards ("GCs") cannot be transferred for value or redeemed for cash. GCs may be used only for purchases of eligible goods at
         <a (click)="openExternalLink('http://amazon.com')">Amazon.com</a> or certain of its affiliated websites. For complete terms and conditions, see
         <a (click)="openExternalLink('https://www.amazon.com/gc-legal')">www.amazon.com/gc-legal</a>. GCs are issued by ACI Gift Cards, Inc., a Washington corporation. All Amazon &reg;, &trade; &amp; &copy; are IP of
         <a (click)="openExternalLink('http://amazon.com')">Amazon.com</a>, Inc. or its affiliates. No expiration date or service fees.
+      </ion-item>
+
+      <!-- Japan -->
+      <ion-item class="amazon-info" *ngIf="country == 'japan'">
+        *
+        <a (click)="openExternalLink('http://amazon.co.jp')">Amazon.co.jp</a> is not a sponsor of this promotion. Except as required by law,
+        <a (click)="openExternalLink('http://amazon.co.jp')">Amazon.co.jp</a> Gift Cards ("GCs") cannot be transferred for value or redeemed for cash. GCs may be used only for purchases of eligible goods at
+        <a (click)="openExternalLink('http://amazon.co.jp')">Amazon.co.jp</a> or certain of its affiliated websites. For complete terms and conditions, see
+        <a (click)="openExternalLink('https://www.amazon.com/gc-legal')">www.amazon.com/gc-legal</a>. GCs are issued by ACI Gift Cards, Inc., a Washington corporation. All Amazon &reg;, &trade; &amp; &copy; are IP of
+        <a (click)="openExternalLink('http://amazon.co.jp')">Amazon.co.jp</a>, Inc. or its affiliates. No expiration date or service fees.
       </ion-item>
     </ion-item-group>
   </ion-list>

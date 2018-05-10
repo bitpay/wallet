@@ -55,6 +55,7 @@ export class BuyAmazonPage {
   public network: string;
   public walletSelectorTitle: string;
   public isOpenSelector: boolean;
+  public country: string;
 
   // Platform info
   public isCordova: boolean;
@@ -86,6 +87,7 @@ export class BuyAmazonPage {
     this.amazonGiftCard = null;
     this.bitcoreCash = this.bwcProvider.getBitcoreCash();
     this.isCordova = this.platformProvider.isCordova;
+    this.country = this.amazonProvider.getCountry();
   }
 
   ionViewWillLeave() {

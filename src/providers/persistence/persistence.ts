@@ -12,6 +12,7 @@ const Keys = {
   ADDRESS_BOOK: network => 'addressbook-' + network,
   AGREE_DISCLAIMER: 'agreeDisclaimer',
   AMAZON_GIFT_CARDS: network => 'amazonGiftCards-' + network,
+  AMAZON_JAPAN_GIFT_CARDS: network => 'amazonJapanGiftCards-' + network,
   APP_IDENTITY: network => 'appIdentity-' + network,
   BACKUP: walletId => 'backup-' + walletId,
   BALANCE_CACHE: cardId => 'balanceCache-' + cardId,
@@ -351,16 +352,30 @@ export class PersistenceProvider {
       .then(() => this.removeWalletOrder(walletId));
   };
 
-  setAmazonGiftCards(network: string, gcs: any): Promise<void> {
-    return this.storage.set(Keys.AMAZON_GIFT_CARDS(network), gcs);
+  // Amazon Gift Cards
+
+  setAmazonGiftCards(network: string, gcs: any, country: string): Promise<void> {
+    if (country == 'japan') {
+      return this.storage.set(Keys.AMAZON_JAPAN_GIFT_CARDS(network), gcs);
+    } else {
+      return this.storage.set(Keys.AMAZON_GIFT_CARDS(network), gcs);
+    }
   };
 
-  getAmazonGiftCards(network: string): Promise<any> {
-    return this.storage.get(Keys.AMAZON_GIFT_CARDS(network));
+  getAmazonGiftCards(network: string, country: string): Promise<any> {
+    if (country == 'japan') {
+      return this.storage.get(Keys.AMAZON_JAPAN_GIFT_CARDS(network));
+    } else {
+      return this.storage.get(Keys.AMAZON_GIFT_CARDS(network));
+    }
   };
 
-  removeAmazonGiftCards(network: string): Promise<void> {
-    return this.storage.remove(Keys.AMAZON_GIFT_CARDS(network));
+  removeAmazonGiftCards(network: string, country: string): Promise<void> {
+    if (country == 'japan') {
+      return this.storage.remove(Keys.AMAZON_JAPAN_GIFT_CARDS(network));
+    } else {
+      return this.storage.remove(Keys.AMAZON_GIFT_CARDS(network));
+    }
   };
 
   setTxConfirmNotification(txid: string, val: any): Promise<void> {

@@ -18,6 +18,7 @@ export class AmazonCardDetailsPage {
 
   public updateGiftCard: boolean;
   public card: any;
+  public country: string;
 
   constructor(
     private amazonProvider: AmazonProvider,
@@ -30,6 +31,7 @@ export class AmazonCardDetailsPage {
     private viewCtrl: ViewController
   ) {
     this.card = this.navParams.data.card;
+    this.country = this.navParams.data.country ? this.navParams.data.country : 'usa';
   }
 
   ionViewDidLoad() {
