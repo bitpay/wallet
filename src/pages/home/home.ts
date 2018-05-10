@@ -570,7 +570,9 @@ export class HomePage {
     this.navCtrl.push(ActivityPage);
   }
 
-  public goTo(page): void {
+  public goTo(service: any): void {
+    let page: string = service.page;
+
     const pageMap = {
       AmazonPage,
       BitPayCardIntroPage,
@@ -579,7 +581,15 @@ export class HomePage {
       MercadoLibrePage,
       ShapeshiftPage
     };
-    this.navCtrl.push(pageMap[page]);
+
+    switch (service.name) {
+      case 'amazonJapan':
+        this.navCtrl.push(pageMap[page], { country: 'japan' });
+        break;
+      default:
+        this.navCtrl.push(pageMap[page]);
+        return;
+    }
   }
 
   public goToCard(cardId): void {

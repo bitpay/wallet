@@ -16,10 +16,11 @@ import { GiftCardNewData } from '../../gift-cards';
   templateUrl: 'amazon-card-details.html'
 })
 export class AmazonCardDetailsPage {
-  public updateGiftCard: boolean;
   public card;
   public isTimeExpired: boolean;
   private EXPIRY_TIME: number;
+  public updateGiftCard: boolean;
+  public country: string;
 
   constructor(
     private amazonProvider: AmazonProvider,
@@ -34,6 +35,9 @@ export class AmazonCardDetailsPage {
     this.EXPIRY_TIME = 15 * 60;
     this.card = this.navParams.data.card;
     this.checkExpiryTime();
+    this.country = this.navParams.data.country
+      ? this.navParams.data.country
+      : 'usa';
   }
 
   ionViewDidLoad() {

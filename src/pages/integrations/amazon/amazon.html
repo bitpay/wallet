@@ -1,6 +1,6 @@
 <ion-header>
   <ion-navbar>
-    <ion-title>Amazon.com Gift Cards</ion-title>
+    <ion-title>{{ pageTitle }}</ion-title>
   </ion-navbar>
 </ion-header>
 
@@ -13,11 +13,13 @@
       <div class="logo">
         <img src="assets/img/amazon/GCs-logo-cllb.png" alt="Amazon.com Gift Card">
       </div>
-      <div class="description" padding>Gift Cards are only redeemable on Amazon.com (US website). Cards never expire and can be redeemed towards millions
-        of items.
+      <div class="description" *ngIf="country == 'usa'" padding>Gift Cards are only redeemable on Amazon.com (US website). Cards never expire and can be redeemed towards millions of items.
+      </div>
+      <div class="description" *ngIf="country == 'japan'" padding>Gift Cards are only redeemable on Amazon.co.jp (Japan website). Cards never expire and can be redeemed towards millions of items.
       </div>
       <button *ngIf="!showOauthForm" ion-button outline class="button-standard" (click)="goTo('Amount')" no-low-fee>Buy a Gift Card</button>
-      <button *ngIf="!showOauthForm" ion-button clear small block color="dark" (click)="openExternalLink('https://www.amazon.com')">Visit Amazon.com &rarr;</button>
+      <button *ngIf="!showOauthForm && country == 'usa'" ion-button clear small block color="dark" (click)="openExternalLink('https://www.amazon.com')">Visit Amazon.com &rarr;</button>
+      <button *ngIf="!showOauthForm && country == 'japan'" ion-button clear small block color="dark" (click)="openExternalLink('https://www.amazon.co.jp')">Visit Amazon.co.jp &rarr;</button>
     </div>
   </div>
   <div class="container" *ngIf="giftCards">
@@ -27,8 +29,11 @@
 
     <div class="integration-giftCard-logo">
       <img src="assets/img/amazon/GCs-logo-cllb.png" alt="Amazon.com Gift Card">
-      <div class="subtitle">
+      <div *ngIf="country == 'usa'" class="subtitle">
         <b>Only</b> redeemable on www.amazon.com (US website).
+      </div>
+      <div *ngIf="country == 'japan'" class="subtitle">
+        <b>Only</b> redeemable on www.amazon.co.jp (Japan website).
       </div>
       <button ion-button no-low-fee (click)="goTo('Amount')">
         Buy Gift Card
@@ -61,15 +66,24 @@
       </button>
       <ion-item-divider></ion-item-divider>
     </ion-list>
-    <div *ngIf="giftCards" class="integration-giftCard-info">
+    <!-- USA -->
+    <div *ngIf="giftCards && country == 'usa'" class="integration-giftCard-info">
       *
       <a (click)="openExternalLink('http://amazon.com')">Amazon.com</a> is not a sponsor of this promotion. Except as required by law,
-      <a (click)="openExternalLink('http://amazon.com')">Amazon.com</a> Gift Cards ("GCs") cannot be transferred for value or redeemed for cash. GCs may be used only for purchases
-      of eligible goods at
+      <a (click)="openExternalLink('http://amazon.com')">Amazon.com</a> Gift Cards ("GCs") cannot be transferred for value or redeemed for cash. GCs may be used only for purchases of eligible goods at
       <a (click)="openExternalLink('http://amazon.com')">Amazon.com</a> or certain of its affiliated websites. For complete terms and conditions, see
-      <a (click)="openExternalLink('https://www.amazon.com/gc-legal')">www.amazon.com/gc-legal</a>. GCs are issued by ACI Gift Cards, Inc., a Washington corporation. All Amazon &reg;, &trade;
-      &amp; &copy; are IP of
+      <a (click)="openExternalLink('https://www.amazon.com/gc-legal')">www.amazon.com/gc-legal</a>. GCs are issued by ACI Gift Cards, Inc., a Washington corporation. All Amazon &reg;, &trade; &amp; &copy; are IP of
       <a (click)="openExternalLink('http://amazon.com')">Amazon.com</a>, Inc. or its affiliates. No expiration date or service fees.
+    </div>
+
+    <!-- Japan -->
+    <div *ngIf="giftCards && country == 'japan'" class="integration-giftCard-info">
+      *
+      <a (click)="openExternalLink('http://amazon.co.jp')">Amazon.co.jp</a> is not a sponsor of this promotion. Except as required by law,
+      <a (click)="openExternalLink('http://amazon.co.jp')">Amazon.co.jp</a> Gift Cards ("GCs") cannot be transferred for value or redeemed for cash. GCs may be used only for purchases of eligible goods at
+      <a (click)="openExternalLink('http://amazon.co.jp')">Amazon.co.jp</a> or certain of its affiliated websites. For complete terms and conditions, see
+      <a (click)="openExternalLink('https://www.amazon.com/gc-legal')">www.amazon.com/gc-legal</a>. GCs are issued by ACI Gift Cards, Inc., a Washington corporation. All Amazon &reg;, &trade; &amp; &copy; are IP of
+      <a (click)="openExternalLink('http://amazon.co.jp')">Amazon.co.jp</a>, Inc. or its affiliates. No expiration date or service fees.
     </div>
   </div>
 </ion-content>
