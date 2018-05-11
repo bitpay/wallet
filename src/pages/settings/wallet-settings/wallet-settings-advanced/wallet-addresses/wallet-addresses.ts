@@ -161,7 +161,11 @@ export class WalletAddressesPage {
     this.walletProvider.startScan(this.wallet);
     this.navCtrl.popToRoot({ animate: false }).then(() => {
       this.navCtrl.parent.select(0);
-      this.navCtrl.push(WalletDetailsPage, { walletId: this.wallet.credentials.walletId });
+
+      // Fixes mobile navigation
+      setTimeout(() => {
+        this.navCtrl.push(WalletDetailsPage, { walletId: this.wallet.credentials.walletId });
+      }, 200);
     });
   }
 }
