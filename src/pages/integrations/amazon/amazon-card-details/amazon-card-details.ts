@@ -21,6 +21,8 @@ export class AmazonCardDetailsPage {
   private EXPIRY_TIME: number;
   public updateGiftCard: boolean;
   public country: string;
+  public currency: string;
+  public redeemAmazonUrl: string;
 
   constructor(
     private amazonProvider: AmazonProvider,
@@ -38,6 +40,9 @@ export class AmazonCardDetailsPage {
     this.country = this.navParams.data.country
       ? this.navParams.data.country
       : 'usa';
+    this.country = this.amazonProvider.getCountry();
+    this.currency = this.amazonProvider.getCurrency();
+    this.redeemAmazonUrl = this.amazonProvider.getRedeemAmazonUrl();
   }
 
   ionViewDidLoad() {

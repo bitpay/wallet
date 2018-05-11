@@ -14,6 +14,7 @@ export class AmazonProvider {
   public limitPerDay: number;
   public country: string;
   public currency: string;
+  public redeemAmazonUrl: string;
 
   constructor(
     private http: HttpClient,
@@ -46,10 +47,12 @@ export class AmazonProvider {
       case 'japan':
         this.currency = 'JPY';
         this.limitPerDay = 200000;
+        this.redeemAmazonUrl = 'https://www.amazon.co.jp/gc/redeem?claimCode=';
         break;
       case 'usa':
         this.currency = 'USD';
         this.limitPerDay = 2000;
+        this.redeemAmazonUrl = 'https://www.amazon.com/gc/redeem?claimCode=';
       default:
         break;
     }
@@ -61,6 +64,10 @@ export class AmazonProvider {
 
   public getCurrency(): string {
     return this.currency;
+  }
+
+  public getRedeemAmazonUrl(): string {
+    return this.redeemAmazonUrl;
   }
 
   public savePendingGiftCard(gc, opts, cb) {
@@ -94,7 +101,7 @@ export class AmazonProvider {
     this.persistenceProvider
       .getAmazonGiftCards(network, this.country)
       .then(giftCards => {
-        return cb(null, giftCards ? giftCards : null);
+        return cb(null, giftCards && !_.isEmpty(giftCards) ? giftCards : null);
       })
       .catch(err => {
         return cb(err);
