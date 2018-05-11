@@ -323,6 +323,15 @@ export class BitPayCardTopUpPage {
     });
   }
 
+  private toFixedTrunc(value, n): any {
+    const v = value.toString().split('.');
+    if (n <= 0) return v[0];
+    let f = v[1] || '';
+    if (f.length > n) return `${v[0]}.${f.substr(0,n)}`;
+    while (f.length < n) f += '0';
+    return `${v[0]}.${f}`
+  }
+
   private calculateAmount(wallet: any): Promise<any> {
     let COIN = wallet.coin.toUpperCase();
     return new Promise((resolve, reject) => {
@@ -340,6 +349,9 @@ export class BitPayCardTopUpPage {
 
           let maxAmount = Number((maxValues.amount / 100000000).toFixed(8));
 
+          // Round to 6 digits
+          maxAmount = this.toFixedTrunc(maxAmount, 6);
+
           this.createInvoice({
             amount: maxAmount,
             currency: wallet.coin.toUpperCase(),
@@ -348,14 +360,15 @@ export class BitPayCardTopUpPage {
 
             // Check if BTC or BCH is enabled in this account
             if (!this.isCryptoCurrencySupported(wallet, inv)) {
-              let msg = this.translate.instant('Top-up with this cryptocurrency is not enabled');
-              this.showErrorAndBack(null, msg);
-              return;
+              return reject({
+                message: this.translate.instant('Top-up with this cryptocurrency is not enabled')
+              });
             }
 
             inv['minerFees'][COIN]['totalFee'] = inv.minerFees[COIN].totalFee || 0;
             let invoiceFeeSat = inv.minerFees[COIN].totalFee;
-            let newAmountSat = maxValues.amount - invoiceFeeSat;
+            let maxAmountSat = Number((maxAmount * 100000000).toFixed(0));
+            let newAmountSat = maxAmountSat - invoiceFeeSat;
 
             if (newAmountSat <= 0) {
               return reject({
@@ -364,6 +377,8 @@ export class BitPayCardTopUpPage {
             }
 
             return resolve({ amount: newAmountSat, currency: 'sat' });
+          }).catch((err) => {
+            return reject(err);
           });
         }).catch((err) => {
           return reject({
