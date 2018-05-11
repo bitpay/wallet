@@ -660,7 +660,7 @@ export class ConfirmPage {
   }
 
   public showDescriptionPopup(tx) {
-    let message = this.translate.instant('Add description');
+    let message = this.translate.instant('Add Memo');
     let opts = {
       defaultText: tx.description
     };

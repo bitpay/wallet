@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
 import { NavController, NavParams } from 'ionic-angular';
 import { Logger } from '../../../providers/logger/logger';
 
@@ -11,6 +12,7 @@ import { ConfigProvider } from '../../../providers/config/config';
 import { ExternalLinkProvider } from '../../../providers/external-link/external-link';
 import { FeedbackProvider } from '../../../providers/feedback/feedback';
 import { PlatformProvider } from '../../../providers/platform/platform';
+import { ReplaceParametersProvider } from '../../../providers/replace-parameters/replace-parameters';
 
 // pages
 import { FeedbackCompletePage } from '../feedback-complete/feedback-complete';
@@ -25,11 +27,13 @@ import * as _ from 'lodash';
 export class FeedbackPage {
 
   public score: number;
-  public appName: string;
+  public subtitle: string;
+  public subsubtitle: string;
 
   private isAndroid: boolean;
   private isIOS: boolean;
   private config: any;
+  private appName: string;
 
   constructor(
     private platformProvider: PlatformProvider,
@@ -40,13 +44,17 @@ export class FeedbackPage {
     private navCtrl: NavController,
     private logger: Logger,
     private externalLinkProvider: ExternalLinkProvider,
-    private device: Device
+    private device: Device,
+    private replaceParametersProvider: ReplaceParametersProvider,
+    private translate: TranslateService
   ) {
     this.score = this.navParams.data.score;
-    this.appName = this.appProvider.info.nameCase;
     this.isAndroid = this.platformProvider.isAndroid;
     this.isIOS = this.platformProvider.isIOS;
     this.config = this.configProvider.get();
+    this.appName = this.appProvider.info.nameCase;
+    this.subtitle = this.replaceParametersProvider.replace(this.translate.instant("5-star ratings help us get {{appName}} into more hands, and more users means more resources can be committed to the app!"), { appName: this.appName });
+    this.subsubtitle = this.replaceParametersProvider.replace(this.translate.instant("Would you be willing to rate {{appName}} in the app store?"), { appName: this.appName });
   }
 
 
