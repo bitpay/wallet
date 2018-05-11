@@ -1,6 +1,6 @@
 import { Component } from "@angular/core";
 import { TranslateService } from '@ngx-translate/core';
-import { Events, NavController, NavParams } from 'ionic-angular';
+import { App, Events, NavController, NavParams } from 'ionic-angular';
 import * as lodash from 'lodash';
 import { Logger } from "../../../../../providers/logger/logger";
 
@@ -14,6 +14,7 @@ import { ProfileProvider } from '../../../../../providers/profile/profile';
 import { PushNotificationsProvider } from "../../../../../providers/push-notifications/push-notifications";
 import { TxFormatProvider } from "../../../../../providers/tx-format/tx-format";
 import { WalletProvider } from "../../../../../providers/wallet/wallet";
+import { TabsPage } from "../../../../tabs/tabs";
 
 @Component({
   selector: 'page-bitcoin-cash',
@@ -28,6 +29,7 @@ export class BitcoinCashPage {
   public error: any;
 
   constructor(
+    private app: App,
     private navCtrl: NavController,
     private walletProvider: WalletProvider,
     private profileProvider: ProfileProvider,
@@ -167,9 +169,7 @@ export class BitcoinCashPage {
           }
 
           this.events.publish('status:updated');
-          this.navCtrl.popToRoot({ animate: false }).then(() => {
-            this.navCtrl.parent.select(0);
-          });
+          this.app.getRootNavs()[0].setRoot(TabsPage);
         });
       }).catch((err) => {
         this.onGoingProcessProvider.clear();

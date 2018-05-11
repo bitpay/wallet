@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { Events, NavController, NavParams } from 'ionic-angular';
+import { App, Events, NavController, NavParams } from 'ionic-angular';
 
 // Pages
 import { WalletDetailsPage } from '../../../pages/wallet-details/wallet-details';
@@ -15,6 +15,7 @@ import { PopupProvider } from '../../../providers/popup/popup';
 import { ProfileProvider } from '../../../providers/profile/profile';
 import { PushNotificationsProvider } from '../../../providers/push-notifications/push-notifications';
 import { WalletProvider } from '../../../providers/wallet/wallet';
+import { TabsPage } from '../../tabs/tabs';
 
 @Component({
   selector: 'page-copayers',
@@ -31,6 +32,7 @@ export class CopayersPage {
   public secret: any;
 
   constructor(
+    private app: App,
     private appProvider: AppProvider,
     private bwcErrorProvider: BwcErrorProvider,
     private events: Events,
@@ -100,9 +102,7 @@ export class CopayersPage {
       this.onGoingProcessProvider.clear();
 
       this.pushNotificationsProvider.unsubscribe(this.wallet);
-      this.navCtrl.popToRoot().then(() => {
-        this.navCtrl.parent.select(0);
-      });
+      this.app.getRootNavs()[0].setRoot(TabsPage);
     }).catch((err: any) => {
       this.onGoingProcessProvider.clear();
       let errorText = this.translate.instant('Error');

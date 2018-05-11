@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController } from 'ionic-angular';
+import { App, NavController } from 'ionic-angular';
 import { Logger } from '../../../../providers/logger/logger';
 
 import * as _ from 'lodash';
@@ -9,6 +9,7 @@ import { ConfigProvider } from '../../../../providers/config/config';
 import { GlideraProvider } from '../../../../providers/glidera/glidera';
 import { HomeIntegrationsProvider } from '../../../../providers/home-integrations/home-integrations';
 import { PopupProvider } from '../../../../providers/popup/popup';
+import { TabsPage } from '../../../tabs/tabs';
 
 @Component({
   selector: 'page-glidera-settings',
@@ -22,6 +23,7 @@ export class GlideraSettingsPage {
   public account: any;
 
   constructor(
+    private app: App,
     private navCtrl: NavController,
     private popupProvider: PopupProvider,
     private logger: Logger,
@@ -71,9 +73,7 @@ export class GlideraSettingsPage {
     ).then((res) => {
       if (res) {
         this.glideraProvider.remove();
-        this.navCtrl.popToRoot({ animate: false }).then(() => {
-          this.navCtrl.parent.select(0);
-        });
+        this.app.getRootNavs()[0].setRoot(TabsPage);
       }
     });
   }

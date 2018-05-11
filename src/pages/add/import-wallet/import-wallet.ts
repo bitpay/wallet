@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
-import { Events, NavController, NavParams } from 'ionic-angular';
+import { App, Events, NavController, NavParams } from 'ionic-angular';
 import { Logger } from '../../../providers/logger/logger';
 
 // Pages
@@ -23,7 +23,6 @@ import { WalletProvider } from '../../../providers/wallet/wallet';
   templateUrl: 'import-wallet.html'
 })
 export class ImportWalletPage {
-
   private derivationPathByDefault: string;
   private derivationPathForTestnet: string;
   private importForm: FormGroup;
@@ -31,7 +30,7 @@ export class ImportWalletPage {
   private defaults: any;
   private errors: any;
   private prettyFileName: string;
-
+  
   public importErr: boolean;
   public fromOnboarding: boolean;
   public formFile: any;
@@ -43,8 +42,9 @@ export class ImportWalletPage {
   public file: File;
   public testnetEnabled: boolean;
   public code: any;
-
+  
   constructor(
+    private app: App,
     private navCtrl: NavController,
     private navParams: NavParams,
     private form: FormBuilder,
@@ -221,9 +221,7 @@ export class ImportWalletPage {
         this.navCtrl.popToRoot();
       }
       else {
-        this.navCtrl.popToRoot().then(() => {
-          this.navCtrl.parent.select(0);
-        });
+        this.app.getRootNavs()[0].setRoot(TabsPage);
       }
     }).catch((err: any) => {
       this.logger.error('Import: could not updateRemotePreferences', err);
