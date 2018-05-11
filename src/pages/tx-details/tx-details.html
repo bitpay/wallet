@@ -126,6 +126,15 @@
       </div>
     </button>
 
+    <ion-item class="container-tx-id">
+      <span translate>Transaction ID</span>
+      <div class="tx-id">
+        <div class="ellipsis id" copy-to-clipboard="{{ btx.txid }}">
+          <span>{{ btx.txid }}</span>
+        </div>
+      </div>
+    </ion-item>
+
     <ion-item *ngIf="txsUnsubscribedForNotifications">
       <ion-label>{{'Notify me if confirmed' | translate}}</ion-label>
       <ion-toggle checked="false" *ngIf="!btx.confirmations || btx.confirmations == 0" [(ngModel)]="txNotification.value" (ionChange)="txConfirmNotificationChange()"></ion-toggle>
