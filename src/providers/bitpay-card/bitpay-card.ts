@@ -313,10 +313,11 @@ export class BitPayCardProvider {
           return cb(this._setError('Card not found'));
 
         this.bitPayProvider.post('/api/v2/' + card.token, json, (res) => {
-          this.logger.info('BitPay TopUp: SUCCESS');
           if (res.error) {
+            this.logger.error('BitPay TopUp: With Errors');
             return cb(res.error);
           } else {
+            this.logger.info('BitPay TopUp: SUCCESS');
             return cb(null, res.data.invoice);
           }
         }, (res) => {
