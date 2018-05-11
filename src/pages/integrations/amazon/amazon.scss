@@ -2,6 +2,9 @@ page-amazon {
   .container {
     height: 100%;
   }
+  .white-background {
+    background-color: white;
+  }
   .center-header {
     height: 100%;
     display: flex;
@@ -12,8 +15,11 @@ page-amazon {
     .logo {
       display: inline-block;
       margin-bottom: 1em;
-      img {
+      .usa-logo {
         max-width: 170px;
+      }
+      .japan-logo {
+        max-width: 240px;
       }
     }
     .description {

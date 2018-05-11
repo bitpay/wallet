@@ -173,7 +173,7 @@ export class BuyAmazonPage {
     });
   }
 
-  private showError = function(title: string, msg: any): Promise<any> {
+  private showError = function (title: string, msg: any): Promise<any> {
     return new Promise(resolve => {
       if (this.isCordova) this.slideButton.isConfirmed(false);
       title = title || this.translate.instant('Error');
@@ -604,12 +604,13 @@ export class BuyAmazonPage {
       { showBackdrop: true, enableBackdropDismiss: false }
     );
     modal.present();
+
     modal.onDidDismiss(async () => {
       await this.navCtrl.popToRoot({ animate: false });
       await this.navCtrl.parent.select(0);
       await this.navCtrl.push(
         AmazonPage,
-        { invoiceId: this.invoiceId },
+        { invoiceId: this.invoiceId, country: this.country },
         { animate: false }
       );
     });

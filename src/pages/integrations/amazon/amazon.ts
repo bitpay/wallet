@@ -25,6 +25,7 @@ export class AmazonPage {
   public updatingPending: any;
   public card: any;
   public invoiceId: string;
+  public currency: string;
 
   private updateGiftCard: boolean;
   private onlyIntegers: boolean;
@@ -80,6 +81,7 @@ export class AmazonPage {
 
   public setCountryParameters(country: string): void {
     this.amazonProvider.setCountryParameters(country);
+    this.currency = this.amazonProvider.getCurrency();
     switch (country) {
       case 'japan':
         this.pageTitle = 'Amazon.co.jp Gift Cards';
