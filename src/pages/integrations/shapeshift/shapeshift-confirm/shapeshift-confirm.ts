@@ -254,29 +254,6 @@ export class ShapeshiftConfirmPage {
     });
   }
 
-  // private setFiatTotalAmount(amountSat: number, feeSat: number, withdrawalSat: number): Promise<void> {
-  //   return this.satToFiat(this.toWallet.coin, withdrawalSat, this.currencyIsoCode).then((w: any) => {
-  //     this.fiatWithdrawal = Number(w);
-  //     return this.satToFiat(this.fromWallet.coin, amountSat, this.currencyIsoCode);
-  //   }).then((a: any) => {
-  //     this.fiatAmount = Number(a);
-  //     return this.satToFiat(this.fromWallet.coin, feeSat, this.currencyIsoCode);
-  //   }).then((i: any) => {
-  //     this.fiatFee = Number(i);
-  //     this.fiatTotalAmount = this.fiatAmount + this.fiatFee;
-  //   });
-  // }
-
-  // private async setFiatTotalAmount(amountSat: number, feeSat: number, withdrawalSat: number): Promise<void> {
-  //   const w = await this.satToFiat(this.toWallet.coin, withdrawalSat, this.currencyIsoCode);
-  //   this.fiatWithdrawal = Number(w);
-  //   const a = await this.satToFiat(this.fromWallet.coin, amountSat, this.currencyIsoCode);
-  //   this.fiatAmount = Number(a);
-  //   const i = await this.satToFiat(this.fromWallet.coin, feeSat, this.currencyIsoCode);
-  //   this.fiatFee = Number(i);
-  //   this.fiatTotalAmount = this.fiatAmount + this.fiatFee;
-  // }
-
   private saveShapeshiftData(): void {
     let address = this.shapeInfo.deposit;
     let withdrawal = this.shapeInfo.withdrawal;
