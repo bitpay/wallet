@@ -41,10 +41,7 @@ export class AmazonPage {
     private popupProvider: PopupProvider,
     private timeProvider: TimeProvider
   ) {
-    this.country = this.navParams.data.country
-      ? this.navParams.data.country
-      : 'usa';
-    this.setCountryParameters(this.country);
+    this.setCountryParameters(this.navParams.data.country);
   }
 
   ionViewDidLoad() {
@@ -81,15 +78,16 @@ export class AmazonPage {
     }
   }
 
-  public setCountryParameters(country: string): void {
+  public setCountryParameters(country?: string): void {
     this.amazonProvider.setCountryParameters(country);
     this.currency = this.amazonProvider.getCurrency();
-    switch (country) {
+    this.country = this.amazonProvider.getCountry();
+    switch (this.country) {
       case 'japan':
         this.pageTitle = 'Amazon.co.jp Gift Cards';
         this.onlyIntegers = true;
         break;
-      case 'usa':
+      default:
         this.pageTitle = 'Amazon.com Gift Cards';
         this.onlyIntegers = false;
         break;

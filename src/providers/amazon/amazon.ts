@@ -15,6 +15,7 @@ export class AmazonProvider {
   public country: string;
   public currency: string;
   public redeemAmazonUrl: string;
+  public amazonNetwork: string;
 
   constructor(
     private http: HttpClient,
@@ -25,7 +26,6 @@ export class AmazonProvider {
   ) {
     this.logger.info('AmazonProvider initialized.');
     this.credentials = {};
-    this.setCountryParameters('usa');
     /*
     * Development: 'testnet'
     * Production: 'livenet'
@@ -35,25 +35,28 @@ export class AmazonProvider {
       this.credentials.NETWORK === 'testnet'
         ? 'https://test.bitpay.com'
         : 'https://bitpay.com';
+    this.setCountryParameters();
   }
 
-  public getNetwork() {
+  public getNetwork(): string {
     return this.credentials.NETWORK;
   }
 
-  public setCountryParameters(country: string): void {
-    this.country = country;
+  public setCountryParameters(country?: string): void {
     switch (country) {
       case 'japan':
+        this.country = 'japan';
         this.currency = 'JPY';
         this.limitPerDay = 200000;
         this.redeemAmazonUrl = 'https://www.amazon.co.jp/gc/redeem?claimCode=';
+        this.amazonNetwork = this.getNetwork() + '-japan';
         break;
-      case 'usa':
+      default: // For USA
+        this.country = 'usa';
         this.currency = 'USD';
         this.limitPerDay = 2000;
         this.redeemAmazonUrl = 'https://www.amazon.com/gc/redeem?claimCode=';
-      default:
+        this.amazonNetwork = this.getNetwork();
         break;
     }
   }
@@ -71,6 +74,7 @@ export class AmazonProvider {
   }
 
   public savePendingGiftCard(gc, opts, cb) {
+<<<<<<< HEAD
     var network = this.getNetwork();
     this.persistenceProvider
       .getAmazonGiftCards(network, this.country)
@@ -94,12 +98,33 @@ export class AmazonProvider {
         this.persistenceProvider.setAmazonGiftCards(network, inv, this.country);
         return cb(null);
       });
+=======
+    this.persistenceProvider.getAmazonGiftCards(this.amazonNetwork).then((oldGiftCards) => {
+      if (_.isString(oldGiftCards)) {
+        oldGiftCards = JSON.parse(oldGiftCards);
+      }
+      if (_.isString(gc)) {
+        gc = JSON.parse(gc);
+      }
+      var inv = oldGiftCards || {};
+      inv[gc.invoiceId] = gc;
+      if (opts && (opts.error || opts.status)) {
+        inv[gc.invoiceId] = _.assign(inv[gc.invoiceId], opts);
+      }
+      if (opts && opts.remove) {
+        delete inv[gc.invoiceId];
+      }
+
+      inv = JSON.stringify(inv);
+      this.persistenceProvider.setAmazonGiftCards(this.amazonNetwork, inv);
+      return cb(null);
+    });
+>>>>>>> Refactor country parameter
   }
 
   public getPendingGiftCards(cb) {
-    var network = this.getNetwork();
     this.persistenceProvider
-      .getAmazonGiftCards(network, this.country)
+      .getAmazonGiftCards(this.amazonNetwork)
       .then(giftCards => {
         return cb(null, giftCards && !_.isEmpty(giftCards) ? giftCards : null);
       })

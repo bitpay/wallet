@@ -18,7 +18,6 @@ const Keys = {
   ADDRESS_BOOK: network => 'addressbook-' + network,
   AGREE_DISCLAIMER: 'agreeDisclaimer',
   AMAZON_GIFT_CARDS: network => 'amazonGiftCards-' + network,
-  AMAZON_JAPAN_GIFT_CARDS: network => 'amazonJapanGiftCards-' + network,
   APP_IDENTITY: network => 'appIdentity-' + network,
   BACKUP: walletId => 'backup-' + walletId,
   BALANCE_CACHE: cardId => 'balanceCache-' + cardId,

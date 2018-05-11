@@ -25,18 +25,16 @@ export class AmazonSettingsPage {
     private navParams: NavParams
   ) {
     // Possible countries: usa, japan
-    this.country = this.navParams.data.country
-      ? this.navParams.data.country
-      : 'usa';
-
-    switch (this.country) {
-      case 'usa':
-        this.serviceName = 'amazon';
-        this.pageTitle = 'Amazon.com Gift Cards';
-        break;
+    switch (this.navParams.data.country) {
       case 'japan':
+        this.country = 'japan';
         this.serviceName = 'amazonJapan';
         this.pageTitle = 'Amazon.co.jp Gift Cards';
+        break;
+      default:
+        this.country = 'usa';
+        this.serviceName = 'amazon';
+        this.pageTitle = 'Amazon.com Gift Cards';
         break;
     }
 
