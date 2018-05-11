@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
 import { NavController, NavParams, ViewController } from 'ionic-angular';
 import { Logger } from '../../../providers/logger/logger';
 
@@ -10,6 +11,7 @@ import { AppProvider } from '../../../providers/app/app';
 import { ConfigProvider } from '../../../providers/config/config';
 import { PersistenceProvider } from '../../../providers/persistence/persistence';
 import { PlatformProvider } from '../../../providers/platform/platform';
+import { ReplaceParametersProvider } from '../../../providers/replace-parameters/replace-parameters';
 
 // pages
 import { HomePage } from '../../home/home';
@@ -45,14 +47,16 @@ export class FeedbackCompletePage {
     private persistenceProvider: PersistenceProvider,
     private socialSharing: SocialSharing,
     private appProvider: AppProvider,
-    private configProvider: ConfigProvider
+    private configProvider: ConfigProvider,
+    private replaceParametersProvider: ReplaceParametersProvider,
+    private translate: TranslateService
   ) {
     this.score = this.navParams.data.score;
     this.skipped = this.navParams.data.skipped;
     this.rated = this.navParams.data.rated;
     this.fromSettings = this.navParams.data.fromSettings;
     this.isCordova = this.platformProvider.isCordova;
-    this.title = "Share " + this.appProvider.info.nameCase;
+    this.title = this.replaceParametersProvider.replace(this.translate.instant("Share {{appName}}"), { appName: this.appProvider.info.nameCase });
     let defaults = this.configProvider.getDefaults();
     this.downloadUrl = this.appProvider.info.name == 'copay' ? defaults.download.copay.url : defaults.download.bitpay.url;
     if (!this.fromSettings) {

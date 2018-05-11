@@ -41,8 +41,8 @@ export class SearchTxModalPage {
     this.wallet = this.navParams.data.wallet;
   }
 
-  public close(): void {
-    this.viewCtrl.dismiss();
+  public close(txid: string): void {
+    this.viewCtrl.dismiss({ txid });
   }
 
   public updateSearchInput(search: string): void {
@@ -120,9 +120,9 @@ export class SearchTxModalPage {
   public showHistory(): void {
     this.txHistorySearchResults = this.filteredTxHistory
       ? this.filteredTxHistory.slice(
-          0,
-          (this.currentTxHistoryPage + 1) * this.HISTORY_SHOW_LIMIT
-        )
+        0,
+        (this.currentTxHistoryPage + 1) * this.HISTORY_SHOW_LIMIT
+      )
       : [];
     this.txHistoryShowMore =
       this.filteredTxHistory.length > this.txHistorySearchResults.length;
@@ -134,12 +134,5 @@ export class SearchTxModalPage {
 
   public createdWithinPastDay(time: any): boolean {
     return this.timeProvider.withinPastDay(time);
-  }
-
-  public goToTxDetails(tx: any): void {
-    this.navCtrl.push(TxDetailsPage, {
-      walletId: this.wallet.credentials.walletId,
-      txid: tx.txid
-    });
   }
 }

@@ -7,6 +7,7 @@ import { Logger } from '../../../providers/logger/logger';
 import { AppProvider } from '../../../providers/app/app';
 import { PersistenceProvider } from '../../../providers/persistence/persistence';
 import { PlatformProvider } from '../../../providers/platform/platform';
+import { ReplaceParametersProvider } from "../../../providers/replace-parameters/replace-parameters";
 
 // pages
 import { FeedbackPage } from '../../../pages/feedback/feedback/feedback';
@@ -18,9 +19,9 @@ import { SendFeedbackPage } from '../../../pages/feedback/send-feedback/send-fee
 })
 export class FeedbackCardPage {
 
-  public appName: string;
   public score: number;
   public button_title: string;
+  public feedbackCardTitle: string;
 
   private isShowRateCard: boolean = false;
   private isCordova: boolean;
@@ -32,11 +33,13 @@ export class FeedbackCardPage {
     private persistenceProvider: PersistenceProvider,
     private events: Events,
     private translate: TranslateService,
-    private platformProvider: PlatformProvider
+    private platformProvider: PlatformProvider,
+    private replaceParametersProvider: ReplaceParametersProvider
   ) {
-    this.appName = this.appProvider.info.nameCase;
     this.score = 0;
     this.isCordova = this.platformProvider.isCordova;
+    let appName = this.appProvider.info.nameCase;
+    this.feedbackCardTitle = this.replaceParametersProvider.replace(this.translate.instant('How do you like {{appName}}?'), { appName });
   }
 
   public setShowRateCard(value) {

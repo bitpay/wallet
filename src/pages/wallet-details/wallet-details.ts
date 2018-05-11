@@ -157,7 +157,7 @@ export class WalletDetailsPage {
     this.updateTxHistoryError = false;
     this.updatingTxHistoryProgress = 0;
 
-    let progressFn = function(txs, newTxs) {
+    let progressFn = function (txs, newTxs) {
       if (newTxs > 5) this.thistory = null;
       this.updatingTxHistoryProgress = newTxs;
     }.bind(this);
@@ -332,5 +332,12 @@ export class WalletDetailsPage {
       { showBackdrop: false, enableBackdropDismiss: true }
     );
     modal.present();
+    modal.onDidDismiss((data: any) => {
+      if (!data || !data.txid) return;
+      this.navCtrl.push(TxDetailsPage, {
+        walletId: this.wallet.credentials.walletId,
+        txid: data.txid
+      });
+    });
   }
 }
