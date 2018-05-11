@@ -229,7 +229,7 @@ export class BuyCoinbasePage {
             else {
               this._processBuyOrder(b);
             }
-          }, 8000);
+          }, 10000);
         });
       });
     });

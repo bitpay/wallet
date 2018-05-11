@@ -137,7 +137,7 @@ export class CoinbaseProvider {
     try {
       if (data && data.errors) errData = data.errors;
       else if (data && data.error) errData = data.error_description;
-      else return 'Unknown error';
+      else return JSON.stringify(data);
 
       if (!_.isArray(errData)) {
         errData = errData && errData.message ? errData.message : errData;
@@ -155,6 +155,7 @@ export class CoinbaseProvider {
       return JSON.stringify(errData);
     } catch (e) {
       this.logger.error(e);
+      return e;
     }
   }
 
