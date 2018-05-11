@@ -244,18 +244,38 @@ export class ShapeshiftConfirmPage {
   private setFiatTotalAmount(amountSat: number, feeSat: number, withdrawalSat: number) {
     this.satToFiat(this.toWallet.coin, withdrawalSat, this.currencyIsoCode).then((w: any) => {
       this.fiatWithdrawal = Number(w);
-
       this.satToFiat(this.fromWallet.coin, amountSat, this.currencyIsoCode).then((a: any) => {
         this.fiatAmount = Number(a);
-
         this.satToFiat(this.fromWallet.coin, feeSat, this.currencyIsoCode).then((i: any) => {
           this.fiatFee = Number(i);
-
           this.fiatTotalAmount = this.fiatAmount + this.fiatFee;
         });
       });
     });
   }
+
+  // private setFiatTotalAmount(amountSat: number, feeSat: number, withdrawalSat: number): Promise<void> {
+  //   return this.satToFiat(this.toWallet.coin, withdrawalSat, this.currencyIsoCode).then((w: any) => {
+  //     this.fiatWithdrawal = Number(w);
+  //     return this.satToFiat(this.fromWallet.coin, amountSat, this.currencyIsoCode);
+  //   }).then((a: any) => {
+  //     this.fiatAmount = Number(a);
+  //     return this.satToFiat(this.fromWallet.coin, feeSat, this.currencyIsoCode);
+  //   }).then((i: any) => {
+  //     this.fiatFee = Number(i);
+  //     this.fiatTotalAmount = this.fiatAmount + this.fiatFee;
+  //   });
+  // }
+
+  // private async setFiatTotalAmount(amountSat: number, feeSat: number, withdrawalSat: number): Promise<void> {
+  //   const w = await this.satToFiat(this.toWallet.coin, withdrawalSat, this.currencyIsoCode);
+  //   this.fiatWithdrawal = Number(w);
+  //   const a = await this.satToFiat(this.fromWallet.coin, amountSat, this.currencyIsoCode);
+  //   this.fiatAmount = Number(a);
+  //   const i = await this.satToFiat(this.fromWallet.coin, feeSat, this.currencyIsoCode);
+  //   this.fiatFee = Number(i);
+  //   this.fiatTotalAmount = this.fiatAmount + this.fiatFee;
+  // }
 
   private saveShapeshiftData(): void {
     let address = this.shapeInfo.deposit;
@@ -474,15 +494,10 @@ export class ShapeshiftConfirmPage {
     let finishText = 'Transaction Sent';
     let modal = this.modalCtrl.create(FinishModalPage, { finishText }, { showBackdrop: true, enableBackdropDismiss: false });
     modal.present();
-    modal.onDidDismiss(() => {
-      this.navCtrl.popToRoot({ animate: false }).then(() => {
-        this.navCtrl.parent.select(0);
-
-        // Fixes mobile navigation
-        setTimeout(() => {
-          this.navCtrl.push(ShapeshiftPage, null, { animate: false });
-        }, 200);
-      });
+    modal.onDidDismiss(async () => {
+      await this.navCtrl.popToRoot({ animate: false });
+      await this.navCtrl.parent.select(0);
+      await this.navCtrl.push(ShapeshiftPage, null, { animate: false });
     });
   }
 

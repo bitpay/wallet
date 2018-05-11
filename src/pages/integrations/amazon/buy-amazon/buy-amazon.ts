@@ -496,15 +496,10 @@ export class BuyAmazonPage {
     let finishText = '';
     let modal = this.modalCtrl.create(FinishModalPage, { finishText, finishComment, cssClass }, { showBackdrop: true, enableBackdropDismiss: false });
     modal.present();
-    modal.onDidDismiss(() => {
-      this.navCtrl.popToRoot({ animate: false }).then(() => {
-        this.navCtrl.parent.select(0);
-
-        // Fixes mobile navigation
-        setTimeout(() => {
-          this.navCtrl.push(AmazonPage, { invoiceId: this.invoiceId }, { animate: false });
-        }, 200);
-      });
+    modal.onDidDismiss(async () => {
+      await this.navCtrl.popToRoot({ animate: false });
+      await this.navCtrl.parent.select(0);
+      await this.navCtrl.push(AmazonPage, { invoiceId: this.invoiceId }, { animate: false });
     });
   }
 

@@ -223,15 +223,10 @@ export class BuyGlideraPage {
     let finishComment = 'A transfer has been initiated from your bank account. Your bitcoins should arrive to your wallet in 2-4 business day';
     let modal = this.modalCtrl.create(FinishModalPage, { finishText, finishComment }, { showBackdrop: true, enableBackdropDismiss: false });
     modal.present();
-    modal.onDidDismiss(() => {
-      this.navCtrl.popToRoot({ animate: false }).then(() => {
-        this.navCtrl.parent.select(0);
-
-        // Fixes mobile navigation
-        setTimeout(() => {
-          this.navCtrl.push(GlideraPage, null, { animate: false });
-        }, 200);
-      });
+    modal.onDidDismiss(async () => {
+      await this.navCtrl.popToRoot({ animate: false });
+      await this.navCtrl.parent.select(0);
+      await this.navCtrl.push(GlideraPage, null, { animate: false });
     });
   }
 }
