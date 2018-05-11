@@ -10,6 +10,7 @@ import { TermsOfUsePage } from './terms-of-use/terms-of-use';
 // providers
 import { AppProvider } from '../../../providers/app/app';
 import { ExternalLinkProvider } from '../../../providers/external-link/external-link';
+import { ReplaceParametersProvider } from '../../../providers/replace-parameters/replace-parameters';
 
 @Component({
   selector: 'page-about',
@@ -22,17 +23,18 @@ export class AboutPage {
 
   constructor(
     private navCtrl: NavController,
-    private app: AppProvider,
+    private appProvider: AppProvider,
     private logger: Logger,
     private externalLinkProvider: ExternalLinkProvider,
+    private replaceParametersProvider: ReplaceParametersProvider,
     private translate: TranslateService
   ) { }
 
   ionViewDidLoad() {
     this.logger.debug('ionViewDidLoad AboutPage');
-    this.commitHash = this.app.info.commitHash;
-    this.version = this.app.info.version;
-    this.title = 'About' + ' ' + this.app.info.nameCase;
+    this.commitHash = this.appProvider.info.commitHash;
+    this.version = this.appProvider.info.version;
+    this.title = this.replaceParametersProvider.replace(this.translate.instant("About {{appName}}"), { appName: this.appProvider.info.nameCase });
   }
 
   public openTermsOfUse(): void {
@@ -40,7 +42,7 @@ export class AboutPage {
   }
 
   public openExternalLink(): void {
-    let url = 'https://github.com/bitpay/' + this.app.info.gitHubRepoName + '/tree/' + this.app.info.commitHash + '';
+    let url = 'https://github.com/bitpay/' + this.appProvider.info.gitHubRepoName + '/tree/' + this.appProvider.info.commitHash + '';
     let optIn = true;
     let title = this.translate.instant('Open GitHub Project');
     let message = this.translate.instant('You can see the latest developments and contribute to this open source app by visiting our project on GitHub.');

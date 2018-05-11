@@ -17,7 +17,7 @@
   <ion-list *ngIf="txHistorySearchResults && txHistorySearchResults[0]" class="tx-history">
     <div>
       <div *ngFor="let tx of txHistorySearchResults; trackBy: trackByFn; let i = index;">
-        <button ion-item (click)="goToTxDetails(tx); close()">
+        <button ion-item (click)="close(tx.txid)">
           <ion-icon item-start>
             <div *ngIf="tx.confirmations == 0">
               <img src="assets/img/tx-action/icon-confirming.svg" width="40">

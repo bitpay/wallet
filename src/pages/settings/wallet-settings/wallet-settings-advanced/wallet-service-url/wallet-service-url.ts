@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { TranslateService } from '@ngx-translate/core';
 import { Events, NavController, NavParams } from 'ionic-angular';
 import { Logger } from '../../../../../providers/logger/logger';
 
@@ -12,6 +13,7 @@ import { ConfigProvider } from '../../../../../providers/config/config';
 import { PersistenceProvider } from '../../../../../providers/persistence/persistence';
 import { PlatformProvider } from '../../../../../providers/platform/platform';
 import { ProfileProvider } from '../../../../../providers/profile/profile';
+import { ReplaceParametersProvider } from '../../../../../providers/replace-parameters/replace-parameters';
 
 @Component({
   selector: 'page-wallet-service-url',
@@ -21,7 +23,7 @@ export class WalletServiceUrlPage {
 
   public success: boolean = false;
   public wallet: any;
-  public appName: string;
+  public comment: string;
   public walletServiceForm: FormGroup;
   private config: any;
   private defaults: any;
@@ -37,7 +39,9 @@ export class WalletServiceUrlPage {
     private formBuilder: FormBuilder,
     private events: Events,
     private splashScreen: SplashScreen,
-    private platformProvider: PlatformProvider
+    private platformProvider: PlatformProvider,
+    private replaceParametersProvider: ReplaceParametersProvider,
+    private translate: TranslateService
   ) {
     this.walletServiceForm = this.formBuilder.group({
       bwsurl: ['', Validators.compose([Validators.minLength(1), Validators.required])]
@@ -52,7 +56,8 @@ export class WalletServiceUrlPage {
     this.wallet = this.profileProvider.getWallet(this.navParams.data.walletId);
     this.defaults = this.configProvider.getDefaults();
     this.config = this.configProvider.get();
-    this.appName = this.app.info.nameCase;
+    let appName = this.app.info.nameCase;
+    this.comment = this.replaceParametersProvider.replace(this.translate.instant("{{appName}} depends on Bitcore Wallet Service (BWS) for blockchain information, networking and Copayer synchronization. The default configuration points to https://bws.bitpay.com (BitPay's public BWS instance)."), { appName });
     this.walletServiceForm.value.bwsurl = (this.config.bwsFor && this.config.bwsFor[this.wallet.credentials.walletId]) || this.defaults.bws.url
   }
 

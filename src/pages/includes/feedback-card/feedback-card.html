@@ -1,7 +1,7 @@
 <div class="card" *ngIf="isShowRateCard">
   <ion-item-divider>
     <div class="title" item-start>
-      <span translate>How do you like {{appName}}?</span>
+      <span>{{ feedbackCardTitle }}</span>
     </div>
     <div item-end>
       <button ion-button clear icon-only color="grey" (click)="hideCard()">
