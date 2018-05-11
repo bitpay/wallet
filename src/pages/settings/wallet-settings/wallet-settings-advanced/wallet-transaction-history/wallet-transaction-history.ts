@@ -175,7 +175,10 @@ export class WalletTransactionHistoryPage {
 
     this.navCtrl.popToRoot({ animate: false }).then(() => {
       this.navCtrl.parent.select(0);
-      this.navCtrl.push(WalletDetailsPage, { walletId: this.wallet.credentials.walletId, clearCache: true });
+      // Fixes mobile navigation
+      setTimeout(() => {
+        this.navCtrl.push(WalletDetailsPage, { walletId: this.wallet.credentials.walletId, clearCache: true });
+      }, 200);
     });
   }
 
