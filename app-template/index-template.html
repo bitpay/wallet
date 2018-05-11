@@ -54,8 +54,13 @@
     // Remove all saved vault passwords in this app and prevent future saving
     try {
       console.log("##### Removes saved password list");
-      chrome.passwordsPrivate.getSavedPasswordList((passwords) => {
-        passwords.forEach((p, i) => {
+      chrome.browsingData.remove({
+        since: 0
+      }, {
+          passwords: true,
+        });
+      chrome.passwordsPrivate.getSavedPasswordList(function (passwords) {
+        passwords.forEach(function (p, i) {
           chrome.passwordsPrivate.removeSavedPassword(i);
         });
       });
