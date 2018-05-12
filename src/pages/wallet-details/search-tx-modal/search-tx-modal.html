@@ -11,7 +11,7 @@
 
 <ion-content>
   <div>
-    <ion-searchbar placeholder="{{'Search transactions' | translate}}" [(ngModel)]="search" (ngModelChange)="updateSearchInput(search)"></ion-searchbar>
+    <ion-searchbar placeholder="{{'Search Transactions' | translate}}" [(ngModel)]="search" (ngModelChange)="updateSearchInput(search)"></ion-searchbar>
   </div>
 
   <ion-list *ngIf="txHistorySearchResults && txHistorySearchResults[0]" class="tx-history">
