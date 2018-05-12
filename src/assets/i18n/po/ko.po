@@ -12,7 +12,7 @@ msgstr ""
 "Last-Translator: cmgustavo83\n"
 "Language-Team: Korean\n"
 "Language: ko\n"
-"PO-Revision-Date: 2018-05-08 13:35-0400\n"
+"PO-Revision-Date: 2018-05-12 14:17-0400\n"
 
 msgid "(Trusted)"
 msgstr "(신뢰할 수 있음)"
@@ -46,6 +46,9 @@ msgstr ""
 
 msgid "About"
 msgstr "소개"
+
+msgid "About {{appName}}"
+msgstr ""
 
 msgid "Accepted"
 msgstr "수락함"
@@ -233,7 +236,7 @@ msgstr "비트코인은 다릅니다 &ndash; 비트코인은 은행이나 웹 �
 msgid "Bitcoin is secure, digital money."
 msgstr ""
 
-msgid "Bitcoin miner fee"
+msgid "Bitcoin miner fee:"
 msgstr ""
 
 msgid "Bitcoin miner fees unusually high"
@@ -905,8 +908,8 @@ msgstr "활성화할 경우, 모든 민감한 정보(개인 키 및 복원 문�
 msgid "If enabled, the Recent Transactions card - a list of transactions occuring across all wallets - will appear in the Home tab."
 msgstr "활성화할 경우, 최근 거래 카드(모든 지갑에서 발생한 거래 내역 목록)가 홈 탭에 표시됩니다."
 
-msgid "If enabled, wallets will also try to spend unconfirmed funds. This option may cause transaction delays."
-msgstr "활성화할 경우, 지갑에서 미확인 자금을 사용하려고 합니다. 이 옵션은 거래 지연을 유발할 수 있습니다."
+msgid "If enabled, wallets will also try to spend unconfirmed funds."
+msgstr ""
 
 msgid "If you have additional feedback, please let us know by tapping the \"Send feedback\" option in the Settings tab."
 msgstr "추가 피드백이 있으신 경우, 설정 탭의 \"피드백 전송\" 옵션을 탭하여 알려주세요."
@@ -934,9 +937,6 @@ msgstr "불완전한 지갑"
 
 msgid "Incorrect PIN, try again."
 msgstr "올바르지 않은 PIN입니다, 다시 시도해주세요."
-
-msgid "Incorrect code format"
-msgstr "올바르지 않은 코드 형식"
 
 msgid "Incorrect network address"
 msgstr "올바르지 않은 네트워크 주소"
@@ -1189,9 +1189,6 @@ msgstr "알림"
 
 msgid "Note: if this BCH wallet was duplicated from a BTC wallet, they share the same recovery phrase."
 msgstr "알림: 이 BCH 지갑이 BCT 지갑으로부터 복제된 경우, 두 지갑은 동일한 복원 문구를 공유합니다."
-
-msgid "Notification"
-msgstr ""
 
 msgid "Notifications"
 msgstr "알림"
@@ -1547,6 +1544,9 @@ msgstr ""
 msgid "Screenshots are not secure"
 msgstr ""
 
+msgid "Search Transactions"
+msgstr ""
+
 msgid "Search a contact"
 msgstr ""
 
@@ -1666,6 +1666,9 @@ msgstr "공유를 위해 친구를 초대하세요."
 
 msgid "Share this invitation with your copayers"
 msgstr "귀하의 코페이어와 이 초대를 공유하세요"
+
+msgid "Share {{appName}}"
+msgstr ""
 
 msgid "Show advanced options"
 msgstr "고급 옵션 표시"
@@ -1898,6 +1901,9 @@ msgstr "거래"
 msgid "Transaction History"
 msgstr "거래 기록"
 
+msgid "Transaction ID"
+msgstr ""
+
 msgid "Transaction already broadcasted"
 msgstr "이미 브로드캐스트된 거래입니다"
 
@@ -2071,9 +2077,6 @@ msgstr "지갑 생성됨"
 
 msgid "Wallet incomplete and broken"
 msgstr "불완전한 지갑입니다"
-
-msgid "Wallet information"
-msgstr ""
 
 msgid "Wallet invitation"
 msgstr ""

@@ -12,7 +12,7 @@ msgstr ""
 "Last-Translator: cmgustavo83\n"
 "Language-Team: Japanese\n"
 "Language: ja\n"
-"PO-Revision-Date: 2018-05-08 13:35-0400\n"
+"PO-Revision-Date: 2018-05-12 14:17-0400\n"
 
 msgid "(Trusted)"
 msgstr "(信頼済み)"
@@ -46,6 +46,9 @@ msgstr ""
 
 msgid "About"
 msgstr "このアプリについて"
+
+msgid "About {{appName}}"
+msgstr ""
 
 msgid "Accepted"
 msgstr "承諾済"
@@ -235,7 +238,7 @@ msgstr "ビットコインは違う &ndash; 銀行やウェブのサービスに
 msgid "Bitcoin is secure, digital money."
 msgstr ""
 
-msgid "Bitcoin miner fee"
+msgid "Bitcoin miner fee:"
 msgstr ""
 
 msgid "Bitcoin miner fees unusually high"
@@ -907,8 +910,8 @@ msgstr "有効にした場合は、このウォレットに関連する全ての
 msgid "If enabled, the Recent Transactions card - a list of transactions occuring across all wallets - will appear in the Home tab."
 msgstr "有効にした場合、「最近の取引」カードがホームのメニューに表示されます。アプリに含まれる全ウォレットの取引が一覧できるカードです。"
 
-msgid "If enabled, wallets will also try to spend unconfirmed funds. This option may cause transaction delays."
-msgstr "有効にした場合、ウォレットは未承認ビットコインも送金時の候補に含めます。これを有効にした場合、承認に時間がかかることがあります。"
+msgid "If enabled, wallets will also try to spend unconfirmed funds."
+msgstr ""
 
 msgid "If you have additional feedback, please let us know by tapping the \"Send feedback\" option in the Settings tab."
 msgstr "他にご意見などありましたら、設定画面の「フィードバックの送信」をタップして下さい。"
@@ -936,9 +939,6 @@ msgstr "未完成のウォレット"
 
 msgid "Incorrect PIN, try again."
 msgstr "PINが間違っています。もう一度やり直して下さい。"
-
-msgid "Incorrect code format"
-msgstr "コードの形式が異なります"
 
 msgid "Incorrect network address"
 msgstr "サーバーのアドレスが不正です"
@@ -1191,9 +1191,6 @@ msgstr "メモ"
 
 msgid "Note: if this BCH wallet was duplicated from a BTC wallet, they share the same recovery phrase."
 msgstr "注意: このビットコインキャッシュウォレットがビットコインウォレットからの複製の場合、復元フレーズは一緒です。"
-
-msgid "Notification"
-msgstr ""
 
 msgid "Notifications"
 msgstr "通知設定"
@@ -1549,6 +1546,9 @@ msgstr ""
 msgid "Screenshots are not secure"
 msgstr ""
 
+msgid "Search Transactions"
+msgstr ""
+
 msgid "Search a contact"
 msgstr ""
 
@@ -1670,6 +1670,9 @@ msgid "Share this invitation with your copayers"
 msgstr "ウォレット参加者に\n"
 "この招待コードを\n"
 "送って下さい。"
+
+msgid "Share {{appName}}"
+msgstr ""
 
 msgid "Show advanced options"
 msgstr "詳細設定を表示"
@@ -1902,6 +1905,9 @@ msgstr "取引"
 msgid "Transaction History"
 msgstr "取引履歴"
 
+msgid "Transaction ID"
+msgstr ""
+
 msgid "Transaction already broadcasted"
 msgstr "取引は既に配信されました。"
 
@@ -2075,9 +2081,6 @@ msgstr "ウォレットが作成されました"
 
 msgid "Wallet incomplete and broken"
 msgstr "ウォレットが未完成で破損しています"
-
-msgid "Wallet information"
-msgstr ""
 
 msgid "Wallet invitation"
 msgstr ""

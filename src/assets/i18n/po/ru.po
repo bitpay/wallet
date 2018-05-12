@@ -12,7 +12,7 @@ msgstr ""
 "Last-Translator: cmgustavo83\n"
 "Language-Team: Russian\n"
 "Language: ru\n"
-"PO-Revision-Date: 2018-05-09 13:53-0400\n"
+"PO-Revision-Date: 2018-05-12 14:17-0400\n"
 
 msgid "(Trusted)"
 msgstr "(Доверенный)"
@@ -46,6 +46,9 @@ msgstr "В общей сложности {{fee}} {{coin}} было исключ�
 
 msgid "About"
 msgstr "О проекте"
+
+msgid "About {{appName}}"
+msgstr ""
 
 msgid "Accepted"
 msgstr "Принято"
@@ -233,7 +236,7 @@ msgstr "Bitcoin is different &ndash; it cannot be safely held with a bank or web
 msgid "Bitcoin is secure, digital money."
 msgstr "Bitcoin это безопасные, цифровые деньги."
 
-msgid "Bitcoin miner fee"
+msgid "Bitcoin miner fee:"
 msgstr ""
 
 msgid "Bitcoin miner fees unusually high"
@@ -905,8 +908,8 @@ msgstr "Если включено, вся конфиденциальная ин�
 msgid "If enabled, the Recent Transactions card - a list of transactions occuring across all wallets - will appear in the Home tab."
 msgstr "Если этот параметр включен, на вкладке Обзор будет отображаться список транзакций из всех кошельков."
 
-msgid "If enabled, wallets will also try to spend unconfirmed funds. This option may cause transaction delays."
-msgstr "Если этот параметр включен, {{appName}} будет пытаться тратить неподтверждённые средства, что может привезти к задержкам подтверждения транзакций."
+msgid "If enabled, wallets will also try to spend unconfirmed funds."
+msgstr ""
 
 msgid "If you have additional feedback, please let us know by tapping the \"Send feedback\" option in the Settings tab."
 msgstr "Если вы хотите что-то ещё нам сообщить, пожалуйста, нажмите \"Отправить отзыв\" в разделе Параметры."
@@ -934,9 +937,6 @@ msgstr "Не все совладельцы присоединились"
 
 msgid "Incorrect PIN, try again."
 msgstr "Неверный PIN-код, попробуйте снова."
-
-msgid "Incorrect code format"
-msgstr "Некорректный формат QR-кода"
 
 msgid "Incorrect network address"
 msgstr ""
@@ -1188,9 +1188,6 @@ msgid "Note"
 msgstr "Примечание"
 
 msgid "Note: if this BCH wallet was duplicated from a BTC wallet, they share the same recovery phrase."
-msgstr ""
-
-msgid "Notification"
 msgstr ""
 
 msgid "Notifications"
@@ -1547,6 +1544,9 @@ msgstr ""
 msgid "Screenshots are not secure"
 msgstr ""
 
+msgid "Search Transactions"
+msgstr ""
+
 msgid "Search a contact"
 msgstr ""
 
@@ -1666,6 +1666,9 @@ msgstr "Поделитесь любовью и пригласите друзей
 
 msgid "Share this invitation with your copayers"
 msgstr "Отправьте приглашение совладельцам кошелька"
+
+msgid "Share {{appName}}"
+msgstr ""
 
 msgid "Show advanced options"
 msgstr "Показать дополнительные параметры"
@@ -1898,6 +1901,9 @@ msgstr "Транзакция"
 msgid "Transaction History"
 msgstr "История транзакций"
 
+msgid "Transaction ID"
+msgstr ""
+
 msgid "Transaction already broadcasted"
 msgstr "Транзакция уже отправлена"
 
@@ -2071,9 +2077,6 @@ msgstr "Кошелёк создан"
 
 msgid "Wallet incomplete and broken"
 msgstr "Не все совладельцы присоединились, кошелёк повреждён"
-
-msgid "Wallet information"
-msgstr ""
 
 msgid "Wallet invitation"
 msgstr ""

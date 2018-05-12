@@ -12,7 +12,7 @@ msgstr ""
 "Last-Translator: cmgustavo83\n"
 "Language-Team: Polish\n"
 "Language: pl\n"
-"PO-Revision-Date: 2018-05-08 13:35-0400\n"
+"PO-Revision-Date: 2018-05-12 14:17-0400\n"
 
 msgid "(Trusted)"
 msgstr "(Zaufany)"
@@ -46,6 +46,9 @@ msgstr ""
 
 msgid "About"
 msgstr "O programie"
+
+msgid "About {{appName}}"
+msgstr ""
 
 msgid "Accepted"
 msgstr "Zatwierdzono"
@@ -233,8 +236,8 @@ msgstr "Bitcoin jest inny &ndash; nie może być bezpiecznie przechowywany w ban
 msgid "Bitcoin is secure, digital money."
 msgstr "Bitcoin jest bezpiecznym, cyfrowym pieniądzem."
 
-msgid "Bitcoin miner fee"
-msgstr "Opłata dla górnika bitcoina"
+msgid "Bitcoin miner fee:"
+msgstr ""
 
 msgid "Bitcoin miner fees unusually high"
 msgstr "Opłata dla górników bitcoina nadzwyczajnie wysoka"
@@ -905,8 +908,8 @@ msgstr "Jeśli opcja jest włączona, wszystkie poufne informacje (klucz prywatn
 msgid "If enabled, the Recent Transactions card - a list of transactions occuring across all wallets - will appear in the Home tab."
 msgstr "Jeśli ta opcja jest włączona, na ekranie głównym pojawi się lista wszystkich transakcji z portfela."
 
-msgid "If enabled, wallets will also try to spend unconfirmed funds. This option may cause transaction delays."
-msgstr "Jeśli opcja jest włączona, portfele będą również starać się wydawać niepotwierdzone środki. Może to prowadzić do opóźnień transakcji."
+msgid "If enabled, wallets will also try to spend unconfirmed funds."
+msgstr ""
 
 msgid "If you have additional feedback, please let us know by tapping the \"Send feedback\" option in the Settings tab."
 msgstr "Jeśli masz dodatkowe uwagi, prosimy o poinformowanie nas poprzez naciśnięcie przycisku \"Wyślij zgłoszenie\" w zakładce Ustawienia."
@@ -934,9 +937,6 @@ msgstr "Nie wszyscy współwłaściciele dołączyli"
 
 msgid "Incorrect PIN, try again."
 msgstr "Nieprawidłowy kod PIN. Spróbuj ponownie."
-
-msgid "Incorrect code format"
-msgstr "Niepoprawny format kodu"
 
 msgid "Incorrect network address"
 msgstr "Nieprawidłowy adres"
@@ -1189,9 +1189,6 @@ msgstr "Notatka"
 
 msgid "Note: if this BCH wallet was duplicated from a BTC wallet, they share the same recovery phrase."
 msgstr "Uwaga: Jeśli ten portfel BCH został zduplikowany z portfela BTC, będą one współdzielić ten sam zwrot odzyskiwania."
-
-msgid "Notification"
-msgstr "Powiadomienie"
 
 msgid "Notifications"
 msgstr "Powiadomienia"
@@ -1547,6 +1544,9 @@ msgstr "Skanowanie środków portfela"
 msgid "Screenshots are not secure"
 msgstr "Zrzuty ekranu nie są bezpieczne"
 
+msgid "Search Transactions"
+msgstr ""
+
 msgid "Search a contact"
 msgstr "Przeszukaj wszystkie kontakty"
 
@@ -1666,6 +1666,9 @@ msgstr "Podziel się miłością, zapraszając swoich przyjaciół."
 
 msgid "Share this invitation with your copayers"
 msgstr "Wyślij zaproszenie współwłaścicielom portfela"
+
+msgid "Share {{appName}}"
+msgstr ""
 
 msgid "Show advanced options"
 msgstr "Pokaż opcje zaawansowane"
@@ -1898,6 +1901,9 @@ msgstr "Transakcja"
 msgid "Transaction History"
 msgstr "Historia transakcji"
 
+msgid "Transaction ID"
+msgstr ""
+
 msgid "Transaction already broadcasted"
 msgstr "Transakcja została już wysłana"
 
@@ -2071,9 +2077,6 @@ msgstr "Portfel został utworzony"
 
 msgid "Wallet incomplete and broken"
 msgstr "Portfel niekompletny lub uszkodzony"
-
-msgid "Wallet information"
-msgstr ""
 
 msgid "Wallet invitation"
 msgstr ""

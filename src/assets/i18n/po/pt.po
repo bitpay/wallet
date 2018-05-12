@@ -12,7 +12,7 @@ msgstr ""
 "Last-Translator: cmgustavo83\n"
 "Language-Team: Portuguese, Brazilian\n"
 "Language: pt\n"
-"PO-Revision-Date: 2018-05-09 13:53-0400\n"
+"PO-Revision-Date: 2018-05-12 14:17-0400\n"
 
 msgid "(Trusted)"
 msgstr "(Confiável)"
@@ -46,6 +46,9 @@ msgstr "Um total de {{fee}} {{coin}} foi excluído. Estes fundos provêm de UTXO
 
 msgid "About"
 msgstr "Sobre"
+
+msgid "About {{appName}}"
+msgstr ""
 
 msgid "Accepted"
 msgstr "Aceite"
@@ -233,8 +236,8 @@ msgstr "Bitcoin é diferente &ndash; ela não pode ser retida com segurança por
 msgid "Bitcoin is secure, digital money."
 msgstr "Bitcoin é seguro, dinheiro digital."
 
-msgid "Bitcoin miner fee"
-msgstr "Taxa de mineração de Bitcoin"
+msgid "Bitcoin miner fee:"
+msgstr ""
 
 msgid "Bitcoin miner fees unusually high"
 msgstr "As taxas de mineração do Bitcoin estão incomumente altas"
@@ -905,8 +908,8 @@ msgstr "Se habilitado, todas as informações sensíveis (chave privada e frase 
 msgid "If enabled, the Recent Transactions card - a list of transactions occuring across all wallets - will appear in the Home tab."
 msgstr "Se habilitado, o Cartão de Transações - Lista todas as transações que ocorreram em todas as Carteiras - aparecerá na aba Início."
 
-msgid "If enabled, wallets will also try to spend unconfirmed funds. This option may cause transaction delays."
-msgstr "Se habilitado, as carteiras irão tentar gastar fundos não confirmados. Está opção pode causar atrasos de transações."
+msgid "If enabled, wallets will also try to spend unconfirmed funds."
+msgstr ""
 
 msgid "If you have additional feedback, please let us know by tapping the \"Send feedback\" option in the Settings tab."
 msgstr "Se você tem sugestões adicionais, por favor, informe-nos através da opção \"Enviar Sugestões\" na Aba Configurações."
@@ -934,9 +937,6 @@ msgstr "Carteira incompleta"
 
 msgid "Incorrect PIN, try again."
 msgstr "PIN incorreto, tente novamente."
-
-msgid "Incorrect code format"
-msgstr "Formato de código incorreto"
 
 msgid "Incorrect network address"
 msgstr "Endereço de rede incorreto"
@@ -1189,9 +1189,6 @@ msgstr "Nota"
 
 msgid "Note: if this BCH wallet was duplicated from a BTC wallet, they share the same recovery phrase."
 msgstr "Nota: se esta carteira BCH foi duplicada de uma carteira BTC, elas compartilham a mesma frase de recuperação."
-
-msgid "Notification"
-msgstr "Notificação"
 
 msgid "Notifications"
 msgstr "Notificações"
@@ -1547,6 +1544,9 @@ msgstr "Pesquisando fundos"
 msgid "Screenshots are not secure"
 msgstr "Capturas de tela não são seguras"
 
+msgid "Search Transactions"
+msgstr ""
+
 msgid "Search a contact"
 msgstr "Buscar contato"
 
@@ -1666,6 +1666,9 @@ msgstr "Compartilhe o amor convidando seus amigos."
 
 msgid "Share this invitation with your copayers"
 msgstr "Compartilhe este convite com seus copayers"
+
+msgid "Share {{appName}}"
+msgstr ""
 
 msgid "Show advanced options"
 msgstr "Mostrar opções avançadas"
@@ -1898,6 +1901,9 @@ msgstr "Transação"
 msgid "Transaction History"
 msgstr "Histórico de Transações"
 
+msgid "Transaction ID"
+msgstr ""
+
 msgid "Transaction already broadcasted"
 msgstr "Transação foi publicada"
 
@@ -2071,9 +2077,6 @@ msgstr "Carteira criada"
 
 msgid "Wallet incomplete and broken"
 msgstr "Carteira incompleta e quebrada"
-
-msgid "Wallet information"
-msgstr "Informações da carteira"
 
 msgid "Wallet invitation"
 msgstr "Convite para a carteira"
