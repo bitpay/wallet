@@ -12,7 +12,7 @@ msgstr ""
 "Last-Translator: cmgustavo83\n"
 "Language-Team: Spanish\n"
 "Language: es\n"
-"PO-Revision-Date: 2018-05-09 13:53-0400\n"
+"PO-Revision-Date: 2018-05-12 19:09-0400\n"
 
 msgid "(Trusted)"
 msgstr "(De confianza)"
@@ -46,6 +46,9 @@ msgstr "Se excluyeron un total de {{fee}} {{coin}}. Estos fondos provienen de UT
 
 msgid "About"
 msgstr "Acerca de"
+
+msgid "About {{appName}}"
+msgstr "Acerca de {{appName}}"
 
 msgid "Accepted"
 msgstr "Aceptada"
@@ -90,7 +93,7 @@ msgid "Address"
 msgstr "Dirección"
 
 msgid "Address Book"
-msgstr "Agenda de contactos"
+msgstr "Libreta de direcciones"
 
 msgid "Address Type"
 msgstr "Tipo de dirección"
@@ -233,8 +236,8 @@ msgstr "Bitcoin es diferente &ndash; no se puede resguardar con ningún servicio
 msgid "Bitcoin is secure, digital money."
 msgstr "Bitcoin es seguro, dinero digital."
 
-msgid "Bitcoin miner fee"
-msgstr "Comisión de minero bitcoin"
+msgid "Bitcoin miner fee:"
+msgstr "Comisión de minero bitcoin:"
 
 msgid "Bitcoin miner fees unusually high"
 msgstr "Comisión de minero bitcoin extraordinariamente alta"
@@ -576,7 +579,7 @@ msgid "Do not include private key"
 msgstr "No incluir la clave privada"
 
 msgid "Don't see your language on Crowdin? Contact the Owner on Crowdin! We'd love to support your language."
-msgstr "¿No ves tu idioma en Crowdin? Contacta con el encargado del proyecto! Nos encantaría soportar tu idioma."
+msgstr "¿No ves tu idioma en Crowdin? ¡Contacta con el encargado del proyecto! Nos encantaría soportar tu idioma."
 
 msgid "Done"
 msgstr "Listo"
@@ -905,8 +908,8 @@ msgstr "Si está habilitado, se protegerá toda información sensible (clave pri
 msgid "If enabled, the Recent Transactions card - a list of transactions occuring across all wallets - will appear in the Home tab."
 msgstr "Si se habilita, aparecerá una lista de las transacciones recientes de las billeteras en el inicio."
 
-msgid "If enabled, wallets will also try to spend unconfirmed funds. This option may cause transaction delays."
-msgstr "Si se habilita, las billeteras podrán gastar los fondos sin confirmar. Esta opción puede causar demoras en la transacción."
+msgid "If enabled, wallets will also try to spend unconfirmed funds."
+msgstr "Si está habilitado, los monederos intentarán gastar fondos sin confirmar."
 
 msgid "If you have additional feedback, please let us know by tapping the \"Send feedback\" option in the Settings tab."
 msgstr "Si tienes comentarios adicionales, por favor envíalos pulsando la opción \"Enviar comentarios\" en la pestaña de preferencias."
@@ -934,9 +937,6 @@ msgstr "Billetera Incompleta"
 
 msgid "Incorrect PIN, try again."
 msgstr "PIN Incorrecto. Inténtelo de nuevo."
-
-msgid "Incorrect code format"
-msgstr "Formato de código incorrecto"
 
 msgid "Incorrect network address"
 msgstr "Dirección de red incorrecta"
@@ -1189,9 +1189,6 @@ msgstr "Nota"
 
 msgid "Note: if this BCH wallet was duplicated from a BTC wallet, they share the same recovery phrase."
 msgstr "Nota: Si esta billetera BCH fue duplicada desde una billetera BTC, entonces comparten la misma frase de recuperación."
-
-msgid "Notification"
-msgstr "Notificación"
 
 msgid "Notifications"
 msgstr "Notificaciones"
@@ -1547,6 +1544,9 @@ msgstr "Buscando fondos"
 msgid "Screenshots are not secure"
 msgstr "Las capturas de pantallas no son seguras"
 
+msgid "Search Transactions"
+msgstr "Buscar Transacciones"
+
 msgid "Search a contact"
 msgstr "Buscar un contacto"
 
@@ -1581,7 +1581,7 @@ msgid "Send"
 msgstr "Enviar"
 
 msgid "Send Feedback"
-msgstr "Enviar Sugerencia"
+msgstr "Enviar Comentario"
 
 msgid "Send Max amount"
 msgstr "Enviar la Máxima cantidad"
@@ -1666,6 +1666,9 @@ msgstr "Comparte la pasión invitando a tus amigos."
 
 msgid "Share this invitation with your copayers"
 msgstr "Compartir esta invitación con sus copayers"
+
+msgid "Share {{appName}}"
+msgstr "Compartir {{appName}}"
 
 msgid "Show advanced options"
 msgstr "Mostrar opciones avanzadas"
@@ -1898,6 +1901,9 @@ msgstr "Transacción"
 msgid "Transaction History"
 msgstr "Historial de Transacciones"
 
+msgid "Transaction ID"
+msgstr "ID de Transacción"
+
 msgid "Transaction already broadcasted"
 msgstr "La transacción ya fue enviada"
 
@@ -2037,7 +2043,7 @@ msgid "Waiting..."
 msgstr "Esperando..."
 
 msgid "Wallet Addresses"
-msgstr "Direcciones de la billetera"
+msgstr "Direcciones de la Billetera"
 
 msgid "Wallet Color"
 msgstr "Color de la billetera"
@@ -2071,9 +2077,6 @@ msgstr "Billetera Creada"
 
 msgid "Wallet incomplete and broken"
 msgstr "Billetera incompleta y rota"
-
-msgid "Wallet information"
-msgstr "Información de la Billetera"
 
 msgid "Wallet invitation"
 msgstr "Invitación a la Billetera"

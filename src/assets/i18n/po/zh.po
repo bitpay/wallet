@@ -12,7 +12,7 @@ msgstr ""
 "Last-Translator: cmgustavo83\n"
 "Language-Team: Chinese Simplified\n"
 "Language: zh\n"
-"PO-Revision-Date: 2018-05-08 13:35-0400\n"
+"PO-Revision-Date: 2018-05-12 14:17-0400\n"
 
 msgid "(Trusted)"
 msgstr "（可信的）"
@@ -46,6 +46,9 @@ msgstr ""
 
 msgid "About"
 msgstr "关于"
+
+msgid "About {{appName}}"
+msgstr ""
 
 msgid "Accepted"
 msgstr "同意"
@@ -233,7 +236,7 @@ msgstr "比特币是不同 — — 它不能安全地举行以银行或 web 服�
 msgid "Bitcoin is secure, digital money."
 msgstr "比特币是安全的数字货币。"
 
-msgid "Bitcoin miner fee"
+msgid "Bitcoin miner fee:"
 msgstr ""
 
 msgid "Bitcoin miner fees unusually high"
@@ -905,8 +908,8 @@ msgstr "如果启用，与此钱包相关的所有敏感信息（私钥、回复
 msgid "If enabled, the Recent Transactions card - a list of transactions occuring across all wallets - will appear in the Home tab."
 msgstr "如果启用，最近的交易卡-交易发生跨所有钱包名单-将出现在主页选项卡。"
 
-msgid "If enabled, wallets will also try to spend unconfirmed funds. This option may cause transaction delays."
-msgstr "如果启用了，钱包也尝试使用未经证实的资金。此选项可能会导致事务延迟。"
+msgid "If enabled, wallets will also try to spend unconfirmed funds."
+msgstr ""
 
 msgid "If you have additional feedback, please let us know by tapping the \"Send feedback\" option in the Settings tab."
 msgstr "如果你有额外的反馈，请让我们知道通过点击设置选项卡中的\"发送反馈\"选项。"
@@ -934,9 +937,6 @@ msgstr "不完整的钱包"
 
 msgid "Incorrect PIN, try again."
 msgstr "PIN码不正确，请重试"
-
-msgid "Incorrect code format"
-msgstr "代码格式不正确"
 
 msgid "Incorrect network address"
 msgstr "网络地址不正确"
@@ -1189,9 +1189,6 @@ msgstr "备注"
 
 msgid "Note: if this BCH wallet was duplicated from a BTC wallet, they share the same recovery phrase."
 msgstr "注意: 如此比特幣錢包由小比特幣复制，他們共享相同恢復短語"
-
-msgid "Notification"
-msgstr "通知"
 
 msgid "Notifications"
 msgstr "通知"
@@ -1547,6 +1544,9 @@ msgstr ""
 msgid "Screenshots are not secure"
 msgstr ""
 
+msgid "Search Transactions"
+msgstr ""
+
 msgid "Search a contact"
 msgstr ""
 
@@ -1666,6 +1666,9 @@ msgstr "邀请您的朋友分享爱。"
 
 msgid "Share this invitation with your copayers"
 msgstr "将此邀请与你的 copayers 共享"
+
+msgid "Share {{appName}}"
+msgstr ""
 
 msgid "Show advanced options"
 msgstr "显示高级选项"
@@ -1898,6 +1901,9 @@ msgstr "交易"
 msgid "Transaction History"
 msgstr "交易历史记录"
 
+msgid "Transaction ID"
+msgstr ""
+
 msgid "Transaction already broadcasted"
 msgstr "交易已经广播"
 
@@ -2071,9 +2077,6 @@ msgstr "创建的钱包"
 
 msgid "Wallet incomplete and broken"
 msgstr "钱包不完整和损坏"
-
-msgid "Wallet information"
-msgstr ""
 
 msgid "Wallet invitation"
 msgstr ""

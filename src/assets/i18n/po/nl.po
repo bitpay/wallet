@@ -12,7 +12,7 @@ msgstr ""
 "Last-Translator: cmgustavo83\n"
 "Language-Team: Dutch\n"
 "Language: nl\n"
-"PO-Revision-Date: 2018-05-08 13:35-0400\n"
+"PO-Revision-Date: 2018-05-12 14:17-0400\n"
 
 msgid "(Trusted)"
 msgstr "(Vertrouwd)"
@@ -46,6 +46,9 @@ msgstr ""
 
 msgid "About"
 msgstr "Over"
+
+msgid "About {{appName}}"
+msgstr ""
 
 msgid "Accepted"
 msgstr "Geaccepteerd"
@@ -233,7 +236,7 @@ msgstr "Bitcoin is anders &ndash; het kan niet veilig worden bewaard bij een ban
 msgid "Bitcoin is secure, digital money."
 msgstr ""
 
-msgid "Bitcoin miner fee"
+msgid "Bitcoin miner fee:"
 msgstr ""
 
 msgid "Bitcoin miner fees unusually high"
@@ -905,8 +908,8 @@ msgstr "Indien ingeschakeld, zullen alle gevoelige informatie (privé sleutel en
 msgid "If enabled, the Recent Transactions card - a list of transactions occuring across all wallets - will appear in the Home tab."
 msgstr "Indien ingeschakeld, zal de Recente Transacties kaart - een lijst van transacties van alle portemonnees - worden weergegeven in het tabblad Start."
 
-msgid "If enabled, wallets will also try to spend unconfirmed funds. This option may cause transaction delays."
-msgstr "Indien ingeschakeld, zullen portemonnees ook onbevestigd saldo proberen te besteden. Deze optie kan transactie vertragingen veroorzaken."
+msgid "If enabled, wallets will also try to spend unconfirmed funds."
+msgstr ""
 
 msgid "If you have additional feedback, please let us know by tapping the \"Send feedback\" option in the Settings tab."
 msgstr "Als u meer feedback heeft, laat het ons dan weten via de \"Geef feedback\" optie in het tabblad Instellingen."
@@ -934,9 +937,6 @@ msgstr "Onvolledige portemonnee"
 
 msgid "Incorrect PIN, try again."
 msgstr "Onjuiste PIN, probeer het opnieuw."
-
-msgid "Incorrect code format"
-msgstr "Onjuist code format"
 
 msgid "Incorrect network address"
 msgstr "Onjuist netwerk adres"
@@ -1189,9 +1189,6 @@ msgstr "Notitie"
 
 msgid "Note: if this BCH wallet was duplicated from a BTC wallet, they share the same recovery phrase."
 msgstr "Let op: als deze BCH portemonnee is gedupliceerd van een BTC portemonnee, dan delen zij de zelfde herstel zin."
-
-msgid "Notification"
-msgstr ""
 
 msgid "Notifications"
 msgstr "Meldingen"
@@ -1547,6 +1544,9 @@ msgstr ""
 msgid "Screenshots are not secure"
 msgstr ""
 
+msgid "Search Transactions"
+msgstr ""
+
 msgid "Search a contact"
 msgstr ""
 
@@ -1666,6 +1666,9 @@ msgstr "Deel het plezier door uw vrienden uit te nodigen."
 
 msgid "Share this invitation with your copayers"
 msgstr "Deel deze uitnodiging met uw copayers"
+
+msgid "Share {{appName}}"
+msgstr ""
 
 msgid "Show advanced options"
 msgstr "Geavanceerde opties weergeven"
@@ -1898,6 +1901,9 @@ msgstr "Transactie"
 msgid "Transaction History"
 msgstr "Transactiehistorie"
 
+msgid "Transaction ID"
+msgstr ""
+
 msgid "Transaction already broadcasted"
 msgstr "Transactie reeds verzonden"
 
@@ -2071,9 +2077,6 @@ msgstr "Portemonnee aangemaakt"
 
 msgid "Wallet incomplete and broken"
 msgstr "Portemonnee onvolledig en onwerkzaam"
-
-msgid "Wallet information"
-msgstr ""
 
 msgid "Wallet invitation"
 msgstr ""
