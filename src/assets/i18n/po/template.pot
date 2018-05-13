@@ -53,6 +53,9 @@ msgstr ""
 msgid "About"
 msgstr ""
 
+msgid "About {{appName}}"
+msgstr ""
+
 msgid "Accepted"
 msgstr ""
 
@@ -254,7 +257,7 @@ msgstr ""
 msgid "Bitcoin is secure, digital money."
 msgstr ""
 
-msgid "Bitcoin miner fee"
+msgid "Bitcoin miner fee:"
 msgstr ""
 
 msgid "Bitcoin miner fees unusually high"
@@ -952,9 +955,7 @@ msgid ""
 "across all wallets - will appear in the Home tab."
 msgstr ""
 
-msgid ""
-"If enabled, wallets will also try to spend unconfirmed funds. This option "
-"may cause transaction delays."
+msgid "If enabled, wallets will also try to spend unconfirmed funds."
 msgstr ""
 
 msgid ""
@@ -986,9 +987,6 @@ msgid "Incomplete wallet"
 msgstr ""
 
 msgid "Incorrect PIN, try again."
-msgstr ""
-
-msgid "Incorrect code format"
 msgstr ""
 
 msgid "Incorrect network address"
@@ -1253,9 +1251,6 @@ msgstr ""
 msgid ""
 "Note: if this BCH wallet was duplicated from a BTC wallet, they share the "
 "same recovery phrase."
-msgstr ""
-
-msgid "Notification"
 msgstr ""
 
 msgid "Notifications"
@@ -1620,6 +1615,9 @@ msgstr ""
 msgid "Screenshots are not secure"
 msgstr ""
 
+msgid "Search Transactions"
+msgstr ""
+
 msgid "Search a contact"
 msgstr ""
 
@@ -1738,6 +1736,9 @@ msgid "Share the love by inviting your friends."
 msgstr ""
 
 msgid "Share this invitation with your copayers"
+msgstr ""
+
+msgid "Share {{appName}}"
 msgstr ""
 
 msgid "Show advanced options"
@@ -2011,6 +2012,9 @@ msgstr ""
 msgid "Transaction History"
 msgstr ""
 
+msgid "Transaction ID"
+msgstr ""
+
 msgid "Transaction already broadcasted"
 msgstr ""
 
@@ -2193,9 +2197,6 @@ msgid "Wallet created"
 msgstr ""
 
 msgid "Wallet incomplete and broken"
-msgstr ""
-
-msgid "Wallet information"
 msgstr ""
 
 msgid "Wallet invitation"
