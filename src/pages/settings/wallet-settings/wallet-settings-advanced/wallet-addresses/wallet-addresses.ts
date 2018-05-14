@@ -19,10 +19,9 @@ import * as _ from 'lodash';
 
 @Component({
   selector: 'page-wallet-addresses',
-  templateUrl: 'wallet-addresses.html',
+  templateUrl: 'wallet-addresses.html'
 })
 export class WalletAddressesPage {
-
   public wallet: any;
   public loading: boolean;
   public latestUnused: any;
@@ -63,53 +62,87 @@ export class WalletAddressesPage {
 
   ionViewWillEnter() {
     this.loading = true;
-    this.walletProvider.getMainAddresses(this.wallet, {}).then((allAddresses: any) => {
-      this.walletProvider.getBalance(this.wallet, {}).then((resp: any) => {
-        this.withBalance = resp.byAddress;
+    this.walletProvider
+      .getMainAddresses(this.wallet, {})
+      .then((allAddresses: any) => {
+        this.walletProvider
+          .getBalance(this.wallet, {})
+          .then((resp: any) => {
+            this.withBalance = resp.byAddress;
 
-        var idx = _.keyBy(this.withBalance, 'address');
-        this.noBalance = _.reject(allAddresses, (x: any) => {
-          return idx[x.address];
-        });
+            var idx = _.keyBy(this.withBalance, 'address');
+            this.noBalance = _.reject(allAddresses, (x: any) => {
+              return idx[x.address];
+            });
 
-        this.processList(this.noBalance);
-        this.processList(this.withBalance);
+            this.processList(this.noBalance);
+            this.processList(this.withBalance);
 
-        this.latestUnused = _.slice(this.noBalance, 0, this.UNUSED_ADDRESS_LIMIT);
-        this.latestWithBalance = _.slice(this.withBalance, 0, this.BALANCE_ADDRESS_LIMIT);
-        this.viewAll = this.noBalance.length > this.UNUSED_ADDRESS_LIMIT || this.withBalance.length > this.BALANCE_ADDRESS_LIMIT;
+            this.latestUnused = _.slice(
+              this.noBalance,
+              0,
+              this.UNUSED_ADDRESS_LIMIT
+            );
+            this.latestWithBalance = _.slice(
+              this.withBalance,
+              0,
+              this.BALANCE_ADDRESS_LIMIT
+            );
+            this.viewAll =
+              this.noBalance.length > this.UNUSED_ADDRESS_LIMIT ||
+              this.withBalance.length > this.BALANCE_ADDRESS_LIMIT;
 
-        this.loading = false;
-      }).catch((err: any) => {
+            this.loading = false;
+          })
+          .catch((err: any) => {
+            this.logger.error(err);
+            this.loading = false;
+            this.popupProvider.ionicAlert(
+              this.bwcErrorProvider.msg(
+                err,
+                this.translate.instant('Could not update wallet')
+              )
+            );
+          });
+      })
+      .catch((err: any) => {
         this.logger.error(err);
         this.loading = false;
-        this.popupProvider.ionicAlert(this.bwcErrorProvider.msg(err, this.translate.instant('Could not update wallet')));
+        this.popupProvider.ionicAlert(
+          this.bwcErrorProvider.msg(
+            err,
+            this.translate.instant('Could not update wallet')
+          )
+        );
       });
-    }).catch((err: any) => {
-      this.logger.error(err);
-      this.loading = false;
-      this.popupProvider.ionicAlert(this.bwcErrorProvider.msg(err, this.translate.instant('Could not update wallet')));
-    });
 
-    this.walletProvider.getLowUtxos(this.wallet).then((resp) => {
+    this.walletProvider
+      .getLowUtxos(this.wallet)
+      .then(resp => {
+        if (resp && resp.allUtxos && resp.allUtxos.length) {
+          let allSum = _.sumBy(resp.allUtxos || 0, 'satoshis');
+          let per = resp.minFee / allSum * 100;
 
-      if (resp && resp.allUtxos && resp.allUtxos.length) {
-
-        let allSum = _.sumBy(resp.allUtxos || 0, 'satoshis');
-        let per = (resp.minFee / allSum) * 100;
-
-        this.lowUtxosNb = resp.lowUtxos.length;
-        this.allUtxosNb = resp.allUtxos.length;
-        this.lowUtxosSum = this.txFormatProvider.formatAmountStr(this.wallet.coin, _.sumBy(resp.lowUtxos || 0, 'satoshis'));
-        this.allUtxosSum = this.txFormatProvider.formatAmountStr(this.wallet.coin, allSum);
-        this.minFee = this.txFormatProvider.formatAmountStr(this.wallet.coin, resp.minFee || 0);
-        this.minFeePer = per.toFixed(2) + '%';
-
-      }
-    }).catch((err) => {
-      this.logger.warn('GetLowUtxos', err);
-    });
-
+          this.lowUtxosNb = resp.lowUtxos.length;
+          this.allUtxosNb = resp.allUtxos.length;
+          this.lowUtxosSum = this.txFormatProvider.formatAmountStr(
+            this.wallet.coin,
+            _.sumBy(resp.lowUtxos || 0, 'satoshis')
+          );
+          this.allUtxosSum = this.txFormatProvider.formatAmountStr(
+            this.wallet.coin,
+            allSum
+          );
+          this.minFee = this.txFormatProvider.formatAmountStr(
+            this.wallet.coin,
+            resp.minFee || 0
+          );
+          this.minFeePer = per.toFixed(2) + '%';
+        }
+      })
+      .catch(err => {
+        this.logger.warn('GetLowUtxos', err);
+      });
   }
 
   private processList(list: any): void {
@@ -123,49 +156,66 @@ export class WalletAddressesPage {
     if (this.gapReached) return;
 
     this.onGoingProcessProvider.set('generatingNewAddress');
-    this.walletProvider.getAddress(this.wallet, true).then((addr: string) => {
-      this.walletProvider.getMainAddresses(this.wallet, { limit: 1 }).then((_addr: any) => {
-        this.onGoingProcessProvider.clear();
-        if (addr != _addr[0].address) {
-          this.popupProvider.ionicAlert(this.translate.instant('Error'), this.translate.instant('New address could not be generated. Please try again.'));
-          return;
-        }
-        this.noBalance = [_addr[0]].concat(this.noBalance);
+    this.walletProvider
+      .getAddress(this.wallet, true)
+      .then((addr: string) => {
+        this.walletProvider
+          .getMainAddresses(this.wallet, { limit: 1 })
+          .then((_addr: any) => {
+            this.onGoingProcessProvider.clear();
+            if (addr != _addr[0].address) {
+              this.popupProvider.ionicAlert(
+                this.translate.instant('Error'),
+                this.translate.instant(
+                  'New address could not be generated. Please try again.'
+                )
+              );
+              return;
+            }
+            this.noBalance = [_addr[0]].concat(this.noBalance);
 
-        this.processList(this.noBalance);
+            this.processList(this.noBalance);
 
-        this.latestUnused = _.slice(this.noBalance, 0, this.UNUSED_ADDRESS_LIMIT);
-        this.viewAll = this.noBalance.length > this.UNUSED_ADDRESS_LIMIT;
-      }).catch((err) => {
+            this.latestUnused = _.slice(
+              this.noBalance,
+              0,
+              this.UNUSED_ADDRESS_LIMIT
+            );
+            this.viewAll = this.noBalance.length > this.UNUSED_ADDRESS_LIMIT;
+          })
+          .catch(err => {
+            this.logger.error(err);
+            this.onGoingProcessProvider.clear();
+            this.popupProvider.ionicAlert(this.translate.instant('Error'), err);
+          });
+      })
+      .catch(err => {
         this.logger.error(err);
         this.onGoingProcessProvider.clear();
-        this.popupProvider.ionicAlert(this.translate.instant('Error'), err);
+        if (err.toString().match('MAIN_ADDRESS_GAP_REACHED')) {
+          this.gapReached = true;
+        } else {
+          this.popupProvider.ionicAlert('Error', err);
+        }
       });
-    }).catch((err) => {
-      this.logger.error(err);
-      this.onGoingProcessProvider.clear();
-      if (err.toString().match('MAIN_ADDRESS_GAP_REACHED')) {
-        this.gapReached = true;
-      } else {
-        this.popupProvider.ionicAlert('Error', err);
-      }
-    });
   }
 
   public viewAllAddresses(): void {
-    let modal = this.modalCtrl.create(AllAddressesPage, { noBalance: this.noBalance, withBalance: this.withBalance, coin: this.wallet.coin, walletName: this.wallet.name });
+    let modal = this.modalCtrl.create(AllAddressesPage, {
+      noBalance: this.noBalance,
+      withBalance: this.withBalance,
+      coin: this.wallet.coin,
+      walletName: this.wallet.name
+    });
     modal.present();
   }
 
-  public scan(): void {
+  public async scan(): Promise<void> {
     this.walletProvider.startScan(this.wallet);
-    this.navCtrl.popToRoot({ animate: false }).then(() => {
-      this.navCtrl.parent.select(0);
-
-      // Fixes mobile navigation
-      setTimeout(() => {
-        this.navCtrl.push(WalletDetailsPage, { walletId: this.wallet.credentials.walletId });
-      }, 200);
+    await this.navCtrl.popToRoot({ animate: false });
+    await this.navCtrl.parent.select(0);
+    await this.navCtrl.push(WalletDetailsPage, {
+      walletId: this.wallet.credentials.walletId
     });
   }
 }
