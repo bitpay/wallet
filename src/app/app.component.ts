@@ -18,10 +18,12 @@ import { BitPayCardProvider } from '../providers/bitpay-card/bitpay-card';
 import { CoinbaseProvider } from '../providers/coinbase/coinbase';
 import { ConfigProvider } from '../providers/config/config';
 import { EmailNotificationsProvider } from '../providers/email-notifications/email-notifications';
+import { FeeProvider } from '../providers/fee/fee';
 import { GlideraProvider } from '../providers/glidera/glidera';
 import { IncomingDataProvider } from '../providers/incoming-data/incoming-data';
 import { Logger } from '../providers/logger/logger';
 import { MercadoLibreProvider } from '../providers/mercado-libre/mercado-libre';
+import { OnGoingProcessProvider } from '../providers/on-going-process/on-going-process';
 import { PopupProvider } from '../providers/popup/popup';
 import { ProfileProvider } from '../providers/profile/profile';
 import { PushNotificationsProvider } from '../providers/push-notifications/push-notifications';
@@ -99,7 +101,9 @@ export class CopayApp {
     private popupProvider: PopupProvider,
     private pushNotificationsProvider: PushNotificationsProvider,
     private app: App,
-    private incomingDataProvider: IncomingDataProvider
+    private incomingDataProvider: IncomingDataProvider,
+    private onGoingProcessProvider: OnGoingProcessProvider,
+    private feeProvider: FeeProvider
   ) {
     this.initializeApp();
   }
@@ -135,13 +139,13 @@ export class CopayApp {
   private onAppLoad(readySource) {
     this.logger.info(
       'Platform ready (' +
-        readySource +
-        '): ' +
-        this.appProvider.info.nameCase +
-        ' - v' +
-        this.appProvider.info.version +
-        ' #' +
-        this.appProvider.info.commitHash
+      readySource +
+      '): ' +
+      this.appProvider.info.nameCase +
+      ' - v' +
+      this.appProvider.info.version +
+      ' #' +
+      this.appProvider.info.commitHash
     );
 
     if (this.platform.is('cordova')) {
@@ -171,6 +175,7 @@ export class CopayApp {
 
     this.registerIntegrations();
     this.incomingDataRedirEvent();
+    this.translateProvidersStrings(); // fixes translations
     // Check Profile
     this.profile
       .loadAndBindProfile()
@@ -357,5 +362,10 @@ export class CopayApp {
     return this.nav
       .getActiveChildNavs()[0]
       .viewCtrl.instance.tabs.getSelected();
+  }
+
+  private translateProvidersStrings(): void {
+    this.onGoingProcessProvider.translateOnGoingProcessNames();
+    this.feeProvider.translateFeeOpts();
   }
 }
