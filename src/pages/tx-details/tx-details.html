@@ -32,7 +32,7 @@
       </div>
     </ion-item>
 
-    <ion-item class="low-fees" text-wrap *ngIf="btx.action == 'received' && btx.lowFees">
+    <ion-item class="low-fees" *ngIf="btx.action == 'received' && btx.lowFees">
       <img src="assets/img/icon-warning.png" width="20">
       <ion-note>
         <span translate>
@@ -41,7 +41,7 @@
       </ion-note>
     </ion-item>
 
-    <ion-item class="low-fees" text-wrap *ngIf="btx.lowAmount">
+    <ion-item class="low-fees" *ngIf="btx.lowAmount">
       <img src="assets/img/icon-warning.png" width="20">
       <ion-note>
         <span translate>

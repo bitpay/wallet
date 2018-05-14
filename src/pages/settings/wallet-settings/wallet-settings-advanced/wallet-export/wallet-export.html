@@ -45,7 +45,7 @@
               <ion-checkbox formControlName="noSignEnabled" (ionChange)="noSignEnabledChange()"></ion-checkbox>
             </ion-item>
           </div>
-          <ion-item-divider *ngIf="!canSign || exportWalletForm.value.noSignEnabled" text-wrap>
+          <ion-item-divider *ngIf="!canSign || exportWalletForm.value.noSignEnabled">
             <div class="warning" *ngIf="!canSign">
               <ion-icon name="ios-warning-outline"></ion-icon>
               <span translate>WARNING: The private key of this wallet is not available. The export allows to check the wallet balance, transaction history, and create spend proposals from the export. However, does not allow to approve (sign) proposals, so funds will not be accessible from the export.</span>
@@ -72,7 +72,7 @@
     <ion-list *ngSwitchCase="'qr-code'">
       <div class="qrCode" *ngIf="supported">
         <ngx-qrcode qrc-value="{{exportWalletInfo}}" qrc-class="aclass" qrc-errorCorrectionLevel="M"></ngx-qrcode>
-        <ion-item-divider text-wrap>
+        <ion-item-divider>
           <span translate>From the destination device, go to Add wallet &gt; Import wallet and scan this QR code</span>
         </ion-item-divider>
       </div>

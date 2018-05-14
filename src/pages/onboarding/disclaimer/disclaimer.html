@@ -5,7 +5,7 @@
   <h3 *ngIf="resume" class="title" translate>Quick review!</h3>
   <h3 *ngIf="!resume" class="title" translate>Almost done! Let's review.</h3>
   <p translate class="top-description">Bitcoin is different &ndash; it cannot be safely held with a bank or web service.</p>
-  <ion-list class="checkbox-list" no-lines text-wrap>
+  <ion-list class="checkbox-list" no-lines>
     <ion-item>
       <ion-label>
         {{'I understand that my funds are held securely on this device, not by a company' | translate}}.
@@ -24,7 +24,7 @@
   <ion-toolbar>
     <div class="checkbox-list">
       <div *ngIf="accepted.first && accepted.second">
-        <ion-item no-lines text-wrap>
+        <ion-item no-lines>
           <ion-label>
             {{'I have read, understood, and agree to the Terms of Use' | translate}}.
           </ion-label>

@@ -8,7 +8,7 @@
 <ion-content no-bounce>
   <div *ngIf="deleted">
     <h1 class="deleted-title" translate>Wallet recovery phrase not available</h1>
-    <ion-item-divider text-wrap>
+    <ion-item-divider>
       {{'You can still export it from Advanced &gt; Export.' |translate}}
       <span *ngIf="wallet.coin == 'bch'" translate>
         Note: if this BCH wallet was duplicated from a BTC wallet, they share the same recovery phrase.
@@ -72,12 +72,12 @@
 
     <ion-slide *ngIf="wallet.mnemonicHasPassphrase">
       <div translate>Enter your password</div>
-      <ion-item-divider text-wrap>{{'In order to verify your wallet backup, please type your password.' | translate}}</ion-item-divider>
+      <ion-item-divider>{{'In order to verify your wallet backup, please type your password.' | translate}}</ion-item-divider>
       <ion-item>
         <ion-label stacked translate>Password</ion-label>
         <ion-input type="password" id="password" [(ngModel)]="password" autocapitalize="off" spellcheck="false"></ion-input>
       </ion-item>
-      <ion-item-divider text-wrap class="assertive">
+      <ion-item-divider class="assertive">
         {{'This recovery phrase was created with a password. To recover this wallet both the recovery phrase and password are needed.' | translate}}
       </ion-item-divider>
 

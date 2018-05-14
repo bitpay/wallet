@@ -122,7 +122,7 @@
       </div>
     </button>
 
-    <button ion-item text-wrap (click)="showDescriptionPopup(tx)">
+    <button ion-item (click)="showDescriptionPopup(tx)">
       <span *ngIf="!tx.description" translate>Add Memo</span>
       <span *ngIf="tx.description" translate>Memo</span>
       <div class="item-memo">

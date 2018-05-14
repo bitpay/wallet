@@ -6,7 +6,7 @@
 
 <ion-content>
   <page-wallet-item [wallet]="wallet"></page-wallet-item>
-  <ion-item-divider text-wrap text-center>
+  <ion-item-divider text-center>
     <span translate>
       Each bitcoin wallet can generate billions of addresses from your 12-word backup. A new address is automatically generated and shown each time you receive a payment.
     </span>
@@ -82,7 +82,7 @@
         <p class="info">{{lowUtxosNb}} [{{ lowUtxosSum }}]</p>
       </ion-item>
 
-      <ion-item text-wrap>
+      <ion-item>
         <span translate>Approximate Bitcoin network fee to transfer wallet's balance (with normal priority)</span>
         <p class="info">{{minFeePer}} [{{minFee}}]</p>
       </ion-item>
