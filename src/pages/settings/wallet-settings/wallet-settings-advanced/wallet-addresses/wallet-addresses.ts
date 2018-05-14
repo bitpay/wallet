@@ -114,7 +114,7 @@ export class WalletAddressesPage {
 
   private processList(list: any): void {
     _.each(list, (n: any) => {
-      n.path = n.path.replace(/^m/g, 'xpub');
+      n.path = n.path ? n.path.replace(/^m/g, 'xpub') : null;
       n.address = this.walletProvider.getAddressView(this.wallet, n.address);
     });
   }
