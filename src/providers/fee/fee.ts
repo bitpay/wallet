@@ -13,14 +13,8 @@ export class FeeProvider {
 
   private CACHE_TIME_TS: number = 60;
   // Constant fee options to translate
-  public feeOpts: any = {
-    urgent: this.translate.instant('Urgent'),
-    priority: this.translate.instant('Priority'),
-    normal: this.translate.instant('Normal'),
-    economy: this.translate.instant('Economy'),
-    superEconomy: this.translate.instant('Super Economy'),
-    custom: this.translate.instant('Custom')
-  };
+  public feeOpts: any;
+
   private cache: any = {
     updateTs: 0,
     coin: ''
@@ -32,7 +26,31 @@ export class FeeProvider {
     private bwcProvider: BwcProvider,
     private translate: TranslateService
   ) {
+    this.feeOpts = {
+      urgent: 'Urgent',
+      priority: 'Priority',
+      normal: 'Normal',
+      economy: 'Economy',
+      superEconomy: 'Super Economy',
+      custom: 'Custom'
+    };
     this.logger.info('FeeProvider initialized.');
+  }
+
+  public translateFeeOpts() {
+    _.forEach(this.feeOpts, (feeOpt, key) => {
+      this.getTranslation(feeOpt).then((feeOptTranslated: string) => {
+        this.feeOpts[key] = feeOptTranslated;
+      });
+    });
+  }
+
+  public getTranslation(feeOpt: string): Promise<string> {
+    return new Promise((resolve) => {
+      this.translate.get(feeOpt).subscribe((feeOptTranslated: string) => {
+        return resolve(feeOptTranslated);
+      })
+    });
   }
 
   public getCurrentFeeLevel(): string {
