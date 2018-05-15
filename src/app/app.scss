@@ -85,6 +85,12 @@ ion-spinner * {
   }
 }
 
+// Fixes IOS 10.3.1 icons 
+.item-img {
+  display: flex;
+  align-items: center;
+}
+
 // Prevent the names of the tabs from disappearing
 .tabbar .tab-button .tab-button-text {
   display: block;
