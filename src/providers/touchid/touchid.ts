@@ -70,63 +70,37 @@ export class TouchIdProvider {
   }
 
   private verifyIOSFingerprint(): Promise<any> {
-    return new Promise((resolve, reject) => {
-      this.touchId
-        .verifyFingerprint('Scan your fingerprint please')
-        .then(res => resolve(), err => reject());
-    });
+    return this.touchId.verifyFingerprint('Scan your fingerprint please');
   }
 
   private verifyAndroidFingerprint(): Promise<any> {
-    return new Promise((resolve, reject) => {
-      this.androidFingerprintAuth
-        .encrypt({ clientId: this.app.info.nameCase })
-        .then(result => {
-          if (result.withFingerprint) {
-            this.logger.debug('Successfully authenticated with fingerprint.');
-            return resolve();
-          } else if (result.withBackup) {
-            this.logger.debug(
-              'Successfully authenticated with backup password!'
-            );
-            return resolve();
-          } else this.logger.debug("Didn't authenticate!");
-        })
-        .catch(error => {
-          if (
-            error === this.androidFingerprintAuth.ERRORS.FINGERPRINT_CANCELLED
-          ) {
-            this.logger.debug('Fingerprint authentication cancelled');
-            return reject();
-          } else {
-            this.logger.warn('Could not get Fingerprint Authenticated', error);
-            return reject();
-          }
-        });
-    });
+    return this.androidFingerprintAuth
+      .encrypt({ clientId: this.app.info.nameCase })
+      .then(result => {
+        if (result.withFingerprint) {
+          this.logger.debug('Successfully authenticated with fingerprint.');
+        } else if (result.withBackup) {
+          this.logger.debug(
+            'Successfully authenticated with backup password!'
+          );
+        } else this.logger.debug("Didn't authenticate!");
+      })
+      .catch(error => {
+        if (error === "FINGERPRINT_CANCELLED") {
+          this.logger.debug('Fingerprint authentication cancelled');
+        } else {
+          this.logger.warn('Could not get Fingerprint Authenticated', error);
+        }
+        throw error;
+      });
   }
 
   public check(): Promise<any> {
-    return new Promise((resolve, reject) => {
-      if (this.platform.isIOS) {
-        this.verifyIOSFingerprint()
-          .then(() => {
-            return resolve();
-          })
-          .catch(() => {
-            return reject();
-          });
-      }
-      if (this.platform.isAndroid) {
-        this.verifyAndroidFingerprint()
-          .then(() => {
-            return resolve();
-          })
-          .catch(() => {
-            return reject();
-          });
-      }
-    });
+    if (this.platform.isIOS)
+      return this.verifyIOSFingerprint();
+
+    if (this.platform.isAndroid)
+      return this.verifyAndroidFingerprint();
   }
 
   private isNeeded(wallet: any): string {
@@ -136,21 +110,12 @@ export class TouchIdProvider {
   }
 
   public checkWallet(wallet: any): Promise<any> {
-    return new Promise((resolve, reject) => {
-      this.isAvailable().then((isAvailable: boolean) => {
-        if (!isAvailable) return resolve();
-        if (this.isNeeded(wallet)) {
-          this.check()
-            .then(() => {
-              return resolve();
-            })
-            .catch(() => {
-              return reject();
-            });
-        } else {
-          return resolve();
-        }
-      });
+    return this.isAvailable().then((isAvailable: boolean) => {
+      if (!isAvailable) 
+        return;
+
+      if (this.isNeeded(wallet))
+        return this.check();
     });
   }
 }
