@@ -62,9 +62,10 @@ export class FeedbackProvider {
 
     let current = formatTagNumber(currentVersion);
     let saved = formatTagNumber(savedVersion);
-    if (saved.major > current.major || (saved.major == current.major && saved.minor > current.minor))
-      return false;
+    if (saved.major == current.major && saved.minor == current.minor) {
+      return true;
+    }
 
-    return true;
+    return false;
   }
 }
