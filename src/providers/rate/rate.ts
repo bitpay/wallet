@@ -9,7 +9,8 @@ export class RateProvider {
   private rates: any;
   private alternatives: any[];
   private ratesBCH: any;
-  private ratesAvailable: boolean;
+  private ratesBtcAvailable: boolean;
+  private ratesBchAvailable: boolean;
 
   private SAT_TO_BTC: number;
   private BTC_TO_SAT: number;
@@ -24,7 +25,8 @@ export class RateProvider {
     this.ratesBCH = {};
     this.SAT_TO_BTC = 1 / 1e8;
     this.BTC_TO_SAT = 1e8;
-    this.ratesAvailable = false;
+    this.ratesBtcAvailable = false;
+    this.ratesBchAvailable = false;
     this.updateRatesBtc();
     this.updateRatesBch();
   }
@@ -41,7 +43,7 @@ export class RateProvider {
               rate: currency.rate
             });
           });
-          this.ratesAvailable = true;
+          this.ratesBtcAvailable = true;
           resolve();
         })
         .catch((errorBTC: any) => {
@@ -58,6 +60,7 @@ export class RateProvider {
           _.each(dataBCH, (currency: any) => {
             this.ratesBCH[currency.code] = currency.rate;
           });
+          this.ratesBchAvailable = true;
           resolve();
         })
         .catch((errorBCH: any) => {
@@ -92,19 +95,23 @@ export class RateProvider {
     return this.alternatives;
   }
 
-  public isAvailable() {
-    return this.ratesAvailable;
+  public isBtcAvailable() {
+    return this.ratesBtcAvailable;
+  }
+
+  public isBchAvailable() {
+    return this.ratesBchAvailable;
   }
 
   public toFiat(satoshis: number, code: string, chain: string): number {
-    if (!this.isAvailable()) {
+    if ((!this.isBtcAvailable() && chain == 'btc') || (!this.isBchAvailable() && chain == 'bch')) {
       return null;
     }
     return satoshis * this.SAT_TO_BTC * this.getRate(code, chain);
   }
 
   public fromFiat(amount: number, code: string, chain: string): number {
-    if (!this.isAvailable()) {
+    if ((!this.isBtcAvailable() && chain == 'btc') || (!this.isBchAvailable() && chain == 'bch')) {
       return null;
     }
     return amount / this.getRate(code, chain) * this.BTC_TO_SAT;
@@ -125,13 +132,20 @@ export class RateProvider {
     return _.uniqBy(alternatives, 'isoCode');
   }
 
-  public whenRatesAvailable(): Promise<any> {
+  public whenRatesAvailable(chain: string): Promise<any> {
     return new Promise((resolve, reject) => {
-      if (this.ratesAvailable) resolve();
+      if ((this.ratesBtcAvailable && chain == 'btc') || (this.ratesBchAvailable && chain == 'bch')) resolve();
       else {
-        this.updateRatesBtc().then(() => {
-          resolve();
-        });
+        if (chain == 'btc') {
+          this.updateRatesBtc().then(() => {
+            resolve();
+          });
+        }
+        if (chain == 'bch') {
+          this.updateRatesBch().then(() => {
+            resolve();
+          });
+        }
       }
     });
   }

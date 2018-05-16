@@ -219,7 +219,7 @@ export class WalletProvider {
           return reject(err);
         });
 
-        this.rateProvider.whenRatesAvailable().then(() => {
+        this.rateProvider.whenRatesAvailable(wallet.coin).then(() => {
 
           let totalBalanceAlternative = this.rateProvider.toFiat(cache.totalBalanceSat, cache.alternativeIsoCode, wallet.coin);
           let pendingBalanceAlternative = this.rateProvider.toFiat(cache.pendingAmount, cache.alternativeIsoCode, wallet.coin);
