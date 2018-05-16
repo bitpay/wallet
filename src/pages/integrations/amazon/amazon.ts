@@ -84,7 +84,7 @@ export class AmazonPage {
     this.country = this.amazonProvider.getCountry();
     switch (this.country) {
       case 'japan':
-        this.pageTitle = 'Amazon.co.jp Gift Cards';
+        this.pageTitle = 'Amazon.co.jp ギフト券';
         this.onlyIntegers = true;
         break;
       default:

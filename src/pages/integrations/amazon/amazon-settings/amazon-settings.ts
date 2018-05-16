@@ -30,7 +30,7 @@ export class AmazonSettingsPage {
       case 'japan':
         this.country = 'japan';
         this.serviceName = 'amazonJapan';
-        this.pageTitle = 'Amazon.co.jp Gift Cards';
+        this.pageTitle = 'Amazon.co.jp ギフト券';
         break;
       default:
         this.country = 'usa';
