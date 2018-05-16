@@ -13,7 +13,8 @@ var templates = {
   'build-desktop.js': 'desktop/',
   '.desktop': 'desktop/',
   'setup-win.iss': 'desktop/',
-  'build-macos.sh': 'desktop/'
+  'build-macos.sh': 'desktop/',
+  'build-linux.js': 'desktop/'
 };
 var configDir = process.argv[2] || 'copay';
 var JSONheader = ' { ' + "\n" + '  "//":"Changes to this file will be overwritten",' + "\n" + '  "//":"        Modify it in the app-template directory", ' + "\n";
