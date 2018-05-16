@@ -645,7 +645,7 @@ export class ConfirmPage {
 
   private setSendError(msg: any) {
     if (this.isCordova) this.slideButton.isConfirmed(false);
-    if (msg.fingerPrintCancelled) return;
+    if (msg.fingerprintCancelled) return;
 
     this.popupProvider.ionicAlert(
       this.translate.instant('Error'),

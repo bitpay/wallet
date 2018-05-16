@@ -73,7 +73,7 @@ export class TouchIdProvider {
     return this.touchId.verifyFingerprint('Scan your fingerprint please')
       .catch(err => {
         if(err && (err.code == -2 || err.code == -128))
-        err.fingerPrintCancelled = true;
+        err.fingerprintCancelled = true;
         throw err;
       });
   }
@@ -94,7 +94,7 @@ export class TouchIdProvider {
         const err: any = new Error(error);
         if (error === "FINGERPRINT_CANCELLED") {
           this.logger.debug('Fingerprint authentication cancelled');
-          err.fingerPrintCancelled = true;
+          err.fingerprintCancelled = true;
         } else {
           this.logger.warn('Could not get Fingerprint Authenticated', error);
         }
