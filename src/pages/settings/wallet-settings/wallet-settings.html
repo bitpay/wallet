@@ -32,7 +32,7 @@
         <ion-label>{{'Request Encrypt Password' | translate}}</ion-label>
         <ion-toggle [(ngModel)]="encryptEnabled" (ionChange)="encryptChange()" [disabled]="(needsBackup || !wallet.isComplete()) && !encryptEnabled"></ion-toggle>
       </ion-item>
-      <ion-item-divider text-wrap>
+      <ion-item-divider>
         <span class="item-text" translate>
           If enabled, all sensitive information (private key and recovery phrase) and actions (spending and exporting) associated with this wallet will be protected.
         </span>

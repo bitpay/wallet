@@ -104,7 +104,7 @@
           <span *ngIf="!requiresMultipleSignatures" translate>Unsent transactions</span>
         </ion-item-divider>
         <page-txp *ngFor="let txp of txps" [tx]="txp" [addressbook]="addressbook"></page-txp>
-        <ion-item text-wrap *ngIf="wallet.status && wallet.status.lockedBalanceSat" class="locked-balance">
+        <ion-item *ngIf="wallet.status && wallet.status.lockedBalanceSat" class="locked-balance">
           <span translate>Total Locked Balance</span>
           <ion-note item-end>
             <span class="total-locked-amount">{{wallet.status.lockedBalanceStr}}</span>

@@ -28,11 +28,11 @@
 
     <ion-item *ngIf="tx.paypro.toAddress" copy-to-clipboard="{{tx.paypro.toAddress}}">
       <div translate>Address</div>
-      <div class="comment" text-wrap>
+      <div class="comment">
         {{address}}
       </div>
     </ion-item>
-    
+
     <ion-item>
       <div translate>Certified by</div>
       <div class="certified" text-wrap *ngIf="tx.paypro.caTrusted">

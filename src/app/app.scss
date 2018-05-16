@@ -25,6 +25,13 @@ ion-alert.alert-top {
   align-items: center;
 }
 
+// Text wrap
+// --------------------------------------------------
+
+ion-label {
+  white-space: normal;
+}
+
 // Buttons
 // --------------------------------------------------
 
@@ -68,9 +75,6 @@ ion-spinner * {
 
 // Item font size
 .item-title {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
   //  font-size: 1.4rem;
 }
 .item-subtitle {
