@@ -234,7 +234,7 @@ export class AmazonProvider {
     });
     this.homeIntegrationsProvider.register({
       name: 'amazonJapan',
-      title: 'Amazon.co.jp Gift Cards',
+      title: 'Amazon.co.jp ギフト券',
       icon: 'assets/img/amazon/icon-amazon.svg',
       page: 'AmazonPage',
       show: !!this.configProvider.get().showIntegration['amazonJapan']
