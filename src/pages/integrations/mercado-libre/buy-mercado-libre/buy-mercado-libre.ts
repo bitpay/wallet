@@ -442,7 +442,7 @@ export class BuyMercadoLibrePage {
         this.checkTransaction(1, this.createdTx.giftData);
       }).catch((err: any) => {
         this._resetValues();
-        this.showError(this.translate.instant('Could not send transaction'), err);
+        this.showError(this.translate.instant('Could not send transaction'), this.bwcErrorProvider.msg(err));
         return;
       });
     });

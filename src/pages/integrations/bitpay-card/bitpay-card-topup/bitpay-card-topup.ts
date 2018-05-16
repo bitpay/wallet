@@ -474,7 +474,7 @@ export class BitPayCardTopUpPage {
       }).catch((err) => {
         this.onGoingProcessProvider.clear();
         this._resetValues();
-        this.showError(this.translate.instant('Could not send transaction'), err);
+        this.showError(this.translate.instant('Could not send transaction'), this.bwcErrorProvider.msg(err));
       });
     });
   };

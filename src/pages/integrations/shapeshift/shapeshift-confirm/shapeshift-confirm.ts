@@ -460,7 +460,7 @@ export class ShapeshiftConfirmPage {
         this.txSent = txSent;
         this.saveShapeshiftData();
       }).catch((err: any) => {
-        this.logger.error(err);
+        this.logger.error(this.bwcErrorProvider.msg(err));
         this.showErrorAndBack(null, this.translate.instant('Could not send transaction'));
         return;
       });

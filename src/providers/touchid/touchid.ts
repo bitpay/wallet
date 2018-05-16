@@ -70,7 +70,12 @@ export class TouchIdProvider {
   }
 
   private verifyIOSFingerprint(): Promise<any> {
-    return this.touchId.verifyFingerprint('Scan your fingerprint please');
+    return this.touchId.verifyFingerprint('Scan your fingerprint please')
+      .catch(err => {
+        if(err && (err.code == -2 || err.code == -128))
+        err.fingerPrintCancelled = true;
+        throw err;
+      });
   }
 
   private verifyAndroidFingerprint(): Promise<any> {
@@ -86,12 +91,14 @@ export class TouchIdProvider {
         } else this.logger.debug("Didn't authenticate!");
       })
       .catch(error => {
+        const err: any = new Error(error);
         if (error === "FINGERPRINT_CANCELLED") {
           this.logger.debug('Fingerprint authentication cancelled');
+          err.fingerPrintCancelled = true;
         } else {
           this.logger.warn('Could not get Fingerprint Authenticated', error);
         }
-        throw error;
+        throw err;
       });
   }
 
