@@ -643,8 +643,10 @@ export class ConfirmPage {
     });
   }
 
-  private setSendError(msg: string) {
+  private setSendError(msg: any) {
     if (this.isCordova) this.slideButton.isConfirmed(false);
+    if (msg.fingerprintCancelled) return;
+
     this.popupProvider.ionicAlert(
       this.translate.instant('Error'),
       this.bwcErrorProvider.msg(msg)

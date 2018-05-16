@@ -1225,7 +1225,7 @@ export class WalletProvider {
             return reject(err);
           });
         }).catch((err) => {
-          return reject(this.bwcErrorProvider.msg(err));
+          return reject(err);
         });
       } else {
         this.prepare(wallet).then((password: string) => {
@@ -1237,10 +1237,10 @@ export class WalletProvider {
               return reject(err);
             });
           }).catch((err) => {
-            return reject(this.bwcErrorProvider.msg(err));
+            return reject(err);
           });
         }).catch((err) => {
-          return reject(this.bwcErrorProvider.msg(err));
+          return reject(err);
         });
       };
     });
