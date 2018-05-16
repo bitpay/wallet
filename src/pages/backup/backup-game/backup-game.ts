@@ -185,8 +185,8 @@ export class BackupGamePage {
 
   public copyRecoveryPhrase(): string {
     if (this.wallet.network == 'livenet') return null;
-    else if (!this.wallet.credentials.mnemonic) return null;
-    else return this.wallet.credentials.mnemonic;
+    else if (this.keys.mnemonic) return this.keys.mnemonic;
+    else return null;
   }
 
   private confirm(): Promise<any> {
