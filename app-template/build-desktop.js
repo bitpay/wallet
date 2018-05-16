@@ -4,7 +4,7 @@ var nw = new NwBuilder({
   appName: '*USERVISIBLENAME*',
   platforms: ['win64', 'osx64', 'linux64'],
   buildDir: './desktop',
-  version: '0.19.5',
+  version: '0.30.2',
   macIcns: './resources/*PACKAGENAME*/mac/app.icns',
   exeIco: './resources/*PACKAGENAME*/windows/icon.ico',
   macPlist: {
@@ -18,7 +18,7 @@ var nw = new NwBuilder({
 });
 
 // Log stuff you want
-nw.on('log',  console.log);
+nw.on('log', console.log);
 
 nw.build().then(function () {
   console.log('all done!');

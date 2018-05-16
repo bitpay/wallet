@@ -209,7 +209,7 @@
     "karma-junit-reporter": "1.2.0",
     "mkdirp": "0.5.1",
     "npm-run-all": "4.1.2",
-    "nw": "0.19.5",
+    "nw": "0.30.2",
     "nw-builder": "3.5.1",
     "path": "0.12.7",
     "plist": "2.1.0",
