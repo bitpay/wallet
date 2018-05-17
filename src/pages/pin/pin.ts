@@ -1,16 +1,19 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { Events, Platform } from 'ionic-angular';
 import { ConfigProvider } from '../../providers/config/config';
 import { Logger } from '../../providers/logger/logger';
 
+import { StatusBar } from '@ionic-native/status-bar';
+import { Vibration } from '@ionic-native/vibration';
+
+import { Shake } from '../../directives/shake/shake';
 import { PersistenceProvider } from '../../providers/persistence/persistence';
 
 @Component({
   selector: 'page-pin',
-  templateUrl: 'pin.html',
+  templateUrl: 'pin.html'
 })
 export class PinModalPage {
-
   private ATTEMPT_LIMIT: number;
   private ATTEMPT_LOCK_OUT_TIME: number;
   private countDown: any;
@@ -25,16 +28,18 @@ export class PinModalPage {
   public unregister: any;
   public showPinModal: boolean;
 
+  @ViewChild(Shake) pinCode: Shake;
+
   constructor(
     private configProvider: ConfigProvider,
     private logger: Logger,
     private platform: Platform,
     private events: Events,
-    private persistenceProvider: PersistenceProvider
+    private persistenceProvider: PersistenceProvider,
+    private statusBar: StatusBar,
+    private vibration: Vibration
   ) {
-
     this.events.subscribe('showPinModalEvent', (action: string) => {
-
       this.ATTEMPT_LIMIT = 3;
       this.ATTEMPT_LOCK_OUT_TIME = 5 * 60;
       this.currentAttempts = 0;
@@ -47,7 +52,7 @@ export class PinModalPage {
       this.incorrect = false;
 
       this.showPinModal = true;
-      this.unregister = this.platform.registerBackButtonAction(() => { });
+      this.unregister = this.platform.registerBackButtonAction(() => {});
 
       this.action = action;
 
@@ -58,6 +63,7 @@ export class PinModalPage {
           this.setLockRelease();
         });
       }
+      this.statusBar.styleDefault();
     });
   }
 
@@ -66,6 +72,7 @@ export class PinModalPage {
     this.showPinModal = false;
     if (this.countDown) clearInterval(this.countDown);
     this.unregister();
+    this.statusBar.styleLightContent();
   }
 
   public newEntry(value: string): void {
@@ -75,21 +82,21 @@ export class PinModalPage {
     if (!this.isComplete()) return;
     if (this.action === 'checkPin' || this.action === 'removeLock') {
       setTimeout(() => {
-        this.checkIfCorrect()
+        this.checkIfCorrect();
       }, 100);
-    };
+    }
     if (this.action === 'pinSetUp') {
       setTimeout(() => {
         if (!this.confirmingPin) {
           this.confirmingPin = true;
           this.firstPinEntered = this.currentPin;
           this.currentPin = '';
-        }
-        else if (this.firstPinEntered === this.currentPin) this.save();
+        } else if (this.firstPinEntered === this.currentPin) this.save();
         else {
           this.firstPinEntered = this.currentPin = '';
           this.incorrect = true;
           this.confirmingPin = false;
+          this.shakeCode();
         }
       }, 100);
     }
@@ -109,13 +116,14 @@ export class PinModalPage {
 
   private showLocktimer() {
     this.disableButtons = true;
-    let bannedUntil = Math.floor(Date.now() / 1000) + this.ATTEMPT_LOCK_OUT_TIME;
+    let bannedUntil =
+      Math.floor(Date.now() / 1000) + this.ATTEMPT_LOCK_OUT_TIME;
     this.countDown = setInterval(() => {
       let now = Math.floor(Date.now() / 1000);
       let totalSecs = bannedUntil - now;
       let m = Math.floor(totalSecs / 60);
       let s = totalSecs % 60;
-      this.expires = ('0' + m).slice(-2) + ":" + ('0' + s).slice(-2);
+      this.expires = ('0' + m).slice(-2) + ':' + ('0' + s).slice(-2);
     }, 1000);
   }
 
@@ -160,15 +168,19 @@ export class PinModalPage {
       if (this.action === 'checkPin') {
         this.close();
       }
-    }
-    else {
+    } else {
       this.currentPin = '';
       this.checkAttempts();
+      this.shakeCode();
     }
+  }
+
+  public shakeCode() {
+    this.pinCode.shakeIt();
+    this.vibration.vibrate(100);
   }
 
   public getFilledClass(limit): string {
     return this.currentPin.length >= limit ? 'filled' : null;
   }
-
 }

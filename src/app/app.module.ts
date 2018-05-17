@@ -160,6 +160,7 @@ import { IosScrollBgColor } from '../directives/ios-scroll-bg-color/ios-scroll-b
 import { LongPress } from '../directives/long-press/long-press';
 import { NavbarBg } from '../directives/navbar-bg/navbar-bg';
 import { NoLowFee } from '../directives/no-low-fee/no-low-fee';
+import { Shake } from '../directives/shake/shake';
 
 /* Components */
 import { ComponentsModule } from './../components/components.module';
@@ -284,6 +285,7 @@ export function createTranslateLoader(http: HttpClient) {
     LongPress,
     NavbarBg,
     NoLowFee,
+    Shake,
     /* Pipes */
     SatToUnitPipe,
     SatToFiatPipe,
@@ -428,4 +430,4 @@ export function createTranslateLoader(http: HttpClient) {
     }
   ]
 })
-export class AppModule { }
+export class AppModule {}

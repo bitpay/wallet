@@ -9,10 +9,10 @@
       <div *ngIf="!disableButtons">
         <span class="message" *ngIf="!confirmingPin && !incorrect" translate>Please enter your PIN</span>
         <span class="message" *ngIf="confirmingPin && !incorrect" translate>Confirm your PIN</span>
-        <span class="message assertive" *ngIf="incorrect" translate>Incorrect PIN, try again.</span>
+        <span class="message" *ngIf="incorrect" translate>Incorrect PIN, try again.</span>
       </div>
       <div *ngIf="disableButtons">
-        <span class="message assertive" *ngIf="expires" translate>Try again in {{expires}}</span>
+        <span class="message" *ngIf="expires" translate>Try again in {{expires}}</span>
       </div>
     </div>
     <div class="icon-container">
@@ -21,34 +21,67 @@
       </ion-icon>
     </div>
   </div>
-  <div class="block-code">
-    <div class="circle" [ngClass]="getFilledClass(1)"></div>
-    <div class="circle" [ngClass]="getFilledClass(2)"></div>
-    <div class="circle" [ngClass]="getFilledClass(3)"></div>
-    <div class="circle" [ngClass]="getFilledClass(4)"></div>
-  </div>
-  <div class="block-buttons">
-    <ion-row>
-      <ion-col (click)="newEntry('1')">1</ion-col>
-      <ion-col (click)="newEntry('2')">2</ion-col>
-      <ion-col (click)="newEntry('3')">3</ion-col>
-    </ion-row>
-    <ion-row>
-      <ion-col (click)="newEntry('4')">4</ion-col>
-      <ion-col (click)="newEntry('5')">5</ion-col>
-      <ion-col (click)="newEntry('6')">6</ion-col>
-    </ion-row>
-    <ion-row>
-      <ion-col (click)="newEntry('7')">7</ion-col>
-      <ion-col (click)="newEntry('8')">8</ion-col>
-      <ion-col (click)="newEntry('9')">9</ion-col>
-    </ion-row>
-    <ion-row>
-      <ion-col></ion-col>
-      <ion-col (click)="newEntry('0')">0</ion-col>
-      <ion-col (click)="delete()">
-        <ion-icon name="arrow-round-back"></ion-icon>
-      </ion-col>
-    </ion-row>
+  <div class="code-wrapper">
+
+    <div class="block-code" shake>
+      <div class="circle" [ngClass]="getFilledClass(1)"></div>
+      <div class="circle" [ngClass]="getFilledClass(2)"></div>
+      <div class="circle" [ngClass]="getFilledClass(3)"></div>
+      <div class="circle" [ngClass]="getFilledClass(4)"></div>
+    </div>
+
+    <div class="block-buttons">
+      <ion-row>
+        <ion-col (click)="newEntry('1')">
+          <div>1</div>
+          <div>ABC</div>
+        </ion-col>
+        <ion-col (click)="newEntry('2')">
+          <div>2</div>
+          <div>DEF</div>
+        </ion-col>
+        <ion-col (click)="newEntry('3')">
+          <div>3</div>
+          <div>GHI</div>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col (click)="newEntry('4')">
+          <div>4</div>
+          <div>JKL</div>
+        </ion-col>
+        <ion-col (click)="newEntry('5')">
+          <div>5</div>
+          <div>MNO</div>
+        </ion-col>
+        <ion-col (click)="newEntry('6')">
+          <div>6</div>
+          <div>PQR</div>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col (click)="newEntry('7')">
+          <div>7</div>
+          <div>STU</div>
+        </ion-col>
+        <ion-col (click)="newEntry('8')">
+          <div>8</div>
+          <div>VWX</div>
+        </ion-col>
+        <ion-col (click)="newEntry('9')">
+          <div>9</div>
+          <div>YZ</div>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col></ion-col>
+        <ion-col (click)="newEntry('0')">
+          <div>0</div>
+        </ion-col>
+        <ion-col (click)="delete()">
+          <img src="assets/img/tail-left.svg">
+        </ion-col>
+      </ion-row>
+    </div>
   </div>
 </ion-content>
