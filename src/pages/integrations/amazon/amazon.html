@@ -6,7 +6,7 @@
 
 <ion-content no-bounce>
   <div class="container" [ngClass]="{'white-background': country == 'japan'}" *ngIf="!giftCards">
-    <div class="box-notification warn no-margin" *ngIf="network == 'testnet'">
+    <div class="box-notification warn no-margin" *ngIf="network == 'testnet'" translate>
       Sandbox version. Only for testing purpose.
     </div>
     <div class="center-header">
@@ -14,36 +14,36 @@
         <img class="usa-logo" *ngIf="country == 'usa'" src="assets/img/amazon/GCs-logo-cllb.png" alt="Amazon.com Gift Card">
         <img class="japan-logo" *ngIf="country == 'japan'" src="assets/img/amazon/japan/GCs-logo-japan-cllb.jpg" alt="Amazon.co.jp Gift Card">
       </div>
-      <div class="description" *ngIf="country == 'usa'" padding>Gift Cards are only redeemable on Amazon.com (US website). Cards never expire and can be redeemed towards millions of items.
+      <div class="description" *ngIf="country == 'usa'" padding translate>Gift Cards are only redeemable on Amazon.com (US website). Cards never expire and can be redeemed towards millions of items.
       </div>
-      <div class="description" *ngIf="country == 'japan'" padding>Gift Cards are only redeemable on Amazon.co.jp (Japan website). Cards never expire and can be redeemed towards millions of items.
+      <div class="description" *ngIf="country == 'japan'" padding translate>Gift Cards are only redeemable on Amazon.co.jp (Japan website). Cards never expire and can be redeemed towards millions of items.
       </div>
-      <button *ngIf="!showOauthForm" ion-button outline class="button-standard" (click)="goTo('Amount')" no-low-fee>Buy a Gift Card</button>
-      <button *ngIf="!showOauthForm && country == 'usa'" ion-button clear small block color="dark" (click)="openExternalLink('https://www.amazon.com')">Visit Amazon.com &rarr;</button>
-      <button *ngIf="!showOauthForm && country == 'japan'" ion-button clear small block color="dark" (click)="openExternalLink('https://www.amazon.co.jp')">Visit Amazon.co.jp &rarr;</button>
+      <button *ngIf="!showOauthForm" ion-button outline class="button-standard" (click)="goTo('Amount')" no-low-fee>{{'Buy a Gift Card' | translate}}</button>
+      <button *ngIf="!showOauthForm && country == 'usa'" ion-button clear small block color="dark" (click)="openExternalLink('https://www.amazon.com')">{{'Visit Amazon.com' | translate}} &rarr;</button>
+      <button *ngIf="!showOauthForm && country == 'japan'" ion-button clear small block color="dark" (click)="openExternalLink('https://www.amazon.co.jp')">{{'Visit Amazon.co.jp' | translate}} &rarr;</button>
     </div>
   </div>
   <div class="container" *ngIf="giftCards">
-    <div class="box-notification warn no-margin" *ngIf="network == 'testnet'">
+    <div class="box-notification warn no-margin" *ngIf="network == 'testnet'" translate>
       Sandbox version. Only for testing purpose.
     </div>
 
     <div class="integration-giftCard-logo">
       <img *ngIf="country == 'usa'" src="assets/img/amazon/GCs-logo-cllb.png" alt="Amazon.com Gift Card">
       <img *ngIf="country == 'japan'" src="assets/img/amazon/japan/GCs-logo-japan-cllb.jpg" alt="Amazon.co.jp Gift Card">
-      <div *ngIf="country == 'usa'" class="subtitle">
-        <b>Only</b> redeemable on www.amazon.com (US website).
+      <div *ngIf="country == 'usa'" class="subtitle" translate>
+        Only redeemable on www.amazon.com (US website).
       </div>
-      <div *ngIf="country == 'japan'" class="subtitle">
-        <b>Only</b> redeemable on www.amazon.co.jp (Japan website).
+      <div *ngIf="country == 'japan'" class="subtitle" translate>
+        Only redeemable on www.amazon.co.jp (Japan website).
       </div>
       <button ion-button no-low-fee (click)="goTo('Amount')">
-        Buy Gift Card
+        {{'Buy Gift Card' | translate}}
       </button>
     </div>
 
     <ion-list>
-      <ion-item-divider>Your Gift Cards</ion-item-divider>
+      <ion-item-divider>{{'Your Gift Cards' | translate}}</ion-item-divider>
       <button ion-item *ngFor="let item of (giftCards | keys : 'date') | orderBy : ['-order']" (click)="openCardModal(item.value)">
         <div class="amazon-card">
           <img src="assets/img/amazon/a-smile_color_btn.png" alt="" class="avatar">
@@ -55,12 +55,12 @@
               <span class="text-gray">{{item.value.date | amTimeAgo}}</span>
               <span *ngIf="updatingPending[item.value.invoiceId]">...</span>
               <span *ngIf="!updatingPending[item.value.invoiceId]">
-                <span class="assertive" *ngIf="item.value.status == 'FAILURE' || item.value.status == 'RESEND'">Error</span>
-                <span class="assertive" *ngIf="item.value.status == 'expired'">Expired</span>
-                <span class="assertive" *ngIf="item.value.status == 'invalid'">Still waiting confirmation (Use higher fees setting to faster delivery)
+                <span class="assertive" *ngIf="item.value.status == 'FAILURE' || item.value.status == 'RESEND'" translate>Error</span>
+                <span class="assertive" *ngIf="item.value.status == 'expired'" translate>Expired</span>
+                <span class="assertive" *ngIf="item.value.status == 'invalid'" translate>Still waiting confirmation (Use higher fees setting to faster delivery)
                 </span>
-                <span class="text-gray" *ngIf="item.value.status == 'PENDING'">Pending to confirmation</span>
-                <span class="assertive" *ngIf="item.value.status == 'SUCCESS' && item.value.cardStatus == 'Canceled'">Canceled</span>
+                <span class="text-gray" *ngIf="item.value.status == 'PENDING'" translate>Pending to confirmation</span>
+                <span class="assertive" *ngIf="item.value.status == 'SUCCESS' && item.value.cardStatus == 'Canceled'" translate>Canceled</span>
               </span>
             </p>
           </div>
