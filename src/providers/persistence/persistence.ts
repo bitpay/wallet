@@ -528,4 +528,16 @@ export class PersistenceProvider {
   removeLockStatus(): Promise<void> {
     return this.storage.remove('lockStatus');
   };
+
+  setNewsByEmail(): Promise<void> {
+    return this.storage.set('getNewsByEmail', 'true');
+  };
+
+  getNewsByEmail(): Promise<string> {
+    return this.storage.get('getNewsByEmail');
+  };
+
+  removeNewsByEmail(): Promise<void> {
+    return this.storage.remove('getNewsByEmail');
+  };
 }
