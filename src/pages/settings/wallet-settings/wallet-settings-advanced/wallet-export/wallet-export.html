@@ -46,11 +46,11 @@
             </ion-item>
           </div>
           <ion-item-divider *ngIf="!canSign || exportWalletForm.value.noSignEnabled">
-            <div class="warning" *ngIf="!canSign">
+            <div class="warning-container" *ngIf="!canSign">
               <ion-icon name="ios-warning-outline"></ion-icon>
               <span translate>WARNING: The private key of this wallet is not available. The export allows to check the wallet balance, transaction history, and create spend proposals from the export. However, does not allow to approve (sign) proposals, so funds will not be accessible from the export.</span>
             </div>
-            <div class="warning" *ngIf="exportWalletForm.value.noSignEnabled">
+            <div class="warning-container" *ngIf="exportWalletForm.value.noSignEnabled">
               <ion-icon name="ios-warning-outline"></ion-icon>
               <span translate>WARNING: Not including the private key allows to check the wallet balance, transaction history, and create spend proposals from the export. However, does not allow to approve (sign) proposals, so funds will not be accessible from the export.</span>
             </div>

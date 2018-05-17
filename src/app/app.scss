@@ -272,6 +272,13 @@ a.royal {
   color: color($colors, danger);
 }
 
+.warning-container {
+  background: color($colors, danger);
+  color: color($colors, light);
+  padding: 1rem;
+  border-radius: 10px;
+}
+
 .card {
   padding-top: 1px;
   width: 92%;

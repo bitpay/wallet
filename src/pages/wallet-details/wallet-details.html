@@ -16,7 +16,7 @@
         <div (longPress)="toggleBalance()">
           <div (tap)="updateAll(true)" *ngIf="!updateStatusError && !wallet.balanceHidden && !wallet.scanning && wallet.status">
             <div class="balance-str">{{wallet.status.totalBalanceStr}}</div>
-            <div class="balance-alt-str" *ngIf="wallet.network != 'testnet'">
+            <div class="balance-alt-str">
               {{wallet.status.totalBalanceAlternative}} {{wallet.status.alternativeIsoCode}}
             </div>
           </div>
@@ -79,6 +79,14 @@
       <a (click)="openBackup()">
         <ion-icon name="warning"></ion-icon>
         {{'Wallet not backed up'|translate}}
+        <ion-icon name="arrow-forward"></ion-icon>
+      </a>
+    </div>
+
+    <div *ngIf="wallet.network == 'testnet'" class="box-notification no-margin warn">
+      <a (click)="openExternalLink()">
+        <ion-icon name="warning"></ion-icon>
+        {{'Learn more about testnet blockchain' | translate}}
         <ion-icon name="arrow-forward"></ion-icon>
       </a>
     </div>
