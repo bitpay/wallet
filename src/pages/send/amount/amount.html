@@ -44,7 +44,7 @@
         <div class="amount" [hidden]="!globalResult">{{globalResult}} {{unit}}</div>
         <div class="result" *ngIf="alternativeAmount">&asymp; {{alternativeAmount || '0.00'}} {{alternativeUnit}}</div>
         <div class="result" *ngIf="!alternativeAmount">&nbsp;</div>
-        <div *ngIf="onlyIntegers">This service only accepts integers amounts</div>
+        <div *ngIf="onlyIntegers" translate>This service only accepts integers amounts</div>
       </div>
     </div>
   </div>
