@@ -1,9 +1,9 @@
 <ion-header>
   <ion-navbar>
-    <ion-title>Details</ion-title>
-    <ion-buttons left>
+    <ion-title>{{'Details' | translate}}</ion-title>
+    <ion-buttons start>
       <button (click)="close()" ion-button>
-        Close
+        {{'Close' | translate}}
       </button>
     </ion-buttons>
   </ion-navbar>
@@ -14,29 +14,29 @@
     <img *ngIf="country == 'usa'" src="assets/img/amazon/a_generic.jpg" alt="Amazon.com Gift Card" (click)="refreshGiftCard()">
     <img *ngIf="country == 'japan'" src="assets/img/amazon/japan/JP_blank.jpg" alt="Amazon.co.jp ギフト券" (click)="refreshGiftCard()">
     <div class="header-modal-amount">
-      Gift Card Amount:
+      {{'Gift Card Amount:' | translate}}
       <span class="text-bold">
         {{card.amount | currency : '$ ' : 2}} {{ currency }}
       </span>
     </div>
-    <div>
+    <div translate>
       Created {{card.date | amTimeAgo}}
     </div>
 
     <div *ngIf="card.claimCode">
       <div *ngIf="card.cardStatus !== 'Canceled'">
-        Claim code:
+        {{'Claim code:' | translate}}
         <span class="text-bold" copy-to-clipboard="{{card.claimCode}}">{{card.claimCode}}</span>
       </div>
       <div class="redeem" *ngIf="card.cardStatus == 'Fulfilled'">
         <button ion-button outline (click)="openExternalLink(redeemAmazonUrl + card.claimCode)">
-          Redeem Now
+          {{'Redeem Now' | translate}}
         </button>
       </div>
       <div *ngIf="card.cardStatus == 'Canceled'">
         <div>
-          Status:
-          <span class="text-bold">
+          {{'Status:' | translate}}
+          <span class="text-bold" translate>
             CANCELED
           </span>
         </div>
@@ -44,28 +44,28 @@
     </div>
     <div *ngIf="!card.claimCode">
       <div>
-        Status:
-        <span class="text-bold" *ngIf="card.status == 'PENDING'">
+        {{'Status:' | translate}}
+        <span class="text-bold" *ngIf="card.status == 'PENDING'" translate>
           PENDING
         </span>
-        <span class="text-bold" *ngIf="card.status=='invalid'">
+        <span class="text-bold" *ngIf="card.status=='invalid'" translate>
           STILL PENDING
         </span>
-        <span class="text-bold" *ngIf="card.status == 'FAILURE' || card.status == 'RESEND'">
+        <span class="text-bold" *ngIf="card.status == 'FAILURE' || card.status == 'RESEND'" translate>
           FAILURE
         </span>
-        <span class="text-bold" *ngIf="card.status == 'expired'">
+        <span class="text-bold" *ngIf="card.status == 'expired'" translate>
           EXPIRED
         </span>
       </div>
       <div *ngIf="updateGiftCard">
-        <a class="button button-clear button-positive" ng-click="refreshGiftCard()">Try again</a>
+        <a class="button button-clear button-positive" ng-click="refreshGiftCard()" translate>Try again</a>
       </div>
     </div>
     <div class="invoice">
-      <a class="button button-clear button-calm" (click)="openExternalLink(card.invoiceUrl)">See invoice &rarr;</a>
+      <a class="button button-clear button-calm" (click)="openExternalLink(card.invoiceUrl)" translate>See invoice &rarr;</a>
     </div>
-    <div class="box-notification assertive" *ngIf="card.status == 'FAILURE' || card.status == 'RESEND'">
+    <div class="box-notification assertive" *ngIf="card.status == 'FAILURE' || card.status == 'RESEND'" translate>
       There was a failure to the create gift card. Please, contact BitPay support.
     </div>
   </div>
