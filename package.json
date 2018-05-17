@@ -15,7 +15,7 @@
   "title": "Copay",
   "chromium-args": "--disable-password-generation --disable-devtools",
   "window": {
-    "title": "Copay - Copay Bitcoin Wallet",
+    "title": "Copay – Copay Bitcoin Wallet",
     "icon": "www/assets/img/app/icon.png",
     "toolbar": false,
     "show": true,
