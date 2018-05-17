@@ -6,7 +6,7 @@
 
 <ion-content *ngIf="!isCordova">
 
-  <div [hidden]="!this.selectedDevice || !hasPermission">
+  <div [hidden]="!selectedDevice || !hasPermission">
 
     <div [hidden]="!hasPermission" class="browser-scanner page-scan-camera-ready">
 
@@ -18,7 +18,7 @@
     </div>
   </div>
 
-  <div *ngIf="!this.selectedDevice || !hasPermission" class="page-scan-has-problems">
+  <div *ngIf="!selectedDevice || !hasPermission" class="page-scan-has-problems">
     <div class="header-container">
       <div>
         <div class="header" padding>
@@ -33,7 +33,6 @@
     <div class="cameraSelector">
       <div padding>
         <div *ngIf="hasPermission === false" translate>Enable the camera to get started.</div>
-        <div *ngIf="hasPermission === undefined" translate>Waiting for permissions.</div>
         <div *ngIf="!hasCameras && hasPermission === true" translate>Please connect a camera to get started.</div>
       </div>
     </div>
