@@ -2562,11 +2562,11 @@ cordova-plugin-network-information@2.0.1:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/cordova-plugin-network-information/-/cordova-plugin-network-information-2.0.1.tgz#e90421f430c6ab76d409223f25fcefbbbce17690"
 
-cordova-plugin-qrscanner@2.5.0:
-  version "2.5.0"
-  resolved "https://registry.yarnpkg.com/cordova-plugin-qrscanner/-/cordova-plugin-qrscanner-2.5.0.tgz#6d6ba13d0bb49e370daa4958d77c8aa76d8ca356"
+cordova-plugin-qrscanner@2.6.0:
+  version "2.6.0"
+  resolved "https://registry.yarnpkg.com/cordova-plugin-qrscanner/-/cordova-plugin-qrscanner-2.6.0.tgz#e981be29d024cb37c11e28bbee87ba2544a29e2a"
   dependencies:
-    qrcode-reader "^0.2.2"
+    qrcode-reader "^1.0.4"
     webrtc-adapter "^3.1.4"
 
 cordova-plugin-screen-orientation@3.0.1:
@@ -7989,9 +7989,9 @@ qjobs@^1.1.4:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/qjobs/-/qjobs-1.2.0.tgz#c45e9c61800bd087ef88d7e256423bdd49e5d071"
 
-qrcode-reader@^0.2.2:
-  version "0.2.2"
-  resolved "https://registry.yarnpkg.com/qrcode-reader/-/qrcode-reader-0.2.2.tgz#1f202f2461d0eeed85e8794a6f44fe418dda7f87"
+qrcode-reader@^1.0.4:
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/qrcode-reader/-/qrcode-reader-1.0.4.tgz#95d9bb9e8130800361a96cb5a43124ad1d9e06b8"
 
 qrcode@^0.8.2:
   version "0.8.2"
