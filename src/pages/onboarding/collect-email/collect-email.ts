@@ -10,7 +10,6 @@ import { Device } from '@ionic-native/device';
 
 // providers
 import { AppProvider } from '../../../providers/app/app';
-import { PersistenceProvider } from '../../../providers/persistence/persistence';
 
 // pages
 import { EmailNotificationsProvider } from '../../../providers/email-notifications/email-notifications';
@@ -35,8 +34,7 @@ export class CollectEmailPage {
     private appProvider: AppProvider,
     private http: HttpClient,
     private emailProvider: EmailNotificationsProvider,
-    private device: Device,
-    private persistenceProvider: PersistenceProvider
+    private device: Device
   ) {
     this.walletId = this.navParams.data.walletId;
     let regex: RegExp = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
@@ -97,8 +95,6 @@ export class CollectEmailPage {
       headers
     }).subscribe(() => {
       this.logger.info("SUCCESS: Email collected");
-      // Set getNewsByEmail flag (needed for disclaimer view)
-      this.persistenceProvider.setNewsByEmail();
     }, (err) => {
       this.logger.error("ERROR: Could not collect email");
     });
