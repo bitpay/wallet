@@ -40,21 +40,22 @@ git clone https://github.com/bitpay/copay.git
 cd copay
 ```
 
-Ensure you have [Node](https://nodejs.org/) installed, then install and start Copay:
+Ensure you have [Node](https://nodejs.org/) and [Yarn](https://yarnpkg.com/) installed, then install the dependencies, apply the Copay theme, and start the app:
 
 ```sh
-npm run apply:copay
-npm run start
+yarn
+yarn apply:copay
+yarn start
 ```
 
 Visit [`localhost:8100`](http://localhost:8100/) to view the app.
 
-## Unit Tests (Karma and Jasmine)
+## Unit & E2E Tests (Karma & Protractor)
 
 To run the tests, run:
 
 ```
- npm run test
+yarn test
 ```
 
 ## Testing on Real Devices
@@ -65,35 +66,35 @@ It's recommended that all final testing be done on a real device – both to ass
 
 Follow the [Cordova Android Platform Guide](https://cordova.apache.org/docs/en/latest/guide/platforms/android/) to set up your development environment.
 
-When your developement enviroment is ready, run the `start:android` npm package script.
+When your developement enviroment is ready, run the `start:android` package script.
 
 ```sh
-npm run apply:copay
-npm run prepare:copay
-npm run start:android
+yarn apply:copay
+yarn prepare:copay
+yarn start:android
 ```
 
 ### iOS
 
 Follow the [Cordova iOS Platform Guide](https://cordova.apache.org/docs/en/latest/guide/platforms/ios/) to set up your development environment.
 
-When your developement enviroment is ready, run the `start:ios` npm package script.
+When your developement enviroment is ready, run the `start:ios` package script.
 
 ```sh
-npm run apply:copay
-npm run prepare:copay
-npm run start:ios
+yarn apply:copay
+yarn prepare:copay
+yarn start:ios
 ```
 
 <!-- ### Desktop (Linux, macOS, and Windows)
 
 The desktop version of Copay currently uses NW.js, an app runtime based on Chromium. To get started, first install NW.js on your system from [the NW.js website](https://nwjs.io/).
 
-When NW.js is installed, run the `start:desktop` npm package script.
+When NW.js is installed, run the `start:desktop` package script.
 
 ```sh
-npm run apply:copay
-npm run start:desktop
+yarn apply:copay
+yarn start:desktop
 ``` -->
 
 ## Build Copay App Bundles
@@ -105,27 +106,27 @@ The `final` commands build the production version of the app, and bundle it with
 ### Android
 
 ```sh
-npm run clean-all
-npm run apply:copay
-npm run prepare:copay
-npm run final:android
+yarn clean-all
+yarn apply:copay
+yarn prepare:copay
+yarn final:android
 ```
 
 ### iOS
 
 ```sh
-npm run clean-all
-npm run apply:copay
-npm run prepare:copay
-npm run final:ios
+yarn clean-all
+yarn apply:copay
+yarn prepare:copay
+yarn final:ios
 ```
 
 <!-- ### Desktop (Linux, macOS, and Windows)
 
 ```sh
-npm run clean-all
-npm run apply:copay
-npm run final:desktop
+yarn clean-all
+yarn apply:copay
+yarn final:desktop
 ``` -->
 
 ## Configuration
@@ -135,9 +136,9 @@ npm run final:desktop
 To enable external services, set the `COPAY_EXTERNAL_SERVICES_CONFIG_LOCATION` or `BITPAY_EXTERNAL_SERVICES_CONFIG_LOCATION` environment variable to the location of your configuration before running the `apply` task.
 
 ```sh
-COPAY_EXTERNAL_SERVICES_CONFIG_LOCATION="~/.copay/externalServices.json" npm run apply:copay
+COPAY_EXTERNAL_SERVICES_CONFIG_LOCATION="~/.copay/externalServices.json" yarn apply:copay
 # or
-BITPAY_EXTERNAL_SERVICES_CONFIG_LOCATION="~/.bitpay/externalServices.json" npm run apply:bitpay
+BITPAY_EXTERNAL_SERVICES_CONFIG_LOCATION="~/.bitpay/externalServices.json" yarn apply:bitpay
 ```
 
 ## About Copay
@@ -175,7 +176,7 @@ Depending on the key `derivationStrategy`, addresses are derived using
 | <1.2          | All                       | BIP45               | P2SH         |
 | ≥1.2          | Non-multisig              | BIP44               | P2PKH        |
 | ≥1.2          | Multisig                  | BIP44               | P2SH         |
-| ≥1.5          | Multisig Hardware wallets | BIP44 (root m/48’)  | P2SH         |
+| ≥1.5          | Multisig Hardware wallets | BIP44 (root m/48’) | P2SH         |
 
 Using a tool like [Bitcore PlayGround](http://bitcore.io/playground) all wallet addresses can be generated. (TIP: Use the `Address` section for P2PKH address type wallets and `Multisig Address` for P2SH address type wallets). For multisig addresses, the required number of signatures (key `m` on the export) is also needed to recreate the addresses.
 
