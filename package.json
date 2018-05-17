@@ -109,7 +109,6 @@
     "@angular/compiler": "5.2.10",
     "@angular/compiler-cli": "5.2.10",
     "@angular/core": "5.2.10",
-    "@ionic-native/device": "4.5.3",
     "@angular/forms": "5.2.10",
     "@angular/http": "5.2.10",
     "@angular/platform-browser": "5.2.10",
@@ -119,6 +118,7 @@
     "@ionic-native/android-fingerprint-auth": "4.5.2",
     "@ionic-native/clipboard": "4.5.2",
     "@ionic-native/core": "4.5.2",
+    "@ionic-native/device": "4.5.3",
     "@ionic-native/fcm": "4.5.2",
     "@ionic-native/file": "4.5.2",
     "@ionic-native/qr-scanner": "4.5.2",
@@ -184,8 +184,8 @@
     "@ionic-native-mocks/file": "2.0.7",
     "@ionic-native-mocks/qr-scanner": "2.0.7",
     "@ionic-native-mocks/touch-id": "2.0.7",
-    "@types/chrome": "0.0.64",
     "@ionic/app-scripts": "3.1.8",
+    "@types/chrome": "0.0.64",
     "@types/cordova-plugin-qrscanner": "1.0.31",
     "@types/jasmine": "2.8.6",
     "@types/jasminewd2": "2.0.3",
@@ -196,6 +196,7 @@
     "bhttp": "1.2.4",
     "codecov": "3.0.0",
     "connect": "3.6.5",
+    "cz-conventional-changelog": "^2.1.0",
     "fs-extra": "5.0.0",
     "html-loader": "0.5.4",
     "ionic": "3.20.0",
@@ -265,6 +266,11 @@
       "android",
       "ios"
     ]
+  },
+  "config": {
+    "commitizen": {
+      "path": "cz-conventional-changelog"
+    }
   },
   "prettier": {
     "singleQuote": true
