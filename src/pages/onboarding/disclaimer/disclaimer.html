@@ -18,12 +18,18 @@
       </ion-label>
       <ion-checkbox [(ngModel)]="accepted.second"></ion-checkbox>
     </ion-item>
+    <ion-item *ngIf="hasEmail">
+      <ion-label>
+        <span translate>I give explicit consent to BitPay to use my email address to send me email notifications about payments (and, if selected, email updates and news about the wallet).</span>
+      </ion-label>
+      <ion-checkbox [(ngModel)]="accepted.third"></ion-checkbox>
+    </ion-item>
   </ion-list>
 </ion-content>
 <ion-footer>
   <ion-toolbar>
     <div class="checkbox-list">
-      <div *ngIf="accepted.first && accepted.second">
+      <div *ngIf="accepted.first && accepted.second && accepted.third">
         <ion-item no-lines>
           <ion-label>
             {{'I have read, understood, and agree to the Terms of Use' | translate}}.
