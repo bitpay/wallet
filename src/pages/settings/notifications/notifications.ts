@@ -9,6 +9,7 @@ import { AppProvider } from '../../../providers/app/app';
 import { ConfigProvider } from '../../../providers/config/config';
 import { EmailNotificationsProvider } from '../../../providers/email-notifications/email-notifications';
 import { ExternalLinkProvider } from '../../../providers/external-link/external-link';
+import { PersistenceProvider } from '../../../providers/persistence/persistence';
 import { PlatformProvider } from '../../../providers/platform/platform';
 import { PushNotificationsProvider } from '../../../providers/push-notifications/push-notifications';
 
@@ -41,6 +42,7 @@ export class NotificationsPage {
     private emailProvider: EmailNotificationsProvider,
     private externalLinkProvider: ExternalLinkProvider,
     private logger: Logger,
+    private persistenceProvider: PersistenceProvider,
     private translate: TranslateService
   ) {
     this.emailForm = this.formBuilder.group({
@@ -100,6 +102,7 @@ export class NotificationsPage {
   }
 
   public saveEmail() {
+    this.persistenceProvider.setEmailLawCompliance('accepted');
     this.emailProvider.updateEmail({
       enabled: this.emailNotifications,
       email: this.emailForm.value.email

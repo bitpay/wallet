@@ -52,7 +52,8 @@ export class PopupProvider {
               resolve(true);
             }
           }
-        ]
+        ],
+        enableBackdropDismiss: false
       });
       confirm.present();
     });

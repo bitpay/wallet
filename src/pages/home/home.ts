@@ -31,6 +31,7 @@ import { AppProvider } from '../../providers/app/app';
 import { BitPayCardProvider } from '../../providers/bitpay-card/bitpay-card';
 import { BwcErrorProvider } from '../../providers/bwc-error/bwc-error';
 import { ConfigProvider } from '../../providers/config/config';
+import { EmailNotificationsProvider } from '../../providers/email-notifications/email-notifications';
 import { ExternalLinkProvider } from '../../providers/external-link/external-link';
 import { FeedbackProvider } from '../../providers/feedback/feedback';
 import { HomeIntegrationsProvider } from '../../providers/home-integrations/home-integrations';
@@ -100,6 +101,7 @@ export class HomePage {
     private feedbackProvider: FeedbackProvider,
     private bitPayCardProvider: BitPayCardProvider,
     private translate: TranslateService,
+    private emailProvider: EmailNotificationsProvider,
     private replaceParametersProvider: ReplaceParametersProvider
   ) {
     this.updatingWalletId = {};
@@ -171,8 +173,38 @@ export class HomePage {
     });
   }
 
+  private openEmailDisclaimer() {
+    let message = this.translate.instant('By providing your email address, you give explicit consent to BitPay to use your email address to send you email notifications about payments.');
+    let title = this.translate.instant('Privacy Policy update');
+    let okText = this.translate.instant('Accept');
+    let cancelText = this.translate.instant('Disable notifications');
+    this.popupProvider.ionicConfirm(title, message, okText, cancelText).then((ok) => {
+      if (ok) {
+        // Accept new Privacy Policy
+        this.persistenceProvider.setEmailLawCompliance('accepted');
+      } else {
+        // Disable email notifications
+        this.persistenceProvider.setEmailLawCompliance('rejected');
+        this.emailProvider.updateEmail({
+          enabled: false,
+          email: 'null@email'
+        });
+      }
+    });
+  }
+
   ionViewDidLoad() {
     this.logger.info('ionViewDidLoad HomePage'); 
+
+    if (this.emailProvider.getEmailIfEnabled()) {
+      this.persistenceProvider.getEmailLawCompliance().then(value => {
+        console.log('[home.ts:193]',value); /* TODO */
+
+        setTimeout(() => {
+          if (!value) this.openEmailDisclaimer();
+        }, 2000);
+      });  
+    }
 
     // Create, Join, Import and Delete -> Get Wallets -> Update Status for All Wallets
     this.events.subscribe('status:updated', () => {
