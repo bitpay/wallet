@@ -3,11 +3,11 @@ import { Component, Input } from '@angular/core';
 @Component({
   selector: 'pin-dots',
   template: `
-    <div *ngFor="let dotIndex of dots" class="circle" [ngClass]="{filled: isFilled(dotIndex)}"></div>
+    <div *ngFor="let dot of dots; index as i" class="circle" [ngClass]="{filled: isFilled(i+1)}"></div>
   `
 })
 export class PinDots {
-  private dots = [1, 2, 3, 4];
+  private dots = new Array(4);
   @Input() pin: string;
 
   public isFilled(limit): boolean {
