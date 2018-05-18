@@ -23,12 +23,7 @@
   </div>
   <div class="code-wrapper">
 
-    <div class="block-code" shake>
-      <div class="circle" [ngClass]="getFilledClass(1)"></div>
-      <div class="circle" [ngClass]="getFilledClass(2)"></div>
-      <div class="circle" [ngClass]="getFilledClass(3)"></div>
-      <div class="circle" [ngClass]="getFilledClass(4)"></div>
-    </div>
+    <pin-dots [pin]="currentPin" animate></pin-dots>
 
     <div class="block-buttons">
       <ion-row>
