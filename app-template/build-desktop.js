@@ -5,7 +5,7 @@ var nw = new NwBuilder({
   appName: '*USERVISIBLENAME*',
   platforms: ['win64', 'osx64', 'linux64'],
   buildDir: './desktop',
-  version: '0.30.2',
+  version: '0.21.6',
   macIcns: './resources/*PACKAGENAME*/mac/app.icns',
   exeIco: './resources/*PACKAGENAME*/windows/icon.ico',
   macPlist: {
@@ -22,7 +22,7 @@ var nw = new NwBuilder({
 nw.on('log', console.log);
 
 nw.build().then(function () {
-  console.log('all done!'); 
+  console.log('all done!');
 }).catch(function (error) {
   console.error(error);
 });
