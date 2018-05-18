@@ -47,9 +47,8 @@
     "url": "https://github.com/bitpay/copay/issues"
   },
   "scripts": {
-    "preinstall": "node -e \"if(process.env.npm_execpath.indexOf('yarn') === -1) throw new Error('Copay must be installed with Yarn: https://yarnpkg.com/')\"",
     "postinstall": "sed -i  -e \"s/.*require(...\\/...);//g\" node_modules/asn1.js-rfc5280/index.js && run-s e2e:update env:dev prompt",
-    "prompt": "\n\n\n\n\n\n#\n#  Choose a distribution with:\n#\n#     $ yarn apply:copay\n#              or\n#     $ yarn apply:bitpay\n#\n",
+    "prompt": "\n\n\n\n\n\n#\n#  Choose a distribution with:\n#\n#     $ npm run apply:copay\n#              or\n#     $ npm run apply:bitpay\n#\n",
     "start": "run-p ionic:serve e2e:serve",
     "clean": "rm -rf platforms && rm -rf plugins && rm -f config.xml",
     "prepare:copay": "run-s clean apply:copay && ionic cordova prepare && run-s fix:fcm",

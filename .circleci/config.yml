@@ -11,20 +11,19 @@ jobs:
       # Download and cache dependencies
       - restore_cache:
           keys:
-            - yarn-packages-{{ .Branch }}-{{ checksum "yarn.lock" }}
-            - yarn-packages-{{ .Branch }}
-            - yarn-packages-master
-            - yarn-packages-
-      - run: yarn install
+          - v1-dependencies-{{ checksum "package.json" }}
+          # fallback to using the latest cache if no exact match is found
+          - v1-dependencies-
+      - run: npm install
       - save_cache:
           paths:
             - node_modules
-          key: yarn-packages-{{ .Branch }}-{{ checksum "yarn.lock" }}
-      - run: yarn apply:copay
+          key: v1-dependencies-{{ checksum "package.json" }}
+      - run: npm run apply:copay
       # Select correct Chromedriver version (this must run after npm install)
-      - run: yarn e2e:update-ci
-      - run: yarn test:ci
-      - run: yarn e2e
+      - run: npm run e2e:update-ci
+      - run: npm run test:ci
+      - run: npm run e2e
       - run: npx reg-cli test/visual/latest/copay test/visual/expected/copay test/visual/diffs --report test/visual/report.html --json test/visual/report.json --enableAntialias  --pixelThreshold 20
       - run: npx codecov
       - store_artifacts:
@@ -40,19 +39,17 @@ jobs:
       - checkout
       - restore_cache:
           keys:
-            - yarn-packages-{{ .Branch }}-{{ checksum "yarn.lock" }}
-            - yarn-packages-{{ .Branch }}
-            - yarn-packages-master
-            - yarn-packages-
-      - run: yarn install
+          - v1-dependencies-{{ checksum "package.json" }}
+          - v1-dependencies-
+      - run: npm install
       - save_cache:
           paths:
             - node_modules
-          key: yarn-packages-{{ .Branch }}-{{ checksum "yarn.lock" }}
-      - run: yarn apply:bitpay
-      - run: yarn e2e:update-ci
-      - run: yarn test:ci
-      - run: yarn e2e
+          key: v1-dependencies-{{ checksum "package.json" }}
+      - run: npm run apply:bitpay
+      - run: npm run e2e:update-ci
+      - run: npm run test:ci
+      - run: npm run e2e
       - run: npx reg-cli test/visual/latest/bitpay test/visual/expected/bitpay test/visual/diffs --report test/visual/report.html --json test/visual/report.json --enableAntialias  --pixelThreshold 20
       - run: npx codecov
       - store_artifacts:

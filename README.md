@@ -40,12 +40,11 @@ git clone https://github.com/bitpay/copay.git
 cd copay
 ```
 
-Ensure you have [Node](https://nodejs.org/) and [Yarn](https://yarnpkg.com/) installed, then install the dependencies, apply the Copay theme, and start the app:
+Ensure you have [Node](https://nodejs.org/) installed, then install and start Copay:
 
 ```sh
-yarn
-yarn apply:copay
-yarn start
+npm run apply:copay
+npm run start
 ```
 
 Visit [`localhost:8100`](http://localhost:8100/) to view the app.
@@ -55,7 +54,7 @@ Visit [`localhost:8100`](http://localhost:8100/) to view the app.
 To run the tests, run:
 
 ```
-yarn test
+ npm run test
 ```
 
 ## Testing on Real Devices
@@ -69,9 +68,9 @@ Follow the [Cordova Android Platform Guide](https://cordova.apache.org/docs/en/l
 When your developement enviroment is ready, run the `start:android` package script.
 
 ```sh
-yarn apply:copay
-yarn prepare:copay
-yarn start:android
+npm run apply:copay
+npm run prepare:copay
+npm run start:android
 ```
 
 ### iOS
@@ -81,9 +80,9 @@ Follow the [Cordova iOS Platform Guide](https://cordova.apache.org/docs/en/lates
 When your developement enviroment is ready, run the `start:ios` package script.
 
 ```sh
-yarn apply:copay
-yarn prepare:copay
-yarn start:ios
+npm run apply:copay
+npm run prepare:copay
+npm run start:ios
 ```
 
 <!-- ### Desktop (Linux, macOS, and Windows)
@@ -93,8 +92,8 @@ The desktop version of Copay currently uses NW.js, an app runtime based on Chrom
 When NW.js is installed, run the `start:desktop` package script.
 
 ```sh
-yarn apply:copay
-yarn start:desktop
+npm run apply:copay
+npm run start:desktop
 ``` -->
 
 ## Build Copay App Bundles
@@ -106,27 +105,27 @@ The `final` commands build the production version of the app, and bundle it with
 ### Android
 
 ```sh
-yarn clean-all
-yarn apply:copay
-yarn prepare:copay
-yarn final:android
+npm run clean-all
+npm run apply:copay
+npm run prepare:copay
+npm run final:android
 ```
 
 ### iOS
 
 ```sh
-yarn clean-all
-yarn apply:copay
-yarn prepare:copay
-yarn final:ios
+npm run clean-all
+npm run apply:copay
+npm run prepare:copay
+npm run final:ios
 ```
 
 <!-- ### Desktop (Linux, macOS, and Windows)
 
 ```sh
-yarn clean-all
-yarn apply:copay
-yarn final:desktop
+npm run clean-all
+npm run apply:copay
+npm run final:desktop
 ``` -->
 
 ## Configuration
@@ -136,9 +135,9 @@ yarn final:desktop
 To enable external services, set the `COPAY_EXTERNAL_SERVICES_CONFIG_LOCATION` or `BITPAY_EXTERNAL_SERVICES_CONFIG_LOCATION` environment variable to the location of your configuration before running the `apply` task.
 
 ```sh
-COPAY_EXTERNAL_SERVICES_CONFIG_LOCATION="~/.copay/externalServices.json" yarn apply:copay
+COPAY_EXTERNAL_SERVICES_CONFIG_LOCATION="~/.copay/externalServices.json" npm run apply:copay
 # or
-BITPAY_EXTERNAL_SERVICES_CONFIG_LOCATION="~/.bitpay/externalServices.json" yarn apply:bitpay
+BITPAY_EXTERNAL_SERVICES_CONFIG_LOCATION="~/.bitpay/externalServices.json" npm run apply:bitpay
 ```
 
 ## About Copay
