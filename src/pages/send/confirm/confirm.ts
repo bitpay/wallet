@@ -240,7 +240,7 @@ export class ConfirmPage {
                   this.translate.instant('Insufficient funds'),
                   true
                 );
-                return reject('Insufficient funds');
+                return reject('INSUFFICIENT_FUNDS');
               }
               this.wallets = _.clone(filteredWallets);
               return resolve();
@@ -256,7 +256,7 @@ export class ConfirmPage {
                   this.translate.instant('Insufficient funds'),
                   true
                 );
-                return reject('Insufficient funds for fee');
+                return reject('INSUFFICIENT_FUNDS_FOR_FEE');
               }
               this.wallets = _.clone(filteredWallets);
               return resolve();
