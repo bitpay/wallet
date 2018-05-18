@@ -92,7 +92,7 @@ export class TxFormatProvider {
       return v1 + ' ' + settings.alternativeIsoCode;
     }).bind(this);
 
-    if (!this.rate.isAvailable()) return null;
+    if ((!this.rate.isBtcAvailable() && coin == 'btc') || (!this.rate.isBchAvailable() && coin == 'bch')) return null;
     return val();
   };
 
@@ -120,7 +120,7 @@ export class TxFormatProvider {
 
       // toDo: translate all tx.outputs[x].toAddress ?
       if (tx.toAddress && coin == 'bch') {
-          tx.toAddress = useLegacyAddress ? this.toLegacyAddress(tx.toAddress) : this.toCashAddress(tx.toAddress);
+        tx.toAddress = useLegacyAddress ? this.toLegacyAddress(tx.toAddress) : this.toCashAddress(tx.toAddress);
       }
     }
 
@@ -133,8 +133,8 @@ export class TxFormatProvider {
       tx.amountUnitStr = tx.amountStr.split(' ')[1];
     }
 
-    if (tx.addressTo && coin == 'bch' ) {
-        tx.addressTo = useLegacyAddress ? this.toLegacyAddress(tx.addressTo) : this.toCashAddress(tx.addressTo);
+    if (tx.addressTo && coin == 'bch') {
+      tx.addressTo = useLegacyAddress ? this.toLegacyAddress(tx.addressTo) : this.toCashAddress(tx.addressTo);
     }
 
     return tx;
