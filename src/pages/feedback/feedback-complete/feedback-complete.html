@@ -20,7 +20,7 @@
   <div *ngIf="!fromSettings">
     <div class="feedback-title" translate>Thank you!</div>
     <div class="subtitle" *ngIf="!skipped" translate>A member of the team will review your feedback as soon as possible.</div>
-    <div *ngIf="score <= 3 || !this.isCordova">
+    <div *ngIf="score <= 3 || !isCordova">
       <div class="subtitle" translate>If you have additional feedback, please let us know by tapping the "Send feedback" option in the Settings tab.</div>
       <div class="illustration-send">
         <img src="assets/img/illustration-send-feedback.png" />
