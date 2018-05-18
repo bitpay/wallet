@@ -22,61 +22,7 @@
     </div>
   </div>
   <div class="code-wrapper">
-
     <pin-dots [pin]="currentPin" animate></pin-dots>
-
-    <div class="block-buttons">
-      <ion-row>
-        <ion-col (click)="newEntry('1')">
-          <div>1</div>
-          <div></div>
-        </ion-col>
-        <ion-col (click)="newEntry('2')">
-          <div>2</div>
-          <div>ABC</div>
-        </ion-col>
-        <ion-col (click)="newEntry('3')">
-          <div>3</div>
-          <div>DEF</div>
-        </ion-col>
-      </ion-row>
-      <ion-row>
-        <ion-col (click)="newEntry('4')">
-          <div>4</div>
-          <div>GHI</div>
-        </ion-col>
-        <ion-col (click)="newEntry('5')">
-          <div>5</div>
-          <div>JKL</div>
-        </ion-col>
-        <ion-col (click)="newEntry('6')">
-          <div>6</div>
-          <div>MNO</div>
-        </ion-col>
-      </ion-row>
-      <ion-row>
-        <ion-col (click)="newEntry('7')">
-          <div>7</div>
-          <div>PQRS</div>
-        </ion-col>
-        <ion-col (click)="newEntry('8')">
-          <div>8</div>
-          <div>TUV</div>
-        </ion-col>
-        <ion-col (click)="newEntry('9')">
-          <div>9</div>
-          <div>WXYZ</div>
-        </ion-col>
-      </ion-row>
-      <ion-row>
-        <ion-col></ion-col>
-        <ion-col (click)="newEntry('0')">
-          <div>0</div>
-        </ion-col>
-        <ion-col (click)="delete()">
-          <img src="assets/img/tail-left.svg">
-        </ion-col>
-      </ion-row>
-    </div>
+    <pin-pad (keystroke)="newEntry($event)"></pin-pad>
   </div>
 </ion-content>

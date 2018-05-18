@@ -1,7 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
 import { StatusBar } from '@ionic-native/status-bar';
 import { Vibration } from '@ionic-native/vibration';
-import { Events, Platform } from 'ionic-angular';
+import { Events, NavParams, Platform } from 'ionic-angular';
 
 import { Animate } from '../../../directives/animate/animate';
 import { ConfigProvider } from '../../../providers/config/config';
@@ -76,6 +76,9 @@ export class PinModalPage {
 
   public newEntry(value: string): void {
     if (this.disableButtons) return;
+    if (value === 'delete') {
+      return this.delete();
+    }
     this.incorrect = false;
     this.currentPin = this.currentPin + value;
     if (!this.isComplete()) return;
@@ -177,9 +180,5 @@ export class PinModalPage {
   public shakeCode() {
     this.pinCode.animate('shake');
     this.vibration.vibrate(100);
-  }
-
-  public getFilledClass(limit): string {
-    return this.currentPin.length >= limit ? 'filled' : null;
   }
 }

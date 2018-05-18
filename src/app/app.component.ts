@@ -214,6 +214,7 @@ export class CopayApp {
     }
 
     setTimeout(() => {
+      console.log('calling open pin modal');
       this.openPINModal('checkPin');
     }, 1000);
   }

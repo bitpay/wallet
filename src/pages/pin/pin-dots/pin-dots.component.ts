@@ -3,16 +3,14 @@ import { Component, Input } from '@angular/core';
 @Component({
   selector: 'pin-dots',
   template: `
-    <div class="circle" [ngClass]="getFilledClass(1)"></div>
-    <div class="circle" [ngClass]="getFilledClass(2)"></div>
-    <div class="circle" [ngClass]="getFilledClass(3)"></div>
-    <div class="circle" [ngClass]="getFilledClass(4)"></div>
+    <div *ngFor="let dotIndex of dots" class="circle" [ngClass]="{filled: isFilled(dotIndex)}"></div>
   `
 })
 export class PinDots {
+  private dots = [1, 2, 3, 4];
   @Input() pin: string;
 
-  public getFilledClass(limit): string {
-    return this.pin.length >= limit ? 'filled' : null;
+  public isFilled(limit): boolean {
+    return this.pin && this.pin.length >= limit;
   }
 }
