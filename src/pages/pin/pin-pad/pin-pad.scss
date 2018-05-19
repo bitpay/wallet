@@ -1,18 +1,14 @@
 pin-pad {
   width: 100%;
+  @media (min-height: 800px) {
+    padding-bottom: 10px;
+  }
+
   .row {
     font-size: 32px;
     cursor: pointer;
     display: flex;
     justify-content: space-around;
-
-    $bottom-spacing: 31px;
-
-    &:last-child {
-      .col {
-        padding-bottom: $bottom-spacing;
-      }
-    }
 
     .col {
       height: 9vh;
@@ -27,14 +23,12 @@ pin-pad {
         min-height: 60px;
       }
 
-      > div {
-        &:nth-child(2) {
-          color: #9b9b9b;
-          font-size: 10px;
-          letter-spacing: 2px;
-          margin-top: 4px;
-          height: 22px;
-        }
+      .letters {
+        color: #9b9b9b;
+        font-size: 10px;
+        letter-spacing: 2px;
+        margin-top: 4px;
+        height: 22px;
       }
     }
   }

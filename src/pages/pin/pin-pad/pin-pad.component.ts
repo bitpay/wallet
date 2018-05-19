@@ -16,7 +16,7 @@ export interface PinButton {
           <span *ngIf="button.value !== 'delete'">{{button.value}}</span>
           <img *ngIf="button.value === 'delete'" src="assets/img/tail-left.svg">
         </div>
-        <div>{{button.letters}}</div>
+        <div class="letters">{{button.letters}}</div>
       </ion-col>
     </ion-row>
   `
