@@ -7,7 +7,7 @@ pin-dots {
   padding-top: 33px;
   .circle {
     $circle-diameter: 18px;
-    $transition-duration: 150ms;
+    $transition-duration: 200ms;
     border-radius: 50%;
     transition: background-color $transition-duration ease,
       border $transition-duration ease;

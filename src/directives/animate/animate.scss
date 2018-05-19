@@ -3,10 +3,6 @@
   animation-duration: 600ms;
 }
 
-.pulse {
-  animation-name: pulse;
-}
-
 @keyframes shake {
   from,
   to {
@@ -32,13 +28,23 @@
   }
 }
 
+.pulse {
+  animation-name: pulse;
+  animation-duration: 400ms;
+  animation-timing-function: linear;
+}
+
 @keyframes pulse {
   from {
     transform: scale3d(1, 1, 1);
   }
 
-  50% {
-    transform: scale3d(1.05, 1.05, 1.05);
+  20% {
+    transform: scale3d(1.5, 1.5, 1.5);
+  }
+
+  80% {
+    transform: scale3d(1.5, 1.5, 1.5);
   }
 
   to {
