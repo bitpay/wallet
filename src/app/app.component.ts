@@ -212,11 +212,6 @@ export class CopayApp {
       this.profile.createProfile();
       this.rootPage = OnboardingPage;
     }
-
-    setTimeout(() => {
-      console.log('calling open pin modal');
-      this.openPINModal('checkPin');
-    }, 1000);
   }
 
   private openLockModal(): void {
@@ -233,10 +228,14 @@ export class CopayApp {
 
   private openPINModal(action): void {
     this.isModalOpen = true;
-    this.events.publish('showPinModalEvent', action);
-    this.events.subscribe('finishPinModalEvent', () => {
+    const modal = this.modalCtrl.create(
+      PinModalPage,
+      { action },
+      { cssClass: 'fullscreen-modal' }
+    );
+    modal.present({ animate: false });
+    modal.onDidDismiss(() => {
       this.isModalOpen = false;
-      this.events.unsubscribe('finishPinModalEvent');
     });
   }
 

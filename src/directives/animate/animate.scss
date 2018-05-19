@@ -1,3 +1,5 @@
+/* Shake */
+
 .shake {
   animation-name: shake;
   animation-duration: 600ms;
@@ -27,6 +29,8 @@
     transform: translate3d(10px, 0, 0);
   }
 }
+
+/* Pulse */
 
 .pulse {
   animation-name: pulse;

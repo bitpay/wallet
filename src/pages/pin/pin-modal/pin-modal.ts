@@ -1,7 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
 import { StatusBar } from '@ionic-native/status-bar';
 import { Vibration } from '@ionic-native/vibration';
-import { Events, NavParams, Platform } from 'ionic-angular';
+import { Events, NavController, NavParams, Platform } from 'ionic-angular';
 
 import { Animate } from '../../../directives/animate/animate';
 import { ConfigProvider } from '../../../providers/config/config';
@@ -25,7 +25,6 @@ export class PinModalPage {
   public expires: string;
   public incorrect: boolean;
   public unregister: any;
-  public showPinModal: boolean;
 
   @ViewChild(Animate) pinCode: Animate;
 
@@ -34,48 +33,52 @@ export class PinModalPage {
     private logger: Logger,
     private platform: Platform,
     private events: Events,
+    private navCtrl: NavController,
+    private navParams: NavParams,
     private persistenceProvider: PersistenceProvider,
     private statusBar: StatusBar,
     private vibration: Vibration
   ) {
-    this.events.subscribe('showPinModalEvent', (action: string) => {
-      this.ATTEMPT_LIMIT = 3;
-      this.ATTEMPT_LOCK_OUT_TIME = 5 * 60;
-      this.currentAttempts = 0;
-      this.currentPin = '';
-      this.firstPinEntered = '';
-      this.confirmingPin = false;
-      this.action = '';
-      this.disableButtons = false;
-      this.expires = '';
-      this.incorrect = false;
+    this.ATTEMPT_LIMIT = 3;
+    this.ATTEMPT_LOCK_OUT_TIME = 5 * 60;
+    this.currentAttempts = 0;
+    this.currentPin = '';
+    this.firstPinEntered = '';
+    this.confirmingPin = false;
+    this.action = '';
+    this.disableButtons = false;
+    this.expires = '';
+    this.incorrect = false;
 
-      this.showPinModal = true;
-      this.unregister = this.platform.registerBackButtonAction(() => {});
+    this.unregister = this.platform.registerBackButtonAction(() => {});
 
-      this.action = action;
+    this.action = this.navParams.get('action');
 
-      if (this.action === 'checkPin' || this.action === 'removeLock') {
-        this.persistenceProvider.getLockStatus().then((isLocked: string) => {
-          if (!isLocked) return;
-          this.showLocktimer();
-          this.setLockRelease();
-        });
-      }
-      if (this.platform.is('ios')) {
-        this.statusBar.styleDefault();
-      }
-    });
+    if (this.action === 'checkPin' || this.action === 'removeLock') {
+      this.persistenceProvider.getLockStatus().then((isLocked: string) => {
+        if (!isLocked) return;
+        this.showLocktimer();
+        this.setLockRelease();
+      });
+    }
   }
 
-  public close(): void {
-    this.events.publish('finishPinModalEvent');
-    this.showPinModal = false;
-    if (this.countDown) clearInterval(this.countDown);
-    this.unregister();
+  ionViewWillEnter() {
+    if (this.platform.is('ios')) {
+      this.statusBar.styleDefault();
+    }
+  }
+
+  ionViewWillLeave() {
     if (this.platform.is('ios')) {
       this.statusBar.styleLightContent();
     }
+  }
+
+  public close(): void {
+    if (this.countDown) clearInterval(this.countDown);
+    this.unregister();
+    this.navCtrl.pop({ animate: true });
   }
 
   public newEntry(value: string): void {

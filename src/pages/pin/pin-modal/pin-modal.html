@@ -1,14 +1,14 @@
-<ion-header *ngIf="showPinModal">
+<ion-header>
   <ion-navbar>
     <ion-buttons end>
       <button (click)="close()" ion-button color="primary" *ngIf="action === 'pinSetUp' || action === 'removeLock'">
-        {{'Close' | translate}}
+        {{'Cancel' | translate}}
       </button>
     </ion-buttons>
   </ion-navbar>
 </ion-header>
 
-<ion-content *ngIf="showPinModal" no-bounce fullscreen>
+<ion-content no-bounce fullscreen>
   <div class="pin-header">
     <div class="title">
       <div *ngIf="!disableButtons">
