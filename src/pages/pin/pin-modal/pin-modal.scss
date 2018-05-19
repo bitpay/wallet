@@ -1,9 +1,15 @@
 page-pin {
+  ion-header {
+    .toolbar-background {
+      background-color: color($colors, light);
+    }
+  }
   ion-content {
     background-color: color($colors, blank) !important;
     .scroll-content {
       display: flex;
       flex-direction: column;
+      padding-top: 0 !important;
     }
   }
   .pin-header {

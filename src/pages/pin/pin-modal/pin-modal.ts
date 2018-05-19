@@ -62,7 +62,9 @@ export class PinModalPage {
           this.setLockRelease();
         });
       }
-      this.statusBar.styleDefault();
+      if (this.platform.is('ios')) {
+        this.statusBar.styleDefault();
+      }
     });
   }
 
@@ -71,7 +73,9 @@ export class PinModalPage {
     this.showPinModal = false;
     if (this.countDown) clearInterval(this.countDown);
     this.unregister();
-    this.statusBar.styleLightContent();
+    if (this.platform.is('ios')) {
+      this.statusBar.styleLightContent();
+    }
   }
 
   public newEntry(value: string): void {
