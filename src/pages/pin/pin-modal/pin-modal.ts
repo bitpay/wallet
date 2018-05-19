@@ -76,7 +76,9 @@ export class PinModalPage {
   }
 
   public close(): void {
-    if (this.countDown) clearInterval(this.countDown);
+    if (this.countDown) {
+      clearInterval(this.countDown);
+    }
     this.unregister();
     this.navCtrl.pop({ animate: true });
   }

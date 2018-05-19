@@ -46,4 +46,21 @@ describe('PinModalPage', () => {
       });
     });
   });
+
+  describe('Methods', () => {
+    describe('close', () => {
+      it('should unregister the back button, and pop the page off the navigation stack', () => {
+        const unregisterSpy = spyOn(instance, 'unregister');
+        instance.close();
+        expect(unregisterSpy).toHaveBeenCalled();
+        expect(instance.navCtrl.pop).toHaveBeenCalled();
+      });
+      it('should clear the countdown timer if it exists', () => {
+        instance.countDown = setInterval(() => {}, 3000);
+        const spy = spyOn(window, 'clearInterval');
+        instance.close();
+        expect(spy).toHaveBeenCalledWith(instance.countDown);
+      });
+    });
+  });
 });
