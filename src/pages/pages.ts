@@ -187,7 +187,7 @@ export const PAGES = [
   PaperWalletPage,
   PayProPage,
   GlideraTxDetailsPage,
-  PIN_COMPONENTS,
+  ...PIN_COMPONENTS,
   ProposalsPage,
   ReceivePage,
   ScanPage,

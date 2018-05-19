@@ -1,7 +1,6 @@
 import { Component, Output } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
-import { EventEmitter } from 'selenium-webdriver';
 
 export interface PinButton {
   value: string;
