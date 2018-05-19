@@ -26,7 +26,7 @@ export class TourPage {
   public localCurrencyPerBtc: string;
   public currentIndex: number;
 
-  private retryCount:number = 0;
+  private retryCount: number = 0;
 
   constructor(
     public navCtrl: NavController,
@@ -41,7 +41,7 @@ export class TourPage {
     private popupProvider: PopupProvider
   ) {
     this.currentIndex = 0;
-    this.rateProvider.whenRatesAvailable().then(() => {
+    this.rateProvider.whenRatesAvailable('btc').then(() => {
       let btcAmount = 1;
       this.localCurrencySymbol = '$'
       this.localCurrencyPerBtc = this.txFormatProvider.formatAlternativeStr('btc', btcAmount * 1e8);
