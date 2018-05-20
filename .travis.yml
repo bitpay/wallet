@@ -7,6 +7,6 @@ before_install:
   - export DISPLAY=:99.0
   - sh -e /etc/init.d/xvfb start
 install:
-  - npm run apply:TRCpay
+  - npm run apply:trcpay
 # after_success:
 #   - npm run exec:coveralls
