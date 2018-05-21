@@ -198,8 +198,6 @@ export class HomePage {
 
     if (this.emailProvider.getEmailIfEnabled()) {
       this.persistenceProvider.getEmailLawCompliance().then(value => {
-        console.log('[home.ts:193]',value); /* TODO */
-
         setTimeout(() => {
           if (!value) this.openEmailDisclaimer();
         }, 2000);
