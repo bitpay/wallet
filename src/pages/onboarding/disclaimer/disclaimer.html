@@ -4,7 +4,7 @@
 <ion-content no-bounce>
   <h3 *ngIf="resume" class="title" translate>Quick review!</h3>
   <h3 *ngIf="!resume" class="title" translate>Almost done! Let's review.</h3>
-  <p translate class="top-description">Bitcoin is different &ndash; it cannot be safely held with a bank or web service.</p>
+  <p class="top-description" translate>Bitcoin is different - it cannot be safely held with a bank or web service.</p>
   <ion-list class="checkbox-list" no-lines>
     <ion-item>
       <ion-label>
@@ -32,8 +32,8 @@
         </ion-item>
         <a (click)="openDisclaimer()" translate>Terms of Use</a>
       </div>
-      <button ion-button class="button-standard" [disabled]="!accepted.first || !accepted.second || !terms.accepted" (click)="confirm()">
-        {{'Confirm &amp; Finish' | translate}}
+      <button ion-button class="button-standard" [disabled]="!accepted.first || !accepted.second || !accepted.third || !terms.accepted" (click)="confirm()">
+        <span translate>Confirm &amp; Finish</span>
       </button>
     </div>
   </ion-toolbar>
