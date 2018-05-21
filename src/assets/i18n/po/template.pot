@@ -56,6 +56,9 @@ msgstr ""
 msgid "About {{appName}}"
 msgstr ""
 
+msgid "Accept"
+msgstr ""
+
 msgid "Accepted"
 msgstr ""
 
@@ -81,9 +84,6 @@ msgid "Add account"
 msgstr ""
 
 msgid "Add as a contact"
-msgstr ""
-
-msgid "Add description"
 msgstr ""
 
 msgid "Add funds"
@@ -187,6 +187,9 @@ msgstr ""
 msgid "Are you sure you want to remove this transaction?"
 msgstr ""
 
+msgid "Are you sure you want to skip it?"
+msgstr ""
+
 msgid "Are you sure?"
 msgstr ""
 
@@ -249,9 +252,7 @@ msgstr ""
 msgid "Bitcoin is a currency."
 msgstr ""
 
-msgid ""
-"Bitcoin is different &ndash; it cannot be safely held with a bank or web "
-"service."
+msgid "Bitcoin is different - it cannot be safely held with a bank or web service."
 msgstr ""
 
 msgid "Bitcoin is secure, digital money."
@@ -287,6 +288,11 @@ msgstr ""
 msgid "Buying Gift Card..."
 msgstr ""
 
+msgid ""
+"By providing your email address, you give explicit consent to BitPay to use "
+"your email address to send you email notifications about payments."
+msgstr ""
+
 msgid "Calculating fee..."
 msgstr ""
 
@@ -297,6 +303,9 @@ msgid "Cancel invitation"
 msgstr ""
 
 msgid "Canceling Gift Card..."
+msgstr ""
+
+msgid "Cannot create wallet"
 msgstr ""
 
 msgid "Cannot join the same wallet more that once"
@@ -356,7 +365,7 @@ msgstr ""
 msgid "Confirm"
 msgstr ""
 
-msgid "Confirm &amp; Finish"
+msgid "Confirm & Finish"
 msgstr ""
 
 msgid "Confirm to shift {{fromCoin}} to {{toCoin}}"
@@ -588,6 +597,9 @@ msgid "Derivation path"
 msgstr ""
 
 msgid "Details"
+msgstr ""
+
+msgid "Disable notifications"
 msgstr ""
 
 msgid "Disabled"
@@ -911,6 +923,12 @@ msgstr ""
 msgid "I don't like it"
 msgstr ""
 
+msgid ""
+"I give explicit consent to BitPay to use my email address to send me email "
+"notifications about payments (and, if selected, email updates and news "
+"about the wallet)."
+msgstr ""
+
 msgid "I have read, understood, and agree to the Terms of Use"
 msgstr ""
 
@@ -956,6 +974,11 @@ msgid ""
 msgstr ""
 
 msgid "If enabled, wallets will also try to spend unconfirmed funds."
+msgstr ""
+
+msgid ""
+"If this device is replaced or this app is deleted, neither you nor BitPay "
+"can recover your funds without a backup."
 msgstr ""
 
 msgid ""
@@ -1445,6 +1468,12 @@ msgstr ""
 msgid "Priority"
 msgstr ""
 
+msgid "Privacy Policy"
+msgstr ""
+
+msgid "Privacy Policy update"
+msgstr ""
+
 msgid "Private Key"
 msgstr ""
 
@@ -1586,6 +1615,9 @@ msgid "Restore from backup"
 msgstr ""
 
 msgid "Retrieving inputs information..."
+msgstr ""
+
+msgid "Retry"
 msgstr ""
 
 msgid "Retry camera"
@@ -1797,9 +1829,6 @@ msgstr ""
 msgid "Start"
 msgstr ""
 
-msgid "Startup Lock"
-msgstr ""
-
 msgid "Still pending"
 msgstr ""
 
@@ -1831,9 +1860,6 @@ msgid "Tap and hold to show"
 msgstr ""
 
 msgid "Terms of Use"
-msgstr ""
-
-msgid "Terms of use"
 msgstr ""
 
 msgid "Text"
@@ -2114,10 +2140,16 @@ msgstr ""
 msgid "View Confirmation Status"
 msgstr ""
 
+msgid "View Privacy Policy"
+msgstr ""
+
 msgid "View Transaction on Insight"
 msgstr ""
 
 msgid "View Update"
+msgstr ""
+
+msgid "View Wallet Terms of Use"
 msgstr ""
 
 msgid "View all addresses"
@@ -2155,9 +2187,6 @@ msgid "WARNING: UNTRUSTED CERTIFICATE"
 msgstr ""
 
 msgid "Waiting for copayers"
-msgstr ""
-
-msgid "Waiting for permissions."
 msgstr ""
 
 msgid "Waiting..."
@@ -2252,6 +2281,9 @@ msgstr ""
 msgid "Warning: this transaction has unconfirmed inputs"
 msgstr ""
 
+msgid "Watch Out!"
+msgstr ""
+
 msgid ""
 "We are always looking for translation contributions! You can make "
 "corrections or help to make this app available in your native language by "
@@ -2281,8 +2313,8 @@ msgid "What do you call this wallet?"
 msgstr ""
 
 msgid ""
-"When this wallet was created, it was called &ldquo;{{walletName}}&rdquo;. "
-"You can change the name displayed on this device below."
+"When this wallet was created, it was called \"{{walletName}}\". You can "
+"change the name displayed on this device below."
 msgstr ""
 
 msgid "Where would you like to receive email notifications about payments?"
@@ -2317,6 +2349,12 @@ msgstr ""
 msgid "Yes"
 msgstr ""
 
+msgid "Yes, skip"
+msgstr ""
+
+msgid "You can create a backup later from your wallet settings."
+msgstr ""
+
 msgid ""
 "You can make contributions by signing up on our Crowdin community "
 "translation website. We’re looking forward to hearing from you!"
@@ -2346,11 +2384,6 @@ msgid "You could sign the transaction later in your wallet details"
 msgstr ""
 
 msgid "You should not set a fee higher than {{maxFeeRecommended}} satoshis/byte."
-msgstr ""
-
-msgid ""
-"You'll receive email notifications about payments sent and received from "
-"your wallets."
 msgstr ""
 
 msgid ""
