@@ -17,7 +17,7 @@ import { CopayApp } from './app.component';
 
 import { PAGES } from './../pages/pages';
 
-// /* Pipes */
+/* Pipes */
 import { FiatToUnitPipe } from '../pipes/fiatToUnit';
 import { KeysPipe } from '../pipes/keys';
 import { OrderByPipe } from '../pipes/order-by';
