@@ -94,7 +94,6 @@ import { FingerprintModalPage } from '../pages/fingerprint/fingerprint';
 import { PIN_COMPONENTS } from '../pages/pin/pin';
 import { AboutPage } from '../pages/settings/about/about';
 import { SessionLogPage } from '../pages/settings/about/session-log/session-log';
-import { TermsOfUsePage } from '../pages/settings/about/terms-of-use/terms-of-use';
 import { AddressbookAddPage } from '../pages/settings/addressbook/add/add';
 import { AddressbookPage } from '../pages/settings/addressbook/addressbook';
 import { AddressbookViewPage } from '../pages/settings/addressbook/view/view';
@@ -202,7 +201,6 @@ export const PAGES = [
   ShapeshiftSettingsPage,
   ShapeshiftPage,
   ShapeshiftShiftPage,
-  TermsOfUsePage,
   MercadoLibreCardDetailsPage,
   NotificationsPage,
   FeePolicyPage,
