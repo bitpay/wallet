@@ -5,7 +5,6 @@ import { Logger } from '../../../providers/logger/logger';
 
 // pages
 import { SessionLogPage } from './session-log/session-log';
-import { TermsOfUsePage } from './terms-of-use/terms-of-use';
 
 // providers
 import { AppProvider } from '../../../providers/app/app';
@@ -37,16 +36,32 @@ export class AboutPage {
     this.title = this.replaceParametersProvider.replace(this.translate.instant("About {{appName}}"), { appName: this.appProvider.info.nameCase });
   }
 
-  public openTermsOfUse(): void {
-    this.navCtrl.push(TermsOfUsePage);
-  }
-
   public openExternalLink(): void {
     let url = 'https://github.com/bitpay/' + this.appProvider.info.gitHubRepoName + '/tree/' + this.appProvider.info.commitHash + '';
     let optIn = true;
     let title = this.translate.instant('Open GitHub Project');
     let message = this.translate.instant('You can see the latest developments and contribute to this open source app by visiting our project on GitHub.');
     let okText = this.translate.instant('Open GitHub');
+    let cancelText = this.translate.instant('Go Back');
+    this.externalLinkProvider.open(url, optIn, title, message, okText, cancelText);
+  }
+
+  public openTermsOfUse() {
+    let url = 'https://bitpay.com/about/terms#wallet';
+    let optIn = true;
+    let message = null;
+    let title = this.translate.instant('View Wallet Terms of Use');
+    let okText = this.translate.instant('Open');
+    let cancelText = this.translate.instant('Go Back');
+    this.externalLinkProvider.open(url, optIn, title, message, okText, cancelText);
+  }
+
+  public openPrivacyPolicy() {
+    let url = 'https://bitpay.com/about/privacy';
+    let optIn = true;
+    let message = null;
+    let title = this.translate.instant('View Privacy Policy');
+    let okText = this.translate.instant('Open');
     let cancelText = this.translate.instant('Go Back');
     this.externalLinkProvider.open(url, optIn, title, message, okText, cancelText);
   }

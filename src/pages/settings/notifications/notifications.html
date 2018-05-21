@@ -38,8 +38,9 @@
     <div *ngIf="emailNotifications">
       <ion-item-divider>
         <span translate>
-          You'll receive email notifications about payments sent and received from your wallets.
-        </span>
+          By providing your email address, you give explicit consent to BitPay to use your email address to send you email notifications about payments.
+        </span> 
+        <a class="externalLink" (click)="openPrivacyPolicy()" translate>View Privacy Policy</a>
       </ion-item-divider>
 
       <form [formGroup]="emailForm">

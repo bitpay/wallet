@@ -528,4 +528,16 @@ export class PersistenceProvider {
   removeLockStatus(): Promise<void> {
     return this.storage.remove('lockStatus');
   };
+
+  setEmailLawCompliance(value: string): Promise<void> {
+    return this.storage.set('emailLawCompliance', value);
+  };
+
+  getEmailLawCompliance(): Promise<string> {
+    return this.storage.get('emailLawCompliance');
+  };
+
+  removeEmailLawCompliance(): Promise<void> {
+    return this.storage.remove('emailLawCompliance');
+  };
 }

@@ -38,4 +38,8 @@ page-disclaimer {
     background-color: color($colors, secondary);
     box-shadow: 0 1px 10px rgba(0, 0, 0, 0.25);
   }
+  a.externalLink {
+    cursor: pointer;
+    color: color($colors, light-grey);
+  }
 }

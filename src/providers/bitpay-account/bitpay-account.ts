@@ -115,7 +115,7 @@ export class BitPayAccountProvider {
           }
 
           let ok = this.translate.instant('Add account');
-          let cancel = this.translate.instant('Go back');
+          let cancel = this.translate.instant('Go Back');
           this.popupProvider.ionicConfirm(title, msg, ok, cancel).then((res) => {
             if (res) {
               let acctData = {

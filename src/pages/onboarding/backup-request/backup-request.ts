@@ -1,6 +1,10 @@
 import { Component } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
 import { AlertController, NavController, NavParams } from 'ionic-angular';
+
+// Providers
 import { Logger } from '../../../providers/logger/logger';
+import { PopupProvider } from '../../../providers/popup/popup';
 
 // Pages
 import { BackupWarningPage } from '../../backup/backup-warning/backup-warning';
@@ -18,45 +22,37 @@ export class BackupRequestPage {
     public navCtrl: NavController,
     public navParams: NavParams,
     public alertCtrl: AlertController,
-    private log: Logger
+    private log: Logger,
+    private translate: TranslateService,
+    private popupProvider: PopupProvider
   ) {
     this.walletId = this.navParams.get('walletId');
-    this.opts = {
-      title: '',
-      message: '',
-      buttons: [],
-    }
   }
 
   ionViewDidLoad() {
     this.log.info('ionViewDidLoad BackupRequestPage');
   }
 
-  initBackupFlow() {
+  public initBackupFlow(): void {
     this.navCtrl.push(BackupWarningPage, { walletId: this.walletId, fromOnboarding: true });
   }
 
-  doBackupLater(confirmed: boolean) {
-    this.opts.title = !confirmed ? 'Watch Out!' : 'Are you sure you want to skip it?';
-    this.opts.message = !confirmed ? 'If this device is replaced or this app is deleted, neither you nor BitPay can recover your funds without a backup.' : 'You can create a backup later from your wallet settings.';
-    this.opts.buttons = [{
-      text: 'Go back',
-      role: 'destructor'
-    },
-    {
-      text: !confirmed ? 'I understand' : 'Yes, skip',
-      handler: () => {
-        if (!confirmed) {
-          setTimeout(() => {
-            this.doBackupLater(true);
-          }, 300);
-        } else {
-          this.navCtrl.push(DisclaimerPage);
-        }
-      }
-    }]
-    let alert = this.alertCtrl.create(this.opts);
-    alert.present();
+  public doBackupLater(): void {
+    let title = this.translate.instant('Watch Out!');
+    let message = this.translate.instant('If this device is replaced or this app is deleted, neither you nor BitPay can recover your funds without a backup.');
+    let okText = this.translate.instant('I understand');
+    let cancelText = this.translate.instant('Go Back');
+    this.popupProvider.ionicConfirm(title, message, okText, cancelText).then((res) => {
+      if (!res) return;
+      let title = this.translate.instant('Are you sure you want to skip it?');
+      let message = this.translate.instant('You can create a backup later from your wallet settings.');
+      let okText = this.translate.instant('Yes, skip');
+      let cancelText = this.translate.instant('Go Back');
+      this.popupProvider.ionicConfirm(title, message, okText, cancelText).then((res) => {
+        if (!res) return;
+        this.navCtrl.push(DisclaimerPage);
+      });
+    });
   }
 
 }

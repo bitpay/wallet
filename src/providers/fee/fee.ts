@@ -27,12 +27,12 @@ export class FeeProvider {
     private translate: TranslateService
   ) {
     this.feeOpts = {
-      urgent: 'Urgent',
-      priority: 'Priority',
-      normal: 'Normal',
-      economy: 'Economy',
-      superEconomy: 'Super Economy',
-      custom: 'Custom'
+      urgent: this.translate.instant('Urgent'),
+      priority: this.translate.instant('Priority'),
+      normal: this.translate.instant('Normal'),
+      economy: this.translate.instant('Economy'),
+      superEconomy: this.translate.instant('Super Economy'),
+      custom: this.translate.instant('Custom')
     };
     this.logger.info('FeeProvider initialized.');
   }

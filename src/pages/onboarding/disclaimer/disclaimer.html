@@ -4,7 +4,7 @@
 <ion-content no-bounce>
   <h3 *ngIf="resume" class="title" translate>Quick review!</h3>
   <h3 *ngIf="!resume" class="title" translate>Almost done! Let's review.</h3>
-  <p translate class="top-description">Bitcoin is different &ndash; it cannot be safely held with a bank or web service.</p>
+  <p class="top-description" translate>Bitcoin is different - it cannot be safely held with a bank or web service.</p>
   <ion-list class="checkbox-list" no-lines>
     <ion-item>
       <ion-label>
@@ -18,22 +18,31 @@
       </ion-label>
       <ion-checkbox [(ngModel)]="accepted.second"></ion-checkbox>
     </ion-item>
+    <div *ngIf="hasEmail">
+      <ion-item>
+        <ion-label>
+          <span translate>I give explicit consent to BitPay to use my email address to send me email notifications about payments (and, if selected, email updates and news about the wallet).</span> 
+        </ion-label>
+        <ion-checkbox [(ngModel)]="accepted.third"></ion-checkbox>
+      </ion-item>
+      <a class="externalLink" (click)="openPrivacyPolicy()" translate>View Privacy Policy</a>
+    </div>
   </ion-list>
 </ion-content>
 <ion-footer>
   <ion-toolbar>
     <div class="checkbox-list">
-      <div *ngIf="accepted.first && accepted.second">
+      <div *ngIf="accepted.first && accepted.second && accepted.third">
         <ion-item no-lines>
           <ion-label>
             {{'I have read, understood, and agree to the Terms of Use' | translate}}.
           </ion-label>
           <ion-checkbox [(ngModel)]="terms.accepted"></ion-checkbox>
         </ion-item>
-        <a (click)="openDisclaimer()" translate>Terms of Use</a>
+        <a class="externalLink" (click)="openDisclaimer()" translate>Terms of Use</a>
       </div>
-      <button ion-button class="button-standard" [disabled]="!accepted.first || !accepted.second || !terms.accepted" (click)="confirm()">
-        {{'Confirm &amp; Finish' | translate}}
+      <button ion-button class="button-standard" [disabled]="!accepted.first || !accepted.second || !accepted.third || !terms.accepted" (click)="confirm()">
+        <span translate>Confirm &amp; Finish</span>
       </button>
     </div>
   </ion-toolbar>
