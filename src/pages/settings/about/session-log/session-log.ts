@@ -1,10 +1,17 @@
 import { Component, Inject } from '@angular/core';
-import { DOCUMENT } from "@angular/platform-browser";
+import { DOCUMENT } from '@angular/platform-browser';
 import { TranslateService } from '@ngx-translate/core';
-import { ActionSheetController, ToastController } from 'ionic-angular';
+import {
+  ActionSheetController,
+  ModalController,
+  ToastController
+} from 'ionic-angular';
 
 // native
 import { SocialSharing } from '@ionic-native/social-sharing';
+
+// components
+import { CustomModalComponent } from '../../../../components/custom-modal/custom-modal';
 
 // providers
 import { ConfigProvider } from '../../../../providers/config/config';
@@ -15,10 +22,9 @@ import * as _ from 'lodash';
 
 @Component({
   selector: 'page-session-log',
-  templateUrl: 'session-log.html',
+  templateUrl: 'session-log.html'
 })
 export class SessionLogPage {
-
   private config: any;
   private dom: Document;
 
@@ -35,7 +41,8 @@ export class SessionLogPage {
     private actionSheetCtrl: ActionSheetController,
     private toastCtrl: ToastController,
     private platformProvider: PlatformProvider,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private modalCtrl: ModalController
   ) {
     this.dom = dom;
     this.config = this.configProvider.get();
@@ -49,7 +56,9 @@ export class SessionLogPage {
   }
 
   ionViewWillEnter() {
-    let selectedLevel: any = _.has(this.config, 'log.weight') ? this.logger.getWeight(this.config.log.weight) : this.logger.getDefaultWeight();
+    let selectedLevel: any = _.has(this.config, 'log.weight')
+      ? this.logger.getWeight(this.config.log.weight)
+      : this.logger.getDefaultWeight();
     this.filterValue = selectedLevel.weight;
     this.setOptionSelected(selectedLevel.weight);
     this.filterLogs(selectedLevel.weight);
@@ -70,11 +79,15 @@ export class SessionLogPage {
   }
 
   public prepareLogs(): any {
-    let log = 'Copay Session Logs\n Be careful, this could contain sensitive private data\n\n';
+    let log =
+      'Copay Session Logs\n Be careful, this could contain sensitive private data\n\n';
     log += '\n\n';
-    log += this.logger.get().map((v) => {
-      return '[' + v.timestamp + '][' + v.level + ']' + v.msg;
-    }).join('\n');
+    log += this.logger
+      .get()
+      .map(v => {
+        return '[' + v.timestamp + '][' + v.level + ']' + v.msg;
+      })
+      .join('\n');
 
     return log;
   }
@@ -88,12 +101,12 @@ export class SessionLogPage {
     let message = this.translate.instant('Copied to clipboard');
     let showSuccess = this.toastCtrl.create({
       message,
-      duration: 1000,
+      duration: 1000
     });
     showSuccess.present();
   }
 
-  public sendLogs(): void {
+  private sendLogs(): void {
     let body = this.prepareLogs();
 
     this.socialSharing.shareViaEmail(
@@ -102,31 +115,33 @@ export class SessionLogPage {
       null, // TO: must be null or an array
       null, // CC: must be null or an array
       null, // BCC: must be null or an array
-      null, // FILES: can be null, a string, or an array
+      null // FILES: can be null, a string, or an array
     );
   }
 
   public showOptionsMenu(): void {
-
     let copyText = this.translate.instant('Copy to clipboard');
     let emailText = this.translate.instant('Send by email');
     let button = [];
 
     if (this.isCordova) {
-      button = [{
-        text: emailText,
-        handler: () => {
-          this.sendLogs()
+      button = [
+        {
+          text: emailText,
+          handler: () => {
+            this.showWarningModal();
+          }
         }
-      }];
-    }
-    else {
-      button = [{
-        text: copyText,
-        handler: () => {
-          this.copyToClipboard();
+      ];
+    } else {
+      button = [
+        {
+          text: copyText,
+          handler: () => {
+            this.showWarningModal();
+          }
         }
-      }];
+      ];
     }
 
     let actionSheet = this.actionSheetCtrl.create({
@@ -134,5 +149,29 @@ export class SessionLogPage {
       buttons: button
     });
     actionSheet.present();
+  }
+
+  private showWarningModal() {
+    let sessionLogWarningModal = this.modalCtrl.create(
+      CustomModalComponent,
+      {
+        modalClass: 'warning',
+        imgPath: 'assets/img/icon-warning.svg',
+        title: 'Sensitive Data',
+        htmlMessage:
+          '<span>The information you are about to share/export may contain sensitive data such us wallet IDs, addresses, balances, etc.</span></br>' +
+          '<span>Although this is not critical, please be careful and make sure you trust the person or entity you are sharing this information with.</span>',
+        firstButton: {
+          text: 'I understand',
+          color: 'warning',
+          data: ''
+        }
+      },
+      { showBackdrop: false, enableBackdropDismiss: false }
+    );
+    sessionLogWarningModal.present();
+    sessionLogWarningModal.onDidDismiss(() => {
+      this.isCordova ? this.sendLogs() : this.copyToClipboard();
+    });
   }
 }

@@ -1,16 +1,23 @@
 import { Component } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { AlertController, Events, ModalController, NavController } from 'ionic-angular';
+import {
+  AlertController,
+  Events,
+  ModalController,
+  NavController
+} from 'ionic-angular';
 import { Logger } from '../../providers/logger/logger';
 
 // Native
 import { SocialSharing } from '@ionic-native/social-sharing';
 
 // Pages
-import { BackupNeededModalPage } from '../backup/backup-needed-modal/backup-needed-modal';
 import { BackupWarningPage } from '../backup/backup-warning/backup-warning';
 import { AmountPage } from '../send/amount/amount';
 import { CopayersPage } from './../add/copayers/copayers';
+
+// Components
+import { CustomModalComponent } from '../../components/custom-modal/custom-modal';
 
 // Providers
 import { AddressProvider } from '../../providers/address/address';
@@ -24,10 +31,9 @@ import * as _ from 'lodash';
 
 @Component({
   selector: 'page-receive',
-  templateUrl: 'receive.html',
+  templateUrl: 'receive.html'
 })
 export class ReceivePage {
-
   public protocolHandler: string;
   public address: string;
   public qrAddress: string;
@@ -61,7 +67,8 @@ export class ReceivePage {
     this.onWalletSelect(this.checkSelectedWallet(this.wallet, this.wallets));
     this.events.subscribe('bwsEvent', (walletId, type, n) => {
       // Update current address
-      if (this.wallet && walletId == this.wallet.id && type == 'NewIncomingTx') this.setAddress(true);
+      if (this.wallet && walletId == this.wallet.id && type == 'NewIncomingTx')
+        this.setAddress(true);
     });
   }
 
@@ -99,21 +106,26 @@ export class ReceivePage {
   }
 
   private setAddress(newAddr?: boolean): void {
-
     this.loading = newAddr || _.isEmpty(this.address) ? true : false;
 
-    this.walletProvider.getAddress(this.wallet, newAddr).then((addr) => {
-      this.loading = false;
-      this.address = this.walletProvider.getAddressView(this.wallet, addr);
-      this.updateQrAddress();
-    }).catch((err) => {
-      this.loading = false;
-      this.logger.warn(this.bwcErrorProvider.msg(err, 'Server Error'));
-    });
+    this.walletProvider
+      .getAddress(this.wallet, newAddr)
+      .then(addr => {
+        this.loading = false;
+        this.address = this.walletProvider.getAddressView(this.wallet, addr);
+        this.updateQrAddress();
+      })
+      .catch(err => {
+        this.loading = false;
+        this.logger.warn(this.bwcErrorProvider.msg(err, 'Server Error'));
+      });
   }
 
   private updateQrAddress(): void {
-    this.qrAddress = this.walletProvider.getProtoAddress(this.wallet, this.address);
+    this.qrAddress = this.walletProvider.getProtoAddress(
+      this.wallet,
+      this.address
+    );
   }
 
   public shareAddress(): void {
@@ -133,25 +145,57 @@ export class ReceivePage {
   }
 
   public goCopayers(): void {
-    this.navCtrl.push(CopayersPage, { walletId: this.wallet.credentials.walletId });
-  };
+    this.navCtrl.push(CopayersPage, {
+      walletId: this.wallet.credentials.walletId
+    });
+  }
 
   public goToBackup(): void {
-    let BackupWarningModal = this.modalCtrl.create(BackupNeededModalPage, {}, { showBackdrop: true, enableBackdropDismiss: false });
+    let BackupWarningModal = this.modalCtrl.create(
+      CustomModalComponent,
+      {
+        modalClass: 'danger',
+        imgPath: 'assets/img/warning.svg',
+        title: 'Backup Needed',
+        htmlMessage:
+          'Now is a good time to backup your wallet. If this device is lost, it is impossible to access your funds without a backup.',
+        firstButton: {
+          text: 'Backup now',
+          color: 'danger',
+          data: 'true'
+        },
+        secondButton: {
+          text: 'Do it later',
+          color: 'danger',
+          data: ''
+        }
+      },
+      { showBackdrop: true, enableBackdropDismiss: false }
+    );
     BackupWarningModal.present({ animate: false });
-    BackupWarningModal.onDidDismiss((goToBackupPage) => {
-      if (goToBackupPage) this.navCtrl.push(BackupWarningPage, { walletId: this.wallet.credentials.walletId });
+    BackupWarningModal.onDidDismiss(goToBackupPage => {
+      if (goToBackupPage)
+        this.navCtrl.push(BackupWarningPage, {
+          walletId: this.wallet.credentials.walletId
+        });
     });
   }
 
   public openWikiBackupNeeded(): void {
-    let url = 'https://support.bitpay.com/hc/en-us/articles/115002989283-Why-don-t-I-have-an-online-account-for-my-BitPay-wallet-';
+    let url =
+      'https://support.bitpay.com/hc/en-us/articles/115002989283-Why-don-t-I-have-an-online-account-for-my-BitPay-wallet-';
     let optIn = true;
     let title = null;
     let message = this.translate.instant('Read more in our Wiki');
     let okText = this.translate.instant('Open');
     let cancelText = this.translate.instant('Go Back');
-    this.externalLinkProvider.open(url, optIn, title, message, okText, cancelText);
+    this.externalLinkProvider.open(
+      url,
+      optIn,
+      title,
+      message,
+      okText,
+      cancelText
+    );
   }
-
 }

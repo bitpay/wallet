@@ -1,4 +1,7 @@
 import { NgModule } from '@angular/core';
+import { TranslateModule } from '@ngx-translate/core';
+import { IonicModule } from 'ionic-angular';
+import { CustomModalComponent } from './custom-modal/custom-modal';
 import {
   ExpandableHeaderComponent,
   ExpandableHeaderFooterComponent,
@@ -8,13 +11,16 @@ import {
   declarations: [
     ExpandableHeaderComponent,
     ExpandableHeaderFooterComponent,
-    ExpandableHeaderPrimaryComponent
+    ExpandableHeaderPrimaryComponent,
+    CustomModalComponent
   ],
-  imports: [],
+  imports: [IonicModule.forRoot({}), TranslateModule.forRoot({})],
   exports: [
     ExpandableHeaderComponent,
     ExpandableHeaderFooterComponent,
-    ExpandableHeaderPrimaryComponent
-  ]
+    ExpandableHeaderPrimaryComponent,
+    CustomModalComponent
+  ],
+  entryComponents: [CustomModalComponent]
 })
 export class ComponentsModule {}

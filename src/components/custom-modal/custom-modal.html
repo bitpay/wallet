@@ -1,0 +1,16 @@
+<ion-content class="popup-modal" no-bounce>
+
+  <div class="modal-img" [ngClass]="{'background-color-warning':modalClass == 'warning', 'background-color-danger':modalClass == 'danger', 'background-color-success':modalClass == 'success'}">
+    <img src="{{imgPath}}">
+  </div>
+  <div class="modal-content">
+    <div class="modal-heading" translate>{{title}}</div>
+    <div class="modal-message" [innerHtml]="htmlMessage" translate></div>
+    <button *ngIf="firstButton" ion-button clear color="{{firstButton?.color}}" class="button-standard" (click)="close(firstButton.data)">
+      {{ firstButton?.text | translate }}
+    </button>
+    <button *ngIf="secondButton" ion-button clear color="{{secondButton?.color}}" (click)="close(secondButton.data)" small>
+      {{ secondButton?.text | translate }}
+    </button>
+  </div>
+</ion-content>
