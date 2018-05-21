@@ -25,7 +25,6 @@ export class CollectEmailPage {
   private walletId: string;
   private emailForm: FormGroup;
   private URL: string;
-  private accept: boolean;
 
   constructor(
     private navCtrl: NavController,
@@ -41,7 +40,7 @@ export class CollectEmailPage {
     let regex: RegExp = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
     this.emailForm = this.fb.group({
       email: [null, [Validators.required, Validators.pattern(regex)]],
-      accept: [true],
+      accept: [false],
     });
     this.showConfirmForm = false;
     // Get more info: https://mashe.hawksey.info/2014/07/google-sheets-as-a-database-insert-with-apps-script-using-postget-methods-with-ajax-example/
@@ -66,9 +65,13 @@ export class CollectEmailPage {
       enabled: true,
       email: this.emailForm.value.email
     };
+    
+    // Confirm for notifications
     this.emailProvider.updateEmail(opts);
 
-    if (this.accept) this.collectEmail();
+    // Confirm to get news and updates from BitPay
+    if (this.emailForm.value.accept) this.collectEmail();
+    
     this.goToBackupRequestPage();
   }
 
@@ -77,8 +80,8 @@ export class CollectEmailPage {
   }
 
   private collectEmail(): void {
-    let platform = this.device.platform;
-    let version = this.device.version;
+    let platform = this.device.platform || 'Unknown platform';
+    let version = this.device.version || 'Unknown version';
 
     const headers: any = new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' });
     const urlSearchParams = new HttpParams()
