@@ -25,12 +25,12 @@ export class PinDots {
     if (!pinChanges) {
       return;
     }
-    const currentValue = changes.pin.currentValue;
-    const previousValue = changes.pin.previousValue;
+    const currentValue = pinChanges.currentValue;
+    const previousValue = pinChanges.previousValue;
     if (!currentValue.length || currentValue.length < previousValue.length) {
       return;
     }
-    this.pulseDot(changes.pin.currentValue.length - 1);
+    this.pulseDot(currentValue.length - 1);
   }
 
   public isFilled(limit): boolean {
