@@ -84,7 +84,7 @@
     </div>
 
     <div *ngIf="wallet.network == 'testnet'" class="box-notification no-margin warn">
-      <a (click)="openExternalLink()">
+      <a (click)="openExternalLink('https://support.bitpay.com/hc/en-us/articles/360004102011-What-is-testnet-How-do-I-avoid-testnet-Bitcoin-scams-')">
         <ion-icon name="warning"></ion-icon>
         {{'Learn more about testnet blockchain' | translate}}
         <ion-icon name="arrow-forward"></ion-icon>
