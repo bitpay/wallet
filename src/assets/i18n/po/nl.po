@@ -12,7 +12,7 @@ msgstr ""
 "Last-Translator: cmgustavo83\n"
 "Language-Team: Dutch\n"
 "Language: nl\n"
-"PO-Revision-Date: 2018-05-12 14:17-0400\n"
+"PO-Revision-Date: 2018-05-21 09:12-0400\n"
 
 msgid "(Trusted)"
 msgstr "(Vertrouwd)"
@@ -50,6 +50,9 @@ msgstr "Over"
 msgid "About {{appName}}"
 msgstr ""
 
+msgid "Accept"
+msgstr ""
+
 msgid "Accepted"
 msgstr "Geaccepteerd"
 
@@ -76,9 +79,6 @@ msgstr ""
 
 msgid "Add as a contact"
 msgstr "Toevoegen als contactpersoon"
-
-msgid "Add description"
-msgstr "Beschrijving toevoegen"
 
 msgid "Add funds"
 msgstr "Saldo toevoegen"
@@ -173,6 +173,9 @@ msgstr "Weet u zeker dat u deze transactie wilt afwijzen?"
 msgid "Are you sure you want to remove this transaction?"
 msgstr "Weet u zeker dat u deze transactie wilt verwijderen?"
 
+msgid "Are you sure you want to skip it?"
+msgstr ""
+
 msgid "Are you sure?"
 msgstr ""
 
@@ -230,8 +233,8 @@ msgstr "Bitcoin cash Betaling"
 msgid "Bitcoin is a currency."
 msgstr "Bitcoin is een valuta."
 
-msgid "Bitcoin is different &ndash; it cannot be safely held with a bank or web service."
-msgstr "Bitcoin is anders &ndash; het kan niet veilig worden bewaard bij een bank of online dienst."
+msgid "Bitcoin is different - it cannot be safely held with a bank or web service."
+msgstr ""
 
 msgid "Bitcoin is secure, digital money."
 msgstr ""
@@ -266,6 +269,9 @@ msgstr "Bitcoin kopen..."
 msgid "Buying Gift Card..."
 msgstr ""
 
+msgid "By providing your email address, you give explicit consent to BitPay to use your email address to send you email notifications about payments."
+msgstr ""
+
 msgid "Calculating fee..."
 msgstr ""
 
@@ -276,6 +282,9 @@ msgid "Cancel invitation"
 msgstr "Uitnodiging annuleren"
 
 msgid "Canceling Gift Card..."
+msgstr ""
+
+msgid "Cannot create wallet"
 msgstr ""
 
 msgid "Cannot join the same wallet more that once"
@@ -335,7 +344,7 @@ msgstr ""
 msgid "Confirm"
 msgstr "Bevestigen"
 
-msgid "Confirm &amp; Finish"
+msgid "Confirm & Finish"
 msgstr ""
 
 msgid "Confirm to shift {{fromCoin}} to {{toCoin}}"
@@ -568,6 +577,9 @@ msgstr ""
 
 msgid "Details"
 msgstr "Details"
+
+msgid "Disable notifications"
+msgstr ""
 
 msgid "Disabled"
 msgstr ""
@@ -875,6 +887,9 @@ msgstr ""
 msgid "I don't like it"
 msgstr "Ik vind hem niet goed"
 
+msgid "I give explicit consent to BitPay to use my email address to send me email notifications about payments (and, if selected, email updates and news about the wallet)."
+msgstr ""
+
 msgid "I have read, understood, and agree to the Terms of Use"
 msgstr ""
 
@@ -909,6 +924,9 @@ msgid "If enabled, the Recent Transactions card - a list of transactions occurin
 msgstr "Indien ingeschakeld, zal de Recente Transacties kaart - een lijst van transacties van alle portemonnees - worden weergegeven in het tabblad Start."
 
 msgid "If enabled, wallets will also try to spend unconfirmed funds."
+msgstr ""
+
+msgid "If this device is replaced or this app is deleted, neither you nor BitPay can recover your funds without a backup."
 msgstr ""
 
 msgid "If you have additional feedback, please let us know by tapping the \"Send feedback\" option in the Settings tab."
@@ -1376,6 +1394,12 @@ msgstr "Backup voorbereiden..."
 msgid "Priority"
 msgstr "Dringend"
 
+msgid "Privacy Policy"
+msgstr ""
+
+msgid "Privacy Policy update"
+msgstr ""
+
 msgid "Private Key"
 msgstr "Privé Sleutel"
 
@@ -1515,6 +1539,9 @@ msgid "Restore from backup"
 msgstr "Herstellen vanuit backup"
 
 msgid "Retrieving inputs information..."
+msgstr ""
+
+msgid "Retry"
 msgstr ""
 
 msgid "Retry camera"
@@ -1724,9 +1751,6 @@ msgstr "Dit bedrag uitgeven vereist aanzienlijke transactiekosten"
 msgid "Start"
 msgstr ""
 
-msgid "Startup Lock"
-msgstr "Opstart Slot"
-
 msgid "Still pending"
 msgstr "Nog in behandeling"
 
@@ -1759,9 +1783,6 @@ msgstr "Tik en houd vast om te tonen"
 
 msgid "Terms of Use"
 msgstr "Gebruikersvoorwaarden"
-
-msgid "Terms of use"
-msgstr ""
 
 msgid "Text"
 msgstr "Tekst"
@@ -2003,11 +2024,17 @@ msgstr "Weergeven"
 msgid "View Confirmation Status"
 msgstr ""
 
+msgid "View Privacy Policy"
+msgstr ""
+
 msgid "View Transaction on Insight"
 msgstr "Bekijk Transactie op Insight"
 
 msgid "View Update"
 msgstr "Update Bekijken"
+
+msgid "View Wallet Terms of Use"
+msgstr ""
 
 msgid "View all addresses"
 msgstr ""
@@ -2035,9 +2062,6 @@ msgstr "WAARSCHUWING: NIET-VERTROUWD CERTIFICAAT"
 
 msgid "Waiting for copayers"
 msgstr "Wachten op copayers"
-
-msgid "Waiting for permissions."
-msgstr ""
 
 msgid "Waiting..."
 msgstr "Wachten..."
@@ -2129,6 +2153,9 @@ msgstr "Waarschuwing!"
 msgid "Warning: this transaction has unconfirmed inputs"
 msgstr "Waarschuwing: deze transactie heeft onbevestigde ontvangsten"
 
+msgid "Watch Out!"
+msgstr ""
+
 msgid "We are always looking for translation contributions! You can make corrections or help to make this app available in your native language by joining our community on Crowdin."
 msgstr ""
 
@@ -2150,8 +2177,8 @@ msgstr ""
 msgid "What do you call this wallet?"
 msgstr "Hoe noemt u deze portemonnee?"
 
-msgid "When this wallet was created, it was called &ldquo;{{walletName}}&rdquo;. You can change the name displayed on this device below."
-msgstr "Ten tijde van aanmaken kreeg deze portemonnee de naam &ldquo;{{walletName}}&rdquo;. U kunt de naam wijzigen die op dit apparaat weergegeven wordt."
+msgid "When this wallet was created, it was called \"{{walletName}}\". You can change the name displayed on this device below."
+msgstr ""
 
 msgid "Where would you like to receive email notifications about payments?"
 msgstr "Waar wilt u email meldingen ontvangen over betalingen?"
@@ -2183,6 +2210,12 @@ msgstr ""
 msgid "Yes"
 msgstr "Ja"
 
+msgid "Yes, skip"
+msgstr ""
+
+msgid "You can create a backup later from your wallet settings."
+msgstr ""
+
 msgid "You can make contributions by signing up on our Crowdin community translation website. We’re looking forward to hearing from you!"
 msgstr "U kunt een bijdrage leveren door u aan te melden bij onze Crowdin gemeenschap vertalings website. Wij kijken er naar uit om van u te horen!"
 
@@ -2209,9 +2242,6 @@ msgstr ""
 
 msgid "You should not set a fee higher than {{maxFeeRecommended}} satoshis/byte."
 msgstr "Het is af te raden transactiekosten te kiezen hoger dan {{maxFeeRecommended}} satoshi's/byte."
-
-msgid "You'll receive email notifications about payments sent and received from your wallets."
-msgstr "U zult email meldingen ontvangen over verzonden en ontvangen betalingen van uw portemonnee."
 
 msgid "Your BitPay Card is ready. Add funds to your card to start using it at stores and ATMs worldwide."
 msgstr "Uw BitPay Kaart is gereed. Voeg saldo toe aan uw kaart om deze te kunnen gebruiken in winkels en pinautomaten over de hele wereld."
