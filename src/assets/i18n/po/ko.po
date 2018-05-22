@@ -12,7 +12,7 @@ msgstr ""
 "Last-Translator: cmgustavo83\n"
 "Language-Team: Korean\n"
 "Language: ko\n"
-"PO-Revision-Date: 2018-05-12 14:17-0400\n"
+"PO-Revision-Date: 2018-05-21 09:12-0400\n"
 
 msgid "(Trusted)"
 msgstr "(신뢰할 수 있음)"
@@ -50,6 +50,9 @@ msgstr "소개"
 msgid "About {{appName}}"
 msgstr ""
 
+msgid "Accept"
+msgstr ""
+
 msgid "Accepted"
 msgstr "수락함"
 
@@ -76,9 +79,6 @@ msgstr ""
 
 msgid "Add as a contact"
 msgstr "연락처로 추가"
-
-msgid "Add description"
-msgstr "설명 추가"
 
 msgid "Add funds"
 msgstr "자금 추가"
@@ -173,6 +173,9 @@ msgstr "정말로 이 거래를 거절하시겠습니까?"
 msgid "Are you sure you want to remove this transaction?"
 msgstr "정말로 이 거래를 제거하시겠습니까?"
 
+msgid "Are you sure you want to skip it?"
+msgstr ""
+
 msgid "Are you sure?"
 msgstr ""
 
@@ -230,8 +233,8 @@ msgstr "비트코인 현금 지불"
 msgid "Bitcoin is a currency."
 msgstr "비트코인은 통화입니다."
 
-msgid "Bitcoin is different &ndash; it cannot be safely held with a bank or web service."
-msgstr "비트코인은 다릅니다 &ndash; 비트코인은 은행이나 웹 서비스로 안전하게 보관할 수 없습니다."
+msgid "Bitcoin is different - it cannot be safely held with a bank or web service."
+msgstr ""
 
 msgid "Bitcoin is secure, digital money."
 msgstr ""
@@ -266,6 +269,9 @@ msgstr "비트코인 구입 중..."
 msgid "Buying Gift Card..."
 msgstr ""
 
+msgid "By providing your email address, you give explicit consent to BitPay to use your email address to send you email notifications about payments."
+msgstr ""
+
 msgid "Calculating fee..."
 msgstr ""
 
@@ -276,6 +282,9 @@ msgid "Cancel invitation"
 msgstr "초대 취소"
 
 msgid "Canceling Gift Card..."
+msgstr ""
+
+msgid "Cannot create wallet"
 msgstr ""
 
 msgid "Cannot join the same wallet more that once"
@@ -335,7 +344,7 @@ msgstr ""
 msgid "Confirm"
 msgstr "확인"
 
-msgid "Confirm &amp; Finish"
+msgid "Confirm & Finish"
 msgstr ""
 
 msgid "Confirm to shift {{fromCoin}} to {{toCoin}}"
@@ -568,6 +577,9 @@ msgstr ""
 
 msgid "Details"
 msgstr "세부 정보"
+
+msgid "Disable notifications"
+msgstr ""
 
 msgid "Disabled"
 msgstr ""
@@ -875,6 +887,9 @@ msgstr ""
 msgid "I don't like it"
 msgstr "마음에 안듭니다"
 
+msgid "I give explicit consent to BitPay to use my email address to send me email notifications about payments (and, if selected, email updates and news about the wallet)."
+msgstr ""
+
 msgid "I have read, understood, and agree to the Terms of Use"
 msgstr ""
 
@@ -909,6 +924,9 @@ msgid "If enabled, the Recent Transactions card - a list of transactions occurin
 msgstr "활성화할 경우, 최근 거래 카드(모든 지갑에서 발생한 거래 내역 목록)가 홈 탭에 표시됩니다."
 
 msgid "If enabled, wallets will also try to spend unconfirmed funds."
+msgstr ""
+
+msgid "If this device is replaced or this app is deleted, neither you nor BitPay can recover your funds without a backup."
 msgstr ""
 
 msgid "If you have additional feedback, please let us know by tapping the \"Send feedback\" option in the Settings tab."
@@ -1376,6 +1394,12 @@ msgstr "백업 준비 중..."
 msgid "Priority"
 msgstr "우선 순위"
 
+msgid "Privacy Policy"
+msgstr ""
+
+msgid "Privacy Policy update"
+msgstr ""
+
 msgid "Private Key"
 msgstr "개인 키"
 
@@ -1515,6 +1539,9 @@ msgid "Restore from backup"
 msgstr "백업에서 복원"
 
 msgid "Retrieving inputs information..."
+msgstr ""
+
+msgid "Retry"
 msgstr ""
 
 msgid "Retry camera"
@@ -1724,9 +1751,6 @@ msgstr "이 잔액을 사용하려면 유효한 비트코인 네트워크 수수
 msgid "Start"
 msgstr ""
 
-msgid "Startup Lock"
-msgstr "스타트업 락"
-
 msgid "Still pending"
 msgstr "여전히 보류 중"
 
@@ -1759,9 +1783,6 @@ msgstr "표시하시려면 길게 탭하세요"
 
 msgid "Terms of Use"
 msgstr "이용 약관"
-
-msgid "Terms of use"
-msgstr ""
 
 msgid "Text"
 msgstr "문자"
@@ -2003,11 +2024,17 @@ msgstr "보기"
 msgid "View Confirmation Status"
 msgstr ""
 
+msgid "View Privacy Policy"
+msgstr ""
+
 msgid "View Transaction on Insight"
 msgstr "Insight에서 거래 보기"
 
 msgid "View Update"
 msgstr "업데이트 보기"
+
+msgid "View Wallet Terms of Use"
+msgstr ""
 
 msgid "View all addresses"
 msgstr ""
@@ -2035,9 +2062,6 @@ msgstr "경고: 신뢰할 수 없는 인증서"
 
 msgid "Waiting for copayers"
 msgstr "코페이어 기다리는 중"
-
-msgid "Waiting for permissions."
-msgstr ""
 
 msgid "Waiting..."
 msgstr "기다리는 중..."
@@ -2129,6 +2153,9 @@ msgstr "경고!"
 msgid "Warning: this transaction has unconfirmed inputs"
 msgstr "경고: 이 거래에는 확인되지 않은 입금이 있습니다"
 
+msgid "Watch Out!"
+msgstr ""
+
 msgid "We are always looking for translation contributions! You can make corrections or help to make this app available in your native language by joining our community on Crowdin."
 msgstr ""
 
@@ -2150,8 +2177,8 @@ msgstr ""
 msgid "What do you call this wallet?"
 msgstr "이 지갑을 뭐라고 부르시겠습니까?"
 
-msgid "When this wallet was created, it was called &ldquo;{{walletName}}&rdquo;. You can change the name displayed on this device below."
-msgstr "이 지갑이 생성될 시, &ldquo;{{walletName}}&rdquo;라고 불렸습니다. 이 기기에 표시되는 이름을 하단에서 변경하실 수 있습니다."
+msgid "When this wallet was created, it was called \"{{walletName}}\". You can change the name displayed on this device below."
+msgstr ""
 
 msgid "Where would you like to receive email notifications about payments?"
 msgstr "지불에 대한 이메일 알림을 어디로 받으시겠습니까?"
@@ -2183,6 +2210,12 @@ msgstr ""
 msgid "Yes"
 msgstr "네"
 
+msgid "Yes, skip"
+msgstr ""
+
+msgid "You can create a backup later from your wallet settings."
+msgstr ""
+
 msgid "You can make contributions by signing up on our Crowdin community translation website. We’re looking forward to hearing from you!"
 msgstr "저희의 Crowdin 커뮤니티 번역 웹사이트에 가입하여 기여하실 수 있습니다. 귀하의 소식을 기다리겠습니다!"
 
@@ -2209,9 +2242,6 @@ msgstr ""
 
 msgid "You should not set a fee higher than {{maxFeeRecommended}} satoshis/byte."
 msgstr "수수료를 {{maxFeeRecommended}} satoshis/byte보다 높게 설정하시면 안됩니다."
-
-msgid "You'll receive email notifications about payments sent and received from your wallets."
-msgstr "귀하의 지갑의 수신 및 발신 내역에 대해 이메일 알림을 받으시게 됩니다."
 
 msgid "Your BitPay Card is ready. Add funds to your card to start using it at stores and ATMs worldwide."
 msgstr "귀하의 BitPay 카드가 준비되었습니다. 전 세계 상점 및 ATM에서 이용하시려면 카드에 자금을 추가해주세요."

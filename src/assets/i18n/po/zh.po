@@ -12,7 +12,7 @@ msgstr ""
 "Last-Translator: cmgustavo83\n"
 "Language-Team: Chinese Simplified\n"
 "Language: zh\n"
-"PO-Revision-Date: 2018-05-12 14:17-0400\n"
+"PO-Revision-Date: 2018-05-21 09:12-0400\n"
 
 msgid "(Trusted)"
 msgstr "（可信的）"
@@ -50,6 +50,9 @@ msgstr "关于"
 msgid "About {{appName}}"
 msgstr ""
 
+msgid "Accept"
+msgstr ""
+
 msgid "Accepted"
 msgstr "同意"
 
@@ -76,9 +79,6 @@ msgstr ""
 
 msgid "Add as a contact"
 msgstr "添加到联系人"
-
-msgid "Add description"
-msgstr "添加描述"
 
 msgid "Add funds"
 msgstr "添加资金"
@@ -173,6 +173,9 @@ msgstr "确定拒绝这笔交易？"
 msgid "Are you sure you want to remove this transaction?"
 msgstr "确定要删除这项交易吗？"
 
+msgid "Are you sure you want to skip it?"
+msgstr ""
+
 msgid "Are you sure?"
 msgstr "是否确认？"
 
@@ -230,8 +233,8 @@ msgstr "比特币现金支付"
 msgid "Bitcoin is a currency."
 msgstr "比特币是一种货币。"
 
-msgid "Bitcoin is different &ndash; it cannot be safely held with a bank or web service."
-msgstr "比特币是不同 — — 它不能安全地举行以银行或 web 服务。"
+msgid "Bitcoin is different - it cannot be safely held with a bank or web service."
+msgstr ""
 
 msgid "Bitcoin is secure, digital money."
 msgstr "比特币是安全的数字货币。"
@@ -266,6 +269,9 @@ msgstr "正在发送 比特币..."
 msgid "Buying Gift Card..."
 msgstr ""
 
+msgid "By providing your email address, you give explicit consent to BitPay to use your email address to send you email notifications about payments."
+msgstr ""
+
 msgid "Calculating fee..."
 msgstr ""
 
@@ -276,6 +282,9 @@ msgid "Cancel invitation"
 msgstr "取消邀请"
 
 msgid "Canceling Gift Card..."
+msgstr ""
+
+msgid "Cannot create wallet"
 msgstr ""
 
 msgid "Cannot join the same wallet more that once"
@@ -335,7 +344,7 @@ msgstr ""
 msgid "Confirm"
 msgstr "确定"
 
-msgid "Confirm &amp; Finish"
+msgid "Confirm & Finish"
 msgstr ""
 
 msgid "Confirm to shift {{fromCoin}} to {{toCoin}}"
@@ -568,6 +577,9 @@ msgstr ""
 
 msgid "Details"
 msgstr "详情"
+
+msgid "Disable notifications"
+msgstr ""
 
 msgid "Disabled"
 msgstr ""
@@ -875,6 +887,9 @@ msgstr ""
 msgid "I don't like it"
 msgstr "我不喜欢"
 
+msgid "I give explicit consent to BitPay to use my email address to send me email notifications about payments (and, if selected, email updates and news about the wallet)."
+msgstr ""
+
 msgid "I have read, understood, and agree to the Terms of Use"
 msgstr ""
 
@@ -909,6 +924,9 @@ msgid "If enabled, the Recent Transactions card - a list of transactions occurin
 msgstr "如果启用，最近的交易卡-交易发生跨所有钱包名单-将出现在主页选项卡。"
 
 msgid "If enabled, wallets will also try to spend unconfirmed funds."
+msgstr ""
+
+msgid "If this device is replaced or this app is deleted, neither you nor BitPay can recover your funds without a backup."
 msgstr ""
 
 msgid "If you have additional feedback, please let us know by tapping the \"Send feedback\" option in the Settings tab."
@@ -1376,6 +1394,12 @@ msgstr "正在准备备份..."
 msgid "Priority"
 msgstr "优先"
 
+msgid "Privacy Policy"
+msgstr ""
+
+msgid "Privacy Policy update"
+msgstr ""
+
 msgid "Private Key"
 msgstr "私钥"
 
@@ -1515,6 +1539,9 @@ msgid "Restore from backup"
 msgstr "从备份中还原"
 
 msgid "Retrieving inputs information..."
+msgstr ""
+
+msgid "Retry"
 msgstr ""
 
 msgid "Retry camera"
@@ -1724,9 +1751,6 @@ msgstr "这笔交易将需要非常高的比特币网络手续费"
 msgid "Start"
 msgstr ""
 
-msgid "Startup Lock"
-msgstr "启动锁定"
-
 msgid "Still pending"
 msgstr "仍然等待"
 
@@ -1759,9 +1783,6 @@ msgstr "点击并按住以显示"
 
 msgid "Terms of Use"
 msgstr "使用条款"
-
-msgid "Terms of use"
-msgstr ""
 
 msgid "Text"
 msgstr "文本"
@@ -2003,11 +2024,17 @@ msgstr "查看"
 msgid "View Confirmation Status"
 msgstr ""
 
+msgid "View Privacy Policy"
+msgstr ""
+
 msgid "View Transaction on Insight"
 msgstr "查看交易记录的洞察"
 
 msgid "View Update"
 msgstr "查看更新"
+
+msgid "View Wallet Terms of Use"
+msgstr ""
 
 msgid "View all addresses"
 msgstr ""
@@ -2035,9 +2062,6 @@ msgstr "警告︰不受信任的证书"
 
 msgid "Waiting for copayers"
 msgstr "正在等待 copayers"
-
-msgid "Waiting for permissions."
-msgstr ""
 
 msgid "Waiting..."
 msgstr "等待中..."
@@ -2129,6 +2153,9 @@ msgstr "警告！​​​​​"
 msgid "Warning: this transaction has unconfirmed inputs"
 msgstr "警告︰此交易有未经确认的输入"
 
+msgid "Watch Out!"
+msgstr ""
+
 msgid "We are always looking for translation contributions! You can make corrections or help to make this app available in your native language by joining our community on Crowdin."
 msgstr ""
 
@@ -2150,8 +2177,8 @@ msgstr ""
 msgid "What do you call this wallet?"
 msgstr "你叫这个钱包是什么？"
 
-msgid "When this wallet was created, it was called &ldquo;{{walletName}}&rdquo;. You can change the name displayed on this device below."
-msgstr "这个钱包在创建时，它被称为\"{{walletName}}\"。您可以更改显示在这下面的设备的名称。"
+msgid "When this wallet was created, it was called \"{{walletName}}\". You can change the name displayed on this device below."
+msgstr ""
 
 msgid "Where would you like to receive email notifications about payments?"
 msgstr "在那里你想要接收电子邮件通知有关付款？"
@@ -2183,6 +2210,12 @@ msgstr ""
 msgid "Yes"
 msgstr "是"
 
+msgid "Yes, skip"
+msgstr ""
+
+msgid "You can create a backup later from your wallet settings."
+msgstr ""
+
 msgid "You can make contributions by signing up on our Crowdin community translation website. We’re looking forward to hearing from you!"
 msgstr "您可以通过签约我们 Crowdin 社区翻译网站作出贡献。我们期待你的听力 ！"
 
@@ -2209,9 +2242,6 @@ msgstr ""
 
 msgid "You should not set a fee higher than {{maxFeeRecommended}} satoshis/byte."
 msgstr "你不应设置高于 {{maxFeeRecommended}} satoshis/字节 的交易手续费。"
-
-msgid "You'll receive email notifications about payments sent and received from your wallets."
-msgstr "在您的钱包进行付款操作时发送通知。"
 
 msgid "Your BitPay Card is ready. Add funds to your card to start using it at stores and ATMs worldwide."
 msgstr "您的 BitPay 卡是准备好了。添加到您的卡开始使用它在商店和自动取款机全球基金。"

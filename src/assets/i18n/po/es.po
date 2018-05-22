@@ -12,7 +12,7 @@ msgstr ""
 "Last-Translator: cmgustavo83\n"
 "Language-Team: Spanish\n"
 "Language: es\n"
-"PO-Revision-Date: 2018-05-12 19:09-0400\n"
+"PO-Revision-Date: 2018-05-22 09:25-0400\n"
 
 msgid "(Trusted)"
 msgstr "(De confianza)"
@@ -50,6 +50,9 @@ msgstr "Acerca de"
 msgid "About {{appName}}"
 msgstr "Acerca de {{appName}}"
 
+msgid "Accept"
+msgstr "Aceptar"
+
 msgid "Accepted"
 msgstr "Aceptada"
 
@@ -76,9 +79,6 @@ msgstr "Agregar cuenta"
 
 msgid "Add as a contact"
 msgstr "Agregar como Contacto"
-
-msgid "Add description"
-msgstr "Añadir descripción"
 
 msgid "Add funds"
 msgstr "Agregar fondos"
@@ -144,7 +144,7 @@ msgid "Amount too big"
 msgstr "Monto demasiado grande"
 
 msgid "An update to this app is available. For your security, please update to the latest version."
-msgstr "Actualización disponible. Por seguridad, actualiza a la versión más reciente."
+msgstr "Hay una actualización disponible para esta aplicación. Por seguridad, actualiza a la versión más reciente."
 
 msgid "Anyone with your backup phrase can access or spend your bitcoin."
 msgstr "Cualquier persona con tu copia de seguridad puede gastar tus bitcoins."
@@ -172,6 +172,9 @@ msgstr "¿Estás seguro de rechazar esta transacción?"
 
 msgid "Are you sure you want to remove this transaction?"
 msgstr "¿Estás seguro de eliminar esta transacción?"
+
+msgid "Are you sure you want to skip it?"
+msgstr "¿Está seguro que desea omitirlo?"
 
 msgid "Are you sure?"
 msgstr "¿Estás seguro?"
@@ -230,8 +233,8 @@ msgstr "Pago en Bitcoin cash"
 msgid "Bitcoin is a currency."
 msgstr "Bitcoin es una moneda."
 
-msgid "Bitcoin is different &ndash; it cannot be safely held with a bank or web service."
-msgstr "Bitcoin es diferente &ndash; no se puede resguardar con ningún servicio web o banco."
+msgid "Bitcoin is different - it cannot be safely held with a bank or web service."
+msgstr "Bitcoin es diferente - no se puede resguardar con ningún servicio web o banco."
 
 msgid "Bitcoin is secure, digital money."
 msgstr "Bitcoin es seguro, dinero digital."
@@ -266,6 +269,9 @@ msgstr "Comprando Bitcoins..."
 msgid "Buying Gift Card..."
 msgstr "Comprando Tarjeta de Regalo..."
 
+msgid "By providing your email address, you give explicit consent to BitPay to use your email address to send you email notifications about payments."
+msgstr "Al proporcionar su dirección de correo electrónico, usted da consentimiento explícito a BitPay de usar su dirección de correo electrónico para enviarle notificaciones sobre pagos."
+
 msgid "Calculating fee..."
 msgstr "Calculando comisión..."
 
@@ -277,6 +283,9 @@ msgstr "Cancelar invitación"
 
 msgid "Canceling Gift Card..."
 msgstr "Cancelando Tarjeta de Regalo..."
+
+msgid "Cannot create wallet"
+msgstr "No se puede crear la billetera"
 
 msgid "Cannot join the same wallet more that once"
 msgstr "No puede unirse a la misma billetera más de una vez"
@@ -335,8 +344,8 @@ msgstr "Configuración (m-n)"
 msgid "Confirm"
 msgstr "Confirmar"
 
-msgid "Confirm &amp; Finish"
-msgstr "Confirmar &amp; Finalizar"
+msgid "Confirm & Finish"
+msgstr "Confirmar & Finalizar"
 
 msgid "Confirm to shift {{fromCoin}} to {{toCoin}}"
 msgstr "Confirmar el cambio de {{fromCoin}} a {{toCoin}}"
@@ -568,6 +577,9 @@ msgstr "Camino de derivación"
 
 msgid "Details"
 msgstr "Detalles"
+
+msgid "Disable notifications"
+msgstr "Desactivar notificaciones"
 
 msgid "Disabled"
 msgstr "Deshabilitado"
@@ -875,6 +887,9 @@ msgstr "Acepto los Términos y certifico que soy el propio beneficiario de los f
 msgid "I don't like it"
 msgstr "No me gusta"
 
+msgid "I give explicit consent to BitPay to use my email address to send me email notifications about payments (and, if selected, email updates and news about the wallet)."
+msgstr "Doy consentimiento explícito a BitPay para usar mi dirección de correo electrónico para enviarme notificaciones de pagos (y, si está seleccionado, noticias acerca de la billetera)."
+
 msgid "I have read, understood, and agree to the Terms of Use"
 msgstr "He leído, entendido y acepto los Términos de Uso"
 
@@ -910,6 +925,9 @@ msgstr "Si se habilita, aparecerá una lista de las transacciones recientes de l
 
 msgid "If enabled, wallets will also try to spend unconfirmed funds."
 msgstr "Si está habilitado, los monederos intentarán gastar fondos sin confirmar."
+
+msgid "If this device is replaced or this app is deleted, neither you nor BitPay can recover your funds without a backup."
+msgstr "Si pierdes este dispositivo o esta aplicación es eliminada, ni tú ni BitPay podrán recuperar el dinero."
 
 msgid "If you have additional feedback, please let us know by tapping the \"Send feedback\" option in the Settings tab."
 msgstr "Si tienes comentarios adicionales, por favor envíalos pulsando la opción \"Enviar comentarios\" en la pestaña de preferencias."
@@ -1376,6 +1394,12 @@ msgstr "Preparando copia de seguridad..."
 msgid "Priority"
 msgstr "Prioritario"
 
+msgid "Privacy Policy"
+msgstr "Política de privacidad"
+
+msgid "Privacy Policy update"
+msgstr "Actualización de la Política de Privacidad"
+
 msgid "Private Key"
 msgstr "Clave privada"
 
@@ -1517,6 +1541,9 @@ msgstr "Restaurar desde copia de seguridad"
 msgid "Retrieving inputs information..."
 msgstr "Recuperando información de las entradas..."
 
+msgid "Retry"
+msgstr "Reintentar"
+
 msgid "Retry camera"
 msgstr "Reintentar cámara"
 
@@ -1581,7 +1608,7 @@ msgid "Send"
 msgstr "Enviar"
 
 msgid "Send Feedback"
-msgstr "Enviar Comentario"
+msgstr "Enviar Comentarios"
 
 msgid "Send Max amount"
 msgstr "Enviar la Máxima cantidad"
@@ -1724,9 +1751,6 @@ msgstr "Gastar este balance requiere de significativas comisiones"
 msgid "Start"
 msgstr "Comenzar"
 
-msgid "Startup Lock"
-msgstr "Bloqueo inicial"
-
 msgid "Still pending"
 msgstr "Aún pendiente"
 
@@ -1759,9 +1783,6 @@ msgstr "Tocar y mantener para mostrar"
 
 msgid "Terms of Use"
 msgstr "Términos de Uso"
-
-msgid "Terms of use"
-msgstr "Términos de uso"
 
 msgid "Text"
 msgstr "Texto"
@@ -2003,11 +2024,17 @@ msgstr "Ver"
 msgid "View Confirmation Status"
 msgstr "Ver Estado de Confirmación"
 
+msgid "View Privacy Policy"
+msgstr "Ver política de privacidad"
+
 msgid "View Transaction on Insight"
 msgstr "Ver Transacción en Insight"
 
 msgid "View Update"
 msgstr "Ver Actualización"
+
+msgid "View Wallet Terms of Use"
+msgstr "Ver los términos de uso de la billetera"
 
 msgid "View all addresses"
 msgstr "Ver todas las direcciones"
@@ -2035,9 +2062,6 @@ msgstr "ADVERTENCIA: EL CERTIFICADO NO ES DE CONFIANZA"
 
 msgid "Waiting for copayers"
 msgstr "Esperando a los demás copayers"
-
-msgid "Waiting for permissions."
-msgstr "A la espera de permisos."
 
 msgid "Waiting..."
 msgstr "Esperando..."
@@ -2129,6 +2153,9 @@ msgstr "¡Advertencia!"
 msgid "Warning: this transaction has unconfirmed inputs"
 msgstr "Advertencia: esta operación tiene entradas sin confirmar"
 
+msgid "Watch Out!"
+msgstr "¡Cuidado!"
+
 msgid "We are always looking for translation contributions! You can make corrections or help to make this app available in your native language by joining our community on Crowdin."
 msgstr "¡Siempre estamos buscando aportes de traducción! Puedes ayudar a que esta aplicación esté disponible en tu idioma nativo uniéndote a nuestra comunidad en Crowdin."
 
@@ -2150,8 +2177,8 @@ msgstr "Sitio Web"
 msgid "What do you call this wallet?"
 msgstr "¿Como desea llamar a esta billetera?"
 
-msgid "When this wallet was created, it was called &ldquo;{{walletName}}&rdquo;. You can change the name displayed on this device below."
-msgstr "Cuando fue creada esta billetera, se llamaba &ldquo;{{walletName}}&rdquo;. Aquí puede cambiar el nombre que se mostrara en este dispositivo."
+msgid "When this wallet was created, it was called \"{{walletName}}\". You can change the name displayed on this device below."
+msgstr "Cuando fué creada esta billetera, se llamaba \"{{walletName}}\". Abajo puede cambiar el nombre que se mostrará en este dispositivo."
 
 msgid "Where would you like to receive email notifications about payments?"
 msgstr "¿A donde le gustaría recibir notificaciones por email sobre sus transacciones?"
@@ -2183,6 +2210,12 @@ msgstr "Contraseña incorrecta"
 msgid "Yes"
 msgstr "Si"
 
+msgid "Yes, skip"
+msgstr "Si, omitir"
+
+msgid "You can create a backup later from your wallet settings."
+msgstr "Puede crear una copia de seguridad después desde los ajustes de la billetera."
+
 msgid "You can make contributions by signing up on our Crowdin community translation website. We’re looking forward to hearing from you!"
 msgstr "Se pueden hacer contribuciones al registrarse en nuestro proyecto de traducciones en Crowdin. ¡Esperamos tener noticias tuyas!"
 
@@ -2209,9 +2242,6 @@ msgstr "Podría firmar la transacción más tarde en los detalles de la Billeter
 
 msgid "You should not set a fee higher than {{maxFeeRecommended}} satoshis/byte."
 msgstr "No debería elegir una comisión superior a {{maxFeeRecommended}} satoshis/byte."
-
-msgid "You'll receive email notifications about payments sent and received from your wallets."
-msgstr "Recibirás notificaciones por correo electrónico acerca de pagos enviados y recibidos de tus billeteras."
 
 msgid "Your BitPay Card is ready. Add funds to your card to start using it at stores and ATMs worldwide."
 msgstr "Tu Tarjeta BitPay ya esta lista. Agrega fondos para comenzar a utilizarla en negocios y cajeros automáticos de todo el mundo."
