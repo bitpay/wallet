@@ -153,23 +153,7 @@ export class ReceivePage {
   public goToBackup(): void {
     let BackupWarningModal = this.modalCtrl.create(
       CustomModalComponent,
-      {
-        modalClass: 'danger',
-        imgPath: 'assets/img/warning.svg',
-        title: 'Backup Needed',
-        htmlMessage:
-          'Now is a good time to backup your wallet. If this device is lost, it is impossible to access your funds without a backup.',
-        firstButton: {
-          text: 'Backup now',
-          color: 'danger',
-          data: 'true'
-        },
-        secondButton: {
-          text: 'Do it later',
-          color: 'danger',
-          data: ''
-        }
-      },
+      { modal: 'backup-needed' },
       { showBackdrop: true, enableBackdropDismiss: false }
     );
     BackupWarningModal.present({ animate: false });

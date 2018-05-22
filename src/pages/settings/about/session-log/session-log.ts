@@ -154,24 +154,12 @@ export class SessionLogPage {
   private showWarningModal() {
     let sessionLogWarningModal = this.modalCtrl.create(
       CustomModalComponent,
-      {
-        modalClass: 'warning',
-        imgPath: 'assets/img/icon-warning.svg',
-        title: 'Sensitive Data',
-        htmlMessage:
-          '<span>The information you are about to share/export may contain sensitive data such us wallet IDs, addresses, balances, etc.</span></br>' +
-          '<span>Although this is not critical, please be careful and make sure you trust the person or entity you are sharing this information with.</span>',
-        firstButton: {
-          text: 'I understand',
-          color: 'warning',
-          data: ''
-        }
-      },
+      { modal: 'sensitive-info' },
       { showBackdrop: false, enableBackdropDismiss: false }
     );
     sessionLogWarningModal.present();
-    sessionLogWarningModal.onDidDismiss(() => {
-      this.isCordova ? this.sendLogs() : this.copyToClipboard();
+    sessionLogWarningModal.onDidDismiss(response => {
+      if (response) this.isCordova ? this.sendLogs() : this.copyToClipboard();
     });
   }
 }

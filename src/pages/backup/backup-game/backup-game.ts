@@ -254,18 +254,7 @@ export class BackupGamePage {
         this.onGoingProcessProvider.clear();
         let modal = this.modalCtrl.create(
           CustomModalComponent,
-          {
-            modalClass: 'success',
-            imgPath: 'assets/img/onboarding-success.svg',
-            title: 'Your bitcoin wallet is backed up!',
-            htmlMessage:
-              'Be sure to store your recovery phrase in a secure place. If this app is deleted, your money cannot be recovered without it.',
-            firstButton: {
-              text: 'Got it',
-              color: 'success',
-              data: ''
-            }
-          },
+          { modal: 'backup-ready' },
           { showBackdrop: false, enableBackdropDismiss: false }
         );
         modal.present({ animate: false });

@@ -4,9 +4,11 @@ import { Events, ModalController, NavController, NavParams } from 'ionic-angular
 import * as _ from 'lodash';
 import { Logger } from '../../../../providers/logger/logger';
 
+// Components
+import { CustomModalComponent } from '../../../../components/custom-modal/custom-modal';
+
 // Pages
 import { FinishModalPage } from '../../../finish/finish';
-import { FeeWarningPage } from '../../../send/fee-warning/fee-warning';
 import { BitPayCardPage } from '../bitpay-card';
 
 // Provider
@@ -396,7 +398,11 @@ export class BitPayCardTopUpPage {
     let per = fee / (amount + fee) * 100;
 
     if (per > FEE_TOO_HIGH_LIMIT_PER) {
-      let feeWarningModal = this.modalCtrl.create(FeeWarningPage, {}, { showBackdrop: false, enableBackdropDismiss: false });
+      let feeWarningModal = this.modalCtrl.create(
+        CustomModalComponent,
+        { modal: 'fee-warning' },
+        { showBackdrop: false, enableBackdropDismiss: false }
+      );
       feeWarningModal.present();
     }
   }

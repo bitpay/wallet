@@ -5,12 +5,18 @@
   </div>
   <div class="modal-content">
     <div class="modal-heading" translate>{{title}}</div>
-    <div class="modal-message" [innerHtml]="htmlMessage" translate></div>
-    <button *ngIf="firstButton" ion-button clear color="{{firstButton?.color}}" class="button-standard" (click)="close(firstButton.data)">
-      {{ firstButton?.text | translate }}
-    </button>
-    <button *ngIf="secondButton" ion-button clear color="{{secondButton?.color}}" (click)="close(secondButton.data)" small>
-      {{ secondButton?.text | translate }}
-    </button>
+    <div class="modal-message" translate>{{message}}</div>
+    <ion-row justify-content-center>
+      <ion-col *ngIf="backButton.text">
+        <button ion-button clear color="{{backButton?.color}}" (click)="close(backButton.data)">
+          {{ backButton?.text | translate }}
+        </button>
+      </ion-col>
+      <ion-col *ngIf="confirmButton.text">
+        <button ion-button clear color="{{confirmButton?.color}}" (click)="close(confirmButton.data)">
+          {{ confirmButton?.text | translate }}
+        </button>
+      </ion-col>
+    </ion-row>
   </div>
 </ion-content>

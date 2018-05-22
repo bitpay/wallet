@@ -34,26 +34,17 @@ export class BackupWarningPage {
   public openWarningModal(): void {
     let BackupWarningModal = this.modalCtrl.create(
       CustomModalComponent,
-      {
-        modalClass: 'warning',
-        imgPath: 'assets/img/no-screenshot.svg',
-        title: 'Screenshots are not secure',
-        htmlMessage:
-          'If you take a screenshot, your backup may be viewed by other apps. You can make a safe backup with physical paper and a pen.',
-        firstButton: {
-          text: 'I understand',
-          color: 'warning',
-          data: 'true'
-        }
-      },
+      { modal: 'backup-warning' },
       { showBackdrop: false, enableBackdropDismiss: false }
     );
     BackupWarningModal.present({ animate: false });
-    BackupWarningModal.onDidDismiss(() => {
-      this.navCtrl.push(BackupGamePage, {
-        walletId: this.walletId,
-        fromOnboarding: this.fromOnboarding
-      });
+    BackupWarningModal.onDidDismiss(response => {
+      if (response) {
+        this.navCtrl.push(BackupGamePage, {
+          walletId: this.walletId,
+          fromOnboarding: this.fromOnboarding
+        });
+      }
     });
   }
 }
