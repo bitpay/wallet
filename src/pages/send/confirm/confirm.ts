@@ -631,6 +631,12 @@ export class ConfirmPage {
       txp.excludeUnconfirmedUtxos = !tx.spendUnconfirmed;
       txp.dryRun = dryRun;
 
+      if (tx.recipientType == 'wallet') {
+        txp.customData = {
+          'toWalletName': tx.name ? tx.name : null
+        };
+      }
+
       this.walletProvider
         .createTx(wallet, txp)
         .then((ctxp: any) => {
