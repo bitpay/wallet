@@ -49,7 +49,7 @@ npm run start
 
 Visit [`localhost:8100`](http://localhost:8100/) to view the app.
 
-## Unit Tests (Karma and Jasmine)
+## Unit & E2E Tests (Karma & Protractor)
 
 To run the tests, run:
 
@@ -65,7 +65,7 @@ It's recommended that all final testing be done on a real device – both to ass
 
 Follow the [Cordova Android Platform Guide](https://cordova.apache.org/docs/en/latest/guide/platforms/android/) to set up your development environment.
 
-When your developement enviroment is ready, run the `start:android` npm package script.
+When your developement enviroment is ready, run the `start:android` package script.
 
 ```sh
 npm run apply:copay
@@ -77,7 +77,7 @@ npm run start:android
 
 Follow the [Cordova iOS Platform Guide](https://cordova.apache.org/docs/en/latest/guide/platforms/ios/) to set up your development environment.
 
-When your developement enviroment is ready, run the `start:ios` npm package script.
+When your developement enviroment is ready, run the `start:ios` package script.
 
 ```sh
 npm run apply:copay
@@ -89,7 +89,7 @@ npm run start:ios
 
 The desktop version of Copay currently uses NW.js, an app runtime based on Chromium. To get started, first install NW.js on your system from [the NW.js website](https://nwjs.io/).
 
-When NW.js is installed, run the `start:desktop` npm package script.
+When NW.js is installed, run the `start:desktop` package script.
 
 ```sh
 npm run apply:copay
@@ -175,7 +175,7 @@ Depending on the key `derivationStrategy`, addresses are derived using
 | <1.2          | All                       | BIP45               | P2SH         |
 | ≥1.2          | Non-multisig              | BIP44               | P2PKH        |
 | ≥1.2          | Multisig                  | BIP44               | P2SH         |
-| ≥1.5          | Multisig Hardware wallets | BIP44 (root m/48’)  | P2SH         |
+| ≥1.5          | Multisig Hardware wallets | BIP44 (root m/48’) | P2SH         |
 
 Using a tool like [Bitcore PlayGround](http://bitcore.io/playground) all wallet addresses can be generated. (TIP: Use the `Address` section for P2PKH address type wallets and `Multisig Address` for P2SH address type wallets). For multisig addresses, the required number of signatures (key `m` on the export) is also needed to recreate the addresses.
 
