@@ -85,7 +85,7 @@ export class SessionLogPage {
     textarea.value = this.prepareLogs();
     textarea.select();
     this.dom.execCommand('copy');
-    let message = this.translate.instant('Copied to clipboard');
+    let message = this.translate.instant('Copied to Clipboard');
     let showSuccess = this.toastCtrl.create({
       message,
       duration: 1000,
@@ -108,8 +108,8 @@ export class SessionLogPage {
 
   public showOptionsMenu(): void {
 
-    let copyText = this.translate.instant('Copy to clipboard');
-    let emailText = this.translate.instant('Send by email');
+    let copyText = this.translate.instant('Copy to Clipboard');
+    let emailText = this.translate.instant('Send by Email');
     let button = [];
 
     if (this.isCordova) {

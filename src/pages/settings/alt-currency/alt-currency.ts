@@ -1,15 +1,14 @@
 import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
-import { Logger } from '../../../providers/logger/logger';
+import * as _ from 'lodash';
 
 // Providers
 import { ConfigProvider } from '../../../providers/config/config';
+import { Logger } from '../../../providers/logger/logger';
 import { PersistenceProvider } from '../../../providers/persistence/persistence';
 import { ProfileProvider } from '../../../providers/profile/profile';
 import { RateProvider } from '../../../providers/rate/rate';
 import { WalletProvider } from '../../../providers/wallet/wallet';
-
-import * as _ from 'lodash';
 
 @Component({
   selector: 'page-alt-currency',

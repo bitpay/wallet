@@ -1,6 +1,6 @@
 <ion-header>
   <ion-navbar>
-    <ion-title>{{'Payment request' | translate}}</ion-title>
+    <ion-title>{{'Payment Request' | translate}}</ion-title>
     <ion-buttons start>
       <button (click)="close()" ion-button>
         {{'Close' | translate}}
@@ -34,7 +34,7 @@
     </ion-item>
 
     <ion-item>
-      <div translate>Certified by</div>
+      <div translate>Certified By</div>
       <div class="certified" text-wrap *ngIf="tx.paypro.caTrusted">
         <ion-icon *ngIf="tx.paypro.verified" color="success" name="lock"></ion-icon>
         <ion-icon *ngIf="!tx.paypro.verified" color="warning" name="unlock"></ion-icon>

@@ -8,13 +8,13 @@
 
   <ion-list>
     <button ion-item *ngIf="csvReady && !isCordova" (click)="downloadCSV()">
-      <span translate>Export to file</span>
+      <span translate>Export to File</span>
     </button>
 
     <ion-item *ngIf="!csvReady && !isCordova">
-      <span translate>Export to file</span>
+      <span translate>Export to File</span>
       <ion-note *ngIf="!err" item-end>
-        {{'preparing...' | translate}}
+        {{'Preparing...' | translate}}
       </ion-note>
       <ion-note *ngIf="err" item-end>
         {{err}}

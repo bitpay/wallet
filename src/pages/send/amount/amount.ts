@@ -109,8 +109,7 @@ export class AmountPage {
     this.reNr = /^[1234567890\.]$/;
     this.reOp = /^[\*\+\-\/]$/;
     this.nextView = this.getNextView();
-    this.itemSelectorLabel = this.translate.instant('Send Max amount');
-
+    this.itemSelectorLabel = this.translate.instant('Send Max Amount');
 
     this.unitToSatoshi = this.config.wallet.settings.unitToSatoshi;
     this.satToUnit = 1 / this.unitToSatoshi;

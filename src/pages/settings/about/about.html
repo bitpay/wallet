@@ -6,7 +6,7 @@
 
 <ion-content>
   <ion-list>
-    <ion-item-divider>{{'Release information'| translate}}</ion-item-divider>
+    <ion-item-divider>{{'Release Information'| translate}}</ion-item-divider>
     <ion-item>
       <ion-icon class="custom-icon" name="ios-download-outline" item-start></ion-icon>
       {{'Version' | translate}}
@@ -16,7 +16,7 @@
     </ion-item>
     <ion-item class="commit-hash" (click)="openExternalLink()">
       <ion-icon class="custom-icon" name="logo-github" item-start></ion-icon>
-      Commit hash
+      Commit Hash
       <ion-note item-end>
         #{{commitHash}}
       </ion-note>
@@ -32,8 +32,7 @@
     </button>
     <button ion-item (click)="openSessionLog()">
       <ion-icon class="custom-icon" name="ios-copy-outline" item-start></ion-icon>
-      {{ 'Session log' | translate }}
+      {{ 'Session Log' | translate }}
     </button>
   </ion-list>
-
 </ion-content>

@@ -2,16 +2,14 @@
   <ion-navbar>
     <ion-title>{{'Notifications' | translate}}</ion-title>
   </ion-navbar>
-
 </ion-header>
-
 
 <ion-content>
   <ion-item-divider></ion-item-divider>
   <ion-list>
     <div *ngIf="usePushNotifications">
       <ion-item>
-        <ion-label>{{ 'Enable push notifications' | translate }}</ion-label>
+        <ion-label>{{ 'Enable Push Notifications' | translate }}</ion-label>
         <ion-toggle [(ngModel)]="pushNotifications" (ionChange)="pushNotificationsChange()"></ion-toggle>
       </ion-item>
     </div>
@@ -24,14 +22,13 @@
 
     <div *ngIf="usePushNotifications && pushNotifications">
       <ion-item>
-        <ion-label>{{ 'Notify me when transactions are confirmed' | translate }}</ion-label>
+        <ion-label>{{ 'Notify Me When Transactions are Confirmed' | translate }}</ion-label>
         <ion-toggle [(ngModel)]="confirmedTxsNotifications" (ionChange)="confirmedTxsNotificationsChange()"></ion-toggle>
       </ion-item>
     </div>
 
-
     <ion-item>
-      <ion-label>{{ 'Enable email notifications' | translate }}</ion-label>
+      <ion-label>{{ 'Enable Email Notifications' | translate }}</ion-label>
       <ion-toggle [(ngModel)]="emailNotifications" (ionChange)="emailNotificationsChange()"></ion-toggle>
     </ion-item>
 

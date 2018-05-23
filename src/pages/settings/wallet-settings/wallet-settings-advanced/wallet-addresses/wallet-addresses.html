@@ -35,7 +35,7 @@
 
   <ion-list *ngIf="!loading">
     <ion-item-divider>
-      {{'Unused addresses' | translate}}
+      {{'Unused Addresses' | translate}}
       <button ion-button clear item-end class="add-icon" (click)="newAddress()">
         <ion-icon name="ios-add"></ion-icon>
       </button>
@@ -43,7 +43,7 @@
 
     <div *ngIf="latestUnused && latestUnused[0]">
       <div *ngIf="gapReached">
-        <h5 translate>Unused addresses limit</h5>
+        <h5 translate>Unused Addresses Limit</h5>
         <p>
           <span translate>The maximum number of consecutive unused addresses (20) has been reached. When one of your unused addresses receives a payment, a new address will be generated and shown in your Receive tab.</span>
           <a (click)="readMore()" *ngIf="!showMore" translate>Read more</a>
@@ -61,7 +61,7 @@
     </div>
 
     <div *ngIf="latestWithBalance && latestWithBalance[0]">
-      <ion-item-divider>{{'Addresses with balance' | translate}}</ion-item-divider>
+      <ion-item-divider>{{'Addresses With Balance' | translate}}</ion-item-divider>
 
       <ion-item *ngFor="let w of latestWithBalance" copy-to-clipboard="{{w.address}}">
         <h3>{{w.address}}</h3>
@@ -73,12 +73,12 @@
       <ion-item-divider>{{'Wallet Inputs' | translate}}</ion-item-divider>
 
       <ion-item>
-        <span translate>Total wallet inputs</span>
+        <span translate>Total Wallet Inputs</span>
         <p class="info">{{allUtxosNb}} [{{allUtxosSum}}]</p>
       </ion-item>
 
       <ion-item>
-        <span translate> Low amount inputs </span>
+        <span translate> Low Amount Inputs </span>
         <p class="info">{{lowUtxosNb}} [{{ lowUtxosSum }}]</p>
       </ion-item>
 

@@ -36,7 +36,7 @@
       <div *ngIf="loading" class="text-address">...</div>
       <div class="btn-container">
         <button ion-button clear [hidden]="!address" (click)="requestSpecificAmount()">
-          <span translate>Request Specific amount</span>
+          <span translate>Request specific amount</span>
           <ion-icon name="arrow-forward"></ion-icon>
         </button>
       </div>
@@ -67,7 +67,7 @@
 
 <ion-footer>
   <ion-item-divider class="selector-label" *ngIf="wallet">
-    {{'Wallet selected' | translate}}
+    {{'Wallet Selected' | translate}}
   </ion-item-divider>
   <button ion-item detail-none *ngIf="wallets[0]" (click)="showWallets()">
     <ion-icon class="item-img" item-start>

@@ -53,7 +53,7 @@
           <div>{{updateStatusError}}.</div>
         </div>
         <div class="balance-error" *ngIf="walletNotRegistered" (tap)="recreate()">
-          <span class="title">Tap to recreate</span>
+          <span class="title">Tap to Recreate</span>
           <div translate>This wallet is not registered at the given Bitcore Wallet Service (BWS). You can recreate it from the local information.</div>
         </div>
       </expandable-header-primary>
@@ -202,7 +202,7 @@
               <ion-note item-end text-end>
                 <div class="amount">
                   <span [ngClass]="{'received': tx.action == 'received'}" *ngIf="tx.action != 'invalid'">{{tx.amount | satToUnit: wallet.coin}}</span>
-                  <span class="double-spend" *ngIf="tx.action == 'invalid'" translate>(possible double spend)</span>
+                  <span class="double-spend" *ngIf="tx.action == 'invalid'" translate>(Possible double spend)</span>
                 </div>
                 <div class="date">
                   <span *ngIf="tx.time && createdWithinPastDay(tx.time * 1000)">{{tx.time * 1000 | amTimeAgo}}</span>

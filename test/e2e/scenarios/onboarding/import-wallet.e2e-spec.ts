@@ -23,16 +23,16 @@ describe('Onboarding: Import Wallet', () => {
   it('has two views, each with advanced options', async () => {
     await expectPage('import-wallet');
     await element(
-      by.cssContainingText('ion-label', 'advanced options')
+      by.cssContainingText('ion-label', 'Advanced Options')
     ).click();
     await takeScreenshot('import-wallet-advanced');
     await element(
-      by.cssContainingText('ion-label', 'advanced options')
+      by.cssContainingText('ion-label', 'Advanced Options')
     ).click();
     await element(by.css('ion-segment-button[value=file]')).click();
     await takeScreenshot('import-wallet-file');
     await element(
-      by.cssContainingText('ion-label', 'advanced options')
+      by.cssContainingText('ion-label', 'Advanced Options')
     ).click();
     await takeScreenshot('import-wallet-file-advanced');
   });
