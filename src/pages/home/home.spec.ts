@@ -25,7 +25,7 @@ describe('HomePage', () => {
         instance = testEnv.instance;
         testBed = testEnv.testBed;
         instance.showCard = {
-          setShowRateCard: () => {}
+          setShowRateCard: () => { }
         };
         fixture.detectChanges();
       })
@@ -64,9 +64,11 @@ describe('HomePage', () => {
       it('should update txps and set wallets on platform resume', () => {
         instance.plt.resume = new Subject();
         instance.ionViewDidLoad();
+        const getNotificationsSpy = spyOn(instance, 'getNotifications');
         const updateTxpsSpy = spyOn(instance, 'updateTxps');
         const setWalletsSpy = spyOn(instance, 'setWallets');
         instance.plt.resume.next();
+        expect(getNotificationsSpy).toHaveBeenCalled();
         expect(updateTxpsSpy).toHaveBeenCalled();
         expect(setWalletsSpy).toHaveBeenCalled();
       });
