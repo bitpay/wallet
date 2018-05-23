@@ -11,6 +11,7 @@ import * as _ from 'lodash';
 // providers
 import { AddressBookProvider } from '../../providers/address-book/address-book';
 import { BwcErrorProvider } from '../../providers/bwc-error/bwc-error';
+import { ExternalLinkProvider } from '../../providers/external-link/external-link';
 import { Logger } from '../../providers/logger/logger';
 import { OnGoingProcessProvider } from '../../providers/on-going-process/on-going-process';
 import { ProfileProvider } from '../../providers/profile/profile';
@@ -61,7 +62,8 @@ export class WalletDetailsPage {
     private timeProvider: TimeProvider,
     private translate: TranslateService,
     private modalCtrl: ModalController,
-    private onGoingProcessProvider: OnGoingProcessProvider
+    private onGoingProcessProvider: OnGoingProcessProvider,
+    private externalLinkProvider: ExternalLinkProvider
   ) {
     let clearCache = this.navParams.data.clearCache;
     this.wallet = this.profileProvider.getWallet(this.navParams.data.walletId);
@@ -340,4 +342,14 @@ export class WalletDetailsPage {
       });
     });
   }
+
+  public openExternalLink(url: string): void {
+    let optIn = true;
+    let title = null;
+    let message = this.translate.instant('Help and support information is available at the website.');
+    let okText = this.translate.instant('Open');
+    let cancelText = this.translate.instant('Go Back');
+    this.externalLinkProvider.open(url, optIn, title, message, okText, cancelText);
+  }
+
 }
