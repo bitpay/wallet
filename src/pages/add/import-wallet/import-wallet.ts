@@ -40,7 +40,6 @@ export class ImportWalletPage {
   public isSafari: boolean;
   public isIOS: boolean;
   public file: File;
-  public testnetEnabled: boolean;
   public code: any;
   
   constructor(
@@ -84,7 +83,7 @@ export class ImportWalletPage {
       file: [null],
       filePassword: [null],
       derivationPath: [this.derivationPathByDefault, Validators.required],
-      testnet: [false],
+      testnetEnabled: [false],
       bwsURL: [this.defaults.bws.url],
       coin: [null, Validators.required]
     });
@@ -159,14 +158,15 @@ export class ImportWalletPage {
       this.popupProvider.ionicAlert(title, subtitle);
     }
 
-    this.testnetEnabled = info.network == 'testnet' ? true : false;
+    let isTestnet = info.network == 'testnet' ? true : false;
+    this.importForm.controls['testnetEnabled'].setValue(isTestnet); 
     this.importForm.controls['derivationPath'].setValue(info.derivationPath);
     this.importForm.controls['words'].setValue(info.data);
     this.importForm.controls['coin'].setValue(info.coin);
   }
 
   public setDerivationPath(): void {
-    let path = this.testnetEnabled ? this.derivationPathForTestnet : this.derivationPathByDefault;
+    let path = this.importForm.value.testnetEnabled ? this.derivationPathForTestnet : this.derivationPathByDefault;
     this.importForm.controls['derivationPath'].setValue(path);
   }
 

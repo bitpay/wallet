@@ -80,8 +80,8 @@ then
 #  export CHILD_PLIST=child.plist
   export APP_PATH=${STAGING_DIR}/${APP_NAME}.app
 
-  codesign --deep -s "${IDENTITY}"  $APP_PATH"/Contents/Versions/66.0.3359.139/nwjs Helper.app" && echo "Sign 1"
-  codesign --deep -s "${IDENTITY}"  $APP_PATH"/Contents/Versions/66.0.3359.139/nwjs Framework.framework/Resources/app_mode_loader.app" && echo "Sign 2"
+  codesign --deep -s "${IDENTITY}"  $APP_PATH"/Contents/Versions/57.0.2987.133/nwjs Helper.app" && echo "Sign 1"
+  codesign --deep -s "${IDENTITY}"  $APP_PATH"/Contents/Versions/57.0.2987.133/nwjs Framework.framework/Resources/app_mode_loader.app" && echo "Sign 2"
   codesign --deep -s "${IDENTITY}"  $APP_PATH && echo "Sign 3"
   echo "Signing Done"
 

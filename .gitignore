@@ -10,8 +10,7 @@ log.txt
 *.sublime-workspace
 npm-debug.log*
 
-# Ignore package-lock for now
-package-lock.json
+yarn.lock
 
 # Firebase
 /GoogleService-Info.plist
