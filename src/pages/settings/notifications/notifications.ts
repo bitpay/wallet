@@ -113,8 +113,8 @@ export class NotificationsPage {
   public openPrivacyPolicy() {
     let url = 'https://bitpay.com/about/privacy';
     let optIn = true;
-    let message = null;
-    let title = this.translate.instant('View Privacy Policy');
+    let title = null;
+    let message = this.translate.instant('View Privacy Policy');
     let okText = this.translate.instant('Open');
     let cancelText = this.translate.instant('Go Back');
     this.externalLinkProvider.open(url, optIn, title, message, okText, cancelText);
