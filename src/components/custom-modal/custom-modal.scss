@@ -44,6 +44,9 @@ custom-modal {
       }
     }
   }
+  .height-content {
+    height: 100%;
+  }
   .background-color-warning {
     background-color: color($colors, warning);
   }
