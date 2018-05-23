@@ -41,7 +41,7 @@ import { GlideraPage } from '../pages/integrations/glidera/glidera';
 import { DisclaimerPage } from '../pages/onboarding/disclaimer/disclaimer';
 import { OnboardingPage } from '../pages/onboarding/onboarding';
 import { PaperWalletPage } from '../pages/paper-wallet/paper-wallet';
-import { PinModalPage } from '../pages/pin/pin';
+import { PinModalPage } from '../pages/pin/pin-modal/pin-modal';
 import { AmountPage } from '../pages/send/amount/amount';
 import { ConfirmPage } from '../pages/send/confirm/confirm';
 import { AddressbookAddPage } from '../pages/settings/addressbook/add/add';
@@ -139,13 +139,13 @@ export class CopayApp {
   private onAppLoad(readySource) {
     this.logger.info(
       'Platform ready (' +
-      readySource +
-      '): ' +
-      this.appProvider.info.nameCase +
-      ' - v' +
-      this.appProvider.info.version +
-      ' #' +
-      this.appProvider.info.commitHash
+        readySource +
+        '): ' +
+        this.appProvider.info.nameCase +
+        ' - v' +
+        this.appProvider.info.version +
+        ' #' +
+        this.appProvider.info.commitHash
     );
 
     if (this.platform.is('cordova')) {
@@ -228,10 +228,14 @@ export class CopayApp {
 
   private openPINModal(action): void {
     this.isModalOpen = true;
-    this.events.publish('showPinModalEvent', action);
-    this.events.subscribe('finishPinModalEvent', () => {
+    const modal = this.modalCtrl.create(
+      PinModalPage,
+      { action },
+      { cssClass: 'fullscreen-modal' }
+    );
+    modal.present({ animate: false });
+    modal.onDidDismiss(() => {
       this.isModalOpen = false;
-      this.events.unsubscribe('finishPinModalEvent');
     });
   }
 

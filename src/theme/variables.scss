@@ -3,14 +3,15 @@
 
 // Font path is used to include ionicons,
 // roboto, and noto sans fonts
-$font-path: '../assets/fonts';
+$font-path: "../assets/fonts";
+$font-family-base: "Roboto";
 
 // The app direction is used to include
 // rtl styles in your app. For more info, please see:
 // http://ionicframework.com/docs/theming/rtl-support/
 $app-direction: ltr;
 
-@import 'ionic.globals';
+@import "ionic.globals";
 
 // Shared Variables
 // --------------------------------------------------
@@ -20,7 +21,8 @@ $app-direction: ltr;
 // http://ionicframework.com/docs/theming/overriding-ionic-variables/
 
 // Override - Homogenized ionic component styles
-@import 'overrides';
+@import "overrides";
+@import "modals";
 
 // Colors
 $colors: (
@@ -62,7 +64,7 @@ $toolbar-md-title-text-color: color($colors, light);
 
 // Onboarding colors
 $onboarding-gradient-top-color: $toolbar-background;
-$onboarding-gradient-bottom-color: $color-secondary;
+$onboarding-gradient-bottom-color: $color-secondary-dark;
 $onboarding-background-image: linear-gradient(
   to bottom,
   $onboarding-gradient-top-color 0%,
@@ -133,20 +135,20 @@ $button-md-text-transform: none;
 // so that the above variables are used and Ionic's
 // default are overridden.
 
-@import 'ionic.theme.default';
+@import "ionic.theme.default";
 
 // Ionicons
 // --------------------------------------------------
 // The premium icon font for Ionic. For more info, please see:
 // http://ionicframework.com/docs/ionicons/
 
-@import 'ionic.ionicons';
+@import "ionic.ionicons";
 
 // Fonts
 // --------------------------------------------------
 
-@import 'roboto';
-@import 'noto-sans';
+@import "roboto";
+@import "noto-sans";
 
 /* Ionic Overrides and Workarounds */
 // Please include a description of the problem solved by the workaround.

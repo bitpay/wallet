@@ -15,6 +15,7 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
 import { Toast } from '@ionic-native/toast';
 import { TouchID } from '@ionic-native/touch-id';
+import { Vibration } from '@ionic-native/vibration';
 
 /* Pipes */
 import { FiatToUnitPipe } from '../pipes/fiatToUnit';
@@ -116,6 +117,7 @@ import { WalletProvider } from '../providers/wallet/wallet';
     SocialSharing,
     Toast,
     TouchID,
+    Vibration,
     TimeProvider,
     TouchIdProvider,
     TxConfirmNotificationProvider,

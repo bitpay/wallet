@@ -1,0 +1,22 @@
+pin-dots {
+  display: flex;
+  justify-content: space-between;
+  max-width: 145px;
+  margin: auto;
+  width: 50%;
+  padding-top: 33px;
+  .circle {
+    $circle-diameter: 18px;
+    $transition-duration: 200ms;
+    border-radius: 50%;
+    transition: background-color $transition-duration ease,
+      border $transition-duration ease;
+    border: 1px solid color($colors, light-grey);
+    height: $circle-diameter;
+    width: $circle-diameter;
+  }
+  .filled {
+    background-color: $color-secondary;
+    border: 1px solid $color-secondary;
+  }
+}
