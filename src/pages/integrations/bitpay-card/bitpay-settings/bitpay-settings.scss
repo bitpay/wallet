@@ -1,10 +1,8 @@
 page-bitpay-settings {
-  .no-cards {
-    height: 90%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
+  .unlink-card {
+    color: color($colors, primary);
+  }
+  .unlink-account {
+    color: color($colors, danger);
   }
 }

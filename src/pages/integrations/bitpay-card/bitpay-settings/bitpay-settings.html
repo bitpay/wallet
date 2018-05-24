@@ -6,8 +6,8 @@
 <ion-content>
 
   <ion-list>
+    <ion-item-divider></ion-item-divider>
     <div *ngIf="!bitpayCard">
-      <ion-item-divider></ion-item-divider>
       <ion-item>
         <ion-label>{{'Show in Home' | translate}}</ion-label>
         <ion-toggle [(ngModel)]="showAtHome" (ionChange)="integrationChange()"></ion-toggle>
@@ -15,22 +15,36 @@
     </div>
 
     <div *ngIf="bitpayCard">
-      <ion-item-divider>
-        <span>BitPay Visa&reg; Cards</span>
-      </ion-item-divider>
       <ion-item>
-        <div>
-          <div>
-            xxxx-xxxx-xxxx-{{bitpayCard.lastFourDigits}}
-          </div>
-          <ion-note>
-            {{bitpayCard.email}}
-          </ion-note>
-        </div>
-        <ion-icon item-end (click)="unlinkCard(bitpayCard)">
-          <img src="assets/img/icon-unlink.svg" />
+        <ion-icon item-start>
+          <img width="60" src="assets/img/bitpay-card/bitpay-card-visa.svg" />
         </ion-icon>
+        <h2>BitPay Visa&reg; Card</h2>
+        <p>{{bitpayCard.email}}</p>
       </ion-item>
+      <ion-item>
+        Last four digits
+        <ion-note item-end>
+          {{bitpayCard.lastFourDigits}}
+        </ion-note>
+      </ion-item>
+      
+      <ion-item-divider></ion-item-divider>
+
+      <a class="unlink-card" ion-item no-lines clear text-center (click)="unlinkCard(bitpayCard)">
+        Unlink card
+      </a>
+      <ion-item-divider>
+        Unlink the card will remove it from this device.
+      </ion-item-divider>
+      <ion-item-divider></ion-item-divider>
+      <a class="unlink-account" ion-item no-lines clear text-center (click)="unlinkAccount(bitpayCard)">
+        Unlink account
+      </a>
+      <ion-item-divider>
+        Unlink the account will remove it and all associated cards from this device.
+      </ion-item-divider>
+
     </div>
   </ion-list>
 </ion-content>
