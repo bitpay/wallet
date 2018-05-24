@@ -25,7 +25,6 @@ export class CollectEmailPage {
   private walletId: string;
   private emailForm: FormGroup;
   private URL: string;
-  private accept: boolean;
 
   constructor(
     private navCtrl: NavController,
@@ -68,7 +67,7 @@ export class CollectEmailPage {
     };
     this.emailProvider.updateEmail(opts);
 
-    if (this.accept) this.collectEmail();
+    if (this.emailForm.value.accept) this.collectEmail();
     this.goToBackupRequestPage();
   }
 
