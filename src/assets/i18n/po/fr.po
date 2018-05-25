@@ -12,7 +12,7 @@ msgstr ""
 "Last-Translator: cmgustavo83\n"
 "Language-Team: French\n"
 "Language: fr\n"
-"PO-Revision-Date: 2018-05-22 09:25-0400\n"
+"PO-Revision-Date: 2018-05-25 14:15-0400\n"
 
 msgid "(Trusted)"
 msgstr "(Fiable)"
@@ -645,7 +645,7 @@ msgid "Enter Two Factor for your BitPay account"
 msgstr "Saisissez le code 2FA pour votre compte BitPay"
 
 msgid "Enter a new encrypt password"
-msgstr "Saisissez un nouveau code chiffrement"
+msgstr "Saisissez un nouveau code de chiffrement"
 
 msgid "Enter a password to encrypt your wallet"
 msgstr "Entrez un mot de passe pour chiffrer votre portefeuille"
@@ -654,7 +654,7 @@ msgid "Enter custom fee in sat/byte"
 msgstr "Saisissez des frais personnalisés en sat/byte"
 
 msgid "Enter encrypt password"
-msgstr "Saisissez le code chiffrement"
+msgstr "Saisissez le code de chiffrement"
 
 msgid "Enter wallet invitation"
 msgstr "Saisissez l'invitation du portefeuille"
