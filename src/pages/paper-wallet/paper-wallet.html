@@ -11,8 +11,10 @@
   <div *ngIf="!noMatchingWallet">
     <h4 class="title">
       <span translate>Funds found</span>:
-      <span *ngIf="balanceSat">{{balanceSat | satToUnit: wallet.coin}}</span>
-      <span *ngIf="!balanceSat">...</span>
+      <span *ngFor="let b of balances">
+        {{b.balance | satToUnit: b.coin}}
+      </span>
+      <span *ngIf="balances.length == 0">...</span>
     </h4>
     <ion-item-divider>{{'Funds will be transferred to' | translate}}</ion-item-divider>
     <button ion-item *ngIf="wallet" detail-none (click)="showWallets()">
@@ -35,9 +37,9 @@
   </div>
 </ion-content>
 <ion-footer>
-  <page-slide-to-accept #slideButton *ngIf="isCordova" [disabled]="sending || balanceSat <= 0 || noMatchingWallet" buttonText="{{'Sweep' | translate}}" (slideDone)="sweepWallet()"></page-slide-to-accept>
+  <page-slide-to-accept #slideButton *ngIf="isCordova" [disabled]="sending || balances.length == 0 || noMatchingWallet" buttonText="{{'Sweep' | translate}}" (slideDone)="sweepWallet()"></page-slide-to-accept>
   <ion-toolbar *ngIf="!isCordova">
-    <button ion-button block class="button-footer" (click)="sweepWallet()" [disabled]="sending || balanceSat <= 0 || noMatchingWallet">
+    <button ion-button block class="button-footer" (click)="sweepWallet()" [disabled]="sending || balances.length == 0 || noMatchingWallet">
       {{'Sweep' | translate}}
     </button>
   </ion-toolbar>
