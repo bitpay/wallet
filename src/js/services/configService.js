@@ -25,7 +25,7 @@ angular.module('copayApp.services').factory('configService', function(storageSer
         url: 'https://copay.io/#download'
       },
       trcpay: {
-        url: 'https://trcpay.terracoin.io/#download'
+        url: 'https://terracoin.io/trcpay/#downloads'
       },
     },
 
@@ -41,8 +41,8 @@ angular.module('copayApp.services').factory('configService', function(storageSer
         wp: ''
       },
       trcpay: {
-        ios: 'http://itunes.apple.com/WebObjects/MZStore.woa/wa/viewContentsUserReviews?id=951330296&pageNumber=0&sortOrdering=2&type=Purple+Software&mt=8',
-        android: 'https://play.google.com/store/apps/details?id=com.bitpay.copay',
+        ios: 'http://itunes.apple.com/WebObjects/MZStore.woa/wa/viewContentsUserReviews?id=000000000&pageNumber=0&sortOrdering=2&type=Purple+Software&mt=8',
+        android: 'https://play.google.com/store/apps/details?id=io.terracoin.trcpay',
         wp: ''
       }
     },
