@@ -3,7 +3,7 @@
 
 #define MyAppName "*USERVISIBLENAME*"
 #define MyAppVersion "*VERSION*"
-#define MyAppPublisher "BitPay"
+#define MyAppPublisher "Terracoin"
 #define MyAppURL "*URL*"
 #define MyAppExeName "*USERVISIBLENAME*.exe"
 #define AppId "*WINDOWSAPPID*"
@@ -46,10 +46,10 @@ Name: "{commondesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; IconFil
 Filename: "{app}\{#MyAppExeName}"; Description: "{cm:LaunchProgram,{#StringChange(MyAppName, '&', '&&')}}"; Flags: nowait postinstall skipifsilent
 
 [Registry]
-Root: HKCR; Subkey: "bitcoin"; ValueType: "string"; ValueData: "URL:Bitcoin Custom Protocol"; Flags: uninsdeletekey
-Root: HKCR; Subkey: "bitcoin"; ValueType: "string"; ValueName: "URL Protocol"; ValueData: ""
-Root: HKCR; Subkey: "bitcoin\DefaultIcon"; ValueType: "string"; ValueData: "{app}\{#MyAppExeName},0"
-Root: HKCR; Subkey: "bitcoin\shell\open\command"; ValueType: "string"; ValueData: """{app}\{#MyAppExeName}"" ""%1"""
+Root: HKCR; Subkey: "terracoin"; ValueType: "string"; ValueData: "URL:Terracoin Custom Protocol"; Flags: uninsdeletekey
+Root: HKCR; Subkey: "terracoin"; ValueType: "string"; ValueName: "URL Protocol"; ValueData: ""
+Root: HKCR; Subkey: "terracoin\DefaultIcon"; ValueType: "string"; ValueData: "{app}\{#MyAppExeName},0"
+Root: HKCR; Subkey: "terracoin\shell\open\command"; ValueType: "string"; ValueData: """{app}\{#MyAppExeName}"" ""%1"""
 
 Root: HKCR; Subkey: "*APPURI*"; ValueType: "string"; ValueData: "URL:*USERVISIBLENAME* Custom Protocol"; Flags: uninsdeletekey
 Root: HKCR; Subkey: "*APPURI*"; ValueType: "string"; ValueName: "URL Protocol"; ValueData: ""

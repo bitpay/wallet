@@ -18,7 +18,7 @@
   "url": "https://terracoin.io/trcpay",
   "appDescription": "TRCpay Terracoin Wallet",
   "winAppName": "TRCpayWallet",
-  "WindowsStoreIdentityName": "18C7659D.Copay-SecureBitcoinWallet",
+  "WindowsStoreIdentityName": "18C7659D.TRCpay-SecureTerracoinWallet",
   "WindowsStoreDisplayName": "TRCpay - Secure Terracoin Wallet",
   "windowsAppId": "804636ee-b017-4cad-8719-e58ac97ffa5c",
   "pushSenderId": "1036948132229",
