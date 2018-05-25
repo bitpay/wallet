@@ -109,7 +109,7 @@
     "run:android":            "cordova run android --device",
     "run:android-release":            "cordova run android --device --release",
     "log:android":            "adb logcat | grep chromium",
-    "sign:android":           "rm -f platforms/android/build/outputs/apk/release/*PACKAGENAME*-release-signed-aligned.apk; jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore ../terracoin.keystore -signedjar platforms/android/build/outputs/apk/release/android-release-signed.apk  platforms/android/build/outputs/apk/release/android-release-unsigned.apk copay_play && $ANDROID_HOME/build-tools/27.0.3/zipalign -v 4 platforms/android/build/outputs/apk/release/android-release-signed.apk platforms/android/build/outputs/apk/*PACKAGENAME*-release-signed-aligned.apk",
+    "sign:android":           "rm -f platforms/android/build/outputs/apk/release/*PACKAGENAME*-release-signed-aligned.apk; jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore ../terracoin.keystore -signedjar platforms/android/build/outputs/apk/release/android-release-signed.apk  platforms/android/build/outputs/apk/release/android-release-unsigned.apk TRCpayReleaseKey && $ANDROID_HOME/build-tools/27.0.3/zipalign -v 4 platforms/android/build/outputs/apk/release/android-release-signed.apk platforms/android/build/outputs/apk/*PACKAGENAME*-release-signed-aligned.apk",
     "apply:trcpay":           "npm i fs-extra && cd app-template && node apply.js trcpay && npm i && cordova prepare",
     "test":                   "echo \"no package tests configured\"",
     "clean":                  "trash platforms && trash plugins && cordova prepare",
