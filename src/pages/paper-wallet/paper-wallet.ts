@@ -210,6 +210,7 @@ export class PaperWalletPage {
       this.logger.debug('Success sweep. Destination address:' + data.destinationAddress + ' - transaction id: ' + data.txid);
       this.openFinishModal();
     }).catch((err: any) => {
+      this.onGoingProcessProvider.clear();
       this.logger.error(err);
       this.popupProvider.ionicAlert(this.translate.instant('Error sweeping wallet:'), err || err.toString());
     });
