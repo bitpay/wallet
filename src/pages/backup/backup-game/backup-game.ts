@@ -255,7 +255,7 @@ export class BackupGamePage {
         let modal = this.modalCtrl.create(
           CustomModalComponent,
           { modal: 'backup-ready' },
-          { showBackdrop: false, enableBackdropDismiss: false }
+          { cssClass: 'fullscreen-modal' }
         );
         modal.present({ animate: false });
         modal.onDidDismiss(() => {

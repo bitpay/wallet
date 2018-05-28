@@ -154,7 +154,7 @@ export class ReceivePage {
     let BackupWarningModal = this.modalCtrl.create(
       CustomModalComponent,
       { modal: 'backup-needed' },
-      { showBackdrop: true, enableBackdropDismiss: false }
+      { cssClass: 'fullscreen-modal' }
     );
     BackupWarningModal.present({ animate: false });
     BackupWarningModal.onDidDismiss(goToBackupPage => {

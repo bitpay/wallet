@@ -155,7 +155,7 @@ export class SessionLogPage {
     let sessionLogWarningModal = this.modalCtrl.create(
       CustomModalComponent,
       { modal: 'sensitive-info' },
-      { showBackdrop: false, enableBackdropDismiss: false }
+      { cssClass: 'fullscreen-modal' }
     );
     sessionLogWarningModal.present();
     sessionLogWarningModal.onDidDismiss(response => {

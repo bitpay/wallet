@@ -506,7 +506,7 @@ export class ConfirmPage {
             let feeWarningModal = this.modalCtrl.create(
               CustomModalComponent,
               { modal: 'fee-warning' },
-              { showBackdrop: false, enableBackdropDismiss: false }
+              { cssClass: 'fullscreen-modal' }
             );
             feeWarningModal.present();
           }

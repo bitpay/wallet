@@ -35,7 +35,7 @@ export class BackupWarningPage {
     let BackupWarningModal = this.modalCtrl.create(
       CustomModalComponent,
       { modal: 'backup-warning' },
-      { showBackdrop: false, enableBackdropDismiss: false }
+      { cssClass: 'fullscreen-modal' }
     );
     BackupWarningModal.present({ animate: false });
     BackupWarningModal.onDidDismiss(response => {
