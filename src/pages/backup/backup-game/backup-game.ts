@@ -58,7 +58,9 @@ export class BackupGamePage {
     this.fromOnboarding = this.navParams.get('fromOnboarding');
     this.wallet = this.profileProvider.getWallet(this.walletId);
     this.credentialsEncrypted = this.wallet.isPrivKeyEncrypted();
+  }
 
+  ionViewDidEnter() {
     this.deleted = this.isDeletedSeed();
     if (this.deleted) {
       this.logger.debug('no mnemonics');
