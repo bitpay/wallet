@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { NavController, NavParams } from 'ionic-angular';
+import { NavController, NavParams, Platform } from 'ionic-angular';
 import * as _ from 'lodash';
 import { Logger } from '../../../providers/logger/logger';
 
@@ -34,7 +34,8 @@ export class CollectEmailPage {
     private appProvider: AppProvider,
     private http: HttpClient,
     private emailProvider: EmailNotificationsProvider,
-    private device: Device
+    private device: Device,
+    private platform: Platform
   ) {
     this.walletId = this.navParams.data.walletId;
     let regex: RegExp = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
@@ -81,7 +82,12 @@ export class CollectEmailPage {
 
   private collectEmail(): void {
     let platform = this.device.platform || 'Unknown platform';
-    let version = this.device.version || 'Unknown version';
+    let versions: any = this.platform.versions();
+    let version: string;
+
+    if (this.platform.is('ios')) version = versions['ios'].str;
+    else if (this.platform.is('android')) version = versions['android'].str;
+    else version = this.device.version || 'Unknown version';
 
     const headers: any = new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' });
     const urlSearchParams = new HttpParams()
