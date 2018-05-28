@@ -94,7 +94,7 @@ export class CollectEmailPage {
       .set('App', this.appProvider.info.nameCase)
       .set('Email', this.emailForm.value.email)
       .set('Platform', platform)
-      .set('DeviceVersion', version)
+      .set('Version', version)
 
     this.http.post(this.URL, null, {
       params: urlSearchParams,
