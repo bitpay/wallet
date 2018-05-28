@@ -1,38 +1,54 @@
 page-fingerprint {
   ion-content {
     background-color: color($colors, blank) !important;
+    .scroll-content {
+      display: flex;
+      flex-direction: column;
+      padding-top: 0 !important;
+    }
   }
   .fingerprint-header {
-    height: 140px;
-    border-bottom: 1px solid #dad7d7;
+    border-bottom: 1px solid #eaeaea;
     position: relative;
-    background-color: color($colors, light);    
+    background-color: color($colors, light);
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    @media (max-height: 600px) {
+      padding-bottom: 25px;
+    }
     .title {
       height: 100%;
       display: flex;
       justify-content: center;
       align-items: center;
+      font-size: 22px;
     }
     .icon-container {
+      $app-icon-radius: 42;
       position: absolute;
-      bottom: -2.3rem;
       text-align: center;
       width: 100%;
       border-radius: 50%;
+      line-height: 0;
+      bottom: $app-icon-radius * -1px;
       .app-icon {
-        width: 4.5rem;
-        height: 4.5rem;
-        box-shadow: 0px 4px 10px 0px rgba(0, 0, 0, 0.3);
+        width: $app-icon-radius * 2px;
+        height: $app-icon-radius * 2px;
       }
     }
   }
-  .button-standard {
-    margin-top: 9rem;
-    ion-icon {
-      margin-left: 1rem;
+  .fingerprint-bottom {
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    .button-standard {
+      ion-icon {
+        margin-left: 1rem;
+      }
     }
-  }
-  .rounded {
-    border-radius: 50%;
   }
 }

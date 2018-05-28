@@ -139,13 +139,13 @@ export class CopayApp {
   private onAppLoad(readySource) {
     this.logger.info(
       'Platform ready (' +
-        readySource +
-        '): ' +
-        this.appProvider.info.nameCase +
-        ' - v' +
-        this.appProvider.info.version +
-        ' #' +
-        this.appProvider.info.commitHash
+      readySource +
+      '): ' +
+      this.appProvider.info.nameCase +
+      ' - v' +
+      this.appProvider.info.version +
+      ' #' +
+      this.appProvider.info.commitHash
     );
 
     if (this.platform.is('cordova')) {
@@ -241,11 +241,14 @@ export class CopayApp {
 
   private openFingerprintModal(): void {
     this.isModalOpen = true;
-    let isCopay = this.appProvider.info.nameCase == 'Copay' ? true : false;
-    this.events.publish('showFingerprintModalEvent', isCopay);
-    this.events.subscribe('finishFingerprintModalEvent', () => {
+    const modal = this.modalCtrl.create(
+      FingerprintModalPage,
+      {},
+      { cssClass: 'fullscreen-modal' }
+    );
+    modal.present({ animate: false });
+    modal.onDidDismiss(() => {
       this.isModalOpen = false;
-      this.events.unsubscribe('finishFingerprintModalEvent');
     });
   }
 
