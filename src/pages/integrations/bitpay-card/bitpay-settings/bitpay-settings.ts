@@ -72,4 +72,16 @@ export class BitPaySettingsPage {
     });
   }
 
+  public unlinkAccount(card: any) {
+    let title = 'Unlink BitPay Account?';
+    let msg = 'Are you sure you would like to remove your BitPay Account (' + card.email + ') and all associated cards from this device?';
+    this.popupProvider.ionicConfirm(title, msg).then((res) => {
+      if (res) {
+        this.bitpayAccountProvider.removeAccount(card.email, () => {
+          this.navCtrl.pop();
+        });
+      }
+    });
+  }
+
 }
