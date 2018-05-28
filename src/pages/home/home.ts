@@ -194,14 +194,14 @@ export class HomePage {
   }
 
   ionViewDidLoad() {
-    this.logger.info('ionViewDidLoad HomePage'); 
+    this.logger.info('ionViewDidLoad HomePage');
 
     if (this.emailProvider.getEmailIfEnabled()) {
       this.persistenceProvider.getEmailLawCompliance().then(value => {
         setTimeout(() => {
           if (!value) this.openEmailDisclaimer();
         }, 2000);
-      });  
+      });
     }
 
     // Create, Join, Import and Delete -> Get Wallets -> Update Status for All Wallets
@@ -211,6 +211,7 @@ export class HomePage {
     });
 
     this.plt.resume.subscribe(e => {
+      this.getNotifications();
       this.updateTxps();
       this.setWallets();
     });
@@ -562,6 +563,7 @@ export class HomePage {
   public doRefresh(refresher) {
     refresher.pullMin = 90;
     this.updateAllWallets();
+    this.getNotifications();
     setTimeout(() => {
       refresher.complete();
     }, 2000);
