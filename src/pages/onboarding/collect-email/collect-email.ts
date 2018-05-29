@@ -44,7 +44,7 @@ export class CollectEmailPage {
     });
     this.showConfirmForm = false;
     // Get more info: https://mashe.hawksey.info/2014/07/google-sheets-as-a-database-insert-with-apps-script-using-postget-methods-with-ajax-example/
-    this.URL = "https://script.google.com/macros/s/AKfycbwQXvUw6-Ix0cRLMi7hBB8dlgNTCTgwfNIQRds6RypPV7dO8evW/exec";
+    this.URL = this.appProvider.servicesInfo.emailSheetURL;
   }
 
   ionViewDidLoad() {
@@ -65,13 +65,13 @@ export class CollectEmailPage {
       enabled: true,
       email: this.emailForm.value.email
     };
-    
+
     // Confirm for notifications
     this.emailProvider.updateEmail(opts);
 
     // Confirm to get news and updates from BitPay
     if (this.emailForm.value.accept) this.collectEmail();
-    
+
     this.goToBackupRequestPage();
   }
 
@@ -87,6 +87,7 @@ export class CollectEmailPage {
     const urlSearchParams = new HttpParams()
       .set('App', this.appProvider.info.nameCase)
       .set('Email', this.emailForm.value.email)
+      .set('AppVersion', this.appProvider.info.version)
       .set('Platform', platform)
       .set('DeviceVersion', version)
 

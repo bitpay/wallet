@@ -1,5 +1,8 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+
+// providers
+import { AppProvider } from '../../providers/app/app';
 import { Logger } from '../../providers/logger/logger';
 
 @Injectable()
@@ -10,8 +13,10 @@ export class FeedbackProvider {
   constructor(
     private http: HttpClient,
     private logger: Logger,
+    private appProvider: AppProvider
   ) {
-    this.URL = "https://script.google.com/macros/s/AKfycbybtvNSQKUfgzgXcj3jYLlvCKrcBoktjiJ1V8_cwd2yVkpUBGe3/exec";
+    // Get more info: https://mashe.hawksey.info/2014/07/google-sheets-as-a-database-insert-with-apps-script-using-postget-methods-with-ajax-example/
+    this.URL = this.appProvider.servicesInfo.feedbackSheetURL;
   }
 
   public send(dataSrc): Promise<any> {
