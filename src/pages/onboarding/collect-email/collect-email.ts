@@ -37,7 +37,7 @@ export class CollectEmailPage {
     private device: Device
   ) {
     this.walletId = this.navParams.data.walletId;
-    let regex: RegExp = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+    let regex: RegExp = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     this.emailForm = this.fb.group({
       email: [null, [Validators.required, Validators.pattern(regex)]],
       accept: [false],
