@@ -37,6 +37,7 @@ import {
   Events,
   Form,
   GestureController,
+  Haptic,
   IonicModule,
   Keyboard,
   LoadingController,
@@ -52,6 +53,7 @@ import {
   EventsMock,
   LoadingControllerMock,
   ModalControllerMock,
+  HapticMock,
   NavControllerMock,
   NavParamsMock,
   PlatformMock
@@ -183,6 +185,10 @@ export class TestUtils {
         {
           provide: AlertController,
           useFactory: () => AlertControllerMock.instance()
+        },
+        {  
+          provide: Haptic,
+          useFactory: () => HapticMock.instance()
         },
         {
           provide: LoadingController,

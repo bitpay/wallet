@@ -58,7 +58,6 @@ describe('LanguagePage', () => {
                 jasmine.clock().tick(1000);
 
                 expect(instance.profileProvider.getWallets).toHaveBeenCalled();
-                expect(updatePrefs).toHaveBeenCalled();
                 expect(updatePrefs).toHaveBeenCalledWith("correct wallet");
                 jasmine.clock().uninstall();
             });
@@ -68,7 +67,6 @@ describe('LanguagePage', () => {
                 const openLink = spyOn(instance.externalLinkProvider, 'open');
                 instance.openExternalLink();
                 expect(openLink).toHaveBeenCalledWith("https://crowdin.com/project/copay", true, "Open Translation Community", "You can make contributions by signing up on our Crowdin community translation website. We’re looking forward to hearing from you!", "Open Crowdin", "Go Back");
-                expect(openLink).toHaveBeenCalled();
             });
         });
     });

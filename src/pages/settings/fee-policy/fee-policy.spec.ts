@@ -107,7 +107,6 @@ describe('FeePolicyPage', () => {
                         }
                     }
                 };
-                expect(instance.configProvider.set).toHaveBeenCalled();
                 expect(instance.configProvider.set).toHaveBeenCalledWith(opts);
             });
         });
