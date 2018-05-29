@@ -76,6 +76,7 @@ import { PlatformProvider } from './providers/platform/platform';
 
 import { SatToFiatPipe } from './pipes/satToFiat';
 import { SatToUnitPipe } from './pipes/satToUnit';
+import { KeysPipe } from './pipes/keys';
 import { ProvidersModule } from './providers/providers.module';
 
 import * as appTemplate from './../app-template/bitpay/appConfig.json';
@@ -131,7 +132,7 @@ export class TestUtils {
   ): Promise<{ fixture: any; instance: any; testBed: typeof TestBed }> {
     const providers = (otherParams && otherParams.providers) || [];
     await TestBed.configureTestingModule({
-      declarations: [...components, SatToFiatPipe, SatToUnitPipe],
+      declarations: [...components, SatToFiatPipe, SatToUnitPipe, KeysPipe],
       imports: [
         FormsModule,
         IonicModule,
@@ -150,6 +151,7 @@ export class TestUtils {
         DecimalPipe,
         SatToFiatPipe,
         SatToUnitPipe,
+        KeysPipe,
         Events,
         Form,
         GestureController,
