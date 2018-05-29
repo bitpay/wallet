@@ -57,22 +57,22 @@ export class FeedbackPage {
     this.subsubtitle = this.replaceParametersProvider.replace(this.translate.instant("Would you be willing to rate {{appName}} in the app store?"), { appName: this.appName });
   }
 
-
   public skip(): void {
 
     this.navCtrl.push(FeedbackCompletePage, { score: this.score, skipped: true })
 
-    let platform = this.device.platform;
-    let version = this.device.version;
+    let platform = this.device.platform || 'Unknown platform';
+    let version = this.device.version || 'Unknown version';
 
     let dataSrc = {
-      "Email": _.values(this.config.emailFor)[0] || ' ',
-      "Feedback": ' ',
-      "Score": this.score,
-      "AppVersion": this.appProvider.info.version,
-      "Platform": platform,
-      "DeviceVersion": version
+      "email": _.values(this.config.emailFor)[0] || ' ',
+      "feedback": ' ',
+      "score": this.score,
+      "appVersion": this.appProvider.info.version,
+      "platform": platform,
+      "deviceVersion": version
     };
+
     this.feedbackProvider.send(dataSrc).catch(() => {
       this.logger.warn('Could not send feedback.');
     });

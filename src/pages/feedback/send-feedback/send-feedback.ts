@@ -19,7 +19,6 @@ import { ReplaceParametersProvider } from '../../../providers/replace-parameters
 // pages
 import { FeedbackCompletePage } from '../feedback-complete/feedback-complete';
 
-
 @Component({
   selector: 'page-send-feedback',
   templateUrl: 'send-feedback.html',
@@ -98,8 +97,8 @@ export class SendFeedbackPage {
 
     let config: any = this.configProvider.get();
 
-    let platform = this.device.platform;
-    let version = this.device.version;
+    let platform = this.device.platform || 'Unknown platform';
+    let version = this.device.version || 'Unknown version';
 
     let dataSrc = {
       "email": _.values(config.emailFor)[0] || ' ',
@@ -120,7 +119,7 @@ export class SendFeedbackPage {
         let okText = this.translate.instant('Finish');
         this.popupProvider.ionicAlert(title, message, okText).then(() => {
           this.feedback = '';
-          this.navCtrl.pop();
+          this.navCtrl.popToRoot({ animate: false });
         });
       }
       else {
@@ -133,6 +132,8 @@ export class SendFeedbackPage {
       let subtitle = this.translate.instant('Feedback could not be submitted. Please try again later.');
       this.popupProvider.ionicAlert(title, subtitle);
     });
-    if (goHome) this.navCtrl.pop();
+    if (goHome) {
+      this.navCtrl.popToRoot({ animate: false });
+    }
   }
 }

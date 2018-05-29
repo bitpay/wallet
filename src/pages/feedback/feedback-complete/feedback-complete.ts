@@ -13,9 +13,6 @@ import { PersistenceProvider } from '../../../providers/persistence/persistence'
 import { PlatformProvider } from '../../../providers/platform/platform';
 import { ReplaceParametersProvider } from '../../../providers/replace-parameters/replace-parameters';
 
-// pages
-import { HomePage } from '../../home/home';
-
 @Component({
   selector: 'page-feedback-complete',
   templateUrl: 'feedback-complete.html',
@@ -120,6 +117,6 @@ export class FeedbackCompletePage {
   };
 
   public close(): void {
-    this.navCtrl.setRoot(HomePage);
+    this.navCtrl.popToRoot({ animate: false });
   }
 }
