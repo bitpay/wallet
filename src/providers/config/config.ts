@@ -146,12 +146,12 @@ const configDefault: Config = {
 
   rateApp: {
     bitpay: {
-      ios: 'http://itunes.apple.com/WebObjects/MZStore.woa/wa/viewContentsUserReviews?id=1149581638&pageNumber=0&sortOrdering=2&type=Purple+Software&mt=8',
+      ios: 'https://itunes.apple.com/ar/app/bitpay-secure-bitcoin-wallet/id1149581638',
       android: 'https://play.google.com/store/apps/details?id=com.bitpay.wallet',
       wp: ''
     },
     copay: {
-      ios: 'http://itunes.apple.com/WebObjects/MZStore.woa/wa/viewContentsUserReviews?id=951330296&pageNumber=0&sortOrdering=2&type=Purple+Software&mt=8',
+      ios: 'https://itunes.apple.com/ar/app/copay-bitcoin-wallet/id951330296',
       android: 'https://play.google.com/store/apps/details?id=com.bitpay.copay',
       wp: ''
     }

@@ -19,7 +19,7 @@
   </div>
   <div *ngIf="!fromSettings">
     <div class="feedback-title" translate>Thank you!</div>
-    <div class="subtitle" *ngIf="!skipped" translate>A member of the team will review your feedback as soon as possible.</div>
+    <div class="subtitle" *ngIf="!skipped || !fromSettings" translate>A member of the team will review your feedback as soon as possible.</div>
     <div *ngIf="score <= 3 || !isCordova">
       <div class="subtitle" translate>If you have additional feedback, please let us know by tapping the "Send feedback" option in the Settings tab.</div>
       <div class="illustration-send">
@@ -35,7 +35,7 @@
       </div>
     </div>
   </div>
-  <div class="share-buttons" *ngIf="score > 3 && isCordova">
+  <div class="share-buttons" *ngIf="(score > 3 || fromSettings) && isCordova">
     <div class="share-buttons__action" *ngIf="facebook" (click)="shareFacebook()">
       <ion-icon>
         <img src="assets/img/social-icons/ico-social-facebook.svg" />

@@ -56,14 +56,21 @@ export class FeedbackCompletePage {
     this.title = this.replaceParametersProvider.replace(this.translate.instant("Share {{appName}}"), { appName: this.appProvider.info.nameCase });
     let defaults = this.configProvider.getDefaults();
     this.downloadUrl = this.appProvider.info.name == 'copay' ? defaults.download.copay.url : defaults.download.bitpay.url;
+  }
+
+  ionViewWillLeave() {
     if (!this.fromSettings) {
-      this.viewCtrl.showBackButton(false);
-    } else {
-      this.viewCtrl.showBackButton(true);
+      this.navCtrl.swipeBackEnabled = true;
     }
   }
 
   ionViewWillEnter() {
+
+    if (!this.fromSettings) {
+      this.viewCtrl.showBackButton(false);
+      this.navCtrl.swipeBackEnabled = false;
+    }
+
     this.persistenceProvider.getFeedbackInfo().then((info: any) => {
       let feedbackInfo = info;
       feedbackInfo.sent = true;
