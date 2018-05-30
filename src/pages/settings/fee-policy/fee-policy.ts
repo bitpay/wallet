@@ -11,7 +11,7 @@ const NETWORK = 'livenet';
 
 @Component({
   selector: 'page-fee-policy',
-  templateUrl: 'fee-policy.html',
+  templateUrl: 'fee-policy.html'
 })
 export class FeePolicyPage {
   public feeLevels: object;
@@ -35,17 +35,24 @@ export class FeePolicyPage {
 
   ionViewDidEnter() {
     this.error = null;
-    return this.feeProvider.getFeeLevels(COIN).then((data) => {
-      this.feeLevels = data['levels'];
-      this.updateCurrentValues();
-    }).catch((err) => {
-      this.logger.error(err);
-      this.error = err;
-    });
+    return this.feeProvider
+      .getFeeLevels(COIN)
+      .then(data => {
+        this.feeLevels = data['levels'];
+        this.updateCurrentValues();
+      })
+      .catch(err => {
+        this.logger.error(err);
+        this.error = err;
+      });
   }
 
   public save() {
-    if (_.isEmpty(this.currentFeeLevel) || this.currentFeeLevel == this.feeProvider.getCurrentFeeLevel()) return;
+    if (
+      _.isEmpty(this.currentFeeLevel) ||
+      this.currentFeeLevel == this.feeProvider.getCurrentFeeLevel()
+    )
+      return;
     this.logger.debug('New fee level: ' + this.currentFeeLevel);
     this.updateCurrentValues();
     this.setFee();
@@ -75,5 +82,4 @@ export class FeePolicyPage {
 
     this.configProvider.set(opts);
   }
-
 }
