@@ -3,7 +3,11 @@ import { TranslateService } from '@ngx-translate/core';
 import { Events, ModalController, NavController, NavParams } from 'ionic-angular';
 import * as _ from 'lodash';
 
+// pages
+import { FinishModalPage } from '../finish/finish';
+
 // providers
+import { BwcErrorProvider } from '../../providers/bwc-error/bwc-error';
 import { BwcProvider } from '../../providers/bwc/bwc';
 import { FeeProvider } from '../../providers/fee/fee';
 import { Logger } from '../../providers/logger/logger';
@@ -12,7 +16,6 @@ import { PlatformProvider } from '../../providers/platform/platform';
 import { PopupProvider } from '../../providers/popup/popup';
 import { ProfileProvider } from '../../providers/profile/profile';
 import { WalletProvider } from '../../providers/wallet/wallet';
-import { FinishModalPage } from '../finish/finish';
 
 @Component({
   selector: 'page-paper-wallet',
@@ -57,18 +60,11 @@ export class PaperWalletPage {
     private modalCtrl: ModalController,
     private translate: TranslateService,
     private platformProvider: PlatformProvider,
+    private bwcErrorProvider: BwcErrorProvider
   ) {
     this.bitcore = this.bwcProvider.getBitcore();
     this.isCordova = this.platformProvider.isCordova;
-  }
-
-  ionViewWillLeave() {
-    this.navCtrl.swipeBackEnabled = true;
-  }
-
-  ionViewWillEnter() {
     this.isOpenSelector = false;
-    this.navCtrl.swipeBackEnabled = false;
     this.scannedKey = this.navParams.data.privateKey;
     this.isPkEncrypted = this.scannedKey ? (this.scannedKey.substring(0, 2) == '6P') : null;
     this.error = false;
@@ -82,7 +78,17 @@ export class PaperWalletPage {
     });
 
     this.coins = _.uniq(_.map(this.wallets, (wallet: any) => wallet.coin));
+  }
 
+  ionViewWillLeave() {
+    this.navCtrl.swipeBackEnabled = true;
+  }
+
+  ionViewWillEnter() {
+    this.navCtrl.swipeBackEnabled = false;
+  }
+
+  ionViewDidEnter() {
     if (!this.wallets || !this.wallets.length) {
       this.noMatchingWallet = true;
       return;
@@ -99,7 +105,9 @@ export class PaperWalletPage {
       }
       this.popupProvider.ionicPrompt(null, message, opts).then((res) => {
         this.passphrase = res;
-        this.scanFunds();
+        setTimeout(() => {
+          this.scanFunds();
+        }, 200);
       });
     }
   }
@@ -136,7 +144,7 @@ export class PaperWalletPage {
     });
   }
 
-  public scanFunds() {
+  public scanFunds(): void {
     this.onGoingProcessProvider.set('scanning');
 
     let scans: any[] = _.map(this.coins, (coin: string) => this._scanFunds(coin));
@@ -165,7 +173,7 @@ export class PaperWalletPage {
     }).catch((err: any) => {
       this.onGoingProcessProvider.clear();
       this.logger.error(err);
-      this.popupProvider.ionicAlert(this.translate.instant('Error scanning funds:'), err || err.toString());
+      this.popupProvider.ionicAlert(this.translate.instant('Error scanning funds:'), this.bwcErrorProvider.msg(err));
       this.navCtrl.pop();
     });
   }
@@ -212,7 +220,7 @@ export class PaperWalletPage {
     }).catch((err: any) => {
       this.onGoingProcessProvider.clear();
       this.logger.error(err);
-      this.popupProvider.ionicAlert(this.translate.instant('Error sweeping wallet:'), err || err.toString());
+      this.popupProvider.ionicAlert(this.translate.instant('Error sweeping wallet:'), this.bwcErrorProvider.msg(err));
     });
   }
 
