@@ -55,7 +55,7 @@ describe('NotificationsPage', () => {
       it('open privacy policy with correct params', () => {
         spyOn(instance.externalLinkProvider, 'open');
 
-        var params = {
+        const params = {
           'View Privacy Policy': 'View Privacy Policy',
           Open: 'Open',
           'Go Back': 'Go Back'
@@ -64,8 +64,7 @@ describe('NotificationsPage', () => {
         spyOn(instance.translate, 'instant').and.callFake(function(myParam) {
           return params[myParam];
         });
-        // let okText = this.translate.instant('Open');
-        // let cancelText = this.translate.instant('Go Back');
+
         instance.openPrivacyPolicy();
 
         expect(instance.externalLinkProvider.open).toHaveBeenCalledWith(
@@ -84,7 +83,7 @@ describe('NotificationsPage', () => {
         instance.confirmedTxsNotifications = true;
         instance.confirmedTxsNotificationsChange();
 
-        let opts = {
+        const opts = {
           confirmedTxsNotifications: {
             enabled: true
           }
@@ -107,7 +106,7 @@ describe('NotificationsPage', () => {
         instance.emailForm.value.email = 'test@satoshi.com';
         instance.saveEmail();
 
-        let opts = {
+        const opts = {
           enabled: true,
           email: 'test@satoshi.com'
         };
@@ -126,7 +125,7 @@ describe('NotificationsPage', () => {
         instance.emailForm.value.email = 'test@satoshi.com';
         instance.emailNotificationsChange();
 
-        let opts = {
+        const opts = {
           enabled: true,
           email: 'test@satoshi.com'
         };
@@ -141,7 +140,7 @@ describe('NotificationsPage', () => {
         spyOn(instance.pushProvider, 'init');
 
         instance.pushNotificationsChange();
-        let opts = {
+        const opts = {
           pushNotificationsEnabled: true
         };
         expect(instance.configProvider.set).toHaveBeenCalledWith(opts);
@@ -153,7 +152,7 @@ describe('NotificationsPage', () => {
         spyOn(instance.pushProvider, 'disable');
 
         instance.pushNotificationsChange();
-        let opts = {
+        const opts = {
           pushNotificationsEnabled: false
         };
         expect(instance.configProvider.set).toHaveBeenCalledWith(opts);

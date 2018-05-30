@@ -39,13 +39,11 @@ describe('LanguagePage', () => {
     describe('#save', () => {
       it('should set new language', () => {
         const setLang = spyOn(instance.languageProvider, 'set');
-        //set language to French
         instance.save('fr');
         expect(setLang).toHaveBeenCalled();
         expect(setLang).toHaveBeenCalledWith('fr');
       });
       it('should pop the nav control', () => {
-        //set language to French
         instance.save('fr');
         expect(instance.navCtrl.pop).toHaveBeenCalled();
       });
