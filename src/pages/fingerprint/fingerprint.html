@@ -1,4 +1,4 @@
-<ion-content *ngIf="showFingerprintModal">
+<ion-content no-bounce fullscreen>
   <div class="fingerprint-header">
     <div class="title">
       <div>
@@ -6,15 +6,16 @@
       </div>
     </div>
     <div class="icon-container">
-      <ion-icon class="app-icon" [ngClass]="{'rounded': !isCopay}">
-        <img [ngClass]="{'rounded': !isCopay}" src="assets/img/app/icon.png" />
+      <ion-icon class="app-icon">
+        <img src="assets/img/app/icon-flat.svg" />
       </ion-icon>
     </div>
   </div>
+  <div class="fingerprint-bottom">
+    <button class="button-standard" ion-button (click)="checkFingerprint()">
+      <span>{{'Scan again' | translate}}</span>
+      <ion-icon name="finger-print" item-end></ion-icon>
+    </button>
+  </div>
 
-
-  <button class="button-standard" ion-button (click)="checkFingerprint()">
-    <span>{{'Scan again' | translate}}</span>
-    <ion-icon name="finger-print" item-end></ion-icon>
-  </button>
 </ion-content>
