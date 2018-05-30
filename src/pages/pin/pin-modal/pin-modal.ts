@@ -84,12 +84,12 @@ export class PinModalPage {
     }
   }
 
-  public close(value: boolean): void {
+  public close(cancelClicked?: boolean): void {
     if (this.countDown) {
       clearInterval(this.countDown);
     }
     this.unregister();
-    if (this.action === 'lockSetUp') this.viewCtrl.dismiss(value);
+    if (this.action === 'lockSetUp') this.viewCtrl.dismiss(cancelClicked);
     else this.navCtrl.pop({ animate: true });
   }
 
@@ -177,7 +177,7 @@ export class PinModalPage {
   public save(): void {
     let lock = { method: 'pin', value: this.currentPin, bannedUntil: null };
     this.configProvider.set({ lock });
-    this.close(true);
+    this.close();
   }
 
   private checkIfCorrect(): void {
@@ -185,7 +185,7 @@ export class PinModalPage {
     let pinValue = config.lock && config.lock.value;
     if (pinValue == this.currentPin) {
       if (this.action === 'checkPin' || this.action === 'lockSetUp') {
-        this.close(true);
+        this.close();
       }
     } else {
       this.currentPin = '';

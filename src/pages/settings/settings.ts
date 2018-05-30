@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { Events, ModalController, NavController } from 'ionic-angular';
+import { ModalController, NavController } from 'ionic-angular';
 import { Logger } from '../../providers/logger/logger';
 
 import * as _ from 'lodash';
@@ -17,7 +17,6 @@ import { ProfileProvider } from '../../providers/profile/profile';
 import { TouchIdProvider } from '../../providers/touchid/touchid';
 
 // pages
-import { animate } from '@angular/core/src/animation/dsl';
 import { FeedbackCompletePage } from '../feedback/feedback-complete/feedback-complete';
 import { SendFeedbackPage } from '../feedback/send-feedback/send-feedback';
 import { AmazonSettingsPage } from '../integrations/amazon/amazon-settings/amazon-settings';
@@ -54,14 +53,12 @@ export class SettingsPage {
   public integrationServices: any[] = [];
   public bitpayCardItems: any[] = [];
   public showBitPayCard: boolean = false;
-  public isModalOpen: boolean;
 
   constructor(
     private navCtrl: NavController,
     private app: AppProvider,
     private language: LanguageProvider,
     private externalLinkProvider: ExternalLinkProvider,
-    private events: Events,
     private profileProvider: ProfileProvider,
     private configProvider: ConfigProvider,
     private logger: Logger,
@@ -141,7 +138,14 @@ export class SettingsPage {
   }
 
   public openLockPage(): void {
-    this.openLockModal();
+    let config: any = this.configProvider.get();
+    let lockMethod =
+      config && config.lock && config.lock.method
+        ? config.lock.method.toLowerCase()
+        : null;
+    if (!lockMethod || lockMethod == 'disabled') this.navCtrl.push(LockPage);
+    if (lockMethod == 'pin') this.openPinModal('lockSetUp');
+    if (lockMethod == 'fingerprint') this.checkFingerprint();
   }
 
   public openAddressBookPage(): void {
@@ -221,38 +225,21 @@ export class SettingsPage {
     );
   }
 
-  private openLockModal(): void {
-    if (this.isModalOpen) return;
-    let config: any = this.configProvider.get();
-    let lockMethod =
-      config && config.lock && config.lock.method
-        ? config.lock.method.toLowerCase()
-        : null;
-    if (!lockMethod) return;
-    if (lockMethod == 'disabled')
-      this.navCtrl.push(LockPage, {}, { animate: false });
-    if (lockMethod == 'pin') this.openPinModal('lockSetUp');
-    if (lockMethod == 'fingerprint') this.openFingerprintModal();
-  }
-
   private openPinModal(action): void {
-    this.isModalOpen = true;
     const modal = this.modalCtrl.create(
       PinModalPage,
       { action },
       { cssClass: 'fullscreen-modal' }
     );
-    modal.present({ animate: false });
-    modal.onDidDismiss(response => {
-      this.isModalOpen = false;
-      if (response) this.navCtrl.push(LockPage, {}, { animate: false });
+    modal.present();
+    modal.onDidDismiss(cancelClicked => {
+      if (!cancelClicked) this.navCtrl.push(LockPage);
     });
   }
-  private openFingerprintModal(): void {
+
+  private checkFingerprint(): void {
     this.touchid.check().then(() => {
-      setTimeout(() => {
-        this.navCtrl.push(LockPage, {}, { animate: false });
-      }, 300);
+      this.navCtrl.push(LockPage);
     });
   }
 }
