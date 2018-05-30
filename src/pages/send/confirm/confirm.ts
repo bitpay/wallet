@@ -10,12 +10,14 @@ import {
 import * as _ from 'lodash';
 import { Logger } from '../../../providers/logger/logger';
 
+// Components
+import { CustomModalComponent } from '../../../components/custom-modal/custom-modal';
+
 // Pages
 import { FinishModalPage } from '../../finish/finish';
 import { PayProPage } from '../../paypro/paypro';
 import { TabsPage } from '../../tabs/tabs';
 import { ChooseFeeLevelPage } from '../choose-fee-level/choose-fee-level';
-import { FeeWarningPage } from '../fee-warning/fee-warning';
 
 // Providers
 import { BwcErrorProvider } from '../../../providers/bwc-error/bwc-error';
@@ -374,11 +376,11 @@ export class ConfirmPage {
       this.onGoingProcessProvider.set('calculatingFee');
       this.feeProvider
         .getFeeRate(
-        wallet.coin,
-        tx.network,
-        this.usingMerchantFee
-          ? maxAllowedMerchantFee[wallet.coin]
-          : this.tx.feeLevel
+          wallet.coin,
+          tx.network,
+          this.usingMerchantFee
+            ? maxAllowedMerchantFee[wallet.coin]
+            : this.tx.feeLevel
         )
         .then((feeRate: any) => {
           let msg;
@@ -389,9 +391,9 @@ export class ConfirmPage {
             let maxAllowedfee = feeRate * 2;
             this.logger.info(
               'Using Merchant Fee:' +
-              tx.feeRate +
-              ' vs. referent level:' +
-              maxAllowedfee
+                tx.feeRate +
+                ' vs. referent level:' +
+                maxAllowedfee
             );
             if (tx.network != 'testnet' && tx.feeRate > maxAllowedfee) {
               this.onGoingProcessProvider.set('calculatingFee');
@@ -460,8 +462,8 @@ export class ConfirmPage {
               );
               this.popupProvider
                 .ionicAlert(
-                this.translate.instant('Error'),
-                this.translate.instant('Not enough funds for fee')
+                  this.translate.instant('Error'),
+                  this.translate.instant('Not enough funds for fee')
                 )
                 .then(() => {
                   return resolve('no_funds');
@@ -502,9 +504,9 @@ export class ConfirmPage {
 
           if (txp.feeTooHigh) {
             let feeWarningModal = this.modalCtrl.create(
-              FeeWarningPage,
-              {},
-              { showBackdrop: false, enableBackdropDismiss: false }
+              CustomModalComponent,
+              { modal: 'fee-warning' },
+              { cssClass: 'fullscreen-modal' }
             );
             feeWarningModal.present();
           }
@@ -560,7 +562,12 @@ export class ConfirmPage {
       if (!sendMaxInfo) return resolve();
 
       let fee = sendMaxInfo.fee / 1e8;
-      let msg = this.replaceParametersProvider.replace(this.translate.instant('{{fee}} {{coin}} will be deducted for bitcoin networking fees.'), { fee: sendMaxInfo.fee / 1e8, coin: this.tx.coin.toUpperCase() });
+      let msg = this.replaceParametersProvider.replace(
+        this.translate.instant(
+          '{{fee}} {{coin}} will be deducted for bitcoin networking fees.'
+        ),
+        { fee: sendMaxInfo.fee / 1e8, coin: this.tx.coin.toUpperCase() }
+      );
       let warningMsg = this.verifyExcludedUtxos(wallet, sendMaxInfo);
 
       if (!_.isEmpty(warningMsg)) msg += '\n' + warningMsg;
@@ -575,13 +582,23 @@ export class ConfirmPage {
     let warningMsg = [];
     if (sendMaxInfo.utxosBelowFee > 0) {
       let amountBelowFeeStr = sendMaxInfo.amountBelowFee / 1e8;
-      let message = this.replaceParametersProvider.replace(this.translate.instant('A total of {{amountBelowFeeStr}} {{coin}} were excluded. These funds come from UTXOs smaller than the network fee provided.'), { amountBelowFeeStr, coin: this.tx.coin.toUpperCase() });
+      let message = this.replaceParametersProvider.replace(
+        this.translate.instant(
+          'A total of {{amountBelowFeeStr}} {{coin}} were excluded. These funds come from UTXOs smaller than the network fee provided.'
+        ),
+        { amountBelowFeeStr, coin: this.tx.coin.toUpperCase() }
+      );
       warningMsg.push(message);
     }
 
     if (sendMaxInfo.utxosAboveMaxSize > 0) {
-      let amountAboveMaxSizeStr = (sendMaxInfo.amountAboveMaxSize / 1e8);
-      let message = this.replaceParametersProvider.replace(this.translate.instant('A total of {{amountAboveMaxSizeStr}} {{coin}} were excluded. The maximum size allowed for a transaction was exceeded.'), { amountAboveMaxSizeStr, coin: this.tx.coin.toUpperCase() });
+      let amountAboveMaxSizeStr = sendMaxInfo.amountAboveMaxSize / 1e8;
+      let message = this.replaceParametersProvider.replace(
+        this.translate.instant(
+          'A total of {{amountAboveMaxSizeStr}} {{coin}} were excluded. The maximum size allowed for a transaction was exceeded.'
+        ),
+        { amountAboveMaxSizeStr, coin: this.tx.coin.toUpperCase() }
+      );
       warningMsg.push(message);
     }
     return warningMsg.join('\n');
@@ -719,7 +736,12 @@ export class ConfirmPage {
         let amount = (this.tx.amount / 1e8).toFixed(8);
         let unit = txp.coin.toUpperCase();
         let name = wallet.name;
-        let message = this.replaceParametersProvider.replace(this.translate.instant('Sending {{amount}} {{unit}} from your {{name}} wallet'), { amount, unit, name });
+        let message = this.replaceParametersProvider.replace(
+          this.translate.instant(
+            'Sending {{amount}} {{unit}} from your {{name}} wallet'
+          ),
+          { amount, unit, name }
+        );
         let okText = this.translate.instant('Confirm');
         let cancelText = this.translate.instant('Cancel');
         this.popupProvider
