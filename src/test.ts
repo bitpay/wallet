@@ -47,7 +47,8 @@ import {
   NavController,
   NavParams,
   Platform,
-  ToastController
+  ToastController,
+  ViewController
 } from 'ionic-angular';
 import {
   ActionSheetControllerMock,
@@ -60,7 +61,8 @@ import {
   NavControllerMock,
   NavParamsMock,
   PlatformMock,
-  ToastControllerMock
+  ToastControllerMock,
+  ViewControllerMock
 } from 'ionic-mocks';
 
 import { AndroidFingerprintAuthMock } from '@ionic-native-mocks/android-fingerprint-auth';
@@ -209,6 +211,10 @@ export class TestUtils {
         {
           provide: ToastController,
           useFactory: () => ToastControllerMock.instance()
+        },
+        {
+          provide: ViewController,
+          useFactory: () => ViewControllerMock.instance()
         },
         {
           provide: AndroidFingerprintAuth,

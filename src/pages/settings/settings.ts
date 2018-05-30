@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { NavController } from 'ionic-angular';
+import { Events, ModalController, NavController } from 'ionic-angular';
 import { Logger } from '../../providers/logger/logger';
 
 import * as _ from 'lodash';
@@ -14,8 +14,10 @@ import { HomeIntegrationsProvider } from '../../providers/home-integrations/home
 import { LanguageProvider } from '../../providers/language/language';
 import { PlatformProvider } from '../../providers/platform/platform';
 import { ProfileProvider } from '../../providers/profile/profile';
+import { TouchIdProvider } from '../../providers/touchid/touchid';
 
 // pages
+import { animate } from '@angular/core/src/animation/dsl';
 import { FeedbackCompletePage } from '../feedback/feedback-complete/feedback-complete';
 import { SendFeedbackPage } from '../feedback/send-feedback/send-feedback';
 import { AmazonSettingsPage } from '../integrations/amazon/amazon-settings/amazon-settings';
@@ -24,6 +26,7 @@ import { CoinbaseSettingsPage } from '../integrations/coinbase/coinbase-settings
 import { GlideraSettingsPage } from '../integrations/glidera/glidera-settings/glidera-settings';
 import { MercadoLibreSettingsPage } from '../integrations/mercado-libre/mercado-libre-settings/mercado-libre-settings';
 import { ShapeshiftSettingsPage } from '../integrations/shapeshift/shapeshift-settings/shapeshift-settings';
+import { PinModalPage } from '../pin/pin-modal/pin-modal';
 import { AboutPage } from './about/about';
 import { AddressbookPage } from './addressbook/addressbook';
 import { AdvancedPage } from './advanced/advanced';
@@ -51,19 +54,23 @@ export class SettingsPage {
   public integrationServices: any[] = [];
   public bitpayCardItems: any[] = [];
   public showBitPayCard: boolean = false;
+  public isModalOpen: boolean;
 
   constructor(
     private navCtrl: NavController,
     private app: AppProvider,
     private language: LanguageProvider,
     private externalLinkProvider: ExternalLinkProvider,
+    private events: Events,
     private profileProvider: ProfileProvider,
     private configProvider: ConfigProvider,
     private logger: Logger,
     private homeIntegrationsProvider: HomeIntegrationsProvider,
     private bitPayCardProvider: BitPayCardProvider,
     private platformProvider: PlatformProvider,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private modalCtrl: ModalController,
+    private touchid: TouchIdProvider
   ) {
     this.appName = this.app.info.nameCase;
     this.walletsBch = [];
@@ -76,7 +83,9 @@ export class SettingsPage {
   }
 
   ionViewWillEnter() {
-    this.currentLanguageName = this.language.getName(this.language.getCurrent());
+    this.currentLanguageName = this.language.getName(
+      this.language.getCurrent()
+    );
     this.walletsBtc = this.profileProvider.getWallets({
       coin: 'btc'
     });
@@ -87,8 +96,11 @@ export class SettingsPage {
     this.selectedAlternative = {
       name: this.config.wallet.settings.alternativeName,
       isoCode: this.config.wallet.settings.alternativeIsoCode
-    }
-    this.lockMethod = (this.config && this.config.lock && this.config.lock.method) ? this.config.lock.method.toLowerCase() : null;
+    };
+    this.lockMethod =
+      this.config && this.config.lock && this.config.lock.method
+        ? this.config.lock.method.toLowerCase()
+        : null;
   }
 
   ionViewDidEnter() {
@@ -97,7 +109,7 @@ export class SettingsPage {
 
     // Hide BitPay if linked
     setTimeout(() => {
-      this.integrationServices = _.remove(_.clone(integrations), (x) => {
+      this.integrationServices = _.remove(_.clone(integrations), x => {
         if (x.name == 'debitcard' && x.linked) return;
         else return x;
       });
@@ -105,7 +117,9 @@ export class SettingsPage {
 
     // Only BitPay Wallet
     this.bitPayCardProvider.get({}, (err, cards) => {
-      this.showBitPayCard = this.app.info._enabledExtensions.debitcard ? true : false;
+      this.showBitPayCard = this.app.info._enabledExtensions.debitcard
+        ? true
+        : false;
       this.bitpayCardItems = cards;
     });
   }
@@ -127,7 +141,7 @@ export class SettingsPage {
   }
 
   public openLockPage(): void {
-    this.navCtrl.push(LockPage);
+    this.openLockModal();
   }
 
   public openAddressBookPage(): void {
@@ -151,7 +165,11 @@ export class SettingsPage {
   }
 
   public openFeedbackCompletePage(): void {
-    this.navCtrl.push(FeedbackCompletePage, { score: 4, skipped: true, fromSettings: true });
+    this.navCtrl.push(FeedbackCompletePage, {
+      score: 4,
+      skipped: true,
+      fromSettings: true
+    });
   }
 
   public openSettingIntegration(name: string): void {
@@ -182,12 +200,59 @@ export class SettingsPage {
   }
 
   public openHelpExternalLink(): void {
-    let url = this.appName == 'Copay' ? 'https://github.com/bitpay/copay/issues' : 'https://help.bitpay.com/bitpay-app';
+    let url =
+      this.appName == 'Copay'
+        ? 'https://github.com/bitpay/copay/issues'
+        : 'https://help.bitpay.com/bitpay-app';
     let optIn = true;
     let title = null;
-    let message = this.translate.instant('Help and support information is available at the website.');
+    let message = this.translate.instant(
+      'Help and support information is available at the website.'
+    );
     let okText = this.translate.instant('Open');
     let cancelText = this.translate.instant('Go Back');
-    this.externalLinkProvider.open(url, optIn, title, message, okText, cancelText);
+    this.externalLinkProvider.open(
+      url,
+      optIn,
+      title,
+      message,
+      okText,
+      cancelText
+    );
+  }
+
+  private openLockModal(): void {
+    if (this.isModalOpen) return;
+    let config: any = this.configProvider.get();
+    let lockMethod =
+      config && config.lock && config.lock.method
+        ? config.lock.method.toLowerCase()
+        : null;
+    if (!lockMethod) return;
+    if (lockMethod == 'disabled')
+      this.navCtrl.push(LockPage, {}, { animate: false });
+    if (lockMethod == 'pin') this.openPinModal('lockSetUp');
+    if (lockMethod == 'fingerprint') this.openFingerprintModal();
+  }
+
+  private openPinModal(action): void {
+    this.isModalOpen = true;
+    const modal = this.modalCtrl.create(
+      PinModalPage,
+      { action },
+      { cssClass: 'fullscreen-modal' }
+    );
+    modal.present({ animate: false });
+    modal.onDidDismiss(response => {
+      this.isModalOpen = false;
+      if (response) this.navCtrl.push(LockPage, {}, { animate: false });
+    });
+  }
+  private openFingerprintModal(): void {
+    this.touchid.check().then(() => {
+      setTimeout(() => {
+        this.navCtrl.push(LockPage, {}, { animate: false });
+      }, 300);
+    });
   }
 }

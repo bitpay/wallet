@@ -94,16 +94,9 @@ export class LockPage {
         this.openPinModal('pinSetUp');
         break;
       case 'disabled':
-        if (
-          this.lockOptions.method &&
-          this.lockOptions.method.toLowerCase() == 'pin'
-        )
-          this.openPinModal('removeLock');
-        if (
-          this.lockOptions.method &&
-          this.lockOptions.method.toLowerCase() == 'fingerprint'
-        )
-          this.removeFingerprint();
+        let lock = { method: 'disabled', value: null, bannedUntil: null };
+        this.configProvider.set({ lock });
+        this.checkLockOptions();
         break;
       case 'fingerprint':
         this.lockByFingerprint();
@@ -121,19 +114,6 @@ export class LockPage {
     modal.onDidDismiss(() => {
       this.checkLockOptions();
     });
-  }
-
-  private removeFingerprint(): void {
-    this.touchIdProvider
-      .check()
-      .then(() => {
-        let lock = { method: 'disabled', value: null, bannedUntil: null };
-        this.configProvider.set({ lock });
-        this.checkLockOptions();
-      })
-      .catch(() => {
-        this.checkLockOptions();
-      });
   }
 
   public lockByFingerprint(): void {
