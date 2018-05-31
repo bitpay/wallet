@@ -3,7 +3,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { NavController, NavParams } from 'ionic-angular';
 import { Logger } from '../../../providers/logger/logger';
 
-// native 
+// native
 import { Device } from '@ionic-native/device';
 
 // providers
@@ -22,10 +22,9 @@ import * as _ from 'lodash';
 
 @Component({
   selector: 'page-feedback',
-  templateUrl: 'feedback.html',
+  templateUrl: 'feedback.html'
 })
 export class FeedbackPage {
-
   public score: number;
   public subtitle: string;
   public subsubtitle: string;
@@ -53,45 +52,66 @@ export class FeedbackPage {
     this.isIOS = this.platformProvider.isIOS;
     this.config = this.configProvider.get();
     this.appName = this.appProvider.info.nameCase;
-    this.subtitle = this.replaceParametersProvider.replace(this.translate.instant("5-star ratings help us get {{appName}} into more hands, and more users means more resources can be committed to the app!"), { appName: this.appName });
-    this.subsubtitle = this.replaceParametersProvider.replace(this.translate.instant("Would you be willing to rate {{appName}} in the app store?"), { appName: this.appName });
+    this.subtitle = this.replaceParametersProvider.replace(
+      this.translate.instant(
+        '5-star ratings help us get {{appName}} into more hands, and more users means more resources can be committed to the app!'
+      ),
+      { appName: this.appName }
+    );
+    this.subsubtitle = this.replaceParametersProvider.replace(
+      this.translate.instant(
+        'Would you be willing to rate {{appName}} in the app store?'
+      ),
+      { appName: this.appName }
+    );
   }
 
-
   public skip(): void {
+    this.navCtrl.push(FeedbackCompletePage, {
+      score: this.score,
+      skipped: true
+    });
 
-    this.navCtrl.push(FeedbackCompletePage, { score: this.score, skipped: true })
-
-    let platform = this.device.platform;
-    let version = this.device.version;
+    let platform = this.device.platform || 'Unknown platform';
+    let version = this.device.version || 'Unknown version';
 
     let dataSrc = {
-      "Email": _.values(this.config.emailFor)[0] || ' ',
-      "Feedback": ' ',
-      "Score": this.score,
-      "AppVersion": this.appProvider.info.version,
-      "Platform": platform,
-      "DeviceVersion": version
+      email: _.values(this.config.emailFor)[0] || ' ',
+      feedback: ' ',
+      score: this.score,
+      appVersion: this.appProvider.info.version,
+      platform,
+      deviceVersion: version
     };
+
     this.feedbackProvider.send(dataSrc).catch(() => {
       this.logger.warn('Could not send feedback.');
     });
-  };
+  }
 
   public sendFeedback(): void {
-    this.navCtrl.push(SendFeedbackPage, { score: this.score })
+    this.navCtrl.push(SendFeedbackPage, { score: this.score });
   }
 
   public goAppStore(): void {
     let defaults = this.configProvider.getDefaults();
     let url;
     if (this.isAndroid)
-      url = this.appName == 'Copay' ? defaults.rateApp.copay.android : defaults.rateApp.bitpay.android;
+      url =
+        this.appName == 'Copay'
+          ? defaults.rateApp.copay.android
+          : defaults.rateApp.bitpay.android;
     if (this.isIOS)
-      url = this.appName == 'Copay' ? defaults.rateApp.copay.ios : defaults.rateApp.bitpay.ios;
+      url =
+        this.appName == 'Copay'
+          ? defaults.rateApp.copay.ios
+          : defaults.rateApp.bitpay.ios;
 
     this.externalLinkProvider.open(url);
-    this.navCtrl.push(FeedbackCompletePage, { score: this.score, skipped: true, rated: true })
+    this.navCtrl.push(FeedbackCompletePage, {
+      score: this.score,
+      skipped: true,
+      rated: true
+    });
   }
-
 }

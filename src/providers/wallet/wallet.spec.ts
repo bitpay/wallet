@@ -40,7 +40,7 @@ describe('Provider: Wallet Provider', () => {
   let walletProvider: WalletProvider;
 
   class PersistenceProviderMock {
-    constructor() {}
+    constructor() { }
     getLastAddress(walletId: any) {
       return Promise.resolve('storedAddress');
     }
@@ -150,7 +150,7 @@ describe('Provider: Wallet Provider', () => {
           return true;
         },
         needsBackup: false,
-        createAddress({}, cb) {
+        createAddress({ }, cb) {
           return cb(null, { address: 'newAddress' });
         }
       };
@@ -166,7 +166,7 @@ describe('Provider: Wallet Provider', () => {
           return true;
         },
         needsBackup: false,
-        createAddress({}, cb) {
+        createAddress({ }, cb) {
           return cb(new Error('CONNECTION_ERROR'));
         }
       };
@@ -181,10 +181,10 @@ describe('Provider: Wallet Provider', () => {
           return true;
         },
         needsBackup: false,
-        createAddress({}, cb) {
+        createAddress({ }, cb) {
           return cb(new Error('MAIN_ADDRESS_GAP_REACHED'));
         },
-        getMainAddresses({}, cb) {
+        getMainAddresses({ }, cb) {
           let mainAddress = [];
           mainAddress.push({ address: 'mainAddress' });
           return cb(null, mainAddress);
@@ -198,10 +198,18 @@ describe('Provider: Wallet Provider', () => {
   });
 
   describe('Function: Get Protocol Handler Function', () => {
-    it('should return bitcoincash if coin is bch', () => {
+    it('should return bitcoincash if coin is bch and network is livenet', () => {
       let coin = 'bch';
-      let protocol = walletProvider.getProtocolHandler(coin);
+      let network = 'livenet';
+      let protocol = walletProvider.getProtocolHandler(coin, network);
       expect(protocol).toEqual('bitcoincash');
+    });
+
+    it('should return bchtest if coin is bch and network is testnet', () => {
+      let coin = 'bch';
+      let network = 'testnet';
+      let protocol = walletProvider.getProtocolHandler(coin, network);
+      expect(protocol).toEqual('bchtest');
     });
 
     it('should return bitcoin if coin is btc', () => {

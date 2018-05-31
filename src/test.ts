@@ -29,6 +29,7 @@ import {
 } from '@ngx-translate/core';
 import { MomentModule } from 'angular2-moment';
 import {
+  ActionSheetController,
   AlertController,
   App,
   Config,
@@ -45,18 +46,23 @@ import {
   ModalController,
   NavController,
   NavParams,
-  Platform
+  Platform,
+  ToastController,
+  ViewController
 } from 'ionic-angular';
 import {
+  ActionSheetControllerMock,
   AlertControllerMock,
   ConfigMock,
   EventsMock,
+  HapticMock,
   LoadingControllerMock,
   ModalControllerMock,
-  HapticMock,
   NavControllerMock,
   NavParamsMock,
-  PlatformMock
+  PlatformMock,
+  ToastControllerMock,
+  ViewControllerMock
 } from 'ionic-mocks';
 
 import { AndroidFingerprintAuthMock } from '@ionic-native-mocks/android-fingerprint-auth';
@@ -76,9 +82,10 @@ import { AppProvider } from './providers/app/app';
 import { PersistenceProvider } from './providers/persistence/persistence';
 import { PlatformProvider } from './providers/platform/platform';
 
+import { KeysPipe } from './pipes/keys';
 import { SatToFiatPipe } from './pipes/satToFiat';
 import { SatToUnitPipe } from './pipes/satToUnit';
-import { KeysPipe } from './pipes/keys';
+
 import { ProvidersModule } from './providers/providers.module';
 
 import * as appTemplate from './../app-template/bitpay/appConfig.json';
@@ -134,7 +141,7 @@ export class TestUtils {
   ): Promise<{ fixture: any; instance: any; testBed: typeof TestBed }> {
     const providers = (otherParams && otherParams.providers) || [];
     await TestBed.configureTestingModule({
-      declarations: [...components, SatToFiatPipe, SatToUnitPipe, KeysPipe],
+      declarations: [...components, KeysPipe, SatToFiatPipe, SatToUnitPipe],
       imports: [
         FormsModule,
         IonicModule,
@@ -151,6 +158,7 @@ export class TestUtils {
         App,
         AppProvider,
         DecimalPipe,
+        KeysPipe,
         SatToFiatPipe,
         SatToUnitPipe,
         KeysPipe,
@@ -179,6 +187,10 @@ export class TestUtils {
         { provide: QRScanner, useClass: QRScannerMock },
         { provide: TouchID, useClass: TouchIDMock },
         {
+          provide: ActionSheetController,
+          useFactory: () => ActionSheetControllerMock.instance()
+        },
+        {
           provide: ModalController,
           useFactory: () => ModalControllerMock.instance()
         },
@@ -186,7 +198,11 @@ export class TestUtils {
           provide: AlertController,
           useFactory: () => AlertControllerMock.instance()
         },
-        {  
+        {
+          provide: Haptic,
+          useFactory: () => HapticMock.instance()
+        },
+        {
           provide: Haptic,
           useFactory: () => HapticMock.instance()
         },
@@ -197,6 +213,14 @@ export class TestUtils {
         {
           provide: NavController,
           useFactory: () => NavControllerMock.instance()
+        },
+        {
+          provide: ToastController,
+          useFactory: () => ToastControllerMock.instance()
+        },
+        {
+          provide: ViewController,
+          useFactory: () => ViewControllerMock.instance()
         },
         {
           provide: AndroidFingerprintAuth,

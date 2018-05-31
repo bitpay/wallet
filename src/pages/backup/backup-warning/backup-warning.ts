@@ -1,13 +1,20 @@
 import { Component } from '@angular/core';
-import { AlertController, ModalController, NavController, NavParams } from 'ionic-angular';
+import {
+  AlertController,
+  ModalController,
+  NavController,
+  NavParams
+} from 'ionic-angular';
 
 // pages
 import { BackupGamePage } from '../backup-game/backup-game';
-import { BackupWarningModalPage } from '../backup-warning-modal/backup-warning-modal';
+
+// components
+import { CustomModalComponent } from '../../../components/custom-modal/custom-modal';
 
 @Component({
   selector: 'page-backup-warning',
-  templateUrl: 'backup-warning.html',
+  templateUrl: 'backup-warning.html'
 })
 export class BackupWarningPage {
   public currentIndex: number;
@@ -25,11 +32,19 @@ export class BackupWarningPage {
   }
 
   public openWarningModal(): void {
-    let BackupWarningModal = this.modalCtrl.create(BackupWarningModalPage, {}, { showBackdrop: false, enableBackdropDismiss: false });
+    let BackupWarningModal = this.modalCtrl.create(
+      CustomModalComponent,
+      { modal: 'backup-warning' },
+      { cssClass: 'fullscreen-modal' }
+    );
     BackupWarningModal.present({ animate: false });
-    BackupWarningModal.onDidDismiss(() => {
-      this.navCtrl.push(BackupGamePage, { walletId: this.walletId, fromOnboarding: this.fromOnboarding });
+    BackupWarningModal.onDidDismiss(response => {
+      if (response) {
+        this.navCtrl.push(BackupGamePage, {
+          walletId: this.walletId,
+          fromOnboarding: this.fromOnboarding
+        });
+      }
     });
   }
-
 }

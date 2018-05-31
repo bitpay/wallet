@@ -1,7 +1,13 @@
 import { Component, ViewChild } from '@angular/core';
 import { StatusBar } from '@ionic-native/status-bar';
 import { Vibration } from '@ionic-native/vibration';
-import { Events, NavController, NavParams, Platform } from 'ionic-angular';
+import {
+  Events,
+  NavController,
+  NavParams,
+  Platform,
+  ViewController
+} from 'ionic-angular';
 
 import { Animate } from '../../../directives/animate/animate';
 import { ConfigProvider } from '../../../providers/config/config';
@@ -37,7 +43,8 @@ export class PinModalPage {
     private navParams: NavParams,
     private persistenceProvider: PersistenceProvider,
     private statusBar: StatusBar,
-    private vibration: Vibration
+    private vibration: Vibration,
+    private viewCtrl: ViewController
   ) {
     this.ATTEMPT_LIMIT = 3;
     this.ATTEMPT_LOCK_OUT_TIME = 5 * 60;
@@ -54,11 +61,13 @@ export class PinModalPage {
 
     this.action = this.navParams.get('action');
 
-    if (this.action === 'checkPin' || this.action === 'removeLock') {
+    if (this.action === 'checkPin' || this.action === 'lockSetUp') {
       this.persistenceProvider.getLockStatus().then((isLocked: string) => {
         if (!isLocked) return;
-        this.showLocktimer();
-        this.setLockRelease();
+        if (this.action === 'checkPin') {
+          this.showLocktimer();
+          this.setLockRelease();
+        }
       });
     }
   }
@@ -75,12 +84,13 @@ export class PinModalPage {
     }
   }
 
-  public close(): void {
+  public close(cancelClicked?: boolean): void {
     if (this.countDown) {
       clearInterval(this.countDown);
     }
     this.unregister();
-    this.navCtrl.pop({ animate: true });
+    if (this.action === 'lockSetUp') this.viewCtrl.dismiss(cancelClicked);
+    else this.navCtrl.pop({ animate: true });
   }
 
   public newEntry(value: string): void {
@@ -91,7 +101,7 @@ export class PinModalPage {
     this.incorrect = false;
     this.currentPin = this.currentPin + value;
     if (!this.isComplete()) return;
-    if (this.action === 'checkPin' || this.action === 'removeLock') {
+    if (this.action === 'checkPin' || this.action === 'lockSetUp') {
       setTimeout(() => {
         this.checkIfCorrect();
       }, 100);
@@ -117,7 +127,10 @@ export class PinModalPage {
     this.currentAttempts += 1;
     this.logger.info('Attempts to unlock:', this.currentAttempts);
     this.incorrect = true;
-    if (this.currentAttempts == this.ATTEMPT_LIMIT) {
+    if (
+      this.currentAttempts == this.ATTEMPT_LIMIT &&
+      this.action !== 'lockSetUp'
+    ) {
       this.currentAttempts = 0;
       this.persistenceProvider.setLockStatus('locked');
       this.showLocktimer();
@@ -171,12 +184,7 @@ export class PinModalPage {
     let config = this.configProvider.get();
     let pinValue = config.lock && config.lock.value;
     if (pinValue == this.currentPin) {
-      if (this.action === 'removeLock') {
-        let lock = { method: 'disabled', value: null, bannedUntil: null };
-        this.configProvider.set({ lock });
-        this.close();
-      }
-      if (this.action === 'checkPin') {
+      if (this.action === 'checkPin' || this.action === 'lockSetUp') {
         this.close();
       }
     } else {

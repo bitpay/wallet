@@ -1,4 +1,4 @@
-page-fee-warning {
+custom-modal {
   .popup-modal {
     background: #fff;
     top: 50% !important;
@@ -16,13 +16,12 @@ page-fee-warning {
     .modal-img {
       position: absolute;
       width: 100%;
-      background-color: color($colors, danger);
       padding: 1rem;
       border-radius: 12px 12px 0px 0px;
       img {
         height: 70px;
       }
-    } 
+    }
     .modal-content {
       height: 100%;
       display: flex;
@@ -36,7 +35,7 @@ page-fee-warning {
         font-size: 18px;
       }
       .modal-message {
-        padding: 1rem 2rem 0rem 2rem;
+        padding: 1rem 2rem 1rem 2rem;
         font-size: 12.5px;
         line-height: 22px;
       }
@@ -44,5 +43,17 @@ page-fee-warning {
         margin: 0;
       }
     }
+  }
+  .height-content {
+    height: 100%;
+  }
+  .background-color-warning {
+    background-color: color($colors, warning);
+  }
+  .background-color-danger {
+    background-color: color($colors, danger);
+  }
+  .background-color-success {
+    background-color: color($colors, success);
   }
 }

@@ -61,12 +61,7 @@ export class LockPage {
             this.lockOptions.method.toLowerCase() == 'pin'
               ? true
               : false,
-          disabled:
-            needsBackup ||
-            (this.lockOptions.method &&
-            this.lockOptions.method.toLowerCase() == 'fingerprint'
-              ? true
-              : false)
+          disabled: needsBackup
         },
         {
           label: this.translate.instant('Fingerprint'),
@@ -76,13 +71,7 @@ export class LockPage {
             this.lockOptions.method.toLowerCase() == 'fingerprint'
               ? true
               : false,
-          disabled:
-            !isAvailable ||
-            needsBackup ||
-            (this.lockOptions.method &&
-            this.lockOptions.method.toLowerCase() == 'pin'
-              ? true
-              : false)
+          disabled: !isAvailable || needsBackup
         }
       ];
     });
@@ -90,25 +79,22 @@ export class LockPage {
 
   public select(method): void {
     switch (method) {
+      case 'disabled':
+        this.removeLockMethod();
+        break;
       case 'pin':
         this.openPinModal('pinSetUp');
-        break;
-      case 'disabled':
-        if (
-          this.lockOptions.method &&
-          this.lockOptions.method.toLowerCase() == 'pin'
-        )
-          this.openPinModal('removeLock');
-        if (
-          this.lockOptions.method &&
-          this.lockOptions.method.toLowerCase() == 'fingerprint'
-        )
-          this.removeFingerprint();
         break;
       case 'fingerprint':
         this.lockByFingerprint();
         break;
     }
+  }
+
+  private removeLockMethod(): void {
+    let lock = { method: 'disabled', value: null, bannedUntil: null };
+    this.configProvider.set({ lock });
+    this.checkLockOptions();
   }
 
   private openPinModal(action): void {
@@ -121,19 +107,6 @@ export class LockPage {
     modal.onDidDismiss(() => {
       this.checkLockOptions();
     });
-  }
-
-  private removeFingerprint(): void {
-    this.touchIdProvider
-      .check()
-      .then(() => {
-        let lock = { method: 'disabled', value: null, bannedUntil: null };
-        this.configProvider.set({ lock });
-        this.checkLockOptions();
-      })
-      .catch(() => {
-        this.checkLockOptions();
-      });
   }
 
   public lockByFingerprint(): void {
