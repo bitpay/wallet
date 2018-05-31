@@ -1,5 +1,10 @@
 import { Component, ViewChild } from '@angular/core';
-import { Events, ModalController, NavController, NavParams } from 'ionic-angular';
+import {
+  Events,
+  ModalController,
+  NavController,
+  NavParams
+} from 'ionic-angular';
 import * as _ from 'lodash';
 import { Logger } from '../../../../providers/logger/logger';
 
@@ -19,7 +24,7 @@ import { CoinbasePage } from '../coinbase';
 
 @Component({
   selector: 'page-buy-coinbase',
-  templateUrl: 'buy-coinbase.html',
+  templateUrl: 'buy-coinbase.html'
 })
 export class BuyCoinbasePage {
   @ViewChild('slideButton') slideButton;
@@ -57,7 +62,7 @@ export class BuyCoinbasePage {
     private txFormatProvider: TxFormatProvider,
     private profileProvider: ProfileProvider,
     private modalCtrl: ModalController,
-    private platformProvider: PlatformProvider,
+    private platformProvider: PlatformProvider
   ) {
     this.coin = 'btc';
     this.isFiat = this.navParams.data.currency != 'BTC' ? true : false;
@@ -92,8 +97,7 @@ export class BuyCoinbasePage {
   }
 
   private showErrorAndBack(err: any): void {
-    if (this.isCordova)
-      this.slideButton.isConfirmed(false);
+    if (this.isCordova) this.slideButton.isConfirmed(false);
     this.logger.error(err);
     err = err.errors ? err.errors[0].message : err;
     this.popupProvider.ionicAlert('Error', err).then(() => {
@@ -102,8 +106,7 @@ export class BuyCoinbasePage {
   }
 
   private showError(err: any): void {
-    if (this.isCordova)
-      this.slideButton.isConfirmed(false);
+    if (this.isCordova) this.slideButton.isConfirmed(false);
     this.logger.error(err);
     err = err.errors ? err.errors[0].message : err;
     this.popupProvider.ionicAlert('Error', err);
@@ -119,47 +122,58 @@ export class BuyCoinbasePage {
       }
       let accessToken = res.accessToken;
 
-      this.coinbaseProvider.buyPrice(accessToken, this.coinbaseProvider.getAvailableCurrency(), (err: any, b: any) => {
-        this.buyPrice = b.data || null;
-      });
+      this.coinbaseProvider.buyPrice(
+        accessToken,
+        this.coinbaseProvider.getAvailableCurrency(),
+        (err: any, b: any) => {
+          this.buyPrice = b.data || null;
+        }
+      );
 
       this.paymentMethods = [];
       this.selectedPaymentMethodId = null;
-      this.coinbaseProvider.getPaymentMethods(accessToken, (err: any, p: any) => {
-        if (err) {
-          this.onGoingProcessProvider.clear();
-          this.showErrorAndBack(err);
-          return;
-        }
+      this.coinbaseProvider.getPaymentMethods(
+        accessToken,
+        (err: any, p: any) => {
+          if (err) {
+            this.onGoingProcessProvider.clear();
+            this.showErrorAndBack(err);
+            return;
+          }
 
-        let hasPrimary;
-        let pm;
-        for (let i = 0; i < p.data.length; i++) {
-          pm = p.data[i];
-          if (pm.allow_buy) {
-            this.paymentMethods.push(pm);
+          let hasPrimary;
+          let pm;
+          for (let i = 0; i < p.data.length; i++) {
+            pm = p.data[i];
+            if (pm.allow_buy) {
+              this.paymentMethods.push(pm);
+            }
+            if (pm.allow_buy && pm.primary_buy) {
+              hasPrimary = true;
+              this.selectedPaymentMethodId = pm.id;
+            }
           }
-          if (pm.allow_buy && pm.primary_buy) {
-            hasPrimary = true;
-            this.selectedPaymentMethodId = pm.id;
+          if (_.isEmpty(this.paymentMethods)) {
+            this.onGoingProcessProvider.clear();
+            let url =
+              'https://support.coinbase.com/customer/portal/articles/1148716-payment-methods-for-us-customers';
+            let msg = 'No payment method available to buy';
+            let okText = 'More info';
+            let cancelText = 'Go Back';
+            this.popupProvider
+              .ionicConfirm(null, msg, okText, cancelText)
+              .then(res => {
+                if (res) this.externalLinkProvider.open(url);
+                this.navCtrl.remove(3, 1);
+                this.navCtrl.pop();
+              });
+            return;
           }
+          if (!hasPrimary)
+            this.selectedPaymentMethodId = this.paymentMethods[0].id;
+          this.buyRequest();
         }
-        if (_.isEmpty(this.paymentMethods)) {
-          this.onGoingProcessProvider.clear();
-          let url = 'https://support.coinbase.com/customer/portal/articles/1148716-payment-methods-for-us-customers';
-          let msg = 'No payment method available to buy';
-          let okText = 'More info';
-          let cancelText = 'Go Back';
-          this.popupProvider.ionicConfirm(null, msg, okText, cancelText).then((res) => {
-            if (res) this.externalLinkProvider.open(url);
-            this.navCtrl.remove(3, 1);
-            this.navCtrl.pop();
-          });
-          return;
-        }
-        if (!hasPrimary) this.selectedPaymentMethodId = this.paymentMethods[0].id;
-        this.buyRequest();
-      });
+      );
     });
   }
 
@@ -178,14 +192,19 @@ export class BuyCoinbasePage {
         payment_method: this.selectedPaymentMethodId,
         quote: true
       };
-      this.coinbaseProvider.buyRequest(accessToken, accountId, dataSrc, (err: any, data: any) => {
-        this.onGoingProcessProvider.clear();
-        if (err) {
-          this.showErrorAndBack(err);
-          return;
+      this.coinbaseProvider.buyRequest(
+        accessToken,
+        accountId,
+        dataSrc,
+        (err: any, data: any) => {
+          this.onGoingProcessProvider.clear();
+          if (err) {
+            this.showErrorAndBack(err);
+            return;
+          }
+          this.buyRequestInfo = data.data;
         }
-        this.buyRequestInfo = data.data;
-      });
+      );
     });
   }
 
@@ -193,47 +212,52 @@ export class BuyCoinbasePage {
     let message = 'Buy bitcoin for ' + this.amountUnitStr;
     let okText = 'Confirm';
     let cancelText = 'Cancel';
-    this.popupProvider.ionicConfirm(null, message, okText, cancelText).then((ok: boolean) => {
-      if (!ok) {
-        if (this.isCordova)
-          this.slideButton.isConfirmed(false);
-        return;
-      }
-
-      this.onGoingProcessProvider.set('buyingBitcoin');
-      this.coinbaseProvider.init((err: any, res: any) => {
-        if (err) {
-          this.onGoingProcessProvider.clear();
-          this.showError(this.coinbaseProvider.getErrorsAsString(err));
+    this.popupProvider
+      .ionicConfirm(null, message, okText, cancelText)
+      .then((ok: boolean) => {
+        if (!ok) {
+          if (this.isCordova) this.slideButton.isConfirmed(false);
           return;
         }
-        let accessToken = res.accessToken;
-        let accountId = res.accountId;
-        let dataSrc = {
-          amount: this.amount,
-          currency: this.currency,
-          payment_method: this.selectedPaymentMethodId,
-          commit: true
-        };
-        this.coinbaseProvider.buyRequest(accessToken, accountId, dataSrc, (err: any, b: any) => {
+
+        this.onGoingProcessProvider.set('buyingBitcoin');
+        this.coinbaseProvider.init((err: any, res: any) => {
           if (err) {
             this.onGoingProcessProvider.clear();
             this.showError(this.coinbaseProvider.getErrorsAsString(err));
             return;
           }
-          setTimeout(() => {
-            let tx = b.data ? b.data.transaction : null;
-            if (tx && tx.id) {
-              this.processBuyTx(tx);
+          let accessToken = res.accessToken;
+          let accountId = res.accountId;
+          let dataSrc = {
+            amount: this.amount,
+            currency: this.currency,
+            payment_method: this.selectedPaymentMethodId,
+            commit: true
+          };
+          this.coinbaseProvider.buyRequest(
+            accessToken,
+            accountId,
+            dataSrc,
+            (err: any, b: any) => {
+              if (err) {
+                this.onGoingProcessProvider.clear();
+                this.showError(this.coinbaseProvider.getErrorsAsString(err));
+                return;
+              }
+              setTimeout(() => {
+                let tx = b.data ? b.data.transaction : null;
+                if (tx && tx.id) {
+                  this.processBuyTx(tx);
+                } else {
+                  this._processBuyOrder(b);
+                }
+              }, 10000);
             }
-            else {
-              this._processBuyOrder(b);
-            }
-          }, 10000);
+          );
         });
       });
-    });
-  };
+  }
 
   private processBuyTx(tx: any): void {
     if (!tx) {
@@ -242,52 +266,73 @@ export class BuyCoinbasePage {
       return;
     }
 
-    this.coinbaseProvider.getTransaction(this.accessToken, this.accountId, tx.id, (err: any, updatedTx: any) => {
-      if (err) {
-        this.onGoingProcessProvider.clear();
-        this.showError(this.coinbaseProvider.getErrorsAsString(err));
-        return;
-      }
-      this.walletProvider.getAddress(this.wallet, false).then((walletAddr: string) => {
-
-        updatedTx.data['toAddr'] = walletAddr;
-        updatedTx.data['status'] = 'pending'; // Forcing "pending" status to process later
-
-        this.logger.debug('Saving transaction to process later...');
-        this.coinbaseProvider.savePendingTransaction(updatedTx.data, {}, (err: any) => {
+    this.coinbaseProvider.getTransaction(
+      this.accessToken,
+      this.accountId,
+      tx.id,
+      (err: any, updatedTx: any) => {
+        if (err) {
           this.onGoingProcessProvider.clear();
-          if (err) this.logger.debug(err);
-          this.openFinishModal();
-        });
-      }).catch((err) => {
-        this.onGoingProcessProvider.clear();
-        this.showError(err);
-      });
-    });
+          this.showError(this.coinbaseProvider.getErrorsAsString(err));
+          return;
+        }
+        this.walletProvider
+          .getAddress(this.wallet, false)
+          .then((walletAddr: string) => {
+            updatedTx.data['toAddr'] = walletAddr;
+            updatedTx.data['status'] = 'pending'; // Forcing "pending" status to process later
+
+            this.logger.debug('Saving transaction to process later...');
+            this.coinbaseProvider.savePendingTransaction(
+              updatedTx.data,
+              {},
+              (err: any) => {
+                this.onGoingProcessProvider.clear();
+                if (err) this.logger.debug(err);
+                this.openFinishModal();
+              }
+            );
+          })
+          .catch(err => {
+            this.onGoingProcessProvider.clear();
+            this.showError(err);
+          });
+      }
+    );
   }
 
   private _processBuyOrder(b: any): void {
-    this.coinbaseProvider.getBuyOrder(this.accessToken, this.accountId, b.data.id, (err: any, buyResp: any) => {
-      if (err) {
-        this.onGoingProcessProvider.clear();
-        this.showError(this.coinbaseProvider.getErrorsAsString(err));
-        return;
+    this.coinbaseProvider.getBuyOrder(
+      this.accessToken,
+      this.accountId,
+      b.data.id,
+      (err: any, buyResp: any) => {
+        if (err) {
+          this.onGoingProcessProvider.clear();
+          this.showError(this.coinbaseProvider.getErrorsAsString(err));
+          return;
+        }
+        let tx = buyResp.data ? buyResp.data.transaction : null;
+        if (tx && tx.id) {
+          this.processBuyTx(tx);
+        } else {
+          setTimeout(() => {
+            this._processBuyOrder(b);
+          }, 5000);
+        }
       }
-      let tx = buyResp.data ? buyResp.data.transaction : null;
-      if (tx && tx.id) {
-        this.processBuyTx(tx);
-      } else {
-        setTimeout(() => {
-          this._processBuyOrder(b);
-        }, 5000);
-      }
-    });
+    );
   }
 
   public showWallets(): void {
     this.isOpenSelector = true;
     let id = this.wallet ? this.wallet.credentials.walletId : null;
-    this.events.publish('showWalletsSelectorEvent', this.wallets, id, 'Receive in');
+    this.events.publish(
+      'showWalletsSelectorEvent',
+      this.wallets,
+      id,
+      'Receive in'
+    );
     this.events.subscribe('selectWalletEvent', (wallet: any) => {
       if (!_.isEmpty(wallet)) this.onWalletSelect(wallet);
       this.events.unsubscribe('selectWalletEvent');
@@ -297,7 +342,11 @@ export class BuyCoinbasePage {
 
   public onWalletSelect(wallet: any) {
     this.wallet = wallet;
-    let parsedAmount = this.txFormatProvider.parseAmount(this.coin, this.amount, this.currency);
+    let parsedAmount = this.txFormatProvider.parseAmount(
+      this.coin,
+      this.amount,
+      this.currency
+    );
 
     // Buy always in BTC
     this.amount = (parsedAmount.amountSat / 100000000).toFixed(8);
@@ -317,14 +366,22 @@ export class BuyCoinbasePage {
 
   private openFinishModal(): void {
     let finishText = 'Bought';
-    let finishComment = 'Bitcoin purchase completed. Coinbase has queued the transfer to your selected wallet';
-    let modal = this.modalCtrl.create(FinishModalPage, { finishText, finishComment }, { showBackdrop: true, enableBackdropDismiss: false });
+    let finishComment =
+      'Bitcoin purchase completed. Coinbase has queued the transfer to your selected wallet';
+    let modal = this.modalCtrl.create(
+      FinishModalPage,
+      { finishText, finishComment },
+      { showBackdrop: true, enableBackdropDismiss: false }
+    );
     modal.present();
     modal.onDidDismiss(async () => {
       await this.navCtrl.popToRoot({ animate: false });
       await this.navCtrl.parent.select(0);
-      await this.navCtrl.push(CoinbasePage, { coin: 'btc' }, { animate: false });
+      await this.navCtrl.push(
+        CoinbasePage,
+        { coin: 'btc' },
+        { animate: false }
+      );
     });
   }
-
 }

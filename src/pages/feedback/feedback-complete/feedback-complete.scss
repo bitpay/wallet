@@ -4,19 +4,19 @@ page-feedback-complete {
     display: flex;
     justify-content: center;
     align-items: center;
-    .share-the-love{
+    .share-the-love {
       display: flex;
       justify-content: center;
       .share-the-love-illustration {
         width: 25%;
         height: 25%;
       }
-    }  
+    }
   }
   .feedback-title {
     font-size: 20px;
     font-weight: bold;
-    color: color($colors,dark);
+    color: color($colors, dark);
     margin: 20px 10px;
     text-align: center;
   }
@@ -27,7 +27,7 @@ page-feedback-complete {
   .share-buttons {
     padding: 50px 10px 30px;
     text-align: center;
-    background-color: color($colors,blank);
+    background-color: color($colors, blank);
     min-height: 200px;
     position: absolute;
     bottom: 0rem;
@@ -43,7 +43,7 @@ page-feedback-complete {
     }
     .name {
       padding-top: 10px;
-      font-size: .9rem;
+      font-size: 0.9rem;
     }
   }
   .illustration-send {

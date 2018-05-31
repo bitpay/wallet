@@ -1,6 +1,9 @@
 /* tslint:disable */
 import { TestBed, getTestBed, inject, async } from '@angular/core/testing';
-import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import {
+  HttpClientTestingModule,
+  HttpTestingController
+} from '@angular/common/http/testing';
 import { Logger } from '../../providers/logger/logger';
 import {
   TranslateModule,
@@ -23,10 +26,7 @@ describe('LoggerProvider', () => {
           loader: { provide: TranslateLoader, useClass: TranslateFakeLoader }
         })
       ],
-      providers: [
-        Logger,
-        Platform
-      ]
+      providers: [Logger, Platform]
     });
 
     injector = getTestBed();
@@ -35,11 +35,21 @@ describe('LoggerProvider', () => {
   });
 
   it('should be able use optional params for errors', () => {
-    service.error('So long and thanks for all the fish!', 'dolphins', 'mice', 'humans');
+    service.error(
+      'So long and thanks for all the fish!',
+      'dolphins',
+      'mice',
+      'humans'
+    );
   });
 
   it('should be able use optional params for debug', () => {
-    service.debug('The answer to life, the universe, and everything is 42.', 'dolphins', 'mice', 'humans');
+    service.debug(
+      'The answer to life, the universe, and everything is 42.',
+      'dolphins',
+      'mice',
+      'humans'
+    );
   });
 
   it('should be able use optional params for warnings', () => {
@@ -47,7 +57,12 @@ describe('LoggerProvider', () => {
   });
 
   it('should be able use optional params for info', () => {
-    service.info("Who's going to dinner at the restaurant at the end of the universe?", 'Arthur', 'Zaphod', 'Trillian');
+    service.info(
+      "Who's going to dinner at the restaurant at the end of the universe?",
+      'Arthur',
+      'Zaphod',
+      'Trillian'
+    );
   });
 
   it('should get levels', () => {
@@ -62,28 +77,28 @@ describe('LoggerProvider', () => {
 
   it('should get weight', () => {
     let weight = service.getWeight(1);
-    expect(weight).toEqual(
-      { level: 'error', weight: 1, label: 'Error' }
-    );
+    expect(weight).toEqual({ level: 'error', weight: 1, label: 'Error' });
     weight = service.getWeight(2);
-    expect(weight).toEqual(
-      { level: 'warn', weight: 2, label: 'Warning' }
-    );
+    expect(weight).toEqual({ level: 'warn', weight: 2, label: 'Warning' });
     weight = service.getWeight(3);
-    expect(weight).toEqual(
-      { level: 'info', weight: 3, label: 'Info', default: true }
-    );
+    expect(weight).toEqual({
+      level: 'info',
+      weight: 3,
+      label: 'Info',
+      default: true
+    });
     weight = service.getWeight(4);
-    expect(weight).toEqual(
-      { level: 'debug', weight: 4, label: 'Debug' }
-    );
+    expect(weight).toEqual({ level: 'debug', weight: 4, label: 'Debug' });
   });
 
   it('should get the defaul weight', () => {
     let defaultWeight = service.getDefaultWeight();
-    expect(defaultWeight).toEqual(
-      { level: 'info', weight: 3, label: 'Info', default: true }
-    );
+    expect(defaultWeight).toEqual({
+      level: 'info',
+      weight: 3,
+      label: 'Info',
+      default: true
+    });
   });
 
   it('should get logs by filtered weight', () => {
@@ -95,7 +110,7 @@ describe('LoggerProvider', () => {
     expect(filteredLogs.length).toBe(2);
 
     service.info("Don't panic");
-    service.info("Take peanuts");
+    service.info('Take peanuts');
     service.info("Don't forget a towel");
     filteredLogs = service.get(3);
     expect(filteredLogs.length).toBe(3);
@@ -120,7 +135,11 @@ describe('LoggerProvider', () => {
   });
 
   it('should process args', () => {
-    let processedArgs = service.processingArgs(['bulldozer', 'bathrobe', 'satchel']);
+    let processedArgs = service.processingArgs([
+      'bulldozer',
+      'bathrobe',
+      'satchel'
+    ]);
     expect(processedArgs).toEqual('bulldozer bathrobe satchel');
 
     processedArgs = service.processingArgs('babel fish');
@@ -132,14 +151,22 @@ describe('LoggerProvider', () => {
     processedArgs = service.processingArgs(['babel', false, 'fish']);
     expect(processedArgs).toEqual('babel null fish');
 
-    processedArgs = service.processingArgs(['babel', { message: 'Save the Humans' }, 'fish']);
+    processedArgs = service.processingArgs([
+      'babel',
+      { message: 'Save the Humans' },
+      'fish'
+    ]);
     expect(processedArgs).toEqual('babel Save the Humans fish');
 
-    processedArgs = service.processingArgs(['babel', { 'improbability': 'infinite' }, 'fish']);
+    processedArgs = service.processingArgs([
+      'babel',
+      { improbability: 'infinite' },
+      'fish'
+    ]);
     expect(processedArgs).toEqual('babel {"improbability":"infinite"} fish');
 
     // cyclical reference; yeah, baby! to break JSON.stringify
-    let a = { b: { a: { } } };
+    let a = { b: { a: {} } };
     a.b.a = a;
     processedArgs = service.processingArgs(['babel', a, 'fish']);
     expect(processedArgs).toEqual('babel undefined fish');

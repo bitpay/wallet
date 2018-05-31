@@ -12,7 +12,7 @@ import { PlatformProvider } from '../../../../../../providers/platform/platform'
 
 @Component({
   selector: 'page-all-addresses',
-  templateUrl: 'all-addresses.html',
+  templateUrl: 'all-addresses.html'
 })
 export class AllAddressesPage {
   public noBalance: any;
@@ -62,11 +62,24 @@ export class AllAddressesPage {
       this.onGoingProcessProvider.clear();
       let appName = this.appProvider.info.nameCase;
 
-      let body: string = appName + ' Wallet "' + this.walletName + '" Addresses\n  Only Main Addresses are  shown.\n\n';
-      body += "\n";
-      body += this.allAddresses.map((v) => {
-        return ('* ' + v.address + ' xpub' + v.path.substring(1) + ' ' + this.formatDate(v.createdOn));
-      }).join("\n");
+      let body: string =
+        appName +
+        ' Wallet "' +
+        this.walletName +
+        '" Addresses\n  Only Main Addresses are  shown.\n\n';
+      body += '\n';
+      body += this.allAddresses
+        .map(v => {
+          return (
+            '* ' +
+            v.address +
+            ' xpub' +
+            v.path.substring(1) +
+            ' ' +
+            this.formatDate(v.createdOn)
+          );
+        })
+        .join('\n');
 
       this.socialSharing.shareViaEmail(
         body,
@@ -74,9 +87,8 @@ export class AllAddressesPage {
         null, // TO: must be null or an array
         null, // CC: must be null or an array
         null, // BCC: must be null or an array
-        null, // FILES: can be null, a string, or an array
+        null // FILES: can be null, a string, or an array
       );
     });
   }
-
 }

@@ -159,7 +159,7 @@ export class WalletDetailsPage {
     this.updateTxHistoryError = false;
     this.updatingTxHistoryProgress = 0;
 
-    let progressFn = function (txs, newTxs) {
+    let progressFn = function(txs, newTxs) {
       if (newTxs > 5) this.thistory = null;
       this.updatingTxHistoryProgress = newTxs;
     }.bind(this);
@@ -346,10 +346,18 @@ export class WalletDetailsPage {
   public openExternalLink(url: string): void {
     let optIn = true;
     let title = null;
-    let message = this.translate.instant('Help and support information is available at the website.');
+    let message = this.translate.instant(
+      'Help and support information is available at the website.'
+    );
     let okText = this.translate.instant('Open');
     let cancelText = this.translate.instant('Go Back');
-    this.externalLinkProvider.open(url, optIn, title, message, okText, cancelText);
+    this.externalLinkProvider.open(
+      url,
+      optIn,
+      title,
+      message,
+      okText,
+      cancelText
+    );
   }
-
 }

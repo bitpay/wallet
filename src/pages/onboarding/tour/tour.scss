@@ -26,12 +26,12 @@ page-tour {
       height: 50%;
       min-height: 240px;
       padding: 2em;
-      @media(max-height: 560px) {
-        padding: 0em 4em 0em 4em;    
+      @media (max-height: 560px) {
+        padding: 0em 4em 0em 4em;
       }
     }
     .ticker-img {
-      @media(max-height: 560px) {
+      @media (max-height: 560px) {
         padding: 0em 2em 0em 2em;
       }
     }
@@ -56,7 +56,7 @@ page-tour {
     text-align: center;
     margin-bottom: -5em;
     margin-top: 3em;
-    @media(max-height: 560px) {
+    @media (max-height: 560px) {
       margin-top: 0.5em;
       margin-bottom: -2em;
     }
@@ -66,7 +66,7 @@ page-tour {
       z-index: 1;
       border-radius: $icon-border-radius;
       position: relative;
-      color: color($colors, blank);    
+      color: color($colors, blank);
     }
   }
   .primary-color {

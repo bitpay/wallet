@@ -1,5 +1,10 @@
 import { Component, ViewChild } from '@angular/core';
-import { Events, ModalController, NavController, NavParams } from 'ionic-angular';
+import {
+  Events,
+  ModalController,
+  NavController,
+  NavParams
+} from 'ionic-angular';
 import { Logger } from '../../../../providers/logger/logger';
 
 // pages
@@ -19,7 +24,7 @@ import * as _ from 'lodash';
 
 @Component({
   selector: 'page-buy-glidera',
-  templateUrl: 'buy-glidera.html',
+  templateUrl: 'buy-glidera.html'
 })
 export class BuyGlideraPage {
   @ViewChild('slideButton') slideButton;
@@ -82,8 +87,7 @@ export class BuyGlideraPage {
   }
 
   private showErrorAndBack(err): void {
-    if (this.isCordova)
-      this.slideButton.isConfirmed(false);
+    if (this.isCordova) this.slideButton.isConfirmed(false);
     this.logger.error(err);
     err = err.errors ? err.errors[0].message : err || '';
     this.popupProvider.ionicAlert('Error', err).then(() => {
@@ -92,8 +96,7 @@ export class BuyGlideraPage {
   }
 
   private showError(err): void {
-    if (this.isCordova)
-      this.slideButton.isConfirmed(false);
+    if (this.isCordova) this.slideButton.isConfirmed(false);
     this.logger.error(err);
     err = err.errors ? err.errors[0].message : err;
     this.popupProvider.ionicAlert('Error', err);
@@ -135,9 +138,10 @@ export class BuyGlideraPage {
       } else if (mode == 'AUTHENTICATOR') {
         message = 'Use an authenticator app (Authy or Google Authenticator).';
       } else {
-        message = 'A SMS containing a confirmation code was sent to your phone.';
+        message =
+          'A SMS containing a confirmation code was sent to your phone.';
       }
-      this.popupProvider.ionicPrompt(title, message).then((twoFaCode) => {
+      this.popupProvider.ionicPrompt(title, message).then(twoFaCode => {
         if (typeof twoFaCode == 'undefined') return cb();
         return cb(twoFaCode);
       });
@@ -150,54 +154,71 @@ export class BuyGlideraPage {
     let message = 'Buy bitcoin for ' + this.amount + ' ' + this.currency;
     let okText = 'Confirm';
     let cancelText = 'Cancel';
-    this.popupProvider.ionicConfirm(null, message, okText, cancelText).then((ok) => {
-      if (!ok) {
-        if (this.isCordova)
-          this.slideButton.isConfirmed(false);
-        return;
-      }
-
-      this.onGoingProcessProvider.set('buyingBitcoin');
-      this.glideraProvider.get2faCode(this.token, (err, tfa) => {
-        if (err) {
-          this.onGoingProcessProvider.clear();
-          this.showError(err);
+    this.popupProvider
+      .ionicConfirm(null, message, okText, cancelText)
+      .then(ok => {
+        if (!ok) {
+          if (this.isCordova) this.slideButton.isConfirmed(false);
           return;
         }
-        this.ask2FaCode(tfa.mode, (twoFaCode) => {
-          if (tfa.mode != 'NONE' && _.isEmpty(twoFaCode)) {
-            this.onGoingProcessProvider.clear();
-            this.showError('No code entered');
-            return;
-          }
 
-          this.walletProvider.getAddress(this.wallet, false).then((walletAddr) => {
-            let data = {
-              destinationAddress: walletAddr,
-              qty: this.buyInfo.qty,
-              priceUuid: this.buyInfo.priceUuid,
-              useCurrentPrice: false,
-              ip: null
-            };
-            this.glideraProvider.buy(this.token, twoFaCode, data, (err, data) => {
-              this.onGoingProcessProvider.clear();
-              if (err) return this.showError(err);
-              this.logger.info('Glidera Buy Info: ', JSON.stringify(data));
-              this.openFinishModal();
-            });
-          }).catch(() => {
+        this.onGoingProcessProvider.set('buyingBitcoin');
+        this.glideraProvider.get2faCode(this.token, (err, tfa) => {
+          if (err) {
             this.onGoingProcessProvider.clear();
             this.showError(err);
+            return;
+          }
+          this.ask2FaCode(tfa.mode, twoFaCode => {
+            if (tfa.mode != 'NONE' && _.isEmpty(twoFaCode)) {
+              this.onGoingProcessProvider.clear();
+              this.showError('No code entered');
+              return;
+            }
+
+            this.walletProvider
+              .getAddress(this.wallet, false)
+              .then(walletAddr => {
+                let data = {
+                  destinationAddress: walletAddr,
+                  qty: this.buyInfo.qty,
+                  priceUuid: this.buyInfo.priceUuid,
+                  useCurrentPrice: false,
+                  ip: null
+                };
+                this.glideraProvider.buy(
+                  this.token,
+                  twoFaCode,
+                  data,
+                  (err, data) => {
+                    this.onGoingProcessProvider.clear();
+                    if (err) return this.showError(err);
+                    this.logger.info(
+                      'Glidera Buy Info: ',
+                      JSON.stringify(data)
+                    );
+                    this.openFinishModal();
+                  }
+                );
+              })
+              .catch(() => {
+                this.onGoingProcessProvider.clear();
+                this.showError(err);
+              });
           });
         });
       });
-    });
   }
 
   public showWallets(): void {
     this.isOpenSelector = true;
     let id = this.wallet ? this.wallet.credentials.walletId : null;
-    this.events.publish('showWalletsSelectorEvent', this.wallets, id, 'Receive in');
+    this.events.publish(
+      'showWalletsSelectorEvent',
+      this.wallets,
+      id,
+      'Receive in'
+    );
     this.events.subscribe('selectWalletEvent', (wallet: any) => {
       if (!_.isEmpty(wallet)) this.onWalletSelect(wallet);
       this.events.unsubscribe('selectWalletEvent');
@@ -210,7 +231,8 @@ export class BuyGlideraPage {
     let parsedAmount = this.txFormatProvider.parseAmount(
       this.coin,
       this.amount,
-      this.currency);
+      this.currency
+    );
 
     this.amount = parsedAmount.amount;
     this.currency = parsedAmount.currency;
@@ -220,8 +242,13 @@ export class BuyGlideraPage {
 
   private openFinishModal(): void {
     let finishText = 'Bought';
-    let finishComment = 'A transfer has been initiated from your bank account. Your bitcoins should arrive to your wallet in 2-4 business day';
-    let modal = this.modalCtrl.create(FinishModalPage, { finishText, finishComment }, { showBackdrop: true, enableBackdropDismiss: false });
+    let finishComment =
+      'A transfer has been initiated from your bank account. Your bitcoins should arrive to your wallet in 2-4 business day';
+    let modal = this.modalCtrl.create(
+      FinishModalPage,
+      { finishText, finishComment },
+      { showBackdrop: true, enableBackdropDismiss: false }
+    );
     modal.present();
     modal.onDidDismiss(async () => {
       await this.navCtrl.popToRoot({ animate: false });

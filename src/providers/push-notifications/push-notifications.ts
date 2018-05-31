@@ -56,7 +56,6 @@ export class PushNotificationsProvider {
 
   public handlePushNotifications(): void {
     if (this.usePushNotifications) {
-
       this.FCMPlugin.onTokenRefresh().subscribe((token: any) => {
         if (!this._token) return;
         this.logger.debug('Refresh and update token for push notifications...');
@@ -66,7 +65,9 @@ export class PushNotificationsProvider {
 
       this.FCMPlugin.onNotification().subscribe((data: any) => {
         if (!this._token) return;
-        this.logger.debug('New Event Push onNotification: ' + JSON.stringify(data));
+        this.logger.debug(
+          'New Event Push onNotification: ' + JSON.stringify(data)
+        );
         if (data.wasTapped) {
           // Notification was received on device tray and tapped by the user.
           var walletIdHashed = data.walletId;
@@ -82,7 +83,9 @@ export class PushNotificationsProvider {
 
   public updateSubscription(walletClient: any): void {
     if (!this._token) {
-      this.logger.warn('Push notifications disabled for this device. Nothing to do here.');
+      this.logger.warn(
+        'Push notifications disabled for this device. Nothing to do here.'
+      );
       return;
     }
     this._subscribe(walletClient);
@@ -90,7 +93,9 @@ export class PushNotificationsProvider {
 
   public enable(): void {
     if (!this._token) {
-      this.logger.warn('No token available for this device. Cannot set push notifications. Needs registration.');
+      this.logger.warn(
+        'No token available for this device. Cannot set push notifications. Needs registration.'
+      );
       return;
     }
 
@@ -98,11 +103,13 @@ export class PushNotificationsProvider {
     _.forEach(wallets, (walletClient: any) => {
       this._subscribe(walletClient);
     });
-  };
+  }
 
   public disable(): void {
     if (!this._token) {
-      this.logger.warn('No token available for this device. Cannot disable push notifications.');
+      this.logger.warn(
+        'No token available for this device. Cannot disable push notifications.'
+      );
       return;
     }
 
@@ -125,15 +132,29 @@ export class PushNotificationsProvider {
       packageName: this.appProvider.info.packageNameId
     };
     walletClient.pushNotificationsSubscribe(opts, (err: any) => {
-      if (err) this.logger.error(walletClient.name + ': Subscription Push Notifications error. ', JSON.stringify(err));
-      else this.logger.debug(walletClient.name + ': Subscription Push Notifications success.');
+      if (err)
+        this.logger.error(
+          walletClient.name + ': Subscription Push Notifications error. ',
+          JSON.stringify(err)
+        );
+      else
+        this.logger.debug(
+          walletClient.name + ': Subscription Push Notifications success.'
+        );
     });
   }
 
   private _unsubscribe(walletClient: any): void {
     walletClient.pushNotificationsUnsubscribe(this._token, (err: any) => {
-      if (err) this.logger.error(walletClient.name + ': Unsubscription Push Notifications error. ', JSON.stringify(err));
-      else this.logger.debug(walletClient.name + ': Unsubscription Push Notifications Success.');
+      if (err)
+        this.logger.error(
+          walletClient.name + ': Unsubscription Push Notifications error. ',
+          JSON.stringify(err)
+        );
+      else
+        this.logger.debug(
+          walletClient.name + ': Unsubscription Push Notifications Success.'
+        );
     });
   }
 
@@ -160,5 +181,4 @@ export class PushNotificationsProvider {
     }
     this.events.publish('OpenWalletEvent', nextView);
   }
-
 }

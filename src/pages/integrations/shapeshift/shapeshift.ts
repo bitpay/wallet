@@ -14,10 +14,9 @@ import { TimeProvider } from '../../../providers/time/time';
 
 @Component({
   selector: 'page-shapeshift',
-  templateUrl: 'shapeshift.html',
+  templateUrl: 'shapeshift.html'
 })
 export class ShapeshiftPage {
-
   public shifts: any;
   public network: string;
 
@@ -40,9 +39,12 @@ export class ShapeshiftPage {
   }
 
   ionViewWillEnter() {
-    this.events.subscribe('bwsEvent', (walletId: string, type: string, n: any) => {
-      if (type == 'NewBlock') this.updateShift(this.shifts);
-    });
+    this.events.subscribe(
+      'bwsEvent',
+      (walletId: string, type: string, n: any) => {
+        if (type == 'NewBlock') this.updateShift(this.shifts);
+      }
+    );
   }
 
   ionViewWillLeave() {
@@ -53,29 +55,39 @@ export class ShapeshiftPage {
     this.externalLinkProvider.open(url);
   }
 
-  private updateShift = _.debounce((shifts: any) => {
-    if (_.isEmpty(shifts.data)) return;
-    _.forEach(shifts.data, (dataFromStorage: any) => {
+  private updateShift = _.debounce(
+    (shifts: any) => {
+      if (_.isEmpty(shifts.data)) return;
+      _.forEach(shifts.data, (dataFromStorage: any) => {
+        if (!this.checkIfShiftNeedsUpdate(dataFromStorage)) return;
 
-      if (!this.checkIfShiftNeedsUpdate(dataFromStorage)) return;
+        this.shapeshiftProvider.getStatus(
+          dataFromStorage.address,
+          (err: any, st: any) => {
+            if (err) return;
 
-      this.shapeshiftProvider.getStatus(dataFromStorage.address, (err: any, st: any) => {
-        if (err) return;
-
-        this.shifts.data[st.address].status = st.status;
-        this.shifts.data[st.address].transaction = st.transaction || null;
-        this.shifts.data[st.address].incomingCoin = st.incomingCoin || null;
-        this.shifts.data[st.address].incomingType = st.incomingType || null;
-        this.shifts.data[st.address].outgoingCoin = st.outgoingCoin || null;
-        this.shifts.data[st.address].outgoingType = st.outgoingType || null;
-        this.shapeshiftProvider.saveShapeshift(this.shifts.data[st.address], null, (err: any) => {
-          this.logger.debug("Saved shift with status: " + st.status);
-        });
+            this.shifts.data[st.address].status = st.status;
+            this.shifts.data[st.address].transaction = st.transaction || null;
+            this.shifts.data[st.address].incomingCoin = st.incomingCoin || null;
+            this.shifts.data[st.address].incomingType = st.incomingType || null;
+            this.shifts.data[st.address].outgoingCoin = st.outgoingCoin || null;
+            this.shifts.data[st.address].outgoingType = st.outgoingType || null;
+            this.shapeshiftProvider.saveShapeshift(
+              this.shifts.data[st.address],
+              null,
+              (err: any) => {
+                this.logger.debug('Saved shift with status: ' + st.status);
+              }
+            );
+          }
+        );
       });
-    });
-  }, 1000, {
-      'leading': true
-    });
+    },
+    1000,
+    {
+      leading: true
+    }
+  );
 
   private checkIfShiftNeedsUpdate(shiftData: any) {
     // Continues normal flow (update shiftData)
@@ -83,13 +95,16 @@ export class ShapeshiftPage {
       return true;
     }
     // Check if shiftData status FAILURE for 24 hours
-    if ((shiftData.status == 'failed' || shiftData.status == 'no_deposits') && this.timeProvider.withinPastDay(shiftData.date)) {
+    if (
+      (shiftData.status == 'failed' || shiftData.status == 'no_deposits') &&
+      this.timeProvider.withinPastDay(shiftData.date)
+    ) {
       return true;
     }
     // If status is complete: do not update
     // If status fails or do not receive deposits for more than 24 hours: do not update
     return false;
-  };
+  }
 
   private init(): void {
     this.shapeshiftProvider.getShapeshift((err: any, ss: any) => {
@@ -108,7 +123,7 @@ export class ShapeshiftPage {
 
     modal.present();
 
-    modal.onDidDismiss((data) => {
+    modal.onDidDismiss(data => {
       this.init();
     });
   }
@@ -120,5 +135,4 @@ export class ShapeshiftPage {
         break;
     }
   }
-
 }

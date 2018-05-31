@@ -18,7 +18,7 @@ import { EmailValidator } from '../../../validators/email';
 
 @Component({
   selector: 'page-notifications',
-  templateUrl: 'notifications.html',
+  templateUrl: 'notifications.html'
 })
 export class NotificationsPage {
   public emailForm: FormGroup;
@@ -46,7 +46,13 @@ export class NotificationsPage {
     private translate: TranslateService
   ) {
     this.emailForm = this.formBuilder.group({
-      email: ['', Validators.compose([Validators.required, new EmailValidator(configProvider, emailProvider).isValid])]
+      email: [
+        '',
+        Validators.compose([
+          Validators.required,
+          new EmailValidator(configProvider, emailProvider).isValid
+        ])
+      ]
     });
   }
 
@@ -59,16 +65,21 @@ export class NotificationsPage {
     let config = this.configProvider.get();
     this.appName = this.appProvider.info.nameCase;
     this.usePushNotifications = this.platformProvider.isCordova;
-    this.isIOSApp = this.platformProvider.isIOS && this.platformProvider.isCordova;
+    this.isIOSApp =
+      this.platformProvider.isIOS && this.platformProvider.isCordova;
 
     this.pushNotifications = config.pushNotificationsEnabled;
-    this.confirmedTxsNotifications = config.confirmedTxsNotifications ? config.confirmedTxsNotifications.enabled : false;
+    this.confirmedTxsNotifications = config.confirmedTxsNotifications
+      ? config.confirmedTxsNotifications.enabled
+      : false;
 
     this.emailForm.setValue({
       email: this.emailProvider.getEmailIfEnabled(config) || ''
     });
 
-    this.emailNotifications = config.emailNotifications ? config.emailNotifications.enabled : false;
+    this.emailNotifications = config.emailNotifications
+      ? config.emailNotifications.enabled
+      : false;
   }
 
   public pushNotificationsChange() {
@@ -78,10 +89,8 @@ export class NotificationsPage {
 
     this.configProvider.set(opts);
 
-    if (opts.pushNotificationsEnabled)
-      this.pushProvider.init();
-    else
-      this.pushProvider.disable();
+    if (opts.pushNotificationsEnabled) this.pushProvider.init();
+    else this.pushProvider.disable();
   }
 
   public confirmedTxsNotificationsChange() {
@@ -117,7 +126,13 @@ export class NotificationsPage {
     let message = this.translate.instant('View Privacy Policy');
     let okText = this.translate.instant('Open');
     let cancelText = this.translate.instant('Go Back');
-    this.externalLinkProvider.open(url, optIn, title, message, okText, cancelText);
+    this.externalLinkProvider.open(
+      url,
+      optIn,
+      title,
+      message,
+      okText,
+      cancelText
+    );
   }
-
 }

@@ -1,6 +1,7 @@
 page-buy-glidera {
   ion-content {
-    .fixed-content, .scroll-content {
+    .fixed-content,
+    .scroll-content {
       margin-bottom: 90px;
     }
   }
@@ -38,8 +39,8 @@ page-buy-glidera {
       }
     }
   }
-  
-  .last-item{
+
+  .last-item {
     margin-left: auto !important;
   }
 }

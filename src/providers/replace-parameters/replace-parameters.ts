@@ -8,9 +8,7 @@ import * as _ from 'lodash';
 
 @Injectable()
 export class ReplaceParametersProvider {
-
-  constructor() {
-  }
+  constructor() {}
 
   public replace(stringToReplace: string, params: any): string {
     let processedParams = [];
@@ -19,10 +17,17 @@ export class ReplaceParametersProvider {
     }
 
     processedParams.forEach(param => {
-      stringToReplace = _.replace(stringToReplace, new RegExp('{{' + param.key + '}}', 'g'), param.value);
-      stringToReplace = _.replace(stringToReplace, new RegExp('{{ ' + param.key + ' }}', 'g'), param.value);
+      stringToReplace = _.replace(
+        stringToReplace,
+        new RegExp('{{' + param.key + '}}', 'g'),
+        param.value
+      );
+      stringToReplace = _.replace(
+        stringToReplace,
+        new RegExp('{{ ' + param.key + ' }}', 'g'),
+        param.value
+      );
     });
     return stringToReplace;
   }
-
 }

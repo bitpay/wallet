@@ -9,18 +9,20 @@ import { PlatformProvider } from '../../platform/platform';
 
 @Injectable()
 export class LocalStorage implements IStorage {
-
   ls: any;
 
   constructor(
     private platformProvider: PlatformProvider,
     private logger: Logger
   ) {
-    this.ls = (typeof window.localStorage !== "undefined") ? window.localStorage : null;
+    this.ls =
+      typeof window.localStorage !== 'undefined' ? window.localStorage : null;
     if (!this.ls) throw new Error('localstorage not available');
 
     if (this.platformProvider.isNW) {
-      this.logger.info('Overwritting localstorage with chrome storage for NW.JS');
+      this.logger.info(
+        'Overwritting localstorage with chrome storage for NW.JS'
+      );
 
       let ts = this.ls.getItem('migrationToChromeStorage');
       let p = this.ls.getItem('profile');
@@ -39,10 +41,13 @@ export class LocalStorage implements IStorage {
             j++;
             if (j == localStorage.length) {
               this.logger.info('### MIGRATION DONE');
-              this.ls.setItem('migrationToChromeStorage', Date.now().toString());
+              this.ls.setItem(
+                'migrationToChromeStorage',
+                Date.now().toString()
+              );
               this.ls = chrome.storage.local;
             }
-          })
+          });
         }
       } else if (p) {
         this.logger.info('# Data already migrated to Chrome storage on ' + ts);
@@ -59,14 +64,13 @@ export class LocalStorage implements IStorage {
     } catch (e) {
       // TODO parse is not necessary
     }
-    return (parsed || v);
+    return parsed || v;
   }
 
   get(k: string): Promise<any> {
     return new Promise(resolve => {
-
       if (this.platformProvider.isNW) {
-        chrome.storage.local.get(k, (data) => {
+        chrome.storage.local.get(k, data => {
           let v = data[k];
           return resolve(this.processingData(v));
         });
@@ -107,7 +111,7 @@ export class LocalStorage implements IStorage {
   }
 
   create(k: string, v: any): Promise<void> {
-    return this.get(k).then((data) => {
+    return this.get(k).then(data => {
       if (data) throw new KeyAlreadyExistsError();
       this.set(k, v);
     });

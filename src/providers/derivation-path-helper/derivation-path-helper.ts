@@ -18,8 +18,7 @@ export class DerivationPathHelperProvider {
       account: 0
     };
 
-    if (arr[0] != 'm')
-      return false;
+    if (arr[0] != 'm') return false;
 
     switch (arr[1]) {
       case "44'":
@@ -29,14 +28,14 @@ export class DerivationPathHelperProvider {
         return {
           derivationStrategy: 'BIP45',
           networkName: 'livenet',
-          account: 0,
-        }
+          account: 0
+        };
       case "48'":
         ret.derivationStrategy = 'BIP48';
         break;
       default:
         return false;
-    };
+    }
 
     switch (arr[2]) {
       case "0'":
@@ -47,13 +46,12 @@ export class DerivationPathHelperProvider {
         break;
       default:
         return false;
-    };
+    }
 
     var match = arr[3].match(/(\d+)'/);
-    if (!match)
-      return false;
-    ret.account = +match[1]
+    if (!match) return false;
+    ret.account = +match[1];
 
     return ret;
-  };
+  }
 }

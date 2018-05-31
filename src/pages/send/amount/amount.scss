@@ -9,21 +9,21 @@ page-amount {
       justify-content: center;
       width: 100%;
       padding: 15% 16px 0 16px;
-      @media(max-height: 640px) {
+      @media (max-height: 640px) {
         padding-top: 10%;
       }
-      @media(max-height: 500px) {
+      @media (max-height: 500px) {
         padding-top: 5%;
       }
       .expression-container {
         display: flex;
         align-items: center;
-        .expression{
+        .expression {
           font-size: 40px;
-          @media(max-height: 640px) {
+          @media (max-height: 640px) {
             font-size: 35px;
           }
-          @media(max-height: 500px) {
+          @media (max-height: 500px) {
             font-size: 25px;
           }
         }
@@ -34,18 +34,18 @@ page-amount {
           padding: 0 5px;
           margin: 0 0 0 1.5rem;
           font-size: 19px;
-          @media(max-height: 500px) {
-              font-size: 16px;
-            }
+          @media (max-height: 500px) {
+            font-size: 16px;
+          }
         }
       }
       .amount {
-        color: #A5A4A4;
+        color: #a5a4a4;
         margin-left: 5px;
         margin-top: 5px;
       }
       .result {
-        color: color($colors,grey);
+        color: color($colors, grey);
         margin-left: 5px;
         margin-top: 5px;
       }
@@ -93,14 +93,14 @@ page-amount {
         }
       }
     }
-    .digit{
+    .digit {
       cursor: pointer;
       border: 1px solid color($colors, light);
       &:active {
         background: color($colors, light);
       }
     }
-    @media(max-height: 500px) {
+    @media (max-height: 500px) {
       font-size: 12px;
       .col {
         line-height: 20px;

@@ -70,10 +70,11 @@ export class TouchIdProvider {
   }
 
   private verifyIOSFingerprint(): Promise<any> {
-    return this.touchId.verifyFingerprint('Scan your fingerprint please')
+    return this.touchId
+      .verifyFingerprint('Scan your fingerprint please')
       .catch(err => {
-        if(err && (err.code == -2 || err.code == -128))
-        err.fingerprintCancelled = true;
+        if (err && (err.code == -2 || err.code == -128))
+          err.fingerprintCancelled = true;
         throw err;
       });
   }
@@ -85,14 +86,12 @@ export class TouchIdProvider {
         if (result.withFingerprint) {
           this.logger.debug('Successfully authenticated with fingerprint.');
         } else if (result.withBackup) {
-          this.logger.debug(
-            'Successfully authenticated with backup password!'
-          );
+          this.logger.debug('Successfully authenticated with backup password!');
         } else this.logger.debug("Didn't authenticate!");
       })
       .catch(error => {
         const err: any = new Error(error);
-        if (error === "FINGERPRINT_CANCELLED") {
+        if (error === 'FINGERPRINT_CANCELLED') {
           this.logger.debug('Fingerprint authentication cancelled');
           err.fingerprintCancelled = true;
         } else {
@@ -103,11 +102,9 @@ export class TouchIdProvider {
   }
 
   public check(): Promise<any> {
-    if (this.platform.isIOS)
-      return this.verifyIOSFingerprint();
+    if (this.platform.isIOS) return this.verifyIOSFingerprint();
 
-    if (this.platform.isAndroid)
-      return this.verifyAndroidFingerprint();
+    if (this.platform.isAndroid) return this.verifyAndroidFingerprint();
   }
 
   private isNeeded(wallet: any): string {
@@ -118,11 +115,9 @@ export class TouchIdProvider {
 
   public checkWallet(wallet: any): Promise<any> {
     return this.isAvailable().then((isAvailable: boolean) => {
-      if (!isAvailable) 
-        return;
+      if (!isAvailable) return;
 
-      if (this.isNeeded(wallet))
-        return this.check();
+      if (this.isNeeded(wallet)) return this.check();
     });
   }
 }

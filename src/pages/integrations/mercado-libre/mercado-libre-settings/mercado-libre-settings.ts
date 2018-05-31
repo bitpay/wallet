@@ -8,10 +8,9 @@ import { HomeIntegrationsProvider } from '../../../../providers/home-integration
 
 @Component({
   selector: 'page-mercado-libre-settings',
-  templateUrl: 'mercado-libre-settings.html',
+  templateUrl: 'mercado-libre-settings.html'
 })
 export class MercadoLibreSettingsPage {
-
   private serviceName: string = 'mercadolibre';
   public showInHome: any;
   public service: any;
@@ -20,15 +19,20 @@ export class MercadoLibreSettingsPage {
     private configProvider: ConfigProvider,
     private homeIntegrationsProvider: HomeIntegrationsProvider
   ) {
-    this.service = _.filter(this.homeIntegrationsProvider.get(), { name: this.serviceName });
+    this.service = _.filter(this.homeIntegrationsProvider.get(), {
+      name: this.serviceName
+    });
     this.showInHome = !!this.service[0].show;
   }
 
   public showInHomeSwitch(): void {
     let opts = {
-      showIntegration: { [this.serviceName] : this.showInHome }
+      showIntegration: { [this.serviceName]: this.showInHome }
     };
-    this.homeIntegrationsProvider.updateConfig(this.serviceName, this.showInHome);
+    this.homeIntegrationsProvider.updateConfig(
+      this.serviceName,
+      this.showInHome
+    );
     this.configProvider.set(opts);
   }
 }

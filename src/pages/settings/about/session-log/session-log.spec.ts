@@ -22,16 +22,14 @@ describe('SessionLogPage', () => {
   let instance: any;
   let testBed: typeof TestBed;
 
-  beforeEach(
-    async(() => {
-      TestUtils.configurePageTestingModule([SessionLogPage]).then(testEnv => {
-        fixture = testEnv.fixture;
-        instance = testEnv.instance;
-        testBed = testEnv.testBed;
-        fixture.detectChanges();
-      });
-    })
-  );
+  beforeEach(async(() => {
+    TestUtils.configurePageTestingModule([SessionLogPage]).then(testEnv => {
+      fixture = testEnv.fixture;
+      instance = testEnv.instance;
+      testBed = testEnv.testBed;
+      fixture.detectChanges();
+    });
+  }));
   afterEach(() => {
     fixture.destroy();
   });

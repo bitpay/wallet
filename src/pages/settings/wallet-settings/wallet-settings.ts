@@ -18,10 +18,9 @@ import { WalletSettingsAdvancedPage } from './wallet-settings-advanced/wallet-se
 
 @Component({
   selector: 'page-wallet-settings',
-  templateUrl: 'wallet-settings.html',
+  templateUrl: 'wallet-settings.html'
 })
 export class WalletSettingsPage {
-
   public wallet: any;
   public walletName: any;
   public canSign: boolean;
@@ -44,8 +43,7 @@ export class WalletSettingsPage {
     private navParams: NavParams,
     private touchIdProvider: TouchIdProvider,
     private translate: TranslateService
-  ) {
-  }
+  ) {}
 
   ionViewDidLoad() {
     this.logger.info('ionViewDidLoad WalletSettingsPage');
@@ -62,15 +60,23 @@ export class WalletSettingsPage {
       this.touchIdAvailable = isAvailable;
     });
     this.config = this.configProvider.get();
-    this.touchIdEnabled = this.config.touchIdFor ? this.config.touchIdFor[this.wallet.credentials.walletId] : null;
+    this.touchIdEnabled = this.config.touchIdFor
+      ? this.config.touchIdFor[this.wallet.credentials.walletId]
+      : null;
     this.touchIdPrevValue = this.touchIdEnabled;
-    if (this.wallet.credentials && !this.wallet.credentials.mnemonicEncrypted && !this.wallet.credentials.mnemonic) {
+    if (
+      this.wallet.credentials &&
+      !this.wallet.credentials.mnemonicEncrypted &&
+      !this.wallet.credentials.mnemonic
+    ) {
       this.deleted = true;
     }
   }
 
   public hiddenBalanceChange(): void {
-    this.profileProvider.toggleHideBalanceFlag(this.wallet.credentials.walletId);
+    this.profileProvider.toggleHideBalanceFlag(
+      this.wallet.credentials.walletId
+    );
   }
 
   public encryptChange(): void {
@@ -79,59 +85,87 @@ export class WalletSettingsPage {
 
     if (val && !this.walletProvider.isEncrypted(this.wallet)) {
       this.logger.debug('Encrypting private key for', this.wallet.name);
-      this.walletProvider.encrypt(this.wallet).then(() => {
-        this.profileProvider.updateCredentials(JSON.parse(this.wallet.export()));
-        this.logger.debug('Wallet encrypted');
-      }).catch((err: any) => {
-        this.logger.warn('Could not encrypt wallet', err);
-        this.encryptEnabled = false;
-      })
+      this.walletProvider
+        .encrypt(this.wallet)
+        .then(() => {
+          this.profileProvider.updateCredentials(
+            JSON.parse(this.wallet.export())
+          );
+          this.logger.debug('Wallet encrypted');
+        })
+        .catch((err: any) => {
+          this.logger.warn('Could not encrypt wallet', err);
+          this.encryptEnabled = false;
+        });
     } else if (!val && this.walletProvider.isEncrypted(this.wallet)) {
-      this.walletProvider.decrypt(this.wallet).then(() => {
-        this.profileProvider.updateCredentials(JSON.parse(this.wallet.export()));
-        this.logger.debug('Wallet decrypted');
-      }).catch((err) => {
-        this.logger.warn('Could not decrypt wallet', err);
-        this.encryptEnabled = true;
-      });
+      this.walletProvider
+        .decrypt(this.wallet)
+        .then(() => {
+          this.profileProvider.updateCredentials(
+            JSON.parse(this.wallet.export())
+          );
+          this.logger.debug('Wallet decrypted');
+        })
+        .catch(err => {
+          this.logger.warn('Could not decrypt wallet', err);
+          this.encryptEnabled = true;
+        });
     }
   }
 
   public openSupportSpendingPassword(): void {
-    let url = 'https://support.bitpay.com/hc/en-us/articles/360000244506-What-Does-a-Spending-Password-Do-';
+    let url =
+      'https://support.bitpay.com/hc/en-us/articles/360000244506-What-Does-a-Spending-Password-Do-';
     let optIn = true;
     let title = null;
     let message = this.translate.instant('Read more in our support page');
     let okText = this.translate.instant('Open');
     let cancelText = this.translate.instant('Go Back');
-    this.externalLinkProvider.open(url, optIn, title, message, okText, cancelText);
+    this.externalLinkProvider.open(
+      url,
+      optIn,
+      title,
+      message,
+      okText,
+      cancelText
+    );
   }
 
   public touchIdChange(): void {
     if (this.touchIdPrevValue == this.touchIdEnabled) return;
     let newStatus = this.touchIdEnabled;
-    this.walletProvider.setTouchId(this.wallet, newStatus).then(() => {
-      this.touchIdPrevValue = this.touchIdEnabled;
-      this.logger.debug('Touch Id status changed: ' + newStatus);
-    }).catch((err: any) => {
-      this.touchIdEnabled = this.touchIdPrevValue;
-    });
+    this.walletProvider
+      .setTouchId(this.wallet, newStatus)
+      .then(() => {
+        this.touchIdPrevValue = this.touchIdEnabled;
+        this.logger.debug('Touch Id status changed: ' + newStatus);
+      })
+      .catch((err: any) => {
+        this.touchIdEnabled = this.touchIdPrevValue;
+      });
   }
 
   public openAdvancedSettings(): void {
-    this.navCtrl.push(WalletSettingsAdvancedPage, { walletId: this.wallet.credentials.walletId });
+    this.navCtrl.push(WalletSettingsAdvancedPage, {
+      walletId: this.wallet.credentials.walletId
+    });
   }
 
   public openWalletName(): void {
-    this.navCtrl.push(WalletNamePage, { walletId: this.wallet.credentials.walletId });
+    this.navCtrl.push(WalletNamePage, {
+      walletId: this.wallet.credentials.walletId
+    });
   }
 
   public openWalletColor(): void {
-    this.navCtrl.push(WalletColorPage, { walletId: this.wallet.credentials.walletId });
+    this.navCtrl.push(WalletColorPage, {
+      walletId: this.wallet.credentials.walletId
+    });
   }
 
   public openBackupSettings(): void {
-    this.navCtrl.push(BackupWarningPage, { walletId: this.wallet.credentials.walletId });
+    this.navCtrl.push(BackupWarningPage, {
+      walletId: this.wallet.credentials.walletId
+    });
   }
-
 }

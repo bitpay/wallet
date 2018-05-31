@@ -9,7 +9,7 @@ page-copayers {
         margin: 0rem 2rem 1rem 2rem;
         font-size: 12px;
       }
-      .aclass >img {
+      .aclass > img {
         width: 220px;
         border-radius: 4px;
       }
@@ -24,12 +24,12 @@ page-copayers {
   .errors-card {
     color: red;
   }
-  .gray-color{
+  .gray-color {
     color: color($colors, grey);
   }
-  .list-title{
+  .list-title {
     padding-left: 0px;
-    .item-inner{
+    .item-inner {
       padding-left: 16px;
     }
   }

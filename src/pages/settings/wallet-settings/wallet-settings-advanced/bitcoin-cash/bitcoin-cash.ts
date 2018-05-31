@@ -1,27 +1,26 @@
-import { Component } from "@angular/core";
+import { Component } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { App, Events, NavController, NavParams } from 'ionic-angular';
 import * as lodash from 'lodash';
-import { Logger } from "../../../../../providers/logger/logger";
+import { Logger } from '../../../../../providers/logger/logger';
 
 // Providers
-import { BwcErrorProvider } from "../../../../../providers/bwc-error/bwc-error";
-import { BwcProvider } from "../../../../../providers/bwc/bwc";
-import { ExternalLinkProvider } from "../../../../../providers/external-link/external-link";
-import { OnGoingProcessProvider } from "../../../../../providers/on-going-process/on-going-process";
-import { PopupProvider } from "../../../../../providers/popup/popup";
+import { BwcErrorProvider } from '../../../../../providers/bwc-error/bwc-error';
+import { BwcProvider } from '../../../../../providers/bwc/bwc';
+import { ExternalLinkProvider } from '../../../../../providers/external-link/external-link';
+import { OnGoingProcessProvider } from '../../../../../providers/on-going-process/on-going-process';
+import { PopupProvider } from '../../../../../providers/popup/popup';
 import { ProfileProvider } from '../../../../../providers/profile/profile';
-import { PushNotificationsProvider } from "../../../../../providers/push-notifications/push-notifications";
-import { TxFormatProvider } from "../../../../../providers/tx-format/tx-format";
-import { WalletProvider } from "../../../../../providers/wallet/wallet";
-import { TabsPage } from "../../../../tabs/tabs";
+import { PushNotificationsProvider } from '../../../../../providers/push-notifications/push-notifications';
+import { TxFormatProvider } from '../../../../../providers/tx-format/tx-format';
+import { WalletProvider } from '../../../../../providers/wallet/wallet';
+import { TabsPage } from '../../../../tabs/tabs';
 
 @Component({
   selector: 'page-bitcoin-cash',
-  templateUrl: 'bitcoin-cash.html',
+  templateUrl: 'bitcoin-cash.html'
 })
 export class BitcoinCashPage {
-
   private errors: any;
 
   public availableWallet: any;
@@ -49,7 +48,6 @@ export class BitcoinCashPage {
   }
 
   ionViewWillEnter() {
-
     let wallet = this.profileProvider.getWallet(this.navParams.data.walletId);
 
     // Filter out already duplicated wallets
@@ -58,7 +56,7 @@ export class BitcoinCashPage {
       network: 'livenet'
     });
 
-    let xPubKeyIndex = lodash.keyBy(walletsBCH, "credentials.xPubKey");
+    let xPubKeyIndex = lodash.keyBy(walletsBCH, 'credentials.xPubKey');
 
     if (xPubKeyIndex[wallet.credentials.xPubKey]) {
       wallet.excludeReason = this.translate.instant('Already duplicated');
@@ -78,17 +76,28 @@ export class BitcoinCashPage {
 
     if (!this.availableWallet) return;
 
-    this.walletProvider.getBalance(this.availableWallet, { coin: 'bch' }).then((balance) => {
-      this.availableWallet.bchBalance = this.txFormatProvider.formatAmountStr('bch', balance.availableAmount);
-      this.availableWallet.error = null;
-    }).catch((err) => {
-      this.availableWallet.error = (err === 'WALLET_NOT_REGISTERED') ? this.translate.instant('Wallet not registered') : this.bwcErrorProvider.msg(err);
-      this.logger.error(err);
-    });
+    this.walletProvider
+      .getBalance(this.availableWallet, { coin: 'bch' })
+      .then(balance => {
+        this.availableWallet.bchBalance = this.txFormatProvider.formatAmountStr(
+          'bch',
+          balance.availableAmount
+        );
+        this.availableWallet.error = null;
+      })
+      .catch(err => {
+        this.availableWallet.error =
+          err === 'WALLET_NOT_REGISTERED'
+            ? this.translate.instant('Wallet not registered')
+            : this.bwcErrorProvider.msg(err);
+        this.logger.error(err);
+      });
   }
 
   public duplicate(wallet: any) {
-    this.logger.debug('Duplicating wallet for BCH: ' + wallet.id + ': ' + wallet.name);
+    this.logger.debug(
+      'Duplicating wallet for BCH: ' + wallet.id + ': ' + wallet.name
+    );
 
     let opts: any = {
       name: wallet.name + '[BCH]',
@@ -98,39 +107,48 @@ export class BitcoinCashPage {
       networkName: wallet.network,
       coin: 'bch',
       walletPrivKey: wallet.credentials.walletPrivKey,
-      compliantDerivation: wallet.credentials.compliantDerivation,
+      compliantDerivation: wallet.credentials.compliantDerivation
     };
 
-    let setErr = (err) => {
-      this.bwcErrorProvider.cb(err, 'Could not duplicate').then((errorMsg) => {
+    let setErr = err => {
+      this.bwcErrorProvider.cb(err, 'Could not duplicate').then(errorMsg => {
         this.logger.warn('Duplicate BCH', errorMsg);
         this.popupProvider.ionicAlert(errorMsg, null, 'OK');
         return;
       });
-    }
+    };
 
     let importOrCreate = () => {
       return new Promise((resolve, reject) => {
-        this.walletProvider.getStatus(wallet, {}).then((status: any) => {
-          opts.singleAddress = status.wallet.singleAddress;
+        this.walletProvider
+          .getStatus(wallet, {})
+          .then((status: any) => {
+            opts.singleAddress = status.wallet.singleAddress;
 
-          // first try to import
-          this.profileProvider.importExtendedPrivateKey(opts.extendedPrivateKey, opts).then((newWallet) => {
-            return resolve({ newWallet });
-          }).catch((err) => {
-            if (!(err instanceof this.errors.NOT_AUTHORIZED)) {
-              return reject(err);
-            }
-            // create and store a wallet
-            this.profileProvider.createWallet(opts).then((newWallet) => {
-              return resolve({ newWallet, isNew: true });
-            }).catch((err) => {
-              return reject(err);
-            });
+            // first try to import
+            this.profileProvider
+              .importExtendedPrivateKey(opts.extendedPrivateKey, opts)
+              .then(newWallet => {
+                return resolve({ newWallet });
+              })
+              .catch(err => {
+                if (!(err instanceof this.errors.NOT_AUTHORIZED)) {
+                  return reject(err);
+                }
+                // create and store a wallet
+                this.profileProvider
+                  .createWallet(opts)
+                  .then(newWallet => {
+                    return resolve({ newWallet, isNew: true });
+                  })
+                  .catch(err => {
+                    return reject(err);
+                  });
+              });
+          })
+          .catch(err => {
+            return reject(err);
           });
-        }).catch((err) => {
-          return reject(err);
-        });
       });
     };
 
@@ -139,54 +157,71 @@ export class BitcoinCashPage {
       if (!isNew) return cb();
       if (wallet.n == 1) return cb();
 
-      this.logger.info('Adding copayers for BCH wallet config:' + wallet.m + '-' + wallet.n);
+      this.logger.info(
+        'Adding copayers for BCH wallet config:' + wallet.m + '-' + wallet.n
+      );
 
-      this.walletProvider.copyCopayers(wallet, newWallet, (err) => {
+      this.walletProvider.copyCopayers(wallet, newWallet, err => {
         if (err) {
           return cb(err);
         }
         return cb();
       });
-    };
+    }
 
-    this.walletProvider.getKeys(wallet).then((keys) => {
-      opts.extendedPrivateKey = keys.xPrivKey;
-      this.onGoingProcessProvider.set('duplicatingWallet');
-      importOrCreate().then((result: any) => {
-        let newWallet = result.newWallet;
-        let isNew = result.isNew;
+    this.walletProvider
+      .getKeys(wallet)
+      .then(keys => {
+        opts.extendedPrivateKey = keys.xPrivKey;
+        this.onGoingProcessProvider.set('duplicatingWallet');
+        importOrCreate()
+          .then((result: any) => {
+            let newWallet = result.newWallet;
+            let isNew = result.isNew;
 
-        this.walletProvider.updateRemotePreferences(newWallet);
-        this.pushNotificationsProvider.updateSubscription(newWallet);
+            this.walletProvider.updateRemotePreferences(newWallet);
+            this.pushNotificationsProvider.updateSubscription(newWallet);
 
-        addCopayers(newWallet, isNew, (err) => {
-          this.onGoingProcessProvider.clear();
-          if (err) {
-            return setErr(err);
-          }
-          if (isNew) {
-            this.walletProvider.startScan(newWallet);
-          }
+            addCopayers(newWallet, isNew, err => {
+              this.onGoingProcessProvider.clear();
+              if (err) {
+                return setErr(err);
+              }
+              if (isNew) {
+                this.walletProvider.startScan(newWallet);
+              }
 
-          this.events.publish('status:updated');
-          this.app.getRootNavs()[0].setRoot(TabsPage);
-        });
-      }).catch((err) => {
-        this.onGoingProcessProvider.clear();
+              this.events.publish('status:updated');
+              this.app.getRootNavs()[0].setRoot(TabsPage);
+            });
+          })
+          .catch(err => {
+            this.onGoingProcessProvider.clear();
+            setErr(err);
+          });
+      })
+      .catch(err => {
         setErr(err);
       });
-    }).catch((err) => {
-      setErr(err);
-    });
   }
 
   public openHelpExternalLink(): void {
-    let url = 'https://support.bitpay.com/hc/en-us/articles/115005019583-How-Can-I-Recover-Bitcoin-Cash-BCH-from-My-Wallet-';
+    let url =
+      'https://support.bitpay.com/hc/en-us/articles/115005019583-How-Can-I-Recover-Bitcoin-Cash-BCH-from-My-Wallet-';
     let optIn = true;
     let title = null;
-    let message = this.translate.instant('Help and support information is available at the website');
+    let message = this.translate.instant(
+      'Help and support information is available at the website'
+    );
     let okText = this.translate.instant('Open');
     let cancelText = this.translate.instant('Go Back');
-    this.externalLinkProvider.open(url, optIn, title, message, okText, cancelText);
+    this.externalLinkProvider.open(
+      url,
+      optIn,
+      title,
+      message,
+      okText,
+      cancelText
+    );
   }
 }
