@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture } from '@angular/core/testing';
 
 import { TestUtils } from '../../../test';
 
@@ -8,14 +8,12 @@ import { SessionLogPage } from './session-log/session-log';
 describe('AboutPage', () => {
   let fixture: ComponentFixture<AboutPage>;
   let instance: any;
-  let testBed: typeof TestBed;
 
   beforeEach(
     async(() =>
       TestUtils.configurePageTestingModule([AboutPage]).then(testEnv => {
         fixture = testEnv.fixture;
         instance = testEnv.instance;
-        testBed = testEnv.testBed;
         fixture.detectChanges();
       })
     )
@@ -63,10 +61,10 @@ describe('AboutPage', () => {
       it('should open privacy policy with correct params', () => {
         spyOn(instance.externalLinkProvider, 'open');
 
-        var params = {
-          'View Privacy Policy': 'View Privacy Policy',
+        const params = {
+          'Go Back': 'Go Back',
           Open: 'Open',
-          'Go Back': 'Go Back'
+          'View Privacy Policy': 'View Privacy Policy'
         };
 
         spyOn(instance.translate, 'instant').and.callFake(myParam => {
@@ -89,10 +87,10 @@ describe('AboutPage', () => {
       it('should open terms of use with correct params', () => {
         spyOn(instance.externalLinkProvider, 'open');
 
-        var params = {
-          'View Wallet Terms of Use': 'View Wallet Terms of Use',
+        const params = {
+          'Go Back': 'Go Back',
           Open: 'Open',
-          'Go Back': 'Go Back'
+          'View Wallet Terms of Use': 'View Wallet Terms of Use'
         };
 
         spyOn(instance.translate, 'instant').and.callFake(myParam => {
@@ -118,12 +116,12 @@ describe('AboutPage', () => {
         instance.appProvider.info.gitHubRepoName = 'testRepo';
         instance.appProvider.info.commitHash = 'testHash';
 
-        var params = {
+        const params = {
+          'Go Back': 'Go Back',
+          'Open GitHub': 'Open GitHub',
           'Open GitHub Project': 'Open GitHub Project',
           'You can see the latest developments and contribute to this open source app by visiting our project on GitHub.':
-            'You can see the latest developments and contribute to this open source app by visiting our project on GitHub.',
-          'Open GitHub': 'Open GitHub',
-          'Go Back': 'Go Back'
+            'You can see the latest developments and contribute to this open source app by visiting our project on GitHub.'
         };
 
         spyOn(instance.translate, 'instant').and.callFake(myParam => {

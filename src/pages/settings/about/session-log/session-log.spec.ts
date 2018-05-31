@@ -1,20 +1,7 @@
-import {
-  async,
-  ComponentFixture,
-  fakeAsync,
-  TestBed
-} from '@angular/core/testing';
-
-import { Subject } from 'rxjs';
+import { async, ComponentFixture } from '@angular/core/testing';
 
 import { TestUtils } from '../../../../test';
 
-import { Exception } from '@zxing/library';
-import { ActionSheetController, ModalController } from 'ionic-angular';
-import { ActionSheetControllerMock, ModalControllerMock } from 'ionic-mocks';
-import { Logger } from '../../../../providers/logger/logger';
-import { PlatformProvider } from '../../../../providers/platform/platform';
-import { ConfigProvider } from './../../../../providers/config/config';
 import { SessionLogPage } from './session-log';
 
 import { CustomModalComponent } from '../../../../components/custom-modal/custom-modal';
@@ -22,14 +9,12 @@ import { CustomModalComponent } from '../../../../components/custom-modal/custom
 describe('SessionLogPage', () => {
   let fixture: ComponentFixture<SessionLogPage>;
   let instance: any;
-  let testBed: typeof TestBed;
 
   beforeEach(
     async(() => {
       TestUtils.configurePageTestingModule([SessionLogPage]).then(testEnv => {
         fixture = testEnv.fixture;
         instance = testEnv.instance;
-        testBed = testEnv.testBed;
         fixture.detectChanges();
       });
     })
@@ -139,9 +124,9 @@ describe('SessionLogPage', () => {
       it('should return correct log', () => {
         spyOn(instance.logger, 'get').and.returnValue([
           {
-            timestamp: '01/07/2008',
             level: 1,
-            msg: 'msg'
+            msg: 'msg',
+            timestamp: '01/07/2008'
           }
         ]);
         const log = instance.prepareLogs();
@@ -170,7 +155,6 @@ describe('SessionLogPage', () => {
     });
     describe('prepareLogs function', () => {
       it('should return log', () => {
-        const logger = testBed.get(Logger);
         expect(instance.prepareLogs()).toContain('Copay');
       });
     });
