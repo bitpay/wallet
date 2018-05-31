@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Logger } from '../../providers/logger/logger';
 import { PersistenceProvider } from '../persistence/persistence';
 
-import * as _ from "lodash";
+import * as _ from 'lodash';
 
 interface Config {
   limits: {
@@ -11,7 +11,7 @@ interface Config {
   };
 
   wallet: {
-    useLegacyAddress: boolean,
+    useLegacyAddress: boolean;
     requiredCopayers: number;
     totalCopayers: number;
     spendUnconfirmed: boolean;
@@ -39,7 +39,7 @@ interface Config {
     };
     copay: {
       url: string;
-    }
+    };
   };
 
   rateApp: {
@@ -66,12 +66,12 @@ interface Config {
   };
 
   showIntegration: {
-    coinbase: boolean,
-    glidera: boolean,
-    debitcard: boolean,
-    amazon: boolean,
-    mercadolibre: boolean,
-    shapeshift: boolean
+    coinbase: boolean;
+    glidera: boolean;
+    debitcard: boolean;
+    amazon: boolean;
+    mercadolibre: boolean;
+    shapeshift: boolean;
   };
 
   rates: {
@@ -100,8 +100,8 @@ interface Config {
   blockExplorerUrl: {
     btc: string;
     bch: string;
-  }
-};
+  };
+}
 
 const configDefault: Config = {
   // wallet limits
@@ -146,8 +146,10 @@ const configDefault: Config = {
 
   rateApp: {
     bitpay: {
-      ios: 'https://itunes.apple.com/ar/app/bitpay-secure-bitcoin-wallet/id1149581638',
-      android: 'https://play.google.com/store/apps/details?id=com.bitpay.wallet',
+      ios:
+        'https://itunes.apple.com/ar/app/bitpay-secure-bitcoin-wallet/id1149581638',
+      android:
+        'https://play.google.com/store/apps/details?id=com.bitpay.wallet',
       wp: ''
     },
     copay: {
@@ -210,7 +212,6 @@ const configDefault: Config = {
 export class ConfigProvider {
   private configCache: Config;
 
-
   constructor(
     private logger: Logger,
     private persistence: PersistenceProvider
@@ -220,18 +221,21 @@ export class ConfigProvider {
 
   public load() {
     return new Promise((resolve, reject) => {
-      this.persistence.getConfig().then((config: Config) => {
-        if (!_.isEmpty(config)) {
-          this.configCache = _.clone(config);
-          this.backwardCompatibility();
-        } else {
-          this.configCache = _.clone(configDefault);
-        }
-        resolve();
-      }).catch(err => {
-        this.logger.error('Error Loading Config');
-        reject(err);
-      });
+      this.persistence
+        .getConfig()
+        .then((config: Config) => {
+          if (!_.isEmpty(config)) {
+            this.configCache = _.clone(config);
+            this.backwardCompatibility();
+          } else {
+            this.configCache = _.clone(configDefault);
+          }
+          resolve();
+        })
+        .catch(err => {
+          this.logger.error('Error Loading Config');
+          reject(err);
+        });
     });
   }
 
@@ -268,7 +272,8 @@ export class ConfigProvider {
       this.configCache.wallet = configDefault.wallet;
     }
     if (!this.configCache.wallet.settings.unitCode) {
-      this.configCache.wallet.settings.unitCode = configDefault.wallet.settings.unitCode;
+      this.configCache.wallet.settings.unitCode =
+        configDefault.wallet.settings.unitCode;
     }
 
     if (!this.configCache.showIntegration) {
@@ -279,16 +284,20 @@ export class ConfigProvider {
       this.configCache.recentTransactions = configDefault.recentTransactions;
     }
     if (!this.configCache.pushNotificationsEnabled) {
-      this.configCache.pushNotificationsEnabled = configDefault.pushNotificationsEnabled;
+      this.configCache.pushNotificationsEnabled =
+        configDefault.pushNotificationsEnabled;
     }
 
     if (this.configCache.wallet.settings.unitCode == 'bit') {
       // Convert to BTC. Bits will be disabled
-      this.configCache.wallet.settings.unitName = configDefault.wallet.settings.unitName;
-      this.configCache.wallet.settings.unitToSatoshi = configDefault.wallet.settings.unitToSatoshi;
-      this.configCache.wallet.settings.unitDecimals = configDefault.wallet.settings.unitDecimals;
-      this.configCache.wallet.settings.unitCode = configDefault.wallet.settings.unitCode;
+      this.configCache.wallet.settings.unitName =
+        configDefault.wallet.settings.unitName;
+      this.configCache.wallet.settings.unitToSatoshi =
+        configDefault.wallet.settings.unitToSatoshi;
+      this.configCache.wallet.settings.unitDecimals =
+        configDefault.wallet.settings.unitDecimals;
+      this.configCache.wallet.settings.unitCode =
+        configDefault.wallet.settings.unitCode;
     }
   }
-
 }
