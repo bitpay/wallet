@@ -16,28 +16,26 @@ describe('WalletDetailsPage', () => {
   let instance: any;
   let testBed: typeof TestBed;
 
-  beforeEach(
-    async(() => {
-      const mockWallet = {
-        name: 'Test Wallet',
-        cachedStatus: null,
-        credentials: { m: 1 },
-        status: {},
-        canSign: () => true,
-        isComplete: () => true,
-        isPrivKeyEncrypted: () => true
-      };
-      spyOn(ProfileProvider.prototype, 'getWallet').and.returnValue(mockWallet);
-      return TestUtils.configurePageTestingModule([WalletDetailsPage]).then(
-        testEnv => {
-          fixture = testEnv.fixture;
-          instance = testEnv.instance;
-          testBed = testEnv.testBed;
-          fixture.detectChanges();
-        }
-      );
-    })
-  );
+  beforeEach(async(() => {
+    const mockWallet = {
+      name: 'Test Wallet',
+      cachedStatus: null,
+      credentials: { m: 1 },
+      status: {},
+      canSign: () => true,
+      isComplete: () => true,
+      isPrivKeyEncrypted: () => true
+    };
+    spyOn(ProfileProvider.prototype, 'getWallet').and.returnValue(mockWallet);
+    return TestUtils.configurePageTestingModule([WalletDetailsPage]).then(
+      testEnv => {
+        fixture = testEnv.fixture;
+        instance = testEnv.instance;
+        testBed = testEnv.testBed;
+        fixture.detectChanges();
+      }
+    );
+  }));
   afterEach(() => {
     fixture.destroy();
   });

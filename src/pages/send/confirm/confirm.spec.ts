@@ -17,23 +17,20 @@ describe('ConfirmPage', () => {
   let instance: any;
   let testBed: typeof TestBed;
 
-  beforeEach(
-    async(() =>
-      TestUtils.configurePageTestingModule([ConfirmPage]).then(testEnv => {
-        fixture = testEnv.fixture;
-        instance = testEnv.instance;
-        testBed = testEnv.testBed;
-        instance.navParams = {
-          data: {
-            toAddress: 'n4VQ5YdHf7hLQ2gWQYYrcxoE5B7nWuDFNF'
-          }
-        };
-        instance.tx = { coin: 'BTC' };
-        spyOn(instance.onGoingProcessProvider, 'set');
-        fixture.detectChanges();
-      })
-    )
-  );
+  beforeEach(async(() =>
+    TestUtils.configurePageTestingModule([ConfirmPage]).then(testEnv => {
+      fixture = testEnv.fixture;
+      instance = testEnv.instance;
+      testBed = testEnv.testBed;
+      instance.navParams = {
+        data: {
+          toAddress: 'n4VQ5YdHf7hLQ2gWQYYrcxoE5B7nWuDFNF'
+        }
+      };
+      instance.tx = { coin: 'BTC' };
+      spyOn(instance.onGoingProcessProvider, 'set');
+      fixture.detectChanges();
+    })));
   afterEach(() => {
     fixture.destroy();
   });

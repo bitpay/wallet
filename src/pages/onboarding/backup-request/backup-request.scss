@@ -12,7 +12,7 @@ page-backup-request {
   .top-description {
     font-size: 1.4rem;
     padding: 0 2rem 0 2rem;
-    color: $onboarding-comment-color
+    color: $onboarding-comment-color;
   }
   .bottom-description {
     font-size: 1.4rem;
@@ -23,8 +23,8 @@ page-backup-request {
   .arrow-down {
     font-size: 7rem;
     color: color($colors, primary);
-    @media(max-height: 560px) and (max-width: 430px) {
-      display: none;    
+    @media (max-height: 560px) and (max-width: 430px) {
+      display: none;
     }
   }
   .alert-icon {
@@ -32,7 +32,7 @@ page-backup-request {
     height: 15vh;
   }
   .primary-color {
-    color: $onboarding-primary-color
+    color: $onboarding-primary-color;
   }
   .bottom-absolute {
     padding: 15px 15px 0px 15px;

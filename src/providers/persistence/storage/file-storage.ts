@@ -9,10 +9,7 @@ export class FileStorage implements IStorage {
   fs: FileSystem;
   dir: DirectoryEntry;
 
-  constructor(
-    private file: File,
-    private log: Logger
-  ) { }
+  constructor(private file: File, private log: Logger) {}
 
   init(): Promise<any> {
     return new Promise((resolve, reject) => {
@@ -85,36 +82,40 @@ export class FileStorage implements IStorage {
 
   get(k: string): Promise<any> {
     return new Promise((resolve, reject) => {
+      this.init()
+        .then(() => {
+          this.file
+            .getFile(this.dir, k, { create: false })
+            .then(fileEntry => {
+              if (!fileEntry) return resolve();
 
-      this.init().then(() => {
-
-        this.file.getFile(this.dir, k, { create: false }).then((fileEntry) => {
-          if (!fileEntry) return resolve();
-
-          this.readFileEntry(fileEntry).then((result) => {
-            return resolve(result);
-          }).catch(() => {
-            this.log.error('Problem parsing input file.');
-          })
-        }).catch((err) => {
-          // Not found
-          if (err.code == 1) return resolve();
-          else throw err;
+              this.readFileEntry(fileEntry)
+                .then(result => {
+                  return resolve(result);
+                })
+                .catch(() => {
+                  this.log.error('Problem parsing input file.');
+                });
+            })
+            .catch(err => {
+              // Not found
+              if (err.code == 1) return resolve();
+              else throw err;
+            });
         })
-      }).catch((err) => {
-        this.log.error(err);
-      })
+        .catch(err => {
+          this.log.error(err);
+        });
     });
   }
 
   set(k: string, v: any): Promise<void> {
     return Promise.resolve(
       this.init().then(() => {
-        this.file.getFile(this.dir, k, { create: true }).then((fileEntry) => {
+        this.file.getFile(this.dir, k, { create: true }).then(fileEntry => {
           // Create a FileWriter object for our FileEntry (log.txt).
           return new Promise((resolve, reject) => {
-
-            fileEntry.createWriter((fileWriter) => {
+            fileEntry.createWriter(fileWriter => {
               fileWriter.onwriteend = e => {
                 this.log.info('Write completed:' + k);
                 return resolve();
@@ -132,18 +133,21 @@ export class FileStorage implements IStorage {
           });
         });
       })
-    )
+    );
   }
 
   remove(k: string): Promise<void> {
     return new Promise<void>((resolve, reject) => {
-      this.file.removeFile(this.dir.nativeURL, k).then(() => {
-        this.log.debug('File removed: ' + k);
-        resolve();
-      }).catch((e) => {
-        this.log.error('Error removing file', e);
-        reject(e);
-      });
+      this.file
+        .removeFile(this.dir.nativeURL, k)
+        .then(() => {
+          this.log.debug('File removed: ' + k);
+          resolve();
+        })
+        .catch(e => {
+          this.log.error('Error removing file', e);
+          reject(e);
+        });
     });
   }
 

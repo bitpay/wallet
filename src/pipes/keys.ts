@@ -7,13 +7,17 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
-  name: 'keys',
+  name: 'keys'
 })
 export class KeysPipe implements PipeTransform {
   transform(value, orderBy?: string): any {
     let keys = [];
     for (let key in value) {
-      keys.push({ key, value: value[key], order: orderBy ? (value[key])[orderBy] : null });
+      keys.push({
+        key,
+        value: value[key],
+        order: orderBy ? value[key][orderBy] : null
+      });
     }
     return keys;
   }

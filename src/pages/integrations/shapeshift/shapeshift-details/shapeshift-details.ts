@@ -9,10 +9,9 @@ import { ShapeshiftProvider } from '../../../../providers/shapeshift/shapeshift'
 
 @Component({
   selector: 'page-shapeshift-details',
-  templateUrl: 'shapeshift-details.html',
+  templateUrl: 'shapeshift-details.html'
 })
 export class ShapeshiftDetailsPage {
-
   public ssData: any;
 
   private defaults: any;
@@ -34,11 +33,15 @@ export class ShapeshiftDetailsPage {
   }
 
   public remove() {
-    this.shapeshiftProvider.saveShapeshift(this.ssData, {
-      remove: true
-    }, (err) => {
-      this.close();
-    });
+    this.shapeshiftProvider.saveShapeshift(
+      this.ssData,
+      {
+        remove: true
+      },
+      err => {
+        this.close();
+      }
+    );
   }
 
   public close() {
@@ -56,5 +59,4 @@ export class ShapeshiftDetailsPage {
     }
     this.externalLinkProvider.open(url);
   }
-
 }

@@ -26,28 +26,32 @@ export class Logger {
   }
 
   public error(message?: any, ...optionalParams: any[]): void {
-    let msg = '[error] ' + (_.isString(message) ? message : JSON.stringify(message));
+    let msg =
+      '[error] ' + (_.isString(message) ? message : JSON.stringify(message));
     console.log(msg, ...optionalParams);
     let args = this.processingArgs(arguments);
     this.add('error', args);
   }
 
   public debug(message?: any, ...optionalParams: any[]): void {
-    let msg = '[debug] ' + (_.isString(message) ? message : JSON.stringify(message));
+    let msg =
+      '[debug] ' + (_.isString(message) ? message : JSON.stringify(message));
     if (isDevMode()) console.log(msg, ...optionalParams);
     let args = this.processingArgs(arguments);
     this.add('debug', args);
   }
 
   public info(message?: any, ...optionalParams: any[]): void {
-    let msg = '[info] ' + (_.isString(message) ? message : JSON.stringify(message));
+    let msg =
+      '[info] ' + (_.isString(message) ? message : JSON.stringify(message));
     if (isDevMode()) console.log(msg, ...optionalParams);
     let args = this.processingArgs(arguments);
     this.add('info', args);
   }
 
   public warn(message?: any, ...optionalParams: any[]): void {
-    let msg = '[warn] ' + (_.isString(message) ? message : JSON.stringify(message));
+    let msg =
+      '[warn] ' + (_.isString(message) ? message : JSON.stringify(message));
     if (isDevMode()) console.log(msg, ...optionalParams);
     let args = this.processingArgs(arguments);
     this.add('warn', args);

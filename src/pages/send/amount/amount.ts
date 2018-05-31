@@ -1,4 +1,9 @@
-import { ChangeDetectorRef, Component, HostListener, NgZone } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  HostListener,
+  NgZone
+} from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { ActionSheetController, NavController, NavParams } from 'ionic-angular';
 import * as _ from 'lodash';
@@ -27,7 +32,7 @@ import { ConfirmPage } from '../confirm/confirm';
 
 @Component({
   selector: 'page-amount',
-  templateUrl: 'amount.html',
+  templateUrl: 'amount.html'
 })
 export class AmountPage {
   private LENGTH_EXPRESSION_LIMIT: number;
@@ -111,7 +116,6 @@ export class AmountPage {
     this.nextView = this.getNextView();
     this.itemSelectorLabel = this.translate.instant('Send Max amount');
 
-
     this.unitToSatoshi = this.config.wallet.settings.unitToSatoshi;
     this.satToUnit = 1 / this.unitToSatoshi;
     this.unitDecimals = this.config.wallet.settings.unitDecimals;
@@ -134,7 +138,8 @@ export class AmountPage {
     this.processAmount();
   }
 
-  @HostListener('document:keydown', ['$event']) handleKeyboardEvent(event: KeyboardEvent) {
+  @HostListener('document:keydown', ['$event'])
+  handleKeyboardEvent(event: KeyboardEvent) {
     if (this.navCtrl.getActive().name != 'AmountPage') return;
     if (!event.key) return;
     if (event.which === 8) {
@@ -157,13 +162,13 @@ export class AmountPage {
     this.availableUnits.push({
       name: 'Bitcoin',
       id: 'btc',
-      shortName: 'BTC',
+      shortName: 'BTC'
     });
 
     this.availableUnits.push({
       name: 'Bitcoin Cash',
       id: 'bch',
-      shortName: 'BCH',
+      shortName: 'BCH'
     });
 
     this.unitIndex = 0;
@@ -177,7 +182,9 @@ export class AmountPage {
           id: c
         });
         if (!coin) {
-          this.logger.warn('Could not find desired coin:' + this.navParams.data.coin)
+          this.logger.warn(
+            'Could not find desired coin:' + this.navParams.data.coin
+          );
         } else {
           newAvailableUnits.push(coin);
         }
@@ -192,7 +199,7 @@ export class AmountPage {
     let fiatName;
     if (this.navParams.data.currency) {
       this.fiatCode = this.navParams.data.currency;
-      this.altUnitIndex = this.unitIndex
+      this.altUnitIndex = this.unitIndex;
       this.unitIndex = this.availableUnits.length;
     } else {
       this.fiatCode = this.config.wallet.settings.alternativeIsoCode || 'USD';
@@ -205,7 +212,7 @@ export class AmountPage {
       // TODO
       id: this.fiatCode,
       shortName: this.fiatCode,
-      isFiat: true,
+      isFiat: true
     });
 
     if (this.navParams.data.fixedUnit) {
@@ -273,8 +280,7 @@ export class AmountPage {
 
     let value = this.nodeWebkitProvider.readFromClipboard();
 
-    if (value && this.evaluate(value) > 0)
-      this.paste(this.evaluate(value));
+    if (value && this.evaluate(value) > 0) this.paste(this.evaluate(value));
   }
 
   public showSendMaxMenu(): void {
@@ -286,7 +292,7 @@ export class AmountPage {
       handler: () => {
         this.sendMax();
       }
-    }
+    };
     buttons.push(sendMaxButton);
 
     const actionSheet = this.actionSheetCtrl.create({
@@ -302,7 +308,11 @@ export class AmountPage {
   }
 
   public pushDigit(digit: string): void {
-    if (this.expression && this.expression.length >= this.LENGTH_EXPRESSION_LIMIT) return;
+    if (
+      this.expression &&
+      this.expression.length >= this.LENGTH_EXPRESSION_LIMIT
+    )
+      return;
     this.zone.run(() => {
       this.expression = (this.expression + digit).replace('..', '.');
       this.processAmount();
@@ -350,37 +360,60 @@ export class AmountPage {
     this.allowSend = _.isNumber(result) && +result > 0;
 
     if (_.isNumber(result)) {
-      this.globalResult = this.isExpression(this.expression) ? '= ' + this.processResult(result) : '';
+      this.globalResult = this.isExpression(this.expression)
+        ? '= ' + this.processResult(result)
+        : '';
 
       if (this.availableUnits[this.unitIndex].isFiat) {
-
         let a = this.fromFiat(result);
         if (a) {
-          this.alternativeAmount = this.txFormatProvider.formatAmount(a * this.unitToSatoshi, true);
+          this.alternativeAmount = this.txFormatProvider.formatAmount(
+            a * this.unitToSatoshi,
+            true
+          );
         } else {
           this.alternativeAmount = result ? 'N/A' : null;
           this.allowSend = false;
         }
       } else {
-        this.alternativeAmount = this.filterProvider.formatFiatAmount(this.toFiat(result));
+        this.alternativeAmount = this.filterProvider.formatFiatAmount(
+          this.toFiat(result)
+        );
       }
     }
   }
 
   private processResult(val: any): number {
-    if (this.availableUnits[this.unitIndex].isFiat) return this.filterProvider.formatFiatAmount(val);
-    else return this.txFormatProvider.formatAmount(val.toFixed(this.unitDecimals) * this.unitToSatoshi, true);
+    if (this.availableUnits[this.unitIndex].isFiat)
+      return this.filterProvider.formatFiatAmount(val);
+    else
+      return this.txFormatProvider.formatAmount(
+        val.toFixed(this.unitDecimals) * this.unitToSatoshi,
+        true
+      );
   }
 
   private fromFiat(val: any, coin?: string): number {
     coin = coin || this.availableUnits[this.altUnitIndex].id;
-    return parseFloat((this.rateProvider.fromFiat(val, this.fiatCode, coin) * this.satToUnit).toFixed(this.unitDecimals));
+    return parseFloat(
+      (
+        this.rateProvider.fromFiat(val, this.fiatCode, coin) * this.satToUnit
+      ).toFixed(this.unitDecimals)
+    );
   }
 
   private toFiat(val: number): number {
     if (!this.rateProvider.getRate(this.fiatCode)) return;
 
-    return parseFloat((this.rateProvider.toFiat(val * this.unitToSatoshi, this.fiatCode, this.availableUnits[this.unitIndex].id)).toFixed(2));
+    return parseFloat(
+      this.rateProvider
+        .toFiat(
+          val * this.unitToSatoshi,
+          this.fiatCode,
+          this.availableUnits[this.unitIndex].id
+        )
+        .toFixed(2)
+    );
   }
 
   private format(val: string): string {
@@ -388,8 +421,7 @@ export class AmountPage {
 
     let result = val.toString();
 
-    if (this.isOperator(_.last(val)))
-      result = result.slice(0, -1);
+    if (this.isOperator(_.last(val))) result = result.slice(0, -1);
 
     return result.replace('x', '*');
   }
@@ -426,7 +458,9 @@ export class AmountPage {
       };
     } else {
       let amount = _amount;
-      amount = unit.isFiat ? (this.fromFiat(amount) * this.unitToSatoshi).toFixed(0) : (amount * this.unitToSatoshi).toFixed(0);
+      amount = unit.isFiat
+        ? (this.fromFiat(amount) * this.unitToSatoshi).toFixed(0)
+        : (amount * this.unitToSatoshi).toFixed(0);
       data = {
         recipientType: this.recipientType,
         amount,
@@ -440,13 +474,18 @@ export class AmountPage {
     }
     this.useSendMax = null;
     this.navCtrl.push(this.nextView, data);
-  };
+  }
 
   private updateUnitUI(): void {
     this.unit = this.availableUnits[this.unitIndex].shortName;
     this.alternativeUnit = this.availableUnits[this.altUnitIndex].shortName;
     this.processAmount();
-    this.logger.debug('Update unit coin @amount unit:' + this.unit + " alternativeUnit:" + this.alternativeUnit);
+    this.logger.debug(
+      'Update unit coin @amount unit:' +
+        this.unit +
+        ' alternativeUnit:' +
+        this.alternativeUnit
+    );
   }
 
   public changeUnit(): void {
@@ -469,5 +508,4 @@ export class AmountPage {
       this.changeDetectorRef.detectChanges();
     });
   }
-
 }

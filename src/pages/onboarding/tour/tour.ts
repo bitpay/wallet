@@ -1,6 +1,11 @@
 import { Component, ViewChild } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { LoadingController, Navbar, NavController, Slides } from 'ionic-angular';
+import {
+  LoadingController,
+  Navbar,
+  NavController,
+  Slides
+} from 'ionic-angular';
 import { Logger } from '../../../providers/logger/logger';
 
 // pages
@@ -16,7 +21,7 @@ import { TxFormatProvider } from '../../../providers/tx-format/tx-format';
 
 @Component({
   selector: 'page-tour',
-  templateUrl: 'tour.html',
+  templateUrl: 'tour.html'
 })
 export class TourPage {
   @ViewChild(Slides) slides: Slides;
@@ -43,8 +48,11 @@ export class TourPage {
     this.currentIndex = 0;
     this.rateProvider.whenRatesAvailable('btc').then(() => {
       let btcAmount = 1;
-      this.localCurrencySymbol = '$'
-      this.localCurrencyPerBtc = this.txFormatProvider.formatAlternativeStr('btc', btcAmount * 1e8);
+      this.localCurrencySymbol = '$';
+      this.localCurrencyPerBtc = this.txFormatProvider.formatAlternativeStr(
+        'btc',
+        btcAmount * 1e8
+      );
     });
   }
 
@@ -55,7 +63,7 @@ export class TourPage {
   ionViewWillEnter() {
     this.navBar.backButtonClick = (e: UIEvent) => {
       this.slidePrev();
-    }
+    };
   }
 
   public slideChanged(): void {
@@ -75,26 +83,30 @@ export class TourPage {
 
   public createDefaultWallet(): void {
     this.onGoingProcessProvider.set('creatingWallet');
-    this.profileProvider.createDefaultWallet().then((wallet) => {
-      this.onGoingProcessProvider.clear();
-      this.persistenceProvider.setOnboardingCompleted();
-      this.navCtrl.push(CollectEmailPage, { walletId: wallet.id });
-    }).catch((err) => {
-      setTimeout(() => {
-        this.logger.warn('Retrying to create default wallet.....:' + ++this.retryCount);
-        if (this.retryCount > 3) {
-          this.onGoingProcessProvider.clear();
-          let title = this.translate.instant('Cannot create wallet');
-          let okText = this.translate.instant('Retry');
-          this.popupProvider.ionicAlert(title, err, okText).then(() => {
-            this.retryCount = 0;
+    this.profileProvider
+      .createDefaultWallet()
+      .then(wallet => {
+        this.onGoingProcessProvider.clear();
+        this.persistenceProvider.setOnboardingCompleted();
+        this.navCtrl.push(CollectEmailPage, { walletId: wallet.id });
+      })
+      .catch(err => {
+        setTimeout(() => {
+          this.logger.warn(
+            'Retrying to create default wallet.....:' + ++this.retryCount
+          );
+          if (this.retryCount > 3) {
+            this.onGoingProcessProvider.clear();
+            let title = this.translate.instant('Cannot create wallet');
+            let okText = this.translate.instant('Retry');
+            this.popupProvider.ionicAlert(title, err, okText).then(() => {
+              this.retryCount = 0;
+              this.createDefaultWallet();
+            });
+          } else {
             this.createDefaultWallet();
-          });
-        } else {
-          this.createDefaultWallet();
-        }
-      }, 2000);
-    });
+          }
+        }, 2000);
+      });
   }
-
 }

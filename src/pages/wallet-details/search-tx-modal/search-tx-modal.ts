@@ -120,9 +120,9 @@ export class SearchTxModalPage {
   public showHistory(): void {
     this.txHistorySearchResults = this.filteredTxHistory
       ? this.filteredTxHistory.slice(
-        0,
-        (this.currentTxHistoryPage + 1) * this.HISTORY_SHOW_LIMIT
-      )
+          0,
+          (this.currentTxHistoryPage + 1) * this.HISTORY_SHOW_LIMIT
+        )
       : [];
     this.txHistoryShowMore =
       this.filteredTxHistory.length > this.txHistorySearchResults.length;

@@ -12,7 +12,7 @@ import { DisclaimerPage } from '../disclaimer/disclaimer';
 
 @Component({
   selector: 'page-backup-request',
-  templateUrl: 'backup-request.html',
+  templateUrl: 'backup-request.html'
 })
 export class BackupRequestPage {
   private opts: any;
@@ -34,25 +34,35 @@ export class BackupRequestPage {
   }
 
   public initBackupFlow(): void {
-    this.navCtrl.push(BackupWarningPage, { walletId: this.walletId, fromOnboarding: true });
+    this.navCtrl.push(BackupWarningPage, {
+      walletId: this.walletId,
+      fromOnboarding: true
+    });
   }
 
   public doBackupLater(): void {
     let title = this.translate.instant('Watch Out!');
-    let message = this.translate.instant('If this device is replaced or this app is deleted, neither you nor BitPay can recover your funds without a backup.');
+    let message = this.translate.instant(
+      'If this device is replaced or this app is deleted, neither you nor BitPay can recover your funds without a backup.'
+    );
     let okText = this.translate.instant('I understand');
     let cancelText = this.translate.instant('Go Back');
-    this.popupProvider.ionicConfirm(title, message, okText, cancelText).then((res) => {
-      if (!res) return;
-      let title = this.translate.instant('Are you sure you want to skip it?');
-      let message = this.translate.instant('You can create a backup later from your wallet settings.');
-      let okText = this.translate.instant('Yes, skip');
-      let cancelText = this.translate.instant('Go Back');
-      this.popupProvider.ionicConfirm(title, message, okText, cancelText).then((res) => {
+    this.popupProvider
+      .ionicConfirm(title, message, okText, cancelText)
+      .then(res => {
         if (!res) return;
-        this.navCtrl.push(DisclaimerPage);
+        let title = this.translate.instant('Are you sure you want to skip it?');
+        let message = this.translate.instant(
+          'You can create a backup later from your wallet settings.'
+        );
+        let okText = this.translate.instant('Yes, skip');
+        let cancelText = this.translate.instant('Go Back');
+        this.popupProvider
+          .ionicConfirm(title, message, okText, cancelText)
+          .then(res => {
+            if (!res) return;
+            this.navCtrl.push(DisclaimerPage);
+          });
       });
-    });
   }
-
 }

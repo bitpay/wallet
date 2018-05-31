@@ -9,10 +9,13 @@ export class PopupProvider {
     private alertCtrl: AlertController,
     private logger: Logger,
     private translate: TranslateService
-  ) {
-  }
+  ) {}
 
-  public ionicAlert(title: string, subTitle?: string, okText?: string): Promise<any> {
+  public ionicAlert(
+    title: string,
+    subTitle?: string,
+    okText?: string
+  ): Promise<any> {
     return new Promise((resolve, reject) => {
       let alert = this.alertCtrl.create({
         title,
@@ -30,9 +33,14 @@ export class PopupProvider {
       });
       alert.present();
     });
-  };
+  }
 
-  public ionicConfirm(title: string, message: string, okText?: string, cancelText?: string): Promise<any> {
+  public ionicConfirm(
+    title: string,
+    message: string,
+    okText?: string,
+    cancelText?: string
+  ): Promise<any> {
     return new Promise((resolve, reject) => {
       let confirm = this.alertCtrl.create({
         title,
@@ -57,9 +65,15 @@ export class PopupProvider {
       });
       confirm.present();
     });
-  };
+  }
 
-  public ionicPrompt(title: string, message: string, opts?: any, okText?: string, cancelText?: string): Promise<any> {
+  public ionicPrompt(
+    title: string,
+    message: string,
+    opts?: any,
+    okText?: string,
+    cancelText?: string
+  ): Promise<any> {
     return new Promise((resolve, reject) => {
       let defaultText = opts && opts.defaultText ? opts.defaultText : null;
       let placeholder = opts && opts.placeholder ? opts.placeholder : null;
@@ -77,7 +91,7 @@ export class PopupProvider {
             value: defaultText,
             placeholder,
             type: inputType
-          },
+          }
         ],
         buttons: [
           {

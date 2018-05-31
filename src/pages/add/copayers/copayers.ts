@@ -9,7 +9,7 @@ import { WalletDetailsPage } from '../../../pages/wallet-details/wallet-details'
 import { AppProvider } from '../../../providers/app/app';
 import { BwcErrorProvider } from '../../../providers/bwc-error/bwc-error';
 import { Logger } from '../../../providers/logger/logger';
-import { OnGoingProcessProvider } from "../../../providers/on-going-process/on-going-process";
+import { OnGoingProcessProvider } from '../../../providers/on-going-process/on-going-process';
 import { PlatformProvider } from '../../../providers/platform/platform';
 import { PopupProvider } from '../../../providers/popup/popup';
 import { ProfileProvider } from '../../../providers/profile/profile';
@@ -19,10 +19,9 @@ import { TabsPage } from '../../tabs/tabs';
 
 @Component({
   selector: 'page-copayers',
-  templateUrl: 'copayers.html',
+  templateUrl: 'copayers.html'
 })
 export class CopayersPage {
-
   public appName: string = this.appProvider.info.userVisibleName;
   public appUrl: string = this.appProvider.info.url;
   public isCordova: boolean = this.platformProvider.isCordova;
@@ -56,7 +55,11 @@ export class CopayersPage {
     this.updateWallet();
 
     this.events.subscribe('bwsEvent', (walletId, type, n) => {
-      if (this.wallet && walletId == this.wallet.id && type == ('NewCopayer' || 'WalletComplete')) {
+      if (
+        this.wallet &&
+        walletId == this.wallet.id &&
+        type == ('NewCopayer' || 'WalletComplete')
+      ) {
         this.updateWallet();
       }
     });
@@ -67,30 +70,36 @@ export class CopayersPage {
   }
 
   private updateWallet(): void {
-    this.logger.debug('Updating wallet:' + this.wallet.name)
-    this.walletProvider.getStatus(this.wallet, {}).then((status: any) => {
-      this.wallet.status = status;
-      this.copayers = this.wallet.status.wallet.copayers;
-      this.secret = this.wallet.status.wallet.secret;
-      if (status.wallet.status == 'complete') {
-        this.wallet.openWallet((err: any, status: any) => {
-          if (err)
-            this.logger.error(err);
+    this.logger.debug('Updating wallet:' + this.wallet.name);
+    this.walletProvider
+      .getStatus(this.wallet, {})
+      .then((status: any) => {
+        this.wallet.status = status;
+        this.copayers = this.wallet.status.wallet.copayers;
+        this.secret = this.wallet.status.wallet.secret;
+        if (status.wallet.status == 'complete') {
+          this.wallet.openWallet((err: any, status: any) => {
+            if (err) this.logger.error(err);
 
-          this.navCtrl.popToRoot();
-          this.navCtrl.push(WalletDetailsPage, { walletId: this.wallet.credentials.walletId });
-        });
-      }
-    }).catch((err: any) => {
-      let message = this.translate.instant('Could not update wallet');
-      this.popupProvider.ionicAlert(this.bwcErrorProvider.msg(err, message));
-      return;
-    });
+            this.navCtrl.popToRoot();
+            this.navCtrl.push(WalletDetailsPage, {
+              walletId: this.wallet.credentials.walletId
+            });
+          });
+        }
+      })
+      .catch((err: any) => {
+        let message = this.translate.instant('Could not update wallet');
+        this.popupProvider.ionicAlert(this.bwcErrorProvider.msg(err, message));
+        return;
+      });
   }
 
   public showDeletePopup(): void {
     let title = this.translate.instant('Confirm');
-    let msg = this.translate.instant('Are you sure you want to cancel and delete this wallet?');
+    let msg = this.translate.instant(
+      'Are you sure you want to cancel and delete this wallet?'
+    );
     this.popupProvider.ionicConfirm(title, msg).then((res: any) => {
       if (res) this.deleteWallet();
     });
@@ -98,17 +107,18 @@ export class CopayersPage {
 
   private deleteWallet(): void {
     this.onGoingProcessProvider.set('deletingWallet');
-    this.profileProvider.deleteWalletClient(this.wallet).then(() => {
-      this.onGoingProcessProvider.clear();
+    this.profileProvider
+      .deleteWalletClient(this.wallet)
+      .then(() => {
+        this.onGoingProcessProvider.clear();
 
-      this.pushNotificationsProvider.unsubscribe(this.wallet);
-      this.app.getRootNavs()[0].setRoot(TabsPage);
-    }).catch((err: any) => {
-      this.onGoingProcessProvider.clear();
-      let errorText = this.translate.instant('Error');
-      this.popupProvider.ionicAlert(errorText, err.message || err);
-    });
+        this.pushNotificationsProvider.unsubscribe(this.wallet);
+        this.app.getRootNavs()[0].setRoot(TabsPage);
+      })
+      .catch((err: any) => {
+        this.onGoingProcessProvider.clear();
+        let errorText = this.translate.instant('Error');
+        this.popupProvider.ionicAlert(errorText, err.message || err);
+      });
   }
-
 }
-

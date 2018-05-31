@@ -1,6 +1,11 @@
 import { Component } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { Events, ModalController, NavParams, ViewController } from 'ionic-angular';
+import {
+  Events,
+  ModalController,
+  NavParams,
+  ViewController
+} from 'ionic-angular';
 import { Logger } from '../../providers/logger/logger';
 
 // providers
@@ -68,8 +73,14 @@ export class TxpDetailsPage {
     this.showMultiplesOutputs = false;
     let config = this.configProvider.get().wallet;
     this.tx = this.navParams.data.tx;
-    this.wallet = this.tx.wallet ? this.tx.wallet : this.profileProvider.getWallet(this.tx.walletId);
-    this.tx = this.txFormatProvider.processTx(this.wallet.coin, this.tx, this.walletProvider.useLegacyAddress());
+    this.wallet = this.tx.wallet
+      ? this.tx.wallet
+      : this.profileProvider.getWallet(this.tx.walletId);
+    this.tx = this.txFormatProvider.processTx(
+      this.wallet.coin,
+      this.tx,
+      this.walletProvider.useLegacyAddress()
+    );
     if (!this.tx.toAddress) this.tx.toAddress = this.tx.outputs[0].toAddress;
     this.isGlidera = this.navParams.data.isGlidera;
     this.GLIDERA_LOCK_TIME = 6 * 60 * 60;
@@ -101,7 +112,6 @@ export class TxpDetailsPage {
     // };
     // this.tx = _.merge(this.tx, txp);
     // this.tx.hasMultiplesOutputs = true;
-
   }
 
   ionViewWillEnter() {
@@ -114,24 +124,32 @@ export class TxpDetailsPage {
     if (this.tx.message === 'Glidera transaction' && this.isGlidera) {
       this.tx.isGlidera = true;
       if (this.tx.canBeRemoved) {
-        this.tx.canBeRemoved = (Date.now() / 1000 - (this.tx.ts || this.tx.createdOn)) > this.GLIDERA_LOCK_TIME;
+        this.tx.canBeRemoved =
+          Date.now() / 1000 - (this.tx.ts || this.tx.createdOn) >
+          this.GLIDERA_LOCK_TIME;
       }
     }
 
-    this.events.subscribe('bwsEvent', (walletId: string, type: string, n: number) => {
-      _.each([
-        'TxProposalRejectedBy',
-        'TxProposalAcceptedBy',
-        'transactionProposalRemoved',
-        'TxProposalRemoved',
-        'NewOutgoingTx',
-        'UpdateTx'
-      ], (eventName: string) => {
-        if (walletId == this.wallet.id && type == eventName) {
-          this.updateTxInfo(eventName);
-        }
-      });
-    });
+    this.events.subscribe(
+      'bwsEvent',
+      (walletId: string, type: string, n: number) => {
+        _.each(
+          [
+            'TxProposalRejectedBy',
+            'TxProposalAcceptedBy',
+            'transactionProposalRemoved',
+            'TxProposalRemoved',
+            'NewOutgoingTx',
+            'UpdateTx'
+          ],
+          (eventName: string) => {
+            if (walletId == this.wallet.id && type == eventName) {
+              this.updateTxInfo(eventName);
+            }
+          }
+        );
+      }
+    );
   }
 
   ionViewWillLeave() {
@@ -139,21 +157,31 @@ export class TxpDetailsPage {
   }
 
   private displayFeeValues(): void {
-    this.tx.feeFiatStr = this.txFormatProvider.formatAlternativeStr(this.wallet.coin, this.tx.fee);
-    this.tx.feeRateStr = (this.tx.fee / (this.tx.amount + this.tx.fee) * 100).toFixed(2) + '%';
+    this.tx.feeFiatStr = this.txFormatProvider.formatAlternativeStr(
+      this.wallet.coin,
+      this.tx.fee
+    );
+    this.tx.feeRateStr =
+      ((this.tx.fee / (this.tx.amount + this.tx.fee)) * 100).toFixed(2) + '%';
     this.tx.feeLevelStr = this.feeProvider.feeOpts[this.tx.feeLevel];
   }
 
   private applyButtonText(): void {
-    var lastSigner = _.filter(this.tx.actions, {
-      type: 'accept'
-    }).length == this.tx.requiredSignatures - 1;
+    var lastSigner =
+      _.filter(this.tx.actions, {
+        type: 'accept'
+      }).length ==
+      this.tx.requiredSignatures - 1;
 
     if (lastSigner) {
-      this.buttonText = this.isCordova ? this.translate.instant('Slide to send') : this.translate.instant('Click to send');
+      this.buttonText = this.isCordova
+        ? this.translate.instant('Slide to send')
+        : this.translate.instant('Click to send');
       this.successText = this.translate.instant('Payment Sent');
     } else {
-      this.buttonText = this.isCordova ? this.translate.instant('Slide to accept') : this.translate.instant('Click to accept');
+      this.buttonText = this.isCordova
+        ? this.translate.instant('Slide to accept')
+        : this.translate.instant('Click to accept');
       this.successText = this.translate.instant('Payment Accepted');
     }
   }
@@ -167,7 +195,7 @@ export class TxpDetailsPage {
       created: this.translate.instant('Proposal Created'),
       accept: this.translate.instant('Accepted'),
       reject: this.translate.instant('Rejected'),
-      broadcasted: this.translate.instant('Broadcasted'),
+      broadcasted: this.translate.instant('Broadcasted')
     };
 
     this.actionList.push({
@@ -193,23 +221,28 @@ export class TxpDetailsPage {
 
   private checkPaypro() {
     if (this.tx.payProUrl) {
-      this.wallet.fetchPayPro({
-        payProUrl: this.tx.payProUrl,
-      }, (err, paypro) => {
-        if (err) {
-          this.logger.error(err);
-          this.paymentExpired = true;
-          this.popupProvider.ionicAlert(null, this.translate.instant('Could not fetch the invoice'));
-          return;
+      this.wallet.fetchPayPro(
+        {
+          payProUrl: this.tx.payProUrl
+        },
+        (err, paypro) => {
+          if (err) {
+            this.logger.error(err);
+            this.paymentExpired = true;
+            this.popupProvider.ionicAlert(
+              null,
+              this.translate.instant('Could not fetch the invoice')
+            );
+            return;
+          }
+          this.tx.paypro = paypro;
+          this.paymentTimeControl(this.tx.paypro.expires);
         }
-        this.tx.paypro = paypro;
-        this.paymentTimeControl(this.tx.paypro.expires);
-      });
+      );
     }
   }
 
   private paymentTimeControl(expirationTime) {
-
     let setExpirationTime = (): void => {
       let now = Math.floor(Date.now() / 1000);
       if (now > expirationTime) {
@@ -220,7 +253,7 @@ export class TxpDetailsPage {
       let totalSecs = expirationTime - now;
       let m = Math.floor(totalSecs / 60);
       let s = totalSecs % 60;
-      this.expires = ('0' + m).slice(-2) + ":" + ('0' + s).slice(-2);
+      this.expires = ('0' + m).slice(-2) + ':' + ('0' + s).slice(-2);
     };
 
     this.paymentExpired = false;
@@ -233,67 +266,101 @@ export class TxpDetailsPage {
 
   private setError(err: any, prefix: string): void {
     this.loading = false;
-    this.popupProvider.ionicAlert(this.translate.instant('Error'), this.bwcError.msg(err, prefix));
+    this.popupProvider.ionicAlert(
+      this.translate.instant('Error'),
+      this.bwcError.msg(err, prefix)
+    );
   }
 
   public sign(): void {
     this.loading = true;
-    this.walletProvider.publishAndSign(this.wallet, this.tx).then((txp: any) => {
-      this.onGoingProcessProvider.clear();
-      this.openFinishModal();
-    }).catch((err: any) => {
-      this.onGoingProcessProvider.clear();
-      this.setError(err, ('Could not send payment'));
-    });
+    this.walletProvider
+      .publishAndSign(this.wallet, this.tx)
+      .then((txp: any) => {
+        this.onGoingProcessProvider.clear();
+        this.openFinishModal();
+      })
+      .catch((err: any) => {
+        this.onGoingProcessProvider.clear();
+        this.setError(err, 'Could not send payment');
+      });
   }
 
   public reject(txp: any): void {
     let title = this.translate.instant('Warning!');
-    let msg = this.translate.instant('Are you sure you want to reject this transaction?');
-    this.popupProvider.ionicConfirm(title, msg, null, null).then((res: boolean) => {
-      if (!res) return
-      this.loading = true;
-      this.onGoingProcessProvider.set('rejectTx');
-      this.walletProvider.reject(this.wallet, this.tx).then((txpr) => {
-        this.onGoingProcessProvider.clear();
-        this.close();
-      }).catch((err: any) => {
-        this.onGoingProcessProvider.clear();
-        this.setError(err, this.translate.instant('Could not reject payment'));
+    let msg = this.translate.instant(
+      'Are you sure you want to reject this transaction?'
+    );
+    this.popupProvider
+      .ionicConfirm(title, msg, null, null)
+      .then((res: boolean) => {
+        if (!res) return;
+        this.loading = true;
+        this.onGoingProcessProvider.set('rejectTx');
+        this.walletProvider
+          .reject(this.wallet, this.tx)
+          .then(txpr => {
+            this.onGoingProcessProvider.clear();
+            this.close();
+          })
+          .catch((err: any) => {
+            this.onGoingProcessProvider.clear();
+            this.setError(
+              err,
+              this.translate.instant('Could not reject payment')
+            );
+          });
       });
-    });
   }
 
   public remove(): void {
     let title = this.translate.instant('Warning!');
-    let msg = this.translate.instant('Are you sure you want to remove this transaction?');
-    this.popupProvider.ionicConfirm(title, msg, null, null).then((res: boolean) => {
-      if (!res) return;
-      this.onGoingProcessProvider.set('removeTx');
-      this.walletProvider.removeTx(this.wallet, this.tx).then(() => {
-        this.onGoingProcessProvider.clear();
-        this.close();
-      }).catch((err: any) => {
-        this.onGoingProcessProvider.clear();
-        if (err && !(err.message && err.message.match(/Unexpected/))) {
-          this.setError(err, this.translate.instant('Could not delete payment proposal'));
-        }
+    let msg = this.translate.instant(
+      'Are you sure you want to remove this transaction?'
+    );
+    this.popupProvider
+      .ionicConfirm(title, msg, null, null)
+      .then((res: boolean) => {
+        if (!res) return;
+        this.onGoingProcessProvider.set('removeTx');
+        this.walletProvider
+          .removeTx(this.wallet, this.tx)
+          .then(() => {
+            this.onGoingProcessProvider.clear();
+            this.close();
+          })
+          .catch((err: any) => {
+            this.onGoingProcessProvider.clear();
+            if (err && !(err.message && err.message.match(/Unexpected/))) {
+              this.setError(
+                err,
+                this.translate.instant('Could not delete payment proposal')
+              );
+            }
+          });
       });
-    });
   }
 
   public broadcast(txp: any): void {
     this.loading = true;
     this.onGoingProcessProvider.set('broadcastingTx');
-    this.walletProvider.broadcastTx(this.wallet, this.tx).then((txpb: any) => {
-      this.onGoingProcessProvider.clear();
-      this.openFinishModal();
-    }).catch((err: any) => {
-      this.onGoingProcessProvider.clear();
-      this.setError(err, 'Could not broadcast payment');
+    this.walletProvider
+      .broadcastTx(this.wallet, this.tx)
+      .then((txpb: any) => {
+        this.onGoingProcessProvider.clear();
+        this.openFinishModal();
+      })
+      .catch((err: any) => {
+        this.onGoingProcessProvider.clear();
+        this.setError(err, 'Could not broadcast payment');
 
-      this.logger.error('Could not broadcast: ', this.tx.coin, this.tx.network, this.tx.raw);
-    });
+        this.logger.error(
+          'Could not broadcast: ',
+          this.tx.coin,
+          this.tx.network,
+          this.tx.raw
+        );
+      });
   }
 
   public getShortNetworkName(): string {
@@ -301,25 +368,36 @@ export class TxpDetailsPage {
   }
 
   private updateTxInfo(eventName: string): void {
-    this.walletProvider.getTxp(this.wallet, this.tx.id).then((tx: any) => {
-      let action = _.find(tx.actions, {
-        copayerId: this.wallet.credentials.copayerId
+    this.walletProvider
+      .getTxp(this.wallet, this.tx.id)
+      .then((tx: any) => {
+        let action = _.find(tx.actions, {
+          copayerId: this.wallet.credentials.copayerId
+        });
+
+        this.tx = this.txFormatProvider.processTx(
+          this.wallet.coin,
+          tx,
+          this.walletProvider.useLegacyAddress()
+        );
+
+        if (!action && tx.status == 'pending') this.tx.pendingForUs = true;
+
+        this.updateCopayerList();
+        this.initActionList();
+      })
+      .catch(err => {
+        if (
+          err.message &&
+          err.message == 'Transaction proposal not found' &&
+          (eventName == 'transactionProposalRemoved' ||
+            eventName == 'TxProposalRemoved')
+        ) {
+          this.tx.removed = true;
+          this.tx.canBeRemoved = false;
+          this.tx.pendingForUs = false;
+        }
       });
-
-      this.tx = this.txFormatProvider.processTx(this.wallet.coin, tx, this.walletProvider.useLegacyAddress());
-
-      if (!action && tx.status == 'pending') this.tx.pendingForUs = true;
-
-      this.updateCopayerList();
-      this.initActionList();
-    }).catch((err) => {
-      if (err.message && err.message == 'Transaction proposal not found' &&
-        (eventName == 'transactionProposalRemoved' || eventName == 'TxProposalRemoved')) {
-        this.tx.removed = true;
-        this.tx.canBeRemoved = false;
-        this.tx.pendingForUs = false;
-      }
-    });
   }
 
   public updateCopayerList(): void {
@@ -334,7 +412,7 @@ export class TxpDetailsPage {
 
   public onConfirm(): void {
     this.sign();
-  };
+  }
 
   public close(): void {
     this.loading = false;
@@ -342,23 +420,29 @@ export class TxpDetailsPage {
   }
 
   private openFinishModal() {
-    let modal = this.modalCtrl.create(FinishModalPage, { finishText: this.successText }, { showBackdrop: true, enableBackdropDismiss: false });
+    let modal = this.modalCtrl.create(
+      FinishModalPage,
+      { finishText: this.successText },
+      { showBackdrop: true, enableBackdropDismiss: false }
+    );
     modal.present();
     modal.onDidDismiss(() => {
       this.close();
-    })
+    });
   }
 
   private contact(): void {
     let addr = this.tx.toAddress;
-    this.addressBookProvider.get(addr).then((ab: any) => {
-      if (ab) {
-        let name = _.isObject(ab) ? ab.name : ab;
-        this.contactName = name;
-      }
-    }).catch((err: any) => {
-      this.logger.warn(err);
-    });
+    this.addressBookProvider
+      .get(addr)
+      .then((ab: any) => {
+        if (ab) {
+          let name = _.isObject(ab) ? ab.name : ab;
+          this.contactName = name;
+        }
+      })
+      .catch((err: any) => {
+        this.logger.warn(err);
+      });
   }
-
 }

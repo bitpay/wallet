@@ -8,10 +8,9 @@ import { AddressbookViewPage } from './view/view';
 
 @Component({
   selector: 'page-addressbook',
-  templateUrl: 'addressbook.html',
+  templateUrl: 'addressbook.html'
 })
 export class AddressbookPage {
-
   private cache: boolean = false;
   public addressbook: object[] = [];
   public filteredAddressbook: object[] = [];
@@ -34,46 +33,48 @@ export class AddressbookPage {
   }
 
   private initAddressbook(): void {
-    this.addressbookProvider.list().then((addressBook: any) => {
-      this.isEmptyList = _.isEmpty(addressBook);
+    this.addressbookProvider
+      .list()
+      .then((addressBook: any) => {
+        this.isEmptyList = _.isEmpty(addressBook);
 
-      let contacts: object[] = [];
-      _.each(addressBook, (contact: any, k: string) => {
-        contacts.push({
-          name: _.isObject(contact) ? contact.name : contact,
-          address: k,
-          email: _.isObject(contact) ? contact.email : null
+        let contacts: object[] = [];
+        _.each(addressBook, (contact: any, k: string) => {
+          contacts.push({
+            name: _.isObject(contact) ? contact.name : contact,
+            address: k,
+            email: _.isObject(contact) ? contact.email : null
+          });
         });
-      });
-      this.addressbook = _.clone(contacts);
-      this.filteredAddressbook = _.clone(this.addressbook);
-    }).catch((err: any) => {
-      this.logger.error(err);
-      let alertError = this.alertCtrl.create({
-        title: err,
-        buttons: [
-          {
-            text: 'Go back',
-            handler: () => {
-              this.navCtrl.pop();
+        this.addressbook = _.clone(contacts);
+        this.filteredAddressbook = _.clone(this.addressbook);
+      })
+      .catch((err: any) => {
+        this.logger.error(err);
+        let alertError = this.alertCtrl.create({
+          title: err,
+          buttons: [
+            {
+              text: 'Go back',
+              handler: () => {
+                this.navCtrl.pop();
+              }
             }
-          }
-        ]
+          ]
+        });
+        alertError.present();
       });
-      alertError.present();
-    });
-  };
+  }
 
   public addEntry(): void {
     this.navCtrl.push(AddressbookAddPage);
-  };
+  }
 
   public viewEntry(contact: any): void {
     this.navCtrl.push(AddressbookViewPage, { contact });
   }
 
   public getItems(event: any): void {
-
     // set val to the value of the searchbar
     let val = event.target.value;
 
@@ -89,5 +90,4 @@ export class AddressbookPage {
       this.initAddressbook();
     }
   }
-
 }

@@ -6,7 +6,6 @@ import { Logger } from '../../providers/logger/logger';
 
 @Injectable()
 export class OnGoingProcessProvider {
-
   private loading: any;
   private processNames: any;
   private pausedOngoingProcess: any;
@@ -25,11 +24,15 @@ export class OnGoingProcessProvider {
       calculatingFee: this.translate.instant('Calculating fee...'),
       connectingCoinbase: this.translate.instant('Connecting to Coinbase...'),
       connectingGlidera: this.translate.instant('Connecting to Glidera...'),
-      connectingShapeshift: this.translate.instant('Connecting to ShapeShift...'),
+      connectingShapeshift: this.translate.instant(
+        'Connecting to ShapeShift...'
+      ),
       creatingTx: this.translate.instant('Creating transaction...'),
       creatingWallet: this.translate.instant('Creating Wallet...'),
       deletingWallet: this.translate.instant('Deleting Wallet...'),
-      extractingWalletInfo: this.translate.instant('Extracting Wallet information...'),
+      extractingWalletInfo: this.translate.instant(
+        'Extracting Wallet information...'
+      ),
       fetchingPayPro: this.translate.instant('Fetching payment information...'),
       generatingCSV: this.translate.instant('Generating .csv file...'),
       gettingFeeLevels: this.translate.instant('Getting fee levels...'),
@@ -38,7 +41,9 @@ export class OnGoingProcessProvider {
       recreating: this.translate.instant('Recreating Wallet...'),
       rejectTx: this.translate.instant('Rejecting payment proposal...'),
       removeTx: this.translate.instant('Deleting payment proposal...'),
-      retrievingInputs: this.translate.instant('Retrieving inputs information...'),
+      retrievingInputs: this.translate.instant(
+        'Retrieving inputs information...'
+      ),
       scanning: this.translate.instant('Scanning Wallet funds...'),
       sendingTx: this.translate.instant('Sending transaction...'),
       signingTx: this.translate.instant('Signing transaction...'),
@@ -51,7 +56,9 @@ export class OnGoingProcessProvider {
       sending2faCode: this.translate.instant('Sending 2FA code...'),
       buyingBitcoin: this.translate.instant('Buying Bitcoin...'),
       sellingBitcoin: this.translate.instant('Selling Bitcoin...'),
-      fetchingBitPayAccount: this.translate.instant('Fetching BitPay Account...'),
+      fetchingBitPayAccount: this.translate.instant(
+        'Fetching BitPay Account...'
+      ),
       fetchingBitPayCards: this.translate.instant('Fetching BitPay Cards...'),
       updatingGiftCards: this.translate.instant('Updating Gift Cards...'),
       updatingGiftCard: this.translate.instant('Updating Gift Card...'),
@@ -72,10 +79,10 @@ export class OnGoingProcessProvider {
   }
 
   public getTranslation(processName: string): Promise<string> {
-    return new Promise((resolve) => {
+    return new Promise(resolve => {
       this.translate.get(processName).subscribe((processTranslated: string) => {
         return resolve(processTranslated);
-      })
+      });
     });
   }
 
@@ -86,7 +93,7 @@ export class OnGoingProcessProvider {
     } catch (e) {
       // No problem
       this.logger.warn('on-going-process is still active. No problem.', e);
-    };
+    }
     this.loading = null;
     this.logger.debug('ongoingProcess clear');
   }
@@ -98,7 +105,7 @@ export class OnGoingProcessProvider {
 
   public resume(): void {
     this.ongoingProcess = this.pausedOngoingProcess;
-    _.forEach(this.pausedOngoingProcess, (v) => {
+    _.forEach(this.pausedOngoingProcess, v => {
       this.set(v);
       return;
     });

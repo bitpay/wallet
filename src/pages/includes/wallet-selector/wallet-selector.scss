@@ -27,7 +27,7 @@ wallet-selector {
   }
   .title {
     font-weight: 500;
-    >img {
+    > img {
       vertical-align: sub;
       margin-right: 5px;
     }
@@ -35,7 +35,7 @@ wallet-selector {
   .no-wallets {
     text-align: center;
     padding: 20px;
-    color: color($colors,danger);
+    color: color($colors, danger);
   }
   .destination-title {
     width: 100%;
@@ -55,10 +55,10 @@ wallet-selector {
   }
   .slider {
     /* only transition on transform properties which are hardware accelerated = way better performances */
-    -webkit-transition:-webkit-transform .2s ease;
-    -moz-transition:   -moz-transform .2s ease;
-    -ms-transition:    -ms-transform .2s ease;
-    transition:        transform .2s ease;
+    -webkit-transition: -webkit-transform 0.2s ease;
+    -moz-transition: -moz-transform 0.2s ease;
+    -ms-transition: -ms-transform 0.2s ease;
+    transition: transform 0.2s ease;
   }
   .opened {
     /* visible */

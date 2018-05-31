@@ -60,18 +60,18 @@ export class ScanProvider {
     this.logger.debug('Camera access is ' + access + '.');
     this.logger.debug(
       'Support for opening device settings is ' +
-      this.orIsNot(this.canOpenSettings) +
-      'available on this platform.'
+        this.orIsNot(this.canOpenSettings) +
+        'available on this platform.'
     );
     this.logger.debug(
       'A light is ' +
-      this.orIsNot(this.canEnableLight) +
-      'available on this platform.'
+        this.orIsNot(this.canEnableLight) +
+        'available on this platform.'
     );
     this.logger.debug(
       'A second camera is ' +
-      this.orIsNot(this.canChangeCamera) +
-      'available on this platform.'
+        this.orIsNot(this.canChangeCamera) +
+        'available on this platform.'
     );
   }
 

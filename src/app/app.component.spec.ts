@@ -21,22 +21,20 @@ describe('CopayApp', () => {
   let fixture;
   let component;
 
-  beforeEach(
-    async(() => {
-      TestBed.configureTestingModule({
-        declarations: [CopayApp],
-        schemas: [NO_ERRORS_SCHEMA],
-        imports: [
-          IonicModule.forRoot(CopayApp),
-          ProvidersModule,
-          HttpClientTestingModule,
-          TranslateModule.forRoot({
-            loader: { provide: TranslateLoader, useClass: TranslateFakeLoader }
-          })
-        ]
-      });
-    })
-  );
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      declarations: [CopayApp],
+      schemas: [NO_ERRORS_SCHEMA],
+      imports: [
+        IonicModule.forRoot(CopayApp),
+        ProvidersModule,
+        HttpClientTestingModule,
+        TranslateModule.forRoot({
+          loader: { provide: TranslateLoader, useClass: TranslateFakeLoader }
+        })
+      ]
+    });
+  }));
 
   beforeEach(async () => {
     fixture = TestBed.createComponent(CopayApp);
@@ -71,7 +69,7 @@ describe('CopayApp', () => {
         (window as any).require = () => {
           return {
             App: {
-              on: (event, cb) => { },
+              on: (event, cb) => {},
               argv: ['URL']
             }
           };

@@ -17,20 +17,17 @@ class TestHostComponent {
 }
 
 describe('NavbarBg', () => {
-  beforeEach(
-    async(() =>
-      TestUtils.beforeEachCompiler([TestHostComponent, NavbarBg]).then(
-        compiled => {
-          fixture = compiled.fixture;
-          instance = compiled.instance;
-          fixture.detectChanges();
-          toolbarBg = instance.element.nativeElement.getElementsByClassName(
-            'toolbar-background'
-          )[0];
-        }
-      )
-    )
-  );
+  beforeEach(async(() =>
+    TestUtils.beforeEachCompiler([TestHostComponent, NavbarBg]).then(
+      compiled => {
+        fixture = compiled.fixture;
+        instance = compiled.instance;
+        fixture.detectChanges();
+        toolbarBg = instance.element.nativeElement.getElementsByClassName(
+          'toolbar-background'
+        )[0];
+      }
+    )));
   afterEach(() => {
     fixture.destroy();
   });

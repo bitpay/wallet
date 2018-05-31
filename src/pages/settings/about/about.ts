@@ -13,7 +13,7 @@ import { ReplaceParametersProvider } from '../../../providers/replace-parameters
 
 @Component({
   selector: 'page-about',
-  templateUrl: 'about.html',
+  templateUrl: 'about.html'
 })
 export class AboutPage {
   public version: string;
@@ -27,23 +27,40 @@ export class AboutPage {
     private externalLinkProvider: ExternalLinkProvider,
     private replaceParametersProvider: ReplaceParametersProvider,
     private translate: TranslateService
-  ) { }
+  ) {}
 
   ionViewDidLoad() {
     this.logger.debug('ionViewDidLoad AboutPage');
     this.commitHash = this.appProvider.info.commitHash;
     this.version = this.appProvider.info.version;
-    this.title = this.replaceParametersProvider.replace(this.translate.instant("About {{appName}}"), { appName: this.appProvider.info.nameCase });
+    this.title = this.replaceParametersProvider.replace(
+      this.translate.instant('About {{appName}}'),
+      { appName: this.appProvider.info.nameCase }
+    );
   }
 
   public openExternalLink(): void {
-    let url = 'https://github.com/bitpay/' + this.appProvider.info.gitHubRepoName + '/tree/' + this.appProvider.info.commitHash + '';
+    let url =
+      'https://github.com/bitpay/' +
+      this.appProvider.info.gitHubRepoName +
+      '/tree/' +
+      this.appProvider.info.commitHash +
+      '';
     let optIn = true;
     let title = this.translate.instant('Open GitHub Project');
-    let message = this.translate.instant('You can see the latest developments and contribute to this open source app by visiting our project on GitHub.');
+    let message = this.translate.instant(
+      'You can see the latest developments and contribute to this open source app by visiting our project on GitHub.'
+    );
     let okText = this.translate.instant('Open GitHub');
     let cancelText = this.translate.instant('Go Back');
-    this.externalLinkProvider.open(url, optIn, title, message, okText, cancelText);
+    this.externalLinkProvider.open(
+      url,
+      optIn,
+      title,
+      message,
+      okText,
+      cancelText
+    );
   }
 
   public openTermsOfUse() {
@@ -53,7 +70,14 @@ export class AboutPage {
     let message = this.translate.instant('View Wallet Terms of Use');
     let okText = this.translate.instant('Open');
     let cancelText = this.translate.instant('Go Back');
-    this.externalLinkProvider.open(url, optIn, title, message, okText, cancelText);
+    this.externalLinkProvider.open(
+      url,
+      optIn,
+      title,
+      message,
+      okText,
+      cancelText
+    );
   }
 
   public openPrivacyPolicy() {
@@ -63,12 +87,17 @@ export class AboutPage {
     let message = this.translate.instant('View Privacy Policy');
     let okText = this.translate.instant('Open');
     let cancelText = this.translate.instant('Go Back');
-    this.externalLinkProvider.open(url, optIn, title, message, okText, cancelText);
+    this.externalLinkProvider.open(
+      url,
+      optIn,
+      title,
+      message,
+      okText,
+      cancelText
+    );
   }
 
   public openSessionLog(): void {
     this.navCtrl.push(SessionLogPage);
   }
-
-
 }

@@ -17,11 +17,13 @@ page-shapeshift {
     align-items: center;
     justify-content: center;
     text-align: center;
-    background: url('../assets/img/shapeshift/shapeshift_background.jpg') center center no-repeat #28394d;
+    background: url('../assets/img/shapeshift/shapeshift_background.jpg') center
+      center no-repeat #28394d;
   }
   .main-header {
     padding: 15px 0;
-    background: url('../assets/img/shapeshift/shapeshift_background.jpg') center center no-repeat #28394d;
+    background: url('../assets/img/shapeshift/shapeshift_background.jpg') center
+      center no-repeat #28394d;
     text-align: center;
     img {
       display: block;
@@ -34,7 +36,8 @@ page-shapeshift {
     white-space: normal;
     font-size: 12.5px;
   }
-  .status, .date {
+  .status,
+  .date {
     font-size: 12.5px;
   }
 }

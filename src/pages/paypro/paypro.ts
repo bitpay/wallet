@@ -6,10 +6,9 @@ import { WalletProvider } from '../../providers/wallet/wallet';
 
 @Component({
   selector: 'page-payrpo',
-  templateUrl: 'paypro.html',
+  templateUrl: 'paypro.html'
 })
 export class PayProPage {
-
   public tx: any;
   public wallet: any;
   public address: string;
@@ -17,11 +16,14 @@ export class PayProPage {
   constructor(
     private navParams: NavParams,
     private viewCtrl: ViewController,
-    private walletProvider: WalletProvider,
+    private walletProvider: WalletProvider
   ) {
     this.tx = this.navParams.data.tx;
     let wallet = this.navParams.data.wallet;
-    this.address = this.walletProvider.getAddressView(wallet, this.tx.paypro.toAddress);
+    this.address = this.walletProvider.getAddressView(
+      wallet,
+      this.tx.paypro.toAddress
+    );
   }
 
   close() {
