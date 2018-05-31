@@ -1,9 +1,6 @@
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { async, TestBed } from '@angular/core/testing';
-import { IonicModule, Platform } from 'ionic-angular';
-
-import { SplashScreen } from '@ionic-native/splash-screen';
-import { StatusBar } from '@ionic-native/status-bar';
+import { IonicModule } from 'ionic-angular';
 
 import { CopayApp } from './app.component';
 

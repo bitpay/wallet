@@ -1,6 +1,6 @@
 import { DecimalPipe } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
-import { async, TestBed } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 import { AndroidFingerprintAuth } from '@ionic-native/android-fingerprint-auth';
 import { TouchID } from '@ionic-native/touch-id';
 import {
@@ -46,17 +46,6 @@ describe('Provider: Wallet Provider', () => {
     }
     storeLastAddress(walletId: any, address: any) {
       return Promise.resolve(address);
-    }
-  }
-
-  class LoggerMock {
-    infoLogs = [];
-    debugLogs = [];
-    info(data) {
-      this.infoLogs.push(data);
-    }
-    debug(data) {
-      this.debugLogs.push(data);
     }
   }
 

@@ -1,4 +1,4 @@
-import { async, TestBed } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 import {
   TranslateFakeLoader,
   TranslateLoader,
@@ -16,7 +16,6 @@ import { ExternalLinkProvider } from './external-link';
 
 describe('Provider: External Link Provider', () => {
   let externalLinkProvider: ExternalLinkProvider;
-  let translate: TranslateService;
   let url = 'https://github.com/bitpay/copay/releases/latest';
 
   beforeEach(() => {

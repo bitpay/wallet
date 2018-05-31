@@ -1,13 +1,10 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, ViewController } from 'ionic-angular';
+import { NavParams, ViewController } from 'ionic-angular';
 import * as _ from 'lodash';
 
 // Providers
 import { PlatformProvider } from '../../../providers/platform/platform';
 import { TimeProvider } from '../../../providers/time/time';
-
-// Pages
-import { TxDetailsPage } from '../../tx-details/tx-details';
 
 @Component({
   selector: 'page-search-tx-modal',
@@ -26,7 +23,6 @@ export class SearchTxModalPage {
   public addressbook: any[];
 
   constructor(
-    private navCtrl: NavController,
     private navParams: NavParams,
     private platformProvider: PlatformProvider,
     private timeProvider: TimeProvider,
@@ -78,9 +74,9 @@ export class SearchTxModalPage {
   }
 
   private computeSearchableString(tx: any): any {
-    let addrbook = '';
+    let addressBook = '';
     if (tx.addressTo && this.addressbook && this.addressbook[tx.addressTo])
-      addrbook =
+      addressBook =
         this.addressbook[tx.addressTo].name ||
         this.addressbook[tx.addressTo] ||
         '';
@@ -93,7 +89,7 @@ export class SearchTxModalPage {
       tx.amountStr +
       message +
       addressTo +
-      addrbook +
+      addressBook +
       searchableDate +
       comment +
       txid

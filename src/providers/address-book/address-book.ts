@@ -31,13 +31,13 @@ export class AddressBookProvider {
   public get(addr: string): Promise<any> {
     return new Promise((resolve, reject) => {
       this.persistenceProvider
-        .getAddressbook('testnet')
+        .getAddressBook('testnet')
         .then((ab: any) => {
           if (ab && _.isString(ab)) ab = JSON.parse(ab);
           if (ab && ab[addr]) return resolve(ab[addr]);
 
           this.persistenceProvider
-            .getAddressbook('livenet')
+            .getAddressBook('livenet')
             .then((ab: any) => {
               if (ab && _.isString(ab)) ab = JSON.parse(ab);
               if (ab && ab[addr]) return resolve(ab[addr]);
@@ -56,13 +56,13 @@ export class AddressBookProvider {
   public list(): Promise<any> {
     return new Promise((resolve, reject) => {
       this.persistenceProvider
-        .getAddressbook('testnet')
+        .getAddressBook('testnet')
         .then((ab: any) => {
           if (ab && _.isString(ab)) ab = JSON.parse(ab);
 
           ab = ab || {};
           this.persistenceProvider
-            .getAddressbook('livenet')
+            .getAddressBook('livenet')
             .then((ab2: any) => {
               if (ab2 && _.isString(ab)) ab2 = JSON.parse(ab2);
 
@@ -88,7 +88,7 @@ export class AddressBookProvider {
         return reject(msg);
       }
       this.persistenceProvider
-        .getAddressbook(network)
+        .getAddressBook(network)
         .then((ab: any) => {
           if (ab && _.isString(ab)) ab = JSON.parse(ab);
           ab = ab || {};
@@ -99,7 +99,7 @@ export class AddressBookProvider {
           }
           ab[entry.address] = entry;
           this.persistenceProvider
-            .setAddressbook(network, JSON.stringify(ab))
+            .setAddressBook(network, JSON.stringify(ab))
             .then((ab: any) => {
               this.list()
                 .then((ab: any) => {
@@ -128,7 +128,7 @@ export class AddressBookProvider {
         return reject(msg);
       }
       this.persistenceProvider
-        .getAddressbook(network)
+        .getAddressBook(network)
         .then((ab: any) => {
           if (ab && _.isString(ab)) ab = JSON.parse(ab);
           ab = ab || {};
@@ -142,7 +142,7 @@ export class AddressBookProvider {
           }
           delete ab[addr];
           this.persistenceProvider
-            .setAddressbook(network, JSON.stringify(ab))
+            .setAddressBook(network, JSON.stringify(ab))
             .then(() => {
               this.list()
                 .then((ab: any) => {

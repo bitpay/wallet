@@ -1,9 +1,4 @@
-import {
-  async,
-  ComponentFixture,
-  fakeAsync,
-  TestBed
-} from '@angular/core/testing';
+import { async, ComponentFixture } from '@angular/core/testing';
 
 import { TestUtils } from '../../../test';
 import { PinModalPage } from './pin-modal';
@@ -11,13 +6,11 @@ import { PinModalPage } from './pin-modal';
 describe('PinModalPage', () => {
   let fixture: ComponentFixture<PinModalPage>;
   let instance: any;
-  let testBed: typeof TestBed;
 
   beforeEach(async(() =>
     TestUtils.configurePageTestingModule([PinModalPage]).then(testEnv => {
       fixture = testEnv.fixture;
       instance = testEnv.instance;
-      testBed = testEnv.testBed;
       fixture.detectChanges();
     })));
   afterEach(() => {

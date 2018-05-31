@@ -1,21 +1,21 @@
-import { HttpClient } from '@angular/common/http';
 import {
   HttpClientTestingModule,
   HttpTestingController
 } from '@angular/common/http/testing';
-import { async, inject, TestBed } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 import { AppProvider } from '../../providers/app/app';
 import { ReleaseProvider } from './release';
 
 describe('Release Provider', () => {
   let releaseService: ReleaseProvider;
   let httpMock: HttpTestingController;
-  let currentAppVersion, latestAppVersion;
+  const currentAppVersion = '1.1.1';
+  const latestAppVersion = '2.2.2';
 
   class AppProviderMock {
-    private info: any;
+    public info: any;
     constructor() {
-      this.info = { version: '1.1.1' };
+      this.info = { version: currentAppVersion };
     }
   }
 
@@ -29,8 +29,6 @@ describe('Release Provider', () => {
     });
     releaseService = TestBed.get(ReleaseProvider);
     httpMock = TestBed.get(HttpTestingController);
-    currentAppVersion = '1.1.1';
-    latestAppVersion = '2.2.2';
   });
 
   afterEach(() => {
@@ -38,7 +36,6 @@ describe('Release Provider', () => {
   });
 
   it('should get successfully the current app version', () => {
-    // Should return the AppProviderMock object
     const appVersion = releaseService.getCurrentAppVersion();
 
     expect(appVersion).toBeDefined();

@@ -1,13 +1,9 @@
 /* tslint:disable */
-import { TestBed, getTestBed, inject, async } from '@angular/core/testing';
-import {
-  HttpClientTestingModule,
-  HttpTestingController
-} from '@angular/common/http/testing';
+import { TestBed, getTestBed } from '@angular/core/testing';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { Logger } from '../../providers/logger/logger';
 import {
   TranslateModule,
-  TranslateService,
   TranslateLoader,
   TranslateFakeLoader
 } from '@ngx-translate/core';
@@ -16,7 +12,6 @@ import { Platform } from 'ionic-angular';
 describe('LoggerProvider', () => {
   let injector: TestBed;
   let service: Logger;
-  let httpMock: HttpTestingController;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -31,7 +26,6 @@ describe('LoggerProvider', () => {
 
     injector = getTestBed();
     service = injector.get(Logger);
-    httpMock = injector.get(HttpTestingController);
   });
 
   it('should be able use optional params for errors', () => {

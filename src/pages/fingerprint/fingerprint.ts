@@ -1,8 +1,7 @@
 import { Component } from '@angular/core';
-import { Events, NavController, Platform } from 'ionic-angular';
+import { NavController, Platform } from 'ionic-angular';
 
 // Providers
-import { AppProvider } from '../../providers/app/app';
 import { TouchIdProvider } from '../../providers/touchid/touchid';
 
 @Component({
@@ -15,8 +14,6 @@ export class FingerprintModalPage {
   constructor(
     private touchid: TouchIdProvider,
     private platform: Platform,
-    private appProvider: AppProvider,
-    private events: Events,
     private navCtrl: NavController
   ) {
     this.unregister = this.platform.registerBackButtonAction(() => {});

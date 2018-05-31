@@ -25,7 +25,7 @@ export class PinPad {
   keystrokeSubject: Subject<string> = new Subject<string>();
   @Output()
   keystroke: Observable<string> = this.keystrokeSubject.asObservable();
-  private buttonRows: PinButton[][] = [
+  public buttonRows: PinButton[][] = [
     [
       {
         value: '1',

@@ -288,8 +288,6 @@ export class BitPayCardTopUpPage {
         });
       }
 
-      let outputs = [];
-
       this.payproProvider
         .getPayProDetails(payProUrl, wallet.coin)
         .then((details: any) => {

@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { Events, ModalController } from 'ionic-angular';
+import { ModalController } from 'ionic-angular';
 
 // pages
 import { PinModalPage } from '../../pin/pin-modal/pin-modal';
@@ -31,8 +31,7 @@ export class LockPage {
     private modalCtrl: ModalController,
     private touchIdProvider: TouchIdProvider,
     private profileProvider: ProfileProvider,
-    private translate: TranslateService,
-    private events: Events
+    private translate: TranslateService
   ) {
     this.checkLockOptions();
   }

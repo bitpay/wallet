@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { App, Events, NavController, NavParams } from 'ionic-angular';
+import { App, Events, NavParams } from 'ionic-angular';
 import * as lodash from 'lodash';
 import { Logger } from '../../../../../providers/logger/logger';
 
@@ -29,7 +29,6 @@ export class BitcoinCashPage {
 
   constructor(
     private app: App,
-    private navCtrl: NavController,
     private walletProvider: WalletProvider,
     private profileProvider: ProfileProvider,
     private txFormatProvider: TxFormatProvider,

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { NavController } from 'ionic-angular';
 import { Logger } from '../../providers/logger/logger';
 
 // pages
@@ -12,11 +12,7 @@ import { JoinWalletPage } from './join-wallet/join-wallet';
   templateUrl: 'add.html'
 })
 export class AddPage {
-  constructor(
-    private navCtrl: NavController,
-    private navParams: NavParams,
-    private logger: Logger
-  ) {}
+  constructor(private navCtrl: NavController, private logger: Logger) {}
 
   ionViewDidLoad() {
     this.logger.info('ionViewDidLoad AddPage');

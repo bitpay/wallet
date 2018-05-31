@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { App, Events, NavController, NavParams } from 'ionic-angular';
+import { App, Events, NavParams } from 'ionic-angular';
 import { Logger } from '../../../../../providers/logger/logger';
 
 // providers
@@ -22,7 +22,6 @@ export class WalletDeletePage {
     private app: App,
     private profileProvider: ProfileProvider,
     private navParams: NavParams,
-    private navCtrl: NavController,
     private popupProvider: PopupProvider,
     private onGoingProcessProvider: OnGoingProcessProvider,
     private pushNotificationsProvider: PushNotificationsProvider,
