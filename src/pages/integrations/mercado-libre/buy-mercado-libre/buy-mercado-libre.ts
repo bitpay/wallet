@@ -10,9 +10,6 @@ import * as _ from 'lodash';
 import * as moment from 'moment';
 import { Logger } from '../../../../providers/logger/logger';
 
-// Components
-import { CustomModalComponent } from '../../../../components/custom-modal/custom-modal';
-
 // Pages
 import { FinishModalPage } from '../../../finish/finish';
 import { MercadoLibrePage } from '../mercado-libre';
@@ -140,11 +137,7 @@ export class BuyMercadoLibrePage {
     let per = (fee / (amount + fee)) * 100;
 
     if (per > this.FEE_TOO_HIGH_LIMIT_PER) {
-      let feeWarningModal = this.modalCtrl.create(
-        CustomModalComponent,
-        { modal: 'fee-warning' },
-        { cssClass: 'fullscreen-modal' }
-      );
+      const feeWarningModal = this.popupProvider.createMiniModal('fee-warning');
       feeWarningModal.present();
     }
   }

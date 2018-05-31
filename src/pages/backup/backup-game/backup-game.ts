@@ -2,7 +2,6 @@ import { Component, ViewChild } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import {
   AlertController,
-  ModalController,
   Navbar,
   NavController,
   NavParams,
@@ -13,9 +12,6 @@ import { Logger } from '../../../providers/logger/logger';
 
 // pages
 import { DisclaimerPage } from '../../onboarding/disclaimer/disclaimer';
-
-// components
-import { CustomModalComponent } from '../../../components/custom-modal/custom-modal';
 
 // providers
 import { BwcProvider } from '../../../providers/bwc/bwc';
@@ -60,8 +56,7 @@ export class BackupGamePage {
     private bwcProvider: BwcProvider,
     private onGoingProcessProvider: OnGoingProcessProvider,
     private popupProvider: PopupProvider,
-    private translate: TranslateService,
-    private modalCtrl: ModalController
+    private translate: TranslateService
   ) {
     this.walletId = this.navParams.get('walletId');
     this.fromOnboarding = this.navParams.get('fromOnboarding');
@@ -254,11 +249,7 @@ export class BackupGamePage {
     this.confirm()
       .then(() => {
         this.onGoingProcessProvider.clear();
-        let modal = this.modalCtrl.create(
-          CustomModalComponent,
-          { modal: 'backup-ready' },
-          { cssClass: 'fullscreen-modal' }
-        );
+        const modal = this.popupProvider.createMiniModal('backup-ready');
         modal.present({ animate: false });
         modal.onDidDismiss(() => {
           if (this.fromOnboarding) {

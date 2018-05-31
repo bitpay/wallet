@@ -1,26 +1,26 @@
 import { NgModule } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
 import { IonicModule } from 'ionic-angular';
-import { CustomModalComponent } from './custom-modal/custom-modal';
 import {
   ExpandableHeaderComponent,
   ExpandableHeaderFooterComponent,
   ExpandableHeaderPrimaryComponent
 } from './expandable-header/expandable-header';
+import { MiniModalComponent } from './mini-modal/mini-modal';
 @NgModule({
   declarations: [
     ExpandableHeaderComponent,
     ExpandableHeaderFooterComponent,
     ExpandableHeaderPrimaryComponent,
-    CustomModalComponent
+    MiniModalComponent
   ],
   imports: [IonicModule.forRoot({}), TranslateModule.forRoot({})],
   exports: [
     ExpandableHeaderComponent,
     ExpandableHeaderFooterComponent,
     ExpandableHeaderPrimaryComponent,
-    CustomModalComponent
+    MiniModalComponent
   ],
-  entryComponents: [CustomModalComponent]
+  entryComponents: [MiniModalComponent]
 })
 export class ComponentsModule {}

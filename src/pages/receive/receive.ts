@@ -16,9 +16,6 @@ import { BackupWarningPage } from '../backup/backup-warning/backup-warning';
 import { AmountPage } from '../send/amount/amount';
 import { CopayersPage } from './../add/copayers/copayers';
 
-// Components
-import { CustomModalComponent } from '../../components/custom-modal/custom-modal';
-
 // Providers
 import { AddressProvider } from '../../providers/address/address';
 import { BwcErrorProvider } from '../../providers/bwc-error/bwc-error';
@@ -28,6 +25,7 @@ import { ProfileProvider } from '../../providers/profile/profile';
 import { WalletProvider } from '../../providers/wallet/wallet';
 
 import * as _ from 'lodash';
+import { PopupProvider } from '../../providers/popup/popup';
 
 @Component({
   selector: 'page-receive',
@@ -56,7 +54,8 @@ export class ReceivePage {
     private translate: TranslateService,
     private externalLinkProvider: ExternalLinkProvider,
     private modalCtrl: ModalController,
-    private addressProvider: AddressProvider
+    private addressProvider: AddressProvider,
+    private popupProvider: PopupProvider
   ) {
     this.showShareButton = this.platformProvider.isCordova;
   }
@@ -151,13 +150,13 @@ export class ReceivePage {
   }
 
   public goToBackup(): void {
-    let BackupWarningModal = this.modalCtrl.create(
-      CustomModalComponent,
-      { modal: 'backup-needed' },
-      { cssClass: 'fullscreen-modal' }
+    const backupWarningModal = this.popupProvider.createMiniModal(
+      'backup-needed'
     );
-    BackupWarningModal.present({ animate: false });
-    BackupWarningModal.onDidDismiss(goToBackupPage => {
+    backupWarningModal.present({
+      animate: false
+    });
+    backupWarningModal.onDidDismiss(goToBackupPage => {
       if (goToBackupPage)
         this.navCtrl.push(BackupWarningPage, {
           walletId: this.wallet.credentials.walletId

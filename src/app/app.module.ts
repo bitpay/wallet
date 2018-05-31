@@ -33,7 +33,7 @@ import { NavbarBg } from '../directives/navbar-bg/navbar-bg';
 import { NoLowFee } from '../directives/no-low-fee/no-low-fee';
 
 /* Components */
-import { ComponentsModule } from './../components/components.module';
+import { COMPONENTS } from './../components/components';
 
 /* Providers */
 import { ProvidersModule } from './../providers/providers.module';
@@ -47,6 +47,7 @@ export function createTranslateLoader(http: HttpClient) {
   declarations: [
     CopayApp,
     ...PAGES,
+    ...COMPONENTS,
     /* Directives */
     CopyToClipboard,
     IosScrollBgColor,
@@ -70,7 +71,6 @@ export function createTranslateLoader(http: HttpClient) {
       backButtonText: ''
     }),
     BrowserModule,
-    ComponentsModule,
     HttpClientModule,
     MomentModule,
     NgxQRCodeModule,
@@ -85,7 +85,7 @@ export function createTranslateLoader(http: HttpClient) {
     ZXingScannerModule.forRoot()
   ],
   bootstrap: [IonicApp],
-  entryComponents: [CopayApp, ...PAGES],
+  entryComponents: [CopayApp, ...PAGES, ...COMPONENTS],
   providers: [
     {
       provide: ErrorHandler,

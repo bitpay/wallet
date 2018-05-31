@@ -26,6 +26,7 @@ import { ActivityPage } from './activity/activity';
 import { ProposalsPage } from './proposals/proposals';
 
 // Providers
+import { MiniModalComponent } from '../../components/mini-modal/mini-modal';
 import { AddressBookProvider } from '../../providers/address-book/address-book';
 import { AppProvider } from '../../providers/app/app';
 import { BitPayCardProvider } from '../../providers/bitpay-card/bitpay-card';
@@ -217,6 +218,9 @@ export class HomePage {
       this.updateTxps();
       this.setWallets();
     });
+
+    const feeWarningModal = this.popupProvider.createMiniModal('backup-needed');
+    feeWarningModal.present();
   }
 
   ionViewWillLeave() {
