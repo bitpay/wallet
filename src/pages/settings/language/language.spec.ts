@@ -1,32 +1,18 @@
-import {
-  async,
-  ComponentFixture,
-  fakeAsync,
-  TestBed
-} from '@angular/core/testing';
-
-import { Subject } from 'rxjs';
+import { async, ComponentFixture } from '@angular/core/testing';
 
 import { TestUtils } from '../../../test';
 
-import { AddressBookProvider } from '../../../providers/address-book/address-book';
-import { ConfigProvider } from './../../../providers/config/config';
 import { LanguagePage } from './language';
 
 describe('LanguagePage', () => {
   let fixture: ComponentFixture<LanguagePage>;
   let instance: any;
-  let testBed: typeof TestBed;
 
   beforeEach(
     async(() =>
       TestUtils.configurePageTestingModule([LanguagePage]).then(testEnv => {
         fixture = testEnv.fixture;
         instance = testEnv.instance;
-        testBed = testEnv.testBed;
-        instance.showCard = {
-          setShowRateCard: () => {}
-        };
         fixture.detectChanges();
       })
     )

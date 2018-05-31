@@ -1,22 +1,12 @@
-import {
-  async,
-  ComponentFixture,
-  fakeAsync,
-  TestBed
-} from '@angular/core/testing';
-
-import { Subject } from 'rxjs';
+import { async, ComponentFixture } from '@angular/core/testing';
 
 import { TestUtils } from '../../../test';
 
-import { AddressBookProvider } from '../../../providers/address-book/address-book';
-import { ConfigProvider } from './../../../providers/config/config';
 import { NotificationsPage } from './notifications';
 
 describe('NotificationsPage', () => {
   let fixture: ComponentFixture<NotificationsPage>;
   let instance: any;
-  let testBed: typeof TestBed;
 
   beforeEach(
     async(() =>
@@ -24,10 +14,6 @@ describe('NotificationsPage', () => {
         testEnv => {
           fixture = testEnv.fixture;
           instance = testEnv.instance;
-          testBed = testEnv.testBed;
-          instance.showCard = {
-            setShowRateCard: () => {}
-          };
           fixture.detectChanges();
         }
       )
@@ -38,7 +24,7 @@ describe('NotificationsPage', () => {
   });
   describe('Lifecycle Hooks', () => {
     describe('ionViewDidLoad', () => {
-      beforeEach(function() {
+      beforeEach(() => {
         spyOn(instance.logger, 'info');
         spyOn(instance, 'updateConfig');
       });
@@ -56,12 +42,12 @@ describe('NotificationsPage', () => {
         spyOn(instance.externalLinkProvider, 'open');
 
         const params = {
-          'View Privacy Policy': 'View Privacy Policy',
+          'Go Back': 'Go Back',
           Open: 'Open',
-          'Go Back': 'Go Back'
+          'View Privacy Policy': 'View Privacy Policy'
         };
 
-        spyOn(instance.translate, 'instant').and.callFake(function(myParam) {
+        spyOn(instance.translate, 'instant').and.callFake(myParam => {
           return params[myParam];
         });
 
@@ -107,8 +93,8 @@ describe('NotificationsPage', () => {
         instance.saveEmail();
 
         const opts = {
-          enabled: true,
-          email: 'test@satoshi.com'
+          email: 'test@satoshi.com',
+          enabled: true
         };
 
         expect(instance.emailProvider.updateEmail).toHaveBeenCalledWith(opts);
@@ -126,8 +112,8 @@ describe('NotificationsPage', () => {
         instance.emailNotificationsChange();
 
         const opts = {
-          enabled: true,
-          email: 'test@satoshi.com'
+          email: 'test@satoshi.com',
+          enabled: true
         };
 
         expect(instance.emailProvider.updateEmail).toHaveBeenCalledWith(opts);
@@ -172,7 +158,7 @@ describe('NotificationsPage', () => {
         expect(instance.isIOSApp).toEqual(true);
       });
       it('should set push notifications setting correctly', () => {
-        let opts = {
+        const opts = {
           pushNotificationsEnabled: true
         };
         spyOn(instance.configProvider, 'get').and.returnValue(opts);
@@ -181,7 +167,7 @@ describe('NotificationsPage', () => {
         expect(instance.pushNotifications).toEqual(true);
       });
       it('should set confirmedTxsNotifications to config.confirmedTxsNotifications.enabled if config.confirmedTxsNotifications exists', () => {
-        let opts = {
+        const opts = {
           confirmedTxsNotifications: { enabled: true },
           pushNotificationsEnabled: true
         };
@@ -191,7 +177,7 @@ describe('NotificationsPage', () => {
         expect(instance.confirmedTxsNotifications).toEqual(true);
       });
       it('should set confirmedTxsNotifications to false if config.confirmedTxsNotifications does not exist', () => {
-        let opts = {
+        const opts = {
           pushNotificationsEnabled: true
         };
         spyOn(instance.configProvider, 'get').and.returnValue(opts);
