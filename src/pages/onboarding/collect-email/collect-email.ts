@@ -48,7 +48,7 @@ export class CollectEmailPage {
       this.appProvider.servicesInfo &&
       this.appProvider.servicesInfo.emailSheetURL
         ? this.appProvider.servicesInfo.emailSheetURL
-        : '';
+        : null;
   }
 
   ionViewDidLoad() {
@@ -83,6 +83,8 @@ export class CollectEmailPage {
   }
 
   private collectEmail(): void {
+    if (!this.URL) return;
+
     let platform = this.device.platform || 'Unknown platform';
     let version = this.device.version || 'Unknown version';
 

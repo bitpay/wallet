@@ -19,11 +19,13 @@ export class FeedbackProvider {
       this.appProvider.servicesInfo &&
       this.appProvider.servicesInfo.feedbackSheetURL
         ? this.appProvider.servicesInfo.feedbackSheetURL
-        : '';
+        : null;
   }
 
   public send(dataSrc): Promise<any> {
     return new Promise((resolve, reject) => {
+      if (!this.URL) return resolve();
+
       const headers: any = new HttpHeaders({
         'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
       });
