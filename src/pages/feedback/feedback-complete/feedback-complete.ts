@@ -13,15 +13,11 @@ import { PersistenceProvider } from '../../../providers/persistence/persistence'
 import { PlatformProvider } from '../../../providers/platform/platform';
 import { ReplaceParametersProvider } from '../../../providers/replace-parameters/replace-parameters';
 
-// pages
-import { HomePage } from '../../home/home';
-
 @Component({
   selector: 'page-feedback-complete',
-  templateUrl: 'feedback-complete.html',
+  templateUrl: 'feedback-complete.html'
 })
 export class FeedbackCompletePage {
-
   public score: number;
   public skipped: boolean;
   public rated: boolean;
@@ -56,17 +52,29 @@ export class FeedbackCompletePage {
     this.rated = this.navParams.data.rated;
     this.fromSettings = this.navParams.data.fromSettings;
     this.isCordova = this.platformProvider.isCordova;
-    this.title = this.replaceParametersProvider.replace(this.translate.instant("Share {{appName}}"), { appName: this.appProvider.info.nameCase });
+    this.title = this.replaceParametersProvider.replace(
+      this.translate.instant('Share {{appName}}'),
+      { appName: this.appProvider.info.nameCase }
+    );
     let defaults = this.configProvider.getDefaults();
-    this.downloadUrl = this.appProvider.info.name == 'copay' ? defaults.download.copay.url : defaults.download.bitpay.url;
+    this.downloadUrl =
+      this.appProvider.info.name == 'copay'
+        ? defaults.download.copay.url
+        : defaults.download.bitpay.url;
+  }
+
+  ionViewWillLeave() {
     if (!this.fromSettings) {
-      this.viewCtrl.showBackButton(false);
-    } else {
-      this.viewCtrl.showBackButton(true);
+      this.navCtrl.swipeBackEnabled = true;
     }
   }
 
   ionViewWillEnter() {
+    if (!this.fromSettings) {
+      this.viewCtrl.showBackButton(false);
+      this.navCtrl.swipeBackEnabled = false;
+    }
+
     this.persistenceProvider.getFeedbackInfo().then((info: any) => {
       let feedbackInfo = info;
       feedbackInfo.sent = true;
@@ -75,51 +83,78 @@ export class FeedbackCompletePage {
 
     if (!this.isCordova) return;
 
-    this.socialSharing.canShareVia('com.apple.social.facebook', 'msg', null, null, null).then(() => {
-      this.shareFacebookVia = 'com.apple.social.facebook';
-      this.facebook = true;
-    }).catch((e) => {
-      this.socialSharing.canShareVia('com.facebook.katana', 'msg', null, null, null).then(() => {
-        this.shareFacebookVia = 'com.facebook.katana';
+    this.socialSharing
+      .canShareVia('com.apple.social.facebook', 'msg', null, null, null)
+      .then(() => {
+        this.shareFacebookVia = 'com.apple.social.facebook';
         this.facebook = true;
-      }).catch((e) => {
-        this.logger.debug('facebook error: ' + e);
-        this.facebook = false;
+      })
+      .catch(e => {
+        this.socialSharing
+          .canShareVia('com.facebook.katana', 'msg', null, null, null)
+          .then(() => {
+            this.shareFacebookVia = 'com.facebook.katana';
+            this.facebook = true;
+          })
+          .catch(e => {
+            this.logger.debug('facebook error: ' + e);
+            this.facebook = false;
+          });
       });
-    });
-    this.socialSharing.canShareVia('com.apple.social.twitter', 'msg', null, null, null).then(() => {
-      this.shareTwitterVia = 'com.apple.social.twitter';
-      this.twitter = true;
-    }).catch((e) => {
-      this.socialSharing.canShareVia('com.twitter.android', 'msg', null, null, null).then(() => {
-        this.shareTwitterVia = 'com.twitter.android';
+    this.socialSharing
+      .canShareVia('com.apple.social.twitter', 'msg', null, null, null)
+      .then(() => {
+        this.shareTwitterVia = 'com.apple.social.twitter';
         this.twitter = true;
-      }).catch((e) => {
-        this.logger.debug('twitter error: ' + e);
-        this.twitter = false;
+      })
+      .catch(e => {
+        this.socialSharing
+          .canShareVia('com.twitter.android', 'msg', null, null, null)
+          .then(() => {
+            this.shareTwitterVia = 'com.twitter.android';
+            this.twitter = true;
+          })
+          .catch(e => {
+            this.logger.debug('twitter error: ' + e);
+            this.twitter = false;
+          });
       });
-    });
-    this.socialSharing.canShareVia('whatsapp', 'msg', null, null, null).then(() => {
-      this.whatsapp = true;
-    }).catch((e) => {
-      this.logger.debug('whatsapp error: ' + e);
-      this.whatsapp = false;
-    });
+    this.socialSharing
+      .canShareVia('whatsapp', 'msg', null, null, null)
+      .then(() => {
+        this.whatsapp = true;
+      })
+      .catch(e => {
+        this.logger.debug('whatsapp error: ' + e);
+        this.whatsapp = false;
+      });
   }
 
   public shareFacebook() {
-    this.socialSharing.shareVia(this.shareFacebookVia, null, null, null, this.downloadUrl);
-  };
+    this.socialSharing.shareVia(
+      this.shareFacebookVia,
+      null,
+      null,
+      null,
+      this.downloadUrl
+    );
+  }
 
   public shareTwitter() {
-    this.socialSharing.shareVia(this.shareTwitterVia, null, null, null, this.downloadUrl);
-  };
+    this.socialSharing.shareVia(
+      this.shareTwitterVia,
+      null,
+      null,
+      null,
+      this.downloadUrl
+    );
+  }
 
   public shareWhatsapp() {
     this.socialSharing.shareViaWhatsApp(this.downloadUrl);
-  };
+  }
 
   public close(): void {
-    this.navCtrl.setRoot(HomePage);
+    this.navCtrl.popToRoot({ animate: false });
   }
 }

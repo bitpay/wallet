@@ -169,11 +169,7 @@ export class SettingsPage {
   }
 
   public openFeedbackCompletePage(): void {
-    this.navCtrl.push(FeedbackCompletePage, {
-      score: 4,
-      skipped: true,
-      fromSettings: true
-    });
+    this.navCtrl.push(FeedbackCompletePage, { fromSettings: true });
   }
 
   public openSettingIntegration(name: string): void {
