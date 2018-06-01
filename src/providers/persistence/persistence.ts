@@ -274,11 +274,11 @@ export class PersistenceProvider {
     return this.storage.remove(Keys.COINBASE_TXS(network));
   }
 
-  setAddressbook(network: string, addressbook: any): Promise<void> {
+  setAddressBook(network: string, addressbook: any): Promise<void> {
     return this.storage.set(Keys.ADDRESS_BOOK(network), addressbook);
   }
 
-  getAddressbook(network: string): Promise<any> {
+  getAddressBook(network: string): Promise<any> {
     return this.storage.get(Keys.ADDRESS_BOOK(network));
   }
 

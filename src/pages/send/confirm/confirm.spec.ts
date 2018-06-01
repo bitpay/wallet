@@ -1,12 +1,4 @@
-import {
-  async,
-  ComponentFixture,
-  fakeAsync,
-  TestBed
-} from '@angular/core/testing';
-
-import { Platform } from 'ionic-angular';
-import { Subject } from 'rxjs';
+import { async, ComponentFixture } from '@angular/core/testing';
 
 import { TestUtils } from '../../../test';
 
@@ -15,13 +7,11 @@ import { ConfirmPage } from './confirm';
 describe('ConfirmPage', () => {
   let fixture: ComponentFixture<ConfirmPage>;
   let instance: any;
-  let testBed: typeof TestBed;
 
   beforeEach(async(() =>
     TestUtils.configurePageTestingModule([ConfirmPage]).then(testEnv => {
       fixture = testEnv.fixture;
       instance = testEnv.instance;
-      testBed = testEnv.testBed;
       instance.navParams = {
         data: {
           toAddress: 'n4VQ5YdHf7hLQ2gWQYYrcxoE5B7nWuDFNF'
@@ -57,7 +47,6 @@ describe('ConfirmPage', () => {
           'setWalletSelector'
         ).and.returnValue(Promise.resolve());
         instance.wallets = [{}, {}];
-        const showWalletsSpy = spyOn(instance, 'showWallets');
         instance.ionViewWillEnter();
         expect(setWalletSelectorSpy).toHaveBeenCalled();
       });
@@ -98,7 +87,7 @@ describe('ConfirmPage', () => {
       });
     });
     describe('onFeeModalDismiss', () => {
-      it('should set usingCustomeFee to true if newFeeLevel is custom', () => {
+      it('should set usingCustomFee to true if newFeeLevel is custom', () => {
         instance.onFeeModalDismiss({ newFeeLevel: 'custom' });
         expect(instance.usingCustomFee).toBe(true);
       });
@@ -172,8 +161,6 @@ describe('ConfirmPage', () => {
       });
     });
     describe('onlyPublish', () => {
-      const txp = { coin: 'BTC' };
-      const wallet = {};
       it('should open the finish modal on success', async () => {
         spyOn(instance.walletProvider, 'onlyPublish').and.returnValue(
           Promise.resolve()

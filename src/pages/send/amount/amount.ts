@@ -9,12 +9,11 @@ import { ActionSheetController, NavController, NavParams } from 'ionic-angular';
 import * as _ from 'lodash';
 
 // Providers
-import { ConfigProvider } from '../../../providers/config/config';
+import { Config, ConfigProvider } from '../../../providers/config/config';
 import { FilterProvider } from '../../../providers/filter/filter';
 import { Logger } from '../../../providers/logger/logger';
 import { NodeWebkitProvider } from '../../../providers/node-webkit/node-webkit';
 import { PlatformProvider } from '../../../providers/platform/platform';
-import { ProfileProvider } from '../../../providers/profile/profile';
 import { RateProvider } from '../../../providers/rate/rate';
 import { TxFormatProvider } from '../../../providers/tx-format/tx-format';
 
@@ -68,7 +67,7 @@ export class AmountPage {
   public email: string;
   public color: string;
   public useSendMax: boolean;
-  public config: any;
+  public config: Config;
   public showRecipient: boolean;
   public toWalletId: string;
   private _id: string;
@@ -81,7 +80,6 @@ export class AmountPage {
     private navCtrl: NavController,
     private navParams: NavParams,
     private nodeWebkitProvider: NodeWebkitProvider,
-    private profileProvider: ProfileProvider,
     private platformProvider: PlatformProvider,
     private rateProvider: RateProvider,
     private txFormatProvider: TxFormatProvider,
@@ -203,7 +201,7 @@ export class AmountPage {
       this.unitIndex = this.availableUnits.length;
     } else {
       this.fiatCode = this.config.wallet.settings.alternativeIsoCode || 'USD';
-      fiatName = this.config.wallet.settings.alternanativeName || this.fiatCode;
+      fiatName = this.config.wallet.settings.alternativeName || this.fiatCode;
       this.altUnitIndex = this.availableUnits.length;
     }
 

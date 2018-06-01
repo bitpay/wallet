@@ -1,4 +1,4 @@
-import { async, TestBed } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 
 // providers
 import { DecimalPipe } from '@angular/common';
@@ -6,12 +6,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { AndroidFingerprintAuth } from '@ionic-native/android-fingerprint-auth';
 import { File } from '@ionic-native/file';
 import { TouchID } from '@ionic-native/touch-id';
-import {
-  TranslateFakeLoader,
-  TranslateLoader,
-  TranslateModule,
-  TranslateService
-} from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import {
   AlertController,
   App,

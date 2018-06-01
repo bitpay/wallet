@@ -1,13 +1,12 @@
-/* tslint:disable */
-import { TestBed, inject, async } from '@angular/core/testing';
+import { inject, TestBed } from '@angular/core/testing';
+import {
+  TranslateFakeLoader,
+  TranslateLoader,
+  TranslateModule,
+  TranslateService
+} from '@ngx-translate/core';
 import { AlertController, App, Config, Platform } from 'ionic-angular';
 import { Logger } from '../../providers/logger/logger';
-import {
-  TranslateModule,
-  TranslateService,
-  TranslateLoader,
-  TranslateFakeLoader
-} from '@ngx-translate/core';
 import { PopupProvider } from './popup';
 
 import { AlertControllerMock } from 'ionic-mocks';

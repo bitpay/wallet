@@ -1,25 +1,19 @@
-/* tslint:disable */
 import { PlatformProvider } from './platform';
 
-import { TestBed, getTestBed, inject, async } from '@angular/core/testing';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { getTestBed, TestBed } from '@angular/core/testing';
 import {
-  HttpClientTestingModule,
-  HttpTestingController
-} from '@angular/common/http/testing';
-import { Logger } from '../../providers/logger/logger';
-import {
-  TranslateModule,
-  TranslateService,
+  TranslateFakeLoader,
   TranslateLoader,
-  TranslateFakeLoader
+  TranslateModule
 } from '@ngx-translate/core';
 import { Platform } from 'ionic-angular';
+import { Logger } from '../../providers/logger/logger';
 
 describe('PlatformProvider', () => {
   let injector: TestBed;
   let service: PlatformProvider;
-  let httpMock: HttpTestingController;
-  let userAgent;
+  let realUserAgent;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -33,7 +27,6 @@ describe('PlatformProvider', () => {
     });
     injector = getTestBed();
     service = injector.get(PlatformProvider);
-    httpMock = injector.get(HttpTestingController);
   });
 
   it('should get browser name', () => {
@@ -42,49 +35,39 @@ describe('PlatformProvider', () => {
   });
 
   it('should return "unknown" if browser is unknown', () => {
-    // change userAgent
-    userAgent = window.navigator.userAgent;
-    console.log('before changing userAgent', window.navigator.userAgent);
+    realUserAgent = window.navigator.userAgent;
     Object.defineProperties(window.navigator, {
       userAgent: {
         value: 'someUnknownCoolBrowser v1.0',
         writable: true
       }
     });
-    console.log('after changing userAgent', window.navigator.userAgent);
 
     let name = service.getBrowserName();
     expect(name).toBe('unknown');
 
-    // restore userAgent
-    console.log('before restoring userAgent', window.navigator.userAgent);
     Object.defineProperties(window.navigator, {
       userAgent: {
-        value: userAgent,
+        value: realUserAgent,
         writable: false
       }
     });
-    console.log('after restoring userAgent', window.navigator.userAgent);
   });
 });
 
 describe('PlatformProvider without navigator', () => {
   let injector: TestBed;
   let service: PlatformProvider;
-  let httpMock: HttpTestingController;
-  let navi;
+  let realNavigator;
 
   beforeEach(() => {
-    navi = window.navigator;
-    console.log('before changing navigator', window.navigator);
-    // change navigator
+    realNavigator = window.navigator;
     Object.defineProperties(window, {
       navigator: {
         value: null,
         writable: true
       }
     });
-    console.log('after changing navigator', window.navigator);
   });
 
   beforeEach(() => {
@@ -99,18 +82,15 @@ describe('PlatformProvider without navigator', () => {
     });
     injector = getTestBed();
     service = injector.get(PlatformProvider);
-    httpMock = injector.get(HttpTestingController);
   });
 
   afterEach(() => {
-    console.log('before restoring navigator', window.navigator);
     Object.defineProperties(window, {
       navigator: {
-        value: navi,
+        value: realNavigator,
         writable: false
       }
     });
-    console.log('after restoring navigator', window.navigator);
   });
 
   it('should have a dummy user agent', () => {

@@ -1,4 +1,4 @@
-import { async, TestBed } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 import { File } from '@ionic-native/file';
 import { Platform } from 'ionic-angular';
 
@@ -6,8 +6,6 @@ import { Logger } from '../../providers/logger/logger';
 import { PersistenceProvider } from '../persistence/persistence';
 import { PlatformProvider } from '../platform/platform';
 import { ConfigProvider } from './config';
-
-import * as _ from 'lodash';
 
 describe('Provider: Config Provider', () => {
   let persistenceProvider: PersistenceProvider;

@@ -1,13 +1,7 @@
 import { Component, VERSION, ViewChild } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { Result } from '@zxing/library';
 import { ZXingScannerComponent } from '@zxing/ngx-scanner';
-import {
-  Events,
-  ModalController,
-  NavController,
-  NavParams
-} from 'ionic-angular';
+import { Events, NavController, NavParams } from 'ionic-angular';
 import { Logger } from '../../providers/logger/logger';
 
 // providers
@@ -41,7 +35,6 @@ export class ScanPage {
   selectedDevice: MediaDeviceInfo;
 
   public browserScanEnabled: boolean;
-  private modalIsOpen: boolean;
   private scannerIsAvailable: boolean;
   private scannerHasPermission: boolean;
   private scannerIsDenied: boolean;
@@ -63,10 +56,9 @@ export class ScanPage {
     private platform: PlatformProvider,
     private incomingDataProvider: IncomingDataProvider,
     private events: Events,
-    private modalCtrl: ModalController,
     private externalLinkProvider: ExternalLinkProvider,
     private logger: Logger,
-    private translate: TranslateService,
+    public translate: TranslateService,
     private navParams: NavParams
   ) {
     this.isCameraSelected = false;
@@ -80,7 +72,6 @@ export class ScanPage {
       loading: 'loading',
       visible: 'visible'
     };
-    this.modalIsOpen = false;
     this.scannerIsAvailable = true;
     this.scannerHasPermission = false;
     this.scannerIsDenied = false;

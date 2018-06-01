@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
-import { App, NavController, NavParams, ToastController } from 'ionic-angular';
+import { App, NavParams, ToastController } from 'ionic-angular';
 import { Logger } from '../../../../../providers/logger/logger';
 
 // native
@@ -43,7 +43,6 @@ export class WalletExportPage {
     private app: App,
     private profileProvider: ProfileProvider,
     private walletProvider: WalletProvider,
-    private navCtrl: NavController,
     private navParams: NavParams,
     private formBuilder: FormBuilder,
     private popupProvider: PopupProvider,
@@ -162,7 +161,7 @@ export class WalletExportPage {
   public downloadWalletBackup(): void {
     this.getPassword()
       .then((password: string) => {
-        this.getAddressbook()
+        this.getAddressBook()
           .then((localAddressBook: any) => {
             let opts = {
               noSign: this.exportWalletForm.value.noSignEnabled,
@@ -198,10 +197,10 @@ export class WalletExportPage {
       });
   }
 
-  public getAddressbook(): Promise<any> {
+  public getAddressBook(): Promise<any> {
     return new Promise((resolve, reject) => {
       this.persistenceProvider
-        .getAddressbook(this.wallet.credentials.network)
+        .getAddressBook(this.wallet.credentials.network)
         .then((addressBook: any) => {
           let localAddressBook = [];
           try {
@@ -225,7 +224,7 @@ export class WalletExportPage {
     return new Promise((resolve, reject) => {
       this.getPassword()
         .then((password: string) => {
-          this.getAddressbook()
+          this.getAddressBook()
             .then((localAddressBook: any) => {
               let opts = {
                 noSign: this.exportWalletForm.value.noSignEnabled,

@@ -385,14 +385,14 @@ export class ConfirmPage {
             msg = this.translate.instant('Custom');
             tx.feeLevelName = msg;
           } else if (this.usingMerchantFee) {
-            let maxAllowedfee = feeRate * 2;
+            let maxAllowedFee = feeRate * 2;
             this.logger.info(
               'Using Merchant Fee:' +
                 tx.feeRate +
                 ' vs. referent level:' +
-                maxAllowedfee
+                maxAllowedFee
             );
-            if (tx.network != 'testnet' && tx.feeRate > maxAllowedfee) {
+            if (tx.network != 'testnet' && tx.feeRate > maxAllowedFee) {
               this.onGoingProcessProvider.set('calculatingFee');
               this.setNoWallet(
                 this.translate.instant(
@@ -556,7 +556,6 @@ export class ConfirmPage {
     return new Promise((resolve, reject) => {
       if (!sendMaxInfo) return resolve();
 
-      let fee = sendMaxInfo.fee / 1e8;
       let msg = this.replaceParametersProvider.replace(
         this.translate.instant(
           '{{fee}} {{coin}} will be deducted for bitcoin networking fees.'
@@ -825,7 +824,7 @@ export class ConfirmPage {
 
   public chooseFeeLevel(): void {
     if (this.tx.coin == 'bch') return;
-    if (this.usingMerchantFee) return; // ToDo: should we allow overwride?
+    if (this.usingMerchantFee) return; // TODO: should we allow override?
 
     let txObject: any = {};
     txObject.network = this.tx.network;
@@ -854,7 +853,7 @@ export class ConfirmPage {
     if (_.isEmpty(data)) return;
 
     this.logger.debug(
-      'New fee level choosen:' + data.newFeeLevel + ' was:' + this.tx.feeLevel
+      'New fee level chosen:' + data.newFeeLevel + ' was:' + this.tx.feeLevel
     );
     this.usingCustomFee = data.newFeeLevel == 'custom' ? true : false;
 

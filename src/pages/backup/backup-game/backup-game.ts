@@ -1,12 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import {
-  AlertController,
-  Navbar,
-  NavController,
-  NavParams,
-  Slides
-} from 'ionic-angular';
+import { Navbar, NavController, NavParams, Slides } from 'ionic-angular';
 import * as _ from 'lodash';
 import { Logger } from '../../../providers/logger/logger';
 
@@ -49,7 +43,6 @@ export class BackupGamePage {
   constructor(
     private navCtrl: NavController,
     private navParams: NavParams,
-    private alertCtrl: AlertController,
     private logger: Logger,
     private profileProvider: ProfileProvider,
     private walletProvider: WalletProvider,
