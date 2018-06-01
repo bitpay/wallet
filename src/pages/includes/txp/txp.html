@@ -16,8 +16,13 @@
     </span>
   </span>
   <div class="item-subtitle">
-    <span *ngIf="tx.creatorName">{{ tx.creatorName}}@</span>
-    <span>{{tx.wallet.name}}</span>
+    <div *ngIf="tx.creatorName">{{ tx.creatorName}}</div>
+    <div>{{tx.wallet.name}}</div>
+  </div>
+
+  <div class="item-subtitle date">
+    <time *ngIf="tx.createdOn && createdWithinPastDay(tx.createdOn * 1000)">{{tx.createdOn * 1000 | amTimeAgo}}</time>
+    <time *ngIf="tx.createdOn && !createdWithinPastDay(tx.createdOn * 1000)">{{tx.createdOn * 1000 | amDateFormat:'MMM D, YYYY'}}</time>
   </div>
 
   <ion-note item-right>
@@ -25,10 +30,6 @@
       <span *ngIf="tx.action == 'sent'">–</span>
       <span *ngIf="tx.action == 'invalid'" translate>(possible double spend)</span>
       <span *ngIf="tx.action != 'invalid'">{{tx.amount | satToUnit: tx.coin}}</span>
-    </div>
-    <div class="date">
-      <time *ngIf="tx.createdOn && createdWithinPastDay(tx.createdOn * 1000)">{{tx.createdOn * 1000 | amTimeAgo}}</time>
-      <time *ngIf="tx.createdOn && !createdWithinPastDay(tx.createdOn * 1000)">{{tx.createdOn * 1000 | amDateFormat:'MMM D, YYYY'}}</time>
     </div>
   </ion-note>
 </button>
