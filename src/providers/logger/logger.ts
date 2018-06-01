@@ -106,8 +106,7 @@ export class Logger {
           v = v.message ? v.message : JSON.stringify(v);
         }
       } catch (e) {
-        // tslint:disable-next-line:no-console
-        console.log('Error at log decorator:', e);
+        this.console.log('Error at log decorator:', e);
         v = 'undefined';
       }
       return v;
