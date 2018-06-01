@@ -1,0 +1,115 @@
+page-home {
+  background: $toolbar-background;
+  ion-content .fixed-content {
+    background: $toolbar-background;
+  }
+  .home-logo {
+    height: 24px;
+    position: relative;
+    top: 3px;
+  }
+  .toolbar-title-ios {
+    text-align: center;
+  }
+  .check {
+    text-align: center;
+    .title {
+      font-weight: 500;
+      font-size: 2rem;
+    }
+    .subtitle {
+      padding: 10px;
+    }
+    .check-icon {
+      margin-top: -40px;
+    }
+  }
+  .title {
+    font-weight: 500;
+    > img {
+      vertical-align: sub;
+      margin-right: 5px;
+    }
+  }
+  .error {
+    color: color($colors, danger);
+  }
+
+  page-txp:last-child,
+  page-wallet-activity:last-child {
+    border: 0;
+
+    & .item-inner {
+      border: 0 !important;
+    }
+  }
+  .header-extend {
+    background: $toolbar-background;
+    height: 180px;
+    position: absolute;
+    top: -100px;
+    width: 100%;
+    z-index: 0;
+    display: flex;
+    justify-content: center;
+    .no-wallets {
+      position: absolute;
+      top: 60%;
+    }
+  }
+  .card {
+    z-index: 1;
+    position: relative;
+  }
+  ion-refresher {
+    height: 120px;
+    background: $toolbar-background;
+    &-content {
+      margin-top: -25px;
+    }
+  }
+
+  .new-release {
+    padding-bottom: 0rem;
+    &-icon {
+      display: flex;
+      justify-content: center;
+      margin-top: 3rem;
+      img {
+        width: 4rem;
+        height: 4rem;
+      }
+    }
+    &-text {
+      text-align: center;
+      color: color($colors, dark);
+      margin-bottom: 1rem;
+    }
+    &-button {
+      padding: 0rem;
+      div {
+        cursor: pointer;
+        font-size: 16px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: color($colors, light);
+        color: color($colors, dark);
+        height: 5rem;
+      }
+    }
+  }
+
+  .scroll-content {
+    // This line prevents an ugly gap from appearing between the
+    // navbar and page content when the user overscrolls on iOS
+    background-image: linear-gradient(
+      to bottom,
+      $toolbar-background,
+      $toolbar-background 50%,
+      $background-color 50%,
+      $background-color 50%,
+      $background-color 50%
+    );
+  }
+}

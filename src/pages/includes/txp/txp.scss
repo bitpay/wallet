@@ -1,0 +1,19 @@
+page-txp {
+  .proposal-container {
+    border-left: 2px solid #ff9900;
+  }
+  img {
+    width: 35px;
+    height: 35px;
+    border-radius: $icon-border-radius;
+  }
+  ion-note {
+    text-align: end;
+    .amount {
+      color: color($colors, dark);
+    }
+    .date {
+      font-size: 12.5px;
+    }
+  }
+}

@@ -1,0 +1,18 @@
+page-choose-fee-level {
+  .testnet-warning {
+    width: 100%;
+    height: 3rem;
+    background-color: #ffc900;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+  }
+
+  .fee-custom {
+    .fee-error {
+      font-size: 12.5px;
+      color: red;
+    }
+  }
+}

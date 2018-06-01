@@ -1,0 +1,142 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>{{ 'Confirm' | translate }}</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content no-bounce>
+  <ion-list *ngIf="tx">
+    <ion-item>
+      <div class="header-container">
+        <div class="sending-label">
+          <img class="sending-img" src="assets/img/icon-tx-sent-outline.svg">
+          <span translate *ngIf="!tx.sendMax">Sending</span>
+          <span translate *ngIf="tx.sendMax">Sending maximum amount</span>
+        </div>
+        <div class="amount-label">
+          <div class="amount">{{tx.amount | satToUnit: tx.coin}}</div>
+          <div class="alternative">{{tx.amount | satToFiat: tx.coin}}</div>
+        </div>
+      </div>
+    </ion-item>
+    <button ion-item class="item-fee" (click)="chooseFeeLevel()">
+      <div class="fee-title">
+        <span translate>Bitcoin miner fee:</span> {{tx.feeLevelName | translate}}
+      </div>
+      <div class="fee-loading" *ngIf="!wallet || !tx.txp[wallet.id]">
+        <div>...</div>
+        <div>...</div>
+      </div>
+      <div *ngIf="wallet && tx.txp[wallet.id]">
+        <span class="fee-amount">{{tx.txp[wallet.id].fee | satToUnit: tx.coin}}</span>
+        <div class="fee-details">
+          {{tx.txp[wallet.id].fee | satToFiat: tx.coin}}
+          <span *ngIf="tx.txp[wallet.id].feeRatePerStr">
+            &middot;
+            <span [ngClass]="{'warn':tx.txp[wallet.id].feeTooHigh}">
+              <ion-icon *ngIf="tx.txp[wallet.id].feeTooHigh" name="warning"></ion-icon>
+              <span translate>{{tx.txp[wallet.id].feeRatePerStr}} of total amount</span>
+            </span>
+          </span>
+        </div>
+      </div>
+    </button>
+
+    <ion-item *ngIf="tx.paypro && !criticalError">
+      <span translate>Payment Expires:</span>
+      <ion-note *ngIf="!paymentExpired" item-end>{{remainingTimeStr}}</ion-note>
+      <ion-note *ngIf="paymentExpired" [ngStyle]="{'color': 'red'}" item-end>{{'Expired' | translate}}</ion-note>
+    </ion-item>
+
+    <ion-item class="container-to" *ngIf="!criticalError">
+      <span translate>To</span>
+
+      <div class="payment-proposal-to" *ngIf="!tx.recipientType">
+        <img class="icon-bitcoin" src="assets/img/icon-bitcoin-small.svg">
+        <div class="ellipsis" *ngIf="!tx.paypro" copy-to-clipboard="{{ tx.origToAddress }}">
+          <!--TODO: <contact *ngIf="tx.origToAddress && !tx.name" address="{{tx.origToAddress}}"></contact>-->
+          <span *ngIf="!tx.name">{{tx.origToAddress}}</span>
+          <span *ngIf="tx.name">{{tx.name}}</span>
+        </div>
+
+        <div class="paypro" *ngIf="tx.paypro" (click)="openPPModal(tx.paypro)">
+
+          <ion-icon *ngIf="tx.paypro.verified && tx.paypro.caTrusted" name="lock" color="success"></ion-icon>
+          <ion-icon *ngIf="!tx.paypro.verified && tx.paypro.caTrusted" name="unlock" color="warning"></ion-icon>
+          <ion-icon *ngIf="!tx.paypro.caTrusted" name="unlock" color="danger"></ion-icon>
+
+          <span [hidden]="tx.name">{{tx.paypro.domain || tx.paypro.toAddress}}</span>
+          <span [hidden]="!tx.name">{{tx.name}}</span>
+        </div>
+      </div>
+
+      <div class="wallet" *ngIf="tx.recipientType == 'wallet'">
+        <ion-icon item-start>
+          <img *ngIf="tx.network == 'testnet'" [ngStyle]="{'background-color': tx.color}" src="assets/img/icon-wallet-testnet.svg" class="icon-wallet" />
+          <img *ngIf="tx.network != 'testnet'" [ngStyle]="{'background-color': tx.color}" src="assets/img/icon-wallet.svg" class="icon-wallet" />
+        </ion-icon>
+        <div class="ellipsis" copy-to-clipboard="{{ tx.origToAddress }}">
+          <!--TODO: <contact ng-if="tx.origToAddress && !tx.name" address="{{tx.origToAddress}}"></contact>-->
+          <span *ngIf="!tx.name">{{tx.origToAddress}}</span>
+          <span *ngIf="tx.name">{{tx.name}}</span>
+        </div>
+      </div>
+
+      <div class="wallet" *ngIf="tx.recipientType == 'contact'" (longPress)="toggleAddress()">
+        <ion-icon class="item-gravatar" item-left>
+          <gravatar [name]="tx.name" [height]="35" [width]="35" [email]="tx.email"></gravatar>
+        </ion-icon>
+        <div class="ellipsis">
+          <span *ngIf="tx.name && !showAddress">{{tx.name}}</span>
+          <span *ngIf="tx.name && showAddress" copy-to-clipboard="{{ tx.toAddress }}">{{tx.toAddress}}</span>
+        </div>
+      </div>
+    </ion-item>
+
+    <button class="container-from" ion-item detail-none (click)="showWallets()">
+      <span translate>From</span>
+      <div class="wallet" *ngIf="wallet">
+        <ion-icon item-start>
+          <img *ngIf="wallet.network == 'testnet'" [ngStyle]="{'background-color': wallet.color}" src="assets/img/icon-wallet-testnet.svg" class="icon-wallet" />
+          <img *ngIf="wallet.network != 'testnet'" [ngStyle]="{'background-color': wallet.color}" src="assets/img/icon-wallet.svg" class="icon-wallet" />
+        </ion-icon>
+        <div>{{wallet.name}}</div>
+        <div class="last-item" item-end>
+          <button ion-button clear color="grey" icon-only>
+            <ion-icon *ngIf="!isOpenSelector" name="ios-arrow-down-outline"></ion-icon>
+            <ion-icon *ngIf="isOpenSelector" name="ios-arrow-up-outline"></ion-icon>
+          </button>
+        </div>
+      </div>
+      <div class="wallet" *ngIf="!wallet">
+        <ion-icon item-start>
+          <img class="icon-wallet disabled" src="assets/img/icon-wallet.svg" />
+        </ion-icon>
+        <div translate>Select a wallet</div>
+        <div class="last-item" item-end>
+          <button ion-button clear color="grey" icon-only>
+            <ion-icon *ngIf="!isOpenSelector" name="ios-arrow-down-outline"></ion-icon>
+            <ion-icon *ngIf="isOpenSelector" name="ios-arrow-up-outline"></ion-icon>
+          </button>
+        </div>
+      </div>
+    </button>
+
+    <button ion-item (click)="showDescriptionPopup(tx)">
+      <span *ngIf="!tx.description" translate>Add Memo</span>
+      <span *ngIf="tx.description" translate>Memo</span>
+      <div class="item-memo">
+        <ion-note>{{tx.description}}</ion-note>
+      </div>
+    </button>
+  </ion-list>
+
+
+</ion-content>
+
+<ion-footer>
+  <page-slide-to-accept #slideButton *ngIf="isCordova" [disabled]="!wallet || noWalletMessage || criticalError || !tx?.txp[wallet.id]" [buttonText]="buttonText" (slideDone)="approve(tx, wallet)"></page-slide-to-accept>
+  <ion-toolbar *ngIf="!isCordova">
+    <button ion-button full class="button-footer" (click)="approve(tx, wallet)" [disabled]="!wallet || noWalletMessage || criticalError || !tx.txp[wallet.id]">{{buttonText}}</button>
+  </ion-toolbar>
+</ion-footer>

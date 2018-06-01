@@ -1,0 +1,39 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>{{ 'Address Book' | translate }}</ion-title>
+    <ion-buttons *ngIf="!isEmptyList" end>
+      <button ion-button (click)="addEntry()">
+        {{'Add' | translate}}
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+
+</ion-header>
+
+<ion-content>
+
+  <div class="zero-state" *ngIf="isEmptyList">
+    <ion-icon class="zero-state-icon">
+      <img class="svg" src="assets/img/address-book-add.svg" />
+    </ion-icon>
+    <div class="zero-state-heading" translate>No contacts yet</div>
+    <div class="zero-state-description" translate>Get started by adding your first one.</div>
+    <button ion-button class="button-standard" (click)="addEntry()">
+      {{'Add Contact' | translate}}
+    </button>
+  </div>
+
+  <div *ngIf="!isEmptyList">
+    <ion-searchbar placeholder="{{'Search a contact' | translate}}" (ionInput)="getItems($event)"></ion-searchbar>
+    <ion-list>
+      <button class="contact" ion-item *ngFor="let entry of filteredAddressbook" (click)="viewEntry(entry)">
+        <gravatar [name]="entry.name" [height]="30" [width]="30" [email]="entry.email"></gravatar>
+        <div>
+          <div clss="item-title">{{ entry.name }}</div>
+          <div class="item-subtitle">{{ entry.address }}</div>
+        </div>
+      </button>
+    </ion-list>
+  </div>
+</ion-content>

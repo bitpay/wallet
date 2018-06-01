@@ -1,0 +1,50 @@
+page-collect-email {
+  & > ion-content {
+    background-image: $onboarding-background-image !important;
+    background-position: top center;
+    background-size: contain;
+    background-repeat: no-repeat;
+  }
+  ion-header {
+    .toolbar-title,
+    ion-icon {
+      color: color($colors, primary);
+    }
+    .toolbar-background {
+      background-color: transparent;
+    }
+  }
+  text-align: center;
+  .title {
+    color: color($colors, blank);
+  }
+  p {
+    margin-left: 1em;
+    margin-right: 1em;
+  }
+  .email-form {
+    p,
+    ion-item {
+      color: #fff;
+    }
+    ion-item {
+      background: none;
+    }
+  }
+  .description {
+    font-size: 1.4rem;
+  }
+  ion-content {
+    img {
+      padding-top: 32px;
+    }
+  }
+  .fixed {
+    height: 100%;
+    width: 100%;
+    overflow-y: hidden;
+  }
+  .primary-color {
+    color: $onboarding-primary-color;
+  }
+}

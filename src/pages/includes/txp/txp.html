@@ -1,0 +1,34 @@
+<button ion-item class="proposal-container" (click)="openTxpModal(tx)">
+  <ion-icon class="item-img" item-start>
+    <img src="assets/img/icon-proposal-pending.svg">
+  </ion-icon>
+  <div *ngIf="!tx.merchant" class="item-title">
+    <span *ngIf="tx.message">{{tx.message}}</span>
+    <span *ngIf="!tx.message && tx.toAddress && addressbook[tx.toAddress]">{{addressbook[tx.toAddress].name || addressbook[tx.toAddress]}}</span>
+    <span *ngIf="!tx.message && tx.toAddress && !addressbook[tx.toAddress]" translate>Sending</span>
+  </div>
+  <span *ngIf="tx.merchant" class="item-subtitle">
+    <span *ngIf="tx.merchant.pr.ca">
+      <ion-icon class="fi-lock"></ion-icon>{{tx.merchant.domain}}
+    </span>
+    <span *ngIf="!tx.merchant.pr.ca">
+      <ion-icon class="fion-icon-unlock"></ion-icon>{{tx.merchant.domain}}
+    </span>
+  </span>
+  <div class="item-subtitle">
+    <span *ngIf="tx.creatorName">{{ tx.creatorName}}@</span>
+    <span>{{tx.wallet.name}}</span>
+  </div>
+
+  <ion-note item-right>
+    <div class="amount">
+      <span *ngIf="tx.action == 'sent'">–</span>
+      <span *ngIf="tx.action == 'invalid'" translate>(possible double spend)</span>
+      <span *ngIf="tx.action != 'invalid'">{{tx.amount | satToUnit: tx.coin}}</span>
+    </div>
+    <div class="date">
+      <time *ngIf="tx.createdOn && createdWithinPastDay(tx.createdOn * 1000)">{{tx.createdOn * 1000 | amTimeAgo}}</time>
+      <time *ngIf="tx.createdOn && !createdWithinPastDay(tx.createdOn * 1000)">{{tx.createdOn * 1000 | amDateFormat:'MMM D, YYYY'}}</time>
+    </div>
+  </ion-note>
+</button>

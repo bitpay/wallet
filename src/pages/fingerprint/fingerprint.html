@@ -1,0 +1,21 @@
+<ion-content no-bounce fullscreen>
+  <div class="fingerprint-header">
+    <div class="title">
+      <div>
+        {{'Verify your identity' | translate}}
+      </div>
+    </div>
+    <div class="icon-container">
+      <ion-icon class="app-icon">
+        <img src="assets/img/app/icon-flat.svg" />
+      </ion-icon>
+    </div>
+  </div>
+  <div class="fingerprint-bottom">
+    <button class="button-standard" ion-button (click)="checkFingerprint()">
+      <span>{{'Scan again' | translate}}</span>
+      <ion-icon name="finger-print" item-end></ion-icon>
+    </button>
+  </div>
+
+</ion-content>

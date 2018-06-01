@@ -1,0 +1,60 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>{{'Notifications' | translate}}</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content>
+  <ion-item-divider></ion-item-divider>
+  <ion-list>
+    <div *ngIf="usePushNotifications">
+      <ion-item>
+        <ion-label>{{ 'Enable push notifications' | translate }}</ion-label>
+        <ion-toggle [(ngModel)]="pushNotifications" (ionChange)="pushNotificationsChange()"></ion-toggle>
+      </ion-item>
+    </div>
+
+    <ion-item-divider *ngIf="!usePushNotifications && isIOSApp">
+      <span translate>
+        Push notifications for {{appName}} are currently disabled. Enable them in the Settings app.
+      </span>
+    </ion-item-divider>
+
+    <div *ngIf="usePushNotifications && pushNotifications">
+      <ion-item>
+        <ion-label>{{ 'Notify me when transactions are confirmed' | translate }}</ion-label>
+        <ion-toggle [(ngModel)]="confirmedTxsNotifications" (ionChange)="confirmedTxsNotificationsChange()"></ion-toggle>
+      </ion-item>
+    </div>
+
+
+    <ion-item>
+      <ion-label>{{ 'Enable email notifications' | translate }}</ion-label>
+      <ion-toggle [(ngModel)]="emailNotifications" (ionChange)="emailNotificationsChange()"></ion-toggle>
+    </ion-item>
+
+    <div *ngIf="emailNotifications">
+      <ion-item-divider>
+        <span translate>
+          By providing your email address, you give explicit consent to BitPay to use your email address to send you email notifications about payments.
+        </span> 
+        <a class="externalLink" (click)="openPrivacyPolicy()" translate>View Privacy Policy</a>
+      </ion-item-divider>
+
+      <form [formGroup]="emailForm">
+        <ion-item>
+          <ion-label stacked>{{ 'Email' | translate }}</ion-label>
+          <ion-input formControlName="email" type="email"></ion-input>
+        </ion-item>
+        <div text-center>
+          <button ion-button class="button-standard" (click)="saveEmail()" [disabled]="emailForm.invalid">
+            {{'Save' | translate}}
+          </button>
+        </div>
+      </form>
+    </div>
+  </ion-list>
+
+</ion-content>

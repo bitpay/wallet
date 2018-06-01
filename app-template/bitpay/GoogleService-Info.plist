@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>AD_UNIT_ID_FOR_BANNER_TEST</key>
+	<string>ca-app-pub-3940256099942544/2934735716</string>
+	<key>AD_UNIT_ID_FOR_INTERSTITIAL_TEST</key>
+	<string>ca-app-pub-3940256099942544/4411468910</string>
+	<key>CLIENT_ID</key>
+	<string>149194066736-nrekra78jvd1cqakh0l69bpbgmj05j81.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.149194066736-nrekra78jvd1cqakh0l69bpbgmj05j81</string>
+	<key>API_KEY</key>
+	<string>AIzaSyAygvOaO5hmkL2Vze66yVAGU2QhcoTyZFA</string>
+	<key>GCM_SENDER_ID</key>
+	<string>149194066736</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.bitpay.wallet</string>
+	<key>PROJECT_ID</key>
+	<string>bitpay-wallet</string>
+	<key>STORAGE_BUCKET</key>
+	<string>bitpay-wallet.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<true/>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false/>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true/>
+	<key>IS_GCM_ENABLED</key>
+	<true/>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true/>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:149194066736:ios:64dc8a200f13f9ee</string>
+	<key>DATABASE_URL</key>
+	<string>https://bitpay-wallet.firebaseio.com</string>
+</dict>
+</plist>

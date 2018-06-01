@@ -1,0 +1,40 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>{{'Custom Amount' | translate}}</ion-title>
+    <ion-buttons end>
+      <button *ngIf="showShareButton" ion-button icon-only (click)="shareAddress()">
+        <ion-icon ios="ios-share-outline" md="md-share"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <div class="qr-container">
+    <ngx-qrcode *ngIf="address" copy-to-clipboard="{{ qrAddress }}" qrc-value="{{qrAddress}}" qrc-class="aclass" qrc-errorCorrectionLevel="M"></ngx-qrcode>
+  </div>
+  <ion-list>
+    <ion-item>
+      <ion-label>{{'Address' | translate}}</ion-label>
+      <ion-note class="address-note" item-end>
+        {{address}}
+      </ion-note>
+    </ion-item>
+    <ion-item>
+      <span translate>Amount</span>
+      <ion-note item-end>
+        {{amountUnitStr}} ({{altAmountStr}})
+      </ion-note>
+    </ion-item>
+    <ion-item ion-item>
+      <span translate>Receive in</span>
+      <ion-note class="wallet-label" item-end>
+        <ion-icon item-start>
+          <img *ngIf="wallet.network == 'testnet'" [ngStyle]="{'background-color': wallet.color}" src="assets/img/icon-wallet-testnet.svg" class="icon-wallet" />
+          <img *ngIf="wallet.network != 'testnet'" [ngStyle]="{'background-color': wallet.color}" src="assets/img/icon-wallet.svg" class="icon-wallet" />
+        </ion-icon>
+        <span class="wallet-name">{{wallet.name}}</span>
+      </ion-note>
+    </ion-item>
+  </ion-list>
+</ion-content>

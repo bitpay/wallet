@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="247px" height="247px" viewBox="0 0 247 247" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 39.1 (31720) - http://www.bohemiancoding.com/sketch -->
+    <title>bg-3</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <linearGradient x1="50%" y1="0%" x2="50%" y2="89.4673583%" id="linearGradient-1">
+            <stop stop-color="#3950B5" offset="0%"></stop>
+            <stop stop-color="#162360" offset="100%"></stop>
+        </linearGradient>
+    </defs>
+    <g id="Onboarding" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="0.2.3---Tour-3" transform="translate(-64.000000, -210.000000)">
+            <g id="bg-3" transform="translate(64.000000, 210.000000)">
+                <path d="M123.5,247 C191.707167,247 247,191.707167 247,123.5 C247,55.2928334 191.707167,1.42108547e-14 123.5,1.42108547e-14 C55.2928334,1.42108547e-14 1.42108547e-14,55.2928334 1.42108547e-14,123.5 C1.42108547e-14,191.707167 55.2928334,247 123.5,247 Z" id="Oval-2" fill="url(#linearGradient-1)" opacity="0.300000012"></path>
+                <rect id="Combined-Shape" stroke="#647CE8" stroke-width="2" fill="#253377" x="63" y="24" width="99.8310062" height="183.875349" rx="8"></rect>
+                <path d="M63.5199532,180.634556 L162.311053,180.634556" id="Line" stroke="#647CE8" stroke-width="2" stroke-linecap="square"></path>
+                <path d="M104.076299,194.254952 L122.794613,194.254952" id="Line" stroke="#647CE8" stroke-width="2" stroke-linecap="square"></path>
+                <g id="Group-4" transform="translate(90.000000, 76.000000)" stroke="#FFFFFF">
+                    <g id="top-up">
+                        <g id="shopping-48px-outline_bitcoin" transform="translate(8.666667, 3.180606)">
+                            <g id="Group" transform="translate(0.619048, 0.627502)">
+                                <path d="M12.3809524,0 L12.3809524,7.5300202" id="Shape"></path>
+                                <path d="M17.3333333,0 L17.3333333,7.5300202" id="Shape"></path>
+                                <path d="M12.3809524,47.6901279 L12.3809524,55.2201481" id="Shape"></path>
+                                <path d="M17.3333333,47.6901279 L17.3333333,55.2201481" id="Shape"></path>
+                                <path d="M0,47.6901279 L7.42857143,47.6901279" id="Shape-Copy"></path>
+                                <path d="M0,7.5300202 L7.42857143,7.5300202" id="Shape-Copy-2"></path>
+                                <path d="M7.42857143,25.1000673 L7.42857143,7.5300202 L21.8042328,7.5300202 C26.9010582,7.5300202 30.952381,11.4205306 30.952381,16.3150438 C30.952381,21.2095569 26.9010582,25.1000673 21.8042328,25.1000673" id="Shape"></path>
+                                <path d="M7.42857143,47.6901279 L7.42857143,25.1000673 L23.6785714,25.1000673 C29.0952381,25.1000673 33.4285714,30.1200808 33.4285714,36.3950976 C33.4285714,42.6701145 29.0952381,47.6901279 23.6785714,47.6901279 L7.42857143,47.6901279 Z" id="Shape"></path>
+                            </g>
+                        </g>
+                    </g>
+                </g>
+                <g id="Group-3" transform="translate(125.000000, 122.000000)" stroke="#12E5B6" stroke-width="2">
+                    <rect id="Rectangle-path" fill="#1F2F7B" x="0.00547760651" y="37.6483369" width="74.7600358" height="65.7214967" rx="4"></rect>
+                    <path d="M18.6954866,37.6483369 L18.6954866,18.8707664 C18.6954866,8.54310266 27.1059906,0.0931959432 37.3854955,0.0931959432 L37.3854955,0.0931959432 C47.6650004,0.0931959432 56.0755044,8.54310266 56.0755044,18.8707664 L56.0755044,37.6483369" id="Shape"></path>
+                    <path d="M36.6300769,65.8146926 L36.6300769,75.2034779" id="Shape" fill="#F9F9F9"></path>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

@@ -1,0 +1,17 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>{{'Pending Proposals'|translate}}</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <ion-list *ngIf="txps && txps[0]">
+    <page-txp *ngFor="let txp of txps" [tx]="txp" [addressbook]="addressbook"></page-txp>
+  </ion-list>
+
+  <ion-list *ngIf="txps && !txps[0]">
+    <ion-item>
+      <span translate>No pending proposals</span>
+    </ion-item>
+  </ion-list>
+</ion-content>

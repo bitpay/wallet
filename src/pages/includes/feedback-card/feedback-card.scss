@@ -1,0 +1,21 @@
+page-feedback-card {
+  .icon-svg {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    > img {
+      background-repeat: no-repeat;
+      background-clip: padding-box;
+      background-size: contain;
+      height: 2.5rem;
+      margin-bottom: 5px;
+    }
+  }
+  .button-standard {
+    margin-bottom: 12px;
+    margin-top: 0px;
+  }
+  .row {
+    padding: 2.2rem 0 2.2rem 0;
+  }
+}

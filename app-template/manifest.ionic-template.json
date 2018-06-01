@@ -1,0 +1,15 @@
+{
+  "name": "*PACKAGEDESCRIPTION*",
+  "short_name": "*NAMECASE*",
+  "start_url": "index.html",
+  "display": "standalone",
+  "icons": [
+    {
+      "src": "assets/img/app/logo.png",
+      "sizes": "150x65",
+      "type": "image/png"
+    }
+  ],
+  "background_color": "*THEMECOLOR*",
+  "theme_color": "*THEMECOLOR*"
+}

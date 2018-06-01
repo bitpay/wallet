@@ -1,0 +1,20 @@
+page-add {
+  .list-button {
+    margin-top: 1rem;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    .item-inner {
+      border: none !important;
+    }
+  }
+  .join-icon {
+    img {
+      padding: 6px;
+    }
+  }
+  .import-icon {
+    img {
+      padding: 0px;
+    }
+  }
+}

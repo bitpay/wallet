@@ -1,0 +1,34 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>{{'Transaction History' | translate}}</ion-title>
+  </ion-navbar>
+</ion-header>
+<ion-content>
+  <page-wallet-item [wallet]="wallet"></page-wallet-item>
+
+  <ion-list>
+    <button ion-item *ngIf="csvReady && !isCordova" (click)="downloadCSV()">
+      <span translate>Export to file</span>
+    </button>
+
+    <ion-item *ngIf="!csvReady && !isCordova">
+      <span translate>Export to file</span>
+      <ion-note *ngIf="!err" item-end>
+        {{'preparing...' | translate}}
+      </ion-note>
+      <ion-note *ngIf="err" item-end>
+        {{err}}
+      </ion-note>
+    </ion-item>
+
+    <button ion-item (click)="clearTransactionHistory()">
+      <span translate>Clear cache</span>
+    </button>
+
+    <ion-item-divider>
+      <span translate>
+        The transaction history and every new incoming transaction are cached in the app. This feature clean this up and synchronizes again from the server
+      </span>
+    </ion-item-divider>
+  </ion-list>
+</ion-content>

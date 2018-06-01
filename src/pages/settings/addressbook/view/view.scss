@@ -1,0 +1,24 @@
+page-addressbook-view {
+  .contact-view-header {
+    position: relative;
+    height: 70px;
+    background-color: $toolbar-background;
+    padding-top: 20px;
+    margin-bottom: 50px;
+    text-align: center;
+    .gravatar {
+      border-radius: 3px;
+      display: inline-block;
+    }
+  }
+  .btn-send {
+    color: color($colors, primary);
+  }
+  .btn-remove {
+    color: color($colors, danger);
+  }
+  .comment {
+    color: color($colors, grey);
+    padding-top: 10px;
+  }
+}

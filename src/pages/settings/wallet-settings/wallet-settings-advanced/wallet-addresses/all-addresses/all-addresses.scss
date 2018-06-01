@@ -1,0 +1,9 @@
+page-all-addresses {
+  .item {
+    cursor: pointer;
+    .info {
+      color: color($colors, primary) !important;
+      margin-top: 1px;
+    }
+  }
+}

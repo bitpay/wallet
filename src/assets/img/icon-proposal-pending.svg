@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="35px" height="35px" viewBox="0 0 35 35" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 49.3 (51167) - http://www.bohemiancoding.com/sketch -->
+    <title>Icons/Send</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="List/Transaction/Pending" transform="translate(-20.000000, -24.000000)">
+            <g id="Transaction-">
+                <g id="Icons/Transaction/Pending" transform="translate(13.000000, 17.000000)">
+                    <g id="Icons/Send" transform="translate(7.000000, 7.000000)">
+                        <g id="icons/received">
+                            <g id="Received" transform="translate(17.244258, 17.883990) scale(-1, 1) translate(-17.244258, -17.883990) translate(0.244258, 0.883990)"></g>
+                            <g id="users-24px-outline-2_a-check" transform="translate(1.000000, 1.000000)" stroke="#F5A623">
+                                <g id="Group">
+                                    <path d="M16.5,33 C25.6126984,33 33,25.6126984 33,16.5 C33,7.38730163 25.6126984,0 16.5,0 C7.38730163,0 0,7.38730163 0,16.5 C0,25.6126984 7.38730163,33 16.5,33 Z" id="Oval-204"></path>
+                                    <path d="M15.7275949,17.3034598 C13.3028473,17.3034598 11.1520001,17.8512604 9.73870884,18.3277955 C8.69548354,18.680689 8,19.6638107 8,20.7654223 L8,24.172433 L14.8689732,24.172433" id="Shape"></path>
+                                    <path d="M15.7275949,17.3034598 L15.7275949,17.3034598 C13.3569405,17.3034598 11.4344866,14.5223843 11.4344866,12.1517299 L11.4344866,11.2931083 C11.4344866,8.92245388 13.3569405,7 15.7275949,7 L15.7275949,7 C18.0982492,7 20.0207031,8.92245388 20.0207031,11.2931083 L20.0207031,12.1517299 C20.0207031,14.5223843 18.0982492,17.3034598 15.7275949,17.3034598 L15.7275949,17.3034598 Z" id="Shape"></path>
+                                    <polyline id="Shape" points="19.1620815 23.3138114 20.8793248 25.0310547 25.172433 20.7379464"></polyline>
+                                </g>
+                            </g>
+                        </g>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

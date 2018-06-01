@@ -1,0 +1,21 @@
+page-send-feedback {
+  .send-feedback-star {
+    height: 2rem;
+    margin-left: 5px;
+  }
+  .rating {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding: 15px;
+  }
+  .feedback-title {
+    padding: 15px;
+    font-size: 20px;
+    font-weight: bold;
+    color: color($colors, dark);
+  }
+  ion-textarea {
+    background-color: color($colors, blank);
+  }
+}

@@ -1,0 +1,67 @@
+# Javascript Node CircleCI 2.0 configuration file
+# Check https://circleci.com/docs/2.0/language-javascript/ for more details
+version: 2
+jobs:
+  copay:
+    docker:
+      - image: circleci/node@sha256:a6f4dfaae4e22f99d3910902362db706f32e0dbca7ce5ef757823d93fef1740e
+    working_directory: ~/copay
+    steps:
+      - checkout
+      # Download and cache dependencies
+      - restore_cache:
+          keys:
+          - v1-dependencies-{{ checksum "package.json" }}
+          # fallback to using the latest cache if no exact match is found
+          - v1-dependencies-
+      - run: npm install
+      - save_cache:
+          paths:
+            - node_modules
+          key: v1-dependencies-{{ checksum "package.json" }}
+      - run: npm run apply:copay
+      # Select correct Chromedriver version (this must run after npm install)
+      - run: npm run e2e:update-ci
+      - run: npm run test:lint
+      - run: npm run test:ci
+      - run: npm run e2e
+      - run: npx reg-cli test/visual/latest/copay test/visual/expected/copay test/visual/diffs --report test/visual/report.html --json test/visual/report.json --enableAntialias  --pixelThreshold 20
+      - run: npx codecov
+      - store_artifacts:
+          path: ./test
+      - store_test_results:
+          path: ./test
+
+  bitpay:
+    docker:
+      - image: circleci/node@sha256:a6f4dfaae4e22f99d3910902362db706f32e0dbca7ce5ef757823d93fef1740e
+    working_directory: ~/copay
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+          - v1-dependencies-{{ checksum "package.json" }}
+          - v1-dependencies-
+      - run: npm install
+      - save_cache:
+          paths:
+            - node_modules
+          key: v1-dependencies-{{ checksum "package.json" }}
+      - run: npm run apply:bitpay
+      - run: npm run e2e:update-ci
+      - run: npm run test:lint
+      - run: npm run test:ci
+      - run: npm run e2e
+      - run: npx reg-cli test/visual/latest/bitpay test/visual/expected/bitpay test/visual/diffs --report test/visual/report.html --json test/visual/report.json --enableAntialias  --pixelThreshold 20
+      - run: npx codecov
+      - store_artifacts:
+          path: ./test
+      - store_test_results:
+          path: ./test
+          
+workflows:
+  version: 2
+  build_and_test:
+    jobs:
+      - copay
+      - bitpay

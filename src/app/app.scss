@@ -1,0 +1,377 @@
+// http://ionicframework.com/docs/theming/
+
+// App Global Sass
+// --------------------------------------------------
+// Put style rules here that you want to apply globally. These
+// styles are for the entire app and not just one component.
+// Additionally, this file can be also used as an entry point
+// to import other Sass files to be included in the output CSS.
+//
+// Shared Sass variables, which can be used to adjust Ionic's
+// default Sass variables, belong in "theme/variables.scss".
+//
+// To declare rules for a specific mode, create a child rule
+// for the .md, .ios, or .wp mode classes. The mode class is
+// automatically applied to the <body> element in the app.
+
+body {
+  line-height: 22px;
+}
+
+// Alert position
+// --------------------------------------------------
+
+ion-alert.alert-top {
+  align-items: center;
+}
+
+// Text wrap
+// --------------------------------------------------
+
+ion-label {
+  white-space: normal;
+}
+
+// Buttons
+// --------------------------------------------------
+
+.bottom-absolute {
+  width: 100%;
+  position: absolute;
+  bottom: 0px;
+  padding: 15px 15px calc(5vw + 1vh) 15px;
+  .button {
+    margin: 1.2rem auto;
+    max-width: 360px;
+  }
+}
+
+.button-footer {
+  margin: 0px;
+  height: 70px;
+  width: 100%;
+  font-size: 1.6rem;
+}
+
+// Hide border when refresh
+.has-refresher > .scroll-content {
+  border-top: none !important;
+}
+
+.scroll-content {
+  .wrapper {
+    background-color: $background-color;
+    min-height: 60%;
+  }
+}
+
+ion-spinner * {
+  stroke: color($colors, light);
+}
+
+.header-ios .toolbar-background-ios {
+  border-width: 0 !important;
+}
+
+// Item font size
+.item-title {
+  //  font-size: 1.4rem;
+}
+.item-subtitle {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-weight: 300;
+  font-size: 12.5px;
+  ion-icon {
+    vertical-align: text-bottom;
+    margin-left: 5px;
+  }
+}
+
+// Fixes IOS 10.3.1 icons
+.item-img {
+  display: flex;
+  align-items: center;
+}
+
+// Prevent the names of the tabs from disappearing
+.tabbar .tab-button .tab-button-text {
+  display: block;
+}
+
+// Remove border of icons when screen resolution is big
+.tab-button-icon {
+  overflow: unset;
+}
+
+// Remove the MD drop-shadow on app header
+.header-md::after {
+  display: none;
+}
+
+.icon-wallet,
+.icon-card {
+  width: 35px;
+  height: 35px;
+  border-radius: $icon-border-radius;
+  background-repeat: no-repeat;
+  background-clip: padding-box;
+  background-size: 103%;
+}
+
+.icon-wallet {
+  background-color: color($colors, primary);
+  padding: 4px;
+}
+
+.icon-card {
+  background-color: #2a3f90;
+}
+
+.big-icon-svg {
+  padding: 10px;
+  .bg {
+    padding: 0 7px;
+    border-radius: $icon-border-radius;
+    width: 40px;
+    height: 40px;
+    background-repeat: no-repeat;
+    background-clip: padding-box;
+    background-size: 103%;
+    &.green {
+      background: rgb(1, 209, 162);
+    }
+  }
+}
+
+.logo-services {
+  width: 100px;
+}
+
+.icon-services {
+  background-color: none;
+  border-radius: $icon-border-radius;
+  width: 35px;
+  height: 35px;
+  box-shadow: 0px 2px 6px 0px rgba(0, 0, 0, 0.2);
+  background-repeat: no-repeat;
+  background-clip: padding-box;
+  background-size: 103%;
+}
+
+.custom-icon {
+  color: rgb(169, 169, 169);
+}
+
+.icon-contact {
+  width: 35px;
+}
+
+.box-notification {
+  cursor: pointer;
+  padding: 10px 0;
+  border: none;
+  margin: 10px;
+  text-align: center;
+  color: color($colors, light);
+  a {
+    display: block;
+    color: color($colors, light);
+  }
+  .icon {
+    vertical-align: middle;
+    margin: 0 5px;
+  }
+  &.no-margin {
+    margin: 0;
+  }
+  &.success {
+    background-color: color($colors, success);
+  }
+  &.notice {
+    background-color: color($colors, dark);
+  }
+  &.warn {
+    background-color: color($colors, warning);
+  }
+  &.error {
+    background-color: color($colors, danger);
+  }
+}
+
+.gravatar {
+  min-width: 3rem;
+  min-height: 3rem;
+  border-radius: $icon-border-radius;
+}
+
+// Compatibility Ionic 1
+
+.light,
+a.light,
+.stable,
+a.stable {
+  color: color($colors, light);
+}
+
+.positive,
+a.positive {
+  color: color($colors, secondary);
+}
+
+.calm,
+a.calm {
+  color: color($colors, grey);
+}
+
+.positive,
+a.positive {
+  color: color($colors, primary);
+}
+
+.energized,
+a.energized {
+  color: color($colors, primary);
+}
+
+.assertive,
+a.assertive {
+  color: color($colors, danger);
+}
+
+.balanced,
+a.balanced {
+  color: color($colors, success);
+}
+.royal,
+a.royal {
+  color: color($colors, dark);
+}
+
+.text-gray {
+  color: color($colors, grey);
+}
+
+.text-bold {
+  font-weight: 700;
+}
+
+.ellipsis {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.pointer {
+  cursor: pointer;
+}
+
+.wallet-warning {
+  color: color($colors, danger);
+}
+
+.warning-container {
+  background: color($colors, danger);
+  color: color($colors, light);
+  padding: 1rem;
+  border-radius: 10px;
+}
+
+.card {
+  padding-top: 1px;
+  width: 92%;
+  padding-bottom: 10px;
+  box-shadow: 0 7px 12px rgba(0, 0, 0, 0.06);
+  overflow: hidden;
+  margin: 20px auto;
+  display: block;
+  border-radius: 3px;
+  background-color: #ffffff;
+
+  .item-divider {
+    background-color: #ffffff;
+    margin-bottom: 5px;
+  }
+  .item-block {
+    padding: 5px 0 5px 24px;
+  }
+}
+
+// Set backgrounds transparent so the QR Scanner can be seen behind the app.
+html,
+body,
+.back-transparent,
+ion-app,
+.nav-decor {
+  background: transparent !important;
+}
+
+ion-icon {
+  &[class*='tab-'] {
+    // Instead of using the font-based icons
+    // We're applying SVG masks
+    mask-size: contain;
+    mask-position: 50% 50%;
+    mask-repeat: no-repeat;
+    background: currentColor;
+    width: 2rem !important;
+    height: 2rem !important;
+  }
+  // custom icons
+  &[class*='tab-home'] {
+    mask-image: url(../assets/img/tab-icons/ico-home.svg);
+  }
+  &[class*='tab-receive'] {
+    mask-image: url(../assets/img/tab-icons/ico-receive.svg);
+  }
+  &[class*='tab-scan'] {
+    mask-image: url(../assets/img/tab-icons/ico-scan.svg);
+    width: 3rem !important;
+  }
+  &[class*='tab-send'] {
+    mask-image: url(../assets/img/tab-icons/ico-send.svg);
+  }
+  &[class*='tab-settings'] {
+    mask-image: url(../assets/img/tab-icons/ico-settings.svg);
+  }
+}
+
+.button-standard {
+  width: 90%;
+  max-width: 300px !important;
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+  min-height: 57px;
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.btn-transparent {
+  border: 0px !important;
+  background-color: color($colors, secondary);
+  color: color($colors, primary);
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  box-shadow: none;
+}
+
+.alertDanger {
+  .alert-message {
+    color: color($colors, danger);
+  }
+}
+
+// https://github.com/ionic-team/ionic/pull/14241
+ion-alert .alert-message {
+  overflow-y: auto;
+}
+
+.mdToastAfterHeader {
+  top: $toolbar-md-height;
+}
+.iosToastAfterHeader {
+  top: $toolbar-ios-height;
+}
