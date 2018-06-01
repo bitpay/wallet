@@ -41,15 +41,17 @@
   </div>
 
   <div class="item-subtitle">
-    <span *ngIf="notification.creatorName">{{ notification.creatorName}}@</span>
-    <span>{{notification.wallet.name}}</span>
+    <div *ngIf="notification.creatorName && notification.wallet.n != 1">{{notification.creatorName}}</div>
+    <div>{{notification.wallet.name}}</div>
+  </div>
+
+  <div class="item-subtitle">
+    <time class="date">{{ notification.createdOn * 1000 | amTimeAgo}}</time>
   </div>
 
   <ion-note item-right>
-    <!-- {{notification.types}} -->
     <div class="amount">
       {{notification.data.amount | satToUnit: notification.wallet.coin}}
     </div>
-    <time class="date">{{ notification.createdOn * 1000 | amTimeAgo}}</time>
   </ion-note>
 </button>
