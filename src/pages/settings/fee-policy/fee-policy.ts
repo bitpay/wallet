@@ -35,7 +35,7 @@ export class FeePolicyPage {
 
   ionViewDidEnter() {
     this.error = null;
-    this.feeProvider
+    return this.feeProvider
       .getFeeLevels(COIN)
       .then(data => {
         this.feeLevels = data['levels'];

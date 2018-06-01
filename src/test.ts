@@ -78,10 +78,11 @@ import { PlatformProvider } from './providers/platform/platform';
 import { KeysPipe } from './pipes/keys';
 import { SatToFiatPipe } from './pipes/satToFiat';
 import { SatToUnitPipe } from './pipes/satToUnit';
+
+import { Logger } from './providers';
 import { ProvidersModule } from './providers/providers.module';
 
 import * as appTemplate from './../app-template/bitpay/appConfig.json';
-import { Logger } from './providers';
 
 declare const require: any;
 
