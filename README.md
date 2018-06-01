@@ -43,6 +43,7 @@ cd copay
 Ensure you have [Node](https://nodejs.org/) installed, then install and start Copay:
 
 ```sh
+npm install
 npm run apply:copay
 npm run start
 ```
