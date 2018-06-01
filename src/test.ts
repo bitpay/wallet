@@ -78,6 +78,7 @@ import { PlatformProvider } from './providers/platform/platform';
 import { KeysPipe } from './pipes/keys';
 import { SatToFiatPipe } from './pipes/satToFiat';
 import { SatToUnitPipe } from './pipes/satToUnit';
+
 import { ProvidersModule } from './providers/providers.module';
 
 import * as appTemplate from './../app-template/bitpay/appConfig.json';
@@ -153,6 +154,7 @@ export class TestUtils {
         KeysPipe,
         SatToFiatPipe,
         SatToUnitPipe,
+        KeysPipe,
         Events,
         Form,
         GestureController,
@@ -188,6 +190,10 @@ export class TestUtils {
         {
           provide: AlertController,
           useFactory: () => AlertControllerMock.instance()
+        },
+        {
+          provide: Haptic,
+          useFactory: () => HapticMock.instance()
         },
         {
           provide: Haptic,
