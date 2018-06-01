@@ -1,12 +1,4 @@
 page-txp {
-  .input-wrapper {
-    overflow: initial;
-  }
-  .item-subtitle {
-    .date {
-      color: color($colors, grey);
-    }
-  }
   .proposal-container {
     border-left: 2px solid #ff9900;
   }
@@ -16,8 +8,12 @@ page-txp {
     border-radius: $icon-border-radius;
   }
   ion-note {
+    text-align: end;
     .amount {
       color: color($colors, dark);
+    }
+    .date {
+      font-size: 12.5px;
     }
   }
 }
