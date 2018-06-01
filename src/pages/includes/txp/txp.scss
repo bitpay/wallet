@@ -1,11 +1,13 @@
 page-txp {
+  .item-subtitle {
+    .icon-container {
+      vertical-align: middle;
+      width: 18px;
+      margin: 0 2px 0 0;
+    }
+  }
   .proposal-container {
     border-left: 2px solid #ff9900;
-  }
-  img {
-    width: 35px;
-    height: 35px;
-    border-radius: $icon-border-radius;
   }
   ion-note {
     text-align: end;
