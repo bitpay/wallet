@@ -162,7 +162,6 @@ export class PushNotificationsProvider {
     let walletIdHash;
     let sjcl = this.bwcProvider.getSJCL();
     let nextView: any = {};
-    let params;
 
     let wallets = this.profileProvider.getWallets();
     let wallet: any = _.find(wallets, (w: any) => {

@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { Events, NavController } from 'ionic-angular';
+import { NavController } from 'ionic-angular';
 import { Logger } from '../../../providers/logger/logger';
 
 // providers
@@ -21,8 +21,8 @@ export class FeedbackCardPage {
   public score: number;
   public button_title: string;
   public feedbackCardTitle: string;
+  public isShowRateCard: boolean = false;
 
-  private isShowRateCard: boolean = false;
   private isCordova: boolean;
 
   constructor(
@@ -30,7 +30,6 @@ export class FeedbackCardPage {
     private navCtrl: NavController,
     private logger: Logger,
     private persistenceProvider: PersistenceProvider,
-    private events: Events,
     private translate: TranslateService,
     private platformProvider: PlatformProvider,
     private replaceParametersProvider: ReplaceParametersProvider

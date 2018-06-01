@@ -1,4 +1,3 @@
-import * as _ from 'lodash';
 import { ReplaceParametersProvider } from './replace-parameters';
 
 describe('Replace Parameters Provider', () => {

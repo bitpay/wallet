@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { App, Events } from 'ionic-angular';
+import { Events } from 'ionic-angular';
 import { Logger } from '../../providers/logger/logger';
 
 // providers
@@ -12,7 +12,6 @@ import { PopupProvider } from '../popup/popup';
 @Injectable()
 export class IncomingDataProvider {
   constructor(
-    private app: App,
     private events: Events,
     private bwcProvider: BwcProvider,
     private payproProvider: PayproProvider,

@@ -557,7 +557,7 @@ export class ProfileProvider {
   private setMetaData(wallet: any, addressBook: any): Promise<any> {
     return new Promise((resolve, reject) => {
       this.persistenceProvider
-        .getAddressbook(wallet.credentials.network)
+        .getAddressBook(wallet.credentials.network)
         .then((localAddressBook: any) => {
           let localAddressBook1 = {};
           try {
@@ -570,7 +570,7 @@ export class ProfileProvider {
           }
           let mergeAddressBook = _.merge(addressBook, localAddressBook1);
           this.persistenceProvider
-            .setAddressbook(
+            .setAddressBook(
               wallet.credentials.network,
               JSON.stringify(mergeAddressBook)
             )

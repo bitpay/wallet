@@ -17,13 +17,6 @@ import { Toast } from '@ionic-native/toast';
 import { TouchID } from '@ionic-native/touch-id';
 import { Vibration } from '@ionic-native/vibration';
 
-/* Pipes */
-import { FiatToUnitPipe } from '../pipes/fiatToUnit';
-import { KeysPipe } from '../pipes/keys';
-import { OrderByPipe } from '../pipes/order-by';
-import { SatToFiatPipe } from '../pipes/satToFiat';
-import { SatToUnitPipe } from '../pipes/satToUnit';
-
 /* Providers */
 import { AddressBookProvider } from '../providers/address-book/address-book';
 import { AddressProvider } from '../providers/address/address';

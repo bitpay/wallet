@@ -1,5 +1,5 @@
 /* tslint:disable */
-import { TestBed, getTestBed, inject, async } from '@angular/core/testing';
+import { TestBed, getTestBed } from '@angular/core/testing';
 import {
   HttpClientTestingModule,
   HttpTestingController
@@ -8,7 +8,6 @@ import { RateProvider } from './rate';
 import { Logger } from '../../providers/logger/logger';
 import {
   TranslateModule,
-  TranslateService,
   TranslateLoader,
   TranslateFakeLoader
 } from '@ngx-translate/core';

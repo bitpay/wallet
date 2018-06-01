@@ -1,6 +1,5 @@
 import { DecimalPipe } from '@angular/common';
-import { Injectable } from '@angular/core';
-import { async, TestBed } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 import { Logger } from '../../providers/logger/logger';
 import { FilterProvider } from './filter';
 

@@ -12,7 +12,7 @@ let scrollContent;
 })
 class TestHostComponent {
   color: string = 'blue';
-  constructor(private element: ElementRef) {}
+  constructor(public element: ElementRef) {}
 }
 
 describe('IosScrollBgColor', () => {

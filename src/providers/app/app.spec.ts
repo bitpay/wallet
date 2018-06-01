@@ -1,16 +1,13 @@
 /* tslint:disable */
-import { TestBed, getTestBed, inject, async } from '@angular/core/testing';
+import { TestBed, getTestBed } from '@angular/core/testing';
 import {
   HttpClientTestingModule,
   HttpTestingController
 } from '@angular/common/http/testing';
-import { XHRBackend, Response, ResponseOptions } from '@angular/http';
-import { MockBackend, MockConnection } from '@angular/http/testing';
 import { AppProvider } from './app';
 import { Logger } from '../../providers/logger/logger';
 import {
   TranslateModule,
-  TranslateService,
   TranslateLoader,
   TranslateFakeLoader
 } from '@ngx-translate/core';
@@ -28,7 +25,6 @@ describe('AppProvider', () => {
   let service: AppProvider;
   let httpMock: HttpTestingController;
   let urls = ['assets/appConfig.json', 'assets/externalServices.json'];
-  let platformProvider: PlatformProvider;
 
   beforeEach(() => {
     TestBed.configureTestingModule({

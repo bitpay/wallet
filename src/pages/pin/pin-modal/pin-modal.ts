@@ -2,7 +2,6 @@ import { Component, ViewChild } from '@angular/core';
 import { StatusBar } from '@ionic-native/status-bar';
 import { Vibration } from '@ionic-native/vibration';
 import {
-  Events,
   NavController,
   NavParams,
   Platform,
@@ -38,7 +37,6 @@ export class PinModalPage {
     private configProvider: ConfigProvider,
     private logger: Logger,
     private platform: Platform,
-    private events: Events,
     private navCtrl: NavController,
     private navParams: NavParams,
     private persistenceProvider: PersistenceProvider,
@@ -65,7 +63,7 @@ export class PinModalPage {
       this.persistenceProvider.getLockStatus().then((isLocked: string) => {
         if (!isLocked) return;
         if (this.action === 'checkPin') {
-          this.showLocktimer();
+          this.showLockTimer();
           this.setLockRelease();
         }
       });
@@ -133,12 +131,12 @@ export class PinModalPage {
     ) {
       this.currentAttempts = 0;
       this.persistenceProvider.setLockStatus('locked');
-      this.showLocktimer();
+      this.showLockTimer();
       this.setLockRelease();
     }
   }
 
-  private showLocktimer() {
+  private showLockTimer() {
     this.disableButtons = true;
     let bannedUntil =
       Math.floor(Date.now() / 1000) + this.ATTEMPT_LOCK_OUT_TIME;

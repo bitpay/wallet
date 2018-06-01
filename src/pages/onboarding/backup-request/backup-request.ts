@@ -15,7 +15,6 @@ import { DisclaimerPage } from '../disclaimer/disclaimer';
   templateUrl: 'backup-request.html'
 })
 export class BackupRequestPage {
-  private opts: any;
   private walletId: string;
 
   constructor(

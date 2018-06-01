@@ -29,8 +29,8 @@ export class ImportWalletPage {
   private reader: FileReader;
   private defaults: any;
   private errors: any;
-  private prettyFileName: string;
 
+  public prettyFileName: string;
   public importErr: boolean;
   public fromOnboarding: boolean;
   public formFile: any;
