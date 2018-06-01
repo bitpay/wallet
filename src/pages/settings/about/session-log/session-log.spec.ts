@@ -25,11 +25,6 @@ describe('SessionLogPage', () => {
 
   describe('Lifecycle Hooks', () => {
     describe('ionViewWillEnter', () => {
-      it('should set weight on configProvider when view enter', () => {
-        spyOn(instance.configProvider, 'get');
-        instance.ionViewWillEnter();
-        expect(instance.configProvider.get).toBeDefined();
-      });
       it('should set correct filter value when config has log weight', () => {
         spyOn(instance.logger, 'getWeight').and.returnValue({ weight: 21 });
 
@@ -151,11 +146,6 @@ describe('SessionLogPage', () => {
           null,
           null
         );
-      });
-    });
-    describe('prepareLogs function', () => {
-      it('should return log', () => {
-        expect(instance.prepareLogs()).toContain('Copay');
       });
     });
     describe('#showOptionsMenu', () => {
