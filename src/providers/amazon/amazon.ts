@@ -67,8 +67,7 @@ export class AmazonProvider {
     this.persistenceProvider
       .getAmazonGiftCards(network)
       .then(giftCards => {
-        var _gcds = giftCards ? giftCards : null;
-        return cb(null, _gcds);
+        return cb(null, giftCards ? giftCards : null);
       })
       .catch(err => {
         return cb(err);

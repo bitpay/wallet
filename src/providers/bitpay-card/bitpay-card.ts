@@ -256,7 +256,7 @@ export class BitPayCardProvider {
   public setCurrencySymbol(card) {
     // Sets a currency symbol.
     // Uses the currency code if no symbol is mapped (should never happen).
-    // Backaward compatibility for FirstView cards (all USD).
+    // Backwards compatibility for FirstView cards (all USD).
     // This avoids users having to re-pair their account.
     if (!card.currency) {
       card.currency = 'USD';
@@ -275,7 +275,7 @@ export class BitPayCardProvider {
 
     this.appIdentityProvider.getIdentity(
       this.bitPayProvider.getEnvironment().network,
-      (err, appIdentity) => {
+      err => {
         if (err) return cb(err);
 
         this.getCards(data => {
@@ -338,7 +338,7 @@ export class BitPayCardProvider {
     };
     this.appIdentityProvider.getIdentity(
       this.bitPayProvider.getEnvironment().network,
-      (err, appIdentity) => {
+      err => {
         if (err) return cb(err);
 
         this.getCards(data => {
@@ -481,7 +481,7 @@ export class BitPayCardProvider {
 
         // async refresh
         if (!opts.noRefresh) {
-          this.getHistory(x.id, {}, (err, data) => {
+          this.getHistory(x.id, {}, err => {
             if (err) return;
             this.addLastKnownBalance(x, () => {});
           });

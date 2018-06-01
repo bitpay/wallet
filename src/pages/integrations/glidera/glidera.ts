@@ -77,7 +77,7 @@ export class GlideraPage {
     });
   }
 
-  public update(opts?: any): void {
+  public update(): void {
     this.logger.debug('Updating Glidera...');
     this.glideraProvider.updateStatus(this.account);
   }

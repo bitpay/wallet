@@ -146,8 +146,10 @@ export class ScanPage {
           this.onDeviceSelectChange();
         });
 
-        this.scanner.camerasNotFound.subscribe((devices: MediaDeviceInfo[]) => {
-          // console.error('An error has occurred when trying to enumerate your video-stream-enabled devices.');
+        this.scanner.camerasNotFound.subscribe(() => {
+          this.logger.error(
+            'An error has occurred when trying to enumerate your video-stream-enabled devices.'
+          );
         });
         this.scanner.permissionResponse.subscribe((answer: boolean) => {
           this.hasPermission = answer;

@@ -33,7 +33,7 @@ export class MercadoLibreCardDetailsPage {
       {
         remove: true
       },
-      (err: any) => {
+      () => {
         this.close();
       }
     );

@@ -79,6 +79,7 @@ import { KeysPipe } from './pipes/keys';
 import { SatToFiatPipe } from './pipes/satToFiat';
 import { SatToUnitPipe } from './pipes/satToUnit';
 
+import { Logger } from './providers';
 import { ProvidersModule } from './providers/providers.module';
 
 import * as appTemplate from './../app-template/bitpay/appConfig.json';
@@ -94,6 +95,76 @@ getTestBed().initTestEnvironment(
 const context: any = require.context('./', true, /\.spec\.ts$/);
 // And load the modules.
 context.keys().map(context);
+
+const baseImports = [
+  FormsModule,
+  HttpClientTestingModule,
+  IonicModule,
+  ReactiveFormsModule,
+  TranslateModule.forRoot({
+    loader: { provide: TranslateLoader, useClass: TranslateFakeLoader }
+  })
+];
+
+const angularProviders = [TranslateService];
+const ionicProviders = [
+  App,
+  DomController,
+  Events,
+  Form,
+  Keyboard,
+  MenuController,
+  NavController,
+  {
+    provide: Platform,
+    useFactory: () => {
+      const instance = PlatformMock.instance();
+      instance.is.and.returnValue(false);
+      instance.resume = new Subject();
+      return instance;
+    }
+  },
+  { provide: Config, useFactory: () => ConfigMock.instance() },
+  { provide: DeepLinker, useFactory: () => ConfigMock.instance() },
+  {
+    provide: ActionSheetController,
+    useFactory: () => ActionSheetControllerMock.instance()
+  },
+  {
+    provide: ModalController,
+    useFactory: () => ModalControllerMock.instance()
+  },
+  {
+    provide: AlertController,
+    useFactory: () => AlertControllerMock.instance()
+  },
+  {
+    provide: Haptic,
+    useFactory: () => HapticMock.instance()
+  },
+  {
+    provide: LoadingController,
+    useFactory: () => LoadingControllerMock.instance()
+  },
+  {
+    provide: NavController,
+    useFactory: () => NavControllerMock.instance()
+  },
+  {
+    provide: ToastController,
+    useFactory: () => ToastControllerMock.instance()
+  },
+  {
+    provide: ViewController,
+    useFactory: () => ViewControllerMock.instance()
+  }
+];
+const baseProviders = [
+  ...angularProviders,
+  ...ionicProviders,
+  Logger,
+  { provide: 'console', useValue: { log: () => undefined } }
+];
 
 export class TestUtils {
   public static beforeEachCompiler(
@@ -113,18 +184,8 @@ export class TestUtils {
   public static configureIonicTestingModule(components: any[]): typeof TestBed {
     return TestBed.configureTestingModule({
       declarations: [...components],
-      imports: [FormsModule, IonicModule, ReactiveFormsModule, TranslateModule],
-      providers: [
-        App,
-        Form,
-        Keyboard,
-        DomController,
-        MenuController,
-        NavController,
-        { provide: Platform, useFactory: () => PlatformMock.instance() },
-        { provide: Config, useFactory: () => ConfigMock.instance() },
-        { provide: DeepLinker, useFactory: () => ConfigMock.instance() }
-      ]
+      imports: baseImports,
+      providers: baseProviders
     });
   }
 
@@ -135,86 +196,22 @@ export class TestUtils {
     const providers = (otherParams && otherParams.providers) || [];
     await TestBed.configureTestingModule({
       declarations: [...components, KeysPipe, SatToFiatPipe, SatToUnitPipe],
-      imports: [
-        FormsModule,
-        IonicModule,
-        MomentModule,
-        ReactiveFormsModule,
-        ProvidersModule,
-        TranslateModule.forRoot({
-          loader: { provide: TranslateLoader, useClass: TranslateFakeLoader }
-        }),
-        HttpClientTestingModule
-      ],
+      imports: [...baseImports, MomentModule, ProvidersModule],
       schemas: [NO_ERRORS_SCHEMA],
       providers: [
-        App,
+        ...baseProviders,
         AppProvider,
         DecimalPipe,
         KeysPipe,
         SatToFiatPipe,
         SatToUnitPipe,
-        KeysPipe,
-        Events,
-        Form,
         GestureController,
-        Keyboard,
-        DomController,
-        MenuController,
         NavParams,
         PlatformProvider,
-        TranslateService,
-        {
-          provide: Platform,
-          useFactory: () => {
-            const instance = PlatformMock.instance();
-            instance.is.and.returnValue(false);
-            instance.resume = new Subject();
-            return instance;
-          }
-        },
-        { provide: Config, useFactory: () => ConfigMock.instance() },
-        { provide: DeepLinker, useFactory: () => ConfigMock.instance() },
         { provide: FCM, useClass: FCMMock },
         { provide: File, useClass: FileMock },
         { provide: QRScanner, useClass: QRScannerMock },
         { provide: TouchID, useClass: TouchIDMock },
-        {
-          provide: ActionSheetController,
-          useFactory: () => ActionSheetControllerMock.instance()
-        },
-        {
-          provide: ModalController,
-          useFactory: () => ModalControllerMock.instance()
-        },
-        {
-          provide: AlertController,
-          useFactory: () => AlertControllerMock.instance()
-        },
-        {
-          provide: Haptic,
-          useFactory: () => HapticMock.instance()
-        },
-        {
-          provide: Haptic,
-          useFactory: () => HapticMock.instance()
-        },
-        {
-          provide: LoadingController,
-          useFactory: () => LoadingControllerMock.instance()
-        },
-        {
-          provide: NavController,
-          useFactory: () => NavControllerMock.instance()
-        },
-        {
-          provide: ToastController,
-          useFactory: () => ToastControllerMock.instance()
-        },
-        {
-          provide: ViewController,
-          useFactory: () => ViewControllerMock.instance()
-        },
         {
           provide: AndroidFingerprintAuth,
           useClass: AndroidFingerprintAuthMock
@@ -234,6 +231,20 @@ export class TestUtils {
       instance: fixture.debugElement.componentInstance,
       testBed: TestBed
     };
+  }
+
+  public static configureProviderTestingModule(
+    providerOverrides: Array<{
+      provide: any;
+      useClass?: any;
+      useValue?: any;
+      useFactory?: (...args: any[]) => any;
+    }> = []
+  ) {
+    return TestBed.configureTestingModule({
+      imports: [...baseImports, ProvidersModule],
+      providers: [...baseProviders, ...providerOverrides]
+    });
   }
 
   // http://stackoverflow.com/questions/2705583/how-to-simulate-a-click-with-javascript

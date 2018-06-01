@@ -1,22 +1,21 @@
-/* tslint:disable */
-import { TestBed, getTestBed } from '@angular/core/testing';
 import {
   HttpClientTestingModule,
   HttpTestingController
 } from '@angular/common/http/testing';
-import { AppProvider } from './app';
-import { Logger } from '../../providers/logger/logger';
+import { getTestBed, TestBed } from '@angular/core/testing';
+import { File } from '@ionic-native/file';
 import {
-  TranslateModule,
+  TranslateFakeLoader,
   TranslateLoader,
-  TranslateFakeLoader
+  TranslateModule
 } from '@ngx-translate/core';
-import { LanguageProvider } from '../../providers/language/language';
+import { Platform } from 'ionic-angular';
 import { ConfigProvider } from '../../providers/config/config';
+import { LanguageProvider } from '../../providers/language/language';
+import { Logger } from '../../providers/logger/logger';
 import { PersistenceProvider } from '../../providers/persistence/persistence';
 import { PlatformProvider } from '../platform/platform';
-import { Platform } from 'ionic-angular';
-import { File } from '@ionic-native/file';
+import { AppProvider } from './app';
 
 import * as appTemplate from './../../../app-template/bitpay/appConfig.json';
 
@@ -37,6 +36,7 @@ describe('AppProvider', () => {
       providers: [
         AppProvider,
         Logger,
+        { provide: 'console', useValue: { log: () => undefined } },
         LanguageProvider,
         ConfigProvider,
         PersistenceProvider,
@@ -67,7 +67,7 @@ describe('AppProvider', () => {
 
   it('should catch an error when loading fails', done => {
     service.config.load = (): Promise<any> => {
-      let prom = new Promise((resolve, reject) => {
+      let prom = new Promise((_, reject) => {
         reject('test rejection');
       });
       return prom;

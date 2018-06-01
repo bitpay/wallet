@@ -1,39 +1,5 @@
-import { DecimalPipe } from '@angular/common';
-import { HttpClientModule } from '@angular/common/http';
-import { TestBed } from '@angular/core/testing';
-import { AndroidFingerprintAuth } from '@ionic-native/android-fingerprint-auth';
-import { TouchID } from '@ionic-native/touch-id';
-import {
-  TranslateFakeLoader,
-  TranslateLoader,
-  TranslateModule,
-  TranslateService
-} from '@ngx-translate/core';
-import {
-  AlertController,
-  App,
-  Config,
-  Events,
-  LoadingController,
-  Platform
-} from 'ionic-angular';
-
-import { AlertControllerMock } from 'ionic-mocks';
-import { Logger } from '../../providers/logger/logger';
-import { AppProvider } from '../app/app';
-import { BwcErrorProvider } from '../bwc-error/bwc-error';
-import { BwcProvider } from '../bwc/bwc';
-import { ConfigProvider } from '../config/config';
-import { FeeProvider } from '../fee/fee';
-import { FilterProvider } from '../filter/filter';
-import { LanguageProvider } from '../language/language';
-import { OnGoingProcessProvider } from '../on-going-process/on-going-process';
+import { TestUtils } from '../../test';
 import { PersistenceProvider } from '../persistence/persistence';
-import { PlatformProvider } from '../platform/platform';
-import { PopupProvider } from '../popup/popup';
-import { RateProvider } from '../rate/rate';
-import { TouchIdProvider } from '../touchid/touchid';
-import { TxFormatProvider } from '../tx-format/tx-format';
 import { WalletProvider } from './wallet';
 
 describe('Provider: Wallet Provider', () => {
@@ -41,56 +7,19 @@ describe('Provider: Wallet Provider', () => {
 
   class PersistenceProviderMock {
     constructor() {}
-    getLastAddress(walletId: any) {
+    getLastAddress() {
       return Promise.resolve('storedAddress');
     }
-    storeLastAddress(walletId: any, address: any) {
+    storeLastAddress(_, address: any) {
       return Promise.resolve(address);
     }
   }
 
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      imports: [
-        HttpClientModule,
-        TranslateModule.forRoot({
-          loader: { provide: TranslateLoader, useClass: TranslateFakeLoader }
-        })
-      ],
-      providers: [
-        AppProvider,
-        AlertController,
-        AndroidFingerprintAuth,
-        App,
-        BwcErrorProvider,
-        BwcProvider,
-        Config,
-        ConfigProvider,
-        DecimalPipe,
-        FeeProvider,
-        Events,
-        FilterProvider,
-        LoadingController,
-        Logger,
-        LanguageProvider,
-        OnGoingProcessProvider,
-        { provide: PersistenceProvider, useClass: PersistenceProviderMock },
-        Platform,
-        PlatformProvider,
-        PopupProvider,
-        RateProvider,
-        TouchID,
-        TouchIdProvider,
-        TranslateService,
-        TxFormatProvider,
-        WalletProvider,
-        {
-          provide: AlertController,
-          useFactory: () => AlertControllerMock.instance()
-        }
-      ]
-    });
-    walletProvider = TestBed.get(WalletProvider);
+    const testBed = TestUtils.configureProviderTestingModule([
+      { provide: PersistenceProvider, useClass: PersistenceProviderMock }
+    ]);
+    walletProvider = testBed.get(WalletProvider);
   });
 
   describe('Function: Get Address Function', () => {

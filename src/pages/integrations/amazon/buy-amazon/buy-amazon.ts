@@ -165,7 +165,7 @@ export class BuyAmazonPage {
   }
 
   private showError = function(title: string, msg: any): Promise<any> {
-    return new Promise((resolve, reject) => {
+    return new Promise(resolve => {
       if (this.isCordova) this.slideButton.isConfirmed(false);
       title = title || this.translate.instant('Error');
       this.logger.error(msg);
@@ -197,7 +197,7 @@ export class BuyAmazonPage {
   }
 
   private satToFiat(coin: string, sat: number): Promise<any> {
-    return new Promise((resolve, reject) => {
+    return new Promise(resolve => {
       this.txFormatProvider
         .toFiat(coin, sat, this.currencyIsoCode)
         .then((value: string) => {
@@ -343,17 +343,17 @@ export class BuyAmazonPage {
 
           this.walletProvider
             .createTx(wallet, txp)
-            .then((ctxp: any) => {
+            .then(ctxp => {
               return resolve(ctxp);
             })
-            .catch((err: any) => {
+            .catch(err => {
               return reject({
                 title: this.translate.instant('Could not create transaction'),
                 message: this.bwcErrorProvider.msg(err)
               });
             });
         })
-        .catch((err: any) => {
+        .catch(() => {
           return reject({
             title: this.translate.instant('Error in Payment Protocol'),
             message: this.translate.instant('Invalid URL')
@@ -398,7 +398,7 @@ export class BuyAmazonPage {
 
         if (giftCard.status == 'PENDING' && count < 3) {
           this.logger.debug('Waiting for payment confirmation');
-          this.amazonProvider.savePendingGiftCard(newData, null, (err: any) => {
+          this.amazonProvider.savePendingGiftCard(newData, null, () => {
             this.logger.debug(
               'Saving gift card with status: ' + newData.status
             );
@@ -407,7 +407,7 @@ export class BuyAmazonPage {
           return;
         }
 
-        this.amazonProvider.savePendingGiftCard(newData, null, (err: any) => {
+        this.amazonProvider.savePendingGiftCard(newData, null, () => {
           this.onGoingProcessProvider.clear();
           this.logger.debug(
             'Saved new gift card with status: ' + newData.status
@@ -535,7 +535,7 @@ export class BuyAmazonPage {
         }
 
         this.publishAndSign(this.wallet, this.createdTx)
-          .then(txSent => {
+          .then(() => {
             this.onGoingProcessProvider.set('buyingGiftCard');
             this.checkTransaction(1, this.createdTx.giftData);
           })

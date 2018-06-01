@@ -1,35 +1,6 @@
-import { HttpClientModule } from '@angular/common/http';
-import { TestBed } from '@angular/core/testing';
-import { File } from '@ionic-native/file';
-import {
-  AlertController,
-  App,
-  Config,
-  Events,
-  LoadingController,
-  Platform
-} from 'ionic-angular';
-
-import {
-  TranslateFakeLoader,
-  TranslateLoader,
-  TranslateModule
-} from '@ngx-translate/core';
-
-// providers
-import { AppProvider } from '../app/app';
-import { BwcErrorProvider } from '../bwc-error/bwc-error';
-import { BwcProvider } from '../bwc/bwc';
-import { ConfigProvider } from '../config/config';
-import { LanguageProvider } from '../language/language';
+import { AppProvider, PopupProvider } from '..';
+import { TestUtils } from '../../test';
 import { Logger } from '../logger/logger';
-import { OnGoingProcessProvider } from '../on-going-process/on-going-process';
-import { PayproProvider } from '../paypro/paypro';
-import { PersistenceProvider } from '../persistence/persistence';
-import { PlatformProvider } from '../platform/platform';
-import { PopupProvider } from '../popup/popup';
-import { ProfileProvider } from '../profile/profile';
-import { ReplaceParametersProvider } from '../replace-parameters/replace-parameters';
 import { IncomingDataProvider } from './incoming-data';
 
 describe('Provider: Incoming Data Provider', () => {
@@ -55,39 +26,12 @@ describe('Provider: Incoming Data Provider', () => {
   }
 
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      imports: [
-        HttpClientModule,
-        TranslateModule.forRoot({
-          loader: { provide: TranslateLoader, useClass: TranslateFakeLoader }
-        })
-      ],
-      providers: [
-        App,
-        { provide: AppProvider, useClass: AppProviderMock },
-        AlertController,
-        BwcErrorProvider,
-        BwcProvider,
-        Config,
-        ConfigProvider,
-        Events,
-        File,
-        IncomingDataProvider,
-        LanguageProvider,
-        LoadingController,
-        Logger,
-        OnGoingProcessProvider,
-        PayproProvider,
-        PersistenceProvider,
-        PlatformProvider,
-        ReplaceParametersProvider,
-        { provide: PopupProvider, useClass: PopupProviderMock },
-        ProfileProvider,
-        Platform
-      ]
-    });
-    incomingDataProvider = TestBed.get(IncomingDataProvider);
-    logger = TestBed.get(Logger);
+    const testBed = TestUtils.configureProviderTestingModule([
+      { provide: AppProvider, useClass: AppProviderMock },
+      { provide: PopupProvider, useClass: PopupProviderMock }
+    ]);
+    incomingDataProvider = testBed.get(IncomingDataProvider);
+    logger = testBed.get(Logger);
     spy = spyOn(logger, 'debug');
   });
 

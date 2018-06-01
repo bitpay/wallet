@@ -106,7 +106,7 @@ export class CollectEmailPage {
         () => {
           this.logger.info('SUCCESS: Email collected');
         },
-        err => {
+        () => {
           this.logger.error('ERROR: Could not collect email');
         }
       );

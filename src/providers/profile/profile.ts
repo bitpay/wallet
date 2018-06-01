@@ -101,7 +101,7 @@ export class ProfileProvider {
   }
 
   private needsBackup(wallet: any): Promise<boolean> {
-    return new Promise((resolve, reject) => {
+    return new Promise(resolve => {
       if (!this.requiresBackup(wallet)) {
         return resolve(false);
       }
@@ -121,7 +121,7 @@ export class ProfileProvider {
   }
 
   private isBalanceHidden(wallet: any): Promise<boolean> {
-    return new Promise((resolve, reject) => {
+    return new Promise(resolve => {
       this.persistenceProvider
         .getHideBalanceFlag(wallet.credentials.walletId)
         .then(shouldHideBalance => {
@@ -193,13 +193,13 @@ export class ProfileProvider {
       {
         notificationIncludeOwn: true
       },
-      (err: any) => {
+      err => {
         if (err) {
           this.logger.error('Could not init notifications err:', err);
           return;
         }
         wallet.setNotificationsInterval(this.UPDATE_PERIOD);
-        wallet.openWallet((err: any) => {
+        wallet.openWallet(() => {
           if (wallet.status !== true)
             this.logger.debug(
               'Wallet + ' +
@@ -251,7 +251,7 @@ export class ProfileProvider {
   }
 
   private addLastKnownBalance(wallet: any): Promise<any> {
-    return new Promise((resolve, reject) => {
+    return new Promise(resolve => {
       let now = Math.floor(Date.now() / 1000);
       let showRange = 600; // 10min;
 
@@ -308,7 +308,7 @@ export class ProfileProvider {
         {
           skipDeviceValidation
         },
-        (err: any, isOK: any) => {
+        (_, isOK) => {
           this.validationLock = false;
 
           this.logger.debug(
@@ -329,7 +329,7 @@ export class ProfileProvider {
 
   public storeProfileIfDirty(): void {
     if (this.profile.dirty) {
-      this.persistenceProvider.storeProfile(this.profile).then((err: any) => {
+      this.persistenceProvider.storeProfile(this.profile).then(() => {
         this.logger.debug('Saved modified Profile');
         return;
       });
@@ -380,7 +380,7 @@ export class ProfileProvider {
       this.addAndBindWalletClient(walletClient, {
         bwsurl: opts.bwsurl
       })
-        .then((walletId: string) => {
+        .then(() => {
           this.setMetaData(walletClient, addressBook)
             .then(() => {
               return resolve(walletClient);
@@ -398,7 +398,7 @@ export class ProfileProvider {
 
   // An alert dialog
   private askPassword(warnMsg: string, title: string): Promise<any> {
-    return new Promise((resolve, reject) => {
+    return new Promise(resolve => {
       let opts = {
         type: 'password',
         useDanger: true
@@ -410,7 +410,7 @@ export class ProfileProvider {
   }
 
   private showWarningNoEncrypt(): Promise<any> {
-    return new Promise((resolve, reject) => {
+    return new Promise(resolve => {
       let title = this.translate.instant('Are you sure?');
       let msg = this.translate.instant(
         'Without encryption, a thief or another application on this device may be able to access your funds.'
@@ -426,7 +426,7 @@ export class ProfileProvider {
   }
 
   private askToEncryptWallet(wallet: any): Promise<any> {
-    return new Promise((resolve, reject) => {
+    return new Promise(resolve => {
       if (!wallet.canSign()) return resolve();
 
       var title = this.translate.instant(
@@ -456,7 +456,7 @@ export class ProfileProvider {
   }
 
   private encrypt(wallet: any): Promise<any> {
-    return new Promise((resolve, reject) => {
+    return new Promise(resolve => {
       let title = this.translate.instant(
         'Enter a password to encrypt your wallet'
       );
@@ -518,7 +518,7 @@ export class ProfileProvider {
         this.bindWalletClient(wallet);
 
         let saveBwsUrl = (): Promise<any> => {
-          return new Promise((resolve, reject) => {
+          return new Promise(resolve => {
             let defaults: any = this.configProvider.getDefaults();
             let bwsFor: any = {};
             bwsFor[walletId] = opts.bwsurl || defaults.bws.url;
@@ -1001,7 +1001,7 @@ export class ProfileProvider {
                 walletPrivKey: opts.walletPrivKey,
                 coin: opts.coin
               },
-              (err: any, secret: any) => {
+              err => {
                 if (err) {
                   this.bwcErrorProvider
                     .cb(err, this.translate.instant('Error creating wallet'))

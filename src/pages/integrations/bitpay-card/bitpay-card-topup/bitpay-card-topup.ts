@@ -173,7 +173,7 @@ export class BitPayCardTopUpPage {
   }
 
   private showError(title: string, msg: any): Promise<any> {
-    return new Promise((resolve, reject) => {
+    return new Promise(resolve => {
       if (this.isCordova) this.slideButton.isConfirmed(false);
       title = title || this.translate.instant('Error');
       this.logger.error(msg);
@@ -185,7 +185,7 @@ export class BitPayCardTopUpPage {
   }
 
   private satToFiat(coin: string, sat: number): Promise<any> {
-    return new Promise((resolve, reject) => {
+    return new Promise(resolve => {
       this.txFormatProvider
         .toFiat(coin, sat, this.currencyIsoCode)
         .then((value: string) => {
@@ -543,7 +543,7 @@ export class BitPayCardTopUpPage {
 
         this.onGoingProcessProvider.set('topup');
         this.publishAndSign(this.wallet, this.createdTx)
-          .then(txSent => {
+          .then(() => {
             this.onGoingProcessProvider.clear();
             this.openFinishModal();
           })

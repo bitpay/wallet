@@ -103,12 +103,12 @@ export class CoinbasePage {
         this.coinbaseProvider.buyPrice(
           data.accessToken,
           this.currency,
-          (err, b: any) => {
+          (_, b: any) => {
             this.buyPrice = b.data || null;
             this.coinbaseProvider.sellPrice(
               data.accessToken,
               this.currency,
-              (err, s: any) => {
+              (_, s: any) => {
                 this.sellPrice = s.data || null;
                 this.loading = false;
               }

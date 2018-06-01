@@ -88,7 +88,7 @@ export class ActivityPage {
             );
             modal.present();
           })
-          .catch(err => {
+          .catch(() => {
             this.onGoingProcessProvider.clear();
             this.logger.warn('No txp found');
             let title = this.translate.instant('Error');

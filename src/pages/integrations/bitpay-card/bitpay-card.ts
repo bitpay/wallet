@@ -59,7 +59,7 @@ export class BitPayCardPage {
         cardId: this.cardId,
         noRefresh: true
       },
-      (err, cards) => {
+      (_, cards) => {
         if (cards && cards[0]) {
           this.lastFourDigits = cards[0].lastFourDigits;
           this.balance = cards[0].balance;

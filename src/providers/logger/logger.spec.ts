@@ -1,31 +1,12 @@
-/* tslint:disable */
-import { TestBed, getTestBed } from '@angular/core/testing';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { Logger } from '../../providers/logger/logger';
-import {
-  TranslateModule,
-  TranslateLoader,
-  TranslateFakeLoader
-} from '@ngx-translate/core';
-import { Platform } from 'ionic-angular';
+import { TestUtils } from '../../test';
 
 describe('LoggerProvider', () => {
-  let injector: TestBed;
   let service: Logger;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      imports: [
-        HttpClientTestingModule,
-        TranslateModule.forRoot({
-          loader: { provide: TranslateLoader, useClass: TranslateFakeLoader }
-        })
-      ],
-      providers: [Logger, Platform]
-    });
-
-    injector = getTestBed();
-    service = injector.get(Logger);
+    const testBed = TestUtils.configureProviderTestingModule();
+    service = testBed.get(Logger);
   });
 
   it('should be able use optional params for errors', () => {
@@ -85,7 +66,7 @@ describe('LoggerProvider', () => {
     expect(weight).toEqual({ level: 'debug', weight: 4, label: 'Debug' });
   });
 
-  it('should get the defaul weight', () => {
+  it('should get the default weight', () => {
     let defaultWeight = service.getDefaultWeight();
     expect(defaultWeight).toEqual({
       level: 'info',

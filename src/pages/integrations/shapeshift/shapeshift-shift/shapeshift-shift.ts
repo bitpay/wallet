@@ -121,10 +121,10 @@ export class ShapeshiftShiftPage {
     this.onToWalletSelect(this.toWallets[0]);
 
     let pair = this.fromWallet.coin + '_' + this.toWallet.coin;
-    this.shapeshiftProvider.getRate(pair, (err: any, rate: number) => {
+    this.shapeshiftProvider.getRate(pair, (_, rate: number) => {
       this.rate = rate;
 
-      this.shapeshiftProvider.getMarketInfo(pair, (err: any, limit: any) => {
+      this.shapeshiftProvider.getMarketInfo(pair, (_, limit: any) => {
         this.limit = limit;
 
         if (this.limit['rate'] == 0 || this.rate['rate'] == 0) {

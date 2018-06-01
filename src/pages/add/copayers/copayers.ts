@@ -54,7 +54,7 @@ export class CopayersPage {
     this.wallet = this.profileProvider.getWallet(this.navParams.data.walletId);
     this.updateWallet();
 
-    this.events.subscribe('bwsEvent', (walletId, type, n) => {
+    this.events.subscribe('bwsEvent', (walletId, type) => {
       if (
         this.wallet &&
         walletId == this.wallet.id &&
@@ -78,7 +78,7 @@ export class CopayersPage {
         this.copayers = this.wallet.status.wallet.copayers;
         this.secret = this.wallet.status.wallet.secret;
         if (status.wallet.status == 'complete') {
-          this.wallet.openWallet((err: any, status: any) => {
+          this.wallet.openWallet((err: any) => {
             if (err) this.logger.error(err);
 
             this.navCtrl.popToRoot();

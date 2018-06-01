@@ -37,7 +37,7 @@ export class CoinbaseTxDetailsPage {
           {
             remove: true
           },
-          (err: any) => {
+          () => {
             this.updateRequired = true;
             this.close();
           }

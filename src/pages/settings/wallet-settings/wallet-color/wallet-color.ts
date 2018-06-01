@@ -35,7 +35,7 @@ export class WalletColorPage {
     this.config = this.configProvider.get();
     this.colorCount = Array(this.getColorCount())
       .fill(0)
-      .map((x, i) => i);
+      .map((_, i) => i);
     this.setCurrentColorIndex();
   }
 

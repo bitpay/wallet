@@ -81,13 +81,10 @@ export class TxDetailsPage {
   }
 
   ionViewWillEnter() {
-    this.events.subscribe(
-      'bwsEvent',
-      (walletId: string, type: string, n: any) => {
-        if (type == 'NewBlock' && n && n.data && n.data.network == 'livenet')
-          this.updateTxDebounced({ hideLoading: true });
-      }
-    );
+    this.events.subscribe('bwsEvent', (_, type: string, n: any) => {
+      if (type == 'NewBlock' && n && n.data && n.data.network == 'livenet')
+        this.updateTxDebounced({ hideLoading: true });
+    });
   }
 
   ionViewWillLeave() {
@@ -251,7 +248,7 @@ export class TxDetailsPage {
 
         this.walletProvider
           .editTxNote(this.wallet, args)
-          .then((res: any) => {
+          .then(() => {
             this.logger.info('Tx Note edited');
           })
           .catch((err: any) => {

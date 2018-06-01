@@ -161,7 +161,7 @@ export class HomePage {
     }, 200);
 
     // Only BitPay Wallet
-    this.bitPayCardProvider.get({}, (err, cards) => {
+    this.bitPayCardProvider.get({}, (_, cards) => {
       this.zone.run(() => {
         this.showBitPayCard = this.appProvider.info._enabledExtensions.debitcard
           ? true
@@ -212,7 +212,7 @@ export class HomePage {
       this.setWallets();
     });
 
-    this.plt.resume.subscribe(e => {
+    this.plt.resume.subscribe(() => {
       this.getNotifications();
       this.updateTxps();
       this.setWallets();
@@ -478,7 +478,7 @@ export class HomePage {
             this.onGoingProcessProvider.clear();
             this.openTxpModal(_txp);
           })
-          .catch((err: any) => {
+          .catch(() => {
             this.onGoingProcessProvider.clear();
             this.logger.warn('No txp found');
             let title = this.translate.instant('Error');

@@ -75,10 +75,11 @@ export class MercadoLibrePage {
   }
 
   private init(): Promise<any> {
-    return new Promise((resolve, reject) => {
+    return new Promise(resolve => {
       this.mercadoLibreProvider.getPendingGiftCards((err: any, gcds: any) => {
         if (err) this.logger.error(err);
         this.giftCards = gcds;
+        resolve();
       });
     });
   }
@@ -163,7 +164,7 @@ export class MercadoLibrePage {
                     this.mercadoLibreProvider.savePendingGiftCard(
                       newData,
                       null,
-                      (err: any) => {
+                      () => {
                         this.logger.debug('Mercado Libre gift card updated');
                         this.updateGiftCards();
                       }

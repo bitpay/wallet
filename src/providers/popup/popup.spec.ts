@@ -1,43 +1,17 @@
-import { inject, TestBed } from '@angular/core/testing';
-import {
-  TranslateFakeLoader,
-  TranslateLoader,
-  TranslateModule,
-  TranslateService
-} from '@ngx-translate/core';
-import { AlertController, App, Config, Platform } from 'ionic-angular';
-import { Logger } from '../../providers/logger/logger';
+import { inject } from '@angular/core/testing';
+import { AlertController } from 'ionic-angular';
+import { TestUtils } from '../../test';
 import { PopupProvider } from './popup';
-
-import { AlertControllerMock } from 'ionic-mocks';
 
 describe('PopupProvider', () => {
   let alertCtrl: AlertController;
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      imports: [
-        TranslateModule.forRoot({
-          loader: { provide: TranslateLoader, useClass: TranslateFakeLoader }
-        })
-      ],
-      providers: [
-        PopupProvider,
-        App,
-        Config,
-        Platform,
-        Logger,
-        TranslateService,
-        {
-          provide: AlertController,
-          useFactory: () => AlertControllerMock.instance()
-        }
-      ]
-    });
-    alertCtrl = AlertControllerMock.instance();
+    const testBed = TestUtils.configureProviderTestingModule();
+    alertCtrl = testBed.get(AlertController);
   });
 
   it('should exist', inject([PopupProvider], (popupProvider: PopupProvider) => {
-    expect(popupProvider).not.toBeUndefined();
+    expect(popupProvider).toBeDefined();
   }));
 
   it('should have an alert', inject(

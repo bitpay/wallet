@@ -1,32 +1,13 @@
+import { TestUtils } from '../../test';
 import { PlatformProvider } from './platform';
 
-import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { getTestBed, TestBed } from '@angular/core/testing';
-import {
-  TranslateFakeLoader,
-  TranslateLoader,
-  TranslateModule
-} from '@ngx-translate/core';
-import { Platform } from 'ionic-angular';
-import { Logger } from '../../providers/logger/logger';
-
 describe('PlatformProvider', () => {
-  let injector: TestBed;
   let service: PlatformProvider;
   let realUserAgent;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      imports: [
-        HttpClientTestingModule,
-        TranslateModule.forRoot({
-          loader: { provide: TranslateLoader, useClass: TranslateFakeLoader }
-        })
-      ],
-      providers: [PlatformProvider, Logger, Platform]
-    });
-    injector = getTestBed();
-    service = injector.get(PlatformProvider);
+    const testBed = TestUtils.configureProviderTestingModule();
+    service = testBed.get(PlatformProvider);
   });
 
   it('should get browser name', () => {
@@ -56,7 +37,6 @@ describe('PlatformProvider', () => {
 });
 
 describe('PlatformProvider without navigator', () => {
-  let injector: TestBed;
   let service: PlatformProvider;
   let realNavigator;
 
@@ -71,17 +51,8 @@ describe('PlatformProvider without navigator', () => {
   });
 
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      imports: [
-        HttpClientTestingModule,
-        TranslateModule.forRoot({
-          loader: { provide: TranslateLoader, useClass: TranslateFakeLoader }
-        })
-      ],
-      providers: [PlatformProvider, Logger, Platform]
-    });
-    injector = getTestBed();
-    service = injector.get(PlatformProvider);
+    const testBed = TestUtils.configureProviderTestingModule();
+    service = testBed.get(PlatformProvider);
   });
 
   afterEach(() => {
