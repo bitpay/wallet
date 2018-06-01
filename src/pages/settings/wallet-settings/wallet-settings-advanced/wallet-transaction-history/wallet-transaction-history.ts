@@ -108,7 +108,7 @@ export class WalletTransactionHistoryPage {
 
         var _amount, _note, _copayers, _creator, _comment;
 
-        data.forEach((it, index) => {
+        data.forEach(it => {
           var amount = it.amount;
 
           if (it.action == 'moved') amount = 0;

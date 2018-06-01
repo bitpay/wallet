@@ -61,9 +61,9 @@ export class CoinbaseProvider {
 
     this.selectedPriceSensitivity = this.priceSensitivity[1];
 
-    this.events.subscribe('bwsEvent', (walletId, type, n) => {
+    this.events.subscribe('bwsEvent', (_, type, n) => {
       if (type == 'NewBlock' && n && n.data && n.data.network == 'livenet') {
-        this.isActive((err, isActive) => {
+        this.isActive((_, isActive) => {
           // Update Coinbase
           if (isActive) this.updatePendingTransactions();
         });
@@ -239,7 +239,7 @@ export class CoinbaseProvider {
 
         return cb(null, amount - parseInt(feeBTC, 10), parseInt(feeBTC, 10));
       })
-      .catch(err => {
+      .catch(() => {
         return cb('Could not get fee rate');
       });
   }
@@ -379,7 +379,7 @@ export class CoinbaseProvider {
     if (_.isEmpty(this.credentials.CLIENT_ID)) {
       return cb('Coinbase is Disabled. Missing credentials.');
     }
-    this.logger.debug('Trying to initialise Coinbase...');
+    this.logger.debug('Trying to initialize Coinbase...');
 
     this.persistenceProvider
       .getCoinbaseToken(this.credentials.NETWORK)
@@ -425,12 +425,12 @@ export class CoinbaseProvider {
           }
         });
       })
-      .catch(err => {
+      .catch(() => {
         return cb();
       });
   }, 10000);
 
-  public getAccount(token, accountId, cb) {
+  public getAccount(token, _, cb) {
     if (!token) return cb('Invalid Token');
     let url = this.credentials.API + '/v2/accounts/';
     let headers: any = {
@@ -467,12 +467,12 @@ export class CoinbaseProvider {
     };
     this.http.get(url, { headers }).subscribe(
       (data: any) => {
-        this.logger.info('Coinbase: Autorization Information SUCCESS');
+        this.logger.info('Coinbase: Authorization Information SUCCESS');
         return cb(null, data);
       },
       data => {
         this.logger.error(
-          'Coinbase: Autorization Information ERROR ' +
+          'Coinbase: Authorization Information ERROR ' +
             data.status +
             '. ' +
             this.getErrorsAsString(data.error)
@@ -1205,7 +1205,7 @@ export class CoinbaseProvider {
               {
                 remove: true
               },
-              err => {
+              () => {
                 this._savePendingTransaction(updatedTx.data, {}, err => {
                   if (err) this.logger.debug(err);
                   this._updateTxs(coinbasePendingTransactions);

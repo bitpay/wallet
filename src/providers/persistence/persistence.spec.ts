@@ -1,4 +1,3 @@
-/* tslint:disable */
 import { File } from '@ionic-native/file';
 import { Logger } from '../../providers/logger/logger';
 import { PlatformProvider } from '../platform/platform';
@@ -45,28 +44,22 @@ describe('Persistence Provider', () => {
     let localStorageBackup;
 
     beforeEach(() => {
-      // remove window.localStorage
       localStorageBackup = window.localStorage;
-      console.log('before clearing', window.localStorage);
       Object.defineProperties(window, {
         localStorage: {
           value: null,
           writable: true
         }
       });
-      console.log('after clearing', window.localStorage);
     });
 
     afterEach(() => {
-      // restore window.localStorage
-      console.log('before restoring', window.localStorage);
       Object.defineProperties(window, {
         localStorage: {
           value: localStorageBackup,
           writable: false
         }
       });
-      console.log('after restoring', window.localStorage);
     });
 
     it('should throw an error if local storage is not available', () => {

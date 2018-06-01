@@ -113,7 +113,7 @@ export class SettingsPage {
     }, 200);
 
     // Only BitPay Wallet
-    this.bitPayCardProvider.get({}, (err, cards) => {
+    this.bitPayCardProvider.get({}, (_, cards) => {
       this.showBitPayCard = this.app.info._enabledExtensions.debitcard
         ? true
         : false;

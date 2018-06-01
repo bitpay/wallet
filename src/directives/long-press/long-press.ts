@@ -9,8 +9,6 @@ import {
 import { Gesture } from 'ionic-angular/gestures/gesture';
 declare var Hammer: any;
 
-import { ProfileProvider } from '../../providers/profile/profile';
-
 @Directive({
   selector: '[longPress]'
 })
@@ -20,7 +18,7 @@ export class LongPress implements OnInit, OnDestroy {
 
   @Output() longPress: EventEmitter<any> = new EventEmitter();
 
-  constructor(el: ElementRef, profileProvider: ProfileProvider) {
+  constructor(el: ElementRef) {
     this.el = el.nativeElement;
   }
 

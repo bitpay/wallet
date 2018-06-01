@@ -84,7 +84,7 @@ export class AddressbookAddPage {
     if (this.addressBookAdd.valid) {
       this.ab
         .add(this.addressBookAdd.value)
-        .then(ab => {
+        .then(() => {
           this.navCtrl.pop();
           this.submitAttempt = false;
         })

@@ -17,7 +17,7 @@ export class IosScrollBgColor {
 
   constructor(private element: ElementRef) {}
 
-  ngOnChanges(changes) {
+  ngOnChanges() {
     this.setScrollContentBackgroundColor(this.color);
   }
 

@@ -169,7 +169,7 @@ export class BuyMercadoLibrePage {
   }
 
   private showError = function(title: string, msg: any): Promise<any> {
-    return new Promise((resolve, reject) => {
+    return new Promise(resolve => {
       if (this.isCordova) this.slideButton.isConfirmed(false);
       title = title || this.translate.instant('Error');
       this.logger.error(msg);
@@ -200,7 +200,7 @@ export class BuyMercadoLibrePage {
   }
 
   private satToFiat(coin: string, sat: number): Promise<any> {
-    return new Promise((resolve, reject) => {
+    return new Promise(resolve => {
       this.txFormatProvider
         .toFiat(coin, sat, this.currencyIsoCode)
         .then((value: string) => {
@@ -356,7 +356,7 @@ export class BuyMercadoLibrePage {
               });
             });
         })
-        .catch((err: any) => {
+        .catch(() => {
           return reject({
             title: this.translate.instant('Error in Payment Protocol'),
             message: this.translate.instant('Invalid URL')
@@ -398,31 +398,23 @@ export class BuyMercadoLibrePage {
 
         if (giftCard.status == 'PENDING' && count < 3) {
           this.logger.debug('Waiting for payment confirmation');
-          this.mercadoLibreProvider.savePendingGiftCard(
-            newData,
-            null,
-            (err: any) => {
-              this.logger.debug(
-                'Saving new gift card with status: ' + newData.status
-              );
-            }
-          );
+          this.mercadoLibreProvider.savePendingGiftCard(newData, null, () => {
+            this.logger.debug(
+              'Saving new gift card with status: ' + newData.status
+            );
+          });
           this.checkTransaction(count + 1, dataSrc);
           return;
         }
 
-        this.mercadoLibreProvider.savePendingGiftCard(
-          newData,
-          null,
-          (err: any) => {
-            this.onGoingProcessProvider.clear();
-            this.logger.debug(
-              'Saved new gift card with status: ' + newData.status
-            );
-            this.mlGiftCard = newData;
-            this.openFinishModal();
-          }
-        );
+        this.mercadoLibreProvider.savePendingGiftCard(newData, null, () => {
+          this.onGoingProcessProvider.clear();
+          this.logger.debug(
+            'Saved new gift card with status: ' + newData.status
+          );
+          this.mlGiftCard = newData;
+          this.openFinishModal();
+        });
       });
     },
     15000,
@@ -538,7 +530,7 @@ export class BuyMercadoLibrePage {
       }
 
       this.publishAndSign(this.wallet, this.createdTx)
-        .then(txSent => {
+        .then(() => {
           this.onGoingProcessProvider.set('Comprando Vale-Presente');
           this.checkTransaction(1, this.createdTx.giftData);
         })

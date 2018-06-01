@@ -51,7 +51,7 @@ export class AltCurrencyPage {
   ionViewWillEnter() {
     this.rate
       .whenRatesAvailable('btc')
-      .then(data => {
+      .then(() => {
         this.completeAlternativeList = this.rate.listAlternatives(true);
         let idx = _.keyBy(this.unusedCurrencyList, 'isoCode');
         let idx2 = _.keyBy(this.lastUsedAltCurrencyList, 'isoCode');

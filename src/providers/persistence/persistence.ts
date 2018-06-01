@@ -74,26 +74,26 @@ export class PersistenceProvider {
   }
 
   getProfile(): Promise<any> {
-    return new Promise((resolve, reject) => {
+    return new Promise(resolve => {
       this.storage.get(Keys.PROFILE).then(profile => {
         resolve(profile);
       });
     });
   }
 
-  deleteProfile(): Promise<void> {
+  deleteProfile() {
     return this.storage.remove(Keys.PROFILE);
   }
 
-  setFeedbackInfo(feedbackValues: any): Promise<void> {
+  setFeedbackInfo(feedbackValues: any) {
     return this.storage.set(Keys.FEEDBACK, feedbackValues);
   }
 
-  getFeedbackInfo(): Promise<void> {
+  getFeedbackInfo() {
     return this.storage.get(Keys.FEEDBACK);
   }
 
-  storeFocusedWalletId(walletId: string): Promise<void> {
+  storeFocusedWalletId(walletId: string) {
     return this.storage.set(Keys.FOCUSED_WALLET_ID, walletId || '');
   }
 
@@ -101,200 +101,200 @@ export class PersistenceProvider {
     return this.storage.get(Keys.FOCUSED_WALLET_ID);
   }
 
-  getLastAddress(walletId: string): Promise<any> {
+  getLastAddress(walletId: string) {
     return this.storage.get(Keys.LAST_ADDRESS(walletId));
   }
 
-  storeLastAddress(walletId: string, address: any): Promise<void> {
+  storeLastAddress(walletId: string, address: any) {
     return this.storage.set(Keys.LAST_ADDRESS(walletId), address);
   }
 
-  clearLastAddress(walletId: string): Promise<void> {
+  clearLastAddress(walletId: string) {
     return this.storage.remove(Keys.LAST_ADDRESS(walletId));
   }
 
-  setBackupFlag(walletId: string): Promise<void> {
+  setBackupFlag(walletId: string) {
     return this.storage.set(Keys.BACKUP(walletId), Date.now());
   }
 
-  getBackupFlag(walletId: string): Promise<any> {
+  getBackupFlag(walletId: string) {
     return this.storage.get(Keys.BACKUP(walletId));
   }
 
-  clearBackupFlag(walletId: string): Promise<void> {
+  clearBackupFlag(walletId: string) {
     return this.storage.remove(Keys.BACKUP(walletId));
   }
 
-  setCleanAndScanAddresses(walletId: string): Promise<void> {
+  setCleanAndScanAddresses(walletId: string) {
     return this.storage.set(Keys.CLEAN_AND_SCAN_ADDRESSES, walletId);
   }
 
-  getCleanAndScanAddresses(): Promise<any> {
+  getCleanAndScanAddresses() {
     return this.storage.get(Keys.CLEAN_AND_SCAN_ADDRESSES);
   }
 
-  removeCleanAndScanAddresses(): Promise<void> {
+  removeCleanAndScanAddresses() {
     return this.storage.remove(Keys.CLEAN_AND_SCAN_ADDRESSES);
   }
 
-  getConfig(): Promise<object> {
+  getConfig() {
     return this.storage.get(Keys.CONFIG);
   }
 
-  storeConfig(config: object): Promise<void> {
+  storeConfig(config: object) {
     return this.storage.set(Keys.CONFIG, config);
   }
 
-  clearConfig(): Promise<void> {
+  clearConfig() {
     return this.storage.remove(Keys.CONFIG);
   }
 
-  getHomeTipAccepted(): Promise<any> {
+  getHomeTipAccepted() {
     return this.storage.get(Keys.HOME_TIP);
   }
 
-  setHomeTipAccepted(homeTip: any): Promise<void> {
+  setHomeTipAccepted(homeTip: any) {
     return this.storage.set(Keys.HOME_TIP, homeTip);
   }
 
-  setHideBalanceFlag(walletId: string, val: any): Promise<void> {
+  setHideBalanceFlag(walletId: string, val: any) {
     return this.storage.set(Keys.HIDE_BALANCE(walletId), val);
   }
 
-  getHideBalanceFlag(walletId: string): Promise<any> {
+  getHideBalanceFlag(walletId: string) {
     return this.storage.get(Keys.HIDE_BALANCE(walletId));
   }
 
-  setDisclaimerAccepted(): Promise<any> {
+  setDisclaimerAccepted() {
     return this.storage.set(Keys.AGREE_DISCLAIMER, true);
   }
 
-  setOnboardingCompleted(): Promise<any> {
+  setOnboardingCompleted() {
     return this.storage.set(Keys.ONBOARDING_COMPLETED, true);
   }
 
   // for compatibility
-  getCopayDisclaimerFlag(): Promise<any> {
+  getCopayDisclaimerFlag() {
     return this.storage.get(Keys.AGREE_DISCLAIMER);
   }
 
-  getCopayOnboardingFlag(): Promise<any> {
+  getCopayOnboardingFlag() {
     return this.storage.get(Keys.ONBOARDING_COMPLETED);
   }
 
-  setRemotePrefsStoredFlag(): Promise<void> {
+  setRemotePrefsStoredFlag() {
     return this.storage.set(Keys.REMOTE_PREF_STORED, true);
   }
 
-  getRemotePrefsStoredFlag(): Promise<any> {
+  getRemotePrefsStoredFlag() {
     return this.storage.get(Keys.REMOTE_PREF_STORED);
   }
 
-  setGlideraToken(network: string, token: string): Promise<void> {
+  setGlideraToken(network: string, token: string) {
     return this.storage.set(Keys.GLIDERA_TOKEN(network), token);
   }
 
-  getGlideraToken(network: string): Promise<string> {
+  getGlideraToken(network: string) {
     return this.storage.get(Keys.GLIDERA_TOKEN(network));
   }
 
-  removeGlideraToken(network: string): Promise<void> {
+  removeGlideraToken(network: string) {
     return this.storage.remove(Keys.GLIDERA_TOKEN(network));
   }
 
-  setGlideraPermissions(network: string, permissions: any): Promise<void> {
+  setGlideraPermissions(network: string, permissions: any) {
     return this.storage.set(Keys.GLIDERA_PERMISSIONS(network), permissions);
   }
 
-  getGlideraPermissions(network: string): Promise<any> {
+  getGlideraPermissions(network: string) {
     return this.storage.get(Keys.GLIDERA_PERMISSIONS(network));
   }
 
-  removeGlideraPermissions(network: string): Promise<void> {
+  removeGlideraPermissions(network: string) {
     return this.storage.remove(Keys.GLIDERA_PERMISSIONS(network));
   }
 
-  setGlideraStatus(network: string, status: any): Promise<void> {
+  setGlideraStatus(network: string, status: any) {
     return this.storage.set(Keys.GLIDERA_STATUS(network), status);
   }
 
-  getGlideraStatus(network: string): Promise<any> {
+  getGlideraStatus(network: string) {
     return this.storage.get(Keys.GLIDERA_STATUS(network));
   }
 
-  removeGlideraStatus(network: string): Promise<void> {
+  removeGlideraStatus(network: string) {
     return this.storage.remove(Keys.GLIDERA_STATUS(network));
   }
 
-  setGlideraTxs(network: string, txs: any): Promise<void> {
+  setGlideraTxs(network: string, txs: any) {
     return this.storage.set(Keys.GLIDERA_TXS(network), txs);
   }
 
-  getGlideraTxs(network: string): Promise<any> {
+  getGlideraTxs(network: string) {
     return this.storage.get(Keys.GLIDERA_TXS(network));
   }
 
-  removeGlideraTxs(network: string): Promise<void> {
+  removeGlideraTxs(network: string) {
     return this.storage.remove(Keys.GLIDERA_TXS(network));
   }
 
-  setCoinbaseToken(network: string, token: string): Promise<void> {
+  setCoinbaseToken(network: string, token: string) {
     return this.storage.set(Keys.COINBASE_TOKEN(network), token);
   }
 
-  getCoinbaseToken(network: string): Promise<string> {
+  getCoinbaseToken(network: string) {
     return this.storage.get(Keys.COINBASE_TOKEN(network));
   }
 
-  removeCoinbaseToken(network: string): Promise<void> {
+  removeCoinbaseToken(network: string) {
     return this.storage.remove(Keys.COINBASE_TOKEN(network));
   }
 
-  setCoinbaseRefreshToken(network: string, token: string): Promise<void> {
+  setCoinbaseRefreshToken(network: string, token: string) {
     return this.storage.set(Keys.COINBASE_REFRESH_TOKEN(network), token);
   }
 
-  getCoinbaseRefreshToken(network: string): Promise<string> {
+  getCoinbaseRefreshToken(network: string) {
     return this.storage.get(Keys.COINBASE_REFRESH_TOKEN(network));
   }
 
-  removeCoinbaseRefreshToken(network: string): Promise<void> {
+  removeCoinbaseRefreshToken(network: string) {
     return this.storage.remove(Keys.COINBASE_REFRESH_TOKEN(network));
   }
 
-  setCoinbaseTxs(network: string, ctx: any): Promise<void> {
+  setCoinbaseTxs(network: string, ctx: any) {
     return this.storage.set(Keys.COINBASE_TXS(network), ctx);
   }
 
-  getCoinbaseTxs(network: string): Promise<any> {
+  getCoinbaseTxs(network: string) {
     return this.storage.get(Keys.COINBASE_TXS(network));
   }
 
-  removeCoinbaseTxs(network: string): Promise<void> {
+  removeCoinbaseTxs(network: string) {
     return this.storage.remove(Keys.COINBASE_TXS(network));
   }
 
-  setAddressBook(network: string, addressbook: any): Promise<void> {
+  setAddressBook(network: string, addressbook: any) {
     return this.storage.set(Keys.ADDRESS_BOOK(network), addressbook);
   }
 
-  getAddressBook(network: string): Promise<any> {
+  getAddressBook(network: string) {
     return this.storage.get(Keys.ADDRESS_BOOK(network));
   }
 
-  removeAddressbook(network: string): Promise<void> {
+  removeAddressbook(network: string) {
     return this.storage.remove(Keys.ADDRESS_BOOK(network));
   }
 
-  setLastCurrencyUsed(lastCurrencyUsed: any): Promise<void> {
+  setLastCurrencyUsed(lastCurrencyUsed: any) {
     return this.storage.set(Keys.LAST_CURRENCY_USED, lastCurrencyUsed);
   }
 
-  getLastCurrencyUsed(): Promise<any> {
+  getLastCurrencyUsed() {
     return this.storage.get(Keys.LAST_CURRENCY_USED);
   }
 
-  checkQuota(): void {
+  checkQuota() {
     let block = '';
     // 50MB
     for (let i = 0; i < 1024 * 1024; ++i) {
@@ -305,94 +305,77 @@ export class PersistenceProvider {
     });
   }
 
-  setTxHistory(walletId: string, txs: any): Promise<void> {
+  setTxHistory(walletId: string, txs: any) {
     return this.storage.set(Keys.TX_HISTORY(walletId), txs).catch(err => {
       this.logger.error('Error saving tx History. Size:' + txs.length);
       this.logger.error(err);
     });
   }
 
-  getTxHistory(walletId: string): Promise<any> {
+  getTxHistory(walletId: string) {
     return this.storage.get(Keys.TX_HISTORY(walletId));
   }
 
-  removeTxHistory(walletId: string): Promise<void> {
+  removeTxHistory(walletId: string) {
     return this.storage.remove(Keys.TX_HISTORY(walletId));
   }
 
-  setBalanceCache(cardId: string, data: any): Promise<void> {
+  setBalanceCache(cardId: string, data: any) {
     return this.storage.set(Keys.BALANCE_CACHE(cardId), data);
   }
 
-  getBalanceCache(cardId: string): Promise<any> {
+  getBalanceCache(cardId: string) {
     return this.storage.get(Keys.BALANCE_CACHE(cardId));
   }
 
-  removeBalanceCache(cardId: string): Promise<void> {
+  removeBalanceCache(cardId: string) {
     return this.storage.remove(Keys.BALANCE_CACHE(cardId));
   }
 
-  setAppIdentity(network: string, data: any): Promise<void> {
+  setAppIdentity(network: string, data: any) {
     return this.storage.set(Keys.APP_IDENTITY(network), data);
   }
 
-  getAppIdentity(network: string): Promise<any> {
+  getAppIdentity(network: string) {
     return this.storage.get(Keys.APP_IDENTITY(network));
   }
 
-  removeAppIdentity(network: string): Promise<void> {
+  removeAppIdentity(network: string) {
     return this.storage.remove(Keys.APP_IDENTITY(network));
   }
 
-  removeAllWalletData(walletId: string): Promise<void> {
+  removeAllWalletData(walletId: string) {
     return this.clearLastAddress(walletId)
       .then(() => this.removeTxHistory(walletId))
       .then(() => this.clearBackupFlag(walletId))
       .then(() => this.removeWalletOrder(walletId));
   }
 
-  setAmazonGiftCards(network: string, gcs: any): Promise<void> {
+  setAmazonGiftCards(network: string, gcs: any) {
     return this.storage.set(Keys.AMAZON_GIFT_CARDS(network), gcs);
   }
 
-  getAmazonGiftCards(network: string): Promise<any> {
+  getAmazonGiftCards(network: string) {
     return this.storage.get(Keys.AMAZON_GIFT_CARDS(network));
   }
 
-  removeAmazonGiftCards(network: string): Promise<void> {
+  removeAmazonGiftCards(network: string) {
     return this.storage.remove(Keys.AMAZON_GIFT_CARDS(network));
   }
 
-  setTxConfirmNotification(txid: string, val: any): Promise<void> {
+  setTxConfirmNotification(txid: string, val: any) {
     return this.storage.set(Keys.TX_CONFIRM_NOTIF(txid), val);
   }
 
-  getTxConfirmNotification(txid: string): Promise<any> {
+  getTxConfirmNotification(txid: string) {
     return this.storage.get(Keys.TX_CONFIRM_NOTIF(txid));
   }
 
-  removeTxConfirmNotification(txid: string): Promise<void> {
+  removeTxConfirmNotification(txid: string) {
     return this.storage.remove(Keys.TX_CONFIRM_NOTIF(txid));
   }
 
-  // cb(err, accounts)
-  // accounts: {
-  //   email_1: {
-  //     token: account token
-  //     cards: {
-  //       <card-data>
-  //     }
-  //   }
-  //   ...
-  //   email_n: {
-  //    token: account token
-  //    cards: {
-  //       <card-data>
-  //     }
-  //   }
-  // }
-  //
-  getBitpayAccounts(network: string): Promise<any> {
+  getBitpayAccounts(network: string) {
     return this.storage.get(Keys.BITPAY_ACCOUNTS_V2(network));
   }
 
@@ -404,7 +387,7 @@ export class PersistenceProvider {
       familyName?: string; // last name
       givenName?: string; // firstName
     }
-  ): Promise<any> {
+  ) {
     return this.getBitpayAccounts(network).then(allAccounts => {
       allAccounts = allAccounts || {};
       let account = allAccounts[data.email] || {};
@@ -420,7 +403,7 @@ export class PersistenceProvider {
     });
   }
 
-  removeBitpayAccount(network: string, email: string): Promise<void> {
+  removeBitpayAccount(network: string, email: string) {
     return this.getBitpayAccounts(network).then(allAccounts => {
       allAccounts = allAccounts || {};
       delete allAccounts[email];
@@ -428,17 +411,7 @@ export class PersistenceProvider {
     });
   }
 
-  // cards: [
-  //   eid: card id
-  //   id: card id
-  //   lastFourDigits: card number
-  //   token: card token
-  // ]
-  setBitpayDebitCards(
-    network: string,
-    email: string,
-    cards: any
-  ): Promise<void> {
+  setBitpayDebitCards(network: string, email: string, cards: any) {
     return this.getBitpayAccounts(network).then(allAccounts => {
       allAccounts = allAccounts || {};
       if (!allAccounts[email])
@@ -455,7 +428,7 @@ export class PersistenceProvider {
   //   token: card token
   //   email: account email
   // ]
-  getBitpayDebitCards(network: string): Promise<any[]> {
+  getBitpayDebitCards(network: string) {
     return this.getBitpayAccounts(network).then(allAccounts => {
       let allCards = [];
       _.each(allAccounts, (account, email) => {
@@ -473,7 +446,7 @@ export class PersistenceProvider {
     });
   }
 
-  removeBitpayDebitCard(network: string, cardEid: string): Promise<void> {
+  removeBitpayDebitCard(network: string, cardEid: string) {
     return this.getBitpayAccounts(network)
       .then(allAccounts => {
         return _.each(allAccounts, account => {
@@ -487,63 +460,63 @@ export class PersistenceProvider {
       });
   }
 
-  setMercadoLibreGiftCards(network: string, gcs): Promise<void> {
+  setMercadoLibreGiftCards(network: string, gcs) {
     return this.storage.set(Keys.MERCADO_LIBRE(network), gcs);
   }
 
-  getMercadoLibreGiftCards(network: string): Promise<void> {
+  getMercadoLibreGiftCards(network: string) {
     return this.storage.get(Keys.MERCADO_LIBRE(network));
   }
 
-  removeMercadoLibreGiftCards(network: string): Promise<void> {
+  removeMercadoLibreGiftCards(network: string) {
     return this.storage.remove(Keys.MERCADO_LIBRE(network));
   }
 
-  setShapeshift(network: string, gcs: any): Promise<void> {
+  setShapeshift(network: string, gcs: any) {
     return this.storage.set('shapeShift-' + network, gcs);
   }
 
-  getShapeshift(network: string): Promise<void> {
+  getShapeshift(network: string) {
     return this.storage.get('shapeShift-' + network);
   }
 
-  removeShapeshift(network: string): Promise<void> {
+  removeShapeshift(network: string) {
     return this.storage.remove('shapeShift-' + network);
   }
 
-  setWalletOrder(walletId: string, order: number): Promise<void> {
+  setWalletOrder(walletId: string, order: number) {
     return this.storage.set(Keys.ORDER_WALLET(walletId), order);
   }
 
-  getWalletOrder(walletId: string): Promise<void> {
+  getWalletOrder(walletId: string) {
     return this.storage.get(Keys.ORDER_WALLET(walletId));
   }
 
-  removeWalletOrder(walletId: string): Promise<void> {
+  removeWalletOrder(walletId: string) {
     return this.storage.remove(Keys.ORDER_WALLET(walletId));
   }
 
-  setLockStatus(isLocked: string): Promise<void> {
+  setLockStatus(isLocked: string) {
     return this.storage.set('lockStatus', isLocked);
   }
 
-  getLockStatus(): Promise<string> {
+  getLockStatus() {
     return this.storage.get('lockStatus');
   }
 
-  removeLockStatus(): Promise<void> {
+  removeLockStatus() {
     return this.storage.remove('lockStatus');
   }
 
-  setEmailLawCompliance(value: string): Promise<void> {
+  setEmailLawCompliance(value: string) {
     return this.storage.set('emailLawCompliance', value);
   }
 
-  getEmailLawCompliance(): Promise<string> {
+  getEmailLawCompliance() {
     return this.storage.get('emailLawCompliance');
   }
 
-  removeEmailLawCompliance(): Promise<void> {
+  removeEmailLawCompliance() {
     return this.storage.remove('emailLawCompliance');
   }
 }

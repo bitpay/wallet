@@ -1,16 +1,12 @@
-import { DecimalPipe } from '@angular/common';
-import { TestBed } from '@angular/core/testing';
-import { Logger } from '../../providers/logger/logger';
+import { TestUtils } from '../../test';
 import { FilterProvider } from './filter';
 
 describe('Provider: Filter Provider', () => {
   let filterProvider: FilterProvider;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      providers: [DecimalPipe, Logger, FilterProvider]
-    });
-    filterProvider = TestBed.get(FilterProvider);
+    const testBed = TestUtils.configureProviderTestingModule();
+    filterProvider = testBed.get(FilterProvider);
   });
 
   describe('Function: formatFiatAmount', () => {

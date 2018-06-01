@@ -2,7 +2,7 @@ import { Directive, ElementRef, Input } from '@angular/core';
 
 /* 
 Ionic does not currently appear to provide an API to set the navbar background
-to an aribitrary color. This directive enables this functionality.
+to an arbitrary color. This directive enables this functionality.
 */
 
 @Directive({
@@ -13,7 +13,7 @@ export class NavbarBg {
 
   constructor(private element: ElementRef) {}
 
-  ngOnChanges(changes) {
+  ngOnChanges() {
     this.setNewNavbarColor(this.color);
   }
 

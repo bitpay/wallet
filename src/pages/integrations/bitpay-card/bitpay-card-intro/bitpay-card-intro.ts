@@ -157,7 +157,7 @@ export class BitPayCardIntroPage {
     if (_.isUndefined(account)) {
       this.startPairBitPayAccount();
     } else {
-      this.bitPayCardProvider.sync(account.apiContext, (err, data) => {
+      this.bitPayCardProvider.sync(account.apiContext, err => {
         if (err) {
           this.popupProvider.ionicAlert(this.translate.instant('Error'), err);
           return;

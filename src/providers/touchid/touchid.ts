@@ -20,7 +20,7 @@ export class TouchIdProvider {
   ) {}
 
   public isAvailable(): Promise<any> {
-    return new Promise((resolve, reject) => {
+    return new Promise(resolve => {
       if (this.platform.isCordova && this.platform.isAndroid) {
         this.checkAndroid().then(isAvailable => {
           return resolve(isAvailable);
@@ -36,12 +36,12 @@ export class TouchIdProvider {
   }
 
   private checkIOS(): Promise<any> {
-    return new Promise((resolve, reject) => {
+    return new Promise(resolve => {
       this.touchId.isAvailable().then(
-        res => {
+        () => {
           return resolve(true);
         },
-        err => {
+        () => {
           this.logger.debug('Fingerprint is not available');
           return resolve(false);
         }
@@ -50,7 +50,7 @@ export class TouchIdProvider {
   }
 
   private checkAndroid() {
-    return new Promise((resolve, reject) => {
+    return new Promise(resolve => {
       this.androidFingerprintAuth
         .isAvailable()
         .then(res => {
@@ -60,7 +60,7 @@ export class TouchIdProvider {
             return resolve(false);
           }
         })
-        .catch(err => {
+        .catch(() => {
           this.logger.warn(
             'Touch ID (Android) is not available for this device'
           );

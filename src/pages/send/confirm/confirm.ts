@@ -482,12 +482,12 @@ export class ConfirmPage {
               .then(() => {
                 return resolve();
               })
-              .catch((err: any) => {
+              .catch(err => {
                 return reject(err);
               });
           });
         })
-        .catch((err: any) => {
+        .catch(() => {
           let msg = this.translate.instant('Error getting SendMax information');
           return reject(msg);
         });
@@ -558,7 +558,7 @@ export class ConfirmPage {
   }
 
   private showSendMaxWarning(wallet: any, sendMaxInfo: any): Promise<any> {
-    return new Promise((resolve, reject) => {
+    return new Promise(resolve => {
       if (!sendMaxInfo) return resolve();
 
       let msg = this.replaceParametersProvider.replace(
@@ -577,7 +577,7 @@ export class ConfirmPage {
     });
   }
 
-  private verifyExcludedUtxos(wallet: any, sendMaxInfo: any): any {
+  private verifyExcludedUtxos(_, sendMaxInfo: any): any {
     let warningMsg = [];
     if (sendMaxInfo.utxosBelowFee > 0) {
       let amountBelowFeeStr = sendMaxInfo.amountBelowFee / 1e8;
@@ -725,8 +725,8 @@ export class ConfirmPage {
       });
   }
 
-  private confirmTx(tx, txp, wallet): Promise<any> {
-    return new Promise((resolve, reject) => {
+  private confirmTx(_, txp, wallet) {
+    return new Promise(resolve => {
       if (this.walletProvider.isEncrypted(wallet)) return resolve();
       this.txFormatProvider.formatToUSD(wallet.coin, txp.amount).then(val => {
         let amountUsd = parseFloat(val);

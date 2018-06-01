@@ -1,10 +1,5 @@
-import { TestBed } from '@angular/core/testing';
-import { File } from '@ionic-native/file';
-import { Platform } from 'ionic-angular';
-
-import { Logger } from '../../providers/logger/logger';
+import { TestUtils } from '../../test';
 import { PersistenceProvider } from '../persistence/persistence';
-import { PlatformProvider } from '../platform/platform';
 import { ConfigProvider } from './config';
 
 describe('Provider: Config Provider', () => {
@@ -12,19 +7,9 @@ describe('Provider: Config Provider', () => {
   let configProvider: ConfigProvider;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      providers: [
-        ConfigProvider,
-        File,
-        Logger,
-        { provide: PersistenceProvider },
-        Platform,
-        PlatformProvider,
-        PersistenceProvider
-      ]
-    });
-    configProvider = TestBed.get(ConfigProvider);
-    persistenceProvider = TestBed.get(PersistenceProvider);
+    const testBed = TestUtils.configureProviderTestingModule();
+    configProvider = testBed.get(ConfigProvider);
+    persistenceProvider = testBed.get(PersistenceProvider);
     persistenceProvider.load();
   });
 
@@ -51,14 +36,14 @@ describe('Provider: Config Provider', () => {
       expect(defaults).not.toBeNull();
     });
     it('should set config from storage', () => {
-      persistenceProvider.getConfig().then(config => {
+      persistenceProvider.getConfig().then(() => {
         expect(this.configCache).not.toBeNull();
       });
     });
     it('should return error if file is corrupted', () => {
       let promise = Promise.reject('Error Loading Config');
       spyOn(persistenceProvider, 'getConfig').and.returnValue(promise);
-      configProvider.load().catch(e => {
+      configProvider.load().catch(() => {
         expect(this.configCache).toBeUndefined();
       });
     });

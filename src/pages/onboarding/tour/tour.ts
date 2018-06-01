@@ -61,7 +61,7 @@ export class TourPage {
   }
 
   ionViewWillEnter() {
-    this.navBar.backButtonClick = (e: UIEvent) => {
+    this.navBar.backButtonClick = () => {
       this.slidePrev();
     };
   }

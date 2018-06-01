@@ -124,7 +124,7 @@ export class SearchTxModalPage {
       this.filteredTxHistory.length > this.txHistorySearchResults.length;
   }
 
-  public trackByFn(index: number, tx: any): number {
+  public trackByFn(index: number): number {
     return index;
   }
 

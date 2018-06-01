@@ -69,7 +69,7 @@ export class AddressbookViewPage {
         if (!res) return;
         this.addressBookProvider
           .remove(addr)
-          .then(ab => {
+          .then(() => {
             this.navCtrl.pop();
           })
           .catch((err: any) => {

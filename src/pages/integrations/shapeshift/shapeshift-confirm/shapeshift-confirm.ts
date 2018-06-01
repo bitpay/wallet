@@ -103,44 +103,41 @@ export class ShapeshiftConfirmPage {
       return;
     }
 
-    this.shapeshiftProvider.getLimit(
-      this.getCoinPair(),
-      (err: any, lim: any) => {
-        let min = Number(lim.min);
-        let max = Number(lim.limit);
+    this.shapeshiftProvider.getLimit(this.getCoinPair(), (_, lim: any) => {
+      let min = Number(lim.min);
+      let max = Number(lim.limit);
 
-        if (this.useSendMax) {
-          this.getMaxInfo(max)
-            .then(() => {
-              this.createShift();
-            })
-            .catch((err: any) => {
-              this.logger.error(err);
-              this.showErrorAndBack(null, err);
-            });
-        } else {
-          let amountNumber = Number(this.amount);
+      if (this.useSendMax) {
+        this.getMaxInfo(max)
+          .then(() => {
+            this.createShift();
+          })
+          .catch((err: any) => {
+            this.logger.error(err);
+            this.showErrorAndBack(null, err);
+          });
+      } else {
+        let amountNumber = Number(this.amount);
 
-          if (amountNumber < min) {
-            let message = this.replaceParametersProvider.replace(
-              this.translate.instant('Minimum amount required is {{min}}'),
-              { min }
-            );
-            this.showErrorAndBack(null, message);
-            return;
-          }
-          if (amountNumber > max) {
-            let message = this.replaceParametersProvider.replace(
-              this.translate.instant('Maximum amount allowed is {{max}}'),
-              { max }
-            );
-            this.showErrorAndBack(null, message);
-            return;
-          }
-          this.createShift();
+        if (amountNumber < min) {
+          let message = this.replaceParametersProvider.replace(
+            this.translate.instant('Minimum amount required is {{min}}'),
+            { min }
+          );
+          this.showErrorAndBack(null, message);
+          return;
         }
+        if (amountNumber > max) {
+          let message = this.replaceParametersProvider.replace(
+            this.translate.instant('Maximum amount allowed is {{max}}'),
+            { max }
+          );
+          this.showErrorAndBack(null, message);
+          return;
+        }
+        this.createShift();
       }
-    );
+    });
   }
 
   ionViewDidLoad() {
@@ -264,7 +261,7 @@ export class ShapeshiftConfirmPage {
   }
 
   private satToFiat(coin: string, sat: number, isoCode: string): Promise<any> {
-    return new Promise((resolve, reject) => {
+    return new Promise(resolve => {
       this.txFormatProvider.toFiat(coin, sat, isoCode).then((value: any) => {
         return resolve(value);
       });
@@ -303,7 +300,7 @@ export class ShapeshiftConfirmPage {
     let withdrawal = this.shapeInfo.withdrawal;
     let now = moment().unix() * 1000;
 
-    this.shapeshiftProvider.getStatus(address, (err: any, st: any) => {
+    this.shapeshiftProvider.getStatus(address, (_, st: any) => {
       let newData = {
         address,
         withdrawal,
@@ -328,7 +325,7 @@ export class ShapeshiftConfirmPage {
         outgoingType: st.outgoingType || null // Coin type of withdrawal
       };
 
-      this.shapeshiftProvider.saveShapeshift(newData, null, (err: any) => {
+      this.shapeshiftProvider.saveShapeshift(newData, null, () => {
         this.logger.debug('Saved shift with status: ' + newData.status);
         this.openFinishModal();
       });
@@ -392,7 +389,7 @@ export class ShapeshiftConfirmPage {
   }
 
   private showSendMaxWarning(): Promise<any> {
-    return new Promise((resolve, reject) => {
+    return new Promise(resolve => {
       let fee = this.sendMaxInfo.fee / 1e8;
       let msg = this.replaceParametersProvider.replace(
         this.translate.instant(
@@ -496,7 +493,7 @@ export class ShapeshiftConfirmPage {
 
                   this.shapeshiftProvider.getRate(
                     this.getCoinPair(),
-                    (err: any, r: any) => {
+                    (_, r: any) => {
                       this.onGoingProcessProvider.clear();
                       this.rateUnit = r.rate;
                       let amountUnit = this.txFormatProvider.satToUnit(
@@ -544,13 +541,13 @@ export class ShapeshiftConfirmPage {
                 });
             });
           })
-          .catch((err: any) => {
+          .catch(() => {
             this.onGoingProcessProvider.clear();
             this.showErrorAndBack(null, 'Could not get address');
             return;
           });
       })
-      .catch((err: any) => {
+      .catch(() => {
         this.onGoingProcessProvider.clear();
         this.showErrorAndBack(null, 'Could not get address');
         return;

@@ -72,7 +72,7 @@ export class AmazonPage {
   }
 
   private initAmazon(): Promise<any> {
-    return new Promise((resolve, reject) => {
+    return new Promise(resolve => {
       this.amazonProvider.getPendingGiftCards((err: any, gcds: any) => {
         if (err) this.logger.error(err);
         this.giftCards = gcds;
@@ -144,7 +144,7 @@ export class AmazonPage {
                         {
                           remove: true
                         },
-                        (err: any) => {
+                        () => {
                           this.updateGiftCards();
                         }
                       );
@@ -154,7 +154,7 @@ export class AmazonPage {
                     this.amazonProvider.savePendingGiftCard(
                       newData,
                       null,
-                      (err: any) => {
+                      () => {
                         this.logger.debug('Amazon gift card updated');
                         this.updateGiftCards();
                       }
