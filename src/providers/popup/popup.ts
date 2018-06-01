@@ -126,7 +126,7 @@ export class PopupProvider {
   public createMiniModal(modalTitle: MiniModalTitle): Modal {
     return this.modalCtrl.create(
       MiniModalComponent,
-      { modal: modalTitle },
+      { modalTitle },
       { cssClass: 'fullscreen-modal' }
     );
   }

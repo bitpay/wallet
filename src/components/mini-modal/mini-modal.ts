@@ -7,12 +7,12 @@ import { MiniModalContent, ModalCancelText } from './mini-modal-content';
   templateUrl: 'mini-modal.html'
 })
 export class MiniModalComponent {
-  modal: string;
+  modalTitle: string;
 
   @ViewChild(MiniModalContent) modalContent: MiniModalContent;
 
   constructor(private viewCtrl: ViewController, private navParams: NavParams) {
-    this.modal = this.navParams.get('modal');
+    this.modalTitle = this.navParams.get('modalTitle');
   }
 
   ngAfterViewInit() {
