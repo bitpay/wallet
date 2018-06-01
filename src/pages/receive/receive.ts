@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { Events, ModalController, NavController } from 'ionic-angular';
+import { Events, NavController } from 'ionic-angular';
 import { Logger } from '../../providers/logger/logger';
 
 // Native
@@ -47,7 +47,6 @@ export class ReceivePage {
     private bwcErrorProvider: BwcErrorProvider,
     private translate: TranslateService,
     private externalLinkProvider: ExternalLinkProvider,
-    private modalCtrl: ModalController,
     private addressProvider: AddressProvider,
     private popupProvider: PopupProvider
   ) {

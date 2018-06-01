@@ -1,19 +1,21 @@
-import { async, ComponentFixture } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { TestUtils } from '../../../../test';
 
+import { ModalMock } from 'ionic-mocks';
+import { PopupProvider } from '../../../../providers/popup/popup';
 import { SessionLogPage } from './session-log';
-
-import { CustomModalComponent } from '../../../../components/custom-modal/custom-modal';
 
 describe('SessionLogPage', () => {
   let fixture: ComponentFixture<SessionLogPage>;
   let instance: any;
+  let testBed: typeof TestBed;
 
   beforeEach(async(() => {
     TestUtils.configurePageTestingModule([SessionLogPage]).then(testEnv => {
       fixture = testEnv.fixture;
       instance = testEnv.instance;
+      testBed = testEnv.testBed;
       fixture.detectChanges();
     });
   }));
@@ -155,13 +157,12 @@ describe('SessionLogPage', () => {
     });
     describe('#showWarningModal', () => {
       it('should create warning modal', () => {
+        const popupProvider: PopupProvider = testBed.get(PopupProvider);
+        const modal = ModalMock.instance();
+        spyOn(popupProvider, 'createMiniModal').and.returnValue(modal);
         instance.showWarningModal();
-
-        expect(instance.modalCtrl.create).toHaveBeenCalledWith(
-          CustomModalComponent,
-          { modal: 'sensitive-info' },
-          { cssClass: 'fullscreen-modal' }
-        );
+        expect(modal.present).toHaveBeenCalled();
+        expect(modal.onDidDismiss).toHaveBeenCalled();
       });
     });
   });

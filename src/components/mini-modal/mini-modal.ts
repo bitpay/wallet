@@ -1,11 +1,4 @@
-import {
-  Component,
-  ContentChild,
-  ElementRef,
-  Input,
-  Renderer,
-  ViewChild
-} from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { NavParams, ViewController } from 'ionic-angular';
 import { MiniModalContent, ModalCancelText } from './mini-modal-content';
 
