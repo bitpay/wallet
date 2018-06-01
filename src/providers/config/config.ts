@@ -4,7 +4,7 @@ import { PersistenceProvider } from '../persistence/persistence';
 
 import * as _ from 'lodash';
 
-interface Config {
+export interface Config {
   limits: {
     totalCopayers: number;
     mPlusN: number;

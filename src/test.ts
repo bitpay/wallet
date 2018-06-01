@@ -10,10 +10,7 @@ import 'zone.js/dist/fake-async-test';
 // tslint:enable:ordered-imports
 
 import { DecimalPipe } from '@angular/common';
-import {
-  HttpClientTestingModule,
-  HttpTestingController
-} from '@angular/common/http/testing';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { getTestBed, TestBed } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -54,12 +51,10 @@ import {
   ActionSheetControllerMock,
   AlertControllerMock,
   ConfigMock,
-  EventsMock,
   HapticMock,
   LoadingControllerMock,
   ModalControllerMock,
   NavControllerMock,
-  NavParamsMock,
   PlatformMock,
   ToastControllerMock,
   ViewControllerMock
@@ -76,10 +71,8 @@ import { File } from '@ionic-native/file';
 import { QRScanner } from '@ionic-native/qr-scanner';
 
 import { TouchID } from '@ionic-native/touch-id';
-import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import { AppProvider } from './providers/app/app';
-import { PersistenceProvider } from './providers/persistence/persistence';
 import { PlatformProvider } from './providers/platform/platform';
 
 import { KeysPipe } from './pipes/keys';

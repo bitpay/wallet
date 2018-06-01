@@ -8,7 +8,7 @@ import {
   Renderer,
   ViewChild
 } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { NavController, NavParams } from 'ionic-angular';
 
 @Component({
   selector: 'page-slide-to-accept',
@@ -44,13 +44,12 @@ export class SlideToAcceptPage implements AfterViewInit {
   private delta: number = 8;
   private htmlButtonElem;
   private htmlContainerElem;
-  private isConfirm: boolean = false;
   private containerWidth: number;
   private origin;
-  private callbackDone: boolean = false;
   private done: boolean = false;
   private isDisabled: boolean = false;
 
+  public isConfirm: boolean = false;
   public animation: boolean;
 
   constructor(
@@ -66,7 +65,6 @@ export class SlideToAcceptPage implements AfterViewInit {
       this.htmlButtonElem = this.buttonElement.nativeElement;
       this.htmlContainerElem = this.containerElement.nativeElement;
       let buttonConstraints = this.htmlButtonElem.getBoundingClientRect();
-      let containerConstraints = this.htmlContainerElem.getBoundingClientRect();
       this.origin = {
         left: buttonConstraints.left,
         top: buttonConstraints.top,

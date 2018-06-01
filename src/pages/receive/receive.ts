@@ -1,11 +1,6 @@
 import { Component } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import {
-  AlertController,
-  Events,
-  ModalController,
-  NavController
-} from 'ionic-angular';
+import { Events, ModalController, NavController } from 'ionic-angular';
 import { Logger } from '../../providers/logger/logger';
 
 // Native
@@ -45,7 +40,6 @@ export class ReceivePage {
 
   constructor(
     private navCtrl: NavController,
-    private alertCtrl: AlertController,
     private logger: Logger,
     private profileProvider: ProfileProvider,
     private walletProvider: WalletProvider,

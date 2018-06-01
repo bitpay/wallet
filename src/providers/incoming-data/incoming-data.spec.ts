@@ -1,5 +1,5 @@
 import { HttpClientModule } from '@angular/common/http';
-import { async, TestBed } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 import { File } from '@ionic-native/file';
 import {
   AlertController,
@@ -13,14 +13,10 @@ import {
 import {
   TranslateFakeLoader,
   TranslateLoader,
-  TranslateModule,
-  TranslateService
+  TranslateModule
 } from '@ngx-translate/core';
 
-import { EventsMock } from 'ionic-mocks';
-
 // providers
-import { setTimeout } from 'timers';
 import { AppProvider } from '../app/app';
 import { BwcErrorProvider } from '../bwc-error/bwc-error';
 import { BwcProvider } from '../bwc/bwc';
@@ -38,7 +34,6 @@ import { IncomingDataProvider } from './incoming-data';
 
 describe('Provider: Incoming Data Provider', () => {
   let incomingDataProvider: IncomingDataProvider;
-  let events: Events;
   let logger: Logger;
   let spy;
 
@@ -93,7 +88,6 @@ describe('Provider: Incoming Data Provider', () => {
     });
     incomingDataProvider = TestBed.get(IncomingDataProvider);
     logger = TestBed.get(Logger);
-    events = EventsMock.instance();
     spy = spyOn(logger, 'debug');
   });
 

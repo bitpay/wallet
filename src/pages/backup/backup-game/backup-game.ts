@@ -1,7 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import {
-  AlertController,
   ModalController,
   Navbar,
   NavController,
@@ -53,7 +52,6 @@ export class BackupGamePage {
   constructor(
     private navCtrl: NavController,
     private navParams: NavParams,
-    private alertCtrl: AlertController,
     private logger: Logger,
     private profileProvider: ProfileProvider,
     private walletProvider: WalletProvider,

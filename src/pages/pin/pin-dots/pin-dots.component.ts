@@ -15,7 +15,7 @@ import { Animate } from './../../../directives/animate/animate';
   `
 })
 export class PinDots {
-  private dotArray = new Array(4);
+  public dotArray = new Array(4);
 
   @Input() pin: string;
   @ViewChildren(Animate) dots: QueryList<Animate>;

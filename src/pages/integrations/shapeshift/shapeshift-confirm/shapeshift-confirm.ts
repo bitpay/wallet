@@ -32,7 +32,6 @@ export class ShapeshiftConfirmPage {
   @ViewChild('slideButton') slideButton;
 
   private amount: number;
-  private currency: string;
   private rateUnit: number;
   private fromWalletId: string;
   private toWalletId: string;
@@ -44,6 +43,7 @@ export class ShapeshiftConfirmPage {
   private useSendMax: boolean;
   private sendMaxInfo: any;
 
+  public currency: string;
   public currencyIsoCode: string;
   public isCordova: boolean;
   public toWallet: any;

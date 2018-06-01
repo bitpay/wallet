@@ -1,4 +1,4 @@
-import { async, TestBed } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 
 // providers
 import { BwcProvider } from '../../providers/bwc/bwc';

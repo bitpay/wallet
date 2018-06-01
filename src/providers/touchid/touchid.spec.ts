@@ -1,5 +1,5 @@
 import { HttpClientModule } from '@angular/common/http';
-import { async, TestBed } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 import { AndroidFingerprintAuth } from '@ionic-native/android-fingerprint-auth';
 import { TouchID } from '@ionic-native/touch-id';
 import {
@@ -19,7 +19,6 @@ import { TouchIdProvider } from './touchid';
 describe('Provider: TouchId Provider', () => {
   let touchIdProvider: TouchIdProvider;
   let platformProvider: PlatformProvider;
-  let configProvider: ConfigProvider;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -45,7 +44,6 @@ describe('Provider: TouchId Provider', () => {
     });
     touchIdProvider = TestBed.get(TouchIdProvider);
     platformProvider = TestBed.get(PlatformProvider);
-    configProvider = TestBed.get(ConfigProvider);
   });
 
   describe('Function: isAvailable', () => {

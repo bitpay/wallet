@@ -1,20 +1,13 @@
-import {
-  async,
-  ComponentFixture,
-  fakeAsync,
-  TestBed
-} from '@angular/core/testing';
+import { async, ComponentFixture } from '@angular/core/testing';
 
 import { TestUtils } from '../../test';
 
 import { ProfileProvider } from './../../providers/profile/profile';
-import { TimeProvider } from './../../providers/time/time';
 import { WalletDetailsPage } from './wallet-details';
 
 describe('WalletDetailsPage', () => {
   let fixture: ComponentFixture<WalletDetailsPage>;
   let instance: any;
-  let testBed: typeof TestBed;
 
   beforeEach(async(() => {
     const mockWallet = {
@@ -31,7 +24,6 @@ describe('WalletDetailsPage', () => {
       testEnv => {
         fixture = testEnv.fixture;
         instance = testEnv.instance;
-        testBed = testEnv.testBed;
         fixture.detectChanges();
       }
     );
