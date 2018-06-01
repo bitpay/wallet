@@ -89,7 +89,7 @@ export class FeedbackCompletePage {
         this.shareFacebookVia = 'com.apple.social.facebook';
         this.facebook = true;
       })
-      .catch(e => {
+      .catch(() => {
         this.socialSharing
           .canShareVia('com.facebook.katana', 'msg', null, null, null)
           .then(() => {
@@ -107,7 +107,7 @@ export class FeedbackCompletePage {
         this.shareTwitterVia = 'com.apple.social.twitter';
         this.twitter = true;
       })
-      .catch(e => {
+      .catch(() => {
         this.socialSharing
           .canShareVia('com.twitter.android', 'msg', null, null, null)
           .then(() => {

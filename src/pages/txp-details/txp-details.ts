@@ -130,26 +130,23 @@ export class TxpDetailsPage {
       }
     }
 
-    this.events.subscribe(
-      'bwsEvent',
-      (walletId: string, type: string, n: number) => {
-        _.each(
-          [
-            'TxProposalRejectedBy',
-            'TxProposalAcceptedBy',
-            'transactionProposalRemoved',
-            'TxProposalRemoved',
-            'NewOutgoingTx',
-            'UpdateTx'
-          ],
-          (eventName: string) => {
-            if (walletId == this.wallet.id && type == eventName) {
-              this.updateTxInfo(eventName);
-            }
+    this.events.subscribe('bwsEvent', (walletId: string, type: string) => {
+      _.each(
+        [
+          'TxProposalRejectedBy',
+          'TxProposalAcceptedBy',
+          'transactionProposalRemoved',
+          'TxProposalRemoved',
+          'NewOutgoingTx',
+          'UpdateTx'
+        ],
+        (eventName: string) => {
+          if (walletId == this.wallet.id && type == eventName) {
+            this.updateTxInfo(eventName);
           }
-        );
-      }
-    );
+        }
+      );
+    });
   }
 
   ionViewWillLeave() {
@@ -264,7 +261,7 @@ export class TxpDetailsPage {
     }, 1000);
   }
 
-  private setError(err: any, prefix: string): void {
+  private setError(err, prefix: string): void {
     this.loading = false;
     this.popupProvider.ionicAlert(
       this.translate.instant('Error'),
@@ -276,17 +273,17 @@ export class TxpDetailsPage {
     this.loading = true;
     this.walletProvider
       .publishAndSign(this.wallet, this.tx)
-      .then((txp: any) => {
+      .then(() => {
         this.onGoingProcessProvider.clear();
         this.openFinishModal();
       })
-      .catch((err: any) => {
+      .catch(err => {
         this.onGoingProcessProvider.clear();
         this.setError(err, 'Could not send payment');
       });
   }
 
-  public reject(txp: any): void {
+  public reject(): void {
     let title = this.translate.instant('Warning!');
     let msg = this.translate.instant(
       'Are you sure you want to reject this transaction?'
@@ -299,7 +296,7 @@ export class TxpDetailsPage {
         this.onGoingProcessProvider.set('rejectTx');
         this.walletProvider
           .reject(this.wallet, this.tx)
-          .then(txpr => {
+          .then(() => {
             this.onGoingProcessProvider.clear();
             this.close();
           })
@@ -341,16 +338,16 @@ export class TxpDetailsPage {
       });
   }
 
-  public broadcast(txp: any): void {
+  public broadcast(): void {
     this.loading = true;
     this.onGoingProcessProvider.set('broadcastingTx');
     this.walletProvider
       .broadcastTx(this.wallet, this.tx)
-      .then((txpb: any) => {
+      .then(() => {
         this.onGoingProcessProvider.clear();
         this.openFinishModal();
       })
-      .catch((err: any) => {
+      .catch(err => {
         this.onGoingProcessProvider.clear();
         this.setError(err, 'Could not broadcast payment');
 

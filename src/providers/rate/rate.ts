@@ -71,7 +71,7 @@ export class RateProvider {
   }
 
   public getBTC(): Promise<any> {
-    return new Promise((resolve, reject) => {
+    return new Promise(resolve => {
       this.http.get(this.rateServiceUrl).subscribe((data: any) => {
         resolve(data);
       });
@@ -79,7 +79,7 @@ export class RateProvider {
   }
 
   public getBCH(): Promise<any> {
-    return new Promise((resolve, reject) => {
+    return new Promise(resolve => {
       this.http.get(this.bchRateServiceUrl).subscribe((data: any) => {
         resolve(data);
       });
@@ -139,7 +139,7 @@ export class RateProvider {
   }
 
   public whenRatesAvailable(chain: string): Promise<any> {
-    return new Promise((resolve, reject) => {
+    return new Promise(resolve => {
       if (
         (this.ratesBtcAvailable && chain == 'btc') ||
         (this.ratesBchAvailable && chain == 'bch')

@@ -16,7 +16,7 @@ export class PopupProvider {
     subTitle?: string,
     okText?: string
   ): Promise<any> {
-    return new Promise((resolve, reject) => {
+    return new Promise(resolve => {
       let alert = this.alertCtrl.create({
         title,
         subTitle,
@@ -41,7 +41,7 @@ export class PopupProvider {
     okText?: string,
     cancelText?: string
   ): Promise<any> {
-    return new Promise((resolve, reject) => {
+    return new Promise(resolve => {
       let confirm = this.alertCtrl.create({
         title,
         message,
@@ -74,7 +74,7 @@ export class PopupProvider {
     okText?: string,
     cancelText?: string
   ): Promise<any> {
-    return new Promise((resolve, reject) => {
+    return new Promise(resolve => {
       let defaultText = opts && opts.defaultText ? opts.defaultText : null;
       let placeholder = opts && opts.placeholder ? opts.placeholder : null;
       let inputType = opts && opts.type ? opts.type : 'text';
@@ -96,7 +96,7 @@ export class PopupProvider {
         buttons: [
           {
             text: cancelText ? cancelText : this.translate.instant('Cancel'),
-            handler: data => {
+            handler: () => {
               this.logger.info('Cancel clicked');
               resolve(null);
             }

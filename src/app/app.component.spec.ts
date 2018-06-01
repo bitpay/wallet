@@ -29,7 +29,8 @@ describe('CopayApp', () => {
         TranslateModule.forRoot({
           loader: { provide: TranslateLoader, useClass: TranslateFakeLoader }
         })
-      ]
+      ],
+      providers: [{ provide: 'console', useValue: { log: () => undefined } }]
     });
   }));
 
@@ -66,7 +67,7 @@ describe('CopayApp', () => {
         (window as any).require = () => {
           return {
             App: {
-              on: (event, cb) => {},
+              on: () => {},
               argv: ['URL']
             }
           };

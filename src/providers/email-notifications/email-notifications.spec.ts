@@ -1,37 +1,7 @@
-import { TestBed } from '@angular/core/testing';
-
-// providers
-import { DecimalPipe } from '@angular/common';
-import { HttpClientModule } from '@angular/common/http';
-import { AndroidFingerprintAuth } from '@ionic-native/android-fingerprint-auth';
-import { File } from '@ionic-native/file';
-import { TouchID } from '@ionic-native/touch-id';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import {
-  AlertController,
-  App,
-  Config,
-  Events,
-  LoadingController,
-  Platform
-} from 'ionic-angular';
-import { Logger } from '../../providers/logger/logger';
-import { AppProvider } from '../app/app';
-import { BwcErrorProvider } from '../bwc-error/bwc-error';
-import { BwcProvider } from '../bwc/bwc';
+import { TestUtils } from '../../test';
 import { ConfigProvider } from '../config/config';
-import { FeeProvider } from '../fee/fee';
-import { FilterProvider } from '../filter/filter';
-import { LanguageProvider } from '../language/language';
-import { OnGoingProcessProvider } from '../on-going-process/on-going-process';
 import { PersistenceProvider } from '../persistence/persistence';
-import { PlatformProvider } from '../platform/platform';
-import { PopupProvider } from '../popup/popup';
 import { ProfileProvider } from '../profile/profile';
-import { RateProvider } from '../rate/rate';
-import { ReplaceParametersProvider } from '../replace-parameters/replace-parameters';
-import { TouchIdProvider } from '../touchid/touchid';
-import { TxFormatProvider } from '../tx-format/tx-format';
 import { WalletProvider } from '../wallet/wallet';
 import { EmailNotificationsProvider } from './email-notifications';
 
@@ -48,48 +18,13 @@ describe('Provider: Wallet Provider', () => {
   };
 
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      imports: [HttpClientModule, TranslateModule.forRoot({})],
-      providers: [
-        AppProvider,
-        AlertController,
-        AndroidFingerprintAuth,
-        App,
-        BwcErrorProvider,
-        BwcProvider,
-        Config,
-        ConfigProvider,
-        DecimalPipe,
-        FeeProvider,
-        EmailNotificationsProvider,
-        Events,
-        File,
-        FilterProvider,
-        LoadingController,
-        Logger,
-        LanguageProvider,
-        OnGoingProcessProvider,
-        { provide: PersistenceProvider },
-        PersistenceProvider,
-        Platform,
-        PlatformProvider,
-        PopupProvider,
-        ProfileProvider,
-        RateProvider,
-        TouchID,
-        TouchIdProvider,
-        TranslateService,
-        TxFormatProvider,
-        WalletProvider,
-        ReplaceParametersProvider
-      ]
-    });
-    configProvider = TestBed.get(ConfigProvider);
-    emailNotificationsProvider = TestBed.get(EmailNotificationsProvider);
-    persistenceProvider = TestBed.get(PersistenceProvider);
+    const testBed = TestUtils.configureProviderTestingModule();
+    configProvider = testBed.get(ConfigProvider);
+    emailNotificationsProvider = testBed.get(EmailNotificationsProvider);
+    persistenceProvider = testBed.get(PersistenceProvider);
     persistenceProvider.load();
-    walletProvider = TestBed.get(WalletProvider);
-    profileProvider = TestBed.get(ProfileProvider);
+    walletProvider = testBed.get(WalletProvider);
+    profileProvider = testBed.get(ProfileProvider);
   });
 
   describe('updateEmail function', () => {
@@ -113,7 +48,7 @@ describe('Provider: Wallet Provider', () => {
       emailNotificationsProvider.updateEmail(opts);
       jasmine.clock().tick(1001);
       let wallets = profileProvider.getWallets();
-      walletProvider.updateRemotePreferences(wallets).then(address => {
+      walletProvider.updateRemotePreferences(wallets).then(() => {
         expect().nothing();
       });
       jasmine.clock().uninstall();

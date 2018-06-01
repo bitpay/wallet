@@ -178,7 +178,7 @@ export class WalletExportPage {
               .then(() => {
                 this.app.getRootNavs()[0].setRoot(TabsPage);
               })
-              .catch((err: string) => {
+              .catch(() => {
                 this.popupProvider.ionicAlert(
                   this.translate.instant('Error'),
                   this.translate.instant('Failed to export')
@@ -221,7 +221,7 @@ export class WalletExportPage {
   }
 
   private getBackup(): Promise<any> {
-    return new Promise((resolve, reject) => {
+    return new Promise(resolve => {
       this.getPassword()
         .then((password: string) => {
           this.getAddressBook()
@@ -245,7 +245,7 @@ export class WalletExportPage {
               }
               return resolve(ew);
             })
-            .catch((err: string) => {
+            .catch(() => {
               this.popupProvider.ionicAlert(
                 this.translate.instant('Error'),
                 this.translate.instant('Failed to export')

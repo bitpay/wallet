@@ -39,12 +39,9 @@ export class ShapeshiftPage {
   }
 
   ionViewWillEnter() {
-    this.events.subscribe(
-      'bwsEvent',
-      (walletId: string, type: string, n: any) => {
-        if (type == 'NewBlock') this.updateShift(this.shifts);
-      }
-    );
+    this.events.subscribe('bwsEvent', (_, type: string) => {
+      if (type == 'NewBlock') this.updateShift(this.shifts);
+    });
   }
 
   ionViewWillLeave() {
@@ -75,7 +72,7 @@ export class ShapeshiftPage {
             this.shapeshiftProvider.saveShapeshift(
               this.shifts.data[st.address],
               null,
-              (err: any) => {
+              () => {
                 this.logger.debug('Saved shift with status: ' + st.status);
               }
             );
@@ -123,7 +120,7 @@ export class ShapeshiftPage {
 
     modal.present();
 
-    modal.onDidDismiss(data => {
+    modal.onDidDismiss(() => {
       this.init();
     });
   }

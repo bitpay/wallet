@@ -1278,7 +1278,7 @@ export class WalletProvider {
 
   // An alert dialog
   private askPassword(warnMsg: string, title: string): Promise<any> {
-    return new Promise((resolve, reject) => {
+    return new Promise(resolve => {
       let opts = {
         type: 'password',
         useDanger: true
@@ -1366,7 +1366,7 @@ export class WalletProvider {
   public onlyPublish(wallet: any, txp: any): Promise<any> {
     return new Promise((resolve, reject) => {
       this.publishTx(wallet, txp)
-        .then(publishedTxp => {
+        .then(() => {
           this.invalidateCache(wallet);
           this.events.publish('Local/TxAction', wallet.id);
           return resolve();

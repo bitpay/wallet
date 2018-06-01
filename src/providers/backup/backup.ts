@@ -63,7 +63,7 @@ export class BackupProvider {
   }
 
   private _download(ew: any, fileName: string): Promise<any> {
-    return new Promise((resolve, reject) => {
+    return new Promise(resolve => {
       let a = document.createElement('a');
       let blob = this.NewBlob(ew, 'text/plain;charset=utf-8');
       let url = window.URL.createObjectURL(blob);

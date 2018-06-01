@@ -98,7 +98,7 @@ export class ScanProvider {
    * The `status` of QRScanner is returned to the callback.
    */
   public gentleInitialize(): Promise<any> {
-    return new Promise((resolve, reject) => {
+    return new Promise(resolve => {
       if (this.initializeStarted && !this.isDesktop) {
         this.qrScanner.getStatus().then(status => {
           this.completeInitialization(status);
@@ -139,7 +139,7 @@ export class ScanProvider {
   }
 
   public initialize(): Promise<any> {
-    return new Promise((resolve, reject) => {
+    return new Promise(resolve => {
       this.logger.debug('Initializing scanner...');
       this.qrScanner
         .prepare()
@@ -179,7 +179,7 @@ export class ScanProvider {
    * is complete.
    */
   public activate(): Promise<any> {
-    return new Promise((resolve, reject) => {
+    return new Promise(resolve => {
       this.logger.debug('Activating scanner...');
       this.qrScanner.show().then(status => {
         this.initializeCompleted = true;
@@ -192,7 +192,7 @@ export class ScanProvider {
    * Start a new scan.
    */
   public scan(): Promise<any> {
-    return new Promise((resolve, reject) => {
+    return new Promise(resolve => {
       this.logger.debug('Scanning...');
       let scanSub = this.qrScanner.scan().subscribe((text: string) => {
         this.logger.debug('Scanned something', text);
@@ -253,7 +253,7 @@ export class ScanProvider {
       if (this.lightEnabled) {
         this.qrScanner
           .disableLight()
-          .then(resp => {
+          .then(() => {
             this.lightEnabled = false;
             return resolve(this.lightEnabled);
           })
@@ -264,7 +264,7 @@ export class ScanProvider {
       } else {
         this.qrScanner
           .enableLight()
-          .then(resp => {
+          .then(() => {
             this.lightEnabled = true;
             return resolve(this.lightEnabled);
           })
@@ -289,7 +289,7 @@ export class ScanProvider {
       if (this.frontCameraEnabled) {
         this.qrScanner
           .useBackCamera()
-          .then(resp => {
+          .then(() => {
             this.frontCameraEnabled = false;
             return resolve(this.frontCameraEnabled);
           })
@@ -300,7 +300,7 @@ export class ScanProvider {
       } else {
         this.qrScanner
           .useFrontCamera()
-          .then(resp => {
+          .then(() => {
             this.frontCameraEnabled = true;
             return resolve(this.frontCameraEnabled);
           })

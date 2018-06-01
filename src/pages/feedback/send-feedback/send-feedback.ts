@@ -149,7 +149,7 @@ export class SendFeedbackPage {
           this.navCtrl.push(FeedbackCompletePage, { score: this.score });
         }
       })
-      .catch(err => {
+      .catch(() => {
         if (goHome) return;
         this.onGoingProcessProvider.clear();
         let title = this.translate.instant('Error');

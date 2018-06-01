@@ -47,7 +47,7 @@ export class AmazonCardDetailsPage {
         return;
       }
       this.card.cardStatus = data.cardStatus;
-      this.amazonProvider.savePendingGiftCard(this.card, null, (err: any) => {
+      this.amazonProvider.savePendingGiftCard(this.card, null, () => {
         this.refreshGiftCard();
       });
     });
@@ -59,7 +59,7 @@ export class AmazonCardDetailsPage {
       {
         remove: true
       },
-      (err: any) => {
+      () => {
         this.close();
       }
     );
@@ -68,13 +68,13 @@ export class AmazonCardDetailsPage {
   public refreshGiftCard(): void {
     if (!this.updateGiftCard) return;
     this.onGoingProcessProvider.set('updatingGiftCard');
-    this.amazonProvider.getPendingGiftCards((err: any, gcds: any) => {
+    this.amazonProvider.getPendingGiftCards((err: any, giftCards: any) => {
       this.onGoingProcessProvider.clear();
       if (err) {
         this.popupProvider.ionicAlert('Error', err);
         return;
       }
-      _.forEach(gcds, function(dataFromStorage) {
+      _.forEach(giftCards, function(dataFromStorage) {
         if (dataFromStorage.invoiceId == this.card.invoiceId) {
           this.logger.debug('creating gift card');
           this.amazonProvider.createGiftCard(
@@ -97,21 +97,17 @@ export class AmazonCardDetailsPage {
                     {
                       remove: true
                     },
-                    (err: any) => {
+                    () => {
                       this.close();
                     }
                   );
                   return;
                 }
 
-                this.amazonProvider.savePendingGiftCard(
-                  newData,
-                  null,
-                  (err: any) => {
-                    this.logger.debug('Amazon gift card updated');
-                    this.card = newData;
-                  }
-                );
+                this.amazonProvider.savePendingGiftCard(newData, null, () => {
+                  this.logger.debug('Amazon gift card updated');
+                  this.card = newData;
+                });
               } else this.logger.debug('Pending gift card not available yet');
             }
           );

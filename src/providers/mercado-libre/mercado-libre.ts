@@ -74,8 +74,8 @@ export class MercadoLibreProvider {
   }
 
   public getPendingGiftCards(cb) {
-    var network = this.getNetwork();
-    this.persistenceProvider
+    const network = this.getNetwork();
+    return this.persistenceProvider
       .getMercadoLibreGiftCards(network)
       .then(giftCards => {
         var _gcds = giftCards ? giftCards : null;

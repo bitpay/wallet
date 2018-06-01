@@ -6,7 +6,7 @@
     "experimentalDecorators": true,
     // "strict": true,
     "noUnusedLocals": true,
-    // "noUnusedParameters": true,
+    "noUnusedParameters": true,
     // "noImplicitReturns": true,
     // "noFallthroughCasesInSwitch": true,
     "lib": ["dom", "es2015"],

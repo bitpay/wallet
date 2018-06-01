@@ -1,18 +1,12 @@
-import { TestBed } from '@angular/core/testing';
-
-// providers
-import { BwcProvider } from '../../providers/bwc/bwc';
-import { Logger } from '../../providers/logger/logger';
+import { TestUtils } from '../../test';
 import { AddressProvider } from './address';
 
 describe('AddressProvider', () => {
   let addressProvider: AddressProvider;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      providers: [AddressProvider, BwcProvider, Logger]
-    });
-    addressProvider = TestBed.get(AddressProvider);
+    const testBed = TestUtils.configureProviderTestingModule();
+    addressProvider = testBed.get(AddressProvider);
   });
 
   let BTCAddresses = [

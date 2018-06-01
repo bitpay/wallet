@@ -140,7 +140,7 @@ export class WalletSettingsPage {
         this.touchIdPrevValue = this.touchIdEnabled;
         this.logger.debug('Touch Id status changed: ' + newStatus);
       })
-      .catch((err: any) => {
+      .catch(() => {
         this.touchIdEnabled = this.touchIdPrevValue;
       });
   }

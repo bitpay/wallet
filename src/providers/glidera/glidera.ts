@@ -513,7 +513,7 @@ export class GlideraProvider {
     if (_.isEmpty(this.credentials.CLIENT_ID)) {
       return cb('Glidera is Disabled');
     }
-    this.logger.debug('Trying to initialise Glidera...');
+    this.logger.debug('Trying to initialize Glidera...');
 
     this.persistenceProvider
       .getGlideraToken(this.credentials.NETWORK)
@@ -591,7 +591,7 @@ export class GlideraProvider {
               );
             });
 
-            this.getLimits(accessToken, (err, limits) => {
+            this.getLimits(accessToken, (_, limits) => {
               data.limits = limits;
             });
 

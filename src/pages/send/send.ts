@@ -183,8 +183,8 @@ export class SendPage {
           email: _.isObject(v) ? v.email : null,
           recipientType: 'contact',
           coin: this.addressProvider.validateAddress(k).coin,
-          getAddress: (): Promise<any> => {
-            return new Promise((resolve, reject) => {
+          getAddress: () => {
+            return new Promise(resolve => {
               return resolve(k);
             });
           }

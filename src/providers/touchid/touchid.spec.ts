@@ -1,18 +1,4 @@
-import { HttpClientModule } from '@angular/common/http';
-import { TestBed } from '@angular/core/testing';
-import { AndroidFingerprintAuth } from '@ionic-native/android-fingerprint-auth';
-import { TouchID } from '@ionic-native/touch-id';
-import {
-  TranslateFakeLoader,
-  TranslateLoader,
-  TranslateModule
-} from '@ngx-translate/core';
-import { LoadingController, Platform } from 'ionic-angular';
-import { Logger } from '../../providers/logger/logger';
-import { AppProvider } from '../app/app';
-import { ConfigProvider } from '../config/config';
-import { LanguageProvider } from '../language/language';
-import { PersistenceProvider } from '../persistence/persistence';
+import { TestUtils } from '../../test';
 import { PlatformProvider } from '../platform/platform';
 import { TouchIdProvider } from './touchid';
 
@@ -21,29 +7,9 @@ describe('Provider: TouchId Provider', () => {
   let platformProvider: PlatformProvider;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      imports: [
-        HttpClientModule,
-        TranslateModule.forRoot({
-          loader: { provide: TranslateLoader, useClass: TranslateFakeLoader }
-        })
-      ],
-      providers: [
-        AppProvider,
-        AndroidFingerprintAuth,
-        ConfigProvider,
-        LoadingController,
-        Logger,
-        LanguageProvider,
-        { provide: PersistenceProvider },
-        Platform,
-        PlatformProvider,
-        TouchID,
-        TouchIdProvider
-      ]
-    });
-    touchIdProvider = TestBed.get(TouchIdProvider);
-    platformProvider = TestBed.get(PlatformProvider);
+    const testBed = TestUtils.configureProviderTestingModule();
+    touchIdProvider = testBed.get(TouchIdProvider);
+    platformProvider = testBed.get(PlatformProvider);
   });
 
   describe('Function: isAvailable', () => {
@@ -96,7 +62,7 @@ describe('Provider: TouchId Provider', () => {
         needsBackup: false
       };
       platformProvider.isIOS = true;
-      return touchIdProvider.checkWallet(wallet).then(resolve => {
+      return touchIdProvider.checkWallet(wallet).then(() => {
         expect().nothing();
       });
     });

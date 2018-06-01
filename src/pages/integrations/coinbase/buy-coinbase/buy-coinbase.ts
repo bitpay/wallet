@@ -125,55 +125,52 @@ export class BuyCoinbasePage {
       this.coinbaseProvider.buyPrice(
         accessToken,
         this.coinbaseProvider.getAvailableCurrency(),
-        (err: any, b: any) => {
+        (_, b) => {
           this.buyPrice = b.data || null;
         }
       );
 
       this.paymentMethods = [];
       this.selectedPaymentMethodId = null;
-      this.coinbaseProvider.getPaymentMethods(
-        accessToken,
-        (err: any, p: any) => {
-          if (err) {
-            this.onGoingProcessProvider.clear();
-            this.showErrorAndBack(err);
-            return;
-          }
-
-          let hasPrimary;
-          let pm;
-          for (let i = 0; i < p.data.length; i++) {
-            pm = p.data[i];
-            if (pm.allow_buy) {
-              this.paymentMethods.push(pm);
-            }
-            if (pm.allow_buy && pm.primary_buy) {
-              hasPrimary = true;
-              this.selectedPaymentMethodId = pm.id;
-            }
-          }
-          if (_.isEmpty(this.paymentMethods)) {
-            this.onGoingProcessProvider.clear();
-            let url =
-              'https://support.coinbase.com/customer/portal/articles/1148716-payment-methods-for-us-customers';
-            let msg = 'No payment method available to buy';
-            let okText = 'More info';
-            let cancelText = 'Go Back';
-            this.popupProvider
-              .ionicConfirm(null, msg, okText, cancelText)
-              .then(res => {
-                if (res) this.externalLinkProvider.open(url);
-                this.navCtrl.remove(3, 1);
-                this.navCtrl.pop();
-              });
-            return;
-          }
-          if (!hasPrimary)
-            this.selectedPaymentMethodId = this.paymentMethods[0].id;
-          this.buyRequest();
+      this.coinbaseProvider.getPaymentMethods(accessToken, (err, p) => {
+        if (err) {
+          this.onGoingProcessProvider.clear();
+          this.showErrorAndBack(err);
+          return;
         }
-      );
+
+        let hasPrimary;
+        let pm;
+        for (let i = 0; i < p.data.length; i++) {
+          pm = p.data[i];
+          if (pm.allow_buy) {
+            this.paymentMethods.push(pm);
+          }
+          if (pm.allow_buy && pm.primary_buy) {
+            hasPrimary = true;
+            this.selectedPaymentMethodId = pm.id;
+          }
+        }
+        if (_.isEmpty(this.paymentMethods)) {
+          this.onGoingProcessProvider.clear();
+          let url =
+            'https://support.coinbase.com/customer/portal/articles/1148716-payment-methods-for-us-customers';
+          let msg = 'No payment method available to buy';
+          let okText = 'More info';
+          let cancelText = 'Go Back';
+          this.popupProvider
+            .ionicConfirm(null, msg, okText, cancelText)
+            .then(res => {
+              if (res) this.externalLinkProvider.open(url);
+              this.navCtrl.remove(3, 1);
+              this.navCtrl.pop();
+            });
+          return;
+        }
+        if (!hasPrimary)
+          this.selectedPaymentMethodId = this.paymentMethods[0].id;
+        this.buyRequest();
+      });
     });
   }
 

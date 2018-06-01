@@ -57,14 +57,10 @@ export class CoinbaseSettingsPage {
       }
       let accessToken = data.accessToken;
       let accountId = data.accountId;
-      this.coinbaseProvider.getAccount(
-        accessToken,
-        accountId,
-        (err, account) => {
-          this.coinbaseAccount = account.data[0];
-        }
-      );
-      this.coinbaseProvider.getCurrentUser(accessToken, (err, user) => {
+      this.coinbaseProvider.getAccount(accessToken, accountId, (_, account) => {
+        this.coinbaseAccount = account.data[0];
+      });
+      this.coinbaseProvider.getCurrentUser(accessToken, (_, user) => {
         this.coinbaseUser = user.data;
       });
     });

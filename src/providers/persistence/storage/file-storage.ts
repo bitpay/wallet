@@ -81,7 +81,7 @@ export class FileStorage implements IStorage {
   }
 
   get(k: string): Promise<any> {
-    return new Promise((resolve, reject) => {
+    return new Promise(resolve => {
       this.init()
         .then(() => {
           this.file
@@ -116,7 +116,7 @@ export class FileStorage implements IStorage {
           // Create a FileWriter object for our FileEntry (log.txt).
           return new Promise((resolve, reject) => {
             fileEntry.createWriter(fileWriter => {
-              fileWriter.onwriteend = e => {
+              fileWriter.onwriteend = () => {
                 this.log.info('Write completed:' + k);
                 return resolve();
               };

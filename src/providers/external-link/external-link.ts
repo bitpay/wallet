@@ -30,16 +30,18 @@ export class ExternalLinkProvider {
     message?: string,
     okText?: string,
     cancelText?: string
-  ): Promise<any> {
-    return new Promise((resolve, reject) => {
+  ) {
+    return new Promise(resolve => {
       if (optIn) {
         this.popupProvider
           .ionicConfirm(title, message, okText, cancelText)
           .then((res: boolean) => {
             this.openBrowser(res, url);
+            resolve();
           });
       } else {
         this.openBrowser(true, url);
+        resolve();
       }
     });
   }

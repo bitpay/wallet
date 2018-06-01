@@ -182,7 +182,7 @@ export class BwcErrorProvider {
   }
 
   public cb(err: string, prefix?: string): Promise<any> {
-    return new Promise((resolve, reject) => {
+    return new Promise(resolve => {
       resolve(this.msg(err, prefix));
     });
   }

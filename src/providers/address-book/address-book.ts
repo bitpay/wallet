@@ -43,11 +43,11 @@ export class AddressBookProvider {
               if (ab && ab[addr]) return resolve(ab[addr]);
               return resolve();
             })
-            .catch((err: any) => {
+            .catch(() => {
               return reject();
             });
         })
-        .catch((err: any) => {
+        .catch(() => {
           return reject();
         });
     });
@@ -63,17 +63,17 @@ export class AddressBookProvider {
           ab = ab || {};
           this.persistenceProvider
             .getAddressBook('livenet')
-            .then((ab2: any) => {
+            .then(ab2 => {
               if (ab2 && _.isString(ab)) ab2 = JSON.parse(ab2);
 
               ab2 = ab2 || {};
               return resolve(_.defaults(ab2, ab));
             })
-            .catch((err: any) => {
+            .catch(err => {
               return reject(err);
             });
         })
-        .catch((err: any) => {
+        .catch(() => {
           let msg = this.translate.instant('Could not get the Addressbook');
           return reject(msg);
         });
@@ -100,27 +100,27 @@ export class AddressBookProvider {
           ab[entry.address] = entry;
           this.persistenceProvider
             .setAddressBook(network, JSON.stringify(ab))
-            .then((ab: any) => {
+            .then(() => {
               this.list()
-                .then((ab: any) => {
+                .then(ab => {
                   return resolve(ab);
                 })
-                .catch((err: any) => {
+                .catch(err => {
                   return reject(err);
                 });
             })
-            .catch((err: any) => {
+            .catch(() => {
               let msg = this.translate.instant('Error adding new entry');
               return reject(msg);
             });
         })
-        .catch((err: any) => {
+        .catch(err => {
           return reject(err);
         });
     });
   }
 
-  public remove(addr: any): Promise<any> {
+  public remove(addr): Promise<any> {
     return new Promise((resolve, reject) => {
       var network = this.getNetwork(addr);
       if (_.isEmpty(network)) {
@@ -129,7 +129,7 @@ export class AddressBookProvider {
       }
       this.persistenceProvider
         .getAddressBook(network)
-        .then((ab: any) => {
+        .then(ab => {
           if (ab && _.isString(ab)) ab = JSON.parse(ab);
           ab = ab || {};
           if (_.isEmpty(ab)) {
@@ -145,10 +145,10 @@ export class AddressBookProvider {
             .setAddressBook(network, JSON.stringify(ab))
             .then(() => {
               this.list()
-                .then((ab: any) => {
+                .then(ab => {
                   return resolve(ab);
                 })
-                .catch((err: any) => {
+                .catch(err => {
                   return reject(err);
                 });
             })

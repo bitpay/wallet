@@ -38,7 +38,7 @@ export class ShapeshiftDetailsPage {
       {
         remove: true
       },
-      err => {
+      () => {
         this.close();
       }
     );

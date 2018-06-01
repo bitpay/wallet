@@ -92,7 +92,7 @@ export class BackupGamePage {
 
   ngOnInit() {
     this.currentIndex = 0;
-    this.navBar.backButtonClick = (e: UIEvent) => {
+    this.navBar.backButtonClick = () => {
       if (this.slides) this.slidePrev();
       else this.navCtrl.pop();
     };

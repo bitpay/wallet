@@ -59,7 +59,7 @@ export class ReceivePage {
     this.isOpenSelector = false;
     this.wallets = this.profileProvider.getWallets();
     this.onWalletSelect(this.checkSelectedWallet(this.wallet, this.wallets));
-    this.events.subscribe('bwsEvent', (walletId, type, n) => {
+    this.events.subscribe('bwsEvent', (walletId, type) => {
       // Update current address
       if (this.wallet && walletId == this.wallet.id && type == 'NewIncomingTx')
         this.setAddress(true);
