@@ -8,17 +8,12 @@ describe('NotificationsPage', () => {
   let fixture: ComponentFixture<NotificationsPage>;
   let instance: any;
 
-  beforeEach(
-    async(() =>
-      TestUtils.configurePageTestingModule([NotificationsPage]).then(
-        testEnv => {
-          fixture = testEnv.fixture;
-          instance = testEnv.instance;
-          fixture.detectChanges();
-        }
-      )
-    )
-  );
+  beforeEach(async(() =>
+    TestUtils.configurePageTestingModule([NotificationsPage]).then(testEnv => {
+      fixture = testEnv.fixture;
+      instance = testEnv.instance;
+      fixture.detectChanges();
+    })));
   afterEach(() => {
     fixture.destroy();
   });

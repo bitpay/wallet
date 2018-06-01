@@ -8,15 +8,12 @@ describe('FeePolicyPage', () => {
   let fixture: ComponentFixture<FeePolicyPage>;
   let instance: any;
 
-  beforeEach(
-    async(() =>
-      TestUtils.configurePageTestingModule([FeePolicyPage]).then(testEnv => {
-        fixture = testEnv.fixture;
-        instance = testEnv.instance;
-        fixture.detectChanges();
-      })
-    )
-  );
+  beforeEach(async(() =>
+    TestUtils.configurePageTestingModule([FeePolicyPage]).then(testEnv => {
+      fixture = testEnv.fixture;
+      instance = testEnv.instance;
+      fixture.detectChanges();
+    })));
   afterEach(() => {
     fixture.destroy();
   });

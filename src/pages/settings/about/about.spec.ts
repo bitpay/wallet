@@ -9,15 +9,12 @@ describe('AboutPage', () => {
   let fixture: ComponentFixture<AboutPage>;
   let instance: any;
 
-  beforeEach(
-    async(() =>
-      TestUtils.configurePageTestingModule([AboutPage]).then(testEnv => {
-        fixture = testEnv.fixture;
-        instance = testEnv.instance;
-        fixture.detectChanges();
-      })
-    )
-  );
+  beforeEach(async(() =>
+    TestUtils.configurePageTestingModule([AboutPage]).then(testEnv => {
+      fixture = testEnv.fixture;
+      instance = testEnv.instance;
+      fixture.detectChanges();
+    })));
   afterEach(() => {
     fixture.destroy();
   });

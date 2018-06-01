@@ -8,15 +8,12 @@ describe('LanguagePage', () => {
   let fixture: ComponentFixture<LanguagePage>;
   let instance: any;
 
-  beforeEach(
-    async(() =>
-      TestUtils.configurePageTestingModule([LanguagePage]).then(testEnv => {
-        fixture = testEnv.fixture;
-        instance = testEnv.instance;
-        fixture.detectChanges();
-      })
-    )
-  );
+  beforeEach(async(() =>
+    TestUtils.configurePageTestingModule([LanguagePage]).then(testEnv => {
+      fixture = testEnv.fixture;
+      instance = testEnv.instance;
+      fixture.detectChanges();
+    })));
   afterEach(() => {
     fixture.destroy();
   });
