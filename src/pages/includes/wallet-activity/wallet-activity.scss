@@ -1,21 +1,23 @@
 page-wallet-activity {
+  .input-wrapper {
+    overflow: initial;
+  }
   .wallet-color-default {
     background-color: color($colors, primary);
   }
   ion-note {
-    text-align: end;
     .amount {
       color: color($colors, dark);
     }
-    .date {
-      font-size: 12.5px;
-    }
   }
-
   .wallet-icon-container {
     width: 37px;
   }
-
+  .item-subtitle {
+    .date {
+      color: color($colors, grey);
+    }
+  }
   .icon-color {
     width: 2rem;
     height: 2rem;
