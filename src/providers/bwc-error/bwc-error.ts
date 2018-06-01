@@ -3,17 +3,15 @@ import { TranslateService } from '@ngx-translate/core';
 
 @Injectable()
 export class BwcErrorProvider {
-
-  constructor(
-    private translate: TranslateService
-  ) { }
+  constructor(private translate: TranslateService) {}
 
   public msg(err: any, prefix?: string): string {
-    if (!err)
-      return 'Unknown error';
+    if (!err) return 'Unknown error';
 
-    const name = err.name ?
-      (err.name === 'Error' ? err.message : err.name.replace(/^bwc.Error/g, ''))
+    const name = err.name
+      ? err.name === 'Error'
+        ? err.message
+        : err.name.replace(/^bwc.Error/g, '')
       : err;
 
     let body = '';
@@ -25,16 +23,22 @@ export class BwcErrorProvider {
           body = this.translate.instant('Wallet Recovery Phrase is invalid');
           break;
         case 'WALLET_DOES_NOT_EXIST':
-          body = this.translate.instant('Wallet not registered at the wallet service. Recreate it from "Create Wallet" using "Advanced Options" to set your recovery phrase');
+          body = this.translate.instant(
+            'Wallet not registered at the wallet service. Recreate it from "Create Wallet" using "Advanced Options" to set your recovery phrase'
+          );
           break;
         case 'MISSING_PRIVATE_KEY':
           body = this.translate.instant('Missing private keys to sign');
           break;
         case 'ENCRYPTED_PRIVATE_KEY':
-          body = this.translate.instant('Private key is encrypted, cannot sign');
+          body = this.translate.instant(
+            'Private key is encrypted, cannot sign'
+          );
           break;
         case 'SERVER_COMPROMISED':
-          body = this.translate.instant('Server response could not be verified');
+          body = this.translate.instant(
+            'Server response could not be verified'
+          );
           break;
         case 'COULD_NOT_BUILD_TRANSACTION':
           body = this.translate.instant('Could not build transaction');
@@ -52,7 +56,9 @@ export class BwcErrorProvider {
           body = this.translate.instant('Connection reset by peer');
           break;
         case 'BAD_RESPONSE_CODE':
-          body = this.translate.instant('The request could not be understood by the server');
+          body = this.translate.instant(
+            'The request could not be understood by the server'
+          );
           break;
         case 'WALLET_ALREADY_EXISTS':
           body = this.translate.instant('Wallet already exists');
@@ -70,10 +76,14 @@ export class BwcErrorProvider {
           body = this.translate.instant('Insufficient funds for fee');
           break;
         case 'LOCKED_FUNDS':
-          body = this.translate.instant('Funds are locked by pending spend proposals');
+          body = this.translate.instant(
+            'Funds are locked by pending spend proposals'
+          );
           break;
         case 'COPAYER_VOTED':
-          body = this.translate.instant('Copayer already voted on this spend proposal');
+          body = this.translate.instant(
+            'Copayer already voted on this spend proposal'
+          );
           break;
         case 'NOT_AUTHORIZED':
           body = this.translate.instant('Not authorized');
@@ -82,10 +92,14 @@ export class BwcErrorProvider {
           body = this.translate.instant('Transaction already broadcasted');
           break;
         case 'TX_CANNOT_CREATE':
-          body = this.translate.instant('Locktime in effect. Please wait to create a new spend proposal');
+          body = this.translate.instant(
+            'Locktime in effect. Please wait to create a new spend proposal'
+          );
           break;
         case 'TX_CANNOT_REMOVE':
-          body = this.translate.instant('Locktime in effect. Please wait to remove this spend proposal');
+          body = this.translate.instant(
+            'Locktime in effect. Please wait to remove this spend proposal'
+          );
           break;
         case 'TX_NOT_ACCEPTED':
           body = this.translate.instant('Spend proposal is not accepted');
@@ -97,7 +111,9 @@ export class BwcErrorProvider {
           body = this.translate.instant('The spend proposal is not pending');
           break;
         case 'UPGRADE_NEEDED':
-          body = this.translate.instant('Please upgrade Copay to perform this action');
+          body = this.translate.instant(
+            'Please upgrade Copay to perform this action'
+          );
           break;
         case 'BAD_SIGNATURES':
           body = this.translate.instant('Signatures rejected by server');
@@ -112,13 +128,17 @@ export class BwcErrorProvider {
           body = this.translate.instant('Incorrect network address');
           break;
         case 'COPAYER_REGISTERED':
-          body = this.translate.instant('Key already associated with an existing wallet');
+          body = this.translate.instant(
+            'Key already associated with an existing wallet'
+          );
           break;
         case 'INVALID_ADDRESS':
           body = this.translate.instant('Invalid address');
           break;
         case 'MAIN_ADDRESS_GAP_REACHED':
-          body = this.translate.instant('Empty addresses limit reached. New addresses cannot be generated.');
+          body = this.translate.instant(
+            'Empty addresses limit reached. New addresses cannot be generated.'
+          );
           break;
         case 'WALLET_LOCKED':
           body = this.translate.instant('Wallet is locked');
@@ -139,10 +159,12 @@ export class BwcErrorProvider {
           body = this.translate.instant('Wrong encrypt password');
           break;
         case 'EXCEEDED_DAILY_LIMIT':
-          body = this.translate.instant('Exceeded daily limit of $500 per user');
+          body = this.translate.instant(
+            'Exceeded daily limit of $500 per user'
+          );
           break;
         case 'ERROR':
-          body = (err.message || err.error);
+          body = err.message || err.error;
           break;
 
         default:

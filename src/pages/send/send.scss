@@ -17,7 +17,7 @@ page-send {
     align-items: center;
     justify-content: center;
     text-align: center;
-      padding: 30px;
+    padding: 30px;
   }
   .wallet-warning {
     ion-label {
@@ -56,12 +56,12 @@ page-send {
       width: 1rem;
       height: 1rem;
       // custom icons
-      &[class*="search-btc"] {
-          mask-image: url(../assets/img/icon-bitcoin-symbol.svg);
-          mask-size: 16px;
-          mask-position: 50% 50%;
-          mask-repeat: no-repeat;
-          background: #cccccc;
+      &[class*='search-btc'] {
+        mask-image: url(../assets/img/icon-bitcoin-symbol.svg);
+        mask-size: 16px;
+        mask-position: 50% 50%;
+        mask-repeat: no-repeat;
+        background: #cccccc;
       }
     }
   }

@@ -1,4 +1,4 @@
-page-slide-to-accept {    
+page-slide-to-accept {
   position: fixed;
   bottom: 0;
   height: 90px;
@@ -6,16 +6,19 @@ page-slide-to-accept {
   background: $color-primary;
 
   @keyframes bounce {
-    0%, 20%, 60%, 100% {
+    0%,
+    20%,
+    60%,
+    100% {
       -webkit-transform: translateX(0);
       transform: translateX(0);
     }
-  
+
     40% {
       -webkit-transform: translateX(-10px);
       transform: translateX(-10px);
     }
-  
+
     80% {
       -webkit-transform: translateX(-5px);
       transform: translateX(-5px);
@@ -26,7 +29,7 @@ page-slide-to-accept {
     animation: bounce 300ms;
   }
 
-  .button-slider{
+  .button-slider {
     z-index: 100 !important;
     width: 120%;
     border-bottom-right-radius: 45px;
@@ -35,12 +38,12 @@ page-slide-to-accept {
     background-color: $slider-bg-color !important;
     height: 90px;
     -webkit-box-shadow: 4px 0px 17px rgba(0, 0, 0, 0.4) !important;
-    box-shadow: 4px 0px 17px rgba(0, 0, 0, 0.4) !important;   
+    box-shadow: 4px 0px 17px rgba(0, 0, 0, 0.4) !important;
 
-  //   -webkit-transition: width 1s; /* For Safari 3.1 to 6.0 */
-  // transition: width 1s;
-  } 
-  
+    //   -webkit-transition: width 1s; /* For Safari 3.1 to 6.0 */
+    // transition: width 1s;
+  }
+
   @mixin center-vertically {
     display: flex;
     align-items: center;
@@ -49,9 +52,8 @@ page-slide-to-accept {
   }
 
   .slide {
-    
     &__listener {
-    @include center-vertically;
+      @include center-vertically;
       overflow: hidden;
       position: relative;
       bottom: 0;
@@ -101,7 +103,6 @@ page-slide-to-accept {
         -webkit-transform: translateY(-47%);
         transform: translateY(-47%);
       }
-
     }
     &__bitcoin {
       @include center-vertically;
@@ -123,7 +124,7 @@ page-slide-to-accept {
       color: color($colors, blank);
       font-size: 18px;
       font-weight: 600;
-      letter-spacing: .03rem;
+      letter-spacing: 0.03rem;
       z-index: 1;
 
       .justify {
@@ -147,7 +148,7 @@ page-slide-to-accept {
       ion-spinner * {
         stroke: color($colors, light) !important;
       }
-      
+
       &.enter {
         transition: transform 2500ms ease, opacity 2500ms ease;
         -webkit-transform: translateY(0);
@@ -155,7 +156,7 @@ page-slide-to-accept {
         opacity: 1;
       }
 
-        img {
+      img {
         width: 17px;
         margin-right: 10px;
         animation-name: spin;
@@ -173,12 +174,12 @@ page-slide-to-accept {
 
   @keyframes spin {
     from {
-        -webkit-transform:rotate(0deg);
-        transform:rotate(0deg);
+      -webkit-transform: rotate(0deg);
+      transform: rotate(0deg);
     }
     to {
-        -webkit-transform:rotate(360deg);
-        transform:rotate(360deg);
+      -webkit-transform: rotate(360deg);
+      transform: rotate(360deg);
     }
   }
 }

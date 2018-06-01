@@ -1,10 +1,11 @@
 page-txp-details {
   .margin-bottom {
-    .fixed-content, .scroll-content {
+    .fixed-content,
+    .scroll-content {
       margin-bottom: 90px;
     }
   }
-  $item-border-color: #EFEFEF;
+  $item-border-color: #efefef;
   $item-lateral-padding: 20px;
   .header-container {
     .sending-label {
@@ -49,8 +50,10 @@ page-txp-details {
     margin-top: 1rem;
   }
 
-  .container-to, .container-from {
-    .wallet, .payment-proposal-to {
+  .container-to,
+  .container-from {
+    .wallet,
+    .payment-proposal-to {
       @include row-flex;
       .icon-wallet {
         margin-right: 0.8rem;
@@ -71,7 +74,7 @@ page-txp-details {
       }
     }
   }
-  
+
   .item-fee {
     .fee-title {
       margin-bottom: 5px;
@@ -91,7 +94,7 @@ page-txp-details {
   }
 
   .timeline-item {
-    background-color: color($colors, blank);;
+    background-color: color($colors, blank);
     border: 0;
     &:nth-child(2) {
       border-top: 1px solid $item-border-color;
@@ -116,9 +119,10 @@ page-txp-details {
       min-width: 40px;
       padding-right: 1rem;
       padding-left: 1rem;
-      margin-right: .5rem;
+      margin-right: 0.5rem;
       position: relative;
-      img, .rejected {
+      img,
+      .rejected {
         z-index: 12;
       }
 
@@ -149,10 +153,10 @@ page-txp-details {
         z-index: 10;
 
         &.rejected {
-          background: #E15061;
-          border-color: #E15061;
-          color: #FFFFFF;
-          font-family: "Roboto-Bold";
+          background: #e15061;
+          border-color: #e15061;
+          color: #ffffff;
+          font-family: 'Roboto-Bold';
           font-size: 19px;
         }
       }
@@ -171,16 +175,16 @@ page-txp-details {
       }
     }
   }
-  .last-item{
+  .last-item {
     margin-left: auto !important;
     margin-right: 0px !important;
   }
-  .output-info{
+  .output-info {
     color: color($colors, dark);
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;
-    &.output-note{
+    &.output-note {
       color: color($colors, grey);
     }
   }
@@ -188,4 +192,3 @@ page-txp-details {
     border-left: 2px solid #ff9900;
   }
 }
-

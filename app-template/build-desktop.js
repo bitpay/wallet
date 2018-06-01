@@ -9,10 +9,10 @@ var nw = new NwBuilder({
   macIcns: './resources/*PACKAGENAME*/mac/app.icns',
   exeIco: './resources/*PACKAGENAME*/windows/icon.ico',
   macPlist: {
-    'CFBundleURLTypes': [
+    CFBundleURLTypes: [
       {
-        'CFBundleURLName': 'URI Handler',
-        'CFBundleURLSchemes': ['bitcoin', 'bitcoincash', '*PACKAGENAME*']
+        CFBundleURLName: 'URI Handler',
+        CFBundleURLSchemes: ['bitcoin', 'bitcoincash', '*PACKAGENAME*']
       }
     ]
   }
@@ -21,9 +21,10 @@ var nw = new NwBuilder({
 // Log stuff you want
 nw.on('log', console.log);
 
-nw.build().then(function () {
-  console.log('all done!');
-}).catch(function (error) {
-  console.error(error);
-});
-
+nw.build()
+  .then(function() {
+    console.log('all done!');
+  })
+  .catch(function(error) {
+    console.error(error);
+  });

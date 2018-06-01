@@ -121,7 +121,7 @@ export class WalletAddressesPage {
       .then(resp => {
         if (resp && resp.allUtxos && resp.allUtxos.length) {
           let allSum = _.sumBy(resp.allUtxos || 0, 'satoshis');
-          let per = resp.minFee / allSum * 100;
+          let per = (resp.minFee / allSum) * 100;
 
           this.lowUtxosNb = resp.lowUtxos.length;
           this.allUtxosNb = resp.allUtxos.length;

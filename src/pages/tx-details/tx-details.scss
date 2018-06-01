@@ -1,7 +1,7 @@
 page-tx-details {
-  $item-border-color: #EFEFEF;
+  $item-border-color: #efefef;
   $item-lateral-padding: 20px;
-  $item-label-color: #6C6C6E;
+  $item-label-color: #6c6c6e;
 
   .header-container {
     .sending-label {
@@ -55,8 +55,12 @@ page-tx-details {
     margin-top: 1rem;
   }
 
-  .container-to, .container-from, .container-tx-id {
-    .wallet, .payment-to, .tx-id {
+  .container-to,
+  .container-from,
+  .container-tx-id {
+    .wallet,
+    .payment-to,
+    .tx-id {
       @include row-flex;
       .icon-wallet {
         width: 25px;
@@ -92,7 +96,7 @@ page-tx-details {
     }
   }
   .timeline-item {
-    background-color: color($colors, blank);;
+    background-color: color($colors, blank);
     border: 0;
     &:nth-child(2) {
       border-top: 1px solid $item-border-color;
@@ -117,9 +121,10 @@ page-tx-details {
       min-width: 40px;
       padding-right: 1rem;
       padding-left: 1rem;
-      margin-right: .5rem;
+      margin-right: 0.5rem;
       position: relative;
-      img, .rejected {
+      img,
+      .rejected {
         z-index: 12;
       }
 
@@ -150,10 +155,10 @@ page-tx-details {
         z-index: 10;
 
         &.rejected {
-          background: #E15061;
-          border-color: #E15061;
-          color: #FFFFFF;
-          font-family: "Roboto-Bold";
+          background: #e15061;
+          border-color: #e15061;
+          color: #ffffff;
+          font-family: 'Roboto-Bold';
           font-size: 19px;
         }
       }
@@ -164,7 +169,7 @@ page-tx-details {
 
       > .action {
         font-size: 16px;
-        @media(max-width: 330px) {
+        @media (max-width: 330px) {
           font-size: 14px;
         }
       }

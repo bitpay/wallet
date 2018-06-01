@@ -37,16 +37,13 @@ describe('PopupProvider', () => {
     alertCtrl = AlertControllerMock.instance();
   });
 
-  it(
-    'should exist',
-    inject([PopupProvider], (popupProvider: PopupProvider) => {
-      expect(popupProvider).not.toBeUndefined();
-    })
-  );
+  it('should exist', inject([PopupProvider], (popupProvider: PopupProvider) => {
+    expect(popupProvider).not.toBeUndefined();
+  }));
 
-  it(
-    'should have an alert',
-    inject([PopupProvider], (popupProvider: PopupProvider) => {
+  it('should have an alert', inject(
+    [PopupProvider],
+    (popupProvider: PopupProvider) => {
       popupProvider.ionicAlert('title', 'subtitle', 'ok text').then(done => {
         let alert = alertCtrl.create();
         expect(popupProvider.ionicAlert).toHaveBeenCalledWith(
@@ -57,12 +54,12 @@ describe('PopupProvider', () => {
         expect(alert.present).toHaveBeenCalled();
         done();
       });
-    })
-  );
+    }
+  ));
 
-  it(
-    'should have a confirm',
-    inject([PopupProvider], (popupProvider: PopupProvider) => {
+  it('should have a confirm', inject(
+    [PopupProvider],
+    (popupProvider: PopupProvider) => {
       popupProvider.ionicConfirm('title', 'message').then(done => {
         let alert = alertCtrl.create();
         expect(popupProvider.ionicConfirm).toHaveBeenCalledWith(
@@ -72,12 +69,12 @@ describe('PopupProvider', () => {
         expect(alert.present).toHaveBeenCalled();
         done();
       });
-    })
-  );
+    }
+  ));
 
-  it(
-    'should have a prompt',
-    inject([PopupProvider], (popupProvider: PopupProvider) => {
+  it('should have a prompt', inject(
+    [PopupProvider],
+    (popupProvider: PopupProvider) => {
       let opts = {
         defaultText: null,
         placeholder: null,
@@ -96,6 +93,6 @@ describe('PopupProvider', () => {
         });
         expect(alert.present).toHaveBeenCalled();
       });
-    })
-  );
+    }
+  ));
 });

@@ -498,7 +498,7 @@ export class ConfirmPage {
     return new Promise((resolve, reject) => {
       this.getTxp(_.clone(tx), wallet, opts.dryRun)
         .then((txp: any) => {
-          let per = txp.fee / (txp.amount + txp.fee) * 100;
+          let per = (txp.fee / (txp.amount + txp.fee)) * 100;
           txp.feeRatePerStr = per.toFixed(2) + '%';
           txp.feeTooHigh = per > this.FEE_TOO_HIGH_LIMIT_PER;
 
@@ -650,7 +650,7 @@ export class ConfirmPage {
 
       if (tx.recipientType == 'wallet') {
         txp.customData = {
-          'toWalletName': tx.name ? tx.name : null
+          toWalletName: tx.name ? tx.name : null
         };
       }
 

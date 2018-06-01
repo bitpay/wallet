@@ -10,10 +10,9 @@ import { TourPage } from './tour/tour';
 
 @Component({
   selector: 'page-onboarding',
-  templateUrl: 'onboarding.html',
+  templateUrl: 'onboarding.html'
 })
 export class OnboardingPage {
-
   public isCopay: boolean;
 
   constructor(
@@ -35,5 +34,4 @@ export class OnboardingPage {
   public restoreFromBackup(): void {
     this.navCtrl.push(ImportWalletPage, { fromOnboarding: true });
   }
-
 }

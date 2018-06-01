@@ -35,24 +35,21 @@ class TestHostComponent {
 }
 
 describe('ExpandableHeaderComponent', () => {
-  beforeEach(
-    async(() =>
-      TestUtils.beforeEachCompiler([
-        TestHostComponent,
-        ExpandableHeaderComponent,
-        ExpandableHeaderFooterComponent,
-        ExpandableHeaderPrimaryComponent
-      ]).then(compiled => {
-        fixture = compiled.fixture;
-        instance = compiled.instance.expandableHeader;
-        ionScrollSubject = new Subject<ScrollEvent>();
-        contentMock = {
-          ionScroll: ionScrollSubject.asObservable()
-        };
-        instance.scrollArea = contentMock as Content;
-      })
-    )
-  );
+  beforeEach(async(() =>
+    TestUtils.beforeEachCompiler([
+      TestHostComponent,
+      ExpandableHeaderComponent,
+      ExpandableHeaderFooterComponent,
+      ExpandableHeaderPrimaryComponent
+    ]).then(compiled => {
+      fixture = compiled.fixture;
+      instance = compiled.instance.expandableHeader;
+      ionScrollSubject = new Subject<ScrollEvent>();
+      contentMock = {
+        ionScroll: ionScrollSubject.asObservable()
+      };
+      instance.scrollArea = contentMock as Content;
+    })));
   afterEach(() => {
     fixture.destroy();
   });

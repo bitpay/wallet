@@ -3,161 +3,160 @@ page-wallet-color {
  * Generate wallet colors from color map
  */
 
-.wallet-color-count {
-  content: "14"; 
-}
+  .wallet-color-count {
+    content: '14';
+  }
 
-/* background-color and color defaults should be the same */
-.wallet-background-color-default {
-  background-color: color($colors, primary);  
-}
+  /* background-color and color defaults should be the same */
+  .wallet-background-color-default {
+    background-color: color($colors, primary);
+  }
 
-.wallet-color-default {
-  color: color($colors, primary); 
-}
+  .wallet-color-default {
+    color: color($colors, primary);
+  }
 
-ion-label {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
+  ion-label {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
 
-.settings-color-block {
-  display: flex;
-  width: 24px;
-  height: 24px;
-  border-radius: 50%;
-  float: left; 
-  margin: 1rem;
-  box-shadow: 0px 0px 10px;
-  align-items: center;
-}
+  .settings-color-block {
+    display: flex;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    float: left;
+    margin: 1rem;
+    box-shadow: 0px 0px 10px;
+    align-items: center;
+  }
 
-/* generate classes for all colors */
-.wallet-color-0 {
-  background: #dd4b39; 
-}
+  /* generate classes for all colors */
+  .wallet-color-0 {
+    background: #dd4b39;
+  }
 
-.wallet-color-0:before {
-  content: "Cinnabar";
-  margin-left: 3.4rem; 
-}
+  .wallet-color-0:before {
+    content: 'Cinnabar';
+    margin-left: 3.4rem;
+  }
 
-.wallet-color-1 {
-  background: #f38f12; 
-}
+  .wallet-color-1 {
+    background: #f38f12;
+  }
 
-.wallet-color-1:before {
-  content: "Carrot Orange";
-  margin-left: 3.4rem; 
-}
+  .wallet-color-1:before {
+    content: 'Carrot Orange';
+    margin-left: 3.4rem;
+  }
 
-.wallet-color-2 {
-  background: #faa77f; 
-}
+  .wallet-color-2 {
+    background: #faa77f;
+  }
 
-.wallet-color-2:before {
-  content: "Light Salmon";
-  margin-left: 3.4rem; 
-}
+  .wallet-color-2:before {
+    content: 'Light Salmon';
+    margin-left: 3.4rem;
+  }
 
-.wallet-color-3 {
-  background: #d0b136; 
-}
+  .wallet-color-3 {
+    background: #d0b136;
+  }
 
-.wallet-color-3:before {
-  content: "Metallic Gold";
-  margin-left: 3.4rem; 
-}
+  .wallet-color-3:before {
+    content: 'Metallic Gold';
+    margin-left: 3.4rem;
+  }
 
-.wallet-color-4 {
-  background: #9edd72; 
-}
+  .wallet-color-4 {
+    background: #9edd72;
+  }
 
-.wallet-color-4:before {
-  content: "Feijoa";
-  margin-left: 3.4rem; 
-}
+  .wallet-color-4:before {
+    content: 'Feijoa';
+    margin-left: 3.4rem;
+  }
 
-.wallet-color-5 {
-  background: #1abb9b; 
-}
+  .wallet-color-5 {
+    background: #1abb9b;
+  }
 
-.wallet-color-5:before {
-  content: "Shamrock";
-  margin-left: 3.4rem; 
-}
+  .wallet-color-5:before {
+    content: 'Shamrock';
+    margin-left: 3.4rem;
+  }
 
-.wallet-color-6 {
-  background: #019477; 
-}
+  .wallet-color-6 {
+    background: #019477;
+  }
 
-.wallet-color-6:before {
-  content: "Observatory";
-  margin-left: 3.4rem; 
-}
+  .wallet-color-6:before {
+    content: 'Observatory';
+    margin-left: 3.4rem;
+  }
 
-.wallet-color-7 {
-  background: #77dada; 
-}
+  .wallet-color-7 {
+    background: #77dada;
+  }
 
-.wallet-color-7:before {
-  content: "Turquoise Blue";
-  margin-left: 3.4rem; 
-}
+  .wallet-color-7:before {
+    content: 'Turquoise Blue';
+    margin-left: 3.4rem;
+  }
 
-.wallet-color-8 {
-  background: #647ce8; 
-}
+  .wallet-color-8 {
+    background: #647ce8;
+  }
 
-.wallet-color-8:before {
-  content: "Cornflower Blue";
-  margin-left: 3.4rem; 
-}
+  .wallet-color-8:before {
+    content: 'Cornflower Blue';
+    margin-left: 3.4rem;
+  }
 
-.wallet-color-9 {
-  background: #484ed3; 
-}
+  .wallet-color-9 {
+    background: #484ed3;
+  }
 
-.wallet-color-9:before {
-  content: "Free Speech Blue";
-  margin-left: 3.4rem; 
-}
+  .wallet-color-9:before {
+    content: 'Free Speech Blue';
+    margin-left: 3.4rem;
+  }
 
-.wallet-color-10 {
-  background: #9b59b6; 
-}
+  .wallet-color-10 {
+    background: #9b59b6;
+  }
 
-.wallet-color-10:before {
-  content: "Deep Lilac";
-  margin-left: 3.4rem; 
-}
+  .wallet-color-10:before {
+    content: 'Deep Lilac';
+    margin-left: 3.4rem;
+  }
 
-.wallet-color-11 {
-  background: #e856ef; 
-}
+  .wallet-color-11 {
+    background: #e856ef;
+  }
 
-.wallet-color-11:before {
-  content: "Free Speech Magenta";
-  margin-left: 3.4rem; 
-}
+  .wallet-color-11:before {
+    content: 'Free Speech Magenta';
+    margin-left: 3.4rem;
+  }
 
-.wallet-color-12 {
-  background: #ff599e; 
-}
+  .wallet-color-12 {
+    background: #ff599e;
+  }
 
-.wallet-color-12:before {
-  content: "Brilliant Rose";
-  margin-left: 3.4rem; 
-}
+  .wallet-color-12:before {
+    content: 'Brilliant Rose';
+    margin-left: 3.4rem;
+  }
 
-.wallet-color-13 {
-  background: #7a8c9e; 
-}
+  .wallet-color-13 {
+    background: #7a8c9e;
+  }
 
-.wallet-color-13:before {
-  content: "Light Slate Grey";
-  margin-left: 3.4rem; 
-}
-
+  .wallet-color-13:before {
+    content: 'Light Slate Grey';
+    margin-left: 3.4rem;
+  }
 }

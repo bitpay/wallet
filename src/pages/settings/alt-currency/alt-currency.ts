@@ -13,10 +13,9 @@ import * as _ from 'lodash';
 
 @Component({
   selector: 'page-alt-currency',
-  templateUrl: 'alt-currency.html',
+  templateUrl: 'alt-currency.html'
 })
 export class AltCurrencyPage {
-
   public completeAlternativeList: any[];
   public searchedAltCurrency: string;
   public altCurrencyList: any[];
@@ -39,35 +38,49 @@ export class AltCurrencyPage {
   ) {
     this.completeAlternativeList = [];
     this.altCurrencyList = [];
-    this.unusedCurrencyList = [{
-      isoCode: 'LTL'
-    }, {
-      isoCode: 'BTC'
-    }];
+    this.unusedCurrencyList = [
+      {
+        isoCode: 'LTL'
+      },
+      {
+        isoCode: 'BTC'
+      }
+    ];
   }
 
   ionViewWillEnter() {
-    this.rate.whenRatesAvailable('btc').then((data) => {
-      this.completeAlternativeList = this.rate.listAlternatives(true);
-      let idx = _.keyBy(this.unusedCurrencyList, 'isoCode');
-      let idx2 = _.keyBy(this.lastUsedAltCurrencyList, 'isoCode');
+    this.rate
+      .whenRatesAvailable('btc')
+      .then(data => {
+        this.completeAlternativeList = this.rate.listAlternatives(true);
+        let idx = _.keyBy(this.unusedCurrencyList, 'isoCode');
+        let idx2 = _.keyBy(this.lastUsedAltCurrencyList, 'isoCode');
 
-      this.completeAlternativeList = _.reject(this.completeAlternativeList, (c: any) => {
-        return idx[c.isoCode] || idx2[c.isoCode];
+        this.completeAlternativeList = _.reject(
+          this.completeAlternativeList,
+          (c: any) => {
+            return idx[c.isoCode] || idx2[c.isoCode];
+          }
+        );
+        this.altCurrencyList = this.completeAlternativeList.slice(0, 20);
+      })
+      .catch((err: any) => {
+        this.logger.error(err);
       });
-      this.altCurrencyList = this.completeAlternativeList.slice(0, 20);
-    }).catch((err: any) => {
-      this.logger.error(err);
-    });
 
     let config = this.configProvider.get();
     this.currentCurrency = config.wallet.settings.alternativeIsoCode;
 
-    this.persistenceProvider.getLastCurrencyUsed().then((lastUsedAltCurrency: any) => {
-      this.lastUsedAltCurrencyList = lastUsedAltCurrency ? lastUsedAltCurrency : [];
-    }).catch((err: any) => {
-      this.logger.error(err);
-    });
+    this.persistenceProvider
+      .getLastCurrencyUsed()
+      .then((lastUsedAltCurrency: any) => {
+        this.lastUsedAltCurrencyList = lastUsedAltCurrency
+          ? lastUsedAltCurrency
+          : [];
+      })
+      .catch((err: any) => {
+        this.logger.error(err);
+      });
   }
 
   public loadAltCurrencies(loading: any): void {
@@ -76,7 +89,10 @@ export class AltCurrencyPage {
       return;
     }
     setTimeout(() => {
-      this.altCurrencyList = this.completeAlternativeList.slice(0, this.PAGE_COUNTER * this.SHOW_LIMIT);
+      this.altCurrencyList = this.completeAlternativeList.slice(
+        0,
+        this.PAGE_COUNTER * this.SHOW_LIMIT
+      );
       this.PAGE_COUNTER++;
       loading.complete();
     }, 300);
@@ -91,30 +107,39 @@ export class AltCurrencyPage {
       wallet: {
         settings: {
           alternativeName: newAltCurrency.name,
-          alternativeIsoCode: newAltCurrency.isoCode,
+          alternativeIsoCode: newAltCurrency.isoCode
         }
       }
     };
 
     this.configProvider.set(opts);
     this.saveLastUsed(newAltCurrency);
-    this.walletProvider.updateRemotePreferences(this.profileProvider.getWallets());
+    this.walletProvider.updateRemotePreferences(
+      this.profileProvider.getWallets()
+    );
     this.navCtrl.pop();
   }
 
   private saveLastUsed(newAltCurrency: any): void {
     this.lastUsedAltCurrencyList.unshift(newAltCurrency);
-    this.lastUsedAltCurrencyList = _.uniqBy(this.lastUsedAltCurrencyList, 'isoCode');
+    this.lastUsedAltCurrencyList = _.uniqBy(
+      this.lastUsedAltCurrencyList,
+      'isoCode'
+    );
     this.lastUsedAltCurrencyList = this.lastUsedAltCurrencyList.slice(0, 3);
-    this.persistenceProvider.setLastCurrencyUsed(JSON.stringify(this.lastUsedAltCurrencyList)).then(() => { });
+    this.persistenceProvider
+      .setLastCurrencyUsed(JSON.stringify(this.lastUsedAltCurrencyList))
+      .then(() => {});
   }
 
   public findCurrency(searchedAltCurrency: string): void {
-    this.altCurrencyList = _.filter(this.completeAlternativeList, (item) => {
-      var val = item.name
+    this.altCurrencyList = _.filter(this.completeAlternativeList, item => {
+      var val = item.name;
       var val2 = item.isoCode;
-      return _.includes(val.toLowerCase(), searchedAltCurrency.toLowerCase()) || _.includes(val2.toLowerCase(), searchedAltCurrency.toLowerCase());
-    })
+      return (
+        _.includes(val.toLowerCase(), searchedAltCurrency.toLowerCase()) ||
+        _.includes(val2.toLowerCase(), searchedAltCurrency.toLowerCase())
+      );
+    });
   }
-
 }

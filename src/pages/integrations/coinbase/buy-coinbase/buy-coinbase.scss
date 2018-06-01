@@ -1,45 +1,46 @@
 page-buy-coinbase {
   ion-content {
-    .fixed-content, .scroll-content {
+    .fixed-content,
+    .scroll-content {
       margin-bottom: 90px;
     }
   }
-    .buying-label {
+  .buying-label {
+    display: flex;
+    align-items: center;
+    .buying-img {
+      margin-right: 2rem;
+    }
+    span {
+      font-size: 1.8rem;
+    }
+  }
+  .amount-label {
+    padding-top: 2rem;
+    .amount {
+      font-size: 3.5rem;
+      .unit {
+        font-weight: 400;
+      }
+    }
+    .alternative {
+      margin-top: 1rem;
+      color: color($colors, grey);
+    }
+  }
+  .wallets-list {
+    .wallet {
       display: flex;
       align-items: center;
-      .buying-img {
-        margin-right: 2rem;
-      }
-      span {
-        font-size: 1.8rem;
-      }
-    }
-    .amount-label {
-      padding-top: 2rem;
-      .amount {
-        font-size: 3.5rem;
-        .unit {
-          font-weight: 400;
-        }
-      }
-      .alternative {
-        margin-top: 1rem;
-        color: color($colors, grey);
+      margin-top: 1rem;
+      .icon-wallet {
+        background-color: color($colors, primary);
+        margin-right: 1rem;
       }
     }
-    .wallets-list {
-      .wallet {
-        display: flex;
-        align-items: center;
-        margin-top: 1rem;
-        .icon-wallet {
-          background-color: color($colors, primary);
-          margin-right: 1rem;
-        }
-      }
-    }
+  }
 
-    .last-item{
-      margin-left: auto !important;
-    }
+  .last-item {
+    margin-left: auto !important;
+  }
 }

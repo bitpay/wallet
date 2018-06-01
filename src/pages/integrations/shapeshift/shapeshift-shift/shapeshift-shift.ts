@@ -15,10 +15,9 @@ import { ShapeshiftProvider } from '../../../../providers/shapeshift/shapeshift'
 
 @Component({
   selector: 'page-shapeshift-shift',
-  templateUrl: 'shapeshift-shift.html',
+  templateUrl: 'shapeshift-shift.html'
 })
 export class ShapeshiftShiftPage {
-
   private walletsBtc: any[];
   private walletsBch: any[];
 
@@ -65,19 +64,28 @@ export class ShapeshiftShiftPage {
     });
 
     if (_.isEmpty(this.walletsBtc) || _.isEmpty(this.walletsBch)) {
-      this.showErrorAndBack(null, this.translate.instant('No wallets available to use ShapeShift'));
+      this.showErrorAndBack(
+        null,
+        this.translate.instant('No wallets available to use ShapeShift')
+      );
       return;
     }
 
-    this.fromWallets = _.filter(this.walletsBtc.concat(this.walletsBch), (w: any) => {
-      // Available cached funds
-      if (!w.cachedBalance) return null;
-      let hasCachedFunds = w.cachedBalance.match(/0\.00 /gi) ? false : true;
-      return hasCachedFunds;
-    });
+    this.fromWallets = _.filter(
+      this.walletsBtc.concat(this.walletsBch),
+      (w: any) => {
+        // Available cached funds
+        if (!w.cachedBalance) return null;
+        let hasCachedFunds = w.cachedBalance.match(/0\.00 /gi) ? false : true;
+        return hasCachedFunds;
+      }
+    );
 
     if (_.isEmpty(this.fromWallets)) {
-      this.showErrorAndBack(null, this.translate.instant('No wallets with funds'));
+      this.showErrorAndBack(
+        null,
+        this.translate.instant('No wallets with funds')
+      );
       return;
     }
 
@@ -93,21 +101,23 @@ export class ShapeshiftShiftPage {
   }
 
   public openTerms() {
-    let url = "https://info.shapeshift.io/sites/default/files/ShapeShift_Terms_Conditions%20v1.1.pdf";
+    let url =
+      'https://info.shapeshift.io/sites/default/files/ShapeShift_Terms_Conditions%20v1.1.pdf';
     this.externalLinkProvider.open(url);
   }
 
   private showErrorAndBack(title: string, msg: any): void {
     title = title ? title : this.translate.instant('Error');
     this.logger.error(msg);
-    msg = (msg && msg.errors) ? msg.errors[0].message : msg;
+    msg = msg && msg.errors ? msg.errors[0].message : msg;
     this.popupProvider.ionicAlert(title, msg).then(() => {
       this.navCtrl.pop();
     });
   }
 
   private showToWallets(): void {
-    this.toWallets = this.fromWallet.coin == 'btc' ? this.walletsBch : this.walletsBtc;
+    this.toWallets =
+      this.fromWallet.coin == 'btc' ? this.walletsBch : this.walletsBtc;
     this.onToWalletSelect(this.toWallets[0]);
 
     let pair = this.fromWallet.coin + '_' + this.toWallet.coin;
@@ -118,7 +128,9 @@ export class ShapeshiftShiftPage {
         this.limit = limit;
 
         if (this.limit['rate'] == 0 || this.rate['rate'] == 0) {
-          let msg = this.translate.instant('ShapeShift is not available at this moment. Please, try again later.');
+          let msg = this.translate.instant(
+            'ShapeShift is not available at this moment. Please, try again later.'
+          );
           this.popupProvider.ionicAlert(null, msg).then(() => {
             this.navCtrl.pop();
           });
@@ -144,7 +156,9 @@ export class ShapeshiftShiftPage {
 
     if (this.toWallet.needsBackup) {
       let title = this.translate.instant('Needs backup');
-      let msg = this.translate.instant('The destination wallet is not backed up. Please, complete the backup process before continue.');
+      let msg = this.translate.instant(
+        'The destination wallet is not backed up. Please, complete the backup process before continue.'
+      );
       this.popupProvider.ionicAlert(title, msg);
       return;
     }
@@ -163,7 +177,10 @@ export class ShapeshiftShiftPage {
   public showWallets(selector: string): void {
     let walletsForActionSheet: any[] = [];
     let selectedWalletId: string;
-    let title: string = selector == 'from' ? this.fromWalletSelectorTitle : this.toWalletSelectorTitle
+    let title: string =
+      selector == 'from'
+        ? this.fromWalletSelectorTitle
+        : this.toWalletSelectorTitle;
     if (selector == 'from') {
       walletsForActionSheet = this.fromWallets;
       selectedWalletId = this.fromWallet.id;
@@ -171,7 +188,12 @@ export class ShapeshiftShiftPage {
       walletsForActionSheet = this.toWallets;
       selectedWalletId = this.toWallet.id;
     }
-    this.events.publish('showWalletsSelectorEvent', walletsForActionSheet, selectedWalletId, title);
+    this.events.publish(
+      'showWalletsSelectorEvent',
+      walletsForActionSheet,
+      selectedWalletId,
+      title
+    );
     this.events.subscribe('selectWalletEvent', (wallet: any) => {
       if (!_.isEmpty(wallet)) this.onWalletSelect(wallet, selector);
       this.events.unsubscribe('selectWalletEvent');
@@ -185,5 +207,4 @@ export class ShapeshiftShiftPage {
       this.onToWalletSelect(wallet);
     }
   }
-
 }

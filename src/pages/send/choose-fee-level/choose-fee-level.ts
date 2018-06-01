@@ -10,10 +10,9 @@ import { PopupProvider } from '../../../providers/popup/popup';
 
 @Component({
   selector: 'page-choose-fee-level',
-  templateUrl: 'choose-fee-level.html',
+  templateUrl: 'choose-fee-level.html'
 })
 export class ChooseFeeLevelPage {
-
   private FEE_MULTIPLIER: number = 10;
   private FEE_MIN: number = 0;
   public maxFeeRecommended: number;
@@ -50,27 +49,41 @@ export class ChooseFeeLevelPage {
     this.feeLevel = this.viewCtrl.data.feeLevel;
 
     // IF usingCustomFee
-    this.customFeePerKB = this.viewCtrl.data.customFeePerKB ? this.viewCtrl.data.customFeePerKB : null;
-    this.feePerSatByte = this.viewCtrl.data.feePerSatByte ? this.viewCtrl.data.feePerSatByte : null;
+    this.customFeePerKB = this.viewCtrl.data.customFeePerKB
+      ? this.viewCtrl.data.customFeePerKB
+      : null;
+    this.feePerSatByte = this.viewCtrl.data.feePerSatByte
+      ? this.viewCtrl.data.feePerSatByte
+      : null;
 
-    if (_.isEmpty(this.feeLevel)) this.showErrorAndClose(null, this.translate.instant('Fee level is not defined'));
+    if (_.isEmpty(this.feeLevel))
+      this.showErrorAndClose(
+        null,
+        this.translate.instant('Fee level is not defined')
+      );
     this.selectedFee = this.feeLevel;
 
     this.feeOpts = Object.keys(this.feeProvider.feeOpts);
     this.loadingFee = true;
-    this.feeProvider.getFeeLevels(this.coin).then((levels: any) => {
-      this.loadingFee = false;
-      if (_.isEmpty(levels)) {
-        this.showErrorAndClose(null, this.translate.instant('Could not get fee levels'));
+    this.feeProvider
+      .getFeeLevels(this.coin)
+      .then((levels: any) => {
+        this.loadingFee = false;
+        if (_.isEmpty(levels)) {
+          this.showErrorAndClose(
+            null,
+            this.translate.instant('Could not get fee levels')
+          );
+          return;
+        }
+        this.feeLevels = levels;
+        this.updateFeeRate();
+      })
+      .catch((err: any) => {
+        this.loadingFee = false;
+        this.showErrorAndClose(null, err);
         return;
-      }
-      this.feeLevels = levels;
-      this.updateFeeRate();
-    }).catch((err: any) => {
-      this.loadingFee = false;
-      this.showErrorAndClose(null, err);
-      return;
-    });
+      });
   }
 
   private showErrorAndClose(title: string, msg: string): void {
@@ -82,9 +95,12 @@ export class ChooseFeeLevelPage {
   }
 
   public updateFeeRate() {
-    let value: any = _.find(this.feeLevels.levels[this.network], (feeLevel: any) => {
-      return feeLevel.level == this.feeLevel;
-    });
+    let value: any = _.find(
+      this.feeLevels.levels[this.network],
+      (feeLevel: any) => {
+        return feeLevel.level == this.feeLevel;
+      }
+    );
 
     // If no custom fee
     if (value) {
@@ -107,21 +123,33 @@ export class ChooseFeeLevelPage {
     this.minFeeRecommended = this.getMinRecommended();
     this.minFeeAllowed = this.FEE_MIN;
     this.maxFeeAllowed = this.maxFeeRecommended * this.FEE_MULTIPLIER;
-    this.maxFee = this.maxFeeRecommended > this.maxFeeAllowed ? this.maxFeeRecommended : this.maxFeeAllowed;
-    this.minFee = this.minFeeRecommended < this.minFeeAllowed ? this.minFeeRecommended : this.minFeeAllowed;
+    this.maxFee =
+      this.maxFeeRecommended > this.maxFeeAllowed
+        ? this.maxFeeRecommended
+        : this.maxFeeAllowed;
+    this.minFee =
+      this.minFeeRecommended < this.minFeeAllowed
+        ? this.minFeeRecommended
+        : this.minFeeAllowed;
   }
 
   private getMinRecommended(): number {
-    let value: any = _.find(this.feeLevels.levels[this.network], (feeLevel: any) => {
-      return feeLevel.level == 'superEconomy';
-    });
+    let value: any = _.find(
+      this.feeLevels.levels[this.network],
+      (feeLevel: any) => {
+        return feeLevel.level == 'superEconomy';
+      }
+    );
     return parseInt((value.feePerKb / 1000).toFixed(), 10);
   }
 
   private getMaxRecommended(): number {
-    let value: any = _.find(this.feeLevels.levels[this.network], (feeLevel: any) => {
-      return feeLevel.level == 'urgent';
-    });
+    let value: any = _.find(
+      this.feeLevels.levels[this.network],
+      (feeLevel: any) => {
+        return feeLevel.level == 'urgent';
+      }
+    );
     return parseInt((value.feePerKb / 1000).toFixed(), 10);
   }
 
@@ -135,8 +163,13 @@ export class ChooseFeeLevelPage {
   }
 
   public ok(): void {
-    this.customFeePerKB = this.customFeePerKB ? (this.customSatPerByte * 1000).toFixed() : null;
-    this.viewCtrl.dismiss({ newFeeLevel: this.feeLevel, customFeePerKB: this.customFeePerKB });
+    this.customFeePerKB = this.customFeePerKB
+      ? (this.customSatPerByte * 1000).toFixed()
+      : null;
+    this.viewCtrl.dismiss({
+      newFeeLevel: this.feeLevel,
+      customFeePerKB: this.customFeePerKB
+    });
   }
 
   public cancel(): void {
@@ -150,5 +183,4 @@ export class ChooseFeeLevelPage {
       this.updateFeeRate();
     }
   }
-
 }

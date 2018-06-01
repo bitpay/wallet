@@ -13,10 +13,9 @@ import { TabsPage } from '../../../tabs/tabs';
 
 @Component({
   selector: 'page-glidera-settings',
-  templateUrl: 'glidera-settings.html',
+  templateUrl: 'glidera-settings.html'
 })
 export class GlideraSettingsPage {
-
   private serviceName: string = 'glidera';
   public showInHome: any;
   public service: any;
@@ -32,7 +31,9 @@ export class GlideraSettingsPage {
     private homeIntegrationsProvider: HomeIntegrationsProvider
   ) {
     this.account = {};
-    this.service = _.filter(this.homeIntegrationsProvider.get(), { name: this.serviceName });
+    this.service = _.filter(this.homeIntegrationsProvider.get(), {
+      name: this.serviceName
+    });
     this.showInHome = !!this.service[0].show;
   }
 
@@ -52,7 +53,7 @@ export class GlideraSettingsPage {
   private showErrorAndBack(title: string, msg: any) {
     title = title ? title : 'Error';
     this.logger.error(msg);
-    msg = (msg && msg.errors) ? msg.errors[0].message : msg;
+    msg = msg && msg.errors ? msg.errors[0].message : msg;
     this.popupProvider.ionicAlert(title, msg).then(() => {
       this.navCtrl.pop();
     });
@@ -60,22 +61,26 @@ export class GlideraSettingsPage {
 
   public showInHomeSwitch(): void {
     let opts = {
-      showIntegration: { [this.serviceName] : this.showInHome }
+      showIntegration: { [this.serviceName]: this.showInHome }
     };
-    this.homeIntegrationsProvider.updateConfig(this.serviceName, this.showInHome);
+    this.homeIntegrationsProvider.updateConfig(
+      this.serviceName,
+      this.showInHome
+    );
     this.configProvider.set(opts);
   }
 
   public revokeToken() {
-    this.popupProvider.ionicConfirm(
-      'Glidera',
-      'Are you sure you would like to log out of your Glidera account?'
-    ).then((res) => {
-      if (res) {
-        this.glideraProvider.remove();
-        this.app.getRootNavs()[0].setRoot(TabsPage);
-      }
-    });
+    this.popupProvider
+      .ionicConfirm(
+        'Glidera',
+        'Are you sure you would like to log out of your Glidera account?'
+      )
+      .then(res => {
+        if (res) {
+          this.glideraProvider.remove();
+          this.app.getRootNavs()[0].setRoot(TabsPage);
+        }
+      });
   }
-
 }

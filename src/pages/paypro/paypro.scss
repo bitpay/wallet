@@ -9,7 +9,8 @@ page-payrpo {
       color: color($colors, grey);
     }
   }
-  .comment, .certified {
+  .comment,
+  .certified {
     margin-top: 1rem;
     color: color($colors, grey);
   }
@@ -22,9 +23,9 @@ page-payrpo {
     }
   }
   .warning {
-    ion-icon, span {
+    ion-icon,
+    span {
       color: color($colors, warning);
     }
   }
-
 }

@@ -2,7 +2,10 @@
 import { PlatformProvider } from './platform';
 
 import { TestBed, getTestBed, inject, async } from '@angular/core/testing';
-import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import {
+  HttpClientTestingModule,
+  HttpTestingController
+} from '@angular/common/http/testing';
 import { Logger } from '../../providers/logger/logger';
 import {
   TranslateModule,
@@ -26,11 +29,7 @@ describe('PlatformProvider', () => {
           loader: { provide: TranslateLoader, useClass: TranslateFakeLoader }
         })
       ],
-      providers: [
-        PlatformProvider,
-        Logger,
-        Platform
-      ]
+      providers: [PlatformProvider, Logger, Platform]
     });
     injector = getTestBed();
     service = injector.get(PlatformProvider);
@@ -96,11 +95,7 @@ describe('PlatformProvider without navigator', () => {
           loader: { provide: TranslateLoader, useClass: TranslateFakeLoader }
         })
       ],
-      providers: [
-        PlatformProvider,
-        Logger,
-        Platform
-      ]
+      providers: [PlatformProvider, Logger, Platform]
     });
     injector = getTestBed();
     service = injector.get(PlatformProvider);

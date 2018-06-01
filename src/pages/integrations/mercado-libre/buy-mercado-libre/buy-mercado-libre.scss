@@ -1,6 +1,7 @@
 page-buy-mercado-libre {
   ion-content {
-    .fixed-content, .scroll-content {
+    .fixed-content,
+    .scroll-content {
       margin-bottom: 90px;
     }
   }
@@ -17,7 +18,7 @@ page-buy-mercado-libre {
     margin-bottom: 5rem;
     .amount {
       font-size: 38px;
-      margin-bottom: .5rem;
+      margin-bottom: 0.5rem;
     }
   }
 
@@ -33,7 +34,7 @@ page-buy-mercado-libre {
     }
   }
 
-  .last-item{
+  .last-item {
     margin-left: auto !important;
   }
 }

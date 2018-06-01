@@ -11,7 +11,7 @@ import { PersistenceProvider } from '../../../providers/persistence/persistence'
 
 @Component({
   selector: 'page-disclaimer',
-  templateUrl: 'disclaimer.html',
+  templateUrl: 'disclaimer.html'
 })
 export class DisclaimerPage {
   public accepted: any;
@@ -33,8 +33,8 @@ export class DisclaimerPage {
       third: this.hasEmail ? false : true
     };
     this.terms = {
-      accepted: false,
-    }
+      accepted: false
+    };
   }
 
   ionViewDidLoad() {
@@ -52,7 +52,14 @@ export class DisclaimerPage {
     let message = this.translate.instant('View Wallet Terms of Use');
     let okText = this.translate.instant('Open');
     let cancelText = this.translate.instant('Go Back');
-    this.externalLinkProvider.open(url, optIn, title, message, okText, cancelText);
+    this.externalLinkProvider.open(
+      url,
+      optIn,
+      title,
+      message,
+      okText,
+      cancelText
+    );
   }
 
   openPrivacyPolicy() {
@@ -62,7 +69,14 @@ export class DisclaimerPage {
     let message = this.translate.instant('View Privacy Policy');
     let okText = this.translate.instant('Open');
     let cancelText = this.translate.instant('Go Back');
-    this.externalLinkProvider.open(url, optIn, title, message, okText, cancelText);
+    this.externalLinkProvider.open(
+      url,
+      optIn,
+      title,
+      message,
+      okText,
+      cancelText
+    );
   }
 
   confirm() {

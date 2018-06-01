@@ -43,23 +43,23 @@ page-backup-game {
     justify-content: center;
     align-items: center;
     .phrase {
-    padding: 2.5rem;
-    font-weight: bold;
-    line-height: 2;
-    font-size: 16px;
-    letter-spacing: 1px;
-    @media (min-width: 575px) {
-      font-size: 18px;
-      padding: 3rem;
-    }
-    @media (max-height: 550px) {
+      padding: 2.5rem;
+      font-weight: bold;
+      line-height: 2;
       font-size: 16px;
-      padding: 1rem;
-    }
-    .button {
-      height: 3rem;
-      font-size: 14px;
-    }
+      letter-spacing: 1px;
+      @media (min-width: 575px) {
+        font-size: 18px;
+        padding: 3rem;
+      }
+      @media (max-height: 550px) {
+        font-size: 16px;
+        padding: 1rem;
+      }
+      .button {
+        height: 3rem;
+        font-size: 14px;
+      }
     }
   }
   .words {
@@ -71,7 +71,7 @@ page-backup-game {
     }
   }
   .bottom {
-    font-size: 16px;    
+    font-size: 16px;
     color: color($colors, grey);
     padding: 1rem;
     position: absolute;
@@ -79,18 +79,18 @@ page-backup-game {
     text-align: center;
     width: 100%;
   }
-  .bottom-absolute{
-    padding: 0px; 
+  .bottom-absolute {
+    padding: 0px;
     bottom: 2rem;
-    .button-footer{
-      color: color($colors, primary);;
+    .button-footer {
+      color: color($colors, primary);
       max-width: 100%;
-      margin:0;
+      margin: 0;
       font-size: 1.2rem;
     }
   }
   .footer-text {
     font-size: 12.5px;
-    color: color($colors, grey);      
+    color: color($colors, grey);
   }
 }

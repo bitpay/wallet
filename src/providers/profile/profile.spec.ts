@@ -67,7 +67,7 @@ describe('Profile Provider', () => {
       },
       isComplete: () => {
         return true;
-      }, 
+      },
       order: 2
     },
     api3: {
@@ -91,14 +91,14 @@ describe('Profile Provider', () => {
   };
 
   class BwcProviderMock {
-    constructor() { }
+    constructor() {}
     getErrors() {
       return 'error';
     }
   }
 
   class PersistenceProviderMock {
-    constructor() { }
+    constructor() {}
     getBalanceCache(walletId: any) {
       return Promise.resolve('0.00 BTC');
     }
@@ -180,14 +180,14 @@ describe('Profile Provider', () => {
 
   describe('wallet order', () => {
     it('should get null order', () => {
-      const walletId:string = 'eabee25b-d6ab-4b11-8b76-88570d826914';
-      profileProvider.getWalletOrder(walletId).then((order) => {
+      const walletId: string = 'eabee25b-d6ab-4b11-8b76-88570d826914';
+      profileProvider.getWalletOrder(walletId).then(order => {
         expect(order).toBe('');
       });
     });
-    it('should set the order', () => { 
-      const walletId:string = 'eabee25b-d6ab-4b11-8b76-88570d826914';
-      const order:number = 2;
+    it('should set the order', () => {
+      const walletId: string = 'eabee25b-d6ab-4b11-8b76-88570d826914';
+      const order: number = 2;
       profileProvider.setWalletOrder(walletId, order);
       expect(profileProvider.wallet.api1.order).toBeDefined();
       profileProvider.wallet.api1.order = order;

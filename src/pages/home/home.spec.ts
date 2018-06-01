@@ -18,19 +18,16 @@ describe('HomePage', () => {
   let instance: any;
   let testBed: typeof TestBed;
 
-  beforeEach(
-    async(() =>
-      TestUtils.configurePageTestingModule([HomePage]).then(testEnv => {
-        fixture = testEnv.fixture;
-        instance = testEnv.instance;
-        testBed = testEnv.testBed;
-        instance.showCard = {
-          setShowRateCard: () => { }
-        };
-        fixture.detectChanges();
-      })
-    )
-  );
+  beforeEach(async(() =>
+    TestUtils.configurePageTestingModule([HomePage]).then(testEnv => {
+      fixture = testEnv.fixture;
+      instance = testEnv.instance;
+      testBed = testEnv.testBed;
+      instance.showCard = {
+        setShowRateCard: () => {}
+      };
+      fixture.detectChanges();
+    })));
   afterEach(() => {
     fixture.destroy();
   });
@@ -40,7 +37,8 @@ describe('HomePage', () => {
       it('should get recentTransactions enabled', () => {
         instance.ionViewWillEnter();
         const configProvider = testBed.get(ConfigProvider);
-        const recentTransactionsEnabled = configProvider.get().recentTransactions.enabled;
+        const recentTransactionsEnabled = configProvider.get()
+          .recentTransactions.enabled;
         expect(recentTransactionsEnabled).toEqual(true);
       });
       it('should not break if address book list call fails', () => {

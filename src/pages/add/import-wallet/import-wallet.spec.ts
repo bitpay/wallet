@@ -7,16 +7,16 @@ describe('ImportWalletPage', () => {
   let instance: any;
   let testBed: typeof TestBed;
 
-  beforeEach(
-    async(() => {
-      return TestUtils.configurePageTestingModule([ImportWalletPage]).then(testEnv => {
+  beforeEach(async(() => {
+    return TestUtils.configurePageTestingModule([ImportWalletPage]).then(
+      testEnv => {
         fixture = testEnv.fixture;
         instance = testEnv.instance;
         testBed = testEnv.testBed;
         fixture.detectChanges();
-      });
-    })
-  );
+      }
+    );
+  }));
   afterEach(() => {
     fixture.destroy();
   });

@@ -1,5 +1,5 @@
 import { Directive, Inject } from '@angular/core';
-import { DOCUMENT } from "@angular/platform-browser";
+import { DOCUMENT } from '@angular/platform-browser';
 import { Clipboard } from '@ionic-native/clipboard';
 import { TranslateService } from '@ngx-translate/core';
 import { ToastController } from 'ionic-angular';
@@ -17,7 +17,6 @@ import { PlatformProvider } from '../../providers/platform/platform';
   }
 })
 export class CopyToClipboard {
-
   public value: string;
   private dom: Document;
   private isCordova: boolean;
@@ -61,9 +60,10 @@ export class CopyToClipboard {
       message: this.translate.instant('Copied to clipboard'),
       duration: 1000,
       position: 'top',
-      cssClass: this.platform.isIOS ? "iosToastAfterHeader" : "mdToastAfterHeader"
+      cssClass: this.platform.isIOS
+        ? 'iosToastAfterHeader'
+        : 'mdToastAfterHeader'
     });
     showSuccess.present();
   }
-
 }

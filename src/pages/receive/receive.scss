@@ -51,7 +51,7 @@ page-receive {
       margin: 5px 0 0 0;
       font-size: 12px;
       color: color($colors, dark);
-      >img {
+      > img {
         vertical-align: middle;
         margin-right: 5px;
         width: 16px;
@@ -62,21 +62,21 @@ page-receive {
       width: auto;
       display: inherit;
     }
-    .aclass >img {
+    .aclass > img {
       margin-bottom: 15px;
       border: 1px solid #e9e9e9;
       border-radius: 4px;
       width: 180px;
-      @media(max-height: 500px) {
+      @media (max-height: 500px) {
         margin-bottom: 0px;
       }
-      @media(min-height: 525px) {
+      @media (min-height: 525px) {
         width: 195px;
       }
-      @media(min-height: 560px) {
+      @media (min-height: 560px) {
         width: 220px;
       }
-      @media(min-height: 620px) {
+      @media (min-height: 620px) {
         width: 260px;
       }
     }
@@ -96,7 +96,7 @@ page-receive {
     .wallet-text {
       padding-left: 24px;
       font-size: 1.7rem;
-      >span {
+      > span {
         font-size: 12.5px;
         font-weight: 300;
       }
@@ -128,6 +128,6 @@ page-receive {
     height: 1rem;
     .label {
       margin: 0rem;
-    } 
+    }
   }
 }

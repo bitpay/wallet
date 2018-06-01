@@ -1,6 +1,7 @@
 page-confirm {
   ion-content {
-    .fixed-content, .scroll-content {
+    .fixed-content,
+    .scroll-content {
       margin-bottom: 90px;
     }
   }
@@ -83,8 +84,10 @@ page-confirm {
     margin-top: 1rem;
   }
 
-  .container-to, .container-from {
-    .wallet, .payment-proposal-to {
+  .container-to,
+  .container-from {
+    .wallet,
+    .payment-proposal-to {
       @include row-flex;
       .icon-wallet {
         margin-right: 1rem;
@@ -102,8 +105,8 @@ page-confirm {
       }
     }
   }
-  
-  .last-item{
+
+  .last-item {
     margin-left: auto !important;
   }
 }

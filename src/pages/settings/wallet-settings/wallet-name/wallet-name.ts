@@ -11,10 +11,9 @@ import { ReplaceParametersProvider } from '../../../../providers/replace-paramet
 
 @Component({
   selector: 'page-wallet-name',
-  templateUrl: 'wallet-name.html',
+  templateUrl: 'wallet-name.html'
 })
 export class WalletNamePage {
-
   public wallet: any;
   public walletName: string;
   public walletNameForm: FormGroup;
@@ -34,7 +33,10 @@ export class WalletNamePage {
     private translate: TranslateService
   ) {
     this.walletNameForm = this.formBuilder.group({
-      walletName: ['', Validators.compose([Validators.minLength(1), Validators.required])]
+      walletName: [
+        '',
+        Validators.compose([Validators.minLength(1), Validators.required])
+      ]
     });
   }
 
@@ -45,17 +47,28 @@ export class WalletNamePage {
   ionViewWillEnter() {
     this.wallet = this.profileProvider.getWallet(this.navParams.data.walletId);
     this.config = this.configProvider.get();
-    let alias = this.config.aliasFor && this.config.aliasFor[this.wallet.credentials.walletId];
-    this.walletNameForm.value.walletName = alias ? alias : this.wallet.credentials.walletName;
+    let alias =
+      this.config.aliasFor &&
+      this.config.aliasFor[this.wallet.credentials.walletId];
+    this.walletNameForm.value.walletName = alias
+      ? alias
+      : this.wallet.credentials.walletName;
     this.walletName = this.wallet.credentials.walletName;
-    this.description = this.replaceParametersProvider.replace(this.translate.instant('When this wallet was created, it was called "{{walletName}}". You can change the name displayed on this device below.'), { walletName: this.walletName });
+    this.description = this.replaceParametersProvider.replace(
+      this.translate.instant(
+        'When this wallet was created, it was called "{{walletName}}". You can change the name displayed on this device below.'
+      ),
+      { walletName: this.walletName }
+    );
   }
 
   public save(): void {
     let opts = {
       aliasFor: {}
     };
-    opts.aliasFor[this.wallet.credentials.walletId] = this.walletNameForm.value.walletName;
+    opts.aliasFor[
+      this.wallet.credentials.walletId
+    ] = this.walletNameForm.value.walletName;
     this.configProvider.set(opts);
     this.events.publish('wallet:updated', this.wallet.credentials.walletId);
     this.navCtrl.pop();
