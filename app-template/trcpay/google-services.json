@@ -10,7 +10,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:509510359428:android:1f39ad9850fca6c9",
         "android_client_info": {
-          "package_name": "io.terracoin.trcpay"
+          "package_name": "info.terracoin.trcpay"
         }
       },
       "oauth_client": [

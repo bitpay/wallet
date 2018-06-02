@@ -1,7 +1,7 @@
 {
   "packageName": "trcpay",
   "packageDescription": "TRCpay Terracoin Wallet",
-  "packageNameId": "io.terracoin.trcpay",
+  "packageNameId": "info.terracoin.trcpay",
   "statusBarColor": "#0e8843",
   "userVisibleName": "TRCpay",
   "purposeLine": "TRCpay Terracoin Wallet",
