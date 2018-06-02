@@ -42,7 +42,7 @@ angular.module('copayApp.services').factory('configService', function(storageSer
       },
       trcpay: {
         ios: 'http://itunes.apple.com/WebObjects/MZStore.woa/wa/viewContentsUserReviews?id=000000000&pageNumber=0&sortOrdering=2&type=Purple+Software&mt=8',
-        android: 'https://play.google.com/store/apps/details?id=io.terracoin.trcpay',
+        android: 'https://play.google.com/store/apps/details?id=info.terracoin.trcpay',
         wp: ''
       }
     },
