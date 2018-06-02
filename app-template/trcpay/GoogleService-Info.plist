@@ -7,9 +7,9 @@
 	<key>AD_UNIT_ID_FOR_INTERSTITIAL_TEST</key>
 	<string>ca-app-pub-3940256099942544/4411468910</string>
 	<key>CLIENT_ID</key>
-	<string>509510359428-o2pqmt4vt8scu5v5p97fll1jv9t31cst.apps.googleusercontent.com</string>
+	<string>509510359428-9duvksu7reu32hvhgdqv93esov2i8lbf.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.509510359428-o2pqmt4vt8scu5v5p97fll1jv9t31cst</string>
+	<string>com.googleusercontent.apps.509510359428-9duvksu7reu32hvhgdqv93esov2i8lbf</string>
 	<key>API_KEY</key>
 	<string>AIzaSyAdGSB08QrOvtG0a5DcbktbJ-wljdqw4OI</string>
 	<key>GCM_SENDER_ID</key>
@@ -33,7 +33,7 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:509510359428:ios:1f39ad9850fca6c9</string>
+	<string>1:509510359428:ios:ac1f6beb2b7d87d1</string>
 	<key>DATABASE_URL</key>
 	<string>https://trcpay-wallet.firebaseio.com</string>
 </dict>

@@ -8,12 +8,51 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:509510359428:android:1f39ad9850fca6c9",
+        "mobilesdk_app_id": "1:509510359428:android:ac1f6beb2b7d87d1",
         "android_client_info": {
           "package_name": "info.terracoin.trcpay"
         }
       },
       "oauth_client": [
+        {
+          "client_id": "509510359428-74o6raqp0dtd9il5icgp3l34i8lpklnc.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "509510359428-74o6raqp0dtd9il5icgp3l34i8lpklnc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCqDHkvBtKr0QnX9RWV9MoiEFZXUOd921I"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:509510359428:android:1f39ad9850fca6c9",
+        "android_client_info": {
+          "package_name": "io.terracoin.trcpay"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "509510359428-74o6raqp0dtd9il5icgp3l34i8lpklnc.apps.googleusercontent.com",
+          "client_type": 3
+        },
         {
           "client_id": "509510359428-74o6raqp0dtd9il5icgp3l34i8lpklnc.apps.googleusercontent.com",
           "client_type": 3
