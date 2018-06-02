@@ -1,4 +1,4 @@
 {
   "name": "*USERVISIBLENAME*",
-  "app_id": "io.terracoin.*BUNDLENAME*"
+  "app_id": "info.terracoin.*BUNDLENAME*"
 }
