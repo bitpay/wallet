@@ -4,16 +4,16 @@
 <div class="modal-content">
   <ng-content select=".modal-heading"></ng-content>
   <ng-content select=".modal-message"></ng-content>
-  <ion-row justify-content-center>
-    <ion-col *ngIf="modalCancelText">
+  <div class="buttons">
+    <div class="button-wrapper" *ngIf="modalCancelText">
       <button ion-button clear [color]="type" (click)="close(false)">
         <ng-content select="modal-cancel-text"></ng-content>
       </button>
-    </ion-col>
-    <ion-col>
+    </div>
+    <div class="button-wrapper">
       <button ion-button clear [color]="type" (click)="close(true)">
         <ng-content select="[modal-confirm-text]"></ng-content>
       </button>
-    </ion-col>
-  </ion-row>
+    </div>
+  </div>
 </div>
