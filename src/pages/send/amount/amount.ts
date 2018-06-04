@@ -49,6 +49,7 @@ export class AmountPage {
   private satToUnit: number;
   private unitDecimals: number;
   private zone: any;
+  private description: string;
 
   public alternativeUnit: string;
   public globalResult: string;
@@ -95,6 +96,7 @@ export class AmountPage {
     this.email = this.navParams.data.email;
     this.color = this.navParams.data.color;
     this.fixedUnit = this.navParams.data.fixedUnit;
+    this.description = this.navParams.data.description;
 
     this.showRecipient = true;
     this.showSendMax = false;
@@ -467,7 +469,8 @@ export class AmountPage {
         email: this.email,
         color: this.color,
         coin,
-        useSendMax: this.useSendMax
+        useSendMax: this.useSendMax,
+        description: this.description
       };
     }
     this.useSendMax = null;
