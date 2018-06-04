@@ -1,0 +1,19 @@
+<div class="modal-img" #imageContainer>
+  <ng-content select="[modal-icon]"></ng-content>
+</div>
+<div class="modal-content">
+  <ng-content select=".modal-heading"></ng-content>
+  <ng-content select=".modal-message"></ng-content>
+  <div class="buttons">
+    <div class="button-wrapper" *ngIf="modalCancelText">
+      <button ion-button clear [color]="type" (click)="close(false)">
+        <ng-content select="modal-cancel-text"></ng-content>
+      </button>
+    </div>
+    <div class="button-wrapper">
+      <button ion-button clear [color]="type" (click)="close(true)">
+        <ng-content select="[modal-confirm-text]"></ng-content>
+      </button>
+    </div>
+  </div>
+</div>

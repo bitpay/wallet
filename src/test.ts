@@ -157,6 +157,14 @@ const ionicProviders = [
   {
     provide: ViewController,
     useFactory: () => ViewControllerMock.instance()
+  },
+  { provide: FCM, useClass: FCMMock },
+  { provide: File, useClass: FileMock },
+  { provide: QRScanner, useClass: QRScannerMock },
+  { provide: TouchID, useClass: TouchIDMock },
+  {
+    provide: AndroidFingerprintAuth,
+    useClass: AndroidFingerprintAuthMock
   }
 ];
 const baseProviders = [
@@ -208,14 +216,6 @@ export class TestUtils {
         GestureController,
         NavParams,
         PlatformProvider,
-        { provide: FCM, useClass: FCMMock },
-        { provide: File, useClass: FileMock },
-        { provide: QRScanner, useClass: QRScannerMock },
-        { provide: TouchID, useClass: TouchIDMock },
-        {
-          provide: AndroidFingerprintAuth,
-          useClass: AndroidFingerprintAuthMock
-        },
         ...providers
       ]
     }).compileComponents();

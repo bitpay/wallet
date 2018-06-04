@@ -1,13 +1,22 @@
 import { Injectable } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { AlertController } from 'ionic-angular';
+import { AlertController, Modal, ModalController } from 'ionic-angular';
+import { MiniModalComponent } from '../../components/mini-modal/mini-modal';
 import { Logger } from '../../providers/logger/logger';
+
+export type MiniModalTitle =
+  | 'backup-needed'
+  | 'backup-ready'
+  | 'backup-warning'
+  | 'fee-warning'
+  | 'sensitive-info';
 
 @Injectable()
 export class PopupProvider {
   constructor(
     private alertCtrl: AlertController,
     private logger: Logger,
+    private modalCtrl: ModalController,
     private translate: TranslateService
   ) {}
 
@@ -112,5 +121,13 @@ export class PopupProvider {
       });
       prompt.present();
     });
+  }
+
+  public createMiniModal(modalTitle: MiniModalTitle): Modal {
+    return this.modalCtrl.create(
+      MiniModalComponent,
+      { modalTitle },
+      { cssClass: 'fullscreen-modal' }
+    );
   }
 }

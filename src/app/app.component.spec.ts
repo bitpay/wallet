@@ -40,6 +40,11 @@ describe('CopayApp', () => {
     fixture.detectChanges();
   });
 
+  afterEach(() => {
+    spyOn(component, 'ngOnDestroy');
+    fixture.destroy();
+  });
+
   it('should be created', () => {
     expect(component instanceof CopayApp).toBe(true);
   });

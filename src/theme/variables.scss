@@ -22,6 +22,7 @@ $app-direction: ltr;
 
 // Override - Homogenized ionic component styles
 @import 'overrides';
+@import 'mixins';
 @import 'modals';
 
 // Colors
@@ -30,7 +31,7 @@ $colors: (
   secondary: $color-secondary,
   warning: #ffa500,
   danger: #ef473a,
-  success: #09c286,
+  success: #01d1a2,
   light: #f4f4f4,
   blank: #fff,
   dark: #424242,

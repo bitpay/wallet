@@ -1,16 +1,10 @@
 import { Component } from '@angular/core';
-import {
-  AlertController,
-  ModalController,
-  NavController,
-  NavParams
-} from 'ionic-angular';
+import { AlertController, NavController, NavParams } from 'ionic-angular';
 
 // pages
 import { BackupGamePage } from '../backup-game/backup-game';
 
-// components
-import { CustomModalComponent } from '../../../components/custom-modal/custom-modal';
+import { PopupProvider } from '../../../providers/popup/popup';
 
 @Component({
   selector: 'page-backup-warning',
@@ -25,20 +19,18 @@ export class BackupWarningPage {
     public navCtrl: NavController,
     public navParams: NavParams,
     public alertCtrl: AlertController,
-    public modalCtrl: ModalController
+    public popupProvider: PopupProvider
   ) {
     this.walletId = this.navParams.get('walletId');
     this.fromOnboarding = this.navParams.get('fromOnboarding');
   }
 
   public openWarningModal(): void {
-    let BackupWarningModal = this.modalCtrl.create(
-      CustomModalComponent,
-      { modal: 'backup-warning' },
-      { cssClass: 'fullscreen-modal' }
+    const backupWarningModal = this.popupProvider.createMiniModal(
+      'backup-warning'
     );
-    BackupWarningModal.present({ animate: false });
-    BackupWarningModal.onDidDismiss(response => {
+    backupWarningModal.present({ animate: false });
+    backupWarningModal.onDidDismiss(response => {
       if (response) {
         this.navCtrl.push(BackupGamePage, {
           walletId: this.walletId,

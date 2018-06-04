@@ -1,22 +1,16 @@
 import { Component, Inject } from '@angular/core';
 import { DOCUMENT } from '@angular/platform-browser';
 import { TranslateService } from '@ngx-translate/core';
-import {
-  ActionSheetController,
-  ModalController,
-  ToastController
-} from 'ionic-angular';
+import { ActionSheetController, ToastController } from 'ionic-angular';
 
 // native
 import { SocialSharing } from '@ionic-native/social-sharing';
-
-// components
-import { CustomModalComponent } from '../../../../components/custom-modal/custom-modal';
 
 // providers
 import { ConfigProvider } from '../../../../providers/config/config';
 import { Logger } from '../../../../providers/logger/logger';
 import { PlatformProvider } from '../../../../providers/platform/platform';
+import { PopupProvider } from '../../../../providers/popup/popup';
 
 import * as _ from 'lodash';
 
@@ -42,7 +36,7 @@ export class SessionLogPage {
     private toastCtrl: ToastController,
     private platformProvider: PlatformProvider,
     private translate: TranslateService,
-    private modalCtrl: ModalController
+    private popupProvider: PopupProvider
   ) {
     this.dom = dom;
     this.config = this.configProvider.get();
@@ -152,10 +146,8 @@ export class SessionLogPage {
   }
 
   private showWarningModal() {
-    let sessionLogWarningModal = this.modalCtrl.create(
-      CustomModalComponent,
-      { modal: 'sensitive-info' },
-      { cssClass: 'fullscreen-modal' }
+    const sessionLogWarningModal = this.popupProvider.createMiniModal(
+      'sensitive-info'
     );
     sessionLogWarningModal.present();
     sessionLogWarningModal.onDidDismiss(response => {

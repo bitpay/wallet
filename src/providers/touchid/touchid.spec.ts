@@ -1,13 +1,18 @@
+import { TestBed } from '@angular/core/testing';
+import { AndroidFingerprintAuth } from '@ionic-native/android-fingerprint-auth';
+import { TouchID } from '@ionic-native/touch-id';
 import { TestUtils } from '../../test';
+import { AppProvider } from '../app/app';
 import { PlatformProvider } from '../platform/platform';
 import { TouchIdProvider } from './touchid';
 
 describe('Provider: TouchId Provider', () => {
   let touchIdProvider: TouchIdProvider;
   let platformProvider: PlatformProvider;
+  let testBed: typeof TestBed;
 
   beforeEach(() => {
-    const testBed = TestUtils.configureProviderTestingModule();
+    testBed = TestUtils.configureProviderTestingModule();
     touchIdProvider = testBed.get(TouchIdProvider);
     platformProvider = testBed.get(PlatformProvider);
   });
@@ -37,18 +42,26 @@ describe('Provider: TouchId Provider', () => {
   });
 
   describe('Function: check', () => {
-    it('should verify is IOS device has Fingerprint', () => {
+    it('should verify iOS device has Fingerprint', () => {
       platformProvider.isIOS = true;
-      platformProvider.isCordova = true;
-      touchIdProvider.check().then(resolve => {
-        expect(resolve).toBeDefined();
-      });
+      const touchId = testBed.get(TouchID);
+      const spy = spyOn(touchId, 'verifyFingerprint').and.returnValue(
+        Promise.resolve()
+      );
+      touchIdProvider.check();
+      expect(spy).toHaveBeenCalled();
     });
 
-    it('should verify is Android device has Fingerprint', () => {
+    it('should verify Android device has Fingerprint', () => {
       platformProvider.isAndroid = true;
-      touchIdProvider.check().then(resolve => {
-        expect(resolve).toBeDefined();
+      const androidFingerprintAuth = testBed.get(AndroidFingerprintAuth);
+      const appProvider = testBed.get(AppProvider);
+      const spy = spyOn(androidFingerprintAuth, 'encrypt').and.returnValue(
+        Promise.resolve({ withFingerprint: true })
+      );
+      touchIdProvider.check();
+      expect(spy).toHaveBeenCalledWith({
+        clientId: appProvider.info.nameCase
       });
     });
   });

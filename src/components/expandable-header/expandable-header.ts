@@ -113,3 +113,9 @@ export class ExpandableHeaderComponent {
       );
   }
 }
+
+export const EXPANDABLE_HEADER_COMPONENTS = [
+  ExpandableHeaderComponent,
+  ExpandableHeaderFooterComponent,
+  ExpandableHeaderPrimaryComponent
+];
