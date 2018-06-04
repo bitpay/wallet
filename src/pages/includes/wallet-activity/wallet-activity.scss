@@ -1,6 +1,14 @@
 page-wallet-activity {
-  .wallet-color-default {
-    background-color: color($colors, primary);
+  .item-subtitle {
+    .wallet-icon-container {
+      vertical-align: middle;
+      margin: 0px 2px 0 0;
+      .icon-wallet {
+        width: 18px;
+        height: 18px;
+        padding: 0;
+      }
+    }
   }
   ion-note {
     text-align: end;
@@ -10,16 +18,5 @@ page-wallet-activity {
     .date {
       font-size: 12.5px;
     }
-  }
-
-  .wallet-icon-container {
-    width: 37px;
-  }
-
-  .icon-color {
-    width: 2rem;
-    height: 2rem;
-    border-radius: $txp-icon-border-radius;
-    margin: 8px auto;
   }
 }
