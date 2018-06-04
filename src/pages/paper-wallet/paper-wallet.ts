@@ -123,11 +123,13 @@ export class PaperWalletPage {
 
   private getPrivateKey(
     scannedKey: string,
-    isPkEncrypted: boolean,
+    privateKeyIsEncrypted: boolean,
     passphrase: string,
     cb: (err, scannedKey) => any
-  ): () => any {
-    if (!isPkEncrypted) return cb(null, scannedKey);
+  ) {
+    if (!privateKeyIsEncrypted) {
+      return cb(null, scannedKey);
+    }
     this.wallet.decryptBIP38PrivateKey(scannedKey, passphrase, null, cb);
   }
 

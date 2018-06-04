@@ -152,6 +152,7 @@ export class SellGlideraPage {
     } else {
       return cb();
     }
+    return undefined;
   }
 
   public sellConfirm(): void {

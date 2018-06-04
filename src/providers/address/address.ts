@@ -40,7 +40,7 @@ export class AddressProvider {
 
   private translateAddress(address: string) {
     var origCoin = this.getCoin(address);
-    if (!origCoin) return;
+    if (!origCoin) return undefined;
 
     var origAddress = new this.Bitcore[origCoin].lib.Address(address);
     var origObj = origAddress.toObject();

@@ -55,7 +55,7 @@ export class TxFormatProvider {
   }
 
   public formatAmountStr(coin: string, satoshis: number): string {
-    if (isNaN(satoshis)) return;
+    if (isNaN(satoshis)) return undefined;
     return this.formatAmount(satoshis) + ' ' + coin.toUpperCase();
   }
 
@@ -82,7 +82,7 @@ export class TxFormatProvider {
   }
 
   public formatAlternativeStr(coin: string, satoshis: number): string {
-    if (isNaN(satoshis)) return;
+    if (isNaN(satoshis)) return undefined;
     let settings = this.configProvider.get().wallet.settings;
 
     let val = (() => {

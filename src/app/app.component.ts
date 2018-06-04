@@ -363,6 +363,7 @@ export class CopayApp {
         return false;
       }
     }
+    return false;
   }
 
   private getSelectedTabNav(): any {

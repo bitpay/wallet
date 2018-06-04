@@ -696,14 +696,14 @@ export class ConfirmPage {
   }
 
   public approve(tx: any, wallet: any): Promise<void> {
-    if (!tx || !wallet) return;
+    if (!tx || !wallet) return undefined;
 
     if (this.paymentExpired) {
       this.popupProvider.ionicAlert(
         null,
         this.translate.instant('This bitcoin payment request has expired.')
       );
-      return;
+      return undefined;
     }
 
     this.onGoingProcessProvider.set('creatingTx');

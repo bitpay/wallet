@@ -64,5 +64,6 @@ export class PlatformProvider {
         return false;
       }
     }
+    return false;
   }
 }
