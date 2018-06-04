@@ -1,25 +1,11 @@
-import { HttpClientModule } from '@angular/common/http';
-import { TestBed } from '@angular/core/testing';
-import { File } from '@ionic-native/file';
-import { AlertController, Config, Platform } from 'ionic-angular';
-
-import {
-  HttpClientTestingModule,
-  HttpTestingController
-} from '@angular/common/http/testing';
-
-import {
-  TranslateFakeLoader,
-  TranslateLoader,
-  TranslateModule
-} from '@ngx-translate/core';
+import { HttpTestingController } from '@angular/common/http/testing';
+import { TestUtils } from '../../test';
 
 // providers
 import { ConfigProvider } from '../config/config';
 import { HomeIntegrationsProvider } from '../home-integrations/home-integrations';
 import { Logger } from '../logger/logger';
 import { PersistenceProvider } from '../persistence/persistence';
-import { PlatformProvider } from '../platform/platform';
 import { AmazonProvider } from './amazon';
 
 describe('Provider: AmazonProvider', () => {
@@ -34,38 +20,17 @@ describe('Provider: AmazonProvider', () => {
   let urls = ['https://bitpay.com', 'https://test.bitpay.com'];
 
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      imports: [
-        HttpClientModule,
-        HttpClientTestingModule,
-        TranslateModule.forRoot({
-          loader: { provide: TranslateLoader, useClass: TranslateFakeLoader }
-        })
-      ],
-      providers: [
-        AmazonProvider,
-        AlertController,
-        Config,
-        ConfigProvider,
-        File,
-        HomeIntegrationsProvider,
-        Logger,
-        { provide: PersistenceProvider },
-        PersistenceProvider,
-        Platform,
-        PlatformProvider
-      ]
-    });
+    const testBed = TestUtils.configureProviderTestingModule();
 
-    amazonProvider = TestBed.get(AmazonProvider);
-    persistenceProvider = TestBed.get(PersistenceProvider);
-    homeIntegrationsProvider = TestBed.get(HomeIntegrationsProvider);
-    configProvider = TestBed.get(ConfigProvider);
-    logger = TestBed.get(Logger);
+    amazonProvider = testBed.get(AmazonProvider);
+    persistenceProvider = testBed.get(PersistenceProvider);
+    homeIntegrationsProvider = testBed.get(HomeIntegrationsProvider);
+    configProvider = testBed.get(ConfigProvider);
+    logger = testBed.get(Logger);
     spyLoggerInfo = spyOn(logger, 'info');
     spyLoggerError = spyOn(logger, 'error');
     persistenceProvider.load();
-    httpMock = TestBed.get(HttpTestingController);
+    httpMock = testBed.get(HttpTestingController);
 
   });
 
