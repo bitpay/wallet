@@ -54,16 +54,16 @@ mini-modal.ion-page {
       }
 
       .buttons {
+        $space-between: 1rem;
+
         width: 100%;
         display: flex;
         margin-top: 0.5rem;
         flex-wrap: wrap;
-        margin-right: -1rem;
-        justify-content: space-between;
+        margin-right: -1 * $space-between;
 
         .button-wrapper {
           flex-grow: 1;
-          text-align: center;
           padding-right: 1rem;
 
           &:first-child {
@@ -77,7 +77,7 @@ mini-modal.ion-page {
           font-weight: 500;
           height: 3 * $content-margin;
           font-weight: 500;
-          padding: 1rem;
+          padding: $space-between;
 
           @media (max-height: $short-screen-height) {
             font-size: 17px;
