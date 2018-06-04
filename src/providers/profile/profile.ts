@@ -77,12 +77,9 @@ export class ProfileProvider {
     if (this.wallet[walletId]) this.wallet[walletId]['order'] = index;
   }
 
-  public getWalletOrder(walletId: string): Promise<any> {
-    return new Promise(resolve => {
-      this.persistenceProvider.getWalletOrder(walletId).then((order: any) => {
-        return resolve(order);
-      });
-    });
+  public async getWalletOrder(walletId: string): Promise<any> {
+    const order = await this.persistenceProvider.getWalletOrder(walletId);
+    return order;
   }
 
   public setBackupFlag(walletId: string): void {
@@ -137,12 +134,14 @@ export class ProfileProvider {
     });
   }
 
-  private bindWalletClient(wallet: any, opts?: any): boolean {
+  private async bindWalletClient(wallet: any, opts?: any) {
     opts = opts ? opts : {};
     let walletId = wallet.credentials.walletId;
 
-    if (this.wallet[walletId] && this.wallet[walletId].started && !opts.force)
-      return false;
+    if (this.wallet[walletId] && this.wallet[walletId].started && !opts.force) {
+      this.logger.info('This wallet has been initialized. Skip. ' + walletId);
+      return;
+    }
 
     // INIT WALLET VIEWMODEL
     wallet.id = walletId;
@@ -157,17 +156,9 @@ export class ProfileProvider {
     this.updateWalletSettings(wallet);
     this.wallet[walletId] = wallet;
 
-    this.needsBackup(wallet).then((val: any) => {
-      wallet.needsBackup = val;
-    });
-
-    this.isBalanceHidden(wallet).then((val: any) => {
-      wallet.balanceHidden = val;
-    });
-
-    this.getWalletOrder(wallet.id).then((val: number) => {
-      wallet.order = val;
-    });
+    wallet.needsBackup = await this.needsBackup(wallet);
+    wallet.balanceHidden = await this.isBalanceHidden(wallet);
+    wallet.order = await this.getWalletOrder(wallet.id);
 
     wallet.removeAllListeners();
 
@@ -216,8 +207,6 @@ export class ProfileProvider {
         this.updateWalletSettings(wallet);
       }
     });
-
-    return true;
   }
 
   private newBwsEvent(n: any, wallet: any): void {
