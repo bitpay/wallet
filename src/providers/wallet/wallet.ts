@@ -978,7 +978,7 @@ export class WalletProvider {
   }
 
   public isEncrypted(wallet: any): boolean {
-    if (lodash.isEmpty(wallet)) return;
+    if (lodash.isEmpty(wallet)) return undefined;
     let isEncrypted = wallet.isPrivKeyEncrypted();
     if (isEncrypted) this.logger.debug('Wallet is encrypted');
     return isEncrypted;

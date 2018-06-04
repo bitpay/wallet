@@ -401,7 +401,7 @@ export class AmountPage {
   }
 
   private toFiat(val: number): number {
-    if (!this.rateProvider.getRate(this.fiatCode)) return;
+    if (!this.rateProvider.getRate(this.fiatCode)) return undefined;
 
     return parseFloat(
       this.rateProvider
@@ -415,7 +415,7 @@ export class AmountPage {
   }
 
   private format(val: string): string {
-    if (!val) return;
+    if (!val) return undefined;
 
     let result = val.toString();
 

@@ -174,6 +174,7 @@ export class IncomingDataProvider {
         } else {
           this.goSend(addr, amount, message, coin);
         }
+        return undefined;
       });
       return true;
     } else if (/^https?:\/\//.test(data)) {
@@ -359,7 +360,7 @@ export class IncomingDataProvider {
   }
 
   private getParameterByName(name: string, url: string): string {
-    if (!url) return;
+    if (!url) return undefined;
     name = name.replace(/[\[\]]/g, '\\$&');
     let regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
       results = regex.exec(url);

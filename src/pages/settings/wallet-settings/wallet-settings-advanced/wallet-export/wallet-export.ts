@@ -88,6 +88,7 @@ export class WalletExportPage {
           mismatchedPasswords: true
         };
       }
+      return undefined;
     };
   }
 

@@ -103,8 +103,8 @@ export class TouchIdProvider {
 
   public check(): Promise<any> {
     if (this.platform.isIOS) return this.verifyIOSFingerprint();
-
     if (this.platform.isAndroid) return this.verifyAndroidFingerprint();
+    return undefined;
   }
 
   private isNeeded(wallet: any): string {
@@ -115,9 +115,9 @@ export class TouchIdProvider {
 
   public checkWallet(wallet: any): Promise<any> {
     return this.isAvailable().then((isAvailable: boolean) => {
-      if (!isAvailable) return;
-
+      if (!isAvailable) return undefined;
       if (this.isNeeded(wallet)) return this.check();
+      return undefined;
     });
   }
 }

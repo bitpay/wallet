@@ -1204,14 +1204,14 @@ export class ProfileProvider {
 
     if (opts.hasFunds) {
       ret = _.filter(ret, (w: any) => {
-        if (!w.status) return;
+        if (!w.status) return undefined;
         return w.status.availableBalanceSat > 0;
       });
     }
 
     if (opts.minAmount) {
       ret = _.filter(ret, (w: any) => {
-        if (!w.status) return;
+        if (!w.status) return undefined;
         return w.status.availableBalanceSat > opts.minAmount;
       });
     }
