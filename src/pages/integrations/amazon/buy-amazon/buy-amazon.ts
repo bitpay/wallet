@@ -573,18 +573,27 @@ export class BuyAmazonPage {
     let finishComment: string;
     let cssClass: string;
     if (this.amazonGiftCard.status == 'FAILURE') {
-      finishComment = this.translate.instant('Your purchase could not be completed');
+      finishComment = this.translate.instant(
+        'Your purchase could not be completed'
+      );
       cssClass = 'danger';
     }
     if (this.amazonGiftCard.status == 'PENDING') {
-      finishComment = this.translate.instant('Your purchase was added to the list of pending');
+      finishComment = this.translate.instant(
+        'Your purchase was added to the list of pending'
+      );
       cssClass = 'warning';
     }
     if (this.amazonGiftCard.status == 'SUCCESS') {
-      finishComment = this.replaceParametersProvider.replace(this.translate.instant('Bought {{ amount }}'), { amount: this.amountUnitStr });
+      finishComment = this.replaceParametersProvider.replace(
+        this.translate.instant('Bought {{ amount }}'),
+        { amount: this.amountUnitStr }
+      );
     }
     if (this.amazonGiftCard.status == 'SUCCESS') {
-      finishComment = this.translate.instant('Gift card generated and ready to use.');
+      finishComment = this.translate.instant(
+        'Gift card generated and ready to use.'
+      );
     }
     let finishText = '';
     let modal = this.modalCtrl.create(

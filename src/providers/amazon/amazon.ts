@@ -51,7 +51,8 @@ export class AmazonProvider {
         this.redeemAmazonUrl = 'https://www.amazon.co.jp/gc/redeem?claimCode=';
         this.amazonNetwork = this.getNetwork() + '-japan';
         break;
-      default: // For USA
+      default:
+        // For USA
         this.country = 'usa';
         this.currency = 'USD';
         this.limitPerDay = 2000;
@@ -74,10 +75,8 @@ export class AmazonProvider {
   }
 
   public savePendingGiftCard(gc, opts, cb) {
-<<<<<<< HEAD
-    var network = this.getNetwork();
     this.persistenceProvider
-      .getAmazonGiftCards(network, this.country)
+      .getAmazonGiftCards(this.amazonNetwork)
       .then(oldGiftCards => {
         if (_.isString(oldGiftCards)) {
           oldGiftCards = JSON.parse(oldGiftCards);
@@ -95,31 +94,9 @@ export class AmazonProvider {
         }
 
         inv = JSON.stringify(inv);
-        this.persistenceProvider.setAmazonGiftCards(network, inv, this.country);
+        this.persistenceProvider.setAmazonGiftCards(this.amazonNetwork, inv);
         return cb(null);
       });
-=======
-    this.persistenceProvider.getAmazonGiftCards(this.amazonNetwork).then((oldGiftCards) => {
-      if (_.isString(oldGiftCards)) {
-        oldGiftCards = JSON.parse(oldGiftCards);
-      }
-      if (_.isString(gc)) {
-        gc = JSON.parse(gc);
-      }
-      var inv = oldGiftCards || {};
-      inv[gc.invoiceId] = gc;
-      if (opts && (opts.error || opts.status)) {
-        inv[gc.invoiceId] = _.assign(inv[gc.invoiceId], opts);
-      }
-      if (opts && opts.remove) {
-        delete inv[gc.invoiceId];
-      }
-
-      inv = JSON.stringify(inv);
-      this.persistenceProvider.setAmazonGiftCards(this.amazonNetwork, inv);
-      return cb(null);
-    });
->>>>>>> Refactor country parameter
   }
 
   public getPendingGiftCards(cb) {
