@@ -35,6 +35,18 @@ page-home {
     color: color($colors, danger);
   }
 
+  page-wallet-activity,
+  page-txp {
+    @media (max-width: 350px) {
+      .item-title {
+        font-size: 13px;
+      }
+      ion-note .date {
+        font-size: 11.5px;
+      }
+    }
+  }
+
   page-txp:last-child,
   page-wallet-activity:last-child {
     border: 0;
