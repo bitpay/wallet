@@ -1,4 +1,14 @@
 page-txp {
+  .item-title {
+    margin-bottom: 0.3rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    line-clamp: 2;
+    -webkit-line-clamp: 2;
+    box-orient: vertical;
+    -webkit-box-orient: vertical;
+  }
   .item-subtitle {
     .icon-container {
       vertical-align: middle;
