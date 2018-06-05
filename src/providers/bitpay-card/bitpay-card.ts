@@ -269,7 +269,10 @@ export class BitPayCardProvider {
     var invoices, history;
     opts = opts || {};
 
-    var json: any = {
+    var json: {
+      method: string;
+      params?: string;
+    } = {
       method: 'getInvoiceHistory'
     };
 
@@ -279,7 +282,7 @@ export class BitPayCardProvider {
         if (err) return cb(err);
 
         this.getCards(data => {
-          var card: any = _.find(data, {
+          var card = _.find(data, {
             id: cardId
           });
 
@@ -342,7 +345,7 @@ export class BitPayCardProvider {
         if (err) return cb(err);
 
         this.getCards(data => {
-          var card: any = _.find(data, {
+          var card = _.find(data, {
             id: cardId
           });
 

@@ -60,7 +60,7 @@ export class SendFeedbackPage {
 
   ionViewWillEnter() {
     this.navBar.backButtonClick = () => {
-      this.persistenceProvider.getFeedbackInfo().then((info: any) => {
+      this.persistenceProvider.getFeedbackInfo().then(info => {
         let feedbackInfo = info;
         feedbackInfo.sent = false;
         this.persistenceProvider.setFeedbackInfo(feedbackInfo);
@@ -115,7 +115,7 @@ export class SendFeedbackPage {
   }
 
   public sendFeedback(feedback: string, goHome: boolean): void {
-    let config: any = this.configProvider.get();
+    let config = this.configProvider.get();
 
     let platform = this.device.platform || 'Unknown platform';
     let version = this.device.version || 'Unknown version';

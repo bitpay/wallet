@@ -93,6 +93,12 @@ export interface Config {
     email: string;
   };
 
+  emailFor?: any;
+  bwsFor?: any;
+  aliasFor?: any;
+  colorFor?: any;
+  touchIdFor?: any;
+
   log: {
     weight: number;
   };
@@ -242,7 +248,7 @@ export class ConfigProvider {
   /**
    * @param newOpts object or string (JSON)
    */
-  public set(newOpts: any) {
+  public set(newOpts) {
     let config = _.cloneDeep(configDefault);
 
     if (_.isString(newOpts)) {

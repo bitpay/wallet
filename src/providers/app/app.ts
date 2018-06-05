@@ -9,7 +9,7 @@ import { LanguageProvider } from '../../providers/language/language';
 import { PersistenceProvider } from '../../providers/persistence/persistence';
 import { PlatformProvider } from '../../providers/platform/platform';
 
-/* TODO: implement interface propertly
+/* TODO: implement interface properly
 interface App {
   packageName: string;
   packageDescription: string;
@@ -39,13 +39,13 @@ interface App {
   androidVersion: string;
   commitHash: string;
   _extraCSS: string;
-  _enabledExtensions: any;
+  _enabledExtensions;
 }*/
 
 @Injectable()
 export class AppProvider {
   public info: any = {};
-  public servicesInfo: any;
+  public servicesInfo;
   private jsonPathApp: string = 'assets/appConfig.json';
   private jsonPathServices: string = 'assets/externalServices.json';
 

@@ -50,14 +50,14 @@ export class FeedbackCardPage {
   public hideCard(): void {
     this.isShowRateCard = false;
     this.logger.debug('Feedback card dismissed.');
-    this.persistenceProvider.getFeedbackInfo().then((info: any) => {
+    this.persistenceProvider.getFeedbackInfo().then(info => {
       let feedbackInfo = info;
       feedbackInfo.sent = true;
       this.persistenceProvider.setFeedbackInfo(feedbackInfo);
     });
   }
 
-  public setScore(score: number): any {
+  public setScore(score: number) {
     this.score = score;
     switch (this.score) {
       case 1:

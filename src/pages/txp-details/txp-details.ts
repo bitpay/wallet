@@ -30,16 +30,16 @@ import * as _ from 'lodash';
   templateUrl: 'txp-details.html'
 })
 export class TxpDetailsPage {
-  public wallet: any;
-  public tx: any;
-  public copayers: any;
+  public wallet;
+  public tx;
+  public copayers;
   public copayerId: string;
   public isShared: boolean;
   public canSign: boolean;
   public color: string;
   public buttonText: string;
   public successText: string;
-  public actionList: any[];
+  public actionList;
   public paymentExpired: boolean;
   public expires: string;
   public currentSpendUnconfirmed: boolean;
@@ -49,7 +49,7 @@ export class TxpDetailsPage {
 
   private isGlidera: boolean;
   private GLIDERA_LOCK_TIME: number;
-  private countDown: any;
+  private countDown;
   private isCordova: boolean;
 
   constructor(
@@ -202,7 +202,7 @@ export class TxpDetailsPage {
       by: this.tx.creatorName
     });
 
-    _.each(this.tx.actions, (action: any) => {
+    _.each(this.tx.actions, action => {
       this.actionList.push({
         type: action.type,
         time: action.createdOn,
@@ -300,7 +300,7 @@ export class TxpDetailsPage {
             this.onGoingProcessProvider.clear();
             this.close();
           })
-          .catch((err: any) => {
+          .catch(err => {
             this.onGoingProcessProvider.clear();
             this.setError(
               err,
@@ -326,7 +326,7 @@ export class TxpDetailsPage {
             this.onGoingProcessProvider.clear();
             this.close();
           })
-          .catch((err: any) => {
+          .catch(err => {
             this.onGoingProcessProvider.clear();
             if (err && !(err.message && err.message.match(/Unexpected/))) {
               this.setError(
@@ -367,7 +367,7 @@ export class TxpDetailsPage {
   private updateTxInfo(eventName: string): void {
     this.walletProvider
       .getTxp(this.wallet, this.tx.id)
-      .then((tx: any) => {
+      .then(tx => {
         let action = _.find(tx.actions, {
           copayerId: this.wallet.credentials.copayerId
         });
@@ -399,7 +399,7 @@ export class TxpDetailsPage {
 
   public updateCopayerList(): void {
     _.map(this.copayers, (cp: any) => {
-      _.each(this.tx.actions, (ac: any) => {
+      _.each(this.tx.actions, ac => {
         if (cp.id == ac.copayerId) {
           cp.action = ac.type;
         }
@@ -432,13 +432,13 @@ export class TxpDetailsPage {
     let addr = this.tx.toAddress;
     this.addressBookProvider
       .get(addr)
-      .then((ab: any) => {
+      .then(ab => {
         if (ab) {
           let name = _.isObject(ab) ? ab.name : ab;
           this.contactName = name;
         }
       })
-      .catch((err: any) => {
+      .catch(err => {
         this.logger.warn(err);
       });
   }

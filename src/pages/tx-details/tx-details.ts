@@ -21,15 +21,15 @@ import { WalletProvider } from '../../providers/wallet/wallet';
 })
 export class TxDetailsPage {
   private txId: string;
-  private config: any;
+  private config;
   private blockexplorerUrl: string;
 
-  public wallet: any;
-  public btx: any;
-  public actionList: any[];
+  public wallet;
+  public btx;
+  public actionList;
   public isShared: boolean;
   public title: string;
-  public txNotification: any;
+  public txNotification;
   public color: string;
   public copayerId: string;
   public txsUnsubscribedForNotifications: boolean;
@@ -69,19 +69,17 @@ export class TxDetailsPage {
         ? defaults.blockExplorerUrl.bch
         : defaults.blockExplorerUrl.btc;
 
-    this.txConfirmNotificationProvider
-      .checkIfEnabled(this.txId)
-      .then((res: any) => {
-        this.txNotification = {
-          value: res
-        };
-      });
+    this.txConfirmNotificationProvider.checkIfEnabled(this.txId).then(res => {
+      this.txNotification = {
+        value: res
+      };
+    });
 
     this.updateTx();
   }
 
   ionViewWillEnter() {
-    this.events.subscribe('bwsEvent', (_, type: string, n: any) => {
+    this.events.subscribe('bwsEvent', (_, type: string, n) => {
       if (type == 'NewBlock' && n && n.data && n.data.network == 'livenet')
         this.updateTxDebounced({ hideLoading: true });
     });
@@ -112,11 +110,11 @@ export class TxDetailsPage {
   private updateMemo(): void {
     this.walletProvider
       .getTxNote(this.wallet, this.btx.txid)
-      .then((note: any) => {
+      .then(note => {
         if (!note || note.body == '') return;
         this.btx.note = note;
       })
-      .catch((err: any) => {
+      .catch(err => {
         this.logger.warn('Could not fetch transaction note: ' + err);
         return;
       });
@@ -144,7 +142,7 @@ export class TxDetailsPage {
       by: this.btx.creatorName
     });
 
-    _.each(this.btx.actions, (action: any) => {
+    _.each(this.btx.actions, action => {
       this.actionList.push({
         type: action.type,
         time: action.createdOn,
@@ -166,12 +164,12 @@ export class TxDetailsPage {
 
   private updateTxDebounced = _.debounce(this.updateTx, 1000);
 
-  private updateTx(opts?: any): void {
+  private updateTx(opts?): void {
     opts = opts ? opts : {};
     if (!opts.hideLoading) this.onGoingProcess.set('loadingTxInfo');
     this.walletProvider
       .getTx(this.wallet, this.txId)
-      .then((tx: any) => {
+      .then(tx => {
         if (!opts.hideLoading) this.onGoingProcess.clear();
 
         this.btx = this.txFormatProvider.processTx(
@@ -179,11 +177,10 @@ export class TxDetailsPage {
           tx,
           this.walletProvider.useLegacyAddress()
         );
-        let v: string = this.txFormatProvider.formatAlternativeStr(
+        this.btx.feeFiatStr = this.txFormatProvider.formatAlternativeStr(
           this.wallet.coin,
           tx.fees
         );
-        this.btx.feeFiatStr = v;
         this.btx.feeRateStr =
           ((this.btx.fees / (this.btx.amount + this.btx.fees)) * 100).toFixed(
             2
@@ -207,12 +204,12 @@ export class TxDetailsPage {
           .then((amount: number) => {
             this.btx.lowAmount = tx.amount < amount;
           })
-          .catch((err: any) => {
+          .catch(err => {
             this.logger.warn('Error getting low amounts: ' + err);
             return;
           });
       })
-      .catch((err: any) => {
+      .catch(err => {
         if (!opts.hideLoading) this.onGoingProcess.clear();
         this.logger.warn('Error getting transaction: ' + err);
         this.navCtrl.pop();
@@ -224,7 +221,7 @@ export class TxDetailsPage {
   }
 
   public showCommentPopup(): void {
-    let opts: any = {};
+    let opts: { defaultText?: any } = {};
     if (this.btx.message) {
       opts.defaultText = this.btx.message;
     }
@@ -251,7 +248,7 @@ export class TxDetailsPage {
           .then(() => {
             this.logger.info('Tx Note edited');
           })
-          .catch((err: any) => {
+          .catch(err => {
             this.logger.debug('Could not save tx comment ' + err);
           });
       });
@@ -299,13 +296,13 @@ export class TxDetailsPage {
     let addr = this.btx.addressTo;
     this.addressBookProvider
       .get(addr)
-      .then((ab: any) => {
+      .then(ab => {
         if (ab) {
           let name = _.isObject(ab) ? ab.name : ab;
           this.contactName = name;
         }
       })
-      .catch((err: any) => {
+      .catch(err => {
         this.logger.warn(err);
       });
   }

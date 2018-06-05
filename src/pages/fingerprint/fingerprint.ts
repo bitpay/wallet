@@ -9,7 +9,7 @@ import { TouchIdProvider } from '../../providers/touchid/touchid';
   templateUrl: 'fingerprint.html'
 })
 export class FingerprintModalPage {
-  public unregister: any;
+  public unregister;
 
   constructor(
     private touchid: TouchIdProvider,

@@ -12,9 +12,9 @@ import { ShapeshiftProvider } from '../../../../providers/shapeshift/shapeshift'
   templateUrl: 'shapeshift-details.html'
 })
 export class ShapeshiftDetailsPage {
-  public ssData: any;
+  public ssData;
 
-  private defaults: any;
+  private defaults;
 
   constructor(
     private configProvider: ConfigProvider,

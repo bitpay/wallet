@@ -4,7 +4,7 @@ import { Logger } from '../../providers/logger/logger';
 
 @Injectable()
 export class FilterProvider {
-  public formats: any;
+  public formats;
 
   constructor(private decimalPipe: DecimalPipe, private logger: Logger) {
     this.logger.info('FilterProvider initialized');
@@ -16,12 +16,12 @@ export class FilterProvider {
   }
 
   formatFiatAmount(amount: number) {
-    let value: any;
-    let sep: any;
-    let group: any;
-    let intValue: any;
-    let floatValue: any;
-    let finalValue: any;
+    let value;
+    let sep;
+    let group;
+    let intValue;
+    let floatValue;
+    let finalValue;
 
     value = this.decimalPipe.transform(amount);
     if (!value) return 0;

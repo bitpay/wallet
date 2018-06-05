@@ -18,7 +18,7 @@ import { BitPayCardPage } from '../bitpay-card';
   templateUrl: 'bitpay-card-intro.html'
 })
 export class BitPayCardIntroPage {
-  public accounts: any;
+  public accounts;
 
   constructor(
     private translate: TranslateService,
@@ -44,7 +44,7 @@ export class BitPayCardIntroPage {
       this.bitPayAccountProvider.pair(
         pairData,
         pairingReason,
-        (err: string, paired: boolean, apiContext: any) => {
+        (err: string, paired: boolean, apiContext) => {
           if (err) {
             this.popupProvider.ionicAlert(
               this.translate.instant('Error pairing BitPay Account'),
@@ -117,9 +117,9 @@ export class BitPayCardIntroPage {
   }
 
   private showAccountSelector() {
-    let options: any[] = [];
+    let options = [];
 
-    _.forEach(this.accounts, (account: any) => {
+    _.forEach(this.accounts, account => {
       options.push({
         text:
           (account.givenName || account.familyName) +

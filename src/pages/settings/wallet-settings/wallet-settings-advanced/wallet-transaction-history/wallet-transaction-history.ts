@@ -19,14 +19,14 @@ import { WalletDetailsPage } from '../../../../../pages/wallet-details/wallet-de
   templateUrl: 'wallet-transaction-history.html'
 })
 export class WalletTransactionHistoryPage {
-  public wallet: any;
+  public wallet;
   public csvReady: boolean;
   public appName: string;
   public isCordova: boolean;
-  public err: any;
-  public config: any;
-  public csvContent: any[];
-  public csvFilename: any;
+  public err;
+  public config;
+  public csvContent;
+  public csvFilename;
   public csvHeader: string[];
   public unitToSatoshi: number;
   public unitDecimals: number;
@@ -66,7 +66,7 @@ export class WalletTransactionHistoryPage {
     this.csvHistory();
   }
 
-  private formatDate(date: any): string {
+  private formatDate(date): string {
     var dateObj = new Date(date);
     if (!dateObj) {
       this.logger.debug('Error formating a date');
@@ -83,7 +83,7 @@ export class WalletTransactionHistoryPage {
     this.logger.debug('Generating CSV from History');
     this.walletProvider
       .getTxHistory(this.wallet, {})
-      .then((txs: any) => {
+      .then(txs => {
         if (_.isEmpty(txs)) {
           this.logger.warn('Failed to generate CSV: no transactions');
           this.err = 'no transactions';

@@ -9,8 +9,8 @@ import { TxpDetailsPage } from '../../txp-details/txp-details';
   templateUrl: 'txp.html'
 })
 export class TxpPage {
-  private _tx: any;
-  private _addressbook: any;
+  private _tx;
+  private _addressbook;
 
   constructor(
     private timeProvider: TimeProvider,
@@ -19,7 +19,7 @@ export class TxpPage {
   ) {}
 
   @Input()
-  set tx(tx: any) {
+  set tx(tx) {
     this._tx = tx;
   }
 
@@ -28,7 +28,7 @@ export class TxpPage {
   }
 
   @Input()
-  set addressbook(addressbook: any) {
+  set addressbook(addressbook) {
     this._addressbook = addressbook;
   }
 
@@ -36,11 +36,11 @@ export class TxpPage {
     return this._addressbook;
   }
 
-  public createdWithinPastDay(time: any): any {
+  public createdWithinPastDay(time) {
     return this.timeProvider.withinPastDay(time);
   }
 
-  public openTxpModal(txp: any): void {
+  public openTxpModal(txp): void {
     let modal = this.modalCtrl.create(
       TxpDetailsPage,
       { tx: txp },

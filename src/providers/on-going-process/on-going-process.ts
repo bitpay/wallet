@@ -6,10 +6,10 @@ import { Logger } from '../../providers/logger/logger';
 
 @Injectable()
 export class OnGoingProcessProvider {
-  private loading: any;
-  private processNames: any;
-  private pausedOngoingProcess: any;
-  private ongoingProcess: any;
+  private loading;
+  private processNames;
+  private pausedOngoingProcess;
+  private ongoingProcess;
 
   constructor(
     private loadingCtrl: LoadingController,

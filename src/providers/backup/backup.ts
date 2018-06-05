@@ -36,11 +36,11 @@ export class BackupProvider {
     });
   }
 
-  public walletExport(password: string, opts: any, walletId: string): any {
+  public walletExport(password: string, opts, walletId: string) {
     if (!password) {
       return null;
     }
-    let wallet: any = this.profileProvider.getWallet(walletId);
+    let wallet = this.profileProvider.getWallet(walletId);
     try {
       opts = opts ? opts : {};
       let b = wallet.export(opts);
@@ -56,13 +56,13 @@ export class BackupProvider {
     }
   }
 
-  private addMetadata(b: any, opts: any): string {
+  private addMetadata(b, opts): string {
     b = JSON.parse(b);
     if (opts.addressBook) b.addressBook = opts.addressBook;
     return JSON.stringify(b);
   }
 
-  private _download(ew: any, fileName: string): Promise<any> {
+  private _download(ew, fileName: string): Promise<any> {
     return new Promise(resolve => {
       let a = document.createElement('a');
       let blob = this.NewBlob(ew, 'text/plain;charset=utf-8');
@@ -79,7 +79,7 @@ export class BackupProvider {
     });
   }
 
-  private NewBlob(data: any, datatype: string): any {
+  private NewBlob(data, datatype: string) {
     let out;
     try {
       out = new Blob([data], {

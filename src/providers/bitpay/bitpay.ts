@@ -32,7 +32,7 @@ export class BitPayProvider {
 
   public get(endpoint, successCallback, errorCallback) {
     let url = this.BITPAY_API_URL + endpoint;
-    let headers: any = {
+    let headers = {
       'Content-Type': 'application/json'
     };
     this.http.get(url, { headers }).subscribe(
@@ -48,7 +48,7 @@ export class BitPayProvider {
   public post(endpoint, json, successCallback, errorCallback) {
     this.appIdentityProvider.getIdentity(
       this.getEnvironment().network,
-      (err, appIdentity: any) => {
+      (err, appIdentity) => {
         if (err) {
           return errorCallback(err);
         }
@@ -57,10 +57,7 @@ export class BitPayProvider {
         let signedData = bitauthService.sign(dataToSign, appIdentity.priv);
         let url = this.BITPAY_API_URL + endpoint;
 
-        let headers: any = new HttpHeaders().set(
-          'content-type',
-          'application/json'
-        );
+        let headers = new HttpHeaders().set('content-type', 'application/json');
         headers = headers.append('x-identity', appIdentity.pub);
         headers = headers.append('x-signature', signedData);
 
@@ -91,7 +88,7 @@ export class BitPayProvider {
         json['params'].pubkey = appIdentity.pub;
         json['params'] = JSON.stringify(json.params);
         let url = this.BITPAY_API_URL + '/api/v2/';
-        let headers: any = {
+        let headers = {
           'Content-Type': 'application/json'
         };
         this.logger.debug('post auth:' + JSON.stringify(json));

@@ -23,7 +23,7 @@ export class PayproProvider {
     disableLoader?: boolean
   ): Promise<any> {
     return new Promise((resolve, reject) => {
-      let wallet: any = this.profileProvider.getWallets({
+      let wallet = this.profileProvider.getWallets({
         onlyComplete: true,
         coin
       })[0];

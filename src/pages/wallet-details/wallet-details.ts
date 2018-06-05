@@ -35,20 +35,20 @@ export class WalletDetailsPage {
   private currentPage: number = 0;
 
   public requiresMultipleSignatures: boolean;
-  public wallet: any;
-  public history: any[] = [];
-  public groupedHistory: any[][] = [];
+  public wallet;
+  public history = [];
+  public groupedHistory = [];
   public walletNotRegistered: boolean;
   public updateError: boolean;
-  public updateStatusError: any;
+  public updateStatusError;
   public updatingStatus: boolean;
   public updatingTxHistory: boolean;
   public updateTxHistoryError: boolean;
   public updatingTxHistoryProgress: number = 0;
   public showNoTransactionsYetMsg: boolean;
   public showBalanceButton: boolean = false;
-  public addressbook: any = {};
-  public txps: any[] = [];
+  public addressbook = {};
+  public txps = [];
 
   constructor(
     private navCtrl: NavController,
@@ -110,7 +110,7 @@ export class WalletDetailsPage {
     this.currentPage = 0;
   }
 
-  private groupHistory(history: any[]): any[][] {
+  private groupHistory(history) {
     return history.reduce((groups, tx, txInd) => {
       this.isFirstInGroup(txInd)
         ? groups.push([tx])
@@ -128,7 +128,7 @@ export class WalletDetailsPage {
     this.currentPage++;
   }
 
-  private setPendingTxps(txps: any[]) {
+  private setPendingTxps(txps) {
     /* Uncomment to test multiple outputs */
 
     // var txp = {
@@ -217,7 +217,7 @@ export class WalletDetailsPage {
 
     this.walletProvider
       .getStatus(this.wallet, { force: !!force })
-      .then((status: any) => {
+      .then(status => {
         this.updatingStatus = false;
         this.setPendingTxps(status.pendingTxps);
         this.wallet.status = status;
@@ -257,7 +257,7 @@ export class WalletDetailsPage {
       });
   }
 
-  public goToTxDetails(tx: any) {
+  public goToTxDetails(tx) {
     this.navCtrl.push(TxDetailsPage, {
       walletId: this.wallet.credentials.walletId,
       txid: tx.txid
@@ -332,7 +332,7 @@ export class WalletDetailsPage {
       { showBackdrop: false, enableBackdropDismiss: true }
     );
     modal.present();
-    modal.onDidDismiss((data: any) => {
+    modal.onDidDismiss(data => {
       if (!data || !data.txid) return;
       this.navCtrl.push(TxDetailsPage, {
         walletId: this.wallet.credentials.walletId,

@@ -6,7 +6,7 @@ import { ConfirmPage } from './confirm';
 
 describe('ConfirmPage', () => {
   let fixture: ComponentFixture<ConfirmPage>;
-  let instance: any;
+  let instance;
 
   beforeEach(async(() =>
     TestUtils.configurePageTestingModule([ConfirmPage]).then(testEnv => {

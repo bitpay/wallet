@@ -4,7 +4,7 @@ import { ImportWalletPage } from './import-wallet';
 
 describe('ImportWalletPage', () => {
   let fixture: ComponentFixture<ImportWalletPage>;
-  let instance: any;
+  let instance;
   let testBed: typeof TestBed;
 
   beforeEach(async(() => {

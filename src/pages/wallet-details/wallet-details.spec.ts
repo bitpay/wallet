@@ -7,7 +7,7 @@ import { WalletDetailsPage } from './wallet-details';
 
 describe('WalletDetailsPage', () => {
   let fixture: ComponentFixture<WalletDetailsPage>;
-  let instance: any;
+  let instance;
 
   beforeEach(async(() => {
     const mockWallet = {

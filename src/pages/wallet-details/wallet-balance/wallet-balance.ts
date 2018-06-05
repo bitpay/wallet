@@ -7,7 +7,7 @@ import { Logger } from '../../../providers/logger/logger';
   templateUrl: 'wallet-balance.html'
 })
 export class WalletBalancePage {
-  public status: any;
+  public status;
 
   constructor(private logger: Logger, private navParams: NavParams) {
     this.status = this.navParams.data.status;

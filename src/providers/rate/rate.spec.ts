@@ -69,7 +69,7 @@ describe('RateProvider', () => {
       return prom;
     };
 
-    service.updateRatesBch().catch((err: any) => {
+    service.updateRatesBch().catch(err => {
       expect(err).not.toBeNull();
     });
   });
@@ -82,7 +82,7 @@ describe('RateProvider', () => {
       return prom;
     };
 
-    service.updateRatesBtc().catch((err: any) => {
+    service.updateRatesBtc().catch(err => {
       expect(err).not.toBeNull();
     });
   });

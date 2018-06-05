@@ -21,11 +21,11 @@ import { ReplaceParametersProvider } from '../../../../../providers/replace-para
 })
 export class WalletServiceUrlPage {
   public success: boolean = false;
-  public wallet: any;
+  public wallet;
   public comment: string;
   public walletServiceForm: FormGroup;
-  private config: any;
-  private defaults: any;
+  private config;
+  private defaults;
 
   constructor(
     private profileProvider: ProfileProvider,

@@ -14,16 +14,19 @@ import { OnGoingProcessProvider } from '../../../providers/on-going-process/on-g
 import { PopupProvider } from '../../../providers/popup/popup';
 import { ProfileProvider } from '../../../providers/profile/profile';
 import { PushNotificationsProvider } from '../../../providers/push-notifications/push-notifications';
-import { WalletProvider } from '../../../providers/wallet/wallet';
+import {
+  WalletOptions,
+  WalletProvider
+} from '../../../providers/wallet/wallet';
 
 @Component({
   selector: 'page-join-wallet',
   templateUrl: 'join-wallet.html'
 })
 export class JoinWalletPage {
-  private defaults: any;
+  private defaults;
   public showAdvOpts: boolean;
-  public seedOptions: any;
+  public seedOptions;
 
   private derivationPathByDefault: string;
   private derivationPathForTestnet: string;
@@ -93,7 +96,7 @@ export class JoinWalletPage {
     this.joinForm.controls['invitationCode'].setValue(data);
   }
 
-  public seedOptionsChange(seed: any): void {
+  public seedOptionsChange(seed): void {
     if (seed === 'set') {
       this.joinForm.get('recoveryPhrase').setValidators([Validators.required]);
     } else {
@@ -114,7 +117,7 @@ export class JoinWalletPage {
   }
 
   public setOptsAndJoin(): void {
-    let opts: any = {
+    let opts: Partial<WalletOptions> = {
       secret: this.joinForm.value.invitationCode,
       myName: this.joinForm.value.myName,
       bwsurl: this.joinForm.value.bwsURL,
@@ -160,12 +163,12 @@ export class JoinWalletPage {
     this.join(opts);
   }
 
-  private join(opts: any): void {
+  private join(opts): void {
     this.onGoingProcessProvider.set('joiningWallet');
 
     this.profileProvider
       .joinWallet(opts)
-      .then((wallet: any) => {
+      .then(wallet => {
         this.onGoingProcessProvider.clear();
         this.events.publish('status:updated');
         this.walletProvider.updateRemotePreferences(wallet);
@@ -179,7 +182,7 @@ export class JoinWalletPage {
           this.navCtrl.popToRoot();
         }
       })
-      .catch((err: any) => {
+      .catch(err => {
         this.onGoingProcessProvider.clear();
         let title = this.translate.instant('Error');
         this.popupProvider.ionicAlert(title, err);

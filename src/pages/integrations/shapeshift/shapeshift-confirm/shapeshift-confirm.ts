@@ -22,7 +22,10 @@ import { ProfileProvider } from '../../../../providers/profile/profile';
 import { ReplaceParametersProvider } from '../../../../providers/replace-parameters/replace-parameters';
 import { ShapeshiftProvider } from '../../../../providers/shapeshift/shapeshift';
 import { TxFormatProvider } from '../../../../providers/tx-format/tx-format';
-import { WalletProvider } from '../../../../providers/wallet/wallet';
+import {
+  TransactionProposal,
+  WalletProvider
+} from '../../../../providers/wallet/wallet';
 
 @Component({
   selector: 'page-shapeshift-confirm',
@@ -35,30 +38,30 @@ export class ShapeshiftConfirmPage {
   private rateUnit: number;
   private fromWalletId: string;
   private toWalletId: string;
-  private createdTx: any;
+  private createdTx;
   private message: string;
-  private configWallet: any;
-  private bitcore: any;
-  private bitcoreCash: any;
+  private configWallet;
+  private bitcore;
+  private bitcoreCash;
   private useSendMax: boolean;
-  private sendMaxInfo: any;
+  private sendMaxInfo;
 
   public currency: string;
   public currencyIsoCode: string;
   public isCordova: boolean;
-  public toWallet: any;
-  public fromWallet: any;
+  public toWallet;
+  public fromWallet;
   public fiatWithdrawal: number;
   public fiatAmount: number;
   public fiatFee: number;
   public fiatTotalAmount: number;
-  public shapeInfo: any;
+  public shapeInfo;
   public feeRatePerStr: string;
   public amountStr: string;
   public withdrawalStr: string;
   public feeStr: string;
   public totalAmountStr: string;
-  public txSent: any;
+  public txSent;
   public network: string;
 
   constructor(
@@ -103,7 +106,7 @@ export class ShapeshiftConfirmPage {
       return;
     }
 
-    this.shapeshiftProvider.getLimit(this.getCoinPair(), (_, lim: any) => {
+    this.shapeshiftProvider.getLimit(this.getCoinPair(), (_, lim) => {
       let min = Number(lim.min);
       let max = Number(lim.limit);
 
@@ -112,7 +115,7 @@ export class ShapeshiftConfirmPage {
           .then(() => {
             this.createShift();
           })
-          .catch((err: any) => {
+          .catch(err => {
             this.logger.error(err);
             this.showErrorAndBack(null, err);
           });
@@ -155,7 +158,7 @@ export class ShapeshiftConfirmPage {
   private getMaxInfo(max: number): Promise<any> {
     return new Promise((resolve, reject) => {
       this.getSendMaxInfo()
-        .then((sendMaxInfo: any) => {
+        .then(sendMaxInfo => {
           if (sendMaxInfo) {
             this.logger.debug('Send max info', sendMaxInfo);
 
@@ -189,7 +192,7 @@ export class ShapeshiftConfirmPage {
             }
           }
         })
-        .catch((err: any) => {
+        .catch(err => {
           this.logger.error('ShapeShift: could not get SendMax info', err);
           let msg = this.translate.instant('Error getting SendMax information');
           return reject(msg);
@@ -205,7 +208,7 @@ export class ShapeshiftConfirmPage {
           this.network,
           this.configWallet.settings.feeLevel || 'normal'
         )
-        .then((feeRate: any) => {
+        .then(feeRate => {
           this.onGoingProcessProvider.set('retrievingInputs');
           this.walletProvider
             .getSendMaxInfo(this.fromWallet, {
@@ -213,11 +216,11 @@ export class ShapeshiftConfirmPage {
               excludeUnconfirmedUtxos: !this.configWallet.spendUnconfirmed,
               returnInputs: true
             })
-            .then((res: any) => {
+            .then(res => {
               this.onGoingProcessProvider.clear();
               return resolve(res);
             })
-            .catch((err: any) => {
+            .catch(err => {
               this.onGoingProcessProvider.clear();
               return reject(err);
             });
@@ -229,7 +232,7 @@ export class ShapeshiftConfirmPage {
     this.externalLinkProvider.open(url);
   }
 
-  private showErrorAndBack(title: string, msg: any) {
+  private showErrorAndBack(title: string, msg) {
     if (this.isCordova) this.slideButton.isConfirmed(false);
     title = title ? title : this.translate.instant('Error');
     this.logger.error(msg);
@@ -239,7 +242,7 @@ export class ShapeshiftConfirmPage {
     });
   }
 
-  private publishAndSign(wallet: any, txp: any): Promise<any> {
+  private publishAndSign(wallet, txp): Promise<any> {
     return new Promise((resolve, reject) => {
       if (!wallet.canSign() && !wallet.isPrivKeyExternal()) {
         let err = this.translate.instant('No signing proposal: No private key');
@@ -248,11 +251,11 @@ export class ShapeshiftConfirmPage {
 
       this.walletProvider
         .publishAndSign(wallet, txp)
-        .then((txp: any) => {
+        .then(txp => {
           this.onGoingProcessProvider.clear();
           return resolve(txp);
         })
-        .catch((err: any) => {
+        .catch(err => {
           this.onGoingProcessProvider.clear();
 
           return reject(err);
@@ -262,7 +265,7 @@ export class ShapeshiftConfirmPage {
 
   private satToFiat(coin: string, sat: number, isoCode: string): Promise<any> {
     return new Promise(resolve => {
-      this.txFormatProvider.toFiat(coin, sat, isoCode).then((value: any) => {
+      this.txFormatProvider.toFiat(coin, sat, isoCode).then(value => {
         return resolve(value);
       });
     });
@@ -277,16 +280,16 @@ export class ShapeshiftConfirmPage {
       this.toWallet.coin,
       withdrawalSat,
       this.currencyIsoCode
-    ).then((w: any) => {
+    ).then(w => {
       this.fiatWithdrawal = Number(w);
       this.satToFiat(
         this.fromWallet.coin,
         amountSat,
         this.currencyIsoCode
-      ).then((a: any) => {
+      ).then(a => {
         this.fiatAmount = Number(a);
         this.satToFiat(this.fromWallet.coin, feeSat, this.currencyIsoCode).then(
-          (i: any) => {
+          i => {
             this.fiatFee = Number(i);
             this.fiatTotalAmount = this.fiatAmount + this.fiatFee;
           }
@@ -300,7 +303,7 @@ export class ShapeshiftConfirmPage {
     let withdrawal = this.shapeInfo.withdrawal;
     let now = moment().unix() * 1000;
 
-    this.shapeshiftProvider.getStatus(address, (_, st: any) => {
+    this.shapeshiftProvider.getStatus(address, (_, st) => {
       let newData = {
         address,
         withdrawal,
@@ -332,7 +335,7 @@ export class ShapeshiftConfirmPage {
     });
   }
 
-  private createTx(wallet: any, toAddress: string): Promise<any> {
+  private createTx(wallet, toAddress: string): Promise<any> {
     return new Promise((resolve, reject) => {
       let amount = this.useSendMax
         ? this.amount
@@ -353,7 +356,7 @@ export class ShapeshiftConfirmPage {
         message: this.message
       });
 
-      let txp: any = {
+      let txp: Partial<TransactionProposal> = {
         toAddress,
         amount,
         outputs,
@@ -376,10 +379,10 @@ export class ShapeshiftConfirmPage {
 
       this.walletProvider
         .createTx(wallet, txp)
-        .then((ctxp: any) => {
+        .then(ctxp => {
           return resolve(ctxp);
         })
-        .catch((err: any) => {
+        .catch(err => {
           return reject({
             title: this.translate.instant('Could not create transaction'),
             message: this.bwcErrorProvider.msg(err)
@@ -407,7 +410,7 @@ export class ShapeshiftConfirmPage {
     });
   }
 
-  private verifyExcludedUtxos(): any {
+  private verifyExcludedUtxos() {
     let warningMsg = [];
     if (this.sendMaxInfo.utxosBelowFee > 0) {
       let amountBelowFeeStr = this.sendMaxInfo.amountBelowFee / 1e8;
@@ -473,7 +476,7 @@ export class ShapeshiftConfirmPage {
               pair: this.getCoinPair(),
               returnAddress
             };
-            this.shapeshiftProvider.shift(data, (err: any, shapeData: any) => {
+            this.shapeshiftProvider.shift(data, (err, shapeData) => {
               if (err || shapeData.error) {
                 this.onGoingProcessProvider.clear();
                 this.showErrorAndBack(null, err || shapeData.error);
@@ -486,14 +489,14 @@ export class ShapeshiftConfirmPage {
               );
 
               this.createTx(this.fromWallet, toAddress)
-                .then((ctxp: any) => {
+                .then(ctxp => {
                   // Save in memory
                   this.createdTx = ctxp;
                   this.shapeInfo = shapeData;
 
                   this.shapeshiftProvider.getRate(
                     this.getCoinPair(),
-                    (_, r: any) => {
+                    (_, r) => {
                       this.onGoingProcessProvider.clear();
                       this.rateUnit = r.rate;
                       let amountUnit = this.txFormatProvider.satToUnit(
@@ -534,7 +537,7 @@ export class ShapeshiftConfirmPage {
                     }
                   );
                 })
-                .catch((err: any) => {
+                .catch(err => {
                   this.onGoingProcessProvider.clear();
                   this.showErrorAndBack(err.title, err.message);
                   return;
@@ -571,28 +574,26 @@ export class ShapeshiftConfirmPage {
 
     let okText = this.translate.instant('OK');
     let cancelText = this.translate.instant('Cancel');
-    this.popupProvider
-      .ionicConfirm(title, '', okText, cancelText)
-      .then((ok: any) => {
-        if (!ok) {
-          if (this.isCordova) this.slideButton.isConfirmed(false);
-          return;
-        }
+    this.popupProvider.ionicConfirm(title, '', okText, cancelText).then(ok => {
+      if (!ok) {
+        if (this.isCordova) this.slideButton.isConfirmed(false);
+        return;
+      }
 
-        this.publishAndSign(this.fromWallet, this.createdTx)
-          .then((txSent: any) => {
-            this.txSent = txSent;
-            this.saveShapeshiftData();
-          })
-          .catch((err: any) => {
-            this.logger.error(this.bwcErrorProvider.msg(err));
-            this.showErrorAndBack(
-              null,
-              this.translate.instant('Could not send transaction')
-            );
-            return;
-          });
-      });
+      this.publishAndSign(this.fromWallet, this.createdTx)
+        .then(txSent => {
+          this.txSent = txSent;
+          this.saveShapeshiftData();
+        })
+        .catch(err => {
+          this.logger.error(this.bwcErrorProvider.msg(err));
+          this.showErrorAndBack(
+            null,
+            this.translate.instant('Could not send transaction')
+          );
+          return;
+        });
+    });
   }
 
   private openFinishModal(): void {

@@ -59,8 +59,8 @@ export class ReleaseProvider {
       result.error =
         'Cannot verify the format of latest release tag: ' + latestVersion;
 
-    let current: any = this.formatTagNumber(currentVersion);
-    let latest: any = this.formatTagNumber(latestVersion);
+    let current = this.formatTagNumber(currentVersion);
+    let latest = this.formatTagNumber(latestVersion);
 
     if (
       latest.major > current.major ||

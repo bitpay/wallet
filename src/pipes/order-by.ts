@@ -13,7 +13,7 @@ import { Pipe, PipeTransform } from '@angular/core';
   pure: false
 })
 export class OrderByPipe implements PipeTransform {
-  static _orderByComparator(a: any, b: any): number {
+  static _orderByComparator(a, b): number {
     if (
       isNaN(parseFloat(a)) ||
       !isFinite(a) ||
@@ -31,7 +31,7 @@ export class OrderByPipe implements PipeTransform {
     return 0; // equal each other
   }
 
-  transform(input: any, [config = '+']): any {
+  transform(input, [config = '+']) {
     if (!Array.isArray(input)) return input;
 
     if (
@@ -55,7 +55,7 @@ export class OrderByPipe implements PipeTransform {
             ? propertyToCheck.substr(1)
             : propertyToCheck;
 
-        return input.sort((a: any, b: any) => {
+        return input.sort((a, b) => {
           return !desc
             ? OrderByPipe._orderByComparator(a[property], b[property])
             : -OrderByPipe._orderByComparator(a[property], b[property]);
@@ -63,7 +63,7 @@ export class OrderByPipe implements PipeTransform {
       }
     } else {
       // Loop over property of the array in order and sort
-      return input.sort((a: any, b: any) => {
+      return input.sort((a, b) => {
         for (var i: number = 0; i < config.length; i++) {
           var desc = config[i].substr(0, 1) == '-';
           var property =

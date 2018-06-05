@@ -5,7 +5,7 @@ import { TranslateService } from '@ngx-translate/core';
 export class BwcErrorProvider {
   constructor(private translate: TranslateService) {}
 
-  public msg(err: any, prefix?: string): string {
+  public msg(err, prefix?: string): string {
     if (!err) return 'Unknown error';
 
     const name = err.name

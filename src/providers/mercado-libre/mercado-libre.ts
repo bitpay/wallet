@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Logger } from '../../providers/logger/logger';
 
@@ -11,8 +11,8 @@ import * as _ from 'lodash';
 
 @Injectable()
 export class MercadoLibreProvider {
-  private credentials: any;
-  // private availableCountries: any;
+  private credentials;
+  // private availableCountries;
 
   constructor(
     private persistenceProvider: PersistenceProvider,
@@ -92,11 +92,11 @@ export class MercadoLibreProvider {
       buyerSelectedTransactionCurrency: data.buyerSelectedTransactionCurrency
     };
     let url = this.credentials.BITPAY_API_URL + '/mercado-libre-gift/pay';
-    let headers: any = {
-      'content-type': 'application/json'
-    };
-    this.http.post(url, dataSrc, headers).subscribe(
-      (data: any) => {
+    let headers = new HttpHeaders({
+      'Content-Type': 'application/json'
+    });
+    this.http.post(url, dataSrc, { headers }).subscribe(
+      data => {
         this.logger.info('BitPay Create Invoice: SUCCESS');
         return cb(null, data);
       },
@@ -109,11 +109,12 @@ export class MercadoLibreProvider {
 
   public getBitPayInvoice(id, cb) {
     let url = this.credentials.BITPAY_API_URL + '/invoices/' + id;
-    let headers: any = {
-      'content-type': 'application/json'
-    };
 
-    this.http.get(url, headers).subscribe(
+    let headers = new HttpHeaders({
+      'Content-Type': 'application/json'
+    });
+
+    this.http.get(url, { headers }).subscribe(
       (data: any) => {
         this.logger.info('BitPay Get Invoice: SUCCESS');
         return cb(null, data.data);
@@ -133,11 +134,11 @@ export class MercadoLibreProvider {
     };
 
     let url = this.credentials.BITPAY_API_URL + '/mercado-libre-gift/redeem';
-    let headers: any = {
-      'content-type': 'application/json'
-    };
+    let headers = new HttpHeaders({
+      'Content-Type': 'application/json'
+    });
 
-    this.http.post(url, dataSrc, headers).subscribe(
+    this.http.post(url, dataSrc, { headers }).subscribe(
       (data: any) => {
         var status =
           data.status == 'new'
@@ -171,10 +172,10 @@ export class MercadoLibreProvider {
       "accessKey": data.accessKey
     };
     let url = this.credentials.BITPAY_API_URL + '/mercado-libre-gift/cancel';
-    let headers: any = {
+    let headers = {
       'content-type': 'application/json'
     };
-    this.http.post(url, dataSrc, headers).subscribe((data: any) => {
+    this.http.post(url, dataSrc, headers).subscribe((data) => {
       this.logger.info('Mercado Libre Gift Card Cancel: SUCCESS');
       return cb(null, data);
     }, (data) => {

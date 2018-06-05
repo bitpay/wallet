@@ -7,7 +7,7 @@ class FileMock extends File {}
 
 describe('Persistence Provider', () => {
   let persistenceProvider: PersistenceProvider;
-  let logs: any[];
+  let logs;
 
   const loggerMock = {
     info: info => {

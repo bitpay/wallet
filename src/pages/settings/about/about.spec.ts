@@ -7,7 +7,7 @@ import { SessionLogPage } from './session-log/session-log';
 
 describe('AboutPage', () => {
   let fixture: ComponentFixture<AboutPage>;
-  let instance: any;
+  let instance;
 
   beforeEach(async(() =>
     TestUtils.configurePageTestingModule([AboutPage]).then(testEnv => {

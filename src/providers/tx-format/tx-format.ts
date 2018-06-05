@@ -9,7 +9,7 @@ import * as _ from 'lodash';
 
 @Injectable()
 export class TxFormatProvider {
-  private bitcoreCash: any;
+  private bitcoreCash;
 
   // TODO: implement configService
   public pendingTxProposalsCountForUs: number;
@@ -103,7 +103,7 @@ export class TxFormatProvider {
     return val();
   }
 
-  public processTx(coin: string, tx: any, useLegacyAddress: boolean): any {
+  public processTx(coin: string, tx, useLegacyAddress: boolean) {
     if (!tx || tx.action == 'invalid') return tx;
 
     // New transaction output format
@@ -117,7 +117,7 @@ export class TxFormatProvider {
         }
         tx.amount = _.reduce(
           tx.outputs,
-          (total: any, o: any) => {
+          (total, o) => {
             o.amountStr = this.formatAmountStr(coin, o.amount);
             o.alternativeAmountStr = this.formatAlternativeStr(coin, o.amount);
             return total + o.amount;
@@ -153,7 +153,7 @@ export class TxFormatProvider {
     return tx;
   }
 
-  public formatPendingTxps(txps): any {
+  public formatPendingTxps(txps) {
     this.pendingTxProposalsCountForUs = 0;
     var now = Math.floor(Date.now() / 1000);
 
@@ -194,7 +194,7 @@ export class TxFormatProvider {
 
       tx = this.processTx(tx.wallet.coin, tx);
 
-      var action: any = _.find(tx.actions, {
+      var action = _.find(tx.actions, {
         copayerId: tx.wallet.copayerId
       });
 
@@ -216,7 +216,7 @@ export class TxFormatProvider {
     return txps;
   }
 
-  public parseAmount(coin: string, amount: any, currency: string): any {
+  public parseAmount(coin: string, amount, currency: string) {
     let settings = this.configProvider.get().wallet.settings;
     var satToBtc = 1 / 100000000;
     var unitToSatoshi = settings.unitToSatoshi;
@@ -251,7 +251,7 @@ export class TxFormatProvider {
     };
   }
 
-  public satToUnit(amount: any): number {
+  public satToUnit(amount): number {
     let settings = this.configProvider.get().wallet.settings;
     var unitToSatoshi = settings.unitToSatoshi;
     var satToUnit = 1 / unitToSatoshi;

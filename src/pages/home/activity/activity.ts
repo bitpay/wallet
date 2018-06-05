@@ -20,9 +20,9 @@ import * as _ from 'lodash';
   templateUrl: 'activity.html'
 })
 export class ActivityPage {
-  public addressbook: any;
-  public txps: any;
-  public notifications: any;
+  public addressbook;
+  public txps;
+  public notifications;
 
   constructor(
     private navCtrl: NavController,
@@ -40,12 +40,12 @@ export class ActivityPage {
     this.onGoingProcessProvider.set(loading);
     this.profileProvider
       .getNotifications(50)
-      .then((nData: any) => {
+      .then(nData => {
         this.onGoingProcessProvider.clear();
         this.notifications = nData.notifications;
         this.profileProvider
           .getTxps({})
-          .then((txpsData: any) => {
+          .then(txpsData => {
             this.txps = txpsData.txps;
           })
           .catch(err => {
@@ -58,7 +58,7 @@ export class ActivityPage {
       });
   }
 
-  public openNotificationModal(n: any): void {
+  public openNotificationModal(n): void {
     let wallet = this.profileProvider.getWallet(n.walletId);
 
     if (n.txid) {

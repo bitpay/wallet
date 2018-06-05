@@ -21,7 +21,7 @@ import * as _ from 'lodash';
   templateUrl: 'coinbase.html'
 })
 export class CoinbasePage {
-  public tx: any;
+  public tx;
   public currency: string;
   public accessToken: string;
   public accountId: string;
@@ -76,7 +76,7 @@ export class CoinbasePage {
       this.accessToken = at;
 
       // Update Access Token if necessary
-      this.coinbaseProvider.init((err: any, data: any) => {
+      this.coinbaseProvider.init((err, data) => {
         if (err || _.isEmpty(data)) {
           this.loading = false;
           if (err) {
@@ -103,12 +103,12 @@ export class CoinbasePage {
         this.coinbaseProvider.buyPrice(
           data.accessToken,
           this.currency,
-          (_, b: any) => {
+          (_, b) => {
             this.buyPrice = b.data || null;
             this.coinbaseProvider.sellPrice(
               data.accessToken,
               this.currency,
-              (_, s: any) => {
+              (_, s) => {
                 this.sellPrice = s.data || null;
                 this.loading = false;
               }
@@ -141,7 +141,7 @@ export class CoinbasePage {
           focus: true,
           position: 'center'
         },
-        (new_win: any) => {
+        new_win => {
           new_win.on('loaded', () => {
             let title = new_win.window.document.title;
             if (title.indexOf('Coinbase') == -1) {
@@ -213,7 +213,7 @@ export class CoinbasePage {
     this.showOauthForm = !this.showOauthForm;
   }
 
-  public openTxModal(tx: any): any {
+  public openTxModal(tx) {
     this.tx = tx;
 
     let modal = this.modalCtrl.create(CoinbaseTxDetailsPage, { tx: this.tx });

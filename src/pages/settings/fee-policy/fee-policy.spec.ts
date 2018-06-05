@@ -6,7 +6,7 @@ import { FeePolicyPage } from './fee-policy';
 
 describe('FeePolicyPage', () => {
   let fixture: ComponentFixture<FeePolicyPage>;
-  let instance: any;
+  let instance;
 
   beforeEach(async(() =>
     TestUtils.configurePageTestingModule([FeePolicyPage]).then(testEnv => {

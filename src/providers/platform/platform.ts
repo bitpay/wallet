@@ -15,7 +15,7 @@ export class PlatformProvider {
   public isDevel: boolean;
 
   constructor(private platform: Platform, private logger: Logger) {
-    let ua: any = navigator ? navigator.userAgent : null;
+    let ua = navigator ? navigator.userAgent : null;
 
     if (!ua) {
       this.logger.info('Could not determine navigator. Using fixed string');

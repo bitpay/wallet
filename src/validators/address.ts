@@ -8,7 +8,7 @@ export class AddressValidator {
     AddressValidator.bitcore = bwc;
   }
 
-  isValid(control: FormControl): any {
+  isValid(control: FormControl) {
     let b = AddressValidator.bitcore.getBitcore();
     let c = AddressValidator.bitcore.getBitcoreCash();
 

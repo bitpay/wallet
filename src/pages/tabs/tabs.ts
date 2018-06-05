@@ -9,7 +9,7 @@ import { SettingsPage } from '../settings/settings';
   templateUrl: 'tabs.html'
 })
 export class TabsPage {
-  @ViewChild('tabs') tabs: any;
+  @ViewChild('tabs') tabs;
 
   homeRoot = HomePage;
   receiveRoot = ReceivePage;

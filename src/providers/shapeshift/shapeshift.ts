@@ -11,7 +11,7 @@ import { PersistenceProvider } from '../persistence/persistence';
 
 @Injectable()
 export class ShapeshiftProvider {
-  private credentials: any;
+  private credentials;
 
   constructor(
     private appProvider: AppProvider,
@@ -49,7 +49,7 @@ export class ShapeshiftProvider {
     return this.credentials.NETWORK;
   }
 
-  public shift(data: any, cb): any {
+  public shift(data, cb) {
     let dataSrc = {
       withdrawal: data.withdrawal,
       pair: data.pair,
@@ -58,7 +58,7 @@ export class ShapeshiftProvider {
     };
 
     this.http.post(this.credentials.API_URL + '/shift', dataSrc).subscribe(
-      (data: any) => {
+      data => {
         this.logger.info('Shapeshift SHIFT: SUCCESS');
         return cb(null, data);
       },
@@ -69,11 +69,11 @@ export class ShapeshiftProvider {
     );
   }
 
-  public saveShapeshift(data: any, opts: any, cb): void {
+  public saveShapeshift(data, opts, cb): void {
     let network = this.getNetwork();
     this.persistenceProvider
       .getShapeshift(network)
-      .then((oldData: any) => {
+      .then(oldData => {
         if (_.isString(oldData)) {
           oldData = JSON.parse(oldData);
         }
@@ -94,7 +94,7 @@ export class ShapeshiftProvider {
         this.persistenceProvider.setShapeshift(network, inv);
         return cb(null);
       })
-      .catch((err: any) => {
+      .catch(err => {
         return cb(err);
       });
   }
@@ -103,21 +103,21 @@ export class ShapeshiftProvider {
     let network = this.getNetwork();
     this.persistenceProvider
       .getShapeshift(network)
-      .then((ss: any) => {
+      .then(ss => {
         return cb(null, ss);
       })
-      .catch((err: any) => {
+      .catch(err => {
         return cb(err, null);
       });
   }
 
   public getRate(pair: string, cb) {
     this.http.get(this.credentials.API_URL + '/rate/' + pair).subscribe(
-      (data: any) => {
+      data => {
         this.logger.info('Shapeshift PAIR: SUCCESS');
         return cb(null, data);
       },
-      (data: any) => {
+      data => {
         this.logger.error('Shapeshift PAIR ERROR: ' + data.error.message);
         return cb(data);
       }
@@ -126,11 +126,11 @@ export class ShapeshiftProvider {
 
   public getLimit(pair: string, cb) {
     this.http.get(this.credentials.API_URL + '/limit/' + pair).subscribe(
-      (data: any) => {
+      data => {
         this.logger.info('Shapeshift LIMIT: SUCCESS');
         return cb(null, data);
       },
-      (data: any) => {
+      data => {
         this.logger.error('Shapeshift LIMIT ERROR: ' + data.error.message);
         return cb(data);
       }
@@ -139,11 +139,11 @@ export class ShapeshiftProvider {
 
   public getMarketInfo(pair: string, cb) {
     this.http.get(this.credentials.API_URL + '/marketinfo/' + pair).subscribe(
-      (data: any) => {
+      data => {
         this.logger.info('Shapeshift MARKET INFO: SUCCESS');
         return cb(null, data);
       },
-      (data: any) => {
+      data => {
         this.logger.error('Shapeshift MARKET INFO ERROR', data.error.message);
         return cb(data);
       }
@@ -152,11 +152,11 @@ export class ShapeshiftProvider {
 
   public getStatus(addr: string, cb) {
     this.http.get(this.credentials.API_URL + '/txStat/' + addr).subscribe(
-      (data: any) => {
+      data => {
         this.logger.info('Shapeshift STATUS: SUCCESS');
         return cb(null, data);
       },
-      (data: any) => {
+      data => {
         this.logger.error('Shapeshift STATUS ERROR: ' + data.error.message);
         return cb(data);
       }

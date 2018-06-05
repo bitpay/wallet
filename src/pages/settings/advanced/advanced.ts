@@ -20,7 +20,7 @@ export class AdvancedPage {
   }
 
   ionViewWillEnter() {
-    let config: any = this.configProvider.get();
+    let config = this.configProvider.get();
 
     this.spendUnconfirmed = config.wallet.spendUnconfirmed;
     this.recentTransactionsEnabled = config.recentTransactions.enabled;

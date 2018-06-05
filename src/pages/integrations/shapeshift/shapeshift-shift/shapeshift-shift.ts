@@ -18,15 +18,15 @@ import { ShapeshiftProvider } from '../../../../providers/shapeshift/shapeshift'
   templateUrl: 'shapeshift-shift.html'
 })
 export class ShapeshiftShiftPage {
-  private walletsBtc: any[];
-  private walletsBch: any[];
+  private walletsBtc;
+  private walletsBch;
 
-  public toWallets: any[];
-  public fromWallets: any[];
-  public fromWallet: any;
-  public toWallet: any;
+  public toWallets;
+  public fromWallets;
+  public fromWallet;
+  public toWallet;
   public rate: number;
-  public limit: any;
+  public limit;
   public network: string;
   public fromWalletSelectorTitle: string;
   public toWalletSelectorTitle: string;
@@ -71,15 +71,12 @@ export class ShapeshiftShiftPage {
       return;
     }
 
-    this.fromWallets = _.filter(
-      this.walletsBtc.concat(this.walletsBch),
-      (w: any) => {
-        // Available cached funds
-        if (!w.cachedBalance) return null;
-        let hasCachedFunds = w.cachedBalance.match(/0\.00 /gi) ? false : true;
-        return hasCachedFunds;
-      }
-    );
+    this.fromWallets = _.filter(this.walletsBtc.concat(this.walletsBch), w => {
+      // Available cached funds
+      if (!w.cachedBalance) return null;
+      let hasCachedFunds = w.cachedBalance.match(/0\.00 /gi) ? false : true;
+      return hasCachedFunds;
+    });
 
     if (_.isEmpty(this.fromWallets)) {
       this.showErrorAndBack(
@@ -106,7 +103,7 @@ export class ShapeshiftShiftPage {
     this.externalLinkProvider.open(url);
   }
 
-  private showErrorAndBack(title: string, msg: any): void {
+  private showErrorAndBack(title: string, msg): void {
     title = title ? title : this.translate.instant('Error');
     this.logger.error(msg);
     msg = msg && msg.errors ? msg.errors[0].message : msg;
@@ -124,7 +121,7 @@ export class ShapeshiftShiftPage {
     this.shapeshiftProvider.getRate(pair, (_, rate: number) => {
       this.rate = rate;
 
-      this.shapeshiftProvider.getMarketInfo(pair, (_, limit: any) => {
+      this.shapeshiftProvider.getMarketInfo(pair, (_, limit) => {
         this.limit = limit;
 
         if (this.limit['rate'] == 0 || this.rate['rate'] == 0) {
@@ -140,12 +137,12 @@ export class ShapeshiftShiftPage {
     });
   }
 
-  public onFromWalletSelect(wallet: any): void {
+  public onFromWalletSelect(wallet): void {
     this.fromWallet = wallet;
     this.showToWallets();
   }
 
-  public onToWalletSelect(wallet: any): void {
+  public onToWalletSelect(wallet): void {
     this.toWallet = wallet;
   }
 
@@ -175,7 +172,7 @@ export class ShapeshiftShiftPage {
   }
 
   public showWallets(selector: string): void {
-    let walletsForActionSheet: any[] = [];
+    let walletsForActionSheet = [];
     let selectedWalletId: string;
     let title: string =
       selector == 'from'
@@ -194,13 +191,13 @@ export class ShapeshiftShiftPage {
       selectedWalletId,
       title
     );
-    this.events.subscribe('selectWalletEvent', (wallet: any) => {
+    this.events.subscribe('selectWalletEvent', wallet => {
       if (!_.isEmpty(wallet)) this.onWalletSelect(wallet, selector);
       this.events.unsubscribe('selectWalletEvent');
     });
   }
 
-  public onWalletSelect(wallet: any, selector: string): void {
+  public onWalletSelect(wallet, selector: string): void {
     if (selector == 'from') {
       this.onFromWalletSelect(wallet);
     } else if (selector == 'to') {

@@ -11,7 +11,7 @@ import { MercadoLibreProvider } from '../../../../providers/mercado-libre/mercad
   templateUrl: 'mercado-libre-card-details.html'
 })
 export class MercadoLibreCardDetailsPage {
-  public card: any;
+  public card;
 
   constructor(
     private mercadoLibreProvider: MercadoLibreProvider,

@@ -27,9 +27,13 @@ import { PlatformProvider } from '../../../providers/platform/platform';
 import { PopupProvider } from '../../../providers/popup/popup';
 import { ProfileProvider } from '../../../providers/profile/profile';
 import { ReplaceParametersProvider } from '../../../providers/replace-parameters/replace-parameters';
+import { TouchIdErrors } from '../../../providers/touchid/touchid';
 import { TxConfirmNotificationProvider } from '../../../providers/tx-confirm-notification/tx-confirm-notification';
 import { TxFormatProvider } from '../../../providers/tx-format/tx-format';
-import { WalletProvider } from '../../../providers/wallet/wallet';
+import {
+  TransactionProposal,
+  WalletProvider
+} from '../../../providers/wallet/wallet';
 
 @Component({
   selector: 'page-confirm',
@@ -38,16 +42,16 @@ import { WalletProvider } from '../../../providers/wallet/wallet';
 export class ConfirmPage {
   @ViewChild('slideButton') slideButton;
 
-  private bitcore: any;
-  private bitcoreCash: any;
+  private bitcore;
+  private bitcoreCash;
 
   public countDown = null;
   public CONFIRM_LIMIT_USD: number;
   public FEE_TOO_HIGH_LIMIT_PER: number;
 
-  public tx: any;
-  public wallet: any;
-  public wallets: any;
+  public tx;
+  public wallet;
+  public wallets;
   public noWalletMessage: string;
   public criticalError: boolean;
   public showAddress: boolean;
@@ -58,7 +62,7 @@ export class ConfirmPage {
   public remainingTimeStr: string;
 
   // Config Related values
-  public config: any;
+  public config;
   public configFeeLevel: string;
 
   // Platform info
@@ -175,7 +179,7 @@ export class ConfirmPage {
       .then(() => {
         this.afterWalletSelectorSet();
       })
-      .catch((err: any) => {
+      .catch(err => {
         this.logger.error(err);
         return this.exitWithError(err);
       });
@@ -201,7 +205,7 @@ export class ConfirmPage {
     return new Promise((resolve, reject) => {
       // no min amount? (sendMax) => look for no empty wallets
       minAmount = minAmount ? minAmount : 1;
-      let filteredWallets: any[] = [];
+      let filteredWallets = [];
       let index: number = 0;
       let walletsUpdated: number = 0;
 
@@ -216,10 +220,10 @@ export class ConfirmPage {
         return resolve();
       }
 
-      _.each(this.wallets, (wallet: any) => {
+      _.each(this.wallets, wallet => {
         this.walletProvider
           .getStatus(wallet, {})
-          .then((status: any) => {
+          .then(status => {
             walletsUpdated++;
             wallet.status = status;
 
@@ -245,7 +249,7 @@ export class ConfirmPage {
               return resolve();
             }
           })
-          .catch((err: any) => {
+          .catch(err => {
             this.logger.error(err);
             if (++index == this.wallets.length) {
               if (!walletsUpdated) return reject('Could not update any wallet');
@@ -272,7 +276,7 @@ export class ConfirmPage {
     this.logger.warn('Not ready to make the payment: ' + msg);
   }
 
-  private exitWithError(err: any) {
+  private exitWithError(err) {
     this.logger.info('Error setting wallet selector:' + err);
     this.popupProvider
       .ionicAlert('', this.bwcErrorProvider.msg(err))
@@ -283,7 +287,7 @@ export class ConfirmPage {
 
   /* sets a wallet on the UI, creates a TXPs for that wallet */
 
-  private setWallet(wallet: any): void {
+  private setWallet(wallet): void {
     this.wallet = wallet;
 
     // If select another wallet
@@ -298,7 +302,7 @@ export class ConfirmPage {
     if (this.tx.paypro) this.paymentTimeControl(this.tx.paypro.expires);
 
     this.tx.feeLevelName = this.feeProvider.feeOpts[this.tx.feeLevel];
-    this.updateTx(this.tx, this.wallet, { dryRun: true }).catch((err: any) => {
+    this.updateTx(this.tx, this.wallet, { dryRun: true }).catch(err => {
       this.logger.warn('Error in updateTx: ', err);
     });
   }
@@ -328,12 +332,12 @@ export class ConfirmPage {
     this.paymentExpired = false;
     this.setExpirationTime(expirationTime);
 
-    let countDown: any = setInterval(() => {
+    let countDown = setInterval(() => {
       this.setExpirationTime(expirationTime, countDown);
     }, 1000);
   }
 
-  private setExpirationTime(expirationTime: number, countDown?: any): void {
+  private setExpirationTime(expirationTime: number, countDown?): void {
     let now = Math.floor(Date.now() / 1000);
 
     if (now > expirationTime) {
@@ -352,7 +356,7 @@ export class ConfirmPage {
     this.remainingTimeStr = ('0' + m).slice(-2) + ':' + ('0' + s).slice(-2);
   }
 
-  private updateTx(tx: any, wallet: any, opts: any): Promise<any> {
+  private updateTx(tx, wallet, opts): Promise<any> {
     return new Promise((resolve, reject) => {
       if (opts.clearCache) {
         tx.txp = {};
@@ -379,7 +383,7 @@ export class ConfirmPage {
             ? maxAllowedMerchantFee[wallet.coin]
             : this.tx.feeLevel
         )
-        .then((feeRate: any) => {
+        .then(feeRate => {
           let msg;
           if (this.usingCustomFee) {
             msg = this.translate.instant('Custom');
@@ -416,7 +420,7 @@ export class ConfirmPage {
               .then(() => {
                 return resolve();
               })
-              .catch((err: any) => {
+              .catch(err => {
                 return reject(err);
               });
           } else {
@@ -431,13 +435,13 @@ export class ConfirmPage {
                 this.onGoingProcessProvider.clear();
                 return resolve();
               })
-              .catch((err: any) => {
+              .catch(err => {
                 this.onGoingProcessProvider.clear();
                 return reject(err);
               });
           }
         })
-        .catch((err: any) => {
+        .catch(err => {
           this.logger.warn('Error getting fee rate', err);
           this.onGoingProcessProvider.clear();
           return reject(err);
@@ -445,10 +449,10 @@ export class ConfirmPage {
     });
   }
 
-  private useSendMax(tx: any, wallet: any, opts: any) {
+  private useSendMax(tx, wallet, opts) {
     return new Promise((resolve, reject) => {
       this.getSendMaxInfo(_.clone(tx), wallet)
-        .then((sendMaxInfo: any) => {
+        .then(sendMaxInfo => {
           if (sendMaxInfo) {
             this.logger.debug('Send max info', sendMaxInfo);
 
@@ -491,10 +495,10 @@ export class ConfirmPage {
     });
   }
 
-  private buildTxp(tx: any, wallet: any, opts: any): Promise<any> {
+  private buildTxp(tx, wallet, opts): Promise<any> {
     return new Promise((resolve, reject) => {
       this.getTxp(_.clone(tx), wallet, opts.dryRun)
-        .then((txp: any) => {
+        .then(txp => {
           let per = (txp.fee / (txp.amount + txp.fee)) * 100;
           txp.feeRatePerStr = per.toFixed(2) + '%';
           txp.feeTooHigh = per > this.FEE_TOO_HIGH_LIMIT_PER;
@@ -514,7 +518,7 @@ export class ConfirmPage {
           );
           return resolve();
         })
-        .catch((err: any) => {
+        .catch(err => {
           if (err.message == 'Insufficient funds') {
             this.setNoWallet(this.translate.instant('Insufficient funds'));
             this.popupProvider.ionicAlert(
@@ -529,7 +533,7 @@ export class ConfirmPage {
     });
   }
 
-  private getSendMaxInfo(tx: any, wallet: any): Promise<any> {
+  private getSendMaxInfo(tx, wallet): Promise<any> {
     return new Promise((resolve, reject) => {
       if (!tx.sendMax) return resolve();
 
@@ -540,11 +544,11 @@ export class ConfirmPage {
           excludeUnconfirmedUtxos: !tx.spendUnconfirmed,
           returnInputs: true
         })
-        .then((res: any) => {
+        .then(res => {
           this.onGoingProcessProvider.clear();
           return resolve(res);
         })
-        .catch((err: any) => {
+        .catch(err => {
           this.onGoingProcessProvider.clear();
           this.logger.warn('Error getting send max info', err);
           return reject(err);
@@ -552,7 +556,7 @@ export class ConfirmPage {
     });
   }
 
-  private showSendMaxWarning(wallet: any, sendMaxInfo: any): Promise<any> {
+  private showSendMaxWarning(wallet, sendMaxInfo): Promise<any> {
     return new Promise(resolve => {
       if (!sendMaxInfo) return resolve();
 
@@ -572,7 +576,7 @@ export class ConfirmPage {
     });
   }
 
-  private verifyExcludedUtxos(_, sendMaxInfo: any): any {
+  private verifyExcludedUtxos(_, sendMaxInfo) {
     let warningMsg = [];
     if (sendMaxInfo.utxosBelowFee > 0) {
       let amountBelowFeeStr = sendMaxInfo.amountBelowFee / 1e8;
@@ -598,7 +602,7 @@ export class ConfirmPage {
     return warningMsg.join('\n');
   }
 
-  private getTxp(tx: any, wallet: any, dryRun: boolean): Promise<any> {
+  private getTxp(tx, wallet, dryRun: boolean): Promise<any> {
     return new Promise((resolve, reject) => {
       // ToDo: use a credential's (or fc's) function for this
       if (tx.description && !wallet.credentials.sharedEncryptingKey) {
@@ -615,7 +619,7 @@ export class ConfirmPage {
         return reject(msg);
       }
 
-      let txp: any = {};
+      let txp: Partial<TransactionProposal> = {};
 
       txp.outputs = [
         {
@@ -650,23 +654,25 @@ export class ConfirmPage {
 
       this.walletProvider
         .createTx(wallet, txp)
-        .then((ctxp: any) => {
+        .then(ctxp => {
           return resolve(ctxp);
         })
-        .catch((err: any) => {
+        .catch(err => {
           this.setSendError(err);
           return reject(err);
         });
     });
   }
 
-  private setSendError(msg: any) {
+  private setSendError(error: Error | string) {
     if (this.isCordova) this.slideButton.isConfirmed(false);
-    if (msg.fingerprintCancelled) return;
+    if ((error as Error).message === TouchIdErrors.fingerprintCancelled) {
+      return;
+    }
 
     this.popupProvider.ionicAlert(
       this.translate.instant('Error'),
-      this.bwcErrorProvider.msg(msg)
+      this.bwcErrorProvider.msg(error)
     );
   }
 
@@ -674,7 +680,7 @@ export class ConfirmPage {
     this.showAddress = !this.showAddress;
   }
 
-  public onWalletSelect(wallet: any): void {
+  public onWalletSelect(wallet): void {
     this.setWallet(wallet);
   }
 
@@ -690,7 +696,7 @@ export class ConfirmPage {
     });
   }
 
-  public approve(tx: any, wallet: any): Promise<void> {
+  public approve(tx, wallet): Promise<void> {
     if (!tx || !wallet) return undefined;
 
     if (this.paymentExpired) {
@@ -703,7 +709,7 @@ export class ConfirmPage {
 
     this.onGoingProcessProvider.set('creatingTx');
     return this.getTxp(_.clone(tx), wallet, false)
-      .then((txp: any) => {
+      .then(txp => {
         return this.confirmTx(tx, txp, wallet).then((nok: boolean) => {
           if (nok) {
             if (this.isCordova) this.slideButton.isConfirmed(false);
@@ -713,7 +719,7 @@ export class ConfirmPage {
           this.publishAndSign(txp, wallet);
         });
       })
-      .catch((err: any) => {
+      .catch(err => {
         this.onGoingProcessProvider.clear();
         this.logger.warn('Error getting transaction proposal', err);
         return;
@@ -755,7 +761,7 @@ export class ConfirmPage {
 
     this.walletProvider
       .publishAndSign(wallet, txp)
-      .then((txp: any) => {
+      .then(txp => {
         this.onGoingProcessProvider.clear();
         if (
           this.config.confirmedTxsNotifications &&
@@ -767,7 +773,7 @@ export class ConfirmPage {
         }
         this.openFinishModal();
       })
-      .catch((err: any) => {
+      .catch(err => {
         this.onGoingProcessProvider.clear();
         this.setSendError(err);
         return;
@@ -783,14 +789,16 @@ export class ConfirmPage {
         this.onGoingProcessProvider.clear();
         this.openFinishModal(true);
       })
-      .catch((err: any) => {
+      .catch(err => {
         this.onGoingProcessProvider.clear();
         this.setSendError(err);
       });
   }
 
   private openFinishModal(onlyPublish?: boolean) {
-    let params: any = { finishText: this.successText };
+    let params: { finishText: string; finishComment?: string } = {
+      finishText: this.successText
+    };
     if (onlyPublish) {
       let finishText = this.translate.instant('Payment Published');
       let finishComment = this.translate.instant(
@@ -826,16 +834,14 @@ export class ConfirmPage {
     if (this.tx.coin == 'bch') return;
     if (this.usingMerchantFee) return; // TODO: should we allow override?
 
-    let txObject: any = {};
-    txObject.network = this.tx.network;
-    txObject.feeLevel = this.tx.feeLevel;
-    txObject.noSave = true;
-    txObject.coin = this.tx.coin;
-
-    if (this.usingCustomFee) {
-      txObject.customFeePerKB = this.tx.feeRate;
-      txObject.feePerSatByte = this.tx.feeRate / 1000;
-    }
+    let txObject = {
+      network: this.tx.network,
+      feeLevel: this.tx.feeLevel,
+      noSave: true,
+      coin: this.tx.coin,
+      customFeePerKB: this.usingCustomFee ? this.tx.feeRate : undefined,
+      feePerSatByte: this.usingCustomFee ? this.tx.feeRate / 1000 : undefined
+    };
 
     const myModal = this.modalCtrl.create(ChooseFeeLevelPage, txObject, {
       showBackdrop: true,
@@ -844,12 +850,12 @@ export class ConfirmPage {
 
     myModal.present();
 
-    myModal.onDidDismiss((data: any) => {
+    myModal.onDidDismiss(data => {
       this.onFeeModalDismiss(data);
     });
   }
 
-  private onFeeModalDismiss(data: any) {
+  private onFeeModalDismiss(data) {
     if (_.isEmpty(data)) return;
 
     this.logger.debug(
@@ -869,7 +875,7 @@ export class ConfirmPage {
     this.updateTx(this.tx, this.wallet, {
       clearCache: true,
       dryRun: true
-    }).catch((err: any) => {
+    }).catch(err => {
       this.logger.warn('Error updateTx', err);
     });
   }
@@ -883,12 +889,12 @@ export class ConfirmPage {
       id,
       this.walletSelectorTitle
     );
-    this.events.subscribe('selectWalletEvent', (wallet: any) => {
+    this.events.subscribe('selectWalletEvent', wallet => {
       this.onSelectWalletEvent(wallet);
     });
   }
 
-  private onSelectWalletEvent(wallet: any): void {
+  private onSelectWalletEvent(wallet): void {
     if (!_.isEmpty(wallet)) this.onWalletSelect(wallet);
     this.events.unsubscribe('selectWalletEvent');
     this.isOpenSelector = false;

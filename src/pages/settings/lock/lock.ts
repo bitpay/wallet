@@ -23,7 +23,7 @@ export class LockPage {
     enabled: boolean;
     disabled: boolean;
   }> = [];
-  public lockOptions: any;
+  public lockOptions;
   public needsBackupMsg: string;
 
   constructor(

@@ -7,9 +7,9 @@ import { Events, Platform } from 'ionic-angular';
 })
 export class WalletSelectorPage {
   public showWalletsSelector: boolean;
-  public wallets: any[];
-  public walletsBtc: any[];
-  public walletsBch: any[];
+  public wallets;
+  public walletsBtc;
+  public walletsBch;
   public showSlideEffect: boolean;
   public title: string;
   public selectedWalletId: string;
@@ -20,7 +20,7 @@ export class WalletSelectorPage {
     this.wallets = [];
     this.events.subscribe(
       'showWalletsSelectorEvent',
-      (wallets: any[], selectedWalletId: string, title?: string) => {
+      (wallets, selectedWalletId: string, title?: string) => {
         this.title = title ? title : null;
         this.showWalletsSelector = true;
         this.selectedWalletId = selectedWalletId;
@@ -28,7 +28,7 @@ export class WalletSelectorPage {
           this.showSlideEffect = true;
         }, 50);
         this.wallets = wallets;
-        this.separeWallets();
+        this.separateWallets();
 
         let unregisterBackButtonAction = this.platform.registerBackButtonAction(
           () => {
@@ -41,7 +41,7 @@ export class WalletSelectorPage {
     );
   }
 
-  public selectWallet(wallet: any): void {
+  public selectWallet(wallet): void {
     this.events.publish('selectWalletEvent', wallet);
     this.showSlideEffect = false;
     setTimeout(() => {
@@ -49,7 +49,7 @@ export class WalletSelectorPage {
     }, 150);
   }
 
-  private separeWallets(): void {
+  private separateWallets(): void {
     this.walletsBtc = [];
     this.walletsBch = [];
     if (this.wallets.length == 0) return;

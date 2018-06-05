@@ -1,18 +1,18 @@
 export class Profile {
   public version: string;
   public createdOn: number;
-  public credentials: any[];
+  public credentials;
   public disclaimerAccepted: boolean;
   public onboardingCompleted: boolean;
-  public checked: any;
-  public checkedUA?: any;
+  public checked;
+  public checkedUA?;
   public dirty: boolean;
 
   constructor() {
     this.version = '1.0.0';
   }
 
-  public create(opts?: any): Profile {
+  public create(opts?): Profile {
     opts = opts ? opts : {};
     let x = new Profile();
     x.createdOn = Date.now();
@@ -23,7 +23,7 @@ export class Profile {
     return x;
   }
 
-  public fromObj(obj: any): Profile {
+  public fromObj(obj): Profile {
     let x = new Profile();
 
     x.createdOn = obj.createdOn;
@@ -55,15 +55,15 @@ export class Profile {
     return false;
   }
 
-  public isChecked(ua: any, walletId: string): boolean {
+  public isChecked(ua, walletId: string): boolean {
     return !!(this.checkedUA == ua && this.checked[walletId]);
   }
 
-  public isDeviceChecked(ua: any): boolean {
+  public isDeviceChecked(ua): boolean {
     return this.checkedUA == ua;
   }
 
-  public setChecked(ua: any, walletId: string): void {
+  public setChecked(ua, walletId: string): void {
     if (this.checkedUA != ua) {
       this.checkedUA = ua;
       this.checked = {};
@@ -72,7 +72,7 @@ export class Profile {
     this.dirty = true;
   }
 
-  public addWallet(credentials: any): boolean {
+  public addWallet(credentials): boolean {
     if (!credentials.walletId)
       throw new Error('credentials must have .walletId');
 
@@ -83,13 +83,13 @@ export class Profile {
     return true;
   }
 
-  public updateWallet(credentials: any): boolean {
+  public updateWallet(credentials): boolean {
     if (!credentials.walletId)
       throw new Error('credentials must have .walletId');
 
     if (!this.hasWallet(credentials.walletId)) return false;
 
-    this.credentials = this.credentials.map((c: any) => {
+    this.credentials = this.credentials.map(c => {
       if (c.walletId != credentials.walletId) {
         return c;
       } else {

@@ -14,7 +14,10 @@ import { OnGoingProcessProvider } from '../../../providers/on-going-process/on-g
 import { PopupProvider } from '../../../providers/popup/popup';
 import { ProfileProvider } from '../../../providers/profile/profile';
 import { PushNotificationsProvider } from '../../../providers/push-notifications/push-notifications';
-import { WalletProvider } from '../../../providers/wallet/wallet';
+import {
+  WalletOptions,
+  WalletProvider
+} from '../../../providers/wallet/wallet';
 
 import * as _ from 'lodash';
 
@@ -24,7 +27,7 @@ import * as _ from 'lodash';
 })
 export class CreateWalletPage implements OnInit {
   /* For compressed keys, m*73 + n*34 <= 496 */
-  private COPAYER_PAIR_LIMITS: any = {
+  private COPAYER_PAIR_LIMITS = {
     1: 1,
     2: 2,
     3: 3,
@@ -40,7 +43,7 @@ export class CreateWalletPage implements OnInit {
   };
 
   private createForm: FormGroup;
-  private defaults: any;
+  private defaults;
   private tc: number;
   private derivationPathByDefault: string;
   private derivationPathForTestnet: string;
@@ -48,7 +51,7 @@ export class CreateWalletPage implements OnInit {
   public copayers: number[];
   public signatures: number[];
   public showAdvOpts: boolean;
-  public seedOptions: any;
+  public seedOptions;
   public isShared: boolean;
   public title: string;
 
@@ -134,7 +137,7 @@ export class CreateWalletPage implements OnInit {
     this.createForm.controls['selectedSeed'].setValue(this.seedOptions[0].id); // new or set
   }
 
-  public seedOptionsChange(seed: any): void {
+  public seedOptionsChange(seed): void {
     if (seed === 'set') {
       this.createForm
         .get('recoveryPhrase')
@@ -159,7 +162,7 @@ export class CreateWalletPage implements OnInit {
   }
 
   public setOptsAndCreate(): void {
-    let opts: any = {
+    let opts: Partial<WalletOptions> = {
       name: this.createForm.value.walletName,
       m: this.createForm.value.requiredCopayers,
       n: this.createForm.value.totalCopayers,
@@ -212,12 +215,12 @@ export class CreateWalletPage implements OnInit {
     this.create(opts);
   }
 
-  private create(opts: any): void {
+  private create(opts): void {
     this.onGoingProcessProvider.set('creatingWallet');
 
     this.profileProvider
       .createWallet(opts)
-      .then((wallet: any) => {
+      .then(wallet => {
         this.onGoingProcessProvider.clear();
         this.events.publish('status:updated');
         this.walletProvider.updateRemotePreferences(wallet);
@@ -236,7 +239,7 @@ export class CreateWalletPage implements OnInit {
           this.navCtrl.popToRoot();
         }
       })
-      .catch((err: any) => {
+      .catch(err => {
         this.onGoingProcessProvider.clear();
         this.logger.error('Create: could not create wallet', err);
         let title = this.translate.instant('Error');

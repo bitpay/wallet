@@ -16,7 +16,10 @@ import { PlatformProvider } from '../../../providers/platform/platform';
 import { PopupProvider } from '../../../providers/popup/popup';
 import { ProfileProvider } from '../../../providers/profile/profile';
 import { PushNotificationsProvider } from '../../../providers/push-notifications/push-notifications';
-import { WalletProvider } from '../../../providers/wallet/wallet';
+import {
+  WalletOptions,
+  WalletProvider
+} from '../../../providers/wallet/wallet';
 
 @Component({
   selector: 'page-import-wallet',
@@ -27,20 +30,20 @@ export class ImportWalletPage {
   private derivationPathForTestnet: string;
   private importForm: FormGroup;
   private reader: FileReader;
-  private defaults: any;
-  private errors: any;
+  private defaults;
+  private errors;
 
   public prettyFileName: string;
   public importErr: boolean;
   public fromOnboarding: boolean;
-  public formFile: any;
+  public formFile;
   public showAdvOpts: boolean;
   public selectedTab: string;
   public isCordova: boolean;
   public isSafari: boolean;
   public isIOS: boolean;
   public file: File;
-  public code: any;
+  public code;
 
   constructor(
     private app: App,
@@ -180,9 +183,9 @@ export class ImportWalletPage {
     this.importForm.controls['derivationPath'].setValue(path);
   }
 
-  private importBlob(str: string, opts: any): void {
+  private importBlob(str: string, opts): void {
     let str2: string;
-    let err: any = null;
+    let err = null;
     try {
       str2 = this.bwcProvider
         .getSJCL()
@@ -207,11 +210,11 @@ export class ImportWalletPage {
     setTimeout(() => {
       this.profileProvider
         .importWallet(str2, opts)
-        .then((wallet: any) => {
+        .then(wallet => {
           this.onGoingProcessProvider.clear();
           this.finish(wallet);
         })
-        .catch((err: any) => {
+        .catch(err => {
           this.onGoingProcessProvider.clear();
           let title = this.translate.instant('Error');
           this.popupProvider.ionicAlert(title, err);
@@ -220,7 +223,7 @@ export class ImportWalletPage {
     }, 100);
   }
 
-  private finish(wallet: any): void {
+  private finish(wallet): void {
     this.walletProvider
       .updateRemotePreferences(wallet)
       .then(() => {
@@ -231,11 +234,11 @@ export class ImportWalletPage {
           this.profileProvider
             .setOnboardingCompleted()
             .then(() => {
-              this.profileProvider.setDisclaimerAccepted().catch((err: any) => {
+              this.profileProvider.setDisclaimerAccepted().catch(err => {
                 this.logger.error(err);
               });
             })
-            .catch((err: any) => {
+            .catch(err => {
               this.logger.error(err);
             });
 
@@ -245,7 +248,7 @@ export class ImportWalletPage {
           this.app.getRootNavs()[0].setRoot(TabsPage);
         }
       })
-      .catch((err: any) => {
+      .catch(err => {
         this.logger.error('Import: could not updateRemotePreferences', err);
       });
   }
@@ -255,11 +258,11 @@ export class ImportWalletPage {
     setTimeout(() => {
       this.profileProvider
         .importExtendedPrivateKey(xPrivKey, opts)
-        .then((wallet: any) => {
+        .then(wallet => {
           this.onGoingProcessProvider.clear();
           this.finish(wallet);
         })
-        .catch((err: any) => {
+        .catch(err => {
           if (err instanceof this.errors.NOT_AUTHORIZED) {
             this.importErr = true;
           } else {
@@ -272,16 +275,16 @@ export class ImportWalletPage {
     }, 100);
   }
 
-  private importMnemonic(words: string, opts: any): void {
+  private importMnemonic(words: string, opts): void {
     this.onGoingProcessProvider.set('importingWallet');
     setTimeout(() => {
       this.profileProvider
         .importMnemonic(words, opts)
-        .then((wallet: any) => {
+        .then(wallet => {
           this.onGoingProcessProvider.clear();
           this.finish(wallet);
         })
-        .catch((err: any) => {
+        .catch(err => {
           if (err instanceof this.errors.NOT_AUTHORIZED) {
             this.importErr = true;
           } else {
@@ -323,7 +326,7 @@ export class ImportWalletPage {
     if (backupFile) {
       this.reader.readAsBinaryString(backupFile);
     } else {
-      let opts: any = {};
+      let opts: Partial<WalletOptions> = {};
       opts.bwsurl = this.importForm.value.bwsURL;
       opts.coin = this.importForm.value.coin;
       this.importBlob(backupText, opts);
@@ -338,12 +341,12 @@ export class ImportWalletPage {
       return;
     }
 
-    let opts: any = {};
+    let opts: Partial<WalletOptions> = {};
 
     if (this.importForm.value.bwsURL)
       opts.bwsurl = this.importForm.value.bwsURL;
 
-    let pathData: any = this.derivationPathHelperProvider.parse(
+    let pathData = this.derivationPathHelperProvider.parse(
       this.importForm.value.derivationPath
     );
 
@@ -369,7 +372,7 @@ export class ImportWalletPage {
     } else if (words.indexOf('xprv') == 0 || words.indexOf('tprv') == 0) {
       return this.importExtendedPrivateKey(words, opts);
     } else {
-      let wordList: any[] = words.split(/[\u3000\s]+/);
+      let wordList = words.split(/[\u3000\s]+/);
 
       if (wordList.length % 3 != 0) {
         let title = this.translate.instant('Error');
@@ -389,7 +392,7 @@ export class ImportWalletPage {
     this.showAdvOpts = !this.showAdvOpts;
   }
 
-  public fileChangeEvent($event: any) {
+  public fileChangeEvent($event) {
     this.file = $event.target
       ? $event.target.files[0]
       : $event.srcElement.files[0];
@@ -401,13 +404,13 @@ export class ImportWalletPage {
 
   private getFile() {
     // If we use onloadend, we need to check the readyState.
-    this.reader.onloadend = (evt: any) => {
-      if (evt.target.readyState == 2) {
-        // DONE == 2
-        let opts: any = {};
+    this.reader.onloadend = () => {
+      if (this.reader.readyState === 2) {
+        // DONE === 2
+        let opts: Partial<WalletOptions> = {};
         opts.bwsurl = this.importForm.value.bwsURL;
         opts.coin = this.importForm.value.coin;
-        this.importBlob(evt.target.result, opts);
+        this.importBlob(this.reader.result, opts);
       }
     };
   }

@@ -16,16 +16,16 @@ import * as _ from 'lodash';
   templateUrl: 'alt-currency.html'
 })
 export class AltCurrencyPage {
-  public completeAlternativeList: any[];
+  public completeAlternativeList;
   public searchedAltCurrency: string;
-  public altCurrencyList: any[];
-  public loading: any;
-  public currentCurrency: any;
-  public lastUsedAltCurrencyList: any[];
+  public altCurrencyList;
+  public loading;
+  public currentCurrency;
+  public lastUsedAltCurrencyList;
 
   private PAGE_COUNTER: number = 3;
   private SHOW_LIMIT: number = 10;
-  private unusedCurrencyList: any;
+  private unusedCurrencyList;
 
   constructor(
     private configProvider: ConfigProvider,
@@ -58,13 +58,13 @@ export class AltCurrencyPage {
 
         this.completeAlternativeList = _.reject(
           this.completeAlternativeList,
-          (c: any) => {
+          c => {
             return idx[c.isoCode] || idx2[c.isoCode];
           }
         );
         this.altCurrencyList = this.completeAlternativeList.slice(0, 20);
       })
-      .catch((err: any) => {
+      .catch(err => {
         this.logger.error(err);
       });
 
@@ -73,17 +73,17 @@ export class AltCurrencyPage {
 
     this.persistenceProvider
       .getLastCurrencyUsed()
-      .then((lastUsedAltCurrency: any) => {
+      .then(lastUsedAltCurrency => {
         this.lastUsedAltCurrencyList = lastUsedAltCurrency
           ? lastUsedAltCurrency
           : [];
       })
-      .catch((err: any) => {
+      .catch(err => {
         this.logger.error(err);
       });
   }
 
-  public loadAltCurrencies(loading: any): void {
+  public loadAltCurrencies(loading): void {
     if (this.altCurrencyList.length === this.completeAlternativeList.length) {
       loading.complete();
       return;
@@ -102,7 +102,7 @@ export class AltCurrencyPage {
     this.logger.info('ionViewDidLoad AltCurrencyPage');
   }
 
-  public save(newAltCurrency: any): void {
+  public save(newAltCurrency): void {
     var opts = {
       wallet: {
         settings: {
@@ -120,7 +120,7 @@ export class AltCurrencyPage {
     this.navCtrl.pop();
   }
 
-  private saveLastUsed(newAltCurrency: any): void {
+  private saveLastUsed(newAltCurrency): void {
     this.lastUsedAltCurrencyList.unshift(newAltCurrency);
     this.lastUsedAltCurrencyList = _.uniqBy(
       this.lastUsedAltCurrencyList,

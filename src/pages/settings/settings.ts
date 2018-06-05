@@ -43,15 +43,15 @@ import { WalletSettingsPage } from './wallet-settings/wallet-settings';
 export class SettingsPage {
   public appName: string;
   public currentLanguageName: string;
-  public languages: any[];
-  public walletsBtc: any[];
-  public walletsBch: any[];
-  public config: any;
-  public selectedAlternative: any;
+  public languages;
+  public walletsBtc;
+  public walletsBch;
+  public config;
+  public selectedAlternative;
   public isCordova: boolean;
   public lockMethod: string;
-  public integrationServices: any[] = [];
-  public bitpayCardItems: any[] = [];
+  public integrationServices = [];
+  public bitpayCardItems = [];
   public showBitPayCard: boolean = false;
 
   constructor(
@@ -138,7 +138,7 @@ export class SettingsPage {
   }
 
   public openLockPage(): void {
-    let config: any = this.configProvider.get();
+    let config = this.configProvider.get();
     let lockMethod =
       config && config.lock && config.lock.method
         ? config.lock.method.toLowerCase()

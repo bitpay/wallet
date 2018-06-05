@@ -92,7 +92,7 @@ getTestBed().initTestEnvironment(
   platformBrowserDynamicTesting()
 );
 // Then we find all the tests.
-const context: any = require.context('./', true, /\.spec\.ts$/);
+const context = require.context('./', true, /\.spec\.ts$/);
 // And load the modules.
 context.keys().map(context);
 
@@ -175,13 +175,11 @@ const baseProviders = [
 ];
 
 export class TestUtils {
-  public static beforeEachCompiler(
-    components: any[]
-  ): Promise<{ fixture: any; instance: any }> {
+  public static beforeEachCompiler(components): Promise<{ fixture; instance }> {
     return TestUtils.configureIonicTestingModule(components)
       .compileComponents()
       .then(() => {
-        const fixture: any = TestBed.createComponent(components[0]);
+        const fixture = TestBed.createComponent(components[0]);
         return {
           fixture,
           instance: fixture.debugElement.componentInstance
@@ -189,7 +187,7 @@ export class TestUtils {
       });
   }
 
-  public static configureIonicTestingModule(components: any[]): typeof TestBed {
+  public static configureIonicTestingModule(components): typeof TestBed {
     return TestBed.configureTestingModule({
       declarations: [...components],
       imports: baseImports,
@@ -198,9 +196,9 @@ export class TestUtils {
   }
 
   public static async configurePageTestingModule(
-    components: any[],
-    otherParams?: any
-  ): Promise<{ fixture: any; instance: any; testBed: typeof TestBed }> {
+    components,
+    otherParams?
+  ): Promise<{ fixture; instance; testBed: typeof TestBed }> {
     const providers = (otherParams && otherParams.providers) || [];
     await TestBed.configureTestingModule({
       declarations: [...components, KeysPipe, SatToFiatPipe, SatToUnitPipe],
@@ -225,7 +223,7 @@ export class TestUtils {
     );
     spyOn(appProvider, 'getServicesInfo').and.returnValue(Promise.resolve({}));
     await appProvider.load();
-    const fixture: any = TestBed.createComponent(components[0]);
+    const fixture = TestBed.createComponent(components[0]);
     return {
       fixture,
       instance: fixture.debugElement.componentInstance,
@@ -235,10 +233,10 @@ export class TestUtils {
 
   public static configureProviderTestingModule(
     providerOverrides: Array<{
-      provide: any;
-      useClass?: any;
-      useValue?: any;
-      useFactory?: (...args: any[]) => any;
+      provide;
+      useClass?;
+      useValue?;
+      useFactory?: (...args) => any;
     }> = []
   ) {
     return TestBed.configureTestingModule({
@@ -248,11 +246,11 @@ export class TestUtils {
   }
 
   // http://stackoverflow.com/questions/2705583/how-to-simulate-a-click-with-javascript
-  public static eventFire(el: any, etype: string): void {
+  public static eventFire(el, etype: string): void {
     if (el.fireEvent) {
       el.fireEvent('on' + etype);
     } else {
-      const evObj: any = document.createEvent('Events');
+      const evObj = document.createEvent('Events');
       evObj.initEvent(etype, true, false);
       el.dispatchEvent(evObj);
     }

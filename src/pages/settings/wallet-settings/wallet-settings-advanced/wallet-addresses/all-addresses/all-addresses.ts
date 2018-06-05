@@ -15,12 +15,12 @@ import { PlatformProvider } from '../../../../../../providers/platform/platform'
   templateUrl: 'all-addresses.html'
 })
 export class AllAddressesPage {
-  public noBalance: any;
-  public withBalance: any;
+  public noBalance;
+  public withBalance;
   public coin: string;
   public isCordova: boolean;
 
-  private allAddresses: any;
+  private allAddresses;
   private walletName: string;
 
   constructor(
@@ -44,7 +44,7 @@ export class AllAddressesPage {
     this.viewCtrl.dismiss();
   }
 
-  private formatDate(ts: number): any {
+  private formatDate(ts: number) {
     var dateObj = new Date(ts * 1000);
     if (!dateObj) {
       this.logger.debug('Error formating a date');
@@ -56,7 +56,7 @@ export class AllAddressesPage {
     return dateObj.toJSON();
   }
 
-  public sendByEmail(): any {
+  public sendByEmail() {
     this.onGoingProcessProvider.set('sendingByEmail');
     setTimeout(() => {
       this.onGoingProcessProvider.clear();

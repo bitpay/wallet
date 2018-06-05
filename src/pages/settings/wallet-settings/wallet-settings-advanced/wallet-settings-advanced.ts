@@ -19,7 +19,7 @@ import { WalletTransactionHistoryPage } from './wallet-transaction-history/walle
   templateUrl: 'wallet-settings-advanced.html'
 })
 export class WalletSettingsAdvancedPage {
-  public wallet: any;
+  public wallet;
 
   constructor(
     private profileProvider: ProfileProvider,

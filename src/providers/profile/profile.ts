@@ -18,6 +18,7 @@ import { ReplaceParametersProvider } from '../replace-parameters/replace-paramet
 
 // models
 import { Profile } from '../../models/profile/profile.model';
+import { WalletOptions } from '../wallet/wallet';
 
 @Injectable()
 export class ProfileProvider {
@@ -25,9 +26,9 @@ export class ProfileProvider {
   public profile: Profile;
 
   private UPDATE_PERIOD = 15;
-  private throttledBwsEvent: any;
+  private throttledBwsEvent;
   private validationLock: boolean = false;
-  private errors: any = this.bwcProvider.getErrors();
+  private errors = this.bwcProvider.getErrors();
 
   constructor(
     private logger: Logger,
@@ -49,9 +50,9 @@ export class ProfileProvider {
     }, 10000);
   }
 
-  private updateWalletSettings(wallet: any): void {
-    let config: any = this.configProvider.get();
-    let defaults: any = this.configProvider.getDefaults();
+  private updateWalletSettings(wallet): void {
+    let config = this.configProvider.get();
+    let defaults = this.configProvider.getDefaults();
     // this.config.whenAvailable( (config) => { TODO
     wallet.usingCustomBWS =
       config.bwsFor &&
@@ -79,7 +80,7 @@ export class ProfileProvider {
 
   public getWalletOrder(walletId: string): Promise<any> {
     return new Promise(resolve => {
-      this.persistenceProvider.getWalletOrder(walletId).then((order: any) => {
+      this.persistenceProvider.getWalletOrder(walletId).then(order => {
         return resolve(order);
       });
     });
@@ -91,7 +92,7 @@ export class ProfileProvider {
     this.wallet[walletId].needsBackup = false;
   }
 
-  private requiresBackup(wallet: any): boolean {
+  private requiresBackup(wallet): boolean {
     if (wallet.isPrivKeyExternal()) return false;
     if (!wallet.credentials.mnemonic && !wallet.credentials.mnemonicEncrypted)
       return false;
@@ -100,7 +101,7 @@ export class ProfileProvider {
     return true;
   }
 
-  private needsBackup(wallet: any): Promise<boolean> {
+  private needsBackup(wallet): Promise<boolean> {
     return new Promise(resolve => {
       if (!this.requiresBackup(wallet)) {
         return resolve(false);
@@ -120,7 +121,7 @@ export class ProfileProvider {
     });
   }
 
-  private isBalanceHidden(wallet: any): Promise<boolean> {
+  private isBalanceHidden(wallet): Promise<boolean> {
     return new Promise(resolve => {
       this.persistenceProvider
         .getHideBalanceFlag(wallet.credentials.walletId)
@@ -137,7 +138,7 @@ export class ProfileProvider {
     });
   }
 
-  private bindWalletClient(wallet: any, opts?: any): boolean {
+  private bindWalletClient(wallet, opts?): boolean {
     opts = opts ? opts : {};
     let walletId = wallet.credentials.walletId;
 
@@ -157,11 +158,11 @@ export class ProfileProvider {
     this.updateWalletSettings(wallet);
     this.wallet[walletId] = wallet;
 
-    this.needsBackup(wallet).then((val: any) => {
+    this.needsBackup(wallet).then(val => {
       wallet.needsBackup = val;
     });
 
-    this.isBalanceHidden(wallet).then((val: any) => {
+    this.isBalanceHidden(wallet).then(val => {
       wallet.balanceHidden = val;
     });
 
@@ -171,11 +172,11 @@ export class ProfileProvider {
 
     wallet.removeAllListeners();
 
-    wallet.on('report', (n: any) => {
+    wallet.on('report', n => {
       this.logger.info('BWC Report:' + n);
     });
 
-    wallet.on('notification', (n: any) => {
+    wallet.on('notification', n => {
       this.logger.debug('BWC Notification:', JSON.stringify(n));
 
       if (n.type == 'NewBlock' && n.data.network == 'testnet') {
@@ -220,7 +221,7 @@ export class ProfileProvider {
     return true;
   }
 
-  private newBwsEvent(n: any, wallet: any): void {
+  private newBwsEvent(n, wallet): void {
     if (wallet.cachedStatus) wallet.cachedStatus.isValid = false;
 
     if (wallet.completeHistory) wallet.completeHistory.isValid = false;
@@ -232,25 +233,25 @@ export class ProfileProvider {
     this.events.publish('bwsEvent', wallet.id, n.type, n);
   }
 
-  public updateCredentials(credentials: any): void {
+  public updateCredentials(credentials): void {
     this.profile.updateWallet(credentials);
     this.persistenceProvider.storeProfile(this.profile);
   }
 
-  public getLastKnownBalance(wid: string): Promise<string> {
+  public getLastKnownBalance(wid: string) {
     return new Promise((resolve, reject) => {
       this.persistenceProvider
         .getBalanceCache(wid)
         .then((data: string) => {
           return resolve(data);
         })
-        .catch((err: any) => {
+        .catch(err => {
           return reject(err);
         });
     });
   }
 
-  private addLastKnownBalance(wallet: any): Promise<any> {
+  private addLastKnownBalance(wallet): Promise<any> {
     return new Promise(resolve => {
       let now = Math.floor(Date.now() / 1000);
       let showRange = 600; // 10min;
@@ -258,7 +259,7 @@ export class ProfileProvider {
       this.getLastKnownBalance(wallet.id)
         .then((data: any) => {
           if (data) {
-            let parseData: any = data;
+            let parseData = data;
             wallet.cachedBalance = parseData.balance;
             wallet.cachedBalanceUpdatedOn =
               parseData.updatedOn < now - showRange
@@ -267,7 +268,7 @@ export class ProfileProvider {
           }
           return resolve();
         })
-        .catch((err: any) => {
+        .catch(err => {
           this.logger.warn('Could not get last known balance: ', err);
         });
     });
@@ -280,7 +281,7 @@ export class ProfileProvider {
     });
   }
 
-  private runValidation(wallet: any, delay?: number, retryDelay?: number) {
+  private runValidation(wallet, delay?: number, retryDelay?: number) {
     delay = delay ? delay : 500;
     retryDelay = retryDelay ? retryDelay : 50;
 
@@ -338,7 +339,7 @@ export class ProfileProvider {
     }
   }
 
-  public importWallet(str: string, opts: any): Promise<any> {
+  public importWallet(str: string, opts): Promise<any> {
     return new Promise((resolve, reject) => {
       let walletClient = this.bwcProvider.getClient(null, opts);
 
@@ -367,7 +368,7 @@ export class ProfileProvider {
         );
       }
 
-      let strParsed: any = JSON.parse(str);
+      let strParsed = JSON.parse(str);
 
       if (!strParsed.n) {
         return reject(
@@ -385,12 +386,12 @@ export class ProfileProvider {
             .then(() => {
               return resolve(walletClient);
             })
-            .catch((err: any) => {
+            .catch(err => {
               this.logger.warn('Could not set meta data: ', err);
               return reject(err);
             });
         })
-        .catch((err: any) => {
+        .catch(err => {
           return reject(err);
         });
     });
@@ -403,7 +404,7 @@ export class ProfileProvider {
         type: 'password',
         useDanger: true
       };
-      this.popupProvider.ionicPrompt(title, warnMsg, opts).then((res: any) => {
+      this.popupProvider.ionicPrompt(title, warnMsg, opts).then(res => {
         return resolve(res);
       });
     });
@@ -419,13 +420,13 @@ export class ProfileProvider {
       let cancelText = this.translate.instant('Go Back');
       this.popupProvider
         .ionicConfirm(title, msg, okText, cancelText)
-        .then((res: any) => {
+        .then(res => {
           return resolve(res);
         });
     });
   }
 
-  private askToEncryptWallet(wallet: any): Promise<any> {
+  private askToEncryptWallet(wallet): Promise<any> {
     return new Promise(resolve => {
       if (!wallet.canSign()) return resolve();
 
@@ -439,7 +440,7 @@ export class ProfileProvider {
       var cancelText = this.translate.instant('No');
       this.popupProvider
         .ionicConfirm(title, message, okText, cancelText)
-        .then((res: any) => {
+        .then(res => {
           if (!res) {
             return this.showWarningNoEncrypt().then(res => {
               if (res) return resolve();
@@ -455,7 +456,7 @@ export class ProfileProvider {
     });
   }
 
-  private encrypt(wallet: any): Promise<any> {
+  private encrypt(wallet): Promise<any> {
     return new Promise(resolve => {
       let title = this.translate.instant(
         'Enter a password to encrypt your wallet'
@@ -465,7 +466,7 @@ export class ProfileProvider {
       );
       this.askPassword(warnMsg, title).then((password: string) => {
         if (!password) {
-          this.showWarningNoEncrypt().then((res: any) => {
+          this.showWarningNoEncrypt().then(res => {
             if (res) return resolve();
             this.encrypt(wallet).then(() => {
               return resolve();
@@ -491,7 +492,7 @@ export class ProfileProvider {
   }
 
   // Adds and bind a new client to the profile
-  private addAndBindWalletClient(wallet: any, opts: any): Promise<any> {
+  private addAndBindWalletClient(wallet, opts): Promise<any> {
     return new Promise((resolve, reject) => {
       if (!wallet || !wallet.credentials) {
         return reject(this.translate.instant('Could not access wallet'));
@@ -519,8 +520,8 @@ export class ProfileProvider {
 
         let saveBwsUrl = (): Promise<any> => {
           return new Promise(resolve => {
-            let defaults: any = this.configProvider.getDefaults();
-            let bwsFor: any = {};
+            let defaults = this.configProvider.getDefaults();
+            let bwsFor = {};
             bwsFor[walletId] = opts.bwsurl || defaults.bws.url;
 
             // Dont save the default
@@ -539,7 +540,7 @@ export class ProfileProvider {
             .then(() => {
               return resolve(wallet);
             })
-            .catch((err: any) => {
+            .catch(err => {
               return reject(err);
             });
         });
@@ -554,11 +555,11 @@ export class ProfileProvider {
     );
   }
 
-  private setMetaData(wallet: any, addressBook: any): Promise<any> {
+  private setMetaData(wallet, addressBook): Promise<any> {
     return new Promise((resolve, reject) => {
       this.persistenceProvider
         .getAddressBook(wallet.credentials.network)
-        .then((localAddressBook: any) => {
+        .then(localAddressBook => {
           let localAddressBook1 = {};
           try {
             localAddressBook1 = JSON.parse(localAddressBook);
@@ -577,22 +578,22 @@ export class ProfileProvider {
             .then(() => {
               return resolve();
             })
-            .catch((err: any) => {
+            .catch(err => {
               return reject(err);
             });
         })
-        .catch((err: any) => {
+        .catch(err => {
           return reject(err);
         });
     });
   }
 
-  public importExtendedPrivateKey(xPrivKey: string, opts: any): Promise<any> {
+  public importExtendedPrivateKey(xPrivKey: string, opts): Promise<any> {
     return new Promise((resolve, reject) => {
       let walletClient = this.bwcProvider.getClient(null, opts);
       this.logger.debug('Importing Wallet xPrivKey');
 
-      walletClient.importFromExtendedPrivateKey(xPrivKey, opts, (err: any) => {
+      walletClient.importFromExtendedPrivateKey(xPrivKey, opts, err => {
         if (err) {
           if (err instanceof this.errors.NOT_AUTHORIZED) return reject(err);
           this.bwcErrorProvider
@@ -604,10 +605,10 @@ export class ProfileProvider {
           this.addAndBindWalletClient(walletClient, {
             bwsurl: opts.bwsurl
           })
-            .then((wallet: any) => {
+            .then(wallet => {
               return resolve(wallet);
             })
-            .catch((err: any) => {
+            .catch(err => {
               return reject(err);
             });
         }
@@ -623,7 +624,7 @@ export class ProfileProvider {
     return wordList.join(isJA ? '\u3000' : ' ');
   }
 
-  public importMnemonic(words: string, opts: any): Promise<any> {
+  public importMnemonic(words: string, opts): Promise<any> {
     return new Promise((resolve, reject) => {
       let walletClient = this.bwcProvider.getClient(null, opts);
 
@@ -640,7 +641,7 @@ export class ProfileProvider {
           account: opts.account || 0,
           coin: opts.coin
         },
-        (err: any) => {
+        err => {
           if (err) {
             if (err instanceof this.errors.NOT_AUTHORIZED) {
               return reject(err);
@@ -656,10 +657,10 @@ export class ProfileProvider {
           this.addAndBindWalletClient(walletClient, {
             bwsurl: opts.bwsurl
           })
-            .then((wallet: any) => {
+            .then(wallet => {
               return resolve(wallet);
             })
-            .catch((err: any) => {
+            .catch(err => {
               return reject(err);
             });
         }
@@ -667,7 +668,7 @@ export class ProfileProvider {
     });
   }
 
-  public importExtendedPublicKey(opts: any): Promise<any> {
+  public importExtendedPublicKey(opts): Promise<any> {
     return new Promise((resolve, reject) => {
       let walletClient = this.bwcProvider.getClient(null, opts);
       this.logger.debug('Importing Wallet XPubKey');
@@ -681,7 +682,7 @@ export class ProfileProvider {
           derivationStrategy: opts.derivationStrategy || 'BIP44',
           coin: opts.coin
         },
-        (err: any) => {
+        err => {
           if (err) {
             // in HW wallets, req key is always the same. They can't addAccess.
             if (err instanceof this.errors.NOT_AUTHORIZED)
@@ -697,10 +698,10 @@ export class ProfileProvider {
           this.addAndBindWalletClient(walletClient, {
             bwsurl: opts.bwsurl
           })
-            .then((wallet: any) => {
+            .then(wallet => {
               return resolve(wallet);
             })
-            .catch((err: any) => {
+            .catch(err => {
               return reject(err);
             });
         }
@@ -715,7 +716,7 @@ export class ProfileProvider {
     this.persistenceProvider.storeNewProfile(this.profile);
   }
 
-  public bindProfile(profile: any): Promise<any> {
+  public bindProfile(profile): Promise<any> {
     return new Promise((resolve, reject) => {
       let bindWallets = (): Promise<any> => {
         return new Promise((resolve, reject) => {
@@ -767,7 +768,7 @@ export class ProfileProvider {
                     .then(() => {
                       return resolve();
                     })
-                    .catch((err: any) => {
+                    .catch(err => {
                       this.logger.error(err);
                     });
                 })
@@ -780,7 +781,7 @@ export class ProfileProvider {
                 });
             });
         })
-        .catch((err: any) => {
+        .catch(err => {
           return reject(err);
         });
     });
@@ -820,7 +821,7 @@ export class ProfileProvider {
     });
   }
 
-  private bindWallet(credentials: any): Promise<any> {
+  private bindWallet(credentials): Promise<any> {
     return new Promise((resolve, reject) => {
       if (!credentials.walletId || !credentials.m) {
         return reject('bindWallet should receive credentials JSON');
@@ -828,8 +829,8 @@ export class ProfileProvider {
 
       // Create the client
       let getBWSURL = (walletId: string) => {
-        let config: any = this.configProvider.get();
-        let defaults: any = this.configProvider.getDefaults();
+        let config = this.configProvider.get();
+        let defaults = this.configProvider.getDefaults();
         return (config.bwsFor && config.bwsFor[walletId]) || defaults.bws.url;
       };
 
@@ -857,7 +858,7 @@ export class ProfileProvider {
     return new Promise((resolve, reject) => {
       this.persistenceProvider
         .getProfile()
-        .then((profile: any) => {
+        .then(profile => {
           if (!profile) {
             return resolve();
           }
@@ -869,17 +870,17 @@ export class ProfileProvider {
             .then(() => {
               return resolve(this.profile);
             })
-            .catch((err: any) => {
+            .catch(err => {
               return reject(err);
             });
         })
-        .catch((err: any) => {
+        .catch(err => {
           return reject(err);
         });
     });
   }
 
-  private seedWallet(opts: any): Promise<any> {
+  private seedWallet(opts): Promise<any> {
     return new Promise((resolve, reject) => {
       opts = opts ? opts : {};
       let walletClient = this.bwcProvider.getClient(null, opts);
@@ -977,7 +978,7 @@ export class ProfileProvider {
   }
 
   // Creates a wallet on BWC/BWS
-  private doCreateWallet(opts: any): Promise<any> {
+  private doCreateWallet(opts): Promise<any> {
     return new Promise((resolve, reject) => {
       let showOpts = _.clone(opts);
       if (showOpts.extendedPrivateKey) showOpts.extendedPrivateKey = '[hidden]';
@@ -986,7 +987,7 @@ export class ProfileProvider {
       this.logger.debug('Creating Wallet:', JSON.stringify(showOpts));
       setTimeout(() => {
         this.seedWallet(opts)
-          .then((walletClient: any) => {
+          .then(walletClient => {
             let name = opts.name || this.translate.instant('Personal Wallet');
             let myName = opts.myName || this.translate.instant('me');
 
@@ -1014,7 +1015,7 @@ export class ProfileProvider {
               }
             );
           })
-          .catch((err: any) => {
+          .catch(err => {
             return reject(err);
           });
       }, 50);
@@ -1022,24 +1023,24 @@ export class ProfileProvider {
   }
 
   // create and store a wallet
-  public createWallet(opts: any): Promise<any> {
+  public createWallet(opts): Promise<any> {
     return new Promise((resolve, reject) => {
       this.doCreateWallet(opts)
-        .then((walletClient: any) => {
+        .then(walletClient => {
           this.addAndBindWalletClient(walletClient, {
             bwsurl: opts.bwsurl
-          }).then((wallet: any) => {
+          }).then(wallet => {
             return resolve(wallet);
           });
         })
-        .catch((err: any) => {
+        .catch(err => {
           return reject(err);
         });
     });
   }
 
   // joins and stores a wallet
-  public joinWallet(opts: any): Promise<any> {
+  public joinWallet(opts): Promise<any> {
     return new Promise((resolve, reject) => {
       this.logger.debug('Joining Wallet:', opts);
 
@@ -1064,14 +1065,14 @@ export class ProfileProvider {
       this.logger.debug('Joining Wallet:', opts);
 
       this.seedWallet(opts)
-        .then((walletClient: any) => {
+        .then(walletClient => {
           walletClient.joinWallet(
             opts.secret,
             opts.myName || 'me',
             {
               coin: opts.coin
             },
-            (err: any) => {
+            err => {
               if (err) {
                 this.bwcErrorProvider
                   .cb(err, this.translate.instant('Could not join wallet'))
@@ -1081,24 +1082,24 @@ export class ProfileProvider {
               } else {
                 this.addAndBindWalletClient(walletClient, {
                   bwsurl: opts.bwsurl
-                }).then((wallet: any) => {
+                }).then(wallet => {
                   return resolve(wallet);
                 });
               }
             }
           );
         })
-        .catch((err: any) => {
+        .catch(err => {
           return reject(err);
         });
     });
   }
 
-  public getWallet(walletId: string): any {
+  public getWallet(walletId: string) {
     return this.wallet[walletId];
   }
 
-  public deleteWalletClient(wallet: any): Promise<any> {
+  public deleteWalletClient(wallet): Promise<any> {
     return new Promise((resolve, reject) => {
       let walletId = wallet.credentials.walletId;
 
@@ -1109,18 +1110,16 @@ export class ProfileProvider {
 
       delete this.wallet[walletId];
 
-      this.persistenceProvider
-        .removeAllWalletData(walletId)
-        .catch((err: any) => {
-          this.logger.warn('Could not remove all wallet data: ', err);
-        });
+      this.persistenceProvider.removeAllWalletData(walletId).catch(err => {
+        this.logger.warn('Could not remove all wallet data: ', err);
+      });
 
       this.persistenceProvider
         .storeProfile(this.profile)
         .then(() => {
           return resolve();
         })
-        .catch((err: any) => {
+        .catch(err => {
           return reject(err);
         });
     });
@@ -1128,13 +1127,13 @@ export class ProfileProvider {
 
   public createDefaultWallet(): Promise<any> {
     return new Promise((resolve, reject) => {
-      let opts: any = {};
+      let opts: Partial<WalletOptions> = {};
       opts.m = 1;
       opts.n = 1;
       opts.networkName = 'livenet';
       opts.coin = 'btc';
       this.createWallet(opts)
-        .then((wallet: any) => {
+        .then(wallet => {
           return resolve(wallet);
         })
         .catch(err => {
@@ -1171,60 +1170,60 @@ export class ProfileProvider {
     });
   }
 
-  public getWallets(opts?: any) {
+  public getWallets(opts?) {
     if (opts && !_.isObject(opts)) throw new Error('bad argument');
 
     opts = opts || {};
 
-    let ret = _.values(this.wallet);
+    let ret = _.values(this.wallet as any);
 
     if (opts.coin) {
-      ret = _.filter(ret, (x: any) => {
+      ret = _.filter(ret, x => {
         return x.credentials.coin == opts.coin;
       });
     }
 
     if (opts.network) {
-      ret = _.filter(ret, (x: any) => {
+      ret = _.filter(ret, x => {
         return x.credentials.network == opts.network;
       });
     }
 
     if (opts.n) {
-      ret = _.filter(ret, (w: any) => {
+      ret = _.filter(ret, w => {
         return w.credentials.n == opts.n;
       });
     }
 
     if (opts.m) {
-      ret = _.filter(ret, (w: any) => {
+      ret = _.filter(ret, w => {
         return w.credentials.m == opts.m;
       });
     }
 
     if (opts.hasFunds) {
-      ret = _.filter(ret, (w: any) => {
+      ret = _.filter(ret, w => {
         if (!w.status) return undefined;
         return w.status.availableBalanceSat > 0;
       });
     }
 
     if (opts.minAmount) {
-      ret = _.filter(ret, (w: any) => {
+      ret = _.filter(ret, w => {
         if (!w.status) return undefined;
         return w.status.availableBalanceSat > opts.minAmount;
       });
     }
 
     if (opts.onlyComplete) {
-      ret = _.filter(ret, (w: any) => {
+      ret = _.filter(ret, w => {
         return w.isComplete();
       });
     } else {
     }
 
     // Add cached balance async
-    _.each(ret, (x: any) => {
+    _.each(ret, x => {
       this.addLastKnownBalance(x);
     });
 
@@ -1239,7 +1238,7 @@ export class ProfileProvider {
     );
   }
 
-  public getNotifications(opts: any): Promise<any> {
+  public getNotifications(opts): Promise<any> {
     return new Promise((resolve, reject) => {
       opts = opts ? opts : {};
 
@@ -1258,11 +1257,11 @@ export class ProfileProvider {
       let j = 0;
       let notifications = [];
 
-      let isActivityCached = (wallet: any): boolean => {
+      let isActivityCached = (wallet): boolean => {
         return wallet.cachedActivity && wallet.cachedActivity.isValid;
       };
 
-      let updateNotifications = (wallet: any): Promise<any> => {
+      let updateNotifications = (wallet): Promise<any> => {
         return new Promise((resolve, reject) => {
           if (isActivityCached(wallet) && !opts.force) {
             return resolve();
@@ -1273,7 +1272,7 @@ export class ProfileProvider {
               timeSpan: TIME_STAMP,
               includeOwn: true
             },
-            (err: any, n: any) => {
+            (err, n) => {
               if (err) {
                 return reject(err);
               }
@@ -1288,14 +1287,14 @@ export class ProfileProvider {
         });
       };
 
-      let process = (notifications: any): any[] => {
+      let process = notifications => {
         if (!notifications) return [];
 
         let shown = _.sortBy(notifications, 'createdOn').reverse();
 
         shown = shown.splice(0, opts.limit || MAX);
 
-        _.each(shown, (x: any) => {
+        _.each(shown, x => {
           x.txpId = x.data ? x.data.txProposalId : null;
           x.txid = x.data ? x.data.txid : null;
           x.types = [x.type];
@@ -1313,12 +1312,12 @@ export class ProfileProvider {
         // let finale = shown; GROUPING DISABLED!
 
         let finale = [];
-        let prev: any;
+        let prev;
 
         // Item grouping... DISABLED.
 
         // REMOVE (if we want 1-to-1 notification) ????
-        _.each(shown, (x: any) => {
+        _.each(shown, x => {
           if (
             prev &&
             prev.walletId === x.walletId &&
@@ -1338,7 +1337,7 @@ export class ProfileProvider {
         });
 
         let u = this.bwcProvider.getUtils();
-        _.each(finale, (x: any) => {
+        _.each(finale, x => {
           if (
             x.data &&
             x.data.message &&
@@ -1359,18 +1358,18 @@ export class ProfileProvider {
       let pr = (wallet, cb) => {
         updateNotifications(wallet)
           .then(() => {
-            let n = _.filter(wallet.cachedActivity.n, (x: any) => {
+            let n = _.filter(wallet.cachedActivity.n, x => {
               return typeFilter[x.type];
             });
 
             let idToName = {};
             if (wallet.cachedStatus) {
-              _.each(wallet.cachedStatus.wallet.copayers, (c: any) => {
+              _.each(wallet.cachedStatus.wallet.copayers, c => {
                 idToName[c.id] = c.name;
               });
             }
 
-            _.each(n, (x: any) => {
+            _.each(n, x => {
               x.wallet = wallet;
               if (x.creatorId && wallet.cachedStatus) {
                 x.creatorName = idToName[x.creatorId];
@@ -1380,12 +1379,12 @@ export class ProfileProvider {
             notifications.push(n);
             return cb();
           })
-          .catch((err: any) => {
+          .catch(err => {
             return cb(err);
           });
       };
 
-      _.each(w, (wallet: any) => {
+      _.each(w, wallet => {
         pr(wallet, err => {
           if (err)
             this.logger.warn(
@@ -1406,7 +1405,7 @@ export class ProfileProvider {
     });
   }
 
-  public getTxps(opts: any): Promise<any> {
+  public getTxps(opts): Promise<any> {
     return new Promise((resolve, reject) => {
       let MAX = 100;
       opts = opts ? opts : {};
@@ -1418,7 +1417,7 @@ export class ProfileProvider {
 
       let txps = [];
 
-      _.each(w, (x: any) => {
+      _.each(w, x => {
         if (x.pendingTxps) txps = txps.concat(x.pendingTxps);
       });
       let n = txps.length;

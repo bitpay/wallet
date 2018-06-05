@@ -14,8 +14,8 @@ import { PersistenceProvider } from '../../../providers/persistence/persistence'
   templateUrl: 'disclaimer.html'
 })
 export class DisclaimerPage {
-  public accepted: any;
-  public terms: any;
+  public accepted;
+  public terms;
   public hasEmail: boolean;
 
   constructor(

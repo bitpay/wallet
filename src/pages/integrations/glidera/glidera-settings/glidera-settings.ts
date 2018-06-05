@@ -17,9 +17,9 @@ import { TabsPage } from '../../../tabs/tabs';
 })
 export class GlideraSettingsPage {
   private serviceName: string = 'glidera';
-  public showInHome: any;
-  public service: any;
-  public account: any;
+  public showInHome;
+  public service;
+  public account;
 
   constructor(
     private app: App,
@@ -50,7 +50,7 @@ export class GlideraSettingsPage {
     });
   }
 
-  private showErrorAndBack(title: string, msg: any) {
+  private showErrorAndBack(title: string, msg) {
     title = title ? title : 'Error';
     this.logger.error(msg);
     msg = msg && msg.errors ? msg.errors[0].message : msg;

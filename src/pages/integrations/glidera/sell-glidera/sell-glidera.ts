@@ -21,6 +21,7 @@ import { PopupProvider } from '../../../../providers/popup/popup';
 import { ProfileProvider } from '../../../../providers/profile/profile';
 import { TxFormatProvider } from '../../../../providers/tx-format/tx-format';
 import { WalletProvider } from '../../../../providers/wallet/wallet';
+import { setPrice } from '../../integrations';
 
 @Component({
   selector: 'page-sell-glidera',
@@ -33,10 +34,10 @@ export class SellGlideraPage {
   public token: string;
   public isFiat: boolean;
   public network: string;
-  public wallet: any;
-  public wallets: any;
+  public wallet;
+  public wallets;
   public amountUnitStr: string;
-  public sellInfo: any;
+  public sellInfo;
   public isOpenSelector: boolean;
 
   private currency: string;
@@ -90,7 +91,7 @@ export class SellGlideraPage {
     this.onWalletSelect(this.wallets[0]); // Default first wallet
   }
 
-  private showErrorAndBack(err: any): void {
+  private showErrorAndBack(err): void {
     if (this.isCordova) this.slideButton.isConfirmed(false);
     this.logger.error(err);
     err = err.errors ? err.errors[0].message : err;
@@ -99,7 +100,7 @@ export class SellGlideraPage {
     });
   }
 
-  private showError(err: any): void {
+  private showError(err): void {
     if (this.isCordova) this.slideButton.isConfirmed(false);
     this.logger.error(err);
     err = err.errors ? err.errors[0].message : err;
@@ -115,12 +116,7 @@ export class SellGlideraPage {
         return;
       }
       this.token = data.token;
-      let price: any = {};
-      if (this.isFiat) {
-        price.fiat = this.amount;
-      } else {
-        price.qty = this.amount;
-      }
+      let price = setPrice(this.isFiat, this.amount);
       this.glideraProvider.sellPrice(this.token, price, (err, sell) => {
         this.onGoingProcessProvider.clear();
         if (err) {
@@ -321,7 +317,7 @@ export class SellGlideraPage {
       id,
       'Sell From'
     );
-    this.events.subscribe('selectWalletEvent', (wallet: any) => {
+    this.events.subscribe('selectWalletEvent', wallet => {
       if (!_.isEmpty(wallet)) this.onWalletSelect(wallet);
       this.events.unsubscribe('selectWalletEvent');
       this.isOpenSelector = false;

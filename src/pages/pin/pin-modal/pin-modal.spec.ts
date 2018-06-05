@@ -5,7 +5,7 @@ import { PinModalPage } from './pin-modal';
 
 describe('PinModalPage', () => {
   let fixture: ComponentFixture<PinModalPage>;
-  let instance: any;
+  let instance;
 
   beforeEach(async(() =>
     TestUtils.configurePageTestingModule([PinModalPage]).then(testEnv => {

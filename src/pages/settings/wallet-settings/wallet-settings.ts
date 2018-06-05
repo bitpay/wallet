@@ -21,8 +21,8 @@ import { WalletSettingsAdvancedPage } from './wallet-settings-advanced/wallet-se
   templateUrl: 'wallet-settings.html'
 })
 export class WalletSettingsPage {
-  public wallet: any;
-  public walletName: any;
+  public wallet;
+  public walletName;
   public canSign: boolean;
   public needsBackup: boolean;
   public hiddenBalance: boolean;
@@ -31,7 +31,7 @@ export class WalletSettingsPage {
   public touchIdPrevValue: boolean;
   public touchIdAvailable: boolean;
   public deleted: boolean = false;
-  private config: any;
+  private config;
 
   constructor(
     private profileProvider: ProfileProvider,
@@ -93,7 +93,7 @@ export class WalletSettingsPage {
           );
           this.logger.debug('Wallet encrypted');
         })
-        .catch((err: any) => {
+        .catch(err => {
           this.logger.warn('Could not encrypt wallet', err);
           this.encryptEnabled = false;
         });

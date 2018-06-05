@@ -18,11 +18,11 @@ import { TimeProvider } from '../../../providers/time/time';
   templateUrl: 'mercado-libre.html'
 })
 export class MercadoLibrePage {
-  public giftCards: any;
+  public giftCards;
   public network: string;
 
   private updateGiftCard: boolean;
-  public card: any;
+  public card;
   public invoiceId: string;
 
   constructor(
@@ -64,7 +64,7 @@ export class MercadoLibrePage {
             this.updateGiftCard = this.checkIfCardNeedsUpdate(card);
           }
         })
-        .catch((err: any) => {
+        .catch(err => {
           this.logger.error('Mercado Libre: could not update gift cards', err);
         });
     }
@@ -76,7 +76,7 @@ export class MercadoLibrePage {
 
   private init(): Promise<any> {
     return new Promise(resolve => {
-      this.mercadoLibreProvider.getPendingGiftCards((err: any, gcds: any) => {
+      this.mercadoLibreProvider.getPendingGiftCards((err, gcds) => {
         if (err) this.logger.error(err);
         this.giftCards = gcds;
         resolve();
@@ -96,7 +96,7 @@ export class MercadoLibrePage {
     }
   }
 
-  private checkIfCardNeedsUpdate(card: any) {
+  private checkIfCardNeedsUpdate(card) {
     // Continues normal flow (update card)
     if (card.status == 'PENDING') {
       return true;
@@ -114,7 +114,7 @@ export class MercadoLibrePage {
 
   private updateGiftCards(): Promise<any> {
     return new Promise((resolve, reject) => {
-      this.mercadoLibreProvider.getPendingGiftCards((err: any, gcds: any) => {
+      this.mercadoLibreProvider.getPendingGiftCards((err, gcds) => {
         if (err) {
           this.popupProvider.ionicAlert('Could not get gift cards', err);
           return reject(err);
@@ -130,7 +130,7 @@ export class MercadoLibrePage {
       this.updateGiftCards()
         .then(() => {
           let gcds = this.giftCards;
-          _.forEach(gcds, (dataFromStorage: any) => {
+          _.forEach(gcds, dataFromStorage => {
             this.updateGiftCard = this.checkIfCardNeedsUpdate(dataFromStorage);
 
             if (this.updateGiftCard) {
@@ -138,7 +138,7 @@ export class MercadoLibrePage {
 
               this.mercadoLibreProvider.createGiftCard(
                 dataFromStorage,
-                (err: any, giftCard: any) => {
+                (err, giftCard) => {
                   if (err) {
                     this.logger.error('Error creating gift card:', err);
                     giftCard = giftCard || {};
@@ -146,7 +146,7 @@ export class MercadoLibrePage {
                   }
 
                   if (giftCard.status != 'PENDING') {
-                    let newData: any = {};
+                    let newData = {};
 
                     if (!giftCard.status) dataFromStorage.status = null; // Fix error from server
 
@@ -175,7 +175,7 @@ export class MercadoLibrePage {
             }
           });
         })
-        .catch((err: any) => {
+        .catch(err => {
           this.logger.error(err);
         });
     },
@@ -185,7 +185,7 @@ export class MercadoLibrePage {
     }
   );
 
-  public openCardModal(card: any): void {
+  public openCardModal(card): void {
     this.card = card;
 
     let modal = this.modalCtrl.create(MercadoLibreCardDetailsPage, {

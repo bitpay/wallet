@@ -8,7 +8,7 @@ const exchangeList: object[] = [{ name: 'coinbase' }, { name: 'glidera' }];
 
 @Injectable()
 export class HomeIntegrationsProvider {
-  public services: any;
+  public services;
   constructor(public http: HttpClient, private logger: Logger) {
     this.logger.info('HomeIntegrationsProviders initialized.');
     this.services = [];

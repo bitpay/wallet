@@ -13,7 +13,7 @@ describe('Release Provider', () => {
   const latestAppVersion = '2.2.2';
 
   class AppProviderMock {
-    public info: any;
+    public info;
     constructor() {
       this.info = { version: currentAppVersion };
     }

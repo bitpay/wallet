@@ -28,7 +28,10 @@ import { PopupProvider } from '../../../../providers/popup/popup';
 import { ProfileProvider } from '../../../../providers/profile/profile';
 import { ReplaceParametersProvider } from '../../../../providers/replace-parameters/replace-parameters';
 import { TxFormatProvider } from '../../../../providers/tx-format/tx-format';
-import { WalletProvider } from '../../../../providers/wallet/wallet';
+import {
+  TransactionProposal,
+  WalletProvider
+} from '../../../../providers/wallet/wallet';
 
 @Component({
   selector: 'page-buy-mercado-libre',
@@ -37,23 +40,23 @@ import { WalletProvider } from '../../../../providers/wallet/wallet';
 export class BuyMercadoLibrePage {
   @ViewChild('slideButton') slideButton;
 
-  private bitcoreCash: any;
+  private bitcoreCash;
   private amount: number;
   private currency: string;
-  private createdTx: any;
+  private createdTx;
   private message: string;
   private invoiceId: string;
-  private configWallet: any;
+  private configWallet;
   private currencyIsoCode: string;
   private FEE_TOO_HIGH_LIMIT_PER: number;
 
-  public wallet: any;
-  public wallets: any;
+  public wallet;
+  public wallets;
   public totalAmountStr: string;
   public invoiceFee: number;
   public networkFee: number;
   public totalAmount: number;
-  public mlGiftCard: any;
+  public mlGiftCard;
   public amountUnitStr: string;
   public limitPerDayMessage: string;
   public network: string;
@@ -151,7 +154,7 @@ export class BuyMercadoLibrePage {
     this.createdTx = this.message = this.invoiceId = null;
   }
 
-  private showErrorAndBack(title: string, msg: any) {
+  private showErrorAndBack(title: string, msg) {
     if (this.isCordova) this.slideButton.isConfirmed(false);
     title = title ? title : this.translate.instant('Error');
     this.logger.error(msg);
@@ -161,7 +164,7 @@ export class BuyMercadoLibrePage {
     });
   }
 
-  private showError = function(title: string, msg: any): Promise<any> {
+  private showError = function(title: string, msg): Promise<any> {
     return new Promise(resolve => {
       if (this.isCordova) this.slideButton.isConfirmed(false);
       title = title || this.translate.instant('Error');
@@ -173,7 +176,7 @@ export class BuyMercadoLibrePage {
     });
   };
 
-  private publishAndSign(wallet: any, txp: any): Promise<any> {
+  private publishAndSign(wallet, txp): Promise<any> {
     return new Promise((resolve, reject) => {
       if (!wallet.canSign() && !wallet.isPrivKeyExternal()) {
         let err = this.translate.instant('No signing proposal: No private key');
@@ -181,11 +184,11 @@ export class BuyMercadoLibrePage {
       }
       this.walletProvider
         .publishAndSign(wallet, txp)
-        .then((txp: any) => {
+        .then(txp => {
           this.onGoingProcessProvider.clear();
           return resolve(txp);
         })
-        .catch((err: any) => {
+        .catch(err => {
           this.onGoingProcessProvider.clear();
           return reject(err);
         });
@@ -203,7 +206,7 @@ export class BuyMercadoLibrePage {
   }
 
   private setTotalAmount(
-    wallet: any,
+    wallet,
     amountSat: number,
     invoiceFeeSat: number,
     networkFeeSat: number
@@ -222,17 +225,17 @@ export class BuyMercadoLibrePage {
     });
   }
 
-  private isCryptoCurrencySupported(wallet: any, invoice: any) {
+  private isCryptoCurrencySupported(wallet, invoice) {
     let COIN = wallet.coin.toUpperCase();
     if (!invoice['supportedTransactionCurrencies'][COIN]) return false;
     return invoice['supportedTransactionCurrencies'][COIN].enabled;
   }
 
-  private createInvoice(data: any): Promise<any> {
+  private createInvoice(data): Promise<any> {
     return new Promise((resolve, reject) => {
       this.mercadoLibreProvider.createBitPayInvoice(
         data,
-        (err: any, dataInvoice: any) => {
+        (err, dataInvoice) => {
           if (err) {
             let err_title = this.translate.instant(
               'Error creating the invoice'
@@ -267,7 +270,7 @@ export class BuyMercadoLibrePage {
 
           this.mercadoLibreProvider.getBitPayInvoice(
             dataInvoice.invoiceId,
-            (err: any, invoice: any) => {
+            (err, invoice) => {
               if (err) {
                 return reject({
                   message: this.translate.instant('Could not get the invoice')
@@ -282,7 +285,7 @@ export class BuyMercadoLibrePage {
     });
   }
 
-  private createTx(wallet: any, invoice: any, message: string): Promise<any> {
+  private createTx(wallet, invoice, message: string): Promise<any> {
     let COIN = wallet.coin.toUpperCase();
     return new Promise((resolve, reject) => {
       let payProUrl =
@@ -299,8 +302,8 @@ export class BuyMercadoLibrePage {
 
       this.payproProvider
         .getPayProDetails(payProUrl, wallet.coin)
-        .then((details: any) => {
-          let txp: any = {
+        .then(details => {
+          let txp: Partial<TransactionProposal> = {
             amount: details.amount,
             toAddress: details.toAddress,
             outputs: [
@@ -339,10 +342,10 @@ export class BuyMercadoLibrePage {
 
           this.walletProvider
             .createTx(wallet, txp)
-            .then((ctxp: any) => {
+            .then(ctxp => {
               return resolve(ctxp);
             })
-            .catch((err: any) => {
+            .catch(err => {
               return reject({
                 title: this.translate.instant('Could not create transaction'),
                 message: this.bwcErrorProvider.msg(err)
@@ -359,7 +362,7 @@ export class BuyMercadoLibrePage {
   }
 
   private checkTransaction = _.throttle(
-    (count: number, dataSrc: any) => {
+    (count: number, dataSrc) => {
       this.mercadoLibreProvider.createGiftCard(dataSrc, (err, giftCard) => {
         this.logger.debug('creating gift card ' + count);
         if (err) {
@@ -416,7 +419,7 @@ export class BuyMercadoLibrePage {
     }
   );
 
-  private initialize(wallet: any): void {
+  private initialize(wallet): void {
     let COIN = wallet.coin.toUpperCase();
     let email = this.emailNotificationsProvider.getEmailIfEnabled();
     let parsedAmount = this.txFormatProvider.parseAmount(
@@ -435,7 +438,7 @@ export class BuyMercadoLibrePage {
     };
     this.onGoingProcessProvider.set('loadingTxInfo');
     this.createInvoice(dataSrc)
-      .then((data: any) => {
+      .then(data => {
         let invoice = data.invoice;
         let accessKey = data.accessKey;
 
@@ -459,7 +462,7 @@ export class BuyMercadoLibrePage {
         );
 
         this.createTx(wallet, invoice, this.message)
-          .then((ctxp: any) => {
+          .then(ctxp => {
             this.onGoingProcessProvider.clear();
 
             // Save in memory
@@ -493,14 +496,14 @@ export class BuyMercadoLibrePage {
               ctxp.fee
             );
           })
-          .catch((err: any) => {
+          .catch(err => {
             this.onGoingProcessProvider.clear();
             this._resetValues();
             this.showError(err.title, err.message);
             return;
           });
       })
-      .catch((err: any) => {
+      .catch(err => {
         this.onGoingProcessProvider.clear();
         this.showErrorAndBack(err.title, err.message);
         return;
@@ -527,7 +530,7 @@ export class BuyMercadoLibrePage {
           this.onGoingProcessProvider.set('Comprando Vale-Presente');
           this.checkTransaction(1, this.createdTx.giftData);
         })
-        .catch((err: any) => {
+        .catch(err => {
           this._resetValues();
           this.showError(
             this.translate.instant('Could not send transaction'),
@@ -538,7 +541,7 @@ export class BuyMercadoLibrePage {
     });
   }
 
-  public onWalletSelect(wallet: any): void {
+  public onWalletSelect(wallet): void {
     this.wallet = wallet;
     this.initialize(wallet);
   }
@@ -552,7 +555,7 @@ export class BuyMercadoLibrePage {
       id,
       'Buy from'
     );
-    this.events.subscribe('selectWalletEvent', (wallet: any) => {
+    this.events.subscribe('selectWalletEvent', wallet => {
       if (!_.isEmpty(wallet)) this.onWalletSelect(wallet);
       this.events.unsubscribe('selectWalletEvent');
       this.isOpenSelector = false;

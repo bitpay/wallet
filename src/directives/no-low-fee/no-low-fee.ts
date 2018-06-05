@@ -13,7 +13,7 @@ import { PopupProvider } from '../../providers/popup/popup';
   }
 })
 export class NoLowFee {
-  private configWallet: any;
+  private configWallet;
 
   constructor(
     private configProvider: ConfigProvider,

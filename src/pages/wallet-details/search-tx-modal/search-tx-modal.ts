@@ -14,13 +14,13 @@ export class SearchTxModalPage {
   private HISTORY_SHOW_LIMIT: number;
   private currentTxHistoryPage: number;
 
-  public wallet: any;
+  public wallet;
   public isCordova: boolean;
-  public filteredTxHistory: any[];
-  public txHistorySearchResults: any[];
+  public filteredTxHistory;
+  public txHistorySearchResults;
   public txHistoryShowMore: boolean;
-  public completeTxHistory: any[];
-  public addressbook: any[];
+  public completeTxHistory;
+  public addressbook;
 
   constructor(
     private navParams: NavParams,
@@ -53,7 +53,7 @@ export class SearchTxModalPage {
     );
   }, 1000);
 
-  private filter(search: string): any[] {
+  private filter(search: string) {
     this.filteredTxHistory = [];
 
     if (_.isEmpty(search)) {
@@ -61,7 +61,7 @@ export class SearchTxModalPage {
       return [];
     }
 
-    this.filteredTxHistory = _.filter(this.completeTxHistory, (tx: any) => {
+    this.filteredTxHistory = _.filter(this.completeTxHistory, tx => {
       if (!tx.searcheableString)
         tx.searcheableString = this.computeSearchableString(tx);
       return _.includes(tx.searcheableString, search.toLowerCase());
@@ -73,7 +73,7 @@ export class SearchTxModalPage {
     return this.filteredTxHistory;
   }
 
-  private computeSearchableString(tx: any): any {
+  private computeSearchableString(tx) {
     let addressBook = '';
     if (tx.addressTo && this.addressbook && this.addressbook[tx.addressTo])
       addressBook =
@@ -128,7 +128,7 @@ export class SearchTxModalPage {
     return index;
   }
 
-  public createdWithinPastDay(time: any): boolean {
+  public createdWithinPastDay(time): boolean {
     return this.timeProvider.withinPastDay(time);
   }
 }

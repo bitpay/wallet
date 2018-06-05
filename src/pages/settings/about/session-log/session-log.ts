@@ -19,11 +19,11 @@ import * as _ from 'lodash';
   templateUrl: 'session-log.html'
 })
 export class SessionLogPage {
-  private config: any;
+  private config;
   private dom: Document;
 
-  public logOptions: any;
-  public filteredLogs: any[];
+  public logOptions;
+  public filteredLogs;
   public filterValue: number;
   public isCordova: boolean;
 
@@ -41,7 +41,7 @@ export class SessionLogPage {
     this.dom = dom;
     this.config = this.configProvider.get();
     this.isCordova = this.platformProvider.isCordova;
-    let logLevels: any = this.logger.getLevels();
+    let logLevels = this.logger.getLevels();
     this.logOptions = _.keyBy(logLevels, 'weight');
   }
 
@@ -50,7 +50,7 @@ export class SessionLogPage {
   }
 
   ionViewWillEnter() {
-    let selectedLevel: any = _.has(this.config, 'log.weight')
+    let selectedLevel = _.has(this.config, 'log.weight')
       ? this.logger.getWeight(this.config.log.weight)
       : this.logger.getDefaultWeight();
     this.filterValue = selectedLevel.weight;
@@ -72,7 +72,7 @@ export class SessionLogPage {
     this.configProvider.set(opts);
   }
 
-  public prepareLogs(): any {
+  public prepareLogs() {
     let log =
       'Copay Session Logs\n Be careful, this could contain sensitive private data\n\n';
     log += '\n\n';

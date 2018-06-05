@@ -49,10 +49,10 @@ export class FileStorage implements IStorage {
     });
   }
 
-  parseResult(v): any {
+  parseResult(v) {
     if (!v) return null;
     if (!_.isString(v)) return v;
-    let parsed: any;
+    let parsed;
     try {
       parsed = JSON.parse(v);
     } catch (e) {
@@ -109,7 +109,7 @@ export class FileStorage implements IStorage {
     });
   }
 
-  set(k: string, v: any): Promise<void> {
+  set(k: string, v): Promise<void> {
     return Promise.resolve(
       this.init().then(() => {
         this.file.getFile(this.dir, k, { create: true }).then(fileEntry => {
@@ -151,7 +151,7 @@ export class FileStorage implements IStorage {
     });
   }
 
-  create(k: string, v: any): Promise<void> {
+  create(k: string, v): Promise<void> {
     return this.get(k).then(data => {
       if (data) throw new KeyAlreadyExistsError();
       this.set(k, v);

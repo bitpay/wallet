@@ -10,7 +10,7 @@ describe('Provider: Wallet Provider', () => {
     getLastAddress() {
       return Promise.resolve('storedAddress');
     }
-    storeLastAddress(_, address: any) {
+    storeLastAddress(_, address) {
       return Promise.resolve(address);
     }
   }

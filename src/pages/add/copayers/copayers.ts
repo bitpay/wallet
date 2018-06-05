@@ -26,9 +26,9 @@ export class CopayersPage {
   public appUrl: string = this.appProvider.info.url;
   public isCordova: boolean = this.platformProvider.isCordova;
 
-  public wallet: any;
-  public copayers: any;
-  public secret: any;
+  public wallet;
+  public copayers;
+  public secret;
 
   constructor(
     private app: App,
@@ -73,12 +73,12 @@ export class CopayersPage {
     this.logger.debug('Updating wallet:' + this.wallet.name);
     this.walletProvider
       .getStatus(this.wallet, {})
-      .then((status: any) => {
+      .then(status => {
         this.wallet.status = status;
         this.copayers = this.wallet.status.wallet.copayers;
         this.secret = this.wallet.status.wallet.secret;
         if (status.wallet.status == 'complete') {
-          this.wallet.openWallet((err: any) => {
+          this.wallet.openWallet(err => {
             if (err) this.logger.error(err);
 
             this.navCtrl.popToRoot();
@@ -88,7 +88,7 @@ export class CopayersPage {
           });
         }
       })
-      .catch((err: any) => {
+      .catch(err => {
         let message = this.translate.instant('Could not update wallet');
         this.popupProvider.ionicAlert(this.bwcErrorProvider.msg(err, message));
         return;
@@ -100,7 +100,7 @@ export class CopayersPage {
     let msg = this.translate.instant(
       'Are you sure you want to cancel and delete this wallet?'
     );
-    this.popupProvider.ionicConfirm(title, msg).then((res: any) => {
+    this.popupProvider.ionicConfirm(title, msg).then(res => {
       if (res) this.deleteWallet();
     });
   }
@@ -115,7 +115,7 @@ export class CopayersPage {
         this.pushNotificationsProvider.unsubscribe(this.wallet);
         this.app.getRootNavs()[0].setRoot(TabsPage);
       })
-      .catch((err: any) => {
+      .catch(err => {
         this.onGoingProcessProvider.clear();
         let errorText = this.translate.instant('Error');
         this.popupProvider.ionicAlert(errorText, err.message || err);

@@ -11,6 +11,8 @@
       "ionic-angular/gestures/gesture"
     ],
 
+    // "no-any": true,
+
     // Temporarily relax rules
     "member-ordering": false,
     "variable-name": false,

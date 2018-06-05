@@ -12,9 +12,13 @@ import * as _ from 'lodash';
 export class FeeProvider {
   private CACHE_TIME_TS: number = 60;
   // Constant fee options to translate
-  public feeOpts: any;
+  public feeOpts;
 
-  private cache: any = {
+  private cache: {
+    updateTs: number;
+    coin: string;
+    data?: any;
+  } = {
     updateTs: 0,
     coin: ''
   };
@@ -65,8 +69,8 @@ export class FeeProvider {
       if (feeLevel == 'custom') return resolve();
       network = network || 'livenet';
       this.getFeeLevels(coin)
-        .then((response: any) => {
-          let feeLevelRate: any;
+        .then(response => {
+          let feeLevelRate;
 
           if (response.fromCache) {
             feeLevelRate = _.find(response.levels[network], o => {
@@ -110,7 +114,7 @@ export class FeeProvider {
         .then((data: number) => {
           return resolve(data);
         })
-        .catch((err: any) => {
+        .catch(err => {
           return reject(err);
         });
     });

@@ -20,50 +20,60 @@ describe('Derivation Path Helper Provider', () => {
 
   /* BIP44 */
   it('should parse successfully the livenet path for BIP44 derivation strategy', () => {
-    const result: any = service.parse("m/44'/0'/0'");
-    expect(result).toBeDefined();
-    expect(result.derivationStrategy).toEqual('BIP44');
-    expect(result.networkName).toEqual('livenet');
-    expect(result.account).toEqual(0);
+    const result = service.parse("m/44'/0'/0'");
+    expect(result).toBeTruthy();
+    if (result !== false) {
+      expect(result.derivationStrategy).toEqual('BIP44');
+      expect(result.networkName).toEqual('livenet');
+      expect(result.account).toEqual(0);
+    }
   });
 
   it('should parse successfully the testnet path for BIP44 derivation strategy', () => {
-    const result: any = service.parse("m/44'/1'/0'");
-    expect(result).toBeDefined();
-    expect(result.derivationStrategy).toEqual('BIP44');
-    expect(result.networkName).toEqual('testnet');
-    expect(result.account).toEqual(0);
+    const result = service.parse("m/44'/1'/0'");
+    expect(result).toBeTruthy();
+    if (result !== false) {
+      expect(result.derivationStrategy).toEqual('BIP44');
+      expect(result.networkName).toEqual('testnet');
+      expect(result.account).toEqual(0);
+    }
   });
 
   /* BIP45 */
   it('should parse successfully the livenet path for BIP45 derivation strategy', () => {
-    const result: any = service.parse("m/45'/0'/0'");
-    expect(result).toBeDefined();
-    expect(result.derivationStrategy).toEqual('BIP45');
-    expect(result.networkName).toEqual('livenet');
-    expect(result.account).toEqual(0);
+    const result = service.parse("m/45'/0'/0'");
+    expect(result).toBeTruthy();
+    if (result !== false) {
+      expect(result.derivationStrategy).toEqual('BIP45');
+      expect(result.networkName).toEqual('livenet');
+      expect(result.account).toEqual(0);
+    }
   });
 
   /* BIP48 */
   it('should parse successfully the livenet path for BIP48 derivation strategy', () => {
-    const result: any = service.parse("m/48'/0'/0'");
-    expect(result).toBeDefined();
-    expect(result.derivationStrategy).toEqual('BIP48');
-    expect(result.networkName).toEqual('livenet');
-    expect(result.account).toEqual(0);
+    const result = service.parse("m/48'/0'/0'");
+    expect(result).toBeTruthy();
+    if (result !== false) {
+      expect(result.derivationStrategy).toEqual('BIP48');
+      expect(result.networkName).toEqual('livenet');
+      expect(result.account).toEqual(0);
+    }
   });
 
   it('should parse successfully the testnet path for BIP48 derivation strategy', () => {
-    const result: any = service.parse("m/48'/1'/0'");
-    expect(result).toBeDefined();
-    expect(result.derivationStrategy).toEqual('BIP48');
-    expect(result.networkName).toEqual('testnet');
-    expect(result.account).toEqual(0);
+    const result = service.parse("m/48'/1'/0'");
+    expect(result).toBeTruthy();
+    if (result !== false) {
+      expect(result.derivationStrategy).toEqual('BIP48');
+      expect(result.networkName).toEqual('testnet');
+      expect(result.account).toEqual(0);
+    }
   });
 
   /* Unsupported paths */
   it('should fail trying to parse an unsupported derivation path', () => {
-    let result: any = service.parse("p/145'/0'/0'");
+    let result = service.parse("p/145'/0'/0'");
     expect(result).toBe(false);
 
     result = service.parse("m/145'/0'/0'");

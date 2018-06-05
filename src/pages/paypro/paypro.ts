@@ -9,8 +9,8 @@ import { WalletProvider } from '../../providers/wallet/wallet';
   templateUrl: 'paypro.html'
 })
 export class PayProPage {
-  public tx: any;
-  public wallet: any;
+  public tx;
+  public wallet;
   public address: string;
 
   constructor(

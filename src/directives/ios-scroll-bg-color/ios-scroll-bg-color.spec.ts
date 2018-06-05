@@ -4,7 +4,7 @@ import { TestUtils } from '../../test';
 import { IosScrollBgColor } from './ios-scroll-bg-color';
 
 let fixture: ComponentFixture<TestHostComponent>;
-let instance: any;
+let instance;
 let scrollContent;
 
 @Component({

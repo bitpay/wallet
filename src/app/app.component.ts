@@ -62,11 +62,15 @@ import { WalletDetailsPage } from '../pages/wallet-details/wallet-details';
 export class CopayApp {
   @ViewChild('appNav') nav: NavController;
 
-  public rootPage: any;
+  public rootPage:
+    | typeof AmountPage
+    | typeof DisclaimerPage
+    | typeof TabsPage
+    | typeof OnboardingPage;
   private onResumeSubscription: Subscription;
   private isModalOpen: boolean;
 
-  private pageMap: { [name: string]: any } = {
+  private pageMap = {
     AddressbookAddPage,
     AmountPage,
     BitPayCardIntroPage,
@@ -179,7 +183,7 @@ export class CopayApp {
     // Check Profile
     this.profile
       .loadAndBindProfile()
-      .then((profile: any) => {
+      .then(profile => {
         this.onProfileLoad(profile);
       })
       .catch((err: Error) => {
@@ -216,7 +220,7 @@ export class CopayApp {
 
   private openLockModal(): void {
     if (this.isModalOpen) return;
-    let config: any = this.configProvider.get();
+    let config = this.configProvider.get();
     let lockMethod =
       config && config.lock && config.lock.method
         ? config.lock.method.toLowerCase()
@@ -366,7 +370,7 @@ export class CopayApp {
     return false;
   }
 
-  private getSelectedTabNav(): any {
+  private getSelectedTabNav() {
     return this.nav
       .getActiveChildNavs()[0]
       .viewCtrl.instance.tabs.getSelected();
