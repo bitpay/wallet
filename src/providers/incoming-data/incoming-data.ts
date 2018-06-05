@@ -399,6 +399,7 @@ export class IncomingDataProvider {
     } else {
       let stateParams = {
         toAddress: addr,
+        description: message,
         coin
       };
       let nextView = {
