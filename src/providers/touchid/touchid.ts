@@ -8,6 +8,9 @@ import { Logger } from '../../providers/logger/logger';
 import { ConfigProvider } from '../config/config';
 import { PlatformProvider } from '../platform/platform';
 
+export enum TouchIdErrors {
+  fingerprintCancelled = 'FINGERPRINT_CANCELLED'
+}
 @Injectable()
 export class TouchIdProvider {
   constructor(
@@ -74,7 +77,7 @@ export class TouchIdProvider {
       .verifyFingerprint('Scan your fingerprint please')
       .catch(err => {
         if (err && (err.code == -2 || err.code == -128))
-          err.fingerprintCancelled = true;
+          err.message = TouchIdErrors.fingerprintCancelled;
         throw err;
       });
   }
@@ -90,10 +93,10 @@ export class TouchIdProvider {
         } else this.logger.debug("Didn't authenticate!");
       })
       .catch(error => {
-        const err: any = new Error(error);
-        if (error === 'FINGERPRINT_CANCELLED') {
+        const err = new Error(error);
+        if (error === TouchIdErrors.fingerprintCancelled) {
           this.logger.debug('Fingerprint authentication cancelled');
-          err.fingerprintCancelled = true;
+          err.message = TouchIdErrors.fingerprintCancelled;
         } else {
           this.logger.warn('Could not get Fingerprint Authenticated', error);
         }
@@ -107,13 +110,13 @@ export class TouchIdProvider {
     return undefined;
   }
 
-  private isNeeded(wallet: any): string {
-    let config: any = this.config.get();
+  private isNeeded(wallet): string {
+    let config = this.config.get();
     config.touchIdFor = config.touchIdFor || {};
     return config.touchIdFor[wallet.credentials.walletId];
   }
 
-  public checkWallet(wallet: any): Promise<any> {
+  public checkWallet(wallet): Promise<any> {
     return this.isAvailable().then((isAvailable: boolean) => {
       if (!isAvailable) return undefined;
       if (this.isNeeded(wallet)) return this.check();

@@ -6,7 +6,7 @@ import { NotificationsPage } from './notifications';
 
 describe('NotificationsPage', () => {
   let fixture: ComponentFixture<NotificationsPage>;
-  let instance: any;
+  let instance;
 
   beforeEach(async(() =>
     TestUtils.configurePageTestingModule([NotificationsPage]).then(testEnv => {

@@ -11,7 +11,7 @@ export class EmailValidator {
     EmailValidator.eml = eml;
   }
 
-  isValid(control: FormControl): any {
+  isValid(control: FormControl) {
     let config = EmailValidator.cnf.get();
     let latestEmail = EmailValidator.eml.getEmailIfEnabled(config);
 

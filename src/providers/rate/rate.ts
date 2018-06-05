@@ -6,9 +6,9 @@ import { Logger } from '../../providers/logger/logger';
 
 @Injectable()
 export class RateProvider {
-  private rates: any;
-  private alternatives: any[];
-  private ratesBCH: any;
+  private rates;
+  private alternatives;
+  private ratesBCH;
   private ratesBtcAvailable: boolean;
   private ratesBchAvailable: boolean;
 
@@ -34,8 +34,8 @@ export class RateProvider {
   public updateRatesBtc(): Promise<any> {
     return new Promise((resolve, reject) => {
       this.getBTC()
-        .then((dataBTC: any) => {
-          _.each(dataBTC, (currency: any) => {
+        .then(dataBTC => {
+          _.each(dataBTC, currency => {
             this.rates[currency.code] = currency.rate;
             this.alternatives.push({
               name: currency.name,
@@ -46,7 +46,7 @@ export class RateProvider {
           this.ratesBtcAvailable = true;
           resolve();
         })
-        .catch((errorBTC: any) => {
+        .catch(errorBTC => {
           this.logger.error(errorBTC);
           reject(errorBTC);
         });
@@ -56,14 +56,14 @@ export class RateProvider {
   public updateRatesBch(): Promise<any> {
     return new Promise((resolve, reject) => {
       this.getBCH()
-        .then((dataBCH: any) => {
-          _.each(dataBCH, (currency: any) => {
+        .then(dataBCH => {
+          _.each(dataBCH, currency => {
             this.ratesBCH[currency.code] = currency.rate;
           });
           this.ratesBchAvailable = true;
           resolve();
         })
-        .catch((errorBCH: any) => {
+        .catch(errorBCH => {
           this.logger.error(errorBCH);
           reject(errorBCH);
         });
@@ -72,7 +72,7 @@ export class RateProvider {
 
   public getBTC(): Promise<any> {
     return new Promise(resolve => {
-      this.http.get(this.rateServiceUrl).subscribe((data: any) => {
+      this.http.get(this.rateServiceUrl).subscribe(data => {
         resolve(data);
       });
     });
@@ -80,7 +80,7 @@ export class RateProvider {
 
   public getBCH(): Promise<any> {
     return new Promise(resolve => {
-      this.http.get(this.bchRateServiceUrl).subscribe((data: any) => {
+      this.http.get(this.bchRateServiceUrl).subscribe(data => {
         resolve(data);
       });
     });
@@ -91,7 +91,7 @@ export class RateProvider {
     else return this.rates[code];
   }
 
-  public getAlternatives(): any[] {
+  public getAlternatives() {
     return this.alternatives;
   }
 
@@ -131,7 +131,7 @@ export class RateProvider {
       };
     });
     if (sort) {
-      alternatives.sort((a: any, b: any) => {
+      alternatives.sort((a, b) => {
         return a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1;
       });
     }

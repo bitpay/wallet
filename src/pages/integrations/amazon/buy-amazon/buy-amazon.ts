@@ -28,7 +28,10 @@ import { PopupProvider } from '../../../../providers/popup/popup';
 import { ProfileProvider } from '../../../../providers/profile/profile';
 import { ReplaceParametersProvider } from '../../../../providers/replace-parameters/replace-parameters';
 import { TxFormatProvider } from '../../../../providers/tx-format/tx-format';
-import { WalletProvider } from '../../../../providers/wallet/wallet';
+import {
+  TransactionProposal,
+  WalletProvider
+} from '../../../../providers/wallet/wallet';
 
 @Component({
   selector: 'page-buy-amazon',
@@ -37,23 +40,23 @@ import { WalletProvider } from '../../../../providers/wallet/wallet';
 export class BuyAmazonPage {
   @ViewChild('slideButton') slideButton;
 
-  private bitcoreCash: any;
+  private bitcoreCash;
   private amount: number;
   private currency: string;
-  private createdTx: any;
+  private createdTx;
   private message: string;
   private invoiceId: string;
-  private configWallet: any;
+  private configWallet;
   private currencyIsoCode: string;
   private FEE_TOO_HIGH_LIMIT_PER: number;
 
-  public wallet: any;
-  public wallets: any;
+  public wallet;
+  public wallets;
   public totalAmountStr: string;
   public invoiceFee: number;
   public networkFee: number;
   public totalAmount: number;
-  public amazonGiftCard: any;
+  public amazonGiftCard;
   public amountUnitStr: string;
   public limitPerDayMessage: string;
   public network: string;
@@ -154,7 +157,7 @@ export class BuyAmazonPage {
     this.createdTx = this.message = this.invoiceId = null;
   }
 
-  private showErrorAndBack(title: string, msg: any) {
+  private showErrorAndBack(title: string, msg) {
     if (this.isCordova) this.slideButton.isConfirmed(false);
     title = title ? title : this.translate.instant('Error');
     this.logger.error(msg);
@@ -164,7 +167,7 @@ export class BuyAmazonPage {
     });
   }
 
-  private showError = function(title: string, msg: any): Promise<any> {
+  private showError = function(title: string, msg): Promise<any> {
     return new Promise(resolve => {
       if (this.isCordova) this.slideButton.isConfirmed(false);
       title = title || this.translate.instant('Error');
@@ -176,7 +179,7 @@ export class BuyAmazonPage {
     });
   };
 
-  private publishAndSign(wallet: any, txp: any): Promise<any> {
+  private publishAndSign(wallet, txp): Promise<any> {
     return new Promise((resolve, reject) => {
       if (!wallet.canSign() && !wallet.isPrivKeyExternal()) {
         let err = this.translate.instant('No signing proposal: No private key');
@@ -185,11 +188,11 @@ export class BuyAmazonPage {
 
       this.walletProvider
         .publishAndSign(wallet, txp)
-        .then((txp: any) => {
+        .then(txp => {
           this.onGoingProcessProvider.clear();
           return resolve(txp);
         })
-        .catch((err: any) => {
+        .catch(err => {
           this.onGoingProcessProvider.clear();
           return reject(err);
         });
@@ -207,7 +210,7 @@ export class BuyAmazonPage {
   }
 
   private setTotalAmount(
-    wallet: any,
+    wallet,
     amountSat: number,
     invoiceFeeSat: number,
     networkFeeSat: number
@@ -226,67 +229,60 @@ export class BuyAmazonPage {
     });
   }
 
-  private isCryptoCurrencySupported(wallet: any, invoice: any) {
+  private isCryptoCurrencySupported(wallet, invoice) {
     let COIN = wallet.coin.toUpperCase();
     if (!invoice['supportedTransactionCurrencies'][COIN]) return false;
     return invoice['supportedTransactionCurrencies'][COIN].enabled;
   }
 
-  private createInvoice(data: any): Promise<any> {
+  private createInvoice(data): Promise<any> {
     return new Promise((resolve, reject) => {
-      this.amazonProvider.createBitPayInvoice(
-        data,
-        (err: any, dataInvoice: any) => {
-          if (err) {
-            let err_title = this.translate.instant(
-              'Error creating the invoice'
+      this.amazonProvider.createBitPayInvoice(data, (err, dataInvoice) => {
+        if (err) {
+          let err_title = this.translate.instant('Error creating the invoice');
+          let err_msg;
+          if (err && err.message && err.message.match(/suspended/i)) {
+            err_title = this.translate.instant('Service not available');
+            err_msg = this.translate.instant(
+              'Amazon.com is not available at this moment. Please try back later.'
             );
-            let err_msg;
-            if (err && err.message && err.message.match(/suspended/i)) {
-              err_title = this.translate.instant('Service not available');
-              err_msg = this.translate.instant(
-                'Amazon.com is not available at this moment. Please try back later.'
-              );
-            } else if (err && err.message) {
-              err_msg = err.message;
-            } else {
-              err_msg = this.translate.instant(
-                'Could not access to Amazon.com'
-              );
-            }
-
-            return reject({
-              title: err_title,
-              message: err_msg
-            });
+          } else if (err && err.message) {
+            err_msg = err.message;
+          } else {
+            err_msg = this.translate.instant('Could not access to Amazon.com');
           }
 
-          let accessKey = dataInvoice ? dataInvoice.accessKey : null;
-
-          if (!accessKey) {
-            return reject({
-              message: this.translate.instant('No access key defined')
-            });
-          }
-
-          this.amazonProvider.getBitPayInvoice(
-            dataInvoice.invoiceId,
-            (err: any, invoice: any) => {
-              if (err) {
-                return reject({
-                  message: this.translate.instant('Could not get the invoice')
-                });
-              }
-
-              return resolve({ invoice, accessKey });
-            }
-          );
+          return reject({
+            title: err_title,
+            message: err_msg
+          });
         }
-      );
+
+        let accessKey = dataInvoice ? dataInvoice.accessKey : null;
+
+        if (!accessKey) {
+          return reject({
+            message: this.translate.instant('No access key defined')
+          });
+        }
+
+        this.amazonProvider.getBitPayInvoice(
+          dataInvoice.invoiceId,
+          (err, invoice) => {
+            if (err) {
+              return reject({
+                message: this.translate.instant('Could not get the invoice')
+              });
+            }
+
+            return resolve({ invoice, accessKey });
+          }
+        );
+      });
     });
   }
 
-  private createTx(wallet: any, invoice: any, message: string): Promise<any> {
+  private createTx(wallet, invoice, message: string): Promise<any> {
     let COIN = wallet.coin.toUpperCase();
     return new Promise((resolve, reject) => {
       let payProUrl =
@@ -303,8 +299,8 @@ export class BuyAmazonPage {
 
       this.payproProvider
         .getPayProDetails(payProUrl, wallet.coin)
-        .then((details: any) => {
-          let txp: any = {
+        .then(details => {
+          let txp: Partial<TransactionProposal> = {
             amount: details.amount,
             toAddress: details.toAddress,
             outputs: [
@@ -363,7 +359,7 @@ export class BuyAmazonPage {
   }
 
   private checkTransaction = _.throttle(
-    (count: number, dataSrc: any) => {
+    (count: number, dataSrc) => {
       this.amazonProvider.createGiftCard(dataSrc, (err, giftCard) => {
         this.logger.debug('creating gift card ' + count);
         if (err) {
@@ -387,7 +383,7 @@ export class BuyAmazonPage {
             {
               remove: true
             },
-            (err: any) => {
+            err => {
               this.logger.error(err);
               this.onGoingProcessProvider.clear();
               this.showError(null, this.translate.instant('Gift card expired'));
@@ -423,7 +419,7 @@ export class BuyAmazonPage {
     }
   );
 
-  private initialize(wallet: any): void {
+  private initialize(wallet): void {
     let COIN = wallet.coin.toUpperCase();
     let email = this.emailNotificationsProvider.getEmailIfEnabled();
     let parsedAmount = this.txFormatProvider.parseAmount(
@@ -443,7 +439,7 @@ export class BuyAmazonPage {
     this.onGoingProcessProvider.set('loadingTxInfo');
 
     this.createInvoice(dataSrc)
-      .then((data: any) => {
+      .then(data => {
         let invoice = data.invoice;
         let accessKey = data.accessKey;
 
@@ -467,7 +463,7 @@ export class BuyAmazonPage {
         );
 
         this.createTx(wallet, invoice, this.message)
-          .then((ctxp: any) => {
+          .then(ctxp => {
             this.onGoingProcessProvider.clear();
 
             // Save in memory
@@ -501,14 +497,14 @@ export class BuyAmazonPage {
               ctxp.fee
             );
           })
-          .catch((err: any) => {
+          .catch(err => {
             this.onGoingProcessProvider.clear();
             this._resetValues();
             this.showError(err.title, err.message);
             return;
           });
       })
-      .catch((err: any) => {
+      .catch(err => {
         this.onGoingProcessProvider.clear();
         this.showErrorAndBack(err.title, err.message);
         return;
@@ -539,7 +535,7 @@ export class BuyAmazonPage {
             this.onGoingProcessProvider.set('buyingGiftCard');
             this.checkTransaction(1, this.createdTx.giftData);
           })
-          .catch((err: any) => {
+          .catch(err => {
             this._resetValues();
             this.showError(
               this.translate.instant('Could not send transaction'),
@@ -550,7 +546,7 @@ export class BuyAmazonPage {
       });
   }
 
-  public onWalletSelect(wallet: any): void {
+  public onWalletSelect(wallet): void {
     this.wallet = wallet;
     this.initialize(wallet);
   }
@@ -564,7 +560,7 @@ export class BuyAmazonPage {
       id,
       'Buy from'
     );
-    this.events.subscribe('selectWalletEvent', (wallet: any) => {
+    this.events.subscribe('selectWalletEvent', wallet => {
       if (!_.isEmpty(wallet)) this.onWalletSelect(wallet);
       this.events.unsubscribe('selectWalletEvent');
       this.isOpenSelector = false;

@@ -4,8 +4,8 @@ import { TestUtils } from '../../test';
 import { NavbarBg } from './navbar-bg';
 
 let fixture: ComponentFixture<TestHostComponent>;
-let instance: any;
-let toolbarBg: any;
+let instance;
+let toolbarBg;
 
 @Component({
   template: `

@@ -35,11 +35,11 @@ import { ConfirmPage } from '../confirm/confirm';
 })
 export class AmountPage {
   private LENGTH_EXPRESSION_LIMIT: number;
-  private availableUnits: any[];
+  private availableUnits;
   private unit: string;
   private reNr: RegExp;
   private reOp: RegExp;
-  private nextView: any;
+  private nextView;
   private fixedUnit: boolean;
   private itemSelectorLabel: string;
   private fiatCode: string;
@@ -48,14 +48,14 @@ export class AmountPage {
   private unitToSatoshi: number;
   private satToUnit: number;
   private unitDecimals: number;
-  private zone: any;
+  private zone;
   private description: string;
 
   public alternativeUnit: string;
   public globalResult: string;
-  public alternativeAmount: any;
-  public expression: any;
-  public amount: any;
+  public alternativeAmount;
+  public expression;
+  public amount;
 
   public shiftMax: number;
   public shiftMin: number;
@@ -228,7 +228,7 @@ export class AmountPage {
     });
   }
 
-  private getNextView(): any {
+  private getNextView() {
     let nextPage;
     switch (this.navParams.data.nextPage) {
       case 'BitPayCardTopUpPage':
@@ -284,7 +284,7 @@ export class AmountPage {
   }
 
   public showSendMaxMenu(): void {
-    let buttons: any[] = [];
+    let buttons = [];
 
     let sendMaxButton = {
       text: this.itemSelectorLabel,
@@ -383,7 +383,7 @@ export class AmountPage {
     }
   }
 
-  private processResult(val: any): number {
+  private processResult(val): number {
     if (this.availableUnits[this.unitIndex].isFiat)
       return this.filterProvider.formatFiatAmount(val);
     else
@@ -393,7 +393,7 @@ export class AmountPage {
       );
   }
 
-  private fromFiat(val: any, coin?: string): number {
+  private fromFiat(val, coin?: string): number {
     coin = coin || this.availableUnits[this.altUnitIndex].id;
     return parseFloat(
       (
@@ -426,7 +426,7 @@ export class AmountPage {
     return result.replace('x', '*');
   }
 
-  private evaluate(val: string): any {
+  private evaluate(val: string) {
     let result;
     try {
       result = eval(val);
@@ -441,7 +441,7 @@ export class AmountPage {
     let unit = this.availableUnits[this.unitIndex];
     let _amount = this.evaluate(this.format(this.expression));
     let coin = unit.id;
-    let data: any;
+    let data;
 
     if (unit.isFiat) {
       coin = this.availableUnits[this.altUnitIndex].id;

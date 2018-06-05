@@ -22,10 +22,10 @@ import * as _ from 'lodash';
   templateUrl: 'wallet-addresses.html'
 })
 export class WalletAddressesPage {
-  public wallet: any;
+  public wallet;
   public loading: boolean;
-  public latestUnused: any;
-  public latestWithBalance: any;
+  public latestUnused;
+  public latestWithBalance;
   public viewAll: boolean;
   public gapReached: boolean;
   public lowUtxosNb: number;
@@ -37,8 +37,8 @@ export class WalletAddressesPage {
 
   private UNUSED_ADDRESS_LIMIT: number;
   private BALANCE_ADDRESS_LIMIT: number;
-  private withBalance: any;
-  private noBalance: any;
+  private withBalance;
+  private noBalance;
 
   constructor(
     private profileProvider: ProfileProvider,
@@ -64,14 +64,14 @@ export class WalletAddressesPage {
     this.loading = true;
     this.walletProvider
       .getMainAddresses(this.wallet, {})
-      .then((allAddresses: any) => {
+      .then(allAddresses => {
         this.walletProvider
           .getBalance(this.wallet, {})
-          .then((resp: any) => {
+          .then(resp => {
             this.withBalance = resp.byAddress;
 
             var idx = _.keyBy(this.withBalance, 'address');
-            this.noBalance = _.reject(allAddresses, (x: any) => {
+            this.noBalance = _.reject(allAddresses, x => {
               return idx[x.address];
             });
 
@@ -94,7 +94,7 @@ export class WalletAddressesPage {
 
             this.loading = false;
           })
-          .catch((err: any) => {
+          .catch(err => {
             this.logger.error(err);
             this.loading = false;
             this.popupProvider.ionicAlert(
@@ -105,7 +105,7 @@ export class WalletAddressesPage {
             );
           });
       })
-      .catch((err: any) => {
+      .catch(err => {
         this.logger.error(err);
         this.loading = false;
         this.popupProvider.ionicAlert(
@@ -145,8 +145,8 @@ export class WalletAddressesPage {
       });
   }
 
-  private processList(list: any): void {
-    _.each(list, (n: any) => {
+  private processList(list): void {
+    _.each(list, n => {
       n.path = n.path ? n.path.replace(/^m/g, 'xpub') : null;
       n.address = this.walletProvider.getAddressView(this.wallet, n.address);
     });
@@ -161,7 +161,7 @@ export class WalletAddressesPage {
       .then((addr: string) => {
         this.walletProvider
           .getMainAddresses(this.wallet, { limit: 1 })
-          .then((_addr: any) => {
+          .then(_addr => {
             this.onGoingProcessProvider.clear();
             if (addr != _addr[0].address) {
               this.popupProvider.ionicAlert(

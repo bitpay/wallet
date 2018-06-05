@@ -10,10 +10,11 @@ import { PersistenceProvider } from '../persistence/persistence';
 import { PlatformProvider } from '../platform/platform';
 
 import * as _ from 'lodash';
+import { Price } from '../../pages/integrations/integrations';
 
 @Injectable()
 export class GlideraProvider {
-  private credentials: any;
+  private credentials;
   private isCordova: boolean;
 
   constructor(
@@ -116,13 +117,13 @@ export class GlideraProvider {
       client_secret: this.credentials.CLIENT_SECRET,
       redirect_uri: this.credentials.REDIRECT_URI
     };
-    const headers: any = new HttpHeaders({
+    const headers = new HttpHeaders({
       'Content-Type': 'application/json',
       Accept: 'application/json'
     });
 
     this.http.post(url, data, { headers }).subscribe(
-      (data: any) => {
+      data => {
         this.logger.info('Glidera Authorization Access Token: SUCCESS');
         return cb(null, data);
       },
@@ -172,14 +173,14 @@ export class GlideraProvider {
     if (!token) return cb('Invalid Token');
 
     let url = this.credentials.HOST + '/api/v1/oauth/token';
-    const headers: any = new HttpHeaders({
+    const headers = new HttpHeaders({
       'Content-Type': 'application/json',
       Accept: 'application/json',
       Authorization: 'Bearer ' + token
     });
 
     this.http.get(url, { headers }).subscribe(
-      (data: any) => {
+      data => {
         this.logger.info('Glidera Access Token Permissions: SUCCESS');
         return cb(null, data);
       },
@@ -194,14 +195,14 @@ export class GlideraProvider {
   public getEmail(token, cb) {
     if (!token) return cb('Invalid Token');
     let url = this.credentials.HOST + '/api/v1/user/email';
-    const headers: any = new HttpHeaders({
+    const headers = new HttpHeaders({
       'Content-Type': 'application/json',
       Accept: 'application/json',
       Authorization: 'Bearer ' + token
     });
 
     this.http.get(url, { headers }).subscribe(
-      (data: any) => {
+      data => {
         this.logger.info('Glidera Get Email: SUCCESS');
         return cb(null, data);
       },
@@ -216,14 +217,14 @@ export class GlideraProvider {
   public getPersonalInfo(token, cb) {
     if (!token) return cb('Invalid Token');
     let url = this.credentials.HOST + '/api/v1/user/personalinfo';
-    const headers: any = new HttpHeaders({
+    const headers = new HttpHeaders({
       'Content-Type': 'application/json',
       Accept: 'application/json',
       Authorization: 'Bearer ' + token
     });
 
     this.http.get(url, { headers }).subscribe(
-      (data: any) => {
+      data => {
         this.logger.info('Glidera Get Personal Info: SUCCESS');
         return cb(null, data);
       },
@@ -240,14 +241,14 @@ export class GlideraProvider {
   public getStatus(token, cb) {
     if (!token) return cb('Invalid Token');
     let url = this.credentials.HOST + '/api/v1/user/status';
-    const headers: any = new HttpHeaders({
+    const headers = new HttpHeaders({
       'Content-Type': 'application/json',
       Accept: 'application/json',
       Authorization: 'Bearer ' + token
     });
 
     this.http.get(url, { headers }).subscribe(
-      (data: any) => {
+      data => {
         this.logger.info('Glidera User Status: SUCCESS');
         return cb(null, data);
       },
@@ -262,14 +263,14 @@ export class GlideraProvider {
   public getLimits(token, cb) {
     if (!token) return cb('Invalid Token');
     let url = this.credentials.HOST + '/api/v1/user/limits';
-    const headers: any = new HttpHeaders({
+    const headers = new HttpHeaders({
       'Content-Type': 'application/json',
       Accept: 'application/json',
       Authorization: 'Bearer ' + token
     });
 
     this.http.get(url, { headers }).subscribe(
-      (data: any) => {
+      data => {
         this.logger.info('Glidera Transaction Limits: SUCCESS');
         return cb(null, data);
       },
@@ -287,7 +288,7 @@ export class GlideraProvider {
     if (!token) return cb('Invalid Token');
 
     let url = this.credentials.HOST + '/api/v1/transaction';
-    const headers: any = new HttpHeaders({
+    const headers = new HttpHeaders({
       'Content-Type': 'application/json',
       Accept: 'application/json',
       Authorization: 'Bearer ' + token
@@ -311,14 +312,14 @@ export class GlideraProvider {
     if (!txid) return cb('TxId required');
 
     let url = this.credentials.HOST + '/api/v1/transaction/' + txid;
-    const headers: any = new HttpHeaders({
+    const headers = new HttpHeaders({
       'Content-Type': 'application/json',
       Accept: 'application/json',
       Authorization: 'Bearer ' + token
     });
 
     this.http.get(url, { headers }).subscribe(
-      (data: any) => {
+      data => {
         this.logger.info('Glidera Transaction: SUCCESS');
         return cb(null, data);
       },
@@ -334,7 +335,7 @@ export class GlideraProvider {
     if (!token) return cb('Invalid Token');
 
     let url = this.credentials.HOST + '/api/v1/user/create_sell_address';
-    const headers: any = new HttpHeaders({
+    const headers = new HttpHeaders({
       'Content-Type': 'application/json',
       Accept: 'application/json',
       Authorization: 'Bearer ' + token
@@ -358,14 +359,14 @@ export class GlideraProvider {
   public get2faCode(token, cb) {
     if (!token) return cb('Invalid Token');
     let url = this.credentials.HOST + '/api/v1/authentication/get2faCode';
-    const headers: any = new HttpHeaders({
+    const headers = new HttpHeaders({
       'Content-Type': 'application/json',
       Accept: 'application/json',
       Authorization: 'Bearer ' + token
     });
 
     this.http.get(url, { headers }).subscribe(
-      (data: any) => {
+      data => {
         this.logger.info('Glidera 2FA code: SUCCESS');
         return cb(null, data);
       },
@@ -383,14 +384,14 @@ export class GlideraProvider {
       fiat: price.fiat
     };
     let url = this.credentials.HOST + '/api/v1/prices/sell';
-    const headers: any = new HttpHeaders({
+    const headers = new HttpHeaders({
       'Content-Type': 'application/json',
       Accept: 'application/json',
       Authorization: 'Bearer ' + token
     });
 
     this.http.post(url, data, { headers }).subscribe(
-      (data: any) => {
+      data => {
         this.logger.info('Glidera Sell Price: SUCCESS');
         return cb(null, data);
       },
@@ -411,7 +412,7 @@ export class GlideraProvider {
       ip: dataSrc.ip
     };
     let url = this.credentials.HOST + '/api/v1/sell';
-    const headers: any = new HttpHeaders({
+    const headers = new HttpHeaders({
       'Content-Type': 'application/json',
       Accept: 'application/json',
       Authorization: 'Bearer ' + token,
@@ -419,7 +420,7 @@ export class GlideraProvider {
     });
 
     this.http.post(url, data, { headers }).subscribe(
-      (data: any) => {
+      data => {
         this.logger.info('Glidera Sell: SUCCESS');
         return cb(null, data);
       },
@@ -431,20 +432,15 @@ export class GlideraProvider {
     );
   }
 
-  public buyPrice(token, price, cb) {
-    let data = {
-      qty: price.qty,
-      fiat: price.fiat
-    };
-    let url = this.credentials.HOST + '/api/v1/prices/buy';
-    const headers: any = new HttpHeaders({
+  public buyPrice(token, price: Price, cb) {
+    const url = this.credentials.HOST + '/api/v1/prices/buy';
+    const headers = new HttpHeaders({
       'Content-Type': 'application/json',
       Accept: 'application/json',
       Authorization: 'Bearer ' + token
     });
-
-    this.http.post(url, data, { headers }).subscribe(
-      (data: any) => {
+    this.http.post(url, price, { headers }).subscribe(
+      data => {
         this.logger.info('Glidera Buy Price: SUCCESS');
         return cb(null, data);
       },
@@ -466,7 +462,7 @@ export class GlideraProvider {
     };
 
     let url = this.credentials.HOST + '/api/v1/buy';
-    const headers: any = new HttpHeaders({
+    const headers = new HttpHeaders({
       'Content-Type': 'application/json',
       Accept: 'application/json',
       Authorization: 'Bearer ' + token,
@@ -474,7 +470,7 @@ export class GlideraProvider {
     });
 
     this.http.post(url, data, { headers }).subscribe(
-      (data: any) => {
+      data => {
         this.logger.info('Glidera Buy: SUCCESS');
         return cb(null, data);
       },

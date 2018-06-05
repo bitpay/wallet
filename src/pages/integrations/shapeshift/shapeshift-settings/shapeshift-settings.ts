@@ -12,8 +12,8 @@ import { HomeIntegrationsProvider } from '../../../../providers/home-integration
 })
 export class ShapeshiftSettingsPage {
   private serviceName: string = 'shapeshift';
-  public showInHome: any;
-  public service: any;
+  public showInHome;
+  public service;
 
   constructor(
     private configProvider: ConfigProvider,

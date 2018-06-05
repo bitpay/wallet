@@ -9,7 +9,7 @@ import { PlatformProvider } from '../../platform/platform';
 
 @Injectable()
 export class LocalStorage implements IStorage {
-  ls: any;
+  ls;
 
   constructor(
     private platformProvider: PlatformProvider,
@@ -58,7 +58,7 @@ export class LocalStorage implements IStorage {
   processingData(v) {
     if (!v) return null;
     if (!_.isString(v)) return v;
-    let parsed: any;
+    let parsed;
     try {
       parsed = JSON.parse(v);
     } catch (e) {
@@ -81,7 +81,7 @@ export class LocalStorage implements IStorage {
     });
   }
 
-  set(k: string, v: any): Promise<void> {
+  set(k: string, v): Promise<void> {
     return new Promise<void>(resolve => {
       if (_.isObject(v)) v = JSON.stringify(v);
       if (!_.isString(v)) v = v.toString();
@@ -110,7 +110,7 @@ export class LocalStorage implements IStorage {
     });
   }
 
-  create(k: string, v: any): Promise<void> {
+  create(k: string, v): Promise<void> {
     return this.get(k).then(data => {
       if (data) throw new KeyAlreadyExistsError();
       this.set(k, v);

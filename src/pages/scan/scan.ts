@@ -43,10 +43,10 @@ export class ScanPage {
   public canChangeCamera: boolean;
   public lightActive: boolean;
   public cameraToggleActive: boolean;
-  public scannerStates: any;
+  public scannerStates;
   public canOpenSettings: boolean;
   public currentState: string;
-  public tabBarElement: any;
+  public tabBarElement;
   public isCordova: boolean;
   public isCameraSelected: boolean;
 

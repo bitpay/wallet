@@ -9,6 +9,7 @@ import { BwcErrorProvider } from '../../../../providers/bwc-error/bwc-error';
 import { ExternalLinkProvider } from '../../../../providers/external-link/external-link';
 import { OnGoingProcessProvider } from '../../../../providers/on-going-process/on-going-process';
 import { PopupProvider } from '../../../../providers/popup/popup';
+import { GiftCardNewData } from '../../gift-cards';
 
 @Component({
   selector: 'page-amazon-card-details',
@@ -16,7 +17,7 @@ import { PopupProvider } from '../../../../providers/popup/popup';
 })
 export class AmazonCardDetailsPage {
   public updateGiftCard: boolean;
-  public card: any;
+  public card;
 
   constructor(
     private amazonProvider: AmazonProvider,
@@ -37,7 +38,7 @@ export class AmazonCardDetailsPage {
 
   public cancelGiftCard(): void {
     this.onGoingProcessProvider.set('cancelingGiftCard');
-    this.amazonProvider.cancelGiftCard(this.card, (err: any, data: any) => {
+    this.amazonProvider.cancelGiftCard(this.card, (err, data) => {
       this.onGoingProcessProvider.clear();
       if (err) {
         this.popupProvider.ionicAlert(
@@ -68,7 +69,7 @@ export class AmazonCardDetailsPage {
   public refreshGiftCard(): void {
     if (!this.updateGiftCard) return;
     this.onGoingProcessProvider.set('updatingGiftCard');
-    this.amazonProvider.getPendingGiftCards((err: any, giftCards: any) => {
+    this.amazonProvider.getPendingGiftCards((err, giftCards) => {
       this.onGoingProcessProvider.clear();
       if (err) {
         this.popupProvider.ionicAlert('Error', err);
@@ -79,7 +80,7 @@ export class AmazonCardDetailsPage {
           this.logger.debug('creating gift card');
           this.amazonProvider.createGiftCard(
             dataFromStorage,
-            (err: any, giftCard: any) => {
+            (err, giftCard) => {
               if (err) {
                 this.popupProvider.ionicAlert(
                   'Error',
@@ -88,7 +89,7 @@ export class AmazonCardDetailsPage {
                 return;
               }
               if (!_.isEmpty(giftCard) && giftCard.status != 'PENDING') {
-                var newData: any = {};
+                var newData: Partial<GiftCardNewData> = {};
                 _.merge(newData, dataFromStorage, giftCard);
 
                 if (newData.status == 'expired') {

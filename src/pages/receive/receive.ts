@@ -30,8 +30,8 @@ export class ReceivePage {
   public protocolHandler: string;
   public address: string;
   public qrAddress: string;
-  public wallets: any[] = [];
-  public wallet: any;
+  public wallets = [];
+  public wallet;
   public showShareButton: boolean;
   public loading: boolean;
   public isOpenSelector: boolean;
@@ -68,16 +68,16 @@ export class ReceivePage {
     this.events.unsubscribe('bwsEvent');
   }
 
-  private onWalletSelect(wallet: any): any {
+  private onWalletSelect(wallet) {
     this.wallet = wallet;
     if (this.wallet) {
       this.setAddress();
     }
   }
 
-  private checkSelectedWallet(wallet: any, wallets: any): any {
+  private checkSelectedWallet(wallet, wallets) {
     if (!wallet) return wallets[0];
-    let w = _.find(wallets, (w: any) => {
+    let w = _.find(wallets, w => {
       return w.id == wallet.id;
     });
     if (!w) return wallets[0];
@@ -129,7 +129,7 @@ export class ReceivePage {
     this.isOpenSelector = true;
     let id = this.wallet ? this.wallet.credentials.walletId : null;
     this.events.publish('showWalletsSelectorEvent', this.wallets, id);
-    this.events.subscribe('selectWalletEvent', (wallet: any) => {
+    this.events.subscribe('selectWalletEvent', wallet => {
       if (!_.isEmpty(wallet)) this.onWalletSelect(wallet);
       this.events.unsubscribe('selectWalletEvent');
       this.isOpenSelector = false;

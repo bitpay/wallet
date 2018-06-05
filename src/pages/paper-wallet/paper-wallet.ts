@@ -20,7 +20,7 @@ import { OnGoingProcessProvider } from '../../providers/on-going-process/on-goin
 import { PlatformProvider } from '../../providers/platform/platform';
 import { PopupProvider } from '../../providers/popup/popup';
 import { ProfileProvider } from '../../providers/profile/profile';
-import { WalletProvider } from '../../providers/wallet/wallet';
+import { WalletOptions, WalletProvider } from '../../providers/wallet/wallet';
 
 @Component({
   selector: 'page-paper-wallet',
@@ -29,24 +29,24 @@ import { WalletProvider } from '../../providers/wallet/wallet';
 export class PaperWalletPage {
   @ViewChild('slideButton') slideButton;
 
-  public wallet: any;
+  public wallet;
   public walletName: string;
   public M: number;
   public N: number;
   public totalBalanceStr: string;
   public network: string;
-  public wallets: any;
+  public wallets;
   // All coins for which we have a usable wallet to sweep to
   public coins: string[];
   public scannedKey: string;
   public isPkEncrypted: boolean;
   public passphrase: string;
-  public balances: any[] = [];
+  public balances = [];
   public noMatchingWallet: boolean;
   public balanceHidden: boolean;
   public error: boolean;
   public isOpenSelector: boolean;
-  private bitcore: any;
+  private bitcore;
 
   // Platform info
   public isCordova: boolean;
@@ -80,11 +80,13 @@ export class PaperWalletPage {
       network: 'livenet'
     });
 
-    this.wallets = _.filter(_.clone(this.wallets), (wallet: any) => {
+    this.wallets = _.filter(_.clone(this.wallets), wallet => {
       return !wallet.needsBackup;
     });
 
-    this.coins = _.uniq(_.map(this.wallets, (wallet: any) => wallet.coin));
+    this.coins = _.uniq(
+      _.map(this.wallets, (wallet: Partial<WalletOptions>) => wallet.coin)
+    );
   }
 
   ionViewWillLeave() {
@@ -136,7 +138,7 @@ export class PaperWalletPage {
   private getBalance(
     privateKey: string,
     coin: string,
-    cb: (err: any, balance: number) => any
+    cb: (err, balance: number) => any
   ): void {
     this.wallet.getBalanceFromPrivateKey(privateKey, coin, cb);
   }
@@ -156,12 +158,12 @@ export class PaperWalletPage {
         this.scannedKey,
         this.isPkEncrypted,
         this.passphrase,
-        (err: any, privateKey: string) => {
+        (err, privateKey: string) => {
           if (err) return reject(err);
           if (!this.checkPrivateKey(privateKey))
             return reject(new Error('Invalid private key'));
 
-          this.getBalance(privateKey, coin, (err: any, balance: number) => {
+          this.getBalance(privateKey, coin, (err, balance: number) => {
             if (err) return reject(err);
             return resolve({ privateKey, coin, balance });
           });
@@ -173,9 +175,7 @@ export class PaperWalletPage {
   public scanFunds(): void {
     this.onGoingProcessProvider.set('scanning');
 
-    let scans: any[] = _.map(this.coins, (coin: string) =>
-      this._scanFunds(coin)
-    );
+    let scans = _.map(this.coins, (coin: string) => this._scanFunds(coin));
 
     Promise.all(scans)
       .then(data => {
@@ -185,7 +185,7 @@ export class PaperWalletPage {
           this.balances.push(d);
         });
 
-        let available: any = {};
+        let available = {};
         this.balances = _.filter(_.clone(this.balances), b => {
           let nonzero: boolean = b.balance > 0;
           available[b.coin] = nonzero;
@@ -205,7 +205,7 @@ export class PaperWalletPage {
           this.navCtrl.pop();
         }
       })
-      .catch((err: any) => {
+      .catch(err => {
         this.onGoingProcessProvider.clear();
         this.logger.error(err);
         this.popupProvider.ionicAlert(
@@ -218,20 +218,23 @@ export class PaperWalletPage {
 
   private _sweepWallet(): Promise<any> {
     return new Promise((resolve, reject) => {
-      let balanceToSweep: any = _.filter(this.balances, b => {
+      let balanceToSweep = _.filter(this.balances, b => {
         return b.coin === this.wallet.coin;
       })[0];
 
       this.walletProvider
         .getAddress(this.wallet, true)
         .then((destinationAddress: string) => {
-          let opts: any = {};
+          let opts: {
+            coin?: any;
+            fee?: any;
+          } = {};
           opts.coin = balanceToSweep.coin;
           this.wallet.buildTxFromPrivateKey(
             balanceToSweep.privateKey,
             destinationAddress,
             opts,
-            (err: any, testTx: any) => {
+            (err, testTx) => {
               if (err) return reject(err);
               let rawTxLength = testTx.serialize().length;
               this.feeProvider
@@ -242,7 +245,7 @@ export class PaperWalletPage {
                     balanceToSweep.privateKey,
                     destinationAddress,
                     opts,
-                    (err: any, tx: any) => {
+                    (err, tx) => {
                       if (err) return reject(err);
                       this.wallet.broadcastRawTx(
                         {
@@ -261,7 +264,7 @@ export class PaperWalletPage {
             }
           );
         })
-        .catch((err: any) => {
+        .catch(err => {
           return reject(err);
         });
     });
@@ -270,7 +273,7 @@ export class PaperWalletPage {
   public sweepWallet(): void {
     this.onGoingProcessProvider.set('sweepingWallet');
     this._sweepWallet()
-      .then((data: any) => {
+      .then(data => {
         this.onGoingProcessProvider.clear();
         this.logger.debug(
           'Success sweep. Destination address:' +
@@ -280,7 +283,7 @@ export class PaperWalletPage {
         );
         this.openFinishModal();
       })
-      .catch((err: any) => {
+      .catch(err => {
         this.onGoingProcessProvider.clear();
         this.logger.error(err);
         this.popupProvider.ionicAlert(
@@ -290,7 +293,7 @@ export class PaperWalletPage {
       });
   }
 
-  private onWalletSelect(wallet: any): void {
+  private onWalletSelect(wallet): void {
     this.wallet = wallet;
   }
 
@@ -303,7 +306,7 @@ export class PaperWalletPage {
       id,
       'Transfer to'
     );
-    this.events.subscribe('selectWalletEvent', (wallet: any) => {
+    this.events.subscribe('selectWalletEvent', wallet => {
       if (!_.isEmpty(wallet)) this.onWalletSelect(wallet);
       this.events.unsubscribe('selectWalletEvent');
       this.isOpenSelector = false;

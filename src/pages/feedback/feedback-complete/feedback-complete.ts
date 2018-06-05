@@ -75,7 +75,7 @@ export class FeedbackCompletePage {
       this.navCtrl.swipeBackEnabled = false;
     }
 
-    this.persistenceProvider.getFeedbackInfo().then((info: any) => {
+    this.persistenceProvider.getFeedbackInfo().then(info => {
       let feedbackInfo = info;
       feedbackInfo.sent = true;
       this.persistenceProvider.setFeedbackInfo(feedbackInfo);

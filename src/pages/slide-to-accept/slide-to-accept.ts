@@ -39,7 +39,7 @@ export class SlideToAcceptPage implements AfterViewInit {
   @ViewChild('slideButtonContainer') private containerElement: ElementRef;
 
   private isPressed: boolean = false;
-  private clickPosition: any;
+  private clickPosition;
   private xMax: number;
   private delta: number = 8;
   private htmlButtonElem;

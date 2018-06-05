@@ -35,19 +35,19 @@ export class SellCoinbasePage {
   private coin: string;
   private amount: string;
   private currency: string;
-  private wallets: any;
+  private wallets;
 
-  public paymentMethods: any[];
-  public selectedPaymentMethodId: any;
-  public selectedPriceSensitivity: any;
+  public paymentMethods;
+  public selectedPaymentMethodId;
+  public selectedPriceSensitivity;
   public sellPrice: string;
   public amountUnitStr: string;
   public accountId: string;
-  public wallet: any;
-  public sellRequestInfo: any;
+  public wallet;
+  public sellRequestInfo;
   public network: string;
   public isFiat: boolean;
-  public priceSensitivity: any;
+  public priceSensitivity;
   public isOpenSelector: boolean;
 
   // Platform info
@@ -109,7 +109,7 @@ export class SellCoinbasePage {
     this.onWalletSelect(this.wallets[0]); // Default first wallet
   }
 
-  private showErrorAndBack(err: any): void {
+  private showErrorAndBack(err): void {
     if (this.isCordova) this.slideButton.isConfirmed(false);
     this.logger.error(err);
     err = err.errors ? err.errors[0].message : err;
@@ -118,14 +118,14 @@ export class SellCoinbasePage {
     });
   }
 
-  private showError(err: any): void {
+  private showError(err): void {
     if (this.isCordova) this.slideButton.isConfirmed(false);
     this.logger.error(err);
     err = err.errors ? err.errors[0].message : err;
     this.popupProvider.ionicAlert('Error', err);
   }
 
-  private publishAndSign(wallet: any, txp: any): Promise<any> {
+  private publishAndSign(wallet, txp): Promise<any> {
     return new Promise((resolve, reject) => {
       if (!wallet.canSign() && !wallet.isPrivKeyExternal()) {
         let err = 'No signing proposal: No private key';
@@ -133,11 +133,11 @@ export class SellCoinbasePage {
       }
       this.walletProvider
         .publishAndSign(wallet, txp)
-        .then((txp: any) => {
+        .then(txp => {
           this.onGoingProcessProvider.clear();
           return resolve(txp);
         })
-        .catch((err: any) => {
+        .catch(err => {
           this.onGoingProcessProvider.clear();
           return reject(err);
         });
@@ -146,7 +146,7 @@ export class SellCoinbasePage {
 
   private processPaymentInfo(): void {
     this.onGoingProcessProvider.set('connectingCoinbase');
-    this.coinbaseProvider.init((err: any, res: any) => {
+    this.coinbaseProvider.init((err, res) => {
       if (err) {
         this.onGoingProcessProvider.clear();
         this.showErrorAndBack(this.coinbaseProvider.getErrorsAsString(err));
@@ -207,7 +207,7 @@ export class SellCoinbasePage {
   }
 
   private checkTransaction = _.throttle(
-    (count: number, txp: any) => {
+    (count: number, txp) => {
       this.logger.warn(
         'Check if transaction has been received by Coinbase. Try ' +
           count +
@@ -216,7 +216,7 @@ export class SellCoinbasePage {
       // TX amount in BTC
       let satToBtc = 1 / 100000000;
       let amountBTC = (txp.amount * satToBtc).toFixed(8);
-      this.coinbaseProvider.init((err: any, res: any) => {
+      this.coinbaseProvider.init((err, res) => {
         if (err) {
           this.logger.error(err);
           this.checkTransaction(count, txp);
@@ -229,7 +229,7 @@ export class SellCoinbasePage {
         this.coinbaseProvider.sellPrice(
           accessToken,
           this.coinbaseProvider.getAvailableCurrency(),
-          (err: any, sell: any) => {
+          (err, sell) => {
             if (err) {
               this.logger.debug(this.coinbaseProvider.getErrorsAsString(err));
               this.checkTransaction(count, txp);
@@ -240,7 +240,7 @@ export class SellCoinbasePage {
             this.coinbaseProvider.getTransactions(
               accessToken,
               accountId,
-              (err: any, ctxs: any) => {
+              (err, ctxs) => {
                 if (err) {
                   this.logger.debug(
                     this.coinbaseProvider.getErrorsAsString(err)
@@ -276,7 +276,7 @@ export class SellCoinbasePage {
                     this.coinbaseProvider.savePendingTransaction(
                       ctx,
                       null,
-                      (err: any) => {
+                      err => {
                         this.onGoingProcessProvider.clear();
                         this.openFinishModal();
                         if (err)
@@ -314,7 +314,7 @@ export class SellCoinbasePage {
   );
 
   public sellRequest(): void {
-    this.coinbaseProvider.init((err: any, res: any) => {
+    this.coinbaseProvider.init((err, res) => {
       if (err) {
         this.onGoingProcessProvider.clear();
         this.showErrorAndBack(this.coinbaseProvider.getErrorsAsString(err));
@@ -332,7 +332,7 @@ export class SellCoinbasePage {
         accessToken,
         accountId,
         dataSrc,
-        (err: any, data: any) => {
+        (err, data) => {
           this.onGoingProcessProvider.clear();
           if (err) {
             this.showErrorAndBack(this.coinbaseProvider.getErrorsAsString(err));
@@ -354,14 +354,14 @@ export class SellCoinbasePage {
     let cancelText = 'Cancel';
     this.popupProvider
       .ionicConfirm(null, message, okText, cancelText)
-      .then((ok: any) => {
+      .then(ok => {
         if (!ok) {
           if (this.isCordova) this.slideButton.isConfirmed(false);
           return;
         }
 
         this.onGoingProcessProvider.set('sellingBitcoin');
-        this.coinbaseProvider.init((err: any, res: any) => {
+        this.coinbaseProvider.init((err, res) => {
           if (err) {
             this.onGoingProcessProvider.clear();
             this.showError(this.coinbaseProvider.getErrorsAsString(err));
@@ -377,7 +377,7 @@ export class SellCoinbasePage {
             accessToken,
             accountId,
             dataSrc,
-            (err: any, data: any) => {
+            (err, data) => {
               if (err) {
                 this.onGoingProcessProvider.clear();
                 this.showError(this.coinbaseProvider.getErrorsAsString(err));
@@ -411,22 +411,22 @@ export class SellCoinbasePage {
 
               this.walletProvider
                 .createTx(this.wallet, txp)
-                .then((ctxp: any) => {
+                .then(ctxp => {
                   this.logger.debug('Transaction created.');
                   this.publishAndSign(this.wallet, ctxp)
-                    .then((txSent: any) => {
+                    .then(txSent => {
                       this.logger.debug(
                         'Transaction broadcasted. Wait for Coinbase confirmation...'
                       );
                       this.checkTransaction(1, txSent);
                     })
-                    .catch((err: any) => {
+                    .catch(err => {
                       this.onGoingProcessProvider.clear();
                       this.showError(this.bwcErrorProvider.msg(err));
                       return;
                     });
                 })
-                .catch((err: any) => {
+                .catch(err => {
                   this.onGoingProcessProvider.clear();
                   this.showError(err);
                   return;
@@ -446,14 +446,14 @@ export class SellCoinbasePage {
       id,
       'Sell from'
     );
-    this.events.subscribe('selectWalletEvent', (wallet: any) => {
+    this.events.subscribe('selectWalletEvent', wallet => {
       if (!_.isEmpty(wallet)) this.onWalletSelect(wallet);
       this.events.unsubscribe('selectWalletEvent');
       this.isOpenSelector = false;
     });
   }
 
-  public onWalletSelect(wallet: any): void {
+  public onWalletSelect(wallet): void {
     this.wallet = wallet;
     let parsedAmount = this.txFormatProvider.parseAmount(
       this.coin,

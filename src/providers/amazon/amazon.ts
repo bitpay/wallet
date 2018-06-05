@@ -10,7 +10,7 @@ import { PersistenceProvider } from '../persistence/persistence';
 
 @Injectable()
 export class AmazonProvider {
-  public credentials: any;
+  public credentials;
   public limitPerDay: number;
 
   constructor(
@@ -86,7 +86,7 @@ export class AmazonProvider {
     this.http
       .post(this.credentials.BITPAY_API_URL + '/amazon-gift/pay', dataSrc)
       .subscribe(
-        (data: any) => {
+        data => {
           this.logger.info('BitPay Create Invoice: SUCCESS');
           return cb(null, data);
         },
@@ -107,7 +107,7 @@ export class AmazonProvider {
           this.logger.info('BitPay Get Invoice: SUCCESS');
           return cb(null, data.data);
         },
-        (data: any) => {
+        data => {
           this.logger.error('BitPay Get Invoice: ERROR ' + data.error.message);
           return cb(data.error.message);
         }
@@ -135,7 +135,7 @@ export class AmazonProvider {
           this.logger.info('Amazon.com Gift Card Create/Update: ' + status);
           return cb(null, data);
         },
-        (data: any) => {
+        data => {
           this.logger.error(
             'Amazon.com Gift Card Create/Update: ' + data.message
           );
@@ -154,11 +154,11 @@ export class AmazonProvider {
     this.http
       .post(this.credentials.BITPAY_API_URL + '/amazon-gift/cancel', dataSrc)
       .subscribe(
-        (data: any) => {
+        data => {
           this.logger.info('Amazon.com Gift Card Cancel: SUCCESS');
           return cb(null, data);
         },
-        (data: any) => {
+        data => {
           this.logger.error('Amazon.com Gift Card Cancel: ' + data.message);
           return cb(data);
         }

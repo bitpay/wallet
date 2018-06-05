@@ -23,7 +23,7 @@ export class IncomingDataProvider {
     this.logger.info('IncomingDataProvider initialized.');
   }
 
-  public showMenu(data: any): void {
+  public showMenu(data): void {
     this.events.publish('showIncomingDataMenuEvent', data);
   }
 
@@ -54,7 +54,7 @@ export class IncomingDataProvider {
     let amount: string;
     let message: string;
     let addr: string;
-    let parsed: any;
+    let parsed;
     let coin: string;
 
     // Bitcoin  URL
@@ -102,7 +102,7 @@ export class IncomingDataProvider {
       if (parsed.r) {
         this.payproProvider
           .getPayProDetails(parsed.r, coin)
-          .then((details: any) => {
+          .then(details => {
             this.handlePayPro(details, coin);
           })
           .catch((err: string) => {
@@ -343,7 +343,7 @@ export class IncomingDataProvider {
     return false;
   }
 
-  private sanitizeUri(data: any): string {
+  private sanitizeUri(data): string {
     // Fixes when a region uses comma to separate decimals
     let regex = /[\?\&]amount=(\d+([\,\.]\d+)?)/i;
     let match = regex.exec(data);
@@ -422,7 +422,7 @@ export class IncomingDataProvider {
     this.events.publish('IncomingDataRedir', nextView);
   }
 
-  private handlePayPro(payProDetails: any, coin?: string): void {
+  private handlePayPro(payProDetails, coin?: string): void {
     if (!payProDetails) {
       this.popupProvider.ionicAlert(
         this.translate.instant('Error'),
@@ -431,20 +431,17 @@ export class IncomingDataProvider {
       return;
     }
 
-    let stateParams: any = {
+    const stateParams = {
       amount: payProDetails.amount,
       toAddress: payProDetails.toAddress,
       description: payProDetails.memo,
       paypro: payProDetails,
-      coin
+      coin,
+      requiredFeeRate: payProDetails.requiredFeeRate
+        ? Math.ceil(payProDetails.requiredFeeRate * 1024)
+        : undefined
     };
-    // fee
-    if (payProDetails.requiredFeeRate) {
-      stateParams.requiredFeeRate = Math.ceil(
-        payProDetails.requiredFeeRate * 1024
-      );
-    }
-    let nextView = {
+    const nextView = {
       name: 'ConfirmPage',
       params: stateParams
     };

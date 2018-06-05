@@ -5,10 +5,10 @@ import { Component, Input } from '@angular/core';
   templateUrl: 'wallet-item.html'
 })
 export class WalletItemPage {
-  private _wallet: any;
+  private _wallet;
 
   @Input()
-  set wallet(wallet: any) {
+  set wallet(wallet) {
     this._wallet = wallet;
   }
 

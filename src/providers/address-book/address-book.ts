@@ -32,13 +32,13 @@ export class AddressBookProvider {
     return new Promise((resolve, reject) => {
       this.persistenceProvider
         .getAddressBook('testnet')
-        .then((ab: any) => {
+        .then(ab => {
           if (ab && _.isString(ab)) ab = JSON.parse(ab);
           if (ab && ab[addr]) return resolve(ab[addr]);
 
           this.persistenceProvider
             .getAddressBook('livenet')
-            .then((ab: any) => {
+            .then(ab => {
               if (ab && _.isString(ab)) ab = JSON.parse(ab);
               if (ab && ab[addr]) return resolve(ab[addr]);
               return resolve();
@@ -57,7 +57,7 @@ export class AddressBookProvider {
     return new Promise((resolve, reject) => {
       this.persistenceProvider
         .getAddressBook('testnet')
-        .then((ab: any) => {
+        .then(ab => {
           if (ab && _.isString(ab)) ab = JSON.parse(ab);
 
           ab = ab || {};
@@ -80,7 +80,7 @@ export class AddressBookProvider {
     });
   }
 
-  public add(entry: any): Promise<any> {
+  public add(entry): Promise<any> {
     return new Promise((resolve, reject) => {
       var network = this.getNetwork(entry.address);
       if (_.isEmpty(network)) {
@@ -89,7 +89,7 @@ export class AddressBookProvider {
       }
       this.persistenceProvider
         .getAddressBook(network)
-        .then((ab: any) => {
+        .then(ab => {
           if (ab && _.isString(ab)) ab = JSON.parse(ab);
           ab = ab || {};
           if (_.isArray(ab)) ab = {}; // No array
@@ -157,7 +157,7 @@ export class AddressBookProvider {
               return reject(msg);
             });
         })
-        .catch((err: any) => {
+        .catch(err => {
           return reject(err);
         });
     });

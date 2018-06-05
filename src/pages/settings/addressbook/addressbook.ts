@@ -35,11 +35,11 @@ export class AddressbookPage {
   private initAddressbook(): void {
     this.addressbookProvider
       .list()
-      .then((addressBook: any) => {
+      .then(addressBook => {
         this.isEmptyList = _.isEmpty(addressBook);
 
         let contacts: object[] = [];
-        _.each(addressBook, (contact: any, k: string) => {
+        _.each(addressBook, (contact, k: string) => {
           contacts.push({
             name: _.isObject(contact) ? contact.name : contact,
             address: k,
@@ -49,7 +49,7 @@ export class AddressbookPage {
         this.addressbook = _.clone(contacts);
         this.filteredAddressbook = _.clone(this.addressbook);
       })
-      .catch((err: any) => {
+      .catch(err => {
         this.logger.error(err);
         let alertError = this.alertCtrl.create({
           title: err,
@@ -70,17 +70,17 @@ export class AddressbookPage {
     this.navCtrl.push(AddressbookAddPage);
   }
 
-  public viewEntry(contact: any): void {
+  public viewEntry(contact): void {
     this.navCtrl.push(AddressbookViewPage, { contact });
   }
 
-  public getItems(event: any): void {
+  public getItems(event): void {
     // set val to the value of the searchbar
     let val = event.target.value;
 
     // if the value is an empty string don't filter the items
     if (val && val.trim() != '') {
-      let result = _.filter(this.addressbook, (item: any) => {
+      let result = _.filter(this.addressbook, item => {
         let name = item['name'];
         return _.includes(name.toLowerCase(), val.toLowerCase());
       });

@@ -8,7 +8,7 @@ import { RateProvider } from '../providers/rate/rate';
   pure: false
 })
 export class SatToFiatPipe implements PipeTransform {
-  private walletSettings: any;
+  private walletSettings;
 
   constructor(
     private configProvider: ConfigProvider,
@@ -17,7 +17,7 @@ export class SatToFiatPipe implements PipeTransform {
   ) {
     this.walletSettings = this.configProvider.get().wallet.settings;
   }
-  transform(amount: number, coin: string): any {
+  transform(amount: number, coin: string) {
     let amount_ = this.rateProvider.toFiat(
       amount,
       this.walletSettings.alternativeIsoCode,

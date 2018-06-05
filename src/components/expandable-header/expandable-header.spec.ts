@@ -11,8 +11,8 @@ import {
 import { Subject } from 'rxjs/Subject';
 
 let fixture: ComponentFixture<TestHostComponent>;
-let instance: any;
-let contentMock: any;
+let instance;
+let contentMock;
 let ionScrollSubject: Subject<ScrollEvent>;
 
 const scrollEventMock = {

@@ -8,7 +8,7 @@ export class RamStorage implements IStorage {
   get(k: string): Promise<any> {
     return Promise.resolve(this.hash[k]);
   }
-  set(k: string, v: any): Promise<void> {
+  set(k: string, v): Promise<void> {
     return new Promise<void>(resolve => {
       this.hash[k] = v;
       resolve();
@@ -20,7 +20,7 @@ export class RamStorage implements IStorage {
       resolve();
     });
   }
-  create(k: string, v: any): Promise<void> {
+  create(k: string, v): Promise<void> {
     return this.get(k).then(data => {
       if (data) throw new KeyAlreadyExistsError();
       this.set(k, v);

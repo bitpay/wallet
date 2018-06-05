@@ -8,7 +8,7 @@ import { SessionLogPage } from './session-log';
 
 describe('SessionLogPage', () => {
   let fixture: ComponentFixture<SessionLogPage>;
-  let instance: any;
+  let instance;
   let testBed: typeof TestBed;
 
   beforeEach(async(() => {

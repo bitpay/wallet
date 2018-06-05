@@ -9,7 +9,7 @@ import * as moment from 'moment';
 
 @Injectable()
 export class LanguageProvider {
-  private languages: any[] = [
+  private languages = [
     {
       name: 'English',
       isoCode: 'en'
@@ -107,11 +107,11 @@ export class LanguageProvider {
     return this.languages[0]['isoCode'];
   }
 
-  public getCurrent(): any {
+  public getCurrent() {
     return this.current;
   }
 
-  public getAvailables(): any {
+  public getAvailables() {
     return this.languages;
   }
 }

@@ -27,18 +27,18 @@ export class BackupGamePage {
   public currentIndex: number;
   public deleted: boolean;
   public mnemonicWords: string[];
-  public shuffledMnemonicWords: any[];
+  public shuffledMnemonicWords;
   public password: string;
-  public customWords: any[];
+  public customWords;
   public selectComplete: boolean;
   public error: boolean;
   public credentialsEncrypted: boolean;
 
-  private mnemonicHasPassphrase: any;
+  private mnemonicHasPassphrase;
   private walletId: string;
-  private wallet: any;
-  private keys: any;
-  private useIdeograms: any;
+  private wallet;
+  private keys;
+  private useIdeograms;
 
   constructor(
     private navCtrl: NavController,
@@ -103,7 +103,7 @@ export class BackupGamePage {
     });
   }
 
-  public addButton(index: number, item: any): void {
+  public addButton(index: number, item): void {
     var newWord = {
       word: item.word,
       prevIndex: index
@@ -113,7 +113,7 @@ export class BackupGamePage {
     this.shouldContinue();
   }
 
-  public removeButton(index: number, item: any): void {
+  public removeButton(index: number, item): void {
     // if ($scope.loading) return;
     this.customWords.splice(index, 1);
     this.shuffledMnemonicWords[item.prevIndex].selected = false;

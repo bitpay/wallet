@@ -32,16 +32,16 @@ export class BuyCoinbasePage {
   private amount: string;
   private currency: string;
   private coin: string;
-  private wallets: any;
+  private wallets;
 
-  public paymentMethods: any[];
-  public selectedPaymentMethodId: any;
+  public paymentMethods;
+  public selectedPaymentMethodId;
   public buyPrice: string;
-  public buyRequestInfo: any;
+  public buyRequestInfo;
   public amountUnitStr: string;
   public accessToken: string;
   public accountId: string;
-  public wallet: any;
+  public wallet;
   public network: string;
   public isFiat: boolean;
   public isOpenSelector: boolean;
@@ -96,7 +96,7 @@ export class BuyCoinbasePage {
     this.onWalletSelect(this.wallets[0]); // Default first wallet
   }
 
-  private showErrorAndBack(err: any): void {
+  private showErrorAndBack(err): void {
     if (this.isCordova) this.slideButton.isConfirmed(false);
     this.logger.error(err);
     err = err.errors ? err.errors[0].message : err;
@@ -105,7 +105,7 @@ export class BuyCoinbasePage {
     });
   }
 
-  private showError(err: any): void {
+  private showError(err): void {
     if (this.isCordova) this.slideButton.isConfirmed(false);
     this.logger.error(err);
     err = err.errors ? err.errors[0].message : err;
@@ -114,7 +114,7 @@ export class BuyCoinbasePage {
 
   private processPaymentInfo(): void {
     this.onGoingProcessProvider.set('connectingCoinbase');
-    this.coinbaseProvider.init((err: any, res: any) => {
+    this.coinbaseProvider.init((err, res) => {
       if (err) {
         this.onGoingProcessProvider.clear();
         this.showErrorAndBack(err);
@@ -193,7 +193,7 @@ export class BuyCoinbasePage {
         accessToken,
         accountId,
         dataSrc,
-        (err: any, data: any) => {
+        (err, data) => {
           this.onGoingProcessProvider.clear();
           if (err) {
             this.showErrorAndBack(err);
@@ -218,7 +218,7 @@ export class BuyCoinbasePage {
         }
 
         this.onGoingProcessProvider.set('buyingBitcoin');
-        this.coinbaseProvider.init((err: any, res: any) => {
+        this.coinbaseProvider.init((err, res) => {
           if (err) {
             this.onGoingProcessProvider.clear();
             this.showError(this.coinbaseProvider.getErrorsAsString(err));
@@ -236,7 +236,7 @@ export class BuyCoinbasePage {
             accessToken,
             accountId,
             dataSrc,
-            (err: any, b: any) => {
+            (err, b) => {
               if (err) {
                 this.onGoingProcessProvider.clear();
                 this.showError(this.coinbaseProvider.getErrorsAsString(err));
@@ -256,7 +256,7 @@ export class BuyCoinbasePage {
       });
   }
 
-  private processBuyTx(tx: any): void {
+  private processBuyTx(tx): void {
     if (!tx) {
       this.onGoingProcessProvider.clear();
       this.showError('Transaction not found');
@@ -267,7 +267,7 @@ export class BuyCoinbasePage {
       this.accessToken,
       this.accountId,
       tx.id,
-      (err: any, updatedTx: any) => {
+      (err, updatedTx) => {
         if (err) {
           this.onGoingProcessProvider.clear();
           this.showError(this.coinbaseProvider.getErrorsAsString(err));
@@ -283,7 +283,7 @@ export class BuyCoinbasePage {
             this.coinbaseProvider.savePendingTransaction(
               updatedTx.data,
               {},
-              (err: any) => {
+              err => {
                 this.onGoingProcessProvider.clear();
                 if (err) this.logger.debug(err);
                 this.openFinishModal();
@@ -298,12 +298,12 @@ export class BuyCoinbasePage {
     );
   }
 
-  private _processBuyOrder(b: any): void {
+  private _processBuyOrder(b): void {
     this.coinbaseProvider.getBuyOrder(
       this.accessToken,
       this.accountId,
       b.data.id,
-      (err: any, buyResp: any) => {
+      (err, buyResp) => {
         if (err) {
           this.onGoingProcessProvider.clear();
           this.showError(this.coinbaseProvider.getErrorsAsString(err));
@@ -330,14 +330,14 @@ export class BuyCoinbasePage {
       id,
       'Receive in'
     );
-    this.events.subscribe('selectWalletEvent', (wallet: any) => {
+    this.events.subscribe('selectWalletEvent', wallet => {
       if (!_.isEmpty(wallet)) this.onWalletSelect(wallet);
       this.events.unsubscribe('selectWalletEvent');
       this.isOpenSelector = false;
     });
   }
 
-  public onWalletSelect(wallet: any) {
+  public onWalletSelect(wallet) {
     this.wallet = wallet;
     let parsedAmount = this.txFormatProvider.parseAmount(
       this.coin,
@@ -351,7 +351,7 @@ export class BuyCoinbasePage {
 
     this.amountUnitStr = parsedAmount.amountUnitStr;
     this.onGoingProcessProvider.set('calculatingFee');
-    this.coinbaseProvider.checkEnoughFundsForFee(this.amount, (err: any) => {
+    this.coinbaseProvider.checkEnoughFundsForFee(this.amount, err => {
       this.onGoingProcessProvider.clear();
       if (err) {
         this.showErrorAndBack(err);

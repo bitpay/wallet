@@ -11,10 +11,10 @@ import { ProfileProvider } from '../../../../providers/profile/profile';
   templateUrl: 'wallet-color.html'
 })
 export class WalletColorPage {
-  public wallet: any;
+  public wallet;
   public colorCount: number[];
   public currentColorIndex: number;
-  private config: any;
+  private config;
   private retries: number = 3;
 
   constructor(
@@ -87,7 +87,7 @@ export class WalletColorPage {
     }
   }
 
-  private colorToIndex(color: string): any {
+  private colorToIndex(color: string) {
     for (let i = 0; i < this.colorCount.length; i++) {
       if (this.indexToColor(i) == color.toLowerCase()) {
         return i;
@@ -105,7 +105,7 @@ export class WalletColorPage {
     );
   }
 
-  private rgb2hex(rgb: any): string {
+  private rgb2hex(rgb): string {
     rgb = rgb.match(
       /^rgba?[\s+]?\([\s+]?(\d+)[\s+]?,[\s+]?(\d+)[\s+]?,[\s+]?(\d+)[\s+]?/i
     );

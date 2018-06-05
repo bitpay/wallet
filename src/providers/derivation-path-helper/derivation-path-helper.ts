@@ -10,7 +10,7 @@ export class DerivationPathHelperProvider {
     this.defaultTestnet = "m/44'/1'/0'";
   }
 
-  parse(str: string): any {
+  parse(str: string) {
     var arr = str.split('/');
     var ret = {
       derivationStrategy: '',

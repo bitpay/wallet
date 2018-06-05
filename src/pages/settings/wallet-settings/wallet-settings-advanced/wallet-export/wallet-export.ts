@@ -23,7 +23,7 @@ import { TabsPage } from '../../../../tabs/tabs';
   templateUrl: 'wallet-export.html'
 })
 export class WalletExportPage {
-  public wallet: any;
+  public wallet;
   public segments: string = 'file/text';
   public password: string = '';
   public result: string = '';
@@ -32,11 +32,11 @@ export class WalletExportPage {
   public isEncrypted: boolean;
   public showAdvanced: boolean = false;
   public canSign: boolean;
-  public backupWalletPlainText: any;
+  public backupWalletPlainText;
   public isCordova: boolean;
   public isSafari: boolean;
   public isIOS: boolean;
-  public exportWalletInfo: any;
+  public exportWalletInfo;
   public supported: boolean;
 
   constructor(
@@ -80,7 +80,7 @@ export class WalletExportPage {
   }
 
   private matchingPasswords(passwordKey: string, confirmPasswordKey: string) {
-    return (group: FormGroup): { [key: string]: any } => {
+    return (group: FormGroup) => {
       let password = group.controls[passwordKey];
       let confirmPassword = group.controls[confirmPasswordKey];
       if (password.value !== confirmPassword.value) {
@@ -106,7 +106,7 @@ export class WalletExportPage {
           this.password = password;
           return resolve(password);
         })
-        .catch((err: any) => {
+        .catch(err => {
           return reject(err);
         });
     });
@@ -163,7 +163,7 @@ export class WalletExportPage {
     this.getPassword()
       .then((password: string) => {
         this.getAddressBook()
-          .then((localAddressBook: any) => {
+          .then(localAddressBook => {
             let opts = {
               noSign: this.exportWalletForm.value.noSignEnabled,
               addressBook: localAddressBook,
@@ -202,7 +202,7 @@ export class WalletExportPage {
     return new Promise((resolve, reject) => {
       this.persistenceProvider
         .getAddressBook(this.wallet.credentials.network)
-        .then((addressBook: any) => {
+        .then(addressBook => {
           let localAddressBook = [];
           try {
             localAddressBook = JSON.parse(addressBook);
@@ -226,7 +226,7 @@ export class WalletExportPage {
       this.getPassword()
         .then((password: string) => {
           this.getAddressBook()
-            .then((localAddressBook: any) => {
+            .then(localAddressBook => {
               let opts = {
                 noSign: this.exportWalletForm.value.noSignEnabled,
                 addressBook: localAddressBook,
@@ -262,7 +262,7 @@ export class WalletExportPage {
   }
 
   public viewWalletBackup(): void {
-    this.getBackup().then((backup: any) => {
+    this.getBackup().then(backup => {
       var ew = backup;
       if (!ew) return;
       this.backupWalletPlainText = ew;
@@ -270,7 +270,7 @@ export class WalletExportPage {
   }
 
   public copyWalletBackup(): void {
-    this.getBackup().then((backup: any) => {
+    this.getBackup().then(backup => {
       var ew = backup;
       if (!ew) return;
       this.clipboard.copy(ew);

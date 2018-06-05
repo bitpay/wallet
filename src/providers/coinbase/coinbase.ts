@@ -15,11 +15,11 @@ import * as _ from 'lodash';
 
 @Injectable()
 export class CoinbaseProvider {
-  private credentials: any;
+  private credentials;
   private isCordova: boolean;
 
-  public priceSensitivity: any;
-  public selectedPriceSensitivity: any;
+  public priceSensitivity;
+  public selectedPriceSensitivity;
 
   constructor(
     private http: HttpClient,
@@ -142,8 +142,8 @@ export class CoinbaseProvider {
     }
   }
 
-  public getErrorsAsString(data: any): string {
-    let errData: any;
+  public getErrorsAsString(data): string {
+    let errData;
 
     try {
       if (data && data.errors) errData = data.errors;
@@ -259,7 +259,7 @@ export class CoinbaseProvider {
     });
 
     this.http.post(url, data, { headers }).subscribe(
-      (data: any) => {
+      data => {
         this.logger.info('Coinbase: GET Access Token: SUCCESS');
         // Show pending task from the UI
         this._afterTokenReceived(data, cb);
@@ -291,7 +291,7 @@ export class CoinbaseProvider {
     });
 
     this.http.post(url, data, { headers }).subscribe(
-      (data: any) => {
+      data => {
         this.logger.info('Coinbase: Refresh Access Token SUCCESS');
         this._afterTokenReceived(data, cb);
       },
@@ -332,7 +332,7 @@ export class CoinbaseProvider {
     if (!token) return cb('Invalid Token');
 
     let url = this.credentials.API + '/v2' + '/accounts';
-    let headers: any = {
+    let headers = {
       'Content-Type': 'application/json',
       Accept: 'application/json',
       'CB-VERSION': this.credentials.API_VERSION,
@@ -340,7 +340,7 @@ export class CoinbaseProvider {
     };
 
     this.http.get(url, { headers }).subscribe(
-      (data: any) => {
+      data => {
         this.logger.info('Coinbase: Get Accounts SUCCESS');
         return cb(null, data);
       },
@@ -433,14 +433,14 @@ export class CoinbaseProvider {
   public getAccount(token, _, cb) {
     if (!token) return cb('Invalid Token');
     let url = this.credentials.API + '/v2/accounts/';
-    let headers: any = {
+    let headers = {
       'Content-Type': 'application/json',
       Accept: 'application/json',
       'CB-VERSION': this.credentials.API_VERSION,
       Authorization: 'Bearer ' + token
     };
     this.http.get(url, { headers }).subscribe(
-      (data: any) => {
+      data => {
         this.logger.info('Coinbase: Get Account SUCCESS');
         return cb(null, data);
       },
@@ -459,14 +459,14 @@ export class CoinbaseProvider {
   public getAuthorizationInformation(token, cb) {
     if (!token) return cb('Invalid Token');
     let url = this.credentials.API + '/v2/user/auth';
-    let headers: any = {
+    let headers = {
       'Content-Type': 'application/json',
       Accept: 'application/json',
       'CB-VERSION': this.credentials.API_VERSION,
       Authorization: 'Bearer ' + token
     };
     this.http.get(url, { headers }).subscribe(
-      (data: any) => {
+      data => {
         this.logger.info('Coinbase: Authorization Information SUCCESS');
         return cb(null, data);
       },
@@ -485,7 +485,7 @@ export class CoinbaseProvider {
   public getCurrentUser(token, cb) {
     if (!token) return cb('Invalid Token');
     let url = this.credentials.API + '/v2/user';
-    let headers: any = {
+    let headers = {
       'Content-Type': 'application/json',
       Accept: 'application/json',
       'CB-VERSION': this.credentials.API_VERSION,
@@ -493,7 +493,7 @@ export class CoinbaseProvider {
     };
 
     this.http.get(url, { headers }).subscribe(
-      (data: any) => {
+      data => {
         this.logger.info('Coinbase: Get Current User SUCCESS');
         return cb(null, data);
       },
@@ -513,7 +513,7 @@ export class CoinbaseProvider {
     if (!token) return cb('Invalid Token');
     let url =
       this.credentials.API + '/v2/accounts/' + accountId + '/buys/' + buyId;
-    let headers: any = {
+    let headers = {
       'Content-Type': 'application/json',
       Accept: 'application/json',
       'CB-VERSION': this.credentials.API_VERSION,
@@ -521,7 +521,7 @@ export class CoinbaseProvider {
     };
 
     this.http.get(url, { headers }).subscribe(
-      (data: any) => {
+      data => {
         this.logger.info('Coinbase: Buy Info SUCCESS');
         return cb(null, data);
       },
@@ -545,14 +545,14 @@ export class CoinbaseProvider {
       accountId +
       '/transactions/' +
       transactionId;
-    let headers: any = {
+    let headers = {
       'Content-Type': 'application/json',
       Accept: 'application/json',
       'CB-VERSION': this.credentials.API_VERSION,
       Authorization: 'Bearer ' + token
     };
     this.http.get(url, { headers }).subscribe(
-      (data: any) => {
+      data => {
         this.logger.info('Coinbase: Transaction SUCCESS');
         return cb(null, data);
       },
@@ -578,7 +578,7 @@ export class CoinbaseProvider {
       '/addresses/' +
       addressId +
       '/transactions';
-    let headers: any = {
+    let headers = {
       'Content-Type': 'application/json',
       Accept: 'application/json',
       'CB-VERSION': this.credentials.API_VERSION,
@@ -586,7 +586,7 @@ export class CoinbaseProvider {
     };
 
     this.http.get(url, { headers }).subscribe(
-      (data: any) => {
+      data => {
         this.logger.info('Coinbase: Address Transactions SUCCESS');
         return cb(null, data);
       },
@@ -606,7 +606,7 @@ export class CoinbaseProvider {
     if (!token) return cb('Invalid Token');
     let url =
       this.credentials.API + '/v2/accounts/' + accountId + '/transactions';
-    let headers: any = {
+    let headers = {
       'Content-Type': 'application/json',
       Accept: 'application/json',
       'CB-VERSION': this.credentials.API_VERSION,
@@ -614,11 +614,11 @@ export class CoinbaseProvider {
     };
 
     this.http.get(url, { headers }).subscribe(
-      (data: any) => {
+      data => {
         this.logger.info('Coinbase: Transactions SUCCESS');
         return cb(null, data);
       },
-      (data: any) => {
+      data => {
         this.logger.error(
           'Coinbase: Transactions ERROR ' +
             data.status +
@@ -634,7 +634,7 @@ export class CoinbaseProvider {
     if (!token) return cb('Invalid Token');
 
     let url = this.credentials.API + Url;
-    let headers: any = {
+    let headers = {
       'Content-Type': 'application/json',
       Accept: 'application/json',
       'CB-VERSION': this.credentials.API_VERSION,
@@ -642,7 +642,7 @@ export class CoinbaseProvider {
     };
 
     this.http.get(url, { headers }).subscribe(
-      (data: any) => {
+      data => {
         this.logger.info('Coinbase: Pagination Transactions SUCCESS');
         return cb(null, data);
       },
@@ -660,7 +660,7 @@ export class CoinbaseProvider {
 
   public sellPrice(token, currency, cb) {
     let url = this.credentials.API + '/v2/prices/sell?currency=' + currency;
-    let headers: any = {
+    let headers = {
       'Content-Type': 'application/json',
       Accept: 'application/json',
       'CB-VERSION': this.credentials.API_VERSION,
@@ -668,7 +668,7 @@ export class CoinbaseProvider {
     };
 
     this.http.get(url, { headers }).subscribe(
-      (data: any) => {
+      data => {
         this.logger.info('Coinbase: Sell Price SUCCESS');
         return cb(null, data);
       },
@@ -686,14 +686,14 @@ export class CoinbaseProvider {
 
   public buyPrice(token, currency, cb) {
     let url = this.credentials.API + '/v2/prices/buy?currency=' + currency;
-    let headers: any = {
+    let headers = {
       'Content-Type': 'application/json',
       Accept: 'application/json',
       'CB-VERSION': this.credentials.API_VERSION,
       Authorization: 'Bearer ' + token
     };
     this.http.get(url, { headers }).subscribe(
-      (data: any) => {
+      data => {
         this.logger.info('Coinbase: Buy Price: SUCCESS');
         return cb(null, data);
       },
@@ -711,14 +711,14 @@ export class CoinbaseProvider {
 
   public getPaymentMethods(token, cb) {
     let url = this.credentials.API + '/v2/payment-methods';
-    let headers: any = {
+    let headers = {
       'Content-Type': 'application/json',
       Accept: 'application/json',
       'CB-VERSION': this.credentials.API_VERSION,
       Authorization: 'Bearer ' + token
     };
     this.http.get(url, { headers }).subscribe(
-      (data: any) => {
+      data => {
         this.logger.info('Coinbase: Get Payment Methods SUCCESS');
         return cb(null, data);
       },
@@ -736,7 +736,7 @@ export class CoinbaseProvider {
 
   public getPaymentMethod(token, paymentMethodId, cb) {
     let url = this.credentials.API + '/v2/payment-methods/' + paymentMethodId;
-    let headers: any = {
+    let headers = {
       'Content-Type': 'application/json',
       Accept: 'application/json',
       'CB-VERSION': this.credentials.API_VERSION,
@@ -744,7 +744,7 @@ export class CoinbaseProvider {
     };
 
     this.http.get(url, { headers }).subscribe(
-      (data: any) => {
+      data => {
         this.logger.info('Coinbase: Get Payment Method SUCCESS');
         return cb(null, data);
       },
@@ -777,7 +777,7 @@ export class CoinbaseProvider {
     });
 
     this.http.post(url, data, { headers }).subscribe(
-      (data: any) => {
+      data => {
         this.logger.info('Coinbase: Sell Request SUCCESS');
         return cb(null, data);
       },
@@ -809,7 +809,7 @@ export class CoinbaseProvider {
     });
 
     this.http.post(url, null, { headers }).subscribe(
-      (data: any) => {
+      data => {
         this.logger.info('Coinbase: Sell Commit SUCCESS');
         return cb(null, data);
       },
@@ -842,7 +842,7 @@ export class CoinbaseProvider {
     });
 
     this.http.post(url, data, { headers }).subscribe(
-      (data: any) => {
+      data => {
         this.logger.info('Coinbase: Buy Request SUCCESS');
         return cb(null, data);
       },
@@ -874,7 +874,7 @@ export class CoinbaseProvider {
     });
 
     this.http.post(url, null, { headers }).subscribe(
-      (data: any) => {
+      data => {
         this.logger.info('Coinbase: Buy Commit SUCCESS');
         return cb(null, data);
       },
@@ -903,7 +903,7 @@ export class CoinbaseProvider {
     });
 
     this.http.post(url, data, { headers }).subscribe(
-      (data: any) => {
+      data => {
         this.logger.info('Coinbase: Create Address SUCCESS');
         return cb(null, data);
       },
@@ -937,7 +937,7 @@ export class CoinbaseProvider {
     });
 
     this.http.post(url, data, { headers }).subscribe(
-      (data: any) => {
+      data => {
         this.logger.info('Coinbase: Create Address SUCCESS');
         return cb(null, data);
       },

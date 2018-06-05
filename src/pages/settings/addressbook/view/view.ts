@@ -16,12 +16,12 @@ import { PopupProvider } from '../../../../providers/popup/popup';
   templateUrl: 'view.html'
 })
 export class AddressbookViewPage {
-  public contact: any;
+  public contact;
   public address: string;
   public name: string;
   public email: string;
 
-  private bitcoreCash: any;
+  private bitcoreCash;
   private coin: string;
 
   constructor(
@@ -63,19 +63,17 @@ export class AddressbookViewPage {
     var message = this.translate.instant(
       'Are you sure you want to delete this contact?'
     );
-    this.popupProvider
-      .ionicConfirm(title, message, null, null)
-      .then((res: any) => {
-        if (!res) return;
-        this.addressBookProvider
-          .remove(addr)
-          .then(() => {
-            this.navCtrl.pop();
-          })
-          .catch((err: any) => {
-            this.popupProvider.ionicAlert(this.translate.instant('Error'), err);
-            return;
-          });
-      });
+    this.popupProvider.ionicConfirm(title, message, null, null).then(res => {
+      if (!res) return;
+      this.addressBookProvider
+        .remove(addr)
+        .then(() => {
+          this.navCtrl.pop();
+        })
+        .catch(err => {
+          this.popupProvider.ionicAlert(this.translate.instant('Error'), err);
+          return;
+        });
+    });
   }
 }

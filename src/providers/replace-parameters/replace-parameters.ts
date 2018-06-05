@@ -10,7 +10,7 @@ import * as _ from 'lodash';
 export class ReplaceParametersProvider {
   constructor() {}
 
-  public replace(stringToReplace: string, params: any): string {
+  public replace(stringToReplace: string, params): string {
     let processedParams = [];
     for (let key in params) {
       processedParams.push({ key, value: params[key] });

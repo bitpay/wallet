@@ -12,8 +12,8 @@ import { ProfileProvider } from '../../../providers/profile/profile';
   templateUrl: 'proposals.html'
 })
 export class ProposalsPage {
-  public addressbook: any;
-  public txps: any;
+  public addressbook;
+  public txps;
 
   constructor(
     private onGoingProcessProvider: OnGoingProcessProvider,
@@ -26,7 +26,7 @@ export class ProposalsPage {
   ionViewWillEnter() {
     this.addressBookProvider
       .list()
-      .then((ab: any) => {
+      .then(ab => {
         this.addressbook = ab || {};
 
         let loading = this.translate.instant(
@@ -39,12 +39,12 @@ export class ProposalsPage {
             this.onGoingProcessProvider.clear();
             this.txps = txpsData.txps;
           })
-          .catch((err: any) => {
+          .catch(err => {
             this.onGoingProcessProvider.clear();
             this.logger.error(err);
           });
       })
-      .catch((err: any) => {
+      .catch(err => {
         this.logger.error(err);
       });
   }

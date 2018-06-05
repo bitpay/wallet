@@ -19,7 +19,7 @@ export class CustomAmountPage {
   public protocolHandler: string;
   public address: string;
   public qrAddress: string;
-  public wallet: any;
+  public wallet;
   public showShareButton: boolean;
   public amountUnitStr: string;
   public amountCoin: string;

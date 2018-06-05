@@ -8,6 +8,12 @@ import { FileStorage } from './storage/file-storage';
 import { LocalStorage } from './storage/local-storage';
 // TODO import { RamStorage } from './storage/ram-storage';
 
+export interface FeedbackValues {
+  time: number;
+  version: string;
+  sent: boolean;
+}
+
 const Keys = {
   ADDRESS_BOOK: network => 'addressbook-' + network,
   AGREE_DISCLAIMER: 'agreeDisclaimer',
@@ -42,9 +48,9 @@ const Keys = {
 
 interface Storage {
   get(k: string): Promise<any>;
-  set(k: string, v: any): Promise<void>;
+  set(k: string, v): Promise<void>;
   remove(k: string): Promise<void>;
-  create(k: string, v: any): Promise<void>;
+  create(k: string, v): Promise<void>;
 }
 
 @Injectable()
@@ -85,7 +91,7 @@ export class PersistenceProvider {
     return this.storage.remove(Keys.PROFILE);
   }
 
-  setFeedbackInfo(feedbackValues: any) {
+  setFeedbackInfo(feedbackValues: FeedbackValues) {
     return this.storage.set(Keys.FEEDBACK, feedbackValues);
   }
 
@@ -105,7 +111,7 @@ export class PersistenceProvider {
     return this.storage.get(Keys.LAST_ADDRESS(walletId));
   }
 
-  storeLastAddress(walletId: string, address: any) {
+  storeLastAddress(walletId: string, address) {
     return this.storage.set(Keys.LAST_ADDRESS(walletId), address);
   }
 
@@ -153,11 +159,11 @@ export class PersistenceProvider {
     return this.storage.get(Keys.HOME_TIP);
   }
 
-  setHomeTipAccepted(homeTip: any) {
+  setHomeTipAccepted(homeTip) {
     return this.storage.set(Keys.HOME_TIP, homeTip);
   }
 
-  setHideBalanceFlag(walletId: string, val: any) {
+  setHideBalanceFlag(walletId: string, val) {
     return this.storage.set(Keys.HIDE_BALANCE(walletId), val);
   }
 
@@ -202,7 +208,7 @@ export class PersistenceProvider {
     return this.storage.remove(Keys.GLIDERA_TOKEN(network));
   }
 
-  setGlideraPermissions(network: string, permissions: any) {
+  setGlideraPermissions(network: string, permissions) {
     return this.storage.set(Keys.GLIDERA_PERMISSIONS(network), permissions);
   }
 
@@ -214,7 +220,7 @@ export class PersistenceProvider {
     return this.storage.remove(Keys.GLIDERA_PERMISSIONS(network));
   }
 
-  setGlideraStatus(network: string, status: any) {
+  setGlideraStatus(network: string, status) {
     return this.storage.set(Keys.GLIDERA_STATUS(network), status);
   }
 
@@ -226,7 +232,7 @@ export class PersistenceProvider {
     return this.storage.remove(Keys.GLIDERA_STATUS(network));
   }
 
-  setGlideraTxs(network: string, txs: any) {
+  setGlideraTxs(network: string, txs) {
     return this.storage.set(Keys.GLIDERA_TXS(network), txs);
   }
 
@@ -262,7 +268,7 @@ export class PersistenceProvider {
     return this.storage.remove(Keys.COINBASE_REFRESH_TOKEN(network));
   }
 
-  setCoinbaseTxs(network: string, ctx: any) {
+  setCoinbaseTxs(network: string, ctx) {
     return this.storage.set(Keys.COINBASE_TXS(network), ctx);
   }
 
@@ -274,7 +280,7 @@ export class PersistenceProvider {
     return this.storage.remove(Keys.COINBASE_TXS(network));
   }
 
-  setAddressBook(network: string, addressbook: any) {
+  setAddressBook(network: string, addressbook) {
     return this.storage.set(Keys.ADDRESS_BOOK(network), addressbook);
   }
 
@@ -286,7 +292,7 @@ export class PersistenceProvider {
     return this.storage.remove(Keys.ADDRESS_BOOK(network));
   }
 
-  setLastCurrencyUsed(lastCurrencyUsed: any) {
+  setLastCurrencyUsed(lastCurrencyUsed) {
     return this.storage.set(Keys.LAST_CURRENCY_USED, lastCurrencyUsed);
   }
 
@@ -305,7 +311,7 @@ export class PersistenceProvider {
     });
   }
 
-  setTxHistory(walletId: string, txs: any) {
+  setTxHistory(walletId: string, txs) {
     return this.storage.set(Keys.TX_HISTORY(walletId), txs).catch(err => {
       this.logger.error('Error saving tx History. Size:' + txs.length);
       this.logger.error(err);
@@ -320,7 +326,7 @@ export class PersistenceProvider {
     return this.storage.remove(Keys.TX_HISTORY(walletId));
   }
 
-  setBalanceCache(cardId: string, data: any) {
+  setBalanceCache(cardId: string, data) {
     return this.storage.set(Keys.BALANCE_CACHE(cardId), data);
   }
 
@@ -332,7 +338,7 @@ export class PersistenceProvider {
     return this.storage.remove(Keys.BALANCE_CACHE(cardId));
   }
 
-  setAppIdentity(network: string, data: any) {
+  setAppIdentity(network: string, data) {
     return this.storage.set(Keys.APP_IDENTITY(network), data);
   }
 
@@ -351,7 +357,7 @@ export class PersistenceProvider {
       .then(() => this.removeWalletOrder(walletId));
   }
 
-  setAmazonGiftCards(network: string, gcs: any) {
+  setAmazonGiftCards(network: string, gcs) {
     return this.storage.set(Keys.AMAZON_GIFT_CARDS(network), gcs);
   }
 
@@ -363,7 +369,7 @@ export class PersistenceProvider {
     return this.storage.remove(Keys.AMAZON_GIFT_CARDS(network));
   }
 
-  setTxConfirmNotification(txid: string, val: any) {
+  setTxConfirmNotification(txid: string, val) {
     return this.storage.set(Keys.TX_CONFIRM_NOTIF(txid), val);
   }
 
@@ -411,7 +417,7 @@ export class PersistenceProvider {
     });
   }
 
-  setBitpayDebitCards(network: string, email: string, cards: any) {
+  setBitpayDebitCards(network: string, email: string, cards) {
     return this.getBitpayAccounts(network).then(allAccounts => {
       allAccounts = allAccounts || {};
       if (!allAccounts[email])
@@ -472,7 +478,7 @@ export class PersistenceProvider {
     return this.storage.remove(Keys.MERCADO_LIBRE(network));
   }
 
-  setShapeshift(network: string, gcs: any) {
+  setShapeshift(network: string, gcs) {
     return this.storage.set('shapeShift-' + network, gcs);
   }
 

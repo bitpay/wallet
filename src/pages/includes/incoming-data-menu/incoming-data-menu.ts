@@ -17,7 +17,7 @@ export class IncomingDataMenuPage {
     this.https = false;
     this.showIncomingDataMenu = false;
     this.showSlideEffect = false;
-    this.events.subscribe('showIncomingDataMenuEvent', (data: any) => {
+    this.events.subscribe('showIncomingDataMenuEvent', data => {
       this.showIncomingDataMenu = true;
       this.data = data.data;
       this.type = data.type;

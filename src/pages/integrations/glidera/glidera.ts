@@ -17,8 +17,8 @@ import { GlideraTxDetailsPage } from './glidera-tx-details/glidera-tx-details';
   templateUrl: 'glidera.html'
 })
 export class GlideraPage {
-  public account: any;
-  public tx: any;
+  public account;
+  public tx;
   public showOauthForm: boolean;
   public network: string;
   public currency: string;

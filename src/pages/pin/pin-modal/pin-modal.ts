@@ -20,7 +20,7 @@ import { PersistenceProvider } from '../../../providers/persistence/persistence'
 export class PinModalPage {
   private ATTEMPT_LIMIT: number;
   private ATTEMPT_LOCK_OUT_TIME: number;
-  private countDown: any;
+  private countDown;
   public currentAttempts: number;
   public currentPin: string;
   public firstPinEntered: string;
@@ -29,7 +29,7 @@ export class PinModalPage {
   public disableButtons: boolean;
   public expires: string;
   public incorrect: boolean;
-  public unregister: any;
+  public unregister;
 
   @ViewChild(Animate) pinCode: Animate;
 

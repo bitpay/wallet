@@ -17,21 +17,21 @@ import { TabsPage } from '../../../../tabs/tabs';
   templateUrl: 'wallet-information.html'
 })
 export class WalletInformationPage {
-  public wallet: any;
+  public wallet;
   public walletId: string;
   public walletName: string;
   public N: number;
   public M: number;
-  public copayers: any;
-  public copayerId: any;
-  public balanceByAddress: any;
+  public copayers;
+  public copayerId;
+  public balanceByAddress;
   public account: number;
   public coin: string;
   public network: string;
   public addressType: string;
   public derivationStrategy: string;
   public basePath: string;
-  public pubKeys: any[];
+  public pubKeys;
   public externalSource: string;
   public canSign: boolean;
   public needsBackup: boolean;

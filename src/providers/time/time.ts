@@ -11,7 +11,7 @@ export class TimeProvider {
     return this.getMonthYear(date1) === this.getMonthYear(date2);
   }
 
-  public withinPastDay(time: any): boolean {
+  public withinPastDay(time): boolean {
     let now = new Date();
     let date = new Date(time);
     return now.getTime() - date.getTime() < 1000 * 60 * 60 * 24;

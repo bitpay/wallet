@@ -6,7 +6,7 @@ import { LanguagePage } from './language';
 
 describe('LanguagePage', () => {
   let fixture: ComponentFixture<LanguagePage>;
-  let instance: any;
+  let instance;
 
   beforeEach(async(() =>
     TestUtils.configurePageTestingModule([LanguagePage]).then(testEnv => {

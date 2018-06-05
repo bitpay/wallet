@@ -79,7 +79,7 @@ export class PopupProvider {
   public ionicPrompt(
     title: string,
     message: string,
-    opts?: any,
+    opts?,
     okText?: string,
     cancelText?: string
   ): Promise<any> {

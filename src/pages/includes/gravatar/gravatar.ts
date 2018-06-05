@@ -7,7 +7,7 @@ import { Logger } from '../../../providers/logger/logger';
   templateUrl: 'gravatar.html'
 })
 export class GravatarPage {
-  public emailHash: any;
+  public emailHash;
 
   @Input() email: string;
   @Input() name: string;

@@ -14,12 +14,12 @@ import { ReplaceParametersProvider } from '../../../../providers/replace-paramet
   templateUrl: 'wallet-name.html'
 })
 export class WalletNamePage {
-  public wallet: any;
+  public wallet;
   public walletName: string;
   public walletNameForm: FormGroup;
   public description: string;
 
-  private config: any;
+  private config;
 
   constructor(
     private profileProvider: ProfileProvider,

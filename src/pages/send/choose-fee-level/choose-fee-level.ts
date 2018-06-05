@@ -25,9 +25,9 @@ export class ChooseFeeLevelPage {
   public customFeePerKB: string;
   public feePerSatByte: string;
   public selectedFee: string;
-  public feeOpts: any[];
+  public feeOpts;
   public loadingFee: boolean;
-  public feeLevels: any;
+  public feeLevels;
   public coin: string;
   public avgConfirmationTime: number;
   public customSatPerByte: number;
@@ -67,7 +67,7 @@ export class ChooseFeeLevelPage {
     this.loadingFee = true;
     this.feeProvider
       .getFeeLevels(this.coin)
-      .then((levels: any) => {
+      .then(levels => {
         this.loadingFee = false;
         if (_.isEmpty(levels)) {
           this.showErrorAndClose(
@@ -79,7 +79,7 @@ export class ChooseFeeLevelPage {
         this.feeLevels = levels;
         this.updateFeeRate();
       })
-      .catch((err: any) => {
+      .catch(err => {
         this.loadingFee = false;
         this.showErrorAndClose(null, err);
         return;
@@ -95,12 +95,9 @@ export class ChooseFeeLevelPage {
   }
 
   public updateFeeRate() {
-    let value: any = _.find(
-      this.feeLevels.levels[this.network],
-      (feeLevel: any) => {
-        return feeLevel.level == this.feeLevel;
-      }
-    );
+    let value = _.find(this.feeLevels.levels[this.network], feeLevel => {
+      return feeLevel.level == this.feeLevel;
+    });
 
     // If no custom fee
     if (value) {
@@ -134,22 +131,16 @@ export class ChooseFeeLevelPage {
   }
 
   private getMinRecommended(): number {
-    let value: any = _.find(
-      this.feeLevels.levels[this.network],
-      (feeLevel: any) => {
-        return feeLevel.level == 'superEconomy';
-      }
-    );
+    let value = _.find(this.feeLevels.levels[this.network], feeLevel => {
+      return feeLevel.level == 'superEconomy';
+    });
     return parseInt((value.feePerKb / 1000).toFixed(), 10);
   }
 
   private getMaxRecommended(): number {
-    let value: any = _.find(
-      this.feeLevels.levels[this.network],
-      (feeLevel: any) => {
-        return feeLevel.level == 'urgent';
-      }
-    );
+    let value = _.find(this.feeLevels.levels[this.network], feeLevel => {
+      return feeLevel.level == 'urgent';
+    });
     return parseInt((value.feePerKb / 1000).toFixed(), 10);
   }
 

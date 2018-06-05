@@ -13,7 +13,10 @@ import { PopupProvider } from '../../../../../providers/popup/popup';
 import { ProfileProvider } from '../../../../../providers/profile/profile';
 import { PushNotificationsProvider } from '../../../../../providers/push-notifications/push-notifications';
 import { TxFormatProvider } from '../../../../../providers/tx-format/tx-format';
-import { WalletProvider } from '../../../../../providers/wallet/wallet';
+import {
+  WalletOptions,
+  WalletProvider
+} from '../../../../../providers/wallet/wallet';
 import { TabsPage } from '../../../../tabs/tabs';
 
 @Component({
@@ -21,11 +24,11 @@ import { TabsPage } from '../../../../tabs/tabs';
   templateUrl: 'bitcoin-cash.html'
 })
 export class BitcoinCashPage {
-  private errors: any;
+  private errors;
 
-  public availableWallet: any;
-  public nonEligibleWallet: any;
-  public error: any;
+  public availableWallet;
+  public nonEligibleWallet;
+  public error;
 
   constructor(
     private app: App,
@@ -93,12 +96,12 @@ export class BitcoinCashPage {
       });
   }
 
-  public duplicate(wallet: any) {
+  public duplicate(wallet) {
     this.logger.debug(
       'Duplicating wallet for BCH: ' + wallet.id + ': ' + wallet.name
     );
 
-    let opts: any = {
+    let opts: Partial<WalletOptions> = {
       name: wallet.name + '[BCH]',
       m: wallet.m,
       n: wallet.n,
@@ -109,7 +112,7 @@ export class BitcoinCashPage {
       compliantDerivation: wallet.credentials.compliantDerivation
     };
 
-    let setErr = err => {
+    const setErr = err => {
       this.bwcErrorProvider.cb(err, 'Could not duplicate').then(errorMsg => {
         this.logger.warn('Duplicate BCH', errorMsg);
         this.popupProvider.ionicAlert(errorMsg, null, 'OK');
@@ -117,11 +120,14 @@ export class BitcoinCashPage {
       });
     };
 
-    let importOrCreate = () => {
+    const importOrCreate: () => Promise<{
+      newWallet: any;
+      isNew?: boolean;
+    }> = () => {
       return new Promise((resolve, reject) => {
         this.walletProvider
           .getStatus(wallet, {})
-          .then((status: any) => {
+          .then(status => {
             opts.singleAddress = status.wallet.singleAddress;
 
             // first try to import
@@ -174,7 +180,7 @@ export class BitcoinCashPage {
         opts.extendedPrivateKey = keys.xPrivKey;
         this.onGoingProcessProvider.set('duplicatingWallet');
         importOrCreate()
-          .then((result: any) => {
+          .then(result => {
             let newWallet = result.newWallet;
             let isNew = result.isNew;
 

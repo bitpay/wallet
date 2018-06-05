@@ -51,32 +51,32 @@ import { WalletProvider } from '../../providers/wallet/wallet';
 })
 export class HomePage {
   @ViewChild('showCard') showCard;
-  public wallets: any;
-  public walletsBtc: any;
-  public walletsBch: any;
+  public wallets;
+  public walletsBtc;
+  public walletsBch;
   public cachedBalanceUpdateOn: string;
   public recentTransactionsEnabled: boolean;
-  public txps: any;
+  public txps;
   public txpsN: number;
-  public notifications: any;
+  public notifications;
   public notificationsN: number;
-  public serverMessage: any;
-  public addressbook: any;
+  public serverMessage;
+  public addressbook;
   public newRelease: boolean;
   public updateText: string;
-  public homeIntegrations: any[];
-  public bitpayCardItems: any;
+  public homeIntegrations;
+  public bitpayCardItems;
   public showBitPayCard: boolean = false;
 
   public showRateCard: boolean;
   public homeTip: boolean;
   public showReorderBtc: boolean;
   public showReorderBch: boolean;
-  public showIntegration: any;
+  public showIntegration;
 
   private isNW: boolean;
   private updatingWalletId: object;
-  private zone: any;
+  private zone;
 
   constructor(
     private plt: Platform,
@@ -120,7 +120,7 @@ export class HomePage {
 
     this.addressBookProvider
       .list()
-      .then((ab: any) => {
+      .then(ab => {
         this.addressbook = ab || {};
       })
       .catch(err => {
@@ -259,7 +259,7 @@ export class HomePage {
   }
 
   private checkFeedbackInfo() {
-    this.persistenceProvider.getFeedbackInfo().then((info: any) => {
+    this.persistenceProvider.getFeedbackInfo().then(info => {
       if (!info) {
         this.initFeedBackInfo();
       } else {
@@ -284,12 +284,12 @@ export class HomePage {
   }
 
   private initFeedBackInfo() {
-    let feedbackInfo: any = {};
-    feedbackInfo.time = moment().unix();
-    feedbackInfo.version = this.releaseProvider.getCurrentAppVersion();
-    feedbackInfo.sent = false;
+    this.persistenceProvider.setFeedbackInfo({
+      time: moment().unix(),
+      version: this.releaseProvider.getCurrentAppVersion(),
+      sent: false
+    });
     this.showRateCard = false;
-    this.persistenceProvider.setFeedbackInfo(feedbackInfo);
   }
 
   private updateWallet(walletId: string): void {
@@ -298,7 +298,7 @@ export class HomePage {
     let wallet = this.profileProvider.getWallet(walletId);
     this.walletProvider
       .getStatus(wallet, {})
-      .then((status: any) => {
+      .then(status => {
         wallet.status = status;
         wallet.error = null;
         this.profileProvider.setLastKnownBalance(
@@ -308,7 +308,7 @@ export class HomePage {
         this.updateTxps();
         this.stopUpdatingWalletId(walletId);
       })
-      .catch((err: any) => {
+      .catch(err => {
         this.logger.error(err);
         this.stopUpdatingWalletId(walletId);
       });
@@ -318,13 +318,13 @@ export class HomePage {
     () => {
       this.profileProvider
         .getTxps({ limit: 3 })
-        .then((data: any) => {
+        .then(data => {
           this.zone.run(() => {
             this.txps = data.txps;
             this.txpsN = data.n;
           });
         })
-        .catch((err: any) => {
+        .catch(err => {
           this.logger.error(err);
         });
     },
@@ -339,13 +339,13 @@ export class HomePage {
       if (!this.recentTransactionsEnabled) return;
       this.profileProvider
         .getNotifications({ limit: 3 })
-        .then((data: any) => {
+        .then(data => {
           this.zone.run(() => {
             this.notifications = data.notifications;
             this.notificationsN = data.total;
           });
         })
-        .catch((err: any) => {
+        .catch(err => {
           this.logger.error(err);
         });
     },
@@ -366,7 +366,7 @@ export class HomePage {
     let pr = ((wallet, cb) => {
       this.walletProvider
         .getStatus(wallet, {})
-        .then((status: any) => {
+        .then(status => {
           wallet.status = status;
           wallet.error = null;
 
@@ -396,7 +396,7 @@ export class HomePage {
         });
     }).bind(this);
 
-    _.each(this.wallets, (wallet: any) => {
+    _.each(this.wallets, wallet => {
       pr(wallet, () => {
         if (++j == i) {
           this.updateTxps();
@@ -437,7 +437,7 @@ export class HomePage {
     this.navCtrl.push(AddPage);
   }
 
-  public goToWalletDetails(wallet: any): void {
+  public goToWalletDetails(wallet): void {
     if (this.showReorderBtc || this.showReorderBch) return;
     if (!wallet.isComplete()) {
       this.navCtrl.push(CopayersPage, {
@@ -450,7 +450,7 @@ export class HomePage {
     });
   }
 
-  public openNotificationModal(n: any) {
+  public openNotificationModal(n) {
     let wallet = this.profileProvider.getWallet(n.walletId);
 
     if (n.txid) {
@@ -465,7 +465,7 @@ export class HomePage {
         this.onGoingProcessProvider.set('loadingTxInfo');
         this.walletProvider
           .getTxp(wallet, n.txpId)
-          .then((txp: any) => {
+          .then(txp => {
             var _txp = txp;
             this.onGoingProcessProvider.clear();
             this.openTxpModal(_txp);
@@ -493,7 +493,7 @@ export class HomePage {
     let element = this.walletsBtc[indexes.from];
     this.walletsBtc.splice(indexes.from, 1);
     this.walletsBtc.splice(indexes.to, 0, element);
-    _.each(this.walletsBtc, (wallet: any, index: number) => {
+    _.each(this.walletsBtc, (wallet, index: number) => {
       this.profileProvider.setWalletOrder(wallet.id, index);
     });
   }
@@ -502,7 +502,7 @@ export class HomePage {
     let element = this.walletsBch[indexes.from];
     this.walletsBch.splice(indexes.from, 1);
     this.walletsBch.splice(indexes.to, 0, element);
-    _.each(this.walletsBch, (wallet: any, index: number) => {
+    _.each(this.walletsBch, (wallet, index: number) => {
       this.profileProvider.setWalletOrder(wallet.id, index);
     });
   }
@@ -526,7 +526,7 @@ export class HomePage {
     );
   }
 
-  public openTxpModal(tx: any): void {
+  public openTxpModal(tx): void {
     let modal = this.modalCtrl.create(
       TxpDetailsPage,
       { tx },

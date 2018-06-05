@@ -11,7 +11,7 @@ import { PopupProvider } from '../../../../providers/popup/popup';
 })
 export class CoinbaseTxDetailsPage {
   public updateRequired: boolean;
-  public tx: any;
+  public tx;
 
   constructor(
     public viewCtrl: ViewController,

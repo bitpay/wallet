@@ -17,7 +17,7 @@ describe('Provider: Incoming Data Provider', () => {
   let eventsSpy;
 
   class AppProviderMock {
-    public info: any = {};
+    public info = {};
     constructor() {
       this.info = { name: 'bitpay', _enabledExtensions: { debitcard: true } };
     }

@@ -17,10 +17,10 @@ import { TabsPage } from '../../../tabs/tabs';
 })
 export class CoinbaseSettingsPage {
   private serviceName: string = 'coinbase';
-  public showInHome: any;
-  public service: any;
-  public coinbaseAccount: any;
-  public coinbaseUser: any;
+  public showInHome;
+  public service;
+  public coinbaseAccount;
+  public coinbaseUser;
 
   constructor(
     private app: App,

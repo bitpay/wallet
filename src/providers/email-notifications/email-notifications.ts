@@ -19,7 +19,7 @@ export class EmailNotificationsProvider {
     this.logger.info('EmailNotificationsProvider initialized');
   }
 
-  public updateEmail(opts: any) {
+  public updateEmail(opts) {
     opts = opts || {};
     if (!opts.email) return;
 
@@ -37,7 +37,7 @@ export class EmailNotificationsProvider {
     }, 1000);
   }
 
-  public getEmailIfEnabled(config?: any) {
+  public getEmailIfEnabled(config?) {
     config = config ? config : this.configProvider.get();
 
     if (config.emailNotifications) {

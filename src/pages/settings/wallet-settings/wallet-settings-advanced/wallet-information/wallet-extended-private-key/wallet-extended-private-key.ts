@@ -11,7 +11,7 @@ import { WalletProvider } from '../../../../../../providers/wallet/wallet';
   templateUrl: 'wallet-extended-private-key.html'
 })
 export class WalletExtendedPrivateKeyPage {
-  public wallet: any;
+  public wallet;
   public credentialsEncrypted: boolean;
   public xPrivKey: string;
 
@@ -36,7 +36,7 @@ export class WalletExtendedPrivateKeyPage {
         this.xPrivKey = k.xPrivKey;
         this.credentialsEncrypted = false;
       })
-      .catch((err: any) => {
+      .catch(err => {
         this.logger.error('Could not get keys: ', err);
         this.navCtrl.pop();
       });

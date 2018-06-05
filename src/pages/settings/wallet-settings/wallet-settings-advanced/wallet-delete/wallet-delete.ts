@@ -15,7 +15,7 @@ import { TabsPage } from '../../../../tabs/tabs';
   templateUrl: 'wallet-delete.html'
 })
 export class WalletDeletePage {
-  public wallet: any;
+  public wallet;
   public walletName: string;
 
   constructor(

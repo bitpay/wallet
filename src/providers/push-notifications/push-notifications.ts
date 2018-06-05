@@ -45,7 +45,7 @@ export class PushNotificationsProvider {
       this.logger.debug('Starting push notification registration...');
 
       // Keep in mind the function will return null if the token has not been established yet.
-      this.FCMPlugin.getToken().then((token: any) => {
+      this.FCMPlugin.getToken().then(token => {
         this.logger.debug('Get token for push notifications: ' + token);
         this._token = token;
         this.enable();
@@ -56,14 +56,14 @@ export class PushNotificationsProvider {
 
   public handlePushNotifications(): void {
     if (this.usePushNotifications) {
-      this.FCMPlugin.onTokenRefresh().subscribe((token: any) => {
+      this.FCMPlugin.onTokenRefresh().subscribe(token => {
         if (!this._token) return;
         this.logger.debug('Refresh and update token for push notifications...');
         this._token = token;
         this.enable();
       });
 
-      this.FCMPlugin.onNotification().subscribe((data: any) => {
+      this.FCMPlugin.onNotification().subscribe(data => {
         if (!this._token) return;
         this.logger.debug(
           'New Event Push onNotification: ' + JSON.stringify(data)
@@ -81,7 +81,7 @@ export class PushNotificationsProvider {
     }
   }
 
-  public updateSubscription(walletClient: any): void {
+  public updateSubscription(walletClient): void {
     if (!this._token) {
       this.logger.warn(
         'Push notifications disabled for this device. Nothing to do here.'
@@ -100,7 +100,7 @@ export class PushNotificationsProvider {
     }
 
     var wallets = this.profileProvider.getWallets();
-    _.forEach(wallets, (walletClient: any) => {
+    _.forEach(wallets, walletClient => {
       this._subscribe(walletClient);
     });
   }
@@ -114,24 +114,24 @@ export class PushNotificationsProvider {
     }
 
     var wallets = this.profileProvider.getWallets();
-    _.forEach(wallets, (walletClient: any) => {
+    _.forEach(wallets, walletClient => {
       this._unsubscribe(walletClient);
     });
     this._token = null;
   }
 
-  public unsubscribe(walletClient: any): void {
+  public unsubscribe(walletClient): void {
     if (!this._token) return;
     this._unsubscribe(walletClient);
   }
 
-  private _subscribe(walletClient: any): void {
+  private _subscribe(walletClient): void {
     let opts = {
       token: this._token,
       platform: this.isIOS ? 'ios' : this.isAndroid ? 'android' : null,
       packageName: this.appProvider.info.packageNameId
     };
-    walletClient.pushNotificationsSubscribe(opts, (err: any) => {
+    walletClient.pushNotificationsSubscribe(opts, err => {
       if (err)
         this.logger.error(
           walletClient.name + ': Subscription Push Notifications error. ',
@@ -144,8 +144,8 @@ export class PushNotificationsProvider {
     });
   }
 
-  private _unsubscribe(walletClient: any): void {
-    walletClient.pushNotificationsUnsubscribe(this._token, (err: any) => {
+  private _unsubscribe(walletClient): void {
+    walletClient.pushNotificationsUnsubscribe(this._token, err => {
       if (err)
         this.logger.error(
           walletClient.name + ': Unsubscription Push Notifications error. ',
@@ -158,13 +158,13 @@ export class PushNotificationsProvider {
     });
   }
 
-  private _openWallet(walletIdHashed: any): void {
+  private _openWallet(walletIdHashed): void {
     let walletIdHash;
     let sjcl = this.bwcProvider.getSJCL();
-    let nextView: any = {};
+    let nextView: { name?: string; params?: { walletId: any } } = {};
 
     let wallets = this.profileProvider.getWallets();
-    let wallet: any = _.find(wallets, (w: any) => {
+    let wallet = _.find(wallets, w => {
       walletIdHash = sjcl.hash.sha256.hash(w.credentials.walletId);
       return _.isEqual(walletIdHashed, sjcl.codec.hex.fromBits(walletIdHash));
     });

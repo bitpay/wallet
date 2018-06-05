@@ -7,7 +7,7 @@ import { TimeProvider } from '../../../providers/time/time';
 })
 export class CardItemPage {
   private _currencySymbol: string;
-  private _card: any;
+  private _card;
   public sent: boolean = false;
   public received: boolean = false;
   public pending: boolean = false;
@@ -15,7 +15,7 @@ export class CardItemPage {
   constructor(private timeProvider: TimeProvider) {}
 
   @Input()
-  set card(card: any) {
+  set card(card) {
     this._card = card;
     if (card.pending) {
       this.pending = true;
@@ -31,7 +31,7 @@ export class CardItemPage {
   }
 
   @Input()
-  set currencySymbol(cs: any) {
+  set currencySymbol(cs) {
     this._currencySymbol = cs;
   }
 
@@ -39,7 +39,7 @@ export class CardItemPage {
     return this._currencySymbol;
   }
 
-  public createdWithinPastDay(time: any): any {
+  public createdWithinPastDay(time) {
     return this.timeProvider.withinPastDay(time);
   }
 }

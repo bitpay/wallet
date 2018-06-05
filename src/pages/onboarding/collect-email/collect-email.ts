@@ -87,7 +87,7 @@ export class CollectEmailPage {
     let platform = this.device.platform || 'Unknown platform';
     let version = this.device.version || 'Unknown version';
 
-    const headers: any = new HttpHeaders({
+    const headers = new HttpHeaders({
       'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
     });
     const urlSearchParams = new HttpParams()

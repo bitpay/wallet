@@ -78,7 +78,7 @@ export class ScanProvider {
   /**
    * Immediately return known capabilities of the current platform.
    */
-  public getCapabilities(): any {
+  public getCapabilities() {
     return {
       isAvailable: this.isAvailable,
       hasPermission: this.hasPermission,
@@ -143,7 +143,7 @@ export class ScanProvider {
       this.logger.debug('Initializing scanner...');
       this.qrScanner
         .prepare()
-        .then((status: any) => {
+        .then(status => {
           this.completeInitialization(status);
           return resolve();
         })
@@ -159,7 +159,7 @@ export class ScanProvider {
     });
   }
 
-  private completeInitialization(status: any): void {
+  private completeInitialization(status): void {
     this.checkCapabilities(status);
     this.initializeCompleted = true;
     this.events.publish('scannerServiceInitialized');

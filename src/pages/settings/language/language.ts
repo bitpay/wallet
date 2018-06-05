@@ -13,8 +13,8 @@ import { WalletProvider } from '../../../providers/wallet/wallet';
   templateUrl: 'language.html'
 })
 export class LanguagePage {
-  public currentLanguage: any;
-  public languages: any;
+  public currentLanguage;
+  public languages;
 
   constructor(
     private navCtrl: NavController,

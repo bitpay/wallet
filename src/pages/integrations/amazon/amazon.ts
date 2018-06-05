@@ -12,6 +12,7 @@ import { AmazonProvider } from '../../../providers/amazon/amazon';
 import { ExternalLinkProvider } from '../../../providers/external-link/external-link';
 import { PopupProvider } from '../../../providers/popup/popup';
 import { TimeProvider } from '../../../providers/time/time';
+import { GiftCardNewData } from '../gift-cards';
 
 @Component({
   selector: 'page-amazon',
@@ -19,11 +20,11 @@ import { TimeProvider } from '../../../providers/time/time';
 })
 export class AmazonPage {
   public network: string;
-  public giftCards: any;
+  public giftCards;
 
   private updateGiftCard: boolean;
-  public updatingPending: any;
-  public card: any;
+  public updatingPending;
+  public card;
   public invoiceId: string;
 
   constructor(
@@ -65,7 +66,7 @@ export class AmazonPage {
             this.openCardModal(card);
           }
         })
-        .catch((err: any) => {
+        .catch(err => {
           this.logger.error('Amazon: could not update gift cards', err);
         });
     }
@@ -73,7 +74,7 @@ export class AmazonPage {
 
   private initAmazon(): Promise<any> {
     return new Promise(resolve => {
-      this.amazonProvider.getPendingGiftCards((err: any, gcds: any) => {
+      this.amazonProvider.getPendingGiftCards((err, gcds) => {
         if (err) this.logger.error(err);
         this.giftCards = gcds;
         return resolve();
@@ -81,7 +82,7 @@ export class AmazonPage {
     });
   }
 
-  private checkIfCardNeedsUpdate(card: any) {
+  private checkIfCardNeedsUpdate(card) {
     // Continues normal flow (update card)
     if (card.status == 'PENDING' || card.status == 'invalid') {
       return true;
@@ -99,7 +100,7 @@ export class AmazonPage {
 
   private updateGiftCards(): Promise<any> {
     return new Promise((resolve, reject) => {
-      this.amazonProvider.getPendingGiftCards((err: any, gcds: any) => {
+      this.amazonProvider.getPendingGiftCards((err, gcds) => {
         if (err) {
           this.popupProvider.ionicAlert('Could not get gift cards', err);
           return reject(err);
@@ -116,7 +117,7 @@ export class AmazonPage {
       this.updateGiftCards()
         .then(() => {
           let gcds = this.giftCards;
-          _.forEach(gcds, (dataFromStorage: any) => {
+          _.forEach(gcds, dataFromStorage => {
             this.updateGiftCard = this.checkIfCardNeedsUpdate(dataFromStorage);
 
             if (this.updateGiftCard) {
@@ -125,7 +126,7 @@ export class AmazonPage {
 
               this.amazonProvider.createGiftCard(
                 dataFromStorage,
-                (err: any, giftCard: any) => {
+                (err, giftCard) => {
                   this.updatingPending[dataFromStorage.invoiceId] = false;
                   if (err) {
                     this.logger.error('Error creating gift card:', err);
@@ -134,7 +135,7 @@ export class AmazonPage {
                   }
 
                   if (giftCard.status != 'PENDING') {
-                    let newData: any = {};
+                    let newData: Partial<GiftCardNewData> = {};
 
                     _.merge(newData, dataFromStorage, giftCard);
 
@@ -165,7 +166,7 @@ export class AmazonPage {
             }
           });
         })
-        .catch((err: any) => {
+        .catch(err => {
           this.logger.error(err);
         });
     },
@@ -175,7 +176,7 @@ export class AmazonPage {
     }
   );
 
-  public openCardModal(card: any): void {
+  public openCardModal(card): void {
     this.card = card;
 
     let modal = this.modalCtrl.create(AmazonCardDetailsPage, {

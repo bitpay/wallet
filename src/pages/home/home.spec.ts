@@ -10,7 +10,7 @@ import { HomePage } from './home';
 
 describe('HomePage', () => {
   let fixture: ComponentFixture<HomePage>;
-  let instance: any;
+  let instance;
   let testBed: typeof TestBed;
 
   beforeEach(async(() =>

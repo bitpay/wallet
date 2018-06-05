@@ -7,19 +7,19 @@ export class NodeWebkitProvider {
     this.logger.info('NodeWebkitProvider initialized.');
   }
 
-  public readFromClipboard(): any {
+  public readFromClipboard() {
     let gui = (window as any).require('nw.gui');
     let clipboard = gui.Clipboard.get();
     return clipboard.get();
   }
 
-  public writeToClipboard(text): any {
+  public writeToClipboard(text) {
     let gui = (window as any).require('nw.gui');
     let clipboard = gui.Clipboard.get();
     return clipboard.set(text);
   }
 
-  public openExternalLink(url): any {
+  public openExternalLink(url) {
     let gui = (window as any).require('nw.gui');
     return gui.Shell.openExternal(url);
   }

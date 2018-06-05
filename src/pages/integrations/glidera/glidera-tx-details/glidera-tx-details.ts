@@ -6,7 +6,7 @@ import { NavParams, ViewController } from 'ionic-angular';
   templateUrl: 'glidera-tx-details.html'
 })
 export class GlideraTxDetailsPage {
-  public tx: any;
+  public tx;
 
   constructor(private navParams: NavParams, private viewCtrl: ViewController) {
     this.tx = this.navParams.data.tx;

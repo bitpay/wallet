@@ -23,12 +23,12 @@ import { AmountPage } from './amount/amount';
 })
 export class SendPage {
   public search: string = '';
-  public walletsBtc: any;
-  public walletsBch: any;
-  public walletBchList: any;
-  public walletBtcList: any;
-  public contactsList: object[] = [];
-  public filteredContactsList: object[] = [];
+  public walletsBtc;
+  public walletsBch;
+  public walletBchList;
+  public walletBtcList;
+  public contactsList = [];
+  public filteredContactsList = [];
   public hasBtcWallets: boolean;
   public hasBchWallets: boolean;
   public hasContacts: boolean;
@@ -110,7 +110,7 @@ export class SendPage {
 
     if (!this.hasBchWallets) return;
 
-    _.each(this.walletsBch, (v: any) => {
+    _.each(this.walletsBch, v => {
       this.walletBchList.push({
         color: v.color,
         name: v.name,
@@ -142,7 +142,7 @@ export class SendPage {
 
     if (!this.hasBtcWallets) return;
 
-    _.each(this.walletsBtc, (v: any) => {
+    _.each(this.walletsBtc, v => {
       this.walletBtcList.push({
         color: v.color,
         name: v.name,
@@ -170,12 +170,12 @@ export class SendPage {
   }
 
   private updateContactsList(): void {
-    this.addressBookProvider.list().then((ab: any) => {
+    this.addressBookProvider.list().then(ab => {
       this.hasContacts = _.isEmpty(ab) ? false : true;
       if (!this.hasContacts) return;
 
       this.contactsList = [];
-      _.each(ab, (v: any, k: string) => {
+      _.each(ab, (v, k: string) => {
         this.contactsList.push({
           name: _.isObject(v) ? v.name : v,
           address: k,
@@ -214,7 +214,7 @@ export class SendPage {
   public findContact(search: string): void {
     if (this.incomingDataProvider.redir(search)) return;
     if (search && search.trim() != '') {
-      let result = _.filter(this.contactsList, (item: any) => {
+      let result = _.filter(this.contactsList, item => {
         let val = item.name;
         return _.includes(val.toLowerCase(), search.toLowerCase());
       });
@@ -224,7 +224,7 @@ export class SendPage {
     }
   }
 
-  public goToAmount(item: any): void {
+  public goToAmount(item): void {
     item
       .getAddress()
       .then((addr: string) => {
@@ -245,7 +245,7 @@ export class SendPage {
         });
         return;
       })
-      .catch((err: any) => {
+      .catch(err => {
         this.logger.error('Send: could not getAddress', err);
       });
   }

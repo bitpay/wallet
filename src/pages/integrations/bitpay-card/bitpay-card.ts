@@ -22,13 +22,13 @@ import * as moment from 'moment';
 })
 export class BitPayCardPage {
   public network: string;
-  public dateRange: any;
+  public dateRange;
   public cardId: string;
   public getStarted: boolean;
   public loadingHistory: boolean;
-  public bitpayCardTransactionHistoryCompleted: any;
-  public bitpayCardTransactionHistoryConfirming: any;
-  public bitpayCardTransactionHistoryPreAuth: any;
+  public bitpayCardTransactionHistoryCompleted;
+  public bitpayCardTransactionHistoryConfirming;
+  public bitpayCardTransactionHistoryPreAuth;
   public balance: number;
   public updatedOn: number;
   public lastFourDigits: number;
@@ -72,7 +72,7 @@ export class BitPayCardPage {
     );
   }
 
-  private setDateRange(preset: string): any {
+  private setDateRange(preset: string) {
     let startDate;
     let endDate;
     preset = preset || 'last30Days';
@@ -97,7 +97,7 @@ export class BitPayCardPage {
         endDate = null;
         break;
       default:
-        return;
+        return undefined;
     }
     return {
       startDate,
@@ -105,7 +105,7 @@ export class BitPayCardPage {
     };
   }
 
-  private setGetStarted(history: any, cb: () => any) {
+  private setGetStarted(history, cb: () => any) {
     // Is the card new?
     if (!_.isEmpty(history.transactionList)) return cb();
 
@@ -198,7 +198,7 @@ export class BitPayCardPage {
     }
   }
 
-  private createdWithinPastDay(tx: any) {
+  private createdWithinPastDay(tx) {
     let result = false;
     if (tx.date) {
       result = this.timeProvider.withinPastDay(tx.date);

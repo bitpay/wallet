@@ -17,7 +17,7 @@ import { TimeProvider } from '../../../providers/time/time';
   templateUrl: 'shapeshift.html'
 })
 export class ShapeshiftPage {
-  public shifts: any;
+  public shifts;
   public network: string;
 
   constructor(
@@ -53,14 +53,14 @@ export class ShapeshiftPage {
   }
 
   private updateShift = _.debounce(
-    (shifts: any) => {
+    shifts => {
       if (_.isEmpty(shifts.data)) return;
-      _.forEach(shifts.data, (dataFromStorage: any) => {
+      _.forEach(shifts.data, dataFromStorage => {
         if (!this.checkIfShiftNeedsUpdate(dataFromStorage)) return;
 
         this.shapeshiftProvider.getStatus(
           dataFromStorage.address,
-          (err: any, st: any) => {
+          (err, st) => {
             if (err) return;
 
             this.shifts.data[st.address].status = st.status;
@@ -86,7 +86,7 @@ export class ShapeshiftPage {
     }
   );
 
-  private checkIfShiftNeedsUpdate(shiftData: any) {
+  private checkIfShiftNeedsUpdate(shiftData) {
     // Continues normal flow (update shiftData)
     if (shiftData.status == 'received') {
       return true;
@@ -104,7 +104,7 @@ export class ShapeshiftPage {
   }
 
   private init(): void {
-    this.shapeshiftProvider.getShapeshift((err: any, ss: any) => {
+    this.shapeshiftProvider.getShapeshift((err, ss) => {
       if (err) this.logger.error(err);
       if (ss) this.shifts = { data: ss };
       this.updateShift(this.shifts);
@@ -115,7 +115,7 @@ export class ShapeshiftPage {
     this.updateShift(this.shifts);
   }
 
-  public openShiftModal(ssData: any) {
+  public openShiftModal(ssData) {
     let modal = this.modalCtrl.create(ShapeshiftDetailsPage, { ssData });
 
     modal.present();

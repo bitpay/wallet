@@ -8,7 +8,7 @@ import { RateProvider } from '../providers/rate/rate';
   pure: false
 })
 export class FiatToUnitPipe implements PipeTransform {
-  private walletSettings: any;
+  private walletSettings;
 
   constructor(
     private configProvider: ConfigProvider,
@@ -17,7 +17,7 @@ export class FiatToUnitPipe implements PipeTransform {
   ) {
     this.walletSettings = this.configProvider.get().wallet.settings;
   }
-  transform(amount: number, coin: string, alternative?: string): any {
+  transform(amount: number, coin: string, alternative?: string) {
     alternative = alternative
       ? alternative
       : this.walletSettings.alternativeIsoCode;

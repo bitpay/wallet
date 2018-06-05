@@ -31,7 +31,7 @@ export class FeedbackPage {
 
   private isAndroid: boolean;
   private isIOS: boolean;
-  private config: any;
+  private config;
   private appName: string;
 
   constructor(

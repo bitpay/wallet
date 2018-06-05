@@ -16,9 +16,9 @@ import { PopupProvider } from '../../../../providers/popup/popup';
 })
 export class BitPaySettingsPage {
   private serviceName: string = 'debitcard';
-  public showAtHome: any;
-  public service: any;
-  public bitpayCard: any;
+  public showAtHome;
+  public service;
+  public bitpayCard;
 
   constructor(
     private navParams: NavParams,
@@ -60,7 +60,7 @@ export class BitPaySettingsPage {
     this.configProvider.set(opts);
   }
 
-  public unlinkCard(card: any) {
+  public unlinkCard(card) {
     let title = 'Unlink BitPay Card?';
     let msg =
       'Are you sure you would like to remove your BitPay Card (' +
@@ -79,7 +79,7 @@ export class BitPaySettingsPage {
     });
   }
 
-  public unlinkAccount(card: any) {
+  public unlinkAccount(card) {
     let title = 'Unlink BitPay Account?';
     let msg =
       'Are you sure you would like to remove your BitPay Account (' +

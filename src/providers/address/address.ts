@@ -5,9 +5,9 @@ import { BwcProvider } from '../../providers/bwc/bwc';
 
 @Injectable()
 export class AddressProvider {
-  private bitcore: any;
-  private bitcoreCash: any;
-  private Bitcore: any;
+  private bitcore;
+  private bitcoreCash;
+  private Bitcore;
 
   constructor(private bwcProvider: BwcProvider) {
     this.bitcore = this.bwcProvider.getBitcore();

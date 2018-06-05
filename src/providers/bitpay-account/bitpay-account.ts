@@ -64,9 +64,9 @@ export class BitPayAccountProvider {
   }
 
   public pair(
-    pairData: any,
+    pairData,
     pairingReason: string,
-    cb: (err: string, paired?: boolean, apiContext?: any) => any
+    cb: (err: string, paired?: boolean, apiContext?) => any
   ) {
     this.checkOtp(pairData, otp => {
       pairData.otp = otp;
@@ -155,7 +155,7 @@ export class BitPayAccountProvider {
     });
   }
 
-  private checkOtp(pairData: any, cb: (otp?) => any) {
+  private checkOtp(pairData, cb: (otp?) => any) {
     if (pairData.otp) {
       let msg = this.translate.instant(
         'Enter Two Factor for your BitPay account'
@@ -168,7 +168,7 @@ export class BitPayAccountProvider {
     }
   }
 
-  private fetchBasicInfo(apiContext: any, cb: (err, basicInfo?) => any) {
+  private fetchBasicInfo(apiContext, cb: (err, basicInfo?) => any) {
     let json = {
       method: 'getBasicInfo'
     };
@@ -235,7 +235,7 @@ export class BitPayAccountProvider {
     });
   }
 
-  private setBitpayAccount(account: any) {
+  private setBitpayAccount(account) {
     this.persistenceProvider.setBitpayAccount(
       this.bitPayProvider.getEnvironment().network,
       account
@@ -250,7 +250,7 @@ export class BitPayAccountProvider {
       });
   }
 
-  private _setError(msg: string, e: any): string {
+  private _setError(msg: string, e): string {
     this.logger.error(msg);
     let error = e && e.data && e.data.error ? e.data.error : msg;
     return error;

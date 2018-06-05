@@ -7,7 +7,7 @@ import { Logger } from '../../providers/logger/logger';
 
 @Injectable()
 export class FeedbackProvider {
-  private URL: any;
+  private URL;
 
   constructor(
     private http: HttpClient,
@@ -26,7 +26,7 @@ export class FeedbackProvider {
     return new Promise((resolve, reject) => {
       if (!this.URL) return resolve();
 
-      const headers: any = new HttpHeaders({
+      const headers = new HttpHeaders({
         'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
       });
       const urlSearchParams = new HttpParams()
@@ -55,7 +55,7 @@ export class FeedbackProvider {
     });
   }
 
-  public isVersionUpdated(currentVersion, savedVersion): any {
+  public isVersionUpdated(currentVersion, savedVersion) {
     let verifyTagFormat = tag => {
       let regex = /^v?\d+\.\d+\.\d+$/i;
       return regex.exec(tag);

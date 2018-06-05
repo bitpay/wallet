@@ -21,6 +21,7 @@ import { TxFormatProvider } from '../../../../providers/tx-format/tx-format';
 import { WalletProvider } from '../../../../providers/wallet/wallet';
 
 import * as _ from 'lodash';
+import { setPrice } from '../../integrations';
 
 @Component({
   selector: 'page-buy-glidera',
@@ -33,10 +34,10 @@ export class BuyGlideraPage {
   public token: string;
   public isFiat: boolean;
   public network: string;
-  public wallet: any;
-  public wallets: any;
+  public wallet;
+  public wallets;
   public amountUnitStr: string;
-  public buyInfo: any;
+  public buyInfo;
 
   private currency: string;
   private amount: number;
@@ -111,12 +112,7 @@ export class BuyGlideraPage {
         return;
       }
       this.token = data.token;
-      var price: any = {};
-      if (this.isFiat) {
-        price.fiat = this.amount;
-      } else {
-        price.qty = this.amount;
-      }
+      var price = setPrice(this.isFiat, this.amount);
       this.glideraProvider.buyPrice(this.token, price, (err, buy) => {
         this.onGoingProcessProvider.clear();
         if (err) {
@@ -220,7 +216,7 @@ export class BuyGlideraPage {
       id,
       'Receive in'
     );
-    this.events.subscribe('selectWalletEvent', (wallet: any) => {
+    this.events.subscribe('selectWalletEvent', wallet => {
       if (!_.isEmpty(wallet)) this.onWalletSelect(wallet);
       this.events.unsubscribe('selectWalletEvent');
       this.isOpenSelector = false;
