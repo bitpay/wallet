@@ -241,7 +241,6 @@ describe('Provider: Incoming Data Provider', () => {
           .URI(data.replace(/^bitcoincash:/, 'bitcoin:'));
 
         let oldAddr = parsed.address ? parsed.address.toString() : '';
-        if (!oldAddr) return false;
 
         let a = bwcProvider
           .getBitcore()
