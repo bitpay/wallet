@@ -3,7 +3,10 @@ import {
   HttpTestingController
 } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
+import { Platform } from 'ionic-angular';
 import { AppProvider } from '../../providers/app/app';
+import { Logger } from '../logger/logger';
+import { PlatformProvider } from '../platform/platform';
 import { ReleaseProvider } from './release';
 
 describe('Release Provider', () => {
@@ -23,6 +26,9 @@ describe('Release Provider', () => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
       providers: [
+        Logger,
+        Platform,
+        PlatformProvider,
         ReleaseProvider,
         { provide: AppProvider, useClass: AppProviderMock }
       ]
@@ -43,7 +49,7 @@ describe('Release Provider', () => {
   });
 
   it('should get successfully the latest app version', () => {
-    releaseService.getLatestAppVersion().subscribe(version => {
+    releaseService.getLatestDesktopVersion().subscribe(version => {
       expect(version).toBeDefined();
       expect(version).toEqual(latestAppVersion);
     });
