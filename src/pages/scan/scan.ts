@@ -50,6 +50,8 @@ export class ScanPage {
   public isCordova: boolean;
   public isCameraSelected: boolean;
 
+  private viewEntered: boolean = false;
+
   constructor(
     private navCtrl: NavController,
     private scanProvider: ScanProvider,
@@ -89,22 +91,26 @@ export class ScanPage {
   }
 
   ionViewWillLeave() {
-    this.events.unsubscribe('finishIncomingDataMenuEvent');
-    this.events.unsubscribe('scannerServiceInitialized');
-    if (this.navParams.data.fromAddressbook) {
-      this.tabBarElement.style.display = 'flex';
-    }
-    if (!this.isCordova) {
-      this.scanner.resetScan();
-    } else {
-      this.cameraToggleActive = false;
-      this.lightActive = false;
-      this.scanProvider.frontCameraEnabled = false;
-      this.scanProvider.deactivate();
-    }
+    // this.events.unsubscribe('finishIncomingDataMenuEvent');
+    // this.events.unsubscribe('scannerServiceInitialized');
+    // if (this.navParams.data.fromAddressbook) {
+    //   this.tabBarElement.style.display = 'flex';
+    // }
+    // if (!this.isCordova) {
+    //   this.scanner.resetScan();
+    // } else {
+    //   this.cameraToggleActive = false;
+    //   this.lightActive = false;
+    //   this.scanProvider.frontCameraEnabled = false;
+    //   this.scanProvider.deactivate();
+    // }
   }
 
   ionViewWillEnter() {
+    if (this.viewEntered) {
+      return;
+    }
+    this.viewEntered = true;
     if (!env.activateScanner) {
       // test scanner visibility in E2E mode
       this.selectedDevice = true as any;
@@ -312,5 +318,9 @@ export class ScanPage {
         }
       }
     }
+  }
+
+  public close() {
+    this.navCtrl.parent.select(0);
   }
 }

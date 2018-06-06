@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { HomePage } from '../home/home';
 import { ReceivePage } from '../receive/receive';
 import { ScanPage } from '../scan/scan';
@@ -17,5 +17,7 @@ export class TabsPage {
   sendRoot = SendPage;
   settingsRoot = SettingsPage;
 
-  constructor() {}
+  constructor(private element: ElementRef) {
+    console.log('this.element', this.element);
+  }
 }

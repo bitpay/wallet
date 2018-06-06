@@ -375,3 +375,13 @@ ion-alert .alert-message {
 .iosToastAfterHeader {
   top: $toolbar-ios-height;
 }
+
+.hide-tabbar {
+  .tabbar {
+    display: none !important;
+  }
+
+  .scroll-content {
+    margin-bottom: 0 !important;
+  }
+}

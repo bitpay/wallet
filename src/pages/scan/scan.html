@@ -1,5 +1,10 @@
 <ion-header>
   <ion-navbar class="navbar-transparent">
+    <ion-buttons left>
+      <button class="modal-close-button" (click)="close()" ion-button>
+        <ion-icon ios="md-close" md="md-close"></ion-icon>
+      </button>
+    </ion-buttons>
     <ion-title>{{'Scan' | translate}}</ion-title>
   </ion-navbar>
 </ion-header>

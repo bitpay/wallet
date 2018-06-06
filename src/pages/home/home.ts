@@ -567,4 +567,8 @@ export class HomePage {
       refresher.complete();
     }, 2000);
   }
+
+  public scan() {
+    this.navCtrl.parent.select(2);
+  }
 }
