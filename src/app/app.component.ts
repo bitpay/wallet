@@ -217,13 +217,8 @@ export class CopayApp {
       this.rootPage = OnboardingPage;
     }
 
-    setTimeout(() => {
-      const tabNav = this.getSelectedTabNav();
-      tabNav.push(this.pageMap['AmountPage'], {});
-    }, 5000);
-
-    // const tabNav = this.getSelectedTabNav();
     // setTimeout(() => {
+    //   const tabNav = this.getSelectedTabNav();
     //   tabNav.push(this.pageMap['AmountPage'], {});
     // }, 5000);
   }
