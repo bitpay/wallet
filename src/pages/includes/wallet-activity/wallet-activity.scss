@@ -1,17 +1,7 @@
 page-wallet-activity {
-  .item-title {
-    margin-bottom: 0.3rem;
-  }
-  .item-subtitle {
-    .wallet-icon-container {
-      vertical-align: middle;
-      margin: 0px 2px 0 0;
-      .icon-wallet {
-        width: 18px;
-        height: 18px;
-        padding: 0;
-      }
-    }
+
+  .wallet-color-default {
+    background-color: color($colors, primary);
   }
   ion-note {
     text-align: end;
@@ -21,5 +11,17 @@ page-wallet-activity {
     .date {
       font-size: 12.5px;
     }
+  }
+
+  .activity-container {
+    border-left: 2px solid color($colors, primary);
+  }
+
+  .icon-color {
+    width: 12px;
+    height: 12px;
+    margin: 2px 8px 0px 0px;
+    float: left;
+    border-radius: $txp-icon-border-radius;
   }
 }

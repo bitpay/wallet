@@ -31,18 +31,17 @@
       
       <ion-item-divider></ion-item-divider>
 
-      <a class="unlink-card" ion-item no-lines clear text-center (click)="unlinkCard(bitpayCard)">
-        Unlink card
+      <a ion-item text-center detail-none (click)="unlinkCard(bitpayCard)">
+        <span ion-text color="primary" translate>Unlink card</span>
       </a>
-      <ion-item-divider>
-        Unlink the card will remove it from this device.
+      <ion-item-divider margin-bottom>
+        <span translate>Unlink the card will remove it from this device.</span>
       </ion-item-divider>
-      <ion-item-divider></ion-item-divider>
-      <a class="unlink-account" ion-item no-lines clear text-center (click)="unlinkAccount(bitpayCard)">
-        Unlink account
+      <a ion-item detail-none text-center (click)="unlinkAccount(bitpayCard)">
+        <span ion-text color="danger" translate>Unlink account</span>
       </a>
-      <ion-item-divider>
-        Unlink the account will remove it and all associated cards from this device.
+      <ion-item-divider margin-bottom>
+        <span translate>Unlink the account will remove it and all associated cards from this device.</span>
       </ion-item-divider>
 
     </div>
