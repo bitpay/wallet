@@ -100,6 +100,21 @@ ion-spinner * {
   display: block;
 }
 
+.tabbar {
+  justify-content: center;
+  padding-top: 5px;
+
+  .tab-button {
+    max-width: 15vw;
+    min-width: 80px;
+
+    // Prevent the names of the tabs from disappearing
+    .tab-button-text {
+      display: block;
+    }
+  }
+}
+
 // Remove border of icons when screen resolution is big
 .tab-button-icon {
   overflow: unset;
@@ -320,6 +335,9 @@ ion-icon {
     height: 2rem !important;
   }
   // custom icons
+  &[class*='tab-activity'] {
+    mask-image: url(../assets/img/tab-icons/ico-activity.svg);
+  }
   &[class*='tab-home'] {
     mask-image: url(../assets/img/tab-icons/ico-home.svg);
   }

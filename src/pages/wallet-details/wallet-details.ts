@@ -358,4 +358,10 @@ export class WalletDetailsPage {
       cancelText
     );
   }
+
+  public close() {
+    // console.log('this.navCtrl', this.navCtrl);
+    this.navCtrl.parent.viewCtrl.dismiss();
+    // this.navCtrl.parent.viewCtrl.pop();
+  }
 }

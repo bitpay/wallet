@@ -1,5 +1,10 @@
 <ion-header no-border>
   <ion-navbar [navbar-bg]="wallet.color">
+    <ion-buttons left>
+      <button class="modal-close-button" (click)="close()" ion-button>
+        <ion-icon ios="md-close" md="md-close"></ion-icon>
+      </button>
+    </ion-buttons>
     <ion-title>{{wallet.name}}</ion-title>
     <ion-buttons end>
       <button ion-button clear *ngIf="wallet && wallet.completeHistory && wallet.completeHistory.length > 4" (click)="openSearchModal()">

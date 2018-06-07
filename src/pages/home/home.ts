@@ -21,7 +21,7 @@ import { MercadoLibrePage } from '../integrations/mercado-libre/mercado-libre';
 import { ShapeshiftPage } from '../integrations/shapeshift/shapeshift';
 import { TxDetailsPage } from '../tx-details/tx-details';
 import { TxpDetailsPage } from '../txp-details/txp-details';
-import { WalletDetailsPage } from '../wallet-details/wallet-details';
+// import { WalletDetailsPage } from '../wallet-details/wallet-details';
 import { ActivityPage } from './activity/activity';
 import { ProposalsPage } from './proposals/proposals';
 
@@ -44,6 +44,7 @@ import { ProfileProvider } from '../../providers/profile/profile';
 import { ReleaseProvider } from '../../providers/release/release';
 import { ReplaceParametersProvider } from '../../providers/replace-parameters/replace-parameters';
 import { WalletProvider } from '../../providers/wallet/wallet';
+import { WalletTabsPage } from '../tabs/wallet-tabs';
 
 @Component({
   selector: 'page-home',
@@ -445,9 +446,20 @@ export class HomePage {
       });
       return;
     }
-    this.navCtrl.push(WalletDetailsPage, {
-      walletId: wallet.credentials.walletId
-    });
+    // this.navCtrl.push(WalletDetailsPage, {
+    //   walletId: wallet.credentials.walletId
+    // });
+    this.modalCtrl
+      .create(
+        WalletTabsPage,
+        {
+          walletId: wallet.credentials.walletId
+        },
+        {
+          cssClass: 'fullscreen-modal'
+        }
+      )
+      .present();
   }
 
   public openNotificationModal(n) {

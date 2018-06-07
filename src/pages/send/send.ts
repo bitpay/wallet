@@ -249,4 +249,10 @@ export class SendPage {
         this.logger.error('Send: could not getAddress', err);
       });
   }
+
+  public close() {
+    // console.log('this.navCtrl', this.navCtrl);
+    this.navCtrl.parent.viewCtrl.dismiss();
+    // this.navCtrl.parent.viewCtrl.pop();
+  }
 }
