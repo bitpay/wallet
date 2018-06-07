@@ -168,6 +168,28 @@ export class HomePage {
     });
   }
 
+  ionViewDidLoad() {
+    this.logger.info('ionViewDidLoad HomePage');
+
+    this.checkEmailLawCompliance();
+
+    // Create, Join, Import and Delete -> Get Wallets -> Update Status for All Wallets
+    this.events.subscribe('status:updated', () => {
+      this.updateTxps();
+      this.setWallets();
+    });
+
+    this.plt.resume.subscribe(() => {
+      this.getNotifications();
+      this.updateTxps();
+      this.setWallets();
+    });
+  }
+
+  ionViewWillLeave() {
+    this.events.unsubscribe('bwsEvent');
+  }
+
   private openEmailDisclaimer() {
     let message = this.translate.instant(
       'By providing your email address, you give explicit consent to BitPay to use your email address to send you email notifications about payments.'
@@ -192,32 +214,14 @@ export class HomePage {
       });
   }
 
-  ionViewDidLoad() {
-    this.logger.info('ionViewDidLoad HomePage');
-
-    if (this.emailProvider.getEmailIfEnabled()) {
-      this.persistenceProvider.getEmailLawCompliance().then(value => {
-        setTimeout(() => {
+  private checkEmailLawCompliance(): void {
+    setTimeout(() => {
+      if (this.emailProvider.getEmailIfEnabled()) {
+        this.persistenceProvider.getEmailLawCompliance().then(value => {
           if (!value) this.openEmailDisclaimer();
-        }, 2000);
-      });
-    }
-
-    // Create, Join, Import and Delete -> Get Wallets -> Update Status for All Wallets
-    this.events.subscribe('status:updated', () => {
-      this.updateTxps();
-      this.setWallets();
-    });
-
-    this.plt.resume.subscribe(() => {
-      this.getNotifications();
-      this.updateTxps();
-      this.setWallets();
-    });
-  }
-
-  ionViewWillLeave() {
-    this.events.unsubscribe('bwsEvent');
+        });
+      }
+    }, 2000);
   }
 
   private startUpdatingWalletId(walletId: string) {
