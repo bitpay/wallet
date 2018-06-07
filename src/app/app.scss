@@ -103,6 +103,7 @@ ion-spinner * {
 .tabbar {
   justify-content: center;
   padding-top: 5px;
+  transform: translate3d(0, 0, 0);
 
   .tab-button {
     max-width: 15vw;
