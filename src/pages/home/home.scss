@@ -55,20 +55,6 @@ page-home {
       border: 0 !important;
     }
   }
-  .header-extend {
-    background: $toolbar-background;
-    height: 180px;
-    position: absolute;
-    top: -100px;
-    width: 100%;
-    z-index: 0;
-    display: flex;
-    justify-content: center;
-    .no-wallets {
-      position: absolute;
-      top: 60%;
-    }
-  }
   .card {
     z-index: 1;
     position: relative;
