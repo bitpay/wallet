@@ -7,10 +7,32 @@
 
 <ion-content>
   <ion-list>
+    <ion-item>
+      <ion-icon item-start>
+        <img width="60" src="assets/img/mercado-libre/giftcard-pt.svg" alt="Mercado Livre Brazil Gift Card" />
+      </ion-icon>
+      <h2>{{'Mercado Livre Brazil' | translate}}</h2>
+      <p>{{'Gift Cards Settings' | translate}}</p>
+    </ion-item>
     <ion-item-divider></ion-item-divider>
     <ion-item>
       <ion-label>{{'Show in Home' | translate}}</ion-label>
       <ion-toggle [(ngModel)]="showInHome" (ionChange)="showInHomeSwitch()"></ion-toggle>
     </ion-item>
+
+    <ion-item-divider *ngIf="showArchivedCards">{{'Your Archived Gift Cards'|translate}}</ion-item-divider>
+    <button ion-item *ngFor="let item of (archivedGiftCards | keys : 'date') | orderBy : ['-order']" (click)="openCardModal(item.value)">
+      <div class="mercado-libre-card">
+        <img src="assets/img/mercado-libre/meli-card-24px.png" alt="" class="avatar">
+        <div class="card-info">
+          <div class="amount">
+            <h2 *ngIf="item.value.amount">
+              {{item.value.amount | currency : '$ ' : 2}} {{item.value.currency}}
+            </h2>
+          </div>
+          <span class="dark">{{item.value.date | amTimeAgo}}</span>
+        </div>
+      </div>
+    </button>
   </ion-list>
 </ion-content>

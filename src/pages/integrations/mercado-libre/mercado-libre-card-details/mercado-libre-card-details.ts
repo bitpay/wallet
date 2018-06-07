@@ -5,6 +5,7 @@ import { Logger } from '../../../../providers/logger/logger';
 // Provider
 import { ExternalLinkProvider } from '../../../../providers/external-link/external-link';
 import { MercadoLibreProvider } from '../../../../providers/mercado-libre/mercado-libre';
+import { TimeProvider } from '../../../../providers/time/time';
 
 @Component({
   selector: 'page-mercado-libre-card-details',
@@ -12,15 +13,18 @@ import { MercadoLibreProvider } from '../../../../providers/mercado-libre/mercad
 })
 export class MercadoLibreCardDetailsPage {
   public card;
+  public isOldCard: boolean;
 
   constructor(
     private mercadoLibreProvider: MercadoLibreProvider,
     private logger: Logger,
     private externalLinkProvider: ExternalLinkProvider,
     private navParams: NavParams,
-    private viewCtrl: ViewController
+    private viewCtrl: ViewController,
+    private timeProvider: TimeProvider
   ) {
     this.card = this.navParams.data.card;
+    this.isOldCard = !this.timeProvider.withinPastDay(this.card.date);
   }
 
   ionViewDidLoad() {
@@ -35,6 +39,18 @@ export class MercadoLibreCardDetailsPage {
       },
       () => {
         this.close();
+      }
+    );
+  }
+
+  public archive(): void {
+    this.mercadoLibreProvider.savePendingGiftCard(
+      this.card,
+      {
+        archived: true
+      },
+      () => {
+        this.logger.debug('Mercado Libre Gift Card archived');
       }
     );
   }
