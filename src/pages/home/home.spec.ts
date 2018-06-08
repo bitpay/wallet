@@ -15,7 +15,7 @@ import { ActivityPage } from './activity/activity';
 import { HomePage } from './home';
 import { ProposalsPage } from './proposals/proposals';
 
-fdescribe('HomePage', () => {
+describe('HomePage', () => {
   let fixture: ComponentFixture<HomePage>;
   let instance;
   let testBed: typeof TestBed;

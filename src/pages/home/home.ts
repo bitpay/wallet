@@ -456,7 +456,7 @@ export class HomePage {
       });
   }
 
-  private showAvailableVersionCard(version) {
+  private showAvailableVersionCard(version: string) {
     if (!version) return;
     this.logger.debug('Current app version:', version);
     var result = this.releaseProvider.checkForUpdates(version);
