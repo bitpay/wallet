@@ -1,4 +1,7 @@
 page-receive {
+  .header-extend {
+    height: 179px;
+  }
   .message-container {
     text-align: center;
     height: 100%;
@@ -6,6 +9,7 @@ page-receive {
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    margin-top: 25px;
     .title {
       color: color($colors, danger);
       font-size: 20px;
@@ -15,14 +19,6 @@ page-receive {
       padding: 20px;
       text-align: center;
     }
-  }
-  .no-wallet-message {
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
   }
   .backup {
     color: color($colors, light);
@@ -36,21 +32,14 @@ page-receive {
     }
   }
   .qr-container {
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-
     text-align: center;
-    .icon {
-      vertical-align: middle;
-      margin: 0 10px;
-    }
     .text-address {
-      margin: 5px 0 0 0;
-      font-size: 12px;
+      font-size: 10px;
+      margin-bottom: 20px;
       color: color($colors, dark);
+      @media (min-height: 525px) {
+        font-size: 12px;
+      }
       > img {
         vertical-align: middle;
         margin-right: 5px;
@@ -58,14 +47,10 @@ page-receive {
         display: inline-block;
       }
     }
-    img {
-      width: auto;
-      display: inherit;
+    .aclass {
+      @include center;
     }
     .aclass > img {
-      margin-bottom: 15px;
-      border: 1px solid #e9e9e9;
-      border-radius: 4px;
       width: 180px;
       @media (max-height: 500px) {
         margin-bottom: 0px;
@@ -80,9 +65,22 @@ page-receive {
         width: 260px;
       }
     }
-    .btn-container {
-      button {
-        margin: 0rem;
+    .new-address {
+      font-size: 10px;
+      @media (min-height: 525px) {
+        font-size: 12px;
+      }
+    }
+    ion-list {
+      margin: 20px 0 -14px 0;
+      .item-block {
+        padding: 0px;
+        .item-inner {
+          padding-right: 0px;
+          ion-label {
+            margin: 6px 0px 14px 0;
+          }
+        }
       }
     }
   }
@@ -102,32 +100,25 @@ page-receive {
       }
     }
   }
-  .footer-md::before {
-    background: none;
-  }
-
   .loading-address {
     margin: 0 auto;
     width: 220px;
-    height: 220px;
+    height: 180px;
     display: flex;
     text-align: center;
     justify-content: middle;
     align-items: center;
+    @media (min-height: 525px) {
+      height: 260px;
+    }
     ion-spinner {
       width: 50px;
       height: 50px;
       margin: 0 auto;
     }
   }
-  .box-notification {
-    position: absolute;
-    width: 100%;
-  }
-  .selector-label {
-    height: 1rem;
-    .label {
-      margin: 0rem;
-    }
+  .card {
+    z-index: 1;
+    position: relative;
   }
 }
