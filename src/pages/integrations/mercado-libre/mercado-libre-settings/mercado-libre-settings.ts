@@ -35,6 +35,10 @@ export class MercadoLibreSettingsPage {
       name: this.serviceName
     });
     this.showInHome = !!this.service[0].show;
+    this.init();
+  }
+
+  private init(): void {
     this.mercadoLibreProvider.getPendingGiftCards((err, gcds) => {
       if (err) this.logger.error(err);
       this.filterArchivedGiftCards(gcds);
@@ -66,5 +70,8 @@ export class MercadoLibreSettingsPage {
       card: this.card
     });
     modal.present();
+    modal.onDidDismiss(() => {
+      this.init();
+    });
   }
 }

@@ -23,14 +23,19 @@
     </div>
 
     <div>
-      <div *ngIf="card.cardStatus == 'active'">
+      <div *ngIf="card.cardStatus == 'active' && !card.archived">
         <div *ngIf="card.pin">
-          Claim code:
+          {{'Claim code:' | translate}}
           <span class="text-bold" copy-to-clipboard="{{card.pin}}">{{card.pin}}</span>
         </div>
         <button class="redeem" ion-button outline (click)="openRedeemLink()">
           {{'Redeem Now' | translate}}
         </button>
+      </div>
+
+      <div *ngIf="card.cardStatus == 'active' && card.archived">
+        {{'Status:' | translate}}
+        <span class="text-bold">{{'Archived' | translate}}</span>
       </div>
 
       <div *ngIf="card.cardStatus == 'inactive'">

@@ -20,6 +20,7 @@ import { TimeProvider } from '../../../providers/time/time';
 export class MercadoLibrePage {
   public giftCards;
   public network: string;
+  public showMainView: boolean;
 
   private updateGiftCard: boolean;
   public card;
@@ -34,7 +35,9 @@ export class MercadoLibrePage {
     private modalCtrl: ModalController,
     private navParams: NavParams,
     private popupProvider: PopupProvider
-  ) {}
+  ) {
+    this.showMainView = true;
+  }
 
   ionViewDidLoad() {
     this.logger.info('ionViewDidLoad MercadoLibrePage');
@@ -88,6 +91,7 @@ export class MercadoLibrePage {
     this.giftCards = _.pickBy(giftCards, gcdValue => {
       return !gcdValue.archived;
     });
+    this.showMainView = _.isEmpty(this.giftCards);
   }
 
   public goTo(page: string): void {

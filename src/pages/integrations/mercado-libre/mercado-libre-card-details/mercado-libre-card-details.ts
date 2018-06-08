@@ -51,6 +51,7 @@ export class MercadoLibreCardDetailsPage {
       },
       () => {
         this.logger.debug('Mercado Libre Gift Card archived');
+        this.close();
       }
     );
   }
