@@ -1,6 +1,11 @@
 import { Component } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { ActionSheetController, Events, NavController } from 'ionic-angular';
+import {
+  ActionSheetController,
+  Events,
+  NavController,
+  NavParams
+} from 'ionic-angular';
 import { Logger } from '../../providers/logger/logger';
 
 // Native
@@ -31,6 +36,7 @@ export class ReceivePage {
   public address: string;
   public qrAddress: string;
   public wallets = [];
+  public walletId: string;
   public wallet;
   public showShareButton: boolean;
   public loading: boolean;
@@ -39,6 +45,7 @@ export class ReceivePage {
   constructor(
     private actionSheetCtrl: ActionSheetController,
     private navCtrl: NavController,
+    private navParams: NavParams,
     private logger: Logger,
     private profileProvider: ProfileProvider,
     private walletProvider: WalletProvider,
@@ -52,11 +59,14 @@ export class ReceivePage {
     private popupProvider: PopupProvider
   ) {
     this.showShareButton = this.platformProvider.isCordova;
+    this.walletId = this.navParams.get('walletId');
   }
 
   ionViewWillEnter() {
     this.isOpenSelector = false;
     this.wallets = this.profileProvider.getWallets();
+    const selectedWallet = this.wallets.filter(w => w.id === this.walletId)[0];
+    this.wallet = selectedWallet;
     this.onWalletSelect(this.checkSelectedWallet(this.wallet, this.wallets));
     this.events.subscribe('bwsEvent', (walletId, type) => {
       // Update current address
