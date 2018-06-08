@@ -1,7 +1,8 @@
 import { Component, ViewChild } from '@angular/core';
 import { NavParams } from 'ionic-angular';
 import { ReceivePage } from '../receive/receive';
-import { SendPage } from '../send/send';
+import { AmountPage } from '../send/amount/amount';
+// import { SendPage } from '../send/send';
 import { WalletDetailsPage } from '../wallet-details/wallet-details';
 
 @Component({
@@ -18,7 +19,8 @@ export class WalletTabsPage {
 
   receiveRoot = ReceivePage;
   activityRoot = WalletDetailsPage;
-  sendRoot = SendPage;
+  sendRoot = AmountPage;
+  // sendRoot = SendPage;
 
   rootParams: NavParams;
 

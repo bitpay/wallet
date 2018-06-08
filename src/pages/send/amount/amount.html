@@ -1,5 +1,10 @@
 <ion-header>
   <ion-navbar>
+    <ion-buttons left>
+      <button class="modal-close-button" (click)="close()" ion-button>
+        <ion-icon ios="md-close" md="md-close"></ion-icon>
+      </button>
+    </ion-buttons>
     <ion-title>{{'Amount' | translate}}</ion-title>
     <ion-buttons end *ngIf="showSendMax">
       <button (click)="showSendMaxMenu()" ion-button icon-only>
@@ -16,8 +21,10 @@
     </ion-item-divider>
     <ion-item>
       <ion-icon *ngIf="recipientType == 'wallet'" item-start>
-        <img *ngIf="network == 'testnet'" [ngStyle]="{'background-color': color}" src="assets/img/icon-wallet-testnet.svg" class="icon-wallet" />
-        <img *ngIf="network != 'testnet'" [ngStyle]="{'background-color': color}" src="assets/img/icon-wallet.svg" class="icon-wallet" />
+        <img *ngIf="network == 'testnet'" [ngStyle]="{'background-color': color}" src="assets/img/icon-wallet-testnet.svg" class="icon-wallet"
+        />
+        <img *ngIf="network != 'testnet'" [ngStyle]="{'background-color': color}" src="assets/img/icon-wallet.svg" class="icon-wallet"
+        />
       </ion-icon>
       <ion-icon *ngIf="recipientType == 'contact'" item-start>
         <gravatar [name]="name" [height]="30" [width]="30" [email]="email"></gravatar>
