@@ -5,14 +5,19 @@
 </ion-header>
 <ion-content>
   <page-wallet-item [wallet]="wallet"></page-wallet-item>
-  <h1 class="assertive" translate>Warning!</h1>
+  <h3 class="assertive" translate>Warning!</h3>
   <p translate>
     Permanently delete this wallet.
   </p>
-  <p translate>
-    THIS ACTION CANNOT BE REVERSED
-  </p>
-  <button ion-button class="button-standard" color="danger" (click)="showDeletePopup()">
-    {{'Delete' | translate}}
-  </button>
+
+  <ion-list>
+    <button ion-item detail-none text-center (click)="showDeletePopup()">
+      <span ion-text color="danger">
+        {{'Delete' | translate}}
+      </span>
+    </button>
+    <ion-item-divider>
+      {{'THIS ACTION CANNOT BE REVERSED' | translate}}
+    </ion-item-divider>
+  </ion-list>
 </ion-content>

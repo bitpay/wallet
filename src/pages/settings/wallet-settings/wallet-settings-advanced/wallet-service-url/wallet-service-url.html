@@ -1,11 +1,17 @@
 <ion-header>
   <ion-navbar>
     <ion-title>Wallet Service URL</ion-title>
+    <ion-buttons end>
+      <button (click)="save()" ion-button [disabled]="!walletServiceForm.valid" translate>
+        Save
+      </button>
+    </ion-buttons>
   </ion-navbar>
 </ion-header>
 <ion-content>
   <page-wallet-item [wallet]="wallet"></page-wallet-item>
   <ion-list>
+    <ion-item-divider></ion-item-divider>
     <form [formGroup]="walletServiceForm">
       <ion-item>
         <ion-label stacked>Wallet Service URL</ion-label>
@@ -17,9 +23,6 @@
           Use default url
         </a>
       </ion-item-divider>
-      <button ion-button class="button-standard" (click)="save()" [disabled]="!walletServiceForm.valid">
-        {{'Save' | translate}}
-      </button>
     </form>
   </ion-list>
 </ion-content>

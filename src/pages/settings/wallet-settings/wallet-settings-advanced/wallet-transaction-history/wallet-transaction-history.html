@@ -7,12 +7,13 @@
   <page-wallet-item [wallet]="wallet"></page-wallet-item>
 
   <ion-list>
+    <ion-item-divider></ion-item-divider>
     <button ion-item *ngIf="csvReady && !isCordova" (click)="downloadCSV()">
-      <span translate>Export to file</span>
+      <span ion-text color="primary" translate>Export to file</span>
     </button>
 
     <ion-item *ngIf="!csvReady && !isCordova">
-      <span translate>Export to file</span>
+      <span ion-text color="grey" translate>Export to file</span>
       <ion-note *ngIf="!err" item-end>
         {{'preparing...' | translate}}
       </ion-note>
@@ -21,8 +22,9 @@
       </ion-note>
     </ion-item>
 
-    <button ion-item (click)="clearTransactionHistory()">
-      <span translate>Clear cache</span>
+    <ion-item-divider></ion-item-divider>
+    <button ion-item text-center (click)="clearTransactionHistory()">
+      <span ion-text color="danger" translate>Clear cache</span>
     </button>
 
     <ion-item-divider>
