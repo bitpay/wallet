@@ -27,6 +27,7 @@ import { SellGlideraPage } from '../../integrations/glidera/sell-glidera/sell-gl
 import { BuyMercadoLibrePage } from '../../integrations/mercado-libre/buy-mercado-libre/buy-mercado-libre';
 import { ShapeshiftConfirmPage } from '../../integrations/shapeshift/shapeshift-confirm/shapeshift-confirm';
 import { CustomAmountPage } from '../../receive/custom-amount/custom-amount';
+import { ConfirmPage } from '../confirm/confirm';
 // import { ConfirmPage } from '../confirm/confirm';
 import { SendPage } from '../send';
 
@@ -271,7 +272,7 @@ export class AmountPage {
         break;
       default:
         this.showSendMax = true;
-        nextPage = SendPage;
+        nextPage = this.toAddress ? ConfirmPage : SendPage;
       // nextPage = ConfirmPage;
     }
     return nextPage;

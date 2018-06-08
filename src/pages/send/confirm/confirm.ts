@@ -816,9 +816,15 @@ export class ConfirmPage {
       enableBackdropDismiss: false
     });
     modal.present();
-    console.log('root navs', this.app.getRootNavs());
-    this.navCtrl.parent.viewCtrl.dismiss();
-    this.app.getRootNavs()[0].setRoot(TabsPage);
+    // console.log('root navs', this.app.getRootNavs());
+
+    const parentWalletId =
+      this.navCtrl.parent && this.navCtrl.parent.viewCtrl.instance.walletId;
+
+    parentWalletId
+      ? this.navCtrl.parent.viewCtrl.dismiss()
+      : this.app.getRootNavs()[0].setRoot(TabsPage);
+    // this.navCtrl.parent.viewCtrl.dismiss();
   }
 
   public openPPModal(): void {
