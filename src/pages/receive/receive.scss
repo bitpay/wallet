@@ -37,6 +37,9 @@ page-receive {
       font-size: 10px;
       margin-bottom: 20px;
       color: color($colors, dark);
+      &.ellipsis {
+        padding: 0 10px 0 4px;
+      }
       @media (min-height: 525px) {
         font-size: 12px;
       }
