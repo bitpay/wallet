@@ -800,7 +800,7 @@ export class ConfirmPage {
       });
   }
 
-  private openFinishModal(onlyPublish?: boolean) {
+  private async openFinishModal(onlyPublish?: boolean) {
     let params: { finishText: string; finishComment?: string } = {
       finishText: this.successText
     };
@@ -815,7 +815,7 @@ export class ConfirmPage {
       showBackdrop: true,
       enableBackdropDismiss: false
     });
-    modal.present();
+    await modal.present();
     // console.log('root navs', this.app.getRootNavs());
 
     const parentWalletId =
