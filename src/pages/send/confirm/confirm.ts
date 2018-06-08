@@ -190,7 +190,12 @@ export class ConfirmPage {
   }
 
   private afterWalletSelectorSet() {
-    if (this.wallets.length > 1) {
+    const parentWalletId =
+      this.navCtrl.parent && this.navCtrl.parent.viewCtrl.instance.walletId;
+    if (parentWalletId) {
+      const wallet = this.wallets.filter(w => w.id === parentWalletId)[0];
+      this.setWallet(wallet);
+    } else if (this.wallets.length > 1) {
       return this.showWallets();
     } else if (this.wallets.length) {
       this.setWallet(this.wallets[0]);
@@ -811,6 +816,8 @@ export class ConfirmPage {
       enableBackdropDismiss: false
     });
     modal.present();
+    console.log('root navs', this.app.getRootNavs());
+    this.navCtrl.parent.viewCtrl.dismiss();
     this.app.getRootNavs()[0].setRoot(TabsPage);
   }
 

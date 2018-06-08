@@ -23,8 +23,10 @@ export class WalletTabsPage {
   // sendRoot = SendPage;
 
   rootParams: NavParams;
+  walletId: string;
 
   constructor(private navParams: NavParams) {
     this.rootParams = this.navParams;
+    this.walletId = this.rootParams.get('walletId');
   }
 }

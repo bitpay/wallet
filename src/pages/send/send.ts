@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Events, NavController } from 'ionic-angular';
+import { Events, NavController, NavParams } from 'ionic-angular';
 import * as _ from 'lodash';
 
 // Providers
@@ -16,6 +16,7 @@ import { WalletProvider } from '../../providers/wallet/wallet';
 import { PaperWalletPage } from '../paper-wallet/paper-wallet';
 import { AddressbookAddPage } from '../settings/addressbook/add/add';
 import { AmountPage } from './amount/amount';
+import { ConfirmPage } from './confirm/confirm';
 
 @Component({
   selector: 'page-send',
@@ -38,6 +39,7 @@ export class SendPage {
 
   constructor(
     private navCtrl: NavController,
+    private navParams: NavParams,
     private profileProvider: ProfileProvider,
     private walletProvider: WalletProvider,
     private addressBookProvider: AddressBookProvider,
@@ -47,7 +49,9 @@ export class SendPage {
     private addressProvider: AddressProvider,
     private events: Events,
     private externalLinkProvider: ExternalLinkProvider
-  ) {}
+  ) {
+    console.log('this.navParams.data', this.navParams.data);
+  }
 
   ionViewDidLoad() {
     this.logger.info('ionViewDidLoad SendPage');
@@ -234,8 +238,18 @@ export class SendPage {
           return;
         }
         this.logger.debug('Got address:' + addr + ' | ' + item.name);
-        this.navCtrl.push(AmountPage, {
+        // this.navCtrl.push(AmountPage, {
+        //   recipientType: item.recipientType,
+        //   toAddress: addr,
+        //   name: item.name,
+        //   email: item.email,
+        //   color: item.color,
+        //   coin: item.coin,
+        //   network: item.network
+        // });
+        this.navCtrl.push(ConfirmPage, {
           recipientType: item.recipientType,
+          amount: parseInt(this.navParams.data.amount, 10),
           toAddress: addr,
           name: item.name,
           email: item.email,
@@ -243,6 +257,13 @@ export class SendPage {
           coin: item.coin,
           network: item.network
         });
+
+        // toAddress: this.navParams.data.toAddress,
+        // amount: parseInt(this.navParams.data.amount, 10),
+        // sendMax: this.navParams.data.useSendMax ? true : false,
+        // description: this.navParams.data.description,
+        // paypro: this.navParams.data.paypro,
+        // spendUnconfirmed: this.config.wallet.spendUnconfirmed,
         return;
       })
       .catch(err => {
