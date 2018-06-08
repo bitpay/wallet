@@ -1,7 +1,4 @@
 page-wallet-activity {
-  .wallet-color-default {
-    background-color: color($colors, primary);
-  }
   ion-note {
     text-align: end;
     .amount {
@@ -11,16 +8,7 @@ page-wallet-activity {
       font-size: 12.5px;
     }
   }
-
   .activity-container {
     border-left: 2px solid color($colors, primary);
-  }
-
-  .icon-color {
-    width: 12px;
-    height: 12px;
-    margin: 2px 8px 0px 0px;
-    float: left;
-    border-radius: $txp-icon-border-radius;
   }
 }
