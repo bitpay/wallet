@@ -44,6 +44,7 @@ import { ProfileProvider } from '../../providers/profile/profile';
 import { ReleaseProvider } from '../../providers/release/release';
 import { ReplaceParametersProvider } from '../../providers/replace-parameters/replace-parameters';
 import { WalletProvider } from '../../providers/wallet/wallet';
+import { SettingsPage } from '../settings/settings';
 import { WalletTabsPage } from '../tabs/wallet-tabs';
 
 @Component({
@@ -586,5 +587,9 @@ export class HomePage {
 
   public scan() {
     this.navCtrl.parent.select(2);
+  }
+
+  public settings() {
+    this.navCtrl.push(SettingsPage);
   }
 }
