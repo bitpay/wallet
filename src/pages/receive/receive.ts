@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { Events, NavController } from 'ionic-angular';
+import { ActionSheetController, Events, NavController } from 'ionic-angular';
 import { Logger } from '../../providers/logger/logger';
 
 // Native
@@ -37,6 +37,7 @@ export class ReceivePage {
   public isOpenSelector: boolean;
 
   constructor(
+    private actionSheetCtrl: ActionSheetController,
     private navCtrl: NavController,
     private logger: Logger,
     private profileProvider: ProfileProvider,
@@ -179,5 +180,40 @@ export class ReceivePage {
     // console.log('this.navCtrl', this.navCtrl);
     this.navCtrl.parent.viewCtrl.dismiss();
     // this.navCtrl.parent.viewCtrl.pop();
+  }
+
+  public showMoreOptions(): void {
+    let buttons = [];
+
+    let specificAmountButton = {
+      text: this.translate.instant('Request Specific Amount'),
+      icon: 'calculator',
+      handler: () => {
+        this.requestSpecificAmount();
+      }
+    };
+    let shareButton = {
+      text: this.translate.instant('Share Address'),
+      icon: 'share',
+      handler: () => {
+        this.shareAddress();
+      }
+    };
+
+    buttons.push(specificAmountButton);
+
+    if (
+      this.showShareButton &&
+      this.wallet &&
+      this.wallet.isComplete() &&
+      !this.wallet.needsBackup
+    )
+      buttons.push(shareButton);
+
+    const actionSheet = this.actionSheetCtrl.create({
+      buttons
+    });
+
+    actionSheet.present();
   }
 }

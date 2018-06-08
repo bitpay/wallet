@@ -311,7 +311,10 @@ a.royal {
     margin-bottom: 5px;
   }
   .item-block {
-    padding: 5px 0 5px 24px;
+    padding: 5px 0 0px 24px;
+  }
+  .input-wrapper {
+    padding-bottom: 4px;
   }
 }
 
@@ -402,5 +405,20 @@ ion-alert .alert-message {
 
   .scroll-content {
     margin-bottom: 0 !important;
+  }
+}
+
+.header-extend {
+  background: $toolbar-background;
+  height: 180px;
+  position: absolute;
+  top: -100px;
+  width: 100%;
+  z-index: 0;
+  display: flex;
+  justify-content: center;
+  .no-wallets {
+    position: absolute;
+    top: 60%;
   }
 }

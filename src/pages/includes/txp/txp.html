@@ -1,4 +1,4 @@
-<button ion-item class="proposal-container" (click)="openTxpModal(tx)">
+<button ion-item class="proposal-container" [ngStyle]="{'border-left-color': tx.wallet.color}" (click)="openTxpModal(tx)">
   <div *ngIf="!tx.merchant" class="item-title">
     <span *ngIf="tx.message">{{tx.message}}</span>
     <span *ngIf="!tx.message && tx.toAddress && addressbook[tx.toAddress]">{{addressbook[tx.toAddress].name || addressbook[tx.toAddress]}}</span>
@@ -13,9 +13,6 @@
     </span>
   </span>
   <div class="item-subtitle">
-    <ion-icon class="icon-container" item-start>
-      <img src="assets/img/icon-proposal-pending.svg">
-    </ion-icon>
     <span *ngIf="tx.creatorName">{{ tx.creatorName}}@</span>
     <span>{{tx.wallet.name}}</span>
   </div>
