@@ -22,11 +22,12 @@
         </span>
         <span *ngIf="availableWallet.error" class="wallet-warning">{{availableWallet.error}}</span>
       </div>
+      <ion-note item-end>
+        <button ion-button clear (click)="duplicate(availableWallet)">
+          {{'Duplicate' | translate}}
+        </button>
+      </ion-note>
     </ion-item>
-    <ion-item-divider></ion-item-divider>
-    <button ion-item text-center detail-none (click)="duplicate(availableWallet)">
-      <span ion-text color="primary" translate>Duplicate</span>
-    </button>
   </div>
 
   <div *ngIf="nonEligibleWallet">

@@ -13,10 +13,8 @@
       </p>
     </div>
     <div *ngIf="wallet && !credentialsEncrypted">
-      <button ion-item text-center detail-none copy-to-clipboard="{{xPrivKey}}">
-        <span ion-text color="primary">
-          {{'Copy to clipboard' | translate}}
-        </span>
+      <button ion-button class="button-standard" copy-to-clipboard="{{xPrivKey}}">
+        {{'Copy to clipboard' | translate}}
       </button>
     </div>
   </div>
