@@ -9,7 +9,7 @@ angular.module('copayApp.services')
     root.M = 'm/';
     root.UNISIG_ROOTPATH = 44;
     root.MULTISIG_ROOTPATH = 48;
-    root.LIVENET_PATH = 0;
+    root.LIVENET_PATH = 83;
     root.TESTNET_PATH = 1;
 
     root._err = function(data) {
