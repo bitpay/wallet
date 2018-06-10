@@ -57,7 +57,7 @@
     "bezier-easing": "2.0.3",
     "bhttp": "1.2.1",
     "bitauth": "0.2.1",
-    "bitcore-wallet-client-terracoin": "https://github.com/terracoin/bitcore-wallet-client-terracoin.git",
+    "bitcore-wallet-client-terracoin": "5.1.3",
     "bower": "1.8.2",
     "cordova-ios": "4.5.4",
     "cordova-android": "6.4.0",
