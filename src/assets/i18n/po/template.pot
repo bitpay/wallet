@@ -169,6 +169,17 @@ msgid ""
 "priority)"
 msgstr ""
 
+msgid "Archive"
+msgstr ""
+
+msgid "Archived"
+msgstr ""
+
+msgid ""
+"Archiving this Gift Card will remove it from this view. You will still be "
+"able to see it in the Mercado Livre settings."
+msgstr ""
+
 msgid "Are you being watched?"
 msgstr ""
 
@@ -206,9 +217,6 @@ msgid "Backup Needed"
 msgstr ""
 
 msgid "Backup all your wallets before using this function"
-msgstr ""
-
-msgid "Backup now"
 msgstr ""
 
 msgid "Backup wallet"
@@ -324,6 +332,9 @@ msgid "Checking..."
 msgstr ""
 
 msgid "Choose a backup file from your computer"
+msgstr ""
+
+msgid "Claim code:"
 msgstr ""
 
 msgid "Clear"
@@ -1075,6 +1086,9 @@ msgstr ""
 msgid "Learn more"
 msgstr ""
 
+msgid "Learn more about testnet blockchain"
+msgstr ""
+
 msgid "Let's verify your backup phrase."
 msgstr ""
 
@@ -1208,6 +1222,9 @@ msgstr ""
 msgid "No entries for this log level"
 msgstr ""
 
+msgid "No funds found"
+msgstr ""
+
 msgid "No password"
 msgstr ""
 
@@ -1257,9 +1274,6 @@ msgid "Not enough funds for fee"
 msgstr ""
 
 msgid "Not even BitPay can access it."
-msgstr ""
-
-msgid "Not funds found"
 msgstr ""
 
 msgid "Not now"
@@ -1596,6 +1610,9 @@ msgstr ""
 msgid "Remove"
 msgstr ""
 
+msgid "Removing this Gift Card will remove all their data from this device."
+msgstr ""
+
 msgid "Repeat the password"
 msgstr ""
 
@@ -1605,7 +1622,7 @@ msgstr ""
 msgid "Request Fingerprint"
 msgstr ""
 
-msgid "Request Specific amount"
+msgid "Request Specific Amount"
 msgstr ""
 
 msgid "Required number of signatures"
@@ -1728,6 +1745,9 @@ msgstr ""
 msgid "Sending {{amount}} {{unit}} from your {{name}} wallet"
 msgstr ""
 
+msgid "Sensitive Data"
+msgstr ""
+
 msgid "Sent"
 msgstr ""
 
@@ -1762,6 +1782,9 @@ msgid "ShapeShift max limit reached"
 msgstr ""
 
 msgid "Share"
+msgstr ""
+
+msgid "Share Address"
 msgstr ""
 
 msgid "Share the love by inviting your friends."
@@ -1912,6 +1935,12 @@ msgid ""
 "The higher the fee, the greater the incentive a miner has to include that "
 "transaction in a block. Current fees are determined based on network load "
 "and the selected policy."
+msgstr ""
+
+msgid ""
+"The information you are about to share/export may contain sensitive data "
+"such us wallet IDs, addresses, balances, etc. Please be sure you trust the "
+"person or entity with whom you are sharing this information."
 msgstr ""
 
 msgid ""
@@ -2086,6 +2115,18 @@ msgstr ""
 msgid "Unconfirmed"
 msgstr ""
 
+msgid "Unlink account"
+msgstr ""
+
+msgid "Unlink card"
+msgstr ""
+
+msgid "Unlink the account will remove it and all associated cards from this device."
+msgstr ""
+
+msgid "Unlink the card will remove it from this device."
+msgstr ""
+
 msgid "Unsent transactions"
 msgstr ""
 
@@ -2183,6 +2224,13 @@ msgid ""
 "proposals, so funds will not be accessible from the export."
 msgstr ""
 
+msgid ""
+"WARNING: The testnet is an alternative Bitcoin block chain, to be used for "
+"testing. Testnet coins are separate and distinct from actual bitcoins, and "
+"do not have any value. This allows application developers or bitcoin "
+"testers to experiment, without having to use real bitcoins."
+msgstr ""
+
 msgid "WARNING: UNTRUSTED CERTIFICATE"
 msgstr ""
 
@@ -2267,9 +2315,6 @@ msgid "Wallet recovery phrase"
 msgstr ""
 
 msgid "Wallet recovery phrase not available"
-msgstr ""
-
-msgid "Wallet selected"
 msgstr ""
 
 msgid "Wallet service not found"
@@ -2384,6 +2429,9 @@ msgid "You could sign the transaction later in your wallet details"
 msgstr ""
 
 msgid "You should not set a fee higher than {{maxFeeRecommended}} satoshis/byte."
+msgstr ""
+
+msgid "Your Archived Gift Cards"
 msgstr ""
 
 msgid ""
