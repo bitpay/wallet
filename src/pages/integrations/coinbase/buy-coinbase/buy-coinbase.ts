@@ -39,8 +39,6 @@ export class BuyCoinbasePage {
   public buyPrice: string;
   public buyRequestInfo;
   public amountUnitStr: string;
-  public accessToken: string;
-  public accountId: string;
   public wallet;
   public network: string;
   public isFiat: boolean;
@@ -125,7 +123,8 @@ export class BuyCoinbasePage {
       this.coinbaseProvider.buyPrice(
         accessToken,
         this.coinbaseProvider.getAvailableCurrency(),
-        (_, b) => {
+        (err, b) => {
+          if (err) this.logger.error(err);
           this.buyPrice = b.data || null;
         }
       );
@@ -245,9 +244,9 @@ export class BuyCoinbasePage {
               setTimeout(() => {
                 let tx = b.data ? b.data.transaction : null;
                 if (tx && tx.id) {
-                  this.processBuyTx(tx);
+                  this.processBuyTx(tx, accessToken, accountId);
                 } else {
-                  this._processBuyOrder(b);
+                  this._processBuyOrder(b, accessToken, accountId);
                 }
               }, 10000);
             }
@@ -256,7 +255,7 @@ export class BuyCoinbasePage {
       });
   }
 
-  private processBuyTx(tx): void {
+  private processBuyTx(tx, accessToken, accountId): void {
     if (!tx) {
       this.onGoingProcessProvider.clear();
       this.showError('Transaction not found');
@@ -264,8 +263,8 @@ export class BuyCoinbasePage {
     }
 
     this.coinbaseProvider.getTransaction(
-      this.accessToken,
-      this.accountId,
+      accessToken,
+      accountId,
       tx.id,
       (err, updatedTx) => {
         if (err) {
@@ -298,10 +297,10 @@ export class BuyCoinbasePage {
     );
   }
 
-  private _processBuyOrder(b): void {
+  private _processBuyOrder(b, accessToken, accountId): void {
     this.coinbaseProvider.getBuyOrder(
-      this.accessToken,
-      this.accountId,
+      accessToken,
+      accountId,
       b.data.id,
       (err, buyResp) => {
         if (err) {
@@ -311,11 +310,11 @@ export class BuyCoinbasePage {
         }
         let tx = buyResp.data ? buyResp.data.transaction : null;
         if (tx && tx.id) {
-          this.processBuyTx(tx);
+          this.processBuyTx(tx, accessToken, accountId);
         } else {
           setTimeout(() => {
-            this._processBuyOrder(b);
-          }, 5000);
+            this._processBuyOrder(b, accessToken, accountId);
+          }, 10000);
         }
       }
     );
