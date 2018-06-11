@@ -75,6 +75,10 @@ export class AmountPage {
   public toWalletId: string;
   private _id: string;
 
+  public wallet: any = {
+    name: 'Personal Wallet'
+  };
+
   constructor(
     private actionSheetCtrl: ActionSheetController,
     private configProvider: ConfigProvider,

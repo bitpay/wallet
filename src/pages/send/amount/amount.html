@@ -1,17 +1,20 @@
-<ion-header>
+<ion-header class="wallet-details-header">
   <ion-navbar>
     <ion-buttons left>
       <button class="modal-close-button" (click)="close()" ion-button>
         <ion-icon ios="md-close" md="md-close"></ion-icon>
       </button>
     </ion-buttons>
-    <ion-title>{{'Amount' | translate}}</ion-title>
+    <ion-title>{{wallet.name || ('Amount' | translate)}}</ion-title>
     <ion-buttons end *ngIf="showSendMax">
       <button (click)="showSendMaxMenu()" ion-button icon-only>
         <ion-icon name="more"></ion-icon>
       </button>
     </ion-buttons>
   </ion-navbar>
+  <ion-toolbar>
+    <div class="wallet-details-header__balance">0.484894 BTC</div>
+  </ion-toolbar>
 </ion-header>
 
 <ion-content no-bounce>

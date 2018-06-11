@@ -221,3 +221,23 @@ page-wallet-details {
     font-size: 12.5px;
   }
 }
+
+.wallet-details-header {
+  ion-title .toolbar-title {
+    font-weight: 100;
+    font-size: 16px;
+  }
+
+  ion-toolbar {
+    min-height: 0;
+    margin-top: -6px;
+  }
+
+  &__balance {
+    text-align: center;
+    color: white;
+    padding-bottom: 10px;
+    font-size: 18px;
+    font-weight: 500;
+  }
+}
