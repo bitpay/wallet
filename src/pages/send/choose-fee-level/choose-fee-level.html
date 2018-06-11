@@ -18,7 +18,7 @@
     <ion-item class="fee-level">
       <ion-label>{{'Fee level' | translate}}</ion-label>
       <ion-select [(ngModel)]="selectedFee" (ionChange)="changeSelectedFee(selectedFee)">
-        <ion-option *ngFor="let fee of feeOpts" [value]="fee">{{ feeProvider.feeOpts[fee] | translate }}</ion-option>
+        <ion-option *ngFor="let fee of feeOpts" [value]="fee">{{ feeProvider.getFeeOpts()[fee] | translate }}</ion-option>
       </ion-select>
     </ion-item>
     <ion-item-divider></ion-item-divider>
@@ -52,8 +52,8 @@
     <ion-list class="fee-custom" *ngIf="customFeePerKB">
       <ion-item>
         <ion-label color="primary" floating>{{'Enter custom fee in sat/byte' | translate}}</ion-label>
-        <ion-input type="number" min="minFee" max="maxFee" (ionChange)="checkFees(customSatPerByte)"
-          [(ngModel)]="customSatPerByte" required></ion-input>
+        <ion-input type="number" min="minFee" max="maxFee" (ionChange)="checkFees(customSatPerByte)" [(ngModel)]="customSatPerByte"
+          required></ion-input>
       </ion-item>
       <ion-item class="fee-error" *ngIf="showError">
         <span translate>Transactions without fee are not supported.</span>

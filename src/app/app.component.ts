@@ -18,7 +18,6 @@ import { BitPayCardProvider } from '../providers/bitpay-card/bitpay-card';
 import { CoinbaseProvider } from '../providers/coinbase/coinbase';
 import { ConfigProvider } from '../providers/config/config';
 import { EmailNotificationsProvider } from '../providers/email-notifications/email-notifications';
-import { FeeProvider } from '../providers/fee/fee';
 import { GlideraProvider } from '../providers/glidera/glidera';
 import { IncomingDataProvider } from '../providers/incoming-data/incoming-data';
 import { Logger } from '../providers/logger/logger';
@@ -106,8 +105,7 @@ export class CopayApp {
     private pushNotificationsProvider: PushNotificationsProvider,
     private app: App,
     private incomingDataProvider: IncomingDataProvider,
-    private onGoingProcessProvider: OnGoingProcessProvider,
-    private feeProvider: FeeProvider
+    private onGoingProcessProvider: OnGoingProcessProvider
   ) {
     this.initializeApp();
   }
@@ -378,6 +376,5 @@ export class CopayApp {
 
   private translateProvidersStrings(): void {
     this.onGoingProcessProvider.translateOnGoingProcessNames();
-    this.feeProvider.translateFeeOpts();
   }
 }
