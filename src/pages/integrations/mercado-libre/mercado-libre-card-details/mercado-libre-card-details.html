@@ -34,8 +34,7 @@
       </div>
 
       <div *ngIf="card.cardStatus == 'active' && card.archived">
-        {{'Status:' | translate}}
-        <span class="text-bold">{{'Archived' | translate}}</span>
+        <span ion-text color="primary" translate>Archived</span>
       </div>
 
       <div *ngIf="card.cardStatus == 'inactive'">
@@ -78,7 +77,7 @@
     <div *ngIf="card.cardStatus == 'inactive' || card.cardStatus == 'expired' || card.status == 'expired' || (card.status == 'FAILURE' && isOldCard) || (card.cardStatus == 'active' && card.archived && isOldCard)">
       <ion-item-divider></ion-item-divider>
       <a translate class="assertive" ion-item no-lines clear text-center (click)="remove()">
-        {{'Remove' | translate}}
+        Remove
       </a>
       <ion-item-divider>
         {{'Removing this Gift Card will remove all their data from this device.' | translate}}
@@ -88,7 +87,7 @@
     <div *ngIf="card.cardStatus == 'active' && !card.archived && isOldCard">
       <ion-item-divider></ion-item-divider>
       <a translate class="assertive" ion-item no-lines clear text-center (click)="archive()">
-        {{'Archive' | translate}}
+        Archive
       </a>
       <ion-item-divider>
         {{'Archiving this Gift Card will remove it from this view. You will still be able to see it in the Mercado Livre settings.' | translate}}
