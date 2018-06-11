@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 2.0.7\n"
+"X-Generator: Poedit 2.0.8\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 msgid "(Trusted)"
@@ -201,6 +201,20 @@ msgstr ""
 "Approximate Bitcoin network fee to transfer wallet's balance (with normal "
 "priority)"
 
+msgid "Archive"
+msgstr "Archive"
+
+#| msgid "Received"
+msgid "Archived"
+msgstr "Archived"
+
+msgid ""
+"Archiving this Gift Card will remove it from this view. You will still be "
+"able to see it in the Mercado Livre settings."
+msgstr ""
+"Archiving this Gift Card will remove it from this view. You will still be "
+"able to see it in the Mercado Livre settings."
+
 msgid "Are you being watched?"
 msgstr "Are you being watched?"
 
@@ -239,9 +253,6 @@ msgstr "Backup Needed"
 
 msgid "Backup all your wallets before using this function"
 msgstr "Backup all your wallets before using this function"
-
-msgid "Backup now"
-msgstr "Backup now"
 
 msgid "Backup wallet"
 msgstr "Backup wallet"
@@ -366,6 +377,9 @@ msgstr "Checking..."
 
 msgid "Choose a backup file from your computer"
 msgstr "Choose a backup file from your computer"
+
+msgid "Claim code:"
+msgstr "Claim code:"
 
 msgid "Clear"
 msgstr "Clear"
@@ -1155,6 +1169,9 @@ msgstr "Language"
 msgid "Learn more"
 msgstr "Learn more"
 
+msgid "Learn more about testnet blockchain"
+msgstr "Learn more about testnet blockchain"
+
 msgid "Let's verify your backup phrase."
 msgstr "Let's verify your backup phrase."
 
@@ -1292,6 +1309,10 @@ msgstr "No contacts yet"
 msgid "No entries for this log level"
 msgstr "No entries for this log level"
 
+#| msgid "Not funds found"
+msgid "No funds found"
+msgstr "No funds found"
+
 msgid "No password"
 msgstr "No password"
 
@@ -1342,9 +1363,6 @@ msgstr "Not enough funds for fee"
 
 msgid "Not even BitPay can access it."
 msgstr "Not even BitPay can access it."
-
-msgid "Not funds found"
-msgstr "Not funds found"
 
 msgid "Not now"
 msgstr "Not now"
@@ -1693,6 +1711,9 @@ msgstr "Release information"
 msgid "Remove"
 msgstr "Remove"
 
+msgid "Removing this Gift Card will remove all their data from this device."
+msgstr "Removing this Gift Card will remove all their data from this device."
+
 msgid "Repeat the password"
 msgstr "Repeat the password"
 
@@ -1702,8 +1723,9 @@ msgstr "Request Encrypt Password"
 msgid "Request Fingerprint"
 msgstr "Request Fingerprint"
 
-msgid "Request Specific amount"
-msgstr "Request Specific amount"
+#| msgid "Request Specific amount"
+msgid "Request Specific Amount"
+msgstr "Request Specific Amount"
 
 msgid "Required number of signatures"
 msgstr "Required number of signatures"
@@ -1825,6 +1847,9 @@ msgstr "Sending transaction..."
 msgid "Sending {{amount}} {{unit}} from your {{name}} wallet"
 msgstr "Sending {{amount}} {{unit}} from your {{name}} wallet"
 
+msgid "Sensitive Data"
+msgstr "Sensitive Data"
+
 msgid "Sent"
 msgstr "Sent"
 
@@ -1860,6 +1885,10 @@ msgstr "ShapeShift max limit reached"
 
 msgid "Share"
 msgstr "Share"
+
+#| msgid "Address"
+msgid "Share Address"
+msgstr "Share Address"
 
 msgid "Share the love by inviting your friends."
 msgstr "Share the love by inviting your friends."
@@ -2025,6 +2054,15 @@ msgstr ""
 "The higher the fee, the greater the incentive a miner has to include that "
 "transaction in a block. Current fees are determined based on network load "
 "and the selected policy."
+
+msgid ""
+"The information you are about to share/export may contain sensitive data "
+"such us wallet IDs, addresses, balances, etc. Please be sure you trust the "
+"person or entity with whom you are sharing this information."
+msgstr ""
+"The information you are about to share/export may contain sensitive data "
+"such us wallet IDs, addresses, balances, etc. Please be sure you trust the "
+"person or entity with whom you are sharing this information."
 
 msgid ""
 "The maximum number of consecutive unused addresses (20) has been reached. "
@@ -2225,6 +2263,21 @@ msgstr "Uh oh..."
 msgid "Unconfirmed"
 msgstr "Unconfirmed"
 
+#| msgid "Add account"
+msgid "Unlink account"
+msgstr "Unlink account"
+
+msgid "Unlink card"
+msgstr "Unlink card"
+
+msgid ""
+"Unlink the account will remove it and all associated cards from this device."
+msgstr ""
+"Unlink the account will remove it and all associated cards from this device."
+
+msgid "Unlink the card will remove it from this device."
+msgstr "Unlink the card will remove it from this device."
+
 msgid "Unsent transactions"
 msgstr "Unsent transactions"
 
@@ -2332,6 +2385,17 @@ msgstr ""
 "from the export. However, does not allow to approve (sign) proposals, so "
 "funds will not be accessible from the export."
 
+msgid ""
+"WARNING: The testnet is an alternative Bitcoin block chain, to be used for "
+"testing. Testnet coins are separate and distinct from actual bitcoins, and "
+"do not have any value. This allows application developers or bitcoin testers "
+"to experiment, without having to use real bitcoins."
+msgstr ""
+"WARNING: The testnet is an alternative Bitcoin block chain, to be used for "
+"testing. Testnet coins are separate and distinct from actual bitcoins, and "
+"do not have any value. This allows application developers or bitcoin testers "
+"to experiment, without having to use real bitcoins."
+
 msgid "WARNING: UNTRUSTED CERTIFICATE"
 msgstr "WARNING: UNTRUSTED CERTIFICATE"
 
@@ -2419,9 +2483,6 @@ msgstr "Wallet recovery phrase"
 
 msgid "Wallet recovery phrase not available"
 msgstr "Wallet recovery phrase not available"
-
-msgid "Wallet selected"
-msgstr "Wallet selected"
 
 msgid "Wallet service not found"
 msgstr "Wallet service not found"
@@ -2557,6 +2618,10 @@ msgid ""
 "You should not set a fee higher than {{maxFeeRecommended}} satoshis/byte."
 msgstr ""
 "You should not set a fee higher than {{maxFeeRecommended}} satoshis/byte."
+
+#| msgid "Your Gift Cards"
+msgid "Your Archived Gift Cards"
+msgstr "Your Archived Gift Cards"
 
 msgid ""
 "Your BitPay Card is ready. Add funds to your card to start using it at "
