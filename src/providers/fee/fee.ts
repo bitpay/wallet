@@ -11,9 +11,6 @@ import * as _ from 'lodash';
 @Injectable()
 export class FeeProvider {
   private CACHE_TIME_TS: number = 60;
-  // Constant fee options to translate
-  public feeOpts;
-
   private cache: {
     updateTs: number;
     coin: string;
@@ -29,7 +26,11 @@ export class FeeProvider {
     private bwcProvider: BwcProvider,
     private translate: TranslateService
   ) {
-    this.feeOpts = {
+    this.logger.info('FeeProvider initialized.');
+  }
+
+  public getFeeOpts() {
+    const feeOpts = {
       urgent: this.translate.instant('Urgent'),
       priority: this.translate.instant('Priority'),
       normal: this.translate.instant('Normal'),
@@ -37,23 +38,7 @@ export class FeeProvider {
       superEconomy: this.translate.instant('Super Economy'),
       custom: this.translate.instant('Custom')
     };
-    this.logger.info('FeeProvider initialized.');
-  }
-
-  public translateFeeOpts() {
-    _.forEach(this.feeOpts, (feeOpt, key) => {
-      this.getTranslation(feeOpt).then((feeOptTranslated: string) => {
-        this.feeOpts[key] = feeOptTranslated;
-      });
-    });
-  }
-
-  public getTranslation(feeOpt: string): Promise<string> {
-    return new Promise(resolve => {
-      this.translate.get(feeOpt).subscribe((feeOptTranslated: string) => {
-        return resolve(feeOptTranslated);
-      });
-    });
+    return feeOpts;
   }
 
   public getCurrentFeeLevel(): string {
