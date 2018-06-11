@@ -71,25 +71,7 @@ angular.module('copayApp.controllers').controller('createController',
 
       */
 
-      if (appConfigService.name == 'trcpay') {
-        if (walletService.externalSource.trezor.supported) {
-          seedOptions.push({
-            id: walletService.externalSource.trezor.id,
-            label: walletService.externalSource.trezor.longName,
-            supportsTestnet: walletService.externalSource.trezor.supportsTestnet
-          });
-        }
-
-        if (walletService.externalSource.intelTEE.supported) {
-          seedOptions.push({
-            id: walletService.externalSource.intelTEE.id,
-            label: walletService.externalSource.intelTEE.longName,
-            supportsTestnet: walletService.externalSource.intelTEE.supportsTestnet
-          });
-        }
-      }
-
-      if (appConfigService.name == 'copay') {
+      if (appConfigService.name == 'copay' || appConfigService.name == 'trcpay') {
         if (n > 1 && walletService.externalSource.ledger.supported)
           seedOptions.push({
             id: walletService.externalSource.ledger.id,

@@ -53,7 +53,7 @@ angular.module('copayApp.controllers').controller('joinController',
 
       */
 
-      if (appConfigService.name == 'copay') {
+      if (appConfigService.name == 'copay' || appConfigService.name == 'trcpay') {
         if (walletService.externalSource.ledger.supported) {
           $scope.seedOptions.push({
             id: walletService.externalSource.ledger.id,
