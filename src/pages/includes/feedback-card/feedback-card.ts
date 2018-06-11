@@ -21,7 +21,7 @@ export class FeedbackCardPage {
   public score: number;
   public button_title: string;
   public feedbackCardTitle: string;
-  public isShowRateCard: boolean = false;
+  public isShowRateCard: boolean;
 
   private isCordova: boolean;
 
@@ -36,15 +36,19 @@ export class FeedbackCardPage {
   ) {
     this.score = 0;
     this.isCordova = this.platformProvider.isCordova;
-    let appName = this.appProvider.info.nameCase;
-    this.feedbackCardTitle = this.replaceParametersProvider.replace(
-      this.translate.instant('How do you like {{appName}}?'),
-      { appName }
-    );
+    this.isShowRateCard = false;
   }
 
   public setShowRateCard(value) {
     this.isShowRateCard = value;
+
+    if (this.isShowRateCard) {
+      let appName = this.appProvider.info.nameCase;
+      this.feedbackCardTitle = this.replaceParametersProvider.replace(
+        this.translate.instant('How do you like {{appName}}?'),
+        { appName }
+      );
+    }
   }
 
   public hideCard(): void {
