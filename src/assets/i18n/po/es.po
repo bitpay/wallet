@@ -12,7 +12,7 @@ msgstr ""
 "Last-Translator: cmgustavo83\n"
 "Language-Team: Spanish\n"
 "Language: es\n"
-"PO-Revision-Date: 2018-05-22 09:25-0400\n"
+"PO-Revision-Date: 2018-06-11 16:02-0400\n"
 
 msgid "(Trusted)"
 msgstr "(De confianza)"
@@ -155,6 +155,15 @@ msgstr "Aplicar los cambios"
 msgid "Approximate Bitcoin network fee to transfer wallet's balance (with normal priority)"
 msgstr "Comisión aproximada de la red Bitcoin para transferir el saldo de esta billetera (con prioridad normal)"
 
+msgid "Archive"
+msgstr "Archivar"
+
+msgid "Archived"
+msgstr "Archivado"
+
+msgid "Archiving this Gift Card will remove it from this view. You will still be able to see it in the Mercado Livre settings."
+msgstr "Al archivar esta Gift Card, se la eliminará de esta vista. Usted puede continuar viéndola en los ajustes de Mercado Livre."
+
 msgid "Are you being watched?"
 msgstr "¿Estás siendo observado?"
 
@@ -193,9 +202,6 @@ msgstr "Necesita respaldar"
 
 msgid "Backup all your wallets before using this function"
 msgstr "Respalda tu billetera para utilizar esta función"
-
-msgid "Backup now"
-msgstr "Respaldar ahora"
 
 msgid "Backup wallet"
 msgstr "Respaldar"
@@ -304,6 +310,9 @@ msgstr "Verificando..."
 
 msgid "Choose a backup file from your computer"
 msgstr "Selecciona el archivo de respaldo de tu computadora"
+
+msgid "Claim code:"
+msgstr "Código promocional:"
 
 msgid "Clear"
 msgstr "Anular"
@@ -1013,6 +1022,9 @@ msgstr "Idioma"
 msgid "Learn more"
 msgstr "Más información"
 
+msgid "Learn more about testnet blockchain"
+msgstr "Aprenda más acerca de la blockchain de testnet"
+
 msgid "Let's verify your backup phrase."
 msgstr "Verifiquemos la copia de seguridad."
 
@@ -1142,6 +1154,9 @@ msgstr "Aun no hay contactos"
 msgid "No entries for this log level"
 msgstr "No hay entradas para este nivel de registro"
 
+msgid "No funds found"
+msgstr "No se encontraron fondos"
+
 msgid "No password"
 msgstr "Sin contraseña"
 
@@ -1192,9 +1207,6 @@ msgstr "No hay suficientes fondos para la comisión"
 
 msgid "Not even BitPay can access it."
 msgstr "Ni siquiera BitPay puede acceder a ellos."
-
-msgid "Not funds found"
-msgstr "No se encontraron fondos"
 
 msgid "Not now"
 msgstr "Ahora no"
@@ -1520,6 +1532,9 @@ msgstr "Información de la versión"
 msgid "Remove"
 msgstr "Remover"
 
+msgid "Removing this Gift Card will remove all their data from this device."
+msgstr "Al eliminar esta Gift Card se eliminarán todos los datos de la misma de este dispositivo."
+
 msgid "Repeat the password"
 msgstr "Repetir la contraseña"
 
@@ -1529,8 +1544,8 @@ msgstr "Solicitar Contraseña de Cifrado"
 msgid "Request Fingerprint"
 msgstr "Solicitar Huella Digital"
 
-msgid "Request Specific amount"
-msgstr "Solicitar importe Especifico"
+msgid "Request Specific Amount"
+msgstr "Solicitar Importe Específico"
 
 msgid "Required number of signatures"
 msgstr "Número requerido de firmas"
@@ -1652,6 +1667,9 @@ msgstr "Enviando transacción..."
 msgid "Sending {{amount}} {{unit}} from your {{name}} wallet"
 msgstr "Enviando {{amount}} {{unit}} desde tu billetera {{name}}"
 
+msgid "Sensitive Data"
+msgstr "Información Sensible"
+
 msgid "Sent"
 msgstr "Enviado"
 
@@ -1687,6 +1705,9 @@ msgstr "ShapeShift alcanzó el límite máximo"
 
 msgid "Share"
 msgstr "Compartir"
+
+msgid "Share Address"
+msgstr "Compartir Dirección"
 
 msgid "Share the love by inviting your friends."
 msgstr "Comparte la pasión invitando a tus amigos."
@@ -1822,6 +1843,9 @@ msgstr "La cotización varía según el mercado."
 
 msgid "The higher the fee, the greater the incentive a miner has to include that transaction in a block. Current fees are determined based on network load and the selected policy."
 msgstr "Mientras más grande la comisión, mayor incentivo tiene el minero para agregar tu transacción a un bloque. Las comisiones están determinadas en base al tráfico y política de la red elegida."
+
+msgid "The information you are about to share/export may contain sensitive data such us wallet IDs, addresses, balances, etc. Please be sure you trust the person or entity with whom you are sharing this information."
+msgstr "La información que está por compartir/exportar podría contener datos sensibles tales como IDs de billetera, direcciones, saldos, etcétera. Por favor asegúrese de que confía en la persona o entidad con quien compartirá esta información."
 
 msgid "The maximum number of consecutive unused addresses (20) has been reached. When one of your unused addresses receives a payment, a new address will be generated and shown in your Receive tab."
 msgstr "Se ha alcanzado el número máximo de direcciones consecutivas sin utilizar (20). Cuando una de sus direcciones reciba un pago, una nueva dirección se generará y se mostrará en la pestaña Recibir."
@@ -1970,6 +1994,18 @@ msgstr "Uh oh..."
 msgid "Unconfirmed"
 msgstr "Sin confirmar"
 
+msgid "Unlink account"
+msgstr "Desvincular cuenta"
+
+msgid "Unlink card"
+msgstr "Desvincular tarjeta"
+
+msgid "Unlink the account will remove it and all associated cards from this device."
+msgstr "Desvincular la cuenta eliminará la cuenta y todas las tarjetas asociadas, de este dispositivo."
+
+msgid "Unlink the card will remove it from this device."
+msgstr "Desvincular la tarjeta la eliminará del dispositivo."
+
 msgid "Unsent transactions"
 msgstr "Transacciones no enviadas"
 
@@ -2057,6 +2093,9 @@ msgstr "ADVERTENCIA: No incluir la clave privada permite verificar el saldo de l
 msgid "WARNING: The private key of this wallet is not available. The export allows to check the wallet balance, transaction history, and create spend proposals from the export. However, does not allow to approve (sign) proposals, so funds will not be accessible from the export."
 msgstr "ADVERTENCIA: La clave privada de esta billetera no está disponible. La exportación permite verificar el saldo de la billetera, historial de transacciones y crear propuestas de gastos. Sin embargo, no permite aprobar propuestas (firmar), así que los fondos no serán accesibles al exportar."
 
+msgid "WARNING: The testnet is an alternative Bitcoin block chain, to be used for testing. Testnet coins are separate and distinct from actual bitcoins, and do not have any value. This allows application developers or bitcoin testers to experiment, without having to use real bitcoins."
+msgstr "ADVERTENCIA: Testnet es una cadena de bloques alternativa de Bitcoin, que se utiliza para pruebas. Las monedas testnet trabajan en una red separada y distinta de los bitcoins reales y no tienen ningún valor. Esto permite a los desarrolladores o usuarios en general, experimentar sin tener que usar bitcoins reales."
+
 msgid "WARNING: UNTRUSTED CERTIFICATE"
 msgstr "ADVERTENCIA: EL CERTIFICADO NO ES DE CONFIANZA"
 
@@ -2140,9 +2179,6 @@ msgstr "Frase de recuperación de la Billetera"
 
 msgid "Wallet recovery phrase not available"
 msgstr "Frase de recuperación de la billetera no disponible"
-
-msgid "Wallet selected"
-msgstr "Billetera seleccionada"
 
 msgid "Wallet service not found"
 msgstr "Wallet Service no encontrado"
@@ -2242,6 +2278,9 @@ msgstr "Podría firmar la transacción más tarde en los detalles de la Billeter
 
 msgid "You should not set a fee higher than {{maxFeeRecommended}} satoshis/byte."
 msgstr "No debería elegir una comisión superior a {{maxFeeRecommended}} satoshis/byte."
+
+msgid "Your Archived Gift Cards"
+msgstr "Sus Gift Cards Archivadas"
 
 msgid "Your BitPay Card is ready. Add funds to your card to start using it at stores and ATMs worldwide."
 msgstr "Tu Tarjeta BitPay ya esta lista. Agrega fondos para comenzar a utilizarla en negocios y cajeros automáticos de todo el mundo."

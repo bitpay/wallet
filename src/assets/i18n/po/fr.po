@@ -12,7 +12,7 @@ msgstr ""
 "Last-Translator: cmgustavo83\n"
 "Language-Team: French\n"
 "Language: fr\n"
-"PO-Revision-Date: 2018-05-25 14:15-0400\n"
+"PO-Revision-Date: 2018-06-11 16:02-0400\n"
 
 msgid "(Trusted)"
 msgstr "(Fiable)"
@@ -155,6 +155,15 @@ msgstr "Appliquer les modifications"
 msgid "Approximate Bitcoin network fee to transfer wallet's balance (with normal priority)"
 msgstr "Frais de réseau Bitcoin approximatifs pour transférer le solde du portefeuille (avec des frais normaux)"
 
+msgid "Archive"
+msgstr "Archiver"
+
+msgid "Archived"
+msgstr "Archivé(e)"
+
+msgid "Archiving this Gift Card will remove it from this view. You will still be able to see it in the Mercado Livre settings."
+msgstr "L’archivage de cette carte-cadeau la fera disparaître de cette vue. Vous serez toujours capable de la voir dans les paramètres de Mercado Livre."
+
 msgid "Are you being watched?"
 msgstr "Êtes-vous surveillé(e) ?"
 
@@ -193,9 +202,6 @@ msgstr "Sauvegarde requise"
 
 msgid "Backup all your wallets before using this function"
 msgstr "Sauvegardez tous vos portefeuilles avant d'utiliser cette fonction"
-
-msgid "Backup now"
-msgstr "Sauvegarder maintenant"
 
 msgid "Backup wallet"
 msgstr "Sauvegarder le portefeuille"
@@ -304,6 +310,9 @@ msgstr "Vérification..."
 
 msgid "Choose a backup file from your computer"
 msgstr "Choisissez un fichier de sauvegarde depuis votre ordinateur"
+
+msgid "Claim code:"
+msgstr "Code promotionnel :"
 
 msgid "Clear"
 msgstr "Effacer"
@@ -1013,6 +1022,9 @@ msgstr "Langue"
 msgid "Learn more"
 msgstr "En savoir plus"
 
+msgid "Learn more about testnet blockchain"
+msgstr "En savoir plus sur la blockchain testnet"
+
 msgid "Let's verify your backup phrase."
 msgstr "Vérifions votre phrase de sauvegarde."
 
@@ -1142,6 +1154,9 @@ msgstr "Aucun contact"
 msgid "No entries for this log level"
 msgstr "Aucune entrée pour ce niveau de log"
 
+msgid "No funds found"
+msgstr "Aucun fonds trouvé"
+
 msgid "No password"
 msgstr "Aucun mot de passe"
 
@@ -1192,9 +1207,6 @@ msgstr "Pas assez de fonds pour les frais"
 
 msgid "Not even BitPay can access it."
 msgstr "Même BitPay ne peut y accéder."
-
-msgid "Not funds found"
-msgstr "Aucun fonds trouvé"
 
 msgid "Not now"
 msgstr "Pas maintenant"
@@ -1520,6 +1532,9 @@ msgstr "Informations de version"
 msgid "Remove"
 msgstr "Supprimer"
 
+msgid "Removing this Gift Card will remove all their data from this device."
+msgstr "La suppression de cette carte-cadeau effacera toutes ses données de cet appareil."
+
 msgid "Repeat the password"
 msgstr "Confirmez le mot de passe"
 
@@ -1529,7 +1544,7 @@ msgstr "Demander un code de chiffrement"
 msgid "Request Fingerprint"
 msgstr "Demander l'empreinte digitale"
 
-msgid "Request Specific amount"
+msgid "Request Specific Amount"
 msgstr "Demander un montant précis"
 
 msgid "Required number of signatures"
@@ -1652,6 +1667,9 @@ msgstr "Envoi de la transaction..."
 msgid "Sending {{amount}} {{unit}} from your {{name}} wallet"
 msgstr "Envoi de {{amount}} {{unit}} depuis votre portefeuille {{name}}"
 
+msgid "Sensitive Data"
+msgstr "Données sensibles"
+
 msgid "Sent"
 msgstr "Envoyés"
 
@@ -1687,6 +1705,9 @@ msgstr "Limite maximale ShapeShift atteinte"
 
 msgid "Share"
 msgstr "Partager"
+
+msgid "Share Address"
+msgstr "Partager l'adresse"
 
 msgid "Share the love by inviting your friends."
 msgstr "Partagez la révolution bitcoin en invitant vos amis."
@@ -1822,6 +1843,9 @@ msgstr "Le taux de change varie avec le marché."
 
 msgid "The higher the fee, the greater the incentive a miner has to include that transaction in a block. Current fees are determined based on network load and the selected policy."
 msgstr "Plus les frais sont importants, plus les mineurs sont incités à inclure votre transaction dans un bloc. Les frais actuels sont déterminés en fonction de la charge du réseau et du choix sélectionné."
+
+msgid "The information you are about to share/export may contain sensitive data such us wallet IDs, addresses, balances, etc. Please be sure you trust the person or entity with whom you are sharing this information."
+msgstr "Les informations que vous êtes sur le point de partager peuvent contenir des données sensibles telles que les ID de portefeuilles, les adresses, les soldes... Vous devez avoir confiance en la personne ou en l'entité avec qui vous partagez ces informations."
 
 msgid "The maximum number of consecutive unused addresses (20) has been reached. When one of your unused addresses receives a payment, a new address will be generated and shown in your Receive tab."
 msgstr "Le nombre maximal d’adresses inutilisées consécutives (20) a été atteint. Lorsqu'une de vos adresses inutilisées reçoit un paiement, une nouvelle adresse sera générée et affichée dans votre onglet Recevoir."
@@ -1970,6 +1994,18 @@ msgstr "Oh là là..."
 msgid "Unconfirmed"
 msgstr "Non confirmée"
 
+msgid "Unlink account"
+msgstr "Dissocier le compte"
+
+msgid "Unlink card"
+msgstr "Dissocier la carte"
+
+msgid "Unlink the account will remove it and all associated cards from this device."
+msgstr "Dissocier le compte le supprimera de cet appareil, ainsi que toutes les cartes associées."
+
+msgid "Unlink the card will remove it from this device."
+msgstr "Dissocier la carte l'enlèvera de cet appareil."
+
 msgid "Unsent transactions"
 msgstr "Transactions non envoyées"
 
@@ -2057,6 +2093,9 @@ msgstr "ATTENTION : Ne pas inclure la clé privée permet de vérifier le solde 
 msgid "WARNING: The private key of this wallet is not available. The export allows to check the wallet balance, transaction history, and create spend proposals from the export. However, does not allow to approve (sign) proposals, so funds will not be accessible from the export."
 msgstr "ATTENTION : La clé privée de ce portefeuille n'est pas disponible. L'exportation permet de vérifier le solde du portefeuille, l'historique des transactions, et de créer des propositions de dépenses depuis le fichier exporté. Cependant, cela ne permet pas d'approuver (de signer) les propositions et les fonds ne seront pas accessibles depuis le fichier exporté."
 
+msgid "WARNING: The testnet is an alternative Bitcoin block chain, to be used for testing. Testnet coins are separate and distinct from actual bitcoins, and do not have any value. This allows application developers or bitcoin testers to experiment, without having to use real bitcoins."
+msgstr "Attention : Le testnet est une blockchain Bitcoin alternative, qui est utilisé pour des tests. Les bitcoins \"testnet\" sont séparés des bitcoins réels et n’ont aucune valeur. Cela permet aux développeurs d’applications d’expérimenter, sans devoir utiliser de vrais bitcoins."
+
 msgid "WARNING: UNTRUSTED CERTIFICATE"
 msgstr "ATTENTION : CERTIFICAT NON APPROUVÉ"
 
@@ -2140,9 +2179,6 @@ msgstr "Phrase de récupération"
 
 msgid "Wallet recovery phrase not available"
 msgstr "La phrase de récupération du portefeuille n'est pas disponible"
-
-msgid "Wallet selected"
-msgstr "Portefeuille sélectionné"
 
 msgid "Wallet service not found"
 msgstr "Wallet Service introuvable"
@@ -2242,6 +2278,9 @@ msgstr "Vous pourrez signer la transaction plus tard dans les détails de votre 
 
 msgid "You should not set a fee higher than {{maxFeeRecommended}} satoshis/byte."
 msgstr "Vous ne devriez pas définir des frais plus élevés que {{maxFeeRecommended}} satoshis/byte."
+
+msgid "Your Archived Gift Cards"
+msgstr "Vos cartes-cadeaux archivées"
 
 msgid "Your BitPay Card is ready. Add funds to your card to start using it at stores and ATMs worldwide."
 msgstr "Votre BitPay Card est prête. Ajoutez des fonds sur votre carte pour commencer à l'utiliser dans des magasins et distributeurs automatiques à travers le monde entier."
