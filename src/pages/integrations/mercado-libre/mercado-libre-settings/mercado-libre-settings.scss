@@ -1,2 +1,20 @@
 page-mercado-libre-settings {
+  .mercado-libre-card {
+    display: flex;
+    align-items: center;
+    .avatar {
+      width: 40px;
+      margin-right: 2rem;
+    }
+    .card-info {
+      padding-left: 1rem;
+      font-size: 12px;
+      width: 100%;
+      .amount {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+    }
+  }
 }

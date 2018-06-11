@@ -23,14 +23,19 @@
     </div>
 
     <div>
-      <div *ngIf="card.cardStatus == 'active'">
+      <div *ngIf="card.cardStatus == 'active' && !card.archived">
         <div *ngIf="card.pin">
-          Claim code:
+          {{'Claim code:' | translate}}
           <span class="text-bold" copy-to-clipboard="{{card.pin}}">{{card.pin}}</span>
         </div>
         <button class="redeem" ion-button outline (click)="openRedeemLink()">
           {{'Redeem Now' | translate}}
         </button>
+      </div>
+
+      <div *ngIf="card.cardStatus == 'active' && card.archived">
+        {{'Status:' | translate}}
+        <span class="text-bold">{{'Archived' | translate}}</span>
       </div>
 
       <div *ngIf="card.cardStatus == 'inactive'">
@@ -61,17 +66,33 @@
   </div>
 
   <ion-list>
-    <button class="links" ion-item (click)="openExternalLink(card.invoiceUrl)">
-      <span translate>See invoice</span> &rarr;
-    </button>
+    <div>
+      <a translate class="energized" ion-item no-lines clear text-center (click)="openExternalLink(card.invoiceUrl)">
+        See invoice
+      </a>
+      <a translate class="energized" ion-item no-lines clear text-center (click)="openSupportWebsite()">
+        Help &amp; Support
+      </a>
+    </div>
 
-    <button class="links" ion-item *ngIf="card.status == 'FAILURE'" (click)="openSupportWebsite()">
-      <span>
-        <span translate>Help &amp; Support</span> &rarr;</span>
-    </button>
+    <div *ngIf="card.cardStatus == 'inactive' || card.cardStatus == 'expired' || card.status == 'expired' || (card.status == 'FAILURE' && isOldCard) || (card.cardStatus == 'active' && card.archived && isOldCard)">
+      <ion-item-divider></ion-item-divider>
+      <a translate class="assertive" ion-item no-lines clear text-center (click)="remove()">
+        {{'Remove' | translate}}
+      </a>
+      <ion-item-divider>
+        {{'Removing this Gift Card will remove all their data from this device.' | translate}}
+      </ion-item-divider>
+    </div>
 
-    <button ion-item block *ngIf="card.cardStatus == 'inactive' || card.cardStatus == 'expired' || card.status == 'expired'" class="assertive" (click)="remove()">
-      {{'Remove' | translate}}
-    </button>
+    <div *ngIf="card.cardStatus == 'active' && !card.archived && isOldCard">
+      <ion-item-divider></ion-item-divider>
+      <a translate class="assertive" ion-item no-lines clear text-center (click)="archive()">
+        {{'Archive' | translate}}
+      </a>
+      <ion-item-divider>
+        {{'Archiving this Gift Card will remove it from this view. You will still be able to see it in the Mercado Livre settings.' | translate}}
+      </ion-item-divider>
+    </div>
   </ion-list>
 </ion-content>
