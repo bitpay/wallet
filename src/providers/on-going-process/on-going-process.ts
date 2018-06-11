@@ -7,7 +7,6 @@ import { Logger } from '../../providers/logger/logger';
 @Injectable()
 export class OnGoingProcessProvider {
   private loading;
-  private processNames;
   private pausedOngoingProcess;
   private ongoingProcess;
 
@@ -19,7 +18,10 @@ export class OnGoingProcessProvider {
     this.logger.info('OnGoingProcessProvider initialized.');
     // TODO GET - CLEAR - CHECK DecimalPipe for FILTER WITH TRANSLATE
     this.ongoingProcess = [];
-    this.processNames = {
+  }
+
+  public getProccessNames() {
+    const processNames = {
       broadcastingTx: this.translate.instant('Broadcasting transaction...'),
       calculatingFee: this.translate.instant('Calculating fee...'),
       connectingCoinbase: this.translate.instant('Connecting to Coinbase...'),
@@ -68,22 +70,7 @@ export class OnGoingProcessProvider {
       topup: this.translate.instant('Top up in progress...'),
       duplicatingWallet: this.translate.instant('Duplicating wallet...')
     };
-  }
-
-  public translateOnGoingProcessNames() {
-    _.forEach(this.processNames, (process, key) => {
-      this.getTranslation(process).then((processTranslated: string) => {
-        this.processNames[key] = processTranslated;
-      });
-    });
-  }
-
-  public getTranslation(processName: string): Promise<string> {
-    return new Promise(resolve => {
-      this.translate.get(processName).subscribe((processTranslated: string) => {
-        return resolve(processTranslated);
-      });
-    });
+    return processNames;
   }
 
   public clear() {
@@ -115,7 +102,7 @@ export class OnGoingProcessProvider {
   public set(processName: string): void {
     this.logger.debug('ongoingProcess active: ', processName);
     this.ongoingProcess.push(processName);
-    let showName = this.processNames[processName] || processName;
+    let showName = this.getProccessNames()[processName] || processName;
     if (!this.loading) {
       this.loading = this.loadingCtrl.create();
     }

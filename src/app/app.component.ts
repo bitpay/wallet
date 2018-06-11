@@ -22,7 +22,6 @@ import { GlideraProvider } from '../providers/glidera/glidera';
 import { IncomingDataProvider } from '../providers/incoming-data/incoming-data';
 import { Logger } from '../providers/logger/logger';
 import { MercadoLibreProvider } from '../providers/mercado-libre/mercado-libre';
-import { OnGoingProcessProvider } from '../providers/on-going-process/on-going-process';
 import { PopupProvider } from '../providers/popup/popup';
 import { ProfileProvider } from '../providers/profile/profile';
 import { PushNotificationsProvider } from '../providers/push-notifications/push-notifications';
@@ -104,8 +103,7 @@ export class CopayApp {
     private popupProvider: PopupProvider,
     private pushNotificationsProvider: PushNotificationsProvider,
     private app: App,
-    private incomingDataProvider: IncomingDataProvider,
-    private onGoingProcessProvider: OnGoingProcessProvider
+    private incomingDataProvider: IncomingDataProvider
   ) {
     this.initializeApp();
   }
@@ -177,7 +175,6 @@ export class CopayApp {
 
     this.registerIntegrations();
     this.incomingDataRedirEvent();
-    this.translateProvidersStrings(); // fixes translations
     // Check Profile
     this.profile
       .loadAndBindProfile()
@@ -372,9 +369,5 @@ export class CopayApp {
     return this.nav
       .getActiveChildNavs()[0]
       .viewCtrl.instance.tabs.getSelected();
-  }
-
-  private translateProvidersStrings(): void {
-    this.onGoingProcessProvider.translateOnGoingProcessNames();
   }
 }
