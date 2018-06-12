@@ -66,13 +66,13 @@ export interface Config {
   };
 
   showIntegration: {
-    coinbase: boolean,
-    glidera: boolean,
-    debitcard: boolean,
-    amazon: boolean,
-    amazonJapan: boolean,
-    mercadolibre: boolean,
-    shapeshift: boolean
+    coinbase: boolean;
+    glidera: boolean;
+    debitcard: boolean;
+    amazon: boolean;
+    amazonJapan: boolean;
+    mercadolibre: boolean;
+    shapeshift: boolean;
   };
 
   rates: {
