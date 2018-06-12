@@ -171,7 +171,8 @@ export class ConfirmPage {
         .toString();
     }
 
-    this.tx.feeLevelName = this.feeProvider.feeOpts[this.tx.feeLevel];
+    const feeOpts = this.feeProvider.getFeeOpts();
+    this.tx.feeLevelName = feeOpts[this.tx.feeLevel];
     this.showAddress = false;
     this.walletSelectorTitle = this.translate.instant('Send from');
 
@@ -306,7 +307,8 @@ export class ConfirmPage {
 
     if (this.tx.paypro) this.paymentTimeControl(this.tx.paypro.expires);
 
-    this.tx.feeLevelName = this.feeProvider.feeOpts[this.tx.feeLevel];
+    const feeOpts = this.feeProvider.getFeeOpts();
+    this.tx.feeLevelName = feeOpts[this.tx.feeLevel];
     this.updateTx(this.tx, this.wallet, { dryRun: true }).catch(err => {
       this.logger.warn('Error in updateTx: ', err);
     });
@@ -415,7 +417,8 @@ export class ConfirmPage {
             msg = this.translate.instant('Suggested by Merchant');
             tx.feeLevelName = msg;
           } else {
-            tx.feeLevelName = this.feeProvider.feeOpts[tx.feeLevel];
+            const feeOpts = this.feeProvider.getFeeOpts();
+            tx.feeLevelName = feeOpts[tx.feeLevel];
             tx.feeRate = feeRate;
           }
 
@@ -881,7 +884,8 @@ export class ConfirmPage {
     }
 
     this.tx.feeLevel = data.newFeeLevel;
-    this.tx.feeLevelName = this.feeProvider.feeOpts[this.tx.feeLevel];
+    const feeOpts = this.feeProvider.getFeeOpts();
+    this.tx.feeLevelName = feeOpts[this.tx.feeLevel];
     if (this.usingCustomFee)
       this.tx.feeRate = parseInt(data.customFeePerKB, 10);
 

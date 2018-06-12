@@ -47,19 +47,19 @@ export class MercadoLibreProvider {
   }
 
   public savePendingGiftCard(gc, opts, cb) {
-    var network = this.getNetwork();
+    let network = this.getNetwork();
     this.persistenceProvider
       .getMercadoLibreGiftCards(network)
       .then(oldGiftCards => {
         if (_.isString(oldGiftCards)) {
-          oldGiftCards = oldGiftCards;
+          oldGiftCards = JSON.parse(oldGiftCards);
         }
         if (_.isString(gc)) {
           gc = JSON.parse(gc);
         }
-        var inv = oldGiftCards || {};
+        let inv = oldGiftCards || {};
         inv[gc.invoiceId] = gc;
-        if (opts && (opts.error || opts.status)) {
+        if (opts && (opts.error || opts.status || opts.archived)) {
           inv[gc.invoiceId] = _.assign(inv[gc.invoiceId], opts);
         }
         if (opts && opts.remove) {

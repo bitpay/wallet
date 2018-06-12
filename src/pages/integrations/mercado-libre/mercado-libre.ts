@@ -20,6 +20,7 @@ import { TimeProvider } from '../../../providers/time/time';
 export class MercadoLibrePage {
   public giftCards;
   public network: string;
+  public showMainView: boolean;
 
   private updateGiftCard: boolean;
   public card;
@@ -34,7 +35,9 @@ export class MercadoLibrePage {
     private modalCtrl: ModalController,
     private navParams: NavParams,
     private popupProvider: PopupProvider
-  ) {}
+  ) {
+    this.showMainView = true;
+  }
 
   ionViewDidLoad() {
     this.logger.info('ionViewDidLoad MercadoLibrePage');
@@ -78,10 +81,17 @@ export class MercadoLibrePage {
     return new Promise(resolve => {
       this.mercadoLibreProvider.getPendingGiftCards((err, gcds) => {
         if (err) this.logger.error(err);
-        this.giftCards = gcds;
+        this.filterArchivedGiftCards(gcds);
         resolve();
       });
     });
+  }
+
+  private filterArchivedGiftCards(giftCards): void {
+    this.giftCards = _.pickBy(giftCards, gcdValue => {
+      return !gcdValue.archived;
+    });
+    this.showMainView = _.isEmpty(this.giftCards);
   }
 
   public goTo(page: string): void {
@@ -119,7 +129,7 @@ export class MercadoLibrePage {
           this.popupProvider.ionicAlert('Could not get gift cards', err);
           return reject(err);
         }
-        this.giftCards = gcds;
+        this.filterArchivedGiftCards(gcds);
         return resolve();
       });
     });

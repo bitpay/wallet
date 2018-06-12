@@ -6,10 +6,6 @@
 
 <ion-content>
   <div *ngIf="availableWallet">
-    <ion-item-divider>
-      <span translate>Duplicate ( Bitcoin Cash )</span>
-    </ion-item-divider>
-
     <ion-item *ngIf="availableWallet">
       <ion-icon class="item-img" item-start>
         <img [ngStyle]="{'background-color': availableWallet.color}" src="assets/img/icon-wallet.svg" class="icon-wallet" />
@@ -27,7 +23,7 @@
         <span *ngIf="availableWallet.error" class="wallet-warning">{{availableWallet.error}}</span>
       </div>
       <ion-note item-end>
-        <button ion-button (click)="duplicate(availableWallet)">
+        <button ion-button clear (click)="duplicate(availableWallet)">
           {{'Duplicate' | translate}}
         </button>
       </ion-note>

@@ -1,24 +1,6 @@
 page-wallet-item {
-  text-align: center;
-  .card {
-    border: none;
-  }
-  .wallet-item {
-    padding: 2rem 0;
-  }
-  .wallet-name {
-    padding: 10px;
-    font-size: 18px;
-    color: color($colors, dark);
-    .wallet-info {
-      font-size: 12px;
-    }
-  }
-  .wallet-icon {
-    img {
-      width: 70px;
-      height: 70px;
-      border-radius: $icon-border-radius;
-    }
+  .icon-wallet {
+    width: 42px;
+    height: 42px;
   }
 }

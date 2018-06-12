@@ -5,6 +5,7 @@ import { App, Events, NavController, NavParams } from 'ionic-angular';
 import { Logger } from '../../../providers/logger/logger';
 
 // Pages
+import { DisclaimerPage } from '../../onboarding/disclaimer/disclaimer';
 import { TabsPage } from '../../tabs/tabs';
 
 // Providers
@@ -231,19 +232,8 @@ export class ImportWalletPage {
         this.events.publish('status:updated');
         this.pushNotificationsProvider.updateSubscription(wallet);
         if (this.fromOnboarding) {
-          this.profileProvider
-            .setOnboardingCompleted()
-            .then(() => {
-              this.profileProvider.setDisclaimerAccepted().catch(err => {
-                this.logger.error(err);
-              });
-            })
-            .catch(err => {
-              this.logger.error(err);
-            });
-
-          this.navCtrl.setRoot(TabsPage);
-          this.navCtrl.popToRoot();
+          this.profileProvider.setOnboardingCompleted();
+          this.navCtrl.push(DisclaimerPage);
         } else {
           this.app.getRootNavs()[0].setRoot(TabsPage);
         }

@@ -170,6 +170,7 @@ export class WalletTransactionHistoryPage {
   }
 
   public downloadCSV() {
+    if (!this.csvReady) return;
     let csv = papa.unparse({
       fields: this.csvHeader,
       data: this.csvContent
