@@ -1,18 +1,18 @@
 <ion-header class="wallet-details-header">
-  <ion-navbar [navbar-bg]="wallet.color">
-    <ion-buttons left>
+  <ion-navbar [navbar-bg]="wallet && wallet.color">
+    <ion-buttons *ngIf="wallet" left>
       <button class="modal-close-button" (click)="close()" ion-button>
         <ion-icon ios="md-close" md="md-close"></ion-icon>
       </button>
     </ion-buttons>
-    <ion-title>{{wallet.name || ('Amount' | translate)}}</ion-title>
+    <ion-title>{{wallet && wallet.name || ('Amount' | translate)}}</ion-title>
     <ion-buttons end *ngIf="showSendMax">
       <button (click)="showSendMaxMenu()" ion-button icon-only>
         <ion-icon name="more"></ion-icon>
       </button>
     </ion-buttons>
   </ion-navbar>
-  <ion-toolbar [navbar-bg]="wallet.color">
+  <ion-toolbar *ngIf="wallet" [navbar-bg]="wallet.color">
     <div class="wallet-details-header__balance">{{wallet.status.totalBalanceStr}}</div>
   </ion-toolbar>
 </ion-header>
