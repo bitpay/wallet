@@ -49,7 +49,7 @@ describe('Onboarding: Import Wallet', () => {
       await element(by.css(`ion-select[formcontrolname=coin]`)).click();
       await element(by.css(CoinBTC)).click();
       await element(
-        by.cssContainingText('ion-alert .alert-button', 'OK')
+        by.cssContainingText('ion-alert .alert-button', 'Ok')
       ).click();
       await element(by.css('ion-footer')).click();
       await waitForIonAlert();
@@ -71,7 +71,7 @@ describe('Onboarding: Import Wallet', () => {
       await element(by.css(CoinBCH)).click();
       await takeScreenshot('import-wallet-coin-bch');
       await element(
-        by.cssContainingText('ion-alert .alert-button', 'OK')
+        by.cssContainingText('ion-alert .alert-button', 'Ok')
       ).click();
       await element(by.css('ion-footer')).click();
       await waitForIonAlert();

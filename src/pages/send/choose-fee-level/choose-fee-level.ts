@@ -36,6 +36,8 @@ export class ChooseFeeLevelPage {
   public showError: boolean;
   public showMaxWarning: boolean;
   public showMinWarning: boolean;
+  public okText: string;
+  public cancelText: string;
 
   constructor(
     private viewCtrl: ViewController,
@@ -44,6 +46,8 @@ export class ChooseFeeLevelPage {
     private feeProvider: FeeProvider,
     private translate: TranslateService
   ) {
+    this.okText = this.translate.instant('Ok');
+    this.cancelText = this.translate.instant('Cancel');
     // From parent controller
     this.network = this.viewCtrl.data.network;
     this.feeLevel = this.viewCtrl.data.feeLevel;
