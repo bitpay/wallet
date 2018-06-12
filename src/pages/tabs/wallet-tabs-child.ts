@@ -29,7 +29,6 @@ export class WalletTabsChild {
 
   public getParentWallet() {
     const walletId = this.getParentTabs().instance.walletId;
-    const wallets = this.profileProvider.getWallets();
-    return wallets.filter(w => w.id === walletId)[0];
+    return this.profileProvider.getWallet(walletId);
   }
 }

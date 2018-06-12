@@ -30,7 +30,6 @@ import { ShapeshiftConfirmPage } from '../../integrations/shapeshift/shapeshift-
 import { CustomAmountPage } from '../../receive/custom-amount/custom-amount';
 import { WalletTabsChild } from '../../tabs/wallet-tabs-child';
 import { ConfirmPage } from '../confirm/confirm';
-// import { ConfirmPage } from '../confirm/confirm';
 import { SendPage } from '../send';
 
 @Component({
@@ -88,13 +87,13 @@ export class AmountPage extends WalletTabsChild {
     private navParams: NavParams,
     private nodeWebkitProvider: NodeWebkitProvider,
     private platformProvider: PlatformProvider,
-    private profileProvider: ProfileProvider,
+    profileProvider: ProfileProvider,
     private rateProvider: RateProvider,
     private txFormatProvider: TxFormatProvider,
     private translate: TranslateService,
     private changeDetectorRef: ChangeDetectorRef
   ) {
-    super(navCtrl);
+    super(navCtrl, profileProvider);
     this.zone = new NgZone({ enableLongStackTrace: false });
     this.config = this.configProvider.get();
     this.recipientType = this.navParams.data.recipientType;
@@ -138,12 +137,6 @@ export class AmountPage extends WalletTabsChild {
 
     this.setAvailableUnits();
     this.updateUnitUI();
-  }
-
-  ngOnInit() {
-    const wallets = this.profileProvider.getWallets();
-    const walletId = this.navCtrl.parent.viewCtrl.instance.walletId;
-    this.wallet = wallets.filter(w => w.id === walletId)[0];
   }
 
   ionViewWillEnter() {
