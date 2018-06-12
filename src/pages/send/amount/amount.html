@@ -1,5 +1,5 @@
 <ion-header class="wallet-details-header">
-  <ion-navbar>
+  <ion-navbar [navbar-bg]="wallet.color">
     <ion-buttons left>
       <button class="modal-close-button" (click)="close()" ion-button>
         <ion-icon ios="md-close" md="md-close"></ion-icon>
@@ -12,7 +12,7 @@
       </button>
     </ion-buttons>
   </ion-navbar>
-  <ion-toolbar>
+  <ion-toolbar [navbar-bg]="wallet.color">
     <div class="wallet-details-header__balance">0.484894 BTC</div>
   </ion-toolbar>
 </ion-header>

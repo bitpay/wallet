@@ -36,6 +36,7 @@ export class SendPage {
   public contactsShowMore: boolean;
   private CONTACTS_SHOW_LIMIT: number = 10;
   private currentContactsPage: number = 0;
+  private wallet: any;
 
   constructor(
     private navCtrl: NavController,
@@ -51,6 +52,14 @@ export class SendPage {
     private externalLinkProvider: ExternalLinkProvider
   ) {
     console.log('this.navParams.data', this.navParams.data);
+  }
+
+  ngOnInit() {
+    console.log('in ngOnInit');
+    const wallets = this.profileProvider.getWallets();
+    const walletId = this.navCtrl.parent.viewCtrl.instance.walletId;
+    this.wallet = wallets.filter(w => w.id === walletId)[0];
+    console.log('this.wallet', this.wallet);
   }
 
   ionViewDidLoad() {

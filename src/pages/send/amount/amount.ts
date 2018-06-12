@@ -18,6 +18,7 @@ import { RateProvider } from '../../../providers/rate/rate';
 import { TxFormatProvider } from '../../../providers/tx-format/tx-format';
 
 // Pages
+import { ProfileProvider } from '../../../providers/profile/profile';
 import { BuyAmazonPage } from '../../integrations/amazon/buy-amazon/buy-amazon';
 import { BitPayCardTopUpPage } from '../../integrations/bitpay-card/bitpay-card-topup/bitpay-card-topup';
 import { BuyCoinbasePage } from '../../integrations/coinbase/buy-coinbase/buy-coinbase';
@@ -88,6 +89,7 @@ export class AmountPage {
     private navParams: NavParams,
     private nodeWebkitProvider: NodeWebkitProvider,
     private platformProvider: PlatformProvider,
+    private profileProvider: ProfileProvider,
     private rateProvider: RateProvider,
     private txFormatProvider: TxFormatProvider,
     private translate: TranslateService,
@@ -142,6 +144,9 @@ export class AmountPage {
     this.expression = '';
     this.useSendMax = false;
     this.processAmount();
+    const wallets = this.profileProvider.getWallets();
+    const walletId = this.navCtrl.parent.viewCtrl.instance.walletId;
+    this.wallet = wallets.filter(w => w.id === walletId)[0];
   }
 
   @HostListener('document:keydown', ['$event'])

@@ -62,12 +62,16 @@ export class ReceivePage {
     this.walletId = this.navParams.get('walletId');
   }
 
+  ngOnInit() {
+    console.log('in ngOnInit');
+    this.wallets = this.profileProvider.getWallets();
+    this.wallet = this.wallets.filter(w => w.id === this.walletId)[0];
+    this.onWalletSelect(this.checkSelectedWallet(this.wallet, this.wallets));
+    console.log('this.wallet', this.wallet);
+  }
+
   ionViewWillEnter() {
     this.isOpenSelector = false;
-    this.wallets = this.profileProvider.getWallets();
-    const selectedWallet = this.wallets.filter(w => w.id === this.walletId)[0];
-    this.wallet = selectedWallet;
-    this.onWalletSelect(this.checkSelectedWallet(this.wallet, this.wallets));
     this.events.subscribe('bwsEvent', (walletId, type) => {
       // Update current address
       if (this.wallet && walletId == this.wallet.id && type == 'NewIncomingTx')
