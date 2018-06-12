@@ -14,7 +14,7 @@
   "gitHubRepoName": "TRCpay",
   "gitHubRepoUrl": "git://github.com/terracoin/TRCpay.git",
   "gitHubRepoBugs": "https://github.com/terracoin/TRCpay/issues",
-  "disclaimerUrl": "https://terracoin.io/trcpaydisclaimer",
+  "disclaimerUrl": "https://terracoin.io/disclaimer",
   "url": "https://terracoin.io/trcpay",
   "appDescription": "TRCpay Terracoin Wallet",
   "winAppName": "TRCpayWallet",
