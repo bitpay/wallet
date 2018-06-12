@@ -19,14 +19,14 @@
 
       <ion-item>
         <ion-label stacked>{{'Total number of copayers' | translate}}</ion-label>
-        <ion-select formControlName="totalCopayers" (ionChange)="setTotalCopayers(createForm.value.totalCopayers)">
+        <ion-select okText="{{okText}}" cancelText="{{cancelText}}" formControlName="totalCopayers" (ionChange)="setTotalCopayers(createForm.value.totalCopayers)">
           <ion-option *ngFor="let copayer of copayers" [value]="copayer">{{copayer}}</ion-option>
         </ion-select>
       </ion-item>
 
       <ion-item>
         <ion-label stacked>{{'Required number of signatures' | translate}}</ion-label>
-        <ion-select formControlName="requiredCopayers">
+        <ion-select okText="{{okText}}" cancelText="{{cancelText}}" formControlName="requiredCopayers">
           <ion-option *ngFor="let signature of signatures" [value]="signature">{{signature}}</ion-option>
         </ion-select>
       </ion-item>
@@ -34,7 +34,7 @@
 
     <ion-item>
       <ion-label stacked>{{'Coin' | translate}}</ion-label>
-      <ion-select placeholder="{{'Select a coin' | translate}}" formControlName="coin">
+      <ion-select okText="{{okText}}" cancelText="{{cancelText}}" placeholder="{{'Select a coin' | translate}}" formControlName="coin">
         <ion-option value="btc">Bitcoin (BTC)</ion-option>
         <ion-option value="bch">Bitcoin Cash (BCH)</ion-option>
       </ion-select>
@@ -59,7 +59,7 @@
 
       <ion-item>
         <ion-label stacked>{{'Wallet key' | translate}}</ion-label>
-        <ion-select formControlName="selectedSeed" (ionChange)="seedOptionsChange(createForm.value.selectedSeed)">
+        <ion-select okText="{{okText}}" cancelText="{{cancelText}}" formControlName="selectedSeed" (ionChange)="seedOptionsChange(createForm.value.selectedSeed)">
           <ion-option *ngFor="let opt of seedOptions" [value]="opt.id">{{opt.label}}</ion-option>
         </ion-select>
       </ion-item>

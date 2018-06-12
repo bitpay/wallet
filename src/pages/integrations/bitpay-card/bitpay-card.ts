@@ -34,6 +34,8 @@ export class BitPayCardPage {
   public lastFourDigits: number;
   public currencySymbol: string;
   public currency: string;
+  public okText: string;
+  public cancelText: string;
 
   constructor(
     private translate: TranslateService,
@@ -46,6 +48,8 @@ export class BitPayCardPage {
     private navParams: NavParams,
     private navCtrl: NavController
   ) {
+    this.okText = this.translate.instant('Ok');
+    this.cancelText = this.translate.instant('Cancel');
     this.dateRange = {
       value: 'last30Days'
     };

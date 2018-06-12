@@ -54,6 +54,8 @@ export class CreateWalletPage implements OnInit {
   public seedOptions;
   public isShared: boolean;
   public title: string;
+  public okText: string;
+  public cancelText: string;
 
   constructor(
     private navCtrl: NavController,
@@ -70,6 +72,8 @@ export class CreateWalletPage implements OnInit {
     private events: Events,
     private pushNotificationsProvider: PushNotificationsProvider
   ) {
+    this.okText = this.translate.instant('Ok');
+    this.cancelText = this.translate.instant('Cancel');
     this.isShared = this.navParams.get('isShared');
     this.title = this.isShared
       ? this.translate.instant('Create shared wallet')
