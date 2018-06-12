@@ -13,6 +13,7 @@ import { ProfileProvider } from '../../providers/profile/profile';
 import { WalletProvider } from '../../providers/wallet/wallet';
 
 // Pages
+import { TxFormatProvider } from '../../providers/tx-format/tx-format';
 import { PaperWalletPage } from '../paper-wallet/paper-wallet';
 import { AddressbookAddPage } from '../settings/addressbook/add/add';
 import { AmountPage } from './amount/amount';
@@ -38,6 +39,10 @@ export class SendPage {
   private currentContactsPage: number = 0;
   private wallet: any;
 
+  public amount: string;
+  public fiatAmount: number;
+  public fiatCode: string;
+
   constructor(
     private navCtrl: NavController,
     private navParams: NavParams,
@@ -49,7 +54,8 @@ export class SendPage {
     private popupProvider: PopupProvider,
     private addressProvider: AddressProvider,
     private events: Events,
-    private externalLinkProvider: ExternalLinkProvider
+    private externalLinkProvider: ExternalLinkProvider,
+    private txFormatProvider: TxFormatProvider
   ) {
     console.log('this.navParams.data', this.navParams.data);
   }
@@ -60,6 +66,13 @@ export class SendPage {
     const walletId = this.navCtrl.parent.viewCtrl.instance.walletId;
     this.wallet = wallets.filter(w => w.id === walletId)[0];
     console.log('this.wallet', this.wallet);
+    console.log(typeof this.navParams.get('amount'));
+    this.amount = this.txFormatProvider.formatAmountStr(
+      this.navParams.get('coin'),
+      parseInt(this.navParams.get('amount'), 10)
+    );
+    this.fiatAmount = this.navParams.get('fiatAmount');
+    this.fiatCode = this.navParams.get('fiatCode');
   }
 
   ionViewDidLoad() {

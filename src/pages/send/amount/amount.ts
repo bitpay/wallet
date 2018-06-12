@@ -140,13 +140,16 @@ export class AmountPage {
     this.updateUnitUI();
   }
 
+  ngOnInit() {
+    const wallets = this.profileProvider.getWallets();
+    const walletId = this.navCtrl.parent.viewCtrl.instance.walletId;
+    this.wallet = wallets.filter(w => w.id === walletId)[0];
+  }
+
   ionViewWillEnter() {
     this.expression = '';
     this.useSendMax = false;
     this.processAmount();
-    const wallets = this.profileProvider.getWallets();
-    const walletId = this.navCtrl.parent.viewCtrl.instance.walletId;
-    this.wallet = wallets.filter(w => w.id === walletId)[0];
   }
 
   @HostListener('document:keydown', ['$event'])
@@ -484,6 +487,11 @@ export class AmountPage {
         useSendMax: this.useSendMax,
         description: this.description
       };
+
+      if (unit.isFiat) {
+        data.fiatAmount = _amount;
+        data.fiatCode = this.fiatCode;
+      }
     }
     this.useSendMax = null;
     this.navCtrl.push(this.nextView, data);

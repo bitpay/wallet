@@ -6,9 +6,14 @@
       </button>
     </ion-buttons> -->
     <ion-title>{{'Sending' | translate}}</ion-title>
+    <ion-buttons right>
+      <button class="modal-close-button" (click)="close()" ion-button>
+        Cancel
+      </button>
+    </ion-buttons>
   </ion-navbar>
   <ion-toolbar [navbar-bg]="wallet.color">
-    <div class="wallet-details-header__balance">$50</div>
+    <div class="wallet-details-header__balance">{{fiatAmount || amount}} {{fiatCode || coin}}</div>
   </ion-toolbar>
 </ion-header>
 
