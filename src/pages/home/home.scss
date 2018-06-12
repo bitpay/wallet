@@ -16,6 +16,7 @@ page-home {
     .title {
       font-weight: 500;
       font-size: 2rem;
+      color: color($colors, grey);
     }
     .subtitle {
       padding: 10px;
@@ -33,6 +34,17 @@ page-home {
   }
   .error {
     color: color($colors, danger);
+  }
+
+  .wallet-ready {
+    padding: 0rem;
+    margin-bottom: 3rem;
+    .row {
+      justify-content: flex-end;
+      button {
+        font-size: 12px;
+      }
+    }
   }
 
   page-wallet-activity,
