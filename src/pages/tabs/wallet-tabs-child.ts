@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController } from 'ionic-angular';
+import { NavController, ViewController } from 'ionic-angular';
 import { ProfileProvider } from '../../providers/profile/profile';
 
 @Component({
@@ -19,11 +19,11 @@ export class WalletTabsChild {
     this.wallet = this.getParentWallet();
   }
 
-  public close() {
-    this.getParentTabs().dismiss();
+  public close(): Promise<void> {
+    return this.getParentTabs().dismiss();
   }
 
-  public getParentTabs() {
+  public getParentTabs(): ViewController {
     return this.navCtrl.parent.viewCtrl;
   }
 

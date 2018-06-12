@@ -268,7 +268,8 @@ export class SendPage extends WalletTabsChild {
           email: item.email,
           color: item.color,
           coin: item.coin,
-          network: item.network
+          network: item.network,
+          fromSendPage: true
         });
 
         // toAddress: this.navParams.data.toAddress,
@@ -282,11 +283,5 @@ export class SendPage extends WalletTabsChild {
       .catch(err => {
         this.logger.error('Send: could not getAddress', err);
       });
-  }
-
-  public close() {
-    // console.log('this.navCtrl', this.navCtrl);
-    this.navCtrl.parent.viewCtrl.dismiss();
-    // this.navCtrl.parent.viewCtrl.pop();
   }
 }

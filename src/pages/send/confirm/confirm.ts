@@ -34,12 +34,13 @@ import {
   TransactionProposal,
   WalletProvider
 } from '../../../providers/wallet/wallet';
+import { WalletTabsChild } from '../../tabs/wallet-tabs-child';
 
 @Component({
   selector: 'page-confirm',
   templateUrl: 'confirm.html'
 })
-export class ConfirmPage {
+export class ConfirmPage extends WalletTabsChild {
   @ViewChild('slideButton') slideButton;
 
   private bitcore;
@@ -73,17 +74,18 @@ export class ConfirmPage {
   public usingMerchantFee: boolean = false;
 
   public isOpenSelector: boolean;
+  public fromSendPage: boolean;
 
   constructor(
     private app: App,
     private bwcProvider: BwcProvider,
-    private navCtrl: NavController,
+    navCtrl: NavController,
     private navParams: NavParams,
     private logger: Logger,
     private configProvider: ConfigProvider,
     private replaceParametersProvider: ReplaceParametersProvider,
     private platformProvider: PlatformProvider,
-    private profileProvider: ProfileProvider,
+    profileProvider: ProfileProvider,
     private walletProvider: WalletProvider,
     private popupProvider: PopupProvider,
     private bwcErrorProvider: BwcErrorProvider,
@@ -96,6 +98,7 @@ export class ConfirmPage {
     private translate: TranslateService,
     private externalLinkProvider: ExternalLinkProvider
   ) {
+    super(navCtrl, profileProvider);
     this.bitcore = this.bwcProvider.getBitcore();
     this.bitcoreCash = this.bwcProvider.getBitcoreCash();
     this.CONFIRM_LIMIT_USD = 20;
@@ -107,11 +110,14 @@ export class ConfirmPage {
     this.isCordova = this.platformProvider.isCordova;
   }
 
+  ngOnInit() {}
+
   ionViewWillLeave() {
     this.navCtrl.swipeBackEnabled = true;
   }
 
   ionViewWillEnter() {
+    this.fromSendPage = this.navParams.get('fromSendPage');
     this.navCtrl.swipeBackEnabled = false;
     this.isOpenSelector = false;
     let B = this.navParams.data.coin == 'bch' ? this.bitcoreCash : this.bitcore;
@@ -188,6 +194,15 @@ export class ConfirmPage {
 
   ionViewDidLoad() {
     this.logger.info('ionViewDidLoad ConfirmPage');
+    // this.bitcore = this.bwcProvider.getBitcore();
+    // this.bitcoreCash = this.bwcProvider.getBitcoreCash();
+    // this.CONFIRM_LIMIT_USD = 20;
+    // this.FEE_TOO_HIGH_LIMIT_PER = 15;
+    // this.config = this.configProvider.get();
+    // this.configFeeLevel = this.config.wallet.settings.feeLevel
+    //   ? this.config.wallet.settings.feeLevel
+    //   : 'normal';
+    // this.isCordova = this.platformProvider.isCordova;
   }
 
   private afterWalletSelectorSet() {

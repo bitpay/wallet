@@ -100,7 +100,7 @@
       </div>
     </ion-item>
 
-    <button class="container-from" ion-item detail-none (click)="showWallets()">
+    <button class="container-from" ion-item detail-none (click)="showWallets()" [ngClass]="{'not-clickable': fromSendPage}">
       <span translate>From</span>
       <div class="wallet" *ngIf="wallet">
         <ion-icon item-start>
@@ -110,7 +110,7 @@
             class="icon-wallet" />
         </ion-icon>
         <div>{{wallet.name}}</div>
-        <div class="last-item" item-end>
+        <div class="last-item" item-end *ngIf="!fromSendPage">
           <button ion-button clear color="grey" icon-only>
             <ion-icon *ngIf="!isOpenSelector" name="ios-arrow-down-outline"></ion-icon>
             <ion-icon *ngIf="isOpenSelector" name="ios-arrow-up-outline"></ion-icon>
