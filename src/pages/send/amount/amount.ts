@@ -28,6 +28,7 @@ import { SellGlideraPage } from '../../integrations/glidera/sell-glidera/sell-gl
 import { BuyMercadoLibrePage } from '../../integrations/mercado-libre/buy-mercado-libre/buy-mercado-libre';
 import { ShapeshiftConfirmPage } from '../../integrations/shapeshift/shapeshift-confirm/shapeshift-confirm';
 import { CustomAmountPage } from '../../receive/custom-amount/custom-amount';
+import { WalletTabsChild } from '../../tabs/wallet-tabs-child';
 import { ConfirmPage } from '../confirm/confirm';
 // import { ConfirmPage } from '../confirm/confirm';
 import { SendPage } from '../send';
@@ -36,7 +37,7 @@ import { SendPage } from '../send';
   selector: 'page-amount',
   templateUrl: 'amount.html'
 })
-export class AmountPage {
+export class AmountPage extends WalletTabsChild {
   private LENGTH_EXPRESSION_LIMIT: number;
   private availableUnits;
   private unit: string;
@@ -76,16 +77,14 @@ export class AmountPage {
   public toWalletId: string;
   private _id: string;
 
-  public wallet: any = {
-    name: 'Personal Wallet'
-  };
+  public wallet;
 
   constructor(
     private actionSheetCtrl: ActionSheetController,
     private configProvider: ConfigProvider,
     private filterProvider: FilterProvider,
     private logger: Logger,
-    private navCtrl: NavController,
+    navCtrl: NavController,
     private navParams: NavParams,
     private nodeWebkitProvider: NodeWebkitProvider,
     private platformProvider: PlatformProvider,
@@ -95,6 +94,7 @@ export class AmountPage {
     private translate: TranslateService,
     private changeDetectorRef: ChangeDetectorRef
   ) {
+    super(navCtrl);
     this.zone = new NgZone({ enableLongStackTrace: false });
     this.config = this.configProvider.get();
     this.recipientType = this.navParams.data.recipientType;
@@ -528,11 +528,5 @@ export class AmountPage {
       this.updateUnitUI();
       this.changeDetectorRef.detectChanges();
     });
-  }
-
-  public close() {
-    // console.log('this.navCtrl', this.navCtrl);
-    this.navCtrl.parent.viewCtrl.dismiss();
-    // this.navCtrl.parent.viewCtrl.pop();
   }
 }
