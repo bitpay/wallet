@@ -1,7 +1,7 @@
 <ion-header>
   <ion-navbar>
     <ion-title>{{ 'Confirm' | translate }}</ion-title>
-    <ion-buttons right>
+    <ion-buttons right *ngIf="fromSendPage">
       <button class="modal-close-button" (click)="close()" ion-button>
         Cancel
       </button>
