@@ -1,16 +1,6 @@
 <ion-header class="wallet-details-header">
   <ion-navbar [navbar-bg]="wallet.color">
-    <!-- <ion-buttons left>
-      <button class="modal-close-button" (click)="close()" ion-button>
-        <ion-icon ios="md-close" md="md-close"></ion-icon>
-      </button>
-    </ion-buttons> -->
     <ion-title>{{'Sending' | translate}}</ion-title>
-    <ion-buttons right>
-      <button class="modal-close-button" (click)="close()" ion-button>
-        Cancel
-      </button>
-    </ion-buttons>
   </ion-navbar>
   <ion-toolbar [navbar-bg]="wallet.color">
     <div class="wallet-details-header__balance">{{fiatAmount || amount}} {{fiatCode || coin}}</div>
