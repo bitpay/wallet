@@ -109,7 +109,9 @@ export class ConfirmPage extends WalletTabsChild {
     this.isCordova = this.platformProvider.isCordova;
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    // Overrides the ngOnInit logic of WalletTabsChild
+  }
 
   ionViewWillLeave() {
     this.navCtrl.swipeBackEnabled = true;
@@ -192,15 +194,6 @@ export class ConfirmPage extends WalletTabsChild {
 
   ionViewDidLoad() {
     this.logger.info('ionViewDidLoad ConfirmPage');
-    // this.bitcore = this.bwcProvider.getBitcore();
-    // this.bitcoreCash = this.bwcProvider.getBitcoreCash();
-    // this.CONFIRM_LIMIT_USD = 20;
-    // this.FEE_TOO_HIGH_LIMIT_PER = 15;
-    // this.config = this.configProvider.get();
-    // this.configFeeLevel = this.config.wallet.settings.feeLevel
-    //   ? this.config.wallet.settings.feeLevel
-    //   : 'normal';
-    // this.isCordova = this.platformProvider.isCordova;
   }
 
   private afterWalletSelectorSet() {
@@ -832,15 +825,10 @@ export class ConfirmPage extends WalletTabsChild {
       enableBackdropDismiss: false
     });
     await modal.present();
-    // console.log('root navs', this.app.getRootNavs());
 
-    const parentWalletId =
-      this.navCtrl.parent && this.navCtrl.parent.viewCtrl.instance.walletId;
-
-    parentWalletId
-      ? this.navCtrl.parent.viewCtrl.dismiss()
+    this.isWithinWalletTabs()
+      ? this.getParentTabs().dismiss()
       : this.app.getRootNavs()[0].setRoot(TabsPage);
-    // this.navCtrl.parent.viewCtrl.dismiss();
   }
 
   public openPPModal(): void {

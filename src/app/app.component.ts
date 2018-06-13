@@ -211,11 +211,6 @@ export class CopayApp {
       this.profile.createProfile();
       this.rootPage = OnboardingPage;
     }
-
-    // setTimeout(() => {
-    //   const tabNav = this.getSelectedTabNav();
-    //   tabNav.push(this.pageMap['AmountPage'], {});
-    // }, 5000);
   }
 
   private openLockModal(): void {

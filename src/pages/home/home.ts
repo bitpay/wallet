@@ -21,7 +21,6 @@ import { MercadoLibrePage } from '../integrations/mercado-libre/mercado-libre';
 import { ShapeshiftPage } from '../integrations/shapeshift/shapeshift';
 import { TxDetailsPage } from '../tx-details/tx-details';
 import { TxpDetailsPage } from '../txp-details/txp-details';
-// import { WalletDetailsPage } from '../wallet-details/wallet-details';
 import { ActivityPage } from './activity/activity';
 import { ProposalsPage } from './proposals/proposals';
 
@@ -451,9 +450,6 @@ export class HomePage {
       });
       return;
     }
-    // this.navCtrl.push(WalletDetailsPage, {
-    //   walletId: wallet.credentials.walletId
-    // });
     this.modalCtrl
       .create(
         WalletTabsPage,
