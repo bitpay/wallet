@@ -34,7 +34,7 @@ import {
   TransactionProposal,
   WalletProvider
 } from '../../../providers/wallet/wallet';
-import { WalletTabsChild } from '../../tabs/wallet-tabs-child';
+import { WalletTabsChild } from '../../wallet-tabs/wallet-tabs-child';
 
 @Component({
   selector: 'page-confirm',

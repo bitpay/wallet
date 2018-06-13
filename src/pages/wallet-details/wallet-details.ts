@@ -22,7 +22,7 @@ import { WalletProvider } from '../../providers/wallet/wallet';
 import { BackupWarningPage } from '../../pages/backup/backup-warning/backup-warning';
 import { WalletAddressesPage } from '../../pages/settings/wallet-settings/wallet-settings-advanced/wallet-addresses/wallet-addresses';
 import { TxDetailsPage } from '../../pages/tx-details/tx-details';
-import { WalletTabsChild } from '../tabs/wallet-tabs-child';
+import { WalletTabsChild } from '../wallet-tabs/wallet-tabs-child';
 import { SearchTxModalPage } from './search-tx-modal/search-tx-modal';
 import { WalletBalancePage } from './wallet-balance/wallet-balance';
 

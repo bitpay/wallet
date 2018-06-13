@@ -21,7 +21,7 @@ import { WalletProvider } from '../../providers/wallet/wallet';
 
 import * as _ from 'lodash';
 import { PopupProvider } from '../../providers/popup/popup';
-import { WalletTabsChild } from '../tabs/wallet-tabs-child';
+import { WalletTabsChild } from '../wallet-tabs/wallet-tabs-child';
 
 @Component({
   selector: 'page-receive',

@@ -16,7 +16,7 @@ import { WalletProvider } from '../../providers/wallet/wallet';
 import { TxFormatProvider } from '../../providers/tx-format/tx-format';
 import { PaperWalletPage } from '../paper-wallet/paper-wallet';
 import { AddressbookAddPage } from '../settings/addressbook/add/add';
-import { WalletTabsChild } from '../tabs/wallet-tabs-child';
+import { WalletTabsChild } from '../wallet-tabs/wallet-tabs-child';
 import { AmountPage } from './amount/amount';
 import { ConfirmPage } from './confirm/confirm';
 

@@ -45,7 +45,7 @@ import { ReleaseProvider } from '../../providers/release/release';
 import { ReplaceParametersProvider } from '../../providers/replace-parameters/replace-parameters';
 import { WalletProvider } from '../../providers/wallet/wallet';
 import { SettingsPage } from '../settings/settings';
-import { WalletTabsPage } from '../tabs/wallet-tabs';
+import { WalletTabsPage } from '../wallet-tabs/wallet-tabs';
 
 @Component({
   selector: 'page-home',
