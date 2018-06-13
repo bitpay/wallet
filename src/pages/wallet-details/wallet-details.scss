@@ -242,7 +242,10 @@ page-wallet-details {
   ion-toolbar {
     min-height: 0;
     margin-top: -6px;
-    padding-top: 0;
+
+    &.toolbar-md {
+      padding-top: 0;
+    }
   }
 
   &__balance {
