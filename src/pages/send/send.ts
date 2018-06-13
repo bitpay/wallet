@@ -20,6 +20,19 @@ import { WalletTabsChild } from '../wallet-tabs/wallet-tabs-child';
 import { AmountPage } from './amount/amount';
 import { ConfirmPage } from './confirm/confirm';
 
+export interface FlatWallet {
+  color: string;
+  name: string;
+  recipientType: 'wallet';
+  coin: 'btc' | 'bch';
+  network: 'testnet' | 'mainnet';
+  m: number;
+  n: number;
+  needsBackup: boolean;
+  isComplete: () => boolean;
+  getAddress: () => Promise<string>;
+}
+
 @Component({
   selector: 'page-send',
   templateUrl: 'send.html'
@@ -28,8 +41,8 @@ export class SendPage extends WalletTabsChild {
   public search: string = '';
   public walletsBtc;
   public walletsBch;
-  public walletBchList;
-  public walletBtcList;
+  public walletBchList: FlatWallet[];
+  public walletBtcList: FlatWallet[];
   public contactsList = [];
   public filteredContactsList = [];
   public hasBtcWallets: boolean;
@@ -97,8 +110,8 @@ export class SendPage extends WalletTabsChild {
       }
     });
 
-    this.updateBchWalletsList();
-    this.updateBtcWalletsList();
+    this.walletBchList = this.getBchWalletsList();
+    this.walletBtcList = this.getBtcWalletsList();
     this.updateContactsList();
   }
 
@@ -122,68 +135,16 @@ export class SendPage extends WalletTabsChild {
     this.navCtrl.push(PaperWalletPage, { privateKey });
   }
 
-  private updateBchWalletsList(): void {
-    this.walletBchList = [];
-
-    if (!this.hasBchWallets) return;
-
-    _.each(this.walletsBch, v => {
-      this.walletBchList.push({
-        color: v.color,
-        name: v.name,
-        recipientType: 'wallet',
-        coin: v.coin,
-        network: v.network,
-        m: v.credentials.m,
-        n: v.credentials.n,
-        isComplete: v.isComplete(),
-        needsBackup: v.needsBackup,
-        getAddress: (): Promise<any> => {
-          return new Promise((resolve, reject) => {
-            this.walletProvider
-              .getAddress(v, false)
-              .then(addr => {
-                return resolve(addr);
-              })
-              .catch(err => {
-                return reject(err);
-              });
-          });
-        }
-      });
-    });
+  private getBchWalletsList(): FlatWallet[] {
+    return this.hasBchWallets
+      ? this.walletsBch.map(wallet => this.flattenWallet(wallet))
+      : [];
   }
 
-  private updateBtcWalletsList(): void {
-    this.walletBtcList = [];
-
-    if (!this.hasBtcWallets) return;
-
-    _.each(this.walletsBtc, v => {
-      this.walletBtcList.push({
-        color: v.color,
-        name: v.name,
-        recipientType: 'wallet',
-        coin: v.coin,
-        network: v.network,
-        m: v.credentials.m,
-        n: v.credentials.n,
-        isComplete: v.isComplete(),
-        needsBackup: v.needsBackup,
-        getAddress: (): Promise<any> => {
-          return new Promise((resolve, reject) => {
-            this.walletProvider
-              .getAddress(v, false)
-              .then(addr => {
-                return resolve(addr);
-              })
-              .catch(err => {
-                return reject(err);
-              });
-          });
-        }
-      });
-    });
+  private getBtcWalletsList(): FlatWallet[] {
+    return this.hasBtcWallets
+      ? this.walletsBtc.map(wallet => this.flattenWallet(wallet))
+      : [];
   }
 
   private updateContactsList(): void {
@@ -191,22 +152,21 @@ export class SendPage extends WalletTabsChild {
       this.hasContacts = _.isEmpty(ab) ? false : true;
       if (!this.hasContacts) return;
 
-      this.contactsList = [];
+      let contactsList = [];
       _.each(ab, (v, k: string) => {
-        this.contactsList.push({
+        contactsList.push({
           name: _.isObject(v) ? v.name : v,
           address: k,
           network: this.addressProvider.validateAddress(k).network,
           email: _.isObject(v) ? v.email : null,
           recipientType: 'contact',
           coin: this.addressProvider.validateAddress(k).coin,
-          getAddress: () => {
-            return new Promise(resolve => {
-              return resolve(k);
-            });
-          }
+          getAddress: () => Promise.resolve(k)
         });
       });
+      this.contactsList = contactsList.filter(c =>
+        this.filterIrrelevantRecipients(c)
+      );
       let shortContactsList = _.clone(
         this.contactsList.slice(
           0,
@@ -217,6 +177,31 @@ export class SendPage extends WalletTabsChild {
       this.contactsShowMore =
         this.contactsList.length > shortContactsList.length;
     });
+  }
+
+  private flattenWallet(wallet): FlatWallet {
+    return {
+      color: wallet.color,
+      name: wallet.name,
+      recipientType: 'wallet',
+      coin: wallet.coin,
+      network: wallet.network,
+      m: wallet.credentials.m,
+      n: wallet.credentials.n,
+      isComplete: wallet.isComplete(),
+      needsBackup: wallet.needsBackup,
+      getAddress: () => this.walletProvider.getAddress(wallet, false)
+    };
+  }
+
+  private filterIrrelevantRecipients(recipient: {
+    coin: string;
+    network: string;
+  }): boolean {
+    return this.wallet
+      ? this.wallet.coin === recipient.coin &&
+          this.wallet.network === recipient.network
+      : true;
   }
 
   public showMore(): void {
