@@ -224,13 +224,26 @@ page-wallet-details {
 
 .wallet-details-header {
   ion-title .toolbar-title {
-    font-weight: 100;
-    font-size: 16px;
+    font-weight: 500;
+  }
+
+  &:not(.no-subtitle) {
+    ion-title .toolbar-title {
+      font-weight: 100;
+      font-size: 16px;
+    }
+  }
+
+  button.modal-close-button {
+    font-size: 17px;
+    font-weight: 400;
+    text-transform: none;
   }
 
   ion-toolbar {
     min-height: 0;
     margin-top: -6px;
+    padding-top: 0;
   }
 
   &__balance {
