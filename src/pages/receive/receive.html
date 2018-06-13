@@ -26,8 +26,8 @@
         </button>
       </div>
     </div>
-    <div class="card">
-      <button ion-item detail-none *ngIf="wallets[0]" (click)="showWallets()">
+    <div class="card" *ngIf="wallets[0]">
+      <button ion-item detail-none (click)="showWallets()">
         <ion-icon class="item-img" item-start>
           <img *ngIf="wallet.network == 'testnet'" [ngStyle]="{'background-color': wallet.color}" src="assets/img/icon-wallet-testnet.svg"
             class="icon-wallet" />

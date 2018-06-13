@@ -27,6 +27,8 @@ export class JoinWalletPage {
   private defaults;
   public showAdvOpts: boolean;
   public seedOptions;
+  public okText: string;
+  public cancelText: string;
 
   private derivationPathByDefault: string;
   private derivationPathForTestnet: string;
@@ -47,6 +49,8 @@ export class JoinWalletPage {
     private events: Events,
     private pushNotificationsProvider: PushNotificationsProvider
   ) {
+    this.okText = this.translate.instant('Ok');
+    this.cancelText = this.translate.instant('Cancel');
     this.defaults = this.configProvider.getDefaults();
 
     this.derivationPathByDefault = this.derivationPathHelperProvider.default;

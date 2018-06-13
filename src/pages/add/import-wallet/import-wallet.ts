@@ -45,6 +45,8 @@ export class ImportWalletPage {
   public isIOS: boolean;
   public file: File;
   public code;
+  public okText: string;
+  public cancelText: string;
 
   constructor(
     private app: App,
@@ -64,6 +66,8 @@ export class ImportWalletPage {
     private events: Events,
     private pushNotificationsProvider: PushNotificationsProvider
   ) {
+    this.okText = this.translate.instant('Ok');
+    this.cancelText = this.translate.instant('Cancel');
     this.reader = new FileReader();
     this.defaults = this.configProvider.getDefaults();
     this.errors = bwcProvider.getErrors();
