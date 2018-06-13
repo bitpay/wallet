@@ -1,3 +1,4 @@
+// tslint:disable-next-line:no-console
 import { Injectable, isDevMode } from '@angular/core';
 
 import * as _ from 'lodash';
