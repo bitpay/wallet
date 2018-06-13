@@ -11,35 +11,47 @@
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
   <div class="wrapper">
-    <div class="header-extend">
-      <div *ngIf="!wallets || !wallets[0]" class="no-wallets">
-        <button ion-button clear (click)="goToAddView()">
-          <span translate>Create a new wallet</span>
-        </button>
-      </div>
-    </div>
+    <div class="header-extend"></div>
 
-    <ion-card *ngIf="serverMessage">
-      <ion-item>
-        <div>{{serverMessage.title}}</div>
-        <div>{{serverMessage.body}}</div>
-        <div (click)="openServerMessageLink()">
-          <span translate>Learn more</span>
+    <ion-card *ngIf="serverMessage " class="server-error-card">
+      <ion-card-content text-center>
+        <div ion-text class="title" color="danger">
+          {{serverMessage.title}}
         </div>
-      </ion-item>
+        <div class="subtitle">
+          {{serverMessage.body}}
+        </div>
+        <div (click)="openServerMessageLink()">
+          <a>{{'Read more' | translate}}</a>
+        </div>
+      </ion-card-content>
     </ion-card>
-
-    <ion-card class="new-release" *ngIf="newRelease">
-      <div class="new-release-icon">
+    
+    <ion-card *ngIf="!wallets || !wallets[0]" class="action-card">
+      <div class="action-card-icon">
+        <img src="assets/img/icon-wallet.svg" class="icon-wallet" />
+      </div>
+      <ion-card-content>
+        <div class="subtitle action-card-text" translate>
+            Create a wallet to start sending and receiving funds, buying Gift Cards and much more!
+        </div>
+        <button ion-button class="button-standard" (click)="goToAddView()">
+          {{'Create a new wallet' | translate}}
+        </button>
+      </ion-card-content>
+    </ion-card>
+    
+    <ion-card class="action-card" *ngIf="newRelease">
+      <div class="action-card-icon">
         <img src="assets/img/icon-update.svg" />
       </div>
-      <ion-card-header class="new-release-text">
-        {{updateText}}
-      </ion-card-header>
-      <ion-card-content class="new-release-button">
-        <div (click)="goToDownload()">
-          <span translate>Download</span>
+      <ion-card-content>
+        <div class="subtitle action-card-text" translate>
+          {{updateText}}
         </div>
+        <button ion-button class="button-standard" (click)="goToDownload()">
+          {{'Download' | translate}}
+        </button>
       </ion-card-content>
     </ion-card>
 

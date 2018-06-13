@@ -393,3 +393,22 @@ ion-alert .alert-message {
     top: 60%;
   }
 }
+
+.action-card {
+  padding-bottom: 0rem;
+  &-icon {
+    display: flex;
+    justify-content: center;
+    margin-top: 3rem;
+    img {
+      width: 4rem;
+      height: 4rem;
+    }
+  }
+  &-text {
+    text-align: center;
+    color: color($colors, dark);
+    margin-bottom: 1rem;
+    padding-top: 3rem;
+  }
+}
