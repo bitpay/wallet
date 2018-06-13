@@ -3,9 +3,7 @@ import { NavController, ViewController } from 'ionic-angular';
 import { ProfileProvider } from '../../providers/profile/profile';
 import { WalletTabsPage } from './wallet-tabs';
 
-@Component({
-  template: ''
-})
+@Component({})
 export class WalletTabsChild {
   wallets;
   wallet;
