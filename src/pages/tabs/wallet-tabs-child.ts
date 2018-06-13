@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { NavController, ViewController } from 'ionic-angular';
 import { ProfileProvider } from '../../providers/profile/profile';
+import { WalletTabsPage } from './wallet-tabs';
 
 @Component({
   template: ''
@@ -19,7 +20,7 @@ export class WalletTabsChild {
     this.wallet = this.getParentWallet();
   }
 
-  public close(): Promise<void> {
+  public close(): Promise<any> {
     return this.getParentTabs().dismiss();
   }
 
@@ -30,5 +31,9 @@ export class WalletTabsChild {
   public getParentWallet() {
     const walletId = this.getParentTabs().instance.walletId;
     return this.profileProvider.getWallet(walletId);
+  }
+
+  public isWithinWalletTabs(): boolean {
+    return !!(this.getParentTabs().instance as WalletTabsPage).walletTabs;
   }
 }

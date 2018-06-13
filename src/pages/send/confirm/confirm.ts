@@ -74,7 +74,6 @@ export class ConfirmPage extends WalletTabsChild {
   public usingMerchantFee: boolean = false;
 
   public isOpenSelector: boolean;
-  public fromSendPage: boolean;
 
   constructor(
     private app: App,
@@ -117,7 +116,6 @@ export class ConfirmPage extends WalletTabsChild {
   }
 
   ionViewWillEnter() {
-    this.fromSendPage = this.navParams.get('fromSendPage');
     this.navCtrl.swipeBackEnabled = false;
     this.isOpenSelector = false;
     let B = this.navParams.data.coin == 'bch' ? this.bitcoreCash : this.bitcore;

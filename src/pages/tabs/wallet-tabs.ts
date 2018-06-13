@@ -15,7 +15,7 @@ import { WalletDetailsPage } from '../wallet-details/wallet-details';
   `
 })
 export class WalletTabsPage {
-  @ViewChild('tabs') tabs: any;
+  @ViewChild('tabs') walletTabs: any;
 
   receiveRoot = ReceivePage;
   activityRoot = WalletDetailsPage;

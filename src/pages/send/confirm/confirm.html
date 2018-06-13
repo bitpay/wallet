@@ -1,7 +1,7 @@
 <ion-header>
   <ion-navbar>
     <ion-title>{{ 'Confirm' | translate }}</ion-title>
-    <ion-buttons right *ngIf="fromSendPage">
+    <ion-buttons right *ngIf="isWithinWalletTabs()">
       <button class="modal-close-button" (click)="close()" ion-button>
         Cancel
       </button>
@@ -100,7 +100,7 @@
       </div>
     </ion-item>
 
-    <button class="container-from" ion-item detail-none (click)="showWallets()" [ngClass]="{'not-clickable': fromSendPage}">
+    <button class="container-from" ion-item detail-none (click)="showWallets()" [ngClass]="{'not-clickable': isWithinWalletTabs()}">
       <span translate>From</span>
       <div class="wallet" *ngIf="wallet">
         <ion-icon item-start>
@@ -110,7 +110,7 @@
             class="icon-wallet" />
         </ion-icon>
         <div>{{wallet.name}}</div>
-        <div class="last-item" item-end *ngIf="!fromSendPage">
+        <div class="last-item" item-end *ngIf="!isWithinWalletTabs()">
           <button ion-button clear color="grey" icon-only>
             <ion-icon *ngIf="!isOpenSelector" name="ios-arrow-down-outline"></ion-icon>
             <ion-icon *ngIf="isOpenSelector" name="ios-arrow-up-outline"></ion-icon>

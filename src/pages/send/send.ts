@@ -268,8 +268,7 @@ export class SendPage extends WalletTabsChild {
           email: item.email,
           color: item.color,
           coin: item.coin,
-          network: item.network,
-          fromSendPage: true
+          network: item.network
         });
 
         // toAddress: this.navParams.data.toAddress,
