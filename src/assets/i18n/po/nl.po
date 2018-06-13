@@ -12,7 +12,7 @@ msgstr ""
 "Last-Translator: cmgustavo83\n"
 "Language-Team: Dutch\n"
 "Language: nl\n"
-"PO-Revision-Date: 2018-05-21 09:12-0400\n"
+"PO-Revision-Date: 2018-06-11 09:23-0400\n"
 
 msgid "(Trusted)"
 msgstr "(Vertrouwd)"
@@ -155,6 +155,15 @@ msgstr ""
 msgid "Approximate Bitcoin network fee to transfer wallet's balance (with normal priority)"
 msgstr "Geschatte Bitcoin netwerk transactiekosten voor overdracht van volledige saldo van portemonnee (met normale prioriteit)"
 
+msgid "Archive"
+msgstr ""
+
+msgid "Archived"
+msgstr ""
+
+msgid "Archiving this Gift Card will remove it from this view. You will still be able to see it in the Mercado Livre settings."
+msgstr ""
+
 msgid "Are you being watched?"
 msgstr "Kijkt er iemand mee?"
 
@@ -192,9 +201,6 @@ msgid "Backup Needed"
 msgstr ""
 
 msgid "Backup all your wallets before using this function"
-msgstr ""
-
-msgid "Backup now"
 msgstr ""
 
 msgid "Backup wallet"
@@ -303,6 +309,9 @@ msgid "Checking..."
 msgstr ""
 
 msgid "Choose a backup file from your computer"
+msgstr ""
+
+msgid "Claim code:"
 msgstr ""
 
 msgid "Clear"
@@ -1013,6 +1022,9 @@ msgstr "Taal"
 msgid "Learn more"
 msgstr "Meer informatie"
 
+msgid "Learn more about testnet blockchain"
+msgstr ""
+
 msgid "Let's verify your backup phrase."
 msgstr "Laten we de backup zin verifiëren."
 
@@ -1142,6 +1154,9 @@ msgstr "Nog geen contactpersonen"
 msgid "No entries for this log level"
 msgstr "Geen items voor dit logboek niveau"
 
+msgid "No funds found"
+msgstr ""
+
 msgid "No password"
 msgstr ""
 
@@ -1192,9 +1207,6 @@ msgstr "Onvoldoende saldo voor transactiekosten"
 
 msgid "Not even BitPay can access it."
 msgstr "Zelfs BitPay heeft geen toegang."
-
-msgid "Not funds found"
-msgstr "Geen saldo gevonden"
 
 msgid "Not now"
 msgstr "Niet nu"
@@ -1520,6 +1532,9 @@ msgstr "Release informatie"
 msgid "Remove"
 msgstr "Verwijderen"
 
+msgid "Removing this Gift Card will remove all their data from this device."
+msgstr ""
+
 msgid "Repeat the password"
 msgstr "Herhaal het wachtwoord"
 
@@ -1529,8 +1544,8 @@ msgstr ""
 msgid "Request Fingerprint"
 msgstr "Vereis Vingerafdruk"
 
-msgid "Request Specific amount"
-msgstr "Vraag specifiek bedrag"
+msgid "Request Specific Amount"
+msgstr ""
 
 msgid "Required number of signatures"
 msgstr ""
@@ -1652,6 +1667,9 @@ msgstr ""
 msgid "Sending {{amount}} {{unit}} from your {{name}} wallet"
 msgstr ""
 
+msgid "Sensitive Data"
+msgstr ""
+
 msgid "Sent"
 msgstr "Verzonden"
 
@@ -1686,6 +1704,9 @@ msgid "ShapeShift max limit reached"
 msgstr ""
 
 msgid "Share"
+msgstr ""
+
+msgid "Share Address"
 msgstr ""
 
 msgid "Share the love by inviting your friends."
@@ -1822,6 +1843,9 @@ msgstr "De wisselkoers wijzigt aan de hand van de markt."
 
 msgid "The higher the fee, the greater the incentive a miner has to include that transaction in a block. Current fees are determined based on network load and the selected policy."
 msgstr "Des te hoger de betaalde transactiekosten, des te meer reden een miner heeft om de transactie in een blok op te nemen. De huidige transactiekosten worden bepaald aan de hand van de drukte op het netwerk en het gekozen beleid."
+
+msgid "The information you are about to share/export may contain sensitive data such us wallet IDs, addresses, balances, etc. Please be sure you trust the person or entity with whom you are sharing this information."
+msgstr ""
 
 msgid "The maximum number of consecutive unused addresses (20) has been reached. When one of your unused addresses receives a payment, a new address will be generated and shown in your Receive tab."
 msgstr ""
@@ -1970,6 +1994,18 @@ msgstr ""
 msgid "Unconfirmed"
 msgstr "Onbevestigd"
 
+msgid "Unlink account"
+msgstr ""
+
+msgid "Unlink card"
+msgstr ""
+
+msgid "Unlink the account will remove it and all associated cards from this device."
+msgstr ""
+
+msgid "Unlink the card will remove it from this device."
+msgstr ""
+
 msgid "Unsent transactions"
 msgstr "Niet-verzonden transacties"
 
@@ -2057,6 +2093,9 @@ msgstr ""
 msgid "WARNING: The private key of this wallet is not available. The export allows to check the wallet balance, transaction history, and create spend proposals from the export. However, does not allow to approve (sign) proposals, so funds will not be accessible from the export."
 msgstr ""
 
+msgid "WARNING: The testnet is an alternative Bitcoin block chain, to be used for testing. Testnet coins are separate and distinct from actual bitcoins, and do not have any value. This allows application developers or bitcoin testers to experiment, without having to use real bitcoins."
+msgstr ""
+
 msgid "WARNING: UNTRUSTED CERTIFICATE"
 msgstr "WAARSCHUWING: NIET-VERTROUWD CERTIFICAAT"
 
@@ -2140,9 +2179,6 @@ msgstr ""
 
 msgid "Wallet recovery phrase not available"
 msgstr "Portemonnee herstel zin niet beschikbaar"
-
-msgid "Wallet selected"
-msgstr ""
 
 msgid "Wallet service not found"
 msgstr "Wallet service niet gevonden"
@@ -2242,6 +2278,9 @@ msgstr ""
 
 msgid "You should not set a fee higher than {{maxFeeRecommended}} satoshis/byte."
 msgstr "Het is af te raden transactiekosten te kiezen hoger dan {{maxFeeRecommended}} satoshi's/byte."
+
+msgid "Your Archived Gift Cards"
+msgstr ""
 
 msgid "Your BitPay Card is ready. Add funds to your card to start using it at stores and ATMs worldwide."
 msgstr "Uw BitPay Kaart is gereed. Voeg saldo toe aan uw kaart om deze te kunnen gebruiken in winkels en pinautomaten over de hele wereld."

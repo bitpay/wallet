@@ -12,7 +12,7 @@ msgstr ""
 "Last-Translator: cmgustavo83\n"
 "Language-Team: Japanese\n"
 "Language: ja\n"
-"PO-Revision-Date: 2018-05-21 09:12-0400\n"
+"PO-Revision-Date: 2018-06-11 09:23-0400\n"
 
 msgid "(Trusted)"
 msgstr "(信頼済み)"
@@ -155,6 +155,15 @@ msgstr ""
 msgid "Approximate Bitcoin network fee to transfer wallet's balance (with normal priority)"
 msgstr "ウォレットの残高を送るために推測される必要なビットコインネットワーク手数料(優先度：普通)"
 
+msgid "Archive"
+msgstr ""
+
+msgid "Archived"
+msgstr ""
+
+msgid "Archiving this Gift Card will remove it from this view. You will still be able to see it in the Mercado Livre settings."
+msgstr ""
+
 msgid "Are you being watched?"
 msgstr "見られていませんか？"
 
@@ -194,9 +203,6 @@ msgid "Backup Needed"
 msgstr ""
 
 msgid "Backup all your wallets before using this function"
-msgstr ""
-
-msgid "Backup now"
 msgstr ""
 
 msgid "Backup wallet"
@@ -305,6 +311,9 @@ msgid "Checking..."
 msgstr ""
 
 msgid "Choose a backup file from your computer"
+msgstr ""
+
+msgid "Claim code:"
 msgstr ""
 
 msgid "Clear"
@@ -1015,6 +1024,9 @@ msgstr "言語設定"
 msgid "Learn more"
 msgstr "詳細情報"
 
+msgid "Learn more about testnet blockchain"
+msgstr ""
+
 msgid "Let's verify your backup phrase."
 msgstr "復元フレーズを確認しましょう。"
 
@@ -1144,6 +1156,9 @@ msgstr "連絡先が無い"
 msgid "No entries for this log level"
 msgstr "このレベルのログのエントリーがありません。"
 
+msgid "No funds found"
+msgstr ""
+
 msgid "No password"
 msgstr ""
 
@@ -1194,9 +1209,6 @@ msgstr "手数料含めたら残高が不足しています。"
 
 msgid "Not even BitPay can access it."
 msgstr "BitPayは管理できない。"
-
-msgid "Not funds found"
-msgstr "残高がありませんでした"
 
 msgid "Not now"
 msgstr "今はしない"
@@ -1522,6 +1534,9 @@ msgstr "リリース情報"
 msgid "Remove"
 msgstr "削除"
 
+msgid "Removing this Gift Card will remove all their data from this device."
+msgstr ""
+
 msgid "Repeat the password"
 msgstr "パスワードの再入力"
 
@@ -1531,8 +1546,8 @@ msgstr ""
 msgid "Request Fingerprint"
 msgstr "指紋を要求"
 
-msgid "Request Specific amount"
-msgstr "指定金額を要求"
+msgid "Request Specific Amount"
+msgstr ""
 
 msgid "Required number of signatures"
 msgstr ""
@@ -1654,6 +1669,9 @@ msgstr ""
 msgid "Sending {{amount}} {{unit}} from your {{name}} wallet"
 msgstr ""
 
+msgid "Sensitive Data"
+msgstr ""
+
 msgid "Sent"
 msgstr "送金済み"
 
@@ -1688,6 +1706,9 @@ msgid "ShapeShift max limit reached"
 msgstr ""
 
 msgid "Share"
+msgstr ""
+
+msgid "Share Address"
 msgstr ""
 
 msgid "Share the love by inviting your friends."
@@ -1826,6 +1847,9 @@ msgstr "為替レートは市場と共に変動する"
 
 msgid "The higher the fee, the greater the incentive a miner has to include that transaction in a block. Current fees are determined based on network load and the selected policy."
 msgstr "円滑な送金をしていただくために、ビットコインの送金には少量の手数料を付けることが義務付けられております。この手数料はビットコインのネットワークを運用する人たちに寄付され、より高い手数料であればより優先的にブロックに含まれ、承認されます。選択された手数料基準やネットワークの混雑状況により、その時点で払われるべき手数料が変動することがあります。"
+
+msgid "The information you are about to share/export may contain sensitive data such us wallet IDs, addresses, balances, etc. Please be sure you trust the person or entity with whom you are sharing this information."
+msgstr ""
 
 msgid "The maximum number of consecutive unused addresses (20) has been reached. When one of your unused addresses receives a payment, a new address will be generated and shown in your Receive tab."
 msgstr ""
@@ -1974,6 +1998,18 @@ msgstr ""
 msgid "Unconfirmed"
 msgstr "未承認"
 
+msgid "Unlink account"
+msgstr ""
+
+msgid "Unlink card"
+msgstr ""
+
+msgid "Unlink the account will remove it and all associated cards from this device."
+msgstr ""
+
+msgid "Unlink the card will remove it from this device."
+msgstr ""
+
 msgid "Unsent transactions"
 msgstr "未送信取引"
 
@@ -2061,6 +2097,9 @@ msgstr ""
 msgid "WARNING: The private key of this wallet is not available. The export allows to check the wallet balance, transaction history, and create spend proposals from the export. However, does not allow to approve (sign) proposals, so funds will not be accessible from the export."
 msgstr ""
 
+msgid "WARNING: The testnet is an alternative Bitcoin block chain, to be used for testing. Testnet coins are separate and distinct from actual bitcoins, and do not have any value. This allows application developers or bitcoin testers to experiment, without having to use real bitcoins."
+msgstr ""
+
 msgid "WARNING: UNTRUSTED CERTIFICATE"
 msgstr "警告: 信頼されていない証明書"
 
@@ -2144,9 +2183,6 @@ msgstr ""
 
 msgid "Wallet recovery phrase not available"
 msgstr "ウォレットの復元フレーズが削除されているため表示できません"
-
-msgid "Wallet selected"
-msgstr ""
 
 msgid "Wallet service not found"
 msgstr "Wallet serviceが見つかりません。"
@@ -2246,6 +2282,9 @@ msgstr ""
 
 msgid "You should not set a fee higher than {{maxFeeRecommended}} satoshis/byte."
 msgstr "{{maxFeeRecommended}} satoshis/byte より高い手数料を設定しない方が良いです。"
+
+msgid "Your Archived Gift Cards"
+msgstr ""
 
 msgid "Your BitPay Card is ready. Add funds to your card to start using it at stores and ATMs worldwide."
 msgstr "BitPayカードの準備が整いました。入金して全世界のお店やATMでご利用下さい。"

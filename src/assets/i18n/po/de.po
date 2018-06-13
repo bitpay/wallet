@@ -12,7 +12,7 @@ msgstr ""
 "Last-Translator: cmgustavo83\n"
 "Language-Team: German\n"
 "Language: de\n"
-"PO-Revision-Date: 2018-05-21 09:12-0400\n"
+"PO-Revision-Date: 2018-06-11 09:23-0400\n"
 
 msgid "(Trusted)"
 msgstr "(Vertraut)"
@@ -30,7 +30,7 @@ msgid "A member of the team will review your feedback as soon as possible."
 msgstr "Ein Mitarbeiter wird Ihr Feedback so bald wie möglich überprüfen."
 
 msgid "A total of {{amountAboveMaxSizeStr}} {{coin}} were excluded. The maximum size allowed for a transaction was exceeded."
-msgstr ""
+msgstr "Un total de {{amountAboveMaxSizeStr}} {{coin}} a été exclu. La taille maximale autorisée pour une transaction a été dépassée.deutsch."
 
 msgid "A total of {{amountBelowFeeStr}} {{coin}} were excluded. These funds come from UTXOs smaller than the network fee provided."
 msgstr ""
@@ -155,6 +155,15 @@ msgstr "Änderungen vornehmen"
 msgid "Approximate Bitcoin network fee to transfer wallet's balance (with normal priority)"
 msgstr "Ungefähre Bitcoin Netzwerkgebühr um das Wallet Guthaben zu übertragen (mit normaler Priorität)"
 
+msgid "Archive"
+msgstr ""
+
+msgid "Archived"
+msgstr ""
+
+msgid "Archiving this Gift Card will remove it from this view. You will still be able to see it in the Mercado Livre settings."
+msgstr ""
+
 msgid "Are you being watched?"
 msgstr "Werden Sie beobachtet?"
 
@@ -193,9 +202,6 @@ msgstr "Eine Sicherung wird benötigt"
 
 msgid "Backup all your wallets before using this function"
 msgstr "Sichern Sie ihr Wallet, bevor Sie diese Funktion nutzen"
-
-msgid "Backup now"
-msgstr "Jetzt sichern"
 
 msgid "Backup wallet"
 msgstr "Sicherung der Wallet"
@@ -304,6 +310,9 @@ msgstr "Überprüfung läuft..."
 
 msgid "Choose a backup file from your computer"
 msgstr "Bitte eine Sicherungsdatei vom Computer wählen"
+
+msgid "Claim code:"
+msgstr ""
 
 msgid "Clear"
 msgstr "Leeren"
@@ -1013,6 +1022,9 @@ msgstr "Sprache"
 msgid "Learn more"
 msgstr "Erfahre mehr"
 
+msgid "Learn more about testnet blockchain"
+msgstr ""
+
 msgid "Let's verify your backup phrase."
 msgstr "Überprüfen Sie Ihre Wiederherstellungsphrase."
 
@@ -1142,6 +1154,9 @@ msgstr "Noch keine Kontakte"
 msgid "No entries for this log level"
 msgstr "Keine Einträge für dieses Log-level"
 
+msgid "No funds found"
+msgstr ""
+
 msgid "No password"
 msgstr "Kein Passwort"
 
@@ -1192,9 +1207,6 @@ msgstr "Das Guthaben reicht nicht für die Gebühr"
 
 msgid "Not even BitPay can access it."
 msgstr "Nicht einmal BitPay kann darauf zugreifen."
-
-msgid "Not funds found"
-msgstr "Kein Guthaben gefunden"
 
 msgid "Not now"
 msgstr "Nicht jetzt"
@@ -1520,6 +1532,9 @@ msgstr "Release-Informationen"
 msgid "Remove"
 msgstr "Entfernen"
 
+msgid "Removing this Gift Card will remove all their data from this device."
+msgstr ""
+
 msgid "Repeat the password"
 msgstr "Passwort wiederholen"
 
@@ -1529,8 +1544,8 @@ msgstr "Verschlüsselungspasswort anfordern"
 msgid "Request Fingerprint"
 msgstr "Fingerabdruck anfordern"
 
-msgid "Request Specific amount"
-msgstr "Einen bestimmten Betrag anfordern"
+msgid "Request Specific Amount"
+msgstr ""
 
 msgid "Required number of signatures"
 msgstr "Erforderliche Anzahl von Signaturen"
@@ -1652,6 +1667,9 @@ msgstr "Sende Transaktion..."
 msgid "Sending {{amount}} {{unit}} from your {{name}} wallet"
 msgstr ""
 
+msgid "Sensitive Data"
+msgstr ""
+
 msgid "Sent"
 msgstr "Gesendet"
 
@@ -1687,6 +1705,9 @@ msgstr "Maximales ShapeShift Limit erreicht"
 
 msgid "Share"
 msgstr "Teilen"
+
+msgid "Share Address"
+msgstr ""
 
 msgid "Share the love by inviting your friends."
 msgstr "Teilen Sie die Liebe indem Sie Ihre Freunde einladen."
@@ -1822,6 +1843,9 @@ msgstr "Der Wechselkurs ändert sich mit dem Markt."
 
 msgid "The higher the fee, the greater the incentive a miner has to include that transaction in a block. Current fees are determined based on network load and the selected policy."
 msgstr "Je höher die Gebühr, desto größer ist der Anreiz das ein \"Miner\" die Transaktion in einem \"Block\" inkludiert. Aktuelle Gebühren werden anhand der Netzauslastung und der ausgewählten Richtlinie bestimmt."
+
+msgid "The information you are about to share/export may contain sensitive data such us wallet IDs, addresses, balances, etc. Please be sure you trust the person or entity with whom you are sharing this information."
+msgstr ""
 
 msgid "The maximum number of consecutive unused addresses (20) has been reached. When one of your unused addresses receives a payment, a new address will be generated and shown in your Receive tab."
 msgstr "Die maximale Anzahl aufeinander folgender ungenutzter Adressen (20) wurde erreicht. Wenn eine Ihrer ungenutzten Adressen eine Zahlung erhält wird eine neue Adresse erzeugt und in der Registerkarte \"Empfangen\" gezeigt."
@@ -1970,6 +1994,18 @@ msgstr "Oh, oh..."
 msgid "Unconfirmed"
 msgstr "Unbestätigt"
 
+msgid "Unlink account"
+msgstr ""
+
+msgid "Unlink card"
+msgstr ""
+
+msgid "Unlink the account will remove it and all associated cards from this device."
+msgstr ""
+
+msgid "Unlink the card will remove it from this device."
+msgstr ""
+
 msgid "Unsent transactions"
 msgstr "Nicht vesendete Transaktionen"
 
@@ -2057,6 +2093,9 @@ msgstr "WARNUNG: Ohne das Hinzufügen des privaten Schlüssels, ist es möglich 
 msgid "WARNING: The private key of this wallet is not available. The export allows to check the wallet balance, transaction history, and create spend proposals from the export. However, does not allow to approve (sign) proposals, so funds will not be accessible from the export."
 msgstr "WARNUNG: Der private Schlüssel ist nicht verfügbar. Dieser Export ermöglicht das Guthaben und die Transaktionshistorie zu prüfen, sowie Zahlungsvorschläge zu erzeugen. Allerdings können Vorschläge nicht ausgeführt (unterschrieben) werden und so ist <b>kein Zugriff auf Guthaben möglich</b>."
 
+msgid "WARNING: The testnet is an alternative Bitcoin block chain, to be used for testing. Testnet coins are separate and distinct from actual bitcoins, and do not have any value. This allows application developers or bitcoin testers to experiment, without having to use real bitcoins."
+msgstr ""
+
 msgid "WARNING: UNTRUSTED CERTIFICATE"
 msgstr "WARNUNG: NICHT VERTRAUENSWÜRDIGES ZERTIFIKAT"
 
@@ -2140,9 +2179,6 @@ msgstr "Wallet-Wiederherstellungsphrase"
 
 msgid "Wallet recovery phrase not available"
 msgstr "Die Wiederherstellungswörter für ihr Wallet sind nicht verfügbar"
-
-msgid "Wallet selected"
-msgstr "Wallet ausgewählt"
 
 msgid "Wallet service not found"
 msgstr "Wallet-Dienst nicht gefunden"
@@ -2242,6 +2278,9 @@ msgstr "Sie konnte die Transaktion später in Ihren Brieftasche-Details anmelden
 
 msgid "You should not set a fee higher than {{maxFeeRecommended}} satoshis/byte."
 msgstr "Du solltest keine Gebür über {{maxFeeRecommended}} satoshis/byte setzen."
+
+msgid "Your Archived Gift Cards"
+msgstr ""
 
 msgid "Your BitPay Card is ready. Add funds to your card to start using it at stores and ATMs worldwide."
 msgstr "Ihre Bitcoin Card ist bereit, fügen sie Guthaben hinzu um sie in Läden und Banken weltweit zu nutzen."

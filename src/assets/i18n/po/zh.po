@@ -12,7 +12,7 @@ msgstr ""
 "Last-Translator: cmgustavo83\n"
 "Language-Team: Chinese Simplified\n"
 "Language: zh\n"
-"PO-Revision-Date: 2018-05-21 09:12-0400\n"
+"PO-Revision-Date: 2018-06-11 09:23-0400\n"
 
 msgid "(Trusted)"
 msgstr "（可信的）"
@@ -155,6 +155,15 @@ msgstr "应用更改"
 msgid "Approximate Bitcoin network fee to transfer wallet's balance (with normal priority)"
 msgstr "转移钱包余额大约需要的比特币网络费用（正常优先级）"
 
+msgid "Archive"
+msgstr ""
+
+msgid "Archived"
+msgstr ""
+
+msgid "Archiving this Gift Card will remove it from this view. You will still be able to see it in the Mercado Livre settings."
+msgstr ""
+
 msgid "Are you being watched?"
 msgstr "你正在被监视吗？"
 
@@ -193,9 +202,6 @@ msgstr "需要备份"
 
 msgid "Backup all your wallets before using this function"
 msgstr "在使用此功能之前，请备份你的钱包。"
-
-msgid "Backup now"
-msgstr "即刻备份"
 
 msgid "Backup wallet"
 msgstr "备份钱包"
@@ -303,6 +309,9 @@ msgid "Checking..."
 msgstr ""
 
 msgid "Choose a backup file from your computer"
+msgstr ""
+
+msgid "Claim code:"
 msgstr ""
 
 msgid "Clear"
@@ -1013,6 +1022,9 @@ msgstr "语言"
 msgid "Learn more"
 msgstr "了解更多"
 
+msgid "Learn more about testnet blockchain"
+msgstr ""
+
 msgid "Let's verify your backup phrase."
 msgstr "让我们验证您备份的短语。"
 
@@ -1142,6 +1154,9 @@ msgstr "然而没有联系人"
 msgid "No entries for this log level"
 msgstr "没有为此日志级别的的条目"
 
+msgid "No funds found"
+msgstr ""
+
 msgid "No password"
 msgstr ""
 
@@ -1192,9 +1207,6 @@ msgstr "费用的资金不足"
 
 msgid "Not even BitPay can access it."
 msgstr "甚至没有 BitPay 可以访问它。"
-
-msgid "Not funds found"
-msgstr "没有资金发现"
 
 msgid "Not now"
 msgstr "不是现在"
@@ -1520,6 +1532,9 @@ msgstr "发布信息"
 msgid "Remove"
 msgstr "移除"
 
+msgid "Removing this Gift Card will remove all their data from this device."
+msgstr ""
+
 msgid "Repeat the password"
 msgstr "重复密码"
 
@@ -1529,8 +1544,8 @@ msgstr ""
 msgid "Request Fingerprint"
 msgstr "请求指纹"
 
-msgid "Request Specific amount"
-msgstr "请求特定量"
+msgid "Request Specific Amount"
+msgstr ""
 
 msgid "Required number of signatures"
 msgstr ""
@@ -1652,6 +1667,9 @@ msgstr ""
 msgid "Sending {{amount}} {{unit}} from your {{name}} wallet"
 msgstr ""
 
+msgid "Sensitive Data"
+msgstr ""
+
 msgid "Sent"
 msgstr "已发送"
 
@@ -1686,6 +1704,9 @@ msgid "ShapeShift max limit reached"
 msgstr ""
 
 msgid "Share"
+msgstr ""
+
+msgid "Share Address"
 msgstr ""
 
 msgid "Share the love by inviting your friends."
@@ -1822,6 +1843,9 @@ msgstr "与市场汇率的变化。"
 
 msgid "The higher the fee, the greater the incentive a miner has to include that transaction in a block. Current fees are determined based on network load and the selected policy."
 msgstr "越高的费用、 更大的激励矿工有要在一个块中包含该事务。当前的费用是基于网络负载和选定的策略来确定的。"
+
+msgid "The information you are about to share/export may contain sensitive data such us wallet IDs, addresses, balances, etc. Please be sure you trust the person or entity with whom you are sharing this information."
+msgstr ""
 
 msgid "The maximum number of consecutive unused addresses (20) has been reached. When one of your unused addresses receives a payment, a new address will be generated and shown in your Receive tab."
 msgstr ""
@@ -1970,6 +1994,18 @@ msgstr ""
 msgid "Unconfirmed"
 msgstr "未确认"
 
+msgid "Unlink account"
+msgstr ""
+
+msgid "Unlink card"
+msgstr ""
+
+msgid "Unlink the account will remove it and all associated cards from this device."
+msgstr ""
+
+msgid "Unlink the card will remove it from this device."
+msgstr ""
+
 msgid "Unsent transactions"
 msgstr "未发送的交易"
 
@@ -2057,6 +2093,9 @@ msgstr ""
 msgid "WARNING: The private key of this wallet is not available. The export allows to check the wallet balance, transaction history, and create spend proposals from the export. However, does not allow to approve (sign) proposals, so funds will not be accessible from the export."
 msgstr ""
 
+msgid "WARNING: The testnet is an alternative Bitcoin block chain, to be used for testing. Testnet coins are separate and distinct from actual bitcoins, and do not have any value. This allows application developers or bitcoin testers to experiment, without having to use real bitcoins."
+msgstr ""
+
 msgid "WARNING: UNTRUSTED CERTIFICATE"
 msgstr "警告︰不受信任的证书"
 
@@ -2140,9 +2179,6 @@ msgstr ""
 
 msgid "Wallet recovery phrase not available"
 msgstr "錢包恢復短語不存在"
-
-msgid "Wallet selected"
-msgstr ""
 
 msgid "Wallet service not found"
 msgstr "找不到 Wallet Service"
@@ -2242,6 +2278,9 @@ msgstr ""
 
 msgid "You should not set a fee higher than {{maxFeeRecommended}} satoshis/byte."
 msgstr "你不应设置高于 {{maxFeeRecommended}} satoshis/字节 的交易手续费。"
+
+msgid "Your Archived Gift Cards"
+msgstr ""
 
 msgid "Your BitPay Card is ready. Add funds to your card to start using it at stores and ATMs worldwide."
 msgstr "您的 BitPay 卡是准备好了。添加到您的卡开始使用它在商店和自动取款机全球基金。"
