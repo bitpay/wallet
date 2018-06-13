@@ -136,15 +136,17 @@ export class SendPage extends WalletTabsChild {
   }
 
   private getBchWalletsList(): FlatWallet[] {
-    return this.hasBchWallets
-      ? this.walletsBch.map(wallet => this.flattenWallet(wallet))
-      : [];
+    return this.hasBchWallets ? this.getRelevantWallets(this.walletsBch) : [];
   }
 
   private getBtcWalletsList(): FlatWallet[] {
-    return this.hasBtcWallets
-      ? this.walletsBtc.map(wallet => this.flattenWallet(wallet))
-      : [];
+    return this.hasBtcWallets ? this.getRelevantWallets(this.walletsBtc) : [];
+  }
+
+  private getRelevantWallets(rawWallets): FlatWallet[] {
+    return rawWallets
+      .map(wallet => this.flattenWallet(wallet))
+      .filter(wallet => this.filterIrrelevantRecipients(wallet));
   }
 
   private updateContactsList(): void {
