@@ -218,7 +218,13 @@ export class SendPage extends WalletTabsChild {
   }
 
   public findContact(search: string): void {
-    if (this.incomingDataProvider.redir(search)) return;
+    if (
+      this.incomingDataProvider.redir(search, {
+        amount: this.navParams.get('amount'),
+        coin: this.navParams.get('coin')
+      })
+    )
+      return;
     if (search && search.trim() != '') {
       let result = _.filter(this.contactsList, item => {
         let val = item.name;

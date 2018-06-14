@@ -254,7 +254,7 @@ export class ScanPage {
       this.events.publish('update:address', { value: contents });
       this.navCtrl.pop();
     } else {
-      this.incomingDataProvider.redir(contents, 'ScanPage');
+      this.incomingDataProvider.redir(contents, { activePage: 'ScanPage' });
     }
   }
 
