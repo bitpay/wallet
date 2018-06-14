@@ -34,6 +34,4 @@ function iconset {
   rm -r $1/mac/$2.iconset
 }
 
-postprocess copay
-postprocess bitpay
-postprocess TRCpay
+postprocess trcpay
