@@ -17,6 +17,7 @@ import { TxFormatProvider } from '../../providers/tx-format/tx-format';
 import { PaperWalletPage } from '../paper-wallet/paper-wallet';
 import { AddressbookAddPage } from '../settings/addressbook/add/add';
 import { WalletTabsChild } from '../wallet-tabs/wallet-tabs-child';
+import { WalletTabsProvider } from '../wallet-tabs/wallet-tabs.provider';
 import { AmountPage } from './amount/amount';
 import { ConfirmPage } from './confirm/confirm';
 
@@ -68,9 +69,10 @@ export class SendPage extends WalletTabsChild {
     private addressProvider: AddressProvider,
     private events: Events,
     private externalLinkProvider: ExternalLinkProvider,
-    private txFormatProvider: TxFormatProvider
+    private txFormatProvider: TxFormatProvider,
+    walletTabsProvider: WalletTabsProvider
   ) {
-    super(navCtrl, profileProvider);
+    super(navCtrl, profileProvider, walletTabsProvider);
   }
 
   ionViewDidLoad() {

@@ -3,6 +3,7 @@ import { NavParams } from 'ionic-angular';
 import { ReceivePage } from '../receive/receive';
 import { AmountPage } from '../send/amount/amount';
 import { WalletDetailsPage } from '../wallet-details/wallet-details';
+import { WalletTabsProvider } from './wallet-tabs.provider';
 
 @Component({
   template: `
@@ -22,7 +23,14 @@ export class WalletTabsPage {
 
   walletId: string;
 
-  constructor(private navParams: NavParams) {
+  constructor(
+    private navParams: NavParams,
+    private walletTabsProvider: WalletTabsProvider
+  ) {
     this.walletId = this.navParams.get('walletId');
+  }
+
+  ngAfterViewInit() {
+    this.walletTabsProvider.setTabNav(this.walletTabs);
   }
 }

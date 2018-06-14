@@ -29,6 +29,7 @@ import { BuyMercadoLibrePage } from '../../integrations/mercado-libre/buy-mercad
 import { ShapeshiftConfirmPage } from '../../integrations/shapeshift/shapeshift-confirm/shapeshift-confirm';
 import { CustomAmountPage } from '../../receive/custom-amount/custom-amount';
 import { WalletTabsChild } from '../../wallet-tabs/wallet-tabs-child';
+import { WalletTabsProvider } from '../../wallet-tabs/wallet-tabs.provider';
 import { ConfirmPage } from '../confirm/confirm';
 import { SendPage } from '../send';
 
@@ -91,9 +92,10 @@ export class AmountPage extends WalletTabsChild {
     private rateProvider: RateProvider,
     private txFormatProvider: TxFormatProvider,
     private translate: TranslateService,
-    private changeDetectorRef: ChangeDetectorRef
+    private changeDetectorRef: ChangeDetectorRef,
+    walletTabsProvider: WalletTabsProvider
   ) {
-    super(navCtrl, profileProvider);
+    super(navCtrl, profileProvider, walletTabsProvider);
     this.zone = new NgZone({ enableLongStackTrace: false });
     this.config = this.configProvider.get();
     this.recipientType = this.navParams.data.recipientType;

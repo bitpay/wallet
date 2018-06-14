@@ -35,6 +35,7 @@ import {
   WalletProvider
 } from '../../../providers/wallet/wallet';
 import { WalletTabsChild } from '../../wallet-tabs/wallet-tabs-child';
+import { WalletTabsProvider } from '../../wallet-tabs/wallet-tabs.provider';
 
 @Component({
   selector: 'page-confirm',
@@ -95,9 +96,10 @@ export class ConfirmPage extends WalletTabsChild {
     private txFormatProvider: TxFormatProvider,
     private events: Events,
     private translate: TranslateService,
-    private externalLinkProvider: ExternalLinkProvider
+    private externalLinkProvider: ExternalLinkProvider,
+    walletTabsProvider: WalletTabsProvider
   ) {
-    super(navCtrl, profileProvider);
+    super(navCtrl, profileProvider, walletTabsProvider);
     this.bitcore = this.bwcProvider.getBitcore();
     this.bitcoreCash = this.bwcProvider.getBitcoreCash();
     this.CONFIRM_LIMIT_USD = 20;

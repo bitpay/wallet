@@ -22,6 +22,7 @@ import { WalletProvider } from '../../providers/wallet/wallet';
 import * as _ from 'lodash';
 import { PopupProvider } from '../../providers/popup/popup';
 import { WalletTabsChild } from '../wallet-tabs/wallet-tabs-child';
+import { WalletTabsProvider } from '../wallet-tabs/wallet-tabs.provider';
 
 @Component({
   selector: 'page-receive',
@@ -50,9 +51,10 @@ export class ReceivePage extends WalletTabsChild {
     private translate: TranslateService,
     private externalLinkProvider: ExternalLinkProvider,
     private addressProvider: AddressProvider,
-    private popupProvider: PopupProvider
+    private popupProvider: PopupProvider,
+    walletTabsProvider: WalletTabsProvider
   ) {
-    super(navCtrl, profileProvider);
+    super(navCtrl, profileProvider, walletTabsProvider);
     this.showShareButton = this.platformProvider.isCordova;
   }
 

@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { NavController, ViewController } from 'ionic-angular';
 import { ProfileProvider } from '../../providers/profile/profile';
 import { WalletTabsPage } from './wallet-tabs';
+import { WalletTabsProvider } from './wallet-tabs.provider';
 
 @Component({})
 export class WalletTabsChild {
@@ -10,7 +11,8 @@ export class WalletTabsChild {
 
   constructor(
     public navCtrl: NavController,
-    public profileProvider: ProfileProvider
+    public profileProvider: ProfileProvider,
+    private walletTabsProvider: WalletTabsProvider
   ) {}
 
   ngOnInit() {
@@ -19,6 +21,7 @@ export class WalletTabsChild {
   }
 
   public close(): Promise<any> {
+    this.walletTabsProvider.clearTabNav();
     return this.getParentTabs().dismiss();
   }
 

@@ -73,3 +73,4 @@ export {
 } from '../providers/tx-confirm-notification/tx-confirm-notification';
 export { TxFormatProvider } from '../providers/tx-format/tx-format';
 export { WalletProvider } from '../providers/wallet/wallet';
+export { WalletTabsProvider } from '../pages/wallet-tabs/wallet-tabs.provider';

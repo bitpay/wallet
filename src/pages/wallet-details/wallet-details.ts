@@ -23,6 +23,7 @@ import { BackupWarningPage } from '../../pages/backup/backup-warning/backup-warn
 import { WalletAddressesPage } from '../../pages/settings/wallet-settings/wallet-settings-advanced/wallet-addresses/wallet-addresses';
 import { TxDetailsPage } from '../../pages/tx-details/tx-details';
 import { WalletTabsChild } from '../wallet-tabs/wallet-tabs-child';
+import { WalletTabsProvider } from '../wallet-tabs/wallet-tabs.provider';
 import { SearchTxModalPage } from './search-tx-modal/search-tx-modal';
 import { WalletBalancePage } from './wallet-balance/wallet-balance';
 
@@ -64,9 +65,10 @@ export class WalletDetailsPage extends WalletTabsChild {
     private translate: TranslateService,
     private modalCtrl: ModalController,
     private onGoingProcessProvider: OnGoingProcessProvider,
-    private externalLinkProvider: ExternalLinkProvider
+    private externalLinkProvider: ExternalLinkProvider,
+    walletTabsProvider: WalletTabsProvider
   ) {
-    super(navCtrl, profileProvider);
+    super(navCtrl, profileProvider, walletTabsProvider);
   }
 
   ionViewDidLoad() {

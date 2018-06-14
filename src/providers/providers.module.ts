@@ -58,7 +58,8 @@ import {
   TxConfirmNotificationProvider,
   TxFormatProvider,
   Vibration,
-  WalletProvider
+  WalletProvider,
+  WalletTabsProvider
 } from './index';
 
 @NgModule({
@@ -120,7 +121,8 @@ import {
     EmailNotificationsProvider,
     DecimalPipe,
     PersistenceProvider,
-    File
+    File,
+    WalletTabsProvider
   ]
 })
 export class ProvidersModule {}

@@ -45,6 +45,7 @@ import { ConfirmPage } from '../pages/send/confirm/confirm';
 import { AddressbookAddPage } from '../pages/settings/addressbook/add/add';
 import { TabsPage } from '../pages/tabs/tabs';
 import { WalletDetailsPage } from '../pages/wallet-details/wallet-details';
+import { WalletTabsProvider } from '../pages/wallet-tabs/wallet-tabs.provider';
 
 // As the handleOpenURL handler kicks in before the App is started,
 // declare the handler function at the top of app.component.ts (outside the class definition)
@@ -103,7 +104,8 @@ export class CopayApp {
     private popupProvider: PopupProvider,
     private pushNotificationsProvider: PushNotificationsProvider,
     private app: App,
-    private incomingDataProvider: IncomingDataProvider
+    private incomingDataProvider: IncomingDataProvider,
+    private walletTabsProvider: WalletTabsProvider
   ) {
     this.initializeApp();
   }
@@ -366,8 +368,10 @@ export class CopayApp {
   }
 
   private getSelectedTabNav() {
-    return this.nav
+    const globalNav = this.nav
       .getActiveChildNavs()[0]
       .viewCtrl.instance.tabs.getSelected();
+    const walletNav = this.walletTabsProvider.getTabNav();
+    return (walletNav && walletNav.getSelected()) || globalNav;
   }
 }
