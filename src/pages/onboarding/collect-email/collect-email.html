@@ -17,7 +17,7 @@
     <p class="description" translate>Where would you like to receive email notifications about payments?</p>
     <form [formGroup]="emailForm" (ngSubmit)="showConfirm()">
       <ion-item>
-        <ion-input type="email" formControlName="email" placeholder="Email Input"></ion-input>
+        <ion-input type="email" formControlName="email" placeholder="{{'Email' | translate}}"></ion-input>
       </ion-item>
 
       <ion-item no-lines>
