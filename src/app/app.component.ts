@@ -105,7 +105,7 @@ export class CopayApp {
     private pushNotificationsProvider: PushNotificationsProvider,
     private app: App,
     private incomingDataProvider: IncomingDataProvider,
-    private walletTabsProvider: WalletTabsProvider
+    private walletTabsProvider: WalletTabsProvider,
   ) {
     this.initializeApp();
   }
@@ -293,6 +293,10 @@ export class CopayApp {
 
   private scanFromWalletEvent(): void {
     this.events.subscribe('ScanFromWallet', () => {
+      const walletDetailsModal = document.getElementsByClassName(
+        'wallet-details-modal'
+      )[0];
+      
       this.getGlobalTabs().select(1);
     });
   }
