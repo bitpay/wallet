@@ -177,6 +177,7 @@ export class CopayApp {
 
     this.registerIntegrations();
     this.incomingDataRedirEvent();
+    this.scanFromWalletEvent();
     // Check Profile
     this.profile
       .loadAndBindProfile()
@@ -290,6 +291,12 @@ export class CopayApp {
     });
   }
 
+  private scanFromWalletEvent(): void {
+    this.events.subscribe('ScanFromWallet', () => {
+      this.getGlobalTabs().select(1);
+    });
+  }
+
   private initPushNotifications() {
     this.events.subscribe('OpenWalletEvent', nextView => {
       this.app.getRootNavs()[0].setRoot(TabsPage);
@@ -368,10 +375,12 @@ export class CopayApp {
   }
 
   private getSelectedTabNav() {
-    const globalNav = this.nav
-      .getActiveChildNavs()[0]
-      .viewCtrl.instance.tabs.getSelected();
-    const walletNav = this.walletTabsProvider.getTabNav();
-    return (walletNav && walletNav.getSelected()) || globalNav;
+    const globalNav = this.getGlobalTabs().getSelected();
+    const walletTabs = this.walletTabsProvider.getTabNav();
+    return (walletTabs && walletTabs.getSelected()) || globalNav;
+  }
+
+  private getGlobalTabs() {
+    return this.nav.getActiveChildNavs()[0].viewCtrl.instance.tabs;
   }
 }

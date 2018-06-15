@@ -457,7 +457,7 @@ export class HomePage {
           walletId: wallet.credentials.walletId
         },
         {
-          cssClass: 'fullscreen-modal'
+          cssClass: 'wallet-details-modal'
         }
       )
       .present();
@@ -582,7 +582,7 @@ export class HomePage {
   }
 
   public scan() {
-    this.navCtrl.parent.select(2);
+    this.navCtrl.parent.select(1);
   }
 
   public settings() {

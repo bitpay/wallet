@@ -214,7 +214,9 @@ export class SendPage extends WalletTabsChild {
   }
 
   public openScanner(): void {
-    this.navCtrl.parent.select(2);
+    console.log('this.navCtrl', this.navCtrl);
+    this.events.publish('ScanFromWallet');
+    // this.navCtrl.parent.select(2);
   }
 
   public findContact(search: string): void {
