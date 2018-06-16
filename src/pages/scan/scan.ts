@@ -16,6 +16,7 @@ import { AmountPage } from '../send/amount/amount';
 import { AddressbookAddPage } from '../settings/addressbook/add/add';
 
 import env from '../../environments';
+import { WalletTabsProvider } from '../wallet-tabs/wallet-tabs.provider';
 
 @Component({
   selector: 'page-scan',
@@ -59,7 +60,8 @@ export class ScanPage {
     private externalLinkProvider: ExternalLinkProvider,
     private logger: Logger,
     public translate: TranslateService,
-    private navParams: NavParams
+    private navParams: NavParams,
+    private walletTabsProvider: WalletTabsProvider
   ) {
     this.isCameraSelected = false;
     this.browserScanEnabled = false;
@@ -254,7 +256,12 @@ export class ScanPage {
       this.events.publish('update:address', { value: contents });
       this.navCtrl.pop();
     } else {
-      this.incomingDataProvider.redir(contents, { activePage: 'ScanPage' });
+      const sendParams = this.walletTabsProvider.getSendParams();
+      const redirParms = sendParams
+        ? { activePage: 'SendPage', ...sendParams }
+        : { activePage: 'ScanPage' };
+      this.incomingDataProvider.redir(contents, redirParms);
+      this.events.publish('FinishScan');
     }
   }
 
@@ -315,6 +322,8 @@ export class ScanPage {
   }
 
   public close() {
-    this.navCtrl.parent.select(0);
+    this.walletTabsProvider.getTabNav()
+      ? this.events.publish('FinishScan')
+      : this.navCtrl.parent.select(0);
   }
 }

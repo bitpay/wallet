@@ -70,7 +70,7 @@ export class IncomingDataProvider {
       parsed = this.bwcProvider.getBitcore().URI(data);
       addr = parsed.address ? parsed.address.toString() : '';
       message = parsed.message;
-      amount = parsed.amount ? parsed.amount : '';
+      amount = parsed.amount || redirParams.amount || '';
 
       if (parsed.r) {
         this.payproProvider
@@ -103,7 +103,7 @@ export class IncomingDataProvider {
       }
 
       message = parsed.message;
-      amount = parsed.amount ? parsed.amount : '';
+      amount = parsed.amount || redirParams.amount || '';
 
       if (parsed.r) {
         this.payproProvider

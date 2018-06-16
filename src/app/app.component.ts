@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, Renderer, ViewChild } from '@angular/core';
 import { ScreenOrientation } from '@ionic-native/screen-orientation';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
@@ -9,7 +9,7 @@ import {
   NavController,
   Platform
 } from 'ionic-angular';
-import { Subscription } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 
 // providers
 import { AmazonProvider } from '../providers/amazon/amazon';
@@ -106,6 +106,7 @@ export class CopayApp {
     private app: App,
     private incomingDataProvider: IncomingDataProvider,
     private walletTabsProvider: WalletTabsProvider,
+    private renderer: Renderer
   ) {
     this.initializeApp();
   }
@@ -292,13 +293,25 @@ export class CopayApp {
   }
 
   private scanFromWalletEvent(): void {
-    this.events.subscribe('ScanFromWallet', () => {
-      const walletDetailsModal = document.getElementsByClassName(
-        'wallet-details-modal'
-      )[0];
-      
+    this.events.subscribe('ScanFromWallet', async () => {
       this.getGlobalTabs().select(1);
+      await this.toggleScannerVisibilityFromWithinWallet(true, 300);
     });
+    this.events.subscribe('FinishScan', async () => {
+      await this.toggleScannerVisibilityFromWithinWallet(false, 300);
+      await this.getGlobalTabs().select(0);
+    });
+  }
+
+  private toggleScannerVisibilityFromWithinWallet(
+    visible: boolean,
+    transitionDuration: number
+  ): Promise<number> {
+    const walletDetailsModal = document.getElementsByClassName(
+      'wallet-details-modal'
+    )[0];
+    this.renderer.setElementClass(walletDetailsModal, 'scanning', visible);
+    return Observable.timer(transitionDuration).toPromise();
   }
 
   private initPushNotifications() {

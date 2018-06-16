@@ -12,7 +12,7 @@ export class WalletTabsChild {
   constructor(
     public navCtrl: NavController,
     public profileProvider: ProfileProvider,
-    private walletTabsProvider: WalletTabsProvider
+    public walletTabsProvider: WalletTabsProvider
   ) {}
 
   ngOnInit() {
