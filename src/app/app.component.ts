@@ -298,6 +298,9 @@ export class CopayApp {
       await this.toggleScannerVisibilityFromWithinWallet(true, 300);
     });
     this.events.subscribe('FinishScan', async () => {
+      if (!this.getWalletDetailsModal()) {
+        return;
+      }
       await this.toggleScannerVisibilityFromWithinWallet(false, 300);
       await this.getGlobalTabs().select(0);
     });
@@ -307,11 +310,13 @@ export class CopayApp {
     visible: boolean,
     transitionDuration: number
   ): Promise<number> {
-    const walletDetailsModal = document.getElementsByClassName(
-      'wallet-details-modal'
-    )[0];
+    const walletDetailsModal = this.getWalletDetailsModal();
     this.renderer.setElementClass(walletDetailsModal, 'scanning', visible);
     return Observable.timer(transitionDuration).toPromise();
+  }
+
+  private getWalletDetailsModal(): Element {
+    return document.getElementsByClassName('wallet-details-modal')[0];
   }
 
   private initPushNotifications() {
