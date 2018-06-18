@@ -182,14 +182,12 @@ export class ReceivePage {
 
     let specificAmountButton = {
       text: this.translate.instant('Request Specific Amount'),
-      icon: 'calculator',
       handler: () => {
         this.requestSpecificAmount();
       }
     };
     let shareButton = {
       text: this.translate.instant('Share Address'),
-      icon: 'share',
       handler: () => {
         this.shareAddress();
       }
