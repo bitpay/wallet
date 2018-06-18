@@ -294,7 +294,7 @@ export class CopayApp {
 
   private scanFromWalletEvent(): void {
     this.events.subscribe('ScanFromWallet', async () => {
-      this.getGlobalTabs().select(1);
+      await this.getGlobalTabs().select(1);
       await this.toggleScannerVisibilityFromWithinWallet(true, 300);
     });
     this.events.subscribe('FinishScan', async () => {
