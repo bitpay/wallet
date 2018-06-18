@@ -72,7 +72,7 @@ export class ReceivePage {
   private onWalletSelect(wallet) {
     this.wallet = wallet;
     if (this.wallet) {
-      this.setAddress();
+      this.setAddress(false, true);
     }
   }
 
@@ -98,8 +98,9 @@ export class ReceivePage {
     });
   }
 
-  private setAddress(newAddr?: boolean): void {
-    this.loading = newAddr || _.isEmpty(this.address) ? true : false;
+  private setAddress(newAddr?: boolean, changingWallet?: boolean): void {
+    this.loading =
+      newAddr || _.isEmpty(this.address) || changingWallet ? true : false;
 
     this.walletProvider
       .getAddress(this.wallet, newAddr)
