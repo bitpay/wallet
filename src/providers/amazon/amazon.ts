@@ -168,12 +168,12 @@ export class AmazonProvider {
                 ? 'PENDING'
                 : data.status;
           data.status = status;
-          this.logger.info('Amazon.com Gift Card Create/Update: ' + status);
+          this.logger.info('Amazon Gift Card Create/Update: ' + status);
           return cb(null, data);
         },
         data => {
           this.logger.error(
-            'Amazon.com Gift Card Create/Update: ' + data.message
+            'Amazon Gift Card Create/Update: ' + data.message
           );
           return cb(data);
         }
@@ -191,11 +191,11 @@ export class AmazonProvider {
       .post(this.credentials.BITPAY_API_URL + '/amazon-gift/cancel', dataSrc)
       .subscribe(
         data => {
-          this.logger.info('Amazon.com Gift Card Cancel: SUCCESS');
+          this.logger.info('Amazon Gift Card Cancel: SUCCESS');
           return cb(null, data);
         },
         data => {
-          this.logger.error('Amazon.com Gift Card Cancel: ' + data.message);
+          this.logger.error('Amazon Gift Card Cancel: ' + data.message);
           return cb(data);
         }
       );
@@ -204,14 +204,14 @@ export class AmazonProvider {
   public register() {
     this.homeIntegrationsProvider.register({
       name: 'amazon',
-      title: 'Amazon.com Gift Cards',
+      title: 'Amazon Gift Cards',
       icon: 'assets/img/amazon/icon-amazon.svg',
       page: 'AmazonPage',
       show: !!this.configProvider.get().showIntegration['amazon']
     });
     this.homeIntegrationsProvider.register({
       name: 'amazonJapan',
-      title: 'Amazon.co.jp ギフト券',
+      title: 'Amazon ギフト券',
       icon: 'assets/img/amazon/icon-amazon.svg',
       page: 'AmazonPage',
       show: !!this.configProvider.get().showIntegration['amazonJapan']

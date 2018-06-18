@@ -14,9 +14,9 @@
         <img class="usa-logo" *ngIf="country == 'usa'" src="assets/img/amazon/GCs-logo-cllb.png" alt="Amazon.com Gift Card">
         <img class="japan-logo" *ngIf="country == 'japan'" src="assets/img/amazon/japan/GCs-logo-japan-cllb.jpg" alt="Amazon.co.jp Gift Card">
       </div>
-      <div class="description" *ngIf="country == 'usa'" padding translate>Gift Cards are only redeemable on Amazon.com (US website). Cards never expire and can be redeemed towards millions of items.
+      <div class="description" *ngIf="country == 'usa'" padding translate>Gift Cards are only redeemable on Amazon.com (US website).
       </div>
-      <div class="description" *ngIf="country == 'japan'" padding translate>Gift Cards are only redeemable on Amazon.co.jp (Japan website). Cards never expire and can be redeemed towards millions of items.
+      <div class="description" *ngIf="country == 'japan'" padding translate>Gift Cards are only redeemable on Amazon.co.jp (Japan website).
       </div>
       <button *ngIf="!showOauthForm" ion-button outline class="button-standard" (click)="goTo('Amount')" no-low-fee>{{'Buy a Gift Card' | translate}}</button>
       <button *ngIf="!showOauthForm && country == 'usa'" ion-button clear small block color="dark" (click)="openExternalLink('https://www.amazon.com')">{{'Visit Amazon.com' | translate}} &rarr;</button>
