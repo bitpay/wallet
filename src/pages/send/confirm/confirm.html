@@ -35,7 +35,8 @@
             &middot;
             <span [ngClass]="{'warn':tx.txp[wallet.id].feeTooHigh}">
               <ion-icon *ngIf="tx.txp[wallet.id].feeTooHigh" name="warning"></ion-icon>
-              <span translate>{{tx.txp[wallet.id].feeRatePerStr}} of total amount</span>
+              {{tx.txp[wallet.id].feeRatePerStr}}
+              <span translate> of total amount</span>
             </span>
           </span>
         </div>
