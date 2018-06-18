@@ -14,8 +14,7 @@ export class WalletColorPage {
   public wallet;
   public colorCount: number[];
   public currentColorIndex: number;
-  private config;
-  private retries: number = 3;
+  private retries: number;
 
   constructor(
     private profileProvider: ProfileProvider,
@@ -24,16 +23,18 @@ export class WalletColorPage {
     private configProvider: ConfigProvider,
     private logger: Logger,
     private events: Events
-  ) {}
+  ) {
+    this.retries = 3;
+  }
 
   ionViewDidLoad() {
     this.logger.info('ionViewDidLoad WalletColorPage');
   }
 
   ionViewWillEnter() {
+    const COLOR_COUNT = 14;
     this.wallet = this.profileProvider.getWallet(this.navParams.data.walletId);
-    this.config = this.configProvider.get();
-    this.colorCount = Array(this.getColorCount())
+    this.colorCount = Array(COLOR_COUNT)
       .fill(0)
       .map((_, i) => i);
     this.setCurrentColorIndex();
@@ -53,29 +54,9 @@ export class WalletColorPage {
     this.navCtrl.pop();
   }
 
-  private getColorCount() {
-    let count = window.getComputedStyle(
-      document.getElementsByClassName('wallet-color-count')[0]
-    ).content;
-    return parseInt(count.replace(/[^0-9]/g, ''), 10);
-  }
-
-  private getColorDefault(): string {
-    return this.rgb2hex(
-      (window as any).getComputedStyle(
-        document.getElementsByClassName('wallet-color-default')[0]
-      ).color
-    );
-  }
-
   private setCurrentColorIndex(): void {
     try {
-      let color =
-        this.config.colorFor &&
-        this.config.colorFor[this.wallet.credentials.walletId]
-          ? this.config.colorFor[this.wallet.credentials.walletId]
-          : this.getColorDefault();
-      this.currentColorIndex = this.colorToIndex(color);
+      this.currentColorIndex = this.colorToIndex(this.wallet.color);
     } catch (e) {
       // Wait for DOM to render and try again.
       setTimeout(() => {
