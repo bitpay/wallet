@@ -582,14 +582,7 @@ export class HomePage {
       ShapeshiftPage
     };
 
-    switch (service.name) {
-      case 'amazonJapan':
-        this.navCtrl.push(pageMap[page], { country: 'japan' });
-        break;
-      default:
-        this.navCtrl.push(pageMap[page]);
-        return;
-    }
+    this.navCtrl.push(pageMap[page]);
   }
 
   public goToCard(cardId): void {

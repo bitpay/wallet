@@ -177,9 +177,6 @@ export class SettingsPage {
       case 'amazon':
         this.navCtrl.push(AmazonSettingsPage);
         break;
-      case 'amazonJapan':
-        this.navCtrl.push(AmazonSettingsPage, { country: 'japan' });
-        break;
       case 'coinbase':
         this.navCtrl.push(CoinbaseSettingsPage);
         break;

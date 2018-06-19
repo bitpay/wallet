@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
-import { NavParams } from 'ionic-angular';
 import * as _ from 'lodash';
 
 // Providers
+import { AmazonProvider } from '../../../../providers/amazon/amazon';
 import { ConfigProvider } from '../../../../providers/config/config';
 import { ExternalLinkProvider } from '../../../../providers/external-link/external-link';
 import { HomeIntegrationsProvider } from '../../../../providers/home-integrations/home-integrations';
@@ -22,21 +22,11 @@ export class AmazonSettingsPage {
     private configProvider: ConfigProvider,
     private externalLinkProvider: ExternalLinkProvider,
     private homeIntegrationsProvider: HomeIntegrationsProvider,
-    private navParams: NavParams
+    private amazonProvider: AmazonProvider
   ) {
-    // Possible countries: usa, japan
-    switch (this.navParams.data.country) {
-      case 'japan':
-        this.country = 'japan';
-        this.serviceName = 'amazonJapan';
-        this.pageTitle = 'Amazon.co.jp ギフト券';
-        break;
-      default:
-        this.country = 'usa';
-        this.serviceName = 'amazon';
-        this.pageTitle = 'Amazon.com Gift Cards';
-        break;
-    }
+    this.country = this.amazonProvider.country;
+    this.serviceName = 'amazon';
+    this.pageTitle = this.amazonProvider.pageTitle;
 
     this.service = _.filter(this.homeIntegrationsProvider.get(), {
       name: this.serviceName

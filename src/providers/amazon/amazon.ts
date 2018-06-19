@@ -16,6 +16,8 @@ export class AmazonProvider {
   public currency: string;
   public redeemAmazonUrl: string;
   public amazonNetwork: string;
+  public pageTitle: string;
+  public onlyIntegers: boolean;
 
   constructor(
     private http: HttpClient,
@@ -35,6 +37,7 @@ export class AmazonProvider {
       this.credentials.NETWORK === 'testnet'
         ? 'https://test.bitpay.com'
         : 'https://bitpay.com';
+    // Initialize default params
     this.setCountryParameters();
   }
 
@@ -50,6 +53,8 @@ export class AmazonProvider {
         this.limitPerDay = 200000;
         this.redeemAmazonUrl = 'https://www.amazon.co.jp/gc/redeem?claimCode=';
         this.amazonNetwork = this.getNetwork() + '-japan';
+        this.pageTitle = 'Amazon.co.jp ギフト券';
+        this.onlyIntegers = true;
         break;
       default:
         // For USA
@@ -58,20 +63,10 @@ export class AmazonProvider {
         this.limitPerDay = 2000;
         this.redeemAmazonUrl = 'https://www.amazon.com/gc/redeem?claimCode=';
         this.amazonNetwork = this.getNetwork();
+        this.pageTitle = 'Amazon.com Gift Cards';
+        this.onlyIntegers = false;
         break;
     }
-  }
-
-  public getCountry(): string {
-    return this.country;
-  }
-
-  public getCurrency(): string {
-    return this.currency;
-  }
-
-  public getRedeemAmazonUrl(): string {
-    return this.redeemAmazonUrl;
   }
 
   public savePendingGiftCard(gc, opts, cb) {
@@ -202,19 +197,16 @@ export class AmazonProvider {
   }
 
   public register() {
+    const showItem = !!this.configProvider.get().showIntegration['amazon'];
     this.homeIntegrationsProvider.register({
       name: 'amazon',
       title: 'Amazon Gift Cards',
       icon: 'assets/img/amazon/icon-amazon.svg',
       page: 'AmazonPage',
-      show: !!this.configProvider.get().showIntegration['amazon']
+      show: showItem
     });
-    this.homeIntegrationsProvider.register({
-      name: 'amazonJapan',
-      title: 'Amazon.co.jp ギフト券',
-      icon: 'assets/img/amazon/icon-amazon.svg',
-      page: 'AmazonPage',
-      show: !!this.configProvider.get().showIntegration['amazonJapan']
-    });
+
+    // TODO: Get country location (if Japan)
+    //if (true) this.setCountryParameters('japan');
   }
 }

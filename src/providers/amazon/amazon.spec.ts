@@ -46,9 +46,9 @@ describe('Provider: AmazonProvider', () => {
     it('Should get all the data of the respective country sent', () => {
       amazonProvider.setCountryParameters('japan');
 
-      expect(amazonProvider.getCountry()).toBe('japan');
-      expect(amazonProvider.getCurrency()).toBe('JPY');
-      expect(amazonProvider.getRedeemAmazonUrl()).toBe(
+      expect(amazonProvider.country).toBe('japan');
+      expect(amazonProvider.currency).toBe('JPY');
+      expect(amazonProvider.redeemAmazonUrl).toBe(
         'https://www.amazon.co.jp/gc/redeem?claimCode='
       );
       expect(amazonProvider.amazonNetwork).toBe('livenet-japan');
@@ -58,9 +58,9 @@ describe('Provider: AmazonProvider', () => {
     it('Should get all the default data if a specific country was not sent', () => {
       amazonProvider.setCountryParameters();
 
-      expect(amazonProvider.getCountry()).toBe('usa');
-      expect(amazonProvider.getCurrency()).toBe('USD');
-      expect(amazonProvider.getRedeemAmazonUrl()).toBe(
+      expect(amazonProvider.country).toBe('usa');
+      expect(amazonProvider.currency).toBe('USD');
+      expect(amazonProvider.redeemAmazonUrl).toBe(
         'https://www.amazon.com/gc/redeem?claimCode='
       );
       expect(amazonProvider.amazonNetwork).toBe('livenet');
@@ -339,7 +339,7 @@ describe('Provider: AmazonProvider', () => {
   describe('Function: register', () => {
     beforeEach(() => {
       let opts = {
-        showIntegration: { ['amazon']: true, ['amazonJapan']: true }
+        showIntegration: { ['amazon']: true }
       };
       configProvider.set(opts);
     });
@@ -349,14 +349,7 @@ describe('Provider: AmazonProvider', () => {
       expect(homeIntegrationsProvider.get()).toEqual([
         {
           name: 'amazon',
-          title: 'Amazon.com Gift Cards',
-          icon: 'assets/img/amazon/icon-amazon.svg',
-          page: 'AmazonPage',
-          show: true
-        },
-        {
-          name: 'amazonJapan',
-          title: 'Amazon.co.jp ギフト券',
+          title: 'Amazon Gift Cards',
           icon: 'assets/img/amazon/icon-amazon.svg',
           page: 'AmazonPage',
           show: true

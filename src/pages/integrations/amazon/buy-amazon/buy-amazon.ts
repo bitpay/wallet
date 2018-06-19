@@ -96,17 +96,9 @@ export class BuyAmazonPage {
     this.amazonGiftCard = null;
     this.bitcoreCash = this.bwcProvider.getBitcoreCash();
     this.isCordova = this.platformProvider.isCordova;
-    this.country = this.amazonProvider.getCountry();
-    switch (this.country) {
-      case 'japan':
-        this.pageTitle = 'Amazon.co.jp ギフト券';
-        this.onlyIntegers = true;
-        break;
-      default:
-        this.pageTitle = 'Amazon.com Gift Cards';
-        this.onlyIntegers = false;
-        break;
-    }
+    this.country = this.amazonProvider.country;
+    this.pageTitle = this.amazonProvider.pageTitle;
+    this.onlyIntegers = this.amazonProvider.onlyIntegers;
   }
 
   ionViewWillLeave() {

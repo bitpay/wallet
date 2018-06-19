@@ -41,7 +41,10 @@ export class AmazonPage {
     private popupProvider: PopupProvider,
     private timeProvider: TimeProvider
   ) {
-    this.setCountryParameters(this.navParams.data.country);
+    this.currency = this.amazonProvider.currency;
+    this.country = this.amazonProvider.country;
+    this.pageTitle = this.amazonProvider.pageTitle;
+    this.onlyIntegers = this.amazonProvider.onlyIntegers;
   }
 
   ionViewDidLoad() {
@@ -75,22 +78,6 @@ export class AmazonPage {
         .catch(err => {
           this.logger.error('Amazon: could not update gift cards', err);
         });
-    }
-  }
-
-  public setCountryParameters(country?: string): void {
-    this.amazonProvider.setCountryParameters(country);
-    this.currency = this.amazonProvider.getCurrency();
-    this.country = this.amazonProvider.getCountry();
-    switch (this.country) {
-      case 'japan':
-        this.pageTitle = 'Amazon.co.jp ギフト券';
-        this.onlyIntegers = true;
-        break;
-      default:
-        this.pageTitle = 'Amazon.com Gift Cards';
-        this.onlyIntegers = false;
-        break;
     }
   }
 
@@ -221,7 +208,7 @@ export class AmazonPage {
       case 'Amount':
         this.navCtrl.push(AmountPage, {
           nextPage: 'BuyAmazonPage',
-          currency: this.amazonProvider.getCurrency(),
+          currency: this.currency,
           fixedUnit: true,
           onlyIntegers: this.onlyIntegers
         });

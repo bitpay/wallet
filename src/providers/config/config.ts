@@ -70,7 +70,6 @@ export interface Config {
     glidera: boolean;
     debitcard: boolean;
     amazon: boolean;
-    amazonJapan: boolean;
     mercadolibre: boolean;
     shapeshift: boolean;
   };
@@ -182,7 +181,6 @@ const configDefault: Config = {
     glidera: true,
     debitcard: true,
     amazon: true,
-    amazonJapan: true,
     mercadolibre: true,
     shapeshift: true
   },

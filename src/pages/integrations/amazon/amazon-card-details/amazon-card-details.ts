@@ -38,20 +38,10 @@ export class AmazonCardDetailsPage {
     this.EXPIRY_TIME = 15 * 60;
     this.card = this.navParams.data.card;
     this.checkExpiryTime();
-    this.country = this.navParams.data.country
-      ? this.navParams.data.country
-      : 'usa';
-    this.country = this.amazonProvider.getCountry();
-    this.currency = this.amazonProvider.getCurrency();
-    this.redeemAmazonUrl = this.amazonProvider.getRedeemAmazonUrl();
-    switch (this.country) {
-      case 'japan':
-        this.onlyIntegers = true;
-        break;
-      default:
-        this.onlyIntegers = false;
-        break;
-    }
+    this.country = this.amazonProvider.country;
+    this.currency = this.amazonProvider.currency;
+    this.redeemAmazonUrl = this.amazonProvider.redeemAmazonUrl;
+    this.onlyIntegers = this.amazonProvider.onlyIntegers;
   }
 
   ionViewDidLoad() {
