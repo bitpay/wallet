@@ -1,7 +1,7 @@
 <ion-header>
   <ion-navbar>
     <ion-title>{{'Details' | translate}}</ion-title>
-    <ion-buttons start>
+    <ion-buttons left>
       <button (click)="close()" ion-button>
         {{'Close' | translate}}
       </button>
@@ -10,13 +10,15 @@
 </ion-header>
 
 <ion-content>
-  <div class="header-modal" [ngClass]="{'white-background': country == 'japan'}">
+  <div class="header-modal">
     <img *ngIf="country == 'usa'" src="assets/img/amazon/a_generic.jpg" alt="Amazon.com Gift Card" (click)="refreshGiftCard()">
     <img *ngIf="country == 'japan'" src="assets/img/amazon/japan/GCs-logo-japan-cllb.jpg" alt="Amazon.co.jp ギフト券" (click)="refreshGiftCard()">
     <div class="header-modal-amount">
       {{'Gift Card Amount:' | translate}}
       <span class="text-bold">
-        {{card.amount | currency : ' ' : 2}} {{ currency }}
+        <span *ngIf="onlyIntegers">{{card.amount | number : '1.0-0'}}</span> 
+        <span *ngIf="!onlyIntegers">{{card.amount | number : '1.2-2'}}</span> 
+        {{ currency }}
       </span>
     </div>
     <div translate>

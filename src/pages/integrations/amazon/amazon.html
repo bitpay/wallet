@@ -64,7 +64,9 @@
           <img src="assets/img/amazon/icon-amazon.svg" alt="Amazon" class="avatar">
           <div class="card-info">
             <h2 *ngIf="item.value.amount">
-              {{item.value.amount | currency : ' ' : 2}} {{item.value.currency ? item.value.currency : currency}}
+              <span *ngIf="onlyIntegers">{{item.value.amount | number : '1.0-0'}}</span> 
+              <span *ngIf="!onlyIntegers">{{item.value.amount | number : '1.2-2'}}</span> 
+              {{item.value.currency ? item.value.currency : currency}}
             </h2>
             <p>
               <span class="text-gray">{{item.value.date | amTimeAgo}}</span>

@@ -10,8 +10,7 @@
     <ion-item>
       <div class="amazon-title">
         <img src="assets/img/amazon/icon-amazon.svg">
-        <span *ngIf="country == 'usa'">Amazon.com Gift Card</span>
-        <span *ngIf="country == 'japan'">Amazon.co.jp ギフト券</span>
+        {{pageTitle}}
       </div>
       <div class="amount-label">
         <div class="amount">{{amountUnitStr}}</div>
@@ -45,25 +44,35 @@
         <ion-item>
           <span>{{'Gift Card' | translate}}</span>
           <ion-note item-end>
-            {{amount | currency:' ':2}} {{currencyIsoCode}}
+            <span *ngIf="onlyIntegers">{{amount | number : '1.0-0'}}</span> 
+            <span *ngIf="!onlyIntegers">{{amount | number : '1.2-2'}}</span> 
+            {{currencyIsoCode}}
           </ion-note>
         </ion-item>
         <ion-item>
           <span>{{'Network cost' | translate}}</span>
           <ion-note item-end>
-            {{invoiceFee | currency:' ':2}} {{currencyIsoCode}}
+            <span *ngIf="onlyIntegers">{{invoiceFee | number : '1.0-0'}}</span> 
+            <span *ngIf="!onlyIntegers">{{invoiceFee | number : '1.2-2'}}</span> 
+            {{currencyIsoCode}}
           </ion-note>
         </ion-item>
         <ion-item>
           <span>{{'Miner fee' | translate}}</span>
           <ion-note item-end>
-            {{networkFee | currency:' ':2}} {{currencyIsoCode}}
+            <span *ngIf="onlyIntegers">{{networkFee | number : '1.0-0'}}</span> 
+            <span *ngIf="!onlyIntegers">{{networkFee | number : '1.2-2'}}</span> 
+            {{currencyIsoCode}}
           </ion-note>
         </ion-item>
         <ion-item>
           <span>{{'Total' | translate}}</span>
           <ion-note item-end>
-            <span *ngIf="totalAmount">{{totalAmount | currency:' ':2}} {{currencyIsoCode}}</span>
+            <span *ngIf="totalAmount">
+              <span *ngIf="onlyIntegers">{{totalAmount | number : '1.0-0'}}</span> 
+              <span *ngIf="!onlyIntegers">{{totalAmount | number : '1.2-2'}}</span> 
+              {{currencyIsoCode}}
+            </span>
             <span *ngIf="totalAmountStr">({{totalAmountStr}})</span>
           </ion-note>
         </ion-item>

@@ -23,6 +23,7 @@ export class AmazonCardDetailsPage {
   public country: string;
   public currency: string;
   public redeemAmazonUrl: string;
+  public onlyIntegers: boolean;
 
   constructor(
     private amazonProvider: AmazonProvider,
@@ -43,6 +44,14 @@ export class AmazonCardDetailsPage {
     this.country = this.amazonProvider.getCountry();
     this.currency = this.amazonProvider.getCurrency();
     this.redeemAmazonUrl = this.amazonProvider.getRedeemAmazonUrl();
+    switch (this.country) {
+      case 'japan':
+        this.onlyIntegers = true;
+        break;
+      default:
+        this.onlyIntegers = false;
+        break;
+    }
   }
 
   ionViewDidLoad() {

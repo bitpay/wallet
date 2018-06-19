@@ -27,9 +27,9 @@ export class AmazonPage {
   public card;
   public invoiceId: string;
   public currency: string;
+  public onlyIntegers: boolean;
 
   private updateGiftCard: boolean;
-  private onlyIntegers: boolean;
 
   constructor(
     private amazonProvider: AmazonProvider,

@@ -1,6 +1,7 @@
 page-amazon-card-details {
   font-family: 'Amazon Ember Display';
   .header-modal {
+    background-color: white;
     text-align: center;
     padding: 2rem;
     img {
@@ -15,9 +16,6 @@ page-amazon-card-details {
     .invoice {
       margin: 1.5rem 0 3rem 0;
     }
-  }
-  .white-background {
-    background-color: white;
   }
   .steps {
     ion-item {

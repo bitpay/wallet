@@ -62,7 +62,9 @@ export class BuyAmazonPage {
   public network: string;
   public walletSelectorTitle: string;
   public isOpenSelector: boolean;
+  public pageTitle: string;
   public country: string;
+  public onlyIntegers: boolean;
 
   // Platform info
   public isCordova: boolean;
@@ -95,6 +97,16 @@ export class BuyAmazonPage {
     this.bitcoreCash = this.bwcProvider.getBitcoreCash();
     this.isCordova = this.platformProvider.isCordova;
     this.country = this.amazonProvider.getCountry();
+    switch (this.country) {
+      case 'japan':
+        this.pageTitle = 'Amazon.co.jp ギフト券';
+        this.onlyIntegers = true;
+        break;
+      default:
+        this.pageTitle = 'Amazon.com Gift Cards';
+        this.onlyIntegers = false;
+        break;
+    }
   }
 
   ionViewWillLeave() {
