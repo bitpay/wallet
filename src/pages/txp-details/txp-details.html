@@ -72,7 +72,7 @@
 
     <div padding class="proposal-deletion" *ngIf="((tx && !tx.removed) && (tx && tx.canBeRemoved)) || (tx && tx.status == 'accepted' && !tx.broadcastedOn)">
       <div class="proposal-deletion-help" *ngIf="!tx.isGlidera && isShared" translate>
-        * A payment proposal can be deleted if 1) you are the creator, and no other copayer has signed, or 2) 24 hours have passed since the proposal was created.
+        * A payment proposal can be deleted if 1) you are the creator, and no other copayer has signed, or 2) 10 minutes have passed since the proposal was created.
       </div>
       <button ion-button clear color="danger" (click)="remove()" [disabled]="loading">
         {{'Delete Payment Proposal' | translate}}
