@@ -200,7 +200,11 @@ export class ConfirmPage extends WalletTabsChild {
 
   private afterWalletSelectorSet() {
     const parentWallet = this.getParentWallet();
-    if (parentWallet && this.tx.coin === parentWallet.coin) {
+    if (
+      parentWallet &&
+      this.tx.coin === parentWallet.coin &&
+      this.tx.network === parentWallet.network
+    ) {
       this.setWallet(parentWallet);
     } else if (this.wallets.length > 1) {
       return this.showWallets();

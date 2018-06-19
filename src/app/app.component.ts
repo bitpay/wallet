@@ -300,8 +300,11 @@ export class CopayApp {
 
   private incomingDataRedirEvent(): void {
     this.events.subscribe('IncomingDataRedir', nextView => {
-      const tabNav = this.getSelectedTabNav();
-      tabNav.push(this.pageMap[nextView.name], nextView.params);
+      this.closeScannerFromWithinWallet();
+      this.getSelectedTabNav().push(
+        this.pageMap[nextView.name],
+        nextView.params
+      );
     });
   }
 
@@ -310,13 +313,17 @@ export class CopayApp {
       await this.getGlobalTabs().select(1);
       await this.toggleScannerVisibilityFromWithinWallet(true, 300);
     });
-    this.events.subscribe('FinishScan', async () => {
-      if (!this.getWalletDetailsModal()) {
-        return;
-      }
-      await this.toggleScannerVisibilityFromWithinWallet(false, 300);
-      await this.getGlobalTabs().select(0);
+    this.events.subscribe('ExitScan', async () => {
+      this.closeScannerFromWithinWallet();
     });
+  }
+
+  private async closeScannerFromWithinWallet() {
+    if (!this.getWalletDetailsModal()) {
+      return;
+    }
+    await this.toggleScannerVisibilityFromWithinWallet(false, 300);
+    await this.getGlobalTabs().select(0);
   }
 
   private toggleScannerVisibilityFromWithinWallet(

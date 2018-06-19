@@ -261,7 +261,6 @@ export class ScanPage {
         ? { activePage: 'SendPage', ...sendParams }
         : { activePage: 'ScanPage' };
       this.incomingDataProvider.redir(contents, redirParms);
-      this.events.publish('FinishScan');
     }
   }
 
@@ -323,7 +322,7 @@ export class ScanPage {
 
   public close() {
     this.walletTabsProvider.getTabNav()
-      ? this.events.publish('FinishScan')
+      ? this.events.publish('ExitScan')
       : this.navCtrl.parent.select(0);
   }
 }
