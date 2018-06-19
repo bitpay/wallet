@@ -1,21 +1,4 @@
 page-wallet-color {
-  /*
- * Generate wallet colors from color map
- */
-
-  .wallet-color-count {
-    content: '14';
-  }
-
-  /* background-color and color defaults should be the same */
-  .wallet-background-color-default {
-    background-color: color($colors, primary);
-  }
-
-  .wallet-color-default {
-    color: color($colors, primary);
-  }
-
   ion-label {
     white-space: nowrap;
     overflow: hidden;

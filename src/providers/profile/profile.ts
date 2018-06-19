@@ -53,6 +53,7 @@ export class ProfileProvider {
   private updateWalletSettings(wallet): void {
     let config = this.configProvider.get();
     let defaults = this.configProvider.getDefaults();
+    let defaultColor = wallet.coin == 'btc' ? '#f38f12' : '#1abb9b';
     // this.config.whenAvailable( (config) => { TODO
     wallet.usingCustomBWS =
       config.bwsFor &&
@@ -64,7 +65,7 @@ export class ProfileProvider {
     wallet.color =
       config.colorFor && config.colorFor[wallet.id]
         ? config.colorFor[wallet.id]
-        : '#647ce8';
+        : defaultColor;
     wallet.email = config.emailFor && config.emailFor[wallet.id];
     // });
   }
@@ -138,7 +139,6 @@ export class ProfileProvider {
   private async bindWalletClient(wallet, opts?) {
     opts = opts ? opts : {};
     let walletId = wallet.credentials.walletId;
-
     if (this.wallet[walletId] && this.wallet[walletId].started && !opts.force) {
       this.logger.info('This wallet has been initialized. Skip. ' + walletId);
       return;
