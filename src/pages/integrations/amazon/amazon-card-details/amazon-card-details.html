@@ -12,11 +12,11 @@
 <ion-content>
   <div class="header-modal" [ngClass]="{'white-background': country == 'japan'}">
     <img *ngIf="country == 'usa'" src="assets/img/amazon/a_generic.jpg" alt="Amazon.com Gift Card" (click)="refreshGiftCard()">
-    <img *ngIf="country == 'japan'" src="assets/img/amazon/japan/JP_blank.jpg" alt="Amazon.co.jp ギフト券" (click)="refreshGiftCard()">
+    <img *ngIf="country == 'japan'" src="assets/img/amazon/japan/GCs-logo-japan-cllb.jpg" alt="Amazon.co.jp ギフト券" (click)="refreshGiftCard()">
     <div class="header-modal-amount">
       {{'Gift Card Amount:' | translate}}
       <span class="text-bold">
-        {{card.amount | currency : '$ ' : 2}} {{ currency }}
+        {{card.amount | currency : ' ' : 2}} {{ currency }}
       </span>
     </div>
     <div translate>

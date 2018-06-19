@@ -84,11 +84,11 @@ export class AmazonPage {
     this.country = this.amazonProvider.getCountry();
     switch (this.country) {
       case 'japan':
-        this.pageTitle = 'Amazon ギフト券';
+        this.pageTitle = 'Amazon.co.jp ギフト券';
         this.onlyIntegers = true;
         break;
       default:
-        this.pageTitle = 'Amazon Gift Cards';
+        this.pageTitle = 'Amazon.com Gift Cards';
         this.onlyIntegers = false;
         break;
     }

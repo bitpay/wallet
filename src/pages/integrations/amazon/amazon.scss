@@ -1,9 +1,8 @@
 page-amazon {
+  font-family: 'Amazon Ember Display';
   .container {
-    height: 100%;
-  }
-  .white-background {
     background-color: white;
+    height: 100%;
   }
   .center-header {
     height: 100%;
@@ -27,7 +26,14 @@ page-amazon {
       max-width: 300px;
     }
   }
-
+  .short-disclaimer {
+    font-size: 12px;
+    text-align: left;
+    color: color($colors, light-grey);
+    padding: 0 20px;
+    margin-top: 20px;
+    width: 100%;
+  }
   .integration-giftCard {
     &-logo {
       background-color: #ffffff;

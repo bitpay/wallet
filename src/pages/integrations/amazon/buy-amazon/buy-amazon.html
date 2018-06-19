@@ -45,30 +45,25 @@
         <ion-item>
           <span>{{'Gift Card' | translate}}</span>
           <ion-note item-end>
-            {{amount | currency:'$ ':2}}
-            <span *ngIf="amount"> {{currencyIsoCode}}</span>
+            {{amount | currency:' ':2}} {{currencyIsoCode}}
           </ion-note>
         </ion-item>
         <ion-item>
           <span>{{'Network cost' | translate}}</span>
           <ion-note item-end>
-            <span>{{invoiceFee | currency:'$ ':2}}
-              <span *ngIf="invoiceFee"> {{currencyIsoCode}}</span>
-            </span>
+            {{invoiceFee | currency:' ':2}} {{currencyIsoCode}}
           </ion-note>
         </ion-item>
         <ion-item>
           <span>{{'Miner fee' | translate}}</span>
           <ion-note item-end>
-            <span>{{networkFee | currency:'$ ':2}}
-              <span *ngIf="networkFee"> {{currencyIsoCode}}</span>
-            </span>
+            {{networkFee | currency:' ':2}} {{currencyIsoCode}}
           </ion-note>
         </ion-item>
         <ion-item>
           <span>{{'Total' | translate}}</span>
           <ion-note item-end>
-            <span *ngIf="totalAmount">{{totalAmount | currency:'$ ':2}} {{currencyIsoCode}}</span>
+            <span *ngIf="totalAmount">{{totalAmount | currency:' ':2}} {{currencyIsoCode}}</span>
             <span *ngIf="totalAmountStr">({{totalAmountStr}})</span>
           </ion-note>
         </ion-item>
