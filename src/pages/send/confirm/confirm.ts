@@ -199,11 +199,9 @@ export class ConfirmPage extends WalletTabsChild {
   }
 
   private afterWalletSelectorSet() {
-    const parentWalletId =
-      this.navCtrl.parent && this.navCtrl.parent.viewCtrl.instance.walletId;
-    if (parentWalletId) {
-      const wallet = this.wallets.filter(w => w.id === parentWalletId)[0];
-      this.setWallet(wallet);
+    const parentWallet = this.getParentWallet();
+    if (parentWallet && this.tx.coin === parentWallet.coin) {
+      this.setWallet(parentWallet);
     } else if (this.wallets.length > 1) {
       return this.showWallets();
     } else if (this.wallets.length) {

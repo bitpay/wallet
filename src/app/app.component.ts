@@ -1,4 +1,12 @@
-import { Component, Renderer, ViewChild } from '@angular/core';
+import {
+  ApplicationRef,
+  Component,
+  ComponentFactoryResolver,
+  EmbeddedViewRef,
+  Injector,
+  Renderer,
+  ViewChild
+} from '@angular/core';
 import { ScreenOrientation } from '@ionic-native/screen-orientation';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
@@ -33,6 +41,7 @@ import { CopayersPage } from '../pages/add/copayers/copayers';
 import { ImportWalletPage } from '../pages/add/import-wallet/import-wallet';
 import { JoinWalletPage } from '../pages/add/join-wallet/join-wallet';
 import { FingerprintModalPage } from '../pages/fingerprint/fingerprint';
+import { WalletSelectorPage } from '../pages/includes/wallet-selector/wallet-selector';
 import { BitPayCardIntroPage } from '../pages/integrations/bitpay-card/bitpay-card-intro/bitpay-card-intro';
 import { CoinbasePage } from '../pages/integrations/coinbase/coinbase';
 import { GlideraPage } from '../pages/integrations/glidera/glidera';
@@ -106,7 +115,10 @@ export class CopayApp {
     private app: App,
     private incomingDataProvider: IncomingDataProvider,
     private walletTabsProvider: WalletTabsProvider,
-    private renderer: Renderer
+    private renderer: Renderer,
+    private componentFactoryResolver: ComponentFactoryResolver,
+    private appRef: ApplicationRef,
+    private injector: Injector
   ) {
     this.initializeApp();
   }
@@ -120,6 +132,7 @@ export class CopayApp {
       .ready()
       .then(readySource => {
         this.onPlatformReady(readySource);
+        this.appendComponentToBody(WalletSelectorPage);
       })
       .catch(e => {
         this.logger.error('Platform is not ready.', e);
@@ -404,5 +417,15 @@ export class CopayApp {
 
   private getGlobalTabs() {
     return this.nav.getActiveChildNavs()[0].viewCtrl.instance.tabs;
+  }
+
+  private appendComponentToBody(component: any) {
+    const componentRef = this.componentFactoryResolver
+      .resolveComponentFactory(component)
+      .create(this.injector);
+    this.appRef.attachView(componentRef.hostView);
+    const domElem = (componentRef.hostView as EmbeddedViewRef<any>)
+      .rootNodes[0] as HTMLElement;
+    document.getElementsByTagName('ion-app')[0].appendChild(domElem);
   }
 }
