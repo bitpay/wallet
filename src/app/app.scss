@@ -346,9 +346,6 @@ ion-icon {
   &[class*='tab-activity'] {
     mask-image: url(../assets/img/tab-icons/ico-activity.svg);
   }
-  &[class*='tab-home'] {
-    mask-image: url(../assets/img/tab-icons/ico-home.svg);
-  }
   &[class*='tab-receive'] {
     mask-image: url(../assets/img/tab-icons/ico-receive.svg);
   }
@@ -358,9 +355,6 @@ ion-icon {
   }
   &[class*='tab-send'] {
     mask-image: url(../assets/img/tab-icons/ico-send.svg);
-  }
-  &[class*='tab-settings'] {
-    mask-image: url(../assets/img/tab-icons/ico-settings.svg);
   }
 }
 
