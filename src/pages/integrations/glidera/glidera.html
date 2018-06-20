@@ -1,7 +1,7 @@
 <ion-header>
   <ion-navbar>
     <ion-title>Glidera</ion-title>
-    <ion-buttons end>
+    <ion-buttons left>
       <button ion-button *ngIf="!account.token" (click)="toggleOauthForm()">
         <span *ngIf="!showOauthForm">Enter Code</span>
         <span *ngIf="showOauthForm">Restart</span>
