@@ -168,17 +168,17 @@ export class AmountPage extends WalletTabsChild {
   private setAvailableUnits(): void {
     this.availableUnits = [];
 
-    this.availableUnits.push({
-      name: 'Bitcoin',
-      id: 'btc',
-      shortName: 'BTC'
-    });
-
-    this.availableUnits.push({
-      name: 'Bitcoin Cash',
-      id: 'bch',
-      shortName: 'BCH'
-    });
+    this.getParentWallet().coin === 'btc'
+      ? this.availableUnits.push({
+          name: 'Bitcoin',
+          id: 'btc',
+          shortName: 'BTC'
+        })
+      : this.availableUnits.push({
+          name: 'Bitcoin Cash',
+          id: 'bch',
+          shortName: 'BCH'
+        });
 
     this.unitIndex = 0;
 
