@@ -44,6 +44,12 @@ page-txp-details {
       font-size: 12.5px;
     }
   }
+
+  .proposal-rejection {
+    background-color: color($colors, blank);
+    text-align: center;
+  }
+
   @mixin row-flex {
     display: flex;
     align-items: center;

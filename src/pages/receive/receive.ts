@@ -88,8 +88,9 @@ export class ReceivePage extends WalletTabsChild {
     });
   }
 
-  private setAddress(newAddr?: boolean): void {
-    this.loading = newAddr || _.isEmpty(this.address) ? true : false;
+  private setAddress(newAddr?: boolean, changingWallet?: boolean): void {
+    this.loading =
+      newAddr || _.isEmpty(this.address) || changingWallet ? true : false;
 
     this.walletProvider
       .getAddress(this.wallet, newAddr)
@@ -160,14 +161,12 @@ export class ReceivePage extends WalletTabsChild {
 
     let specificAmountButton = {
       text: this.translate.instant('Request Specific Amount'),
-      icon: 'calculator',
       handler: () => {
         this.requestSpecificAmount();
       }
     };
     let shareButton = {
       text: this.translate.instant('Share Address'),
-      icon: 'share',
       handler: () => {
         this.shareAddress();
       }

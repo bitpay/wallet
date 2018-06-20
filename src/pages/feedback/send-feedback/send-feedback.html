@@ -1,7 +1,7 @@
 <ion-header>
   <ion-navbar #navBar>
     <ion-title>{{'Send Feedback'|translate}}</ion-title>
-    <ion-buttons end>
+    <ion-buttons left>
       <button ion-button clear *ngIf="score" (click)="sendFeedback(null, true)">
         <span translate>Cancel</span>
       </button>

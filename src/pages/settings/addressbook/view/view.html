@@ -15,7 +15,7 @@
         {{ name }}
       </ion-note>
     </ion-item>
-    <ion-item>
+    <ion-item *ngIf="email">
       {{'Email' | translate}}
       <ion-note item-end>
         {{ email }}

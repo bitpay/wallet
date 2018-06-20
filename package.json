@@ -18,7 +18,7 @@
     "title": "Copay – Copay Bitcoin Wallet",
     "icon": "www/assets/img/app/icon.png",
     "toolbar": false,
-    "show": true,
+    "show": false,
     "visible": true,
     "resizable": true,
     "frame": true,

@@ -1,9 +1,9 @@
 <ion-header>
   <ion-navbar hideBackButton="true">
     <ion-title>{{'Fee level' | translate}}</ion-title>
-    <ion-buttons start>
-      <button (click)="cancel()" icon-only ion-button>
-        <ion-icon name="close"></ion-icon>
+    <ion-buttons left>
+      <button (click)="cancel()" ion-button>
+        {{'Close' | translate}}
       </button>
     </ion-buttons>
   </ion-navbar>
@@ -52,8 +52,7 @@
     <ion-list class="fee-custom" *ngIf="customFeePerKB">
       <ion-item>
         <ion-label color="primary" floating>{{'Enter custom fee in sat/byte' | translate}}</ion-label>
-        <ion-input type="number" min="minFee" max="maxFee" (ionChange)="checkFees(customSatPerByte)" [(ngModel)]="customSatPerByte"
-          required></ion-input>
+        <ion-input type="number" min="minFee" max="maxFee" (ionChange)="checkFees(customSatPerByte)" [(ngModel)]="customSatPerByte" required></ion-input>
       </ion-item>
       <ion-item class="fee-error" *ngIf="showError">
         <span translate>Transactions without fee are not supported.</span>
@@ -65,7 +64,7 @@
       </ion-item>
     </ion-list>
 
-    <button [disabled]="customSatPerByte >= maxFeeAllowed || showError" (click)="ok()" full class="button-standard" ion-button>
+    <button [disabled]="customSatPerByte >= maxFeeAllowed || showError" (click)="ok()" class="button-standard" ion-button>
       {{'Apply changes' | translate}}
     </button>
   </div>
