@@ -77,8 +77,6 @@ export class AmountPage extends WalletTabsChild {
   public toWalletId: string;
   private _id: string;
 
-  public wallet;
-
   constructor(
     private actionSheetCtrl: ActionSheetController,
     private configProvider: ConfigProvider,
@@ -168,17 +166,24 @@ export class AmountPage extends WalletTabsChild {
   private setAvailableUnits(): void {
     this.availableUnits = [];
 
-    this.getParentWallet().coin === 'btc'
-      ? this.availableUnits.push({
-          name: 'Bitcoin',
-          id: 'btc',
-          shortName: 'BTC'
-        })
-      : this.availableUnits.push({
-          name: 'Bitcoin Cash',
-          id: 'bch',
-          shortName: 'BCH'
-        });
+    const parentWalletCoin =
+      this.getParentWallet() && this.getParentWallet().coin;
+
+    if (parentWalletCoin === 'btc' || !parentWalletCoin) {
+      this.availableUnits.push({
+        name: 'Bitcoin',
+        id: 'btc',
+        shortName: 'BTC'
+      });
+    }
+
+    if (parentWalletCoin === 'bch' || !parentWalletCoin) {
+      this.availableUnits.push({
+        name: 'Bitcoin Cash',
+        id: 'bch',
+        shortName: 'BCH'
+      });
+    }
 
     this.unitIndex = 0;
 
@@ -280,7 +285,6 @@ export class AmountPage extends WalletTabsChild {
       default:
         this.showSendMax = true;
         nextPage = this.toAddress ? ConfirmPage : SendPage;
-      // nextPage = ConfirmPage;
     }
     return nextPage;
   }
