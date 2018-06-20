@@ -250,15 +250,6 @@ export class SendPage extends WalletTabsChild {
           return;
         }
         this.logger.debug('Got address:' + addr + ' | ' + item.name);
-        // this.navCtrl.push(AmountPage, {
-        //   recipientType: item.recipientType,
-        //   toAddress: addr,
-        //   name: item.name,
-        //   email: item.email,
-        //   color: item.color,
-        //   coin: item.coin,
-        //   network: item.network
-        // });
         this.navCtrl.push(ConfirmPage, {
           recipientType: item.recipientType,
           amount: parseInt(this.navParams.data.amount, 10),
@@ -269,14 +260,6 @@ export class SendPage extends WalletTabsChild {
           coin: item.coin,
           network: item.network
         });
-
-        // toAddress: this.navParams.data.toAddress,
-        // amount: parseInt(this.navParams.data.amount, 10),
-        // sendMax: this.navParams.data.useSendMax ? true : false,
-        // description: this.navParams.data.description,
-        // paypro: this.navParams.data.paypro,
-        // spendUnconfirmed: this.config.wallet.spendUnconfirmed,
-        return;
       })
       .catch(err => {
         this.logger.error('Send: could not getAddress', err);
