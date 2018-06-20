@@ -9,9 +9,9 @@ import { SocialSharing } from '@ionic-native/social-sharing';
 // providers
 import { AppProvider } from '../../../providers/app/app';
 import { ConfigProvider } from '../../../providers/config/config';
-import { PopupProvider } from '../../../providers/index';
 import { PersistenceProvider } from '../../../providers/persistence/persistence';
 import { PlatformProvider } from '../../../providers/platform/platform';
+import { PopupProvider } from '../../../providers/popup/popup';
 import { ReplaceParametersProvider } from '../../../providers/replace-parameters/replace-parameters';
 
 @Component({
