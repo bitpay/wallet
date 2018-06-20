@@ -1,7 +1,7 @@
 <ion-header no-border>
   <ion-navbar [navbar-bg]="wallet.color">
     <ion-title>{{wallet.name}}</ion-title>
-    <ion-buttons end>
+    <ion-buttons left>
       <button ion-button clear *ngIf="wallet && wallet.completeHistory && wallet.completeHistory.length > 4" (click)="openSearchModal()">
         <ion-icon item-end name="search" class="search-icon"></ion-icon>
       </button>
@@ -154,8 +154,7 @@
                 </div>
                 <div *ngIf="tx.confirmations > 0">
                   <span *ngIf="tx.customData && tx.customData.service">
-                    <img class="icon-services" src="assets/img/shapeshift/icon-shapeshift.svg" *ngIf="tx.customData.service == 'shapeshift'"
-                      width="40">
+                    <img class="icon-services" src="assets/img/shapeshift/icon-shapeshift.svg" *ngIf="tx.customData.service == 'shapeshift'" width="40">
                     <img class="icon-services" src="assets/img/amazon/icon-amazon.svg" *ngIf="tx.customData.service == 'amazon'" width="40">
                     <img class="icon-services" src="assets/img/mercado-libre/icon-ml.svg" *ngIf="tx.customData.service == 'mercadolibre'" width="40">
                     <img class="icon-services" src="assets/img/bitpay-card/icon-bitpay.svg" *ngIf="tx.customData.service == 'debitcard'" width="40">
