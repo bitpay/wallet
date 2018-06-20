@@ -101,6 +101,10 @@ ion-spinner * {
 }
 
 .tabbar {
+  .tabs-md &,
+  .tabs-ios & {
+    background: white;
+  }
   justify-content: center;
   padding-top: 5px;
   transform: translate3d(0, 0, 0);
