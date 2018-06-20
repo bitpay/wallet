@@ -37,19 +37,27 @@ export class AmazonProvider {
       this.credentials.NETWORK === 'testnet'
         ? 'https://test.bitpay.com'
         : 'https://bitpay.com';
-    // Initialize default params
-    this.setCountryParameters();
+    
+    this.getSupportedCards()
+      .then( currency => {
+        this.logger.info('Set Amazon Gift Card to: ' + currency);
+        this.setCountryParameters(currency);
+      })
+      .catch( () => {
+        this.logger.warn('Set Amazon Gift Card to: USD (by default)');
+        this.setCountryParameters();
+      });
   }
 
   public getNetwork(): string {
     return this.credentials.NETWORK;
   }
 
-  public setCountryParameters(country?: string): void {
-    switch (country) {
-      case 'japan':
+  private setCountryParameters(currency?: string): void {
+    switch (currency) {
+      case 'JPY':
+        this.currency = currency;
         this.country = 'japan';
-        this.currency = 'JPY';
         this.limitPerDay = 200000;
         this.redeemAmazonUrl = 'https://www.amazon.co.jp/gc/redeem?claimCode=';
         this.amazonNetwork = this.getNetwork() + '-japan';
@@ -58,8 +66,8 @@ export class AmazonProvider {
         break;
       default:
         // For USA
+        this.currency = 'USD'
         this.country = 'usa';
-        this.currency = 'USD';
         this.limitPerDay = 2000;
         this.redeemAmazonUrl = 'https://www.amazon.com/gc/redeem?claimCode=';
         this.amazonNetwork = this.getNetwork();
@@ -196,6 +204,23 @@ export class AmazonProvider {
       );
   }
 
+  private getSupportedCards(): Promise<any> {
+    return new Promise((resolve, reject) => {
+      this.http
+        .get(this.credentials.BITPAY_API_URL + '/amazon-gift/supportedCards')
+        .subscribe(
+          data => {
+            this.logger.info('Amazon Gift Card Supported Cards: SUCCESS');
+            return resolve(data['supportedCards'][0]);
+          },
+          data => {
+            this.logger.error('Amazon Gift Card Supported Cards: ' + data.message);
+            return reject(data);
+          }
+        );
+    });
+  }
+
   public register() {
     const showItem = !!this.configProvider.get().showIntegration['amazon'];
     this.homeIntegrationsProvider.register({
@@ -205,8 +230,5 @@ export class AmazonProvider {
       page: 'AmazonPage',
       show: showItem
     });
-
-    // TODO: Get country location (if Japan)
-    //if (true) this.setCountryParameters('japan');
   }
 }
