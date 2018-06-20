@@ -6,7 +6,7 @@
       </button>
     </ion-buttons>
     <ion-title>{{wallet && wallet.name || ('Receive'|translate)}}</ion-title>
-    <ion-buttons end>
+    <ion-buttons right>
       <button *ngIf="wallet && wallet.isComplete() && !wallet.needsBackup" (click)="showMoreOptions()" ion-button icon-only>
         <ion-icon name="more"></ion-icon>
       </button>
