@@ -1,7 +1,7 @@
 <ion-header>
   <ion-navbar>
     <ion-title>{{'Receive'|translate}}</ion-title>
-    <ion-buttons left>
+    <ion-buttons right>
       <button *ngIf="wallet && wallet.isComplete() && !wallet.needsBackup" (click)="showMoreOptions()" ion-button icon-only>
         <ion-icon name="more"></ion-icon>
       </button>

@@ -2,7 +2,7 @@
 
   <ion-navbar>
     <ion-title>{{ 'Address Book' | translate }}</ion-title>
-    <ion-buttons *ngIf="!isEmptyList" left>
+    <ion-buttons *ngIf="!isEmptyList" right>
       <button ion-button (click)="addEntry()">
         {{'Add' | translate}}
       </button>
