@@ -9,6 +9,7 @@ import { SocialSharing } from '@ionic-native/social-sharing';
 // providers
 import { AppProvider } from '../../../providers/app/app';
 import { ConfigProvider } from '../../../providers/config/config';
+import { PopupProvider } from '../../../providers/index';
 import { PersistenceProvider } from '../../../providers/persistence/persistence';
 import { PlatformProvider } from '../../../providers/platform/platform';
 import { ReplaceParametersProvider } from '../../../providers/replace-parameters/replace-parameters';
@@ -45,7 +46,8 @@ export class FeedbackCompletePage {
     private appProvider: AppProvider,
     private configProvider: ConfigProvider,
     private replaceParametersProvider: ReplaceParametersProvider,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private popupProvider: PopupProvider
   ) {
     this.score = this.navParams.data.score;
     this.skipped = this.navParams.data.skipped;
@@ -131,6 +133,10 @@ export class FeedbackCompletePage {
   }
 
   public shareFacebook() {
+    if (!this.facebook) {
+      this.showError();
+      return;
+    }
     this.socialSharing.shareVia(
       this.shareFacebookVia,
       null,
@@ -141,6 +147,10 @@ export class FeedbackCompletePage {
   }
 
   public shareTwitter() {
+    if (!this.twitter) {
+      this.showError();
+      return;
+    }
     this.socialSharing.shareVia(
       this.shareTwitterVia,
       null,
@@ -151,7 +161,18 @@ export class FeedbackCompletePage {
   }
 
   public shareWhatsapp() {
+    if (!this.whatsapp) {
+      this.showError();
+      return;
+    }
     this.socialSharing.shareViaWhatsApp(this.downloadUrl);
+  }
+
+  private showError() {
+    let msg = this.translate.instant(
+      'This app is not available for your device.'
+    );
+    this.popupProvider.ionicAlert(this.translate.instant('Error'), msg);
   }
 
   public close(): void {
