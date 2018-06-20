@@ -4,7 +4,7 @@ import { ProfileProvider } from '../../providers/profile/profile';
 import { WalletTabsPage } from './wallet-tabs';
 import { WalletTabsProvider } from './wallet-tabs.provider';
 
-@Component({})
+@Component({ template: '' })
 export class WalletTabsChild {
   wallets;
   wallet;

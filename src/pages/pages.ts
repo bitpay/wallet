@@ -125,6 +125,7 @@ import { ConfirmPage } from '../pages/send/confirm/confirm';
 
 /* Receive */
 import { CustomAmountPage } from '../pages/receive/custom-amount/custom-amount';
+import { WalletTabsChild } from './wallet-tabs/wallet-tabs-child';
 
 export const PAGES = [
   ActivityPage,
@@ -218,6 +219,7 @@ export const PAGES = [
   WalletDeletePage,
   WalletExtendedPrivateKeyPage,
   WalletDetailsPage,
+  WalletTabsChild,
   WalletTabsPage,
   WalletBalancePage,
   WalletItemPage,
