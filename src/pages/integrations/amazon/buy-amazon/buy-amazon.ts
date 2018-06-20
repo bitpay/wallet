@@ -355,10 +355,10 @@ export class BuyAmazonPage {
               });
             });
         })
-        .catch(() => {
+        .catch(err => {
           return reject({
             title: this.translate.instant('Error in Payment Protocol'),
-            message: this.translate.instant('Invalid URL')
+            message: err
           });
         });
     });
