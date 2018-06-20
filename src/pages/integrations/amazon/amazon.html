@@ -23,16 +23,16 @@
       <button *ngIf="!showOauthForm && country == 'japan'" ion-button clear small block color="dark" (click)="openExternalLink('https://www.amazon.co.jp')">{{'Visit Amazon.co.jp' | translate}} &rarr;</button>
       <div class="short-disclaimer">
         <div *ngIf="country != 'japan'">
-          *Restrictions apply, see amazon.com/gc-legal (<a (click)="openExternalLink('https://amazon.com/gc-legal')">learn more</a>)
+          * Restrictions apply, see amazon.com/gc-legal
         </div>
         <div *ngIf="country == 'japan'">
-          *本プログラムはBitPayによる提供です。 本キャンペーンについてのお問い合わせはAmazonではお受けしておりません。BitPayにご連絡ください。      
+          * 本プログラムはBitPayによる提供です。 本キャンペーンについてのお問い合わせはAmazonではお受けしておりません。BitPayにご連絡ください。      
           <br>
           * Amazon、Amazon.co.jpおよびそれらのロゴはAmazon.com, Inc.またはその関連会社の商標です。
           <div margin-top>
-            *Amazon.co.jp is not a sponsor of this program.
+            * Amazon.co.jp is not a sponsor of this program.
             <br>
-            *"Amazon", "Amazon.co.jp" and their logos are registered trademarks of Amazon.com, Inc. and its affiliates.
+            * "Amazon", "Amazon.co.jp" and their logos are registered trademarks of Amazon.com, Inc. and its affiliates.
           </div>
         </div>
       </div>
