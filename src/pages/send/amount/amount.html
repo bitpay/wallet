@@ -18,7 +18,7 @@
 </ion-header>
 
 <ion-content no-bounce>
-  <ion-list *ngIf="showRecipient">
+  <!-- <ion-list *ngIf="showRecipient">
     <ion-item-divider>
       <span translate>Recipient</span>
     </ion-item-divider>
@@ -37,7 +37,7 @@
       </ion-icon>
       <span>{{name || toAddress}}</span>
     </ion-item>
-  </ion-list>
+  </ion-list> -->
   <div>
     <div class="amount-pane">
 
@@ -60,7 +60,8 @@
 </ion-content>
 <ion-footer>
   <ion-toolbar>
-    <div class="keypad">
+    <pin-pad (keystroke)="pushDigit($event)" type="amount"></pin-pad>
+    <!-- <div class="keypad">
       <div class="operator-row">
         <div class="col operator-send" [hidden]="!allowSend" (click)="finish()">
           <ion-icon name="arrow-round-forward"></ion-icon>
@@ -95,6 +96,6 @@
         </div>
         <div class="col operator" (click)="pushOperator('-')">&#45;</div>
       </div>
-    </div>
+    </div> -->
   </ion-toolbar>
 </ion-footer>

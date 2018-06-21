@@ -322,6 +322,9 @@ export class AmountPage extends WalletTabsChild {
   }
 
   public pushDigit(digit: string): void {
+    if (digit === 'delete') {
+      return this.removeDigit();
+    }
     if (
       this.expression &&
       this.expression.length >= this.LENGTH_EXPRESSION_LIMIT
