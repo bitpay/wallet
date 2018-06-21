@@ -2,10 +2,6 @@ page-amount {
   ion-content.content {
     background: white;
   }
-  // .amount-pane {
-  //   .shapeshift-values {
-  //     padding: 1.7rem;
-  //   }
 
   pin-pad {
     .row {
@@ -24,6 +20,17 @@ page-amount {
   .amount-header-margin {
     margin: 2rem;
     margin-bottom: 0;
+  }
+
+  .next-button {
+    opacity: 0;
+    transform: translateY(-30px);
+    transition: opacity 250ms ease, transform 250ms ease;
+
+    &.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
 
   .amount-header {
@@ -90,17 +97,6 @@ page-amount {
         //   font-size: 25px;
         // }
       }
-      .unit-button {
-        cursor: pointer;
-        color: color($colors, grey);
-        border: 1px solid color($colors, grey);
-        padding: 0 5px;
-        margin: 0 0 0 1.5rem;
-        font-size: 19px;
-        @media (max-height: 500px) {
-          font-size: 16px;
-        }
-      }
     }
     .amount {
       color: #a5a4a4;
@@ -109,67 +105,10 @@ page-amount {
     }
     .result {
       color: color($colors, grey);
-      // margin-left: 5px;
       margin-top: 20px;
     }
   }
-  // }
 
-  // .keypad {
-  //   color: color($colors, dark);
-  //   text-align: center;
-  //   font-size: 24px;
-  //   font-weight: normal;
-  //   // position: absolute;
-  //   // bottom: 0;
-  //   width: 100%;
-  //   .row {
-  //     padding: 0 !important;
-  //     margin: 0 !important;
-  //   }
-  //   .col {
-  //     line-height: 40px;
-  //   }
-  //   .operator {
-  //     cursor: pointer;
-  //     background: color($colors, light);
-  //     &:active {
-  //       color: white;
-  //       background-color: color($colors, dark);
-  //     }
-  //   }
-  //   .operator-row {
-  //     width: 25%;
-  //     margin-left: 75%;
-  //     .operator-send {
-  //       color: color($colors, light);
-  //       opacity: 0.9;
-  //       background-color: color($colors, primary);
-  //       font-size: 16px;
-  //       cursor: pointer;
-  //       padding: 0.4rem;
-  //       &:active {
-  //         color: color($colors, primary);
-  //         background-color: #fff;
-  //         border: 1px solid color($colors, primary);
-  //         border-radius: 2px;
-  //       }
-  //     }
-  //   }
-  //   .digit {
-  //     cursor: pointer;
-  //     border: 1px solid color($colors, light);
-  //     &:active {
-  //       background: color($colors, light);
-  //     }
-  //   }
-  //   @media (max-height: 500px) {
-  //     font-size: 12px;
-  //     .col {
-  //       line-height: 20px;
-  //     }
-  //   }
-  // }
   .footer::before {
     display: none;
   }

@@ -18,34 +18,7 @@
 </ion-header>
 
 <ion-content no-bounce>
-  <!-- <ion-list *ngIf="showRecipient">
-    <ion-item-divider>
-      <span translate>Recipient</span>
-    </ion-item-divider>
-    <ion-item>
-      <ion-icon *ngIf="recipientType == 'wallet'" item-start>
-        <img *ngIf="network == 'testnet'" [ngStyle]="{'background-color': color}" src="assets/img/icon-wallet-testnet.svg" class="icon-wallet"
-        />
-        <img *ngIf="network != 'testnet'" [ngStyle]="{'background-color': color}" src="assets/img/icon-wallet.svg" class="icon-wallet"
-        />
-      </ion-icon>
-      <ion-icon *ngIf="recipientType == 'contact'" item-start>
-        <gravatar [name]="name" [height]="30" [width]="30" [email]="email"></gravatar>
-      </ion-icon>
-      <ion-icon *ngIf="!recipientType" item-start>
-        <img src="assets/img/contact-placeholder.svg" class="icon-contact">
-      </ion-icon>
-      <span>{{name || toAddress}}</span>
-    </ion-item>
-  </ion-list> -->
 
-  <!-- <div> -->
-  <!-- <div class="amount-pane"> -->
-
-  <!-- <div *ngIf="shiftMin && shiftMax" class="shapeshift-values">
-      <div>Min: {{shiftMin}}</div>
-      <div>Max: {{shiftMax}}</div>
-    </div> -->
   <div class="amount-wrapper">
 
     <div class="amount-header-margin">
@@ -57,17 +30,13 @@
           </div>
         </div>
         <div class="amount-header__label">Enter Amount</div>
-        <img src="assets/img/icon-next.svg">
-        <!-- <div class="next">
-        <img src="assets/img/icon-next.svg">
-      </div> -->
+        <img class="next-button" [ngClass]="{'show': expression}" src="assets/img/icon-next.svg" (click)="finish()">
       </div>
     </div>
 
     <div class="amount-content">
       <div class="expression-container">
         <span class="expression">{{expression || '0.00'}}</span>
-        <!-- <span class="unit-button" (click)="changeUnit()">{{unit}}</span> -->
       </div>
       <div class="amount" [hidden]="!globalResult">{{globalResult}} {{unit}}</div>
       <div class="result" *ngIf="alternativeAmount">&asymp; {{alternativeAmount || '0.00'}} {{alternativeUnit}}</div>
@@ -77,47 +46,5 @@
     <pin-pad (keystroke)="pushDigit($event)" type="amount"></pin-pad>
 
   </div>
-  <!-- </div> -->
-  <!-- </div> -->
+
 </ion-content>
-
-<!-- <ion-footer>
-  <ion-toolbar>
-    <div class="keypad">
-      <div class="operator-row">
-        <div class="col operator-send" [hidden]="!allowSend" (click)="finish()">
-          <ion-icon name="arrow-round-forward"></ion-icon>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col digit" (click)="pushDigit('7')">7</div>
-        <div class="col digit" (click)="pushDigit('8')">8</div>
-        <div class="col digit" (click)="pushDigit('9')">9</div>
-        <div class="col operator" (click)="pushOperator('/')">&#247;</div>
-      </div>
-
-      <div class="row">
-        <div class="col digit" (click)="pushDigit('4')">4</div>
-        <div class="col digit" (click)="pushDigit('5')">5</div>
-        <div class="col digit" (click)="pushDigit('6')">6</div>
-        <div class="col operator" (click)="pushOperator('x')">&#215;</div>
-      </div>
-
-      <div class="row">
-        <div class="col digit" (click)="pushDigit('1')">1</div>
-        <div class="col digit" (click)="pushDigit('2')">2</div>
-        <div class="col digit" (click)="pushDigit('3')">3</div>
-        <div class="col operator" (click)="pushOperator('+')">&#43;</div>
-      </div>
-
-      <div class="row">
-        <div class="col digit" (click)="pushDigit('.')">.</div>
-        <div class="col digit" (click)="pushDigit('0')">0</div>
-        <div class="col digit" (click)="removeDigit()">
-          <ion-icon name="backspace"></ion-icon>
-        </div>
-        <div class="col operator" (click)="pushOperator('-')">&#45;</div>
-      </div>
-    </div>
-  </ion-toolbar>
-</ion-footer> -->
