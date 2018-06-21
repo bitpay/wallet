@@ -2,114 +2,174 @@ page-amount {
   ion-content.content {
     background: white;
   }
-  .amount-pane {
-    .shapeshift-values {
-      padding: 1.7rem;
-    }
-    .amount-content {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      width: 100%;
-      padding: 15% 16px 0 16px;
-      @media (max-height: 640px) {
-        padding-top: 10%;
-      }
-      @media (max-height: 500px) {
-        padding-top: 5%;
-      }
-      .expression-container {
-        display: flex;
-        align-items: center;
-        .expression {
-          font-size: 40px;
-          @media (max-height: 640px) {
-            font-size: 35px;
-          }
-          @media (max-height: 500px) {
-            font-size: 25px;
-          }
-        }
-        .unit-button {
-          cursor: pointer;
-          color: color($colors, grey);
-          border: 1px solid color($colors, grey);
-          padding: 0 5px;
-          margin: 0 0 0 1.5rem;
-          font-size: 19px;
-          @media (max-height: 500px) {
-            font-size: 16px;
-          }
-        }
-      }
-      .amount {
-        color: #a5a4a4;
-        margin-left: 5px;
-        margin-top: 5px;
-      }
-      .result {
-        color: color($colors, grey);
-        margin-left: 5px;
-        margin-top: 5px;
+  // .amount-pane {
+  //   .shapeshift-values {
+  //     padding: 1.7rem;
+  //   }
+
+  pin-pad {
+    .row {
+      ion-col.col {
+        min-height: 60px;
       }
     }
   }
 
-  .keypad {
-    color: color($colors, dark);
-    text-align: center;
-    font-size: 24px;
-    font-weight: normal;
-    // position: absolute;
-    // bottom: 0;
+  .amount-wrapper {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .amount-header-margin {
+    margin: 2rem;
+    margin-bottom: 0;
+  }
+
+  .amount-header {
+    display: flex;
     width: 100%;
-    .row {
-      padding: 0 !important;
-      margin: 0 !important;
-    }
-    .col {
-      line-height: 40px;
-    }
-    .operator {
-      cursor: pointer;
-      background: color($colors, light);
-      &:active {
-        color: white;
-        background-color: color($colors, dark);
+    position: relative;
+    align-items: center;
+    // padding-top: 2rem;
+    // padding: 2rem;
+    // padding-bottom: 0;
+
+    .switcher {
+      flex: 1;
+      display: inline-flex;
+      align-items: center;
+      background: rgba(0, 0, 0, 0.06);
+      padding: 0.75rem 1rem;
+      border-radius: 3px;
+
+      &__icon {
+        margin-right: 10px;
+      }
+
+      &__label {
+        color: #060606;
+        font-size: 18px;
       }
     }
-    .operator-row {
-      width: 25%;
-      margin-left: 75%;
-      .operator-send {
-        color: color($colors, light);
-        opacity: 0.9;
-        background-color: color($colors, primary);
-        font-size: 16px;
+
+    &__label {
+      flex-grow: 1;
+      text-align: center;
+      position: absolute;
+      width: 100%;
+      font-size: 16px;
+    }
+  }
+
+  .amount-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    flex-grow: 1;
+    // padding-top: 10px;
+    // padding: 15% 16px 0 16px;
+    // @media (max-height: 640px) {
+    //   padding-top: 10%;
+    // }
+    // @media (max-height: 500px) {
+    //   padding-top: 5%;
+    // }
+    .expression-container {
+      display: flex;
+      align-items: center;
+      .expression {
+        font-size: 50px;
+        font-weight: 500;
+        // @media (max-height: 640px) {
+        //   font-size: 35px;
+        // }
+        // @media (max-height: 500px) {
+        //   font-size: 25px;
+        // }
+      }
+      .unit-button {
         cursor: pointer;
-        padding: 0.4rem;
-        &:active {
-          color: color($colors, primary);
-          background-color: #fff;
-          border: 1px solid color($colors, primary);
-          border-radius: 2px;
+        color: color($colors, grey);
+        border: 1px solid color($colors, grey);
+        padding: 0 5px;
+        margin: 0 0 0 1.5rem;
+        font-size: 19px;
+        @media (max-height: 500px) {
+          font-size: 16px;
         }
       }
     }
-    .digit {
-      cursor: pointer;
-      border: 1px solid color($colors, light);
-      &:active {
-        background: color($colors, light);
-      }
+    .amount {
+      color: #a5a4a4;
+      margin-left: 5px;
+      margin-top: 5px;
     }
-    @media (max-height: 500px) {
-      font-size: 12px;
-      .col {
-        line-height: 20px;
-      }
+    .result {
+      color: color($colors, grey);
+      // margin-left: 5px;
+      margin-top: 20px;
     }
   }
+  // }
+
+  // .keypad {
+  //   color: color($colors, dark);
+  //   text-align: center;
+  //   font-size: 24px;
+  //   font-weight: normal;
+  //   // position: absolute;
+  //   // bottom: 0;
+  //   width: 100%;
+  //   .row {
+  //     padding: 0 !important;
+  //     margin: 0 !important;
+  //   }
+  //   .col {
+  //     line-height: 40px;
+  //   }
+  //   .operator {
+  //     cursor: pointer;
+  //     background: color($colors, light);
+  //     &:active {
+  //       color: white;
+  //       background-color: color($colors, dark);
+  //     }
+  //   }
+  //   .operator-row {
+  //     width: 25%;
+  //     margin-left: 75%;
+  //     .operator-send {
+  //       color: color($colors, light);
+  //       opacity: 0.9;
+  //       background-color: color($colors, primary);
+  //       font-size: 16px;
+  //       cursor: pointer;
+  //       padding: 0.4rem;
+  //       &:active {
+  //         color: color($colors, primary);
+  //         background-color: #fff;
+  //         border: 1px solid color($colors, primary);
+  //         border-radius: 2px;
+  //       }
+  //     }
+  //   }
+  //   .digit {
+  //     cursor: pointer;
+  //     border: 1px solid color($colors, light);
+  //     &:active {
+  //       background: color($colors, light);
+  //     }
+  //   }
+  //   @media (max-height: 500px) {
+  //     font-size: 12px;
+  //     .col {
+  //       line-height: 20px;
+  //     }
+  //   }
+  // }
   .footer::before {
     display: none;
   }
