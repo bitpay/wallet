@@ -51,9 +51,9 @@
     <div class="amount-header-margin">
       <div class="amount-header">
         <div style="flex: 1">
-          <div class="switcher">
+          <div class="switcher" (click)="changeUnit()">
             <img class="switcher__icon" src="assets/img/icon-swap.svg">
-            <div class="switcher__label">BTC</div>
+            <div class="switcher__label">{{unit}}</div>
           </div>
         </div>
         <div class="amount-header__label">Enter Amount</div>

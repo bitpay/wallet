@@ -31,9 +31,6 @@ page-amount {
     width: 100%;
     position: relative;
     align-items: center;
-    // padding-top: 2rem;
-    // padding: 2rem;
-    // padding-bottom: 0;
 
     .switcher {
       flex: 1;
@@ -42,6 +39,8 @@ page-amount {
       background: rgba(0, 0, 0, 0.06);
       padding: 0.75rem 1rem;
       border-radius: 3px;
+      cursor: pointer;
+      width: 81px;
 
       &__icon {
         margin-right: 10px;
@@ -59,6 +58,7 @@ page-amount {
       position: absolute;
       width: 100%;
       font-size: 16px;
+      pointer-events: none;
     }
   }
 
