@@ -14,7 +14,8 @@ export interface PinButton {
       <ion-col *ngFor="let button of row" (click)="onKeystroke(button.value)" tappable>
         <div>
           <span *ngIf="button.value !== 'delete'">{{button.value}}</span>
-          <img *ngIf="button.value === 'delete'" src="assets/img/tail-left.svg">
+          <img *ngIf="button.value === 'delete' && type ==='pin'" src="assets/img/tail-left.svg">
+          <img class="amount-delete" *ngIf="button.value === 'delete' && type ==='amount'" src="assets/img/icon-delete.svg">
         </div>
         <div class="letters" *ngIf="type === 'pin'">{{button.letters}}</div>
       </ion-col>
@@ -22,7 +23,7 @@ export interface PinButton {
   `
 })
 export class PinPad {
-  @Input() type: string;
+  @Input() type: 'pin' | 'amount';
 
   keystrokeSubject: Subject<string> = new Subject<string>();
   @Output()
