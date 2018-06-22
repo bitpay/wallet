@@ -5,9 +5,9 @@ import * as _ from 'lodash';
 import { AmazonProvider } from '../../../../providers/amazon/amazon';
 import { ConfigProvider } from '../../../../providers/config/config';
 import { ExternalLinkProvider } from '../../../../providers/external-link/external-link';
+import { HomeIntegrationsProvider } from '../../../../providers/home-integrations/home-integrations';
 import { Logger } from '../../../../providers/logger/logger';
 import { OnGoingProcessProvider } from '../../../../providers/on-going-process/on-going-process';
-import { HomeIntegrationsProvider } from '../../../../providers/home-integrations/home-integrations';
 
 @Component({
   selector: 'page-amazon-settings',
