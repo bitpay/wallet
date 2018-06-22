@@ -53,7 +53,8 @@ export class ProfileProvider {
   private updateWalletSettings(wallet): void {
     let config = this.configProvider.get();
     let defaults = this.configProvider.getDefaults();
-    let defaultColor = wallet.coin == 'btc' ? '#f38f12' : '#1abb9b';
+    let defaultColor =
+      this.appProvider.info.nameCase == 'Copay' ? '#1abb9b' : '#647ce8';
     // this.config.whenAvailable( (config) => { TODO
     wallet.usingCustomBWS =
       config.bwsFor &&
