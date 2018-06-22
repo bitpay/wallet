@@ -36,7 +36,9 @@
 
     <div class="amount-content">
       <div class="expression-container">
-        <span class="expression">{{expression || '0.00'}}</span>
+        <span class="expression">
+          <span *ngIf="unit === 'USD'">$</span>{{expression || '0.00'}}
+        </span>
       </div>
       <div class="amount" [hidden]="!globalResult">{{globalResult}} {{unit}}</div>
       <div class="result" *ngIf="alternativeAmount">&asymp; {{alternativeAmount || '0.00'}} {{alternativeUnit}}</div>
