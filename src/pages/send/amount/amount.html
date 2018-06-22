@@ -41,8 +41,11 @@
         </span>
       </div>
       <div class="amount" [hidden]="!globalResult">{{globalResult}} {{unit}}</div>
-      <div class="result" *ngIf="alternativeAmount">&asymp; {{alternativeAmount || '0.00'}} {{alternativeUnit}}</div>
-      <div class="result" *ngIf="!alternativeAmount">&nbsp;</div>
+      <div class="result">&asymp;
+        <span *ngIf="fiatCode === alternativeUnit">{{alternativeAmount || '0.00'}}</span>
+        <span *ngIf="fiatCode !== alternativeUnit">{{alternativeAmount || '0.000000'}}</span>
+        {{alternativeUnit}}
+      </div>
     </div>
 
     <pin-pad (keystroke)="pushDigit($event)" type="amount"></pin-pad>
