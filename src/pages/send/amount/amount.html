@@ -24,13 +24,13 @@
     <div class="amount-header-margin">
       <div class="amount-header">
         <div style="flex: 1">
-          <div class="switcher" (click)="changeUnit()">
+          <div class="switcher" (click)="changeUnit()" tappable>
             <img class="switcher__icon" src="assets/img/icon-swap.svg">
             <div class="switcher__label">{{unit}}</div>
           </div>
         </div>
         <div class="amount-header__label">Enter Amount</div>
-        <img class="next-button" [ngClass]="{'show': expression}" src="assets/img/icon-next.svg" (click)="finish()">
+        <img class="next-button" [ngClass]="{'show': expression}" src="assets/img/icon-next.svg" (click)="finish()" tappable>
       </div>
     </div>
 

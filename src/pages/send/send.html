@@ -3,7 +3,10 @@
     <ion-title>{{'Sending' | translate}}</ion-title>
   </ion-navbar>
   <ion-toolbar [navbar-bg]="wallet.color">
-    <div class="wallet-details-header__balance">{{fiatAmount || amount}} {{fiatCode || coin}}</div>
+    <div class="wallet-details-header__balance">
+      <span *ngIf="fiatCode === 'USD'">$</span>{{fiatAmount || amount}}
+      <span *ngIf="fiatCode !== 'USD'">{{fiatCode || coin}}</span>
+    </div>
   </ion-toolbar>
 </ion-header>
 
