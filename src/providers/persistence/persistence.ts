@@ -527,4 +527,16 @@ export class PersistenceProvider {
   removeEmailLawCompliance() {
     return this.storage.remove('emailLawCompliance');
   }
+
+  setShowAmazonJapanAnnouncement(value: string) {
+    return this.storage.set('showAmazonJapanAnnouncement', value);
+  }
+
+  getShowAmazonJapanAnnouncement() {
+    return this.storage.get('showAmazonJapanAnnouncement');
+  }
+
+  removeShowAmazonJapanAnnouncement() {
+    return this.storage.remove('showAmazonJapanAnnouncement');
+  }
 }

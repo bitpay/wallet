@@ -37,20 +37,24 @@ export class AmazonProvider {
       this.credentials.NETWORK === 'testnet'
         ? 'https://test.bitpay.com'
         : 'https://bitpay.com';
-    
-    this.getSupportedCards()
-      .then( currency => {
-        this.logger.info('Set Amazon Gift Card to: ' + currency);
-        this.setCountryParameters(currency);
-      })
-      .catch( () => {
-        this.logger.warn('Set Amazon Gift Card to: USD (by default)');
-        this.setCountryParameters();
-      });
   }
 
   public getNetwork(): string {
     return this.credentials.NETWORK;
+  }
+
+  public async setCurrencyByLocation() {
+    return new Promise(resolve => {
+      this.getSupportedCards()
+      .then( currency => {
+        this.setCountryParameters(currency);
+        resolve();
+      })
+      .catch( () => {
+        this.setCountryParameters();
+        resolve();
+      });
+    });
   }
 
   private setCountryParameters(currency?: string): void {
@@ -75,6 +79,7 @@ export class AmazonProvider {
         this.onlyIntegers = false;
         break;
     }
+    this.logger.info('Set Amazon Gift Card to: ' + this.currency);
   }
 
   public savePendingGiftCard(gc, opts, cb) {

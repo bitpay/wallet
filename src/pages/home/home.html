@@ -29,6 +29,24 @@
       </ion-item>
     </ion-card>
 
+    <ion-card *ngIf="showAnnouncement">
+      <ion-card-header class="wallet-ready">
+        <ion-row>
+          <button ion-button clear icon-only item-end color="grey" (click)="hideAnnouncement()">
+            <ion-icon name="close"></ion-icon>
+          </button>
+        </ion-row>
+      </ion-card-header>
+      <ion-card-content class="check">
+        <div class="title">Great news!</div>
+        <img class="announcement-logo" src="assets/img/amazon/japan/GCs-logo-japan-cllb.jpg" alt="Amazon.co.jp Gift Card">
+        <div class="subtitle">You can now use Bitcoin and Bitcoin Cash to purchase Amazon.co.jp Gift Cards for Amazon's Japanese store.</div>
+        <div margin-top (click)="openAnnouncement()">
+          <span ion-text color="primary" translate>Get started &gt;</span>
+        </div>
+      </ion-card-content>
+    </ion-card>
+
     <ion-card class="new-release" *ngIf="newRelease">
       <div class="new-release-icon">
         <img src="assets/img/icon-update.svg" />

@@ -10,6 +10,7 @@ import { AmazonCardDetailsPage } from './amazon-card-details/amazon-card-details
 import { AmazonProvider } from '../../../providers/amazon/amazon';
 import { ExternalLinkProvider } from '../../../providers/external-link/external-link';
 import { Logger } from '../../../providers/logger/logger';
+import { OnGoingProcessProvider } from '../../../providers/on-going-process/on-going-process';
 import { PopupProvider } from '../../../providers/popup/popup';
 import { TimeProvider } from '../../../providers/time/time';
 import { GiftCardNewData } from '../gift-cards';
@@ -39,12 +40,9 @@ export class AmazonPage {
     private navCtrl: NavController,
     private navParams: NavParams,
     private popupProvider: PopupProvider,
+    private onGoingProcessProvider: OnGoingProcessProvider,
     private timeProvider: TimeProvider
-  ) {
-    this.currency = this.amazonProvider.currency;
-    this.country = this.amazonProvider.country;
-    this.pageTitle = this.amazonProvider.pageTitle;
-    this.onlyIntegers = this.amazonProvider.onlyIntegers;
+  ) { 
   }
 
   ionViewDidLoad() {
@@ -81,7 +79,16 @@ export class AmazonPage {
     }
   }
 
-  private initAmazon(): Promise<any> {
+  private async initAmazon(): Promise<any> {
+    if (!this.amazonProvider.currency) {
+      this.onGoingProcessProvider.set('');
+      await this.amazonProvider.setCurrencyByLocation();
+      this.onGoingProcessProvider.clear();
+    }
+    this.currency = this.amazonProvider.currency;
+    this.country = this.amazonProvider.country;
+    this.pageTitle = this.amazonProvider.pageTitle;
+    this.onlyIntegers = this.amazonProvider.onlyIntegers;
     return new Promise(resolve => {
       this.amazonProvider.getPendingGiftCards((err, gcds) => {
         if (err) this.logger.error(err);
