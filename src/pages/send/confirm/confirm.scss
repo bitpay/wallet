@@ -55,35 +55,26 @@ page-confirm {
       color: color($colors, danger);
     }
   }
-
   .item-gravatar {
     img {
       margin-right: 1rem;
     }
   }
-
   .paypro {
     width: 100%;
     cursor: pointer;
   }
-
-  .item-memo {
-    margin-top: 10px;
-  }
-
   .no-wallet-message {
     ion-item {
       text-align: center;
       text-transform: uppercase;
     }
   }
-
   @mixin row-flex {
     display: flex;
     align-items: center;
     margin-top: 1rem;
   }
-
   .container-to,
   .container-from {
     .wallet,
@@ -105,8 +96,16 @@ page-confirm {
       }
     }
   }
-
   .last-item {
     margin-left: auto !important;
+  }
+  .slide-confirm-down {
+    transform: translate(0px, 90px);
+  }
+  .slide-confirm-slow {
+    transition: transform 0.7s;
+  }
+  .slide-confirm-fast {
+    transition: transform 0.3s;
   }
 }

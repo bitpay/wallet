@@ -45,7 +45,8 @@
       <img src="assets/img/icon-warning.png" width="20">
       <ion-note>
         <span translate>
-          This transaction amount is too small compared to current Bitcoin network fees. Spending these funds will need a Bitcoin network fee cost comparable to the funds itself.
+          This transaction amount is too small compared to current Bitcoin network fees. Spending these funds will need a Bitcoin network
+          fee cost comparable to the funds itself.
         </span>
       </ion-note>
       <a (click)="readMore()" translate>Learn more</a>
@@ -83,8 +84,10 @@
       <span *ngIf="btx.action === 'sent'" translate>From</span>
       <span *ngIf="btx.action !== 'sent'" translate>To</span>
       <div class="wallet" *ngIf="wallet">
-        <img *ngIf="wallet.network == 'testnet'" [ngStyle]="{'background-color': wallet.color}" src="assets/img/icon-wallet-testnet.svg" class="icon-wallet" />
-        <img *ngIf="wallet.network != 'testnet'" [ngStyle]="{'background-color': wallet.color}" src="assets/img/icon-wallet.svg" class="icon-wallet" />
+        <img *ngIf="wallet.network == 'testnet'" [ngStyle]="{'background-color': wallet.color}" src="assets/img/icon-wallet-testnet.svg"
+          class="icon-wallet" />
+        <img *ngIf="wallet.network != 'testnet'" [ngStyle]="{'background-color': wallet.color}" src="assets/img/icon-wallet.svg"
+          class="icon-wallet" />
         <div>{{wallet.name}}</div>
       </div>
     </ion-item>
@@ -118,13 +121,9 @@
       </ion-note>
     </ion-item>
 
-    <button ion-item (click)="showCommentPopup()">
-      <span translate>Memo</span>
-      <div class="item-memo" *ngIf="(btx.note && btx.note.body) || btx.message" text-wrap>
-        <ion-note *ngIf="btx.note && btx.note.body">{{btx.note.body}}</ion-note>
-        <ion-note *ngIf="(!btx.note || !btx.note.body) && btx.message">{{btx.message}}</ion-note>
-      </div>
-    </button>
+    <editable-item (valChange)="saveMemoInfo($event)" [value]="txMemo" [itemPlaceholder]="'Enter a transaction memo'">
+      <span item-label translate>Memo</span>
+    </editable-item>
 
     <ion-item class="container-tx-id">
       <span translate>Transaction ID</span>
@@ -142,7 +141,8 @@
 
     <div *ngIf="actionList && actionList[0]">
       <ion-item-divider>{{'Timeline' | translate}}</ion-item-divider>
-      <div class="timeline-item" [ngClass]="{'action-created' : a.type == 'created' || a.type == 'accept', 'action-rejected' : a.type == 'reject'}" *ngFor="let a of actionList; let i = index">
+      <div class="timeline-item" [ngClass]="{'action-created' : a.type == 'created' || a.type == 'accept', 'action-rejected' : a.type == 'reject'}"
+        *ngFor="let a of actionList; let i = index">
         <div class="timeline-content">
           <div class="timeline-content-icon">
             <div class="rejected" *ngIf="a.type === 'reject'">!</div>
