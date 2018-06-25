@@ -121,7 +121,7 @@
       </ion-note>
     </ion-item>
 
-    <editable-item (valChange)="saveMemoInfo($event)" [value]="txMemo" [itemPlaceholder]="'Enter a transaction memo'">
+    <editable-item (valChange)="saveMemoInfo($event)" [value]="txMemo" [itemPlaceholder]="'Enter a transaction memo' | translate">
       <span item-label translate>Memo</span>
     </editable-item>
 
