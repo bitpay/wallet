@@ -127,7 +127,7 @@
       </div>
     </button>
 
-    <editable-item (focus)="tx.description = $event" (valChange)="tx.description = $event" [value]="tx.description" [itemPlaceholder]="'Enter a transaction memo'">
+    <editable-item (focus)="memoFocused = $event" (valChange)="tx.description = $event" [value]="tx.description" [itemPlaceholder]="'Enter a transaction memo'">
       <span item-label translate>Memo</span>
     </editable-item>
 
