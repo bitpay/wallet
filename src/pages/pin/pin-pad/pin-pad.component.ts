@@ -12,10 +12,19 @@ export interface PinButton {
   template: `
     <ion-row *ngFor="let row of buttonRows">
       <ion-col *ngFor="let button of row" (click)="onKeystroke(button.value)" tappable>
-        <div>
-          <span *ngIf="button.value !== 'delete'">{{button.value}}</span>
-          <img *ngIf="button.value === 'delete' && type ==='pin'" src="assets/img/tail-left.svg">
-          <img class="amount-delete" *ngIf="button.value === 'delete' && type ==='amount'" src="assets/img/icon-delete.svg">
+        <div [ngSwitch]="button.value">
+          <span *ngSwitchCase="'delete'">
+            <img *ngIf="type ==='pin'" src="assets/img/tail-left.svg"> 
+            <img class="amount-delete" *ngIf="type ==='amount'" src="assets/img/icon-delete.svg">
+          </span>
+          <span *ngSwitchCase="'.'">
+            <span *ngIf="type === 'amount'">.</span>
+          </span>
+          <span *ngSwitchCase="'0'" class="key-wrapper" [ngClass]="{'swap-key': swapKey || type === 'pin'}">
+            <span class="send-max">Send Max</span>
+            <span>0</span>
+          </span>
+          <span *ngSwitchDefault>{{button.value}}</span>
         </div>
         <div class="letters" *ngIf="type === 'pin'">{{button.letters}}</div>
       </ion-col>
@@ -23,9 +32,12 @@ export interface PinButton {
   `
 })
 export class PinPad {
+  @Input() swapKey: boolean = false;
+
   @Input() type: 'pin' | 'amount';
 
   keystrokeSubject: Subject<string> = new Subject<string>();
+
   @Output()
   keystroke: Observable<string> = this.keystrokeSubject.asObservable();
   public buttonRows: PinButton[][] = [

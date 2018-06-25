@@ -325,6 +325,9 @@ export class AmountPage extends WalletTabsChild {
     if (digit === 'delete') {
       return this.removeDigit();
     }
+    if (!this.expression && digit === '0') {
+      return this.sendMax();
+    }
     if (
       this.expression &&
       this.expression.length >= this.LENGTH_EXPRESSION_LIMIT
