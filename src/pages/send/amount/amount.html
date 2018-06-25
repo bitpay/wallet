@@ -6,11 +6,6 @@
       </button>
     </ion-buttons>
     <ion-title>{{wallet && wallet.name || ('Amount' | translate)}}</ion-title>
-    <ion-buttons end *ngIf="showSendMax">
-      <button (click)="showSendMaxMenu()" ion-button icon-only>
-        <ion-icon name="more"></ion-icon>
-      </button>
-    </ion-buttons>
   </ion-navbar>
   <ion-toolbar *ngIf="wallet" [navbar-bg]="wallet.color">
     <div class="wallet-details-header__balance">{{wallet.status.totalBalanceStr}}</div>

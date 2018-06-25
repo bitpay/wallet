@@ -21,7 +21,7 @@ export interface PinButton {
             <span *ngIf="type === 'amount'">.</span>
           </span>
           <span *ngSwitchCase="'0'" class="key-wrapper" [ngClass]="{'swap-key': swapKey || type === 'pin'}">
-            <span class="send-max">Send Max</span>
+            <span class="send-max" translate>Send Max</span>
             <span>0</span>
           </span>
           <span *ngSwitchDefault>{{button.value}}</span>

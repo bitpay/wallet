@@ -4,8 +4,7 @@ import {
   HostListener,
   NgZone
 } from '@angular/core';
-import { TranslateService } from '@ngx-translate/core';
-import { ActionSheetController, NavController, NavParams } from 'ionic-angular';
+import { NavController, NavParams } from 'ionic-angular';
 import * as _ from 'lodash';
 
 // Providers
@@ -45,7 +44,6 @@ export class AmountPage extends WalletTabsChild {
   private reOp: RegExp;
   private nextView;
   private fixedUnit: boolean;
-  private itemSelectorLabel: string;
   private fiatCode: string;
   private altUnitIndex: number;
   private unitIndex: number;
@@ -78,7 +76,6 @@ export class AmountPage extends WalletTabsChild {
   private _id: string;
 
   constructor(
-    private actionSheetCtrl: ActionSheetController,
     private configProvider: ConfigProvider,
     private filterProvider: FilterProvider,
     private logger: Logger,
@@ -89,7 +86,6 @@ export class AmountPage extends WalletTabsChild {
     profileProvider: ProfileProvider,
     private rateProvider: RateProvider,
     private txFormatProvider: TxFormatProvider,
-    private translate: TranslateService,
     private changeDetectorRef: ChangeDetectorRef,
     walletTabsProvider: WalletTabsProvider
   ) {
@@ -121,7 +117,6 @@ export class AmountPage extends WalletTabsChild {
     this.reNr = /^[1234567890\.]$/;
     this.reOp = /^[\*\+\-\/]$/;
     this.nextView = this.getNextView();
-    this.itemSelectorLabel = this.translate.instant('Send Max amount');
 
     this.unitToSatoshi = this.config.wallet.settings.unitToSatoshi;
     this.satToUnit = 1 / this.unitToSatoshi;
@@ -295,25 +290,6 @@ export class AmountPage extends WalletTabsChild {
     let value = this.nodeWebkitProvider.readFromClipboard();
 
     if (value && this.evaluate(value) > 0) this.paste(this.evaluate(value));
-  }
-
-  public showSendMaxMenu(): void {
-    let buttons = [];
-
-    let sendMaxButton = {
-      text: this.itemSelectorLabel,
-      icon: 'speedometer',
-      handler: () => {
-        this.sendMax();
-      }
-    };
-    buttons.push(sendMaxButton);
-
-    const actionSheet = this.actionSheetCtrl.create({
-      buttons
-    });
-
-    actionSheet.present();
   }
 
   public sendMax(): void {
