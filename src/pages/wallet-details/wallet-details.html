@@ -154,7 +154,8 @@
                 </div>
                 <div *ngIf="tx.confirmations > 0">
                   <span *ngIf="tx.customData && tx.customData.service">
-                    <img class="icon-services" src="assets/img/shapeshift/icon-shapeshift.svg" *ngIf="tx.customData.service == 'shapeshift'" width="40">
+                    <img class="icon-services" src="assets/img/shapeshift/icon-shapeshift.svg" *ngIf="tx.customData.service == 'shapeshift'"
+                      width="40">
                     <img class="icon-services" src="assets/img/amazon/icon-amazon.svg" *ngIf="tx.customData.service == 'amazon'" width="40">
                     <img class="icon-services" src="assets/img/mercado-libre/icon-ml.svg" *ngIf="tx.customData.service == 'mercadolibre'" width="40">
                     <img class="icon-services" src="assets/img/bitpay-card/icon-bitpay.svg" *ngIf="tx.customData.service == 'debitcard'" width="40">
@@ -177,7 +178,7 @@
               </div>
 
               <div class="action" *ngIf="tx.confirmations > 0 && tx.action == 'received'">
-                <span *ngIf="(!tx.note || (tx.note && tx.note.body == '')) && (!addressbook || !tx.outputs[0] || !addressbook[tx.outputs[0].address])">{{'Received' | translate}}</span>
+                <span *ngIf="(!tx.note || (tx.note && !tx.note.body)) && (!addressbook || !tx.outputs[0] || !addressbook[tx.outputs[0].address])">{{'Received' | translate}}</span>
                 <span *ngIf="tx.note && tx.note.body != ''">{{tx.note.body}}</span>
                 <span *ngIf="addressbook && tx.outputs[0] && addressbook[tx.outputs[0].address]">
                   {{addressbook[tx.outputs[0].address].name || addressbook[tx.outputs[0].address]}}
@@ -185,17 +186,22 @@
               </div>
 
               <div class="action" *ngIf="tx.confirmations > 0 && tx.action == 'sent'">
-                <span *ngIf="!tx.message && (!tx.note || (tx.note && tx.note.body == '')) && (!addressbook || !tx.outputs[0] || !addressbook[tx.outputs[0].address]) && (!tx.customData || !tx.customData.toWalletName)">{{'Sent' | translate}}</span>
-                <span *ngIf="!tx.message && (!tx.note || (tx.note && tx.note.body == '')) && (!addressbook || !tx.outputs[0] || !addressbook[tx.outputs[0].address]) && (tx.customData && tx.customData.toWalletName)">{{tx.customData.toWalletName}}</span>
-                <span *ngIf="tx.message">{{tx.message}}</span>
-                <span *ngIf="!tx.message && tx.note && tx.note.body != ''">{{tx.note.body}}</span>
+                <span *ngIf="(tx.message && (tx.note && !tx.note.body)) && (!addressbook || !tx.outputs[0] || !addressbook[tx.outputs[0].address]) && (!tx.customData || !tx.customData.toWalletName)"
+                  translate>Sent</span>
+                <span *ngIf="(tx.message && (tx.note && !tx.note.body)) && (!addressbook || !tx.outputs[0] || !addressbook[tx.outputs[0].address]) && (tx.customData && tx.customData.toWalletName)">{{tx.customData.toWalletName}}</span>
+                <span *ngIf="!tx.message && (!tx.note || (tx.note && !tx.note.body)) && (!addressbook || !tx.outputs[0] || !addressbook[tx.outputs[0].address]) && (!tx.customData || !tx.customData.toWalletName)">{{'Sent' | translate}}</span>
+                <span *ngIf="!tx.message && (!tx.note || (tx.note && !tx.note.body)) && (!addressbook || !tx.outputs[0] || !addressbook[tx.outputs[0].address]) && (tx.customData && tx.customData.toWalletName)">{{tx.customData.toWalletName}}</span>
+                <span *ngIf="!tx.note && tx.message">{{tx.message}}</span>
+                <span *ngIf="tx.note && tx.note.body != ''">{{tx.note.body}}</span>
                 <span *ngIf="!tx.message && addressbook && tx.outputs[0] && addressbook[tx.outputs[0].address]">
                   {{addressbook[tx.outputs[0].address].name || addressbook[tx.outputs[0].address]}}
                 </span>
               </div>
 
               <div class="action" *ngIf="tx.confirmations > 0 && tx.action == 'moved'">
-                <span *ngIf="(!tx.note || (tx.note && tx.note.body == ''))" translate>Moved</span>
+                <span *ngIf="(tx.message && (tx.note && !tx.note.body))" translate>Moved</span>
+                <span *ngIf="((!tx.note || (tx.note && !tx.note.body)) && !tx.message)" translate>Moved</span>
+                <span *ngIf="!tx.note && tx.message">{{tx.message}}</span>
                 <span *ngIf="tx.note && tx.note.body != ''">{{tx.note.body}}</span>
               </div>
 

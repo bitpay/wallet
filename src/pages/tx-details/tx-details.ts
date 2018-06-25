@@ -34,6 +34,7 @@ export class TxDetailsPage {
   public copayerId: string;
   public txsUnsubscribedForNotifications: boolean;
   public contactName: string;
+  public txMemo: string;
 
   constructor(
     private addressBookProvider: AddressBookProvider,
@@ -50,7 +51,9 @@ export class TxDetailsPage {
     private txFormatProvider: TxFormatProvider,
     private walletProvider: WalletProvider,
     private translate: TranslateService
-  ) {
+  ) {}
+
+  ionViewDidLoad() {
     this.config = this.configProvider.get();
 
     this.txId = this.navParams.data.txid;
@@ -186,6 +189,13 @@ export class TxDetailsPage {
             2
           ) + '%';
 
+        if (!this.btx.note) {
+          this.txMemo = this.btx.message;
+        }
+        if (this.btx.note && this.btx.note.body) {
+          this.txMemo = this.btx.note.body;
+        }
+
         if (this.btx.action != 'invalid') {
           if (this.btx.action == 'sent')
             this.title = this.translate.instant('Sent Funds');
@@ -220,38 +230,24 @@ export class TxDetailsPage {
       });
   }
 
-  public showCommentPopup(): void {
-    let opts: { defaultText?: any } = {};
-    if (this.btx.message) {
-      opts.defaultText = this.btx.message;
-    }
-    if (this.btx.note && this.btx.note.body)
-      opts.defaultText = this.btx.note.body;
+  public async saveMemoInfo(memo: string): Promise<void> {
+    this.btx.note = {
+      body: memo
+    };
+    this.logger.debug('Saving memo');
 
-    this.popupProvider
-      .ionicPrompt(this.wallet.name, this.translate.instant('Memo'), opts)
-      .then((text: string) => {
-        if (text == null) return;
+    let args = {
+      txid: this.btx.txid,
+      body: memo
+    };
 
-        this.btx.note = {
-          body: text
-        };
-        this.logger.debug('Saving memo');
-
-        let args = {
-          txid: this.btx.txid,
-          body: text
-        };
-
-        this.walletProvider
-          .editTxNote(this.wallet, args)
-          .then(() => {
-            this.logger.info('Tx Note edited');
-          })
-          .catch(err => {
-            this.logger.debug('Could not save tx comment ' + err);
-          });
+    await this.walletProvider
+      .editTxNote(this.wallet, args)
+      .catch((err: any) => {
+        this.logger.debug('Could not save tx comment ' + err);
       });
+
+    this.logger.info('Tx Note edited');
   }
 
   public viewOnBlockchain(): void {

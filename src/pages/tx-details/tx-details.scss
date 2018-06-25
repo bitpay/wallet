@@ -2,7 +2,6 @@ page-tx-details {
   $item-border-color: #efefef;
   $item-lateral-padding: 20px;
   $item-label-color: #6c6c6e;
-
   .header-container {
     .sending-label {
       display: flex;
@@ -30,7 +29,6 @@ page-tx-details {
       }
     }
   }
-
   .item-fee {
     .fee-title {
       margin-bottom: 5px;
@@ -44,17 +42,11 @@ page-tx-details {
       color: color($colors, light-grey);
     }
   }
-
-  .item-memo {
-    margin-top: 10px;
-  }
-
   @mixin row-flex {
     display: flex;
     align-items: center;
     margin-top: 1rem;
   }
-
   .container-to,
   .container-from,
   .container-tx-id {
@@ -85,7 +77,6 @@ page-tx-details {
       }
     }
   }
-
   .low-fees {
     img {
       margin-right: 0.1rem;
@@ -105,16 +96,13 @@ page-tx-details {
       border-bottom: 1px solid $item-border-color;
     }
     padding: 17px $item-lateral-padding;
-
     > * {
       padding-right: 0;
     }
   }
-
   .timeline-content {
     display: flex;
     align-items: center;
-
     &-icon {
       display: flex;
       align-items: center;
@@ -127,7 +115,6 @@ page-tx-details {
       .rejected {
         z-index: 12;
       }
-
       .line::before {
         content: '';
         background: #e8e8e8;
@@ -139,7 +126,6 @@ page-tx-details {
         transform: translateX(-50%) translateY(-100%);
         top: 0;
       }
-
       > div {
         border: 3px solid color($colors, primary);
         border-radius: $icon-border-radius;
@@ -153,7 +139,6 @@ page-tx-details {
         vertical-align: middle;
         color: color($colors, primary);
         z-index: 10;
-
         &.rejected {
           background: #e15061;
           border-color: #e15061;
@@ -163,17 +148,14 @@ page-tx-details {
         }
       }
     }
-
     &-label {
       flex-grow: 1;
-
       > .action {
         font-size: 16px;
         @media (max-width: 330px) {
           font-size: 14px;
         }
       }
-
       > .name {
         color: #aaa;
         font-size: 14px;
