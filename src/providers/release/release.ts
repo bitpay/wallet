@@ -7,19 +7,28 @@ import { AppProvider } from '../../providers/app/app';
 export class ReleaseProvider {
   private LATEST_RELEASE_URL: string;
   private appVersion: string;
+  private URL: string;
 
   constructor(private http: HttpClient, private app: AppProvider) {
     this.LATEST_RELEASE_URL =
       'https://api.github.com/repos/bitpay/copay/releases/latest';
     this.appVersion = this.app.info.version;
+    this.URL =
+      this.app.servicesInfo && this.app.servicesInfo.latestVersionURL
+        ? this.app.servicesInfo.latestVersionURL
+        : null;
   }
 
   public getCurrentAppVersion() {
     return this.appVersion;
   }
 
-  public getLatestAppVersion() {
+  public getLatestDesktopVersion() {
     return this.http.get(this.LATEST_RELEASE_URL).pipe(map(x => x['tag_name']));
+  }
+
+  public getLatestMobileVersion() {
+    return this.http.get(this.URL + '?action=read');
   }
 
   private verifyTagFormat(tag: string) {
