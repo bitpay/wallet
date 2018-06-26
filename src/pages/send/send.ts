@@ -56,6 +56,7 @@ export class SendPage extends WalletTabsChild {
   public amount: string;
   public fiatAmount: number;
   public fiatCode: string;
+  public useSendMax: boolean;
 
   constructor(
     navCtrl: NavController,
@@ -86,6 +87,7 @@ export class SendPage extends WalletTabsChild {
     );
     this.fiatAmount = this.navParams.get('fiatAmount');
     this.fiatCode = this.navParams.get('fiatCode');
+    this.useSendMax = this.navParams.get('useSendMax');
     this.logger.info('ionViewDidLoad SendPage');
   }
 
@@ -258,7 +260,8 @@ export class SendPage extends WalletTabsChild {
           email: item.email,
           color: item.color,
           coin: item.coin,
-          network: item.network
+          network: item.network,
+          useSendMax: this.useSendMax
         });
       })
       .catch(err => {

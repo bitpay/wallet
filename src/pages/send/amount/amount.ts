@@ -294,7 +294,15 @@ export class AmountPage extends WalletTabsChild {
 
   public sendMax(): void {
     this.useSendMax = true;
-    this.finish();
+    const maxAmount = this.wallet.status.totalBalanceStr.replace(
+      /[^0-9.]/g,
+      ''
+    );
+    this.expression = this.availableUnits[this.unitIndex].isFiat
+      ? this.toFiat(maxAmount)
+      : maxAmount;
+    this.processAmount();
+    this.changeDetectorRef.detectChanges();
   }
 
   public pushDigit(digit: string): void {
