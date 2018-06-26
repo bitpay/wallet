@@ -142,20 +142,7 @@ export class ScanPage {
 
     if (!this.isCordova) {
       if (!this.isCameraSelected) {
-        this.scanner.camerasFound.subscribe((devices: MediaDeviceInfo[]) => {
-          this.hasCameras = true;
-          this.availableDevices = devices;
-          this.onDeviceSelectChange();
-        });
-
-        this.scanner.camerasNotFound.subscribe(() => {
-          this.logger.error(
-            'An error has occurred when trying to enumerate your video-stream-enabled devices.'
-          );
-        });
-        this.scanner.permissionResponse.subscribe((answer: boolean) => {
-          this.hasPermission = answer;
-        });
+        this.loadCamera();
       } else {
         this.scanner.startScan(this.selectedDevice);
       }
@@ -179,6 +166,23 @@ export class ScanPage {
         this._refreshScanView();
       });
     }
+  }
+
+  public loadCamera() {
+    this.scanner.camerasFound.subscribe((devices: MediaDeviceInfo[]) => {
+      this.hasCameras = true;
+      this.availableDevices = devices;
+      this.onDeviceSelectChange();
+    });
+
+    this.scanner.camerasNotFound.subscribe(() => {
+      this.logger.error(
+        'An error has occurred when trying to enumerate your video-stream-enabled devices.'
+      );
+    });
+    this.scanner.askForPermission().subscribe((answer: boolean) => {
+      this.hasPermission = answer;
+    });
   }
 
   private goToUrl(url: string): void {

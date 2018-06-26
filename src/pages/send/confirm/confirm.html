@@ -132,21 +132,18 @@
       </div>
     </button>
 
-    <button ion-item (click)="showDescriptionPopup(tx)">
-      <span *ngIf="!tx.description" translate>Add Memo</span>
-      <span *ngIf="tx.description" translate>Memo</span>
-      <div class="item-memo">
-        <ion-note>{{tx.description}}</ion-note>
-      </div>
-    </button>
+    <editable-item (focus)="memoFocused = $event" (valChange)="tx.description = $event" [value]="tx.description" [itemPlaceholder]="'Enter a transaction memo' | translate">
+      <span item-label translate>Memo</span>
+    </editable-item>
+
   </ion-list>
 
 
 </ion-content>
 
 <ion-footer>
-  <page-slide-to-accept #slideButton *ngIf="isCordova" [disabled]="!wallet || noWalletMessage || criticalError || !tx?.txp[wallet.id]"
-    [buttonText]="buttonText" (slideDone)="approve(tx, wallet)"></page-slide-to-accept>
+  <page-slide-to-accept #slideButton *ngIf="isCordova" [ngClass]="{'slide-confirm-fast': memoFocused, 'slide-confirm-slow': !memoFocused, 'slide-confirm-down': memoFocused}"
+    [disabled]="!wallet || noWalletMessage || criticalError || !tx?.txp[wallet.id]" [buttonText]="buttonText" (slideDone)="approve(tx, wallet)"></page-slide-to-accept>
   <ion-toolbar *ngIf="!isCordova">
     <button ion-button full class="button-footer" (click)="approve(tx, wallet)" [disabled]="!wallet || noWalletMessage || criticalError || !tx.txp[wallet.id]">{{buttonText}}</button>
   </ion-toolbar>

@@ -35,10 +35,15 @@
         <div class="subtitle" translate>You can scan bitcoin addresses, payment requests, paper wallets, and more.</div>
       </div>
     </div>
-    <div class="cameraSelector">
+    <div class="body">
       <div padding>
         <div *ngIf="hasPermission === false" translate>Enable the camera to get started.</div>
         <div *ngIf="!hasCameras && hasPermission === true" translate>Please connect a camera to get started.</div>
+      </div>
+      <div>
+        <button ion-button outline class="button-standard" *ngIf="hasPermission === false" (click)="loadCamera()">
+          {{'Retry camera' | translate}}
+        </button>
       </div>
     </div>
   </div>

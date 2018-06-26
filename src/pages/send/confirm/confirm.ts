@@ -62,6 +62,7 @@ export class ConfirmPage extends WalletTabsChild {
   public successText: string;
   public paymentExpired: boolean;
   public remainingTimeStr: string;
+  public memoFocused: boolean;
 
   // Config Related values
   public config;
@@ -109,6 +110,7 @@ export class ConfirmPage extends WalletTabsChild {
       ? this.config.wallet.settings.feeLevel
       : 'normal';
     this.isCordova = this.platformProvider.isCordova;
+    this.memoFocused = false;
   }
 
   ngOnInit() {
