@@ -298,11 +298,13 @@ export class AmountPage extends WalletTabsChild {
       /[^0-9.]/g,
       ''
     );
-    this.expression = this.availableUnits[this.unitIndex].isFiat
-      ? this.toFiat(maxAmount)
-      : maxAmount;
-    this.processAmount();
-    this.changeDetectorRef.detectChanges();
+    this.zone.run(() => {
+      this.expression = this.availableUnits[this.unitIndex].isFiat
+        ? this.toFiat(maxAmount).toFixed(2)
+        : maxAmount;
+      this.processAmount();
+      this.changeDetectorRef.detectChanges();
+    });
   }
 
   public pushDigit(digit: string): void {
