@@ -1,4 +1,18 @@
 {
+    "ios": {
+        "debug": {
+            "codeSignIdentity": "iPhone Developer",
+            "developmentTeam": "743WAUKKZJ",
+            "provisioningProfile": "0f098394-d17f-4b67-892f-b0832ca156cd",
+            "packageType": "development"
+        },
+        "release": {
+            "codeSignIdentity": "iPhone Distribution",
+            "developmentTeam": "743WAUKKZJ",
+            "provisioningProfile": "9cef88c1-8566-4245-8781-10f1ad881681",
+            "packageType": "app-store"
+        }
+    },
     "windows": {
         "debug": {
             "packageCertificateKeyFile": "platforms\\windows\\CordovaApp_TemporaryKey.pfx"
