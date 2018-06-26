@@ -260,7 +260,7 @@ We release bug fixes as soon as possible for all platforms.  Usually around a we
 
 ## How to Verify TRCpay Signatures
 
- 1. Download the `xxx@terracoin.io` public key (`gpg --recv-keys 1112CFA1`)
+ 1. Download the `xxx@terracoin.io` public key (`gpg --recv-keys A78B5052E13EC768`)
  2. Download TRCpay binary (`$FILENAME`) and signature file (`$FILENAME.sig`)
  3. Verify the signature by running:
 
