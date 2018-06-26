@@ -65,4 +65,11 @@ page-send {
       }
     }
   }
+  .header-extend {
+    height: 179px;
+  }
+  .action-card {
+    z-index: 1;
+    position: relative;
+  }
 }

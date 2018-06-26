@@ -11,13 +11,19 @@
 
 <ion-content no-bounce>
   <div class="wrapper">
-    <div class="header-extend">
-      <div *ngIf="!wallet" class="no-wallets">
-        <button ion-button clear>
-          <span translate>No wallet</span>
-        </button>
+    <div class="header-extend"></div>
+
+    <ion-card *ngIf="!wallets || !wallets[0]" class="action-card">
+      <div class="action-card-icon">
+        <img src="assets/img/tab-icons/ico-receive.svg" />
       </div>
-    </div>
+      <ion-card-content>
+        <div class="subtitle action-card-text" translate>
+            Create a wallet to start sending and receiving funds, buying Gift Cards and much more!
+        </div>
+      </ion-card-content>
+    </ion-card>
+
     <div class="card" *ngIf="wallets[0]">
       <button ion-item detail-none (click)="showWallets()">
         <ion-icon class="item-img" item-start>
