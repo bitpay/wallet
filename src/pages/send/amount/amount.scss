@@ -3,14 +3,6 @@ page-amount {
     background: white;
   }
 
-  pin-pad {
-    .row {
-      ion-col.col {
-        min-height: 60px;
-      }
-    }
-  }
-
   $short-screen: 500px;
 
   .amount-wrapper {
@@ -124,13 +116,15 @@ page-amount {
     }
   }
 
-  .footer::before {
-    display: none;
-  }
-
   pin-pad {
-    .row ion-col.col {
-      min-height: 50px;
+    .row {
+      ion-col.col {
+        min-height: 60px;
+
+        @media (max-height: $short-screen) {
+          min-height: 50px;
+        }
+      }
     }
   }
 }
