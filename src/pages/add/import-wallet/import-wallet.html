@@ -33,7 +33,7 @@
   <form [formGroup]="importForm" (ngSubmit)="import()">
     <ion-item *ngIf="selectedTab == 'words'">
       <ion-label stacked>{{'Type the recovery phrase (usually 12 words)' | translate}}</ion-label>
-      <ion-textarea formControlName="words" [value]="importForm.value.words"></ion-textarea>
+      <ion-textarea formControlName="words" [value]="importForm.value.words" autocapitalize="none"></ion-textarea>
       <ion-icon *ngIf="!fromOnboarding" class="scanner-icon" name="qr-scanner" item-right (click)="openScanner()"></ion-icon>
     </ion-item>
 
