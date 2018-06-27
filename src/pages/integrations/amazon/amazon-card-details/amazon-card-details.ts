@@ -18,6 +18,8 @@ import { GiftCardNewData } from '../../gift-cards';
 export class AmazonCardDetailsPage {
   public updateGiftCard: boolean;
   public card;
+  public isTimeExpired: boolean;
+  private EXPIRY_TIME: number;
 
   constructor(
     private amazonProvider: AmazonProvider,
@@ -29,7 +31,9 @@ export class AmazonCardDetailsPage {
     private popupProvider: PopupProvider,
     private viewCtrl: ViewController
   ) {
+    this.EXPIRY_TIME = 15 * 60;
     this.card = this.navParams.data.card;
+    this.checkExpiryTime();
   }
 
   ionViewDidLoad() {
@@ -123,5 +127,11 @@ export class AmazonCardDetailsPage {
 
   public openExternalLink(url: string): void {
     this.externalLinkProvider.open(url);
+  }
+
+  private checkExpiryTime(): void {
+    let cardDate = Math.floor(this.card.date / 1000);
+    let now = Math.floor(Date.now() / 1000);
+    this.isTimeExpired = now - cardDate > this.EXPIRY_TIME ? true : false;
   }
 }
