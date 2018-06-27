@@ -11,6 +11,8 @@ page-amount {
     }
   }
 
+  $short-screen: 500px;
+
   .amount-wrapper {
     height: 100%;
     display: flex;
@@ -20,6 +22,11 @@ page-amount {
   .amount-header-margin {
     margin: 2rem;
     margin-bottom: 0;
+    @media (max-height: $short-screen + 70px) {
+      margin: 1.5rem;
+      margin-bottom: 0;
+      margin-top: 1rem;
+    }
   }
 
   .next-button {
@@ -51,6 +58,10 @@ page-amount {
       cursor: pointer;
       width: 81px;
 
+      @media (max-height: $short-screen + 70px) {
+        width: 75px;
+      }
+
       &__icon {
         margin-right: 10px;
       }
@@ -59,6 +70,9 @@ page-amount {
         color: #060606;
         font-size: 18px;
         margin-top: 1px;
+        @media (max-height: $short-screen + 70px) {
+          font-size: 15px;
+        }
       }
     }
 
@@ -69,6 +83,9 @@ page-amount {
       width: 100%;
       font-size: 16px;
       pointer-events: none;
+      @media (max-height: $short-screen) {
+        font-size: 15px;
+      }
     }
   }
 
@@ -79,26 +96,16 @@ page-amount {
     align-items: center;
     width: 100%;
     flex-grow: 1;
-    // padding-top: 10px;
-    // padding: 15% 16px 0 16px;
-    // @media (max-height: 640px) {
-    //   padding-top: 10%;
-    // }
-    // @media (max-height: 500px) {
-    //   padding-top: 5%;
-    // }
     .expression-container {
       display: flex;
       align-items: center;
       .expression {
         font-size: 50px;
         font-weight: 500;
-        // @media (max-height: 640px) {
-        //   font-size: 35px;
-        // }
-        // @media (max-height: 500px) {
-        //   font-size: 25px;
-        // }
+
+        @media (max-height: $short-screen) {
+          font-size: 40px;
+        }
       }
     }
     .amount {
@@ -107,14 +114,23 @@ page-amount {
       margin-top: 5px;
     }
     .result {
-      // color: color($colors, grey);
       margin-top: 20px;
       font-size: 15px;
       color: #4a4a4a;
+      @media (max-height: $short-screen) {
+        font-size: 14px;
+        margin-top: 15px;
+      }
     }
   }
 
   .footer::before {
     display: none;
+  }
+
+  pin-pad {
+    .row ion-col.col {
+      min-height: 50px;
+    }
   }
 }
