@@ -150,7 +150,7 @@ export class AmountPage extends WalletTabsChild {
     }
 
     if (event.key.match(this.reNr)) {
-      this.pushDigit(event.key);
+      this.pushDigit(event.key, true);
     } else if (event.key.match(this.reOp)) {
       this.pushOperator(event.key);
     } else if (event.keyCode === 86) {
@@ -307,11 +307,11 @@ export class AmountPage extends WalletTabsChild {
     });
   }
 
-  public pushDigit(digit: string): void {
+  public pushDigit(digit: string, isHardwareKeyboard?: boolean): void {
     if (digit === 'delete') {
       return this.removeDigit();
     }
-    if (!this.expression && digit === '0') {
+    if (!this.expression && digit === '0' && !isHardwareKeyboard) {
       return this.sendMax();
     }
     if (
