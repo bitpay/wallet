@@ -56,4 +56,7 @@ page-import-wallet {
     color: color($colors, success);
     background-color: lighten(color($colors, success), 55%);
   }
+  .info-message {
+    font-size: 12.5px;
+  }
 }
