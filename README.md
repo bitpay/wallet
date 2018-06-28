@@ -5,7 +5,7 @@
 
 TRCpay is a secure Terracoin wallet platform for both desktop and mobile devices. TRCpay uses [Bitcore Wallet Service for Terracoin](https://github.com/terracoiny/bitcore-wallet-service-terracoin) (BWS) for peer synchronization and network interfacing.
 
-Binary versions of TRCpay are available for download at [Terracoin.io](https://terracoin.io/trcpay). TRCpay Binaries are signed with the key `xxx@terracoin.io` – See the section [`How to Verify TRCpay Signatures`](https://github.com/terracoin/TRCpay#how-to-verify-trcpay-signatures) for details.
+Binary versions of TRCpay are available for download at [Terracoin.io](https://terracoin.io/trcpay). TRCpay Binaries are signed with the key `support@terracoin.io` – See the section [`How to Verify TRCpay Signatures`](https://github.com/terracoin/TRCpay#how-to-verify-trcpay-signatures) for details.
 
 For a list of frequently asked questions please visit the [Copay FAQ](https://github.com/bitpay/copay/wiki/COPAY---FAQ).
 
@@ -260,7 +260,7 @@ We release bug fixes as soon as possible for all platforms.  Usually around a we
 
 ## How to Verify TRCpay Signatures
 
- 1. Download the `xxx@terracoin.io` public key (`gpg --recv-keys A78B5052E13EC768`)
+ 1. Download the `support@terracoin.io` public key (`gpg --recv-keys A78B5052E13EC768`)
  2. Download TRCpay binary (`$FILENAME`) and signature file (`$FILENAME.sig`)
  3. Verify the signature by running:
 
@@ -270,7 +270,7 @@ $ gpg --verify \
  $FILENAME
 
 # It should return:
-Good signature from "TRCpay (visit terracoin.io) <xxx@terracoin.io>"
+Good signature from "TRCpay (visit terracoin.io) <support@terracoin.io>"
 ```
 
 ### Public Key for TRCpay Binaries
