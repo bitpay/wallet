@@ -12,10 +12,10 @@ export class Logger {
   constructor() {
     this.logs = [];
     this.levels = [
-      { level: 'error', weight: 1, label: 'Error' },
-      { level: 'warn', weight: 2, label: 'Warning' },
-      { level: 'info', weight: 3, label: 'Info', default: true },
-      { level: 'debug', weight: 4, label: 'Debug' }
+      { level: 'error', weight: 1, label: 'Error', def: false },
+      { level: 'warn', weight: 2, label: 'Warning', def: false },
+      { level: 'info', weight: 3, label: 'Info', def: true },
+      { level: 'debug', weight: 4, label: 'Debug', def: false }
     ];
 
     // Create an array of level weights for performant filtering.
@@ -69,7 +69,7 @@ export class Logger {
 
   public getDefaultWeight() {
     return _.find(this.levels, l => {
-      return l.default;
+      return l.def;
     });
   }
 
