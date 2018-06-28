@@ -50,7 +50,7 @@
     <plugin name="cordova-plugin-globalization" spec="1.0.9" />
     <plugin name="cordova-plugin-qrscanner" spec="2.5.0" />
     <plugin name="cordova-plugin-splashscreen" spec="5.0.2" />
-    <plugin name="cordova-plugin-statusbar" spec="2.4.1" />
+    <plugin name="cordova-plugin-statusbar" spec="2.4.2" />
     <plugin name="cordova-plugin-inappbrowser" spec="2.0.2" />
     <plugin name="cordova-plugin-touch-id" spec="3.3.1" />
     <plugin name="cordova-plugin-whitelist" spec="1.3.3" />
