@@ -43,27 +43,42 @@ describe('LoggerProvider', () => {
   it('should get levels', () => {
     const levels = service.getLevels();
     expect(levels).toEqual([
-      { level: 'error', weight: 1, label: 'Error' },
-      { level: 'warn', weight: 2, label: 'Warning' },
-      { level: 'info', weight: 3, label: 'Info', default: true },
-      { level: 'debug', weight: 4, label: 'Debug' }
+      { level: 'error', weight: 1, label: 'Error', def: false },
+      { level: 'warn', weight: 2, label: 'Warning', def: false },
+      { level: 'info', weight: 3, label: 'Info', def: true },
+      { level: 'debug', weight: 4, label: 'Debug', def: false }
     ]);
   });
 
   it('should get weight', () => {
     let weight = service.getWeight(1);
-    expect(weight).toEqual({ level: 'error', weight: 1, label: 'Error' });
+    expect(weight).toEqual({
+      level: 'error',
+      weight: 1,
+      label: 'Error',
+      def: false
+    });
     weight = service.getWeight(2);
-    expect(weight).toEqual({ level: 'warn', weight: 2, label: 'Warning' });
+    expect(weight).toEqual({
+      level: 'warn',
+      weight: 2,
+      label: 'Warning',
+      def: false
+    });
     weight = service.getWeight(3);
     expect(weight).toEqual({
       level: 'info',
       weight: 3,
       label: 'Info',
-      default: true
+      def: true
     });
     weight = service.getWeight(4);
-    expect(weight).toEqual({ level: 'debug', weight: 4, label: 'Debug' });
+    expect(weight).toEqual({
+      level: 'debug',
+      weight: 4,
+      label: 'Debug',
+      def: false
+    });
   });
 
   it('should get the default weight', () => {
@@ -72,7 +87,7 @@ describe('LoggerProvider', () => {
       level: 'info',
       weight: 3,
       label: 'Info',
-      default: true
+      def: true
     });
   });
 
