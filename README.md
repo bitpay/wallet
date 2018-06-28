@@ -28,7 +28,7 @@ For a list of frequently asked questions please visit the [Copay FAQ](https://gi
 - Push notifications (only available for ios and android versions)
 - Customizable wallet naming and background colors
 - Multiple languages supported
-- Available for [iOS](https://itunes.apple.com/us/app/trcpay/id951330296), [Android](https://play.google.com/store/apps/details?id=info.terracoin.trcpay&hl=en),
+- Available for [iOS](https://itunes.apple.com/us/app/trcpay/id1403526136), [Android](https://play.google.com/store/apps/details?id=info.terracoin.trcpay&hl=en),
  [Chrome App](https://chrome.google.com/webstore/detail/trcpay/cnidaodnidkbaplmghlelgikaiejfhja?hl=en), [Linux](https://github.com/terracoin/TRCpay/releases/latest), [Windows](https://github.com/terracoin/TRCpay/releases/latest) and [OS X](https://github.com/terracoin/TRCpay/releases/latest) devices
 
 ## Testing in a Browser
