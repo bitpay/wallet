@@ -24,6 +24,7 @@ describe('HomePage', () => {
       fixture.detectChanges();
     })));
   afterEach(() => {
+    spyOn(instance, 'ngOnDestroy');
     fixture.destroy();
   });
 
@@ -56,6 +57,7 @@ describe('HomePage', () => {
     describe('ionViewDidLoad', () => {
       it('should update txps and set wallets on platform resume', () => {
         instance.plt.resume = new Subject();
+        instance.plt.pause = new Subject();
         instance.ionViewDidLoad();
         const getNotificationsSpy = spyOn(instance, 'getNotifications');
         const updateTxpsSpy = spyOn(instance, 'updateTxps');
