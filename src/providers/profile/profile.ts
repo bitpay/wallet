@@ -18,7 +18,7 @@ import { ReplaceParametersProvider } from '../replace-parameters/replace-paramet
 
 // models
 import { Profile } from '../../models/profile/profile.model';
-import { WalletOptions } from '../wallet/wallet';
+import { Coin, WalletOptions } from '../wallet/wallet';
 
 @Injectable()
 export class ProfileProvider {
@@ -1121,7 +1121,7 @@ export class ProfileProvider {
       opts.m = 1;
       opts.n = 1;
       opts.networkName = 'livenet';
-      opts.coin = 'btc';
+      opts.coin = Coin.BTC;
       this.createWallet(opts)
         .then(wallet => {
           return resolve(wallet);

@@ -8,11 +8,12 @@ import { AppProvider } from '../app/app';
 import { BwcProvider } from '../bwc/bwc';
 import { PayproProvider } from '../paypro/paypro';
 import { PopupProvider } from '../popup/popup';
+import { Coin } from '../wallet/wallet';
 
 export interface RedirParams {
   activePage?: any;
   amount?: string;
-  coin?: 'btc' | 'bch';
+  coin?: Coin;
 }
 
 @Injectable()

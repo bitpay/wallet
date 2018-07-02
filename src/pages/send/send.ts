@@ -10,7 +10,7 @@ import { IncomingDataProvider } from '../../providers/incoming-data/incoming-dat
 import { Logger } from '../../providers/logger/logger';
 import { PopupProvider } from '../../providers/popup/popup';
 import { ProfileProvider } from '../../providers/profile/profile';
-import { WalletProvider } from '../../providers/wallet/wallet';
+import { Coin, WalletProvider } from '../../providers/wallet/wallet';
 
 // Pages
 import { TxFormatProvider } from '../../providers/tx-format/tx-format';
@@ -25,7 +25,7 @@ export interface FlatWallet {
   color: string;
   name: string;
   recipientType: 'wallet';
-  coin: 'btc' | 'bch';
+  coin: Coin;
   network: 'testnet' | 'mainnet';
   m: number;
   n: number;
