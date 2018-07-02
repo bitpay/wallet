@@ -8,6 +8,7 @@ import {
 } from 'ionic-angular';
 import * as _ from 'lodash';
 import * as moment from 'moment';
+import { Subscription } from 'rxjs';
 
 // Pages
 import { AddPage } from '../add/add';
@@ -78,6 +79,8 @@ export class HomePage {
   private isNW: boolean;
   private updatingWalletId: object;
   private zone;
+  private onResumeSubscription: Subscription;
+  private onPauseSubscription: Subscription;
 
   constructor(
     private plt: Platform,
@@ -137,13 +140,7 @@ export class HomePage {
     this.checkHomeTip();
     this.checkFeedbackInfo();
 
-    // BWS Events: Update Status per Wallet
-    // NewBlock, NewCopayer, NewAddress, NewTxProposal, TxProposalAcceptedBy, TxProposalRejectedBy, txProposalFinallyRejected,
-    // txProposalFinallyAccepted, TxProposalRemoved, NewIncomingTx, NewOutgoingTx
-    this.events.subscribe('bwsEvent', (walletId: string) => {
-      this.getNotifications();
-      this.updateWallet(walletId);
-    });
+    this.subscribeBwsEvents();
 
     // Show integrations
     let integrations = _.filter(this.homeIntegrationsProvider.get(), {
@@ -174,21 +171,47 @@ export class HomePage {
 
     this.checkEmailLawCompliance();
 
+    this.subscribeStatusEvents();
+
+    this.onResumeSubscription = this.plt.resume.subscribe(() => {
+      this.getNotifications();
+      this.updateTxps();
+      this.setWallets();
+      this.subscribeBwsEvents();
+      this.subscribeStatusEvents();
+    });
+
+    this.onPauseSubscription = this.plt.pause.subscribe(() => {
+      this.events.unsubscribe('bwsEvent');
+      this.events.unsubscribe('status:updated');
+    });
+  }
+
+  ngOnDestroy() {
+    this.onResumeSubscription.unsubscribe();
+    this.onPauseSubscription.unsubscribe();
+  }
+
+  ionViewWillLeave() {
+    this.events.unsubscribe('bwsEvent');
+  }
+
+  private subscribeBwsEvents() {
+    // BWS Events: Update Status per Wallet
+    // NewBlock, NewCopayer, NewAddress, NewTxProposal, TxProposalAcceptedBy, TxProposalRejectedBy, txProposalFinallyRejected,
+    // txProposalFinallyAccepted, TxProposalRemoved, NewIncomingTx, NewOutgoingTx
+    this.events.subscribe('bwsEvent', (walletId: string) => {
+      this.getNotifications();
+      this.updateWallet(walletId);
+    });
+  }
+
+  private subscribeStatusEvents() {
     // Create, Join, Import and Delete -> Get Wallets -> Update Status for All Wallets
     this.events.subscribe('status:updated', () => {
       this.updateTxps();
       this.setWallets();
     });
-
-    this.plt.resume.subscribe(() => {
-      this.getNotifications();
-      this.updateTxps();
-      this.setWallets();
-    });
-  }
-
-  ionViewWillLeave() {
-    this.events.unsubscribe('bwsEvent');
   }
 
   private openEmailDisclaimer() {

@@ -104,5 +104,6 @@
     <a (click)="openExternalLink('http://amazon.com')">Amazon.com</a>, Inc. or its affiliates. No expiration date or service fees.
   </div>
 
-  <button ion-item block text-center *ngIf="card.status == 'FAILURE' || card.cardStatus == 'Canceled' || card.cardStatus == 'Expired' || card.status == 'expired'" class="button-footer assertive" (click)="remove()">Remove</button>
+  <button ion-item block text-center detail-none *ngIf="card.status == 'FAILURE' || card.cardStatus == 'Canceled' || card.cardStatus == 'Expired' || card.status == 'expired'" class="button-footer assertive" (click)="remove()">Remove</button>
+  <button ion-item block text-center detail-none *ngIf="card.status == 'SUCCESS' && card.cardStatus == 'Fulfilled' && !isTimeExpired" class="assertive" (click)="cancelGiftCard()">Cancel</button>
 </ion-content>
