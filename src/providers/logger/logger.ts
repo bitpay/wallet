@@ -1,5 +1,4 @@
-/* tslint:disable:no-console */
-import { Injectable, isDevMode } from '@angular/core';
+import { Inject, Injectable, isDevMode } from '@angular/core';
 
 import * as _ from 'lodash';
 
@@ -9,7 +8,7 @@ export class Logger {
   public weight;
   public logs;
 
-  constructor() {
+  constructor(@Inject('console') private console: { log: (...args) => void }) {
     this.logs = [];
     this.levels = [
       { level: 'error', weight: 1, label: 'Error', def: false },
@@ -28,7 +27,7 @@ export class Logger {
   public error(message?, ...optionalParams): void {
     let msg =
       '[error] ' + (_.isString(message) ? message : JSON.stringify(message));
-    console.log(msg, ...optionalParams);
+    this.console.log(msg, ...optionalParams);
     let args = this.processingArgs(arguments);
     this.add('error', args);
   }
@@ -36,7 +35,7 @@ export class Logger {
   public debug(message?, ...optionalParams): void {
     let msg =
       '[debug] ' + (_.isString(message) ? message : JSON.stringify(message));
-    if (isDevMode()) console.log(msg, ...optionalParams);
+    if (isDevMode()) this.console.log(msg, ...optionalParams);
     let args = this.processingArgs(arguments);
     this.add('debug', args);
   }
@@ -44,7 +43,7 @@ export class Logger {
   public info(message?, ...optionalParams): void {
     let msg =
       '[info] ' + (_.isString(message) ? message : JSON.stringify(message));
-    if (isDevMode()) console.log(msg, ...optionalParams);
+    if (isDevMode()) this.console.log(msg, ...optionalParams);
     let args = this.processingArgs(arguments);
     this.add('info', args);
   }
@@ -52,7 +51,7 @@ export class Logger {
   public warn(message?, ...optionalParams): void {
     let msg =
       '[warn] ' + (_.isString(message) ? message : JSON.stringify(message));
-    if (isDevMode()) console.log(msg, ...optionalParams);
+    if (isDevMode()) this.console.log(msg, ...optionalParams);
     let args = this.processingArgs(arguments);
     this.add('warn', args);
   }
@@ -107,7 +106,7 @@ export class Logger {
           v = v.message ? v.message : JSON.stringify(v);
         }
       } catch (e) {
-        console.log('Error at log decorator:', e);
+        this.console.log('Error at log decorator:', e);
         v = 'undefined';
       }
       return v;
