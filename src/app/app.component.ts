@@ -162,9 +162,6 @@ export class CopayApp {
 
       // Subscribe Resume
       this.onResumeSubscription = this.platform.resume.subscribe(() => {
-        // Update Wallet Status
-        this.events.publish('status:updated');
-
         // Check PIN or Fingerprint on Resume
         this.openLockModal();
       });
