@@ -257,7 +257,7 @@
         </div>
       </ion-item-divider>
       <ion-list *ngIf="!hideHomeIntegrations">
-        <button ion-item *ngFor="let service of homeIntegrations" (click)="goTo(service)">
+        <button ion-item *ngFor="let service of homeIntegrations" (click)="goTo(service.page)">
           <ion-icon class="item-img" item-start>
             <img src="{{service.icon}}" class="icon-services" />
           </ion-icon>

@@ -593,9 +593,7 @@ export class HomePage {
     this.navCtrl.push(ActivityPage);
   }
 
-  public goTo(service: any): void {
-    let page: string = service.page;
-
+  public goTo(page: string): void {
     const pageMap = {
       AmazonPage,
       BitPayCardIntroPage,
