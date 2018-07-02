@@ -42,8 +42,7 @@ export class AmazonPage {
     private popupProvider: PopupProvider,
     private onGoingProcessProvider: OnGoingProcessProvider,
     private timeProvider: TimeProvider
-  ) { 
-  }
+  ) {}
 
   ionViewDidLoad() {
     this.logger.info('ionViewDidLoad AmazonPage');

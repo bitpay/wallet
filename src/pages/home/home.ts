@@ -293,7 +293,7 @@ export class HomePage {
     if (!this.amazonProvider.currency)
       await this.amazonProvider.setCurrencyByLocation();
     if (this.amazonProvider.currency == 'JPY') {
-      this.persistenceProvider.getShowAmazonJapanAnnouncement().then( value => {
+      this.persistenceProvider.getShowAmazonJapanAnnouncement().then(value => {
         if (!value) this.showAnnouncement = true;
       });
     }

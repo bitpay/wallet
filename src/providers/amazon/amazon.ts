@@ -46,14 +46,14 @@ export class AmazonProvider {
   public async setCurrencyByLocation() {
     return new Promise(resolve => {
       this.getSupportedCards()
-      .then( currency => {
-        this.setCountryParameters(currency);
-        resolve();
-      })
-      .catch( () => {
-        this.setCountryParameters();
-        resolve();
-      });
+        .then(currency => {
+          this.setCountryParameters(currency);
+          resolve();
+        })
+        .catch(() => {
+          this.setCountryParameters();
+          resolve();
+        });
     });
   }
 
@@ -70,7 +70,7 @@ export class AmazonProvider {
         break;
       default:
         // For USA
-        this.currency = 'USD'
+        this.currency = 'USD';
         this.country = 'usa';
         this.limitPerDay = 2000;
         this.redeemAmazonUrl = 'https://www.amazon.com/gc/redeem?claimCode=';
@@ -172,17 +172,13 @@ export class AmazonProvider {
           var status =
             data.status == 'new'
               ? 'PENDING'
-              : data.status == 'paid'
-                ? 'PENDING'
-                : data.status;
+              : data.status == 'paid' ? 'PENDING' : data.status;
           data.status = status;
           this.logger.info('Amazon Gift Card Create/Update: ' + status);
           return cb(null, data);
         },
         data => {
-          this.logger.error(
-            'Amazon Gift Card Create/Update: ' + data.message
-          );
+          this.logger.error('Amazon Gift Card Create/Update: ' + data.message);
           return cb(data);
         }
       );
@@ -219,7 +215,9 @@ export class AmazonProvider {
             return resolve(data['supportedCards'][0]);
           },
           data => {
-            this.logger.error('Amazon Gift Card Supported Cards: ' + data.message);
+            this.logger.error(
+              'Amazon Gift Card Supported Cards: ' + data.message
+            );
             return reject(data);
           }
         );
