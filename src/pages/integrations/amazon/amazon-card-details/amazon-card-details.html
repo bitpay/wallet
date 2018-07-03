@@ -156,6 +156,6 @@
     <a (click)="openExternalLink('http://www.amazon.co.jp/giftcard/tc')">http://www.amazon.co.jp/giftcard/tc</a>).
   </div>
 
-  <button ion-item block text-center detail-none *ngIf="card.status == 'FAILURE' || card.cardStatus == 'Canceled' || card.cardStatus == 'Expired' || card.status == 'expired'" class="button-footer assertive" (click)="remove()">Remove</button>
-  <button ion-item block text-center detail-none *ngIf="card.status == 'SUCCESS' && card.cardStatus == 'Fulfilled' && !isTimeExpired" class="assertive" (click)="cancelGiftCard()">Cancel</button>
+  <button ion-item block text-center detail-none *ngIf="card.status == 'FAILURE' || card.cardStatus == 'Canceled' || card.cardStatus == 'Expired' || card.status == 'expired'" class="button-footer assertive" (click)="remove()" translate>Remove</button>
+  <button ion-item block text-center detail-none *ngIf="card.status == 'SUCCESS' && card.cardStatus == 'Fulfilled' && !isTimeExpired" class="assertive" (click)="cancelGiftCard()" translate>Cancel</button>
 </ion-content>
