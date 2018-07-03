@@ -189,12 +189,6 @@ export class BackupGamePage {
     if (this.currentIndex == 2) this.slidePrev();
   }
 
-  public copyRecoveryPhrase(): string {
-    if (this.wallet.network == 'livenet') return null;
-    else if (this.keys.mnemonic) return this.keys.mnemonic;
-    else return null;
-  }
-
   private confirm(): Promise<any> {
     return new Promise((resolve, reject) => {
       this.error = false;
