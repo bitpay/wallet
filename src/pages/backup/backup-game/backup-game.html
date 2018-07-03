@@ -21,7 +21,7 @@
       <div class="slide-container" *ngIf="mnemonicWords && mnemonicWords[0] || !credentialsEncrypted">
         <div>
           <div class="slide-title" translate>Please carefully write down this phrase.</div>
-          <div class="phrase-container" copy-to-clipboard="{{ copyRecoveryPhrase() }}">
+          <div class="phrase-container" copy-to-clipboard="{{ wallet.network == 'testnet' ? keys?.mnemonic : null }}">
             <div class="phrase">
               <span *ngFor="let word of mnemonicWords">
                 <span>{{word}}</span>
