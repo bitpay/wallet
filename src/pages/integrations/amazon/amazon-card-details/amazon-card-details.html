@@ -21,8 +21,8 @@
         {{ currency }}
       </span>
     </div>
-    <div translate>
-      Created {{card.date | amTimeAgo}}
+    <div>
+      {{'Created' | translate}} {{card.date | amTimeAgo}}
     </div>
 
     <div *ngIf="card.claimCode">
