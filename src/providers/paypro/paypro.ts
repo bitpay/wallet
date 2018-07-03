@@ -2,6 +2,9 @@ import { Injectable } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Logger } from '../../providers/logger/logger';
 
+import * as _ from 'lodash';
+import encoding from 'text-encoding';
+
 // providers
 import { OnGoingProcessProvider } from '../on-going-process/on-going-process';
 import { ProfileProvider } from '../profile/profile';
@@ -44,7 +47,11 @@ export class PayproProvider {
         },
         (err, paypro) => {
           this.onGoingProcessProvider.clear();
-          if (err)
+          if (_.isArrayBuffer(err)) {
+            const enc = new encoding.TextDecoder();
+            err = enc.decode(err);
+            return reject(err);
+          } else if (err)
             return reject(
               this.translate.instant(
                 'Could Not Fetch Payment: Check if it is still valid'

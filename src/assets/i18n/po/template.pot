@@ -12,8 +12,14 @@ msgstr ""
 
 msgid ""
 "* A payment proposal can be deleted if 1) you are the creator, and no other "
-"copayer has signed, or 2) 24 hours have passed since the proposal was "
+"copayer has signed, or 2) 10 minutes have passed since the proposal was "
 "created."
+msgstr ""
+
+msgid ""
+"* This field is only for users who, in previous versions (it's not "
+"supported anymore), set a password to protect their recovery phrase. This "
+"field is not for your encrypt password."
 msgstr ""
 
 msgid ""
@@ -236,12 +242,6 @@ msgid ""
 "deleted, your money cannot be recovered without it."
 msgstr ""
 
-msgid ""
-"Bitcoin (BTC) miner fees are high due to record demand for limited space on "
-"the Bitcoin network. BitPay does not receive and does not control bitcoin "
-"miner fees."
-msgstr ""
-
 msgid "Bitcoin Address"
 msgstr ""
 
@@ -278,6 +278,9 @@ msgstr ""
 msgid "Bitcoin transactions include a fee collected by miners on the network."
 msgstr ""
 
+msgid "Bought {{ amount }}"
+msgstr ""
+
 msgid "Broadcast Payment"
 msgstr ""
 
@@ -288,6 +291,9 @@ msgid "Broadcasting transaction..."
 msgstr ""
 
 msgid "Buy Gift Card"
+msgstr ""
+
+msgid "Buy a Gift Card"
 msgstr ""
 
 msgid "Buying Bitcoin..."
@@ -301,6 +307,9 @@ msgid ""
 "your email address to send you email notifications about payments."
 msgstr ""
 
+msgid "CANCELED"
+msgstr ""
+
 msgid "Calculating fee..."
 msgstr ""
 
@@ -308,6 +317,9 @@ msgid "Cancel"
 msgstr ""
 
 msgid "Cancel invitation"
+msgstr ""
+
+msgid "Canceled"
 msgstr ""
 
 msgid "Canceling Gift Card..."
@@ -377,6 +389,9 @@ msgid "Confirm"
 msgstr ""
 
 msgid "Confirm & Finish"
+msgstr ""
+
+msgid "Confirm purchase"
 msgstr ""
 
 msgid "Confirm to shift {{fromCoin}} to {{toCoin}}"
@@ -642,6 +657,9 @@ msgstr ""
 msgid "Duplicating wallet..."
 msgstr ""
 
+msgid "EXPIRED"
+msgstr ""
+
 msgid ""
 "Each bitcoin wallet can generate billions of addresses from your 12-word "
 "backup. A new address is automatically generated and shown each time you "
@@ -687,6 +705,9 @@ msgid "Enter a new encrypt password"
 msgstr ""
 
 msgid "Enter a password to encrypt your wallet"
+msgstr ""
+
+msgid "Enter a transaction memo"
 msgstr ""
 
 msgid "Enter custom fee in sat/byte"
@@ -782,6 +803,9 @@ msgstr ""
 msgid "Extracting Wallet information..."
 msgstr ""
 
+msgid "FAILURE"
+msgstr ""
+
 msgid "Failed"
 msgstr ""
 
@@ -859,7 +883,7 @@ msgid "Generating new address..."
 msgstr ""
 
 msgid ""
-"Get local cash anywhere you go, from any Visa&reg; compatible ATM. ATM bank "
+"Get local cash anywhere you go, from any Visa® compatible ATM. ATM bank "
 "fees may apply."
 msgstr ""
 
@@ -881,10 +905,22 @@ msgstr ""
 msgid "Gift Card Amount"
 msgstr ""
 
+msgid "Gift Card Amount:"
+msgstr ""
+
 msgid "Gift Card is not available to use anymore"
 msgstr ""
 
+msgid "Gift Cards are only redeemable on Amazon.co.jp (Japan website)."
+msgstr ""
+
+msgid "Gift Cards are only redeemable on Amazon.com (US website)."
+msgstr ""
+
 msgid "Gift card expired"
+msgstr ""
+
+msgid "Gift card generated and ready to use."
 msgstr ""
 
 msgid "Go Back"
@@ -1151,6 +1187,11 @@ msgstr ""
 msgid "Miner fee"
 msgstr ""
 
+msgid ""
+"Miner fees are high due to record demand for limited space on the network. "
+"BitPay does not receive and does not control miner fees."
+msgstr ""
+
 msgid "Minimum amount required is {{min}}"
 msgstr ""
 
@@ -1333,6 +1374,12 @@ msgstr ""
 msgid "Only redeemable on Mercado Livre (Brazil)"
 msgstr ""
 
+msgid "Only redeemable on www.amazon.co.jp (Japan website)."
+msgstr ""
+
+msgid "Only redeemable on www.amazon.com (US website)."
+msgstr ""
+
 msgid "Open"
 msgstr ""
 
@@ -1364,6 +1411,9 @@ msgid "Order the BitPay Card"
 msgstr ""
 
 msgid "Ouch!"
+msgstr ""
+
+msgid "PENDING"
 msgstr ""
 
 msgid "PIN"
@@ -1432,6 +1482,9 @@ msgid "Pending"
 msgstr ""
 
 msgid "Pending Proposals"
+msgstr ""
+
+msgid "Pending to confirmation"
 msgstr ""
 
 msgid "Permanently delete this wallet."
@@ -1595,7 +1648,7 @@ msgstr ""
 msgid "Redeem Now"
 msgstr ""
 
-msgid "Reject"
+msgid "Reject Payment Proposal"
 msgstr ""
 
 msgid "Rejected"
@@ -1640,6 +1693,9 @@ msgstr ""
 msgid "Retry camera"
 msgstr ""
 
+msgid "STILL PENDING"
+msgstr ""
+
 msgid "Save"
 msgstr ""
 
@@ -1680,6 +1736,9 @@ msgid "Security"
 msgstr ""
 
 msgid "See invoice"
+msgstr ""
+
+msgid "See invoice &rarr;"
 msgstr ""
 
 msgid "See transaction"
@@ -1852,7 +1911,13 @@ msgstr ""
 msgid "Start"
 msgstr ""
 
+msgid "Status:"
+msgstr ""
+
 msgid "Still pending"
+msgstr ""
+
+msgid "Still waiting confirmation (Use higher fees setting to faster delivery)"
 msgstr ""
 
 msgid "Suggested by Merchant"
@@ -1986,12 +2051,18 @@ msgstr ""
 msgid "There is an error in the form"
 msgstr ""
 
+msgid "There was a failure to the create gift card. Please, contact BitPay support."
+msgstr ""
+
 msgid ""
 "There's obviously something we're doing wrong. How could we improve your "
 "experience?"
 msgstr ""
 
 msgid "This app is fantastic!"
+msgstr ""
+
+msgid "This app is not available for your device."
 msgstr ""
 
 msgid "This app stores your bitcoin with cutting-edge security."
@@ -2010,10 +2081,13 @@ msgid ""
 "both the recovery phrase and password are needed."
 msgstr ""
 
+msgid "This service only accepts integers amounts"
+msgstr ""
+
 msgid ""
 "This transaction amount is too small compared to current Bitcoin network "
-"fees. Spending these funds will need a Bitcoin network fee cost comparable "
-"to the funds itself."
+"fees. Spending these funds will need a Bitcoin network\n"
+"          fee cost comparable to the funds itself."
 msgstr ""
 
 msgid ""
@@ -2100,10 +2174,13 @@ msgstr ""
 msgid "Transfer to Contact"
 msgstr ""
 
+msgid "Try again"
+msgstr ""
+
 msgid "Try again in {{expires}}"
 msgstr ""
 
-msgid "Turn bitcoin into dollars, swipe anywhere Visa&reg; is accepted."
+msgid "Turn bitcoin into dollars, swipe anywhere Visa® is accepted."
 msgstr ""
 
 msgid "Type the recovery phrase (usually 12 words)"
@@ -2197,6 +2274,12 @@ msgid "View all addresses"
 msgstr ""
 
 msgid "View on blockchain"
+msgstr ""
+
+msgid "Visit Amazon.co.jp"
+msgstr ""
+
+msgid "Visit Amazon.com"
 msgstr ""
 
 msgid "Visit ShapeShift.io"
@@ -2466,6 +2549,12 @@ msgstr ""
 msgid "Your name"
 msgstr ""
 
+msgid "Your purchase could not be completed"
+msgstr ""
+
+msgid "Your purchase was added to the list of pending"
+msgstr ""
+
 msgid "Your wallet is never saved to cloud storage or standard device backups."
 msgstr ""
 
@@ -2487,6 +2576,9 @@ msgid "me"
 msgstr ""
 
 msgid "no password"
+msgstr ""
+
+msgid "of total amount"
 msgstr ""
 
 msgid "password mismatch"
@@ -2512,9 +2604,6 @@ msgid "{{fee}} {{coin}} will be deducted for bitcoin networking fees."
 msgstr ""
 
 msgid "{{tx.feeRateStr}} of the total amount"
-msgstr ""
-
-msgid "{{tx.txp[wallet.id].feeRatePerStr}} of total amount"
 msgstr ""
 
 msgid "{{updatingTxHistoryProgress}} transactions downloaded"

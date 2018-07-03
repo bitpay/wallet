@@ -174,17 +174,17 @@ export class SettingsPage {
 
   public openSettingIntegration(name: string): void {
     switch (name) {
+      case 'amazon':
+        this.navCtrl.push(AmazonSettingsPage);
+        break;
       case 'coinbase':
         this.navCtrl.push(CoinbaseSettingsPage);
-        break;
-      case 'glidera':
-        this.navCtrl.push(GlideraSettingsPage);
         break;
       case 'debitcard':
         this.navCtrl.push(BitPaySettingsPage);
         break;
-      case 'amazon':
-        this.navCtrl.push(AmazonSettingsPage);
+      case 'glidera':
+        this.navCtrl.push(GlideraSettingsPage);
         break;
       case 'mercadolibre':
         this.navCtrl.push(MercadoLibreSettingsPage);

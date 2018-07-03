@@ -1,9 +1,9 @@
 <ion-header>
   <ion-navbar>
-    <ion-title>Details</ion-title>
+    <ion-title>{{'Details' | translate}}</ion-title>
     <ion-buttons left>
       <button (click)="close()" ion-button>
-        Close
+        {{'Close' | translate}}
       </button>
     </ion-buttons>
   </ion-navbar>
@@ -11,31 +11,34 @@
 
 <ion-content>
   <div class="header-modal">
-    <img src="assets/img/amazon/a_generic.jpg" alt="Amazon.com Gift Card" (click)="refreshGiftCard()">
+    <img *ngIf="country == 'usa'" src="assets/img/amazon/a_generic.jpg" alt="Amazon.com Gift Card" (click)="refreshGiftCard()">
+    <img *ngIf="country == 'japan'" src="assets/img/amazon/japan/GCs-logo-japan-cllb.jpg" alt="Amazon.co.jp ギフト券" (click)="refreshGiftCard()">
     <div class="header-modal-amount">
-      Gift Card Amount:
+      {{'Gift Card Amount:' | translate}}
       <span class="text-bold">
-        {{card.amount | currency : '$ ' : 2}}
+        <span *ngIf="onlyIntegers">{{card.amount | number : '1.0-0'}}</span> 
+        <span *ngIf="!onlyIntegers">{{card.amount | number : '1.2-2'}}</span> 
+        {{ currency }}
       </span>
     </div>
     <div>
-      Created {{card.date | amTimeAgo}}
+      {{'Created' | translate}} {{card.date | amTimeAgo}}
     </div>
 
     <div *ngIf="card.claimCode">
       <div *ngIf="card.cardStatus !== 'Canceled'">
-        Claim code:
+        {{'Claim code:' | translate}}
         <span class="text-bold" copy-to-clipboard="{{card.claimCode}}">{{card.claimCode}}</span>
       </div>
       <div class="redeem" *ngIf="card.cardStatus == 'Fulfilled'">
-        <button ion-button outline (click)="openExternalLink('https://www.amazon.com/gc/redeem?claimCode=' + card.claimCode)">
-          Redeem Now
+        <button ion-button outline (click)="openExternalLink(redeemAmazonUrl + card.claimCode)">
+          {{'Redeem Now' | translate}}
         </button>
       </div>
       <div *ngIf="card.cardStatus == 'Canceled'">
         <div>
-          Status:
-          <span class="text-bold">
+          {{'Status:' | translate}}
+          <span class="text-bold" translate>
             CANCELED
           </span>
         </div>
@@ -43,34 +46,34 @@
     </div>
     <div *ngIf="!card.claimCode">
       <div>
-        Status:
-        <span class="text-bold" *ngIf="card.status == 'PENDING'">
+        {{'Status:' | translate}}
+        <span class="text-bold" *ngIf="card.status == 'PENDING'" translate>
           PENDING
         </span>
-        <span class="text-bold" *ngIf="card.status=='invalid'">
+        <span class="text-bold" *ngIf="card.status=='invalid'" translate>
           STILL PENDING
         </span>
-        <span class="text-bold" *ngIf="card.status == 'FAILURE' || card.status == 'RESEND'">
+        <span class="text-bold" *ngIf="card.status == 'FAILURE' || card.status == 'RESEND'" translate>
           FAILURE
         </span>
-        <span class="text-bold" *ngIf="card.status == 'expired'">
+        <span class="text-bold" *ngIf="card.status == 'expired'" translate>
           EXPIRED
         </span>
       </div>
       <div *ngIf="updateGiftCard">
-        <a class="button button-clear button-positive" ng-click="refreshGiftCard()">Try again</a>
+        <a class="button button-clear button-positive" ng-click="refreshGiftCard()" translate>Try again</a>
       </div>
     </div>
     <div class="invoice">
-      <a class="button button-clear button-calm" (click)="openExternalLink(card.invoiceUrl)">See invoice &rarr;</a>
+      <a class="button button-clear button-calm" (click)="openExternalLink(card.invoiceUrl)" translate>See invoice &rarr;</a>
+    </div>
+    <div class="box-notification assertive" *ngIf="card.status == 'FAILURE' || card.status == 'RESEND'" translate>
+      There was a failure to the create gift card. Please, contact BitPay support.
     </div>
   </div>
 
-  <div class="box-notification assertive" *ngIf="card.status == 'FAILURE' || card.status == 'RESEND'">
-    There was a failure to the create gift card. Please, contact BitPay support.
-  </div>
-
-  <ion-list *ngIf="card.claimCode && card.cardStatus == 'Fulfilled'" class="steps">
+  <!-- Amazon USA -->
+  <ion-list *ngIf="card.claimCode && card.cardStatus == 'Fulfilled' && country == 'usa'" class="steps">
     <ion-item-divider>To redeem your gift card, follow these steps:</ion-item-divider>
 
     <ion-item>
@@ -95,7 +98,7 @@
       </div>
     </ion-item>
   </ion-list>
-  <div padding class="steps-info">
+  <div *ngIf="country == 'usa'" padding class="steps-info">
     *
     <a (click)="openExternalLink('http://amazon.com')">Amazon.com</a> is not a sponsor of this promotion. Except as required by law,
     <a (click)="openExternalLink('http://amazon.com')">Amazon.com</a> Gift Cards ("GCs") cannot be transferred for value or redeemed for cash. GCs may be used only for purchases of eligible goods at
@@ -104,6 +107,55 @@
     <a (click)="openExternalLink('http://amazon.com')">Amazon.com</a>, Inc. or its affiliates. No expiration date or service fees.
   </div>
 
-  <button ion-item block text-center detail-none *ngIf="card.status == 'FAILURE' || card.cardStatus == 'Canceled' || card.cardStatus == 'Expired' || card.status == 'expired'" class="button-footer assertive" (click)="remove()">Remove</button>
-  <button ion-item block text-center detail-none *ngIf="card.status == 'SUCCESS' && card.cardStatus == 'Fulfilled' && !isTimeExpired" class="assertive" (click)="cancelGiftCard()">Cancel</button>
+  <!-- Amazon Japan -->
+  <ion-list *ngIf="card.claimCode && card.cardStatus == 'Fulfilled' && country == 'japan'" class="steps">
+    <ion-item-divider>Amazonギフト券のご利用方法</ion-item-divider>
+
+    <ion-item>
+      <p class="steps-info">Amazonギフト券をご利用いただくには、最初にアカウントにギフト券を登録します。</p>
+      <ol class="steps-info">
+        <li>
+          <a (click)="openExternalLink('https://www.amazon.co.jp/giftcard/use')">www.amazon.co.jp/giftcard/use</a> にアクセスする。
+        </li>
+        <li>サインインする。</li>
+        <li>ギフト券番号を入力し、「アカウントに登録する」をクリックする。</li>
+        <li>登録されたギフト券の金額が画面右側に表示されます。</li>
+        <li>ショッピングをお楽しみください。</li>
+      </ol>
+
+      <div>
+        <p class="steps-info">
+          *　Amazonギフト券は一度アカウントに登録すると、有効期限内は残高がゼロになるまでご利用いただけます。
+        </p>
+      </div>
+    </ion-item>
+
+    <ion-item-divider>To redeem your Gift Card:</ion-item-divider>
+    <ion-item>
+      <ol class="steps-info">
+        <li>Visit
+          <a (click)="openExternalLink('https://www.amazon.co.jp/giftcard/use')">www.amazon.co.jp/giftcard/use</a>
+        </li>
+        <li>Sign-in to your Amazon.co.jp account.</li>
+        <li>Input Gift Card Code, and click “Apply to Your Account” button.</li>
+        <li>The balance of Gift Card amount is shown at the right column.</li>
+        <li>Please enjoy your shopping at Amazon.co.jp!</li>
+        <li>Once Amazon Gift Card is added to your account, you will be able to keep using the Gift Card until the balance becomes 0 JPY before it is expired.</li>
+      </ol>
+    </ion-item>
+
+  </ion-list>
+  <div *ngIf="country == 'japan'" padding class="steps-info">
+    * Amazon Gift Cards Japan 株式会社 (「当社」) が発行するAmazonギフト券 (「ギフト券」)のご利用には、
+    <a (click)="openExternalLink('http://amazon.co.jp')">Amazon.co.jp</a> (PC・モバイルを含み「アマゾンサイト」) のアカウント作成が必要です。ギフト券は、アマゾンサイトでのみご利用できますが、他のギフト券の購入又は一部の会費の支払等には利用できません。このギフト券の有効期限は発行日から10年間です。ギフト券の換金・返金等はできません。当社及び当社の関連会社は、ギフト券の紛失・盗難等について一切責任を負いません。ギフト券に関するお問合せは、カスタマーサービス(℡0120-999-373東京都目黒区下目黒1-8-1)までお願いします。詳細は、細則 (
+    <a (click)="openExternalLink('https://www.amazon.co.jp/giftcard/tc')">www.amazon.co.jp/giftcard/tc</a>)　をご覧下さい。
+    <br>
+    <br>* To use
+    <a (click)="openExternalLink('http://amazon.co.jp')">Amazon.co.jp</a> gift cards (“Gift Card” or “Gift Cards”) issued by Amazon Gift Cards Japan K.K. (“Amazon GC”), you need to create an account on
+    <a (click)="openExternalLink('http://amazon.co.jp')">http://www.amazon.co.jp</a> (including PC and mobile sites. “Amazon Sites”). Gift Cards can only be redeemed through Amazon Sites, but cannot be used to purchase other Gift Cards or to pay certain membership fee available at Amazon Sites. Gift Card balance will expire at 11:59 p.m. (Japan Time) of the date specified as expiration date on each Gift Card. Gift Cards are non-refundable and non-exchangeable. Gift Card cannot be resold or transferred for value. Amazon GC or its affiliates are not responsible if Gift Card is lost, stolen, destroyed or used without your permission. If you want to know your Gift Card balance, expiration date or have any other questions regarding Gift Cards, please call Customer Service (TEL: 0120-999-373, Address: 1-8-1 Shimomeguro, Meguro-ku, Tokyo 153-0064, Japan). For more information, please read the full Terms and Conditions of Gift Cards (
+    <a (click)="openExternalLink('http://www.amazon.co.jp/giftcard/tc')">http://www.amazon.co.jp/giftcard/tc</a>).
+  </div>
+
+  <button ion-item block text-center detail-none *ngIf="card.status == 'FAILURE' || card.cardStatus == 'Canceled' || card.cardStatus == 'Expired' || card.status == 'expired'" class="button-footer assertive" (click)="remove()" translate>Remove</button>
+  <button ion-item block text-center detail-none *ngIf="card.status == 'SUCCESS' && card.cardStatus == 'Fulfilled' && !isTimeExpired" class="assertive" (click)="cancelGiftCard()" translate>Cancel</button>
 </ion-content>
