@@ -151,6 +151,11 @@ $button-md-text-transform: none;
 @import 'roboto';
 @import 'noto-sans';
 
+@font-face {
+  font-family: 'AmazonEmberDisplay';
+  src: url(../assets/fonts/AmazonEmberDisplay_Rg.ttf) format('truetype');
+}
+
 /* Ionic Overrides and Workarounds */
 // Please include a description of the problem solved by the workaround.
 
