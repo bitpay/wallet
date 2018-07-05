@@ -123,7 +123,7 @@ export class ReceivePage extends WalletTabsChild {
     await Observable.timer(400).toPromise();
     this.address = address;
     this.qrAddress = qrAddress;
-    await Observable.timer(600).toPromise();
+    await Observable.timer(200).toPromise();
     this.playAnimation = false;
   }
 
