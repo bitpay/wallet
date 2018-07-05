@@ -12,7 +12,7 @@ msgstr ""
 "Last-Translator: cmgustavo83\n"
 "Language-Team: Polish\n"
 "Language: pl\n"
-"PO-Revision-Date: 2018-06-11 09:24-0400\n"
+"PO-Revision-Date: 2018-07-04 13:58\n"
 
 msgid "(Trusted)"
 msgstr "(Zaufany)"
@@ -20,8 +20,11 @@ msgstr "(Zaufany)"
 msgid "(possible double spend)"
 msgstr "(możliwa podwójna wypłata)"
 
-msgid "* A payment proposal can be deleted if 1) you are the creator, and no other copayer has signed, or 2) 24 hours have passed since the proposal was created."
-msgstr "* Wniosek wypłaty może być usunięty jeśli: 1) Po utworzeniu nie zatwierdził go żaden inny współwłaściciel portfela lub 2) minęły 24 godziny od kiedy wniosek został utworzony."
+msgid "* A payment proposal can be deleted if 1) you are the creator, and no other copayer has signed, or 2) 10 minutes have passed since the proposal was created."
+msgstr ""
+
+msgid "* This field is only for users who, in previous versions (it's not supported anymore), set a password to protect their recovery phrase. This field is not for your encrypt password."
+msgstr ""
 
 msgid "5-star ratings help us get {{appName}} into more hands, and more users means more resources can be committed to the app!"
 msgstr "5-gwiazdkowa ocena pozwoli na wzrost popularności {{appName}}, a większa ilość użytkowników da nam do dyspozycji więcej środków na rozwój aplikacji!"
@@ -218,9 +221,6 @@ msgstr "Stan konta ukryty"
 msgid "Be sure to store your recovery phrase in a secure place. If this app is deleted, your money cannot be recovered without it."
 msgstr "Pamiętaj aby przechowywać swoją kluczową frazę w bezpiecznym miejscu. Jeśli ta aplikacja zostanie usunięta, nie będziesz mógł bez niej odzyskać swoich pieniędzy."
 
-msgid "Bitcoin (BTC) miner fees are high due to record demand for limited space on the Bitcoin network. BitPay does not receive and does not control bitcoin miner fees."
-msgstr "Wysokość opłat dla górników bitcoina (BTC) jest spowodowana rekordowym popytem na ograniczone miejsce w sieci Bitcoin. Bitpay nie otrzymuje ani nie kontroluje opłat dla górników bitcoina."
-
 msgid "Bitcoin Address"
 msgstr "Adres bitcoin"
 
@@ -257,6 +257,9 @@ msgstr "Polityka prowizji sieci Bitcoin"
 msgid "Bitcoin transactions include a fee collected by miners on the network."
 msgstr "Transakcje Bitcoin obejmują prowizję pobieraną przez górników w sieci."
 
+msgid "Bought {{ amount }}"
+msgstr ""
+
 msgid "Broadcast Payment"
 msgstr "Przekaż płatność"
 
@@ -269,6 +272,9 @@ msgstr "Przekazywanie transakcji..."
 msgid "Buy Gift Card"
 msgstr "Kup kartę podarunkową"
 
+msgid "Buy a Gift Card"
+msgstr ""
+
 msgid "Buying Bitcoin..."
 msgstr "Zakup bitcoinów..."
 
@@ -276,6 +282,9 @@ msgid "Buying Gift Card..."
 msgstr "Kupowanie karty podarunkowej..."
 
 msgid "By providing your email address, you give explicit consent to BitPay to use your email address to send you email notifications about payments."
+msgstr ""
+
+msgid "CANCELED"
 msgstr ""
 
 msgid "Calculating fee..."
@@ -286,6 +295,9 @@ msgstr "Anuluj"
 
 msgid "Cancel invitation"
 msgstr "Anuluj zaproszenie"
+
+msgid "Canceled"
+msgstr ""
 
 msgid "Canceling Gift Card..."
 msgstr "Anulowanie karty podarunkowej..."
@@ -354,6 +366,9 @@ msgid "Confirm"
 msgstr "Potwierdź"
 
 msgid "Confirm & Finish"
+msgstr ""
+
+msgid "Confirm purchase"
 msgstr ""
 
 msgid "Confirm to shift {{fromCoin}} to {{toCoin}}"
@@ -617,6 +632,9 @@ msgstr ""
 msgid "Duplicating wallet..."
 msgstr "Duplikowanie portfela..."
 
+msgid "EXPIRED"
+msgstr ""
+
 msgid "Each bitcoin wallet can generate billions of addresses from your 12-word backup. A new address is automatically generated and shown each time you receive a payment."
 msgstr ""
 
@@ -658,6 +676,9 @@ msgstr "Wprowadź nowe hasło"
 
 msgid "Enter a password to encrypt your wallet"
 msgstr "Wprowadź hasło aby zaszyfrować swój portfel"
+
+msgid "Enter a transaction memo"
+msgstr ""
 
 msgid "Enter custom fee in sat/byte"
 msgstr "Wprowadź standardową opłatę w sat/byte"
@@ -752,6 +773,9 @@ msgstr "Rozszerzone klucze publiczne"
 msgid "Extracting Wallet information..."
 msgstr "Wyodrębnianie danych z portfela..."
 
+msgid "FAILURE"
+msgstr ""
+
 msgid "Failed"
 msgstr ""
 
@@ -824,7 +848,7 @@ msgstr "Generowanie pliku csv..."
 msgid "Generating new address..."
 msgstr "Generowanie nowego adresu..."
 
-msgid "Get local cash anywhere you go, from any Visa&reg; compatible ATM. ATM bank fees may apply."
+msgid "Get local cash anywhere you go, from any Visa® compatible ATM. ATM bank fees may apply."
 msgstr ""
 
 msgid "Get news and updates from BitPay"
@@ -845,11 +869,23 @@ msgstr "Karta podarunkowa"
 msgid "Gift Card Amount"
 msgstr ""
 
+msgid "Gift Card Amount:"
+msgstr ""
+
 msgid "Gift Card is not available to use anymore"
 msgstr "Karta podarunkowa nie jest już dostępna"
 
+msgid "Gift Cards are only redeemable on Amazon.co.jp (Japan website)."
+msgstr ""
+
+msgid "Gift Cards are only redeemable on Amazon.com (US website)."
+msgstr ""
+
 msgid "Gift card expired"
 msgstr "Karta upominkowa wygasła"
+
+msgid "Gift card generated and ready to use."
+msgstr ""
 
 msgid "Go Back"
 msgstr "Powrót"
@@ -1085,6 +1121,9 @@ msgstr ""
 msgid "Miner fee"
 msgstr ""
 
+msgid "Miner fees are high due to record demand for limited space on the network. BitPay does not receive and does not control miner fees."
+msgstr ""
+
 msgid "Minimum amount required is {{min}}"
 msgstr ""
 
@@ -1259,6 +1298,12 @@ msgstr "Na tym ekranie można zobaczyć wszystkie swoje portfele, konta i środk
 msgid "Only redeemable on Mercado Livre (Brazil)"
 msgstr ""
 
+msgid "Only redeemable on www.amazon.co.jp (Japan website)."
+msgstr ""
+
+msgid "Only redeemable on www.amazon.com (US website)."
+msgstr ""
+
 msgid "Open"
 msgstr "Otwórz"
 
@@ -1291,6 +1336,9 @@ msgstr "Zamów kartę bitpay"
 
 msgid "Ouch!"
 msgstr "Ała!"
+
+msgid "PENDING"
+msgstr ""
 
 msgid "PIN"
 msgstr "PIN"
@@ -1357,6 +1405,9 @@ msgstr "Oczekiwanie"
 
 msgid "Pending Proposals"
 msgstr "Rozpatrywane płatności"
+
+msgid "Pending to confirmation"
+msgstr ""
 
 msgid "Permanently delete this wallet."
 msgstr "Trwale usuń portfel."
@@ -1517,8 +1568,8 @@ msgstr "Przywracanie portfela..."
 msgid "Redeem Now"
 msgstr "Zrealizuj teraz"
 
-msgid "Reject"
-msgstr "Odrzuć"
+msgid "Reject Payment Proposal"
+msgstr ""
 
 msgid "Rejected"
 msgstr "Odrzucono"
@@ -1562,6 +1613,9 @@ msgstr ""
 msgid "Retry camera"
 msgstr ""
 
+msgid "STILL PENDING"
+msgstr ""
+
 msgid "Save"
 msgstr "Zapisz"
 
@@ -1602,6 +1656,9 @@ msgid "Security"
 msgstr "Bezpieczeństwo"
 
 msgid "See invoice"
+msgstr ""
+
+msgid "See invoice &rarr;"
 msgstr ""
 
 msgid "See transaction"
@@ -1772,8 +1829,14 @@ msgstr ""
 msgid "Start"
 msgstr ""
 
+msgid "Status:"
+msgstr ""
+
 msgid "Still pending"
 msgstr "Jeszcze w toku"
+
+msgid "Still waiting confirmation (Use higher fees setting to faster delivery)"
+msgstr ""
 
 msgid "Suggested by Merchant"
 msgstr ""
@@ -1880,11 +1943,17 @@ msgstr ""
 msgid "There is an error in the form"
 msgstr "Wystąpił błąd w postaci"
 
+msgid "There was a failure to the create gift card. Please, contact BitPay support."
+msgstr ""
+
 msgid "There's obviously something we're doing wrong. How could we improve your experience?"
 msgstr ""
 
 msgid "This app is fantastic!"
 msgstr "Ta aplikacja jest fantastyczna!"
+
+msgid "This app is not available for your device."
+msgstr ""
 
 msgid "This app stores your bitcoin with cutting-edge security."
 msgstr "Ta aplikacja przechowuje Twoje bitcoiny z zaawansowanymi zabezpieczeniami."
@@ -1898,7 +1967,11 @@ msgstr ""
 msgid "This recovery phrase was created with a password. To recover this wallet both the recovery phrase and password are needed."
 msgstr "Ta kluczowa fraza został utworzona przy użyciu hasła. Aby odzyskać portfel potrzebna jest kluczowa fraza i hasło."
 
-msgid "This transaction amount is too small compared to current Bitcoin network fees. Spending these funds will need a Bitcoin network fee cost comparable to the funds itself."
+msgid "This service only accepts integers amounts"
+msgstr ""
+
+msgid "This transaction amount is too small compared to current Bitcoin network fees. Spending these funds will need a Bitcoin network\n"
+"          fee cost comparable to the funds itself."
 msgstr ""
 
 msgid "This transaction could take a long time to confirm or could be dropped due to the low fees set by the sender"
@@ -1979,10 +2052,13 @@ msgstr ""
 msgid "Transfer to Contact"
 msgstr ""
 
+msgid "Try again"
+msgstr ""
+
 msgid "Try again in {{expires}}"
 msgstr "Spróbuj ponownie w {{expires}}"
 
-msgid "Turn bitcoin into dollars, swipe anywhere Visa&reg; is accepted."
+msgid "Turn bitcoin into dollars, swipe anywhere Visa® is accepted."
 msgstr ""
 
 msgid "Type the recovery phrase (usually 12 words)"
@@ -2077,6 +2153,12 @@ msgstr "Zobacz wszystkie adresy"
 
 msgid "View on blockchain"
 msgstr "Zobacz na blockchainie"
+
+msgid "Visit Amazon.co.jp"
+msgstr ""
+
+msgid "Visit Amazon.com"
+msgstr ""
 
 msgid "Visit ShapeShift.io"
 msgstr ""
@@ -2306,6 +2388,12 @@ msgstr "Twoje pomysły, opinie lub komentarze"
 msgid "Your name"
 msgstr "Twój nick"
 
+msgid "Your purchase could not be completed"
+msgstr ""
+
+msgid "Your purchase was added to the list of pending"
+msgstr ""
+
 msgid "Your wallet is never saved to cloud storage or standard device backups."
 msgstr "Twój portfel nigdy nie jest przechowywany w chmurze lub na urządzeniach do tworzenia kopii zapasowych."
 
@@ -2327,6 +2415,9 @@ msgstr "ja"
 msgid "no password"
 msgstr ""
 
+msgid "of total amount"
+msgstr ""
+
 msgid "password mismatch"
 msgstr ""
 
@@ -2346,9 +2437,6 @@ msgid "{{fee}} {{coin}} will be deducted for bitcoin networking fees."
 msgstr ""
 
 msgid "{{tx.feeRateStr}} of the total amount"
-msgstr ""
-
-msgid "{{tx.txp[wallet.id].feeRatePerStr}} of total amount"
 msgstr ""
 
 msgid "{{updatingTxHistoryProgress}} transactions downloaded"

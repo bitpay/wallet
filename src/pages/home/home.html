@@ -34,6 +34,27 @@
       </ion-item>
     </ion-card>
 
+    <ion-card *ngIf="showAnnouncement">
+      <ion-card-header class="wallet-ready">
+        <ion-row>
+          <button ion-button clear icon-only item-end color="grey" (click)="hideAnnouncement()">
+            <ion-icon name="close"></ion-icon>
+          </button>
+        </ion-row>
+      </ion-card-header>
+      <ion-card-content class="check">
+        <img class="announcement-logo" src="assets/img/amazon/japan/GCs-logo-japan-cllb.jpg" alt="Amazon.co.jp Gift Card">
+        <div class="subtitle">
+          Amazonギフト券が利用可能になりました！ ビットコインとビットコインキャッシュでAmazon.co.jpのギフト券（コードタイプ）を購入できます。
+        </div>
+        <div margin-top (click)="openAnnouncement()">
+          <span ion-text color="primary">
+            始めましょう
+          </span>
+        </div>
+      </ion-card-content>
+    </ion-card>
+
     <ion-card class="new-release" *ngIf="newRelease">
       <div class="new-release-icon">
         <img src="assets/img/icon-update.svg" />

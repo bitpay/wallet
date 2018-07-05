@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { ModalController, NavController, NavParams } from 'ionic-angular';
 import * as _ from 'lodash';
-import { Logger } from '../../../providers/logger/logger';
 
 // Pages
 import { AmountPage } from '../../send/amount/amount';
@@ -10,6 +9,8 @@ import { AmazonCardDetailsPage } from './amazon-card-details/amazon-card-details
 // Providers
 import { AmazonProvider } from '../../../providers/amazon/amazon';
 import { ExternalLinkProvider } from '../../../providers/external-link/external-link';
+import { Logger } from '../../../providers/logger/logger';
+import { OnGoingProcessProvider } from '../../../providers/on-going-process/on-going-process';
 import { PopupProvider } from '../../../providers/popup/popup';
 import { TimeProvider } from '../../../providers/time/time';
 import { GiftCardNewData } from '../gift-cards';
@@ -21,11 +22,15 @@ import { GiftCardNewData } from '../gift-cards';
 export class AmazonPage {
   public network: string;
   public giftCards;
-
-  private updateGiftCard: boolean;
+  public country: string;
+  public pageTitle: string;
   public updatingPending;
   public card;
   public invoiceId: string;
+  public currency: string;
+  public onlyIntegers: boolean;
+
+  private updateGiftCard: boolean;
 
   constructor(
     private amazonProvider: AmazonProvider,
@@ -35,6 +40,7 @@ export class AmazonPage {
     private navCtrl: NavController,
     private navParams: NavParams,
     private popupProvider: PopupProvider,
+    private onGoingProcessProvider: OnGoingProcessProvider,
     private timeProvider: TimeProvider
   ) {}
 
@@ -72,7 +78,16 @@ export class AmazonPage {
     }
   }
 
-  private initAmazon(): Promise<any> {
+  private async initAmazon(): Promise<any> {
+    if (!this.amazonProvider.currency) {
+      this.onGoingProcessProvider.set('');
+      await this.amazonProvider.setCurrencyByLocation();
+      this.onGoingProcessProvider.clear();
+    }
+    this.currency = this.amazonProvider.currency;
+    this.country = this.amazonProvider.country;
+    this.pageTitle = this.amazonProvider.pageTitle;
+    this.onlyIntegers = this.amazonProvider.onlyIntegers;
     return new Promise(resolve => {
       this.amazonProvider.getPendingGiftCards((err, gcds) => {
         if (err) this.logger.error(err);
@@ -199,8 +214,9 @@ export class AmazonPage {
       case 'Amount':
         this.navCtrl.push(AmountPage, {
           nextPage: 'BuyAmazonPage',
-          currency: 'USD',
-          fixedUnit: true
+          currency: this.currency,
+          fixedUnit: true,
+          onlyIntegers: this.onlyIntegers
         });
         break;
     }

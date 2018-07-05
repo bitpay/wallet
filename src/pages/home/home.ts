@@ -27,6 +27,7 @@ import { ProposalsPage } from './proposals/proposals';
 
 // Providers
 import { AddressBookProvider } from '../../providers/address-book/address-book';
+import { AmazonProvider } from '../../providers/amazon/amazon';
 import { AppProvider } from '../../providers/app/app';
 import { BitPayCardProvider } from '../../providers/bitpay-card/bitpay-card';
 import { BwcErrorProvider } from '../../providers/bwc-error/bwc-error';
@@ -69,6 +70,7 @@ export class HomePage {
   public homeIntegrations;
   public bitpayCardItems;
   public showBitPayCard: boolean = false;
+  public showAnnouncement: boolean = false;
 
   public showRateCard: boolean;
   public homeTip: boolean;
@@ -105,7 +107,8 @@ export class HomePage {
     private bitPayCardProvider: BitPayCardProvider,
     private translate: TranslateService,
     private emailProvider: EmailNotificationsProvider,
-    private replaceParametersProvider: ReplaceParametersProvider
+    private replaceParametersProvider: ReplaceParametersProvider,
+    private amazonProvider: AmazonProvider
   ) {
     this.updatingWalletId = {};
     this.addressbook = {};
@@ -139,6 +142,7 @@ export class HomePage {
     if (this.isNW) this.checkUpdate();
     this.checkHomeTip();
     this.checkFeedbackInfo();
+    this.checkAnnouncement();
 
     this.subscribeBwsEvents();
 
@@ -284,6 +288,25 @@ export class HomePage {
   public hideHomeTip(): void {
     this.persistenceProvider.setHomeTipAccepted('accepted');
     this.homeTip = false;
+  }
+
+  private async checkAnnouncement() {
+    if (!this.amazonProvider.currency)
+      await this.amazonProvider.setCurrencyByLocation();
+    if (this.amazonProvider.currency == 'JPY') {
+      this.persistenceProvider.getShowAmazonJapanAnnouncement().then(value => {
+        if (!value) this.showAnnouncement = true;
+      });
+    }
+  }
+
+  public hideAnnouncement(): void {
+    this.persistenceProvider.setShowAmazonJapanAnnouncement('hide');
+    this.showAnnouncement = false;
+  }
+
+  public openAnnouncement(): void {
+    this.navCtrl.push(AmazonPage);
   }
 
   private checkFeedbackInfo() {
@@ -579,7 +602,7 @@ export class HomePage {
     this.navCtrl.push(ActivityPage);
   }
 
-  public goTo(page): void {
+  public goTo(page: string): void {
     const pageMap = {
       AmazonPage,
       BitPayCardIntroPage,
@@ -588,6 +611,7 @@ export class HomePage {
       MercadoLibrePage,
       ShapeshiftPage
     };
+
     this.navCtrl.push(pageMap[page]);
   }
 

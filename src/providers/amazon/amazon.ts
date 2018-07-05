@@ -12,6 +12,12 @@ import { PersistenceProvider } from '../persistence/persistence';
 export class AmazonProvider {
   public credentials;
   public limitPerDay: number;
+  public country: string;
+  public currency: string;
+  public redeemAmazonUrl: string;
+  public amazonNetwork: string;
+  public pageTitle: string;
+  public onlyIntegers: boolean;
 
   constructor(
     private http: HttpClient,
@@ -31,43 +37,81 @@ export class AmazonProvider {
       this.credentials.NETWORK === 'testnet'
         ? 'https://test.bitpay.com'
         : 'https://bitpay.com';
-    this.limitPerDay = 2000;
   }
 
-  public getNetwork() {
+  public getNetwork(): string {
     return this.credentials.NETWORK;
   }
 
-  public savePendingGiftCard(gc, opts, cb) {
-    var network = this.getNetwork();
-    this.persistenceProvider.getAmazonGiftCards(network).then(oldGiftCards => {
-      if (_.isString(oldGiftCards)) {
-        oldGiftCards = JSON.parse(oldGiftCards);
-      }
-      if (_.isString(gc)) {
-        gc = JSON.parse(gc);
-      }
-      var inv = oldGiftCards || {};
-      inv[gc.invoiceId] = gc;
-      if (opts && (opts.error || opts.status)) {
-        inv[gc.invoiceId] = _.assign(inv[gc.invoiceId], opts);
-      }
-      if (opts && opts.remove) {
-        delete inv[gc.invoiceId];
-      }
-
-      inv = JSON.stringify(inv);
-      this.persistenceProvider.setAmazonGiftCards(network, inv);
-      return cb(null);
+  public async setCurrencyByLocation() {
+    return new Promise(resolve => {
+      this.getSupportedCards()
+        .then(currency => {
+          this.setCountryParameters(currency);
+          resolve();
+        })
+        .catch(() => {
+          this.setCountryParameters();
+          resolve();
+        });
     });
   }
 
-  public getPendingGiftCards(cb) {
-    var network = this.getNetwork();
+  private setCountryParameters(currency?: string): void {
+    switch (currency) {
+      case 'JPY':
+        this.currency = currency;
+        this.country = 'japan';
+        this.limitPerDay = 200000;
+        this.redeemAmazonUrl = 'https://www.amazon.co.jp/gc/redeem?claimCode=';
+        this.amazonNetwork = this.getNetwork() + '-japan';
+        this.pageTitle = 'Amazon.co.jp ギフト券';
+        this.onlyIntegers = true;
+        break;
+      default:
+        // For USA
+        this.currency = 'USD';
+        this.country = 'usa';
+        this.limitPerDay = 2000;
+        this.redeemAmazonUrl = 'https://www.amazon.com/gc/redeem?claimCode=';
+        this.amazonNetwork = this.getNetwork();
+        this.pageTitle = 'Amazon.com Gift Cards';
+        this.onlyIntegers = false;
+        break;
+    }
+    this.logger.info('Set Amazon Gift Card to: ' + this.currency);
+  }
+
+  public savePendingGiftCard(gc, opts, cb) {
     this.persistenceProvider
-      .getAmazonGiftCards(network)
+      .getAmazonGiftCards(this.amazonNetwork)
+      .then(oldGiftCards => {
+        if (_.isString(oldGiftCards)) {
+          oldGiftCards = JSON.parse(oldGiftCards);
+        }
+        if (_.isString(gc)) {
+          gc = JSON.parse(gc);
+        }
+        var inv = oldGiftCards || {};
+        inv[gc.invoiceId] = gc;
+        if (opts && (opts.error || opts.status)) {
+          inv[gc.invoiceId] = _.assign(inv[gc.invoiceId], opts);
+        }
+        if (opts && opts.remove) {
+          delete inv[gc.invoiceId];
+        }
+
+        inv = JSON.stringify(inv);
+        this.persistenceProvider.setAmazonGiftCards(this.amazonNetwork, inv);
+        return cb(null);
+      });
+  }
+
+  public getPendingGiftCards(cb) {
+    this.persistenceProvider
+      .getAmazonGiftCards(this.amazonNetwork)
       .then(giftCards => {
-        return cb(null, giftCards ? giftCards : null);
+        return cb(null, giftCards && !_.isEmpty(giftCards) ? giftCards : null);
       })
       .catch(err => {
         return cb(err);
@@ -132,13 +176,11 @@ export class AmazonProvider {
                 ? 'PENDING'
                 : data.status;
           data.status = status;
-          this.logger.info('Amazon.com Gift Card Create/Update: ' + status);
+          this.logger.info('Amazon Gift Card Create/Update: ' + status);
           return cb(null, data);
         },
         data => {
-          this.logger.error(
-            'Amazon.com Gift Card Create/Update: ' + data.message
-          );
+          this.logger.error('Amazon Gift Card Create/Update: ' + data.message);
           return cb(data);
         }
       );
@@ -155,23 +197,43 @@ export class AmazonProvider {
       .post(this.credentials.BITPAY_API_URL + '/amazon-gift/cancel', dataSrc)
       .subscribe(
         data => {
-          this.logger.info('Amazon.com Gift Card Cancel: SUCCESS');
+          this.logger.info('Amazon Gift Card Cancel: SUCCESS');
           return cb(null, data);
         },
         data => {
-          this.logger.error('Amazon.com Gift Card Cancel: ' + data.message);
+          this.logger.error('Amazon Gift Card Cancel: ' + data.message);
           return cb(data);
         }
       );
   }
 
+  private getSupportedCards(): Promise<any> {
+    return new Promise((resolve, reject) => {
+      this.http
+        .get(this.credentials.BITPAY_API_URL + '/amazon-gift/supportedCards')
+        .subscribe(
+          data => {
+            this.logger.info('Amazon Gift Card Supported Cards: SUCCESS');
+            return resolve(data['supportedCards'][0]);
+          },
+          data => {
+            this.logger.error(
+              'Amazon Gift Card Supported Cards: ' + data.message
+            );
+            return reject(data);
+          }
+        );
+    });
+  }
+
   public register() {
+    const showItem = !!this.configProvider.get().showIntegration['amazon'];
     this.homeIntegrationsProvider.register({
       name: 'amazon',
-      title: 'Amazon.com Gift Cards',
+      title: 'Amazon Gift Cards',
       icon: 'assets/img/amazon/icon-amazon.svg',
       page: 'AmazonPage',
-      show: !!this.configProvider.get().showIntegration['amazon']
+      show: showItem
     });
   }
 }

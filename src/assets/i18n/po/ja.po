@@ -12,7 +12,7 @@ msgstr ""
 "Last-Translator: cmgustavo83\n"
 "Language-Team: Japanese\n"
 "Language: ja\n"
-"PO-Revision-Date: 2018-06-11 09:23-0400\n"
+"PO-Revision-Date: 2018-07-04 13:58\n"
 
 msgid "(Trusted)"
 msgstr "(信頼済み)"
@@ -20,8 +20,11 @@ msgstr "(信頼済み)"
 msgid "(possible double spend)"
 msgstr "(二重払い可能性あり)"
 
-msgid "* A payment proposal can be deleted if 1) you are the creator, and no other copayer has signed, or 2) 24 hours have passed since the proposal was created."
-msgstr "* 送金の提案の取下げは①他のウォレット参加者に署名されていなかった場合、提案者に提案を取り下げることができます。②提案の起案から24時間が経っても解決しなかった場合、全員に取り下げることができます。"
+msgid "* A payment proposal can be deleted if 1) you are the creator, and no other copayer has signed, or 2) 10 minutes have passed since the proposal was created."
+msgstr ""
+
+msgid "* This field is only for users who, in previous versions (it's not supported anymore), set a password to protect their recovery phrase. This field is not for your encrypt password."
+msgstr ""
 
 msgid "5-star ratings help us get {{appName}} into more hands, and more users means more resources can be committed to the app!"
 msgstr "5つ星の評価をいただけると、もっとたくさんの人にこのアプリを届けることができます。そして、ユーザーが増えればこのアプリの改善に当てられる人員やリソースも増えます。"
@@ -220,9 +223,6 @@ msgstr ""
 msgid "Be sure to store your recovery phrase in a secure place. If this app is deleted, your money cannot be recovered without it."
 msgstr "書き留めた復元フレーズは金庫など、安全な場所にて保管して下さい。このアプリが削除されたら、復元フレーズが必須になってきます。"
 
-msgid "Bitcoin (BTC) miner fees are high due to record demand for limited space on the Bitcoin network. BitPay does not receive and does not control bitcoin miner fees."
-msgstr ""
-
 msgid "Bitcoin Address"
 msgstr "ビットコインアドレス"
 
@@ -259,6 +259,9 @@ msgstr ""
 msgid "Bitcoin transactions include a fee collected by miners on the network."
 msgstr "ビットコインの取引はネットワークの安全を守る「採掘者」と呼ばれる者達に送る手数料が含まれます。"
 
+msgid "Bought {{ amount }}"
+msgstr ""
+
 msgid "Broadcast Payment"
 msgstr "取引送信"
 
@@ -271,6 +274,9 @@ msgstr ""
 msgid "Buy Gift Card"
 msgstr ""
 
+msgid "Buy a Gift Card"
+msgstr ""
+
 msgid "Buying Bitcoin..."
 msgstr "ビットコインを購入中..."
 
@@ -278,6 +284,9 @@ msgid "Buying Gift Card..."
 msgstr ""
 
 msgid "By providing your email address, you give explicit consent to BitPay to use your email address to send you email notifications about payments."
+msgstr ""
+
+msgid "CANCELED"
 msgstr ""
 
 msgid "Calculating fee..."
@@ -288,6 +297,9 @@ msgstr "キャンセル"
 
 msgid "Cancel invitation"
 msgstr "招待状のキャンセル"
+
+msgid "Canceled"
+msgstr ""
 
 msgid "Canceling Gift Card..."
 msgstr ""
@@ -356,6 +368,9 @@ msgid "Confirm"
 msgstr "確認"
 
 msgid "Confirm & Finish"
+msgstr ""
+
+msgid "Confirm purchase"
 msgstr ""
 
 msgid "Confirm to shift {{fromCoin}} to {{toCoin}}"
@@ -619,6 +634,9 @@ msgstr ""
 msgid "Duplicating wallet..."
 msgstr "ウォレットを複製しています..."
 
+msgid "EXPIRED"
+msgstr ""
+
 msgid "Each bitcoin wallet can generate billions of addresses from your 12-word backup. A new address is automatically generated and shown each time you receive a payment."
 msgstr ""
 
@@ -659,6 +677,9 @@ msgid "Enter a new encrypt password"
 msgstr ""
 
 msgid "Enter a password to encrypt your wallet"
+msgstr ""
+
+msgid "Enter a transaction memo"
 msgstr ""
 
 msgid "Enter custom fee in sat/byte"
@@ -754,6 +775,9 @@ msgstr "拡張公開鍵"
 msgid "Extracting Wallet information..."
 msgstr "ウォレット情報を抽出中…"
 
+msgid "FAILURE"
+msgstr ""
+
 msgid "Failed"
 msgstr ""
 
@@ -826,7 +850,7 @@ msgstr "CSVファイル作成中…"
 msgid "Generating new address..."
 msgstr "新規アドレスを生成中..."
 
-msgid "Get local cash anywhere you go, from any Visa&reg; compatible ATM. ATM bank fees may apply."
+msgid "Get local cash anywhere you go, from any Visa® compatible ATM. ATM bank fees may apply."
 msgstr ""
 
 msgid "Get news and updates from BitPay"
@@ -847,11 +871,23 @@ msgstr "ギフトカード"
 msgid "Gift Card Amount"
 msgstr ""
 
+msgid "Gift Card Amount:"
+msgstr ""
+
 msgid "Gift Card is not available to use anymore"
 msgstr "ギフトカードがもう使用できません。"
 
+msgid "Gift Cards are only redeemable on Amazon.co.jp (Japan website)."
+msgstr ""
+
+msgid "Gift Cards are only redeemable on Amazon.com (US website)."
+msgstr ""
+
 msgid "Gift card expired"
 msgstr "期限切れのギフトカード"
+
+msgid "Gift card generated and ready to use."
+msgstr ""
 
 msgid "Go Back"
 msgstr "戻る"
@@ -1087,6 +1123,9 @@ msgstr ""
 msgid "Miner fee"
 msgstr ""
 
+msgid "Miner fees are high due to record demand for limited space on the network. BitPay does not receive and does not control miner fees."
+msgstr ""
+
 msgid "Minimum amount required is {{min}}"
 msgstr ""
 
@@ -1261,6 +1300,12 @@ msgstr "この画面では、全てのウォレット、アカウント、資産
 msgid "Only redeemable on Mercado Livre (Brazil)"
 msgstr ""
 
+msgid "Only redeemable on www.amazon.co.jp (Japan website)."
+msgstr ""
+
+msgid "Only redeemable on www.amazon.com (US website)."
+msgstr ""
+
 msgid "Open"
 msgstr "開く"
 
@@ -1292,6 +1337,9 @@ msgid "Order the BitPay Card"
 msgstr ""
 
 msgid "Ouch!"
+msgstr ""
+
+msgid "PENDING"
 msgstr ""
 
 msgid "PIN"
@@ -1359,6 +1407,9 @@ msgstr "未決"
 
 msgid "Pending Proposals"
 msgstr "保留中の提案"
+
+msgid "Pending to confirmation"
+msgstr ""
 
 msgid "Permanently delete this wallet."
 msgstr "ウォレットを完全に削除する"
@@ -1519,7 +1570,7 @@ msgstr "ウォレットを再作成中…"
 msgid "Redeem Now"
 msgstr ""
 
-msgid "Reject"
+msgid "Reject Payment Proposal"
 msgstr ""
 
 msgid "Rejected"
@@ -1564,6 +1615,9 @@ msgstr ""
 msgid "Retry camera"
 msgstr ""
 
+msgid "STILL PENDING"
+msgstr ""
+
 msgid "Save"
 msgstr "保存"
 
@@ -1604,6 +1658,9 @@ msgid "Security"
 msgstr "セキュリティ"
 
 msgid "See invoice"
+msgstr ""
+
+msgid "See invoice &rarr;"
 msgstr ""
 
 msgid "See transaction"
@@ -1776,8 +1833,14 @@ msgstr "この入力の組み合わせを送金するために膨大なビット
 msgid "Start"
 msgstr ""
 
+msgid "Status:"
+msgstr ""
+
 msgid "Still pending"
 msgstr "まだ未決"
+
+msgid "Still waiting confirmation (Use higher fees setting to faster delivery)"
+msgstr ""
 
 msgid "Suggested by Merchant"
 msgstr ""
@@ -1884,11 +1947,17 @@ msgstr ""
 msgid "There is an error in the form"
 msgstr "フォームにエラーがありました"
 
+msgid "There was a failure to the create gift card. Please, contact BitPay support."
+msgstr ""
+
 msgid "There's obviously something we're doing wrong. How could we improve your experience?"
 msgstr ""
 
 msgid "This app is fantastic!"
 msgstr "このアプリは素晴らしいです!"
+
+msgid "This app is not available for your device."
+msgstr ""
 
 msgid "This app stores your bitcoin with cutting-edge security."
 msgstr "このアプリは、最先端のセキュリティであなたのビットコインをお守りします。"
@@ -1902,8 +1971,12 @@ msgstr ""
 msgid "This recovery phrase was created with a password. To recover this wallet both the recovery phrase and password are needed."
 msgstr "この復元フレーズにパスワードがかかっています。このウォレットを復元するためには、復元フレーズに加え、パスワードも必要です。"
 
-msgid "This transaction amount is too small compared to current Bitcoin network fees. Spending these funds will need a Bitcoin network fee cost comparable to the funds itself."
-msgstr "この取引の金額はビットコインネットワーク手数料より低いです。送金額より大きい手数料を払ってしまうことになります。"
+msgid "This service only accepts integers amounts"
+msgstr ""
+
+msgid "This transaction amount is too small compared to current Bitcoin network fees. Spending these funds will need a Bitcoin network\n"
+"          fee cost comparable to the funds itself."
+msgstr ""
 
 msgid "This transaction could take a long time to confirm or could be dropped due to the low fees set by the sender"
 msgstr "この取引は承認されるまで非常に時間のかかる可能性があります。承認されずにネットワークに捨てられてしまう危険性もありますので、承認されるまでお待ちいただくことを強くおすすめします。"
@@ -1983,10 +2056,13 @@ msgstr ""
 msgid "Transfer to Contact"
 msgstr ""
 
+msgid "Try again"
+msgstr ""
+
 msgid "Try again in {{expires}}"
 msgstr "{{expires}} 経過後にもう一度試してください。"
 
-msgid "Turn bitcoin into dollars, swipe anywhere Visa&reg; is accepted."
+msgid "Turn bitcoin into dollars, swipe anywhere Visa® is accepted."
 msgstr ""
 
 msgid "Type the recovery phrase (usually 12 words)"
@@ -2081,6 +2157,12 @@ msgstr ""
 
 msgid "View on blockchain"
 msgstr "ブロックチェーンで詳細を閲覧"
+
+msgid "Visit Amazon.co.jp"
+msgstr ""
+
+msgid "Visit Amazon.com"
+msgstr ""
 
 msgid "Visit ShapeShift.io"
 msgstr ""
@@ -2310,6 +2392,12 @@ msgstr "提案、評価、コメントなど"
 msgid "Your name"
 msgstr "自分の名前"
 
+msgid "Your purchase could not be completed"
+msgstr ""
+
+msgid "Your purchase was added to the list of pending"
+msgstr ""
+
 msgid "Your wallet is never saved to cloud storage or standard device backups."
 msgstr "ウォレットは一度もクラウドへ保存されたりすることはありませんし、携帯電話などに付いている標準バックアップ機能ではバックアップされません！！！！"
 
@@ -2331,6 +2419,9 @@ msgstr "自分"
 msgid "no password"
 msgstr ""
 
+msgid "of total amount"
+msgstr ""
+
 msgid "password mismatch"
 msgstr ""
 
@@ -2350,9 +2441,6 @@ msgid "{{fee}} {{coin}} will be deducted for bitcoin networking fees."
 msgstr ""
 
 msgid "{{tx.feeRateStr}} of the total amount"
-msgstr ""
-
-msgid "{{tx.txp[wallet.id].feeRatePerStr}} of total amount"
 msgstr ""
 
 msgid "{{updatingTxHistoryProgress}} transactions downloaded"

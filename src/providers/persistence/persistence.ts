@@ -357,6 +357,8 @@ export class PersistenceProvider {
       .then(() => this.removeWalletOrder(walletId));
   }
 
+  // Amazon Gift Cards
+
   setAmazonGiftCards(network: string, gcs) {
     return this.storage.set(Keys.AMAZON_GIFT_CARDS(network), gcs);
   }
@@ -524,5 +526,17 @@ export class PersistenceProvider {
 
   removeEmailLawCompliance() {
     return this.storage.remove('emailLawCompliance');
+  }
+
+  setShowAmazonJapanAnnouncement(value: string) {
+    return this.storage.set('showAmazonJapanAnnouncement', value);
+  }
+
+  getShowAmazonJapanAnnouncement() {
+    return this.storage.get('showAmazonJapanAnnouncement');
+  }
+
+  removeShowAmazonJapanAnnouncement() {
+    return this.storage.remove('showAmazonJapanAnnouncement');
   }
 }
