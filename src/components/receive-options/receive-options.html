@@ -1,17 +1,17 @@
 <action-sheet>
-    <div sheet-content class="options-container">
-        <div class="option" (click)="optionClicked('request-amount')">
-            <div class="option-icon">
-                <img src="assets/img/specific-amount.svg">
-            </div>
-            <div translate class="option-text">Request Specific Amount</div>
-        </div>
-        <div *ngIf="showShare" class="option" (click)="optionClicked('share-address')">
-            <div class="option-icon">
-                <img src="assets/img/icon-share.svg">
-            </div>
-            <div translate class="option-text">Share Address</div>
-        </div>
-        <div (click)="dismiss()" class="cancel-btn">Cancel</div>
+  <div sheet-content class="options-container">
+    <div class="option" (click)="optionClicked('request-amount')">
+      <div class="option-icon">
+        <img src="assets/img/specific-amount.svg">
+      </div>
+      <div translate class="option-text">Request Specific Amount</div>
     </div>
+    <div *ngIf="showShare" class="option" (click)="optionClicked('share-address')">
+      <div class="option-icon">
+        <img src="assets/img/icon-share.svg">
+      </div>
+      <div translate class="option-text">Share Address</div>
+    </div>
+    <div (click)="dismiss()" class="cancel-btn">Cancel</div>
+  </div>
 </action-sheet>

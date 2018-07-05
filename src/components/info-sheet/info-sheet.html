@@ -1,18 +1,18 @@
 <action-sheet>
-    <div sheet-content class="info-container" [ngSwitch]="sheetType">
-        <div class="confirm-sheet" *ngSwitchCase="'address-copied'">
-            <div class="sheet-title">
-                <div class="title-icon">
-                    <img src="assets/img/green-check-circled.svg">
-                </div>
-                {{sheetTitle}}
-            </div>
-            <div class="sheet-text">
-                {{sheetText}}
-            </div>
-            <div class="sheet-btn" (click)="dismiss()">
-                OK
-            </div>
+  <div sheet-content class="info-container" [ngSwitch]="sheetType">
+    <div class="confirm-sheet" *ngSwitchCase="'address-copied'">
+      <div class="sheet-title">
+        <div class="title-icon">
+          <img src="assets/img/green-check-circled.svg">
         </div>
+        {{sheetTitle}}
+      </div>
+      <div class="sheet-text">
+        {{sheetText}}
+      </div>
+      <div class="sheet-btn" (click)="dismiss()">
+        OK
+      </div>
     </div>
+  </div>
 </action-sheet>

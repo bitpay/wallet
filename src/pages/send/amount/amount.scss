@@ -2,15 +2,12 @@ page-amount {
   ion-content.content {
     background: white;
   }
-
   $short-screen: 500px;
-
   .amount-wrapper {
     height: 100%;
     display: flex;
     flex-direction: column;
   }
-
   .amount-header-margin {
     margin: 2rem;
     margin-bottom: 0;
@@ -20,26 +17,22 @@ page-amount {
       margin-top: 1rem;
     }
   }
-
   .next-button {
     opacity: 0;
     transform: translateY(-20px);
     transition: opacity 200ms ease, transform 200ms ease;
     pointer-events: none;
-
     &.show {
       opacity: 1;
       pointer-events: all;
       transform: translateY(0);
     }
   }
-
   .amount-header {
     display: flex;
     width: 100%;
     position: relative;
     align-items: center;
-
     .switcher {
       flex: 1;
       display: inline-flex;
@@ -49,15 +42,12 @@ page-amount {
       border-radius: 3px;
       cursor: pointer;
       width: 81px;
-
       @media (max-height: $short-screen + 70px) {
         width: 75px;
       }
-
       &__icon {
         margin-right: 10px;
       }
-
       &__label {
         color: #060606;
         font-size: 18px;
@@ -67,7 +57,6 @@ page-amount {
         }
       }
     }
-
     &__label {
       flex-grow: 1;
       text-align: center;
@@ -80,7 +69,6 @@ page-amount {
       }
     }
   }
-
   .amount-content {
     display: flex;
     flex-direction: column;
@@ -94,7 +82,6 @@ page-amount {
       .expression {
         font-size: 50px;
         font-weight: 500;
-
         @media (max-height: $short-screen) {
           font-size: 40px;
         }
@@ -115,12 +102,10 @@ page-amount {
       }
     }
   }
-
   pin-pad {
     .row {
       ion-col.col {
         min-height: 60px;
-
         @media (max-height: $short-screen) {
           min-height: 50px;
         }

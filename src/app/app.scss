@@ -1,5 +1,4 @@
 // http://ionicframework.com/docs/theming/
-
 // App Global Sass
 // --------------------------------------------------
 // Put style rules here that you want to apply globally. These
@@ -13,28 +12,24 @@
 // To declare rules for a specific mode, create a child rule
 // for the .md, .ios, or .wp mode classes. The mode class is
 // automatically applied to the <body> element in the app.
-
 body {
   line-height: 22px;
 }
 
 // Alert position
 // --------------------------------------------------
-
 ion-alert.alert-top {
   align-items: center;
 }
 
 // Text wrap
 // --------------------------------------------------
-
 ion-label {
   white-space: normal;
 }
 
 // Buttons
 // --------------------------------------------------
-
 .bottom-absolute {
   width: 100%;
   position: absolute;
@@ -77,6 +72,7 @@ ion-spinner * {
 .item-title {
   //  font-size: 1.4rem;
 }
+
 .item-subtitle {
   white-space: nowrap;
   overflow: hidden;
@@ -108,12 +104,9 @@ ion-spinner * {
   justify-content: center;
   padding-top: 5px;
   transform: translate3d(0, 0, 0);
-
   .tab-button {
     max-width: 15vw;
-    min-width: 80px;
-
-    // Prevent the names of the tabs from disappearing
+    min-width: 80px; // Prevent the names of the tabs from disappearing
     .tab-button-text {
       display: block;
     }
@@ -227,7 +220,6 @@ ion-spinner * {
 }
 
 // Compatibility Ionic 1
-
 .light,
 a.light,
 .stable,
@@ -264,6 +256,7 @@ a.assertive {
 a.balanced {
   color: color($colors, success);
 }
+
 .royal,
 a.royal {
   color: color($colors, dark);
@@ -309,7 +302,6 @@ a.royal {
   display: block;
   border-radius: 3px;
   background-color: #ffffff;
-
   .item-divider {
     background-color: #ffffff;
     margin-bottom: 5px;
@@ -341,8 +333,7 @@ ion-icon {
     background: currentColor;
     width: 2rem !important;
     height: 2rem !important;
-  }
-  // custom icons
+  } // custom icons
   &[class*='tab-activity'] {
     mask-image: url(../assets/img/tab-icons/ico-activity.svg);
   }
@@ -367,6 +358,12 @@ ion-icon {
   min-height: 57px;
   margin-top: 1.5rem;
   margin-bottom: 1.5rem;
+  border-radius: 5px;
+  box-shadow: none;
+  font-weight: 400;
+  color: white;
+  font-size: 18px;
+  background-color: color($colors, primary);
 }
 
 .btn-transparent {
@@ -392,6 +389,7 @@ ion-alert .alert-message {
 .mdToastAfterHeader {
   top: $toolbar-md-height;
 }
+
 .iosToastAfterHeader {
   top: $toolbar-ios-height;
 }
@@ -400,7 +398,6 @@ ion-alert .alert-message {
   .tabbar {
     display: none !important;
   }
-
   .scroll-content {
     margin-bottom: 0 !important;
   }
