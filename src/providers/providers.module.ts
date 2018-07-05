@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { DecimalPipe } from '@angular/common';
 
 import {
+  ActionSheetProvider,
   AddressBookProvider,
   AddressProvider,
   AmazonProvider,
@@ -20,6 +21,7 @@ import {
   ConfigProvider,
   DerivationPathHelperProvider,
   Device,
+  DomProvider,
   EmailNotificationsProvider,
   ExternalLinkProvider,
   FCM,
@@ -64,6 +66,7 @@ import {
 
 @NgModule({
   providers: [
+    ActionSheetProvider,
     AddressProvider,
     AddressBookProvider,
     AndroidFingerprintAuth,
@@ -81,6 +84,7 @@ import {
     Clipboard,
     DerivationPathHelperProvider,
     Device,
+    DomProvider,
     ExternalLinkProvider,
     FeedbackProvider,
     FCM,

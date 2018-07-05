@@ -1,0 +1,29 @@
+.options-container {
+    width: 100%;
+    height: 100%;
+    background-color: white;
+    cursor: pointer;
+    .option {
+        padding: 20px;
+        border-bottom: 1px solid rgb(237, 237, 237);
+        .option-icon {
+            display: inline-block;
+            padding-right: 15px;
+            vertical-align: middle;
+        }
+        .option-text {
+            display: inline-block;
+            color: black;
+            font-size: 18px;
+            vertical-align: middle;
+        }
+    }
+    .cancel-btn {
+        color: black;
+        background-color: rgb(237, 237, 237);
+        padding: 25px;
+        text-align: center;
+        font-size: 20px;
+        font-weight: 400;
+    }
+}

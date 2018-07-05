@@ -53,7 +53,6 @@ export class AmountPage extends WalletTabsChild {
   private zone;
   private description: string;
 
-  public onlyIntegers: boolean;
   public alternativeUnit: string;
   public globalResult: string;
   public alternativeAmount;
@@ -75,6 +74,7 @@ export class AmountPage extends WalletTabsChild {
   public showRecipient: boolean;
   public toWalletId: string;
   private _id: string;
+  public requestingAmount: boolean;
 
   constructor(
     private configProvider: ConfigProvider,
@@ -101,9 +101,6 @@ export class AmountPage extends WalletTabsChild {
     this.color = this.navParams.data.color;
     this.fixedUnit = this.navParams.data.fixedUnit;
     this.description = this.navParams.data.description;
-    this.onlyIntegers = this.navParams.data.onlyIntegers
-      ? this.navParams.data.onlyIntegers
-      : false;
 
     this.showRecipient = true;
     this.showSendMax = false;
@@ -120,6 +117,9 @@ export class AmountPage extends WalletTabsChild {
 
     this.reNr = /^[1234567890\.]$/;
     this.reOp = /^[\*\+\-\/]$/;
+
+    this.requestingAmount =
+      this.navParams.get('nextPage') === 'CustomAmountPage';
     this.nextView = this.getNextView();
 
     this.unitToSatoshi = this.config.wallet.settings.unitToSatoshi;
@@ -315,7 +315,12 @@ export class AmountPage extends WalletTabsChild {
     if (digit === 'delete') {
       return this.removeDigit();
     }
-    if (!this.expression && digit === '0' && !isHardwareKeyboard) {
+    if (
+      !this.expression &&
+      digit === '0' &&
+      !isHardwareKeyboard &&
+      !this.requestingAmount
+    ) {
       return this.sendMax();
     }
     if (
@@ -367,9 +372,7 @@ export class AmountPage extends WalletTabsChild {
   private processAmount(): void {
     let formatedValue = this.format(this.expression);
     let result = this.evaluate(formatedValue);
-    this.allowSend = this.onlyIntegers
-      ? _.isNumber(result) && +result > 0 && Number.isInteger(+result)
-      : _.isNumber(result) && +result > 0;
+    this.allowSend = _.isNumber(result) && +result > 0;
 
     if (_.isNumber(result)) {
       this.globalResult = this.isExpression(this.expression)

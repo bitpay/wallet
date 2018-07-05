@@ -1,6 +1,6 @@
 <ion-header class="wallet-details-header">
   <ion-navbar [navbar-bg]="wallet && wallet.color">
-    <ion-buttons *ngIf="wallet" left>
+    <ion-buttons *ngIf="wallet && !requestingAmount" left>
       <button class="modal-close-button" (click)="close()" ion-button>
         <ion-icon ios="md-close" md="md-close"></ion-icon>
       </button>
@@ -43,7 +43,7 @@
       </div>
     </div>
 
-    <pin-pad (keystroke)="pushDigit($event)" type="amount" [swapKey]="expression"></pin-pad>
+    <pin-pad (keystroke)="pushDigit($event)" type="amount" [swapKey]="expression || requestingAmount"></pin-pad>
 
   </div>
 
