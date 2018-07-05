@@ -1,18 +1,17 @@
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { async, TestBed } from '@angular/core/testing';
-import { IonicModule } from 'ionic-angular';
-
-import { CopayApp } from './app.component';
-
-import { HttpClientTestingModule } from '@angular/common/http/testing';
 import {
   TranslateFakeLoader,
   TranslateLoader,
   TranslateModule
 } from '@ngx-translate/core';
+import { IonicModule } from 'ionic-angular';
+
 import { EmailNotificationsProvider } from '../providers/email-notifications/email-notifications';
 import { ProfileProvider } from '../providers/profile/profile';
 import { ProvidersModule } from './../providers/providers.module';
+import { CopayApp } from './app.component';
 
 describe('CopayApp', () => {
   let fixture;
