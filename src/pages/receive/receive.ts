@@ -120,17 +120,11 @@ export class ReceivePage extends WalletTabsChild {
       this.wallet,
       address
     );
-    Observable.timer(400)
-      .toPromise()
-      .then(() => {
-        this.address = address;
-        this.qrAddress = qrAddress;
-      });
-    Observable.timer(600)
-      .toPromise()
-      .then(() => {
-        this.playAnimation = false;
-      });
+    await Observable.timer(400).toPromise();
+    this.address = address;
+    this.qrAddress = qrAddress;
+    await Observable.timer(600).toPromise();
+    this.playAnimation = false;
   }
 
   public shareAddress(): void {
