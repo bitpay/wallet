@@ -63,6 +63,13 @@ page-home {
     }
   }
 
+  page-txp:first-child,
+  page-wallet-activity:first-child {
+    & .item-ios {
+      border-top: 0.55px solid #f4f4f4;
+    }
+  }
+
   page-txp:last-child,
   page-wallet-activity:last-child {
     border: 0;
