@@ -49,7 +49,7 @@ ion-label {
 }
 
 // Hide border when refresh
-.has-refresher > .scroll-content {
+.has-refresher>.scroll-content {
   border-top: none !important;
 }
 
@@ -363,7 +363,6 @@ ion-icon {
   font-weight: 400;
   color: white;
   font-size: 18px;
-  background-color: color($colors, primary);
 }
 
 .btn-transparent {

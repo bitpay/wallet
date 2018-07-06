@@ -72,6 +72,7 @@ export class ReceivePage extends WalletTabsChild {
       // Update current address
       if (this.wallet && walletId == this.wallet.id && type == 'NewIncomingTx')
         this.setAddress(true);
+      else this.setAddress();
     });
   }
 
@@ -106,21 +107,21 @@ export class ReceivePage extends WalletTabsChild {
         this.logger.warn(this.bwcErrorProvider.msg(err, 'Server Error'));
       })) as string;
     this.loading = false;
-    if (addr != this.address) {
-      let address = await this.walletProvider.getAddressView(this.wallet, addr);
-      if (this.address) {
-        this.playAnimation = true;
-      }
-      this.updateQrAddress(address);
+    let address = await this.walletProvider.getAddressView(this.wallet, addr);
+    if (this.address && this.address != address) {
+      this.playAnimation = true;
     }
+    this.updateQrAddress(address, newAddr);
   }
 
-  private async updateQrAddress(address?): Promise<void> {
+  private async updateQrAddress(address?, newAddr?: boolean): Promise<void> {
     let qrAddress = await this.walletProvider.getProtoAddress(
       this.wallet,
       address
     );
-    await Observable.timer(400).toPromise();
+    if (newAddr) {
+      await Observable.timer(400).toPromise();
+    }
     this.address = address;
     this.qrAddress = qrAddress;
     await Observable.timer(200).toPromise();
