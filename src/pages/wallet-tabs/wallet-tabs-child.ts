@@ -26,15 +26,19 @@ export class WalletTabsChild {
   }
 
   public getParentTabs(): ViewController {
-    return this.navCtrl.parent.viewCtrl;
+    const navParent = this.navCtrl.parent;
+    return navParent && navParent.viewCtrl;
   }
 
   public getParentWallet() {
-    const walletId = this.getParentTabs().instance.walletId;
+    const tabs = this.getParentTabs();
+    const walletId = tabs && tabs.instance && tabs.instance.walletId;
     return this.profileProvider.getWallet(walletId);
   }
 
   public isWithinWalletTabs(): boolean {
-    return !!(this.getParentTabs().instance as WalletTabsPage).walletTabs;
+    const tabs = this.getParentTabs();
+    const tabsInstance = tabs && (tabs.instance as WalletTabsPage);
+    return tabsInstance && tabsInstance.walletTabs ? true : false;
   }
 }

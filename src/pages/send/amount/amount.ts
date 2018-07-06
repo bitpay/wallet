@@ -54,6 +54,8 @@ export class AmountPage extends WalletTabsChild {
   private zone;
   private description: string;
 
+  public disableHardwareKeyboard: boolean;
+  public onlyIntegers: boolean;
   public alternativeUnit: string;
   public globalResult: string;
   public alternativeAmount;
@@ -141,14 +143,19 @@ export class AmountPage extends WalletTabsChild {
   }
 
   ionViewWillEnter() {
+    this.disableHardwareKeyboard = false;
     this.expression = '';
     this.useSendMax = false;
     this.processAmount();
   }
 
+  ionViewWillLeave() {
+    this.disableHardwareKeyboard = true;
+  }
+
   @HostListener('document:keydown', ['$event'])
   handleKeyboardEvent(event: KeyboardEvent) {
-    if (this.navCtrl.getActive().name != 'AmountPage') return;
+    if (this.disableHardwareKeyboard) return;
     if (!event.key) return;
     if (event.which === 8) {
       event.preventDefault();
