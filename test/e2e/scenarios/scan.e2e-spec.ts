@@ -20,7 +20,7 @@ describe('Scan', () => {
     await disableCSSAnimations();
     await holdMyProtractorIAmGoingIn(async () => {
       await waitForIonicPage('home');
-      let scanTab = '#tab-t0-2';
+      const scanTab = '#scan-button';
       await waitForCss(scanTab);
       await element(by.css(scanTab)).click();
       await simulateScanner();
