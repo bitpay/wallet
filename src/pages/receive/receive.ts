@@ -72,7 +72,6 @@ export class ReceivePage extends WalletTabsChild {
       // Update current address
       if (this.wallet && walletId == this.wallet.id && type == 'NewIncomingTx')
         this.setAddress(true);
-      else this.setAddress();
     });
   }
 

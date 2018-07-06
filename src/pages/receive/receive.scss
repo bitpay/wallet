@@ -47,7 +47,7 @@ page-receive {
       @media (min-height: 525px) {
         font-size: 12px;
       }
-      > img {
+      >img {
         vertical-align: middle;
         margin-right: 5px;
         width: 16px;
@@ -57,7 +57,7 @@ page-receive {
     .aclass {
       @include center;
     }
-    .aclass > img {
+    .aclass>img {
       filter: grayscale(100%);
       width: 180px;
       @media (max-height: 500px) {
@@ -103,7 +103,7 @@ page-receive {
     .wallet-text {
       padding-left: 24px;
       font-size: 1.7rem;
-      > span {
+      >span {
         font-size: 12.5px;
         font-weight: 300;
       }
@@ -203,9 +203,12 @@ page-receive {
     padding-bottom: 0px;
     width: 70%;
     max-width: 293px;
-    height: 70vw;
-    max-height: 293px;
     box-shadow: none;
+  }
+  @media screen and (device-aspect-ratio: 2/3) {
+    .qr-card {
+      width: 60%;
+    }
   }
   .address-text {
     width: 70%;
