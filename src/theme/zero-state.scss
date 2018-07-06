@@ -1,9 +1,9 @@
 .prompt-user {
   text-align: center;
   width: 100%;
-  height: 100%;
-  padding-top: 80px;
-  background-color: rgb(251, 251, 251);
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
   .title-info {
     font-weight: 600;
     color: black;
@@ -16,27 +16,61 @@
     max-width: 310px;
     font-size: 18px;
     margin: auto;
-    min-height: 150px;
-    height: 30%;
   }
   .title-icon {
     margin: auto;
     img {
-      width: 100%;
+      height: 100%;
+      vertical-align: bottom;
     }
     width: 80px;
+    height:115px;
+    vertical-align:bottom;
   }
   .larger-icon {
     width: 150px;
-    margin-top: 14px;
   }
   button {
-    margin-top: 50px;
+    margin-top: 30px;
   }
 }
 
 .activity-fix {
-  background-color: rgb(245, 245, 245);
-  padding-top: 60px;
-  margin-top: -1.3em;
+  position: relative;
+  top: 0%;
+  transform: none;
+}
+
+@media only screen and (min-device-width: 320px) and (max-device-width: 568px) and (-webkit-min-device-pixel-ratio: 2) and (device-aspect-ratio: 40/71) {
+  .prompt-user {
+    .subtitle-info {
+      font-size: 16px;
+    }
+    .title-info {
+      font-size: 20px;
+      margin: 20px;
+    }
+  }
+}
+
+@media screen and (device-aspect-ratio: 2/3) {
+  .prompt-user {
+    .subtitle-info {
+      font-size: 15px;
+    }
+    .title-info {
+      font-size: 19px;
+      margin: 16px;
+    }
+    .title-icon {
+      width: 40px;
+      height: 60px;
+    }
+    .larger-icon {
+      width: 140px;
+    }
+    button {
+      margin-top: 20px;
+    }
+  }
 }
