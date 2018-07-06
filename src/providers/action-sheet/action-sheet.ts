@@ -5,7 +5,7 @@ import { OptionsSheetComponent } from '../../components/options-sheet/options-sh
 import { ReceiveOptionsSheetComponent } from '../../components/receive-options/receive-options';
 import { DomProvider } from '../../providers/dom/dom';
 
-export type InfoSheetType = 'address-copied';
+export type InfoSheetType = 'address-copied' | 'receiving-bitcoin';
 export type OptionsSheetType = 'address-options';
 
 @Injectable()
@@ -34,7 +34,7 @@ export class ActionSheetProvider {
     const sheet = this.setupSheet<InfoSheetComponent>(InfoSheetComponent, type);
     if (params) {
       sheet.instance.sheetTitle = params.title;
-      sheet.instance.sheetText = params.address;
+      sheet.instance.sheetText = params.text;
     }
     return sheet.instance;
   }

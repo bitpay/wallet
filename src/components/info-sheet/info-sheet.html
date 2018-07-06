@@ -7,11 +7,26 @@
         </div>
         {{sheetTitle}}
       </div>
-      <div class="sheet-text">
+      <div class="sheet-text text-address">
         {{sheetText}}
       </div>
       <div class="sheet-btn" (click)="dismiss()">
         OK
+      </div>
+    </div>
+    <div class="confirm-sheet" *ngSwitchCase="'receiving-bitcoin'">
+      <div class="sheet-title">
+        <div class="title-icon">
+          <img src="assets/img/icon-info-blue.svg">
+        </div>
+        {{sheetTitle}}
+      </div>
+      <div class="sheet-text">
+        Your wallet address is similar to a bank account number. You can add funds to your wallet by withdrawing funds you may have
+        stored on an exchange to your wallet address. Or other Bitcoin users can send you money by scanning your QR code.
+      </div>
+      <div class="sheet-btn blue" (click)="dismiss()">
+        GOT IT
       </div>
     </div>
   </div>

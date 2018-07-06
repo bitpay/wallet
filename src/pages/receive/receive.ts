@@ -198,7 +198,7 @@ export class ReceivePage extends WalletTabsChild {
 
     const infoSheet = this.actionSheetProvider.createInfoSheet(
       'address-copied',
-      { title, address: this.address }
+      { title, text: this.address }
     );
     infoSheet.present();
   }

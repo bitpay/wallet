@@ -17,6 +17,10 @@ export class WalletTabsProvider {
     return this.tabNav;
   }
 
+  goToTabIndex(index: number) {
+    this.tabNav.select(index);
+  }
+
   setTabNav(nav: Tabs) {
     this.tabNav = nav;
   }

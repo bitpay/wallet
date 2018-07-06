@@ -21,6 +21,8 @@ info-sheet {
         color: rgb(46, 46, 46);
         font-weight: 400;
         padding: 25px 0px;
+      }
+      .text-address {
         letter-spacing: 1px;
       }
       .sheet-btn {
@@ -29,6 +31,9 @@ info-sheet {
         padding-top: 15px;
         border-top: 2px solid rgb(244, 244, 244);
         cursor: pointer;
+      }
+      .sheet-btn.blue {
+        color: rgb(84, 118, 235);
       }
     }
   }

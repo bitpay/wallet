@@ -8,6 +8,7 @@ import { NavController, NavParams } from 'ionic-angular';
 import * as _ from 'lodash';
 
 // Providers
+import { ActionSheetProvider } from '../../../providers/action-sheet/action-sheet';
 import { Config, ConfigProvider } from '../../../providers/config/config';
 import { FilterProvider } from '../../../providers/filter/filter';
 import { Logger } from '../../../providers/logger/logger';
@@ -77,6 +78,7 @@ export class AmountPage extends WalletTabsChild {
   public requestingAmount: boolean;
 
   constructor(
+    private actionSheetProvider: ActionSheetProvider,
     private configProvider: ConfigProvider,
     private filterProvider: FilterProvider,
     private logger: Logger,
@@ -528,5 +530,21 @@ export class AmountPage extends WalletTabsChild {
       this.updateUnitUI();
       this.changeDetectorRef.detectChanges();
     });
+  }
+
+  public goToReceive() {
+    this.walletTabsProvider.goToTabIndex(0);
+
+    let title = 'Receiving ';
+    if (this.wallet.coin == 'btc') {
+      title += 'bitcoin';
+    } else if (this.wallet.coin == 'bch') {
+      title += 'bitcoin cash';
+    }
+    const infoSheet = this.actionSheetProvider.createInfoSheet(
+      'receiving-bitcoin',
+      { title }
+    );
+    infoSheet.present();
   }
 }

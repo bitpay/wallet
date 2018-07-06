@@ -14,7 +14,7 @@
 
 <ion-content no-bounce>
 
-  <div class="prompt-user" *ngIf="!wallet.status.balance.availableBalance">
+  <div class="prompt-user" *ngIf="!wallet.status.totalBalanceSat">
     <div class="title-icon larger-icon">
       <img src="assets/img/ghost-straight-face.svg" />
     </div>
@@ -24,13 +24,13 @@
     <div class="subtitle-info">
       <span translate>It appears that you do not have any money to spend.</span>
     </div>
-    <button ion-button class="button-standard">
+    <button ion-button class="button-standard" (click)="goToReceive()">
       {{'Add funds' | translate}}
     </button>
   </div>
 
 
-  <div *ngIf="wallet.status.balance.availableBalance" class="amount-wrapper">
+  <div *ngIf="wallet.status.totalBalanceSat" class="amount-wrapper">
 
     <div class="amount-header-margin">
       <div class="amount-header">
