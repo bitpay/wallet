@@ -31,7 +31,8 @@ export class WalletTabsChild {
   }
 
   public getParentWallet() {
-    const walletId = this.getParentTabs().instance.walletId;
+    const tabs = this.getParentTabs();
+    const walletId = tabs && tabs.instance && tabs.instance.walletId;
     return this.profileProvider.getWallet(walletId);
   }
 
