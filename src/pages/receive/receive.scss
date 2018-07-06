@@ -47,7 +47,7 @@ page-receive {
       @media (min-height: 525px) {
         font-size: 12px;
       }
-      >img {
+      > img {
         vertical-align: middle;
         margin-right: 5px;
         width: 16px;
@@ -57,7 +57,7 @@ page-receive {
     .aclass {
       @include center;
     }
-    .aclass>img {
+    .aclass > img {
       filter: grayscale(100%);
       width: 180px;
       @media (max-height: 500px) {
@@ -103,7 +103,7 @@ page-receive {
     .wallet-text {
       padding-left: 24px;
       font-size: 1.7rem;
-      >span {
+      > span {
         font-size: 12.5px;
         font-weight: 300;
       }
@@ -185,26 +185,6 @@ page-receive {
     to {
       transform: rotate(-360deg);
     }
-  }
-  .title-info {
-    font-weight: 600;
-    color: black;
-    font-size: 21px;
-    margin: 30px;
-  }
-  .subtitle-info {
-    color: rgb(74, 74, 74);
-    width: 77%;
-    max-width: 310px;
-    font-size: 17px;
-    margin-bottom: 55px;
-  }
-  .title-icon {
-    img {
-      width: 100%;
-    }
-    width: 25%;
-    max-width: 100px;
   }
   .wallet-details {
     background: linear-gradient(#ececec, white);

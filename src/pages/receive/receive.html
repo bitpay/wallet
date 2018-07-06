@@ -27,7 +27,7 @@
       </div>
     </div>
 
-    <div *ngIf="wallet && wallet.isComplete() && wallet.needsBackup" class="message-container">
+    <div class="prompt-user" *ngIf="wallet && wallet.isComplete() && wallet.needsBackup">
       <div class="title-icon">
         <img src="assets/img/single-folded-content.svg" />
       </div>
