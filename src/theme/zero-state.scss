@@ -1,7 +1,10 @@
+$short-device-height: 570px;
+
 .prompt-user-fullscreen-container {
   @include center;
   min-height: 100%;
   padding: 1rem;
+  flex-grow: 1;
 }
 
 .prompt-user {
@@ -23,13 +26,6 @@
   }
   .title-icon {
     margin: auto;
-    img {
-      height: 100%;
-      vertical-align: bottom;
-    }
-    width: 80px;
-    height: 115px;
-    vertical-align: bottom;
   }
   .larger-icon {
     width: 150px;
@@ -39,46 +35,28 @@
   }
 }
 
-.activity-fix {
-  position: relative;
-  top: 0%;
-  transform: none;
-}
-
-@media only screen and (min-device-width: 320px) and (max-device-width: 568px) and (-webkit-min-device-pixel-ratio: 2) and (device-aspect-ratio: 40/71) {
-  .prompt-user {
-    .subtitle-info {
-      font-size: 16px;
-    }
-    .title-info {
-      font-size: 20px;
-      margin: 20px;
-    }
-    button {
-      width: 75%;
-    }
-  }
-}
-
-@media screen and (device-aspect-ratio: 2/3) {
+@media (max-height: $short-device-height) {
   .prompt-user {
     .subtitle-info {
       font-size: 15px;
     }
     .title-info {
-      font-size: 19px;
+      font-size: 18px;
       margin: 16px;
-    }
-    .title-icon {
-      width: 40px;
-      height: 60px;
-    }
-    .larger-icon {
-      width: 140px;
     }
     button {
       margin-top: 20px;
       width: 75%;
+      font-size: 17px;
+      min-height: 54px;
+    }
+  }
+}
+
+@media (max-height: 490px) {
+  .title-icon {
+    img {
+      max-height: 70px;
     }
   }
 }

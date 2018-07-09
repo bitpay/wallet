@@ -7,19 +7,19 @@ info-sheet {
       padding: 25px;
       padding-bottom: 15px;
       .sheet-title {
-        color: black;
+        color: #060606;
         font-size: 19px;
         font-weight: 500;
         .title-icon {
           vertical-align: middle;
-          padding-right: 20px;
+          padding-right: 15px;
           display: inline-block;
         }
       }
       .sheet-text {
         font-size: 16px;
         color: rgb(46, 46, 46);
-        font-weight: 400;
+        font-weight: 300;
         padding: 25px 0px;
       }
       .text-address {
@@ -29,7 +29,7 @@ info-sheet {
         color: rgb(105, 202, 167);
         font-size: 16px;
         padding-top: 15px;
-        border-top: 2px solid rgb(244, 244, 244);
+        border-top: 1px solid #ebebeb;
         cursor: pointer;
       }
       .sheet-btn.blue {

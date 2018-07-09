@@ -66,27 +66,26 @@
         </div>
       </div>
 
-      <div *ngIf="wallets[0]" class="receive-content">
-        <div *ngIf="wallet && wallet.isComplete() && !wallet.needsBackup" class="address-container">
-          <div class="text-address ellipsis">
-            <img src="assets/img/icon-bitcoin-small.svg" alt="BTC" width="12" />
-            <span class="address-divider"></span>
-            <div [ngClass]="{'fade-in-out': playAnimation}" (click)="showFullAddr()" class="address-text ellipsis">
-              <span copy-to-clipboard="{{ address }}" hide-toast="true">{{ address }}</span>
-            </div>
+    </div>
 
-            <button class="new-address-btn" detail-none text-center (click)="setAddress(true)">
-              <span class="new-address" ion-text color="primary" translate>
-                <img [hidden]="loading" class="spin-icon" [ngClass]="{'spin-backwards': playAnimation}" src="assets/img/right.svg" width="16"
-                />
-                <div *ngIf="loading" [ngClass]="{'spin-fast': loading}" class="spinner"></div>
-              </span>
-            </button>
+    <div *ngIf="wallets[0]" class="receive-content">
+      <div *ngIf="wallet && wallet.isComplete() && !wallet.needsBackup" class="address-container">
+        <div class="text-address ellipsis">
+          <img src="assets/img/icon-bitcoin-small.svg" alt="BTC" width="12" />
+          <span class="address-divider"></span>
+          <div [ngClass]="{'fade-in-out': playAnimation}" (click)="showFullAddr()" class="address-text ellipsis">
+            <span copy-to-clipboard="{{ address }}" hide-toast="true">{{ address }}</span>
           </div>
+
+          <button class="new-address-btn" detail-none text-center (click)="setAddress(true)">
+            <span class="new-address" ion-text color="primary" translate>
+              <img [hidden]="loading" class="spin-icon" [ngClass]="{'spin-backwards': playAnimation}" src="assets/img/right.svg" width="16"
+              />
+              <div *ngIf="loading" [ngClass]="{'spin-fast': loading}" class="spinner"></div>
+            </span>
+          </button>
         </div>
       </div>
-
-
     </div>
 
   </div>
