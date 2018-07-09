@@ -8,17 +8,18 @@
   text-align: center;
   width: 100%;
   .title-info {
-    font-weight: 600;
-    color: black;
-    font-size: 22px;
+    font-weight: 500;
+    color: #060606;
+    font-size: 18px;
     margin: 30px;
   }
   .subtitle-info {
-    color: rgb(74, 74, 74);
+    color: rgba(0, 0, 0, 0.8);
     width: 77%;
     max-width: 310px;
-    font-size: 18px;
+    font-size: 16px;
     margin: auto;
+    font-weight: 300;
   }
   .title-icon {
     margin: auto;

@@ -18,7 +18,9 @@ import { RateProvider } from '../../../providers/rate/rate';
 import { TxFormatProvider } from '../../../providers/tx-format/tx-format';
 
 // Pages
+import { Observable } from 'rxjs/Observable';
 import { ProfileProvider } from '../../../providers/profile/profile';
+import { Coin } from '../../../providers/wallet/wallet';
 import { BuyAmazonPage } from '../../integrations/amazon/buy-amazon/buy-amazon';
 import { BitPayCardTopUpPage } from '../../integrations/bitpay-card/bitpay-card-topup/bitpay-card-topup';
 import { BuyCoinbasePage } from '../../integrations/coinbase/buy-coinbase/buy-coinbase';
@@ -539,19 +541,20 @@ export class AmountPage extends WalletTabsChild {
     });
   }
 
-  public goToReceive() {
-    this.walletTabsProvider.goToTabIndex(0);
+  public async goToReceive() {
+    await this.walletTabsProvider.goToTabIndex(0);
 
     let title = 'Receiving ';
-    if (this.wallet.coin == 'btc') {
+    if (this.wallet.coin === Coin.BTC) {
       title += 'bitcoin';
-    } else if (this.wallet.coin == 'bch') {
+    } else if (this.wallet.coin === Coin.BCH) {
       title += 'bitcoin cash';
     }
     const infoSheet = this.actionSheetProvider.createInfoSheet(
       'receiving-bitcoin',
       { title }
     );
+    await Observable.timer(250).toPromise();
     infoSheet.present();
   }
 }
