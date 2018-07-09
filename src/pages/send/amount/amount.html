@@ -14,21 +14,22 @@
 
 <ion-content no-bounce>
 
-  <div class="prompt-user" *ngIf="!wallet.status.totalBalanceSat">
-    <div class="title-icon larger-icon">
-      <img src="assets/img/ghost-straight-face.svg" />
+  <div class="prompt-user-fullscreen-container" *ngIf="!wallet.status.totalBalanceSat">
+    <div class="prompt-user">
+      <div class="title-icon larger-icon">
+        <img src="assets/img/ghost-straight-face.svg" />
+      </div>
+      <div class="title-info">
+        <span translate>Mmm...</span>
+      </div>
+      <div class="subtitle-info">
+        <span translate>It appears that you do not have any money to spend.</span>
+      </div>
+      <button ion-button class="button-standard" (click)="goToReceive()">
+        {{'Add funds' | translate}}
+      </button>
     </div>
-    <div class="title-info">
-      <span translate>Mmm...</span>
-    </div>
-    <div class="subtitle-info">
-      <span translate>It appears that you do not have any money to spend.</span>
-    </div>
-    <button ion-button class="button-standard" (click)="goToReceive()">
-      {{'Add funds' | translate}}
-    </button>
   </div>
-
 
   <div *ngIf="wallet.status.totalBalanceSat" class="amount-wrapper">
 

@@ -27,20 +27,22 @@
       </div>
     </div>
 
-    <div class="prompt-user" *ngIf="wallet && wallet.isComplete() && wallet.needsBackup">
-      <div class="title-icon">
-        <img src="assets/img/single-folded-content.svg" />
+    <div class="prompt-user-fullscreen-container" *ngIf="wallet && wallet.isComplete() && wallet.needsBackup">
+      <div class="prompt-user">
+        <div class="title-icon">
+          <img src="assets/img/single-folded-content.svg" />
+        </div>
+        <div class="title-info">
+          <span translate>Paper Key Unverified</span>
+        </div>
+        <div class="subtitle-info">
+          <span translate>Before retrieving your wallet address, it's recommended that you first write down your paper key and store it securely
+            so that your wallet can be recovered in the case your device was lost or stolen.</span>
+        </div>
+        <button ion-button class="button-standard" (click)="goToBackup()">
+          {{'Write Down Paper Key' | translate}}
+        </button>
       </div>
-      <div class="title-info">
-        <span translate>Paper Key Unverified</span>
-      </div>
-      <div class="subtitle-info">
-        <span translate>Before retrieving your wallet address, it's recommended that you first write down your paper key and store it securely
-          so that your wallet can be recovered in the case your device was lost or stolen.</span>
-      </div>
-      <button ion-button class="button-standard" (click)="goToBackup()">
-        {{'Write Down Paper Key' | translate}}
-      </button>
     </div>
 
     <div class="wallet-details" *ngIf="wallet && wallet.isComplete() && !wallet.needsBackup">

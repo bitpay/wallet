@@ -1,9 +1,12 @@
+.prompt-user-fullscreen-container {
+  @include center;
+  min-height: 100%;
+  padding: 1rem;
+}
+
 .prompt-user {
   text-align: center;
   width: 100%;
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
   .title-info {
     font-weight: 600;
     color: black;
@@ -24,8 +27,8 @@
       vertical-align: bottom;
     }
     width: 80px;
-    height:115px;
-    vertical-align:bottom;
+    height: 115px;
+    vertical-align: bottom;
   }
   .larger-icon {
     width: 150px;

@@ -225,14 +225,13 @@ page-wallet-details {
     .wrapper {
       display: flex;
       flex-direction: column;
-      min-height: 100%;
     }
 
     .history-wrapper {
+      align-items: center;
       flex-grow: 1;
       display: flex;
       width: 100%;
-      align-items: center;
     }
 
     .prompt-user {

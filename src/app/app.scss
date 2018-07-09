@@ -49,14 +49,15 @@ ion-label {
 }
 
 // Hide border when refresh
-.has-refresher>.scroll-content {
+.has-refresher > .scroll-content {
   border-top: none !important;
 }
 
 .scroll-content {
   .wrapper {
     background-color: $background-color;
-    min-height: 60%;
+    min-height: 100%;
+    // min-height: 60%;
   }
 }
 
