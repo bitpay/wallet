@@ -220,6 +220,25 @@ page-wallet-details {
     text-align: end;
     font-size: 12.5px;
   }
+
+  .zero-state {
+    .wrapper {
+      display: flex;
+      flex-direction: column;
+      min-height: 100%;
+    }
+
+    .history-wrapper {
+      flex-grow: 1;
+      display: flex;
+      width: 100%;
+      align-items: center;
+    }
+
+    .prompt-user {
+      margin-bottom: 3rem;
+    }
+  }
 }
 
 .wallet-details-header {

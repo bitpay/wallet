@@ -110,6 +110,10 @@ export class WalletDetailsPage extends WalletTabsChild {
     this.events.unsubscribe('bwsEvent');
   }
 
+  shouldShowZeroState() {
+    return this.showNoTransactionsYetMsg && !this.updateStatusError;
+  }
+
   private clearHistoryCache() {
     this.history = [];
     this.currentPage = 0;

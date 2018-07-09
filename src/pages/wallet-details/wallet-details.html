@@ -14,7 +14,7 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content no-bounce #scrollArea [ios-scroll-bg-color]="wallet.color">
+<ion-content no-bounce #scrollArea [ios-scroll-bg-color]="wallet.color" [ngClass]="{'zero-state': shouldShowZeroState()}">
   <div class="wrapper">
     <expandable-header class="balance-card" [scrollArea]="scrollArea" [ngStyle]="{'background': wallet.color}">
       <expandable-header-primary class="balance-header">
@@ -129,7 +129,7 @@
       <!-- Transactions -->
 
 
-      <div class="prompt-user activity-fix" *ngIf="showNoTransactionsYetMsg && !updateStatusError">
+      <div class="prompt-user activity-fix" *ngIf="shouldShowZeroState()">
         <div class="title-icon larger-icon">
           <img src="assets/img/ghost-tongue-out.svg" />
         </div>
@@ -238,7 +238,7 @@
         </ion-item-group>
       </ion-list>
 
-      <ion-infinite-scroll (ionInfinite)="loadHistory($event)">
+      <ion-infinite-scroll (ionInfinite)="loadHistory($event)" *ngIf="!shouldShowZeroState()">
         <ion-infinite-scroll-content></ion-infinite-scroll-content>
       </ion-infinite-scroll>
 

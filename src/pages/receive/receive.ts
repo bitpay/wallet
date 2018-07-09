@@ -22,7 +22,6 @@ import { WalletProvider } from '../../providers/wallet/wallet';
 
 import * as _ from 'lodash';
 import { Observable } from 'rxjs';
-import { PopupProvider } from '../../providers/popup/popup';
 import { WalletTabsChild } from '../wallet-tabs/wallet-tabs-child';
 import { WalletTabsProvider } from '../wallet-tabs/wallet-tabs.provider';
 
@@ -54,7 +53,6 @@ export class ReceivePage extends WalletTabsChild {
     private translate: TranslateService,
     private externalLinkProvider: ExternalLinkProvider,
     private addressProvider: AddressProvider,
-    private popupProvider: PopupProvider,
     walletTabsProvider: WalletTabsProvider
   ) {
     super(navCtrl, profileProvider, walletTabsProvider);
@@ -139,17 +137,8 @@ export class ReceivePage extends WalletTabsChild {
   }
 
   public goToBackup(): void {
-    const backupWarningModal = this.popupProvider.createMiniModal(
-      'backup-needed'
-    );
-    backupWarningModal.present({
-      animate: false
-    });
-    backupWarningModal.onDidDismiss(goToBackupPage => {
-      if (goToBackupPage)
-        this.navCtrl.push(BackupWarningPage, {
-          walletId: this.wallet.credentials.walletId
-        });
+    this.navCtrl.push(BackupWarningPage, {
+      walletId: this.wallet.credentials.walletId
     });
   }
 
