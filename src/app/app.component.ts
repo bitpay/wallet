@@ -1,12 +1,4 @@
-import {
-  ApplicationRef,
-  Component,
-  ComponentFactoryResolver,
-  EmbeddedViewRef,
-  Injector,
-  Renderer,
-  ViewChild
-} from '@angular/core';
+import { Component, Renderer, ViewChild } from '@angular/core';
 import { ScreenOrientation } from '@ionic-native/screen-orientation';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
@@ -25,6 +17,7 @@ import { AppProvider } from '../providers/app/app';
 import { BitPayCardProvider } from '../providers/bitpay-card/bitpay-card';
 import { CoinbaseProvider } from '../providers/coinbase/coinbase';
 import { ConfigProvider } from '../providers/config/config';
+import { DomProvider } from '../providers/dom/dom';
 import { EmailNotificationsProvider } from '../providers/email-notifications/email-notifications';
 import { GlideraProvider } from '../providers/glidera/glidera';
 import { IncomingDataProvider } from '../providers/incoming-data/incoming-data';
@@ -93,6 +86,7 @@ export class CopayApp {
   };
 
   constructor(
+    private domProvider: DomProvider,
     private platform: Platform,
     private statusBar: StatusBar,
     private splashScreen: SplashScreen,
@@ -115,10 +109,7 @@ export class CopayApp {
     private app: App,
     private incomingDataProvider: IncomingDataProvider,
     private walletTabsProvider: WalletTabsProvider,
-    private renderer: Renderer,
-    private componentFactoryResolver: ComponentFactoryResolver,
-    private appRef: ApplicationRef,
-    private injector: Injector
+    private renderer: Renderer
   ) {
     this.initializeApp();
   }
@@ -132,7 +123,9 @@ export class CopayApp {
       .ready()
       .then(readySource => {
         this.onPlatformReady(readySource);
-        this.appendComponentToBody(WalletSelectorPage);
+        this.domProvider.appendComponentToBody<WalletSelectorPage>(
+          WalletSelectorPage as any
+        );
       })
       .catch(e => {
         this.logger.error('Platform is not ready.', e);
@@ -421,15 +414,5 @@ export class CopayApp {
 
   private getGlobalTabs() {
     return this.nav.getActiveChildNavs()[0].viewCtrl.instance.tabs;
-  }
-
-  private appendComponentToBody(component: any) {
-    const componentRef = this.componentFactoryResolver
-      .resolveComponentFactory(component)
-      .create(this.injector);
-    this.appRef.attachView(componentRef.hostView);
-    const domElem = (componentRef.hostView as EmbeddedViewRef<any>)
-      .rootNodes[0] as HTMLElement;
-    document.getElementsByTagName('ion-app')[0].appendChild(domElem);
   }
 }
