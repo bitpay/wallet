@@ -7,7 +7,6 @@ import { InfoSheetTemplate } from './info-sheet-template';
   templateUrl: 'info-sheet.html'
 })
 export class InfoSheetComponent extends ActionSheetParent {
-  params: any;
   @ViewChild(InfoSheetTemplate) infoSheetTemplate: InfoSheetTemplate;
   constructor() {
     super();

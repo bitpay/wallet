@@ -3,9 +3,9 @@ import { ActionSheetComponent } from './action-sheet';
 
 export type dismissFunction = (data?: any) => void;
 export class ActionSheetParent {
+  public params: any;
   public componentRef: any;
   public sheetType: string;
-  public sheetTitle: string;
   public dismissFunction: dismissFunction;
 
   @ViewChild(ActionSheetComponent) actionSheet: ActionSheetComponent;

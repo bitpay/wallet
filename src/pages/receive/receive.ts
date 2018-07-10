@@ -169,8 +169,9 @@ export class ReceivePage extends WalletTabsChild {
       this.wallet &&
       this.wallet.isComplete() &&
       !this.wallet.needsBackup;
-    const optionsSheet = this.actionSheetProvider.createReceiveOptionsSheet(
-      showShare
+    const optionsSheet = this.actionSheetProvider.createOptionsSheet(
+      'address-options',
+      { showShare }
     );
     optionsSheet.present();
 
