@@ -61,6 +61,9 @@ export class ReceivePage extends WalletTabsChild {
 
   ionViewDidLoad() {
     this.setAddress();
+    this.events.subscribe('backupCompleted', () => {
+      this.setAddress();
+    });
   }
 
   ionViewWillEnter() {
