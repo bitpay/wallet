@@ -120,7 +120,7 @@ export class ShapeshiftShiftPage {
       return w.needsBackup ? null : w;
     });
     this.onToWalletSelect(this.toWallets[0]);
-    
+
     let msg = this.translate.instant(
       'ShapeShift is not available at this moment. Please, try again later.'
     );
