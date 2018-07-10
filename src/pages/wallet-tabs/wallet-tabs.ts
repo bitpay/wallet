@@ -26,11 +26,17 @@ export class WalletTabsPage {
   constructor(
     private navParams: NavParams,
     private walletTabsProvider: WalletTabsProvider
-  ) {
+  ) {}
+
+  ionViewDidLoad() {
     this.walletId = this.navParams.get('walletId');
   }
 
   ngAfterViewInit() {
     this.walletTabsProvider.setTabNav(this.walletTabs);
+  }
+
+  ngOnDestroy() {
+    this.walletTabsProvider.clear();
   }
 }

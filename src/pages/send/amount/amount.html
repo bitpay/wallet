@@ -14,7 +14,7 @@
 
 <ion-content no-bounce>
 
-  <div class="prompt-user-fullscreen-container" *ngIf="!wallet.status.totalBalanceSat">
+  <div class="prompt-user-fullscreen-container" *ngIf="wallet && !wallet.status.totalBalanceSat">
     <div class="prompt-user">
       <div class="title-icon larger-icon">
         <img src="assets/img/ghost-straight-face.svg" />
@@ -31,7 +31,7 @@
     </div>
   </div>
 
-  <div *ngIf="wallet.status.totalBalanceSat" class="amount-wrapper">
+  <div *ngIf="!wallet || wallet.status.totalBalanceSat" class="amount-wrapper">
 
     <div class="amount-header-margin">
       <div class="amount-header">

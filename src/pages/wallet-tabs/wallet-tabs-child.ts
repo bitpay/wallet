@@ -21,7 +21,6 @@ export class WalletTabsChild {
   }
 
   public close(): Promise<any> {
-    this.walletTabsProvider.clearTabNav();
     return this.getParentTabs().dismiss();
   }
 

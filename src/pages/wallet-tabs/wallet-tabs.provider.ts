@@ -9,13 +9,8 @@ export interface SendParams {
 
 @Injectable()
 export class WalletTabsProvider {
-  tabNav: Tabs;
-
-  sendParams: SendParams;
-
-  getTabNav() {
-    return this.tabNav;
-  }
+  private tabNav: Tabs;
+  private sendParams: SendParams;
 
   goToTabIndex(index: number) {
     return this.tabNav.select(index);
@@ -25,8 +20,8 @@ export class WalletTabsProvider {
     this.tabNav = nav;
   }
 
-  clearTabNav() {
-    this.tabNav = null;
+  getTabNav() {
+    return this.tabNav;
   }
 
   setSendParams(params: SendParams) {
@@ -35,5 +30,10 @@ export class WalletTabsProvider {
 
   getSendParams() {
     return this.sendParams;
+  }
+
+  clear() {
+    this.tabNav = null;
+    this.sendParams = null;
   }
 }
