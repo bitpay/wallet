@@ -6,7 +6,6 @@ import { ActionSheetParent } from '../action-sheet/action-sheet-parent';
   templateUrl: 'options-sheet.html'
 })
 export class OptionsSheetComponent extends ActionSheetParent {
-  public sheetType: string;
   constructor() {
     super();
   }
