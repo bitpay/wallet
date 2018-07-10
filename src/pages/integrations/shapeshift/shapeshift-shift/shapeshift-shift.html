@@ -69,7 +69,7 @@
               <span class="tab-home__wallet__multisig-number" *ngIf="toWallet.n > 1">
                 {{toWallet.m}}-of-{{toWallet.n}}
               </span>
-              <ion-icon *ngIf="!fromWallet.balanceHidden && (fromWallet.status.totalBalanceSat != fromWallet.status.spendableAmount)" name="ios-timer-outline"></ion-icon>
+              <ion-icon *ngIf="!toWallet.balanceHidden && (toWallet.status.totalBalanceSat != toWallet.status.spendableAmount)" name="ios-timer-outline"></ion-icon>
               <span class="wallet-warning" *ngIf="toWallet.error">{{toWallet.error}}</span>
             </span>
             &nbsp;
