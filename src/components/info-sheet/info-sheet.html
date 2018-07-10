@@ -1,33 +1,17 @@
 <action-sheet>
-  <div sheet-content class="info-container" [ngSwitch]="sheetType">
-    <div class="confirm-sheet" *ngSwitchCase="'address-copied'">
-      <div class="sheet-title">
-        <div class="title-icon">
-          <img src="assets/img/green-check-circled.svg">
-        </div>
-        {{sheetTitle}}
-      </div>
-      <div class="sheet-text text-address">
-        {{sheetText}}
-      </div>
-      <div class="sheet-btn" (click)="dismiss()">
-        OK
-      </div>
-    </div>
-    <div class="confirm-sheet" *ngSwitchCase="'receiving-bitcoin'">
-      <div class="sheet-title">
-        <div class="title-icon">
-          <img src="assets/img/icon-info-blue.svg">
-        </div>
-        {{sheetTitle}}
-      </div>
-      <div class="sheet-text">
+  <div class="info-container" [ngSwitch]="sheetType">
+    <info-sheet-template *ngSwitchCase="'address-copied'" type="success">
+      <span sheet-title-text translate>Copied {{params.coin.toUpperCase()}} address</span>
+      <span sheet-text class="text-address" translate>{{params.address}}</span>
+      <span sheet-button-text translate>OK</span>
+    </info-sheet-template>
+    <info-sheet-template *ngSwitchCase="'receiving-bitcoin'" type="info">
+      <span sheet-title-text translate>Receiving {{params.coinName}} address</span>
+      <span sheet-text translate>
         Your wallet address is similar to a bank account number. You can add funds to your wallet by withdrawing funds you may have
-        stored on an exchange to your wallet address. Or other Bitcoin users can send you money by scanning your QR code.
-      </div>
-      <div class="sheet-btn blue" (click)="dismiss()">
-        GOT IT
-      </div>
-    </div>
+        stored on an exchange to your wallet address. Or other {{params.coinName}} users can send you money by scanning your
+        QR code.</span>
+      <span sheet-button-text translate>GOT IT</span>
+    </info-sheet-template>
   </div>
 </action-sheet>

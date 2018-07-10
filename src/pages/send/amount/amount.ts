@@ -543,16 +543,10 @@ export class AmountPage extends WalletTabsChild {
 
   public async goToReceive() {
     await this.walletTabsProvider.goToTabIndex(0);
-
-    let title = 'Receiving ';
-    if (this.wallet.coin === Coin.BTC) {
-      title += 'bitcoin';
-    } else if (this.wallet.coin === Coin.BCH) {
-      title += 'bitcoin cash';
-    }
+    const coinName = this.wallet.coin === Coin.BTC ? 'bitcoin' : 'bitcoin cash';
     const infoSheet = this.actionSheetProvider.createInfoSheet(
       'receiving-bitcoin',
-      { title }
+      { coinName }
     );
     await Observable.timer(250).toPromise();
     infoSheet.present();

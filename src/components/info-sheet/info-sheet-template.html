@@ -1,0 +1,15 @@
+<div class="confirm-sheet">
+  <div class="sheet-title">
+    <div class="title-icon">
+      <img *ngIf="type === 'success'" src="assets/img/green-check-circled.svg">
+      <img *ngIf="type === 'info'" src="assets/img/icon-info-blue.svg">
+    </div>
+    <ng-content select="[sheet-title-text]"></ng-content>
+  </div>
+  <div class="sheet-text">
+    <ng-content select="[sheet-text]"></ng-content>
+  </div>
+  <div class="sheet-btn" [ngClass]="{blue: type === 'info'}" (click)="dismiss()">
+    <ng-content select="[sheet-button-text]"></ng-content>
+  </div>
+</div>

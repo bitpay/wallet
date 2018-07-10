@@ -32,10 +32,7 @@ export class ActionSheetProvider {
 
   public createInfoSheet(type: InfoSheetType, params?): InfoSheetComponent {
     const sheet = this.setupSheet<InfoSheetComponent>(InfoSheetComponent, type);
-    if (params) {
-      sheet.instance.sheetTitle = params.title;
-      sheet.instance.sheetText = params.text;
-    }
+    sheet.instance.params = params;
     return sheet.instance;
   }
 

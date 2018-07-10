@@ -181,16 +181,9 @@ export class ReceivePage extends WalletTabsChild {
   }
 
   public showFullAddr(): void {
-    let title =
-      this.translate.instant('Copied') +
-      ' ' +
-      this.wallet.coin.toUpperCase() +
-      ' ' +
-      this.translate.instant('Address');
-
     const infoSheet = this.actionSheetProvider.createInfoSheet(
       'address-copied',
-      { title, text: this.address }
+      { address: this.address, coin: this.wallet.coin }
     );
     infoSheet.present();
   }
