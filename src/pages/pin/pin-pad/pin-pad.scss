@@ -18,27 +18,27 @@ pin-pad {
     @include center;
 
     > span {
-      &:first-child {
+      &:last-child {
         opacity: 1;
         transform: translateY(0);
         transition: opacity 200ms ease, transform 200ms ease;
       }
 
-      &:last-child {
+      &:first-child {
         opacity: 0;
-        transform: translateY(-25px);
+        transform: translateY(25px);
         transition: opacity 200ms ease, transform 200ms ease;
       }
     }
 
     &.swap-key {
       > span {
-        &:first-child {
+        &:last-child {
           opacity: 0;
-          transform: translateY(20px);
+          transform: translateY(-20px);
         }
 
-        &:last-child {
+        &:first-child {
           opacity: 1;
           transform: translateY(0);
         }

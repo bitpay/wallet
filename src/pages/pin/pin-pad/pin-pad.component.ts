@@ -20,7 +20,7 @@ export interface PinButton {
           <span *ngSwitchCase="'.'">
             <span *ngIf="type === 'amount'">.</span>
           </span>
-          <span *ngSwitchCase="'0'" class="key-wrapper" [ngClass]="{'swap-key': swapKey || type === 'pin'}">
+          <span *ngSwitchCase="'0'" class="key-wrapper" [ngClass]="{'swap-key': type === 'amount' && showSendMax}">
             <span class="send-max" translate>Send Max</span>
             <span>0</span>
           </span>
@@ -33,7 +33,7 @@ export interface PinButton {
 })
 export class PinPad {
   @Input() onlyIntegers: boolean = false;
-  @Input() swapKey: boolean = false;
+  @Input() showSendMax: boolean = false;
 
   @Input() type: 'pin' | 'amount';
 

@@ -76,7 +76,6 @@ export class AmountPage extends WalletTabsChild {
   public color: string;
   public useSendMax: boolean;
   public config: Config;
-  public showRecipient: boolean;
   public toWalletId: string;
   private _id: string;
   public requestingAmount: boolean;
@@ -111,7 +110,6 @@ export class AmountPage extends WalletTabsChild {
       ? this.navParams.data.onlyIntegers
       : false;
 
-    this.showRecipient = true;
     this.showSendMax = false;
     this.useSendMax = false;
     this.allowSend = false;
@@ -259,40 +257,32 @@ export class AmountPage extends WalletTabsChild {
     let nextPage;
     switch (this.navParams.data.nextPage) {
       case 'BitPayCardTopUpPage':
-        this.showRecipient = false;
         this.showSendMax = true;
         nextPage = BitPayCardTopUpPage;
         break;
       case 'BuyAmazonPage':
-        this.showRecipient = false;
         nextPage = BuyAmazonPage;
         break;
       case 'BuyGlideraPage':
-        this.showRecipient = false;
         nextPage = BuyGlideraPage;
         break;
       case 'SellGlideraPage':
-        this.showRecipient = false;
         nextPage = SellGlideraPage;
         break;
       case 'BuyCoinbasePage':
-        this.showRecipient = false;
         nextPage = BuyCoinbasePage;
         break;
       case 'SellCoinbasePage':
-        this.showRecipient = false;
         nextPage = SellCoinbasePage;
         break;
       case 'CustomAmountPage':
         nextPage = CustomAmountPage;
         break;
       case 'BuyMercadoLibrePage':
-        this.showRecipient = false;
         nextPage = BuyMercadoLibrePage;
         break;
       case 'ShapeshiftConfirmPage':
         this.showSendMax = true;
-        this.showRecipient = false;
         nextPage = ShapeshiftConfirmPage;
         break;
       default:
@@ -325,17 +315,16 @@ export class AmountPage extends WalletTabsChild {
     });
   }
 
+  public isSendMaxButtonShown() {
+    return !this.expression && !this.requestingAmount && this.showSendMax;
+  }
+
   public pushDigit(digit: string, isHardwareKeyboard?: boolean): void {
     this.useSendMax = false;
     if (digit === 'delete') {
       return this.removeDigit();
     }
-    if (
-      !this.expression &&
-      digit === '0' &&
-      !isHardwareKeyboard &&
-      !this.requestingAmount
-    ) {
+    if (this.isSendMaxButtonShown() && digit === '0' && !isHardwareKeyboard) {
       return this.sendMax();
     }
     if (
