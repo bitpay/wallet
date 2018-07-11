@@ -107,6 +107,9 @@ export class AmountPage extends WalletTabsChild {
     this.color = this.navParams.data.color;
     this.fixedUnit = this.navParams.data.fixedUnit;
     this.description = this.navParams.data.description;
+    this.onlyIntegers = this.navParams.data.onlyIntegers
+      ? this.navParams.data.onlyIntegers
+      : false;
 
     this.showRecipient = true;
     this.showSendMax = false;

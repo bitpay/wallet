@@ -11,7 +11,7 @@ export interface PinButton {
   selector: 'pin-pad',
   template: `
     <ion-row *ngFor="let row of buttonRows">
-      <ion-col *ngFor="let button of row" (click)="onKeystroke(button.value)" tappable>
+      <ion-col *ngFor="let button of row" (click)="onKeystroke(button.value)" [ngClass]="{disabled: isValueDisabled(button.value)}" tappable>
         <div [ngSwitch]="button.value">
           <span *ngSwitchCase="'delete'">
             <img *ngIf="type ==='pin'" src="assets/img/tail-left.svg"> 
@@ -32,6 +32,7 @@ export interface PinButton {
   `
 })
 export class PinPad {
+  @Input() onlyIntegers: boolean = false;
   @Input() swapKey: boolean = false;
 
   @Input() type: 'pin' | 'amount';
@@ -100,6 +101,13 @@ export class PinPad {
   ];
 
   public onKeystroke(value: string): void {
+    if (this.isValueDisabled(value)) {
+      return;
+    }
     this.keystrokeSubject.next(value);
+  }
+
+  public isValueDisabled(value: string) {
+    return value === '.' && this.onlyIntegers;
   }
 }
