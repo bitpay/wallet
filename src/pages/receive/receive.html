@@ -60,10 +60,8 @@
           </button>
         </div>
 
-        <div class="qr-container">
-          <ngx-qrcode (click)="showFullAddr()" *ngIf="address" class="qr-code" copy-to-clipboard="{{ address }}" hide-toast="true"
-            qrc-value="{{qrAddress}}" qrc-class="aclass" qrc-errorCorrectionLevel="M"></ngx-qrcode>
-        </div>
+        <ngx-qrcode (click)="showFullAddr()" *ngIf="address" class="qr-code" copy-to-clipboard="{{ address }}" hide-toast="true"
+          qrc-value="{{qrAddress}}" qrc-class="aclass" qrc-errorCorrectionLevel="M"></ngx-qrcode>
       </div>
 
     </div>

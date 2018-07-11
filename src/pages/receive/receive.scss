@@ -31,67 +31,14 @@ page-receive {
       margin: 0 5px;
     }
   }
-  .qr-container {
-    padding: 4px;
-    img {
-      opacity: 0.715;
-    }
-    text-align: center;
-    .text-address {
-      font-size: 10px;
-      margin-bottom: 20px;
-      color: color($colors, dark);
-      &.ellipsis {
-        padding: 0 10px 0 4px;
-      }
-      @media (min-height: 525px) {
-        font-size: 12px;
-      }
-      > img {
-        vertical-align: middle;
-        margin-right: 5px;
-        width: 16px;
-        display: inline-block;
-      }
-    }
-    .aclass {
-      @include center;
-    }
-    .aclass > img {
-      filter: grayscale(100%);
-      width: 180px;
-      @media (max-height: 500px) {
-        margin-bottom: 0px;
-      }
-      @media (min-height: 525px) {
-        width: 195px;
-      }
-      @media (min-height: 560px) {
-        width: 220px;
-      }
-      @media (min-height: 620px) {
-        width: 290px;
-      }
-    }
-    .new-address {
-      display: inline-block;
-      font-size: 10px;
-      @media (min-height: 525px) {
-        font-size: 12px;
-      }
-    }
-    ion-list {
-      margin: 20px 0 -14px 0;
-      .item-block {
-        padding: 0px;
-        .item-inner {
-          padding-right: 0px;
-          ion-label {
-            margin: 6px 0px 14px 0;
-          }
-        }
-      }
-    }
+  .aclass {
+    @include center;
+  }
+  .aclass > img {
+    filter: grayscale(100%);
+    height: 100%;
+    width: 100%;
+    opacity: 0.8;
   }
   .wallets-container {
     padding-left: 2rem;
@@ -202,11 +149,6 @@ page-receive {
     width: 70%;
     max-width: 293px;
     box-shadow: none;
-  }
-  @media screen and (device-aspect-ratio: 2/3) {
-    .qr-card {
-      width: 60%;
-    }
   }
   .address-text {
     width: 70%;
