@@ -326,6 +326,7 @@ export class AmountPage extends WalletTabsChild {
   }
 
   public pushDigit(digit: string, isHardwareKeyboard?: boolean): void {
+    this.useSendMax = false;
     if (digit === 'delete') {
       return this.removeDigit();
     }
