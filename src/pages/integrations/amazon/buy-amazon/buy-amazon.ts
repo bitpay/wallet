@@ -431,7 +431,8 @@ export class BuyAmazonPage {
     let parsedAmount = this.txFormatProvider.parseAmount(
       wallet.coin,
       this.amount,
-      this.currency
+      this.currency,
+      this.onlyIntegers
     );
     this.currencyIsoCode = parsedAmount.currency;
     this.amountUnitStr = parsedAmount.amountUnitStr;
