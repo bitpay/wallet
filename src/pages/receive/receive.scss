@@ -33,12 +33,13 @@ page-receive {
   }
   .aclass {
     @include center;
+    padding: 5px;
   }
   .aclass > img {
     filter: grayscale(100%);
     height: 100%;
     width: 100%;
-    opacity: 0.8;
+    opacity: 0.715;
   }
   .wallets-container {
     padding-left: 2rem;
