@@ -80,14 +80,6 @@
 
     </expandable-header>
 
-    <div *ngIf="wallet.needsBackup" class="box-notification no-margin warn">
-      <a (click)="openBackup()">
-        <ion-icon name="warning"></ion-icon>
-        {{'Wallet not backed up'|translate}}
-        <ion-icon name="arrow-forward"></ion-icon>
-      </a>
-    </div>
-
     <div *ngIf="wallet.network == 'testnet'" class="box-notification no-margin warn">
       <a (click)="openExternalLink('https://support.bitpay.com/hc/en-us/articles/360004102011-What-is-testnet-How-do-I-avoid-testnet-Bitcoin-scams-')">
         <ion-icon name="warning"></ion-icon>

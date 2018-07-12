@@ -1,10 +1,5 @@
 import { Component } from '@angular/core';
-import {
-  Events,
-  ModalController,
-  NavController,
-  NavParams
-} from 'ionic-angular';
+import { Events, NavController, NavParams } from 'ionic-angular';
 import * as _ from 'lodash';
 import * as papa from 'papaparse';
 import { Logger } from '../../../../../providers/logger/logger';
@@ -39,7 +34,6 @@ export class WalletTransactionHistoryPage {
 
   constructor(
     private events: Events,
-    private modalCtrl: ModalController,
     private profileProvider: ProfileProvider,
     private navCtrl: NavController,
     private navParams: NavParams,
