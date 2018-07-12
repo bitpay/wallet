@@ -125,7 +125,7 @@ export class CopayApp {
       .then(readySource => {
         this.onPlatformReady(readySource);
         this.domProvider.appendComponentToBody<WalletSelectorPage>(
-          WalletSelectorPage as any
+          WalletSelectorPage
         );
       })
       .catch(e => {
