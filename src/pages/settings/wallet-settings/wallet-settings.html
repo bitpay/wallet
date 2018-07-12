@@ -25,7 +25,7 @@
     <button ion-item (click)="openBackupSettings()">
       <span translate>Backup</span>
       <ion-note *ngIf="needsBackup" class="wallet-warning" item-end>
-        {{'Needs backup' | translate}}
+        {{'Paper key unverified' | translate}}
       </ion-note>
     </button>
     <div *ngIf="canSign">
@@ -35,7 +35,8 @@
       </ion-item>
       <ion-item-divider>
         <span class="item-text" translate>
-          If enabled, all sensitive information (private key and recovery phrase) and actions (spending and exporting) associated with this wallet will be protected.
+          If enabled, all sensitive information (private key and recovery phrase) and actions (spending and exporting) associated with
+          this wallet will be protected.
         </span>
         <a (click)="openSupportSpendingPassword()" translate>Learn more</a>
       </ion-item-divider>

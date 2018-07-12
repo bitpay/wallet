@@ -217,7 +217,7 @@
               Incomplete
             </span>
             <span class="wallet-warning" *ngIf="wallet.isComplete() && wallet.needsBackup" translate>
-              Needs backup
+              Paper key unverified
             </span>
             <span *ngIf="wallet.isComplete() && !wallet.needsBackup">
               <span *ngIf="!wallet.balanceHidden && !wallet.scanning">

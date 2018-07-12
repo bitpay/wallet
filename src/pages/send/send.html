@@ -58,7 +58,7 @@
             {{'Incomplete' | translate}}
           </ion-note>
           <ion-note class="wallet-warning" *ngIf="wallet.isComplete && wallet.needsBackup" item-end>
-            {{'Needs backup' | translate}}
+            {{'Paper key unverified' | translate}}
           </ion-note>
           <ion-note *ngIf="wallet.m > 1 && wallet.isComplete && !wallet.needsBackup" item-end>
             {{wallet.m}}-{{wallet.n}}
@@ -86,7 +86,7 @@
             {{'Incomplete' | translate}}
           </ion-note>
           <ion-note class="wallet-warning" *ngIf="wallet.isComplete && wallet.needsBackup" item-end>
-            {{'Needs backup' | translate}}
+            {{'Paper key unverified' | translate}}
           </ion-note>
           <ion-note *ngIf="wallet.m > 1 && wallet.isComplete && !wallet.needsBackup" item-end>
             {{wallet.m}}-{{wallet.n}}
