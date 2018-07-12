@@ -12,7 +12,6 @@ import { Subscription } from 'rxjs';
 
 // Pages
 import { AddPage } from '../add/add';
-import { CopayersPage } from '../add/copayers/copayers';
 import { AmazonPage } from '../integrations/amazon/amazon';
 import { BitPayCardPage } from '../integrations/bitpay-card/bitpay-card';
 import { BitPayCardIntroPage } from '../integrations/bitpay-card/bitpay-card-intro/bitpay-card-intro';
@@ -46,7 +45,6 @@ import { ReleaseProvider } from '../../providers/release/release';
 import { ReplaceParametersProvider } from '../../providers/replace-parameters/replace-parameters';
 import { WalletProvider } from '../../providers/wallet/wallet';
 import { SettingsPage } from '../settings/settings';
-import { WalletTabsPage } from '../wallet-tabs/wallet-tabs';
 
 @Component({
   selector: 'page-home',
