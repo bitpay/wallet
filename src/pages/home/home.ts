@@ -490,23 +490,7 @@ export class HomePage {
 
   public goToWalletDetails(wallet): void {
     if (this.showReorderBtc || this.showReorderBch) return;
-    if (!wallet.isComplete()) {
-      this.navCtrl.push(CopayersPage, {
-        walletId: wallet.credentials.walletId
-      });
-      return;
-    }
-    this.modalCtrl
-      .create(
-        WalletTabsPage,
-        {
-          walletId: wallet.credentials.walletId
-        },
-        {
-          cssClass: 'wallet-details-modal'
-        }
-      )
-      .present();
+    this.events.publish('OpenWallet', wallet);
   }
 
   public openNotificationModal(n) {

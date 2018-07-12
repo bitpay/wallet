@@ -47,6 +47,7 @@ import { ConfirmPage } from '../pages/send/confirm/confirm';
 import { AddressbookAddPage } from '../pages/settings/addressbook/add/add';
 import { TabsPage } from '../pages/tabs/tabs';
 import { WalletDetailsPage } from '../pages/wallet-details/wallet-details';
+import { WalletTabsPage } from '../pages/wallet-tabs/wallet-tabs';
 import { WalletTabsProvider } from '../pages/wallet-tabs/wallet-tabs.provider';
 
 // As the handleOpenURL handler kicks in before the App is started,
@@ -182,6 +183,7 @@ export class CopayApp {
     this.registerIntegrations();
     this.incomingDataRedirEvent();
     this.scanFromWalletEvent();
+    this.events.subscribe('OpenWallet', wallet => this.openWallet(wallet));
     // Check Profile
     this.profile
       .loadAndBindProfile()
@@ -296,6 +298,21 @@ export class CopayApp {
         nextView.params
       );
     });
+  }
+
+  private openWallet(wallet) {
+    const page = wallet.isComplete() ? WalletTabsPage : CopayersPage;
+    this.modalCtrl
+      .create(
+        page,
+        {
+          walletId: wallet.credentials.walletId
+        },
+        {
+          cssClass: 'wallet-details-modal'
+        }
+      )
+      .present();
   }
 
   private scanFromWalletEvent(): void {

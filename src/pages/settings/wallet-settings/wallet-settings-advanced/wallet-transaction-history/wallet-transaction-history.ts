@@ -1,5 +1,10 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
+import {
+  Events,
+  ModalController,
+  NavController,
+  NavParams
+} from 'ionic-angular';
 import * as _ from 'lodash';
 import * as papa from 'papaparse';
 import { Logger } from '../../../../../providers/logger/logger';
@@ -10,9 +15,6 @@ import { ConfigProvider } from '../../../../../providers/config/config';
 import { PlatformProvider } from '../../../../../providers/platform/platform';
 import { ProfileProvider } from '../../../../../providers/profile/profile';
 import { WalletProvider } from '../../../../../providers/wallet/wallet';
-
-// Pages
-import { WalletDetailsPage } from '../../../../../pages/wallet-details/wallet-details';
 
 @Component({
   selector: 'page-wallet-transaction-history',
@@ -36,6 +38,8 @@ export class WalletTransactionHistoryPage {
   private currency: string;
 
   constructor(
+    private events: Events,
+    private modalCtrl: ModalController,
     private profileProvider: ProfileProvider,
     private navCtrl: NavController,
     private navParams: NavParams,
@@ -191,9 +195,6 @@ export class WalletTransactionHistoryPage {
     this.logger.info('Transaction history cleared for :' + this.wallet.id);
     await this.navCtrl.popToRoot({ animate: false });
     await this.navCtrl.parent.select(0);
-    await this.navCtrl.push(WalletDetailsPage, {
-      walletId: this.wallet.credentials.walletId,
-      clearCache: true
-    });
+    this.events.publish('OpenWallet', this.wallet);
   }
 }
