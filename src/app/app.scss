@@ -401,8 +401,10 @@ ion-alert .alert-message {
   .tabbar {
     display: none !important;
   }
-  .scroll-content {
-    margin-bottom: 0 !important;
+  .fullscreen-tab {
+    .scroll-content {
+      margin-bottom: 0 !important;
+    }
   }
 }
 
