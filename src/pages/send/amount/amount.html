@@ -1,4 +1,4 @@
-<ion-header class="wallet-details-header">
+<ion-header [ngClass]="{'wallet-details-header': wallet}">
   <ion-navbar [navbar-bg]="wallet && wallet.color">
     <ion-buttons *ngIf="wallet && !requestingAmount" left>
       <button class="modal-close-button" (click)="close()" ion-button>
