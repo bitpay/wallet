@@ -382,7 +382,9 @@ export class AmountPage extends WalletTabsChild {
   private processAmount(): void {
     let formatedValue = this.format(this.expression);
     let result = this.evaluate(formatedValue);
-    this.allowSend = _.isNumber(result) && +result > 0;
+    this.allowSend = this.onlyIntegers
+      ? _.isNumber(result) && +result > 0 && Number.isInteger(+result)
+      : _.isNumber(result) && +result > 0;
 
     if (_.isNumber(result)) {
       this.globalResult = this.isExpression(this.expression)
