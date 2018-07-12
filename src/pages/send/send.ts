@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Events, NavController } from 'ionic-angular';
+import { Events, NavController, NavParams } from 'ionic-angular';
 import * as _ from 'lodash';
 
 // Providers
@@ -10,23 +10,40 @@ import { IncomingDataProvider } from '../../providers/incoming-data/incoming-dat
 import { Logger } from '../../providers/logger/logger';
 import { PopupProvider } from '../../providers/popup/popup';
 import { ProfileProvider } from '../../providers/profile/profile';
-import { WalletProvider } from '../../providers/wallet/wallet';
+import { Coin, WalletProvider } from '../../providers/wallet/wallet';
 
 // Pages
+import { TxFormatProvider } from '../../providers/tx-format/tx-format';
 import { PaperWalletPage } from '../paper-wallet/paper-wallet';
 import { AddressbookAddPage } from '../settings/addressbook/add/add';
+import { WalletTabsChild } from '../wallet-tabs/wallet-tabs-child';
+import { WalletTabsProvider } from '../wallet-tabs/wallet-tabs.provider';
 import { AmountPage } from './amount/amount';
+import { ConfirmPage } from './confirm/confirm';
+
+export interface FlatWallet {
+  color: string;
+  name: string;
+  recipientType: 'wallet';
+  coin: Coin;
+  network: 'testnet' | 'mainnet';
+  m: number;
+  n: number;
+  needsBackup: boolean;
+  isComplete: () => boolean;
+  getAddress: () => Promise<string>;
+}
 
 @Component({
   selector: 'page-send',
   templateUrl: 'send.html'
 })
-export class SendPage {
+export class SendPage extends WalletTabsChild {
   public search: string = '';
   public walletsBtc;
   public walletsBch;
-  public walletBchList;
-  public walletBtcList;
+  public walletBchList: FlatWallet[];
+  public walletBtcList: FlatWallet[];
   public contactsList = [];
   public filteredContactsList = [];
   public hasBtcWallets: boolean;
@@ -36,9 +53,15 @@ export class SendPage {
   private CONTACTS_SHOW_LIMIT: number = 10;
   private currentContactsPage: number = 0;
 
+  public amount: string;
+  public fiatAmount: number;
+  public fiatCode: string;
+  public useSendMax: boolean;
+
   constructor(
-    private navCtrl: NavController,
-    private profileProvider: ProfileProvider,
+    navCtrl: NavController,
+    private navParams: NavParams,
+    profileProvider: ProfileProvider,
     private walletProvider: WalletProvider,
     private addressBookProvider: AddressBookProvider,
     private logger: Logger,
@@ -46,10 +69,25 @@ export class SendPage {
     private popupProvider: PopupProvider,
     private addressProvider: AddressProvider,
     private events: Events,
-    private externalLinkProvider: ExternalLinkProvider
-  ) {}
+    private externalLinkProvider: ExternalLinkProvider,
+    private txFormatProvider: TxFormatProvider,
+    walletTabsProvider: WalletTabsProvider
+  ) {
+    super(navCtrl, profileProvider, walletTabsProvider);
+  }
 
   ionViewDidLoad() {
+    this.walletTabsProvider.setSendParams({
+      amount: this.navParams.get('amount'),
+      coin: this.navParams.get('coin')
+    });
+    this.amount = this.txFormatProvider.formatAmountStr(
+      this.navParams.get('coin'),
+      parseInt(this.navParams.get('amount'), 10)
+    );
+    this.fiatAmount = this.navParams.get('fiatAmount');
+    this.fiatCode = this.navParams.get('fiatCode');
+    this.useSendMax = this.navParams.get('useSendMax');
     this.logger.info('ionViewDidLoad SendPage');
   }
 
@@ -80,8 +118,8 @@ export class SendPage {
       }
     });
 
-    this.updateBchWalletsList();
-    this.updateBtcWalletsList();
+    this.walletBchList = this.getBchWalletsList();
+    this.walletBtcList = this.getBtcWalletsList();
     this.updateContactsList();
   }
 
@@ -105,68 +143,18 @@ export class SendPage {
     this.navCtrl.push(PaperWalletPage, { privateKey });
   }
 
-  private updateBchWalletsList(): void {
-    this.walletBchList = [];
-
-    if (!this.hasBchWallets) return;
-
-    _.each(this.walletsBch, v => {
-      this.walletBchList.push({
-        color: v.color,
-        name: v.name,
-        recipientType: 'wallet',
-        coin: v.coin,
-        network: v.network,
-        m: v.credentials.m,
-        n: v.credentials.n,
-        isComplete: v.isComplete(),
-        needsBackup: v.needsBackup,
-        getAddress: (): Promise<any> => {
-          return new Promise((resolve, reject) => {
-            this.walletProvider
-              .getAddress(v, false)
-              .then(addr => {
-                return resolve(addr);
-              })
-              .catch(err => {
-                return reject(err);
-              });
-          });
-        }
-      });
-    });
+  private getBchWalletsList(): FlatWallet[] {
+    return this.hasBchWallets ? this.getRelevantWallets(this.walletsBch) : [];
   }
 
-  private updateBtcWalletsList(): void {
-    this.walletBtcList = [];
+  private getBtcWalletsList(): FlatWallet[] {
+    return this.hasBtcWallets ? this.getRelevantWallets(this.walletsBtc) : [];
+  }
 
-    if (!this.hasBtcWallets) return;
-
-    _.each(this.walletsBtc, v => {
-      this.walletBtcList.push({
-        color: v.color,
-        name: v.name,
-        recipientType: 'wallet',
-        coin: v.coin,
-        network: v.network,
-        m: v.credentials.m,
-        n: v.credentials.n,
-        isComplete: v.isComplete(),
-        needsBackup: v.needsBackup,
-        getAddress: (): Promise<any> => {
-          return new Promise((resolve, reject) => {
-            this.walletProvider
-              .getAddress(v, false)
-              .then(addr => {
-                return resolve(addr);
-              })
-              .catch(err => {
-                return reject(err);
-              });
-          });
-        }
-      });
-    });
+  private getRelevantWallets(rawWallets): FlatWallet[] {
+    return rawWallets
+      .map(wallet => this.flattenWallet(wallet))
+      .filter(wallet => this.filterIrrelevantRecipients(wallet));
   }
 
   private updateContactsList(): void {
@@ -174,22 +162,21 @@ export class SendPage {
       this.hasContacts = _.isEmpty(ab) ? false : true;
       if (!this.hasContacts) return;
 
-      this.contactsList = [];
+      let contactsList = [];
       _.each(ab, (v, k: string) => {
-        this.contactsList.push({
+        contactsList.push({
           name: _.isObject(v) ? v.name : v,
           address: k,
           network: this.addressProvider.validateAddress(k).network,
           email: _.isObject(v) ? v.email : null,
           recipientType: 'contact',
           coin: this.addressProvider.validateAddress(k).coin,
-          getAddress: () => {
-            return new Promise(resolve => {
-              return resolve(k);
-            });
-          }
+          getAddress: () => Promise.resolve(k)
         });
       });
+      this.contactsList = contactsList.filter(c =>
+        this.filterIrrelevantRecipients(c)
+      );
       let shortContactsList = _.clone(
         this.contactsList.slice(
           0,
@@ -202,17 +189,48 @@ export class SendPage {
     });
   }
 
+  private flattenWallet(wallet): FlatWallet {
+    return {
+      color: wallet.color,
+      name: wallet.name,
+      recipientType: 'wallet',
+      coin: wallet.coin,
+      network: wallet.network,
+      m: wallet.credentials.m,
+      n: wallet.credentials.n,
+      isComplete: wallet.isComplete(),
+      needsBackup: wallet.needsBackup,
+      getAddress: () => this.walletProvider.getAddress(wallet, false)
+    };
+  }
+
+  private filterIrrelevantRecipients(recipient: {
+    coin: string;
+    network: string;
+  }): boolean {
+    return this.wallet
+      ? this.wallet.coin === recipient.coin &&
+          this.wallet.network === recipient.network
+      : true;
+  }
+
   public showMore(): void {
     this.currentContactsPage++;
     this.updateContactsList();
   }
 
   public openScanner(): void {
-    this.navCtrl.parent.select(2);
+    this.events.publish('ScanFromWallet');
   }
 
   public findContact(search: string): void {
-    if (this.incomingDataProvider.redir(search)) return;
+    if (
+      this.incomingDataProvider.redir(search, {
+        amount: this.navParams.get('amount'),
+        coin: this.navParams.get('coin')
+      })
+    )
+      return;
     if (search && search.trim() != '') {
       let result = _.filter(this.contactsList, item => {
         let val = item.name;
@@ -234,16 +252,17 @@ export class SendPage {
           return;
         }
         this.logger.debug('Got address:' + addr + ' | ' + item.name);
-        this.navCtrl.push(AmountPage, {
+        this.navCtrl.push(ConfirmPage, {
           recipientType: item.recipientType,
+          amount: parseInt(this.navParams.data.amount, 10),
           toAddress: addr,
           name: item.name,
           email: item.email,
           color: item.color,
           coin: item.coin,
-          network: item.network
+          network: item.network,
+          useSendMax: this.useSendMax
         });
-        return;
       })
       .catch(err => {
         this.logger.error('Send: could not getAddress', err);

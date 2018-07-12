@@ -24,6 +24,7 @@ import { TxpDetailsPage } from '../pages/txp-details/txp-details';
 import { SearchTxModalPage } from '../pages/wallet-details/search-tx-modal/search-tx-modal';
 import { WalletBalancePage } from '../pages/wallet-details/wallet-balance/wallet-balance';
 import { WalletDetailsPage } from '../pages/wallet-details/wallet-details';
+import { WalletTabsPage } from '../pages/wallet-tabs/wallet-tabs';
 
 // Integrations: Amazon
 import { AmazonPage } from '../pages/integrations/amazon/amazon';
@@ -124,6 +125,7 @@ import { ConfirmPage } from '../pages/send/confirm/confirm';
 
 /* Receive */
 import { CustomAmountPage } from '../pages/receive/custom-amount/custom-amount';
+import { WalletTabsChild } from './wallet-tabs/wallet-tabs-child';
 
 export const PAGES = [
   ActivityPage,
@@ -217,6 +219,8 @@ export const PAGES = [
   WalletDeletePage,
   WalletExtendedPrivateKeyPage,
   WalletDetailsPage,
+  WalletTabsChild,
+  WalletTabsPage,
   WalletBalancePage,
   WalletItemPage,
   WalletActivityPage,

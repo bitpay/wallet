@@ -4,15 +4,57 @@ pin-pad {
     padding-bottom: 10px;
   }
 
+  .amount-delete {
+    margin-right: 10px;
+  }
+
+  .send-max {
+    color: color($colors, primary);
+    font-size: 14px;
+    position: absolute;
+  }
+
+  .key-wrapper {
+    @include center;
+
+    > span {
+      &:last-child {
+        opacity: 1;
+        transform: translateY(0);
+        transition: opacity 200ms ease, transform 200ms ease;
+      }
+
+      &:first-child {
+        opacity: 0;
+        transform: translateY(25px);
+        transition: opacity 200ms ease, transform 200ms ease;
+      }
+    }
+
+    &.swap-key {
+      > span {
+        &:last-child {
+          opacity: 0;
+          transform: translateY(-20px);
+        }
+
+        &:first-child {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+    }
+  }
+
   .row {
     font-size: 32px;
-    cursor: pointer;
     display: flex;
     justify-content: space-around;
 
     .col {
       height: 9vh;
       min-height: 65px;
+      cursor: pointer;
 
       display: flex;
       align-items: center;
@@ -29,6 +71,12 @@ pin-pad {
         letter-spacing: 2px;
         margin-top: 4px;
         height: 22px;
+      }
+
+      &.disabled {
+        cursor: default;
+        pointer-events: none;
+        opacity: 0;
       }
     }
   }

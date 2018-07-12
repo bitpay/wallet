@@ -8,6 +8,13 @@ import { AppProvider } from '../app/app';
 import { BwcProvider } from '../bwc/bwc';
 import { PayproProvider } from '../paypro/paypro';
 import { PopupProvider } from '../popup/popup';
+import { Coin } from '../wallet/wallet';
+
+export interface RedirParams {
+  activePage?: any;
+  amount?: string;
+  coin?: Coin;
+}
 
 @Injectable()
 export class IncomingDataProvider {
@@ -27,7 +34,7 @@ export class IncomingDataProvider {
     this.events.publish('showIncomingDataMenuEvent', data);
   }
 
-  public redir(data: string, activePage?: string): boolean {
+  public redir(data: string, redirParams?: RedirParams): boolean {
     // data extensions for Payment Protocol with non-backwards-compatible request
     if (/^bitcoin(cash)?:\?r=[\w+]/.exec(data)) {
       this.logger.debug(
@@ -64,7 +71,7 @@ export class IncomingDataProvider {
       parsed = this.bwcProvider.getBitcore().URI(data);
       addr = parsed.address ? parsed.address.toString() : '';
       message = parsed.message;
-      amount = parsed.amount ? parsed.amount : '';
+      amount = parsed.amount || redirParams.amount || '';
 
       if (parsed.r) {
         this.payproProvider
@@ -97,7 +104,7 @@ export class IncomingDataProvider {
       }
 
       message = parsed.message;
-      amount = parsed.amount ? parsed.amount : '';
+      amount = parsed.amount || redirParams.amount || '';
 
       if (parsed.r) {
         this.payproProvider
@@ -201,14 +208,16 @@ export class IncomingDataProvider {
       this.bwcProvider.getBitcore().Address.isValid(data, 'testnet')
     ) {
       this.logger.debug('Handling Bitcoin Plain Address');
-      if (activePage === 'ScanPage') {
+      const coin = 'btc';
+      if (redirParams.activePage === 'ScanPage') {
         this.showMenu({
           data,
           type: 'bitcoinAddress',
-          coin: 'btc'
+          coin
         });
+      } else if (redirParams && redirParams.amount) {
+        this.goSend(data, redirParams.amount, '', coin);
       } else {
-        let coin = 'btc';
         this.goToAmountPage(data, coin);
       }
       return true;
@@ -217,14 +226,16 @@ export class IncomingDataProvider {
       this.bwcProvider.getBitcoreCash().Address.isValid(data, 'testnet')
     ) {
       this.logger.debug('Handling Bitcoin Cash Plain Address');
-      if (activePage === 'ScanPage') {
+      const coin = 'bch';
+      if (redirParams.activePage === 'ScanPage') {
         this.showMenu({
           data,
           type: 'bitcoinAddress',
           coin: 'bch'
         });
+      } else if (redirParams && redirParams.amount) {
+        this.goSend(data, redirParams.amount, '', coin);
       } else {
-        let coin = 'bch';
         this.goToAmountPage(data, coin);
       }
       return true;
@@ -331,7 +342,7 @@ export class IncomingDataProvider {
       this.events.publish('IncomingDataRedir', nextView);
       return true;
     } else {
-      if (activePage === 'ScanPage') {
+      if (redirParams.activePage === 'ScanPage') {
         this.logger.debug('Handling plain text');
         this.showMenu({
           data,

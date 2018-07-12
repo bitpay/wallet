@@ -1,0 +1,62 @@
+$short-device-height: 570px;
+
+.prompt-user-fullscreen-container {
+  @include center;
+  min-height: 100%;
+  padding: 1rem;
+  flex-grow: 1;
+}
+
+.prompt-user {
+  text-align: center;
+  width: 100%;
+  .title-info {
+    font-weight: 500;
+    color: #060606;
+    font-size: 18px;
+    margin: 30px;
+  }
+  .subtitle-info {
+    color: rgba(0, 0, 0, 0.8);
+    width: 77%;
+    max-width: 310px;
+    font-size: 16px;
+    margin: auto;
+    font-weight: 300;
+  }
+  .title-icon {
+    margin: auto;
+  }
+  .larger-icon {
+    width: 150px;
+  }
+  button {
+    margin-top: 30px;
+  }
+}
+
+@media (max-height: $short-device-height) {
+  .prompt-user {
+    .subtitle-info {
+      font-size: 15px;
+    }
+    .title-info {
+      font-size: 18px;
+      margin: 16px;
+    }
+    button {
+      margin-top: 20px;
+      width: 75%;
+      font-size: 17px;
+      min-height: 54px;
+    }
+  }
+}
+
+@media (max-height: 490px) {
+  .title-icon {
+    img {
+      max-height: 70px;
+    }
+  }
+}

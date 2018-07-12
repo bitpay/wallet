@@ -95,6 +95,10 @@ page-confirm {
         border-radius: $icon-border-radius;
       }
     }
+
+    &.not-clickable {
+      pointer-events: none;
+    }
   }
   .last-item {
     margin-left: auto !important;

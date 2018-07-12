@@ -1,10 +1,10 @@
 <div ion-item [ngClass]="{'no-border': isFocused}" (mousedown)="toggleValueUpdate()">
-    <ng-content select="[item-label]"></ng-content>
-    <div class="spinner" [ngClass]="{'spin-fade': saving}">
-    </div>
+  <ng-content select="[item-label]"></ng-content>
+  <div class="spinner" [ngClass]="{'spin-fade': saving}">
+  </div>
 </div>
 <div ion-item class="item-text" [hidden]="!value && !isFocused">
-    <ion-textarea rows="1" [ngClass]="{'ios-margin-fix': platformProvider.isCordova}" (input)="resizeTextarea()" (ionFocus)="toggleValueUpdate()"
-        spellcheck="false" #itemTextarea [formControl]="textInput" (ionBlur)="saveValueNow()" class="item-textarea" [(ngModel)]="value"
-        placeholder="{{ itemPlaceholder }}"></ion-textarea>
+  <ion-textarea rows="1" [ngClass]="{'ios-margin-fix': platformProvider.isCordova}" (input)="resizeTextarea()" (ionFocus)="toggleValueUpdate()"
+    spellcheck="false" #itemTextarea [formControl]="textInput" (ionBlur)="saveValueNow()" class="item-textarea" [(ngModel)]="value"
+    placeholder="{{ itemPlaceholder }}"></ion-textarea>
 </div>

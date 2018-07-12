@@ -19,6 +19,11 @@ import { RateProvider } from '../rate/rate';
 import { TouchIdProvider } from '../touchid/touchid';
 import { TxFormatProvider } from '../tx-format/tx-format';
 
+export enum Coin {
+  BTC = 'btc',
+  BCH = 'bch'
+}
+
 export interface WalletOptions {
   name: any;
   m: any;
@@ -27,7 +32,7 @@ export interface WalletOptions {
   networkName: string;
   bwsurl: any;
   singleAddress: any;
-  coin: any;
+  coin: Coin;
   extendedPrivateKey: any;
   mnemonic: any;
   derivationStrategy: any;
@@ -455,7 +460,7 @@ export class WalletProvider {
     }
   }
 
-  public getAddress(wallet, forceNew: boolean): Promise<any> {
+  public getAddress(wallet, forceNew: boolean): Promise<string> {
     return new Promise((resolve, reject) => {
       this.persistenceProvider
         .getLastAddress(wallet.id)

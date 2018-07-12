@@ -1,4 +1,4 @@
-import { Component, Output } from '@angular/core';
+import { Component, Input, Output } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 
@@ -11,18 +11,34 @@ export interface PinButton {
   selector: 'pin-pad',
   template: `
     <ion-row *ngFor="let row of buttonRows">
-      <ion-col *ngFor="let button of row" (click)="onKeystroke(button.value)" tappable>
-        <div>
-          <span *ngIf="button.value !== 'delete'">{{button.value}}</span>
-          <img *ngIf="button.value === 'delete'" src="assets/img/tail-left.svg">
+      <ion-col *ngFor="let button of row" (click)="onKeystroke(button.value)" [ngClass]="{disabled: isValueDisabled(button.value)}" tappable>
+        <div [ngSwitch]="button.value">
+          <span *ngSwitchCase="'delete'">
+            <img *ngIf="type ==='pin'" src="assets/img/tail-left.svg"> 
+            <img class="amount-delete" *ngIf="type ==='amount'" src="assets/img/icon-delete.svg">
+          </span>
+          <span *ngSwitchCase="'.'">
+            <span *ngIf="type === 'amount'">.</span>
+          </span>
+          <span *ngSwitchCase="'0'" class="key-wrapper" [ngClass]="{'swap-key': type === 'amount' && showSendMax}">
+            <span class="send-max" translate>Send Max</span>
+            <span>0</span>
+          </span>
+          <span *ngSwitchDefault>{{button.value}}</span>
         </div>
-        <div class="letters">{{button.letters}}</div>
+        <div class="letters" *ngIf="type === 'pin'">{{button.letters}}</div>
       </ion-col>
     </ion-row>
   `
 })
 export class PinPad {
+  @Input() onlyIntegers: boolean = false;
+  @Input() showSendMax: boolean = false;
+
+  @Input() type: 'pin' | 'amount';
+
   keystrokeSubject: Subject<string> = new Subject<string>();
+
   @Output()
   keystroke: Observable<string> = this.keystrokeSubject.asObservable();
   public buttonRows: PinButton[][] = [
@@ -70,7 +86,7 @@ export class PinPad {
     ],
     [
       {
-        value: '',
+        value: '.',
         letters: ''
       },
       {
@@ -85,6 +101,13 @@ export class PinPad {
   ];
 
   public onKeystroke(value: string): void {
+    if (this.isValueDisabled(value)) {
+      return;
+    }
     this.keystrokeSubject.next(value);
+  }
+
+  public isValueDisabled(value: string) {
+    return value === '.' && this.onlyIntegers;
   }
 }

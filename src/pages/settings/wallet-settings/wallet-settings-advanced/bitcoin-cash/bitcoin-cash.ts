@@ -14,6 +14,7 @@ import { ProfileProvider } from '../../../../../providers/profile/profile';
 import { PushNotificationsProvider } from '../../../../../providers/push-notifications/push-notifications';
 import { TxFormatProvider } from '../../../../../providers/tx-format/tx-format';
 import {
+  Coin,
   WalletOptions,
   WalletProvider
 } from '../../../../../providers/wallet/wallet';
@@ -107,7 +108,7 @@ export class BitcoinCashPage {
       n: wallet.n,
       myName: wallet.credentials.copayerName,
       networkName: wallet.network,
-      coin: 'bch',
+      coin: Coin.BCH,
       walletPrivKey: wallet.credentials.walletPrivKey,
       compliantDerivation: wallet.credentials.compliantDerivation
     };

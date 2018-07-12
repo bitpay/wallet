@@ -22,6 +22,8 @@ import { WalletProvider } from '../../providers/wallet/wallet';
 import { BackupWarningPage } from '../../pages/backup/backup-warning/backup-warning';
 import { WalletAddressesPage } from '../../pages/settings/wallet-settings/wallet-settings-advanced/wallet-addresses/wallet-addresses';
 import { TxDetailsPage } from '../../pages/tx-details/tx-details';
+import { WalletTabsChild } from '../wallet-tabs/wallet-tabs-child';
+import { WalletTabsProvider } from '../wallet-tabs/wallet-tabs.provider';
 import { SearchTxModalPage } from './search-tx-modal/search-tx-modal';
 import { WalletBalancePage } from './wallet-balance/wallet-balance';
 
@@ -31,7 +33,7 @@ const HISTORY_SHOW_LIMIT = 10;
   selector: 'page-wallet-details',
   templateUrl: 'wallet-details.html'
 })
-export class WalletDetailsPage {
+export class WalletDetailsPage extends WalletTabsChild {
   private currentPage: number = 0;
 
   public requiresMultipleSignatures: boolean;
@@ -51,9 +53,9 @@ export class WalletDetailsPage {
   public txps = [];
 
   constructor(
-    private navCtrl: NavController,
+    navCtrl: NavController,
     private navParams: NavParams,
-    private profileProvider: ProfileProvider,
+    profileProvider: ProfileProvider,
     private walletProvider: WalletProvider,
     private addressbookProvider: AddressBookProvider,
     private bwcError: BwcErrorProvider,
@@ -63,12 +65,15 @@ export class WalletDetailsPage {
     private translate: TranslateService,
     private modalCtrl: ModalController,
     private onGoingProcessProvider: OnGoingProcessProvider,
-    private externalLinkProvider: ExternalLinkProvider
+    private externalLinkProvider: ExternalLinkProvider,
+    walletTabsProvider: WalletTabsProvider
   ) {
-    let clearCache = this.navParams.data.clearCache;
-    this.wallet = this.profileProvider.getWallet(this.navParams.data.walletId);
+    super(navCtrl, profileProvider, walletTabsProvider);
+  }
+
+  ionViewDidLoad() {
     // Getting info from cache
-    if (clearCache) {
+    if (this.navParams.data.clearCache) {
       this.clearHistoryCache();
     } else {
       this.wallet.status = this.wallet.cachedStatus;
@@ -103,6 +108,10 @@ export class WalletDetailsPage {
   ionViewWillLeave() {
     this.events.unsubscribe('Local/TxAction');
     this.events.unsubscribe('bwsEvent');
+  }
+
+  shouldShowZeroState() {
+    return this.showNoTransactionsYetMsg && !this.updateStatusError;
   }
 
   private clearHistoryCache() {

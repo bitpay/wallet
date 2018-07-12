@@ -1,5 +1,10 @@
-<ion-header no-border>
+<ion-header no-border class="wallet-details-header">
   <ion-navbar [navbar-bg]="wallet.color">
+    <ion-buttons left>
+      <button class="modal-close-button" (click)="close()" ion-button>
+        <ion-icon ios="md-close" md="md-close"></ion-icon>
+      </button>
+    </ion-buttons>
     <ion-title>{{wallet.name}}</ion-title>
     <ion-buttons right>
       <button ion-button clear *ngIf="wallet && wallet.completeHistory && wallet.completeHistory.length > 4" (click)="openSearchModal()">
@@ -9,7 +14,7 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content no-bounce #scrollArea [ios-scroll-bg-color]="wallet.color">
+<ion-content no-bounce #scrollArea [ios-scroll-bg-color]="wallet.color" [ngClass]="{'zero-state': shouldShowZeroState()}">
   <div class="wrapper">
     <expandable-header class="balance-card" [scrollArea]="scrollArea" [ngStyle]="{'background': wallet.color}">
       <expandable-header-primary class="balance-header">
@@ -64,7 +69,7 @@
         <img class="testnet-text" *ngIf="wallet.network == 'testnet'" src="assets/img/icon-text-testnet.svg">
         <img class="read-only" *ngIf="!wallet.canSign()" src="assets/img/icon-read-only.svg">
         <img class="read-only-text" *ngIf="!wallet.canSign()" src="assets/img/icon-text-read-only.svg">
-        <img class="auditable-text" *ngIf="wallet.status && wallet.status.wallet.singleAddress" src="assets/img/icon-text-auditable.svg">
+        <img class="auditable-text" *ngIf="wallet.status && wallet.status.wallet && wallet.status.wallet.singleAddress" src="assets/img/icon-text-auditable.svg">
         <img class="custom-bws" *ngIf="wallet.usingCustomBWS" src="assets/img/icon-bws-white.svg">
         <img class="encrypted" *ngIf="wallet.isPrivKeyEncrypted()" src="assets/img/icon-lock-white.svg">
 
@@ -74,14 +79,6 @@
       </expandable-header-footer>
 
     </expandable-header>
-
-    <div *ngIf="wallet.needsBackup" class="box-notification no-margin warn">
-      <a (click)="openBackup()">
-        <ion-icon name="warning"></ion-icon>
-        {{'Wallet not backed up'|translate}}
-        <ion-icon name="arrow-forward"></ion-icon>
-      </a>
-    </div>
 
     <div *ngIf="wallet.network == 'testnet'" class="box-notification no-margin warn">
       <a (click)="openExternalLink('https://support.bitpay.com/hc/en-us/articles/360004102011-What-is-testnet-How-do-I-avoid-testnet-Bitcoin-scams-')">
@@ -123,8 +120,17 @@
 
       <!-- Transactions -->
 
-      <div class="middle-message" *ngIf="showNoTransactionsYetMsg && !updateStatusError" translate>
-        No transactions yet
+
+      <div class="prompt-user activity-fix" *ngIf="shouldShowZeroState()">
+        <div class="title-icon larger-icon">
+          <img src="assets/img/ghost-tongue-out.svg" />
+        </div>
+        <div class="title-info">
+          <span translate>It's a ghost town in here</span>
+        </div>
+        <div class="subtitle-info">
+          <span translate>If you have funds stored on a website then you should move them into a secure wallet... like this one!</span>
+        </div>
       </div>
 
       <div class="middle-message" *ngIf="txHistory && !txHistory[0] && updateTxHistoryError" translate>
@@ -224,7 +230,7 @@
         </ion-item-group>
       </ion-list>
 
-      <ion-infinite-scroll (ionInfinite)="loadHistory($event)">
+      <ion-infinite-scroll (ionInfinite)="loadHistory($event)" *ngIf="!shouldShowZeroState()">
         <ion-infinite-scroll-content></ion-infinite-scroll-content>
       </ion-infinite-scroll>
 

@@ -12,7 +12,6 @@ import { Subscription } from 'rxjs';
 
 // Pages
 import { AddPage } from '../add/add';
-import { CopayersPage } from '../add/copayers/copayers';
 import { AmazonPage } from '../integrations/amazon/amazon';
 import { BitPayCardPage } from '../integrations/bitpay-card/bitpay-card';
 import { BitPayCardIntroPage } from '../integrations/bitpay-card/bitpay-card-intro/bitpay-card-intro';
@@ -22,7 +21,6 @@ import { MercadoLibrePage } from '../integrations/mercado-libre/mercado-libre';
 import { ShapeshiftPage } from '../integrations/shapeshift/shapeshift';
 import { TxDetailsPage } from '../tx-details/tx-details';
 import { TxpDetailsPage } from '../txp-details/txp-details';
-import { WalletDetailsPage } from '../wallet-details/wallet-details';
 import { ActivityPage } from './activity/activity';
 import { ProposalsPage } from './proposals/proposals';
 
@@ -46,6 +44,7 @@ import { ProfileProvider } from '../../providers/profile/profile';
 import { ReleaseProvider } from '../../providers/release/release';
 import { ReplaceParametersProvider } from '../../providers/replace-parameters/replace-parameters';
 import { WalletProvider } from '../../providers/wallet/wallet';
+import { SettingsPage } from '../settings/settings';
 
 @Component({
   selector: 'page-home',
@@ -489,15 +488,7 @@ export class HomePage {
 
   public goToWalletDetails(wallet): void {
     if (this.showReorderBtc || this.showReorderBch) return;
-    if (!wallet.isComplete()) {
-      this.navCtrl.push(CopayersPage, {
-        walletId: wallet.credentials.walletId
-      });
-      return;
-    }
-    this.navCtrl.push(WalletDetailsPage, {
-      walletId: wallet.credentials.walletId
-    });
+    this.events.publish('OpenWallet', wallet);
   }
 
   public openNotificationModal(n) {
@@ -617,5 +608,13 @@ export class HomePage {
     setTimeout(() => {
       refresher.complete();
     }, 2000);
+  }
+
+  public scan() {
+    this.navCtrl.parent.select(1);
+  }
+
+  public settings() {
+    this.navCtrl.push(SettingsPage);
   }
 }

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, HostBinding } from '@angular/core';
 import { Events, Platform } from 'ionic-angular';
 
 @Component({
@@ -10,9 +10,10 @@ export class WalletSelectorPage {
   public wallets;
   public walletsBtc;
   public walletsBch;
-  public showSlideEffect: boolean;
   public title: string;
   public selectedWalletId: string;
+
+  @HostBinding('class.open') public showSlideEffect: boolean;
 
   constructor(private events: Events, private platform: Platform) {
     this.showWalletsSelector = false;

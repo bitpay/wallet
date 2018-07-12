@@ -31,61 +31,15 @@ page-receive {
       margin: 0 5px;
     }
   }
-  .qr-container {
-    text-align: center;
-    .text-address {
-      font-size: 10px;
-      margin-bottom: 20px;
-      color: color($colors, dark);
-      &.ellipsis {
-        padding: 0 10px 0 4px;
-      }
-      @media (min-height: 525px) {
-        font-size: 12px;
-      }
-      > img {
-        vertical-align: middle;
-        margin-right: 5px;
-        width: 16px;
-        display: inline-block;
-      }
-    }
-    .aclass {
-      @include center;
-    }
-    .aclass > img {
-      width: 180px;
-      @media (max-height: 500px) {
-        margin-bottom: 0px;
-      }
-      @media (min-height: 525px) {
-        width: 195px;
-      }
-      @media (min-height: 560px) {
-        width: 220px;
-      }
-      @media (min-height: 620px) {
-        width: 260px;
-      }
-    }
-    .new-address {
-      font-size: 10px;
-      @media (min-height: 525px) {
-        font-size: 12px;
-      }
-    }
-    ion-list {
-      margin: 20px 0 -14px 0;
-      .item-block {
-        padding: 0px;
-        .item-inner {
-          padding-right: 0px;
-          ion-label {
-            margin: 6px 0px 14px 0;
-          }
-        }
-      }
-    }
+  .aclass {
+    @include center;
+    padding: 5px;
+  }
+  .aclass > img {
+    filter: grayscale(100%);
+    height: 100%;
+    width: 100%;
+    opacity: 0.715;
   }
   .wallets-container {
     padding-left: 2rem;
@@ -123,5 +77,142 @@ page-receive {
   .card {
     z-index: 1;
     position: relative;
+  }
+  .receive-container {
+    z-index: 1;
+    position: relative;
+  }
+  .address-container {
+    bottom: 0;
+    background-color: rgb(248, 248, 248);
+    border-top: 1px solid rgb(229, 229, 229);
+    color: rgb(80, 80, 80);
+    width: 100%;
+    padding: 15px;
+    text-align: center;
+    font-size: 15px;
+  }
+  .address-divider {
+    width: 1px;
+    height: 25px;
+    background-color: rgb(227, 227, 227);
+    display: inline-block;
+    margin-left: 10px;
+    margin-right: 12px;
+    vertical-align: middle;
+  }
+  .text-address.ellipsis img {
+    vertical-align: middle;
+  }
+  .scroll-content .wrapper {
+    display: flex;
+    flex-direction: column;
+    background-color: rgb(251, 251, 251);
+  }
+  .scroll-content {
+    background-color: rgb(251, 251, 251);
+  }
+  .new-address-btn {
+    width: 25px;
+    height: 25px;
+    padding: 0px;
+    vertical-align: middle;
+    padding-bottom: 3px;
+    margin-left: 5px;
+    background-color: transparent;
+  }
+  .spin-backwards {
+    animation: spin-backwards 0.5s ease-out 1;
+  }
+  @keyframes spin-backwards {
+    from {
+      transform: rotate(210deg);
+    }
+    to {
+      transform: rotate(-360deg);
+    }
+  }
+  .wallet-details {
+    flex-grow: 1;
+    @include center;
+    background: linear-gradient(#ececec, white);
+    height: 100%;
+  }
+  .loading-dots {
+    display: inline-block;
+  }
+  .qr-card {
+    border: 1px solid rgb(207, 207, 207);
+    border-radius: 7px;
+    transform: translateY(0);
+    margin: 0;
+    padding-bottom: 0;
+    width: 70%;
+    max-width: 293px;
+    box-shadow: none;
+  }
+  .address-text {
+    width: 70%;
+    max-width: 300px;
+    vertical-align: middle;
+    display: inline-block;
+    opacity: 1;
+    transition: opacity 500ms ease;
+  }
+  .fade-in-out {
+    opacity: 0.1;
+  }
+  .qr-code-bounce {
+    animation: bounce-down 0.5s linear;
+  }
+  @keyframes bounce-down {
+    0% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(15%);
+    }
+    100% {
+      transform: translateY(0);
+    }
+  }
+  $spinner-height: 18px;
+  .spin-icon {
+    height: $spinner-height;
+  }
+  .spinner {
+    float: right;
+    padding-bottom: 0px;
+    border: 1px solid #d0d5ef;
+    border-top: 1px solid #5b7cea;
+    border-radius: 50%;
+    width: $spinner-height;
+    height: $spinner-height;
+    margin: 2px;
+  }
+  .spin-fast {
+    animation: spin-fast 0.3s linear infinite;
+  }
+  @keyframes spin-fast {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  .clipboard-actionsheet {
+    background-color: red;
+    color: black;
+    font-weight: 400;
+  }
+  .bar-button {
+    margin-right: 10px;
+    .horizontal-lg {
+      font-size: 45px;
+    }
+    .horizontal-lg::before {
+      content: '\f1c8';
+    }
   }
 }

@@ -1,6 +1,12 @@
 import { Component, ViewChild } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { Navbar, NavController, NavParams, Slides } from 'ionic-angular';
+import {
+  Events,
+  Navbar,
+  NavController,
+  NavParams,
+  Slides
+} from 'ionic-angular';
 import * as _ from 'lodash';
 import { Logger } from '../../../providers/logger/logger';
 
@@ -41,6 +47,7 @@ export class BackupGamePage {
   private useIdeograms;
 
   constructor(
+    private events: Events,
     private navCtrl: NavController,
     private navParams: NavParams,
     private logger: Logger,
@@ -243,6 +250,7 @@ export class BackupGamePage {
             this.navCtrl.push(DisclaimerPage);
           } else {
             this.navCtrl.popToRoot({ animate: false });
+            this.events.publish('backupCompleted');
           }
         });
       })

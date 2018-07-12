@@ -109,16 +109,16 @@
           Incomplete
         </span>
         <span class="wallet-warning" *ngIf="wallet.isComplete() && wallet.needsBackup" translate>
-          Needs backup
+          Paper key unverified
         </span>
       </div>
       <ion-note *ngIf="wallet.credentials.m > 1 && wallet.isComplete() && !wallet.needsBackup" item-end>
         {{wallet.credentials.m}}-{{wallet.credentials.n}}
       </ion-note>
     </button>
-    
+
     <ion-item-divider *ngIf="walletsBch.length">{{'Bitcoin Cash Wallets' | translate}}</ion-item-divider>
-    
+
     <button ion-item *ngFor="let wallet of walletsBch" (click)="openWalletSettingsPage(wallet.credentials.walletId)">
       <ion-icon class="item-img" item-start>
         <img *ngIf="wallet.network == 'testnet'" [ngStyle]="{'background-color': wallet.color}" src="assets/img/icon-wallet-testnet.svg"
@@ -132,7 +132,7 @@
           Incomplete
         </span>
         <span class="wallet-warning" *ngIf="wallet.isComplete() && wallet.needsBackup" translate>
-          Needs backup
+          Paper key unverified
         </span>
       </div>
       <ion-note *ngIf="wallet.credentials.m > 1 && wallet.isComplete() && !wallet.needsBackup" item-end>

@@ -1,6 +1,12 @@
 import { Component } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { App, Events, NavController, NavParams } from 'ionic-angular';
+import {
+  App,
+  Events,
+  NavController,
+  NavParams,
+  ViewController
+} from 'ionic-angular';
 
 // Pages
 import { WalletDetailsPage } from '../../../pages/wallet-details/wallet-details';
@@ -44,7 +50,8 @@ export class CopayersPage {
     private onGoingProcessProvider: OnGoingProcessProvider,
     private walletProvider: WalletProvider,
     private translate: TranslateService,
-    private pushNotificationsProvider: PushNotificationsProvider
+    private pushNotificationsProvider: PushNotificationsProvider,
+    private viewCtrl: ViewController
   ) {
     this.secret = null;
   }
@@ -67,6 +74,10 @@ export class CopayersPage {
 
   ionViewWillLeave() {
     this.events.unsubscribe('bwsEvent');
+  }
+
+  close() {
+    this.viewCtrl.dismiss();
   }
 
   private updateWallet(): void {

@@ -34,12 +34,14 @@ import {
   TransactionProposal,
   WalletProvider
 } from '../../../providers/wallet/wallet';
+import { WalletTabsChild } from '../../wallet-tabs/wallet-tabs-child';
+import { WalletTabsProvider } from '../../wallet-tabs/wallet-tabs.provider';
 
 @Component({
   selector: 'page-confirm',
   templateUrl: 'confirm.html'
 })
-export class ConfirmPage {
+export class ConfirmPage extends WalletTabsChild {
   @ViewChild('slideButton') slideButton;
 
   private bitcore;
@@ -78,13 +80,13 @@ export class ConfirmPage {
   constructor(
     private app: App,
     private bwcProvider: BwcProvider,
-    private navCtrl: NavController,
+    navCtrl: NavController,
     private navParams: NavParams,
     private logger: Logger,
     private configProvider: ConfigProvider,
     private replaceParametersProvider: ReplaceParametersProvider,
     private platformProvider: PlatformProvider,
-    private profileProvider: ProfileProvider,
+    profileProvider: ProfileProvider,
     private walletProvider: WalletProvider,
     private popupProvider: PopupProvider,
     private bwcErrorProvider: BwcErrorProvider,
@@ -95,8 +97,10 @@ export class ConfirmPage {
     private txFormatProvider: TxFormatProvider,
     private events: Events,
     private translate: TranslateService,
-    private externalLinkProvider: ExternalLinkProvider
+    private externalLinkProvider: ExternalLinkProvider,
+    walletTabsProvider: WalletTabsProvider
   ) {
+    super(navCtrl, profileProvider, walletTabsProvider);
     this.bitcore = this.bwcProvider.getBitcore();
     this.bitcoreCash = this.bwcProvider.getBitcoreCash();
     this.CONFIRM_LIMIT_USD = 20;
@@ -107,6 +111,10 @@ export class ConfirmPage {
       : 'normal';
     this.isCordova = this.platformProvider.isCordova;
     this.memoFocused = false;
+  }
+
+  ngOnInit() {
+    // Overrides the ngOnInit logic of WalletTabsChild
   }
 
   ionViewWillLeave() {
@@ -193,7 +201,14 @@ export class ConfirmPage {
   }
 
   private afterWalletSelectorSet() {
-    if (this.wallets.length > 1) {
+    const parentWallet = this.getParentWallet();
+    if (
+      parentWallet &&
+      this.tx.coin === parentWallet.coin &&
+      this.tx.network === parentWallet.network
+    ) {
+      this.setWallet(parentWallet);
+    } else if (this.wallets.length > 1) {
       return this.showWallets();
     } else if (this.wallets.length) {
       this.setWallet(this.wallets[0]);
@@ -800,7 +815,7 @@ export class ConfirmPage {
       });
   }
 
-  private openFinishModal(onlyPublish?: boolean) {
+  private async openFinishModal(onlyPublish?: boolean) {
     let params: { finishText: string; finishComment?: string } = {
       finishText: this.successText
     };
@@ -815,8 +830,11 @@ export class ConfirmPage {
       showBackdrop: true,
       enableBackdropDismiss: false
     });
-    modal.present();
-    this.app.getRootNavs()[0].setRoot(TabsPage);
+    await modal.present();
+
+    this.isWithinWalletTabs()
+      ? this.close()
+      : this.app.getRootNavs()[0].setRoot(TabsPage);
   }
 
   public openPPModal(): void {
