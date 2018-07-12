@@ -315,6 +315,12 @@ export class AmountPage extends WalletTabsChild {
     });
   }
 
+  public shouldShowZeroState() {
+    return (
+      this.wallet && this.wallet.status && !this.wallet.status.totalBalanceSat
+    );
+  }
+
   public isSendMaxButtonShown() {
     return !this.expression && !this.requestingAmount && this.showSendMax;
   }

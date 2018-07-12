@@ -13,7 +13,7 @@
     </ion-buttons>
   </ion-navbar>
   <ion-toolbar [navbar-bg]="wallet.color">
-    <div class="wallet-details-header__balance">{{wallet.status.totalBalanceStr}}</div>
+    <div class="wallet-details-header__balance">{{wallet.status && wallet.status.totalBalanceStr}}</div>
   </ion-toolbar>
 </ion-header>
 

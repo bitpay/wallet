@@ -8,13 +8,13 @@
     <ion-title>{{wallet && wallet.name || ('Amount' | translate)}}</ion-title>
   </ion-navbar>
   <ion-toolbar *ngIf="wallet" [navbar-bg]="wallet.color">
-    <div class="wallet-details-header__balance">{{wallet.status.totalBalanceStr}}</div>
+    <div class="wallet-details-header__balance">{{wallet.status && wallet.status.totalBalanceStr}}</div>
   </ion-toolbar>
 </ion-header>
 
 <ion-content no-bounce>
 
-  <div class="prompt-user-fullscreen-container" *ngIf="wallet && !wallet.status.totalBalanceSat">
+  <div class="prompt-user-fullscreen-container" *ngIf="shouldShowZeroState()">
     <div class="prompt-user">
       <div class="title-icon larger-icon">
         <img src="assets/img/ghost-straight-face.svg" />
@@ -31,7 +31,7 @@
     </div>
   </div>
 
-  <div *ngIf="!wallet || wallet.status.totalBalanceSat" class="amount-wrapper">
+  <div *ngIf="!shouldShowZeroState()" class="amount-wrapper">
 
     <div class="amount-header-margin">
       <div class="amount-header">
