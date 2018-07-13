@@ -38,6 +38,9 @@ module.exports = function(config) {
       config.angularCli && config.angularCli.codeCoverage
         ? ['spec', 'coverage-istanbul']
         : ['spec', 'kjhtml'],
+    specReporter: {
+      suppressSkipped: true // do not print information about skipped tests
+    },
     port: 9876,
     colors: true,
     logLevel: config.LOG_INFO,

@@ -32,7 +32,7 @@ export interface PinButton {
   `
 })
 export class PinPad {
-  @Input() onlyIntegers: boolean = false;
+  @Input() integersOnly: boolean = false;
   @Input() showSendMax: boolean = false;
 
   @Input() type: 'pin' | 'amount';
@@ -108,6 +108,6 @@ export class PinPad {
   }
 
   public isValueDisabled(value: string) {
-    return value === '.' && this.onlyIntegers;
+    return value === '.' && this.integersOnly;
   }
 }
