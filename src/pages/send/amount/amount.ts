@@ -308,7 +308,7 @@ export class AmountPage extends WalletTabsChild {
     );
     this.zone.run(() => {
       this.expression = this.availableUnits[this.unitIndex].isFiat
-        ? this.toFiat(maxAmount).toFixed(2)
+        ? this.toFiat(maxAmount, this.wallet.coin).toFixed(2)
         : maxAmount;
       this.processAmount();
       this.changeDetectorRef.detectChanges();
@@ -429,7 +429,7 @@ export class AmountPage extends WalletTabsChild {
     );
   }
 
-  private toFiat(val: number): number {
+  private toFiat(val: number, coin?: Coin): number {
     if (!this.rateProvider.getRate(this.fiatCode)) return undefined;
 
     return parseFloat(
@@ -437,7 +437,7 @@ export class AmountPage extends WalletTabsChild {
         .toFiat(
           val * this.unitToSatoshi,
           this.fiatCode,
-          this.availableUnits[this.unitIndex].id
+          coin || this.availableUnits[this.unitIndex].id
         )
         .toFixed(2)
     );
