@@ -216,7 +216,12 @@ export class TxFormatProvider {
     return txps;
   }
 
-  public parseAmount(coin: string, amount, currency: string) {
+  public parseAmount(
+    coin: string,
+    amount,
+    currency: string,
+    onlyIntegers?: boolean
+  ) {
     let settings = this.configProvider.get().wallet.settings;
     var satToBtc = 1 / 100000000;
     var unitToSatoshi = settings.unitToSatoshi;
@@ -226,7 +231,10 @@ export class TxFormatProvider {
 
     // If fiat currency
     if (currency != 'BCH' && currency != 'BTC' && currency != 'sat') {
-      amountUnitStr = this.filter.formatFiatAmount(amount) + ' ' + currency;
+      let formattedAmount = onlyIntegers
+        ? Number(this.filter.formatFiatAmount(amount)).toFixed(0)
+        : this.filter.formatFiatAmount(amount);
+      amountUnitStr = formattedAmount + ' ' + currency;
       amountSat = Number(this.rate.fromFiat(amount, currency, coin).toFixed(0));
     } else if (currency == 'sat') {
       amountSat = Number(amount);
