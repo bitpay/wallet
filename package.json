@@ -274,7 +274,7 @@
       "cordova-plugin-screen-orientation": {},
       "cordova-plugin-spinner-dialog": {},
       "cordova-plugin-vibration": {},
-      "cordova-plugin-useragent": {}
+      "im.ltdev.cordova.UserAgent": {}
     },
     "platforms": [
       "android",
