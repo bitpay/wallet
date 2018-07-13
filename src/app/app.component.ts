@@ -170,9 +170,9 @@ export class CopayApp {
         this.appProvider.info.name +
           ' ' +
           this.appProvider.info.version +
-          '(' +
+          ' (' +
           this.device.platform +
-          ' - ' +
+          ' ' +
           this.device.version +
           ' - ' +
           this.device.model +
