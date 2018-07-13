@@ -13,6 +13,7 @@
   ],
   "main": "www/index.html",
   "title": "Copay",
+  "user-agent": "%name %ver (%osinfo)",
   "chromium-args": "--disable-password-generation --disable-devtools",
   "window": {
     "title": "Copay – Copay Bitcoin Wallet",
