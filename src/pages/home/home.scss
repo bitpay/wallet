@@ -134,11 +134,12 @@ page-home {
     );
   }
 
-  ion-fab[right] {
-    right: env(safe-area-inset-bottom);
-  }
-
-  ion-fab[bottom] {
-    bottom: env(safe-area-inset-bottom);
+  @media only screen and (device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3) {
+    ion-fab[right] {
+      right: env(safe-area-inset-bottom);
+    }
+    ion-fab[bottom] {
+      bottom: env(safe-area-inset-bottom);
+    }
   }
 }
