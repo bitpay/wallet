@@ -1,7 +1,9 @@
 import { Component, Renderer, ViewChild } from '@angular/core';
+import { Device } from '@ionic-native/device';
 import { ScreenOrientation } from '@ionic-native/screen-orientation';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
+import { UserAgent } from '@ionic-native/user-agent';
 import {
   App,
   Events,
@@ -110,7 +112,9 @@ export class CopayApp {
     private app: App,
     private incomingDataProvider: IncomingDataProvider,
     private walletTabsProvider: WalletTabsProvider,
-    private renderer: Renderer
+    private renderer: Renderer,
+    private userAgent: UserAgent,
+    private device: Device
   ) {
     this.initializeApp();
   }
@@ -160,6 +164,20 @@ export class CopayApp {
 
     if (this.platform.is('cordova')) {
       this.statusBar.show();
+
+      // Set User-Agent
+      this.userAgent.set(
+        this.appProvider.info.name +
+          ' ' +
+          this.appProvider.info.version +
+          '(' +
+          this.device.platform +
+          ' - ' +
+          this.device.version +
+          ' - ' +
+          this.device.model +
+          ')'
+      );
 
       // Set to portrait
       this.screenOrientation.lock(this.screenOrientation.ORIENTATIONS.PORTRAIT);
