@@ -115,24 +115,24 @@ export class ShapeshiftShiftPage {
   private showToWallets(): void {
     this.toWallets =
       this.fromWallet.coin == 'btc' ? this.walletsBch : this.walletsBtc;
+
+    this.toWallets = this.toWallets.filter(w => !w.needsBackup);
     this.onToWalletSelect(this.toWallets[0]);
 
+    let msg = this.translate.instant(
+      'ShapeShift is not available at this moment. Please, try again later.'
+    );
     let pair = this.fromWallet.coin + '_' + this.toWallet.coin;
-    this.shapeshiftProvider.getRate(pair, (_, rate: number) => {
+    this.shapeshiftProvider.getRate(pair, (error, rate: number) => {
+      if (error) return this.showErrorAndBack(null, msg);
       this.rate = rate;
 
-      this.shapeshiftProvider.getMarketInfo(pair, (_, limit) => {
+      this.shapeshiftProvider.getMarketInfo(pair, (error, limit) => {
+        if (error) return this.showErrorAndBack(null, msg);
         this.limit = limit;
 
-        if (this.limit['rate'] == 0 || this.rate['rate'] == 0) {
-          let msg = this.translate.instant(
-            'ShapeShift is not available at this moment. Please, try again later.'
-          );
-          this.popupProvider.ionicAlert(null, msg).then(() => {
-            this.navCtrl.pop();
-          });
-          return;
-        }
+        if (this.limit['rate'] == 0 || this.rate['rate'] == 0)
+          return this.showErrorAndBack(null, msg);
       });
     });
   }
