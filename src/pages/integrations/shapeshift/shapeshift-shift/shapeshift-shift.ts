@@ -124,23 +124,15 @@ export class ShapeshiftShiftPage {
     );
     let pair = this.fromWallet.coin + '_' + this.toWallet.coin;
     this.shapeshiftProvider.getRate(pair, (_, rate: number) => {
-      if (_) {
-        this.showErrorAndBack(null, msg);
-        return;
-      }
+      if (_) return this.showErrorAndBack(null, msg);
       this.rate = rate;
 
       this.shapeshiftProvider.getMarketInfo(pair, (_, limit) => {
-        if (_) {
-          this.showErrorAndBack(null, msg);
-          return;
-        }
+        if (_) return this.showErrorAndBack(null, msg);
         this.limit = limit;
 
-        if (this.limit['rate'] == 0 || this.rate['rate'] == 0) {
-          this.showErrorAndBack(null, msg);
-          return;
-        }
+        if (this.limit['rate'] == 0 || this.rate['rate'] == 0)
+          return this.showErrorAndBack(null, msg);
       });
     });
   }
