@@ -24,6 +24,9 @@ describe('UpdateMemoComponent', () => {
   });
 
   describe('Methods', () => {
+    beforeEach(() => {
+      document.body.appendChild(document.createElement('ion-app'));
+    });
     describe('#toggleValueUpdate', () => {
       it('should emit focus(true) if isCordova', async () => {
         testBed.get(PlatformProvider).isCordova = true;
