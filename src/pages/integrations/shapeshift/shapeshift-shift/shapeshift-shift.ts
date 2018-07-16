@@ -116,9 +116,7 @@ export class ShapeshiftShiftPage {
     this.toWallets =
       this.fromWallet.coin == 'btc' ? this.walletsBch : this.walletsBtc;
 
-    this.toWallets = _.filter(this.toWallets, w => {
-      return w.needsBackup ? null : w;
-    });
+    this.toWallets = this.toWallets.filter(w => !w.needsBackup);
     this.onToWalletSelect(this.toWallets[0]);
 
     let msg = this.translate.instant(
@@ -127,26 +125,20 @@ export class ShapeshiftShiftPage {
     let pair = this.fromWallet.coin + '_' + this.toWallet.coin;
     this.shapeshiftProvider.getRate(pair, (_, rate: number) => {
       if (_) {
-        this.popupProvider.ionicAlert(null, msg).then(() => {
-          this.navCtrl.pop();
-        });
+        this.showErrorAndBack(null, msg);
         return;
       }
       this.rate = rate;
 
       this.shapeshiftProvider.getMarketInfo(pair, (_, limit) => {
         if (_) {
-          this.popupProvider.ionicAlert(null, msg).then(() => {
-            this.navCtrl.pop();
-          });
+          this.showErrorAndBack(null, msg);
           return;
         }
         this.limit = limit;
 
         if (this.limit['rate'] == 0 || this.rate['rate'] == 0) {
-          this.popupProvider.ionicAlert(null, msg).then(() => {
-            this.navCtrl.pop();
-          });
+          this.showErrorAndBack(null, msg);
           return;
         }
       });
