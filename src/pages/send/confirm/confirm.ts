@@ -220,6 +220,9 @@ export class ConfirmPage extends WalletTabsChild {
     network: string,
     minAmount: number
   ): Promise<any> {
+    if (this.getParentWallet()) {
+      return Promise.resolve();
+    }
     return new Promise((resolve, reject) => {
       // no min amount? (sendMax) => look for no empty wallets
       minAmount = minAmount ? minAmount : 1;
