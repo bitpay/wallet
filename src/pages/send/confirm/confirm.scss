@@ -5,6 +5,12 @@ page-confirm {
       margin-bottom: 90px;
     }
   }
+  .no-margin-bottom {
+    .fixed-content,
+    .scroll-content {
+      margin-bottom: 0px;
+    }
+  }
   .header-container {
     padding: 20px 0px 20px 0px;
     .sending-label {
@@ -95,7 +101,6 @@ page-confirm {
         border-radius: $icon-border-radius;
       }
     }
-
     &.not-clickable {
       pointer-events: none;
     }

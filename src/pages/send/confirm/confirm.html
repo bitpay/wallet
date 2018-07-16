@@ -9,7 +9,7 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content no-bounce>
+<ion-content [ngClass]="{'no-margin-bottom': memoFocused}" no-bounce>
   <ion-list *ngIf="tx">
     <ion-item>
       <div class="header-container">
