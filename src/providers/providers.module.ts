@@ -59,6 +59,7 @@ import {
   TouchIdProvider,
   TxConfirmNotificationProvider,
   TxFormatProvider,
+  UserAgent,
   Vibration,
   WalletProvider,
   WalletTabsProvider
@@ -121,6 +122,7 @@ import {
     TxConfirmNotificationProvider,
     FilterProvider,
     TxFormatProvider,
+    UserAgent,
     WalletProvider,
     EmailNotificationsProvider,
     DecimalPipe,
