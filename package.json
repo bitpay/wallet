@@ -57,7 +57,7 @@
     "lint": "ionic-app-scripts lint",
     "ionic:build": "ionic-app-scripts build",
     "ionic:serve": "ionic-app-scripts serve",
-    "watch": "ng test --browsers=Chrome -sm=false",
+    "watch": "ng test --browsers=Chrome",
     "test": "run-s env:dev test:lint test:ci env:e2e e2e env:dev",
     "test:coverage": "ng test --code-coverage",
     "test:ci": "ng test --watch=false --code-coverage --no-progress",
