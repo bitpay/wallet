@@ -414,7 +414,7 @@ export class ImportWalletPage {
       this.navCtrl.popToRoot({ animate: false });
     } else {
       this.navCtrl.popToRoot({ animate: false }).then(() => {
-        this.navCtrl.parent.select(2);
+        this.navCtrl.parent.select(1);
       });
     }
   }
