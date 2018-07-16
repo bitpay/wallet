@@ -123,12 +123,12 @@ export class ShapeshiftShiftPage {
       'ShapeShift is not available at this moment. Please, try again later.'
     );
     let pair = this.fromWallet.coin + '_' + this.toWallet.coin;
-    this.shapeshiftProvider.getRate(pair, (_, rate: number) => {
-      if (_) return this.showErrorAndBack(null, msg);
+    this.shapeshiftProvider.getRate(pair, (error, rate: number) => {
+      if (error) return this.showErrorAndBack(null, msg);
       this.rate = rate;
 
-      this.shapeshiftProvider.getMarketInfo(pair, (_, limit) => {
-        if (_) return this.showErrorAndBack(null, msg);
+      this.shapeshiftProvider.getMarketInfo(pair, (error, limit) => {
+        if (error) return this.showErrorAndBack(null, msg);
         this.limit = limit;
 
         if (this.limit['rate'] == 0 || this.rate['rate'] == 0)
