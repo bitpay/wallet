@@ -47,5 +47,11 @@ describe('AmountPage', () => {
       expect(spy).toHaveBeenCalledWith(100000000, 'USD', Coin.BCH);
       expect(instance.expression).toBe('1000000.00');
     });
+
+    it('should skip rate calculations and go directly to confirm if not within wallet', () => {
+      const spy = spyOn(instance, 'finish');
+      instance.sendMax();
+      expect(spy).toHaveBeenCalled();
+    });
   });
 });

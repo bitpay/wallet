@@ -36,7 +36,7 @@ export class IncomingDataProvider {
   }
 
   public redir(data: string, redirParams?: RedirParams): boolean {
-    const useSendMax = redirParams && redirParams.useSendMax;
+    const useSendMax = redirParams && redirParams.useSendMax ? true : false;
     // data extensions for Payment Protocol with non-backwards-compatible request
     if (/^bitcoin(cash)?:\?r=[\w+]/.exec(data)) {
       this.logger.debug(
