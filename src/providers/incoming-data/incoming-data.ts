@@ -14,6 +14,7 @@ export interface RedirParams {
   activePage?: any;
   amount?: string;
   coin?: Coin;
+  useSendMax?: boolean;
 }
 
 @Injectable()
@@ -35,6 +36,7 @@ export class IncomingDataProvider {
   }
 
   public redir(data: string, redirParams?: RedirParams): boolean {
+    const useSendMax = redirParams && redirParams.useSendMax;
     // data extensions for Payment Protocol with non-backwards-compatible request
     if (/^bitcoin(cash)?:\?r=[\w+]/.exec(data)) {
       this.logger.debug(
@@ -80,7 +82,8 @@ export class IncomingDataProvider {
             this.handlePayPro(details, coin);
           })
           .catch((err: string) => {
-            if (addr && amount) this.goSend(addr, amount, message, coin);
+            if (addr && amount)
+              this.goSend(addr, amount, message, coin, useSendMax);
             else
               this.popupProvider.ionicAlert(
                 this.translate.instant('Error'),
@@ -88,7 +91,7 @@ export class IncomingDataProvider {
               );
           });
       } else {
-        this.goSend(addr, amount, message, coin);
+        this.goSend(addr, amount, message, coin, useSendMax);
       }
       return true;
       // Cash URI
@@ -113,7 +116,8 @@ export class IncomingDataProvider {
             this.handlePayPro(details, coin);
           })
           .catch((err: string) => {
-            if (addr && amount) this.goSend(addr, amount, message, coin);
+            if (addr && amount)
+              this.goSend(addr, amount, message, coin, useSendMax);
             else
               this.popupProvider.ionicAlert(
                 this.translate.instant('Error'),
@@ -121,7 +125,7 @@ export class IncomingDataProvider {
               );
           });
       } else {
-        this.goSend(addr, amount, message, coin);
+        this.goSend(addr, amount, message, coin, useSendMax);
       }
       return true;
 
@@ -171,7 +175,8 @@ export class IncomingDataProvider {
               this.handlePayPro(details, coin);
             })
             .catch(err => {
-              if (addr && amount) this.goSend(addr, amount, message, coin);
+              if (addr && amount)
+                this.goSend(addr, amount, message, coin, useSendMax);
               else
                 this.popupProvider.ionicAlert(
                   this.translate.instant('Error'),
@@ -179,7 +184,7 @@ export class IncomingDataProvider {
                 );
             });
         } else {
-          this.goSend(addr, amount, message, coin);
+          this.goSend(addr, amount, message, coin, useSendMax);
         }
         return undefined;
       });
@@ -216,7 +221,7 @@ export class IncomingDataProvider {
           coin
         });
       } else if (redirParams && redirParams.amount) {
-        this.goSend(data, redirParams.amount, '', coin);
+        this.goSend(data, redirParams.amount, '', coin, useSendMax);
       } else {
         this.goToAmountPage(data, coin);
       }
@@ -234,7 +239,7 @@ export class IncomingDataProvider {
           coin: 'bch'
         });
       } else if (redirParams && redirParams.amount) {
-        this.goSend(data, redirParams.amount, '', coin);
+        this.goSend(data, redirParams.amount, '', coin, useSendMax);
       } else {
         this.goToAmountPage(data, coin);
       }
@@ -393,14 +398,16 @@ export class IncomingDataProvider {
     addr: string,
     amount: string,
     message: string,
-    coin: string
+    coin: string,
+    useSendMax: boolean
   ): void {
     if (amount) {
       let stateParams = {
         amount,
         toAddress: addr,
         description: message,
-        coin
+        coin,
+        useSendMax
       };
       let nextView = {
         name: 'ConfirmPage',
