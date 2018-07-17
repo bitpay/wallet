@@ -302,6 +302,9 @@ export class AmountPage extends WalletTabsChild {
 
   public sendMax(): void {
     this.useSendMax = true;
+    if (!this.getParentWallet()) {
+      return this.finish();
+    }
     const maxAmount = this.wallet.status.totalBalanceStr.replace(
       /[^0-9.]/g,
       ''
