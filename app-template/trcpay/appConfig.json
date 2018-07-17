@@ -24,7 +24,7 @@
   "pushSenderId": "509510359428",
   "description": "A Secure Terracoin Wallet",
   "version": "3.15.3",
-  "androidVersion": "39915200",
+  "androidVersion": "39915300",
   "_extraCSS": null,
   "_enabledExtensions": {
     "coinbase": false,
