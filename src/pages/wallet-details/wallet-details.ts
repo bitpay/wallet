@@ -22,6 +22,7 @@ import { WalletProvider } from '../../providers/wallet/wallet';
 import { BackupWarningPage } from '../../pages/backup/backup-warning/backup-warning';
 import { WalletAddressesPage } from '../../pages/settings/wallet-settings/wallet-settings-advanced/wallet-addresses/wallet-addresses';
 import { TxDetailsPage } from '../../pages/tx-details/tx-details';
+import { ActionSheetProvider } from '../../providers/index';
 import { WalletTabsChild } from '../wallet-tabs/wallet-tabs-child';
 import { WalletTabsProvider } from '../wallet-tabs/wallet-tabs.provider';
 import { SearchTxModalPage } from './search-tx-modal/search-tx-modal';
@@ -66,7 +67,8 @@ export class WalletDetailsPage extends WalletTabsChild {
     private modalCtrl: ModalController,
     private onGoingProcessProvider: OnGoingProcessProvider,
     private externalLinkProvider: ExternalLinkProvider,
-    walletTabsProvider: WalletTabsProvider
+    walletTabsProvider: WalletTabsProvider,
+    private actionSheetProvider: ActionSheetProvider
   ) {
     super(navCtrl, profileProvider, walletTabsProvider);
   }
@@ -90,6 +92,8 @@ export class WalletDetailsPage extends WalletTabsChild {
       .catch(err => {
         this.logger.error(err);
       });
+
+    if (this.wallet.needsBackup) this.openBackupModal();
   }
 
   ionViewDidEnter() {
@@ -270,6 +274,16 @@ export class WalletDetailsPage extends WalletTabsChild {
     this.navCtrl.push(TxDetailsPage, {
       walletId: this.wallet.credentials.walletId,
       txid: tx.txid
+    });
+  }
+
+  public openBackupModal(): void {
+    const infoSheet = this.actionSheetProvider.createInfoSheet(
+      'paper-key-unverified'
+    );
+    infoSheet.present();
+    infoSheet.onDidDismiss(option => {
+      if (option) this.openBackup();
     });
   }
 

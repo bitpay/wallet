@@ -14,11 +14,12 @@ export enum AlertType {
 })
 export class InfoSheetTemplate {
   @Input() type: AlertType = AlertType.info;
+  @Input() option: boolean;
 
   private dismissSubject = new Subject<void>();
   public onDismiss = this.dismissSubject.asObservable();
 
-  dismiss() {
-    this.dismissSubject.next();
+  dismiss(option) {
+    this.dismissSubject.next(option);
   }
 }

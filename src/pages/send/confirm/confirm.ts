@@ -27,6 +27,7 @@ import { TouchIdErrors } from '../../../providers/touchid/touchid';
 import { TxConfirmNotificationProvider } from '../../../providers/tx-confirm-notification/tx-confirm-notification';
 import { TxFormatProvider } from '../../../providers/tx-format/tx-format';
 import {
+  Coin,
   TransactionProposal,
   WalletProvider
 } from '../../../providers/wallet/wallet';
@@ -537,10 +538,13 @@ export class ConfirmPage extends WalletTabsChild {
           txp.feeTooHigh = per > this.FEE_TOO_HIGH_LIMIT_PER;
 
           if (txp.feeTooHigh) {
-            const feeWarningModal = this.popupProvider.createMiniModal(
-              'fee-warning'
+            const coinName =
+              this.wallet.coin === Coin.BTC ? 'Bitcoin' : 'Bitcoin Cash';
+            const minerFeeInfoSheet = this.actionSheetProvider.createInfoSheet(
+              'miner-fee',
+              { coinName }
             );
-            feeWarningModal.present();
+            minerFeeInfoSheet.present();
           }
 
           tx.txp[wallet.id] = txp;
@@ -593,17 +597,22 @@ export class ConfirmPage extends WalletTabsChild {
     return new Promise(resolve => {
       if (!sendMaxInfo) return resolve();
 
-      let msg = this.replaceParametersProvider.replace(
-        this.translate.instant(
-          '{{fee}} {{coin}} will be deducted for bitcoin networking fees.'
-        ),
-        { fee: sendMaxInfo.fee / 1e8, coin: this.tx.coin.toUpperCase() }
-      );
       let warningMsg = this.verifyExcludedUtxos(wallet, sendMaxInfo);
 
-      if (!_.isEmpty(warningMsg)) msg += '\n' + warningMsg;
+      const coinName =
+        this.wallet.coin === Coin.BTC ? 'Bitcoin (BTC)' : 'Bitcoin Cash (BCH)';
 
-      this.popupProvider.ionicAlert(null, msg).then(() => {
+      const minerFeeNoticeInfoSheet = this.actionSheetProvider.createInfoSheet(
+        'miner-fee-notice',
+        {
+          coinName,
+          fee: sendMaxInfo.fee / 1e8,
+          coin: this.tx.coin.toUpperCase(),
+          msg: !_.isEmpty(warningMsg) ? warningMsg : ''
+        }
+      );
+      minerFeeNoticeInfoSheet.present();
+      minerFeeNoticeInfoSheet.onDidDismiss(() => {
         return resolve();
       });
     });

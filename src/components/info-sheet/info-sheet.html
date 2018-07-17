@@ -5,6 +5,7 @@
       <span sheet-text class="text-address" translate>{{params.address}}</span>
       <span sheet-button-text translate>OK</span>
     </info-sheet-template>
+
     <info-sheet-template *ngSwitchCase="'custom-amount'" type="success">
       <span sheet-title-text translate>Copied</span>
       <span sheet-text translate>
@@ -25,6 +26,57 @@
         Your wallet address is similar to a bank account number. You can add funds to your wallet by withdrawing funds you may have
         stored on an exchange to your wallet address. Or other {{params.coinName}} users can send you money by scanning your
         QR code.</span>
+      <span sheet-button-text translate>GOT IT</span>
+    </info-sheet-template>
+
+
+    <info-sheet-template *ngSwitchCase="'paper-key-unverified'" type="warning">
+      <span sheet-title-text translate>You could lose money</span>
+      <span sheet-text translate>
+        Without your wallet's paper key you could lose money if this device is damaged, this app is deleted, or you migrate to another
+        device. Neither you nor BitPay will be able recover your funds.</span>
+      <span sheet-button-text translate>Verify Now</span>
+      <span sheet-second-button-text translate>I understand</span>
+    </info-sheet-template>
+
+    <info-sheet-template *ngSwitchCase="'paper-key-unverified-with-activity'" type="info">
+      <span sheet-title-text translate>Paper Key Unverified</span>
+      <span sheet-text translate>
+        Congratulations! It looks like you've recently received money. It's highly advised that you verify your paper key so that
+        your funds can be recovered in case your phone was lost or stolen.</span>
+      <span sheet-button-text translate>Continue</span>
+      <span sheet-second-button-text translate>Not right now</span>
+    </info-sheet-template>
+
+    <info-sheet-template *ngSwitchCase="'miner-fee-notice'" type="warning">
+      <span sheet-title-text translate>Miner Fee Notice</span>
+      <span sheet-text translate>
+        Because you are sending the maximum amount contained in this wallet, the {{params.coinName}} miner fee ({{params.fee}} {{params.coin}})
+        will be deducted from the total. {{params.msg}}
+      </span>
+      <span sheet-button-text translate>GOT IT</span>
+    </info-sheet-template>
+
+    <info-sheet-template *ngSwitchCase="'miner-fee'" type="danger">
+      <span sheet-title-text translate>{{params.coinName}} miner fees unusually high</span>
+      <span sheet-text translate>
+        {{params.coinName}} miner fees are high due to record demand for limited space on the {{params.coinName}} network. BitPay
+        does not receive and does not control {{params.coinName}} miner fees.</span>
+      <span sheet-button-text translate>GOT IT</span>
+    </info-sheet-template>
+
+    <info-sheet-template *ngSwitchCase="'insufficient-funds'" type="danger">
+      <span sheet-title-text translate>Not enough funds</span>
+      <span sheet-text translate>
+        You are trying to send ({{params.amount}} {{params.coin}}) more than what your wallet contains. Please enter a lower amount
+        or send max.</span>
+      <span sheet-button-text translate>Change Amount</span>
+      <span sheet-second-button-text translate>Send Max</span>
+    </info-sheet-template>
+
+    <info-sheet-template *ngSwitchCase="'default-error'" type="danger">
+      <span sheet-title-text translate>{{params.title}}</span>
+      <span sheet-text translate>{{params.msg}}</span>
       <span sheet-button-text translate>GOT IT</span>
     </info-sheet-template>
   </div>

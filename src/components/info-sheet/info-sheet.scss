@@ -25,15 +25,30 @@ info-sheet {
       .text-address {
         letter-spacing: 1px;
       }
-      .sheet-btn {
+      .sheet-btn-group {
         color: rgb(105, 202, 167);
         font-size: 16px;
         padding-top: 15px;
         border-top: 1px solid #ebebeb;
         cursor: pointer;
-      }
-      .sheet-btn.blue {
-        color: rgb(84, 118, 235);
+        display: flex;
+        .sheet-btn {
+          color: rgb(105, 202, 167);
+          margin-right: auto;
+        }
+        .sheet-btn.blue {
+          color: rgb(84, 118, 235);
+        }
+        .sheet-btn.yellow {
+          color: rgb(253, 180, 85);
+        }
+        .sheet-btn.red {
+          color: rgb(223, 82, 100);
+        }
+        .sheet-second-btn {
+          color: rgb(70, 76, 94);
+          margin-left: auto;
+        }
       }
     }
 
