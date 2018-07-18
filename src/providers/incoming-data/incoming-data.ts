@@ -43,7 +43,7 @@ export class IncomingDataProvider {
         'Handling Payment Protocol with non-backwards-compatible request'
       );
 
-      let coin = data.indexOf('bitcoincash') === 0 ? 'bch' : 'btc';
+      let coin = data.indexOf('bitcoincash') === 0 ? Coin.BCH : Coin.BTC;
 
       data = decodeURIComponent(data.replace(/bitcoin(cash)?:\?r=/, ''));
 
@@ -64,12 +64,12 @@ export class IncomingDataProvider {
     let message: string;
     let addr: string;
     let parsed;
-    let coin: string;
+    let coin: Coin;
 
     // Bitcoin  URL
     if (this.bwcProvider.getBitcore().URI.isValid(data)) {
       this.logger.debug('Handling Bitcoin URI');
-      coin = 'btc';
+      coin = Coin.BTC;
       parsed = this.bwcProvider.getBitcore().URI(data);
       addr = parsed.address ? parsed.address.toString() : '';
       message = parsed.message;
@@ -82,13 +82,12 @@ export class IncomingDataProvider {
             this.handlePayPro(details, coin);
           })
           .catch((err: string) => {
-            if (addr && amount)
-              this.goSend(addr, amount, message, coin, useSendMax);
-            else
-              this.popupProvider.ionicAlert(
-                this.translate.instant('Error'),
-                err
-              );
+            addr && amount
+              ? this.goSend(addr, amount, message, coin, useSendMax)
+              : this.popupProvider.ionicAlert(
+                  this.translate.instant('Error'),
+                  err
+                );
           });
       } else {
         this.goSend(addr, amount, message, coin, useSendMax);
@@ -97,7 +96,7 @@ export class IncomingDataProvider {
       // Cash URI
     } else if (this.bwcProvider.getBitcoreCash().URI.isValid(data)) {
       this.logger.debug('Handling Bitcoin Cash URI');
-      coin = 'bch';
+      coin = Coin.BCH;
       parsed = this.bwcProvider.getBitcoreCash().URI(data);
       addr = parsed.address ? parsed.address.toString() : '';
 
@@ -116,13 +115,12 @@ export class IncomingDataProvider {
             this.handlePayPro(details, coin);
           })
           .catch((err: string) => {
-            if (addr && amount)
-              this.goSend(addr, amount, message, coin, useSendMax);
-            else
-              this.popupProvider.ionicAlert(
-                this.translate.instant('Error'),
-                err
-              );
+            addr && amount
+              ? this.goSend(addr, amount, message, coin, useSendMax)
+              : this.popupProvider.ionicAlert(
+                  this.translate.instant('Error'),
+                  err
+                );
           });
       } else {
         this.goSend(addr, amount, message, coin, useSendMax);
@@ -136,7 +134,7 @@ export class IncomingDataProvider {
         .URI.isValid(data.replace(/^bitcoincash:/, 'bitcoin:'))
     ) {
       this.logger.debug('Handling Bitcoin Cash URI with legacy address');
-      coin = 'bch';
+      coin = Coin.BCH;
       parsed = this.bwcProvider
         .getBitcore()
         .URI(data.replace(/^bitcoincash:/, 'bitcoin:'));
@@ -175,13 +173,12 @@ export class IncomingDataProvider {
               this.handlePayPro(details, coin);
             })
             .catch(err => {
-              if (addr && amount)
-                this.goSend(addr, amount, message, coin, useSendMax);
-              else
-                this.popupProvider.ionicAlert(
-                  this.translate.instant('Error'),
-                  err
-                );
+              addr && amount
+                ? this.goSend(addr, amount, message, coin, useSendMax)
+                : this.popupProvider.ionicAlert(
+                    this.translate.instant('Error'),
+                    err
+                  );
             });
         } else {
           this.goSend(addr, amount, message, coin, useSendMax);
@@ -193,7 +190,7 @@ export class IncomingDataProvider {
       // Plain URL
       this.logger.debug('Handling Plain URL');
 
-      let coin = 'btc'; // Assume BTC
+      let coin = Coin.BTC; // Assume BTC
 
       this.payproProvider
         .getPayProDetails(data, coin, true)
@@ -213,7 +210,7 @@ export class IncomingDataProvider {
       this.bwcProvider.getBitcore().Address.isValid(data, 'testnet')
     ) {
       this.logger.debug('Handling Bitcoin Plain Address');
-      const coin = 'btc';
+      const coin = Coin.BTC;
       if (redirParams.activePage === 'ScanPage') {
         this.showMenu({
           data,
@@ -231,7 +228,7 @@ export class IncomingDataProvider {
       this.bwcProvider.getBitcoreCash().Address.isValid(data, 'testnet')
     ) {
       this.logger.debug('Handling Bitcoin Cash Plain Address');
-      const coin = 'bch';
+      const coin = Coin.BCH;
       if (redirParams.activePage === 'ScanPage') {
         this.showMenu({
           data,
@@ -398,7 +395,7 @@ export class IncomingDataProvider {
     addr: string,
     amount: string,
     message: string,
-    coin: string,
+    coin: Coin,
     useSendMax: boolean
   ): void {
     if (amount) {
@@ -428,7 +425,7 @@ export class IncomingDataProvider {
     }
   }
 
-  private goToAmountPage(toAddress: string, coin: string): void {
+  private goToAmountPage(toAddress: string, coin: Coin): void {
     let stateParams = {
       toAddress,
       coin
@@ -440,7 +437,7 @@ export class IncomingDataProvider {
     this.events.publish('IncomingDataRedir', nextView);
   }
 
-  private handlePayPro(payProDetails, coin?: string): void {
+  private handlePayPro(payProDetails, coin?: Coin): void {
     if (!payProDetails) {
       this.popupProvider.ionicAlert(
         this.translate.instant('Error'),
