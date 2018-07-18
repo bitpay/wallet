@@ -53,7 +53,7 @@ export class IncomingDataProvider {
           this.handlePayPro(details, coin);
         })
         .catch(err => {
-          this.popupProvider.ionicAlert(this.translate.instant('Error'), err);
+          this.showError(err);
         });
 
       return true;
@@ -84,10 +84,7 @@ export class IncomingDataProvider {
           .catch((err: string) => {
             addr && amount
               ? this.goSend(addr, amount, message, coin, useSendMax)
-              : this.popupProvider.ionicAlert(
-                  this.translate.instant('Error'),
-                  err
-                );
+              : this.showError(err);
           });
       } else {
         this.goSend(addr, amount, message, coin, useSendMax);
@@ -117,10 +114,7 @@ export class IncomingDataProvider {
           .catch((err: string) => {
             addr && amount
               ? this.goSend(addr, amount, message, coin, useSendMax)
-              : this.popupProvider.ionicAlert(
-                  this.translate.instant('Error'),
-                  err
-                );
+              : this.showError(err);
           });
       } else {
         this.goSend(addr, amount, message, coin, useSendMax);
@@ -175,10 +169,7 @@ export class IncomingDataProvider {
             .catch(err => {
               addr && amount
                 ? this.goSend(addr, amount, message, coin, useSendMax)
-                : this.popupProvider.ionicAlert(
-                    this.translate.instant('Error'),
-                    err
-                  );
+                : this.showError(err);
             });
         } else {
           this.goSend(addr, amount, message, coin, useSendMax);
@@ -437,12 +428,16 @@ export class IncomingDataProvider {
     this.events.publish('IncomingDataRedir', nextView);
   }
 
+  private showError(message: string) {
+    return this.popupProvider.ionicAlert(
+      this.translate.instant('Error'),
+      this.translate.instant(message)
+    );
+  }
+
   private handlePayPro(payProDetails, coin?: Coin): void {
     if (!payProDetails) {
-      this.popupProvider.ionicAlert(
-        this.translate.instant('Error'),
-        this.translate.instant('No wallets available')
-      );
+      this.showError('No wallets available');
       return;
     }
 
