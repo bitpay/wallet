@@ -49,6 +49,9 @@ info-sheet {
           color: rgb(70, 76, 94);
           margin-left: auto;
         }
+        .sheet-second-btn.primary {
+          color: color($colors, primary);
+        }
       }
     }
 

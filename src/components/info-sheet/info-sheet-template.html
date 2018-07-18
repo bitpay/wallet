@@ -15,7 +15,7 @@
     <div class="sheet-btn" [ngClass]="{blue: type === 'info', yellow: type == 'warning', red: type == 'danger'}" (click)="dismiss(option)">
       <ng-content select="[sheet-button-text]"></ng-content>
     </div>
-    <div class="sheet-second-btn" (click)="dismiss(false)">
+    <div class="sheet-second-btn" [ngClass]="{primary: type == 'danger'}" (click)="dismiss(false)">
       <ng-content select="[sheet-second-button-text]"></ng-content>
     </div>
   </div>

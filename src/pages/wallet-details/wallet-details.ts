@@ -9,9 +9,11 @@ import {
 import * as _ from 'lodash';
 
 // providers
+import { InfoSheetType } from '../../providers/action-sheet/action-sheet';
 import { AddressBookProvider } from '../../providers/address-book/address-book';
 import { BwcErrorProvider } from '../../providers/bwc-error/bwc-error';
 import { ExternalLinkProvider } from '../../providers/external-link/external-link';
+import { ActionSheetProvider } from '../../providers/index';
 import { Logger } from '../../providers/logger/logger';
 import { OnGoingProcessProvider } from '../../providers/on-going-process/on-going-process';
 import { ProfileProvider } from '../../providers/profile/profile';
@@ -22,7 +24,6 @@ import { WalletProvider } from '../../providers/wallet/wallet';
 import { BackupWarningPage } from '../../pages/backup/backup-warning/backup-warning';
 import { WalletAddressesPage } from '../../pages/settings/wallet-settings/wallet-settings-advanced/wallet-addresses/wallet-addresses';
 import { TxDetailsPage } from '../../pages/tx-details/tx-details';
-import { ActionSheetProvider } from '../../providers/index';
 import { WalletTabsChild } from '../wallet-tabs/wallet-tabs-child';
 import { WalletTabsProvider } from '../wallet-tabs/wallet-tabs.provider';
 import { SearchTxModalPage } from './search-tx-modal/search-tx-modal';
@@ -278,9 +279,11 @@ export class WalletDetailsPage extends WalletTabsChild {
   }
 
   public openBackupModal(): void {
-    const infoSheet = this.actionSheetProvider.createInfoSheet(
-      'paper-key-unverified'
-    );
+    let infoSheetType: InfoSheetType = !this.showNoTransactionsYetMsg
+      ? 'paper-key-unverified'
+      : 'paper-key-unverified-with-activity';
+
+    const infoSheet = this.actionSheetProvider.createInfoSheet(infoSheetType);
     infoSheet.present();
     infoSheet.onDidDismiss(option => {
       if (option) this.openBackup();
