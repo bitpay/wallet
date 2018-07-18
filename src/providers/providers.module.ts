@@ -95,7 +95,6 @@ import {
     IncomingDataProvider,
     LanguageProvider,
     Logger,
-    { provide: 'console', useValue: console },
     MercadoLibreProvider,
     NodeWebkitProvider,
     OnGoingProcessProvider,
