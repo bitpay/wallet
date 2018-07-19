@@ -34,7 +34,7 @@ describe('SendPage', () => {
   });
 
   describe('openScanner', () => {
-    it('should set the send display value expression to the total balance', () => {
+    it('should pass the pre-selected amount, coin, and sendMax values to the scanner', () => {
       const walletTabsProvider: WalletTabsProvider = testBed.get(
         WalletTabsProvider
       );
