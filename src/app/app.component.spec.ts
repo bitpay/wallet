@@ -9,6 +9,8 @@ import {
 import { IonicModule } from 'ionic-angular';
 
 import { EmailNotificationsProvider } from '../providers/email-notifications/email-notifications';
+import { Logger } from '../providers/logger/logger';
+import { LoggerMock } from '../providers/logger/logger.mock';
 import { ProfileProvider } from '../providers/profile/profile';
 import { ProvidersModule } from './../providers/providers.module';
 import { CopayApp } from './app.component';
@@ -29,7 +31,7 @@ describe('CopayApp', () => {
           loader: { provide: TranslateLoader, useClass: TranslateFakeLoader }
         })
       ],
-      providers: [{ provide: 'console', useValue: { log: () => undefined } }]
+      providers: [{ provide: Logger, useClass: LoggerMock }]
     });
   }));
 

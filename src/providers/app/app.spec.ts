@@ -17,6 +17,7 @@ import { PersistenceProvider } from '../../providers/persistence/persistence';
 import { PlatformProvider } from '../platform/platform';
 import { AppProvider } from './app';
 
+import { LoggerMock } from '../logger/logger.mock';
 import * as appTemplate from './../../../app-template/bitpay/appConfig.json';
 
 describe('AppProvider', () => {
@@ -35,8 +36,7 @@ describe('AppProvider', () => {
       ],
       providers: [
         AppProvider,
-        Logger,
-        { provide: 'console', useValue: { log: () => undefined } },
+        { provide: Logger, useClass: LoggerMock },
         LanguageProvider,
         ConfigProvider,
         PersistenceProvider,

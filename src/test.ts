@@ -83,6 +83,7 @@ import { Logger } from './providers';
 import { ProvidersModule } from './providers/providers.module';
 
 import * as appTemplate from './../app-template/bitpay/appConfig.json';
+import { LoggerMock } from './providers/logger/logger.mock';
 
 declare const require: any;
 
@@ -170,8 +171,7 @@ const ionicProviders = [
 const baseProviders = [
   ...angularProviders,
   ...ionicProviders,
-  Logger,
-  { provide: 'console', useValue: { log: () => undefined } }
+  { provide: Logger, useClass: LoggerMock }
 ];
 
 export class TestUtils {
