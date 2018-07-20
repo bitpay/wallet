@@ -19,6 +19,7 @@ angular.module('copayApp.controllers').controller('importController',
       $scope.formData.coin = $stateParams.coin;
       $scope.importErr = false;
       $scope.isCopay = appConfigService.name == 'copay';
+      $scope.isTRCpay = appConfigService.name == 'trcpay';
       $scope.fromHardwareWallet = {
         value: false
       };
