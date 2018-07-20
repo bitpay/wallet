@@ -175,7 +175,9 @@ export class AmazonProvider {
           var status =
             data.status == 'new'
               ? 'PENDING'
-              : data.status == 'paid' ? 'PENDING' : data.status;
+              : data.status == 'paid'
+                ? 'PENDING'
+                : data.status;
           data.status = status;
           this.logger.info('Amazon Gift Card Create/Update: ' + status);
           return cb(null, data);
@@ -232,10 +234,10 @@ export class AmazonProvider {
       email
     );
     if (!validEmail) return false;
-    else return true;
+    return true;
   }
 
-  public storeEmail(email: string) {
+  public storeEmail(email: string): void {
     this.setUserInfo({ email });
   }
 
