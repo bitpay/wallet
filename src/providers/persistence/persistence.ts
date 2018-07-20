@@ -18,6 +18,7 @@ const Keys = {
   ADDRESS_BOOK: network => 'addressbook-' + network,
   AGREE_DISCLAIMER: 'agreeDisclaimer',
   AMAZON_GIFT_CARDS: network => 'amazonGiftCards-' + network,
+  AMAZON_USER_INFO: 'amazonUserInfo',
   APP_IDENTITY: network => 'appIdentity-' + network,
   BACKUP: walletId => 'backup-' + walletId,
   BALANCE_CACHE: cardId => 'balanceCache-' + cardId,
@@ -369,6 +370,18 @@ export class PersistenceProvider {
 
   removeAmazonGiftCards(network: string) {
     return this.storage.remove(Keys.AMAZON_GIFT_CARDS(network));
+  }
+
+  setAmazonUserInfo(data) {
+    return this.storage.set(Keys.AMAZON_USER_INFO, data);
+  }
+
+  getAmazonUserInfo() {
+    return this.storage.get(Keys.AMAZON_USER_INFO);
+  }
+
+  removeAmazonUserInfo() {
+    return this.storage.remove(Keys.AMAZON_USER_INFO);
   }
 
   setTxConfirmNotification(txid: string, val) {
