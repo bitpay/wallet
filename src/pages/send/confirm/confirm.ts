@@ -1,12 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import {
-  App,
-  Events,
-  ModalController,
-  NavController,
-  NavParams
-} from 'ionic-angular';
+import { App, ModalController, NavController, NavParams } from 'ionic-angular';
 import * as _ from 'lodash';
 import { Logger } from '../../../providers/logger/logger';
 
@@ -17,6 +11,7 @@ import { TabsPage } from '../../tabs/tabs';
 import { ChooseFeeLevelPage } from '../choose-fee-level/choose-fee-level';
 
 // Providers
+import { ActionSheetProvider } from '../../../providers/action-sheet/action-sheet';
 import { BwcErrorProvider } from '../../../providers/bwc-error/bwc-error';
 import { BwcProvider } from '../../../providers/bwc/bwc';
 import { ConfigProvider } from '../../../providers/config/config';
@@ -78,6 +73,7 @@ export class ConfirmPage extends WalletTabsChild {
   public isOpenSelector: boolean;
 
   constructor(
+    private actionSheetProvider: ActionSheetProvider,
     private app: App,
     private bwcProvider: BwcProvider,
     navCtrl: NavController,
@@ -95,7 +91,6 @@ export class ConfirmPage extends WalletTabsChild {
     private txConfirmNotificationProvider: TxConfirmNotificationProvider,
     private modalCtrl: ModalController,
     private txFormatProvider: TxFormatProvider,
-    private events: Events,
     private translate: TranslateService,
     private externalLinkProvider: ExternalLinkProvider,
     walletTabsProvider: WalletTabsProvider
@@ -910,20 +905,22 @@ export class ConfirmPage extends WalletTabsChild {
   public showWallets(): void {
     this.isOpenSelector = true;
     let id = this.wallet ? this.wallet.credentials.walletId : null;
-    this.events.publish(
-      'showWalletsSelectorEvent',
-      this.wallets,
-      id,
-      this.walletSelectorTitle
+    const params = {
+      wallets: this.wallets,
+      selectedWalletId: id,
+      title: this.walletSelectorTitle
+    };
+    const walletSelector = this.actionSheetProvider.createWalletSelector(
+      params
     );
-    this.events.subscribe('selectWalletEvent', wallet => {
+    walletSelector.present();
+    walletSelector.onDidDismiss(wallet => {
       this.onSelectWalletEvent(wallet);
     });
   }
 
   private onSelectWalletEvent(wallet): void {
     if (!_.isEmpty(wallet)) this.onWalletSelect(wallet);
-    this.events.unsubscribe('selectWalletEvent');
     this.isOpenSelector = false;
   }
 }

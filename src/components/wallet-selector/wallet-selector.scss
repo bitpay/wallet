@@ -1,0 +1,36 @@
+wallet-selector {
+  .error {
+    color: color($colors, danger);
+  }
+  .wallet-button {
+    background: none;
+  }
+  .title {
+    font-weight: 500;
+    > img {
+      vertical-align: sub;
+      margin-right: 5px;
+    }
+  }
+  .no-wallets {
+    text-align: center;
+    padding: 20px;
+    color: color($colors, danger);
+  }
+  .destination-title {
+    width: 100%;
+    text-align: center;
+    font-weight: 500;
+    margin: 20px 0;
+    text-transform: uppercase;
+  }
+  .back-button {
+    background-color: $background-color;
+    display: inline-block;
+    width: 100%;
+    ion-icon {
+      padding: 1.5rem 20px 1.5rem 20px;
+      cursor: pointer;
+    }
+  }
+}

@@ -1,10 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import {
-  Events,
-  ModalController,
-  NavController,
-  NavParams
-} from 'ionic-angular';
+import { ModalController, NavController, NavParams } from 'ionic-angular';
 import { Logger } from '../../../../providers/logger/logger';
 
 // pages
@@ -12,6 +7,7 @@ import { FinishModalPage } from '../../../finish/finish';
 import { GlideraPage } from '../../../integrations/glidera/glidera';
 
 // providers
+import { ActionSheetProvider } from '../../../../providers/action-sheet/action-sheet';
 import { GlideraProvider } from '../../../../providers/glidera/glidera';
 import { OnGoingProcessProvider } from '../../../../providers/on-going-process/on-going-process';
 import { PlatformProvider } from '../../../../providers/platform/platform';
@@ -45,8 +41,8 @@ export class BuyGlideraPage {
   public isOpenSelector: boolean;
 
   constructor(
+    private actionSheetProvider: ActionSheetProvider,
     private platformProvider: PlatformProvider,
-    private events: Events,
     private logger: Logger,
     private popupProvider: PopupProvider,
     private navCtrl: NavController,
@@ -210,15 +206,17 @@ export class BuyGlideraPage {
   public showWallets(): void {
     this.isOpenSelector = true;
     let id = this.wallet ? this.wallet.credentials.walletId : null;
-    this.events.publish(
-      'showWalletsSelectorEvent',
-      this.wallets,
-      id,
-      'Receive in'
+    const params = {
+      wallets: this.wallets,
+      selectedWalletId: id,
+      title: 'Receive in'
+    };
+    const walletSelector = this.actionSheetProvider.createWalletSelector(
+      params
     );
-    this.events.subscribe('selectWalletEvent', wallet => {
+    walletSelector.present();
+    walletSelector.onDidDismiss(wallet => {
       if (!_.isEmpty(wallet)) this.onWalletSelect(wallet);
-      this.events.unsubscribe('selectWalletEvent');
       this.isOpenSelector = false;
     });
   }

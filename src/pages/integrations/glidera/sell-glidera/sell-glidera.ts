@@ -1,10 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import {
-  Events,
-  ModalController,
-  NavController,
-  NavParams
-} from 'ionic-angular';
+import { ModalController, NavController, NavParams } from 'ionic-angular';
 import * as _ from 'lodash';
 import { Logger } from '../../../../providers/logger/logger';
 
@@ -13,6 +8,7 @@ import { FinishModalPage } from '../../../finish/finish';
 import { GlideraPage } from '../../../integrations/glidera/glidera';
 
 // providers
+import { ActionSheetProvider } from '../../../../providers/action-sheet/action-sheet';
 import { ConfigProvider } from '../../../../providers/config/config';
 import { GlideraProvider } from '../../../../providers/glidera/glidera';
 import { OnGoingProcessProvider } from '../../../../providers/on-going-process/on-going-process';
@@ -45,6 +41,7 @@ export class SellGlideraPage {
   private coin: string;
 
   constructor(
+    private actionSheetProvider: ActionSheetProvider,
     private platformProvider: PlatformProvider,
     private logger: Logger,
     private popupProvider: PopupProvider,
@@ -56,7 +53,6 @@ export class SellGlideraPage {
     private txFormatProvider: TxFormatProvider,
     private walletProvider: WalletProvider,
     private configProvider: ConfigProvider,
-    private events: Events,
     private modalCtrl: ModalController
   ) {
     this.coin = 'btc';
@@ -311,15 +307,17 @@ export class SellGlideraPage {
   public showWallets(): void {
     this.isOpenSelector = true;
     let id = this.wallet ? this.wallet.credentials.walletId : null;
-    this.events.publish(
-      'showWalletsSelectorEvent',
-      this.wallets,
-      id,
-      'Sell From'
+    const params = {
+      wallets: this.wallets,
+      selectedWalletId: id,
+      title: 'Sell From'
+    };
+    const walletSelector = this.actionSheetProvider.createWalletSelector(
+      params
     );
-    this.events.subscribe('selectWalletEvent', wallet => {
+    walletSelector.present();
+    walletSelector.onDidDismiss(wallet => {
       if (!_.isEmpty(wallet)) this.onWalletSelect(wallet);
-      this.events.unsubscribe('selectWalletEvent');
       this.isOpenSelector = false;
     });
   }

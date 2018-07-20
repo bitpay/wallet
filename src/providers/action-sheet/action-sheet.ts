@@ -2,11 +2,16 @@ import { ComponentRef, Injectable } from '@angular/core';
 import { ActionSheetParent } from '../../components/action-sheet/action-sheet-parent';
 import { InfoSheetComponent } from '../../components/info-sheet/info-sheet';
 import { OptionsSheetComponent } from '../../components/options-sheet/options-sheet';
+import { WalletSelectorComponent } from '../../components/wallet-selector/wallet-selector';
 import { DomProvider } from '../../providers/dom/dom';
 
 export type InfoSheetType = 'address-copied' | 'receiving-bitcoin';
 export type OptionsSheetType = 'address-options';
-
+export interface WalletSelectorParams {
+  wallets: any[];
+  selectedWalletId: string;
+  title: string;
+}
 @Injectable()
 export class ActionSheetProvider {
   constructor(private domProvider: DomProvider) {}
@@ -25,6 +30,16 @@ export class ActionSheetProvider {
   public createInfoSheet(type: InfoSheetType, params?): InfoSheetComponent {
     return this.setupSheet<InfoSheetComponent>(InfoSheetComponent, type, params)
       .instance;
+  }
+
+  public createWalletSelector(
+    params: WalletSelectorParams
+  ): WalletSelectorComponent {
+    return this.setupSheet<WalletSelectorComponent>(
+      WalletSelectorComponent,
+      null,
+      params
+    ).instance;
   }
 
   private setupSheet<T extends ActionSheetParent>(

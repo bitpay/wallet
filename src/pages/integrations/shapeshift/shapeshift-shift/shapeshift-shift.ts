@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { Events, NavController } from 'ionic-angular';
+import { NavController } from 'ionic-angular';
 import * as _ from 'lodash';
 import { Logger } from '../../../../providers/logger/logger';
 
@@ -8,6 +8,7 @@ import { Logger } from '../../../../providers/logger/logger';
 import { AmountPage } from './../../../send/amount/amount';
 
 // Providers
+import { ActionSheetProvider } from '../../../../providers/action-sheet/action-sheet';
 import { ExternalLinkProvider } from '../../../../providers/external-link/external-link';
 import { PopupProvider } from '../../../../providers/popup/popup';
 import { ProfileProvider } from '../../../../providers/profile/profile';
@@ -33,7 +34,7 @@ export class ShapeshiftShiftPage {
   public termsAccepted: boolean;
 
   constructor(
-    private events: Events,
+    private actionSheetProvider: ActionSheetProvider,
     private externalLinkProvider: ExternalLinkProvider,
     private logger: Logger,
     private navCtrl: NavController,
@@ -185,15 +186,17 @@ export class ShapeshiftShiftPage {
       walletsForActionSheet = this.toWallets;
       selectedWalletId = this.toWallet.id;
     }
-    this.events.publish(
-      'showWalletsSelectorEvent',
-      walletsForActionSheet,
+    const params = {
+      wallets: walletsForActionSheet,
       selectedWalletId,
       title
+    };
+    const walletSelector = this.actionSheetProvider.createWalletSelector(
+      params
     );
-    this.events.subscribe('selectWalletEvent', wallet => {
+    walletSelector.present();
+    walletSelector.onDidDismiss(wallet => {
       if (!_.isEmpty(wallet)) this.onWalletSelect(wallet, selector);
-      this.events.unsubscribe('selectWalletEvent');
     });
   }
 
