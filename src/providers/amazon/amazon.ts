@@ -241,24 +241,20 @@ export class AmazonProvider {
     this.setUserInfo({ email });
   }
 
-  public getUserEmail(): Promise<any> {
-    return new Promise(resolve => {
-      this.persistenceProvider
-        .getAmazonUserInfo()
-        .then(data => {
-          if (_.isString(data)) {
-            data = JSON.parse(data);
-          }
-          let email =
-            data && data.email
-              ? data.email
-              : this.emailNotificationsProvider.getEmailIfEnabled();
-          resolve(email);
-        })
-        .catch(_ => {
-          resolve();
-        });
-    });
+  public getUserEmail(): Promise<string> {
+    return this.persistenceProvider
+    .getAmazonUserInfo()
+    .then(data => {
+      if (_.isString(data)) {
+        data = JSON.parse(data);
+      }
+      let email =
+        data && data.email
+        ? data.email
+        : this.emailNotificationsProvider.getEmailIfEnabled();
+      return email;
+    })
+    .catch(_ => {});
   }
 
   private setUserInfo(data: any): void {
