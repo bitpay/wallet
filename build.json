@@ -3,24 +3,14 @@
         "debug": {
             "codeSignIdentity": "iPhone Developer",
             "developmentTeam": "743WAUKKZJ",
-            "packageType": "development",
-            "automaticProvisioning": true,
-            "buildFlag": [
-                "EMBEDDED_CONTENT_CONTAINS_SWIFT = YES",
-                "ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES=NO",
-                "LD_RUNPATH_SEARCH_PATHS = \"@executable_path/Frameworks\""
-            ]
+            "provisioningProfile": "a78203d1-92cc-4e5f-9260-c0bb1d181031",
+            "packageType": "development"
         },
         "release": {
             "codeSignIdentity": "iPhone Distribution",
             "developmentTeam": "743WAUKKZJ",
-            "packageType": "app-store",
-            "automaticProvisioning": true,
-            "buildFlag": [
-                "EMBEDDED_CONTENT_CONTAINS_SWIFT = YES",
-                "ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES=NO",
-                "LD_RUNPATH_SEARCH_PATHS = \"@executable_path/Frameworks\""
-            ]
+            "provisioningProfile": "9cef88c1-8566-4245-8781-10f1ad881681",
+            "packageType": "app-store"
         }
     },
     "windows": {
