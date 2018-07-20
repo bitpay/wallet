@@ -177,8 +177,7 @@ export class AmountPage extends WalletTabsChild {
   private setAvailableUnits(): void {
     this.availableUnits = [];
 
-    const parentWalletCoin =
-      this.getParentWallet() && this.getParentWallet().coin;
+    const parentWalletCoin = this.wallet && this.wallet.coin;
 
     if (parentWalletCoin === 'btc' || !parentWalletCoin) {
       this.availableUnits.push({
@@ -302,6 +301,9 @@ export class AmountPage extends WalletTabsChild {
 
   public sendMax(): void {
     this.useSendMax = true;
+    if (!this.wallet) {
+      return this.finish();
+    }
     const maxAmount = this.wallet.status.totalBalanceStr.replace(
       /[^0-9.]/g,
       ''

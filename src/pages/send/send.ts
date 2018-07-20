@@ -77,10 +77,6 @@ export class SendPage extends WalletTabsChild {
   }
 
   ionViewDidLoad() {
-    this.walletTabsProvider.setSendParams({
-      amount: this.navParams.get('amount'),
-      coin: this.navParams.get('coin')
-    });
     this.amount = this.txFormatProvider.formatAmountStr(
       this.navParams.get('coin'),
       parseInt(this.navParams.get('amount'), 10)
@@ -220,6 +216,11 @@ export class SendPage extends WalletTabsChild {
   }
 
   public openScanner(): void {
+    this.walletTabsProvider.setSendParams({
+      amount: this.navParams.get('amount'),
+      coin: this.navParams.get('coin'),
+      useSendMax: this.useSendMax
+    });
     this.events.publish('ScanFromWallet');
   }
 
