@@ -12,7 +12,7 @@
     <ng-content select="[sheet-text]"></ng-content>
   </div>
   <div class="sheet-btn-group">
-    <div class="sheet-btn" [ngClass]="{blue: type === 'info', yellow: type == 'warning', red: type == 'danger'}" (click)="dismiss(option)">
+    <div class="sheet-btn" [ngClass]="{blue: type === 'info', yellow: type == 'warning', red: type == 'danger'}" (click)="dismiss(true)">
       <ng-content select="[sheet-button-text]"></ng-content>
     </div>
     <div class="sheet-second-btn" [ngClass]="{primary: type == 'danger'}" (click)="dismiss(false)">
