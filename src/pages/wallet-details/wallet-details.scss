@@ -142,6 +142,8 @@ page-wallet-details {
     font-weight: 400;
     color: color($colors, light);
     display: block;
+    display: flex;
+    align-items: center;
     height: 3rem;
     padding: 0 5px;
     img {
@@ -186,11 +188,14 @@ page-wallet-details {
       padding-top: 5px;
       font-size: 11px;
     }
+    .search-button {
+      padding: 0;
+      padding-bottom: 8px;
+    }
     ion-spinner {
-      float: right;
+      margin: 0;
       width: 20px;
       height: 20px;
-      margin: 5px 5px 0 0;
       * {
         stroke: color($colors, light);
       }

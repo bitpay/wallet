@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="22px" height="22px" viewBox="0 0 22 22" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 51 (57462) - http://www.bohemiancoding.com/sketch -->
+    <title>preferences-rotate</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linecap="square">
+        <g id="Icons/Small-(20px)/Controls/Settings-2-(White)" transform="translate(1.000000, 1.000000)" stroke="#FFFFFF">
+            <g id="preferences-rotate">
+                <path d="M3.04347826,10 L3.04347826,0.434782609" id="Shape"></path>
+                <path d="M3.04347826,19.5652174 L3.04347826,16.9565217" id="Shape"></path>
+                <rect id="Rectangle-path" x="0.434782609" y="13.4782609" width="5.2173913" height="3.47826087"></rect>
+                <path d="M10,1.30434783 L10,0.434782609" id="Shape"></path>
+                <path d="M10,19.5652174 L10,8.26086957" id="Shape"></path>
+                <rect id="Rectangle-path" x="7.39130435" y="4.7826087" width="5.2173913" height="3.47826087"></rect>
+                <path d="M16.9565217,10 L16.9565217,0.434782609" id="Shape"></path>
+                <path d="M16.9565217,19.5652174 L16.9565217,16.9565217" id="Shape"></path>
+                <rect id="Rectangle-path" x="14.3478261" y="13.4782609" width="5.2173913" height="3.47826087"></rect>
+            </g>
+        </g>
+    </g>
+</svg>

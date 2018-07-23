@@ -114,6 +114,15 @@ export class WalletDetailsPage extends WalletTabsChild {
     return this.showNoTransactionsYetMsg && !this.updateStatusError;
   }
 
+  shouldShowSpinner() {
+    return (
+      (this.updatingStatus || this.updatingTxHistory) &&
+      !this.walletNotRegistered &&
+      !this.updateStatusError &&
+      !this.updateTxHistoryError
+    );
+  }
+
   private clearHistoryCache() {
     this.history = [];
     this.currentPage = 0;
