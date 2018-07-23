@@ -1,10 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import {
-  Events,
-  ModalController,
-  NavController,
-  NavParams
-} from 'ionic-angular';
+import { ModalController, NavController, NavParams } from 'ionic-angular';
 import * as _ from 'lodash';
 import { Logger } from '../../../../providers/logger/logger';
 
@@ -13,6 +8,7 @@ import { FinishModalPage } from '../../../finish/finish';
 import { CoinbasePage } from '../coinbase';
 
 // providers
+import { ActionSheetProvider } from '../../../../providers/action-sheet/action-sheet';
 import { AppProvider } from '../../../../providers/app/app';
 import { BwcErrorProvider } from '../../../../providers/bwc-error/bwc-error';
 import { CoinbaseProvider } from '../../../../providers/coinbase/coinbase';
@@ -54,11 +50,11 @@ export class SellCoinbasePage {
   public isCordova: boolean;
 
   constructor(
+    private actionSheetProvider: ActionSheetProvider,
     private appProvider: AppProvider,
     private bwcErrorProvider: BwcErrorProvider,
     private coinbaseProvider: CoinbaseProvider,
     private configProvider: ConfigProvider,
-    private events: Events,
     private logger: Logger,
     private popupProvider: PopupProvider,
     private navCtrl: NavController,
@@ -440,15 +436,17 @@ export class SellCoinbasePage {
   public showWallets(): void {
     this.isOpenSelector = true;
     let id = this.wallet ? this.wallet.credentials.walletId : null;
-    this.events.publish(
-      'showWalletsSelectorEvent',
-      this.wallets,
-      id,
-      'Sell from'
+    const params = {
+      wallets: this.wallets,
+      selectedWalletId: id,
+      title: 'Sell from'
+    };
+    const walletSelector = this.actionSheetProvider.createWalletSelector(
+      params
     );
-    this.events.subscribe('selectWalletEvent', wallet => {
+    walletSelector.present();
+    walletSelector.onDidDismiss(wallet => {
       if (!_.isEmpty(wallet)) this.onWalletSelect(wallet);
-      this.events.unsubscribe('selectWalletEvent');
       this.isOpenSelector = false;
     });
   }

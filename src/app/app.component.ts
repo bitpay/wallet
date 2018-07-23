@@ -19,7 +19,6 @@ import { AppProvider } from '../providers/app/app';
 import { BitPayCardProvider } from '../providers/bitpay-card/bitpay-card';
 import { CoinbaseProvider } from '../providers/coinbase/coinbase';
 import { ConfigProvider } from '../providers/config/config';
-import { DomProvider } from '../providers/dom/dom';
 import { EmailNotificationsProvider } from '../providers/email-notifications/email-notifications';
 import { GlideraProvider } from '../providers/glidera/glidera';
 import { IncomingDataProvider } from '../providers/incoming-data/incoming-data';
@@ -36,7 +35,6 @@ import { CopayersPage } from '../pages/add/copayers/copayers';
 import { ImportWalletPage } from '../pages/add/import-wallet/import-wallet';
 import { JoinWalletPage } from '../pages/add/join-wallet/join-wallet';
 import { FingerprintModalPage } from '../pages/fingerprint/fingerprint';
-import { WalletSelectorPage } from '../pages/includes/wallet-selector/wallet-selector';
 import { BitPayCardIntroPage } from '../pages/integrations/bitpay-card/bitpay-card-intro/bitpay-card-intro';
 import { CoinbasePage } from '../pages/integrations/coinbase/coinbase';
 import { GlideraPage } from '../pages/integrations/glidera/glidera';
@@ -89,7 +87,6 @@ export class CopayApp {
   };
 
   constructor(
-    private domProvider: DomProvider,
     private platform: Platform,
     private statusBar: StatusBar,
     private splashScreen: SplashScreen,
@@ -128,9 +125,6 @@ export class CopayApp {
       .ready()
       .then(readySource => {
         this.onPlatformReady(readySource);
-        this.domProvider.appendComponentToBody<WalletSelectorPage>(
-          WalletSelectorPage
-        );
       })
       .catch(e => {
         this.logger.error('Platform is not ready.', e);

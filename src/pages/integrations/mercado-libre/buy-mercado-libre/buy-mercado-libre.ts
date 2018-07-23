@@ -1,11 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import {
-  Events,
-  ModalController,
-  NavController,
-  NavParams
-} from 'ionic-angular';
+import { ModalController, NavController, NavParams } from 'ionic-angular';
 import * as _ from 'lodash';
 import * as moment from 'moment';
 import { Logger } from '../../../../providers/logger/logger';
@@ -15,6 +10,7 @@ import { FinishModalPage } from '../../../finish/finish';
 import { MercadoLibrePage } from '../mercado-libre';
 
 // Provider
+import { ActionSheetProvider } from '../../../../providers/action-sheet/action-sheet';
 import { BwcErrorProvider } from '../../../../providers/bwc-error/bwc-error';
 import { BwcProvider } from '../../../../providers/bwc/bwc';
 import { ConfigProvider } from '../../../../providers/config/config';
@@ -67,13 +63,13 @@ export class BuyMercadoLibrePage {
   public isCordova: boolean;
 
   constructor(
+    private actionSheetProvider: ActionSheetProvider,
     private mercadoLibreProvider: MercadoLibreProvider,
     private bwcErrorProvider: BwcErrorProvider,
     private bwcProvider: BwcProvider,
     private configProvider: ConfigProvider,
     private replaceParametersProvider: ReplaceParametersProvider,
     private emailNotificationsProvider: EmailNotificationsProvider,
-    private events: Events,
     private externalLinkProvider: ExternalLinkProvider,
     private logger: Logger,
     private modalCtrl: ModalController,
@@ -549,15 +545,17 @@ export class BuyMercadoLibrePage {
   public showWallets(): void {
     this.isOpenSelector = true;
     let id = this.wallet ? this.wallet.credentials.walletId : null;
-    this.events.publish(
-      'showWalletsSelectorEvent',
-      this.wallets,
-      id,
-      'Buy from'
+    const params = {
+      wallets: this.wallets,
+      selectedWalletId: id,
+      title: 'Buy from'
+    };
+    const walletSelector = this.actionSheetProvider.createWalletSelector(
+      params
     );
-    this.events.subscribe('selectWalletEvent', wallet => {
+    walletSelector.present();
+    walletSelector.onDidDismiss(wallet => {
       if (!_.isEmpty(wallet)) this.onWalletSelect(wallet);
-      this.events.unsubscribe('selectWalletEvent');
       this.isOpenSelector = false;
     });
   }

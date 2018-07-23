@@ -1,14 +1,10 @@
 import { Component, ViewChild } from '@angular/core';
-import {
-  Events,
-  ModalController,
-  NavController,
-  NavParams
-} from 'ionic-angular';
+import { ModalController, NavController, NavParams } from 'ionic-angular';
 import * as _ from 'lodash';
 import { Logger } from '../../../../providers/logger/logger';
 
 // providers
+import { ActionSheetProvider } from '../../../../providers/action-sheet/action-sheet';
 import { CoinbaseProvider } from '../../../../providers/coinbase/coinbase';
 import { ExternalLinkProvider } from '../../../../providers/external-link/external-link';
 import { OnGoingProcessProvider } from '../../../../providers/on-going-process/on-going-process';
@@ -48,11 +44,11 @@ export class BuyCoinbasePage {
   public isCordova: boolean;
 
   constructor(
+    private actionSheetProvider: ActionSheetProvider,
     private coinbaseProvider: CoinbaseProvider,
     private logger: Logger,
     private popupProvider: PopupProvider,
     private navCtrl: NavController,
-    private events: Events,
     private externalLinkProvider: ExternalLinkProvider,
     private onGoingProcessProvider: OnGoingProcessProvider,
     private navParams: NavParams,
@@ -323,15 +319,17 @@ export class BuyCoinbasePage {
   public showWallets(): void {
     this.isOpenSelector = true;
     let id = this.wallet ? this.wallet.credentials.walletId : null;
-    this.events.publish(
-      'showWalletsSelectorEvent',
-      this.wallets,
-      id,
-      'Receive in'
+    const params = {
+      wallets: this.wallets,
+      selectedWalletId: id,
+      title: 'Receive in'
+    };
+    const walletSelector = this.actionSheetProvider.createWalletSelector(
+      params
     );
-    this.events.subscribe('selectWalletEvent', wallet => {
+    walletSelector.present();
+    walletSelector.onDidDismiss(wallet => {
       if (!_.isEmpty(wallet)) this.onWalletSelect(wallet);
-      this.events.unsubscribe('selectWalletEvent');
       this.isOpenSelector = false;
     });
   }

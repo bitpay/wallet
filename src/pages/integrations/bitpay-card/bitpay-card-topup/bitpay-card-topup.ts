@@ -1,11 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import {
-  Events,
-  ModalController,
-  NavController,
-  NavParams
-} from 'ionic-angular';
+import { ModalController, NavController, NavParams } from 'ionic-angular';
 import * as _ from 'lodash';
 import { Logger } from '../../../../providers/logger/logger';
 
@@ -14,6 +9,7 @@ import { FinishModalPage } from '../../../finish/finish';
 import { BitPayCardPage } from '../bitpay-card';
 
 // Provider
+import { ActionSheetProvider } from '../../../../providers/action-sheet/action-sheet';
 import { BitPayCardProvider } from '../../../../providers/bitpay-card/bitpay-card';
 import { BitPayProvider } from '../../../../providers/bitpay/bitpay';
 import { BwcErrorProvider } from '../../../../providers/bwc-error/bwc-error';
@@ -66,12 +62,12 @@ export class BitPayCardTopUpPage {
   public isOpenSelector: boolean;
 
   constructor(
+    private actionSheetProvider: ActionSheetProvider,
     private bitPayCardProvider: BitPayCardProvider,
     private bitPayProvider: BitPayProvider,
     private bwcErrorProvider: BwcErrorProvider,
     private bwcProvider: BwcProvider,
     private configProvider: ConfigProvider,
-    private events: Events,
     private externalLinkProvider: ExternalLinkProvider,
     private logger: Logger,
     private modalCtrl: ModalController,
@@ -582,10 +578,17 @@ export class BitPayCardTopUpPage {
   public showWallets(): void {
     this.isOpenSelector = true;
     let id = this.wallet ? this.wallet.credentials.walletId : null;
-    this.events.publish('showWalletsSelectorEvent', this.wallets, id, 'From');
-    this.events.subscribe('selectWalletEvent', wallet => {
+    const params = {
+      wallets: this.wallets,
+      selectedWalletId: id,
+      title: 'From'
+    };
+    const walletSelector = this.actionSheetProvider.createWalletSelector(
+      params
+    );
+    walletSelector.present();
+    walletSelector.onDidDismiss(wallet => {
       if (!_.isEmpty(wallet)) this.onWalletSelect(wallet);
-      this.events.unsubscribe('selectWalletEvent');
       this.isOpenSelector = false;
     });
   }

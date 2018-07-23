@@ -73,7 +73,6 @@ import { IncomingDataMenuPage } from '../pages/includes/incoming-data-menu/incom
 import { TxpPage } from '../pages/includes/txp/txp';
 import { WalletActivityPage } from '../pages/includes/wallet-activity/wallet-activity';
 import { WalletItemPage } from '../pages/includes/wallet-item/wallet-item';
-import { WalletSelectorPage } from '../pages/includes/wallet-selector/wallet-selector';
 
 /* Tabs */
 import { HomePage } from '../pages/home/home';
@@ -224,7 +223,6 @@ export const PAGES = [
   WalletBalancePage,
   WalletItemPage,
   WalletActivityPage,
-  WalletSelectorPage,
   CardItemPage,
   SlideToAcceptPage
 ];

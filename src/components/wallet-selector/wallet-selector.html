@@ -1,9 +1,7 @@
-<div class="backdrop" *ngIf="showWalletsSelector" (click)="backdropDismiss()">
-</div>
-<div class="wallet-selector slider" [ngClass]="{'opened': showSlideEffect, 'closed': !showSlideEffect }" [hidden]="!showWalletsSelector">
+<action-sheet>
   <ion-row align-items-center>
     <ion-col col-4 text-left>
-      <button ion-button clear icon-only color="grey" (click)="backdropDismiss()">
+      <button ion-button clear icon-only color="grey" (click)="dismiss()">
         <ion-icon name="arrow-round-back"></ion-icon>
       </button>
     </ion-col>
@@ -22,7 +20,7 @@
     </ion-item-divider>
 
     <ion-list>
-      <button ion-item detail-none *ngFor="let wallet of walletsBtc" class="wallet-button" (click)="selectWallet(wallet)">
+      <button ion-item detail-none *ngFor="let wallet of walletsBtc" class="wallet-button" (click)="optionClicked(wallet)">
         <ion-icon class="item-img" item-start>
           <img *ngIf="wallet.network == 'testnet'" [ngStyle]="{'background-color': wallet.color}" src="assets/img/icon-wallet-testnet.svg"
             class="icon-wallet" />
@@ -68,7 +66,7 @@
     </ion-item-divider>
 
     <ion-list>
-      <button ion-item detail-none *ngFor="let wallet of walletsBch" class="wallet-button" (click)="selectWallet(wallet)">
+      <button ion-item detail-none *ngFor="let wallet of walletsBch" class="wallet-button" (click)="optionClicked(wallet)">
         <ion-icon class="item-img" item-start>
           <img *ngIf="wallet.network == 'testnet'" [ngStyle]="{'background-color': wallet.color}" src="assets/img/icon-wallet-testnet.svg"
             class="icon-wallet" />
@@ -105,4 +103,4 @@
     </ion-list>
   </div>
   <ion-item-divider></ion-item-divider>
-</div>
+</action-sheet>
