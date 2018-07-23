@@ -5,6 +5,7 @@ import { Logger } from '../../providers/logger/logger';
 
 // providers
 import { ConfigProvider } from '../config/config';
+import { EmailNotificationsProvider } from '../email-notifications/email-notifications';
 import { HomeIntegrationsProvider } from '../home-integrations/home-integrations';
 import { PersistenceProvider } from '../persistence/persistence';
 
@@ -18,12 +19,14 @@ export class AmazonProvider {
   public amazonNetwork: string;
   public pageTitle: string;
   public onlyIntegers: boolean;
+  public userInfo: object = { email: '' };
 
   constructor(
     private http: HttpClient,
     private logger: Logger,
     private persistenceProvider: PersistenceProvider,
     private homeIntegrationsProvider: HomeIntegrationsProvider,
+    private emailNotificationsProvider: EmailNotificationsProvider,
     private configProvider: ConfigProvider
   ) {
     this.logger.info('AmazonProvider initialized.');
@@ -224,6 +227,39 @@ export class AmazonProvider {
           }
         );
     });
+  }
+
+  public emailIsValid(email: string): boolean {
+    let validEmail = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(
+      email
+    );
+    if (!validEmail) return false;
+    return true;
+  }
+
+  public storeEmail(email: string): void {
+    this.setUserInfo({ email });
+  }
+
+  public getUserEmail(): Promise<string> {
+    return this.persistenceProvider
+      .getAmazonUserInfo()
+      .then(data => {
+        if (_.isString(data)) {
+          data = JSON.parse(data);
+        }
+        let email =
+          data && data.email
+            ? data.email
+            : this.emailNotificationsProvider.getEmailIfEnabled();
+        return email;
+      })
+      .catch(_ => {});
+  }
+
+  private setUserInfo(data: any): void {
+    if (!_.isString(data)) data = JSON.stringify(data);
+    this.persistenceProvider.setAmazonUserInfo(data);
   }
 
   public register() {

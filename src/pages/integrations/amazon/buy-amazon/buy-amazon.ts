@@ -15,7 +15,6 @@ import { AmazonProvider } from '../../../../providers/amazon/amazon';
 import { BwcErrorProvider } from '../../../../providers/bwc-error/bwc-error';
 import { BwcProvider } from '../../../../providers/bwc/bwc';
 import { ConfigProvider } from '../../../../providers/config/config';
-import { EmailNotificationsProvider } from '../../../../providers/email-notifications/email-notifications';
 import { ExternalLinkProvider } from '../../../../providers/external-link/external-link';
 import { OnGoingProcessProvider } from '../../../../providers/on-going-process/on-going-process';
 import { PayproProvider } from '../../../../providers/paypro/paypro';
@@ -72,7 +71,6 @@ export class BuyAmazonPage {
     private bwcProvider: BwcProvider,
     private configProvider: ConfigProvider,
     private replaceParametersProvider: ReplaceParametersProvider,
-    private emailNotificationsProvider: EmailNotificationsProvider,
     private externalLinkProvider: ExternalLinkProvider,
     private logger: Logger,
     private modalCtrl: ModalController,
@@ -421,9 +419,32 @@ export class BuyAmazonPage {
     }
   );
 
+  private async promptEmail(): Promise<any> {
+    let email = await this.amazonProvider.getUserEmail();
+    return new Promise((resolve, reject) => {
+      if (email) return resolve(email);
+      let title = this.translate.instant('Enter email address');
+      let message = this.translate.instant(
+        'Where do you want to receive your purchase receipt'
+      );
+      let opts = { type: 'email', defaultText: email || '' };
+      this.popupProvider.ionicPrompt(title, message, opts).then(email => {
+        if (_.isNull(email)) return reject();
+        else if (
+          !_.isEmpty(email) &&
+          !this.amazonProvider.emailIsValid(email)
+        ) {
+          return reject();
+        } else {
+          this.amazonProvider.storeEmail(email);
+          return resolve(email);
+        }
+      });
+    });
+  }
+
   private initialize(wallet): void {
     let COIN = wallet.coin.toUpperCase();
-    let email = this.emailNotificationsProvider.getEmailIfEnabled();
     let parsedAmount = this.txFormatProvider.parseAmount(
       wallet.coin,
       this.amount,
@@ -432,84 +453,97 @@ export class BuyAmazonPage {
     );
     this.currencyIsoCode = parsedAmount.currency;
     this.amountUnitStr = parsedAmount.amountUnitStr;
-    let dataSrc = {
-      amount: parsedAmount.amount,
-      currency: parsedAmount.currency,
-      uuid: wallet.id,
-      email,
-      buyerSelectedTransactionCurrency: COIN
-    };
-    this.onGoingProcessProvider.set('loadingTxInfo');
 
-    this.createInvoice(dataSrc)
-      .then(data => {
-        let invoice = data.invoice;
-        let accessKey = data.accessKey;
+    this.promptEmail()
+      .then(email => {
+        let dataSrc = {
+          amount: parsedAmount.amount,
+          currency: parsedAmount.currency,
+          uuid: wallet.id,
+          email,
+          buyerSelectedTransactionCurrency: COIN
+        };
+        this.onGoingProcessProvider.set('loadingTxInfo');
 
-        if (!this.isCryptoCurrencySupported(wallet, invoice)) {
-          this.onGoingProcessProvider.clear();
-          let msg = this.translate.instant(
-            'Purchases with this cryptocurrency is not enabled'
-          );
-          this.showErrorAndBack(null, msg);
-          return;
-        }
+        this.createInvoice(dataSrc)
+          .then(data => {
+            let invoice = data.invoice;
+            let accessKey = data.accessKey;
 
-        // Sometimes API does not return this element;
-        invoice['minerFees'][COIN]['totalFee'] =
-          invoice.minerFees[COIN].totalFee || 0;
-        let invoiceFeeSat = invoice.minerFees[COIN].totalFee;
+            if (!this.isCryptoCurrencySupported(wallet, invoice)) {
+              this.onGoingProcessProvider.clear();
+              let msg = this.translate.instant(
+                'Purchases with this cryptocurrency is not enabled'
+              );
+              this.showErrorAndBack(null, msg);
+              return;
+            }
 
-        this.message = this.replaceParametersProvider.replace(
-          this.translate.instant('{{amountUnitStr}} Gift Card'),
-          { amountUnitStr: this.amountUnitStr }
-        );
+            // Sometimes API does not return this element;
+            invoice['minerFees'][COIN]['totalFee'] =
+              invoice.minerFees[COIN].totalFee || 0;
+            let invoiceFeeSat = invoice.minerFees[COIN].totalFee;
 
-        this.createTx(wallet, invoice, this.message)
-          .then(ctxp => {
-            this.onGoingProcessProvider.clear();
-
-            // Save in memory
-            this.createdTx = ctxp;
-            this.invoiceId = invoice.id;
-
-            this.createdTx.giftData = {
-              currency: dataSrc.currency,
-              amount: dataSrc.amount,
-              uuid: dataSrc.uuid,
-              accessKey,
-              invoiceId: invoice.id,
-              invoiceUrl: invoice.url,
-              invoiceTime: invoice.invoiceTime
-            };
-            this.totalAmountStr = this.txFormatProvider.formatAmountStr(
-              wallet.coin,
-              ctxp.amount
+            this.message = this.replaceParametersProvider.replace(
+              this.translate.instant('{{amountUnitStr}} Gift Card'),
+              { amountUnitStr: this.amountUnitStr }
             );
 
-            // Warn: fee too high
-            this.checkFeeHigh(
-              Number(parsedAmount.amountSat),
-              Number(invoiceFeeSat) + Number(ctxp.fee)
-            );
+            this.createTx(wallet, invoice, this.message)
+              .then(ctxp => {
+                this.onGoingProcessProvider.clear();
 
-            this.setTotalAmount(
-              wallet,
-              parsedAmount.amountSat,
-              invoiceFeeSat,
-              ctxp.fee
-            );
+                // Save in memory
+                this.createdTx = ctxp;
+                this.invoiceId = invoice.id;
+
+                this.createdTx.giftData = {
+                  currency: dataSrc.currency,
+                  amount: dataSrc.amount,
+                  uuid: dataSrc.uuid,
+                  accessKey,
+                  invoiceId: invoice.id,
+                  invoiceUrl: invoice.url,
+                  invoiceTime: invoice.invoiceTime
+                };
+                this.totalAmountStr = this.txFormatProvider.formatAmountStr(
+                  wallet.coin,
+                  ctxp.amount
+                );
+
+                // Warn: fee too high
+                this.checkFeeHigh(
+                  Number(parsedAmount.amountSat),
+                  Number(invoiceFeeSat) + Number(ctxp.fee)
+                );
+
+                this.setTotalAmount(
+                  wallet,
+                  parsedAmount.amountSat,
+                  invoiceFeeSat,
+                  ctxp.fee
+                );
+              })
+              .catch(err => {
+                this.onGoingProcessProvider.clear();
+                this._resetValues();
+                this.showError(err.title, err.message);
+                return;
+              });
           })
           .catch(err => {
             this.onGoingProcessProvider.clear();
-            this._resetValues();
-            this.showError(err.title, err.message);
+            this.showErrorAndBack(err.title, err.message);
             return;
           });
       })
-      .catch(err => {
+      .catch(_ => {
+        let title = this.translate.instant('Error');
+        let msg = this.translate.instant(
+          'Email address is needed to purchase Gift Cards'
+        );
         this.onGoingProcessProvider.clear();
-        this.showErrorAndBack(err.title, err.message);
+        this.showErrorAndBack(title, msg);
         return;
       });
   }
