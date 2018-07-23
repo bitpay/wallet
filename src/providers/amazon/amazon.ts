@@ -243,18 +243,18 @@ export class AmazonProvider {
 
   public getUserEmail(): Promise<string> {
     return this.persistenceProvider
-    .getAmazonUserInfo()
-    .then(data => {
-      if (_.isString(data)) {
-        data = JSON.parse(data);
-      }
-      let email =
-        data && data.email
-        ? data.email
-        : this.emailNotificationsProvider.getEmailIfEnabled();
-      return email;
-    })
-    .catch(_ => {});
+      .getAmazonUserInfo()
+      .then(data => {
+        if (_.isString(data)) {
+          data = JSON.parse(data);
+        }
+        let email =
+          data && data.email
+            ? data.email
+            : this.emailNotificationsProvider.getEmailIfEnabled();
+        return email;
+      })
+      .catch(_ => {});
   }
 
   private setUserInfo(data: any): void {
