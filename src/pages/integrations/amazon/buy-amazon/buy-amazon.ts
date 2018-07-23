@@ -71,7 +71,6 @@ export class BuyAmazonPage {
     private bwcProvider: BwcProvider,
     private configProvider: ConfigProvider,
     private replaceParametersProvider: ReplaceParametersProvider,
-    private events: Events,
     private externalLinkProvider: ExternalLinkProvider,
     private logger: Logger,
     private modalCtrl: ModalController,
