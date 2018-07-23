@@ -422,3 +422,14 @@ ion-alert .alert-message {
     top: 60%;
   }
 }
+
+ion-header {
+  button.modal-close-button {
+    font-size: 16px;
+    font-weight: 400;
+
+    ion-icon {
+      font-size: 20px;
+    }
+  }
+}
