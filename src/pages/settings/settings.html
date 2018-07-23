@@ -94,7 +94,7 @@
       </ion-note>
     </button>
 
-    <ion-item-divider *ngIf="walletsBtc.length">{{'Bitcoin Wallets' | translate}}</ion-item-divider>
+    <!-- <ion-item-divider *ngIf="walletsBtc.length">{{'Bitcoin Wallets' | translate}}</ion-item-divider>
 
     <button ion-item *ngFor="let wallet of walletsBtc" (click)="openWalletSettingsPage(wallet.credentials.walletId)">
       <ion-icon class="item-img" item-start>
@@ -138,7 +138,7 @@
       <ion-note *ngIf="wallet.credentials.m > 1 && wallet.isComplete() && !wallet.needsBackup" item-end>
         {{wallet.credentials.m}}-{{wallet.credentials.n}}
       </ion-note>
-    </button>
+    </button> -->
 
     <div *ngIf="showBitPayCard && bitpayCardItems && bitpayCardItems[0]">
       <ion-item-divider>

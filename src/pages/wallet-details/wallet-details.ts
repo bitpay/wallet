@@ -22,6 +22,8 @@ import { WalletProvider } from '../../providers/wallet/wallet';
 import { BackupWarningPage } from '../../pages/backup/backup-warning/backup-warning';
 import { WalletAddressesPage } from '../../pages/settings/wallet-settings/wallet-settings-advanced/wallet-addresses/wallet-addresses';
 import { TxDetailsPage } from '../../pages/tx-details/tx-details';
+import { SettingsPage } from '../settings/settings';
+import { WalletSettingsPage } from '../settings/wallet-settings/wallet-settings';
 import { WalletTabsChild } from '../wallet-tabs/wallet-tabs-child';
 import { WalletTabsProvider } from '../wallet-tabs/wallet-tabs.provider';
 import { SearchTxModalPage } from './search-tx-modal/search-tx-modal';
@@ -121,6 +123,10 @@ export class WalletDetailsPage extends WalletTabsChild {
       !this.updateStatusError &&
       !this.updateTxHistoryError
     );
+  }
+
+  goToPreferences() {
+    this.navCtrl.push(WalletSettingsPage, { walletId: this.wallet.id });
   }
 
   private clearHistoryCache() {

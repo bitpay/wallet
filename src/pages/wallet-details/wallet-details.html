@@ -7,7 +7,7 @@
     </ion-buttons>
     <ion-title>{{wallet.name}}</ion-title>
     <ion-buttons right>
-      <button ion-button clear (click)="openSearchModal()">
+      <button ion-button clear (click)="goToPreferences()">
         <img src="assets/img/preferences.svg">
       </button>
     </ion-buttons>
@@ -64,11 +64,7 @@
       </expandable-header-primary>
       <expandable-header-footer class="wallet-info" *ngIf="wallet" style="display: flex; align-items: center">
 
-        <!-- <ion-buttons right> -->
-
-        <!-- </ion-buttons> -->
-
-        <div style="flex-grow: 1;">
+        <div class="left-buttons">
           <img class="testnet" *ngIf="wallet.network == 'testnet'" src="assets/img/icon-wallet-testnet.svg">
           <img class="testnet-text" *ngIf="wallet.network == 'testnet'" src="assets/img/icon-text-testnet.svg">
           <img class="read-only" *ngIf="!wallet.canSign()" src="assets/img/icon-read-only.svg">
@@ -85,7 +81,6 @@
         <button ion-button clear class="search-button" *ngIf="wallet && wallet.completeHistory && wallet.completeHistory.length > 4 && !shouldShowSpinner()"
           (click)="openSearchModal()">
           <img src="assets/img/search.svg">
-          <!-- <ion-icon item-end name="search" class="search-icon"></ion-icon> -->
         </button>
 
         <ion-spinner name="crescent" *ngIf="shouldShowSpinner()"></ion-spinner>
