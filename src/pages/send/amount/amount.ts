@@ -472,17 +472,22 @@ export class AmountPage extends WalletTabsChild {
   }
 
   public checkAmount() {
-    let amount = this.evaluate(this.format(this.expression));
-    const maxAmountAvailable = this.wallet.status.totalBalanceStr.replace(
-      /[^0-9.]/g,
-      ''
-    );
+    if (!this.wallet || this.requestingAmount) {
+      this.finish();
+      return;
+    }
+
+    let unit = this.availableUnits[this.unitIndex];
+    let _amount = this.evaluate(this.format(this.expression));
+    let amount = unit.isFiat
+      ? (this.fromFiat(_amount) * this.unitToSatoshi).toFixed(0)
+      : (_amount * this.unitToSatoshi).toFixed(0);
+    let maxAmountAvailable = this.wallet.status.availableBalanceSat;
 
     if (amount > maxAmountAvailable) {
-      const coin = this.wallet.coin.toUpperCase();
       const insufficientFundsInfoSheet = this.actionSheetProvider.createInfoSheet(
         'insufficient-funds',
-        { amount, coin }
+        { amount: _amount, coin: unit.shortName }
       );
       insufficientFundsInfoSheet.present();
       insufficientFundsInfoSheet.onDidDismiss(option => {
@@ -491,9 +496,7 @@ export class AmountPage extends WalletTabsChild {
           this.finish();
         }
       });
-    } else {
-      this.finish();
-    }
+    } else this.finish();
   }
 
   private finish(): void {
