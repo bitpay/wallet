@@ -261,7 +261,8 @@ page-wallet-details {
     }
   }
 
-  &__balance {
+  &__balance,
+  &__balance-hidden {
     text-align: center;
     color: white;
     padding-bottom: 10px;
