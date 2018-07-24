@@ -1,11 +1,11 @@
 <ion-header>
-  <ion-navbar>
+  <ion-navbar *ngIf="wallet" [navbar-bg]="wallet.color">
     <ion-buttons left>
       <button class="modal-close-button" (click)="close()" ion-button>
         <ion-icon ios="md-close" md="md-close"></ion-icon>
       </button>
     </ion-buttons>
-    <ion-title *ngIf="wallet">{{ wallet.name }}</ion-title>
+    <ion-title>{{ wallet.name }}</ion-title>
   </ion-navbar>
 </ion-header>
 

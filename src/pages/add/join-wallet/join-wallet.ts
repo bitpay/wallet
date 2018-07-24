@@ -1,7 +1,12 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
-import { Events, NavController, NavParams } from 'ionic-angular';
+import {
+  Events,
+  ModalController,
+  NavController,
+  NavParams
+} from 'ionic-angular';
 import { Logger } from '../../../providers/logger/logger';
 
 // Pages
@@ -39,6 +44,7 @@ export class JoinWalletPage {
     private form: FormBuilder,
     private navCtrl: NavController,
     private navParams: NavParams,
+    private modalCtrl: ModalController,
     private derivationPathHelperProvider: DerivationPathHelperProvider,
     private onGoingProcessProvider: OnGoingProcessProvider,
     private popupProvider: PopupProvider,
@@ -179,9 +185,17 @@ export class JoinWalletPage {
         this.pushNotificationsProvider.updateSubscription(wallet);
         if (!wallet.isComplete()) {
           this.navCtrl.popToRoot();
-          this.navCtrl.push(CopayersPage, {
-            walletId: wallet.credentials.walletId
-          });
+          this.modalCtrl
+            .create(
+              CopayersPage,
+              {
+                walletId: wallet.credentials.walletId
+              },
+              {
+                cssClass: 'wallet-details-modal'
+              }
+            )
+            .present();
         } else {
           this.navCtrl.popToRoot();
         }

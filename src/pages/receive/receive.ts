@@ -9,7 +9,6 @@ import { SocialSharing } from '@ionic-native/social-sharing';
 // Pages
 import { BackupWarningPage } from '../backup/backup-warning/backup-warning';
 import { AmountPage } from '../send/amount/amount';
-import { CopayersPage } from './../add/copayers/copayers';
 
 // Providers
 import { ActionSheetProvider } from '../../providers/action-sheet/action-sheet';
@@ -131,12 +130,6 @@ export class ReceivePage extends WalletTabsChild {
   public shareAddress(): void {
     if (!this.showShareButton) return;
     this.socialSharing.share(this.address);
-  }
-
-  public goCopayers(): void {
-    this.navCtrl.push(CopayersPage, {
-      walletId: this.wallet.credentials.walletId
-    });
   }
 
   public goToBackup(): void {
