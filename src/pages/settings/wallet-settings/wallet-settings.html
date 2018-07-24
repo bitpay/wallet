@@ -1,13 +1,10 @@
 <ion-header class="wide-header">
-  <ion-navbar [navbar-bg]="wallet && wallet.color">
-    <!-- <ion-title>{{'Preferences'|translate}}</ion-title> -->
-  </ion-navbar>
+  <ion-navbar [navbar-bg]="wallet && wallet.color"></ion-navbar>
   <ion-toolbar [navbar-bg]="wallet && wallet.color">
     <div class="wide-header__title" translate>Preferences</div>
   </ion-toolbar>
 </ion-header>
 <ion-content>
-  <!-- <page-wallet-item [wallet]="wallet"></page-wallet-item> -->
   <ion-list>
     <ion-item-divider></ion-item-divider>
     <button ion-item (click)="openWalletName()">

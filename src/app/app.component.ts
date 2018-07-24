@@ -6,6 +6,7 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { UserAgent } from '@ionic-native/user-agent';
 import {
   App,
+  Config,
   Events,
   ModalController,
   NavController,
@@ -87,6 +88,7 @@ export class CopayApp {
   };
 
   constructor(
+    private config: Config,
     private platform: Platform,
     private statusBar: StatusBar,
     private splashScreen: SplashScreen,
@@ -121,6 +123,7 @@ export class CopayApp {
   }
 
   initializeApp() {
+    this.config.set('backButtonIcon', 'tab-button-back');
     this.platform
       .ready()
       .then(readySource => {

@@ -348,6 +348,9 @@ ion-icon {
   &[class*='tab-send'] {
     mask-image: url(../assets/img/tab-icons/ico-send.svg);
   }
+  &[class*='tab-button-back'] {
+    mask-image: url(../assets/img/button-back.svg);
+  }
 }
 
 .button-standard {
