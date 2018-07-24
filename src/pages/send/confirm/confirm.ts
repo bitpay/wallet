@@ -58,6 +58,8 @@ export class ConfirmPage extends WalletTabsChild {
   public paymentExpired: boolean;
   public remainingTimeStr: string;
   public memoFocused: boolean;
+  public amount;
+  public formatAlternative;
 
   // Config Related values
   public config;
@@ -175,6 +177,12 @@ export class ConfirmPage extends WalletTabsChild {
         .Address(this.tx.toAddress)
         .toString();
     }
+
+    this.amount = this.txFormatProvider.satToUnit(this.tx.amount);
+    this.formatAlternative = this.txFormatProvider.formatAlternative(
+      this.tx.coin,
+      this.tx.amount
+    );
 
     const feeOpts = this.feeProvider.getFeeOpts();
     this.tx.feeLevelName = feeOpts[this.tx.feeLevel];

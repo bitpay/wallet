@@ -14,19 +14,24 @@
     <ion-item>
       <div class="header-container">
         <div class="sending-label">
-          <img class="sending-img" src="assets/img/icon-tx-sent-outline.svg">
           <span translate *ngIf="!tx.sendMax">Sending</span>
           <span translate *ngIf="tx.sendMax">Sending maximum amount</span>
         </div>
         <div class="amount-label">
-          <div class="amount">{{tx.amount | satToUnit: tx.coin}}</div>
-          <div class="alternative">{{tx.amount | satToFiat: tx.coin}}</div>
+          <div class="amount">
+            <div>
+              {{amount}}
+              <span class="amount-coin">{{tx.coin | uppercase}}</span>
+            </div>
+            <img class="sending-img" src="assets/img/icon-tx-sent-outline.svg">
+          </div>
+          <div class="alternative">{{formatAlternative?.amount | currency:formatAlternative?.currency}} {{formatAlternative?.currency}}</div>
         </div>
       </div>
     </ion-item>
-    <button ion-item class="item-fee" (click)="chooseFeeLevel()">
+    <button ion-item class="item-fee" (click)="chooseFeeLevel()" [ngClass]="{'warn': wallet && tx.txp[wallet.id] && tx.txp[wallet.id].feeTooHigh}">
       <div class="fee-title">
-        <span translate>Bitcoin miner fee:</span> {{tx.feeLevelName | translate}}
+        <span translate>Bitcoin miner fee:</span>
       </div>
       <div class="fee-loading" *ngIf="!wallet || !tx.txp[wallet.id]">
         <div>...</div>
@@ -38,7 +43,7 @@
           {{tx.txp[wallet.id].fee | satToFiat: tx.coin}}
           <span *ngIf="tx.txp[wallet.id].feeRatePerStr">
             &middot;
-            <span [ngClass]="{'warn':tx.txp[wallet.id].feeTooHigh}">
+            <span>
               <ion-icon *ngIf="tx.txp[wallet.id].feeTooHigh" name="warning"></ion-icon>
               {{tx.txp[wallet.id].feeRatePerStr}}
               <span translate> of total amount</span>
@@ -46,6 +51,9 @@
           </span>
         </div>
       </div>
+      <ion-note [ngClass]="{'warn': wallet && tx.txp[wallet.id] && tx.txp[wallet.id].feeTooHigh}" item-right>
+        {{tx.feeLevelName | translate}}
+      </ion-note>
     </button>
 
     <ion-item *ngIf="tx.paypro && !criticalError">
@@ -57,8 +65,11 @@
     <ion-item class="container-to" *ngIf="!criticalError">
       <span translate>To</span>
 
-      <div class="payment-proposal-to" *ngIf="!tx.recipientType">
-        <img class="icon-bitcoin" src="assets/img/icon-bitcoin-small.svg">
+      <div class="payment-proposal-to address-coppied" *ngIf="!tx.recipientType">
+        <div class="text-address ellipsis">
+          <img src="assets/img/icon-bitcoin-small.svg" alt="BTC" width="12" />
+          <span class="address-divider"></span>
+        </div>
         <div class="ellipsis" *ngIf="!tx.paypro" copy-to-clipboard="{{ tx.origToAddress }}">
           <!--TODO: <contact *ngIf="tx.origToAddress && !tx.name" address="{{tx.origToAddress}}"></contact>-->
           <span *ngIf="!tx.name">{{tx.origToAddress}}</span>

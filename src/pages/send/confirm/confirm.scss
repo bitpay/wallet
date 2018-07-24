@@ -16,28 +16,39 @@ page-confirm {
     .sending-label {
       display: flex;
       align-items: center;
-      img.sending-img {
-        margin-right: 2rem;
-        width: auto;
-        display: inherit;
-      }
       span {
         font-size: 1.8rem;
       }
     }
-    .amount-label {
-      padding-top: 1rem;
-      .amount {
-        font-size: 3.5rem;
-        .unit {
-          font-weight: 400;
-        }
+  }
+  .amount-label {
+    padding-top: 1rem;
+    .amount {
+      display: flex;
+      font-size: 3.5rem;
+      justify-content: space-between;
+      .unit {
+        font-weight: 400;
       }
-      .alternative {
-        margin-top: 0.5rem;
-        color: color($colors, light-grey);
+      img.sending-img {
+        float: right;
+        width: auto;
+        padding-top: 2px;
+      }
+      .amount-coin {
+        font-size: 1.5rem;
+        font-size: 1.5rem;
+        margin-top: 0.35rem;
+        margin-left: 0.8rem;
+      }
+      div {
+        display: flex;
       }
     }
+  }
+  .alternative {
+    margin-top: 0.5rem;
+    color: color($colors, light-grey);
   }
   .item-fee {
     line-height: 20px;
@@ -57,8 +68,15 @@ page-confirm {
       font-size: 12.5px;
       color: color($colors, light-grey);
     }
-    .warn {
-      color: color($colors, danger);
+    &.warn {
+      color: rgb(229, 108, 123);
+      background-color: rgb(255, 242, 244);
+    }
+    ion-note {
+      font-weight: 100;
+      &.warn {
+        color: rgb(229, 108, 123);
+      }
     }
   }
   .item-gravatar {
@@ -99,6 +117,26 @@ page-confirm {
         padding: 5px 10px;
         border: 1px solid color($colors, grey);
         border-radius: $icon-border-radius;
+      }
+      .address-divider {
+        width: 1px;
+        height: 25px;
+        background-color: rgb(227, 227, 227);
+        display: inline-block;
+        margin-left: 6px;
+        margin-right: 12px;
+        vertical-align: middle;
+      }
+      .text-address.ellipsis {
+        flex: 0 0 47px;
+        img {
+          margin: 12px 0 12px 12px;
+          vertical-align: middle;
+        }
+      }
+      &.address-coppied {
+        border-radius: 3px;
+        background-color: rgb(248, 248, 248);
       }
     }
     &.not-clickable {
