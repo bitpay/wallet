@@ -493,7 +493,6 @@ export class AmountPage extends WalletTabsChild {
       insufficientFundsInfoSheet.onDidDismiss(option => {
         if (!option) {
           this.sendMax();
-          this.finish();
         }
       });
     } else this.finish();
