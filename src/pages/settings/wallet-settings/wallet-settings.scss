@@ -34,4 +34,21 @@ page-wallet-settings {
       padding-left: 6px;
     }
   }
+
+  ion-navbar {
+    padding-top: 15px;
+
+    .ios & {
+      padding-left: 15px;
+    }
+  }
+
+  ion-toolbar {
+    padding-top: 30px;
+    padding-bottom: 22px;
+
+    .ios & {
+      padding-left: 15px;
+    }
+  }
 }
