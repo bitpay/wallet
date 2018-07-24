@@ -13,7 +13,10 @@
     </ion-buttons>
   </ion-navbar>
   <ion-toolbar [navbar-bg]="wallet.color">
-    <div class="wallet-details-header__balance">{{wallet.status && wallet.status.totalBalanceStr}}</div>
+    <div *ngIf="!wallet.balanceHidden && !wallet.scanning && wallet.status" class="wallet-details-header__balance">{{wallet.status && wallet.status.totalBalanceStr}}</div>
+    <div *ngIf="wallet.balanceHidden  && !wallet.scanning" class="wallet-details-header__balance-hidden">
+      <span class="title" translate>[Balance Hidden]</span>
+    </div>
   </ion-toolbar>
 </ion-header>
 
@@ -36,8 +39,7 @@
           <span translate>Paper Key Unverified</span>
         </div>
         <div class="subtitle-info">
-          <span translate>Before retrieving your wallet address, it's recommended that you first write down your paper key and store it securely
-            so that your wallet can be recovered in the case your device was lost or stolen.</span>
+          <span translate>Before retrieving your wallet address, it's recommended that you first write down your paper key and store it securely so that your wallet can be recovered in the case your device was lost or stolen.</span>
         </div>
         <button ion-button class="button-standard" (click)="goToBackup()">
           {{'Write Down Paper Key' | translate}}
@@ -60,8 +62,7 @@
           </button>
         </div>
 
-        <ngx-qrcode (click)="showFullAddr()" *ngIf="address" class="qr-code" copy-to-clipboard="{{ address }}" hide-toast="true"
-          qrc-value="{{qrAddress}}" qrc-class="aclass" qrc-errorCorrectionLevel="M"></ngx-qrcode>
+        <ngx-qrcode (click)="showFullAddr()" *ngIf="address" class="qr-code" copy-to-clipboard="{{ address }}" hide-toast="true" qrc-value="{{qrAddress}}" qrc-class="aclass" qrc-errorCorrectionLevel="M"></ngx-qrcode>
       </div>
 
     </div>
@@ -77,8 +78,7 @@
 
           <button class="new-address-btn" detail-none text-center (click)="setAddress(true)">
             <span class="new-address" ion-text color="primary" translate>
-              <img [hidden]="loading" class="spin-icon" [ngClass]="{'spin-backwards': playAnimation}" src="assets/img/right.svg" width="16"
-              />
+              <img [hidden]="loading" class="spin-icon" [ngClass]="{'spin-backwards': playAnimation}" src="assets/img/right.svg" width="16" />
               <div *ngIf="loading" [ngClass]="{'spin-fast': loading}" class="spinner"></div>
             </span>
           </button>
