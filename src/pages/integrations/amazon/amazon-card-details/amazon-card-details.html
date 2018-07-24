@@ -2,8 +2,8 @@
   <ion-navbar>
     <ion-title>{{'Details' | translate}}</ion-title>
     <ion-buttons left>
-      <button (click)="close()" ion-button>
-        {{'Close' | translate}}
+      <button class="modal-close-button" (click)="close()" ion-button>
+        <ion-icon ios="md-close" md="md-close"></ion-icon>
       </button>
     </ion-buttons>
   </ion-navbar>
@@ -16,8 +16,8 @@
     <div class="header-modal-amount">
       {{'Gift Card Amount:' | translate}}
       <span class="text-bold">
-        <span *ngIf="onlyIntegers">{{card.amount | number : '1.0-0'}}</span> 
-        <span *ngIf="!onlyIntegers">{{card.amount | number : '1.2-2'}}</span> 
+        <span *ngIf="onlyIntegers">{{card.amount | number : '1.0-0'}}</span>
+        <span *ngIf="!onlyIntegers">{{card.amount | number : '1.2-2'}}</span>
         {{ currency }}
       </span>
     </div>
