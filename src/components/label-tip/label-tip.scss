@@ -2,26 +2,29 @@ label-tip {
   $info-color: #eff1f8;
   color: #4a4a4a;
   display: block;
-  margin-top: 18px;
+  margin-top: 24px;
   padding: 20px;
   position: relative;
 
   &:before {
+    $arrow-height: 18px;
+    $arrow-width: $arrow-height * 0.8;
     content: '';
-    display: block;
-    height: 20px;
-    width: 20px;
+    width: 0;
+    height: 0;
+    border-left: $arrow-width solid transparent;
+    border-right: $arrow-width solid transparent;
+    border-bottom: $arrow-height solid transparent;
     position: absolute;
-    top: -10px;
+    top: -$arrow-height;
     left: 25px;
-    transform: rotate(45deg);
   }
 
   &.info {
     background: $info-color;
 
     &:before {
-      background: $info-color;
+      border-bottom-color: $info-color;
     }
   }
 
