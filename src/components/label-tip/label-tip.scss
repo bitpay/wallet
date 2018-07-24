@@ -13,6 +13,7 @@ label-tip {
     width: 20px;
     position: absolute;
     top: -10px;
+    left: 25px;
     transform: rotate(45deg);
   }
 
@@ -28,7 +29,7 @@ label-tip {
     color: black;
     $icon-height: 20px;
     &__icon {
-      margin-right: $icon-height/2;
+      margin-right: $icon-height/1.5;
       height: $icon-height;
       width: $icon-height;
     }

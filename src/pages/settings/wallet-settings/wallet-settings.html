@@ -28,6 +28,13 @@
         {{'Paper key unverified' | translate}}
       </ion-note>
     </button>
+    <div *ngIf="canSign && touchIdAvailable">
+      <ion-item>
+        <ion-label [ngClass]="{'disabled': needsBackup}">{{'Request Fingerprint'| translate}}</ion-label>
+        <ion-toggle [(ngModel)]="touchIdEnabled" (ionChange)="touchIdChange()"></ion-toggle>
+      </ion-item>
+      <!-- <ion-item-divider></ion-item-divider> -->
+    </div>
     <div *ngIf="canSign">
       <ion-item>
         <ion-label>{{'Request Encrypt Password' | translate}}</ion-label>
@@ -49,13 +56,6 @@
         </span>
         <a (click)="openSupportSpendingPassword()" translate>Learn more</a>
       </ion-item-divider> -->
-    </div>
-    <div *ngIf="canSign && touchIdAvailable">
-      <ion-item>
-        <ion-label [ngClass]="{'disabled': needsBackup}">{{'Request Fingerprint'| translate}}</ion-label>
-        <ion-toggle [(ngModel)]="touchIdEnabled" (ionChange)="touchIdChange()"></ion-toggle>
-      </ion-item>
-      <ion-item-divider></ion-item-divider>
     </div>
     <ion-item-divider>{{'Advanced' | translate}}</ion-item-divider>
     <button ion-item (click)="openWalletInformation()">
