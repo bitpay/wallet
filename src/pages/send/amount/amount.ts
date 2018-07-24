@@ -140,7 +140,9 @@ export class AmountPage extends WalletTabsChild {
     this.toWalletId = this.navParams.data.toWalletId;
     this.shiftMax = this.navParams.data.shiftMax;
     this.shiftMin = this.navParams.data.shiftMin;
+  }
 
+  ionViewDidLoad() {
     this.setAvailableUnits();
     this.updateUnitUI();
   }
