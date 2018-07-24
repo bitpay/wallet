@@ -19,3 +19,15 @@ page-wallet-settings {
     background-color: color($colors, primary);
   }
 }
+
+.wide-header {
+  &__title {
+    color: white;
+    font-size: 25px;
+    font-weight: 500;
+
+    .md & {
+      padding-left: 19px;
+    }
+  }
+}
