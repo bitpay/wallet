@@ -42,7 +42,7 @@
           </div>
         </div>
         <div class="amount-header__label">Enter Amount</div>
-        <img class="next-button" [ngClass]="{'show': expression}" src="assets/img/icon-next.svg" (click)="finish()" tappable>
+        <img class="next-button" [ngClass]="{'show': expression && allowSend}" src="assets/img/icon-next.svg" (click)="finish()" tappable>
       </div>
     </div>
 

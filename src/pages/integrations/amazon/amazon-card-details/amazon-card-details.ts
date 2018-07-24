@@ -55,7 +55,7 @@ export class AmazonCardDetailsPage {
       if (err) {
         this.popupProvider.ionicAlert(
           'Error canceling gift card',
-          this.bwcErrorProvider.msg(err)
+          this.bwcErrorProvider.msg(err.error)
         );
         return;
       }
