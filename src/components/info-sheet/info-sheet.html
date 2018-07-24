@@ -5,6 +5,13 @@
       <span sheet-text class="text-address" translate>{{params.address}}</span>
       <span sheet-button-text translate>OK</span>
     </info-sheet-template>
+    <info-sheet-template *ngSwitchCase="'custom-amount'" type="success">
+      <span sheet-title-text translate>Copied</span>
+      <span sheet-text translate>
+        Requesting {{params.amount}} in {{params.address}}
+      </span>
+      <span sheet-button-text translate>OK</span>
+    </info-sheet-template>
     <info-sheet-template *ngSwitchCase="'receiving-bitcoin'" type="info">
       <span sheet-title-text translate>Receiving {{params.coinName}} address</span>
       <span sheet-text translate>
