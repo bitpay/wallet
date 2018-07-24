@@ -321,7 +321,10 @@ export class AmountPage extends WalletTabsChild {
 
   public shouldShowZeroState() {
     return (
-      this.wallet && this.wallet.status && !this.wallet.status.totalBalanceSat
+      this.wallet &&
+      this.wallet.status &&
+      !this.wallet.status.totalBalanceSat &&
+      !this.requestingAmount
     );
   }
 
