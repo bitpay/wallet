@@ -48,10 +48,28 @@
       </ion-item>
       <ion-item-divider></ion-item-divider>
     </div>
-    <button ion-item (click)="openAdvancedSettings()">
-      <span translate>More Options</span>
+    <ion-item-divider>{{'Advanced' | translate}}</ion-item-divider>
+    <button ion-item (click)="openWalletInformation()">
+      <span translate>Wallet Information</span>
+    </button>
+    <button ion-item (click)="openWalletAddresses()">
+      <span translate>Wallet Addresses</span>
+    </button>
+    <button ion-item (click)="openExportWallet()">
+      <span translate>Export Wallet</span>
+    </button>
+    <button ion-item (click)="openWalletServiceUrl()">
+      <span translate>Wallet Service URL</span>
+    </button>
+    <button ion-item (click)="openTransactionHistory()">
+      <span translate>Transaction History</span>
+    </button>
+    <button ion-item *ngIf="wallet && wallet.network == 'livenet' && wallet.isComplete() && wallet.coin == 'btc'" (click)="openBitcoinCashPage()">
+      <span translate>Duplicate ( Bitcoin Cash )</span>
+    </button>
+    <button ion-item (click)="openDeleteWallet()">
+      <span translate>Delete Wallet</span>
     </button>
     <ion-item-divider></ion-item-divider>
   </ion-list>
-
 </ion-content>

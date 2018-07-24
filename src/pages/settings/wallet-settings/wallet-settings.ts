@@ -14,7 +14,14 @@ import { WalletProvider } from '../../../providers/wallet/wallet';
 import { BackupWarningPage } from '../../backup/backup-warning/backup-warning';
 import { WalletColorPage } from './wallet-color/wallet-color';
 import { WalletNamePage } from './wallet-name/wallet-name';
+import { BitcoinCashPage } from './wallet-settings-advanced/bitcoin-cash/bitcoin-cash';
+import { WalletAddressesPage } from './wallet-settings-advanced/wallet-addresses/wallet-addresses';
+import { WalletDeletePage } from './wallet-settings-advanced/wallet-delete/wallet-delete';
+import { WalletExportPage } from './wallet-settings-advanced/wallet-export/wallet-export';
+import { WalletInformationPage } from './wallet-settings-advanced/wallet-information/wallet-information';
+import { WalletServiceUrlPage } from './wallet-settings-advanced/wallet-service-url/wallet-service-url';
 import { WalletSettingsAdvancedPage } from './wallet-settings-advanced/wallet-settings-advanced';
+import { WalletTransactionHistoryPage } from './wallet-settings-advanced/wallet-transaction-history/wallet-transaction-history';
 
 @Component({
   selector: 'page-wallet-settings',
@@ -165,6 +172,42 @@ export class WalletSettingsPage {
 
   public openBackupSettings(): void {
     this.navCtrl.push(BackupWarningPage, {
+      walletId: this.wallet.credentials.walletId
+    });
+  }
+
+  public openWalletInformation(): void {
+    this.navCtrl.push(WalletInformationPage, {
+      walletId: this.wallet.credentials.walletId
+    });
+  }
+  public openWalletAddresses(): void {
+    this.navCtrl.push(WalletAddressesPage, {
+      walletId: this.wallet.credentials.walletId
+    });
+  }
+  public openExportWallet(): void {
+    this.navCtrl.push(WalletExportPage, {
+      walletId: this.wallet.credentials.walletId
+    });
+  }
+  public openWalletServiceUrl(): void {
+    this.navCtrl.push(WalletServiceUrlPage, {
+      walletId: this.wallet.credentials.walletId
+    });
+  }
+  public openTransactionHistory(): void {
+    this.navCtrl.push(WalletTransactionHistoryPage, {
+      walletId: this.wallet.credentials.walletId
+    });
+  }
+  public openDeleteWallet(): void {
+    this.navCtrl.push(WalletDeletePage, {
+      walletId: this.wallet.credentials.walletId
+    });
+  }
+  public openBitcoinCashPage(): void {
+    this.navCtrl.push(BitcoinCashPage, {
       walletId: this.wallet.credentials.walletId
     });
   }
