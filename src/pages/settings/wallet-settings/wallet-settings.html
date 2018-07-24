@@ -33,13 +33,22 @@
         <ion-label>{{'Request Encrypt Password' | translate}}</ion-label>
         <ion-toggle [(ngModel)]="encryptEnabled" (ionChange)="encryptChange()" [disabled]="(needsBackup || !wallet.isComplete()) && !encryptEnabled"></ion-toggle>
       </ion-item>
-      <ion-item-divider>
+      <label-tip type="info">
+        <span label-tip-title>Password Not Recoverable</span>
+        <div label-tip-body>
+          This password cannot be recovered. If this password is lost, the 12 word backup can not be restored, and funds will be permanently
+          lost.
+          <br>
+          <a class="label-tip-link" (click)="openSupportSpendingPassword()">Learn More</a>
+        </div>
+      </label-tip>
+      <!-- <ion-item-divider>
         <span class="item-text" translate>
           If enabled, all sensitive information (private key and recovery phrase) and actions (spending and exporting) associated with
           this wallet will be protected.
         </span>
         <a (click)="openSupportSpendingPassword()" translate>Learn more</a>
-      </ion-item-divider>
+      </ion-item-divider> -->
     </div>
     <div *ngIf="canSign && touchIdAvailable">
       <ion-item>
