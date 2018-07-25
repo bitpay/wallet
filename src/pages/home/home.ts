@@ -115,9 +115,22 @@ export class HomePage {
     this.showReorderBtc = false;
     this.showReorderBch = false;
     this.zone = new NgZone({ enableLongStackTrace: false });
+    this.events.subscribe('Home/reloadStatus', () => {
+      this._willEnter();
+      this._didEnter();
+      this.subscribeBwsEvents();
+    });
   }
 
   ionViewWillEnter() {
+    this._willEnter();
+  }
+
+  ionViewDidEnter() {
+    this._didEnter();
+  }
+
+  private _willEnter() {
     this.recentTransactionsEnabled = this.configProvider.get().recentTransactions.enabled;
 
     // Update list of wallets, status and TXPs
@@ -136,7 +149,7 @@ export class HomePage {
     this.getNotifications();
   }
 
-  ionViewDidEnter() {
+  private _didEnter() {
     if (this.isNW) this.checkUpdate();
     this.checkHomeTip();
     this.checkFeedbackInfo();

@@ -62,5 +62,6 @@ export class WalletTabsPage {
 
   ngOnDestroy() {
     this.walletTabsProvider.clear();
+    this.events.publish('Home/reloadStatus');
   }
 }
