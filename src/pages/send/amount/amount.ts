@@ -173,7 +173,7 @@ export class AmountPage extends WalletTabsChild {
       this.pushOperator(event.key);
     } else if (event.keyCode === 86) {
       if (event.ctrlKey || event.metaKey) this.processClipboard();
-    } else if (event.keyCode === 13) this.checkAmount();
+    } else if (event.keyCode === 13) this.finish();
   }
 
   private setAvailableUnits(): void {
@@ -471,34 +471,7 @@ export class AmountPage extends WalletTabsChild {
     return result;
   }
 
-  public checkAmount() {
-    if (!this.wallet || this.requestingAmount) {
-      this.finish();
-      return;
-    }
-
-    let unit = this.availableUnits[this.unitIndex];
-    let _amount = this.evaluate(this.format(this.expression));
-    let amount = unit.isFiat
-      ? (this.fromFiat(_amount) * this.unitToSatoshi).toFixed(0)
-      : (_amount * this.unitToSatoshi).toFixed(0);
-    let maxAmountAvailable = this.wallet.status.availableBalanceSat;
-
-    if (amount > maxAmountAvailable) {
-      const insufficientFundsInfoSheet = this.actionSheetProvider.createInfoSheet(
-        'insufficient-funds',
-        { amount: _amount, coin: unit.shortName }
-      );
-      insufficientFundsInfoSheet.present();
-      insufficientFundsInfoSheet.onDidDismiss(option => {
-        if (!option) {
-          this.sendMax();
-        }
-      });
-    } else this.finish();
-  }
-
-  private finish(): void {
+  public finish(): void {
     let unit = this.availableUnits[this.unitIndex];
     let _amount = this.evaluate(this.format(this.expression));
     let coin = unit.id;

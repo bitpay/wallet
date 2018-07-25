@@ -10,7 +10,6 @@ export type InfoSheetType =
   | 'copayers'
   | 'custom-amount'
   | 'default-error'
-  | 'insufficient-funds'
   | 'miner-fee'
   | 'miner-fee-notice'
   | 'paper-key-unverified'
