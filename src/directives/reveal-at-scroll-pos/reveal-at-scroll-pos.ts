@@ -31,7 +31,7 @@ export class RevealAtScrollPosition {
   }
 
   getOpacity(scrollTop: number) {
-    const startFadeAt = this.scrollThreshold - 15;
+    const startFadeAt = this.scrollThreshold - 28;
     const m = 1 / (this.scrollThreshold - startFadeAt);
     const opacity = m * (scrollTop - this.scrollThreshold) + 1;
     return opacity;
