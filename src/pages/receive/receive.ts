@@ -37,7 +37,6 @@ export class ReceivePage extends WalletTabsChild {
   public wallet;
   public showShareButton: boolean;
   public loading: boolean;
-  public isOpenSelector: boolean;
   public playAnimation: boolean;
 
   constructor(
@@ -61,23 +60,20 @@ export class ReceivePage extends WalletTabsChild {
 
   ionViewDidLoad() {
     this.setAddress();
-    this.events.subscribe('backupCompleted', () => {
-      this.setAddress();
-    });
   }
 
   ionViewWillEnter() {
-    this.playAnimation = false;
-    this.isOpenSelector = false;
-    this.events.subscribe('bwsEvent', (walletId, type) => {
-      // Update current address
-      if (this.wallet && walletId == this.wallet.id && type == 'NewIncomingTx')
-        this.setAddress(true);
+    this.events.subscribe('Wallet/backupCompleted', () => {
+      this.setAddress();
+    });
+    this.events.subscribe('Wallet/setAddress', () => {
+      this.setAddress(true);
     });
   }
 
   ionViewWillLeave() {
-    this.events.unsubscribe('bwsEvent');
+    this.events.unsubscribe('Wallet/backupCompleted');
+    this.events.unsubscribe('Wallet/setAddress');
   }
 
   public requestSpecificAmount(): void {

@@ -89,25 +89,21 @@ export class WalletDetailsPage extends WalletTabsChild {
       })
       .catch(err => {
         this.logger.error(err);
-      });
+      }); 
+  }
+
+  ionViewWillEnter() {
+    this.events.subscribe('Wallet/updateAll', () => {
+      this.updateAll();
+    });
   }
 
   ionViewDidEnter() {
     this.updateAll();
   }
 
-  ionViewWillEnter() {
-    this.events.subscribe('bwsEvent', (walletId, type) => {
-      if (walletId == this.wallet.id && type != 'NewAddress') this.updateAll();
-    });
-    this.events.subscribe('Local/TxAction', walletId => {
-      if (walletId == this.wallet.id) this.updateAll();
-    });
-  }
-
   ionViewWillLeave() {
-    this.events.unsubscribe('Local/TxAction');
-    this.events.unsubscribe('bwsEvent');
+    this.events.unsubscribe('Wallet/updateAll');
   }
 
   shouldShowZeroState() {

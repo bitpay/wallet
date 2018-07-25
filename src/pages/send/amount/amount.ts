@@ -4,7 +4,7 @@ import {
   HostListener,
   NgZone
 } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { Events, NavController, NavParams } from 'ionic-angular';
 import * as _ from 'lodash';
 
 // Providers
@@ -93,7 +93,8 @@ export class AmountPage extends WalletTabsChild {
     private rateProvider: RateProvider,
     private txFormatProvider: TxFormatProvider,
     private changeDetectorRef: ChangeDetectorRef,
-    walletTabsProvider: WalletTabsProvider
+    walletTabsProvider: WalletTabsProvider,
+    private events: Events
   ) {
     super(navCtrl, profileProvider, walletTabsProvider);
     this.zone = new NgZone({ enableLongStackTrace: false });
@@ -152,9 +153,16 @@ export class AmountPage extends WalletTabsChild {
     this.expression = '';
     this.useSendMax = false;
     this.processAmount();
+    this.events.subscribe('Wallet/disableHardwareKeyboard', () => {
+      this._disableHardwareKeyboard();
+    });
   }
 
   ionViewWillLeave() {
+    this._disableHardwareKeyboard();
+  }
+
+  private _disableHardwareKeyboard() {
     this.disableHardwareKeyboard = true;
   }
 

@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { NavParams } from 'ionic-angular';
+import { Events, NavParams } from 'ionic-angular';
 import { ReceivePage } from '../receive/receive';
 import { AmountPage } from '../send/amount/amount';
 import { WalletDetailsPage } from '../wallet-details/wallet-details';
@@ -25,11 +25,36 @@ export class WalletTabsPage {
 
   constructor(
     private navParams: NavParams,
-    private walletTabsProvider: WalletTabsProvider
+    private walletTabsProvider: WalletTabsProvider,
+    private events: Events
   ) {}
 
   ionViewDidLoad() {
     this.walletId = this.navParams.get('walletId');
+  }
+
+  ionViewWillEnter() {
+    this.events.subscribe('bwsEvent', (walletId, type) => {
+      // Update current address
+      if (this.walletId == walletId && type == 'NewIncomingTx')
+        this.events.publish('Wallet/setAddress');
+      // Update wallet details
+      if (this.walletId == walletId && type != 'NewAddress')
+        this.events.publish('Wallet/updateAll');
+    });
+    this.events.subscribe('Local/TxAction', walletId => {
+      if (this.walletId == walletId)
+        this.events.publish('Wallet/updateAll');
+    });
+  }
+
+  ionViewWillLeave() {
+    this.events.unsubscribe('bwsEvent');
+    this.events.unsubscribe('Local/TxAction');
+    this.events.unsubscribe('Wallet/updateAll');
+    this.events.unsubscribe('Wallet/setAddress');
+    this.events.unsubscribe('Wallet/backupCompleted');
+    this.events.unsubscribe('Wallet/disableHardwareKeyboard');
   }
 
   ngAfterViewInit() {
