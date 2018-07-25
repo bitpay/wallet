@@ -1,10 +1,20 @@
 <ion-header class="wide-header">
-  <ion-navbar [navbar-bg]="wallet && wallet.color"></ion-navbar>
-  <ion-toolbar [navbar-bg]="wallet && wallet.color">
-    <div class="wide-header__title" translate>Preferences</div>
-  </ion-toolbar>
+  <ion-navbar [navbar-bg]="wallet && wallet.color">
+    <ion-title>
+      <span [reveal-at-scroll-pos]="expandableHeader.headerHeight" [scrollArea]="scrollArea" translate>Preferences</span>
+    </ion-title>
+  </ion-navbar>
 </ion-header>
-<ion-content>
+<ion-content #scrollArea>
+
+  <expandable-header [scrollArea]="scrollArea" #expandableHeader>
+    <ion-toolbar [navbar-bg]="wallet && wallet.color" class="wide-header__title">
+      <expandable-header-primary>
+        Preferences
+      </expandable-header-primary>
+    </ion-toolbar>
+  </expandable-header>
+
   <ion-list class="settings-list">
     <ion-item-divider>{{'Preferences' | translate}}</ion-item-divider>
     <button ion-item (click)="openWalletName()">
@@ -43,7 +53,7 @@
       <label-tip type="info">
         <span label-tip-title>Password Not Recoverable</span>
         <div label-tip-body>
-          This password cannot be recovered. If this password is lost, the 12 word backup can not be restored, and funds will be permanently
+          This password cannot be recovered. If this password is lost, the 12-word backup can not be restored, and funds will be permanently
           lost.
           <br>
           <a class="label-tip-link" (click)="openSupportSpendingPassword()">Learn More</a>

@@ -54,9 +54,6 @@ export class WalletSettingsPage {
 
   ionViewDidLoad() {
     this.logger.info('ionViewDidLoad WalletSettingsPage');
-  }
-
-  ionViewWillEnter() {
     this.wallet = this.profileProvider.getWallet(this.navParams.data.walletId);
     this.walletName = this.wallet.name;
     this.canSign = this.wallet.canSign();
@@ -79,6 +76,8 @@ export class WalletSettingsPage {
       this.deleted = true;
     }
   }
+
+  ionViewWillEnter() {}
 
   public hiddenBalanceChange(): void {
     this.profileProvider.toggleHideBalanceFlag(

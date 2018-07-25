@@ -38,11 +38,9 @@ export class ExpandableHeaderComponent {
   constructor(public element: ElementRef, public renderer: Renderer) {}
 
   ngOnInit() {
-    this.scrollArea.ionScroll.subscribe(event => {
-      event.domWrite(() => {
-        this.applyTransforms(event.scrollTop);
-      });
-    });
+    this.scrollArea.ionScroll.subscribe(event =>
+      event.domWrite(() => this.applyTransforms(event.scrollTop))
+    );
   }
 
   ngAfterViewInit() {

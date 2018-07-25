@@ -32,22 +32,30 @@ page-wallet-settings {
 }
 
 .wide-header {
+  ion-title .toolbar-title {
+    font-weight: 400;
+  }
+
   &__title {
+    padding-top: 30px;
+    padding-bottom: 20px;
+    padding-left: 20px;
+
     color: white;
     font-size: 25px;
     font-weight: 500;
 
-    .md & {
-      padding-left: 19px;
-    }
+    // .md & {
+    //   padding-left: 19px;
+    // }
 
-    .ios & {
-      padding-left: 6px;
-    }
+    // .ios & {
+    //   padding-left: 6px;
+    // }
   }
 
   ion-navbar {
-    padding-top: 15px;
+    // padding-top: 15px;
 
     .ios & {
       padding-left: 15px;
@@ -55,8 +63,8 @@ page-wallet-settings {
   }
 
   ion-toolbar {
-    padding-top: 30px;
-    padding-bottom: 22px;
+    // padding-top: 30px;
+    // padding-bottom: 22px;
 
     .ios & {
       padding-left: 15px;
