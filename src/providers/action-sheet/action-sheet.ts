@@ -5,7 +5,10 @@ import { OptionsSheetComponent } from '../../components/options-sheet/options-sh
 import { WalletSelectorComponent } from '../../components/wallet-selector/wallet-selector';
 import { DomProvider } from '../../providers/dom/dom';
 
-export type InfoSheetType = 'address-copied' | 'receiving-bitcoin';
+export type InfoSheetType =
+  | 'address-copied'
+  | 'receiving-bitcoin'
+  | 'custom-amount';
 export type OptionsSheetType = 'address-options';
 export interface WalletSelectorParams {
   wallets: any[];
