@@ -43,8 +43,7 @@ export class WalletTabsPage {
         this.events.publish('Wallet/updateAll');
     });
     this.events.subscribe('Local/TxAction', walletId => {
-      if (this.walletId == walletId)
-        this.events.publish('Wallet/updateAll');
+      if (this.walletId == walletId) this.events.publish('Wallet/updateAll');
     });
   }
 

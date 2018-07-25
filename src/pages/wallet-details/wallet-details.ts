@@ -89,7 +89,7 @@ export class WalletDetailsPage extends WalletTabsChild {
       })
       .catch(err => {
         this.logger.error(err);
-      }); 
+      });
   }
 
   ionViewWillEnter() {
