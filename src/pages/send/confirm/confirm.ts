@@ -831,7 +831,7 @@ export class ConfirmPage extends WalletTabsChild {
     await modal.present();
 
     this.isWithinWalletTabs()
-      ? this.close()
+      ? this.close().then( _ => { this.app.getRootNavs()[0].setRoot(TabsPage); } )
       : this.app.getRootNavs()[0].setRoot(TabsPage);
   }
 
