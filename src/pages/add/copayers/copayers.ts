@@ -12,6 +12,7 @@ import {
 import { WalletDetailsPage } from '../../../pages/wallet-details/wallet-details';
 
 // Providers
+import { ActionSheetProvider } from '../../../providers/action-sheet/action-sheet';
 import { AppProvider } from '../../../providers/app/app';
 import { BwcErrorProvider } from '../../../providers/bwc-error/bwc-error';
 import { Logger } from '../../../providers/logger/logger';
@@ -28,9 +29,9 @@ import { TabsPage } from '../../tabs/tabs';
   templateUrl: 'copayers.html'
 })
 export class CopayersPage {
-  public appName: string = this.appProvider.info.userVisibleName;
-  public appUrl: string = this.appProvider.info.url;
-  public isCordova: boolean = this.platformProvider.isCordova;
+  public appName: string;
+  public appUrl: string;
+  public isCordova: boolean;
 
   public wallet;
   public copayers;
@@ -51,14 +52,18 @@ export class CopayersPage {
     private walletProvider: WalletProvider,
     private translate: TranslateService,
     private pushNotificationsProvider: PushNotificationsProvider,
-    private viewCtrl: ViewController
+    private viewCtrl: ViewController,
+    private actionSheetProvider: ActionSheetProvider
   ) {
     this.secret = null;
+    this.appName = this.appProvider.info.userVisibleName;
+    this.appUrl = this.appProvider.info.url;
+    this.isCordova = this.platformProvider.isCordova;
+    this.wallet = this.profileProvider.getWallet(this.navParams.data.walletId);
   }
 
   ionViewWillEnter() {
     this.logger.info('ionViewDidLoad CopayersPage');
-    this.wallet = this.profileProvider.getWallet(this.navParams.data.walletId);
     this.updateWallet();
 
     this.events.subscribe('bwsEvent', (walletId, type) => {
@@ -131,5 +136,12 @@ export class CopayersPage {
         let errorText = this.translate.instant('Error');
         this.popupProvider.ionicAlert(errorText, err.message || err);
       });
+  }
+
+  public showFullInfo(): void {
+    const infoSheet = this.actionSheetProvider.createInfoSheet('copayers', {
+      secret: this.secret
+    });
+    infoSheet.present();
   }
 }

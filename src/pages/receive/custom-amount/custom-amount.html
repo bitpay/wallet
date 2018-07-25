@@ -12,8 +12,8 @@
 <ion-content>
   <div class="qr-container">
     <div class="card qr-card">
-      <ngx-qrcode (click)="showFullInfo()" *ngIf="address" class="qr-code" hide-toast="true" copy-to-clipboard="{{ qrAddress }}"
-        qrc-value="{{qrAddress}}" qrc-class="aclass" qrc-errorCorrectionLevel="M"></ngx-qrcode>
+      <ngx-qrcode (click)="showFullInfo()" *ngIf="address" hide-toast="true" copy-to-clipboard="{{ qrAddress }}" qrc-value="{{qrAddress}}"
+        qrc-class="aclass" qrc-errorCorrectionLevel="M"></ngx-qrcode>
     </div>
   </div>
   <ion-list>
