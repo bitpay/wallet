@@ -433,3 +433,29 @@ ion-header {
     }
   }
 }
+
+.qr-container {
+  flex-grow: 1;
+  @include center;
+  background: linear-gradient(#ececec, white);
+  .qr-card {
+    border: 1px solid rgb(207, 207, 207);
+    border-radius: 7px;
+    transform: translateY(0);
+    margin: 0;
+    padding-bottom: 0;
+    width: 70%;
+    max-width: 293px;
+    box-shadow: none;
+    .aclass {
+      @include center;
+      padding: 5px;
+    }
+    .aclass > img {
+      filter: grayscale(100%);
+      height: 100%;
+      width: 100%;
+      opacity: 0.715;
+    }
+  }
+}

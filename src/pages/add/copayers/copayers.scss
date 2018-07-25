@@ -1,36 +1,6 @@
 page-copayers {
-  .copayers-secret {
-    ion-item {
-      text-align: center;
-    }
-    .qr-code-container {
-      cursor: pointer;
-      .secret {
-        margin: 0rem 2rem 1rem 2rem;
-        font-size: 12px;
-      }
-      .aclass > img {
-        width: 220px;
-        border-radius: 4px;
-      }
-    }
-  }
-  .copayers-card {
-    ion-card-header {
-      display: flex;
-      justify-content: space-between;
-    }
-  }
-  .errors-card {
-    color: red;
-  }
-  .gray-color {
-    color: color($colors, grey);
-  }
-  .list-title {
-    padding-left: 0px;
-    .item-inner {
-      padding-left: 16px;
-    }
+  .qr-container {
+    padding: 30px;
+    height: 50%;
   }
 }

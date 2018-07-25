@@ -8,7 +8,9 @@ import { DomProvider } from '../../providers/dom/dom';
 export type InfoSheetType =
   | 'address-copied'
   | 'receiving-bitcoin'
-  | 'custom-amount';
+  | 'custom-amount'
+  | 'copayers';
+
 export type OptionsSheetType = 'address-options';
 export interface WalletSelectorParams {
   wallets: any[];

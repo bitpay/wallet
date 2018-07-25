@@ -12,6 +12,13 @@
       </span>
       <span sheet-button-text translate>OK</span>
     </info-sheet-template>
+    <info-sheet-template *ngSwitchCase="'copayers'" type="success">
+      <span sheet-title-text translate>Copied</span>
+      <span sheet-text>
+        {{params.secret}}
+      </span>
+      <span sheet-button-text translate>OK</span>
+    </info-sheet-template>
     <info-sheet-template *ngSwitchCase="'receiving-bitcoin'" type="info">
       <span sheet-title-text translate>Receiving {{params.coinName}} address</span>
       <span sheet-text translate>
