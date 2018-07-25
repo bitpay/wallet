@@ -1,8 +1,8 @@
-<ion-header class="wallet-details-header no-subtitle">
+<ion-header class="wallet-details-header">
   <ion-navbar>
     <ion-title>{{ 'Confirm' | translate }}</ion-title>
     <ion-buttons right *ngIf="isWithinWalletTabs()">
-      <button class="modal-close-button" (click)="close()" ion-button>
+      <button (click)="close()" ion-button>
         Cancel
       </button>
     </ion-buttons>
@@ -51,7 +51,7 @@
           </span>
         </div>
       </div>
-      <ion-note [ngClass]="{'warn': wallet && tx.txp[wallet.id] && tx.txp[wallet.id].feeTooHigh}" item-right>
+      <ion-note item-right>
         {{tx.feeLevelName | translate}}
       </ion-note>
     </button>

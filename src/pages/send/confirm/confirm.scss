@@ -1,4 +1,10 @@
 page-confirm {
+  .wallet-details-header {
+    button {
+      font-weight: 100;
+      font-size: 16px;
+    }
+  }
   ion-content {
     .fixed-content,
     .scroll-content {
@@ -31,9 +37,8 @@ page-confirm {
         font-weight: 400;
       }
       img.sending-img {
-        float: right;
         width: auto;
-        padding-top: 2px;
+        height: 40px;
       }
       .amount-coin {
         font-size: 1.5rem;
@@ -71,12 +76,13 @@ page-confirm {
     &.warn {
       color: rgb(229, 108, 123);
       background-color: rgb(255, 242, 244);
+      .fee-details,
+      ion-note {
+        color: rgb(229, 108, 123);
+      }
     }
     ion-note {
       font-weight: 100;
-      &.warn {
-        color: rgb(229, 108, 123);
-      }
     }
   }
   .item-gravatar {
