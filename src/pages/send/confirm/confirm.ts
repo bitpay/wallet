@@ -1,3 +1,4 @@
+import { DecimalPipe } from '@angular/common';
 import { Component, ViewChild } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { App, ModalController, NavController, NavParams } from 'ionic-angular';
@@ -58,6 +59,8 @@ export class ConfirmPage extends WalletTabsChild {
   public paymentExpired: boolean;
   public remainingTimeStr: string;
   public memoFocused: boolean;
+  public amount;
+  public formatAlternative;
 
   // Config Related values
   public config;
@@ -93,7 +96,8 @@ export class ConfirmPage extends WalletTabsChild {
     private txFormatProvider: TxFormatProvider,
     private translate: TranslateService,
     private externalLinkProvider: ExternalLinkProvider,
-    walletTabsProvider: WalletTabsProvider
+    walletTabsProvider: WalletTabsProvider,
+    private decimalPipe: DecimalPipe
   ) {
     super(navCtrl, profileProvider, walletTabsProvider);
     this.bitcore = this.bwcProvider.getBitcore();
@@ -176,6 +180,8 @@ export class ConfirmPage extends WalletTabsChild {
         .toString();
     }
 
+    this.getAmountDetails();
+
     const feeOpts = this.feeProvider.getFeeOpts();
     this.tx.feeLevelName = feeOpts[this.tx.feeLevel];
     this.showAddress = false;
@@ -193,6 +199,14 @@ export class ConfirmPage extends WalletTabsChild {
 
   ionViewDidLoad() {
     this.logger.info('ionViewDidLoad ConfirmPage');
+  }
+
+  private getAmountDetails() {
+    this.amount = this.decimalPipe.transform(this.tx.amount / 1e8, '1.2-6');
+    this.formatAlternative = this.txFormatProvider.formatAlternative(
+      this.tx.coin,
+      this.tx.amount
+    );
   }
 
   private afterWalletSelectorSet() {
@@ -490,6 +504,7 @@ export class ConfirmPage extends WalletTabsChild {
             }
             tx.sendMaxInfo = sendMaxInfo;
             tx.amount = tx.sendMaxInfo.amount;
+            this.getAmountDetails();
           }
           this.showSendMaxWarning(wallet, sendMaxInfo).then(() => {
             // txp already generated for this wallet?
