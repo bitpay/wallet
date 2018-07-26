@@ -1,16 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
-import {
-  Events,
-  ModalController,
-  NavController,
-  NavParams
-} from 'ionic-angular';
+import { Events, NavController, NavParams } from 'ionic-angular';
 import { Logger } from '../../../providers/logger/logger';
-
-// Pages
-import { CopayersPage } from '../copayers/copayers';
 
 // Providers
 import { ConfigProvider } from '../../../providers/config/config';
@@ -65,7 +57,6 @@ export class CreateWalletPage implements OnInit {
   constructor(
     private navCtrl: NavController,
     private navParams: NavParams,
-    private modalCtrl: ModalController,
     private fb: FormBuilder,
     private profileProvider: ProfileProvider,
     private configProvider: ConfigProvider,
@@ -239,23 +230,8 @@ export class CreateWalletPage implements OnInit {
         if (this.createForm.value.selectedSeed == 'set') {
           this.profileProvider.setBackupFlag(wallet.credentials.walletId);
         }
-
-        if (!wallet.isComplete()) {
-          this.navCtrl.popToRoot();
-          this.modalCtrl
-            .create(
-              CopayersPage,
-              {
-                walletId: wallet.credentials.walletId
-              },
-              {
-                cssClass: 'wallet-details-modal'
-              }
-            )
-            .present();
-        } else {
-          this.navCtrl.popToRoot();
-        }
+        this.navCtrl.popToRoot();
+        this.events.publish('OpenWallet', wallet);
       })
       .catch(err => {
         this.onGoingProcessProvider.clear();
