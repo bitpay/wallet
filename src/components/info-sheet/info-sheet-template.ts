@@ -18,7 +18,7 @@ export class InfoSheetTemplate {
   private dismissSubject = new Subject<void>();
   public onDismiss = this.dismissSubject.asObservable();
 
-  dismiss() {
-    this.dismissSubject.next();
+  dismiss(option) {
+    this.dismissSubject.next(option);
   }
 }

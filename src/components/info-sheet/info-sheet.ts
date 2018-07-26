@@ -12,7 +12,9 @@ export class InfoSheetComponent extends ActionSheetParent {
     super();
   }
   ngAfterViewInit() {
-    this.infoSheetTemplate.onDismiss.subscribe(() => this.dismiss());
+    this.infoSheetTemplate.onDismiss.subscribe(option => {
+      this.dismiss(option);
+    });
   }
 }
 

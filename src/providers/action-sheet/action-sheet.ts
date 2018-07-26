@@ -7,9 +7,14 @@ import { DomProvider } from '../../providers/dom/dom';
 
 export type InfoSheetType =
   | 'address-copied'
-  | 'receiving-bitcoin'
+  | 'copayers'
   | 'custom-amount'
-  | 'copayers';
+  | 'default-error'
+  | 'miner-fee'
+  | 'miner-fee-notice'
+  | 'paper-key-unverified'
+  | 'paper-key-unverified-with-activity'
+  | 'receiving-bitcoin';
 
 export type OptionsSheetType = 'address-options';
 export interface WalletSelectorParams {

@@ -9,9 +9,11 @@ import {
 import * as _ from 'lodash';
 
 // providers
+import { InfoSheetType } from '../../providers/action-sheet/action-sheet';
 import { AddressBookProvider } from '../../providers/address-book/address-book';
 import { BwcErrorProvider } from '../../providers/bwc-error/bwc-error';
 import { ExternalLinkProvider } from '../../providers/external-link/external-link';
+import { ActionSheetProvider } from '../../providers/index';
 import { Logger } from '../../providers/logger/logger';
 import { OnGoingProcessProvider } from '../../providers/on-going-process/on-going-process';
 import { ProfileProvider } from '../../providers/profile/profile';
@@ -66,7 +68,8 @@ export class WalletDetailsPage extends WalletTabsChild {
     private modalCtrl: ModalController,
     private onGoingProcessProvider: OnGoingProcessProvider,
     private externalLinkProvider: ExternalLinkProvider,
-    walletTabsProvider: WalletTabsProvider
+    walletTabsProvider: WalletTabsProvider,
+    private actionSheetProvider: ActionSheetProvider
   ) {
     super(navCtrl, profileProvider, walletTabsProvider);
   }
@@ -90,6 +93,8 @@ export class WalletDetailsPage extends WalletTabsChild {
       .catch(err => {
         this.logger.error(err);
       });
+
+    if (this.wallet.needsBackup) this.openBackupModal();
   }
 
   ionViewDidEnter() {
@@ -270,6 +275,18 @@ export class WalletDetailsPage extends WalletTabsChild {
     this.navCtrl.push(TxDetailsPage, {
       walletId: this.wallet.credentials.walletId,
       txid: tx.txid
+    });
+  }
+
+  public openBackupModal(): void {
+    let infoSheetType: InfoSheetType = !this.showNoTransactionsYetMsg
+      ? 'paper-key-unverified'
+      : 'paper-key-unverified-with-activity';
+
+    const infoSheet = this.actionSheetProvider.createInfoSheet(infoSheetType);
+    infoSheet.present();
+    infoSheet.onDidDismiss(option => {
+      if (option) this.openBackup();
     });
   }
 
