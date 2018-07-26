@@ -12,7 +12,6 @@ import { TxFormatProvider } from '../../../../../providers/tx-format/tx-format';
 import { WalletProvider } from '../../../../../providers/wallet/wallet';
 
 // pages
-import { WalletDetailsPage } from '../../../../../pages/wallet-details/wallet-details';
 import { AllAddressesPage } from './all-addresses/all-addresses';
 
 import * as _ from 'lodash';
@@ -212,10 +211,6 @@ export class WalletAddressesPage {
 
   public async scan(): Promise<void> {
     this.walletProvider.startScan(this.wallet);
-    await this.navCtrl.popToRoot({ animate: false });
-    await this.navCtrl.parent.select(0);
-    await this.navCtrl.push(WalletDetailsPage, {
-      walletId: this.wallet.credentials.walletId
-    });
+    return this.navCtrl.popToRoot();
   }
 }
