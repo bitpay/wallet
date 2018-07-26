@@ -28,8 +28,21 @@ page-wallet-settings {
       }
     }
 
-    .item.item-ios {
-      font-size: 16px;
+    .item {
+      padding-left: 0;
+      .item-inner {
+        padding-left: 16px;
+      }
+
+      &:last-of-type {
+        .item-inner {
+          border-color: transparent;
+        }
+      }
+
+      &.item-ios {
+        font-size: 16px;
+      }
     }
   }
 }
