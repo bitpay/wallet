@@ -1,0 +1,8 @@
+.item {
+  &.warn {
+    background-color: rgb(255, 242, 244);
+    ion-note {
+      color: rgb(229, 108, 123);
+    }
+  }
+}

@@ -32,10 +32,10 @@
         <ion-toggle [(ngModel)]="hiddenBalance" (ionChange)="hiddenBalanceChange()"></ion-toggle>
       </ion-item>
       <ion-item-divider>{{'Security' | translate}}</ion-item-divider>
-      <button ion-item (click)="openBackupSettings()">
-        <span translate>Backup</span>
+      <button ion-item (click)="openBackupSettings()" [ngClass]="{warn: needsBackup}">
+        <span translate>Paper/Master Key</span>
         <ion-note *ngIf="needsBackup" class="wallet-warning" item-end>
-          {{'Paper key unverified' | translate}}
+          {{'Unverified' | translate}}
         </ion-note>
       </button>
       <div *ngIf="canSign && touchIdAvailable">

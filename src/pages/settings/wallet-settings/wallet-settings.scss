@@ -15,7 +15,6 @@ page-wallet-settings {
     border-radius: 50%;
     float: left;
     margin: 1rem;
-    box-shadow: 0px 0px 10px;
     background-color: color($colors, primary);
   }
 
@@ -27,6 +26,10 @@ page-wallet-settings {
         margin-bottom: 7px;
         margin-top: 25px;
       }
+    }
+
+    .item.item-ios {
+      font-size: 16px;
     }
   }
 }
