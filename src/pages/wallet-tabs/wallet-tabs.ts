@@ -48,6 +48,7 @@ export class WalletTabsPage {
   }
 
   ionViewWillLeave() {
+    this.events.publish('Wallet/disableHardwareKeyboard');
     this.events.unsubscribe('bwsEvent');
     this.events.unsubscribe('Local/TxAction');
     this.events.unsubscribe('Wallet/updateAll');
