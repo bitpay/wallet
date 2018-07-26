@@ -13,7 +13,10 @@
     </ion-buttons>
   </ion-navbar>
   <ion-toolbar [navbar-bg]="wallet.color">
-    <div *ngIf="!wallet.balanceHidden && !wallet.scanning && wallet.status" class="wallet-details-header__balance">{{wallet.status && wallet.status.totalBalanceStr}}</div>
+    <div *ngIf="!wallet.balanceHidden && !wallet.scanning && wallet.status" class="wallet-details-header__balance">
+      <span>{{wallet.status && wallet.status.totalBalanceStr}}</span>
+      <ion-icon *ngIf="wallet.status.totalBalanceSat != wallet.status.spendableAmount" ios="ios-timer-outline" md="md-timer"></ion-icon>
+    </div>
     <div *ngIf="wallet.balanceHidden  && !wallet.scanning" class="wallet-details-header__balance-hidden">
       <span class="title" translate>[Balance Hidden]</span>
     </div>

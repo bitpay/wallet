@@ -314,7 +314,7 @@ export class AmountPage extends WalletTabsChild {
     if (!this.wallet) {
       return this.finish();
     }
-    const maxAmount = this.wallet.status.totalBalanceStr.replace(
+    const maxAmount = this.wallet.status.availableBalanceStr.replace(
       /[^0-9.]/g,
       ''
     );
@@ -324,6 +324,7 @@ export class AmountPage extends WalletTabsChild {
         : maxAmount;
       this.processAmount();
       this.changeDetectorRef.detectChanges();
+      this.finish();
     });
   }
 
