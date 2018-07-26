@@ -13,7 +13,8 @@ describe('AmountPage', () => {
   const wallet = {
     coin: 'bch',
     status: {
-      totalBalanceStr: '1.000000'
+      totalBalanceStr: '1.000000',
+      availableBalanceStr: '1.000000'
     }
   };
 
