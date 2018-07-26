@@ -36,15 +36,14 @@ describe('WalletDetailsPage', () => {
       it('should subscribe to events', () => {
         const spy = spyOn(instance.events, 'subscribe');
         instance.ionViewWillEnter();
-        expect(spy).toHaveBeenCalledTimes(2);
+        expect(spy).toHaveBeenCalledTimes(1);
       });
     });
     describe('ionViewWillLeave', () => {
       it('should unsubscribe from events', () => {
         const spy = spyOn(instance.events, 'unsubscribe');
         instance.ionViewWillLeave();
-        expect(spy).toHaveBeenCalledWith('Local/TxAction');
-        expect(spy).toHaveBeenCalledWith('bwsEvent');
+        expect(spy).toHaveBeenCalledWith('Wallet/updateAll');
       });
     });
     describe('ionViewDidEnter', () => {
