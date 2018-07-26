@@ -1,3 +1,4 @@
+import { DecimalPipe } from '@angular/common';
 import { Component, ViewChild } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { App, ModalController, NavController, NavParams } from 'ionic-angular';
@@ -26,6 +27,7 @@ import { TouchIdErrors } from '../../../providers/touchid/touchid';
 import { TxConfirmNotificationProvider } from '../../../providers/tx-confirm-notification/tx-confirm-notification';
 import { TxFormatProvider } from '../../../providers/tx-format/tx-format';
 import {
+  Coin,
   TransactionProposal,
   WalletProvider
 } from '../../../providers/wallet/wallet';
@@ -58,6 +60,8 @@ export class ConfirmPage extends WalletTabsChild {
   public paymentExpired: boolean;
   public remainingTimeStr: string;
   public memoFocused: boolean;
+  public amount;
+  public formatAlternative;
 
   // Config Related values
   public config;
@@ -93,7 +97,8 @@ export class ConfirmPage extends WalletTabsChild {
     private txFormatProvider: TxFormatProvider,
     private translate: TranslateService,
     private externalLinkProvider: ExternalLinkProvider,
-    walletTabsProvider: WalletTabsProvider
+    walletTabsProvider: WalletTabsProvider,
+    private decimalPipe: DecimalPipe
   ) {
     super(navCtrl, profileProvider, walletTabsProvider);
     this.bitcore = this.bwcProvider.getBitcore();
@@ -176,6 +181,8 @@ export class ConfirmPage extends WalletTabsChild {
         .toString();
     }
 
+    this.getAmountDetails();
+
     const feeOpts = this.feeProvider.getFeeOpts();
     this.tx.feeLevelName = feeOpts[this.tx.feeLevel];
     this.showAddress = false;
@@ -193,6 +200,14 @@ export class ConfirmPage extends WalletTabsChild {
 
   ionViewDidLoad() {
     this.logger.info('ionViewDidLoad ConfirmPage');
+  }
+
+  private getAmountDetails() {
+    this.amount = this.decimalPipe.transform(this.tx.amount / 1e8, '1.2-6');
+    this.formatAlternative = this.txFormatProvider.formatAlternative(
+      this.tx.coin,
+      this.tx.amount
+    );
   }
 
   private afterWalletSelectorSet() {
@@ -294,11 +309,9 @@ export class ConfirmPage extends WalletTabsChild {
 
   private exitWithError(err) {
     this.logger.info('Error setting wallet selector:' + err);
-    this.popupProvider
-      .ionicAlert('', this.bwcErrorProvider.msg(err))
-      .then(() => {
-        this.app.getRootNavs()[0].setRoot(TabsPage);
-      });
+    this.setSendError(this.bwcErrorProvider.msg(err)).then(() => {
+      this.app.getRootNavs()[0].setRoot(TabsPage);
+    });
   }
 
   /* sets a wallet on the UI, creates a TXPs for that wallet */
@@ -479,17 +492,15 @@ export class ConfirmPage extends WalletTabsChild {
                 this.translate.instant('Insufficient funds for fee'),
                 false
               );
-              this.popupProvider
-                .ionicAlert(
-                  this.translate.instant('Error'),
-                  this.translate.instant('Not enough funds for fee')
-                )
-                .then(() => {
-                  return resolve('no_funds');
-                });
+              this.setSendError(
+                this.translate.instant('Not enough funds for fee')
+              ).then(() => {
+                return resolve('no_funds');
+              });
             }
             tx.sendMaxInfo = sendMaxInfo;
             tx.amount = tx.sendMaxInfo.amount;
+            this.getAmountDetails();
           }
           this.showSendMaxWarning(wallet, sendMaxInfo).then(() => {
             // txp already generated for this wallet?
@@ -522,10 +533,13 @@ export class ConfirmPage extends WalletTabsChild {
           txp.feeTooHigh = per > this.FEE_TOO_HIGH_LIMIT_PER;
 
           if (txp.feeTooHigh) {
-            const feeWarningModal = this.popupProvider.createMiniModal(
-              'fee-warning'
+            const coinName =
+              this.wallet.coin === Coin.BTC ? 'Bitcoin' : 'Bitcoin Cash';
+            const minerFeeInfoSheet = this.actionSheetProvider.createInfoSheet(
+              'miner-fee',
+              { coinName }
             );
-            feeWarningModal.present();
+            minerFeeInfoSheet.present();
           }
 
           tx.txp[wallet.id] = txp;
@@ -539,8 +553,7 @@ export class ConfirmPage extends WalletTabsChild {
         .catch(err => {
           if (err.message == 'Insufficient funds') {
             this.setNoWallet(this.translate.instant('Insufficient funds'));
-            this.popupProvider.ionicAlert(
-              this.translate.instant('Error'),
+            this.setSendError(
               this.translate.instant('Not enough funds for fee')
             );
             return reject('no_funds');
@@ -578,17 +591,22 @@ export class ConfirmPage extends WalletTabsChild {
     return new Promise(resolve => {
       if (!sendMaxInfo) return resolve();
 
-      let msg = this.replaceParametersProvider.replace(
-        this.translate.instant(
-          '{{fee}} {{coin}} will be deducted for bitcoin networking fees.'
-        ),
-        { fee: sendMaxInfo.fee / 1e8, coin: this.tx.coin.toUpperCase() }
-      );
       let warningMsg = this.verifyExcludedUtxos(wallet, sendMaxInfo);
 
-      if (!_.isEmpty(warningMsg)) msg += '\n' + warningMsg;
+      const coinName =
+        this.wallet.coin === Coin.BTC ? 'Bitcoin (BTC)' : 'Bitcoin Cash (BCH)';
 
-      this.popupProvider.ionicAlert(null, msg).then(() => {
+      const minerFeeNoticeInfoSheet = this.actionSheetProvider.createInfoSheet(
+        'miner-fee-notice',
+        {
+          coinName,
+          fee: sendMaxInfo.fee / 1e8,
+          coin: this.tx.coin.toUpperCase(),
+          msg: !_.isEmpty(warningMsg) ? warningMsg : ''
+        }
+      );
+      minerFeeNoticeInfoSheet.present();
+      minerFeeNoticeInfoSheet.onDidDismiss(() => {
         return resolve();
       });
     });
@@ -682,16 +700,24 @@ export class ConfirmPage extends WalletTabsChild {
     });
   }
 
-  private setSendError(error: Error | string) {
-    if (this.isCordova) this.slideButton.isConfirmed(false);
-    if ((error as Error).message === TouchIdErrors.fingerprintCancelled) {
-      return;
-    }
+  private setSendError(error: Error | string, title?: string): Promise<any> {
+    return new Promise((resolve, reject) => {
+      if (this.isCordova) this.slideButton.isConfirmed(false);
+      if ((error as Error).message === TouchIdErrors.fingerprintCancelled) {
+        return reject();
+      }
 
-    this.popupProvider.ionicAlert(
-      this.translate.instant('Error'),
-      this.bwcErrorProvider.msg(error)
-    );
+      let modalTitle = title ? title : this.translate.instant('Error');
+
+      const errorInfoSheet = this.actionSheetProvider.createInfoSheet(
+        'default-error',
+        { msg: this.bwcErrorProvider.msg(error), title: modalTitle }
+      );
+      errorInfoSheet.present();
+      errorInfoSheet.onDidDismiss(() => {
+        return resolve();
+      });
+    });
   }
 
   public toggleAddress(): void {

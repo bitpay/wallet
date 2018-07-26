@@ -13,7 +13,10 @@
     </ion-buttons>
   </ion-navbar>
   <ion-toolbar [navbar-bg]="wallet.color">
-    <div class="wallet-details-header__balance">{{wallet.status && wallet.status.totalBalanceStr}}</div>
+    <div *ngIf="!wallet.balanceHidden && !wallet.scanning && wallet.status" class="wallet-details-header__balance">{{wallet.status && wallet.status.totalBalanceStr}}</div>
+    <div *ngIf="wallet.balanceHidden  && !wallet.scanning" class="wallet-details-header__balance-hidden">
+      <span class="title" translate>[Balance Hidden]</span>
+    </div>
   </ion-toolbar>
 </ion-header>
 
@@ -45,25 +48,11 @@
       </div>
     </div>
 
-    <div class="wallet-details" *ngIf="wallet && wallet.isComplete() && !wallet.needsBackup">
+    <div class="qr-container" *ngIf="wallet && wallet.isComplete() && !wallet.needsBackup">
       <div class="card qr-card" [ngClass]="{'qr-code-bounce': playAnimation}" *ngIf="wallets[0] && address">
-
-        <div *ngIf="wallet && !wallet.isComplete()" class="message-container">
-          <div class="title">
-            <span translate>Incomplete wallet</span>
-          </div>
-          <div class="subtitle">
-            <span translate>All signing devices must be added to this multisig wallet before bitcoin addresses can be created.</span>
-          </div>
-          <button ion-button class="button-standard" (click)="goCopayers()">
-            {{'Open wallet' | translate}}
-          </button>
-        </div>
-
-        <ngx-qrcode (click)="showFullAddr()" *ngIf="address" class="qr-code" copy-to-clipboard="{{ address }}" hide-toast="true"
-          qrc-value="{{qrAddress}}" qrc-class="aclass" qrc-errorCorrectionLevel="M"></ngx-qrcode>
+        <ngx-qrcode (click)="showFullAddr()" *ngIf="address" copy-to-clipboard="{{ address }}" hide-toast="true" qrc-value="{{qrAddress}}"
+          qrc-class="aclass" qrc-errorCorrectionLevel="M"></ngx-qrcode>
       </div>
-
     </div>
 
     <div *ngIf="wallets[0]" class="receive-content">

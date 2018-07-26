@@ -7,8 +7,11 @@
     </ion-buttons>
     <ion-title>{{wallet && wallet.name || ('Amount' | translate)}}</ion-title>
   </ion-navbar>
-  <ion-toolbar *ngIf="wallet" [navbar-bg]="wallet.color">
-    <div class="wallet-details-header__balance">{{wallet.status && wallet.status.totalBalanceStr}}</div>
+  <ion-toolbar *ngIf="wallet && !requestingAmount" [navbar-bg]="wallet.color">
+    <div *ngIf="!wallet.balanceHidden && !wallet.scanning && wallet.status" class="wallet-details-header__balance">{{wallet.status && wallet.status.totalBalanceStr}}</div>
+    <div *ngIf="wallet.balanceHidden  && !wallet.scanning" class="wallet-details-header__balance-hidden">
+      <span class="title" translate>[Balance Hidden]</span>
+    </div>
   </ion-toolbar>
 </ion-header>
 
@@ -42,14 +45,15 @@
           </div>
         </div>
         <div class="amount-header__label">Enter Amount</div>
-        <img class="next-button" [ngClass]="{'show': expression}" src="assets/img/icon-next.svg" (click)="finish()" tappable>
+        <img class="next-button" [ngClass]="{'show': expression && allowSend}" src="assets/img/icon-next.svg" (click)="finish()"
+          tappable>
       </div>
     </div>
 
     <div class="amount-content">
       <div class="expression-container">
         <span class="expression">
-          <span *ngIf="unit === 'USD'">$</span>{{expression || '0.00'}}
+          <span *ngIf="unit === 'USD'">$</span>{{expression ? expression : onlyIntegers ? '0' : '0.00'}}
         </span>
       </div>
       <div class="amount" [hidden]="!globalResult">{{globalResult}} {{unit}}</div>

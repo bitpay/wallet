@@ -261,15 +261,6 @@ page-wallet-details {
     }
   }
 
-  button.modal-close-button {
-    font-size: 16px;
-    font-weight: 400;
-
-    ion-icon {
-      font-size: 26px;
-    }
-  }
-
   ion-toolbar {
     min-height: 0;
     margin-top: -6px;
@@ -279,7 +270,9 @@ page-wallet-details {
     }
   }
 
-  &__balance {
+  &__balance,
+  &__balance-hidden,
+  &__subtitle {
     text-align: center;
     color: white;
     padding-bottom: 10px;

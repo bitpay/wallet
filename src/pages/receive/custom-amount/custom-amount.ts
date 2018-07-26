@@ -6,6 +6,7 @@ import { Logger } from '../../../providers/logger/logger';
 import { SocialSharing } from '@ionic-native/social-sharing';
 
 // providers
+import { ActionSheetProvider } from '../../../providers/action-sheet/action-sheet';
 import { PlatformProvider } from '../../../providers/platform/platform';
 import { ProfileProvider } from '../../../providers/profile/profile';
 import { TxFormatProvider } from '../../../providers/tx-format/tx-format';
@@ -32,7 +33,8 @@ export class CustomAmountPage {
     private walletProvider: WalletProvider,
     private logger: Logger,
     private socialSharing: SocialSharing,
-    private txFormatProvider: TxFormatProvider
+    private txFormatProvider: TxFormatProvider,
+    private actionSheetProvider: ActionSheetProvider
   ) {
     let walletId = this.navParams.data.id;
     this.showShareButton = this.platformProvider.isCordova;
@@ -91,5 +93,16 @@ export class CustomAmountPage {
 
   public shareAddress(): void {
     this.socialSharing.share(this.qrAddress);
+  }
+
+  public showFullInfo(): void {
+    const infoSheet = this.actionSheetProvider.createInfoSheet(
+      'custom-amount',
+      {
+        address: this.address,
+        amount: this.amountUnitStr
+      }
+    );
+    infoSheet.present();
   }
 }

@@ -32,14 +32,16 @@ describe('AmountPage', () => {
   describe('sendMax', () => {
     it('should set the send display value expression to the total balance', () => {
       instance.wallet = wallet;
+      instance.ionViewDidLoad();
       instance.sendMax();
       expect(instance.expression).toBe(instance.wallet.status.totalBalanceStr);
     });
 
     it('should fetch the bch rate if in bch wallet', () => {
       instance.wallet = wallet;
+      instance.ionViewDidLoad();
       instance.fiatCode = 'USD';
-      instance.unitIndex = 2;
+      instance.unitIndex = 1;
       const rateProvider: RateProvider = testBed.get(RateProvider);
       spyOn(rateProvider, 'getRate').and.returnValue(1000000);
       const spy = spyOn(rateProvider, 'toFiat').and.returnValue(1000000);

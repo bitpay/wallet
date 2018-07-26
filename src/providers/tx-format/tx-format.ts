@@ -103,6 +103,29 @@ export class TxFormatProvider {
     return val();
   }
 
+  public formatAlternative(coin: string, satoshis: number) {
+    if (isNaN(satoshis)) return undefined;
+
+    if (
+      (!this.rate.isBtcAvailable() && coin == 'btc') ||
+      (!this.rate.isBchAvailable() && coin == 'bch')
+    )
+      return null;
+
+    let settings = this.configProvider.get().wallet.settings;
+
+    let amount = this.rate
+      .toFiat(satoshis, settings.alternativeIsoCode, coin)
+      .toFixed(2);
+
+    if (!amount) return null;
+
+    return {
+      amount,
+      currency: settings.alternativeIsoCode
+    };
+  }
+
   public processTx(coin: string, tx, useLegacyAddress: boolean) {
     if (!tx || tx.action == 'invalid') return tx;
 
