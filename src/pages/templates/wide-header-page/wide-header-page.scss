@@ -7,23 +7,20 @@ wide-header-page {
     }
 
     &__title {
-      padding-top: 30px;
-      padding-bottom: 20px;
-      padding-left: 20px;
-
       color: white;
       font-size: 25px;
       font-weight: 500;
+      padding-top: 30px;
+      padding-bottom: 20px;
+      padding-left: 20px;
     }
 
     ion-navbar {
       .ios & {
         padding-left: 15px;
         padding-top: calc(5px + env(safe-area-inset-top));
-        padding-bottom: 7px;
 
         ion-title {
-          padding-top: 20px;
           padding-top: env(safe-area-inset-top);
         }
       }
@@ -32,6 +29,14 @@ wide-header-page {
     ion-toolbar {
       .ios & {
         padding-left: 15px;
+      }
+    }
+
+    &.cordova {
+      ion-navbar {
+        .ios & {
+          padding-bottom: 7px;
+        }
       }
     }
   }

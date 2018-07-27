@@ -1,4 +1,4 @@
-<ion-header class="wide-header">
+<ion-header class="wide-header" [ngClass]="{cordova: platformProvider.isCordova}">
   <ion-navbar [navbar-bg]="headerColor">
     <ion-title>
       <div [reveal-at-scroll-pos]="expandableHeader.headerHeight" [scrollArea]="scrollArea">

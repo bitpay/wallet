@@ -1,4 +1,5 @@
 import { Component, Input } from '@angular/core';
+import { PlatformProvider } from '../../../providers/platform/platform';
 
 @Component({
   selector: 'wide-header-page',
@@ -7,4 +8,6 @@ import { Component, Input } from '@angular/core';
 export class WideHeaderPage {
   @Input() headerColor: string;
   @Input() title: string;
+
+  constructor(public platformProvider: PlatformProvider) {}
 }
