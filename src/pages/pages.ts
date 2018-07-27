@@ -124,6 +124,7 @@ import { ConfirmPage } from '../pages/send/confirm/confirm';
 
 /* Receive */
 import { CustomAmountPage } from '../pages/receive/custom-amount/custom-amount';
+import { WideHeaderPage } from './templates/wide-header-page/wide-header-page';
 import { WalletTabsChild } from './wallet-tabs/wallet-tabs-child';
 
 export const PAGES = [
@@ -223,6 +224,7 @@ export const PAGES = [
   WalletBalancePage,
   WalletItemPage,
   WalletActivityPage,
+  WideHeaderPage,
   CardItemPage,
   SlideToAcceptPage
 ];

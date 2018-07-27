@@ -1,148 +1,144 @@
-<ion-header>
-  <ion-navbar>
-    <ion-title>{{'Settings' | translate}}</ion-title>
-  </ion-navbar>
-</ion-header>
+<wide-header-page title="Settings">
+  <div page-content>
+    <ion-list class="settings-list">
+      <ion-item-divider></ion-item-divider>
+      <button ion-item (click)="openAddressBookPage()">
+        <ion-icon class="item-img" item-start>
+          <img src="assets/img/settings-icons/icon-address-book.svg" width="22">
+        </ion-icon>
+        <span translate>Address book</span>
+      </button>
 
-<ion-content no-bounce>
-  <ion-list class="settings-list">
-    <ion-item-divider></ion-item-divider>
-    <button ion-item (click)="openAddressBookPage()">
-      <ion-icon class="item-img" item-start>
-        <img src="assets/img/settings-icons/icon-address-book.svg" width="22">
-      </ion-icon>
-      <span translate>Address book</span>
-    </button>
+      <button ion-item (click)="openHelpExternalLink()">
+        <ion-icon class="item-img" item-start>
+          <img src="assets/img/settings-icons/icon-help-support.svg" width="22">
+        </ion-icon>
+        <span translate>Help &amp; support</span>
+      </button>
 
-    <button ion-item (click)="openHelpExternalLink()">
-      <ion-icon class="item-img" item-start>
-        <img src="assets/img/settings-icons/icon-help-support.svg" width="22">
-      </ion-icon>
-      <span translate>Help &amp; support</span>
-    </button>
+      <button ion-item (click)="openSendFeedbackPage()">
+        <ion-icon class="item-img" item-start>
+          <img src="assets/img/settings-icons/icon-send-feedback.svg" width="22">
+        </ion-icon>
+        <span translate>Send feedback</span>
+      </button>
 
-    <button ion-item (click)="openSendFeedbackPage()">
-      <ion-icon class="item-img" item-start>
-        <img src="assets/img/settings-icons/icon-send-feedback.svg" width="22">
-      </ion-icon>
-      <span translate>Send feedback</span>
-    </button>
+      <button ion-item *ngIf="isCordova" (click)="openFeedbackCompletePage()">
+        <ion-icon class="item-img" item-start>
+          <img src="assets/img/settings-icons/icon-heart.svg" width="22">
+        </ion-icon>
+        <span translate>Share</span> {{ appName }}
+      </button>
 
-    <button ion-item *ngIf="isCordova" (click)="openFeedbackCompletePage()">
-      <ion-icon class="item-img" item-start>
-        <img src="assets/img/settings-icons/icon-heart.svg" width="22">
-      </ion-icon>
-      <span translate>Share</span> {{ appName }}
-    </button>
+      <ion-item-divider>{{'Preferences' | translate}}</ion-item-divider>
 
-    <ion-item-divider>{{'Preferences' | translate}}</ion-item-divider>
+      <button ion-item (click)="openNotificationsPage()">
+        <ion-icon class="item-img" item-start>
+          <img src="assets/img/settings-icons/icon-notifications.svg" width="22">
+        </ion-icon>
+        <span translate>Notifications</span>
+      </button>
 
-    <button ion-item (click)="openNotificationsPage()">
-      <ion-icon class="item-img" item-start>
-        <img src="assets/img/settings-icons/icon-notifications.svg" width="22">
-      </ion-icon>
-      <span translate>Notifications</span>
-    </button>
+      <button ion-item (click)="openLanguagePage()">
+        <ion-icon class="item-img" item-start>
+          <img src="assets/img/settings-icons/icon-language.svg" width="22">
+        </ion-icon>
+        <ion-label>
+          <span translate>Language</span>
+        </ion-label>
+        <ion-note *ngIf="currentLanguageName" item-end>
+          {{ currentLanguageName }}
+        </ion-note>
+      </button>
 
-    <button ion-item (click)="openLanguagePage()">
-      <ion-icon class="item-img" item-start>
-        <img src="assets/img/settings-icons/icon-language.svg" width="22">
-      </ion-icon>
-      <ion-label>
-        <span translate>Language</span>
-      </ion-label>
-      <ion-note *ngIf="currentLanguageName" item-end>
-        {{ currentLanguageName }}
-      </ion-note>
-    </button>
+      <button ion-item (click)="openAltCurrencyPage()">
+        <ion-icon class="item-img" item-start>
+          <img src="assets/img/settings-icons/icon-alternative-currency.svg" width="22">
+        </ion-icon>
+        <ion-label>
+          {{'Alternative currency' | translate}}
+        </ion-label>
+        <ion-note *ngIf="selectedAlternative" item-end>
+          {{ selectedAlternative.name }}
+        </ion-note>
+      </button>
 
-    <button ion-item (click)="openAltCurrencyPage()">
-      <ion-icon class="item-img" item-start>
-        <img src="assets/img/settings-icons/icon-alternative-currency.svg" width="22">
-      </ion-icon>
-      <ion-label>
-        {{'Alternative currency' | translate}}
-      </ion-label>
-      <ion-note *ngIf="selectedAlternative" item-end>
-        {{ selectedAlternative.name }}
-      </ion-note>
-    </button>
+      <button ion-item (click)="openFeePolicyPage()">
+        <ion-icon class="item-img" item-start>
+          <img src="assets/img/settings-icons/icon-network.svg" width="22">
+        </ion-icon>
+        <ion-label>
+          {{'Bitcoin network fee policy' | translate}}
+        </ion-label>
+      </button>
 
-    <button ion-item (click)="openFeePolicyPage()">
-      <ion-icon class="item-img" item-start>
-        <img src="assets/img/settings-icons/icon-network.svg" width="22">
-      </ion-icon>
-      <ion-label>
-        {{'Bitcoin network fee policy' | translate}}
-      </ion-label>
-    </button>
+      <button ion-item *ngIf="isCordova" (click)="openLockPage()">
+        <ion-icon class="custom-icon item-img" *ngIf="lockMethod != 'disabled'" name="ios-lock-outline" item-start></ion-icon>
+        <ion-icon class="custom-icon item-img" *ngIf="lockMethod == 'disabled'" name="ios-unlock-outline" item-start></ion-icon>
+        <ion-label>
+          {{'Lock' | translate}}
+        </ion-label>
+        <ion-note *ngIf="lockMethod === 'disabled'" item-end>
+          {{'Disabled' | translate}}
+        </ion-note>
+        <ion-note *ngIf="lockMethod === 'pin'" item-end>
+          {{'PIN' | translate}}
+        </ion-note>
+        <ion-note *ngIf="lockMethod === 'fingerprint'" item-end>
+          {{'Fingerprint' | translate}}
+        </ion-note>
+      </button>
 
-    <button ion-item *ngIf="isCordova" (click)="openLockPage()">
-      <ion-icon class="custom-icon item-img" *ngIf="lockMethod != 'disabled'" name="ios-lock-outline" item-start></ion-icon>
-      <ion-icon class="custom-icon item-img" *ngIf="lockMethod == 'disabled'" name="ios-unlock-outline" item-start></ion-icon>
-      <ion-label>
-        {{'Lock' | translate}}
-      </ion-label>
-      <ion-note *ngIf="lockMethod === 'disabled'" item-end>
-        {{'Disabled' | translate}}
-      </ion-note>
-      <ion-note *ngIf="lockMethod === 'pin'" item-end>
-        {{'PIN' | translate}}
-      </ion-note>
-      <ion-note *ngIf="lockMethod === 'fingerprint'" item-end>
-        {{'Fingerprint' | translate}}
-      </ion-note>
-    </button>
+      <div *ngIf="showBitPayCard && bitpayCardItems && bitpayCardItems[0]">
+        <ion-item-divider>
+          BitPay Visa
+          <sup>&reg;</sup> Card
+        </ion-item-divider>
+        <ion-list>
+          <button ion-item *ngFor="let card of bitpayCardItems" (click)="openCardSettings(card.id)">
+            <ion-icon class="item-img" item-start>
+              <img src="assets/img/icon-card.svg" class="icon-card" />
+            </ion-icon>
+            <div class="item-title">BitPay Visa&reg; Card ({{card.lastFourDigits}})</div>
+            <div class="item-subtitle">{{card.balance ? (card.balance | currency:card.currencySymbol:2) : 'Add funds to get started'|translate}} {{card.updatedOn
+              ? (' &middot; ' + (card.updatedOn * 1000 | amTimeAgo)) : ''}}</div>
+          </button>
+        </ion-list>
+      </div>
 
-    <div *ngIf="showBitPayCard && bitpayCardItems && bitpayCardItems[0]">
       <ion-item-divider>
-        BitPay Visa
-        <sup>&reg;</sup> Card
+        {{'Integrations' | translate}}
       </ion-item-divider>
-      <ion-list>
-        <button ion-item *ngFor="let card of bitpayCardItems" (click)="openCardSettings(card.id)">
-          <ion-icon class="item-img" item-start>
-            <img src="assets/img/icon-card.svg" class="icon-card" />
-          </ion-icon>
-          <div class="item-title">BitPay Visa&reg; Card ({{card.lastFourDigits}})</div>
-          <div class="item-subtitle">{{card.balance ? (card.balance | currency:card.currencySymbol:2) : 'Add funds to get started'|translate}} {{card.updatedOn
-            ? (' &middot; ' + (card.updatedOn * 1000 | amTimeAgo)) : ''}}</div>
-        </button>
-      </ion-list>
-    </div>
 
-    <ion-item-divider>
-      {{'Services' | translate}}
-    </ion-item-divider>
+      <button ion-item *ngFor="let integration of integrationServices" (click)="openSettingIntegration(integration.name)">
+        <ion-icon class="item-img" item-start>
+          <img src="{{integration.icon}}" class="icon-services" />
+        </ion-icon>
+        <span>{{integration.title}}</span>
+        <ion-note item-end>
+          <span *ngIf="integration.linked" translate>Linked</span>
+          <span *ngIf="!integration.linked">
+            {{integration.show ? ('On'|translate) : ('Off'|translate)}}
+          </span>
+        </ion-note>
+      </button>
 
-    <button ion-item *ngFor="let integration of integrationServices" (click)="openSettingIntegration(integration.name)">
-      <ion-icon class="item-img" item-start>
-        <img src="{{integration.icon}}" class="icon-services" />
-      </ion-icon>
-      <span>{{integration.title}}</span>
-      <ion-note item-end>
-        <span *ngIf="integration.linked" translate>Linked</span>
-        <span *ngIf="!integration.linked">
-          {{integration.show ? ('On'|translate) : ('Off'|translate)}}
-        </span>
-      </ion-note>
-    </button>
+      <ion-item-divider>{{'More' | translate}}</ion-item-divider>
 
-    <ion-item-divider>{{'More' | translate}}</ion-item-divider>
+      <button ion-item (click)="openAdvancedPage()">
+        <ion-icon class="item-img" item-start>
+          <img src="assets/img/settings-icons/icon-advanced.svg" width="22">
+        </ion-icon>
+        <span translate>Advanced</span>
+      </button>
 
-    <button ion-item (click)="openAdvancedPage()">
-      <ion-icon class="item-img" item-start>
-        <img src="assets/img/settings-icons/icon-advanced.svg" width="22">
-      </ion-icon>
-      <span translate>Advanced</span>
-    </button>
-
-    <button ion-item (click)="openAboutPage()">
-      <ion-icon class="item-img" item-start>
-        <img src="assets/img/settings-icons/icon-about.svg" width="22">
-      </ion-icon>
-      <span translate>About</span> {{appName}}
-    </button>
-    <ion-item-divider></ion-item-divider>
-  </ion-list>
-</ion-content>
+      <button ion-item (click)="openAboutPage()">
+        <ion-icon class="item-img" item-start>
+          <img src="assets/img/settings-icons/icon-about.svg" width="22">
+        </ion-icon>
+        <span translate>About</span> {{appName}}
+      </button>
+      <ion-item-divider></ion-item-divider>
+    </ion-list>
+  </div>
+</wide-header-page>

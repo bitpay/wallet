@@ -5,7 +5,7 @@
 </ion-header>
 <ion-content>
 
-  <ion-list>
+  <ion-list class="settings-list">
     <ion-item-divider></ion-item-divider>
     <div *ngIf="!bitpayCard">
       <ion-item>
@@ -28,7 +28,7 @@
           {{bitpayCard.lastFourDigits}}
         </ion-note>
       </ion-item>
-      
+
       <ion-item-divider></ion-item-divider>
 
       <a ion-item text-center detail-none (click)="unlinkCard(bitpayCard)">
