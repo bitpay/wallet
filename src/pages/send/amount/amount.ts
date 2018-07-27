@@ -559,12 +559,16 @@ export class AmountPage extends WalletTabsChild {
 
   public async goToReceive() {
     await this.walletTabsProvider.goToTabIndex(0);
-    const coinName = this.wallet.coin === Coin.BTC ? 'bitcoin' : 'bitcoin cash';
-    const infoSheet = this.actionSheetProvider.createInfoSheet(
-      'receiving-bitcoin',
-      { coinName }
-    );
-    await Observable.timer(250).toPromise();
-    infoSheet.present();
+
+    if (!(this.shouldShowZeroState() && this.wallet.needsBackup)) {
+      const coinName =
+        this.wallet.coin === Coin.BTC ? 'bitcoin' : 'bitcoin cash';
+      const infoSheet = this.actionSheetProvider.createInfoSheet(
+        'receiving-bitcoin',
+        { coinName }
+      );
+      await Observable.timer(250).toPromise();
+      infoSheet.present();
+    }
   }
 }
