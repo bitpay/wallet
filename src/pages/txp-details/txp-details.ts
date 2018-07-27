@@ -6,6 +6,7 @@ import {
   NavParams,
   ViewController
 } from 'ionic-angular';
+import { DecimalPipe } from '../../../node_modules/@angular/common';
 import { Logger } from '../../providers/logger/logger';
 
 // providers
@@ -46,6 +47,8 @@ export class TxpDetailsPage {
   public loading: boolean;
   public contactName: string;
   public showMultiplesOutputs: boolean;
+  public amount: string;
+  public formatAlternative;
 
   private isGlidera: boolean;
   private GLIDERA_LOCK_TIME: number;
@@ -68,7 +71,8 @@ export class TxpDetailsPage {
     private txFormatProvider: TxFormatProvider,
     private translate: TranslateService,
     private modalCtrl: ModalController,
-    private addressBookProvider: AddressBookProvider
+    private addressBookProvider: AddressBookProvider,
+    private decimalPipe: DecimalPipe
   ) {
     this.showMultiplesOutputs = false;
     let config = this.configProvider.get().wallet;
@@ -119,6 +123,7 @@ export class TxpDetailsPage {
     this.initActionList();
     this.checkPaypro();
     this.applyButtonText();
+    this.getAmountDetails();
 
     // ToDo: use tx.customData instead of tx.message
     if (this.tx.message === 'Glidera transaction' && this.isGlidera) {
@@ -151,6 +156,14 @@ export class TxpDetailsPage {
 
   ionViewWillLeave() {
     this.events.unsubscribe('bwsEvent');
+  }
+
+  private getAmountDetails() {
+    this.amount = this.decimalPipe.transform(this.tx.amount / 1e8, '1.2-6');
+    this.formatAlternative = this.txFormatProvider.formatAlternative(
+      this.tx.coin,
+      this.tx.amount
+    );
   }
 
   private displayFeeValues(): void {

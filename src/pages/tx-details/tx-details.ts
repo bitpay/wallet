@@ -184,6 +184,10 @@ export class TxDetailsPage {
           this.wallet.coin,
           tx.fees
         );
+        this.btx.formatAlternative = this.txFormatProvider.formatAlternative(
+          this.wallet.coin,
+          tx.amount
+        );
         this.btx.feeRateStr =
           ((this.btx.fees / (this.btx.amount + this.btx.fees)) * 100).toFixed(
             2
