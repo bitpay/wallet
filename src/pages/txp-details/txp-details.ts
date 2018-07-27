@@ -117,14 +117,14 @@ export class TxpDetailsPage {
     // this.tx = _.merge(this.tx, txp);
     // this.tx.hasMultiplesOutputs = true;
   }
-  
+
   ionViewWillEnter() {
     this.displayFeeValues();
     this.initActionList();
     this.checkPaypro();
     this.applyButtonText();
     this.getAmountDetails();
-    
+
     // ToDo: use tx.customData instead of tx.message
     if (this.tx.message === 'Glidera transaction' && this.isGlidera) {
       this.tx.isGlidera = true;
