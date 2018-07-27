@@ -161,7 +161,6 @@ export class PushNotificationsProvider {
   private _openWallet(walletIdHashed): void {
     let walletIdHash;
     let sjcl = this.bwcProvider.getSJCL();
-    let nextView: { name?: string; params?: { walletId: any } } = {};
 
     let wallets = this.profileProvider.getWallets();
     let wallet = _.find(wallets, w => {
@@ -171,13 +170,6 @@ export class PushNotificationsProvider {
 
     if (!wallet) return;
 
-    if (!wallet.isComplete()) {
-      nextView.name = 'CopayersPage';
-      return;
-    } else {
-      nextView.name = 'WalletDetailsPage';
-      nextView.params = { walletId: wallet.credentials.walletId };
-    }
-    this.events.publish('OpenWalletEvent', nextView);
+    this.events.publish('OpenWallet', wallet);
   }
 }

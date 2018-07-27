@@ -1,15 +1,6 @@
 import { Component } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import {
-  App,
-  Events,
-  NavController,
-  NavParams,
-  ViewController
-} from 'ionic-angular';
-
-// Pages
-import { WalletDetailsPage } from '../../../pages/wallet-details/wallet-details';
+import { Events, NavParams, ViewController } from 'ionic-angular';
 
 // Providers
 import { ActionSheetProvider } from '../../../providers/action-sheet/action-sheet';
@@ -22,7 +13,6 @@ import { PopupProvider } from '../../../providers/popup/popup';
 import { ProfileProvider } from '../../../providers/profile/profile';
 import { PushNotificationsProvider } from '../../../providers/push-notifications/push-notifications';
 import { WalletProvider } from '../../../providers/wallet/wallet';
-import { TabsPage } from '../../tabs/tabs';
 
 @Component({
   selector: 'page-copayers',
@@ -38,12 +28,10 @@ export class CopayersPage {
   public secret;
 
   constructor(
-    private app: App,
     private appProvider: AppProvider,
     private bwcErrorProvider: BwcErrorProvider,
     private events: Events,
     private logger: Logger,
-    private navCtrl: NavController,
     private navParams: NavParams,
     private platformProvider: PlatformProvider,
     private popupProvider: PopupProvider,
@@ -97,9 +85,8 @@ export class CopayersPage {
           this.wallet.openWallet(err => {
             if (err) this.logger.error(err);
 
-            this.navCtrl.popToRoot();
-            this.navCtrl.push(WalletDetailsPage, {
-              walletId: this.wallet.credentials.walletId
+            this.viewCtrl.dismiss().then(() => {
+              this.events.publish('OpenWallet', this.wallet);
             });
           });
         }
@@ -129,7 +116,7 @@ export class CopayersPage {
         this.onGoingProcessProvider.clear();
 
         this.pushNotificationsProvider.unsubscribe(this.wallet);
-        this.app.getRootNavs()[0].setRoot(TabsPage);
+        this.viewCtrl.dismiss();
       })
       .catch(err => {
         this.onGoingProcessProvider.clear();

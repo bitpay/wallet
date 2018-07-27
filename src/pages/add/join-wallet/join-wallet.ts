@@ -1,16 +1,8 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
-import {
-  Events,
-  ModalController,
-  NavController,
-  NavParams
-} from 'ionic-angular';
+import { Events, NavController, NavParams } from 'ionic-angular';
 import { Logger } from '../../../providers/logger/logger';
-
-// Pages
-import { CopayersPage } from '../copayers/copayers';
 
 // Providers
 import { ConfigProvider } from '../../../providers/config/config';
@@ -44,7 +36,6 @@ export class JoinWalletPage {
     private form: FormBuilder,
     private navCtrl: NavController,
     private navParams: NavParams,
-    private modalCtrl: ModalController,
     private derivationPathHelperProvider: DerivationPathHelperProvider,
     private onGoingProcessProvider: OnGoingProcessProvider,
     private popupProvider: PopupProvider,
@@ -183,22 +174,8 @@ export class JoinWalletPage {
         this.events.publish('status:updated');
         this.walletProvider.updateRemotePreferences(wallet);
         this.pushNotificationsProvider.updateSubscription(wallet);
-        if (!wallet.isComplete()) {
-          this.navCtrl.popToRoot();
-          this.modalCtrl
-            .create(
-              CopayersPage,
-              {
-                walletId: wallet.credentials.walletId
-              },
-              {
-                cssClass: 'wallet-details-modal'
-              }
-            )
-            .present();
-        } else {
-          this.navCtrl.popToRoot();
-        }
+        this.navCtrl.popToRoot();
+        this.events.publish('OpenWallet', wallet);
       })
       .catch(err => {
         this.onGoingProcessProvider.clear();

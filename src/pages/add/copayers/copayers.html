@@ -13,40 +13,38 @@
 </ion-header>
 
 <ion-content no-bounce>
-  <div *ngIf="!wallet.notAuthorized && secret">
-    <div class="qr-container">
-      <div class="card qr-card">
-        <ngx-qrcode (click)="showFullInfo()" class="qr-code" hide-toast="true" copy-to-clipboard="{{ secret }}" qrc-value="{{secret}}"
-          qrc-class="aclass" qrc-errorCorrectionLevel="L"></ngx-qrcode>
-      </div>
+  <div class="qr-container" *ngIf="!wallet.notAuthorized && secret">
+    <div class="card qr-card">
+      <ngx-qrcode (click)="showFullInfo()" class="qr-code" hide-toast="true" copy-to-clipboard="{{ secret }}" qrc-value="{{secret}}"
+        qrc-class="aclass" qrc-errorCorrectionLevel="L"></ngx-qrcode>
     </div>
-    <ion-list>
-      <ion-item>
-        <span translate>Waiting for copayers</span>
-        <span class="text-gray">
-          [
-          <span translate>{{wallet.m}}-of-{{wallet.n}}</span> ]
-        </span>
+  </div>
+  <ion-list>
+    <ion-item>
+      <span translate>Waiting for copayers</span>
+      <span class="text-gray">
+        [
+        <span translate>{{wallet.m}}-of-{{wallet.n}}</span> ]
+      </span>
+    </ion-item>
+    <div *ngFor="let copayer of copayers">
+      <ion-item *ngIf="copayer.id == wallet.copayerId">
+        <ion-icon ios="ios-checkmark" md="md-checkmark" item-start></ion-icon>
+        {{'Me'|translate}}
       </ion-item>
-      <div *ngFor="let copayer of copayers">
-        <ion-item *ngIf="copayer.id == wallet.copayerId">
-          <ion-icon ios="ios-checkmark" md="md-checkmark" item-start></ion-icon>
-          {{'Me'|translate}}
-        </ion-item>
-        <ion-item *ngIf="copayer.id != wallet.copayerId">
-          <ion-icon ios="ios-checkmark" md="md-checkmark" item-start></ion-icon>
-          {{copayer.name}}
-        </ion-item>
-      </div>
-      <ion-item *ngIf="!wallet.isComplete()">
-        <ion-icon ios="ios-repeat" md="md-repeat" item-start></ion-icon> {{'Waiting...'|translate}}
+      <ion-item *ngIf="copayer.id != wallet.copayerId">
+        <ion-icon ios="ios-checkmark" md="md-checkmark" item-start></ion-icon>
+        {{copayer.name}}
       </ion-item>
-    </ion-list>
-    <div text-center padding>
-      <button ion-button clear color="danger" (click)="showDeletePopup()">
-        {{'Cancel invitation' | translate}}
-      </button>
     </div>
+    <ion-item *ngIf="!wallet.isComplete()">
+      <ion-icon ios="ios-repeat" md="md-repeat" item-start></ion-icon> {{'Waiting...'|translate}}
+    </ion-item>
+  </ion-list>
+  <div *ngIf="!wallet.notAuthorized && secret" text-center padding>
+    <button ion-button clear color="danger" (click)="showDeletePopup()">
+      {{'Cancel invitation' | translate}}
+    </button>
   </div>
 
   <div *ngIf="wallet.notAuthorized" padding>

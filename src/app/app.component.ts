@@ -5,7 +5,6 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
 import { UserAgent } from '@ionic-native/user-agent';
 import {
-  App,
   Events,
   ModalController,
   NavController,
@@ -70,7 +69,9 @@ export class CopayApp {
     | typeof TabsPage
     | typeof OnboardingPage;
   private onResumeSubscription: Subscription;
-  private isModalOpen: boolean;
+  private isLockModalOpen: boolean;
+  private isWalletModalOpen: boolean;
+  private walletModal: any;
 
   private pageMap = {
     AddressbookAddPage,
@@ -106,7 +107,6 @@ export class CopayApp {
     private screenOrientation: ScreenOrientation,
     private popupProvider: PopupProvider,
     private pushNotificationsProvider: PushNotificationsProvider,
-    private app: App,
     private incomingDataProvider: IncomingDataProvider,
     private walletTabsProvider: WalletTabsProvider,
     private renderer: Renderer,
@@ -235,7 +235,7 @@ export class CopayApp {
   }
 
   private openLockModal(): void {
-    if (this.isModalOpen) return;
+    if (this.isLockModalOpen) return;
     let config = this.configProvider.get();
     let lockMethod =
       config && config.lock && config.lock.method
@@ -247,7 +247,7 @@ export class CopayApp {
   }
 
   private openPINModal(action): void {
-    this.isModalOpen = true;
+    this.isLockModalOpen = true;
     const modal = this.modalCtrl.create(
       PinModalPage,
       { action },
@@ -255,12 +255,12 @@ export class CopayApp {
     );
     modal.present({ animate: false });
     modal.onDidDismiss(() => {
-      this.isModalOpen = false;
+      this.isLockModalOpen = false;
     });
   }
 
   private openFingerprintModal(): void {
-    this.isModalOpen = true;
+    this.isLockModalOpen = true;
     const modal = this.modalCtrl.create(
       FingerprintModalPage,
       {},
@@ -268,7 +268,7 @@ export class CopayApp {
     );
     modal.present({ animate: false });
     modal.onDidDismiss(() => {
-      this.isModalOpen = false;
+      this.isLockModalOpen = false;
     });
   }
 
@@ -313,18 +313,25 @@ export class CopayApp {
   }
 
   private openWallet(wallet) {
+    // check if modal is already open
+    if (this.isWalletModalOpen) {
+      this.walletModal.dismiss();
+    }
     const page = wallet.isComplete() ? WalletTabsPage : CopayersPage;
-    this.modalCtrl
-      .create(
-        page,
-        {
-          walletId: wallet.credentials.walletId
-        },
-        {
-          cssClass: 'wallet-details-modal'
-        }
-      )
-      .present();
+    this.isWalletModalOpen = true;
+    this.walletModal = this.modalCtrl.create(
+      page,
+      {
+        walletId: wallet.credentials.walletId
+      },
+      {
+        cssClass: 'wallet-details-modal'
+      }
+    );
+    this.walletModal.present();
+    this.walletModal.onDidDismiss(() => {
+      this.isWalletModalOpen = false;
+    });
   }
 
   private scanFromWalletEvent(): void {
@@ -359,10 +366,6 @@ export class CopayApp {
   }
 
   private initPushNotifications() {
-    this.events.subscribe('OpenWalletEvent', nextView => {
-      this.app.getRootNavs()[0].setRoot(TabsPage);
-      this.nav.push(this.pageMap[nextView.name], nextView.params);
-    });
     this.pushNotificationsProvider.init();
   }
 
