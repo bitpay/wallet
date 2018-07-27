@@ -75,8 +75,6 @@
       </button>
     </div>
 
-    <ion-item-divider></ion-item-divider>
-
     <ion-item class="container-to" (click)="showMultiplesOutputs = !showMultiplesOutputs" copy-to-clipboard="{{ tx.toAddress && !tx.hasMultiplesOutputs ? tx.toAddress : tx.outputs[0].address }}">
       <span translate>To</span>
       <div class="wallet">
