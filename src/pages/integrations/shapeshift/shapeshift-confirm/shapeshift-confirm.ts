@@ -100,7 +100,9 @@ export class ShapeshiftConfirmPage {
     this.network = this.shapeshiftProvider.getNetwork();
     this.fromWallet = this.profileProvider.getWallet(this.fromWalletId);
     this.toWallet = this.profileProvider.getWallet(this.toWalletId);
+  }
 
+  ionViewDidEnter() {
     if (_.isEmpty(this.fromWallet) || _.isEmpty(this.toWallet)) {
       this.showErrorAndBack(null, this.translate.instant('No wallet found'));
       return;
@@ -111,33 +113,21 @@ export class ShapeshiftConfirmPage {
       let max = Number(lim.limit);
 
       if (this.useSendMax) {
-        this.getMaxInfo(max)
+        this.onGoingProcessProvider.set('calculatingSendMax');
+        this.setMaxInfo(max, min)
           .then(() => {
+            this.onGoingProcessProvider.clear();
             this.createShift();
           })
           .catch(err => {
+            this.onGoingProcessProvider.clear();
             this.logger.error(err);
             this.showErrorAndBack(null, err);
           });
       } else {
         let amountNumber = Number(this.amount);
-
-        if (amountNumber < min) {
-          let message = this.replaceParametersProvider.replace(
-            this.translate.instant('Minimum amount required is {{min}}'),
-            { min }
-          );
-          this.showErrorAndBack(null, message);
-          return;
-        }
-        if (amountNumber > max) {
-          let message = this.replaceParametersProvider.replace(
-            this.translate.instant('Maximum amount allowed is {{max}}'),
-            { max }
-          );
-          this.showErrorAndBack(null, message);
-          return;
-        }
+        if (this.isMinimum(amountNumber, min)) return;
+        if (this.isMaximum(amountNumber, max)) return;
         this.createShift();
       }
     });
@@ -155,7 +145,31 @@ export class ShapeshiftConfirmPage {
     this.navCtrl.swipeBackEnabled = false;
   }
 
-  private getMaxInfo(max: number): Promise<any> {
+  private isMaximum(amount: number, max: number): boolean {
+    if (amount > max) {
+      let message = this.replaceParametersProvider.replace(
+        this.translate.instant('Maximum amount allowed is {{max}}'),
+        { max }
+      );
+      this.showErrorAndBack(null, message);
+      return true;
+    }
+    return false;
+  }
+
+  private isMinimum(amount: number, min: number): boolean {
+    if (amount < min) {
+      let message = this.replaceParametersProvider.replace(
+        this.translate.instant('Minimum amount required is {{min}}'),
+        { min }
+      );
+      this.showErrorAndBack(null, message);
+      return true;
+    }
+    return false;
+  }
+
+  private setMaxInfo(max: number, min: number): Promise<any> {
     return new Promise((resolve, reject) => {
       this.getSendMaxInfo()
         .then(sendMaxInfo => {
@@ -174,6 +188,10 @@ export class ShapeshiftConfirmPage {
               (max * this.configWallet.settings.unitToSatoshi).toFixed(0),
               10
             );
+            let minSat = parseInt(
+              (min * this.configWallet.settings.unitToSatoshi).toFixed(0),
+              10
+            );
             if (this.amount > maxSat) {
               this.popupProvider
                 .ionicAlert(
@@ -185,6 +203,14 @@ export class ShapeshiftConfirmPage {
                   this.useSendMax = false;
                   return resolve();
                 });
+            } else if (this.amount < minSat) {
+              let err = this.replaceParametersProvider.replace(
+                this.translate.instant(
+                  'ShapeShift requires a minimum value of {{min}}'
+                ),
+                { min }
+              );
+              return reject(err);
             } else {
               this.showSendMaxWarning().then(() => {
                 return resolve();
@@ -507,7 +533,7 @@ export class ShapeshiftConfirmPage {
                       );
 
                       // Fee rate
-                      let per = (ctxp.fee / (ctxp.amount + ctxp.fee)) * 100;
+                      let per = ctxp.fee / (ctxp.amount + ctxp.fee) * 100;
                       this.feeRatePerStr = per.toFixed(2) + '%';
 
                       // Amount + Unit
@@ -606,8 +632,11 @@ export class ShapeshiftConfirmPage {
     modal.present();
     modal.onDidDismiss(async () => {
       await this.navCtrl.popToRoot({ animate: false });
-      await this.navCtrl.parent.select(0);
       await this.navCtrl.push(ShapeshiftPage, null, { animate: false });
     });
+  }
+
+  public cancel(): void {
+    this.navCtrl.popToRoot({ animate: false });
   }
 }

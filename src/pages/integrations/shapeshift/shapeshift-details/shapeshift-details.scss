@@ -1,21 +1,23 @@
 page-shapeshift-details {
   .header-modal {
-    padding-top: 10px;
+    background: white;
+    padding: 25px 16px;
     .title-modal {
-      font-size: 26px;
-      text-align: center;
+      color: color($colors, light-grey);
+      .icon-service {
+        border-radius: 50%;
+        padding: 1px;
+        width: 46px;
+        height: 46px;
+        box-shadow: none;
+        border: 1px solid #d7d7d7;
+      }
       img {
-        vertical-align: middle;
+        float: right;
       }
     }
     .subtitle-modal {
-      font-size: 14px;
-      text-align: center;
-    }
-    .status-modal {
-      text-align: center;
-      font-weight: bold;
-      margin: 15px 0;
+      font-size: 2rem;
     }
   }
 }
