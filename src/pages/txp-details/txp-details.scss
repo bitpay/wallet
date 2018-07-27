@@ -32,7 +32,6 @@ page-txp-details {
       }
       .amount-coin {
         font-size: 1.5rem;
-        font-size: 1.5rem;
         margin-top: 0.35rem;
         margin-left: 0.8rem;
       }
@@ -72,15 +71,6 @@ page-txp-details {
     .wallet,
     .payment-proposal-to {
       justify-content: space-between;
-      .address-divider {
-        width: 1px;
-        height: 25px;
-        background-color: rgb(227, 227, 227);
-        display: inline-block;
-        margin-left: 6px;
-        margin-right: 12px;
-        vertical-align: middle;
-      }
       .text-address.ellipsis {
         flex: 0 0 47px;
         img {

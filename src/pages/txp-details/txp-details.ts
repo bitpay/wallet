@@ -47,7 +47,7 @@ export class TxpDetailsPage {
   public loading: boolean;
   public contactName: string;
   public showMultiplesOutputs: boolean;
-  public amount;
+  public amount: string;
   public formatAlternative;
 
   private isGlidera: boolean;
