@@ -18,15 +18,18 @@
   }
 
   .item {
-    padding-left: 0;
-    .item-inner {
-      padding-left: 16px;
-      padding-top: 3px;
-      padding-bottom: 3px;
-    }
+    border-bottom: 0.55px solid #f4f4f4;
+    &.item-ios,
+    &.item-md {
+      .item-inner {
+        border: none;
+        padding-top: 4px;
+        padding-bottom: 4px;
+      }
 
-    &.item-ios {
-      font-size: 16px;
+      &.item-ios {
+        font-size: 16px;
+      }
     }
   }
 }
