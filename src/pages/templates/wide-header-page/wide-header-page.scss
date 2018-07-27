@@ -19,11 +19,12 @@ wide-header-page {
     ion-navbar {
       .ios & {
         padding-left: 15px;
-        padding-top: 25px;
+        padding-top: calc(5px + env(safe-area-inset-top));
         padding-bottom: 7px;
 
         ion-title {
           padding-top: 20px;
+          padding-top: env(safe-area-inset-top);
         }
       }
     }
