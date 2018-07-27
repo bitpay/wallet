@@ -13,6 +13,8 @@ import { ShapeshiftProvider } from '../../../../providers/shapeshift/shapeshift'
 })
 export class ShapeshiftDetailsPage {
   public ssData;
+  public amount;
+  public amountUnit;
 
   private defaults;
 
@@ -26,6 +28,9 @@ export class ShapeshiftDetailsPage {
   ) {
     this.defaults = this.configProvider.getDefaults();
     this.ssData = this.navParams.data.ssData;
+    const amountData = this.ssData.amount.split(' ');
+    this.amount = amountData[0];
+    this.amountUnit = amountData[1];
   }
 
   ionViewDidLoad() {

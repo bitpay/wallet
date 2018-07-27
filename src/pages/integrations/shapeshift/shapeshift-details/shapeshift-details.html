@@ -14,12 +14,13 @@
 <ion-content no-bounce>
   <div class="header-modal">
     <div class="title-modal">
-      <img class="icon-service" src="assets/img/shapeshift/icon-shapeshift.svg" alt="ShapeShift" width="40">
       {{ssData.title}}
     </div>
 
     <div class="subtitle-modal">
-      {{ssData.amount}}
+      <img class="icon-service" src="assets/img/shapeshift/icon-shapeshift.svg" alt="ShapeShift" width="40">
+      {{amount}}
+      <span class="amount-unit">{{amountUnit}}</span>
     </div>
   </div>
 
@@ -97,11 +98,11 @@
       </ion-note>
     </ion-item>
 
-    <ion-item-divider></ion-item-divider>
-
-    <button ion-item detail-none *ngIf="ssData.transaction" (click)="openTransaction(ssData.transaction)">
-      {{'See transaction' | translate}}
-    </button>
+    <div text-center padding-top *ngIf="ssData.transaction">
+      <button ion-button clear (click)="openTransaction(ssData.transaction)">
+        {{'See transaction' | translate}}
+      </button>
+    </div>
     <ion-item-divider></ion-item-divider>
     <button class="assertive" ion-item detail-none text-center (click)="remove()">
       {{'Remove' | translate}}

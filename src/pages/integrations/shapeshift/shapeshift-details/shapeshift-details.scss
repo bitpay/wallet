@@ -1,23 +1,27 @@
 page-shapeshift-details {
   .header-modal {
     background: white;
-    padding: 25px 16px;
+    padding: 40px 16px;
     .title-modal {
       color: color($colors, light-grey);
+    }
+    .subtitle-modal {
+      font-size: 3.5rem;
+      .amount-unit {
+        font-size: 1.5rem;
+        vertical-align: text-top;
+      }
       .icon-service {
         border-radius: 50%;
         padding: 1px;
-        width: 46px;
-        height: 46px;
+        width: 40px;
+        height: 40px;
         box-shadow: none;
         border: 1px solid #d7d7d7;
       }
       img {
         float: right;
       }
-    }
-    .subtitle-modal {
-      font-size: 2rem;
     }
   }
 }
