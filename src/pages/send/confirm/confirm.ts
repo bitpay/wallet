@@ -232,7 +232,11 @@ export class ConfirmPage extends WalletTabsChild {
     network: string,
     minAmount: number
   ): Promise<any> {
-    if (this.getParentWallet()) {
+    const parentWallet = this.getParentWallet();
+    if (
+      parentWallet &&
+      (parentWallet.network == network && parentWallet.coin == coin)
+    ) {
       return Promise.resolve();
     }
     return new Promise((resolve, reject) => {
