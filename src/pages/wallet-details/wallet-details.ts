@@ -94,7 +94,8 @@ export class WalletDetailsPage extends WalletTabsChild {
         this.logger.error(err);
       });
 
-    if (this.wallet.needsBackup) this.openBackupModal();
+    if (this.wallet.needsBackup && this.showNoTransactionsYetMsg)
+      this.openBackupModal();
   }
 
   ionViewWillEnter() {
@@ -275,10 +276,7 @@ export class WalletDetailsPage extends WalletTabsChild {
   }
 
   public openBackupModal(): void {
-    let infoSheetType: InfoSheetType = !this.showNoTransactionsYetMsg
-      ? 'paper-key-unverified'
-      : 'paper-key-unverified-with-activity';
-
+    let infoSheetType: InfoSheetType = 'paper-key-unverified-with-activity';
     const infoSheet = this.actionSheetProvider.createInfoSheet(infoSheetType);
     infoSheet.present();
     infoSheet.onDidDismiss(option => {
