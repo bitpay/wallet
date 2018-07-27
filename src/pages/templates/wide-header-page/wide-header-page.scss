@@ -1,27 +1,37 @@
-.wide-header {
-  ion-title .toolbar-title {
-    font-weight: 400;
-  }
+wide-header-page {
+  @include fix-ios-bg-scroll();
 
-  &__title {
-    padding-top: 30px;
-    padding-bottom: 20px;
-    padding-left: 20px;
-
-    color: white;
-    font-size: 25px;
-    font-weight: 500;
-  }
-
-  ion-navbar {
-    .ios & {
-      padding-left: 15px;
+  .wide-header {
+    ion-title .toolbar-title {
+      font-weight: 400;
     }
-  }
 
-  ion-toolbar {
-    .ios & {
-      padding-left: 15px;
+    &__title {
+      padding-top: 30px;
+      padding-bottom: 20px;
+      padding-left: 20px;
+
+      color: white;
+      font-size: 25px;
+      font-weight: 500;
+    }
+
+    ion-navbar {
+      .ios & {
+        padding-left: 15px;
+        padding-top: 25px;
+        padding-bottom: 7px;
+
+        ion-title {
+          padding-top: 20px;
+        }
+      }
+    }
+
+    ion-toolbar {
+      .ios & {
+        padding-left: 15px;
+      }
     }
   }
 }

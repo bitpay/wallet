@@ -18,31 +18,3 @@ page-wallet-settings {
     background-color: color($colors, primary);
   }
 }
-
-.wide-header {
-  ion-title .toolbar-title {
-    font-weight: 400;
-  }
-
-  &__title {
-    padding-top: 30px;
-    padding-bottom: 20px;
-    padding-left: 20px;
-
-    color: white;
-    font-size: 25px;
-    font-weight: 500;
-  }
-
-  ion-navbar {
-    .ios & {
-      padding-left: 15px;
-    }
-  }
-
-  ion-toolbar {
-    .ios & {
-      padding-left: 15px;
-    }
-  }
-}

@@ -121,18 +121,7 @@ page-home {
     }
   }
 
-  .scroll-content {
-    // This line prevents an ugly gap from appearing between the
-    // navbar and page content when the user overscrolls on iOS
-    background-image: linear-gradient(
-      to bottom,
-      $toolbar-background,
-      $toolbar-background 50%,
-      $background-color 50%,
-      $background-color 50%,
-      $background-color 50%
-    );
-  }
+  @include fix-ios-bg-scroll();
 
   @media only screen and (device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3) {
     ion-fab[right] {
