@@ -8,31 +8,41 @@ page-txp-details {
   $item-border-color: #efefef;
   $item-lateral-padding: 20px;
   .header-container {
+    padding: 20px 0px 20px 0px;
     .sending-label {
       display: flex;
       align-items: center;
-      img.sending-img {
-        margin-right: 2rem;
-        width: auto;
-        display: inherit;
-      }
       span {
         font-size: 1.8rem;
       }
     }
-    .amount-label {
-      padding-top: 1rem;
-      .amount {
-        font-size: 3.5rem;
-        .unit {
-          font-weight: 400;
-        }
+  }
+  .amount-label {
+    padding-top: 1rem;
+    .amount {
+      display: flex;
+      font-size: 3.5rem;
+      justify-content: space-between;
+      .unit {
+        font-weight: 400;
       }
-      .alternative {
-        margin-top: 0.5rem;
-        color: color($colors, light-grey);
+      img.sending-img {
+        width: auto;
+        height: 40px;
+      }
+      .amount-coin {
+        font-size: 1.5rem;
+        margin-top: 0.35rem;
+        margin-left: 0.8rem;
+      }
+      div {
+        display: flex;
       }
     }
+  }
+  .alternative {
+    margin-top: 0.5rem;
+    color: color($colors, light-grey);
   }
 
   .proposal-deletion {
@@ -60,6 +70,24 @@ page-txp-details {
   .container-from {
     .wallet,
     .payment-proposal-to {
+      justify-content: space-between;
+      .text-address.ellipsis {
+        flex: 0 0 47px;
+        img {
+          margin: 12px 0 12px 12px;
+          vertical-align: middle;
+        }
+      }
+      .address-coppied {
+        display: flex;
+        align-items: center;
+        width: 100%;
+        border-radius: 3px;
+        background-color: rgb(248, 248, 248);
+      }
+      .address-width {
+        width: 92%;
+      }
       @include row-flex;
       .icon-wallet {
         margin-right: 0.8rem;

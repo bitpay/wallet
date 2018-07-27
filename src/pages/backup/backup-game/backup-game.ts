@@ -250,7 +250,7 @@ export class BackupGamePage {
             this.navCtrl.push(DisclaimerPage);
           } else {
             this.navCtrl.popToRoot();
-            this.events.publish('backupCompleted');
+            this.events.publish('Wallet/backupCompleted');
           }
         });
       })

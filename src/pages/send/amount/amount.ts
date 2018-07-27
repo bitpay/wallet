@@ -4,7 +4,7 @@ import {
   HostListener,
   NgZone
 } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { Events, NavController, NavParams } from 'ionic-angular';
 import * as _ from 'lodash';
 
 // Providers
@@ -93,7 +93,8 @@ export class AmountPage extends WalletTabsChild {
     private rateProvider: RateProvider,
     private txFormatProvider: TxFormatProvider,
     private changeDetectorRef: ChangeDetectorRef,
-    walletTabsProvider: WalletTabsProvider
+    walletTabsProvider: WalletTabsProvider,
+    private events: Events
   ) {
     super(navCtrl, profileProvider, walletTabsProvider);
     this.zone = new NgZone({ enableLongStackTrace: false });
@@ -152,9 +153,16 @@ export class AmountPage extends WalletTabsChild {
     this.expression = '';
     this.useSendMax = false;
     this.processAmount();
+    this.events.subscribe('Wallet/disableHardwareKeyboard', () => {
+      this._disableHardwareKeyboard();
+    });
   }
 
   ionViewWillLeave() {
+    this._disableHardwareKeyboard();
+  }
+
+  private _disableHardwareKeyboard() {
     this.disableHardwareKeyboard = true;
   }
 
@@ -306,9 +314,8 @@ export class AmountPage extends WalletTabsChild {
     if (!this.wallet) {
       return this.finish();
     }
-    const maxAmount = this.wallet.status.totalBalanceStr.replace(
-      /[^0-9.]/g,
-      ''
+    const maxAmount = this.txFormatProvider.satToUnit(
+      this.wallet.status.availableBalanceSat
     );
     this.zone.run(() => {
       this.expression = this.availableUnits[this.unitIndex].isFiat
@@ -316,6 +323,7 @@ export class AmountPage extends WalletTabsChild {
         : maxAmount;
       this.processAmount();
       this.changeDetectorRef.detectChanges();
+      this.finish();
     });
   }
 
@@ -551,12 +559,16 @@ export class AmountPage extends WalletTabsChild {
 
   public async goToReceive() {
     await this.walletTabsProvider.goToTabIndex(0);
-    const coinName = this.wallet.coin === Coin.BTC ? 'bitcoin' : 'bitcoin cash';
-    const infoSheet = this.actionSheetProvider.createInfoSheet(
-      'receiving-bitcoin',
-      { coinName }
-    );
-    await Observable.timer(250).toPromise();
-    infoSheet.present();
+
+    if (!(this.shouldShowZeroState() && this.wallet.needsBackup)) {
+      const coinName =
+        this.wallet.coin === Coin.BTC ? 'bitcoin' : 'bitcoin cash';
+      const infoSheet = this.actionSheetProvider.createInfoSheet(
+        'receiving-bitcoin',
+        { coinName }
+      );
+      await Observable.timer(250).toPromise();
+      infoSheet.present();
+    }
   }
 }

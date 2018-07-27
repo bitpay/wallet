@@ -14,23 +14,27 @@
 <ion-content no-bounce>
   <div class="header-modal">
     <div class="title-modal">
-      <img src="assets/img/shapeshift/icon-shapeshift.svg" alt="ShapeShift" width="50"> {{ssData.title}}
+      {{ssData.title}}
     </div>
 
     <div class="subtitle-modal">
-      {{ssData.amount}}
-    </div>
-
-    <div class="status-modal">
-      <span class="assertive" *ngIf="ssData.status == 'failed'" translate>Failed</span>
-      <span class="balanced" *ngIf="ssData.status == 'complete'" translate>Completed</span>
-      <span class="dark" *ngIf="ssData.status == 'received'" translate>Pending</span>
-      <span class="text-gray" *ngIf="ssData.status == 'no_deposits'" translate>Pending</span>
+      <img class="icon-service" src="assets/img/shapeshift/icon-shapeshift.svg" alt="ShapeShift" width="40">
+      {{amount}}
+      <span class="amount-unit">{{amountUnit}}</span>
     </div>
   </div>
 
   <ion-list>
     <ion-item-divider></ion-item-divider>
+    <ion-item>
+      {{'Status' | translate}}
+      <ion-note item-end>
+        <span class="assertive" *ngIf="ssData.status == 'failed'" translate>Failed</span>
+        <span class="balanced" *ngIf="ssData.status == 'complete'" translate>Completed</span>
+        <span class="dark" *ngIf="ssData.status == 'received'" translate>Pending</span>
+        <span class="text-gray" *ngIf="ssData.status == 'no_deposits'" translate>Pending</span>
+      </ion-note>
+    </ion-item>
 
     <ion-item>
       {{'Rate' | translate}}
@@ -94,12 +98,13 @@
       </ion-note>
     </ion-item>
 
+    <div text-center padding-top *ngIf="ssData.transaction">
+      <button ion-button clear (click)="openTransaction(ssData.transaction)">
+        {{'See transaction' | translate}}
+      </button>
+    </div>
     <ion-item-divider></ion-item-divider>
-
-    <button ion-item detail-none *ngIf="ssData.transaction" (click)="openTransaction(ssData.transaction)">
-      {{'See transaction' | translate}}
-    </button>
-    <button class="assertive" ion-item detail-none (click)="remove()">
+    <button class="assertive" ion-item detail-none text-center (click)="remove()">
       {{'Remove' | translate}}
     </button>
 

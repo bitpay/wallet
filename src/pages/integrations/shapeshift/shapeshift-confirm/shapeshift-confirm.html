@@ -1,19 +1,27 @@
 <ion-header>
   <ion-navbar>
     <ion-title>{{'Confirm'|translate}}</ion-title>
+    <ion-buttons right>
+      <button (click)="cancel()" ion-button>
+        Cancel
+      </button>
+    </ion-buttons>
   </ion-navbar>
 </ion-header>
 
 <ion-content no-bounce>
   <ion-list>
-    <ion-item>
+    <ion-item class="header-label">
       <div class="sending-label">
-        <img src="assets/img/shapeshift/icon-shapeshift.svg" alt="shapeshift">
-        <span>Shift</span>
+        {{fromWallet.coin | uppercase}} to {{toWallet.coin | uppercase}}
       </div>
       <div class="amount-label">
-        <div class="amount">{{amountStr}}</div>
+        <img class="icon-service" src="assets/img/shapeshift/icon-shapeshift.svg" alt="shapeshift" width="40">
+        <div class="amount">
+          {{amountStr ? amountStr : '...'}}
+        </div>
         <div class="alternative" *ngIf="fiatAmount">{{fiatAmount | currency}} {{currencyIsoCode}}</div>
+        <div class="alternative" *ngIf="!fiatAmount">...</div>
       </div>
     </ion-item>
 
@@ -70,7 +78,7 @@
 
     <ion-item-divider class="item-description" *ngIf="withdrawalStr" no-lines>
       <span translate>
-        A total of {{amountStr}} ({{fiatAmount | currency}} {{currencyIsoCode}}) will be exchanged for {{withdrawalStr}} ({{fiatWithdrawal | currency}} {{currencyIsoCode}}). Would you like to proceed?
+        A total of {{amountStr}} ({{fiatAmount | currency}} {{currencyIsoCode}}) will be exchanged for {{withdrawalStr}} ({{fiatWithdrawal | currency}} {{currencyIsoCode}}).
       </span>
     </ion-item-divider>
   </ion-list>

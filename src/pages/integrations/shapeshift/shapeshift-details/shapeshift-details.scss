@@ -1,21 +1,27 @@
 page-shapeshift-details {
   .header-modal {
-    padding-top: 10px;
+    background: white;
+    padding: 40px 16px;
     .title-modal {
-      font-size: 26px;
-      text-align: center;
-      img {
-        vertical-align: middle;
-      }
+      color: color($colors, light-grey);
     }
     .subtitle-modal {
-      font-size: 14px;
-      text-align: center;
-    }
-    .status-modal {
-      text-align: center;
-      font-weight: bold;
-      margin: 15px 0;
+      font-size: 3.5rem;
+      .amount-unit {
+        font-size: 1.5rem;
+        vertical-align: text-top;
+      }
+      .icon-service {
+        border-radius: 50%;
+        padding: 1px;
+        width: 40px;
+        height: 40px;
+        box-shadow: none;
+        border: 1px solid #d7d7d7;
+      }
+      img {
+        float: right;
+      }
     }
   }
 }

@@ -228,7 +228,8 @@ export class SendPage extends WalletTabsChild {
     if (
       this.incomingDataProvider.redir(search, {
         amount: this.navParams.get('amount'),
-        coin: this.navParams.get('coin')
+        coin: this.navParams.get('coin'),
+        useSendMax: this.useSendMax
       })
     )
       return;
@@ -243,7 +244,7 @@ export class SendPage extends WalletTabsChild {
     }
   }
 
-  public goToAmount(item): void {
+  public goToConfirm(item): void {
     item
       .getAddress()
       .then((addr: string) => {

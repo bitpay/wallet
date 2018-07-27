@@ -122,15 +122,6 @@ page-confirm {
         border: 1px solid color($colors, grey);
         border-radius: $icon-border-radius;
       }
-      .address-divider {
-        width: 1px;
-        height: 25px;
-        background-color: rgb(227, 227, 227);
-        display: inline-block;
-        margin-left: 6px;
-        margin-right: 12px;
-        vertical-align: middle;
-      }
       .text-address.ellipsis {
         flex: 0 0 47px;
         img {

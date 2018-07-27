@@ -11,7 +11,10 @@ import { BackupWarningPage } from '../backup/backup-warning/backup-warning';
 import { AmountPage } from '../send/amount/amount';
 
 // Providers
-import { ActionSheetProvider } from '../../providers/action-sheet/action-sheet';
+import {
+  ActionSheetProvider,
+  InfoSheetType
+} from '../../providers/action-sheet/action-sheet';
 import { AddressProvider } from '../../providers/address/address';
 import { BwcErrorProvider } from '../../providers/bwc-error/bwc-error';
 import { ExternalLinkProvider } from '../../providers/external-link/external-link';
@@ -36,7 +39,6 @@ export class ReceivePage extends WalletTabsChild {
   public wallet;
   public showShareButton: boolean;
   public loading: boolean;
-  public isOpenSelector: boolean;
   public playAnimation: boolean;
 
   constructor(
@@ -60,23 +62,25 @@ export class ReceivePage extends WalletTabsChild {
 
   ionViewDidLoad() {
     this.setAddress();
-    this.events.subscribe('backupCompleted', () => {
-      this.setAddress();
-    });
+    if (this.wallet.needsBackup) {
+      let infoSheetType: InfoSheetType = 'paper-key-unverified';
+      const infoSheet = this.actionSheetProvider.createInfoSheet(infoSheetType);
+      infoSheet.present();
+    }
   }
 
   ionViewWillEnter() {
-    this.playAnimation = false;
-    this.isOpenSelector = false;
-    this.events.subscribe('bwsEvent', (walletId, type) => {
-      // Update current address
-      if (this.wallet && walletId == this.wallet.id && type == 'NewIncomingTx')
-        this.setAddress(true);
+    this.events.subscribe('Wallet/backupCompleted', () => {
+      this.setAddress();
+    });
+    this.events.subscribe('Wallet/setAddress', () => {
+      this.setAddress(true);
     });
   }
 
   ionViewWillLeave() {
-    this.events.unsubscribe('bwsEvent');
+    this.events.unsubscribe('Wallet/backupCompleted');
+    this.events.unsubscribe('Wallet/setAddress');
   }
 
   public requestSpecificAmount(): void {

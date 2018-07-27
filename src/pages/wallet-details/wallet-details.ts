@@ -95,25 +95,22 @@ export class WalletDetailsPage extends WalletTabsChild {
         this.logger.error(err);
       });
 
-    if (this.wallet.needsBackup) this.openBackupModal();
+    if (this.wallet.needsBackup && this.showNoTransactionsYetMsg)
+      this.openBackupModal();
+  }
+
+  ionViewWillEnter() {
+    this.events.subscribe('Wallet/updateAll', () => {
+      this.updateAll();
+    });
   }
 
   ionViewDidEnter() {
     this.updateAll();
   }
 
-  ionViewWillEnter() {
-    this.events.subscribe('bwsEvent', (walletId, type) => {
-      if (walletId == this.wallet.id && type != 'NewAddress') this.updateAll();
-    });
-    this.events.subscribe('Local/TxAction', walletId => {
-      if (walletId == this.wallet.id) this.updateAll();
-    });
-  }
-
   ionViewWillLeave() {
-    this.events.unsubscribe('Local/TxAction');
-    this.events.unsubscribe('bwsEvent');
+    this.events.unsubscribe('Wallet/updateAll');
   }
 
   shouldShowZeroState() {
@@ -293,10 +290,7 @@ export class WalletDetailsPage extends WalletTabsChild {
   }
 
   public openBackupModal(): void {
-    let infoSheetType: InfoSheetType = !this.showNoTransactionsYetMsg
-      ? 'paper-key-unverified'
-      : 'paper-key-unverified-with-activity';
-
+    let infoSheetType: InfoSheetType = 'paper-key-unverified-with-activity';
     const infoSheet = this.actionSheetProvider.createInfoSheet(infoSheetType);
     infoSheet.present();
     infoSheet.onDidDismiss(option => {
