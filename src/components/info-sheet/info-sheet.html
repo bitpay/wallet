@@ -1,7 +1,7 @@
 <action-sheet>
   <div class="info-container" [ngSwitch]="sheetType">
     <info-sheet-template *ngSwitchCase="'address-copied'" type="success">
-      <span sheet-title-text translate>Copied {{params.coin.toUpperCase()}} address</span>
+      <span sheet-title-text translate>Copied {{params.coin | uppercase}} address</span>
       <span sheet-text class="text-address" translate>{{params.address}}</span>
       <span sheet-button-text translate>OK</span>
     </info-sheet-template>
@@ -68,8 +68,8 @@
     <info-sheet-template *ngSwitchCase="'insufficient-funds'" type="danger">
       <span sheet-title-text translate>Not enough funds</span>
       <span sheet-text translate>
-        You are trying to send ({{params.amount}} {{params.coin}}) more than what your wallet contains. Please enter a lower amount
-        or send max.</span>
+        You are trying to send ({{params.amount}} {{params.coin | uppercase}}) more than what your wallet contains. Please enter
+        a lower amount or send max.</span>
       <span sheet-button-text translate>Change Amount</span>
       <span sheet-second-button-text translate>Send Max</span>
     </info-sheet-template>
