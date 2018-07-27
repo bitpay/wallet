@@ -11,7 +11,10 @@ import { BackupWarningPage } from '../backup/backup-warning/backup-warning';
 import { AmountPage } from '../send/amount/amount';
 
 // Providers
-import { ActionSheetProvider } from '../../providers/action-sheet/action-sheet';
+import {
+  ActionSheetProvider,
+  InfoSheetType
+} from '../../providers/action-sheet/action-sheet';
 import { AddressProvider } from '../../providers/address/address';
 import { BwcErrorProvider } from '../../providers/bwc-error/bwc-error';
 import { ExternalLinkProvider } from '../../providers/external-link/external-link';
@@ -59,6 +62,11 @@ export class ReceivePage extends WalletTabsChild {
 
   ionViewDidLoad() {
     this.setAddress();
+    if (this.wallet.needsBackup) {
+      let infoSheetType: InfoSheetType = 'paper-key-unverified';
+      const infoSheet = this.actionSheetProvider.createInfoSheet(infoSheetType);
+      infoSheet.present();
+    }
   }
 
   ionViewWillEnter() {
