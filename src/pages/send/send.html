@@ -4,8 +4,11 @@
   </ion-navbar>
   <ion-toolbar [navbar-bg]="wallet.color">
     <div class="wallet-details-header__balance">
-      <span *ngIf="fiatCode === 'USD'">$</span>{{fiatAmount || amount}}
-      <span *ngIf="fiatCode !== 'USD'">{{fiatCode || coin}}</span>
+      <span *ngIf="!useSendMax">
+        <span *ngIf="fiatCode === 'USD'">$</span>{{fiatAmount || amount}}
+        <span *ngIf="fiatCode !== 'USD'">{{fiatCode || coin}}</span>
+      </span>
+      <span *ngIf="useSendMax">{{'Maximum Amount' | translate}}</span>
     </div>
   </ion-toolbar>
 </ion-header>
@@ -27,7 +30,7 @@
         <span class="title" translate>Transfer to Contact</span>
       </ion-item-divider>
       <ion-list>
-        <button ion-item *ngFor="let item of filteredContactsList" (click)="goToAmount(item)">
+        <button ion-item *ngFor="let item of filteredContactsList" (click)="goToConfirm(item)">
           <ion-icon class="item-img" item-start>
             <gravatar [name]="item.name" [width]="35" [height]="35" [email]="item.email"></gravatar>
           </ion-icon>
@@ -46,10 +49,12 @@
       </ion-item-divider>
 
       <ion-list>
-        <button ion-item *ngFor="let wallet of walletBtcList" (click)="goToAmount(wallet)">
+        <button ion-item *ngFor="let wallet of walletBtcList" (click)="goToConfirm(wallet)">
           <ion-icon class="item-img" item-start>
-            <img *ngIf="wallet.network == 'testnet'" [ngStyle]="{'background-color': wallet.color}" src="assets/img/icon-wallet-testnet.svg" class="icon-wallet" />
-            <img *ngIf="wallet.network != 'testnet'" [ngStyle]="{'background-color': wallet.color}" src="assets/img/icon-wallet.svg" class="icon-wallet" />
+            <img *ngIf="wallet.network == 'testnet'" [ngStyle]="{'background-color': wallet.color}" src="assets/img/icon-wallet-testnet.svg"
+              class="icon-wallet" />
+            <img *ngIf="wallet.network != 'testnet'" [ngStyle]="{'background-color': wallet.color}" src="assets/img/icon-wallet.svg"
+              class="icon-wallet" />
           </ion-icon>
           <span class="item-title">{{wallet.name}}</span>
           <ion-note class="wallet-warning" *ngIf="!wallet.isComplete" item-end>
@@ -72,10 +77,12 @@
       </ion-item-divider>
 
       <ion-list>
-        <button ion-item *ngFor="let wallet of walletBchList" (click)="goToAmount(wallet)">
+        <button ion-item *ngFor="let wallet of walletBchList" (click)="goToConfirm(wallet)">
           <ion-icon class="item-img" item-start>
-            <img *ngIf="wallet.network == 'testnet'" [ngStyle]="{'background-color': wallet.color}" src="assets/img/icon-wallet-testnet.svg" class="icon-wallet" />
-            <img *ngIf="wallet.network != 'testnet'" [ngStyle]="{'background-color': wallet.color}" src="assets/img/icon-wallet.svg" class="icon-wallet" />
+            <img *ngIf="wallet.network == 'testnet'" [ngStyle]="{'background-color': wallet.color}" src="assets/img/icon-wallet-testnet.svg"
+              class="icon-wallet" />
+            <img *ngIf="wallet.network != 'testnet'" [ngStyle]="{'background-color': wallet.color}" src="assets/img/icon-wallet.svg"
+              class="icon-wallet" />
           </ion-icon>
           <span class="item-title">{{wallet.name}}</span>
           <ion-note class="wallet-warning" *ngIf="!wallet.isComplete" item-end>

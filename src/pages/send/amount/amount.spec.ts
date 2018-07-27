@@ -13,7 +13,10 @@ describe('AmountPage', () => {
   const wallet = {
     coin: 'bch',
     status: {
-      totalBalanceStr: '1.000000'
+      totalBalanceStr: '1.000000',
+      totalBalanceSat: 100000000,
+      availableBalanceStr: '1.000000',
+      availableBalanceSat: 100000000
     }
   };
 
@@ -30,11 +33,13 @@ describe('AmountPage', () => {
   });
 
   describe('sendMax', () => {
-    it('should set the send display value expression to the total balance', () => {
+    it('should set the send display value expression to the available balance', () => {
       instance.wallet = wallet;
       instance.ionViewDidLoad();
       instance.sendMax();
-      expect(instance.expression).toBe(instance.wallet.status.totalBalanceStr);
+      expect(instance.expression).toBe(
+        instance.wallet.status.availableBalanceSat / 1e8
+      );
     });
 
     it('should fetch the bch rate if in bch wallet', () => {

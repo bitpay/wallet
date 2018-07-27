@@ -314,9 +314,8 @@ export class AmountPage extends WalletTabsChild {
     if (!this.wallet) {
       return this.finish();
     }
-    const maxAmount = this.wallet.status.totalBalanceStr.replace(
-      /[^0-9.]/g,
-      ''
+    const maxAmount = this.txFormatProvider.satToUnit(
+      this.wallet.status.availableBalanceSat
     );
     this.zone.run(() => {
       this.expression = this.availableUnits[this.unitIndex].isFiat
@@ -324,6 +323,7 @@ export class AmountPage extends WalletTabsChild {
         : maxAmount;
       this.processAmount();
       this.changeDetectorRef.detectChanges();
+      this.finish();
     });
   }
 

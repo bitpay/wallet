@@ -149,8 +149,10 @@ export class ConfirmPage extends WalletTabsChild {
 
     this.tx = {
       toAddress: this.navParams.data.toAddress,
-      amount: parseInt(this.navParams.data.amount, 10),
       sendMax: this.navParams.data.useSendMax ? true : false,
+      amount: this.navParams.data.useSendMax
+        ? 0
+        : parseInt(this.navParams.data.amount, 10),
       description: this.navParams.data.description,
       paypro: this.navParams.data.paypro,
       spendUnconfirmed: this.config.wallet.spendUnconfirmed,
@@ -502,20 +504,19 @@ export class ConfirmPage extends WalletTabsChild {
             tx.amount = tx.sendMaxInfo.amount;
             this.getAmountDetails();
           }
-          this.showSendMaxWarning(wallet, sendMaxInfo).then(() => {
-            // txp already generated for this wallet?
-            if (tx.txp[wallet.id]) {
-              return resolve();
-            }
+          this.showSendMaxWarning(wallet, sendMaxInfo);
+          // txp already generated for this wallet?
+          if (tx.txp[wallet.id]) {
+            return resolve();
+          }
 
-            this.buildTxp(tx, wallet, opts)
-              .then(() => {
-                return resolve();
-              })
-              .catch(err => {
-                return reject(err);
-              });
-          });
+          this.buildTxp(tx, wallet, opts)
+            .then(() => {
+              return resolve();
+            })
+            .catch(err => {
+              return reject(err);
+            });
         })
         .catch(() => {
           let msg = this.translate.instant('Error getting SendMax information');
@@ -587,29 +588,24 @@ export class ConfirmPage extends WalletTabsChild {
     });
   }
 
-  private showSendMaxWarning(wallet, sendMaxInfo): Promise<any> {
-    return new Promise(resolve => {
-      if (!sendMaxInfo) return resolve();
+  private showSendMaxWarning(wallet, sendMaxInfo): void {
+    if (!sendMaxInfo) return;
 
-      let warningMsg = this.verifyExcludedUtxos(wallet, sendMaxInfo);
+    let warningMsg = this.verifyExcludedUtxos(wallet, sendMaxInfo);
 
-      const coinName =
-        this.wallet.coin === Coin.BTC ? 'Bitcoin (BTC)' : 'Bitcoin Cash (BCH)';
+    const coinName =
+      this.wallet.coin === Coin.BTC ? 'Bitcoin (BTC)' : 'Bitcoin Cash (BCH)';
 
-      const minerFeeNoticeInfoSheet = this.actionSheetProvider.createInfoSheet(
-        'miner-fee-notice',
-        {
-          coinName,
-          fee: sendMaxInfo.fee / 1e8,
-          coin: this.tx.coin.toUpperCase(),
-          msg: !_.isEmpty(warningMsg) ? warningMsg : ''
-        }
-      );
-      minerFeeNoticeInfoSheet.present();
-      minerFeeNoticeInfoSheet.onDidDismiss(() => {
-        return resolve();
-      });
-    });
+    const minerFeeNoticeInfoSheet = this.actionSheetProvider.createInfoSheet(
+      'miner-fee-notice',
+      {
+        coinName,
+        fee: sendMaxInfo.fee / 1e8,
+        coin: this.tx.coin.toUpperCase(),
+        msg: !_.isEmpty(warningMsg) ? warningMsg : ''
+      }
+    );
+    minerFeeNoticeInfoSheet.present();
   }
 
   private verifyExcludedUtxos(_, sendMaxInfo) {
