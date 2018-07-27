@@ -839,7 +839,7 @@ export class ConfirmPage extends WalletTabsChild {
     await modal.present();
 
     this.isWithinWalletTabs()
-      ? this.exit()
+      ? this.close()
       : this.app.getRootNavs()[0].setRoot(TabsPage);
   }
 
