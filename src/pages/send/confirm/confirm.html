@@ -2,7 +2,7 @@
   <ion-navbar>
     <ion-title>{{ 'Confirm' | translate }}</ion-title>
     <ion-buttons right *ngIf="isWithinWalletTabs()">
-      <button (click)="close()" ion-button>
+      <button (click)="exit()" ion-button>
         Cancel
       </button>
     </ion-buttons>
@@ -56,13 +56,13 @@
       </ion-note>
     </button>
 
-    <ion-item *ngIf="tx.paypro && !criticalError">
+    <ion-item *ngIf="tx.paypro">
       <span translate>Payment Expires:</span>
       <ion-note *ngIf="!paymentExpired" item-end>{{remainingTimeStr}}</ion-note>
       <ion-note *ngIf="paymentExpired" [ngStyle]="{'color': 'red'}" item-end>{{'Expired' | translate}}</ion-note>
     </ion-item>
 
-    <ion-item class="container-to" *ngIf="!criticalError">
+    <ion-item class="container-to">
       <span translate>To</span>
 
       <div class="payment-proposal-to address-coppied" *ngIf="!tx.recipientType">
@@ -154,8 +154,8 @@
 
 <ion-footer>
   <page-slide-to-accept #slideButton *ngIf="isCordova" [ngClass]="{'slide-confirm-fast': memoFocused, 'slide-confirm-slow': !memoFocused, 'slide-confirm-down': memoFocused}"
-    [disabled]="!wallet || noWalletMessage || criticalError || !tx?.txp[wallet.id]" [buttonText]="buttonText" (slideDone)="approve(tx, wallet)"></page-slide-to-accept>
+    [disabled]="!wallet || !tx?.txp[wallet.id]" [buttonText]="buttonText" (slideDone)="approve(tx, wallet)"></page-slide-to-accept>
   <ion-toolbar *ngIf="!isCordova">
-    <button ion-button full class="button-footer" (click)="approve(tx, wallet)" [disabled]="!wallet || noWalletMessage || criticalError || !tx.txp[wallet.id]">{{buttonText}}</button>
+    <button ion-button full class="button-footer" (click)="approve(tx, wallet)" [disabled]="!wallet || !tx.txp[wallet.id]">{{buttonText}}</button>
   </ion-toolbar>
 </ion-footer>

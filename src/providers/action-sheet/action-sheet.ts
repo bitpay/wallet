@@ -14,7 +14,8 @@ export type InfoSheetType =
   | 'miner-fee-notice'
   | 'paper-key-unverified'
   | 'paper-key-unverified-with-activity'
-  | 'receiving-bitcoin';
+  | 'receiving-bitcoin'
+  | 'insufficient-funds';
 
 export type OptionsSheetType = 'address-options';
 export interface WalletSelectorParams {

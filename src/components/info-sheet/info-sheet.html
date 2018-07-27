@@ -65,6 +65,15 @@
       <span sheet-button-text translate>GOT IT</span>
     </info-sheet-template>
 
+    <info-sheet-template *ngSwitchCase="'insufficient-funds'" type="danger">
+      <span sheet-title-text translate>Not enough funds</span>
+      <span sheet-text translate>
+        You are trying to send ({{params.amount}} {{params.coin}}) more than what your wallet contains. Please enter a lower amount
+        or send max.</span>
+      <span sheet-button-text translate>Change Amount</span>
+      <span sheet-second-button-text translate>Send Max</span>
+    </info-sheet-template>
+
     <info-sheet-template *ngSwitchCase="'default-error'" type="danger">
       <span sheet-title-text translate>{{params.title}}</span>
       <span sheet-text translate>{{params.msg}}</span>
