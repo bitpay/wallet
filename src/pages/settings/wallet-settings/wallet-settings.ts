@@ -29,7 +29,6 @@ import { WalletTransactionHistoryPage } from './wallet-settings-advanced/wallet-
 })
 export class WalletSettingsPage {
   public wallet;
-  public walletName;
   public canSign: boolean;
   public needsBackup: boolean;
   public hiddenBalance: boolean;
@@ -55,7 +54,6 @@ export class WalletSettingsPage {
   ionViewDidLoad() {
     this.logger.info('ionViewDidLoad WalletSettingsPage');
     this.wallet = this.profileProvider.getWallet(this.navParams.data.walletId);
-    this.walletName = this.wallet.name;
     this.canSign = this.wallet.canSign();
     this.needsBackup = this.wallet.needsBackup;
     this.hiddenBalance = this.wallet.balanceHidden;
@@ -76,8 +74,6 @@ export class WalletSettingsPage {
       this.deleted = true;
     }
   }
-
-  ionViewWillEnter() {}
 
   public hiddenBalanceChange(): void {
     this.profileProvider.toggleHideBalanceFlag(

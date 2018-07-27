@@ -17,30 +17,6 @@ page-wallet-settings {
     margin: 1rem;
     background-color: color($colors, primary);
   }
-
-  .settings-list {
-    ion-item-divider {
-      ion-label.label {
-        color: #4a4a4a;
-        font-size: 15px;
-        margin-bottom: 7px;
-        margin-top: 25px;
-      }
-    }
-
-    .item {
-      padding-left: 0;
-      .item-inner {
-        padding-left: 16px;
-        padding-top: 3px;
-        padding-bottom: 3px;
-      }
-
-      &.item-ios {
-        font-size: 16px;
-      }
-    }
-  }
 }
 
 .wide-header {
@@ -56,28 +32,15 @@ page-wallet-settings {
     color: white;
     font-size: 25px;
     font-weight: 500;
-
-    // .md & {
-    //   padding-left: 19px;
-    // }
-
-    // .ios & {
-    //   padding-left: 6px;
-    // }
   }
 
   ion-navbar {
-    // padding-top: 15px;
-
     .ios & {
       padding-left: 15px;
     }
   }
 
   ion-toolbar {
-    // padding-top: 30px;
-    // padding-bottom: 22px;
-
     .ios & {
       padding-left: 15px;
     }

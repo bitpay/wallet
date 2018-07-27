@@ -20,7 +20,7 @@
       <button ion-item (click)="openWalletName()">
         <div translate float-left>Name</div>
         <div text-end text-wrap ion-text color="light-grey">
-          {{walletName}}
+          {{wallet && wallet.name}}
         </div>
       </button>
       <button ion-item (click)="openWalletColor()">
