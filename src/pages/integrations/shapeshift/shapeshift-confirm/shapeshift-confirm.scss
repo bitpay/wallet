@@ -5,30 +5,30 @@ page-shapeshift-confirm {
       margin-bottom: 90px;
     }
   }
+  .header-label {
+    height: 162px;
+  }
   .sending-label {
-    display: flex;
-    font-size: 18px;
-    align-items: center;
-    margin-bottom: 1.8rem;
-
-    img {
-      margin-right: 1rem;
-      height: 35px;
-      width: 35px;
-    }
-
-    .big-icon-svg {
-      margin-right: 0.6rem;
-    }
+    font-size: 1.6rem;
+    font-weight: 400;
   }
   .amount-label {
-    line-height: 30px;
+    .icon-service {
+      border-radius: 50%;
+      padding: 1px;
+      width: 46px;
+      height: 46px;
+      box-shadow: none;
+      border: 1px solid #d7d7d7;
+    }
+    img {
+      float: right;
+    }
     .amount {
-      font-size: 38px;
-      margin-bottom: 0.5rem;
+      font-size: 3.3rem;
     }
     .alternative {
-      font-size: 12px;
+      margin-top: 0.5rem;
       color: color($colors, grey);
     }
   }
