@@ -414,7 +414,11 @@ export class ConfirmPage extends WalletTabsChild {
             );
             if (tx.network != 'testnet' && tx.feeRate > maxAllowedFee) {
               this.onGoingProcessProvider.set('calculatingFee');
-              return reject('Merchant fee too high. Payment rejected');
+              return reject(
+                this.translate.instant(
+                  'Merchant fee too high. Payment rejected'
+                )
+              );
             }
 
             msg = this.translate.instant('Suggested by Merchant');
@@ -453,8 +457,9 @@ export class ConfirmPage extends WalletTabsChild {
           }
         })
         .catch(err => {
+          this.logger.warn('Error getting fee rate', err);
           this.onGoingProcessProvider.clear();
-          return reject('Error getting fee rate: ' + err);
+          return reject(this.translate.instant('Error getting fee rate'));
         });
     });
   }
@@ -673,7 +678,7 @@ export class ConfirmPage extends WalletTabsChild {
         this.setWallet(this.wallet);
       } else {
         this.isWithinWalletTabs()
-          ? this.exit()
+          ? this.navCtrl.popToRoot()
           : this.app.getRootNavs()[0].setRoot(TabsPage);
       }
     });
@@ -698,7 +703,7 @@ export class ConfirmPage extends WalletTabsChild {
     errorInfoSheet.onDidDismiss(() => {
       if (exit) {
         this.isWithinWalletTabs()
-          ? this.exit()
+          ? this.navCtrl.popToRoot()
           : this.app.getRootNavs()[0].setRoot(TabsPage);
       }
     });
@@ -930,9 +935,5 @@ export class ConfirmPage extends WalletTabsChild {
   private onSelectWalletEvent(wallet): void {
     if (!_.isEmpty(wallet)) this.onWalletSelect(wallet);
     this.isOpenSelector = false;
-  }
-
-  private exit(): void {
-    this.navCtrl.popToRoot();
   }
 }
