@@ -48,7 +48,6 @@ export class TxpDetailsPage {
   public contactName: string;
   public showMultiplesOutputs: boolean;
   public amount: string;
-  public formatAlternative;
 
   private isGlidera: boolean;
   private GLIDERA_LOCK_TIME: number;
@@ -123,7 +122,8 @@ export class TxpDetailsPage {
     this.initActionList();
     this.checkPaypro();
     this.applyButtonText();
-    this.getAmountDetails();
+
+    this.amount = this.decimalPipe.transform(this.tx.amount / 1e8, '1.2-6');
 
     // ToDo: use tx.customData instead of tx.message
     if (this.tx.message === 'Glidera transaction' && this.isGlidera) {
@@ -156,14 +156,6 @@ export class TxpDetailsPage {
 
   ionViewWillLeave() {
     this.events.unsubscribe('bwsEvent');
-  }
-
-  private getAmountDetails() {
-    this.amount = this.decimalPipe.transform(this.tx.amount / 1e8, '1.2-6');
-    this.formatAlternative = this.txFormatProvider.formatAlternative(
-      this.tx.coin,
-      this.tx.amount
-    );
   }
 
   private displayFeeValues(): void {

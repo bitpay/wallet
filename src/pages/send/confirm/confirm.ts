@@ -61,7 +61,6 @@ export class ConfirmPage extends WalletTabsChild {
   public remainingTimeStr: string;
   public memoFocused: boolean;
   public amount;
-  public formatAlternative;
 
   // Config Related values
   public config;
@@ -206,10 +205,6 @@ export class ConfirmPage extends WalletTabsChild {
 
   private getAmountDetails() {
     this.amount = this.decimalPipe.transform(this.tx.amount / 1e8, '1.2-6');
-    this.formatAlternative = this.txFormatProvider.formatAlternative(
-      this.tx.coin,
-      this.tx.amount
-    );
   }
 
   private afterWalletSelectorSet() {

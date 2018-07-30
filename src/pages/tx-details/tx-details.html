@@ -14,7 +14,6 @@
           <span *ngIf="btx.action === 'moved'" translate>Moved</span>
         </div>
         <div class="sending-label" *ngIf="btx.confirmations === 0">
-          <img class="sending-img" src="assets/img/tx-action/icon-confirming.svg">
           <span *ngIf="btx.action == 'sent' || btx.action == 'moved'" translate>Sending</span>
           <span *ngIf="btx.action == 'received'" translate>Receiving</span>
         </div>
@@ -24,11 +23,16 @@
               {{btx.amountValueStr}}
               <span class="amount-coin">{{btx.amountUnitStr}}</span>
             </div>
-            <img class="sending-img" src="assets/img/tx-action/icon-sent.svg" width="40" *ngIf="btx.action === 'sent'">
-            <img class="sending-img" src="assets/img/tx-action/icon-received.svg" width="40" *ngIf="btx.action === 'received'">
-            <img class="sending-img" src="assets/img/tx-action/icon-moved.svg" width="40" *ngIf="btx.action === 'moved'">
+            <span *ngIf="btx.confirmations > 0">
+              <img class="sending-img" src="assets/img/tx-action/icon-sent.svg" width="40" *ngIf="btx.action === 'sent'">
+              <img class="sending-img" src="assets/img/tx-action/icon-received.svg" width="40" *ngIf="btx.action === 'received'">
+              <img class="sending-img" src="assets/img/tx-action/icon-moved.svg" width="40" *ngIf="btx.action === 'moved'">
+            </span>
+            <span *ngIf="btx.confirmations === 0">
+              <img class="sending-img" src="assets/img/tx-action/icon-confirming.svg">
+            </span>
           </div>
-          <div class="alternative">{{btx.formatAlternative?.amount | currency:btx.formatAlternative?.currency}} {{btx.formatAlternative?.currency}}</div>
+          <div class="alternative">{{btx.alternativeAmountStr}}</div>
         </div>
       </div>
     </ion-item>
