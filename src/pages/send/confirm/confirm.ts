@@ -194,8 +194,7 @@ export class ConfirmPage extends WalletTabsChild {
         this.afterWalletSelectorSet();
       })
       .catch(err => {
-        this.logger.error(err);
-        return this.exitWithError(err);
+        this.showErrorInfoSheet(err, null, true);
       });
   }
 
@@ -248,8 +247,7 @@ export class ConfirmPage extends WalletTabsChild {
       });
 
       if (!this.wallets || !this.wallets.length) {
-        this.setNoWallet(this.translate.instant('No wallets available'), true);
-        return resolve();
+        return reject(this.translate.instant('No wallets available'));
       }
 
       _.each(this.wallets, wallet => {
@@ -271,11 +269,7 @@ export class ConfirmPage extends WalletTabsChild {
               if (!walletsUpdated) return reject('Could not update any wallet');
 
               if (_.isEmpty(filteredWallets)) {
-                this.setNoWallet(
-                  this.translate.instant('Insufficient funds'),
-                  true
-                );
-                return reject('INSUFFICIENT_FUNDS');
+                return reject(this.translate.instant('Insufficient funds'));
               }
               this.wallets = _.clone(filteredWallets);
               return resolve();
@@ -287,31 +281,15 @@ export class ConfirmPage extends WalletTabsChild {
               if (!walletsUpdated) return reject('Could not update any wallet');
 
               if (_.isEmpty(filteredWallets)) {
-                this.setNoWallet(
-                  this.translate.instant('Insufficient funds'),
-                  true
+                return reject(
+                  this.translate.instant('Insufficient funds for fee')
                 );
-                return reject('INSUFFICIENT_FUNDS_FOR_FEE');
               }
               this.wallets = _.clone(filteredWallets);
               return resolve();
             }
           });
       });
-    });
-  }
-
-  private setNoWallet(msg: string, criticalError?: boolean) {
-    this.wallet = null;
-    this.noWalletMessage = msg;
-    this.criticalError = criticalError;
-    this.logger.warn('Not ready to make the payment: ' + msg);
-  }
-
-  private exitWithError(err) {
-    this.logger.info('Error setting wallet selector:' + err);
-    this.setSendError(this.bwcErrorProvider.msg(err)).then(() => {
-      this.app.getRootNavs()[0].setRoot(TabsPage);
     });
   }
 
@@ -334,7 +312,14 @@ export class ConfirmPage extends WalletTabsChild {
     const feeOpts = this.feeProvider.getFeeOpts();
     this.tx.feeLevelName = feeOpts[this.tx.feeLevel];
     this.updateTx(this.tx, this.wallet, { dryRun: true }).catch(err => {
-      this.logger.warn('Error in updateTx: ', err);
+      switch (err) {
+        case 'insufficient_funds':
+          this.showInsufficientFundsInfoSheet();
+          break;
+        default:
+          this.showErrorInfoSheet(err);
+          break;
+      }
     });
   }
 
@@ -429,13 +414,11 @@ export class ConfirmPage extends WalletTabsChild {
             );
             if (tx.network != 'testnet' && tx.feeRate > maxAllowedFee) {
               this.onGoingProcessProvider.set('calculatingFee');
-              this.setNoWallet(
+              return reject(
                 this.translate.instant(
                   'Merchant fee too high. Payment rejected'
-                ),
-                true
+                )
               );
-              return reject('fee_too_high');
             }
 
             msg = this.translate.instant('Suggested by Merchant');
@@ -476,7 +459,7 @@ export class ConfirmPage extends WalletTabsChild {
         .catch(err => {
           this.logger.warn('Error getting fee rate', err);
           this.onGoingProcessProvider.clear();
-          return reject(err);
+          return reject(this.translate.instant('Error getting fee rate'));
         });
     });
   }
@@ -489,15 +472,10 @@ export class ConfirmPage extends WalletTabsChild {
             this.logger.debug('Send max info', sendMaxInfo);
 
             if (sendMaxInfo.amount == 0) {
-              this.setNoWallet(
-                this.translate.instant('Insufficient funds for fee'),
-                false
-              );
-              this.setSendError(
+              this.showErrorInfoSheet(
                 this.translate.instant('Not enough funds for fee')
-              ).then(() => {
-                return resolve('no_funds');
-              });
+              );
+              return resolve();
             }
             tx.sendMaxInfo = sendMaxInfo;
             tx.amount = tx.sendMaxInfo.amount;
@@ -552,11 +530,7 @@ export class ConfirmPage extends WalletTabsChild {
         })
         .catch(err => {
           if (err.message == 'Insufficient funds') {
-            this.setNoWallet(this.translate.instant('Insufficient funds'));
-            this.setSendError(
-              this.translate.instant('Not enough funds for fee')
-            );
-            return reject('no_funds');
+            return reject('insufficient_funds');
           } else {
             return reject(err);
           }
@@ -640,13 +614,11 @@ export class ConfirmPage extends WalletTabsChild {
         let msg = this.translate.instant(
           'Could not add message to imported wallet without shared encrypting key'
         );
-        this.setSendError(msg);
         return reject(msg);
       }
 
       if (tx.amount > Number.MAX_SAFE_INTEGER) {
         let msg = this.translate.instant('Amount too big');
-        this.setSendError(msg);
         return reject(msg);
       }
 
@@ -689,29 +661,51 @@ export class ConfirmPage extends WalletTabsChild {
           return resolve(ctxp);
         })
         .catch(err => {
-          this.setSendError(err);
           return reject(err);
         });
     });
   }
 
-  private setSendError(error: Error | string, title?: string): Promise<any> {
-    return new Promise((resolve, reject) => {
-      if (this.isCordova) this.slideButton.isConfirmed(false);
-      if ((error as Error).message === TouchIdErrors.fingerprintCancelled) {
-        return reject();
+  private showInsufficientFundsInfoSheet(): void {
+    const insufficientFundsInfoSheet = this.actionSheetProvider.createInfoSheet(
+      'insufficient-funds',
+      { amount: this.amount, coin: this.tx.coin }
+    );
+    insufficientFundsInfoSheet.present();
+    insufficientFundsInfoSheet.onDidDismiss(option => {
+      if (!option) {
+        this.tx.sendMax = true;
+        this.setWallet(this.wallet);
+      } else {
+        this.isWithinWalletTabs()
+          ? this.navCtrl.popToRoot()
+          : this.app.getRootNavs()[0].setRoot(TabsPage);
       }
+    });
+  }
 
-      let modalTitle = title ? title : this.translate.instant('Error');
+  private showErrorInfoSheet(
+    error: Error | string,
+    title?: string,
+    exit?: boolean
+  ): void {
+    this.logger.warn('ERROR:', error);
+    if (this.isCordova) this.slideButton.isConfirmed(false);
+    if ((error as Error).message === TouchIdErrors.fingerprintCancelled) return;
 
-      const errorInfoSheet = this.actionSheetProvider.createInfoSheet(
-        'default-error',
-        { msg: this.bwcErrorProvider.msg(error), title: modalTitle }
-      );
-      errorInfoSheet.present();
-      errorInfoSheet.onDidDismiss(() => {
-        return resolve();
-      });
+    let infoSheetTitle = title ? title : this.translate.instant('Error');
+
+    const errorInfoSheet = this.actionSheetProvider.createInfoSheet(
+      'default-error',
+      { msg: this.bwcErrorProvider.msg(error), title: infoSheetTitle }
+    );
+    errorInfoSheet.present();
+    errorInfoSheet.onDidDismiss(() => {
+      if (exit) {
+        this.isWithinWalletTabs()
+          ? this.navCtrl.popToRoot()
+          : this.app.getRootNavs()[0].setRoot(TabsPage);
+      }
     });
   }
 
@@ -761,7 +755,6 @@ export class ConfirmPage extends WalletTabsChild {
       .catch(err => {
         this.onGoingProcessProvider.clear();
         this.logger.warn('Error getting transaction proposal', err);
-        return;
       });
   }
 
@@ -814,8 +807,7 @@ export class ConfirmPage extends WalletTabsChild {
       })
       .catch(err => {
         this.onGoingProcessProvider.clear();
-        this.setSendError(err);
-        return;
+        this.showErrorInfoSheet(err);
       });
   };
 
@@ -830,7 +822,7 @@ export class ConfirmPage extends WalletTabsChild {
       })
       .catch(err => {
         this.onGoingProcessProvider.clear();
-        this.setSendError(err);
+        this.showErrorInfoSheet(err);
       });
   }
 

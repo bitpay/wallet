@@ -64,16 +64,6 @@ describe('ConfirmPage', () => {
     });
   });
   describe('Methods', () => {
-    describe('setNoWallet', () => {
-      it('should set wallet to null and set the appropriate message', () => {
-        const msg = 'No wallets available';
-        const error = 'Bad error';
-        instance.setNoWallet(msg, error);
-        expect(instance.wallet).toBe(null);
-        expect(instance.noWalletMessage).toBe(msg);
-        expect(instance.criticalError).toBe(error);
-      });
-    });
     describe('chooseFeeLevel', () => {
       it('should display a fee modal', () => {
         const modal = {
@@ -155,13 +145,13 @@ describe('ConfirmPage', () => {
         await instance.onlyPublish();
         expect(modalSpy).toHaveBeenCalled();
       });
-      it('should set send error on failure', async () => {
+      it('should show error info sheet on failure', async () => {
         spyOn(instance.walletProvider, 'onlyPublish').and.returnValue(
           Promise.reject('error')
         );
-        const setErrorSpy = spyOn(instance, 'setSendError');
+        const showErrorInfoSheetSpy = spyOn(instance, 'showErrorInfoSheet');
         await instance.onlyPublish();
-        expect(setErrorSpy).toHaveBeenCalled();
+        expect(showErrorInfoSheetSpy).toHaveBeenCalled();
       });
     });
   });
