@@ -16,6 +16,7 @@ $app-direction: ltr;
 // To view all the possible Ionic variables, see:
 // http://ionicframework.com/docs/theming/overriding-ionic-variables/
 // Override - Homogenized ionic component styles
+@import 'lists';
 @import 'overrides';
 @import 'mixins';
 @import 'modals';

@@ -8,7 +8,7 @@
 
 <ion-content>
   <ion-item-divider></ion-item-divider>
-  <ion-list>
+  <ion-list class="settings-list">
     <div *ngIf="usePushNotifications">
       <ion-item>
         <ion-label>{{ 'Enable push notifications' | translate }}</ion-label>
@@ -38,8 +38,9 @@
     <div *ngIf="emailNotifications">
       <ion-item-divider>
         <span translate>
-          By providing your email address, you give explicit consent to BitPay to use your email address to send you email notifications about payments.
-        </span> 
+          By providing your email address, you give explicit consent to BitPay to use your email address to send you email notifications
+          about payments.
+        </span>
         <a class="externalLink" (click)="openPrivacyPolicy()" translate>View Privacy Policy</a>
       </ion-item-divider>
 

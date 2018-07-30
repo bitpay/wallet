@@ -1,0 +1,35 @@
+.item {
+  &.warn {
+    background-color: rgb(255, 242, 244);
+    ion-note {
+      color: rgb(229, 108, 123);
+    }
+  }
+}
+
+.settings-list {
+  ion-item-divider {
+    ion-label.label {
+      color: #4a4a4a;
+      font-size: 15px;
+      margin-bottom: 7px;
+      margin-top: 25px;
+    }
+  }
+
+  .item {
+    border-bottom: 0.55px solid #f4f4f4;
+    &.item-ios,
+    &.item-md {
+      .item-inner {
+        border: none;
+        padding-top: 4px;
+        padding-bottom: 4px;
+      }
+
+      &.item-ios {
+        font-size: 16px;
+      }
+    }
+  }
+}

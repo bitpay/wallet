@@ -1,0 +1,54 @@
+label-tip {
+  $info-color: #eff1f8;
+  color: #4a4a4a;
+  display: block;
+  margin-top: 24px;
+  padding: 20px;
+  position: relative;
+
+  &:before {
+    $arrow-height: 18px;
+    $arrow-width: $arrow-height * 0.8;
+    content: '';
+    width: 0;
+    height: 0;
+    border-left: $arrow-width solid transparent;
+    border-right: $arrow-width solid transparent;
+    border-bottom: $arrow-height solid transparent;
+    position: absolute;
+    top: -$arrow-height;
+    left: 25px;
+  }
+
+  &.info {
+    background: $info-color;
+
+    &:before {
+      border-bottom-color: $info-color;
+    }
+  }
+
+  .label-header {
+    color: black;
+    $icon-height: 20px;
+    &__icon {
+      margin-right: $icon-height/1.5;
+      height: $icon-height;
+      width: $icon-height;
+    }
+
+    align-items: center;
+    display: flex;
+    font-size: 16px;
+    margin-bottom: 20px;
+  }
+
+  [label-tip-body] {
+    font-size: 15px;
+
+    a.label-tip-link {
+      display: inline-block;
+      margin-top: 10px;
+    }
+  }
+}

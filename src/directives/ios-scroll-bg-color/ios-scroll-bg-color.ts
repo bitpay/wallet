@@ -13,7 +13,7 @@ to create the illusion of smooth, fluid, and connected elements.
 })
 export class IosScrollBgColor {
   @Input('ios-scroll-bg-color') color: string;
-  @Input() bottomColor: string = '#f5f5f5';
+  @Input() bottomColor: string = '#f8f8f9';
 
   constructor(private element: ElementRef) {}
 

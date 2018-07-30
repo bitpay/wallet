@@ -5,7 +5,7 @@
 </ion-header>
 
 <ion-content>
-  <ion-list radio-group [(ngModel)]="currentColorIndex">
+  <ion-list radio-group [(ngModel)]="currentColorIndex" class="settings-list">
     <ion-item *ngFor="let i of colorCount">
       <ion-label>
         <span class="settings-color-block wallet-color-{{i}}"></span>

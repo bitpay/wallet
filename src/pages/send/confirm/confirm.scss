@@ -75,9 +75,7 @@ page-confirm {
     }
     &.warn {
       color: rgb(229, 108, 123);
-      background-color: rgb(255, 242, 244);
-      .fee-details,
-      ion-note {
+      .fee-details {
         color: rgb(229, 108, 123);
       }
     }

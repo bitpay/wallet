@@ -1,57 +1,72 @@
-<ion-header>
-  <ion-navbar>
-    <ion-title>{{'Wallet Settings'|translate}}</ion-title>
-  </ion-navbar>
-</ion-header>
-<ion-content>
-  <page-wallet-item [wallet]="wallet"></page-wallet-item>
-  <ion-list>
-    <ion-item-divider></ion-item-divider>
-    <button ion-item (click)="openWalletName()">
-      <div translate float-left>Name</div>
-      <div text-end text-wrap ion-text color="light-grey">
-        {{walletName}}
-      </div>
-    </button>
-    <button ion-item (click)="openWalletColor()">
-      <span translate>Color</span>
-      <span item-end [ngStyle]="{'background-color': wallet?.color}" class="settings-color-block"></span>
-    </button>
-    <ion-item>
-      <ion-label>{{'Hide Balance' | translate}}</ion-label>
-      <ion-toggle [(ngModel)]="hiddenBalance" (ionChange)="hiddenBalanceChange()"></ion-toggle>
-    </ion-item>
-    <ion-item-divider>{{'Security' | translate}}</ion-item-divider>
-    <button ion-item (click)="openBackupSettings()">
-      <span translate>Backup</span>
-      <ion-note *ngIf="needsBackup" class="wallet-warning" item-end>
-        {{'Paper key unverified' | translate}}
-      </ion-note>
-    </button>
-    <div *ngIf="canSign">
-      <ion-item>
-        <ion-label>{{'Request Encrypt Password' | translate}}</ion-label>
-        <ion-toggle [(ngModel)]="encryptEnabled" (ionChange)="encryptChange()" [disabled]="(needsBackup || !wallet.isComplete()) && !encryptEnabled"></ion-toggle>
-      </ion-item>
-      <ion-item-divider>
-        <span class="item-text" translate>
-          If enabled, all sensitive information (private key and recovery phrase) and actions (spending and exporting) associated with
-          this wallet will be protected.
-        </span>
-        <a (click)="openSupportSpendingPassword()" translate>Learn more</a>
-      </ion-item-divider>
-    </div>
-    <div *ngIf="canSign && touchIdAvailable">
-      <ion-item>
-        <ion-label [ngClass]="{'disabled': needsBackup}">{{'Request Fingerprint'| translate}}</ion-label>
-        <ion-toggle [(ngModel)]="touchIdEnabled" (ionChange)="touchIdChange()"></ion-toggle>
-      </ion-item>
+<wide-header-page [headerColor]="wallet && wallet.color" title="Preferences">
+  <div page-content>
+    <ion-list class="settings-list">
       <ion-item-divider></ion-item-divider>
-    </div>
-    <button ion-item (click)="openAdvancedSettings()">
-      <span translate>More Options</span>
-    </button>
-    <ion-item-divider></ion-item-divider>
-  </ion-list>
-
-</ion-content>
+      <button ion-item (click)="openWalletName()">
+        <div translate float-left>Name</div>
+        <div text-end text-wrap ion-text color="light-grey">
+          {{wallet && wallet.name}}
+        </div>
+      </button>
+      <button ion-item (click)="openWalletColor()">
+        <span translate>Color</span>
+        <span item-end [ngStyle]="{'background-color': wallet?.color}" class="settings-color-block"></span>
+      </button>
+      <ion-item>
+        <ion-label>{{'Hide Balance' | translate}}</ion-label>
+        <ion-toggle [(ngModel)]="hiddenBalance" (ionChange)="hiddenBalanceChange()"></ion-toggle>
+      </ion-item>
+      <ion-item-divider>{{'Security' | translate}}</ion-item-divider>
+      <button ion-item (click)="openBackupSettings()" [ngClass]="{warn: needsBackup}">
+        <span translate>Paper/Master Key</span>
+        <ion-note *ngIf="needsBackup" class="wallet-warning" item-end>
+          {{'Unverified' | translate}}
+        </ion-note>
+      </button>
+      <div *ngIf="canSign && touchIdAvailable">
+        <ion-item>
+          <ion-label [ngClass]="{'disabled': needsBackup}">{{'Request Fingerprint'| translate}}</ion-label>
+          <ion-toggle [(ngModel)]="touchIdEnabled" (ionChange)="touchIdChange()"></ion-toggle>
+        </ion-item>
+      </div>
+      <div *ngIf="canSign">
+        <ion-item>
+          <ion-label>{{'Request Encrypt Password' | translate}}</ion-label>
+          <ion-toggle [(ngModel)]="encryptEnabled" (ionChange)="encryptChange()" [disabled]="(needsBackup || !wallet.isComplete()) && !encryptEnabled"></ion-toggle>
+        </ion-item>
+        <label-tip type="info">
+          <span label-tip-title>Password Not Recoverable</span>
+          <div label-tip-body>
+            This password cannot be recovered. If this password is lost, funds can only be recovered by re-importing your 12-word paper
+            key.
+            <br>
+            <a class="label-tip-link" (click)="openSupportSpendingPassword()">Learn More</a>
+          </div>
+        </label-tip>
+      </div>
+      <ion-item-divider>{{'Advanced' | translate}}</ion-item-divider>
+      <button ion-item (click)="openWalletInformation()">
+        <span translate>Wallet Information</span>
+      </button>
+      <button ion-item (click)="openWalletAddresses()">
+        <span translate>Wallet Addresses</span>
+      </button>
+      <button ion-item (click)="openExportWallet()">
+        <span translate>Export Wallet</span>
+      </button>
+      <button ion-item (click)="openWalletServiceUrl()">
+        <span translate>Wallet Service URL</span>
+      </button>
+      <button ion-item (click)="openTransactionHistory()">
+        <span translate>Transaction History</span>
+      </button>
+      <button ion-item *ngIf="wallet && wallet.network == 'livenet' && wallet.isComplete() && wallet.coin == 'btc'" (click)="openBitcoinCashPage()">
+        <span translate>Duplicate ( Bitcoin Cash )</span>
+      </button>
+      <button ion-item (click)="openDeleteWallet()">
+        <span translate>Delete Wallet</span>
+      </button>
+      <ion-item-divider></ion-item-divider>
+    </ion-list>
+  </div>
+</wide-header-page>

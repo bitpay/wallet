@@ -1,0 +1,21 @@
+<ion-header class="wide-header" [ngClass]="{cordova: platformProvider.isCordova}">
+  <ion-navbar [navbar-bg]="headerColor">
+    <ion-title>
+      <div [reveal-at-scroll-pos]="expandableHeader.headerHeight" [scrollArea]="scrollArea">
+        {{title | translate}}
+      </div>
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+<ion-content #scrollArea [ios-scroll-bg-color]="headerColor">
+  <div class="wrapper">
+    <expandable-header [scrollArea]="scrollArea" [fadeFactor]="5" #expandableHeader>
+      <ion-toolbar [navbar-bg]="headerColor" class="wide-header__title">
+        <expandable-header-primary>
+          {{title | translate}}
+        </expandable-header-primary>
+      </ion-toolbar>
+    </expandable-header>
+    <ng-content select="[page-content]"></ng-content>
+  </div>
+</ion-content>

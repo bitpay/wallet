@@ -5,7 +5,7 @@
 </ion-header>
 <ion-content>
   <page-wallet-item *ngIf="wallet" [wallet]="wallet"></page-wallet-item>
-  <ion-list>
+  <ion-list class="settings-list">
     <ion-item-divider></ion-item-divider>
     <ion-item (click)="saveBlack()">
       <div translate float-left>Name (at creation)</div>

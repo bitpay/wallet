@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Events, NavController, NavParams } from 'ionic-angular';
+import { NavController, NavParams } from 'ionic-angular';
 import * as _ from 'lodash';
 import * as papa from 'papaparse';
 import { Logger } from '../../../../../providers/logger/logger';
@@ -33,7 +33,6 @@ export class WalletTransactionHistoryPage {
   private currency: string;
 
   constructor(
-    private events: Events,
     private profileProvider: ProfileProvider,
     private navCtrl: NavController,
     private navParams: NavParams,
@@ -187,8 +186,6 @@ export class WalletTransactionHistoryPage {
     this.logger.info('Removing Transaction history ' + this.wallet.id);
     this.walletProvider.clearTxHistory(this.wallet);
     this.logger.info('Transaction history cleared for :' + this.wallet.id);
-    await this.navCtrl.popToRoot({ animate: false });
-    await this.navCtrl.parent.select(0);
-    this.events.publish('OpenWallet', this.wallet);
+    return this.navCtrl.popToRoot();
   }
 }

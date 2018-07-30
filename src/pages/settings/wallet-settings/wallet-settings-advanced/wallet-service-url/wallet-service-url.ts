@@ -108,8 +108,7 @@ export class WalletServiceUrlPage {
       this.wallet.credentials.walletId
     );
     this.events.publish('wallet:updated', this.wallet.credentials.walletId);
-    this.navCtrl.popToRoot({ animate: false }).then(() => {
-      this.navCtrl.parent.select(0);
+    this.navCtrl.popToRoot().then(() => {
       this.reload();
     });
   }

@@ -348,6 +348,9 @@ ion-icon {
   &[class*='tab-send'] {
     mask-image: url(../assets/img/tab-icons/ico-send.svg);
   }
+  &[class*='tab-button-back'] {
+    mask-image: url(../assets/img/button-back.svg);
+  }
 }
 
 .button-standard {
@@ -423,14 +426,12 @@ ion-alert .alert-message {
   }
 }
 
-ion-header {
-  button.modal-close-button {
-    font-size: 16px;
-    font-weight: 400;
+button.modal-close-button {
+  font-size: 16px;
+  font-weight: 400;
 
-    ion-icon {
-      font-size: 20px;
-    }
+  ion-icon {
+    font-size: 26px;
   }
 }
 

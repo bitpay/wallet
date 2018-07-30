@@ -30,19 +30,31 @@ export class ExpandableHeaderComponent {
   @ContentChild(ExpandableHeaderFooterComponent)
   footerContent: ExpandableHeaderFooterComponent;
 
+  /**
+   * The instance of ion-content to which the expandable header
+   * will react based on user scrolling.
+   */
   @Input('scrollArea') scrollArea: Content;
 
+  /**
+   * Determines how quickly the content fades out on scroll. The
+   * greater the value, the quicker the fade.
+   */
+  @Input() fadeFactor: number = 2.5;
+
+  /**
+   * The height of the entire component based on its' content.
+   */
   headerHeight: number;
-  setTransformTo2dTimeout: NodeJS.Timer;
+
+  private setTransformTo2dTimeout: NodeJS.Timer;
 
   constructor(public element: ElementRef, public renderer: Renderer) {}
 
   ngOnInit() {
-    this.scrollArea.ionScroll.subscribe(event => {
-      event.domWrite(() => {
-        this.applyTransforms(event.scrollTop);
-      });
-    });
+    this.scrollArea.ionScroll.subscribe(event =>
+      event.domWrite(() => this.applyTransforms(event.scrollTop))
+    );
   }
 
   ngAfterViewInit() {
@@ -72,7 +84,7 @@ export class ExpandableHeaderComponent {
 
   computeTransformations(scrollTop: number): number[] {
     const newHeaderHeight = this.getNewHeaderHeight(scrollTop);
-    const opacity = this.getScaleValue(newHeaderHeight, 2.5);
+    const opacity = this.getScaleValue(newHeaderHeight, this.fadeFactor);
     const scale = this.getScaleValue(newHeaderHeight, 0.5);
     const translateY = scrollTop > 0 ? scrollTop / 1.5 : 0;
     return [opacity, scale, translateY];

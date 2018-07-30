@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="24px" height="20px" viewBox="0 0 24 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 51.1 (57501) - http://www.bohemiancoding.com/sketch -->
+    <title>Left-Controler</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Header/Large" transform="translate(-20.000000, -32.000000)" stroke="#FFFFFF">
+            <g id="Left-Controler">
+                <g id="Icons/Small-(20px)/Controls/Back-(white)" transform="translate(20.000000, 32.000000)">
+                    <g id="Icons/Small-(20px)/Controls/back-(white)" transform="translate(1.000000, 1.000000)">
+                        <path d="M23,8.5 L1,8.5" id="Shape" stroke-width="2"></path>
+                        <polyline id="Shape" stroke-width="2" stroke-linecap="square" points="9 17 0 8.5 9 0"></polyline>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
