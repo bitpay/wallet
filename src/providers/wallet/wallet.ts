@@ -1339,12 +1339,12 @@ export class WalletProvider {
       );
       this.askPassword(warnMsg, title)
         .then((password: string) => {
-          if (!password) return reject(this.translate.instant('no password'));
+          if (!password) return reject(this.translate.instant('No password'));
           title = this.translate.instant('Confirm your new encrypt password');
           this.askPassword(warnMsg, title)
             .then((password2: string) => {
               if (!password2 || password != password2)
-                return reject(this.translate.instant('password mismatch'));
+                return reject(this.translate.instant('Password mismatch'));
               wallet.encryptPrivateKey(password);
               return resolve();
             })
@@ -1365,11 +1365,11 @@ export class WalletProvider {
         null,
         this.translate.instant('Enter encrypt password')
       ).then((password: string) => {
-        if (!password) return reject(this.translate.instant('no password'));
+        if (!password) return reject(this.translate.instant('No password'));
         try {
           wallet.decryptPrivateKey(password);
         } catch (e) {
-          return reject(e);
+          return reject(this.translate.instant('Wrong password'));
         }
         return resolve();
       });

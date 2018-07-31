@@ -89,7 +89,7 @@ export class WalletInformationPage {
     opts.colorFor[this.wallet.credentials.walletId] = color;
     this.configProvider.set(opts);
     this.events.publish('wallet:updated', this.wallet.credentials.walletId);
-    this.app.getRootNavs()[0].setRoot(TabsPage);
+    this.navCtrl.popToRoot();
   }
 
   public openWalletExtendedPrivateKey(): void {

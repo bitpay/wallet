@@ -9,11 +9,11 @@ import { Clipboard } from '@ionic-native/clipboard';
 import { SocialSharing } from '@ionic-native/social-sharing';
 
 // providers
+import { ActionSheetProvider } from '../../../../../providers/action-sheet/action-sheet';
 import { AppProvider } from '../../../../../providers/app/app';
 import { BackupProvider } from '../../../../../providers/backup/backup';
 import { PersistenceProvider } from '../../../../../providers/persistence/persistence';
 import { PlatformProvider } from '../../../../../providers/platform/platform';
-import { PopupProvider } from '../../../../../providers/popup/popup';
 import { ProfileProvider } from '../../../../../providers/profile/profile';
 import { WalletProvider } from '../../../../../providers/wallet/wallet';
 import { TabsPage } from '../../../../tabs/tabs';
@@ -45,7 +45,6 @@ export class WalletExportPage {
     private walletProvider: WalletProvider,
     private navParams: NavParams,
     private formBuilder: FormBuilder,
-    private popupProvider: PopupProvider,
     private logger: Logger,
     private persistenceProvider: PersistenceProvider,
     private backupProvider: BackupProvider,
@@ -54,7 +53,8 @@ export class WalletExportPage {
     private appProvider: AppProvider,
     private clipboard: Clipboard,
     public toastCtrl: ToastController,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private actionSheetProvider: ActionSheetProvider
   ) {
     this.exportWalletForm = this.formBuilder.group(
       {
@@ -131,11 +131,13 @@ export class WalletExportPage {
             this.segments = 'qr-code';
           })
           .catch((err: string) => {
-            this.popupProvider.ionicAlert(this.translate.instant('Error'), err);
+            let title = this.translate.instant('Error');
+            this.showErrorInfoSheet(err, title);
           });
       })
       .catch((err: string) => {
-        this.popupProvider.ionicAlert(this.translate.instant('Error'), err);
+        let title = this.translate.instant('Error');
+        this.showErrorInfoSheet(err, title);
       });
   }
 
@@ -180,21 +182,20 @@ export class WalletExportPage {
                 this.app.getRootNavs()[0].setRoot(TabsPage);
               })
               .catch(() => {
-                this.popupProvider.ionicAlert(
-                  this.translate.instant('Error'),
-                  this.translate.instant('Failed to export')
-                );
+                let title = this.translate.instant('Error');
+                let err = this.translate.instant('Failed to export');
+                this.showErrorInfoSheet(err, title);
               });
           })
           .catch(() => {
-            this.popupProvider.ionicAlert(
-              this.translate.instant('Error'),
-              this.translate.instant('Failed to export')
-            );
+            let title = this.translate.instant('Error');
+            let err = this.translate.instant('Failed to export');
+            this.showErrorInfoSheet(err, title);
           });
       })
       .catch((err: string) => {
-        this.popupProvider.ionicAlert(this.translate.instant('Error'), err);
+        let title = this.translate.instant('Error');
+        this.showErrorInfoSheet(err, title);
       });
   }
 
@@ -239,23 +240,22 @@ export class WalletExportPage {
                 this.navParams.data.walletId
               );
               if (!ew) {
-                this.popupProvider.ionicAlert(
-                  this.translate.instant('Error'),
-                  this.translate.instant('Failed to export')
-                );
+                let title = this.translate.instant('Error');
+                let err = this.translate.instant('Failed to export');
+                this.showErrorInfoSheet(err, title);
               }
               return resolve(ew);
             })
             .catch(() => {
-              this.popupProvider.ionicAlert(
-                this.translate.instant('Error'),
-                this.translate.instant('Failed to export')
-              );
+              let title = this.translate.instant('Error');
+              let err = this.translate.instant('Failed to export');
+              this.showErrorInfoSheet(err, title);
               return resolve();
             });
         })
         .catch((err: string) => {
-          this.popupProvider.ionicAlert(this.translate.instant('Error'), err);
+          let title = this.translate.instant('Error');
+          this.showErrorInfoSheet(err, title);
           return resolve();
         });
     });
@@ -318,5 +318,17 @@ export class WalletExportPage {
         null // FILES: can be null, a string, or an array
       );
     });
+  }
+
+  private showErrorInfoSheet(
+    err: Error | string,
+    infoSheetTitle: string
+  ): void {
+    this.logger.warn(err);
+    const errorInfoSheet = this.actionSheetProvider.createInfoSheet(
+      'default-error',
+      { msg: err, title: infoSheetTitle }
+    );
+    errorInfoSheet.present();
   }
 }
