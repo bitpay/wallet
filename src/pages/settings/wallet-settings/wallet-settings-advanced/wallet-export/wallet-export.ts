@@ -131,13 +131,11 @@ export class WalletExportPage {
             this.segments = 'qr-code';
           })
           .catch((err: string) => {
-            let title = this.translate.instant('Error');
-            this.showErrorInfoSheet(err, title);
+            if (err) this.showErrorInfoSheet(err);
           });
       })
       .catch((err: string) => {
-        let title = this.translate.instant('Error');
-        this.showErrorInfoSheet(err, title);
+        if (err) this.showErrorInfoSheet(err);
       });
   }
 
@@ -182,20 +180,15 @@ export class WalletExportPage {
                 this.app.getRootNavs()[0].setRoot(TabsPage);
               })
               .catch(() => {
-                let title = this.translate.instant('Error');
-                let err = this.translate.instant('Failed to export');
-                this.showErrorInfoSheet(err, title);
+                this.showErrorInfoSheet();
               });
           })
           .catch(() => {
-            let title = this.translate.instant('Error');
-            let err = this.translate.instant('Failed to export');
-            this.showErrorInfoSheet(err, title);
+            this.showErrorInfoSheet();
           });
       })
       .catch((err: string) => {
-        let title = this.translate.instant('Error');
-        this.showErrorInfoSheet(err, title);
+        if (err) this.showErrorInfoSheet(err);
       });
   }
 
@@ -240,22 +233,17 @@ export class WalletExportPage {
                 this.navParams.data.walletId
               );
               if (!ew) {
-                let title = this.translate.instant('Error');
-                let err = this.translate.instant('Failed to export');
-                this.showErrorInfoSheet(err, title);
+                this.showErrorInfoSheet();
               }
               return resolve(ew);
             })
             .catch(() => {
-              let title = this.translate.instant('Error');
-              let err = this.translate.instant('Failed to export');
-              this.showErrorInfoSheet(err, title);
+              this.showErrorInfoSheet();
               return resolve();
             });
         })
         .catch((err: string) => {
-          let title = this.translate.instant('Error');
-          this.showErrorInfoSheet(err, title);
+          if (err) this.showErrorInfoSheet(err);
           return resolve();
         });
     });
@@ -320,15 +308,13 @@ export class WalletExportPage {
     });
   }
 
-  private showErrorInfoSheet(
-    err: Error | string,
-    infoSheetTitle: string
-  ): void {
-    if (!err) return;
+  private showErrorInfoSheet(err?: Error | string): void {
+    let title = this.translate.instant('Error');
+    let msg = err ? err : this.translate.instant('Failed to export');
     this.logger.warn(err);
     const errorInfoSheet = this.actionSheetProvider.createInfoSheet(
       'default-error',
-      { msg: err, title: infoSheetTitle }
+      { msg, title }
     );
     errorInfoSheet.present();
   }
