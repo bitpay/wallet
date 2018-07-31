@@ -15,7 +15,7 @@ import {
 
 // providers
 import { AddressBookProvider } from '../../../../providers/address-book/address-book';
-import { BwcProvider } from '../../../../providers/bwc/bwc';
+import { AddressProvider } from '../../../../providers/address/address';
 import { Logger } from '../../../../providers/logger/logger';
 
 // validators
@@ -37,8 +37,8 @@ export class AddressbookAddPage {
     private navParams: NavParams,
     private events: Events,
     private alertCtrl: AlertController,
-    private bwc: BwcProvider,
     private ab: AddressBookProvider,
+    private addressProvider: AddressProvider,
     private formBuilder: FormBuilder,
     private logger: Logger
   ) {
@@ -55,7 +55,7 @@ export class AddressbookAddPage {
         '',
         Validators.compose([
           Validators.required,
-          new AddressValidator(this.bwc).isValid
+          new AddressValidator(this.addressProvider).isValid
         ])
       ]
     });

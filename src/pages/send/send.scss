@@ -40,6 +40,8 @@ page-send {
     background-color: #f2f2f2;
     display: flex;
     align-items: baseline;
+    border: 1px solid #f2f2f2;
+    border-radius: 4px;
     .item-inner {
       margin-left: 0rem !important;
       border-bottom: 0px !important;
@@ -65,5 +67,10 @@ page-send {
         background: #cccccc;
       }
     }
+  }
+  .invalid {
+    border: 1px solid color($colors, error);
+    color: color($colors, error);
+    background-color: #fff6f7;
   }
 }
