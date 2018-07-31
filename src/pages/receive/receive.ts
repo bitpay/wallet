@@ -66,6 +66,9 @@ export class ReceivePage extends WalletTabsChild {
       let infoSheetType: InfoSheetType = 'paper-key-unverified';
       const infoSheet = this.actionSheetProvider.createInfoSheet(infoSheetType);
       infoSheet.present();
+      infoSheet.onDidDismiss(option => {
+        if (option) this.goToBackup();
+      });
     }
   }
 

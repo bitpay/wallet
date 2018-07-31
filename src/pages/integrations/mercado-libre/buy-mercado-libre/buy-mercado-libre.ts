@@ -136,8 +136,12 @@ export class BuyMercadoLibrePage {
     let per = (fee / (amount + fee)) * 100;
 
     if (per > this.FEE_TOO_HIGH_LIMIT_PER) {
-      const feeWarningModal = this.popupProvider.createMiniModal('fee-warning');
-      feeWarningModal.present();
+      const coinName = this.wallet.coin === 'btc' ? 'Bitcoin' : 'Bitcoin Cash';
+      const minerFeeInfoSheet = this.actionSheetProvider.createInfoSheet(
+        'miner-fee',
+        { coinName }
+      );
+      minerFeeInfoSheet.present();
     }
   }
 

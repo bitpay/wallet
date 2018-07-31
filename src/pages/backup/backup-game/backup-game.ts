@@ -14,7 +14,10 @@ import { Logger } from '../../../providers/logger/logger';
 import { DisclaimerPage } from '../../onboarding/disclaimer/disclaimer';
 
 // providers
-import { ActionSheetProvider } from '../../../providers/action-sheet/action-sheet';
+import {
+  ActionSheetProvider,
+  InfoSheetType
+} from '../../../providers/action-sheet/action-sheet';
 import { BwcProvider } from '../../../providers/bwc/bwc';
 import { OnGoingProcessProvider } from '../../../providers/on-going-process/on-going-process';
 import { PopupProvider } from '../../../providers/popup/popup';
@@ -58,7 +61,7 @@ export class BackupGamePage {
     private onGoingProcessProvider: OnGoingProcessProvider,
     private popupProvider: PopupProvider,
     private translate: TranslateService,
-    private actionSheetProvider: ActionSheetProvider
+    public actionSheetProvider: ActionSheetProvider
   ) {
     this.walletId = this.navParams.get('walletId');
     this.fromOnboarding = this.navParams.get('fromOnboarding');
@@ -259,9 +262,15 @@ export class BackupGamePage {
     this.confirm()
       .then(() => {
         this.onGoingProcessProvider.clear();
-        const modal = this.popupProvider.createMiniModal('backup-ready');
-        modal.present({ animate: false });
-        modal.onDidDismiss(() => {
+        const walletType =
+          this.wallet.coin === 'btc' ? 'bitcoin' : 'bitcoin cash';
+        let infoSheetType: InfoSheetType = 'backup-ready';
+        const infoSheet = this.actionSheetProvider.createInfoSheet(
+          infoSheetType,
+          { walletType }
+        );
+        infoSheet.present();
+        infoSheet.onDidDismiss(() => {
           if (this.fromOnboarding) {
             this.navCtrl.push(DisclaimerPage);
           } else {

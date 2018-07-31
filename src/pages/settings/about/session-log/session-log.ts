@@ -7,10 +7,13 @@ import { ActionSheetController, ToastController } from 'ionic-angular';
 import { SocialSharing } from '@ionic-native/social-sharing';
 
 // providers
+import {
+  ActionSheetProvider,
+  InfoSheetType
+} from '../../../../providers/action-sheet/action-sheet';
 import { ConfigProvider } from '../../../../providers/config/config';
 import { Logger } from '../../../../providers/logger/logger';
 import { PlatformProvider } from '../../../../providers/platform/platform';
-import { PopupProvider } from '../../../../providers/popup/popup';
 
 import * as _ from 'lodash';
 
@@ -36,7 +39,7 @@ export class SessionLogPage {
     private toastCtrl: ToastController,
     private platformProvider: PlatformProvider,
     private translate: TranslateService,
-    private popupProvider: PopupProvider
+    private actionSheetProvider: ActionSheetProvider
   ) {
     this.dom = dom;
     this.config = this.configProvider.get();
@@ -146,12 +149,11 @@ export class SessionLogPage {
   }
 
   private showWarningModal() {
-    const sessionLogWarningModal = this.popupProvider.createMiniModal(
-      'sensitive-info'
-    );
-    sessionLogWarningModal.present();
-    sessionLogWarningModal.onDidDismiss(response => {
-      if (response) this.isCordova ? this.sendLogs() : this.copyToClipboard();
+    let infoSheetType: InfoSheetType = 'sensitive-info';
+    const infoSheet = this.actionSheetProvider.createInfoSheet(infoSheetType);
+    infoSheet.present();
+    infoSheet.onDidDismiss(option => {
+      if (option) this.isCordova ? this.sendLogs() : this.copyToClipboard();
     });
   }
 }
