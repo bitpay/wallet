@@ -98,7 +98,6 @@ export class WalletSettingsPage {
           this.logger.debug('Wallet encrypted');
         })
         .catch(err => {
-          this.logger.warn('Could not encrypt wallet: ', err);
           this.encryptEnabled = false;
           let title = this.translate.instant('Could not encrypt wallet');
           this.showErrorInfoSheet(err, title);
@@ -113,7 +112,6 @@ export class WalletSettingsPage {
           this.logger.debug('Wallet decrypted');
         })
         .catch(err => {
-          this.logger.warn('Could not decrypt wallet: ', err);
           this.encryptEnabled = true;
           let title = this.translate.instant('Could not decrypt wallet');
           this.showErrorInfoSheet(err, title);
@@ -125,6 +123,8 @@ export class WalletSettingsPage {
     err: Error | string,
     infoSheetTitle: string
   ): void {
+    if (!err) return;
+    this.logger.warn('Could not encrypt/decrypt wallet:', err);
     const errorInfoSheet = this.actionSheetProvider.createInfoSheet(
       'default-error',
       { msg: err, title: infoSheetTitle }

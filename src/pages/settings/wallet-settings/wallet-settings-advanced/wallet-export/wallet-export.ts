@@ -324,6 +324,7 @@ export class WalletExportPage {
     err: Error | string,
     infoSheetTitle: string
   ): void {
+    if (!err) return;
     this.logger.warn(err);
     const errorInfoSheet = this.actionSheetProvider.createInfoSheet(
       'default-error',

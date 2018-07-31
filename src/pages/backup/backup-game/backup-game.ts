@@ -84,7 +84,6 @@ export class BackupGamePage {
         this.setFlow();
       })
       .catch(err => {
-        this.logger.warn('Could not get keys: ', err);
         let title = this.translate.instant('Could not decrypt wallet');
         this.showErrorInfoSheet(err, title);
         this.navCtrl.pop();
@@ -107,6 +106,8 @@ export class BackupGamePage {
     err: Error | string,
     infoSheetTitle: string
   ): void {
+    if (!err) return;
+    this.logger.warn('Could not get keys:', err);
     const errorInfoSheet = this.actionSheetProvider.createInfoSheet(
       'default-error',
       { msg: err, title: infoSheetTitle }

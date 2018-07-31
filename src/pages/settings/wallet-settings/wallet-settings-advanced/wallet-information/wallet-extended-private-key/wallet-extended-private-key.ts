@@ -44,7 +44,6 @@ export class WalletExtendedPrivateKeyPage {
         this.credentialsEncrypted = false;
       })
       .catch(err => {
-        this.logger.error('Could not get keys: ', err);
         let title = this.translate.instant('Could not decrypt wallet');
         this.showErrorInfoSheet(err, title);
         this.navCtrl.pop();
@@ -55,6 +54,8 @@ export class WalletExtendedPrivateKeyPage {
     err: Error | string,
     infoSheetTitle: string
   ): void {
+    if (!err) return;
+    this.logger.error('Could not get keys:', err);
     const errorInfoSheet = this.actionSheetProvider.createInfoSheet(
       'default-error',
       { msg: err, title: infoSheetTitle }
