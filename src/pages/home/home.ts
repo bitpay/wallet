@@ -35,6 +35,7 @@ import { EmailNotificationsProvider } from '../../providers/email-notifications/
 import { ExternalLinkProvider } from '../../providers/external-link/external-link';
 import { FeedbackProvider } from '../../providers/feedback/feedback';
 import { HomeIntegrationsProvider } from '../../providers/home-integrations/home-integrations';
+import { IncomingDataProvider } from '../../providers/incoming-data/incoming-data';
 import { Logger } from '../../providers/logger/logger';
 import { OnGoingProcessProvider } from '../../providers/on-going-process/on-going-process';
 import { PersistenceProvider } from '../../providers/persistence/persistence';
@@ -69,6 +70,7 @@ export class HomePage {
   public bitpayCardItems;
   public showBitPayCard: boolean = false;
   public showAnnouncement: boolean = false;
+  public inputData: string;
 
   public showRateCard: boolean;
   public homeTip: boolean;
@@ -106,7 +108,8 @@ export class HomePage {
     private translate: TranslateService,
     private emailProvider: EmailNotificationsProvider,
     private replaceParametersProvider: ReplaceParametersProvider,
-    private amazonProvider: AmazonProvider
+    private amazonProvider: AmazonProvider,
+    private incomingDataProvider: IncomingDataProvider
   ) {
     this.updatingWalletId = {};
     this.addressbook = {};
@@ -179,6 +182,9 @@ export class HomePage {
         this.bitpayCardItems = cards;
       });
     });
+
+    // Clear Input
+    this.inputData = '';
   }
 
   ionViewDidLoad() {
@@ -629,5 +635,11 @@ export class HomePage {
 
   public settings() {
     this.navCtrl.push(SettingsPage);
+  }
+
+  public redir(url: string): void {
+    if (!this.incomingDataProvider.redir(url)) {
+      this.logger.warn('Unknown URL! : ' + url);
+    }
   }
 }

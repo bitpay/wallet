@@ -3,6 +3,12 @@ page-home {
   ion-content .fixed-content {
     background: $toolbar-background;
   }
+  .redir-input {
+    width: 92%;
+    overflow: hidden;
+    margin: 20px auto;
+    border-radius: 3px;
+  }
   .home-logo {
     height: 24px;
     position: relative;

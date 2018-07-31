@@ -24,6 +24,10 @@
       </div>
     </div>
 
+    <ion-item class="redir-input">
+      <ion-input type="text" placeholder="{{'Enter a Payment URL, bitcoin address' | translate}}" [(ngModel)]="inputData" (ngModelChange)="redir(inputData)"></ion-input>
+    </ion-item>
+
     <ion-card *ngIf="serverMessage">
       <ion-item>
         <div>{{serverMessage.title}}</div>
