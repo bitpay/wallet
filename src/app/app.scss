@@ -470,24 +470,3 @@ button.modal-close-button {
   margin-right: 12px;
   vertical-align: middle;
 }
-
-ion-title .toolbar-title {
-  font-weight: 400;
-}
-
-ion-navbar {
-  .ios & {
-    padding-left: 15px;
-    padding-top: calc(5px + env(safe-area-inset-top));
-
-    ion-title {
-      padding-top: env(safe-area-inset-top);
-    }
-  }
-}
-
-ion-toolbar {
-  .ios & {
-    padding-left: 15px;
-  }
-}

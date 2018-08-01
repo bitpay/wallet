@@ -2,6 +2,10 @@ wide-header-page {
   @include fix-ios-bg-scroll();
 
   .wide-header {
+    ion-title .toolbar-title {
+      font-weight: 400;
+    }
+
     &__title {
       color: white;
       font-size: 25px;
@@ -9,6 +13,15 @@ wide-header-page {
       padding-top: 30px;
       padding-bottom: 20px;
       padding-left: 20px;
+    }
+
+    ion-navbar {
+      .ios & {
+        padding-top: calc(5px + env(safe-area-inset-top));
+        ion-title {
+          padding-top: env(safe-area-inset-top);
+        }
+      }
     }
 
     &.cordova {
