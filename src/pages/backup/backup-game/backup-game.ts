@@ -14,6 +14,7 @@ import { Logger } from '../../../providers/logger/logger';
 import { DisclaimerPage } from '../../onboarding/disclaimer/disclaimer';
 
 // providers
+import { ActionSheetProvider } from '../../../providers/action-sheet/action-sheet';
 import { BwcProvider } from '../../../providers/bwc/bwc';
 import { OnGoingProcessProvider } from '../../../providers/on-going-process/on-going-process';
 import { PopupProvider } from '../../../providers/popup/popup';
@@ -56,7 +57,8 @@ export class BackupGamePage {
     private bwcProvider: BwcProvider,
     private onGoingProcessProvider: OnGoingProcessProvider,
     private popupProvider: PopupProvider,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private actionSheetProvider: ActionSheetProvider
   ) {
     this.walletId = this.navParams.get('walletId');
     this.fromOnboarding = this.navParams.get('fromOnboarding');
@@ -75,14 +77,15 @@ export class BackupGamePage {
       .getKeys(this.wallet)
       .then(keys => {
         if (_.isEmpty(keys)) {
-          this.logger.error('Empty keys');
+          this.logger.warn('Empty keys');
         }
         this.credentialsEncrypted = false;
         this.keys = keys;
         this.setFlow();
       })
       .catch(err => {
-        this.logger.error('Could not get keys: ', err);
+        let title = this.translate.instant('Could not decrypt wallet');
+        this.showErrorInfoSheet(err, title);
         this.navCtrl.pop();
       });
   }
@@ -97,6 +100,19 @@ export class BackupGamePage {
 
   ionViewDidLoad() {
     if (this.slides) this.slides.lockSwipes(true);
+  }
+
+  private showErrorInfoSheet(
+    err: Error | string,
+    infoSheetTitle: string
+  ): void {
+    if (!err) return;
+    this.logger.warn('Could not get keys:', err);
+    const errorInfoSheet = this.actionSheetProvider.createInfoSheet(
+      'default-error',
+      { msg: err, title: infoSheetTitle }
+    );
+    errorInfoSheet.present();
   }
 
   private shuffledWords(words: string[]) {

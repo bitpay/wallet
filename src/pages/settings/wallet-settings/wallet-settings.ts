@@ -4,6 +4,7 @@ import { NavController, NavParams } from 'ionic-angular';
 import { Logger } from '../../../providers/logger/logger';
 
 // providers
+import { ActionSheetProvider } from '../../../providers/action-sheet/action-sheet';
 import { ConfigProvider } from '../../../providers/config/config';
 import { ExternalLinkProvider } from '../../../providers/external-link/external-link';
 import { ProfileProvider } from '../../../providers/profile/profile';
@@ -48,7 +49,8 @@ export class WalletSettingsPage {
     private navCtrl: NavController,
     private navParams: NavParams,
     private touchIdProvider: TouchIdProvider,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private actionSheetProvider: ActionSheetProvider
   ) {}
 
   ionViewDidLoad() {
@@ -96,8 +98,9 @@ export class WalletSettingsPage {
           this.logger.debug('Wallet encrypted');
         })
         .catch(err => {
-          this.logger.warn('Could not encrypt wallet', err);
           this.encryptEnabled = false;
+          let title = this.translate.instant('Could not encrypt wallet');
+          this.showErrorInfoSheet(err, title);
         });
     } else if (!val && this.walletProvider.isEncrypted(this.wallet)) {
       this.walletProvider
@@ -109,10 +112,24 @@ export class WalletSettingsPage {
           this.logger.debug('Wallet decrypted');
         })
         .catch(err => {
-          this.logger.warn('Could not decrypt wallet', err);
           this.encryptEnabled = true;
+          let title = this.translate.instant('Could not decrypt wallet');
+          this.showErrorInfoSheet(err, title);
         });
     }
+  }
+
+  private showErrorInfoSheet(
+    err: Error | string,
+    infoSheetTitle: string
+  ): void {
+    if (!err) return;
+    this.logger.warn('Could not encrypt/decrypt wallet:', err);
+    const errorInfoSheet = this.actionSheetProvider.createInfoSheet(
+      'default-error',
+      { msg: err, title: infoSheetTitle }
+    );
+    errorInfoSheet.present();
   }
 
   public openSupportSpendingPassword(): void {

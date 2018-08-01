@@ -689,6 +689,7 @@ export class ConfirmPage extends WalletTabsChild {
     title?: string,
     exit?: boolean
   ): void {
+    if (!error) return;
     this.logger.warn('ERROR:', error);
     if (this.isCordova) this.slideButton.isConfirmed(false);
     if ((error as Error).message === TouchIdErrors.fingerprintCancelled) return;
