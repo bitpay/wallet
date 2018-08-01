@@ -1,10 +1,9 @@
 <ion-header>
-  <ion-navbar>
+  <ion-navbar [navbar-bg]="wallet?.color">
     <ion-title>{{'Wallet Information' | translate}}</ion-title>
   </ion-navbar>
 </ion-header>
 <ion-content>
-  <page-wallet-item *ngIf="wallet" [wallet]="wallet"></page-wallet-item>
   <ion-list class="settings-list">
     <ion-item-divider></ion-item-divider>
     <ion-item (click)="saveBlack()">

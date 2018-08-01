@@ -1,13 +1,10 @@
 <ion-header>
-  <ion-navbar>
+  <ion-navbar [navbar-bg]="wallet?.color">
     <ion-title>{{'Transaction History' | translate}}</ion-title>
   </ion-navbar>
 </ion-header>
 <ion-content>
-  <page-wallet-item [wallet]="wallet"></page-wallet-item>
-
   <ion-list>
-    <ion-item-divider></ion-item-divider>
     <button ion-button class="button-standard" *ngIf="!isCordova" (click)="downloadCSV()" [disabled]="!csvReady">
       <span *ngIf="csvReady" translate>Export to file</span>
       <span *ngIf="!csvReady && !err">

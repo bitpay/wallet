@@ -204,7 +204,8 @@ export class WalletAddressesPage {
       noBalance: this.noBalance,
       withBalance: this.withBalance,
       coin: this.wallet.coin,
-      walletName: this.wallet.name
+      walletName: this.wallet.name,
+      walletColor: this.wallet.color
     });
     modal.present();
   }

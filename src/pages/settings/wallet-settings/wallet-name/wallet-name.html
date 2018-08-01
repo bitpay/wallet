@@ -1,18 +1,17 @@
 <ion-header>
-  <ion-navbar>
+  <ion-navbar [navbar-bg]="wallet?.color">
     <ion-title>{{'Wallet Name' | translate}}</ion-title>
   </ion-navbar>
 </ion-header>
 
 <ion-content>
-  <page-wallet-item [wallet]="wallet"></page-wallet-item>
   <ion-list class="settings-list">
-    <ion-item-divider class="settings-explanation">
+    <div class="settings-explanation">
       <div class="settings-heading" translate>What do you call this wallet?</div>
       <div class="settings-description">
         {{description}}
       </div>
-    </ion-item-divider>
+    </div>
     <form [formGroup]="walletNameForm">
       <ion-item>
         <ion-label stacked>{{'Name' | translate}}</ion-label>

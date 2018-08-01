@@ -1,10 +1,9 @@
 <ion-header>
-  <ion-navbar>
+  <ion-navbar [navbar-bg]="wallet?.color">
     <ion-title>Wallet Service URL</ion-title>
   </ion-navbar>
 </ion-header>
 <ion-content>
-  <page-wallet-item [wallet]="wallet"></page-wallet-item>
   <ion-list>
     <ion-item-divider></ion-item-divider>
     <form [formGroup]="walletServiceForm">

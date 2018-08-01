@@ -30,6 +30,7 @@ export class BitcoinCashPage {
   public availableWallet;
   public nonEligibleWallet;
   public error;
+  public wallet;
 
   constructor(
     private app: App,
@@ -51,7 +52,7 @@ export class BitcoinCashPage {
   }
 
   ionViewWillEnter() {
-    let wallet = this.profileProvider.getWallet(this.navParams.data.walletId);
+    this.wallet = this.profileProvider.getWallet(this.navParams.data.walletId);
 
     // Filter out already duplicated wallets
     let walletsBCH = this.profileProvider.getWallets({
@@ -61,20 +62,20 @@ export class BitcoinCashPage {
 
     let xPubKeyIndex = lodash.keyBy(walletsBCH, 'credentials.xPubKey');
 
-    if (xPubKeyIndex[wallet.credentials.xPubKey]) {
-      wallet.excludeReason = this.translate.instant('Already duplicated');
-      this.nonEligibleWallet = wallet;
-    } else if (wallet.credentials.derivationStrategy != 'BIP44') {
-      wallet.excludeReason = this.translate.instant('Non BIP44 wallet');
-      this.nonEligibleWallet = wallet;
-    } else if (!wallet.canSign()) {
-      wallet.excludeReason = this.translate.instant('Read only wallet');
-      this.nonEligibleWallet = wallet;
-    } else if (wallet.needsBackup) {
-      wallet.excludeReason = this.translate.instant('Needs backup');
-      this.nonEligibleWallet = wallet;
+    if (xPubKeyIndex[this.wallet.credentials.xPubKey]) {
+      this.wallet.excludeReason = this.translate.instant('Already duplicated');
+      this.nonEligibleWallet = this.wallet;
+    } else if (this.wallet.credentials.derivationStrategy != 'BIP44') {
+      this.wallet.excludeReason = this.translate.instant('Non BIP44 wallet');
+      this.nonEligibleWallet = this.wallet;
+    } else if (!this.wallet.canSign()) {
+      this.wallet.excludeReason = this.translate.instant('Read only wallet');
+      this.nonEligibleWallet = this.wallet;
+    } else if (this.wallet.needsBackup) {
+      this.wallet.excludeReason = this.translate.instant('Needs backup');
+      this.nonEligibleWallet = this.wallet;
     } else {
-      this.availableWallet = wallet;
+      this.availableWallet = this.wallet;
     }
 
     if (!this.availableWallet) return;

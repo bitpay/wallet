@@ -17,7 +17,6 @@ import { WalletTabsProvider } from '../../../../wallet-tabs/wallet-tabs.provider
 })
 export class WalletDeletePage extends WalletTabsChild {
   public wallet;
-  public walletName: string;
 
   constructor(
     public profileProvider: ProfileProvider,
@@ -40,7 +39,6 @@ export class WalletDeletePage extends WalletTabsChild {
 
   ionViewWillEnter() {
     this.wallet = this.profileProvider.getWallet(this.navParams.data.walletId);
-    this.walletName = this.wallet.name;
   }
 
   public showDeletePopup(): void {
