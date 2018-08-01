@@ -7,10 +7,7 @@ import { ActionSheetController, ToastController } from 'ionic-angular';
 import { SocialSharing } from '@ionic-native/social-sharing';
 
 // providers
-import {
-  ActionSheetProvider,
-  InfoSheetType
-} from '../../../../providers/action-sheet/action-sheet';
+import { ActionSheetProvider } from '../../../../providers/action-sheet/action-sheet';
 import { ConfigProvider } from '../../../../providers/config/config';
 import { Logger } from '../../../../providers/logger/logger';
 import { PlatformProvider } from '../../../../providers/platform/platform';
@@ -149,8 +146,9 @@ export class SessionLogPage {
   }
 
   private showWarningModal() {
-    let infoSheetType: InfoSheetType = 'sensitive-info';
-    const infoSheet = this.actionSheetProvider.createInfoSheet(infoSheetType);
+    const infoSheet = this.actionSheetProvider.createInfoSheet(
+      'sensitive-info'
+    );
     infoSheet.present();
     infoSheet.onDidDismiss(option => {
       if (option) this.isCordova ? this.sendLogs() : this.copyToClipboard();

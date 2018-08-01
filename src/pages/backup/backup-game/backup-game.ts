@@ -14,10 +14,7 @@ import { Logger } from '../../../providers/logger/logger';
 import { DisclaimerPage } from '../../onboarding/disclaimer/disclaimer';
 
 // providers
-import {
-  ActionSheetProvider,
-  InfoSheetType
-} from '../../../providers/action-sheet/action-sheet';
+import { ActionSheetProvider } from '../../../providers/action-sheet/action-sheet';
 import { BwcProvider } from '../../../providers/bwc/bwc';
 import { OnGoingProcessProvider } from '../../../providers/on-going-process/on-going-process';
 import { PopupProvider } from '../../../providers/popup/popup';
@@ -264,9 +261,8 @@ export class BackupGamePage {
         this.onGoingProcessProvider.clear();
         const walletType =
           this.wallet.coin === 'btc' ? 'bitcoin' : 'bitcoin cash';
-        let infoSheetType: InfoSheetType = 'backup-ready';
         const infoSheet = this.actionSheetProvider.createInfoSheet(
-          infoSheetType,
+          'backup-ready',
           { walletType }
         );
         infoSheet.present();

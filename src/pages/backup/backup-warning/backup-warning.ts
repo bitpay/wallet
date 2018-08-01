@@ -4,10 +4,7 @@ import { AlertController, NavController, NavParams } from 'ionic-angular';
 // pages
 import { BackupGamePage } from '../backup-game/backup-game';
 
-import {
-  ActionSheetProvider,
-  InfoSheetType
-} from '../../../providers/action-sheet/action-sheet';
+import { ActionSheetProvider } from '../../../providers/action-sheet/action-sheet';
 
 @Component({
   selector: 'page-backup-warning',
@@ -29,8 +26,9 @@ export class BackupWarningPage {
   }
 
   public openWarningModal(): void {
-    let infoSheetType: InfoSheetType = 'backup-warning';
-    const infoSheet = this.actionSheetProvider.createInfoSheet(infoSheetType);
+    const infoSheet = this.actionSheetProvider.createInfoSheet(
+      'backup-warning'
+    );
     infoSheet.present();
     infoSheet.onDidDismiss(option => {
       if (option) {
