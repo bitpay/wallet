@@ -180,7 +180,7 @@ export class ScanPage {
         'An error has occurred when trying to enumerate your video-stream-enabled devices.'
       );
     });
-    this.scanner.askForPermission().subscribe((answer: boolean) => {
+    this.scanner.askForPermission().then((answer: boolean) => {
       this.hasPermission = answer;
     });
   }
