@@ -45,10 +45,7 @@ export class AddressbookAddPage {
     this.addressBookAdd = this.formBuilder.group({
       name: [
         '',
-        Validators.compose([
-          Validators.required,
-          Validators.pattern('[a-zA-Z0-9 ]*')
-        ])
+        Validators.compose([Validators.minLength(1), Validators.required])
       ],
       email: ['', this.emailOrEmpty],
       address: [
