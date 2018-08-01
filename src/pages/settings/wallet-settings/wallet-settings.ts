@@ -20,7 +20,6 @@ import { WalletDeletePage } from './wallet-settings-advanced/wallet-delete/walle
 import { WalletExportPage } from './wallet-settings-advanced/wallet-export/wallet-export';
 import { WalletInformationPage } from './wallet-settings-advanced/wallet-information/wallet-information';
 import { WalletServiceUrlPage } from './wallet-settings-advanced/wallet-service-url/wallet-service-url';
-import { WalletSettingsAdvancedPage } from './wallet-settings-advanced/wallet-settings-advanced';
 import { WalletTransactionHistoryPage } from './wallet-settings-advanced/wallet-transaction-history/wallet-transaction-history';
 
 @Component({
@@ -145,12 +144,6 @@ export class WalletSettingsPage {
       .catch(() => {
         this.touchIdEnabled = this.touchIdPrevValue;
       });
-  }
-
-  public openAdvancedSettings(): void {
-    this.navCtrl.push(WalletSettingsAdvancedPage, {
-      walletId: this.wallet.credentials.walletId
-    });
   }
 
   public openWalletName(): void {
