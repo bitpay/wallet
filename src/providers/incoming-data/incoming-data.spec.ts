@@ -91,7 +91,9 @@ describe('Provider: Incoming Data Provider', () => {
       expect(incomingDataProvider.redir(data, { activePage: 'ScanPage' })).toBe(
         true
       );
-      expect(loggerSpy).toHaveBeenCalledWith('Incoming-data (redirect): Code to join to a wallet');
+      expect(loggerSpy).toHaveBeenCalledWith(
+        'Incoming-data (redirect): Code to join to a wallet'
+      );
       expect(eventsSpy).toHaveBeenCalledWith('IncomingDataRedir', nextView);
     });
     it('Should handle Old Join Wallet', () => {
@@ -106,7 +108,9 @@ describe('Provider: Incoming Data Provider', () => {
       expect(incomingDataProvider.redir(data, { activePage: 'ScanPage' })).toBe(
         true
       );
-      expect(loggerSpy).toHaveBeenCalledWith('Incoming-data (redirect): Code to join to a wallet');
+      expect(loggerSpy).toHaveBeenCalledWith(
+        'Incoming-data (redirect): Code to join to a wallet'
+      );
       expect(eventsSpy).toHaveBeenCalledWith('IncomingDataRedir', nextView);
     });
     it('Should handle QR Code Export feature', () => {
@@ -189,7 +193,9 @@ describe('Provider: Incoming Data Provider', () => {
         expect(
           incomingDataProvider.redir(element, { activePage: 'ScanPage' })
         ).toBe(true);
-        expect(loggerSpy).toHaveBeenCalledWith('Incoming-data: Bitcoin Cash URI');
+        expect(loggerSpy).toHaveBeenCalledWith(
+          'Incoming-data: Bitcoin Cash URI'
+        );
         expect(eventsSpy).toHaveBeenCalledWith('IncomingDataRedir', nextView);
       });
     });
@@ -322,7 +328,9 @@ describe('Provider: Incoming Data Provider', () => {
         expect(
           incomingDataProvider.redir(element, { activePage: 'ScanPage' })
         ).toBe(true);
-        expect(loggerSpy).toHaveBeenCalledWith('Incoming-data (redirect): Glidera URL');
+        expect(loggerSpy).toHaveBeenCalledWith(
+          'Incoming-data (redirect): Glidera URL'
+        );
         expect(eventsSpy).toHaveBeenCalledWith('IncomingDataRedir', nextView);
       });
     });
@@ -337,7 +345,9 @@ describe('Provider: Incoming Data Provider', () => {
         expect(
           incomingDataProvider.redir(element, { activePage: 'ScanPage' })
         ).toBe(true);
-        expect(loggerSpy).toHaveBeenCalledWith('Incoming-data (redirect): Coinbase URL');
+        expect(loggerSpy).toHaveBeenCalledWith(
+          'Incoming-data (redirect): Coinbase URL'
+        );
         expect(eventsSpy).toHaveBeenCalledWith('IncomingDataRedir', nextView);
       });
     });
@@ -351,7 +361,9 @@ describe('Provider: Incoming Data Provider', () => {
       expect(incomingDataProvider.redir(data, { activePage: 'ScanPage' })).toBe(
         true
       );
-      expect(loggerSpy).toHaveBeenCalledWith('Incoming-data (redirect): BitPay Card URL');
+      expect(loggerSpy).toHaveBeenCalledWith(
+        'Incoming-data (redirect): BitPay Card URL'
+      );
       expect(eventsSpy).toHaveBeenCalledWith('IncomingDataRedir', nextView);
     });
   });

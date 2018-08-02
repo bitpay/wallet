@@ -22,7 +22,7 @@ export class IncomingDataProvider {
     private bwcProvider: BwcProvider,
     private payproProvider: PayproProvider,
     private logger: Logger,
-    private appProvider: AppProvider,
+    private appProvider: AppProvider
   ) {
     this.logger.info('IncomingDataProvider initialized.');
   }
@@ -33,53 +33,57 @@ export class IncomingDataProvider {
 
   private isValidPayProNonBackwardsCompatible(data: string): boolean {
     data = this.sanitizeUri(data);
-    return !!(/^bitcoin(cash)?:\?r=[\w+]/.exec(data));
+    return !!/^bitcoin(cash)?:\?r=[\w+]/.exec(data);
   }
 
   private isValidBitcoinUri(data: string): boolean {
     data = this.sanitizeUri(data);
-    return !!(this.bwcProvider.getBitcore().URI.isValid(data));
+    return !!this.bwcProvider.getBitcore().URI.isValid(data);
   }
 
   private isValidBitcoinCashUri(data: string): boolean {
     data = this.sanitizeUri(data);
-    return !!(this.bwcProvider.getBitcoreCash().URI.isValid(data));
+    return !!this.bwcProvider.getBitcoreCash().URI.isValid(data);
   }
 
   private isValidBitcoinCashUriWithLegacyAddress(data: string): boolean {
     data = this.sanitizeUri(data);
-    return !!(this.bwcProvider
+    return !!this.bwcProvider
       .getBitcore()
-      .URI.isValid(data.replace(/^bitcoincash:/, 'bitcoin:')));
-    }
+      .URI.isValid(data.replace(/^bitcoincash:/, 'bitcoin:'));
+  }
 
   private isValidPlainUrl(data: string): boolean {
     data = this.sanitizeUri(data);
-    return !!(/^https?:\/\//.test(data));
+    return !!/^https?:\/\//.test(data);
   }
 
   private isValidBitcoinAddress(data: string): boolean {
     return !!(
       this.bwcProvider.getBitcore().Address.isValid(data, 'livenet') ||
-      this.bwcProvider.getBitcore().Address.isValid(data, 'testnet'));
+      this.bwcProvider.getBitcore().Address.isValid(data, 'testnet')
+    );
   }
 
   private isValidBitcoinCashAddress(data: string): boolean {
     return !!(
       this.bwcProvider.getBitcoreCash().Address.isValid(data, 'livenet') ||
-      this.bwcProvider.getBitcoreCash().Address.isValid(data, 'testnet'));
+      this.bwcProvider.getBitcoreCash().Address.isValid(data, 'testnet')
+    );
   }
 
   private isValidGlideraUri(data: string): boolean {
     data = this.sanitizeUri(data);
-    return !!(data &&
-      data.indexOf(this.appProvider.info.name + '://glidera') === 0);
+    return !!(
+      data && data.indexOf(this.appProvider.info.name + '://glidera') === 0
+    );
   }
 
   private isValidCoinbaseUri(data: string): boolean {
     data = this.sanitizeUri(data);
-    return !!(data &&
-      data.indexOf(this.appProvider.info.name + '://coinbase') === 0);
+    return !!(
+      data && data.indexOf(this.appProvider.info.name + '://coinbase') === 0
+    );
   }
 
   private isValidBitPayCardUri(data: string): boolean {
@@ -89,17 +93,11 @@ export class IncomingDataProvider {
 
   private isValidJoinCode(data: string): boolean {
     data = this.sanitizeUri(data);
-    return !!(
-      data && 
-      data.match(/^copay:[0-9A-HJ-NP-Za-km-z]{70,80}$/)
-    );
+    return !!(data && data.match(/^copay:[0-9A-HJ-NP-Za-km-z]{70,80}$/));
   }
 
   private isValidJoinLegacyCode(data: string): boolean {
-    return !!(
-      data &&
-      data.match(/^[0-9A-HJ-NP-Za-km-z]{70,80}$/)
-    );
+    return !!(data && data.match(/^[0-9A-HJ-NP-Za-km-z]{70,80}$/));
   }
 
   private isValidPrivateKey(data: string): boolean {
@@ -173,7 +171,10 @@ export class IncomingDataProvider {
     else this.goSend(address, amount, message, coin, useSendMax);
   }
 
-  private handleBitcoinCashUriLegacyAddress(data: string, redirParams?: RedirParams): void {
+  private handleBitcoinCashUriLegacyAddress(
+    data: string,
+    redirParams?: RedirParams
+  ): void {
     this.logger.debug('Incoming-data: Bitcoin Cash URI with legacy address');
     const useSendMax = redirParams && redirParams.useSendMax ? true : false;
     const coin = Coin.BCH;
@@ -211,7 +212,10 @@ export class IncomingDataProvider {
     });
   }
 
-  private handlePlainBitcoinAddress(data: string, redirParams?: RedirParams): void {
+  private handlePlainBitcoinAddress(
+    data: string,
+    redirParams?: RedirParams
+  ): void {
     this.logger.debug('Incoming-data: Bitcoin plain address');
     const useSendMax = redirParams && redirParams.useSendMax ? true : false;
     const coin = Coin.BTC;
@@ -228,7 +232,10 @@ export class IncomingDataProvider {
     }
   }
 
-  private handlePlainBitcoinCashAddress(data: string, redirParams?: RedirParams): void {
+  private handlePlainBitcoinCashAddress(
+    data: string,
+    redirParams?: RedirParams
+  ): void {
     this.logger.debug('Incoming-data: Bitcoin Cash plain address');
     const useSendMax = redirParams && redirParams.useSendMax ? true : false;
     const coin = Coin.BCH;
@@ -254,12 +261,11 @@ export class IncomingDataProvider {
       params: stateParams
     };
     this.events.publish('IncomingDataRedir', nextView);
-  } 
+  }
 
   private goToJoinWallet(data: string): void {
     this.logger.debug('Incoming-data (redirect): Code to join to a wallet');
     if (this.isValidJoinCode(data)) {
-
       let stateParams = { url: data, fromScan: true };
       let nextView = {
         name: 'JoinWalletPage',
@@ -327,14 +333,14 @@ export class IncomingDataProvider {
       params: stateParams
     };
     this.events.publish('IncomingDataRedir', nextView);
-  } 
+  }
 
   public redir(data: string, redirParams?: RedirParams): boolean {
     // Payment Protocol with non-backwards-compatible request
     if (this.isValidPayProNonBackwardsCompatible(data)) {
       this.handlePayProNonBackwardsCompatible(data);
       return true;
-      
+
       // Bitcoin  URI
     } else if (this.isValidBitcoinUri(data)) {
       this.handleBitcoinUri(data, redirParams);
@@ -374,7 +380,7 @@ export class IncomingDataProvider {
     } else if (this.isValidCoinbaseUri(data)) {
       this.goToCoinbase(data);
       return true;
-      
+
       // BitPayCard Authentication
     } else if (this.isValidBitPayCardUri(data)) {
       this.goToBitPayCard(data);
@@ -384,7 +390,7 @@ export class IncomingDataProvider {
     } else if (this.isValidJoinCode(data) || this.isValidJoinLegacyCode(data)) {
       this.goToJoinWallet(data);
       return true;
-      
+
       // Check Private Key
     } else if (this.isValidPrivateKey(data)) {
       this.handlePrivateKey(data);
@@ -394,7 +400,7 @@ export class IncomingDataProvider {
     } else if (this.isValidImportPrivateKey(data)) {
       this.goToImportByPrivateKey(data);
       return true;
-      
+
       // Anything else
     } else {
       if (redirParams && redirParams.activePage === 'ScanPage') {
@@ -498,13 +504,13 @@ export class IncomingDataProvider {
 
   private goToPayPro(url: string, coin: Coin): void {
     this.payproProvider
-    .getPayProDetails(url, coin)
-    .then(details => {
-      this.handlePayPro(details, coin);
-    })
-    .catch(err => {
-      this.logger.error(err);
-    });
+      .getPayProDetails(url, coin)
+      .then(details => {
+        this.handlePayPro(details, coin);
+      })
+      .catch(err => {
+        this.logger.error(err);
+      });
   }
 
   private handlePayPro(payProDetails, coin?: Coin): void {
