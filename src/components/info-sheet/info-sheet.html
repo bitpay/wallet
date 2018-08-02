@@ -79,5 +79,32 @@
       <span sheet-text translate>{{params.msg}}</span>
       <span sheet-button-text translate>GOT IT</span>
     </info-sheet-template>
+
+    <info-sheet-template *ngSwitchCase="'backup-warning'" type="warning">
+      <span sheet-title-text translate>Screenshots are not secure</span>
+      <span sheet-text translate>
+        If you take a screenshot, your backup may be viewed by other apps. You can make a safe backup with physical paper and a pen.
+      </span>
+      <span sheet-button-text translate>I understand</span>
+      <span sheet-second-button-text translate>Go Back</span>
+    </info-sheet-template>
+
+    <info-sheet-template *ngSwitchCase="'backup-ready'" type="success">
+      <span sheet-title-text translate>Your {{params.walletType}} wallet is backed up!</span>
+      <span sheet-text translate>
+        Be sure to store your recovery phrase in a secure place. If this app is deleted, your money cannot be recovered without it.
+      </span>
+      <span sheet-button-text translate>GOT IT</span>
+    </info-sheet-template>
+
+    <info-sheet-template *ngSwitchCase="'sensitive-info'" type="warning">
+      <span sheet-title-text translate>Sensitive Data</span>
+      <span sheet-text translate>
+        The information you are about to share/export may contain sensitive data such us wallet IDs, addresses, balances, etc. Please
+        be sure you trust the person or entity with whom you are sharing this information.
+      </span>
+      <span sheet-button-text translate>I understand</span>
+      <span sheet-second-button-text translate>Go Back</span>
+    </info-sheet-template>
   </div>
 </action-sheet>

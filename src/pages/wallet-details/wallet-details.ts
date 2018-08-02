@@ -9,7 +9,6 @@ import {
 import * as _ from 'lodash';
 
 // providers
-import { InfoSheetType } from '../../providers/action-sheet/action-sheet';
 import { AddressBookProvider } from '../../providers/address-book/address-book';
 import { BwcErrorProvider } from '../../providers/bwc-error/bwc-error';
 import { ExternalLinkProvider } from '../../providers/external-link/external-link';
@@ -290,8 +289,9 @@ export class WalletDetailsPage extends WalletTabsChild {
   }
 
   public openBackupModal(): void {
-    let infoSheetType: InfoSheetType = 'paper-key-unverified-with-activity';
-    const infoSheet = this.actionSheetProvider.createInfoSheet(infoSheetType);
+    const infoSheet = this.actionSheetProvider.createInfoSheet(
+      'paper-key-unverified-with-activity'
+    );
     infoSheet.present();
     infoSheet.onDidDismiss(option => {
       if (option) this.openBackup();

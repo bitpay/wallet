@@ -3,7 +3,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { TestUtils } from '../../../../test';
 
 import { ModalMock } from 'ionic-mocks';
-import { PopupProvider } from '../../../../providers/popup/popup';
+import { ActionSheetProvider } from '../../../../providers/action-sheet/action-sheet';
 import { SessionLogPage } from './session-log';
 
 describe('SessionLogPage', () => {
@@ -157,9 +157,11 @@ describe('SessionLogPage', () => {
     });
     describe('#showWarningModal', () => {
       it('should create warning modal', () => {
-        const popupProvider: PopupProvider = testBed.get(PopupProvider);
+        const actionSheetProvider: ActionSheetProvider = testBed.get(
+          ActionSheetProvider
+        );
         const modal = ModalMock.instance();
-        spyOn(popupProvider, 'createMiniModal').and.returnValue(modal);
+        spyOn(actionSheetProvider, 'createInfoSheet').and.returnValue(modal);
         instance.showWarningModal();
         expect(modal.present).toHaveBeenCalled();
         expect(modal.onDidDismiss).toHaveBeenCalled();
