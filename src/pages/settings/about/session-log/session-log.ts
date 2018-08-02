@@ -35,10 +35,6 @@ export class SessionLogPage {
     private actionSheetCtrl: ActionSheetController,
     private platformProvider: PlatformProvider,
     private translate: TranslateService,
-<<<<<<< HEAD
-=======
-    private popupProvider: PopupProvider,
->>>>>>> action sheets for all the copy-to-clipboard
     private actionSheetProvider: ActionSheetProvider
   ) {
     this.dom = dom;
