@@ -5,6 +5,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { ToastController } from 'ionic-angular';
 
 // providers
+import { ActionSheetProvider } from '../../providers/action-sheet/action-sheet';
 import { Logger } from '../../providers/logger/logger';
 import { NodeWebkitProvider } from '../../providers/node-webkit/node-webkit';
 import { PlatformProvider } from '../../providers/platform/platform';
@@ -30,7 +31,8 @@ export class CopyToClipboard {
     public platform: PlatformProvider,
     public logger: Logger,
     public translate: TranslateService,
-    private nodeWebkitProvider: NodeWebkitProvider
+    private nodeWebkitProvider: NodeWebkitProvider,
+    private actionSheetProvider: ActionSheetProvider
   ) {
     this.logger.info('CopyToClipboardDirective initialized.');
     this.isCordova = this.platform.isCordova;
@@ -59,14 +61,11 @@ export class CopyToClipboard {
       this.copyBrowser();
     }
     if (this.hideToast) return;
-    let showSuccess = this.toastCtrl.create({
-      message: this.translate.instant('Copied to clipboard'),
-      duration: 1000,
-      position: 'top',
-      cssClass: this.platform.isIOS
-        ? 'iosToastAfterHeader'
-        : 'mdToastAfterHeader'
-    });
-    showSuccess.present();
+
+    const infoSheet = this.actionSheetProvider.createInfoSheet(
+      'copy-to-clipboard',
+      { msg: this.value }
+    );
+    infoSheet.present();
   }
 }

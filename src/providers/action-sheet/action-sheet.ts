@@ -10,6 +10,7 @@ export type InfoSheetType =
   | 'backup-ready'
   | 'backup-warning'
   | 'copayers'
+  | 'copy-to-clipboard'
   | 'custom-amount'
   | 'default-error'
   | 'insufficient-funds'
