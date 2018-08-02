@@ -1,8 +1,8 @@
 <ion-header>
-  <ion-navbar>
+  <ion-navbar [navbar-bg]="wallet?.color">
     <ion-title>{{'Export wallet' | translate}}</ion-title>
   </ion-navbar>
-  <ion-toolbar>
+  <ion-toolbar [navbar-bg]="wallet?.color">
     <ion-segment [(ngModel)]="segments" color="blank">
       <ion-segment-button value="file/text">
         {{'File/Text' | translate}}
@@ -14,7 +14,6 @@
   </ion-toolbar>
 </ion-header>
 <ion-content>
-  <page-wallet-item [wallet]="wallet"></page-wallet-item>
   <div [ngSwitch]="segments">
     <ion-list *ngSwitchCase="'file/text'">
       <ion-item-divider></ion-item-divider>

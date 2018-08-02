@@ -72,7 +72,6 @@ import { GravatarPage } from '../pages/includes/gravatar/gravatar';
 import { IncomingDataMenuPage } from '../pages/includes/incoming-data-menu/incoming-data-menu';
 import { TxpPage } from '../pages/includes/txp/txp';
 import { WalletActivityPage } from '../pages/includes/wallet-activity/wallet-activity';
-import { WalletItemPage } from '../pages/includes/wallet-item/wallet-item';
 
 /* Tabs */
 import { HomePage } from '../pages/home/home';
@@ -114,7 +113,6 @@ import { WalletExportPage } from '../pages/settings/wallet-settings/wallet-setti
 import { WalletExtendedPrivateKeyPage } from '../pages/settings/wallet-settings/wallet-settings-advanced/wallet-information/wallet-extended-private-key/wallet-extended-private-key';
 import { WalletInformationPage } from '../pages/settings/wallet-settings/wallet-settings-advanced/wallet-information/wallet-information';
 import { WalletServiceUrlPage } from '../pages/settings/wallet-settings/wallet-settings-advanced/wallet-service-url/wallet-service-url';
-import { WalletSettingsAdvancedPage } from '../pages/settings/wallet-settings/wallet-settings-advanced/wallet-settings-advanced';
 import { WalletTransactionHistoryPage } from '../pages/settings/wallet-settings/wallet-settings-advanced/wallet-transaction-history/wallet-transaction-history';
 
 /* Send */
@@ -208,7 +206,6 @@ export const PAGES = [
   TxDetailsPage,
   TxpPage,
   WalletSettingsPage,
-  WalletSettingsAdvancedPage,
   WalletNamePage,
   WalletColorPage,
   WalletInformationPage,
@@ -222,7 +219,6 @@ export const PAGES = [
   WalletTabsChild,
   WalletTabsPage,
   WalletBalancePage,
-  WalletItemPage,
   WalletActivityPage,
   WideHeaderPage,
   CardItemPage,

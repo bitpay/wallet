@@ -78,6 +78,7 @@ $searchbar-ios-background-color: color($colors, blank);
 $searchbar-ios-padding-vertical: 16px;
 $searchbar-ios-padding-horizontal: 8px;
 $note-ios-color: color($colors, light-grey);
+$toolbar-ios-title-font-weight: 400;
 // App Material Design Variables
 // --------------------------------------------------
 // Material Design only Sass variables can go here
@@ -160,8 +161,8 @@ ion-footer {
   }
 }
 
-// Titles centered on all headers for material design
 .toolbar {
+  // Titles centered on all headers for material design
   &.toolbar-md {
     //material design only
     position: relative;
@@ -178,7 +179,13 @@ ion-footer {
       text-align: center;
       .toolbar-title-md {
         padding: 0px 50px 0px 50px;
+        font-weight: 400;
       }
+    }
+  }
+  &.toolbar-ios {
+    .back-button {
+      padding: 15px;
     }
   }
 }

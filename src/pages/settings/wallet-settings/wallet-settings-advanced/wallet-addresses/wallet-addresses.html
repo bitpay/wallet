@@ -1,11 +1,10 @@
 <ion-header>
-  <ion-navbar>
+  <ion-navbar [navbar-bg]="wallet.color">
     <ion-title>{{'Wallet Addresses' | translate}}</ion-title>
   </ion-navbar>
 </ion-header>
 
 <ion-content>
-  <page-wallet-item [wallet]="wallet"></page-wallet-item>
   <ion-item-divider text-center>
     <span translate>
       Each bitcoin wallet can generate billions of addresses from your 12-word backup. A new address is automatically generated
