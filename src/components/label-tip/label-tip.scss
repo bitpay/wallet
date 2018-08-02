@@ -1,8 +1,6 @@
 label-tip {
-  $info-color: #eff1f8;
   color: #4a4a4a;
   display: block;
-  margin-top: 24px;
   padding: 20px;
   position: relative;
 
@@ -20,11 +18,27 @@ label-tip {
     left: 25px;
   }
 
-  &.info {
-    background: $info-color;
+  &.danger {
+    background: color($background-colors, danger);
 
     &:before {
-      border-bottom-color: $info-color;
+      border-bottom-color: color($background-colors, danger);
+    }
+  }
+
+  &.warn {
+    background: color($background-colors, warning);
+
+    &:before {
+      border-bottom-color: color($background-colors, warning);
+    }
+  }
+
+  &.info {
+    background: color($background-colors, info);
+
+    &:before {
+      border-bottom-color: color($background-colors, info);
     }
   }
 
@@ -50,5 +64,15 @@ label-tip {
       display: inline-block;
       margin-top: 10px;
     }
+  }
+
+  .blue a.label-tip-link {
+    color: color($colors, info);
+  }
+  .yellow a.label-tip-link {
+    color: color($colors, warning);
+  }
+  .red a.label-tip-link {
+    color: color($colors, danger);
   }
 }

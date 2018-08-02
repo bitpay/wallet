@@ -52,6 +52,7 @@ page-tx-details {
     }
     .fee-details {
       font-size: 12.5px;
+      margin-bottom: 5px;
       color: color($colors, light-grey);
     }
   }
@@ -95,15 +96,6 @@ page-tx-details {
         border-radius: 3px;
         background-color: rgb(248, 248, 248);
       }
-    }
-  }
-  .low-fees {
-    img {
-      margin-right: 0.1rem;
-      vertical-align: sub;
-    }
-    a {
-      font-size: 1.2rem;
     }
   }
   .timeline-item {

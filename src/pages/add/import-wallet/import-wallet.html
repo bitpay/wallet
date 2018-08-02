@@ -25,7 +25,8 @@
         <li translate>The Wallet Service URL</li>
       </ul>
       <small>
-        <span translate>NOTE: To import a wallet from a 3rd party software, please go to Add Wallet, Create Wallet, and specify the Recovery Phrase there.</span>
+        <span translate>NOTE: To import a wallet from a 3rd party software, please go to Add Wallet, Create Wallet, and specify the Recovery
+          Phrase there.</span>
       </small>
     </ion-item>
   </ion-card>
@@ -78,27 +79,36 @@
 
     <div *ngIf="showAdvOpts">
       <div *ngIf="selectedTab == 'words'">
-        <ion-item>
-          <ion-label stacked>{{'Password' | translate}} *</ion-label>
+        <ion-item class="with-label">
+          <ion-label stacked>{{'Password' | translate}}</ion-label>
           <ion-input type="password" formControlName="passphrase"></ion-input>
         </ion-item>
+
+        <label-tip type="info" header="no-header">
+          <div label-tip-body translate>
+            This field is only for users who, in previous versions (it's not supported anymore), set a password to protect their recovery
+            phrase. This field is not for your encrypt password.
+          </div>
+        </label-tip>
 
         <ion-item>
           <ion-label stacked>{{'Derivation path' | translate}}</ion-label>
           <ion-input type="text" formControlName="derivationPath" [value]="importForm.value.derivationPath"></ion-input>
         </ion-item>
 
-        <ion-item>
+        <ion-item [ngClass]="{'with-label': importForm.value.testnetEnabled}">
           <ion-label>Testnet</ion-label>
           <ion-toggle formControlName="testnetEnabled" (ionChange)="setDerivationPath()"></ion-toggle>
         </ion-item>
 
-        <ion-item *ngIf="importForm.value.testnetEnabled">
-          <div class="warning-container">
-            <ion-icon name="ios-warning-outline"></ion-icon>
-            <span translate>WARNING: The testnet is an alternative Bitcoin block chain, to be used for testing. Testnet coins are separate and distinct from actual bitcoins, and do not have any value. This allows application developers or bitcoin testers to experiment, without having to use real bitcoins.</span>
+        <label-tip *ngIf="importForm.value.testnetEnabled" type="warn">
+          <span label-tip-title translate>Testnet Wallet</span>
+          <div label-tip-body translate>
+            The testnet is an alternative Bitcoin block chain, to be used for testing. Testnet coins are separate and distinct from actual
+            bitcoins, and do not have any value. This allows application developers or bitcoin testers to experiment, without
+            having to use real bitcoins.
           </div>
-        </ion-item>
+        </label-tip>
 
       </div>
 
@@ -106,10 +116,6 @@
         <ion-label stacked>Wallet Service URL</ion-label>
         <ion-input type="text" formControlName="bwsURL"></ion-input>
       </ion-item>
-
-      <ion-item-divider>
-        <span class="info-message" translate>* This field is only for users who, in previous versions (it's not supported anymore), set a password to protect their recovery phrase. This field is not for your encrypt password.</span>
-      </ion-item-divider>
 
     </div>
   </form>

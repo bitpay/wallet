@@ -66,10 +66,10 @@
 
   <ion-list>
     <div>
-      <a translate class="energized" ion-item no-lines clear text-center (click)="openExternalLink(card.invoiceUrl)">
+      <a translate class="warning" ion-item no-lines clear text-center (click)="openExternalLink(card.invoiceUrl)">
         See invoice
       </a>
-      <a translate class="energized" ion-item no-lines clear text-center (click)="openSupportWebsite()">
+      <a translate class="warning" ion-item no-lines clear text-center (click)="openSupportWebsite()">
         Help &amp; Support
       </a>
     </div>
@@ -90,7 +90,8 @@
         Archive
       </a>
       <ion-item-divider>
-        {{'Archiving this Gift Card will remove it from this view. You will still be able to see it in the Mercado Livre settings.' | translate}}
+        {{'Archiving this Gift Card will remove it from this view. You will still be able to see it in the Mercado Livre settings.'
+        | translate}}
       </ion-item-divider>
     </div>
   </ion-list>

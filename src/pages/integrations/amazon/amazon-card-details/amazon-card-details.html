@@ -67,7 +67,7 @@
     <div class="invoice">
       <a class="button button-clear button-calm" (click)="openExternalLink(card.invoiceUrl)" translate>See invoice &rarr;</a>
     </div>
-    <div class="box-notification assertive" *ngIf="card.status == 'FAILURE' || card.status == 'RESEND'" translate>
+    <div class="box-notification danger" *ngIf="card.status == 'FAILURE' || card.status == 'RESEND'" translate>
       There was a failure to the create gift card. Please, contact BitPay support.
     </div>
   </div>
@@ -88,7 +88,8 @@
 
       <div>
         <p class="steps-info">
-          Your gift card claim code may also be entered when prompted during checkout. To redeem your gift card using the Amazon.com 1-Click&reg; service, first add the gift card funds to Your Account.
+          Your gift card claim code may also be entered when prompted during checkout. To redeem your gift card using the Amazon.com
+          1-Click&reg; service, first add the gift card funds to Your Account.
         </p>
 
         <p class="steps-info">
@@ -101,9 +102,11 @@
   <div *ngIf="country == 'usa'" padding class="steps-info">
     *
     <a (click)="openExternalLink('http://amazon.com')">Amazon.com</a> is not a sponsor of this promotion. Except as required by law,
-    <a (click)="openExternalLink('http://amazon.com')">Amazon.com</a> Gift Cards ("GCs") cannot be transferred for value or redeemed for cash. GCs may be used only for purchases of eligible goods at
+    <a (click)="openExternalLink('http://amazon.com')">Amazon.com</a> Gift Cards ("GCs") cannot be transferred for value or redeemed for cash. GCs may be used only for purchases
+    of eligible goods at
     <a (click)="openExternalLink('http://amazon.com')">Amazon.com</a> or certain of its affiliated websites. For complete terms and conditions, see
-    <a (click)="openExternalLink('https://www.amazon.com/gc-legal')">www.amazon.com/gc-legal</a>. GCs are issued by ACI Gift Cards, Inc., a Washington corporation. All Amazon &reg;, &trade; &amp; &copy; are IP of
+    <a (click)="openExternalLink('https://www.amazon.com/gc-legal')">www.amazon.com/gc-legal</a>. GCs are issued by ACI Gift Cards, Inc., a Washington corporation. All Amazon &reg;, &trade;
+    &amp; &copy; are IP of
     <a (click)="openExternalLink('http://amazon.com')">Amazon.com</a>, Inc. or its affiliates. No expiration date or service fees.
   </div>
 
@@ -140,22 +143,34 @@
         <li>Input Gift Card Code, and click “Apply to Your Account” button.</li>
         <li>The balance of Gift Card amount is shown at the right column.</li>
         <li>Please enjoy your shopping at Amazon.co.jp!</li>
-        <li>Once Amazon Gift Card is added to your account, you will be able to keep using the Gift Card until the balance becomes 0 JPY before it is expired.</li>
+        <li>Once Amazon Gift Card is added to your account, you will be able to keep using the Gift Card until the balance becomes
+          0 JPY before it is expired.</li>
       </ol>
     </ion-item>
 
   </ion-list>
   <div *ngIf="country == 'japan'" padding class="steps-info">
     * Amazon Gift Cards Japan 株式会社 (「当社」) が発行するAmazonギフト券 (「ギフト券」)のご利用には、
-    <a (click)="openExternalLink('http://amazon.co.jp')">Amazon.co.jp</a> (PC・モバイルを含み「アマゾンサイト」) のアカウント作成が必要です。ギフト券は、アマゾンサイトでのみご利用できますが、他のギフト券の購入又は一部の会費の支払等には利用できません。このギフト券の有効期限は発行日から10年間です。ギフト券の換金・返金等はできません。当社及び当社の関連会社は、ギフト券の紛失・盗難等について一切責任を負いません。ギフト券に関するお問合せは、カスタマーサービス(℡0120-999-373東京都目黒区下目黒1-8-1)までお願いします。詳細は、細則 (
+    <a (click)="openExternalLink('http://amazon.co.jp')">Amazon.co.jp</a> (PC・モバイルを含み「アマゾンサイト」) のアカウント作成が必要です。ギフト券は、アマゾンサイトでのみご利用できますが、他のギフト券の購入又は一部の会費の支払等には利用できません。このギフト券の有効期限は発行日から10年間です。ギフト券の換金・返金等はできません。当社及び当社の関連会社は、ギフト券の紛失・盗難等について一切責任を負いません。ギフト券に関するお問合せは、カスタマーサービス(℡0120-999-373東京都目黒区下目黒1-8-1)までお願いします。詳細は、細則
+    (
     <a (click)="openExternalLink('https://www.amazon.co.jp/giftcard/tc')">www.amazon.co.jp/giftcard/tc</a>)　をご覧下さい。
     <br>
     <br>* To use
-    <a (click)="openExternalLink('http://amazon.co.jp')">Amazon.co.jp</a> gift cards (“Gift Card” or “Gift Cards”) issued by Amazon Gift Cards Japan K.K. (“Amazon GC”), you need to create an account on
-    <a (click)="openExternalLink('http://amazon.co.jp')">http://www.amazon.co.jp</a> (including PC and mobile sites. “Amazon Sites”). Gift Cards can only be redeemed through Amazon Sites, but cannot be used to purchase other Gift Cards or to pay certain membership fee available at Amazon Sites. Gift Card balance will expire at 11:59 p.m. (Japan Time) of the date specified as expiration date on each Gift Card. Gift Cards are non-refundable and non-exchangeable. Gift Card cannot be resold or transferred for value. Amazon GC or its affiliates are not responsible if Gift Card is lost, stolen, destroyed or used without your permission. If you want to know your Gift Card balance, expiration date or have any other questions regarding Gift Cards, please call Customer Service (TEL: 0120-999-373, Address: 1-8-1 Shimomeguro, Meguro-ku, Tokyo 153-0064, Japan). For more information, please read the full Terms and Conditions of Gift Cards (
+    <a (click)="openExternalLink('http://amazon.co.jp')">Amazon.co.jp</a> gift cards (“Gift Card” or “Gift Cards”) issued by Amazon Gift Cards Japan K.K. (“Amazon GC”), you need
+    to create an account on
+    <a (click)="openExternalLink('http://amazon.co.jp')">http://www.amazon.co.jp</a> (including PC and mobile sites. “Amazon Sites”). Gift Cards can only be redeemed through
+    Amazon Sites, but cannot be used to purchase other Gift Cards or to pay certain membership fee available at Amazon Sites.
+    Gift Card balance will expire at 11:59 p.m. (Japan Time) of the date specified as expiration date on each Gift Card.
+    Gift Cards are non-refundable and non-exchangeable. Gift Card cannot be resold or transferred for value. Amazon GC or
+    its affiliates are not responsible if Gift Card is lost, stolen, destroyed or used without your permission. If you want
+    to know your Gift Card balance, expiration date or have any other questions regarding Gift Cards, please call Customer
+    Service (TEL: 0120-999-373, Address: 1-8-1 Shimomeguro, Meguro-ku, Tokyo 153-0064, Japan). For more information, please
+    read the full Terms and Conditions of Gift Cards (
     <a (click)="openExternalLink('http://www.amazon.co.jp/giftcard/tc')">http://www.amazon.co.jp/giftcard/tc</a>).
   </div>
 
-  <button ion-item block text-center detail-none *ngIf="card.status == 'FAILURE' || card.cardStatus == 'Canceled' || card.cardStatus == 'Expired' || card.status == 'expired'" class="button-footer assertive" (click)="remove()" translate>Remove</button>
-  <button ion-item block text-center detail-none *ngIf="card.status == 'SUCCESS' && card.cardStatus == 'Fulfilled' && !isTimeExpired" class="assertive" (click)="cancelGiftCard()" translate>Cancel</button>
+  <button ion-item block text-center detail-none *ngIf="card.status == 'FAILURE' || card.cardStatus == 'Canceled' || card.cardStatus == 'Expired' || card.status == 'expired'"
+    class="button-footer assertive" (click)="remove()" translate>Remove</button>
+  <button ion-item block text-center detail-none *ngIf="card.status == 'SUCCESS' && card.cardStatus == 'Fulfilled' && !isTimeExpired"
+    class="assertive" (click)="cancelGiftCard()" translate>Cancel</button>
 </ion-content>

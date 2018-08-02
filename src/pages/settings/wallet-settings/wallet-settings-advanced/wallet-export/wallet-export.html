@@ -30,6 +30,14 @@
           <ion-item *ngIf="exportWalletForm.controls.confirmPassword.touched && exportWalletForm.hasError('mismatchedPasswords') && exportWalletForm.controls.password.valid">
             <span ion-text color="warning" translate>Passwords do not match</span>
           </ion-item>
+          <label-tip class="no-pk" *ngIf="!canSign" type="warn">
+            <span label-tip-title translate>No Private Key</span>
+            <div label-tip-body translate>
+              The private key of this wallet is not available. The export allows to check the wallet balance, transaction history, and
+              create spend proposals from the export. However, does not allow to approve (sign) proposals, so funds will
+              not be accessible from the export.
+            </div>
+          </label-tip>
           <div *ngIf="canSign">
             <ion-item-divider></ion-item-divider>
             <ion-item (click)="showAdvChange()">
@@ -40,25 +48,20 @@
                 <ion-icon color="grey" *ngIf="showAdv" name="ios-arrow-up-outline"></ion-icon>
               </div>
             </ion-item>
-            <ion-item *ngIf="showAdv">
-              <ion-label stacked>{{'Do not include private key' | translate}}</ion-label>
-              <ion-checkbox formControlName="noSignEnabled" (ionChange)="noSignEnabledChange()"></ion-checkbox>
-            </ion-item>
           </div>
-          <ion-item-divider *ngIf="!canSign || exportWalletForm.value.noSignEnabled">
-            <div class="warning-container" *ngIf="!canSign">
-              <ion-icon name="ios-warning-outline"></ion-icon>
-              <span translate>WARNING: The private key of this wallet is not available. The export allows to check the wallet balance, transaction
-                history, and create spend proposals from the export. However, does not allow to approve (sign) proposals,
-                so funds will not be accessible from the export.</span>
+          <ion-item [ngClass]="{'with-label': exportWalletForm.value.noSignEnabled }" *ngIf="showAdv">
+            <ion-label stacked>{{'Do not include private key' | translate}}</ion-label>
+            <ion-checkbox formControlName="noSignEnabled" (ionChange)="noSignEnabledChange()"></ion-checkbox>
+          </ion-item>
+
+          <label-tip *ngIf="exportWalletForm.value.noSignEnabled" type="warn">
+            <span label-tip-title translate>Funds Will Not Be Accessible</span>
+            <div label-tip-body translate>
+              Not including the private key allows to check the wallet balance, transaction history, and create spend proposals from the
+              export. However, does not allow to approve (sign) proposals, so funds will not be accessible from the export.
             </div>
-            <div class="warning-container" *ngIf="exportWalletForm.value.noSignEnabled">
-              <ion-icon name="ios-warning-outline"></ion-icon>
-              <span translate>WARNING: Not including the private key allows to check the wallet balance, transaction history, and create
-                spend proposals from the export. However, does not allow to approve (sign) proposals, so funds will not be
-                accessible from the export.</span>
-            </div>
-          </ion-item-divider>
+          </label-tip>
+
           <button *ngIf="!isSafari && !isCordova" class="button-standard" ion-button type="submit" (click)="downloadWalletBackup()"
             [disabled]="(!exportWalletForm.value.password || exportWalletForm.value.password != exportWalletForm.value.confirmPassword) || !exportWalletForm.valid ">
             <span translate>Download</span>

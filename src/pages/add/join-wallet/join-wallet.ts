@@ -27,8 +27,6 @@ export class JoinWalletPage {
   public okText: string;
   public cancelText: string;
 
-  private derivationPathByDefault: string;
-  private derivationPathForTestnet: string;
   private joinForm: FormGroup;
 
   constructor(
@@ -50,9 +48,6 @@ export class JoinWalletPage {
     this.cancelText = this.translate.instant('Cancel');
     this.defaults = this.configProvider.getDefaults();
 
-    this.derivationPathByDefault = this.derivationPathHelperProvider.default;
-    this.derivationPathForTestnet = this.derivationPathHelperProvider.defaultTestnet;
-
     this.showAdvOpts = false;
 
     let regex: RegExp = /^[0-9A-HJ-NP-Za-km-z]{70,80}$/; // For invitationCode
@@ -62,7 +57,6 @@ export class JoinWalletPage {
       bwsURL: [this.defaults.bws.url],
       selectedSeed: ['new'],
       recoveryPhrase: [null],
-      derivationPath: [this.derivationPathByDefault],
       coin: [null, Validators.required]
     });
 
@@ -104,17 +98,6 @@ export class JoinWalletPage {
       this.joinForm.get('recoveryPhrase').setValidators(null);
     }
     this.joinForm.controls['selectedSeed'].setValue(seed);
-    this.joinForm.controls['testnet'].setValue(false);
-    this.joinForm.controls['derivationPath'].setValue(
-      this.derivationPathByDefault
-    );
-  }
-
-  setDerivationPath() {
-    let path: string = this.joinForm.value.testnet
-      ? this.derivationPathForTestnet
-      : this.derivationPathByDefault;
-    this.joinForm.controls['derivationPath'].setValue(path);
   }
 
   public setOptsAndJoin(): void {

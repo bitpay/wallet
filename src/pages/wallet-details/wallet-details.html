@@ -89,16 +89,16 @@
 
     </expandable-header>
 
-    <div *ngIf="wallet.network == 'testnet'" class="box-notification no-margin warn">
-      <a (click)="openExternalLink('https://support.bitpay.com/hc/en-us/articles/360004102011-What-is-testnet-How-do-I-avoid-testnet-Bitcoin-scams-')">
+    <div *ngIf="wallet.network == 'testnet'" class="box-notification warning">
+      <a class="warning" (click)="openExternalLink('https://support.bitpay.com/hc/en-us/articles/360004102011-What-is-testnet-How-do-I-avoid-testnet-Bitcoin-scams-')">
         <ion-icon name="warning"></ion-icon>
         {{'Learn more about testnet blockchain' | translate}}
         <ion-icon name="arrow-forward"></ion-icon>
       </a>
     </div>
 
-    <div *ngIf="lowUtxosWarning" class="box-notification no-margin warn">
-      <a (click)="openAddresses()">
+    <div *ngIf="lowUtxosWarning" class="box-notification warning">
+      <a class="warning" (click)="openAddresses()">
         <ion-icon name="alert"></ion-icon>
         {{'Spending this balance will need significant Bitcoin network fees'|translate}}
         <ion-icon name="arrow-forward"></ion-icon>
