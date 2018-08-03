@@ -39,14 +39,14 @@ export class ClipboardProvider {
   }
 
   public process(data: ClipboardData): void {
-    let index = _.findIndex(this.values, {date: data.date});
+    let index = _.findIndex(this.values, { date: data.date });
     this.values.splice(index, 1);
     this.incomingDataProvider.redir(data.data);
   }
 
   public async getData(): Promise<any> {
     let data = await this.paste();
-    if (_.findIndex(this.values, {data: data}) != -1) return this.values;
+    if (_.findIndex(this.values, { data: data }) != -1) return this.values;
     this.setValue(data);
     this.values = _.orderBy(this.values, ['date'], ['desc']);
     if (this.values.length == 4) this.values.splice(this.values.length - 1, 1);
@@ -94,5 +94,4 @@ export class ClipboardProvider {
       return;
     }
   }
-
 }

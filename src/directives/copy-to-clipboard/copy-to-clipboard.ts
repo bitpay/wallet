@@ -2,7 +2,6 @@ import { Directive, Inject } from '@angular/core';
 import { DOCUMENT } from '@angular/platform-browser';
 import { Clipboard } from '@ionic-native/clipboard';
 import { TranslateService } from '@ngx-translate/core';
-import { ToastController } from 'ionic-angular';
 
 // providers
 import { ActionSheetProvider } from '../../providers/action-sheet/action-sheet';
@@ -24,7 +23,6 @@ export class CopyToClipboard {
 
   constructor(
     @Inject(DOCUMENT) dom: Document,
-    public toastCtrl: ToastController,
     public clipboard: Clipboard,
     public platform: PlatformProvider,
     public logger: Logger,
@@ -49,7 +47,7 @@ export class CopyToClipboard {
     if (!this.value) return;
     try {
       this.clipboardProvider.copy(this.value);
-    } catch(e) {
+    } catch (e) {
       if (e) this.logger.warn(e.message);
       this.copyBrowser();
     }
