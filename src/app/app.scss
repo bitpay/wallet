@@ -184,33 +184,27 @@ ion-spinner * {
 
 .box-notification {
   cursor: pointer;
-  padding: 10px 0;
-  border: none;
-  margin: 10px;
+  padding: 10px;
   text-align: center;
-  color: color($colors, light);
-  a {
-    display: block;
-    color: color($colors, light);
-  }
   .icon {
     vertical-align: middle;
     margin: 0 5px;
   }
-  &.no-margin {
-    margin: 0;
-  }
   &.success {
-    background-color: color($colors, success);
+    background-color: color($background-colors, success);
+    color: color($colors, success);
   }
-  &.notice {
-    background-color: color($colors, dark);
+  &.info {
+    background-color: color($background-colors, info);
+    color: color($colors, info);
   }
-  &.warn {
-    background-color: color($colors, warning);
+  &.warning {
+    background-color: color($background-colors, warning);
+    color: color($colors, warning);
   }
   &.error {
-    background-color: color($colors, danger);
+    background-color: color($background-colors, danger);
+    color: color($colors, danger);
   }
 }
 
@@ -228,11 +222,6 @@ a.stable {
   color: color($colors, light);
 }
 
-.positive,
-a.positive {
-  color: color($colors, secondary);
-}
-
 .calm,
 a.calm {
   color: color($colors, grey);
@@ -245,7 +234,7 @@ a.positive {
 
 .energized,
 a.energized {
-  color: color($colors, primary);
+  color: color($colors, warning);
 }
 
 .assertive,
@@ -284,13 +273,6 @@ a.royal {
 
 .wallet-warning {
   color: color($colors, danger);
-}
-
-.warning-container {
-  background: color($colors, danger);
-  color: color($colors, light);
-  padding: 1rem;
-  border-radius: 10px;
 }
 
 .card {
@@ -469,4 +451,15 @@ button.modal-close-button {
   margin-left: 6px;
   margin-right: 12px;
   vertical-align: middle;
+}
+
+// Add padding bottom when item has label
+ion-item.with-label.item {
+  padding-bottom: 10px;
+  &.item-ios,
+  &.item-md {
+    .item-inner {
+      border-bottom: 0;
+    }
+  }
 }

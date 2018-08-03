@@ -30,28 +30,29 @@
         </div>
       </div>
     </ion-item>
-    <div *ngIf="tx && tx.removed" class="box-notification no-margin warn" text-wrap>
+    <div *ngIf="tx && tx.removed" class="box-notification warning" text-wrap>
       <span translate>The payment was removed by creator</span>
     </div>
-    <div *ngIf="!currentSpendUnconfirmed && tx && tx.hasUnconfirmedInputs" class="box-notification no-margin warn" text-wrap>
+    <div *ngIf="!currentSpendUnconfirmed && tx && tx.hasUnconfirmedInputs" class="box-notification warning" text-wrap>
       <span translate>Warning: this transaction has unconfirmed inputs</span>
     </div>
 
     <div *ngIf="tx && tx.status != 'pending'">
-      <div text-center *ngIf="tx && tx.status == 'accepted' && !tx.isGlidera">
-        <div class="box-notification no-margin notice" text-wrap translate>Payment accepted, but not yet broadcasted</div>
+      <div class="box-notification info" text-center *ngIf="tx && tx.status == 'accepted' && !tx.isGlidera">
+        <div text-wrap translate>Payment accepted, but not yet broadcasted</div>
         <button margin ion-button outline small icon-left (click)="broadcast(tx)" [disabled]="loading">
           <ion-icon name="cloud-upload"></ion-icon>
           <span translate>Broadcast Payment</span>
         </button>
       </div>
-      <div class="box-notification no-margin notice" *ngIf="tx && tx.status == 'accepted' && tx.isGlidera" text-wrap padding>
-        <span translate>Payment accepted. It will be broadcasted by Glidera. In case there is a problem, it can be deleted 6 hours after it was created.</span>
+      <div class="box-notification info" *ngIf="tx && tx.status == 'accepted' && tx.isGlidera" text-wrap padding>
+        <span translate>Payment accepted. It will be broadcasted by Glidera. In case there is a problem, it can be deleted 6 hours after
+          it was created.</span>
       </div>
-      <div class="box-notification no-margin success" *ngIf="tx && tx.status == 'broadcasted'" translate>
+      <div class="box-notification success" *ngIf="tx && tx.status == 'broadcasted'" translate>
         Payment Sent
       </div>
-      <div class="box-notification no-margin warn" *ngIf="tx && tx.status =='rejected'" translate>
+      <div class="box-notification warning" *ngIf="tx && tx.status =='rejected'" translate>
         Payment Rejected
       </div>
     </div>
@@ -131,8 +132,10 @@
       <span translate>From</span>
       <div class="wallet" *ngIf="wallet">
         <ion-icon item-start>
-          <img *ngIf="wallet.network == 'testnet'" [ngStyle]="{'background-color': wallet.color}" src="assets/img/icon-wallet-testnet.svg" class="icon-wallet" />
-          <img *ngIf="wallet.network != 'testnet'" [ngStyle]="{'background-color': wallet.color}" src="assets/img/icon-wallet.svg" class="icon-wallet" />
+          <img *ngIf="wallet.network == 'testnet'" [ngStyle]="{'background-color': wallet.color}" src="assets/img/icon-wallet-testnet.svg"
+            class="icon-wallet" />
+          <img *ngIf="wallet.network != 'testnet'" [ngStyle]="{'background-color': wallet.color}" src="assets/img/icon-wallet.svg"
+            class="icon-wallet" />
         </ion-icon>
         <div>{{wallet.name}}</div>
       </div>
@@ -219,7 +222,8 @@
 
     <div *ngIf="actionList && actionList[0]">
       <ion-item-divider>{{'Timeline' | translate}}</ion-item-divider>
-      <div class="timeline-item" [ngClass]="{'action-created' : a.type == 'created' || a.type == 'accept', 'action-rejected' : a.type == 'reject'}" *ngFor="let a of actionList; let i = index">
+      <div class="timeline-item" [ngClass]="{'action-created' : a.type == 'created' || a.type == 'accept', 'action-rejected' : a.type == 'reject'}"
+        *ngFor="let a of actionList; let i = index">
         <div class="timeline-content">
           <div class="timeline-content-icon">
             <div class="rejected" *ngIf="a.type === 'reject'">!</div>
@@ -239,7 +243,8 @@
 
     <div padding class="proposal-deletion" *ngIf="((tx && !tx.removed) && (tx && tx.canBeRemoved)) || (tx && tx.status == 'accepted' && !tx.broadcastedOn)">
       <div class="proposal-deletion-help" *ngIf="!tx.isGlidera && isShared" translate>
-        * A payment proposal can be deleted if 1) you are the creator, and no other copayer has signed, or 2) 10 minutes have passed since the proposal was created.
+        * A payment proposal can be deleted if 1) you are the creator, and no other copayer has signed, or 2) 10 minutes have passed
+        since the proposal was created.
       </div>
       <button ion-button clear color="danger" (click)="remove()" [disabled]="loading">
         {{'Delete Payment Proposal' | translate}}
@@ -250,7 +255,8 @@
 </ion-content>
 
 <ion-footer>
-  <page-slide-to-accept #slideButton *ngIf="(tx && !tx.removed) && (tx && tx.pendingForUs && canSign && !paymentExpired) && isCordova" [buttonText]="buttonText" (slideDone)="onConfirm()"></page-slide-to-accept>
+  <page-slide-to-accept #slideButton *ngIf="(tx && !tx.removed) && (tx && tx.pendingForUs && canSign && !paymentExpired) && isCordova"
+    [buttonText]="buttonText" (slideDone)="onConfirm()"></page-slide-to-accept>
   <ion-toolbar *ngIf="(tx && !tx.removed) && (tx && tx.pendingForUs && canSign && !paymentExpired) && !isCordova">
     <button ion-button full class="button-footer" (click)="onConfirm()">{{buttonText}}</button>
   </ion-toolbar>

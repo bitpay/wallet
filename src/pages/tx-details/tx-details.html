@@ -37,27 +37,17 @@
       </div>
     </ion-item>
 
-    <ion-item class="low-fees" *ngIf="btx.action == 'received' && btx.lowFees">
-      <img src="assets/img/icon-warning.png" width="20">
-      <ion-note>
-        <span translate>
-          This transaction could take a long time to confirm or could be dropped due to the low fees set by the sender
-        </span>
-      </ion-note>
-    </ion-item>
+    <label-tip class="low-fees" type="warn" *ngIf="btx.lowAmount">
+      <span label-tip-title translate>Amount Too Low To Spend</span>
+      <div label-tip-body translate>
+        This transaction amount is too small compared to current Bitcoin network fees. Spending these funds will need a Bitcoin network
+        fee cost comparable to the funds itself.
+        <br>
+        <a class="label-tip-link" (click)="readMore()" translate>Learn More</a>
+      </div>
+    </label-tip>
 
-    <ion-item class="low-fees" *ngIf="btx.lowAmount">
-      <img src="assets/img/icon-warning.png" width="20">
-      <ion-note>
-        <span translate>
-          This transaction amount is too small compared to current Bitcoin network fees. Spending these funds will need a Bitcoin network
-          fee cost comparable to the funds itself.
-        </span>
-      </ion-note>
-      <a (click)="readMore()" translate>Learn more</a>
-    </ion-item>
-
-    <ion-item class="item-fee" *ngIf="btx && btx.feeStr && btx.action != 'received'">
+    <ion-item class="with-label" *ngIf="btx && btx.feeStr && btx.action != 'received'">
       <div class="fee-title">
         {{'Fee' | translate}}
       </div>
@@ -69,6 +59,14 @@
         </div>
       </ion-note>
     </ion-item>
+
+    <label-tip *ngIf="btx.action == 'received' && btx.lowFees" type="danger">
+      <span label-tip-title translate>Low Fee</span>
+      <div label-tip-body translate>
+        This transaction could take a long time to confirm or could be dropped due to the low fees set by the sender.
+        <br>
+      </div>
+    </label-tip>
 
     <ion-item *ngIf="btx.action === 'sent'" class="container-to">
       <span translate>To</span>

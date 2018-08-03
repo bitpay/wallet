@@ -26,27 +26,27 @@ info-sheet {
         letter-spacing: 1px;
       }
       .sheet-btn-group {
-        color: rgb(105, 202, 167);
+        color: #69caa7;
         font-size: 16px;
         padding-top: 15px;
         border-top: 1px solid #ebebeb;
         cursor: pointer;
         display: flex;
         .sheet-btn {
-          color: rgb(105, 202, 167);
+          color: #69caa7;
           margin-right: auto;
         }
         .sheet-btn.blue {
-          color: rgb(84, 118, 235);
+          color: #5476eb;
         }
         .sheet-btn.yellow {
-          color: rgb(253, 180, 85);
+          color: #fdb455;
         }
         .sheet-btn.red {
-          color: rgb(223, 82, 100);
+          color: #df5264;
         }
         .sheet-second-btn {
-          color: rgb(70, 76, 94);
+          color: #464c5e;
           margin-left: auto;
         }
         .sheet-second-btn.primary {

@@ -30,17 +30,17 @@
         </ion-item>
       </div>
       <div *ngIf="canSign">
-        <ion-item>
+        <ion-item class="with-label">
           <ion-label>{{'Request Encrypt Password' | translate}}</ion-label>
           <ion-toggle [(ngModel)]="encryptEnabled" (ionChange)="encryptChange()" [disabled]="(needsBackup || !wallet.isComplete()) && !encryptEnabled"></ion-toggle>
         </ion-item>
         <label-tip type="info">
-          <span label-tip-title>Password Not Recoverable</span>
-          <div label-tip-body>
+          <span label-tip-title translate>Password Not Recoverable</span>
+          <div label-tip-body translate>
             This password cannot be recovered. If this password is lost, funds can only be recovered by reimporting your 12-word paper
             key.
             <br>
-            <a class="label-tip-link" (click)="openSupportSpendingPassword()">Learn More</a>
+            <a class="label-tip-link" (click)="openSupportSpendingPassword()" translate>Learn More</a>
           </div>
         </label-tip>
       </div>

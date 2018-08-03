@@ -10,18 +10,6 @@ page-session-log {
   .log-level {
     font-weight: bold;
   }
-  .energized {
-    color: color($colors, warning);
-  }
-  .dark {
-    color: color($colors, dark);
-  }
-  .positive {
-    color: color($colors, primary);
-  }
-  .assertive {
-    color: color($colors, danger);
-  }
   .filter-container {
     padding: 20px;
     .labels {
