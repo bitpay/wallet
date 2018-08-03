@@ -30,6 +30,7 @@ import { AmazonProvider } from '../../providers/amazon/amazon';
 import { AppProvider } from '../../providers/app/app';
 import { BitPayCardProvider } from '../../providers/bitpay-card/bitpay-card';
 import { BwcErrorProvider } from '../../providers/bwc-error/bwc-error';
+import { ClipboardProvider } from '../../providers/clipboard/clipboard';
 import { ConfigProvider } from '../../providers/config/config';
 import { EmailNotificationsProvider } from '../../providers/email-notifications/email-notifications';
 import { ExternalLinkProvider } from '../../providers/external-link/external-link';
@@ -69,6 +70,7 @@ export class HomePage {
   public bitpayCardItems;
   public showBitPayCard: boolean = false;
   public showAnnouncement: boolean = false;
+  public validDataFromClipboard;
 
   public showRateCard: boolean;
   public homeTip: boolean;
@@ -106,7 +108,8 @@ export class HomePage {
     private translate: TranslateService,
     private emailProvider: EmailNotificationsProvider,
     private replaceParametersProvider: ReplaceParametersProvider,
-    private amazonProvider: AmazonProvider
+    private amazonProvider: AmazonProvider,
+    private clipboardProvider: ClipboardProvider
   ) {
     this.updatingWalletId = {};
     this.addressbook = {};
@@ -120,6 +123,14 @@ export class HomePage {
       this._didEnter();
       this.subscribeBwsEvents();
     });
+
+    if (this.isNW) {
+      let gui = (window as any).require('nw.gui');
+      let win = gui.Window.get();
+      win.on('focus', () => {
+        this.checkClipboard();
+      });
+    }
   }
 
   ionViewWillEnter() {
@@ -154,6 +165,7 @@ export class HomePage {
     this.checkHomeTip();
     this.checkFeedbackInfo();
     this.checkAnnouncement();
+    this.checkClipboard();
 
     this.subscribeBwsEvents();
 
@@ -194,6 +206,7 @@ export class HomePage {
       this.setWallets();
       this.subscribeBwsEvents();
       this.subscribeStatusEvents();
+      this.checkClipboard();
     });
 
     this.onPauseSubscription = this.plt.pause.subscribe(() => {
@@ -343,6 +356,19 @@ export class HomePage {
         this.showCard.setShowRateCard(this.showRateCard);
       }
     });
+  }
+
+  public async checkClipboard() {
+    this.validDataFromClipboard = await this.clipboardProvider.getData();
+  }
+
+  public processClipboardData(data) {
+    this.clipboardProvider.process(data);
+  }
+
+  public clearClipboard() {
+    this.clipboardProvider.clear();
+    this.validDataFromClipboard = [];
   }
 
   private initFeedBackInfo() {

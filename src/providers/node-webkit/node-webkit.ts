@@ -19,6 +19,12 @@ export class NodeWebkitProvider {
     return clipboard.set(text);
   }
 
+  public clearClipboard() {
+    let gui = (window as any).require('nw.gui');
+    let clip = gui.Clipboard.get();
+    clip.clear();
+  }
+
   public openExternalLink(url) {
     let gui = (window as any).require('nw.gui');
     return gui.Shell.openExternal(url);

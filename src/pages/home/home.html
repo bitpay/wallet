@@ -92,6 +92,26 @@
       </ion-card-content>
     </ion-card>
 
+    <div class="card" *ngIf="validDataFromClipboard && validDataFromClipboard[0]">
+      <ion-item-divider>
+        <div class="title" item-start>
+          <img src="assets/img/paste-clipboard.svg" alt="Clipboard" width="20" />
+          <span translate>Copied to Clipboard</span>
+        </div>
+        <div item-end>
+          <button ion-button clear icon-only color="grey" (click)="clearClipboard()">
+            <ion-icon name="trash"></ion-icon>
+          </button>
+        </div>
+      </ion-item-divider>
+      <ion-list>
+        <button *ngFor="let data of validDataFromClipboard" ion-item (click)="processClipboardData(data)">
+          <div class="item-title">{{data.data}}</div>
+          <div class="item-subtitle">{{data.type}}</div>
+        </button>
+      </ion-list>
+    </div>
+
     <div class="card" *ngIf="txps && txps[0]">
       <ion-item-divider (click)="openProposalsPage()">
         <div class="title" item-start>

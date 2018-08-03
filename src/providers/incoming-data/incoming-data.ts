@@ -142,12 +142,6 @@ export class IncomingDataProvider {
     );
   }
 
-  /*
-   *
-   * Parse values
-   *
-   */
-
   private handlePrivateKey(data: string): void {
     this.logger.debug('Incoming-data: private key');
     this.showMenu({
@@ -245,7 +239,7 @@ export class IncomingDataProvider {
     this.logger.debug('Incoming-data: Bitcoin plain address');
     const useSendMax = redirParams && redirParams.useSendMax ? true : false;
     const coin = Coin.BTC;
-    if (redirParams.activePage === 'ScanPage') {
+    if (redirParams && redirParams.activePage === 'ScanPage') {
       this.showMenu({
         data,
         type: 'bitcoinAddress',
@@ -265,7 +259,7 @@ export class IncomingDataProvider {
     this.logger.debug('Incoming-data: Bitcoin Cash plain address');
     const useSendMax = redirParams && redirParams.useSendMax ? true : false;
     const coin = Coin.BCH;
-    if (redirParams.activePage === 'ScanPage') {
+    if (redirParams && redirParams.activePage === 'ScanPage') {
       this.showMenu({
         data,
         type: 'bitcoinAddress',
@@ -440,6 +434,104 @@ export class IncomingDataProvider {
         this.logger.warn('Incoming-data: Unknown information');
         return false;
       }
+    }
+  }
+
+  public parseData(data: string): any {
+    if (!data) return;
+    if (this.isValidPayProNonBackwardsCompatible(data)) {
+      return {
+        data,
+        type: 'PayPro'
+      };
+
+      // Bitcoin  URI
+    } else if (this.isValidBitcoinUri(data)) {
+      return {
+        data,
+        type: 'BitcoinUri'
+      };
+
+      // Bitcoin Cash URI
+    } else if (this.isValidBitcoinCashUri(data)) {
+      return {
+        data,
+        type: 'BitcoinCashUri'
+      };
+
+      // Bitcoin Cash URI using Bitcoin Core legacy address
+    } else if (this.isValidBitcoinCashUriWithLegacyAddress(data)) {
+      return {
+        data,
+        type: 'BitcoinCashUri'
+      };
+
+      // Plain URL
+    } else if (this.isValidPlainUrl(data)) {
+      return {
+        data,
+        type: 'PlainUrl'
+      };
+
+      // Plain Address (Bitcoin)
+    } else if (this.isValidBitcoinAddress(data)) {
+      return {
+        data,
+        type: 'BitcoinAddress'
+      };
+
+      // Plain Address (Bitcoin Cash)
+    } else if (this.isValidBitcoinCashAddress(data)) {
+      return {
+        data,
+        type: 'BitcoinCashAddress'
+      };
+
+      // Glidera
+    } else if (this.isValidGlideraUri(data)) {
+      return {
+        data,
+        type: 'Glidera'
+      };
+
+      // Coinbase
+    } else if (this.isValidCoinbaseUri(data)) {
+      return {
+        data,
+        type: 'Coinbase'
+      };
+
+      // BitPayCard Authentication
+    } else if (this.isValidBitPayCardUri(data)) {
+      return {
+        data,
+        type: 'BitPayCard'
+      };
+
+      // Join
+    } else if (this.isValidJoinCode(data) || this.isValidJoinLegacyCode(data)) {
+      return {
+        data,
+        type: 'JoinWallet'
+      };
+
+      // Check Private Key
+    } else if (this.isValidPrivateKey(data)) {
+      return {
+        data,
+        type: 'PrivateKey'
+      };
+
+      // Import Private Key
+    } else if (this.isValidImportPrivateKey(data)) {
+      return {
+        data,
+        type: 'ImportPrivateKey'
+      };
+
+      // Anything else
+    } else {
+      return;
     }
   }
 
