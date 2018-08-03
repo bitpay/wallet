@@ -2,6 +2,7 @@ import { fakeAsync, tick } from '@angular/core/testing';
 import { Events } from 'ionic-angular';
 import { AppProvider, PopupProvider } from '..';
 import { TestUtils } from '../../test';
+import { ActionSheetProvider } from '../action-sheet/action-sheet';
 import { BwcProvider } from '../bwc/bwc';
 import { Logger } from '../logger/logger';
 import { PayproProvider } from '../paypro/paypro';
@@ -15,6 +16,7 @@ describe('Provider: Incoming Data Provider', () => {
   let events: Events;
   let loggerSpy;
   let eventsSpy;
+  let actionSheetSpy;
 
   class AppProviderMock {
     public info = {};
@@ -45,6 +47,13 @@ describe('Provider: Incoming Data Provider', () => {
     events = testBed.get(Events);
     loggerSpy = spyOn(logger, 'debug');
     eventsSpy = spyOn(events, 'publish');
+    actionSheetSpy = spyOn(
+      testBed.get(ActionSheetProvider),
+      'createIncomingDataMenu'
+    ).and.returnValue({
+      present() {},
+      onDidDismiss() {}
+    });
   });
 
   describe('Function: SCANNER Redir', () => {
@@ -60,9 +69,11 @@ describe('Provider: Incoming Data Provider', () => {
           incomingDataProvider.redir(element, { activePage: 'ScanPage' })
         ).toBe(true);
         expect(loggerSpy).toHaveBeenCalledWith('Handling plain text');
-        expect(eventsSpy).toHaveBeenCalledWith('showIncomingDataMenuEvent', {
-          data: element,
-          type: 'text'
+        expect(actionSheetSpy).toHaveBeenCalledWith({
+          data: {
+            type: 'text',
+            data: element
+          }
         });
       });
     });
@@ -82,9 +93,11 @@ describe('Provider: Incoming Data Provider', () => {
           ).toBe(true);
           expect(loggerSpy).toHaveBeenCalledWith('Handling Plain URL');
           tick();
-          expect(eventsSpy).toHaveBeenCalledWith('showIncomingDataMenuEvent', {
-            data: element,
-            type: 'url'
+          expect(actionSheetSpy).toHaveBeenCalledWith({
+            data: {
+              type: 'url',
+              data: element
+            }
           });
         });
       })
@@ -166,10 +179,12 @@ describe('Provider: Incoming Data Provider', () => {
         expect(loggerSpy).toHaveBeenCalledWith(
           'Handling Bitcoin Cash Plain Address'
         );
-        expect(eventsSpy).toHaveBeenCalledWith('showIncomingDataMenuEvent', {
-          data: element,
-          type: 'bitcoinAddress',
-          coin: 'bch'
+        expect(actionSheetSpy).toHaveBeenCalledWith({
+          data: {
+            data: element,
+            type: 'bitcoinAddress',
+            coin: 'bch'
+          }
         });
       });
     });
@@ -297,10 +312,12 @@ describe('Provider: Incoming Data Provider', () => {
         expect(loggerSpy).toHaveBeenCalledWith(
           'Handling Bitcoin Plain Address'
         );
-        expect(eventsSpy).toHaveBeenCalledWith('showIncomingDataMenuEvent', {
-          data: element,
-          type: 'bitcoinAddress',
-          coin: 'btc'
+        expect(actionSheetSpy).toHaveBeenCalledWith({
+          data: {
+            data: element,
+            type: 'bitcoinAddress',
+            coin: 'btc'
+          }
         });
       });
     });
@@ -315,9 +332,11 @@ describe('Provider: Incoming Data Provider', () => {
           incomingDataProvider.redir(element, { activePage: 'ScanPage' })
         ).toBe(true);
         expect(loggerSpy).toHaveBeenCalledWith('Handling private key');
-        expect(eventsSpy).toHaveBeenCalledWith('showIncomingDataMenuEvent', {
-          data: element,
-          type: 'privateKey'
+        expect(actionSheetSpy).toHaveBeenCalledWith({
+          data: {
+            data: element,
+            type: 'privateKey'
+          }
         });
       });
     });

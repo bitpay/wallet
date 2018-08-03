@@ -4,6 +4,7 @@ import { Events } from 'ionic-angular';
 import { Logger } from '../../providers/logger/logger';
 
 // providers
+import { ActionSheetProvider } from '../action-sheet/action-sheet';
 import { AppProvider } from '../app/app';
 import { BwcProvider } from '../bwc/bwc';
 import { PayproProvider } from '../paypro/paypro';
@@ -20,6 +21,7 @@ export interface RedirParams {
 @Injectable()
 export class IncomingDataProvider {
   constructor(
+    private actionSheetProvider: ActionSheetProvider,
     private events: Events,
     private bwcProvider: BwcProvider,
     private payproProvider: PayproProvider,
@@ -32,7 +34,16 @@ export class IncomingDataProvider {
   }
 
   public showMenu(data): void {
-    this.events.publish('showIncomingDataMenuEvent', data);
+    const dataMenu = this.actionSheetProvider.createIncomingDataMenu({ data });
+    dataMenu.present();
+    dataMenu.onDidDismiss(this.finishIncomingData);
+  }
+
+  public finishIncomingData(): void {
+    this.events.publish('finishIncomingDataMenuEvent', {
+      redirTo: null,
+      value: null
+    });
   }
 
   public redir(data: string, redirParams?: RedirParams): boolean {

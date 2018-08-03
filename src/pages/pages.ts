@@ -69,7 +69,6 @@ import { BitPaySettingsPage } from '../pages/integrations/bitpay-card/bitpay-set
 import { CardItemPage } from '../pages/includes/card-item/card-item';
 import { FeedbackCardPage } from '../pages/includes/feedback-card/feedback-card';
 import { GravatarPage } from '../pages/includes/gravatar/gravatar';
-import { IncomingDataMenuPage } from '../pages/includes/incoming-data-menu/incoming-data-menu';
 import { TxpPage } from '../pages/includes/txp/txp';
 import { WalletActivityPage } from '../pages/includes/wallet-activity/wallet-activity';
 import { WalletItemPage } from '../pages/includes/wallet-item/wallet-item';
@@ -159,7 +158,6 @@ export const PAGES = [
   FeedbackCardPage,
   FeedbackPage,
   FeedbackCompletePage,
-  IncomingDataMenuPage,
   ImportWalletPage,
   JoinWalletPage,
   BackupWarningPage,
