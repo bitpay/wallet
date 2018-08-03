@@ -74,9 +74,9 @@ page-confirm {
       color: color($colors, light-grey);
     }
     &.warn {
-      color: rgb(229, 108, 123);
+      color: color($colors, error);
       .fee-details {
-        color: rgb(229, 108, 123);
+        color: color($colors, error);
       }
     }
     ion-note {

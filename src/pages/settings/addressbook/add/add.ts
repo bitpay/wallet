@@ -15,7 +15,7 @@ import {
 
 // providers
 import { AddressBookProvider } from '../../../../providers/address-book/address-book';
-import { BwcProvider } from '../../../../providers/bwc/bwc';
+import { AddressProvider } from '../../../../providers/address/address';
 import { Logger } from '../../../../providers/logger/logger';
 
 // validators
@@ -37,25 +37,22 @@ export class AddressbookAddPage {
     private navParams: NavParams,
     private events: Events,
     private alertCtrl: AlertController,
-    private bwc: BwcProvider,
     private ab: AddressBookProvider,
+    private addressProvider: AddressProvider,
     private formBuilder: FormBuilder,
     private logger: Logger
   ) {
     this.addressBookAdd = this.formBuilder.group({
       name: [
         '',
-        Validators.compose([
-          Validators.required,
-          Validators.pattern('[a-zA-Z0-9 ]*')
-        ])
+        Validators.compose([Validators.minLength(1), Validators.required])
       ],
       email: ['', this.emailOrEmpty],
       address: [
         '',
         Validators.compose([
           Validators.required,
-          new AddressValidator(this.bwc).isValid
+          new AddressValidator(this.addressProvider).isValid
         ])
       ]
     });

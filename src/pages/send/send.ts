@@ -46,6 +46,7 @@ export class SendPage extends WalletTabsChild {
   public walletBtcList: FlatWallet[];
   public contactsList = [];
   public filteredContactsList = [];
+  public filteredWallets = [];
   public hasBtcWallets: boolean;
   public hasBchWallets: boolean;
   public hasContacts: boolean;
@@ -57,6 +58,7 @@ export class SendPage extends WalletTabsChild {
   public fiatAmount: number;
   public fiatCode: string;
   public useSendMax: boolean;
+  public invalidAddress: boolean;
 
   constructor(
     navCtrl: NavController,
@@ -224,24 +226,58 @@ export class SendPage extends WalletTabsChild {
     this.events.publish('ScanFromWallet');
   }
 
-  public findContact(search: string): void {
-    if (
-      this.incomingDataProvider.redir(search, {
-        amount: this.navParams.get('amount'),
-        coin: this.navParams.get('coin'),
-        useSendMax: this.useSendMax
-      })
-    )
-      return;
-    if (search && search.trim() != '') {
-      let result = _.filter(this.contactsList, item => {
-        let val = item.name;
-        return _.includes(val.toLowerCase(), search.toLowerCase());
-      });
-      this.filteredContactsList = result;
+  public processInput(): void {
+    if (this.search && this.search.trim() != '') {
+      this.searchWallets();
+      this.searchContacts();
+
+      if (
+        this.filteredContactsList.length === 0 &&
+        this.filteredWallets.length === 0
+      ) {
+        if (
+          !this.addressProvider.checkCoinAndNetwork(
+            this.wallet.coin,
+            this.wallet.network,
+            this.search
+          )
+        ) {
+          this.invalidAddress = true;
+        } else {
+          this.invalidAddress = false;
+          this.incomingDataProvider.redir(this.search, {
+            amount: this.navParams.get('amount'),
+            coin: this.navParams.get('coin'),
+            useSendMax: this.useSendMax
+          });
+        }
+      } else {
+        this.invalidAddress = false;
+      }
     } else {
       this.updateContactsList();
+      this.filteredWallets = [];
     }
+  }
+
+  public searchWallets(): void {
+    if (this.hasBchWallets && this.wallet.coin === 'bch') {
+      this.filteredWallets = this.walletBchList.filter(wallet => {
+        return _.includes(wallet.name.toLowerCase(), this.search.toLowerCase());
+      });
+    }
+    if (this.hasBtcWallets && this.wallet.coin === 'btc') {
+      this.filteredWallets = this.walletBtcList.filter(wallet => {
+        return _.includes(wallet.name.toLowerCase(), this.search.toLowerCase());
+      });
+    }
+  }
+
+  public searchContacts(): void {
+    this.filteredContactsList = _.filter(this.contactsList, item => {
+      let val = item.name;
+      return _.includes(val.toLowerCase(), this.search.toLowerCase());
+    });
   }
 
   public goToConfirm(item): void {

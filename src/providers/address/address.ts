@@ -72,4 +72,87 @@ export class AddressProvider {
       translation: this.translateAddress(address)
     };
   }
+
+  public checkCoinAndNetwork(
+    coin: string,
+    network: string,
+    address: string
+  ): boolean {
+    let addressData;
+    let extractedAddress = this.extractAddress(address);
+    if (this.isValid(extractedAddress)) {
+      addressData = this.validateAddress(extractedAddress);
+      return addressData.coin == coin
+        ? addressData.network == network
+          ? true
+          : false
+        : false;
+    } else {
+      return false;
+    }
+  }
+
+  public extractAddress(address: string): string {
+    let extractedAddress = address.replace(/^(bitcoincash:|bitcoin:)/, '');
+    return extractedAddress || address;
+  }
+
+  public isValid(address: string): boolean {
+    let URI = this.bitcore.URI;
+    let Address = this.bitcore.Address;
+    let URICash = this.bitcoreCash.URI;
+    let AddressCash = this.bitcoreCash.Address;
+
+    // Bip21 uri
+    let uri, isAddressValidLivenet, isAddressValidTestnet;
+    if (/^bitcoin:/.test(address)) {
+      let isUriValid = URI.isValid(address);
+      if (isUriValid) {
+        uri = new URI(address);
+        isAddressValidLivenet = Address.isValid(
+          uri.address.toString(),
+          'livenet'
+        );
+        isAddressValidTestnet = Address.isValid(
+          uri.address.toString(),
+          'testnet'
+        );
+      }
+      if (isUriValid && (isAddressValidLivenet || isAddressValidTestnet)) {
+        return true;
+      }
+    } else if (/^bitcoincash:/.test(address)) {
+      let isUriValid = URICash.isValid(address);
+      if (isUriValid) {
+        uri = new URICash(address);
+        isAddressValidLivenet = AddressCash.isValid(
+          uri.address.toString(),
+          'livenet'
+        );
+        isAddressValidTestnet = AddressCash.isValid(
+          uri.address.toString(),
+          'testnet'
+        );
+      }
+      if (isUriValid && (isAddressValidLivenet || isAddressValidTestnet)) {
+        return true;
+      }
+    }
+
+    // Regular Address: try Bitcoin and Bitcoin Cash
+    let regularAddressLivenet = Address.isValid(address, 'livenet');
+    let regularAddressTestnet = Address.isValid(address, 'testnet');
+    let regularAddressCashLivenet = AddressCash.isValid(address, 'livenet');
+    let regularAddressCashTestnet = AddressCash.isValid(address, 'testnet');
+    if (
+      regularAddressLivenet ||
+      regularAddressTestnet ||
+      regularAddressCashLivenet ||
+      regularAddressCashTestnet
+    ) {
+      return true;
+    }
+
+    return false;
+  }
 }

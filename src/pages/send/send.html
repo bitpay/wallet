@@ -17,8 +17,8 @@
   <div *ngIf="hasBtcWallets || hasBchWallets">
     <div class="send-header-wrapper">
       <span class="send-heading" translate>Recipient</span>
-      <ion-item class="search-wrapper">
-        <ion-input placeholder="{{'Search or enter bitcoin address' | translate}}" [(ngModel)]="search" (ngModelChange)="findContact(search)"></ion-input>
+      <ion-item class="search-wrapper" [ngClass]="{'invalid': invalidAddress && search != ''}">
+        <ion-input placeholder="{{'Search or enter bitcoin address' | translate}}" [(ngModel)]="search" (ngModelChange)="processInput()"></ion-input>
         <ion-icon item-end class="scan-icon" (click)="openScanner()">
           <img src="assets/img/scan-ico.svg">
         </ion-icon>
@@ -49,7 +49,7 @@
       </ion-item-divider>
 
       <ion-list>
-        <button ion-item *ngFor="let wallet of walletBtcList" (click)="goToConfirm(wallet)">
+        <button ion-item *ngFor="let wallet of filteredWallets[0] ? filteredWallets : walletBtcList" (click)="goToConfirm(wallet)">
           <ion-icon class="item-img" item-start>
             <img *ngIf="wallet.network == 'testnet'" [ngStyle]="{'background-color': wallet.color}" src="assets/img/icon-wallet-testnet.svg"
               class="icon-wallet" />
@@ -77,7 +77,7 @@
       </ion-item-divider>
 
       <ion-list>
-        <button ion-item *ngFor="let wallet of walletBchList" (click)="goToConfirm(wallet)">
+        <button ion-item *ngFor="let wallet of filteredWallets[0] ? filteredWallets : walletBchList" (click)="goToConfirm(wallet)">
           <ion-icon class="item-img" item-start>
             <img *ngIf="wallet.network == 'testnet'" [ngStyle]="{'background-color': wallet.color}" src="assets/img/icon-wallet-testnet.svg"
               class="icon-wallet" />
