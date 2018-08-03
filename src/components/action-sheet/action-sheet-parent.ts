@@ -15,11 +15,11 @@ export class ActionSheetParent {
   }
 
   public async dismiss(data?: any): Promise<void> {
-    await this.actionSheet.dismiss();
-    this.dismissFunction && this.dismissFunction(data);
+    await this.actionSheet.dismiss(data);
   }
 
   public onDidDismiss(func: dismissFunction) {
     this.dismissFunction = func;
+    this.actionSheet.dismissFunction = func;
   }
 }
