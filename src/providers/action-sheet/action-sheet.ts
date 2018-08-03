@@ -1,6 +1,5 @@
 import { ComponentRef, Injectable } from '@angular/core';
 import { ActionSheetParent } from '../../components/action-sheet/action-sheet-parent';
-import { IncomingDataMenuComponent } from '../../components/incoming-data-menu/incoming-data-menu';
 import { InfoSheetComponent } from '../../components/info-sheet/info-sheet';
 import { OptionsSheetComponent } from '../../components/options-sheet/options-sheet';
 import { WalletSelectorComponent } from '../../components/wallet-selector/wallet-selector';
@@ -21,8 +20,8 @@ export type InfoSheetType =
   | 'paper-key-unverified-with-activity'
   | 'receiving-bitcoin'
   | 'sensitive-info';
-export type OptionsSheetType = 'address-options' | 'incoming-data';
 
+export type OptionsSheetType = 'address-options';
 export interface WalletSelectorParams {
   wallets: any[];
   selectedWalletId: string;
@@ -39,14 +38,6 @@ export class ActionSheetProvider {
     return this.setupSheet<OptionsSheetComponent>(
       OptionsSheetComponent,
       type,
-      params
-    ).instance;
-  }
-
-  public createIncomingDataMenu(params?): IncomingDataMenuComponent {
-    return this.setupSheet<IncomingDataMenuComponent>(
-      IncomingDataMenuComponent,
-      null,
       params
     ).instance;
   }

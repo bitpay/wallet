@@ -6,6 +6,7 @@ export class ActionSheetParent {
   public params: any;
   public componentRef: any;
   public sheetType: string;
+  public dismissFunction: dismissFunction;
 
   @ViewChild(ActionSheetComponent) actionSheet: ActionSheetComponent;
 
@@ -14,10 +15,11 @@ export class ActionSheetParent {
   }
 
   public async dismiss(data?: any): Promise<void> {
-    await this.actionSheet.dismiss(data);
+    await this.actionSheet.dismiss();
+    this.dismissFunction && this.dismissFunction(data);
   }
 
   public onDidDismiss(func: dismissFunction) {
-    this.actionSheet.dismissFunction = func;
+    this.dismissFunction = func;
   }
 }
