@@ -10,10 +10,12 @@ info-sheet {
         color: #060606;
         font-size: 19px;
         font-weight: 500;
+        display: flex;
+        justify-content: start;
         .title-icon {
-          vertical-align: middle;
           padding-right: 15px;
-          display: inline-block;
+          display: flex;
+          align-self: center;
         }
       }
       .sheet-text {
