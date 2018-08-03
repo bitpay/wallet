@@ -222,11 +222,6 @@ a.stable {
   color: color($colors, light);
 }
 
-.positive,
-a.positive {
-  color: color($colors, secondary);
-}
-
 .calm,
 a.calm {
   color: color($colors, grey);
@@ -237,8 +232,8 @@ a.positive {
   color: color($colors, primary);
 }
 
-.warning,
-a.warning {
+.energized,
+a.energized {
   color: color($colors, warning);
 }
 

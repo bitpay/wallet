@@ -6,7 +6,7 @@
 
 <ion-content no-bounce>
   <div class="container" *ngIf="showMainView">
-    <div class="box-notification warn" *ngIf="network == 'testnet'">
+    <div class="box-notification warning" *ngIf="network == 'testnet'">
       Sandbox version. Only for testing purpose.
     </div>
     <div class="center-header">
@@ -25,7 +25,7 @@
     </div>
   </div>
   <div class="container" *ngIf="!showMainView">
-    <div class="box-notification warn" *ngIf="network == 'testnet'">
+    <div class="box-notification warning" *ngIf="network == 'testnet'">
       Sandbox version. Only for testing purpose.
     </div>
 

@@ -30,10 +30,10 @@
         </div>
       </div>
     </ion-item>
-    <div *ngIf="tx && tx.removed" class="box-notification warn" text-wrap>
+    <div *ngIf="tx && tx.removed" class="box-notification warning" text-wrap>
       <span translate>The payment was removed by creator</span>
     </div>
-    <div *ngIf="!currentSpendUnconfirmed && tx && tx.hasUnconfirmedInputs" class="box-notification warn" text-wrap>
+    <div *ngIf="!currentSpendUnconfirmed && tx && tx.hasUnconfirmedInputs" class="box-notification warning" text-wrap>
       <span translate>Warning: this transaction has unconfirmed inputs</span>
     </div>
 
@@ -52,7 +52,7 @@
       <div class="box-notification success" *ngIf="tx && tx.status == 'broadcasted'" translate>
         Payment Sent
       </div>
-      <div class="box-notification warn" *ngIf="tx && tx.status =='rejected'" translate>
+      <div class="box-notification warning" *ngIf="tx && tx.status =='rejected'" translate>
         Payment Rejected
       </div>
     </div>
