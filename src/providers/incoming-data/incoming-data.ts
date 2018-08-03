@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { TranslateService } from '@ngx-translate/core';
 import { Events } from 'ionic-angular';
 import { Logger } from '../../providers/logger/logger';
 
@@ -7,7 +6,6 @@ import { Logger } from '../../providers/logger/logger';
 import { AppProvider } from '../app/app';
 import { BwcProvider } from '../bwc/bwc';
 import { PayproProvider } from '../paypro/paypro';
-import { PopupProvider } from '../popup/popup';
 import { Coin } from '../wallet/wallet';
 
 export interface RedirParams {
@@ -23,328 +21,400 @@ export class IncomingDataProvider {
     private events: Events,
     private bwcProvider: BwcProvider,
     private payproProvider: PayproProvider,
-    private popupProvider: PopupProvider,
     private logger: Logger,
-    private appProvider: AppProvider,
-    private translate: TranslateService
+    private appProvider: AppProvider
   ) {
     this.logger.info('IncomingDataProvider initialized.');
   }
 
-  public showMenu(data): void {
-    this.events.publish('showIncomingDataMenuEvent', data);
+  /*
+   * VALIDATION
+   */
+
+  private isValidPayProNonBackwardsCompatible(data: string): boolean {
+    data = this.sanitizeUri(data);
+    return !!/^bitcoin(cash)?:\?r=[\w+]/.exec(data);
   }
 
-  public redir(data: string, redirParams?: RedirParams): boolean {
-    const useSendMax = redirParams && redirParams.useSendMax ? true : false;
-    // data extensions for Payment Protocol with non-backwards-compatible request
-    if (/^bitcoin(cash)?:\?r=[\w+]/.exec(data)) {
-      this.logger.debug(
-        'Handling Payment Protocol with non-backwards-compatible request'
-      );
-
-      let coin = data.indexOf('bitcoincash') === 0 ? Coin.BCH : Coin.BTC;
-
-      data = decodeURIComponent(data.replace(/bitcoin(cash)?:\?r=/, ''));
-
-      this.payproProvider
-        .getPayProDetails(data, coin)
-        .then(details => {
-          this.handlePayPro(details, coin);
-        })
-        .catch(err => {
-          this.showError(err);
-        });
-
-      return true;
-    }
-
+  private isValidBitcoinUri(data: string): boolean {
     data = this.sanitizeUri(data);
-    let amount: string;
-    let message: string;
-    let addr: string;
-    let parsed;
-    let coin: Coin;
+    return !!this.bwcProvider.getBitcore().URI.isValid(data);
+  }
 
-    // Bitcoin  URL
-    if (this.bwcProvider.getBitcore().URI.isValid(data)) {
-      this.logger.debug('Handling Bitcoin URI');
-      coin = Coin.BTC;
-      parsed = this.bwcProvider.getBitcore().URI(data);
-      addr = parsed.address ? parsed.address.toString() : '';
-      message = parsed.message;
-      amount = parsed.amount || redirParams.amount || '';
+  private isValidBitcoinCashUri(data: string): boolean {
+    data = this.sanitizeUri(data);
+    return !!this.bwcProvider.getBitcoreCash().URI.isValid(data);
+  }
 
-      if (parsed.r) {
-        this.payproProvider
-          .getPayProDetails(parsed.r, coin)
-          .then(details => {
-            this.handlePayPro(details, coin);
-          })
-          .catch((err: string) => {
-            addr && amount
-              ? this.goSend(addr, amount, message, coin, useSendMax)
-              : this.showError(err);
-          });
-      } else {
-        this.goSend(addr, amount, message, coin, useSendMax);
-      }
-      return true;
-      // Cash URI
-    } else if (this.bwcProvider.getBitcoreCash().URI.isValid(data)) {
-      this.logger.debug('Handling Bitcoin Cash URI');
-      coin = Coin.BCH;
-      parsed = this.bwcProvider.getBitcoreCash().URI(data);
-      addr = parsed.address ? parsed.address.toString() : '';
+  private isValidBitcoinCashUriWithLegacyAddress(data: string): boolean {
+    data = this.sanitizeUri(data);
+    return !!this.bwcProvider
+      .getBitcore()
+      .URI.isValid(data.replace(/^bitcoincash:/, 'bitcoin:'));
+  }
 
-      // keep address in original format
-      if (parsed.address && data.indexOf(addr) < 0) {
-        addr = parsed.address.toCashAddress();
-      }
+  private isValidPlainUrl(data: string): boolean {
+    data = this.sanitizeUri(data);
+    return !!/^https?:\/\//.test(data);
+  }
 
-      message = parsed.message;
-      amount = parsed.amount || redirParams.amount || '';
-
-      if (parsed.r) {
-        this.payproProvider
-          .getPayProDetails(parsed.r, coin)
-          .then(details => {
-            this.handlePayPro(details, coin);
-          })
-          .catch((err: string) => {
-            addr && amount
-              ? this.goSend(addr, amount, message, coin, useSendMax)
-              : this.showError(err);
-          });
-      } else {
-        this.goSend(addr, amount, message, coin, useSendMax);
-      }
-      return true;
-
-      // Cash URI with bitcoin core address version number?
-    } else if (
-      this.bwcProvider
-        .getBitcore()
-        .URI.isValid(data.replace(/^bitcoincash:/, 'bitcoin:'))
-    ) {
-      this.logger.debug('Handling Bitcoin Cash URI with legacy address');
-      coin = Coin.BCH;
-      parsed = this.bwcProvider
-        .getBitcore()
-        .URI(data.replace(/^bitcoincash:/, 'bitcoin:'));
-
-      let oldAddr = parsed.address ? parsed.address.toString() : '';
-      if (!oldAddr) return false;
-
-      addr = '';
-
-      let a = this.bwcProvider
-        .getBitcore()
-        .Address(oldAddr)
-        .toObject();
-      addr = this.bwcProvider
-        .getBitcoreCash()
-        .Address.fromObject(a)
-        .toString();
-
-      // Translate address
-      this.logger.debug('address transalated to:' + addr);
-      let title = this.translate.instant('Bitcoin cash Payment');
-      let msg = this.translate.instant(
-        'Payment address was translated to new Bitcoin Cash address format: {{addr}}',
-        { addr }
-      );
-      this.popupProvider.ionicConfirm(title, msg).then((res: boolean) => {
-        if (!res) return false;
-
-        message = parsed.message;
-        amount = parsed.amount ? parsed.amount : '';
-
-        if (parsed.r) {
-          this.payproProvider
-            .getPayProDetails(parsed.r, coin)
-            .then(details => {
-              this.handlePayPro(details, coin);
-            })
-            .catch(err => {
-              addr && amount
-                ? this.goSend(addr, amount, message, coin, useSendMax)
-                : this.showError(err);
-            });
-        } else {
-          this.goSend(addr, amount, message, coin, useSendMax);
-        }
-        return undefined;
-      });
-      return true;
-    } else if (/^https?:\/\//.test(data)) {
-      // Plain URL
-      this.logger.debug('Handling Plain URL');
-
-      let coin = Coin.BTC; // Assume BTC
-
-      this.payproProvider
-        .getPayProDetails(data, coin, true)
-        .then(details => {
-          this.handlePayPro(details, coin);
-        })
-        .catch(() => {
-          this.showMenu({
-            data,
-            type: 'url'
-          });
-        });
-      return true;
-      // Plain Address
-    } else if (
+  private isValidBitcoinAddress(data: string): boolean {
+    return !!(
       this.bwcProvider.getBitcore().Address.isValid(data, 'livenet') ||
       this.bwcProvider.getBitcore().Address.isValid(data, 'testnet')
-    ) {
-      this.logger.debug('Handling Bitcoin Plain Address');
-      const coin = Coin.BTC;
-      if (redirParams.activePage === 'ScanPage') {
-        this.showMenu({
-          data,
-          type: 'bitcoinAddress',
-          coin
-        });
-      } else if (redirParams && redirParams.amount) {
-        this.goSend(data, redirParams.amount, '', coin, useSendMax);
-      } else {
-        this.goToAmountPage(data, coin);
-      }
-      return true;
-    } else if (
+    );
+  }
+
+  private isValidBitcoinCashAddress(data: string): boolean {
+    return !!(
       this.bwcProvider.getBitcoreCash().Address.isValid(data, 'livenet') ||
       this.bwcProvider.getBitcoreCash().Address.isValid(data, 'testnet')
-    ) {
-      this.logger.debug('Handling Bitcoin Cash Plain Address');
-      const coin = Coin.BCH;
-      if (redirParams.activePage === 'ScanPage') {
-        this.showMenu({
-          data,
-          type: 'bitcoinAddress',
-          coin: 'bch'
-        });
-      } else if (redirParams && redirParams.amount) {
-        this.goSend(data, redirParams.amount, '', coin, useSendMax);
-      } else {
-        this.goToAmountPage(data, coin);
-      }
-      return true;
-    } else if (
-      data &&
-      data.indexOf(this.appProvider.info.name + '://glidera') === 0
-    ) {
-      this.logger.debug('Handling Glidera URL');
+    );
+  }
 
-      let code = this.getParameterByName('code', data);
-      let stateParams = { code };
-      let nextView = {
-        name: 'GlideraPage',
-        params: stateParams
-      };
-      this.events.publish('IncomingDataRedir', nextView);
+  private isValidGlideraUri(data: string): boolean {
+    data = this.sanitizeUri(data);
+    return !!(
+      data && data.indexOf(this.appProvider.info.name + '://glidera') === 0
+    );
+  }
 
-      return true;
-    } else if (
-      data &&
-      data.indexOf(this.appProvider.info.name + '://coinbase') === 0
-    ) {
-      this.logger.debug('Handling Coinbase URL');
+  private isValidCoinbaseUri(data: string): boolean {
+    data = this.sanitizeUri(data);
+    return !!(
+      data && data.indexOf(this.appProvider.info.name + '://coinbase') === 0
+    );
+  }
 
-      let code = this.getParameterByName('code', data);
-      let stateParams = { code };
-      let nextView = {
-        name: 'CoinbasePage',
-        params: stateParams
-      };
-      this.events.publish('IncomingDataRedir', nextView);
+  private isValidBitPayCardUri(data: string): boolean {
+    data = this.sanitizeUri(data);
+    return !!(data && data.indexOf('bitpay://bitpay.com?secret=') === 0);
+  }
 
-      return true;
-      // BitPayCard Authentication
-    } else if (data && data.indexOf(this.appProvider.info.name + '://') === 0) {
-      this.logger.debug('Handling BitPayCard URL');
+  private isValidJoinCode(data: string): boolean {
+    data = this.sanitizeUri(data);
+    return !!(data && data.match(/^copay:[0-9A-HJ-NP-Za-km-z]{70,80}$/));
+  }
 
-      // Disable BitPay Card
-      if (!this.appProvider.info._enabledExtensions.debitcard) return false;
+  private isValidJoinLegacyCode(data: string): boolean {
+    return !!(data && data.match(/^[0-9A-HJ-NP-Za-km-z]{70,80}$/));
+  }
 
-      let secret = this.getParameterByName('secret', data);
-      let email = this.getParameterByName('email', data);
-      let otp = this.getParameterByName('otp', data);
-      let reason = this.getParameterByName('r', data);
-      switch (reason) {
-        default:
-        case '0':
-          /* For BitPay card binding */
-          let stateParams = { secret, email, otp };
-          let nextView = {
-            name: 'BitPayCardIntroPage',
-            params: stateParams
-          };
-          this.events.publish('IncomingDataRedir', nextView);
-          break;
-      }
-      return true;
-
-      // Join
-    } else if (data && data.match(/^copay:[0-9A-HJ-NP-Za-km-z]{70,80}$/)) {
-      this.logger.debug('Handling Join Wallet');
-
-      let stateParams = { url: data, fromScan: true };
-      let nextView = {
-        name: 'JoinWalletPage',
-        params: stateParams
-      };
-      this.events.publish('IncomingDataRedir', nextView);
-      return true;
-      // Old join
-    } else if (data && data.match(/^[0-9A-HJ-NP-Za-km-z]{70,80}$/)) {
-      this.logger.debug('Handling Old Join Wallet');
-
-      let stateParams = { url: data, fromScan: true };
-      let nextView = {
-        name: 'JoinWalletPage',
-        params: stateParams
-      };
-      this.events.publish('IncomingDataRedir', nextView);
-      return true;
-    } else if (
+  private isValidPrivateKey(data: string): boolean {
+    return !!(
       data &&
       (data.substring(0, 2) == '6P' || this.checkPrivateKey(data))
-    ) {
-      this.logger.debug('Handling private key');
-      this.showMenu({
-        data,
-        type: 'privateKey'
-      });
-      return true;
-    } else if (
+    );
+  }
+
+  private isValidImportPrivateKey(data: string): boolean {
+    return !!(
       data &&
       (data.substring(0, 2) == '1|' ||
         data.substring(0, 2) == '2|' ||
         data.substring(0, 2) == '3|')
-    ) {
-      this.logger.debug('Handling QR Code Export feature');
+    );
+  }
 
-      let stateParams = { code: data, fromScan: true };
+  /*
+   *
+   * Parse values
+   *
+   */
+
+  private handlePrivateKey(data: string): void {
+    this.logger.debug('Incoming-data: private key');
+    this.showMenu({
+      data,
+      type: 'privateKey'
+    });
+  }
+
+  private handlePayProNonBackwardsCompatible(data: string): void {
+    this.logger.debug(
+      'Incoming-data: Payment Protocol with non-backwards-compatible request'
+    );
+    let coin = data.indexOf('bitcoincash') === 0 ? Coin.BCH : Coin.BTC;
+    data = decodeURIComponent(data.replace(/bitcoin(cash)?:\?r=/, ''));
+
+    this.goToPayPro(data, coin);
+  }
+
+  private handleBitcoinUri(data: string, redirParams?: RedirParams): void {
+    this.logger.debug('Incoming-data: Bitcoin URI');
+    const useSendMax = redirParams && redirParams.useSendMax ? true : false;
+    const coin = Coin.BTC;
+    let parsed = this.bwcProvider.getBitcore().URI(data);
+    let address = parsed.address ? parsed.address.toString() : '';
+    let message = parsed.message;
+    let amount = parsed.amount || redirParams.amount || '';
+    if (parsed.r) this.goToPayPro(data, coin);
+    else this.goSend(address, amount, message, coin, useSendMax);
+  }
+
+  private handleBitcoinCashUri(data: string, redirParams?: RedirParams): void {
+    this.logger.debug('Incoming-data: Bitcoin Cash URI');
+    const useSendMax = redirParams && redirParams.useSendMax ? true : false;
+    const coin = Coin.BCH;
+    let parsed = this.bwcProvider.getBitcoreCash().URI(data);
+    let address = parsed.address ? parsed.address.toString() : '';
+
+    // keep address in original format
+    if (parsed.address && data.indexOf(address) < 0) {
+      address = parsed.address.toCashAddress();
+    }
+
+    let message = parsed.message;
+    let amount = parsed.amount || redirParams.amount || '';
+
+    if (parsed.r) this.goToPayPro(data, coin);
+    else this.goSend(address, amount, message, coin, useSendMax);
+  }
+
+  private handleBitcoinCashUriLegacyAddress(
+    data: string,
+    redirParams?: RedirParams
+  ): void {
+    this.logger.debug('Incoming-data: Bitcoin Cash URI with legacy address');
+    const useSendMax = redirParams && redirParams.useSendMax ? true : false;
+    const coin = Coin.BCH;
+    let parsed = this.bwcProvider
+      .getBitcore()
+      .URI(data.replace(/^bitcoincash:/, 'bitcoin:'));
+
+    let oldAddr = parsed.address ? parsed.address.toString() : '';
+    if (!oldAddr)
+      this.logger.error('Could not parse Bitcoin Cash legacy address');
+
+    let a = this.bwcProvider
+      .getBitcore()
+      .Address(oldAddr)
+      .toObject();
+    let address = this.bwcProvider
+      .getBitcoreCash()
+      .Address.fromObject(a)
+      .toString();
+    let message = parsed.message;
+    let amount = parsed.amount ? parsed.amount : '';
+
+    // Translate address
+    this.logger.warn('Legacy Bitcoin Address transalated to: ' + address);
+    if (parsed.r) this.goToPayPro(data, coin);
+    else this.goSend(address, amount, message, coin, useSendMax);
+  }
+
+  private handlePlainUrl(data: string): void {
+    this.logger.debug('Incoming-data: Plain URL');
+    data = this.sanitizeUri(data);
+    this.showMenu({
+      data,
+      type: 'url'
+    });
+  }
+
+  private handlePlainBitcoinAddress(
+    data: string,
+    redirParams?: RedirParams
+  ): void {
+    this.logger.debug('Incoming-data: Bitcoin plain address');
+    const useSendMax = redirParams && redirParams.useSendMax ? true : false;
+    const coin = Coin.BTC;
+    if (redirParams.activePage === 'ScanPage') {
+      this.showMenu({
+        data,
+        type: 'bitcoinAddress',
+        coin
+      });
+    } else if (redirParams && redirParams.amount) {
+      this.goSend(data, redirParams.amount, '', coin, useSendMax);
+    } else {
+      this.goToAmountPage(data, coin);
+    }
+  }
+
+  private handlePlainBitcoinCashAddress(
+    data: string,
+    redirParams?: RedirParams
+  ): void {
+    this.logger.debug('Incoming-data: Bitcoin Cash plain address');
+    const useSendMax = redirParams && redirParams.useSendMax ? true : false;
+    const coin = Coin.BCH;
+    if (redirParams.activePage === 'ScanPage') {
+      this.showMenu({
+        data,
+        type: 'bitcoinAddress',
+        coin
+      });
+    } else if (redirParams && redirParams.amount) {
+      this.goSend(data, redirParams.amount, '', coin, useSendMax);
+    } else {
+      this.goToAmountPage(data, coin);
+    }
+  }
+
+  private goToImportByPrivateKey(data: string): void {
+    this.logger.debug('Incoming-data (redirect): QR code export feature');
+
+    let stateParams = { code: data, fromScan: true };
+    let nextView = {
+      name: 'ImportWalletPage',
+      params: stateParams
+    };
+    this.events.publish('IncomingDataRedir', nextView);
+  }
+
+  private goToJoinWallet(data: string): void {
+    this.logger.debug('Incoming-data (redirect): Code to join to a wallet');
+    if (this.isValidJoinCode(data)) {
+      let stateParams = { url: data, fromScan: true };
       let nextView = {
-        name: 'ImportWalletPage',
+        name: 'JoinWalletPage',
         params: stateParams
       };
       this.events.publish('IncomingDataRedir', nextView);
-      return true;
+    } else if (this.isValidJoinLegacyCode(data)) {
+      let stateParams = { url: data, fromScan: true };
+      let nextView = {
+        name: 'JoinWalletPage',
+        params: stateParams
+      };
+      this.events.publish('IncomingDataRedir', nextView);
     } else {
-      if (redirParams.activePage === 'ScanPage') {
-        this.logger.debug('Handling plain text');
+      this.logger.error('Incoming-data: Invalid code to join to a wallet');
+    }
+  }
+
+  private goToBitPayCard(data: string): void {
+    this.logger.debug('Incoming-data (redirect): BitPay Card URL');
+
+    // Disable BitPay Card
+    if (!this.appProvider.info._enabledExtensions.debitcard) {
+      this.logger.warn('BitPay Card has been disabled for this build');
+      return;
+    }
+
+    let secret = this.getParameterByName('secret', data);
+    let email = this.getParameterByName('email', data);
+    let otp = this.getParameterByName('otp', data);
+    let reason = this.getParameterByName('r', data);
+    switch (reason) {
+      default:
+      case '0':
+        /* For BitPay card binding */
+        let stateParams = { secret, email, otp };
+        let nextView = {
+          name: 'BitPayCardIntroPage',
+          params: stateParams
+        };
+        this.events.publish('IncomingDataRedir', nextView);
+        break;
+    }
+  }
+
+  private goToCoinbase(data: string): void {
+    this.logger.debug('Incoming-data (redirect): Coinbase URL');
+
+    let code = this.getParameterByName('code', data);
+    let stateParams = { code };
+    let nextView = {
+      name: 'CoinbasePage',
+      params: stateParams
+    };
+    this.events.publish('IncomingDataRedir', nextView);
+  }
+
+  private goToGlidera(data: string): void {
+    this.logger.debug('Incoming-data (redirect): Glidera URL');
+
+    let code = this.getParameterByName('code', data);
+    let stateParams = { code };
+    let nextView = {
+      name: 'GlideraPage',
+      params: stateParams
+    };
+    this.events.publish('IncomingDataRedir', nextView);
+  }
+
+  public redir(data: string, redirParams?: RedirParams): boolean {
+    // Payment Protocol with non-backwards-compatible request
+    if (this.isValidPayProNonBackwardsCompatible(data)) {
+      this.handlePayProNonBackwardsCompatible(data);
+      return true;
+
+      // Bitcoin  URI
+    } else if (this.isValidBitcoinUri(data)) {
+      this.handleBitcoinUri(data, redirParams);
+      return true;
+
+      // Bitcoin Cash URI
+    } else if (this.isValidBitcoinCashUri(data)) {
+      this.handleBitcoinCashUri(data, redirParams);
+      return true;
+
+      // Bitcoin Cash URI using Bitcoin Core legacy address
+    } else if (this.isValidBitcoinCashUriWithLegacyAddress(data)) {
+      this.handleBitcoinCashUriLegacyAddress(data, redirParams);
+      return true;
+
+      // Plain URL
+    } else if (this.isValidPlainUrl(data)) {
+      this.handlePlainUrl(data);
+      return true;
+
+      // Plain Address (Bitcoin)
+    } else if (this.isValidBitcoinAddress(data)) {
+      this.handlePlainBitcoinAddress(data, redirParams);
+      return true;
+
+      // Plain Address (Bitcoin Cash)
+    } else if (this.isValidBitcoinCashAddress(data)) {
+      this.handlePlainBitcoinCashAddress(data, redirParams);
+      return true;
+
+      // Glidera
+    } else if (this.isValidGlideraUri(data)) {
+      this.goToGlidera(data);
+      return true;
+
+      // Coinbase
+    } else if (this.isValidCoinbaseUri(data)) {
+      this.goToCoinbase(data);
+      return true;
+
+      // BitPayCard Authentication
+    } else if (this.isValidBitPayCardUri(data)) {
+      this.goToBitPayCard(data);
+      return true;
+
+      // Join
+    } else if (this.isValidJoinCode(data) || this.isValidJoinLegacyCode(data)) {
+      this.goToJoinWallet(data);
+      return true;
+
+      // Check Private Key
+    } else if (this.isValidPrivateKey(data)) {
+      this.handlePrivateKey(data);
+      return true;
+
+      // Import Private Key
+    } else if (this.isValidImportPrivateKey(data)) {
+      this.goToImportByPrivateKey(data);
+      return true;
+
+      // Anything else
+    } else {
+      if (redirParams && redirParams.activePage === 'ScanPage') {
+        this.logger.debug('Incoming-data: Plain text');
         this.showMenu({
           data,
           type: 'text'
         });
         return true;
+      } else {
+        this.logger.warn('Incoming-data: Unknown information');
+        return false;
       }
     }
-    return false;
   }
 
   private sanitizeUri(data): string {
@@ -428,16 +498,24 @@ export class IncomingDataProvider {
     this.events.publish('IncomingDataRedir', nextView);
   }
 
-  private showError(message: string) {
-    return this.popupProvider.ionicAlert(
-      this.translate.instant('Error'),
-      this.translate.instant(message)
-    );
+  public showMenu(data): void {
+    this.events.publish('showIncomingDataMenuEvent', data);
+  }
+
+  private goToPayPro(url: string, coin: Coin): void {
+    this.payproProvider
+      .getPayProDetails(url, coin)
+      .then(details => {
+        this.handlePayPro(details, coin);
+      })
+      .catch(err => {
+        this.logger.error(err);
+      });
   }
 
   private handlePayPro(payProDetails, coin?: Coin): void {
     if (!payProDetails) {
-      this.showError('No wallets available');
+      this.logger.error('No wallets available');
       return;
     }
 
