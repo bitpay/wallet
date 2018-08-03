@@ -1,4 +1,6 @@
-<action-sheet>
+<div class="backdrop" *ngIf="showIncomingDataMenu" (click)="backdropDismiss()">
+</div>
+<div class="incoming-data-menu slider" [ngClass]="{'opened': showSlideEffect, 'closed': !showSlideEffect }" [hidden]="!showIncomingDataMenu">
   <ion-list *ngIf="type === 'url'">
     <ion-item-divider>{{'Website' | translate}}</ion-item-divider>
     <ion-item>
@@ -83,4 +85,4 @@
   <button ion-button clear color="danger" class="button-standard" (click)="close(null, null)">
     {{'Close' | translate}}
   </button>
-</action-sheet>
+</div>

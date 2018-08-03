@@ -1,5 +1,5 @@
 import { Component, HostBinding } from '@angular/core';
-import { Events, Platform } from 'ionic-angular';
+import { Platform } from 'ionic-angular';
 import { Observable } from 'rxjs';
 import { DomProvider } from '../../providers/dom/dom';
 
@@ -11,15 +11,9 @@ export class ActionSheetComponent {
   private transitionDuration: number = 250;
   private parentComponentRef: any;
   private deregisterBackButtonAction;
-  public dismissFunction: (data?: any) => void;
-
   @HostBinding('class.open') public slideIn: boolean = false;
 
-  constructor(
-    private domProvider: DomProvider,
-    private platform: Platform,
-    public events: Events
-  ) {}
+  constructor(private domProvider: DomProvider, private platform: Platform) {}
 
   ngOnInit() {
     this.overrideHardwareBackButton();
@@ -31,9 +25,8 @@ export class ActionSheetComponent {
     this.slideIn = true;
   }
 
-  public async dismiss(data?: any): Promise<void> {
+  public async dismiss(): Promise<void> {
     this.slideIn = false;
-    this.dismissFunction && this.dismissFunction(data);
     await Observable.timer(this.transitionDuration).toPromise();
     this.domProvider.removeComponent(this.parentComponentRef);
   }
