@@ -1,7 +1,7 @@
 import { Component, Inject } from '@angular/core';
 import { DOCUMENT } from '@angular/platform-browser';
 import { TranslateService } from '@ngx-translate/core';
-import { ActionSheetController, ToastController } from 'ionic-angular';
+import { ActionSheetController } from 'ionic-angular';
 
 // native
 import { SocialSharing } from '@ionic-native/social-sharing';
@@ -33,7 +33,6 @@ export class SessionLogPage {
     private logger: Logger,
     private socialSharing: SocialSharing,
     private actionSheetCtrl: ActionSheetController,
-    private toastCtrl: ToastController,
     private platformProvider: PlatformProvider,
     private translate: TranslateService,
     private actionSheetProvider: ActionSheetProvider
@@ -92,12 +91,11 @@ export class SessionLogPage {
     textarea.value = this.prepareLogs();
     textarea.select();
     this.dom.execCommand('copy');
-    let message = this.translate.instant('Copied to clipboard');
-    let showSuccess = this.toastCtrl.create({
-      message,
-      duration: 1000
-    });
-    showSuccess.present();
+    const infoSheet = this.actionSheetProvider.createInfoSheet(
+      'copy-to-clipboard',
+      { msg: this.translate.instant('Session Log') }
+    );
+    infoSheet.present();
   }
 
   private sendLogs(): void {
