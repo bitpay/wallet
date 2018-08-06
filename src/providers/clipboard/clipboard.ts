@@ -3,8 +3,6 @@ import { Clipboard } from '@ionic-native/clipboard';
 import { TranslateService } from '@ngx-translate/core';
 import { ToastController } from 'ionic-angular';
 
-import * as _ from 'lodash';
-
 // providers
 import { Logger } from '../../providers/logger/logger';
 import { NodeWebkitProvider } from '../../providers/node-webkit/node-webkit';
