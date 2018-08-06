@@ -463,3 +463,8 @@ ion-item.with-label.item {
     }
   }
 }
+
+// Remove arrowhead from label
+label-tip.warn.no-arrowhead:before {
+  display: none;
+}

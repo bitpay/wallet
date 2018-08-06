@@ -30,7 +30,7 @@
           <ion-item *ngIf="exportWalletForm.controls.confirmPassword.touched && exportWalletForm.hasError('mismatchedPasswords') && exportWalletForm.controls.password.valid">
             <span ion-text color="warning" translate>Passwords do not match</span>
           </ion-item>
-          <label-tip class="no-pk" *ngIf="!canSign" type="warn">
+          <label-tip class="no-arrowhead" *ngIf="!canSign" type="warn">
             <span label-tip-title translate>No Private Key</span>
             <div label-tip-body translate>
               The private key of this wallet is not available. The export allows to check the wallet balance, transaction history, and
