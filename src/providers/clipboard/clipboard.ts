@@ -54,7 +54,7 @@ export class ClipboardProvider {
 
   public clear() {
     if (this.isCordova) {
-      this.clipboard.copy('');
+      this.clipboard.copy(null);
     } else if (this.isNW) {
       this.nodeWebkitProvider.clearClipboard();
     } else {
