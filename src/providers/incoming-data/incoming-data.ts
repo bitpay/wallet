@@ -3,6 +3,7 @@ import { Events } from 'ionic-angular';
 import { Logger } from '../../providers/logger/logger';
 
 // providers
+import { ActionSheetProvider } from '../action-sheet/action-sheet';
 import { AppProvider } from '../app/app';
 import { BwcProvider } from '../bwc/bwc';
 import { PayproProvider } from '../paypro/paypro';
@@ -18,6 +19,7 @@ export interface RedirParams {
 @Injectable()
 export class IncomingDataProvider {
   constructor(
+    private actionSheetProvider: ActionSheetProvider,
     private events: Events,
     private bwcProvider: BwcProvider,
     private payproProvider: PayproProvider,
@@ -27,6 +29,30 @@ export class IncomingDataProvider {
     this.logger.info('IncomingDataProvider initialized.');
   }
 
+  public showMenu(data): void {
+    const dataMenu = this.actionSheetProvider.createIncomingDataMenu({ data });
+    dataMenu.present();
+    dataMenu.onDidDismiss(data => this.finishIncomingData(data));
+  }
+
+  public finishIncomingData(data: any): void {
+    let redirTo = null;
+    let value = null;
+    if (data) {
+      redirTo = data.redirTo;
+      value = data.value;
+    }
+    if (redirTo === 'AmountPage') {
+      let coin = data.coin ? data.coin : 'btc';
+      this.events.publish('finishIncomingDataMenuEvent', {
+        redirTo,
+        value,
+        coin
+      });
+    } else {
+      this.events.publish('finishIncomingDataMenuEvent', { redirTo, value });
+    }
+  }
   /*
    * VALIDATION
    */
@@ -496,10 +522,6 @@ export class IncomingDataProvider {
       params: stateParams
     };
     this.events.publish('IncomingDataRedir', nextView);
-  }
-
-  public showMenu(data): void {
-    this.events.publish('showIncomingDataMenuEvent', data);
   }
 
   private goToPayPro(url: string, coin: Coin): void {
