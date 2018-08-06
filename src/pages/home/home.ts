@@ -36,6 +36,7 @@ import { EmailNotificationsProvider } from '../../providers/email-notifications/
 import { ExternalLinkProvider } from '../../providers/external-link/external-link';
 import { FeedbackProvider } from '../../providers/feedback/feedback';
 import { HomeIntegrationsProvider } from '../../providers/home-integrations/home-integrations';
+import { IncomingDataProvider } from '../../providers/incoming-data/incoming-data';
 import { Logger } from '../../providers/logger/logger';
 import { OnGoingProcessProvider } from '../../providers/on-going-process/on-going-process';
 import { PersistenceProvider } from '../../providers/persistence/persistence';
@@ -109,7 +110,8 @@ export class HomePage {
     private emailProvider: EmailNotificationsProvider,
     private replaceParametersProvider: ReplaceParametersProvider,
     private amazonProvider: AmazonProvider,
-    private clipboardProvider: ClipboardProvider
+    private clipboardProvider: ClipboardProvider,
+    private incomingDataProvider: IncomingDataProvider
   ) {
     this.updatingWalletId = {};
     this.addressbook = {};
@@ -359,16 +361,15 @@ export class HomePage {
   }
 
   public async checkClipboard() {
-    this.validDataFromClipboard = await this.clipboardProvider.getData();
+    let data = await this.clipboardProvider.getData();
+    let parsedInfo = this.incomingDataProvider.parseData(data);
+    this.validDataFromClipboard = parsedInfo;
   }
 
   public processClipboardData(data) {
-    this.clipboardProvider.process(data);
-  }
-
-  public clearClipboard() {
+    this.validDataFromClipboard = null;
     this.clipboardProvider.clear();
-    this.validDataFromClipboard = [];
+    this.incomingDataProvider.redir(data);
   }
 
   private initFeedBackInfo() {
