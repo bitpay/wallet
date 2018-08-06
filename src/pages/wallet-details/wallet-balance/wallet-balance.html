@@ -8,9 +8,11 @@
 
 <ion-content>
   <ion-list>
-
-    <ion-item>{{'All of your bitcoin wallet balance may not be available for immediate spending.' | translate}}</ion-item>
-    <ion-item-divider></ion-item-divider>
+    <label-tip type="warn" header="no-header" class="no-arrowhead">
+      <div label-tip-body translate>
+        All of your bitcoin wallet balance may not be available for immediate spending.
+      </div>
+    </label-tip>
     <ion-item>
       <div class="balance-container">
         <div class="title">
@@ -28,10 +30,12 @@
           </div>
         </div>
       </div>
-      <div translate text-wrap class="description">The total amount of bitcoin stored in this wallet.</div>
     </ion-item>
-
-    <ion-item-divider></ion-item-divider>
+    <label-tip type="info" header="no-header">
+      <div label-tip-body translate>
+        The total amount of bitcoin stored in this wallet.
+      </div>
+    </label-tip>
 
     <ion-item>
       <div class="balance-container">
@@ -50,10 +54,12 @@
           </div>
         </div>
       </div>
-      <div translate text-wrap class="description">The amount of bitcoin immediately spendable from this wallet.</div>
     </ion-item>
-
-    <ion-item-divider></ion-item-divider>
+    <label-tip type="info" header="no-header">
+      <div label-tip-body translate>
+        The amount of bitcoin immediately spendable from this wallet.
+      </div>
+    </label-tip>
 
     <ion-item>
       <div class="balance-container">
@@ -72,10 +78,12 @@
           </div>
         </div>
       </div>
-      <div translate text-wrap class="description">The amount of bitcoin stored in this wallet with less than 1 blockchain confirmation.</div>
     </ion-item>
-
-    <ion-item-divider></ion-item-divider>
+    <label-tip type="info" header="no-header">
+      <div label-tip-body translate>
+        The amount of bitcoin stored in this wallet with less than 1 blockchain confirmation.
+      </div>
+    </label-tip>
 
     <ion-item>
       <div class="balance-container">
@@ -94,12 +102,12 @@
           </div>
         </div>
       </div>
-      <div translate text-wrap class="description">
-        The amount of bitcoin stored in this wallet that is allocated as inputs to your pending transaction proposals. The amount is determined using unspent transaction outputs associated with this wallet and may be more than the actual amounts associated with your pending transaction proposals.
-      </div>
     </ion-item>
-
-    <ion-item-divider></ion-item-divider>
+    <label-tip type="info" header="no-header">
+      <div label-tip-body translate>
+          The amount of bitcoin stored in this wallet that is allocated as inputs to your pending transaction proposals. The amount is determined using unspent transaction outputs associated with this wallet and may be more than the actual amounts associated with your pending transaction proposals.
+      </div>
+    </label-tip>
 
   </ion-list>
 </ion-content>
