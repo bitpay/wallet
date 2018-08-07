@@ -53,9 +53,6 @@ export class IncomingDataProvider {
       this.events.publish('finishIncomingDataMenuEvent', { redirTo, value });
     }
   }
-  /*
-   * VALIDATION
-   */
 
   private isValidPayProNonBackwardsCompatible(data: string): boolean {
     data = this.sanitizeUri(data);
@@ -162,18 +159,22 @@ export class IncomingDataProvider {
 
   private handleBitcoinUri(data: string, redirParams?: RedirParams): void {
     this.logger.debug('Incoming-data: Bitcoin URI');
+    let amountFromRedirParams =
+      redirParams && redirParams.amount ? redirParams.amount : '';
     const useSendMax = redirParams && redirParams.useSendMax ? true : false;
     const coin = Coin.BTC;
     let parsed = this.bwcProvider.getBitcore().URI(data);
     let address = parsed.address ? parsed.address.toString() : '';
     let message = parsed.message;
-    let amount = parsed.amount || redirParams.amount || '';
+    let amount = parsed.amount || amountFromRedirParams;
     if (parsed.r) this.goToPayPro(data, coin);
     else this.goSend(address, amount, message, coin, useSendMax);
   }
 
   private handleBitcoinCashUri(data: string, redirParams?: RedirParams): void {
     this.logger.debug('Incoming-data: Bitcoin Cash URI');
+    let amountFromRedirParams =
+      redirParams && redirParams.amount ? redirParams.amount : '';
     const useSendMax = redirParams && redirParams.useSendMax ? true : false;
     const coin = Coin.BCH;
     let parsed = this.bwcProvider.getBitcoreCash().URI(data);
@@ -185,7 +186,7 @@ export class IncomingDataProvider {
     }
 
     let message = parsed.message;
-    let amount = parsed.amount || redirParams.amount || '';
+    let amount = parsed.amount || amountFromRedirParams;
 
     if (parsed.r) this.goToPayPro(data, coin);
     else this.goSend(address, amount, message, coin, useSendMax);
