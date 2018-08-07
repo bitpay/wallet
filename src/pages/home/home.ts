@@ -528,6 +528,7 @@ export class HomePage {
 
   public goToWalletDetails(wallet): void {
     if (this.showReorderBtc || this.showReorderBch) return;
+    this.events.unsubscribe('bwsEvent');
     this.events.publish('OpenWallet', wallet);
   }
 
