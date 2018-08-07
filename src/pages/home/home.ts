@@ -30,11 +30,13 @@ import { AmazonProvider } from '../../providers/amazon/amazon';
 import { AppProvider } from '../../providers/app/app';
 import { BitPayCardProvider } from '../../providers/bitpay-card/bitpay-card';
 import { BwcErrorProvider } from '../../providers/bwc-error/bwc-error';
+import { ClipboardProvider } from '../../providers/clipboard/clipboard';
 import { ConfigProvider } from '../../providers/config/config';
 import { EmailNotificationsProvider } from '../../providers/email-notifications/email-notifications';
 import { ExternalLinkProvider } from '../../providers/external-link/external-link';
 import { FeedbackProvider } from '../../providers/feedback/feedback';
 import { HomeIntegrationsProvider } from '../../providers/home-integrations/home-integrations';
+import { IncomingDataProvider } from '../../providers/incoming-data/incoming-data';
 import { Logger } from '../../providers/logger/logger';
 import { OnGoingProcessProvider } from '../../providers/on-going-process/on-going-process';
 import { PersistenceProvider } from '../../providers/persistence/persistence';
@@ -69,6 +71,7 @@ export class HomePage {
   public bitpayCardItems;
   public showBitPayCard: boolean = false;
   public showAnnouncement: boolean = false;
+  public validDataFromClipboard;
 
   public showRateCard: boolean;
   public homeTip: boolean;
@@ -106,7 +109,9 @@ export class HomePage {
     private translate: TranslateService,
     private emailProvider: EmailNotificationsProvider,
     private replaceParametersProvider: ReplaceParametersProvider,
-    private amazonProvider: AmazonProvider
+    private amazonProvider: AmazonProvider,
+    private clipboardProvider: ClipboardProvider,
+    private incomingDataProvider: IncomingDataProvider
   ) {
     this.updatingWalletId = {};
     this.addressbook = {};
@@ -120,6 +125,14 @@ export class HomePage {
       this._didEnter();
       this.subscribeBwsEvents();
     });
+
+    if (this.isNW) {
+      let gui = (window as any).require('nw.gui');
+      let win = gui.Window.get();
+      win.on('focus', () => {
+        this.checkClipboard();
+      });
+    }
   }
 
   ionViewWillEnter() {
@@ -154,6 +167,7 @@ export class HomePage {
     this.checkHomeTip();
     this.checkFeedbackInfo();
     this.checkAnnouncement();
+    this.checkClipboard();
 
     this.subscribeBwsEvents();
 
@@ -194,6 +208,7 @@ export class HomePage {
       this.setWallets();
       this.subscribeBwsEvents();
       this.subscribeStatusEvents();
+      this.checkClipboard();
     });
 
     this.onPauseSubscription = this.plt.pause.subscribe(() => {
@@ -343,6 +358,18 @@ export class HomePage {
         this.showCard.setShowRateCard(this.showRateCard);
       }
     });
+  }
+
+  public async checkClipboard() {
+    let data = await this.clipboardProvider.getData();
+    let parsedInfo = this.incomingDataProvider.parseData(data);
+    this.validDataFromClipboard = parsedInfo;
+  }
+
+  public processClipboardData(data) {
+    this.validDataFromClipboard = null;
+    this.clipboardProvider.clear();
+    this.incomingDataProvider.redir(data);
   }
 
   private initFeedBackInfo() {

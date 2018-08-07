@@ -2,12 +2,11 @@ import { Directive, Inject } from '@angular/core';
 import { DOCUMENT } from '@angular/platform-browser';
 import { Clipboard } from '@ionic-native/clipboard';
 import { TranslateService } from '@ngx-translate/core';
-import { ToastController } from 'ionic-angular';
 
 // providers
 import { ActionSheetProvider } from '../../providers/action-sheet/action-sheet';
+import { ClipboardProvider } from '../../providers/clipboard/clipboard';
 import { Logger } from '../../providers/logger/logger';
-import { NodeWebkitProvider } from '../../providers/node-webkit/node-webkit';
 import { PlatformProvider } from '../../providers/platform/platform';
 
 @Directive({
@@ -21,22 +20,17 @@ export class CopyToClipboard {
   public value: string;
   public hideToast: boolean;
   private dom: Document;
-  private isCordova: boolean;
-  private isNW: boolean;
 
   constructor(
     @Inject(DOCUMENT) dom: Document,
-    public toastCtrl: ToastController,
     public clipboard: Clipboard,
     public platform: PlatformProvider,
     public logger: Logger,
     public translate: TranslateService,
-    private nodeWebkitProvider: NodeWebkitProvider,
-    private actionSheetProvider: ActionSheetProvider
+    private actionSheetProvider: ActionSheetProvider,
+    private clipboardProvider: ClipboardProvider
   ) {
     this.logger.info('CopyToClipboardDirective initialized.');
-    this.isCordova = this.platform.isCordova;
-    this.isNW = this.platform.isNW;
     this.dom = dom;
   }
 
@@ -50,14 +44,11 @@ export class CopyToClipboard {
   }
 
   public copy() {
-    if (!this.value) {
-      return;
-    }
-    if (this.isCordova) {
-      this.clipboard.copy(this.value);
-    } else if (this.isNW) {
-      this.nodeWebkitProvider.writeToClipboard(this.value);
-    } else {
+    if (!this.value) return;
+    try {
+      this.clipboardProvider.copy(this.value);
+    } catch (e) {
+      if (e) this.logger.warn(e.message);
       this.copyBrowser();
     }
     if (this.hideToast) return;
