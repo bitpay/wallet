@@ -62,7 +62,8 @@ import { WalletTabsProvider } from '../pages/wallet-tabs/wallet-tabs.provider';
   providers: [TouchIdProvider]
 })
 export class CopayApp {
-  @ViewChild('appNav') nav: NavController;
+  @ViewChild('appNav')
+  nav: NavController;
 
   public rootPage:
     | typeof AmountPage

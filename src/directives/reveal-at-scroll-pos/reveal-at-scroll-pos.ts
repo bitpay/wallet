@@ -5,8 +5,10 @@ import { Content } from 'ionic-angular';
   selector: '[reveal-at-scroll-pos]'
 })
 export class RevealAtScrollPosition {
-  @Input('reveal-at-scroll-pos') scrollThreshold: number;
-  @Input('scrollArea') scrollArea: Content;
+  @Input('reveal-at-scroll-pos')
+  scrollThreshold: number;
+  @Input('scrollArea')
+  scrollArea: Content;
 
   animationDistance: number = 28;
 

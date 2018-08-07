@@ -31,7 +31,8 @@ export class PinModalPage {
   public incorrect: boolean;
   public unregister;
 
-  @ViewChild(Animate) pinCode: Animate;
+  @ViewChild(Animate)
+  pinCode: Animate;
 
   constructor(
     private configProvider: ConfigProvider,

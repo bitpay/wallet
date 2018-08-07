@@ -16,7 +16,8 @@ export class LongPress implements OnInit, OnDestroy {
   el: HTMLElement;
   pressGesture: Gesture;
 
-  @Output() longPress: EventEmitter<any> = new EventEmitter();
+  @Output()
+  longPress: EventEmitter<any> = new EventEmitter();
 
   constructor(el: ElementRef) {
     this.el = el.nativeElement;

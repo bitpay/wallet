@@ -35,7 +35,8 @@ const FEE_TOO_HIGH_LIMIT_PER = 15;
   templateUrl: 'bitpay-card-topup.html'
 })
 export class BitPayCardTopUpPage {
-  @ViewChild('slideButton') slideButton;
+  @ViewChild('slideButton')
+  slideButton;
 
   public cardId;
   public useSendMax: boolean;

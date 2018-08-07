@@ -24,7 +24,8 @@ import { setPrice } from '../../integrations';
   templateUrl: 'sell-glidera.html'
 })
 export class SellGlideraPage {
-  @ViewChild('slideButton') slideButton;
+  @ViewChild('slideButton')
+  slideButton;
 
   public isCordova: boolean;
   public token: string;

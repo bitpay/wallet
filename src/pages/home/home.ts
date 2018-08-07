@@ -53,7 +53,8 @@ import { SettingsPage } from '../settings/settings';
   templateUrl: 'home.html'
 })
 export class HomePage {
-  @ViewChild('showCard') showCard;
+  @ViewChild('showCard')
+  showCard;
   public wallets;
   public walletsBtc;
   public walletsBch;

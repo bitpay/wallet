@@ -21,13 +21,18 @@ export class EditableItemComponent {
   public isFocused: boolean;
   public textInput = new FormControl('');
   public saving: boolean;
-  @ViewChild('itemTextarea') itemTextarea;
+  @ViewChild('itemTextarea')
+  itemTextarea;
   @ViewChild('itemTextarea', { read: ElementRef })
   moveCaret: ElementRef;
-  @Output() valChange: EventEmitter<string> = new EventEmitter();
-  @Output() focus: EventEmitter<boolean> = new EventEmitter();
-  @Input() value: string;
-  @Input() itemPlaceholder: string;
+  @Output()
+  valChange: EventEmitter<string> = new EventEmitter();
+  @Output()
+  focus: EventEmitter<boolean> = new EventEmitter();
+  @Input()
+  value: string;
+  @Input()
+  itemPlaceholder: string;
 
   listenerForEnsuringBlurOnIos = (e: Event) => {
     e.stopPropagation();
@@ -36,11 +41,7 @@ export class EditableItemComponent {
 
   constructor(private platformProvider: PlatformProvider) {
     this.textInput.valueChanges
-      .pipe(
-        debounceTime(600),
-        distinctUntilChanged(),
-        skip(1)
-      )
+      .pipe(debounceTime(600), distinctUntilChanged(), skip(1))
       .subscribe(value => {
         this.value = value;
         this.saving = true;

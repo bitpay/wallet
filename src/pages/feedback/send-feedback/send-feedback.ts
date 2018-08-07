@@ -24,7 +24,8 @@ import { FeedbackCompletePage } from '../feedback-complete/feedback-complete';
   templateUrl: 'send-feedback.html'
 })
 export class SendFeedbackPage {
-  @ViewChild(Navbar) navBar: Navbar;
+  @ViewChild(Navbar)
+  navBar: Navbar;
 
   public feedback: string;
   public score: number;

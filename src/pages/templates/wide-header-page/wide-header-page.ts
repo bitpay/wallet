@@ -6,8 +6,10 @@ import { PlatformProvider } from '../../../providers/platform/platform';
   templateUrl: 'wide-header-page.html'
 })
 export class WideHeaderPage {
-  @Input() headerColor: string;
-  @Input() title: string;
+  @Input()
+  headerColor: string;
+  @Input()
+  title: string;
 
   constructor(public platformProvider: PlatformProvider) {}
 }

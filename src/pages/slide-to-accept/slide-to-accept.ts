@@ -15,9 +15,11 @@ import { NavController, NavParams } from 'ionic-angular';
   templateUrl: 'slide-to-accept.html'
 })
 export class SlideToAcceptPage implements AfterViewInit {
-  @Output() slideDone = new EventEmitter<boolean>();
+  @Output()
+  slideDone = new EventEmitter<boolean>();
 
-  @Input() buttonText: string;
+  @Input()
+  buttonText: string;
 
   @Input()
   set disabled(disabled: boolean) {
@@ -36,7 +38,8 @@ export class SlideToAcceptPage implements AfterViewInit {
 
   @ViewChild('slideButton', { read: ElementRef })
   private buttonElement: ElementRef;
-  @ViewChild('slideButtonContainer') private containerElement: ElementRef;
+  @ViewChild('slideButtonContainer')
+  private containerElement: ElementRef;
 
   private isPressed: boolean = false;
   private clickPosition;

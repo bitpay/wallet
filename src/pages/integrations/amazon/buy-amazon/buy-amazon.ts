@@ -33,7 +33,8 @@ import {
   templateUrl: 'buy-amazon.html'
 })
 export class BuyAmazonPage {
-  @ViewChild('slideButton') slideButton;
+  @ViewChild('slideButton')
+  slideButton;
 
   private bitcoreCash;
   private amount: number;
