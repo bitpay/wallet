@@ -159,7 +159,8 @@ export class IncomingDataProvider {
 
   private handleBitcoinUri(data: string, redirParams?: RedirParams): void {
     this.logger.debug('Incoming-data: Bitcoin URI');
-    let amountFromRedirParams = (redirParams && redirParams.amount) ? redirParams.amount : '';
+    let amountFromRedirParams =
+      redirParams && redirParams.amount ? redirParams.amount : '';
     const useSendMax = redirParams && redirParams.useSendMax ? true : false;
     const coin = Coin.BTC;
     let parsed = this.bwcProvider.getBitcore().URI(data);
@@ -172,7 +173,8 @@ export class IncomingDataProvider {
 
   private handleBitcoinCashUri(data: string, redirParams?: RedirParams): void {
     this.logger.debug('Incoming-data: Bitcoin Cash URI');
-    let amountFromRedirParams = (redirParams && redirParams.amount) ? redirParams.amount : '';
+    let amountFromRedirParams =
+      redirParams && redirParams.amount ? redirParams.amount : '';
     const useSendMax = redirParams && redirParams.useSendMax ? true : false;
     const coin = Coin.BCH;
     let parsed = this.bwcProvider.getBitcoreCash().URI(data);
