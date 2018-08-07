@@ -178,9 +178,11 @@
                   <span *ngIf="tx.customData && tx.customData.toWalletName && !tx.customData.service">
                     <img class="icon-services" src="assets/img/icon-wallet-reverse.svg" *ngIf="tx.action == 'sent'" width="40">
                   </span>
-                  <span *ngIf="!tx.customData || (tx.customData && !tx.customData.service && (!tx.customData.toWalletName || tx.customData.toWalletName === wallet.name))">
-                    <img src="assets/img/tx-action/icon-received.svg" *ngIf="tx.action == 'received'" width="40">
+                  <span *ngIf="!tx.customData || (tx.customData && !tx.customData.service && !tx.customData.toWalletName)">
                     <img src="assets/img/tx-action/icon-sent.svg" *ngIf="tx.action == 'sent'" width="40">
+                  </span>
+                  <span>
+                    <img src="assets/img/tx-action/icon-received.svg" *ngIf="tx.action == 'received'" width="40">
                     <img src="assets/img/tx-action/icon-moved.svg" *ngIf="tx.action == 'moved'" width="40">
                   </span>
                 </div>
