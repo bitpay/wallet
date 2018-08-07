@@ -9,9 +9,9 @@ import {
 @Injectable()
 export class DomProvider {
   constructor(
-    private componentFactoryResolver: ComponentFactoryResolver,
-    private injector: Injector,
-    private appRef: ApplicationRef
+    protected componentFactoryResolver: ComponentFactoryResolver,
+    protected injector: Injector,
+    protected appRef: ApplicationRef
   ) {}
 
   public appendComponentToBody<T>(component: {
@@ -23,8 +23,12 @@ export class DomProvider {
     this.appRef.attachView(componentRef.hostView);
     const domElem = (componentRef.hostView as EmbeddedViewRef<T>)
       .rootNodes[0] as HTMLElement;
-    document.getElementsByTagName('ion-app')[0].appendChild(domElem);
+    this.appendToDom(domElem);
     return componentRef;
+  }
+
+  protected appendToDom(domElem: HTMLElement) {
+    document.getElementsByTagName('ion-app')[0].appendChild(domElem);
   }
 
   public removeComponent<T>(componentRef: ComponentRef<T>) {
