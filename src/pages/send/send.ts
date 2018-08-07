@@ -5,20 +5,16 @@ import * as _ from 'lodash';
 // Providers
 import { AddressBookProvider } from '../../providers/address-book/address-book';
 import { AddressProvider } from '../../providers/address/address';
-import { ExternalLinkProvider } from '../../providers/external-link/external-link';
 import { IncomingDataProvider } from '../../providers/incoming-data/incoming-data';
 import { Logger } from '../../providers/logger/logger';
 import { PopupProvider } from '../../providers/popup/popup';
 import { ProfileProvider } from '../../providers/profile/profile';
+import { TxFormatProvider } from '../../providers/tx-format/tx-format';
 import { Coin, WalletProvider } from '../../providers/wallet/wallet';
+import { WalletTabsProvider } from '../wallet-tabs/wallet-tabs.provider';
 
 // Pages
-import { TxFormatProvider } from '../../providers/tx-format/tx-format';
-import { PaperWalletPage } from '../paper-wallet/paper-wallet';
-import { AddressbookAddPage } from '../settings/addressbook/add/add';
 import { WalletTabsChild } from '../wallet-tabs/wallet-tabs-child';
-import { WalletTabsProvider } from '../wallet-tabs/wallet-tabs.provider';
-import { AmountPage } from './amount/amount';
 import { ConfirmPage } from './confirm/confirm';
 
 export interface FlatWallet {
@@ -71,7 +67,6 @@ export class SendPage extends WalletTabsChild {
     private popupProvider: PopupProvider,
     private addressProvider: AddressProvider,
     private events: Events,
-    private externalLinkProvider: ExternalLinkProvider,
     private txFormatProvider: TxFormatProvider,
     walletTabsProvider: WalletTabsProvider
   ) {
@@ -87,10 +82,11 @@ export class SendPage extends WalletTabsChild {
     this.fiatCode = this.navParams.get('fiatCode');
     this.useSendMax = this.navParams.get('useSendMax');
     this.logger.info('ionViewDidLoad SendPage');
-  }
 
-  ionViewWillLeave() {
-    this.events.unsubscribe('finishIncomingDataMenuEvent');
+    this.events.subscribe('update:address', data => {
+      this.search = data.value;
+      this.processInput();
+    });
   }
 
   ionViewWillEnter() {
@@ -98,47 +94,13 @@ export class SendPage extends WalletTabsChild {
     this.walletsBch = this.profileProvider.getWallets({ coin: 'bch' });
     this.hasBtcWallets = !_.isEmpty(this.walletsBtc);
     this.hasBchWallets = !_.isEmpty(this.walletsBch);
-
-    this.events.subscribe('finishIncomingDataMenuEvent', data => {
-      switch (data.redirTo) {
-        case 'AmountPage':
-          this.sendPaymentToAddress(data.value, data.coin);
-          break;
-        case 'AddressBookPage':
-          this.addToAddressBook(data.value);
-          break;
-        case 'OpenExternalLink':
-          this.goToUrl(data.value);
-          break;
-        case 'PaperWalletPage':
-          this.scanPaperWallet(data.value);
-          break;
-      }
-    });
-
     this.walletBchList = this.getBchWalletsList();
     this.walletBtcList = this.getBtcWalletsList();
     this.updateContactsList();
   }
 
-  ionViewDidEnter() {
-    this.search = '';
-  }
-
-  private goToUrl(url: string): void {
-    this.externalLinkProvider.open(url);
-  }
-
-  private sendPaymentToAddress(bitcoinAddress: string, coin: string): void {
-    this.navCtrl.push(AmountPage, { toAddress: bitcoinAddress, coin });
-  }
-
-  private addToAddressBook(bitcoinAddress: string): void {
-    this.navCtrl.push(AddressbookAddPage, { addressbookEntry: bitcoinAddress });
-  }
-
-  private scanPaperWallet(privateKey: string) {
-    this.navCtrl.push(PaperWalletPage, { privateKey });
+  ngOnDestroy() {
+    this.events.unsubscribe('update:address');
   }
 
   private getBchWalletsList(): FlatWallet[] {
@@ -223,6 +185,7 @@ export class SendPage extends WalletTabsChild {
       coin: this.navParams.get('coin'),
       useSendMax: this.useSendMax
     });
+    this.walletTabsProvider.setFromPage({ fromSend: true });
     this.events.publish('ScanFromWallet');
   }
 

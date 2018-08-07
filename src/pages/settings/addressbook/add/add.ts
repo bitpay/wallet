@@ -71,6 +71,10 @@ export class AddressbookAddPage {
     this.logger.info('ionViewDidLoad AddressbookAddPage');
   }
 
+  ngOnDestroy() {
+    this.events.unsubscribe('update:address');
+  }
+
   private emailOrEmpty(control: AbstractControl): ValidationErrors | null {
     return control.value === '' ? null : Validators.email(control);
   }

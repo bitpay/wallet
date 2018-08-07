@@ -1,6 +1,6 @@
 <ion-header>
   <ion-navbar class="navbar-transparent">
-    <ion-buttons left>
+    <ion-buttons left *ngIf="!fromAddressbook">
       <button class="modal-close-button" (click)="close()" ion-button>
         <ion-icon ios="md-close" md="md-close"></ion-icon>
       </button>
