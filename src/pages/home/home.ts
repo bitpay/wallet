@@ -19,6 +19,9 @@ import { CoinbasePage } from '../integrations/coinbase/coinbase';
 import { GlideraPage } from '../integrations/glidera/glidera';
 import { MercadoLibrePage } from '../integrations/mercado-libre/mercado-libre';
 import { ShapeshiftPage } from '../integrations/shapeshift/shapeshift';
+import { PaperWalletPage } from '../paper-wallet/paper-wallet';
+import { AmountPage } from '../send/amount/amount';
+import { AddressbookAddPage } from '../settings/addressbook/add/add';
 import { TxDetailsPage } from '../tx-details/tx-details';
 import { TxpDetailsPage } from '../txp-details/txp-details';
 import { ActivityPage } from './activity/activity';
@@ -169,6 +172,7 @@ export class HomePage {
     this.checkAnnouncement();
     this.checkClipboard();
 
+    this.subscribeIncomingDataMenuEvent();
     this.subscribeBwsEvents();
 
     // Show integrations
@@ -206,12 +210,14 @@ export class HomePage {
       this.getNotifications();
       this.updateTxps();
       this.setWallets();
+      this.subscribeIncomingDataMenuEvent();
       this.subscribeBwsEvents();
       this.subscribeStatusEvents();
       this.checkClipboard();
     });
 
     this.onPauseSubscription = this.plt.pause.subscribe(() => {
+      this.events.unsubscribe('finishIncomingDataMenuEvent');
       this.events.unsubscribe('bwsEvent');
       this.events.unsubscribe('status:updated');
     });
@@ -223,6 +229,7 @@ export class HomePage {
   }
 
   ionViewWillLeave() {
+    this.events.unsubscribe('finishIncomingDataMenuEvent');
     this.events.unsubscribe('bwsEvent');
   }
 
@@ -242,6 +249,41 @@ export class HomePage {
       this.updateTxps();
       this.setWallets();
     });
+  }
+
+  private subscribeIncomingDataMenuEvent() {
+    this.events.subscribe('finishIncomingDataMenuEvent', data => {
+      switch (data.redirTo) {
+        case 'AmountPage':
+          this.sendPaymentToAddress(data.value, data.coin);
+          break;
+        case 'AddressBookPage':
+          this.addToAddressBook(data.value);
+          break;
+        case 'OpenExternalLink':
+          this.goToUrl(data.value);
+          break;
+        case 'PaperWalletPage':
+          this.scanPaperWallet(data.value);
+          break;
+      }
+    });
+  }
+
+  private goToUrl(url: string): void {
+    this.externalLinkProvider.open(url);
+  }
+
+  private sendPaymentToAddress(bitcoinAddress: string, coin: string): void {
+    this.navCtrl.push(AmountPage, { toAddress: bitcoinAddress, coin });
+  }
+
+  private addToAddressBook(bitcoinAddress: string): void {
+    this.navCtrl.push(AddressbookAddPage, { addressbookEntry: bitcoinAddress });
+  }
+
+  private scanPaperWallet(privateKey: string) {
+    this.navCtrl.push(PaperWalletPage, { privateKey });
   }
 
   private openEmailDisclaimer() {
@@ -528,6 +570,7 @@ export class HomePage {
 
   public goToWalletDetails(wallet): void {
     if (this.showReorderBtc || this.showReorderBch) return;
+    this.events.unsubscribe('finishIncomingDataMenuEvent');
     this.events.unsubscribe('bwsEvent');
     this.events.publish('OpenWallet', wallet);
   }
