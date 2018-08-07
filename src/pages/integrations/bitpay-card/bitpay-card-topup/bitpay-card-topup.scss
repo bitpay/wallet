@@ -41,4 +41,13 @@ page-bitpay-card-topup {
   .last-item {
     margin-left: auto !important;
   }
+
+  .info .item-info {
+    display: flex;
+    align-items: center;
+    ion-icon {
+      margin-left: 1rem;
+      cursor: pointer;
+    }
+  }
 }
