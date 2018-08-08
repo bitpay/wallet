@@ -12,6 +12,7 @@ export interface SendParams {
 export class WalletTabsProvider {
   private tabNav: Tabs;
   private sendParams: SendParams;
+  private fromPage;
 
   goToTabIndex(index: number) {
     return this.tabNav.select(index);
@@ -33,8 +34,17 @@ export class WalletTabsProvider {
     return this.sendParams;
   }
 
+  setFromPage(page) {
+    this.fromPage = page;
+  }
+
+  getFromPage() {
+    return this.fromPage;
+  }
+
   clear() {
     this.tabNav = null;
     this.sendParams = null;
+    this.fromPage = null;
   }
 }
