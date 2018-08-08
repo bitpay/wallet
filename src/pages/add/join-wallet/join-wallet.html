@@ -16,8 +16,6 @@
       <ion-input type="text" formControlName="invitationCode" placeholder="{{'Enter wallet invitation'| translate}}"></ion-input>
 
       <ion-icon *ngIf="joinForm.controls.invitationCode.status == 'VALID'" name="ios-checkmark-circle" class="check success" item-right></ion-icon>
-      <ion-icon *ngIf="joinForm.value.invitationCode && joinForm.controls.invitationCode.status == 'INVALID'" class="check fail"
-        name="ios-close-circle" item-right></ion-icon>
 
       <ion-icon class="scanner-icon" name="qr-scanner" item-right (click)="openScanner()"></ion-icon>
     </ion-item>
