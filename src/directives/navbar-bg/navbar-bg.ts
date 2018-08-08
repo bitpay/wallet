@@ -9,7 +9,8 @@ to an arbitrary color. This directive enables this functionality.
   selector: '[navbar-bg]'
 })
 export class NavbarBg {
-  @Input('navbar-bg') color: string;
+  @Input('navbar-bg')
+  color: string;
 
   constructor(private element: ElementRef) {}
 

@@ -24,8 +24,10 @@ import { TxFormatProvider } from '../../../providers/tx-format/tx-format';
   templateUrl: 'tour.html'
 })
 export class TourPage {
-  @ViewChild(Slides) slides: Slides;
-  @ViewChild(Navbar) navBar: Navbar;
+  @ViewChild(Slides)
+  slides: Slides;
+  @ViewChild(Navbar)
+  navBar: Navbar;
 
   public localCurrencySymbol: string;
   public localCurrencyPerBtc: string;

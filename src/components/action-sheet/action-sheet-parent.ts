@@ -8,7 +8,8 @@ export class ActionSheetParent {
   public sheetType: string;
   public dismissFunction: dismissFunction;
 
-  @ViewChild(ActionSheetComponent) actionSheet: ActionSheetComponent;
+  @ViewChild(ActionSheetComponent)
+  actionSheet: ActionSheetComponent;
 
   public async present(): Promise<void> {
     return this.actionSheet.present(this.componentRef);

@@ -23,7 +23,8 @@ import { CoinbasePage } from '../coinbase';
   templateUrl: 'buy-coinbase.html'
 })
 export class BuyCoinbasePage {
-  @ViewChild('slideButton') slideButton;
+  @ViewChild('slideButton')
+  slideButton;
 
   private amount: string;
   private currency: string;

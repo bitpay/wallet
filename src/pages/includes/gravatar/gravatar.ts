@@ -9,10 +9,14 @@ import { Logger } from '../../../providers/logger/logger';
 export class GravatarPage {
   public emailHash;
 
-  @Input() email: string;
-  @Input() name: string;
-  @Input() height: number;
-  @Input() width: number;
+  @Input()
+  email: string;
+  @Input()
+  name: string;
+  @Input()
+  height: number;
+  @Input()
+  width: number;
 
   constructor(private logger: Logger) {}
 

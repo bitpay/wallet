@@ -6,7 +6,8 @@ import { ScanPage } from '../scan/scan';
   templateUrl: 'tabs.html'
 })
 export class TabsPage {
-  @ViewChild('tabs') tabs;
+  @ViewChild('tabs')
+  tabs;
 
   homeRoot = HomePage;
   scanRoot = ScanPage;

@@ -26,8 +26,10 @@ import { WalletProvider } from '../../../providers/wallet/wallet';
   templateUrl: 'backup-game.html'
 })
 export class BackupGamePage {
-  @ViewChild(Slides) slides: Slides;
-  @ViewChild(Navbar) navBar: Navbar;
+  @ViewChild(Slides)
+  slides: Slides;
+  @ViewChild(Navbar)
+  navBar: Navbar;
 
   private fromOnboarding: boolean;
 

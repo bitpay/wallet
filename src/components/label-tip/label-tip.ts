@@ -16,8 +16,10 @@ import { AlertType } from '../info-sheet/info-sheet-template';
   `
 })
 export class LabelTip {
-  @Input() type: AlertType;
-  @Input() header: string;
+  @Input()
+  type: AlertType;
+  @Input()
+  header: string;
 
   constructor(private element: ElementRef, private renderer: Renderer) {}
 

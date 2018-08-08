@@ -23,7 +23,8 @@ import { WalletOptions, WalletProvider } from '../../providers/wallet/wallet';
   templateUrl: 'paper-wallet.html'
 })
 export class PaperWalletPage {
-  @ViewChild('slideButton') slideButton;
+  @ViewChild('slideButton')
+  slideButton;
 
   public wallet;
   public walletName: string;

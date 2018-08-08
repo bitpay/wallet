@@ -32,10 +32,13 @@ export interface PinButton {
   `
 })
 export class PinPad {
-  @Input() integersOnly: boolean = false;
-  @Input() showSendMax: boolean = false;
+  @Input()
+  integersOnly: boolean = false;
+  @Input()
+  showSendMax: boolean = false;
 
-  @Input() type: 'pin' | 'amount';
+  @Input()
+  type: 'pin' | 'amount';
 
   keystrokeSubject: Subject<string> = new Subject<string>();
 

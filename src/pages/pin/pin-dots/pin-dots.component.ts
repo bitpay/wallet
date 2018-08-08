@@ -17,8 +17,10 @@ import { Animate } from './../../../directives/animate/animate';
 export class PinDots {
   public dotArray = new Array(4);
 
-  @Input() pin: string;
-  @ViewChildren(Animate) dots: QueryList<Animate>;
+  @Input()
+  pin: string;
+  @ViewChildren(Animate)
+  dots: QueryList<Animate>;
 
   ngOnChanges(changes: SimpleChanges) {
     const pinChanges = changes.pin;

@@ -32,7 +32,8 @@ import {
   templateUrl: 'shapeshift-confirm.html'
 })
 export class ShapeshiftConfirmPage {
-  @ViewChild('slideButton') slideButton;
+  @ViewChild('slideButton')
+  slideButton;
 
   private amount: number;
   private rateUnit: number;

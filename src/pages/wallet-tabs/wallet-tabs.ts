@@ -15,7 +15,8 @@ import { WalletTabsProvider } from './wallet-tabs.provider';
   `
 })
 export class WalletTabsPage {
-  @ViewChild('tabs') walletTabs: any;
+  @ViewChild('tabs')
+  walletTabs: any;
 
   receiveRoot = ReceivePage;
   activityRoot = WalletDetailsPage;

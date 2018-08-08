@@ -12,7 +12,8 @@ export class ActionSheetComponent {
   private parentComponentRef: any;
   private deregisterBackButtonAction;
   public dismissFunction: (data?: any) => void;
-  @HostBinding('class.open') public slideIn: boolean = false;
+  @HostBinding('class.open')
+  public slideIn: boolean = false;
 
   constructor(private domProvider: DomProvider, private platform: Platform) {}
 

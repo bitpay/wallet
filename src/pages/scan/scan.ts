@@ -26,7 +26,8 @@ import { WalletTabsProvider } from '../wallet-tabs/wallet-tabs.provider';
 export class ScanPage {
   ngVersion = VERSION.full;
 
-  @ViewChild('scanner') scanner: ZXingScannerComponent;
+  @ViewChild('scanner')
+  scanner: ZXingScannerComponent;
 
   hasCameras = false;
   hasPermission: boolean;

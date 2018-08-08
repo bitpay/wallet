@@ -34,7 +34,8 @@ import {
   templateUrl: 'buy-mercado-libre.html'
 })
 export class BuyMercadoLibrePage {
-  @ViewChild('slideButton') slideButton;
+  @ViewChild('slideButton')
+  slideButton;
 
   private bitcoreCash;
   private amount: number;

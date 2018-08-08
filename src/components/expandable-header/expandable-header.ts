@@ -34,13 +34,15 @@ export class ExpandableHeaderComponent {
    * The instance of ion-content to which the expandable header
    * will react based on user scrolling.
    */
-  @Input('scrollArea') scrollArea: Content;
+  @Input('scrollArea')
+  scrollArea: Content;
 
   /**
    * Determines how quickly the content fades out on scroll. The
    * greater the value, the quicker the fade.
    */
-  @Input() fadeFactor: number = 2.5;
+  @Input()
+  fadeFactor: number = 2.5;
 
   /**
    * The height of the entire component based on its' content.

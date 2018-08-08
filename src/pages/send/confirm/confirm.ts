@@ -39,7 +39,8 @@ import { WalletTabsProvider } from '../../wallet-tabs/wallet-tabs.provider';
   templateUrl: 'confirm.html'
 })
 export class ConfirmPage extends WalletTabsChild {
-  @ViewChild('slideButton') slideButton;
+  @ViewChild('slideButton')
+  slideButton;
 
   private bitcore;
   private bitcoreCash;
