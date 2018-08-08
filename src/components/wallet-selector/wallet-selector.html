@@ -49,7 +49,7 @@
               <span translate>Balance Hidden</span>]</span>
             <span class="text-gray" *ngIf="wallet.credentials.m > 1" translate>{{wallet.credentials.m}}-of-{{wallet.credentials.n}}</span>
             <ion-icon *ngIf="!wallet.balanceHidden && wallet.status && (wallet.status.totalBalanceSat != wallet.status.spendableAmount)"
-              name="timer"></ion-icon>
+              ios="ios-timer-outline" md="md-timer"></ion-icon>
             <span *ngIf="wallet.error" class="error">{{wallet.error}}</span>
           </span>
         </div>
@@ -95,7 +95,7 @@
               <span translate>Balance Hidden</span>]</span>
             <span class="text-gray" *ngIf="wallet.credentials.m > 1">{{wallet.credentials.m}}-of-{{wallet.credentials.n}}</span>
             <ion-icon *ngIf="!wallet.balanceHidden && wallet.status && (wallet.status.totalBalanceSat != wallet.status.spendableAmount)"
-              name="timer"></ion-icon>
+              ios="ios-timer-outline" md="md-timer"></ion-icon>
             <span *ngIf="wallet.error" class="error">{{wallet.error}}</span>
           </span>
         </div>
