@@ -2,11 +2,15 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
 import { Events, NavController, NavParams } from 'ionic-angular';
-import { Logger } from '../../../providers/logger/logger';
+
+// Pages
+import { ScanPage } from '../../scan/scan';
 
 // Providers
+import { ActionSheetProvider } from '../../../providers/action-sheet/action-sheet';
 import { ConfigProvider } from '../../../providers/config/config';
 import { DerivationPathHelperProvider } from '../../../providers/derivation-path-helper/derivation-path-helper';
+import { Logger } from '../../../providers/logger/logger';
 import { OnGoingProcessProvider } from '../../../providers/on-going-process/on-going-process';
 import { PopupProvider } from '../../../providers/popup/popup';
 import { ProfileProvider } from '../../../providers/profile/profile';
@@ -28,6 +32,7 @@ export class JoinWalletPage {
   public cancelText: string;
 
   private joinForm: FormGroup;
+  private regex: RegExp;
 
   constructor(
     private configProvider: ConfigProvider,
@@ -42,7 +47,8 @@ export class JoinWalletPage {
     private logger: Logger,
     private translate: TranslateService,
     private events: Events,
-    private pushNotificationsProvider: PushNotificationsProvider
+    private pushNotificationsProvider: PushNotificationsProvider,
+    private actionSheetProvider: ActionSheetProvider
   ) {
     this.okText = this.translate.instant('Ok');
     this.cancelText = this.translate.instant('Cancel');
@@ -50,10 +56,13 @@ export class JoinWalletPage {
 
     this.showAdvOpts = false;
 
-    let regex: RegExp = /^[0-9A-HJ-NP-Za-km-z]{70,80}$/; // For invitationCode
+    this.regex = /^[0-9A-HJ-NP-Za-km-z]{70,80}$/; // For invitationCode
     this.joinForm = this.form.group({
       myName: [null, Validators.required],
-      invitationCode: [null, [Validators.required, Validators.pattern(regex)]], // invitationCode == secret
+      invitationCode: [
+        null,
+        [Validators.required, Validators.pattern(this.regex)]
+      ], // invitationCode == secret
       bwsURL: [this.defaults.bws.url],
       selectedSeed: ['new'],
       recoveryPhrase: [null],
@@ -72,6 +81,10 @@ export class JoinWalletPage {
         supportsTestnet: false
       }
     ];
+    this.events.subscribe('update:invitationCode', data => {
+      let invitationCode = data.value.replace('copay:', '');
+      this.onQrCodeScannedJoin(invitationCode);
+    });
   }
 
   ionViewDidLoad() {
@@ -86,9 +99,23 @@ export class JoinWalletPage {
     }
   }
 
+  ngOnDestroy() {
+    this.events.unsubscribe('update:invitationCode');
+  }
+
   public onQrCodeScannedJoin(data: string): void {
-    // TODO
-    this.joinForm.controls['invitationCode'].setValue(data);
+    if (this.regex.test(data)) {
+      this.joinForm.controls['invitationCode'].setValue(data);
+    } else {
+      const errorInfoSheet = this.actionSheetProvider.createInfoSheet(
+        'default-error',
+        {
+          msg: this.translate.instant('Invalid data'),
+          title: this.translate.instant('Error')
+        }
+      );
+      errorInfoSheet.present();
+    }
   }
 
   public seedOptionsChange(seed): void {
@@ -169,12 +196,6 @@ export class JoinWalletPage {
   }
 
   public openScanner(): void {
-    if (this.navParams.data.fromScan) {
-      this.navCtrl.popToRoot({ animate: false });
-    } else {
-      this.navCtrl.popToRoot({ animate: false }).then(() => {
-        this.navCtrl.parent.select(1);
-      });
-    }
+    this.navCtrl.push(ScanPage, { fromJoin: true });
   }
 }

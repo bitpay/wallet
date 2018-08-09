@@ -6,9 +6,11 @@ import { Logger } from '../../../providers/logger/logger';
 
 // Pages
 import { DisclaimerPage } from '../../onboarding/disclaimer/disclaimer';
+import { ScanPage } from '../../scan/scan';
 import { TabsPage } from '../../tabs/tabs';
 
 // Providers
+import { ActionSheetProvider } from '../../../providers/action-sheet/action-sheet';
 import { BwcProvider } from '../../../providers/bwc/bwc';
 import { ConfigProvider } from '../../../providers/config/config';
 import { DerivationPathHelperProvider } from '../../../providers/derivation-path-helper/derivation-path-helper';
@@ -64,7 +66,8 @@ export class ImportWalletPage {
     private profileProvider: ProfileProvider,
     private translate: TranslateService,
     private events: Events,
-    private pushNotificationsProvider: PushNotificationsProvider
+    private pushNotificationsProvider: PushNotificationsProvider,
+    private actionSheetProvider: ActionSheetProvider
   ) {
     this.okText = this.translate.instant('Ok');
     this.cancelText = this.translate.instant('Cancel');
@@ -95,12 +98,19 @@ export class ImportWalletPage {
       bwsURL: [this.defaults.bws.url],
       coin: [null, Validators.required]
     });
+    this.events.subscribe('update:words', data => {
+      this.processWalletInfo(data.value);
+    });
   }
 
   ionViewWillEnter() {
     if (this.code) {
       this.processWalletInfo(this.code);
     }
+  }
+
+  ngOnDestroy() {
+    this.events.unsubscribe('update:words');
   }
 
   selectTab(tab: string) {
@@ -165,7 +175,16 @@ export class ImportWalletPage {
       hasPassphrase: parsedCode[4] == 'true' ? true : false,
       coin: parsedCode[5]
     };
-
+    if (!info.data) {
+      const errorInfoSheet = this.actionSheetProvider.createInfoSheet(
+        'default-error',
+        {
+          msg: this.translate.instant('Invalid data'),
+          title: this.translate.instant('Error')
+        }
+      );
+      errorInfoSheet.present();
+    }
     if (info.type == '1' && info.hasPassphrase) {
       let title = this.translate.instant('Error');
       let subtitle = this.translate.instant(
@@ -410,12 +429,6 @@ export class ImportWalletPage {
   }
 
   public openScanner(): void {
-    if (this.navParams.data.fromScan) {
-      this.navCtrl.popToRoot({ animate: false });
-    } else {
-      this.navCtrl.popToRoot({ animate: false }).then(() => {
-        this.navCtrl.parent.select(1);
-      });
-    }
+    this.navCtrl.push(ScanPage, { fromImport: true });
   }
 }
