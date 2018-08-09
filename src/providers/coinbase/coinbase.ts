@@ -63,7 +63,7 @@ export class CoinbaseProvider {
 
     this.events.subscribe('bwsEvent', (_, type, n) => {
       if (type == 'NewBlock' && n && n.data && n.data.network == 'livenet') {
-        this.isActive((_, isActive) => {
+        this.isActive(isActive => {
           // Update Coinbase
           if (isActive) this.updatePendingTransactions();
         });
@@ -181,8 +181,8 @@ export class CoinbaseProvider {
         if (!accessToken) return cb();
         return cb(accessToken);
       })
-      .catch(err => {
-        return cb(err);
+      .catch(_ => {
+        return cb();
       });
   }
 
@@ -381,53 +381,52 @@ export class CoinbaseProvider {
     }
     this.logger.debug('Trying to initialize Coinbase...');
 
-    this.persistenceProvider
-      .getCoinbaseToken(this.credentials.NETWORK)
-      .then(accessToken => {
-        if (!accessToken) return cb();
-        this._getMainAccountId(accessToken, (err, accountId) => {
-          if (err) {
-            if (!err.errors) return cb(err);
-            if (err.errors && !_.isArray(err.errors)) return cb(err);
+    this.getStoredToken(accessToken => {
+      if (!accessToken) {
+        this.logger.debug('Coinbase not linked');
+        return cb();
+      }
+      this.logger.debug('Coinbase already has Token.');
+      this._getMainAccountId(accessToken, (err, accountId) => {
+        if (err) {
+          if (!err.errors) return cb(err);
+          if (err.errors && !_.isArray(err.errors)) return cb(err);
 
-            let expiredToken;
-            for (let i = 0; i < err.errors.length; i++) {
-              if (err.errors[i].id == 'expired_token') expiredToken = true;
-            }
+          let expiredToken;
+          for (let i = 0; i < err.errors.length; i++) {
+            if (err.errors[i].id == 'expired_token') expiredToken = true;
+          }
 
-            if (expiredToken) {
-              this.logger.debug('Refresh token');
-              this.persistenceProvider
-                .getCoinbaseRefreshToken(this.credentials.NETWORK)
-                .then(refreshToken => {
-                  this._refreshToken(refreshToken, (err, newToken) => {
+          if (expiredToken) {
+            this.logger.debug('Token Expired. Refresh and get new Token.');
+            this.persistenceProvider
+              .getCoinbaseRefreshToken(this.credentials.NETWORK)
+              .then(refreshToken => {
+                this._refreshToken(refreshToken, (err, newToken) => {
+                  if (err) return cb(err);
+                  this._getMainAccountId(newToken, (err, accountId) => {
                     if (err) return cb(err);
-                    this._getMainAccountId(newToken, (err, accountId) => {
-                      if (err) return cb(err);
-                      return cb(null, {
-                        accessToken: newToken,
-                        accountId
-                      });
+                    return cb(null, {
+                      accessToken: newToken,
+                      accountId
                     });
                   });
-                })
-                .catch(err => {
-                  return cb(err);
                 });
-            } else {
-              return cb(err);
-            }
+              })
+              .catch(err => {
+                return cb(err);
+              });
           } else {
-            return cb(null, {
-              accessToken,
-              accountId
-            });
+            return cb(err);
           }
-        });
-      })
-      .catch(() => {
-        return cb();
+        } else {
+          return cb(null, {
+            accessToken,
+            accountId
+          });
+        }
       });
+    });
   }, 10000);
 
   public getAccount(token, _, cb) {
@@ -1330,7 +1329,7 @@ export class CoinbaseProvider {
         location: '33 Countries',
         page: 'CoinbasePage',
         show: !!this.configProvider.get().showIntegration['coinbase'],
-        linked: !!isActive
+        linked: isActive
       });
     });
   }
