@@ -112,5 +112,15 @@
       <span sheet-text translate>{{params?.msg}}</span>
       <span sheet-button-text translate>GOT IT</span>
     </info-sheet-template>
+
+    <info-sheet-template *ngSwitchCase="'legacy-address-info'" type="info">
+      <span sheet-title-text translate>{{params.appName}} BCH wallets use the CashAddr format by default</span>
+      <span sheet-text translate>
+        If you need to send to "old" addresses, and you are SURE those are BCH addresses, you can "translate" them using the BCH
+        Translator tool.
+      </span>
+      <span sheet-button-text translate>Translate address</span>
+      <span sheet-second-button-text translate>GOT IT</span>
+    </info-sheet-template>
   </div>
 </action-sheet>
