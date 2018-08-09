@@ -20,7 +20,7 @@
         <div class="amount">
           {{amountStr ? amountStr : '...'}}
         </div>
-        <div class="alternative" *ngIf="fiatAmount">{{fiatAmount | currency}} {{currencyIsoCode}}</div>
+        <div class="alternative" *ngIf="fiatAmount">{{fiatAmount | number:'1.2-2'}} {{currencyIsoCode}}</div>
         <div class="alternative" *ngIf="!fiatAmount">...</div>
       </div>
     </ion-item>
@@ -62,7 +62,7 @@
       <ion-note item-end>
         <span>
           {{feeStr}} (
-          <span *ngIf="fiatFee && fiatFee > 0">{{fiatFee | currency}} {{currencyIsoCode}}, </span>{{feeRatePerStr}} )
+          <span *ngIf="fiatFee && fiatFee > 0">{{fiatFee | number:'1.2-2'}} {{currencyIsoCode}}, </span>{{feeRatePerStr}} )
         </span>
       </ion-note>
     </ion-item>
@@ -71,14 +71,15 @@
       {{'Total'|translate}}
       <ion-note item-end>
         <span>
-          {{totalAmountStr}} ( {{fiatTotalAmount | currency}} {{currencyIsoCode}} )
+          {{totalAmountStr}} ( {{fiatTotalAmount | number:'1.2-2'}} {{currencyIsoCode}} )
         </span>
       </ion-note>
     </ion-item>
 
     <ion-item-divider class="item-description" *ngIf="withdrawalStr" no-lines>
       <span translate>
-        A total of {{amountStr}} ({{fiatAmount | currency}} {{currencyIsoCode}}) will be exchanged for {{withdrawalStr}} ({{fiatWithdrawal | currency}} {{currencyIsoCode}}).
+        A total of {{amountStr}} ({{fiatAmount | number:'1.2-2'}} {{currencyIsoCode}}) will be exchanged for {{withdrawalStr}} ({{fiatWithdrawal
+        | number:'1.2-2'}} {{currencyIsoCode}}).
       </span>
     </ion-item-divider>
   </ion-list>
@@ -86,7 +87,8 @@
 </ion-content>
 
 <ion-footer>
-  <page-slide-to-accept #slideButton *ngIf="isCordova" [disabled]="!fromWallet || !totalAmountStr || !toWallet" buttonText="{{'Slide to confirm' | translate}}" (slideDone)="confirmTx()"></page-slide-to-accept>
+  <page-slide-to-accept #slideButton *ngIf="isCordova" [disabled]="!fromWallet || !totalAmountStr || !toWallet" buttonText="{{'Slide to confirm' | translate}}"
+    (slideDone)="confirmTx()"></page-slide-to-accept>
   <ion-toolbar *ngIf="!isCordova">
     <button ion-button full class="button-footer" (click)="confirmTx()" [disabled]="!fromWallet || !totalAmountStr || !toWallet">
       {{'Click to confirm' | translate}}
