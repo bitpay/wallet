@@ -9,7 +9,7 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content [ngClass]="{'no-margin-bottom': memoFocused}" no-bounce>
+<ion-content #scrollArea [ngClass]="{'no-margin-bottom': memoFocused}" no-bounce>
   <ion-list *ngIf="tx">
     <ion-item>
       <div class="header-container">
@@ -143,7 +143,8 @@
       </div>
     </button>
 
-    <editable-item (focus)="memoFocused = $event" (valChange)="tx.description = $event" [value]="tx.description" [itemPlaceholder]="'Enter a transaction memo' | translate">
+    <editable-item [scrollArea]="scrollArea" (focus)="memoFocused = $event" (valChange)="tx.description = $event" [value]="tx.description"
+      [itemPlaceholder]="'Enter a transaction memo' | translate">
       <span item-label translate>Memo</span>
     </editable-item>
 

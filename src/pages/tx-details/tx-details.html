@@ -4,7 +4,7 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content no-bounce>
+<ion-content no-bounce #scrollArea>
   <ion-list *ngIf="btx">
     <ion-item>
       <div class="header-container">
@@ -125,7 +125,8 @@
       </ion-note>
     </ion-item>
 
-    <editable-item (valChange)="saveMemoInfo($event)" [value]="txMemo" [itemPlaceholder]="'Enter a transaction memo' | translate">
+    <editable-item (valChange)="saveMemoInfo($event)" [value]="txMemo" [itemPlaceholder]="'Enter a transaction memo' | translate"
+      [scrollArea]="scrollArea">
       <span item-label translate>Memo</span>
     </editable-item>
 

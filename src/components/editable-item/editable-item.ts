@@ -7,6 +7,7 @@ import {
   ViewChild
 } from '@angular/core';
 import { FormControl } from '@angular/forms';
+import { Content } from 'ionic-angular';
 import { Observable } from 'rxjs';
 import { debounceTime, distinctUntilChanged, skip } from 'rxjs/operators';
 
@@ -19,6 +20,7 @@ import { PlatformProvider } from '../../providers/platform/platform';
 })
 export class EditableItemComponent {
   public isFocused: boolean;
+  public finishedFocus: boolean;
   public textInput = new FormControl('');
   public saving: boolean;
   @ViewChild('itemTextarea')
@@ -33,6 +35,8 @@ export class EditableItemComponent {
   value: string;
   @Input()
   itemPlaceholder: string;
+  @Input('scrollArea')
+  scrollArea: Content;
 
   listenerForEnsuringBlurOnIos = (e: Event) => {
     e.stopPropagation();
@@ -57,6 +61,20 @@ export class EditableItemComponent {
       });
     this.saving = false;
     this.isFocused = false;
+    this.finishedFocus = false;
+  }
+
+  ngOnInit() {
+    if (!this.scrollArea || !this.scrollArea.ionScroll) return;
+    this.scrollArea.ionScroll.subscribe(event => {
+      if (this.finishedFocus) {
+        const scrollSensitivity = 10;
+        if (Math.abs(event.velocityY) > scrollSensitivity) {
+          let activeElement = document.activeElement as HTMLElement;
+          activeElement && activeElement.blur && activeElement.blur();
+        }
+      }
+    });
   }
 
   ngAfterViewInit(): void {
@@ -76,6 +94,7 @@ export class EditableItemComponent {
 
   public saveValueNow(): void {
     this.isFocused = false;
+    this.finishedFocus = false;
     if (this.platformProvider.isCordova) {
       this.focus.emit(false);
     }
@@ -105,6 +124,8 @@ export class EditableItemComponent {
       }
     }
     this.enableClickBlock();
+    await Observable.timer(250).toPromise();
+    this.finishedFocus = true;
   }
 
   private getIonApp() {
