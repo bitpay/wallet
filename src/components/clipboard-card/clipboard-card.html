@@ -9,8 +9,7 @@
     <div class="amount">
       {{payProDetailsData?.amount | satToUnit: 'BTC'}}
     </div>
-    <span translate>Expires</span>
-    <time class="date">{{ payProDetailsData?.expires * 1000 | amTimeAgo}}</time>
+    <span class="date">{{ remainingTimeStr }}</span>
   </ion-note>
   <div *ngIf="!payProDetailsData" class='loader gradient'></div>
   <div *ngIf="!payProDetailsData" class='loader loader-subtitle gradient'></div>

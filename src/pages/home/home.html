@@ -101,7 +101,8 @@
           <span>{{'Copied' | translate }} {{validDataFromClipboard.title}}</span>
         </div>
       </ion-item-divider>
-      <page-clipboard-card [payProDetailsData]="payProDetailsData" [validDataFromClipboard]="validDataFromClipboard" (click)="processClipboardData(validDataFromClipboard.data)"></page-clipboard-card>
+      <page-clipboard-card [remainingTimeStr]="remainingTimeStr" [payProDetailsData]="payProDetailsData" [validDataFromClipboard]="validDataFromClipboard"
+        (click)="processClipboardData(validDataFromClipboard.data)"></page-clipboard-card>
     </div>
 
     <div class="card" *ngIf="txps && txps[0]">

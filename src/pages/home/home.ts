@@ -76,6 +76,7 @@ export class HomePage {
   public showAnnouncement: boolean = false;
   public validDataFromClipboard;
   public payProDetailsData;
+  public remainingTimeStr: string;
 
   public showRateCard: boolean;
   public homeTip: boolean;
@@ -86,6 +87,7 @@ export class HomePage {
   private isNW: boolean;
   private updatingWalletId: object;
   private zone;
+  private countDown;
   private onResumeSubscription: Subscription;
   private onPauseSubscription: Subscription;
 
@@ -416,6 +418,7 @@ export class HomePage {
             .getPayProDetails(data)
             .then(payProDetails => {
               this.payProDetailsData = payProDetails;
+              this.paymentTimeControl(this.payProDetailsData.expires);
             })
             .catch(() => {
               this.logger.warn('Error in Payment Protocol');
@@ -429,8 +432,30 @@ export class HomePage {
 
   public processClipboardData(data): void {
     this.validDataFromClipboard = null;
+    this.payProDetailsData = null;
     this.clipboardProvider.clear();
     this.incomingDataProvider.redir(data);
+  }
+
+  private paymentTimeControl(expirationTime): void {
+    let setExpirationTime = (): void => {
+      let now = Math.floor(Date.now() / 1000);
+      if (now > expirationTime) {
+        this.remainingTimeStr = this.translate.instant('Expired');
+        if (this.countDown) clearInterval(this.countDown);
+        return;
+      }
+      let totalSecs = expirationTime - now;
+      let m = Math.floor(totalSecs / 60);
+      let s = totalSecs % 60;
+      this.remainingTimeStr = ('0' + m).slice(-2) + ':' + ('0' + s).slice(-2);
+    };
+
+    setExpirationTime();
+
+    this.countDown = setInterval(() => {
+      setExpirationTime();
+    }, 1000);
   }
 
   private initFeedBackInfo() {
