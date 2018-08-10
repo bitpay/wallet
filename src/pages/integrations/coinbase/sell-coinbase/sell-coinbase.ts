@@ -191,7 +191,6 @@ export class SellCoinbasePage {
             .ionicConfirm(null, msg, okText, cancelText)
             .then(res => {
               if (res) this.externalLinkProvider.open(url);
-              this.navCtrl.remove(3, 1);
               this.navCtrl.pop();
             });
           return;
@@ -478,7 +477,6 @@ export class SellCoinbasePage {
     modal.present();
     modal.onDidDismiss(async () => {
       await this.navCtrl.popToRoot({ animate: false });
-      await this.navCtrl.parent.select(0);
       await this.navCtrl.push(
         CoinbasePage,
         { coin: 'btc' },

@@ -86,7 +86,7 @@ export class CoinbasePage {
               ? err.errors[0].message
               : err.error_description
                 ? err.error_description
-                : err.error || 'Unknown error';
+                : err.error || err || 'Unknown error';
             this.popupProvider
               .ionicAlert('Error connecting to Coinbase', err)
               .then(() => {
@@ -131,8 +131,7 @@ export class CoinbasePage {
 
   public openAuthenticateWindow(): void {
     let oauthUrl = this.getAuthenticateUrl();
-    if (!this.isNW) {
-      this.navCtrl.pop({animate: false});
+    if (!this.isNW) { 
       this.externalLinkProvider.open(oauthUrl);
     } else {
       let gui = (window as any).require('nw.gui');
@@ -163,6 +162,10 @@ export class CoinbasePage {
       if (err) {
         this.popupProvider.ionicAlert('Error connecting to Coinbase', err);
         return;
+      }
+      if (!this.isNW) {
+        let previousView = this.navCtrl.getPrevious();
+        this.navCtrl.removeView(previousView);
       }
       this.accessToken = accessToken;
       this.init();

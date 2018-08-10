@@ -591,7 +591,6 @@ export class BuyMercadoLibrePage {
     modal.present();
     modal.onDidDismiss(async () => {
       await this.navCtrl.popToRoot({ animate: false });
-      await this.navCtrl.parent.select(0);
       await this.navCtrl.push(
         MercadoLibrePage,
         { invoiceId: this.invoiceId },
