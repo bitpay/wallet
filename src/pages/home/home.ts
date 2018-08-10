@@ -407,15 +407,20 @@ export class HomePage {
     this.clipboardProvider
       .getData()
       .then(data => {
-        let parsedInfo = this.incomingDataProvider.parseData(data);
-        if (parsedInfo && parsedInfo.type == 'PayPro') {
+        this.validDataFromClipboard = this.incomingDataProvider.parseData(data);
+        if (
+          this.validDataFromClipboard &&
+          this.validDataFromClipboard.type == 'PayPro'
+        ) {
           this.incomingDataProvider
             .getPayProDetails(data)
             .then(payProDetails => {
               this.payProDetailsData = payProDetails;
+            })
+            .catch(() => {
+              this.logger.warn('Error in Payment Protocol');
             });
         }
-        this.validDataFromClipboard = parsedInfo;
       })
       .catch(() => {
         this.logger.warn('Paste from clipboard err');

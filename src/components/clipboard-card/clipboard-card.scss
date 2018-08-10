@@ -1,5 +1,6 @@
 page-clipboard-card {
   .clipboard-paypro-container {
+    height: 6rem;
     ion-note {
       text-align: end;
       .amount {
@@ -9,12 +10,51 @@ page-clipboard-card {
         font-size: 12.5px;
       }
     }
-  }
-
-  .clipboard {
-    .item-block {
-      padding-left: 10px;
+    .loader {
+      width: 100%;
+      height: 18px;
+      margin-bottom: 6px;
+      background-color: #f3f3f3;
+      position: relative;
     }
+    .loader-subtitle {
+      width: 50%;
+      height: 10px;
+    }
+    .loader:after {
+      content: '';
+      position: absolute;
+      display: block;
+      height: 100%;
+      background-color: #e9e9e9;
+      left: 0%;
+      right: 100%;
+      animation: loading 1s ease infinite;
+    }
+
+    .loader.gradient {
+      background-image: linear-gradient(to right, #f3f3f3, #e9e9e9);
+    }
+    .loader.gradient:after {
+      background-color: #e8e8e8;
+    }
+
+    @keyframes loading {
+      0% {
+        left: 0;
+        right: 100%;
+      }
+      50% {
+        left: 0;
+        right: 0;
+      }
+      100% {
+        left: 100%;
+        right: 0;
+      }
+    }
+  }
+  .clipboard {
     ion-label {
       background-color: color($colors, light);
       padding: 10px 5px;
@@ -22,6 +62,9 @@ page-clipboard-card {
     }
     .ellipsis {
       font-size: 13px;
+    }
+    .item-inner {
+      border-bottom: none !important;
     }
     img {
       float: left;
