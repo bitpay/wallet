@@ -27,8 +27,7 @@ export class ClipboardProvider {
   }
 
   public async getData(): Promise<any> {
-    let data = await this.paste();
-    return data;
+    return this.paste();
   }
 
   public copy(value: string) {
@@ -47,8 +46,7 @@ export class ClipboardProvider {
     } else if (this.isNW) {
       return this.nodeWebkitProvider.readFromClipboard();
     } else {
-      this.logger.warn('Paste from clipboard not supported');
-      return;
+      return (navigator as any).clipboard.readText();
     }
   }
 

@@ -121,27 +121,6 @@ page-home {
     }
   }
 
-  .clipboard {
-    .item-block {
-      padding-left: 10px;
-    }
-    ion-label {
-      background-color: color($colors, light);
-      padding: 10px 5px;
-      margin: 0;
-    }
-    .ellipsis {
-      font-size: 13px;
-    }
-    img {
-      float: left;
-      margin-left: 10px;
-      margin-right: 10px;
-      padding-right: 10px;
-      border-right: 1px solid color($colors, blank);
-    }
-  }
-
   @include fix-ios-bg-scroll();
 
   @media only screen and (device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3) {

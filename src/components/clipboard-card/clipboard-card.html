@@ -1,0 +1,19 @@
+<button ion-item class="clipboard-paypro-container" *ngIf="validDataFromClipboard.type == 'PayPro'">
+  <div class="item-title">
+    <span translate>Payment request</span>
+  </div>
+  <div class="item-subtitle">
+    <span translate>From</span>: {{payProDetailsData?.domain}}
+  </div>
+  <ion-note item-right>
+    <div class="amount">
+      {{payProDetailsData?.amount | satToUnit: 'BTC'}}
+    </div>
+    <span translate>Expires</span>
+    <time class="date">{{ payProDetailsData?.expires * 1000 | amTimeAgo}}</time>
+  </ion-note>
+</button>
+<button ion-item *ngIf="validDataFromClipboard.type != 'PayPro'" class="clipboard">
+  <img src="assets/img/icon-bitcoin-small.svg" />
+  <div class="ellipsis">{{validDataFromClipboard.data}}</div>
+</button>

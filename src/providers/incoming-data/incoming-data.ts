@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
 import { Events } from 'ionic-angular';
 import { Logger } from '../../providers/logger/logger';
 
@@ -24,7 +25,8 @@ export class IncomingDataProvider {
     private bwcProvider: BwcProvider,
     private payproProvider: PayproProvider,
     private logger: Logger,
-    private appProvider: AppProvider
+    private appProvider: AppProvider,
+    private translate: TranslateService
   ) {
     this.logger.info('IncomingDataProvider initialized.');
   }
@@ -443,91 +445,104 @@ export class IncomingDataProvider {
     if (this.isValidPayProNonBackwardsCompatible(data)) {
       return {
         data,
-        type: 'PayPro'
+        type: 'PayPro',
+        title: this.translate.instant('Payment URL')
       };
 
       // Bitcoin  URI
     } else if (this.isValidBitcoinUri(data)) {
       return {
         data,
-        type: 'BitcoinUri'
+        type: 'BitcoinUri',
+        title: this.translate.instant('Bitcoin URI')
       };
 
       // Bitcoin Cash URI
     } else if (this.isValidBitcoinCashUri(data)) {
       return {
         data,
-        type: 'BitcoinCashUri'
+        type: 'BitcoinCashUri',
+        title: this.translate.instant('Bitcoin Cash URI')
       };
 
       // Bitcoin Cash URI using Bitcoin Core legacy address
     } else if (this.isValidBitcoinCashUriWithLegacyAddress(data)) {
       return {
         data,
-        type: 'BitcoinCashUri'
+        type: 'BitcoinCashUri',
+        title: this.translate.instant('Bitcoin Cash URI')
       };
 
       // Plain URL
     } else if (this.isValidPlainUrl(data)) {
       return {
         data,
-        type: 'PlainUrl'
+        type: 'PlainUrl',
+        title: this.translate.instant('Plain URL')
       };
 
       // Plain Address (Bitcoin)
     } else if (this.isValidBitcoinAddress(data)) {
       return {
         data,
-        type: 'BitcoinAddress'
+        type: 'BitcoinAddress',
+        title: this.translate.instant('Bitcoin Address')
       };
 
       // Plain Address (Bitcoin Cash)
     } else if (this.isValidBitcoinCashAddress(data)) {
       return {
         data,
-        type: 'BitcoinCashAddress'
+        type: 'BitcoinCashAddress',
+        title: this.translate.instant('Bitcoin Cash Address')
       };
 
       // Glidera
     } else if (this.isValidGlideraUri(data)) {
       return {
         data,
-        type: 'Glidera'
+        type: 'Glidera',
+        title: this.translate.instant('Glidera URI')
       };
 
       // Coinbase
     } else if (this.isValidCoinbaseUri(data)) {
       return {
         data,
-        type: 'Coinbase'
+        type: 'Coinbase',
+        title: this.translate.instant('Coibase URI')
       };
 
       // BitPayCard Authentication
     } else if (this.isValidBitPayCardUri(data)) {
       return {
         data,
-        type: 'BitPayCard'
+        type: 'BitPayCard',
+        title: this.translate.instant('BitPay Card URI')
       };
 
       // Join
     } else if (this.isValidJoinCode(data) || this.isValidJoinLegacyCode(data)) {
       return {
         data,
-        type: 'JoinWallet'
+        type: 'JoinWallet',
+        title: this.translate.instant('Invitation Code')
       };
 
       // Check Private Key
     } else if (this.isValidPrivateKey(data)) {
       return {
         data,
-        type: 'PrivateKey'
+        type: 'PrivateKey',
+        title: this.translate.instant('Private Key')
       };
 
       // Import Private Key
     } else if (this.isValidImportPrivateKey(data)) {
       return {
         data,
-        type: 'ImportPrivateKey'
+        type: 'ImportPrivateKey',
+        title: this.translate.instant('Import Words')
       };
 
       // Anything else
@@ -649,5 +664,45 @@ export class IncomingDataProvider {
       params: stateParams
     };
     this.events.publish('IncomingDataRedir', nextView);
+  }
+
+  public getPayProDetails(data: string): Promise<any> {
+    return new Promise((resolve, reject) => {
+      let coin: string;
+
+      // Payment Protocol with non-backwards-compatible request
+      if (this.isValidPayProNonBackwardsCompatible(data)) {
+        this.logger.debug(
+          'Incoming-data: Payment Protocol with non-backwards-compatible request'
+        );
+        coin = data.indexOf('bitcoincash') === 0 ? Coin.BCH : Coin.BTC;
+        data = decodeURIComponent(data.replace(/bitcoin(cash)?:\?r=/, ''));
+        // Bitcoin  URI
+      } else if (this.isValidBitcoinUri(data)) {
+        this.logger.debug('Incoming-data: Bitcoin URI');
+        coin = Coin.BTC;
+
+        // Bitcoin Cash URI
+      } else if (this.isValidBitcoinCashUri(data)) {
+        this.logger.debug('Incoming-data: Bitcoin Cash URI');
+        coin = Coin.BCH;
+
+        // Bitcoin Cash URI using Bitcoin Core legacy address
+      } else if (this.isValidBitcoinCashUriWithLegacyAddress(data)) {
+        this.logger.debug(
+          'Incoming-data: Bitcoin Cash URI with legacy address'
+        );
+        coin = Coin.BCH;
+      }
+
+      this.payproProvider
+        .getPayProDetails(data, coin)
+        .then(details => {
+          return resolve(details);
+        })
+        .catch(err => {
+          return reject(err);
+        });
+    });
   }
 }

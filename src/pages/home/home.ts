@@ -56,8 +56,7 @@ import { SettingsPage } from '../settings/settings';
   templateUrl: 'home.html'
 })
 export class HomePage {
-  @ViewChild('showCard')
-  showCard;
+  @ViewChild('showCard') showCard;
   public wallets;
   public walletsBtc;
   public walletsBch;
@@ -76,6 +75,7 @@ export class HomePage {
   public showBitPayCard: boolean = false;
   public showAnnouncement: boolean = false;
   public validDataFromClipboard;
+  public payProDetailsData;
 
   public showRateCard: boolean;
   public homeTip: boolean;
@@ -403,13 +403,26 @@ export class HomePage {
     });
   }
 
-  public async checkClipboard() {
-    let data = await this.clipboardProvider.getData();
-    let parsedInfo = this.incomingDataProvider.parseData(data);
-    this.validDataFromClipboard = parsedInfo;
+  public checkClipboard() {
+    this.clipboardProvider
+      .getData()
+      .then(data => {
+        let parsedInfo = this.incomingDataProvider.parseData(data);
+        if (parsedInfo && parsedInfo.type == 'PayPro') {
+          this.incomingDataProvider
+            .getPayProDetails(data)
+            .then(payProDetails => {
+              this.payProDetailsData = payProDetails;
+            });
+        }
+        this.validDataFromClipboard = parsedInfo;
+      })
+      .catch(() => {
+        this.logger.warn('Paste from clipboard not supported');
+      });
   }
 
-  public processClipboardData(data) {
+  public processClipboardData(data): void {
     this.validDataFromClipboard = null;
     this.clipboardProvider.clear();
     this.incomingDataProvider.redir(data);
