@@ -12,6 +12,7 @@ import { PlatformProvider } from '../../providers/platform/platform';
 export class ClipboardProvider {
   private isCordova: boolean;
   private isNW: boolean;
+  private isDevel: boolean;
 
   constructor(
     public toastCtrl: ToastController,
@@ -24,6 +25,7 @@ export class ClipboardProvider {
     this.logger.info('ClipboardProvider initialized.');
     this.isCordova = this.platform.isCordova;
     this.isNW = this.platform.isNW;
+    this.isDevel = this.platform.isDevel;
   }
 
   public async getData(): Promise<any> {
@@ -45,18 +47,21 @@ export class ClipboardProvider {
       return this.clipboard.paste();
     } else if (this.isNW) {
       return this.nodeWebkitProvider.readFromClipboard();
-    } else {
+    } else if (this.isDevel) {
       return (navigator as any).clipboard.readText();
+    } else {
+      this.logger.warn('Paste from clipboard not supported');
+      return;
     }
   }
 
-  public clear() {
+  public clear(): void {
     if (this.isCordova) {
       this.clipboard.copy(null);
     } else if (this.isNW) {
       this.nodeWebkitProvider.clearClipboard();
-    } else {
-      return;
+    } else if (this.isDevel) {
+      (navigator as any).clipboard.writeText(null);
     }
   }
 }

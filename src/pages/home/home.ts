@@ -403,7 +403,7 @@ export class HomePage {
     });
   }
 
-  public checkClipboard() {
+  public checkClipboard(): void {
     this.clipboardProvider
       .getData()
       .then(data => {
@@ -418,7 +418,7 @@ export class HomePage {
         this.validDataFromClipboard = parsedInfo;
       })
       .catch(() => {
-        this.logger.warn('Paste from clipboard not supported');
+        this.logger.warn('Paste from clipboard err');
       });
   }
 
