@@ -132,6 +132,7 @@ export class CoinbasePage {
   public openAuthenticateWindow(): void {
     let oauthUrl = this.getAuthenticateUrl();
     if (!this.isNW) {
+      this.navCtrl.pop({animate: false});
       this.externalLinkProvider.open(oauthUrl);
     } else {
       let gui = (window as any).require('nw.gui');
