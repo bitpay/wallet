@@ -69,7 +69,7 @@ export class IncomingDataProvider {
     return !!this.bwcProvider.getBitcoreCash().URI.isValid(data);
   }
 
-  private isValidBitcoinCashUriWithLegacyAddress(data: string): boolean {
+  public isValidBitcoinCashUriWithLegacyAddress(data: string): boolean {
     data = this.sanitizeUri(data);
     return !!this.bwcProvider
       .getBitcore()
@@ -82,6 +82,13 @@ export class IncomingDataProvider {
   }
 
   private isValidBitcoinAddress(data: string): boolean {
+    return !!(
+      this.bwcProvider.getBitcore().Address.isValid(data, 'livenet') ||
+      this.bwcProvider.getBitcore().Address.isValid(data, 'testnet')
+    );
+  }
+
+  public isValidBitcoinCashLegacyAddress(data: string): boolean {
     return !!(
       this.bwcProvider.getBitcore().Address.isValid(data, 'livenet') ||
       this.bwcProvider.getBitcore().Address.isValid(data, 'testnet')

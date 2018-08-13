@@ -15,6 +15,7 @@ export type InfoSheetType =
   | 'custom-amount'
   | 'default-error'
   | 'insufficient-funds'
+  | 'legacy-address-info'
   | 'miner-fee'
   | 'miner-fee-notice'
   | 'paper-key-unverified'

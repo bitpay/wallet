@@ -3,8 +3,11 @@ import { Events, NavController, NavParams } from 'ionic-angular';
 import * as _ from 'lodash';
 
 // Providers
+import { ActionSheetProvider } from '../../providers/action-sheet/action-sheet';
 import { AddressBookProvider } from '../../providers/address-book/address-book';
 import { AddressProvider } from '../../providers/address/address';
+import { AppProvider } from '../../providers/app/app';
+import { ExternalLinkProvider } from '../../providers/external-link/external-link';
 import { IncomingDataProvider } from '../../providers/incoming-data/incoming-data';
 import { Logger } from '../../providers/logger/logger';
 import { PopupProvider } from '../../providers/popup/popup';
@@ -68,7 +71,10 @@ export class SendPage extends WalletTabsChild {
     private addressProvider: AddressProvider,
     private events: Events,
     private txFormatProvider: TxFormatProvider,
-    walletTabsProvider: WalletTabsProvider
+    walletTabsProvider: WalletTabsProvider,
+    private actionSheetProvider: ActionSheetProvider,
+    private externalLinkProvider: ExternalLinkProvider,
+    private appProvider: AppProvider
   ) {
     super(navCtrl, profileProvider, walletTabsProvider);
   }
@@ -206,6 +212,7 @@ export class SendPage extends WalletTabsChild {
           )
         ) {
           this.invalidAddress = true;
+          if (this.wallet.coin === 'bch') this.checkIfLegacy();
         } else {
           this.invalidAddress = false;
           this.incomingDataProvider.redir(this.search, {
@@ -220,6 +227,30 @@ export class SendPage extends WalletTabsChild {
     } else {
       this.updateContactsList();
       this.filteredWallets = [];
+    }
+  }
+
+  private checkIfLegacy() {
+    let usingLegacyAddress =
+      this.incomingDataProvider.isValidBitcoinCashLegacyAddress(this.search) ||
+      this.incomingDataProvider.isValidBitcoinCashUriWithLegacyAddress(
+        this.search
+      );
+
+    if (usingLegacyAddress) {
+      let appName = this.appProvider.info.nameCase;
+      const infoSheet = this.actionSheetProvider.createInfoSheet(
+        'legacy-address-info',
+        { appName }
+      );
+      infoSheet.present();
+      infoSheet.onDidDismiss(option => {
+        if (option) {
+          let url = 'https://bitpay.github.io/address-translator/';
+          this.externalLinkProvider.open(url);
+        }
+        this.search = '';
+      });
     }
   }
 
