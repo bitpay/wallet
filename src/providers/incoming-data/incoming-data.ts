@@ -502,7 +502,7 @@ export class IncomingDataProvider {
       return {
         data,
         type: 'Glidera',
-        title: this.translate.instant('Glidera URI')
+        title: 'Glidera URI'
       };
 
       // Coinbase
@@ -510,7 +510,7 @@ export class IncomingDataProvider {
       return {
         data,
         type: 'Coinbase',
-        title: this.translate.instant('Coibase URI')
+        title: 'Coinbase URI'
       };
 
       // BitPayCard Authentication
