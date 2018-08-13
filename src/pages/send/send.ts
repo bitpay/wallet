@@ -232,7 +232,7 @@ export class SendPage extends WalletTabsChild {
 
   private checkIfLegacy() {
     let usingLegacyAddress =
-      this.incomingDataProvider.isValidBitcoinAddress(this.search) ||
+      this.incomingDataProvider.isValidBitcoinCashLegacyAddress(this.search) ||
       this.incomingDataProvider.isValidBitcoinCashUriWithLegacyAddress(
         this.search
       );
