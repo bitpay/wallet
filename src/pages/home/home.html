@@ -100,13 +100,9 @@
           <img src="assets/img/paste-clipboard.svg" alt="Clipboard" width="20" />
           <span>{{'Copied' | translate }} {{validDataFromClipboard.title}}</span>
         </div>
-        <div (click)="processClipboardData(validDataFromClipboard.data)" item-end>
-          <button ion-button clear icon-only color="grey">
-            <ion-icon name="ios-arrow-dropright"></ion-icon>
-          </button>
-        </div>
       </ion-item-divider>
-      <page-clipboard-card [remainingTimeStr]="remainingTimeStr" [payProDetailsData]="payProDetailsData" [validDataFromClipboard]="validDataFromClipboard"></page-clipboard-card>
+      <page-clipboard-card [remainingTimeStr]="remainingTimeStr" [payProDetailsData]="payProDetailsData" [validDataFromClipboard]="validDataFromClipboard"
+        (click)="processClipboardData(validDataFromClipboard.data)"></page-clipboard-card>
     </div>
 
     <div class="card" *ngIf="txps && txps[0]">
