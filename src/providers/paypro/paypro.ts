@@ -35,9 +35,7 @@ export class PayproProvider {
 
       this.logger.debug('Fetch PayPro Request...', uri);
 
-      if (disableLoader) {
-        this.onGoingProcessProvider.set('');
-      } else {
+      if (!disableLoader) {
         this.onGoingProcessProvider.set('fetchingPayPro');
       }
 
@@ -46,7 +44,7 @@ export class PayproProvider {
           payProUrl: uri
         },
         (err, paypro) => {
-          this.onGoingProcessProvider.clear();
+          if (!disableLoader) this.onGoingProcessProvider.clear();
           if (_.isArrayBuffer(err)) {
             const enc = new encoding.TextDecoder();
             err = enc.decode(err);

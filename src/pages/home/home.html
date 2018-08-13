@@ -98,15 +98,11 @@
       <ion-item-divider>
         <div class="title" item-start>
           <img src="assets/img/paste-clipboard.svg" alt="Clipboard" width="20" />
-          <span translate>Copied from Clipboard</span>
+          <span>{{'Copied' | translate }} {{validDataFromClipboard.title}}</span>
         </div>
       </ion-item-divider>
-      <ion-list class="clipboard">
-        <button ion-item detail-none (click)="processClipboardData(validDataFromClipboard.data)">
-          <img src="assets/img/icon-bitcoin-small.svg" />
-          <div class="ellipsis">{{validDataFromClipboard.data}}</div>
-        </button>
-      </ion-list>
+      <page-clipboard-card [remainingTimeStr]="remainingTimeStr" [payProDetailsData]="payProDetailsData" [validDataFromClipboard]="validDataFromClipboard"
+        (click)="processClipboardData(validDataFromClipboard.data)"></page-clipboard-card>
     </div>
 
     <div class="card" *ngIf="txps && txps[0]">

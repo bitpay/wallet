@@ -27,8 +27,7 @@ export class ClipboardProvider {
   }
 
   public async getData(): Promise<any> {
-    let data = await this.paste();
-    return data;
+    return this.paste();
   }
 
   public copy(value: string) {
@@ -52,13 +51,11 @@ export class ClipboardProvider {
     }
   }
 
-  public clear() {
+  public clear(): void {
     if (this.isCordova) {
       this.clipboard.copy(null);
     } else if (this.isNW) {
       this.nodeWebkitProvider.clearClipboard();
-    } else {
-      return;
     }
   }
 }
