@@ -42,40 +42,27 @@ export class AmazonPage {
     private popupProvider: PopupProvider,
     private onGoingProcessProvider: OnGoingProcessProvider,
     private timeProvider: TimeProvider
-  ) {}
-
-  ionViewDidLoad() {
-    this.logger.info('ionViewDidLoad AmazonPage');
+  ) {
     this.network = this.amazonProvider.getNetwork();
-    this.initAmazon().then(() => {
-      if (this.giftCards) {
-        this.updatePendingGiftCards();
-      }
-    });
+    this.invoiceId = this.navParams.data.invoiceId;
   }
 
   ionViewWillEnter() {
-    if (this.giftCards) {
-      this.invoiceId = this.navParams.data.invoiceId;
-      this.updateGiftCards()
-        .then(() => {
-          if (this.invoiceId) {
-            let card = _.find(this.giftCards, {
-              invoiceId: this.invoiceId
-            });
-            if (_.isEmpty(card)) {
-              this.popupProvider.ionicAlert(null, 'Card not found');
-              return;
-            }
-            this.updateGiftCard = this.checkIfCardNeedsUpdate(card);
-            this.invoiceId = this.navParams.data.invoiceId = null;
-            this.openCardModal(card);
-          }
-        })
-        .catch(err => {
-          this.logger.error('Amazon: could not update gift cards', err);
-        });
+    this.initAmazon();
+  }
+
+  private openGiftCardFromInvoiceId(): void {
+    if (!this.invoiceId) return;
+    let card = _.find(this.giftCards, {
+      invoiceId: this.invoiceId
+    });
+    if (_.isEmpty(card)) {
+      this.popupProvider.ionicAlert(null, 'Card not found');
+      return;
     }
+    this.updateGiftCard = this.checkIfCardNeedsUpdate(card);
+    this.invoiceId = this.navParams.data.invoiceId = null;
+    this.openCardModal(card);
   }
 
   private async initAmazon(): Promise<any> {
@@ -88,13 +75,16 @@ export class AmazonPage {
     this.country = this.amazonProvider.country;
     this.pageTitle = this.amazonProvider.pageTitle;
     this.onlyIntegers = this.amazonProvider.onlyIntegers;
-    return new Promise(resolve => {
-      this.amazonProvider.getPendingGiftCards((err, gcds) => {
-        if (err) this.logger.error(err);
-        this.giftCards = gcds;
-        return resolve();
+    this.updateGiftCards()
+      .then(() => {
+        if (this.giftCards) {
+          this.openGiftCardFromInvoiceId();
+          this.updatePendingGiftCards();
+        }
+      })
+      .catch(err => {
+        this.logger.error(err);
       });
-    });
   }
 
   private checkIfCardNeedsUpdate(card) {
@@ -116,10 +106,7 @@ export class AmazonPage {
   private updateGiftCards(): Promise<any> {
     return new Promise((resolve, reject) => {
       this.amazonProvider.getPendingGiftCards((err, gcds) => {
-        if (err) {
-          this.popupProvider.ionicAlert('Could not get gift cards', err);
-          return reject(err);
-        }
+        if (err) return reject(err);
         this.giftCards = gcds;
         return resolve();
       });
