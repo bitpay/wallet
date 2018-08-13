@@ -5,9 +5,12 @@ import { Component, Input } from '@angular/core';
   templateUrl: 'clipboard-card.html'
 })
 export class ClipboardCardPage {
-  @Input() validDataFromClipboard;
-  @Input() payProDetailsData;
-  @Input() remainingTimeStr;
+  @Input()
+  validDataFromClipboard;
+  @Input()
+  payProDetailsData;
+  @Input()
+  remainingTimeStr;
 
   constructor() {}
 }
