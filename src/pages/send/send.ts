@@ -249,6 +249,7 @@ export class SendPage extends WalletTabsChild {
           let url = 'https://bitpay.github.io/address-translator/';
           this.externalLinkProvider.open(url);
         }
+        this.search = '';
       });
     }
   }
