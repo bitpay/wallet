@@ -59,15 +59,17 @@ export class ReceivePage extends WalletTabsChild {
 
   ionViewDidLoad() {
     this.setAddress();
-    if (this.wallet.needsBackup) {
-      const infoSheet = this.actionSheetProvider.createInfoSheet(
-        'paper-key-unverified'
-      );
-      infoSheet.present();
-      infoSheet.onDidDismiss(option => {
-        if (option) this.goToBackup();
-      });
-    }
+    this.walletProvider.getTxHistory(this.wallet, {}).then(txHistory => {
+      if (this.wallet.needsBackup && !_.isEmpty(txHistory)) {
+        const infoSheet = this.actionSheetProvider.createInfoSheet(
+          'paper-key-unverified'
+        );
+        infoSheet.present();
+        infoSheet.onDidDismiss(option => {
+          if (option) this.goToBackup();
+        });
+      }
+    });
   }
 
   ionViewWillEnter() {
