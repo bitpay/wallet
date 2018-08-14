@@ -278,7 +278,7 @@ export class SendPage extends WalletTabsChild {
     });
   }
 
-  public goToConfirm(item): void {
+  public goToAmount(item): void {
     item
       .getAddress()
       .then((addr: string) => {

@@ -79,8 +79,8 @@ export class AddressProvider {
     address: string
   ): boolean {
     let addressData;
-    let extractedAddress = this.extractAddress(address);
-    if (this.isValid(extractedAddress)) {
+    if (this.isValid(address)) {
+      let extractedAddress = this.extractAddress(address);
       addressData = this.validateAddress(extractedAddress);
       return addressData.coin == coin
         ? addressData.network == network
@@ -93,7 +93,9 @@ export class AddressProvider {
   }
 
   public extractAddress(address: string): string {
-    let extractedAddress = address.replace(/^(bitcoincash:|bitcoin:)/, '');
+    let extractedAddress = address
+      .replace(/^(bitcoincash:|bitcoin:)/, '')
+      .replace(/\?.*/, '');
     return extractedAddress || address;
   }
 
