@@ -7,7 +7,7 @@
   </div>
   <ion-note *ngIf="payProDetailsData" item-right>
     <div class="amount">
-      {{payProDetailsData?.amount | satToUnit: 'BTC'}}
+      {{payProDetailsData?.amount | satToUnit: payProDetailsData?.coin}}
     </div>
     <span class="date">{{ remainingTimeStr }}</span>
   </ion-note>
