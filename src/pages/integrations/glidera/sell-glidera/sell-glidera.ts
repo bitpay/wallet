@@ -335,7 +335,6 @@ export class SellGlideraPage {
     modal.present();
     modal.onDidDismiss(async () => {
       await this.navCtrl.popToRoot({ animate: false });
-      await this.navCtrl.parent.select(0);
       await this.navCtrl.push(GlideraPage, null, { animate: false });
     });
   }
