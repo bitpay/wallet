@@ -127,6 +127,7 @@
     "@ionic-native/device": "4.11.0",
     "@ionic-native/fcm": "4.11.0",
     "@ionic-native/file": "4.11.0",
+    "@ionic-native/launch-review": "4.11.0",
     "@ionic-native/qr-scanner": "4.11.0",
     "@ionic-native/screen-orientation": "4.11.0",
     "@ionic-native/social-sharing": "4.11.0",
@@ -150,6 +151,7 @@
     "cordova-clipboard": "1.2.1",
     "cordova-custom-config": "5.0.2",
     "cordova-ios": "4.5.4",
+    "cordova-launch-review": "3.1.1",
     "cordova-plugin-add-swift-support": "1.7.2",
     "cordova-plugin-android-fingerprint-auth": "1.4.3",
     "cordova-plugin-compat": "1.2.0",
@@ -276,7 +278,8 @@
       "cordova-plugin-screen-orientation": {},
       "cordova-plugin-spinner-dialog": {},
       "cordova-plugin-vibration": {},
-      "im.ltdev.cordova.UserAgent": {}
+      "im.ltdev.cordova.UserAgent": {},
+      "cordova-launch-review": {}
     },
     "platforms": [
       "android",
