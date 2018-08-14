@@ -12,13 +12,12 @@ import { IncomingDataProvider } from '../../providers/incoming-data/incoming-dat
 import { Logger } from '../../providers/logger/logger';
 import { PopupProvider } from '../../providers/popup/popup';
 import { ProfileProvider } from '../../providers/profile/profile';
-import { TxFormatProvider } from '../../providers/tx-format/tx-format';
 import { Coin, WalletProvider } from '../../providers/wallet/wallet';
 import { WalletTabsProvider } from '../wallet-tabs/wallet-tabs.provider';
 
 // Pages
 import { WalletTabsChild } from '../wallet-tabs/wallet-tabs-child';
-import { ConfirmPage } from './confirm/confirm';
+import { AmountPage } from './amount/amount';
 
 export interface FlatWallet {
   color: string;
@@ -56,7 +55,6 @@ export class SendPage extends WalletTabsChild {
   public amount: string;
   public fiatAmount: number;
   public fiatCode: string;
-  public useSendMax: boolean;
   public invalidAddress: boolean;
 
   constructor(
@@ -70,7 +68,6 @@ export class SendPage extends WalletTabsChild {
     private popupProvider: PopupProvider,
     private addressProvider: AddressProvider,
     private events: Events,
-    private txFormatProvider: TxFormatProvider,
     walletTabsProvider: WalletTabsProvider,
     private actionSheetProvider: ActionSheetProvider,
     private externalLinkProvider: ExternalLinkProvider,
@@ -80,13 +77,6 @@ export class SendPage extends WalletTabsChild {
   }
 
   ionViewDidLoad() {
-    this.amount = this.txFormatProvider.formatAmountStr(
-      this.navParams.get('coin'),
-      parseInt(this.navParams.get('amount'), 10)
-    );
-    this.fiatAmount = this.navParams.get('fiatAmount');
-    this.fiatCode = this.navParams.get('fiatCode');
-    this.useSendMax = this.navParams.get('useSendMax');
     this.logger.info('ionViewDidLoad SendPage');
 
     this.events.subscribe('update:address', data => {
@@ -188,11 +178,29 @@ export class SendPage extends WalletTabsChild {
   public openScanner(): void {
     this.walletTabsProvider.setSendParams({
       amount: this.navParams.get('amount'),
-      coin: this.navParams.get('coin'),
-      useSendMax: this.useSendMax
+      coin: this.navParams.get('coin')
     });
     this.walletTabsProvider.setFromPage({ fromSend: true });
     this.events.publish('ScanFromWallet');
+  }
+
+  private checkIfValidAddress(address): void {
+    const validAddress = this.addressProvider.checkCoinAndNetwork(
+      this.wallet.coin,
+      this.wallet.network,
+      address
+    );
+    if (validAddress) {
+      this.invalidAddress = false;
+      this.incomingDataProvider.redir(this.search, {
+        amount: this.navParams.get('amount'),
+        coin: this.navParams.get('coin')
+      });
+      this.search = '';
+    } else {
+      this.invalidAddress = true;
+      if (this.wallet.coin === 'bch') this.checkIfLegacy();
+    }
   }
 
   public processInput(): void {
@@ -204,22 +212,18 @@ export class SendPage extends WalletTabsChild {
         this.filteredContactsList.length === 0 &&
         this.filteredWallets.length === 0
       ) {
-        if (
-          !this.addressProvider.checkCoinAndNetwork(
-            this.wallet.coin,
-            this.wallet.network,
-            this.search
-          )
-        ) {
-          this.invalidAddress = true;
-          if (this.wallet.coin === 'bch') this.checkIfLegacy();
+        const validData = this.incomingDataProvider.parseData(this.search);
+        if (validData && validData.type == 'PayPro') {
+          this.incomingDataProvider
+            .getPayProDetails(this.search)
+            .then(payProDetails => {
+              this.checkIfValidAddress(payProDetails.toAddress);
+            })
+            .catch(() => {
+              this.logger.warn('Error in Payment Protocol');
+            });
         } else {
-          this.invalidAddress = false;
-          this.incomingDataProvider.redir(this.search, {
-            amount: this.navParams.get('amount'),
-            coin: this.navParams.get('coin'),
-            useSendMax: this.useSendMax
-          });
+          this.checkIfValidAddress(this.search);
         }
       } else {
         this.invalidAddress = false;
@@ -284,7 +288,7 @@ export class SendPage extends WalletTabsChild {
           return;
         }
         this.logger.debug('Got address:' + addr + ' | ' + item.name);
-        this.navCtrl.push(ConfirmPage, {
+        this.navCtrl.push(AmountPage, {
           recipientType: item.recipientType,
           amount: parseInt(this.navParams.data.amount, 10),
           toAddress: addr,
@@ -292,8 +296,7 @@ export class SendPage extends WalletTabsChild {
           email: item.email,
           color: item.color,
           coin: item.coin,
-          network: item.network,
-          useSendMax: this.useSendMax
+          network: item.network
         });
       })
       .catch(err => {

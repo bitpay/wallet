@@ -33,7 +33,6 @@ import { CustomAmountPage } from '../../receive/custom-amount/custom-amount';
 import { WalletTabsChild } from '../../wallet-tabs/wallet-tabs-child';
 import { WalletTabsProvider } from '../../wallet-tabs/wallet-tabs.provider';
 import { ConfirmPage } from '../confirm/confirm';
-import { SendPage } from '../send';
 
 @Component({
   selector: 'page-amount',
@@ -296,7 +295,7 @@ export class AmountPage extends WalletTabsChild {
         break;
       default:
         this.showSendMax = true;
-        nextPage = this.toAddress ? ConfirmPage : SendPage;
+        nextPage = ConfirmPage;
     }
     return nextPage;
   }

@@ -1,7 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
 import { Events, NavParams } from 'ionic-angular';
 import { ReceivePage } from '../receive/receive';
-import { AmountPage } from '../send/amount/amount';
+import { SendPage } from '../send/send';
 import { WalletDetailsPage } from '../wallet-details/wallet-details';
 import { WalletTabsProvider } from './wallet-tabs.provider';
 
@@ -20,7 +20,7 @@ export class WalletTabsPage {
 
   receiveRoot = ReceivePage;
   activityRoot = WalletDetailsPage;
-  sendRoot = AmountPage;
+  sendRoot = SendPage;
 
   walletId: string;
 

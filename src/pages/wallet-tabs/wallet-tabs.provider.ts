@@ -5,7 +5,6 @@ import { Coin } from '../../providers/wallet/wallet';
 export interface SendParams {
   amount: string;
   coin: Coin;
-  useSendMax: boolean;
 }
 
 @Injectable()

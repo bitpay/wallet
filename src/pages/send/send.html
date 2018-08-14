@@ -1,14 +1,19 @@
 <ion-header class="wallet-details-header">
-  <ion-navbar [navbar-bg]="wallet.color">
-    <ion-title>{{'Sending' | translate}}</ion-title>
+  <ion-navbar [navbar-bg]="wallet && wallet.color">
+    <ion-buttons *ngIf="wallet" left>
+      <button class="modal-close-button" (click)="close()" ion-button>
+        <ion-icon ios="md-close" md="md-close"></ion-icon>
+      </button>
+    </ion-buttons>
+    <ion-title>{{wallet && wallet.name || ('Amount' | translate)}}</ion-title>
   </ion-navbar>
-  <ion-toolbar [navbar-bg]="wallet.color">
-    <div class="wallet-details-header__balance">
-      <span *ngIf="!useSendMax">
-        <span *ngIf="fiatCode === 'USD'">$</span>{{fiatAmount || amount}}
-        <span *ngIf="fiatCode !== 'USD'">{{fiatCode || coin}}</span>
-      </span>
-      <span *ngIf="useSendMax">{{'Maximum Amount' | translate}}</span>
+  <ion-toolbar *ngIf="wallet" [navbar-bg]="wallet.color">
+    <div *ngIf="!wallet.balanceHidden && !wallet.scanning && wallet.status" class="wallet-details-header__balance">
+      <span>{{wallet.status && wallet.status.totalBalanceStr}}</span>
+      <ion-icon *ngIf="wallet.status.totalBalanceSat != wallet.status.spendableAmount" ios="ios-timer-outline" md="md-timer"></ion-icon>
+    </div>
+    <div *ngIf="wallet.balanceHidden  && !wallet.scanning" class="wallet-details-header__balance-hidden">
+      <span class="title" translate>[Balance Hidden]</span>
     </div>
   </ion-toolbar>
 </ion-header>
