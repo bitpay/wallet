@@ -68,9 +68,6 @@ export class ReceivePage extends WalletTabsChild {
         if (option) this.goToBackup();
       });
     }
-    this.events.subscribe('Wallet/backupCompleted', () => {
-      this.setAddress();
-    });
     this.events.subscribe('Wallet/setAddress', () => {
       this.setAddress(true);
     });
