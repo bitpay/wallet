@@ -21,7 +21,8 @@ export type InfoSheetType =
   | 'paper-key-unverified'
   | 'paper-key-unverified-with-activity'
   | 'receiving-bitcoin'
-  | 'sensitive-info';
+  | 'sensitive-info'
+  | 'appreciate-review';
 export type OptionsSheetType = 'address-options' | 'incoming-data';
 
 export interface WalletSelectorParams {

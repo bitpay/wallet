@@ -5,6 +5,7 @@
       <img *ngIf="type === 'info'" src="assets/img/icon-info-blue.svg">
       <img *ngIf="type === 'warning'" src="assets/img/icon-warning-circled.svg">
       <img *ngIf="type === 'danger'" src="assets/img/icon-danger.svg">
+      <img *ngIf="type === 'love'" src="assets/img/icon-heart.svg">
     </div>
     <ng-content select="[sheet-title-text]"></ng-content>
   </div>
@@ -12,7 +13,8 @@
     <ng-content select="[sheet-text]"></ng-content>
   </div>
   <div class="sheet-btn-group">
-    <div class="sheet-btn" [ngClass]="{blue: type === 'info', yellow: type == 'warning', red: type == 'danger'}" (click)="dismiss(true)">
+    <div class="sheet-btn" [ngClass]="{blue: type === 'info' || type === 'love', yellow: type === 'warning', red: type === 'danger'}"
+      (click)="dismiss(true)">
       <ng-content select="[sheet-button-text]"></ng-content>
     </div>
     <div class="sheet-second-btn" [ngClass]="{primary: type == 'danger'}" (click)="dismiss(false)">

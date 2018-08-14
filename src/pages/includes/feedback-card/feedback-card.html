@@ -1,44 +1,30 @@
 <div class="card" *ngIf="isShowRateCard">
-  <ion-item-divider>
-    <div class="title" item-start>
-      <span>{{ feedbackCardTitle }}</span>
+  <div class="title" item-start>
+    <div class="card-title">
+      Give us feedback
     </div>
-    <div item-end>
-      <button ion-button clear icon-only color="grey" (click)="hideCard()">
-        <ion-icon name="close"></ion-icon>
-      </button>
-    </div>
-  </ion-item-divider>
+    <div class="card-title-info">{{ feedbackCardTitle }}</div>
+  </div>
+  <div class="close-btn" item-end>
+    <button ion-button clear icon-only color="grey" (click)="hideCard()">
+      <ion-icon name="close"></ion-icon>
+    </button>
+  </div>
   <ion-list>
     <ion-row>
       <ion-col col-20>
         <ion-icon class="icon-svg" (click)="setScore(1)">
-          <img *ngIf="1 <= score" src="assets/img/ico-star-filled.svg" />
-          <img *ngIf="1 > score" src="assets/img/ico-star.svg" />
+          <img [ngClass]="{'opacity-low': score > 0 && score != 1}" src="assets/img/disappointed-face.svg" />
         </ion-icon>
       </ion-col>
       <ion-col col-20>
         <ion-icon class="icon-svg" (click)="setScore(2)">
-          <img *ngIf="2 <= score" src="assets/img/ico-star-filled.svg" />
-          <img *ngIf="2 > score" src="assets/img/ico-star.svg" />
+          <img [ngClass]="{'opacity-low': score > 0 && score != 2}" src="assets/img/satisfied-face.svg" />
         </ion-icon>
       </ion-col>
       <ion-col col-20>
         <ion-icon class="icon-svg" (click)="setScore(3)">
-          <img *ngIf="3 <= score" src="assets/img/ico-star-filled.svg" />
-          <img *ngIf="3 > score" src="assets/img/ico-star.svg" />
-        </ion-icon>
-      </ion-col>
-      <ion-col col-20>
-        <ion-icon class="icon-svg" (click)="setScore(4)">
-          <img *ngIf="4 <= score" src="assets/img/ico-star-filled.svg" />
-          <img *ngIf="4 > score" src="assets/img/ico-star.svg" />
-        </ion-icon>
-      </ion-col>
-      <ion-col col-20>
-        <ion-icon class="icon-svg" (click)="setScore(5)">
-          <img *ngIf="5 <= score" src="assets/img/ico-star-filled.svg" />
-          <img *ngIf="5 > score" src="assets/img/ico-star.svg" />
+          <img [ngClass]="{'opacity-low': score > 0 && score != 3}" src="assets/img/happy-face.svg" />
         </ion-icon>
       </ion-col>
     </ion-row>

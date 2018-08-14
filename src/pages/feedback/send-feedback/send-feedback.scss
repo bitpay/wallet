@@ -7,15 +7,84 @@ page-send-feedback {
     display: flex;
     align-items: center;
     justify-content: flex-end;
-    padding: 15px;
+  }
+  ion-content {
+    background-color: rgb(248, 248, 248);
+  }
+  .rating img {
+    height: 36px;
   }
   .feedback-title {
-    padding: 15px;
-    font-size: 20px;
+    font-size: 28px;
     font-weight: bold;
-    color: color($colors, dark);
+    color: black;
+    margin-top: 7px;
+    margin-left: -5px;
+  }
+  .feedback-msg {
+    font-size: 16px;
+    color: rgb(16, 16, 16);
+    font-weight: 300;
+    margin-top: 12px;
   }
   ion-textarea {
     background-color: color($colors, blank);
+  }
+  .msg-to-user {
+    background-color: white;
+    padding: 30px;
+    padding-top: 25px;
+    padding-bottom: 25px;
+  }
+  .user-feedback-card {
+    background-color: white;
+    margin: 12px;
+    margin-top: 20px;
+    border-radius: 3px;
+    padding: 22px;
+    padding-bottom: 18px;
+    cursor: pointer;
+    box-shadow: 0px 7px 11px 0px rgba(0, 0, 0, 0.06);
+  }
+  .user-feedback-title {
+    font-size: 18px;
+    font-weight: 500;
+    color: black;
+  }
+  .feedback-icon {
+    margin-right: 18px;
+    margin-top: 3px;
+  }
+  .feedback-action-icon {
+    float: right;
+    margin-top: 4px;
+  }
+  .arrow-right {
+    border: solid rgb(171, 174, 181);
+    border-width: 0 2px 2px 0;
+    padding: 3px;
+    transform: rotate(-45deg);
+    -webkit-transform: rotate(-45deg);
+    width: 15px;
+    height: 15px;
+    margin-top: 6px;
+  }
+  a {
+    text-decoration: none;
+  }
+  .feedback-form {
+    border-top: 1px solid rgb(238, 238, 238);
+    ion-textarea {
+      textarea {
+        font-size: 16px;
+        margin: 0px;
+      }
+    }
+  }
+  .back-button.show-back-button {
+    display: none;
+  }
+  .close-btn {
+    font-size: 2em;
   }
 }

@@ -18,4 +18,40 @@ page-feedback-card {
   .row {
     padding: 2.2rem 0 2.2rem 0;
   }
+  .title {
+    padding: 18px;
+  }
+  .card-title {
+    font-size: 20px;
+    color: black;
+    font-weight: 500;
+    text-align: center;
+  }
+  .card-title-info {
+    color: black;
+    font-weight: 300;
+    text-align: center;
+    font-size: 16px;
+    margin-top: 13px;
+  }
+  .title {
+    width: 100%;
+  }
+  .close-btn {
+    float: right;
+    position: absolute;
+    top: 7px;
+    right: 8px;
+    color: #4a4a4a;
+  }
+  .opacity-low {
+    opacity: 0.42;
+  }
+  .icon-svg > img {
+    height: 44px;
+  }
+  .close-btn button span ion-icon {
+    font-size: 1.5em;
+    color: rgb(175, 175, 175);
+  }
 }
