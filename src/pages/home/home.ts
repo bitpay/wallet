@@ -408,8 +408,8 @@ export class HomePage {
     });
   }
 
-  public checkClipboard(): void {
-    this.clipboardProvider
+  public checkClipboard() {
+    return this.clipboardProvider
       .getData()
       .then(data => {
         this.validDataFromClipboard = this.incomingDataProvider.parseData(data);

@@ -5,6 +5,8 @@ import { Subject } from 'rxjs';
 import { TestUtils } from '../../test';
 
 import { AddressBookProvider } from '../../providers/address-book/address-book';
+import { ClipboardProvider } from '../../providers/clipboard/clipboard';
+import { IncomingDataProvider } from '../../providers/incoming-data/incoming-data';
 import { ConfigProvider } from './../../providers/config/config';
 import { HomePage } from './home';
 
@@ -74,6 +76,33 @@ describe('HomePage', () => {
         const spy = spyOn(instance.events, 'unsubscribe');
         instance.ionViewWillLeave();
         expect(spy).toHaveBeenCalledWith('bwsEvent');
+      });
+    });
+  });
+
+  describe('Methods', () => {
+    describe('checkClipboard', () => {
+      let incomingDataProvider: IncomingDataProvider;
+      beforeEach(() => {
+        const clipboardProvider: ClipboardProvider = testBed.get(
+          ClipboardProvider
+        );
+        incomingDataProvider = testBed.get(IncomingDataProvider);
+        spyOn(clipboardProvider, 'getData').and.returnValue(Promise.resolve());
+      });
+      it('should ignore BitcoinAddress', async () => {
+        spyOn(incomingDataProvider, 'parseData').and.returnValue({
+          type: 'BitcoinAddress'
+        });
+        await instance.checkClipboard();
+        expect(instance.validDataFromClipboard).toBeNull();
+      });
+      it('should ignore BitcoinCashAddress', async () => {
+        spyOn(incomingDataProvider, 'parseData').and.returnValue({
+          type: 'BitcoinCashAddress'
+        });
+        await instance.checkClipboard();
+        expect(instance.validDataFromClipboard).toBeNull();
       });
     });
   });
