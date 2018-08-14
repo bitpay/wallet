@@ -54,7 +54,6 @@ export class WalletTabsPage {
     this.events.unsubscribe('Local/TxAction');
     this.events.unsubscribe('Wallet/updateAll');
     this.events.unsubscribe('Wallet/setAddress');
-    this.events.unsubscribe('Wallet/backupCompleted');
     this.events.unsubscribe('Wallet/disableHardwareKeyboard');
   }
 
