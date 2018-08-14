@@ -192,15 +192,13 @@ describe('SendPage', () => {
       instance.search = 'mirvQBSEktFGQ7TEK1UAifqjyewZsRou88'; // btc testnet address
       instance.navParams.data.amount = 11111111;
       instance.navParams.data.coin = 'btc';
-      instance.useSendMax = false;
 
       instance.processInput();
       expect(redirSpy).toHaveBeenCalledWith(
         'mirvQBSEktFGQ7TEK1UAifqjyewZsRou88',
         {
           amount: 11111111,
-          coin: 'btc',
-          useSendMax: false
+          coin: 'btc'
         }
       );
       expect(instance.invalidAddress).toBeFalsy();
@@ -224,15 +222,13 @@ describe('SendPage', () => {
       const navParams: NavParams = testBed.get(NavParams);
       const amount = '1.00000';
       const coin = Coin.BCH;
-      instance.useSendMax = false;
       spyOn(navParams, 'get').and.returnValues(amount, coin);
       const sendParamsSpy = spyOn(walletTabsProvider, 'setSendParams');
       const publishSpy = spyOn(events, 'publish');
       instance.openScanner();
       expect(sendParamsSpy).toHaveBeenCalledWith({
         amount,
-        coin,
-        useSendMax: false
+        coin
       });
       expect(publishSpy).toHaveBeenCalledWith('ScanFromWallet');
     });

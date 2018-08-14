@@ -235,8 +235,7 @@ describe('Provider: Incoming Data Provider', () => {
             amount,
             toAddress: addr,
             description: message,
-            coin: 'btc',
-            useSendMax: false
+            coin: 'btc'
           };
           let nextView = {
             name: 'ConfirmPage',

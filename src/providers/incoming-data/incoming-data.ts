@@ -14,7 +14,6 @@ export interface RedirParams {
   activePage?: any;
   amount?: string;
   coin?: Coin;
-  useSendMax?: boolean;
 }
 
 @Injectable()
@@ -170,21 +169,19 @@ export class IncomingDataProvider {
     this.logger.debug('Incoming-data: Bitcoin URI');
     let amountFromRedirParams =
       redirParams && redirParams.amount ? redirParams.amount : '';
-    const useSendMax = redirParams && redirParams.useSendMax ? true : false;
     const coin = Coin.BTC;
     let parsed = this.bwcProvider.getBitcore().URI(data);
     let address = parsed.address ? parsed.address.toString() : '';
     let message = parsed.message;
     let amount = parsed.amount || amountFromRedirParams;
     if (parsed.r) this.goToPayPro(data, coin);
-    else this.goSend(address, amount, message, coin, useSendMax);
+    else this.goSend(address, amount, message, coin);
   }
 
   private handleBitcoinCashUri(data: string, redirParams?: RedirParams): void {
     this.logger.debug('Incoming-data: Bitcoin Cash URI');
     let amountFromRedirParams =
       redirParams && redirParams.amount ? redirParams.amount : '';
-    const useSendMax = redirParams && redirParams.useSendMax ? true : false;
     const coin = Coin.BCH;
     let parsed = this.bwcProvider.getBitcoreCash().URI(data);
     let address = parsed.address ? parsed.address.toString() : '';
@@ -198,15 +195,11 @@ export class IncomingDataProvider {
     let amount = parsed.amount || amountFromRedirParams;
 
     if (parsed.r) this.goToPayPro(data, coin);
-    else this.goSend(address, amount, message, coin, useSendMax);
+    else this.goSend(address, amount, message, coin);
   }
 
-  private handleBitcoinCashUriLegacyAddress(
-    data: string,
-    redirParams?: RedirParams
-  ): void {
+  private handleBitcoinCashUriLegacyAddress(data: string): void {
     this.logger.debug('Incoming-data: Bitcoin Cash URI with legacy address');
-    const useSendMax = redirParams && redirParams.useSendMax ? true : false;
     const coin = Coin.BCH;
     let parsed = this.bwcProvider
       .getBitcore()
@@ -230,7 +223,7 @@ export class IncomingDataProvider {
     // Translate address
     this.logger.warn('Legacy Bitcoin Address transalated to: ' + address);
     if (parsed.r) this.goToPayPro(data, coin);
-    else this.goSend(address, amount, message, coin, useSendMax);
+    else this.goSend(address, amount, message, coin);
   }
 
   private handlePlainUrl(data: string): void {
@@ -247,7 +240,6 @@ export class IncomingDataProvider {
     redirParams?: RedirParams
   ): void {
     this.logger.debug('Incoming-data: Bitcoin plain address');
-    const useSendMax = redirParams && redirParams.useSendMax ? true : false;
     const coin = Coin.BTC;
     if (redirParams && redirParams.activePage === 'ScanPage') {
       this.showMenu({
@@ -256,7 +248,7 @@ export class IncomingDataProvider {
         coin
       });
     } else if (redirParams && redirParams.amount) {
-      this.goSend(data, redirParams.amount, '', coin, useSendMax);
+      this.goSend(data, redirParams.amount, '', coin);
     } else {
       this.goToAmountPage(data, coin);
     }
@@ -267,7 +259,6 @@ export class IncomingDataProvider {
     redirParams?: RedirParams
   ): void {
     this.logger.debug('Incoming-data: Bitcoin Cash plain address');
-    const useSendMax = redirParams && redirParams.useSendMax ? true : false;
     const coin = Coin.BCH;
     if (redirParams && redirParams.activePage === 'ScanPage') {
       this.showMenu({
@@ -276,7 +267,7 @@ export class IncomingDataProvider {
         coin
       });
     } else if (redirParams && redirParams.amount) {
-      this.goSend(data, redirParams.amount, '', coin, useSendMax);
+      this.goSend(data, redirParams.amount, '', coin);
     } else {
       this.goToAmountPage(data, coin);
     }
@@ -383,7 +374,7 @@ export class IncomingDataProvider {
 
       // Bitcoin Cash URI using Bitcoin Core legacy address
     } else if (this.isValidBitcoinCashUriWithLegacyAddress(data)) {
-      this.handleBitcoinCashUriLegacyAddress(data, redirParams);
+      this.handleBitcoinCashUriLegacyAddress(data);
       return true;
 
       // Plain URL
@@ -597,16 +588,14 @@ export class IncomingDataProvider {
     addr: string,
     amount: string,
     message: string,
-    coin: Coin,
-    useSendMax: boolean
+    coin: Coin
   ): void {
     if (amount) {
       let stateParams = {
         amount,
         toAddress: addr,
         description: message,
-        coin,
-        useSendMax
+        coin
       };
       let nextView = {
         name: 'ConfirmPage',
@@ -674,30 +663,8 @@ export class IncomingDataProvider {
   }
 
   public getPayProDetails(data: string): Promise<any> {
-    let coin: string;
-
-    // Payment Protocol with non-backwards-compatible request
-    if (this.isValidPayProNonBackwardsCompatible(data)) {
-      this.logger.debug(
-        'Incoming-data: Payment Protocol with non-backwards-compatible request'
-      );
-      coin = data.indexOf('bitcoincash') === 0 ? Coin.BCH : Coin.BTC;
-      data = decodeURIComponent(data.replace(/bitcoin(cash)?:\?r=/, ''));
-      // Bitcoin  URI
-    } else if (this.isValidBitcoinUri(data)) {
-      this.logger.debug('Incoming-data: Bitcoin URI');
-      coin = Coin.BTC;
-
-      // Bitcoin Cash URI
-    } else if (this.isValidBitcoinCashUri(data)) {
-      this.logger.debug('Incoming-data: Bitcoin Cash URI');
-      coin = Coin.BCH;
-
-      // Bitcoin Cash URI using Bitcoin Core legacy address
-    } else if (this.isValidBitcoinCashUriWithLegacyAddress(data)) {
-      this.logger.debug('Incoming-data: Bitcoin Cash URI with legacy address');
-      coin = Coin.BCH;
-    }
+    let coin: string = data.indexOf('bitcoincash') === 0 ? Coin.BCH : Coin.BTC;
+    data = decodeURIComponent(data.replace(/bitcoin(cash)?:\?r=/, ''));
 
     let disableLoader = true;
     return this.payproProvider.getPayProDetails(data, coin, disableLoader);
