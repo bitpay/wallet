@@ -663,30 +663,8 @@ export class IncomingDataProvider {
   }
 
   public getPayProDetails(data: string): Promise<any> {
-    let coin: string;
-
-    // Payment Protocol with non-backwards-compatible request
-    if (this.isValidPayProNonBackwardsCompatible(data)) {
-      this.logger.debug(
-        'Incoming-data: Payment Protocol with non-backwards-compatible request'
-      );
-      coin = data.indexOf('bitcoincash') === 0 ? Coin.BCH : Coin.BTC;
-      data = decodeURIComponent(data.replace(/bitcoin(cash)?:\?r=/, ''));
-      // Bitcoin  URI
-    } else if (this.isValidBitcoinUri(data)) {
-      this.logger.debug('Incoming-data: Bitcoin URI');
-      coin = Coin.BTC;
-
-      // Bitcoin Cash URI
-    } else if (this.isValidBitcoinCashUri(data)) {
-      this.logger.debug('Incoming-data: Bitcoin Cash URI');
-      coin = Coin.BCH;
-
-      // Bitcoin Cash URI using Bitcoin Core legacy address
-    } else if (this.isValidBitcoinCashUriWithLegacyAddress(data)) {
-      this.logger.debug('Incoming-data: Bitcoin Cash URI with legacy address');
-      coin = Coin.BCH;
-    }
+    let coin: string = data.indexOf('bitcoincash') === 0 ? Coin.BCH : Coin.BTC;
+    data = decodeURIComponent(data.replace(/bitcoin(cash)?:\?r=/, ''));
 
     let disableLoader = true;
     return this.payproProvider.getPayProDetails(data, coin, disableLoader);

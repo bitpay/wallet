@@ -219,8 +219,8 @@ export class SendPage extends WalletTabsChild {
             .then(payProDetails => {
               this.checkIfValidAddress(payProDetails.toAddress);
             })
-            .catch(() => {
-              this.logger.warn('Error in Payment Protocol');
+            .catch(err => {
+              this.logger.warn(err);
             });
         } else {
           this.checkIfValidAddress(this.search);
