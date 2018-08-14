@@ -2,7 +2,7 @@
   <div class="info-container" [ngSwitch]="sheetType">
     <info-sheet-template *ngSwitchCase="'address-copied'" type="success">
       <span sheet-title-text translate>Copied {{params.coin | uppercase}} address</span>
-      <span sheet-text class="text-address" translate>{{params.address}}</span>
+      <span sheet-text class="text-address">{{params.address}}</span>
       <span sheet-button-text translate>OK</span>
     </info-sheet-template>
 
@@ -24,17 +24,14 @@
     <info-sheet-template *ngSwitchCase="'receiving-bitcoin'" type="info">
       <span sheet-title-text translate>Receiving {{params.coinName}} address</span>
       <span sheet-text translate>
-        Your wallet address is similar to a bank account number. You can add funds to your wallet by withdrawing funds you may have
-        stored on an exchange to your wallet address. Or other {{params.coinName}} users can send you money by scanning your
-        QR code.</span>
+        Your wallet address is similar to a bank account number. You can add funds to your wallet by withdrawing funds you may have stored on an exchange to your wallet address. Or other {{params.coinName}} users can send you money by scanning your QR code.</span>
       <span sheet-button-text translate>GOT IT</span>
     </info-sheet-template>
 
     <info-sheet-template *ngSwitchCase="'paper-key-unverified'" type="warning">
       <span sheet-title-text translate>You could lose money</span>
       <span sheet-text translate>
-        Without your wallet's paper key you could lose money if this device is damaged, this app is deleted, or you migrate to another
-        device. Neither you nor BitPay will be able recover your funds.</span>
+        Without your wallet's paper key you could lose money if this device is damaged, this app is deleted, or you migrate to another device. Neither you nor BitPay will be able recover your funds.</span>
       <span sheet-button-text translate>Verify Now</span>
       <span sheet-second-button-text translate>I understand</span>
     </info-sheet-template>
@@ -42,8 +39,7 @@
     <info-sheet-template *ngSwitchCase="'paper-key-unverified-with-activity'" type="info">
       <span sheet-title-text translate>Paper Key Unverified</span>
       <span sheet-text translate>
-        Congratulations! It looks like you've recently received money. It's highly advised that you verify your paper key so that
-        your funds can be recovered in case your phone was lost or stolen.</span>
+        Congratulations! It looks like you've recently received money. It's highly advised that you verify your paper key so that your funds can be recovered in case your phone was lost or stolen.</span>
       <span sheet-button-text translate>Continue</span>
       <span sheet-second-button-text translate>Not right now</span>
     </info-sheet-template>
@@ -51,8 +47,7 @@
     <info-sheet-template *ngSwitchCase="'miner-fee-notice'" type="warning">
       <span sheet-title-text translate>Miner Fee Notice</span>
       <span sheet-text translate>
-        Because you are sending the maximum amount contained in this wallet, the {{params.coinName}} miner fee ({{params.fee}} {{params.coin}})
-        will be deducted from the total. {{params.msg}}
+        Because you are sending the maximum amount contained in this wallet, the {{params.coinName}} miner fee ({{params.fee}} {{params.coin}}) will be deducted from the total. {{params.msg}}
       </span>
       <span sheet-button-text translate>GOT IT</span>
     </info-sheet-template>
@@ -60,23 +55,21 @@
     <info-sheet-template *ngSwitchCase="'miner-fee'" type="danger">
       <span sheet-title-text translate>{{params.coinName}} miner fees unusually high</span>
       <span sheet-text translate>
-        {{params.coinName}} miner fees are high due to record demand for limited space on the {{params.coinName}} network. BitPay
-        does not receive and does not control {{params.coinName}} miner fees.</span>
+        {{params.coinName}} miner fees are high due to record demand for limited space on the {{params.coinName}} network. BitPay does not receive and does not control {{params.coinName}} miner fees.</span>
       <span sheet-button-text translate>GOT IT</span>
     </info-sheet-template>
 
     <info-sheet-template *ngSwitchCase="'insufficient-funds'" type="danger">
       <span sheet-title-text translate>Not enough funds</span>
       <span sheet-text translate>
-        You are trying to send ({{params.amount}} {{params.coin | uppercase}}) more than what your wallet contains. Please enter
-        a lower amount or send max.</span>
+        You are trying to send ({{params.amount}} {{params.coin | uppercase}}) more than what your wallet contains. Please enter a lower amount or send max.</span>
       <span sheet-button-text translate>Change Amount</span>
       <span sheet-second-button-text translate>Send Max</span>
     </info-sheet-template>
 
     <info-sheet-template *ngSwitchCase="'default-error'" type="danger">
-      <span sheet-title-text translate>{{params.title}}</span>
-      <span sheet-text translate>{{params.msg}}</span>
+      <span sheet-title-text>{{params.title}}</span>
+      <span sheet-text>{{params.msg}}</span>
       <span sheet-button-text translate>GOT IT</span>
     </info-sheet-template>
 
@@ -100,8 +93,7 @@
     <info-sheet-template *ngSwitchCase="'sensitive-info'" type="warning">
       <span sheet-title-text translate>Sensitive Data</span>
       <span sheet-text translate>
-        The information you are about to share/export may contain sensitive data such us wallet IDs, addresses, balances, etc. Please
-        be sure you trust the person or entity with whom you are sharing this information.
+        The information you are about to share/export may contain sensitive data such us wallet IDs, addresses, balances, etc. Please be sure you trust the person or entity with whom you are sharing this information.
       </span>
       <span sheet-button-text translate>I understand</span>
       <span sheet-second-button-text translate>Go Back</span>
@@ -109,15 +101,14 @@
 
     <info-sheet-template *ngSwitchCase="'copy-to-clipboard'" type="success">
       <span sheet-title-text translate>Copied to Clipboard</span>
-      <span sheet-text translate>{{params?.msg}}</span>
+      <span sheet-text>{{params?.msg}}</span>
       <span sheet-button-text translate>GOT IT</span>
     </info-sheet-template>
 
     <info-sheet-template *ngSwitchCase="'legacy-address-info'" type="info">
       <span sheet-title-text translate>{{params.appName}} BCH wallets use the CashAddr format by default</span>
       <span sheet-text translate>
-        If you need to send to "old" addresses, and you are SURE those are BCH addresses, you can "translate" them using the BCH
-        Translator tool.
+        If you need to send to "old" addresses, and you are SURE those are BCH addresses, you can "translate" them using the BCH Translator tool.
       </span>
       <span sheet-button-text translate>Translate address</span>
       <span sheet-second-button-text translate>GOT IT</span>
@@ -125,8 +116,7 @@
 
     <info-sheet-template *ngSwitchCase="'appreciate-review'" type="love">
       <span sheet-title-text translate>We appreciate your review</span>
-      <span sheet-text translate>5-star ratings help us get BitPay Wallet into more hands, and more users means more resources can be committed to the
-        app!
+      <span sheet-text translate>5-star ratings help us get BitPay Wallet into more hands, and more users means more resources can be committed to the app!
       </span>
       <span sheet-button-text translate>Continue to App Store</span>
     </info-sheet-template>

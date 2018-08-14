@@ -33,9 +33,7 @@
           <label-tip class="no-arrowhead" *ngIf="!canSign" type="warn">
             <span label-tip-title translate>No Private Key</span>
             <div label-tip-body translate>
-              The private key of this wallet is not available. The export allows to check the wallet balance, transaction history, and
-              create spend proposals from the export. However, does not allow to approve (sign) proposals, so funds will
-              not be accessible from the export.
+              The private key of this wallet is not available. The export allows to check the wallet balance, transaction history, and create spend proposals from the export. However, does not allow to approve (sign) proposals, so funds will not be accessible from the export.
             </div>
           </label-tip>
           <div *ngIf="canSign">
@@ -57,8 +55,7 @@
           <label-tip *ngIf="exportWalletForm.value.noSignEnabled" type="warn">
             <span label-tip-title translate>Funds Will Not Be Accessible</span>
             <div label-tip-body translate>
-              Not including the private key allows to check the wallet balance, transaction history, and create spend proposals from the
-              export. However, does not allow to approve (sign) proposals, so funds will not be accessible from the export.
+              Not including the private key allows to check the wallet balance, transaction history, and create spend proposals from the export. However, does not allow to approve (sign) proposals, so funds will not be accessible from the export.
             </div>
           </label-tip>
 

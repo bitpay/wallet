@@ -10,3 +10,4 @@ platforms/
 plugins/
 www/
 src/assets/*.json
+src/*.html
