@@ -51,6 +51,7 @@ export class SendPage extends WalletTabsChild {
   public contactsShowMore: boolean;
   private CONTACTS_SHOW_LIMIT: number = 10;
   private currentContactsPage: number = 0;
+  private scannerOpened: boolean;
 
   public amount: string;
   public fiatAmount: number;
@@ -176,6 +177,7 @@ export class SendPage extends WalletTabsChild {
   }
 
   public openScanner(): void {
+    this.scannerOpened = true;
     this.walletTabsProvider.setSendParams({
       amount: this.navParams.get('amount'),
       coin: this.navParams.get('coin')
@@ -302,5 +304,11 @@ export class SendPage extends WalletTabsChild {
       .catch(err => {
         this.logger.error('Send: could not getAddress', err);
       });
+  }
+
+  public closeCam(): void {
+    if (this.scannerOpened) this.events.publish('ExitScan');
+    else this.getParentTabs().dismiss();
+    this.scannerOpened = false;
   }
 }
