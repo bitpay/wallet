@@ -46,8 +46,7 @@
         </button>
       </div>
       <div class="box-notification info" *ngIf="tx && tx.status == 'accepted' && tx.isGlidera" text-wrap padding>
-        <span translate>Payment accepted. It will be broadcasted by Glidera. In case there is a problem, it can be deleted 6 hours after
-          it was created.</span>
+        <span translate>Payment accepted. It will be broadcasted by Glidera. In case there is a problem, it can be deleted 6 hours after it was created.</span>
       </div>
       <div class="box-notification success" *ngIf="tx && tx.status == 'broadcasted'" translate>
         Payment Sent
@@ -243,8 +242,7 @@
 
     <div padding class="proposal-deletion" *ngIf="((tx && !tx.removed) && (tx && tx.canBeRemoved)) || (tx && tx.status == 'accepted' && !tx.broadcastedOn)">
       <div class="proposal-deletion-help" *ngIf="!tx.isGlidera && isShared" translate>
-        * A payment proposal can be deleted if 1) you are the creator, and no other copayer has signed, or 2) 10 minutes have passed
-        since the proposal was created.
+        * A payment proposal can be deleted if 1) you are the creator, and no other copayer has signed, or 2) 10 minutes have passed since the proposal was created.
       </div>
       <button ion-button clear color="danger" (click)="remove()" [disabled]="loading">
         {{'Delete Payment Proposal' | translate}}

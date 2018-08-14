@@ -40,8 +40,7 @@
     <label-tip class="low-fees" type="warn" *ngIf="btx.lowAmount">
       <span label-tip-title translate>Amount Too Low To Spend</span>
       <div label-tip-body translate>
-        This transaction amount is too small compared to current Bitcoin network fees. Spending these funds will need a Bitcoin network
-        fee cost comparable to the funds itself.
+        This transaction amount is too small compared to current Bitcoin network fees. Spending these funds will need a Bitcoin network fee cost comparable to the funds itself.
         <br>
         <a class="label-tip-link" (click)="readMore()" translate>Learn More</a>
       </div>
@@ -64,7 +63,6 @@
       <span label-tip-title translate>Low Fee</span>
       <div label-tip-body translate>
         This transaction could take a long time to confirm or could be dropped due to the low fees set by the sender.
-        <br>
       </div>
     </label-tip>
 
