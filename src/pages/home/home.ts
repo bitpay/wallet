@@ -29,6 +29,7 @@ import { ProposalsPage } from './proposals/proposals';
 
 // Providers
 import { AddressBookProvider } from '../../providers/address-book/address-book';
+import { AddressProvider } from '../../providers/address/address';
 import { AmazonProvider } from '../../providers/amazon/amazon';
 import { AppProvider } from '../../providers/app/app';
 import { BitPayCardProvider } from '../../providers/bitpay-card/bitpay-card';
@@ -118,7 +119,8 @@ export class HomePage {
     private replaceParametersProvider: ReplaceParametersProvider,
     private amazonProvider: AmazonProvider,
     private clipboardProvider: ClipboardProvider,
-    private incomingDataProvider: IncomingDataProvider
+    private incomingDataProvider: IncomingDataProvider,
+    private addressProvider: AddressProvider
   ) {
     this.updatingWalletId = {};
     this.addressbook = {};
@@ -419,6 +421,9 @@ export class HomePage {
             .getPayProDetails(data)
             .then(payProDetails => {
               this.payProDetailsData = payProDetails;
+              this.payProDetailsData.coin = this.addressProvider.getCoin(
+                this.payProDetailsData.toAddress
+              );
               this.paymentTimeControl(this.payProDetailsData.expires);
             })
             .catch(() => {
