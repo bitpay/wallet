@@ -82,15 +82,18 @@ page-amount {
       .expression {
         font-size: 50px;
         font-weight: 500;
+        line-height: 50px;
+        .unit {
+          font-weight: 200;
+        }
         @media (max-height: $short-screen) {
           font-size: 40px;
+          line-height: 40px;
         }
       }
     }
     .amount {
       color: #a5a4a4;
-      margin-left: 5px;
-      margin-top: 5px;
     }
     .result {
       margin-top: 20px;

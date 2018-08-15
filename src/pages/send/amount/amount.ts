@@ -535,6 +535,12 @@ export class AmountPage extends WalletTabsChild {
     );
   }
 
+  private resetValues(): void {
+    this.expression = '';
+    this.globalResult = '';
+    this.alternativeAmount = null;
+  }
+
   public changeUnit(): void {
     if (this.fixedUnit) return;
 
@@ -549,6 +555,8 @@ export class AmountPage extends WalletTabsChild {
         isFiat: true
       });
     }
+
+    this.resetValues();
 
     this.zone.run(() => {
       this.updateUnitUI();
