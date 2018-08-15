@@ -6,8 +6,6 @@ import { ImportWalletPage } from '../pages/add/import-wallet/import-wallet';
 import { JoinWalletPage } from '../pages/add/join-wallet/join-wallet';
 import { BackupGamePage } from '../pages/backup/backup-game/backup-game';
 import { BackupWarningPage } from '../pages/backup/backup-warning/backup-warning';
-import { FeedbackCompletePage } from '../pages/feedback/feedback-complete/feedback-complete';
-import { FeedbackPage } from '../pages/feedback/feedback/feedback';
 import { SendFeedbackPage } from '../pages/feedback/send-feedback/send-feedback';
 import { FinishModalPage } from '../pages/finish/finish';
 import { BackupRequestPage } from '../pages/onboarding/backup-request/backup-request';
@@ -97,6 +95,7 @@ import { FeePolicyPage } from '../pages/settings/fee-policy/fee-policy';
 import { LanguagePage } from '../pages/settings/language/language';
 import { LockPage } from '../pages/settings/lock/lock';
 import { NotificationsPage } from '../pages/settings/notifications/notifications';
+import { SharePage } from '../pages/settings/share/share';
 
 /* Wallet Settings */
 import { WalletColorPage } from '../pages/settings/wallet-settings/wallet-color/wallet-color';
@@ -154,8 +153,7 @@ export const PAGES = [
   CoinbaseTxDetailsPage,
   CopayersPage,
   FeedbackCardPage,
-  FeedbackPage,
-  FeedbackCompletePage,
+  SharePage,
   ImportWalletPage,
   JoinWalletPage,
   BackupWarningPage,

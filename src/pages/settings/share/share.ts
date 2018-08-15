@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { NavController, NavParams, ViewController } from 'ionic-angular';
 import { Logger } from '../../../providers/logger/logger';
 
 // native
@@ -9,26 +8,19 @@ import { SocialSharing } from '@ionic-native/social-sharing';
 // providers
 import { AppProvider } from '../../../providers/app/app';
 import { ConfigProvider } from '../../../providers/config/config';
-import { PersistenceProvider } from '../../../providers/persistence/persistence';
-import { PlatformProvider } from '../../../providers/platform/platform';
 import { PopupProvider } from '../../../providers/popup/popup';
 import { ReplaceParametersProvider } from '../../../providers/replace-parameters/replace-parameters';
 
 @Component({
-  selector: 'page-feedback-complete',
-  templateUrl: 'feedback-complete.html'
+  selector: 'page-share',
+  templateUrl: 'share.html'
 })
-export class FeedbackCompletePage {
-  public score: number;
-  public skipped: boolean;
-  public rated: boolean;
-  public fromSettings: boolean;
+export class SharePage {
   public facebook: boolean;
   public twitter: boolean;
   public googleplus: boolean;
   public email: boolean;
   public whatsapp: boolean;
-  public isCordova: boolean;
   public title: string;
 
   private downloadUrl: string;
@@ -36,12 +28,7 @@ export class FeedbackCompletePage {
   private shareTwitterVia: string;
 
   constructor(
-    private navCtrl: NavController,
-    private navParams: NavParams,
-    private viewCtrl: ViewController,
     private logger: Logger,
-    private platformProvider: PlatformProvider,
-    private persistenceProvider: PersistenceProvider,
     private socialSharing: SocialSharing,
     private appProvider: AppProvider,
     private configProvider: ConfigProvider,
@@ -49,11 +36,6 @@ export class FeedbackCompletePage {
     private translate: TranslateService,
     private popupProvider: PopupProvider
   ) {
-    this.score = this.navParams.data.score;
-    this.skipped = this.navParams.data.skipped;
-    this.rated = this.navParams.data.rated;
-    this.fromSettings = this.navParams.data.fromSettings;
-    this.isCordova = this.platformProvider.isCordova;
     this.title = this.replaceParametersProvider.replace(
       this.translate.instant('Share {{appName}}'),
       { appName: this.appProvider.info.nameCase }
@@ -65,26 +47,7 @@ export class FeedbackCompletePage {
         : defaults.download.bitpay.url;
   }
 
-  ionViewWillLeave() {
-    if (!this.fromSettings) {
-      this.navCtrl.swipeBackEnabled = true;
-    }
-  }
-
   ionViewWillEnter() {
-    if (!this.fromSettings) {
-      this.viewCtrl.showBackButton(false);
-      this.navCtrl.swipeBackEnabled = false;
-    }
-
-    this.persistenceProvider.getFeedbackInfo().then(info => {
-      let feedbackInfo = info;
-      feedbackInfo.sent = true;
-      this.persistenceProvider.setFeedbackInfo(feedbackInfo);
-    });
-
-    if (!this.isCordova) return;
-
     this.socialSharing
       .canShareVia('com.apple.social.facebook', 'msg', null, null, null)
       .then(() => {
@@ -173,9 +136,5 @@ export class FeedbackCompletePage {
       'This app is not available for your device.'
     );
     this.popupProvider.ionicAlert(this.translate.instant('Error'), msg);
-  }
-
-  public close(): void {
-    this.navCtrl.popToRoot({ animate: false });
   }
 }
