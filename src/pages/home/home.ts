@@ -429,6 +429,7 @@ export class HomePage {
               this.payProDetailsData.coin = this.addressProvider.getCoin(
                 this.payProDetailsData.toAddress
               );
+              this.clearCountDownInterval();
               this.paymentTimeControl(this.payProDetailsData.expires);
             })
             .catch(err => {
@@ -447,7 +448,12 @@ export class HomePage {
     this.validDataFromClipboard = null;
     this.payProDetailsData = null;
     this.clipboardProvider.clear();
+    this.clearCountDownInterval();
     this.incomingDataProvider.redir(data);
+  }
+
+  private clearCountDownInterval(): void {
+    if (this.countDown) clearInterval(this.countDown);
   }
 
   private paymentTimeControl(expirationTime): void {
@@ -455,7 +461,7 @@ export class HomePage {
       let now = Math.floor(Date.now() / 1000);
       if (now > expirationTime) {
         this.remainingTimeStr = this.translate.instant('Expired');
-        if (this.countDown) clearInterval(this.countDown);
+        this.clearCountDownInterval();
         return;
       }
       let totalSecs = expirationTime - now;
