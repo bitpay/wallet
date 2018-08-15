@@ -6,7 +6,7 @@ import { TimeProvider } from '../../../providers/time/time';
   templateUrl: 'card-item.html'
 })
 export class CardItemPage {
-  private _currencySymbol: string;
+  private _currency: string;
   private _card;
   public sent: boolean = false;
   public received: boolean = false;
@@ -31,12 +31,12 @@ export class CardItemPage {
   }
 
   @Input()
-  set currencySymbol(cs) {
-    this._currencySymbol = cs;
+  set currency(c) {
+    this._currency = c;
   }
 
-  get currencySymbol() {
-    return this._currencySymbol;
+  get currency() {
+    return this._currency;
   }
 
   public createdWithinPastDay(time) {

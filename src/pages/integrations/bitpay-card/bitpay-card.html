@@ -9,7 +9,7 @@
   <div class="balance-card">
     <div class="balance-header">
       <div (tap)="update()" class="balance-str" *ngIf="balance">
-        {{balance | currency:currencySymbol:2 }}
+        {{balance | number:'1.2-2' }} {{currency}}
       </div>
       <button ion-button color="primary" (click)="topUp()" *ngIf="balance" no-low-fee>
         <span translate>Add funds</span> &rarr;
@@ -49,7 +49,7 @@
     </ion-item-divider>
     <ion-list>
       <div *ngFor="let card of bitpayCardTransactionHistoryConfirming">
-        <page-card-item [card]="card" [currencySymbol]="currencySymbol"></page-card-item>
+        <page-card-item [card]="card" [currency]="currency"></page-card-item>
       </div>
     </ion-list>
 
@@ -61,7 +61,7 @@
     </ion-item-divider>
     <ion-list>
       <div *ngFor="let card of bitpayCardTransactionHistoryPreAuth">
-        <page-card-item [card]="card" [currencySymbol]="currencySymbol"></page-card-item>
+        <page-card-item [card]="card" [currency]="currency"></page-card-item>
       </div>
     </ion-list>
 
@@ -70,7 +70,7 @@
     </ion-item-divider>
     <ion-list>
       <div *ngFor="let card of bitpayCardTransactionHistoryCompleted">
-        <page-card-item [card]="card" [currencySymbol]="currencySymbol"></page-card-item>
+        <page-card-item [card]="card" [currency]="currency"></page-card-item>
       </div>
     </ion-list>
   </ion-list>
