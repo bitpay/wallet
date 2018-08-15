@@ -121,14 +121,12 @@ export class SendFeedbackPage {
       'appreciate-review'
     );
     infoSheet.present();
-    infoSheet.onDidDismiss(async () => {
+    infoSheet.onDidDismiss(async option => {
+      if (!option) return;
       if (this.launchReview.isRatingSupported()) {
-        this.launchReview.rating().then(val => {
-          if (val == 'dismissed') this.navCtrl.popToRoot({ animate: false });
-        });
+        this.launchReview.rating();
       } else {
         await this.launchReview.launch();
-        this.navCtrl.popToRoot({ animate: false });
       }
     });
   }
@@ -142,7 +140,6 @@ export class SendFeedbackPage {
 
   public async openExternalLink(url: string): Promise<void> {
     await this.externalLinkProvider.open(url);
-    this.navCtrl.popToRoot({ animate: false });
   }
 
   public async sendFeedback(feedback: string, goHome: boolean): Promise<void> {
