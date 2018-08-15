@@ -8,7 +8,6 @@ import { Events, NavController, NavParams } from 'ionic-angular';
 import * as _ from 'lodash';
 
 // Providers
-import { ActionSheetProvider } from '../../../providers/action-sheet/action-sheet';
 import { Config, ConfigProvider } from '../../../providers/config/config';
 import { FilterProvider } from '../../../providers/filter/filter';
 import { Logger } from '../../../providers/logger/logger';
@@ -18,7 +17,6 @@ import { RateProvider } from '../../../providers/rate/rate';
 import { TxFormatProvider } from '../../../providers/tx-format/tx-format';
 
 // Pages
-import { Observable } from 'rxjs/Observable';
 import { ProfileProvider } from '../../../providers/profile/profile';
 import { Coin } from '../../../providers/wallet/wallet';
 import { BuyAmazonPage } from '../../integrations/amazon/buy-amazon/buy-amazon';
@@ -80,7 +78,6 @@ export class AmountPage extends WalletTabsChild {
   public requestingAmount: boolean;
 
   constructor(
-    private actionSheetProvider: ActionSheetProvider,
     private configProvider: ConfigProvider,
     private filterProvider: FilterProvider,
     private logger: Logger,
