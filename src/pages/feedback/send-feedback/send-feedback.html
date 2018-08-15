@@ -1,7 +1,7 @@
 <ion-header>
-  <ion-navbar #navBar>
+  <ion-navbar [hideBackButton]="fromCard">
     <ion-title>{{'Feedback'|translate}}</ion-title>
-    <ion-buttons left>
+    <ion-buttons left *ngIf="fromCard">
       <button ion-button clear (click)="sendFeedback(null, true)">
         <ion-icon class="close-btn" name="close"></ion-icon>
       </button>

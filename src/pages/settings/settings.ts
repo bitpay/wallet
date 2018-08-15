@@ -17,7 +17,6 @@ import { ProfileProvider } from '../../providers/profile/profile';
 import { TouchIdProvider } from '../../providers/touchid/touchid';
 
 // pages
-import { FeedbackCompletePage } from '../feedback/feedback-complete/feedback-complete';
 import { SendFeedbackPage } from '../feedback/send-feedback/send-feedback';
 import { AmazonSettingsPage } from '../integrations/amazon/amazon-settings/amazon-settings';
 import { BitPaySettingsPage } from '../integrations/bitpay-card/bitpay-settings/bitpay-settings';
@@ -34,6 +33,7 @@ import { FeePolicyPage } from './fee-policy/fee-policy';
 import { LanguagePage } from './language/language';
 import { LockPage } from './lock/lock';
 import { NotificationsPage } from './notifications/notifications';
+import { SharePage } from './share/share';
 import { WalletSettingsPage } from './wallet-settings/wallet-settings';
 
 @Component({
@@ -168,8 +168,8 @@ export class SettingsPage {
     this.navCtrl.push(SendFeedbackPage);
   }
 
-  public openFeedbackCompletePage(): void {
-    this.navCtrl.push(FeedbackCompletePage, { fromSettings: true });
+  public openSharePage(): void {
+    this.navCtrl.push(SharePage);
   }
 
   public openSettingIntegration(name: string): void {
