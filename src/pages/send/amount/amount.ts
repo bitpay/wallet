@@ -41,12 +41,12 @@ import { ConfirmPage } from '../confirm/confirm';
 export class AmountPage extends WalletTabsChild {
   private LENGTH_EXPRESSION_LIMIT: number;
   private availableUnits;
-  private unit: string;
+  public unit: string;
   private reNr: RegExp;
   private reOp: RegExp;
   private nextView;
   private fixedUnit: boolean;
-  private fiatCode: string;
+  public fiatCode: string;
   private altUnitIndex: number;
   private unitIndex: number;
   private unitToSatoshi: number;
@@ -326,15 +326,6 @@ export class AmountPage extends WalletTabsChild {
     });
   }
 
-  public shouldShowZeroState() {
-    return (
-      this.wallet &&
-      this.wallet.status &&
-      !this.wallet.status.totalBalanceSat &&
-      !this.requestingAmount
-    );
-  }
-
   public isSendMaxButtonShown() {
     return !this.expression && !this.requestingAmount && this.showSendMax;
   }
@@ -554,20 +545,5 @@ export class AmountPage extends WalletTabsChild {
       this.updateUnitUI();
       this.changeDetectorRef.detectChanges();
     });
-  }
-
-  public async goToReceive() {
-    await this.walletTabsProvider.goToTabIndex(0);
-
-    if (!(this.shouldShowZeroState() && this.wallet.needsBackup)) {
-      const coinName =
-        this.wallet.coin === Coin.BTC ? 'bitcoin' : 'bitcoin cash';
-      const infoSheet = this.actionSheetProvider.createInfoSheet(
-        'receiving-bitcoin',
-        { coinName }
-      );
-      await Observable.timer(250).toPromise();
-      infoSheet.present();
-    }
   }
 }

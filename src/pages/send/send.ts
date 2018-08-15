@@ -16,6 +16,7 @@ import { Coin, WalletProvider } from '../../providers/wallet/wallet';
 import { WalletTabsProvider } from '../wallet-tabs/wallet-tabs.provider';
 
 // Pages
+import { Observable } from 'rxjs/Observable';
 import { WalletTabsChild } from '../wallet-tabs/wallet-tabs-child';
 import { AmountPage } from './amount/amount';
 
@@ -169,6 +170,23 @@ export class SendPage extends WalletTabsChild {
       ? this.wallet.coin === recipient.coin &&
           this.wallet.network === recipient.network
       : true;
+  }
+
+  public shouldShowZeroState() {
+    return (
+      this.wallet && this.wallet.status && !this.wallet.status.totalBalanceSat
+    );
+  }
+
+  public async goToReceive() {
+    await this.walletTabsProvider.goToTabIndex(0);
+    const coinName = this.wallet.coin === Coin.BTC ? 'bitcoin' : 'bitcoin cash';
+    const infoSheet = this.actionSheetProvider.createInfoSheet(
+      'receiving-bitcoin',
+      { coinName }
+    );
+    await Observable.timer(250).toPromise();
+    infoSheet.present();
   }
 
   public showMore(): void {
