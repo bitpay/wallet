@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavParams } from 'ionic-angular';
+import { NavController, NavParams } from 'ionic-angular';
 import { Logger } from '../../../providers/logger/logger';
 
 // Native
@@ -34,7 +34,8 @@ export class CustomAmountPage {
     private logger: Logger,
     private socialSharing: SocialSharing,
     private txFormatProvider: TxFormatProvider,
-    private actionSheetProvider: ActionSheetProvider
+    private actionSheetProvider: ActionSheetProvider,
+    private navCtrl: NavController
   ) {
     let walletId = this.navParams.data.id;
     this.showShareButton = this.platformProvider.isCordova;
@@ -104,5 +105,9 @@ export class CustomAmountPage {
       }
     );
     infoSheet.present();
+  }
+
+  public close(): void {
+    this.navCtrl.popToRoot();
   }
 }
