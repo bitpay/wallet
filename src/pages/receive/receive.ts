@@ -59,15 +59,6 @@ export class ReceivePage extends WalletTabsChild {
 
   ionViewDidLoad() {
     this.setAddress();
-    if (this.wallet.needsBackup) {
-      const infoSheet = this.actionSheetProvider.createInfoSheet(
-        'paper-key-unverified'
-      );
-      infoSheet.present();
-      infoSheet.onDidDismiss(option => {
-        if (option) this.goToBackup();
-      });
-    }
     this.events.subscribe('Wallet/setAddress', () => {
       this.setAddress(true);
     });
