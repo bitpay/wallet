@@ -408,15 +408,20 @@ export class HomePage {
     });
   }
 
-  public checkClipboard(): void {
-    this.clipboardProvider
+  public checkClipboard() {
+    return this.clipboardProvider
       .getData()
       .then(data => {
         this.validDataFromClipboard = this.incomingDataProvider.parseData(data);
-        if (
-          this.validDataFromClipboard &&
-          this.validDataFromClipboard.type == 'PayPro'
-        ) {
+        if (!this.validDataFromClipboard) {
+          return;
+        }
+        const dataToIgnore = ['BitcoinAddress', 'BitcoinCashAddress'];
+        if (dataToIgnore.indexOf(this.validDataFromClipboard.type) > -1) {
+          this.validDataFromClipboard = null;
+          return;
+        }
+        if (this.validDataFromClipboard.type === 'PayPro') {
           this.incomingDataProvider
             .getPayProDetails(data)
             .then(payProDetails => {
@@ -426,8 +431,10 @@ export class HomePage {
               );
               this.paymentTimeControl(this.payProDetailsData.expires);
             })
-            .catch(() => {
-              this.logger.warn('Error in Payment Protocol');
+            .catch(err => {
+              this.validDataFromClipboard = null;
+              this.logger.warn('Error in Payment Protocol', err);
+              this.logger.warn(err);
             });
         }
       })
