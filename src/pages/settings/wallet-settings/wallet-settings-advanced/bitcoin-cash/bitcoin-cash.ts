@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { App, Events, NavParams } from 'ionic-angular';
+import { Events, NavController, NavParams } from 'ionic-angular';
 import * as lodash from 'lodash';
 import { Logger } from '../../../../../providers/logger/logger';
 
@@ -18,13 +18,14 @@ import {
   WalletOptions,
   WalletProvider
 } from '../../../../../providers/wallet/wallet';
-import { TabsPage } from '../../../../tabs/tabs';
+import { WalletTabsChild } from '../../../../wallet-tabs/wallet-tabs-child';
+import { WalletTabsProvider } from '../../../../wallet-tabs/wallet-tabs.provider';
 
 @Component({
   selector: 'page-bitcoin-cash',
   templateUrl: 'bitcoin-cash.html'
 })
-export class BitcoinCashPage {
+export class BitcoinCashPage extends WalletTabsChild {
   private errors;
 
   public availableWallet;
@@ -33,9 +34,8 @@ export class BitcoinCashPage {
   public wallet;
 
   constructor(
-    private app: App,
     private walletProvider: WalletProvider,
-    private profileProvider: ProfileProvider,
+    public profileProvider: ProfileProvider,
     private txFormatProvider: TxFormatProvider,
     private onGoingProcessProvider: OnGoingProcessProvider,
     private popupProvider: PopupProvider,
@@ -46,8 +46,11 @@ export class BitcoinCashPage {
     private logger: Logger,
     private translate: TranslateService,
     private events: Events,
-    private navParams: NavParams
+    private navParams: NavParams,
+    public navCtrl: NavController,
+    public walletTabsProvider: WalletTabsProvider
   ) {
+    super(navCtrl, profileProvider, walletTabsProvider);
     this.errors = this.bwcProvider.getErrors();
   }
 
@@ -199,7 +202,7 @@ export class BitcoinCashPage {
               }
 
               this.events.publish('status:updated');
-              this.app.getRootNavs()[0].setRoot(TabsPage);
+              this.close();
             });
           })
           .catch(err => {

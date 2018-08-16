@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
-import { App, NavParams, ToastController } from 'ionic-angular';
+import { NavController, NavParams, ToastController } from 'ionic-angular';
 import { Logger } from '../../../../../providers/logger/logger';
 
 // native
@@ -16,13 +16,14 @@ import { PersistenceProvider } from '../../../../../providers/persistence/persis
 import { PlatformProvider } from '../../../../../providers/platform/platform';
 import { ProfileProvider } from '../../../../../providers/profile/profile';
 import { WalletProvider } from '../../../../../providers/wallet/wallet';
-import { TabsPage } from '../../../../tabs/tabs';
+import { WalletTabsChild } from '../../../../wallet-tabs/wallet-tabs-child';
+import { WalletTabsProvider } from '../../../../wallet-tabs/wallet-tabs.provider';
 
 @Component({
   selector: 'page-wallet-export',
   templateUrl: 'wallet-export.html'
 })
-export class WalletExportPage {
+export class WalletExportPage extends WalletTabsChild {
   public wallet;
   public segments: string = 'file/text';
   public password: string = '';
@@ -40,8 +41,8 @@ export class WalletExportPage {
   public supported: boolean;
 
   constructor(
-    private app: App,
-    private profileProvider: ProfileProvider,
+    public profileProvider: ProfileProvider,
+    public navCtrl: NavController,
     private walletProvider: WalletProvider,
     private navParams: NavParams,
     private formBuilder: FormBuilder,
@@ -54,8 +55,10 @@ export class WalletExportPage {
     private clipboard: Clipboard,
     public toastCtrl: ToastController,
     private translate: TranslateService,
-    private actionSheetProvider: ActionSheetProvider
+    private actionSheetProvider: ActionSheetProvider,
+    public walletTabsProvider: WalletTabsProvider
   ) {
+    super(navCtrl, profileProvider, walletTabsProvider);
     this.exportWalletForm = this.formBuilder.group(
       {
         password: ['', Validators.required],
@@ -177,7 +180,7 @@ export class WalletExportPage {
                 this.navParams.data.walletId
               )
               .then(() => {
-                this.app.getRootNavs()[0].setRoot(TabsPage);
+                this.close();
               })
               .catch(() => {
                 this.showErrorInfoSheet();
