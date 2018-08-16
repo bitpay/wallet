@@ -8,7 +8,6 @@ import { Events, NavController, NavParams } from 'ionic-angular';
 import * as _ from 'lodash';
 
 // Providers
-import { ActionSheetProvider } from '../../../providers/action-sheet/action-sheet';
 import { Config, ConfigProvider } from '../../../providers/config/config';
 import { FilterProvider } from '../../../providers/filter/filter';
 import { Logger } from '../../../providers/logger/logger';
@@ -18,7 +17,6 @@ import { RateProvider } from '../../../providers/rate/rate';
 import { TxFormatProvider } from '../../../providers/tx-format/tx-format';
 
 // Pages
-import { Observable } from 'rxjs/Observable';
 import { ProfileProvider } from '../../../providers/profile/profile';
 import { Coin } from '../../../providers/wallet/wallet';
 import { BuyAmazonPage } from '../../integrations/amazon/buy-amazon/buy-amazon';
@@ -41,12 +39,12 @@ import { ConfirmPage } from '../confirm/confirm';
 export class AmountPage extends WalletTabsChild {
   private LENGTH_EXPRESSION_LIMIT: number;
   private availableUnits;
-  private unit: string;
+  public unit: string;
   private reNr: RegExp;
   private reOp: RegExp;
   private nextView;
   private fixedUnit: boolean;
-  private fiatCode: string;
+  public fiatCode: string;
   private altUnitIndex: number;
   private unitIndex: number;
   private unitToSatoshi: number;
@@ -80,7 +78,6 @@ export class AmountPage extends WalletTabsChild {
   public requestingAmount: boolean;
 
   constructor(
-    private actionSheetProvider: ActionSheetProvider,
     private configProvider: ConfigProvider,
     private filterProvider: FilterProvider,
     private logger: Logger,
@@ -326,15 +323,6 @@ export class AmountPage extends WalletTabsChild {
     });
   }
 
-  public shouldShowZeroState() {
-    return (
-      this.wallet &&
-      this.wallet.status &&
-      !this.wallet.status.totalBalanceSat &&
-      !this.requestingAmount
-    );
-  }
-
   public isSendMaxButtonShown() {
     return !this.expression && !this.requestingAmount && this.showSendMax;
   }
@@ -554,20 +542,5 @@ export class AmountPage extends WalletTabsChild {
       this.updateUnitUI();
       this.changeDetectorRef.detectChanges();
     });
-  }
-
-  public async goToReceive() {
-    await this.walletTabsProvider.goToTabIndex(0);
-
-    if (!(this.shouldShowZeroState() && this.wallet.needsBackup)) {
-      const coinName =
-        this.wallet.coin === Coin.BTC ? 'bitcoin' : 'bitcoin cash';
-      const infoSheet = this.actionSheetProvider.createInfoSheet(
-        'receiving-bitcoin',
-        { coinName }
-      );
-      await Observable.timer(250).toPromise();
-      infoSheet.present();
-    }
   }
 }
