@@ -24,7 +24,7 @@
   <div class="container" *ngIf="(shifts.data | json) != '{}'">
     <div class="main-header">
       <img src="assets/img/shapeshift/logo-shapeshift.svg" width="180" (click)="update()">
-      <button ion-button clear icon-right color="light" no-low-fee (click)="goTo('Shift')">
+      <button ion-button icon-right no-low-fee margin-top (click)="goTo('Shift')">
         <span>Shift</span>
         <ion-icon name="arrow-forward"></ion-icon>
       </button>
@@ -52,10 +52,13 @@
 </ion-content>
 
 <ion-footer>
-  <div *ngIf="shifts.data" class="shift-problems">
-    <span translate>Having problems with a ShapeShift?</span>
-    <a (click)="openExternalLink('https://shapeshift.zendesk.com/hc/en-us/requests/new')" translate>
-      Contact the ShapeShift support team.
-    </a>
-  </div>
+  <ion-toolbar *ngIf="shifts.data">
+    <div class="shift-problems">
+      <span translate>Having problems with a ShapeShift?</span>
+      <br>
+      <a (click)="openExternalLink('https://shapeshift.zendesk.com/hc/en-us/requests/new')" translate>
+        Contact the ShapeShift support team.
+      </a>
+    </div>
+  </ion-toolbar>
 </ion-footer>

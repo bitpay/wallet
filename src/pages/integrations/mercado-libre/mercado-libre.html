@@ -5,8 +5,8 @@
 </ion-header>
 
 <ion-content no-bounce>
-  <div class="container" *ngIf="!giftCards">
-    <div class="box-notification warn no-margin" *ngIf="network == 'testnet'">
+  <div class="container" *ngIf="showMainView">
+    <div class="box-notification warning" *ngIf="network == 'testnet'">
       Sandbox version. Only for testing purpose.
     </div>
     <div class="center-header">
@@ -24,8 +24,8 @@
       </button>
     </div>
   </div>
-  <div class="container" *ngIf="giftCards">
-    <div class="box-notification warn no-margin" *ngIf="network == 'testnet'">
+  <div class="container" *ngIf="!showMainView">
+    <div class="box-notification warning" *ngIf="network == 'testnet'">
       Sandbox version. Only for testing purpose.
     </div>
 

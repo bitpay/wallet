@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { Events, ModalController, NavController, NavParams } from 'ionic-angular';
+import { ModalController, NavController, NavParams } from 'ionic-angular';
 import * as _ from 'lodash';
 import { Logger } from '../../../../providers/logger/logger';
 
@@ -8,6 +8,7 @@ import { FinishModalPage } from '../../../finish/finish';
 import { GlideraPage } from '../../../integrations/glidera/glidera';
 
 // providers
+import { ActionSheetProvider } from '../../../../providers/action-sheet/action-sheet';
 import { ConfigProvider } from '../../../../providers/config/config';
 import { GlideraProvider } from '../../../../providers/glidera/glidera';
 import { OnGoingProcessProvider } from '../../../../providers/on-going-process/on-going-process';
@@ -16,22 +17,24 @@ import { PopupProvider } from '../../../../providers/popup/popup';
 import { ProfileProvider } from '../../../../providers/profile/profile';
 import { TxFormatProvider } from '../../../../providers/tx-format/tx-format';
 import { WalletProvider } from '../../../../providers/wallet/wallet';
+import { setPrice } from '../../integrations';
 
 @Component({
   selector: 'page-sell-glidera',
-  templateUrl: 'sell-glidera.html',
+  templateUrl: 'sell-glidera.html'
 })
 export class SellGlideraPage {
-  @ViewChild('slideButton') slideButton;
+  @ViewChild('slideButton')
+  slideButton;
 
   public isCordova: boolean;
   public token: string;
   public isFiat: boolean;
   public network: string;
-  public wallet: any;
-  public wallets: any;
+  public wallet;
+  public wallets;
   public amountUnitStr: string;
-  public sellInfo: any;
+  public sellInfo;
   public isOpenSelector: boolean;
 
   private currency: string;
@@ -39,6 +42,7 @@ export class SellGlideraPage {
   private coin: string;
 
   constructor(
+    private actionSheetProvider: ActionSheetProvider,
     private platformProvider: PlatformProvider,
     private logger: Logger,
     private popupProvider: PopupProvider,
@@ -50,7 +54,6 @@ export class SellGlideraPage {
     private txFormatProvider: TxFormatProvider,
     private walletProvider: WalletProvider,
     private configProvider: ConfigProvider,
-    private events: Events,
     private modalCtrl: ModalController
   ) {
     this.coin = 'btc';
@@ -85,9 +88,8 @@ export class SellGlideraPage {
     this.onWalletSelect(this.wallets[0]); // Default first wallet
   }
 
-  private showErrorAndBack(err: any): void {
-    if (this.isCordova)
-      this.slideButton.isConfirmed(false);
+  private showErrorAndBack(err): void {
+    if (this.isCordova) this.slideButton.isConfirmed(false);
     this.logger.error(err);
     err = err.errors ? err.errors[0].message : err;
     this.popupProvider.ionicAlert('Error', err).then(() => {
@@ -95,9 +97,8 @@ export class SellGlideraPage {
     });
   }
 
-  private showError(err: any): void {
-    if (this.isCordova)
-      this.slideButton.isConfirmed(false);
+  private showError(err): void {
+    if (this.isCordova) this.slideButton.isConfirmed(false);
     this.logger.error(err);
     err = err.errors ? err.errors[0].message : err;
     this.popupProvider.ionicAlert('Error', err);
@@ -112,12 +113,7 @@ export class SellGlideraPage {
         return;
       }
       this.token = data.token;
-      let price: any = {};
-      if (this.isFiat) {
-        price.fiat = this.amount;
-      } else {
-        price.qty = this.amount;
-      }
+      let price = setPrice(this.isFiat, this.amount);
       this.glideraProvider.sellPrice(this.token, price, (err, sell) => {
         this.onGoingProcessProvider.clear();
         if (err) {
@@ -139,126 +135,160 @@ export class SellGlideraPage {
       } else if (mode == 'AUTHENTICATOR') {
         message = 'Use an authenticator app (Authy or Google Authenticator).';
       } else {
-        message = 'A SMS containing a confirmation code was sent to your phone.';
+        message =
+          'A SMS containing a confirmation code was sent to your phone.';
       }
-      this.popupProvider.ionicPrompt(title, message).then((twoFaCode) => {
+      this.popupProvider.ionicPrompt(title, message).then(twoFaCode => {
         if (typeof twoFaCode == 'undefined') return cb();
         return cb(twoFaCode);
       });
     } else {
       return cb();
     }
+    return undefined;
   }
 
   public sellConfirm(): void {
     let message = 'Sell bitcoin for ' + this.amount + ' ' + this.currency;
     let okText = 'Confirm';
     let cancelText = 'Cancel';
-    this.popupProvider.ionicConfirm(null, message, okText, cancelText).then((ok) => {
-      if (!ok) {
-        if (this.isCordova)
-          this.slideButton.isConfirmed(false);
-        return;
-      }
-      this.onGoingProcessProvider.set('sellingBitcoin');
-      this.glideraProvider.get2faCode(this.token, (err, tfa) => {
-        if (err) {
-          this.onGoingProcessProvider.clear();
-          this.showError(err);
+    this.popupProvider
+      .ionicConfirm(null, message, okText, cancelText)
+      .then(ok => {
+        if (!ok) {
+          if (this.isCordova) this.slideButton.isConfirmed(false);
           return;
         }
-        this.ask2FaCode(tfa.mode, (twoFaCode) => {
-          if (tfa.mode != 'NONE' && _.isEmpty(twoFaCode)) {
+        this.onGoingProcessProvider.set('sellingBitcoin');
+        this.glideraProvider.get2faCode(this.token, (err, tfa) => {
+          if (err) {
             this.onGoingProcessProvider.clear();
-            this.showError('No code entered');
+            this.showError(err);
             return;
           }
-
-          let outputs = [];
-          let config = this.configProvider.get();
-          let configWallet = config.wallet;
-          let walletSettings = configWallet.settings;
-
-          this.walletProvider.getAddress(this.wallet, false).then((refundAddress) => {
-            if (!refundAddress) {
+          this.ask2FaCode(tfa.mode, twoFaCode => {
+            if (tfa.mode != 'NONE' && _.isEmpty(twoFaCode)) {
               this.onGoingProcessProvider.clear();
-              this.showError('Could not create address');
+              this.showError('No code entered');
               return;
             }
-            this.glideraProvider.getSellAddress(this.token, (err, sellAddress) => {
-              if (!sellAddress || err) {
-                this.onGoingProcessProvider.clear();
-                this.showError(err);
-                return;
-              }
-              let amount = parseInt((this.sellInfo.qty * 100000000).toFixed(0), 10);
-              let comment = 'Glidera transaction';
 
-              outputs.push({
-                'toAddress': sellAddress,
-                'amount': amount,
-                'message': comment
-              });
+            let outputs = [];
+            let config = this.configProvider.get();
+            let configWallet = config.wallet;
+            let walletSettings = configWallet.settings;
 
-              let txp = {
-                toAddress: sellAddress,
-                amount,
-                outputs,
-                message: comment,
-                payProUrl: null,
-                excludeUnconfirmedUtxos: configWallet.spendUnconfirmed ? false : true,
-                feeLevel: walletSettings.feeLevel || 'normal',
-                customData: {
-                  'glideraToken': this.token
+            this.walletProvider
+              .getAddress(this.wallet, false)
+              .then(refundAddress => {
+                if (!refundAddress) {
+                  this.onGoingProcessProvider.clear();
+                  this.showError('Could not create address');
+                  return;
                 }
-              };
-
-              this.walletProvider.createTx(this.wallet, txp).then((createdTxp) => {
-
-                this.walletProvider.prepare(this.wallet).then((password) => {
-
-                  this.walletProvider.publishTx(this.wallet, createdTxp).then((publishedTxp) => {
-
-                    this.walletProvider.signTx(this.wallet, publishedTxp, password).then((signedTxp) => {
-
-                      let rawTx = signedTxp.raw;
-                      let data = {
-                        refundAddress,
-                        signedTransaction: rawTx,
-                        priceUuid: this.sellInfo.priceUuid,
-                        useCurrentPrice: this.sellInfo.priceUuid ? false : true,
-                        ip: null
-                      };
-                      this.glideraProvider.sell(this.token, twoFaCode, data, (err, data) => {
-                        this.onGoingProcessProvider.clear();
-                        if (err) return this.showError(err);
-                        this.logger.info(data);
-                        this.openFinishModal();
-                      });
-                    }).catch((err) => {
+                this.glideraProvider.getSellAddress(
+                  this.token,
+                  (err, sellAddress) => {
+                    if (!sellAddress || err) {
                       this.onGoingProcessProvider.clear();
                       this.showError(err);
-                      this.walletProvider.removeTx(this.wallet, publishedTxp).catch((err) => { // TODO in the original code use signedTxp on this function
-                        if (err) this.logger.debug(err);
-                      });
+                      return;
+                    }
+                    let amount = parseInt(
+                      (this.sellInfo.qty * 100000000).toFixed(0),
+                      10
+                    );
+                    let comment = 'Glidera transaction';
+
+                    outputs.push({
+                      toAddress: sellAddress,
+                      amount,
+                      message: comment
                     });
-                  }).catch((err) => {
-                    this.onGoingProcessProvider.clear();
-                    this.showError(err);
-                  });
-                }).catch((err) => {
-                  this.onGoingProcessProvider.clear();
-                  this.showError(err);
-                });
-              }).catch((err) => {
-                this.onGoingProcessProvider.clear();
-                this.showError(err);
+
+                    let txp = {
+                      toAddress: sellAddress,
+                      amount,
+                      outputs,
+                      message: comment,
+                      payProUrl: null,
+                      excludeUnconfirmedUtxos: configWallet.spendUnconfirmed
+                        ? false
+                        : true,
+                      feeLevel: walletSettings.feeLevel || 'normal',
+                      customData: {
+                        glideraToken: this.token
+                      }
+                    };
+
+                    this.walletProvider
+                      .createTx(this.wallet, txp)
+                      .then(createdTxp => {
+                        this.walletProvider
+                          .prepare(this.wallet)
+                          .then(password => {
+                            this.walletProvider
+                              .publishTx(this.wallet, createdTxp)
+                              .then(publishedTxp => {
+                                this.walletProvider
+                                  .signTx(this.wallet, publishedTxp, password)
+                                  .then(signedTxp => {
+                                    let rawTx = signedTxp.raw;
+                                    let data = {
+                                      refundAddress,
+                                      signedTransaction: rawTx,
+                                      priceUuid: this.sellInfo.priceUuid,
+                                      useCurrentPrice: this.sellInfo.priceUuid
+                                        ? false
+                                        : true,
+                                      ip: null
+                                    };
+                                    this.glideraProvider.sell(
+                                      this.token,
+                                      twoFaCode,
+                                      data,
+                                      (err, data) => {
+                                        this.onGoingProcessProvider.clear();
+                                        if (err) return this.showError(err);
+                                        this.logger.info(
+                                          'Glidera Sell Info: ',
+                                          JSON.stringify(data)
+                                        );
+                                        this.openFinishModal();
+                                      }
+                                    );
+                                  })
+                                  .catch(err => {
+                                    this.onGoingProcessProvider.clear();
+                                    this.showError(err);
+                                    this.walletProvider
+                                      .removeTx(this.wallet, publishedTxp)
+                                      .catch(err => {
+                                        // TODO in the original code use signedTxp on this function
+                                        if (err) this.logger.debug(err);
+                                      });
+                                  });
+                              })
+                              .catch(err => {
+                                this.onGoingProcessProvider.clear();
+                                this.showError(err);
+                              });
+                          })
+                          .catch(err => {
+                            this.onGoingProcessProvider.clear();
+                            this.showError(err);
+                          });
+                      })
+                      .catch(err => {
+                        this.onGoingProcessProvider.clear();
+                        this.showError(err);
+                      });
+                  }
+                );
               });
-            });
           });
         });
       });
-    });
   }
 
   public onWalletSelect(wallet): void {
@@ -266,7 +296,8 @@ export class SellGlideraPage {
     let parsedAmount = this.txFormatProvider.parseAmount(
       this.coin,
       this.amount,
-      this.currency);
+      this.currency
+    );
 
     this.amount = parsedAmount.amount;
     this.currency = parsedAmount.currency;
@@ -277,29 +308,34 @@ export class SellGlideraPage {
   public showWallets(): void {
     this.isOpenSelector = true;
     let id = this.wallet ? this.wallet.credentials.walletId : null;
-    this.events.publish('showWalletsSelectorEvent', this.wallets, id, 'Sell From');
-    this.events.subscribe('selectWalletEvent', (wallet: any) => {
+    const params = {
+      wallets: this.wallets,
+      selectedWalletId: id,
+      title: 'Sell From'
+    };
+    const walletSelector = this.actionSheetProvider.createWalletSelector(
+      params
+    );
+    walletSelector.present();
+    walletSelector.onDidDismiss(wallet => {
       if (!_.isEmpty(wallet)) this.onWalletSelect(wallet);
-      this.events.unsubscribe('selectWalletEvent');
       this.isOpenSelector = false;
     });
   }
 
   private openFinishModal(): void {
     let finishText = 'Funds sent to Glidera Account';
-    let finishComment = 'The transaction is not yet confirmed, and will show as "Pending" in your Activity. The bitcoin sale will be completed automatically once it is confirmed by Glidera';
-    let modal = this.modalCtrl.create(FinishModalPage, { finishText, finishComment }, { showBackdrop: true, enableBackdropDismiss: false });
+    let finishComment =
+      'The transaction is not yet confirmed, and will show as "Pending" in your Activity. The bitcoin sale will be completed automatically once it is confirmed by Glidera';
+    let modal = this.modalCtrl.create(
+      FinishModalPage,
+      { finishText, finishComment },
+      { showBackdrop: true, enableBackdropDismiss: false }
+    );
     modal.present();
-    modal.onDidDismiss(() => {
-      this.navCtrl.popToRoot({ animate: false }).then(() => {
-        this.navCtrl.parent.select(0);
-
-        // Fixes mobile navigation
-        setTimeout(() => {
-          this.navCtrl.push(GlideraPage, null, { animate: false });
-        }, 200);
-      });
+    modal.onDidDismiss(async () => {
+      await this.navCtrl.popToRoot({ animate: false });
+      await this.navCtrl.push(GlideraPage, null, { animate: false });
     });
   }
-
 }

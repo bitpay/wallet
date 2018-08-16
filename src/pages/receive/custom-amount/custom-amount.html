@@ -1,18 +1,25 @@
-<ion-header>
-
-  <ion-navbar>
+<ion-header class="wallet-details-header">
+  <ion-navbar [hideBackButton]="true" [navbar-bg]="wallet.color">
+    <ion-buttons left>
+      <button (click)="close()" ion-button>
+        {{'Close' | translate}}
+      </button>
+    </ion-buttons>
     <ion-title>{{'Custom Amount' | translate}}</ion-title>
-    <ion-buttons end>
+    <ion-buttons right>
       <button *ngIf="showShareButton" ion-button icon-only (click)="shareAddress()">
         <ion-icon ios="ios-share-outline" md="md-share"></ion-icon>
       </button>
     </ion-buttons>
   </ion-navbar>
-
 </ion-header>
+
 <ion-content>
   <div class="qr-container">
-    <ngx-qrcode *ngIf="address" copy-to-clipboard="{{ qrAddress }}" qrc-value="{{qrAddress}}" qrc-class="aclass" qrc-errorCorrectionLevel="M"></ngx-qrcode>
+    <div class="card qr-card">
+      <ngx-qrcode (click)="showFullInfo()" *ngIf="address" hide-toast="true" copy-to-clipboard="{{ qrAddress }}" qrc-value="{{qrAddress}}"
+        qrc-class="aclass" qrc-errorCorrectionLevel="M"></ngx-qrcode>
+    </div>
   </div>
   <ion-list>
     <ion-item>

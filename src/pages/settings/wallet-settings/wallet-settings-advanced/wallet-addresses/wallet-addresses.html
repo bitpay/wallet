@@ -1,12 +1,11 @@
 <ion-header>
-  <ion-navbar>
+  <ion-navbar [navbar-bg]="wallet.color">
     <ion-title>{{'Wallet Addresses' | translate}}</ion-title>
   </ion-navbar>
 </ion-header>
 
 <ion-content>
-  <page-wallet-item [wallet]="wallet"></page-wallet-item>
-  <ion-item-divider text-wrap text-center>
+  <ion-item-divider text-center>
     <span translate>
       Each bitcoin wallet can generate billions of addresses from your 12-word backup. A new address is automatically generated and shown each time you receive a payment.
     </span>
@@ -20,12 +19,14 @@
     </div>
   </ion-item-divider>
 
-  <button ion-item (click)="scan()">
-    {{'Scan addresses for funds' | translate}}
+  <button ion-button class="button-standard" (click)="scan()">
+    <span translate>Scan addresses for funds</span>
   </button>
 
+  <ion-item-divider></ion-item-divider>
+
   <button ion-item *ngIf="viewAll" (click)="viewAllAddresses()">
-    {{'View all addresses' | translate}}
+    <span ion-text color="dark" translate>View all addresses</span>
   </button>
 
   <div class="loading" *ngIf="loading">
@@ -33,7 +34,7 @@
     <span translate>Loading addresses...</span>
   </div>
 
-  <ion-list *ngIf="!loading">
+  <ion-list *ngIf="!loading" class="settings-list">
     <ion-item-divider>
       {{'Unused addresses' | translate}}
       <button ion-button clear item-end class="add-icon" (click)="newAddress()">
@@ -49,7 +50,7 @@
           <a (click)="readMore()" *ngIf="!showMore" translate>Read more</a>
         </p>
         <p *ngIf="showMore">
-          <span translate>The restore process will stop when 20 addresses are generated in a row which contain no funds. To safely generate more addresses, make a payment to one of the unused addresses which has already been generated.</span> 
+          <span translate>The restore process will stop when 20 addresses are generated in a row which contain no funds. To safely generate more addresses, make a payment to one of the unused addresses which has already been generated.</span>
           <a (click)="readMore()" translate>Read less</a>
         </p>
       </div>
@@ -82,10 +83,11 @@
         <p class="info">{{lowUtxosNb}} [{{ lowUtxosSum }}]</p>
       </ion-item>
 
-      <ion-item text-wrap>
+      <ion-item>
         <span translate>Approximate Bitcoin network fee to transfer wallet's balance (with normal priority)</span>
         <p class="info">{{minFeePer}} [{{minFee}}]</p>
       </ion-item>
     </div>
   </ion-list>
+  <ion-item-divider></ion-item-divider>
 </ion-content>

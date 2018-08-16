@@ -1,57 +1,60 @@
-<ion-header>
-  <ion-toolbar>
+<ion-header class="wallet-details-header">
+  <ion-navbar>
     <ion-title>
       {{'Payment Proposal' | translate}}
     </ion-title>
-    <ion-buttons start>
-      <button (click)="close()" ion-button>
-        {{'Close' | translate}}
+    <ion-buttons left>
+      <button class="modal-close-button" (click)="close()" ion-button>
+        <ion-icon ios="md-close" md="md-close"></ion-icon>
       </button>
     </ion-buttons>
-  </ion-toolbar>
+  </ion-navbar>
 </ion-header>
 
-<ion-content no-bounce>
+<ion-content no-bounce [ngClass]="{'margin-bottom':(tx && !tx.removed) && (tx && tx.pendingForUs && canSign && !paymentExpired)}">
   <ion-list *ngIf="tx">
     <ion-item>
       <div class="header-container">
         <div class="sending-label">
-          <img class="sending-img" src="assets/img/icon-tx-sent-outline.svg">
           <span translate>Sending</span>
         </div>
         <div class="amount-label">
-          <div class="amount">{{tx.amountStr}}</div>
+          <div class="amount">
+            <div>
+              {{amount}}
+              <span class="amount-coin">{{tx.coin | uppercase}}</span>
+            </div>
+            <img class="sending-img" src="assets/img/icon-tx-sent-outline.svg">
+          </div>
           <div class="alternative" *ngIf="tx.alternativeAmountStr">{{tx.alternativeAmountStr}}</div>
         </div>
       </div>
     </ion-item>
-    <div *ngIf="tx && tx.removed" class="box-notification no-margin warn" text-wrap>
+    <div *ngIf="tx && tx.removed" class="box-notification warning" text-wrap>
       <span translate>The payment was removed by creator</span>
+    </div>
+    <div *ngIf="!currentSpendUnconfirmed && tx && tx.hasUnconfirmedInputs" class="box-notification warning" text-wrap>
+      <span translate>Warning: this transaction has unconfirmed inputs</span>
     </div>
 
     <div *ngIf="tx && tx.status != 'pending'">
-      <div text-center *ngIf="tx && tx.status == 'accepted' && !tx.isGlidera">
-        <div class="box-notification no-margin notice" text-wrap translate>Payment accepted, but not yet broadcasted</div>
+      <div class="box-notification info" text-center *ngIf="tx && tx.status == 'accepted' && !tx.isGlidera">
+        <div text-wrap translate>Payment accepted, but not yet broadcasted</div>
         <button margin ion-button outline small icon-left (click)="broadcast(tx)" [disabled]="loading">
           <ion-icon name="cloud-upload"></ion-icon>
           <span translate>Broadcast Payment</span>
         </button>
       </div>
-      <div class="box-notification no-margin notice" *ngIf="tx && tx.status == 'accepted' && tx.isGlidera" text-wrap padding>
+      <div class="box-notification info" *ngIf="tx && tx.status == 'accepted' && tx.isGlidera" text-wrap padding>
         <span translate>Payment accepted. It will be broadcasted by Glidera. In case there is a problem, it can be deleted 6 hours after it was created.</span>
       </div>
-      <div class="box-notification no-margin success" *ngIf="tx && tx.status == 'broadcasted'" translate>
+      <div class="box-notification success" *ngIf="tx && tx.status == 'broadcasted'" translate>
         Payment Sent
       </div>
-      <div class="box-notification no-margin warn" *ngIf="tx && tx.status =='rejected'" translate>
+      <div class="box-notification warning" *ngIf="tx && tx.status =='rejected'" translate>
         Payment Rejected
       </div>
     </div>
-
-    <ion-item-divider *ngIf="!currentSpendUnconfirmed && tx && tx.hasUnconfirmedInputs">
-      <span translate>Warning: this transaction has unconfirmed inputs</span>
-    </ion-item-divider>
-
 
     <ion-item class="item-fee" *ngIf="tx && tx.feeStr">
       <div class="fee-title">
@@ -66,48 +69,63 @@
       </ion-note>
     </ion-item>
 
-    <ion-item-divider></ion-item-divider>
+    <div padding class="proposal-rejection" *ngIf="(tx && !tx.removed) && isShared && (tx && tx.pendingForUs) && !paymentExpired">
+      <button ion-button clear color="danger" (click)="reject()" [disabled]="loading">
+        {{'Reject Payment Proposal'| translate}}
+      </button>
+    </div>
 
-    <ion-item class="container-to">
+    <ion-item class="container-to" (click)="showMultiplesOutputs = !showMultiplesOutputs" copy-to-clipboard="{{ tx.toAddress && !tx.hasMultiplesOutputs ? tx.toAddress : tx.outputs[0].address }}">
       <span translate>To</span>
-      <div class="payment-proposal-to" copy-to-clipboard="{{tx.toAddress}}">
-        <img class="icon-bitcoin" src="assets/img/icon-bitcoin-small.svg" />
-        <!-- <contact ng-if="!tx.hasMultiplesOutputs" class="ellipsis" address="{{tx.toAddress}}"></contact>  TODO -->
-        <div class="ellipsis">
-          <span *ngIf="tx && !tx.name">{{tx.toAddress}}</span>
-          <span *ngIf="tx && tx.name">{{tx.name}}</span>
-          <span *ngIf="tx && tx.hasMultiplesOutputs" translate>Multiple recipients</span>
-        </div>
-      </div>
-
-      <div *ngIf="tx && tx.hasMultiplesOutputs" (click)="showMultiplesOutputs = !showMultiplesOutputs">
-        <span translate>Recipients</span>
-        <span>{{tx.recipientCount}}
-          <ion-icon name="arrow-up"></ion-icon>
-        </span>
-      </div>
-
-      <div *ngIf="tx && tx.hasMultiplesOutputs && showMultiplesOutputs">
-        <div *ngFor="let output of tx.outputs">
-          <div class="item" copy-to-clipboard="{{output.toAddress}}">
-            <span translate>To</span>:
-            <span>{{output.toAddress || output.address}}</span>
+      <div class="wallet">
+        <div class="address-coppied" [ngClass]="{'address-width':tx && tx.hasMultiplesOutputs}">
+          <div class="text-address ellipsis">
+            <img src="assets/img/icon-bitcoin-small.svg" width="12">
+            <span class="address-divider"></span>
           </div>
-
-          <div class="item">
-            <span translate>Amount</span>:
-            <span>{{output.amountStr}}
-              <span *ngIf="output.alternativeAmountStr">({{output.alternativeAmountStr}})</span>
+          <!-- <contact ng-if="!tx.hasMultiplesOutputs" class="ellipsis" address="{{tx.toAddress}}"></contact>  TODO -->
+          <div class="ellipsis">
+            <span *ngIf="!contactName && !tx.toAddress && !tx.hasMultiplesOutputs">{{ tx.outputs[0].address }}</span>
+            <span *ngIf="!contactName && tx.toAddress && !tx.hasMultiplesOutputs">{{ tx.toAddress }}</span>
+            <span *ngIf="contactName && !tx.hasMultiplesOutputs">{{ contactName }}</span>
+            <span *ngIf="tx && tx.hasMultiplesOutputs">
+              <span translate>Multiple recipients</span>
+              <span>{{tx.recipientCount}}</span>
             </span>
           </div>
+        </div>
 
-          <div class="item" *ngIf="output.message">
-            <span translate>Note</span>:
-            <span>{{output.message}}</span>
-          </div>
+        <div class="last-item" *ngIf="tx && tx.hasMultiplesOutputs" item-end>
+          <button ion-button clear color="grey" icon-only>
+            <ion-icon *ngIf="showMultiplesOutputs" name="ios-arrow-up-outline"></ion-icon>
+            <ion-icon *ngIf="!showMultiplesOutputs" name="ios-arrow-down-outline"></ion-icon>
+          </button>
         </div>
       </div>
     </ion-item>
+
+    <ion-list detail-none *ngIf="tx && tx.hasMultiplesOutputs && showMultiplesOutputs">
+      <ion-item class="proposal-container" *ngFor="let output of tx.outputs" copy-to-clipboard="{{output.toAddress}}">
+        <div item-left>
+          <h2>
+            <span translate>To</span>:
+          </h2>
+          <h3>
+            <span translate>Amount</span>:
+          </h3>
+          <p>
+            <span translate>Note</span>:
+          </p>
+        </div>
+        <ion-note item-right text-end col-11>
+          <h2 class="output-info">{{output.toAddress || output.address}}</h2>
+          <h3 class="output-info">{{output.amountStr}}
+            <span *ngIf="output.alternativeAmountStr">({{output.alternativeAmountStr}})</span>
+          </h3>
+          <p class="output-info output-note">{{output.message}}</p>
+        </ion-note>
+      </ion-item>
+    </ion-list>
 
     <ion-item class="container-from">
       <span translate>From</span>
@@ -214,7 +232,7 @@
             <div class="action">{{a.description}}</div>
             <div class="name">{{a.by}}</div>
           </div>
-          <ion-note>
+          <ion-note class="ellipsis">
             <time>{{ a.time * 1000 | amTimeAgo}}</time>
           </ion-note>
         </div>
@@ -222,32 +240,22 @@
       <ion-item-divider></ion-item-divider>
     </div>
 
-    <div padding class="proposal-deletion" *ngIf="(tx && !tx.removed) && (tx && tx.canBeRemoved) || (tx && tx.status == 'accepted' && !tx.broadcastedOn)">
+    <div padding class="proposal-deletion" *ngIf="((tx && !tx.removed) && (tx && tx.canBeRemoved)) || (tx && tx.status == 'accepted' && !tx.broadcastedOn)">
       <div class="proposal-deletion-help" *ngIf="!tx.isGlidera && isShared" translate>
-        * A payment proposal can be deleted if 1) you are the creator, and no other copayer has signed, or 2) 24 hours have passed since the proposal was created.
+        * A payment proposal can be deleted if 1) you are the creator, and no other copayer has signed, or 2) 10 minutes have passed since the proposal was created.
       </div>
       <button ion-button clear color="danger" (click)="remove()" [disabled]="loading">
-        <span translate>Delete Payment Proposal</span>
+        {{'Delete Payment Proposal' | translate}}
       </button>
     </div>
+
   </ion-list>
 </ion-content>
 
 <ion-footer>
-  <div *ngIf="(tx && !tx.removed) && (isShared && tx && tx.pendingForUs && !paymentExpired) || (tx && tx.pendingForUs && canSign && !paymentExpired)">
-    <ion-toolbar>
-      <ion-buttons left>
-        <button ion-button icon-left (click)="reject()" [disabled]="loading" color="warning" *ngIf="isShared && tx.pendingForUs && !paymentExpired">
-          <ion-icon name="close"></ion-icon>
-          {{'Reject'| translate}}
-        </button>
-      </ion-buttons>
-      <ion-buttons right>
-        <button *ngIf="tx && tx.pendingForUs && canSign && !paymentExpired" color="blank" ion-button icon-right (click)="onConfirm()">
-          {{buttonText}}
-          <ion-icon name="send"></ion-icon>
-        </button>
-      </ion-buttons>
-    </ion-toolbar>
-  </div>
+  <page-slide-to-accept #slideButton *ngIf="(tx && !tx.removed) && (tx && tx.pendingForUs && canSign && !paymentExpired) && isCordova"
+    [buttonText]="buttonText" (slideDone)="onConfirm()"></page-slide-to-accept>
+  <ion-toolbar *ngIf="(tx && !tx.removed) && (tx && tx.pendingForUs && canSign && !paymentExpired) && !isCordova">
+    <button ion-button full class="button-footer" (click)="onConfirm()">{{buttonText}}</button>
+  </ion-toolbar>
 </ion-footer>

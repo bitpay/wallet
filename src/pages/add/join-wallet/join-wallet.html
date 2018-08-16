@@ -8,25 +8,23 @@
   <form [formGroup]="joinForm" (ngSubmit)="setOptsAndJoin()">
     <ion-item>
       <ion-label stacked>{{'Your name' | translate}}</ion-label>
-      <ion-input type="text" formControlName="myName"></ion-input>
+      <ion-input type="text" formControlName="myName" placeholder="{{'Enter your name'| translate}}"></ion-input>
     </ion-item>
 
     <ion-item>
       <ion-label stacked>{{'Wallet invitation' | translate}}</ion-label>
-      <ion-input type="text" formControlName="invitationCode"></ion-input>
+      <ion-input type="text" formControlName="invitationCode" placeholder="{{'Enter wallet invitation'| translate}}"></ion-input>
 
       <ion-icon *ngIf="joinForm.controls.invitationCode.status == 'VALID'" name="ios-checkmark-circle" class="check success" item-right></ion-icon>
-      <ion-icon *ngIf="joinForm.value.invitationCode && joinForm.controls.invitationCode.status == 'INVALID'" class="check fail"
-        name="ios-close-circle" item-right></ion-icon>
 
       <ion-icon class="scanner-icon" name="qr-scanner" item-right (click)="openScanner()"></ion-icon>
     </ion-item>
 
     <ion-item>
       <ion-label stacked>{{'Coin' | translate}}</ion-label>
-      <ion-select formControlName="coin">
-        <ion-option value="btc">BTC</ion-option>
-        <ion-option value="bch">BCH</ion-option>
+      <ion-select okText="{{okText}}" cancelText="{{cancelText}}" placeholder="{{'Select a coin' | translate}}" formControlName="coin">
+        <ion-option value="btc">Bitcoin (BTC)</ion-option>
+        <ion-option value="bch">Bitcoin Cash (BCH)</ion-option>
       </ion-select>
     </ion-item>
 
@@ -35,6 +33,10 @@
     <ion-item (click)="showAdvOpts = !showAdvOpts">
       <ion-label *ngIf="!showAdvOpts">{{'Show advanced options' | translate}}</ion-label>
       <ion-label *ngIf="showAdvOpts">{{'Hide advanced options' | translate}}</ion-label>
+      <div item-end>
+        <ion-icon color="grey" *ngIf="!showAdvOpts" name="ios-arrow-down-outline"></ion-icon>
+        <ion-icon color="grey" *ngIf="showAdvOpts" name="ios-arrow-up-outline"></ion-icon>
+      </div>
     </ion-item>
 
     <div *ngIf="showAdvOpts">
@@ -45,7 +47,7 @@
 
       <ion-item>
         <ion-label stacked>{{'Wallet key' | translate}}</ion-label>
-        <ion-select formControlName="selectedSeed" (ionChange)="seedOptionsChange(joinForm.value.selectedSeed)">
+        <ion-select okText="{{okText}}" cancelText="{{cancelText}}" formControlName="selectedSeed" (ionChange)="seedOptionsChange(joinForm.value.selectedSeed)">
           <ion-option *ngFor="let opt of seedOptions" [value]="opt.id">{{opt.label}}</ion-option>
         </ion-select>
       </ion-item>
@@ -64,7 +66,9 @@
 </ion-content>
 
 <ion-footer>
-  <button ion-button full class="button-footer" (click)="setOptsAndJoin()" [disabled]="!joinForm.valid">
-    {{'Join wallet' | translate}}
-  </button>
+  <ion-toolbar>
+    <button ion-button full class="button-footer" (click)="setOptsAndJoin()" [disabled]="!joinForm.valid">
+      {{'Join wallet' | translate}}
+    </button>
+  </ion-toolbar>
 </ion-footer>

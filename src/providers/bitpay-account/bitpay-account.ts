@@ -1,22 +1,22 @@
 import { Injectable } from '@angular/core';
-import { Logger } from '../logger/logger';
+import { TranslateService } from '@ngx-translate/core';
+import * as _ from 'lodash';
 
-// native 
+// native
 import { Device } from '@ionic-native/device';
 
 // providers
 import { AppIdentityProvider } from '../app-identity/app-identity';
 import { BitPayProvider } from '../bitpay/bitpay';
+import { Logger } from '../logger/logger';
+import { OnGoingProcessProvider } from '../on-going-process/on-going-process';
 import { PersistenceProvider } from '../persistence/persistence';
 import { PlatformProvider } from '../platform/platform';
 import { PopupProvider } from '../popup/popup';
-
-import * as _ from 'lodash';
+import { ReplaceParametersProvider } from '../replace-parameters/replace-parameters';
 
 @Injectable()
 export class BitPayAccountProvider {
-
-
   /*
    * Pair this app with the bitpay server using the specified pairing data.
    * An app identity will be created if one does not already exist.
@@ -47,21 +47,28 @@ export class BitPayAccountProvider {
    *     appIdentity: the identity of this app
    *   }
    */
-  
+
   constructor(
     private platformProvider: PlatformProvider,
+    private replaceParametersProvider: ReplaceParametersProvider,
     private bitPayProvider: BitPayProvider,
     private logger: Logger,
+    private onGoingProcessProvider: OnGoingProcessProvider,
     private popupProvider: PopupProvider,
     private persistenceProvider: PersistenceProvider,
     private appIdentityProvider: AppIdentityProvider,
-    private device: Device
+    private device: Device,
+    private translate: TranslateService
   ) {
     this.logger.info('BitPayAccountProvider initialized');
   }
 
-  public pair(pairData: any, pairingReason: string, cb: (err: string, paired?: boolean, apiContext?: any) => any) {
-    this.checkOtp(pairData, (otp) => {
+  public pair(
+    pairData,
+    pairingReason: string,
+    cb: (err: string, paired?: boolean, apiContext?) => any
+  ) {
+    this.checkOtp(pairData, otp => {
       pairData.otp = otp;
       let deviceName = 'Unknown device';
       if (this.platformProvider.isNW) {
@@ -79,60 +86,81 @@ export class BitPayAccountProvider {
         }
       };
 
-      this.bitPayProvider.postAuth(json, (data) => {
-        if (data && data.error) {
-          return cb(data.error);
-        }
-        let apiContext = {
-          token: data.data,
-          pairData,
-          appIdentity: data.appIdentity
-        };
-        this.logger.info('BitPay service BitAuth create token: SUCCESS');
-
-        this.fetchBasicInfo(apiContext, (err, basicInfo) => {
-          if (err) return cb(err);
-          let title = 'Add BitPay Account?'; // TODO gettextcatalog
-          let msg;
-
-          if (pairingReason) {
-            let reason = pairingReason;
-            let email = pairData.email;
-
-            msg = 'To ' + reason + ' you must first add your BitPay account - ' + email; // TODO gettextcatalog
-          } else {
-            let email = pairData.email;
-            msg = 'Add this BitPay account ' + '(' + email + ')?'; // TODO gettextcatalog
+      this.onGoingProcessProvider.set('fetchingBitPayAccount');
+      this.bitPayProvider.postAuth(
+        json,
+        data => {
+          if (data && data.error) {
+            this.onGoingProcessProvider.clear();
+            return cb(data.error);
           }
+          let apiContext = {
+            token: data.data,
+            pairData,
+            appIdentity: data.appIdentity
+          };
+          this.logger.info('BitPay service BitAuth create token: SUCCESS');
 
-          let ok = 'Add Account'; // TODO gettextcatalog
-          let cancel = 'Go back'; // TODO gettextcatalog
-          this.popupProvider.ionicConfirm(title, msg, ok, cancel).then((res) => {
-            if (res) {
-              let acctData = {
-                token: apiContext.token,
-                email: pairData.email,
-                givenName: basicInfo.givenName,
-                familyName: basicInfo.familyName
-              };
-              this.setBitpayAccount(acctData)
-              return cb(null, true, apiContext);
+          this.fetchBasicInfo(apiContext, (err, basicInfo) => {
+            this.onGoingProcessProvider.clear();
+            if (err) return cb(err);
+            let title = this.translate.instant('Add BitPay Account?');
+            let msg;
+
+            if (pairingReason) {
+              let reason = pairingReason;
+              let email = pairData.email;
+
+              msg = this.replaceParametersProvider.replace(
+                this.translate.instant(
+                  'To {{reason}} you must first add your BitPay account - {{email}}'
+                ),
+                { reason, email }
+              );
             } else {
-              this.logger.info('User cancelled BitPay pairing process');
-              return cb(null, false);
+              let email = pairData.email;
+              msg = this.replaceParametersProvider.replace(
+                this.translate.instant('Add this BitPay account ({{email}})?'),
+                { email }
+              );
             }
+
+            let ok = this.translate.instant('Add account');
+            let cancel = this.translate.instant('Go Back');
+            this.popupProvider
+              .ionicConfirm(title, msg, ok, cancel)
+              .then(res => {
+                if (res) {
+                  let acctData = {
+                    token: apiContext.token,
+                    email: pairData.email,
+                    givenName: basicInfo.givenName,
+                    familyName: basicInfo.familyName
+                  };
+                  this.setBitpayAccount(acctData);
+                  return cb(null, true, apiContext);
+                } else {
+                  this.logger.info('User cancelled BitPay pairing process');
+                  return cb(null, false);
+                }
+              });
           });
-        });
-      }, (data) => {
-        return cb(this._setError('BitPay service BitAuth create token: ERROR ', data));
-      });
+        },
+        data => {
+          return cb(
+            this._setError('BitPay service BitAuth create token: ERROR ', data)
+          );
+        }
+      );
     });
   }
 
-  private checkOtp(pairData: any, cb: (otp?) => any) {
+  private checkOtp(pairData, cb: (otp?) => any) {
     if (pairData.otp) {
-      let msg = 'Enter Two Factor for your BitPay account'; // TODO gettextcatalog
-      this.popupProvider.ionicPrompt(null, msg, null).then((res) => {
+      let msg = this.translate.instant(
+        'Enter Two Factor for your BitPay account'
+      );
+      this.popupProvider.ionicPrompt(null, msg, null).then(res => {
         cb(res);
       });
     } else {
@@ -140,28 +168,36 @@ export class BitPayAccountProvider {
     }
   }
 
-  private fetchBasicInfo(apiContext: any, cb: (err, basicInfo?) => any) {
+  private fetchBasicInfo(apiContext, cb: (err, basicInfo?) => any) {
     let json = {
       method: 'getBasicInfo'
     };
     // Get basic account information
-    this.bitPayProvider.post('/api/v2/' + apiContext.token, json, (data) => {
-      if (data && data.error) return cb(data.error);
-      this.logger.info('BitPay Account Get Basic Info: SUCCESS');
-      return cb(null, data.data);
-    }, (data) => {
-      return cb(this._setError('BitPay Account Error: Get Basic Info', data));
-    });
-  };
+    this.bitPayProvider.post(
+      '/api/v2/' + apiContext.token,
+      json,
+      data => {
+        if (data && data.error) return cb(data.error);
+        this.logger.info('BitPay Account Get Basic Info: SUCCESS');
+        return cb(null, data.data);
+      },
+      data => {
+        return cb(this._setError('BitPay Account Error: Get Basic Info', data));
+      }
+    );
+  }
 
   // Returns account objects as stored.
   public getAccountsAsStored(cb: (err, accounts) => any) {
-    this.persistenceProvider.getBitpayAccounts(this.bitPayProvider.getEnvironment().network).then((accounts) => {
-      return cb(null, accounts);
-    }).catch((err) => {
-      return cb(err, []);
-    });
-  };
+    this.persistenceProvider
+      .getBitpayAccounts(this.bitPayProvider.getEnvironment().network)
+      .then(accounts => {
+        return cb(null, accounts);
+      })
+      .catch(err => {
+        return cb(err, []);
+      });
+  }
 
   // Returns an array where each element represents an account including all information required for fetching data
   // from the server for each account (apiContext).
@@ -170,46 +206,53 @@ export class BitPayAccountProvider {
       if (err || _.isEmpty(accounts)) {
         return cb(err, []);
       }
-      this.appIdentityProvider.getIdentity(this.bitPayProvider.getEnvironment().network, (err, appIdentity) => {
-        if (err) {
-          return cb(err);
+      this.appIdentityProvider.getIdentity(
+        this.bitPayProvider.getEnvironment().network,
+        (err, appIdentity) => {
+          if (err) {
+            return cb(err);
+          }
+
+          let accountsArray = [];
+          _.forEach(Object.keys(accounts), key => {
+            accounts[key].cards = accounts[key].cards;
+            accounts[key].email = key;
+            accounts[key].givenName = accounts[key].givenName || '';
+            accounts[key].familyName = accounts[key].familyName || '';
+            accounts[key].apiContext = {
+              token: accounts[key].token,
+              pairData: {
+                email: key
+              },
+              appIdentity
+            };
+
+            accountsArray.push(accounts[key]);
+          });
+          return cb(null, accountsArray);
         }
-
-        let accountsArray = [];
-        _.forEach(Object.keys(accounts), (key) => {
-          accounts[key].cards = accounts[key].cards;
-          accounts[key].email = key;
-          accounts[key].givenName = accounts[key].givenName || '';
-          accounts[key].familyName = accounts[key].familyName || '';
-          accounts[key].apiContext = {
-            token: accounts[key].token,
-            pairData: {
-              email: key
-            },
-            appIdentity
-          };
-
-          accountsArray.push(accounts[key]);
-        });
-        return cb(null, accountsArray);
-      });
+      );
     });
-  };
+  }
 
-  private setBitpayAccount(account: any) {
-    this.persistenceProvider.setBitpayAccount(this.bitPayProvider.getEnvironment().network, account);
-  };
+  private setBitpayAccount(account) {
+    this.persistenceProvider.setBitpayAccount(
+      this.bitPayProvider.getEnvironment().network,
+      account
+    );
+  }
 
   public removeAccount(email: string, cb: () => any) {
-    this.persistenceProvider.removeBitpayAccount(this.bitPayProvider.getEnvironment().network, email).then(() => {
-      return cb();
-    });
-  };
+    this.persistenceProvider
+      .removeBitpayAccount(this.bitPayProvider.getEnvironment().network, email)
+      .then(() => {
+        return cb();
+      });
+  }
 
-  private _setError(msg: string, e: any): string {
+  private _setError(msg: string, e): string {
     this.logger.error(msg);
-    let error = (e && e.data && e.data.error) ? e.data.error : msg;
+    let error = e && e.data && e.data.error ? e.data.error : msg;
     return error;
-  };
-
+  }
 }

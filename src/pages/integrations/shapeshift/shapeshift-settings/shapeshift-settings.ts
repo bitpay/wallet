@@ -8,27 +8,31 @@ import { HomeIntegrationsProvider } from '../../../../providers/home-integration
 
 @Component({
   selector: 'page-shapeshift-settings',
-  templateUrl: 'shapeshift-settings.html',
+  templateUrl: 'shapeshift-settings.html'
 })
 export class ShapeshiftSettingsPage {
-
   private serviceName: string = 'shapeshift';
-  public showInHome: any;
-  public service: any;
+  public showInHome;
+  public service;
 
   constructor(
     private configProvider: ConfigProvider,
     private homeIntegrationsProvider: HomeIntegrationsProvider
   ) {
-    this.service = _.filter(this.homeIntegrationsProvider.get(), { name: this.serviceName });
+    this.service = _.filter(this.homeIntegrationsProvider.get(), {
+      name: this.serviceName
+    });
     this.showInHome = !!this.service[0].show;
   }
 
   public showInHomeSwitch(): void {
     let opts = {
-      showIntegration: { [this.serviceName] : this.showInHome }
+      showIntegration: { [this.serviceName]: this.showInHome }
     };
-    this.homeIntegrationsProvider.updateConfig(this.serviceName, this.showInHome);
+    this.homeIntegrationsProvider.updateConfig(
+      this.serviceName,
+      this.showInHome
+    );
     this.configProvider.set(opts);
   }
 }

@@ -16,7 +16,8 @@ const env: EnvironmentSchema = {
   ratesAPI: {
     btc: `${host}/bitpay.com/api/rates`,
     bch: `${host}/bitpay.com/api/rates/bch`
-  }
+  },
+  activateScanner: false
 };
 
 export default env;

@@ -1,6 +1,6 @@
 <img src="https://raw.githubusercontent.com/bitpay/copay/master/resources/copay/android/icon/drawable-xxxhdpi-icon.png" alt="Copay" width="79">
 
-[![CircleCI](https://img.shields.io/circleci/project/github/bitpay/copay.svg)](https://circleci.com/gh/bitpay/copay/)
+[![CircleCI](https://img.shields.io/circleci/project/github/bitpay/copay/master.svg)](https://circleci.com/gh/bitpay/copay/)
 [![Codecov](https://img.shields.io/codecov/c/github/bitpay/copay.svg)](https://codecov.io/gh/bitpay/copay/)
 [![Crowdin](https://d322cqt584bo4o.cloudfront.net/copay/localized.png)](https://crowdin.com/project/copay)
 
@@ -43,13 +43,14 @@ cd copay
 Ensure you have [Node](https://nodejs.org/) installed, then install and start Copay:
 
 ```sh
+npm install
 npm run apply:copay
 npm run start
 ```
 
 Visit [`localhost:8100`](http://localhost:8100/) to view the app.
 
-## Unit Tests (Karma and Jasmine)
+## Unit & E2E Tests (Karma & Protractor)
 
 To run the tests, run:
 
@@ -65,7 +66,7 @@ It's recommended that all final testing be done on a real device – both to ass
 
 Follow the [Cordova Android Platform Guide](https://cordova.apache.org/docs/en/latest/guide/platforms/android/) to set up your development environment.
 
-When your developement enviroment is ready, run the `start:android` npm package script.
+When your developement enviroment is ready, run the `start:android` package script.
 
 ```sh
 npm run apply:copay
@@ -75,9 +76,9 @@ npm run start:android
 
 ### iOS
 
-Follow the [Cordova iOS Platform Guide](https://cordova.apache.org/docs/en/latest/guide/platforms/android/) to set up your development environment.
+Follow the [Cordova iOS Platform Guide](https://cordova.apache.org/docs/en/latest/guide/platforms/ios/) to set up your development environment.
 
-When your developement enviroment is ready, run the `start:ios` npm package script.
+When your developement enviroment is ready, run the `start:ios` package script.
 
 ```sh
 npm run apply:copay
@@ -89,7 +90,7 @@ npm run start:ios
 
 The desktop version of Copay currently uses NW.js, an app runtime based on Chromium. To get started, first install NW.js on your system from [the NW.js website](https://nwjs.io/).
 
-When NW.js is installed, run the `start:desktop` npm package script.
+When NW.js is installed, run the `start:desktop` package script.
 
 ```sh
 npm run apply:copay
@@ -144,24 +145,23 @@ BITPAY_EXTERNAL_SERVICES_CONFIG_LOCATION="~/.bitpay/externalServices.json" npm r
 
 ### General
 
-Copay implements a multisig wallet using [p2sh](https://en.bitcoin.it/wiki/Pay_to_script_hash) addresses.  It supports multiple wallets, each with its own configuration, such as 3-of-5 (3 required signatures from 5 participant peers) or 2-of-3.  To create a multisig wallet shared between multiple participants, Copay requires the extended public keys of all the wallet participants.  Those public keys are then incorporated into the wallet configuration and combined to generate a payment address where funds can be sent into the wallet.  Conversely, each participant manages their own private key and that private key is never transmitted anywhere.
+Copay implements a multisig wallet using [p2sh](https://en.bitcoin.it/wiki/Pay_to_script_hash) addresses. It supports multiple wallets, each with its own configuration, such as 3-of-5 (3 required signatures from 5 participant peers) or 2-of-3. To create a multisig wallet shared between multiple participants, Copay requires the extended public keys of all the wallet participants. Those public keys are then incorporated into the wallet configuration and combined to generate a payment address where funds can be sent into the wallet. Conversely, each participant manages their own private key and that private key is never transmitted anywhere.
 
-To unlock a payment and spend the wallet's funds, a quorum of participant signatures must be collected and assembled in the transaction.  The funds cannot be spent without at least the minimum number of signatures required by the wallet configuration (2-of-3, 3-of-5, 6-of-6, etc.).  Once a transaction proposal is created, the proposal is distributed among the wallet participants for each to sign the transaction locally.  Finally, when the transaction is signed, the last signing participant will broadcast the transaction to the Bitcoin network.
+To unlock a payment and spend the wallet's funds, a quorum of participant signatures must be collected and assembled in the transaction. The funds cannot be spent without at least the minimum number of signatures required by the wallet configuration (2-of-3, 3-of-5, 6-of-6, etc.). Once a transaction proposal is created, the proposal is distributed among the wallet participants for each to sign the transaction locally. Finally, when the transaction is signed, the last signing participant will broadcast the transaction to the Bitcoin network.
 
-Copay also implements [BIP32](https://github.com/bitcoin/bips/blob/master/bip-0032.mediawiki) to generate new addresses for peers.  The public key that each participant contributes to the wallet is a BIP32 extended public key.  As additional public keys are needed for wallet operations (to produce new addresses to receive payments into the wallet, for example) new public keys can be derived from the participants' original extended public keys.  Once again, it's important to stress that each participant keeps their own private keys locally - private keys are not shared - and are used to sign transaction proposals to make payments from the shared wallet.
+Copay also implements [BIP32](https://github.com/bitcoin/bips/blob/master/bip-0032.mediawiki) to generate new addresses for peers. The public key that each participant contributes to the wallet is a BIP32 extended public key. As additional public keys are needed for wallet operations (to produce new addresses to receive payments into the wallet, for example) new public keys can be derived from the participants' original extended public keys. Once again, it's important to stress that each participant keeps their own private keys locally - private keys are not shared - and are used to sign transaction proposals to make payments from the shared wallet.
 
 For more information regarding how addresses are generated using this procedure, see: [Structure for Deterministic P2SH Multisignature Wallets](https://github.com/bitcoin/bips/blob/master/bip-0045.mediawiki).
 
 ## Copay Backups and Recovery
 
-Since v1.2 Copay uses BIP39 mnemonics for backing up wallets.  The BIP44 standard is used for wallet address derivation. Multisig wallets use P2SH addresses, while non-multisig wallets use P2PKH.
+Since v1.2 Copay uses BIP39 mnemonics for backing up wallets. The BIP44 standard is used for wallet address derivation. Multisig wallets use P2SH addresses, while non-multisig wallets use P2PKH.
 
 Information about backup and recovery procedures is available at: https://github.com/bitpay/copay/blob/master/backupRecovery.md
 
 Previous versions of Copay used files as backups. See the following section.
 
 It is possible to recover funds from a Copay Wallet without using Copay or the Wallet Service, check the [Copay Recovery Tool](https://github.com/bitpay/copay-recovery/tree/master).
-
 
 ## Wallet Export Format
 
@@ -172,7 +172,7 @@ Depending on the key `derivationStrategy`, addresses are derived using
 [BIP44](https://github.com/bitcoin/bips/blob/master/bip-0044.mediawiki) or [BIP45](https://github.com/bitcoin/bips/blob/master/bip-0045.mediawiki). Wallets created in Copay v1.2 and forward always use BIP44, all previous wallets use BIP45. Also note that since Copay version v1.2, non-multisig wallets use address types Pay-to-PublicKeyHash (P2PKH) while multisig wallets still use Pay-to-ScriptHash (P2SH) (key `addressType` at the backup):
 
 | Copay Version | Wallet Type               | Derivation Strategy | Address Type |
-|---------------|---------------------------|---------------------|--------------|
+| ------------- | ------------------------- | ------------------- | ------------ |
 | <1.2          | All                       | BIP45               | P2SH         |
 | ≥1.2          | Non-multisig              | BIP44               | P2PKH        |
 | ≥1.2          | Multisig                  | BIP44               | P2SH         |
@@ -184,13 +184,13 @@ BIP45 note: All addresses generated at BWS with BIP45 use the 'shared cosigner i
 
 Since version 1.5, Copay uses the root `m/48'` for hardware multisignature wallets. This was coordinated with Ledger and Trezor teams. While the derivation path format is still similar to BIP44, the root was in order to indicate that these wallets are not discoverable by scanning addresses for funds. Address generation for multisignature wallets requires the other copayers extended public keys.
 
-
 ## Bitcore Wallet Service
 
-Copay depends on [Bitcore Wallet Service](https://github.com/bitpay/bitcore-wallet-service) (BWS) for blockchain information, networking and Copayer synchronization.  A BWS instance can be setup and operational within minutes or you can use a public instance like `https://bws.bitpay.com`.  Switching between BWS instances is very simple and can be done with a click from within Copay.  BWS also allows Copay to interoperate with other wallets like [Bitcore Wallet CLI] (https://github.com/bitpay/bitcore-wallet).
+Copay depends on [Bitcore Wallet Service](https://github.com/bitpay/bitcore-wallet-service) (BWS) for blockchain information, networking and Copayer synchronization. A BWS instance can be setup and operational within minutes or you can use a public instance like `https://bws.bitpay.com`. Switching between BWS instances is very simple and can be done with a click from within Copay. BWS also allows Copay to interoperate with other wallets like [Bitcore Wallet CLI](https://github.com/bitpay/bitcore-wallet).
 
 ## Translations
-Copay uses standard gettext PO files for translations and [Crowdin](https://crowdin.com/project/copay) as the front-end tool for translators.  To join our team of translators, please create an account at [Crowdin](https://crowdin.com) and translate the Copay documentation and application text into your native language.
+
+Copay uses standard gettext PO files for translations and [Crowdin](https://crowdin.com/project/copay) as the front-end tool for translators. To join our team of translators, please create an account at [Crowdin](https://crowdin.com) and translate the Copay documentation and application text into your native language.
 
 To download and build using the latest translations from Crowdin, please use the following commands:
 
@@ -202,6 +202,7 @@ node crowdin_download.js
 This will download all partial and complete language translations while also cleaning out any untranslated ones.
 
 **Translation Credits:**
+
 - Japanese: @dabura667
 - French: @kirvx
 - Portuguese: @pmichelazzo
@@ -209,16 +210,18 @@ This will download all partial and complete language translations while also cle
 - German: @saschad
 - Russian: @vadim0
 
-*Gracias totales!*
+_Gracias totales!_
 
 ## Release Schedules
-Copay uses the `MAJOR.MINOR.BATCH` convention for versioning.  Any release that adds features should modify the MINOR or MAJOR number.
+
+Copay uses the `MAJOR.MINOR.BATCH` convention for versioning. Any release that adds features should modify the MINOR or MAJOR number.
 
 ### Bug Fixing Releases
 
-We release bug fixes as soon as possible for all platforms.  Usually around a week after patches, a new release is made with language translation updates (like 1.1.4 and then 1.1.5).  There is no coordination so all platforms are updated at the same time.
+We release bug fixes as soon as possible for all platforms. Usually around a week after patches, a new release is made with language translation updates (like 1.1.4 and then 1.1.5). There is no coordination so all platforms are updated at the same time.
 
 ### Minor and Major Releases
+
 - t+0: tag the release 1.2 and "text lock" (meaning only non-text related bug fixes. Though this rule is sometimes broken, it's good to make a rule.)
 - t+7: testing for 1.2 is finished, translation is also finished, and 1.2.1 is tagged with all translations along with bug fixes made in the last week.
 - t+7: iOS is submitted for 1.2.1. All other platforms are submitted with auto-release off.
@@ -226,11 +229,11 @@ We release bug fixes as soon as possible for all platforms.  Usually around a we
 
 ## How to Verify Copay Signatures
 
- 1. Download the `copay@bitpay.com` public key (`gpg --recv-keys 1112CFA1`)
- 2. Download Copay binary (`$FILENAME`) and signature file (`$FILENAME.sig`)
- 3. Verify the signature by running:
+1.  Download the `copay@bitpay.com` public key (`gpg --recv-keys 1112CFA1`)
+2.  Download Copay binary (`$FILENAME`) and signature file (`$FILENAME.sig`)
+3.  Verify the signature by running:
 
-``` bash
+```bash
 $ gpg --verify \
  $FILENAME.sig \
  $FILENAME
@@ -240,6 +243,7 @@ Good signature from "Copay (visit copay.io) <copay@bitpay.com>"
 ```
 
 ### Public Key for Copay Binaries
+
 Instead of importing the public key from a public server (like gnu's) you can grab it from here:
 
 ```
@@ -269,28 +273,28 @@ fMbk4YsO11Yj2B2m
 =tKra
 -----END PGP PUBLIC KEY BLOCK-----
 ```
+
 Save that text to /tmp/key, and then import it as follows:
+
 ```
 gpg --import /tmp/key
 ```
+
 (Thanks @pzkpfwVI and @mika-mitzahlen for this section, taken from [Gist](https://gist.github.com/matiu/61c9f529efeeba66c0e2).
-
-
 
 ## Contributing to this project
 
 Anyone and everyone is welcome to contribute. Please take a moment to
 review the [guidelines for contributing](CONTRIBUTING.md).
 
-* [Bug reports](CONTRIBUTING.md#bugs)
-* [Feature requests](CONTRIBUTING.md#features)
-* [Pull requests](CONTRIBUTING.md#pull-requests)
+- [Bug reports](CONTRIBUTING.md#bugs)
+- [Feature requests](CONTRIBUTING.md#features)
+- [Pull requests](CONTRIBUTING.md#pull-requests)
 
 ## Support
 
- Please see [Support requests](CONTRIBUTING.md#support)
-
+Please see [Support requests](CONTRIBUTING.md#support)
 
 ## License
 
-Copay is released under the MIT License.  Please refer to the [LICENSE](https://github.com/bitpay/copay/blob/master/LICENSE) file that accompanies this project for more information including complete terms and conditions.
+Copay is released under the MIT License. Please refer to the [LICENSE](https://github.com/bitpay/copay/blob/master/LICENSE) file that accompanies this project for more information including complete terms and conditions.

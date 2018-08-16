@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { NavController } from 'ionic-angular';
+import { ModalController, NavController } from 'ionic-angular';
 import { Logger } from '../../providers/logger/logger';
 
 import * as _ from 'lodash';
@@ -14,9 +14,9 @@ import { HomeIntegrationsProvider } from '../../providers/home-integrations/home
 import { LanguageProvider } from '../../providers/language/language';
 import { PlatformProvider } from '../../providers/platform/platform';
 import { ProfileProvider } from '../../providers/profile/profile';
+import { TouchIdProvider } from '../../providers/touchid/touchid';
 
 // pages
-import { FeedbackCompletePage } from '../feedback/feedback-complete/feedback-complete';
 import { SendFeedbackPage } from '../feedback/send-feedback/send-feedback';
 import { AmazonSettingsPage } from '../integrations/amazon/amazon-settings/amazon-settings';
 import { BitPaySettingsPage } from '../integrations/bitpay-card/bitpay-settings/bitpay-settings';
@@ -24,15 +24,16 @@ import { CoinbaseSettingsPage } from '../integrations/coinbase/coinbase-settings
 import { GlideraSettingsPage } from '../integrations/glidera/glidera-settings/glidera-settings';
 import { MercadoLibreSettingsPage } from '../integrations/mercado-libre/mercado-libre-settings/mercado-libre-settings';
 import { ShapeshiftSettingsPage } from '../integrations/shapeshift/shapeshift-settings/shapeshift-settings';
+import { PinModalPage } from '../pin/pin-modal/pin-modal';
 import { AboutPage } from './about/about';
 import { AddressbookPage } from './addressbook/addressbook';
 import { AdvancedPage } from './advanced/advanced';
 import { AltCurrencyPage } from './alt-currency/alt-currency';
-import { BitcoinCashPage } from './bitcoin-cash/bitcoin-cash';
 import { FeePolicyPage } from './fee-policy/fee-policy';
 import { LanguagePage } from './language/language';
 import { LockPage } from './lock/lock';
 import { NotificationsPage } from './notifications/notifications';
+import { SharePage } from './share/share';
 import { WalletSettingsPage } from './wallet-settings/wallet-settings';
 
 @Component({
@@ -42,15 +43,15 @@ import { WalletSettingsPage } from './wallet-settings/wallet-settings';
 export class SettingsPage {
   public appName: string;
   public currentLanguageName: string;
-  public languages: any[];
-  public walletsBtc: any[];
-  public walletsBch: any[];
-  public config: any;
-  public selectedAlternative: any;
+  public languages;
+  public walletsBtc;
+  public walletsBch;
+  public config;
+  public selectedAlternative;
   public isCordova: boolean;
   public lockMethod: string;
-  public integrationServices: any[] = [];
-  public bitpayCardItems: any[] = [];
+  public integrationServices = [];
+  public bitpayCardItems = [];
   public showBitPayCard: boolean = false;
 
   constructor(
@@ -64,7 +65,9 @@ export class SettingsPage {
     private homeIntegrationsProvider: HomeIntegrationsProvider,
     private bitPayCardProvider: BitPayCardProvider,
     private platformProvider: PlatformProvider,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private modalCtrl: ModalController,
+    private touchid: TouchIdProvider
   ) {
     this.appName = this.app.info.nameCase;
     this.walletsBch = [];
@@ -77,7 +80,9 @@ export class SettingsPage {
   }
 
   ionViewWillEnter() {
-    this.currentLanguageName = this.language.getName(this.language.getCurrent());
+    this.currentLanguageName = this.language.getName(
+      this.language.getCurrent()
+    );
     this.walletsBtc = this.profileProvider.getWallets({
       coin: 'btc'
     });
@@ -88,8 +93,11 @@ export class SettingsPage {
     this.selectedAlternative = {
       name: this.config.wallet.settings.alternativeName,
       isoCode: this.config.wallet.settings.alternativeIsoCode
-    }
-    this.lockMethod = this.config.lock.method ? this.config.lock.method.toLowerCase() : null;
+    };
+    this.lockMethod =
+      this.config && this.config.lock && this.config.lock.method
+        ? this.config.lock.method.toLowerCase()
+        : null;
   }
 
   ionViewDidEnter() {
@@ -98,21 +106,19 @@ export class SettingsPage {
 
     // Hide BitPay if linked
     setTimeout(() => {
-      this.integrationServices = _.remove(_.clone(integrations), (x) => {
+      this.integrationServices = _.remove(_.clone(integrations), x => {
         if (x.name == 'debitcard' && x.linked) return;
         else return x;
       });
     }, 200);
 
     // Only BitPay Wallet
-    this.bitPayCardProvider.get({}, (err, cards) => {
-      this.showBitPayCard = this.app.info._enabledExtensions.debitcard ? true : false;
+    this.bitPayCardProvider.get({}, (_, cards) => {
+      this.showBitPayCard = this.app.info._enabledExtensions.debitcard
+        ? true
+        : false;
       this.bitpayCardItems = cards;
     });
-  }
-
-  public openBitcoinCashPage(): void {
-    this.navCtrl.push(BitcoinCashPage);
   }
 
   public openAltCurrencyPage(): void {
@@ -132,7 +138,14 @@ export class SettingsPage {
   }
 
   public openLockPage(): void {
-    this.navCtrl.push(LockPage);
+    let config = this.configProvider.get();
+    let lockMethod =
+      config && config.lock && config.lock.method
+        ? config.lock.method.toLowerCase()
+        : null;
+    if (!lockMethod || lockMethod == 'disabled') this.navCtrl.push(LockPage);
+    if (lockMethod == 'pin') this.openPinModal('lockSetUp');
+    if (lockMethod == 'fingerprint') this.checkFingerprint();
   }
 
   public openAddressBookPage(): void {
@@ -155,23 +168,23 @@ export class SettingsPage {
     this.navCtrl.push(SendFeedbackPage);
   }
 
-  public openFeedbackCompletePage(): void {
-    this.navCtrl.push(FeedbackCompletePage, { score: 4, skipped: true, fromSettings: true });
+  public openSharePage(): void {
+    this.navCtrl.push(SharePage);
   }
 
   public openSettingIntegration(name: string): void {
     switch (name) {
+      case 'amazon':
+        this.navCtrl.push(AmazonSettingsPage);
+        break;
       case 'coinbase':
         this.navCtrl.push(CoinbaseSettingsPage);
-        break;
-      case 'glidera':
-        this.navCtrl.push(GlideraSettingsPage);
         break;
       case 'debitcard':
         this.navCtrl.push(BitPaySettingsPage);
         break;
-      case 'amazon':
-        this.navCtrl.push(AmazonSettingsPage);
+      case 'glidera':
+        this.navCtrl.push(GlideraSettingsPage);
         break;
       case 'mercadolibre':
         this.navCtrl.push(MercadoLibreSettingsPage);
@@ -187,12 +200,42 @@ export class SettingsPage {
   }
 
   public openHelpExternalLink(): void {
-    let url = this.appName == 'Copay' ? 'https://github.com/bitpay/copay/issues' : 'https://help.bitpay.com/bitpay-app';
+    let url =
+      this.appName == 'Copay'
+        ? 'https://github.com/bitpay/copay/issues'
+        : 'https://help.bitpay.com/bitpay-app';
     let optIn = true;
     let title = null;
-    let message = this.translate.instant('Help and support information is available at the website.');
+    let message = this.translate.instant(
+      'Help and support information is available at the website.'
+    );
     let okText = this.translate.instant('Open');
     let cancelText = this.translate.instant('Go Back');
-    this.externalLinkProvider.open(url, optIn, title, message, okText, cancelText);
+    this.externalLinkProvider.open(
+      url,
+      optIn,
+      title,
+      message,
+      okText,
+      cancelText
+    );
+  }
+
+  private openPinModal(action): void {
+    const modal = this.modalCtrl.create(
+      PinModalPage,
+      { action },
+      { cssClass: 'fullscreen-modal' }
+    );
+    modal.present();
+    modal.onDidDismiss(cancelClicked => {
+      if (!cancelClicked) this.navCtrl.push(LockPage);
+    });
+  }
+
+  private checkFingerprint(): void {
+    this.touchid.check().then(() => {
+      this.navCtrl.push(LockPage);
+    });
   }
 }

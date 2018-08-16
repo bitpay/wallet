@@ -1,36 +1,36 @@
 import { Directive, Inject } from '@angular/core';
-import { DOCUMENT } from "@angular/platform-browser";
+import { DOCUMENT } from '@angular/platform-browser';
 import { Clipboard } from '@ionic-native/clipboard';
 import { TranslateService } from '@ngx-translate/core';
-import { ToastController } from 'ionic-angular';
+
+// providers
+import { ActionSheetProvider } from '../../providers/action-sheet/action-sheet';
+import { ClipboardProvider } from '../../providers/clipboard/clipboard';
 import { Logger } from '../../providers/logger/logger';
 import { PlatformProvider } from '../../providers/platform/platform';
 
 @Directive({
   selector: '[copy-to-clipboard]', // Attribute selector
-  inputs: ['value: copy-to-clipboard'],
+  inputs: ['value: copy-to-clipboard', 'hideToast: hide-toast'],
   host: {
     '(click)': 'copy()'
   }
 })
 export class CopyToClipboard {
-
   public value: string;
+  public hideToast: boolean;
   private dom: Document;
-  private isCordova: boolean;
-  private isNW: boolean;
 
   constructor(
     @Inject(DOCUMENT) dom: Document,
-    public toastCtrl: ToastController,
     public clipboard: Clipboard,
     public platform: PlatformProvider,
     public logger: Logger,
-    public translate: TranslateService
+    public translate: TranslateService,
+    private actionSheetProvider: ActionSheetProvider,
+    private clipboardProvider: ClipboardProvider
   ) {
     this.logger.info('CopyToClipboardDirective initialized.');
-    this.isCordova = this.platform.isCordova;
-    this.isNW = this.platform.isNW;
     this.dom = dom;
   }
 
@@ -40,25 +40,23 @@ export class CopyToClipboard {
     textarea.value = this.value;
     textarea.select();
     this.dom.execCommand('copy');
+    this.dom.body.removeChild(textarea);
   }
 
   public copy() {
-    if (!this.value) {
-      return;
-    }
-    if (this.isCordova) {
-      this.clipboard.copy(this.value);
-    } else if (this.isNW) {
-      // TODO: Node-webkit won't be supported
-    } else {
+    if (!this.value) return;
+    try {
+      this.clipboardProvider.copy(this.value);
+    } catch (e) {
+      if (e) this.logger.warn(e.message);
       this.copyBrowser();
     }
-    let showSuccess = this.toastCtrl.create({
-      message: this.translate.instant('Copied to clipboard'),
-      duration: 1000,
-      position: 'top'
-    });
-    showSuccess.present();
-  }
+    if (this.hideToast) return;
 
+    const infoSheet = this.actionSheetProvider.createInfoSheet(
+      'copy-to-clipboard',
+      { msg: this.value }
+    );
+    infoSheet.present();
+  }
 }

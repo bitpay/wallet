@@ -1,7 +1,8 @@
 page-sell-coinbase {
   ion-content {
-    .fixed-content, .scroll-content {
-      margin-bottom: 70px;
+    .fixed-content,
+    .scroll-content {
+      margin-bottom: 90px;
     }
   }
   .sending-label {
@@ -41,7 +42,7 @@ page-sell-coinbase {
     }
   }
 
-  .last-item{
+  .last-item {
     margin-left: auto !important;
   }
 }

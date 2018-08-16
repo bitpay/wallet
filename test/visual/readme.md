@@ -4,13 +4,13 @@ As part of our continuous testing, we compare screenshots taken during our e2e t
 
 ## Approving Changes
 
-If a screenshot taken during the e2e tests doesn't closely match it's expected version (in the `approved` folder), `test:visual` will fail. So when you make a change to the UI, you'll need to update the relevant screenshots in the visual tests.
+If a screenshot taken during the e2e tests doesn't closely match it's expected version (in the `expected` folder), `test:visual` will fail. So when you make a change to the UI, you'll need to update the relevant screenshots in the visual tests.
 
 ### Option 1: Copy Screenshots from CircleCI
 
 When you submit a PR, CircleCI will automatically try building your changes. When the build fails, you'll be able to view the `report.html` in the CircleCI Artifacts for that build.
 
-Once you've reviewed the changes in the report, simply copy the updated images from the report to the `approved` directory locally, commit them, and push.
+Once you've reviewed the changes in the report, simply copy the updated images from the report to the `expected` directory locally, commit them, and push.
 
 ### Option 2: Build Screenshots Locally
 
@@ -36,4 +36,4 @@ Once you've reviewed the changed screenshots for visual defects, you can approve
 $ npm run test:visual -- --update
 ```
 
-This will automatically copy all the changed images into the `approved` directory.
+This will automatically copy all the changed images into the `expected` directory.

@@ -1,9 +1,9 @@
 page-tx-details {
-  $item-border-color: #EFEFEF;
+  $item-border-color: #efefef;
   $item-lateral-padding: 20px;
-  $item-label-color: #6C6C6E;
-
+  $item-label-color: #6c6c6e;
   .header-container {
+    padding: 20px 0px 20px 0px;
     .sending-label {
       display: flex;
       align-items: center;
@@ -18,10 +18,22 @@ page-tx-details {
     }
     .amount-label {
       padding-top: 1rem;
+      img.sending-img {
+        width: auto;
+        height: 40px;
+      }
       .amount {
+        display: flex;
         font-size: 3.5rem;
-        .unit {
-          font-weight: 400;
+        justify-content: space-between;
+        font-size: 3.5rem;
+        .amount-coin {
+          font-size: 1.5rem;
+          margin-top: 0.35rem;
+          margin-left: 0.8rem;
+        }
+        div {
+          display: flex;
         }
       }
       .alternative {
@@ -30,7 +42,6 @@ page-tx-details {
       }
     }
   }
-
   .item-fee {
     .fee-title {
       margin-bottom: 5px;
@@ -41,22 +52,21 @@ page-tx-details {
     }
     .fee-details {
       font-size: 12.5px;
+      margin-bottom: 5px;
       color: color($colors, light-grey);
     }
   }
-
-  .item-memo {
-    margin-top: 10px;
-  }
-
   @mixin row-flex {
     display: flex;
     align-items: center;
     margin-top: 1rem;
   }
-
-  .container-to, .container-from {
-    .wallet, .payment-to {
+  .container-to,
+  .container-from,
+  .container-tx-id {
+    .wallet,
+    .payment-to,
+    .tx-id {
       @include row-flex;
       .icon-wallet {
         width: 25px;
@@ -68,27 +78,28 @@ page-tx-details {
         }
       }
       .icon-bitcoin {
-        margin: 9px 2rem 9px 0;
-        width: 25px;
-        height: 25px;
-        padding: 3px 8px;
-        border: 1px solid color($colors, grey);
-        border-radius: $icon-border-radius;
+        width: 30px;
+        height: 40px;
+      }
+      .id {
+        font-size: 12.5px;
+        color: color($colors, light-grey);
+      }
+      .text-address.ellipsis {
+        flex: 0 0 47px;
+        img {
+          margin: 12px 0 12px 12px;
+          vertical-align: middle;
+        }
+      }
+      &.address-coppied {
+        border-radius: 3px;
+        background-color: rgb(248, 248, 248);
       }
     }
   }
-
-  .low-fees {
-    img {
-      margin-right: 0.1rem;
-      vertical-align: sub;
-    }
-    a {
-      font-size: 1.2rem;
-    }
-  }
   .timeline-item {
-    background-color: color($colors, blank);;
+    background-color: color($colors, blank);
     border: 0;
     &:nth-child(2) {
       border-top: 1px solid $item-border-color;
@@ -97,29 +108,29 @@ page-tx-details {
       border-bottom: 1px solid $item-border-color;
     }
     padding: 17px $item-lateral-padding;
-
     > * {
       padding-right: 0;
     }
   }
-
   .timeline-content {
     display: flex;
     align-items: center;
-
     &-icon {
       display: flex;
       align-items: center;
       min-width: 40px;
       padding-right: 1rem;
       padding-left: 1rem;
-      margin-right: .5rem;
+      margin-right: 0.5rem;
       position: relative;
-
+      img,
+      .rejected {
+        z-index: 12;
+      }
       .line::before {
         content: '';
         background: #e8e8e8;
-        height: 42px;
+        height: 52px;
         width: 1px;
         position: absolute;
         left: 50%;
@@ -127,7 +138,6 @@ page-tx-details {
         transform: translateX(-50%) translateY(-100%);
         top: 0;
       }
-
       > div {
         border: 3px solid color($colors, primary);
         border-radius: $icon-border-radius;
@@ -141,24 +151,23 @@ page-tx-details {
         vertical-align: middle;
         color: color($colors, primary);
         z-index: 10;
-
         &.rejected {
-          background: #E15061;
-          border-color: #E15061;
-          color: #FFFFFF;
-          font-family: "Roboto-Bold";
+          background: #e15061;
+          border-color: #e15061;
+          color: #ffffff;
+          font-family: 'Roboto-Bold';
           font-size: 19px;
         }
       }
     }
-
     &-label {
       flex-grow: 1;
-
       > .action {
         font-size: 16px;
+        @media (max-width: 330px) {
+          font-size: 14px;
+        }
       }
-
       > .name {
         color: #aaa;
         font-size: 14px;

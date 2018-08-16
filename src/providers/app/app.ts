@@ -7,8 +7,9 @@ import { Logger } from '../../providers/logger/logger';
 import { ConfigProvider } from '../../providers/config/config';
 import { LanguageProvider } from '../../providers/language/language';
 import { PersistenceProvider } from '../../providers/persistence/persistence';
+import { PlatformProvider } from '../../providers/platform/platform';
 
-/* TODO: implement interface propertly
+/* TODO: implement interface properly
 interface App {
   packageName: string;
   packageDescription: string;
@@ -38,13 +39,13 @@ interface App {
   androidVersion: string;
   commitHash: string;
   _extraCSS: string;
-  _enabledExtensions: any;
+  _enabledExtensions;
 }*/
 
 @Injectable()
 export class AppProvider {
-  public info: any;
-  public servicesInfo: any;
+  public info: any = {};
+  public servicesInfo;
   private jsonPathApp: string = 'assets/appConfig.json';
   private jsonPathServices: string = 'assets/externalServices.json';
 
@@ -54,34 +55,51 @@ export class AppProvider {
     private language: LanguageProvider,
     public config: ConfigProvider,
     private persistence: PersistenceProvider,
+    private platformProvider: PlatformProvider
   ) {
     this.logger.info('AppProvider initialized.');
   }
 
-  public load(): Promise<any> {
-    return new Promise((resolve, reject) => {
-      this.persistence.load();
-      this.config.load().then(() => {
-        this.language.load();
-        this.getServicesInfo().subscribe((infoServices) => {
-          this.servicesInfo = infoServices;
-          this.getInfo().subscribe((infoApp) => {
-            this.info = infoApp;
-            resolve();
-          });
-        });
-      }).catch((err) => {
-        this.logger.error(err);
-        reject(err);
-      });
-    });
+  public async load() {
+    await Promise.all([this.getInfo(), this.loadProviders()]);
+    this.setCustomMenuBarNW();
   }
 
-  private getInfo() {
-    return this.http.get(this.jsonPathApp);
+  private async getInfo() {
+    [this.servicesInfo, this.info] = await Promise.all([
+      this.getServicesInfo(),
+      this.getAppInfo()
+    ]);
+  }
+
+  private async loadProviders() {
+    this.persistence.load();
+    await this.config.load();
+    this.language.load();
+  }
+
+  private getAppInfo() {
+    return this.http.get(this.jsonPathApp).toPromise();
   }
 
   private getServicesInfo() {
-    return this.http.get(this.jsonPathServices);
+    return this.http.get(this.jsonPathServices).toPromise();
+  }
+
+  public setCustomMenuBarNW() {
+    if (!this.platformProvider.isNW) {
+      return;
+    }
+    let gui = (window as any).require('nw.gui');
+    let win = gui.Window.get();
+    let nativeMenuBar = new gui.Menu({
+      type: 'menubar'
+    });
+    try {
+      nativeMenuBar.createMacBuiltin(this.info.nameCase);
+    } catch (e) {
+      this.logger.debug('This is not OSX');
+    }
+    win.menu = nativeMenuBar;
   }
 }

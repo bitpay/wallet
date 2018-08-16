@@ -11,9 +11,11 @@ const templates = {
   'config-template.xml': '/',
   'ionic.config-template.json': '/',
   'manifest.ionic-template.json': 'src/',
+  'build-desktop.js': 'desktop/',
   '.desktop': 'desktop/',
   'setup-win.iss': 'desktop/',
-  'build-macos.sh': 'desktop/'
+  'build-macos.sh': 'desktop/',
+  'build-linux.js': 'desktop/'
 };
 
 const jsonHeader = `{

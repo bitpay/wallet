@@ -1,7 +1,4 @@
-<button ion-item class="proposal-container" (click)="openTxpModal(tx)">
-  <ion-icon item-start>
-    <img src="assets/img/icon-proposal-pending.svg">
-  </ion-icon>
+<button ion-item class="proposal-container" [ngStyle]="{'border-left-color': tx.wallet.color}" (click)="openTxpModal(tx)">
   <div *ngIf="!tx.merchant" class="item-title">
     <span *ngIf="tx.message">{{tx.message}}</span>
     <span *ngIf="!tx.message && tx.toAddress && addressbook[tx.toAddress]">{{addressbook[tx.toAddress].name || addressbook[tx.toAddress]}}</span>
@@ -24,7 +21,7 @@
     <div class="amount">
       <span *ngIf="tx.action == 'sent'">–</span>
       <span *ngIf="tx.action == 'invalid'" translate>(possible double spend)</span>
-      <span *ngIf="tx.action != 'invalid'"> – {{tx.amount | satToUnit: tx.coin}}</span>
+      <span *ngIf="tx.action != 'invalid'">{{tx.amount | satToUnit: tx.coin}}</span>
     </div>
     <div class="date">
       <time *ngIf="tx.createdOn && createdWithinPastDay(tx.createdOn * 1000)">{{tx.createdOn * 1000 | amTimeAgo}}</time>

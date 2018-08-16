@@ -1,7 +1,8 @@
 page-backup-warning {
   text-align: center;
   ion-header {
-    .toolbar-title, ion-icon {
+    .toolbar-title,
+    ion-icon {
       color: color($colors, primary);
     }
     .toolbar-background {
@@ -55,4 +56,3 @@ page-backup-warning {
     color: $onboarding-primary-color;
   }
 }
-

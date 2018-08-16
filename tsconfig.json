@@ -4,28 +4,22 @@
     "declaration": false,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "lib": [
-      "dom",
-      "es2015"
-    ],
+    // "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "lib": ["dom", "es2015"],
     "module": "es2015",
     "moduleResolution": "node",
     "sourceMap": true,
     "target": "es6"
   },
-  "include": [
-    "src/**/*.ts"
-  ],
-  "exclude": [
-    "node_modules",
-    "src/**/*.spec.ts"
-  ],
+  "include": ["src/**/*.ts"],
+  "exclude": ["node_modules"],
   "compileOnSave": false,
   "atom": {
     "rewriteTsconfig": false
   },
-  "types": [
-    "lodash",
-    "node"
-  ]
+  "types": ["lodash", "node", "chrome"]
 }

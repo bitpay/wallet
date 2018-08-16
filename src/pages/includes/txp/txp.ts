@@ -1,25 +1,25 @@
-import { Component, Input } from "@angular/core";
-import { ModalController } from 'ionic-angular';
+import { Component, Input } from '@angular/core';
+import { Events, ModalController } from 'ionic-angular';
 import { TimeProvider } from '../../../providers/time/time';
 
 import { TxpDetailsPage } from '../../txp-details/txp-details';
 
 @Component({
   selector: 'page-txp',
-  templateUrl: 'txp.html',
+  templateUrl: 'txp.html'
 })
 export class TxpPage {
-  private _tx: any;
-  private _addressbook: any;
+  private _tx;
+  private _addressbook;
 
   constructor(
     private timeProvider: TimeProvider,
+    private events: Events,
     private modalCtrl: ModalController
-  ) {
-  }
+  ) {}
 
   @Input()
-  set tx(tx: any) {
+  set tx(tx) {
     this._tx = tx;
   }
 
@@ -28,7 +28,7 @@ export class TxpPage {
   }
 
   @Input()
-  set addressbook(addressbook: any) {
+  set addressbook(addressbook) {
     this._addressbook = addressbook;
   }
 
@@ -36,12 +36,19 @@ export class TxpPage {
     return this._addressbook;
   }
 
-  public createdWithinPastDay(time: any): any {
+  public createdWithinPastDay(time) {
     return this.timeProvider.withinPastDay(time);
   }
 
-  public openTxpModal(txp: any): void {
-    let modal = this.modalCtrl.create(TxpDetailsPage, { tx: txp }, { showBackdrop: false, enableBackdropDismiss: false });
+  public openTxpModal(txp): void {
+    let modal = this.modalCtrl.create(
+      TxpDetailsPage,
+      { tx: txp },
+      { showBackdrop: false, enableBackdropDismiss: false }
+    );
     modal.present();
+    modal.onDidDismiss(() => {
+      this.events.publish('status:updated');
+    });
   }
 }

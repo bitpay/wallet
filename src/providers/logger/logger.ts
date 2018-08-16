@@ -1,21 +1,21 @@
+/* tslint:disable:no-console */
 import { Injectable, isDevMode } from '@angular/core';
 
 import * as _ from 'lodash';
 
 @Injectable()
 export class Logger {
-  /* tslint:disable */
-  public levels: any;
-  public weight: any;
-  public logs: any[];
+  public levels;
+  public weight;
+  public logs;
 
   constructor() {
     this.logs = [];
     this.levels = [
-      { level: 'error', weight: 1, label: 'Error' },
-      { level: 'warn', weight: 2, label: 'Warning' },
-      { level: 'info', weight: 3, label: 'Info', default: true },
-      { level: 'debug', weight: 4, label: 'Debug' }
+      { level: 'error', weight: 1, label: 'Error', def: false },
+      { level: 'warn', weight: 2, label: 'Warning', def: false },
+      { level: 'info', weight: 3, label: 'Info', def: true },
+      { level: 'debug', weight: 4, label: 'Debug', def: false }
     ];
 
     // Create an array of level weights for performant filtering.
@@ -25,51 +25,55 @@ export class Logger {
     }
   }
 
-  public error(message?: any, ...optionalParams: any[]): void {
-    let msg = '[error] ' + (_.isString(message) ? message : JSON.stringify(message));
-    console.log(msg, ...optionalParams);
+  public error(message?, ...optionalParams): void {
+    let msg =
+      '[error] ' + (_.isString(message) ? message : JSON.stringify(message));
+    this.log(msg, ...optionalParams);
     let args = this.processingArgs(arguments);
     this.add('error', args);
   }
 
-  public debug(message?: any, ...optionalParams: any[]): void {
-    let msg = '[debug] ' + (_.isString(message) ? message : JSON.stringify(message));
-    if (isDevMode()) console.log(msg, ...optionalParams);
+  public debug(message?, ...optionalParams): void {
+    let msg =
+      '[debug] ' + (_.isString(message) ? message : JSON.stringify(message));
+    if (isDevMode()) this.log(msg, ...optionalParams);
     let args = this.processingArgs(arguments);
     this.add('debug', args);
   }
 
-  public info(message?: any, ...optionalParams: any[]): void {
-    let msg = '[info] ' + (_.isString(message) ? message : JSON.stringify(message));
-    if (isDevMode()) console.log(msg, ...optionalParams);
+  public info(message?, ...optionalParams): void {
+    let msg =
+      '[info] ' + (_.isString(message) ? message : JSON.stringify(message));
+    if (isDevMode()) this.log(msg, ...optionalParams);
     let args = this.processingArgs(arguments);
     this.add('info', args);
   }
 
-  public warn(message?: any, ...optionalParams: any[]): void {
-    let msg = '[warn] ' + (_.isString(message) ? message : JSON.stringify(message));
-    if (isDevMode()) console.log(msg, ...optionalParams);
+  public warn(message?, ...optionalParams): void {
+    let msg =
+      '[warn] ' + (_.isString(message) ? message : JSON.stringify(message));
+    if (isDevMode()) this.log(msg, ...optionalParams);
     let args = this.processingArgs(arguments);
     this.add('warn', args);
   }
 
-  public getLevels(): any {
+  public getLevels() {
     return this.levels;
   }
 
-  public getWeight(weight): any {
+  public getWeight(weight) {
     return _.find(this.levels, l => {
       return l.weight == weight;
     });
   }
 
-  public getDefaultWeight(): any {
+  public getDefaultWeight() {
     return _.find(this.levels, l => {
-      return l.default;
+      return l.def;
     });
   }
 
-  public add(level, msg): any {
+  public add(level, msg) {
     msg = msg.replace('/xpriv.*/', '[...]');
     msg = msg.replace('/walletPrivKey.*/', 'walletPrivKey:[...]');
     this.logs.push({
@@ -83,7 +87,7 @@ export class Logger {
    * Returns logs of <= to filteredWeight
    * @param {number} filteredWeight Weight (1-4) to use when filtering logs. optional
    */
-  public get(filterWeight?: number): any {
+  public get(filterWeight?: number) {
     let filteredLogs = this.logs;
     if (filterWeight != undefined) {
       filteredLogs = _.filter(this.logs, l => {
@@ -93,7 +97,7 @@ export class Logger {
     return filteredLogs;
   }
 
-  public processingArgs(argsValues: any) {
+  public processingArgs(argsValues) {
     var args = Array.prototype.slice.call(argsValues);
     args = args.map(v => {
       try {
@@ -103,12 +107,15 @@ export class Logger {
           v = v.message ? v.message : JSON.stringify(v);
         }
       } catch (e) {
-        // tslint:disable-next-line:no-console
         console.log('Error at log decorator:', e);
         v = 'undefined';
       }
       return v;
     });
     return args.join(' ');
+  }
+
+  public log(msg: string, ...optionalParams) {
+    console.log(msg, ...optionalParams);
   }
 }

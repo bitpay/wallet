@@ -1,17 +1,2 @@
 page-advanced {
-  .advanced {
-    background: white;
-    padding: 1rem 1rem 1.5rem 2rem;
-    &-toggle {
-      display: flex;
-      align-items: center;
-      padding-bottom: 2rem;
-      ion-label {
-        white-space: normal;
-      }
-    }
-    span {
-      color: color($colors, grey);
-    }
-  }
 }

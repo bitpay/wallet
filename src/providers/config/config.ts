@@ -2,16 +2,16 @@ import { Injectable } from '@angular/core';
 import { Logger } from '../../providers/logger/logger';
 import { PersistenceProvider } from '../persistence/persistence';
 
-import * as _ from "lodash";
+import * as _ from 'lodash';
 
-interface Config {
+export interface Config {
   limits: {
     totalCopayers: number;
     mPlusN: number;
   };
 
   wallet: {
-    useLegacyAddress: boolean,
+    useLegacyAddress: boolean;
     requiredCopayers: number;
     totalCopayers: number;
     spendUnconfirmed: boolean;
@@ -39,7 +39,7 @@ interface Config {
     };
     copay: {
       url: string;
-    }
+    };
   };
 
   rateApp: {
@@ -66,12 +66,12 @@ interface Config {
   };
 
   showIntegration: {
-    coinbase: boolean,
-    glidera: boolean,
-    debitcard: boolean,
-    amazon: boolean,
-    mercadolibre: boolean,
-    shapeshift: boolean
+    coinbase: boolean;
+    glidera: boolean;
+    debitcard: boolean;
+    amazon: boolean;
+    mercadolibre: boolean;
+    shapeshift: boolean;
   };
 
   rates: {
@@ -93,6 +93,12 @@ interface Config {
     email: string;
   };
 
+  emailFor?: any;
+  bwsFor?: any;
+  aliasFor?: any;
+  colorFor?: any;
+  touchIdFor?: any;
+
   log: {
     weight: number;
   };
@@ -100,8 +106,8 @@ interface Config {
   blockExplorerUrl: {
     btc: string;
     bch: string;
-  }
-};
+  };
+}
 
 const configDefault: Config = {
   // wallet limits
@@ -146,12 +152,14 @@ const configDefault: Config = {
 
   rateApp: {
     bitpay: {
-      ios: 'http://itunes.apple.com/WebObjects/MZStore.woa/wa/viewContentsUserReviews?id=1149581638&pageNumber=0&sortOrdering=2&type=Purple+Software&mt=8',
-      android: 'https://play.google.com/store/apps/details?id=com.bitpay.wallet',
+      ios:
+        'https://itunes.apple.com/app/bitpay-secure-bitcoin-wallet/id1149581638',
+      android:
+        'https://play.google.com/store/apps/details?id=com.bitpay.wallet',
       wp: ''
     },
     copay: {
-      ios: 'http://itunes.apple.com/WebObjects/MZStore.woa/wa/viewContentsUserReviews?id=951330296&pageNumber=0&sortOrdering=2&type=Purple+Software&mt=8',
+      ios: 'https://itunes.apple.com/app/copay-bitcoin-wallet/id951330296',
       android: 'https://play.google.com/store/apps/details?id=com.bitpay.copay',
       wp: ''
     }
@@ -202,14 +210,13 @@ const configDefault: Config = {
 
   blockExplorerUrl: {
     btc: 'insight.bitpay.com',
-    bch: 'bch-insight.bitpay.com'
+    bch: 'bch-insight.bitpay.com/#'
   }
 };
 
 @Injectable()
 export class ConfigProvider {
   private configCache: Config;
-
 
   constructor(
     private logger: Logger,
@@ -220,25 +227,28 @@ export class ConfigProvider {
 
   public load() {
     return new Promise((resolve, reject) => {
-      this.persistence.getConfig().then((config: Config) => {
-        if (!_.isEmpty(config)) {
-          this.configCache = _.clone(config);
-          this.backwardCompatibility();
-        } else {
-          this.configCache = _.clone(configDefault);
-        }
-        resolve();
-      }).catch((err) => {
-        this.logger.error(err);
-        reject();
-      });
+      this.persistence
+        .getConfig()
+        .then((config: Config) => {
+          if (!_.isEmpty(config)) {
+            this.configCache = _.clone(config);
+            this.backwardCompatibility();
+          } else {
+            this.configCache = _.clone(configDefault);
+          }
+          resolve();
+        })
+        .catch(err => {
+          this.logger.error('Error Loading Config');
+          reject(err);
+        });
     });
   }
 
   /**
    * @param newOpts object or string (JSON)
    */
-  public set(newOpts: any) {
+  public set(newOpts) {
     let config = _.cloneDeep(configDefault);
 
     if (_.isString(newOpts)) {
@@ -268,7 +278,8 @@ export class ConfigProvider {
       this.configCache.wallet = configDefault.wallet;
     }
     if (!this.configCache.wallet.settings.unitCode) {
-      this.configCache.wallet.settings.unitCode = configDefault.wallet.settings.unitCode;
+      this.configCache.wallet.settings.unitCode =
+        configDefault.wallet.settings.unitCode;
     }
 
     if (!this.configCache.showIntegration) {
@@ -279,16 +290,20 @@ export class ConfigProvider {
       this.configCache.recentTransactions = configDefault.recentTransactions;
     }
     if (!this.configCache.pushNotificationsEnabled) {
-      this.configCache.pushNotificationsEnabled = configDefault.pushNotificationsEnabled;
+      this.configCache.pushNotificationsEnabled =
+        configDefault.pushNotificationsEnabled;
     }
 
     if (this.configCache.wallet.settings.unitCode == 'bit') {
       // Convert to BTC. Bits will be disabled
-      this.configCache.wallet.settings.unitName = configDefault.wallet.settings.unitName;
-      this.configCache.wallet.settings.unitToSatoshi = configDefault.wallet.settings.unitToSatoshi;
-      this.configCache.wallet.settings.unitDecimals = configDefault.wallet.settings.unitDecimals;
-      this.configCache.wallet.settings.unitCode = configDefault.wallet.settings.unitCode;
+      this.configCache.wallet.settings.unitName =
+        configDefault.wallet.settings.unitName;
+      this.configCache.wallet.settings.unitToSatoshi =
+        configDefault.wallet.settings.unitToSatoshi;
+      this.configCache.wallet.settings.unitDecimals =
+        configDefault.wallet.settings.unitDecimals;
+      this.configCache.wallet.settings.unitCode =
+        configDefault.wallet.settings.unitCode;
     }
   }
-
 }

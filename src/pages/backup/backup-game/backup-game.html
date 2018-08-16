@@ -1,16 +1,14 @@
 <ion-header>
-
   <ion-navbar>
     <ion-title>{{'Backup' | translate}}</ion-title>
   </ion-navbar>
-
 </ion-header>
 
 
 <ion-content no-bounce>
   <div *ngIf="deleted">
     <h1 class="deleted-title" translate>Wallet recovery phrase not available</h1>
-    <ion-item-divider text-wrap>
+    <ion-item-divider>
       {{'You can still export it from Advanced &gt; Export.' |translate}}
       <span *ngIf="wallet.coin == 'bch'" translate>
         Note: if this BCH wallet was duplicated from a BTC wallet, they share the same recovery phrase.
@@ -23,7 +21,7 @@
       <div class="slide-container" *ngIf="mnemonicWords && mnemonicWords[0] || !credentialsEncrypted">
         <div>
           <div class="slide-title" translate>Please carefully write down this phrase.</div>
-          <div class="phrase-container" copy-to-clipboard="{{ copyRecoveryPhrase() }}">
+          <div class="phrase-container" copy-to-clipboard="{{ wallet.network == 'testnet' ? keys?.mnemonic : null }}">
             <div class="phrase">
               <span *ngFor="let word of mnemonicWords">
                 <span>{{word}}</span>
@@ -32,12 +30,12 @@
             </div>
           </div>
         </div>
-        <div class="bottom-absolute">
-          <div translate class="footer-text">We will confirm on the next screen.</div>
-          <button *ngIf="currentIndex == 0" ion-button class="button-standard" [disabled]="credentialsEncrypted || error" (click)="slideNext(true)">
-            {{'I have written it down' | translate}}
-          </button>
-        </div>
+      </div>
+      <div class="bottom-absolute">
+        <div translate class="footer-text">We will confirm on the next screen.</div>
+        <button *ngIf="currentIndex == 0" ion-button class="button-standard" [disabled]="credentialsEncrypted || error" (click)="slideNext(true)">
+          {{'I have written it down' | translate}}
+        </button>
       </div>
     </ion-slide>
 
@@ -51,13 +49,13 @@
             </div>
           </div>
         </div>
-        <div class="bottom">
-          <div *ngIf="!selectComplete">
-            <ion-item-divider>{{'Please tap each word in the correct order.' | translate}}</ion-item-divider>
-            <div class="words">
-              <button ion-button *ngFor="let shuffledWord of shuffledMnemonicWords; let i = index" (click)="addButton(i, shuffledWord)" [disabled]="shuffledWord.selected">{{shuffledWord.word}}
-              </button>
-            </div>
+      </div>
+      <div class="bottom">
+        <div *ngIf="!selectComplete">
+          <ion-item-divider>{{'Please tap each word in the correct order.' | translate}}</ion-item-divider>
+          <div class="words">
+            <button ion-button *ngFor="let shuffledWord of shuffledMnemonicWords; let i = index" (click)="addButton(i, shuffledWord)" [disabled]="shuffledWord.selected">{{shuffledWord.word}}
+            </button>
           </div>
         </div>
       </div>
@@ -74,12 +72,12 @@
 
     <ion-slide *ngIf="wallet.mnemonicHasPassphrase">
       <div translate>Enter your password</div>
-      <ion-item-divider text-wrap>{{'In order to verify your wallet backup, please type your password.' | translate}}</ion-item-divider>
+      <ion-item-divider>{{'In order to verify your wallet backup, please type your password.' | translate}}</ion-item-divider>
       <ion-item>
         <ion-label stacked translate>Password</ion-label>
         <ion-input type="password" id="password" [(ngModel)]="password" autocapitalize="off" spellcheck="false"></ion-input>
       </ion-item>
-      <ion-item-divider text-wrap class="assertive">
+      <ion-item-divider class="assertive">
         {{'This recovery phrase was created with a password. To recover this wallet both the recovery phrase and password are needed.' | translate}}
       </ion-item-divider>
 

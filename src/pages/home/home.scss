@@ -1,5 +1,8 @@
 page-home {
   background: $toolbar-background;
+  ion-content .fixed-content {
+    background: $toolbar-background;
+  }
   .home-logo {
     height: 24px;
     position: relative;
@@ -13,12 +16,17 @@ page-home {
     .title {
       font-weight: 500;
       font-size: 2rem;
+      color: color($colors, grey);
     }
     .subtitle {
       padding: 10px;
     }
     .check-icon {
       margin-top: -40px;
+    }
+    .announcement-logo {
+      width: 200px;
+      margin: 10px auto;
     }
   }
   .title {
@@ -31,13 +39,35 @@ page-home {
   .error {
     color: color($colors, danger);
   }
-  .no-wallets {
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
+
+  .wallet-ready {
+    padding: 0rem;
+    margin-bottom: 3rem;
+    .row {
+      justify-content: flex-end;
+      button {
+        font-size: 12px;
+      }
+    }
+  }
+
+  page-wallet-activity,
+  page-txp {
+    @media (max-width: 350px) {
+      .item-title {
+        font-size: 13px;
+      }
+      ion-note .date {
+        font-size: 11.5px;
+      }
+    }
+  }
+
+  page-txp:first-child,
+  page-wallet-activity:first-child {
+    & .item-ios {
+      border-top: 0.55px solid #f4f4f4;
+    }
   }
 
   page-txp:last-child,
@@ -48,17 +78,6 @@ page-home {
       border: 0 !important;
     }
   }
-  .header-extend {
-    background: $toolbar-background;
-    height: 222px;
-    position: absolute;
-    top: -100px;
-    width: 100%;
-    z-index: 0;
-  }
-  .wrapper {
-    background-color: $background-color;
-  }
   .card {
     z-index: 1;
     position: relative;
@@ -66,5 +85,50 @@ page-home {
   ion-refresher {
     height: 120px;
     background: $toolbar-background;
+    &-content {
+      margin-top: -25px;
+    }
+  }
+
+  .new-release {
+    padding-bottom: 0rem;
+    &-icon {
+      display: flex;
+      justify-content: center;
+      margin-top: 3rem;
+      img {
+        width: 4rem;
+        height: 4rem;
+      }
+    }
+    &-text {
+      text-align: center;
+      color: color($colors, dark);
+      margin-bottom: 1rem;
+    }
+    &-button {
+      padding: 0rem;
+      div {
+        cursor: pointer;
+        font-size: 16px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: color($colors, light);
+        color: color($colors, dark);
+        height: 5rem;
+      }
+    }
+  }
+
+  @include fix-ios-bg-scroll();
+
+  @media only screen and (device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3) {
+    ion-fab[right] {
+      right: env(safe-area-inset-bottom);
+    }
+    ion-fab[bottom] {
+      bottom: env(safe-area-inset-bottom);
+    }
   }
 }

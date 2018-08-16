@@ -25,7 +25,7 @@
         <li translate>The Wallet Service URL</li>
       </ul>
       <small>
-        <span translate>NOTE: To import a wallet from a 3rd party software, please go to Add Wallet &gt; Create Wallet, and specify the Recovery Phrase there.</span>
+        <span translate>NOTE: To import a wallet from a 3rd party software, please go to Add Wallet, Create Wallet, and specify the Recovery Phrase there.</span>
       </small>
     </ion-item>
   </ion-card>
@@ -33,8 +33,8 @@
   <form [formGroup]="importForm" (ngSubmit)="import()">
     <ion-item *ngIf="selectedTab == 'words'">
       <ion-label stacked>{{'Type the recovery phrase (usually 12 words)' | translate}}</ion-label>
-      <ion-textarea formControlName="words" [value]="importForm.value.words"></ion-textarea>
-      <ion-icon *ngIf="!fromOnboarding" class="scanner-icon" name="qr-scanner" item-right (click)="openScanner()"></ion-icon>
+      <ion-textarea formControlName="words" [value]="importForm.value.words" autocapitalize="none"></ion-textarea>
+      <ion-icon class="scanner-icon" name="qr-scanner" item-right (click)="openScanner()"></ion-icon>
     </ion-item>
 
     <div *ngIf="selectedTab == 'file'">
@@ -59,9 +59,9 @@
 
     <ion-item *ngIf="selectedTab != 'file'">
       <ion-label stacked>{{'Coin' | translate}}</ion-label>
-      <ion-select formControlName="coin" (ionChange)="testnetEnabled = false">
-        <ion-option value="btc">BTC</ion-option>
-        <ion-option value="bch">BCH</ion-option>
+      <ion-select okText="{{okText}}" cancelText="{{cancelText}}" placeholder="{{'Select a coin' | translate}}" formControlName="coin">
+        <ion-option value="btc">Bitcoin (BTC)</ion-option>
+        <ion-option value="bch">Bitcoin Cash (BCH)</ion-option>
       </ion-select>
     </ion-item>
 
@@ -70,36 +70,57 @@
     <ion-item (click)="toggleShowAdvOpts()">
       <ion-label *ngIf="!showAdvOpts">{{'Show advanced options' | translate}}</ion-label>
       <ion-label *ngIf="showAdvOpts">{{'Hide advanced options' | translate}}</ion-label>
+      <div item-end>
+        <ion-icon color="grey" *ngIf="!showAdvOpts" name="ios-arrow-down-outline"></ion-icon>
+        <ion-icon color="grey" *ngIf="showAdvOpts" name="ios-arrow-up-outline"></ion-icon>
+      </div>
     </ion-item>
 
     <div *ngIf="showAdvOpts">
       <div *ngIf="selectedTab == 'words'">
-        <ion-item>
+        <ion-item class="with-label">
           <ion-label stacked>{{'Password' | translate}}</ion-label>
-          <ion-input type="password" formControlName="mnemonicPassword"></ion-input>
+          <ion-input type="password" formControlName="passphrase"></ion-input>
         </ion-item>
+
+        <label-tip type="info" header="no-header">
+          <div label-tip-body translate>
+            This field is only for users who, in previous versions (it's not supported anymore), set a password to protect their recovery phrase. This field is not for your encrypt password.
+          </div>
+        </label-tip>
 
         <ion-item>
           <ion-label stacked>{{'Derivation path' | translate}}</ion-label>
           <ion-input type="text" formControlName="derivationPath" [value]="importForm.value.derivationPath"></ion-input>
         </ion-item>
 
-        <ion-item>
+        <ion-item [ngClass]="{'with-label': importForm.value.testnetEnabled}">
           <ion-label>Testnet</ion-label>
-          <ion-toggle color="primary" formControlName="testnet" [(ngModel)]="testnetEnabled" (ionChange)="setDerivationPath()"></ion-toggle>
+          <ion-toggle formControlName="testnetEnabled" (ionChange)="setDerivationPath()"></ion-toggle>
         </ion-item>
+
+        <label-tip *ngIf="importForm.value.testnetEnabled" type="warn">
+          <span label-tip-title translate>Testnet Wallet</span>
+          <div label-tip-body translate>
+            The testnet is an alternative Bitcoin block chain, to be used for testing. Testnet coins are separate and distinct from actual bitcoins, and do not have any value. This allows application developers or bitcoin testers to experiment, without having to use real bitcoins.
+          </div>
+        </label-tip>
+
       </div>
 
       <ion-item>
         <ion-label stacked>Wallet Service URL</ion-label>
         <ion-input type="text" formControlName="bwsURL"></ion-input>
       </ion-item>
+
     </div>
   </form>
 </ion-content>
 
 <ion-footer>
-  <button ion-button full class="button-footer" (click)="import()" [disabled]="!importForm.valid">
-    {{'Import wallet' | translate}}
-  </button>
+  <ion-toolbar>
+    <button ion-button full class="button-footer" (click)="import()" [disabled]="!importForm.valid">
+      {{'Import wallet' | translate}}
+    </button>
+  </ion-toolbar>
 </ion-footer>

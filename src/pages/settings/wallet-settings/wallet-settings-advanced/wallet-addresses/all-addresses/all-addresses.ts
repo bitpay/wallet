@@ -12,15 +12,16 @@ import { PlatformProvider } from '../../../../../../providers/platform/platform'
 
 @Component({
   selector: 'page-all-addresses',
-  templateUrl: 'all-addresses.html',
+  templateUrl: 'all-addresses.html'
 })
 export class AllAddressesPage {
-  public noBalance: any;
-  public withBalance: any;
+  public noBalance;
+  public withBalance;
   public coin: string;
   public isCordova: boolean;
+  public walletColor: string;
 
-  private allAddresses: any;
+  private allAddresses;
   private walletName: string;
 
   constructor(
@@ -33,6 +34,7 @@ export class AllAddressesPage {
     private platformProvider: PlatformProvider
   ) {
     this.walletName = this.navParams.data.walletName;
+    this.walletColor = this.navParams.data.walletColor;
     this.noBalance = this.navParams.data.noBalance;
     this.withBalance = this.navParams.data.withBalance;
     this.coin = this.navParams.data.coin;
@@ -44,7 +46,7 @@ export class AllAddressesPage {
     this.viewCtrl.dismiss();
   }
 
-  private formatDate(ts: number): any {
+  private formatDate(ts: number) {
     var dateObj = new Date(ts * 1000);
     if (!dateObj) {
       this.logger.debug('Error formating a date');
@@ -56,17 +58,30 @@ export class AllAddressesPage {
     return dateObj.toJSON();
   }
 
-  public sendByEmail(): any {
+  public sendByEmail() {
     this.onGoingProcessProvider.set('sendingByEmail');
     setTimeout(() => {
       this.onGoingProcessProvider.clear();
       let appName = this.appProvider.info.nameCase;
 
-      let body: string = appName + ' Wallet "' + this.walletName + '" Addresses\n  Only Main Addresses are  shown.\n\n';
-      body += "\n";
-      body += this.allAddresses.map((v) => {
-        return ('* ' + v.address + ' xpub' + v.path.substring(1) + ' ' + this.formatDate(v.createdOn));
-      }).join("\n");
+      let body: string =
+        appName +
+        ' Wallet "' +
+        this.walletName +
+        '" Addresses\n  Only Main Addresses are  shown.\n\n';
+      body += '\n';
+      body += this.allAddresses
+        .map(v => {
+          return (
+            '* ' +
+            v.address +
+            ' xpub' +
+            v.path.substring(1) +
+            ' ' +
+            this.formatDate(v.createdOn)
+          );
+        })
+        .join('\n');
 
       this.socialSharing.shareViaEmail(
         body,
@@ -74,9 +89,8 @@ export class AllAddressesPage {
         null, // TO: must be null or an array
         null, // CC: must be null or an array
         null, // BCC: must be null or an array
-        null, // FILES: can be null, a string, or an array
+        null // FILES: can be null, a string, or an array
       );
     });
   }
-
 }

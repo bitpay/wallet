@@ -1,32 +1,48 @@
 page-txp-details {
-  $item-border-color: #EFEFEF;
+  .margin-bottom {
+    .fixed-content,
+    .scroll-content {
+      margin-bottom: 90px;
+    }
+  }
+  $item-border-color: #efefef;
   $item-lateral-padding: 20px;
   .header-container {
+    padding: 20px 0px 20px 0px;
     .sending-label {
       display: flex;
       align-items: center;
-      img.sending-img {
-        margin-right: 2rem;
-        width: auto;
-        display: inherit;
-      }
       span {
         font-size: 1.8rem;
       }
     }
-    .amount-label {
-      padding-top: 1rem;
-      .amount {
-        font-size: 3.5rem;
-        .unit {
-          font-weight: 400;
-        }
+  }
+  .amount-label {
+    padding-top: 1rem;
+    .amount {
+      display: flex;
+      font-size: 3.5rem;
+      justify-content: space-between;
+      .unit {
+        font-weight: 400;
       }
-      .alternative {
-        margin-top: 0.5rem;
-        color: color($colors, light-grey);
+      img.sending-img {
+        width: auto;
+        height: 40px;
+      }
+      .amount-coin {
+        font-size: 1.5rem;
+        margin-top: 0.35rem;
+        margin-left: 0.8rem;
+      }
+      div {
+        display: flex;
       }
     }
+  }
+  .alternative {
+    margin-top: 0.5rem;
+    color: color($colors, light-grey);
   }
 
   .proposal-deletion {
@@ -38,14 +54,40 @@ page-txp-details {
       font-size: 12.5px;
     }
   }
+
+  .proposal-rejection {
+    background-color: color($colors, blank);
+    text-align: center;
+  }
+
   @mixin row-flex {
     display: flex;
     align-items: center;
     margin-top: 1rem;
   }
 
-  .container-to, .container-from {
-    .wallet, .payment-proposal-to {
+  .container-to,
+  .container-from {
+    .wallet,
+    .payment-proposal-to {
+      justify-content: space-between;
+      .text-address.ellipsis {
+        flex: 0 0 47px;
+        img {
+          margin: 12px 0 12px 12px;
+          vertical-align: middle;
+        }
+      }
+      .address-coppied {
+        display: flex;
+        align-items: center;
+        width: 100%;
+        border-radius: 3px;
+        background-color: rgb(248, 248, 248);
+      }
+      .address-width {
+        width: 92%;
+      }
       @include row-flex;
       .icon-wallet {
         margin-right: 0.8rem;
@@ -57,7 +99,7 @@ page-txp-details {
         }
       }
       .icon-bitcoin {
-        margin: 9px 2rem 9px 0;
+        margin-right: 0.8rem;
         width: 25px;
         height: 25px;
         padding: 2px 7px;
@@ -66,7 +108,7 @@ page-txp-details {
       }
     }
   }
-  
+
   .item-fee {
     .fee-title {
       margin-bottom: 5px;
@@ -86,7 +128,7 @@ page-txp-details {
   }
 
   .timeline-item {
-    background-color: color($colors, blank);;
+    background-color: color($colors, blank);
     border: 0;
     &:nth-child(2) {
       border-top: 1px solid $item-border-color;
@@ -111,13 +153,17 @@ page-txp-details {
       min-width: 40px;
       padding-right: 1rem;
       padding-left: 1rem;
-      margin-right: .5rem;
+      margin-right: 0.5rem;
       position: relative;
+      img,
+      .rejected {
+        z-index: 12;
+      }
 
       .line::before {
         content: '';
         background: #e8e8e8;
-        height: 42px;
+        height: 52px;
         width: 1px;
         position: absolute;
         left: 50%;
@@ -141,10 +187,10 @@ page-txp-details {
         z-index: 10;
 
         &.rejected {
-          background: #E15061;
-          border-color: #E15061;
-          color: #FFFFFF;
-          font-family: "Roboto-Bold";
+          background: #e15061;
+          border-color: #e15061;
+          color: #ffffff;
+          font-family: 'Roboto-Bold';
           font-size: 19px;
         }
       }
@@ -163,5 +209,20 @@ page-txp-details {
       }
     }
   }
+  .last-item {
+    margin-left: auto !important;
+    margin-right: 0px !important;
+  }
+  .output-info {
+    color: color($colors, dark);
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    &.output-note {
+      color: color($colors, grey);
+    }
+  }
+  .proposal-container {
+    border-left: 2px solid #ff9900;
+  }
 }
-

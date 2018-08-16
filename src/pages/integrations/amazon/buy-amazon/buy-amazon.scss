@@ -1,7 +1,9 @@
 page-buy-amazon {
+  font-family: 'AmazonEmberDisplay';
   ion-content {
-    .fixed-content, .scroll-content {
-      margin-bottom: 70px;
+    .fixed-content,
+    .scroll-content {
+      margin-bottom: 90px;
     }
   }
   .amazon-title {
@@ -19,7 +21,7 @@ page-buy-amazon {
     margin-bottom: 5rem;
     .amount {
       font-size: 38px;
-      margin-bottom: .5rem;
+      margin-bottom: 0.5rem;
     }
     .alternative {
       font-size: 12px;
@@ -44,8 +46,8 @@ page-buy-amazon {
       line-height: 16px;
     }
   }
-  
-  .last-item{
+
+  .last-item {
     margin-left: auto !important;
   }
 }

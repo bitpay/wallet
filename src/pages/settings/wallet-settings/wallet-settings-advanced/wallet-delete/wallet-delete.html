@@ -1,11 +1,10 @@
 <ion-header>
-  <ion-navbar>
+  <ion-navbar [navbar-bg]="wallet?.color">
     <ion-title>{{'Delete Wallet' | translate}}</ion-title>
   </ion-navbar>
 </ion-header>
 <ion-content>
-  <page-wallet-item [wallet]="wallet"></page-wallet-item>
-  <h1 class="assertive">Warning!</h1>
+  <h3 class="assertive" translate>Warning!</h3>
   <p translate>
     Permanently delete this wallet.
   </p>

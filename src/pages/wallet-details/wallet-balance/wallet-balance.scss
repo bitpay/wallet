@@ -7,7 +7,8 @@ page-wallet-balance {
     .title {
       display: flex;
       align-items: center;
-      img, >ion-icon {
+      img,
+      > ion-icon {
         height: 18px;
         width: 18px;
         margin-right: 1.5rem;
@@ -18,7 +19,8 @@ page-wallet-balance {
       .available {
         color: color($colors, success);
       }
-      .confirming, .locked {
+      .confirming,
+      .locked {
         color: color($colors, warning);
       }
       .fiat {
@@ -26,9 +28,5 @@ page-wallet-balance {
         font-size: 12.5px;
       }
     }
-  }
-  .description {
-    font-size: 12.5px;
-    color: color($colors, grey);      
   }
 }

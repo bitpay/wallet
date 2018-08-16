@@ -1,19 +1,18 @@
 import { Component } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { AlertController, Events, ModalController, NavController } from 'ionic-angular';
+import { Events, NavController } from 'ionic-angular';
 import { Logger } from '../../providers/logger/logger';
 
 // Native
 import { SocialSharing } from '@ionic-native/social-sharing';
 
 // Pages
-import { BackupNeededModalPage } from '../backup/backup-needed-modal/backup-needed-modal';
 import { BackupWarningPage } from '../backup/backup-warning/backup-warning';
-
 import { AmountPage } from '../send/amount/amount';
-import { CopayersPage } from './../add/copayers/copayers';
 
 // Providers
+import { ActionSheetProvider } from '../../providers/action-sheet/action-sheet';
+import { AddressProvider } from '../../providers/address/address';
 import { BwcErrorProvider } from '../../providers/bwc-error/bwc-error';
 import { ExternalLinkProvider } from '../../providers/external-link/external-link';
 import { PlatformProvider } from '../../providers/platform/platform';
@@ -21,27 +20,29 @@ import { ProfileProvider } from '../../providers/profile/profile';
 import { WalletProvider } from '../../providers/wallet/wallet';
 
 import * as _ from 'lodash';
+import { Observable } from 'rxjs';
+import { WalletTabsChild } from '../wallet-tabs/wallet-tabs-child';
+import { WalletTabsProvider } from '../wallet-tabs/wallet-tabs.provider';
 
 @Component({
   selector: 'page-receive',
-  templateUrl: 'receive.html',
+  templateUrl: 'receive.html'
 })
-export class ReceivePage {
-
+export class ReceivePage extends WalletTabsChild {
   public protocolHandler: string;
   public address: string;
   public qrAddress: string;
-  public wallets: any[] = [];
-  public wallet: any;
+  public wallets = [];
+  public wallet;
   public showShareButton: boolean;
   public loading: boolean;
-  public isOpenSelector: boolean;
+  public playAnimation: boolean;
 
   constructor(
-    private navCtrl: NavController,
-    private alertCtrl: AlertController,
+    private actionSheetProvider: ActionSheetProvider,
+    navCtrl: NavController,
     private logger: Logger,
-    private profileProvider: ProfileProvider,
+    profileProvider: ProfileProvider,
     private walletProvider: WalletProvider,
     private platformProvider: PlatformProvider,
     private events: Events,
@@ -49,35 +50,18 @@ export class ReceivePage {
     private bwcErrorProvider: BwcErrorProvider,
     private translate: TranslateService,
     private externalLinkProvider: ExternalLinkProvider,
-    private modalCtrl: ModalController
+    private addressProvider: AddressProvider,
+    walletTabsProvider: WalletTabsProvider
   ) {
+    super(navCtrl, profileProvider, walletTabsProvider);
     this.showShareButton = this.platformProvider.isCordova;
   }
 
-  ionViewWillEnter() {
-    this.isOpenSelector = false;
-    this.wallets = this.profileProvider.getWallets();
-    this.onWalletSelect(this.checkSelectedWallet(this.wallet, this.wallets));
-    this.events.subscribe('bwsEvent', (walletId, type, n) => {
-      // Update current address
-      if (this.wallet && walletId == this.wallet.id && type == 'NewIncomingTx') this.setAddress(true);
+  ionViewDidLoad() {
+    this.setAddress();
+    this.events.subscribe('Wallet/setAddress', () => {
+      this.setAddress(true);
     });
-  }
-
-  private onWalletSelect(wallet: any): any {
-    this.wallet = wallet;
-    if (this.wallet) {
-      this.setAddress();
-    }
-  }
-
-  private checkSelectedWallet(wallet: any, wallets: any): any {
-    if (!wallet) return wallets[0];
-    let w = _.find(wallets, (w: any) => {
-      return w.id == wallet.id;
-    });
-    if (!w) return wallets[0];
-    return wallet;
   }
 
   public requestSpecificAmount(): void {
@@ -89,25 +73,43 @@ export class ReceivePage {
       color: this.wallet.color,
       coin: this.wallet.coin,
       nextPage: 'CustomAmountPage',
+      network: this.addressProvider.validateAddress(this.address).network
     });
   }
 
-  private setAddress(newAddr?: boolean): void {
+  private async setAddress(
+    newAddr?: boolean,
+    changingWallet?: boolean
+  ): Promise<void> {
+    this.loading =
+      newAddr || _.isEmpty(this.address) || changingWallet ? true : false;
 
-    this.loading = newAddr || _.isEmpty(this.address) ? true : false;
-
-    this.walletProvider.getAddress(this.wallet, newAddr).then((addr) => {
-      this.loading = false
-      this.address = this.walletProvider.getAddressView(this.wallet, addr);
-      this.updateQrAddress();
-    }).catch((err) => {
-      this.loading = false;
-      this.logger.warn(this.bwcErrorProvider.msg(err, 'Server Error'));
-    });
+    let addr: string = (await this.walletProvider
+      .getAddress(this.wallet, newAddr)
+      .catch(err => {
+        this.loading = false;
+        this.logger.warn(this.bwcErrorProvider.msg(err, 'Server Error'));
+      })) as string;
+    this.loading = false;
+    let address = await this.walletProvider.getAddressView(this.wallet, addr);
+    if (this.address && this.address != address) {
+      this.playAnimation = true;
+    }
+    this.updateQrAddress(address, newAddr);
   }
 
-  private updateQrAddress(): void {
-    this.qrAddress = this.walletProvider.getProtoAddress(this.wallet, this.address);
+  private async updateQrAddress(address?, newAddr?: boolean): Promise<void> {
+    let qrAddress = await this.walletProvider.getProtoAddress(
+      this.wallet,
+      address
+    );
+    if (newAddr) {
+      await Observable.timer(400).toPromise();
+    }
+    this.address = address;
+    this.qrAddress = qrAddress;
+    await Observable.timer(200).toPromise();
+    this.playAnimation = false;
   }
 
   public shareAddress(): void {
@@ -115,37 +117,53 @@ export class ReceivePage {
     this.socialSharing.share(this.address);
   }
 
-  public showWallets(): void {
-    this.isOpenSelector = true;
-    let id = this.wallet ? this.wallet.credentials.walletId : null;
-    this.events.publish('showWalletsSelectorEvent', this.wallets, id);
-    this.events.subscribe('selectWalletEvent', (wallet: any) => {
-      if (!_.isEmpty(wallet)) this.onWalletSelect(wallet);
-      this.events.unsubscribe('selectWalletEvent');
-      this.isOpenSelector = false;
-    });
-  }
-
-  public goCopayers(): void {
-    this.navCtrl.push(CopayersPage, { walletId: this.wallet.credentials.walletId });
-  };
-
   public goToBackup(): void {
-    let BackupWarningModal = this.modalCtrl.create(BackupNeededModalPage, {}, { showBackdrop: true, enableBackdropDismiss: false });
-    BackupWarningModal.present({ animate: false });
-    BackupWarningModal.onDidDismiss((goToBackupPage) => {
-      if (goToBackupPage) this.navCtrl.push(BackupWarningPage, { walletId: this.wallet.credentials.walletId });
+    this.navCtrl.push(BackupWarningPage, {
+      walletId: this.wallet.credentials.walletId
     });
   }
 
   public openWikiBackupNeeded(): void {
-    let url = 'https://support.bitpay.com/hc/en-us/articles/115002989283-Why-don-t-I-have-an-online-account-for-my-BitPay-wallet-';
+    let url =
+      'https://support.bitpay.com/hc/en-us/articles/115002989283-Why-don-t-I-have-an-online-account-for-my-BitPay-wallet-';
     let optIn = true;
     let title = null;
     let message = this.translate.instant('Read more in our Wiki');
     let okText = this.translate.instant('Open');
     let cancelText = this.translate.instant('Go Back');
-    this.externalLinkProvider.open(url, optIn, title, message, okText, cancelText);
+    this.externalLinkProvider.open(
+      url,
+      optIn,
+      title,
+      message,
+      okText,
+      cancelText
+    );
   }
 
+  public showMoreOptions(): void {
+    const showShare =
+      this.showShareButton &&
+      this.wallet &&
+      this.wallet.isComplete() &&
+      !this.wallet.needsBackup;
+    const optionsSheet = this.actionSheetProvider.createOptionsSheet(
+      'address-options',
+      { showShare }
+    );
+    optionsSheet.present();
+
+    optionsSheet.onDidDismiss(option => {
+      if (option == 'request-amount') this.requestSpecificAmount();
+      if (option == 'share-address') this.shareAddress();
+    });
+  }
+
+  public showFullAddr(): void {
+    const infoSheet = this.actionSheetProvider.createInfoSheet(
+      'address-copied',
+      { address: this.address, coin: this.wallet.coin }
+    );
+    infoSheet.present();
+  }
 }

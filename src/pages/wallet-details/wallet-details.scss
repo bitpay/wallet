@@ -1,22 +1,20 @@
 page-wallet-details {
-  .scroll-content {
-    margin-top: 0 !important;
-  }
-  ion-header, .toolbar-background {
-    background-color: initial !important;
-    // background-color: rgba(0,0,0,0) !important;
-
+  ion-header,
+  .toolbar-background {
+    background-color: rgba(0, 0, 0, 0) !important;
     &:after {
-      height: 0  !important;
-    } 
+      height: 0 !important;
+    }
   }
-  
+  .search-icon {
+    font-size: 2.5rem;
+  }
   .balance-card {
     background: color($colors, primary);
     overflow: hidden;
   }
   .balance-header {
-    margin-top: 44px;
+    margin-top: 15px;
     height: 12rem;
     color: color($colors, light);
     text-align: center;
@@ -64,7 +62,52 @@ page-wallet-details {
       font-weight: 500;
     }
   }
+  .history-wrapper {
+    margin-top: 1.3rem;
+  }
   .tx-history {
+    .tx-history-header {
+      &--large {
+        &.item {
+          margin-bottom: 3px;
+          ion-label {
+            font-size: 15px;
+          }
+        }
+      }
+      &.item {
+        min-height: 26px;
+        ion-label {
+          margin: 0;
+          font-size: 14px;
+        }
+        .item-inner {
+          padding: 0 !important;
+        }
+      }
+    }
+    .item-wrapper {
+      &:last-child {
+        .item-inner {
+          border-bottom: 0;
+        }
+      }
+    }
+    .item {
+      font-size: 16px;
+      padding-left: 19px;
+
+      .item-icon {
+        margin-right: 15px;
+      }
+
+      .item-inner {
+        background-image: none;
+        padding: 11px 10px 11px 0;
+        margin-left: 3px;
+        border-bottom: 1px solid color($colors, light);
+      }
+    }
     img {
       width: 35px;
     }
@@ -81,7 +124,8 @@ page-wallet-details {
       }
     }
     .date {
-      font-size: 12.5px;
+      font-size: 14px;
+      margin-top: 8px;
     }
   }
 
@@ -97,11 +141,14 @@ page-wallet-details {
   .wallet-info {
     font-weight: 400;
     color: color($colors, light);
+    display: block;
+    display: flex;
+    align-items: center;
     height: 3rem;
     padding: 0 5px;
     img {
       float: left;
-      margin-right: 4px;
+      margin-right: 3px;
     }
     .testnet {
       height: 2rem;
@@ -129,6 +176,11 @@ page-wallet-details {
       height: 3rem;
       width: 3rem;
     }
+    .encrypted {
+      height: 1.6rem;
+      width: 1.6rem;
+      margin-top: 5px;
+    }
     .wallet-type {
       display: block;
       float: left;
@@ -136,11 +188,18 @@ page-wallet-details {
       padding-top: 5px;
       font-size: 11px;
     }
+    .left-buttons {
+      flex-grow: 1;
+      padding-left: 2px;
+    }
+    .search-button {
+      padding: 0;
+      padding-bottom: 8px;
+    }
     ion-spinner {
-      float: right;
+      margin: 0;
       width: 20px;
       height: 20px;
-      margin: 5px 5px 0 0;
       * {
         stroke: color($colors, light);
       }
@@ -156,11 +215,73 @@ page-wallet-details {
     border: 1px solid #d7d7d7;
   }
 
+  .locked-balance.item {
+    .item-inner {
+      padding-bottom: 5px;
+      padding-top: 5px;
+    }
+  }
   .total-locked-amount {
     color: color($colors, dark);
   }
-  .total-alt-locked-amount, .double-spend {
+  .total-alt-locked-amount,
+  .double-spend {
     text-align: end;
     font-size: 12.5px;
+  }
+
+  .zero-state {
+    .wrapper {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .history-wrapper {
+      align-items: center;
+      flex-grow: 1;
+      display: flex;
+      width: 100%;
+    }
+
+    .prompt-user {
+      margin-bottom: 2rem;
+    }
+  }
+}
+
+.wallet-details-header {
+  ion-title .toolbar-title {
+    font-weight: 500;
+  }
+
+  &:not(.no-subtitle) {
+    ion-title .toolbar-title {
+      font-weight: 100;
+      font-size: 16px;
+    }
+  }
+
+  ion-toolbar {
+    min-height: 0;
+    margin-top: -6px;
+
+    &.toolbar-md {
+      padding-top: 0;
+    }
+  }
+
+  &__balance,
+  &__balance-hidden,
+  &__subtitle {
+    text-align: center;
+    color: white;
+    padding-bottom: 10px;
+    font-size: 18px;
+    font-weight: 500;
+    ion-icon {
+      font-size: 16px;
+      font-weight: 100;
+      margin-left: 5px;
+    }
   }
 }

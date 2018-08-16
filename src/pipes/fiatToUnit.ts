@@ -8,18 +8,28 @@ import { RateProvider } from '../providers/rate/rate';
   pure: false
 })
 export class FiatToUnitPipe implements PipeTransform {
-  private walletSettings: any;
+  private walletSettings;
 
   constructor(
     private configProvider: ConfigProvider,
     private rateProvider: RateProvider,
-    private decimalPipe: DecimalPipe,
+    private decimalPipe: DecimalPipe
   ) {
     this.walletSettings = this.configProvider.get().wallet.settings;
   }
-  transform(amount: number, coin: string, alternative?: string): any {
-    alternative = alternative ? alternative : this.walletSettings.alternativeIsoCode;
-    let amount_ = this.rateProvider.fromFiat(amount, alternative, coin.toLowerCase());
-    return this.decimalPipe.transform(amount_ / 1e8 || 0, '1.2-8') + ' ' + coin.toUpperCase();
+  transform(amount: number, coin: string, alternative?: string) {
+    alternative = alternative
+      ? alternative
+      : this.walletSettings.alternativeIsoCode;
+    let amount_ = this.rateProvider.fromFiat(
+      amount,
+      alternative,
+      coin.toLowerCase()
+    );
+    return (
+      this.decimalPipe.transform(amount_ / 1e8 || 0, '1.2-8') +
+      ' ' +
+      coin.toUpperCase()
+    );
   }
 }

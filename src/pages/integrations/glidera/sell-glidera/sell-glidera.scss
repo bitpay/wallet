@@ -1,7 +1,8 @@
 page-sell-glidera {
   ion-content {
-    .fixed-content, .scroll-content {
-      margin-bottom: 70px;
+    .fixed-content,
+    .scroll-content {
+      margin-bottom: 90px;
     }
   }
   .selling-label {
@@ -39,7 +40,7 @@ page-sell-glidera {
     }
   }
 
-  .last-item{
+  .last-item {
     margin-left: auto !important;
   }
 }

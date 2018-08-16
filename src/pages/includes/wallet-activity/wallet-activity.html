@@ -1,8 +1,4 @@
-<button ion-item>
-
-  <ion-icon class="wallet-icon-container" item-start>
-    <div class="icon-color" [ngClass]="{'wallet-color-default': !notification.wallet.color}" [ngStyle]="{'background-color':notification.wallet.color}"></div>
-  </ion-icon>
+<button ion-item class="activity-container" [ngStyle]="{'border-left-color': notification.wallet.color}">
 
   <div class="item-title" *ngIf="notification.type == 'NewCopayer' && notification.wallet.n>1">
     <span translate>Copayer joined</span>
@@ -12,7 +8,7 @@
     <span translate>Wallet created</span>
   </div>
 
-  <div class="item-title" *ngIf="notification.type == 'NewOutgoingTx'">
+  <div class="item-title" *ngIf="notification.type == 'NewOutgoingTx'"> 
     <span translate>Payment Sent</span>
   </div>
 
@@ -40,11 +36,10 @@
     <b>{{notification.message}}</b>
   </div>
 
-  <div class="item-subtitle">
-    <span *ngIf="notification.creatorName">{{ notification.creatorName}}@</span>
+  <div class="item-subtitle"> 
+    <span *ngIf="notification.creatorName && notification.wallet.n != 1">{{notification.creatorName}}</span>
     <span>{{notification.wallet.name}}</span>
   </div>
-
   <ion-note item-right>
     <!-- {{notification.types}} -->
     <div class="amount">

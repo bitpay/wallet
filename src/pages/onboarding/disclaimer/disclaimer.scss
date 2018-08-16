@@ -20,7 +20,8 @@ page-disclaimer {
     cursor: pointer;
   }
   .checkbox-list {
-    ion-item, .agree-to-terms ion-item {
+    ion-item,
+    .agree-to-terms ion-item {
       font-size: 14px;
       background: none;
       color: #fff;
@@ -37,5 +38,9 @@ page-disclaimer {
   ion-footer {
     background-color: color($colors, secondary);
     box-shadow: 0 1px 10px rgba(0, 0, 0, 0.25);
+  }
+  a.externalLink {
+    cursor: pointer;
+    color: color($colors, light-grey);
   }
 }

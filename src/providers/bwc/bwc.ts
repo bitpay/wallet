@@ -9,32 +9,30 @@ export class BwcProvider {
   public buildTx = BWC.buildTx;
   public parseSecret = BWC.parseSecret;
   public Client = BWC;
-  constructor(
-    private logger: Logger
-  ) {
+  constructor(private logger: Logger) {
     this.logger.info('BwcProvider initialized.');
   }
-  public getBitcore(): any {
+  public getBitcore() {
     return BWC.Bitcore;
   }
 
-  public getBitcoreCash(): any {
+  public getBitcoreCash() {
     return BWC.BitcoreCash;
   }
 
-  public getErrors(): any {
+  public getErrors() {
     return BWC.errors;
   }
 
-  public getSJCL(): any {
+  public getSJCL() {
     return BWC.sjcl;
   }
 
-  public getUtils(): any {
+  public getUtils() {
     return BWC.Utils;
   }
 
-  public getClient(walletData?, opts?): any {
+  public getClient(walletData?, opts?) {
     opts = opts || {};
 
     // note opts use `bwsurl` all lowercase;
@@ -42,11 +40,9 @@ export class BwcProvider {
       baseUrl: opts.bwsurl || 'https://bws.bitpay.com/bws/api',
       verbose: opts.verbose,
       timeout: 100000,
-      transports: ['polling'],
+      transports: ['polling']
     });
-    if (walletData)
-      bwc.import(walletData, opts);
+    if (walletData) bwc.import(walletData, opts);
     return bwc;
   }
-
 }

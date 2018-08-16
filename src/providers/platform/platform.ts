@@ -14,11 +14,8 @@ export class PlatformProvider {
   public isMobile: boolean;
   public isDevel: boolean;
 
-  constructor(
-    private platform: Platform,
-    private logger: Logger
-  ) {
-    let ua: any = navigator ? navigator.userAgent : null;
+  constructor(private platform: Platform, private logger: Logger) {
+    let ua = navigator ? navigator.userAgent : null;
 
     if (!ua) {
       this.logger.info('Could not determine navigator. Using fixed string');
@@ -41,26 +38,32 @@ export class PlatformProvider {
 
   public getBrowserName(): string {
     let userAgent = window.navigator.userAgent;
-    let browsers = { chrome: /chrome/i, safari: /safari/i, firefox: /firefox/i, ie: /internet explorer/i };
+    let browsers = {
+      chrome: /chrome/i,
+      safari: /safari/i,
+      firefox: /firefox/i,
+      ie: /internet explorer/i
+    };
 
     for (let key in browsers) {
       if (browsers[key].test(userAgent)) {
         return key;
       }
-    };
+    }
 
     return 'unknown';
   }
 
   public isNodeWebkit(): boolean {
-    return false;
-    // TODO: Disabled NW.js
-    /* 
-    try {
-      return (typeof require('nw.gui') !== "undefined");
-    } catch (e) {
-      return false;
+    let isNode =
+      typeof process !== 'undefined' && typeof require !== 'undefined';
+    if (isNode) {
+      try {
+        return typeof (window as any).require('nw.gui') !== 'undefined';
+      } catch (e) {
+        return false;
+      }
     }
-    */
+    return false;
   }
 }

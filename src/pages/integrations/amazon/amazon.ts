@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { ModalController, NavController, NavParams } from 'ionic-angular';
 import * as _ from 'lodash';
-import { Logger } from '../../../providers/logger/logger';
 
 // Pages
 import { AmountPage } from '../../send/amount/amount';
@@ -10,22 +9,28 @@ import { AmazonCardDetailsPage } from './amazon-card-details/amazon-card-details
 // Providers
 import { AmazonProvider } from '../../../providers/amazon/amazon';
 import { ExternalLinkProvider } from '../../../providers/external-link/external-link';
+import { Logger } from '../../../providers/logger/logger';
+import { OnGoingProcessProvider } from '../../../providers/on-going-process/on-going-process';
 import { PopupProvider } from '../../../providers/popup/popup';
 import { TimeProvider } from '../../../providers/time/time';
+import { GiftCardNewData } from '../gift-cards';
 
 @Component({
   selector: 'page-amazon',
-  templateUrl: 'amazon.html',
+  templateUrl: 'amazon.html'
 })
 export class AmazonPage {
-
   public network: string;
-  public giftCards: any;
+  public giftCards;
+  public country: string;
+  public pageTitle: string;
+  public updatingPending;
+  public card;
+  public invoiceId: string;
+  public currency: string;
+  public onlyIntegers: boolean;
 
   private updateGiftCard: boolean;
-  public updatingPending: any;
-  public card: any;
-  public invoiceId: string;
 
   constructor(
     private amazonProvider: AmazonProvider,
@@ -35,138 +40,156 @@ export class AmazonPage {
     private navCtrl: NavController,
     private navParams: NavParams,
     private popupProvider: PopupProvider,
+    private onGoingProcessProvider: OnGoingProcessProvider,
     private timeProvider: TimeProvider
   ) {
-  }
-
-  ionViewDidLoad() {
-    this.logger.info('ionViewDidLoad AmazonPage');
     this.network = this.amazonProvider.getNetwork();
-    this.initAmazon().then(() => {
-      if (this.giftCards) {
-        this.updatePendingGiftCards();
-      }
-    });
+    this.invoiceId = this.navParams.data.invoiceId;
   }
 
   ionViewWillEnter() {
-    if (this.giftCards) {
-      this.invoiceId = this.navParams.data.invoiceId;
-      this.updateGiftCards().then(() => {
-        if (this.invoiceId) {
-          let card = _.find(this.giftCards, {
-            invoiceId: this.invoiceId
-          });
-          if (_.isEmpty(card)) {
-            this.popupProvider.ionicAlert(null, 'Card not found');
-            return;
-          }
-          this.updateGiftCard = this.checkIfCardNeedsUpdate(card);
-          this.invoiceId = this.navParams.data.invoiceId = null;
-          this.openCardModal(card);
-        }
-      }).catch((err: any) => {
-        this.logger.warn(err);
-      });
-    }
+    this.initAmazon();
   }
 
-  private initAmazon(): Promise<any> {
-    return new Promise((resolve, reject) => {
-      this.amazonProvider.getPendingGiftCards((err: any, gcds: any) => {
-        if (err) this.logger.error(err);
-        this.giftCards = gcds;
-        return resolve();
-      });
+  private openGiftCardFromInvoiceId(): void {
+    if (!this.invoiceId) return;
+    let card = _.find(this.giftCards, {
+      invoiceId: this.invoiceId
     });
+    if (_.isEmpty(card)) {
+      this.popupProvider.ionicAlert(null, 'Card not found');
+      return;
+    }
+    this.updateGiftCard = this.checkIfCardNeedsUpdate(card);
+    this.invoiceId = this.navParams.data.invoiceId = null;
+    this.openCardModal(card);
   }
 
-  private checkIfCardNeedsUpdate(card: any) {
+  private async initAmazon(): Promise<any> {
+    if (!this.amazonProvider.currency) {
+      this.onGoingProcessProvider.set('');
+      await this.amazonProvider.setCurrencyByLocation();
+      this.onGoingProcessProvider.clear();
+    }
+    this.currency = this.amazonProvider.currency;
+    this.country = this.amazonProvider.country;
+    this.pageTitle = this.amazonProvider.pageTitle;
+    this.onlyIntegers = this.amazonProvider.onlyIntegers;
+    this.updateGiftCards()
+      .then(() => {
+        if (this.giftCards) {
+          this.openGiftCardFromInvoiceId();
+          this.updatePendingGiftCards();
+        }
+      })
+      .catch(err => {
+        this.logger.error(err);
+      });
+  }
+
+  private checkIfCardNeedsUpdate(card) {
     // Continues normal flow (update card)
     if (card.status == 'PENDING' || card.status == 'invalid') {
       return true;
     }
     // Check if card status FAILURE for 24 hours
-    if (card.status == 'FAILURE' && this.timeProvider.withinPastDay(card.date)) {
+    if (
+      card.status == 'FAILURE' &&
+      this.timeProvider.withinPastDay(card.date)
+    ) {
       return true;
     }
     // Success: do not update
     return false;
-  };
+  }
 
   private updateGiftCards(): Promise<any> {
     return new Promise((resolve, reject) => {
-      this.amazonProvider.getPendingGiftCards((err: any, gcds: any) => {
-        if (err) {
-          this.popupProvider.ionicAlert('Could not get gift cards', err);
-          return reject(err);
-        }
+      this.amazonProvider.getPendingGiftCards((err, gcds) => {
+        if (err) return reject(err);
         this.giftCards = gcds;
         return resolve();
       });
     });
   }
 
-  public updatePendingGiftCards = _.debounce(() => {
-    this.updatingPending = {};
-    this.updateGiftCards().then(() => {
-      let gcds = this.giftCards;
-      _.forEach(gcds, (dataFromStorage: any) => {
+  public updatePendingGiftCards = _.debounce(
+    () => {
+      this.updatingPending = {};
+      this.updateGiftCards()
+        .then(() => {
+          let gcds = this.giftCards;
+          _.forEach(gcds, dataFromStorage => {
+            this.updateGiftCard = this.checkIfCardNeedsUpdate(dataFromStorage);
 
-        this.updateGiftCard = this.checkIfCardNeedsUpdate(dataFromStorage);
+            if (this.updateGiftCard) {
+              this.logger.debug('Creating / Updating gift card');
+              this.updatingPending[dataFromStorage.invoiceId] = true;
 
-        if (this.updateGiftCard) {
-          this.logger.debug("Creating / Updating gift card");
-          this.updatingPending[dataFromStorage.invoiceId] = true;
+              this.amazonProvider.createGiftCard(
+                dataFromStorage,
+                (err, giftCard) => {
+                  this.updatingPending[dataFromStorage.invoiceId] = false;
+                  if (err) {
+                    this.logger.error('Error creating gift card:', err);
+                    giftCard = giftCard || {};
+                    giftCard['status'] = 'FAILURE';
+                  }
 
-          this.amazonProvider.createGiftCard(dataFromStorage, (err: any, giftCard: any) => {
+                  if (giftCard.status != 'PENDING') {
+                    let newData: Partial<GiftCardNewData> = {};
 
-            this.updatingPending[dataFromStorage.invoiceId] = false;
-            if (err) {
-              this.logger.error('Error creating gift card:', err);
-              giftCard = giftCard || {};
-              giftCard['status'] = 'FAILURE';
-            }
+                    _.merge(newData, dataFromStorage, giftCard);
 
-            if (giftCard.status != 'PENDING') {
-              let newData: any = {};
+                    if (newData.status == 'expired') {
+                      this.amazonProvider.savePendingGiftCard(
+                        newData,
+                        {
+                          remove: true
+                        },
+                        () => {
+                          this.updateGiftCards();
+                        }
+                      );
+                      return;
+                    }
 
-              _.merge(newData, dataFromStorage, giftCard);
-
-              if (newData.status == 'expired') {
-                this.amazonProvider.savePendingGiftCard(newData, {
-                  remove: true
-                }, (err: any) => {
-                  this.updateGiftCards();
-                });
-                return;
-              }
-
-              this.amazonProvider.savePendingGiftCard(newData, null, (err: any) => {
-                this.logger.debug("Amazon gift card updated");
-                this.updateGiftCards();
-              });
+                    this.amazonProvider.savePendingGiftCard(
+                      newData,
+                      null,
+                      () => {
+                        this.logger.debug('Amazon gift card updated');
+                        this.updateGiftCards();
+                      }
+                    );
+                  }
+                }
+              );
             }
           });
-        }
-      });
-    }).catch((err: any) => {
-      this.logger.error(err);
-    });
+        })
+        .catch(err => {
+          this.logger.error(err);
+        });
+    },
+    1000,
+    {
+      leading: true
+    }
+  );
 
-  }, 1000, {
-      'leading': true
-    });
-
-  public openCardModal(card: any): void {
+  public openCardModal(card): void {
     this.card = card;
 
-    let modal = this.modalCtrl.create(AmazonCardDetailsPage, { card: this.card, updateGiftCard: this.updateGiftCard });
+    let modal = this.modalCtrl.create(AmazonCardDetailsPage, {
+      card: this.card,
+      updateGiftCard: this.updateGiftCard
+    });
     modal.present();
 
     modal.onDidDismiss(() => {
       this.updatePendingGiftCards();
-    })
+    });
   }
 
   public openExternalLink(url: string) {
@@ -178,11 +201,11 @@ export class AmazonPage {
       case 'Amount':
         this.navCtrl.push(AmountPage, {
           nextPage: 'BuyAmazonPage',
-          currency: 'USD',
+          currency: this.currency,
           fixedUnit: true,
+          onlyIntegers: this.onlyIntegers
         });
         break;
     }
   }
-
 }

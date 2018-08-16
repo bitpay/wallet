@@ -9,11 +9,14 @@ export class PopupProvider {
     private alertCtrl: AlertController,
     private logger: Logger,
     private translate: TranslateService
-  ) {
-  }
+  ) {}
 
-  public ionicAlert(title: string, subTitle?: string, okText?: string): Promise<any> {
-    return new Promise((resolve, reject) => {
+  public ionicAlert(
+    title: string,
+    subTitle?: string,
+    okText?: string
+  ): Promise<any> {
+    return new Promise(resolve => {
       let alert = this.alertCtrl.create({
         title,
         subTitle,
@@ -30,10 +33,15 @@ export class PopupProvider {
       });
       alert.present();
     });
-  };
+  }
 
-  public ionicConfirm(title: string, message: string, okText?: string, cancelText?: string): Promise<any> {
-    return new Promise((resolve, reject) => {
+  public ionicConfirm(
+    title: string,
+    message: string,
+    okText?: string,
+    cancelText?: string
+  ): Promise<any> {
+    return new Promise(resolve => {
       let confirm = this.alertCtrl.create({
         title,
         message,
@@ -52,19 +60,26 @@ export class PopupProvider {
               resolve(true);
             }
           }
-        ]
+        ],
+        enableBackdropDismiss: false
       });
       confirm.present();
     });
-  };
+  }
 
-  public ionicPrompt(title: string, message: string, opts?: any, okText?: string, cancelText?: string): Promise<any> {
-    return new Promise((resolve, reject) => {
+  public ionicPrompt(
+    title: string,
+    message: string,
+    opts?,
+    okText?: string,
+    cancelText?: string
+  ): Promise<any> {
+    return new Promise(resolve => {
       let defaultText = opts && opts.defaultText ? opts.defaultText : null;
       let placeholder = opts && opts.placeholder ? opts.placeholder : null;
       let inputType = opts && opts.type ? opts.type : 'text';
-      let cssClass = opts.useDanger ? "alertDanger" : null;
-      let enableBackdropDismiss = !!opts.enableBackdropDismiss;
+      let cssClass = opts && opts.useDanger ? 'alertDanger' : null;
+      let enableBackdropDismiss = !!(opts && opts.enableBackdropDismiss);
 
       let prompt = this.alertCtrl.create({
         title,
@@ -76,12 +91,12 @@ export class PopupProvider {
             value: defaultText,
             placeholder,
             type: inputType
-          },
+          }
         ],
         buttons: [
           {
             text: cancelText ? cancelText : this.translate.instant('Cancel'),
-            handler: data => {
+            handler: () => {
               this.logger.info('Cancel clicked');
               resolve(null);
             }

@@ -6,11 +6,10 @@ import { ConfigProvider } from '../config/config';
 import { ProfileProvider } from '../profile/profile';
 import { WalletProvider } from '../wallet/wallet';
 
-import * as _ from "lodash";
+import * as _ from 'lodash';
 
 @Injectable()
 export class EmailNotificationsProvider {
-
   constructor(
     private configProvider: ConfigProvider,
     private profileProvider: ProfileProvider,
@@ -20,10 +19,9 @@ export class EmailNotificationsProvider {
     this.logger.info('EmailNotificationsProvider initialized');
   }
 
-  public updateEmail(opts: any) {
+  public updateEmail(opts) {
     opts = opts || {};
     if (!opts.email) return;
-
 
     this.configProvider.set({
       emailFor: null, // Backward compatibility
@@ -37,9 +35,9 @@ export class EmailNotificationsProvider {
       let wallets = this.profileProvider.getWallets();
       this.walletProvider.updateRemotePreferences(wallets);
     }, 1000);
-  };
+  }
 
-  public getEmailIfEnabled(config?: any) {
+  public getEmailIfEnabled(config?) {
     config = config ? config : this.configProvider.get();
 
     if (config.emailNotifications) {
@@ -58,13 +56,12 @@ export class EmailNotificationsProvider {
         return emails[i];
       }
     }
-  };
+  }
 
   public init() {
     let config = this.configProvider.get();
 
     if (config.emailNotifications && config.emailNotifications.enabled) {
-
       // If email already set
       if (config.emailNotifications.email) return;
 
@@ -75,6 +72,5 @@ export class EmailNotificationsProvider {
         email: currentEmail
       });
     }
-  };
-
+  }
 }

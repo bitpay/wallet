@@ -6,10 +6,11 @@ import { Logger } from '../../providers/logger/logger';
 
 @Injectable()
 export class RateProvider {
-  private rates: any;
-  private alternatives: any[];
-  private ratesBCH: any;
-  private ratesAvailable: boolean;
+  private rates;
+  private alternatives;
+  private ratesBCH;
+  private ratesBtcAvailable: boolean;
+  private ratesBchAvailable: boolean;
 
   private SAT_TO_BTC: number;
   private BTC_TO_SAT: number;
@@ -24,7 +25,8 @@ export class RateProvider {
     this.ratesBCH = {};
     this.SAT_TO_BTC = 1 / 1e8;
     this.BTC_TO_SAT = 1e8;
-    this.ratesAvailable = false;
+    this.ratesBtcAvailable = false;
+    this.ratesBchAvailable = false;
     this.updateRatesBtc();
     this.updateRatesBch();
   }
@@ -32,8 +34,8 @@ export class RateProvider {
   public updateRatesBtc(): Promise<any> {
     return new Promise((resolve, reject) => {
       this.getBTC()
-        .then((dataBTC: any) => {
-          _.each(dataBTC, (currency: any) => {
+        .then(dataBTC => {
+          _.each(dataBTC, currency => {
             this.rates[currency.code] = currency.rate;
             this.alternatives.push({
               name: currency.name,
@@ -41,10 +43,10 @@ export class RateProvider {
               rate: currency.rate
             });
           });
-          this.ratesAvailable = true;
+          this.ratesBtcAvailable = true;
           resolve();
         })
-        .catch((errorBTC: any) => {
+        .catch(errorBTC => {
           this.logger.error(errorBTC);
           reject(errorBTC);
         });
@@ -54,13 +56,14 @@ export class RateProvider {
   public updateRatesBch(): Promise<any> {
     return new Promise((resolve, reject) => {
       this.getBCH()
-        .then((dataBCH: any) => {
-          _.each(dataBCH, (currency: any) => {
+        .then(dataBCH => {
+          _.each(dataBCH, currency => {
             this.ratesBCH[currency.code] = currency.rate;
           });
+          this.ratesBchAvailable = true;
           resolve();
         })
-        .catch((errorBCH: any) => {
+        .catch(errorBCH => {
           this.logger.error(errorBCH);
           reject(errorBCH);
         });
@@ -68,16 +71,16 @@ export class RateProvider {
   }
 
   public getBTC(): Promise<any> {
-    return new Promise((resolve, reject) => {
-      this.http.get(this.rateServiceUrl).subscribe((data: any) => {
+    return new Promise(resolve => {
+      this.http.get(this.rateServiceUrl).subscribe(data => {
         resolve(data);
       });
     });
   }
 
   public getBCH(): Promise<any> {
-    return new Promise((resolve, reject) => {
-      this.http.get(this.bchRateServiceUrl).subscribe((data: any) => {
+    return new Promise(resolve => {
+      this.http.get(this.bchRateServiceUrl).subscribe(data => {
         resolve(data);
       });
     });
@@ -88,26 +91,36 @@ export class RateProvider {
     else return this.rates[code];
   }
 
-  public getAlternatives(): any[] {
+  public getAlternatives() {
     return this.alternatives;
   }
 
-  public isAvailable() {
-    return this.ratesAvailable;
+  public isBtcAvailable() {
+    return this.ratesBtcAvailable;
+  }
+
+  public isBchAvailable() {
+    return this.ratesBchAvailable;
   }
 
   public toFiat(satoshis: number, code: string, chain: string): number {
-    if (!this.isAvailable()) {
+    if (
+      (!this.isBtcAvailable() && chain == 'btc') ||
+      (!this.isBchAvailable() && chain == 'bch')
+    ) {
       return null;
     }
     return satoshis * this.SAT_TO_BTC * this.getRate(code, chain);
   }
 
   public fromFiat(amount: number, code: string, chain: string): number {
-    if (!this.isAvailable()) {
+    if (
+      (!this.isBtcAvailable() && chain == 'btc') ||
+      (!this.isBchAvailable() && chain == 'bch')
+    ) {
       return null;
     }
-    return amount / this.getRate(code, chain) * this.BTC_TO_SAT;
+    return (amount / this.getRate(code, chain)) * this.BTC_TO_SAT;
   }
 
   public listAlternatives(sort: boolean) {
@@ -118,20 +131,31 @@ export class RateProvider {
       };
     });
     if (sort) {
-      alternatives.sort((a: any, b: any) => {
+      alternatives.sort((a, b) => {
         return a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1;
       });
     }
     return _.uniqBy(alternatives, 'isoCode');
   }
 
-  public whenRatesAvailable(): Promise<any> {
-    return new Promise((resolve, reject) => {
-      if (this.ratesAvailable) resolve();
+  public whenRatesAvailable(chain: string): Promise<any> {
+    return new Promise(resolve => {
+      if (
+        (this.ratesBtcAvailable && chain == 'btc') ||
+        (this.ratesBchAvailable && chain == 'bch')
+      )
+        resolve();
       else {
-        this.updateRatesBtc().then(() => {
-          resolve();
-        });
+        if (chain == 'btc') {
+          this.updateRatesBtc().then(() => {
+            resolve();
+          });
+        }
+        if (chain == 'bch') {
+          this.updateRatesBch().then(() => {
+            resolve();
+          });
+        }
       }
     });
   }

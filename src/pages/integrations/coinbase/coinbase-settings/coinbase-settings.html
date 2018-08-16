@@ -52,7 +52,7 @@
     </ion-item>
   </ion-list>
 
-  <ion-list>
+  <ion-list *ngIf="coinbaseAccount">
     <ion-item-divider></ion-item-divider>
     <button ion-item (click)="revokeToken()">
       <span class="assertive">Log out</span>

@@ -10,10 +10,9 @@ import { PopupProvider } from '../../../providers/popup/popup';
 
 @Component({
   selector: 'page-choose-fee-level',
-  templateUrl: 'choose-fee-level.html',
+  templateUrl: 'choose-fee-level.html'
 })
 export class ChooseFeeLevelPage {
-
   private FEE_MULTIPLIER: number = 10;
   private FEE_MIN: number = 0;
   public maxFeeRecommended: number;
@@ -26,9 +25,9 @@ export class ChooseFeeLevelPage {
   public customFeePerKB: string;
   public feePerSatByte: string;
   public selectedFee: string;
-  public feeOpts: any[];
+  public feeOpts;
   public loadingFee: boolean;
-  public feeLevels: any;
+  public feeLevels;
   public coin: string;
   public avgConfirmationTime: number;
   public customSatPerByte: number;
@@ -37,6 +36,8 @@ export class ChooseFeeLevelPage {
   public showError: boolean;
   public showMaxWarning: boolean;
   public showMinWarning: boolean;
+  public okText: string;
+  public cancelText: string;
 
   constructor(
     private viewCtrl: ViewController,
@@ -45,36 +46,48 @@ export class ChooseFeeLevelPage {
     private feeProvider: FeeProvider,
     private translate: TranslateService
   ) {
+    this.okText = this.translate.instant('Ok');
+    this.cancelText = this.translate.instant('Cancel');
     // From parent controller
     this.network = this.viewCtrl.data.network;
     this.feeLevel = this.viewCtrl.data.feeLevel;
 
     // IF usingCustomFee
-    this.customFeePerKB = this.viewCtrl.data.customFeePerKB ? this.viewCtrl.data.customFeePerKB : null;
-    this.feePerSatByte = this.viewCtrl.data.feePerSatByte ? this.viewCtrl.data.feePerSatByte : null;
+    this.customFeePerKB = this.viewCtrl.data.customFeePerKB
+      ? this.viewCtrl.data.customFeePerKB
+      : null;
+    this.feePerSatByte = this.viewCtrl.data.feePerSatByte
+      ? this.viewCtrl.data.feePerSatByte
+      : null;
 
-    if (_.isEmpty(this.feeLevel)) this.showErrorAndClose(null, this.translate.instant('Fee level is not defined'));
+    if (_.isEmpty(this.feeLevel))
+      this.showErrorAndClose(
+        null,
+        this.translate.instant('Fee level is not defined')
+      );
     this.selectedFee = this.feeLevel;
 
-    this.feeOpts = Object.keys(this.feeProvider.feeOpts);
+    this.feeOpts = Object.keys(this.feeProvider.getFeeOpts());
     this.loadingFee = true;
-    this.feeProvider.getFeeLevels(this.coin).then((levels: any) => {
-      this.loadingFee = false;
-      if (_.isEmpty(levels)) {
-        this.showErrorAndClose(null, this.translate.instant('Could not get fee levels'));
+    this.feeProvider
+      .getFeeLevels(this.coin)
+      .then(levels => {
+        this.loadingFee = false;
+        if (_.isEmpty(levels)) {
+          this.showErrorAndClose(
+            null,
+            this.translate.instant('Could not get fee levels')
+          );
+          return;
+        }
+        this.feeLevels = levels;
+        this.updateFeeRate();
+      })
+      .catch(err => {
+        this.loadingFee = false;
+        this.showErrorAndClose(null, err);
         return;
-      }
-      this.feeLevels = levels;
-      this.updateFeeRate();
-    }).catch((err: any) => {
-      this.loadingFee = false;
-      this.showErrorAndClose(null, err);
-      return;
-    });
-  }
-
-  public close() {
-    this.viewCtrl.dismiss({ newFeeLevel: "Hola mundo" });
+      });
   }
 
   private showErrorAndClose(title: string, msg: string): void {
@@ -86,7 +99,7 @@ export class ChooseFeeLevelPage {
   }
 
   public updateFeeRate() {
-    let value: any = _.find(this.feeLevels.levels[this.network], (feeLevel: any) => {
+    let value = _.find(this.feeLevels.levels[this.network], feeLevel => {
       return feeLevel.level == this.feeLevel;
     });
 
@@ -111,19 +124,25 @@ export class ChooseFeeLevelPage {
     this.minFeeRecommended = this.getMinRecommended();
     this.minFeeAllowed = this.FEE_MIN;
     this.maxFeeAllowed = this.maxFeeRecommended * this.FEE_MULTIPLIER;
-    this.maxFee = this.maxFeeRecommended > this.maxFeeAllowed ? this.maxFeeRecommended : this.maxFeeAllowed;
-    this.minFee = this.minFeeRecommended < this.minFeeAllowed ? this.minFeeRecommended : this.minFeeAllowed;
+    this.maxFee =
+      this.maxFeeRecommended > this.maxFeeAllowed
+        ? this.maxFeeRecommended
+        : this.maxFeeAllowed;
+    this.minFee =
+      this.minFeeRecommended < this.minFeeAllowed
+        ? this.minFeeRecommended
+        : this.minFeeAllowed;
   }
 
   private getMinRecommended(): number {
-    let value: any = _.find(this.feeLevels.levels[this.network], (feeLevel: any) => {
+    let value = _.find(this.feeLevels.levels[this.network], feeLevel => {
       return feeLevel.level == 'superEconomy';
     });
     return parseInt((value.feePerKb / 1000).toFixed(), 10);
   }
 
   private getMaxRecommended(): number {
-    let value: any = _.find(this.feeLevels.levels[this.network], (feeLevel: any) => {
+    let value = _.find(this.feeLevels.levels[this.network], feeLevel => {
       return feeLevel.level == 'urgent';
     });
     return parseInt((value.feePerKb / 1000).toFixed(), 10);
@@ -139,8 +158,13 @@ export class ChooseFeeLevelPage {
   }
 
   public ok(): void {
-    this.customFeePerKB = this.customFeePerKB ? (this.customSatPerByte * 1000).toFixed() : null;
-    this.viewCtrl.dismiss({ newFeeLevel: this.feeLevel, customFeePerKB: this.customFeePerKB });
+    this.customFeePerKB = this.customFeePerKB
+      ? (this.customSatPerByte * 1000).toFixed()
+      : null;
+    this.viewCtrl.dismiss({
+      newFeeLevel: this.feeLevel,
+      customFeePerKB: this.customFeePerKB
+    });
   }
 
   public cancel(): void {
@@ -154,5 +178,4 @@ export class ChooseFeeLevelPage {
       this.updateFeeRate();
     }
   }
-
 }

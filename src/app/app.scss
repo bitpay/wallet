@@ -1,5 +1,4 @@
 // http://ionicframework.com/docs/theming/
-
 // App Global Sass
 // --------------------------------------------------
 // Put style rules here that you want to apply globally. These
@@ -13,19 +12,24 @@
 // To declare rules for a specific mode, create a child rule
 // for the .md, .ios, or .wp mode classes. The mode class is
 // automatically applied to the <body> element in the app.
-
-// Position
-// --------------------------------------------------
-
 body {
   line-height: 22px;
-  font-family: 'Roboto';
 }
 
+// Alert position
+// --------------------------------------------------
 ion-alert.alert-top {
   align-items: center;
 }
 
+// Text wrap
+// --------------------------------------------------
+ion-label {
+  white-space: normal;
+}
+
+// Buttons
+// --------------------------------------------------
 .bottom-absolute {
   width: 100%;
   position: absolute;
@@ -47,15 +51,16 @@ ion-alert.alert-top {
 // Hide border when refresh
 .has-refresher > .scroll-content {
   border-top: none !important;
-  background-image: linear-gradient(
-    to bottom,
-    $toolbar-background,
-    $toolbar-background 50%,
-    $background-color 50%,
-    $background-color 50%,
-    $background-color 50%
-  );
 }
+
+.scroll-content {
+  .wrapper {
+    background-color: $background-color;
+    min-height: 100%;
+    // min-height: 60%;
+  }
+}
+
 ion-spinner * {
   stroke: color($colors, light);
 }
@@ -66,11 +71,9 @@ ion-spinner * {
 
 // Item font size
 .item-title {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
   //  font-size: 1.4rem;
 }
+
 .item-subtitle {
   white-space: nowrap;
   overflow: hidden;
@@ -83,9 +86,37 @@ ion-spinner * {
   }
 }
 
+// Fixes IOS 10.3.1 icons
+.item-img {
+  display: flex;
+  align-items: center;
+}
+
 // Prevent the names of the tabs from disappearing
 .tabbar .tab-button .tab-button-text {
   display: block;
+}
+
+.tabbar {
+  .tabs-md &,
+  .tabs-ios & {
+    background: white;
+  }
+  justify-content: center;
+  padding-top: 5px;
+  transform: translate3d(0, 0, 0);
+  .tab-button {
+    max-width: 15vw;
+    min-width: 80px; // Prevent the names of the tabs from disappearing
+    .tab-button-text {
+      display: block;
+    }
+  }
+}
+
+// Remove border of icons when screen resolution is big
+.tab-button-icon {
+  overflow: unset;
 }
 
 // Remove the MD drop-shadow on app header
@@ -153,33 +184,27 @@ ion-spinner * {
 
 .box-notification {
   cursor: pointer;
-  padding: 10px 0;
-  border: none;
-  margin: 10px;
+  padding: 10px;
   text-align: center;
-  color: color($colors, light);
-  a {
-    display: block;
-    color: color($colors, light);
-  }
   .icon {
     vertical-align: middle;
     margin: 0 5px;
   }
-  &.no-margin {
-    margin: 0;
-  }
   &.success {
-    background-color: color($colors, success);
+    background-color: color($background-colors, success);
+    color: color($colors, success);
   }
-  &.notice {
-    background-color: color($colors, dark);
+  &.info {
+    background-color: color($background-colors, info);
+    color: color($colors, info);
   }
-  &.warn {
-    background-color: color($colors, warning);
+  &.warning {
+    background-color: color($background-colors, warning);
+    color: color($colors, warning);
   }
   &.error {
-    background-color: color($colors, danger);
+    background-color: color($background-colors, danger);
+    color: color($colors, danger);
   }
 }
 
@@ -190,17 +215,11 @@ ion-spinner * {
 }
 
 // Compatibility Ionic 1
-
 .light,
 a.light,
 .stable,
 a.stable {
   color: color($colors, light);
-}
-
-.positive,
-a.positive {
-  color: color($colors, secondary);
 }
 
 .calm,
@@ -215,7 +234,7 @@ a.positive {
 
 .energized,
 a.energized {
-  color: color($colors, primary);
+  color: color($colors, warning);
 }
 
 .assertive,
@@ -227,6 +246,7 @@ a.assertive {
 a.balanced {
   color: color($colors, success);
 }
+
 .royal,
 a.royal {
   color: color($colors, dark);
@@ -265,21 +285,16 @@ a.royal {
   display: block;
   border-radius: 3px;
   background-color: #ffffff;
-
   .item-divider {
     background-color: #ffffff;
     margin-bottom: 5px;
+    min-height: 48px;
   }
   .item-block {
-    padding: 5px 0 5px 24px;
+    padding: 5px 0 0px 24px;
   }
-  .item-title {
-    font-size: 18px;
-    font-weight: 500;
-  }
-  .item-subtitle {
-    font-size: 0.8em;
-    margin-top: 2px;
+  .input-wrapper {
+    padding-bottom: 4px;
   }
 }
 
@@ -302,10 +317,9 @@ ion-icon {
     background: currentColor;
     width: 2rem !important;
     height: 2rem !important;
-  }
-  // custom icons
-  &[class*='tab-home'] {
-    mask-image: url(../assets/img/tab-icons/ico-home.svg);
+  } // custom icons
+  &[class*='tab-activity'] {
+    mask-image: url(../assets/img/tab-icons/ico-activity.svg);
   }
   &[class*='tab-receive'] {
     mask-image: url(../assets/img/tab-icons/ico-receive.svg);
@@ -317,8 +331,8 @@ ion-icon {
   &[class*='tab-send'] {
     mask-image: url(../assets/img/tab-icons/ico-send.svg);
   }
-  &[class*='tab-settings'] {
-    mask-image: url(../assets/img/tab-icons/ico-settings.svg);
+  &[class*='tab-button-back'] {
+    mask-image: url(../assets/img/button-back.svg);
   }
 }
 
@@ -331,6 +345,14 @@ ion-icon {
   min-height: 57px;
   margin-top: 1.5rem;
   margin-bottom: 1.5rem;
+  border-radius: 5px;
+  box-shadow: none;
+  font-weight: 400;
+  font-size: 18px;
+}
+
+.button-default {
+  color: white;
 }
 
 .btn-transparent {
@@ -351,4 +373,99 @@ ion-icon {
 // https://github.com/ionic-team/ionic/pull/14241
 ion-alert .alert-message {
   overflow-y: auto;
+}
+
+.mdToastAfterHeader {
+  top: $toolbar-md-height;
+}
+
+.iosToastAfterHeader {
+  top: $toolbar-ios-height;
+}
+
+.hide-tabbar {
+  .tabbar {
+    display: none !important;
+  }
+  .fullscreen-tab {
+    .scroll-content {
+      margin-bottom: 0 !important;
+    }
+  }
+}
+
+.header-extend {
+  background: $toolbar-background;
+  height: 180px;
+  position: absolute;
+  top: -100px;
+  width: 100%;
+  z-index: 0;
+  display: flex;
+  justify-content: center;
+  .no-wallets {
+    position: absolute;
+    top: 60%;
+  }
+}
+
+button.modal-close-button {
+  font-size: 16px;
+  font-weight: 400;
+
+  ion-icon {
+    font-size: 26px;
+  }
+}
+
+.qr-container {
+  flex-grow: 1;
+  @include center;
+  background: linear-gradient(#ececec, white);
+  .qr-card {
+    border: 1px solid rgb(207, 207, 207);
+    border-radius: 7px;
+    transform: translateY(0);
+    margin: 0;
+    padding-bottom: 0;
+    width: 70%;
+    max-width: 293px;
+    box-shadow: none;
+    .aclass {
+      @include center;
+      padding: 5px;
+    }
+    .aclass > img {
+      filter: grayscale(100%);
+      height: 100%;
+      width: 100%;
+      opacity: 0.715;
+    }
+  }
+}
+
+.address-divider {
+  width: 1px;
+  height: 25px;
+  background-color: rgb(227, 227, 227);
+  display: inline-block;
+  margin-left: 6px;
+  margin-right: 12px;
+  vertical-align: middle;
+}
+
+// Add padding bottom when item has label
+ion-item.with-label.item {
+  padding-bottom: 10px;
+  &.item-ios,
+  &.item-md {
+    .item-inner {
+      border-bottom: 0;
+    }
+  }
+}
+
+// Remove arrowhead from label
+label-tip.warn.no-arrowhead:before {
+  display: none;
 }

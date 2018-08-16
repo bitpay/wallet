@@ -1,63 +1,52 @@
-<ion-header>
+<ion-header class="wallet-details-header">
   <ion-navbar>
     <ion-title>{{title | translate}}</ion-title>
   </ion-navbar>
 </ion-header>
 
-<ion-content no-bounce>
+<ion-content no-bounce #scrollArea>
   <ion-list *ngIf="btx">
     <ion-item>
       <div class="header-container">
         <div class="sending-label" *ngIf="btx.confirmations > 0">
-          <img class="sending-img" src="assets/img/tx-action/icon-sent.svg" width="40" *ngIf="btx.action === 'sent'">
-          <img class="sending-img" src="assets/img/tx-action/icon-received.svg" width="40" *ngIf="btx.action === 'received'">
-          <img class="sending-img" src="assets/img/tx-action/icon-moved.svg" width="40" *ngIf="btx.action === 'moved'">
           <span *ngIf="btx.action === 'sent'" translate>Sent</span>
           <span *ngIf="btx.action === 'received'" translate>Received</span>
           <span *ngIf="btx.action === 'moved'" translate>Moved</span>
         </div>
         <div class="sending-label" *ngIf="btx.confirmations === 0">
-          <img class="sending-img" src="assets/img/tx-action/icon-confirming.svg">
           <span *ngIf="btx.action == 'sent' || btx.action == 'moved'" translate>Sending</span>
           <span *ngIf="btx.action == 'received'" translate>Receiving</span>
         </div>
         <div class="amount-label">
-          <div class="amount">{{btx.amountValueStr}}
-            <span class="unit">{{btx.amountUnitStr}}</span>
-          </div>
-          <div class="alternative" (click)="showRate = !showRate">
-            <span *ngIf="!showRate">{{btx.alternativeAmountStr}}</span>
-            <span *ngIf="showRate">
-              <span *ngIf="!rate">...</span>
-              <span *ngIf="rate">
-                {{rate| currency:'':2}} {{alternativeIsoCode}} ({{rateDate | amDateFormat:'MM/DD/YYYY HH:mm a'}})
-              </span>
+          <div class="amount">
+            <div>
+              {{btx.amountValueStr}}
+              <span class="amount-coin">{{btx.amountUnitStr}}</span>
+            </div>
+            <span *ngIf="btx.confirmations > 0">
+              <img class="sending-img" src="assets/img/tx-action/icon-sent.svg" width="40" *ngIf="btx.action === 'sent'">
+              <img class="sending-img" src="assets/img/tx-action/icon-received.svg" width="40" *ngIf="btx.action === 'received'">
+              <img class="sending-img" src="assets/img/tx-action/icon-moved.svg" width="40" *ngIf="btx.action === 'moved'">
+            </span>
+            <span *ngIf="btx.confirmations === 0">
+              <img class="sending-img" src="assets/img/tx-action/icon-confirming.svg">
             </span>
           </div>
+          <div class="alternative">{{btx.alternativeAmountStr}}</div>
         </div>
       </div>
     </ion-item>
 
-    <ion-item class="low-fees" text-wrap *ngIf="btx.action == 'received' && btx.lowFees">
-      <img src="assets/img/icon-warning.png" width="20">
-      <ion-note>
-        <span translate>
-          This transaction could take a long time to confirm or could be dropped due to the low fees set by the sender
-        </span>
-      </ion-note>
-    </ion-item>
-
-    <ion-item class="low-fees" text-wrap *ngIf="btx.lowAmount">
-      <img src="assets/img/icon-warning.png" width="20">
-      <ion-note>
-        <span translate>
+    <label-tip class="low-fees" type="warn" *ngIf="btx.lowAmount">
+      <span label-tip-title translate>Amount Too Low To Spend</span>
+      <div label-tip-body translate>
         This transaction amount is too small compared to current Bitcoin network fees. Spending these funds will need a Bitcoin network fee cost comparable to the funds itself.
-        </span>
-      </ion-note>
-      <a (click)="readMore()" translate>Learn more</a>
-    </ion-item>
+        <br>
+        <a class="label-tip-link" (click)="readMore()" translate>Learn More</a>
+      </div>
+    </label-tip>
 
-    <ion-item class="item-fee" *ngIf="btx && btx.feeStr && btx.action != 'received'">
+    <ion-item class="with-label" *ngIf="btx && btx.feeStr && btx.action != 'received'">
       <div class="fee-title">
         {{'Fee' | translate}}
       </div>
@@ -70,16 +59,25 @@
       </ion-note>
     </ion-item>
 
-    <ion-item-divider></ion-item-divider>
+    <label-tip *ngIf="btx.action == 'received' && btx.lowFees" type="danger">
+      <span label-tip-title translate>Low Fee</span>
+      <div label-tip-body translate>
+        This transaction could take a long time to confirm or could be dropped due to the low fees set by the sender.
+      </div>
+    </label-tip>
 
     <ion-item *ngIf="btx.action === 'sent'" class="container-to">
       <span translate>To</span>
-      <div class="payment-to">
-        <img class="icon-bitcoin" *ngIf="!cardId" src="assets/img/icon-bitcoin-small.svg">
-        <img class="icon-bitcoin" *ngIf="cardId" src="assets/img/icon-card.svg" width="34">
-        <div copy-to-clipboard="{{ btx.outputs[0].address }}">
-          <span class="contact" *ngIf="!toName">{{ btx.outputs[0].address }}"</span>
-          <span *ngIf="toName">{{ toName }}</span>
+      <div class="payment-to address-coppied">
+        <div class="text-address ellipsis">
+          <img *ngIf="!cardId" src="assets/img/icon-bitcoin-small.svg" width="12">
+          <img *ngIf="cardId" src="assets/img/icon-card.svg" width="12" class="icon-bitcoin">
+          <span class="address-divider"></span>
+        </div>
+        <div class="ellipsis" copy-to-clipboard="{{ btx.addressTo ? btx.addressTo : btx.outputs[0].address }}">
+          <span *ngIf="!contactName && !btx.addressTo">{{ btx.outputs[0].address }}</span>
+          <span *ngIf="!contactName && btx.addressTo">{{ btx.addressTo }}</span>
+          <span *ngIf="contactName">{{ contactName }}</span>
         </div>
       </div>
     </ion-item>
@@ -125,13 +123,19 @@
       </ion-note>
     </ion-item>
 
-    <button ion-item (click)="showCommentPopup()">
-      <span translate>Memo</span>
-      <div class="item-memo" *ngIf="(btx.note && btx.note.body) || btx.message" text-wrap>
-        <ion-note *ngIf="btx.note && btx.note.body">{{btx.note.body}}</ion-note>
-        <ion-note *ngIf="(!btx.note || !btx.note.body) && btx.message">{{btx.message}}</ion-note>
+    <editable-item (valChange)="saveMemoInfo($event)" [value]="txMemo" [itemPlaceholder]="'Enter a transaction memo' | translate"
+      [scrollArea]="scrollArea">
+      <span item-label translate>Memo</span>
+    </editable-item>
+
+    <ion-item class="container-tx-id">
+      <span translate>Transaction ID</span>
+      <div class="tx-id">
+        <div class="ellipsis id" copy-to-clipboard="{{ btx.txid }}">
+          <span>{{ btx.txid }}</span>
+        </div>
       </div>
-    </button>
+    </ion-item>
 
     <ion-item *ngIf="txsUnsubscribedForNotifications">
       <ion-label>{{'Notify me if confirmed' | translate}}</ion-label>
@@ -152,7 +156,7 @@
             <div class="action">{{a.description}}</div>
             <div class="name">{{a.by}}</div>
           </div>
-          <ion-note>
+          <ion-note class="ellipsis">
             <time>{{ a.time * 1000 | amTimeAgo}}</time>
           </ion-note>
         </div>

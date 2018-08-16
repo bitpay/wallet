@@ -1,14 +1,14 @@
-import { Component, Input } from "@angular/core";
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'page-wallet-activity',
-  templateUrl: 'wallet-activity.html',
+  templateUrl: 'wallet-activity.html'
 })
 export class WalletActivityPage {
-  private _notification: any;
+  private _notification;
 
   @Input()
-  set notification(notification: any) {
+  set notification(notification) {
     this._notification = notification;
   }
 

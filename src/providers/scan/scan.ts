@@ -78,7 +78,7 @@ export class ScanProvider {
   /**
    * Immediately return known capabilities of the current platform.
    */
-  public getCapabilities(): any {
+  public getCapabilities() {
     return {
       isAvailable: this.isAvailable,
       hasPermission: this.hasPermission,
@@ -98,7 +98,7 @@ export class ScanProvider {
    * The `status` of QRScanner is returned to the callback.
    */
   public gentleInitialize(): Promise<any> {
-    return new Promise((resolve, reject) => {
+    return new Promise(resolve => {
       if (this.initializeStarted && !this.isDesktop) {
         this.qrScanner.getStatus().then(status => {
           this.completeInitialization(status);
@@ -139,11 +139,11 @@ export class ScanProvider {
   }
 
   public initialize(): Promise<any> {
-    return new Promise((resolve, reject) => {
+    return new Promise(resolve => {
       this.logger.debug('Initializing scanner...');
       this.qrScanner
         .prepare()
-        .then((status: any) => {
+        .then(status => {
           this.completeInitialization(status);
           return resolve();
         })
@@ -159,7 +159,7 @@ export class ScanProvider {
     });
   }
 
-  private completeInitialization(status: any): void {
+  private completeInitialization(status): void {
     this.checkCapabilities(status);
     this.initializeCompleted = true;
     this.events.publish('scannerServiceInitialized');
@@ -179,7 +179,7 @@ export class ScanProvider {
    * is complete.
    */
   public activate(): Promise<any> {
-    return new Promise((resolve, reject) => {
+    return new Promise(resolve => {
       this.logger.debug('Activating scanner...');
       this.qrScanner.show().then(status => {
         this.initializeCompleted = true;
@@ -192,11 +192,10 @@ export class ScanProvider {
    * Start a new scan.
    */
   public scan(): Promise<any> {
-    return new Promise((resolve, reject) => {
+    return new Promise(resolve => {
       this.logger.debug('Scanning...');
       let scanSub = this.qrScanner.scan().subscribe((text: string) => {
         this.logger.debug('Scanned something', text);
-        this.qrScanner.hide(); // hide camera preview
         scanSub.unsubscribe(); // stop scanning
         return resolve(text);
       });
@@ -254,23 +253,23 @@ export class ScanProvider {
       if (this.lightEnabled) {
         this.qrScanner
           .disableLight()
-          .then(resp => {
+          .then(() => {
             this.lightEnabled = false;
             return resolve(this.lightEnabled);
           })
           .catch(err => {
-            this.logger.warn('Error: ', err);
+            this.logger.error('Scan Provider Error (disableLight)', err);
             return reject(err);
           });
       } else {
         this.qrScanner
           .enableLight()
-          .then(resp => {
+          .then(() => {
             this.lightEnabled = true;
             return resolve(this.lightEnabled);
           })
           .catch(err => {
-            this.logger.warn('Error: ', err);
+            this.logger.error('Scan Provider Error (enableLight)', err);
             return reject(err);
           });
       }
@@ -290,23 +289,23 @@ export class ScanProvider {
       if (this.frontCameraEnabled) {
         this.qrScanner
           .useBackCamera()
-          .then(resp => {
+          .then(() => {
             this.frontCameraEnabled = false;
             return resolve(this.frontCameraEnabled);
           })
           .catch(err => {
-            this.logger.warn('Error: ', err);
+            this.logger.error('Scan Provider Error (useBackCamera)', err);
             return reject(err);
           });
       } else {
         this.qrScanner
           .useFrontCamera()
-          .then(resp => {
+          .then(() => {
             this.frontCameraEnabled = true;
             return resolve(this.frontCameraEnabled);
           })
           .catch(err => {
-            this.logger.warn('Error: ', err);
+            this.logger.error('Scan Provider Error (useFrontCamera)', err);
             return reject(err);
           });
       }

@@ -18,11 +18,10 @@ import * as _ from 'lodash';
 
 @Component({
   selector: 'page-coinbase',
-  templateUrl: 'coinbase.html',
+  templateUrl: 'coinbase.html'
 })
 export class CoinbasePage {
-
-  public tx: any;
+  public tx;
   public currency: string;
   public accessToken: string;
   public accountId: string;
@@ -50,10 +49,12 @@ export class CoinbasePage {
     private formBuilder: FormBuilder
   ) {
     this.oauthCodeForm = this.formBuilder.group({
-      code: ['', Validators.compose([Validators.minLength(1), Validators.required])]
+      code: [
+        '',
+        Validators.compose([Validators.minLength(1), Validators.required])
+      ]
     });
-    // TODO: desktop
-    // this.isNW = this.platformProvider.isNW;
+    this.isNW = this.platformProvider.isNW;
     this.isCordova = this.platformProvider.isCordova;
     this.showOauthForm = false;
   }
@@ -75,31 +76,45 @@ export class CoinbasePage {
       this.accessToken = at;
 
       // Update Access Token if necessary
-      this.coinbaseProvider.init((err: any, data: any) => {
+      this.coinbaseProvider.init((err, data) => {
         if (err || _.isEmpty(data)) {
           this.loading = false;
           if (err) {
             this.logger.error(err);
             let errorId = err.errors ? err.errors[0].id : null;
-            err = err.errors ? err.errors[0].message : (err.error_description ? err.error_description : (err.error || 'Unknown error'));
-            this.popupProvider.ionicAlert('Error connecting to Coinbase', err).then(() => {
-              if (errorId == 'revoked_token') {
-                this.coinbaseProvider.logout();
-              }
-              this.navCtrl.pop();
-            });
+            err = err.errors
+              ? err.errors[0].message
+              : err.error_description
+                ? err.error_description
+                : err.error || err || 'Unknown error';
+            this.popupProvider
+              .ionicAlert('Error connecting to Coinbase', err)
+              .then(() => {
+                if (errorId == 'revoked_token') {
+                  this.coinbaseProvider.logout();
+                }
+                this.navCtrl.pop();
+              });
           }
           return;
         }
 
         // Show rates
-        this.coinbaseProvider.buyPrice(data.accessToken, this.currency, (err, b: any) => {
-          this.buyPrice = b.data || null;
-          this.coinbaseProvider.sellPrice(data.accessToken, this.currency, (err, s: any) => {
-            this.sellPrice = s.data || null;
-            this.loading = false;
-          });
-        });
+        this.coinbaseProvider.buyPrice(
+          data.accessToken,
+          this.currency,
+          (_, b) => {
+            this.buyPrice = b.data || null;
+            this.coinbaseProvider.sellPrice(
+              data.accessToken,
+              this.currency,
+              (_, s) => {
+                this.sellPrice = s.data || null;
+                this.loading = false;
+              }
+            );
+          }
+        );
 
         // Updating accessToken and accountId
         this.accessToken = data.accessToken;
@@ -119,22 +134,24 @@ export class CoinbasePage {
     if (!this.isNW) {
       this.externalLinkProvider.open(oauthUrl);
     } else {
-      /* TODO: desktop
-      let gui = require('nw.gui');
-      gui.Window.open(oauthUrl, {
-        focus: true,
-        position: 'center'
-      }, (new_win: any) => {
-        new_win.on('loaded', () => {
-          let title = new_win.window.document.title;
-          if (title.indexOf('Coinbase') == -1) {
-            this.code = title;
-            this.submitOauthCode(this.code);
-            new_win.close();
-          }
-        });
-      });
-       */
+      let gui = (window as any).require('nw.gui');
+      gui.Window.open(
+        oauthUrl,
+        {
+          focus: true,
+          position: 'center'
+        },
+        new_win => {
+          new_win.on('loaded', () => {
+            let title = new_win.window.document.title;
+            if (title.indexOf('Coinbase') == -1) {
+              this.code = title;
+              this.submitOauthCode(this.code);
+              new_win.close();
+            }
+          });
+        }
+      );
     }
   }
 
@@ -145,6 +162,10 @@ export class CoinbasePage {
       if (err) {
         this.popupProvider.ionicAlert('Error connecting to Coinbase', err);
         return;
+      }
+      if (!this.isNW) {
+        let previousView = this.navCtrl.getPrevious();
+        this.navCtrl.removeView(previousView);
       }
       this.accessToken = accessToken;
       this.init();
@@ -160,42 +181,67 @@ export class CoinbasePage {
     let url = this.coinbaseProvider.getSignupUrl();
     let optIn = true;
     let title = 'Sign Up for Coinbase';
-    let message = 'This will open Coinbase.com, where you can create an account.';
+    let message =
+      'This will open Coinbase.com, where you can create an account.';
     let okText = 'Go to Coinbase';
     let cancelText = 'Back';
-    this.externalLinkProvider.open(url, optIn, title, message, okText, cancelText);
+    this.externalLinkProvider.open(
+      url,
+      optIn,
+      title,
+      message,
+      okText,
+      cancelText
+    );
   }
 
   public openSupportWindow(): void {
     let url = this.coinbaseProvider.getSupportUrl();
     let optIn = true;
     let title = 'Coinbase Support';
-    let message = 'You can email support@coinbase.com for direct support, or you can view their help center.';
+    let message =
+      'You can email support@coinbase.com for direct support, or you can view their help center.';
     let okText = 'Open Help Center';
     let cancelText = 'Go Back';
-    this.externalLinkProvider.open(url, optIn, title, message, okText, cancelText);
+    this.externalLinkProvider.open(
+      url,
+      optIn,
+      title,
+      message,
+      okText,
+      cancelText
+    );
   }
 
   public toggleOauthForm(): void {
     this.showOauthForm = !this.showOauthForm;
   }
 
-  public openTxModal(tx: any): any {
+  public openTxModal(tx) {
     this.tx = tx;
 
     let modal = this.modalCtrl.create(CoinbaseTxDetailsPage, { tx: this.tx });
     modal.present();
-    modal.onDidDismiss((data) => {
+    modal.onDidDismiss(data => {
       if (data.updateRequired) this.updateTransactions();
-    })
+    });
   }
 
   public goToBuyCoinbasePage(): void {
-    this.navCtrl.push(AmountPage, { nextPage: 'BuyCoinbasePage', currency: this.currency, coin: 'btc', fixedUnit: true });
+    this.navCtrl.push(AmountPage, {
+      nextPage: 'BuyCoinbasePage',
+      currency: this.currency,
+      coin: 'btc',
+      fixedUnit: true
+    });
   }
 
   public goToSellCoinbasePage(): void {
-    this.navCtrl.push(AmountPage, { nextPage: 'SellCoinbasePage', currency: this.currency, coin: 'btc', fixedUnit: true })
+    this.navCtrl.push(AmountPage, {
+      nextPage: 'SellCoinbasePage',
+      currency: this.currency,
+      coin: 'btc',
+      fixedUnit: true
+    });
   }
-
 }
