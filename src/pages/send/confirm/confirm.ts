@@ -313,9 +313,19 @@ export class ConfirmPage extends WalletTabsChild {
     const feeOpts = this.feeProvider.getFeeOpts();
     this.tx.feeLevelName = feeOpts[this.tx.feeLevel];
     this.updateTx(this.tx, this.wallet, { dryRun: true }).catch(err => {
+      let previousView = this.navCtrl.getPrevious().name;
       switch (err) {
         case 'insufficient_funds':
-          this.showInsufficientFundsInfoSheet();
+          // Do not allow user to change or use max amount if previous view is not Amount
+          if (previousView === 'AmountPage') {
+            this.showInsufficientFundsInfoSheet();
+          } else {
+            this.showErrorInfoSheet(
+              this.translate.instant('Insufficient funds'),
+              null,
+              true
+            );
+          }
           break;
         default:
           this.showErrorInfoSheet(err);
@@ -674,13 +684,13 @@ export class ConfirmPage extends WalletTabsChild {
     );
     insufficientFundsInfoSheet.present();
     insufficientFundsInfoSheet.onDidDismiss(option => {
-      if (!option) {
+      if (option || typeof option === 'undefined') {
+        this.isWithinWalletTabs()
+          ? this.navCtrl.pop()
+          : this.app.getRootNavs()[0].setRoot(TabsPage);
+      } else {
         this.tx.sendMax = true;
         this.setWallet(this.wallet);
-      } else {
-        this.isWithinWalletTabs()
-          ? this.navCtrl.popToRoot()
-          : this.app.getRootNavs()[0].setRoot(TabsPage);
       }
     });
   }
