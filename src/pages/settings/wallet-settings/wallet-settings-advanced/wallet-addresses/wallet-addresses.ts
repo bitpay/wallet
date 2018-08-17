@@ -5,7 +5,6 @@ import { Logger } from '../../../../../providers/logger/logger';
 
 // providers
 import { BwcErrorProvider } from '../../../../../providers/bwc-error/bwc-error';
-import { OnGoingProcessProvider } from '../../../../../providers/on-going-process/on-going-process';
 import { PopupProvider } from '../../../../../providers/popup/popup';
 import { ProfileProvider } from '../../../../../providers/profile/profile';
 import { TxFormatProvider } from '../../../../../providers/tx-format/tx-format';
@@ -26,13 +25,14 @@ export class WalletAddressesPage {
   public latestUnused;
   public latestWithBalance;
   public viewAll: boolean;
-  public gapReached: boolean;
   public lowUtxosNb: number;
   public allUtxosNb: number;
   public lowUtxosSum: string;
   public allUtxosSum: string;
   public minFee: string;
   public minFeePer: string;
+  public showInfo: boolean;
+  public showMore: boolean;
 
   private UNUSED_ADDRESS_LIMIT: number;
   private BALANCE_ADDRESS_LIMIT: number;
@@ -47,7 +47,6 @@ export class WalletAddressesPage {
     private logger: Logger,
     private bwcErrorProvider: BwcErrorProvider,
     private popupProvider: PopupProvider,
-    private onGoingProcessProvider: OnGoingProcessProvider,
     private modalCtrl: ModalController,
     private txFormatProvider: TxFormatProvider,
     private translate: TranslateService
@@ -149,54 +148,6 @@ export class WalletAddressesPage {
       n.path = n.path ? n.path.replace(/^m/g, 'xpub') : null;
       n.address = this.walletProvider.getAddressView(this.wallet, n.address);
     });
-  }
-
-  public newAddress(): void {
-    if (this.gapReached) return;
-
-    this.onGoingProcessProvider.set('generatingNewAddress');
-    this.walletProvider
-      .getAddress(this.wallet, true)
-      .then((addr: string) => {
-        this.walletProvider
-          .getMainAddresses(this.wallet, { limit: 1 })
-          .then(_addr => {
-            this.onGoingProcessProvider.clear();
-            if (addr != _addr[0].address) {
-              this.popupProvider.ionicAlert(
-                this.translate.instant('Error'),
-                this.translate.instant(
-                  'New address could not be generated. Please try again.'
-                )
-              );
-              return;
-            }
-            this.noBalance = [_addr[0]].concat(this.noBalance);
-
-            this.processList(this.noBalance);
-
-            this.latestUnused = _.slice(
-              this.noBalance,
-              0,
-              this.UNUSED_ADDRESS_LIMIT
-            );
-            this.viewAll = this.noBalance.length > this.UNUSED_ADDRESS_LIMIT;
-          })
-          .catch(err => {
-            this.logger.error(err);
-            this.onGoingProcessProvider.clear();
-            this.popupProvider.ionicAlert(this.translate.instant('Error'), err);
-          });
-      })
-      .catch(err => {
-        this.logger.error(err);
-        this.onGoingProcessProvider.clear();
-        if (err.toString().match('MAIN_ADDRESS_GAP_REACHED')) {
-          this.gapReached = true;
-        } else {
-          this.popupProvider.ionicAlert('Error', err);
-        }
-      });
   }
 
   public viewAllAddresses(): void {
