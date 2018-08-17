@@ -25,14 +25,6 @@
 
 <ion-content no-bounce>
   <div class="wrapper">
-    <div>
-      <div *ngIf="!wallet" class="no-wallets">
-        <button ion-button clear>
-          <span translate>No wallet</span>
-        </button>
-      </div>
-    </div>
-
     <div class="prompt-user-fullscreen-container" *ngIf="wallet && wallet.isComplete() && wallet.needsBackup">
       <div class="prompt-user">
         <div class="title-icon">
