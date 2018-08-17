@@ -6,6 +6,11 @@
       </button>
     </ion-buttons>
     <ion-title>{{ wallet.name }}</ion-title>
+    <ion-buttons right>
+      <button *ngIf="isCordova" ion-button icon-only (click)="shareAddress()">
+        <ion-icon ios="ios-share-outline" md="md-share"></ion-icon>
+      </button>
+    </ion-buttons>
   </ion-navbar>
   <ion-toolbar *ngIf="!wallet.notAuthorized && secret" [navbar-bg]="wallet.color">
     <div class="wallet-details-header__subtitle">{{ 'Share this invitation with your copayers' | translate }}</div>
