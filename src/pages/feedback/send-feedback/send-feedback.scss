@@ -59,21 +59,33 @@ page-send-feedback {
     float: right;
     margin-top: 4px;
   }
-  .arrow-right {
+  .arrow {
     border: solid rgb(171, 174, 181);
     border-width: 0 2px 2px 0;
     padding: 3px;
-    transform: rotate(-45deg);
-    -webkit-transform: rotate(-45deg);
     width: 15px;
     height: 15px;
-    margin-top: 6px;
+    &.arrow-right {
+      margin-top: 6px;
+      transform: rotate(-45deg);
+      -webkit-transform: rotate(-45deg);
+    }
+    &.arrow-dropdown {
+      transform: rotate(45deg);
+      -webkit-transform: rotate(45deg);
+      margin-top: 3px;
+    }
+    &.arrow-dropup {
+      transform: rotate(-135deg);
+      -webkit-transform: rotate(-135deg);
+      margin-top: 9px;
+    }
   }
+
   a {
     text-decoration: none;
   }
   .feedback-form {
-    border-top: 1px solid rgb(238, 238, 238);
     ion-textarea {
       textarea {
         font-size: 16px;
