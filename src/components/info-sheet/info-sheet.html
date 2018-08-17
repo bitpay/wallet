@@ -112,5 +112,13 @@
       </span>
       <span sheet-button-text translate>Rate in App Store</span>
     </info-sheet-template>
+
+    <info-sheet-template *ngSwitchCase="'backup-failed'" type="warning">
+      <span sheet-title-text translate>Uh oh...</span>
+      <span sheet-text translate>
+        It's important that you write your backup phrase down correctly. If something happens to your wallet, you'll need this backup to recover your money. Please review your backup and try again.
+      </span>
+      <span sheet-button-text translate>GOT IT</span>
+    </info-sheet-template>
   </div>
 </action-sheet>
