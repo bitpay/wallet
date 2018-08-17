@@ -211,7 +211,9 @@ export class BitcoinCashPage extends WalletTabsChild {
           });
       })
       .catch(err => {
-        setErr(err);
+        if (err && err.message != 'FINGERPRINT_CANCELLED') {
+          setErr(err);
+        }
       });
   }
 
