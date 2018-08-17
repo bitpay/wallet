@@ -14,6 +14,7 @@ export interface RedirParams {
   activePage?: any;
   amount?: string;
   coin?: Coin;
+  fromHomeCard?: boolean;
 }
 
 @Injectable()
@@ -147,11 +148,12 @@ export class IncomingDataProvider {
     );
   }
 
-  private handlePrivateKey(data: string): void {
+  private handlePrivateKey(data: string, redirParams?: RedirParams): void {
     this.logger.debug('Incoming-data: private key');
     this.showMenu({
       data,
-      type: 'privateKey'
+      type: 'privateKey',
+      fromHomeCard: redirParams ? redirParams.fromHomeCard : false
     });
   }
 
@@ -414,7 +416,7 @@ export class IncomingDataProvider {
 
       // Check Private Key
     } else if (this.isValidPrivateKey(data)) {
-      this.handlePrivateKey(data);
+      this.handlePrivateKey(data, redirParams);
       return true;
 
       // Import Private Key
@@ -576,12 +578,20 @@ export class IncomingDataProvider {
   }
 
   private checkPrivateKey(privateKey: string): boolean {
+    // Check if it is a Transaction id to prevent errors
+    let isTxId: boolean = this.checkTxId(privateKey);
+    if (isTxId) return false;
     try {
       this.bwcProvider.getBitcore().PrivateKey(privateKey, 'livenet');
     } catch (err) {
       return false;
     }
     return true;
+  }
+
+  private checkTxId(data: string): boolean {
+    let IsTxIdregex = new RegExp(/[a-fA-F0-9]{64}/);
+    return !!IsTxIdregex.exec(data);
   }
 
   private goSend(

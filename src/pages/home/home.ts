@@ -449,7 +449,7 @@ export class HomePage {
     this.payProDetailsData = null;
     this.clipboardProvider.clear();
     this.clearCountDownInterval();
-    this.incomingDataProvider.redir(data);
+    this.incomingDataProvider.redir(data, { fromHomeCard: true });
   }
 
   private clearCountDownInterval(): void {
