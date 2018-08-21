@@ -17,7 +17,6 @@ import { DisclaimerPage } from '../../onboarding/disclaimer/disclaimer';
 import { ActionSheetProvider } from '../../../providers/action-sheet/action-sheet';
 import { BwcProvider } from '../../../providers/bwc/bwc';
 import { OnGoingProcessProvider } from '../../../providers/on-going-process/on-going-process';
-import { PopupProvider } from '../../../providers/popup/popup';
 import { ProfileProvider } from '../../../providers/profile/profile';
 import { WalletProvider } from '../../../providers/wallet/wallet';
 
@@ -58,7 +57,6 @@ export class BackupGamePage {
     private walletProvider: WalletProvider,
     private bwcProvider: BwcProvider,
     private onGoingProcessProvider: OnGoingProcessProvider,
-    private popupProvider: PopupProvider,
     private translate: TranslateService,
     public actionSheetProvider: ActionSheetProvider
   ) {
@@ -283,11 +281,11 @@ export class BackupGamePage {
         this.onGoingProcessProvider.clear();
         this.logger.warn('Failed to verify backup: ', err);
         this.error = true;
-        let title = this.translate.instant('Uh oh...');
-        let message = this.translate.instant(
-          "It's important that you write your backup phrase down correctly. If something happens to your wallet, you'll need this backup to recover your money. Please review your backup and try again."
+        const infoSheet = this.actionSheetProvider.createInfoSheet(
+          'backup-failed'
         );
-        this.popupProvider.ionicAlert(title, message).then(() => {
+        infoSheet.present();
+        infoSheet.onDidDismiss(() => {
           this.setFlow();
         });
       });

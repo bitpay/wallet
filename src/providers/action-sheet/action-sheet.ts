@@ -8,6 +8,8 @@ import { DomProvider } from '../../providers/dom/dom';
 
 export type InfoSheetType =
   | 'address-copied'
+  | 'appreciate-review'
+  | 'backup-failed'
   | 'backup-ready'
   | 'backup-warning'
   | 'copayers'
@@ -20,8 +22,8 @@ export type InfoSheetType =
   | 'miner-fee-notice'
   | 'paper-key-unverified-with-activity'
   | 'receiving-bitcoin'
-  | 'sensitive-info'
-  | 'appreciate-review';
+  | 'sensitive-info';
+
 export type OptionsSheetType = 'address-options' | 'incoming-data';
 
 export interface WalletSelectorParams {
