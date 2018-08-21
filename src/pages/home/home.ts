@@ -132,7 +132,6 @@ export class HomePage {
     this.events.subscribe('Home/reloadStatus', () => {
       this._willEnter();
       this._didEnter();
-      this.subscribeBwsEvents();
     });
 
     if (this.isNW) {

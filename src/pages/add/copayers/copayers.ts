@@ -82,6 +82,7 @@ export class CopayersPage {
   }
 
   ngOnDestroy() {
+    this.events.publish('Home/reloadStatus');
     this.onResumeSubscription.unsubscribe();
     this.onPauseSubscription.unsubscribe();
   }
