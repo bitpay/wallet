@@ -11,15 +11,26 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content class="fullscreen-tab">
+<ion-content class="fullscreen-tab" [ngClass]="{'zero-state': !wallets || !wallets[0]}">
   <ion-refresher (ionRefresh)="doRefresh($event)" *ngIf="!showReorderBtc && !showReorderBch">
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
   <div class="wrapper">
-    <div class="header-extend">
-      <div *ngIf="!wallets || !wallets[0]" class="no-wallets">
-        <button ion-button clear (click)="goToAddView()">
-          <span translate>Create a new wallet</span>
+    <div class="header-extend" *ngIf="wallets && wallets[0]"></div>
+
+    <div class="prompt-user-fullscreen-container" *ngIf="!wallets || !wallets[0]">
+      <div class="prompt-user">
+        <div class="title-icon larger-icon">
+          <img src="assets/img/ghost-straight-face.svg" />
+        </div>
+        <div class="title-info">
+          <span translate>No wallets available</span>
+        </div>
+        <div class="subtitle-info">
+          <span translate>Create a new wallet to start using this app.</span>
+        </div>
+        <button ion-button class="button-standard" (click)="goToAddView()">
+          {{'Create a new wallet' | translate}}
         </button>
       </div>
     </div>

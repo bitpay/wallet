@@ -120,7 +120,16 @@ page-home {
       }
     }
   }
+  .zero-state {
+    .wrapper {
+      display: flex;
+      flex-direction: column;
+    }
 
+    .prompt-user {
+      margin-bottom: 2rem;
+    }
+  }
   @include fix-ios-bg-scroll();
 
   @media only screen and (device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3) {
