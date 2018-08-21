@@ -100,8 +100,7 @@ export class CustomAmountPage {
     const infoSheet = this.actionSheetProvider.createInfoSheet(
       'custom-amount',
       {
-        address: this.address,
-        amount: this.amountUnitStr
+        qrAddress: this.qrAddress
       }
     );
     infoSheet.present();
