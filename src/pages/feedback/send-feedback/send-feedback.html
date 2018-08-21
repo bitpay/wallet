@@ -25,86 +25,85 @@
     <div class="feedback-msg">{{comment}}</div>
   </div>
 
-  <div *ngIf="!leavingFeedback">
-    <div *ngIf="score == 1" class="user-feedback-card" (click)="leaveFeedback()">
-      <ion-row>
-        <div class="feedback-icon">
-          <img src="assets/img/ico-chat.svg" />
+  <div *ngIf="score == 1" class="user-feedback-card" (click)="leaveFeedback()">
+    <ion-row>
+      <div class="feedback-icon">
+        <img src="assets/img/ico-chat.svg" />
+      </div>
+      <ion-col>
+        <div class="user-feedback-title">
+          <span translate>Leave Feedback</span>
         </div>
-        <ion-col>
-          <div class="user-feedback-title">
-            <span translate>Leave Feedback</span>
-          </div>
-        </ion-col>
-        <div class="feedback-action-icon arrow-right"></div>
-      </ion-row>
+      </ion-col>
+      <div *ngIf="!leavingFeedback" class="feedback-action-icon arrow arrow-dropdown"></div>
+      <div *ngIf="leavingFeedback" class="feedback-action-icon arrow arrow-dropup"></div>
+    </ion-row>
+    <div *ngIf="leavingFeedback">
+      <form class="feedback-form" [formGroup]="feedbackForm">
+        <ion-textarea #focusMe rows="3" type="text" formControlName="comment" [value]="feedbackForm.value.comment" required padding></ion-textarea>
+      </form>
+      <button ion-button class="button-standard" (click)="sendFeedback(feedbackForm.value.comment)" [disabled]="!feedbackForm.valid">
+        {{'Send' | translate}}
+      </button>
     </div>
-    <div *ngIf="(score == 3 || !score) && isCordova" class="user-feedback-card" (click)="showAppreciationSheet()">
-      <ion-row>
-        <div class="feedback-icon">
-          <img src="assets/img/icon-star-review.svg" />
+  </div>
+  <div *ngIf="(score == 3 || !score) && isCordova" class="user-feedback-card" (click)="showAppreciationSheet()">
+    <ion-row>
+      <div class="feedback-icon">
+        <img src="assets/img/icon-star-review.svg" />
+      </div>
+      <ion-col>
+        <div class="user-feedback-title">
+          <span translate>Write a Review</span>
         </div>
-        <ion-col>
-          <div class="user-feedback-title">
-            <span translate>Write a Review</span>
-          </div>
-        </ion-col>
-        <div class="feedback-action-icon arrow-right"></div>
-      </ion-row>
-    </div>
-    <div *ngIf="score != 1" class="user-feedback-card" (click)="openExternalLink('https://bitpay.canny.io/wallet-feature-request')">
-      <ion-row>
-        <div class="feedback-icon">
-          <img src="assets/img/ico-chat.svg" />
+      </ion-col>
+      <div class="feedback-action-icon arrow arrow-right"></div>
+    </ion-row>
+  </div>
+  <div *ngIf="score != 1" class="user-feedback-card" (click)="openExternalLink('https://bitpay.canny.io/wallet-feature-request')">
+    <ion-row>
+      <div class="feedback-icon">
+        <img src="assets/img/ico-chat.svg" />
+      </div>
+      <ion-col>
+        <div class="user-feedback-title">
+          <span translate>Submit Feature Request</span>
         </div>
-        <ion-col>
-          <div class="user-feedback-title">
-            <span translate>Submit Feature Request</span>
-          </div>
-        </ion-col>
-        <div class="feedback-action-icon">
-          <img src="assets/img/ico-link.svg" />
+      </ion-col>
+      <div class="feedback-action-icon">
+        <img src="assets/img/ico-link.svg" />
+      </div>
+    </ion-row>
+  </div>
+  <div *ngIf="score != 3" class="user-feedback-card" (click)="openExternalLink('https://bitpay.canny.io/wallet-bugs')">
+    <ion-row>
+      <div class="feedback-icon">
+        <img src="assets/img/ico-bug.svg" />
+      </div>
+      <ion-col>
+        <div class="user-feedback-title">
+          <span translate>Report an Issue</span>
         </div>
-      </ion-row>
-    </div>
-    <div *ngIf="score != 3" class="user-feedback-card" (click)="openExternalLink('https://bitpay.canny.io/wallet-bugs')">
-      <ion-row>
-        <div class="feedback-icon">
-          <img src="assets/img/ico-bug.svg" />
+      </ion-col>
+      <div class="feedback-action-icon">
+        <img src="assets/img/ico-link.svg" />
+      </div>
+    </ion-row>
+  </div>
+  <div *ngIf="score == 1" class="user-feedback-card" (click)="openExternalLink('https://help.bitpay.com/requestHelp')">
+    <ion-row>
+      <div class="feedback-icon">
+        <img src="assets/img/icon-question-help.svg" />
+      </div>
+      <ion-col>
+        <div class="user-feedback-title">
+          <span translate>Get Help</span>
         </div>
-        <ion-col>
-          <div class="user-feedback-title">
-            <span translate>Report an Issue</span>
-          </div>
-        </ion-col>
-        <div class="feedback-action-icon">
-          <img src="assets/img/ico-link.svg" />
-        </div>
-      </ion-row>
-    </div>
-    <div *ngIf="score == 1" class="user-feedback-card" (click)="openExternalLink('https://help.bitpay.com/requestHelp')">
-      <ion-row>
-        <div class="feedback-icon">
-          <img src="assets/img/icon-question-help.svg" />
-        </div>
-        <ion-col>
-          <div class="user-feedback-title">
-            <span translate>Get Help</span>
-          </div>
-        </ion-col>
-        <div class="feedback-action-icon">
-          <img src="assets/img/ico-link.svg" />
-        </div>
-      </ion-row>
-    </div>
+      </ion-col>
+      <div class="feedback-action-icon">
+        <img src="assets/img/ico-link.svg" />
+      </div>
+    </ion-row>
   </div>
 
-  <div *ngIf="leavingFeedback">
-    <form class="feedback-form" [formGroup]="feedbackForm">
-      <ion-textarea #focusMe rows="3" type="text" formControlName="comment" [value]="feedbackForm.value.comment" required padding></ion-textarea>
-    </form>
-    <button ion-button class="button-standard" (click)="sendFeedback(feedbackForm.value.comment)" [disabled]="!feedbackForm.valid">
-      {{'Send' | translate}}
-    </button>
-  </div>
 </ion-content>

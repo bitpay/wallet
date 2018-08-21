@@ -116,10 +116,11 @@ export class SendFeedbackPage {
   }
 
   public leaveFeedback() {
-    this.leavingFeedback = true;
-    setTimeout(() => {
-      this.feedbackTextarea.setFocus();
-    }, 150);
+    this.leavingFeedback = this.leavingFeedback ? false : true;
+    if (this.leavingFeedback)
+      setTimeout(() => {
+        this.feedbackTextarea.setFocus();
+      }, 50);
   }
 
   public async openExternalLink(url: string): Promise<void> {
