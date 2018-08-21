@@ -20,7 +20,7 @@ export type InfoSheetType =
   | 'legacy-address-info'
   | 'miner-fee'
   | 'miner-fee-notice'
-  | 'paper-key-unverified-with-activity'
+  | 'backup-needed-with-activity'
   | 'receiving-bitcoin'
   | 'sensitive-info';
 
