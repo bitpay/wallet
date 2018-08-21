@@ -17,7 +17,6 @@ import { DisclaimerPage } from '../../onboarding/disclaimer/disclaimer';
 import { ActionSheetProvider } from '../../../providers/action-sheet/action-sheet';
 import { BwcProvider } from '../../../providers/bwc/bwc';
 import { OnGoingProcessProvider } from '../../../providers/on-going-process/on-going-process';
-import { PopupProvider } from '../../../providers/popup/popup';
 import { ProfileProvider } from '../../../providers/profile/profile';
 import { WalletProvider } from '../../../providers/wallet/wallet';
 
@@ -58,7 +57,6 @@ export class BackupGamePage {
     private walletProvider: WalletProvider,
     private bwcProvider: BwcProvider,
     private onGoingProcessProvider: OnGoingProcessProvider,
-    private popupProvider: PopupProvider,
     private translate: TranslateService,
     public actionSheetProvider: ActionSheetProvider
   ) {
