@@ -18,9 +18,9 @@
       </ion-item>
       <ion-item-divider>{{'Security' | translate}}</ion-item-divider>
       <button ion-item (click)="openBackupSettings()" [ngClass]="{warn: needsBackup}">
-        <span translate>Paper/Master Key</span>
+        <span translate>Backup</span>
         <ion-note *ngIf="needsBackup" class="wallet-warning" item-end>
-          {{'Unverified' | translate}}
+          {{'Needs backup' | translate}}
         </ion-note>
       </button>
       <div *ngIf="canSign && touchIdAvailable">
@@ -37,7 +37,7 @@
         <label-tip type="info">
           <span label-tip-title translate>Password Not Recoverable</span>
           <div label-tip-body>
-            <span translate>This password cannot be recovered. If this password is lost, funds can only be recovered by reimporting your 12-word paper key.</span>
+            <span translate>This password cannot be recovered. If this password is lost, funds can only be recovered by reimporting your 12-word recovery phrase.</span>
             <br>
             <a class="label-tip-link" (click)="openSupportSpendingPassword()" translate>Learn More</a>
           </div>

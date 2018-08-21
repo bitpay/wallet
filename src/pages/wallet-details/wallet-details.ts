@@ -37,7 +37,7 @@ const HISTORY_SHOW_LIMIT = 10;
 })
 export class WalletDetailsPage extends WalletTabsChild {
   private currentPage: number = 0;
-  private showPaperKeyUnverifiedMsg: boolean = true;
+  private showBackupNeededMsg: boolean = true;
 
   public requiresMultipleSignatures: boolean;
   public wallet;
@@ -194,7 +194,7 @@ export class WalletDetailsPage extends WalletTabsChild {
         let hasTx = txHistory[0];
         this.showNoTransactionsYetMsg = hasTx ? false : true;
 
-        if (this.wallet.needsBackup && hasTx && this.showPaperKeyUnverifiedMsg)
+        if (this.wallet.needsBackup && hasTx && this.showBackupNeededMsg)
           this.openBackupModal();
 
         this.wallet.completeHistory = txHistory;
@@ -290,9 +290,9 @@ export class WalletDetailsPage extends WalletTabsChild {
   }
 
   public openBackupModal(): void {
-    this.showPaperKeyUnverifiedMsg = false;
+    this.showBackupNeededMsg = false;
     const infoSheet = this.actionSheetProvider.createInfoSheet(
-      'paper-key-unverified-with-activity'
+      'backup-needed-with-activity'
     );
     infoSheet.present();
     infoSheet.onDidDismiss(option => {

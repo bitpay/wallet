@@ -61,7 +61,7 @@
               Incomplete
             </span>
             <span class="wallet-warning" *ngIf="toWallet.isComplete() && toWallet.needsBackup" translate>
-              Paper Key Unverified
+              Needs Backup
             </span>
             <span *ngIf="toWallet.isComplete() && !toWallet.needsBackup">
               <span *ngIf="!toWallet.balanceHidden && !toWallet.scanning"> {{toWallet.status.totalBalanceStr ? toWallet.status.totalBalanceStr : ( toWallet.cachedBalance ? toWallet.cachedBalance
