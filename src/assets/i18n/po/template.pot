@@ -22,14 +22,6 @@ msgid ""
 msgstr ""
 
 msgid ""
-"5-star ratings help us get {{appName}} into more hands, and more users "
-"means more resources can be committed to the app!"
-msgstr ""
-
-msgid "A member of the team will review your feedback as soon as possible."
-msgstr ""
-
-msgid ""
 "A total of {{amountAboveMaxSizeStr}} {{coin}} were excluded. The maximum "
 "size allowed for a transaction was exceeded."
 msgstr ""
@@ -244,8 +236,8 @@ msgstr ""
 
 msgid ""
 "Before retrieving your wallet address, it's recommended that you first "
-"write down your paper key and store it securely so that your wallet can be "
-"recovered in the case your device was lost or stolen."
+"write down your recovery phrase and store it securely so that your wallet "
+"can be recovered in the case your device was lost or stolen."
 msgstr ""
 
 msgid "BitPay Card URI"
@@ -429,8 +421,8 @@ msgstr ""
 
 msgid ""
 "Congratulations! It looks like you've recently received money. It's highly "
-"advised that you verify your paper key so that your funds can be recovered "
-"in case your phone was lost or stolen."
+"advised that you verify your recovery phrase so that your funds can be "
+"recovered in case your phone was lost or stolen."
 msgstr ""
 
 msgid "Connect my BitPay Card"
@@ -452,9 +444,6 @@ msgid "Contact the ShapeShift support team."
 msgstr ""
 
 msgid "Continue"
-msgstr ""
-
-msgid "Continue to App Store"
 msgstr ""
 
 msgid "Contribute translations"
@@ -587,6 +576,9 @@ msgid "Could not update wallet"
 msgstr ""
 
 msgid "Create a new wallet"
+msgstr ""
+
+msgid "Create a new wallet to start using this app."
 msgstr ""
 
 msgid "Create bitcoin wallet"
@@ -893,9 +885,6 @@ msgstr ""
 msgid "Fingerprint"
 msgstr ""
 
-msgid "Finish"
-msgstr ""
-
 msgid "From"
 msgstr ""
 
@@ -1075,11 +1064,6 @@ msgstr ""
 msgid ""
 "If this device is replaced or this app is deleted, neither you nor BitPay "
 "can recover your funds without a backup."
-msgstr ""
-
-msgid ""
-"If you have additional feedback, please let us know by tapping the \"Send "
-"feedback\" option in the Settings tab."
 msgstr ""
 
 msgid ""
@@ -1308,6 +1292,9 @@ msgstr ""
 msgid "Name (at creation)"
 msgstr ""
 
+msgid "Needs Backup"
+msgstr ""
+
 msgid "Needs backup"
 msgstr ""
 
@@ -1324,9 +1311,6 @@ msgid "Network error"
 msgstr ""
 
 msgid "New Proposal"
-msgstr ""
-
-msgid "New address could not be generated. Please try again."
 msgstr ""
 
 msgid "New wallet"
@@ -1363,9 +1347,6 @@ msgid "No private key"
 msgstr ""
 
 msgid "No signing proposal: No private key"
-msgstr ""
-
-msgid "No wallet"
 msgstr ""
 
 msgid "No wallet found"
@@ -1412,9 +1393,6 @@ msgid ""
 "transaction history, and create spend proposals from the export. However, "
 "does not allow to approve (sign) proposals, so funds will not be accessible "
 "from the export."
-msgstr ""
-
-msgid "Not now"
 msgstr ""
 
 msgid "Not right now"
@@ -1506,12 +1484,6 @@ msgid "PENDING"
 msgstr ""
 
 msgid "PIN"
-msgstr ""
-
-msgid "Paper Key Unverified"
-msgstr ""
-
-msgid "Paper/Master Key"
 msgstr ""
 
 msgid "Password"
@@ -1698,13 +1670,7 @@ msgstr ""
 msgid "Rate"
 msgstr ""
 
-msgid "Rate on the app store"
-msgstr ""
-
-msgid "Read less"
-msgstr ""
-
-msgid "Read more"
+msgid "Rate in App Store"
 msgstr ""
 
 msgid "Read more in our Wiki"
@@ -1786,9 +1752,6 @@ msgid "Request Fingerprint"
 msgstr ""
 
 msgid "Request Specific Amount"
-msgstr ""
-
-msgid "Requesting {{params.amount}} in {{params.address}}"
 msgstr ""
 
 msgid "Required number of signatures"
@@ -1891,9 +1854,6 @@ msgid "Send from"
 msgstr ""
 
 msgid "Send payment to this address"
-msgstr ""
-
-msgid "Send us feedback instead"
 msgstr ""
 
 msgid "Sending"
@@ -2072,9 +2032,6 @@ msgstr ""
 msgid "Text"
 msgstr ""
 
-msgid "Thank you!"
-msgstr ""
-
 msgid "Thanks!"
 msgstr ""
 
@@ -2122,12 +2079,6 @@ msgid ""
 "person or entity with whom you are sharing this information."
 msgstr ""
 
-msgid ""
-"The maximum number of consecutive unused addresses (20) has been reached. "
-"When one of your unused addresses receives a payment, a new address will be "
-"generated and shown in your Receive tab."
-msgstr ""
-
 msgid "The password of the recovery phrase (if set)"
 msgstr ""
 
@@ -2147,12 +2098,6 @@ msgid ""
 msgstr ""
 
 msgid "The request could not be understood by the server"
-msgstr ""
-
-msgid ""
-"The restore process will stop when 20 addresses are generated in a row "
-"which contain no funds. To safely generate more addresses, make a payment "
-"to one of the unused addresses which has already been generated."
 msgstr ""
 
 msgid "The spend proposal is not pending"
@@ -2208,7 +2153,7 @@ msgstr ""
 
 msgid ""
 "This password cannot be recovered. If this password is lost, funds can only "
-"be recovered by reimporting your 12-word paper key."
+"be recovered by reimporting your 12-word recovery phrase."
 msgstr ""
 
 msgid ""
@@ -2350,12 +2295,6 @@ msgstr ""
 msgid "Unused addresses"
 msgstr ""
 
-msgid "Unused addresses limit"
-msgstr ""
-
-msgid "Unverified"
-msgstr ""
-
 msgid "Update Available"
 msgstr ""
 
@@ -2387,9 +2326,6 @@ msgid "Use default url"
 msgstr ""
 
 msgid "Validating recovery phrase..."
-msgstr ""
-
-msgid "Verify Now"
 msgstr ""
 
 msgid "Verify your identity"
@@ -2587,19 +2523,10 @@ msgid ""
 "able to access your funds."
 msgstr ""
 
-msgid ""
-"Without your wallet's paper key you could lose money if this device is "
-"damaged, this app is deleted, or you migrate to another device. Neither you "
-"nor BitPay will be able recover your funds."
-msgstr ""
-
-msgid "Would you be willing to rate {{appName}} in the app store?"
-msgstr ""
-
 msgid "Would you like to protect this wallet with a password?"
 msgstr ""
 
-msgid "Write Down Paper Key"
+msgid "Write Down Recovery Phrase"
 msgstr ""
 
 msgid "Write a Review"
@@ -2651,9 +2578,6 @@ msgid "You can trade it for other currencies like US Dollars, Euros, or Pounds."
 msgstr ""
 
 msgid "You control your bitcoin."
-msgstr ""
-
-msgid "You could lose money"
 msgstr ""
 
 msgid "You could sign the transaction later in your wallet details"
