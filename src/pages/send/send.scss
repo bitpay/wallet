@@ -43,13 +43,17 @@ page-send {
     border: 1px solid #f2f2f2;
     border-radius: 4px;
     .item-inner {
+      align-items: center;
       margin-left: 0rem !important;
       border-bottom: 0px !important;
       box-shadow: none !important;
     }
     .scan-icon {
       margin: 0;
-      padding: 1rem;
+      padding: 0.6rem 1rem 1rem 1rem;
+      z-index: 999;
+    }
+    .backspace-icon {
       z-index: 999;
     }
     .bitcoin-icon {
