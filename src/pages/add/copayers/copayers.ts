@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { Events, NavParams, ViewController } from 'ionic-angular';
+import { Events, NavParams, Platform, ViewController } from 'ionic-angular';
+import { Subscription } from 'rxjs';
 
 // Native
 import { SocialSharing } from '@ionic-native/social-sharing';
@@ -30,7 +31,11 @@ export class CopayersPage {
   public copayers;
   public secret;
 
+  private onResumeSubscription: Subscription;
+  private onPauseSubscription: Subscription;
+
   constructor(
+    private plt: Platform,
     private appProvider: AppProvider,
     private bwcErrorProvider: BwcErrorProvider,
     private events: Events,
@@ -54,10 +59,34 @@ export class CopayersPage {
     this.wallet = this.profileProvider.getWallet(this.navParams.data.walletId);
   }
 
-  ionViewWillEnter() {
+  ionViewDidLoad() {
     this.logger.info('ionViewDidLoad CopayersPage');
-    this.updateWallet();
 
+    this.onResumeSubscription = this.plt.resume.subscribe(() => {
+      this.updateWallet();
+      this.subscribeEvents();
+    });
+
+    this.onPauseSubscription = this.plt.pause.subscribe(() => {
+      this.unsubscribeEvents();
+    });
+  }
+
+  ionViewWillEnter() {
+    this.updateWallet();
+    this.subscribeEvents();
+  }
+
+  ionViewWillLeave() {
+    this.unsubscribeEvents();
+  }
+
+  ngOnDestroy() {
+    this.onResumeSubscription.unsubscribe();
+    this.onPauseSubscription.unsubscribe();
+  }
+
+  private subscribeEvents(): void {
     this.events.subscribe('bwsEvent', (walletId, type) => {
       if (
         this.wallet &&
@@ -69,7 +98,7 @@ export class CopayersPage {
     });
   }
 
-  ionViewWillLeave() {
+  private unsubscribeEvents(): void {
     this.events.unsubscribe('bwsEvent');
   }
 
