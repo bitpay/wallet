@@ -137,8 +137,9 @@ export class WalletExportPage extends WalletTabsChild {
             if (err) this.showErrorInfoSheet(err);
           });
       })
-      .catch((err: string) => {
-        if (err) this.showErrorInfoSheet(err);
+      .catch(err => {
+        if (err && err.message != 'FINGERPRINT_CANCELLED')
+          this.showErrorInfoSheet(err);
       });
   }
 
@@ -190,8 +191,9 @@ export class WalletExportPage extends WalletTabsChild {
             this.showErrorInfoSheet();
           });
       })
-      .catch((err: string) => {
-        if (err) this.showErrorInfoSheet(err);
+      .catch(err => {
+        if (err && err.message != 'FINGERPRINT_CANCELLED')
+          this.showErrorInfoSheet(err);
       });
   }
 
@@ -245,8 +247,9 @@ export class WalletExportPage extends WalletTabsChild {
               return resolve();
             });
         })
-        .catch((err: string) => {
-          if (err) this.showErrorInfoSheet(err);
+        .catch(err => {
+          if (err && err.message != 'FINGERPRINT_CANCELLED')
+            this.showErrorInfoSheet(err);
           return resolve();
         });
     });
