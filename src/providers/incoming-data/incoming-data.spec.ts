@@ -330,7 +330,8 @@ describe('Provider: Incoming Data Provider', () => {
         expect(actionSheetSpy).toHaveBeenCalledWith({
           data: {
             data: element,
-            type: 'privateKey'
+            type: 'privateKey',
+            fromHomeCard: undefined
           }
         });
       });

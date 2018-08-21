@@ -72,7 +72,7 @@
       </ion-icon>
       <span translate>Sweep paper wallet</span>
     </button>
-    <button ion-item copy-to-clipboard="{{ data }}">
+    <button *ngIf="!fromHomeCard" ion-item copy-to-clipboard="{{ data }}">
       <ion-icon item-start>
         <img src="assets/img/icon-paperclip.svg">
       </ion-icon>
