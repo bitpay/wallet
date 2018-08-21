@@ -1,10 +1,11 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
-import { Events, NavController, NavParams } from 'ionic-angular';
+import { App, Events, NavController, NavParams } from 'ionic-angular';
 
 // Pages
 import { ScanPage } from '../../scan/scan';
+import { TabsPage } from '../../tabs/tabs';
 
 // Providers
 import { ActionSheetProvider } from '../../../providers/action-sheet/action-sheet';
@@ -35,6 +36,7 @@ export class JoinWalletPage {
   private regex: RegExp;
 
   constructor(
+    private app: App,
     private configProvider: ConfigProvider,
     private form: FormBuilder,
     private navCtrl: NavController,
@@ -184,8 +186,12 @@ export class JoinWalletPage {
         this.events.publish('status:updated');
         this.walletProvider.updateRemotePreferences(wallet);
         this.pushNotificationsProvider.updateSubscription(wallet);
-        this.navCtrl.popToRoot();
-        this.events.publish('OpenWallet', wallet);
+        this.app
+          .getRootNavs()[0]
+          .setRoot(TabsPage)
+          .then(() => {
+            this.events.publish('OpenWallet', wallet);
+          });
       })
       .catch(err => {
         this.onGoingProcessProvider.clear();

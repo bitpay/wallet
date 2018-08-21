@@ -258,7 +258,12 @@ export class ImportWalletPage {
           this.profileProvider.setOnboardingCompleted();
           this.navCtrl.push(DisclaimerPage);
         } else {
-          this.app.getRootNavs()[0].setRoot(TabsPage);
+          this.app
+            .getRootNavs()[0]
+            .setRoot(TabsPage)
+            .then(() => {
+              this.events.publish('OpenWallet', wallet);
+            });
         }
       })
       .catch(err => {
