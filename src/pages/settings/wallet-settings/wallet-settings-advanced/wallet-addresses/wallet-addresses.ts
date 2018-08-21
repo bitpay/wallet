@@ -32,7 +32,6 @@ export class WalletAddressesPage {
   public minFee: string;
   public minFeePer: string;
   public showInfo: boolean;
-  public showMore: boolean;
 
   private UNUSED_ADDRESS_LIMIT: number;
   private BALANCE_ADDRESS_LIMIT: number;
