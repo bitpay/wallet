@@ -118,5 +118,13 @@
       </span>
       <span sheet-button-text translate>GOT IT</span>
     </info-sheet-template>
+
+    <info-sheet-template *ngSwitchCase="'payment-request'" type="info">
+        <span sheet-title-text translate>Payment Request info</span>
+        <span sheet-text translate>
+          Share this QR code to receive {{params.amount}} in your wallet {{params.name}}.
+        </span>
+        <span sheet-button-text translate>GOT IT</span>
+      </info-sheet-template>
   </div>
 </action-sheet>
