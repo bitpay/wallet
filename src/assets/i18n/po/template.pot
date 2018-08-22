@@ -617,9 +617,6 @@ msgstr ""
 msgid "Custom"
 msgstr ""
 
-msgid "Custom Amount"
-msgstr ""
-
 msgid "Date"
 msgstr ""
 
@@ -1537,6 +1534,12 @@ msgstr ""
 msgid "Payment Rejected"
 msgstr ""
 
+msgid "Payment Request"
+msgstr ""
+
+msgid "Payment Request info"
+msgstr ""
+
 msgid "Payment Sent"
 msgstr ""
 
@@ -1673,7 +1676,7 @@ msgstr ""
 msgid "Rate"
 msgstr ""
 
-msgid "Rate on the App Store"
+msgid "Rate on the {{params?.storeName}}"
 msgstr ""
 
 msgid "Read more in our Wiki"
@@ -1686,9 +1689,6 @@ msgid "Read only wallet"
 msgstr ""
 
 msgid "Receive"
-msgstr ""
-
-msgid "Receive in"
 msgstr ""
 
 msgid "Received"
@@ -1920,6 +1920,11 @@ msgid "Share Address"
 msgstr ""
 
 msgid "Share the love by inviting your friends."
+msgstr ""
+
+msgid ""
+"Share this QR code to receive {{params.amount}} in your wallet "
+"{{params.name}}."
 msgstr ""
 
 msgid "Share this invitation with your copayers"

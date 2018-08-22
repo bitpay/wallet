@@ -28,7 +28,9 @@ describe('SendFeedbackPage', () => {
           onDidDismiss() {}
         });
         instance.showAppreciationSheet();
-        expect(appSheet).toHaveBeenCalledWith('appreciate-review');
+        expect(appSheet).toHaveBeenCalledWith('appreciate-review', {
+          storeName: 'App Store'
+        });
       });
     });
     describe('#openExternalLink', () => {

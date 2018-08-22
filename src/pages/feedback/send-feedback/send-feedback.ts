@@ -41,6 +41,8 @@ export class SendFeedbackPage {
   public isCordova: boolean;
   public fromCard: boolean;
 
+  private isAndroid: boolean;
+
   constructor(
     private actionSheetProvider: ActionSheetProvider,
     private configProvider: ConfigProvider,
@@ -69,6 +71,7 @@ export class SendFeedbackPage {
     this.appName = this.appProvider.info.nameCase;
     this.leavingFeedback = false;
     this.isCordova = this.platformProvider.isCordova;
+    this.isAndroid = this.platformProvider.isAndroid;
   }
 
   ionViewWillEnter() {
@@ -101,8 +104,10 @@ export class SendFeedbackPage {
   }
 
   public showAppreciationSheet(): void {
+    const storeName = this.isAndroid ? 'Play Store' : 'App Store';
     const infoSheet = this.actionSheetProvider.createInfoSheet(
-      'appreciate-review'
+      'appreciate-review',
+      { storeName }
     );
     infoSheet.present();
     infoSheet.onDidDismiss(async option => {
