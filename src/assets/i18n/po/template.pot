@@ -735,6 +735,9 @@ msgid ""
 "by malicious software."
 msgstr ""
 
+msgid "Enter Amount"
+msgstr ""
+
 msgid "Enter Two Factor for your BitPay account"
 msgstr ""
 
@@ -1670,7 +1673,7 @@ msgstr ""
 msgid "Rate"
 msgstr ""
 
-msgid "Rate in App Store"
+msgid "Rate on the App Store"
 msgstr ""
 
 msgid "Read more in our Wiki"
@@ -2115,8 +2118,7 @@ msgstr ""
 
 msgid ""
 "The transaction history and every new incoming transaction are cached in "
-"the app. This feature clean this up and synchronizes\n"
-"        again from the server"
+"the app. This feature clean this up and synchronizes again from the server"
 msgstr ""
 
 msgid "There is a new version of {{nameCase}} available"
