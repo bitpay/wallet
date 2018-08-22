@@ -12,7 +12,7 @@ msgstr ""
 "Last-Translator: cmgustavo83\n"
 "Language-Team: French\n"
 "Language: fr\n"
-"PO-Revision-Date: 2018-08-22 19:37\n"
+"PO-Revision-Date: 2018-08-22 20:43\n"
 
 msgid "(Trusted)"
 msgstr "(Fiable)"
@@ -1458,10 +1458,10 @@ msgid "Payment Rejected"
 msgstr "Paiement rejeté"
 
 msgid "Payment Request"
-msgstr ""
+msgstr "Demande de paiement"
 
 msgid "Payment Request info"
-msgstr ""
+msgstr "Info de demande de paiement"
 
 msgid "Payment Sent"
 msgstr "Paiement envoyé"
@@ -1596,7 +1596,7 @@ msgid "Rate"
 msgstr "Noter"
 
 msgid "Rate on the {{params?.storeName}}"
-msgstr ""
+msgstr "Évaluer sur le {{params?.storeName}}"
 
 msgid "Read more in our Wiki"
 msgstr "Lisez notre Wiki pour en savoir plus"
@@ -1842,7 +1842,7 @@ msgid "Share the love by inviting your friends."
 msgstr "Partagez la révolution bitcoin en invitant vos amis."
 
 msgid "Share this QR code to receive {{params.amount}} in your wallet {{params.name}}."
-msgstr ""
+msgstr "Partagez ce QR code pour recevoir {{params.amount}} dans votre portefeuille {{params.name}}."
 
 msgid "Share this invitation with your copayers"
 msgstr "Partagez cette invitation avec vos copayers"
