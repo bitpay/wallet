@@ -36,9 +36,9 @@
     <div class="amount-content">
       <div class="expression-container">
         <span class="expression">
-          {{expression ? expression : (onlyIntegers || unit == 'BTC' || unit == 'BCH') ? '0' : '0.00'}} 
-          <span class="unit" [hidden]="globalResult">{{unit}}</span>
+          {{expression ? expression : (onlyIntegers || unit == 'BTC' || unit == 'BCH') ? '0' : '0.00'}}
         </span>
+        <span class="unit" [hidden]="globalResult">{{unit}}</span>
       </div>
       <div class="amount" [hidden]="!globalResult">{{globalResult}} {{unit}}</div>
       <div class="result">&asymp;
