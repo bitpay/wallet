@@ -32,7 +32,6 @@ export class BitPayCardPage {
   public balance: number;
   public updatedOn: number;
   public lastFourDigits: number;
-  public currencySymbol: string;
   public currency: string;
   public okText: string;
   public cancelText: string;
@@ -67,7 +66,6 @@ export class BitPayCardPage {
         if (cards && cards[0]) {
           this.lastFourDigits = cards[0].lastFourDigits;
           this.balance = cards[0].balance;
-          this.currencySymbol = cards[0].currencySymbol;
           this.updatedOn = cards[0].updatedOn;
           this.currency = cards[0].currency;
         }
