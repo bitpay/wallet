@@ -1,24 +1,65 @@
 page-custom-amount {
+  .scroll-content {
+    background-color: rgb(251, 251, 251);
+    margin-top: 0rem;
+    .wrapper {
+      display: flex;
+      flex-direction: column;
+      background-color: rgb(251, 251, 251);
+    }
+  }
+
   .qr-container {
-    height: 50%;
-  }
-  .wallet-label {
-    align-items: center;
-    display: flex;
-    .wallet-name {
-      padding-left: 10px;
+    height: 100%;
+    .qr-card {
+      .qr-card-header {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 5rem;
+        border-bottom: 1px solid rgb(229, 229, 229);
+        .qr-card-title {
+          font-weight: bold;
+        }
+        ion-icon {
+          position: absolute;
+          right: 2rem;
+          width: 2rem;
+        }
+      }
+      .qr-card-amount {
+        text-align: center;
+        margin-bottom: -10px;
+        margin-top: 15px;
+        font-size: 1.8rem;
+        font-weight: bold;
+        small {
+          font-weight: normal;
+        }
+      }
     }
   }
-  ion-item {
-    ion-label {
-      overflow: initial;
+  .receive-content {
+    .address-container {
+      bottom: 0;
+      background-color: rgb(248, 248, 248);
+      border-top: 1px solid rgb(229, 229, 229);
+      color: rgb(80, 80, 80);
+      width: 100%;
+      padding: 15px;
+      text-align: center;
+      font-size: 15px;
+      .text-address.ellipsis img {
+        vertical-align: middle;
+      }
     }
-    .address-note {
-      font-size: 12px;
+    .address-text {
+      width: 70%;
+      max-width: 300px;
+      vertical-align: middle;
+      display: inline-block;
+      opacity: 1;
+      transition: opacity 500ms ease;
     }
-  }
-  .icon-wallet {
-    width: 25px;
-    height: 25px;
   }
 }

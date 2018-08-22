@@ -106,6 +106,17 @@ export class CustomAmountPage {
     infoSheet.present();
   }
 
+  public showPaymentRequestInfo(): void {
+    const infoSheet = this.actionSheetProvider.createInfoSheet(
+      'payment-request',
+      {
+        amount: this.amountUnitStr,
+        name: this.wallet.name
+      }
+    );
+    infoSheet.present();
+  }
+
   public close(): void {
     this.navCtrl.popToRoot();
   }
