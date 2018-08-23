@@ -443,7 +443,7 @@ export class HomePage {
       });
   }
 
-  public hideCilpboardCard() {
+  public hideClipboardCard() {
     this.validDataFromClipboard = null;
     this.clipboardProvider.clear();
   }
