@@ -443,10 +443,13 @@ export class HomePage {
       });
   }
 
-  public processClipboardData(data): void {
+  public hideCilpboardCard() {
     this.validDataFromClipboard = null;
-    this.payProDetailsData = null;
     this.clipboardProvider.clear();
+  }
+
+  public processClipboardData(data): void {
+    this.payProDetailsData = null;
     this.clearCountDownInterval();
     this.incomingDataProvider.redir(data, { fromHomeCard: true });
   }

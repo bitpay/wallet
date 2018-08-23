@@ -111,6 +111,11 @@
           <img src="assets/img/paste-clipboard.svg" alt="Clipboard" width="20" />
           <span>{{'Copied' | translate }} {{validDataFromClipboard.title}}</span>
         </div>
+        <div item-end>
+          <button ion-button clear icon-only color="grey" (click)="hideCilpboardCard()">
+            <ion-icon name="close"></ion-icon>
+          </button>
+        </div>
       </ion-item-divider>
       <page-clipboard-card [remainingTimeStr]="remainingTimeStr" [payProDetailsData]="payProDetailsData" [validDataFromClipboard]="validDataFromClipboard"
         (click)="processClipboardData(validDataFromClipboard.data)"></page-clipboard-card>
