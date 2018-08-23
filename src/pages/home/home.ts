@@ -415,7 +415,11 @@ export class HomePage {
         if (!this.validDataFromClipboard) {
           return;
         }
-        const dataToIgnore = ['BitcoinAddress', 'BitcoinCashAddress'];
+        const dataToIgnore = [
+          'BitcoinAddress',
+          'BitcoinCashAddress',
+          'PlainUrl'
+        ];
         if (dataToIgnore.indexOf(this.validDataFromClipboard.type) > -1) {
           this.validDataFromClipboard = null;
           return;
