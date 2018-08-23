@@ -1,4 +1,13 @@
 page-feedback-card {
+  .feedback-header {
+    padding: 0rem;
+    .row {
+      justify-content: flex-end;
+      button {
+        font-size: 12px;
+      }
+    }
+  }
   .icon-svg {
     display: flex;
     justify-content: center;
@@ -13,45 +22,26 @@ page-feedback-card {
   }
   .button-standard {
     margin-bottom: 12px;
-    margin-top: 0px;
+    margin-top: 10px;
   }
-  .row {
-    padding: 2.2rem 0 2.2rem 0;
+  .icons-row {
+    padding-top: 2.2rem;
   }
-  .title {
-    padding: 18px;
-  }
-  .card-title {
-    font-size: 20px;
-    color: black;
-    font-weight: 500;
+  ion-card-content {
     text-align: center;
-  }
-  .card-title-info {
-    color: black;
-    font-weight: 300;
-    text-align: center;
-    font-size: 16px;
-    margin-top: 13px;
-  }
-  .title {
-    width: 100%;
-  }
-  .close-btn {
-    float: right;
-    position: absolute;
-    top: 7px;
-    right: 8px;
-    color: #4a4a4a;
+    .title {
+      font-weight: 500;
+      font-size: 2rem;
+      color: color($colors, grey);
+    }
+    .subtitle {
+      padding: 10px;
+    }
   }
   .opacity-low {
     opacity: 0.42;
   }
   .icon-svg > img {
     height: 44px;
-  }
-  .close-btn button span ion-icon {
-    font-size: 1.5em;
-    color: rgb(175, 175, 175);
   }
 }
