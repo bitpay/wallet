@@ -17,8 +17,10 @@ wide-header-page {
 
     ion-navbar {
       .ios & {
+        padding-top: 3rem; // Fix iOS 10.3
         padding-top: calc(6px + env(safe-area-inset-top));
         ion-title {
+          padding-top: 3rem; // Fix iOS 10.3
           padding-top: env(safe-area-inset-top);
         }
       }

@@ -7,7 +7,7 @@
     </ion-title>
   </ion-navbar>
 </ion-header>
-<ion-content #scrollArea [ios-scroll-bg-color]="headerColor">
+<ion-content #scrollArea [ios-scroll-bg-color]="headerColor" [ion-content-background-color]="headerColor">
   <div class="wrapper">
     <expandable-header [scrollArea]="scrollArea" [fadeFactor]="5" #expandableHeader>
       <ion-toolbar [navbar-bg]="headerColor" class="wide-header__title">
