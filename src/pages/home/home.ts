@@ -415,7 +415,11 @@ export class HomePage {
         if (!this.validDataFromClipboard) {
           return;
         }
-        const dataToIgnore = ['BitcoinAddress', 'BitcoinCashAddress'];
+        const dataToIgnore = [
+          'BitcoinAddress',
+          'BitcoinCashAddress',
+          'PlainUrl'
+        ];
         if (dataToIgnore.indexOf(this.validDataFromClipboard.type) > -1) {
           this.validDataFromClipboard = null;
           return;
@@ -443,10 +447,13 @@ export class HomePage {
       });
   }
 
-  public processClipboardData(data): void {
+  public hideClipboardCard() {
     this.validDataFromClipboard = null;
-    this.payProDetailsData = null;
     this.clipboardProvider.clear();
+  }
+
+  public processClipboardData(data): void {
+    this.payProDetailsData = null;
     this.clearCountDownInterval();
     this.incomingDataProvider.redir(data, { fromHomeCard: true });
   }
