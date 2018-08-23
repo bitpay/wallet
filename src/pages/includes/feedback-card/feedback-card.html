@@ -1,35 +1,35 @@
-<div class="card" *ngIf="isShowRateCard">
-  <div class="title" item-start>
-    <div class="card-title">
-      Give us feedback
-    </div>
-    <div class="card-title-info">{{ feedbackCardTitle }}</div>
-  </div>
-  <div class="close-btn" item-end>
-    <button ion-button clear icon-only color="grey" (click)="hideCard()">
-      <ion-icon name="close"></ion-icon>
-    </button>
-  </div>
-  <ion-list>
+<ion-card *ngIf="isShowRateCard">
+  <ion-card-header class="feedback-header">
     <ion-row>
-      <ion-col col-20>
-        <ion-icon class="icon-svg" (click)="setScore(1)">
-          <img [ngClass]="{'opacity-low': score > 0 && score != 1}" src="assets/img/disappointed-face.svg" />
-        </ion-icon>
-      </ion-col>
-      <ion-col col-20>
-        <ion-icon class="icon-svg" (click)="setScore(2)">
-          <img [ngClass]="{'opacity-low': score > 0 && score != 2}" src="assets/img/satisfied-face.svg" />
-        </ion-icon>
-      </ion-col>
-      <ion-col col-20>
-        <ion-icon class="icon-svg" (click)="setScore(3)">
-          <img [ngClass]="{'opacity-low': score > 0 && score != 3}" src="assets/img/happy-face.svg" />
-        </ion-icon>
-      </ion-col>
+      <button ion-button clear icon-only item-end color="grey" (click)="hideHomeTip()">
+        <ion-icon name="close"></ion-icon>
+      </button>
     </ion-row>
-    <button ion-button class="button-standard" (click)="goFeedbackFlow()" *ngIf="button_title">
-      <span>{{button_title}}</span>
-    </button>
-  </ion-list>
-</div>
+  </ion-card-header>
+  <ion-card-content>
+    <div class="title" translate>Give us feedback</div>
+    <div class="subtitle">{{feedbackCardTitle}}</div>
+    <ion-list>
+      <ion-row class="icons-row">
+        <ion-col col-20>
+          <ion-icon class="icon-svg" (click)="setScore(1)">
+            <img [ngClass]="{'opacity-low': score > 0 && score != 1}" src="assets/img/disappointed-face.svg" />
+          </ion-icon>
+        </ion-col>
+        <ion-col col-20>
+          <ion-icon class="icon-svg" (click)="setScore(2)">
+            <img [ngClass]="{'opacity-low': score > 0 && score != 2}" src="assets/img/satisfied-face.svg" />
+          </ion-icon>
+        </ion-col>
+        <ion-col col-20>
+          <ion-icon class="icon-svg" (click)="setScore(3)">
+            <img [ngClass]="{'opacity-low': score > 0 && score != 3}" src="assets/img/happy-face.svg" />
+          </ion-icon>
+        </ion-col>
+      </ion-row>
+      <button ion-button class="button-standard" (click)="goFeedbackFlow()" *ngIf="button_title">
+        <span>{{button_title}}</span>
+      </button>
+    </ion-list>
+  </ion-card-content>
+</ion-card>
