@@ -579,8 +579,8 @@ export class IncomingDataProvider {
 
   private checkPrivateKey(privateKey: string): boolean {
     // Check if it is a Transaction id to prevent errors
-    let isTxId: boolean = this.checkTxId(privateKey);
-    if (isTxId) return false;
+    let isPK: boolean = this.checkRegex(privateKey);
+    if (!isPK) return false;
     try {
       this.bwcProvider.getBitcore().PrivateKey(privateKey, 'livenet');
     } catch (err) {
@@ -589,9 +589,9 @@ export class IncomingDataProvider {
     return true;
   }
 
-  private checkTxId(data: string): boolean {
-    let IsTxIdregex = new RegExp(/[a-fA-F0-9]{64}/);
-    return !!IsTxIdregex.exec(data);
+  private checkRegex(data: string): boolean {
+    let PKregex = new RegExp(/^[5KL][1-9A-HJ-NP-Za-km-z]{50,51}$/);
+    return !!PKregex.exec(data);
   }
 
   private goSend(
