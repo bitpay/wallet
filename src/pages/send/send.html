@@ -74,7 +74,8 @@
         </ion-item-divider>
 
         <ion-list>
-          <button ion-item *ngFor="let wallet of filteredWallets[0] ? filteredWallets : walletBtcList" (click)="goToAmount(wallet)">
+          <button ion-item *ngFor="let wallet of filteredWallets[0] ? filteredWallets : walletBtcList" (click)="goToAmount(wallet)"
+            [ngClass]="{'wallet-disabled': !wallet.isComplete || wallet.needsBackup}">
             <ion-icon class="item-img" item-start>
               <img *ngIf="wallet.network == 'testnet'" [ngStyle]="{'background-color': wallet.color}" src="assets/img/icon-wallet-testnet.svg"
                 class="icon-wallet" />

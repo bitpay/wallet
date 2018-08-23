@@ -24,6 +24,17 @@ page-send {
       white-space: inherit;
     }
   }
+  .wallet-disabled {
+    background-color: #fbfbfb;
+    ion-icon {
+      img {
+        background-color: #d4d4d4 !important;
+      }
+    }
+    .item-title {
+      color: #d4d4d4;
+    }
+  }
   .send-header-wrapper {
     padding: 10px;
     background-color: white;
