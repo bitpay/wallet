@@ -26,6 +26,7 @@ import { SatToUnitPipe } from '../pipes/satToUnit';
 /* Directives */
 import { Animate } from '../directives/animate/animate';
 import { CopyToClipboard } from '../directives/copy-to-clipboard/copy-to-clipboard';
+import { IonContentBackgroundColor } from '../directives/ion-content-background-color/ion-content-background-color';
 import { IosScrollBgColor } from '../directives/ios-scroll-bg-color/ios-scroll-bg-color';
 import { LongPress } from '../directives/long-press/long-press';
 import { NavbarBg } from '../directives/navbar-bg/navbar-bg';
@@ -51,6 +52,7 @@ export function createTranslateLoader(http: HttpClient) {
     /* Directives */
     CopyToClipboard,
     IosScrollBgColor,
+    IonContentBackgroundColor,
     LongPress,
     NavbarBg,
     NoLowFee,
