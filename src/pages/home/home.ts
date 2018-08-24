@@ -8,7 +8,7 @@ import {
 } from 'ionic-angular';
 import * as _ from 'lodash';
 import * as moment from 'moment';
-import { Subscription } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 
 // Pages
 import { AddPage } from '../add/add';
@@ -79,6 +79,7 @@ export class HomePage {
   public validDataFromClipboard;
   public payProDetailsData;
   public remainingTimeStr: string;
+  public slideDown: boolean = false;
 
   public showRateCard: boolean;
   public homeTip: boolean;
@@ -410,7 +411,7 @@ export class HomePage {
   public checkClipboard() {
     return this.clipboardProvider
       .getData()
-      .then(data => {
+      .then(async data => {
         this.validDataFromClipboard = this.incomingDataProvider.parseData(data);
         if (!this.validDataFromClipboard) {
           return;
@@ -441,6 +442,8 @@ export class HomePage {
               this.logger.warn(err);
             });
         }
+        await Observable.timer(50).toPromise();
+        this.slideDown = true;
       })
       .catch(() => {
         this.logger.warn('Paste from clipboard err');
@@ -450,6 +453,7 @@ export class HomePage {
   public hideClipboardCard() {
     this.validDataFromClipboard = null;
     this.clipboardProvider.clear();
+    this.slideDown = false;
   }
 
   public processClipboardData(data): void {
