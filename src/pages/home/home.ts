@@ -173,6 +173,7 @@ export class HomePage {
   }
 
   private _didEnter() {
+    this.validDataFromClipboard = null;
     if (this.isNW) this.checkUpdate();
     this.checkHomeTip();
     this.checkFeedbackInfo();
