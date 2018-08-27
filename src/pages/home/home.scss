@@ -82,21 +82,23 @@ page-home {
     z-index: 1;
     position: relative;
   }
-  .slide-up,
-  .slide-down {
-    max-height: 0px;
-    -webkit-transition: max-height 0.5s linear;
-    -moz-transition: max-height 0.5s linear;
-    -o-transition: max-height 0.5s linear;
-    transition: max-height 0.5s linear;
+  .clipboard-card {
+    z-index: 0;
   }
-  .slide-down {
-    max-height: 160px;
+  .initial-margin {
+    margin-top: -140px;
   }
   .content-animation {
+    z-index: 5;
+    margin-top: 0px;
+    -webkit-transition: margin-top 0.7s cubic-bezier(1, 0, 0.93, 0.19);
+    -moz-transition: margin-top 0.7s cubic-bezier(1, 0, 0.93, 0.19);
+    -o-transition: margin-top 0.7s cubic-bezier(1, 0, 0.93, 0.19);
+    transition: margin-top 0.7s cubic-bezier(1, 0, 0.93, 0.19);
+    transition-delay: 0.2s;
     animation-name: bounce-card;
-    animation-duration: 1s;
-    animation-delay: 0.3s;
+    animation-duration: 0.7s;
+    animation-delay: 1s;
   }
 
   ion-refresher {
@@ -167,7 +169,7 @@ page-home {
       transform: translateY(0);
     }
     30% {
-      transform: translateY(30px);
+      transform: translateY(40px);
     }
     50% {
       transform: translateY(0);

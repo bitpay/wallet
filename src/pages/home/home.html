@@ -18,7 +18,7 @@
   <div class="wrapper">
     <div class="header-extend" *ngIf="wallets && wallets[0]"></div>
 
-    <div class="card" *ngIf="validDataFromClipboard" [ngClass]="{'slide-down':slideDown, 'slide-up':!slideDown}">
+    <div class="card clipboard-card" *ngIf="validDataFromClipboard">
       <ion-item-divider>
         <div class="title" item-start>
           <img src="assets/img/paste-clipboard.svg" alt="Clipboard" width="20" />
@@ -34,7 +34,7 @@
         (click)="processClipboardData(validDataFromClipboard.data)"></page-clipboard-card>
     </div>
 
-    <div [ngClass]="{'content-animation': slideDown}">
+    <div [ngClass]="{'content-animation': slideDown, 'initial-margin': validDataFromClipboard}">
 
       <div class="prompt-user-fullscreen-container" *ngIf="!wallets || !wallets[0]">
         <div class="prompt-user">
@@ -198,7 +198,7 @@
               <span *ngIf="wallet.isComplete() && !wallet.needsBackup">
                 <span *ngIf="!wallet.balanceHidden && !wallet.scanning">
                   {{wallet.status && wallet.status.totalBalanceStr ? (wallet.status.totalBalanceStr) : ( wallet.cachedBalance ? wallet.cachedBalance
-                  + (wallet.cachedBalanceUpdatedOn ? ' &middot; ' + ( wallet.cachedBalanceUpdatedOn * 1000 | amTimeAgo) : '') 
+                  + (wallet.cachedBalanceUpdatedOn ? ' &middot; ' + ( wallet.cachedBalanceUpdatedOn * 1000 | amTimeAgo) : '')
                   : '')}}
                 </span>
                 <span *ngIf="wallet.scanning" translate>Scanning funds</span>
@@ -288,8 +288,8 @@
               <img src="assets/img/icon-card.svg" class="icon-card" />
             </ion-icon>
             <div class="item-title">BitPay Visa&reg; Card ({{card.lastFourDigits}})</div>
-            <div class="item-subtitle">{{card.balance ? ((card.balance | number:'1.2-2') + ' ' + card.currency) : 'Add funds to get started'|translate}} {{card.updatedOn
-               ? (' &middot; ' + (card.updatedOn * 1000 | amTimeAgo)) : ''}}</div>
+            <div class="item-subtitle">{{card.balance ? ((card.balance | number:'1.2-2') + ' ' + card.currency) : 'Add funds to get started'|translate}} {{card.updatedOn 
+              ? (' &middot; ' + (card.updatedOn * 1000 | amTimeAgo)) : ''}}</div>
           </button>
         </ion-list>
       </div>

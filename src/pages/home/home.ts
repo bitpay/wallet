@@ -79,7 +79,7 @@ export class HomePage {
   public validDataFromClipboard;
   public payProDetailsData;
   public remainingTimeStr: string;
-  public slideDown: boolean = false;
+  public slideDown: boolean;
 
   public showRateCard: boolean;
   public homeTip: boolean;
@@ -123,6 +123,7 @@ export class HomePage {
     private incomingDataProvider: IncomingDataProvider,
     private addressProvider: AddressProvider
   ) {
+    this.slideDown = false;
     this.updatingWalletId = {};
     this.addressbook = {};
     this.cachedBalanceUpdateOn = '';
@@ -237,6 +238,8 @@ export class HomePage {
   ionViewWillLeave() {
     this.events.unsubscribe('finishIncomingDataMenuEvent');
     this.events.unsubscribe('bwsEvent');
+    this.validDataFromClipboard = null;
+    this.slideDown = false;
   }
 
   private subscribeBwsEvents() {
