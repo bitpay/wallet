@@ -173,7 +173,6 @@ export class HomePage {
   }
 
   private _didEnter() {
-    this.validDataFromClipboard = null;
     if (this.isNW) this.checkUpdate();
     this.checkHomeTip();
     this.checkFeedbackInfo();
@@ -239,6 +238,11 @@ export class HomePage {
   ionViewWillLeave() {
     this.events.unsubscribe('finishIncomingDataMenuEvent');
     this.events.unsubscribe('bwsEvent');
+    this.resetValuesForAnimationCard();
+  }
+
+  private async resetValuesForAnimationCard() {
+    await Observable.timer(50).toPromise();
     this.validDataFromClipboard = null;
     this.slideDown = false;
   }
@@ -461,7 +465,6 @@ export class HomePage {
   }
 
   public processClipboardData(data): void {
-    this.payProDetailsData = null;
     this.clearCountDownInterval();
     this.incomingDataProvider.redir(data, { fromHomeCard: true });
   }
