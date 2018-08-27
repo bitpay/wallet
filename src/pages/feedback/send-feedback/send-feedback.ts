@@ -89,13 +89,13 @@ export class SendFeedbackPage {
         );
         break;
       case 3:
-        this.reaction = 'Thanks!';
+        this.reaction = this.translate.instant('Thanks!');
         this.comment = this.translate.instant(
           "We're always listening for ways we can improve your experience. Feel free to leave us a review in the app store or request a new feature."
         );
         break;
       default:
-        this.reaction = 'Feedback!';
+        this.reaction = this.translate.instant('Feedback!');
         this.comment = this.translate.instant(
           "We're always listening for ways we can improve your experience. Feel free to leave us a review in the app store or request a new feature. Also, let us know if you experience any technical issues."
         );

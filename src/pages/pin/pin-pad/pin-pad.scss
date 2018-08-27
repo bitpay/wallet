@@ -8,6 +8,11 @@ pin-pad {
     margin-right: 10px;
   }
 
+  .buttons-container {
+    text-align: center;
+    width: 100%;
+  }
+
   .send-max {
     color: color($colors, primary);
     font-size: 14px;

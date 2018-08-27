@@ -2,7 +2,7 @@
   <ion-navbar [navbar-bg]="headerColor">
     <ion-title>
       <div [reveal-at-scroll-pos]="expandableHeader.headerHeight" [scrollArea]="scrollArea">
-        {{title | translate}}
+        title
       </div>
     </ion-title>
   </ion-navbar>
@@ -12,7 +12,7 @@
     <expandable-header [scrollArea]="scrollArea" [fadeFactor]="5" #expandableHeader>
       <ion-toolbar [navbar-bg]="headerColor" class="wide-header__title">
         <expandable-header-primary>
-          {{title | translate}}
+          title
         </expandable-header-primary>
       </ion-toolbar>
     </expandable-header>
