@@ -59,8 +59,7 @@ export class InterpolatedTranslateParser extends TranslateDefaultParser {
   public templateMatcher: RegExp = /{\s?([^{}\s]*)\s?}/g;
 }
 
-export class MyMissingTranslationHandler
-  implements MissingTranslationHandler {
+export class MyMissingTranslationHandler implements MissingTranslationHandler {
   public parser: TranslateParser = translateParserFactory();
   public handle(params: MissingTranslationHandlerParams) {
     return this.parser.interpolate(params.key, params.interpolateParams);
@@ -103,7 +102,10 @@ export class MyMissingTranslationHandler
     ProvidersModule,
     TranslateModule.forRoot({
       parser: { provide: TranslateParser, useFactory: translateParserFactory },
-      missingTranslationHandler: {provide: MissingTranslationHandler, useClass: MyMissingTranslationHandler},
+      missingTranslationHandler: {
+        provide: MissingTranslationHandler,
+        useClass: MyMissingTranslationHandler
+      },
       loader: {
         provide: TranslateLoader,
         useFactory: translateLoaderFactory,
