@@ -39,7 +39,6 @@ export class CreateWalletPage implements OnInit {
     12: 1
   };
 
-  private createForm: FormGroup;
   private defaults;
   private tc: number;
   private derivationPathByDefault: string;
@@ -53,6 +52,7 @@ export class CreateWalletPage implements OnInit {
   public title: string;
   public okText: string;
   public cancelText: string;
+  public createForm: FormGroup;
 
   constructor(
     private navCtrl: NavController,

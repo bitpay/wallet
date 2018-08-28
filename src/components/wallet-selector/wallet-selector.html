@@ -50,7 +50,7 @@
             <span class="text-gray" *ngIf="wallet.credentials.m > 1" translate>{{wallet.credentials.m}}-of-{{wallet.credentials.n}}</span>
             <ion-icon *ngIf="!wallet.balanceHidden && wallet.status && (wallet.status.totalBalanceSat != wallet.status.spendableAmount)"
               ios="ios-timer-outline" md="md-timer"></ion-icon>
-            <span *ngIf="wallet.error" class="error">{{wallet.error}}</span>
+            <div *ngIf="wallet.error" class="error">{{wallet.error}}</div>
           </span>
         </div>
       </button>
@@ -96,7 +96,7 @@
             <span class="text-gray" *ngIf="wallet.credentials.m > 1">{{wallet.credentials.m}}-of-{{wallet.credentials.n}}</span>
             <ion-icon *ngIf="!wallet.balanceHidden && wallet.status && (wallet.status.totalBalanceSat != wallet.status.spendableAmount)"
               ios="ios-timer-outline" md="md-timer"></ion-icon>
-            <span *ngIf="wallet.error" class="error">{{wallet.error}}</span>
+            <div *ngIf="wallet.error" class="error">{{wallet.error}}</div>
           </span>
         </div>
       </button>
