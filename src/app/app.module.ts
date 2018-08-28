@@ -5,7 +5,14 @@ import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 
 /* Modules */
 import { TranslatePoHttpLoader } from '@biesbjerg/ngx-translate-po-http-loader';
-import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import {
+  MissingTranslationHandler,
+  MissingTranslationHandlerParams,
+  TranslateDefaultParser,
+  TranslateLoader,
+  TranslateModule,
+  TranslateParser
+} from '@ngx-translate/core';
 import { ZXingScannerModule } from '@zxing/ngx-scanner';
 import { MomentModule } from 'angular2-moment';
 import { NgxQRCodeModule } from 'ngx-qrcode2';
@@ -40,8 +47,23 @@ import { COMPONENTS } from './../components/components';
 import { ProvidersModule } from './../providers/providers.module';
 
 /* Read translation files */
-export function createTranslateLoader(http: HttpClient) {
+export function translateLoaderFactory(http: HttpClient) {
   return new TranslatePoHttpLoader(http, 'assets/i18n/po', '.po');
+}
+
+export function translateParserFactory() {
+  return new InterpolatedTranslateParser();
+}
+
+export class InterpolatedTranslateParser extends TranslateDefaultParser {
+  public templateMatcher: RegExp = /{\s?([^{}\s]*)\s?}/g;
+}
+
+export class MyMissingTranslationHandler implements MissingTranslationHandler {
+  public parser: TranslateParser = translateParserFactory();
+  public handle(params: MissingTranslationHandlerParams) {
+    return this.parser.interpolate(params.key, params.interpolateParams);
+  }
 }
 
 @NgModule({
@@ -79,9 +101,14 @@ export function createTranslateLoader(http: HttpClient) {
     NgxQRCodeModule,
     ProvidersModule,
     TranslateModule.forRoot({
+      parser: { provide: TranslateParser, useFactory: translateParserFactory },
+      missingTranslationHandler: {
+        provide: MissingTranslationHandler,
+        useClass: MyMissingTranslationHandler
+      },
       loader: {
         provide: TranslateLoader,
-        useFactory: createTranslateLoader,
+        useFactory: translateLoaderFactory,
         deps: [HttpClient]
       }
     }),

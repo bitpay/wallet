@@ -54,11 +54,11 @@
         </div>
 
         <div class="balance-error" *ngIf="updateStatusError" (tap)="updateAll(true)">
-          <span class="title">Tap to retry</span>
+          <span class="title" translate>Tap to retry</span>
           <div>{{updateStatusError}}.</div>
         </div>
         <div class="balance-error" *ngIf="walletNotRegistered" (tap)="recreate()">
-          <span class="title">Tap to recreate</span>
+          <span class="title" translate>Tap to recreate</span>
           <div translate>This wallet is not registered at the given Bitcore Wallet Service (BWS). You can recreate it from the local information.</div>
         </div>
       </expandable-header-primary>

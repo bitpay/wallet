@@ -35,9 +35,9 @@
         <span translate>Activity</span>
       </ion-label>
       <ion-select okText="{{okText}}" cancelText="{{cancelText}}" padding-horizontal [(ngModel)]="dateRange.value" (ionChange)="update()">
-        <ion-option value="last30Days" selected>Recent</ion-option>
-        <ion-option value="lastMonth">Last Month</ion-option>
-        <ion-option value="all">All</ion-option>
+        <ion-option value="last30Days" selected translate>Recent</ion-option>
+        <ion-option value="lastMonth" translate>Last Month</ion-option>
+        <ion-option value="all" translate>All</ion-option>
       </ion-select>
     </ion-item-divider>
 
