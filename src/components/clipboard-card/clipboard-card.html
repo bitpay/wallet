@@ -1,16 +1,19 @@
 <button ion-item class="clipboard-paypro-container" *ngIf="validDataFromClipboard.type === 'PayPro'">
-  <div *ngIf="payProDetailsData" class="item-title">
+  <div *ngIf="payProDetailsData && !payProDetailsData.error" class="item-title">
     <span translate>Payment request</span>
   </div>
-  <div *ngIf="payProDetailsData" class="item-subtitle">
+  <div *ngIf="payProDetailsData && !payProDetailsData.error" class="item-subtitle">
     <span translate>From</span>: {{payProDetailsData?.domain}}
   </div>
-  <ion-note *ngIf="payProDetailsData" item-right>
+  <ion-note *ngIf="payProDetailsData && !payProDetailsData.error" item-right>
     <div class="amount">
       {{payProDetailsData?.amount | satToUnit: payProDetailsData?.coin}}
     </div>
     <span class="date">{{ remainingTimeStr }}</span>
   </ion-note>
+  <div *ngIf="payProDetailsData && payProDetailsData.error" class="item-title">
+    {{payProDetailsData?.error}}
+  </div>
   <div *ngIf="!payProDetailsData" class='loader gradient'></div>
   <div *ngIf="!payProDetailsData" class='loader loader-subtitle gradient'></div>
 </button>
