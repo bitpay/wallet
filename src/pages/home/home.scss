@@ -82,6 +82,24 @@ page-home {
     z-index: 1;
     position: relative;
   }
+  .clipboard-card {
+    z-index: 0;
+  }
+  .initial-margin {
+    margin-top: -140px;
+  }
+  .content-animation {
+    z-index: 5;
+    margin-top: 0px;
+    -webkit-transition: margin-top 0.7s cubic-bezier(1, 0, 0.93, 0.19) 0.2s;
+    -moz-transition: margin-top 0.7s cubic-bezier(1, 0, 0.93, 0.19) 0.2s;
+    -o-transition: margin-top 0.7s cubic-bezier(1, 0, 0.93, 0.19) 0.2s;
+    transition: margin-top 0.7s cubic-bezier(1, 0, 0.93, 0.19) 0.2s;
+    animation-name: bounce-card;
+    animation-duration: 0.7s;
+    animation-delay: 0.8s;
+  }
+
   ion-refresher {
     height: 120px;
     background: $toolbar-background;
@@ -130,6 +148,7 @@ page-home {
       margin-bottom: 2rem;
     }
   }
+
   @include fix-ios-bg-scroll();
 
   @media only screen and (device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3) {
@@ -138,6 +157,30 @@ page-home {
     }
     ion-fab[bottom] {
       bottom: env(safe-area-inset-bottom);
+    }
+  }
+
+  @keyframes bounce-card {
+    0% {
+      transform: translateY(0);
+    }
+    10% {
+      transform: translateY(0);
+    }
+    30% {
+      transform: translateY(40px);
+    }
+    50% {
+      transform: translateY(0);
+    }
+    57% {
+      transform: translateY(5px);
+    }
+    64% {
+      transform: translateY(0);
+    }
+    100% {
+      transform: translateY(0);
     }
   }
 }
