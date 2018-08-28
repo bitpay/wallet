@@ -606,10 +606,15 @@ export class ProfileProvider {
     });
   }
 
-  private normalizeMnemonic(words: string): string {
+  public normalizeMnemonic(words: string): string {
     if (!words || !words.indexOf) return words;
+
+    // \u3000: A space of non-variable width: used in Chinese, Japanese, Korean
     let isJA = words.indexOf('\u3000') > -1;
-    let wordList = words.split(/[\u3000\s]+/);
+    let wordList = words
+      .trim()
+      .toLowerCase()
+      .split(/[\u3000\s]+/);
 
     return wordList.join(isJA ? '\u3000' : ' ');
   }

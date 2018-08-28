@@ -153,14 +153,6 @@ export class ImportWalletPage {
     this.importForm.get('coin').updateValueAndValidity();
   }
 
-  normalizeMnemonic(words: string) {
-    if (!words || !words.indexOf) return words;
-    var isJA = words.indexOf('\u3000') > -1;
-    var wordList = words.split(/[\u3000\s]+/);
-
-    return wordList.join(isJA ? '\u3000' : ' ');
-  }
-
   private processWalletInfo(code: string): void {
     if (!code) return;
 
@@ -315,7 +307,7 @@ export class ImportWalletPage {
     }, 100);
   }
 
-  import() {
+  public import(): void {
     if (this.selectedTab === 'file') {
       this.importFromFile();
     } else {
@@ -390,7 +382,7 @@ export class ImportWalletPage {
     } else if (words.indexOf('xprv') == 0 || words.indexOf('tprv') == 0) {
       return this.importExtendedPrivateKey(words, opts);
     } else {
-      let wordList = words.split(/[\u3000\s]+/);
+      let wordList = words.trim().split(/[\u3000\s]+/);
 
       if (wordList.length % 3 != 0) {
         let title = this.translate.instant('Error');
