@@ -38,14 +38,16 @@
       <div *ngIf="!leavingFeedback" class="feedback-action-icon arrow arrow-dropdown"></div>
       <div *ngIf="leavingFeedback" class="feedback-action-icon arrow arrow-dropup"></div>
     </ion-row>
-    <div *ngIf="leavingFeedback">
-      <form class="feedback-form" [formGroup]="feedbackForm">
+  </div>
+  <div class="feedback-form-card" *ngIf="leavingFeedback">
+    <form class="feedback-form" [formGroup]="feedbackForm">
+      <ion-item>
         <ion-textarea #focusMe rows="3" type="text" formControlName="comment" [value]="feedbackForm.value.comment" required padding></ion-textarea>
-      </form>
-      <button ion-button class="button-standard" (click)="sendFeedback(feedbackForm.value.comment)" [disabled]="!feedbackForm.valid">
-        {{'Send' | translate}}
-      </button>
-    </div>
+      </ion-item>
+    </form>
+    <button ion-button class="button-standard" (click)="sendFeedback(feedbackForm.value.comment)" [disabled]="!feedbackForm.valid">
+      {{'Send' | translate}}
+    </button>
   </div>
   <div *ngIf="(score == 3 || !score) && isCordova" class="user-feedback-card" (click)="showAppreciationSheet()">
     <ion-row>
