@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { Events, NavController } from 'ionic-angular';
+import { Events, NavController, Platform } from 'ionic-angular';
+import { Observable, Subscription } from 'rxjs';
 import { Logger } from '../../providers/logger/logger';
 
 // Native
@@ -20,7 +21,6 @@ import { ProfileProvider } from '../../providers/profile/profile';
 import { WalletProvider } from '../../providers/wallet/wallet';
 
 import * as _ from 'lodash';
-import { Observable } from 'rxjs';
 import { WalletTabsChild } from '../wallet-tabs/wallet-tabs-child';
 import { WalletTabsProvider } from '../wallet-tabs/wallet-tabs.provider';
 
@@ -38,6 +38,8 @@ export class ReceivePage extends WalletTabsChild {
   public loading: boolean;
   public playAnimation: boolean;
 
+  private onResumeSubscription: Subscription;
+
   constructor(
     private actionSheetProvider: ActionSheetProvider,
     navCtrl: NavController,
@@ -51,10 +53,24 @@ export class ReceivePage extends WalletTabsChild {
     private translate: TranslateService,
     private externalLinkProvider: ExternalLinkProvider,
     private addressProvider: AddressProvider,
-    walletTabsProvider: WalletTabsProvider
+    walletTabsProvider: WalletTabsProvider,
+    private platform: Platform
   ) {
     super(navCtrl, profileProvider, walletTabsProvider);
     this.showShareButton = this.platformProvider.isCordova;
+  }
+
+  ionViewWillEnter() {
+    this.onResumeSubscription = this.platform.resume.subscribe(() => {
+      this.setAddress();
+      this.events.subscribe('Wallet/setAddress', (newAddr?: boolean) => {
+        this.setAddress(newAddr);
+      });
+    });
+  }
+
+  ionViewWillLeave() {
+    this.onResumeSubscription.unsubscribe();
   }
 
   ionViewDidLoad() {

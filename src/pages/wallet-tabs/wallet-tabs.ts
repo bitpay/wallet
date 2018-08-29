@@ -1,5 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
-import { Events, NavParams } from 'ionic-angular';
+import { Events, NavParams, Platform } from 'ionic-angular';
+import { Subscription } from 'rxjs';
 
 // Pages
 import { ReceivePage } from '../receive/receive';
@@ -30,12 +31,14 @@ export class WalletTabsPage {
   walletId: string;
 
   private isNW: boolean;
-
+  private onPauseSubscription: Subscription;
+  private onResumeSubscription: Subscription;
   constructor(
     private navParams: NavParams,
     private walletTabsProvider: WalletTabsProvider,
     private events: Events,
-    private platformProvider: PlatformProvider
+    private platformProvider: PlatformProvider,
+    private platform: Platform
   ) {
     this.isNW = this.platformProvider.isNW;
   }
@@ -48,10 +51,17 @@ export class WalletTabsPage {
     if (this.isNW) {
       this.updateDesktopOnFocus();
     }
-    this.subscribeBwsEvents();
+    this.subscribeEvents();
+
+    this.onPauseSubscription = this.platform.pause.subscribe(() => {
+      this.unsubscribeEvents();
+    });
+    this.onResumeSubscription = this.platform.resume.subscribe(() => {
+      this.subscribeEvents();
+    });
   }
 
-  private subscribeBwsEvents(): void {
+  private subscribeEvents(): void {
     this.events.subscribe('bwsEvent', (walletId, type) => {
       // Update current address
       if (this.walletId == walletId && type == 'NewIncomingTx')
@@ -93,6 +103,8 @@ export class WalletTabsPage {
 
   ngOnDestroy() {
     this.walletTabsProvider.clear();
+    this.onPauseSubscription.unsubscribe();
+    this.onResumeSubscription.unsubscribe();
     this.events.publish('Home/reloadStatus');
   }
 }
