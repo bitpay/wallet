@@ -273,7 +273,7 @@ export class BackupGamePage {
             this.navCtrl.push(DisclaimerPage);
           } else {
             this.navCtrl.popToRoot();
-            this.events.publish('Wallet/setAddress');
+            this.events.publish('Wallet/setAddress', true);
           }
         });
       })

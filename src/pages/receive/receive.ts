@@ -59,8 +59,8 @@ export class ReceivePage extends WalletTabsChild {
 
   ionViewDidLoad() {
     this.setAddress();
-    this.events.subscribe('Wallet/setAddress', () => {
-      this.setAddress(true);
+    this.events.subscribe('Wallet/setAddress', (newAddr?: boolean) => {
+      this.setAddress(newAddr);
     });
   }
 
@@ -77,12 +77,8 @@ export class ReceivePage extends WalletTabsChild {
     });
   }
 
-  private async setAddress(
-    newAddr?: boolean,
-    changingWallet?: boolean
-  ): Promise<void> {
-    this.loading =
-      newAddr || _.isEmpty(this.address) || changingWallet ? true : false;
+  private async setAddress(newAddr?: boolean): Promise<void> {
+    this.loading = newAddr || _.isEmpty(this.address) ? true : false;
 
     let addr: string = (await this.walletProvider
       .getAddress(this.wallet, newAddr)
