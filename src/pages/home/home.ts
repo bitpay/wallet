@@ -445,7 +445,8 @@ export class HomePage {
               this.paymentTimeControl(this.payProDetailsData.expires);
             })
             .catch(err => {
-              this.validDataFromClipboard = null;
+              this.payProDetailsData = {};
+              this.payProDetailsData.error = err;
               this.logger.warn('Error in Payment Protocol', err);
               this.logger.warn(err);
             });

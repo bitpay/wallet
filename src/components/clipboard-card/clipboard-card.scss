@@ -10,6 +10,9 @@ page-clipboard-card {
         font-size: 12.5px;
       }
     }
+    .item-inner {
+      border-bottom: none !important;
+    }
     .loader {
       width: 100%;
       height: 18px;
