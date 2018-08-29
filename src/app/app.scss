@@ -28,6 +28,17 @@ ion-label {
   white-space: normal;
 }
 
+.two-lines {
+  white-space: normal;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  line-clamp: 2;
+  -webkit-line-clamp: 2;
+  box-orient: vertical;
+  -webkit-box-orient: vertical;
+}
+
 // Buttons
 // --------------------------------------------------
 .bottom-absolute {
@@ -341,7 +352,7 @@ ion-icon {
   max-width: 300px !important;
   margin-left: auto;
   margin-right: auto;
-  display: block;
+  display: flex;
   min-height: 57px;
   margin-top: 1.5rem;
   margin-bottom: 1.5rem;
@@ -349,6 +360,9 @@ ion-icon {
   box-shadow: none;
   font-weight: 400;
   font-size: 18px;
+  span {
+    @extend .two-lines;
+  }
 }
 
 .button-default {

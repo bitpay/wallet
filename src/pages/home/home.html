@@ -160,11 +160,11 @@
 
       <div class="card" *ngIf="walletsBtc && walletsBtc[0]">
         <ion-item-divider>
-          <div class="title" item-start>
+          <div class="title wallets-list-title" item-start>
             <img src="assets/img/icon-bitcoin.svg" alt="Bitcoin Wallets" width="18" />
             <span translate>Bitcoin Wallets</span>
           </div>
-          <div item-end *ngIf="!showReorderBtc">
+          <div class="title-buttons" item-end *ngIf="!showReorderBtc">
             <button ion-button clear icon-only color="grey" (click)="goToAddView()">
               <ion-icon name="add"></ion-icon>
             </button>
@@ -198,8 +198,8 @@
               <span *ngIf="wallet.isComplete() && !wallet.needsBackup">
                 <span *ngIf="!wallet.balanceHidden && !wallet.scanning">
                   {{wallet.status && wallet.status.totalBalanceStr ? (wallet.status.totalBalanceStr) : ( wallet.cachedBalance ? wallet.cachedBalance
-                  + (wallet.cachedBalanceUpdatedOn ? ' &middot; ' + ( wallet.cachedBalanceUpdatedOn * 1000 | amTimeAgo) : '') 
-                  : '')}}
+                  + (wallet.cachedBalanceUpdatedOn ? ' &middot; ' + ( wallet.cachedBalanceUpdatedOn * 1000 | amTimeAgo) :
+                  '') : '')}}
                 </span>
                 <span *ngIf="wallet.scanning" translate>Scanning funds</span>
                 <span *ngIf="wallet.balanceHidden && !wallet.scanning">[
@@ -216,11 +216,11 @@
 
       <div class="card" *ngIf="walletsBch && walletsBch[0]">
         <ion-item-divider>
-          <div class="title" item-start>
+          <div class="title wallets-list-title" item-start>
             <img src="assets/img/bitcoin-cash-logo.svg" alt="Bitcoin Cash Wallets" width="22" />
             <span translate>Bitcoin Cash Wallets</span>
           </div>
-          <div item-end *ngIf="!showReorderBch">
+          <div class="title-buttons" item-end *ngIf="!showReorderBch">
             <button ion-button clear icon-only color="grey" (click)="goToAddView()">
               <ion-icon name="add"></ion-icon>
             </button>
@@ -254,8 +254,8 @@
               <span *ngIf="wallet.isComplete() && !wallet.needsBackup">
                 <span *ngIf="!wallet.balanceHidden && !wallet.scanning">
                   {{wallet.status && wallet.status.totalBalanceStr ? (wallet.status.totalBalanceStr) : ( wallet.cachedBalance ? wallet.cachedBalance
-                  + (wallet.cachedBalanceUpdatedOn ? ' &middot; ' + ( wallet.cachedBalanceUpdatedOn * 1000 | amTimeAgo) : '') 
-                  : '')}}
+                  + (wallet.cachedBalanceUpdatedOn ? ' &middot; ' + ( wallet.cachedBalanceUpdatedOn * 1000 | amTimeAgo) :
+                  '') : '')}}
                 </span>
                 <span *ngIf="wallet.scanning" translate>Scanning funds</span>
                 <span *ngIf="wallet.balanceHidden && !wallet.scanning">[
@@ -288,8 +288,8 @@
               <img src="assets/img/icon-card.svg" class="icon-card" />
             </ion-icon>
             <div class="item-title">BitPay Visa&reg; Card ({{card.lastFourDigits}})</div>
-            <div class="item-subtitle">{{card.balance ? ((card.balance | number:'1.2-2') + ' ' + card.currency) : 'Add funds to get started'|translate}} {{card.updatedOn 
-              ? (' &middot; ' + (card.updatedOn * 1000 | amTimeAgo)) : ''}}</div>
+            <div class="item-subtitle">{{card.balance ? ((card.balance | number:'1.2-2') + ' ' + card.currency) : 'Add funds to get started'|translate}}
+              {{card.updatedOn ? (' &middot; ' + (card.updatedOn * 1000 | amTimeAgo)) : ''}}</div>
           </button>
         </ion-list>
       </div>

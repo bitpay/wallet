@@ -29,7 +29,7 @@
     <ion-list>
       <button class="contact" ion-item *ngFor="let entry of filteredAddressbook" (click)="viewEntry(entry)">
         <gravatar [name]="entry.name" [height]="30" [width]="30" [email]="entry.email"></gravatar>
-        <div>
+        <div class="contact-info">
           <div clss="item-title">{{ entry.name }}</div>
           <div class="item-subtitle">{{ entry.address }}</div>
         </div>

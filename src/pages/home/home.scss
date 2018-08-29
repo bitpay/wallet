@@ -29,11 +29,30 @@ page-home {
       margin: 10px auto;
     }
   }
+  .card,
+  ion-card {
+    .wallets-list-title {
+      display: flex;
+      align-items: center;
+      max-width: 70%;
+      > img {
+        margin-right: 7px;
+      }
+      > span {
+        line-height: 18px;
+      }
+    }
+    .title-buttons {
+      display: flex;
+      button:first-child {
+        margin-right: 5px;
+      }
+    }
+  }
   .title {
     font-weight: 500;
     > img {
-      vertical-align: sub;
-      margin-right: 5px;
+      margin-right: 7px;
     }
   }
   .error {
