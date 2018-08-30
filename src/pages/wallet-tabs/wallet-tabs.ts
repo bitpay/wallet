@@ -45,13 +45,6 @@ export class WalletTabsPage {
 
   ionViewDidLoad() {
     this.walletId = this.navParams.get('walletId');
-  }
-
-  ionViewWillEnter() {
-    if (this.isNW) {
-      this.updateDesktopOnFocus();
-    }
-    this.subscribeEvents();
 
     this.onPauseSubscription = this.platform.pause.subscribe(() => {
       this.unsubscribeEvents();
@@ -59,6 +52,13 @@ export class WalletTabsPage {
     this.onResumeSubscription = this.platform.resume.subscribe(() => {
       this.subscribeEvents();
     });
+  }
+
+  ionViewWillEnter() {
+    if (this.isNW) {
+      this.updateDesktopOnFocus();
+    }
+    this.subscribeEvents();
   }
 
   private subscribeEvents(): void {
