@@ -475,7 +475,7 @@ msgstr ""
 msgid "Copied to clipboard"
 msgstr ""
 
-msgid "Copied {coin}"
+msgid "Copied {coin} address"
 msgstr ""
 
 msgid "Copy this text as it is to a safe place (notepad or email)"
