@@ -14,7 +14,10 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content no-bounce #scrollArea [ios-scroll-bg-color]="wallet.color" [ngClass]="{'zero-state': shouldShowZeroState()}">
+<ion-content no-bounce #scrollArea [ios-scroll-bg-color]="wallet.color" [ios-fixed-bg-color]="wallet.color" [ngClass]="{'zero-state': shouldShowZeroState()}">
+  <ion-refresher (ionRefresh)="doRefresh($event)" [ngStyle]="{'background': wallet.color}" pullMin="90" pullMax="180">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
   <div class="wrapper">
     <expandable-header class="balance-card" [scrollArea]="scrollArea" [ngStyle]="{'background': wallet.color}">
       <expandable-header-primary class="balance-header">
