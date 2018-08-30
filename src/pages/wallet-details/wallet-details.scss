@@ -7,8 +7,11 @@ page-wallet-details {
     .refresher-pulling ion-icon {
       color: white;
     }
-    .refresher-refreshing .spinner-crescent circle {
-      stroke: white;
+    .refresher-refreshing {
+      .spinner-crescent circle,
+      .spinner-ios line {
+        stroke: white;
+      }
     }
   }
   ion-header,
