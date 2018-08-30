@@ -1,8 +1,14 @@
 page-settings {
-  .wallet-warning {
-    ion-label {
-      white-space: inherit;
-    }
+  ion-label,
+  .item-title {
+    white-space: normal;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    line-clamp: 2;
+    -webkit-line-clamp: 2;
+    box-orient: vertical;
+    -webkit-box-orient: vertical;
   }
   .icon-wallet,
   .icon-services {

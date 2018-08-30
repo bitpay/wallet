@@ -41,5 +41,12 @@ page-addressbook {
         margin-right: 1.5rem;
       }
     }
+    .contact-info {
+      overflow: hidden;
+      .item-title {
+        text-overflow: ellipsis;
+        overflow: hidden;
+      }
+    }
   }
 }
