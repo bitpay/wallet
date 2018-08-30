@@ -1,4 +1,16 @@
 page-wallet-details {
+  ion-refresher {
+    height: 120px;
+    &-content {
+      margin-top: -25px;
+    }
+    .refresher-pulling ion-icon {
+      color: white;
+    }
+    .refresher-refreshing .spinner-crescent circle {
+      stroke: white;
+    }
+  }
   ion-header,
   .toolbar-background {
     background-color: rgba(0, 0, 0, 0) !important;

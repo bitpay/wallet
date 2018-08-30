@@ -397,4 +397,11 @@ export class WalletDetailsPage extends WalletTabsChild {
       cancelText
     );
   }
+
+  public doRefresh(refresher) {
+    this.updateAll(true);
+    setTimeout(() => {
+      refresher.complete();
+    }, 2000);
+  }
 }
