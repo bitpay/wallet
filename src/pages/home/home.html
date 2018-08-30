@@ -12,7 +12,7 @@
 </ion-header>
 
 <ion-content class="fullscreen-tab" [ngClass]="{'zero-state': !wallets || !wallets[0]}">
-  <ion-refresher (ionRefresh)="doRefresh($event)" *ngIf="!showReorderBtc && !showReorderBch">
+  <ion-refresher (ionRefresh)="doRefresh($event)" *ngIf="!showReorderBtc && !showReorderBch" pullMin="90" pullMax="180">
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
   <div class="wrapper">
