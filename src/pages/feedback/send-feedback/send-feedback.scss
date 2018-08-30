@@ -86,12 +86,26 @@ page-send-feedback {
     text-decoration: none;
   }
   .feedback-form {
+    margin: -12px 12px 12px 12px;
+    ion-item {
+      .item-inner {
+        border-bottom: none !important;
+        box-shadow: none !important;
+      }
+    }
     ion-textarea {
       textarea {
         font-size: 16px;
         margin: 0px;
       }
     }
+  }
+  .feedback-form-card {
+    background-color: white;
+    margin: -20px 12px 12px 12px;
+    border-radius: 3px;
+    padding-bottom: 18px;
+    box-shadow: 0px 7px 11px 0px rgba(0, 0, 0, 0.06);
   }
   .close-btn {
     font-size: 2em;
