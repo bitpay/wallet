@@ -265,10 +265,6 @@ msgstr ""
 "Be sure to store your recovery phrase in a secure place. If this app is "
 "deleted, your money cannot be recovered without it."
 
-#| msgid ""
-#| "Because you are sending the maximum amount contained in this wallet, the "
-#| "{{params.coinName}} miner fee ({{params.fee}} {{params.coin}}) will be "
-#| "deducted from the total. {{params.msg}}"
 msgid ""
 "Because you are sending the maximum amount contained in this wallet, the "
 "{coinName} miner fee ({fee} {coin}) will be deducted from the total. {msg}"
@@ -525,7 +521,6 @@ msgstr "Copied to Clipboard"
 msgid "Copied to clipboard"
 msgstr "Copied to clipboard"
 
-#| msgid "Copied"
 msgid "Copied {coin}"
 msgstr "Copied {coin}"
 
@@ -930,7 +925,6 @@ msgstr "Feedback"
 msgid "Feedback could not be submitted. Please try again later."
 msgstr "Feedback could not be submitted. Please try again later."
 
-#| msgid "Feedback"
 msgid "Feedback!"
 msgstr "Feedback!"
 
@@ -1035,7 +1029,6 @@ msgstr "Gift card expired"
 msgid "Gift card generated and ready to use."
 msgstr "Gift card generated and ready to use."
 
-#| msgid "Send feedback"
 msgid "Give us feedback"
 msgstr "Give us feedback"
 
@@ -1793,7 +1786,6 @@ msgstr "Random"
 msgid "Rate"
 msgstr "Rate"
 
-#| msgid "Rate on the {{params?.storeName}}"
 msgid "Rate on the {storeName}"
 msgstr "Rate on the {storeName}"
 
@@ -1818,7 +1810,6 @@ msgstr "Received Funds"
 msgid "Receiving"
 msgstr "Receiving"
 
-#| msgid "Receiving {{params.coinName}} address"
 msgid "Receiving {coinName} address"
 msgstr "Receiving {coinName} address"
 
@@ -2023,7 +2014,6 @@ msgstr "Session log"
 msgid "Set up a password"
 msgstr "Set up a password"
 
-#| msgid "Card Settings"
 msgid "Settings"
 msgstr "Settings"
 
@@ -2045,9 +2035,6 @@ msgstr "Share Address"
 msgid "Share the love by inviting your friends."
 msgstr "Share the love by inviting your friends."
 
-#| msgid ""
-#| "Share this QR code to receive {{params.amount}} in your wallet {{params."
-#| "name}}."
 msgid "Share this QR code to receive {amount} in your wallet {name}."
 msgstr "Share this QR code to receive {amount} in your wallet {name}."
 
@@ -2158,7 +2145,6 @@ msgstr "Take control of your money, get started with bitcoin."
 msgid "Tap and hold to show"
 msgstr "Tap and hold to show"
 
-#| msgid "Wallet created"
 msgid "Tap to recreate"
 msgstr "Tap to recreate"
 
@@ -2758,10 +2744,6 @@ msgstr "Yes"
 msgid "Yes, skip"
 msgstr "Yes, skip"
 
-#| msgid ""
-#| "You are trying to send ({{params.amount}} {{params.coin | uppercase}}) "
-#| "more than what your wallet contains. Please enter a lower amount or send "
-#| "max."
 msgid ""
 "You are trying to send ({amount} {coin}) more than what your wallet "
 "contains. Please enter a lower amount or send max."
@@ -2856,11 +2838,6 @@ msgstr "Your purchase could not be completed"
 msgid "Your purchase was added to the list of pending"
 msgstr "Your purchase was added to the list of pending"
 
-#| msgid ""
-#| "Your wallet address is similar to a bank account number. You can add "
-#| "funds to your wallet by withdrawing funds you may have stored on an "
-#| "exchange to your wallet address. Or other {{params.coinName}} users can "
-#| "send you money by scanning your QR code."
 msgid ""
 "Your wallet address is similar to a bank account number. You can add funds "
 "to your wallet by withdrawing funds you may have stored on an exchange to "
@@ -2883,7 +2860,6 @@ msgstr ""
 "Your wallet key will be encrypted. The encrypt password cannot be recovered. "
 "Be sure to write it down."
 
-#| msgid "Your {{params.walletType}} wallet is backed up!"
 msgid "Your {walletType} wallet is backed up!"
 msgstr "Your {walletType} wallet is backed up!"
 
@@ -2905,14 +2881,9 @@ msgstr "of total amount"
 msgid "preparing..."
 msgstr "preparing..."
 
-#| msgid "{{params.appName}} BCH wallets use the CashAddr format by default"
 msgid "{appName} BCH wallets use the CashAddr format by default"
 msgstr "{appName} BCH wallets use the CashAddr format by default"
 
-#| msgid ""
-#| "{{params.coinName}} miner fees are high due to record demand for limited "
-#| "space on the {{params.coinName}} network. BitPay does not receive and "
-#| "does not control {{params.coinName}} miner fees."
 msgid ""
 "{coinName} miner fees are high due to record demand for limited space on the "
 "{coinName} network. BitPay does not receive and does not control {coinName} "
@@ -2922,7 +2893,6 @@ msgstr ""
 "{coinName} network. BitPay does not receive and does not control {coinName} "
 "miner fees."
 
-#| msgid "{{params.coinName}} miner fees unusually high"
 msgid "{coinName} miner fees unusually high"
 msgstr "{coinName} miner fees unusually high"
 
@@ -2957,9 +2927,3 @@ msgstr "{{wallet.credentials.m}}-of-{{wallet.credentials.n}}"
 
 msgid "{{wallet.m}}-of-{{wallet.n}}"
 msgstr "{{wallet.m}}-of-{{wallet.n}}"
-
-#~ msgid "Copied {{params.coin | uppercase}} address"
-#~ msgstr "Copied {{params.coin | uppercase}} address"
-
-#~ msgid "Verify your identity"
-#~ msgstr "Verify your identity"
