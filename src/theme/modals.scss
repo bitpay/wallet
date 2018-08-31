@@ -13,6 +13,10 @@
   }
 }
 
+.fullscreen-modal {
+  z-index: 999999 !important;
+}
+
 .wallet-details-modal {
   transition: opacity 300ms ease;
   &.scanning {
