@@ -12,7 +12,7 @@ msgstr ""
 "Last-Translator: cmgustavo83\n"
 "Language-Team: Japanese\n"
 "Language: ja\n"
-"PO-Revision-Date: 2018-08-22 19:37\n"
+"PO-Revision-Date: 2018-08-30 17:27\n"
 
 msgid "(Trusted)"
 msgstr "(信頼済み)"
@@ -106,6 +106,9 @@ msgstr ""
 
 msgid "Advanced"
 msgstr "上級者向け"
+
+msgid "All"
+msgstr ""
 
 msgid "All addresses"
 msgstr ""
@@ -214,7 +217,7 @@ msgstr ""
 msgid "Be sure to store your recovery phrase in a secure place. If this app is deleted, your money cannot be recovered without it."
 msgstr "書き留めた復元フレーズは金庫など、安全な場所にて保管して下さい。このアプリが削除されたら、復元フレーズが必須になってきます。"
 
-msgid "Because you are sending the maximum amount contained in this wallet, the {{params.coinName}} miner fee ({{params.fee}} {{params.coin}}) will be deducted from the total. {{params.msg}}"
+msgid "Because you are sending the maximum amount contained in this wallet, the {coinName} miner fee ({fee} {coin}) will be deducted from the total. {msg}"
 msgstr ""
 
 msgid "Before retrieving your wallet address, it's recommended that you first write down your recovery phrase and store it securely so that your wallet can be recovered in the case your device was lost or stolen."
@@ -448,7 +451,7 @@ msgstr ""
 msgid "Copied to clipboard"
 msgstr "クリップボードにコピーしました"
 
-msgid "Copied {{params.coin | uppercase}} address"
+msgid "Copied {coin} address"
 msgstr ""
 
 msgid "Copy this text as it is to a safe place (notepad or email)"
@@ -838,6 +841,9 @@ msgstr ""
 msgid "Feedback could not be submitted. Please try again later."
 msgstr "フォームを送信する事ができませんでした。時間をおいて再試行ください。"
 
+msgid "Feedback!"
+msgstr ""
+
 msgid "Fetching BitPay Account..."
 msgstr "BitPay アカウントを取得..."
 
@@ -929,6 +935,9 @@ msgid "Gift card expired"
 msgstr "期限切れのギフトカード"
 
 msgid "Gift card generated and ready to use."
+msgstr ""
+
+msgid "Give us feedback"
 msgstr ""
 
 msgid "Go Back"
@@ -1116,6 +1125,9 @@ msgstr "この鍵は既存のウォレットにて登録されています"
 
 msgid "Language"
 msgstr "言語設定"
+
+msgid "Last Month"
+msgstr ""
 
 msgid "Learn More"
 msgstr ""
@@ -1597,7 +1609,7 @@ msgstr ""
 msgid "Rate"
 msgstr ""
 
-msgid "Rate on the {{params?.storeName}}"
+msgid "Rate on the {storeName}"
 msgstr ""
 
 msgid "Read more in our Wiki"
@@ -1621,7 +1633,7 @@ msgstr "受領した資金"
 msgid "Receiving"
 msgstr "受け取り中"
 
-msgid "Receiving {{params.coinName}} address"
+msgid "Receiving {coinName} address"
 msgstr ""
 
 msgid "Recent"
@@ -1825,6 +1837,9 @@ msgstr "セッションのログ"
 msgid "Set up a password"
 msgstr "パスワードを設定"
 
+msgid "Settings"
+msgstr ""
+
 msgid "ShapeShift is not available at this moment. Please, try again later."
 msgstr ""
 
@@ -1843,7 +1858,7 @@ msgstr ""
 msgid "Share the love by inviting your friends."
 msgstr "是非友達と共有して下さい"
 
-msgid "Share this QR code to receive {{params.amount}} in your wallet {{params.name}}."
+msgid "Share this QR code to receive {amount} in your wallet {name}."
 msgstr ""
 
 msgid "Share this invitation with your copayers"
@@ -1949,6 +1964,12 @@ msgstr ""
 
 msgid "Tap and hold to show"
 msgstr "長押しで表示"
+
+msgid "Tap to recreate"
+msgstr ""
+
+msgid "Tap to retry"
+msgstr ""
 
 msgid "Terms of Use"
 msgstr "利用規約"
@@ -2169,6 +2190,9 @@ msgstr ""
 msgid "Unlink the card will remove it from this device."
 msgstr ""
 
+msgid "Unlock App"
+msgstr ""
+
 msgid "Unsent transactions"
 msgstr "未送信取引"
 
@@ -2207,9 +2231,6 @@ msgstr ""
 
 msgid "Validating recovery phrase..."
 msgstr "復元フレーズを検証中…"
-
-msgid "Verify your identity"
-msgstr ""
 
 msgid "Version"
 msgstr "バージョン"
@@ -2409,7 +2430,7 @@ msgstr "はい"
 msgid "Yes, skip"
 msgstr ""
 
-msgid "You are trying to send ({{params.amount}} {{params.coin | uppercase}}) more than what your wallet contains. Please enter a lower amount or send max."
+msgid "You are trying to send ({amount} {coin}) more than what your wallet contains. Please enter a lower amount or send max."
 msgstr ""
 
 msgid "You can create a backup later from your wallet settings."
@@ -2469,7 +2490,7 @@ msgstr ""
 msgid "Your purchase was added to the list of pending"
 msgstr ""
 
-msgid "Your wallet address is similar to a bank account number. You can add funds to your wallet by withdrawing funds you may have stored on an exchange to your wallet address. Or other {{params.coinName}} users can send you money by scanning your QR code."
+msgid "Your wallet address is similar to a bank account number. You can add funds to your wallet by withdrawing funds you may have stored on an exchange to your wallet address. Or other {coinName} users can send you money by scanning your QR code."
 msgstr ""
 
 msgid "Your wallet is never saved to cloud storage or standard device backups."
@@ -2478,7 +2499,7 @@ msgstr "ウォレットは一度もクラウドへ保存されたりすること
 msgid "Your wallet key will be encrypted. The encrypt password cannot be recovered. Be sure to write it down."
 msgstr ""
 
-msgid "Your {{params.walletType}} wallet is backed up!"
+msgid "Your {walletType} wallet is backed up!"
 msgstr ""
 
 msgid "[Balance Hidden]"
@@ -2499,6 +2520,15 @@ msgstr ""
 msgid "preparing..."
 msgstr "準備中..."
 
+msgid "{appName} BCH wallets use the CashAddr format by default"
+msgstr ""
+
+msgid "{coinName} miner fees are high due to record demand for limited space on the {coinName} network. BitPay does not receive and does not control {coinName} miner fees."
+msgstr ""
+
+msgid "{coinName} miner fees unusually high"
+msgstr ""
+
 msgid "{{amountUnitStr}} Gift Card"
 msgstr ""
 
@@ -2509,15 +2539,6 @@ msgid "{{btx.feeRateStr}} of the total amount"
 msgstr ""
 
 msgid "{{fee}} {{coin}} will be deducted for bitcoin networking fees."
-msgstr ""
-
-msgid "{{params.appName}} BCH wallets use the CashAddr format by default"
-msgstr ""
-
-msgid "{{params.coinName}} miner fees are high due to record demand for limited space on the {{params.coinName}} network. BitPay does not receive and does not control {{params.coinName}} miner fees."
-msgstr ""
-
-msgid "{{params.coinName}} miner fees unusually high"
 msgstr ""
 
 msgid "{{tx.feeRateStr}} of the total amount"

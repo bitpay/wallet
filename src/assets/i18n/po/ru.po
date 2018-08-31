@@ -12,7 +12,7 @@ msgstr ""
 "Last-Translator: cmgustavo83\n"
 "Language-Team: Russian\n"
 "Language: ru\n"
-"PO-Revision-Date: 2018-08-22 19:37\n"
+"PO-Revision-Date: 2018-08-30 17:27\n"
 
 msgid "(Trusted)"
 msgstr "(Доверенный)"
@@ -106,6 +106,9 @@ msgstr "Адреса с балансом"
 
 msgid "Advanced"
 msgstr "Дополнительные возможности"
+
+msgid "All"
+msgstr ""
 
 msgid "All addresses"
 msgstr "Все адреса"
@@ -212,7 +215,7 @@ msgstr "Баланс Скрыт"
 msgid "Be sure to store your recovery phrase in a secure place. If this app is deleted, your money cannot be recovered without it."
 msgstr "Сохраните ваше ключевое словосочетание в безопасном месте. Если {{appName}} будет удален, ваши деньги нельзя будет восстановить без ключевого словосочетания."
 
-msgid "Because you are sending the maximum amount contained in this wallet, the {{params.coinName}} miner fee ({{params.fee}} {{params.coin}}) will be deducted from the total. {{params.msg}}"
+msgid "Because you are sending the maximum amount contained in this wallet, the {coinName} miner fee ({fee} {coin}) will be deducted from the total. {msg}"
 msgstr ""
 
 msgid "Before retrieving your wallet address, it's recommended that you first write down your recovery phrase and store it securely so that your wallet can be recovered in the case your device was lost or stolen."
@@ -446,7 +449,7 @@ msgstr ""
 msgid "Copied to clipboard"
 msgstr "Скопировано в буфер обмена"
 
-msgid "Copied {{params.coin | uppercase}} address"
+msgid "Copied {coin} address"
 msgstr ""
 
 msgid "Copy this text as it is to a safe place (notepad or email)"
@@ -836,6 +839,9 @@ msgstr ""
 msgid "Feedback could not be submitted. Please try again later."
 msgstr "Отзыв не может быть отправлен. Пожалуйста, попробуйте позже."
 
+msgid "Feedback!"
+msgstr ""
+
 msgid "Fetching BitPay Account..."
 msgstr "Подключение учетной записи BitPay..."
 
@@ -927,6 +933,9 @@ msgid "Gift card expired"
 msgstr "Истек срок действия Подарочной карты"
 
 msgid "Gift card generated and ready to use."
+msgstr ""
+
+msgid "Give us feedback"
 msgstr ""
 
 msgid "Go Back"
@@ -1114,6 +1123,9 @@ msgstr "Ключ уже связан с существующим кошельк�
 
 msgid "Language"
 msgstr "Язык"
+
+msgid "Last Month"
+msgstr ""
 
 msgid "Learn More"
 msgstr ""
@@ -1595,7 +1607,7 @@ msgstr "Случайное"
 msgid "Rate"
 msgstr "Курс"
 
-msgid "Rate on the {{params?.storeName}}"
+msgid "Rate on the {storeName}"
 msgstr ""
 
 msgid "Read more in our Wiki"
@@ -1619,7 +1631,7 @@ msgstr "Полученные средства"
 msgid "Receiving"
 msgstr "Получение"
 
-msgid "Receiving {{params.coinName}} address"
+msgid "Receiving {coinName} address"
 msgstr ""
 
 msgid "Recent"
@@ -1823,6 +1835,9 @@ msgstr "Журнал сеанса"
 msgid "Set up a password"
 msgstr "Задайте пароль"
 
+msgid "Settings"
+msgstr ""
+
 msgid "ShapeShift is not available at this moment. Please, try again later."
 msgstr "ShapeShift в настоящий момент недоступен. Пожалуйста, повторите попытку позже."
 
@@ -1841,7 +1856,7 @@ msgstr "Поделиться Адресом"
 msgid "Share the love by inviting your friends."
 msgstr "Поделитесь любовью и пригласите друзей."
 
-msgid "Share this QR code to receive {{params.amount}} in your wallet {{params.name}}."
+msgid "Share this QR code to receive {amount} in your wallet {name}."
 msgstr ""
 
 msgid "Share this invitation with your copayers"
@@ -1945,6 +1960,12 @@ msgstr ""
 
 msgid "Tap and hold to show"
 msgstr "Коснитесь и удерживайте, чтобы показать"
+
+msgid "Tap to recreate"
+msgstr ""
+
+msgid "Tap to retry"
+msgstr ""
 
 msgid "Terms of Use"
 msgstr "Условия использования"
@@ -2165,6 +2186,9 @@ msgstr ""
 msgid "Unlink the card will remove it from this device."
 msgstr ""
 
+msgid "Unlock App"
+msgstr ""
+
 msgid "Unsent transactions"
 msgstr "Неотправленные транзакции"
 
@@ -2203,9 +2227,6 @@ msgstr "Используйте базовый Url"
 
 msgid "Validating recovery phrase..."
 msgstr "Проверка ключевого словосочетания..."
-
-msgid "Verify your identity"
-msgstr "Подтвердить личность"
 
 msgid "Version"
 msgstr "Версия"
@@ -2405,7 +2426,7 @@ msgstr "Да"
 msgid "Yes, skip"
 msgstr "Да, пропустить"
 
-msgid "You are trying to send ({{params.amount}} {{params.coin | uppercase}}) more than what your wallet contains. Please enter a lower amount or send max."
+msgid "You are trying to send ({amount} {coin}) more than what your wallet contains. Please enter a lower amount or send max."
 msgstr ""
 
 msgid "You can create a backup later from your wallet settings."
@@ -2465,7 +2486,7 @@ msgstr ""
 msgid "Your purchase was added to the list of pending"
 msgstr ""
 
-msgid "Your wallet address is similar to a bank account number. You can add funds to your wallet by withdrawing funds you may have stored on an exchange to your wallet address. Or other {{params.coinName}} users can send you money by scanning your QR code."
+msgid "Your wallet address is similar to a bank account number. You can add funds to your wallet by withdrawing funds you may have stored on an exchange to your wallet address. Or other {coinName} users can send you money by scanning your QR code."
 msgstr ""
 
 msgid "Your wallet is never saved to cloud storage or standard device backups."
@@ -2474,7 +2495,7 @@ msgstr "Ваш кошелёк никогда не сохраняется в об
 msgid "Your wallet key will be encrypted. The encrypt password cannot be recovered. Be sure to write it down."
 msgstr ""
 
-msgid "Your {{params.walletType}} wallet is backed up!"
+msgid "Your {walletType} wallet is backed up!"
 msgstr ""
 
 msgid "[Balance Hidden]"
@@ -2495,6 +2516,15 @@ msgstr ""
 msgid "preparing..."
 msgstr "Подготавливается..."
 
+msgid "{appName} BCH wallets use the CashAddr format by default"
+msgstr ""
+
+msgid "{coinName} miner fees are high due to record demand for limited space on the {coinName} network. BitPay does not receive and does not control {coinName} miner fees."
+msgstr ""
+
+msgid "{coinName} miner fees unusually high"
+msgstr ""
+
 msgid "{{amountUnitStr}} Gift Card"
 msgstr ""
 
@@ -2505,15 +2535,6 @@ msgid "{{btx.feeRateStr}} of the total amount"
 msgstr ""
 
 msgid "{{fee}} {{coin}} will be deducted for bitcoin networking fees."
-msgstr ""
-
-msgid "{{params.appName}} BCH wallets use the CashAddr format by default"
-msgstr ""
-
-msgid "{{params.coinName}} miner fees are high due to record demand for limited space on the {{params.coinName}} network. BitPay does not receive and does not control {{params.coinName}} miner fees."
-msgstr ""
-
-msgid "{{params.coinName}} miner fees unusually high"
 msgstr ""
 
 msgid "{{tx.feeRateStr}} of the total amount"
