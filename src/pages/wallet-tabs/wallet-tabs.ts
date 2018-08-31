@@ -1,8 +1,14 @@
 import { Component, ViewChild } from '@angular/core';
-import { Events, NavParams } from 'ionic-angular';
+import { Events, NavParams, Platform } from 'ionic-angular';
+import { Subscription } from 'rxjs';
+
+// Pages
 import { ReceivePage } from '../receive/receive';
 import { SendPage } from '../send/send';
 import { WalletDetailsPage } from '../wallet-details/wallet-details';
+
+// Providers
+import { PlatformProvider } from '../../providers/platform/platform';
 import { WalletTabsProvider } from './wallet-tabs.provider';
 
 @Component({
@@ -24,21 +30,42 @@ export class WalletTabsPage {
 
   walletId: string;
 
+  private isNW: boolean;
+  private onPauseSubscription: Subscription;
+  private onResumeSubscription: Subscription;
   constructor(
     private navParams: NavParams,
     private walletTabsProvider: WalletTabsProvider,
-    private events: Events
-  ) {}
+    private events: Events,
+    private platformProvider: PlatformProvider,
+    private platform: Platform
+  ) {
+    this.isNW = this.platformProvider.isNW;
+  }
 
   ionViewDidLoad() {
     this.walletId = this.navParams.get('walletId');
+
+    this.onPauseSubscription = this.platform.pause.subscribe(() => {
+      this.unsubscribeEvents();
+    });
+    this.onResumeSubscription = this.platform.resume.subscribe(() => {
+      this.subscribeEvents();
+    });
   }
 
   ionViewWillEnter() {
+    if (this.isNW) {
+      this.updateDesktopOnFocus();
+    }
+    this.subscribeEvents();
+  }
+
+  private subscribeEvents(): void {
     this.events.subscribe('bwsEvent', (walletId, type) => {
       // Update current address
       if (this.walletId == walletId && type == 'NewIncomingTx')
-        this.events.publish('Wallet/setAddress');
+        this.events.publish('Wallet/setAddress', true);
       // Update wallet details
       if (this.walletId == walletId && type != 'NewAddress')
         this.events.publish('Wallet/updateAll');
@@ -49,6 +76,10 @@ export class WalletTabsPage {
   }
 
   ionViewWillLeave() {
+    this.unsubscribeEvents();
+  }
+
+  private unsubscribeEvents(): void {
     this.events.publish('Wallet/disableHardwareKeyboard');
     this.events.unsubscribe('bwsEvent');
     this.events.unsubscribe('Local/TxAction');
@@ -57,12 +88,23 @@ export class WalletTabsPage {
     this.events.unsubscribe('Wallet/disableHardwareKeyboard');
   }
 
+  private updateDesktopOnFocus() {
+    let gui = (window as any).require('nw.gui');
+    let win = gui.Window.get();
+    win.on('focus', () => {
+      this.events.publish('Wallet/updateAll');
+      this.events.publish('Wallet/setAddress', false);
+    });
+  }
+
   ngAfterViewInit() {
     this.walletTabsProvider.setTabNav(this.walletTabs);
   }
 
   ngOnDestroy() {
     this.walletTabsProvider.clear();
+    this.onPauseSubscription.unsubscribe();
+    this.onResumeSubscription.unsubscribe();
     this.events.publish('Home/reloadStatus');
   }
 }

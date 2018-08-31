@@ -4,9 +4,11 @@ import {
   Events,
   ModalController,
   NavController,
-  NavParams
+  NavParams,
+  Platform
 } from 'ionic-angular';
 import * as _ from 'lodash';
+import { Subscription } from 'rxjs';
 
 // providers
 import { AddressBookProvider } from '../../providers/address-book/address-book';
@@ -38,6 +40,7 @@ const HISTORY_SHOW_LIMIT = 10;
 export class WalletDetailsPage extends WalletTabsChild {
   private currentPage: number = 0;
   private showBackupNeededMsg: boolean = true;
+  private onResumeSubscription: Subscription;
 
   public requiresMultipleSignatures: boolean;
   public wallet;
@@ -70,7 +73,8 @@ export class WalletDetailsPage extends WalletTabsChild {
     private onGoingProcessProvider: OnGoingProcessProvider,
     private externalLinkProvider: ExternalLinkProvider,
     walletTabsProvider: WalletTabsProvider,
-    private actionSheetProvider: ActionSheetProvider
+    private actionSheetProvider: ActionSheetProvider,
+    private platform: Platform
   ) {
     super(navCtrl, profileProvider, walletTabsProvider);
   }
@@ -100,6 +104,13 @@ export class WalletDetailsPage extends WalletTabsChild {
     this.events.subscribe('Wallet/updateAll', () => {
       this.updateAll();
     });
+
+    this.onResumeSubscription = this.platform.resume.subscribe(() => {
+      this.updateAll();
+      this.events.subscribe('Wallet/updateAll', () => {
+        this.updateAll();
+      });
+    });
   }
 
   ionViewDidEnter() {
@@ -108,6 +119,7 @@ export class WalletDetailsPage extends WalletTabsChild {
 
   ionViewWillLeave() {
     this.events.unsubscribe('Wallet/updateAll');
+    this.onResumeSubscription.unsubscribe();
   }
 
   shouldShowZeroState() {
