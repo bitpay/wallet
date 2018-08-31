@@ -13,7 +13,8 @@
         {{pageTitle}}
       </div>
       <div class="amount-label">
-        <div class="amount">{{amountUnitStr}}</div>
+        <div class="amount" *ngIf="onlyIntegers">{{amount | number : '1.0-0'}} {{currency}}</div>
+        <div class="amount" *ngIf="!onlyIntegers">{{amountUnitStr}}</div>
         <div class="alternative">
           {{limitPerDayMessage}}
         </div>
