@@ -12,7 +12,7 @@ msgstr ""
 "Last-Translator: cmgustavo83\n"
 "Language-Team: French\n"
 "Language: fr\n"
-"PO-Revision-Date: 2018-08-22 20:43\n"
+"PO-Revision-Date: 2018-08-31 14:07\n"
 
 msgid "(Trusted)"
 msgstr "(Fiable)"
@@ -106,6 +106,9 @@ msgstr "Adresses avec un solde"
 
 msgid "Advanced"
 msgstr "Paramètres avancés"
+
+msgid "All"
+msgstr "Toutes"
 
 msgid "All addresses"
 msgstr "Toutes les adresses"
@@ -212,8 +215,8 @@ msgstr "Solde masqué"
 msgid "Be sure to store your recovery phrase in a secure place. If this app is deleted, your money cannot be recovered without it."
 msgstr "N’oubliez pas de conserver votre phrase de récupération dans un endroit sûr. Si cette application est supprimée, votre argent ne peut pas être récupéré sans elle."
 
-msgid "Because you are sending the maximum amount contained in this wallet, the {{params.coinName}} miner fee ({{params.fee}} {{params.coin}}) will be deducted from the total. {{params.msg}}"
-msgstr "Étant donné que vous envoyez le montant maximal contenu dans ce portefeuille, les frais miniers {{params.coinName}} ({{params.fee}} {{params.coin}}) seront déduits du total. {{params.msg}}"
+msgid "Because you are sending the maximum amount contained in this wallet, the {coinName} miner fee ({fee} {coin}) will be deducted from the total. {msg}"
+msgstr "Étant donné que vous envoyez le montant maximal contenu dans ce portefeuille, les frais miniers {coinName} ({fee} {coin}) seront déduits du total. {msg}"
 
 msgid "Before retrieving your wallet address, it's recommended that you first write down your recovery phrase and store it securely so that your wallet can be recovered in the case your device was lost or stolen."
 msgstr "Avant de récupérer votre adresse de portefeuille, il est recommandé de noter d'abord votre phrase de récupération et de la stocker de manière sécurisée afin que votre portefeuille puisse être récupéré en cas de perte ou de vol de votre appareil."
@@ -446,8 +449,8 @@ msgstr "Copié dans le presse-papier"
 msgid "Copied to clipboard"
 msgstr "Copié(e) dans le presse-papier"
 
-msgid "Copied {{params.coin | uppercase}} address"
-msgstr "{{params.coin | uppercase}} adresses copiées"
+msgid "Copied {coin} address"
+msgstr "Adresse {coin} copiée"
 
 msgid "Copy this text as it is to a safe place (notepad or email)"
 msgstr "Copiez ce texte présenté tel quel vers un endroit sûr (bloc-notes ou e-mail)"
@@ -831,10 +834,13 @@ msgid "Fee level is not defined"
 msgstr "Le niveau de frais n'est pas défini"
 
 msgid "Feedback"
-msgstr "Avis"
+msgstr "Commentaire"
 
 msgid "Feedback could not be submitted. Please try again later."
 msgstr "Vos commentaires n'ont pas pu être envoyés. Veuillez réessayer plus tard."
+
+msgid "Feedback!"
+msgstr "Votre avis compte !"
 
 msgid "Fetching BitPay Account..."
 msgstr "Récupération du compte BitPay..."
@@ -928,6 +934,9 @@ msgstr "Carte-cadeau expirée"
 
 msgid "Gift card generated and ready to use."
 msgstr "Carte-cadeau générée et prête à l’emploi."
+
+msgid "Give us feedback"
+msgstr "Donnez-nous votre avis !"
 
 msgid "Go Back"
 msgstr "Retour"
@@ -1114,6 +1123,9 @@ msgstr "La clé est déjà associée avec un portefeuille existant"
 
 msgid "Language"
 msgstr "Langue"
+
+msgid "Last Month"
+msgstr "Le mois dernier"
 
 msgid "Learn More"
 msgstr "En savoir plus"
@@ -1595,8 +1607,8 @@ msgstr "Aléatoire"
 msgid "Rate"
 msgstr "Noter"
 
-msgid "Rate on the {{params?.storeName}}"
-msgstr "Évaluer sur le {{params?.storeName}}"
+msgid "Rate on the {storeName}"
+msgstr "Évaluer sur le {storeName}"
 
 msgid "Read more in our Wiki"
 msgstr "Lisez notre Wiki pour en savoir plus"
@@ -1619,8 +1631,8 @@ msgstr "Fonds reçus"
 msgid "Receiving"
 msgstr "Réception"
 
-msgid "Receiving {{params.coinName}} address"
-msgstr "Réception d'adresse {{params.coinName}}"
+msgid "Receiving {coinName} address"
+msgstr "Réception d'adresse {coinName}"
 
 msgid "Recent"
 msgstr "Transactions récentes"
@@ -1823,6 +1835,9 @@ msgstr "Journal de session"
 msgid "Set up a password"
 msgstr "Spécifiez un mot de passe"
 
+msgid "Settings"
+msgstr "Paramètres"
+
 msgid "ShapeShift is not available at this moment. Please, try again later."
 msgstr "ShapeShift n’est pas disponible pour le moment. Veuillez réessayer plus tard."
 
@@ -1841,8 +1856,8 @@ msgstr "Partager l'adresse"
 msgid "Share the love by inviting your friends."
 msgstr "Partagez la révolution bitcoin en invitant vos amis."
 
-msgid "Share this QR code to receive {{params.amount}} in your wallet {{params.name}}."
-msgstr "Partagez ce QR code pour recevoir {{params.amount}} dans votre portefeuille {{params.name}}."
+msgid "Share this QR code to receive {amount} in your wallet {name}."
+msgstr "Partagez ce QR code pour recevoir {amount} dans votre portefeuille {name}."
 
 msgid "Share this invitation with your copayers"
 msgstr "Partagez cette invitation avec vos copayers"
@@ -1945,6 +1960,12 @@ msgstr "Prenez le contrôle de votre argent, commencez avec bitcoin."
 
 msgid "Tap and hold to show"
 msgstr "Appuyez et maintenez pour afficher"
+
+msgid "Tap to recreate"
+msgstr "Appuyez pour recréer"
+
+msgid "Tap to retry"
+msgstr "Appuyez pour réessayer"
 
 msgid "Terms of Use"
 msgstr "Conditions d'utilisation"
@@ -2165,6 +2186,9 @@ msgstr "Dissocier le compte le supprimera de cet appareil, ainsi que toutes les 
 msgid "Unlink the card will remove it from this device."
 msgstr "Dissocier la carte l'enlèvera de cet appareil."
 
+msgid "Unlock App"
+msgstr "Déverrouiller l'appli"
+
 msgid "Unsent transactions"
 msgstr "Transactions non envoyées"
 
@@ -2203,9 +2227,6 @@ msgstr "Utiliser l'url par défaut"
 
 msgid "Validating recovery phrase..."
 msgstr "Validation de la phrase de récupération..."
-
-msgid "Verify your identity"
-msgstr "Vérification de votre identité"
 
 msgid "Version"
 msgstr "Version"
@@ -2349,10 +2370,10 @@ msgid "We will confirm on the next screen."
 msgstr "Nous allons la confirmer sur l’écran suivant."
 
 msgid "We're always listening for ways we can improve your experience. Feel free to leave us a review in the app store or request a new feature."
-msgstr "Nous sommes toujours à votre écoute pour améliorer votre expérience. N'hésitez pas à nous laisser un avis dans la boutique d'applications ou à demander une nouvelle fonctionnalité."
+msgstr "Nous sommes toujours à votre écoute pour améliorer votre expérience. N'hésitez pas à nous laisser une évaluation dans la boutique d'applications ou à demander une nouvelle fonctionnalité."
 
 msgid "We're always listening for ways we can improve your experience. Feel free to leave us a review in the app store or request a new feature. Also, let us know if you experience any technical issues."
-msgstr "Nous sommes toujours à votre écoute pour améliorer votre expérience. N'hésitez pas à nous laisser un avis dans la boutique d'applications ou à demander une nouvelle fonctionnalité. Dites-nous également si vous rencontrez des problèmes techniques."
+msgstr "Nous sommes toujours à votre écoute pour améliorer votre expérience. N'hésitez pas à nous laisser une évaluation dans la boutique d'applications ou à demander une nouvelle fonctionnalité. Dites-nous également si vous rencontrez des problèmes techniques."
 
 msgid "We're always listening for ways we can improve your experience. Is there anything we could do to improve your experience?"
 msgstr "Nous sommes toujours à votre écoute pour améliorer votre expérience. Y a-t-il quelque chose que nous pourrions faire pour améliorer votre expérience ?"
@@ -2385,10 +2406,10 @@ msgid "Would you like to protect this wallet with a password?"
 msgstr "Souhaitez-vous protéger ce portefeuille avec un mot de passe ?"
 
 msgid "Write Down Recovery Phrase"
-msgstr "Écrivez la phrase de récupération"
+msgstr "Écrire la phrase de récupération"
 
 msgid "Write a Review"
-msgstr "Écrire un avis"
+msgstr "Écrire une évaluation"
 
 msgid "Wrong encrypt password"
 msgstr "Code de chiffrement incorrect"
@@ -2405,8 +2426,8 @@ msgstr "Oui"
 msgid "Yes, skip"
 msgstr "Oui, ignorer"
 
-msgid "You are trying to send ({{params.amount}} {{params.coin | uppercase}}) more than what your wallet contains. Please enter a lower amount or send max."
-msgstr "Vous essayez d'envoyer ({{params.amount}} {{params.coin | uppercase}}) de plus par rapport à ce que contient votre portefeuille. Veuillez entrer un montant inférieur ou envoyer le maximum."
+msgid "You are trying to send ({amount} {coin}) more than what your wallet contains. Please enter a lower amount or send max."
+msgstr "Vous essayez d'envoyer ({amount} {coin}) de plus par rapport à ce que contient votre portefeuille. Veuillez entrer un montant inférieur ou envoyer le maximum."
 
 msgid "You can create a backup later from your wallet settings."
 msgstr "Vous pouvez créer une sauvegarde plus tard à partir des paramètres de votre portefeuille."
@@ -2465,8 +2486,8 @@ msgstr "Votre achat n'a pas pu aboutir"
 msgid "Your purchase was added to the list of pending"
 msgstr "Votre achat a été ajouté à la liste d’attente"
 
-msgid "Your wallet address is similar to a bank account number. You can add funds to your wallet by withdrawing funds you may have stored on an exchange to your wallet address. Or other {{params.coinName}} users can send you money by scanning your QR code."
-msgstr "Votre adresse de portefeuille est similaire à un numéro de compte bancaire. Vous pouvez ajouter des fonds à l'adresse de votre portefeuille en retirant des fonds que vous avez éventuellement sur des places de marché. D'autres utilisateurs {{params.coinName}} peuvent vous envoyer de l’argent en numérisant votre code QR."
+msgid "Your wallet address is similar to a bank account number. You can add funds to your wallet by withdrawing funds you may have stored on an exchange to your wallet address. Or other {coinName} users can send you money by scanning your QR code."
+msgstr "Votre adresse de portefeuille est similaire à un numéro de compte bancaire. Vous pouvez ajouter des fonds à l'adresse de votre portefeuille en retirant des fonds que vous avez éventuellement sur des places de marché. D'autres utilisateurs {coinName} peuvent vous envoyer de l’argent en numérisant votre code QR."
 
 msgid "Your wallet is never saved to cloud storage or standard device backups."
 msgstr "Votre portefeuille n’est jamais enregistré en dehors de votre appareil ou dans des sauvegardes qui lui sont propres."
@@ -2474,8 +2495,8 @@ msgstr "Votre portefeuille n’est jamais enregistré en dehors de votre apparei
 msgid "Your wallet key will be encrypted. The encrypt password cannot be recovered. Be sure to write it down."
 msgstr "La clé de votre portefeuille sera chiffrée. Le code de chiffrement ne peut pas être récupéré. N'oubliez pas de l'écrire."
 
-msgid "Your {{params.walletType}} wallet is backed up!"
-msgstr "Votre portefeuille {{params.walletType}} est sauvegardé !"
+msgid "Your {walletType} wallet is backed up!"
+msgstr "Votre portefeuille {walletType} est sauvegardé !"
 
 msgid "[Balance Hidden]"
 msgstr "[Solde masqué]"
@@ -2495,6 +2516,15 @@ msgstr "du montant total"
 msgid "preparing..."
 msgstr "préparation..."
 
+msgid "{appName} BCH wallets use the CashAddr format by default"
+msgstr "Les portefeuilles BCH de {appName} utilisent le format CashAddr par défaut"
+
+msgid "{coinName} miner fees are high due to record demand for limited space on the {coinName} network. BitPay does not receive and does not control {coinName} miner fees."
+msgstr "Les frais miniers {coinName} sont élevés en raison d'une forte demande pour un espace limité sur le réseau {coinName}. BitPay ne reçoit pas, et ne contrôle pas ces frais {coinName}."
+
+msgid "{coinName} miner fees unusually high"
+msgstr "Les frais miniers {coinName} sont anormalement élevés"
+
 msgid "{{amountUnitStr}} Gift Card"
 msgstr "{{amountUnitStr}} carte(s)-cadeau(x)"
 
@@ -2506,15 +2536,6 @@ msgstr "{{btx.feeRateStr}} du montant total"
 
 msgid "{{fee}} {{coin}} will be deducted for bitcoin networking fees."
 msgstr "{{fee}} {{coin}} seront déduits pour les frais de réseau Bitcoin."
-
-msgid "{{params.appName}} BCH wallets use the CashAddr format by default"
-msgstr "Les portefeuilles BCH de {{params.appName}} utilisent le format CashAddr par défaut"
-
-msgid "{{params.coinName}} miner fees are high due to record demand for limited space on the {{params.coinName}} network. BitPay does not receive and does not control {{params.coinName}} miner fees."
-msgstr "Les frais miniers {{params.coinName}} sont élevés en raison d'une forte demande pour un espace limité sur le réseau {{params.coinName}}. BitPay ne reçoit pas, et ne contrôle pas ces frais {{params.coinName}}."
-
-msgid "{{params.coinName}} miner fees unusually high"
-msgstr "Les frais miniers {{params.coinName}} sont anormalement élevés"
 
 msgid "{{tx.feeRateStr}} of the total amount"
 msgstr "{{tx.feeRateStr}} du montant total"

@@ -12,7 +12,7 @@ msgstr ""
 "Last-Translator: cmgustavo83\n"
 "Language-Team: Korean\n"
 "Language: ko\n"
-"PO-Revision-Date: 2018-08-22 19:37\n"
+"PO-Revision-Date: 2018-08-30 17:27\n"
 
 msgid "(Trusted)"
 msgstr "(신뢰할 수 있음)"
@@ -106,6 +106,9 @@ msgstr ""
 
 msgid "Advanced"
 msgstr "고급"
+
+msgid "All"
+msgstr ""
 
 msgid "All addresses"
 msgstr ""
@@ -212,7 +215,7 @@ msgstr ""
 msgid "Be sure to store your recovery phrase in a secure place. If this app is deleted, your money cannot be recovered without it."
 msgstr "안전한 장소에 복원 문구를 보관하세요. 이 앱이 삭제될 경우, 복원 문구 없이 귀하의 화폐를 복구할 수 없습니다."
 
-msgid "Because you are sending the maximum amount contained in this wallet, the {{params.coinName}} miner fee ({{params.fee}} {{params.coin}}) will be deducted from the total. {{params.msg}}"
+msgid "Because you are sending the maximum amount contained in this wallet, the {coinName} miner fee ({fee} {coin}) will be deducted from the total. {msg}"
 msgstr ""
 
 msgid "Before retrieving your wallet address, it's recommended that you first write down your recovery phrase and store it securely so that your wallet can be recovered in the case your device was lost or stolen."
@@ -446,7 +449,7 @@ msgstr ""
 msgid "Copied to clipboard"
 msgstr "클립보드에 복사됨"
 
-msgid "Copied {{params.coin | uppercase}} address"
+msgid "Copied {coin} address"
 msgstr ""
 
 msgid "Copy this text as it is to a safe place (notepad or email)"
@@ -836,6 +839,9 @@ msgstr ""
 msgid "Feedback could not be submitted. Please try again later."
 msgstr "피드백을 제출할 수 없습니다. 나중에 다시 시도해주세요."
 
+msgid "Feedback!"
+msgstr ""
+
 msgid "Fetching BitPay Account..."
 msgstr "BitPay 계좌 가져오는 중..."
 
@@ -927,6 +933,9 @@ msgid "Gift card expired"
 msgstr "기프트 카드가 만료되었습니다"
 
 msgid "Gift card generated and ready to use."
+msgstr ""
+
+msgid "Give us feedback"
 msgstr ""
 
 msgid "Go Back"
@@ -1114,6 +1123,9 @@ msgstr "이미 기존 지갑과 연결된 키입니다"
 
 msgid "Language"
 msgstr "언어"
+
+msgid "Last Month"
+msgstr ""
 
 msgid "Learn More"
 msgstr ""
@@ -1595,7 +1607,7 @@ msgstr ""
 msgid "Rate"
 msgstr ""
 
-msgid "Rate on the {{params?.storeName}}"
+msgid "Rate on the {storeName}"
 msgstr ""
 
 msgid "Read more in our Wiki"
@@ -1619,7 +1631,7 @@ msgstr "자금 수신함"
 msgid "Receiving"
 msgstr "수신 중"
 
-msgid "Receiving {{params.coinName}} address"
+msgid "Receiving {coinName} address"
 msgstr ""
 
 msgid "Recent"
@@ -1823,6 +1835,9 @@ msgstr "세션 로그"
 msgid "Set up a password"
 msgstr "비밀번호 설정"
 
+msgid "Settings"
+msgstr ""
+
 msgid "ShapeShift is not available at this moment. Please, try again later."
 msgstr ""
 
@@ -1841,7 +1856,7 @@ msgstr ""
 msgid "Share the love by inviting your friends."
 msgstr "공유를 위해 친구를 초대하세요."
 
-msgid "Share this QR code to receive {{params.amount}} in your wallet {{params.name}}."
+msgid "Share this QR code to receive {amount} in your wallet {name}."
 msgstr ""
 
 msgid "Share this invitation with your copayers"
@@ -1945,6 +1960,12 @@ msgstr ""
 
 msgid "Tap and hold to show"
 msgstr "표시하시려면 길게 탭하세요"
+
+msgid "Tap to recreate"
+msgstr ""
+
+msgid "Tap to retry"
+msgstr ""
 
 msgid "Terms of Use"
 msgstr "이용 약관"
@@ -2165,6 +2186,9 @@ msgstr ""
 msgid "Unlink the card will remove it from this device."
 msgstr ""
 
+msgid "Unlock App"
+msgstr ""
+
 msgid "Unsent transactions"
 msgstr "미전송 거래"
 
@@ -2203,9 +2227,6 @@ msgstr ""
 
 msgid "Validating recovery phrase..."
 msgstr "복구 문구 확인 중..."
-
-msgid "Verify your identity"
-msgstr ""
 
 msgid "Version"
 msgstr "버전"
@@ -2405,7 +2426,7 @@ msgstr "네"
 msgid "Yes, skip"
 msgstr ""
 
-msgid "You are trying to send ({{params.amount}} {{params.coin | uppercase}}) more than what your wallet contains. Please enter a lower amount or send max."
+msgid "You are trying to send ({amount} {coin}) more than what your wallet contains. Please enter a lower amount or send max."
 msgstr ""
 
 msgid "You can create a backup later from your wallet settings."
@@ -2465,7 +2486,7 @@ msgstr ""
 msgid "Your purchase was added to the list of pending"
 msgstr ""
 
-msgid "Your wallet address is similar to a bank account number. You can add funds to your wallet by withdrawing funds you may have stored on an exchange to your wallet address. Or other {{params.coinName}} users can send you money by scanning your QR code."
+msgid "Your wallet address is similar to a bank account number. You can add funds to your wallet by withdrawing funds you may have stored on an exchange to your wallet address. Or other {coinName} users can send you money by scanning your QR code."
 msgstr ""
 
 msgid "Your wallet is never saved to cloud storage or standard device backups."
@@ -2474,7 +2495,7 @@ msgstr "귀하의 지갑을 절대로 클라우드 스토리지 또는 표준 �
 msgid "Your wallet key will be encrypted. The encrypt password cannot be recovered. Be sure to write it down."
 msgstr ""
 
-msgid "Your {{params.walletType}} wallet is backed up!"
+msgid "Your {walletType} wallet is backed up!"
 msgstr ""
 
 msgid "[Balance Hidden]"
@@ -2495,6 +2516,15 @@ msgstr ""
 msgid "preparing..."
 msgstr "준비 중..."
 
+msgid "{appName} BCH wallets use the CashAddr format by default"
+msgstr ""
+
+msgid "{coinName} miner fees are high due to record demand for limited space on the {coinName} network. BitPay does not receive and does not control {coinName} miner fees."
+msgstr ""
+
+msgid "{coinName} miner fees unusually high"
+msgstr ""
+
 msgid "{{amountUnitStr}} Gift Card"
 msgstr ""
 
@@ -2505,15 +2535,6 @@ msgid "{{btx.feeRateStr}} of the total amount"
 msgstr ""
 
 msgid "{{fee}} {{coin}} will be deducted for bitcoin networking fees."
-msgstr ""
-
-msgid "{{params.appName}} BCH wallets use the CashAddr format by default"
-msgstr ""
-
-msgid "{{params.coinName}} miner fees are high due to record demand for limited space on the {{params.coinName}} network. BitPay does not receive and does not control {{params.coinName}} miner fees."
-msgstr ""
-
-msgid "{{params.coinName}} miner fees unusually high"
 msgstr ""
 
 msgid "{{tx.feeRateStr}} of the total amount"

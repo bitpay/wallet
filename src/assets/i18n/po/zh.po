@@ -12,7 +12,7 @@ msgstr ""
 "Last-Translator: cmgustavo83\n"
 "Language-Team: Chinese Simplified\n"
 "Language: zh\n"
-"PO-Revision-Date: 2018-08-22 19:37\n"
+"PO-Revision-Date: 2018-08-30 17:27\n"
 
 msgid "(Trusted)"
 msgstr "（可信的）"
@@ -106,6 +106,9 @@ msgstr "有余额的地址"
 
 msgid "Advanced"
 msgstr "進階"
+
+msgid "All"
+msgstr ""
 
 msgid "All addresses"
 msgstr "所有地址"
@@ -212,8 +215,8 @@ msgstr "隐藏余额"
 msgid "Be sure to store your recovery phrase in a secure place. If this app is deleted, your money cannot be recovered without it."
 msgstr "请务必将您的恢复短语存储在一个安全的地方。如果这个程序被删除，不能没有它恢复你的钱。"
 
-msgid "Because you are sending the maximum amount contained in this wallet, the {{params.coinName}} miner fee ({{params.fee}} {{params.coin}}) will be deducted from the total. {{params.msg}}"
-msgstr "Bởi vì bạn đang gửi số tiền tối đa chứa trong này ví , các {{}} params.coinName  thợ mỏ  phí ( {{params.fee}}  {{params.coin}} ) sẽ được trừ vào tổng số. {{params.msg}}"
+msgid "Because you are sending the maximum amount contained in this wallet, the {coinName} miner fee ({fee} {coin}) will be deducted from the total. {msg}"
+msgstr ""
 
 msgid "Before retrieving your wallet address, it's recommended that you first write down your recovery phrase and store it securely so that your wallet can be recovered in the case your device was lost or stolen."
 msgstr ""
@@ -446,8 +449,8 @@ msgstr "Copied to Clipboard"
 msgid "Copied to clipboard"
 msgstr "已复制到剪贴板"
 
-msgid "Copied {{params.coin | uppercase}} address"
-msgstr "Đã sao chép { {params.coin | } hoa } địa chỉ"
+msgid "Copied {coin} address"
+msgstr ""
 
 msgid "Copy this text as it is to a safe place (notepad or email)"
 msgstr "将此文本复制到一个安全的地方（记事本或电子邮件）"
@@ -836,6 +839,9 @@ msgstr "Feedback"
 msgid "Feedback could not be submitted. Please try again later."
 msgstr "无法提交反馈。请稍后再试。"
 
+msgid "Feedback!"
+msgstr ""
+
 msgid "Fetching BitPay Account..."
 msgstr "正在获取 BitPay 帐户..."
 
@@ -928,6 +934,9 @@ msgstr "礼品卡过期"
 
 msgid "Gift card generated and ready to use."
 msgstr "礼品卡已生成并可以使用。"
+
+msgid "Give us feedback"
+msgstr ""
 
 msgid "Go Back"
 msgstr "返回	#"
@@ -1114,6 +1123,9 @@ msgstr "钥已经关联现有的钱包"
 
 msgid "Language"
 msgstr "语言"
+
+msgid "Last Month"
+msgstr ""
 
 msgid "Learn More"
 msgstr ""
@@ -1595,7 +1607,7 @@ msgstr "随机"
 msgid "Rate"
 msgstr "评分"
 
-msgid "Rate on the {{params?.storeName}}"
+msgid "Rate on the {storeName}"
 msgstr ""
 
 msgid "Read more in our Wiki"
@@ -1619,7 +1631,7 @@ msgstr "收到的资金"
 msgid "Receiving"
 msgstr "接收"
 
-msgid "Receiving {{params.coinName}} address"
+msgid "Receiving {coinName} address"
 msgstr ""
 
 msgid "Recent"
@@ -1823,6 +1835,9 @@ msgstr "会话日志"
 msgid "Set up a password"
 msgstr "设置密码"
 
+msgid "Settings"
+msgstr ""
+
 msgid "ShapeShift is not available at this moment. Please, try again later."
 msgstr "ShapeShift 当前不可用。请稍后再试。"
 
@@ -1841,7 +1856,7 @@ msgstr "共享地址"
 msgid "Share the love by inviting your friends."
 msgstr "邀请您的朋友分享爱。"
 
-msgid "Share this QR code to receive {{params.amount}} in your wallet {{params.name}}."
+msgid "Share this QR code to receive {amount} in your wallet {name}."
 msgstr ""
 
 msgid "Share this invitation with your copayers"
@@ -1945,6 +1960,12 @@ msgstr "控制好你的钱，开始使用比特币。"
 
 msgid "Tap and hold to show"
 msgstr "点击并按住以显示"
+
+msgid "Tap to recreate"
+msgstr ""
+
+msgid "Tap to retry"
+msgstr ""
 
 msgid "Terms of Use"
 msgstr "使用条款"
@@ -2165,6 +2186,9 @@ msgstr "解除关联帐户将从这个设备删除它和所有关联的卡。"
 msgid "Unlink the card will remove it from this device."
 msgstr "解除关联的卡将会从该设备中移除它。"
 
+msgid "Unlock App"
+msgstr ""
+
 msgid "Unsent transactions"
 msgstr "未发送的交易"
 
@@ -2203,9 +2227,6 @@ msgstr "使用默认URL"
 
 msgid "Validating recovery phrase..."
 msgstr "正在验证恢复短语。。。"
-
-msgid "Verify your identity"
-msgstr "验证您的身份"
 
 msgid "Version"
 msgstr "版本"
@@ -2405,7 +2426,7 @@ msgstr "是"
 msgid "Yes, skip"
 msgstr "是的，请跳过"
 
-msgid "You are trying to send ({{params.amount}} {{params.coin | uppercase}}) more than what your wallet contains. Please enter a lower amount or send max."
+msgid "You are trying to send ({amount} {coin}) more than what your wallet contains. Please enter a lower amount or send max."
 msgstr ""
 
 msgid "You can create a backup later from your wallet settings."
@@ -2465,7 +2486,7 @@ msgstr "您的购买无法完成"
 msgid "Your purchase was added to the list of pending"
 msgstr "您的购买已添加到待处理列表中"
 
-msgid "Your wallet address is similar to a bank account number. You can add funds to your wallet by withdrawing funds you may have stored on an exchange to your wallet address. Or other {{params.coinName}} users can send you money by scanning your QR code."
+msgid "Your wallet address is similar to a bank account number. You can add funds to your wallet by withdrawing funds you may have stored on an exchange to your wallet address. Or other {coinName} users can send you money by scanning your QR code."
 msgstr ""
 
 msgid "Your wallet is never saved to cloud storage or standard device backups."
@@ -2474,7 +2495,7 @@ msgstr "你的钱包是永远不会保存到云存储或标准设备备份。"
 msgid "Your wallet key will be encrypted. The encrypt password cannot be recovered. Be sure to write it down."
 msgstr "你的钱包密钥将被加密。加密密码无法恢复加密密码。请务必把它写下来。"
 
-msgid "Your {{params.walletType}} wallet is backed up!"
+msgid "Your {walletType} wallet is backed up!"
 msgstr ""
 
 msgid "[Balance Hidden]"
@@ -2495,6 +2516,15 @@ msgstr "总金额"
 msgid "preparing..."
 msgstr "准备中..."
 
+msgid "{appName} BCH wallets use the CashAddr format by default"
+msgstr ""
+
+msgid "{coinName} miner fees are high due to record demand for limited space on the {coinName} network. BitPay does not receive and does not control {coinName} miner fees."
+msgstr ""
+
+msgid "{coinName} miner fees unusually high"
+msgstr ""
+
 msgid "{{amountUnitStr}} Gift Card"
 msgstr "{{amountUnitStr}} 礼品卡"
 
@@ -2506,15 +2536,6 @@ msgstr "{{btx.feeRateStr}}的总额"
 
 msgid "{{fee}} {{coin}} will be deducted for bitcoin networking fees."
 msgstr "{{fee}}{{coin}}将扣除比特币网络费"
-
-msgid "{{params.appName}} BCH wallets use the CashAddr format by default"
-msgstr ""
-
-msgid "{{params.coinName}} miner fees are high due to record demand for limited space on the {{params.coinName}} network. BitPay does not receive and does not control {{params.coinName}} miner fees."
-msgstr ""
-
-msgid "{{params.coinName}} miner fees unusually high"
-msgstr ""
 
 msgid "{{tx.feeRateStr}} of the total amount"
 msgstr "{{tx.feeRateStr}}的总额"
