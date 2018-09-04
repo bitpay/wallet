@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
 import { File } from '@ionic-native/file';
+import { TranslateService } from '@ngx-translate/core';
+import { Events } from 'ionic-angular';
 import * as _ from 'lodash';
 import { Logger } from '../../providers/logger/logger';
 
@@ -38,6 +40,7 @@ const Keys = {
   HOME_TIP: 'homeTip',
   LAST_ADDRESS: walletId => 'lastAddress-' + walletId,
   LAST_CURRENCY_USED: 'lastCurrencyUsed',
+  LOGS: 'logs',
   MERCADO_LIBRE: network => 'MercadoLibreGiftCards-' + network,
   ONBOARDING_COMPLETED: 'onboardingCompleted',
   PROFILE: 'profile',
@@ -61,15 +64,58 @@ export class PersistenceProvider {
   constructor(
     private logger: Logger,
     private platform: PlatformProvider,
-    private file: File
+    private file: File,
+    private events: Events,
+    private translate: TranslateService
   ) {
     this.logger.info('PersistenceProvider initialized.');
+
+    this.events.subscribe('newImportantLog', newLog => {
+      this.processLogs(newLog);
+    });
   }
 
   public load() {
     this.storage = this.platform.isCordova
       ? new FileStorage(this.file, this.logger)
       : new LocalStorage(this.platform, this.logger);
+  }
+
+  private processLogs(newLog): void {
+    this.getLogs()
+      .then(logs => {
+        if (logs && _.isString(logs)) logs = JSON.parse(logs);
+        logs = logs || {};
+        if (_.isArray(logs)) logs = {}; // No array
+
+        // Compare dates and remove logs older than a week
+        let now = new Date();
+        let aWeekAgo = new Date(now.setDate(now.getDate() - 7));
+        Object.keys(logs).forEach(key => {
+          let logDate = new Date(key);
+          if (logDate < aWeekAgo) {
+            delete logs[key];
+          }
+        });
+
+        if (logs[newLog.timestamp]) {
+          let msg = this.translate.instant('Logs timestamp collapse');
+          this.logger.warn(msg);
+          return;
+        }
+        logs[newLog.timestamp] = newLog;
+        this.setLogs(JSON.stringify(logs))
+          .then(() => {
+            this.logger.info();
+          })
+          .catch(() => {
+            let msg = this.translate.instant('Error adding new log');
+            return this.logger.warn(msg);
+          });
+      })
+      .catch(err => {
+        this.logger.error(err);
+      });
   }
 
   storeNewProfile(profile): Promise<void> {
@@ -279,6 +325,14 @@ export class PersistenceProvider {
 
   removeCoinbaseTxs(network: string) {
     return this.storage.remove(Keys.COINBASE_TXS(network));
+  }
+
+  setLogs(logs) {
+    return this.storage.set(Keys.LOGS, logs);
+  }
+
+  getLogs() {
+    return this.storage.get(Keys.LOGS);
   }
 
   setAddressBook(network: string, addressbook) {

@@ -9,7 +9,7 @@ import {
   TranslateLoader,
   TranslateModule
 } from '@ngx-translate/core';
-import { Platform } from 'ionic-angular';
+import { Events, Platform } from 'ionic-angular';
 import { ConfigProvider } from '../../providers/config/config';
 import { LanguageProvider } from '../../providers/language/language';
 import { Logger } from '../../providers/logger/logger';
@@ -39,6 +39,7 @@ describe('AppProvider', () => {
         { provide: Logger, useClass: LoggerMock },
         LanguageProvider,
         ConfigProvider,
+        Events,
         PersistenceProvider,
         PlatformProvider,
         Platform,

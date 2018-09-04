@@ -1,6 +1,6 @@
 /* tslint:disable:no-console */
 import { Injectable, isDevMode } from '@angular/core';
-
+import { Events } from 'ionic-angular';
 import * as _ from 'lodash';
 
 @Injectable()
@@ -9,7 +9,7 @@ export class Logger {
   public weight;
   public logs;
 
-  constructor() {
+  constructor(private events: Events) {
     this.logs = [];
     this.levels = [
       { level: 'error', weight: 1, label: 'Error', def: false },
@@ -73,14 +73,18 @@ export class Logger {
     });
   }
 
-  public add(level, msg) {
+  public add(level, msg): void {
     msg = msg.replace('/xpriv.*/', '[...]');
     msg = msg.replace('/walletPrivKey.*/', 'walletPrivKey:[...]');
-    this.logs.push({
+    let newLog = {
       timestamp: new Date().toISOString(),
       level,
       msg
-    });
+    };
+    this.logs.push(newLog);
+    if (level === 'warn' || level === 'error') {
+      this.events.publish('newImportantLog', newLog);
+    }
   }
 
   /**
