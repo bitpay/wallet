@@ -129,9 +129,9 @@
           <div class="title" item-start>
             <span translate>Payment Proposals</span>
           </div>
-          <div item-end>
+          <div item-end *ngIf="txpsN>3">
             <button ion-button clear icon-only color="grey" (click)="openProposalsPage()">
-              <ion-badge *ngIf="txpsN>3" color="danger">{{txpsN}}</ion-badge>
+              <ion-badge color="danger">{{txpsN}}</ion-badge>
             </button>
           </div>
         </ion-item-divider>
@@ -145,9 +145,9 @@
           <div class="title" item-start>
             <span translate>Recent Transactions</span>
           </div>
-          <div item-end>
+          <div item-end *ngIf="notificationsN>3">
             <button ion-button clear icon-only color="grey" (click)="openActivityPage()">
-              <ion-badge *ngIf="notificationsN>3" color="danger">{{notificationsN}}</ion-badge>
+              <ion-badge color="danger">{{notificationsN}}</ion-badge>
             </button>
           </div>
         </ion-item-divider>
