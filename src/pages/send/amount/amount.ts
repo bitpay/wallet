@@ -19,13 +19,12 @@ import { TxFormatProvider } from '../../../providers/tx-format/tx-format';
 // Pages
 import { ProfileProvider } from '../../../providers/profile/profile';
 import { Coin } from '../../../providers/wallet/wallet';
-import { BuyAmazonPage } from '../../integrations/amazon/buy-amazon/buy-amazon';
 import { BitPayCardTopUpPage } from '../../integrations/bitpay-card/bitpay-card-topup/bitpay-card-topup';
 import { BuyCoinbasePage } from '../../integrations/coinbase/buy-coinbase/buy-coinbase';
 import { SellCoinbasePage } from '../../integrations/coinbase/sell-coinbase/sell-coinbase';
+import { ConfirmCardPurchasePage } from '../../integrations/gift-cards/confirm-card-purchase/confirm-card-purchase';
 import { BuyGlideraPage } from '../../integrations/glidera/buy-glidera/buy-glidera';
 import { SellGlideraPage } from '../../integrations/glidera/sell-glidera/sell-glidera';
-import { BuyMercadoLibrePage } from '../../integrations/mercado-libre/buy-mercado-libre/buy-mercado-libre';
 import { ShapeshiftConfirmPage } from '../../integrations/shapeshift/shapeshift-confirm/shapeshift-confirm';
 import { CustomAmountPage } from '../../receive/custom-amount/custom-amount';
 import { WalletTabsChild } from '../../wallet-tabs/wallet-tabs-child';
@@ -265,8 +264,8 @@ export class AmountPage extends WalletTabsChild {
         this.showSendMax = true;
         nextPage = BitPayCardTopUpPage;
         break;
-      case 'BuyAmazonPage':
-        nextPage = BuyAmazonPage;
+      case 'ConfirmCardPurchasePage':
+        nextPage = ConfirmCardPurchasePage;
         break;
       case 'BuyGlideraPage':
         nextPage = BuyGlideraPage;
@@ -282,9 +281,6 @@ export class AmountPage extends WalletTabsChild {
         break;
       case 'CustomAmountPage':
         nextPage = CustomAmountPage;
-        break;
-      case 'BuyMercadoLibrePage':
-        nextPage = BuyMercadoLibrePage;
         break;
       case 'ShapeshiftConfirmPage':
         this.showSendMax = true;
@@ -494,7 +490,8 @@ export class AmountPage extends WalletTabsChild {
         currency: unit.id.toUpperCase(),
         coin,
         useSendMax: this.useSendMax,
-        toWalletId: this.toWalletId
+        toWalletId: this.toWalletId,
+        cardName: this.navParams.get('cardName')
       };
     } else {
       let amount = _amount;

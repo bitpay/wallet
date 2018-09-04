@@ -1,0 +1,37 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>{{cardConfig?.brand}}</ion-title>
+    <ion-buttons right>
+      <button (click)="showMoreOptions()" ion-button icon-only>
+        <ion-icon class="horizontal-lg" name="more"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content class="gift-card-content">
+  <div class="wrapper">
+    <div class="header-extension"></div>
+    <div class="main-content">
+      <div class="balance">{{card.amount | formatCurrency:card.currency}}</div>
+      <img class="card-image" [src]="cardConfig?.cardImage">
+      <div class="card-info" (click)="copyClaimCode()" [copy-to-clipboard]="card.claimCode" [hide-toast]="true" *ngIf="card.status !== 'PENDING'">
+        <div class="card-info__title">Claim Code</div>
+        <div class="card-info__body">{{card.claimCode}}</div>
+        <div class="card-info__date">Created {{card.date | amTimeAgo}}</div>
+      </div>
+      <div class="card-info" *ngIf="card.status === 'PENDING'">
+        <div class="card-info__body">Awaiting Payment to Confirm</div>
+      </div>
+      <div class="actions" *ngIf="card.status !== 'PENDING' && !card.archived">
+        <button ion-button class="button-standard" (click)="redeem()">
+          {{'Redeem Now' | translate}}
+        </button>
+        <button ion-button class="button-standard button-secondary" (click)="openArchiveSheet()">
+          {{"I've used this card" | translate}}
+        </button>
+      </div>
+    </div>
+    <card-terms [cardName]="card.name"></card-terms>
+  </div>
+</ion-content>

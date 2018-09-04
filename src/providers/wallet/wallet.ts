@@ -1032,7 +1032,10 @@ export class WalletProvider {
     return isEncrypted;
   }
 
-  public createTx(wallet, txp: Partial<TransactionProposal>) {
+  public createTx(
+    wallet,
+    txp: Partial<TransactionProposal>
+  ): Promise<TransactionProposal> {
     return new Promise((resolve, reject) => {
       if (lodash.isEmpty(txp) || lodash.isEmpty(wallet))
         return reject('MISSING_PARAMETER');

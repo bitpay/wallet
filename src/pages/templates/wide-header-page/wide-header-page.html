@@ -5,6 +5,7 @@
         {{title}}
       </div>
     </ion-title>
+    <ng-content select="[right]"></ng-content>
   </ion-navbar>
 </ion-header>
 <ion-content #scrollArea [fixed-scroll-bg-color]="headerColor" [ion-content-background-color]="headerColor">

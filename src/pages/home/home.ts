@@ -12,12 +12,10 @@ import { Observable, Subscription } from 'rxjs';
 
 // Pages
 import { AddPage } from '../add/add';
-import { AmazonPage } from '../integrations/amazon/amazon';
 import { BitPayCardPage } from '../integrations/bitpay-card/bitpay-card';
 import { BitPayCardIntroPage } from '../integrations/bitpay-card/bitpay-card-intro/bitpay-card-intro';
 import { CoinbasePage } from '../integrations/coinbase/coinbase';
 import { GlideraPage } from '../integrations/glidera/glidera';
-import { MercadoLibrePage } from '../integrations/mercado-libre/mercado-libre';
 import { ShapeshiftPage } from '../integrations/shapeshift/shapeshift';
 import { PaperWalletPage } from '../paper-wallet/paper-wallet';
 import { AmountPage } from '../send/amount/amount';
@@ -28,6 +26,7 @@ import { ActivityPage } from './activity/activity';
 import { ProposalsPage } from './proposals/proposals';
 
 // Providers
+import { GiftCardProvider } from '../../providers';
 import { AddressBookProvider } from '../../providers/address-book/address-book';
 import { AddressProvider } from '../../providers/address/address';
 import { AmazonProvider } from '../../providers/amazon/amazon';
@@ -50,6 +49,8 @@ import { ProfileProvider } from '../../providers/profile/profile';
 import { ReleaseProvider } from '../../providers/release/release';
 import { ReplaceParametersProvider } from '../../providers/replace-parameters/replace-parameters';
 import { WalletProvider } from '../../providers/wallet/wallet';
+import { BuyCardPage } from '../integrations/gift-cards/buy-card/buy-card';
+import { PurchasedCardsPage } from '../integrations/gift-cards/purchased-cards/purchased-cards';
 import { SettingsPage } from '../settings/settings';
 
 @Component({
@@ -86,6 +87,7 @@ export class HomePage {
   public showReorderBtc: boolean;
   public showReorderBch: boolean;
   public showIntegration;
+  public hideHomeIntegrations: boolean;
 
   private isNW: boolean;
   private updatingWalletId: object;
@@ -105,6 +107,7 @@ export class HomePage {
     private events: Events,
     private configProvider: ConfigProvider,
     private externalLinkProvider: ExternalLinkProvider,
+    private giftCardProvider: GiftCardProvider,
     private onGoingProcessProvider: OnGoingProcessProvider,
     private popupProvider: PopupProvider,
     private modalCtrl: ModalController,
@@ -145,7 +148,7 @@ export class HomePage {
     this._didEnter();
   }
 
-  private _willEnter() {
+  private async _willEnter() {
     this.recentTransactionsEnabled = this.configProvider.get().recentTransactions.enabled;
 
     // Update list of wallets, status and TXPs
@@ -173,7 +176,7 @@ export class HomePage {
     if (this.isNW) this.checkUpdate();
     this.checkHomeTip();
     this.checkFeedbackInfo();
-    this.checkAnnouncement();
+    this.amazonProvider.getSupportedCurrency();
     this.checkClipboard();
 
     this.subscribeIncomingDataMenuEvent();
@@ -377,25 +380,6 @@ export class HomePage {
   public hideHomeTip(): void {
     this.persistenceProvider.setHomeTipAccepted('accepted');
     this.homeTip = false;
-  }
-
-  private async checkAnnouncement() {
-    if (!this.amazonProvider.currency)
-      await this.amazonProvider.setCurrencyByLocation();
-    if (this.amazonProvider.currency == 'JPY') {
-      this.persistenceProvider.getShowAmazonJapanAnnouncement().then(value => {
-        if (!value) this.showAnnouncement = true;
-      });
-    }
-  }
-
-  public hideAnnouncement(): void {
-    this.persistenceProvider.setShowAmazonJapanAnnouncement('hide');
-    this.showAnnouncement = false;
-  }
-
-  public openAnnouncement(): void {
-    this.navCtrl.push(AmazonPage);
   }
 
   private checkFeedbackInfo() {
@@ -756,17 +740,32 @@ export class HomePage {
     this.navCtrl.push(ActivityPage);
   }
 
-  public goTo(page: string): void {
+  public goTo(page: string, serviceName: string): void {
+    if (serviceName === 'amazon' || serviceName === 'mercadolibre') {
+      this.buyGiftCard(serviceName);
+      return;
+    }
     const pageMap = {
-      AmazonPage,
       BitPayCardIntroPage,
       CoinbasePage,
       GlideraPage,
-      MercadoLibrePage,
       ShapeshiftPage
     };
-
     this.navCtrl.push(pageMap[page]);
+  }
+
+  public async buyGiftCard(servicename: string) {
+    const brandNames = {
+      amazon: 'Amazon',
+      mercadolibre: 'Mercado Livre'
+    };
+    const supportedCards = await this.giftCardProvider.getSupportedCards();
+    const cardName = supportedCards.filter(
+      c => c.brand === brandNames[servicename]
+    )[0].name;
+    const cards = await this.giftCardProvider.getPurchasedCards(cardName);
+    const nextPage = !cards.length ? BuyCardPage : PurchasedCardsPage;
+    this.navCtrl.push(nextPage, { cardName });
   }
 
   public goToCard(cardId): void {

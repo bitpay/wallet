@@ -4,8 +4,9 @@
   background-color: white;
   cursor: pointer;
   .option {
-    padding: 20px;
     border-bottom: 1px solid rgb(237, 237, 237);
+    display: flex;
+    padding: 20px;
     .option-icon {
       display: inline-block;
       padding-right: 15px;

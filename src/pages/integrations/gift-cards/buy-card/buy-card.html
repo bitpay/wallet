@@ -1,0 +1,28 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>Buy {{cardConfig?.brand}} Gift Card</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content class="gift-card-content">
+  <div class="wrapper">
+    <div class="header-extension"></div>
+    <div class="amount-box">
+      <div>
+        <img class="card-image" src="{{cardConfig?.cardImage}}">
+      </div>
+      <div class="amount-box__value" *ngIf="cardConfig">
+        <span *ngIf="cardConfig.currency === 'USD'">$0.00</span>
+        <span *ngIf="cardConfig.currency !== 'USD'">{{0 | formatCurrency:cardConfig.currency}}</span>
+      </div>
+    </div>
+    <div class="buy-box">
+      <sales-pitch class="buy-box__terms" [cardName]="cardConfig?.name"></sales-pitch>
+      <div class="actions">
+        <button ion-button class="button-standard" (click)="enterAmount()">
+          {{'Enter Amount' | translate}}
+        </button>
+      </div>
+    </div>
+  </div>
+</ion-content>

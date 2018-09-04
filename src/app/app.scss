@@ -68,7 +68,6 @@ ion-label {
   .wrapper {
     background-color: $background-color;
     min-height: 100%;
-    // min-height: 60%;
   }
 }
 
@@ -349,7 +348,7 @@ ion-icon {
 
 .button-standard {
   width: 90%;
-  max-width: 300px !important;
+  max-width: 300px;
   margin-left: auto;
   margin-right: auto;
   display: flex;
@@ -367,6 +366,28 @@ ion-icon {
 
 .button-default {
   color: white;
+}
+
+.button-secondary {
+  background-color: #ededed;
+  color: black;
+  &:hover,
+  &:focus,
+  &:active {
+    &.button-md,
+    &.button-ios {
+      background-color: #ededed;
+      color: black;
+      box-shadow: none;
+    }
+  }
+  &:active,
+  &.activated {
+    &.button-md,
+    &.button-ios {
+      background-color: #e5e5e5;
+    }
+  }
 }
 
 .btn-transparent {
@@ -422,7 +443,6 @@ ion-alert .alert-message {
 button.modal-close-button {
   font-size: 16px;
   font-weight: 400;
-
   ion-icon {
     font-size: 26px;
   }
