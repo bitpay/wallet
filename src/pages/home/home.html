@@ -125,14 +125,13 @@
 
 
       <div class="card" *ngIf="txps && txps[0]">
-        <ion-item-divider (click)="openProposalsPage()">
+        <ion-item-divider>
           <div class="title" item-start>
             <span translate>Payment Proposals</span>
           </div>
           <div item-end>
-            <button ion-button clear icon-only color="grey">
+            <button ion-button clear icon-only color="grey" (click)="openProposalsPage()">
               <ion-badge *ngIf="txpsN>3" color="danger">{{txpsN}}</ion-badge>
-              <ion-icon ios="ios-arrow-dropright"></ion-icon>
             </button>
           </div>
         </ion-item-divider>
@@ -142,14 +141,13 @@
       </div>
 
       <div class="card" *ngIf="recentTransactionsEnabled && notifications && notifications[0]">
-        <ion-item-divider (click)="openActivityPage()">
+        <ion-item-divider>
           <div class="title" item-start>
             <span translate>Recent Transactions</span>
           </div>
           <div item-end>
-            <button ion-button clear icon-only color="grey">
+            <button ion-button clear icon-only color="grey" (click)="openActivityPage()">
               <ion-badge *ngIf="notificationsN>3" color="danger">{{notificationsN}}</ion-badge>
-              <ion-icon ios="ios-arrow-dropright"></ion-icon>
             </button>
           </div>
         </ion-item-divider>
