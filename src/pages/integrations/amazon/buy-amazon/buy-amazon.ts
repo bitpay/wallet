@@ -578,7 +578,6 @@ export class BuyAmazonPage {
             this.checkTransaction(1, this.createdTx.giftData);
           })
           .catch(err => {
-            this._resetValues();
             this.showError(
               this.translate.instant('Could not send transaction'),
               this.bwcErrorProvider.msg(err)
