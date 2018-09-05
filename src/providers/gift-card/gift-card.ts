@@ -24,10 +24,10 @@ export { CardBrand, CardConifg, CardName, GiftCard };
 @Injectable()
 export class GiftCardProvider {
   credentials: {
-    NETWORK: string;
+    NETWORK: 'testnet' | 'livenet';
     BITPAY_API_URL: string;
   } = {
-    NETWORK: 'livenet',
+    NETWORK: 'testnet',
     BITPAY_API_URL: 'https://bitpay.com'
   };
 

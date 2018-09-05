@@ -16,7 +16,7 @@ describe('Provider: Wallet Provider', () => {
   });
 
   describe('getCardConfig', () => {
-    it('should work', async () => {
+    it('should retrieve correct gift card config values based on card name', async () => {
       const cardConfig = await giftCardProvider.getCardConfig(CardName.amazon);
       expect(cardConfig.name).toBe(CardName.amazon);
     });
