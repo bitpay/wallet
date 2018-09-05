@@ -26,7 +26,6 @@ export class PurchasedCardsPage {
   public updatingPending;
   public card;
   public invoiceId: string;
-  public platformName: 'ios' | 'md' = 'md';
   public cardConfig: CardConifg;
 
   constructor(
