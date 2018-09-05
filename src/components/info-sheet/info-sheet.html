@@ -104,8 +104,9 @@
     </info-sheet-template>
 
     <info-sheet-template *ngSwitchCase="'copied-gift-card-claim-code'" type="info">
-      <span sheet-title-text translate>Copied: {{params.claimCode}}</span>
-      <span sheet-text translate>Paste this code on {{params.website}}. This gift card cannot be recovered if your claim code is lost. </span>
+      <span sheet-title-text translate>{{'Copied: {claimCode}' | translate: {claimCode: params.claimCode} }}</span>
+      <span sheet-text translate>{{'Paste this code on {website}. This gift card cannot be recovered if your claim code is lost.' | translate: {website:
+        params.website} }}</span>
       <span sheet-button-text translate>GOT IT</span>
     </info-sheet-template>
 
