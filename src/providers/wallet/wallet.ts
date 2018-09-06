@@ -699,7 +699,7 @@ export class WalletProvider {
                   }
 
                   requestLimit = LIMIT;
-                  getNewTxs(newTxs, skip).then(txs => {
+                  return getNewTxs(newTxs, skip).then(txs => {
                     resolve(txs);
                   });
                 })
@@ -709,13 +709,18 @@ export class WalletProvider {
                     (err.message && err.message.match(/5../))
                   ) {
                     this.logger.info('Retrying history download in 5 secs...');
-                    return reject(
-                      setTimeout(() => {
-                        return getNewTxs(newTxs, skip);
-                      }, 5000)
-                    );
+                    return setTimeout(() => {
+                      return getNewTxs(newTxs, skip)
+                        .then(txs => {
+                          resolve(txs);
+                        })
+                        .catch(err => {
+                          return reject(err);
+                        });
+                    }, 5000);
+                  } else {
+                    return reject(err);
                   }
-                  return reject(err);
                 });
             });
           };
