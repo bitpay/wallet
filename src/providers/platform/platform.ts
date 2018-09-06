@@ -66,4 +66,28 @@ export class PlatformProvider {
     }
     return false;
   }
+
+  public getOS() {
+    let OS = {
+      OSName: '',
+      extension: ''
+    };
+
+    if (this.isNW) {
+      if (navigator.appVersion.indexOf('Win') != -1) {
+        OS.OSName = 'Windows';
+        OS.extension = '.exe';
+      }
+      if (navigator.appVersion.indexOf('Mac') != -1) {
+        OS.OSName = 'MacOS';
+        OS.extension = '.dmg';
+      }
+      if (navigator.appVersion.indexOf('Linux') != -1) {
+        OS.OSName = 'Linux';
+        OS.extension = '-linux.zip';
+      }
+    }
+
+    return OS;
+  }
 }
