@@ -27,7 +27,7 @@ export class GiftCardProvider {
     NETWORK: 'testnet' | 'livenet';
     BITPAY_API_URL: string;
   } = {
-    NETWORK: 'testnet',
+    NETWORK: 'livenet',
     BITPAY_API_URL: 'https://bitpay.com'
   };
 
@@ -144,7 +144,8 @@ export class GiftCardProvider {
 
   getCardStatus(res: RedeemResponse) {
     /* Hope to deprecate this method when we have a standardized redeem endpoint */
-    const amazonCardStatus = res.status === 'paid' ? 'PENDING' : res.status;
+    const amazonCardStatus =
+      res.status === 'new' || res.status === 'paid' ? 'PENDING' : res.status;
     const mlCardStatus =
       res.cardStatus === 'active' ? 'SUCCESS' : res.cardStatus;
     return amazonCardStatus || mlCardStatus;
