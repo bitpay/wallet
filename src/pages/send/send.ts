@@ -270,7 +270,8 @@ export class SendPage extends WalletTabsChild {
       infoSheet.present();
       infoSheet.onDidDismiss(option => {
         if (option) {
-          let url = 'https://bitpay.github.io/address-translator/';
+          let url =
+            'https://bitpay.github.io/address-translator?addr=' + this.search;
           this.externalLinkProvider.open(url);
         }
         this.search = '';
