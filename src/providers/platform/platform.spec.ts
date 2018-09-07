@@ -34,6 +34,42 @@ describe('PlatformProvider', () => {
       }
     });
   });
+
+  describe('getOS function', () => {
+    it('should get Mac OS', () => {
+      Object.defineProperties(navigator, {
+        appVersion: {
+          value: '(Macintosh; Intel Mac OS X 10_13_6)',
+          writable: true
+        }
+      });
+      service.isNW = true;
+      let OS = service.getOS();
+      expect(OS.OSName).toEqual('MacOS');
+    });
+    it('should get Windows OS', () => {
+      Object.defineProperties(navigator, {
+        appVersion: {
+          value: '(Windows)',
+          writable: true
+        }
+      });
+      service.isNW = true;
+      let OS = service.getOS();
+      expect(OS.OSName).toEqual('Windows');
+    });
+    it('should get Linux OS', () => {
+      Object.defineProperties(navigator, {
+        appVersion: {
+          value: '(Linux)',
+          writable: true
+        }
+      });
+      service.isNW = true;
+      let OS = service.getOS();
+      expect(OS.OSName).toEqual('Linux');
+    });
+  });
 });
 
 describe('PlatformProvider without navigator', () => {
