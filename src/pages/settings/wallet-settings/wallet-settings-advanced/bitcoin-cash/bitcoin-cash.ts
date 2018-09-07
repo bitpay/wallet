@@ -162,23 +162,6 @@ export class BitcoinCashPage extends WalletTabsChild {
       });
     };
 
-    // Multisig wallets? add Copayers
-    function addCopayers(newWallet, isNew, cb) {
-      if (!isNew) return cb();
-      if (wallet.n == 1) return cb();
-
-      this.logger.info(
-        'Adding copayers for BCH wallet config:' + wallet.m + '-' + wallet.n
-      );
-
-      this.walletProvider.copyCopayers(wallet, newWallet, err => {
-        if (err) {
-          return cb(err);
-        }
-        return cb();
-      });
-    }
-
     this.walletProvider
       .getKeys(wallet)
       .then(keys => {
@@ -192,18 +175,23 @@ export class BitcoinCashPage extends WalletTabsChild {
             this.walletProvider.updateRemotePreferences(newWallet);
             this.pushNotificationsProvider.updateSubscription(newWallet);
 
-            addCopayers(newWallet, isNew, err => {
-              this.onGoingProcessProvider.clear();
-              if (err) {
-                return setErr(err);
-              }
-              if (isNew) {
-                this.walletProvider.startScan(newWallet);
-              }
+            // Multisig wallets? add Copayers
+            this.addCopayers(wallet, newWallet, isNew)
+              .then(() => {
+                this.onGoingProcessProvider.clear();
 
-              this.events.publish('status:updated');
-              this.close();
-            });
+                if (isNew) {
+                  this.walletProvider.startScan(newWallet).catch(err => {
+                    this.logger.warn(err);
+                  });
+                }
+                this.events.publish('status:updated');
+                this.close();
+              })
+              .catch(err => {
+                this.onGoingProcessProvider.clear();
+                setErr(err);
+              });
           })
           .catch(err => {
             this.onGoingProcessProvider.clear();
@@ -215,6 +203,26 @@ export class BitcoinCashPage extends WalletTabsChild {
           setErr(err);
         }
       });
+  }
+
+  private addCopayers(wallet, newWallet, isNew): Promise<any> {
+    return new Promise((resolve, reject) => {
+      if (!isNew) return resolve();
+      if (wallet.n == 1) return resolve();
+
+      this.logger.info(
+        'Adding copayers for BCH wallet config:' + wallet.m + '-' + wallet.n
+      );
+
+      this.walletProvider
+        .copyCopayers(wallet, newWallet)
+        .then(() => {
+          return resolve();
+        })
+        .catch(err => {
+          return reject(err);
+        });
+    });
   }
 
   public openHelpExternalLink(): void {

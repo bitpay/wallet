@@ -1228,7 +1228,8 @@ export class WalletProvider {
   public startScan(wallet): Promise<any> {
     return new Promise((resolve, reject) => {
       this.logger.debug('Scanning wallet ' + wallet.id);
-      if (!wallet.isComplete()) return reject();
+      if (!wallet.isComplete())
+        return reject('Wallet incomplete: ' + wallet.name);
 
       wallet.scanning = true;
       wallet.startScan(
