@@ -525,7 +525,7 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
     const params = {
       wallets: this.wallets,
       selectedWalletId: id,
-      title: 'Buy from'
+      title: this.translate.instant('Buy from')
     };
     const walletSelector = this.actionSheetProvider.createWalletSelector(
       params
