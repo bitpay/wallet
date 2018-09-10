@@ -67,19 +67,13 @@ export class PurchasedCardsPage {
       .getPurchasedCards(this.cardConfig.name)
       .then(cards => this.setGiftCards(cards))
       .catch(err => this.logger.error(err));
-    this.updatePendingCards(this.currentGiftCards);
+    this.giftCardProvider.updatePendingGiftCards(this.currentGiftCards);
   }
 
   setGiftCards(allCards: GiftCard[]) {
     this.allGiftCards = allCards;
     this.currentGiftCards = allCards.filter(gc => !gc.archived);
     this.archivedGiftCards = allCards.filter(gc => gc.archived);
-  }
-
-  public updatePendingCards(cards: GiftCard[]) {
-    this.giftCardProvider
-      .updatePendingGiftCards(cards)
-      .subscribe(card => this.updateCard(card));
   }
 
   public openExternalLink(url: string) {
