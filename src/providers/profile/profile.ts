@@ -647,17 +647,17 @@ export class ProfileProvider {
               .then((msg: string) => {
                 return reject(msg);
               });
-          }
-
-          this.addAndBindWalletClient(walletClient, {
-            bwsurl: opts.bwsurl
-          })
-            .then(wallet => {
-              return resolve(wallet);
+          } else {
+            this.addAndBindWalletClient(walletClient, {
+              bwsurl: opts.bwsurl
             })
-            .catch(err => {
-              return reject(err);
-            });
+              .then(wallet => {
+                return resolve(wallet);
+              })
+              .catch(err => {
+                return reject(err);
+              });
+          }
         }
       );
     });

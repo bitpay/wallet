@@ -260,6 +260,12 @@ export class ImportWalletPage {
       })
       .catch(err => {
         this.logger.error('Import: could not updateRemotePreferences', err);
+        this.app
+          .getRootNavs()[0]
+          .setRoot(TabsPage)
+          .then(() => {
+            this.events.publish('OpenWallet', wallet);
+          });
       });
   }
 
