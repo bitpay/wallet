@@ -122,6 +122,20 @@
       <span sheet-button-text translate>OK</span>
     </info-sheet-template>
 
+    <info-sheet-template *ngSwitchCase="'below-minimum-gift-card-amount'" type="danger">
+      <span sheet-title-text translate>Below Minimum Amount</span>
+      <span sheet-text translate>{{'The purchase amount must be at least {minAmount} {currency}. Please modify your amount.' | translate: params }}</span>
+      <span sheet-button-text translate>GOT IT</span>
+    </info-sheet-template>
+
+    <info-sheet-template *ngSwitchCase="'above-maximum-gift-card-amount'" type="danger">
+      <span sheet-title-text translate>Purchase Limit Reached</span>
+      <span sheet-text translate>{{'The purchase amount is limited to {maxAmount} {currency} per day. Please modify your amount.' | translate: params
+        }}
+      </span>
+      <span sheet-button-text translate>GOT IT</span>
+    </info-sheet-template>
+
     <info-sheet-template *ngSwitchCase="'legacy-address-info'" type="info">
       <span sheet-title-text>{{'{appName} BCH wallets use the CashAddr format by default' | translate: {appName: params.appName} }}</span>
       <span sheet-text translate>

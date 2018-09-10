@@ -21,6 +21,8 @@ export type InfoSheetType =
   | 'default-error'
   | 'gift-card-archived'
   | 'insufficient-funds'
+  | 'above-maximum-gift-card-amount'
+  | 'below-minimum-gift-card-amount'
   | 'legacy-address-info'
   | 'miner-fee'
   | 'miner-fee-notice'
