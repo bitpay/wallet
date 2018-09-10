@@ -90,8 +90,8 @@ describe('SessionLogPage', () => {
           weight: 10
         });
         instance.filterLogs(21);
-        expect(instance.filteredLogs).toEqual({ weight: 10 });
         expect(instance.logger.get).toHaveBeenCalledWith(21);
+        expect(instance.filteredLogs).toEqual([10]);
       });
     });
     describe('#setOptionSelected', () => {

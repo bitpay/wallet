@@ -95,6 +95,7 @@ export class HomePage {
   private countDown;
   private onResumeSubscription: Subscription;
   private onPauseSubscription: Subscription;
+  private latestVersion: string;
 
   constructor(
     private plt: Platform,
@@ -613,6 +614,7 @@ export class HomePage {
       .getLatestAppVersion()
       .toPromise()
       .then(version => {
+        this.latestVersion = version;
         this.logger.debug('Current app version:', version);
         var result = this.releaseProvider.checkForUpdates(version);
         this.logger.debug('Update available:', result.updateAvailable);
@@ -705,13 +707,29 @@ export class HomePage {
   }
 
   public goToDownload(): void {
-    let url = 'https://github.com/bitpay/copay/releases/latest';
+    let url: string;
+    let okText: string;
+    let appName = this.appProvider.info.nameCase;
+    let OS = this.platformProvider.getOS();
+
+    if (OS.extension !== '') {
+      okText = this.translate.instant('Download');
+      url =
+        'https://github.com/bitpay/copay/releases/download/' +
+        this.latestVersion +
+        '/' +
+        appName +
+        OS.extension;
+    } else {
+      okText = this.translate.instant('View Update');
+      url = 'https://github.com/bitpay/copay/releases/latest';
+    }
+
     let optIn = true;
     let title = this.translate.instant('Update Available');
     let message = this.translate.instant(
       'An update to this app is available. For your security, please update to the latest version.'
     );
-    let okText = this.translate.instant('View Update');
     let cancelText = this.translate.instant('Go Back');
     this.externalLinkProvider.open(
       url,
