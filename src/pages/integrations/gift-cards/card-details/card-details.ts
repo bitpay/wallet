@@ -30,6 +30,9 @@ export class CardDetailsPage {
   async ngOnInit() {
     this.card = this.navParams.get('card');
     this.cardConfig = await this.giftCardProvider.getCardConfig(this.card.name);
+    this.giftCardProvider
+      .updatePendingGiftCards([this.card])
+      .subscribe(card => (this.card = card));
   }
 
   copyClaimCode() {

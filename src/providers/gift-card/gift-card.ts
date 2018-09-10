@@ -155,20 +155,23 @@ export class GiftCardProvider {
     const cardsNeedingUpdate = cards.filter(card =>
       this.checkIfCardNeedsUpdate(card)
     );
-    return from(cardsNeedingUpdate).pipe(
-      mergeMap(card =>
-        fromPromise(this.createGiftCard(card)).catch(err => {
-          this.logger.error('Error creating gift card:', err);
-          return of({ ...card, status: 'FAILURE' });
+    from(cardsNeedingUpdate)
+      .pipe(
+        mergeMap(card =>
+          fromPromise(this.createGiftCard(card)).catch(err => {
+            this.logger.error('Error creating gift card:', err);
+            return of({ ...card, status: 'FAILURE' });
+          })
+        ),
+        mergeMap((updatedFields, index) => {
+          const card = cardsNeedingUpdate[index];
+          return updatedFields.status !== 'PENDING'
+            ? this.updatePreviouslyPendingCard(card, updatedFields)
+            : of(card);
         })
-      ),
-      mergeMap((updatedFields, index) => {
-        const card = cardsNeedingUpdate[index];
-        return updatedFields.status !== 'PENDING'
-          ? this.updatePreviouslyPendingCard(card, updatedFields)
-          : of(card);
-      })
-    );
+      )
+      .subscribe(card => this.cardUpdatesSubject.next(card));
+    return this.cardUpdates$;
   }
 
   updatePreviouslyPendingCard(
