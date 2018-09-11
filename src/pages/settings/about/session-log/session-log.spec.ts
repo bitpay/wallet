@@ -6,10 +6,14 @@ import { ModalMock } from 'ionic-mocks';
 import { ActionSheetProvider } from '../../../../providers/action-sheet/action-sheet';
 import { SessionLogPage } from './session-log';
 
+// Providers
+import { PersistenceProvider } from '../../../../providers/persistence/persistence';
+
 describe('SessionLogPage', () => {
   let fixture: ComponentFixture<SessionLogPage>;
   let instance;
   let testBed: typeof TestBed;
+  let persistenceProvider: PersistenceProvider;
 
   beforeEach(async(() => {
     TestUtils.configurePageTestingModule([SessionLogPage]).then(testEnv => {
@@ -17,6 +21,9 @@ describe('SessionLogPage', () => {
       instance = testEnv.instance;
       testBed = testEnv.testBed;
       fixture.detectChanges();
+
+      persistenceProvider = testBed.get(PersistenceProvider);
+      persistenceProvider.load();
     });
   }));
   afterEach(() => {
@@ -115,37 +122,36 @@ describe('SessionLogPage', () => {
         expect(instance.configProvider.set).toHaveBeenCalledWith(opts);
       });
     });
-    describe('#prepareLogs', () => {
-      it('should return correct log', () => {
-        spyOn(instance.logger, 'get').and.returnValue([
-          {
+    describe('#preparePersistenceLogs', () => {
+      it('should return correct log from persistence provider', () => {
+        let promise = Promise.resolve({
+          '01/07/2008': {
             level: 1,
             msg: 'msg',
             timestamp: '01/07/2008'
           }
-        ]);
-        const log = instance.prepareLogs();
+        });
+        spyOn(persistenceProvider, 'getLogs').and.returnValue(promise);
 
-        expect(log).toEqual(
-          'Copay Session Logs\n Be careful, this could contain sensitive private data\n\n\n\n[01/07/2008][1]msg'
-        );
+        instance.preparePersistenceLogs().then(logs => {
+          expect(logs).toEqual(
+            'Copay Session Logs\n Be careful, this could contain sensitive private data\n\n\n\n[01/07/2008][1]msg\n'
+          );
+        });
       });
     });
     describe('#sendLogs', () => {
       it('should send logs', () => {
-        spyOn(instance, 'prepareLogs').and.returnValue('logs');
+        let promise = Promise.resolve(
+          'Copay Session Logs\n Be careful, this could contain sensitive private data\n\n\n\n[01/07/2008][1]msg\n'
+        );
+
+        spyOn(instance, 'preparePersistenceLogs').and.returnValue(promise);
         spyOn(instance.socialSharing, 'shareViaEmail');
 
         instance.sendLogs();
 
-        expect(instance.socialSharing.shareViaEmail).toHaveBeenCalledWith(
-          'logs',
-          'Copay Logs',
-          null,
-          null,
-          null,
-          null
-        );
+        expect(instance.preparePersistenceLogs).toHaveBeenCalled();
       });
     });
     describe('#showOptionsMenu', () => {

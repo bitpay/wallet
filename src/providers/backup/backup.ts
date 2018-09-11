@@ -4,6 +4,7 @@ import { Logger } from '../../providers/logger/logger';
 // Providers
 import { AppProvider } from '../../providers/app/app';
 import { BwcProvider } from '../../providers/bwc/bwc';
+import { DownloadProvider } from '../../providers/download/download';
 import { ProfileProvider } from '../../providers/profile/profile';
 import { ConfigProvider } from '../config/config';
 
@@ -12,9 +13,10 @@ export class BackupProvider {
   constructor(
     private appProvider: AppProvider,
     private bwcProvider: BwcProvider,
+    private configProvider: ConfigProvider,
+    private downloadProvider: DownloadProvider,
     private logger: Logger,
-    private profileProvider: ProfileProvider,
-    private configProvider: ConfigProvider
+    private profileProvider: ProfileProvider
   ) {
     this.logger.info('BackupProvider initialized.');
   }
@@ -40,7 +42,7 @@ export class BackupProvider {
       if (opts.noSign) walletName = walletName + '-noSign';
       let filename =
         walletName + '-' + this.appProvider.info.nameCase + 'backup.aes.json';
-      this._download(ew, filename).then(() => {
+      this.downloadProvider.download(ew, filename).then(() => {
         return resolve();
       });
     });
@@ -70,44 +72,5 @@ export class BackupProvider {
     b = JSON.parse(b);
     if (opts.addressBook) b.addressBook = opts.addressBook;
     return JSON.stringify(b);
-  }
-
-  private _download(ew, fileName: string): Promise<any> {
-    return new Promise(resolve => {
-      let a = document.createElement('a');
-      let blob = this.NewBlob(ew, 'text/plain;charset=utf-8');
-      let url = window.URL.createObjectURL(blob);
-
-      document.body.appendChild(a);
-
-      a.href = url;
-      a.download = fileName;
-      a.click();
-      window.URL.revokeObjectURL(url);
-
-      return resolve();
-    });
-  }
-
-  private NewBlob(data, datatype: string) {
-    let out;
-    try {
-      out = new Blob([data], {
-        type: datatype
-      });
-      this.logger.debug('case 1');
-    } catch (e) {
-      if (e.name == 'InvalidStateError') {
-        // InvalidStateError (tested on FF13 WinXP)
-        out = new Blob([data], {
-          type: datatype
-        });
-        this.logger.debug('case 2');
-      } else {
-        // We're screwed, blob constructor unsupported entirely
-        this.logger.debug('Error');
-      }
-    }
-    return out;
   }
 }
