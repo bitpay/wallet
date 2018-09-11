@@ -291,6 +291,18 @@ review the [guidelines for contributing](CONTRIBUTING.md).
 - [Feature requests](CONTRIBUTING.md#features)
 - [Pull requests](CONTRIBUTING.md#pull-requests)
 
+## Current Active Developers GPG keys ID
+
+- 15EDAD8D9F2EB1AF @cmgustavo
+
+- FC283098DA862864 @gabrielbazan7
+
+- DD6D7EAADE12280D @Gamboster
+
+- D87947CC8A32D91C @msalcala11
+
+- 612C9C4DDAC47B61 @rastajpa
+
 ## Support
 
 Please see [Support requests](CONTRIBUTING.md#support)
