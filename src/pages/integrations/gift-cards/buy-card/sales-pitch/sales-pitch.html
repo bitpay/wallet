@@ -1,0 +1,16 @@
+<div [ngSwitch]="cardName">
+  <div *ngSwitchCase="CardName.amazon">
+    <div translate>Only redeemable on www.amazon.com (USA website)</div>
+    <div translate>Amazon.com Gift Cards never expire and can be redeemed towards millions of items at www.amazon.com.</div>
+  </div>
+  <div *ngSwitchCase="CardName.amazonJapan">
+    <div translate>Only redeemable on www.amazon.co.jp (Japan website)</div>
+    <div translate>Amazon.co.jp Gift Cards never expire and can be redeemed towards millions of items at www.amazon.co.jp.</div>
+  </div>
+  <div *ngSwitchCase="CardName.mercadoLibre">
+    <div translate>Only redeemable on Mercado Livre (Brazil)</div>
+    <div translate>You can use your Mercado Livre gift cards on your Mercado Pago account for everyday expenses like utilities and metro
+      rides.
+    </div>
+  </div>
+</div>

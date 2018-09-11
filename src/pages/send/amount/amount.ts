@@ -17,15 +17,16 @@ import { RateProvider } from '../../../providers/rate/rate';
 import { TxFormatProvider } from '../../../providers/tx-format/tx-format';
 
 // Pages
+import { ActionSheetProvider, GiftCardProvider } from '../../../providers';
+import { CardConifg, CardName } from '../../../providers/gift-card/gift-card';
 import { ProfileProvider } from '../../../providers/profile/profile';
 import { Coin } from '../../../providers/wallet/wallet';
-import { BuyAmazonPage } from '../../integrations/amazon/buy-amazon/buy-amazon';
 import { BitPayCardTopUpPage } from '../../integrations/bitpay-card/bitpay-card-topup/bitpay-card-topup';
 import { BuyCoinbasePage } from '../../integrations/coinbase/buy-coinbase/buy-coinbase';
 import { SellCoinbasePage } from '../../integrations/coinbase/sell-coinbase/sell-coinbase';
+import { ConfirmCardPurchasePage } from '../../integrations/gift-cards/confirm-card-purchase/confirm-card-purchase';
 import { BuyGlideraPage } from '../../integrations/glidera/buy-glidera/buy-glidera';
 import { SellGlideraPage } from '../../integrations/glidera/sell-glidera/sell-glidera';
-import { BuyMercadoLibrePage } from '../../integrations/mercado-libre/buy-mercado-libre/buy-mercado-libre';
 import { ShapeshiftConfirmPage } from '../../integrations/shapeshift/shapeshift-confirm/shapeshift-confirm';
 import { CustomAmountPage } from '../../receive/custom-amount/custom-amount';
 import { WalletTabsChild } from '../../wallet-tabs/wallet-tabs-child';
@@ -77,9 +78,14 @@ export class AmountPage extends WalletTabsChild {
   private _id: string;
   public requestingAmount: boolean;
 
+  public cardName: CardName;
+  public cardConfig: CardConifg;
+
   constructor(
+    private actionSheetProvider: ActionSheetProvider,
     private configProvider: ConfigProvider,
     private filterProvider: FilterProvider,
+    private giftCardProvider: GiftCardProvider,
     private logger: Logger,
     navCtrl: NavController,
     private navParams: NavParams,
@@ -137,11 +143,16 @@ export class AmountPage extends WalletTabsChild {
     this.toWalletId = this.navParams.data.toWalletId;
     this.shiftMax = this.navParams.data.shiftMax;
     this.shiftMin = this.navParams.data.shiftMin;
+
+    this.cardName = this.navParams.get('cardName');
   }
 
-  ionViewDidLoad() {
+  async ionViewDidLoad() {
     this.setAvailableUnits();
     this.updateUnitUI();
+    this.cardConfig =
+      this.cardName &&
+      (await this.giftCardProvider.getCardConfig(this.cardName));
   }
 
   ionViewWillEnter() {
@@ -265,8 +276,8 @@ export class AmountPage extends WalletTabsChild {
         this.showSendMax = true;
         nextPage = BitPayCardTopUpPage;
         break;
-      case 'BuyAmazonPage':
-        nextPage = BuyAmazonPage;
+      case 'ConfirmCardPurchasePage':
+        nextPage = ConfirmCardPurchasePage;
         break;
       case 'BuyGlideraPage':
         nextPage = BuyGlideraPage;
@@ -282,9 +293,6 @@ export class AmountPage extends WalletTabsChild {
         break;
       case 'CustomAmountPage':
         nextPage = CustomAmountPage;
-        break;
-      case 'BuyMercadoLibrePage':
-        nextPage = BuyMercadoLibrePage;
         break;
       case 'ShapeshiftConfirmPage':
         this.showSendMax = true;
@@ -477,6 +485,22 @@ export class AmountPage extends WalletTabsChild {
     return result;
   }
 
+  public validateGiftCardAmount(amount) {
+    return (
+      amount <= this.cardConfig.maxAmount && amount >= this.cardConfig.minAmount
+    );
+  }
+
+  public showCardAmountInfoSheet(amount) {
+    const sheetType =
+      amount < this.cardConfig.minAmount
+        ? 'below-minimum-gift-card-amount'
+        : 'above-maximum-gift-card-amount';
+    this.actionSheetProvider
+      .createInfoSheet(sheetType, this.cardConfig)
+      .present();
+  }
+
   public finish(): void {
     let unit = this.availableUnits[this.unitIndex];
     let _amount = this.evaluate(this.format(this.expression));
@@ -488,13 +512,20 @@ export class AmountPage extends WalletTabsChild {
     }
 
     if (this.navParams.data.nextPage) {
+      const amount = this.useSendMax ? null : _amount;
+      if (this.cardConfig && !this.validateGiftCardAmount(amount)) {
+        this.showCardAmountInfoSheet(amount);
+        return;
+      }
+
       data = {
         id: this._id,
-        amount: this.useSendMax ? null : _amount,
+        amount,
         currency: unit.id.toUpperCase(),
         coin,
         useSendMax: this.useSendMax,
-        toWalletId: this.toWalletId
+        toWalletId: this.toWalletId,
+        cardName: this.cardName
       };
     } else {
       let amount = _amount;

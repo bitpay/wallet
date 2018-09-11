@@ -8,6 +8,7 @@ import { DomProvider } from '../../providers/dom/dom';
 
 export type InfoSheetType =
   | 'address-copied'
+  | 'archive-gift-card'
   | 'appreciate-review'
   | 'backup-failed'
   | 'backup-needed-with-activity'
@@ -15,9 +16,13 @@ export type InfoSheetType =
   | 'backup-warning'
   | 'copayers'
   | 'copy-to-clipboard'
+  | 'copied-gift-card-claim-code'
   | 'custom-amount'
   | 'default-error'
+  | 'gift-card-archived'
   | 'insufficient-funds'
+  | 'above-maximum-gift-card-amount'
+  | 'below-minimum-gift-card-amount'
   | 'legacy-address-info'
   | 'miner-fee'
   | 'miner-fee-notice'
@@ -25,7 +30,10 @@ export type InfoSheetType =
   | 'receiving-bitcoin'
   | 'sensitive-info';
 
-export type OptionsSheetType = 'address-options' | 'incoming-data';
+export type OptionsSheetType =
+  | 'address-options'
+  | 'gift-card-options'
+  | 'incoming-data';
 
 export interface WalletSelectorParams {
   wallets: any[];

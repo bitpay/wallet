@@ -43,11 +43,11 @@ export class ConfirmPage extends WalletTabsChild {
   slideButton;
 
   private bitcore;
-  private bitcoreCash;
+  protected bitcoreCash;
 
   public countDown = null;
   public CONFIRM_LIMIT_USD: number;
-  public FEE_TOO_HIGH_LIMIT_PER: number;
+  protected FEE_TOO_HIGH_LIMIT_PER: number;
 
   public tx;
   public wallet;
@@ -77,28 +77,28 @@ export class ConfirmPage extends WalletTabsChild {
   public isOpenSelector: boolean;
 
   constructor(
-    private actionSheetProvider: ActionSheetProvider,
-    private app: App,
-    private bwcProvider: BwcProvider,
+    protected actionSheetProvider: ActionSheetProvider,
+    protected app: App,
+    protected bwcErrorProvider: BwcErrorProvider,
+    protected bwcProvider: BwcProvider,
+    protected configProvider: ConfigProvider,
+    protected decimalPipe: DecimalPipe,
+    protected externalLinkProvider: ExternalLinkProvider,
+    protected feeProvider: FeeProvider,
+    protected logger: Logger,
+    protected modalCtrl: ModalController,
     navCtrl: NavController,
-    private navParams: NavParams,
-    private logger: Logger,
-    private configProvider: ConfigProvider,
-    private replaceParametersProvider: ReplaceParametersProvider,
-    private platformProvider: PlatformProvider,
+    protected navParams: NavParams,
+    protected onGoingProcessProvider: OnGoingProcessProvider,
+    protected platformProvider: PlatformProvider,
     profileProvider: ProfileProvider,
-    private walletProvider: WalletProvider,
-    private popupProvider: PopupProvider,
-    private bwcErrorProvider: BwcErrorProvider,
-    private onGoingProcessProvider: OnGoingProcessProvider,
-    private feeProvider: FeeProvider,
-    private txConfirmNotificationProvider: TxConfirmNotificationProvider,
-    private modalCtrl: ModalController,
-    private txFormatProvider: TxFormatProvider,
-    private translate: TranslateService,
-    private externalLinkProvider: ExternalLinkProvider,
-    walletTabsProvider: WalletTabsProvider,
-    private decimalPipe: DecimalPipe
+    protected popupProvider: PopupProvider,
+    protected replaceParametersProvider: ReplaceParametersProvider,
+    protected translate: TranslateService,
+    protected txConfirmNotificationProvider: TxConfirmNotificationProvider,
+    protected txFormatProvider: TxFormatProvider,
+    protected walletProvider: WalletProvider,
+    walletTabsProvider: WalletTabsProvider
   ) {
     super(navCtrl, profileProvider, walletTabsProvider);
     this.bitcore = this.bwcProvider.getBitcore();
@@ -513,22 +513,33 @@ export class ConfirmPage extends WalletTabsChild {
     });
   }
 
+  protected getFeeRate(amount: number, fee: number) {
+    return (fee / (amount + fee)) * 100;
+  }
+
+  protected isHighFee(amount: number, fee: number) {
+    return this.getFeeRate(amount, fee) > this.FEE_TOO_HIGH_LIMIT_PER;
+  }
+
+  protected showHighFeeSheet() {
+    const coinName = this.wallet.coin === 'btc' ? 'Bitcoin' : 'Bitcoin Cash';
+    const minerFeeInfoSheet = this.actionSheetProvider.createInfoSheet(
+      'miner-fee',
+      { coinName }
+    );
+    minerFeeInfoSheet.present();
+  }
+
   private buildTxp(tx, wallet, opts): Promise<any> {
     return new Promise((resolve, reject) => {
       this.getTxp(_.clone(tx), wallet, opts.dryRun)
         .then(txp => {
-          let per = (txp.fee / (txp.amount + txp.fee)) * 100;
+          const per = this.getFeeRate(txp.amount, txp.fee);
           txp.feeRatePerStr = per.toFixed(2) + '%';
-          txp.feeTooHigh = per > this.FEE_TOO_HIGH_LIMIT_PER;
+          txp.feeTooHigh = this.isHighFee(txp.amount, txp.fee);
 
           if (txp.feeTooHigh) {
-            const coinName =
-              this.wallet.coin === Coin.BTC ? 'Bitcoin' : 'Bitcoin Cash';
-            const minerFeeInfoSheet = this.actionSheetProvider.createInfoSheet(
-              'miner-fee',
-              { coinName }
-            );
-            minerFeeInfoSheet.present();
+            this.showHighFeeSheet();
           }
 
           tx.txp[wallet.id] = txp;
@@ -797,13 +808,12 @@ export class ConfirmPage extends WalletTabsChild {
     });
   }
 
-  private publishAndSign = (txp, wallet): void => {
+  protected publishAndSign(txp, wallet) {
     if (!wallet.canSign() && !wallet.isPrivKeyExternal()) {
-      this.onlyPublish(txp, wallet);
-      return;
+      return this.onlyPublish(txp, wallet);
     }
 
-    this.walletProvider
+    return this.walletProvider
       .publishAndSign(wallet, txp)
       .then(txp => {
         this.onGoingProcessProvider.clear();
@@ -815,14 +825,14 @@ export class ConfirmPage extends WalletTabsChild {
             txid: txp.txid
           });
         }
-        this.openFinishModal();
+        return this.openFinishModal();
       })
       .catch(err => {
         if (this.isCordova) this.slideButton.isConfirmed(false);
         this.onGoingProcessProvider.clear();
         this.showErrorInfoSheet(err);
       });
-  };
+  }
 
   private onlyPublish(txp, wallet): Promise<void> {
     this.logger.info('No signing proposal: No private key');
@@ -839,7 +849,7 @@ export class ConfirmPage extends WalletTabsChild {
       });
   }
 
-  private async openFinishModal(onlyPublish?: boolean) {
+  protected async openFinishModal(onlyPublish?: boolean) {
     let params: { finishText: string; finishComment?: string } = {
       finishText: this.successText
     };

@@ -1,0 +1,25 @@
+.card-list-item {
+  &__icon {
+    $icon-height: 50px;
+    height: $icon-height;
+    width: $icon-height;
+    margin: 3px 10px 3px 12px;
+  }
+  &__label {
+    font-size: 19px;
+    font-weight: 600;
+    margin-bottom: 5px;
+  }
+  &__note {
+    font-weight: 300;
+    font-size: 15px;
+  }
+  &.item.item-md {
+    .item-inner {
+      margin-left: 0;
+    }
+    ion-icon {
+      margin-right: 16px;
+    }
+  }
+}

@@ -1,0 +1,50 @@
+card-details-page {
+  $background-color: white;
+  @include fix-ios-bg-scroll($background-color);
+  .wrapper {
+    padding: 0 $gift-card-page-padding;
+    .header-extension {
+      height: 150px;
+    }
+  }
+  .main-content {
+    flex-grow: 1;
+  }
+  .balance {
+    color: $background-color;
+    font-size: 25px;
+    font-weight: 500;
+    margin: 30px 0;
+    margin-top: -110px;
+  }
+  .card-image {
+    position: relative;
+    z-index: 1;
+  }
+  .card-info {
+    background-color: #f7f7f7;
+    border: 1px solid #e7e7e7;
+    border-radius: 8px;
+    padding: 70px 30px 20px;
+    margin-top: -55px;
+    margin-bottom: 25px;
+    max-width: $gift-card-content-max-width;
+    margin-left: auto;
+    margin-right: auto;
+    &__title {
+      color: rgba(0, 0, 0, 0.6);
+      font-size: 16px;
+    }
+    &__body {
+      color: #060606;
+      cursor: pointer;
+      font-size: 18px;
+      font-weight: 500;
+      margin: 20px 0;
+    }
+    &__date {
+      color: #4a4a4a;
+      font-size: 14px;
+    }
+  }
+}

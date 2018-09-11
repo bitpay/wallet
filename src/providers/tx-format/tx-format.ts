@@ -60,7 +60,7 @@ export class TxFormatProvider {
     return this.formatAmount(satoshis) + ' ' + coin.toUpperCase();
   }
 
-  public toFiat(coin: string, satoshis: number, code: string): Promise<any> {
+  public toFiat(coin: string, satoshis: number, code: string): Promise<string> {
     // TODO not a promise
     return new Promise(resolve => {
       if (isNaN(satoshis)) return resolve();

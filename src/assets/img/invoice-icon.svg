@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="17px" height="20px" viewBox="0 0 17 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 51.2 (57519) - http://www.bohemiancoding.com/sketch -->
+    <title>receipt-list-42</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linecap="square">
+        <g id="Icons/Small-(20px)/Invoice-(Dark)" transform="translate(-1.000000, 0.000000)" stroke="#464D5F">
+            <g id="receipt-list-42" transform="translate(2.000000, 1.000000)">
+                <polygon id="Shape" points="15 18 0 18 0 0 2.5 1.71428571 5 0 7.5 1.71428571 10 0 12.5 1.71428571 15 0"></polygon>
+                <path d="M4,7 L8,7" id="Shape"></path>
+                <path d="M11,7 L12,7" id="Shape"></path>
+                <path d="M4,11 L8,11" id="Shape"></path>
+                <path d="M11,11 L12,11" id="Shape"></path>
+                <path d="M4,14 L8,14" id="Shape"></path>
+                <path d="M11,14 L12,14" id="Shape"></path>
+            </g>
+        </g>
+    </g>
+</svg>

@@ -15,10 +15,15 @@ export class RevealAtScrollPosition {
   constructor(private element: ElementRef, private renderer: Renderer) {}
 
   ngAfterViewInit() {
-    this.setOpacity(0);
+    this.setInitialStyles();
     this.scrollArea.ionScroll.subscribe(event =>
       this.updateStyling(event.scrollTop)
     );
+  }
+
+  setInitialStyles() {
+    this.setOpacity(0);
+    this.renderer.setElementClass(this.element.nativeElement, 'ellipsis', true);
   }
 
   updateStyling(scrollTop: number) {

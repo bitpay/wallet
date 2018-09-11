@@ -24,12 +24,6 @@ import { WalletBalancePage } from '../pages/wallet-details/wallet-balance/wallet
 import { WalletDetailsPage } from '../pages/wallet-details/wallet-details';
 import { WalletTabsPage } from '../pages/wallet-tabs/wallet-tabs';
 
-// Integrations: Amazon
-import { AmazonPage } from '../pages/integrations/amazon/amazon';
-import { AmazonCardDetailsPage } from '../pages/integrations/amazon/amazon-card-details/amazon-card-details';
-import { AmazonSettingsPage } from '../pages/integrations/amazon/amazon-settings/amazon-settings';
-import { BuyAmazonPage } from '../pages/integrations/amazon/buy-amazon/buy-amazon';
-
 // Integrations: Coinbase
 import { BuyCoinbasePage } from '../pages/integrations/coinbase/buy-coinbase/buy-coinbase';
 import { CoinbasePage } from '../pages/integrations/coinbase/coinbase';
@@ -43,12 +37,6 @@ import { GlideraPage } from '../pages/integrations/glidera/glidera';
 import { GlideraSettingsPage } from '../pages/integrations/glidera/glidera-settings/glidera-settings';
 import { GlideraTxDetailsPage } from '../pages/integrations/glidera/glidera-tx-details/glidera-tx-details';
 import { SellGlideraPage } from '../pages/integrations/glidera/sell-glidera/sell-glidera';
-
-// Integrations: Mercado Libre
-import { BuyMercadoLibrePage } from '../pages/integrations/mercado-libre/buy-mercado-libre/buy-mercado-libre';
-import { MercadoLibrePage } from '../pages/integrations/mercado-libre/mercado-libre';
-import { MercadoLibreCardDetailsPage } from '../pages/integrations/mercado-libre/mercado-libre-card-details/mercado-libre-card-details';
-import { MercadoLibreSettingsPage } from '../pages/integrations/mercado-libre/mercado-libre-settings/mercado-libre-settings';
 
 // Integrations: ShapeShift
 import { ShapeshiftPage } from '../pages/integrations/shapeshift/shapeshift';
@@ -83,6 +71,8 @@ import { ProposalsPage } from '../pages/home/proposals/proposals';
 
 /* Settings */
 import { FingerprintModalPage } from '../pages/fingerprint/fingerprint';
+import { AmazonSettingsPage } from '../pages/integrations/amazon/amazon-settings/amazon-settings';
+import { MercadoLibreSettingsPage } from '../pages/integrations/mercado-libre/mercado-libre-settings/mercado-libre-settings';
 import { PIN_COMPONENTS } from '../pages/pin/pin';
 import { AboutPage } from '../pages/settings/about/about';
 import { SessionLogPage } from '../pages/settings/about/session-log/session-log';
@@ -123,12 +113,13 @@ import { CustomAmountPage } from '../pages/receive/custom-amount/custom-amount';
 import { WideHeaderPage } from './templates/wide-header-page/wide-header-page';
 import { WalletTabsChild } from './wallet-tabs/wallet-tabs-child';
 
+import { GIFT_CARD_PAGES } from './integrations/gift-cards/gift-cards';
+
 export const PAGES = [
   ActivityPage,
   AddPage,
-  AmazonCardDetailsPage,
-  AmazonPage,
   AmazonSettingsPage,
+  MercadoLibreSettingsPage,
   AmountPage,
   AddressbookPage,
   AddressbookAddPage,
@@ -143,10 +134,8 @@ export const PAGES = [
   BitPayCardPage,
   BitPaySettingsPage,
   BitPayCardTopUpPage,
-  BuyAmazonPage,
   BuyCoinbasePage,
   BuyGlideraPage,
-  BuyMercadoLibrePage,
   ChooseFeeLevelPage,
   CreateWalletPage,
   CoinbasePage,
@@ -162,14 +151,13 @@ export const PAGES = [
   CustomAmountPage,
   DisclaimerPage,
   CollectEmailPage,
+  ...GIFT_CARD_PAGES,
   GlideraPage,
   GravatarPage,
   FingerprintModalPage,
   HomePage,
   LanguagePage,
   LockPage,
-  MercadoLibrePage,
-  MercadoLibreSettingsPage,
   OnboardingPage,
   PaperWalletPage,
   PayProPage,
@@ -189,7 +177,6 @@ export const PAGES = [
   ShapeshiftSettingsPage,
   ShapeshiftPage,
   ShapeshiftShiftPage,
-  MercadoLibreCardDetailsPage,
   NotificationsPage,
   FeePolicyPage,
   SearchTxModalPage,
