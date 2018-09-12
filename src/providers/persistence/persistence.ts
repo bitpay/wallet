@@ -104,14 +104,10 @@ export class PersistenceProvider {
           return;
         }
         logs[newLog.timestamp] = newLog;
-        this.setLogs(JSON.stringify(logs))
-          .then(() => {
-            this.logger.info();
-          })
-          .catch(() => {
-            let msg = this.translate.instant('Error adding new log');
-            return this.logger.warn(msg);
-          });
+        this.setLogs(JSON.stringify(logs)).catch(() => {
+          let msg = this.translate.instant('Error adding new log');
+          return this.logger.warn(msg);
+        });
       })
       .catch(err => {
         this.logger.error(err);
