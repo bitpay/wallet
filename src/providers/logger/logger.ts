@@ -82,9 +82,7 @@ export class Logger {
       msg
     };
     this.logs.push(newLog);
-    if (level === 'warn' || level === 'error') {
-      this.events.publish('newImportantLog', newLog);
-    }
+    this.events.publish('newLog', newLog);
   }
 
   /**

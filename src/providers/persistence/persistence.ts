@@ -60,6 +60,7 @@ interface Storage {
 @Injectable()
 export class PersistenceProvider {
   public storage: Storage;
+  private persistentLogs;
 
   constructor(
     private logger: Logger,
@@ -69,19 +70,13 @@ export class PersistenceProvider {
     private translate: TranslateService
   ) {
     this.logger.debug('PersistenceProvider initialized');
-
-    this.events.subscribe('newImportantLog', newLog => {
-      this.processLogs(newLog);
-    });
   }
 
   public load() {
     this.storage = this.platform.isCordova
       ? new FileStorage(this.file, this.logger)
       : new LocalStorage(this.platform, this.logger);
-  }
 
-  private processLogs(newLog): void {
     this.getLogs()
       .then(logs => {
         if (logs && _.isString(logs)) logs = JSON.parse(logs);
@@ -90,28 +85,35 @@ export class PersistenceProvider {
 
         // Compare dates and remove logs older than a week
         let now = new Date();
-        let aWeekAgo = new Date(now.setDate(now.getDate() - 7));
+        let aWeekAgo = new Date(now.setDate(now.getDate() - 3));
         Object.keys(logs).forEach(key => {
           let logDate = new Date(key);
           if (logDate < aWeekAgo) {
             delete logs[key];
           }
         });
-
-        if (logs[newLog.timestamp]) {
-          let msg = this.translate.instant('Logs timestamp collapse');
-          this.logger.warn(msg);
-          return;
-        }
-        logs[newLog.timestamp] = newLog;
-        this.setLogs(JSON.stringify(logs)).catch(() => {
-          let msg = this.translate.instant('Error adding new log');
-          return this.logger.warn(msg);
-        });
+        this.persistentLogs = logs;
       })
       .catch(err => {
         this.logger.error(err);
       });
+
+    this.events.subscribe('newLog', newLog => {
+      this.saveNewLog(newLog);
+    });
+  }
+
+  private saveNewLog(newLog): void {
+    if (this.persistentLogs[newLog.timestamp]) {
+      let msg = this.translate.instant('Logs timestamp collapse');
+      this.logger.warn(msg);
+      return;
+    }
+    this.persistentLogs[newLog.timestamp] = newLog;
+    this.setLogs(JSON.stringify(this.persistentLogs)).catch(() => {
+      let msg = this.translate.instant('Error adding new log');
+      this.logger.warn(msg);
+    });
   }
 
   storeNewProfile(profile): Promise<void> {
