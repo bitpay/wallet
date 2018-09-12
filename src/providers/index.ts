@@ -37,6 +37,7 @@ export {
   DerivationPathHelperProvider
 } from '../providers/derivation-path-helper/derivation-path-helper';
 export { DomProvider } from '../providers/dom/dom';
+export { DownloadProvider } from '../providers/download/download';
 export {
   EmailNotificationsProvider
 } from '../providers/email-notifications/email-notifications';

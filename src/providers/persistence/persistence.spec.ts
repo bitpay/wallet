@@ -1,4 +1,6 @@
 import { File } from '@ionic-native/file';
+import { TranslateService } from '@ngx-translate/core';
+import { Events } from 'ionic-angular';
 import { Logger } from '../../providers/logger/logger';
 import { PlatformProvider } from '../platform/platform';
 import { PersistenceProvider } from './persistence';
@@ -7,7 +9,14 @@ class FileMock extends File {}
 
 describe('Persistence Provider', () => {
   let persistenceProvider: PersistenceProvider;
+  let translate: TranslateService;
   let logs;
+
+  const eventsMock = {
+    subscribe: event => {
+      logs.push(event);
+    }
+  } as Events;
 
   const loggerMock = {
     info: info => {
@@ -25,7 +34,9 @@ describe('Persistence Provider', () => {
     persistenceProvider = new PersistenceProvider(
       loggerMock,
       platformMock,
-      fileMock
+      fileMock,
+      eventsMock,
+      translate
     );
     persistenceProvider.load();
   }
