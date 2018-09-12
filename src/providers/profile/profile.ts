@@ -2,24 +2,23 @@ import { Injectable } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Events } from 'ionic-angular';
 import * as _ from 'lodash';
-import { Logger } from '../../providers/logger/logger';
 
 // providers
-import { AppProvider } from '../../providers/app/app';
-import { LanguageProvider } from '../../providers/language/language';
+import { AppProvider } from '../app/app';
 import { BwcErrorProvider } from '../bwc-error/bwc-error';
 import { BwcProvider } from '../bwc/bwc';
 import { ConfigProvider } from '../config/config';
+import { LanguageProvider } from '../language/language';
+import { Logger } from '../logger/logger';
 import { OnGoingProcessProvider } from '../on-going-process/on-going-process';
 import { PersistenceProvider } from '../persistence/persistence';
 import { PlatformProvider } from '../platform/platform';
 import { PopupProvider } from '../popup/popup';
 import { ReplaceParametersProvider } from '../replace-parameters/replace-parameters';
-import { WalletProvider } from '../../providers/wallet/wallet';
+import { Coin, WalletOptions, WalletProvider } from '../wallet/wallet';
 
 // models
 import { Profile } from '../../models/profile/profile.model';
-import { Coin, WalletOptions } from '../wallet/wallet';
 
 @Injectable()
 export class ProfileProvider {

@@ -20,10 +20,10 @@ describe('AboutPage', () => {
   });
   describe('Lifecycle Hooks', () => {
     describe('ionViewDidLoad', () => {
-      it('should log debug info', () => {
-        spyOn(instance.logger, 'debug');
+      it('should log info', () => {
+        spyOn(instance.logger, 'info');
         instance.ionViewDidLoad();
-        expect(instance.logger.debug).toHaveBeenCalledWith(
+        expect(instance.logger.info).toHaveBeenCalledWith(
           'ionViewDidLoad AboutPage'
         );
       });

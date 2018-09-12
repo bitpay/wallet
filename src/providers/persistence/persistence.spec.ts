@@ -21,6 +21,9 @@ describe('Persistence Provider', () => {
   const loggerMock = {
     info: info => {
       logs.push(info);
+    },
+    debug: info => {
+      logs.push(info);
     }
   } as Logger;
   const platformMock = {} as PlatformProvider;
