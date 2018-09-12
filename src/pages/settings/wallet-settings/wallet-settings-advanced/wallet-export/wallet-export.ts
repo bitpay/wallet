@@ -12,6 +12,7 @@ import { SocialSharing } from '@ionic-native/social-sharing';
 import { ActionSheetProvider } from '../../../../../providers/action-sheet/action-sheet';
 import { AppProvider } from '../../../../../providers/app/app';
 import { BackupProvider } from '../../../../../providers/backup/backup';
+import { BwcErrorProvider } from '../../../../../providers/bwc-error/bwc-error';
 import { ConfigProvider } from '../../../../../providers/config/config';
 import { PersistenceProvider } from '../../../../../providers/persistence/persistence';
 import { PlatformProvider } from '../../../../../providers/platform/platform';
@@ -59,7 +60,8 @@ export class WalletExportPage extends WalletTabsChild {
     private translate: TranslateService,
     private actionSheetProvider: ActionSheetProvider,
     public walletTabsProvider: WalletTabsProvider,
-    private configProvider: ConfigProvider
+    private configProvider: ConfigProvider,
+    private bwcErrorProvider: BwcErrorProvider
   ) {
     super(navCtrl, profileProvider, walletTabsProvider);
     this.exportWalletForm = this.formBuilder.group(
@@ -147,8 +149,12 @@ export class WalletExportPage extends WalletTabsChild {
       .catch(err => {
         this.showQrCode = false;
         this.segments = 'file/text';
-        if (err && err.message != 'FINGERPRINT_CANCELLED')
-          this.showErrorInfoSheet(err);
+        if (
+          err &&
+          err.message != 'FINGERPRINT_CANCELLED' &&
+          err.message != 'PASSWORD_CANCELLED'
+        )
+          this.showErrorInfoSheet(this.bwcErrorProvider.msg(err));
       });
   }
 
@@ -201,8 +207,12 @@ export class WalletExportPage extends WalletTabsChild {
           });
       })
       .catch(err => {
-        if (err && err.message != 'FINGERPRINT_CANCELLED')
-          this.showErrorInfoSheet(err);
+        if (
+          err &&
+          err.message != 'FINGERPRINT_CANCELLED' &&
+          err.message != 'PASSWORD_CANCELLED'
+        )
+          this.showErrorInfoSheet(this.bwcErrorProvider.msg(err));
       });
   }
 
@@ -257,8 +267,12 @@ export class WalletExportPage extends WalletTabsChild {
             });
         })
         .catch(err => {
-          if (err && err.message != 'FINGERPRINT_CANCELLED')
-            this.showErrorInfoSheet(err);
+          if (
+            err &&
+            err.message != 'FINGERPRINT_CANCELLED' &&
+            err.message != 'PASSWORD_CANCELLED'
+          )
+            this.showErrorInfoSheet(this.bwcErrorProvider.msg(err));
           return resolve();
         });
     });

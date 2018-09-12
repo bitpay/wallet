@@ -152,11 +152,11 @@ export class BwcErrorProvider {
         case 'MISSING_PARAMETER':
           body = this.translate.instant('Missing parameter');
           break;
-        case 'NO_PASSWORD_GIVEN':
-          body = this.translate.instant('Encrypt password needed');
+        case 'NO_PASSWORD':
+          body = this.translate.instant('No password');
           break;
-        case 'PASSWORD_INCORRECT':
-          body = this.translate.instant('Wrong encrypt password');
+        case 'WRONG_PASSWORD':
+          body = this.translate.instant('Wrong password');
           break;
         case 'EXCEEDED_DAILY_LIMIT':
           body = this.translate.instant(

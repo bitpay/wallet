@@ -1406,13 +1406,13 @@ export class WalletProvider {
         this.translate.instant('Enter encrypt password')
       ).then((password: string) => {
         if (lodash.isNull(password)) {
-          return reject();
+          return reject(new Error('PASSWORD_CANCELLED'));
         }
         if (password == '') {
-          return reject(this.translate.instant('No password'));
+          return reject(new Error('NO_PASSWORD'));
         }
         if (!wallet.checkPassword(password))
-          return reject(this.translate.instant('Wrong password'));
+          return reject(new Error('WRONG_PASSWORD'));
         return resolve(password);
       });
     });

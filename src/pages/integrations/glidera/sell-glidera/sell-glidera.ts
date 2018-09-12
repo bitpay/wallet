@@ -9,6 +9,7 @@ import { GlideraPage } from '../../../integrations/glidera/glidera';
 
 // providers
 import { ActionSheetProvider } from '../../../../providers/action-sheet/action-sheet';
+import { BwcErrorProvider } from '../../../../providers/bwc-error/bwc-error';
 import { ConfigProvider } from '../../../../providers/config/config';
 import { GlideraProvider } from '../../../../providers/glidera/glidera';
 import { OnGoingProcessProvider } from '../../../../providers/on-going-process/on-going-process';
@@ -43,6 +44,7 @@ export class SellGlideraPage {
 
   constructor(
     private actionSheetProvider: ActionSheetProvider,
+    private bwcErrorProvider: BwcErrorProvider,
     private platformProvider: PlatformProvider,
     private logger: Logger,
     private popupProvider: PopupProvider,
@@ -276,7 +278,12 @@ export class SellGlideraPage {
                           })
                           .catch(err => {
                             this.onGoingProcessProvider.clear();
-                            this.showError(err);
+                            if (
+                              err &&
+                              err.message != 'FINGERPRINT_CANCELLED' &&
+                              err.message != 'PASSWORD_CANCELLED'
+                            )
+                              this.showError(this.bwcErrorProvider.msg(err));
                           });
                       })
                       .catch(err => {
