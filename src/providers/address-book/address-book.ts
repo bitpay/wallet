@@ -14,7 +14,7 @@ export class AddressBookProvider {
     private persistenceProvider: PersistenceProvider,
     private translate: TranslateService
   ) {
-    this.logger.info('AddressBookProvider initialized.');
+    this.logger.debug('AddressBookProvider initialized');
   }
 
   private getNetwork(address: string): string {

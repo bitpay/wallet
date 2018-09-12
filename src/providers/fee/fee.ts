@@ -26,7 +26,7 @@ export class FeeProvider {
     private bwcProvider: BwcProvider,
     private translate: TranslateService
   ) {
-    this.logger.info('FeeProvider initialized.');
+    this.logger.debug('FeeProvider initialized');
   }
 
   public getFeeOpts() {

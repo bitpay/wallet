@@ -66,7 +66,7 @@ export class WalletTransactionHistoryPage {
   private formatDate(date): string {
     var dateObj = new Date(date);
     if (!dateObj) {
-      this.logger.debug('Error formating a date');
+      this.logger.warn('Error formating a date');
       return 'DateError';
     }
     if (!dateObj.toJSON()) {
@@ -77,7 +77,7 @@ export class WalletTransactionHistoryPage {
 
   // TODO : move this to walletService.
   public csvHistory() {
-    this.logger.debug('Generating CSV from History');
+    this.logger.info('Generating CSV from History');
     this.walletProvider
       .getTxHistory(this.wallet, {})
       .then(txs => {

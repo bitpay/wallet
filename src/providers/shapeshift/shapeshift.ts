@@ -21,7 +21,7 @@ export class ShapeshiftProvider {
     private configProvider: ConfigProvider,
     private persistenceProvider: PersistenceProvider
   ) {
-    this.logger.info('Hello ShapeshiftProvider Provider');
+    this.logger.debug('ShapeshiftProvider Provider initialized');
     this.credentials = {};
 
     // (Optional) Affiliate PUBLIC KEY, for volume tracking, affiliate payments, split-shifts, etc.

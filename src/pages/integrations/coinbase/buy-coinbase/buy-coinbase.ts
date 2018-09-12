@@ -280,7 +280,7 @@ export class BuyCoinbasePage {
               {},
               err => {
                 this.onGoingProcessProvider.clear();
-                if (err) this.logger.debug(err);
+                if (err) this.logger.warn(err);
                 this.openFinishModal();
               }
             );

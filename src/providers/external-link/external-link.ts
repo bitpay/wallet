@@ -14,7 +14,7 @@ export class ExternalLinkProvider {
     private platformProvider: PlatformProvider,
     private nodeWebkitProvider: NodeWebkitProvider
   ) {
-    this.logger.info('ExternalLinkProvider initialized.');
+    this.logger.debug('ExternalLinkProvider initialized');
   }
 
   private restoreHandleOpenURL(old: string): void {

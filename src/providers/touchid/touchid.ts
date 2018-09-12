@@ -45,7 +45,7 @@ export class TouchIdProvider {
           return resolve(true);
         },
         () => {
-          this.logger.debug('Fingerprint is not available');
+          this.logger.warn('Fingerprint is not available');
           return resolve(false);
         }
       );
@@ -59,7 +59,7 @@ export class TouchIdProvider {
         .then(res => {
           if (res.isAvailable) return resolve(true);
           else {
-            this.logger.debug('Fingerprint is not available');
+            this.logger.warn('Fingerprint is not available');
             return resolve(false);
           }
         })
@@ -90,7 +90,7 @@ export class TouchIdProvider {
           this.logger.debug('Successfully authenticated with fingerprint.');
         } else if (result.withBackup) {
           this.logger.debug('Successfully authenticated with backup password!');
-        } else this.logger.debug("Didn't authenticate!");
+        } else this.logger.warn("Didn't authenticate!");
       })
       .catch(error => {
         const err = new Error(error);

@@ -68,7 +68,7 @@ export class PersistenceProvider {
     private events: Events,
     private translate: TranslateService
   ) {
-    this.logger.info('PersistenceProvider initialized.');
+    this.logger.debug('PersistenceProvider initialized');
 
     this.events.subscribe('newImportantLog', newLog => {
       this.processLogs(newLog);

@@ -78,7 +78,7 @@ export class GlideraPage {
   }
 
   public update(): void {
-    this.logger.debug('Updating Glidera...');
+    this.logger.info('Updating Glidera...');
     this.glideraProvider.updateStatus(this.account);
   }
 

@@ -41,7 +41,7 @@ export class GiftCardProvider {
     private mercadoLibreProvider: MercadoLibreProvider,
     private timeProvider: TimeProvider
   ) {
-    this.logger.info('GiftCardProvider initialized.');
+    this.logger.debug('GiftCardProvider initialized');
     this.setCredentials();
   }
 

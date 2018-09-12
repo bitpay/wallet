@@ -21,7 +21,7 @@ export class GravatarPage {
   constructor(private logger: Logger) {}
 
   ngOnInit() {
-    this.logger.info('ionViewDidLoad GravatarPage');
+    this.logger.info('ngOnInit GravatarPage');
     if (typeof this.email === 'string') {
       this.emailHash = Md5.hashStr(this.email.toLowerCase() || '');
     }

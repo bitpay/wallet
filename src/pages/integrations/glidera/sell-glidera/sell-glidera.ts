@@ -265,7 +265,7 @@ export class SellGlideraPage {
                                       .removeTx(this.wallet, publishedTxp)
                                       .catch(err => {
                                         // TODO in the original code use signedTxp on this function
-                                        if (err) this.logger.debug(err);
+                                        if (err) this.logger.error(err);
                                       });
                                   });
                               })

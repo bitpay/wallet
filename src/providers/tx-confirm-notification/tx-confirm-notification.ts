@@ -10,7 +10,7 @@ export class TxConfirmNotificationProvider {
     private logger: Logger,
     private persistenceProvider: PersistenceProvider
   ) {
-    this.logger.info('TxConfirmNotificationProvider initialized.');
+    this.logger.debug('TxConfirmNotificationProvider initialized');
   }
 
   public checkIfEnabled(txid: string): Promise<any> {

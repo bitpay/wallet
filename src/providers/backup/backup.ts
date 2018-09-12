@@ -18,7 +18,7 @@ export class BackupProvider {
     private logger: Logger,
     private profileProvider: ProfileProvider
   ) {
-    this.logger.info('BackupProvider initialized.');
+    this.logger.debug('BackupProvider initialized');
   }
 
   public walletDownload(password, opts, walletId: string): Promise<any> {
@@ -63,7 +63,7 @@ export class BackupProvider {
       });
       return e;
     } catch (err) {
-      this.logger.debug('Error exporting wallet: ', err);
+      this.logger.error('Error exporting wallet: ', err);
       return null;
     }
   }

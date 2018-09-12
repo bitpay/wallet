@@ -231,11 +231,10 @@ export class TxDetailsPage {
   }
 
   public async saveMemoInfo(memo: string): Promise<void> {
+    this.logger.info('Saving memo');
     this.btx.note = {
       body: memo
     };
-    this.logger.debug('Saving memo');
-
     let args = {
       txid: this.btx.txid,
       body: memo
@@ -244,7 +243,7 @@ export class TxDetailsPage {
     await this.walletProvider
       .editTxNote(this.wallet, args)
       .catch((err: any) => {
-        this.logger.debug('Could not save tx comment ' + err);
+        this.logger.error('Could not save tx comment ' + err);
       });
 
     this.logger.info('Tx Note edited');

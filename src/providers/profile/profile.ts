@@ -15,6 +15,7 @@ import { PersistenceProvider } from '../persistence/persistence';
 import { PlatformProvider } from '../platform/platform';
 import { PopupProvider } from '../popup/popup';
 import { ReplaceParametersProvider } from '../replace-parameters/replace-parameters';
+import { WalletProvider } from '../../providers/wallet/wallet';
 
 // models
 import { Profile } from '../../models/profile/profile.model';
@@ -43,7 +44,8 @@ export class ProfileProvider {
     private events: Events,
     private popupProvider: PopupProvider,
     private onGoingProcessProvider: OnGoingProcessProvider,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private walletProvider: WalletProvider
   ) {
     this.throttledBwsEvent = _.throttle((n, wallet) => {
       this.newBwsEvent(n, wallet);
@@ -137,12 +139,12 @@ export class ProfileProvider {
     });
   }
 
-  private async bindWalletClient(wallet, opts?) {
+  private async bindWalletClient(wallet, opts?): Promise<boolean> {
     opts = opts ? opts : {};
     let walletId = wallet.credentials.walletId;
     if (this.wallet[walletId] && this.wallet[walletId].started && !opts.force) {
       this.logger.info('This wallet has been initialized. Skip. ' + walletId);
-      return;
+      return false;
     }
 
     // INIT WALLET VIEWMODEL
@@ -193,13 +195,19 @@ export class ProfileProvider {
         }
         wallet.setNotificationsInterval(this.UPDATE_PERIOD);
         wallet.openWallet(() => {
-          if (wallet.status !== true)
-            this.logger.debug(
-              'Wallet + ' +
-                walletId +
-                ' status:' +
-                JSON.stringify(wallet.status)
-            );
+          this.walletProvider
+            .getStatus(wallet, {})
+            .then(status => {
+              this.logger.debug(
+                'Wallet: ' +
+                  walletId +
+                  ' status:' +
+                  JSON.stringify(this.processStatus(status))
+              );
+            })
+            .catch(err => {
+              this.logger.debug('Wallet: ' + walletId + ' status:' + err);
+            });
         });
       }
     );
@@ -209,6 +217,27 @@ export class ProfileProvider {
         this.updateWalletSettings(wallet);
       }
     });
+    return true;
+  }
+
+  private processStatus(status) {
+    delete status.balance.byAddress;
+    delete status.wallet.encryptedName;
+    status.wallet.copayers.forEach(copayer => {
+      delete copayer.encryptedName;
+      delete copayer.requestPubKeys;
+    });
+
+    let processedStatus = {
+      balance: status.balance,
+      preferences: status.preferences,
+      wallet: status.wallet,
+      pendingTxps: status.pendingTxps ? status.pendingTxps.length : 0
+    };
+    processedStatus.balance.alternativeIsoCode = status.alternativeIsoCode;
+    processedStatus.balance.availableBalanceStr = status.availableBalanceStr;
+
+    return processedStatus;
   }
 
   private newBwsEvent(n, wallet): void {
@@ -331,9 +360,8 @@ export class ProfileProvider {
 
   public importWallet(str: string, opts): Promise<any> {
     return new Promise((resolve, reject) => {
+      this.logger.info('Importing Wallet:', opts);
       let walletClient = this.bwcProvider.getClient(null, opts);
-
-      this.logger.debug('Importing Wallet:', opts);
 
       try {
         let c = JSON.parse(str);
@@ -580,8 +608,8 @@ export class ProfileProvider {
 
   public importExtendedPrivateKey(xPrivKey: string, opts): Promise<any> {
     return new Promise((resolve, reject) => {
+      this.logger.info('Importing Wallet xPrivKey');
       let walletClient = this.bwcProvider.getClient(null, opts);
-      this.logger.debug('Importing Wallet xPrivKey');
 
       walletClient.importFromExtendedPrivateKey(xPrivKey, opts, err => {
         if (err) {
@@ -621,9 +649,8 @@ export class ProfileProvider {
 
   public importMnemonic(words: string, opts): Promise<any> {
     return new Promise((resolve, reject) => {
+      this.logger.info('Importing Wallet Mnemonic');
       let walletClient = this.bwcProvider.getClient(null, opts);
-
-      this.logger.debug('Importing Wallet Mnemonic');
 
       words = this.normalizeMnemonic(words);
       walletClient.importFromMnemonic(
@@ -665,8 +692,8 @@ export class ProfileProvider {
 
   public importExtendedPublicKey(opts): Promise<any> {
     return new Promise((resolve, reject) => {
+      this.logger.info('Importing Wallet XPubKey');
       let walletClient = this.bwcProvider.getClient(null, opts);
-      this.logger.debug('Importing Wallet XPubKey');
 
       walletClient.importFromExtendedPublicKey(
         opts.extendedPublicKey,
@@ -819,7 +846,7 @@ export class ProfileProvider {
   private bindWallet(credentials): Promise<any> {
     return new Promise((resolve, reject) => {
       if (!credentials.walletId || !credentials.m) {
-        return reject('bindWallet should receive credentials JSON');
+        return reject(new Error('bindWallet should receive credentials JSON'));
       }
 
       // Create the client
@@ -839,7 +866,7 @@ export class ProfileProvider {
       let skipKeyValidation = this.shouldSkipValidation(credentials.walletId);
       if (!skipKeyValidation) this.runValidation(walletClient, 500);
 
-      this.logger.info(
+      this.logger.debug(
         'Binding wallet:' +
           credentials.walletId +
           ' Validating?:' +
@@ -860,7 +887,7 @@ export class ProfileProvider {
           this.profile = new Profile();
           this.profile = this.profile.fromObj(profile);
           // Deprecated: storageService.tryToMigrate
-          this.logger.debug('Profile read');
+          this.logger.info('Profile read');
           this.bindProfile(this.profile)
             .then(() => {
               return resolve(this.profile);
@@ -1037,7 +1064,7 @@ export class ProfileProvider {
   // joins and stores a wallet
   public joinWallet(opts): Promise<any> {
     return new Promise((resolve, reject) => {
-      this.logger.debug('Joining Wallet:', opts);
+      this.logger.info('Joining Wallet...');
 
       try {
         var walletData = this.bwcProvider.parseSecret(opts.secret);
@@ -1053,7 +1080,7 @@ export class ProfileProvider {
           );
         }
       } catch (ex) {
-        this.logger.debug(ex);
+        this.logger.error(ex);
         return reject(this.translate.instant('Bad wallet invitation'));
       }
       opts.networkName = walletData.network;
@@ -1096,9 +1123,9 @@ export class ProfileProvider {
 
   public deleteWalletClient(wallet): Promise<any> {
     return new Promise((resolve, reject) => {
+      this.logger.info('Deleting Wallet:', wallet.credentials.walletName);
       let walletId = wallet.credentials.walletId;
 
-      this.logger.debug('Deleting Wallet:', wallet.credentials.walletName);
       wallet.removeAllListeners();
 
       this.profile.deleteWallet(walletId);

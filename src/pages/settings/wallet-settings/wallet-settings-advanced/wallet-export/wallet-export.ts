@@ -332,7 +332,7 @@ export class WalletExportPage extends WalletTabsChild {
   private showErrorInfoSheet(err?: Error | string): void {
     let title = this.translate.instant('Error');
     let msg = err ? err : this.translate.instant('Failed to export');
-    this.logger.warn(err);
+    this.logger.error(err);
     const errorInfoSheet = this.actionSheetProvider.createInfoSheet(
       'default-error',
       { msg, title }

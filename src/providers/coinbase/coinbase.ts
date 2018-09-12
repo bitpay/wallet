@@ -32,7 +32,7 @@ export class CoinbaseProvider {
     private appProvider: AppProvider,
     private events: Events
   ) {
-    this.logger.info('Coinbase initialized.');
+    this.logger.debug('Coinbase initialized');
     this.credentials = {};
     this.isCordova = this.platformProvider.isCordova;
 

@@ -254,24 +254,29 @@ export class ScanPage {
   }
 
   public activate(): void {
-    this.scanProvider.activate().then(() => {
-      this.updateCapabilities();
-      this.handleCapabilities();
-      this.logger.debug('Scanner activated, setting to visible...');
-      this.currentState = this.scannerStates.visible;
+    this.scanProvider
+      .activate()
+      .then(() => {
+        this.logger.info('Scanner activated, setting to visible...');
+        this.updateCapabilities();
+        this.handleCapabilities();
+        this.currentState = this.scannerStates.visible;
 
-      // resume preview if paused
-      this.scanProvider.resumePreview();
+        // resume preview if paused
+        this.scanProvider.resumePreview();
 
-      this.scanProvider.scan().then((contents: string) => {
-        this.scanProvider.pausePreview();
-        this.handleSuccessfulScan(contents);
+        this.scanProvider.scan().then((contents: string) => {
+          this.scanProvider.pausePreview();
+          this.handleSuccessfulScan(contents);
+        });
+      })
+      .catch(err => {
+        this.logger.error(err);
       });
-    });
   }
 
   private handleSuccessfulScan(contents: string): void {
-    this.logger.debug('Scan returned: "' + contents + '"');
+    this.logger.info('Scan returned: "' + contents + '"');
     if (this.fromAddressbook) {
       this.events.publish('update:address', { value: contents });
       this.navCtrl.pop();

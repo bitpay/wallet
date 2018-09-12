@@ -20,7 +20,7 @@ export class LocalStorage implements IStorage {
     if (!this.ls) throw new Error('localstorage not available');
 
     if (this.platformProvider.isNW) {
-      this.logger.info(
+      this.logger.debug(
         'Overwritting localstorage with chrome storage for NW.JS'
       );
 
@@ -29,7 +29,7 @@ export class LocalStorage implements IStorage {
 
       // Need migration?
       if (!ts && p) {
-        this.logger.info('### MIGRATING DATA! TO CHROME STORAGE');
+        this.logger.debug('### MIGRATING DATA! TO CHROME STORAGE');
 
         let j = 0;
         for (let i = 0; i < localStorage.length; i++) {
@@ -40,7 +40,7 @@ export class LocalStorage implements IStorage {
           this.set(k, v).then(() => {
             j++;
             if (j == localStorage.length) {
-              this.logger.info('### MIGRATION DONE');
+              this.logger.debug('### MIGRATION DONE');
               this.ls.setItem(
                 'migrationToChromeStorage',
                 Date.now().toString()
@@ -50,7 +50,7 @@ export class LocalStorage implements IStorage {
           });
         }
       } else if (p) {
-        this.logger.info('# Data already migrated to Chrome storage on ' + ts);
+        this.logger.debug('# Data already migrated to Chrome storage on ' + ts);
       }
     }
   }

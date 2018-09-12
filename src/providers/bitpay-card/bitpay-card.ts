@@ -23,7 +23,7 @@ export class BitPayCardProvider {
     private configProvider: ConfigProvider,
     private homeIntegrationsProvider: HomeIntegrationsProvider
   ) {
-    this.logger.info('BitPayCardProvider initialized');
+    this.logger.debug('BitPayCardProvider initialized');
   }
 
   private isActive(cb): void {

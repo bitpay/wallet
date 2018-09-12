@@ -49,7 +49,7 @@ export class AllAddressesPage {
   private formatDate(ts: number) {
     var dateObj = new Date(ts * 1000);
     if (!dateObj) {
-      this.logger.debug('Error formating a date');
+      this.logger.warn('Error formating a date');
       return 'DateError';
     }
     if (!dateObj.toJSON()) {

@@ -440,7 +440,6 @@ export class HomePage {
               this.payProDetailsData = {};
               this.payProDetailsData.error = err;
               this.logger.warn('Error in Payment Protocol', err);
-              this.logger.warn(err);
             });
         }
         await Observable.timer(50).toPromise();

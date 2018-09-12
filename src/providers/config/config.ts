@@ -222,7 +222,7 @@ export class ConfigProvider {
     private logger: Logger,
     private persistence: PersistenceProvider
   ) {
-    this.logger.info('ConfigProvider initialized.');
+    this.logger.debug('ConfigProvider initialized');
   }
 
   public load() {

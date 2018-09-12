@@ -62,7 +62,7 @@ export class SharePage {
             this.facebook = true;
           })
           .catch(e => {
-            this.logger.debug('facebook error: ' + e);
+            this.logger.error('facebook error: ' + e);
             this.facebook = false;
           });
       });
@@ -80,7 +80,7 @@ export class SharePage {
             this.twitter = true;
           })
           .catch(e => {
-            this.logger.debug('twitter error: ' + e);
+            this.logger.error('twitter error: ' + e);
             this.twitter = false;
           });
       });
@@ -90,7 +90,7 @@ export class SharePage {
         this.whatsapp = true;
       })
       .catch(e => {
-        this.logger.debug('whatsapp error: ' + e);
+        this.logger.error('whatsapp error: ' + e);
         this.whatsapp = false;
       });
   }

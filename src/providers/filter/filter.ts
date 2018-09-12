@@ -7,7 +7,7 @@ export class FilterProvider {
   public formats;
 
   constructor(private decimalPipe: DecimalPipe, private logger: Logger) {
-    this.logger.info('FilterProvider initialized');
+    this.logger.debug('FilterProvider initialized');
     this.formats = {
       CURRENCY_SYM: '$',
       DECIMAL_SEP: '.',

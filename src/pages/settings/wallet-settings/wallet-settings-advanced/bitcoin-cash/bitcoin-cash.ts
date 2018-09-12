@@ -102,7 +102,7 @@ export class BitcoinCashPage extends WalletTabsChild {
   }
 
   public duplicate(wallet) {
-    this.logger.debug(
+    this.logger.info(
       'Duplicating wallet for BCH: ' + wallet.id + ': ' + wallet.name
     );
 
@@ -210,7 +210,7 @@ export class BitcoinCashPage extends WalletTabsChild {
       if (!isNew) return resolve();
       if (wallet.n == 1) return resolve();
 
-      this.logger.info(
+      this.logger.debug(
         'Adding copayers for BCH wallet config:' + wallet.m + '-' + wallet.n
       );
 

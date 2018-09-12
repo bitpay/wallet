@@ -17,7 +17,7 @@
     <ion-item class="log-entry">
       <div *ngIf="filteredLogs && filteredLogs.length > 0">
         <div *ngFor="let l of filteredLogs">
-          <span [ngClass]="{'energized': l.level=='warn', 'balanced': l.level=='debug', 'royal': l.level=='info', 'assertive': l.level=='error'}">
+          <span [ngClass]="{'energized': l.level=='warn', 'royal': l.level=='debug', 'info-color': l.level=='info', 'assertive': l.level=='error'}">
             <span class="log-timestamp">[{{l.timestamp}}]</span>
             <span class="log-level">[{{l.level}}]</span> {{l.msg}}
           </span>

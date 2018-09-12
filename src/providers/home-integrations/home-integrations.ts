@@ -10,7 +10,7 @@ const exchangeList: object[] = [{ name: 'coinbase' }, { name: 'glidera' }];
 export class HomeIntegrationsProvider {
   public services;
   constructor(public http: HttpClient, private logger: Logger) {
-    this.logger.info('HomeIntegrationsProviders initialized.');
+    this.logger.debug('HomeIntegrationsProviders initialized');
     this.services = [];
   }
 

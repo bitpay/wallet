@@ -227,7 +227,7 @@ export class SellCoinbasePage {
           this.coinbaseProvider.getAvailableCurrency(),
           (err, sell) => {
             if (err) {
-              this.logger.debug(this.coinbaseProvider.getErrorsAsString(err));
+              this.logger.error(this.coinbaseProvider.getErrorsAsString(err));
               this.checkTransaction(count, txp);
               return;
             }
@@ -238,7 +238,7 @@ export class SellCoinbasePage {
               accountId,
               (err, ctxs) => {
                 if (err) {
-                  this.logger.debug(
+                  this.logger.error(
                     this.coinbaseProvider.getErrorsAsString(err)
                   );
                   this.checkTransaction(count, txp);
@@ -255,7 +255,7 @@ export class SellCoinbasePage {
                     ctx.from &&
                     ctx.amount.amount == amountBTC
                   ) {
-                    this.logger.warn('Transaction found!', ctx);
+                    this.logger.debug('Transaction found!', ctx);
                     txFound = true;
                     this.logger.debug('Saving transaction to process later...');
                     ctx.payment_method = this.selectedPaymentMethodId;
@@ -276,7 +276,7 @@ export class SellCoinbasePage {
                         this.onGoingProcessProvider.clear();
                         this.openFinishModal();
                         if (err)
-                          this.logger.debug(
+                          this.logger.error(
                             this.coinbaseProvider.getErrorsAsString(err)
                           );
                       }
