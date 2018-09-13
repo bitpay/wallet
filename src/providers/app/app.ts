@@ -63,6 +63,7 @@ export class AppProvider {
   public async load() {
     await Promise.all([this.getInfo(), this.loadProviders()]);
     this.setCustomMenuBarNW();
+    this.persistence.getPersistentLogs();
   }
 
   private async getInfo() {

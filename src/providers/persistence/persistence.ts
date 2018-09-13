@@ -76,7 +76,9 @@ export class PersistenceProvider {
     this.storage = this.platform.isCordova
       ? new FileStorage(this.file, this.logger)
       : new LocalStorage(this.platform, this.logger);
+  }
 
+  public getPersistentLogs(): void {
     this.getLogs()
       .then(logs => {
         if (logs && _.isString(logs)) logs = JSON.parse(logs);
@@ -93,14 +95,13 @@ export class PersistenceProvider {
           }
         });
         this.persistentLogs = logs;
+        this.events.subscribe('newLog', newLog => {
+          this.saveNewLog(newLog);
+        });
       })
       .catch(err => {
         this.logger.error(err);
       });
-
-    this.events.subscribe('newLog', newLog => {
-      this.saveNewLog(newLog);
-    });
   }
 
   private saveNewLog(newLog): void {
