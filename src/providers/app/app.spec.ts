@@ -3,6 +3,7 @@ import {
   HttpTestingController
 } from '@angular/common/http/testing';
 import { getTestBed, TestBed } from '@angular/core/testing';
+import { Device } from '@ionic-native/device';
 import { File } from '@ionic-native/file';
 import {
   TranslateFakeLoader,
@@ -43,7 +44,8 @@ describe('AppProvider', () => {
         PersistenceProvider,
         PlatformProvider,
         Platform,
-        File
+        File,
+        Device
       ]
     });
 
