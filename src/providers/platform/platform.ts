@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { Device } from '@ionic-native/device';
 import { Platform } from 'ionic-angular';
 
 import { Logger } from '../../providers/logger/logger';
@@ -14,7 +15,11 @@ export class PlatformProvider {
   public isMobile: boolean;
   public isDevel: boolean;
 
-  constructor(private platform: Platform, private logger: Logger) {
+  constructor(
+    private platform: Platform,
+    private logger: Logger,
+    private device: Device
+  ) {
     let ua = navigator ? navigator.userAgent : null;
 
     if (!ua) {
@@ -89,5 +94,24 @@ export class PlatformProvider {
     }
 
     return OS;
+  }
+
+  public getDeviceInfo(): string {
+    let info: string;
+
+    if (this.isNW) {
+      info = ' (' + navigator.appVersion + ')';
+    } else {
+      info =
+        ' (' +
+        this.device.platform +
+        ' ' +
+        this.device.version +
+        ' - ' +
+        this.device.model +
+        ')';
+    }
+
+    return info;
   }
 }
