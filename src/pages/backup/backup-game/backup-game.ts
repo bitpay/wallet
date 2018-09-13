@@ -15,6 +15,7 @@ import { DisclaimerPage } from '../../onboarding/disclaimer/disclaimer';
 
 // providers
 import { ActionSheetProvider } from '../../../providers/action-sheet/action-sheet';
+import { BwcErrorProvider } from '../../../providers/bwc-error/bwc-error';
 import { BwcProvider } from '../../../providers/bwc/bwc';
 import { OnGoingProcessProvider } from '../../../providers/on-going-process/on-going-process';
 import { ProfileProvider } from '../../../providers/profile/profile';
@@ -56,6 +57,7 @@ export class BackupGamePage {
     private profileProvider: ProfileProvider,
     private walletProvider: WalletProvider,
     private bwcProvider: BwcProvider,
+    private bwcErrorProvider: BwcErrorProvider,
     private onGoingProcessProvider: OnGoingProcessProvider,
     private translate: TranslateService,
     public actionSheetProvider: ActionSheetProvider
@@ -84,9 +86,13 @@ export class BackupGamePage {
         this.setFlow();
       })
       .catch(err => {
-        if (err && err.message != 'FINGERPRINT_CANCELLED') {
+        if (
+          err &&
+          err.message != 'FINGERPRINT_CANCELLED' &&
+          err.message != 'PASSWORD_CANCELLED'
+        ) {
           let title = this.translate.instant('Could not decrypt wallet');
-          this.showErrorInfoSheet(err, title);
+          this.showErrorInfoSheet(this.bwcErrorProvider.msg(err), title);
         }
         this.navCtrl.pop();
       });

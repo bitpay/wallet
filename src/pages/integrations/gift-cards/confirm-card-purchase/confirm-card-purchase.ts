@@ -506,11 +506,19 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
         return this.createGiftCard(this.tx.giftData);
       })
       .catch(err => {
-        this.resetValues();
-        this.showError(
-          this.translate.instant('Could not send transaction'),
-          this.bwcErrorProvider.msg(err)
-        );
+        if (
+          err &&
+          err.message != 'FINGERPRINT_CANCELLED' &&
+          err.message != 'PASSWORD_CANCELLED'
+        ) {
+          if (err.message != 'NO_PASSWORD' && err.message != 'WRONG_PASSWORD') {
+            this.resetValues();
+          }
+          this.showError(
+            this.translate.instant('Could not send transaction'),
+            this.bwcErrorProvider.msg(err)
+          );
+        }
       });
   }
 
