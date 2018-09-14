@@ -71,6 +71,7 @@ export class HomePage {
   public serverMessage;
   public addressbook;
   public newRelease: boolean;
+  public deprecated: boolean;
   public updateText: string;
   public homeIntegrations;
   public bitpayCardItems;
@@ -171,6 +172,8 @@ export class HomePage {
 
   private _didEnter() {
     if (this.isNW) this.checkUpdate();
+    if (this.platformProvider.isAndroid && this.appProvider.info['name'] == 'copay')
+      this.deprecated = true;
     this.checkHomeTip();
     this.checkFeedbackInfo();
     this.checkAnnouncement();

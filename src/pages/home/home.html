@@ -36,6 +36,20 @@
 
     <div [ngClass]="{'content-animation': slideDown, 'initial-margin': validDataFromClipboard}">
 
+      <ion-card class="deprecated" *ngIf="deprecated">
+        <div class="deprecated-icon">
+          <img src="assets/img/icon-warning.png" />
+        </div>
+        <ion-card-header class="deprecated-text">
+          {{ 'Due to recent changes in Google Play Store polices, we will stop pushing Copay updates into the store. We recommend you migrate to Bitpay Wallet for a similar wallet experience.' | translate }}
+        </ion-card-header>
+        <ion-card-content class="deprecated-button">
+          <div (click)="goToUrl('https://bitpay.com/help/xx')">
+            <span translate>How to do it</span>
+          </div>
+        </ion-card-content>
+      </ion-card>
+
       <div class="prompt-user-fullscreen-container" *ngIf="!wallets || !wallets[0]">
         <div class="prompt-user">
           <div class="title-icon larger-icon">
