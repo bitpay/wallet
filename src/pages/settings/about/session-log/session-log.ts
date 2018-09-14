@@ -106,14 +106,33 @@ export class SessionLogPage {
   private sendLogs(): void {
     this.preparePersistenceLogs()
       .then(logs => {
-        this.socialSharing.shareViaEmail(
-          logs,
-          'Copay Logs',
-          null, // TO: must be null or an array
-          null, // CC: must be null or an array
-          null, // BCC: must be null or an array
-          null // FILES: can be null, a string, or an array
-        );
+        let now = new Date().toISOString();
+        let subject: string = this.appProvider.info.nameCase + '-logs ' + now;
+
+        let blob = new Blob([logs], { type: 'text/txt' });
+
+        let reader = new FileReader();
+        reader.onload = event => {
+          let attachment = (event as any).target.result; // <-- data url
+
+          this.socialSharing
+            .shareViaEmail(
+              'Copay Session Logs. Be careful, this could contain sensitive private data',
+              subject,
+              null, // TO: must be null or an array
+              null, // CC: must be null or an array
+              null, // BCC: must be null or an array
+              attachment // FILES: can be null, a string, or an array
+            )
+            .then(data => {
+              this.logger.info('Email sent with success: ', data);
+            })
+            .catch(err => {
+              this.logger.error('socialSharing Error: ', err);
+            });
+        };
+
+        reader.readAsDataURL(blob);
       })
       .catch(err => {
         this.logger.error(err);

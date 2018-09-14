@@ -24,7 +24,7 @@ export class DownloadProvider {
     });
   }
 
-  private newBlob(data, datatype: string) {
+  public newBlob(data, datatype: string) {
     let out;
     try {
       this.logger.debug('Trying to blob data');
