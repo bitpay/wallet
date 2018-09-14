@@ -16,7 +16,7 @@ export class BitPayProvider {
     private appIdentityProvider: AppIdentityProvider,
     private logger: Logger
   ) {
-    this.logger.info('BitPayProvider initialized.');
+    this.logger.debug('BitPayProvider initialized');
     this.NETWORK = 'livenet';
     this.BITPAY_API_URL =
       this.NETWORK == 'livenet'

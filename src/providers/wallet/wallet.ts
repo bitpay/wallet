@@ -106,7 +106,7 @@ export class WalletProvider {
     private feeProvider: FeeProvider,
     private translate: TranslateService
   ) {
-    this.logger.info('WalletService initialized.');
+    this.logger.debug('WalletProvider initialized');
     this.isPopupOpen = false;
   }
 
@@ -497,7 +497,7 @@ export class WalletProvider {
 
   private createAddress(wallet): Promise<any> {
     return new Promise((resolve, reject) => {
-      this.logger.debug('Creating address for wallet:', wallet.id);
+      this.logger.info('Creating address for wallet:', wallet.id);
 
       wallet.createAddress({}, (err, addr) => {
         if (err) {
@@ -1112,7 +1112,7 @@ export class WalletProvider {
           }
         }
 
-        this.logger.debug('Transaction broadcasted');
+        this.logger.info('Transaction broadcasted');
         if (memo) this.logger.info('Memo: ', memo);
 
         return resolve(broadcastedTxp);
@@ -1224,7 +1224,7 @@ export class WalletProvider {
 
   public recreate(wallet): Promise<any> {
     return new Promise((resolve, reject) => {
-      this.logger.debug('Recreating wallet:', wallet.id);
+      this.logger.info('Recreating wallet:', wallet.id);
       wallet.recreateWallet(err => {
         wallet.notAuthorized = false;
         if (err) return reject(err);
@@ -1235,7 +1235,7 @@ export class WalletProvider {
 
   public startScan(wallet): Promise<any> {
     return new Promise((resolve, reject) => {
-      this.logger.debug('Scanning wallet ' + wallet.id);
+      this.logger.info('Scanning wallet ' + wallet.id);
       if (!wallet.isComplete())
         return reject('Wallet incomplete: ' + wallet.name);
 
@@ -1259,7 +1259,7 @@ export class WalletProvider {
 
   public expireAddress(wallet): Promise<any> {
     return new Promise((resolve, reject) => {
-      this.logger.debug('Cleaning Address ' + wallet.id);
+      this.logger.info('Cleaning Address ' + wallet.id);
       this.persistenceProvider
         .clearLastAddress(wallet.id)
         .then(() => {
@@ -1377,7 +1377,7 @@ export class WalletProvider {
 
   public decrypt(wallet): Promise<any> {
     return new Promise((resolve, reject) => {
-      this.logger.debug('Disabling private key encryption for' + wallet.name);
+      this.logger.info('Disabling private key encryption for' + wallet.name);
       this.askPassword(
         null,
         this.translate.instant('Enter encrypt password')
@@ -1493,7 +1493,7 @@ export class WalletProvider {
               : this.translate.instant(
                   'The payment was created but could not be completed. Please try again from home screen'
                 );
-          this.logger.debug('Sign error: ' + msg);
+          this.logger.error('Sign error: ' + msg);
           this.events.publish('Local/TxAction', wallet.id);
           return reject(msg);
         });
@@ -1594,7 +1594,7 @@ export class WalletProvider {
     try {
       return wallet.getKeys(password);
     } catch (e) {
-      this.logger.debug(e);
+      this.logger.error(e);
     }
   }
 
@@ -1613,7 +1613,7 @@ export class WalletProvider {
         })
         .catch(err => {
           opts.touchIdFor[wallet.id] = !enabled;
-          this.logger.debug('Error with fingerprint:' + err);
+          this.logger.error('Error with fingerprint:' + err);
           this.configProvider.set(opts);
           return reject(err);
         });

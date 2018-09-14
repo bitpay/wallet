@@ -67,6 +67,9 @@ describe('Profile Provider', () => {
     getErrors() {
       return 'error';
     }
+    getBitcoreCash() {
+      return true;
+    }
   }
 
   class PersistenceProviderMock {

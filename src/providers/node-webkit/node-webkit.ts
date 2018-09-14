@@ -4,7 +4,7 @@ import { Logger } from '../../providers/logger/logger';
 @Injectable()
 export class NodeWebkitProvider {
   constructor(private logger: Logger) {
-    this.logger.info('NodeWebkitProvider initialized.');
+    this.logger.debug('NodeWebkitProvider initialized');
   }
 
   public readFromClipboard() {

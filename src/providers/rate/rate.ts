@@ -19,7 +19,7 @@ export class RateProvider {
   private bchRateServiceUrl = env.ratesAPI.bch;
 
   constructor(private http: HttpClient, private logger: Logger) {
-    this.logger.info('RateProvider initialized.');
+    this.logger.debug('RateProvider initialized');
     this.rates = {};
     this.alternatives = [];
     this.ratesBCH = {};

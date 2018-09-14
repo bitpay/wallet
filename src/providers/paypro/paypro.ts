@@ -17,7 +17,7 @@ export class PayproProvider {
     private onGoingProcessProvider: OnGoingProcessProvider,
     private translate: TranslateService
   ) {
-    this.logger.info('PayproProvider initialized');
+    this.logger.debug('PayproProvider initialized');
   }
 
   public getPayProDetails(

@@ -16,7 +16,7 @@ export class EmailNotificationsProvider {
     private walletProvider: WalletProvider,
     private logger: Logger
   ) {
-    this.logger.info('EmailNotificationsProvider initialized');
+    this.logger.debug('EmailNotificationsProvider initialized');
   }
 
   public updateEmail(opts) {

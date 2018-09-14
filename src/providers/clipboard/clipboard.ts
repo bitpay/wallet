@@ -21,7 +21,7 @@ export class ClipboardProvider {
     private clipboard: Clipboard,
     private nodeWebkitProvider: NodeWebkitProvider
   ) {
-    this.logger.info('ClipboardProvider initialized.');
+    this.logger.debug('ClipboardProvider initialized');
     this.isCordova = this.platform.isCordova;
     this.isNW = this.platform.isNW;
   }

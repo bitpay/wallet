@@ -15,7 +15,7 @@ export class OnGoingProcessProvider {
     private logger: Logger,
     private translate: TranslateService
   ) {
-    this.logger.info('OnGoingProcessProvider initialized.');
+    this.logger.debug('OnGoingProcessProvider initialized');
     // TODO GET - CLEAR - CHECK DecimalPipe for FILTER WITH TRANSLATE
     this.ongoingProcess = [];
   }

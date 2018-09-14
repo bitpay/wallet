@@ -31,7 +31,7 @@ export class PushNotificationsProvider {
     private FCMPlugin: FCM,
     private events: Events
   ) {
-    this.logger.info('PushNotificationsProvider initialized.');
+    this.logger.debug('PushNotificationsProvider initialized');
     this.isIOS = this.platformProvider.isIOS;
     this.isAndroid = this.platformProvider.isAndroid;
     this.usePushNotifications = this.platformProvider.isCordova;

@@ -71,7 +71,7 @@ export class BackupGamePage {
   ionViewDidEnter() {
     this.deleted = this.isDeletedSeed();
     if (this.deleted) {
-      this.logger.debug('no mnemonics');
+      this.logger.warn('no mnemonics');
       return;
     }
 

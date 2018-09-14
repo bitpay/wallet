@@ -13,7 +13,7 @@ export class AppIdentityProvider {
     private logger: Logger,
     private persistenceProvider: PersistenceProvider
   ) {
-    this.logger.info('AppIdentityProvider initialized.');
+    this.logger.debug('AppIdentityProvider initialized');
   }
 
   public getIdentity(network, cb) {

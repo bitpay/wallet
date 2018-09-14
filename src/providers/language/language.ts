@@ -64,7 +64,7 @@ export class LanguageProvider {
     private translate: TranslateService,
     private configProvider: ConfigProvider
   ) {
-    this.logger.info('LanguageProvider initialized.');
+    this.logger.debug('LanguageProvider initialized');
     this.translate.onLangChange.subscribe(event => {
       this.logger.info('Setting new default language to: ' + event.lang);
     });

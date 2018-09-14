@@ -4,7 +4,7 @@ import { Logger } from '../../providers/logger/logger';
 @Injectable()
 export class DownloadProvider {
   constructor(private logger: Logger) {
-    this.logger.info('DownloadProvider initialized.');
+    this.logger.debug('DownloadProvider initialized');
   }
 
   public download(ew, fileName: string): Promise<any> {
@@ -27,20 +27,20 @@ export class DownloadProvider {
   private newBlob(data, datatype: string) {
     let out;
     try {
+      this.logger.debug('Trying to blob data');
       out = new Blob([data], {
         type: datatype
       });
-      this.logger.debug('case 1');
     } catch (e) {
       if (e.name == 'InvalidStateError') {
         // InvalidStateError (tested on FF13 WinXP)
+        this.logger.debug('Invalid state Error: Trying to blob data again');
         out = new Blob([data], {
           type: datatype
         });
-        this.logger.debug('case 2');
       } else {
         // We're screwed, blob constructor unsupported entirely
-        this.logger.debug('Error');
+        this.logger.error('Error: blob constructor unsupported entirely');
       }
     }
     return out;

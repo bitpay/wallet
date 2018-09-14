@@ -108,7 +108,7 @@ export class CopayersPage {
   }
 
   private updateWallet(): void {
-    this.logger.debug('Updating wallet:' + this.wallet.name);
+    this.logger.info('Updating wallet:' + this.wallet.name);
     this.walletProvider
       .getStatus(this.wallet, {})
       .then(status => {

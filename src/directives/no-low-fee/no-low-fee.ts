@@ -22,7 +22,7 @@ export class NoLowFee {
     private navCtrl: NavController,
     private popupProvider: PopupProvider
   ) {
-    this.logger.info('Hello NoLowFee Directive');
+    this.logger.debug('NoLowFee Directive initialized');
     this.configWallet = this.configProvider.get().wallet;
   }
 

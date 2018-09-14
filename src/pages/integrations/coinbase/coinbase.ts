@@ -125,7 +125,7 @@ export class CoinbasePage {
   }
 
   public updateTransactions(): void {
-    this.logger.debug('Getting transactions...');
+    this.logger.info('Getting transactions...');
     this.coinbaseProvider.getPendingTransactions(this.pendingTransactions);
   }
 

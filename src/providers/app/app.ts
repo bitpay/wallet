@@ -57,7 +57,7 @@ export class AppProvider {
     private persistence: PersistenceProvider,
     private platformProvider: PlatformProvider
   ) {
-    this.logger.info('AppProvider initialized.');
+    this.logger.debug('AppProvider initialized');
   }
 
   public async load() {
@@ -98,7 +98,7 @@ export class AppProvider {
     try {
       nativeMenuBar.createMacBuiltin(this.info.nameCase);
     } catch (e) {
-      this.logger.debug('This is not OSX');
+      this.logger.warn('This is not OSX');
     }
     win.menu = nativeMenuBar;
   }

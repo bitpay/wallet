@@ -28,7 +28,7 @@ export class IncomingDataProvider {
     private appProvider: AppProvider,
     private translate: TranslateService
   ) {
-    this.logger.info('IncomingDataProvider initialized.');
+    this.logger.debug('IncomingDataProvider initialized');
   }
 
   public showMenu(data): void {

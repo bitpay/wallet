@@ -26,7 +26,7 @@ export class GlideraProvider {
     private configProvider: ConfigProvider,
     private appProvider: AppProvider
   ) {
-    this.logger.info('GlideraProvider initialized');
+    this.logger.debug('GlideraProvider initialized');
     this.credentials = {};
     this.isCordova = this.platformProvider.isCordova;
   }
@@ -506,10 +506,10 @@ export class GlideraProvider {
   }
 
   public init(cb) {
+    this.logger.info('Trying to initialize Glidera...');
     if (_.isEmpty(this.credentials.CLIENT_ID)) {
       return cb('Glidera is Disabled');
     }
-    this.logger.debug('Trying to initialize Glidera...');
 
     this.persistenceProvider
       .getGlideraToken(this.credentials.NETWORK)

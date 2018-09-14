@@ -10,7 +10,7 @@ export class BwcProvider {
   public parseSecret = BWC.parseSecret;
   public Client = BWC;
   constructor(private logger: Logger) {
-    this.logger.info('BwcProvider initialized.');
+    this.logger.debug('BwcProvider initialized');
   }
   public getBitcore() {
     return BWC.Bitcore;

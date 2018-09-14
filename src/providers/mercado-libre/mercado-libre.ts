@@ -17,7 +17,7 @@ export class MercadoLibreProvider {
     private logger: Logger,
     private configProvider: ConfigProvider
   ) {
-    this.logger.info('MercadoLibreProvider initialized');
+    this.logger.debug('MercadoLibreProvider initialized');
 
     this.credentials = {};
     /*

@@ -60,7 +60,7 @@ export class BitPayAccountProvider {
     private device: Device,
     private translate: TranslateService
   ) {
-    this.logger.info('BitPayAccountProvider initialized');
+    this.logger.debug('BitPayAccountProvider initialized');
   }
 
   public pair(

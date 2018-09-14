@@ -1,4 +1,7 @@
 page-session-log {
+  .info-color {
+    color: color($colors, info);
+  }
   .log-entry {
     font-size: 12px;
     line-height: 18px;

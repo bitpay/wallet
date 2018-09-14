@@ -31,7 +31,7 @@ export class AmazonProvider {
     private emailNotificationsProvider: EmailNotificationsProvider,
     private configProvider: ConfigProvider
   ) {
-    this.logger.info('AmazonProvider initialized.');
+    this.logger.debug('AmazonProvider initialized');
     this.credentials = {};
     /*
     * Development: 'testnet'

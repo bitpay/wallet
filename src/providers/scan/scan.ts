@@ -34,7 +34,7 @@ export class ScanProvider {
   }
 
   private checkCapabilities(status) {
-    this.logger.debug('scannerService is reviewing platform capabilities...');
+    this.logger.info('scannerService is reviewing platform capabilities...');
     // Permission can be assumed on the desktop builds
     this.hasPermission = this.isDesktop || status.authorized ? true : false;
     this.isDenied = status.denied ? true : false;
@@ -140,7 +140,7 @@ export class ScanProvider {
 
   public initialize(): Promise<any> {
     return new Promise(resolve => {
-      this.logger.debug('Initializing scanner...');
+      this.logger.info('Initializing scanner...');
       this.qrScanner
         .prepare()
         .then(status => {
@@ -180,7 +180,7 @@ export class ScanProvider {
    */
   public activate(): Promise<any> {
     return new Promise(resolve => {
-      this.logger.debug('Activating scanner...');
+      this.logger.info('Activating scanner...');
       this.qrScanner.show().then(status => {
         this.initializeCompleted = true;
         this.checkCapabilities(status);
@@ -193,7 +193,7 @@ export class ScanProvider {
    */
   public scan(): Promise<any> {
     return new Promise(resolve => {
-      this.logger.debug('Scanning...');
+      this.logger.info('Scanning...');
       let scanSub = this.qrScanner.scan().subscribe((text: string) => {
         this.logger.debug('Scanned something', text);
         scanSub.unsubscribe(); // stop scanning
@@ -220,7 +220,7 @@ export class ScanProvider {
    */
 
   public deactivate(): void {
-    this.logger.debug('Deactivating scanner...');
+    this.logger.info('Deactivating scanner...');
     if (this.lightEnabled) {
       this.qrScanner.disableLight();
       this.lightEnabled = false;
@@ -313,7 +313,7 @@ export class ScanProvider {
   }
 
   public openSettings(): void {
-    this.logger.debug('Attempting to open device settings...');
+    this.logger.info('Attempting to open device settings...');
     this.qrScanner.openSettings();
   }
 }

@@ -48,7 +48,7 @@ export class FeedbackProvider {
             return resolve();
           },
           err => {
-            this.logger.info('ERROR: Feedback sent anyway.');
+            this.logger.warn('ERROR: Feedback sent anyway.');
             return reject(err);
           }
         );
