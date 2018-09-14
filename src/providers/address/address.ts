@@ -79,6 +79,7 @@ export class AddressProvider {
     address: string
   ): boolean {
     let addressData;
+    address = coin === 'bch' ? address.toLowerCase() : address;
     if (this.isValid(address)) {
       let extractedAddress = this.extractAddress(address);
       addressData = this.validateAddress(extractedAddress);
@@ -94,7 +95,7 @@ export class AddressProvider {
 
   public extractAddress(address: string): string {
     let extractedAddress = address
-      .replace(/^(bitcoincash:|bitcoin:)/, '')
+      .replace(/^(bitcoincash:|bchtest:|bitcoin:)/, '')
       .replace(/\?.*/, '');
     return extractedAddress || address;
   }
@@ -123,7 +124,7 @@ export class AddressProvider {
       if (isUriValid && (isAddressValidLivenet || isAddressValidTestnet)) {
         return true;
       }
-    } else if (/^bitcoincash:/.test(address)) {
+    } else if (/^bitcoincash:/.test(address) || /^bchtest:/.test(address)) {
       let isUriValid = URICash.isValid(address);
       if (isUriValid) {
         uri = new URICash(address);
