@@ -172,7 +172,10 @@ export class HomePage {
 
   private _didEnter() {
     if (this.isNW) this.checkUpdate();
-    if (this.platformProvider.isAndroid && this.appProvider.info['name'] == 'copay')
+    if (
+      this.platformProvider.isAndroid &&
+      this.appProvider.info['name'] == 'copay'
+    )
       this.deprecated = true;
     this.checkHomeTip();
     this.checkFeedbackInfo();
