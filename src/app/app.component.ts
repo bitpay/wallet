@@ -24,6 +24,7 @@ import { GlideraProvider } from '../providers/glidera/glidera';
 import { IncomingDataProvider } from '../providers/incoming-data/incoming-data';
 import { Logger } from '../providers/logger/logger';
 import { MercadoLibreProvider } from '../providers/mercado-libre/mercado-libre';
+import { PlatformProvider } from '../providers/platform/platform';
 import { PopupProvider } from '../providers/popup/popup';
 import { ProfileProvider } from '../providers/profile/profile';
 import { PushNotificationsProvider } from '../providers/push-notifications/push-notifications';
@@ -92,6 +93,7 @@ export class CopayApp {
   constructor(
     private config: Config,
     private platform: Platform,
+    private platformProvider: PlatformProvider,
     private statusBar: StatusBar,
     private splashScreen: SplashScreen,
     private events: Events,
@@ -149,6 +151,8 @@ export class CopayApp {
   }
 
   private onAppLoad(readySource) {
+    const deviceInfo = this.platformProvider.getDeviceInfo();
+
     this.logger.info(
       'Platform ready (' +
         readySource +
@@ -157,7 +161,8 @@ export class CopayApp {
         ' - v' +
         this.appProvider.info.version +
         ' #' +
-        this.appProvider.info.commitHash
+        this.appProvider.info.commitHash +
+        deviceInfo
     );
 
     if (this.platform.is('cordova')) {
