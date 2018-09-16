@@ -2,11 +2,12 @@ import { Component, VERSION, ViewChild } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { ZXingScannerComponent } from '@zxing/ngx-scanner';
 import { Events, NavController, NavParams, Platform } from 'ionic-angular';
-import { Logger } from '../../providers/logger/logger';
+import { Subscription } from 'rxjs';
 
 // providers
 import { ExternalLinkProvider } from '../../providers/external-link/external-link';
 import { IncomingDataProvider } from '../../providers/incoming-data/incoming-data';
+import { Logger } from '../../providers/logger/logger';
 import { PlatformProvider } from '../../providers/platform/platform';
 import { ScanProvider } from '../../providers/scan/scan';
 
@@ -56,6 +57,7 @@ export class ScanPage {
   public fromImport: boolean;
   public fromJoin: boolean;
   public fromSend: boolean;
+  private onResumeSubscription: Subscription;
 
   constructor(
     private navCtrl: NavController,
@@ -91,6 +93,9 @@ export class ScanPage {
 
   ionViewDidLoad() {
     this.logger.info('ionViewDidLoad ScanPage');
+    this.onResumeSubscription = this.platform.resume.subscribe(() => {
+      this.ionViewWillEnter();
+    });
   }
 
   ionViewWillLeave() {
@@ -175,6 +180,10 @@ export class ScanPage {
         this._refreshScanView();
       });
     }
+  }
+
+  ngOnDestroy() {
+    this.onResumeSubscription.unsubscribe();
   }
 
   private initializeBackButtonHandler(): void {

@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { PlatformProvider } from '../../providers/platform/platform';
 import { ActionSheetParent } from '../action-sheet/action-sheet-parent';
 
 @Component({
@@ -11,9 +12,11 @@ export class IncomingDataMenuComponent extends ActionSheetParent {
   public type: string;
   public coin: string;
   public fromHomeCard: boolean;
+  public isCordova: boolean;
 
-  constructor() {
+  constructor(private platformProvider: PlatformProvider) {
     super();
+    this.isCordova = this.platformProvider.isCordova;
   }
 
   ngOnInit() {
@@ -28,9 +31,12 @@ export class IncomingDataMenuComponent extends ActionSheetParent {
   }
 
   public close(redirTo: string, value: string) {
-    redirTo !== 'OpenExternalLink'
-      ? this.dismiss({ redirTo, value, coin: this.coin })
-      : this.dismissFunction &&
-        this.dismissFunction({ redirTo, value, coin: this.coin });
+    if (redirTo == 'OpenExternalLink') {
+      if (this.isCordova) this.dismiss();
+      this.dismissFunction;
+      this.dismissFunction({ redirTo, value, coin: this.coin });
+    } else {
+      this.dismiss({ redirTo, value, coin: this.coin });
+    }
   }
 }
