@@ -15,6 +15,7 @@ import { BwcErrorProvider } from '../../providers/bwc-error/bwc-error';
 import { ConfigProvider } from '../../providers/config/config';
 import { FeeProvider } from '../../providers/fee/fee';
 import { OnGoingProcessProvider } from '../../providers/on-going-process/on-going-process';
+import { PayproProvider } from '../../providers/paypro/paypro';
 import { PlatformProvider } from '../../providers/platform/platform';
 import { PopupProvider } from '../../providers/popup/popup';
 import { ProfileProvider } from '../../providers/profile/profile';
@@ -71,7 +72,8 @@ export class TxpDetailsPage {
     private translate: TranslateService,
     private modalCtrl: ModalController,
     private addressBookProvider: AddressBookProvider,
-    private decimalPipe: DecimalPipe
+    private decimalPipe: DecimalPipe,
+    private payproProvider: PayproProvider
   ) {
     this.showMultiplesOutputs = false;
     let config = this.configProvider.get().wallet;
@@ -226,24 +228,21 @@ export class TxpDetailsPage {
 
   private checkPaypro(): void {
     if (this.tx.payProUrl) {
-      this.wallet.fetchPayPro(
-        {
-          payProUrl: this.tx.payProUrl
-        },
-        (err, paypro) => {
-          if (err) {
-            this.logger.error(err);
-            this.paymentExpired = true;
-            this.popupProvider.ionicAlert(
-              null,
-              this.translate.instant('Could not fetch the invoice')
-            );
-            return;
-          }
-          this.tx.paypro = paypro;
+      const disableLoader = true;
+      this.payproProvider
+        .getPayProDetails(this.tx.payProUrl, this.tx.coin, disableLoader)
+        .then(payProDetails => {
+          this.tx.paypro = payProDetails;
           this.paymentTimeControl(this.tx.paypro.expires);
-        }
-      );
+        })
+        .catch(err => {
+          this.logger.warn('Error in Payment Protocol: ', err);
+          this.paymentExpired = true;
+          this.popupProvider.ionicAlert(
+            this.translate.instant('Error in Payment Protocol'),
+            err
+          );
+        });
     }
   }
 
