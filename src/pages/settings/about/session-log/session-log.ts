@@ -108,6 +108,9 @@ export class SessionLogPage {
       .then(logs => {
         let now = new Date().toISOString();
         let subject: string = this.appProvider.info.nameCase + '-logs ' + now;
+        let message = this.translate.instant(
+          'Copay Session Logs. Be careful, this could contain sensitive private data'
+        );
 
         let blob = new Blob([logs], { type: 'text/txt' });
 
@@ -117,7 +120,7 @@ export class SessionLogPage {
 
           this.socialSharing
             .shareViaEmail(
-              'Copay Session Logs. Be careful, this could contain sensitive private data',
+              message,
               subject,
               null, // TO: must be null or an array
               null, // CC: must be null or an array

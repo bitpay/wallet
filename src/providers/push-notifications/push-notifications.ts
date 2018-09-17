@@ -135,7 +135,7 @@ export class PushNotificationsProvider {
       if (err)
         this.logger.error(
           walletClient.name + ': Subscription Push Notifications error. ',
-          JSON.stringify(err)
+          err.message
         );
       else
         this.logger.debug(
@@ -149,7 +149,7 @@ export class PushNotificationsProvider {
       if (err)
         this.logger.error(
           walletClient.name + ': Unsubscription Push Notifications error. ',
-          JSON.stringify(err)
+          err.message
         );
       else
         this.logger.debug(

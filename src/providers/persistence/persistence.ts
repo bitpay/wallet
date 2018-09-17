@@ -81,16 +81,22 @@ export class PersistenceProvider {
   public getPersistentLogs(): void {
     this.getLogs()
       .then(logs => {
-        if (logs && _.isString(logs)) logs = JSON.parse(logs);
+        if (logs && _.isString(logs)) {
+          try {
+            logs = JSON.parse(logs);
+          } catch {
+            logs = {};
+          }
+        }
         logs = logs || {};
         if (_.isArray(logs)) logs = {}; // No array
 
-        // Compare dates and remove logs older than a week
+        // Compare dates and remove logs older than 3 days
         let now = new Date();
-        let aWeekAgo = new Date(now.setDate(now.getDate() - 3));
+        let daysAgo = new Date(now.setDate(now.getDate() - 3));
         Object.keys(logs).forEach(key => {
           let logDate = new Date(key);
-          if (logDate < aWeekAgo) {
+          if (logDate < daysAgo) {
             delete logs[key];
           }
         });
@@ -106,8 +112,7 @@ export class PersistenceProvider {
 
   private saveNewLog(newLog): void {
     if (this.persistentLogs[newLog.timestamp]) {
-      let msg = this.translate.instant('Logs timestamp collapse');
-      this.logger.warn(msg);
+      // Logs timestamp collapse
       return;
     }
     this.persistentLogs[newLog.timestamp] = newLog;
