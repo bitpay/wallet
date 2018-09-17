@@ -68,10 +68,10 @@ export class SellCoinbasePage {
     private modalCtrl: ModalController,
     private platformProvider: PlatformProvider
   ) {
-    this.coin = 'btc';
-    this.isFiat = this.navParams.data.currency != 'BTC' ? true : false;
-    this.amount = this.navParams.data.amount;
-    this.currency = this.navParams.data.currency;
+    this.isFiat = true;
+    this.coin = this.navParams.data.coin; // BTC
+    this.amount = this.navParams.data.amount; // USD
+    this.currency = this.navParams.data.currency; // USD
     this.priceSensitivity = this.coinbaseProvider.priceSensitivity;
     this.selectedPriceSensitivity = {
       data: this.coinbaseProvider.selectedPriceSensitivity
@@ -172,12 +172,18 @@ export class SellCoinbasePage {
         let pm;
         for (let i = 0; i < p.data.length; i++) {
           pm = p.data[i];
-          if (pm.allow_buy) {
-            this.paymentMethods.push(pm);
-          }
-          if (pm.allow_buy && pm.primary_buy) {
-            hasPrimary = true;
-            this.selectedPaymentMethodId = pm.id;
+          // Only USD for US bank accounts (or fiat account in USD)
+          if (
+            pm.currency == 'USD' &&
+            (pm.type == 'fiat_account' || pm.type == 'ach_bank_account')
+          ) {
+            if (pm.allow_sell) {
+              this.paymentMethods.push(pm);
+            }
+            if (pm.allow_sell && pm.primary_sell) {
+              hasPrimary = true;
+              this.selectedPaymentMethodId = pm.id;
+            }
           }
         }
         if (_.isEmpty(this.paymentMethods)) {
