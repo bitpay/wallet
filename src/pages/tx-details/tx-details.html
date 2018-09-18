@@ -54,7 +54,9 @@
         <span class="fee-amount">{{btx.feeStr}}</span>
         <div class="fee-details">
           {{btx.feeFiatStr}} &middot;
-          <span *ngIf="btx.feeRateStr" translate>{{btx.feeRateStr}} of the total amount</span>
+          <span *ngIf="btx.feeRateStr">{{btx.feeRateStr}}
+            <span translate> of total amount</span>
+          </span>
         </div>
       </ion-note>
     </ion-item>
@@ -86,10 +88,8 @@
       <span *ngIf="btx.action === 'sent'" translate>From</span>
       <span *ngIf="btx.action !== 'sent'" translate>To</span>
       <div class="wallet" *ngIf="wallet">
-        <img *ngIf="wallet.network == 'testnet'" [ngStyle]="{'background-color': wallet.color}" src="assets/img/icon-wallet-testnet.svg"
-          class="icon-wallet" />
-        <img *ngIf="wallet.network != 'testnet'" [ngStyle]="{'background-color': wallet.color}" src="assets/img/icon-wallet.svg"
-          class="icon-wallet" />
+        <img *ngIf="wallet.network == 'testnet'" [ngStyle]="{'background-color': wallet.color}" src="assets/img/icon-wallet-testnet.svg" class="icon-wallet" />
+        <img *ngIf="wallet.network != 'testnet'" [ngStyle]="{'background-color': wallet.color}" src="assets/img/icon-wallet.svg" class="icon-wallet" />
         <div>{{wallet.name}}</div>
       </div>
     </ion-item>
@@ -123,8 +123,7 @@
       </ion-note>
     </ion-item>
 
-    <editable-item (valChange)="saveMemoInfo($event)" [value]="txMemo" [itemPlaceholder]="'Enter a transaction memo' | translate"
-      [scrollArea]="scrollArea">
+    <editable-item (valChange)="saveMemoInfo($event)" [value]="txMemo" [itemPlaceholder]="'Enter a transaction memo' | translate" [scrollArea]="scrollArea">
       <span item-label translate>Memo</span>
     </editable-item>
 
@@ -144,8 +143,7 @@
 
     <div *ngIf="actionList && actionList[0]">
       <ion-item-divider>{{'Timeline' | translate}}</ion-item-divider>
-      <div class="timeline-item" [ngClass]="{'action-created' : a.type == 'created' || a.type == 'accept', 'action-rejected' : a.type == 'reject'}"
-        *ngFor="let a of actionList; let i = index">
+      <div class="timeline-item" [ngClass]="{'action-created' : a.type == 'created' || a.type == 'accept', 'action-rejected' : a.type == 'reject'}" *ngFor="let a of actionList; let i = index">
         <div class="timeline-content">
           <div class="timeline-content-icon">
             <div class="rejected" *ngIf="a.type === 'reject'">!</div>
