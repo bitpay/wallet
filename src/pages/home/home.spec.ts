@@ -48,25 +48,38 @@ describe('HomePage', () => {
     });
 
     describe('ionViewDidEnter', () => {
-      it('should check for update if NW', () => {
-        instance.isNW = true;
-        const spy = spyOn(instance, 'checkUpdate');
+      it('should check clipboard', () => {
+        const spy = spyOn(instance, 'checkClipboard');
+        instance.ionViewDidEnter();
+        expect(spy).toHaveBeenCalled();
+      });
+      it('should subscribe to incoming data menu event', () => {
+        const spy = spyOn(instance, 'subscribeIncomingDataMenuEvent');
+        instance.ionViewDidEnter();
+        expect(spy).toHaveBeenCalled();
+      });
+      it('should subscribe to bws events', () => {
+        const spy = spyOn(instance, 'subscribeBwsEvents');
         instance.ionViewDidEnter();
         expect(spy).toHaveBeenCalled();
       });
     });
 
     describe('ionViewDidLoad', () => {
-      it('should update txps and set wallets on platform resume', () => {
+      it('should check for update if NW', () => {
+        instance.isNW = true;
+        const spy = spyOn(instance, 'checkUpdate');
         instance.plt.resume = new Subject();
         instance.plt.pause = new Subject();
         instance.ionViewDidLoad();
-        const getNotificationsSpy = spyOn(instance, 'getNotifications');
-        const updateTxpsSpy = spyOn(instance, 'updateTxps');
+        expect(spy).toHaveBeenCalled();
+      });
+      it('should update wallets on platform resume', () => {
+        instance.plt.resume = new Subject();
+        instance.plt.pause = new Subject();
+        instance.ionViewDidLoad();
         const setWalletsSpy = spyOn(instance, 'setWallets');
         instance.plt.resume.next();
-        expect(getNotificationsSpy).toHaveBeenCalled();
-        expect(updateTxpsSpy).toHaveBeenCalled();
         expect(setWalletsSpy).toHaveBeenCalled();
       });
     });
