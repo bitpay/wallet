@@ -52,6 +52,10 @@ export class WalletTabsPage {
     this.onResumeSubscription = this.platform.resume.subscribe(() => {
       this.subscribeEvents();
     });
+
+    this.events.subscribe('Local/TxAction', walletId => {
+      if (this.walletId == walletId) this.events.publish('Wallet/updateAll');
+    });
   }
 
   ionViewWillEnter() {
@@ -70,9 +74,6 @@ export class WalletTabsPage {
       if (this.walletId == walletId && type != 'NewAddress')
         this.events.publish('Wallet/updateAll');
     });
-    this.events.subscribe('Local/TxAction', walletId => {
-      if (this.walletId == walletId) this.events.publish('Wallet/updateAll');
-    });
   }
 
   ionViewWillLeave() {
@@ -82,8 +83,6 @@ export class WalletTabsPage {
   private unsubscribeEvents(): void {
     this.events.publish('Wallet/disableHardwareKeyboard');
     this.events.unsubscribe('bwsEvent');
-    this.events.unsubscribe('Local/TxAction');
-    this.events.unsubscribe('Wallet/updateAll');
     this.events.unsubscribe('Wallet/setAddress');
     this.events.unsubscribe('Wallet/disableHardwareKeyboard');
   }
@@ -105,6 +104,8 @@ export class WalletTabsPage {
     this.walletTabsProvider.clear();
     this.onPauseSubscription.unsubscribe();
     this.onResumeSubscription.unsubscribe();
+    this.events.unsubscribe('Local/TxAction');
+    this.events.unsubscribe('Wallet/updateAll');
     this.events.publish('Home/reloadStatus');
   }
 }

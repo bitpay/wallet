@@ -32,19 +32,11 @@ describe('WalletDetailsPage', () => {
     fixture.destroy();
   });
   describe('Lifecycle Hooks', () => {
-    describe('ionViewWillEnter', () => {
+    describe('ionViewDidLoad', () => {
       it('should subscribe to events', () => {
         const spy = spyOn(instance.events, 'subscribe');
-        instance.ionViewWillEnter();
+        instance.ionViewDidLoad();
         expect(spy).toHaveBeenCalledTimes(1);
-      });
-    });
-    describe('ionViewWillLeave', () => {
-      it('should unsubscribe from events', () => {
-        instance.ionViewWillEnter();
-        const spy = spyOn(instance.events, 'unsubscribe');
-        instance.ionViewWillLeave();
-        expect(spy).toHaveBeenCalledWith('Wallet/updateAll');
       });
     });
     describe('ionViewDidEnter', () => {

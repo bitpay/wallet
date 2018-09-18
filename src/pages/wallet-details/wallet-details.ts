@@ -80,6 +80,10 @@ export class WalletDetailsPage extends WalletTabsChild {
   }
 
   ionViewDidLoad() {
+    this.events.subscribe('Wallet/updateAll', () => {
+      this.updateAll();
+    });
+
     // Getting info from cache
     if (this.navParams.data.clearCache) {
       this.clearHistoryCache();
@@ -101,10 +105,6 @@ export class WalletDetailsPage extends WalletTabsChild {
   }
 
   ionViewWillEnter() {
-    this.events.subscribe('Wallet/updateAll', () => {
-      this.updateAll();
-    });
-
     this.onResumeSubscription = this.platform.resume.subscribe(() => {
       this.updateAll();
       this.events.subscribe('Wallet/updateAll', () => {
@@ -118,7 +118,6 @@ export class WalletDetailsPage extends WalletTabsChild {
   }
 
   ionViewWillLeave() {
-    this.events.unsubscribe('Wallet/updateAll');
     this.onResumeSubscription.unsubscribe();
   }
 
