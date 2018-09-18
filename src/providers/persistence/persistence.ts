@@ -61,6 +61,12 @@ interface Storage {
 export class PersistenceProvider {
   public storage: Storage;
   private persistentLogs;
+  private logsBuffer: Array<{
+    timestamp: string;
+    level: string;
+    msg: string;
+  }>;
+  private logsLoaded: boolean;
 
   constructor(
     private logger: Logger,
@@ -70,6 +76,11 @@ export class PersistenceProvider {
     private translate: TranslateService
   ) {
     this.logger.debug('PersistenceProvider initialized');
+    this.logsBuffer = [];
+    this.logsLoaded = false;
+    this.events.subscribe('newLog', newLog => {
+      this.saveNewLog(newLog);
+    });
   }
 
   public load() {
@@ -101,9 +112,7 @@ export class PersistenceProvider {
           }
         });
         this.persistentLogs = logs;
-        this.events.subscribe('newLog', newLog => {
-          this.saveNewLog(newLog);
-        });
+        this.logsLoaded = true;
       })
       .catch(err => {
         this.logger.error(err);
@@ -111,6 +120,22 @@ export class PersistenceProvider {
   }
 
   private saveNewLog(newLog): void {
+    if (!this.logsLoaded) {
+      this.logsBuffer.push(newLog);
+      return;
+    }
+
+    if (!_.isEmpty(this.logsBuffer)) {
+      this.logsBuffer.forEach(log => {
+        this.saveLog(log);
+      });
+      this.logsBuffer = [];
+    }
+
+    this.saveLog(newLog);
+  }
+
+  private saveLog(newLog): void {
     if (this.persistentLogs[newLog.timestamp]) {
       // Logs timestamp collapse
       return;
