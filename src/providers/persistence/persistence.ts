@@ -61,6 +61,12 @@ interface Storage {
 export class PersistenceProvider {
   public storage: Storage;
   private persistentLogs;
+  private logsBuffer: Array<{
+    timestamp: string;
+    level: string;
+    msg: string;
+  }>;
+  private logsLoaded: boolean;
 
   constructor(
     private logger: Logger,
@@ -70,6 +76,11 @@ export class PersistenceProvider {
     private translate: TranslateService
   ) {
     this.logger.debug('PersistenceProvider initialized');
+    this.logsBuffer = [];
+    this.logsLoaded = false;
+    this.events.subscribe('newLog', newLog => {
+      this.saveNewLog(newLog);
+    });
   }
 
   public load() {
@@ -81,23 +92,27 @@ export class PersistenceProvider {
   public getPersistentLogs(): void {
     this.getLogs()
       .then(logs => {
-        if (logs && _.isString(logs)) logs = JSON.parse(logs);
+        if (logs && _.isString(logs)) {
+          try {
+            logs = JSON.parse(logs);
+          } catch {
+            logs = {};
+          }
+        }
         logs = logs || {};
         if (_.isArray(logs)) logs = {}; // No array
 
-        // Compare dates and remove logs older than a week
+        // Compare dates and remove logs older than 3 days
         let now = new Date();
-        let aWeekAgo = new Date(now.setDate(now.getDate() - 3));
+        let daysAgo = new Date(now.setDate(now.getDate() - 3));
         Object.keys(logs).forEach(key => {
           let logDate = new Date(key);
-          if (logDate < aWeekAgo) {
+          if (logDate < daysAgo) {
             delete logs[key];
           }
         });
         this.persistentLogs = logs;
-        this.events.subscribe('newLog', newLog => {
-          this.saveNewLog(newLog);
-        });
+        this.logsLoaded = true;
       })
       .catch(err => {
         this.logger.error(err);
@@ -105,9 +120,24 @@ export class PersistenceProvider {
   }
 
   private saveNewLog(newLog): void {
+    if (!this.logsLoaded) {
+      this.logsBuffer.push(newLog);
+      return;
+    }
+
+    if (!_.isEmpty(this.logsBuffer)) {
+      this.logsBuffer.forEach(log => {
+        this.saveLog(log);
+      });
+      this.logsBuffer = [];
+    }
+
+    this.saveLog(newLog);
+  }
+
+  private saveLog(newLog): void {
     if (this.persistentLogs[newLog.timestamp]) {
-      let msg = this.translate.instant('Logs timestamp collapse');
-      this.logger.warn(msg);
+      // Logs timestamp collapse
       return;
     }
     this.persistentLogs[newLog.timestamp] = newLog;

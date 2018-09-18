@@ -108,6 +108,9 @@ export class SessionLogPage {
       .then(logs => {
         let now = new Date().toISOString();
         let subject: string = this.appProvider.info.nameCase + '-logs ' + now;
+        let message = this.translate.instant(
+          'Copay Session Logs. Be careful, this could contain sensitive private data'
+        );
 
         let blob = new Blob([logs], { type: 'text/txt' });
 
@@ -115,20 +118,38 @@ export class SessionLogPage {
         reader.onload = event => {
           let attachment = (event as any).target.result; // <-- data url
 
+          // Check if sharing via email is supported
           this.socialSharing
-            .shareViaEmail(
-              'Copay Session Logs. Be careful, this could contain sensitive private data',
-              subject,
-              null, // TO: must be null or an array
-              null, // CC: must be null or an array
-              null, // BCC: must be null or an array
-              attachment // FILES: can be null, a string, or an array
-            )
-            .then(data => {
-              this.logger.info('Email sent with success: ', data);
+            .canShareViaEmail()
+            .then(() => {
+              this.logger.info('sharing via email is possible');
+              this.socialSharing
+                .shareViaEmail(
+                  message,
+                  subject,
+                  null, // TO: must be null or an array
+                  null, // CC: must be null or an array
+                  null, // BCC: must be null or an array
+                  attachment // FILES: can be null, a string, or an array
+                )
+                .then(data => {
+                  this.logger.info('Email sent with success: ', data);
+                })
+                .catch(err => {
+                  this.logger.error('socialSharing Error: ', err);
+                });
             })
-            .catch(err => {
-              this.logger.error('socialSharing Error: ', err);
+            .catch(() => {
+              this.logger.warn('sharing via email is not possible');
+              this.socialSharing
+                .share(
+                  message,
+                  subject,
+                  attachment // FILES: can be null, a string, or an array
+                )
+                .catch(err => {
+                  this.logger.error('socialSharing Error: ', err);
+                });
             });
         };
 
