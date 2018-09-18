@@ -141,6 +141,15 @@ export class SessionLogPage {
             })
             .catch(() => {
               this.logger.warn('sharing via email is not possible');
+              this.socialSharing
+                .share(
+                  message,
+                  subject,
+                  attachment // FILES: can be null, a string, or an array
+                )
+                .catch(err => {
+                  this.logger.error('socialSharing Error: ', err);
+                });
             });
         };
 
