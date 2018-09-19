@@ -187,12 +187,8 @@ export class CoinbaseProvider {
   }
 
   public getAvailableCurrency() {
-    var config = this.configProvider.get().wallet.settings;
-    // ONLY "USD"
-    switch (config.alternativeIsoCode) {
-      default:
-        return 'USD';
-    }
+    // Only "USD" (US bank account)
+    return 'USD';
   }
 
   public checkEnoughFundsForFee(amount, cb) {
