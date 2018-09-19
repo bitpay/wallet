@@ -30,7 +30,6 @@ export class CopyToClipboard {
     private actionSheetProvider: ActionSheetProvider,
     private clipboardProvider: ClipboardProvider
   ) {
-    this.logger.debug('CopyToClipboard Directive initialized');
     this.dom = dom;
   }
 
