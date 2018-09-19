@@ -15,7 +15,7 @@ import { PersistenceProvider } from '../persistence/persistence';
 import { PlatformProvider } from '../platform/platform';
 import { PopupProvider } from '../popup/popup';
 import { ReplaceParametersProvider } from '../replace-parameters/replace-parameters';
-import { Coin, WalletOptions, WalletProvider } from '../wallet/wallet';
+import { Coin, WalletOptions } from '../wallet/wallet';
 
 // models
 import { Profile } from '../../models/profile/profile.model';
@@ -43,8 +43,7 @@ export class ProfileProvider {
     private events: Events,
     private popupProvider: PopupProvider,
     private onGoingProcessProvider: OnGoingProcessProvider,
-    private translate: TranslateService,
-    private walletProvider: WalletProvider
+    private translate: TranslateService
   ) {
     this.throttledBwsEvent = _.throttle((n, wallet) => {
       this.newBwsEvent(n, wallet);
@@ -170,7 +169,10 @@ export class ProfileProvider {
     });
 
     wallet.on('notification', n => {
-      this.logger.debug('BWC Notification:', JSON.stringify(n));
+      // TODO: Only development purpose
+      if (!this.platformProvider.isNW && !this.platformProvider.isCordova) {
+        this.logger.debug('BWC Notification:', JSON.stringify(n));
+      }
 
       if (n.type == 'NewBlock' && n.data.network == 'testnet') {
         this.throttledBwsEvent(n, wallet);
@@ -193,21 +195,7 @@ export class ProfileProvider {
           return;
         }
         wallet.setNotificationsInterval(this.UPDATE_PERIOD);
-        wallet.openWallet(() => {
-          this.walletProvider
-            .getStatus(wallet, {})
-            .then(status => {
-              this.logger.debug(
-                'Wallet: ' +
-                  walletId +
-                  ' status:' +
-                  JSON.stringify(this.processStatus(status))
-              );
-            })
-            .catch(err => {
-              this.logger.debug('Wallet: ' + walletId + ' status:' + err);
-            });
-        });
+        wallet.openWallet(() => {});
       }
     );
     this.events.subscribe('wallet:updated', (walletId: string) => {
@@ -217,26 +205,6 @@ export class ProfileProvider {
       }
     });
     return true;
-  }
-
-  private processStatus(status) {
-    delete status.balance.byAddress;
-    delete status.wallet.encryptedName;
-    status.wallet.copayers.forEach(copayer => {
-      delete copayer.encryptedName;
-      delete copayer.requestPubKeys;
-    });
-
-    let processedStatus = {
-      balance: status.balance,
-      preferences: status.preferences,
-      wallet: status.wallet,
-      pendingTxps: status.pendingTxps ? status.pendingTxps.length : 0
-    };
-    processedStatus.balance.alternativeIsoCode = status.alternativeIsoCode;
-    processedStatus.balance.availableBalanceStr = status.availableBalanceStr;
-
-    return processedStatus;
   }
 
   private newBwsEvent(n, wallet): void {

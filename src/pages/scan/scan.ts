@@ -285,7 +285,6 @@ export class ScanPage {
   }
 
   private handleSuccessfulScan(contents: string): void {
-    this.logger.info('Scan returned: "' + contents + '"');
     if (this.fromAddressbook) {
       this.events.publish('update:address', { value: contents });
       this.navCtrl.pop();

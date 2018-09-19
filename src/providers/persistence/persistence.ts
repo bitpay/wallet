@@ -79,7 +79,9 @@ export class PersistenceProvider {
     this.logsBuffer = [];
     this.logsLoaded = false;
     this.events.subscribe('newLog', newLog => {
-      this.saveNewLog(newLog);
+      setTimeout(() => {
+        this.saveNewLog(newLog);
+      }, 0);
     });
   }
 
