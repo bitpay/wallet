@@ -83,14 +83,35 @@ export class AllAddressesPage {
         })
         .join('\n');
 
-      this.socialSharing.shareViaEmail(
-        body,
-        appName + ' Addresses',
-        null, // TO: must be null or an array
-        null, // CC: must be null or an array
-        null, // BCC: must be null or an array
-        null // FILES: can be null, a string, or an array
-      );
+      let subject = appName + ' Addresses';
+
+      // Check if sharing via email is supported
+      this.socialSharing
+        .canShareViaEmail()
+        .then(() => {
+          this.logger.info('sharing via email is possible');
+          this.socialSharing
+            .shareViaEmail(
+              body,
+              subject,
+              null, // TO: must be null or an array
+              null, // CC: must be null or an array
+              null, // BCC: must be null or an array
+              null // FILES: can be null, a string, or an array
+            )
+            .then(data => {
+              this.logger.info('Email sent with success: ', data);
+            })
+            .catch(err => {
+              this.logger.error('socialSharing Error: ', err);
+            });
+        })
+        .catch(() => {
+          this.logger.warn('sharing via email is not possible');
+          this.socialSharing.share(body, subject).catch(err => {
+            this.logger.error('socialSharing Error: ', err);
+          });
+        });
     });
   }
 }
