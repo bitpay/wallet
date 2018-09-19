@@ -149,7 +149,8 @@ export class HomePage {
     this._didEnter();
   }
 
-  private async _willEnter() {
+  private _willEnter() {
+    // Show recent transactions card
     this.recentTransactionsEnabled = this.configProvider.get().recentTransactions.enabled;
 
     // Update list of wallets, status and TXPs
@@ -174,10 +175,6 @@ export class HomePage {
   }
 
   private _didEnter() {
-    if (this.isNW) this.checkUpdate();
-    this.checkHomeTip();
-    this.checkFeedbackInfo();
-    this.amazonProvider.getSupportedCurrency();
     this.checkClipboard();
 
     this.subscribeIncomingDataMenuEvent();
@@ -210,24 +207,31 @@ export class HomePage {
   ionViewDidLoad() {
     this.logger.info('ionViewDidLoad HomePage');
 
+    if (this.isNW) this.checkUpdate();
+    this.checkHomeTip();
+    this.checkFeedbackInfo();
+    this.amazonProvider.getSupportedCurrency();
+
     this.checkEmailLawCompliance();
 
     this.subscribeStatusEvents();
 
+    this.subscribeLocalTxAction();
+
     this.onResumeSubscription = this.plt.resume.subscribe(() => {
-      this.getNotifications();
-      this.updateTxps();
       this.setWallets();
+      this.checkClipboard();
       this.subscribeIncomingDataMenuEvent();
       this.subscribeBwsEvents();
       this.subscribeStatusEvents();
-      this.checkClipboard();
+      this.subscribeLocalTxAction();
     });
 
     this.onPauseSubscription = this.plt.pause.subscribe(() => {
       this.events.unsubscribe('finishIncomingDataMenuEvent');
       this.events.unsubscribe('bwsEvent');
       this.events.unsubscribe('status:updated');
+      this.events.unsubscribe('Local/TxAction');
     });
   }
 
@@ -249,20 +253,25 @@ export class HomePage {
   }
 
   private subscribeBwsEvents() {
-    // BWS Events: Update Status per Wallet
+    // BWS Events: Update Status per Wallet -> Update recent transactions and txps
     // NewBlock, NewCopayer, NewAddress, NewTxProposal, TxProposalAcceptedBy, TxProposalRejectedBy, txProposalFinallyRejected,
     // txProposalFinallyAccepted, TxProposalRemoved, NewIncomingTx, NewOutgoingTx
     this.events.subscribe('bwsEvent', (walletId: string) => {
-      this.getNotifications();
       this.updateWallet(walletId);
     });
   }
 
   private subscribeStatusEvents() {
-    // Create, Join, Import and Delete -> Get Wallets -> Update Status for All Wallets
+    // Create, Join, Import and Delete -> Get Wallets -> Update Status for All Wallets -> Update recent transactions and txps
     this.events.subscribe('status:updated', () => {
-      this.updateTxps();
       this.setWallets();
+    });
+  }
+
+  private subscribeLocalTxAction() {
+    // Reject, Remove, OnlyPublish and SignAndBroadcast -> Update Status per Wallet -> Update recent transactions and txps
+    this.events.subscribe('Local/TxAction', walletId => {
+      this.updateWallet(walletId);
     });
   }
 
@@ -508,7 +517,11 @@ export class HomePage {
           wallet.id,
           wallet.status.availableBalanceStr
         );
+
+        // Update recent transactions and txps
         this.updateTxps();
+        this.getNotifications();
+
         this.stopUpdatingWalletId(walletId);
       })
       .catch(err => {
@@ -517,19 +530,9 @@ export class HomePage {
       });
   }
 
-  private updateTxps = _.debounce(
+  private debounceUpdateTxps = _.debounce(
     () => {
-      this.profileProvider
-        .getTxps({ limit: 3 })
-        .then(data => {
-          this.zone.run(() => {
-            this.txps = data.txps;
-            this.txpsN = data.n;
-          });
-        })
-        .catch(err => {
-          this.logger.error(err);
-        });
+      this.updateTxps();
     },
     5000,
     {
@@ -537,73 +540,89 @@ export class HomePage {
     }
   );
 
-  private getNotifications = _.debounce(
-    () => {
-      if (!this.recentTransactionsEnabled) return;
-      this.profileProvider
-        .getNotifications({ limit: 3 })
-        .then(data => {
-          this.zone.run(() => {
-            this.notifications = data.notifications;
-            this.notificationsN = data.total;
-          });
-        })
-        .catch(err => {
-          this.logger.error(err);
+  private updateTxps() {
+    this.profileProvider
+      .getTxps({ limit: 3 })
+      .then(data => {
+        this.zone.run(() => {
+          this.txps = data.txps;
+          this.txpsN = data.n;
         });
+      })
+      .catch(err => {
+        this.logger.error(err);
+      });
+  }
+
+  private debounceUpdateNotifications = _.debounce(
+    () => {
+      this.getNotifications();
     },
     5000,
     {
       leading: true
     }
   );
+
+  private getNotifications() {
+    if (!this.recentTransactionsEnabled) return;
+    this.profileProvider
+      .getNotifications({ limit: 3 })
+      .then(data => {
+        this.zone.run(() => {
+          this.notifications = data.notifications;
+          this.notificationsN = data.total;
+        });
+      })
+      .catch(err => {
+        this.logger.error(err);
+      });
+  }
 
   private updateAllWallets(): void {
     let foundMessage = false;
 
     if (_.isEmpty(this.wallets)) return;
 
-    let i = this.wallets.length;
-    let j = 0;
+    let pr = wallet => {
+      return new Promise(resolve => {
+        this.walletProvider
+          .getStatus(wallet, {})
+          .then(status => {
+            wallet.status = status;
+            wallet.error = null;
 
-    let pr = ((wallet, cb) => {
-      this.walletProvider
-        .getStatus(wallet, {})
-        .then(status => {
-          wallet.status = status;
-          wallet.error = null;
+            if (!foundMessage && !_.isEmpty(status.serverMessage)) {
+              this.serverMessage = status.serverMessage;
+              foundMessage = true;
+            }
 
-          if (!foundMessage && !_.isEmpty(status.serverMessage)) {
-            this.serverMessage = status.serverMessage;
-            foundMessage = true;
-          }
-
-          this.profileProvider.setLastKnownBalance(
-            wallet.id,
-            wallet.status.availableBalanceStr
-          );
-          return cb();
-        })
-        .catch(err => {
-          wallet.error =
-            err === 'WALLET_NOT_REGISTERED'
-              ? 'Wallet not registered'
-              : this.bwcErrorProvider.msg(err);
-          this.logger.warn(
-            this.bwcErrorProvider.msg(
-              err,
-              'Error updating status for ' + wallet.name
-            )
-          );
-          return cb();
-        });
-    }).bind(this);
+            this.profileProvider.setLastKnownBalance(
+              wallet.id,
+              wallet.status.availableBalanceStr
+            );
+            return resolve();
+          })
+          .catch(err => {
+            wallet.error =
+              err === 'WALLET_NOT_REGISTERED'
+                ? 'Wallet not registered'
+                : this.bwcErrorProvider.msg(err);
+            this.logger.warn(
+              this.bwcErrorProvider.msg(
+                err,
+                'Error updating status for ' + wallet.name
+              )
+            );
+            return resolve();
+          });
+      });
+    };
 
     _.each(this.wallets, wallet => {
-      pr(wallet, () => {
-        if (++j == i) {
-          this.updateTxps();
-        }
+      pr(wallet).then(() => {
+        this.debounceUpdateTxps();
+        this.debounceUpdateNotifications();
       });
     });
   }
@@ -790,8 +809,7 @@ export class HomePage {
   }
 
   public doRefresh(refresher) {
-    this.updateAllWallets();
-    this.getNotifications();
+    this.setWallets();
     setTimeout(() => {
       refresher.complete();
     }, 2000);
