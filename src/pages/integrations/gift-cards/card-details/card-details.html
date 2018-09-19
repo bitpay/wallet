@@ -33,11 +33,8 @@
           <div *ngIf="card.status == 'PENDING' || card.status == 'invalid'" class="card-info__body" translate>
             Awaiting payment to confirm
           </div>
-          <div *ngIf="card.status == 'expired'" class="card-info__body" translate>
-            Invoice expired
-          </div>
           <div *ngIf="card.status == 'FAILURE' || card.status == 'RESEND'" class="card-info__body" translate>
-            There was a failure to the create gift card. Please, contact BitPay support.
+            Could not get claim code. Please contact BitPay support.
           </div>
         </div>
       </div>
