@@ -19,7 +19,7 @@
       </p>
     </ion-item>
 
-    <ion-item-divider>{{'Unused addresses' | translate}}</ion-item-divider>
+    <ion-item-divider *ngIf="noBalance && noBalance[0]">{{'Unused addresses' | translate}}</ion-item-divider>
     <ion-item *ngFor="let u of noBalance" copy-to-clipboard="{{u.address}}">
       <div>{{u.address}}</div>
       <ion-note>

@@ -7,14 +7,16 @@
 <ion-content>
   <ion-item-divider text-center>
     <span translate>
-      Each bitcoin wallet can generate billions of addresses from your 12-word backup. A new address is automatically generated and shown each time you receive a payment.
+      Each bitcoin wallet can generate billions of addresses from your 12-word backup. A new address is automatically
+      generated and shown each time you receive a payment.
     </span>
     <a (click)="showInfo = !showInfo" *ngIf="!showInfo" translate>Why?</a>
 
     <div *ngIf="showInfo">
       <br>
       <span translate>
-        It's a good idea to avoid reusing addresses - this both protects your privacy and keeps your bitcoins secure against hypothetical attacks by quantum computers.</span>
+        It's a good idea to avoid reusing addresses - this both protects your privacy and keeps your bitcoins secure
+        against hypothetical attacks by quantum computers.</span>
       <a (click)="showInfo = !showInfo" translate>Hide</a>
     </div>
   </ion-item-divider>
@@ -35,9 +37,8 @@
   </div>
 
   <ion-list *ngIf="!loading" class="settings-list">
-    <ion-item-divider>{{'Unused addresses' | translate}}</ion-item-divider>
-
     <div *ngIf="latestUnused && latestUnused[0]">
+      <ion-item-divider>{{'Unused addresses' | translate}}</ion-item-divider>
       <ion-item *ngFor="let u of latestUnused" copy-to-clipboard="{{u.address}}">
         <h3>{{u.address}}</h3>
         <p>{{u.path}} {{u.createdOn * 1000 | amDateFormat:'MMMM Do YYYY, hh:mm a'}}</p>
@@ -46,7 +47,6 @@
 
     <div *ngIf="latestWithBalance && latestWithBalance[0]">
       <ion-item-divider>{{'Addresses with balance' | translate}}</ion-item-divider>
-
       <ion-item *ngFor="let w of latestWithBalance" copy-to-clipboard="{{w.address}}">
         <h3>{{w.address}}</h3>
         <p class="info">{{w.amount | satToUnit: wallet.coin}}</p>
