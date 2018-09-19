@@ -49,11 +49,11 @@ export class TxpDetailsPage {
   public contactName: string;
   public showMultiplesOutputs: boolean;
   public amount: string;
+  public isCordova: boolean;
 
   private isGlidera: boolean;
   private GLIDERA_LOCK_TIME: number;
   private countDown;
-  private isCordova: boolean;
 
   constructor(
     private navParams: NavParams,
