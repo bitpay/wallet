@@ -35,9 +35,8 @@
   </div>
 
   <ion-list *ngIf="!loading" class="settings-list">
-    <ion-item-divider>{{'Unused addresses' | translate}}</ion-item-divider>
-
     <div *ngIf="latestUnused && latestUnused[0]">
+      <ion-item-divider>{{'Unused addresses' | translate}}</ion-item-divider>
       <ion-item *ngFor="let u of latestUnused" copy-to-clipboard="{{u.address}}">
         <h3>{{u.address}}</h3>
         <p>{{u.path}} {{u.createdOn * 1000 | amDateFormat:'MMMM Do YYYY, hh:mm a'}}</p>
@@ -46,7 +45,6 @@
 
     <div *ngIf="latestWithBalance && latestWithBalance[0]">
       <ion-item-divider>{{'Addresses with balance' | translate}}</ion-item-divider>
-
       <ion-item *ngFor="let w of latestWithBalance" copy-to-clipboard="{{w.address}}">
         <h3>{{w.address}}</h3>
         <p class="info">{{w.amount | satToUnit: wallet.coin}}</p>
