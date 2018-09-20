@@ -1,8 +1,5 @@
 card-details-page {
   $background-color: white;
-  ion-content .fixed-content {
-    background: $toolbar-background;
-  }
   @include fix-ios-bg-scroll($background-color);
   .wrapper {
     padding: 0 $gift-card-page-padding;

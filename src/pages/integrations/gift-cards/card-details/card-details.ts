@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Events, NavController, NavParams } from 'ionic-angular';
+import { take } from 'rxjs/operators';
 import {
   ActionSheetProvider,
   InfoSheetType
@@ -49,6 +50,7 @@ export class CardDetailsPage {
   updateGiftCard() {
     this.giftCardProvider
       .updatePendingGiftCards([this.card])
+      .pipe(take(1))
       .subscribe(card => (this.card = card));
   }
 
