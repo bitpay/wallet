@@ -79,7 +79,12 @@ export class GiftCardProvider {
       method(),
       this.getCardConfig(cardName)
     ]);
-    return cards.map(c => ({ ...c, name: cardName, brand: cardConfig.brand }));
+    return cards.map(c => ({
+      ...c,
+      name: cardName,
+      brand: cardConfig.brand,
+      currency: cardConfig.currency
+    }));
   }
 
   async saveGiftCard(

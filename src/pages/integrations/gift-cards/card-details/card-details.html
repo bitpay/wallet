@@ -15,15 +15,30 @@
     <div class="main-content">
       <div class="balance">{{card.amount | formatCurrency:card.currency}}</div>
       <img class="card-image" [src]="cardConfig?.cardImage">
-      <div class="card-info" (click)="copyClaimCode()" [copy-to-clipboard]="card.claimCode" [hide-toast]="true" *ngIf="card.status !== 'PENDING'">
-        <div class="card-info__title">Claim Code</div>
-        <div class="card-info__body">{{card.claimCode}}</div>
+      <div class="card-info">
+        <div *ngIf="card.claimCode">
+          <div *ngIf="card.status !== 'Canceled'" (click)="copyClaimCode()" [copy-to-clipboard]="card.claimCode"
+            [hide-toast]="true">
+            <div class="card-info__title">Claim Code</div>
+            <div class="card-info__body">{{card.claimCode}}</div>
+          </div>
+          <div *ngIf="card.status == 'Canceled'" class="card-info__body" translate>
+            Gift card canceled
+          </div>
+        </div>
+
         <div class="card-info__date">Created {{card.date | amTimeAgo}}</div>
+
+        <div *ngIf="!card.claimCode">
+          <div *ngIf="card.status == 'PENDING' || card.status == 'invalid'" class="card-info__body" translate>
+            Awaiting payment to confirm
+          </div>
+          <div *ngIf="card.status == 'FAILURE' || card.status == 'RESEND'" class="card-info__body" translate>
+            Could not get claim code. Please contact BitPay support.
+          </div>
+        </div>
       </div>
-      <div class="card-info" *ngIf="card.status === 'PENDING'">
-        <div class="card-info__body">Awaiting Payment to Confirm</div>
-      </div>
-      <div class="actions" *ngIf="card.status !== 'PENDING' && !card.archived">
+      <div class="actions" *ngIf="card.status !== 'PENDING' && !card.archived && card.claimCode">
         <button ion-button class="button-standard" (click)="redeem()">
           {{'Redeem Now' | translate}}
         </button>
