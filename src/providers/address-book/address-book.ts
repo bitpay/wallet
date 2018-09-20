@@ -2,30 +2,19 @@ import { Injectable } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Logger } from '../../providers/logger/logger';
 import { PersistenceProvider } from '../../providers/persistence/persistence';
-import { BwcProvider } from '../bwc/bwc';
+import { AddressProvider } from '../address/address';
 
 import * as _ from 'lodash';
 
 @Injectable()
 export class AddressBookProvider {
   constructor(
-    private bwcProvider: BwcProvider,
     private logger: Logger,
     private persistenceProvider: PersistenceProvider,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private addressProvider: AddressProvider
   ) {
     this.logger.debug('AddressBookProvider initialized');
-  }
-
-  private getNetwork(address: string): string {
-    let network;
-    try {
-      network = this.bwcProvider.getBitcore().Address(address).network.name;
-    } catch (e) {
-      this.logger.warn('No valid bitcoin address. Trying bitcoin cash...');
-      network = this.bwcProvider.getBitcoreCash().Address(address).network.name;
-    }
-    return network;
   }
 
   public get(addr: string): Promise<any> {
@@ -82,7 +71,7 @@ export class AddressBookProvider {
 
   public add(entry): Promise<any> {
     return new Promise((resolve, reject) => {
-      var network = this.getNetwork(entry.address);
+      var network = this.addressProvider.getNetwork(entry.address);
       if (_.isEmpty(network)) {
         let msg = this.translate.instant('Not valid bitcoin address');
         return reject(msg);
@@ -122,7 +111,7 @@ export class AddressBookProvider {
 
   public remove(addr): Promise<any> {
     return new Promise((resolve, reject) => {
-      var network = this.getNetwork(addr);
+      var network = this.addressProvider.getNetwork(addr);
       if (_.isEmpty(network)) {
         let msg = this.translate.instant('Not valid bitcoin address');
         return reject(msg);

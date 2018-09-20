@@ -25,6 +25,7 @@ export class AddressProvider {
   }
 
   public getCoin(address: string) {
+    address = address.replace(/^(bitcoincash:|bchtest:|bitcoin:)/i, '');
     try {
       new this.Bitcore['btc'].lib.Address(address);
       return 'btc';
@@ -36,6 +37,20 @@ export class AddressProvider {
         return null;
       }
     }
+  }
+
+  public getNetwork(address: string) {
+    address = address.replace(/^(bitcoincash:|bchtest:|bitcoin:)/i, '');
+    let network;
+    try {
+      network = this.bwcProvider.getBitcore().Address(address).network.name;
+    } catch (e) {
+      try {
+        network = this.bwcProvider.getBitcoreCash().Address(address).network
+          .name;
+      } catch (e) {}
+    }
+    return network;
   }
 
   private translateAddress(address: string) {

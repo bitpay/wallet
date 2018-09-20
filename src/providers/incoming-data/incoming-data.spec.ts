@@ -214,6 +214,40 @@ describe('Provider: Incoming Data Provider', () => {
         expect(eventsSpy).toHaveBeenCalledWith('IncomingDataRedir', nextView);
       });
     });
+    it('Should handle Bitcoin cash Copay/BitPay format and CashAddr format URI with amount', () => {
+      let data = [
+        'BITCOINCASH:QZCY06MXSK7HW0RU4KZWTRKXDS6VF8Y34VRM5SF9Z7?amount=1.00000000'
+      ];
+
+      data.forEach(element => {
+        let parsed = bwcProvider.getBitcoreCash().URI(element);
+        let addr = parsed.address ? parsed.address.toString() : '';
+        // keep address in original format
+        if (parsed.address && element.indexOf(addr) < 0) {
+          addr = parsed.address.toCashAddress();
+        }
+
+        let amount = parsed.amount;
+
+        let stateParams = {
+          amount,
+          toAddress: addr,
+          description: null,
+          coin: 'bch'
+        };
+        let nextView = {
+          name: 'ConfirmPage',
+          params: stateParams
+        };
+        expect(
+          incomingDataProvider.redir(element, { activePage: 'ScanPage' })
+        ).toBe(true);
+        expect(loggerSpy).toHaveBeenCalledWith(
+          'Incoming-data: Bitcoin Cash URI'
+        );
+        expect(eventsSpy).toHaveBeenCalledWith('IncomingDataRedir', nextView);
+      });
+    });
     it('Should handle Bitcoin URI', () => {
       let data = [
         'bitcoin:1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa', // Genesis Bitcoin Address
@@ -270,6 +304,46 @@ describe('Provider: Incoming Data Provider', () => {
         let parsed = bwcProvider
           .getBitcore()
           .URI(data.replace(/^bitcoincash:/, 'bitcoin:'));
+
+        let oldAddr = parsed.address ? parsed.address.toString() : '';
+
+        let a = bwcProvider
+          .getBitcore()
+          .Address(oldAddr)
+          .toObject();
+        let addr = bwcProvider
+          .getBitcoreCash()
+          .Address.fromObject(a)
+          .toString();
+
+        let stateParams = {
+          toAddress: addr,
+          description: null,
+          coin: 'bch'
+        };
+        let nextView = {
+          name: 'AmountPage',
+          params: stateParams
+        };
+        tick();
+        expect(eventsSpy).toHaveBeenCalledWith('IncomingDataRedir', nextView);
+      })
+    );
+    it(
+      'Should Handle Testnet Bitcoin Cash URI with legacy address',
+      fakeAsync(() => {
+        let data = 'bchtest:mu7ns6LXun5rQiyTJx7yY1QxTzndob4bhJ';
+        expect(
+          incomingDataProvider.redir(data, { activePage: 'ScanPage' })
+        ).toBe(true);
+
+        expect(loggerSpy).toHaveBeenCalledWith(
+          'Incoming-data: Bitcoin Cash URI with legacy address'
+        );
+
+        let parsed = bwcProvider
+          .getBitcore()
+          .URI(data.replace(/^bchtest:/, 'bitcoin:'));
 
         let oldAddr = parsed.address ? parsed.address.toString() : '';
 

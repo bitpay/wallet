@@ -75,7 +75,7 @@ export class IncomingDataProvider {
     data = this.sanitizeUri(data);
     return !!this.bwcProvider
       .getBitcore()
-      .URI.isValid(data.replace(/^bitcoincash:/, 'bitcoin:'));
+      .URI.isValid(data.replace(/^(bitcoincash:|bchtest:)/, 'bitcoin:'));
   }
 
   private isValidPlainUrl(data: string): boolean {
@@ -205,7 +205,7 @@ export class IncomingDataProvider {
     const coin = Coin.BCH;
     let parsed = this.bwcProvider
       .getBitcore()
-      .URI(data.replace(/^bitcoincash:/, 'bitcoin:'));
+      .URI(data.replace(/^(bitcoincash:|bchtest:)/, 'bitcoin:'));
 
     let oldAddr = parsed.address ? parsed.address.toString() : '';
     if (!oldAddr)
