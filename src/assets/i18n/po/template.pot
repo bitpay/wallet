@@ -136,7 +136,14 @@ msgstr ""
 msgid "Alternative currency"
 msgstr ""
 
-msgid "Amazon.com is not available at this moment. Please try back later."
+msgid ""
+"Amazon.co.jp Gift Cards never expire and can be redeemed towards millions "
+"of items at www.amazon.co.jp."
+msgstr ""
+
+msgid ""
+"Amazon.com Gift Cards never expire and can be redeemed towards millions of "
+"items at www.amazon.com."
 msgstr ""
 
 msgid "Amount"
@@ -167,15 +174,13 @@ msgid ""
 "priority)"
 msgstr ""
 
-msgid "Archive"
+msgid "Archive Card"
 msgstr ""
 
-msgid "Archived"
+msgid "Archive this Card?"
 msgstr ""
 
-msgid ""
-"Archiving this Gift Card will remove it from this view. You will still be "
-"able to see it in the Mercado Livre settings."
+msgid "Archived Cards"
 msgstr ""
 
 msgid "Are you being watched?"
@@ -206,6 +211,9 @@ msgid "Available"
 msgstr ""
 
 msgid "Average confirmation time"
+msgstr ""
+
+msgid "Awaiting payment to confirm"
 msgstr ""
 
 msgid "Backup"
@@ -240,6 +248,9 @@ msgid ""
 "Before retrieving your wallet address, it's recommended that you first "
 "write down your recovery phrase and store it securely so that your wallet "
 "can be recovered in the case your device was lost or stolen."
+msgstr ""
+
+msgid "Below Minimum Amount"
 msgstr ""
 
 msgid "BitPay Card URI"
@@ -284,9 +295,6 @@ msgstr ""
 msgid "Bitcoin transactions include a fee collected by miners on the network."
 msgstr ""
 
-msgid "Bought {{ amount }}"
-msgstr ""
-
 msgid "Broadcast Payment"
 msgstr ""
 
@@ -294,12 +302,6 @@ msgid "Broadcasted"
 msgstr ""
 
 msgid "Broadcasting transaction..."
-msgstr ""
-
-msgid "Buy Gift Card"
-msgstr ""
-
-msgid "Buy a Gift Card"
 msgstr ""
 
 msgid "Buying Bitcoin..."
@@ -311,9 +313,6 @@ msgstr ""
 msgid ""
 "By providing your email address, you give explicit consent to BitPay to use "
 "your email address to send you email notifications about payments."
-msgstr ""
-
-msgid "CANCELED"
 msgstr ""
 
 msgid "Calculating fee..."
@@ -328,9 +327,6 @@ msgstr ""
 msgid "Cancel invitation"
 msgstr ""
 
-msgid "Canceled"
-msgstr ""
-
 msgid "Canceling Gift Card..."
 msgstr ""
 
@@ -338,6 +334,9 @@ msgid "Cannot create wallet"
 msgstr ""
 
 msgid "Cannot join the same wallet more that once"
+msgstr ""
+
+msgid "Card Archived"
 msgstr ""
 
 msgid "Card Settings"
@@ -356,9 +355,6 @@ msgid "Checking..."
 msgstr ""
 
 msgid "Choose a backup file from your computer"
-msgstr ""
-
-msgid "Claim code:"
 msgstr ""
 
 msgid "Clear"
@@ -451,6 +447,9 @@ msgstr ""
 msgid "Contribute translations"
 msgstr ""
 
+msgid "Copay Session Logs. Be careful, this could contain sensitive private data"
+msgstr ""
+
 msgid "Copay only supports Bitcoin Cash using new version numbers addresses"
 msgstr ""
 
@@ -478,6 +477,9 @@ msgstr ""
 msgid "Copied {coin} address"
 msgstr ""
 
+msgid "Copied: {claimCode}"
+msgstr ""
+
 msgid "Copy this text as it is to a safe place (notepad or email)"
 msgstr ""
 
@@ -487,13 +489,7 @@ msgstr ""
 msgid "Could Not Fetch Payment: Check if it is still valid"
 msgstr ""
 
-msgid "Could not access Gift Card Service"
-msgstr ""
-
 msgid "Could not access the wallet at the server. Please check:"
-msgstr ""
-
-msgid "Could not access to Amazon.com"
 msgstr ""
 
 msgid "Could not access wallet"
@@ -532,7 +528,7 @@ msgstr ""
 msgid "Could not encrypt wallet"
 msgstr ""
 
-msgid "Could not fetch the invoice"
+msgid "Could not get claim code. Please contact BitPay support."
 msgstr ""
 
 msgid "Could not get dynamic fee"
@@ -545,9 +541,6 @@ msgid "Could not get fee levels"
 msgstr ""
 
 msgid "Could not get the Addressbook"
-msgstr ""
-
-msgid "Could not get the invoice"
 msgstr ""
 
 msgid "Could not get transactions"
@@ -601,9 +594,6 @@ msgstr ""
 msgid "Created by"
 msgstr ""
 
-msgid "Created {{card.date | amTimeAgo}}"
-msgstr ""
-
 msgid "Creating Gift Card..."
 msgstr ""
 
@@ -611,6 +601,9 @@ msgid "Creating Wallet..."
 msgstr ""
 
 msgid "Creating transaction..."
+msgstr ""
+
+msgid "Current Cards"
 msgstr ""
 
 msgid "Current fee rate for this policy"
@@ -681,6 +674,9 @@ msgstr ""
 msgid "Download"
 msgstr ""
 
+msgid "Download logs"
+msgstr ""
+
 msgid "Duplicate"
 msgstr ""
 
@@ -688,9 +684,6 @@ msgid "Duplicate ( Bitcoin Cash )"
 msgstr ""
 
 msgid "Duplicating wallet..."
-msgstr ""
-
-msgid "EXPIRED"
 msgstr ""
 
 msgid ""
@@ -708,9 +701,6 @@ msgstr ""
 msgid "Email"
 msgstr ""
 
-msgid "Email address is needed to purchase Gift Cards"
-msgstr ""
-
 msgid "Empty addresses limit reached. New addresses cannot be generated."
 msgstr ""
 
@@ -724,9 +714,6 @@ msgid "Enable push notifications"
 msgstr ""
 
 msgid "Enable the camera to get started."
-msgstr ""
-
-msgid "Encrypt password needed"
 msgstr ""
 
 msgid ""
@@ -785,7 +772,7 @@ msgstr ""
 msgid "Error adding new entry"
 msgstr ""
 
-msgid "Error creating the invoice"
+msgid "Error adding new log"
 msgstr ""
 
 msgid "Error creating wallet"
@@ -846,9 +833,6 @@ msgid "Extended Public Keys"
 msgstr ""
 
 msgid "Extracting Wallet information..."
-msgstr ""
-
-msgid "FAILURE"
 msgstr ""
 
 msgid "Failed"
@@ -951,25 +935,7 @@ msgstr ""
 msgid "Gift Card"
 msgstr ""
 
-msgid "Gift Card Amount"
-msgstr ""
-
-msgid "Gift Card Amount:"
-msgstr ""
-
-msgid "Gift Card is not available to use anymore"
-msgstr ""
-
-msgid "Gift Cards are only redeemable on Amazon.co.jp (Japan website)."
-msgstr ""
-
-msgid "Gift Cards are only redeemable on Amazon.com (US website)."
-msgstr ""
-
-msgid "Gift card expired"
-msgstr ""
-
-msgid "Gift card generated and ready to use."
+msgid "Gift card canceled"
 msgstr ""
 
 msgid "Give us feedback"
@@ -984,10 +950,10 @@ msgstr ""
 msgid "Got it"
 msgstr ""
 
-msgid "Having problems with a ShapeShift?"
+msgid "Have you redeemed the entire balance of this gift card?"
 msgstr ""
 
-msgid "Help & Support"
+msgid "Having problems with a ShapeShift?"
 msgstr ""
 
 msgid "Help & support"
@@ -1056,6 +1022,9 @@ msgstr ""
 msgid "I'm very happy"
 msgstr ""
 
+msgid "I've used this card"
+msgstr ""
+
 msgid ""
 "If enabled, Bitcoin Cash addresses will be shown using Copay style address, "
 "and not the new cashaddr format."
@@ -1080,8 +1049,10 @@ msgid ""
 msgstr ""
 
 msgid ""
-"If you need to send to \"old\" addresses, and you are SURE those are BCH "
-"addresses, you can \"translate\" them using the BCH Translator tool."
+"If you need to send to \"old\" addresses (like the one you just pasted), "
+"and you are SURE those are BCH addresses, you can \"translate\" them using "
+"the BCH Translator tool and paste the corresponding address in CashAddr "
+"format for that \"old\" address."
 msgstr ""
 
 msgid ""
@@ -1099,9 +1070,6 @@ msgid "Importing Wallet..."
 msgstr ""
 
 msgid "In order to verify your wallet backup, please type your password."
-msgstr ""
-
-msgid "Inactive"
 msgstr ""
 
 msgid "Incomplete"
@@ -1141,9 +1109,6 @@ msgid "Invalid derivation path"
 msgstr ""
 
 msgid "Invitation Code"
-msgstr ""
-
-msgid "Invoice expired"
 msgstr ""
 
 msgid "Is this correct?"
@@ -1245,14 +1210,6 @@ msgstr ""
 msgid "Memo"
 msgstr ""
 
-msgid "Mercado Livre Brazil Gift Cards"
-msgstr ""
-
-msgid ""
-"Mercadolibre Gift Card Service is not available at this moment. Please try "
-"back later."
-msgstr ""
-
 msgid "Merchant Message"
 msgstr ""
 
@@ -1331,9 +1288,6 @@ msgid "No"
 msgstr ""
 
 msgid "No Private Key"
-msgstr ""
-
-msgid "No access key defined"
 msgstr ""
 
 msgid "No backup, no bitcoin."
@@ -1455,10 +1409,10 @@ msgstr ""
 msgid "Only redeemable on Mercado Livre (Brazil)"
 msgstr ""
 
-msgid "Only redeemable on www.amazon.co.jp (Japan website)."
+msgid "Only redeemable on www.amazon.co.jp (Japan website)"
 msgstr ""
 
-msgid "Only redeemable on www.amazon.com (US website)."
+msgid "Only redeemable on www.amazon.com (USA website)"
 msgstr ""
 
 msgid "Open"
@@ -1491,9 +1445,6 @@ msgstr ""
 msgid "Ouch!"
 msgstr ""
 
-msgid "PENDING"
-msgstr ""
-
 msgid "PIN"
 msgstr ""
 
@@ -1513,6 +1464,11 @@ msgid "Passwords do not match"
 msgstr ""
 
 msgid "Paste the backup plain text code"
+msgstr ""
+
+msgid ""
+"Paste this code on {website}. This gift card cannot be recovered if your "
+"claim code is lost."
 msgstr ""
 
 msgid "Pay 0% fees to turn bitcoin into dollars."
@@ -1572,9 +1528,6 @@ msgid "Pending"
 msgstr ""
 
 msgid "Pending Proposals"
-msgstr ""
-
-msgid "Pending to confirmation"
 msgstr ""
 
 msgid "Permanently delete this wallet."
@@ -1661,13 +1614,7 @@ msgstr ""
 msgid "Proposals"
 msgstr ""
 
-msgid "Purchase Amount is limited to {{limitPerDay}} {{currency}} per day"
-msgstr ""
-
-msgid "Purchase amount must be a value between 50 and 2000"
-msgstr ""
-
-msgid "Purchases with this cryptocurrency is not enabled"
+msgid "Purchase Limit Reached"
 msgstr ""
 
 msgid ""
@@ -1750,9 +1697,6 @@ msgstr ""
 msgid "Remove"
 msgstr ""
 
-msgid "Removing this Gift Card will remove all their data from this device."
-msgstr ""
-
 msgid "Repeat the password"
 msgstr ""
 
@@ -1781,9 +1725,6 @@ msgid "Retry"
 msgstr ""
 
 msgid "Retry camera"
-msgstr ""
-
-msgid "STILL PENDING"
 msgstr ""
 
 msgid "Save"
@@ -1825,12 +1766,6 @@ msgstr ""
 msgid "Security"
 msgstr ""
 
-msgid "See invoice"
-msgstr ""
-
-msgid "See invoice &rarr;"
-msgstr ""
-
 msgid "See transaction"
 msgstr ""
 
@@ -1867,6 +1802,9 @@ msgstr ""
 msgid "Send from"
 msgstr ""
 
+msgid "Send logs by email"
+msgstr ""
+
 msgid "Send payment to this address"
 msgstr ""
 
@@ -1874,6 +1812,9 @@ msgid "Sending"
 msgstr ""
 
 msgid "Sending 2FA code..."
+msgstr ""
+
+msgid "Sending From"
 msgstr ""
 
 msgid "Sending feedback..."
@@ -1898,9 +1839,6 @@ msgid "Sent Funds"
 msgstr ""
 
 msgid "Server response could not be verified"
-msgstr ""
-
-msgid "Service not available"
 msgstr ""
 
 msgid "Services"
@@ -2002,15 +1940,6 @@ msgid "Start"
 msgstr ""
 
 msgid "Status"
-msgstr ""
-
-msgid "Status:"
-msgstr ""
-
-msgid "Still pending"
-msgstr ""
-
-msgid "Still waiting confirmation (Use higher fees setting to faster delivery)"
 msgstr ""
 
 msgid "Submit Feature Request"
@@ -2123,6 +2052,16 @@ msgid ""
 "will not be accessible from the export."
 msgstr ""
 
+msgid ""
+"The purchase amount is limited to {maxAmount} {currency} per day. Please "
+"modify your amount."
+msgstr ""
+
+msgid ""
+"The purchase amount must be at least {minAmount} {currency}. Please modify "
+"your amount."
+msgstr ""
+
 msgid "The request could not be understood by the server"
 msgstr ""
 
@@ -2148,9 +2087,6 @@ msgid "There is a new version of {{nameCase}} available"
 msgstr ""
 
 msgid "There is an error in the form"
-msgstr ""
-
-msgid "There was a failure to the create gift card. Please, contact BitPay support."
 msgstr ""
 
 msgid ""
@@ -2365,6 +2301,9 @@ msgstr ""
 msgid "View Confirmation Status"
 msgstr ""
 
+msgid "View Invoice"
+msgstr ""
+
 msgid "View Privacy Policy"
 msgstr ""
 
@@ -2383,16 +2322,7 @@ msgstr ""
 msgid "View on blockchain"
 msgstr ""
 
-msgid "Visit Amazon.co.jp"
-msgstr ""
-
-msgid "Visit Amazon.com"
-msgstr ""
-
 msgid "Visit ShapeShift.io"
-msgstr ""
-
-msgid "Visit mercadolivre.com.br"
 msgstr ""
 
 msgid ""
@@ -2557,13 +2487,13 @@ msgstr ""
 msgid "Write a Review"
 msgstr ""
 
-msgid "Wrong encrypt password"
-msgstr ""
-
 msgid "Wrong number of recovery words:"
 msgstr ""
 
 msgid "Wrong password"
+msgstr ""
+
+msgid "YES"
 msgstr ""
 
 msgid "Yes"
@@ -2575,6 +2505,11 @@ msgstr ""
 msgid ""
 "You are trying to send ({amount} {coin}) more than what your wallet "
 "contains. Please enter a lower amount or send max."
+msgstr ""
+
+msgid ""
+"You can continue to view your archived cards here if you need to access "
+"them."
 msgstr ""
 
 msgid "You can create a backup later from your wallet settings."
@@ -2602,6 +2537,11 @@ msgstr ""
 msgid "You can trade it for other currencies like US Dollars, Euros, or Pounds."
 msgstr ""
 
+msgid ""
+"You can use your Mercado Livre gift cards on your Mercado Pago account for "
+"everyday expenses like utilities and metro rides."
+msgstr ""
+
 msgid "You control your bitcoin."
 msgstr ""
 
@@ -2611,15 +2551,9 @@ msgstr ""
 msgid "You should not set a fee higher than {{maxFeeRecommended}} satoshis/byte."
 msgstr ""
 
-msgid "Your Archived Gift Cards"
-msgstr ""
-
 msgid ""
 "Your BitPay Card is ready. Add funds to your card to start using it at "
 "stores and ATMs worldwide."
-msgstr ""
-
-msgid "Your Gift Cards"
 msgstr ""
 
 msgid "Your bitcoin wallet is ready!"
@@ -2638,12 +2572,6 @@ msgid "Your fee is lower than recommended."
 msgstr ""
 
 msgid "Your name"
-msgstr ""
-
-msgid "Your purchase could not be completed"
-msgstr ""
-
-msgid "Your purchase was added to the list of pending"
 msgstr ""
 
 msgid ""
@@ -2694,9 +2622,6 @@ msgstr ""
 msgid "{coinName} miner fees unusually high"
 msgstr ""
 
-msgid "{{amountUnitStr}} Gift Card"
-msgstr ""
-
 msgid ""
 "{{appName}} depends on Bitcore Wallet Service (BWS) for blockchain "
 "information, networking and Copayer synchronization. The default "
@@ -2704,13 +2629,7 @@ msgid ""
 "instance)."
 msgstr ""
 
-msgid "{{btx.feeRateStr}} of the total amount"
-msgstr ""
-
 msgid "{{fee}} {{coin}} will be deducted for bitcoin networking fees."
-msgstr ""
-
-msgid "{{tx.feeRateStr}} of the total amount"
 msgstr ""
 
 msgid "{{updatingTxHistoryProgress}} transactions downloaded"
