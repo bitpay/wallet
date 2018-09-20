@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { File } from '@ionic-native/file';
-import { TranslateService } from '@ngx-translate/core';
 import { Events } from 'ionic-angular';
 import * as _ from 'lodash';
 import { Logger } from '../../providers/logger/logger';
@@ -72,10 +71,10 @@ export class PersistenceProvider {
     private logger: Logger,
     private platform: PlatformProvider,
     private file: File,
-    private events: Events,
-    private translate: TranslateService
+    private events: Events
   ) {
     this.logger.debug('PersistenceProvider initialized');
+    this.persistentLogs = {};
     this.logsBuffer = [];
     this.logsLoaded = false;
     this.events.subscribe('newLog', newLog => {
@@ -104,21 +103,42 @@ export class PersistenceProvider {
         logs = logs || {};
         if (_.isArray(logs)) logs = {}; // No array
 
-        // Compare dates and remove logs older than 3 days
-        let now = new Date();
-        let daysAgo = new Date(now.setDate(now.getDate() - 3));
-        Object.keys(logs).forEach(key => {
-          let logDate = new Date(key);
-          if (logDate < daysAgo) {
-            delete logs[key];
-          }
-        });
-        this.persistentLogs = logs;
+        this.persistentLogs = this.deleteOldLogs(logs);
         this.logsLoaded = true;
       })
       .catch(err => {
         this.logger.error(err);
       });
+  }
+
+  private deleteOldLogs(logs) {
+    let now = new Date();
+    let daysAgo = new Date(now.setDate(now.getDate() - 3));
+    // Compare dates and remove logs older than 3 days
+    Object.keys(logs).forEach(key => {
+      let logDate = new Date(key);
+      if (logDate < daysAgo) {
+        delete logs[key];
+      }
+    });
+    // Clean if logs entries are more than 6000
+    let logsAmount = Object.keys(logs).length;
+    if (logsAmount > 6000) {
+      let entriesToDelete: number = logsAmount - 6000;
+      Object.keys(logs).forEach((key, index) => {
+        if (index < entriesToDelete) {
+          delete logs[key];
+          index++;
+        }
+      });
+    }
+    this.logger.debug(
+      'Saved logs: ' +
+        logsAmount +
+        '. Logs after cleaning: ' +
+        Object.keys(logs).length
+    );
+    return logs;
   }
 
   private saveNewLog(newLog): void {
@@ -144,8 +164,9 @@ export class PersistenceProvider {
     }
     this.persistentLogs[newLog.timestamp] = newLog;
     this.setLogs(JSON.stringify(this.persistentLogs)).catch(() => {
-      let msg = this.translate.instant('Error adding new log');
-      this.logger.warn(msg);
+      this.logger.warn('Error adding new log');
+      // Unsubscribe to prevent errors loop
+      this.events.unsubscribe('newLog');
     });
   }
 
