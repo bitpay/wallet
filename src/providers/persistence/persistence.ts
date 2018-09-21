@@ -97,7 +97,7 @@ export class PersistenceProvider {
         if (
           _.isEmpty(config) ||
           _.isUndefined(config.persistentLogs) ||
-          (config.persistentLogs && config.persistentLogs.enabled)
+          config.persistentLogsEnabled
         ) {
           this._subscribeEvents();
         }

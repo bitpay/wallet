@@ -65,9 +65,7 @@ export interface Config {
     enabled: boolean;
   };
 
-  persistentLogs: {
-    enabled: boolean;
-  };
+  persistentLogsEnabled: boolean;
 
   showIntegration: {
     coinbase: boolean;
@@ -179,9 +177,7 @@ const configDefault: Config = {
     enabled: true
   },
 
-  persistentLogs: {
-    enabled: true
-  },
+  persistentLogsEnabled: true,
 
   // External services
   showIntegration: {
@@ -295,8 +291,9 @@ export class ConfigProvider {
     if (!this.configCache.recentTransactions) {
       this.configCache.recentTransactions = configDefault.recentTransactions;
     }
-    if (!this.configCache.persistentLogs) {
-      this.configCache.persistentLogs = configDefault.persistentLogs;
+    if (!this.configCache.persistentLogsEnabled) {
+      this.configCache.persistentLogsEnabled =
+        configDefault.persistentLogsEnabled;
     }
     if (!this.configCache.pushNotificationsEnabled) {
       this.configCache.pushNotificationsEnabled =

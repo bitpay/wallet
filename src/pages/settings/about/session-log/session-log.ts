@@ -52,7 +52,7 @@ export class SessionLogPage {
   }
 
   ionViewWillEnter() {
-    this.persistentLogsEnabled = this.config.persistentLogs.enabled;
+    this.persistentLogsEnabled = this.config.persistentLogsEnabled;
     let selectedLevel = _.has(this.config, 'log.weight')
       ? this.logger.getWeight(this.config.log.weight)
       : this.logger.getDefaultWeight();
@@ -226,9 +226,7 @@ export class SessionLogPage {
 
   private setPersistentLogs(option: boolean): void {
     let opts = {
-      persistentLogs: {
-        enabled: option
-      }
+      persistentLogsEnabled: option
     };
     this.configProvider.set(opts);
     this.persistenceProvider.persistentLogsChange(option);
