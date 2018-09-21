@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { Events, NavController, NavParams } from 'ionic-angular';
+import { take } from 'rxjs/operators';
 import {
   ActionSheetProvider,
   InfoSheetType
@@ -24,15 +25,40 @@ export class CardDetailsPage {
     private externalLinkProvider: ExternalLinkProvider,
     private giftCardProvider: GiftCardProvider,
     private nav: NavController,
-    private navParams: NavParams
+    private navParams: NavParams,
+    private events: Events
   ) {}
 
   async ngOnInit() {
     this.card = this.navParams.get('card');
     this.cardConfig = await this.giftCardProvider.getCardConfig(this.card.name);
+    this.updateGiftCard();
+  }
+
+  ionViewWillEnter() {
+    this.events.subscribe('bwsEvent', (_, type: string) => {
+      if (type == 'NewBlock') {
+        this.updateGiftCard();
+      }
+    });
+  }
+
+  ionViewWillLeave() {
+    this.events.unsubscribe('bwsEvent');
+  }
+
+  updateGiftCard() {
     this.giftCardProvider
       .updatePendingGiftCards([this.card])
+      .pipe(take(1))
       .subscribe(card => (this.card = card));
+  }
+
+  doRefresh(refresher) {
+    this.updateGiftCard();
+    setTimeout(() => {
+      refresher.complete();
+    }, 2000);
   }
 
   copyClaimCode() {

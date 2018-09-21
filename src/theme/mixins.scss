@@ -5,7 +5,8 @@
 }
 
 @mixin fix-ios-bg-scroll($bottom-color: $background-color) {
-  .scroll-content {
+  .scroll-content,
+  .fixed-content {
     // This line prevents an ugly gap from appearing between the
     // navbar and page content when the user overscrolls on iOS
     background-image: linear-gradient(
