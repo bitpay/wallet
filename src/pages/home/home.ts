@@ -210,7 +210,7 @@ export class HomePage {
     if (this.isNW) this.checkUpdate();
     this.checkHomeTip();
     this.checkFeedbackInfo();
-    this.amazonProvider.getSupportedCurrency();
+    this.amazonProvider.getSupportedCurrency().catch(() => {});
 
     this.checkEmailLawCompliance();
 
