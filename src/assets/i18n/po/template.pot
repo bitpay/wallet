@@ -772,9 +772,6 @@ msgstr ""
 msgid "Error adding new entry"
 msgstr ""
 
-msgid "Error adding new log"
-msgstr ""
-
 msgid "Error creating wallet"
 msgstr ""
 
