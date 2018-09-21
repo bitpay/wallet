@@ -4,14 +4,14 @@ import { TranslateService } from '@ngx-translate/core';
 import { ToastController } from 'ionic-angular';
 
 // providers
+import { ElectronProvider } from '../../providers/electron/electron';
 import { Logger } from '../../providers/logger/logger';
-import { NodeWebkitProvider } from '../../providers/node-webkit/node-webkit';
 import { PlatformProvider } from '../../providers/platform/platform';
 
 @Injectable()
 export class ClipboardProvider {
   private isCordova: boolean;
-  private isNW: boolean;
+  private isElectron: boolean;
 
   constructor(
     public toastCtrl: ToastController,
@@ -19,11 +19,11 @@ export class ClipboardProvider {
     public logger: Logger,
     public translate: TranslateService,
     private clipboard: Clipboard,
-    private nodeWebkitProvider: NodeWebkitProvider
+    private electronProvider: ElectronProvider
   ) {
     this.logger.debug('ClipboardProvider initialized');
     this.isCordova = this.platform.isCordova;
-    this.isNW = this.platform.isNW;
+    this.isElectron = this.platform.isElectron;
   }
 
   public async getData(): Promise<any> {
@@ -33,8 +33,8 @@ export class ClipboardProvider {
   public copy(value: string) {
     if (this.isCordova) {
       this.clipboard.copy(value);
-    } else if (this.isNW) {
-      this.nodeWebkitProvider.writeToClipboard(value);
+    } else if (this.isElectron) {
+      this.electronProvider.writeToClipboard(value);
     } else {
       throw new Error('Copied to Clipboard using a Web Browser.');
     }
@@ -43,8 +43,8 @@ export class ClipboardProvider {
   private async paste(): Promise<any> {
     if (this.isCordova) {
       return this.clipboard.paste();
-    } else if (this.isNW) {
-      return this.nodeWebkitProvider.readFromClipboard();
+    } else if (this.isElectron) {
+      return this.electronProvider.readFromClipboard();
     } else {
       this.logger.warn('Paste from clipboard not supported');
       return;
@@ -54,8 +54,8 @@ export class ClipboardProvider {
   public clear(): void {
     if (this.isCordova) {
       this.clipboard.copy(null);
-    } else if (this.isNW) {
-      this.nodeWebkitProvider.clearClipboard();
+    } else if (this.isElectron) {
+      this.electronProvider.clearClipboard();
     }
   }
 }

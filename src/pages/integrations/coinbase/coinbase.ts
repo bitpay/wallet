@@ -33,7 +33,7 @@ export class CoinbasePage {
   public showOauthForm: boolean;
   public oauthCodeForm: FormGroup;
 
-  private isNW: boolean = false; // TODO: desktop
+  private isElectron: boolean = false; // TODO: desktop
   private isCordova: boolean;
 
   constructor(
@@ -54,7 +54,7 @@ export class CoinbasePage {
         Validators.compose([Validators.minLength(1), Validators.required])
       ]
     });
-    this.isNW = this.platformProvider.isNW;
+    this.isElectron = this.platformProvider.isElectron;
     this.isCordova = this.platformProvider.isCordova;
     this.showOauthForm = false;
   }
@@ -131,10 +131,11 @@ export class CoinbasePage {
 
   public openAuthenticateWindow(): void {
     let oauthUrl = this.getAuthenticateUrl();
-    if (!this.isNW) {
+    if (!this.isElectron) {
       this.externalLinkProvider.open(oauthUrl);
     } else {
-      let gui = (window as any).require('nw.gui');
+      // TODO ELECTRON
+      /* let gui = (window as any).require('nw.gui');
       gui.Window.open(
         oauthUrl,
         {
@@ -151,7 +152,7 @@ export class CoinbasePage {
             }
           });
         }
-      );
+      ); */
     }
   }
 
@@ -163,7 +164,7 @@ export class CoinbasePage {
         this.popupProvider.ionicAlert('Error connecting to Coinbase', err);
         return;
       }
-      if (!this.isNW) {
+      if (!this.isElectron) {
         let previousView = this.navCtrl.getPrevious();
         this.navCtrl.removeView(previousView);
       }
@@ -173,7 +174,7 @@ export class CoinbasePage {
   }
 
   public getAuthenticateUrl(): string {
-    this.showOauthForm = this.isCordova || this.isNW ? false : true;
+    this.showOauthForm = this.isCordova || this.isElectron ? false : true;
     return this.coinbaseProvider.getOauthCodeUrl();
   }
 

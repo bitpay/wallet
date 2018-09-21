@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Logger } from '../../providers/logger/logger';
 
 // providers
-import { NodeWebkitProvider } from '../node-webkit/node-webkit';
+import { ElectronProvider } from '../electron/electron';
 import { PlatformProvider } from '../platform/platform';
 import { PopupProvider } from '../popup/popup';
 
@@ -12,7 +12,7 @@ export class ExternalLinkProvider {
     private popupProvider: PopupProvider,
     private logger: Logger,
     private platformProvider: PlatformProvider,
-    private nodeWebkitProvider: NodeWebkitProvider
+    private electronProvider: ElectronProvider
   ) {
     this.logger.debug('ExternalLinkProvider initialized');
   }
@@ -55,8 +55,8 @@ export class ExternalLinkProvider {
     };
 
     if (res)
-      this.platformProvider.isNW
-        ? this.nodeWebkitProvider.openExternalLink(url)
+      this.platformProvider.isElectron
+        ? this.electronProvider.openExternalLink(url)
         : window.open(url, '_system');
 
     this.restoreHandleOpenURL(old);

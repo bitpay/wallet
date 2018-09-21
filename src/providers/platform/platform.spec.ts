@@ -43,7 +43,7 @@ describe('PlatformProvider', () => {
           writable: true
         }
       });
-      service.isNW = true;
+      service.isElectron = true;
       let OS = service.getOS();
       expect(OS.OSName).toEqual('MacOS');
     });
@@ -54,7 +54,7 @@ describe('PlatformProvider', () => {
           writable: true
         }
       });
-      service.isNW = true;
+      service.isElectron = true;
       let OS = service.getOS();
       expect(OS.OSName).toEqual('Windows');
     });
@@ -65,7 +65,7 @@ describe('PlatformProvider', () => {
           writable: true
         }
       });
-      service.isNW = true;
+      service.isElectron = true;
       let OS = service.getOS();
       expect(OS.OSName).toEqual('Linux');
     });

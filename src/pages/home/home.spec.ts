@@ -66,8 +66,8 @@ describe('HomePage', () => {
     });
 
     describe('ionViewDidLoad', () => {
-      it('should check for update if NW', () => {
-        instance.isNW = true;
+      it('should check for update if Electron', () => {
+        instance.isElectron = true;
         const spy = spyOn(instance, 'checkUpdate');
         instance.plt.resume = new Subject();
         instance.plt.pause = new Subject();

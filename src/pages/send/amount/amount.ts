@@ -9,9 +9,9 @@ import * as _ from 'lodash';
 
 // Providers
 import { Config, ConfigProvider } from '../../../providers/config/config';
+import { ElectronProvider } from '../../../providers/electron/electron';
 import { FilterProvider } from '../../../providers/filter/filter';
 import { Logger } from '../../../providers/logger/logger';
-import { NodeWebkitProvider } from '../../../providers/node-webkit/node-webkit';
 import { PlatformProvider } from '../../../providers/platform/platform';
 import { RateProvider } from '../../../providers/rate/rate';
 import { TxFormatProvider } from '../../../providers/tx-format/tx-format';
@@ -89,7 +89,7 @@ export class AmountPage extends WalletTabsChild {
     private logger: Logger,
     navCtrl: NavController,
     private navParams: NavParams,
-    private nodeWebkitProvider: NodeWebkitProvider,
+    private electronProvider: ElectronProvider,
     private platformProvider: PlatformProvider,
     profileProvider: ProfileProvider,
     private rateProvider: RateProvider,
@@ -306,9 +306,9 @@ export class AmountPage extends WalletTabsChild {
   }
 
   public processClipboard(): void {
-    if (!this.platformProvider.isNW) return;
+    if (!this.platformProvider.isElectron) return;
 
-    let value = this.nodeWebkitProvider.readFromClipboard();
+    let value = this.electronProvider.readFromClipboard();
 
     if (value && this.evaluate(value) > 0) this.paste(this.evaluate(value));
   }

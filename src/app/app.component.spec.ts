@@ -68,7 +68,7 @@ describe('CopayApp', () => {
         expect(profileProvider.createProfile).toHaveBeenCalled();
       });
     });
-    describe('handleDeepLinksNW', () => {
+    /* TODO describe('handleDeepLinksNW', () => {
       beforeEach(() => {
         (window as any).require = () => {
           return {
@@ -96,6 +96,6 @@ describe('CopayApp', () => {
         expect(spy).toHaveBeenCalledTimes(1);
         jasmine.clock().uninstall();
       });
-    });
+    }); */
   });
 });

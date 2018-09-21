@@ -104,7 +104,6 @@ export class CoinbaseProvider {
       'wallet:transactions:send:bypass-2fa,' +
       'wallet:payment-methods:read';
 
-    // NW has a bug with Window Object
     this.credentials.REDIRECT_URI = this.isCordova
       ? coinbase.redirect_uri.mobile
       : coinbase.redirect_uri.desktop;

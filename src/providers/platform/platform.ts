@@ -10,7 +10,7 @@ export class PlatformProvider {
   public isIOS: boolean;
   public isSafari: boolean;
   public isCordova: boolean;
-  public isNW: boolean;
+  public isElectron: boolean;
   public ua: string;
   public isMobile: boolean;
   public isDevel: boolean;
@@ -34,9 +34,9 @@ export class PlatformProvider {
     this.isIOS = this.platform.is('ios');
     this.ua = ua;
     this.isCordova = this.platform.is('cordova');
-    this.isNW = this.isNodeWebkit();
+    this.isElectron = this.isElectronPlatform();
     this.isMobile = this.platform.is('mobile');
-    this.isDevel = !this.isMobile && !this.isNW;
+    this.isDevel = !this.isMobile && !this.isElectron;
 
     this.logger.debug('PlatformProvider initialized');
   }
@@ -59,17 +59,13 @@ export class PlatformProvider {
     return 'unknown';
   }
 
-  public isNodeWebkit(): boolean {
-    let isNode =
-      typeof process !== 'undefined' && typeof require !== 'undefined';
-    if (isNode) {
-      try {
-        return typeof (window as any).require('nw.gui') !== 'undefined';
-      } catch (e) {
-        return false;
-      }
+  public isElectronPlatform(): boolean {
+    var userAgent = navigator.userAgent.toLowerCase();
+    if (userAgent.indexOf('electron/') > -1) {
+      return true;
+    } else {
+      return false;
     }
-    return false;
   }
 
   public getOS() {
@@ -78,7 +74,7 @@ export class PlatformProvider {
       extension: ''
     };
 
-    if (this.isNW) {
+    if (this.isElectron) {
       if (navigator.appVersion.indexOf('Win') != -1) {
         OS.OSName = 'Windows';
         OS.extension = '.exe';
@@ -99,7 +95,7 @@ export class PlatformProvider {
   public getDeviceInfo(): string {
     let info: string;
 
-    if (this.isNW) {
+    if (this.isElectron) {
       info = ' (' + navigator.appVersion + ')';
     } else {
       info =

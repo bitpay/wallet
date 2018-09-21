@@ -131,9 +131,12 @@ export class CopayApp {
 
   initializeApp() {
     this.config.set('backButtonIcon', 'tab-button-back');
+    console.log('#########################INITIALIZED');
+
     this.platform
       .ready()
       .then(readySource => {
+        console.log('#########################PLARGOMRREADY');
         this.onPlatformReady(readySource);
       })
       .catch(e => {
@@ -142,9 +145,13 @@ export class CopayApp {
   }
 
   private onPlatformReady(readySource): void {
+    console.log('#########################LOADINGAPP');
+
     this.appProvider
       .load()
       .then(() => {
+        console.log('#########################ONLOAD');
+
         this.onAppLoad(readySource);
       })
       .catch(err => {
@@ -216,6 +223,7 @@ export class CopayApp {
     this.events.subscribe('OpenWallet', wallet => this.openWallet(wallet));
     this.persistenceProvider.removeLogs();
     // Check Profile
+    console.log('#######################···CHEKING PROFILE');
     this.profile
       .loadAndBindProfile()
       .then(profile => {
@@ -243,8 +251,8 @@ export class CopayApp {
         this.handleDeepLinks();
       }
 
-      if (this.isNodeWebkit()) {
-        this.handleDeepLinksNW();
+      if (this.isElectronPlatform()) {
+        // this.handleDeepLinksNW();
       }
     } else {
       this.logger.info('No profile exists.');
@@ -414,7 +422,7 @@ export class CopayApp {
     }
   }
 
-  private handleDeepLinksNW() {
+  /*  private handleDeepLinksNW() {
     var gui = (window as any).require('nw.gui');
 
     // This event is sent to an existent instance of Copay (only for standalone apps)
@@ -426,9 +434,9 @@ export class CopayApp {
       (window as any)._urlHandled = true;
       this.handleOpenUrl(argv[0]);
     }
-  }
+  } */
 
-  private onOpenNW(pathData) {
+  /*  private onOpenNW(pathData) {
     if (pathData.indexOf('bitcoincash:/') != -1) {
       this.logger.debug('Bitcoin Cash URL found');
       this.handleOpenUrl(pathData.substring(pathData.indexOf('bitcoincash:/')));
@@ -444,19 +452,15 @@ export class CopayApp {
       this.logger.debug('URL found');
       this.handleOpenUrl(pathData);
     }
-  }
+  } */
 
-  private isNodeWebkit(): boolean {
-    let isNode =
-      typeof process !== 'undefined' && typeof require !== 'undefined';
-    if (isNode) {
-      try {
-        return typeof (window as any).require('nw.gui') !== 'undefined';
-      } catch (e) {
-        return false;
-      }
+  private isElectronPlatform(): boolean {
+    var userAgent = navigator.userAgent.toLowerCase();
+    if (userAgent.indexOf(' electron/') > -1) {
+      return true;
+    } else {
+      return false;
     }
-    return false;
   }
 
   private getSelectedTabNav() {

@@ -11,7 +11,7 @@
     "multisignature",
     "bitcore"
   ],
-  "main": "www/index.html",
+  "main": "electron/main.js",
   "title": "Copay",
   "user-agent": "%name %ver (%osinfo)",
   "chromium-args": "--disable-password-generation --disable-devtools",
@@ -48,6 +48,7 @@
     "url": "https://github.com/bitpay/copay/issues"
   },
   "scripts": {
+    "electron": "electron .",
     "postinstall": "sed -i  -e \"s/.*require(...\\/...);//g\" node_modules/asn1.js-rfc5280/index.js && run-s e2e:update env:dev prompt",
     "prompt": "\n\n\n\n\n\n#\n#  Choose a distribution with:\n#\n#     $ npm run apply:copay\n#              or\n#     $ npm run apply:bitpay\n#\n",
     "start": "run-p ionic:serve e2e:serve",
@@ -213,6 +214,7 @@
     "codecov": "3.0.0",
     "connect": "3.6.5",
     "cz-conventional-changelog": "2.1.0",
+    "electron": "^3.0.0",
     "fs-extra": "5.0.0",
     "html-loader": "0.5.4",
     "ionic": "3.20.0",

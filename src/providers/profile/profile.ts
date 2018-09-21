@@ -170,7 +170,10 @@ export class ProfileProvider {
 
     wallet.on('notification', n => {
       // TODO: Only development purpose
-      if (!this.platformProvider.isNW && !this.platformProvider.isCordova) {
+      if (
+        !this.platformProvider.isElectron &&
+        !this.platformProvider.isCordova
+      ) {
         this.logger.debug('BWC Notification:', JSON.stringify(n));
       }
 

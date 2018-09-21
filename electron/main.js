@@ -37,6 +37,9 @@ function createWindow() {
   });
 }
 
+app.setAsDefaultProtocolClient('copay');
+app.setAsDefaultProtocolClient('bitpay');
+app.setAsDefaultProtocolClient('bitcoin');
 app.setVersion(appConfig.version);
 app.setName(appConfig.nameCase);
 
@@ -64,6 +67,19 @@ app.on('activate', () => {
   // dock icon is clicked and there are no other windows open.
   if (win === null) {
     createWindow();
+  }
+});
+
+app.on('open-url', function(e, url) {
+  e.preventDefault();
+
+  if (win) {
+    win.webContents.send('open-url-event', url);
+    if (win.isMinimized()) {
+      win.restore();
+    } else {
+      win.focus();
+    }
   }
 });
 
