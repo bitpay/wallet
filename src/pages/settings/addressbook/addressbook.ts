@@ -51,18 +51,6 @@ export class AddressbookPage {
       })
       .catch(err => {
         this.logger.error(err);
-        let alertError = this.alertCtrl.create({
-          title: err,
-          buttons: [
-            {
-              text: 'Go back',
-              handler: () => {
-                this.navCtrl.pop();
-              }
-            }
-          ]
-        });
-        alertError.present();
       });
   }
 

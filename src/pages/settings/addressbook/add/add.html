@@ -25,14 +25,13 @@
       <ion-input formControlName="address" type="text" [value]="addressBookAdd.value.address" address-validator></ion-input>
 
       <ion-icon *ngIf="addressBookAdd.controls.address.status == 'VALID'" name="ios-checkmark-circle" class="check success" item-right></ion-icon>
-      <ion-icon *ngIf="addressBookAdd.value.address && addressBookAdd.controls.address.status == 'INVALID'" class="check fail"
-        name="ios-close-circle" item-right></ion-icon>
+      <ion-icon *ngIf="addressBookAdd.value.address && addressBookAdd.controls.address.status == 'INVALID'" class="check fail" name="ios-close-circle" item-right></ion-icon>
 
       <ion-icon class="scanner-icon" name="qr-scanner" item-right (click)="openScanner()"></ion-icon>
     </ion-item>
   </form>
 
-  <button ion-button class="button-standard" (click)="save()" [disabled]="addressBookAdd.invalid || submitAttempt">
+  <button ion-button class="button-standard" (click)="save()" [disabled]="addressBookAdd.invalid">
     {{'Save' | translate}}
   </button>
 

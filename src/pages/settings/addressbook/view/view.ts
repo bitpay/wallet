@@ -8,7 +8,6 @@ import { AmountPage } from '../../../../pages/send/amount/amount';
 // Providers
 import { AddressBookProvider } from '../../../../providers/address-book/address-book';
 import { AddressProvider } from '../../../../providers/address/address';
-import { BwcProvider } from '../../../../providers/bwc/bwc';
 import { PopupProvider } from '../../../../providers/popup/popup';
 
 @Component({
@@ -21,28 +20,17 @@ export class AddressbookViewPage {
   public name: string;
   public email: string;
 
-  private bitcoreCash;
-  private coin: string;
-
   constructor(
     private addressBookProvider: AddressBookProvider,
     private addressProvider: AddressProvider,
-    private bwcProvider: BwcProvider,
     private navCtrl: NavController,
     private navParams: NavParams,
     private popupProvider: PopupProvider,
     private translate: TranslateService
   ) {
-    this.bitcoreCash = this.bwcProvider.getBitcoreCash();
     this.address = this.navParams.data.contact.address;
     this.name = this.navParams.data.contact.name;
     this.email = this.navParams.data.contact.email;
-
-    const cashAddress = this.bitcoreCash.Address.isValid(
-      this.address,
-      'livenet'
-    );
-    this.coin = cashAddress ? 'bch' : 'btc';
   }
 
   ionViewDidLoad() {}
@@ -52,9 +40,9 @@ export class AddressbookViewPage {
       toAddress: this.address,
       name: this.name,
       email: this.email,
-      coin: this.coin,
+      coin: this.addressProvider.getCoin(this.address),
       recipientType: 'contact',
-      network: this.addressProvider.validateAddress(this.address).network
+      network: this.addressProvider.getNetwork(this.address)
     });
   }
 

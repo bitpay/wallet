@@ -6,17 +6,13 @@ import {
   ValidationErrors,
   Validators
 } from '@angular/forms';
-import {
-  AlertController,
-  Events,
-  NavController,
-  NavParams
-} from 'ionic-angular';
+import { Events, NavController, NavParams } from 'ionic-angular';
 
 // providers
 import { AddressBookProvider } from '../../../../providers/address-book/address-book';
 import { AddressProvider } from '../../../../providers/address/address';
 import { Logger } from '../../../../providers/logger/logger';
+import { PopupProvider } from '../../../../providers/popup/popup';
 
 // validators
 import { AddressValidator } from '../../../../validators/address';
@@ -29,18 +25,17 @@ import { ScanPage } from '../../../scan/scan';
 export class AddressbookAddPage {
   private addressBookAdd: FormGroup;
 
-  public submitAttempt: boolean = false;
   public isCordova: boolean;
 
   constructor(
     private navCtrl: NavController,
     private navParams: NavParams,
     private events: Events,
-    private alertCtrl: AlertController,
     private ab: AddressBookProvider,
     private addressProvider: AddressProvider,
     private formBuilder: FormBuilder,
-    private logger: Logger
+    private logger: Logger,
+    private popupProvider: PopupProvider
   ) {
     this.addressBookAdd = this.formBuilder.group({
       name: [
@@ -62,8 +57,9 @@ export class AddressbookAddPage {
       );
     }
     this.events.subscribe('update:address', data => {
-      let address = data.value.replace(/^bitcoin(cash)?:/, '');
-      this.addressBookAdd.controls['address'].setValue(address);
+      this.addressBookAdd.controls['address'].setValue(
+        this.parseAddress(data.value)
+      );
     });
   }
 
@@ -80,46 +76,21 @@ export class AddressbookAddPage {
   }
 
   public save(): void {
-    this.submitAttempt = true;
+    this.addressBookAdd.controls['address'].setValue(
+      this.parseAddress(this.addressBookAdd.value.address)
+    );
+    this.ab
+      .add(this.addressBookAdd.value)
+      .then(() => {
+        this.navCtrl.pop();
+      })
+      .catch(err => {
+        this.popupProvider.ionicAlert('Error', err);
+      });
+  }
 
-    if (this.addressBookAdd.valid) {
-      this.ab
-        .add(this.addressBookAdd.value)
-        .then(() => {
-          this.navCtrl.pop();
-          this.submitAttempt = false;
-        })
-        .catch(err => {
-          let opts = {
-            title: err,
-            buttons: [
-              {
-                text: 'OK',
-                handler: () => {
-                  this.navCtrl.pop();
-                }
-              }
-            ]
-          };
-          this.alertCtrl.create(opts).present();
-          this.submitAttempt = false;
-        });
-    } else {
-      let opts = {
-        title: 'Error',
-        message: 'Could not save the contact',
-        buttons: [
-          {
-            text: 'OK',
-            handler: () => {
-              this.navCtrl.pop();
-            }
-          }
-        ]
-      };
-      this.alertCtrl.create(opts).present();
-      this.submitAttempt = false;
-    }
+  private parseAddress(address: string): string {
+    return address.replace(/^(bitcoincash:|bchtest:|bitcoin:)/i, '');
   }
 
   public openScanner(): void {
