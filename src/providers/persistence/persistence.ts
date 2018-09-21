@@ -77,6 +77,9 @@ export class PersistenceProvider {
     this.persistentLogs = {};
     this.logsBuffer = [];
     this.logsLoaded = false;
+  }
+
+  private _subscribeEvents(): void {
     this.events.subscribe('newLog', newLog => {
       setTimeout(() => {
         this.saveNewLog(newLog);
@@ -88,6 +91,20 @@ export class PersistenceProvider {
     this.storage = this.platform.isCordova
       ? new FileStorage(this.file, this.logger)
       : new LocalStorage(this.platform, this.logger);
+
+    this.getConfig()
+      .then(config => {
+        if (
+          _.isEmpty(config) ||
+          _.isUndefined(config.persistentLogs) ||
+          (config.persistentLogs && config.persistentLogs.enabled)
+        ) {
+          this._subscribeEvents();
+        }
+      })
+      .catch(err => {
+        this.logger.error('Error Loading Config from persistence', err);
+      });
   }
 
   public getPersistentLogs(): void {
@@ -139,6 +156,18 @@ export class PersistenceProvider {
         Object.keys(logs).length
     );
     return logs;
+  }
+
+  public persistentLogsChange(enabled: boolean): void {
+    this.persistentLogs = {};
+    if (enabled) {
+      this._subscribeEvents();
+    } else {
+      this.events.unsubscribe('newLog');
+      this.setLogs(this.persistentLogs).catch(() => {
+        this.logger.warn('Error deleting persistent logs');
+      });
+    }
   }
 
   private saveNewLog(newLog): void {

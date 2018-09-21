@@ -65,6 +65,10 @@ export interface Config {
     enabled: boolean;
   };
 
+  persistentLogs: {
+    enabled: boolean;
+  };
+
   showIntegration: {
     coinbase: boolean;
     glidera: boolean;
@@ -171,11 +175,15 @@ const configDefault: Config = {
     bannedUntil: null
   },
 
-  // External services
   recentTransactions: {
     enabled: true
   },
 
+  persistentLogs: {
+    enabled: true
+  },
+
+  // External services
   showIntegration: {
     coinbase: true,
     glidera: true,
@@ -281,13 +289,14 @@ export class ConfigProvider {
       this.configCache.wallet.settings.unitCode =
         configDefault.wallet.settings.unitCode;
     }
-
     if (!this.configCache.showIntegration) {
       this.configCache.showIntegration = configDefault.showIntegration;
     }
-
     if (!this.configCache.recentTransactions) {
       this.configCache.recentTransactions = configDefault.recentTransactions;
+    }
+    if (!this.configCache.persistentLogs) {
+      this.configCache.persistentLogs = configDefault.persistentLogs;
     }
     if (!this.configCache.pushNotificationsEnabled) {
       this.configCache.pushNotificationsEnabled =
