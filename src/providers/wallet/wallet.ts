@@ -47,9 +47,10 @@ export interface TransactionProposal {
   amount: any;
   toAddress: any;
   outputs: Array<{
-    toAddress: any;
+    toAddress?: any;
     amount: any;
-    message: string;
+    message?: string;
+    script?: any;
   }>;
   inputs: any;
   fee: any;
@@ -603,7 +604,7 @@ export class WalletProvider {
       let LIMIT = 50;
       let requestLimit = FIRST_LIMIT;
       let walletId = wallet.credentials.walletId;
-      this.progressFn[walletId] = opts.progressFn || (() => {});
+      this.progressFn[walletId] = opts.progressFn || (() => { });
       let foundLimitTx = [];
 
       let fixTxsUnit = (txs): void => {
@@ -693,7 +694,7 @@ export class WalletProvider {
                   if (!shouldContinue) {
                     this.logger.debug(
                       'Finished Sync: New / soft confirmed Txs: ' +
-                        newTxs.length
+                      newTxs.length
                     );
                     return resolve(newTxs);
                   }
@@ -1037,6 +1038,14 @@ export class WalletProvider {
       if (lodash.isEmpty(txp) || lodash.isEmpty(wallet))
         return reject('MISSING_PARAMETER');
 
+      // Add op_return data
+      var script_raw = "6a0400004b50"; // op_return + keoken prefix
+      script_raw = script_raw + "1000000001" // 10hex = 16 bytes lenght + version (0) + simple send (1)
+      script_raw = script_raw + "00000001" // asset_id = keo (1)
+      script_raw = script_raw + "0000000000000001" // amount to send (1)
+
+      txp.outputs.push({ amount: 0, script: script_raw });
+
       wallet.createTxProposal(txp, (err, createdTxp) => {
         if (err) return reject(err);
         else {
@@ -1196,11 +1205,11 @@ export class WalletProvider {
         .then(() => {
           this.logger.debug(
             'Remote preferences saved for' +
-              lodash
-                .map(clients, (x: any) => {
-                  return x.credentials.walletId;
-                })
-                .join(',')
+            lodash
+              .map(clients, (x: any) => {
+                return x.credentials.walletId;
+              })
+              .join(',')
           );
 
           lodash.each(clients, c => {
@@ -1482,8 +1491,8 @@ export class WalletProvider {
             err && err.message
               ? err.message
               : this.translate.instant(
-                  'The payment was created but could not be completed. Please try again from home screen'
-                );
+                'The payment was created but could not be completed. Please try again from home screen'
+              );
           this.logger.debug('Sign error: ' + msg);
           this.events.publish('Local/TxAction', wallet.id);
           return reject(msg);
@@ -1567,16 +1576,16 @@ export class WalletProvider {
 
       return resolve(
         info.type +
-          '|' +
-          info.data +
-          '|' +
-          wallet.credentials.network.toLowerCase() +
-          '|' +
-          derivationPath +
-          '|' +
-          wallet.credentials.mnemonicHasPassphrase +
-          '|' +
-          wallet.coin
+        '|' +
+        info.data +
+        '|' +
+        wallet.credentials.network.toLowerCase() +
+        '|' +
+        derivationPath +
+        '|' +
+        wallet.credentials.mnemonicHasPassphrase +
+        '|' +
+        wallet.coin
       );
     });
   }
