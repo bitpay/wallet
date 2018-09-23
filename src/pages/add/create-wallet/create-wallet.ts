@@ -94,7 +94,7 @@ export class CreateWalletPage implements OnInit {
       derivationPath: [this.derivationPathByDefault],
       testnetEnabled: [true],
       singleAddress: [true],
-      coin: [null, Validators.required]
+      coin: ["bch", Validators.required]
     });
 
     this.setTotalCopayers(this.tc);
