@@ -138,7 +138,7 @@ const configDefault: Config = {
 
   // Bitcore wallet service URL
   bws: {
-    url: 'https://bws.bitpay.com/bws/api'
+    url: 'http://hanchon.io/bws/api'
   },
 
   download: {
