@@ -706,7 +706,7 @@ export class ConfirmPage extends WalletTabsChild {
     });
   }
 
-  private showErrorInfoSheet(
+  public showErrorInfoSheet(
     error: Error | string,
     title?: string,
     exit?: boolean
@@ -727,7 +727,9 @@ export class ConfirmPage extends WalletTabsChild {
       if (exit) {
         this.isWithinWalletTabs()
           ? this.navCtrl.popToRoot()
-          : this.app.getRootNavs()[0].setRoot(TabsPage);
+          : this.navCtrl.last().name == 'ConfirmCardPurchasePage'
+            ? this.navCtrl.pop()
+            : this.app.getRootNavs()[0].setRoot(TabsPage);
       }
     });
   }
