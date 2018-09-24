@@ -128,7 +128,7 @@ export class PersistenceProvider {
       .then(config => {
         if (
           _.isEmpty(config) ||
-          _.isUndefined(config.persistentLogs) ||
+          _.isUndefined(config.persistentLogsEnabled) ||
           config.persistentLogsEnabled
         ) {
           this.persistentLogsEnabled = true;

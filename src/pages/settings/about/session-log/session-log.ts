@@ -176,20 +176,22 @@ export class SessionLogPage {
       }
     });
 
-    if (this.isCordova) {
-      button.push({
-        text: emailText,
-        handler: () => {
-          this.showWarningModal();
-        }
-      });
-    } else {
-      button.push({
-        text: downloadText,
-        handler: () => {
-          this.showWarningModal();
-        }
-      });
+    if (this.persistentLogsEnabled) {
+      if (this.isCordova) {
+        button.push({
+          text: emailText,
+          handler: () => {
+            this.showWarningModal();
+          }
+        });
+      } else {
+        button.push({
+          text: downloadText,
+          handler: () => {
+            this.showWarningModal();
+          }
+        });
+      }
     }
 
     let actionSheet = this.actionSheetCtrl.create({
