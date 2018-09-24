@@ -24,7 +24,7 @@ export class OnboardingPage {
   }
 
   ionViewDidLoad() {
-    this.logger.info('ionViewDidLoad OnboardingPage');
+    this.logger.info('Loaded:  OnboardingPage');
   }
 
   public getStarted(): void {

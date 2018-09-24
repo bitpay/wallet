@@ -47,7 +47,7 @@ export class WalletInformationPage {
   ) {}
 
   ionViewDidLoad() {
-    this.logger.info('ionViewDidLoad WalletInformationPage');
+    this.logger.info('Loaded:  WalletInformationPage');
   }
 
   ionViewWillEnter() {

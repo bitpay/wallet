@@ -82,7 +82,7 @@ export class CustomAmountPage {
   }
 
   ionViewDidLoad() {
-    this.logger.info('ionViewDidLoad CustomAmountPage');
+    this.logger.info('Loaded:  CustomAmountPage');
   }
 
   private updateQrAddress(): void {

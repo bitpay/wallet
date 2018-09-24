@@ -85,7 +85,7 @@ describe('SessionLogPage', () => {
         spyOn(instance.logger, 'info');
         instance.ionViewDidLoad();
         expect(instance.logger.info).toHaveBeenCalledWith(
-          'ionViewDidLoad SessionLogPage'
+          'Loaded: SessionLogPage'
         );
       });
     });

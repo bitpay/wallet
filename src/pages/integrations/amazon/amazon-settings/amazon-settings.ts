@@ -41,7 +41,7 @@ export class AmazonSettingsPage {
   }
 
   ionViewDidLoad() {
-    this.logger.info('ionViewDidLoad AmazonSettingsPage');
+    this.logger.info('Loaded:  AmazonSettingsPage');
     this.initialize();
   }
 

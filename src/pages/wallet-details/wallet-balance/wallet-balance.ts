@@ -16,6 +16,6 @@ export class WalletBalancePage {
   }
 
   ionViewDidLoad() {
-    this.logger.info('ionViewDidLoad WalletBalancePage');
+    this.logger.info('Loaded:  WalletBalancePage');
   }
 }

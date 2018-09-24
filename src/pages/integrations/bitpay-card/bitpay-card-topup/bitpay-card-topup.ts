@@ -90,7 +90,7 @@ export class BitPayCardTopUpPage {
   }
 
   ionViewDidLoad() {
-    this.logger.info('ionViewDidLoad BitPayCardTopUpPage');
+    this.logger.info('Loaded:  BitPayCardTopUpPage');
   }
 
   ionViewWillLeave() {

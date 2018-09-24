@@ -99,7 +99,7 @@ export class AltCurrencyPage {
   }
 
   ionViewDidLoad() {
-    this.logger.info('ionViewDidLoad AltCurrencyPage');
+    this.logger.info('Loaded:  AltCurrencyPage');
   }
 
   public save(newAltCurrency): void {

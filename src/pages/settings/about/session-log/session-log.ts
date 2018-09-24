@@ -47,7 +47,7 @@ export class SessionLogPage {
   }
 
   ionViewDidLoad() {
-    this.logger.info('ionViewDidLoad SessionLogPage');
+    this.logger.info('Loaded: SessionLogPage');
   }
 
   ionViewWillEnter() {

@@ -51,7 +51,7 @@ export class CollectEmailPage {
   }
 
   ionViewDidLoad() {
-    this.logger.info('ionViewDidLoad CollectEmailPage');
+    this.logger.info('Loaded:  CollectEmailPage');
   }
 
   public skip(): void {

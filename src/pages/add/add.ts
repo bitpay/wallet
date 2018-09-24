@@ -15,7 +15,7 @@ export class AddPage {
   constructor(private navCtrl: NavController, private logger: Logger) {}
 
   ionViewDidLoad() {
-    this.logger.info('ionViewDidLoad AddPage');
+    this.logger.info('Loaded:  AddPage');
   }
 
   public goToCreateWallet(isShared: boolean): void {

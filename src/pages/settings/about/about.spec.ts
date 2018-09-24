@@ -23,9 +23,7 @@ describe('AboutPage', () => {
       it('should log info', () => {
         spyOn(instance.logger, 'info');
         instance.ionViewDidLoad();
-        expect(instance.logger.info).toHaveBeenCalledWith(
-          'ionViewDidLoad AboutPage'
-        );
+        expect(instance.logger.info).toHaveBeenCalledWith('Loaded: AboutPage');
       });
       it('should set correct commit hash and version', () => {
         instance.appProvider.info.commitHash = 'testHash';

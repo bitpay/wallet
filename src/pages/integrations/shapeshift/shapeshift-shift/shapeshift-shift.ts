@@ -91,7 +91,7 @@ export class ShapeshiftShiftPage {
   }
 
   ionViewDidLoad() {
-    this.logger.info('ionViewDidLoad ShapeshiftShiftPage');
+    this.logger.info('Loaded:  ShapeshiftShiftPage');
   }
 
   ionViewDidEnter() {

@@ -21,7 +21,7 @@ export class BackupRequestPage {
     public navCtrl: NavController,
     public navParams: NavParams,
     public alertCtrl: AlertController,
-    private log: Logger,
+    private logger: Logger,
     private translate: TranslateService,
     private popupProvider: PopupProvider
   ) {
@@ -29,7 +29,7 @@ export class BackupRequestPage {
   }
 
   ionViewDidLoad() {
-    this.log.info('ionViewDidLoad BackupRequestPage');
+    this.logger.info('Loaded: BackupRequestPage');
   }
 
   public initBackupFlow(): void {
