@@ -61,6 +61,7 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
   public onlyIntegers: boolean;
 
   public cardConfig: CardConifg;
+  public hideSlideButton: boolean;
 
   constructor(
     actionSheetProvider: ActionSheetProvider,
@@ -113,7 +114,7 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
       walletProvider,
       walletTabsProvider
     );
-
+    this.hideSlideButton = false;
     this.configWallet = this.configProvider.get().wallet;
   }
 
@@ -175,10 +176,14 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
       const err = this.translate.instant('No signing proposal: No private key');
       return Promise.reject(err);
     }
+    if (this.walletProvider.isEncrypted(wallet)) {
+      this.hideSlideButton = true;
+    }
     await this.walletProvider.publishAndSign(wallet, txp).catch(err => {
       this.onGoingProcessProvider.clear();
       throw err;
     });
+    this.hideSlideButton = false;
     return this.onGoingProcessProvider.clear();
   }
 
@@ -375,6 +380,7 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
     this.amountUnitStr = parsedAmount.amountUnitStr;
 
     const email = await this.promptEmail();
+    this.hideSlideButton = false;
     const dataSrc = {
       amount: parsedAmount.amount,
       currency: parsedAmount.currency,
@@ -559,5 +565,6 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
       { animate: false }
     );
     await this.navCtrl.push(CardDetailsPage, { card }, { animate: false });
+    this.hideSlideButton = true;
   }
 }

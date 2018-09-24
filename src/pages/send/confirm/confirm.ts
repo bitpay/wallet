@@ -60,7 +60,7 @@ export class ConfirmPage extends WalletTabsChild {
   public successText: string;
   public paymentExpired: boolean;
   public remainingTimeStr: string;
-  public memoFocused: boolean;
+  public hideSlideButton: boolean;
   public amount;
 
   // Config Related values
@@ -110,7 +110,7 @@ export class ConfirmPage extends WalletTabsChild {
       ? this.config.wallet.settings.feeLevel
       : 'normal';
     this.isCordova = this.platformProvider.isCordova;
-    this.memoFocused = false;
+    this.hideSlideButton = false;
   }
 
   ngOnInit() {
@@ -724,6 +724,7 @@ export class ConfirmPage extends WalletTabsChild {
     );
     errorInfoSheet.present();
     errorInfoSheet.onDidDismiss(() => {
+      this.hideSlideButton = false;
       if (exit) {
         this.isWithinWalletTabs()
           ? this.navCtrl.popToRoot()
@@ -785,7 +786,10 @@ export class ConfirmPage extends WalletTabsChild {
 
   private confirmTx(_, txp, wallet) {
     return new Promise(resolve => {
-      if (this.walletProvider.isEncrypted(wallet)) return resolve();
+      if (this.walletProvider.isEncrypted(wallet)) {
+        this.hideSlideButton = true;
+        return resolve();
+      }
       this.txFormatProvider.formatToUSD(wallet.coin, txp.amount).then(val => {
         let amountUsd = parseFloat(val);
         if (amountUsd <= this.CONFIRM_LIMIT_USD) return resolve();
@@ -867,6 +871,7 @@ export class ConfirmPage extends WalletTabsChild {
       enableBackdropDismiss: false
     });
     await modal.present();
+    this.hideSlideButton = false;
 
     this.isWithinWalletTabs()
       ? this.close()
