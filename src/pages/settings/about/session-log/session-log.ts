@@ -163,7 +163,7 @@ export class SessionLogPage {
   }
 
   public showOptionsMenu(): void {
-    let usePersistantLogsText = this.persistentLogsEnabled
+    let usePersistentLogsText = this.persistentLogsEnabled
       ? this.translate.instant('Disable persistent logs')
       : this.translate.instant('Enable persistent logs');
     let downloadText = this.translate.instant('Download logs');
@@ -171,7 +171,7 @@ export class SessionLogPage {
     let button = [];
 
     button.push({
-      text: usePersistantLogsText,
+      text: usePersistentLogsText,
       handler: () => {
         this.persistentLogsEnabled
           ? this.presentPersistentLogsInfo()
