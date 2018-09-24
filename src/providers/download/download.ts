@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 import { Logger } from '../../providers/logger/logger';
 
 @Injectable()
@@ -8,7 +9,8 @@ export class DownloadProvider {
   }
 
   public download(ew, fileName: string): Promise<any> {
-    return new Promise(resolve => {
+    return new Promise(async resolve => {
+      await Observable.timer(1000).toPromise();
       let a = document.createElement('a');
       let blob = this.newBlob(ew, 'text/plain;charset=utf-8');
       let url = window.URL.createObjectURL(blob);
