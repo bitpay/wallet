@@ -641,6 +641,11 @@ export class WalletProvider {
       updateOnProgress[walletId] = [cb];
        */
 
+      this.logger.debug(
+        'Trying to download Tx history for: ' +
+          walletId +
+          '. If it fails retry in 5 secs'
+      );
       this.getSavedTxs(walletId)
         .then(txsFromLocal => {
           fixTxsUnit(txsFromLocal);
@@ -671,7 +676,12 @@ export class WalletProvider {
                   );
                   skip = skip + requestLimit;
                   this.logger.debug(
-                    'Syncing TXs. Got:' + newTxs.length + ' Skip:' + skip,
+                    'Syncing TXs for:' +
+                      walletId +
+                      '. Got:' +
+                      newTxs.length +
+                      ' Skip:' +
+                      skip,
                     ' EndingTxid:',
                     endingTxid,
                     ' Continue:',
@@ -708,7 +718,6 @@ export class WalletProvider {
                     err instanceof this.errors.CONNECTION_ERROR ||
                     (err.message && err.message.match(/5../))
                   ) {
-                    this.logger.info('Retrying history download in 5 secs...');
                     return setTimeout(() => {
                       return getNewTxs(newTxs, skip)
                         .then(txs => {
@@ -1014,7 +1023,7 @@ export class WalletProvider {
       if (isHistoryCached() && !opts.force)
         return resolve(wallet.completeHistory);
 
-      this.logger.debug('Updating Transaction History');
+      this.logger.info('Updating Transaction History');
       this.updateLocalTxHistory(wallet, opts)
         .then(txs => {
           if (opts.limitTx) {
