@@ -240,6 +240,7 @@ export class ConfigProvider {
           } else {
             this.configCache = _.clone(configDefault);
           }
+          this.logImportantConfig(this.configCache);
           resolve();
         })
         .catch(err => {
@@ -247,6 +248,24 @@ export class ConfigProvider {
           reject(err);
         });
     });
+  }
+
+  private logImportantConfig(config: Config): void {
+    let spendUnconfirmed = config.wallet.spendUnconfirmed;
+    let useLegacyAddress = config.wallet.useLegacyAddress;
+    let persistentLogsEnabled = config.persistentLogsEnabled;
+    let lockMethod = config.lock.method;
+
+    this.logger.debug(
+      'Config | spendUnconfirmed: ' +
+        spendUnconfirmed +
+        ' - useLegacyAddress: ' +
+        useLegacyAddress +
+        ' - persistentLogsEnabled: ' +
+        persistentLogsEnabled +
+        ' - lockMethod: ' +
+        lockMethod
+    );
   }
 
   /**
