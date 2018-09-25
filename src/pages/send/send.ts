@@ -237,9 +237,15 @@ export class SendPage extends WalletTabsChild {
           this.incomingDataProvider
             .getPayProDetails(this.search)
             .then(payProDetails => {
-              this.checkIfValidAddress(payProDetails.toAddress);
+              // Translate Legacy BitPay BCH Format to CashAddr Format if necessary
+              let address: string = this.walletProvider.getAddressView(
+                this.wallet,
+                payProDetails.toAddress
+              );
+              this.checkIfValidAddress(address);
             })
             .catch(err => {
+              this.invalidAddress = true;
               this.logger.warn(err);
             });
         } else {
