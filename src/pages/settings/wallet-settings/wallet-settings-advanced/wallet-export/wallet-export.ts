@@ -220,13 +220,12 @@ export class WalletExportPage extends WalletTabsChild {
     return new Promise((resolve, reject) => {
       this.persistenceProvider
         .getAddressBook(this.wallet.credentials.network)
-        .then(addressBook => {
-          let localAddressBook = [];
+        .then(localAddressBook => {
           try {
-            localAddressBook = JSON.parse(addressBook);
+            localAddressBook = JSON.parse(localAddressBook);
           } catch (ex) {
             this.logger.warn(
-              'Wallet Export: JSON Parse addressBook is not necessary',
+              'Wallet Export: JSON Parse localAddressBook is not necessary',
               ex
             );
           }
