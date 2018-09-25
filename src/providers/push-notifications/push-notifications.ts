@@ -46,6 +46,12 @@ export class PushNotificationsProvider {
 
       // Keep in mind the function will return null if the token has not been established yet.
       this.FCMPlugin.getToken().then(token => {
+        if (!token) {
+          setTimeout(() => {
+            this.init();
+          }, 5000);
+          return;
+        }
         this.logger.debug('Get token for push notifications: ' + token);
         this._token = token;
         this.enable();
