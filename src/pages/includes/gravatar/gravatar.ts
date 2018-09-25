@@ -1,6 +1,5 @@
 import { Component, Input } from '@angular/core';
 import { Md5 } from 'ts-md5/dist/md5';
-import { Logger } from '../../../providers/logger/logger';
 
 @Component({
   selector: 'gravatar',
@@ -18,10 +17,9 @@ export class GravatarPage {
   @Input()
   width: number;
 
-  constructor(private logger: Logger) {}
+  constructor() {}
 
   ngOnInit() {
-    this.logger.info('ngOnInit GravatarPage');
     if (typeof this.email === 'string') {
       this.emailHash = Md5.hashStr(this.email.toLowerCase() || '');
     }

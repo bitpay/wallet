@@ -28,7 +28,7 @@ export class WalletColorPage {
   }
 
   ionViewDidLoad() {
-    this.logger.info('Loaded:  WalletColorPage');
+    this.logger.info('Loaded: WalletColorPage');
   }
 
   ionViewWillEnter() {

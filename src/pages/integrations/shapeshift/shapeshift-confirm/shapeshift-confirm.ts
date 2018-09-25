@@ -135,7 +135,7 @@ export class ShapeshiftConfirmPage {
   }
 
   ionViewDidLoad() {
-    this.logger.info('Loaded:  ShapeshiftConfirmPage');
+    this.logger.info('Loaded: ShapeshiftConfirmPage');
   }
 
   ionViewWillLeave() {

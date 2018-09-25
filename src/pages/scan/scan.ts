@@ -92,7 +92,7 @@ export class ScanPage {
   }
 
   ionViewDidLoad() {
-    this.logger.info('Loaded:  ScanPage');
+    this.logger.info('Loaded: ScanPage');
     this.onResumeSubscription = this.platform.resume.subscribe(() => {
       this.ionViewWillEnter();
     });

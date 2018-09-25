@@ -30,7 +30,7 @@ export class WalletExtendedPrivateKeyPage {
   ) {}
 
   ionViewDidLoad() {
-    this.logger.info('Loaded:  WalletExtendedPrivateKeyPage');
+    this.logger.info('Loaded: WalletExtendedPrivateKeyPage');
   }
 
   ionViewWillEnter() {

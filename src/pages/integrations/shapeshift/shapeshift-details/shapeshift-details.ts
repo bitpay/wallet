@@ -34,7 +34,7 @@ export class ShapeshiftDetailsPage {
   }
 
   ionViewDidLoad() {
-    this.logger.info('Loaded:  ShapeshiftDetailsPage');
+    this.logger.info('Loaded: ShapeshiftDetailsPage');
   }
 
   public remove() {

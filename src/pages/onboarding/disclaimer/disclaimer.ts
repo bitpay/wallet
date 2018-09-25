@@ -38,7 +38,7 @@ export class DisclaimerPage {
   }
 
   ionViewDidLoad() {
-    this.logger.info('Loaded:  DisclaimerPage');
+    this.logger.info('Loaded: DisclaimerPage');
   }
 
   selectTerms() {

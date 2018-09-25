@@ -44,7 +44,7 @@ export class PurchasedCardsPage {
   }
 
   async ionViewDidLoad() {
-    this.logger.info('Loaded:  PurchasedCardsPage');
+    this.logger.info('Loaded: PurchasedCardsPage');
   }
 
   listenForUpdates() {

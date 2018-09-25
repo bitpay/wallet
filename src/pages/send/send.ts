@@ -79,7 +79,7 @@ export class SendPage extends WalletTabsChild {
   }
 
   ionViewDidLoad() {
-    this.logger.info('Loaded:  SendPage');
+    this.logger.info('Loaded: SendPage');
 
     this.events.subscribe('update:address', data => {
       this.search = data.value;

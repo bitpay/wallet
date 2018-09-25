@@ -205,7 +205,7 @@ export class HomePage {
   }
 
   ionViewDidLoad() {
-    this.logger.info('Loaded:  HomePage');
+    this.logger.info('Loaded: HomePage');
 
     if (this.isNW) this.checkUpdate();
     this.checkHomeTip();

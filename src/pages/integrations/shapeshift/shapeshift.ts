@@ -35,7 +35,7 @@ export class ShapeshiftPage {
   }
 
   ionViewDidLoad() {
-    this.logger.info('Loaded:  ShapeshiftPage');
+    this.logger.info('Loaded: ShapeshiftPage');
   }
 
   ionViewWillEnter() {
