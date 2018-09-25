@@ -163,7 +163,7 @@ msgid ""
 "latest version."
 msgstr ""
 
-msgid "Anyone with your backup phrase can access or spend your bitcoin."
+msgid "Anyone with your recovery phrase can access or spend your bitcoin."
 msgstr ""
 
 msgid "Apply changes"
@@ -654,6 +654,9 @@ msgstr ""
 msgid "Disable notifications"
 msgstr ""
 
+msgid "Disable persistent logs"
+msgstr ""
+
 msgid "Disabled"
 msgstr ""
 
@@ -688,8 +691,8 @@ msgstr ""
 
 msgid ""
 "Each bitcoin wallet can generate billions of addresses from your 12-word "
-"backup. A new address is automatically generated and shown each time you "
-"receive a payment."
+"recovery phrase. A new address is automatically generated and shown each "
+"time you receive a payment."
 msgstr ""
 
 msgid "Economy"
@@ -708,6 +711,9 @@ msgid "Enable camera access in your device settings to get started."
 msgstr ""
 
 msgid "Enable email notifications"
+msgstr ""
+
+msgid "Enable persistent logs"
 msgstr ""
 
 msgid "Enable push notifications"
@@ -999,7 +1005,7 @@ msgstr ""
 
 msgid ""
 "I understand that if this app is moved to another device or deleted, my "
-"bitcoin can only be recovered with the backup phrase"
+"bitcoin can only be recovered with the recovery phrase"
 msgstr ""
 
 msgid ""
@@ -1041,6 +1047,11 @@ msgid ""
 msgstr ""
 
 msgid ""
+"If you disable the persistent logs, all the logs registered so far will be "
+"deleted. However, you can still see the session logs on this screen."
+msgstr ""
+
+msgid ""
 "If you have funds stored on a website then you should move them into a "
 "secure wallet... like this one!"
 msgstr ""
@@ -1053,8 +1064,8 @@ msgid ""
 msgstr ""
 
 msgid ""
-"If you take a screenshot, your backup may be viewed by other apps. You can "
-"make a safe backup with physical paper and a pen."
+"If you take a screenshot, your recovery phrase may be viewed by other apps. "
+"You can make a safe backup with physical paper and a pen."
 msgstr ""
 
 msgid "Import Words"
@@ -1066,7 +1077,7 @@ msgstr ""
 msgid "Importing Wallet..."
 msgstr ""
 
-msgid "In order to verify your wallet backup, please type your password."
+msgid "In order to verify your wallet recovery phrase, please type your password."
 msgstr ""
 
 msgid "Incomplete"
@@ -1127,9 +1138,9 @@ msgid ""
 msgstr ""
 
 msgid ""
-"It's important that you write your backup phrase down correctly. If "
-"something happens to your wallet, you'll need this backup to recover your "
-"money. Please review your backup and try again."
+"It's important that you write your recovery phrase down correctly. If "
+"something happens to your wallet, you'll need it to recover your money. "
+"Please review and try again."
 msgstr ""
 
 msgid "Join shared wallet"
@@ -1165,7 +1176,7 @@ msgstr ""
 msgid "Leave Feedback"
 msgstr ""
 
-msgid "Let's verify your backup phrase."
+msgid "Let's verify your recovery phrase."
 msgstr ""
 
 msgid "Linked"
@@ -1528,6 +1539,9 @@ msgid "Pending Proposals"
 msgstr ""
 
 msgid "Permanently delete this wallet."
+msgstr ""
+
+msgid "Persistent logs"
 msgstr ""
 
 msgid "Personal Wallet"
@@ -1896,7 +1910,7 @@ msgid "Signing transaction..."
 msgstr ""
 
 msgid ""
-"Since only you control your money, you’ll need to save your backup phrase "
+"Since only you control your money, you’ll need to save your recovery phrase "
 "in case this app is deleted."
 msgstr ""
 
@@ -2504,12 +2518,12 @@ msgid ""
 "contains. Please enter a lower amount or send max."
 msgstr ""
 
+msgid "You can backup your wallet later from your wallet settings."
+msgstr ""
+
 msgid ""
 "You can continue to view your archived cards here if you need to access "
 "them."
-msgstr ""
-
-msgid "You can create a backup later from your wallet settings."
 msgstr ""
 
 msgid ""
