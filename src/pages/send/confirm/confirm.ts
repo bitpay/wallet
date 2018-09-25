@@ -714,8 +714,10 @@ export class ConfirmPage extends WalletTabsChild {
     if (!error) return;
     this.logger.warn('ERROR:', error);
     if (this.isCordova) this.slideButton.isConfirmed(false);
-    if ((error as Error).message === TouchIdErrors.fingerprintCancelled) return;
-
+    if ((error as Error).message === TouchIdErrors.fingerprintCancelled) {
+      this.hideSlideButton = false;
+      return;
+    }
     let infoSheetTitle = title ? title : this.translate.instant('Error');
 
     const errorInfoSheet = this.actionSheetProvider.createInfoSheet(
@@ -758,9 +760,9 @@ export class ConfirmPage extends WalletTabsChild {
   public approve(tx, wallet): Promise<void> {
     if (!tx || !wallet) return undefined;
 
+    this.hideSlideButton = true;
     if (this.paymentExpired) {
-      this.popupProvider.ionicAlert(
-        null,
+      this.showErrorInfoSheet(
         this.translate.instant('This bitcoin payment request has expired.')
       );
       return undefined;
@@ -786,10 +788,7 @@ export class ConfirmPage extends WalletTabsChild {
 
   private confirmTx(_, txp, wallet) {
     return new Promise(resolve => {
-      if (this.walletProvider.isEncrypted(wallet)) {
-        this.hideSlideButton = true;
-        return resolve();
-      }
+      if (this.walletProvider.isEncrypted(wallet)) return resolve();
       this.txFormatProvider.formatToUSD(wallet.coin, txp.amount).then(val => {
         let amountUsd = parseFloat(val);
         if (amountUsd <= this.CONFIRM_LIMIT_USD) return resolve();
@@ -871,7 +870,6 @@ export class ConfirmPage extends WalletTabsChild {
       enableBackdropDismiss: false
     });
     await modal.present();
-    this.hideSlideButton = false;
 
     this.isWithinWalletTabs()
       ? this.close()

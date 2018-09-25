@@ -565,6 +565,5 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
       { animate: false }
     );
     await this.navCtrl.push(CardDetailsPage, { card }, { animate: false });
-    this.hideSlideButton = true;
   }
 }
