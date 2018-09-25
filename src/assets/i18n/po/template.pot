@@ -654,6 +654,9 @@ msgstr ""
 msgid "Disable notifications"
 msgstr ""
 
+msgid "Disable persistent logs"
+msgstr ""
+
 msgid "Disabled"
 msgstr ""
 
@@ -708,6 +711,9 @@ msgid "Enable camera access in your device settings to get started."
 msgstr ""
 
 msgid "Enable email notifications"
+msgstr ""
+
+msgid "Enable persistent logs"
 msgstr ""
 
 msgid "Enable push notifications"
@@ -1038,6 +1044,11 @@ msgstr ""
 msgid ""
 "If this device is replaced or this app is deleted, neither you nor BitPay "
 "can recover your funds without a backup."
+msgstr ""
+
+msgid ""
+"If you disable the persistent logs, all the logs registered so far will be "
+"deleted. However, you can still see the session logs on this screen."
 msgstr ""
 
 msgid ""
@@ -1528,6 +1539,9 @@ msgid "Pending Proposals"
 msgstr ""
 
 msgid "Permanently delete this wallet."
+msgstr ""
+
+msgid "Persistent logs"
 msgstr ""
 
 msgid "Personal Wallet"
