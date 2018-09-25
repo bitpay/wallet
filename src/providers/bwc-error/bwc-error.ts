@@ -158,12 +158,6 @@ export class BwcErrorProvider {
         case 'WRONG_PASSWORD':
           body = this.translate.instant('Wrong password');
           break;
-        case 'PASSWORD_CANCELLED':
-          body = this.translate.instant('Password cancelled');
-          break;
-        case 'FINGERPRINT_CANCELLED':
-          body = this.translate.instant('Fingerprint cancelled');
-          break;
         case 'EXCEEDED_DAILY_LIMIT':
           body = this.translate.instant(
             'Exceeded daily limit of $500 per user'

@@ -280,7 +280,10 @@ export class TxpDetailsPage {
     if (!error) return;
     this.logger.warn('ERROR:', error);
     if (this.isCordova) this.slideButton.isConfirmed(false);
-    if ((error as Error).message === 'FINGERPRINT_CANCELLED') {
+    if (
+      (error as Error).message === 'FINGERPRINT_CANCELLED' ||
+      (error as Error).message === 'PASSWORD_CANCELLED'
+    ) {
       this.hideSlideButton = false;
       return;
     }
