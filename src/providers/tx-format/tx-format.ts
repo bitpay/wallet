@@ -135,7 +135,7 @@ export class TxFormatProvider {
           ? this.toLegacyAddress(tx.toAddress)
           : this.toCashAddress(tx.toAddress);
       }
-    } 
+    }
 
     // Old tx format. Fill .output, for forward compatibility
     if (!tx.outputs) {
