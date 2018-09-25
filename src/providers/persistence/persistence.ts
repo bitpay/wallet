@@ -66,6 +66,7 @@ export class PersistenceProvider {
     msg: string;
   }>;
   private logsLoaded: boolean;
+  private persistentLogsEnabled: boolean;
 
   constructor(
     private logger: Logger,
@@ -77,11 +78,22 @@ export class PersistenceProvider {
     this.persistentLogs = {};
     this.logsBuffer = [];
     this.logsLoaded = false;
+    this.persistentLogsEnabled = false;
+    this._subscribeEvents();
+  }
+
+  private _subscribeEvents(): void {
     this.events.subscribe('newLog', newLog => {
       setTimeout(() => {
         this.saveNewLog(newLog);
       }, 0);
     });
+  }
+
+  private _unsubscribeEvents(): void {
+    this.events.unsubscribe('newLog');
+    this.logsBuffer = [];
+    this.persistentLogsEnabled = false;
   }
 
   public load() {
@@ -108,6 +120,24 @@ export class PersistenceProvider {
       })
       .catch(err => {
         this.logger.error(err);
+      });
+  }
+
+  public checkLogsConfig(): void {
+    this.getConfig()
+      .then(config => {
+        if (
+          _.isEmpty(config) ||
+          _.isUndefined(config.persistentLogsEnabled) ||
+          config.persistentLogsEnabled
+        ) {
+          this.persistentLogsEnabled = true;
+        } else {
+          this._unsubscribeEvents();
+        }
+      })
+      .catch(err => {
+        this.logger.error('Error Loading Config from persistence', err);
       });
   }
 
@@ -141,8 +171,21 @@ export class PersistenceProvider {
     return logs;
   }
 
+  public persistentLogsChange(enabled: boolean): void {
+    this.persistentLogs = {};
+    if (enabled) {
+      this.persistentLogsEnabled = true;
+      this._subscribeEvents();
+    } else {
+      this._unsubscribeEvents();
+      this.setLogs(this.persistentLogs).catch(() => {
+        this.logger.warn('Error deleting persistent logs');
+      });
+    }
+  }
+
   private saveNewLog(newLog): void {
-    if (!this.logsLoaded) {
+    if (!this.logsLoaded && !this.persistentLogsEnabled) {
       this.logsBuffer.push(newLog);
       return;
     }
@@ -166,7 +209,7 @@ export class PersistenceProvider {
     this.setLogs(JSON.stringify(this.persistentLogs)).catch(() => {
       this.logger.warn('Error adding new log');
       // Unsubscribe to prevent errors loop
-      this.events.unsubscribe('newLog');
+      this._unsubscribeEvents();
     });
   }
 

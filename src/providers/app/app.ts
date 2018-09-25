@@ -64,6 +64,7 @@ export class AppProvider {
     await Promise.all([this.getInfo(), this.loadProviders()]);
     this.setCustomMenuBarNW();
     this.persistence.getPersistentLogs();
+    this.persistence.checkLogsConfig();
   }
 
   private async getInfo() {

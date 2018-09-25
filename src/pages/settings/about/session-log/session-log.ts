@@ -22,6 +22,7 @@ import * as _ from 'lodash';
 })
 export class SessionLogPage {
   private config;
+  private persistentLogsEnabled: boolean;
 
   public logOptions;
   public filteredLogs;
@@ -51,6 +52,7 @@ export class SessionLogPage {
   }
 
   ionViewWillEnter() {
+    this.persistentLogsEnabled = this.config.persistentLogsEnabled;
     let selectedLevel = _.has(this.config, 'log.weight')
       ? this.logger.getWeight(this.config.log.weight)
       : this.logger.getDefaultWeight();
@@ -60,10 +62,7 @@ export class SessionLogPage {
   }
 
   private filterLogs(weight: number): void {
-    this.filteredLogs = _.sortBy(
-      this.logger.get(weight),
-      'timestamp'
-    ).reverse();
+    this.filteredLogs = _.sortBy(this.logger.get(weight), 'timestamp');
   }
 
   public setOptionSelected(weight: number): void {
@@ -161,28 +160,38 @@ export class SessionLogPage {
   }
 
   public showOptionsMenu(): void {
+    let usePersistentLogsText = this.persistentLogsEnabled
+      ? this.translate.instant('Disable persistent logs')
+      : this.translate.instant('Enable persistent logs');
     let downloadText = this.translate.instant('Download logs');
     let emailText = this.translate.instant('Send logs by email');
     let button = [];
 
-    if (this.isCordova) {
-      button = [
-        {
+    button.push({
+      text: usePersistentLogsText,
+      handler: () => {
+        this.persistentLogsEnabled
+          ? this.presentPersistentLogsInfo()
+          : this.setPersistentLogs(true); // Enable
+      }
+    });
+
+    if (this.persistentLogsEnabled) {
+      if (this.isCordova) {
+        button.push({
           text: emailText,
           handler: () => {
             this.showWarningModal();
           }
-        }
-      ];
-    } else {
-      button = [
-        {
+        });
+      } else {
+        button.push({
           text: downloadText,
           handler: () => {
             this.showWarningModal();
           }
-        }
-      ];
+        });
+      }
     }
 
     let actionSheet = this.actionSheetCtrl.create({
@@ -200,6 +209,28 @@ export class SessionLogPage {
     infoSheet.onDidDismiss(option => {
       if (option) this.isCordova ? this.sendLogs() : this.download();
     });
+  }
+
+  private presentPersistentLogsInfo(): void {
+    const infoSheet = this.actionSheetProvider.createInfoSheet(
+      'persistent-logs'
+    );
+    infoSheet.present();
+    infoSheet.onDidDismiss(option => {
+      if (option) {
+        this.setPersistentLogs(false); // Disable
+      }
+    });
+  }
+
+  private setPersistentLogs(option: boolean): void {
+    let opts = {
+      persistentLogsEnabled: option
+    };
+    this.configProvider.set(opts);
+    this.persistenceProvider.persistentLogsChange(option);
+    this.persistentLogsEnabled = option;
+    this.logger.info('Persistent logs set with: ' + option);
   }
 
   public download(): void {

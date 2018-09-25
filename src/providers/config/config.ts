@@ -65,6 +65,8 @@ export interface Config {
     enabled: boolean;
   };
 
+  persistentLogsEnabled: boolean;
+
   showIntegration: {
     coinbase: boolean;
     glidera: boolean;
@@ -171,11 +173,13 @@ const configDefault: Config = {
     bannedUntil: null
   },
 
-  // External services
   recentTransactions: {
     enabled: true
   },
 
+  persistentLogsEnabled: true,
+
+  // External services
   showIntegration: {
     coinbase: true,
     glidera: true,
@@ -236,6 +240,7 @@ export class ConfigProvider {
           } else {
             this.configCache = _.clone(configDefault);
           }
+          this.logImportantConfig(this.configCache);
           resolve();
         })
         .catch(err => {
@@ -243,6 +248,24 @@ export class ConfigProvider {
           reject(err);
         });
     });
+  }
+
+  private logImportantConfig(config: Config): void {
+    let spendUnconfirmed = config.wallet.spendUnconfirmed;
+    let useLegacyAddress = config.wallet.useLegacyAddress;
+    let persistentLogsEnabled = config.persistentLogsEnabled;
+    let lockMethod = config.lock.method;
+
+    this.logger.debug(
+      'Config | spendUnconfirmed: ' +
+        spendUnconfirmed +
+        ' - useLegacyAddress: ' +
+        useLegacyAddress +
+        ' - persistentLogsEnabled: ' +
+        persistentLogsEnabled +
+        ' - lockMethod: ' +
+        lockMethod
+    );
   }
 
   /**
@@ -281,13 +304,15 @@ export class ConfigProvider {
       this.configCache.wallet.settings.unitCode =
         configDefault.wallet.settings.unitCode;
     }
-
     if (!this.configCache.showIntegration) {
       this.configCache.showIntegration = configDefault.showIntegration;
     }
-
     if (!this.configCache.recentTransactions) {
       this.configCache.recentTransactions = configDefault.recentTransactions;
+    }
+    if (!this.configCache.persistentLogsEnabled) {
+      this.configCache.persistentLogsEnabled =
+        configDefault.persistentLogsEnabled;
     }
     if (!this.configCache.pushNotificationsEnabled) {
       this.configCache.pushNotificationsEnabled =
