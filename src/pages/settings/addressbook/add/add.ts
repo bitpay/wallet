@@ -64,7 +64,7 @@ export class AddressbookAddPage {
   }
 
   ionViewDidLoad() {
-    this.logger.info('Loaded:  AddressbookAddPage');
+    this.logger.info('Loaded: AddressbookAddPage');
   }
 
   ngOnDestroy() {

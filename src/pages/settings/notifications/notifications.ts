@@ -57,7 +57,7 @@ export class NotificationsPage {
   }
 
   ionViewDidLoad() {
-    this.logger.info('Loaded:  NotificationsPage');
+    this.logger.info('Loaded: NotificationsPage');
     this.updateConfig();
   }
 

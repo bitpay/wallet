@@ -76,7 +76,7 @@ export class SettingsPage {
   }
 
   ionViewDidLoad() {
-    this.logger.info('Loaded:  SettingsPage');
+    this.logger.info('Loaded: SettingsPage');
   }
 
   ionViewWillEnter() {

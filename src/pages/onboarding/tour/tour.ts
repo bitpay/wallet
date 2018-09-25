@@ -59,7 +59,7 @@ export class TourPage {
   }
 
   ionViewDidLoad() {
-    this.logger.info('Loaded:  TourPage');
+    this.logger.info('Loaded: TourPage');
   }
 
   ionViewWillEnter() {

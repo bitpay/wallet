@@ -60,7 +60,7 @@ export class CopayersPage {
   }
 
   ionViewDidLoad() {
-    this.logger.info('Loaded:  CopayersPage');
+    this.logger.info('Loaded: CopayersPage');
 
     this.onResumeSubscription = this.plt.resume.subscribe(() => {
       this.updateWallet();

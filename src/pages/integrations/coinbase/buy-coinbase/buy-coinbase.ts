@@ -68,7 +68,7 @@ export class BuyCoinbasePage {
   }
 
   ionViewDidLoad() {
-    this.logger.info('Loaded:  BuyCoinbasePage');
+    this.logger.info('Loaded: BuyCoinbasePage');
   }
 
   ionViewWillLeave() {
