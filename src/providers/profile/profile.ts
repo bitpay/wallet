@@ -545,16 +545,15 @@ export class ProfileProvider {
       this.persistenceProvider
         .getAddressBook(wallet.credentials.network)
         .then(localAddressBook => {
-          let localAddressBook1 = {};
           try {
-            localAddressBook1 = JSON.parse(localAddressBook);
+            localAddressBook = JSON.parse(localAddressBook);
           } catch (ex) {
             this.logger.info(
               'Address Book: JSON.parse not neccesary.',
               localAddressBook
             );
           }
-          let mergeAddressBook = _.merge(addressBook, localAddressBook1);
+          let mergeAddressBook = _.merge(addressBook, localAddressBook);
           this.persistenceProvider
             .setAddressBook(
               wallet.credentials.network,
