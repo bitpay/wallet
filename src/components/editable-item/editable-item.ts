@@ -45,7 +45,11 @@ export class EditableItemComponent {
 
   constructor(private platformProvider: PlatformProvider) {
     this.textInput.valueChanges
-      .pipe(debounceTime(600), distinctUntilChanged(), skip(1))
+      .pipe(
+        debounceTime(600),
+        distinctUntilChanged(),
+        skip(1)
+      )
       .subscribe(value => {
         this.value = value;
         this.saving = true;
