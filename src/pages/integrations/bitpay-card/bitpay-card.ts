@@ -140,9 +140,11 @@ export class BitPayCardPage {
           this.bitpayCardTransactionHistoryPreAuth = null;
           this.balance = null;
           this.popupProvider.ionicAlert(
-            'Error',
+            err,
             this.translate.instant('Could not get transactions')
-          );
+          ).then( () => {
+            this.navCtrl.pop();
+          });
           return;
         }
 
