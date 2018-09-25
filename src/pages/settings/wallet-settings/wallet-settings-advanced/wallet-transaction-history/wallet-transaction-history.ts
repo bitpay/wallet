@@ -47,7 +47,7 @@ export class WalletTransactionHistoryPage {
   }
 
   ionViewDidLoad() {
-    this.logger.info('ionViewDidLoad WalletTransactionHistoryPage');
+    this.logger.info('Loaded:  WalletTransactionHistoryPage');
   }
 
   ionViewWillEnter() {

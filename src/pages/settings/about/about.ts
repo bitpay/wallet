@@ -30,7 +30,7 @@ export class AboutPage {
   ) {}
 
   ionViewDidLoad() {
-    this.logger.info('ionViewDidLoad AboutPage');
+    this.logger.info('Loaded: AboutPage');
     this.commitHash = this.appProvider.info.commitHash;
     this.version = this.appProvider.info.version;
     this.title = this.replaceParametersProvider.replace(

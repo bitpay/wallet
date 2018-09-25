@@ -127,7 +127,7 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
   }
 
   ionViewDidLoad() {
-    this.logger.info('ionViewDidLoad ConfirmCardPurchasePage');
+    this.logger.info('Loaded:  ConfirmCardPurchasePage');
   }
 
   ionViewWillEnter() {

@@ -75,7 +75,7 @@ export class WalletExportPage extends WalletTabsChild {
   }
 
   ionViewDidLoad() {
-    this.logger.info('ionViewDidLoad WalletExportPage');
+    this.logger.info('Loaded:  WalletExportPage');
   }
 
   ionViewWillEnter() {

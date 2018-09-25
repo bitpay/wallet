@@ -200,7 +200,7 @@ export class ConfirmPage extends WalletTabsChild {
   }
 
   ionViewDidLoad() {
-    this.logger.info('ionViewDidLoad ConfirmPage');
+    this.logger.info('Loaded:  ConfirmPage');
   }
 
   private getAmountDetails() {

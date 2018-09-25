@@ -34,7 +34,7 @@ export class WalletDeletePage extends WalletTabsChild {
   }
 
   ionViewDidLoad() {
-    this.logger.info('ionViewDidLoad WalletDeletePage');
+    this.logger.info('Loaded:  WalletDeletePage');
   }
 
   ionViewWillEnter() {

@@ -16,7 +16,7 @@ export class AdvancedPage {
   constructor(private configProvider: ConfigProvider, private logger: Logger) {}
 
   ionViewDidLoad() {
-    this.logger.info('ionViewDidLoad AdvancedPage');
+    this.logger.info('Loaded:  AdvancedPage');
   }
 
   ionViewWillEnter() {

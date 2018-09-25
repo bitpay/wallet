@@ -53,7 +53,7 @@ export class WalletSettingsPage {
   ) {}
 
   ionViewDidLoad() {
-    this.logger.info('ionViewDidLoad WalletSettingsPage');
+    this.logger.info('Loaded:  WalletSettingsPage');
     this.wallet = this.profileProvider.getWallet(this.navParams.data.walletId);
     this.canSign = this.wallet.canSign();
     this.needsBackup = this.wallet.needsBackup;

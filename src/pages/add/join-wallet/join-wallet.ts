@@ -90,7 +90,7 @@ export class JoinWalletPage {
   }
 
   ionViewDidLoad() {
-    this.logger.info('ionViewDidLoad JoinWalletPage');
+    this.logger.info('Loaded:  JoinWalletPage');
   }
 
   ionViewWillEnter() {
