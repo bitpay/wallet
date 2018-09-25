@@ -141,9 +141,10 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
       hasFunds: true
     });
     if (_.isEmpty(this.wallets)) {
-      this.showErrorAndBack(
+      this.showErrorInfoSheet(
+        this.translate.instant('No wallets available'),
         null,
-        this.translate.instant('No wallets available')
+        true
       );
       return;
     }
@@ -168,28 +169,6 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
     this.totalAmountStr = this.invoiceFee = this.networkFee = this.totalAmount = this.wallet = null;
     this.tx = this.message = this.invoiceId = null;
   }
-
-  private showErrorAndBack(title: string, msg) {
-    if (this.isCordova) this.slideButton.isConfirmed(false);
-    title = title ? title : this.translate.instant('Error');
-    this.logger.error(msg);
-    msg = msg && msg.errors ? msg.errors[0].message : msg;
-    this.popupProvider.ionicAlert(title, msg).then(() => {
-      this.navCtrl.pop();
-    });
-  }
-
-  private showError = function(title: string, msg): Promise<any> {
-    return new Promise(resolve => {
-      if (this.isCordova) this.slideButton.isConfirmed(false);
-      title = title || this.translate.instant('Error');
-      this.logger.error(msg);
-      msg = msg && msg.errors ? msg.errors[0].message : msg;
-      this.popupProvider.ionicAlert(title, msg).then(() => {
-        return resolve();
-      });
-    });
-  };
 
   async publishAndSign(wallet, txp) {
     if (!wallet.canSign() && !wallet.isPrivKeyExternal()) {
@@ -380,7 +359,7 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
       'An email address is required for this purchase.'
     );
     this.onGoingProcessProvider.clear();
-    this.showErrorAndBack(title, msg);
+    this.showErrorInfoSheet(msg, title, true);
     throw new Error('email required');
   }
 
@@ -408,7 +387,7 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
 
     const data = await this.createInvoice(dataSrc).catch(err => {
       this.onGoingProcessProvider.clear();
-      throw this.showErrorAndBack(err.title, err.message);
+      throw this.showErrorInfoSheet(err.message, err.title, true);
     });
     const invoice = data.invoice;
     const accessKey = data.accessKey;
@@ -418,7 +397,7 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
       let msg = this.translate.instant(
         'Purchases with this cryptocurrency are not enabled'
       );
-      this.showErrorAndBack(null, msg);
+      this.showErrorInfoSheet(msg, null, true);
       return;
     }
 
@@ -436,7 +415,7 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
       err => {
         this.onGoingProcessProvider.clear();
         this.resetValues();
-        throw this.showError(err.title, err.message);
+        throw this.showErrorInfoSheet(err.message, err.title);
       }
     );
 
@@ -480,8 +459,7 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
 
   public async buyConfirm() {
     if (!this.tx) {
-      this.showError(
-        null,
+      this.showErrorInfoSheet(
         this.translate.instant('Transaction has not been created')
       );
       return;
@@ -514,9 +492,9 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
           if (err.message != 'NO_PASSWORD' && err.message != 'WRONG_PASSWORD') {
             this.resetValues();
           }
-          this.showError(
-            this.translate.instant('Could not send transaction'),
-            this.bwcErrorProvider.msg(err)
+          this.showErrorInfoSheet(
+            this.bwcErrorProvider.msg(err),
+            this.translate.instant('Could not send transaction')
           );
         }
       });
