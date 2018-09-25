@@ -273,9 +273,6 @@ export class ProfileProvider {
 
     if (this.validationLock) {
       return setTimeout(() => {
-        this.logger.debug(
-          'ValidatingWallet Locked: Retrying in: ' + retryDelay
-        );
         return this.runValidation(wallet, delay, retryDelay);
       }, retryDelay);
     }
@@ -499,7 +496,10 @@ export class ProfileProvider {
         }
 
         let skipKeyValidation: boolean = this.shouldSkipValidation(walletId);
-        if (!skipKeyValidation) this.runValidation(wallet);
+        if (!skipKeyValidation) {
+          this.logger.debug('Trying to runValidation: ' + walletId);
+          this.runValidation(wallet);
+        }
 
         this.bindWalletClient(wallet);
 
@@ -831,7 +831,10 @@ export class ProfileProvider {
       );
 
       let skipKeyValidation = this.shouldSkipValidation(credentials.walletId);
-      if (!skipKeyValidation) this.runValidation(walletClient, 500);
+      if (!skipKeyValidation) {
+        this.logger.debug('Trying to runValidation: ' + credentials.walletId);
+        this.runValidation(walletClient, 500);
+      }
 
       this.logger.debug(
         'Binding wallet:' +
