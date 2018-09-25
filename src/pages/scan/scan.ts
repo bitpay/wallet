@@ -5,6 +5,7 @@ import { Events, NavController, NavParams, Platform } from 'ionic-angular';
 import { Subscription } from 'rxjs';
 
 // providers
+import { ActionSheetProvider } from '../../providers/action-sheet/action-sheet';
 import { ExternalLinkProvider } from '../../providers/external-link/external-link';
 import { IncomingDataProvider } from '../../providers/incoming-data/incoming-data';
 import { Logger } from '../../providers/logger/logger';
@@ -70,7 +71,8 @@ export class ScanPage {
     public translate: TranslateService,
     private navParams: NavParams,
     private walletTabsProvider: WalletTabsProvider,
-    private platform: Platform
+    private platform: Platform,
+    private actionSheetProvider: ActionSheetProvider
   ) {
     this.isCameraSelected = false;
     this.browserScanEnabled = false;
@@ -99,6 +101,7 @@ export class ScanPage {
   }
 
   ionViewWillLeave() {
+    this.events.unsubscribe('incomingDataError');
     this.events.unsubscribe('finishIncomingDataMenuEvent');
     this.events.unsubscribe('scannerServiceInitialized');
     if (!this.isCordova) {
@@ -127,6 +130,10 @@ export class ScanPage {
       this.hasPermission = true;
       return;
     }
+
+    this.events.subscribe('incomingDataError', err => {
+      this.showErrorInfoSheet(err);
+    });
 
     this.events.subscribe('finishIncomingDataMenuEvent', data => {
       if (!this.isCordova) {
@@ -184,6 +191,22 @@ export class ScanPage {
 
   ngOnDestroy() {
     this.onResumeSubscription.unsubscribe();
+  }
+
+  private showErrorInfoSheet(error: Error | string, title?: string): void {
+    let infoSheetTitle = title ? title : this.translate.instant('Error');
+    const errorInfoSheet = this.actionSheetProvider.createInfoSheet(
+      'default-error',
+      { msg: error, title: infoSheetTitle }
+    );
+    errorInfoSheet.present();
+    errorInfoSheet.onDidDismiss(() => {
+      if (this.isCordova) {
+        this.activate();
+      } else if (this.isCameraSelected) {
+        this.scanner.startScan(this.selectedDevice);
+      }
+    });
   }
 
   private initializeBackButtonHandler(): void {
