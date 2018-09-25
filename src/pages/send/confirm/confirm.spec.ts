@@ -123,11 +123,11 @@ describe('ConfirmPage', () => {
         await instance.approve(tx, wallet);
         expect(publishSpy).toHaveBeenCalled();
       });
-      it('should display a popup if the payment has expired', () => {
+      it('should display info sheet if the payment has expired', () => {
         instance.paymentExpired = true;
-        const popupSpy = spyOn(instance.popupProvider, 'ionicAlert');
+        const infoSheetSpy = spyOn(instance, 'showErrorInfoSheet');
         instance.approve(tx, wallet);
-        expect(popupSpy).toHaveBeenCalled();
+        expect(infoSheetSpy).toHaveBeenCalled();
       });
       it('should handle errors', async () => {
         spyOn(instance, 'getTxp').and.returnValue(Promise.reject('bad error'));

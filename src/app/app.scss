@@ -499,3 +499,13 @@ ion-item.with-label.item {
 label-tip.warn.no-arrowhead:before {
   display: none;
 }
+
+.slide-confirm-down {
+  transform: translate(0px, 90px);
+}
+.slide-confirm-slow {
+  transition: transform 0.7s;
+}
+.slide-confirm-fast {
+  transition: transform 0.3s;
+}

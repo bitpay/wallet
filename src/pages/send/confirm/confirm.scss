@@ -142,13 +142,4 @@ confirm-card-purchase {
   .last-item {
     margin-left: auto !important;
   }
-  .slide-confirm-down {
-    transform: translate(0px, 90px);
-  }
-  .slide-confirm-slow {
-    transition: transform 0.7s;
-  }
-  .slide-confirm-fast {
-    transition: transform 0.3s;
-  }
 }

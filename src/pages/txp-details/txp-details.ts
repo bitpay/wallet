@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import {
   Events,
@@ -10,6 +10,7 @@ import { DecimalPipe } from '../../../node_modules/@angular/common';
 import { Logger } from '../../providers/logger/logger';
 
 // providers
+import { ActionSheetProvider } from '../../providers/action-sheet/action-sheet';
 import { AddressBookProvider } from '../../providers/address-book/address-book';
 import { BwcErrorProvider } from '../../providers/bwc-error/bwc-error';
 import { ConfigProvider } from '../../providers/config/config';
@@ -32,6 +33,9 @@ import * as _ from 'lodash';
   templateUrl: 'txp-details.html'
 })
 export class TxpDetailsPage {
+  @ViewChild('slideButton')
+  slideButton;
+
   public wallet;
   public tx;
   public copayers;
@@ -50,6 +54,7 @@ export class TxpDetailsPage {
   public showMultiplesOutputs: boolean;
   public amount: string;
   public isCordova: boolean;
+  public hideSlideButton: boolean;
 
   private isGlidera: boolean;
   private GLIDERA_LOCK_TIME: number;
@@ -62,7 +67,6 @@ export class TxpDetailsPage {
     private events: Events,
     private logger: Logger,
     private popupProvider: PopupProvider,
-    private bwcError: BwcErrorProvider,
     private walletProvider: WalletProvider,
     private onGoingProcessProvider: OnGoingProcessProvider,
     private viewCtrl: ViewController,
@@ -73,7 +77,9 @@ export class TxpDetailsPage {
     private modalCtrl: ModalController,
     private addressBookProvider: AddressBookProvider,
     private decimalPipe: DecimalPipe,
-    private payproProvider: PayproProvider
+    private payproProvider: PayproProvider,
+    private actionSheetProvider: ActionSheetProvider,
+    private bwcErrorProvider: BwcErrorProvider
   ) {
     this.showMultiplesOutputs = false;
     let config = this.configProvider.get().wallet;
@@ -98,6 +104,7 @@ export class TxpDetailsPage {
     this.canSign = this.wallet.canSign() || this.wallet.isPrivKeyExternal();
     this.color = this.wallet.color;
     this.contact();
+    this.hideSlideButton = false;
 
     // To test multiple outputs...
 
@@ -238,9 +245,9 @@ export class TxpDetailsPage {
         .catch(err => {
           this.logger.warn('Error in Payment Protocol: ', err);
           this.paymentExpired = true;
-          this.popupProvider.ionicAlert(
-            this.translate.instant('Error in Payment Protocol'),
-            err
+          this.showErrorInfoSheet(
+            err,
+            this.translate.instant('Error in Payment Protocol')
           );
         });
     }
@@ -268,16 +275,34 @@ export class TxpDetailsPage {
     }, 1000);
   }
 
-  private setError(err, prefix: string): void {
+  private showErrorInfoSheet(error: Error | string, title?: string): void {
     this.loading = false;
-    this.popupProvider.ionicAlert(
-      this.translate.instant('Error'),
-      this.bwcError.msg(err, prefix)
+    if (!error) return;
+    this.logger.warn('ERROR:', error);
+    if (this.isCordova) this.slideButton.isConfirmed(false);
+    if (
+      (error as Error).message === 'FINGERPRINT_CANCELLED' ||
+      (error as Error).message === 'PASSWORD_CANCELLED'
+    ) {
+      this.hideSlideButton = false;
+      return;
+    }
+
+    let infoSheetTitle = title ? title : this.translate.instant('Error');
+
+    const errorInfoSheet = this.actionSheetProvider.createInfoSheet(
+      'default-error',
+      { msg: this.bwcErrorProvider.msg(error), title: infoSheetTitle }
     );
+    errorInfoSheet.present();
+    errorInfoSheet.onDidDismiss(() => {
+      this.hideSlideButton = false;
+    });
   }
 
   public sign(): void {
     this.loading = true;
+    this.hideSlideButton = true;
     this.walletProvider
       .publishAndSign(this.wallet, this.tx)
       .then(() => {
@@ -286,7 +311,7 @@ export class TxpDetailsPage {
       })
       .catch(err => {
         this.onGoingProcessProvider.clear();
-        this.setError(err, 'Could not send payment');
+        this.showErrorInfoSheet(err, 'Could not send payment');
       });
   }
 
@@ -309,7 +334,7 @@ export class TxpDetailsPage {
           })
           .catch(err => {
             this.onGoingProcessProvider.clear();
-            this.setError(
+            this.showErrorInfoSheet(
               err,
               this.translate.instant('Could not reject payment')
             );
@@ -336,7 +361,7 @@ export class TxpDetailsPage {
           .catch(err => {
             this.onGoingProcessProvider.clear();
             if (err && !(err.message && err.message.match(/Unexpected/))) {
-              this.setError(
+              this.showErrorInfoSheet(
                 err,
                 this.translate.instant('Could not delete payment proposal')
               );
@@ -356,7 +381,7 @@ export class TxpDetailsPage {
       })
       .catch(err => {
         this.onGoingProcessProvider.clear();
-        this.setError(err, 'Could not broadcast payment');
+        this.showErrorInfoSheet(err, 'Could not broadcast payment');
 
         this.logger.error(
           'Could not broadcast: ',
@@ -420,6 +445,7 @@ export class TxpDetailsPage {
 
   public close(): void {
     this.loading = false;
+    this.hideSlideButton = false;
     this.viewCtrl.dismiss();
   }
 

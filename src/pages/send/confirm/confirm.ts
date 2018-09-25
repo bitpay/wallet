@@ -23,7 +23,6 @@ import { PlatformProvider } from '../../../providers/platform/platform';
 import { PopupProvider } from '../../../providers/popup/popup';
 import { ProfileProvider } from '../../../providers/profile/profile';
 import { ReplaceParametersProvider } from '../../../providers/replace-parameters/replace-parameters';
-import { TouchIdErrors } from '../../../providers/touchid/touchid';
 import { TxConfirmNotificationProvider } from '../../../providers/tx-confirm-notification/tx-confirm-notification';
 import { TxFormatProvider } from '../../../providers/tx-format/tx-format';
 import {
@@ -60,7 +59,7 @@ export class ConfirmPage extends WalletTabsChild {
   public successText: string;
   public paymentExpired: boolean;
   public remainingTimeStr: string;
-  public memoFocused: boolean;
+  public hideSlideButton: boolean;
   public amount;
 
   // Config Related values
@@ -110,7 +109,7 @@ export class ConfirmPage extends WalletTabsChild {
       ? this.config.wallet.settings.feeLevel
       : 'normal';
     this.isCordova = this.platformProvider.isCordova;
-    this.memoFocused = false;
+    this.hideSlideButton = false;
   }
 
   ngOnInit() {
@@ -714,8 +713,13 @@ export class ConfirmPage extends WalletTabsChild {
     if (!error) return;
     this.logger.warn('ERROR:', error);
     if (this.isCordova) this.slideButton.isConfirmed(false);
-    if ((error as Error).message === TouchIdErrors.fingerprintCancelled) return;
-
+    if (
+      (error as Error).message === 'FINGERPRINT_CANCELLED' ||
+      (error as Error).message === 'PASSWORD_CANCELLED'
+    ) {
+      this.hideSlideButton = false;
+      return;
+    }
     let infoSheetTitle = title ? title : this.translate.instant('Error');
 
     const errorInfoSheet = this.actionSheetProvider.createInfoSheet(
@@ -724,6 +728,7 @@ export class ConfirmPage extends WalletTabsChild {
     );
     errorInfoSheet.present();
     errorInfoSheet.onDidDismiss(() => {
+      this.hideSlideButton = false;
       if (exit) {
         this.isWithinWalletTabs()
           ? this.navCtrl.popToRoot()
@@ -757,9 +762,9 @@ export class ConfirmPage extends WalletTabsChild {
   public approve(tx, wallet): Promise<void> {
     if (!tx || !wallet) return undefined;
 
+    this.hideSlideButton = true;
     if (this.paymentExpired) {
-      this.popupProvider.ionicAlert(
-        null,
+      this.showErrorInfoSheet(
         this.translate.instant('This bitcoin payment request has expired.')
       );
       return undefined;
