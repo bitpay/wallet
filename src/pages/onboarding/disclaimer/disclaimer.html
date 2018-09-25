@@ -14,14 +14,14 @@
     </ion-item>
     <ion-item>
       <ion-label>
-        {{'I understand that if this app is moved to another device or deleted, my bitcoin can only be recovered with the backup phrase' | translate}}.
+        {{'I understand that if this app is moved to another device or deleted, my bitcoin can only be recovered with the recovery phrase' | translate}}.
       </ion-label>
       <ion-checkbox [(ngModel)]="accepted.second"></ion-checkbox>
     </ion-item>
     <div *ngIf="hasEmail">
       <ion-item>
         <ion-label>
-          <span translate>I give explicit consent to BitPay to use my email address to send me email notifications about payments (and, if selected, email updates and news about the wallet).</span> 
+          <span translate>I give explicit consent to BitPay to use my email address to send me email notifications about payments (and, if selected, email updates and news about the wallet).</span>
         </ion-label>
         <ion-checkbox [(ngModel)]="accepted.third"></ion-checkbox>
       </ion-item>

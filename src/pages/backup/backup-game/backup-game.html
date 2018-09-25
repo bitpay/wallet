@@ -42,7 +42,7 @@
     <ion-slide>
       <div class="slide-container">
         <div class="slide-body">
-          <div class="slide-title" translate>Let's verify your backup phrase.</div>
+          <div class="slide-title" translate>Let's verify your recovery phrase.</div>
           <div class="phrase-container">
             <div class="phrase">
               <button ion-button outline *ngFor="let customWord of customWords; let i = index" (click)="removeButton(i, customWord)">{{customWord.word}}</button>
@@ -72,7 +72,7 @@
 
     <ion-slide *ngIf="wallet.mnemonicHasPassphrase">
       <div translate>Enter your password</div>
-      <ion-item-divider>{{'In order to verify your wallet backup, please type your password.' | translate}}</ion-item-divider>
+      <ion-item-divider>{{'In order to verify your wallet recovery phrase, please type your password.' | translate}}</ion-item-divider>
       <ion-item>
         <ion-label stacked translate>Password</ion-label>
         <ion-input type="password" id="password" [(ngModel)]="password" autocapitalize="off" spellcheck="false"></ion-input>
