@@ -137,16 +137,18 @@ export class TxFormatProvider {
     }
 
     if (!tx.outputs) {
-      tx.outputs = [{
-        address: tx.toAddress,
-        amount: tx.amount,
-      }];
+      tx.outputs = [
+        {
+          address: tx.toAddress,
+          amount: tx.amount
+        }
+      ];
     }
 
     tx.amountStr = this.formatAmountStr(coin, tx.amount);
     tx.alternativeAmountStr = this.formatAlternativeStr(coin, tx.amount);
 
-    tx.feeStr = (tx.fee) ? this.formatAmountStr(coin, tx.fee || tx.fees) : 'N/A';
+    tx.feeStr = tx.fee ? this.formatAmountStr(coin, tx.fee || tx.fees) : 'N/A';
 
     if (tx.amountStr) {
       tx.amountValueStr = tx.amountStr.split(' ')[0];
