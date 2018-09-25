@@ -652,6 +652,8 @@ export class IncomingDataProvider {
   private handlePayPro(payProDetails, coin?: Coin): void {
     if (!payProDetails) {
       this.logger.error('No wallets available');
+      const error = this.translate.instant('No wallets available');
+      this.events.publish('incomingDataError', error);
       return;
     }
 
