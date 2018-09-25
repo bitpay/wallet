@@ -107,7 +107,8 @@ export class TxFormatProvider {
   public processTx(coin: string, tx, useLegacyAddress: boolean) {
     if (!tx || tx.action == 'invalid') return tx;
 
-    // New transaction output format
+    // New transaction output format. Fill tx.amount and tx.toAmount for
+    // backward compatibility.
     if (tx.outputs && tx.outputs.length) {
       var outputsNr = tx.outputs.length;
 
@@ -136,9 +137,20 @@ export class TxFormatProvider {
       }
     }
 
+    // Old tx format. Fill .output, for forward compatibility
+    if (!tx.outputs) {
+      tx.outputs = [
+        {
+          address: tx.toAddress,
+          amount: tx.amount
+        }
+      ];
+    }
+
     tx.amountStr = this.formatAmountStr(coin, tx.amount);
     tx.alternativeAmountStr = this.formatAlternativeStr(coin, tx.amount);
-    tx.feeStr = this.formatAmountStr(coin, tx.fee || tx.fees);
+
+    tx.feeStr = tx.fee ? this.formatAmountStr(coin, tx.fee || tx.fees) : 'N/A';
 
     if (tx.amountStr) {
       tx.amountValueStr = tx.amountStr.split(' ')[0];
