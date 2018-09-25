@@ -107,7 +107,8 @@ export class TxFormatProvider {
   public processTx(coin: string, tx, useLegacyAddress: boolean) {
     if (!tx || tx.action == 'invalid') return tx;
 
-    // New transaction output format
+    // New transaction output format. Fill tx.amount and tx.toAmount for
+    // backward compatibility.
     if (tx.outputs && tx.outputs.length) {
       var outputsNr = tx.outputs.length;
 
@@ -134,8 +135,9 @@ export class TxFormatProvider {
           ? this.toLegacyAddress(tx.toAddress)
           : this.toCashAddress(tx.toAddress);
       }
-    }
+    } 
 
+    // Old tx format. Fill .output, for forward compatibility
     if (!tx.outputs) {
       tx.outputs = [
         {
