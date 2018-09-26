@@ -8,10 +8,13 @@ Copay is a secure bitcoin wallet platform for both desktop and mobile devices. C
 
 Binary versions of Copay are available for download at [Copay.io](https://copay.io/#download). Copay Binaries are signed with the key `copay@bitpay.com` – See the section [`How to Verify Copay Signatures`](https://github.com/bitpay/copay#how-to-verify-copay-signatures) for details.
 
+This project was created by BitPay Inc, and it is maintained by BitPay and houndreds of contributors. There is a BitPay branded version of Copay at mobile phone stores, BitPay Wallet, which features integration with the BitPay Visa Debit Card, as its main difference.
+
 For a list of frequently asked questions please visit the [Copay FAQ](https://github.com/bitpay/copay/wiki/COPAY---FAQ).
 
 ## Main Features
 
+- Bitcoin and Bitcoin Cash coin support
 - Multiple wallet creation and management in-app
 - Intuitive, multisignature security for personal or shared wallets
 - Easy spending proposal flow for shared wallets and group payments
@@ -302,6 +305,8 @@ review the [guidelines for contributing](CONTRIBUTING.md).
 - D87947CC8A32D91C @msalcala11
 
 - 612C9C4DDAC47B61 @rastajpa
+
+- F8FC1D9B1B46486D @matiu
 
 ## Support
 
