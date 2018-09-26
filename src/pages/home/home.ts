@@ -309,14 +309,13 @@ export class HomePage {
   }
 
   private updateDesktopOnFocus() {
-    // TODO ELECTRON
-    /* let gui = (window as any).require('nw.gui');
-    let win = gui.Window.get();
+    const { remote } = (window as any).require('electron');
+    const win = remote.getCurrentWindow();
     win.on('focus', () => {
       this.checkClipboard();
       this.getNotifications();
       this.setWallets();
-    });*/
+    });
   }
 
   private openEmailDisclaimer() {
