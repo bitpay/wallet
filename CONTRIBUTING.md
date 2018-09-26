@@ -108,7 +108,13 @@ implementing features, refactoring code, porting to a different language),
 otherwise you risk spending a lot of time working on something that the
 project's developers might not want to merge into the project.
 
-Please adhere to the coding conventions used throughout Copay (indentation, tests, etc.)
+Please adhere to the coding conventions used throughout Copay (indentation, tests, etc.). You can
+check and fix your code patch with:
+
+```
+npm run test:link         # Check if the code matches style rules
+npm run fix:prettier      # Modify files to match style rules 
+```
 
 **IMPORTANT**: By submitting a patch, you agree to allow the project owner to
 license your work under the same license as that used by the project.
