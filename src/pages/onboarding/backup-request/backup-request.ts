@@ -52,7 +52,7 @@ export class BackupRequestPage {
         if (!res) return;
         let title = this.translate.instant('Are you sure you want to skip it?');
         let message = this.translate.instant(
-          'You can backup your wallet later from your wallet settings.'
+          'You can back up your wallet later from your wallet settings.'
         );
         let okText = this.translate.instant('Yes, skip');
         let cancelText = this.translate.instant('Go Back');
