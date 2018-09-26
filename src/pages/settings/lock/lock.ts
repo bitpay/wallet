@@ -126,12 +126,12 @@ export class LockPage {
 
     if (singleLivenetWallet) {
       this.needsBackupMsg = this.translate.instant(
-        'Backup your wallet before using this function'
+        'Back up your wallet before using this function'
       );
       return true;
     } else if (atLeastOneLivenetWallet) {
       this.needsBackupMsg = this.translate.instant(
-        'Backup all your wallets before using this function'
+        'Back up all your wallets before using this function'
       );
       return true;
     } else {
