@@ -134,7 +134,30 @@ export class CoinbasePage {
     if (!this.isElectron) {
       this.externalLinkProvider.open(oauthUrl);
     } else {
-      // TODO ELECTRON
+      // TODO ELECTRON needs to be tested
+      const { remote } = (window as any).require('electron');
+      const BrowserWindow = remote.BrowserWindow;
+      let win = new BrowserWindow({
+        alwaysOnTop: true,
+        center: true
+      });
+      win.once('ready-to-show', () => {
+        win.show();
+        win.focus();
+      });
+      win.loadURL(oauthUrl);
+      win.webContents.on('will-navigate', (_, url) => {
+        this.code = url;
+        this.submitOauthCode(this.code);
+        win.close();
+      });
+
+      win.webContents.on('did-get-redirect-request', (_, _oldUrl, newUrl) => {
+        this.code = newUrl;
+        this.submitOauthCode(this.code);
+        win.close();
+      });
+      // NWJS code
       /* let gui = (window as any).require('nw.gui');
       gui.Window.open(
         oauthUrl,
