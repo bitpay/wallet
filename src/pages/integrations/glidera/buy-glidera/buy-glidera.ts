@@ -40,6 +40,7 @@ export class BuyGlideraPage {
   private amount: number;
   private coin: string;
   public isOpenSelector: boolean;
+  public hideSlideButton: boolean;
 
   constructor(
     private actionSheetProvider: ActionSheetProvider,
@@ -57,6 +58,7 @@ export class BuyGlideraPage {
   ) {
     this.coin = 'btc';
     this.isCordova = this.platformProvider.isCordova;
+    this.hideSlideButton = false;
   }
 
   ionViewWillLeave() {
@@ -85,6 +87,7 @@ export class BuyGlideraPage {
   }
 
   private showErrorAndBack(err): void {
+    this.hideSlideButton = false;
     if (this.isCordova) this.slideButton.isConfirmed(false);
     this.logger.error(err);
     err = err.errors ? err.errors[0].message : err || '';
@@ -94,6 +97,7 @@ export class BuyGlideraPage {
   }
 
   private showError(err): void {
+    this.hideSlideButton = false;
     if (this.isCordova) this.slideButton.isConfirmed(false);
     this.logger.error(err);
     err = err.errors ? err.errors[0].message : err;
@@ -156,6 +160,7 @@ export class BuyGlideraPage {
           return;
         }
 
+        this.hideSlideButton = true;
         this.onGoingProcessProvider.set('buyingBitcoin');
         this.glideraProvider.get2faCode(this.token, (err, tfa) => {
           if (err) {

@@ -46,6 +46,7 @@ export class SellCoinbasePage {
   public isFiat: boolean;
   public priceSensitivity;
   public isOpenSelector: boolean;
+  public hideSlideButton: boolean;
 
   // Platform info
   public isCordova: boolean;
@@ -78,6 +79,7 @@ export class SellCoinbasePage {
     };
     this.network = this.coinbaseProvider.getNetwork();
     this.isCordova = this.platformProvider.isCordova;
+    this.hideSlideButton = false;
   }
 
   ionViewDidLoad() {
@@ -107,6 +109,7 @@ export class SellCoinbasePage {
   }
 
   private showErrorAndBack(err): void {
+    this.hideSlideButton = false;
     if (this.isCordova) this.slideButton.isConfirmed(false);
     this.logger.error(err);
     err = err.errors ? err.errors[0].message : err;
@@ -116,6 +119,7 @@ export class SellCoinbasePage {
   }
 
   private showError(err): void {
+    this.hideSlideButton = false;
     if (this.isCordova) this.slideButton.isConfirmed(false);
     this.logger.error(err);
     err = err.errors ? err.errors[0].message : err;
@@ -362,6 +366,7 @@ export class SellCoinbasePage {
           return;
         }
 
+        this.hideSlideButton = true;
         this.onGoingProcessProvider.set('sellingBitcoin');
         this.coinbaseProvider.init((err, res) => {
           if (err) {

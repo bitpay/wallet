@@ -68,7 +68,8 @@
 </ion-content>
 
 <ion-footer>
-  <page-slide-to-accept #slideButton *ngIf="isCordova" [disabled]="!wallet || !buyRequestInfo || !selectedPaymentMethodId" buttonText="Slide to confirm" (slideDone)="buyConfirm()"></page-slide-to-accept>
+  <page-slide-to-accept #slideButton *ngIf="isCordova" [disabled]="!wallet || !buyRequestInfo || !selectedPaymentMethodId"
+    buttonText="Slide to confirm" (slideDone)="buyConfirm()" [ngClass]="{'slide-confirm-fast slide-confirm-down': hideSlideButton, 'slide-confirm-slow': !hideSlideButton}"></page-slide-to-accept>
   <ion-toolbar *ngIf="!isCordova">
     <button ion-button full class="button-footer" (click)="buyConfirm()" [disabled]="!wallet || !buyRequestInfo || !selectedPaymentMethodId">Confirm purchase</button>
   </ion-toolbar>
