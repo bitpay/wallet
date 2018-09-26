@@ -113,7 +113,7 @@ check and fix your code patch with:
 
 ```
 npm run test:link         # Check if the code matches style rules
-npm run fix:prettier      # Modify files to match style rules 
+npm run fix:prettier      # Modify files to match style rules
 ```
 
 **IMPORTANT**: By submitting a patch, you agree to allow the project owner to
