@@ -244,7 +244,7 @@ export class CopayApp {
       }
 
       if (this.isElectronPlatform()) {
-        // this.handleDeepLinksNW();
+        this.handleDeepLinksElectron();
       }
     } else {
       this.logger.info('No profile exists.');
@@ -414,21 +414,20 @@ export class CopayApp {
     }
   }
 
-  /*  private handleDeepLinksNW() {
-    var gui = (window as any).require('nw.gui');
+  private handleDeepLinksElectron() {
+    const electron = (window as any).require('electron');
+    electron.ipcRenderer.on('open-url-event', (_, url) => {
+      this.processUrl(url);
+      // Used at the startup of Copay NWJS TODO: Electron
+      /* var argv = gui.App.argv;
+        if (argv && argv[0] && !(window as any)._urlHandled) {
+          (window as any)._urlHandled = true;
+          this.handleOpenUrl(argv[0]);
+        } */
+    });
+  }
 
-    // This event is sent to an existent instance of Copay (only for standalone apps)
-    gui.App.on('open', this.onOpenNW.bind(this));
-
-    // Used at the startup of Copay
-    var argv = gui.App.argv;
-    if (argv && argv[0] && !(window as any)._urlHandled) {
-      (window as any)._urlHandled = true;
-      this.handleOpenUrl(argv[0]);
-    }
-  } */
-
-  /*  private onOpenNW(pathData) {
+  private processUrl(pathData): void {
     if (pathData.indexOf('bitcoincash:/') != -1) {
       this.logger.debug('Bitcoin Cash URL found');
       this.handleOpenUrl(pathData.substring(pathData.indexOf('bitcoincash:/')));
@@ -444,7 +443,7 @@ export class CopayApp {
       this.logger.debug('URL found');
       this.handleOpenUrl(pathData);
     }
-  } */
+  }
 
   private isElectronPlatform(): boolean {
     var userAgent = navigator.userAgent.toLowerCase();
