@@ -418,12 +418,6 @@ export class CopayApp {
     const electron = (window as any).require('electron');
     electron.ipcRenderer.on('open-url-event', (_, url) => {
       this.processUrl(url);
-      // Used at the startup of Copay NWJS TODO: Electron
-      /* var argv = gui.App.argv;
-        if (argv && argv[0] && !(window as any)._urlHandled) {
-          (window as any)._urlHandled = true;
-          this.handleOpenUrl(argv[0]);
-        } */
     });
   }
 

@@ -12,6 +12,11 @@ console.log('Desktop: ' + appConfig.nameCase + ' v' + appConfig.version);
 // be closed automatically when the JavaScript object is garbage collected.
 let win;
 
+// Deep linked url
+let deeplinkingUrl;
+
+const isDevMode = process.execPath.match(/[\\/]electron/);
+
 function createWindow() {
   // Create the browser window.
   win = new BrowserWindow({ width: 400, height: 650 });
@@ -26,14 +31,28 @@ function createWindow() {
   );
 
   // Open the DevTools.
-  win.webContents.openDevTools();
-
+  if (isDevMode) {
+    win.webContents.openDevTools();
+  }
   // Emitted when the window is closed.
   win.on('closed', () => {
     // Dereference the window object, usually you would store windows
     // in an array if your app supports multi windows, this is the time
     // when you should delete the corresponding element.
     win = null;
+  });
+
+  win.webContents.on('did-finish-load', () => {
+    // Windows: Handle deeplink url
+    if (process.platform == 'win32') {
+      // Keep only command line / deep linked arguments
+      deeplinkingUrl = process.argv.slice(1);
+    }
+    if (deeplinkingUrl) {
+      setTimeout(() => {
+        win.webContents.send('open-url-event', deeplinkingUrl);
+      }, 1000);
+    }
   });
 }
 
@@ -72,9 +91,11 @@ app.on('activate', () => {
 
 app.on('open-url', function(e, url) {
   e.preventDefault();
-
+  deeplinkingUrl = url;
+  // Wait for main window to be ready
   if (win) {
-    win.webContents.send('open-url-event', url);
+    win.webContents.send('open-url-event', deeplinkingUrl);
+    deeplinkingUrl = null;
     if (win.isMinimized()) {
       win.restore();
     } else {
