@@ -12,7 +12,7 @@ msgstr ""
 "Last-Translator: cmgustavo83\n"
 "Language-Team: German\n"
 "Language: de\n"
-"PO-Revision-Date: 2018-08-30 17:27\n"
+"PO-Revision-Date: 2018-09-26 20:14\n"
 
 msgid "(Trusted)"
 msgstr "(Vertraut)"
@@ -128,8 +128,11 @@ msgstr ""
 msgid "Alternative currency"
 msgstr "Alternative Währung"
 
-msgid "Amazon.com is not available at this moment. Please try back later."
-msgstr "Amazon.com ist zur Zeit nicht erreichbar, bitte versuchen Sie es später nochmal."
+msgid "Amazon.co.jp Gift Cards never expire and can be redeemed towards millions of items at www.amazon.co.jp."
+msgstr ""
+
+msgid "Amazon.com Gift Cards never expire and can be redeemed towards millions of items at www.amazon.com."
+msgstr ""
 
 msgid "Amount"
 msgstr "Betrag"
@@ -146,8 +149,8 @@ msgstr "Betrag zu hoch"
 msgid "An update to this app is available. For your security, please update to the latest version."
 msgstr "Ein Aktualisierung für diese App ist verfügbar. Zu Ihrer Sicherheit bitte auf die neueste Version aktualisieren."
 
-msgid "Anyone with your backup phrase can access or spend your bitcoin."
-msgstr "Jeder mit Ihrer Wiederherstellungsphrase hat Zugriff auf ihre Bitcoins und kann diese ausgeben."
+msgid "Anyone with your recovery phrase can access or spend your bitcoin."
+msgstr ""
 
 msgid "Apply changes"
 msgstr "Änderungen vornehmen"
@@ -155,13 +158,13 @@ msgstr "Änderungen vornehmen"
 msgid "Approximate Bitcoin network fee to transfer wallet's balance (with normal priority)"
 msgstr "Ungefähre Bitcoin Netzwerkgebühr um das Wallet Guthaben zu übertragen (mit normaler Priorität)"
 
-msgid "Archive"
+msgid "Archive Card"
 msgstr ""
 
-msgid "Archived"
+msgid "Archive this Card?"
 msgstr ""
 
-msgid "Archiving this Gift Card will remove it from this view. You will still be able to see it in the Mercado Livre settings."
+msgid "Archived Cards"
 msgstr ""
 
 msgid "Are you being watched?"
@@ -194,17 +197,20 @@ msgstr "Verfügbar"
 msgid "Average confirmation time"
 msgstr "Durchschnittliche Bestätigungzeit"
 
+msgid "Awaiting payment to confirm"
+msgstr ""
+
+msgid "Back up all your wallets before using this function"
+msgstr ""
+
+msgid "Back up your wallet before using this function"
+msgstr ""
+
 msgid "Backup"
 msgstr "Sicherung"
 
-msgid "Backup all your wallets before using this function"
-msgstr "Sichern Sie ihr Wallet, bevor Sie diese Funktion nutzen"
-
 msgid "Backup wallet"
 msgstr "Sicherung der Wallet"
-
-msgid "Backup your wallet before using this function"
-msgstr "Sichern Sie ihr Wallet, bevor Sie diese Funktion nutzen"
 
 msgid "Bad wallet invitation"
 msgstr "Ungültige Einladung"
@@ -219,6 +225,9 @@ msgid "Because you are sending the maximum amount contained in this wallet, the 
 msgstr ""
 
 msgid "Before retrieving your wallet address, it's recommended that you first write down your recovery phrase and store it securely so that your wallet can be recovered in the case your device was lost or stolen."
+msgstr ""
+
+msgid "Below Minimum Amount"
 msgstr ""
 
 msgid "BitPay Card URI"
@@ -263,9 +272,6 @@ msgstr "Bitcoin-Netzwerk Gebührenübersicht"
 msgid "Bitcoin transactions include a fee collected by miners on the network."
 msgstr "Bitcoin Transaktionen enthalten eine Gebühr für die \"Miners\" im Netzwerk."
 
-msgid "Bought {{ amount }}"
-msgstr ""
-
 msgid "Broadcast Payment"
 msgstr "Zahlung übermitteln"
 
@@ -275,12 +281,6 @@ msgstr "Gesendet"
 msgid "Broadcasting transaction..."
 msgstr "Übermittlung der Transaktion..."
 
-msgid "Buy Gift Card"
-msgstr "Eine Geschenkkarte kaufen"
-
-msgid "Buy a Gift Card"
-msgstr ""
-
 msgid "Buying Bitcoin..."
 msgstr "Kaufe Bitcoins..."
 
@@ -288,9 +288,6 @@ msgid "Buying Gift Card..."
 msgstr "Geschenkkarte kaufen..."
 
 msgid "By providing your email address, you give explicit consent to BitPay to use your email address to send you email notifications about payments."
-msgstr ""
-
-msgid "CANCELED"
 msgstr ""
 
 msgid "Calculating fee..."
@@ -305,9 +302,6 @@ msgstr "Abbruch"
 msgid "Cancel invitation"
 msgstr "Einladung abbrechen"
 
-msgid "Canceled"
-msgstr ""
-
 msgid "Canceling Gift Card..."
 msgstr "Kauf der Geschenkkarte wird abgebrochen..."
 
@@ -316,6 +310,9 @@ msgstr ""
 
 msgid "Cannot join the same wallet more that once"
 msgstr "An einem Wallet kann nicht mehrfach teilgenommen werden"
+
+msgid "Card Archived"
+msgstr ""
 
 msgid "Card Settings"
 msgstr "Karteneinstellungen"
@@ -334,9 +331,6 @@ msgstr "Überprüfung läuft..."
 
 msgid "Choose a backup file from your computer"
 msgstr "Bitte eine Sicherungsdatei vom Computer wählen"
-
-msgid "Claim code:"
-msgstr ""
 
 msgid "Clear"
 msgstr "Leeren"
@@ -425,6 +419,9 @@ msgstr "Weiter"
 msgid "Contribute translations"
 msgstr "Trage zu Übersetzungen bei"
 
+msgid "Copay Session Logs. Be careful, this could contain sensitive private data"
+msgstr ""
+
 msgid "Copay only supports Bitcoin Cash using new version numbers addresses"
 msgstr "Copay unterstützt nur die neue Version der Bitcoin Cash adressen"
 
@@ -452,6 +449,9 @@ msgstr "In die Zwischenablage kopiert"
 msgid "Copied {coin} address"
 msgstr ""
 
+msgid "Copied: {claimCode}"
+msgstr ""
+
 msgid "Copy this text as it is to a safe place (notepad or email)"
 msgstr "Diesen Text an einem sichern Ort einfügen (Notepad oder E-Mail)"
 
@@ -461,14 +461,8 @@ msgstr "In die Zwischenablage kopieren"
 msgid "Could Not Fetch Payment: Check if it is still valid"
 msgstr "Zahlung konnte nicht ausgeführt werden: Bitte prüfen Sie die Gültigkeit"
 
-msgid "Could not access Gift Card Service"
-msgstr "Konnte nicht auf den Geschenk Karten Sevice zugreifen"
-
 msgid "Could not access the wallet at the server. Please check:"
 msgstr "Kein Zugriff auf Wallet des Servers. Überprüfen Sie bitte:"
-
-msgid "Could not access to Amazon.com"
-msgstr "Konnte nicht auf Amazon.com zugreifen"
 
 msgid "Could not access wallet"
 msgstr "Auf Wallet konnte nicht zugegriffen werden"
@@ -506,8 +500,8 @@ msgstr "Zahlungsvorschlag konnte nicht gelöscht werden"
 msgid "Could not encrypt wallet"
 msgstr ""
 
-msgid "Could not fetch the invoice"
-msgstr "Die Rechnung konnte nicht empfangen werden"
+msgid "Could not get claim code. Please contact BitPay support."
+msgstr ""
 
 msgid "Could not get dynamic fee"
 msgstr "Dynamische Gebühr konnten nicht abgerufen werden"
@@ -520,9 +514,6 @@ msgstr "Die Gebühr konnte nicht ermittelt werden"
 
 msgid "Could not get the Addressbook"
 msgstr "Adressbuch nicht erhalten"
-
-msgid "Could not get the invoice"
-msgstr "Konnte die Rechnung nicht empfangen"
 
 msgid "Could not get transactions"
 msgstr "Transaktionen konnten nicht gefunden werden"
@@ -575,9 +566,6 @@ msgstr "Erstellt"
 msgid "Created by"
 msgstr "Erstellt von"
 
-msgid "Created {{card.date | amTimeAgo}}"
-msgstr "Erstellt am {{card.date | amTimeAgo}}"
-
 msgid "Creating Gift Card..."
 msgstr "Erstellung der Geschenkkarte..."
 
@@ -586,6 +574,9 @@ msgstr "Wallet erstellen..."
 
 msgid "Creating transaction..."
 msgstr "Transaktion erstellen..."
+
+msgid "Current Cards"
+msgstr ""
 
 msgid "Current fee rate for this policy"
 msgstr "Aktuelle Gebühr für dieses Verfahren"
@@ -635,6 +626,9 @@ msgstr "Details"
 msgid "Disable notifications"
 msgstr ""
 
+msgid "Disable persistent logs"
+msgstr ""
+
 msgid "Disabled"
 msgstr "Deaktiviert"
 
@@ -653,6 +647,9 @@ msgstr "Erledigt"
 msgid "Download"
 msgstr "Herunterladen"
 
+msgid "Download logs"
+msgstr ""
+
 msgid "Duplicate"
 msgstr "Duplizieren"
 
@@ -662,11 +659,8 @@ msgstr ""
 msgid "Duplicating wallet..."
 msgstr "Das Wallet wird dubliziert..."
 
-msgid "EXPIRED"
+msgid "Each bitcoin wallet can generate billions of addresses from your 12-word recovery phrase. A new address is automatically generated and shown each time you receive a payment."
 msgstr ""
-
-msgid "Each bitcoin wallet can generate billions of addresses from your 12-word backup. A new address is automatically generated and shown each time you receive a payment."
-msgstr "Jede Bitcoin-Wallet kann Milliarden von Adressen aus Ihrem 12-Wort Backup erzeugen. Jedesmal wenn Sie eine Zahlung erhalten wird neue Adresse automatisch generiert und dargestellten."
 
 msgid "Economy"
 msgstr "Wirtschaftlich"
@@ -677,9 +671,6 @@ msgstr "Bearbeiten"
 msgid "Email"
 msgstr "E-Mail"
 
-msgid "Email address is needed to purchase Gift Cards"
-msgstr ""
-
 msgid "Empty addresses limit reached. New addresses cannot be generated."
 msgstr "Obergrenze für leere Adressen erreicht. Neue Adressen können nicht generiert werden."
 
@@ -689,14 +680,14 @@ msgstr "Aktiviere den Kamerazugriff in Ihren Geräteeinstellungen."
 msgid "Enable email notifications"
 msgstr "Aktiviere E-Mail Benachrichtigung"
 
+msgid "Enable persistent logs"
+msgstr ""
+
 msgid "Enable push notifications"
 msgstr "Pushbenachrichtigungen aktivieren"
 
 msgid "Enable the camera to get started."
 msgstr "Aktivieren Sie die Kamera um loszulegen."
-
-msgid "Encrypt password needed"
-msgstr "Verschlüsselungspasswort benötigt"
 
 msgid "Encryption can protect your funds if this device is stolen or compromised by malicious software."
 msgstr "Eine Verschlüsselung kann Ihre Einlagen sichern, Fall dieses Gerät gestohlen oder schädlicher Software befallen wird."
@@ -751,9 +742,6 @@ msgstr "Fehler"
 
 msgid "Error adding new entry"
 msgstr "Während des Hinzufügens eines neuen Eintrags trat ein Fehler auf"
-
-msgid "Error creating the invoice"
-msgstr "Fehler beim erstellen der Rechnung"
 
 msgid "Error creating wallet"
 msgstr "Fehler beim Erstellen des Wallets"
@@ -814,9 +802,6 @@ msgstr "Erweiterte öffentliche Schlüssel"
 
 msgid "Extracting Wallet information..."
 msgstr "Extrahiere die Wallet informationen..."
-
-msgid "FAILURE"
-msgstr ""
 
 msgid "Failed"
 msgstr "Fehlgeschlagen"
@@ -914,25 +899,7 @@ msgstr "Entgelt-Level werden abgerufen..."
 msgid "Gift Card"
 msgstr "Geschenkkarte"
 
-msgid "Gift Card Amount"
-msgstr "Geschenkkarten Betrag"
-
-msgid "Gift Card Amount:"
-msgstr ""
-
-msgid "Gift Card is not available to use anymore"
-msgstr "Die Geschenkkarte kann nicht mehr genutzt werden"
-
-msgid "Gift Cards are only redeemable on Amazon.co.jp (Japan website)."
-msgstr ""
-
-msgid "Gift Cards are only redeemable on Amazon.com (US website)."
-msgstr ""
-
-msgid "Gift card expired"
-msgstr "Die Geschenkkarte ist abgelaufen"
-
-msgid "Gift card generated and ready to use."
+msgid "Gift card canceled"
 msgstr ""
 
 msgid "Give us feedback"
@@ -947,11 +914,11 @@ msgstr "Zurück"
 msgid "Got it"
 msgstr "Habe verstanden"
 
+msgid "Have you redeemed the entire balance of this gift card?"
+msgstr ""
+
 msgid "Having problems with a ShapeShift?"
 msgstr "Haben Sie Probleme mit einem ShapeShift?"
-
-msgid "Help & Support"
-msgstr "Hilfe & Support"
 
 msgid "Help & support"
 msgstr "Hilfe & Support"
@@ -992,8 +959,8 @@ msgstr "Ich habe es aufgeschrieben"
 msgid "I understand"
 msgstr "Ich verstehe"
 
-msgid "I understand that if this app is moved to another device or deleted, my bitcoin can only be recovered with the backup phrase"
-msgstr "Ich verstehe, dass wenn diese App auf ein anderes Gerät verschoben oder gelöscht wird, meine Bitcoins nur mit der Wiederherstellungsphrase wiederhergestellt werden können"
+msgid "I understand that if this app is moved to another device or deleted, my bitcoin can only be recovered with the recovery phrase"
+msgstr ""
 
 msgid "I understand that my funds are held securely on this device, not by a company"
 msgstr "Ich verstehe, dass mein Geld auf diesem Gerät und nicht von einem Unternehmen gesichert wird"
@@ -1010,6 +977,9 @@ msgstr "Ich bin mir sicher"
 msgid "I'm very happy"
 msgstr ""
 
+msgid "I've used this card"
+msgstr ""
+
 msgid "If enabled, Bitcoin Cash addresses will be shown using Copay style address, and not the new cashaddr format."
 msgstr "Wenn aktiviert, werden Bargeld Bitcoin-Adressen mit Copay Stil Adresse und nicht die neue Cashaddr-Format angezeigt."
 
@@ -1022,14 +992,17 @@ msgstr ""
 msgid "If this device is replaced or this app is deleted, neither you nor BitPay can recover your funds without a backup."
 msgstr ""
 
+msgid "If you disable the persistent logs, all the logs registered so far will be deleted. However, you can still see the session logs on this screen."
+msgstr ""
+
 msgid "If you have funds stored on a website then you should move them into a secure wallet... like this one!"
 msgstr ""
 
-msgid "If you need to send to \"old\" addresses, and you are SURE those are BCH addresses, you can \"translate\" them using the BCH Translator tool."
+msgid "If you need to send to \"old\" addresses (like the one you just pasted), and you are SURE those are BCH addresses, you can \"translate\" them using the BCH Translator tool and paste the corresponding address in CashAddr format for that \"old\" address."
 msgstr ""
 
-msgid "If you take a screenshot, your backup may be viewed by other apps. You can make a safe backup with physical paper and a pen."
-msgstr "Wenn Sie einen Screenshot erstellen, kann die Sicherung von anderen Apps angesehen werden. Sie können ein sicheres Backup mit Papier und Stift erstellen."
+msgid "If you take a screenshot, your recovery phrase may be viewed by other apps. You can make a safe backup with physical paper and a pen."
+msgstr ""
 
 msgid "Import Words"
 msgstr ""
@@ -1040,11 +1013,8 @@ msgstr "Wallet importieren"
 msgid "Importing Wallet..."
 msgstr "Wallet wird importiert..."
 
-msgid "In order to verify your wallet backup, please type your password."
-msgstr "Um die Sicherung der Wallet zu überprüfen, geben Sie bitte Ihr Passwort ein."
-
-msgid "Inactive"
-msgstr "Inaktiv"
+msgid "In order to verify your wallet recovery phrase, please type your password."
+msgstr ""
 
 msgid "Incomplete"
 msgstr "Unvollständig"
@@ -1085,9 +1055,6 @@ msgstr "Ungültige Ableitungsstruktur"
 msgid "Invitation Code"
 msgstr ""
 
-msgid "Invoice expired"
-msgstr "Rechnung abgelaufen"
-
 msgid "Is this correct?"
 msgstr "Ist das richtig?"
 
@@ -1103,8 +1070,8 @@ msgstr ""
 msgid "It's a good idea to avoid reusing addresses - this both protects your privacy and keeps your bitcoins secure against hypothetical attacks by quantum computers."
 msgstr "Es ist eine gute Idee Adressen nicht wiederzuverwenden - dies schützt Ihre Privatsphäre und hält Ihre Bitcoins vor hypothetischen Angriffen durch Quanten-Computern sicher."
 
-msgid "It's important that you write your backup phrase down correctly. If something happens to your wallet, you'll need this backup to recover your money. Please review your backup and try again."
-msgstr "Es ist wichtig dass Sie Ihre Wiederherstellungsphrase korrekt aufschreiben. Wenn etwas mit Ihrer Wallet passiert benötigen Sie diese Sicherung um Ihr Geld wiederherstellen zu können. Bitte überprüfen Sie Ihre Sicherung und versuchen Sie es erneut."
+msgid "It's important that you write your recovery phrase down correctly. If something happens to your wallet, you'll need it to recover your money. Please review and try again."
+msgstr ""
 
 msgid "Join shared wallet"
 msgstr "Gemeinschaftliches Wallet"
@@ -1139,8 +1106,8 @@ msgstr ""
 msgid "Leave Feedback"
 msgstr ""
 
-msgid "Let's verify your backup phrase."
-msgstr "Überprüfen Sie Ihre Wiederherstellungsphrase."
+msgid "Let's verify your recovery phrase."
+msgstr ""
 
 msgid "Linked"
 msgstr "Verbunden"
@@ -1180,12 +1147,6 @@ msgstr "Ich"
 
 msgid "Memo"
 msgstr "Notiz"
-
-msgid "Mercado Livre Brazil Gift Cards"
-msgstr "Mercado Livre Brasilien Geschenkkarten"
-
-msgid "Mercadolibre Gift Card Service is not available at this moment. Please try back later."
-msgstr "Der Mercadolibre Geschenk Card Service ist momentan nicht verfügbar. Bitte versuchen Sie es später."
 
 msgid "Merchant Message"
 msgstr "Händlernachricht"
@@ -1264,9 +1225,6 @@ msgstr "Nein"
 
 msgid "No Private Key"
 msgstr ""
-
-msgid "No access key defined"
-msgstr "Kein Zugangsschlüssel definiert"
 
 msgid "No backup, no bitcoin."
 msgstr "Keine Sicherung, keine Bitcoins."
@@ -1379,10 +1337,10 @@ msgstr "Auf diesem Bildschirm sehen Sie alle Ihre Wallets, Konten und Guthaben."
 msgid "Only redeemable on Mercado Livre (Brazil)"
 msgstr "Nur einlösbar auf Mercado Livre (Brasilien)"
 
-msgid "Only redeemable on www.amazon.co.jp (Japan website)."
+msgid "Only redeemable on www.amazon.co.jp (Japan website)"
 msgstr ""
 
-msgid "Only redeemable on www.amazon.com (US website)."
+msgid "Only redeemable on www.amazon.com (USA website)"
 msgstr ""
 
 msgid "Open"
@@ -1415,9 +1373,6 @@ msgstr "BitPay-Karte bestellen"
 msgid "Ouch!"
 msgstr "Autsch!"
 
-msgid "PENDING"
-msgstr ""
-
 msgid "PIN"
 msgstr "PIN"
 
@@ -1438,6 +1393,9 @@ msgstr "Passwörter stimmen nicht überein"
 
 msgid "Paste the backup plain text code"
 msgstr "Den Klartext der Sicherung einfügen"
+
+msgid "Paste this code on {website}. This gift card cannot be recovered if your claim code is lost."
+msgstr ""
 
 msgid "Pay 0% fees to turn bitcoin into dollars."
 msgstr "Zahle 0 % Gebühren um Bitcoins in Dollar zu wechseln."
@@ -1496,11 +1454,11 @@ msgstr "In Arbeit"
 msgid "Pending Proposals"
 msgstr "Anstehende Vorschläge"
 
-msgid "Pending to confirmation"
-msgstr ""
-
 msgid "Permanently delete this wallet."
 msgstr "Wallet dauerhaft löschen."
+
+msgid "Persistent logs"
+msgstr ""
 
 msgid "Personal Wallet"
 msgstr "Persönliches Wallet"
@@ -1583,14 +1541,8 @@ msgstr "Vorschlag erstellt"
 msgid "Proposals"
 msgstr "Vorschläge"
 
-msgid "Purchase Amount is limited to {{limitPerDay}} {{currency}} per day"
+msgid "Purchase Limit Reached"
 msgstr ""
-
-msgid "Purchase amount must be a value between 50 and 2000"
-msgstr "Der Kaufbetrag muss einen Wert zwischen 50 und 2000 haben"
-
-msgid "Purchases with this cryptocurrency is not enabled"
-msgstr "Einkäufe mit dieser Kryptowährung sind nicht ermöglicht"
 
 msgid "Push notifications for {{appName}} are currently disabled. Enable them in the Settings app."
 msgstr "Push-Benachrichtigungen für {{appName}} sind derzeit deaktiviert. Aktivieren Sie diese in den Einstellungen."
@@ -1670,9 +1622,6 @@ msgstr "Release-Informationen"
 msgid "Remove"
 msgstr "Entfernen"
 
-msgid "Removing this Gift Card will remove all their data from this device."
-msgstr ""
-
 msgid "Repeat the password"
 msgstr "Passwort wiederholen"
 
@@ -1702,9 +1651,6 @@ msgstr ""
 
 msgid "Retry camera"
 msgstr "Kamera nochmals versuchen"
-
-msgid "STILL PENDING"
-msgstr ""
 
 msgid "Save"
 msgstr "Speichern"
@@ -1745,12 +1691,6 @@ msgstr "Suchen Sie Ihre Währung"
 msgid "Security"
 msgstr "Sicherheit"
 
-msgid "See invoice"
-msgstr "Rechnung einsehen"
-
-msgid "See invoice &rarr;"
-msgstr ""
-
 msgid "See transaction"
 msgstr "Transaktionen durchsuchen"
 
@@ -1787,6 +1727,9 @@ msgstr "Feedback senden"
 msgid "Send from"
 msgstr "Senden von"
 
+msgid "Send logs by email"
+msgstr ""
+
 msgid "Send payment to this address"
 msgstr "Senden sie die Zahlung an diese Adresse"
 
@@ -1795,6 +1738,9 @@ msgstr "Senden"
 
 msgid "Sending 2FA code..."
 msgstr "2FA Code senden..."
+
+msgid "Sending From"
+msgstr ""
 
 msgid "Sending feedback..."
 msgstr "Feedback wird gesendet..."
@@ -1819,9 +1765,6 @@ msgstr "Guthaben senden"
 
 msgid "Server response could not be verified"
 msgstr "Antwort des Servers konnte nicht verifiziert werden"
-
-msgid "Service not available"
-msgstr "Dienst nicht verfügbar"
 
 msgid "Services"
 msgstr "Services"
@@ -1880,8 +1823,8 @@ msgstr "Signaturen wurden vom Server abgelehnt"
 msgid "Signing transaction..."
 msgstr "Transaktion wird signiert..."
 
-msgid "Since only you control your money, you’ll need to save your backup phrase in case this app is deleted."
-msgstr "Da nur Sie Ihr Geld kontrollieren müssen Sie Ihre Wiederherstellungsphrase gut sichern, für den Fall dass die App gelöscht wird."
+msgid "Since only you control your money, you’ll need to save your recovery phrase in case this app is deleted."
+msgstr ""
 
 msgid "Single address"
 msgstr "SingleShare Adresse"
@@ -1920,15 +1863,6 @@ msgid "Start"
 msgstr "Start"
 
 msgid "Status"
-msgstr ""
-
-msgid "Status:"
-msgstr ""
-
-msgid "Still pending"
-msgstr "Noch unerledigt"
-
-msgid "Still waiting confirmation (Use higher fees setting to faster delivery)"
 msgstr ""
 
 msgid "Submit Feature Request"
@@ -2021,6 +1955,12 @@ msgstr "Die Zahlung wurde vom Ersteller entfernt"
 msgid "The private key of this wallet is not available. The export allows to check the wallet balance, transaction history, and create spend proposals from the export. However, does not allow to approve (sign) proposals, so funds will not be accessible from the export."
 msgstr ""
 
+msgid "The purchase amount is limited to {maxAmount} {currency} per day. Please modify your amount."
+msgstr ""
+
+msgid "The purchase amount must be at least {minAmount} {currency}. Please modify your amount."
+msgstr ""
+
 msgid "The request could not be understood by the server"
 msgstr "Die Anforderung konnte nicht vom Server interpretiert werden"
 
@@ -2041,9 +1981,6 @@ msgstr ""
 
 msgid "There is an error in the form"
 msgstr "Es ist ein Fehler im Formular aufgetreten"
-
-msgid "There was a failure to the create gift card. Please, contact BitPay support."
-msgstr ""
 
 msgid "There's obviously something we're doing wrong. How could we improve your experience?"
 msgstr "Es gibt offensichtlich etwas das wir falsch machen. Wie können wir Ihr Erlebnis verbessern?"
@@ -2237,6 +2174,9 @@ msgstr "Ansicht"
 msgid "View Confirmation Status"
 msgstr "Bestätigungsstatus ansehen"
 
+msgid "View Invoice"
+msgstr ""
+
 msgid "View Privacy Policy"
 msgstr ""
 
@@ -2255,17 +2195,8 @@ msgstr "Alle Adressen anzeigen"
 msgid "View on blockchain"
 msgstr "Auf blockchain anzeigen"
 
-msgid "Visit Amazon.co.jp"
-msgstr ""
-
-msgid "Visit Amazon.com"
-msgstr ""
-
 msgid "Visit ShapeShift.io"
 msgstr "Besuchen Sie ShapeShift.io"
-
-msgid "Visit mercadolivre.com.br"
-msgstr "Besuchen Sie mercadolivre.com.br"
 
 msgid "WARNING: Key derivation is not working on this device/wallet. Actions cannot be performed on this wallet."
 msgstr "Warnung: Ableitung der Schlüssel funktioniert nicht auf diesem Gerät/Wallet. Aktionen können nicht mit dieser Wallet durchgeführt werden."
@@ -2411,14 +2342,14 @@ msgstr ""
 msgid "Write a Review"
 msgstr ""
 
-msgid "Wrong encrypt password"
-msgstr "Aktuelles Passwort falsch"
-
 msgid "Wrong number of recovery words:"
 msgstr "Falsche Anzahl von Wiederherstellungswörtern:"
 
 msgid "Wrong password"
 msgstr "Falsches Passwort"
+
+msgid "YES"
+msgstr ""
 
 msgid "Yes"
 msgstr "Ja"
@@ -2429,7 +2360,10 @@ msgstr ""
 msgid "You are trying to send ({amount} {coin}) more than what your wallet contains. Please enter a lower amount or send max."
 msgstr ""
 
-msgid "You can create a backup later from your wallet settings."
+msgid "You can back up your wallet later from your wallet settings."
+msgstr ""
+
+msgid "You can continue to view your archived cards here if you need to access them."
 msgstr ""
 
 msgid "You can make contributions by signing up on our Crowdin community translation website. We’re looking forward to hearing from you!"
@@ -2444,11 +2378,14 @@ msgstr "Sie können auf GitHub die neuesten Entwicklungen ansehen und zu dieser 
 msgid "You can spend bitcoin at millions of websites and stores worldwide."
 msgstr "Sie können Bitcoins auf Millionen von Webseiten und Shops weltweit ausgeben."
 
-msgid "You can still export it from Advanced &gt; Export."
-msgstr "Sie können es auch exportieren aus dem Erweiterten &gt; Export."
+msgid "You can still export it from \"Export Wallet\" option."
+msgstr ""
 
 msgid "You can trade it for other currencies like US Dollars, Euros, or Pounds."
 msgstr "Sie können auch mit andere Währungen wie US-Dollar, Euro oder Pfund handeln."
+
+msgid "You can use your Mercado Livre gift cards on your Mercado Pago account for everyday expenses like utilities and metro rides."
+msgstr ""
 
 msgid "You control your bitcoin."
 msgstr "Sie kontrollieren Ihre Bitcoins."
@@ -2459,14 +2396,8 @@ msgstr "Sie konnte die Transaktion später in Ihren Brieftasche-Details anmelden
 msgid "You should not set a fee higher than {{maxFeeRecommended}} satoshis/byte."
 msgstr "Du solltest keine Gebür über {{maxFeeRecommended}} satoshis/byte setzen."
 
-msgid "Your Archived Gift Cards"
-msgstr ""
-
 msgid "Your BitPay Card is ready. Add funds to your card to start using it at stores and ATMs worldwide."
 msgstr "Ihre Bitcoin Card ist bereit, fügen sie Guthaben hinzu um sie in Läden und Banken weltweit zu nutzen."
-
-msgid "Your Gift Cards"
-msgstr "Ihre Gutscheinkarten"
 
 msgid "Your bitcoin wallet is ready!"
 msgstr "Ihre Bitcoin-Wallet ist fertig!"
@@ -2479,12 +2410,6 @@ msgstr "Ihre Gebür ist niedriger als sie empfohlen wird."
 
 msgid "Your name"
 msgstr "Ihr Name"
-
-msgid "Your purchase could not be completed"
-msgstr ""
-
-msgid "Your purchase was added to the list of pending"
-msgstr ""
 
 msgid "Your wallet address is similar to a bank account number. You can add funds to your wallet by withdrawing funds you may have stored on an exchange to your wallet address. Or other {coinName} users can send you money by scanning your QR code."
 msgstr ""
@@ -2525,20 +2450,11 @@ msgstr ""
 msgid "{coinName} miner fees unusually high"
 msgstr ""
 
-msgid "{{amountUnitStr}} Gift Card"
-msgstr ""
-
 msgid "{{appName}} depends on Bitcore Wallet Service (BWS) for blockchain information, networking and Copayer synchronization. The default configuration points to https://bws.bitpay.com (BitPay's public BWS instance)."
 msgstr "{{appName}} hängt von Bitcore Wallet Service (BWS) ab bezüglich Blockchain Informationen, Vernetzung und Copayer Synchronisation. Die Standard Konfiguration verweist auf https://bws.bitpay.com (BitPays öffentlicher BWS Instanz)."
 
-msgid "{{btx.feeRateStr}} of the total amount"
-msgstr "{{btx.feeRateStr}} des Gesamtbetrages"
-
 msgid "{{fee}} {{coin}} will be deducted for bitcoin networking fees."
 msgstr ""
-
-msgid "{{tx.feeRateStr}} of the total amount"
-msgstr "{{tx.feeRateStr}} des Gesamtbetrages"
 
 msgid "{{updatingTxHistoryProgress}} transactions downloaded"
 msgstr "{{updatingTxHistoryProgress}} Transaktionen werden heruntergeladen"
