@@ -216,16 +216,16 @@ msgstr ""
 msgid "Awaiting payment to confirm"
 msgstr ""
 
+msgid "Back up all your wallets before using this function"
+msgstr ""
+
+msgid "Back up your wallet before using this function"
+msgstr ""
+
 msgid "Backup"
 msgstr ""
 
-msgid "Backup all your wallets before using this function"
-msgstr ""
-
 msgid "Backup wallet"
-msgstr ""
-
-msgid "Backup your wallet before using this function"
 msgstr ""
 
 msgid "Bad wallet invitation"
@@ -2518,7 +2518,7 @@ msgid ""
 "contains. Please enter a lower amount or send max."
 msgstr ""
 
-msgid "You can backup your wallet later from your wallet settings."
+msgid "You can back up your wallet later from your wallet settings."
 msgstr ""
 
 msgid ""
@@ -2542,7 +2542,7 @@ msgstr ""
 msgid "You can spend bitcoin at millions of websites and stores worldwide."
 msgstr ""
 
-msgid "You can still export it from Advanced &gt; Export."
+msgid "You can still export it from \"Export Wallet\" option."
 msgstr ""
 
 msgid "You can trade it for other currencies like US Dollars, Euros, or Pounds."
