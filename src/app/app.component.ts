@@ -4,6 +4,7 @@ import { ScreenOrientation } from '@ionic-native/screen-orientation';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
 import { UserAgent } from '@ionic-native/user-agent';
+import { TranslateService } from '@ngx-translate/core';
 import {
   Config,
   Events,
@@ -14,6 +15,7 @@ import {
 import { Observable, Subscription } from 'rxjs';
 
 // providers
+import { ActionSheetProvider } from '../providers/action-sheet/action-sheet';
 import { AmazonProvider } from '../providers/amazon/amazon';
 import { AppProvider } from '../providers/app/app';
 import { BitPayCardProvider } from '../providers/bitpay-card/bitpay-card';
@@ -116,7 +118,9 @@ export class CopayApp {
     private walletTabsProvider: WalletTabsProvider,
     private renderer: Renderer,
     private userAgent: UserAgent,
-    private device: Device
+    private device: Device,
+    private translate: TranslateService,
+    private actionSheetProvider: ActionSheetProvider
   ) {
     this.initializeApp();
   }
@@ -399,6 +403,13 @@ export class CopayApp {
   private handleOpenUrl(url: string) {
     if (!this.incomingDataProvider.redir(url)) {
       this.logger.warn('Unknown URL! : ' + url);
+      const msg = this.translate.instant('Unknown URL');
+      const title = this.translate.instant('Error');
+      const errorInfoSheet = this.actionSheetProvider.createInfoSheet(
+        'default-error',
+        { msg, title }
+      );
+      errorInfoSheet.present();
     }
   }
 
