@@ -79,6 +79,8 @@ export class GlideraSettingsPage {
       .then(res => {
         if (res) {
           this.glideraProvider.remove();
+          this.showInHome = false;
+          this.showInHomeSwitch();
           this.app.getRootNavs()[0].setRoot(TabsPage);
         }
       });

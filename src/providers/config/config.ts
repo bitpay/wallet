@@ -181,8 +181,8 @@ const configDefault: Config = {
 
   // External services
   showIntegration: {
-    coinbase: true,
-    glidera: true,
+    coinbase: false,
+    glidera: false,
     debitcard: true,
     amazon: true,
     mercadolibre: true,
