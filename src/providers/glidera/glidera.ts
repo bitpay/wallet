@@ -620,16 +620,20 @@ export class GlideraProvider {
   }
 
   public register() {
+    let show: boolean = false;
     this.persistenceProvider
       .getGlideraToken(this.credentials.NETWORK)
       .then(token => {
+        if (token) {
+          show = true;
+        }
         this.homeIntegrationsProvider.register({
           name: 'glidera',
           title: 'Glidera',
           icon: 'assets/img/glidera/glidera-icon.png',
           location: 'US Only',
           page: 'GlideraPage',
-          show: !!this.configProvider.get().showIntegration['glidera'],
+          show: !!this.configProvider.get().showIntegration['glidera'] || show,
           linked: !!token
         });
       });

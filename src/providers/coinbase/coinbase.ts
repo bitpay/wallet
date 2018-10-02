@@ -1316,16 +1316,22 @@ export class CoinbaseProvider {
     });
   }
 
-  public register() {
-    this.isActive(isActive => {
-      this.homeIntegrationsProvider.register({
-        name: 'coinbase',
-        title: 'Coinbase',
-        icon: 'assets/img/coinbase/coinbase-icon.png',
-        location: '33 Countries',
-        page: 'CoinbasePage',
-        show: !!this.configProvider.get().showIntegration['coinbase'],
-        linked: isActive
+  public register(): void {
+    let show: boolean = false;
+    this.getStoredToken(accessToken => {
+      if (accessToken) {
+        show = true;
+      }
+      this.isActive(isActive => {
+        this.homeIntegrationsProvider.register({
+          name: 'coinbase',
+          title: 'Coinbase',
+          icon: 'assets/img/coinbase/coinbase-icon.png',
+          location: '33 Countries',
+          page: 'CoinbasePage',
+          show: !!this.configProvider.get().showIntegration['coinbase'] || show,
+          linked: isActive
+        });
       });
     });
   }
