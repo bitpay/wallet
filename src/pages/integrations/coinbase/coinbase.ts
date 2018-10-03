@@ -33,7 +33,7 @@ export class CoinbasePage {
   public showOauthForm: boolean;
   public oauthCodeForm: FormGroup;
 
-  private isElectron: boolean = false; // TODO: desktop
+  private isElectron: boolean;
   private isCordova: boolean;
 
   constructor(
@@ -130,52 +130,30 @@ export class CoinbasePage {
   }
 
   public openAuthenticateWindow(): void {
-    let oauthUrl = this.getAuthenticateUrl();
+    const oauthUrl = this.getAuthenticateUrl();
     if (!this.isElectron) {
       this.externalLinkProvider.open(oauthUrl);
     } else {
-      // TODO ELECTRON needs to be tested
       const { remote } = (window as any).require('electron');
       const BrowserWindow = remote.BrowserWindow;
-      let win = new BrowserWindow({
+      const win = new BrowserWindow({
         alwaysOnTop: true,
-        center: true
+        center: true,
+        webPreferences: { nodeIntegration: false }
       });
       win.once('ready-to-show', () => {
         win.show();
         win.focus();
       });
       win.loadURL(oauthUrl);
-      win.webContents.on('will-navigate', (_, url) => {
-        this.code = url;
-        this.submitOauthCode(this.code);
-        win.close();
-      });
-
-      win.webContents.on('did-get-redirect-request', (_, _oldUrl, newUrl) => {
-        this.code = newUrl;
-        this.submitOauthCode(this.code);
-        win.close();
-      });
-      // NWJS code
-      /* let gui = (window as any).require('nw.gui');
-      gui.Window.open(
-        oauthUrl,
-        {
-          focus: true,
-          position: 'center'
-        },
-        new_win => {
-          new_win.on('loaded', () => {
-            let title = new_win.window.document.title;
-            if (title.indexOf('Coinbase') == -1) {
-              this.code = title;
-              this.submitOauthCode(this.code);
-              new_win.close();
-            }
-          });
+      win.webContents.on('did-finish-load', () => {
+        const title = win.webContents.getTitle();
+        if (title.indexOf('Coinbase') == -1) {
+          this.code = title;
+          this.submitOauthCode(this.code);
+          win.close();
         }
-      ); */
+      });
     }
   }
 

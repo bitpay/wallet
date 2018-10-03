@@ -123,7 +123,6 @@ export class GlideraPage {
   }
 
   public openAuthenticateWindow(): void {
-    // TODO Electron needs to be tested
     this.openExternalLink(this.getAuthenticateUrl());
     this.navCtrl.popToRoot();
   }
