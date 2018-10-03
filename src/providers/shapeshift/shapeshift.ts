@@ -24,15 +24,6 @@ export class ShapeshiftProvider {
     this.logger.debug('ShapeshiftProvider Provider initialized');
     this.credentials = {};
 
-    // (Optional) Affiliate PUBLIC KEY, for volume tracking, affiliate payments, split-shifts, etc.
-    if (
-      this.appProvider.servicesInfo &&
-      this.appProvider.servicesInfo.shapeshift
-    ) {
-      this.credentials.API_KEY =
-        this.appProvider.servicesInfo.shapeshift.api_key || null;
-    }
-
     /*
     * Development: 'testnet'
     * Production: 'livenet'
@@ -171,5 +162,13 @@ export class ShapeshiftProvider {
       page: 'ShapeshiftPage',
       show: !!this.configProvider.get().showIntegration['shapeshift']
     });
+    // (Mandatory) Affiliate PUBLIC KEY, for volume tracking, affiliate payments, split-shifts, etc.
+    if (
+      this.appProvider.servicesInfo &&
+      this.appProvider.servicesInfo.shapeshift
+    ) {
+      this.credentials.API_KEY =
+        this.appProvider.servicesInfo.shapeshift.api_key || null;
+    }
   }
 }
