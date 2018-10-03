@@ -60,8 +60,11 @@ export class PlatformProvider {
   }
 
   public isElectronPlatform(): boolean {
-    var userAgent = navigator.userAgent.toLowerCase();
-    if (userAgent.indexOf('electron/') > -1) {
+    const userAgent =
+      navigator && navigator.userAgent
+        ? navigator.userAgent.toLowerCase()
+        : null;
+    if (userAgent && userAgent.indexOf('electron/') > -1) {
       return true;
     } else {
       return false;
