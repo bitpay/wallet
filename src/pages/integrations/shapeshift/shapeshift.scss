@@ -29,6 +29,11 @@ page-shapeshift {
       display: block;
       margin: 0 auto;
     }
+    ion-spinner {
+      position: absolute;
+      bottom: 5px;
+      right: 5px;
+    }
   }
   .shift-problems {
     padding: 10px;

@@ -484,107 +484,119 @@ export class ShapeshiftConfirmPage {
 
   private createShift(): void {
     this.onGoingProcessProvider.set('connectingShapeshift');
-
-    this.walletProvider
-      .getAddress(this.toWallet, false)
-      .then((withdrawalAddress: string) => {
-        withdrawalAddress = this.getLegacyAddressFormat(
-          withdrawalAddress,
-          this.toWallet.coin
+    this.shapeshiftProvider.init((err, res) => {
+      if (err) {
+        this.onGoingProcessProvider.clear();
+        this.showErrorAndBack(
+          null,
+          this.shapeshiftProvider.getErrorsAsString(err)
         );
+        return;
+      }
+      let accessToken = res.accessToken;
 
-        this.walletProvider
-          .getAddress(this.fromWallet, false)
-          .then((returnAddress: string) => {
-            returnAddress = this.getLegacyAddressFormat(
-              returnAddress,
-              this.fromWallet.coin
-            );
+      this.walletProvider
+        .getAddress(this.toWallet, false)
+        .then((withdrawalAddress: string) => {
+          withdrawalAddress = this.getLegacyAddressFormat(
+            withdrawalAddress,
+            this.toWallet.coin
+          );
 
-            let data = {
-              withdrawal: withdrawalAddress,
-              pair: this.getCoinPair(),
-              returnAddress
-            };
-            this.shapeshiftProvider.shift(data, (err, shapeData) => {
-              if (err || shapeData.error) {
-                this.onGoingProcessProvider.clear();
-                this.showErrorAndBack(null, err || shapeData.error);
-                return;
-              }
-
-              let toAddress = this.getNewAddressFormat(
-                shapeData.deposit,
+          this.walletProvider
+            .getAddress(this.fromWallet, false)
+            .then((returnAddress: string) => {
+              returnAddress = this.getLegacyAddressFormat(
+                returnAddress,
                 this.fromWallet.coin
               );
 
-              this.createTx(this.fromWallet, toAddress)
-                .then(ctxp => {
-                  // Save in memory
-                  this.createdTx = ctxp;
-                  this.shapeInfo = shapeData;
-
-                  this.shapeshiftProvider.getRate(
-                    this.getCoinPair(),
-                    (_, r) => {
-                      this.onGoingProcessProvider.clear();
-                      this.rateUnit = r.rate;
-                      let amountUnit = this.txFormatProvider.satToUnit(
-                        ctxp.amount
-                      );
-                      let withdrawalSat = Number(
-                        (this.rateUnit * amountUnit * 100000000).toFixed()
-                      );
-
-                      // Fee rate
-                      let per = (ctxp.fee / (ctxp.amount + ctxp.fee)) * 100;
-                      this.feeRatePerStr = per.toFixed(2) + '%';
-
-                      // Amount + Unit
-                      this.amountStr = this.txFormatProvider.formatAmountStr(
-                        this.fromWallet.coin,
-                        ctxp.amount
-                      );
-                      this.withdrawalStr = this.txFormatProvider.formatAmountStr(
-                        this.toWallet.coin,
-                        withdrawalSat
-                      );
-                      this.feeStr = this.txFormatProvider.formatAmountStr(
-                        this.fromWallet.coin,
-                        ctxp.fee
-                      );
-                      this.totalAmountStr = this.txFormatProvider.formatAmountStr(
-                        this.fromWallet.coin,
-                        ctxp.amount + ctxp.fee
-                      );
-
-                      // Convert to fiat
-                      this.setFiatTotalAmount(
-                        ctxp.amount,
-                        ctxp.fee,
-                        withdrawalSat
-                      );
-                    }
-                  );
-                })
-                .catch(err => {
+              let data = {
+                withdrawal: withdrawalAddress,
+                pair: this.getCoinPair(),
+                returnAddress,
+                token: accessToken
+              };
+              this.shapeshiftProvider.shift(data, (err, shapeData) => {
+                if (err || shapeData.error) {
                   this.onGoingProcessProvider.clear();
-                  this.showErrorAndBack(err.title, err.message);
+                  this.showErrorAndBack(null, err || shapeData.error);
                   return;
-                });
+                }
+
+                let toAddress = this.getNewAddressFormat(
+                  shapeData.deposit,
+                  this.fromWallet.coin
+                );
+
+                this.createTx(this.fromWallet, toAddress)
+                  .then(ctxp => {
+                    // Save in memory
+                    this.createdTx = ctxp;
+                    this.shapeInfo = shapeData;
+
+                    this.shapeshiftProvider.getRate(
+                      this.getCoinPair(),
+                      (_, r) => {
+                        this.onGoingProcessProvider.clear();
+                        this.rateUnit = r.rate;
+                        let amountUnit = this.txFormatProvider.satToUnit(
+                          ctxp.amount
+                        );
+                        let withdrawalSat = Number(
+                          (this.rateUnit * amountUnit * 100000000).toFixed()
+                        );
+
+                        // Fee rate
+                        let per = (ctxp.fee / (ctxp.amount + ctxp.fee)) * 100;
+                        this.feeRatePerStr = per.toFixed(2) + '%';
+
+                        // Amount + Unit
+                        this.amountStr = this.txFormatProvider.formatAmountStr(
+                          this.fromWallet.coin,
+                          ctxp.amount
+                        );
+                        this.withdrawalStr = this.txFormatProvider.formatAmountStr(
+                          this.toWallet.coin,
+                          withdrawalSat
+                        );
+                        this.feeStr = this.txFormatProvider.formatAmountStr(
+                          this.fromWallet.coin,
+                          ctxp.fee
+                        );
+                        this.totalAmountStr = this.txFormatProvider.formatAmountStr(
+                          this.fromWallet.coin,
+                          ctxp.amount + ctxp.fee
+                        );
+
+                        // Convert to fiat
+                        this.setFiatTotalAmount(
+                          ctxp.amount,
+                          ctxp.fee,
+                          withdrawalSat
+                        );
+                      }
+                    );
+                  })
+                  .catch(err => {
+                    this.onGoingProcessProvider.clear();
+                    this.showErrorAndBack(err.title, err.message);
+                    return;
+                  });
+              });
+            })
+            .catch(() => {
+              this.onGoingProcessProvider.clear();
+              this.showErrorAndBack(null, 'Could not get address');
+              return;
             });
-          })
-          .catch(() => {
-            this.onGoingProcessProvider.clear();
-            this.showErrorAndBack(null, 'Could not get address');
-            return;
-          });
-      })
-      .catch(() => {
-        this.onGoingProcessProvider.clear();
-        this.showErrorAndBack(null, 'Could not get address');
-        return;
-      });
+        })
+        .catch(() => {
+          this.onGoingProcessProvider.clear();
+          this.showErrorAndBack(null, 'Could not get address');
+          return;
+        });
+    });
   }
 
   public confirmTx(): void {
