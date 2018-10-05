@@ -155,8 +155,7 @@
       "artifactName": "${productName}.${ext}"
     },
     "linux": {
-      "target": "zip",
-      "icon": "resources/copay/linux/icon.png",
+      "target": "AppImage",
       "artifactName": "${productName}-linux.${ext}"
     }
   },
