@@ -2,7 +2,7 @@
   "name": "copay",
   "description": "A Secure Bitcoin Wallet",
   "author": "BitPay",
-  "version": "4.8.0",
+  "version": "5.0.0",
   "keywords": [
     "bitcoin",
     "wallet",
@@ -101,15 +101,63 @@
     "apply:bitpay": "cd app-template && node apply.js bitpay",
     "fix:fcm": "echo platforms/ios/Copay/Resources platforms/ios/Copay/Resources/Resources platforms/ios/Bitpay/Resources platforms/ios/Bitpay/Resources/Resources | xargs -n 1 cp GoogleService-Info.plist 2>/dev/null; mkdir -p platforms/android/app/src/debug platforms/android/app/src/release; echo platforms/android/app/src/debug platforms/android/app/src/release platforms/android/app | xargs -n 1 cp google-services.json",
     "sign:copay-desktop": "run-s sign:copay-linux sign:copay-windows sign:copay-macos",
-    "sign:copay-macos": "gpg -u 1112CFA1 --output desktop/Copay.dmg.sig --detach-sig desktop/Copay.dmg",
-    "sign:copay-linux": "gpg -u 1112CFA1 --output desktop/Copay-linux.zip.sig --detach-sig desktop/Copay-linux.zip",
-    "sign:copay-windows": "gpg -u 1112CFA1 --output desktop/Copay.exe.sig --detach-sig desktop/Copay.exe",
-    "verify:copay-desktop": "gpg --verify desktop/Copay-linux.zip.sig desktop/Copay-linux.zip; gpg --verify desktop/Copay.exe.sig desktop/Copay.exe; gpg --verify desktop/Copay.dmg.sig desktop/Copay.dmg",
+    "sign:copay-macos": "gpg -u 1112CFA1 --output dist/Copay.dmg.sig --detach-sig dist/Copay.dmg",
+    "sign:copay-linux": "gpg -u 1112CFA1 --output dist/Copay-linux.zip.sig --detach-sig dist/Copay-linux.zip",
+    "sign:copay-windows": "gpg -u 1112CFA1 --output dist/Copay.exe.sig --detach-sig dist/Copay.exe",
+    "verify:copay-desktop": "gpg --verify dist/Copay-linux.zip.sig dist/Copay-linux.zip; gpg --verify dist/Copay.exe.sig dist/Copay.exe; gpg --verify dist/Copay.dmg.sig dist/Copay.dmg",
     "sign:bitpay-desktop": "run-s sign:bitpay-linux sign:bitpay-windows sign:bitpay-macos",
-    "sign:bitpay-macos": "gpg -u 1112CFA1 --output desktop/BitPay.dmg.sig --detach-sig desktop/BitPay.dmg",
-    "sign:bitpay-linux": "gpg -u 1112CFA1 --output desktop/BitPay-linux.zip.sig --detach-sig desktop/BitPay-linux.zip",
-    "sign:bitpay-windows": "gpg -u 1112CFA1 --output desktop/BitPay.exe.sig --detach-sig desktop/BitPay.exe",
-    "verify:bitpay-desktop": "gpg --verify desktop/BitPay-linux.zip.sig desktop/BitPay-linux.zip; gpg --verify desktop/BitPay.exe.sig desktop/BitPay.exe; gpg --verify desktop/BitPay.dmg.sig desktop/BitPay.dmg"
+    "sign:bitpay-macos": "gpg -u 1112CFA1 --output dist/BitPay.dmg.sig --detach-sig dist/BitPay.dmg",
+    "sign:bitpay-linux": "gpg -u 1112CFA1 --output dist/BitPay-linux.zip.sig --detach-sig dist/BitPay-linux.zip",
+    "sign:bitpay-windows": "gpg -u 1112CFA1 --output dist/BitPay.exe.sig --detach-sig dist/BitPay.exe",
+    "verify:bitpay-desktop": "gpg --verify dist/BitPay-linux.zip.sig dist/BitPay-linux.zip; gpg --verify dist/BitPay.exe.sig dist/BitPay.exe; gpg --verify dist/BitPay.dmg.sig dist/BitPay.dmg"
+  },
+  "build": {
+    "appId": "com.bitpay.copay",
+    "productName": "Copay",
+    "files": [
+      "./electron/main.js",
+      "./package.json",
+      "./www/**/*"
+    ],
+    "protocols": {
+      "name": "URL protocol schemes",
+      "schemes": [
+        "bitcoin",
+        "bitcoincash",
+        "copay"
+      ]
+    },
+    "mac": {
+      "category": "public.app-category.finance",
+      "icon": "resources/copay/mac/app.icns",
+      "identity": "iPhone Distribution: BitPay, Inc. (884JRH5R93)",
+      "artifactName": "${productName}.${ext}"
+    },
+    "dmg": {
+      "contents": [
+        {
+          "x": 120,
+          "y": 180
+        },
+        {
+          "x": 380,
+          "y": 180,
+          "type": "link",
+          "path": "/Applications"
+        }
+      ],
+      "background": "resources/copay/mac/dmg-background.tiff",
+      "icon": "resources/copay/mac/volume-icon.icns"
+    },
+    "win": {
+      "icon": "resources/copay/windows/icon.ico",
+      "artifactName": "${productName}.${ext}"
+    },
+    "linux": {
+      "target": "zip",
+      "icon": "resources/copay/linux/icon.png",
+      "artifactName": "${productName}-linux.${ext}"
+    }
   },
   "dependencies": {
     "@angular/common": "5.2.10",
