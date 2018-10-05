@@ -92,7 +92,7 @@
     "open:android": "open -a open -a /Applications/Android\\ Studio.app platforms/android",
     "final:ios": "run-s build:ios-release open:ios",
     "final:android": "run-s build:android-release sign:android run:android-release",
-    "final:desktop": "run-s build:desktop-release && node desktop/build-desktop.js && node desktop/build-linux && sh desktop/build-macos.sh sign",
+    "final:desktop": "run-s build:desktop-release && ELECTRON_BUILDER_ALLOW_UNRESOLVED_DEPENDENCIES=true electron-builder -mwl",
     "run:android": "run-s env:dev && ionic cordova run android --device --debug",
     "run:android-release": "run-s env:prod && ionic cordova run android --device --release",
     "log:android": "adb logcat | grep chromium",
@@ -131,7 +131,8 @@
       "category": "public.app-category.finance",
       "icon": "resources/copay/mac/app.icns",
       "identity": "iPhone Distribution: BitPay, Inc. (884JRH5R93)",
-      "artifactName": "${productName}.${ext}"
+      "artifactName": "${productName}.${ext}",
+      "target": ["dmg", "pkg"]
     },
     "dmg": {
       "contents": [
