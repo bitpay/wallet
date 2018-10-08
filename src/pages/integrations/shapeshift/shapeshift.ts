@@ -138,6 +138,7 @@ export class ShapeshiftPage {
 
         this.shapeshiftProvider.getStatus(
           dataFromStorage.address,
+          this.accessToken,
           (err, st) => {
             if (err) return;
 

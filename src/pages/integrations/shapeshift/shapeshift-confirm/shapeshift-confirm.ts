@@ -46,6 +46,7 @@ export class ShapeshiftConfirmPage {
   private bitcoreCash;
   private useSendMax: boolean;
   private sendMaxInfo;
+  private accessToken: string;
 
   public currency: string;
   public currencyIsoCode: string;
@@ -332,7 +333,7 @@ export class ShapeshiftConfirmPage {
     let withdrawal = this.shapeInfo.withdrawal;
     let now = moment().unix() * 1000;
 
-    this.shapeshiftProvider.getStatus(address, (_, st) => {
+    this.shapeshiftProvider.getStatus(address, this.accessToken, (_, st) => {
       let newData = {
         address,
         withdrawal,
@@ -493,7 +494,7 @@ export class ShapeshiftConfirmPage {
         );
         return;
       }
-      let accessToken = res.accessToken;
+      this.accessToken = res.accessToken;
 
       this.walletProvider
         .getAddress(this.toWallet, false)
@@ -515,7 +516,7 @@ export class ShapeshiftConfirmPage {
                 withdrawal: withdrawalAddress,
                 pair: this.getCoinPair(),
                 returnAddress,
-                token: accessToken
+                token: this.accessToken
               };
               this.shapeshiftProvider.shift(data, (err, shapeData) => {
                 if (err || shapeData.error) {

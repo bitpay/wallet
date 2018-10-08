@@ -12,4 +12,32 @@
       <ion-toggle [(ngModel)]="showInHome" (ionChange)="showInHomeSwitch()"></ion-toggle>
     </ion-item>
   </ion-list>
+
+  <ion-list *ngIf="shapeshiftUser">
+    <ion-item-divider>User Information</ion-item-divider>
+    <ion-item *ngIf="shapeshiftUser.username">
+      <span>Username</span>
+      <ion-note item-end>
+        {{shapeshiftUser.username}}
+      </ion-note>
+    </ion-item>
+    <ion-item>
+      <span>ID</span>
+      <ion-note item-end>
+        {{shapeshiftUser.id}}
+      </ion-note>
+    </ion-item>
+    <ion-item>
+      <span>Email</span>
+      <ion-note item-end>
+        {{shapeshiftUser.email}}
+      </ion-note>
+    </ion-item>
+  </ion-list>
+  <ion-list *ngIf="shapeshiftUser">
+    <ion-item-divider></ion-item-divider>
+    <button ion-item (click)="revokeToken()">
+      <span class="assertive">Log out</span>
+    </button>
+  </ion-list>
 </ion-content>

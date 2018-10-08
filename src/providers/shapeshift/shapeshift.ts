@@ -166,17 +166,24 @@ export class ShapeshiftProvider {
     );
   }
 
-  public getStatus(addr: string, cb) {
-    this.http.get(this.credentials.API_URL + '/txStat/' + addr).subscribe(
-      data => {
-        this.logger.info('Shapeshift STATUS: SUCCESS');
-        return cb(null, data);
-      },
-      data => {
-        this.logger.error('Shapeshift STATUS ERROR: ' + data.error.message);
-        return cb(data);
-      }
-    );
+  public getStatus(addr: string, token: string, cb) {
+    let headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      Accept: 'application/json',
+      Authorization: 'Bearer ' + token
+    });
+    this.http
+      .get(this.credentials.API_URL + '/txStat/' + addr, { headers })
+      .subscribe(
+        data => {
+          this.logger.info('Shapeshift STATUS: SUCCESS');
+          return cb(null, data);
+        },
+        data => {
+          this.logger.error('Shapeshift STATUS ERROR: ' + data.error.message);
+          return cb(data);
+        }
+      );
   }
 
   public register(): void {
@@ -280,12 +287,12 @@ export class ShapeshiftProvider {
 
     this.http.post(url, data, { headers }).subscribe(
       data => {
-        this.logger.info('Coinbase: Refresh Access Token SUCCESS');
+        this.logger.info('ShapeShift: Refresh Access Token SUCCESS');
         this._afterTokenReceived(data, cb);
       },
       data => {
         this.logger.error(
-          'Coinbase: Refresh Access Token ERROR ' +
+          'ShapeShift: Refresh Access Token ERROR ' +
             data.status +
             '. ' +
             this.getErrorsAsString(data.error)
@@ -378,16 +385,19 @@ export class ShapeshiftProvider {
   }, 10000);
 
   private _getMainAccountId(accessToken, cb) {
-    this.getAccounts(accessToken, (err, a) => {
+    this.getAccount(accessToken, (err, a) => {
       if (err) {
         this.logout();
         return cb(err);
       }
-      return cb(null, a.data.id);
+      if (a.data.verificationStatus != 'NONE') {
+        return cb(null, a.data.id);
+      }
+      return cb('Your account is not verified');
     });
   }
 
-  private getAccounts(token, cb) {
+  public getAccount(token, cb) {
     if (!token) return cb('Invalid Token');
 
     let url = this.credentials.HOST + '/api/v1/users/me';
@@ -399,12 +409,12 @@ export class ShapeshiftProvider {
 
     this.http.get(url, { headers }).subscribe(
       data => {
-        this.logger.info('ShapeShift: Get Accounts SUCCESS');
+        this.logger.info('ShapeShift: Get Account SUCCESS');
         return cb(null, data);
       },
       data => {
         this.logger.error(
-          'ShapeShift: Get Accounts ERROR ' +
+          'ShapeShift: Get Account ERROR ' +
             data.status +
             '. ' +
             this.getErrorsAsString(data.error)
