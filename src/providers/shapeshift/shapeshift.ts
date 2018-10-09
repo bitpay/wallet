@@ -390,10 +390,10 @@ export class ShapeshiftProvider {
         this.logout();
         return cb(err);
       }
-      if (a.data.verificationStatus != 'NONE') {
-        return cb(null, a.data.id);
+      if (a.data.verificationStatus == 'NONE') {
+        return cb('unverified_account');
       }
-      return cb('Your account is not verified');
+      return cb(null, a.data.id);
     });
   }
 

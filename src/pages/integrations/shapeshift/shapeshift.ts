@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
 import {
+  App,
   Events,
   ModalController,
   NavController,
@@ -9,6 +11,7 @@ import * as _ from 'lodash';
 import { Logger } from '../../../providers/logger/logger';
 
 // Pages
+import { TabsPage } from '../../tabs/tabs';
 import { ShapeshiftDetailsPage } from './shapeshift-details/shapeshift-details';
 import { ShapeshiftShiftPage } from './shapeshift-shift/shapeshift-shift';
 
@@ -39,6 +42,7 @@ export class ShapeshiftPage {
   private isCordova: boolean;
 
   constructor(
+    private app: App,
     private events: Events,
     private externalLinkProvider: ExternalLinkProvider,
     private logger: Logger,
@@ -49,6 +53,7 @@ export class ShapeshiftPage {
     private navParams: NavParams,
     private formBuilder: FormBuilder,
     private onGoingProcessProvider: OnGoingProcessProvider,
+    protected translate: TranslateService,
     private popupProvider: PopupProvider,
     private platformProvider: PlatformProvider
   ) {
@@ -97,19 +102,23 @@ export class ShapeshiftPage {
           this.loading = false;
           if (err) {
             this.logger.error(err);
-            let errorId = err.errors ? err.errors[0].id : null;
             err = err.errors
               ? err.errors[0].message
               : err.error_description
                 ? err.error_description
                 : err.error || err || 'Unknown error';
-            this.popupProvider
-              .ionicAlert('Error connecting to ShapeShift', err)
-              .then(() => {
-                if (errorId == 'revoked_token') {
-                  this.shapeshiftProvider.logout();
-                }
-              });
+            if (err == 'unverified_account') {
+              this.openShafeShiftWindow();
+            } else {
+              this.popupProvider
+                .ionicAlert(
+                  this.translate.instant('Error connecting to ShapeShift'),
+                  err
+                )
+                .then(() => {
+                  this.logout();
+                });
+            }
           }
           return;
         }
@@ -124,6 +133,11 @@ export class ShapeshiftPage {
         });
       });
     });
+  }
+
+  private logout() {
+    this.shapeshiftProvider.logout();
+    this.app.getRootNavs()[0].setRoot(TabsPage);
   }
 
   public openExternalLink(url: string): void {
@@ -235,12 +249,28 @@ export class ShapeshiftPage {
     return this.shapeshiftProvider.getOauthCodeUrl();
   }
 
+  private openShafeShiftWindow(): void {
+    let url = 'https://shapeshift.io';
+    let optIn = true;
+    let title = this.translate.instant('Error connecting to ShapeShift');
+    let message = this.translate.instant(
+      'Your account is not verified. This will open shapeshift.io, where you can verify your account.'
+    );
+    let okText = this.translate.instant('Open');
+    let cancelText = this.translate.instant('Go Back');
+    this.externalLinkProvider
+      .open(url, optIn, title, message, okText, cancelText)
+      .then(() => {
+        this.logout();
+      });
+  }
+
   public openSignupWindow(): void {
     let url = this.shapeshiftProvider.getSignupUrl();
     let optIn = true;
     let title = 'Sign Up for ShapeShift';
     let message =
-      'This will open Shapeshift.com, where you can create an account.';
+      'This will open shapeshift.io, where you can create an account.';
     let okText = 'Go to ShapeShift';
     let cancelText = 'Back';
     this.externalLinkProvider.open(
@@ -255,21 +285,29 @@ export class ShapeshiftPage {
 
   public submitOauthCode(code: string): void {
     this.onGoingProcessProvider.set('connectingShapeshift');
-    this.shapeshiftProvider.getToken(
-      code,
-      (err: string, accessToken: string) => {
-        this.onGoingProcessProvider.clear();
-        if (err) {
-          this.logger.error('Error connecting to ShapeShift' + err);
-          return;
-        }
-        if (!this.isNW) {
-          let previousView = this.navCtrl.getPrevious();
-          this.navCtrl.removeView(previousView);
-        }
-        this.accessToken = accessToken;
-        this.init();
+    this.shapeshiftProvider.getToken(code, (err: any, accessToken: string) => {
+      this.onGoingProcessProvider.clear();
+      if (err) {
+        this.logger.error(
+          'Error connecting to ShapeShift: ' + err.error_description
+        );
+        this.popupProvider
+          .ionicAlert(
+            this.translate.instant('Error connecting to ShapeShift'),
+            err.error_description
+          )
+          .then(() => {
+            this.showOauthForm = false;
+            this.oauthCodeForm.reset();
+          });
+        return;
       }
-    );
+      if (!this.isNW) {
+        let previousView = this.navCtrl.getPrevious();
+        this.navCtrl.removeView(previousView);
+      }
+      this.accessToken = accessToken;
+      this.init();
+    });
   }
 }

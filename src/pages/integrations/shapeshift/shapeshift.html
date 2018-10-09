@@ -21,15 +21,13 @@
       <button ion-button clear small color="light" (click)="openExternalLink('https://shapeshift.io')">
         {{'Visit ShapeShift.io' | translate}} &rarr;
       </button>
-      <div *ngIf="showOauthForm">
-        <form [formGroup]="oauthCodeForm" (ngSubmit)="submitOauthCode(oauthCodeForm.value.code)">
-          <ion-label stacked>OAuth Code</ion-label>
-          <ion-input type="text" formControlName="code" [value]="oauthCodeForm.value.code" placeholder="{{'Enter OAuth Code'}}"
-            required></ion-input>
-          <button ion-button block outline type="submit" [disabled]="!oauthCodeForm.valid">Connect ShapeShift Account</button>
-        </form>
-        <button ion-button block clear small color="dark" (click)="openSupportWindow()">ShapeShift Support &rarr;</button>
-      </div>
+      <form *ngIf="showOauthForm" class="form-container" [formGroup]="oauthCodeForm" (ngSubmit)="submitOauthCode(oauthCodeForm.value.code)">
+        <ion-label color="light" stacked>OAuth Code</ion-label>
+        <ion-input color="light" type="text" formControlName="code" [value]="oauthCodeForm.value.code" placeholder="{{'Enter OAuth Code'}}"
+          required></ion-input>
+        <button ion-button outline type="submit" class="button-standard" color="light" [disabled]="!oauthCodeForm.valid">{{'Connect
+          to ShapeShift Account' | translate}}</button>
+      </form>
     </div>
   </div>
 

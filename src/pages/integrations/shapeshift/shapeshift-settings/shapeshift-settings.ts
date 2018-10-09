@@ -25,7 +25,7 @@ export class ShapeshiftSettingsPage {
 
   constructor(
     private app: App,
-    private nacCtrl: NavController,
+    private navCtrl: NavController,
     private popupProvider: PopupProvider,
     private logger: Logger,
     private shapeshiftProvider: ShapeshiftProvider,
@@ -43,15 +43,12 @@ export class ShapeshiftSettingsPage {
       if (err || _.isEmpty(data)) {
         if (err) {
           this.logger.error(err);
-          let errorId = err.errors ? err.errors[0].id : null;
           err = err.errors ? err.errors[0].message : err;
           this.popupProvider
             .ionicAlert('Error connecting to ShapeShift', err)
             .then(() => {
-              if (errorId == 'revoked_token') {
-                this.shapeshiftProvider.logout();
-                this.nacCtrl.popToRoot({ animate: false });
-              }
+              this.shapeshiftProvider.logout();
+              this.navCtrl.popToRoot({ animate: false });
             });
         }
         return;
