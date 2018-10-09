@@ -51,6 +51,8 @@ export interface TransactionProposal {
     amount: any;
     message?: string;
     script?: any;
+    keoken_id?: any;
+    keoken_amount?: any;
   }>;
   inputs: any;
   fee: any;
@@ -1044,7 +1046,7 @@ export class WalletProvider {
       script_raw = script_raw + "00000001" // asset_id = keo (1)
       script_raw = script_raw + "0000000000000001" // amount to send (1)
 
-      txp.outputs.push({ amount: 0, script: script_raw });
+      txp.outputs.push({ amount: 0, script: script_raw, keoken_id: 1, keoken_amount: 1 });
 
       wallet.createTxProposal(txp, (err, createdTxp) => {
         if (err) return reject(err);
