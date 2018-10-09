@@ -146,7 +146,12 @@ export class AmountPage extends WalletTabsChild {
 
   ionViewWillEnter() {
     this.disableHardwareKeyboard = false;
-    this.expression = '';
+
+    // Default value should be BCH dust to send the minumum to the destiny wallet
+    if (!this.expression) {
+      this.expression = '0.00005';
+    }
+
     this.useSendMax = false;
     this.processAmount();
     this.events.subscribe('Wallet/disableHardwareKeyboard', () => {
@@ -528,9 +533,9 @@ export class AmountPage extends WalletTabsChild {
     this.processAmount();
     this.logger.debug(
       'Update unit coin @amount unit:' +
-        this.unit +
-        ' alternativeUnit:' +
-        this.alternativeUnit
+      this.unit +
+      ' alternativeUnit:' +
+      this.alternativeUnit
     );
   }
 
