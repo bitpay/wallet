@@ -3,11 +3,10 @@ import { TranslateService } from '@ngx-translate/core';
 
 @Injectable()
 export class BwcErrorProvider {
-  constructor(private translate: TranslateService) {}
+  constructor(private translate: TranslateService) { }
 
   public msg(err, prefix?: string): string {
     if (!err) return 'Unknown error';
-
     const name = err.name
       ? err.name === 'Error'
         ? err.message
@@ -162,6 +161,14 @@ export class BwcErrorProvider {
           body = this.translate.instant(
             'Exceeded daily limit of $500 per user'
           );
+          break;
+        case 'INVALID_SCRIPT':
+          // body = this.translate.instant('The keoken script is not valid');
+          body = 'The keoken script is not valid';
+          break;
+        case 'NOT_ENOUGH_KEOKEN_BALANCE':
+          // body = this.translate.instant('Insufficient token funds');
+          body = 'Insufficient token funds';
           break;
         case 'ERROR':
           body = err.message || err.error;
