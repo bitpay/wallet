@@ -27,11 +27,12 @@
   "androidVersion": "46200000",
   "_extraCSS": null,
   "_enabledExtensions": {
-    "coinbase": true,
-    "glidera": true,
+    "coinbase": false,
+    "glidera": false,
     "debitcard": false,
-    "amazon": true,
-    "mercadolibre": true,
-    "shapeshift": true
+    "amazon": false,
+    "mercadolibre": false,
+    "shapeshift": false,
+    "faucet": true
   }
 }

@@ -44,6 +44,9 @@ import { GlideraSettingsPage } from '../pages/integrations/glidera/glidera-setti
 import { GlideraTxDetailsPage } from '../pages/integrations/glidera/glidera-tx-details/glidera-tx-details';
 import { SellGlideraPage } from '../pages/integrations/glidera/sell-glidera/sell-glidera';
 
+// Itegrations: Faucet
+import { FaucetPage } from '../pages/integrations/faucet/faucet';
+
 // Integrations: Mercado Libre
 import { BuyMercadoLibrePage } from '../pages/integrations/mercado-libre/buy-mercado-libre/buy-mercado-libre';
 import { MercadoLibrePage } from '../pages/integrations/mercado-libre/mercado-libre';
@@ -188,6 +191,7 @@ export const PAGES = [
   ShapeshiftDetailsPage,
   ShapeshiftSettingsPage,
   ShapeshiftPage,
+  FaucetPage,
   ShapeshiftShiftPage,
   MercadoLibreCardDetailsPage,
   NotificationsPage,

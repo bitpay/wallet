@@ -1,0 +1,35 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>Testnet Faucet</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content no-bounce>
+  <div class="container">
+    <div class="center-header">
+      <img src="assets/img/shapeshift/logo-shapeshift.svg" width="200" alt="Shapeshift">
+      <div padding>
+        <h4 translate>Get some coins!</h4>
+        <p translate>Use the faucet.</p>
+      </div>
+      <button ion-button outline class="button-standard" color="light" no-low-fee (click)="openExternalLink('https://faucet.testnet.keoken.io/')">
+        {{'Start' | translate}}
+      </button>
+      <!-- <button ion-button clear small color="light" (click)="openExternalLink('https://faucet.testnet.keoken.io/')">
+        {{'Go to the faucet' | translate}} &rarr;
+      </button> -->
+    </div>
+  </div>
+</ion-content>
+
+<ion-footer>
+  <ion-toolbar>
+    <div class="shift-problems">
+      <span translate>Having problems with Faucet?</span>
+      <br>
+      <a (click)="openExternalLink('https://faucet.testnet.keoken.io/')" translate>
+        Follow our guide!
+      </a>
+    </div>
+  </ion-toolbar>
+</ion-footer>
