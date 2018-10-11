@@ -132,7 +132,10 @@
       "icon": "resources/copay/mac/app.icns",
       "identity": "iPhone Distribution: BitPay, Inc. (884JRH5R93)",
       "artifactName": "${productName}.${ext}",
-      "target": ["dmg", "pkg"]
+      "target": [
+        "dmg",
+        "pkg"
+      ]
     },
     "dmg": {
       "contents": [
@@ -155,7 +158,10 @@
       "artifactName": "${productName}.${ext}"
     },
     "linux": {
-      "target": ["AppImage", "snap"],
+      "target": [
+        "AppImage",
+        "snap"
+      ],
       "artifactName": "${productName}-linux.${ext}"
     }
   },
@@ -279,8 +285,6 @@
     "karma-spec-reporter": "0.0.32",
     "mkdirp": "0.5.1",
     "npm-run-all": "4.1.2",
-    "nw": "0.21.6",
-    "nw-builder": "3.5.1",
     "plist": "2.1.0",
     "prettier": "^1.13.3",
     "protractor": "5.3.0",

@@ -140,6 +140,15 @@ package.repository.url = config.gitHubRepoUrl;
 package.bugs.url = config.gitHubRepoBugs;
 package.cordova.plugins['cordova-plugin-customurlscheme'].SECOND_URL_SCHEME =
   config.packageName;
+package.build.appId = config.packageNameId;
+package.build.productName = config.userVisibleName;
+package.build.protocols.schemes = ['bitcoin', 'bitcoincash', config.name];
+package.build.mac.icon = `resources/${config.name}/mac/app.icns`;
+package.build.win.icon = `resources/${config.name}/windows/icon.ico`;
+package.build.dmg.background = `resources/${
+  config.name
+}/mac/dmg-background.tiff`;
+package.build.dmg.icon = `resources/${config.name}/mac/volume-icon.icns`;
 
 const stringifiedNpmStyle = JSON.stringify(package, null, 2) + '\n';
 fs.writeFileSync('../package.json', stringifiedNpmStyle);
