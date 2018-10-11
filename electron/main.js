@@ -20,7 +20,14 @@ const isDevMode = process.execPath.match(/[\\/]electron/);
 
 function createWindow() {
   // Create the browser window.
-  win = new BrowserWindow({ width: 400, height: 650 });
+  win = new BrowserWindow({
+    width: 400,
+    height: 650,
+    minWidth: 400,
+    maxWidth: 800,
+    minHeight: 650,
+    show: false
+  });
 
   // and load the index.html of the app.
   win.loadURL(
