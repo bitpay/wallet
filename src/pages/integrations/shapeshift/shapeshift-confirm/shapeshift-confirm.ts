@@ -488,10 +488,7 @@ export class ShapeshiftConfirmPage {
     this.shapeshiftProvider.init((err, res) => {
       if (err) {
         this.onGoingProcessProvider.clear();
-        this.showErrorAndBack(
-          null,
-          this.shapeshiftProvider.getErrorsAsString(err)
-        );
+        this.showErrorAndBack(null, err.error.error_description);
         return;
       }
       this.accessToken = res.accessToken;

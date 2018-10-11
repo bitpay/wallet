@@ -7,10 +7,18 @@
 <ion-content>
   <ion-list>
     <ion-item-divider></ion-item-divider>
-    <ion-item>
+    <ion-item [ngClass]="{'with-label': unverifiedAccount}">
       <ion-label>{{'Show in Home' | translate}}</ion-label>
       <ion-toggle [(ngModel)]="showInHome" (ionChange)="showInHomeSwitch()"></ion-toggle>
     </ion-item>
+    <label-tip *ngIf="unverifiedAccount" type="warn">
+      <span label-tip-title translate>Unverified Account</span>
+      <div label-tip-body translate>
+        Please complete your account verification on ShapeShift website.
+        <br>
+        <a class="label-tip-link" (click)="openAuthenticateWindow()" translate>Verify Account</a>
+      </div>
+    </label-tip>
   </ion-list>
 
   <ion-list *ngIf="shapeshiftUser">
@@ -34,7 +42,8 @@
       </ion-note>
     </ion-item>
   </ion-list>
-  <ion-list *ngIf="shapeshiftUser">
+
+  <ion-list *ngIf="shapeshiftUser || unverifiedAccount">
     <ion-item-divider></ion-item-divider>
     <button ion-item (click)="revokeToken()">
       <span class="assertive">Log out</span>

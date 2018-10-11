@@ -47,8 +47,7 @@ const Keys = {
   TX_CONFIRM_NOTIF: txid => 'txConfirmNotif-' + txid,
   TX_HISTORY: walletId => 'txsHistory-' + walletId,
   ORDER_WALLET: walletId => 'order-' + walletId,
-  SHAPESHIFT_TOKEN: network => 'shapeshiftToken-' + network,
-  SHAPESHIFT_REFRESH_TOKEN: network => 'shapeshiftRefreshToken-' + network
+  SHAPESHIFT_TOKEN: network => 'shapeshiftToken-' + network
 };
 
 interface Storage {
@@ -670,18 +669,6 @@ export class PersistenceProvider {
 
   removeShapeshiftToken(network: string) {
     return this.storage.remove(Keys.SHAPESHIFT_TOKEN(network));
-  }
-
-  setShapeshiftRefreshToken(network: string, token: string) {
-    return this.storage.set(Keys.SHAPESHIFT_REFRESH_TOKEN(network), token);
-  }
-
-  getShapeshiftRefreshToken(network: string) {
-    return this.storage.get(Keys.SHAPESHIFT_REFRESH_TOKEN(network));
-  }
-
-  removeShapeshiftRefreshToken(network: string) {
-    return this.storage.remove(Keys.SHAPESHIFT_REFRESH_TOKEN(network));
   }
 
   setWalletOrder(walletId: string, order: number) {

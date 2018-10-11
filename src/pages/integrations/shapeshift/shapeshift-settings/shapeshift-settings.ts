@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { App, NavController } from 'ionic-angular';
+import { App } from 'ionic-angular';
 
 import * as _ from 'lodash';
 
@@ -8,6 +8,7 @@ import { TabsPage } from '../../../tabs/tabs';
 
 // Providers
 import { ConfigProvider } from '../../../../providers/config/config';
+import { ExternalLinkProvider } from '../../../../providers/external-link/external-link';
 import { HomeIntegrationsProvider } from '../../../../providers/home-integrations/home-integrations';
 import { Logger } from '../../../../providers/logger/logger';
 import { PopupProvider } from '../../../../providers/popup/popup';
@@ -22,15 +23,17 @@ export class ShapeshiftSettingsPage {
   public showInHome;
   public service;
   public shapeshiftUser;
+  public unverifiedAccount: boolean;
+  private accessToken;
 
   constructor(
     private app: App,
-    private navCtrl: NavController,
     private popupProvider: PopupProvider,
     private logger: Logger,
     private shapeshiftProvider: ShapeshiftProvider,
     private configProvider: ConfigProvider,
-    private homeIntegrationsProvider: HomeIntegrationsProvider
+    private homeIntegrationsProvider: HomeIntegrationsProvider,
+    private externalLinkProvider: ExternalLinkProvider
   ) {
     this.service = _.filter(this.homeIntegrationsProvider.get(), {
       name: this.serviceName
@@ -40,21 +43,16 @@ export class ShapeshiftSettingsPage {
 
   ionViewDidLoad() {
     this.shapeshiftProvider.init((err, data) => {
-      if (err || _.isEmpty(data)) {
-        if (err) {
-          this.logger.error(err);
-          err = err.errors ? err.errors[0].message : err;
-          this.popupProvider
-            .ionicAlert('Error connecting to ShapeShift', err)
-            .then(() => {
-              this.shapeshiftProvider.logout();
-              this.navCtrl.popToRoot({ animate: false });
-            });
-        }
+      if (!err && !data) return;
+
+      if (err) {
+        this.logger.error(err);
+        this.unverifiedAccount = err == 'unverified_account' ? true : false;
         return;
       }
-      let accessToken = data.accessToken;
-      this.shapeshiftProvider.getAccount(accessToken, (err, account) => {
+
+      this.accessToken = data.accessToken;
+      this.shapeshiftProvider.getAccount(this.accessToken, (err, account) => {
         if (err) this.logger.error(err);
         this.shapeshiftUser = account.data;
       });
@@ -80,9 +78,16 @@ export class ShapeshiftSettingsPage {
       )
       .then(res => {
         if (res) {
-          this.shapeshiftProvider.logout();
-          this.app.getRootNavs()[0].setRoot(TabsPage);
+          this.shapeshiftProvider.getStoredToken(accessToken => {
+            this.shapeshiftProvider.logout(accessToken);
+            this.app.getRootNavs()[0].setRoot(TabsPage);
+          });
         }
       });
+  }
+
+  public openAuthenticateWindow() {
+    let url = 'https://portal.shapeshift.io/me/fox/dashboard';
+    this.externalLinkProvider.open(url);
   }
 }

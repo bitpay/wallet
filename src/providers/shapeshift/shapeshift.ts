@@ -1,4 +1,4 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import * as _ from 'lodash';
 import { Logger } from '../../providers/logger/logger';
@@ -180,8 +180,10 @@ export class ShapeshiftProvider {
           return cb(null, data);
         },
         data => {
-          this.logger.error('Shapeshift STATUS ERROR: ' + data.error.message);
-          return cb(data);
+          this.logger.error(
+            'Shapeshift STATUS ERROR: ' + data.error.error_description
+          );
+          return cb(data.error);
         }
       );
   }
@@ -247,7 +249,7 @@ export class ShapeshiftProvider {
           'ShapeShift: GET Access Token: ERROR ' +
             data.status +
             '. ' +
-            this.getErrorsAsString(data.error)
+            data.error.error_description
         );
         return cb(data.error);
       }
@@ -260,73 +262,10 @@ export class ShapeshiftProvider {
         this.credentials.NETWORK,
         data.access_token
       );
-      this.persistenceProvider.setShapeshiftRefreshToken(
-        this.credentials.NETWORK,
-        data.refresh_token
-      );
       this.homeIntegrationsProvider.updateLink('shapeshift', data.access_token); // Name, Token
       return cb(null, data.access_token);
     } else {
       return cb('Could not get the access token');
-    }
-  }
-
-  private _refreshToken(refreshToken, cb) {
-    let url = this.credentials.HOST + '/oauth/token';
-    let data = {
-      grant_type: 'refresh_token',
-      client_id: this.credentials.CLIENT_ID,
-      client_secret: this.credentials.CLIENT_SECRET,
-      redirect_uri: this.credentials.REDIRECT_URI,
-      refresh_token: refreshToken
-    };
-    const headers = new HttpHeaders({
-      'Content-Type': 'application/json',
-      Accept: 'application/json'
-    });
-
-    this.http.post(url, data, { headers }).subscribe(
-      data => {
-        this.logger.info('ShapeShift: Refresh Access Token SUCCESS');
-        this._afterTokenReceived(data, cb);
-      },
-      data => {
-        this.logger.error(
-          'ShapeShift: Refresh Access Token ERROR ' +
-            data.status +
-            '. ' +
-            this.getErrorsAsString(data.error)
-        );
-        return cb(data.error);
-      }
-    );
-  }
-
-  public getErrorsAsString(data): string {
-    let errData;
-
-    try {
-      if (data && data.errors) errData = data.errors;
-      else if (data && data.error) errData = data.error_description;
-      else return JSON.stringify(data);
-
-      if (!_.isArray(errData)) {
-        errData = errData && errData.message ? errData.message : errData;
-        return errData;
-      }
-
-      if (_.isArray(errData)) {
-        var errStr = '';
-        for (var i = 0; i < errData.length; i++) {
-          errStr = errStr + errData[i].message + '. ';
-        }
-        return errStr;
-      }
-
-      return JSON.stringify(errData);
-    } catch (e) {
-      this.logger.error(e);
-      return e;
     }
   }
 
@@ -342,60 +281,21 @@ export class ShapeshiftProvider {
         return cb();
       }
       this.logger.debug('ShapeShift already has Token.');
-      this._getMainAccountId(accessToken, (err, accountId) => {
+      this.getAccount(accessToken, (err, data) => {
         if (err) {
-          if (!err.errors) return cb(err);
-          if (err.errors && !_.isArray(err.errors)) return cb(err);
-
-          let expiredToken;
-          for (let i = 0; i < err.errors.length; i++) {
-            if (err.errors[i].id == 'expired_token') expiredToken = true;
-          }
-
-          if (expiredToken) {
-            this.logger.debug('Token Expired. Refresh and get new Token.');
-            this.persistenceProvider
-              .getShapeshiftRefreshToken(this.credentials.NETWORK)
-              .then(refreshToken => {
-                this._refreshToken(refreshToken, (err, newToken) => {
-                  if (err) return cb(err);
-                  this._getMainAccountId(newToken, (err, accountId) => {
-                    if (err) return cb(err);
-                    return cb(null, {
-                      accessToken: newToken,
-                      accountId
-                    });
-                  });
-                });
-              })
-              .catch(err => {
-                return cb(err);
-              });
-          } else {
-            return cb(err);
-          }
+          this.logout(accessToken);
+          return cb(err);
+        }
+        if (data.data.verificationStatus == 'NONE') {
+          return cb('unverified_account');
         } else {
           return cb(null, {
-            accessToken,
-            accountId
+            accessToken
           });
         }
       });
     });
   }, 10000);
-
-  private _getMainAccountId(accessToken, cb) {
-    this.getAccount(accessToken, (err, a) => {
-      if (err) {
-        this.logout();
-        return cb(err);
-      }
-      if (a.data.verificationStatus == 'NONE') {
-        return cb('unverified_account');
-      }
-      return cb(null, a.data.id);
-    });
-  }
 
   public getAccount(token, cb) {
     if (!token) return cb('Invalid Token');
@@ -417,18 +317,40 @@ export class ShapeshiftProvider {
           'ShapeShift: Get Account ERROR ' +
             data.status +
             '. ' +
-            this.getErrorsAsString(data.error)
+            data.error.error_description
         );
         return cb(data.error);
       }
     );
   }
 
-  public logout() {
-    this.persistenceProvider.removeShapeshiftToken(this.credentials.NETWORK);
-    this.persistenceProvider.removeShapeshiftRefreshToken(
-      this.credentials.NETWORK
+  public revokeAccessToken(token) {
+    let url = this.credentials.HOST + '/oauth/token/revoke';
+    let data = new HttpParams().set('token', token);
+    let headers = new HttpHeaders({
+      Authorization:
+        'Basic ' +
+        btoa(this.credentials.CLIENT_ID + ':' + this.credentials.CLIENT_SECRET)
+    });
+
+    this.http.post(url, data, { headers }).subscribe(
+      () => {
+        this.logger.info('ShapeShift: Revoke Access Token SUCCESS');
+      },
+      data => {
+        this.logger.error(
+          'ShapeShift: Revoke Access Token ERROR ' +
+            data.status +
+            '. ' +
+            data.error.error_description
+        );
+      }
     );
+  }
+
+  public logout(token) {
+    this.revokeAccessToken(token);
+    this.persistenceProvider.removeShapeshiftToken(this.credentials.NETWORK);
     this.homeIntegrationsProvider.updateLink('shapeshift', null); // Name, Token
   }
 }
