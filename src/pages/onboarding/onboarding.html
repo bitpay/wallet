@@ -10,5 +10,15 @@
     <button ion-button clear class="button-standard primary-color" (click)="restoreFromBackup()">
       {{'Restore from backup' | translate}}
     </button>
+    <div class="comment">
+      <p [ngClass]="{'primary-color': !isCopay, 'comment-color': isCopay}" translate>
+        This version of Copay uses a new desktop platform
+        for improved performance and better user experience.
+      </p>
+      <p [ngClass]="{'primary-color': !isCopay, 'comment-color': isCopay}" translate>
+        If you were using the old desktop version you will need
+        to restore your wallets manually from backup.
+      </p>
+    </div>
   </div>
 </ion-content>

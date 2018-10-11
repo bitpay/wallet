@@ -17,6 +17,14 @@ page-onboarding {
       font-size: 1.6rem;
     }
   }
+  .comment {
+    padding: 0rem 1rem 1rem 1rem;
+    text-align: center;
+    p {
+      line-height: 1.6;
+      font-size: 1.3rem;
+    }
+  }
   .primary-color {
     color: $onboarding-primary-color;
   }
