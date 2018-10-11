@@ -1,6 +1,7 @@
 const { app, BrowserWindow } = require('electron');
 const path = require('path');
 const url = require('url');
+const os = require('os');
 
 const appConfig = require(path.join(
   __dirname,
@@ -62,10 +63,21 @@ app.setAsDefaultProtocolClient('bitcoin');
 app.setVersion(appConfig.version);
 app.setName(appConfig.nameCase);
 
-let nameFolder = appConfig.name + '-v4';
+const getHomeDirPath = platform => {
+  switch (platform) {
+    case 'win32':
+      return process.env['USERPROFILE'];
+    case 'darwin':
+      return os.homedir();
+    case 'linux':
+      return os.homedir();
+    default:
+      throw new Error('Platform not supported');
+  }
+};
+const homeDir = getHomeDirPath(process.platform);
 
-app.setPath('userData', path.join(app.getPath('appData'), nameFolder));
-app.setPath('userCache', path.join(app.getPath('cache'), nameFolder));
+app.setPath('userData', path.join(homeDir, `.${appConfig.name}/app`));
 
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
