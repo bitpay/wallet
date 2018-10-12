@@ -82,8 +82,7 @@ export class ShapeshiftPage {
   ionViewWillEnter() {
     if (this.navParams.data.code) {
       this.shapeshiftProvider.getStoredToken((at: string) => {
-        if (!at) this.submitOauthCode(this.navParams.data.code);
-        else this.init();
+        at ? this.init() : this.submitOauthCode(this.navParams.data.code);
       });
     } else {
       this.init();

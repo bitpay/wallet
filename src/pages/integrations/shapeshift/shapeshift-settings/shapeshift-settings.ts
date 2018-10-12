@@ -20,11 +20,13 @@ import { ShapeshiftProvider } from '../../../../providers/shapeshift/shapeshift'
 })
 export class ShapeshiftSettingsPage {
   private serviceName: string = 'shapeshift';
+  private accessToken;
+
   public showInHome;
   public service;
   public shapeshiftUser;
   public unverifiedAccount: boolean;
-  private accessToken;
+  public loading: boolean;
 
   constructor(
     private app: App,
@@ -42,17 +44,22 @@ export class ShapeshiftSettingsPage {
   }
 
   ionViewDidLoad() {
+    this.loading = true;
     this.shapeshiftProvider.init((err, data) => {
-      if (!err && !data) return;
-
+      if (!err && !data) {
+        this.loading = false;
+        return;
+      }
       if (err) {
         this.logger.error(err);
+        this.loading = false;
         this.unverifiedAccount = err == 'unverified_account' ? true : false;
         return;
       }
 
       this.accessToken = data.accessToken;
       this.shapeshiftProvider.getAccount(this.accessToken, (err, account) => {
+        this.loading = false;
         if (err) this.logger.error(err);
         this.shapeshiftUser = account.data;
       });

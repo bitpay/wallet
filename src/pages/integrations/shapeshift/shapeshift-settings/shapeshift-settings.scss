@@ -10,4 +10,9 @@ page-shapeshift-settings {
     box-orient: vertical;
     -webkit-box-orient: vertical;
   }
+  ion-spinner {
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+  }
 }

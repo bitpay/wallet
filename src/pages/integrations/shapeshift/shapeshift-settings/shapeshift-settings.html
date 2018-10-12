@@ -7,6 +7,7 @@
 <ion-content>
   <ion-list>
     <ion-item-divider></ion-item-divider>
+    <ion-spinner *ngIf="loading"></ion-spinner>
     <ion-item [ngClass]="{'with-label': unverifiedAccount}">
       <ion-label>{{'Show in Home' | translate}}</ion-label>
       <ion-toggle [(ngModel)]="showInHome" (ionChange)="showInHomeSwitch()"></ion-toggle>
