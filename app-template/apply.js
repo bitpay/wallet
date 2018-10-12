@@ -144,6 +144,11 @@ package.build.appId = config.packageNameId;
 package.build.productName = config.userVisibleName;
 package.build.protocols.schemes = ['bitcoin', 'bitcoincash', config.name];
 package.build.mac.icon = `resources/${config.name}/mac/app.icns`;
+if (process.platform == 'win32') {
+  package.build.win.target = ['nsis', 'appx']; //AppX package can be built only on Windows 10.
+} else {
+  package.build.win.target = ['nsis'];
+}
 package.build.win.icon = `resources/${config.name}/windows/icon.ico`;
 package.build.dmg.background = `resources/${
   config.name

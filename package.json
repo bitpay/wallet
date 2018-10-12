@@ -154,6 +154,9 @@
       "icon": "resources/copay/mac/volume-icon.icns"
     },
     "win": {
+      "target": [
+        "nsis"
+      ],
       "icon": "resources/copay/windows/icon.ico",
       "artifactName": "${productName}.${ext}"
     },
