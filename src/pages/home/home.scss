@@ -55,6 +55,24 @@ page-home {
   .error {
     color: color($colors, danger);
   }
+  .warning-card {
+    text-align: center;
+    padding: 2.5rem;
+    img {
+      width: 5rem;
+    }
+    &-title {
+      font-size: 22px;
+      font-weight: bold;
+      color: color($colors, warning);
+      padding-top: 2rem;
+      padding-bottom: 2.5rem;
+    }
+    &-text {
+      text-align: center;
+      font-size: 16px;
+    }
+  }
 
   .wallet-ready {
     padding: 0rem;

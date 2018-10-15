@@ -81,6 +81,7 @@ export class HomePage {
   public payProDetailsData;
   public remainingTimeStr: string;
   public slideDown: boolean;
+  public appName: string;
 
   public showRateCard: boolean;
   public homeTip: boolean;
@@ -132,6 +133,7 @@ export class HomePage {
     this.addressbook = {};
     this.cachedBalanceUpdateOn = '';
     this.isNW = this.platformProvider.isNW;
+    this.appName = this.appProvider.info.nameCase;
     this.showReorderBtc = false;
     this.showReorderBch = false;
     this.zone = new NgZone({ enableLongStackTrace: false });
@@ -727,7 +729,6 @@ export class HomePage {
   public goToDownload(): void {
     let url: string;
     let okText: string;
-    let appName = this.appProvider.info.nameCase;
     let OS = this.platformProvider.getOS();
 
     if (OS.extension !== '') {
@@ -736,7 +737,7 @@ export class HomePage {
         'https://github.com/bitpay/copay/releases/download/' +
         this.latestVersion +
         '/' +
-        appName +
+        this.appName +
         OS.extension;
     } else {
       okText = this.translate.instant('View Update');
