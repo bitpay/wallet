@@ -8,6 +8,8 @@ import {
   ViewController
 } from 'ionic-angular';
 
+import { Subscription } from 'rxjs';
+
 import { Animate } from '../../../directives/animate/animate';
 import { ConfigProvider } from '../../../providers/config/config';
 import { Logger } from '../../../providers/logger/logger';
@@ -21,6 +23,10 @@ export class PinModalPage {
   private ATTEMPT_LIMIT: number;
   private ATTEMPT_LOCK_OUT_TIME: number;
   private countDown;
+  private lockReleaseTimeout;
+  private onPauseSubscription: Subscription;
+  private onResumeSubscription: Subscription;
+
   public currentAttempts: number;
   public currentPin: string;
   public firstPinEntered: string;
@@ -46,7 +52,7 @@ export class PinModalPage {
     private viewCtrl: ViewController
   ) {
     this.ATTEMPT_LIMIT = 3;
-    this.ATTEMPT_LOCK_OUT_TIME = 5 * 60;
+    this.ATTEMPT_LOCK_OUT_TIME = 2 * 60;
     this.currentAttempts = 0;
     this.currentPin = '';
     this.firstPinEntered = '';
@@ -81,6 +87,24 @@ export class PinModalPage {
     if (this.platform.is('ios')) {
       this.statusBar.styleLightContent();
     }
+  }
+
+  ionViewDidLoad() {
+    this.onPauseSubscription = this.platform.pause.subscribe(() => {
+      clearInterval(this.countDown);
+      clearTimeout(this.lockReleaseTimeout);
+      this.expires = this.disableButtons = null;
+      this.currentPin = this.firstPinEntered = '';
+    });
+    this.onResumeSubscription = this.platform.resume.subscribe(() => {
+      this.showLockTimer();
+      this.setLockRelease();
+    });
+  }
+
+  ngOnDestroy() {
+    this.onPauseSubscription.unsubscribe();
+    this.onResumeSubscription.unsubscribe();
   }
 
   public close(cancelClicked?: boolean): void {
@@ -151,16 +175,12 @@ export class PinModalPage {
   }
 
   private setLockRelease() {
-    setTimeout(() => {
+    this.lockReleaseTimeout = setTimeout(() => {
       clearInterval(this.countDown);
-      this.unlock();
+      this.expires = this.disableButtons = null;
+      this.currentPin = this.firstPinEntered = '';
+      this.persistenceProvider.removeLockStatus();
     }, this.ATTEMPT_LOCK_OUT_TIME * 1000);
-  }
-
-  private unlock() {
-    this.expires = this.disableButtons = null;
-    this.currentPin = this.firstPinEntered = '';
-    this.persistenceProvider.removeLockStatus();
   }
 
   public delete(): void {
