@@ -1051,6 +1051,10 @@ export class WalletProvider {
       txp.outputs.push({ amount: 0, script: script_raw });
       txp.keoken = { keoken_id: 1, keoken_amount: 1 }
 
+      // TODO (guille): remove this call and use a callback instead of null
+      // The return must be changed on the bitcore-cient-wallet to support callbacks
+      wallet.getKeokenBalance(txp, null);
+
       wallet.createTxProposal(txp, (err, createdTxp) => {
         if (err) return reject(err);
         else {
