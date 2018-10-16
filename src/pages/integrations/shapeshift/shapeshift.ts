@@ -288,7 +288,7 @@ export class ShapeshiftPage {
           });
         return;
       }
-      if (!this.isNW) {
+      if (this.isCordova) {
         this.navCtrl.pop();
       }
       this.accessToken = accessToken;
