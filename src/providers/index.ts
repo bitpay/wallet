@@ -72,6 +72,7 @@ export {
 export { ScanProvider } from '../providers/scan/scan';
 export { ShapeshiftProvider } from '../providers/shapeshift/shapeshift';
 export { FaucetProvider } from '../providers/faucet/faucet';
+export { ExplorerProvider } from '../providers/explorer/explorer';
 export { TimeProvider } from '../providers/time/time';
 export { TouchIdProvider } from '../providers/touchid/touchid';
 export {

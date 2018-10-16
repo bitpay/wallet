@@ -33,6 +33,7 @@
     "amazon": false,
     "mercadolibre": false,
     "shapeshift": false,
-    "faucet": true
+    "faucet": true,
+    "explorer": true
   }
 }

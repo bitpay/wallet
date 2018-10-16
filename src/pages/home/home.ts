@@ -16,6 +16,7 @@ import { AmazonPage } from '../integrations/amazon/amazon';
 import { BitPayCardPage } from '../integrations/bitpay-card/bitpay-card';
 import { BitPayCardIntroPage } from '../integrations/bitpay-card/bitpay-card-intro/bitpay-card-intro';
 import { CoinbasePage } from '../integrations/coinbase/coinbase';
+import { ExplorerPage } from '../integrations/explorer/explorer';
 import { FaucetPage } from '../integrations/faucet/faucet';
 import { GlideraPage } from '../integrations/glidera/glidera';
 import { MercadoLibrePage } from '../integrations/mercado-libre/mercado-libre';
@@ -765,7 +766,8 @@ export class HomePage {
       GlideraPage,
       MercadoLibrePage,
       ShapeshiftPage,
-      FaucetPage
+      FaucetPage,
+      ExplorerPage
     };
 
     this.navCtrl.push(pageMap[page]);

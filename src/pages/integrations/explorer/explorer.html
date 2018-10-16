@@ -1,0 +1,35 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>Testnet Explorer</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content no-bounce>
+  <div class="container">
+    <div class="center-header">
+      <img src="assets/img/shapeshift/logo-shapeshift.svg" width="200" alt="Shapeshift">
+      <div padding>
+        <h4 translate>Keoken Testnet Explorer!</h4>
+        <p translate>Use the Explorer.</p>
+      </div>
+      <button ion-button outline class="button-standard" color="light" no-low-fee (click)="openExternalLink('https://explorer.testnet.keoken.io/')">
+        {{'Start' | translate}}
+      </button>
+      <!-- <button ion-button clear small color="light" (click)="openExternalLink('https://faucet.testnet.keoken.io/')">
+        {{'Go to the faucet' | translate}} &rarr;
+      </button> -->
+    </div>
+  </div>
+</ion-content>
+
+<ion-footer>
+  <ion-toolbar>
+    <div class="shift-problems">
+      <span translate>Having problems with Explorer?</span>
+      <br>
+      <a (click)="openExternalLink('https://explorer.testnet.keoken.io/')" translate>
+        Follow our guide!
+      </a>
+    </div>
+  </ion-toolbar>
+</ion-footer>

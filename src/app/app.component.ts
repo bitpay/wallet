@@ -32,6 +32,8 @@ import { TouchIdProvider } from '../providers/touchid/touchid';
 
 import { FaucetProvider } from '../providers/faucet/faucet';
 
+import { ExplorerProvider } from '../providers/explorer/explorer';
+
 // pages
 import { CopayersPage } from '../pages/add/copayers/copayers';
 import { ImportWalletPage } from '../pages/add/import-wallet/import-wallet';
@@ -109,6 +111,7 @@ export class CopayApp {
     private mercadoLibreProvider: MercadoLibreProvider,
     private shapeshiftProvider: ShapeshiftProvider,
     private faucetProvider: FaucetProvider,
+    private explorerProvider: ExplorerProvider,
     private emailNotificationsProvider: EmailNotificationsProvider,
     private screenOrientation: ScreenOrientation,
     private popupProvider: PopupProvider,
@@ -282,6 +285,10 @@ export class CopayApp {
   private registerIntegrations(): void {
     if (this.appProvider.info._enabledExtensions.faucet) {
       this.faucetProvider.register();
+    }
+
+    if (this.appProvider.info._enabledExtensions.explorer) {
+      this.explorerProvider.register();
     }
 
     // Mercado Libre
