@@ -79,7 +79,7 @@ export class PersistenceProvider {
     this.logsBuffer = [];
     this.logsLoaded = false;
     this.persistentLogsEnabled = false;
-    this._subscribeEvents();
+    // this._subscribeEvents();
   }
 
   private _subscribeEvents(): void {
@@ -428,6 +428,10 @@ export class PersistenceProvider {
 
   getLogs() {
     return this.storage.get(Keys.LOGS);
+  }
+
+  removeLogs() {
+    return this.storage.remove(Keys.LOGS);
   }
 
   setAddressBook(network: string, addressbook) {

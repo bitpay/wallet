@@ -106,6 +106,7 @@ export class LocalStorage implements IStorage {
       } else {
         this.ls.removeItem(k);
       }
+      this.logger.debug('File removed: ' + k);
       resolve();
     });
   }
