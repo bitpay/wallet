@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
 import { Events, NavController, NavParams } from 'ionic-angular';
 import * as _ from 'lodash';
 
@@ -73,7 +74,8 @@ export class SendPage extends WalletTabsChild {
     walletTabsProvider: WalletTabsProvider,
     private actionSheetProvider: ActionSheetProvider,
     private externalLinkProvider: ExternalLinkProvider,
-    private appProvider: AppProvider
+    private appProvider: AppProvider,
+    private translate: TranslateService
   ) {
     super(navCtrl, profileProvider, walletTabsProvider);
   }
@@ -219,7 +221,24 @@ export class SendPage extends WalletTabsChild {
       this.search = '';
     } else {
       this.invalidAddress = true;
-      if (this.wallet.coin === 'bch') this.checkIfLegacy();
+      const addressDetails = this.addressProvider.validateAddress(address);
+      if (
+        addressDetails.coin != this.wallet.coin ||
+        addressDetails.network != this.wallet.network
+      ) {
+        const msg = this.translate.instant(
+          'The wallet you are using does not match the network and/or the currency of the address provided'
+        );
+        const title = this.translate.instant('Error');
+        const infoSheet = this.actionSheetProvider.createInfoSheet(
+          'default-error',
+          { msg, title }
+        );
+        infoSheet.present();
+        infoSheet.onDidDismiss(() => {
+          this.search = '';
+        });
+      } else if (this.wallet.coin === 'bch') this.checkIfLegacy();
     }
   }
 
