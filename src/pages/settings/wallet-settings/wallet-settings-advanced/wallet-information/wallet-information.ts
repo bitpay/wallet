@@ -52,8 +52,6 @@ export class WalletInformationPage {
 
   ionViewWillEnter() {
     this.wallet = this.profileProvider.getWallet(this.navParams.data.walletId);
-
-    console.log('[wallet-information.ts.55]', this.wallet); //TODO
     this.walletName = this.wallet.name;
     this.coin = this.wallet.coin;
     this.walletId = this.wallet.credentials.walletId;
