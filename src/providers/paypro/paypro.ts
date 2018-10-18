@@ -59,6 +59,7 @@ export class PayproProvider {
             this.logger.warn('Failed to verify payment protocol signatures');
             return reject(this.translate.instant('Payment Protocol Invalid'));
           }
+          paypro.coin = coin; // workaround to hanlde bch and btc testnet
           return resolve(paypro);
         }
       );

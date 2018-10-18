@@ -88,7 +88,7 @@ export class AddressProvider {
     };
   }
 
-  public checkCoinAndNetwork(
+  public checkCoinAndNetworkFromAddr(
     coin: string,
     network: string,
     address: string
@@ -105,6 +105,18 @@ export class AddressProvider {
     } else {
       return false;
     }
+  }
+
+  public checkCoinAndNetworkFromPayPro(
+    coin: string,
+    network: string,
+    payProDetails
+  ): boolean {
+    return payProDetails.coin == coin
+      ? payProDetails.network == network
+        ? true
+        : false
+      : false;
   }
 
   public extractAddress(address: string): string {

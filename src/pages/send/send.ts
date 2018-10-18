@@ -206,40 +206,74 @@ export class SendPage extends WalletTabsChild {
     this.events.publish('ScanFromWallet');
   }
 
-  private checkIfValidAddress(address): void {
-    const validAddress = this.addressProvider.checkCoinAndNetwork(
-      this.wallet.coin,
-      this.wallet.network,
-      address
-    );
-    if (validAddress) {
-      this.invalidAddress = false;
-      this.incomingDataProvider.redir(this.search, {
-        amount: this.navParams.get('amount'),
-        coin: this.navParams.get('coin')
-      });
-      this.search = '';
+  private checkCoinAndNetwork(data, isPayPro?): boolean {
+    let isValid;
+    if (isPayPro) {
+      isValid = this.addressProvider.checkCoinAndNetworkFromPayPro(
+        this.wallet.coin,
+        this.wallet.network,
+        data
+      );
     } else {
-      this.invalidAddress = true;
-      const addressDetails = this.addressProvider.validateAddress(address);
-      if (
-        addressDetails.coin != this.wallet.coin ||
-        addressDetails.network != this.wallet.network
-      ) {
-        const msg = this.translate.instant(
-          'The wallet you are using does not match the network and/or the currency of the address provided'
-        );
-        const title = this.translate.instant('Error');
-        const infoSheet = this.actionSheetProvider.createInfoSheet(
-          'default-error',
-          { msg, title }
-        );
-        infoSheet.present();
-        infoSheet.onDidDismiss(() => {
-          this.search = '';
-        });
-      } else if (this.wallet.coin === 'bch') this.checkIfLegacy();
+      isValid = this.addressProvider.checkCoinAndNetworkFromAddr(
+        this.wallet.coin,
+        this.wallet.network,
+        data
+      );
     }
+
+    if (isValid) {
+      this.invalidAddress = false;
+      return true;
+    } else if (this.wallet.coin === 'bch') {
+      const isLegacy = this.checkIfLegacy();
+      isLegacy ? this.showLegacyAddrMessage() : this.showErrorMessage();
+    } else {
+      this.showErrorMessage();
+    }
+    return false;
+  }
+
+  private redir() {
+    this.incomingDataProvider.redir(this.search, {
+      amount: this.navParams.get('amount'),
+      coin: this.navParams.get('coin')
+    });
+    this.search = '';
+  }
+
+  private showErrorMessage() {
+    this.invalidAddress = true;
+    const msg = this.translate.instant(
+      'The wallet you are using does not match the network and/or the currency of the address provided'
+    );
+    const title = this.translate.instant('Error');
+    const infoSheet = this.actionSheetProvider.createInfoSheet(
+      'default-error',
+      { msg, title }
+    );
+    infoSheet.present();
+    infoSheet.onDidDismiss(() => {
+      this.search = '';
+    });
+  }
+
+  private showLegacyAddrMessage() {
+    this.invalidAddress = true;
+    const appName = this.appProvider.info.nameCase;
+    const infoSheet = this.actionSheetProvider.createInfoSheet(
+      'legacy-address-info',
+      { appName }
+    );
+    infoSheet.present();
+    infoSheet.onDidDismiss(option => {
+      if (option) {
+        let url =
+          'https://bitpay.github.io/address-translator?addr=' + this.search;
+        this.externalLinkProvider.open(url);
+      }
+      this.search = '';
+    });
   }
 
   public processInput(): void {
@@ -256,19 +290,16 @@ export class SendPage extends WalletTabsChild {
           this.incomingDataProvider
             .getPayProDetails(this.search)
             .then(payProDetails => {
-              // Translate Legacy BitPay BCH Format to CashAddr Format if necessary
-              let address: string = this.walletProvider.getAddressView(
-                this.wallet,
-                payProDetails.toAddress
-              );
-              this.checkIfValidAddress(address);
+              const isValid = this.checkCoinAndNetwork(payProDetails, true);
+              if (isValid) this.redir();
             })
             .catch(err => {
               this.invalidAddress = true;
               this.logger.warn(err);
             });
         } else {
-          this.checkIfValidAddress(this.search);
+          const isValid = this.checkCoinAndNetwork(this.search);
+          if (isValid) this.redir();
         }
       } else {
         this.invalidAddress = false;
@@ -279,29 +310,13 @@ export class SendPage extends WalletTabsChild {
     }
   }
 
-  private checkIfLegacy() {
-    let usingLegacyAddress =
+  private checkIfLegacy(): boolean {
+    return (
       this.incomingDataProvider.isValidBitcoinCashLegacyAddress(this.search) ||
       this.incomingDataProvider.isValidBitcoinCashUriWithLegacyAddress(
         this.search
-      );
-
-    if (usingLegacyAddress) {
-      let appName = this.appProvider.info.nameCase;
-      const infoSheet = this.actionSheetProvider.createInfoSheet(
-        'legacy-address-info',
-        { appName }
-      );
-      infoSheet.present();
-      infoSheet.onDidDismiss(option => {
-        if (option) {
-          let url =
-            'https://bitpay.github.io/address-translator?addr=' + this.search;
-          this.externalLinkProvider.open(url);
-        }
-        this.search = '';
-      });
-    }
+      )
+    );
   }
 
   public searchWallets(): void {
