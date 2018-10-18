@@ -4,7 +4,11 @@ import { Logger } from '../../providers/logger/logger';
 
 import * as _ from 'lodash';
 
-const exchangeList: object[] = [{ name: 'coinbase' }, { name: 'glidera' }];
+const exchangeList: object[] = [
+  { name: 'coinbase' },
+  { name: 'glidera' },
+  { name: 'shapeshift' }
+];
 
 @Injectable()
 export class HomeIntegrationsProvider {

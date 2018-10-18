@@ -46,7 +46,8 @@ const Keys = {
   REMOTE_PREF_STORED: 'remotePrefStored',
   TX_CONFIRM_NOTIF: txid => 'txConfirmNotif-' + txid,
   TX_HISTORY: walletId => 'txsHistory-' + walletId,
-  ORDER_WALLET: walletId => 'order-' + walletId
+  ORDER_WALLET: walletId => 'order-' + walletId,
+  SHAPESHIFT_TOKEN: network => 'shapeshiftToken-' + network
 };
 
 interface Storage {
@@ -656,6 +657,18 @@ export class PersistenceProvider {
 
   removeShapeshift(network: string) {
     return this.storage.remove('shapeShift-' + network);
+  }
+
+  setShapeshiftToken(network: string, token: string) {
+    return this.storage.set(Keys.SHAPESHIFT_TOKEN(network), token);
+  }
+
+  getShapeshiftToken(network: string) {
+    return this.storage.get(Keys.SHAPESHIFT_TOKEN(network));
+  }
+
+  removeShapeshiftToken(network: string) {
+    return this.storage.remove(Keys.SHAPESHIFT_TOKEN(network));
   }
 
   setWalletOrder(walletId: string, order: number) {

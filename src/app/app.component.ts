@@ -14,6 +14,7 @@ import {
 import { Observable, Subscription } from 'rxjs';
 
 // providers
+import { WalletTabsProvider } from '../pages/wallet-tabs/wallet-tabs.provider';
 import { AmazonProvider } from '../providers/amazon/amazon';
 import { AppProvider } from '../providers/app/app';
 import { BitPayCardProvider } from '../providers/bitpay-card/bitpay-card';
@@ -40,6 +41,7 @@ import { FingerprintModalPage } from '../pages/fingerprint/fingerprint';
 import { BitPayCardIntroPage } from '../pages/integrations/bitpay-card/bitpay-card-intro/bitpay-card-intro';
 import { CoinbasePage } from '../pages/integrations/coinbase/coinbase';
 import { GlideraPage } from '../pages/integrations/glidera/glidera';
+import { ShapeshiftPage } from '../pages/integrations/shapeshift/shapeshift';
 import { DisclaimerPage } from '../pages/onboarding/disclaimer/disclaimer';
 import { OnboardingPage } from '../pages/onboarding/onboarding';
 import { PaperWalletPage } from '../pages/paper-wallet/paper-wallet';
@@ -50,7 +52,6 @@ import { AddressbookAddPage } from '../pages/settings/addressbook/add/add';
 import { TabsPage } from '../pages/tabs/tabs';
 import { WalletDetailsPage } from '../pages/wallet-details/wallet-details';
 import { WalletTabsPage } from '../pages/wallet-tabs/wallet-tabs';
-import { WalletTabsProvider } from '../pages/wallet-tabs/wallet-tabs.provider';
 
 // As the handleOpenURL handler kicks in before the App is started,
 // declare the handler function at the top of app.component.ts (outside the class definition)
@@ -88,6 +89,7 @@ export class CopayApp {
     ImportWalletPage,
     JoinWalletPage,
     PaperWalletPage,
+    ShapeshiftPage,
     WalletDetailsPage
   };
 
@@ -294,8 +296,10 @@ export class CopayApp {
       this.amazonProvider.register();
 
     // ShapeShift
-    if (this.appProvider.info._enabledExtensions.shapeshift)
+    if (this.appProvider.info._enabledExtensions.shapeshift) {
+      this.shapeshiftProvider.setCredentials();
       this.shapeshiftProvider.register();
+    }
 
     // Glidera
     if (this.appProvider.info._enabledExtensions.glidera) {

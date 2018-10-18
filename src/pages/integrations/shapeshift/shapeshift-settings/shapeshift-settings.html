@@ -7,9 +7,47 @@
 <ion-content>
   <ion-list>
     <ion-item-divider></ion-item-divider>
-    <ion-item>
+    <ion-spinner *ngIf="loading"></ion-spinner>
+    <ion-item [ngClass]="{'with-label': unverifiedAccount}">
       <ion-label>{{'Show in Home' | translate}}</ion-label>
       <ion-toggle [(ngModel)]="showInHome" (ionChange)="showInHomeSwitch()"></ion-toggle>
     </ion-item>
+    <label-tip *ngIf="unverifiedAccount" type="warn">
+      <span label-tip-title translate>Unverified Account</span>
+      <div label-tip-body translate>
+        Please complete your account verification on ShapeShift website.
+        <br>
+        <a class="label-tip-link" (click)="openAuthenticateWindow()" translate>Verify Account</a>
+      </div>
+    </label-tip>
+  </ion-list>
+
+  <ion-list *ngIf="shapeshiftUser">
+    <ion-item-divider>User Information</ion-item-divider>
+    <ion-item *ngIf="shapeshiftUser.username">
+      <span>Username</span>
+      <ion-note item-end>
+        {{shapeshiftUser.username}}
+      </ion-note>
+    </ion-item>
+    <ion-item>
+      <span>ID</span>
+      <ion-note item-end>
+        {{shapeshiftUser.id}}
+      </ion-note>
+    </ion-item>
+    <ion-item>
+      <span>Email</span>
+      <ion-note item-end>
+        {{shapeshiftUser.email}}
+      </ion-note>
+    </ion-item>
+  </ion-list>
+
+  <ion-list *ngIf="shapeshiftUser || unverifiedAccount">
+    <ion-item-divider></ion-item-divider>
+    <button ion-item (click)="revokeToken()">
+      <span class="assertive">Log out</span>
+    </button>
   </ion-list>
 </ion-content>

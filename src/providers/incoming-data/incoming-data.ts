@@ -118,6 +118,13 @@ export class IncomingDataProvider {
     );
   }
 
+  private isValidShapeshiftUri(data: string): boolean {
+    data = this.sanitizeUri(data);
+    return !!(
+      data && data.indexOf(this.appProvider.info.name + '://shapeshift') === 0
+    );
+  }
+
   private isValidBitPayCardUri(data: string): boolean {
     data = this.sanitizeUri(data);
     return !!(data && data.indexOf('bitpay://bitpay.com?secret=') === 0);
@@ -346,6 +353,18 @@ export class IncomingDataProvider {
     this.events.publish('IncomingDataRedir', nextView);
   }
 
+  private goToShapeshift(data: string): void {
+    this.logger.debug('Incoming-data (redirect): ShapeShift URL');
+
+    let code = this.getParameterByName('code', data);
+    let stateParams = { code };
+    let nextView = {
+      name: 'ShapeshiftPage',
+      params: stateParams
+    };
+    this.events.publish('IncomingDataRedir', nextView);
+  }
+
   private goToGlidera(data: string): void {
     this.logger.debug('Incoming-data (redirect): Glidera URL');
 
@@ -402,6 +421,11 @@ export class IncomingDataProvider {
       // Coinbase
     } else if (this.isValidCoinbaseUri(data)) {
       this.goToCoinbase(data);
+      return true;
+
+      // ShapeShift
+    } else if (this.isValidShapeshiftUri(data)) {
+      this.goToShapeshift(data);
       return true;
 
       // BitPayCard Authentication

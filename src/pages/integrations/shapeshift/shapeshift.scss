@@ -29,6 +29,11 @@ page-shapeshift {
       display: block;
       margin: 0 auto;
     }
+    ion-spinner {
+      position: absolute;
+      bottom: 5px;
+      right: 5px;
+    }
   }
   .shift-problems {
     padding: 10px;
@@ -39,5 +44,12 @@ page-shapeshift {
   .status,
   .date {
     font-size: 12.5px;
+  }
+  .form-container {
+    width: 100%;
+    input {
+      text-align: center;
+      color: white;
+    }
   }
 }
