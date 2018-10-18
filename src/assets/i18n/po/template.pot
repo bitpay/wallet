@@ -254,7 +254,7 @@ msgstr ""
 msgid "Bitcoin Cash URI"
 msgstr ""
 
-msgid "Bitcoin Cash Wallets"
+msgid "Bitcoin Cash Keoken Wallets"
 msgstr ""
 
 msgid "Bitcoin Network Fee Policy"

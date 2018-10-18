@@ -233,8 +233,8 @@ msgstr ""
 msgid "Bitcoin Cash URI"
 msgstr ""
 
-msgid "Bitcoin Cash Wallets"
-msgstr "Carteiras Bitcoin Cash"
+msgid "Bitcoin Cash Keoken Wallets"
+msgstr "Carteiras Keoken Bitcoin Cash"
 
 msgid "Bitcoin Network Fee Policy"
 msgstr "Política de taxa de rede Bitcoin"

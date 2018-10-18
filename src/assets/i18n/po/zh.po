@@ -233,7 +233,7 @@ msgstr "Địa chỉ Bitcoin Cash"
 msgid "Bitcoin Cash URI"
 msgstr "Bitcoin Cash URI"
 
-msgid "Bitcoin Cash Wallets"
+msgid "Bitcoin Cash Keoken Wallets"
 msgstr "比特币现金钱包"
 
 msgid "Bitcoin Network Fee Policy"
