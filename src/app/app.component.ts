@@ -146,8 +146,13 @@ export class CopayApp {
         this.onAppLoad(readySource);
       })
       .catch(err => {
-        let title = 'Could not initialize the app';
-        let message = JSON.stringify(err);
+        const title = 'Could not initialize the app';
+        let message;
+        try {
+          message = err instanceof Error ? err.toString() : JSON.stringify(err);
+        } catch (error) {
+          message = 'Unknown error';
+        }
         this.popupProvider.ionicAlert(title, message);
       });
   }
