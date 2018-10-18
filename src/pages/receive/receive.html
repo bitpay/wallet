@@ -7,7 +7,8 @@
     </ion-buttons>
     <ion-title>{{wallet && wallet.name || ('Receive'|translate)}}</ion-title>
     <ion-buttons right>
-      <button *ngIf="wallet && wallet.isComplete() && !wallet.needsBackup" (click)="showMoreOptions()" ion-button icon-only>
+      <button *ngIf="wallet && wallet.isComplete() && !wallet.needsBackup" (click)="showMoreOptions()" ion-button
+        icon-only>
         <ion-icon class="horizontal-lg" name="more"></ion-icon>
       </button>
     </ion-buttons>
@@ -34,7 +35,9 @@
           <span translate>Needs Backup</span>
         </div>
         <div class="subtitle-info">
-          <span translate>Before retrieving your wallet address, it's recommended that you first write down your recovery phrase and store it securely so that your wallet can be recovered in the case your device was lost or stolen.</span>
+          <span translate>Before retrieving your wallet address, it's recommended that you first write down your
+            recovery phrase and store it securely so that your wallet can be recovered in the case your device was lost
+            or stolen.</span>
         </div>
         <button ion-button class="button-standard" (click)="goToBackup()">
           {{'Write Down Recovery Phrase' | translate}}
@@ -44,8 +47,8 @@
 
     <div class="qr-container" *ngIf="wallet && wallet.isComplete() && !wallet.needsBackup">
       <div class="card qr-card" [ngClass]="{'qr-code-bounce': playAnimation}" *ngIf="wallets[0] && address">
-        <ngx-qrcode (click)="showFullAddr()" *ngIf="address" copy-to-clipboard="{{ address }}" hide-toast="true" qrc-value="{{qrAddress}}"
-          qrc-class="aclass" qrc-errorCorrectionLevel="M"></ngx-qrcode>
+        <ngx-qrcode (click)="showFullAddr()" *ngIf="address" copy-to-clipboard="{{ address }}" hide-toast="true"
+          qrc-value="{{qrAddress}}" qrc-class="aclass" qrc-errorCorrectionLevel="M"></ngx-qrcode>
       </div>
     </div>
 
@@ -60,8 +63,8 @@
 
           <button class="new-address-btn" detail-none text-center (click)="setAddress(true)">
             <span class="new-address" ion-text color="primary" translate>
-              <img [hidden]="loading" class="spin-icon" [ngClass]="{'spin-backwards': playAnimation}" src="assets/img/right.svg" width="16"
-              />
+              <img [hidden]="loading" class="spin-icon" [ngClass]="{'spin-backwards': playAnimation}" src="assets/img/right.svg"
+                width="16" />
               <div *ngIf="loading" [ngClass]="{'spin-fast': loading}" class="spinner"></div>
             </span>
           </button>

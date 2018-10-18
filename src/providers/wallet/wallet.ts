@@ -223,6 +223,14 @@ export class WalletProvider {
         // Total wallet balance is same regardless of 'spend unconfirmed funds' setting.
         cache.totalBalanceSat = balance.totalAmount;
 
+        cache.keokenBalance = 0;
+        wallet.getKeokenBalance(null, (err, balance) => {
+          if (!err)
+            cache.keokenBalance = balance.amount;
+          this.logger.debug('balance ' + balance.amount);
+        });
+
+
         // Spend unconfirmed funds
         if (config.spendUnconfirmed) {
           cache.lockedBalanceSat = balance.lockedAmount;
@@ -1042,19 +1050,15 @@ export class WalletProvider {
       if (lodash.isEmpty(txp) || lodash.isEmpty(wallet))
         return reject('MISSING_PARAMETER');
 
-      // Add op_return data
-      var script_raw = "6a0400004b50"; // op_return + keoken prefix
-      script_raw = script_raw + "1000000001" // 10hex = 16 bytes lenght + version (0) + simple send (1)
-      script_raw = script_raw + "00000001" // asset_id = keo (1)
-      script_raw = script_raw + "0000000000000001" // amount to send (1)
-
-      txp.outputs.push({ amount: 0, script: script_raw });
-      txp.keoken = { keoken_id: 1, keoken_amount: 1 }
-
       // TODO (guille): remove this call and use a callback instead of null
       // The return must be changed on the bitcore-cient-wallet to support callbacks
-      wallet.getKeokenBalance(txp, null);
+      var keokenBalance = 0;
+      wallet.getKeokenBalance(txp, (err, balance) => {
+        if (!err)
+          keokenBalance = balance.amount;
+      });
 
+      this.logger.debug('keokenBalance' + keokenBalance);
       wallet.createTxProposal(txp, (err, createdTxp) => {
         if (err) return reject(err);
         else {

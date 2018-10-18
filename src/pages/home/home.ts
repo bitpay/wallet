@@ -528,6 +528,12 @@ export class HomePage {
         );
         this.updateTxps();
         this.stopUpdatingWalletId(walletId);
+        wallet.status.keokenBalance = 0;
+        wallet.getKeokenBalance(null, (err, balance) => {
+          if (!err)
+            wallet.status.keokenBalance = balance;
+        });
+
       })
       .catch(err => {
         this.logger.error(err);

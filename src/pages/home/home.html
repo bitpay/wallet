@@ -30,8 +30,8 @@
           </button>
         </div>
       </ion-item-divider>
-      <page-clipboard-card [remainingTimeStr]="remainingTimeStr" [payProDetailsData]="payProDetailsData" [validDataFromClipboard]="validDataFromClipboard"
-        (click)="processClipboardData(validDataFromClipboard.data)"></page-clipboard-card>
+      <page-clipboard-card [remainingTimeStr]="remainingTimeStr" [payProDetailsData]="payProDetailsData"
+        [validDataFromClipboard]="validDataFromClipboard" (click)="processClipboardData(validDataFromClipboard.data)"></page-clipboard-card>
     </div>
 
     <div [ngClass]="{'content-animation': slideDown, 'initial-margin': validDataFromClipboard}">
@@ -152,7 +152,8 @@
           </div>
         </ion-item-divider>
         <ion-list>
-          <page-wallet-activity *ngFor="let notification of notifications" (click)="openNotificationModal(notification)" [notification]="notification"></page-wallet-activity>
+          <page-wallet-activity *ngFor="let notification of notifications" (click)="openNotificationModal(notification)"
+            [notification]="notification"></page-wallet-activity>
         </ion-list>
       </div>
 
@@ -195,8 +196,10 @@
               </span>
               <span *ngIf="wallet.isComplete() && !wallet.needsBackup">
                 <span *ngIf="!wallet.balanceHidden && !wallet.scanning">
-                  {{wallet.status && wallet.status.totalBalanceStr ? (wallet.status.totalBalanceStr) : ( wallet.cachedBalance ? wallet.cachedBalance
-                  + (wallet.cachedBalanceUpdatedOn ? ' &middot; ' + ( wallet.cachedBalanceUpdatedOn * 1000 | amTimeAgo) :
+                  {{wallet.status && wallet.status.totalBalanceStr ? (wallet.status.totalBalanceStr) : (
+                  wallet.cachedBalance ? wallet.cachedBalance
+                  + (wallet.cachedBalanceUpdatedOn ? ' &middot; ' + ( wallet.cachedBalanceUpdatedOn * 1000 | amTimeAgo)
+                  :
                   '') : '')}}
                 </span>
                 <span *ngIf="wallet.scanning" translate>Scanning funds</span>
@@ -251,8 +254,15 @@
               </span>
               <span *ngIf="wallet.isComplete() && !wallet.needsBackup">
                 <span *ngIf="!wallet.balanceHidden && !wallet.scanning">
-                  {{wallet.status && wallet.status.totalBalanceStr ? (wallet.status.totalBalanceStr) : ( wallet.cachedBalance ? wallet.cachedBalance
-                  + (wallet.cachedBalanceUpdatedOn ? ' &middot; ' + ( wallet.cachedBalanceUpdatedOn * 1000 | amTimeAgo) :
+                  {{wallet.status && wallet.status.keokenBalance }}
+                </span>
+                <span> keo </span>
+                <br>
+                <span *ngIf="!wallet.balanceHidden && !wallet.scanning">
+                  {{wallet.status && wallet.status.totalBalanceStr ? (wallet.status.totalBalanceStr) : (
+                  wallet.cachedBalance ? wallet.cachedBalance
+                  + (wallet.cachedBalanceUpdatedOn ? ' &middot; ' + ( wallet.cachedBalanceUpdatedOn * 1000 | amTimeAgo)
+                  :
                   '') : '')}}
                 </span>
                 <span *ngIf="wallet.scanning" translate>Scanning funds</span>
@@ -286,7 +296,8 @@
               <img src="assets/img/icon-card.svg" class="icon-card" />
             </ion-icon>
             <div class="item-title">BitPay Visa&reg; Card ({{card.lastFourDigits}})</div>
-            <div class="item-subtitle">{{card.balance ? ((card.balance | number:'1.2-2') + ' ' + card.currency) : 'Add funds to get started'|translate}}
+            <div class="item-subtitle">{{card.balance ? ((card.balance | number:'1.2-2') + ' ' + card.currency) : 'Add
+              funds to get started'|translate}}
               {{card.updatedOn ? (' &middot; ' + (card.updatedOn * 1000 | amTimeAgo)) : ''}}</div>
           </button>
         </ion-list>

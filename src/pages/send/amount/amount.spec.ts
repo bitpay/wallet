@@ -16,7 +16,8 @@ describe('AmountPage', () => {
       totalBalanceStr: '1.000000',
       totalBalanceSat: 100000000,
       availableBalanceStr: '1.000000',
-      availableBalanceSat: 100000000
+      availableBalanceSat: 100000000,
+      keokenBalance: 0
     }
   };
 

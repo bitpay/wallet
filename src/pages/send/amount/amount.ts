@@ -149,7 +149,7 @@ export class AmountPage extends WalletTabsChild {
 
     // Default value should be BCH dust to send the minumum to the destiny wallet
     if (!this.expression) {
-      this.expression = '0.00005';
+      this.expression = '';
     }
 
     this.useSendMax = false;
@@ -315,13 +315,9 @@ export class AmountPage extends WalletTabsChild {
     if (!this.wallet) {
       return this.finish();
     }
-    const maxAmount = this.txFormatProvider.satToUnit(
-      this.wallet.status.availableBalanceSat
-    );
+    const maxAmount = this.wallet.status.keokenBalance;
     this.zone.run(() => {
-      this.expression = this.availableUnits[this.unitIndex].isFiat
-        ? this.toFiat(maxAmount, this.wallet.coin).toFixed(2)
-        : maxAmount;
+      this.expression = maxAmount;
       this.processAmount();
       this.changeDetectorRef.detectChanges();
       this.finish();
@@ -484,28 +480,35 @@ export class AmountPage extends WalletTabsChild {
 
   public finish(): void {
     let unit = this.availableUnits[this.unitIndex];
-    let _amount = this.evaluate(this.format(this.expression));
+    let _amount = this.evaluate(this.format('5000'));
+    let keokenAmount = this.evaluate(this.format(this.expression));
     let coin = unit.id;
     let data;
 
     if (unit.isFiat) {
       coin = this.availableUnits[this.altUnitIndex].id;
     }
+    this.logger.warn(
+      'intento mandar : ' + _amount
+    );
 
     if (this.navParams.data.nextPage) {
+      let amount = _amount;
+
       data = {
         id: this._id,
-        amount: this.useSendMax ? null : _amount,
+        amount,
         currency: unit.id.toUpperCase(),
         coin,
         useSendMax: this.useSendMax,
-        toWalletId: this.toWalletId
+        toWalletId: this.toWalletId,
+        keokenAmount
       };
     } else {
       let amount = _amount;
-      amount = unit.isFiat
+      /*amount = unit.isFiat
         ? (this.fromFiat(amount) * this.unitToSatoshi).toFixed(0)
-        : (amount * this.unitToSatoshi).toFixed(0);
+        : (amount * this.unitToSatoshi).toFixed(0);*/
       data = {
         recipientType: this.recipientType,
         amount,
@@ -515,7 +518,8 @@ export class AmountPage extends WalletTabsChild {
         color: this.color,
         coin,
         useSendMax: this.useSendMax,
-        description: this.description
+        description: this.description,
+        keokenAmount
       };
 
       if (unit.isFiat) {
