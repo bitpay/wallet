@@ -92,6 +92,8 @@ export class CoinbaseSettingsPage {
       .then(res => {
         if (res) {
           this.coinbaseProvider.logout();
+          this.showInHome = false;
+          this.showInHomeSwitch();
           this.app.getRootNavs()[0].setRoot(TabsPage);
         }
       });
