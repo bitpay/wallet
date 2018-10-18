@@ -226,7 +226,7 @@ export class WalletProvider {
         cache.keokenBalance = 0;
         wallet.getKeokenBalance(null, (err, balance) => {
           if (!err)
-            cache.keokenBalance = balance.amount;
+            wallet.status.keokenBalance = balance.amount;
           this.logger.debug('balance ' + balance.amount);
         });
 

@@ -531,7 +531,7 @@ export class HomePage {
         wallet.status.keokenBalance = 0;
         wallet.getKeokenBalance(null, (err, balance) => {
           if (!err)
-            wallet.status.keokenBalance = balance;
+            wallet.status.keokenBalance = balance.amount;
         });
 
       })

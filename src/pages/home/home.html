@@ -253,9 +253,7 @@
                 Needs Backup
               </span>
               <span *ngIf="wallet.isComplete() && !wallet.needsBackup">
-                <span *ngIf="!wallet.balanceHidden && !wallet.scanning">
-                  {{wallet.status && wallet.status.keokenBalance }}
-                </span>
+                <span> {{wallet.status && wallet.status.keokenBalance }}</span>
                 <span> keo </span>
                 <br>
                 <span *ngIf="!wallet.balanceHidden && !wallet.scanning">
