@@ -5,14 +5,12 @@ import {
   Events,
   ModalController,
   NavController,
-  NavParams,
-  Platform
+  NavParams
 } from 'ionic-angular';
 import * as _ from 'lodash';
 import { Logger } from '../../../providers/logger/logger';
 
 // Pages
-import { Subscription } from 'rxjs';
 import { TabsPage } from '../../tabs/tabs';
 import { ShapeshiftDetailsPage } from './shapeshift-details/shapeshift-details';
 import { ShapeshiftShiftPage } from './shapeshift-shift/shapeshift-shift';
@@ -21,7 +19,6 @@ import { ShapeshiftShiftPage } from './shapeshift-shift/shapeshift-shift';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ExternalLinkProvider } from '../../../providers/external-link/external-link';
 import { OnGoingProcessProvider } from '../../../providers/on-going-process/on-going-process';
-import { PlatformProvider } from '../../../providers/platform/platform';
 import { PopupProvider } from '../../../providers/popup/popup';
 import { ShapeshiftProvider } from '../../../providers/shapeshift/shapeshift';
 import { TimeProvider } from '../../../providers/time/time';
@@ -39,10 +36,6 @@ export class ShapeshiftPage {
   public code: string;
   public loading: boolean;
 
-  private isNW: boolean = false; // TODO: desktop
-  private isCordova: boolean;
-  private onResumeSubscription: Subscription;
-
   constructor(
     private app: App,
     private events: Events,
@@ -56,9 +49,7 @@ export class ShapeshiftPage {
     private formBuilder: FormBuilder,
     private onGoingProcessProvider: OnGoingProcessProvider,
     protected translate: TranslateService,
-    private popupProvider: PopupProvider,
-    private platformProvider: PlatformProvider,
-    private platform: Platform
+    private popupProvider: PopupProvider
   ) {
     this.oauthCodeForm = this.formBuilder.group({
       code: [
@@ -67,16 +58,12 @@ export class ShapeshiftPage {
       ]
     });
     this.showOauthForm = false;
-    this.isCordova = this.platformProvider.isCordova;
     this.network = this.shapeshiftProvider.getNetwork();
     this.shifts = { data: {} };
   }
 
   ionViewDidLoad() {
     this.logger.info('Loaded: ShapeshiftPage');
-    this.onResumeSubscription = this.platform.resume.subscribe(() => {
-      // this.ionViewWillEnter();
-    });
   }
 
   ionViewWillEnter() {
@@ -95,10 +82,6 @@ export class ShapeshiftPage {
 
   ionViewWillLeave() {
     this.events.unsubscribe('bwsEvent');
-  }
-
-  ngOnDestroy() {
-    this.onResumeSubscription.unsubscribe();
   }
 
   private init(): void {
@@ -218,21 +201,9 @@ export class ShapeshiftPage {
   }
 
   public openAuthenticateWindow(): void {
-    let oauthUrl = this.getAuthenticateUrl();
-    if (!this.isNW) {
-      this.externalLinkProvider.open(oauthUrl);
-    } else {
-      let gui = (window as any).require('nw.gui');
-      gui.Window.open(oauthUrl, {
-        focus: true,
-        position: 'center'
-      });
-    }
-  }
-
-  public getAuthenticateUrl(): string {
-    this.showOauthForm = this.isCordova || this.isNW ? false : true;
-    return this.shapeshiftProvider.getOauthCodeUrl();
+    this.showOauthForm = true;
+    let oauthUrl = this.shapeshiftProvider.getOauthCodeUrl();
+    this.externalLinkProvider.open(oauthUrl);
   }
 
   private openShafeShiftWindow(): void {
@@ -287,9 +258,6 @@ export class ShapeshiftPage {
             this.oauthCodeForm.reset();
           });
         return;
-      }
-      if (this.isCordova) {
-        this.navCtrl.pop();
       }
       this.accessToken = accessToken;
       this.init();
