@@ -148,9 +148,7 @@ export class AmountPage extends WalletTabsChild {
     this.disableHardwareKeyboard = false;
 
     // Default value should be BCH dust to send the minumum to the destiny wallet
-    if (!this.expression) {
-      this.expression = '';
-    }
+    this.expression = '';
 
     this.useSendMax = false;
     this.processAmount();
