@@ -528,9 +528,9 @@ export class HomePage {
         );
         this.updateTxps();
         this.stopUpdatingWalletId(walletId);
-        wallet.status.keokenBalance = 0;
-        wallet.getKeokenBalance(null, (err, balance) => {
-          if (!err)
+        //wallet.status.keokenBalance = 0;
+        wallet.getKeokenBalance(wallet.id, (err, balance) => {
+          if (!err && balance.amount)
             wallet.status.keokenBalance = balance.amount;
         });
 

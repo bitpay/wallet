@@ -224,9 +224,10 @@ export class WalletProvider {
         cache.totalBalanceSat = balance.totalAmount;
 
         cache.keokenBalance = 0;
-        wallet.getKeokenBalance(null, (err, balance) => {
-          if (!err)
+        wallet.getKeokenBalance(wallet.id, (err, balance) => {
+          if (!err && balance.amount) {
             wallet.status.keokenBalance = balance.amount;
+          }
           this.logger.debug('balance ' + balance.amount);
         });
 
@@ -1050,15 +1051,6 @@ export class WalletProvider {
       if (lodash.isEmpty(txp) || lodash.isEmpty(wallet))
         return reject('MISSING_PARAMETER');
 
-      // TODO (guille): remove this call and use a callback instead of null
-      // The return must be changed on the bitcore-cient-wallet to support callbacks
-      var keokenBalance = 0;
-      wallet.getKeokenBalance(txp, (err, balance) => {
-        if (!err)
-          keokenBalance = balance.amount;
-      });
-
-      this.logger.debug('keokenBalance' + keokenBalance);
       wallet.createTxProposal(txp, (err, createdTxp) => {
         if (err) return reject(err);
         else {
