@@ -181,7 +181,6 @@ describe('SendPage', () => {
 
     describe('for wallets btc livenet', () => {
       beforeEach(() => {
-        instance.hasBtcWallets = true;
         instance.wallet.coin = 'btc';
         instance.wallet.network = 'livenet';
         instance.navParams.data.amount = 11111111;
@@ -309,7 +308,6 @@ describe('SendPage', () => {
 
     describe('for wallets btc testnet', () => {
       beforeEach(() => {
-        instance.hasBtcWallets = true;
         instance.wallet.coin = 'btc';
         instance.wallet.network = 'testnet';
         instance.navParams.data.amount = 11111111;
@@ -437,7 +435,6 @@ describe('SendPage', () => {
 
     describe('for wallets bch livenet', () => {
       beforeEach(() => {
-        instance.hasBtcWallets = true;
         instance.wallet.coin = 'bch';
         instance.wallet.network = 'livenet';
         instance.navParams.data.amount = 11111111;
@@ -565,7 +562,6 @@ describe('SendPage', () => {
 
     describe('for wallets bch testnet', () => {
       beforeEach(() => {
-        instance.hasBtcWallets = true;
         instance.wallet.coin = 'bch';
         instance.wallet.network = 'testnet';
         instance.navParams.data.amount = 11111111;
