@@ -5,15 +5,15 @@
     <desc>Created with Sketch.</desc>
     <defs>
         <linearGradient x1="50.0034413%" y1="-0.00291497976%" x2="50.0034413%" y2="75.267085%" id="linearGradient-1">
-            <stop stop-color="#192C3A" offset="0%"></stop>
-            <stop stop-color="#192C3A" offset="100%"></stop>
+            <stop stop-color="#5D41A8" offset="0%"></stop>
+            <stop stop-color="#5D41A8" offset="100%"></stop>
         </linearGradient>
     </defs>
     <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
         <g id="onboarding-tour-phone">
             <path d="M123.5,247 C191.7,247 247,191.7 247,123.5 C247,55.3 191.7,0 123.5,0 C55.3,0 0,55.3 0,123.5 C0,191.7 55.3,247 123.5,247 Z" id="Shape" fill="url(#linearGradient-1)" fill-rule="nonzero" opacity="0.3"></path>
-            <g id="Group" transform="translate(69.000000, 32.000000)" stroke="#707D89" stroke-width="2">
-                <path d="M8,0 L91.8,0 C96.2,0 99.8,3.6 99.8,8 L99.8,175.9 C99.8,180.3 96.2,183.9 91.8,183.9 L8,183.9 C3.6,183.9 0,180.3 0,175.9 L0,8 C0,3.6 3.6,0 8,0 Z" id="Shape" fill-opacity="0.6548" fill="#192C3A" fill-rule="nonzero"></path>
+            <g id="Group" transform="translate(69.000000, 32.000000)" stroke="#7C6D87" stroke-width="2">
+                <path d="M8,0 L91.8,0 C96.2,0 99.8,3.6 99.8,8 L99.8,175.9 C99.8,180.3 96.2,183.9 91.8,183.9 L8,183.9 C3.6,183.9 0,180.3 0,175.9 L0,8 C0,3.6 3.6,0 8,0 Z" id="Shape" fill-opacity="0.6548" fill="#5D41A8" fill-rule="nonzero"></path>
                 <path d="M0.5,156 L99.3,156" id="Shape" stroke-linecap="square"></path>
                 <path d="M44.1,170.3 L62.8,170.3" id="Shape" stroke-linecap="square"></path>
             </g>

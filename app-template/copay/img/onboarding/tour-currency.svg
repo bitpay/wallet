@@ -5,12 +5,12 @@
     <desc>Created with Sketch.</desc>
     <defs>
         <linearGradient x1="50.0034413%" y1="0.00943319838%" x2="50.0034413%" y2="89.4694332%" id="linearGradient-1">
-            <stop stop-color="#192C3A" offset="0%"></stop>
-            <stop stop-color="#192C3A" offset="100%"></stop>
+            <stop stop-color="#5D41A8" offset="0%"></stop>
+            <stop stop-color="#5D41A8" offset="100%"></stop>
         </linearGradient>
         <linearGradient x1="50%" y1="100.020333%" x2="50%" y2="0.0203333333%" id="linearGradient-2">
-            <stop stop-color="#192C3A" offset="0%"></stop>
-            <stop stop-color="#192C3A" offset="100%"></stop>
+            <stop stop-color="#5D41A8" offset="0%"></stop>
+            <stop stop-color="#5D41A8" offset="100%"></stop>
         </linearGradient>
     </defs>
     <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">

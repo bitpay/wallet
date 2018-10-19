@@ -21,7 +21,7 @@ export class IonContentBackgroundColor {
     )[0];
     if (color) ionContent.style.setProperty('background-color', color);
     else {
-      const color = this.app.info.nameCase == 'Keoken' ? '#192c3a' : '#2a3f90';
+      const color = this.app.info.nameCase == 'Keoken' ? '#5D41A8' : '#2a3f90';
       ionContent.style.setProperty('background-color', color);
     }
   }
