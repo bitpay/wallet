@@ -9,7 +9,7 @@ export class IonContentBackgroundColor {
   @Input('ion-content-background-color')
   color: string;
 
-  constructor(private element: ElementRef, private app: AppProvider) {}
+  constructor(private element: ElementRef, private app: AppProvider) { }
 
   ngOnChanges() {
     this.setContentBackgroundColor(this.color);
@@ -21,7 +21,7 @@ export class IonContentBackgroundColor {
     )[0];
     if (color) ionContent.style.setProperty('background-color', color);
     else {
-      const color = this.app.info.nameCase == 'Copay' ? '#192c3a' : '#2a3f90';
+      const color = this.app.info.nameCase == 'Keoken' ? '#192c3a' : '#2a3f90';
       ionContent.style.setProperty('background-color', color);
     }
   }

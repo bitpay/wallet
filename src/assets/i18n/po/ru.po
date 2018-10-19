@@ -23,7 +23,7 @@ msgstr "(возможна двойная трата)"
 msgid "* A payment proposal can be deleted if 1) you are the creator, and no other copayer has signed, or 2) 10 minutes have passed since the proposal was created."
 msgstr ""
 
-msgid "5-star ratings help us get BitPay Wallet into more hands, and more users means more resources can be committed to the app!"
+msgid "5-star ratings help us get Bitprim Wallet into more hands, and more users means more resources can be committed to the app!"
 msgstr ""
 
 msgid "A total of {{amountAboveMaxSizeStr}} {{coin}} were excluded. The maximum size allowed for a transaction was exceeded."
@@ -425,8 +425,8 @@ msgstr "Продолжить"
 msgid "Contribute translations"
 msgstr "Помочь с переводами"
 
-msgid "Copay only supports Bitcoin Cash using new version numbers addresses"
-msgstr "Используя новую версию номеров адресов Copay поддерживает только Bitcoin Cash"
+msgid "Keoken only supports Bitcoin Cash using new version numbers addresses"
+msgstr "Используя новую версию номеров адресов Keoken поддерживает только Bitcoin Cash"
 
 msgid "Copayer already in this wallet"
 msgstr "Совладелец кошелька уже присоединился"
@@ -1019,7 +1019,7 @@ msgstr "Если этот параметр включен, на вкладке �
 msgid "If enabled, wallets will also try to spend unconfirmed funds."
 msgstr "Если включено, кошельки также попытаються потратить неподтвержденные средства."
 
-msgid "If this device is replaced or this app is deleted, neither you nor BitPay can recover your funds without a backup."
+msgid "If this device is replaced or this app is deleted, neither you nor Bitprim can recover your funds without a backup."
 msgstr ""
 
 msgid "If you have funds stored on a website then you should move them into a secure wallet... like this one!"
@@ -1328,8 +1328,8 @@ msgstr ""
 msgid "Not enough funds for fee"
 msgstr "Недостаточно средств для уплаты комиссии"
 
-msgid "Not even BitPay can access it."
-msgstr "BitPay не сможет получить доступ самостоятельно."
+msgid "Not even Bitprim can access it."
+msgstr "Bitprim не сможет получить доступ самостоятельно."
 
 msgid "Not including the private key allows to check the wallet balance, transaction history, and create spend proposals from the export. However, does not allow to approve (sign) proposals, so funds will not be accessible from the export."
 msgstr ""
@@ -1526,8 +1526,8 @@ msgstr "Пожалуйста, введите ПИН-код"
 msgid "Please tap each word in the correct order."
 msgstr "Тапните каждое слово в правильном порядке."
 
-msgid "Please upgrade Copay to perform this action"
-msgstr "Пожалуйста, обновите Copay для выполнения этого действия"
+msgid "Please upgrade Keoken to perform this action"
+msgstr "Пожалуйста, обновите Keoken для выполнения этого действия"
 
 msgid "Please wait..."
 msgstr "Пожалуйста, подождите..."
@@ -2519,7 +2519,7 @@ msgstr "Подготавливается..."
 msgid "{appName} BCH wallets use the CashAddr format by default"
 msgstr ""
 
-msgid "{coinName} miner fees are high due to record demand for limited space on the {coinName} network. BitPay does not receive and does not control {coinName} miner fees."
+msgid "{coinName} miner fees are high due to record demand for limited space on the {coinName} network. Bitprim does not receive and does not control {coinName} miner fees."
 msgstr ""
 
 msgid "{coinName} miner fees unusually high"
@@ -2528,7 +2528,7 @@ msgstr ""
 msgid "{{amountUnitStr}} Gift Card"
 msgstr ""
 
-msgid "{{appName}} depends on Bitcore Wallet Service (BWS) for blockchain information, networking and Copayer synchronization. The default configuration points to https://bws.bitpay.com (BitPay's public BWS instance)."
+msgid "{{appName}} depends on Bitcore Wallet Service (BWS) for blockchain information, networking and Copayer synchronization. The default configuration points to https://bws.bitpay.com (Bitprim's public BWS instance)."
 msgstr ""
 
 msgid "{{btx.feeRateStr}} of the total amount"

@@ -20,7 +20,7 @@ export class OnboardingPage {
     private logger: Logger,
     private app: AppProvider
   ) {
-    this.isCopay = this.app.info.nameCase == 'Copay' ? true : false;
+    this.isCopay = this.app.info.nameCase == 'Keoken' ? true : false;
   }
 
   ionViewDidLoad() {

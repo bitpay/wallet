@@ -425,8 +425,8 @@ msgstr "Weiter"
 msgid "Contribute translations"
 msgstr "Trage zu Übersetzungen bei"
 
-msgid "Copay only supports Bitcoin Cash using new version numbers addresses"
-msgstr "Copay unterstützt nur die neue Version der Bitcoin Cash adressen"
+msgid "Keoken only supports Bitcoin Cash using new version numbers addresses"
+msgstr "Keoken unterstützt nur die neue Version der Bitcoin Cash adressen"
 
 msgid "Copayer already in this wallet"
 msgstr "Copayer nimmt bereits teil"
@@ -1526,8 +1526,8 @@ msgstr "Bitte geben Sie Ihre PIN ein"
 msgid "Please tap each word in the correct order."
 msgstr "Bitte tippen Sie jedes Wort in der richtigen Reihenfolge."
 
-msgid "Please upgrade Copay to perform this action"
-msgstr "Bitte Copay aktualisieren, um diese Aktion auszuführen"
+msgid "Please upgrade Keoken to perform this action"
+msgstr "Bitte Keoken aktualisieren, um diese Aktion auszuführen"
 
 msgid "Please wait..."
 msgstr "Bitte warten..."
@@ -2216,8 +2216,8 @@ msgstr "Aktualisiere... Bitte warten"
 msgid "Urgent"
 msgstr "Dringend"
 
-msgid "Use Bitcoin Cash Copay Style Addresses"
-msgstr "Bitcoin-Cash Copay Stil Adressen verwenden"
+msgid "Use Bitcoin Cash Keoken Style Addresses"
+msgstr "Bitcoin-Cash Keoken Stil Adressen verwenden"
 
 msgid "Use Unconfirmed Funds"
 msgstr "Unbestätigte Mittel einsetzen"

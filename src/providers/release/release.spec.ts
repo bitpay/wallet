@@ -49,7 +49,7 @@ describe('Release Provider', () => {
     });
 
     const githubReq = httpMock.expectOne(
-      'https://api.github.com/repos/bitpay/copay/releases/latest'
+      'https://api.github.com/repos/bitprim/copay/releases/latest'
     );
     expect(githubReq.request.method).toEqual('GET');
     githubReq.flush({ tag_name: latestAppVersion });

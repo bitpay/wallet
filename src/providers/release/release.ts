@@ -10,7 +10,7 @@ export class ReleaseProvider {
 
   constructor(private http: HttpClient, private app: AppProvider) {
     this.LATEST_RELEASE_URL =
-      'https://api.github.com/repos/bitpay/copay/releases/latest';
+      'https://api.github.com/repos/bitprim/copay/releases/latest';
     this.appVersion = this.app.info.version;
   }
 
@@ -40,10 +40,10 @@ export class ReleaseProvider {
     latestVersion: string,
     currentVersion?: string
   ): {
-    updateAvailable: boolean | null;
-    availableVersion: string | null;
-    error: string | null;
-  } {
+      updateAvailable: boolean | null;
+      availableVersion: string | null;
+      error: string | null;
+    } {
     if (!currentVersion) currentVersion = this.appVersion;
 
     let result = {

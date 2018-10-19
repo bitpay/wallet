@@ -130,7 +130,7 @@ export class ConfirmPage extends WalletTabsChild {
       networkName = new B.Address(this.navParams.data.toAddress).network.name;
     } catch (e) {
       var message = this.translate.instant(
-        'Copay only supports Bitcoin Cash using new version numbers addresses'
+        'Keoken only supports Bitcoin Cash using new version numbers addresses'
       );
       var backText = this.translate.instant('Go back');
       var learnText = this.translate.instant('Learn more');

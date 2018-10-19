@@ -42,7 +42,7 @@ export class BackupRequestPage {
   public doBackupLater(): void {
     let title = this.translate.instant('Watch Out!');
     let message = this.translate.instant(
-      'If this device is replaced or this app is deleted, neither you nor BitPay can recover your funds without a backup.'
+      'If this device is replaced or this app is deleted, neither you nor Bitprim can recover your funds without a backup.'
     );
     let okText = this.translate.instant('I understand');
     let cancelText = this.translate.instant('Go Back');
