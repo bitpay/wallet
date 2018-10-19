@@ -563,6 +563,138 @@ describe('SendPage', () => {
       }));
     });
 
+    describe('for wallets bch testnet', () => {
+      beforeEach(() => {
+        instance.hasBtcWallets = true;
+        instance.wallet.coin = 'bch';
+        instance.wallet.network = 'testnet';
+        instance.navParams.data.amount = 11111111;
+        instance.navParams.data.coin = 'bch';
+      });
+
+      it('should handle addresses bch testnet and call to redir function', () => {
+        const redirSpy = spyOn(instance.incomingDataProvider, 'redir');
+        instance.search = 'qqycye950l689c98l7z5j43n4484ssnp4y3uu4ramr';
+        instance.processInput();
+        expect(instance.invalidAddress).toBeFalsy();
+        expect(redirSpy).toHaveBeenCalledWith(
+          'qqycye950l689c98l7z5j43n4484ssnp4y3uu4ramr',
+          {
+            amount: 11111111,
+            coin: 'bch'
+          }
+        );
+      });
+
+      it('should handle bch testnet paypro and call to redir function', fakeAsync(() => {
+        const redirSpy = spyOn(instance.incomingDataProvider, 'redir');
+        const mockPayPro = Promise.resolve({
+          coin: 'bch',
+          network: 'testnet'
+        });
+        spyOn(
+          instance.incomingDataProvider,
+          'getPayProDetails'
+        ).and.returnValue(mockPayPro);
+        instance.navParams.data.amount = undefined;
+        instance.navParams.data.coin = undefined;
+        instance.search =
+          'bitcoincash:?r=https://bitpay.com/i/3dZDvRXdxpkL4FoWtkB6ZZ';
+        instance.processInput();
+        tick();
+        expect(instance.invalidAddress).toBeFalsy();
+        expect(redirSpy).toHaveBeenCalledWith(
+          'bitcoincash:?r=https://bitpay.com/i/3dZDvRXdxpkL4FoWtkB6ZZ',
+          {
+            amount: undefined,
+            coin: undefined
+          }
+        );
+      }));
+
+      it('should handle addresses bch livenet and call to error modal', () => {
+        const errorModalSpy = spyOn(instance, 'showErrorMessage');
+        instance.search =
+          'bitcoincash:qz8ds306px5n65gffn8u69vvnksfw6huwyjczrvkh3';
+        instance.processInput();
+        expect(instance.invalidAddress).toBeTruthy();
+        expect(errorModalSpy).toHaveBeenCalled();
+      });
+
+      it('should handle address btc livenet and call to error modal', () => {
+        const errorModalSpy = spyOn(instance, 'showErrorMessage');
+        instance.search = '1CVuVALD6Zo7ms24n3iUXv162kvUzsHr69';
+        instance.processInput();
+        expect(instance.invalidAddress).toBeTruthy();
+        expect(errorModalSpy).toHaveBeenCalled();
+      });
+
+      it('should handle address btc testnet and call showLegacyAddrMessage', () => {
+        const showLegacyAddrMessageSpy = spyOn(
+          instance,
+          'showLegacyAddrMessage'
+        );
+        instance.search = 'n3LHh1WTFSpSVKXNFQo4U5eLAqowCadFHY';
+        instance.processInput();
+        expect(instance.invalidAddress).toBeTruthy();
+        expect(showLegacyAddrMessageSpy).toHaveBeenCalled();
+      });
+
+      it('should handle paypro BTC livenet and call error modal', fakeAsync(() => {
+        const errorModalSpy = spyOn(instance, 'showErrorMessage');
+        const mockPayPro = Promise.resolve({
+          coin: 'btc',
+          network: 'livenet'
+        });
+        spyOn(
+          instance.incomingDataProvider,
+          'getPayProDetails'
+        ).and.returnValue(mockPayPro);
+        instance.search =
+          'bitcoin:?r=https://bitpay.com/i/MB6kXuVY9frBW1DyoZkE5e';
+        instance.processInput();
+        tick();
+        expect(instance.invalidAddress).toBeTruthy();
+        expect(errorModalSpy).toHaveBeenCalled();
+      }));
+
+      it('should handle paypro BTC testnet and call error modal', fakeAsync(() => {
+        const errorModalSpy = spyOn(instance, 'showErrorMessage');
+        const mockPayPro = Promise.resolve({
+          coin: 'btc',
+          network: 'testnet'
+        });
+        spyOn(
+          instance.incomingDataProvider,
+          'getPayProDetails'
+        ).and.returnValue(mockPayPro);
+        instance.search =
+          'bitcoin:?r=https://bitpay.com/i/MB6kXuVY9frBW1DyoZkE5e';
+        instance.processInput();
+        tick();
+        expect(instance.invalidAddress).toBeTruthy();
+        expect(errorModalSpy).toHaveBeenCalled();
+      }));
+
+      it('should handle paypro bch livenet and call error modal', fakeAsync(() => {
+        const errorModalSpy = spyOn(instance, 'showErrorMessage');
+        const mockPayPro = Promise.resolve({
+          coin: 'bch',
+          network: 'livenet'
+        });
+        spyOn(
+          instance.incomingDataProvider,
+          'getPayProDetails'
+        ).and.returnValue(mockPayPro);
+        instance.search =
+          'bitcoincash:?r=https://bitpay.com/i/3dZDvRXdxpkL4FoWtkB6ZZ';
+        instance.processInput();
+        tick();
+        expect(instance.invalidAddress).toBeTruthy();
+        expect(errorModalSpy).toHaveBeenCalled();
+      }));
+    });
+
     it('should reset values to default when search input is empty', () => {
       const updateContactsListSpy = spyOn(instance, 'updateContactsList');
       instance.search = '';
