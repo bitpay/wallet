@@ -226,9 +226,11 @@ export class SendPage extends WalletTabsChild {
       this.invalidAddress = false;
       return true;
     } else if (this.wallet.coin === 'bch') {
+      this.invalidAddress = true;
       const isLegacy = this.checkIfLegacy();
       isLegacy ? this.showLegacyAddrMessage() : this.showErrorMessage();
     } else {
+      this.invalidAddress = true;
       this.showErrorMessage();
     }
     return false;
@@ -243,7 +245,6 @@ export class SendPage extends WalletTabsChild {
   }
 
   private showErrorMessage() {
-    this.invalidAddress = true;
     const msg = this.translate.instant(
       'The wallet you are using does not match the network and/or the currency of the address provided'
     );
@@ -259,7 +260,6 @@ export class SendPage extends WalletTabsChild {
   }
 
   private showLegacyAddrMessage() {
-    this.invalidAddress = true;
     const appName = this.appProvider.info.nameCase;
     const infoSheet = this.actionSheetProvider.createInfoSheet(
       'legacy-address-info',
