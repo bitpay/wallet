@@ -225,14 +225,26 @@ export class SendPage extends WalletTabsChild {
     if (isValid) {
       this.invalidAddress = false;
       return true;
-    } else if (this.wallet.coin === 'bch') {
-      this.invalidAddress = true;
-      const isLegacy = this.checkIfLegacy();
-      isLegacy ? this.showLegacyAddrMessage() : this.showErrorMessage();
     } else {
       this.invalidAddress = true;
-      this.showErrorMessage();
+      let network;
+      if (isPayPro) {
+        network = data.network;
+      } else {
+        const extractedAddress = this.addressProvider.extractAddress(data);
+        const addressData = this.addressProvider.validateAddress(
+          extractedAddress
+        );
+        network = addressData.network;
+      }
+      if (this.wallet.coin === 'bch' && this.wallet.network === network) {
+        const isLegacy = this.checkIfLegacy();
+        isLegacy ? this.showLegacyAddrMessage() : this.showErrorMessage();
+      } else {
+        this.showErrorMessage();
+      }
     }
+
     return false;
   }
 

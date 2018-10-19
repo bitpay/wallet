@@ -435,35 +435,132 @@ describe('SendPage', () => {
       }));
     });
 
-    it('should check address coin and network and set invalid address with true', () => {
-      instance.hasBtcWallets = true;
-      instance.wallet.coin = 'btc';
-      instance.wallet.network = 'testnet';
-      instance.search = 'qqycye950l689c98l7z5j43n4484ssnp4y3uu4ramr'; // bch testnet address
-      instance.processInput();
-      expect(instance.filteredWallets.length).toEqual(0);
-      expect(instance.filteredContactsList.length).toEqual(0);
-      expect(instance.invalidAddress).toBeTruthy();
-    });
+    describe('for wallets bch livenet', () => {
+      beforeEach(() => {
+        instance.hasBtcWallets = true;
+        instance.wallet.coin = 'bch';
+        instance.wallet.network = 'livenet';
+        instance.navParams.data.amount = 11111111;
+        instance.navParams.data.coin = 'bch';
+      });
 
-    it('should check address coin and network, set invalid address with false and run redir function', () => {
-      const redirSpy = spyOn(instance.incomingDataProvider, 'redir');
-      instance.hasBtcWallets = true;
-      instance.wallet.coin = 'btc';
-      instance.wallet.network = 'testnet';
-      instance.search = 'mirvQBSEktFGQ7TEK1UAifqjyewZsRou88'; // btc testnet address
-      instance.navParams.data.amount = 11111111;
-      instance.navParams.data.coin = 'btc';
+      it('should handle addresses bch livenet and call to redir function', () => {
+        const redirSpy = spyOn(instance.incomingDataProvider, 'redir');
+        instance.search = 'qzcy06mxsk7hw0ru4kzwtrkxds6vf8y34vrm5sf9z7';
+        instance.processInput();
+        expect(instance.invalidAddress).toBeFalsy();
+        expect(redirSpy).toHaveBeenCalledWith(
+          'qzcy06mxsk7hw0ru4kzwtrkxds6vf8y34vrm5sf9z7',
+          {
+            amount: 11111111,
+            coin: 'bch'
+          }
+        );
+      });
 
-      instance.processInput();
-      expect(redirSpy).toHaveBeenCalledWith(
-        'mirvQBSEktFGQ7TEK1UAifqjyewZsRou88',
-        {
-          amount: 11111111,
-          coin: 'btc'
-        }
-      );
-      expect(instance.invalidAddress).toBeFalsy();
+      it('should handle bch livenet paypro and call to redir function', fakeAsync(() => {
+        const redirSpy = spyOn(instance.incomingDataProvider, 'redir');
+        const mockPayPro = Promise.resolve({
+          coin: 'bch',
+          network: 'livenet'
+        });
+        spyOn(
+          instance.incomingDataProvider,
+          'getPayProDetails'
+        ).and.returnValue(mockPayPro);
+        instance.navParams.data.amount = undefined;
+        instance.navParams.data.coin = undefined;
+        instance.search =
+          'bitcoincash:?r=https://bitpay.com/i/3dZDvRXdxpkL4FoWtkB6ZZ';
+        instance.processInput();
+        tick();
+        expect(instance.invalidAddress).toBeFalsy();
+        expect(redirSpy).toHaveBeenCalledWith(
+          'bitcoincash:?r=https://bitpay.com/i/3dZDvRXdxpkL4FoWtkB6ZZ',
+          {
+            amount: undefined,
+            coin: undefined
+          }
+        );
+      }));
+
+      it('should handle addresses btc livenet and call to legacy address info modal', () => {
+        const legacyAddrModalSpy = spyOn(instance, 'showLegacyAddrMessage');
+        instance.search = '3BzniD7NsTgWL5shRWPt1DRxmPtBuSccnG';
+        instance.processInput();
+        expect(instance.invalidAddress).toBeTruthy();
+        expect(legacyAddrModalSpy).toHaveBeenCalled();
+      });
+
+      it('should handle address bch testnet and call error modal', () => {
+        const errorModalSpy = spyOn(instance, 'showErrorMessage');
+        instance.search = 'qqfs4tjymy5cs0j4lz78y2lvensl0l42wu80z5jass';
+        instance.processInput();
+        expect(instance.invalidAddress).toBeTruthy();
+        expect(errorModalSpy).toHaveBeenCalled();
+      });
+
+      it('should handle address btc testnet and call error modal', () => {
+        const errorModalSpy = spyOn(instance, 'showErrorMessage');
+        instance.search = 'mpX44VAhEsUkfpBUFDADtEk9gDFV17G1vT';
+        instance.processInput();
+        expect(instance.invalidAddress).toBeTruthy();
+        expect(errorModalSpy).toHaveBeenCalled();
+      });
+
+      it('should handle paypro btc livenet and call error modal', fakeAsync(() => {
+        const errorModalSpy = spyOn(instance, 'showErrorMessage');
+        const mockPayPro = Promise.resolve({
+          coin: 'btc',
+          network: 'livenet'
+        });
+        spyOn(
+          instance.incomingDataProvider,
+          'getPayProDetails'
+        ).and.returnValue(mockPayPro);
+        instance.search =
+          'bitcoin:?r=https://bitpay.com/i/MB6kXuVY9frBW1DyoZkE5e';
+        instance.processInput();
+        tick();
+        expect(instance.invalidAddress).toBeTruthy();
+        expect(errorModalSpy).toHaveBeenCalled();
+      }));
+
+      it('should handle paypro bch testnet and call error modal', fakeAsync(() => {
+        const errorModalSpy = spyOn(instance, 'showErrorMessage');
+        const mockPayPro = Promise.resolve({
+          coin: 'bch',
+          network: 'testnet'
+        });
+        spyOn(
+          instance.incomingDataProvider,
+          'getPayProDetails'
+        ).and.returnValue(mockPayPro);
+        instance.search =
+          'bitcoincash:?r=https://test.bitpay.com/i/JTfRobeRFmiCjBivDnzV1Q';
+        instance.processInput();
+        tick();
+        expect(instance.invalidAddress).toBeTruthy();
+        expect(errorModalSpy).toHaveBeenCalled();
+      }));
+
+      it('should handle paypro btc testnet and call error modal', fakeAsync(() => {
+        const errorModalSpy = spyOn(instance, 'showErrorMessage');
+        const mockPayPro = Promise.resolve({
+          coin: 'btc',
+          network: 'testnet'
+        });
+        spyOn(
+          instance.incomingDataProvider,
+          'getPayProDetails'
+        ).and.returnValue(mockPayPro);
+        instance.search =
+          'bitcoin:?r=https://test.bitpay.com/i/S5jbsUtrHVuvYQN6XHPuvJ';
+        instance.processInput();
+        tick();
+        expect(instance.invalidAddress).toBeTruthy();
+        expect(errorModalSpy).toHaveBeenCalled();
+      }));
     });
 
     it('should reset values to default when search input is empty', () => {

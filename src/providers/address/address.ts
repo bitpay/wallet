@@ -97,10 +97,8 @@ export class AddressProvider {
     if (this.isValid(address)) {
       let extractedAddress = this.extractAddress(address);
       addressData = this.validateAddress(extractedAddress);
-      return addressData.coin == coin
-        ? addressData.network == network
-          ? true
-          : false
+      return addressData.coin == coin && addressData.network == network
+        ? true
         : false;
     } else {
       return false;
@@ -112,10 +110,8 @@ export class AddressProvider {
     network: string,
     payProDetails
   ): boolean {
-    return payProDetails.coin == coin
-      ? payProDetails.network == network
-        ? true
-        : false
+    return payProDetails.coin == coin && payProDetails.network == network
+      ? true
       : false;
   }
 
