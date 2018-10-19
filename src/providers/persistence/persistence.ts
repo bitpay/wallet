@@ -100,7 +100,7 @@ export class PersistenceProvider {
   public load() {
     this.storage = this.platform.isCordova
       ? new FileStorage(this.file, this.logger)
-      : new LocalStorage();
+      : new LocalStorage(this.logger);
   }
 
   public getPersistentLogs(): void {
