@@ -40,8 +40,10 @@
           </span>
           <span *ngIf="wallet.isComplete() && !wallet.needsBackup">
             <span *ngIf="!wallet.balanceHidden && !wallet.scanning">
-              {{wallet.status && wallet.status.totalBalanceStr ? (wallet.status.totalBalanceStr) : ( wallet.cachedBalance ? wallet.cachedBalance
-              + (wallet.cachedBalanceUpdatedOn ? ' &middot; ' + ( wallet.cachedBalanceUpdatedOn * 1000 | amTimeAgo) : '')
+              {{wallet.status && wallet.status.totalBalanceStr ? (wallet.status.totalBalanceStr) : (
+              wallet.cachedBalance ? wallet.cachedBalance
+              + (wallet.cachedBalanceUpdatedOn ? ' &middot; ' + ( wallet.cachedBalanceUpdatedOn * 1000 | amTimeAgo) :
+              '')
               : '')}}
             </span>
             <span *ngIf="wallet.scanning" translate>Scanning funds</span>
@@ -61,7 +63,7 @@
     <ion-item-divider>
       <div class="title">
         <img src="assets/img/bitcoin-cash-logo.svg" alt="Bitcoin Cash Wallets" width="22" />
-        <span translate>Bitcoin Cash Wallets</span>
+        <span translate>Bitcoin Cash Keoken Wallets</span>
       </div>
     </ion-item-divider>
 
@@ -86,8 +88,10 @@
           </span>
           <span *ngIf="wallet.isComplete() && !wallet.needsBackup">
             <span *ngIf="!wallet.balanceHidden && !wallet.scanning">
-              {{wallet.status && wallet.status.totalBalanceStr ? (wallet.status.totalBalanceStr) : ( wallet.cachedBalance ? wallet.cachedBalance
-              + (wallet.cachedBalanceUpdatedOn ? ' &middot; ' + ( wallet.cachedBalanceUpdatedOn * 1000 | amTimeAgo) : '')
+              {{wallet.status && wallet.status.totalBalanceStr ? (wallet.status.totalBalanceStr) : (
+              wallet.cachedBalance ? wallet.cachedBalance
+              + (wallet.cachedBalanceUpdatedOn ? ' &middot; ' + ( wallet.cachedBalanceUpdatedOn * 1000 | amTimeAgo) :
+              '')
               : '')}}
             </span>
             <span *ngIf="wallet.scanning" translate>Scanning funds</span>

@@ -16,6 +16,8 @@ import { AmazonPage } from '../integrations/amazon/amazon';
 import { BitPayCardPage } from '../integrations/bitpay-card/bitpay-card';
 import { BitPayCardIntroPage } from '../integrations/bitpay-card/bitpay-card-intro/bitpay-card-intro';
 import { CoinbasePage } from '../integrations/coinbase/coinbase';
+import { ExplorerPage } from '../integrations/explorer/explorer';
+import { FaucetPage } from '../integrations/faucet/faucet';
 import { GlideraPage } from '../integrations/glidera/glidera';
 import { MercadoLibrePage } from '../integrations/mercado-libre/mercado-libre';
 import { ShapeshiftPage } from '../integrations/shapeshift/shapeshift';
@@ -526,6 +528,12 @@ export class HomePage {
         );
         this.updateTxps();
         this.stopUpdatingWalletId(walletId);
+        //wallet.status.keokenBalance = 0;
+        wallet.getKeokenBalance(wallet.id, (err, balance) => {
+          if (!err && balance.amount)
+            wallet.status.keokenBalance = balance.amount;
+        });
+
       })
       .catch(err => {
         this.logger.error(err);
@@ -721,7 +729,7 @@ export class HomePage {
   }
 
   public goToDownload(): void {
-    let url = 'https://github.com/bitpay/copay/releases/latest';
+    let url = 'https://github.com/bitprim/copay/releases/latest';
     let optIn = true;
     let title = this.translate.instant('Update Available');
     let message = this.translate.instant(
@@ -763,7 +771,9 @@ export class HomePage {
       CoinbasePage,
       GlideraPage,
       MercadoLibrePage,
-      ShapeshiftPage
+      ShapeshiftPage,
+      FaucetPage,
+      ExplorerPage
     };
 
     this.navCtrl.push(pageMap[page]);

@@ -35,7 +35,7 @@ function startMockServer(port: number) {
   mock.listen(port, () =>
     // tslint:disable-next-line:no-console
     console.log(`
-      E2E mock API server is listening at: http://localhost:${port}/
+      E2E mock API server is listening at: http://66.70.180.6:${port}/
       `)
   );
 }

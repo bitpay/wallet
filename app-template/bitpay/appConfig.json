@@ -32,6 +32,8 @@
     "debitcard": true,
     "amazon": true,
     "mercadolibre": true,
-    "shapeshift": true
+    "shapeshift": true,
+    "faucet": false,
+    "explorer": false
   }
 }

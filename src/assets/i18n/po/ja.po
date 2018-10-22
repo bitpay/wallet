@@ -23,7 +23,7 @@ msgstr "(二重払い可能性あり)"
 msgid "* A payment proposal can be deleted if 1) you are the creator, and no other copayer has signed, or 2) 10 minutes have passed since the proposal was created."
 msgstr ""
 
-msgid "5-star ratings help us get BitPay Wallet into more hands, and more users means more resources can be committed to the app!"
+msgid "5-star ratings help us get Bitprim Wallet into more hands, and more users means more resources can be committed to the app!"
 msgstr ""
 
 msgid "A total of {{amountAboveMaxSizeStr}} {{coin}} were excluded. The maximum size allowed for a transaction was exceeded."
@@ -235,7 +235,7 @@ msgstr ""
 msgid "Bitcoin Cash URI"
 msgstr ""
 
-msgid "Bitcoin Cash Wallets"
+msgid "Bitcoin Cash Keoken Wallets"
 msgstr "ビットコインキャッシュウォレット"
 
 msgid "Bitcoin Network Fee Policy"
@@ -427,8 +427,8 @@ msgstr "続ける"
 msgid "Contribute translations"
 msgstr ""
 
-msgid "Copay only supports Bitcoin Cash using new version numbers addresses"
-msgstr "Copay のビットコインキャッシュはビットコインと完全に異なる別通貨なので、アドレスの頭文字が異なります。"
+msgid "Keoken only supports Bitcoin Cash using new version numbers addresses"
+msgstr "Keoken のビットコインキャッシュはビットコインと完全に異なる別通貨なので、アドレスの頭文字が異なります。"
 
 msgid "Copayer already in this wallet"
 msgstr "ウォレット参加者が既に存在しています。"
@@ -1021,7 +1021,7 @@ msgstr "有効にした場合、「最近の取引」カードがホームのメ
 msgid "If enabled, wallets will also try to spend unconfirmed funds."
 msgstr ""
 
-msgid "If this device is replaced or this app is deleted, neither you nor BitPay can recover your funds without a backup."
+msgid "If this device is replaced or this app is deleted, neither you nor Bitprim can recover your funds without a backup."
 msgstr ""
 
 msgid "If you have funds stored on a website then you should move them into a secure wallet... like this one!"
@@ -1330,8 +1330,8 @@ msgstr ""
 msgid "Not enough funds for fee"
 msgstr "手数料含めたら残高が不足しています。"
 
-msgid "Not even BitPay can access it."
-msgstr "BitPayは管理できない。"
+msgid "Not even Bitprim can access it."
+msgstr "Bitprimは管理できない。"
 
 msgid "Not including the private key allows to check the wallet balance, transaction history, and create spend proposals from the export. However, does not allow to approve (sign) proposals, so funds will not be accessible from the export."
 msgstr ""
@@ -2475,7 +2475,7 @@ msgstr "ギフトカード"
 msgid "Your bitcoin wallet is ready!"
 msgstr "ビットコインウォレットが完成しました!"
 
-msgid "Your extended private keys are all that is needed to access your bitcoin funds. Be sure to protect your private keys and store them only on secure devices. BitPay does not have access to your private keys, so you alone are responsible for your keys. If you share key access with external services, you take responsibility for the risk of theft or breach. Only advanced users should handle extended private keys directly."
+msgid "Your extended private keys are all that is needed to access your bitcoin funds. Be sure to protect your private keys and store them only on secure devices. Bitprim does not have access to your private keys, so you alone are responsible for your keys. If you share key access with external services, you take responsibility for the risk of theft or breach. Only advanced users should handle extended private keys directly."
 msgstr ""
 
 msgid "Your fee is lower than recommended."
@@ -2523,7 +2523,7 @@ msgstr "準備中..."
 msgid "{appName} BCH wallets use the CashAddr format by default"
 msgstr ""
 
-msgid "{coinName} miner fees are high due to record demand for limited space on the {coinName} network. BitPay does not receive and does not control {coinName} miner fees."
+msgid "{coinName} miner fees are high due to record demand for limited space on the {coinName} network. Bitprim does not receive and does not control {coinName} miner fees."
 msgstr ""
 
 msgid "{coinName} miner fees unusually high"
@@ -2532,7 +2532,7 @@ msgstr ""
 msgid "{{amountUnitStr}} Gift Card"
 msgstr ""
 
-msgid "{{appName}} depends on Bitcore Wallet Service (BWS) for blockchain information, networking and Copayer synchronization. The default configuration points to https://bws.bitpay.com (BitPay's public BWS instance)."
+msgid "{{appName}} depends on Bitcore Wallet Service (BWS) for blockchain information, networking and Copayer synchronization. The default configuration points to https://bws.bitpay.com (Bitprim's public BWS instance)."
 msgstr ""
 
 msgid "{{btx.feeRateStr}} of the total amount"

@@ -24,7 +24,9 @@ import {
   Device,
   DomProvider,
   EmailNotificationsProvider,
+  ExplorerProvider,
   ExternalLinkProvider,
+  FaucetProvider,
   FCM,
   FeedbackProvider,
   FeeProvider,
@@ -90,6 +92,8 @@ import {
     Device,
     DomProvider,
     ExternalLinkProvider,
+    FaucetProvider,
+    ExplorerProvider,
     FeedbackProvider,
     FCM,
     HomeIntegrationsProvider,
@@ -134,4 +138,4 @@ import {
     WalletTabsProvider
   ]
 })
-export class ProvidersModule {}
+export class ProvidersModule { }

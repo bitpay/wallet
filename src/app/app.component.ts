@@ -30,6 +30,10 @@ import { PushNotificationsProvider } from '../providers/push-notifications/push-
 import { ShapeshiftProvider } from '../providers/shapeshift/shapeshift';
 import { TouchIdProvider } from '../providers/touchid/touchid';
 
+import { FaucetProvider } from '../providers/faucet/faucet';
+
+import { ExplorerProvider } from '../providers/explorer/explorer';
+
 // pages
 import { CopayersPage } from '../pages/add/copayers/copayers';
 import { ImportWalletPage } from '../pages/add/import-wallet/import-wallet';
@@ -106,6 +110,8 @@ export class CopayApp {
     private bitPayCardProvider: BitPayCardProvider,
     private mercadoLibreProvider: MercadoLibreProvider,
     private shapeshiftProvider: ShapeshiftProvider,
+    private faucetProvider: FaucetProvider,
+    private explorerProvider: ExplorerProvider,
     private emailNotificationsProvider: EmailNotificationsProvider,
     private screenOrientation: ScreenOrientation,
     private popupProvider: PopupProvider,
@@ -151,13 +157,13 @@ export class CopayApp {
   private onAppLoad(readySource) {
     this.logger.info(
       'Platform ready (' +
-        readySource +
-        '): ' +
-        this.appProvider.info.nameCase +
-        ' - v' +
-        this.appProvider.info.version +
-        ' #' +
-        this.appProvider.info.commitHash
+      readySource +
+      '): ' +
+      this.appProvider.info.nameCase +
+      ' - v' +
+      this.appProvider.info.version +
+      ' #' +
+      this.appProvider.info.commitHash
     );
 
     if (this.platform.is('cordova')) {
@@ -166,15 +172,15 @@ export class CopayApp {
       // Set User-Agent
       this.userAgent.set(
         this.appProvider.info.name +
-          ' ' +
-          this.appProvider.info.version +
-          ' (' +
-          this.device.platform +
-          ' ' +
-          this.device.version +
-          ' - ' +
-          this.device.model +
-          ')'
+        ' ' +
+        this.appProvider.info.version +
+        ' (' +
+        this.device.platform +
+        ' ' +
+        this.device.version +
+        ' - ' +
+        this.device.model +
+        ')'
       );
 
       // Set to portrait
@@ -277,6 +283,14 @@ export class CopayApp {
   }
 
   private registerIntegrations(): void {
+    if (this.appProvider.info._enabledExtensions.faucet) {
+      this.faucetProvider.register();
+    }
+
+    if (this.appProvider.info._enabledExtensions.explorer) {
+      this.explorerProvider.register();
+    }
+
     // Mercado Libre
     if (this.appProvider.info._enabledExtensions.mercadolibre)
       this.mercadoLibreProvider.register();

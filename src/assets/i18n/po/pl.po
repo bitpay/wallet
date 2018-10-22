@@ -23,7 +23,7 @@ msgstr "(możliwa podwójna wypłata)"
 msgid "* A payment proposal can be deleted if 1) you are the creator, and no other copayer has signed, or 2) 10 minutes have passed since the proposal was created."
 msgstr ""
 
-msgid "5-star ratings help us get BitPay Wallet into more hands, and more users means more resources can be committed to the app!"
+msgid "5-star ratings help us get Bitprim Wallet into more hands, and more users means more resources can be committed to the app!"
 msgstr ""
 
 msgid "A total of {{amountAboveMaxSizeStr}} {{coin}} were excluded. The maximum size allowed for a transaction was exceeded."
@@ -233,8 +233,8 @@ msgstr ""
 msgid "Bitcoin Cash URI"
 msgstr ""
 
-msgid "Bitcoin Cash Wallets"
-msgstr "Płatność Bitcoin Cash"
+msgid "Bitcoin Cash Keoken Wallets"
+msgstr "Płatność Keoken Bitcoin Cash"
 
 msgid "Bitcoin Network Fee Policy"
 msgstr "Polityka prowizji sieci bitcoin"
@@ -425,8 +425,8 @@ msgstr "Dalej"
 msgid "Contribute translations"
 msgstr "Wkład do tłumaczenia"
 
-msgid "Copay only supports Bitcoin Cash using new version numbers addresses"
-msgstr "Copay obsługuje tylko Bitcoin gotówki za pomocą nowej wersji numery adresy"
+msgid "Keoken only supports Bitcoin Cash using new version numbers addresses"
+msgstr "Keoken obsługuje tylko Bitcoin gotówki za pomocą nowej wersji numery adresy"
 
 msgid "Copayer already in this wallet"
 msgstr "Użytkownik jest już w tym portfelu"
@@ -1019,7 +1019,7 @@ msgstr "Jeśli ta opcja jest włączona, na ekranie głównym pojawi się lista 
 msgid "If enabled, wallets will also try to spend unconfirmed funds."
 msgstr ""
 
-msgid "If this device is replaced or this app is deleted, neither you nor BitPay can recover your funds without a backup."
+msgid "If this device is replaced or this app is deleted, neither you nor Bitprim can recover your funds without a backup."
 msgstr ""
 
 msgid "If you have funds stored on a website then you should move them into a secure wallet... like this one!"
@@ -1526,8 +1526,8 @@ msgstr "Wprowadź swój kod PIN"
 msgid "Please tap each word in the correct order."
 msgstr "Proszę wpisać każde słowo we właściwej kolejności."
 
-msgid "Please upgrade Copay to perform this action"
-msgstr "Proszę uaktualnić Copay, by móc wykonać tę operację"
+msgid "Please upgrade Keoken to perform this action"
+msgstr "Proszę uaktualnić Keoken, by móc wykonać tę operację"
 
 msgid "Please wait..."
 msgstr "Proszę czekać..."
@@ -2471,7 +2471,7 @@ msgstr "Twoje karty podarunkowe"
 msgid "Your bitcoin wallet is ready!"
 msgstr "Twój portfel jest gotowy!"
 
-msgid "Your extended private keys are all that is needed to access your bitcoin funds. Be sure to protect your private keys and store them only on secure devices. BitPay does not have access to your private keys, so you alone are responsible for your keys. If you share key access with external services, you take responsibility for the risk of theft or breach. Only advanced users should handle extended private keys directly."
+msgid "Your extended private keys are all that is needed to access your bitcoin funds. Be sure to protect your private keys and store them only on secure devices. Bitprim does not have access to your private keys, so you alone are responsible for your keys. If you share key access with external services, you take responsibility for the risk of theft or breach. Only advanced users should handle extended private keys directly."
 msgstr ""
 
 msgid "Your fee is lower than recommended."
@@ -2519,7 +2519,7 @@ msgstr "Przygotowywanie..."
 msgid "{appName} BCH wallets use the CashAddr format by default"
 msgstr ""
 
-msgid "{coinName} miner fees are high due to record demand for limited space on the {coinName} network. BitPay does not receive and does not control {coinName} miner fees."
+msgid "{coinName} miner fees are high due to record demand for limited space on the {coinName} network. Bitprim does not receive and does not control {coinName} miner fees."
 msgstr ""
 
 msgid "{coinName} miner fees unusually high"
@@ -2528,7 +2528,7 @@ msgstr ""
 msgid "{{amountUnitStr}} Gift Card"
 msgstr ""
 
-msgid "{{appName}} depends on Bitcore Wallet Service (BWS) for blockchain information, networking and Copayer synchronization. The default configuration points to https://bws.bitpay.com (BitPay's public BWS instance)."
+msgid "{{appName}} depends on Bitcore Wallet Service (BWS) for blockchain information, networking and Copayer synchronization. The default configuration points to https://bws.bitpay.com (Bitprim's public BWS instance)."
 msgstr ""
 
 msgid "{{btx.feeRateStr}} of the total amount"

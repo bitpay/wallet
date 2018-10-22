@@ -233,8 +233,8 @@ msgstr ""
 msgid "Bitcoin Cash URI"
 msgstr ""
 
-msgid "Bitcoin Cash Wallets"
-msgstr "Portafogli Bitcoin Cash"
+msgid "Bitcoin Cash Keoken Wallets"
+msgstr "Portafogli Keoken Bitcoin Cash"
 
 msgid "Bitcoin Network Fee Policy"
 msgstr "Criterio delle Commissioni del Bitcoin Network"
@@ -425,8 +425,8 @@ msgstr "Continua"
 msgid "Contribute translations"
 msgstr "Contribuisci alle traduzioni"
 
-msgid "Copay only supports Bitcoin Cash using new version numbers addresses"
-msgstr "Copay supporta Bitcoin Cash soltanto utilizzando la nuova versione di indirizzi"
+msgid "Keoken only supports Bitcoin Cash using new version numbers addresses"
+msgstr "Keoken supporta Bitcoin Cash soltanto utilizzando la nuova versione di indirizzi"
 
 msgid "Copayer already in this wallet"
 msgstr "Copayer già in questo portafoglio"
@@ -1019,8 +1019,8 @@ msgstr "Se abilitata, la scheda delle Transazioni Recenti - una lista di transaz
 msgid "If enabled, wallets will also try to spend unconfirmed funds."
 msgstr "Se abilitata, i portafogli cercheranno di spendere fondi anche se non confermati."
 
-msgid "If this device is replaced or this app is deleted, neither you nor BitPay can recover your funds without a backup."
-msgstr "Se questo dispositivo viene sostituito o eliminato questa app, né tu né BitPay può recuperare i fondi senza una copia di backup."
+msgid "If this device is replaced or this app is deleted, neither you nor Bitprim can recover your funds without a backup."
+msgstr "Se questo dispositivo viene sostituito o eliminato questa app, né tu né Bitprim può recuperare i fondi senza una copia di backup."
 
 msgid "If you have funds stored on a website then you should move them into a secure wallet... like this one!"
 msgstr ""
@@ -1328,8 +1328,8 @@ msgstr ""
 msgid "Not enough funds for fee"
 msgstr "Non ci sono abbastanza fondi per la commissione"
 
-msgid "Not even BitPay can access it."
-msgstr "Nemmeno BitPay può accedervi."
+msgid "Not even Bitprim can access it."
+msgstr "Nemmeno Bitprim può accedervi."
 
 msgid "Not including the private key allows to check the wallet balance, transaction history, and create spend proposals from the export. However, does not allow to approve (sign) proposals, so funds will not be accessible from the export."
 msgstr ""
@@ -1526,8 +1526,8 @@ msgstr "Per favore inserisci il tuo PIN"
 msgid "Please tap each word in the correct order."
 msgstr "Si prega di toccare ogni parola nell'ordine corretto."
 
-msgid "Please upgrade Copay to perform this action"
-msgstr "Si prega di aggiornare Copay per eseguire questa azione"
+msgid "Please upgrade Keoken to perform this action"
+msgstr "Si prega di aggiornare Keoken per eseguire questa azione"
 
 msgid "Please wait..."
 msgstr "Attendere prego..."
@@ -2471,8 +2471,8 @@ msgstr "Le tue carte regalo"
 msgid "Your bitcoin wallet is ready!"
 msgstr "Il tuo portafoglio bitcoin è pronto!"
 
-msgid "Your extended private keys are all that is needed to access your bitcoin funds. Be sure to protect your private keys and store them only on secure devices. BitPay does not have access to your private keys, so you alone are responsible for your keys. If you share key access with external services, you take responsibility for the risk of theft or breach. Only advanced users should handle extended private keys directly."
-msgstr "Le tue chiavi private estese sono tutto ciò che è necessario per accedere ai tuoi fondi bitcoin. Assicuratevi di proteggere le chiavi private e memorizzarle solo su dispositivi sicuri. BitPay non ha accesso alla vostre chiavi private, quindi sei l'unico responsabile per le tue chiavi. Se si condivide la tua chiave di accesso con servizi esterni, ti assumi la responsabilità per il rischio di furto o di violazione. Solo gli utenti esperti dovrebbero gestire direttamente le chiavi estese private."
+msgid "Your extended private keys are all that is needed to access your bitcoin funds. Be sure to protect your private keys and store them only on secure devices. Bitprim does not have access to your private keys, so you alone are responsible for your keys. If you share key access with external services, you take responsibility for the risk of theft or breach. Only advanced users should handle extended private keys directly."
+msgstr "Le tue chiavi private estese sono tutto ciò che è necessario per accedere ai tuoi fondi bitcoin. Assicuratevi di proteggere le chiavi private e memorizzarle solo su dispositivi sicuri. Bitprim non ha accesso alla vostre chiavi private, quindi sei l'unico responsabile per le tue chiavi. Se si condivide la tua chiave di accesso con servizi esterni, ti assumi la responsabilità per il rischio di furto o di violazione. Solo gli utenti esperti dovrebbero gestire direttamente le chiavi estese private."
 
 msgid "Your fee is lower than recommended."
 msgstr "La tua commissione è inferiore a quella consigliata."
@@ -2519,7 +2519,7 @@ msgstr "preparazione..."
 msgid "{appName} BCH wallets use the CashAddr format by default"
 msgstr ""
 
-msgid "{coinName} miner fees are high due to record demand for limited space on the {coinName} network. BitPay does not receive and does not control {coinName} miner fees."
+msgid "{coinName} miner fees are high due to record demand for limited space on the {coinName} network. Bitprim does not receive and does not control {coinName} miner fees."
 msgstr ""
 
 msgid "{coinName} miner fees unusually high"
@@ -2528,8 +2528,8 @@ msgstr ""
 msgid "{{amountUnitStr}} Gift Card"
 msgstr "Carta regalo {{amountUnitStr}}"
 
-msgid "{{appName}} depends on Bitcore Wallet Service (BWS) for blockchain information, networking and Copayer synchronization. The default configuration points to https://bws.bitpay.com (BitPay's public BWS instance)."
-msgstr "{{appName}} dipende dal servizio portafoglio di Bitcore (BWS) per informazioni blockchain, networking e sincronizzazione di Copayer. La configurazione predefinita fa riferimento a https://bws.bitpay.com (istanza di BitPay BWS pubblica)."
+msgid "{{appName}} depends on Bitcore Wallet Service (BWS) for blockchain information, networking and Copayer synchronization. The default configuration points to https://bws.bitpay.com (Bitprim's public BWS instance)."
+msgstr "{{appName}} dipende dal servizio portafoglio di Bitcore (BWS) per informazioni blockchain, networking e sincronizzazione di Copayer. La configurazione predefinita fa riferimento a https://bws.bitpay.com (istanza di Bitprim BWS pubblica)."
 
 msgid "{{btx.feeRateStr}} of the total amount"
 msgstr "{{btx.feeRateStr}} dell'importo totale"

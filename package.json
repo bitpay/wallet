@@ -1,22 +1,22 @@
 {
-  "name": "copay",
-  "description": "A Secure Bitcoin Wallet",
-  "author": "BitPay",
+  "name": "keoken",
+  "description": "A Secure Keoken Bitcoin Cash Wallet",
+  "author": "Bitprim",
   "version": "4.6.2",
   "keywords": [
     "bitcoin",
     "wallet",
-    "bitpay",
+    "bitprim",
     "copay",
     "multisignature",
     "bitcore"
   ],
   "main": "www/index.html",
-  "title": "Copay",
+  "title": "Keoken",
   "user-agent": "%name %ver (%osinfo)",
   "chromium-args": "--disable-password-generation --disable-devtools",
   "window": {
-    "title": "Copay – Copay Bitcoin Wallet",
+    "title": "Keoken – Keoken Bitcoin Wallet",
     "icon": "www/assets/img/app/icon.png",
     "toolbar": false,
     "show": false,
@@ -38,14 +38,14 @@
   },
   "dom_storage_quota": 200,
   "id": "jid1-x7bV5evAaI1P9Q",
-  "homepage": "https://copay.io",
+  "homepage": "https://keoken.io",
   "license": "MIT",
   "repository": {
-    "url": "git://github.com/bitpay/copay.git",
+    "url": "git://github.com/bitprim/copay.git",
     "type": "git"
   },
   "bugs": {
-    "url": "https://github.com/bitpay/copay/issues"
+    "url": "https://github.com/bitprim/copay/issues"
   },
   "scripts": {
     "postinstall": "sed -i  -e \"s/.*require(...\\/...);//g\" node_modules/asn1.js-rfc5280/index.js && run-s e2e:update env:dev prompt",
@@ -266,7 +266,7 @@
       "cordova-custom-config": {},
       "cordova-plugin-customurlscheme": {
         "URL_SCHEME": "bitcoin",
-        "SECOND_URL_SCHEME": "copay",
+        "SECOND_URL_SCHEME": "keoken",
         "THIRD_URL_SCHEME": "bitcoincash",
         "ANDROID_SCHEME": " ",
         "ANDROID_HOST": " ",

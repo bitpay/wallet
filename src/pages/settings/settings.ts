@@ -200,10 +200,9 @@ export class SettingsPage {
   }
 
   public openHelpExternalLink(): void {
-    let url =
-      this.appName == 'Copay'
-        ? 'https://github.com/bitpay/copay/issues'
-        : 'https://help.bitpay.com/bitpay-app';
+    // TODO add help webpage
+    let url = 'https://github.com/bitprim/copay/issues'
+
     let optIn = true;
     let title = null;
     let message = this.translate.instant(
