@@ -46,7 +46,7 @@ export class DisclaimerPage {
   }
 
   openDisclaimer() {
-    let url = 'https://bitpay.com/about/terms#wallet';
+    let url = 'https://www.keoken.io/W_Terms_of_use.html';
     let optIn = true;
     let title = null;
     let message = this.translate.instant('View Wallet Terms of Use');
@@ -63,7 +63,7 @@ export class DisclaimerPage {
   }
 
   openPrivacyPolicy() {
-    let url = 'https://bitpay.com/about/privacy';
+    let url = 'https://www.keoken.io/W_Privacy_Policy.html';
     let optIn = true;
     let title = null;
     let message = this.translate.instant('View Privacy Policy');

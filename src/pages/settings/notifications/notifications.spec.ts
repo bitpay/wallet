@@ -49,7 +49,7 @@ describe('NotificationsPage', () => {
         instance.openPrivacyPolicy();
 
         expect(instance.externalLinkProvider.open).toHaveBeenCalledWith(
-          'https://bitpay.com/about/privacy',
+          'https://www.keoken.io/W_Privacy_Policy.html',
           true,
           null,
           'View Privacy Policy',
