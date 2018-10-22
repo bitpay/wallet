@@ -299,9 +299,12 @@ export class SendPage extends WalletTabsChild {
       ) {
         const validData = this.incomingDataProvider.parseData(this.search);
         if (validData && validData.type == 'PayPro') {
+          const coin: string =
+            this.search.indexOf('bitcoincash') === 0 ? Coin.BCH : Coin.BTC;
           this.incomingDataProvider
             .getPayProDetails(this.search)
             .then(payProDetails => {
+              payProDetails.coin = coin;
               const isValid = this.checkCoinAndNetwork(payProDetails, true);
               if (isValid) this.redir();
             })

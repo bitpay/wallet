@@ -28,7 +28,6 @@ import { ProposalsPage } from './proposals/proposals';
 // Providers
 import { GiftCardProvider } from '../../providers';
 import { AddressBookProvider } from '../../providers/address-book/address-book';
-import { AddressProvider } from '../../providers/address/address';
 import { AmazonProvider } from '../../providers/amazon/amazon';
 import { AppProvider } from '../../providers/app/app';
 import { BitPayCardProvider } from '../../providers/bitpay-card/bitpay-card';
@@ -48,7 +47,7 @@ import { PopupProvider } from '../../providers/popup/popup';
 import { ProfileProvider } from '../../providers/profile/profile';
 import { ReleaseProvider } from '../../providers/release/release';
 import { ReplaceParametersProvider } from '../../providers/replace-parameters/replace-parameters';
-import { WalletProvider } from '../../providers/wallet/wallet';
+import { Coin, WalletProvider } from '../../providers/wallet/wallet';
 import { BuyCardPage } from '../integrations/gift-cards/buy-card/buy-card';
 import { PurchasedCardsPage } from '../integrations/gift-cards/purchased-cards/purchased-cards';
 import { SettingsPage } from '../settings/settings';
@@ -124,8 +123,7 @@ export class HomePage {
     private replaceParametersProvider: ReplaceParametersProvider,
     private amazonProvider: AmazonProvider,
     private clipboardProvider: ClipboardProvider,
-    private incomingDataProvider: IncomingDataProvider,
-    private addressProvider: AddressProvider
+    private incomingDataProvider: IncomingDataProvider
   ) {
     this.slideDown = false;
     this.updatingWalletId = {};
@@ -435,13 +433,16 @@ export class HomePage {
           return;
         }
         if (this.validDataFromClipboard.type === 'PayPro') {
+          const coin: string =
+            data.indexOf('bitcoincash') === 0 ? Coin.BCH : Coin.BTC;
           this.incomingDataProvider
             .getPayProDetails(data)
             .then(payProDetails => {
+              if (!payProDetails) {
+                throw this.translate.instant('No wallets available');
+              }
               this.payProDetailsData = payProDetails;
-              this.payProDetailsData.coin = this.addressProvider.getCoin(
-                this.payProDetailsData.toAddress
-              );
+              this.payProDetailsData.coin = coin;
               this.clearCountDownInterval();
               this.paymentTimeControl(this.payProDetailsData.expires);
             })
