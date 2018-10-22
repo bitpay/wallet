@@ -88,7 +88,7 @@ export class AddressProvider {
     };
   }
 
-  public checkCoinAndNetwork(
+  public checkCoinAndNetworkFromAddr(
     coin: string,
     network: string,
     address: string
@@ -97,14 +97,22 @@ export class AddressProvider {
     if (this.isValid(address)) {
       let extractedAddress = this.extractAddress(address);
       addressData = this.validateAddress(extractedAddress);
-      return addressData.coin == coin
-        ? addressData.network == network
-          ? true
-          : false
+      return addressData.coin == coin && addressData.network == network
+        ? true
         : false;
     } else {
       return false;
     }
+  }
+
+  public checkCoinAndNetworkFromPayPro(
+    coin: string,
+    network: string,
+    payProDetails
+  ): boolean {
+    return payProDetails.coin == coin && payProDetails.network == network
+      ? true
+      : false;
   }
 
   public extractAddress(address: string): string {
