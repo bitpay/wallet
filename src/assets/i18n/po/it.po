@@ -287,8 +287,8 @@ msgstr "Comprare Bitcoin..."
 msgid "Buying Gift Card..."
 msgstr "Acquisizione carta regalo..."
 
-msgid "By providing your email address, you give explicit consent to BitPay to use your email address to send you email notifications about payments."
-msgstr "Fornendo il tuo indirizzo email, darai il consenso esplicito a BitPay di utilizzare il tuo indirizzo email per inviarti notifiche via email relative ai pagamenti."
+msgid "By providing your email address, you give explicit consent to Bitprim to use your email address to send you email notifications about payments."
+msgstr "Fornendo il tuo indirizzo email, darai il consenso esplicito a Bitprim di utilizzare il tuo indirizzo email per inviarti notifiche via email relative ai pagamenti."
 
 msgid "CANCELED"
 msgstr "ANNULLATO"
@@ -980,8 +980,8 @@ msgstr ""
 msgid "I agree to the Terms and certify that I am the beneficial owner of the input assets and the destination address."
 msgstr "Accetto i Termini e certifico che io sono il proprietario dei fondi in entrata e dagli indirizzi di destinazione."
 
-msgid "I give explicit consent to BitPay to use my email address to send me email notifications about payments (and, if selected, email updates and news about the wallet)."
-msgstr "Do il consenso esplicito a BitPay di utilizzare il mio indirizzo di posta elettronica per inviarmi notifiche e-mail relative ai pagamenti (e, se selezionato, e-mail di aggiornamenti e notizie sul portafoglio)."
+msgid "I give explicit consent to Bitprim to use my email address to send me email notifications about payments (and, if selected, email updates and news about the wallet)."
+msgstr "Do il consenso esplicito a Bitprim di utilizzare il mio indirizzo di posta elettronica per inviarmi notifiche e-mail relative ai pagamenti (e, se selezionato, e-mail di aggiornamenti e notizie sul portafoglio)."
 
 msgid "I have read, understood, and agree to the Terms of Use"
 msgstr "Ho letto, compreso e accettato i Termini di Utilizzo"
@@ -992,8 +992,8 @@ msgstr "L'ho scritto"
 msgid "I understand"
 msgstr "Ho capito"
 
-msgid "I understand that if this app is moved to another device or deleted, my bitcoin can only be recovered with the backup phrase"
-msgstr "Ho compreso che se questa app sarà trasferita ad un altro dispositivo o cancellata, i miei bitcoin potranno essere recuperati solo tramite la tua frase di recupero"
+msgid "I understand that if this app is moved to another device or deleted, my Bitcoin Cash can only be recovered with the backup phrase"
+msgstr "Ho compreso che se questa app sarà trasferita ad un altro dispositivo o cancellata, i miei Bitcoin Cash potranno essere recuperati solo tramite la tua frase di recupero"
 
 msgid "I understand that my funds are held securely on this device, not by a company"
 msgstr "Ho capito che i miei fondi sono custoditi in sicurezza in questa dispositivo, non da un'azienda"

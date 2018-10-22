@@ -287,8 +287,8 @@ msgstr "Achat de bitcoins..."
 msgid "Buying Gift Card..."
 msgstr "Achat d'une carte-cadeau..."
 
-msgid "By providing your email address, you give explicit consent to BitPay to use your email address to send you email notifications about payments."
-msgstr "En fournissant votre adresse e-mail, vous donnez le consentement explicite à BitPay d’utiliser votre adresse email pour vous envoyer les notifications relatifs aux paiements."
+msgid "By providing your email address, you give explicit consent to Bitprim to use your email address to send you email notifications about payments."
+msgstr "En fournissant votre adresse e-mail, vous donnez le consentement explicite à Bitprim d’utiliser votre adresse email pour vous envoyer les notifications relatifs aux paiements."
 
 msgid "CANCELED"
 msgstr "ANNULÉ"
@@ -980,8 +980,8 @@ msgstr "Êtes-vous content de l'appli {{appName}} ?"
 msgid "I agree to the Terms and certify that I am the beneficial owner of the input assets and the destination address."
 msgstr "J'accepte les conditions et atteste que je suis le propriétaire effectif des actifs d’entrée et de l’adresse de destination."
 
-msgid "I give explicit consent to BitPay to use my email address to send me email notifications about payments (and, if selected, email updates and news about the wallet)."
-msgstr "Je donne le consentement explicite à BitPay d'utiliser mon adresse e-mail pour m’envoyer des notifications e-mail sur les paiements (et, si sélectionné, sur les mises à jour et les nouvelles du portefeuille)."
+msgid "I give explicit consent to Bitprim to use my email address to send me email notifications about payments (and, if selected, email updates and news about the wallet)."
+msgstr "Je donne le consentement explicite à Bitprim d'utiliser mon adresse e-mail pour m’envoyer des notifications e-mail sur les paiements (et, si sélectionné, sur les mises à jour et les nouvelles du portefeuille)."
 
 msgid "I have read, understood, and agree to the Terms of Use"
 msgstr "J'ai lu, compris et suis d'accord avec les conditions d'utilisation"
@@ -992,8 +992,8 @@ msgstr "Je l'ai bien écrite"
 msgid "I understand"
 msgstr "Je comprends"
 
-msgid "I understand that if this app is moved to another device or deleted, my bitcoin can only be recovered with the backup phrase"
-msgstr "Je comprends que si cette application est déplacée vers un autre appareil ou supprimée, mes bitcoins ne peuvent être récupérés qu'avec la phrase de sauvegarde"
+msgid "I understand that if this app is moved to another device or deleted, my Bitcoin Cash can only be recovered with the backup phrase"
+msgstr "Je comprends que si cette application est déplacée vers un autre appareil ou supprimée, mes Bitcoin Cash ne peuvent être récupérés qu'avec la phrase de sauvegarde"
 
 msgid "I understand that my funds are held securely on this device, not by a company"
 msgstr "Je comprends que mes fonds sont en toute sécurité sur cet appareil et non détenus par une entreprise"

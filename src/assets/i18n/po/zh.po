@@ -287,8 +287,8 @@ msgstr "正在发送 比特币..."
 msgid "Buying Gift Card..."
 msgstr "正在购买礼品卡..."
 
-msgid "By providing your email address, you give explicit consent to BitPay to use your email address to send you email notifications about payments."
-msgstr "通过提供您的电子邮件地址，您已明确同意BitPay使用您的电子邮件地址向您发送有关付款的电子邮件通知。"
+msgid "By providing your email address, you give explicit consent to Bitprim to use your email address to send you email notifications about payments."
+msgstr "通过提供您的电子邮件地址，您已明确同意Bitprim使用您的电子邮件地址向您发送有关付款的电子邮件通知。"
 
 msgid "CANCELED"
 msgstr "已取消"
@@ -980,8 +980,8 @@ msgstr "Làm thế nào bạn hài lòng với {{AppName}}  ví ?"
 msgid "I agree to the Terms and certify that I am the beneficial owner of the input assets and the destination address."
 msgstr "本人同意条款，并证明本人是输入资产及目的地地址的实益拥有人。"
 
-msgid "I give explicit consent to BitPay to use my email address to send me email notifications about payments (and, if selected, email updates and news about the wallet)."
-msgstr "我明确同意BitPay使用我的电子邮件地址向我发送关于付款的电子邮件通知(如果选择，发送有关钱包的更新和资讯)。"
+msgid "I give explicit consent to Bitprim to use my email address to send me email notifications about payments (and, if selected, email updates and news about the wallet)."
+msgstr "我明确同意Bitprim使用我的电子邮件地址向我发送关于付款的电子邮件通知(如果选择，发送有关钱包的更新和资讯)。"
 
 msgid "I have read, understood, and agree to the Terms of Use"
 msgstr "我已阅读、 理解并同意本使用条款。"
@@ -992,7 +992,7 @@ msgstr "我已经写下"
 msgid "I understand"
 msgstr "我知道了"
 
-msgid "I understand that if this app is moved to another device or deleted, my bitcoin can only be recovered with the backup phrase"
+msgid "I understand that if this app is moved to another device or deleted, my Bitcoin Cash can only be recovered with the backup phrase"
 msgstr "我理解如果这个app被移动到另一个设备或删除，我的比特币只能通过备份短语恢复。"
 
 msgid "I understand that my funds are held securely on this device, not by a company"

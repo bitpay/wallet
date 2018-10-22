@@ -309,7 +309,7 @@ msgid "Buying Gift Card..."
 msgstr ""
 
 msgid ""
-"By providing your email address, you give explicit consent to BitPay to use "
+"By providing your email address, you give explicit consent to Bitprim to use "
 "your email address to send you email notifications about payments."
 msgstr ""
 
@@ -1020,7 +1020,7 @@ msgid ""
 msgstr ""
 
 msgid ""
-"I give explicit consent to BitPay to use my email address to send me email "
+"I give explicit consent to Bitprim to use my email address to send me email "
 "notifications about payments (and, if selected, email updates and news "
 "about the wallet)."
 msgstr ""
@@ -1036,7 +1036,7 @@ msgstr ""
 
 msgid ""
 "I understand that if this app is moved to another device or deleted, my "
-"bitcoin can only be recovered with the backup phrase"
+"Bitcoin Cash can only be recovered with the backup phrase"
 msgstr ""
 
 msgid ""

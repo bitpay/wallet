@@ -311,7 +311,7 @@ export class HomePage {
 
   private openEmailDisclaimer() {
     let message = this.translate.instant(
-      'By providing your email address, you give explicit consent to BitPay to use your email address to send you email notifications about payments.'
+      'By providing your email address, you give explicit consent to Bitprim to use your email address to send you email notifications about payments.'
     );
     let title = this.translate.instant('Privacy Policy update');
     let okText = this.translate.instant('Accept');
