@@ -209,12 +209,12 @@ export class ShapeshiftPage {
   private openShafeShiftWindow(): void {
     let url = 'https://portal.shapeshift.io/me/fox/dashboard';
     let optIn = true;
-    let title = this.translate.instant('Unverified account');
+    let title = this.translate.instant('Unverified Account');
     let message = this.translate.instant(
       'Do you want to verify your account now?'
     );
-    let okText = this.translate.instant('Verify');
-    let cancelText = this.translate.instant('Later');
+    let okText = this.translate.instant('Verify Account');
+    let cancelText = this.translate.instant('Cancel');
     this.externalLinkProvider
       .open(url, optIn, title, message, okText, cancelText)
       .then(() => {
