@@ -251,10 +251,10 @@ export class ConfigProvider {
   }
 
   private logImportantConfig(config: Config): void {
-    let spendUnconfirmed = config.wallet.spendUnconfirmed;
-    let useLegacyAddress = config.wallet.useLegacyAddress;
-    let persistentLogsEnabled = config.persistentLogsEnabled;
-    let lockMethod = config.lock.method;
+    const spendUnconfirmed = config.wallet.spendUnconfirmed;
+    const useLegacyAddress = config.wallet.useLegacyAddress;
+    const persistentLogsEnabled = config.persistentLogsEnabled;
+    const lockMethod = config && config.lock ? config.lock.method : null;
 
     this.logger.debug(
       'Config | spendUnconfirmed: ' +
@@ -317,6 +317,16 @@ export class ConfigProvider {
     if (!this.configCache.pushNotificationsEnabled) {
       this.configCache.pushNotificationsEnabled =
         configDefault.pushNotificationsEnabled;
+    }
+    if (!this.configCache.emailNotifications) {
+      this.configCache.emailNotifications = configDefault.emailNotifications;
+    }
+    if (!this.configCache.lock) {
+      this.configCache.lock = configDefault.lock;
+    }
+    if (!this.configCache.confirmedTxsNotifications) {
+      this.configCache.confirmedTxsNotifications =
+        configDefault.confirmedTxsNotifications;
     }
 
     if (this.configCache.wallet.settings.unitCode == 'bit') {
