@@ -4,7 +4,7 @@
   "author": "Bitprim",
   "version": "4.6.2",
   "keywords": [
-    "bitcoin",
+    "Bitcoin Cash",
     "wallet",
     "bitprim",
     "copay",
@@ -16,7 +16,7 @@
   "user-agent": "%name %ver (%osinfo)",
   "chromium-args": "--disable-password-generation --disable-devtools",
   "window": {
-    "title": "Keoken – Keoken Bitcoin Wallet",
+    "title": "Keoken – Keoken Bitcoin Cash Wallet",
     "icon": "www/assets/img/app/icon.png",
     "toolbar": false,
     "show": false,

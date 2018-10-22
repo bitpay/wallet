@@ -245,14 +245,14 @@ msgstr ""
 msgid "Bitcoin Wallets"
 msgstr "Portfele Bitcoin"
 
-msgid "Bitcoin is a currency."
-msgstr "Bitcoin jest walutą."
+msgid "Bitcoin Cash is a currency."
+msgstr "BitcoinCash jest walutą."
 
-msgid "Bitcoin is different - it cannot be safely held with a bank or web service."
+msgid "Bitcoin Cash is different - it cannot be safely held with a bank or web service."
 msgstr ""
 
-msgid "Bitcoin is secure, digital money."
-msgstr "Bitcoin jest bezpiecznym, cyfrowym pieniądzem."
+msgid "Bitcoin Cash is secure, digital money."
+msgstr "BitcoinCash jest bezpiecznym, cyfrowym pieniądzem."
 
 msgid "Bitcoin miner fee:"
 msgstr ""
@@ -1268,8 +1268,8 @@ msgstr ""
 msgid "No access key defined"
 msgstr "Klucz dostępu nie jest zdefiniowany"
 
-msgid "No backup, no bitcoin."
-msgstr "Nie ma kopii zapasowej - nie ma bitcoinów."
+msgid "No backup, no Bitcoin Cash."
+msgstr "Nie ma kopii zapasowej - nie ma BitcoinCash."
 
 msgid "No contacts yet"
 msgstr "Brak kontaktów"
@@ -1955,7 +1955,7 @@ msgstr "Sczytywanie portfela..."
 msgid "THIS ACTION CANNOT BE REVERSED"
 msgstr "TEJ CZYNNOŚCI NIE MOŻNA COFNĄĆ"
 
-msgid "Take control of your money, get started with bitcoin."
+msgid "Take control of your money, get started with Bitcoin Cash."
 msgstr ""
 
 msgid "Tap and hold to show"
@@ -2051,8 +2051,8 @@ msgstr ""
 msgid "This app is not available for your device."
 msgstr ""
 
-msgid "This app stores your bitcoin with cutting-edge security."
-msgstr "Ta aplikacja przechowuje Twoje bitcoiny z zaawansowanymi zabezpieczeniami."
+msgid "This app stores your Bitcoin Cash with cutting-edge security."
+msgstr "Ta aplikacja przechowuje Twoje BitcoinCash z zaawansowanymi zabezpieczeniami."
 
 msgid "This bitcoin payment request has expired."
 msgstr "Ten wniosek płatności wygasł."
@@ -2441,7 +2441,7 @@ msgstr "Możesz zeskanować adresy bitcoin, wnioski płatności, portfele papier
 msgid "You can see the latest developments and contribute to this open source app by visiting our project on GitHub."
 msgstr "Możesz zobaczyć postępy prac i przyczynić się do rozwoju tej aplikacji open source odwiedzając nasz projekt na GitHub."
 
-msgid "You can spend bitcoin at millions of websites and stores worldwide."
+msgid "You can spend Bitcoin Cash at millions of websites and stores worldwide."
 msgstr "Bitcoiny możesz wydać w milionach sklepów i stron internetowych na całym świecie."
 
 msgid "You can still export it from Advanced &gt; Export."
@@ -2450,8 +2450,8 @@ msgstr "Nadal możesz go wyeksportować w Zaawansowane &gt; Eksport."
 msgid "You can trade it for other currencies like US Dollars, Euros, or Pounds."
 msgstr "Możesz je wymienić na inne waluty, takie jak dolary amerykańskie, euro lub funty."
 
-msgid "You control your bitcoin."
-msgstr "Ty kontrolujesz swoje bitcoiny."
+msgid "You control your Bitcoin Cash."
+msgstr "Ty kontrolujesz swoje BitcoinCash."
 
 msgid "You could sign the transaction later in your wallet details"
 msgstr ""
@@ -2468,7 +2468,7 @@ msgstr "Twoja karta BitPay jest gotowa. Zasil kartę, aby zacząć ją używać 
 msgid "Your Gift Cards"
 msgstr "Twoje karty podarunkowe"
 
-msgid "Your bitcoin wallet is ready!"
+msgid "Your Bitcoin Cash wallet is ready!"
 msgstr "Twój portfel jest gotowy!"
 
 msgid "Your extended private keys are all that is needed to access your bitcoin funds. Be sure to protect your private keys and store them only on secure devices. Bitprim does not have access to your private keys, so you alone are responsible for your keys. If you share key access with external services, you take responsibility for the risk of theft or breach. Only advanced users should handle extended private keys directly."

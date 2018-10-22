@@ -245,14 +245,14 @@ msgstr ""
 msgid "Bitcoin Wallets"
 msgstr "Bitcoin-Wallet"
 
-msgid "Bitcoin is a currency."
-msgstr "Bitcoin ist eine Währung."
+msgid "Bitcoin Cash is a currency."
+msgstr "BitcoinCash ist eine Währung."
 
-msgid "Bitcoin is different - it cannot be safely held with a bank or web service."
+msgid "Bitcoin Cash is different - it cannot be safely held with a bank or web service."
 msgstr ""
 
-msgid "Bitcoin is secure, digital money."
-msgstr "Bitcoin ist sicheres, digitales Geld."
+msgid "Bitcoin Cash is secure, digital money."
+msgstr "BitcoinCash ist sicheres, digitales Geld."
 
 msgid "Bitcoin miner fee:"
 msgstr ""
@@ -1268,7 +1268,7 @@ msgstr ""
 msgid "No access key defined"
 msgstr "Kein Zugangsschlüssel definiert"
 
-msgid "No backup, no bitcoin."
+msgid "No backup, no Bitcoin Cash."
 msgstr "Keine Sicherung, keine Bitcoins."
 
 msgid "No contacts yet"
@@ -1955,8 +1955,8 @@ msgstr "Leere Wallet..."
 msgid "THIS ACTION CANNOT BE REVERSED"
 msgstr "DIESE AKTION KANN NICHT RÜCKGÄNGIG GEMACHT WERDEN"
 
-msgid "Take control of your money, get started with bitcoin."
-msgstr "Übernehmen Sie die Kontrolle über Ihr Geld, legen Sie mit Bitcoin los."
+msgid "Take control of your money, get started with Bitcoin Cash."
+msgstr "Übernehmen Sie die Kontrolle über Ihr Geld, legen Sie mit BitcoinCash los."
 
 msgid "Tap and hold to show"
 msgstr "Anzeigen durch tippen und halten"
@@ -2051,8 +2051,8 @@ msgstr "Es gibt offensichtlich etwas das wir falsch machen. Wie können wir Ihr 
 msgid "This app is not available for your device."
 msgstr ""
 
-msgid "This app stores your bitcoin with cutting-edge security."
-msgstr "Diese App speichert Ihre Bitcoins mit modernster Sicherheit."
+msgid "This app stores your Bitcoin Cash with cutting-edge security."
+msgstr "Diese App speichert Ihre BitcoinCash mit modernster Sicherheit."
 
 msgid "This bitcoin payment request has expired."
 msgstr "Diese Bitcoin Zahlungsaufforderung ist abgelaufen."
@@ -2441,8 +2441,8 @@ msgstr "Sie können Bitcoin-Adressen, Zahlungsaufforderungen, Papier-Wallets und
 msgid "You can see the latest developments and contribute to this open source app by visiting our project on GitHub."
 msgstr "Sie können auf GitHub die neuesten Entwicklungen ansehen und zu dieser Open-Source App beitragen."
 
-msgid "You can spend bitcoin at millions of websites and stores worldwide."
-msgstr "Sie können Bitcoins auf Millionen von Webseiten und Shops weltweit ausgeben."
+msgid "You can spend Bitcoin Cash at millions of websites and stores worldwide."
+msgstr "Sie können BitcoinCashs auf Millionen von Webseiten und Shops weltweit ausgeben."
 
 msgid "You can still export it from Advanced &gt; Export."
 msgstr "Sie können es auch exportieren aus dem Erweiterten &gt; Export."
@@ -2450,8 +2450,8 @@ msgstr "Sie können es auch exportieren aus dem Erweiterten &gt; Export."
 msgid "You can trade it for other currencies like US Dollars, Euros, or Pounds."
 msgstr "Sie können auch mit andere Währungen wie US-Dollar, Euro oder Pfund handeln."
 
-msgid "You control your bitcoin."
-msgstr "Sie kontrollieren Ihre Bitcoins."
+msgid "You control your Bitcoin Cash."
+msgstr "Sie kontrollieren Ihre BitcoinCash."
 
 msgid "You could sign the transaction later in your wallet details"
 msgstr "Sie konnte die Transaktion später in Ihren Brieftasche-Details anmelden."
@@ -2468,8 +2468,8 @@ msgstr "Ihre Bitcoin Card ist bereit, fügen sie Guthaben hinzu um sie in Läden
 msgid "Your Gift Cards"
 msgstr "Ihre Gutscheinkarten"
 
-msgid "Your bitcoin wallet is ready!"
-msgstr "Ihre Bitcoin-Wallet ist fertig!"
+msgid "Your Bitcoin Cash wallet is ready!"
+msgstr "Ihre BitcoinCash-Wallet ist fertig!"
 
 msgid "Your extended private keys are all that is needed to access your bitcoin funds. Be sure to protect your private keys and store them only on secure devices. BitPay does not have access to your private keys, so you alone are responsible for your keys. If you share key access with external services, you take responsibility for the risk of theft or breach. Only advanced users should handle extended private keys directly."
 msgstr "Ihre erweiterten privaten Schlüssel sind alles um auf ihr Bitcoin Guthaben zu zugreifen. Beschützen Sie Ihren privaten Schlüssel und bewahren Sie Ihn ausschließlich auf einem sicheren Gerät auf. BitPay hat keinen Einfluss auf Ihren Schlüssel, also müssen Sie sich alleine um Ihre Schlüssel kümmern. Wenn Sie den Schlüssel für andere externe Services teilen, tragen Sie die Verantwortung für den eventuellen Diebstahl. Nur erfahrene Nutzer sollten erweiterte private Schlüssel direkt verschicken."

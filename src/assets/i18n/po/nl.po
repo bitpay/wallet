@@ -245,13 +245,13 @@ msgstr ""
 msgid "Bitcoin Wallets"
 msgstr "Bitcoin Portemonnees"
 
-msgid "Bitcoin is a currency."
-msgstr "Bitcoin is een valuta."
+msgid "Bitcoin Cash is a currency."
+msgstr "BitcoinCash is een valuta."
 
-msgid "Bitcoin is different - it cannot be safely held with a bank or web service."
+msgid "Bitcoin Cash is different - it cannot be safely held with a bank or web service."
 msgstr ""
 
-msgid "Bitcoin is secure, digital money."
+msgid "Bitcoin Cash is secure, digital money."
 msgstr ""
 
 msgid "Bitcoin miner fee:"
@@ -1268,8 +1268,8 @@ msgstr ""
 msgid "No access key defined"
 msgstr "Geen toegangsknop ingesteld"
 
-msgid "No backup, no bitcoin."
-msgstr "Geen backup, geen bitcoin."
+msgid "No backup, no Bitcoin Cash."
+msgstr "Geen backup, geen BitcoinCash."
 
 msgid "No contacts yet"
 msgstr "Nog geen contactpersonen"
@@ -1955,7 +1955,7 @@ msgstr "Saldo Portemonnee opnemen..."
 msgid "THIS ACTION CANNOT BE REVERSED"
 msgstr "DEZE ACTIE IS ONOMKEERBAAR"
 
-msgid "Take control of your money, get started with bitcoin."
+msgid "Take control of your money, get started with Bitcoin Cash."
 msgstr ""
 
 msgid "Tap and hold to show"
@@ -2051,8 +2051,8 @@ msgstr ""
 msgid "This app is not available for your device."
 msgstr ""
 
-msgid "This app stores your bitcoin with cutting-edge security."
-msgstr "Deze app bewaart uw bitcoin met de nieuwste beveiliging."
+msgid "This app stores your Bitcoin Cash with cutting-edge security."
+msgstr "Deze app bewaart uw BitcoinCash met de nieuwste beveiliging."
 
 msgid "This bitcoin payment request has expired."
 msgstr "Dit bitcoin betalingsverzoek is verlopen."
@@ -2441,8 +2441,8 @@ msgstr "U kunt bitcoin adressen scannen, betalingsverzoeken, papieren portemonne
 msgid "You can see the latest developments and contribute to this open source app by visiting our project on GitHub."
 msgstr "U kunt de laatste ontwikkelingen volgen en bijdragen aan deze open source app door onze project pagina te bezoeken op GitHub."
 
-msgid "You can spend bitcoin at millions of websites and stores worldwide."
-msgstr "U kunt met bitcoin betalen bij miljoenen websites en winkels over de hele wereld."
+msgid "You can spend Bitcoin Cash at millions of websites and stores worldwide."
+msgstr "U kunt met BitcoinCash betalen bij miljoenen websites en winkels over de hele wereld."
 
 msgid "You can still export it from Advanced &gt; Export."
 msgstr "U kunt deze nog steeds exporteren vanuit Geavanceerd &gt; Exporteren."
@@ -2450,8 +2450,8 @@ msgstr "U kunt deze nog steeds exporteren vanuit Geavanceerd &gt; Exporteren."
 msgid "You can trade it for other currencies like US Dollars, Euros, or Pounds."
 msgstr "U kunt het inwisselen voor valuta's zoals de Amerikaanse Dollar, de Euro, of Ponden."
 
-msgid "You control your bitcoin."
-msgstr "U heeft de controle over uw bitcoin."
+msgid "You control your Bitcoin Cash."
+msgstr "U heeft de controle over uw BitcoinCash."
 
 msgid "You could sign the transaction later in your wallet details"
 msgstr ""
@@ -2468,8 +2468,8 @@ msgstr "Uw BitPay Kaart is gereed. Voeg saldo toe aan uw kaart om deze te kunnen
 msgid "Your Gift Cards"
 msgstr "Uw Cadeaubonnen"
 
-msgid "Your bitcoin wallet is ready!"
-msgstr "Uw bitcoin portemonnee is gereed!"
+msgid "Your Bitcoin Cash wallet is ready!"
+msgstr "Uw BitcoinCash portemonnee is gereed!"
 
 msgid "Your extended private keys are all that is needed to access your bitcoin funds. Be sure to protect your private keys and store them only on secure devices. Bitprim does not have access to your private keys, so you alone are responsible for your keys. If you share key access with external services, you take responsibility for the risk of theft or breach. Only advanced users should handle extended private keys directly."
 msgstr ""

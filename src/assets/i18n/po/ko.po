@@ -245,13 +245,13 @@ msgstr ""
 msgid "Bitcoin Wallets"
 msgstr "비트코인 지갑"
 
-msgid "Bitcoin is a currency."
+msgid "Bitcoin Cash is a currency."
 msgstr "비트코인은 통화입니다."
 
-msgid "Bitcoin is different - it cannot be safely held with a bank or web service."
+msgid "Bitcoin Cash is different - it cannot be safely held with a bank or web service."
 msgstr ""
 
-msgid "Bitcoin is secure, digital money."
+msgid "Bitcoin Cash is secure, digital money."
 msgstr ""
 
 msgid "Bitcoin miner fee:"
@@ -1268,7 +1268,7 @@ msgstr ""
 msgid "No access key defined"
 msgstr "액세스 키가 정의되지 않았습니다"
 
-msgid "No backup, no bitcoin."
+msgid "No backup, no Bitcoin Cash."
 msgstr "백업도, 비트코인도 없습니다."
 
 msgid "No contacts yet"
@@ -1955,7 +1955,7 @@ msgstr "지갑 스윕 중..."
 msgid "THIS ACTION CANNOT BE REVERSED"
 msgstr "이 작업은 되돌릴 수 없습니다"
 
-msgid "Take control of your money, get started with bitcoin."
+msgid "Take control of your money, get started with Bitcoin Cash."
 msgstr ""
 
 msgid "Tap and hold to show"
@@ -2051,7 +2051,7 @@ msgstr ""
 msgid "This app is not available for your device."
 msgstr ""
 
-msgid "This app stores your bitcoin with cutting-edge security."
+msgid "This app stores your Bitcoin Cash with cutting-edge security."
 msgstr "이 앱은 최첨단 보안 기능으로 귀하의 비트코인을 저장합니다."
 
 msgid "This bitcoin payment request has expired."
@@ -2441,7 +2441,7 @@ msgstr "비트코인 주소, 지불 요청, 페이퍼 지갑 등을 스캔하실
 msgid "You can see the latest developments and contribute to this open source app by visiting our project on GitHub."
 msgstr "GitHub에서 저희의 프로젝트에 방문하여 이 오픈 소스 앱에 기여하시거나 최신 개발 사항을 확인하실 수 있습니다."
 
-msgid "You can spend bitcoin at millions of websites and stores worldwide."
+msgid "You can spend Bitcoin Cash at millions of websites and stores worldwide."
 msgstr "전 세계 수백만 웹사이트 및 상점에서 비트코인을 사용하실 수 있습니다."
 
 msgid "You can still export it from Advanced &gt; Export."
@@ -2450,7 +2450,7 @@ msgstr "여전히 고급 &gt; 내보내기에서 내보내실 수 있습니다."
 msgid "You can trade it for other currencies like US Dollars, Euros, or Pounds."
 msgstr "US 달러, 유로 또는 파운드와 같은 다른 통화로 바꾸실 수 있습니다."
 
-msgid "You control your bitcoin."
+msgid "You control your Bitcoin Cash."
 msgstr "귀하의 비트코인을 제어하실 수 있습니다."
 
 msgid "You could sign the transaction later in your wallet details"
@@ -2468,7 +2468,7 @@ msgstr "귀하의 BitPay 카드가 준비되었습니다. 전 세계 상점 및 
 msgid "Your Gift Cards"
 msgstr "귀하의 기프트 카드"
 
-msgid "Your bitcoin wallet is ready!"
+msgid "Your Bitcoin Cash wallet is ready!"
 msgstr "귀하의 비트코인 지갑이 준비되었습니다!"
 
 msgid "Your extended private keys are all that is needed to access your bitcoin funds. Be sure to protect your private keys and store them only on secure devices. Bitprim does not have access to your private keys, so you alone are responsible for your keys. If you share key access with external services, you take responsibility for the risk of theft or breach. Only advanced users should handle extended private keys directly."

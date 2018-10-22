@@ -31,7 +31,7 @@ describe('Onboarding: Get Started', () => {
     // TODO,FIXME: breaks in e2e tests, but not in manual testing
     // await (await element(by.css('ion-navbar .back-button'))).click();
     // expect(await element(by.css('.swiper-slide-active h3')).getText()).toEqual(
-    //   'Bitcoin is a currency.'
+    //   'Bitcoin Cash is a currency.'
     // );
     // await (element(by.buttonText('Makes sense'))).click();
 
