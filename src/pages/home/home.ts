@@ -141,6 +141,7 @@ export class HomePage {
     });
   }
 
+  // ionViewWillEnter
   ionViewWillEnter() {
     this._willEnter();
   }
