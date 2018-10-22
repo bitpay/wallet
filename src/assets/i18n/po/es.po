@@ -12,7 +12,7 @@ msgstr ""
 "Last-Translator: cmgustavo83\n"
 "Language-Team: Spanish\n"
 "Language: es\n"
-"PO-Revision-Date: 2018-09-27 13:11\n"
+"PO-Revision-Date: 2018-10-22 18:56\n"
 
 msgid "(Trusted)"
 msgstr "(De confianza)"
@@ -398,6 +398,9 @@ msgstr "¡Felicidades! Parece que recientemente ha recibido dinero. Es altamente
 msgid "Connect my BitPay Card"
 msgstr "Conectar mi Tarjeta BitPay"
 
+msgid "Connect to ShapeShift Account"
+msgstr "Conectarse a la cuenta de ShapeShift"
+
 msgid "Connecting to Coinbase..."
 msgstr "Conectando a Coinbase..."
 
@@ -626,9 +629,6 @@ msgstr "Detalles"
 msgid "Disable notifications"
 msgstr "Desactivar notificaciones"
 
-msgid "Disable persistent logs"
-msgstr "Deshabilitar registros persistentes"
-
 msgid "Disabled"
 msgstr "Deshabilitado"
 
@@ -637,6 +637,9 @@ msgstr "Luego"
 
 msgid "Do not include private key"
 msgstr "No incluir la clave privada"
+
+msgid "Do you want to verify your account now?"
+msgstr "¿Desea verificar su cuenta ahora?"
 
 msgid "Don't see your language on Crowdin? Contact the Owner on Crowdin! We'd love to support your language."
 msgstr "¿No ves tu idioma en Crowdin? ¡Contacta con el encargado del proyecto! Nos encantaría soportar tu idioma."
@@ -679,9 +682,6 @@ msgstr "Habilitar el acceso de la cámara en su configuración de dispositivo pa
 
 msgid "Enable email notifications"
 msgstr "Activar notificaciones de correo electrónico"
-
-msgid "Enable persistent logs"
-msgstr "Habilitar registros persistentes"
 
 msgid "Enable push notifications"
 msgstr "Activar notificaciones push"
@@ -742,6 +742,9 @@ msgstr "Error"
 
 msgid "Error adding new entry"
 msgstr "Error al agregar nuevo elemento"
+
+msgid "Error connecting to ShapeShift"
+msgstr "Error al conectar con ShapeShift"
 
 msgid "Error creating wallet"
 msgstr "Error al crear billetera"
@@ -1469,6 +1472,9 @@ msgstr "URL simple"
 msgid "Please carefully write down this phrase."
 msgstr "Por favor, anota cuidadosamente esta frase."
 
+msgid "Please complete your account verification on ShapeShift website."
+msgstr "Por favor complete la verificación de la cuenta en el sitio web de ShapeShift."
+
 msgid "Please connect a camera to get started."
 msgstr "Por favor, conecta una cámara para empezar."
 
@@ -1817,6 +1823,9 @@ msgstr "Mostrar todo"
 msgid "Show in Home"
 msgstr "Mostrar en Inicio"
 
+msgid "Sign Up for ShapeShift"
+msgstr "Registrarse en ShapeShift"
+
 msgid "Signatures rejected by server"
 msgstr "Firmas rechazadas por el servidor"
 
@@ -1858,9 +1867,6 @@ msgstr "Balance disponible"
 
 msgid "Spending this balance will need significant Bitcoin network fees"
 msgstr "Gastar este balance requiere de significativas comisiones"
-
-msgid "Start"
-msgstr "Comenzar"
 
 msgid "Status"
 msgstr "Estado"
@@ -1976,6 +1982,9 @@ msgstr "El total de bitcoins almacenados en esta billetera."
 msgid "The transaction history and every new incoming transaction are cached in the app. This feature clean this up and synchronizes again from the server"
 msgstr "El historial de transacciones y toda nueva transacción son cacheadas en la aplicación. Esta característica limpia y sincroniza nuevamente desde el servidor"
 
+msgid "The wallet you are using does not match the network and/or the currency of the address provided"
+msgstr "La billetera que está utilizando no coincide con la red y/o la moneda de la dirección proporcionada"
+
 msgid "There is a new version of {{nameCase}} available"
 msgstr "Hay una nueva versión de {{nameCase}} disponible"
 
@@ -2049,8 +2058,8 @@ msgstr "Número total de copayers"
 msgid "Total wallet inputs"
 msgstr "Total de entradas de la billetera"
 
-msgid "Trade any leading blockchain asset for any other. Protection by Design. No Account Needed."
-msgstr "Comerciar de cualquier blockchain a cualquier otro. Protegido por diseño. Sin necesidad de tener una cuenta."
+msgid "Trade any leading blockchain asset for any other. Protection by Design."
+msgstr "Intercambia entre activos de la blockchain. Protección por diseño."
 
 msgid "Transaction"
 msgstr "Transacción"
@@ -2133,6 +2142,9 @@ msgstr "Transacciones no enviadas"
 msgid "Unused addresses"
 msgstr "Direcciones sin utilizar"
 
+msgid "Unverified Account"
+msgstr "Cuenta no verificada"
+
 msgid "Update Available"
 msgstr "Actualización Disponible"
 
@@ -2165,6 +2177,9 @@ msgstr "Utilizar URL por defecto"
 
 msgid "Validating recovery phrase..."
 msgstr "Validando la frase de recuperación..."
+
+msgid "Verify Account"
+msgstr "Verificar Cuenta"
 
 msgid "Version"
 msgstr "Versión"

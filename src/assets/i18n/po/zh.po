@@ -12,7 +12,7 @@ msgstr ""
 "Last-Translator: cmgustavo83\n"
 "Language-Team: Chinese Simplified\n"
 "Language: zh\n"
-"PO-Revision-Date: 2018-09-26 20:14\n"
+"PO-Revision-Date: 2018-10-22 17:47\n"
 
 msgid "(Trusted)"
 msgstr "（可信的）"
@@ -398,6 +398,9 @@ msgstr ""
 msgid "Connect my BitPay Card"
 msgstr "连接我的BitPay卡"
 
+msgid "Connect to ShapeShift Account"
+msgstr ""
+
 msgid "Connecting to Coinbase..."
 msgstr "正在连接 Coinbase..."
 
@@ -626,9 +629,6 @@ msgstr "详情"
 msgid "Disable notifications"
 msgstr "禁用通知"
 
-msgid "Disable persistent logs"
-msgstr ""
-
 msgid "Disabled"
 msgstr "已禁用"
 
@@ -637,6 +637,9 @@ msgstr "以后再做"
 
 msgid "Do not include private key"
 msgstr "不包括私钥"
+
+msgid "Do you want to verify your account now?"
+msgstr ""
 
 msgid "Don't see your language on Crowdin? Contact the Owner on Crowdin! We'd love to support your language."
 msgstr "在 Crowdin 找不到你的语言？请联系 Crowdin 的所有者！我们很乐意支持你的语言。"
@@ -679,9 +682,6 @@ msgstr "相机中启用访问您的设备设置入门。"
 
 msgid "Enable email notifications"
 msgstr "启用电子邮件通知"
-
-msgid "Enable persistent logs"
-msgstr ""
 
 msgid "Enable push notifications"
 msgstr "启用推式通知"
@@ -742,6 +742,9 @@ msgstr "错误！"
 
 msgid "Error adding new entry"
 msgstr "错误添加新条目"
+
+msgid "Error connecting to ShapeShift"
+msgstr ""
 
 msgid "Error creating wallet"
 msgstr "创建钱包时出现错误"
@@ -1469,6 +1472,9 @@ msgstr ""
 msgid "Please carefully write down this phrase."
 msgstr "请仔细记下这句话。"
 
+msgid "Please complete your account verification on ShapeShift website."
+msgstr ""
+
 msgid "Please connect a camera to get started."
 msgstr "请连接相机入门。"
 
@@ -1817,6 +1823,9 @@ msgstr "显示全部"
 msgid "Show in Home"
 msgstr "首页中显示"
 
+msgid "Sign Up for ShapeShift"
+msgstr ""
+
 msgid "Signatures rejected by server"
 msgstr "签名被服务器拒绝"
 
@@ -1858,9 +1867,6 @@ msgstr "可用余额"
 
 msgid "Spending this balance will need significant Bitcoin network fees"
 msgstr "这笔交易将需要非常高的比特币网络手续费"
-
-msgid "Start"
-msgstr "开始"
 
 msgid "Status"
 msgstr ""
@@ -1976,6 +1982,9 @@ msgstr "比特币存储在这个钱包的总量。"
 msgid "The transaction history and every new incoming transaction are cached in the app. This feature clean this up and synchronizes again from the server"
 msgstr ""
 
+msgid "The wallet you are using does not match the network and/or the currency of the address provided"
+msgstr ""
+
 msgid "There is a new version of {{nameCase}} available"
 msgstr "发现新版本{{nameCase}}"
 
@@ -2048,8 +2057,8 @@ msgstr "copayers总数"
 msgid "Total wallet inputs"
 msgstr "钱包总共进账"
 
-msgid "Trade any leading blockchain asset for any other. Protection by Design. No Account Needed."
-msgstr "交易任何领先的区块链资产。设计保护。无需帐户。"
+msgid "Trade any leading blockchain asset for any other. Protection by Design."
+msgstr ""
 
 msgid "Transaction"
 msgstr "交易"
@@ -2132,6 +2141,9 @@ msgstr "未发送的交易"
 msgid "Unused addresses"
 msgstr "未使用过的地址"
 
+msgid "Unverified Account"
+msgstr ""
+
 msgid "Update Available"
 msgstr "可用的更新"
 
@@ -2164,6 +2176,9 @@ msgstr "使用默认URL"
 
 msgid "Validating recovery phrase..."
 msgstr "正在验证恢复短语。。。"
+
+msgid "Verify Account"
+msgstr ""
 
 msgid "Version"
 msgstr "版本"

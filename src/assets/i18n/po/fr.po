@@ -12,7 +12,7 @@ msgstr ""
 "Last-Translator: cmgustavo83\n"
 "Language-Team: French\n"
 "Language: fr\n"
-"PO-Revision-Date: 2018-09-26 20:14\n"
+"PO-Revision-Date: 2018-10-22 18:56\n"
 
 msgid "(Trusted)"
 msgstr "(Fiable)"
@@ -201,10 +201,10 @@ msgid "Awaiting payment to confirm"
 msgstr "En attente du paiement pour confirmer"
 
 msgid "Back up all your wallets before using this function"
-msgstr ""
+msgstr "Sauvegardez tous vos portefeuilles avant d'utiliser cette fonction"
 
 msgid "Back up your wallet before using this function"
-msgstr ""
+msgstr "Sauvegardez votre portefeuille avant d'utiliser cette fonction"
 
 msgid "Backup"
 msgstr "Sauvegarder"
@@ -397,6 +397,9 @@ msgstr "Félicitations ! On dirait que vous avez récemment reçu de l'argent. I
 
 msgid "Connect my BitPay Card"
 msgstr "Connecter ma BitPay Card"
+
+msgid "Connect to ShapeShift Account"
+msgstr ""
 
 msgid "Connecting to Coinbase..."
 msgstr "Connexion à Coinbase..."
@@ -626,9 +629,6 @@ msgstr "Détails"
 msgid "Disable notifications"
 msgstr "Désactiver les notifications"
 
-msgid "Disable persistent logs"
-msgstr "Désactiver les journaux persistants"
-
 msgid "Disabled"
 msgstr "Désactivé"
 
@@ -637,6 +637,9 @@ msgstr "La faire plus tard"
 
 msgid "Do not include private key"
 msgstr "Ne pas inclure la clé privée"
+
+msgid "Do you want to verify your account now?"
+msgstr "Voulez-vous vérifier votre compte maintenant ?"
 
 msgid "Don't see your language on Crowdin? Contact the Owner on Crowdin! We'd love to support your language."
 msgstr "Vous ne voyez pas votre langue sur Crowdin ? Contactez le propriétaire sur Crowdin ! Nous serions ravis de prendre en charge votre langue."
@@ -679,9 +682,6 @@ msgstr "Autorisez l’accès à la caméra dans les réglages de votre appareil 
 
 msgid "Enable email notifications"
 msgstr "Activer les notifications e-mail"
-
-msgid "Enable persistent logs"
-msgstr "Activer les journaux persistants"
 
 msgid "Enable push notifications"
 msgstr "Autoriser les notifications"
@@ -742,6 +742,9 @@ msgstr "Erreur"
 
 msgid "Error adding new entry"
 msgstr "Erreur lors de l’ajout d’une nouvelle entrée"
+
+msgid "Error connecting to ShapeShift"
+msgstr "Erreur de connexion à ShapeShift"
 
 msgid "Error creating wallet"
 msgstr "Erreur de création du portefeuille"
@@ -1014,7 +1017,7 @@ msgid "Importing Wallet..."
 msgstr "Importation du portefeuille..."
 
 msgid "In order to verify your wallet recovery phrase, please type your password."
-msgstr ""
+msgstr "Afin de vérifier votre phrase de récupération, veuillez saisir votre mot de passe."
 
 msgid "Incomplete"
 msgstr "Non terminé"
@@ -1469,6 +1472,9 @@ msgstr "Plain URL"
 msgid "Please carefully write down this phrase."
 msgstr "Veuillez écrire soigneusement cette phrase."
 
+msgid "Please complete your account verification on ShapeShift website."
+msgstr "Veuillez terminer votre vérification de compte sur le site web de ShapeShift."
+
 msgid "Please connect a camera to get started."
 msgstr "Veuillez connecter une caméra pour commencer."
 
@@ -1817,6 +1823,9 @@ msgstr "Tout montrer"
 msgid "Show in Home"
 msgstr "Afficher dans l'accueil"
 
+msgid "Sign Up for ShapeShift"
+msgstr ""
+
 msgid "Signatures rejected by server"
 msgstr "Signatures rejetées par le serveur"
 
@@ -1858,9 +1867,6 @@ msgstr "Solde disponible"
 
 msgid "Spending this balance will need significant Bitcoin network fees"
 msgstr "La dépense de ce solde demandera d'importants frais de réseau Bitcoin"
-
-msgid "Start"
-msgstr "Démarrer"
 
 msgid "Status"
 msgstr "État"
@@ -1976,6 +1982,9 @@ msgstr "Le montant total des bitcoins stockés dans ce portefeuille."
 msgid "The transaction history and every new incoming transaction are cached in the app. This feature clean this up and synchronizes again from the server"
 msgstr "L’historique des transactions et chaque nouvelle transaction entrante sont mis en cache dans l’application. Cette fonctionnalité efface cela et synchronise à nouveau à partir du serveur"
 
+msgid "The wallet you are using does not match the network and/or the currency of the address provided"
+msgstr "Le portefeuille que vous utilisez ne correspond pas au réseau et/ou à la monnaie de l’adresse fournie"
+
 msgid "There is a new version of {{nameCase}} available"
 msgstr "Une nouvelle version de {{nameCase}} est disponible"
 
@@ -2048,8 +2057,8 @@ msgstr "Nombre total de copayers"
 msgid "Total wallet inputs"
 msgstr "Entrées de portefeuille totales"
 
-msgid "Trade any leading blockchain asset for any other. Protection by Design. No Account Needed."
-msgstr "Échangez n'importe quel actif blockchain pour un autre. Protection par conception sécurisée. Aucun compte requis."
+msgid "Trade any leading blockchain asset for any other. Protection by Design."
+msgstr ""
 
 msgid "Transaction"
 msgstr "Transaction"
@@ -2132,6 +2141,9 @@ msgstr "Transactions non envoyées"
 msgid "Unused addresses"
 msgstr "Adresses inutilisées"
 
+msgid "Unverified Account"
+msgstr "Compte non vérifié"
+
 msgid "Update Available"
 msgstr "Mise à jour disponible"
 
@@ -2164,6 +2176,9 @@ msgstr "Utiliser l'url par défaut"
 
 msgid "Validating recovery phrase..."
 msgstr "Validation de la phrase de récupération..."
+
+msgid "Verify Account"
+msgstr "Vérification du compte"
 
 msgid "Version"
 msgstr "Version"
@@ -2361,7 +2376,7 @@ msgid "You are trying to send ({amount} {coin}) more than what your wallet conta
 msgstr "Vous essayez d'envoyer ({amount} {coin}) de plus par rapport à ce que contient votre portefeuille. Veuillez entrer un montant inférieur ou envoyer le maximum."
 
 msgid "You can back up your wallet later from your wallet settings."
-msgstr ""
+msgstr "Vous pouvez sauvegarder votre portefeuille plus tard à partir des paramètres de celui-ci."
 
 msgid "You can continue to view your archived cards here if you need to access them."
 msgstr "Vous pouvez continuer d’afficher ici vos cartes archivées si vous avez besoin d’y accéder."
@@ -2379,7 +2394,7 @@ msgid "You can spend bitcoin at millions of websites and stores worldwide."
 msgstr "Vous pouvez dépenser des bitcoins dans des millions de boutiques et de sites internet à travers le monde."
 
 msgid "You can still export it from \"Export Wallet\" option."
-msgstr ""
+msgstr "Vous pouvez toujours l’exporter depuis l’option « Exporter le portefeuille »."
 
 msgid "You can trade it for other currencies like US Dollars, Euros, or Pounds."
 msgstr "Vous pouvez l’échanger contre d'autres monnaies comme le dollar américain, l'euro ou la livre sterling."
