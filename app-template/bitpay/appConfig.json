@@ -1,7 +1,7 @@
 {
   "packageName": "bitpay",
   "packageDescription": "Secure Bitcoin Wallet",
-  "packageNameId": "com.bitpay.wallet",
+  "packageNameId": "com.bitprim.wallet",
   "themeColor": "#2A3F90",
   "userVisibleName": "BitPay",
   "purposeLine": "Secure Bitcoin Wallet",

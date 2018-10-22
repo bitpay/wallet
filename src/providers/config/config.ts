@@ -155,12 +155,13 @@ const configDefault: Config = {
       ios:
         'https://itunes.apple.com/app/bitpay-secure-bitcoin-wallet/id1149581638',
       android:
-        'https://play.google.com/store/apps/details?id=com.bitpay.wallet',
+        'https://play.google.com/store/apps/details?id=com.bitprim.keoken',
       wp: ''
     },
     copay: {
       ios: 'https://itunes.apple.com/app/copay-bitcoin-wallet/id951330296',
-      android: 'https://play.google.com/store/apps/details?id=com.bitpay.copay',
+      android:
+        'https://play.google.com/store/apps/details?id=com.bitprim.keoken',
       wp: ''
     }
   },

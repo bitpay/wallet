@@ -10,7 +10,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:149194066736:android:64dc8a200f13f9ee",
         "android_client_info": {
-          "package_name": "com.bitpay.wallet"
+          "package_name": "com.bitprim.wallet"
         }
       },
       "oauth_client": [

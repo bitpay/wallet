@@ -1,6 +1,6 @@
 {
   "name": "*USERVISIBLENAME*",
-  "app_id": "com.bitpay.*BUNDLENAME*",
+  "app_id": "com.bitprim.*BUNDLENAME*",
   "type": "ionic-angular",
   "integrations": {
     "cordova": {}
