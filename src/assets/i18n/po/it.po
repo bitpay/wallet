@@ -12,7 +12,7 @@ msgstr ""
 "Last-Translator: cmgustavo83\n"
 "Language-Team: Italian\n"
 "Language: it\n"
-"PO-Revision-Date: 2018-09-26 20:14\n"
+"PO-Revision-Date: 2018-10-22 17:46\n"
 
 msgid "(Trusted)"
 msgstr "(Fidato)"
@@ -159,13 +159,13 @@ msgid "Approximate Bitcoin network fee to transfer wallet's balance (with normal
 msgstr "La tariffa approssimativa della rete Bitcoin per il trasferimento del saldo del portafoglio ( con priorità normale)"
 
 msgid "Archive Card"
-msgstr ""
+msgstr "Archivia carta"
 
 msgid "Archive this Card?"
-msgstr ""
+msgstr "Archiviare questa carta?"
 
 msgid "Archived Cards"
-msgstr ""
+msgstr "Carte archiviate"
 
 msgid "Are you being watched?"
 msgstr "Sei osservato?"
@@ -312,7 +312,7 @@ msgid "Cannot join the same wallet more that once"
 msgstr "Non è possibile aggiungere un portafoglio più di una volta"
 
 msgid "Card Archived"
-msgstr ""
+msgstr "Carta archiviata"
 
 msgid "Card Settings"
 msgstr "Impostazioni della carta"
@@ -398,6 +398,9 @@ msgstr ""
 msgid "Connect my BitPay Card"
 msgstr "Collegare la mia Carta BitPay"
 
+msgid "Connect to ShapeShift Account"
+msgstr ""
+
 msgid "Connecting to Coinbase..."
 msgstr "Connessione a Coinbase..."
 
@@ -450,7 +453,7 @@ msgid "Copied {coin} address"
 msgstr ""
 
 msgid "Copied: {claimCode}"
-msgstr ""
+msgstr "Copiato: {claimCode}"
 
 msgid "Copy this text as it is to a safe place (notepad or email)"
 msgstr "Copia questo testo cosí com'è in un posto sicuro (blocco note o email)"
@@ -576,7 +579,7 @@ msgid "Creating transaction..."
 msgstr "Creazione transazione..."
 
 msgid "Current Cards"
-msgstr ""
+msgstr "Carte attuali"
 
 msgid "Current fee rate for this policy"
 msgstr "Attuale commissione con questa politica"
@@ -626,9 +629,6 @@ msgstr "Dettagli"
 msgid "Disable notifications"
 msgstr "Disabilita le notifiche"
 
-msgid "Disable persistent logs"
-msgstr ""
-
 msgid "Disabled"
 msgstr "Disabilitato"
 
@@ -637,6 +637,9 @@ msgstr "Farlo in seguito"
 
 msgid "Do not include private key"
 msgstr "Non includere la chiave privata"
+
+msgid "Do you want to verify your account now?"
+msgstr ""
 
 msgid "Don't see your language on Crowdin? Contact the Owner on Crowdin! We'd love to support your language."
 msgstr "Non vedi la tua lingua su Crowdin? Contatta il proprietario su Crowdin! Ci piacerebbe supportare la lingua."
@@ -679,9 +682,6 @@ msgstr "Abilita l'accesso alla fotocamera dalle impostazioni del tuo dispositivo
 
 msgid "Enable email notifications"
 msgstr "Attiva Notifiche Email"
-
-msgid "Enable persistent logs"
-msgstr ""
 
 msgid "Enable push notifications"
 msgstr "Abilitare le notifiche push"
@@ -742,6 +742,9 @@ msgstr "Errore"
 
 msgid "Error adding new entry"
 msgstr "Errore nell'aggiunta di nuova voce"
+
+msgid "Error connecting to ShapeShift"
+msgstr ""
 
 msgid "Error creating wallet"
 msgstr "Errore creazione portafoglio"
@@ -900,7 +903,7 @@ msgid "Gift Card"
 msgstr "Carta Regalo"
 
 msgid "Gift card canceled"
-msgstr ""
+msgstr "Carta regalo annullata"
 
 msgid "Give us feedback"
 msgstr "Lascia un commento"
@@ -966,7 +969,7 @@ msgid "I understand that my funds are held securely on this device, not by a com
 msgstr "Ho capito che i miei fondi sono custoditi in sicurezza in questa dispositivo, non da un'azienda"
 
 msgid "I'm disappointed"
-msgstr ""
+msgstr "Sono deluso"
 
 msgid "I'm satisfied"
 msgstr "Sono soddisfatto"
@@ -978,7 +981,7 @@ msgid "I'm very happy"
 msgstr "Sono molto felice"
 
 msgid "I've used this card"
-msgstr ""
+msgstr "Ho usato questa carta"
 
 msgid "If enabled, Bitcoin Cash addresses will be shown using Copay style address, and not the new cashaddr format."
 msgstr "Se abilitato, gli indirizzi di Bitcoin Cash saranno mostrati con lo stile di indirizzo di Copay, e non con il nuovo formato di cashaddr."
@@ -1107,7 +1110,7 @@ msgid "Leave Feedback"
 msgstr "Lascia un feedback"
 
 msgid "Let's verify your recovery phrase."
-msgstr ""
+msgstr "Verifichiamo la tua frase di recupero."
 
 msgid "Linked"
 msgstr "Connesso"
@@ -1469,6 +1472,9 @@ msgstr ""
 msgid "Please carefully write down this phrase."
 msgstr "Si prega di annotare accuratamente questa frase."
 
+msgid "Please complete your account verification on ShapeShift website."
+msgstr ""
+
 msgid "Please connect a camera to get started."
 msgstr "Si prega di collegare una telecamera per iniziare."
 
@@ -1817,6 +1823,9 @@ msgstr "Visualizza tutti"
 msgid "Show in Home"
 msgstr "Mostra in Home"
 
+msgid "Sign Up for ShapeShift"
+msgstr ""
+
 msgid "Signatures rejected by server"
 msgstr "Firme rifiutate dal server"
 
@@ -1858,9 +1867,6 @@ msgstr "Saldo spendibile"
 
 msgid "Spending this balance will need significant Bitcoin network fees"
 msgstr "Per spendere questa quantità saranno necessarie significative commissioni di rete Bitcoin"
-
-msgid "Start"
-msgstr "Inizio"
 
 msgid "Status"
 msgstr "Stato"
@@ -1976,6 +1982,9 @@ msgstr "La quantità totale di bitcoin depositati su questo portafoglio."
 msgid "The transaction history and every new incoming transaction are cached in the app. This feature clean this up and synchronizes again from the server"
 msgstr "La cronologia delle transazioni e ogni nuova transazione in entrata vengono memorizzate nella cache nell'app. Questa funzionalità la ripulisce e sincronizza nuovamente dal server"
 
+msgid "The wallet you are using does not match the network and/or the currency of the address provided"
+msgstr ""
+
 msgid "There is a new version of {{nameCase}} available"
 msgstr "C'è una nuova versione di {{nameCase}} disponibile"
 
@@ -2048,8 +2057,8 @@ msgstr "Numero totale di copayer"
 msgid "Total wallet inputs"
 msgstr "Totale ingressi nel portafoglio"
 
-msgid "Trade any leading blockchain asset for any other. Protection by Design. No Account Needed."
-msgstr "Scambia qualsiasi crittovaluta con un'altra. Protetto da Design. Non necessità Account."
+msgid "Trade any leading blockchain asset for any other. Protection by Design."
+msgstr ""
 
 msgid "Transaction"
 msgstr "Transazione"
@@ -2132,6 +2141,9 @@ msgstr "Transazioni non inviate"
 msgid "Unused addresses"
 msgstr "Indirizzi non utilizzati"
 
+msgid "Unverified Account"
+msgstr ""
+
 msgid "Update Available"
 msgstr "Aggiornamento Disponibile"
 
@@ -2164,6 +2176,9 @@ msgstr "Usare url predefinito"
 
 msgid "Validating recovery phrase..."
 msgstr "Validazione della frase di recupero..."
+
+msgid "Verify Account"
+msgstr ""
 
 msgid "Version"
 msgstr "Versione"
