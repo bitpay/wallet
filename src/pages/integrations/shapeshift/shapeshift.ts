@@ -188,7 +188,7 @@ export class ShapeshiftPage {
   }
 
   public openShiftModal(ssData) {
-    let modal = this.modalCtrl.create(ShapeshiftDetailsPage, { ssData });
+    const modal = this.modalCtrl.create(ShapeshiftDetailsPage, { ssData });
 
     modal.present();
 
@@ -207,19 +207,19 @@ export class ShapeshiftPage {
 
   public openAuthenticateWindow(): void {
     this.showOauthForm = true;
-    let oauthUrl = this.shapeshiftProvider.getOauthCodeUrl();
+    const oauthUrl = this.shapeshiftProvider.getOauthCodeUrl();
     this.externalLinkProvider.open(oauthUrl);
   }
 
   private openShafeShiftWindow(): void {
-    let url = 'https://portal.shapeshift.io/me/fox/dashboard';
-    let optIn = true;
-    let title = this.translate.instant('Unverified Account');
-    let message = this.translate.instant(
+    const url = 'https://portal.shapeshift.io/me/fox/dashboard';
+    const optIn = true;
+    const title = this.translate.instant('Unverified Account');
+    const message = this.translate.instant(
       'Do you want to verify your account now?'
     );
-    let okText = this.translate.instant('Verify Account');
-    let cancelText = this.translate.instant('Cancel');
+    const okText = this.translate.instant('Verify Account');
+    const cancelText = this.translate.instant('Cancel');
     this.externalLinkProvider
       .open(url, optIn, title, message, okText, cancelText)
       .then(() => {
@@ -228,13 +228,13 @@ export class ShapeshiftPage {
   }
 
   public openSignupWindow(): void {
-    let url = this.shapeshiftProvider.getSignupUrl();
-    let optIn = true;
-    let title = 'Sign Up for ShapeShift';
-    let message =
+    const url = this.shapeshiftProvider.getSignupUrl();
+    const optIn = true;
+    const title = 'Sign Up for ShapeShift';
+    const message =
       'This will open shapeshift.io, where you can create an account.';
-    let okText = 'Go to ShapeShift';
-    let cancelText = 'Back';
+    const okText = 'Go to ShapeShift';
+    const cancelText = 'Back';
     this.externalLinkProvider.open(
       url,
       optIn,

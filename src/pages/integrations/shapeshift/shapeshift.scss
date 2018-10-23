@@ -11,6 +11,7 @@ page-shapeshift {
       font-weight: 300;
       margin-bottom: 30px;
     }
+    position: relative;
     height: 100%;
     display: flex;
     flex-direction: column;
@@ -19,6 +20,10 @@ page-shapeshift {
     text-align: center;
     background: url('../assets/img/shapeshift/shapeshift_background.jpg') center
       center no-repeat #28394d;
+    .bottom-position {
+      position: absolute;
+      bottom: 10px;
+    }
   }
   .main-header {
     padding: 25px 0;
