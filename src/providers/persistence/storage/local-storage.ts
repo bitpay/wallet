@@ -45,7 +45,7 @@ export class LocalStorage implements IStorage {
   remove(k: string): Promise<void> {
     return new Promise<void>(resolve => {
       this.ls.removeItem(k);
-      this.logger.debug('File removed: ' + k);
+      this.logger.debug(`Storage Key: ${k} removed`);
       resolve();
     });
   }
