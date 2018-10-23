@@ -69,7 +69,7 @@ export class ShapeshiftPage {
 
   ionViewWillEnter() {
     if (this.navParams.data.code) {
-    this.shapeshiftProvider.getStoredToken((at: string) => {
+      this.shapeshiftProvider.getStoredToken((at: string) => {
         at ? this.init() : this.submitOauthCode(this.navParams.data.code);
       });
     } else {
@@ -247,9 +247,7 @@ export class ShapeshiftPage {
       this.onGoingProcessProvider.clear();
       if (err) {
         this.error = err;
-        this.logger.error(
-          'Error connecting to ShapeShift: ' + err
-        );
+        this.logger.error('Error connecting to ShapeShift: ' + err);
         return;
       }
       this.accessToken = accessToken;
