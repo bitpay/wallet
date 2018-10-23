@@ -245,13 +245,13 @@ msgstr "Bitcoin URI"
 msgid "Bitcoin Wallets"
 msgstr "比特币钱包"
 
-msgid "Bitcoin is a currency."
+msgid "Bitcoin Cash is a currency."
 msgstr "比特币是一种货币。"
 
-msgid "Bitcoin is different - it cannot be safely held with a bank or web service."
+msgid "Bitcoin Cash is different - it cannot be safely held with a bank or web service."
 msgstr "比特币是特殊的—它无法被银行或者网络服务安全持有。"
 
-msgid "Bitcoin is secure, digital money."
+msgid "Bitcoin Cash is secure, digital money."
 msgstr "比特币是安全的数字货币。"
 
 msgid "Bitcoin miner fee:"
@@ -287,8 +287,8 @@ msgstr "正在发送 比特币..."
 msgid "Buying Gift Card..."
 msgstr "正在购买礼品卡..."
 
-msgid "By providing your email address, you give explicit consent to BitPay to use your email address to send you email notifications about payments."
-msgstr "通过提供您的电子邮件地址，您已明确同意BitPay使用您的电子邮件地址向您发送有关付款的电子邮件通知。"
+msgid "By providing your email address, you give explicit consent to Bitprim to use your email address to send you email notifications about payments."
+msgstr "通过提供您的电子邮件地址，您已明确同意Bitprim使用您的电子邮件地址向您发送有关付款的电子邮件通知。"
 
 msgid "CANCELED"
 msgstr "已取消"
@@ -980,8 +980,8 @@ msgstr "Làm thế nào bạn hài lòng với {{AppName}}  ví ?"
 msgid "I agree to the Terms and certify that I am the beneficial owner of the input assets and the destination address."
 msgstr "本人同意条款，并证明本人是输入资产及目的地地址的实益拥有人。"
 
-msgid "I give explicit consent to BitPay to use my email address to send me email notifications about payments (and, if selected, email updates and news about the wallet)."
-msgstr "我明确同意BitPay使用我的电子邮件地址向我发送关于付款的电子邮件通知(如果选择，发送有关钱包的更新和资讯)。"
+msgid "I give explicit consent to Bitprim to use my email address to send me email notifications about payments (and, if selected, email updates and news about the wallet)."
+msgstr "我明确同意Bitprim使用我的电子邮件地址向我发送关于付款的电子邮件通知(如果选择，发送有关钱包的更新和资讯)。"
 
 msgid "I have read, understood, and agree to the Terms of Use"
 msgstr "我已阅读、 理解并同意本使用条款。"
@@ -992,7 +992,7 @@ msgstr "我已经写下"
 msgid "I understand"
 msgstr "我知道了"
 
-msgid "I understand that if this app is moved to another device or deleted, my bitcoin can only be recovered with the backup phrase"
+msgid "I understand that if this app is moved to another device or deleted, my Bitcoin Cash can only be recovered with the backup phrase"
 msgstr "我理解如果这个app被移动到另一个设备或删除，我的比特币只能通过备份短语恢复。"
 
 msgid "I understand that my funds are held securely on this device, not by a company"
@@ -1268,7 +1268,7 @@ msgstr ""
 msgid "No access key defined"
 msgstr "授权密钥未定义"
 
-msgid "No backup, no bitcoin."
+msgid "No backup, no Bitcoin Cash."
 msgstr "没有备份，没有比特币。"
 
 msgid "No contacts yet"
@@ -1955,7 +1955,7 @@ msgstr "正在导出钱包"
 msgid "THIS ACTION CANNOT BE REVERSED"
 msgstr "此操作无法撤消"
 
-msgid "Take control of your money, get started with bitcoin."
+msgid "Take control of your money, get started with Bitcoin Cash."
 msgstr "控制好你的钱，开始使用比特币。"
 
 msgid "Tap and hold to show"
@@ -2051,7 +2051,7 @@ msgstr "显然我们做错了什么。我们怎样才能提高您的用户体验
 msgid "This app is not available for your device."
 msgstr "此app不适用于您的设备。"
 
-msgid "This app stores your bitcoin with cutting-edge security."
+msgid "This app stores your Bitcoin Cash with cutting-edge security."
 msgstr "此应用程序商店你比特币与尖端的安全。"
 
 msgid "This bitcoin payment request has expired."
@@ -2441,7 +2441,7 @@ msgstr "您可以扫描比特币地址、 付款申请、 纸钱包和更多。"
 msgid "You can see the latest developments and contribute to this open source app by visiting our project on GitHub."
 msgstr "你可以看到最新的事态发展和贡献这个开放源码应用程序通过在 GitHub 上访问我们的项目。"
 
-msgid "You can spend bitcoin at millions of websites and stores worldwide."
+msgid "You can spend Bitcoin Cash at millions of websites and stores worldwide."
 msgstr "你可以花比特币在数以百万计的网站和世界各地的商店。"
 
 msgid "You can still export it from Advanced &gt; Export."
@@ -2450,7 +2450,7 @@ msgstr "你仍然可以将其导出从高级 &gt; 出口。"
 msgid "You can trade it for other currencies like US Dollars, Euros, or Pounds."
 msgstr "你可以换其他货币，如美元、 欧元或英镑。"
 
-msgid "You control your bitcoin."
+msgid "You control your Bitcoin Cash."
 msgstr "您可以控制您的比特币。"
 
 msgid "You could sign the transaction later in your wallet details"
@@ -2468,7 +2468,7 @@ msgstr "您的 BitPay 卡是准备好了。添加到您的卡开始使用它在�
 msgid "Your Gift Cards"
 msgstr "礼品卡"
 
-msgid "Your bitcoin wallet is ready!"
+msgid "Your Bitcoin Cash wallet is ready!"
 msgstr "你的比特币钱包是准备好了 ！"
 
 msgid "Your extended private keys are all that is needed to access your bitcoin funds. Be sure to protect your private keys and store them only on secure devices. Bitprim does not have access to your private keys, so you alone are responsible for your keys. If you share key access with external services, you take responsibility for the risk of theft or breach. Only advanced users should handle extended private keys directly."

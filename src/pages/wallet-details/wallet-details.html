@@ -60,8 +60,7 @@
         </div>
         <div class="balance-error" *ngIf="walletNotRegistered" (tap)="recreate()">
           <span class="title" translate>Tap to recreate</span>
-          <div translate>This wallet is not registered at the given Bitcore Wallet Service (BWS). You can recreate it
-            from the local information.</div>
+          <div translate>This wallet is not registered at the given Bitcore Wallet Service (BWS). You can recreate it from the local information.</div>
         </div>
       </expandable-header-primary>
       <expandable-header-footer class="wallet-info" *ngIf="wallet" style="display: flex; align-items: center">
@@ -95,7 +94,7 @@
     <div *ngIf="wallet.network == 'testnet'" class="box-notification warning">
       <a class="energized" (click)="openExternalLink('https://support.bitpay.com/hc/en-us/articles/360004102011-What-is-testnet-How-do-I-avoid-testnet-Bitcoin-scams-')">
         <ion-icon name="warning"></ion-icon>
-        {{'Learn more about testnet blockchain' | translate}}
+        <!--{{'Learn more about testnet blockchain' | translate}}-->
         <ion-icon name="arrow-forward"></ion-icon>
       </a>
     </div>
@@ -142,8 +141,7 @@
           <span translate>It's a ghost town in here</span>
         </div>
         <div class="subtitle-info">
-          <span translate>If you have funds stored on a website then you should move them into a secure wallet... like
-            this one!</span>
+          <span translate>If you have funds stored on a website then you should move them into a secure wallet... like this one!</span>
         </div>
       </div>
 

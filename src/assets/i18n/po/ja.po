@@ -247,13 +247,13 @@ msgstr ""
 msgid "Bitcoin Wallets"
 msgstr "ビットコインウォレット"
 
-msgid "Bitcoin is a currency."
+msgid "Bitcoin Cash is a currency."
 msgstr "ビットコインは通貨の一つ"
 
-msgid "Bitcoin is different - it cannot be safely held with a bank or web service."
+msgid "Bitcoin Cash is different - it cannot be safely held with a bank or web service."
 msgstr ""
 
-msgid "Bitcoin is secure, digital money."
+msgid "Bitcoin Cash is secure, digital money."
 msgstr ""
 
 msgid "Bitcoin miner fee:"
@@ -289,7 +289,7 @@ msgstr "ビットコインを購入中..."
 msgid "Buying Gift Card..."
 msgstr ""
 
-msgid "By providing your email address, you give explicit consent to BitPay to use your email address to send you email notifications about payments."
+msgid "By providing your email address, you give explicit consent to Bitprim to use your email address to send you email notifications about payments."
 msgstr ""
 
 msgid "CANCELED"
@@ -982,7 +982,7 @@ msgstr ""
 msgid "I agree to the Terms and certify that I am the beneficial owner of the input assets and the destination address."
 msgstr ""
 
-msgid "I give explicit consent to BitPay to use my email address to send me email notifications about payments (and, if selected, email updates and news about the wallet)."
+msgid "I give explicit consent to Bitprim to use my email address to send me email notifications about payments (and, if selected, email updates and news about the wallet)."
 msgstr ""
 
 msgid "I have read, understood, and agree to the Terms of Use"
@@ -994,7 +994,7 @@ msgstr ""
 msgid "I understand"
 msgstr "承知しました"
 
-msgid "I understand that if this app is moved to another device or deleted, my bitcoin can only be recovered with the backup phrase"
+msgid "I understand that if this app is moved to another device or deleted, my Bitcoin Cash can only be recovered with the backup phrase"
 msgstr ""
 
 msgid "I understand that my funds are held securely on this device, not by a company"
@@ -1270,7 +1270,7 @@ msgstr ""
 msgid "No access key defined"
 msgstr "アクセスキーが定義されていません"
 
-msgid "No backup, no bitcoin."
+msgid "No backup, no Bitcoin Cash."
 msgstr "バックアップは非常に重要です！"
 
 msgid "No contacts yet"
@@ -1959,7 +1959,7 @@ msgstr "ビットコイン回収中…"
 msgid "THIS ACTION CANNOT BE REVERSED"
 msgstr "＊＊＊注意＊＊＊ このアクションを元に戻すことはできません！！！"
 
-msgid "Take control of your money, get started with bitcoin."
+msgid "Take control of your money, get started with Bitcoin Cash."
 msgstr ""
 
 msgid "Tap and hold to show"
@@ -2055,7 +2055,7 @@ msgstr ""
 msgid "This app is not available for your device."
 msgstr ""
 
-msgid "This app stores your bitcoin with cutting-edge security."
+msgid "This app stores your Bitcoin Cash with cutting-edge security."
 msgstr "このアプリは、最先端のセキュリティであなたのビットコインをお守りします。"
 
 msgid "This bitcoin payment request has expired."
@@ -2445,7 +2445,7 @@ msgstr "ビットコインアドレス、支払い請求、ペーパーウォレ
 msgid "You can see the latest developments and contribute to this open source app by visiting our project on GitHub."
 msgstr "GitHubのページにて最近の開発動向を見たり、改善案のソースコードの貢献したりすることができます。"
 
-msgid "You can spend bitcoin at millions of websites and stores worldwide."
+msgid "You can spend Bitcoin Cash at millions of websites and stores worldwide."
 msgstr "世界中のECサイトや店舗でビットコインを使って支払いができます。"
 
 msgid "You can still export it from Advanced &gt; Export."
@@ -2454,7 +2454,7 @@ msgstr "バックアップファイルの作成は「上級者向け」⇒「エ
 msgid "You can trade it for other currencies like US Dollars, Euros, or Pounds."
 msgstr "米ドル、ユーロ、ポンドなど他の通貨との取引ができます。"
 
-msgid "You control your bitcoin."
+msgid "You control your Bitcoin Cash."
 msgstr "ビットコインの自己管理"
 
 msgid "You could sign the transaction later in your wallet details"
@@ -2472,7 +2472,7 @@ msgstr "BitPayカードの準備が整いました。入金して全世界のお
 msgid "Your Gift Cards"
 msgstr "ギフトカード"
 
-msgid "Your bitcoin wallet is ready!"
+msgid "Your Bitcoin Cash wallet is ready!"
 msgstr "ビットコインウォレットが完成しました!"
 
 msgid "Your extended private keys are all that is needed to access your bitcoin funds. Be sure to protect your private keys and store them only on secure devices. Bitprim does not have access to your private keys, so you alone are responsible for your keys. If you share key access with external services, you take responsibility for the risk of theft or breach. Only advanced users should handle extended private keys directly."

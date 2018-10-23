@@ -24,7 +24,7 @@ export class FaucetProvider {
     this.homeIntegrationsProvider.register({
       name: 'faucet',
       title: 'Testnet Faucet',
-      icon: 'assets/img/shapeshift/icon-shapeshift.svg',
+      icon: 'assets/img/keoken/faucet-ico.svg',
       page: 'FaucetPage',
       show: true
     });

@@ -80,7 +80,7 @@ export class WalletServiceUrlPage {
     switch (this.walletServiceForm.value.bwsurl) {
       case 'prod':
       case 'production':
-        bws = 'http://localhost:3232/bws/api';
+        bws = 'https://bws.testnet.keoken.io:3232/bws/api';
         break;
       case 'sta':
       case 'staging':
@@ -88,7 +88,7 @@ export class WalletServiceUrlPage {
         break;
       case 'loc':
       case 'local':
-        bws = 'http://localhost:3232/bws/api';
+        bws = 'https://bws.testnet.keoken.io:3232/bws/api';
         break;
     }
     if (bws) {

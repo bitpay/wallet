@@ -24,7 +24,7 @@ export class ExplorerProvider {
     this.homeIntegrationsProvider.register({
       name: 'explorer',
       title: 'Testnet Explorer',
-      icon: 'assets/img/shapeshift/icon-shapeshift.svg',
+      icon: 'assets/img/keoken/explorer-ico.svg',
       page: 'ExplorerPage',
       show: true
     });

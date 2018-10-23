@@ -245,14 +245,14 @@ msgstr ""
 msgid "Bitcoin Wallets"
 msgstr "Bitcoin Кошельки"
 
-msgid "Bitcoin is a currency."
+msgid "Bitcoin Cash is a currency."
 msgstr "Биткойн - это валюта."
 
-msgid "Bitcoin is different - it cannot be safely held with a bank or web service."
+msgid "Bitcoin Cash is different - it cannot be safely held with a bank or web service."
 msgstr ""
 
-msgid "Bitcoin is secure, digital money."
-msgstr "Bitcoin это безопасные, цифровые деньги."
+msgid "Bitcoin Cash is secure, digital money."
+msgstr "BitcoinCash это безопасные, цифровые деньги."
 
 msgid "Bitcoin miner fee:"
 msgstr "Tранзакционные сборы:"
@@ -287,7 +287,7 @@ msgstr "Покупка биткойн..."
 msgid "Buying Gift Card..."
 msgstr "Покупка Подарочной карты..."
 
-msgid "By providing your email address, you give explicit consent to BitPay to use your email address to send you email notifications about payments."
+msgid "By providing your email address, you give explicit consent to Bitprim to use your email address to send you email notifications about payments."
 msgstr ""
 
 msgid "CANCELED"
@@ -980,7 +980,7 @@ msgstr ""
 msgid "I agree to the Terms and certify that I am the beneficial owner of the input assets and the destination address."
 msgstr "Я согласен с Условиями и подтверждаю, что являюсь бенефициарным владельцем вводимых активов и адреса назначения."
 
-msgid "I give explicit consent to BitPay to use my email address to send me email notifications about payments (and, if selected, email updates and news about the wallet)."
+msgid "I give explicit consent to Bitprim to use my email address to send me email notifications about payments (and, if selected, email updates and news about the wallet)."
 msgstr ""
 
 msgid "I have read, understood, and agree to the Terms of Use"
@@ -992,8 +992,8 @@ msgstr "Я записал"
 msgid "I understand"
 msgstr "Я понимаю"
 
-msgid "I understand that if this app is moved to another device or deleted, my bitcoin can only be recovered with the backup phrase"
-msgstr "Я осознаю, что если это приложение будет перемещено на другое устройство или удалено, мой bitcoin может быть восстановлен только с помощью резервной фразы"
+msgid "I understand that if this app is moved to another device or deleted, my Bitcoin Cash can only be recovered with the backup phrase"
+msgstr "Я осознаю, что если это приложение будет перемещено на другое устройство или удалено, мой Bitcoin Cash может быть восстановлен только с помощью резервной фразы"
 
 msgid "I understand that my funds are held securely on this device, not by a company"
 msgstr "Я понимаю, что мои средства безопасно хранятся на данном устройстве, а не компанией"
@@ -1268,7 +1268,7 @@ msgstr ""
 msgid "No access key defined"
 msgstr "Не определен ключ доступа"
 
-msgid "No backup, no bitcoin."
+msgid "No backup, no Bitcoin Cash."
 msgstr "Нет резервной копии - нет биткойнов."
 
 msgid "No contacts yet"
@@ -1955,7 +1955,7 @@ msgstr "Считывание кошелька..."
 msgid "THIS ACTION CANNOT BE REVERSED"
 msgstr "ЭТО ДЕЙСТВИЕ НЕ МОЖЕТ БЫТЬ ОТМЕНЕНО"
 
-msgid "Take control of your money, get started with bitcoin."
+msgid "Take control of your money, get started with Bitcoin Cash."
 msgstr ""
 
 msgid "Tap and hold to show"
@@ -2051,7 +2051,7 @@ msgstr ""
 msgid "This app is not available for your device."
 msgstr ""
 
-msgid "This app stores your bitcoin with cutting-edge security."
+msgid "This app stores your Bitcoin Cash with cutting-edge security."
 msgstr ""
 
 msgid "This bitcoin payment request has expired."
@@ -2441,7 +2441,7 @@ msgstr "Вы можете сканировать биткойн-адреса, з
 msgid "You can see the latest developments and contribute to this open source app by visiting our project on GitHub."
 msgstr ""
 
-msgid "You can spend bitcoin at millions of websites and stores worldwide."
+msgid "You can spend Bitcoin Cash at millions of websites and stores worldwide."
 msgstr ""
 
 msgid "You can still export it from Advanced &gt; Export."
@@ -2450,8 +2450,8 @@ msgstr "Вы можете экспортировать её в Дополнит�
 msgid "You can trade it for other currencies like US Dollars, Euros, or Pounds."
 msgstr ""
 
-msgid "You control your bitcoin."
-msgstr "Вы контролируете Ваши bitcoin-ы."
+msgid "You control your Bitcoin Cash."
+msgstr "Вы контролируете Ваши BitcoinCash."
 
 msgid "You could sign the transaction later in your wallet details"
 msgstr ""
@@ -2468,7 +2468,7 @@ msgstr ""
 msgid "Your Gift Cards"
 msgstr "Мои подарочные карты"
 
-msgid "Your bitcoin wallet is ready!"
+msgid "Your Bitcoin Cash wallet is ready!"
 msgstr "Ваш кошелёк готов!"
 
 msgid "Your extended private keys are all that is needed to access your bitcoin funds. Be sure to protect your private keys and store them only on secure devices. BitPay does not have access to your private keys, so you alone are responsible for your keys. If you share key access with external services, you take responsibility for the risk of theft or breach. Only advanced users should handle extended private keys directly."

@@ -266,13 +266,13 @@ msgstr ""
 msgid "Bitcoin Wallets"
 msgstr ""
 
-msgid "Bitcoin is a currency."
+msgid "Bitcoin Cash is a currency."
 msgstr ""
 
-msgid "Bitcoin is different - it cannot be safely held with a bank or web service."
+msgid "Bitcoin Cash is different - it cannot be safely held with a bank or web service."
 msgstr ""
 
-msgid "Bitcoin is secure, digital money."
+msgid "Bitcoin Cash is secure, digital money."
 msgstr ""
 
 msgid "Bitcoin miner fee:"
@@ -309,7 +309,7 @@ msgid "Buying Gift Card..."
 msgstr ""
 
 msgid ""
-"By providing your email address, you give explicit consent to BitPay to use "
+"By providing your email address, you give explicit consent to Bitprim to use "
 "your email address to send you email notifications about payments."
 msgstr ""
 
@@ -1020,7 +1020,7 @@ msgid ""
 msgstr ""
 
 msgid ""
-"I give explicit consent to BitPay to use my email address to send me email "
+"I give explicit consent to Bitprim to use my email address to send me email "
 "notifications about payments (and, if selected, email updates and news "
 "about the wallet)."
 msgstr ""
@@ -1036,7 +1036,7 @@ msgstr ""
 
 msgid ""
 "I understand that if this app is moved to another device or deleted, my "
-"bitcoin can only be recovered with the backup phrase"
+"Bitcoin Cash can only be recovered with the backup phrase"
 msgstr ""
 
 msgid ""
@@ -1336,7 +1336,7 @@ msgstr ""
 msgid "No access key defined"
 msgstr ""
 
-msgid "No backup, no bitcoin."
+msgid "No backup, no Bitcoin Cash."
 msgstr ""
 
 msgid "No contacts yet"
@@ -2037,7 +2037,7 @@ msgstr ""
 msgid "THIS ACTION CANNOT BE REVERSED"
 msgstr ""
 
-msgid "Take control of your money, get started with bitcoin."
+msgid "Take control of your money, get started with Bitcoin Cash."
 msgstr ""
 
 msgid "Tap and hold to show"
@@ -2161,7 +2161,7 @@ msgstr ""
 msgid "This app is not available for your device."
 msgstr ""
 
-msgid "This app stores your bitcoin with cutting-edge security."
+msgid "This app stores your Bitcoin Cash with cutting-edge security."
 msgstr ""
 
 msgid "This bitcoin payment request has expired."
@@ -2593,7 +2593,7 @@ msgid ""
 "by visiting our project on GitHub."
 msgstr ""
 
-msgid "You can spend bitcoin at millions of websites and stores worldwide."
+msgid "You can spend Bitcoin Cash at millions of websites and stores worldwide."
 msgstr ""
 
 msgid "You can still export it from Advanced &gt; Export."
@@ -2602,7 +2602,7 @@ msgstr ""
 msgid "You can trade it for other currencies like US Dollars, Euros, or Pounds."
 msgstr ""
 
-msgid "You control your bitcoin."
+msgid "You control your Bitcoin Cash."
 msgstr ""
 
 msgid "You could sign the transaction later in your wallet details"
@@ -2622,7 +2622,7 @@ msgstr ""
 msgid "Your Gift Cards"
 msgstr ""
 
-msgid "Your bitcoin wallet is ready!"
+msgid "Your Bitcoin Cash wallet is ready!"
 msgstr ""
 
 msgid ""

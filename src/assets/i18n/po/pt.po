@@ -245,14 +245,14 @@ msgstr ""
 msgid "Bitcoin Wallets"
 msgstr "Carteiras Bitcoin"
 
-msgid "Bitcoin is a currency."
-msgstr "Bitcoin é uma moeda."
+msgid "Bitcoin Cash is a currency."
+msgstr "BitcoinCash é uma moeda."
 
-msgid "Bitcoin is different - it cannot be safely held with a bank or web service."
-msgstr "Bitcoin é diferente &ndash; ela não pode ser retida com segurança por um serviço web ou banco."
+msgid "Bitcoin Cash is different - it cannot be safely held with a bank or web service."
+msgstr "BitcoinCash é diferente &ndash; ela não pode ser retida com segurança por um serviço web ou banco."
 
-msgid "Bitcoin is secure, digital money."
-msgstr "Bitcoin é seguro, dinheiro digital."
+msgid "Bitcoin Cash is secure, digital money."
+msgstr "BitcoinCash é seguro, dinheiro digital."
 
 msgid "Bitcoin miner fee:"
 msgstr "Taxa de mineração de Bitcoin:"
@@ -287,8 +287,8 @@ msgstr "A comprar Bitcoin..."
 msgid "Buying Gift Card..."
 msgstr "Comprando Cartão-Presente..."
 
-msgid "By providing your email address, you give explicit consent to BitPay to use your email address to send you email notifications about payments."
-msgstr "Ao fornecer seu endereço de e-mail, você dá consentimento explícito para BitPay usar seu endereço de e-mail para enviar que e-mail notificações sobre pagamentos."
+msgid "By providing your email address, you give explicit consent to Bitprim to use your email address to send you email notifications about payments."
+msgstr "Ao fornecer seu endereço de e-mail, você dá consentimento explícito para Bitprim usar seu endereço de e-mail para enviar que e-mail notificações sobre pagamentos."
 
 msgid "CANCELED"
 msgstr ""
@@ -980,8 +980,8 @@ msgstr ""
 msgid "I agree to the Terms and certify that I am the beneficial owner of the input assets and the destination address."
 msgstr "Eu concordo com os termos e certifico que sou o beneficiário efetivo dos ativos e do endereço de destino."
 
-msgid "I give explicit consent to BitPay to use my email address to send me email notifications about payments (and, if selected, email updates and news about the wallet)."
-msgstr "Dou consentimento explícito para BitPay usar meu endereço de e-mail para enviar-me e-mail notificações sobre pagamentos (e, se selecionado, email atualizações e novidades sobre a carteira)."
+msgid "I give explicit consent to Bitprim to use my email address to send me email notifications about payments (and, if selected, email updates and news about the wallet)."
+msgstr "Dou consentimento explícito para Bitprim usar meu endereço de e-mail para enviar-me e-mail notificações sobre pagamentos (e, se selecionado, email atualizações e novidades sobre a carteira)."
 
 msgid "I have read, understood, and agree to the Terms of Use"
 msgstr "Eu li, entendi e concordo com os Termos de Uso"
@@ -992,8 +992,8 @@ msgstr "Eu anotei em outro local"
 msgid "I understand"
 msgstr "Eu compreendi"
 
-msgid "I understand that if this app is moved to another device or deleted, my bitcoin can only be recovered with the backup phrase"
-msgstr "Eu entendi que se este app for apagado ou movido para outro dispositivo, meu Bitcoin somente pode ser recuperado com a frase de backup"
+msgid "I understand that if this app is moved to another device or deleted, my Bitcoin Cash can only be recovered with the backup phrase"
+msgstr "Eu entendi que se este app for apagado ou movido para outro dispositivo, meu Bitcoin Cash somente pode ser recuperado com a frase de backup"
 
 msgid "I understand that my funds are held securely on this device, not by a company"
 msgstr "Eu entendi que meus fundos são mantidos seguros neste dispositivo, e não por uma empresa"
@@ -1268,8 +1268,8 @@ msgstr ""
 msgid "No access key defined"
 msgstr "Nenhuma chave de acesso definida"
 
-msgid "No backup, no bitcoin."
-msgstr "Sem backup, sem bitcoin."
+msgid "No backup, no Bitcoin Cash."
+msgstr "Sem backup, sem BitcoinCash."
 
 msgid "No contacts yet"
 msgstr "Ainda não existem contactos"
@@ -1955,8 +1955,8 @@ msgstr "Carteira de varredura..."
 msgid "THIS ACTION CANNOT BE REVERSED"
 msgstr "ESTA AÇÃO NÃO PODE SER REVERTIDA"
 
-msgid "Take control of your money, get started with bitcoin."
-msgstr "Assuma o controle de seu dinheiro, comece com bitcoin."
+msgid "Take control of your money, get started with Bitcoin Cash."
+msgstr "Assuma o controle de seu dinheiro, comece com BitcoinCash."
 
 msgid "Tap and hold to show"
 msgstr "Toque e mantenha para mostrar"
@@ -2051,8 +2051,8 @@ msgstr "Obviamente há algo estamos fazendo errado. Como poderíamos melhorar su
 msgid "This app is not available for your device."
 msgstr ""
 
-msgid "This app stores your bitcoin with cutting-edge security."
-msgstr "Este aplicativo armazena seu bitcoin com segurança de ponta."
+msgid "This app stores your Bitcoin Cash with cutting-edge security."
+msgstr "Este aplicativo armazena seu BitcoinCash com segurança de ponta."
 
 msgid "This bitcoin payment request has expired."
 msgstr "Este bitcoin pagamento pedido expirou."
@@ -2441,8 +2441,8 @@ msgstr "Você pode escanear endereços bitcoins, pedidos de pagamento carteiras 
 msgid "You can see the latest developments and contribute to this open source app by visiting our project on GitHub."
 msgstr "Você pode ver os mais recentes desenvolvimentos e contribuir para este aplicativo de código aberto, visitando nosso projeto no GitHub."
 
-msgid "You can spend bitcoin at millions of websites and stores worldwide."
-msgstr "Você pode gastar bitcoins em milhões de sites e lojas em todo o mundo."
+msgid "You can spend Bitcoin Cash at millions of websites and stores worldwide."
+msgstr "Você pode gastar BitcoinCashs em milhões de sites e lojas em todo o mundo."
 
 msgid "You can still export it from Advanced &gt; Export."
 msgstr "Você ainda pode exportá-la em Avançado &gt; Exportar."
@@ -2450,8 +2450,8 @@ msgstr "Você ainda pode exportá-la em Avançado &gt; Exportar."
 msgid "You can trade it for other currencies like US Dollars, Euros, or Pounds."
 msgstr "Você pode trocá-lo por outras moedas como dólares americanos, Euros ou libras."
 
-msgid "You control your bitcoin."
-msgstr "Você controla o seu bitcoin."
+msgid "You control your Bitcoin Cash."
+msgstr "Você controla o seu BitcoinCash."
 
 msgid "You could sign the transaction later in your wallet details"
 msgstr "Você poderia assinar a transação mais tarde nos detalhes de sua carteira"
@@ -2468,8 +2468,8 @@ msgstr "Seu BitPay Card está pronto. Adicione fundos ao seu cartão para começ
 msgid "Your Gift Cards"
 msgstr "Seus Vales-Presente"
 
-msgid "Your bitcoin wallet is ready!"
-msgstr "Sua carteira de bitcoins está pronta!"
+msgid "Your Bitcoin Cash wallet is ready!"
+msgstr "Sua carteira de BitcoinCash está pronta!"
 
 msgid "Your extended private keys are all that is needed to access your bitcoin funds. Be sure to protect your private keys and store them only on secure devices. Bitprim does not have access to your private keys, so you alone are responsible for your keys. If you share key access with external services, you take responsibility for the risk of theft or breach. Only advanced users should handle extended private keys directly."
 msgstr "Suas chaves privadas estendidas é tudo o que precisa para acessar seus fundos bitcoin. Certifique-se de proteger suas chaves privadas e armazená-las somente em dispositivos seguros. A Bitprim não tem acesso as suas chaves privadas, então você é responsável pelas suas chaves. Se você compartilhar a chave de acesso com serviços externos, responsabilize-se pelo risco de roubo ou violação. Apenas usuários avançados devem lidar com chaves privadas estendidas diretamente."
