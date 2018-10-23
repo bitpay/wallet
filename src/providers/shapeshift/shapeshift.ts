@@ -33,7 +33,7 @@ export class ShapeshiftProvider {
     ) {
       return;
     }
-    var shapeshift = this.appProvider.servicesInfo.shapeshift;
+    const shapeshift = this.appProvider.servicesInfo.shapeshift;
 
     /*
     * Development: 'testnet'
@@ -59,15 +59,15 @@ export class ShapeshiftProvider {
   }
 
   public shift(data, cb) {
-    let dataSrc = {
+    const dataSrc = {
       withdrawal: data.withdrawal,
       pair: data.pair,
       returnAddress: data.returnAddress,
       apiKey: this.credentials.API_KEY
     };
 
-    let url = this.credentials.API_URL + '/shift';
-    let headers = new HttpHeaders({
+    const url = this.credentials.API_URL + '/shift';
+    const headers = new HttpHeaders({
       'Content-Type': 'application/json',
       Accept: 'application/json',
       Authorization: 'Bearer ' + data.token
@@ -86,7 +86,7 @@ export class ShapeshiftProvider {
   }
 
   public saveShapeshift(data, opts, cb): void {
-    let network = this.getNetwork();
+    const network = this.getNetwork();
     this.persistenceProvider
       .getShapeshift(network)
       .then(oldData => {
@@ -116,7 +116,7 @@ export class ShapeshiftProvider {
   }
 
   public getShapeshift(cb) {
-    let network = this.getNetwork();
+    const network = this.getNetwork();
     this.persistenceProvider
       .getShapeshift(network)
       .then(ss => {
@@ -167,7 +167,7 @@ export class ShapeshiftProvider {
   }
 
   public getStatus(addr: string, token: string, cb) {
-    let headers = new HttpHeaders({
+    const headers = new HttpHeaders({
       'Content-Type': 'application/json',
       Accept: 'application/json',
       Authorization: 'Bearer ' + token
@@ -225,8 +225,8 @@ export class ShapeshiftProvider {
   }
 
   public getToken(code, cb) {
-    let url = this.credentials.HOST + '/oauth/token';
-    let data = {
+    const url = this.credentials.HOST + '/oauth/token';
+    const data = {
       grant_type: 'authorization_code',
       code,
       client_id: this.credentials.CLIENT_ID,
@@ -245,13 +245,14 @@ export class ShapeshiftProvider {
         this._afterTokenReceived(data, cb);
       },
       data => {
+        const error =
+          data && data.error && data.error.error_description
+            ? data.error.error_description
+            : data.statusText;
         this.logger.error(
-          'ShapeShift: GET Access Token: ERROR ' +
-            data.status +
-            '. ' +
-            data.statusText
+          'ShapeShift: GET Access Token: ERROR ' + data.status + '. ' + error
         );
-        return cb(data.message);
+        return cb(error);
       }
     );
   }
@@ -300,8 +301,8 @@ export class ShapeshiftProvider {
   private getAccessTokenDetails(token, cb) {
     if (!token) return cb('Invalid Token');
 
-    let url = this.credentials.HOST + '/oauth/token/details';
-    let headers = {
+    const url = this.credentials.HOST + '/oauth/token/details';
+    const headers = {
       'Content-Type': 'application/json',
       Accept: 'application/json',
       Authorization: 'Bearer ' + token
@@ -327,8 +328,8 @@ export class ShapeshiftProvider {
   public getAccount(token, cb) {
     if (!token) return cb('Invalid Token');
 
-    let url = this.credentials.HOST + '/api/v1/users/me';
-    let headers = {
+    const url = this.credentials.HOST + '/api/v1/users/me';
+    const headers = {
       'Content-Type': 'application/json',
       Accept: 'application/json',
       Authorization: 'Bearer ' + token
@@ -352,9 +353,9 @@ export class ShapeshiftProvider {
   }
 
   public revokeAccessToken(token) {
-    let url = this.credentials.HOST + '/oauth/token/revoke';
-    let data = new HttpParams().set('token', token);
-    let headers = new HttpHeaders({
+    const url = this.credentials.HOST + '/oauth/token/revoke';
+    const data = new HttpParams().set('token', token);
+    const headers = new HttpHeaders({
       'Content-Type': 'application/x-www-form-urlencoded',
       Authorization:
         'Basic ' +
