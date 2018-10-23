@@ -5,7 +5,8 @@ import {
   Events,
   ModalController,
   NavController,
-  NavParams
+  NavParams,
+  Platform
 } from 'ionic-angular';
 import * as _ from 'lodash';
 import { Logger } from '../../../providers/logger/logger';
@@ -36,10 +37,12 @@ export class ShapeshiftPage {
   public code: string;
   public loading: boolean;
   public error: string;
+  public disabled: boolean;
 
   constructor(
     private app: App,
     private events: Events,
+    private platform: Platform,
     private externalLinkProvider: ExternalLinkProvider,
     private logger: Logger,
     private modalCtrl: ModalController,
@@ -61,6 +64,7 @@ export class ShapeshiftPage {
     this.showOauthForm = false;
     this.network = this.shapeshiftProvider.getNetwork();
     this.shifts = { data: {} };
+    this.disabled = this.platform.is('ios') ? true : false;
   }
 
   ionViewDidLoad() {
