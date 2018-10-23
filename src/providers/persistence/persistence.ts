@@ -67,7 +67,6 @@ export class PersistenceProvider {
     msg: string;
   }>;
   private logsLoaded: boolean;
-  private persistentLogsEnabled: boolean;
 
   constructor(
     private logger: Logger,
@@ -79,8 +78,7 @@ export class PersistenceProvider {
     this.persistentLogs = {};
     this.logsBuffer = [];
     this.logsLoaded = false;
-    this.persistentLogsEnabled = false;
-    // this._subscribeEvents();
+    this._subscribeEvents();
   }
 
   private _subscribeEvents(): void {
@@ -94,7 +92,6 @@ export class PersistenceProvider {
   private _unsubscribeEvents(): void {
     this.events.unsubscribe('newLog');
     this.logsBuffer = [];
-    this.persistentLogsEnabled = false;
   }
 
   public load() {
@@ -115,7 +112,6 @@ export class PersistenceProvider {
         }
         logs = logs || {};
         if (_.isArray(logs)) logs = {}; // No array
-
         this.persistentLogs = this.deleteOldLogs(logs);
         this.logsLoaded = true;
       })
@@ -124,38 +120,32 @@ export class PersistenceProvider {
       });
   }
 
-  public checkLogsConfig(): void {
-    this.getConfig()
-      .then(config => {
-        if (
-          _.isEmpty(config) ||
-          _.isUndefined(config.persistentLogsEnabled) ||
-          config.persistentLogsEnabled
-        ) {
-          this.persistentLogsEnabled = true;
-        } else {
-          this._unsubscribeEvents();
-        }
-      })
-      .catch(err => {
-        this.logger.error('Error Loading Config from persistence', err);
-      });
+  public checkLogsConfig(config): void {
+    if (
+      _.isEmpty(config) ||
+      _.isUndefined(config.persistentLogsEnabled) ||
+      config.persistentLogsEnabled
+    ) {
+      return;
+    } else {
+      this._unsubscribeEvents();
+    }
   }
 
   private deleteOldLogs(logs) {
     let now = new Date();
-    let daysAgo = new Date(now.setDate(now.getDate() - 3));
-    // Compare dates and remove logs older than 3 days
+    let daysAgo = new Date(now.setDate(now.getDate() - 7));
+    // Compare dates and remove logs older than 7 days
     Object.keys(logs).forEach(key => {
       let logDate = new Date(key);
       if (logDate < daysAgo) {
         delete logs[key];
       }
     });
-    // Clean if logs entries are more than 6000
+    // Clean if logs entries are more than 3000
     let logsAmount = Object.keys(logs).length;
-    if (logsAmount > 6000) {
-      let entriesToDelete: number = logsAmount - 6000;
+    if (logsAmount > 3000) {
+      let entriesToDelete: number = logsAmount - 3000;
       Object.keys(logs).forEach((key, index) => {
         if (index < entriesToDelete) {
           delete logs[key];
@@ -175,7 +165,6 @@ export class PersistenceProvider {
   public persistentLogsChange(enabled: boolean): void {
     this.persistentLogs = {};
     if (enabled) {
-      this.persistentLogsEnabled = true;
       this._subscribeEvents();
     } else {
       this._unsubscribeEvents();
@@ -186,15 +175,22 @@ export class PersistenceProvider {
   }
 
   private saveNewLog(newLog): void {
-    if (!this.logsLoaded && !this.persistentLogsEnabled) {
+    if (!this.logsLoaded) {
       this.logsBuffer.push(newLog);
       return;
     }
 
     if (!_.isEmpty(this.logsBuffer)) {
+      let allLogsMsgs: string = '';
       this.logsBuffer.forEach(log => {
-        this.saveLog(log);
+        allLogsMsgs = allLogsMsgs + '\n[' + log.level + '] ' + log.msg;
       });
+      let completeInitialLogs = {
+        timestamp: new Date().toISOString(),
+        level: 'debug',
+        msg: allLogsMsgs
+      };
+      this.saveLog(completeInitialLogs);
       this.logsBuffer = [];
     }
 
@@ -206,8 +202,15 @@ export class PersistenceProvider {
       // Logs timestamp collapse
       return;
     }
+    let stringifiedPersistentLogs: string = '';
     this.persistentLogs[newLog.timestamp] = newLog;
-    this.setLogs(JSON.stringify(this.persistentLogs)).catch(() => {
+    try {
+      stringifiedPersistentLogs = JSON.stringify(this.persistentLogs);
+    } catch {
+      this._unsubscribeEvents();
+      return;
+    }
+    this.setLogs(stringifiedPersistentLogs).catch(() => {
       this.logger.warn('Error adding new log');
       // Unsubscribe to prevent errors loop
       this._unsubscribeEvents();
