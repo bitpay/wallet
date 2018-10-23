@@ -5,8 +5,7 @@ import {
   Events,
   ModalController,
   NavController,
-  NavParams,
-  Platform
+  NavParams
 } from 'ionic-angular';
 import * as _ from 'lodash';
 import { Logger } from '../../../providers/logger/logger';
@@ -20,6 +19,7 @@ import { ShapeshiftShiftPage } from './shapeshift-shift/shapeshift-shift';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ExternalLinkProvider } from '../../../providers/external-link/external-link';
 import { OnGoingProcessProvider } from '../../../providers/on-going-process/on-going-process';
+import { PlatformProvider } from '../../../providers/platform/platform';
 import { PopupProvider } from '../../../providers/popup/popup';
 import { ShapeshiftProvider } from '../../../providers/shapeshift/shapeshift';
 import { TimeProvider } from '../../../providers/time/time';
@@ -42,7 +42,7 @@ export class ShapeshiftPage {
   constructor(
     private app: App,
     private events: Events,
-    private platform: Platform,
+    private platformProvider: PlatformProvider,
     private externalLinkProvider: ExternalLinkProvider,
     private logger: Logger,
     private modalCtrl: ModalController,
@@ -64,7 +64,7 @@ export class ShapeshiftPage {
     this.showOauthForm = false;
     this.network = this.shapeshiftProvider.getNetwork();
     this.shifts = { data: {} };
-    this.disabled = this.platform.is('cordova') ? true : false;
+    this.disabled = this.platformProvider.isCordova ? true : false;
   }
 
   ionViewDidLoad() {
