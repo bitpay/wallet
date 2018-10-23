@@ -64,7 +64,7 @@ export class ShapeshiftPage {
     this.showOauthForm = false;
     this.network = this.shapeshiftProvider.getNetwork();
     this.shifts = { data: {} };
-    this.disabled = this.platform.is('ios') ? true : false;
+    this.disabled = this.platform.is('cordova') ? true : false;
   }
 
   ionViewDidLoad() {
