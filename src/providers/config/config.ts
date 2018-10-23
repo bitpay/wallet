@@ -143,10 +143,10 @@ const configDefault: Config = {
 
   download: {
     bitpay: {
-      url: 'https://bitpay.com/wallet'
+      url: 'https://keoken.io'
     },
     copay: {
-      url: 'https://copay.io/#download'
+      url: 'https://keoken.io'
     }
   },
 
