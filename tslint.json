@@ -25,7 +25,6 @@
     "interface-name": false,
     "prefer-for-of": false,
     "forin": false,
-    "prefer-const": false,
     "no-unused-expression": false,
     "no-eval": false,
     "no-object-literal-type-assertion": false,
