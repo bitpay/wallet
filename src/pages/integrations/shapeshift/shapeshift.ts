@@ -35,6 +35,7 @@ export class ShapeshiftPage {
   public accessToken: string;
   public code: string;
   public loading: boolean;
+  public error: string;
 
   constructor(
     private app: App,
@@ -68,7 +69,7 @@ export class ShapeshiftPage {
 
   ionViewWillEnter() {
     if (this.navParams.data.code) {
-      this.shapeshiftProvider.getStoredToken((at: string) => {
+    this.shapeshiftProvider.getStoredToken((at: string) => {
         at ? this.init() : this.submitOauthCode(this.navParams.data.code);
       });
     } else {
@@ -245,18 +246,10 @@ export class ShapeshiftPage {
     this.shapeshiftProvider.getToken(code, (err: any, accessToken: string) => {
       this.onGoingProcessProvider.clear();
       if (err) {
+        this.error = err;
         this.logger.error(
-          'Error connecting to ShapeShift: ' + err.error_description
+          'Error connecting to ShapeShift: ' + err
         );
-        this.popupProvider
-          .ionicAlert(
-            this.translate.instant('Error connecting to ShapeShift'),
-            err.error_description
-          )
-          .then(() => {
-            this.showOauthForm = false;
-            this.oauthCodeForm.reset();
-          });
         return;
       }
       this.accessToken = accessToken;

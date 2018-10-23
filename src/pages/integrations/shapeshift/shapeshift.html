@@ -21,6 +21,9 @@
       <button ion-button clear small color="light" (click)="openExternalLink('https://shapeshift.io')">
         {{'Visit ShapeShift.io' | translate}} &rarr;
       </button>
+      <div *ngIf="error">
+        <span ion-text color="danger">{{error}}</span>
+      </div>
       <form *ngIf="showOauthForm" class="form-container" [formGroup]="oauthCodeForm" (ngSubmit)="submitOauthCode(oauthCodeForm.value.code)">
         <ion-label color="light" stacked>OAuth Code</ion-label>
         <ion-input color="light" type="text" formControlName="code" [value]="oauthCodeForm.value.code" placeholder="{{'Enter OAuth Code'}}"
