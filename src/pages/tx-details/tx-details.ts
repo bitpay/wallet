@@ -260,8 +260,8 @@ export class TxDetailsPage {
       btx.txid;
     let optIn = true;
     let title = null;
-    let message = this.translate.instant('View Transaction on Insight');
-    let okText = this.translate.instant('Open Insight');
+    let message = this.translate.instant('View Transaction on Blockdozer');
+    let okText = this.translate.instant('Open Blockdozer');
     let cancelText = this.translate.instant('Go Back');
     this.externalLinkProvider.open(
       url,

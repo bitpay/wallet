@@ -227,11 +227,11 @@ export class BitPayCardPage {
   }
 
   public viewOnBlockchain(transactionId: string) {
-    let url = 'https://insight.bitpay.com/tx/' + transactionId;
+    let url = 'https://tbch.blockdozer.com/tx/' + transactionId;
     let optIn = true;
     let title = null;
-    let message = this.translate.instant('View Transaction on Insight');
-    let okText = this.translate.instant('Open Insight');
+    let message = this.translate.instant('View Transaction on Blockdozer');
+    let okText = this.translate.instant('Open Blockdozer');
     let cancelText = this.translate.instant('Go Back');
     this.externalLinkProvider.open(
       url,
