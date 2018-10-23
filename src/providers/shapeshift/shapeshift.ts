@@ -249,9 +249,9 @@ export class ShapeshiftProvider {
           'ShapeShift: GET Access Token: ERROR ' +
             data.status +
             '. ' +
-            data.error.error_description
+            data.statusText
         );
-        return cb(data.error);
+        return cb(data.message);
       }
     );
   }
