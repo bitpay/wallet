@@ -9,9 +9,8 @@ export class LocalStorage implements IStorage {
   ls;
 
   constructor(private logger: Logger) {
-    this.ls =
-      typeof window.localStorage !== 'undefined' ? window.localStorage : null;
-    if (!this.ls) throw new Error('localstorage not available');
+    if (!window.localStorage) throw new Error('localstorage not available');
+    this.ls = window.localStorage;
   }
 
   processValue(v) {
