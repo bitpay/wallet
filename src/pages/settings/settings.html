@@ -56,14 +56,14 @@
         </ion-note>
       </button>
 
-      <button ion-item (click)="openFeePolicyPage()">
+      <!--<button ion-item (click)="openFeePolicyPage()">
         <ion-icon class="item-img" item-start>
           <img src="assets/img/settings-icons/icon-network.svg" width="22">
         </ion-icon>
         <ion-label>
           {{'Bitcoin network fee policy' | translate}}
         </ion-label>
-      </button>
+      </button>-->
 
       <button ion-item *ngIf="isCordova" (click)="openLockPage()">
         <ion-icon class="custom-icon item-img" *ngIf="lockMethod != 'disabled'" name="ios-lock-outline" item-start></ion-icon>
