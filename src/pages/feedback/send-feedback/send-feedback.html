@@ -42,7 +42,8 @@
   <div class="feedback-form-card" *ngIf="leavingFeedback">
     <form class="feedback-form" [formGroup]="feedbackForm">
       <ion-item>
-        <ion-textarea #focusMe rows="3" type="text" formControlName="comment" [value]="feedbackForm.value.comment" required padding></ion-textarea>
+        <ion-textarea #focusMe rows="3" type="text" formControlName="comment" [value]="feedbackForm.value.comment"
+          required padding></ion-textarea>
       </ion-item>
     </form>
     <button ion-button class="button-standard" (click)="sendFeedback(feedbackForm.value.comment)" [disabled]="!feedbackForm.valid">
@@ -62,7 +63,7 @@
       <div class="feedback-action-icon arrow arrow-right"></div>
     </ion-row>
   </div>
-  <div *ngIf="score != 1" class="user-feedback-card" (click)="openExternalLink('https://bitpay.canny.io/wallet-feature-request')">
+  <div *ngIf="score != 1" class="user-feedback-card" (click)="openExternalLink('https://www.bitprim.com/#contact')">
     <ion-row>
       <div class="feedback-icon">
         <img src="assets/img/ico-chat.svg" />
@@ -77,7 +78,7 @@
       </div>
     </ion-row>
   </div>
-  <div *ngIf="score != 3" class="user-feedback-card" (click)="openExternalLink('https://bitpay.canny.io/wallet-bugs')">
+  <div *ngIf="score != 3" class="user-feedback-card" (click)="openExternalLink('https://www.bitprim.com/#contact')">
     <ion-row>
       <div class="feedback-icon">
         <img src="assets/img/ico-bug.svg" />
@@ -92,7 +93,7 @@
       </div>
     </ion-row>
   </div>
-  <div *ngIf="score == 1" class="user-feedback-card" (click)="openExternalLink('https://help.bitpay.com/requestHelp')">
+  <div *ngIf="score == 1" class="user-feedback-card" (click)="openExternalLink('https://www.bitprim.com/#contact')">
     <ion-row>
       <div class="feedback-icon">
         <img src="assets/img/icon-question-help.svg" />
