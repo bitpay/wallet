@@ -14,7 +14,7 @@ export class LocalStorage implements IStorage {
     if (!this.ls) throw new Error('localstorage not available');
   }
 
-  processingData(v) {
+  processValue(v) {
     if (!v) return null;
     if (!_.isString(v)) return v;
     let parsed;
@@ -29,7 +29,7 @@ export class LocalStorage implements IStorage {
   get(k: string): Promise<any> {
     return new Promise(resolve => {
       let v = this.ls.getItem(k);
-      return resolve(this.processingData(v));
+      return resolve(this.processValue(v));
     });
   }
 
