@@ -143,7 +143,7 @@ export class FileStorage implements IStorage {
           resolve();
         })
         .catch(e => {
-          this.log.warn("Can't remove file: " + k);
+          this.log.warn(`Can't remove Storage Key: ${k}`);
           reject(e);
         });
     });

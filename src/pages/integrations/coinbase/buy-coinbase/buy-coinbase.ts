@@ -170,6 +170,7 @@ export class BuyCoinbasePage {
               if (res) this.externalLinkProvider.open(url);
               this.navCtrl.pop();
             });
+          this.logger.debug(msg);
           return;
         }
         if (!hasPrimary)
