@@ -1397,7 +1397,7 @@ msgstr "打开 GitHub"
 msgid "Open GitHub Project"
 msgstr "打开 GitHub 项目"
 
-msgid "Open Insight"
+msgid "Open Blockdozer"
 msgstr "开放的洞察力"
 
 msgid "Open Translation Community"
@@ -2240,7 +2240,7 @@ msgstr "查看确认状态"
 msgid "View Privacy Policy"
 msgstr "查看隐私策政策"
 
-msgid "View Transaction on Insight"
+msgid "View Transaction on Blockdozer"
 msgstr "查看交易记录的洞察"
 
 msgid "View Update"

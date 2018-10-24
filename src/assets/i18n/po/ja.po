@@ -1399,8 +1399,8 @@ msgstr "GitHubを開く"
 msgid "Open GitHub Project"
 msgstr "GitHub のプロジェクトを開く"
 
-msgid "Open Insight"
-msgstr "Insightを開く"
+msgid "Open Blockdozer"
+msgstr "Blockdozerを開く"
 
 msgid "Open Translation Community"
 msgstr "翻訳ページを開く"
@@ -2244,8 +2244,8 @@ msgstr ""
 msgid "View Privacy Policy"
 msgstr ""
 
-msgid "View Transaction on Insight"
-msgstr "Insightにて取引を表示"
+msgid "View Transaction on Blockdozer"
+msgstr "Blockdozerにて取引を表示"
 
 msgid "View Update"
 msgstr "更新情報を表示"

@@ -1397,8 +1397,8 @@ msgstr "GitHub 열기"
 msgid "Open GitHub Project"
 msgstr "GitHub 프로젝트 열기"
 
-msgid "Open Insight"
-msgstr "Insight 열기"
+msgid "Open Blockdozer"
+msgstr "Blockdozer 열기"
 
 msgid "Open Translation Community"
 msgstr "번역 커뮤니티 열기"
@@ -2240,8 +2240,8 @@ msgstr ""
 msgid "View Privacy Policy"
 msgstr ""
 
-msgid "View Transaction on Insight"
-msgstr "Insight에서 거래 보기"
+msgid "View Transaction on Blockdozer"
+msgstr "Blockdozer에서 거래 보기"
 
 msgid "View Update"
 msgstr "업데이트 보기"

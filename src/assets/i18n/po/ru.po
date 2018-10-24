@@ -1397,8 +1397,8 @@ msgstr "Открытые GitHub"
 msgid "Open GitHub Project"
 msgstr "Откройте проект GitHub"
 
-msgid "Open Insight"
-msgstr "Открыть Insight"
+msgid "Open Blockdozer"
+msgstr "Открыть Blockdozer"
 
 msgid "Open Translation Community"
 msgstr "Редактировать перевод"
@@ -2240,8 +2240,8 @@ msgstr "Просмотреть состояние подтверждения"
 msgid "View Privacy Policy"
 msgstr "Просмотр политики конфиденциальности"
 
-msgid "View Transaction on Insight"
-msgstr "Просмотреть транзакцию на Insight"
+msgid "View Transaction on Blockdozer"
+msgstr "Просмотреть транзакцию на Blockdozer"
 
 msgid "View Update"
 msgstr "Просмотреть обновление"
