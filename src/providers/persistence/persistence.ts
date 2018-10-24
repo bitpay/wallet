@@ -67,6 +67,7 @@ export class PersistenceProvider {
     msg: string;
   }>;
   private logsLoaded: boolean;
+  private maxLogsEntries: number = 3000;
 
   constructor(
     private logger: Logger,
@@ -142,10 +143,10 @@ export class PersistenceProvider {
         delete logs[key];
       }
     });
-    // Clean if logs entries are more than 3000
+    // Clean if logs entries are more than (maxLogsEntries - 1000)
     let logsAmount = Object.keys(logs).length;
-    if (logsAmount > 3000) {
-      let entriesToDelete: number = logsAmount - 3000;
+    if (logsAmount > this.maxLogsEntries - 1000) {
+      let entriesToDelete: number = logsAmount - (this.maxLogsEntries - 1000);
       Object.keys(logs).forEach((key, index) => {
         if (index < entriesToDelete) {
           delete logs[key];
@@ -203,7 +204,13 @@ export class PersistenceProvider {
       return;
     }
     let stringifiedPersistentLogs: string = '';
-    this.persistentLogs[newLog.timestamp] = newLog;
+    this.persistentLogs[newLog.timestamp] = {
+      level: newLog.level,
+      msg: newLog.msg
+    };
+    if (Object.keys(this.persistentLogs).length > this.maxLogsEntries) {
+      this.persistentLogs = this.deleteOldLogs(this.persistentLogs);
+    }
     try {
       stringifiedPersistentLogs = JSON.stringify(this.persistentLogs);
     } catch {

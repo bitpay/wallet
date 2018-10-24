@@ -99,13 +99,7 @@ export class SessionLogPage {
         .then(logs => {
           Object.keys(logs).forEach(key => {
             log +=
-              '[' +
-              logs[key].timestamp +
-              '][' +
-              logs[key].level +
-              ']' +
-              logs[key].msg +
-              '\n';
+              '[' + key + '][' + logs[key].level + ']' + logs[key].msg + '\n';
           });
           resolve(log);
         })
