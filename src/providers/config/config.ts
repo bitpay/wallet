@@ -210,8 +210,8 @@ const configDefault: Config = {
   },
 
   blockExplorerUrl: {
-    btc: 'insight.bitpay.com',
-    bch: 'tbch.blockdozer.com'
+    btc: 'btc.blockdozer.com',
+    bch: 'bch.blockdozer.com'
   }
 };
 
