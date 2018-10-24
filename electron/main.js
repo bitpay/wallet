@@ -80,9 +80,7 @@ app.setName(appConfig.nameCase);
 const getHomeDirPath = platform => {
   switch (platform) {
     case 'win32':
-      return process.env['USERPROFILE'];
     case 'darwin':
-      return os.homedir();
     case 'linux':
       return os.homedir();
     default:
