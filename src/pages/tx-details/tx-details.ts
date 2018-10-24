@@ -254,7 +254,6 @@ export class TxDetailsPage {
     let btx = this.btx;
     let url =
       'https://' +
-      (this.getShortNetworkName() == 'test' ? 'test-' : '') +
       this.blockexplorerUrl +
       '/tx/' +
       btx.txid;
