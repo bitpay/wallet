@@ -14,23 +14,6 @@
   "main": "electron/main.js",
   "title": "Copay",
   "user-agent": "%name %ver (%osinfo)",
-  "chromium-args": "--disable-password-generation --disable-devtools",
-  "window": {
-    "title": "Copay – Copay Bitcoin Wallet",
-    "icon": "www/assets/img/app/icon.png",
-    "toolbar": false,
-    "show": false,
-    "visible": true,
-    "resizable": true,
-    "frame": true,
-    "width": 400,
-    "height": 650,
-    "min_width": 400,
-    "max_width": 800,
-    "min_height": 650,
-    "position": "center",
-    "fullscreen": false
-  },
   "webkit": {
     "page-cache": false,
     "java": false,
@@ -48,7 +31,6 @@
     "url": "https://github.com/bitpay/copay/issues"
   },
   "scripts": {
-    "electron": "electron .",
     "postinstall": "sed -i  -e \"s/.*require(...\\/...);//g\" node_modules/asn1.js-rfc5280/index.js && run-s e2e:update env:dev prompt",
     "prompt": "\n\n\n\n\n\n#\n#  Choose a distribution with:\n#\n#     $ npm run apply:copay\n#              or\n#     $ npm run apply:bitpay\n#\n",
     "start": "run-p ionic:serve e2e:serve",
@@ -81,7 +63,7 @@
     "extract": "ngx-translate-extract --input ./src --output ./src/assets/i18n/po/template.pot --clean --sort --format pot",
     "start:ios": "run-s build:ios open:ios",
     "start:android": "run-s run:android",
-    "start:desktop": "run-s build:desktop && nw .",
+    "start:desktop": "run-s build:desktop && electron .",
     "build:ios": "run-s env:dev && ionic cordova build ios --debug",
     "build:android": "run-s env:dev && ionic cordova build android --debug",
     "build:desktop": "run-s env:dev && run-s ionic:build",
@@ -124,6 +106,7 @@
       "schemes": [
         "bitcoin",
         "bitcoincash",
+        "bchtest",
         "copay"
       ]
     },
@@ -272,6 +255,7 @@
     "connect": "3.6.5",
     "cz-conventional-changelog": "2.1.0",
     "electron": "^3.0.0",
+    "electron-builder": "^20.28.4",
     "fs-extra": "5.0.0",
     "html-loader": "0.5.4",
     "ionic": "3.20.0",

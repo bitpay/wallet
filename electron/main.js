@@ -62,11 +62,18 @@ function createWindow() {
       }, 1000);
     }
   });
+
+  win.once('ready-to-show', () => {
+    win.show();
+  });
 }
 
-app.setAsDefaultProtocolClient('copay');
-app.setAsDefaultProtocolClient('bitpay');
+// The setAsDefaultProtocolClient only works on packaged versions of the application
+
 app.setAsDefaultProtocolClient('bitcoin');
+app.setAsDefaultProtocolClient('bitcoincash');
+app.setAsDefaultProtocolClient('bchtest');
+app.setAsDefaultProtocolClient(appConfig.name);
 app.setVersion(appConfig.version);
 app.setName(appConfig.nameCase);
 

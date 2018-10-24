@@ -10,12 +10,7 @@ const templates = {
   'index-template.html': 'src/',
   'config-template.xml': '/',
   'ionic.config-template.json': '/',
-  'manifest.ionic-template.json': 'src/',
-  'build-desktop.js': 'desktop/',
-  '.desktop': 'desktop/',
-  'setup-win.iss': 'desktop/',
-  'build-macos.sh': 'desktop/',
-  'build-linux.js': 'desktop/'
+  'manifest.ionic-template.json': 'src/'
 };
 
 const jsonHeader = `{
@@ -134,7 +129,6 @@ package.name = config.packageName;
 package.description = config.description;
 package.version = config.version;
 package.title = config.userVisibleName;
-package.window.title = `${config.userVisibleName} – ${config.purposeLine}`;
 package.homepage = config.url;
 package.repository.url = config.gitHubRepoUrl;
 package.bugs.url = config.gitHubRepoBugs;
