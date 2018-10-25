@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { FCM } from '@ionic-native/fcm';
 import { Events } from 'ionic-angular';
+import { Observable } from 'rxjs';
 import { Logger } from '../../providers/logger/logger';
 
 // providers
@@ -76,7 +77,7 @@ export class PushNotificationsProvider {
         );
         if (data.wasTapped) {
           // Notification was received on device tray and tapped by the user.
-          var walletIdHashed = data.walletId;
+          const walletIdHashed = data.walletId;
           if (!walletIdHashed) return;
           this._openWallet(walletIdHashed);
         } else {
@@ -105,7 +106,7 @@ export class PushNotificationsProvider {
       return;
     }
 
-    var wallets = this.profileProvider.getWallets();
+    const wallets = this.profileProvider.getWallets();
     _.forEach(wallets, walletClient => {
       this._subscribe(walletClient);
     });
@@ -119,7 +120,7 @@ export class PushNotificationsProvider {
       return;
     }
 
-    var wallets = this.profileProvider.getWallets();
+    const wallets = this.profileProvider.getWallets();
     _.forEach(wallets, walletClient => {
       this._unsubscribe(walletClient);
     });
@@ -132,7 +133,7 @@ export class PushNotificationsProvider {
   }
 
   private _subscribe(walletClient): void {
-    let opts = {
+    const opts = {
       token: this._token,
       platform: this.isIOS ? 'ios' : this.isAndroid ? 'android' : null,
       packageName: this.appProvider.info.packageNameId
@@ -164,17 +165,19 @@ export class PushNotificationsProvider {
     });
   }
 
-  private _openWallet(walletIdHashed): void {
+  private async _openWallet(walletIdHashed) {
     let walletIdHash;
-    let sjcl = this.bwcProvider.getSJCL();
+    const sjcl = this.bwcProvider.getSJCL();
 
-    let wallets = this.profileProvider.getWallets();
-    let wallet = _.find(wallets, w => {
+    const wallets = this.profileProvider.getWallets();
+    const wallet = _.find(wallets, w => {
       walletIdHash = sjcl.hash.sha256.hash(w.credentials.walletId);
       return _.isEqual(walletIdHashed, sjcl.codec.hex.fromBits(walletIdHash));
     });
 
     if (!wallet) return;
+
+    await Observable.timer(1000).toPromise(); // wait for subscription to OpenWallet event
 
     this.events.publish('OpenWallet', wallet);
   }
