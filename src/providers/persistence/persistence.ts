@@ -184,7 +184,7 @@ export class PersistenceProvider {
     if (!_.isEmpty(this.logsBuffer)) {
       let allLogsMsgs: string = '';
       this.logsBuffer.forEach(log => {
-        allLogsMsgs = allLogsMsgs + '\n[' + log.level + '] ' + log.msg;
+        allLogsMsgs = allLogsMsgs + '\n[' + log.level + ']' + log.msg;
       });
       let completeInitialLogs = {
         timestamp: new Date().toISOString(),
