@@ -133,7 +133,7 @@ export class PersistenceProvider {
     }
   }
 
-  private deleteOldLogs(logs) {
+  public deleteOldLogs(logs) {
     let now = new Date();
     let daysAgo = new Date(now.setDate(now.getDate() - 7));
     // Compare dates and remove logs older than 7 days
@@ -175,7 +175,7 @@ export class PersistenceProvider {
     }
   }
 
-  private saveNewLog(newLog): void {
+  public saveNewLog(newLog): void {
     if (!this.logsLoaded) {
       this.logsBuffer.push(newLog);
       return;
