@@ -38,7 +38,7 @@ describe('Persistence Provider', () => {
       // get the current date & time
       let dateObj = Date.now();
       dateObj += 1000 + i;
-      let date = new Date(dateObj).toISOString();
+      const date = new Date(dateObj).toISOString();
       persistentLogs[date] = {
         level: 'debug',
         msg: 'Debug message'
@@ -96,7 +96,7 @@ describe('Persistence Provider', () => {
       expect(persistenceProvider.storage.constructor.name).toBe('LocalStorage');
     });
     it('should correctly perform a profile roundtrip', done => {
-      let p = { name: 'My profile' };
+      const p = { name: 'My profile' };
       persistenceProvider
         .storeNewProfile(p)
         .catch(err => expect(err).toBeNull)
@@ -111,7 +111,7 @@ describe('Persistence Provider', () => {
     });
 
     it('should fail to create a profile when one already exists', () => {
-      let p = { name: 'My profile' };
+      const p = { name: 'My profile' };
       persistenceProvider
         .storeNewProfile(p)
         .then(() => {
@@ -123,7 +123,7 @@ describe('Persistence Provider', () => {
     });
 
     it('should be able to delete a profile', done => {
-      let p = { name: 'My profile' };
+      const p = { name: 'My profile' };
       persistenceProvider
         .storeNewProfile(p)
         .catch(err => expect(err).toBeNull)
@@ -145,7 +145,7 @@ describe('Persistence Provider', () => {
     });
 
     it('should store profile', done => {
-      let p = { name: 'My profile' };
+      const p = { name: 'My profile' };
       persistenceProvider
         .storeProfile(p)
         .catch(err => expect(err).toBeNull)
@@ -299,7 +299,7 @@ describe('Persistence Provider', () => {
     describe('deleteOldLogs', () => {
       let persistentLogs = getPersistentLogsMock();
       it('should return the same logs if there is nothing to delete', () => {
-        let deletedPersistentLogs = persistenceProvider.deleteOldLogs(
+        const deletedPersistentLogs = persistenceProvider.deleteOldLogs(
           persistentLogs
         );
         expect(deletedPersistentLogs).toEqual(persistentLogs);
@@ -320,7 +320,7 @@ describe('Persistence Provider', () => {
         };
         expect(Object.keys(persistentLogs).length).toEqual(7);
 
-        let deletedPersistentLogs = persistenceProvider.deleteOldLogs(
+        const deletedPersistentLogs = persistenceProvider.deleteOldLogs(
           persistentLogs
         );
         expect(Object.keys(deletedPersistentLogs).length).toEqual(4);
@@ -337,7 +337,7 @@ describe('Persistence Provider', () => {
         }
 
         expect(Object.keys(persistentLogs).length).toEqual(2200);
-        let deletedPersistentLogs = persistenceProvider.deleteOldLogs(
+        const deletedPersistentLogs = persistenceProvider.deleteOldLogs(
           persistentLogs
         );
         expect(Object.keys(deletedPersistentLogs).length).toEqual(2000);
@@ -363,7 +363,7 @@ describe('Persistence Provider', () => {
       let persistentLogs;
       let spyGetLogs;
       let dateObj = Date.now();
-      let newLog = {
+      const newLog = {
         timestamp: new Date((dateObj += 1000 * 60)).toISOString(),
         level: 'debug',
         msg: 'Debug message'

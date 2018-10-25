@@ -134,19 +134,19 @@ export class PersistenceProvider {
   }
 
   public deleteOldLogs(logs) {
-    let now = new Date();
-    let daysAgo = new Date(now.setDate(now.getDate() - 7));
+    const now = new Date();
+    const daysAgo = new Date(now.setDate(now.getDate() - 7));
     // Compare dates and remove logs older than 7 days
     Object.keys(logs).forEach(key => {
-      let logDate = new Date(key);
+      const logDate = new Date(key);
       if (logDate < daysAgo) {
         delete logs[key];
       }
     });
     // Clean if logs entries are more than (maxLogsEntries - 1000)
-    let logsAmount = Object.keys(logs).length;
+    const logsAmount = Object.keys(logs).length;
     if (logsAmount > this.maxLogsEntries - 1000) {
-      let entriesToDelete: number = logsAmount - (this.maxLogsEntries - 1000);
+      const entriesToDelete: number = logsAmount - (this.maxLogsEntries - 1000);
       Object.keys(logs).forEach((key, index) => {
         if (index < entriesToDelete) {
           delete logs[key];
@@ -186,7 +186,7 @@ export class PersistenceProvider {
       this.logsBuffer.forEach(log => {
         allLogsMsgs = allLogsMsgs + '\n[' + log.level + ']' + log.msg;
       });
-      let completeInitialLogs = {
+      const completeInitialLogs = {
         timestamp: new Date().toISOString(),
         level: 'debug',
         msg: allLogsMsgs
@@ -575,7 +575,7 @@ export class PersistenceProvider {
   ) {
     return this.getBitpayAccounts(network).then(allAccounts => {
       allAccounts = allAccounts || {};
-      let account = allAccounts[data.email] || {};
+      const account = allAccounts[data.email] || {};
       account.token = data.token;
       account.familyName = data.familyName;
       account.givenName = data.givenName;
@@ -619,7 +619,7 @@ export class PersistenceProvider {
       _.each(allAccounts, (account, email) => {
         if (account.cards) {
           // Add account's email to each card
-          var cards = _.clone(account.cards);
+          const cards = _.clone(account.cards);
           _.each(cards, x => {
             x.email = email;
           });

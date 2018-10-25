@@ -43,7 +43,7 @@ export class SessionLogPage {
   ) {
     this.config = this.configProvider.get();
     this.isCordova = this.platformProvider.isCordova;
-    let logLevels = this.logger.getLevels();
+    const logLevels = this.logger.getLevels();
     this.logOptions = _.keyBy(logLevels, 'weight');
   }
 
@@ -53,7 +53,7 @@ export class SessionLogPage {
 
   ionViewWillEnter() {
     this.persistentLogsEnabled = this.config.persistentLogsEnabled;
-    let selectedLevel = _.has(this.config, 'log.weight')
+    const selectedLevel = _.has(this.config, 'log.weight')
       ? this.logger.getWeight(this.config.log.weight)
       : this.logger.getDefaultWeight();
     this.filterValue = selectedLevel.weight;
@@ -67,7 +67,7 @@ export class SessionLogPage {
 
   public setOptionSelected(weight: number): void {
     this.filterLogs(weight);
-    let opts = {
+    const opts = {
       log: {
         weight
       }
@@ -112,17 +112,15 @@ export class SessionLogPage {
   private sendLogs(): void {
     this.preparePersistenceLogs()
       .then(logs => {
-        let now = new Date().toISOString();
-        let subject: string = this.appProvider.info.nameCase + '-logs ' + now;
-        let message = this.translate.instant(
+        const now = new Date().toISOString();
+        const subject: string = this.appProvider.info.nameCase + '-logs ' + now;
+        const message = this.translate.instant(
           'Copay Session Logs. Be careful, this could contain sensitive private data'
         );
-
-        let blob = new Blob([logs], { type: 'text/txt' });
-
-        let reader = new FileReader();
+        const blob = new Blob([logs], { type: 'text/txt' });
+        const reader = new FileReader();
         reader.onload = event => {
-          let attachment = (event as any).target.result; // <-- data url
+          const attachment = (event as any).target.result; // <-- data url
 
           // Check if sharing via email is supported
           this.socialSharing
@@ -167,12 +165,12 @@ export class SessionLogPage {
   }
 
   public showOptionsMenu(): void {
-    let usePersistentLogsText = this.persistentLogsEnabled
+    const usePersistentLogsText = this.persistentLogsEnabled
       ? this.translate.instant('Disable persistent logs')
       : this.translate.instant('Enable persistent logs');
-    let downloadText = this.translate.instant('Download logs');
-    let emailText = this.translate.instant('Send logs by email');
-    let button = [];
+    const downloadText = this.translate.instant('Download logs');
+    const emailText = this.translate.instant('Send logs by email');
+    const button = [];
 
     button.push({
       text: usePersistentLogsText,
@@ -201,7 +199,7 @@ export class SessionLogPage {
       }
     }
 
-    let actionSheet = this.actionSheetCtrl.create({
+    const actionSheet = this.actionSheetCtrl.create({
       title: '',
       buttons: button
     });
@@ -231,7 +229,7 @@ export class SessionLogPage {
   }
 
   private setPersistentLogs(option: boolean): void {
-    let opts = {
+    const opts = {
       persistentLogsEnabled: option
     };
     this.configProvider.set(opts);
@@ -243,9 +241,9 @@ export class SessionLogPage {
   public download(): void {
     this.preparePersistenceLogs()
       .then(logs => {
-        let now = new Date().toISOString();
-
-        let filename = this.appProvider.info.nameCase + '-logs ' + now + '.txt';
+        const now = new Date().toISOString();
+        const filename =
+          this.appProvider.info.nameCase + '-logs ' + now + '.txt';
         this.downloadProvider.download(logs, filename);
       })
       .catch(err => {
