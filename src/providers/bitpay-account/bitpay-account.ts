@@ -71,8 +71,8 @@ export class BitPayAccountProvider {
     this.checkOtp(pairData, otp => {
       pairData.otp = otp;
       let deviceName = 'Unknown device';
-      if (this.platformProvider.isNW) {
-        deviceName = require('os').platform();
+      if (this.platformProvider.isElectron) {
+        deviceName = this.platformProvider.getOS().OSName;
       } else if (this.platformProvider.isCordova) {
         deviceName = this.device.model;
       }

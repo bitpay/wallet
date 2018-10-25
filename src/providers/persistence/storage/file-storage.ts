@@ -139,7 +139,7 @@ export class FileStorage implements IStorage {
       this.file
         .removeFile(this.dir.nativeURL, k)
         .then(() => {
-          this.log.debug('File removed: ' + k);
+          this.log.debug(`Storage Key: ${k} removed`);
           resolve();
         })
         .catch(e => {

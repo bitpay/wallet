@@ -29,7 +29,8 @@ export type InfoSheetType =
   | 'payment-request'
   | 'persistent-logs'
   | 'receiving-bitcoin'
-  | 'sensitive-info';
+  | 'sensitive-info'
+  | 'electron-info';
 
 export type OptionsSheetType =
   | 'address-options'

@@ -68,33 +68,26 @@ describe('CopayApp', () => {
         expect(profileProvider.createProfile).toHaveBeenCalled();
       });
     });
-    describe('handleDeepLinksNW', () => {
+    describe('handleDeepLinksElectron', () => {
       beforeEach(() => {
         (window as any).require = () => {
           return {
-            App: {
-              on: () => {},
-              argv: ['URL']
+            ipcRenderer: {
+              on: () => {
+                component.processUrl('url');
+              }
             }
           };
         };
-        (window as any)._urlHandled = false;
       });
       afterEach(() => {
         delete (window as any).require;
-        delete (window as any)._urlHandled;
       });
-      it('should not try to handle deeplinks if was already handled', () => {
-        jasmine.clock().install();
-        const spy = spyOn(component, 'handleOpenUrl');
-        component.handleDeepLinksNW();
-        jasmine.clock().tick(1001);
-
-        component.handleDeepLinksNW();
-        jasmine.clock().tick(1001);
-
+      it('should listen to open-url-event event and process url', () => {
+        const spy = spyOn(component, 'processUrl');
+        component.handleDeepLinksElectron();
         expect(spy).toHaveBeenCalledTimes(1);
-        jasmine.clock().uninstall();
+        expect(spy).toHaveBeenCalledWith('url');
       });
     });
   });

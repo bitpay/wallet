@@ -16,9 +16,9 @@ yarn.lock
 /GoogleService-Info.plist
 /google-services.json
 
-# Desktop node-webkit
+# Desktop electron
 cache
-desktop/*
+dist/*
 
 ## Ionic App
 /config.xml

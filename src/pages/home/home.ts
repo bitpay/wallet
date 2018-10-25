@@ -88,7 +88,7 @@ export class HomePage {
   public showIntegration;
   public hideHomeIntegrations: boolean;
 
-  private isNW: boolean;
+  private isElectron: boolean;
   private updatingWalletId: object;
   private zone;
   private countDown;
@@ -129,7 +129,7 @@ export class HomePage {
     this.updatingWalletId = {};
     this.addressbook = {};
     this.cachedBalanceUpdateOn = '';
-    this.isNW = this.platformProvider.isNW;
+    this.isElectron = this.platformProvider.isElectron;
     this.showReorderBtc = false;
     this.showReorderBch = false;
     this.zone = new NgZone({ enableLongStackTrace: false });
@@ -167,7 +167,7 @@ export class HomePage {
     this.getNotifications();
 
     // Update Wallet on Focus
-    if (this.isNW) {
+    if (this.isElectron) {
       this.updateDesktopOnFocus();
     }
   }
@@ -205,7 +205,7 @@ export class HomePage {
   ionViewDidLoad() {
     this.logger.info('Loaded: HomePage');
 
-    if (this.isNW) this.checkUpdate();
+    if (this.isElectron) this.checkUpdate();
     this.checkHomeTip();
     this.checkFeedbackInfo();
     this.amazonProvider.getSupportedCurrency().catch(() => {});
@@ -309,8 +309,8 @@ export class HomePage {
   }
 
   private updateDesktopOnFocus() {
-    let gui = (window as any).require('nw.gui');
-    let win = gui.Window.get();
+    const { remote } = (window as any).require('electron');
+    const win = remote.getCurrentWindow();
     win.on('focus', () => {
       this.checkClipboard();
       this.getNotifications();

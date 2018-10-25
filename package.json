@@ -2,7 +2,7 @@
   "name": "copay",
   "description": "A Secure Bitcoin Wallet",
   "author": "BitPay",
-  "version": "4.8.0",
+  "version": "5.0.0",
   "keywords": [
     "bitcoin",
     "wallet",
@@ -11,26 +11,9 @@
     "multisignature",
     "bitcore"
   ],
-  "main": "www/index.html",
+  "main": "electron/main.js",
   "title": "Copay",
   "user-agent": "%name %ver (%osinfo)",
-  "chromium-args": "--disable-password-generation --disable-devtools",
-  "window": {
-    "title": "Copay – Copay Bitcoin Wallet",
-    "icon": "www/assets/img/app/icon.png",
-    "toolbar": false,
-    "show": false,
-    "visible": true,
-    "resizable": true,
-    "frame": true,
-    "width": 400,
-    "height": 650,
-    "min_width": 400,
-    "max_width": 800,
-    "min_height": 650,
-    "position": "center",
-    "fullscreen": false
-  },
   "webkit": {
     "page-cache": false,
     "java": false,
@@ -80,7 +63,7 @@
     "extract": "ngx-translate-extract --input ./src --output ./src/assets/i18n/po/template.pot --clean --sort --format pot",
     "start:ios": "run-s build:ios open:ios",
     "start:android": "run-s run:android",
-    "start:desktop": "run-s build:desktop && nw .",
+    "start:desktop": "run-s build:desktop && electron .",
     "build:ios": "run-s env:dev && ionic cordova build ios --debug",
     "build:android": "run-s env:dev && ionic cordova build android --debug",
     "build:desktop": "run-s env:dev && run-s ionic:build",
@@ -91,7 +74,7 @@
     "open:android": "open -a open -a /Applications/Android\\ Studio.app platforms/android",
     "final:ios": "run-s build:ios-release open:ios",
     "final:android": "run-s build:android-release sign:android run:android-release",
-    "final:desktop": "run-s build:desktop-release && node desktop/build-desktop.js && node desktop/build-linux && sh desktop/build-macos.sh sign",
+    "final:desktop": "run-s build:desktop-release && ELECTRON_BUILDER_ALLOW_UNRESOLVED_DEPENDENCIES=true electron-builder -mwl",
     "run:android": "run-s env:dev && ionic cordova run android --device --debug",
     "run:android-release": "run-s env:prod && ionic cordova run android --device --release",
     "log:android": "adb logcat | grep chromium",
@@ -100,15 +83,73 @@
     "apply:bitpay": "cd app-template && node apply.js bitpay",
     "fix:fcm": "echo platforms/ios/Copay/Resources platforms/ios/Copay/Resources/Resources platforms/ios/Bitpay/Resources platforms/ios/Bitpay/Resources/Resources | xargs -n 1 cp GoogleService-Info.plist 2>/dev/null; mkdir -p platforms/android/app/src/debug platforms/android/app/src/release; echo platforms/android/app/src/debug platforms/android/app/src/release platforms/android/app | xargs -n 1 cp google-services.json",
     "sign:copay-desktop": "run-s sign:copay-linux sign:copay-windows sign:copay-macos",
-    "sign:copay-macos": "gpg -u 1112CFA1 --output desktop/Copay.dmg.sig --detach-sig desktop/Copay.dmg",
-    "sign:copay-linux": "gpg -u 1112CFA1 --output desktop/Copay-linux.zip.sig --detach-sig desktop/Copay-linux.zip",
-    "sign:copay-windows": "gpg -u 1112CFA1 --output desktop/Copay.exe.sig --detach-sig desktop/Copay.exe",
-    "verify:copay-desktop": "gpg --verify desktop/Copay-linux.zip.sig desktop/Copay-linux.zip; gpg --verify desktop/Copay.exe.sig desktop/Copay.exe; gpg --verify desktop/Copay.dmg.sig desktop/Copay.dmg",
+    "sign:copay-macos": "gpg -u 1112CFA1 --output dist/Copay.dmg.sig --detach-sig dist/Copay.dmg",
+    "sign:copay-linux": "gpg -u 1112CFA1 --output dist/Copay-linux.zip.sig --detach-sig dist/Copay-linux.zip",
+    "sign:copay-windows": "gpg -u 1112CFA1 --output dist/Copay.exe.sig --detach-sig dist/Copay.exe",
+    "verify:copay-desktop": "gpg --verify dist/Copay-linux.zip.sig dist/Copay-linux.zip; gpg --verify dist/Copay.exe.sig dist/Copay.exe; gpg --verify dist/Copay.dmg.sig dist/Copay.dmg",
     "sign:bitpay-desktop": "run-s sign:bitpay-linux sign:bitpay-windows sign:bitpay-macos",
-    "sign:bitpay-macos": "gpg -u 1112CFA1 --output desktop/BitPay.dmg.sig --detach-sig desktop/BitPay.dmg",
-    "sign:bitpay-linux": "gpg -u 1112CFA1 --output desktop/BitPay-linux.zip.sig --detach-sig desktop/BitPay-linux.zip",
-    "sign:bitpay-windows": "gpg -u 1112CFA1 --output desktop/BitPay.exe.sig --detach-sig desktop/BitPay.exe",
-    "verify:bitpay-desktop": "gpg --verify desktop/BitPay-linux.zip.sig desktop/BitPay-linux.zip; gpg --verify desktop/BitPay.exe.sig desktop/BitPay.exe; gpg --verify desktop/BitPay.dmg.sig desktop/BitPay.dmg"
+    "sign:bitpay-macos": "gpg -u 1112CFA1 --output dist/BitPay.dmg.sig --detach-sig dist/BitPay.dmg",
+    "sign:bitpay-linux": "gpg -u 1112CFA1 --output dist/BitPay-linux.zip.sig --detach-sig dist/BitPay-linux.zip",
+    "sign:bitpay-windows": "gpg -u 1112CFA1 --output dist/BitPay.exe.sig --detach-sig dist/BitPay.exe",
+    "verify:bitpay-desktop": "gpg --verify dist/BitPay-linux.zip.sig dist/BitPay-linux.zip; gpg --verify dist/BitPay.exe.sig dist/BitPay.exe; gpg --verify dist/BitPay.dmg.sig dist/BitPay.dmg"
+  },
+  "build": {
+    "appId": "com.bitpay.copay",
+    "productName": "Copay",
+    "files": [
+      "./electron/main.js",
+      "./package.json",
+      "./www/**/*"
+    ],
+    "protocols": {
+      "name": "URL protocol schemes",
+      "schemes": [
+        "bitcoin",
+        "bitcoincash",
+        "bchtest",
+        "copay"
+      ]
+    },
+    "mac": {
+      "category": "public.app-category.finance",
+      "icon": "resources/copay/mac/app.icns",
+      "identity": "iPhone Distribution: BitPay, Inc. (884JRH5R93)",
+      "artifactName": "${productName}.${ext}",
+      "target": [
+        "dmg",
+        "pkg"
+      ]
+    },
+    "dmg": {
+      "contents": [
+        {
+          "x": 120,
+          "y": 180
+        },
+        {
+          "x": 380,
+          "y": 180,
+          "type": "link",
+          "path": "/Applications"
+        }
+      ],
+      "background": "resources/copay/mac/dmg-background.tiff",
+      "icon": "resources/copay/mac/volume-icon.icns"
+    },
+    "win": {
+      "target": [
+        "nsis"
+      ],
+      "icon": "resources/copay/windows/icon.ico",
+      "artifactName": "${productName}.${ext}"
+    },
+    "linux": {
+      "target": [
+        "AppImage",
+        "snap"
+      ],
+      "artifactName": "${productName}-linux.${ext}"
+    }
   },
   "dependencies": {
     "@angular/common": "5.2.10",
@@ -213,6 +254,8 @@
     "codecov": "3.0.0",
     "connect": "3.6.5",
     "cz-conventional-changelog": "2.1.0",
+    "electron": "^3.0.0",
+    "electron-builder": "^20.28.4",
     "fs-extra": "5.0.0",
     "html-loader": "0.5.4",
     "ionic": "3.20.0",
@@ -229,8 +272,6 @@
     "karma-spec-reporter": "0.0.32",
     "mkdirp": "0.5.1",
     "npm-run-all": "4.1.2",
-    "nw": "0.21.6",
-    "nw-builder": "3.5.1",
     "plist": "2.1.0",
     "prettier": "^1.13.3",
     "protractor": "5.3.0",

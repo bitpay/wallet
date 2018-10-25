@@ -7,7 +7,6 @@ import { Logger } from '../../providers/logger/logger';
 import { ConfigProvider } from '../../providers/config/config';
 import { LanguageProvider } from '../../providers/language/language';
 import { PersistenceProvider } from '../../providers/persistence/persistence';
-import { PlatformProvider } from '../../providers/platform/platform';
 
 /* TODO: implement interface properly
 interface App {
@@ -54,15 +53,13 @@ export class AppProvider {
     private logger: Logger,
     private language: LanguageProvider,
     public config: ConfigProvider,
-    private persistence: PersistenceProvider,
-    private platformProvider: PlatformProvider
+    private persistence: PersistenceProvider
   ) {
     this.logger.debug('AppProvider initialized');
   }
 
   public async load() {
     await Promise.all([this.getInfo(), this.loadProviders()]);
-    this.setCustomMenuBarNW();
     // TODO: Ref persistent logs
     // this.persistence.getPersistentLogs();
     // this.persistence.checkLogsConfig();
@@ -87,22 +84,5 @@ export class AppProvider {
 
   private getServicesInfo() {
     return this.http.get(this.jsonPathServices).toPromise();
-  }
-
-  public setCustomMenuBarNW() {
-    if (!this.platformProvider.isNW) {
-      return;
-    }
-    let gui = (window as any).require('nw.gui');
-    let win = gui.Window.get();
-    let nativeMenuBar = new gui.Menu({
-      type: 'menubar'
-    });
-    try {
-      nativeMenuBar.createMacBuiltin(this.info.nameCase);
-    } catch (e) {
-      this.logger.warn('This is not OSX');
-    }
-    win.menu = nativeMenuBar;
   }
 }

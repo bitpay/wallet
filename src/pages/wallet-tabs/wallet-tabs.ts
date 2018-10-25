@@ -30,7 +30,7 @@ export class WalletTabsPage {
 
   walletId: string;
 
-  private isNW: boolean;
+  private isElectron: boolean;
   private onPauseSubscription: Subscription;
   private onResumeSubscription: Subscription;
   constructor(
@@ -40,7 +40,7 @@ export class WalletTabsPage {
     private platformProvider: PlatformProvider,
     private platform: Platform
   ) {
-    this.isNW = this.platformProvider.isNW;
+    this.isElectron = this.platformProvider.isElectron;
   }
 
   ionViewDidLoad() {
@@ -59,7 +59,7 @@ export class WalletTabsPage {
   }
 
   ionViewWillEnter() {
-    if (this.isNW) {
+    if (this.isElectron) {
       this.updateDesktopOnFocus();
     }
     this.subscribeEvents();
@@ -88,8 +88,8 @@ export class WalletTabsPage {
   }
 
   private updateDesktopOnFocus() {
-    let gui = (window as any).require('nw.gui');
-    let win = gui.Window.get();
+    const { remote } = (window as any).require('electron');
+    const win = remote.getCurrentWindow();
     win.on('focus', () => {
       this.events.publish('Wallet/updateAll');
       this.events.publish('Wallet/setAddress', false);

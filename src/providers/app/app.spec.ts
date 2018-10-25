@@ -60,12 +60,6 @@ describe('AppProvider', () => {
       httpMock.expectOne(urls[1]).flush({});
       httpMock.expectOne(urls[0]).flush(appTemplate);
     });
-    it('should try to set custom NW menu bar', () => {
-      const spy = spyOn(service, 'setCustomMenuBarNW');
-      service.load().then(() => {
-        expect(spy).toHaveBeenCalled();
-      });
-    });
   });
 
   it('should catch an error when loading fails', done => {

@@ -54,7 +54,7 @@ export { IncomingDataProvider } from '../providers/incoming-data/incoming-data';
 export { LanguageProvider } from '../providers/language/language';
 export { Logger } from '../providers/logger/logger';
 export { MercadoLibreProvider } from '../providers/mercado-libre/mercado-libre';
-export { NodeWebkitProvider } from '../providers/node-webkit/node-webkit';
+export { ElectronProvider } from '../providers/electron/electron';
 export {
   OnGoingProcessProvider
 } from '../providers/on-going-process/on-going-process';
