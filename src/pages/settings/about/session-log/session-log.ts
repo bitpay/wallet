@@ -80,20 +80,6 @@ export class SessionLogPage {
       let log: string =
         'Copay Session Logs\n Be careful, this could contain sensitive private data\n\n';
       log += '\n\n';
-
-      // This code is to use session logs
-      // Object.keys(this.filteredLogs).forEach(key => {
-      //   log +=
-      //     '[' +
-      //     this.filteredLogs[key].timestamp +
-      //     '][' +
-      //     this.filteredLogs[key].level +
-      //     ']' +
-      //     this.filteredLogs[key].msg +
-      //     '\n';
-      // });
-      // resolve(log);
-
       this.persistenceProvider
         .getLogs()
         .then(logs => {
