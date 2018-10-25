@@ -136,7 +136,12 @@ package.cordova.plugins['cordova-plugin-customurlscheme'].SECOND_URL_SCHEME =
   config.packageName;
 package.build.appId = config.packageNameId;
 package.build.productName = config.userVisibleName;
-package.build.protocols.schemes = ['bitcoin', 'bitcoincash', config.name];
+package.build.protocols.schemes = [
+  'bitcoin',
+  'bitcoincash',
+  'bchtest',
+  config.name
+];
 package.build.mac.icon = `resources/${config.name}/mac/app.icns`;
 if (process.platform == 'win32') {
   package.build.win.target = ['nsis', 'appx']; //AppX package can be built only on Windows 10.
