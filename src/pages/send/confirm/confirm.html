@@ -29,7 +29,9 @@
         </div>
       </div>
     </ion-item>
-    <button ion-item class="item-fee" (click)="chooseFeeLevel()" [ngClass]="{'warn': wallet && tx.txp[wallet.id] && tx.txp[wallet.id].feeTooHigh}">
+    <button ion-item class="item-fee" [attr.detail-none]="usingMerchantFee ? '' : null" (click)="chooseFeeLevel()"
+      [ngClass]="{'warn': wallet && tx.txp[wallet.id] && tx.txp[wallet.id].feeTooHigh, 'btn-opacity': usingMerchantFee}"
+      [disabled]="usingMerchantFee">
       <div class="fee-title">
         <span translate>Bitcoin miner fee:</span>
         <br>

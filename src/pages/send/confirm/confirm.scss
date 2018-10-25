@@ -83,6 +83,9 @@ confirm-card-purchase {
     ion-note {
       font-weight: 100;
     }
+    &.btn-opacity {
+      opacity: 1;
+    }
   }
   .item-gravatar {
     img {
