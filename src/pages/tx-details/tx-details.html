@@ -37,7 +37,7 @@
       </div>
     </ion-item>
 
-    <label-tip class="low-fees" type="warn" *ngIf="btx.lowAmount">
+    <label-tip class="low-fees" type="warn" *ngIf="btx.action == 'received' && btx.lowAmount">
       <span label-tip-title translate>Amount Too Low To Spend</span>
       <div label-tip-body translate>
         This transaction amount is too small compared to current Bitcoin network fees. Spending these funds will need a Bitcoin network fee cost comparable to the funds itself.
