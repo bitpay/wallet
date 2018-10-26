@@ -28,6 +28,7 @@ export class NotificationsPage {
   public isIOSApp: boolean;
 
   public pushNotifications: boolean;
+  public inAppNotifications: boolean;
   public confirmedTxsNotifications: boolean;
 
   public emailNotifications: boolean;
@@ -62,13 +63,14 @@ export class NotificationsPage {
   }
 
   private updateConfig() {
-    let config = this.configProvider.get();
+    const config = this.configProvider.get();
     this.appName = this.appProvider.info.nameCase;
     this.usePushNotifications = this.platformProvider.isCordova;
     this.isIOSApp =
       this.platformProvider.isIOS && this.platformProvider.isCordova;
 
     this.pushNotifications = config.pushNotificationsEnabled;
+    this.inAppNotifications = config.inAppNotificationsEnabled;
     this.confirmedTxsNotifications = config.confirmedTxsNotifications
       ? config.confirmedTxsNotifications.enabled
       : false;
@@ -83,7 +85,7 @@ export class NotificationsPage {
   }
 
   public pushNotificationsChange() {
-    let opts = {
+    const opts = {
       pushNotificationsEnabled: this.pushNotifications
     };
 
@@ -93,8 +95,16 @@ export class NotificationsPage {
     else this.pushProvider.disable();
   }
 
+  public inAppNotificationChange() {
+    const opts = {
+      inAppNotificationsEnabled: this.inAppNotifications
+    };
+
+    this.configProvider.set(opts);
+  }
+
   public confirmedTxsNotificationsChange() {
-    let opts = {
+    const opts = {
       confirmedTxsNotifications: {
         enabled: this.confirmedTxsNotifications
       }
@@ -103,7 +113,7 @@ export class NotificationsPage {
   }
 
   public emailNotificationsChange() {
-    let opts = {
+    const opts = {
       enabled: this.emailNotifications,
       email: this.emailForm.value.email
     };
@@ -120,12 +130,12 @@ export class NotificationsPage {
   }
 
   public openPrivacyPolicy() {
-    let url = 'https://bitpay.com/about/privacy';
-    let optIn = true;
-    let title = null;
-    let message = this.translate.instant('View Privacy Policy');
-    let okText = this.translate.instant('Open');
-    let cancelText = this.translate.instant('Go Back');
+    const url = 'https://bitpay.com/about/privacy';
+    const optIn = true;
+    const title = null;
+    const message = this.translate.instant('View Privacy Policy');
+    const okText = this.translate.instant('Open');
+    const cancelText = this.translate.instant('Go Back');
     this.externalLinkProvider.open(
       url,
       optIn,

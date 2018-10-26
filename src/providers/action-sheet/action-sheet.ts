@@ -30,7 +30,8 @@ export type InfoSheetType =
   | 'persistent-logs'
   | 'receiving-bitcoin'
   | 'sensitive-info'
-  | 'electron-info';
+  | 'electron-info'
+  | 'in-app-notification';
 
 export type OptionsSheetType =
   | 'address-options'

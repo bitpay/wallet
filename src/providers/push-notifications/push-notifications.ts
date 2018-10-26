@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { FCM } from '@ionic-native/fcm';
+import { Vibration } from '@ionic-native/vibration';
 import { Events } from 'ionic-angular';
 import { Observable } from 'rxjs';
 import { Logger } from '../../providers/logger/logger';
@@ -13,6 +14,7 @@ import { PlatformProvider } from '../platform/platform';
 import { ProfileProvider } from '../profile/profile';
 
 import * as _ from 'lodash';
+import { ActionSheetProvider } from '../action-sheet/action-sheet';
 
 @Injectable()
 export class PushNotificationsProvider {
@@ -30,7 +32,9 @@ export class PushNotificationsProvider {
     public appProvider: AppProvider,
     private bwcProvider: BwcProvider,
     private FCMPlugin: FCM,
-    private events: Events
+    private events: Events,
+    private vibration: Vibration,
+    private actionSheetProvider: ActionSheetProvider
   ) {
     this.logger.debug('PushNotificationsProvider initialized');
     this.isIOS = this.platformProvider.isIOS;
@@ -70,7 +74,7 @@ export class PushNotificationsProvider {
         this.enable();
       });
 
-      this.FCMPlugin.onNotification().subscribe(data => {
+      this.FCMPlugin.onNotification().subscribe(async data => {
         if (!this._token) return;
         this.logger.debug(
           'New Event Push onNotification: ' + JSON.stringify(data)
@@ -81,8 +85,22 @@ export class PushNotificationsProvider {
           if (!walletIdHashed) return;
           this._openWallet(walletIdHashed);
         } else {
-          // TODO
-          // Notification was received in foreground. Maybe the user needs to be notified.
+          if (!this.configProvider.get().inAppNotificationsEnabled) return;
+          if (data.body && data.title) {
+            const walletName = this.profileProvider.getWallet(data.walletId)
+              .name;
+            const infoSheet = this.actionSheetProvider.createInfoSheet(
+              'in-app-notification',
+              {
+                title: data.title,
+                body: `${walletName}: ${data.body}`
+              }
+            );
+            this.vibration.vibrate(300);
+            infoSheet.present();
+            await Observable.timer(5000).toPromise();
+            infoSheet.dismiss();
+          }
         }
       });
     }
