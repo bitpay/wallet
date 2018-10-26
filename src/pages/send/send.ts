@@ -51,14 +51,20 @@ export class SendPage extends WalletTabsChild {
   public hasBchWallets: boolean;
   public hasContacts: boolean;
   public contactsShowMore: boolean;
-  private CONTACTS_SHOW_LIMIT: number = 10;
-  private currentContactsPage: number = 0;
-  private scannerOpened: boolean;
-
   public amount: string;
   public fiatAmount: number;
   public fiatCode: string;
   public invalidAddress: boolean;
+
+  private CONTACTS_SHOW_LIMIT: number = 10;
+  private currentContactsPage: number = 0;
+  private scannerOpened: boolean;
+  private validDataTypeMap: string[] = [
+    'BitcoinAddress',
+    'BitcoinCashAddress',
+    'BitcoinUri',
+    'BitcoinCashUri'
+  ];
 
   constructor(
     navCtrl: NavController,
@@ -297,8 +303,8 @@ export class SendPage extends WalletTabsChild {
         this.filteredContactsList.length === 0 &&
         this.filteredWallets.length === 0
       ) {
-        const validData = this.incomingDataProvider.parseData(this.search);
-        if (validData && validData.type == 'PayPro') {
+        const parsedData = this.incomingDataProvider.parseData(this.search);
+        if (parsedData && parsedData.type == 'PayPro') {
           const coin: string =
             this.search.indexOf('bitcoincash') === 0 ? Coin.BCH : Coin.BTC;
           this.incomingDataProvider
@@ -312,9 +318,14 @@ export class SendPage extends WalletTabsChild {
               this.invalidAddress = true;
               this.logger.warn(err);
             });
-        } else {
+        } else if (
+          parsedData &&
+          _.indexOf(this.validDataTypeMap, parsedData.type) != -1
+        ) {
           const isValid = this.checkCoinAndNetwork(this.search);
           if (isValid) this.redir();
+        } else {
+          this.invalidAddress = true;
         }
       } else {
         this.invalidAddress = false;
