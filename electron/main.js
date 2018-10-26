@@ -1,4 +1,4 @@
-const { app, BrowserWindow } = require('electron');
+const { app, Menu, BrowserWindow } = require('electron');
 const path = require('path');
 const url = require('url');
 const os = require('os');
@@ -68,6 +68,53 @@ function createWindow() {
   });
 }
 
+function createMenu() {
+  const template = [
+    {
+      label: 'Edit',
+      submenu: [
+        { role: 'cut' },
+        { role: 'copy' },
+        { role: 'paste' },
+        { role: 'selectall' }
+      ]
+    },
+    {
+      role: 'window',
+      submenu: [{ role: 'minimize' }, { role: 'close' }]
+    },
+    {
+      role: 'help',
+      submenu: [
+        {
+          label: 'Open Help Center',
+          click() {
+            require('electron').shell.openExternal(
+              'https://support.bitpay.com/hc/en-us'
+            );
+          }
+        }
+      ]
+    }
+  ];
+
+  if (process.platform === 'darwin') {
+    template.unshift({
+      label: appConfig.nameCase,
+      submenu: [
+        { role: 'about' },
+        { type: 'separator' },
+        { role: 'hide' },
+        { role: 'hideothers' },
+        { role: 'unhide' },
+        { type: 'separator' },
+        { role: 'quit' }
+      ]
+    });
+  }
+
+  Menu.setApplicationMenu(Menu.buildFromTemplate(template));
+}
 // The setAsDefaultProtocolClient only works on packaged versions of the application
 
 app.setAsDefaultProtocolClient('bitcoin');
@@ -94,7 +141,10 @@ app.setPath('userData', path.join(homeDir, `.${appConfig.name}/app`));
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
-app.on('ready', createWindow);
+app.on('ready', () => {
+  createWindow();
+  createMenu();
+});
 
 // Quit when all windows are closed.
 app.on('window-all-closed', () => {
