@@ -2,7 +2,7 @@
   "name": "copay",
   "description": "A Secure Bitcoin Wallet",
   "author": "BitPay",
-  "version": "5.0.0",
+  "version": "5.0.2",
   "keywords": [
     "bitcoin",
     "wallet",
@@ -94,8 +94,9 @@
     "verify:bitpay-desktop": "gpg --verify dist/BitPay-linux.zip.sig dist/BitPay-linux.zip; gpg --verify dist/BitPay.exe.sig dist/BitPay.exe; gpg --verify dist/BitPay.dmg.sig dist/BitPay.dmg"
   },
   "build": {
-    "appId": "com.bitpay.copay",
+    "appId": "com.bitpay.copay.desktop2",
     "productName": "Copay",
+    "asar": "false",
     "files": [
       "./electron/main.js",
       "./package.json",
@@ -113,28 +114,16 @@
     "mac": {
       "category": "public.app-category.finance",
       "icon": "resources/copay/mac/app.icns",
-      "identity": "iPhone Distribution: BitPay, Inc. (884JRH5R93)",
       "artifactName": "${productName}.${ext}",
       "target": [
-        "dmg",
-        "pkg"
+        "mas"
       ]
     },
-    "dmg": {
-      "contents": [
-        {
-          "x": 120,
-          "y": 180
-        },
-        {
-          "x": 380,
-          "y": 180,
-          "type": "link",
-          "path": "/Applications"
-        }
-      ],
-      "background": "resources/copay/mac/dmg-background.tiff",
-      "icon": "resources/copay/mac/volume-icon.icns"
+    "mas": {
+      "type": "distribution",
+      "identity": "BitPay, Inc. (884JRH5R93)",
+      "entitlements": "./copay-entitlements.mas.plist",
+      "provisioningProfile": "./copay-embedded.provisionprofile"
     },
     "win": {
       "target": [

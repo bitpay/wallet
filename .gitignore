@@ -19,6 +19,8 @@ yarn.lock
 # Desktop electron
 cache
 dist/*
+*-embedded.provisionprofile
+*-entitlements.mas.plist
 
 ## Ionic App
 /config.xml

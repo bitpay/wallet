@@ -134,8 +134,12 @@ package.repository.url = config.gitHubRepoUrl;
 package.bugs.url = config.gitHubRepoBugs;
 package.cordova.plugins['cordova-plugin-customurlscheme'].SECOND_URL_SCHEME =
   config.packageName;
-package.build.appId = config.packageNameId;
+package.build.appId = config.packageNameIdDesktop;
 package.build.productName = config.userVisibleName;
+package.build.mas.entitlements =
+  './' + config.packageName + '-entitlements.mas.plist';
+package.build.mas.provisioningProfile =
+  './' + config.packageName + '-embedded.provisionprofile';
 package.build.protocols.schemes = [
   'bitcoin',
   'bitcoincash',
@@ -149,10 +153,6 @@ if (process.platform == 'win32') {
   package.build.win.target = ['nsis'];
 }
 package.build.win.icon = `resources/${config.name}/windows/icon.ico`;
-package.build.dmg.background = `resources/${
-  config.name
-}/mac/dmg-background.tiff`;
-package.build.dmg.icon = `resources/${config.name}/mac/volume-icon.icns`;
 
 const stringifiedNpmStyle = JSON.stringify(package, null, 2) + '\n';
 fs.writeFileSync('../package.json', stringifiedNpmStyle);
