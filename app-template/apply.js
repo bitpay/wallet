@@ -136,8 +136,10 @@ package.cordova.plugins['cordova-plugin-customurlscheme'].SECOND_URL_SCHEME =
   config.packageName;
 package.build.appId = config.packageNameIdDesktop;
 package.build.productName = config.userVisibleName;
-package.build.mas.entitlements = './' + config.packageName + '-entitlements.mas.plist';
-package.build.mas.provisioningProfile = './' + config.packageName + '-embedded.provisionprofile';
+package.build.mas.entitlements =
+  './' + config.packageName + '-entitlements.mas.plist';
+package.build.mas.provisioningProfile =
+  './' + config.packageName + '-embedded.provisionprofile';
 package.build.protocols.schemes = [
   'bitcoin',
   'bitcoincash',
