@@ -10,7 +10,8 @@ const templates = {
   'index-template.html': 'src/',
   'config-template.xml': '/',
   'ionic.config-template.json': '/',
-  'manifest.ionic-template.json': 'src/'
+  'manifest.ionic-template.json': 'src/',
+  'afterPack-template.js': 'electron/'
 };
 
 const jsonHeader = `{
@@ -54,6 +55,8 @@ Object.keys(templates).forEach(function(k) {
     k = 'ionic.config.json';
   } else if (k === 'manifest.ionic-template.json') {
     k = 'manifest.json';
+  } else if (k === 'afterPack-template.js') {
+    k = 'afterPack.js';
   }
 
   if (!fs.existsSync('../' + targetDir)) {

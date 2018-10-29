@@ -19,6 +19,7 @@ yarn.lock
 # Desktop electron
 cache
 dist/*
+electron/afterPack.js
 *-embedded.provisionprofile
 *-entitlements.mas.plist
 
