@@ -1,11 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
-<svg version="1.1" id="bitpay-lock" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px"
-	 y="0px" viewBox="0 0 15 20" style="enable-background:new 0 0 15 20;" xml:space="preserve">
-<style type="text/css">
-	.st0{fill:#12E5B6;}
-</style>
-<path class="st0" d="M12.2,6.7V5.4c0-2.7-2-4.7-4.7-4.7s-4.7,2-4.7,4.7v1.4H0.5v12.5h13.9V6.7H12.2z M4.6,5.4c0-1.6,1.3-2.9,2.9-2.9
-	s2.9,1.3,2.9,2.9v1.4H4.6V5.4z M12.6,17.4H2.4V8.6h0.4h9.4h0.5V17.4z"/>
-<path class="st0" d="M7.5,9.8c-1.3,0-2.4,1.1-2.4,2.4c0,1,0.7,1.9,1.5,2.2v0.7h1.9v-0.7c0.9-0.4,1.5-1.2,1.5-2.2
-	C9.9,10.9,8.8,9.8,7.5,9.8z M7.5,11.7c0.3,0,0.6,0.3,0.6,0.6c0,0.4-0.3,0.6-0.6,0.6s-0.6-0.3-0.6-0.6C6.9,12,7.2,11.7,7.5,11.7z"/>
-</svg>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" preserveAspectRatio="xMidYMid meet" viewBox="0 0 25 25" width="25" height="25"><defs><path d="M13.86 1L14.47 1.16L15.05 1.38L15.59 1.65L16.09 1.97L16.55 2.34L16.97 2.76L17.34 3.22L17.66 3.73L17.93 4.27L18.15 4.84L18.31 5.45L18.4 6.09L18.44 6.75L18.44 8.38L21.19 8.38L21.19 24.13L3.81 24.13L3.81 8.5L6.69 8.5L6.69 6.75L6.72 6.09L6.82 5.45L6.97 4.84L7.19 4.27L7.46 3.73L7.78 3.22L8.16 2.76L8.57 2.34L9.04 1.97L9.54 1.65L10.08 1.38L10.66 1.16L11.26 1L11.9 0.91L12.56 0.88L13.23 0.91L13.86 1ZM6.19 21.75L19.06 21.75L19.06 10.75L6.19 10.75L6.19 21.75ZM11.23 3.32L10.53 3.55L9.95 3.89L9.58 4.25L9.29 4.68L9.07 5.18L8.94 5.74L8.94 8.5L16.19 8.5L16.19 5.74L16.07 5.08L15.76 4.53L15.33 4.08L14.87 3.73L14.37 3.45L13.86 3.26L13.27 3.16L12.56 3.13L11.94 3.17L11.23 3.32Z" id="d22ASScwUn"></path><path d="M14.69 13.14L15.38 14.1L15.69 15.25L15.55 16.14L15.17 16.91L14.58 17.54L13.81 18L13.81 18.88L11.44 18.88L11.44 18L10.72 17.59L10.13 16.95L9.71 16.15L9.56 15.25L9.8 14.1L10.45 13.14L11.41 12.49L12.56 12.25L13.72 12.49L14.69 13.14ZM12.05 14.86L11.88 15.1L11.81 15.37L11.88 15.65L12.05 15.89L12.29 16.06L12.56 16.13L12.84 16.08L13.08 15.94L13.25 15.7L13.31 15.37L13.25 15.1L13.08 14.86L12.84 14.69L12.56 14.63L12.29 14.69L12.05 14.86Z" id="b7gemX4"></path></defs><g><g><g><use xlink:href="#d22ASScwUn" opacity="1" fill="#6cc64d" fill-opacity="1"></use><g><use xlink:href="#d22ASScwUn" opacity="1" fill-opacity="0" stroke="#000000" stroke-width="1" stroke-opacity="0"></use></g></g><g><use xlink:href="#b7gemX4" opacity="1" fill="#6cc64d" fill-opacity="1"></use><g><use xlink:href="#b7gemX4" opacity="1" fill-opacity="0" stroke="#000000" stroke-width="1" stroke-opacity="0"></use></g></g></g></g></svg>

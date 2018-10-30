@@ -1,17 +1,3 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg width="25px" height="25px" viewBox="0 0 25 25" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <!-- Generator: Sketch 40.1 (33804) - http://www.bohemiancoding.com/sketch -->
-    <title>Group</title>
-    <desc>Created with Sketch.</desc>
-    <defs></defs>
-    <g id="Wallet" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g id="1.4---Transaction-(Detail)" transform="translate(-39.000000, -914.000000)">
-            <g id="Group-2-Copy-6" transform="translate(41.000000, 909.000000)">
-                <g id="Group" transform="translate(0.000000, 7.000000)">
-                    <path d="M10.5,21 C16.2989899,21 21,16.2989899 21,10.5 C21,4.70101013 16.2989899,0 10.5,0 C4.70101013,0 0,4.70101013 0,10.5 C0,16.2989899 4.70101013,21 10.5,21 Z" id="Oval-2-Copy-3" stroke="#13E5B6" stroke-width="3" fill="#13E5B6"></path>
-                    <path d="M4.8565172,10.7739543 L17.6308211,10.7739543 M9.55650668,16.6261508 L3.82082067,10.8572239 L9.35708555,5.17917933" id="Line" stroke="#FFFFFF" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" transform="translate(10.725821, 10.902665) scale(1, -1) rotate(-135.000000) translate(-10.725821, -10.902665) "></path>
-                </g>
-            </g>
-        </g>
-    </g>
-</svg>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" preserveAspectRatio="xMidYMid meet" viewBox="0 0 25 25" width="25" height="25"><defs><path d="M23 12.5C23 6.7 18.3 2 12.5 2C6.7 2 2 6.7 2 12.5C2 18.3 6.7 23 12.5 23C18.3 23 23 18.3 23 12.5Z" id="c4cRUXuTn"></path><path d="M8.73 7.63C13.59 7.69 15.74 7.72 15.17 7.71C15.49 7.71 15.65 8.1 15.42 8.32C15.82 7.92 12.8 10.93 6.36 17.35C6.04 17.67 5.96 18.22 6.35 18.61C6.74 19 7.22 19 7.61 18.61C13.95 12.29 17.05 9.21 16.91 9.35C16.99 9.27 17.12 9.32 17.12 9.44C17.12 9.24 17.14 11.41 17.19 15.96C17.18 16.43 17.58 16.83 18.05 16.83C18.52 16.83 18.91 16.44 18.91 15.97C18.9 15.07 18.79 7.92 18.77 7.02C18.77 6.86 18.69 6.63 18.54 6.47C18.38 6.31 18.15 6.23 17.99 6.23C17.58 6.23 15.9 6.21 14.08 6.19C11.81 6.17 9.32 6.14 8.81 6.14C8.18 5.98 7.87 6.29 7.87 6.76C7.87 7.23 8.26 7.63 8.73 7.63Z" id="b25jhnkt2r"></path></defs><g><g><g><use xlink:href="#c4cRUXuTn" opacity="1" fill="#6cc64d" fill-opacity="1"></use><g><use xlink:href="#c4cRUXuTn" opacity="1" fill-opacity="0" stroke="#6cc64d" stroke-width="3" stroke-opacity="1"></use></g></g><path></path><path></path><path></path><g><use xlink:href="#b25jhnkt2r" opacity="1" fill="#ffffff" fill-opacity="1"></use><g><use xlink:href="#b25jhnkt2r" opacity="1" fill-opacity="0" stroke="#000000" stroke-width="1" stroke-opacity="0"></use></g></g></g></g></svg>
