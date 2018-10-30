@@ -23,8 +23,8 @@
                         </g>
                         <ellipse id="Oval-2" stroke="#7C6D87" stroke-width="2" fill-opacity="0.41907269" fill="#5D41A8" fill-rule="nonzero" opacity="0.945615695" cx="169" cy="57.4884375" rx="47" ry="44.4884375"></ellipse>
                         <g id="Group-3" transform="translate(62.000000, 33.000000)">
-                            <path d="M12.7105489,19.5 L50.4911698,19.5" id="Line" stroke="#12E5B6" stroke-width="3" stroke-linecap="square"></path>
-                            <path d="M21.96,10.4166666 L43.0026407,10.4166666" id="Line" stroke="#12E5B6" stroke-width="3" stroke-linecap="square"></path>
+                            <path d="M12.7105489,19.5 L50.4911698,19.5" id="Line" stroke="#75da52" stroke-width="3" stroke-linecap="square"></path>
+                            <path d="M21.96,10.4166666 L43.0026407,10.4166666" id="Line" stroke="#75da52" stroke-width="3" stroke-linecap="square"></path>
                             <g id="Rectangle-3">
                                 <g id="path-2-Clipped">
                                     <mask id="mask-3" fill="white">
