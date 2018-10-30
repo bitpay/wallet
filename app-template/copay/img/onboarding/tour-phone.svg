@@ -17,7 +17,7 @@
                 <path d="M0.5,156 L99.3,156" id="Shape" stroke-linecap="square"></path>
                 <path d="M44.1,170.3 L62.8,170.3" id="Shape" stroke-linecap="square"></path>
             </g>
-            <g id="Group" transform="translate(102.000000, 66.000000)" fill-rule="nonzero" fill="#5BC2A7">
+            <g id="Group" transform="translate(102.000000, 66.000000)" fill-rule="nonzero" fill="#75da52">
                 <path d="M31.8,0 L0,0 L0,31.8 L31.8,31.8 L31.8,0 L31.8,0 Z M27.3,27.3 L4.6,27.3 L4.6,4.5 L27.3,4.5 L27.3,27.3 L27.3,27.3 Z" id="Shape"></path>
                 <polygon id="Shape" points="65.9 90.9 61.4 90.9 61.4 100 100 100 100 95.5 65.9 95.5"></polygon>
                 <rect id="Rectangle-path" x="9.1" y="9.1" width="13.6" height="13.6"></rect>
