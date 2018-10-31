@@ -2,7 +2,7 @@
   "name": "copay",
   "description": "A Secure Bitcoin Wallet",
   "author": "BitPay",
-  "version": "5.0.2",
+  "version": "5.0.4",
   "keywords": [
     "bitcoin",
     "wallet",
@@ -96,7 +96,7 @@
   "build": {
     "appId": "com.bitpay.copay.desktop2",
     "productName": "Copay",
-    "asar": "false",
+    "afterPack": "./electron/afterPack.js",
     "files": [
       "./electron/main.js",
       "./package.json",
@@ -120,21 +120,25 @@
       ]
     },
     "mas": {
-      "type": "distribution",
       "identity": "BitPay, Inc. (884JRH5R93)",
       "entitlements": "./copay-entitlements.mas.plist",
       "provisioningProfile": "./copay-embedded.provisionprofile"
     },
     "win": {
       "target": [
-        "nsis"
+        "appx"
       ],
       "icon": "resources/copay/windows/icon.ico",
       "artifactName": "${productName}.${ext}"
     },
+    "appx": {
+      "identityName": "18C7659D.Copay-SecureBitcoinWallet",
+      "publisher": "CN=F89609D1-EB3E-45FD-A58A-C2E3895FCE7B",
+      "publisherDisplayName": "BitPay Inc.",
+      "applicationId": "Copay"
+    },
     "linux": {
       "target": [
-        "AppImage",
         "snap"
       ],
       "artifactName": "${productName}-linux.${ext}"
