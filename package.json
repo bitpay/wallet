@@ -95,6 +95,7 @@
   },
   "build": {
     "appId": "com.bitpay.copay.desktop2",
+    "buildVersion": "5",
     "productName": "Copay",
     "afterPack": "./electron/afterPack.js",
     "files": [
