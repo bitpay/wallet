@@ -126,10 +126,16 @@
     },
     "win": {
       "target": [
-        "nsis"
+        "appx"
       ],
       "icon": "resources/copay/windows/icon.ico",
       "artifactName": "${productName}.${ext}"
+    },
+    "appx": {
+      "identityName": "18C7659D.Copay-SecureBitcoinWallet",
+      "publisher": "CN=F89609D1-EB3E-45FD-A58A-C2E3895FCE7B",
+      "publisherDisplayName": "BitPay Inc.",
+      "applicationId": "Copay"
     },
     "linux": {
       "target": [

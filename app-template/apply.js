@@ -143,6 +143,8 @@ package.build.mas.entitlements =
   './' + config.packageName + '-entitlements.mas.plist';
 package.build.mas.provisioningProfile =
   './' + config.packageName + '-embedded.provisionprofile';
+package.build.appx.identityName = config.WindowsStoreIdentityName;
+package.build.appx.applicationId = config.nameCase;
 package.build.protocols.schemes = [
   'bitcoin',
   'bitcoincash',
