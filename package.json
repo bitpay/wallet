@@ -2,7 +2,7 @@
   "name": "copay",
   "description": "A Secure Bitcoin Wallet",
   "author": "BitPay",
-  "version": "5.0.4",
+  "version": "5.0.5",
   "keywords": [
     "bitcoin",
     "wallet",
@@ -132,10 +132,11 @@
       "artifactName": "${productName}.${ext}"
     },
     "appx": {
-      "identityName": "18C7659D.Copay-SecureBitcoinWallet",
+      "identityName": "18C7659D.CopayforWindows",
       "publisher": "CN=F89609D1-EB3E-45FD-A58A-C2E3895FCE7B",
       "publisherDisplayName": "BitPay Inc.",
-      "applicationId": "Copay"
+      "applicationId": "CopayforWindows",
+      "displayName": "Copay for Windows"
     },
     "linux": {
       "target": [
