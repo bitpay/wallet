@@ -152,11 +152,6 @@ package.build.protocols.schemes = [
   config.name
 ];
 package.build.mac.icon = `resources/${config.name}/mac/app.icns`;
-if (process.platform == 'win32') {
-  package.build.win.target = ['nsis', 'appx']; //AppX package can be built only on Windows 10.
-} else {
-  package.build.win.target = ['nsis'];
-}
 package.build.win.icon = `resources/${config.name}/windows/icon.ico`;
 
 const stringifiedNpmStyle = JSON.stringify(package, null, 2) + '\n';
