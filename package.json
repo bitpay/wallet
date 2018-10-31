@@ -139,7 +139,6 @@
     },
     "linux": {
       "target": [
-        "AppImage",
         "snap"
       ],
       "artifactName": "${productName}-linux.${ext}"
