@@ -18,18 +18,20 @@
   <div class="wrapper">
     <div class="header-extend" *ngIf="wallets && wallets[0]"></div>
 
-    <div class="card warning-card">
-      <img src="assets/img/icon-warning-circled.svg" alt="Clipboard" width="40" />
+    <div class="card warning-card" *ngIf="isNW">
+      <img src="assets/img/icon-warning-circled.svg" alt="warning-card" width="40" />
       <div class="warning-card-title">
         <span>New {{appName}} desktop platform</span>
       </div>
       <div class="warning-card-text">
         <span>{{appName}} has been migrated to a new desktop platform for improved performance and better user experience.</span>
-        <span>This version of {{appName}} is not longer maintained. Please download the new version from the app store at:</span>
-        <br>
-        <a href="https://github.com/bitpay/copay/releases">Link</a>
+        <span>This version of {{appName}} is no longer maintained.</span>
         <br><br>
-        <span>You will need to migrate your wallets manually, but importing your backups on the new version.</span>
+        <span>You will need to migrate your wallets manually, by importing your backups on the new version.</span>
+        <br>
+        <button ion-button class="button-standard" (click)="goToDownloadElectronVersion()">
+          Download new version
+        </button>
       </div>
     </div>
 
@@ -90,8 +92,6 @@
           </div>
         </ion-card-content>
       </ion-card>
-
-      <page-feedback-card #showCard></page-feedback-card>
 
       <ion-card *ngIf="homeTip && wallets && wallets[0]">
         <ion-card-header class="wallet-ready">

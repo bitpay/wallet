@@ -20,9 +20,6 @@ describe('HomePage', () => {
       fixture = testEnv.fixture;
       instance = testEnv.instance;
       testBed = testEnv.testBed;
-      instance.showCard = {
-        setShowRateCard: () => {}
-      };
       fixture.detectChanges();
     })));
   afterEach(() => {
