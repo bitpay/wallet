@@ -110,6 +110,7 @@ export class ConfirmPage extends WalletTabsChild {
       : 'normal';
     this.isCordova = this.platformProvider.isCordova;
     this.hideSlideButton = false;
+    console.log('this.navParams.data: ', this.navParams.data);
   }
 
   ngOnInit() {
@@ -125,33 +126,38 @@ export class ConfirmPage extends WalletTabsChild {
     this.isOpenSelector = false;
     let B = this.navParams.data.coin == 'bch' ? this.bitcoreCash : this.bitcore;
     let networkName;
-    try {
-      networkName = new B.Address(this.navParams.data.toAddress).network.name;
-    } catch (e) {
-      var message = this.translate.instant(
-        'Copay only supports Bitcoin Cash using new version numbers addresses'
-      );
-      var backText = this.translate.instant('Go back');
-      var learnText = this.translate.instant('Learn more');
-      this.popupProvider
-        .ionicConfirm(null, message, backText, learnText)
-        .then(back => {
-          if (!back) {
-            var url =
-              'https://support.bitpay.com/hc/en-us/articles/115004671663';
-            this.externalLinkProvider.open(url);
-          }
-          this.navCtrl.pop();
-        });
-      return;
+    let amount;
+    if (this.navParams.data.fromMultiSend) {
+      networkName = this.navParams.data.network;
+      amount = this.navParams.data.totalAmount;
+    } else {
+      amount = this.navParams.data.amount;
+      try {
+        networkName = new B.Address(this.navParams.data.toAddress).network.name;
+      } catch (e) {
+        var message = this.translate.instant(
+          'Copay only supports Bitcoin Cash using new version numbers addresses'
+        );
+        var backText = this.translate.instant('Go back');
+        var learnText = this.translate.instant('Learn more');
+        this.popupProvider
+          .ionicConfirm(null, message, backText, learnText)
+          .then(back => {
+            if (!back) {
+              var url =
+                'https://support.bitpay.com/hc/en-us/articles/115004671663';
+              this.externalLinkProvider.open(url);
+            }
+            this.navCtrl.pop();
+          });
+        return;
+      }
     }
 
     this.tx = {
       toAddress: this.navParams.data.toAddress,
       sendMax: this.navParams.data.useSendMax ? true : false,
-      amount: this.navParams.data.useSendMax
-        ? 0
-        : parseInt(this.navParams.data.amount, 10),
+      amount: this.navParams.data.useSendMax ? 0 : parseInt(amount, 10),
       description: this.navParams.data.description,
       paypro: this.navParams.data.paypro,
       spendUnconfirmed: this.config.wallet.spendUnconfirmed,
@@ -161,7 +167,9 @@ export class ConfirmPage extends WalletTabsChild {
       name: this.navParams.data.name,
       email: this.navParams.data.email,
       color: this.navParams.data.color,
-      network: networkName,
+      network: this.navParams.data.network
+        ? this.navParams.data.network
+        : networkName,
       coin: this.navParams.data.coin,
       txp: {}
     };
@@ -203,7 +211,9 @@ export class ConfirmPage extends WalletTabsChild {
   }
 
   private getAmountDetails() {
+    console.log('this.tx.amount: ', this.tx.amount);
     this.amount = this.decimalPipe.transform(this.tx.amount / 1e8, '1.2-6');
+    console.log('this.amount: ', this.amount);
   }
 
   private afterWalletSelectorSet() {
@@ -645,13 +655,24 @@ export class ConfirmPage extends WalletTabsChild {
 
       let txp: Partial<TransactionProposal> = {};
 
-      txp.outputs = [
-        {
-          toAddress: tx.toAddress,
-          amount: tx.amount,
-          message: tx.description
-        }
-      ];
+      if (this.navParams.data.fromMultiSend) {
+        txp.outputs = [];
+        this.navParams.data.recipients.forEach(recipient => {
+          txp.outputs.push({
+            toAddress: recipient.toAddress,
+            amount: recipient.amount,
+            message: tx.description
+          });
+        });
+      } else {
+        txp.outputs = [
+          {
+            toAddress: tx.toAddress,
+            amount: tx.amount,
+            message: tx.description
+          }
+        ];
+      }
 
       if (tx.sendMaxInfo) {
         txp.inputs = tx.sendMaxInfo.inputs;

@@ -173,6 +173,8 @@ export class TxDetailsPage {
     this.walletProvider
       .getTx(this.wallet, this.txId)
       .then(tx => {
+        console.log('-------------tx: ', tx);
+
         if (!opts.hideLoading) this.onGoingProcess.clear();
 
         this.btx = this.txFormatProvider.processTx(

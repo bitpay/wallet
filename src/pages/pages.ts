@@ -104,6 +104,8 @@ import { WalletTransactionHistoryPage } from '../pages/settings/wallet-settings/
 import { AmountPage } from '../pages/send/amount/amount';
 import { ChooseFeeLevelPage } from '../pages/send/choose-fee-level/choose-fee-level';
 import { ConfirmPage } from '../pages/send/confirm/confirm';
+import { MultiSendPage } from '../pages/send/multi-send/multi-send';
+import { TransferToModalPage } from '../pages/send/transfer-to-modal/transfer-to-modal';
 
 /* Receive */
 import { CustomAmountPage } from '../pages/receive/custom-amount/custom-amount';
@@ -144,6 +146,8 @@ export const PAGES = [
   BackupWarningPage,
   BackupGamePage,
   ConfirmPage,
+  MultiSendPage,
+  TransferToModalPage,
   CustomAmountPage,
   DisclaimerPage,
   CollectEmailPage,

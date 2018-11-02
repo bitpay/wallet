@@ -4,7 +4,12 @@ import {
   HostListener,
   NgZone
 } from '@angular/core';
-import { Events, NavController, NavParams } from 'ionic-angular';
+import {
+  Events,
+  NavController,
+  NavParams,
+  ViewController
+} from 'ionic-angular';
 import * as _ from 'lodash';
 
 // Providers
@@ -99,7 +104,8 @@ export class AmountPage extends WalletTabsChild {
     private txFormatProvider: TxFormatProvider,
     private changeDetectorRef: ChangeDetectorRef,
     walletTabsProvider: WalletTabsProvider,
-    private events: Events
+    private events: Events,
+    private viewCtrl: ViewController
   ) {
     super(navCtrl, profileProvider, walletTabsProvider);
     this.zone = new NgZone({ enableLongStackTrace: false });
@@ -553,7 +559,8 @@ export class AmountPage extends WalletTabsChild {
       }
     }
     this.useSendMax = null;
-    this.navCtrl.push(this.nextView, data);
+    this.closeModal(data);
+    // this.navCtrl.push(this.nextView, data);
   }
 
   private updateUnitUI(): void {
@@ -595,5 +602,9 @@ export class AmountPage extends WalletTabsChild {
       this.updateUnitUI();
       this.changeDetectorRef.detectChanges();
     });
+  }
+
+  public closeModal(item): void {
+    this.viewCtrl.dismiss(item);
   }
 }

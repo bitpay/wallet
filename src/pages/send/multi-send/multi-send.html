@@ -1,0 +1,93 @@
+<ion-header [ngClass]="{'wallet-details-header': wallet}">
+  <ion-navbar [navbar-bg]="wallet && wallet.color">
+    <ion-title>{{wallet && wallet.name || ('Amount' | translate)}}</ion-title>
+  </ion-navbar>
+  <ion-toolbar *ngIf="wallet" [navbar-bg]="wallet.color">
+    <div *ngIf="!wallet.balanceHidden && !wallet.scanning && wallet.status" class="wallet-details-header__balance">
+      <span>{{wallet.status && wallet.status.totalBalanceStr}}</span>
+      <ion-icon *ngIf="wallet.status.totalBalanceSat != wallet.status.spendableAmount" ios="ios-timer-outline" md="md-timer"></ion-icon>
+    </div>
+    <div *ngIf="wallet.balanceHidden  && !wallet.scanning" class="wallet-details-header__balance-hidden">
+      <span class="title" translate>[Balance Hidden]</span>
+    </div>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content no-bounce>
+
+  <div *ngIf="!shouldShowZeroState()">
+    <div *ngIf="hasBtcWallets || hasBchWallets">
+      <div class="send-header-wrapper">
+        <span class="send-heading" translate>Recipient</span>
+        <ion-item class="search-wrapper" [ngClass]="{'invalid': invalidAddress && search != ''}">
+          <ion-input placeholder="{{'Search or enter bitcoin address' | translate}}" [(ngModel)]="search" (ngModelChange)="processInput()"></ion-input>
+          <ion-icon *ngIf="invalidAddress && search != ''" item-end class="backspace-icon" name="backspace" (click)="search = ''"></ion-icon>
+          <ion-icon item-end class="scan-icon" (click)="openScanner()">
+            <img src="assets/img/scan-ico.svg">
+          </ion-icon>
+        </ion-item>
+        <div *ngIf="!invalidAddress && search != ''">
+          <span (click)="addRecipient()">Añadir destinatario</span>
+          <span (click)="openAmountModal()">Cancelar</span>
+          <ion-icon item-end class="open-modal-icon">
+            <img src="assets/img/address-book-add.svg" />
+          </ion-icon>
+          <ion-icon class="check fail" name="ios-close-circle" item-right></ion-icon>
+        </div>
+      </div>
+
+      <div>
+        <div class="card" *ngFor="let att of multiSearch; let idx = index">
+          <span>Destinatario {{idx +1}}: {{att.toAddress}}</span>
+          <ion-icon class="check fail" name="ios-close-outline" item-right (click)="removeRecipient(idx)"></ion-icon>
+          <br>
+          <span>Tipo: {{att.type}}</span>
+          <br>
+          <span>Amount: {{att.amountToShow}} {{wallet.coin}}</span>
+          <ion-icon class="check fail" name="ios-calculator-outline" (click)="openAmountModal(att, idx)"></ion-icon>
+        </div>
+      </div>
+
+      <!-- <div class="send-header-wrapper">
+        <span class="send-heading" translate>Recipients</span>
+        <div *ngFor="let att of multiSearch; let idx = index">
+          <ion-item class="search-wrapper" [ngClass]="{'invalid': invalidAddress && search != ''}">
+            <ion-label color="primary">{{att.label}}{{idx+1}}</ion-label>
+            <ion-input placeholder="{{'Search or enter bitcoin address' | translate}}" [(ngModel)]="multiSearch[idx].toAddress" (ngModelChange)="processInput()"></ion-input>
+            <ion-icon *ngIf="invalidAddress && search != ''" item-end class="backspace-icon" name="backspace"></ion-icon>
+            <ion-icon item-end class="scan-icon" (click)="openScanner()">
+              <img src="assets/img/scan-ico.svg">
+            </ion-icon>
+            <ion-icon item-end class="open-modal-icon">
+              <img src="assets/img/address-book-add.svg" />
+            </ion-icon>
+            <ion-icon class="check fail" name="ios-close-circle" item-right></ion-icon>
+          </ion-item>
+        </div>
+      </div> -->
+
+      <!-- <button ion-button class="button-standard" (click)="addRecipient()">
+        {{'Add Recipient' | translate}}
+      </button>
+
+      <button ion-button class="button-standard" (click)="removeRecipient()">
+        {{'Remove Recipient' | translate}}
+      </button>
+
+      <button ion-button class="button-standard" (click)="goToAmount()">
+        {{'Go to Amount' | translate}}
+      </button>
+
+      <button ion-button class="button-standard" (click)="openTransferToModal()">
+        {{'Open Contacts modal' | translate}}
+      </button> -->
+
+      <button ion-button class="button-standard" (click)="goToConfirm()">
+        {{'Continue to Confirm Page' | translate}}
+      </button>
+    </div>
+    <div *ngIf="!hasBtcWallets && !hasBchWallets" class="no-wallet-message">
+      <span translate>To get started, you'll need to create a bitcoin wallet and get some bitcoin.</span>
+    </div>
+  </div>
+</ion-content>

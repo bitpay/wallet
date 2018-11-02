@@ -1,26 +1,33 @@
+import { DecimalPipe } from '@angular/common';
 import { Component } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { Events, NavController, NavParams } from 'ionic-angular';
+import {
+  Events,
+  ModalController,
+  NavController,
+  NavParams
+} from 'ionic-angular';
 import * as _ from 'lodash';
 import { Observable } from 'rxjs/Observable';
 
 // Providers
-import { ActionSheetProvider } from '../../providers/action-sheet/action-sheet';
-import { AddressBookProvider } from '../../providers/address-book/address-book';
-import { AddressProvider } from '../../providers/address/address';
-import { AppProvider } from '../../providers/app/app';
-import { ExternalLinkProvider } from '../../providers/external-link/external-link';
-import { IncomingDataProvider } from '../../providers/incoming-data/incoming-data';
-import { Logger } from '../../providers/logger/logger';
-import { PopupProvider } from '../../providers/popup/popup';
-import { ProfileProvider } from '../../providers/profile/profile';
-import { Coin, WalletProvider } from '../../providers/wallet/wallet';
-import { WalletTabsProvider } from '../wallet-tabs/wallet-tabs.provider';
+import { ActionSheetProvider } from '../../../providers/action-sheet/action-sheet';
+import { AddressBookProvider } from '../../../providers/address-book/address-book';
+import { AddressProvider } from '../../../providers/address/address';
+import { AppProvider } from '../../../providers/app/app';
+import { ExternalLinkProvider } from '../../../providers/external-link/external-link';
+import { IncomingDataProvider } from '../../../providers/incoming-data/incoming-data';
+import { Logger } from '../../../providers/logger/logger';
+import { PopupProvider } from '../../../providers/popup/popup';
+import { ProfileProvider } from '../../../providers/profile/profile';
+import { Coin, WalletProvider } from '../../../providers/wallet/wallet';
+import { WalletTabsProvider } from '../../wallet-tabs/wallet-tabs.provider';
 
 // Pages
-import { WalletTabsChild } from '../wallet-tabs/wallet-tabs-child';
-import { AmountPage } from './amount/amount';
-import { MultiSendPage } from './multi-send/multi-send';
+import { WalletTabsChild } from '../../wallet-tabs/wallet-tabs-child';
+import { AmountPage } from '../amount/amount';
+import { ConfirmPage } from '../confirm/confirm';
+import { TransferToModalPage } from '../transfer-to-modal/transfer-to-modal';
 
 export interface FlatWallet {
   color: string;
@@ -36,11 +43,12 @@ export interface FlatWallet {
 }
 
 @Component({
-  selector: 'page-send',
-  templateUrl: 'send.html'
+  selector: 'page-multi-send',
+  templateUrl: 'multi-send.html'
 })
-export class SendPage extends WalletTabsChild {
+export class MultiSendPage extends WalletTabsChild {
   public search: string = '';
+  public multiSearch: any = [];
   public walletsBtc;
   public walletsBch;
   public walletBchList: FlatWallet[];
@@ -82,13 +90,15 @@ export class SendPage extends WalletTabsChild {
     private actionSheetProvider: ActionSheetProvider,
     private externalLinkProvider: ExternalLinkProvider,
     private appProvider: AppProvider,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private modalCtrl: ModalController,
+    private decimalPipe: DecimalPipe
   ) {
     super(navCtrl, profileProvider, walletTabsProvider);
   }
 
   ionViewDidLoad() {
-    this.logger.info('Loaded: SendPage');
+    this.logger.info('Loaded: MultiSendPage');
 
     this.events.subscribe('update:address', data => {
       this.search = data.value;
@@ -108,6 +118,68 @@ export class SendPage extends WalletTabsChild {
 
   ngOnDestroy() {
     this.events.unsubscribe('update:address');
+  }
+
+  // addRecipient() {
+  //   console.log('addRecipient');
+  //   this.multiSearch.push({ toAddress: '', type: '' }); // Type: wallet, contact, address
+  // }
+
+  // removeRecipient() {
+  //   console.log('removeRecipient');
+  // }
+
+  public openTransferToModal(): void {
+    let modal = this.modalCtrl.create(
+      TransferToModalPage,
+      {
+        wallet: this.wallet
+      },
+      { showBackdrop: false, enableBackdropDismiss: true }
+    );
+    modal.present();
+    modal.onDidDismiss(data => {
+      if (!data) return;
+      console.log('data after modal: ', data);
+    });
+  }
+
+  public openAmountModal(item, index): void {
+    console.log('openAmountModal item: ', item, index);
+    let modal = this.modalCtrl.create(
+      AmountPage,
+      {
+        wallet: this.wallet
+      },
+      { showBackdrop: false, enableBackdropDismiss: true }
+    );
+    modal.present();
+    modal.onDidDismiss(data => {
+      if (!data) return;
+      item.amount = +data.amount;
+      item.fiatAmount = data.fiatAmount;
+      item.fiatCode = data.fiatCode;
+      item.amountToShow = this.decimalPipe.transform(
+        data.amount / 1e8,
+        '1.2-6'
+      );
+
+      this.multiSearch[index] = item;
+      console.log('data after modal: ', this.multiSearch[index]);
+    });
+  }
+
+  public addRecipient(): void {
+    this.multiSearch.push({
+      toAddress: _.clone(this.search),
+      type: 'plain address'
+    }); // Type: wallet, contact, address
+    this.search = '';
+    this.invalidAddress = false;
+  }
+
+  public removeRecipient(index): void {
+    this.multiSearch.splice(index, 1);
   }
 
   private getBchWalletsList(): FlatWallet[] {
@@ -306,25 +378,13 @@ export class SendPage extends WalletTabsChild {
       ) {
         const parsedData = this.incomingDataProvider.parseData(this.search);
         if (parsedData && parsedData.type == 'PayPro') {
-          const coin: string =
-            this.search.indexOf('bitcoincash') === 0 ? Coin.BCH : Coin.BTC;
-          this.incomingDataProvider
-            .getPayProDetails(this.search)
-            .then(payProDetails => {
-              payProDetails.coin = coin;
-              const isValid = this.checkCoinAndNetwork(payProDetails, true);
-              if (isValid) this.redir();
-            })
-            .catch(err => {
-              this.invalidAddress = true;
-              this.logger.warn(err);
-            });
+          this.invalidAddress = true;
         } else if (
           parsedData &&
           _.indexOf(this.validDataTypeMap, parsedData.type) != -1
         ) {
           const isValid = this.checkCoinAndNetwork(this.search);
-          if (isValid) this.redir();
+          if (isValid) this.invalidAddress = false;
         } else {
           this.invalidAddress = true;
         }
@@ -366,6 +426,24 @@ export class SendPage extends WalletTabsChild {
     });
   }
 
+  public goToConfirm(): void {
+    console.log('go to Confirm Page with this data: ', this.multiSearch);
+    let totalAmount = 0;
+    this.multiSearch.forEach(recipient => {
+      totalAmount += recipient.amount;
+    });
+    this.navCtrl.push(ConfirmPage, {
+      fromMultiSend: true,
+      totalAmount,
+      recipientType: 'multi',
+      color: this.wallet.color,
+      coin: this.wallet.coin,
+      network: this.wallet.network,
+      useSendMax: false,
+      recipients: this.multiSearch
+    });
+  }
+
   public goToAmount(item): void {
     item
       .getAddress()
@@ -390,10 +468,6 @@ export class SendPage extends WalletTabsChild {
       .catch(err => {
         this.logger.error('Send: could not getAddress', err);
       });
-  }
-
-  public goToMultiSendPage(): void {
-    this.navCtrl.push(MultiSendPage);
   }
 
   public closeCam(): void {
