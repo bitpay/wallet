@@ -16,16 +16,11 @@
     </div>
     <div class="buy-box">
       <card-description class="buy-box__terms" [cardConfig]="cardConfig"></card-description>
-      <div class="actions">
-        <button ion-button *ngIf="!fixContinueButtonToBottom()" class="button-standard" (click)="enterAmount()">
-          {{'Enter Amount' | translate}}
-        </button>
-      </div>
     </div>
   </div>
 </ion-content>
 
-<ion-footer *ngIf="fixContinueButtonToBottom()">
+<ion-footer>
   <ion-toolbar>
     <button ion-button full class="button-footer" (click)="next()">
       {{'Continue' | translate}}

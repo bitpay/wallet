@@ -57,8 +57,4 @@ export class BuyCardPage {
       ? this.continue()
       : this.enterAmount();
   }
-
-  fixContinueButtonToBottom() {
-    return true; // this.cardConfig && this.cardConfig.supportedAmounts;
-  }
 }
