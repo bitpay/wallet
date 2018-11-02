@@ -26,12 +26,12 @@
       utilities and metro rides.
     </div>
   </div>
-  <!-- <div *ngSwitchCase="CardName.uber">
+  <div *ngSwitchCase="CardName.uber">
     <div translate>Give friends and family the gift of tapping a button and getting a ride - any time of day, any day
       of year.</div>
     <div translate>Uber gift cards also apply to UberEATS orders. Enjoy food from hundreds of restaurants, delivered at
       Uber speed.</div>
-  </div> -->
+  </div>
   <div *ngSwitchDefault externalize-links>
     <div markdown [data]="prepForMarkdown(cardConfig.description)"></div>
   </div>

@@ -35,10 +35,6 @@ describe('GiftCardProvider', () => {
         await saveGiftCards(giftCardProvider, persistenceProvider);
       }
     ));
-    // afterEach(inject(
-    //   [HttpTestingController],
-    //   async (httpMock: HttpTestingController) => httpMock.verify()
-    // ));
     it('should return an empty array when the storage key for a brand is unset', inject(
       [GiftCardProvider, HttpTestingController],
       async (

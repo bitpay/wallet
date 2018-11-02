@@ -1,11 +1,11 @@
-import { AfterViewInit, Directive, ElementRef } from '@angular/core';
+import { AfterViewInit, Directive, ElementRef, OnDestroy } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ExternalLinkProvider } from '../../providers';
 
 @Directive({
   selector: '[externalize-links]'
 })
-export class ExternalizeLinks implements AfterViewInit {
+export class ExternalizeLinks implements AfterViewInit, OnDestroy {
   constructor(
     private element: ElementRef,
     private externalLinkProvider: ExternalLinkProvider
