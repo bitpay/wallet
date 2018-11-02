@@ -1,4 +1,5 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, ViewChild } from '@angular/core';
+import { Content } from 'ionic-angular';
 import { PlatformProvider } from '../../../providers/platform/platform';
 
 @Component({
@@ -10,6 +11,9 @@ export class WideHeaderPage {
   headerColor: string;
   @Input()
   title: string;
+
+  @ViewChild(Content)
+  scrollArea: Content;
 
   constructor(public platformProvider: PlatformProvider) {}
 }

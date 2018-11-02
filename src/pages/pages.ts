@@ -71,8 +71,6 @@ import { ProposalsPage } from '../pages/home/proposals/proposals';
 
 /* Settings */
 import { FingerprintModalPage } from '../pages/fingerprint/fingerprint';
-import { AmazonSettingsPage } from '../pages/integrations/amazon/amazon-settings/amazon-settings';
-import { MercadoLibreSettingsPage } from '../pages/integrations/mercado-libre/mercado-libre-settings/mercado-libre-settings';
 import { PIN_COMPONENTS } from '../pages/pin/pin';
 import { AboutPage } from '../pages/settings/about/about';
 import { SessionLogPage } from '../pages/settings/about/session-log/session-log';
@@ -113,13 +111,12 @@ import { CustomAmountPage } from '../pages/receive/custom-amount/custom-amount';
 import { WideHeaderPage } from './templates/wide-header-page/wide-header-page';
 import { WalletTabsChild } from './wallet-tabs/wallet-tabs-child';
 
+import { CardCatalogPage } from './integrations/gift-cards/card-catalog/card-catalog';
 import { GIFT_CARD_PAGES } from './integrations/gift-cards/gift-cards';
 
 export const PAGES = [
   ActivityPage,
   AddPage,
-  AmazonSettingsPage,
-  MercadoLibreSettingsPage,
   AmountPage,
   AddressbookPage,
   AddressbookAddPage,
@@ -136,6 +133,7 @@ export const PAGES = [
   BitPayCardTopUpPage,
   BuyCoinbasePage,
   BuyGlideraPage,
+  CardCatalogPage,
   ChooseFeeLevelPage,
   CreateWalletPage,
   CoinbasePage,

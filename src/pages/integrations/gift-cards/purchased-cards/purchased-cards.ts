@@ -1,13 +1,12 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 
-// Providers
-import { ExternalLinkProvider } from '../../../../providers/external-link/external-link';
+import { ActionSheetProvider } from '../../../../providers';
+import { GiftCardProvider } from '../../../../providers/gift-card/gift-card';
 import {
-  CardConifg,
-  GiftCard,
-  GiftCardProvider
-} from '../../../../providers/gift-card/gift-card';
+  CardConfig,
+  GiftCard
+} from '../../../../providers/gift-card/gift-card.types';
 import { Logger } from '../../../../providers/logger/logger';
 import { BuyCardPage } from '../buy-card/buy-card';
 import { CardDetailsPage } from '../card-details/card-details';
@@ -18,22 +17,17 @@ import { CardListItemComponent } from './card-list-item/card-list-item';
   templateUrl: 'purchased-cards.html'
 })
 export class PurchasedCardsPage {
-  public network: string;
-  public giftCards: { [invoiceId: string]: GiftCard };
   public allGiftCards: GiftCard[];
   public currentGiftCards: GiftCard[];
   public archivedGiftCards: GiftCard[];
-  public updatingPending;
-  public card;
-  public invoiceId: string;
-  public cardConfig: CardConifg;
+  public cardConfig: CardConfig;
 
   constructor(
-    private externalLinkProvider: ExternalLinkProvider,
-    private giftCardProvider: GiftCardProvider,
-    private logger: Logger,
-    private navCtrl: NavController,
-    private navParams: NavParams
+    protected actionSheetProvider: ActionSheetProvider,
+    protected giftCardProvider: GiftCardProvider,
+    protected logger: Logger,
+    protected navCtrl: NavController,
+    protected navParams: NavParams
   ) {}
 
   async ngOnInit() {
@@ -57,12 +51,23 @@ export class PurchasedCardsPage {
     );
     this.setGiftCards(this.allGiftCards);
   }
-
-  addCard() {
-    this.navCtrl.push(BuyCardPage, { cardName: this.cardConfig.name });
+  async addCard() {
+    this.navCtrl.push(BuyCardPage, { cardConfig: this.cardConfig });
+  }
+  async archive() {
+    const archiveSheet = this.actionSheetProvider.createInfoSheet(
+      'archive-all-gift-cards',
+      { brand: this.cardConfig.brand }
+    );
+    archiveSheet.present();
+    archiveSheet.onDidDismiss(async confirm => {
+      if (!confirm) return;
+      await this.navCtrl.pop();
+      this.giftCardProvider.archiveAllCards(this.cardConfig.name);
+    });
   }
 
-  private async getCards(): Promise<any> {
+  protected async getCards(): Promise<any> {
     await this.giftCardProvider
       .getPurchasedCards(this.cardConfig.name)
       .then(cards => this.setGiftCards(cards))
@@ -76,12 +81,14 @@ export class PurchasedCardsPage {
     this.archivedGiftCards = allCards.filter(gc => gc.archived);
   }
 
-  public openExternalLink(url: string) {
-    this.externalLinkProvider.open(url);
+  public async goToCardDetails(card) {
+    await this.navCtrl.push(CardDetailsPage, { card });
+    this.currentGiftCards.length === 1 && this.removePageFromHistory();
   }
 
-  public goToCardDetails(card) {
-    return this.navCtrl.push(CardDetailsPage, { card });
+  protected removePageFromHistory() {
+    const startIndex = this.navCtrl.getActive().index - 1;
+    this.navCtrl.remove(startIndex, 1);
   }
 }
 

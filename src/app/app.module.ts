@@ -1,4 +1,7 @@
 import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MarkdownModule } from 'ngx-markdown';
+
 import { ErrorHandler, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
@@ -15,6 +18,7 @@ import {
 } from '@ngx-translate/core';
 import { ZXingScannerModule } from '@zxing/ngx-scanner';
 import { MomentModule } from 'angular2-moment';
+import { NgxBarcodeModule } from 'ngx-barcode';
 import { NgxQRCodeModule } from 'ngx-qrcode2';
 
 /* Copay App */
@@ -46,6 +50,7 @@ import { WideHeaderBarButton } from '../pages/templates/wide-header-page/wide-he
 import { COMPONENTS } from './../components/components';
 
 /* Providers */
+import { ExternalizeLinks } from '../directives/externalize-links/externalize-links';
 import { ProvidersModule } from './../providers/providers.module';
 
 /* Read translation files */
@@ -75,6 +80,7 @@ export class MyMissingTranslationHandler implements MissingTranslationHandler {
     ...COMPONENTS,
     /* Directives */
     CopyToClipboard,
+    ExternalizeLinks,
     FixedScrollBgColor,
     IonContentBackgroundColor,
     LongPress,
@@ -100,8 +106,11 @@ export class MyMissingTranslationHandler implements MissingTranslationHandler {
       backButtonText: ''
     }),
     BrowserModule,
+    BrowserAnimationsModule,
     HttpClientModule,
+    MarkdownModule.forRoot(),
     MomentModule,
+    NgxBarcodeModule,
     NgxQRCodeModule,
     ProvidersModule,
     TranslateModule.forRoot({

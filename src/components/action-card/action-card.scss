@@ -1,0 +1,35 @@
+action-card.card {
+  background: white;
+  display: block;
+  text-align: center;
+  padding: 20px;
+  padding-bottom: 0;
+
+  > * {
+    margin: 15px;
+  }
+
+  .action-card {
+    &__title {
+      font-size: 20px;
+      font-weight: 500;
+    }
+
+    &__body {
+      font-size: 16px;
+      font-weight: 300;
+      line-height: 23px;
+    }
+
+    &__cta {
+      background: #f8f8f8;
+      cursor: pointer;
+      font-size: 18px;
+      margin: 30px -20px 0;
+
+      > div {
+        padding: 20px;
+      }
+    }
+  }
+}

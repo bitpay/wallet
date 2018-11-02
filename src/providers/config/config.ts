@@ -74,6 +74,7 @@ export interface Config {
     amazon: boolean;
     mercadolibre: boolean;
     shapeshift: boolean;
+    giftcards: boolean;
   };
 
   rates: {
@@ -186,7 +187,8 @@ const configDefault: Config = {
     debitcard: true,
     amazon: true,
     mercadolibre: true,
-    shapeshift: true
+    shapeshift: true,
+    giftcards: true
   },
 
   rates: {
@@ -306,6 +308,11 @@ export class ConfigProvider {
     }
     if (!this.configCache.showIntegration) {
       this.configCache.showIntegration = configDefault.showIntegration;
+    } else {
+      if (this.configCache.showIntegration.giftcards !== false) {
+        this.configCache.showIntegration.giftcards =
+          configDefault.showIntegration.giftcards;
+      }
     }
     if (!this.configCache.recentTransactions) {
       this.configCache.recentTransactions = configDefault.recentTransactions;

@@ -146,6 +146,7 @@
     }
   },
   "dependencies": {
+    "@angular/animations": "^5.2.10",
     "@angular/common": "5.2.10",
     "@angular/compiler": "5.2.10",
     "@angular/compiler-cli": "5.2.10",
@@ -217,6 +218,8 @@
     "ionic-angular": "3.9.2",
     "ionicons": "3.0.0",
     "lodash": "4.17.11",
+    "ngx-barcode": "^0.2.4",
+    "ngx-markdown": "^7.0.0",
     "ngx-qrcode2": "0.1.0",
     "papaparse": "4.3.6",
     "preconditions": "2.2.0",
@@ -225,6 +228,7 @@
     "sw-toolbox": "3.6.0",
     "text-encoding": "0.6.4",
     "ts-md5": "1.2.2",
+    "web-animations-js": "^2.3.1",
     "zone.js": "0.8.26"
   },
   "devDependencies": {

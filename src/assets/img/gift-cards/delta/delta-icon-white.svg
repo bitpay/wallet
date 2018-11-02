@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="50px" height="50px" viewBox="0 0 50 50" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 52.1 (67048) - http://www.bohemiancoding.com/sketch -->
+    <title>Icons/Large (50px)/Delta</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <rect id="path-1" x="0" y="0" width="50" height="50"></rect>
+        <polygon id="path-3" points="0 0.2457 62.4158182 0.2457 62.4158182 48.958 0 48.958"></polygon>
+    </defs>
+    <g id="Icons/Large-(50px)/Delta" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <rect fill="#FFFFFF" x="0" y="0" width="50" height="50"></rect>
+        <mask id="mask-2" fill="white">
+            <use xlink:href="#path-1"></use>
+        </mask>
+        <rect stroke-opacity="0.2" stroke="#464D5F" x="0.5" y="0.5" width="49" height="49"></rect>
+        <g id="Group-5" mask="url(#mask-2)">
+            <g transform="translate(24.500000, 23.500000) rotate(57.000000) translate(-24.500000, -23.500000) translate(-7.000000, -1.000000)">
+                <mask id="mask-4" fill="white">
+                    <use xlink:href="#path-3"></use>
+                </mask>
+                <g id="Clip-2" stroke="none" fill="none"></g>
+                <path d="M60.1227614,43.7969 L31.2064773,30.1847 L31.2064773,0.2457 L60.1227614,43.7969 Z M62.4158182,49 L31.2064773,36.106 L31.2064773,49 L62.4158182,49 Z" id="Fill-1" stroke="none" fill="#81112C" fill-rule="evenodd" mask="url(#mask-4)"></path>
+                <polyline id="Fill-3" stroke="none" fill="#D02139" fill-rule="evenodd" mask="url(#mask-4)" points="2.28661364 43.7969 31.2064773 0.2457 31.2064773 30.1847 2.28661364 43.7969"></polyline>
+                <polyline id="Fill-4" stroke="none" fill="#D02139" fill-rule="evenodd" mask="url(#mask-4)" points="0 49 31.2064773 49 31.2064773 36.106 0 49"></polyline>
+            </g>
+        </g>
+    </g>
+</svg>

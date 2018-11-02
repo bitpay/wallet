@@ -162,8 +162,8 @@ msgstr "Already duplicated"
 msgid "Alternative currency"
 msgstr "Alternative currency"
 
-msgid "Amazon.com is not available at this moment. Please try back later."
-msgstr "Amazon.com is not available at this moment. Please try back later."
+msgid "Amazon.com is not available at this moment. Please try again later."
+msgstr "Amazon.com is not available at this moment. Please try again later."
 
 msgid "Amount"
 msgstr "Amount"

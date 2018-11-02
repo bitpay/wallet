@@ -15,11 +15,17 @@
       </div>
     </div>
     <div *ngSwitchCase="'gift-card-options'">
-      <div class="option" (click)="optionClicked('archive')">
+      <div class="option" (click)="optionClicked('archive')" *ngIf="!params.card.archived">
         <div class="option-icon">
           <img src="assets/img/notebook.svg">
         </div>
         <div translate class="option-text">Archive Card</div>
+      </div>
+      <div class="option" (click)="optionClicked('unarchive')" *ngIf="params.card.archived">
+        <div class="option-icon">
+          <img src="assets/img/notebook.svg">
+        </div>
+        <div translate class="option-text">Unarchive Card</div>
       </div>
       <div class="option" (click)="optionClicked('view-invoice')">
         <div class="option-icon">

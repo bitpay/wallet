@@ -5,7 +5,7 @@ import {
   CardBrand,
   CardName,
   GiftCard
-} from '../../../../providers/gift-card/gift-card';
+} from '../../../../providers/gift-card/gift-card.types';
 import { PurchasedCardsPage } from './purchased-cards';
 
 describe('PurchasedCardsPage', () => {

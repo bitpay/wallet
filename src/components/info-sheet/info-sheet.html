@@ -22,7 +22,9 @@
     <info-sheet-template *ngSwitchCase="'receiving-bitcoin'" type="info">
       <span sheet-title-text>{{'Receiving {coinName} address' | translate: {coinName: params.coinName } }}</span>
       <span sheet-text>
-        {{'Your wallet address is similar to a bank account number. You can add funds to your wallet by withdrawing funds you may have stored on an exchange to your wallet address. Or other {coinName} users can send you money by scanning your QR code.' | translate: {coinName: params.coinName} }}
+        {{'Your wallet address is similar to a bank account number. You can add funds to your wallet by withdrawing
+        funds you may have stored on an exchange to your wallet address. Or other {coinName} users can send you money
+        by scanning your QR code.' | translate: {coinName: params.coinName} }}
       </span>
       <span sheet-button-text translate>GOT IT</span>
     </info-sheet-template>
@@ -30,7 +32,8 @@
     <info-sheet-template *ngSwitchCase="'backup-needed-with-activity'" type="info">
       <span sheet-title-text translate>Needs Backup</span>
       <span sheet-text translate>
-        Congratulations! It looks like you've recently received money. It's highly advised that you verify your recovery phrase so that your funds can be recovered in case your phone was lost or stolen.
+        Congratulations! It looks like you've recently received money. It's highly advised that you verify your
+        recovery phrase so that your funds can be recovered in case your phone was lost or stolen.
       </span>
       <span sheet-button-text translate>Continue</span>
       <span sheet-second-button-text translate>Not right now</span>
@@ -39,7 +42,9 @@
     <info-sheet-template *ngSwitchCase="'miner-fee-notice'" type="warning">
       <span sheet-title-text translate>Miner Fee Notice</span>
       <span sheet-text>
-        {{'Because you are sending the maximum amount contained in this wallet, the {coinName} miner fee ({fee} {coin}) will be deducted from the total. {msg}' | translate: {coinName: params.coinName, fee: params.fee, coin: params.coin, msg: params.msg} }}
+        {{'Because you are sending the maximum amount contained in this wallet, the {coinName} miner fee ({fee} {coin})
+        will be deducted from the total. {msg}' | translate: {coinName: params.coinName, fee: params.fee, coin:
+        params.coin, msg: params.msg} }}
       </span>
       <span sheet-button-text translate>GOT IT</span>
     </info-sheet-template>
@@ -47,7 +52,8 @@
     <info-sheet-template *ngSwitchCase="'miner-fee'" type="danger">
       <span sheet-title-text>{{ '{coinName} miner fees unusually high' | translate: {coinName: params.coinName } }}</span>
       <span sheet-text>
-        {{ '{coinName} miner fees are high due to record demand for limited space on the {coinName} network. BitPay does not receive and does not control {coinName} miner fees.' | translate: {coinName: params.coinName } }}
+        {{ '{coinName} miner fees are high due to record demand for limited space on the {coinName} network. BitPay
+        does not receive and does not control {coinName} miner fees.' | translate: {coinName: params.coinName } }}
       </span>
       <span sheet-button-text translate>GOT IT</span>
     </info-sheet-template>
@@ -55,7 +61,8 @@
     <info-sheet-template *ngSwitchCase="'insufficient-funds'" type="danger">
       <span sheet-title-text translate>Not enough funds</span>
       <span sheet-text>
-        {{ 'You are trying to send ({amount} {coin}) more than what your wallet contains. Please enter a lower amount or send max.' | translate: {amount: params.amount, coin: params.coin | uppercase} }}
+        {{ 'You are trying to send ({amount} {coin}) more than what your wallet contains. Please enter a lower amount
+        or send max.' | translate: {amount: params.amount, coin: params.coin | uppercase} }}
       </span>
       <span sheet-button-text translate>Change Amount</span>
       <span sheet-second-button-text translate>Send Max</span>
@@ -70,16 +77,19 @@
     <info-sheet-template *ngSwitchCase="'backup-warning'" type="warning">
       <span sheet-title-text translate>Screenshots are not secure</span>
       <span sheet-text translate>
-        If you take a screenshot, your recovery phrase may be viewed by other apps. You can make a safe backup with physical paper and a pen.
+        If you take a screenshot, your recovery phrase may be viewed by other apps. You can make a safe backup with
+        physical paper and a pen.
       </span>
       <span sheet-button-text translate>I understand</span>
       <span sheet-second-button-text translate>Go Back</span>
     </info-sheet-template>
 
     <info-sheet-template *ngSwitchCase="'backup-ready'" type="success">
-      <span sheet-title-text>{{'Your {walletType} wallet is backed up!' | translate : {walletType: params.walletType} }}</span>
+      <span sheet-title-text>{{'Your {walletType} wallet is backed up!' | translate : {walletType: params.walletType}
+        }}</span>
       <span sheet-text translate>
-        Be sure to store your recovery phrase in a secure place. If this app is deleted, your money cannot be recovered without it.
+        Be sure to store your recovery phrase in a secure place. If this app is deleted, your money cannot be recovered
+        without it.
       </span>
       <span sheet-button-text translate>GOT IT</span>
     </info-sheet-template>
@@ -87,7 +97,8 @@
     <info-sheet-template *ngSwitchCase="'sensitive-info'" type="warning">
       <span sheet-title-text translate>Sensitive Data</span>
       <span sheet-text translate>
-        The information you are about to share/export may contain sensitive data such us wallet IDs, addresses, balances, etc. Please be sure you trust the person or entity with whom you are sharing this information.
+        The information you are about to share/export may contain sensitive data such us wallet IDs, addresses,
+        balances, etc. Please be sure you trust the person or entity with whom you are sharing this information.
       </span>
       <span sheet-button-text translate>I understand</span>
       <span sheet-second-button-text translate>Go Back</span>
@@ -99,12 +110,19 @@
       <span sheet-button-text translate>GOT IT</span>
     </info-sheet-template>
 
-    <info-sheet-template *ngSwitchCase="'copied-gift-card-claim-code'" type="info">
-      <span sheet-title-text>{{'Copied: {claimCode}' | translate: {claimCode: params.claimCode} }}</span>
+    <info-sheet-template *ngSwitchCase="'copied-gift-card-claim-code'" type="success">
+      <span sheet-title-text>{{'Copied: {claimCode}' | translate: params }}</span>
       <span sheet-text>
-        {{'Paste this code on {website}. This gift card cannot be recovered if your claim code is lost.' | translate: {website: params.website} }}
+        <redeem-instructions [cardConfig]="params.cardConfig" [params]="params"></redeem-instructions>
       </span>
       <span sheet-button-text translate>GOT IT</span>
+    </info-sheet-template>
+
+    <info-sheet-template *ngSwitchCase="'archive-all-gift-cards'" type="warning">
+      <span sheet-title-text>{{'Archive All {brand} Gift Cards?' | translate: params }}</span>
+      <span sheet-text>{{'Have you redeemed all of your {brand} Gift Cards? Archived gift cards will still be
+        accessible in settings.' | translate: params }}</span>
+      <span sheet-button-text translate>YES</span>
     </info-sheet-template>
 
     <info-sheet-template *ngSwitchCase="'archive-gift-card'" type="warning">
@@ -119,24 +137,35 @@
       <span sheet-button-text translate>OK</span>
     </info-sheet-template>
 
+    <info-sheet-template *ngSwitchCase="'gift-cards-unavailable'" type="danger">
+      <span sheet-title-text translate>Temporarily Unavailable</span>
+      <span sheet-text translate>Gift card purchases are temporarily unavailable. Please try again later.</span>
+      <span sheet-button-text translate>OK</span>
+    </info-sheet-template>
+
     <info-sheet-template *ngSwitchCase="'below-minimum-gift-card-amount'" type="danger">
       <span sheet-title-text translate>Below Minimum Amount</span>
-      <span sheet-text>{{'The purchase amount must be at least {minAmount} {currency}. Please modify your amount.' | translate: params }}</span>
+      <span sheet-text>{{'The purchase amount must be at least {minAmount} {currency}. Please modify your amount.' |
+        translate: params }}</span>
       <span sheet-button-text translate>GOT IT</span>
     </info-sheet-template>
 
     <info-sheet-template *ngSwitchCase="'above-maximum-gift-card-amount'" type="danger">
       <span sheet-title-text translate>Purchase Limit Reached</span>
       <span sheet-text>
-        {{'The purchase amount is limited to {maxAmount} {currency} per day. Please modify your amount.' | translate: params }}
+        {{'The purchase amount is limited to {maxAmount} {currency} per day. Please modify your amount.' | translate:
+        params }}
       </span>
       <span sheet-button-text translate>GOT IT</span>
     </info-sheet-template>
 
     <info-sheet-template *ngSwitchCase="'legacy-address-info'" type="info">
-      <span sheet-title-text>{{'{appName} BCH wallets use the CashAddr format by default' | translate: {appName: params.appName} }}</span>
+      <span sheet-title-text>{{'{appName} BCH wallets use the CashAddr format by default' | translate: {appName:
+        params.appName} }}</span>
       <span sheet-text translate>
-        If you need to send to "old" addresses (like the one you just pasted), and you are SURE those are BCH addresses, you can "translate" them using the BCH Translator tool and paste the corresponding address in CashAddr format for that "old" address.
+        If you need to send to "old" addresses (like the one you just pasted), and you are SURE those are BCH
+        addresses, you can "translate" them using the BCH Translator tool and paste the corresponding address in
+        CashAddr format for that "old" address.
       </span>
       <span sheet-button-text translate>Translate address</span>
       <span sheet-second-button-text translate>GOT IT</span>
@@ -144,7 +173,8 @@
 
     <info-sheet-template *ngSwitchCase="'appreciate-review'" type="love">
       <span sheet-title-text translate>We appreciate your review</span>
-      <span sheet-text translate>5-star ratings help us get BitPay Wallet into more hands, and more users means more resources can be committed to the app!
+      <span sheet-text translate>5-star ratings help us get BitPay Wallet into more hands, and more users means more
+        resources can be committed to the app!
       </span>
       <span sheet-button-text>{{'Rate on the {storeName}' | translate: {storeName: params?.storeName} }}</span>
     </info-sheet-template>
@@ -152,7 +182,8 @@
     <info-sheet-template *ngSwitchCase="'backup-failed'" type="warning">
       <span sheet-title-text translate>Uh oh...</span>
       <span sheet-text translate>
-        It's important that you write your recovery phrase down correctly. If something happens to your wallet, you'll need it to recover your money. Please review and try again.
+        It's important that you write your recovery phrase down correctly. If something happens to your wallet, you'll
+        need it to recover your money. Please review and try again.
       </span>
       <span sheet-button-text translate>GOT IT</span>
     </info-sheet-template>
@@ -160,7 +191,8 @@
     <info-sheet-template *ngSwitchCase="'payment-request'" type="info">
       <span sheet-title-text translate>Payment Request info</span>
       <span sheet-text>
-        {{'Share this QR code to receive {amount} in your wallet {name}.' | translate: {amount: params.amount, name: params.name} }}
+        {{'Share this QR code to receive {amount} in your wallet {name}.' | translate: {amount: params.amount, name:
+        params.name} }}
       </span>
       <span sheet-button-text translate>GOT IT</span>
     </info-sheet-template>
@@ -168,7 +200,8 @@
     <info-sheet-template *ngSwitchCase="'persistent-logs'" type="warning">
       <span sheet-title-text translate>Persistent logs</span>
       <span sheet-text translate>
-        If you disable the persistent logs, all the logs registered so far will be deleted. However, you can still see the session logs on this screen.
+        If you disable the persistent logs, all the logs registered so far will be deleted. However, you can still see
+        the session logs on this screen.
       </span>
       <span sheet-button-text translate>Continue</span>
       <span sheet-second-button-text translate>Go Back</span>

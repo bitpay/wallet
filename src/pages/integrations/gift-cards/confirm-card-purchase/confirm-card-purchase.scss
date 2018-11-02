@@ -5,23 +5,29 @@ confirm-card-purchase-page {
       margin-bottom: 90px;
     }
   }
+
   .wallets-list {
     ion-label {
       margin-bottom: 8px;
     }
   }
+
   ion-item.item.confirm-header {
     border: none;
   }
+
   .confirm-header {
     padding-top: 25px;
+
     ion-label {
       display: flex;
       align-items: center;
     }
+
     &__amount {
       flex-grow: 1;
     }
+
     .card-list-item__icon {
       border: 1px #9ba3ae solid;
       border-radius: 50%;
@@ -30,6 +36,7 @@ confirm-card-purchase-page {
       width: 45px;
     }
   }
+
   .gift-card-title {
     display: flex;
     align-items: center;
@@ -37,6 +44,7 @@ confirm-card-purchase-page {
     margin-top: 1.2rem;
     font-size: 18px;
     font-weight: 500;
+
     img {
       width: 3.5rem;
       margin-right: 1.5rem;
@@ -44,27 +52,32 @@ confirm-card-purchase-page {
       border-radius: $icon-border-radius;
     }
   }
+
   .amount-label {
     .amount {
       font-size: 38px;
       margin-bottom: 0.5rem;
     }
+
     .alternative {
       font-size: 12px;
       color: color($colors, grey);
     }
   }
+
   .wallets-list {
     .wallet {
       display: flex;
       align-items: center;
       margin-top: 1rem;
+
       .icon-wallet {
         background-color: color($colors, primary);
         margin-right: 1rem;
       }
     }
   }
+
   .amazon-info {
     * {
       white-space: normal;
@@ -72,10 +85,15 @@ confirm-card-purchase-page {
       line-height: 16px;
     }
   }
+
   .last-item {
     margin-left: auto !important;
   }
+
   .terms {
-    margin: 5px 10px;
+    > p {
+      margin-left: 10px;
+      margin-right: 10px;
+    }
   }
 }

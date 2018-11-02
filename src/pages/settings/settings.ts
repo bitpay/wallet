@@ -18,11 +18,10 @@ import { TouchIdProvider } from '../../providers/touchid/touchid';
 
 // pages
 import { SendFeedbackPage } from '../feedback/send-feedback/send-feedback';
-import { AmazonSettingsPage } from '../integrations/amazon/amazon-settings/amazon-settings';
 import { BitPaySettingsPage } from '../integrations/bitpay-card/bitpay-settings/bitpay-settings';
 import { CoinbaseSettingsPage } from '../integrations/coinbase/coinbase-settings/coinbase-settings';
+import { GiftCardsSettingsPage } from '../integrations/gift-cards/gift-cards-settings/gift-cards-settings';
 import { GlideraSettingsPage } from '../integrations/glidera/glidera-settings/glidera-settings';
-import { MercadoLibreSettingsPage } from '../integrations/mercado-libre/mercado-libre-settings/mercado-libre-settings';
 import { ShapeshiftSettingsPage } from '../integrations/shapeshift/shapeshift-settings/shapeshift-settings';
 import { PinModalPage } from '../pin/pin-modal/pin-modal';
 import { AboutPage } from './about/about';
@@ -174,9 +173,6 @@ export class SettingsPage {
 
   public openSettingIntegration(name: string): void {
     switch (name) {
-      case 'amazon':
-        this.navCtrl.push(AmazonSettingsPage);
-        break;
       case 'coinbase':
         this.navCtrl.push(CoinbaseSettingsPage);
         break;
@@ -186,17 +182,21 @@ export class SettingsPage {
       case 'glidera':
         this.navCtrl.push(GlideraSettingsPage);
         break;
-      case 'mercadolibre':
-        this.navCtrl.push(MercadoLibreSettingsPage);
-        break;
       case 'shapeshift':
         this.navCtrl.push(ShapeshiftSettingsPage);
+        break;
+      case 'giftcards':
+        this.navCtrl.push(GiftCardsSettingsPage);
         break;
     }
   }
 
   public openCardSettings(id): void {
     this.navCtrl.push(BitPaySettingsPage, { id });
+  }
+
+  public openGiftCardsSettings() {
+    this.navCtrl.push(GiftCardsSettingsPage);
   }
 
   public openHelpExternalLink(): void {

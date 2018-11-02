@@ -1,27 +1,21 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
-import {
-  CardConifg,
-  GiftCardProvider
-} from '../../../../providers/gift-card/gift-card';
+import { CardConfig } from '../../../../providers/gift-card/gift-card.types';
 import { AmountPage } from '../../../send/amount/amount';
+import { ConfirmCardPurchasePage } from '../confirm-card-purchase/confirm-card-purchase';
 
 @Component({
   selector: 'buy-card-page',
   templateUrl: 'buy-card.html'
 })
 export class BuyCardPage {
-  cardConfig: CardConifg;
+  amount: number;
+  cardConfig: CardConfig;
 
-  constructor(
-    private giftCardProvider: GiftCardProvider,
-    private nav: NavController,
-    private navParams: NavParams
-  ) {}
+  constructor(private nav: NavController, private navParams: NavParams) {}
 
   async ngOnInit() {
-    const cardName = this.navParams.get('cardName');
-    this.cardConfig = await this.giftCardProvider.getCardConfig(cardName);
+    this.cardConfig = this.navParams.get('cardConfig');
   }
 
   cancel() {
@@ -36,5 +30,35 @@ export class BuyCardPage {
       fixedUnit: true,
       onlyIntegers: this.cardConfig.currency === 'JPY'
     });
+  }
+
+  onAmountChange(amount: number) {
+    this.amount = amount;
+  }
+
+  onAmountClick() {
+    if (this.cardConfig.supportedAmounts) {
+      return;
+    }
+    this.enterAmount();
+  }
+
+  continue() {
+    const data = {
+      amount: this.amount,
+      currency: this.cardConfig.currency,
+      cardName: this.cardConfig.name
+    };
+    this.nav.push(ConfirmCardPurchasePage, data);
+  }
+
+  next() {
+    this.cardConfig && this.cardConfig.supportedAmounts
+      ? this.continue()
+      : this.enterAmount();
+  }
+
+  fixContinueButtonToBottom() {
+    return true; // this.cardConfig && this.cardConfig.supportedAmounts;
   }
 }

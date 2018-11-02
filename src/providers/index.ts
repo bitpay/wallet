@@ -19,7 +19,6 @@ export { UserAgent } from '@ionic-native/user-agent';
 export { ActionSheetProvider } from '../providers/action-sheet/action-sheet';
 export { AddressBookProvider } from '../providers/address-book/address-book';
 export { AddressProvider } from '../providers/address/address';
-export { AmazonProvider } from '../providers/amazon/amazon';
 export { AppIdentityProvider } from '../providers/app-identity/app-identity';
 export { AppProvider } from '../providers/app/app';
 export { BackupProvider } from '../providers/backup/backup';
@@ -53,7 +52,6 @@ export {
 export { IncomingDataProvider } from '../providers/incoming-data/incoming-data';
 export { LanguageProvider } from '../providers/language/language';
 export { Logger } from '../providers/logger/logger';
-export { MercadoLibreProvider } from '../providers/mercado-libre/mercado-libre';
 export { ElectronProvider } from '../providers/electron/electron';
 export {
   OnGoingProcessProvider

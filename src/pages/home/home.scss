@@ -1,57 +1,72 @@
 page-home {
   background: $toolbar-background;
+
   .home-logo {
     height: 24px;
     position: relative;
     top: 3px;
   }
+
   .toolbar-title-ios {
     text-align: center;
   }
+
   .check {
     text-align: center;
+
     .title {
       font-weight: 500;
       font-size: 2rem;
       color: color($colors, grey);
     }
+
     .subtitle {
       padding: 10px;
     }
+
     .check-icon {
       margin-top: -40px;
     }
+
     .announcement-logo {
       width: 200px;
       margin: 10px auto;
     }
   }
+
   .card,
   ion-card {
     .wallets-list-title {
       display: flex;
       align-items: center;
       max-width: 70%;
+
       > img {
         margin-right: 7px;
       }
+
       > span {
         line-height: 18px;
       }
     }
+
     .title-buttons {
       display: flex;
+
       button:first-child {
         margin-right: 5px;
       }
     }
   }
+
   .title {
     font-weight: 500;
+
     > img {
       margin-right: 7px;
     }
   }
+
   .error {
     color: color($colors, danger);
   }
@@ -59,8 +74,10 @@ page-home {
   .wallet-ready {
     padding: 0rem;
     margin-bottom: 3rem;
+
     .row {
       justify-content: flex-end;
+
       button {
         font-size: 12px;
       }
@@ -73,6 +90,7 @@ page-home {
       .item-title {
         font-size: 13px;
       }
+
       ion-note .date {
         font-size: 11.5px;
       }
@@ -94,16 +112,20 @@ page-home {
       border: 0 !important;
     }
   }
+
   .card {
     z-index: 1;
     position: relative;
   }
+
   .clipboard-card {
     z-index: 0;
   }
+
   .initial-margin {
     margin-top: -140px;
   }
+
   .content-animation {
     z-index: 5;
     margin-top: 0px;
@@ -119,6 +141,7 @@ page-home {
   ion-refresher {
     height: 120px;
     background: $toolbar-background;
+
     &-content {
       margin-top: -25px;
     }
@@ -126,22 +149,27 @@ page-home {
 
   .new-release {
     padding-bottom: 0rem;
+
     &-icon {
       display: flex;
       justify-content: center;
       margin-top: 3rem;
+
       img {
         width: 4rem;
         height: 4rem;
       }
     }
+
     &-text {
       text-align: center;
       color: color($colors, dark);
       margin-bottom: 1rem;
     }
+
     &-button {
       padding: 0rem;
+
       div {
         cursor: pointer;
         font-size: 16px;
@@ -154,6 +182,7 @@ page-home {
       }
     }
   }
+
   .zero-state {
     .wrapper {
       display: flex;
@@ -172,6 +201,7 @@ page-home {
     ion-fab[right] {
       right: env(safe-area-inset-bottom);
     }
+
     ion-fab[bottom] {
       bottom: env(safe-area-inset-bottom);
     }
@@ -181,21 +211,27 @@ page-home {
     0% {
       transform: translateY(0);
     }
+
     10% {
       transform: translateY(0);
     }
+
     30% {
       transform: translateY(40px);
     }
+
     50% {
       transform: translateY(0);
     }
+
     57% {
       transform: translateY(5px);
     }
+
     64% {
       transform: translateY(0);
     }
+
     100% {
       transform: translateY(0);
     }

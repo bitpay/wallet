@@ -7,17 +7,19 @@ import { Pipe, PipeTransform } from '@angular/core';
 export class FormatCurrencyPipe implements PipeTransform {
   constructor(private decimalPipe: DecimalPipe) {}
 
-  transform(amount: number, currencyCode: string) {
-    const precision = this.getPrecision(currencyCode);
-    const numericalValue = this.decimalPipe.transform(
+  transform(amount: number, currencyCode: string, customPrecision?: number) {
+    const precision =
+      customPrecision || customPrecision === 0
+        ? customPrecision
+        : this.getPrecision(currencyCode);
+    const numericValue = this.decimalPipe.transform(
       amount,
       this.getPrecisionString(precision)
     );
-    const formattedValue = `${numericalValue} ${currencyCode}`;
     const finalValue =
       currencyCode.toUpperCase() === 'USD'
-        ? `$${formattedValue}`
-        : formattedValue;
+        ? `$${numericValue}`
+        : `${numericValue} ${currencyCode}`;
 
     return finalValue;
   }

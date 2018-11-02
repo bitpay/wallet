@@ -18,7 +18,10 @@ import { TxFormatProvider } from '../../../providers/tx-format/tx-format';
 
 // Pages
 import { ActionSheetProvider, GiftCardProvider } from '../../../providers';
-import { CardConifg, CardName } from '../../../providers/gift-card/gift-card';
+import {
+  CardConfig,
+  CardName
+} from '../../../providers/gift-card/gift-card.types';
 import { ProfileProvider } from '../../../providers/profile/profile';
 import { Coin } from '../../../providers/wallet/wallet';
 import { BitPayCardTopUpPage } from '../../integrations/bitpay-card/bitpay-card-topup/bitpay-card-topup';
@@ -79,7 +82,7 @@ export class AmountPage extends WalletTabsChild {
   public requestingAmount: boolean;
 
   public cardName: CardName;
-  public cardConfig: CardConifg;
+  public cardConfig: CardConfig;
 
   constructor(
     private actionSheetProvider: ActionSheetProvider,
