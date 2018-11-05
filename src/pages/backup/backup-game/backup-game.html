@@ -82,9 +82,6 @@
       </ion-item-divider>
 
       <div class="bottom-absolute">
-        <button ion-button block [disabled]="!password" (click)="finalStep()">
-          {{'Confirm' | translate}}
-        </button>
         <button *ngIf="currentIndex == 2" [disabled]="!password" ion-button class="button-standard" (click)="finalStep()">
           {{'Confirm' | translate}}
         </button>
