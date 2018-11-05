@@ -89,16 +89,16 @@ npm run prepare:copay
 npm run start:ios
 ```
 
-<!-- ### Desktop (Linux, macOS, and Windows)
+### Desktop (Linux, macOS, and Windows)
 
-The desktop version of Copay currently uses NW.js, an app runtime based on Chromium. To get started, first install NW.js on your system from [the NW.js website](https://nwjs.io/).
+The desktop version of Copay currently uses Electron. To get started, first install Electron on your system from [the Electron website](https://electronjs.org/).
 
-When NW.js is installed, run the `start:desktop` package script.
+When Electron is installed, run the `start:desktop` package script.
 
 ```sh
 npm run apply:copay
 npm run start:desktop
-``` -->
+```
 
 ## Build Copay App Bundles
 
@@ -110,6 +110,7 @@ The `final` commands build the production version of the app, and bundle it with
 
 ```sh
 npm run clean-all
+npm install
 npm run apply:copay
 npm run prepare:copay
 npm run final:android
@@ -119,18 +120,30 @@ npm run final:android
 
 ```sh
 npm run clean-all
+npm install
 npm run apply:copay
 npm run prepare:copay
 npm run final:ios
 ```
 
-<!-- ### Desktop (Linux, macOS, and Windows)
+### Desktop (Linux, macOS, and Windows)
 
 ```sh
 npm run clean-all
+npm install
 npm run apply:copay
 npm run final:desktop
-``` -->
+```
+
+## Desktop Data Path
+
+Per-user application data directory for Copay or BitPay distribution.
+
+```sh
+"~/Library/Containers/com.bitpay.copay.desktop2/Data/.copay"
+# or
+"~/Library/Containers/com.bitpay.wallet.desktop/Data/.bitpay"
+```
 
 ## Configuration
 
