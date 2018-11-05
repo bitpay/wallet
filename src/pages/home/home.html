@@ -51,6 +51,19 @@
     </div>
 
     <div [ngClass]="{'content-animation': slideDown, 'initial-margin': validDataFromClipboard}">
+      <ion-card class="new-release" *ngIf="newRelease">
+        <div class="new-release-icon">
+          <img src="assets/img/icon-update.svg" />
+        </div>
+        <ion-card-header class="new-release-text">
+          {{updateText}}
+        </ion-card-header>
+        <ion-card-content class="new-release-button">
+          <div (click)="goToDownload()">
+            <span translate>Download</span>
+          </div>
+        </ion-card-content>
+      </ion-card>
 
       <div class="prompt-user-fullscreen-container" *ngIf="!wallets || !wallets[0]">
         <div class="prompt-user">
@@ -77,20 +90,6 @@
             <span translate>Learn more</span>
           </div>
         </ion-item>
-      </ion-card>
-
-      <ion-card class="new-release" *ngIf="newRelease">
-        <div class="new-release-icon">
-          <img src="assets/img/icon-update.svg" />
-        </div>
-        <ion-card-header class="new-release-text">
-          {{updateText}}
-        </ion-card-header>
-        <ion-card-content class="new-release-button">
-          <div (click)="goToDownload()">
-            <span translate>Download</span>
-          </div>
-        </ion-card-content>
       </ion-card>
 
       <ion-card *ngIf="homeTip && wallets && wallets[0]">
