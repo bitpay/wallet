@@ -698,7 +698,7 @@ export class HomePage {
         url =
           this.appName == 'Copay'
             ? 'macappstores://itunes.apple.com/app/id1440201813?mt=12'
-            : 'macappstores://itunes.apple.com/app/id1440201813?mt=12';
+            : 'macappstores://itunes.apple.com/app/id1440200291?mt=12';
         break;
       case 'Linux':
         url =
