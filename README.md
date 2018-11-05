@@ -126,6 +126,14 @@ npm run prepare:copay
 npm run final:ios
 ```
 
+### Push Notifications
+
+Push notification doesn't work on iOS 12 due to an update of Xcode and plugin `cordova-plugin-fcm`.
+
+A current workaround is to comment out the line to prevent the removal of the file during the debug build (line 56 in platforms/ios/cordova/lib/copy-www-build-step.js).
+
+[Source](https://github.com/phonegap/phonegap-plugin-push/issues/2518)
+
 ### Desktop (Linux, macOS, and Windows)
 
 ```sh
