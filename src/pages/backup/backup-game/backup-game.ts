@@ -239,7 +239,7 @@ export class BackupGamePage {
         try {
           walletClient.seedFromMnemonic(customSentence, {
             network: this.wallet.credentials.network,
-            password,
+            passphrase: password,
             account: this.wallet.credentials.account
           });
         } catch (err) {
