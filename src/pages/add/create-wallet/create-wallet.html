@@ -86,10 +86,17 @@
         <ion-input type="text" formControlName="derivationPath"></ion-input>
       </ion-item>
 
-      <ion-item>
+      <ion-item [ngClass]="{'with-label': createForm.value.singleAddress}">
         <ion-label>{{'Single address' | translate}}</ion-label>
         <ion-toggle formControlName="singleAddress"></ion-toggle>
       </ion-item>
+      <label-tip *ngIf="createForm.value.singleAddress" type="info" header="no-header">
+        <div label-tip-body>
+          <span translate>The single address feature will force the wallet to only use one address rather than generating new addresses.</span>
+          <br>
+          <a class="label-tip-link" (click)="openSupportSingleAddress()" translate>Learn More</a>
+        </div>
+      </label-tip>
     </div>
   </form>
 </ion-content>
