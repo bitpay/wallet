@@ -178,6 +178,10 @@ export class MultiSendPage extends WalletTabsChild {
     this.invalidAddress = false;
   }
 
+  public cancelRecipient(): void {
+    this.search = '';
+  }
+
   public removeRecipient(index): void {
     this.multiSearch.splice(index, 1);
   }
@@ -325,14 +329,6 @@ export class MultiSendPage extends WalletTabsChild {
     }
 
     return false;
-  }
-
-  private redir() {
-    this.incomingDataProvider.redir(this.search, {
-      amount: this.navParams.get('amount'),
-      coin: this.navParams.get('coin')
-    });
-    this.search = '';
   }
 
   private showErrorMessage() {
