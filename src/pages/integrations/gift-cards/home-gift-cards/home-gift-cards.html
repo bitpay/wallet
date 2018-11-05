@@ -2,7 +2,7 @@
   <gift-card-item *ngFor="let brandCards of activeBrands" [cardName]="brandCards[0].name" [giftCards]="brandCards"
     (action)="onGiftCardAction($event, brandCards)" [@archiveAnimation]></gift-card-item>
   <div *ngIf="activeBrands?.length" [@archiveAnimation] class="add-gift-card-button" (click)="buyGiftCards()" tappable
-    translate>Add Gift Card</div>
+    translate>Buy Gift Card</div>
 </ion-list>
 <action-card *ngIf="!activeBrands?.length">
   <div action-card-icon><img src="assets/img/icon-credit-card.svg"></div>
@@ -12,7 +12,7 @@
     {appName: appName} }}
   </div>
   <div action-card-button translate (click)="buyGiftCards()" tappable>
-    Get Started
+    Shop Now
   </div>
 </action-card>
 <preload-card-images></preload-card-images>
