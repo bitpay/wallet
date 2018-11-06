@@ -77,7 +77,6 @@ export class HomePage {
   public remainingTimeStr: string;
   public slideDown: boolean;
   public appName: string;
-  public homeTip: boolean;
   public showReorderBtc: boolean;
   public showReorderBch: boolean;
   public showIntegration;
@@ -201,7 +200,6 @@ export class HomePage {
     this.logger.info('Loaded: HomePage');
 
     if (this.isNW) this.checkUpdate();
-    this.checkHomeTip();
     this.amazonProvider.getSupportedCurrency().catch(() => {});
 
     this.checkEmailLawCompliance();
@@ -372,17 +370,6 @@ export class HomePage {
       leading: true
     }
   );
-
-  public checkHomeTip(): void {
-    this.persistenceProvider.getHomeTipAccepted().then((value: string) => {
-      this.homeTip = value == 'accepted' ? false : true;
-    });
-  }
-
-  public hideHomeTip(): void {
-    this.persistenceProvider.setHomeTipAccepted('accepted');
-    this.homeTip = false;
-  }
 
   public checkClipboard() {
     return this.clipboardProvider

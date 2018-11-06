@@ -92,28 +92,6 @@
         </ion-item>
       </ion-card>
 
-      <ion-card *ngIf="homeTip && wallets && wallets[0]">
-        <ion-card-header class="wallet-ready">
-          <ion-row>
-            <button ion-button clear icon-only item-end color="grey" (click)="hideHomeTip()">
-              <ion-icon name="close"></ion-icon>
-            </button>
-          </ion-row>
-        </ion-card-header>
-        <ion-card-content class="check">
-          <ion-icon class="big-icon-svg check-icon">
-            <img src="assets/img/check-white.svg" class="bg green" />
-          </ion-icon>
-          <div class="title" translate>
-            Your bitcoin wallet is ready!
-          </div>
-          <div class="subtitle" translate>
-            On this screen you can see all your wallets, accounts, and assets.
-          </div>
-        </ion-card-content>
-      </ion-card>
-
-
       <div class="card" *ngIf="txps && txps[0]">
         <ion-item-divider>
           <div class="title" item-start>
