@@ -7,6 +7,7 @@ import { Logger } from '../../../providers/logger/logger';
 // Providers
 import { ConfigProvider } from '../../../providers/config/config';
 import { DerivationPathHelperProvider } from '../../../providers/derivation-path-helper/derivation-path-helper';
+import { ExternalLinkProvider } from '../../../providers/external-link/external-link';
 import { OnGoingProcessProvider } from '../../../providers/on-going-process/on-going-process';
 import { PopupProvider } from '../../../providers/popup/popup';
 import { ProfileProvider } from '../../../providers/profile/profile';
@@ -67,7 +68,8 @@ export class CreateWalletPage implements OnInit {
     private walletProvider: WalletProvider,
     private translate: TranslateService,
     private events: Events,
-    private pushNotificationsProvider: PushNotificationsProvider
+    private pushNotificationsProvider: PushNotificationsProvider,
+    private externalLinkProvider: ExternalLinkProvider
   ) {
     this.okText = this.translate.instant('Ok');
     this.cancelText = this.translate.instant('Cancel');
@@ -115,7 +117,7 @@ export class CreateWalletPage implements OnInit {
 
   private updateRCSelect(n: number): void {
     this.createForm.controls['totalCopayers'].setValue(n);
-    var maxReq = this.COPAYER_PAIR_LIMITS[n];
+    const maxReq = this.COPAYER_PAIR_LIMITS[n];
     this.signatures = _.range(1, maxReq + 1);
     this.createForm.controls['requiredCopayers'].setValue(
       Math.min(Math.trunc(n / 2 + 1), maxReq)
@@ -156,14 +158,14 @@ export class CreateWalletPage implements OnInit {
   }
 
   public setDerivationPath(): void {
-    let path: string = this.createForm.value.testnet
+    const path: string = this.createForm.value.testnet
       ? this.derivationPathForTestnet
       : this.derivationPathByDefault;
     this.createForm.controls['derivationPath'].setValue(path);
   }
 
   public setOptsAndCreate(): void {
-    let opts: Partial<WalletOptions> = {
+    const opts: Partial<WalletOptions> = {
       name: this.createForm.value.walletName,
       m: this.createForm.value.requiredCopayers,
       n: this.createForm.value.totalCopayers,
@@ -177,9 +179,9 @@ export class CreateWalletPage implements OnInit {
       coin: this.createForm.value.coin
     };
 
-    let setSeed = this.createForm.value.selectedSeed == 'set';
+    const setSeed = this.createForm.value.selectedSeed == 'set';
     if (setSeed) {
-      let words = this.createForm.value.recoveryPhrase || '';
+      const words = this.createForm.value.recoveryPhrase || '';
       if (
         words.indexOf(' ') == -1 &&
         words.indexOf('prv') == 1 &&
@@ -190,12 +192,12 @@ export class CreateWalletPage implements OnInit {
         opts.mnemonic = words;
       }
 
-      let pathData = this.derivationPathHelperProvider.parse(
+      const pathData = this.derivationPathHelperProvider.parse(
         this.createForm.value.derivationPath
       );
       if (!pathData) {
-        let title = this.translate.instant('Error');
-        let subtitle = this.translate.instant('Invalid derivation path');
+        const title = this.translate.instant('Error');
+        const subtitle = this.translate.instant('Invalid derivation path');
         this.popupProvider.ionicAlert(title, subtitle);
         return;
       }
@@ -205,8 +207,8 @@ export class CreateWalletPage implements OnInit {
     }
 
     if (setSeed && !opts.mnemonic && !opts.extendedPrivateKey) {
-      let title = this.translate.instant('Error');
-      let subtitle = this.translate.instant(
+      const title = this.translate.instant('Error');
+      const subtitle = this.translate.instant(
         'Please enter the wallet recovery phrase'
       );
       this.popupProvider.ionicAlert(title, subtitle);
@@ -236,9 +238,27 @@ export class CreateWalletPage implements OnInit {
       .catch(err => {
         this.onGoingProcessProvider.clear();
         this.logger.error('Create: could not create wallet', err);
-        let title = this.translate.instant('Error');
+        const title = this.translate.instant('Error');
         this.popupProvider.ionicAlert(title, err);
         return;
       });
+  }
+
+  public openSupportSingleAddress(): void {
+    const url =
+      'https://support.bitpay.com/hc/en-us/articles/360015920572-Setting-up-the-Single-Address-Feature-for-your-BitPay-Wallet';
+    const optIn = true;
+    const title = null;
+    const message = this.translate.instant('Read more in our support page');
+    const okText = this.translate.instant('Open');
+    const cancelText = this.translate.instant('Go Back');
+    this.externalLinkProvider.open(
+      url,
+      optIn,
+      title,
+      message,
+      okText,
+      cancelText
+    );
   }
 }

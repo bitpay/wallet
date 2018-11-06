@@ -87,6 +87,8 @@ export interface Config {
 
   pushNotificationsEnabled: boolean;
 
+  inAppNotificationsEnabled: boolean;
+
   confirmedTxsNotifications: {
     enabled: boolean;
   };
@@ -201,6 +203,8 @@ const configDefault: Config = {
 
   pushNotificationsEnabled: true,
 
+  inAppNotificationsEnabled: true,
+
   confirmedTxsNotifications: {
     enabled: true
   },
@@ -274,7 +278,7 @@ export class ConfigProvider {
    * @param newOpts object or string (JSON)
    */
   public set(newOpts) {
-    let config = _.cloneDeep(configDefault);
+    const config = _.cloneDeep(configDefault);
 
     if (_.isString(newOpts)) {
       newOpts = JSON.parse(newOpts);
@@ -324,6 +328,10 @@ export class ConfigProvider {
     if (!this.configCache.pushNotificationsEnabled) {
       this.configCache.pushNotificationsEnabled =
         configDefault.pushNotificationsEnabled;
+    }
+    if (!this.configCache.inAppNotificationsEnabled) {
+      this.configCache.inAppNotificationsEnabled =
+        configDefault.inAppNotificationsEnabled;
     }
     if (!this.configCache.emailNotifications) {
       this.configCache.emailNotifications = configDefault.emailNotifications;

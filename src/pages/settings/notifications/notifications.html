@@ -24,6 +24,13 @@
 
     <div *ngIf="usePushNotifications && pushNotifications">
       <ion-item>
+        <ion-label>{{ 'Enable in-app notification' | translate }}</ion-label>
+        <ion-toggle [(ngModel)]="inAppNotifications" (ionChange)="inAppNotificationChange()"></ion-toggle>
+      </ion-item>
+    </div>
+
+    <div *ngIf="usePushNotifications && pushNotifications">
+      <ion-item>
         <ion-label>{{ 'Notify me when transactions are confirmed' | translate }}</ion-label>
         <ion-toggle [(ngModel)]="confirmedTxsNotifications" (ionChange)="confirmedTxsNotificationsChange()"></ion-toggle>
       </ion-item>

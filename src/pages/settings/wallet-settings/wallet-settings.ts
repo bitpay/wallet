@@ -15,7 +15,6 @@ import { WalletProvider } from '../../../providers/wallet/wallet';
 import { BackupWarningPage } from '../../backup/backup-warning/backup-warning';
 import { WalletColorPage } from './wallet-color/wallet-color';
 import { WalletNamePage } from './wallet-name/wallet-name';
-import { BitcoinCashPage } from './wallet-settings-advanced/bitcoin-cash/bitcoin-cash';
 import { WalletAddressesPage } from './wallet-settings-advanced/wallet-addresses/wallet-addresses';
 import { WalletDeletePage } from './wallet-settings-advanced/wallet-delete/wallet-delete';
 import { WalletExportPage } from './wallet-settings-advanced/wallet-export/wallet-export';
@@ -208,11 +207,6 @@ export class WalletSettingsPage {
   }
   public openDeleteWallet(): void {
     this.navCtrl.push(WalletDeletePage, {
-      walletId: this.wallet.credentials.walletId
-    });
-  }
-  public openBitcoinCashPage(): void {
-    this.navCtrl.push(BitcoinCashPage, {
       walletId: this.wallet.credentials.walletId
     });
   }
