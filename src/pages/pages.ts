@@ -93,7 +93,6 @@ import { WalletNamePage } from '../pages/settings/wallet-settings/wallet-name/wa
 import { WalletSettingsPage } from '../pages/settings/wallet-settings/wallet-settings';
 
 /* Wallet Advanced Settings */
-import { BitcoinCashPage } from '../pages/settings/wallet-settings/wallet-settings-advanced/bitcoin-cash/bitcoin-cash';
 import { AllAddressesPage } from '../pages/settings/wallet-settings/wallet-settings-advanced/wallet-addresses/all-addresses/all-addresses';
 import { WalletAddressesPage } from '../pages/settings/wallet-settings/wallet-settings-advanced/wallet-addresses/wallet-addresses';
 import { WalletDeletePage } from '../pages/settings/wallet-settings/wallet-settings-advanced/wallet-delete/wallet-delete';
@@ -129,7 +128,6 @@ export const PAGES = [
   AllAddressesPage,
   AltCurrencyPage,
   BackupRequestPage,
-  BitcoinCashPage,
   BitPayCardIntroPage,
   BitPayCardPage,
   BitPaySettingsPage,
