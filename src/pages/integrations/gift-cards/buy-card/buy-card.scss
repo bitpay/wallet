@@ -25,4 +25,10 @@ buy-card-page {
       margin-bottom: 30px;
     }
   }
+
+  ion-footer {
+    ion-toolbar {
+      background: $color-primary
+    }
+  }
 }
