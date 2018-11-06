@@ -1,4 +1,4 @@
-import { Component, NgZone, ViewChild } from '@angular/core';
+import { Component, NgZone } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import {
   Events,
@@ -7,7 +7,6 @@ import {
   Platform
 } from 'ionic-angular';
 import * as _ from 'lodash';
-import * as moment from 'moment';
 import { Observable, Subscription } from 'rxjs';
 
 // Pages
@@ -36,7 +35,6 @@ import { ClipboardProvider } from '../../providers/clipboard/clipboard';
 import { ConfigProvider } from '../../providers/config/config';
 import { EmailNotificationsProvider } from '../../providers/email-notifications/email-notifications';
 import { ExternalLinkProvider } from '../../providers/external-link/external-link';
-import { FeedbackProvider } from '../../providers/feedback/feedback';
 import { HomeIntegrationsProvider } from '../../providers/home-integrations/home-integrations';
 import { IncomingDataProvider } from '../../providers/incoming-data/incoming-data';
 import { Logger } from '../../providers/logger/logger';
@@ -57,8 +55,6 @@ import { SettingsPage } from '../settings/settings';
   templateUrl: 'home.html'
 })
 export class HomePage {
-  @ViewChild('showCard')
-  showCard;
   public wallets;
   public walletsBtc;
   public walletsBch;
@@ -80,8 +76,7 @@ export class HomePage {
   public payProDetailsData;
   public remainingTimeStr: string;
   public slideDown: boolean;
-
-  public showRateCard: boolean;
+  public appName: string;
   public homeTip: boolean;
   public showReorderBtc: boolean;
   public showReorderBch: boolean;
@@ -116,7 +111,6 @@ export class HomePage {
     private platformProvider: PlatformProvider,
     private homeIntegrationsProvider: HomeIntegrationsProvider,
     private persistenceProvider: PersistenceProvider,
-    private feedbackProvider: FeedbackProvider,
     private bitPayCardProvider: BitPayCardProvider,
     private translate: TranslateService,
     private emailProvider: EmailNotificationsProvider,
@@ -130,6 +124,7 @@ export class HomePage {
     this.addressbook = {};
     this.cachedBalanceUpdateOn = '';
     this.isNW = this.platformProvider.isNW;
+    this.appName = this.appProvider.info.nameCase;
     this.showReorderBtc = false;
     this.showReorderBch = false;
     this.zone = new NgZone({ enableLongStackTrace: false });
@@ -207,7 +202,6 @@ export class HomePage {
 
     if (this.isNW) this.checkUpdate();
     this.checkHomeTip();
-    this.checkFeedbackInfo();
     this.amazonProvider.getSupportedCurrency().catch(() => {});
 
     this.checkEmailLawCompliance();
@@ -390,31 +384,6 @@ export class HomePage {
     this.homeTip = false;
   }
 
-  private checkFeedbackInfo() {
-    this.persistenceProvider.getFeedbackInfo().then(info => {
-      if (!info) {
-        this.initFeedBackInfo();
-      } else {
-        let feedbackInfo = info;
-        // Check if current version is greater than saved version
-        let currentVersion = this.releaseProvider.getCurrentAppVersion();
-        let savedVersion = feedbackInfo.version;
-        let isVersionUpdated = this.feedbackProvider.isVersionUpdated(
-          currentVersion,
-          savedVersion
-        );
-        if (!isVersionUpdated) {
-          this.initFeedBackInfo();
-          return;
-        }
-        let now = moment().unix();
-        let timeExceeded = now - feedbackInfo.time >= 24 * 7 * 60 * 60;
-        this.showRateCard = timeExceeded && !feedbackInfo.sent;
-        this.showCard.setShowRateCard(this.showRateCard);
-      }
-    });
-  }
-
   public checkClipboard() {
     return this.clipboardProvider
       .getData()
@@ -494,15 +463,6 @@ export class HomePage {
     this.countDown = setInterval(() => {
       setExpirationTime();
     }, 1000);
-  }
-
-  private initFeedBackInfo() {
-    this.persistenceProvider.setFeedbackInfo({
-      time: moment().unix(),
-      version: this.releaseProvider.getCurrentAppVersion(),
-      sent: false
-    });
-    this.showRateCard = false;
   }
 
   private updateWallet(walletId: string): void {
@@ -725,10 +685,39 @@ export class HomePage {
     });
   }
 
+  public goToDownloadElectronVersion(): void {
+    let url: string;
+    let OS = this.platformProvider.getOS();
+    switch (OS.OSName) {
+      case 'Windows':
+        url =
+          this.appName == 'Copay'
+            ? 'ms-windows-store://pdp/?productid=9MZGT30HL9DF'
+            : 'ms-windows-store://pdp/?productid=9NBR15SK4ZJV';
+        break;
+      case 'MacOS':
+        url =
+          this.appName == 'Copay'
+            ? 'macappstores://itunes.apple.com/app/id1440201813?mt=12'
+            : 'macappstores://itunes.apple.com/app/id1440200291?mt=12';
+        break;
+      case 'Linux':
+        url =
+          this.appName == 'Copay'
+            ? 'https://snapcraft.io/copay'
+            : 'https://snapcraft.io/bitpay';
+        break;
+    }
+    this.logger.info(
+      'Trying to download Electron version with this url: ',
+      url
+    );
+    this.externalLinkProvider.open(url);
+  }
+
   public goToDownload(): void {
     let url: string;
     let okText: string;
-    let appName = this.appProvider.info.nameCase;
     let OS = this.platformProvider.getOS();
 
     if (OS.extension !== '') {
@@ -737,7 +726,7 @@ export class HomePage {
         'https://github.com/bitpay/copay/releases/download/' +
         this.latestVersion +
         '/' +
-        appName +
+        this.appName +
         OS.extension;
     } else {
       okText = this.translate.instant('View Update');
