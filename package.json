@@ -2,7 +2,7 @@
   "name": "copay",
   "description": "A Secure Bitcoin Wallet",
   "author": "BitPay",
-  "version": "4.8.0",
+  "version": "4.8.1",
   "keywords": [
     "bitcoin",
     "wallet",
@@ -12,11 +12,11 @@
     "bitcore"
   ],
   "main": "www/index.html",
-  "title": "Copay",
+  "title": "Copay Legacy",
   "user-agent": "%name %ver (%osinfo)",
   "chromium-args": "--disable-password-generation --disable-devtools",
   "window": {
-    "title": "Copay – Copay Bitcoin Wallet",
+    "title": "Copay Legacy",
     "icon": "www/assets/img/app/icon.png",
     "toolbar": false,
     "show": false,
