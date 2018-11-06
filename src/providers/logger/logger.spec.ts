@@ -82,7 +82,7 @@ describe('LoggerProvider', () => {
   });
 
   it('should get the default weight', () => {
-    let defaultWeight = service.getDefaultWeight();
+    const defaultWeight = service.getDefaultWeight();
     expect(defaultWeight).toEqual({
       level: 'info',
       weight: 3,
@@ -116,7 +116,7 @@ describe('LoggerProvider', () => {
     service.info('Zaphod is President');
     service.debug('Marvin is depressed');
 
-    let logs = service.get();
+    const logs = service.get();
 
     expect(logs[0].msg).toEqual('Beware the Bugblatter Beast of Traal');
     expect(logs[1].msg).toEqual('Heart of Gold has been stolen');
@@ -139,14 +139,17 @@ describe('LoggerProvider', () => {
     expect(processedArgs).toEqual('babel undefined fish');
 
     processedArgs = service.processingArgs(['babel', false, 'fish']);
-    expect(processedArgs).toEqual('babel null fish');
+    expect(processedArgs).toEqual('babel false fish');
+
+    processedArgs = service.processingArgs(['babel', 0, 'fish']);
+    expect(processedArgs).toEqual('babel 0 fish');
 
     processedArgs = service.processingArgs([
       'babel',
       { message: 'Save the Humans' },
       'fish'
     ]);
-    expect(processedArgs).toEqual('babel Save the Humans fish');
+    expect(processedArgs).toEqual('babel {"message":"Save the Humans"} fish');
 
     processedArgs = service.processingArgs([
       'babel',
@@ -156,9 +159,9 @@ describe('LoggerProvider', () => {
     expect(processedArgs).toEqual('babel {"improbability":"infinite"} fish');
 
     // cyclical reference; yeah, baby! to break JSON.stringify
-    let a = { b: { a: {} } };
+    const a = { b: { a: {} } };
     a.b.a = a;
     processedArgs = service.processingArgs(['babel', a, 'fish']);
-    expect(processedArgs).toEqual('babel undefined fish');
+    expect(processedArgs).toEqual('babel Unknown message fish');
   });
 });
