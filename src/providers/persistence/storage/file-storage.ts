@@ -15,7 +15,7 @@ export class FileStorage implements IStorage {
     return new Promise((resolve, reject) => {
       if (this.fs && this.dir) return resolve();
 
-      let onSuccess = (fs: FileSystem): Promise<any> => {
+      const onSuccess = (fs: FileSystem): Promise<any> => {
         this.log.debug('File system started: ', fs.name, fs.root.name);
         this.fs = fs;
         return this.getDir().then(dir => {
@@ -26,7 +26,7 @@ export class FileStorage implements IStorage {
         });
       };
 
-      let onFailure = (err: Error): Promise<any> => {
+      const onFailure = (err: Error): Promise<any> => {
         this.log.error('Could not init file system: ' + err.message);
         return Promise.reject(err);
       };
@@ -41,9 +41,9 @@ export class FileStorage implements IStorage {
       return Promise.reject(new Error('Could not write on device storage'));
     }
 
-    var url = this.file.dataDirectory;
+    const url = this.file.dataDirectory;
     return this.file.resolveDirectoryUrl(url).catch(err => {
-      let msg = 'Could not resolve filesystem ' + url;
+      const msg = 'Could not resolve filesystem ' + url;
       this.log.warn(msg, err);
       throw err || new Error(msg);
     });
@@ -64,7 +64,7 @@ export class FileStorage implements IStorage {
   readFileEntry(fileEntry): Promise<any> {
     return new Promise((resolve, reject) => {
       fileEntry.file(file => {
-        var reader = new FileReader();
+        const reader = new FileReader();
 
         reader.onerror = () => {
           reader.abort();
@@ -143,7 +143,6 @@ export class FileStorage implements IStorage {
           resolve();
         })
         .catch(e => {
-          this.log.error('Error removing file: ' + k, e);
           reject(e);
         });
     });
