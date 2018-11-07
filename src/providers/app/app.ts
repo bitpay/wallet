@@ -60,8 +60,9 @@ export class AppProvider {
 
   public async load() {
     await Promise.all([this.getInfo(), this.loadProviders()]);
-    this.persistence.getPersistentLogs();
-    this.persistence.checkLogsConfig(this.config.get());
+    // TODO: Ref persistent logs
+    // this.persistence.getPersistentLogs();
+    // this.persistence.checkLogsConfig();
   }
 
   private async getInfo() {

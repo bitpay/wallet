@@ -48,6 +48,14 @@ Object.keys(templates).forEach(function(k) {
   }
 
   if (k === 'config-template.xml') {
+    // Set a random port number to WKPort
+    const max = 65535;
+    const min = 49152;
+    const randomPort = Math.floor(Math.random() * (max - min) + min).toString();
+    content = content.replace(
+      '<preference name="WKPort" value="8080" />',
+      `<preference name="WKPort" value="${randomPort}" />`
+    );
     k = 'config.xml';
   } else if (k === 'index-template.html') {
     k = 'index.html';

@@ -24,6 +24,7 @@ import { EmailNotificationsProvider } from '../providers/email-notifications/ema
 import { GlideraProvider } from '../providers/glidera/glidera';
 import { IncomingDataProvider } from '../providers/incoming-data/incoming-data';
 import { Logger } from '../providers/logger/logger';
+import { PersistenceProvider } from '../providers/persistence/persistence';
 import { PlatformProvider } from '../providers/platform/platform';
 import { PopupProvider } from '../providers/popup/popup';
 import { ProfileProvider } from '../providers/profile/profile';
@@ -116,7 +117,8 @@ export class CopayApp {
     private walletTabsProvider: WalletTabsProvider,
     private renderer: Renderer,
     private userAgent: UserAgent,
-    private device: Device
+    private device: Device,
+    private persistenceProvider: PersistenceProvider
   ) {
     this.initializeApp();
   }
@@ -210,6 +212,7 @@ export class CopayApp {
     this.incomingDataRedirEvent();
     this.scanFromWalletEvent();
     this.events.subscribe('OpenWallet', wallet => this.openWallet(wallet));
+    this.persistenceProvider.removeLogs();
     // Check Profile
     this.profile
       .loadAndBindProfile()
