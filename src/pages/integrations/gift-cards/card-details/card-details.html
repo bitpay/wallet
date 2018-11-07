@@ -66,9 +66,12 @@
       <div class="actions-wrapper" [@preventInitialChildAnimations]>
         <div class="actions" *ngIf="card.status !== 'PENDING' && !card.archived && (card.claimCode || card.claimLink)"
           [@enterAnimation]>
-          <button ion-button *ngIf="!showClaimLinkUI()" class="button-standard" (click)="redeem()">
-            <ng-container *ngIf="cardConfig?.redeemUrl">{{'Redeem Now' | translate}}</ng-container>
-            <ng-container *ngIf="!cardConfig?.redeemUrl">{{'Copy Code' | translate}}</ng-container>
+          <button ion-button *ngIf="!showClaimLinkUI() && cardConfig?.redeemUrl" class="button-standard" (click)="redeem()">
+            {{'Redeem Now' | translate}}
+          </button>
+          <button ion-button *ngIf="!showClaimLinkUI() && !cardConfig?.redeemUrl" class="button-standard" (click)="redeem()"
+            [copy-to-clipboard]="card.claimCode" [hide-toast]="true">
+            {{'Copy Code' | translate}}
           </button>
           <button ion-button *ngIf="showClaimLinkUI()" class="button-standard" (click)="viewRedemptionCode()">
             {{'View Redemption Code' | translate}}
