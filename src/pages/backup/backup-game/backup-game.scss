@@ -68,16 +68,8 @@ page-backup-game {
     .button {
       height: 3rem;
       font-size: 14px;
+      margin: 5px;
     }
-  }
-  .bottom {
-    font-size: 16px;
-    color: color($colors, grey);
-    padding: 1rem;
-    position: absolute;
-    bottom: 2rem;
-    text-align: center;
-    width: 100%;
   }
   .bottom-absolute {
     padding: 0px;
@@ -88,9 +80,9 @@ page-backup-game {
       margin: 0;
       font-size: 1.2rem;
     }
-  }
-  .footer-text {
-    font-size: 12.5px;
-    color: color($colors, grey);
+    .footer-text {
+      font-size: 12.5px;
+      color: color($colors, grey);
+    }
   }
 }
