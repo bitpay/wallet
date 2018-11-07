@@ -42,12 +42,12 @@ export class BackupGamePage {
   public selectComplete: boolean;
   public error: boolean;
   public credentialsEncrypted: boolean;
+  public mnemonicHasPassphrase;
+  public useIdeograms;
+  public wallet;
+  public keys;
 
-  private mnemonicHasPassphrase;
   private walletId: string;
-  private wallet;
-  private keys;
-  private useIdeograms;
 
   constructor(
     private events: Events,
@@ -91,7 +91,7 @@ export class BackupGamePage {
           err.message != 'FINGERPRINT_CANCELLED' &&
           err.message != 'PASSWORD_CANCELLED'
         ) {
-          let title = this.translate.instant('Could not decrypt wallet');
+          const title = this.translate.instant('Could not decrypt wallet');
           this.showErrorInfoSheet(this.bwcErrorProvider.msg(err), title);
         }
         this.navCtrl.pop();
@@ -124,7 +124,7 @@ export class BackupGamePage {
   }
 
   private shuffledWords(words: string[]) {
-    var sort = _.sortBy(words);
+    const sort = _.sortBy(words);
 
     return _.map(sort, w => {
       return {
@@ -135,7 +135,7 @@ export class BackupGamePage {
   }
 
   public addButton(index: number, item): void {
-    var newWord = {
+    const newWord = {
       word: item.word,
       prevIndex: index
     };
@@ -224,17 +224,17 @@ export class BackupGamePage {
     return new Promise((resolve, reject) => {
       this.error = false;
 
-      let customWordList = _.map(this.customWords, 'word');
+      const customWordList = _.map(this.customWords, 'word');
 
       if (!_.isEqual(this.mnemonicWords, customWordList)) {
         return reject('Mnemonic string mismatch');
       }
 
       if (this.mnemonicHasPassphrase) {
-        let walletClient = this.bwcProvider.getClient();
-        let separator = this.useIdeograms ? '\u3000' : ' ';
-        let customSentence = customWordList.join(separator);
-        let password = this.password || '';
+        const walletClient = this.bwcProvider.getClient();
+        const separator = this.useIdeograms ? '\u3000' : ' ';
+        const customSentence = customWordList.join(separator);
+        const password = this.password || '';
 
         try {
           walletClient.seedFromMnemonic(customSentence, {

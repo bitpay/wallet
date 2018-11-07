@@ -50,36 +50,38 @@
           </div>
         </div>
       </div>
-      <div class="bottom">
+      <div class="bottom-absolute">
         <div *ngIf="!selectComplete">
-          <ion-item-divider>{{'Please tap each word in the correct order.' | translate}}</ion-item-divider>
+          <div class="slide-title" translate>Please tap each word in the correct order.</div>
           <div class="words">
-            <button ion-button *ngFor="let shuffledWord of shuffledMnemonicWords; let i = index" (click)="addButton(i, shuffledWord)" [disabled]="shuffledWord.selected">{{shuffledWord.word}}
-            </button>
+            <button ion-button *ngFor="let shuffledWord of shuffledMnemonicWords; let i = index" (click)="addButton(i, shuffledWord)" [disabled]="shuffledWord.selected">{{shuffledWord.word}}</button>
           </div>
         </div>
-      </div>
-      <div *ngIf="selectComplete" class="bottom-absolute">
-        <div class="footer-text">{{'Is this correct?' | translate}}</div>
-        <button *ngIf="currentIndex == 1 && selectComplete" ion-button class="button-standard" (click)="slideNext(false)">
-          {{'Confirm' | translate}}
-        </button>
-        <button ion-button clear class="button-standard" (click)="setFlow()">
-          {{'Clear' | translate}}
-        </button>
+        <div *ngIf="selectComplete">
+          <div class="footer-text" translate>Is this correct?</div>
+          <button *ngIf="currentIndex == 1 && selectComplete" ion-button class="button-standard" (click)="slideNext(false)">
+            {{'Confirm' | translate}}
+          </button>
+          <button ion-button clear class="button-standard" (click)="setFlow()">
+            {{'Clear' | translate}}
+          </button>
+        </div>
       </div>
     </ion-slide>
 
-    <ion-slide *ngIf="wallet.mnemonicHasPassphrase">
-      <div translate>Enter your password</div>
-      <ion-item-divider>{{'In order to verify your wallet recovery phrase, please type your password.' | translate}}</ion-item-divider>
-      <ion-item>
-        <ion-label stacked translate>Password</ion-label>
-        <ion-input type="password" id="password" [(ngModel)]="password" autocapitalize="off" spellcheck="false"></ion-input>
-      </ion-item>
-      <ion-item-divider class="assertive">
-        {{'This recovery phrase was created with a password. To recover this wallet both the recovery phrase and password are needed.' | translate}}
-      </ion-item-divider>
+    <ion-slide *ngIf="mnemonicHasPassphrase">
+      <div class="slide-container">
+        <div class="slide-body">
+          <div class="slide-title" translate>In order to verify your wallet recovery phrase, please type your password.</div>
+          <ion-item>
+            <ion-label stacked translate>Password</ion-label>
+            <ion-input type="password" id="password" [(ngModel)]="password" autocapitalize="off" spellcheck="false"></ion-input>
+          </ion-item>
+          <div class="slide-title">
+            <span class="assertive" translate>This recovery phrase was created with a password. To recover this wallet both the recovery phrase and password are needed.</span>
+          </div>
+        </div>
+      </div>
 
       <div class="bottom-absolute">
         <button *ngIf="currentIndex == 2" [disabled]="!password" ion-button class="button-standard" (click)="finalStep()">
