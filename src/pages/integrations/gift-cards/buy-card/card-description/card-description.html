@@ -1,0 +1,38 @@
+<div [ngSwitch]="cardConfig.name">
+  <div *ngSwitchCase="CardName.amazon">
+    <div translate>Only redeemable on www.amazon.com (USA website)</div>
+    <div translate>Amazon.com Gift Cards never expire and can be redeemed towards millions of items at www.amazon.com.</div>
+  </div>
+  <div *ngSwitchCase="CardName.amazonJapan">
+    <div translate>Only redeemable on www.amazon.co.jp (Japan website)</div>
+    <div translate>Amazon.co.jp Gift Cards never expire and can be redeemed towards millions of items at
+      www.amazon.co.jp.</div>
+  </div>
+  <div *ngSwitchCase="CardName.delta">
+    <div translate>
+      The Gift of Go.™ With over 300 destinations and limitless adventures to choose from, the Delta Gift
+      Card opens up a world of possibilities.
+    </div>
+    <div translate>
+      Delta Gift Cards can be used toward airfare on any Delta marketed flight through www.delta.com, at
+      the airport, through reservations, or by phone with Delta Vacations®. Delta Gift Cards do not have any expiration
+      dates or fees.
+    </div>
+  </div>
+  <div *ngSwitchCase="CardName.mercadoLibre">
+    <div translate>Only redeemable on Mercado Livre (Brazil)</div>
+    <div translate>
+      You can use your Mercado Livre gift cards on your Mercado Pago account for everyday expenses like
+      utilities and metro rides.
+    </div>
+  </div>
+  <div *ngSwitchCase="CardName.uber">
+    <div translate>Give friends and family the gift of tapping a button and getting a ride - any time of day, any day
+      of year.</div>
+    <div translate>Uber gift cards also apply to UberEATS orders. Enjoy food from hundreds of restaurants, delivered at
+      Uber speed.</div>
+  </div>
+  <div *ngSwitchDefault externalize-links>
+    <div markdown [data]="prepForMarkdown(cardConfig.description)"></div>
+  </div>
+</div>

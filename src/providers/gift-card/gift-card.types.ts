@@ -1,27 +1,48 @@
 export enum CardBrand {
   amazon = 'Amazon',
-  mercadoLibre = 'Mercado Livre'
+  delta = 'Delta',
+  hotelsCom = 'Hotels.com',
+  mercadoLibre = 'Mercado Livre',
+  uber = 'Uber',
+  uberEats = 'Uber Eats',
+  venue = 'Venue'
 }
 
 export enum CardName {
   amazon = 'Amazon.com',
   amazonJapan = 'Amazon.co.jp',
-  mercadoLibre = 'Mercado Livre'
+  delta = 'Delta Air Lines',
+  hotelsCom = 'Hotels.com',
+  mercadoLibre = 'Mercado Livre',
+  uber = 'Uber',
+  uberEats = 'Uber Eats',
+  venue = 'Venue USD'
 }
 
-export interface CardConifg {
+export interface BaseCardConfig {
   brand: CardBrand;
   cardImage: string;
-  currency: string;
+  defaultClaimCodeType: 'barcode' | 'link' | 'code';
   emailRequired: boolean;
   icon: string;
-  maxAmount: number;
-  minAmount: number;
+  logo: string;
+  logoBackgroundColor: string;
   name: CardName;
-  bitpayApiPath: string;
-  redeemUrl: string;
+  redeemUrl?: string;
   website: string;
 }
+
+export interface ApiCardConfig {
+  currency: string;
+  description?: string;
+  minAmount?: number;
+  maxAmount?: number;
+  redeemInstructions?: string;
+  supportedAmounts?: number[];
+  terms: string;
+}
+
+export interface CardConfig extends BaseCardConfig, ApiCardConfig {}
 
 export interface GiftCard {
   accessKey: string;
@@ -29,38 +50,37 @@ export interface GiftCard {
   archived: boolean;
   brand: CardBrand;
   claimCode: string;
+  claimLink?: string;
   currency: string;
   date: number;
   invoiceId: string;
   invoiceTime?: number;
   invoiceUrl: string;
   name: CardName;
+  pin?: string;
   status: string;
   uuid: string;
 }
 
-/*
-  Hopefully we'll standardize our redeem endpoint and these temporary interfaces
-  will no longer be necessary.
-*/
-export interface TemporaryMercadoLibreResponse {
-  cardStatus: string;
-  pin: string;
-}
-
-export interface TemporaryAmazonResponse {
+export type GiftCardSaveParams = Partial<{
+  error: string;
   status: string;
-  gcId: string;
-  cardStatus: string;
-  amount: number;
+  remove: boolean;
+}>;
+
+export interface ApiCard {
+  amount?: number;
   currency: string;
-  claimCode: string;
+  description: string;
+  minAmount?: number;
+  maxAmount?: number;
+  redeemInstructions?: string;
+  terms: string;
+  type: 'fixed' | 'range';
 }
 
-export type RedeemResponse = TemporaryMercadoLibreResponse &
-  TemporaryAmazonResponse;
+export type ApiBrandConfig = ApiCard[];
 
-export enum LegacyCardServiceName {
-  amazon = 'amazon',
-  mercadoLibre = 'mercadolibre'
-}
+export type AvailableCardMap = {
+  [T in keyof typeof CardName]?: ApiBrandConfig
+};

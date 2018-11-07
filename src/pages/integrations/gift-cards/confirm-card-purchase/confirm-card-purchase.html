@@ -80,7 +80,7 @@
         </ion-item>
       </div>
       <ion-item>
-        <card-terms [cardName]="cardConfig?.name"></card-terms>
+        <card-terms *ngIf="cardConfig" [cardName]="cardConfig.name"></card-terms>
       </ion-item>
     </ion-item-group>
   </ion-list>
@@ -90,6 +90,7 @@
   <page-slide-to-accept #slideButton *ngIf="isCordova" [disabled]="!(wallet && totalAmountStr)" buttonText="{{'Slide to confirm' | translate}}"
     (slideDone)="buyConfirm()" [ngClass]="{'slide-confirm-fast slide-confirm-down': hideSlideButton, 'slide-confirm-slow': !hideSlideButton}"></page-slide-to-accept>
   <ion-toolbar *ngIf="!isCordova">
-    <button ion-button full class="button-footer" (click)="buyConfirm()" [disabled]="!(wallet && totalAmountStr)">{{'Confirm purchase' | translate}}</button>
+    <button ion-button full class="button-footer" (click)="buyConfirm()" [disabled]="!(wallet && totalAmountStr)">{{'Confirm
+      purchase' | translate}}</button>
   </ion-toolbar>
 </ion-footer>

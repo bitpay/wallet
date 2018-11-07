@@ -1,0 +1,13 @@
+<wide-header-page title="Gift Card Settings">
+  <div page-content>
+    <ion-list class="settings-list top-padding">
+      <ion-item>
+        <ion-label>{{'Show in Home' | translate}}</ion-label>
+        <ion-toggle [(ngModel)]="showAtHome" (ionChange)="integrationChange()"></ion-toggle>
+      </ion-item>
+      <ion-item-divider *ngIf="purchasedBrands?.length">{{'Purchased Brands' | translate}}</ion-item-divider>
+      <card-list-item *ngFor="let brandCards of purchasedBrands" [card]="brandCards[0]" [catalogListing]="true" (click)="goToCardSettings(brandCards[0].name)"></card-list-item>
+      <ion-item-divider></ion-item-divider>
+    </ion-list>
+  </div>
+</wide-header-page>

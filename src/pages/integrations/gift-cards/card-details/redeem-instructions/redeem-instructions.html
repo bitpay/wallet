@@ -1,0 +1,13 @@
+<span [ngSwitch]="cardConfig.name">
+  <span *ngSwitchCase="CardName.uber">
+    <p translate>Redeem by going to the payment section in the Uber app.</p>
+    <p translate>1. Tap "Add Payment Method" and select "Gift Card"</p>
+    <p translate>2. Enter Gift Code</p>
+  </span>
+  <span *ngSwitchDefault>
+    <span *ngIf="cardConfig.redeemInstructions" markdown [data]="cardConfig.redeemInstructions" externalize-links></span>
+    <span *ngIf="!cardConfig.redeemInstructions">
+      {{'Paste this code on {cardConfig.website}. This gift card cannot be recovered if your claim code is lost.' |
+      translate:params }}</span>
+  </span>
+</span>

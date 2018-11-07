@@ -45,6 +45,11 @@ export class HomeIntegrationsProvider {
     });
   }
 
+  public shouldShowInHome(serviceName: string) {
+    const service = this.services.find(i => i.name === serviceName);
+    return service && service.show;
+  }
+
   public get() {
     return _.orderBy(this.services, ['name'], ['asc']);
   }

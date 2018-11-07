@@ -16,16 +16,15 @@ import {
   WalletTabsProvider
 } from '../../../../providers';
 import { ActionSheetProvider } from '../../../../providers/action-sheet/action-sheet';
-import { AmazonProvider } from '../../../../providers/amazon/amazon';
 import { BwcErrorProvider } from '../../../../providers/bwc-error/bwc-error';
 import { BwcProvider } from '../../../../providers/bwc/bwc';
 import { ConfigProvider } from '../../../../providers/config/config';
 import { ExternalLinkProvider } from '../../../../providers/external-link/external-link';
+import { GiftCardProvider } from '../../../../providers/gift-card/gift-card';
 import {
-  CardConifg,
-  GiftCard,
-  GiftCardProvider
-} from '../../../../providers/gift-card/gift-card';
+  CardConfig,
+  GiftCard
+} from '../../../../providers/gift-card/gift-card.types';
 import { OnGoingProcessProvider } from '../../../../providers/on-going-process/on-going-process';
 import { PayproProvider } from '../../../../providers/paypro/paypro';
 import { PlatformProvider } from '../../../../providers/platform/platform';
@@ -60,13 +59,12 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
   public network: string;
   public onlyIntegers: boolean;
 
-  public cardConfig: CardConifg;
+  public cardConfig: CardConfig;
   public hideSlideButton: boolean;
 
   constructor(
     actionSheetProvider: ActionSheetProvider,
     app: App,
-    private amazonProvider: AmazonProvider,
     bwcErrorProvider: BwcErrorProvider,
     bwcProvider: BwcProvider,
     configProvider: ConfigProvider,
@@ -220,18 +218,19 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
   private handleCreateInvoiceError(err) {
     let err_title = this.translate.instant('Error creating the invoice');
     let err_msg;
-    if (err && err.message && err.message.match(/suspended/i)) {
+    const errMessage = err && err.error && err.error.message;
+    if (errMessage && errMessage.match(/suspended/i)) {
       err_title = this.translate.instant('Service not available');
       err_msg = this.translate.instant(
         `${
           this.cardConfig.brand
-        } gift card purchases are not available at this time. Please try back later.`
+        } gift card purchases are not available at this time. Please try again later.`
       );
-    } else if (err && err.message) {
-      err_msg = err.message;
+    } else if (errMessage) {
+      err_msg = errMessage;
     } else {
       err_msg = this.translate.instant(
-        `Unable to complete your purchase at this time. Please try back later.`
+        `Unable to complete your purchase at this time. Please try again later.`
       );
     }
 
@@ -297,9 +296,8 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
       ],
       message,
       customData: {
-        service: this.giftCardProvider.getLegacyServiceNameFromBrand(
-          this.cardConfig.brand
-        )
+        giftCardName: this.cardConfig.name,
+        service: 'giftcards'
       },
       payProUrl,
       excludeUnconfirmedUtxos: this.configWallet.spendUnconfirmed ? false : true
@@ -343,7 +341,7 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
     if (!this.cardConfig.emailRequired) {
       return Promise.resolve();
     }
-    const email = await this.amazonProvider.getUserEmail();
+    const email = await this.giftCardProvider.getUserEmail();
     if (email) return Promise.resolve(email);
     const title = this.translate.instant('Enter email address');
     const message = this.translate.instant(
@@ -351,10 +349,10 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
     );
     const opts = { type: 'email', defaultText: '' };
     const newEmail = await this.popupProvider.ionicPrompt(title, message, opts);
-    if (!this.amazonProvider.emailIsValid(newEmail)) {
+    if (!this.giftCardProvider.emailIsValid(newEmail)) {
       this.throwEmailRequiredError();
     }
-    this.amazonProvider.storeEmail(newEmail);
+    this.giftCardProvider.storeEmail(newEmail);
     return newEmail;
   }
 
@@ -413,7 +411,7 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
     let invoiceFeeSat = invoice.minerFees[COIN].totalFee;
 
     this.message = this.replaceParametersProvider.replace(
-      this.translate.instant('{{amountUnitStr}} Gift Card'),
+      this.translate.instant(`{{amountUnitStr}} Gift Card`),
       { amountUnitStr: this.amountUnitStr }
     );
 
@@ -534,14 +532,12 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
     let cssClass: string;
     if (card.status == 'FAILURE') {
       finishComment = this.translate.instant(
-        'Your purchase could not be completed'
+        'Your purchase could not be completed.'
       );
       cssClass = 'danger';
     }
     if (card.status == 'PENDING') {
-      finishComment = this.translate.instant(
-        'Your purchase was added to the list of pending'
-      );
+      finishComment = this.translate.instant('Your purchase is pending.');
       cssClass = 'warning';
     }
     if (card.status == 'SUCCESS') {
@@ -555,15 +551,28 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
       { finishText, finishComment, cssClass },
       { showBackdrop: true, enableBackdropDismiss: false }
     );
+
     await modal.present();
 
     await this.navCtrl.popToRoot({ animate: false });
     await this.navCtrl.parent.select(0);
-    await this.navCtrl.push(
-      PurchasedCardsPage,
-      { cardName: card.name },
-      { animate: false }
-    );
+
+    const numActiveCards = await this.getNumActiveCards();
+    if (numActiveCards > 1) {
+      await this.navCtrl.push(
+        PurchasedCardsPage,
+        { cardName: card.name },
+        { animate: false }
+      );
+    }
     await this.navCtrl.push(CardDetailsPage, { card }, { animate: false });
+  }
+
+  async getNumActiveCards(): Promise<number> {
+    const allGiftCards = await this.giftCardProvider.getPurchasedCards(
+      this.cardConfig.name
+    );
+    const currentGiftCards = allGiftCards.filter(c => !c.archived);
+    return currentGiftCards.length;
   }
 }

@@ -26,9 +26,7 @@ import { ActivityPage } from './activity/activity';
 import { ProposalsPage } from './proposals/proposals';
 
 // Providers
-import { GiftCardProvider } from '../../providers';
 import { AddressBookProvider } from '../../providers/address-book/address-book';
-import { AmazonProvider } from '../../providers/amazon/amazon';
 import { AppProvider } from '../../providers/app/app';
 import { BitPayCardProvider } from '../../providers/bitpay-card/bitpay-card';
 import { BwcErrorProvider } from '../../providers/bwc-error/bwc-error';
@@ -48,8 +46,6 @@ import { ProfileProvider } from '../../providers/profile/profile';
 import { ReleaseProvider } from '../../providers/release/release';
 import { ReplaceParametersProvider } from '../../providers/replace-parameters/replace-parameters';
 import { Coin, WalletProvider } from '../../providers/wallet/wallet';
-import { BuyCardPage } from '../integrations/gift-cards/buy-card/buy-card';
-import { PurchasedCardsPage } from '../integrations/gift-cards/purchased-cards/purchased-cards';
 import { SettingsPage } from '../settings/settings';
 
 @Component({
@@ -87,6 +83,7 @@ export class HomePage {
   public showReorderBch: boolean;
   public showIntegration;
   public hideHomeIntegrations: boolean;
+  public showGiftCards: boolean;
 
   private isElectron: boolean;
   private updatingWalletId: object;
@@ -107,7 +104,6 @@ export class HomePage {
     private events: Events,
     private configProvider: ConfigProvider,
     private externalLinkProvider: ExternalLinkProvider,
-    private giftCardProvider: GiftCardProvider,
     private onGoingProcessProvider: OnGoingProcessProvider,
     private popupProvider: PopupProvider,
     private modalCtrl: ModalController,
@@ -121,7 +117,6 @@ export class HomePage {
     private translate: TranslateService,
     private emailProvider: EmailNotificationsProvider,
     private replaceParametersProvider: ReplaceParametersProvider,
-    private amazonProvider: AmazonProvider,
     private clipboardProvider: ClipboardProvider,
     private incomingDataProvider: IncomingDataProvider
   ) {
@@ -174,14 +169,17 @@ export class HomePage {
 
   private _didEnter() {
     this.checkClipboard();
-
     this.subscribeIncomingDataMenuEvent();
     this.subscribeBwsEvents();
 
     // Show integrations
-    let integrations = _.filter(this.homeIntegrationsProvider.get(), {
+    const integrations = _.filter(this.homeIntegrationsProvider.get(), {
       show: true
-    });
+    }).filter(i => i.name !== 'giftcards');
+
+    this.showGiftCards = this.homeIntegrationsProvider.shouldShowInHome(
+      'giftcards'
+    );
 
     // Hide BitPay if linked
     setTimeout(() => {
@@ -208,7 +206,6 @@ export class HomePage {
     if (this.isElectron) this.checkUpdate();
     this.checkHomeTip();
     this.checkFeedbackInfo();
-    this.amazonProvider.getSupportedCurrency().catch(() => {});
 
     this.checkEmailLawCompliance();
 
@@ -777,11 +774,7 @@ export class HomePage {
     this.navCtrl.push(ActivityPage);
   }
 
-  public goTo(page: string, serviceName: string): void {
-    if (serviceName === 'amazon' || serviceName === 'mercadolibre') {
-      this.buyGiftCard(serviceName);
-      return;
-    }
+  public goTo(page: string): void {
     const pageMap = {
       BitPayCardIntroPage,
       CoinbasePage,
@@ -789,20 +782,6 @@ export class HomePage {
       ShapeshiftPage
     };
     this.navCtrl.push(pageMap[page]);
-  }
-
-  public async buyGiftCard(servicename: string) {
-    const brandNames = {
-      amazon: 'Amazon',
-      mercadolibre: 'Mercado Livre'
-    };
-    const supportedCards = await this.giftCardProvider.getSupportedCards();
-    const cardName = supportedCards.filter(
-      c => c.brand === brandNames[servicename]
-    )[0].name;
-    const cards = await this.giftCardProvider.getPurchasedCards(cardName);
-    const nextPage = !cards.length ? BuyCardPage : PurchasedCardsPage;
-    this.navCtrl.push(nextPage, { cardName });
   }
 
   public goToCard(cardId): void {

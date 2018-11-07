@@ -3,15 +3,17 @@
   height: 100%;
   background-color: white;
   cursor: pointer;
+
   .option {
     border-bottom: 1px solid rgb(237, 237, 237);
     display: flex;
-    padding: 20px;
+    padding: 22px;
+
     .option-icon {
-      display: inline-block;
+      display: flex;
       padding-right: 15px;
-      vertical-align: middle;
     }
+
     .option-text {
       display: inline-block;
       color: black;
@@ -19,6 +21,7 @@
       vertical-align: middle;
     }
   }
+
   .cancel-btn {
     color: black;
     background-color: rgb(237, 237, 237);

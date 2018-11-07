@@ -15,7 +15,7 @@ import { Observable, Subscription } from 'rxjs';
 
 // providers
 import { WalletTabsProvider } from '../pages/wallet-tabs/wallet-tabs.provider';
-import { AmazonProvider } from '../providers/amazon/amazon';
+import { GiftCardProvider } from '../providers';
 import { AppProvider } from '../providers/app/app';
 import { BitPayCardProvider } from '../providers/bitpay-card/bitpay-card';
 import { CoinbaseProvider } from '../providers/coinbase/coinbase';
@@ -24,7 +24,6 @@ import { EmailNotificationsProvider } from '../providers/email-notifications/ema
 import { GlideraProvider } from '../providers/glidera/glidera';
 import { IncomingDataProvider } from '../providers/incoming-data/incoming-data';
 import { Logger } from '../providers/logger/logger';
-import { MercadoLibreProvider } from '../providers/mercado-libre/mercado-libre';
 import { PersistenceProvider } from '../providers/persistence/persistence';
 import { PlatformProvider } from '../providers/platform/platform';
 import { PopupProvider } from '../providers/popup/popup';
@@ -104,12 +103,11 @@ export class CopayApp {
     private appProvider: AppProvider,
     private profile: ProfileProvider,
     private configProvider: ConfigProvider,
+    private giftCardProvider: GiftCardProvider,
     private modalCtrl: ModalController,
     private glideraProvider: GlideraProvider,
     private coinbaseProvider: CoinbaseProvider,
-    private amazonProvider: AmazonProvider,
     private bitPayCardProvider: BitPayCardProvider,
-    private mercadoLibreProvider: MercadoLibreProvider,
     private shapeshiftProvider: ShapeshiftProvider,
     private emailNotificationsProvider: EmailNotificationsProvider,
     private screenOrientation: ScreenOrientation,
@@ -292,13 +290,9 @@ export class CopayApp {
   }
 
   private registerIntegrations(): void {
-    // Mercado Libre
-    if (this.appProvider.info._enabledExtensions.mercadolibre)
-      this.mercadoLibreProvider.register();
-
-    // Amazon Gift Cards
-    if (this.appProvider.info._enabledExtensions.amazon)
-      this.amazonProvider.register();
+    // Gift Cards
+    if (this.appProvider.info._enabledExtensions.giftcards)
+      this.giftCardProvider.register();
 
     // ShapeShift
     if (this.appProvider.info._enabledExtensions.shapeshift) {

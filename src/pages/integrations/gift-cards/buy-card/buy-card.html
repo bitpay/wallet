@@ -11,18 +11,19 @@
       <div>
         <img class="card-image" src="{{cardConfig?.cardImage}}">
       </div>
-      <div class="amount-box__value" *ngIf="cardConfig">
-        <span *ngIf="cardConfig.currency === 'USD'">$0.00</span>
-        <span *ngIf="cardConfig.currency !== 'USD'">{{0 | formatCurrency:cardConfig.currency}}</span>
-      </div>
+      <amount-picker *ngIf="cardConfig" [currency]="cardConfig.currency" [supportedAmounts]="cardConfig.supportedAmounts"
+        (amountChange)="onAmountChange($event)" (click)="onAmountClick()"></amount-picker>
     </div>
     <div class="buy-box">
-      <sales-pitch class="buy-box__terms" [cardName]="cardConfig?.name"></sales-pitch>
-      <div class="actions">
-        <button ion-button class="button-standard" (click)="enterAmount()">
-          {{'Enter Amount' | translate}}
-        </button>
-      </div>
+      <card-description class="buy-box__terms" [cardConfig]="cardConfig"></card-description>
     </div>
   </div>
 </ion-content>
+
+<ion-footer>
+  <ion-toolbar>
+    <button ion-button full class="button-footer" (click)="next()">
+      {{'Continue' | translate}}
+    </button>
+  </ion-toolbar>
+</ion-footer>

@@ -1,30 +1,34 @@
 @import './../gift-cards';
+
 buy-card-page {
   @include fix-ios-bg-scroll($gift-card-page-background-color);
+
   .card-image {
-    height: 200px;
+    height: 170px;
     margin-top: -75px;
   }
+
   .amount-box {
     background-image: linear-gradient(-180deg, #ffffff 0%, #ebedf8 100%);
     display: flex;
     flex-direction: column;
     flex-grow: 1;
     min-height: 180px;
-    &__value {
-      @include center();
-      color: #1a3a8b;
-      flex-grow: 1;
-      font-size: 50px;
-      font-weight: 500;
-    }
   }
+
   .buy-box {
     font-size: 16px;
     padding: 10px 35px 20px;
+
     &__terms {
       text-align: left;
       margin-bottom: 30px;
+    }
+  }
+
+  ion-footer {
+    ion-toolbar {
+      background: $color-primary
     }
   }
 }

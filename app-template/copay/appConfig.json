@@ -31,8 +31,7 @@
     "coinbase": true,
     "glidera": true,
     "debitcard": false,
-    "amazon": true,
-    "mercadolibre": true,
-    "shapeshift": true
+    "shapeshift": true,
+    "giftcards": true
   }
 }

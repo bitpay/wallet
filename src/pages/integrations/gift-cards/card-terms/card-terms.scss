@@ -1,11 +1,21 @@
 card-terms {
   display: block;
+  margin-top: 30px;
+  margin-bottom: 40px;
 
-  .terms {
+  .terms p {
     font-size: 12px;
     line-height: 18px;
     color: rgba(58, 58, 58, 0.5);
-    margin-top: 30px;
-    margin-bottom: 40px;
+    margin-bottom: 20px;
+    margin-top: 20px;
+
+    &:first-child {
+      margin-top: 0;
+    }
   }
+}
+
+a {
+  text-decoration: none;
 }

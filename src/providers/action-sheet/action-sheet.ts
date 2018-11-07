@@ -8,6 +8,7 @@ import { DomProvider } from '../../providers/dom/dom';
 
 export type InfoSheetType =
   | 'address-copied'
+  | 'archive-all-gift-cards'
   | 'archive-gift-card'
   | 'appreciate-review'
   | 'backup-failed'
@@ -20,6 +21,7 @@ export type InfoSheetType =
   | 'custom-amount'
   | 'default-error'
   | 'gift-card-archived'
+  | 'gift-cards-unavailable'
   | 'insufficient-funds'
   | 'above-maximum-gift-card-amount'
   | 'below-minimum-gift-card-amount'

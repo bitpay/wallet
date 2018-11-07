@@ -46,6 +46,7 @@ ion-label {
   position: absolute;
   bottom: 0px;
   padding: 15px 15px calc(5vw + 1vh) 15px;
+
   .button {
     margin: 1.2rem auto;
     max-width: 360px;
@@ -56,7 +57,7 @@ ion-label {
   margin: 0px;
   height: 70px;
   width: 100%;
-  font-size: 1.6rem;
+  font-size: 18px;
 }
 
 // Hide border when refresh
@@ -90,6 +91,7 @@ ion-spinner * {
   text-overflow: ellipsis;
   font-weight: 300;
   font-size: 12.5px;
+
   ion-icon {
     vertical-align: text-bottom;
     margin-left: 5px;
@@ -112,12 +114,15 @@ ion-spinner * {
   .tabs-ios & {
     background: white;
   }
+
   justify-content: center;
   padding-top: 5px;
   transform: translate3d(0, 0, 0);
+
   .tab-button {
     max-width: 15vw;
     min-width: 80px; // Prevent the names of the tabs from disappearing
+
     .tab-button-text {
       display: block;
     }
@@ -155,6 +160,7 @@ ion-spinner * {
 
 .big-icon-svg {
   padding: 10px;
+
   .bg {
     padding: 0 7px;
     border-radius: $icon-border-radius;
@@ -163,6 +169,7 @@ ion-spinner * {
     background-repeat: no-repeat;
     background-clip: padding-box;
     background-size: 103%;
+
     &.green {
       background: rgb(1, 209, 162);
     }
@@ -196,22 +203,27 @@ ion-spinner * {
   cursor: pointer;
   padding: 10px;
   text-align: center;
+
   .icon {
     vertical-align: middle;
     margin: 0 5px;
   }
+
   &.success {
     background-color: color($background-colors, success);
     color: color($colors, success);
   }
+
   &.info {
     background-color: color($background-colors, info);
     color: color($colors, info);
   }
+
   &.warning {
     background-color: color($background-colors, warning);
     color: color($colors, warning);
   }
+
   &.error {
     background-color: color($background-colors, danger);
     color: color($colors, danger);
@@ -295,14 +307,17 @@ a.royal {
   display: block;
   border-radius: 3px;
   background-color: #ffffff;
+
   .item-divider {
     background-color: #ffffff;
     margin-bottom: 5px;
     min-height: 48px;
   }
+
   .item-block {
     padding: 5px 0 0px 24px;
   }
+
   .input-wrapper {
     padding-bottom: 4px;
   }
@@ -327,20 +342,26 @@ ion-icon {
     background: currentColor;
     width: 2rem !important;
     height: 2rem !important;
-  } // custom icons
+  }
+
+  // custom icons
   &[class*='tab-activity'] {
     mask-image: url(../assets/img/tab-icons/ico-activity.svg);
   }
+
   &[class*='tab-receive'] {
     mask-image: url(../assets/img/tab-icons/ico-receive.svg);
   }
+
   &[class*='tab-scan'] {
     mask-image: url(../assets/img/tab-icons/ico-scan.svg);
     width: 3rem !important;
   }
+
   &[class*='tab-send'] {
     mask-image: url(../assets/img/tab-icons/ico-send.svg);
   }
+
   &[class*='tab-button-back'] {
     mask-image: url(../assets/img/button-back.svg);
   }
@@ -359,6 +380,11 @@ ion-icon {
   box-shadow: none;
   font-weight: 400;
   font-size: 18px;
+
+  .button-inner {
+    padding: 2px;
+  }
+
   span {
     @extend .two-lines;
   }
@@ -371,6 +397,7 @@ ion-icon {
 .button-secondary {
   background-color: #ededed;
   color: black;
+
   &:hover,
   &:focus,
   &:active {
@@ -381,6 +408,7 @@ ion-icon {
       box-shadow: none;
     }
   }
+
   &:active,
   &.activated {
     &.button-md,
@@ -422,6 +450,7 @@ ion-alert .alert-message {
   .tabbar {
     display: none !important;
   }
+
   .fullscreen-tab {
     .scroll-content {
       margin-bottom: 0 !important;
@@ -443,6 +472,7 @@ ion-alert .alert-message {
 button.modal-close-button {
   font-size: 16px;
   font-weight: 400;
+
   ion-icon {
     font-size: 26px;
   }
@@ -452,6 +482,7 @@ button.modal-close-button {
   flex-grow: 1;
   @include center;
   background: linear-gradient(#ececec, white);
+
   .qr-card {
     border: 1px solid rgb(207, 207, 207);
     border-radius: 7px;
@@ -461,10 +492,12 @@ button.modal-close-button {
     width: 70%;
     max-width: 293px;
     box-shadow: none;
+
     .aclass {
       @include center;
       padding: 5px;
     }
+
     .aclass > img {
       filter: grayscale(100%);
       height: 100%;
@@ -487,6 +520,7 @@ button.modal-close-button {
 // Add padding bottom when item has label
 ion-item.with-label.item {
   padding-bottom: 10px;
+
   &.item-ios,
   &.item-md {
     .item-inner {
@@ -503,9 +537,11 @@ label-tip.warn.no-arrowhead:before {
 .slide-confirm-down {
   transform: translate(0px, 90px);
 }
+
 .slide-confirm-slow {
   transition: transform 0.7s;
 }
+
 .slide-confirm-fast {
   transition: transform 0.3s;
 }
