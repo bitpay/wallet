@@ -33,6 +33,9 @@
     <preference name="SplashMaintainAspectRatio" value="true" />
     <preference name="loadUrlTimeoutValue" value="60000" />
 
+    <preference name="WKPort" value="8080" />
+    <preference name="WKInternalConnectionsOnly" value="true" />
+
     <!-- Android Version: Lollipop 5.1 (API Level 22) or higher -->
     <preference name="android-minSdkVersion" value="22" />
 
@@ -75,7 +78,7 @@
     </plugin>
     <plugin name="cordova-plugin-fcm" spec="https://github.com/cmgustavo/cordova-plugin-fcm.git#v4.1" />
 
-    <plugin name="cordova-plugin-ionic-webview" spec="2.1.4" />
+    <plugin name="cordova-plugin-ionic-webview" spec="2.2.0"/>
 
     <!-- Platform Specific Settings -->
     <platform name="ios">
