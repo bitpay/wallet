@@ -228,7 +228,7 @@ msgid "Bitcoin Address"
 msgstr "比特币地址"
 
 msgid "Bitcoin Cash Address"
-msgstr "Địa chỉ Bitcoin Cash"
+msgstr "比特币现金地址"
 
 msgid "Bitcoin Cash URI"
 msgstr "Bitcoin Cash URI"
@@ -246,13 +246,13 @@ msgid "Bitcoin Wallets"
 msgstr "比特币钱包"
 
 msgid "Bitcoin Cash is a currency."
-msgstr "比特币是一种货币。"
+msgstr "比特币现金是一种货币。"
 
 msgid "Bitcoin Cash is different - it cannot be safely held with a bank or web service."
-msgstr "比特币是特殊的—它无法被银行或者网络服务安全持有。"
+msgstr "比特币现金是特殊的—它无法被银行或者网络服务安全持有。"
 
 msgid "Bitcoin Cash is secure, digital money."
-msgstr "比特币是安全的数字货币。"
+msgstr "比特币现金是安全的数字货币。"
 
 msgid "Bitcoin miner fee:"
 msgstr "比特币矿工费："
@@ -993,7 +993,7 @@ msgid "I understand"
 msgstr "我知道了"
 
 msgid "I understand that if this app is moved to another device or deleted, my Bitcoin Cash can only be recovered with the backup phrase"
-msgstr "我理解如果这个app被移动到另一个设备或删除，我的比特币只能通过备份短语恢复。"
+msgstr "我理解如果这个app被移动到另一个设备或删除，我的比特币现金只能通过备份短语恢复。"
 
 msgid "I understand that my funds are held securely on this device, not by a company"
 msgstr "我理解我的资金是在这个设备上被安全持有，而不是由一家公司持有。"
@@ -1269,7 +1269,7 @@ msgid "No access key defined"
 msgstr "授权密钥未定义"
 
 msgid "No backup, no Bitcoin Cash."
-msgstr "没有备份，没有比特币。"
+msgstr "没有备份，没有比特币现金。"
 
 msgid "No contacts yet"
 msgstr "然而没有联系人"
@@ -1956,7 +1956,7 @@ msgid "THIS ACTION CANNOT BE REVERSED"
 msgstr "此操作无法撤消"
 
 msgid "Take control of your money, get started with Bitcoin Cash."
-msgstr "控制好你的钱，开始使用比特币。"
+msgstr "控制好你的钱，开始使用比特币现金。"
 
 msgid "Tap and hold to show"
 msgstr "点击并按住以显示"
@@ -2052,7 +2052,7 @@ msgid "This app is not available for your device."
 msgstr "此app不适用于您的设备。"
 
 msgid "This app stores your Bitcoin Cash with cutting-edge security."
-msgstr "此应用程序商店你比特币与尖端的安全。"
+msgstr "此应用程序商店你比特币现金与尖端的安全。"
 
 msgid "This bitcoin payment request has expired."
 msgstr "这比特币付款请求已过期。"
@@ -2436,13 +2436,13 @@ msgid "You can make contributions by signing up on our Crowdin community transla
 msgstr "您可以通过签约我们 Crowdin 社区翻译网站作出贡献。我们期待你的听力 ！"
 
 msgid "You can scan Bitcoin Cash addresses, payment requests, paper wallets, and more."
-msgstr "您可以扫描比特币地址、 付款申请、 纸钱包和更多。"
+msgstr "您可以扫描比特币现金地址、 付款申请、 纸钱包和更多。"
 
 msgid "You can see the latest developments and contribute to this open source app by visiting our project on GitHub."
 msgstr "你可以看到最新的事态发展和贡献这个开放源码应用程序通过在 GitHub 上访问我们的项目。"
 
 msgid "You can spend Bitcoin Cash at millions of websites and stores worldwide."
-msgstr "你可以花比特币在数以百万计的网站和世界各地的商店。"
+msgstr "你可以花比特币现金在数以百万计的网站和世界各地的商店。"
 
 msgid "You can still export it from Advanced &gt; Export."
 msgstr "你仍然可以将其导出从高级 &gt; 出口。"
@@ -2451,7 +2451,7 @@ msgid "You can trade it for other currencies like US Dollars, Euros, or Pounds."
 msgstr "你可以换其他货币，如美元、 欧元或英镑。"
 
 msgid "You control your Bitcoin Cash."
-msgstr "您可以控制您的比特币。"
+msgstr "您可以控制您的比特币现金。"
 
 msgid "You could sign the transaction later in your wallet details"
 msgstr "稍后你可以在你的钱包详细信息中签下这笔交易。"
@@ -2469,7 +2469,7 @@ msgid "Your Gift Cards"
 msgstr "礼品卡"
 
 msgid "Your Bitcoin Cash wallet is ready!"
-msgstr "你的比特币钱包是准备好了 ！"
+msgstr "你的比特币现金钱包是准备好了 ！"
 
 msgid "Your extended private keys are all that is needed to access your bitcoin funds. Be sure to protect your private keys and store them only on secure devices. Bitprim does not have access to your private keys, so you alone are responsible for your keys. If you share key access with external services, you take responsibility for the risk of theft or breach. Only advanced users should handle extended private keys directly."
 msgstr "访问您的比特币基金只需要的是您的扩展私钥。请确保保护好您的私钥，并将它们存储在安全的设备上。Bitprim无法访问您的私钥，因此您自己负责您的密钥。如果您与外部服务共享密钥访问，则您将对被盗或违规的风险承担责任。只有高级用户才能直接处理扩展的私钥。"
