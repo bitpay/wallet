@@ -16,6 +16,12 @@ msgid ""
 "created."
 msgstr ""
 
+msgid "1. Tap \"Add Payment Method\" and select \"Gift Card\""
+msgstr ""
+
+msgid "2. Enter Gift Code"
+msgstr ""
+
 msgid ""
 "5-star ratings help us get BitPay Wallet into more hands, and more users "
 "means more resources can be committed to the app!"
@@ -86,7 +92,9 @@ msgstr ""
 msgid "Add funds"
 msgstr ""
 
-msgid "Add funds to get started"
+msgid ""
+"Add gift cards to your {appName} wallet from brands like Amazon, Delta, "
+"Hotels.com, and Uber."
 msgstr ""
 
 msgid "Add this BitPay account ({{email}})?"
@@ -130,9 +138,6 @@ msgstr ""
 msgid "Almost done! Let's review."
 msgstr ""
 
-msgid "Already duplicated"
-msgstr ""
-
 msgid "Alternative currency"
 msgstr ""
 
@@ -172,6 +177,9 @@ msgstr ""
 msgid ""
 "Approximate Bitcoin network fee to transfer wallet's balance (with normal "
 "priority)"
+msgstr ""
+
+msgid "Archive All {brand} Gift Cards?"
 msgstr ""
 
 msgid "Archive Card"
@@ -295,6 +303,9 @@ msgstr ""
 msgid "Bitcoin transactions include a fee collected by miners on the network."
 msgstr ""
 
+msgid "Brands"
+msgstr ""
+
 msgid "Broadcast Payment"
 msgstr ""
 
@@ -302,6 +313,12 @@ msgid "Broadcasted"
 msgstr ""
 
 msgid "Broadcasting transaction..."
+msgstr ""
+
+msgid "Buy Gift Card"
+msgstr ""
+
+msgid "Buy Gift Cards"
 msgstr ""
 
 msgid "Buying Bitcoin..."
@@ -351,9 +368,6 @@ msgstr ""
 msgid "Check the transaction on your wallet details"
 msgstr ""
 
-msgid "Checking..."
-msgstr ""
-
 msgid "Choose a backup file from your computer"
 msgstr ""
 
@@ -397,9 +411,6 @@ msgid "Confirm"
 msgstr ""
 
 msgid "Confirm & Finish"
-msgstr ""
-
-msgid "Confirm purchase"
 msgstr ""
 
 msgid "Confirm to shift {{fromCoin}} to {{toCoin}}"
@@ -481,6 +492,9 @@ msgid "Copied {coin} address"
 msgstr ""
 
 msgid "Copied: {claimCode}"
+msgstr ""
+
+msgid "Copy Code"
 msgstr ""
 
 msgid "Copy this text as it is to a safe place (notepad or email)"
@@ -636,6 +650,13 @@ msgstr ""
 msgid "Deleting payment proposal..."
 msgstr ""
 
+msgid ""
+"Delta Gift Cards can be used toward airfare on any Delta marketed flight "
+"through www.delta.com, at the airport, through reservations, or by phone "
+"with Delta Vacations®. Delta Gift Cards do not have any expiration dates or "
+"fees."
+msgstr ""
+
 msgid "Deposit"
 msgstr ""
 
@@ -683,12 +704,6 @@ msgstr ""
 msgid "Download logs"
 msgstr ""
 
-msgid "Duplicate"
-msgstr ""
-
-msgid "Duplicate ( Bitcoin Cash )"
-msgstr ""
-
 msgid "Duplicating wallet..."
 msgstr ""
 
@@ -714,6 +729,9 @@ msgid "Enable camera access in your device settings to get started."
 msgstr ""
 
 msgid "Enable email notifications"
+msgstr ""
+
+msgid "Enable in-app notification"
 msgstr ""
 
 msgid "Enable push notifications"
@@ -761,9 +779,6 @@ msgid "Enter your encrypt password again to confirm"
 msgstr ""
 
 msgid "Enter your name"
-msgstr ""
-
-msgid "Enter your password"
 msgstr ""
 
 msgid "Entry already exist"
@@ -944,6 +959,14 @@ msgstr ""
 msgid "Gift card canceled"
 msgstr ""
 
+msgid "Gift card purchases are temporarily unavailable. Please try again later."
+msgstr ""
+
+msgid ""
+"Give friends and family the gift of tapping a button and getting a ride - "
+"any time of day, any day of year."
+msgstr ""
+
 msgid "Give us feedback"
 msgstr ""
 
@@ -963,9 +986,6 @@ msgid "Having problems with a ShapeShift?"
 msgstr ""
 
 msgid "Help & support"
-msgstr ""
-
-msgid "Help and support information is available at the website"
 msgstr ""
 
 msgid "Help and support information is available at the website."
@@ -1069,6 +1089,11 @@ msgstr ""
 msgid ""
 "If you take a screenshot, your recovery phrase may be viewed by other apps. "
 "You can make a safe backup with physical paper and a pen."
+msgstr ""
+
+msgid ""
+"If you were using the old desktop version you will need to import your "
+"wallets manually."
 msgstr ""
 
 msgid "Import Words"
@@ -1295,6 +1320,9 @@ msgstr ""
 msgid "New wallet"
 msgstr ""
 
+msgid "New {appName} desktop platform"
+msgstr ""
+
 msgid "No"
 msgstr ""
 
@@ -1340,19 +1368,10 @@ msgstr ""
 msgid "No wallets with funds"
 msgstr ""
 
-msgid "Non BIP44 wallet"
-msgstr ""
-
-msgid "Non eligible BTC wallet"
-msgstr ""
-
 msgid "Normal"
 msgstr ""
 
 msgid "Not authorized"
-msgstr ""
-
-msgid "Not defined"
 msgstr ""
 
 msgid "Not enough funds"
@@ -1372,6 +1391,9 @@ msgid ""
 msgstr ""
 
 msgid "Not right now"
+msgstr ""
+
+msgid "Not set"
 msgstr ""
 
 msgid "Not valid bitcoin address"
@@ -1478,8 +1500,8 @@ msgid "Paste the backup plain text code"
 msgstr ""
 
 msgid ""
-"Paste this code on {website}. This gift card cannot be recovered if your "
-"claim code is lost."
+"Paste this code on {cardConfig.website}. This gift card cannot be recovered "
+"if your claim code is lost."
 msgstr ""
 
 msgid "Pay 0% fees to turn bitcoin into dollars."
@@ -1634,6 +1656,9 @@ msgstr ""
 msgid "Purchase Limit Reached"
 msgstr ""
 
+msgid "Purchased Brands"
+msgstr ""
+
 msgid ""
 "Push notifications for {{appName}} are currently disabled. Enable them in "
 "the Settings app."
@@ -1660,7 +1685,7 @@ msgstr ""
 msgid "Read more in our support page"
 msgstr ""
 
-msgid "Read only wallet"
+msgid "Receipt Email"
 msgstr ""
 
 msgid "Receive"
@@ -1697,6 +1722,9 @@ msgid "Recreating Wallet..."
 msgstr ""
 
 msgid "Redeem Now"
+msgstr ""
+
+msgid "Redeem by going to the payment section in the Uber app."
 msgstr ""
 
 msgid "Reject Payment Proposal"
@@ -1900,6 +1928,9 @@ msgstr ""
 msgid "Share {{appName}}"
 msgstr ""
 
+msgid "Shop Now"
+msgstr ""
+
 msgid "Show advanced options"
 msgstr ""
 
@@ -1995,6 +2026,9 @@ msgstr ""
 msgid "Tap to retry"
 msgstr ""
 
+msgid "Temporarily Unavailable"
+msgstr ""
+
 msgid "Terms of Use"
 msgstr ""
 
@@ -2005,6 +2039,11 @@ msgid "Text"
 msgstr ""
 
 msgid "Thanks!"
+msgstr ""
+
+msgid ""
+"The Gift of Go.™ With over 300 destinations and limitless adventures to "
+"choose from, the Delta Gift Card opens up a world of possibilities."
 msgstr ""
 
 msgid "The Safest, Fastest Asset Exchange on Earth"
@@ -2080,6 +2119,11 @@ msgid ""
 msgstr ""
 
 msgid "The request could not be understood by the server"
+msgstr ""
+
+msgid ""
+"The single address feature will force the wallet to only use one address "
+"rather than generating new addresses."
 msgstr ""
 
 msgid "The spend proposal is not pending"
@@ -2252,7 +2296,15 @@ msgstr ""
 msgid "Type the recovery phrase (usually 12 words)"
 msgstr ""
 
+msgid ""
+"Uber gift cards also apply to UberEATS orders. Enjoy food from hundreds of "
+"restaurants, delivered at Uber speed."
+msgstr ""
+
 msgid "Uh oh..."
+msgstr ""
+
+msgid "Unarchive Card"
 msgstr ""
 
 msgid "Unconfirmed"
@@ -2331,6 +2383,9 @@ msgid "View Invoice"
 msgstr ""
 
 msgid "View Privacy Policy"
+msgstr ""
+
+msgid "View Redemption Code"
 msgstr ""
 
 msgid "View Transaction on Insight"
@@ -2422,9 +2477,6 @@ msgstr ""
 msgid "Wallet not found"
 msgstr ""
 
-msgid "Wallet not registered"
-msgstr ""
-
 msgid ""
 "Wallet not registered at the wallet service. Recreate it from \"Create "
 "Wallet\" using \"Advanced Options\" to set your recovery phrase"
@@ -2487,10 +2539,13 @@ msgid ""
 "change the name displayed on this device below."
 msgstr ""
 
-msgid "Where do you want to receive your purchase receipt"
+msgid "Where would you like to receive email notifications about payments?"
 msgstr ""
 
-msgid "Where would you like to receive email notifications about payments?"
+msgid "Where would you like to receive your Amazon gift card purchase receipts?"
+msgstr ""
+
+msgid "Why does this require authentication?"
 msgstr ""
 
 msgid "Why?"
