@@ -100,7 +100,7 @@ export class AllAddressesPage {
               null // FILES: can be null, a string, or an array
             )
             .then(data => {
-              this.logger.info('Email created successfully: ', data);
+              this.logger.info('Email sent with success: ', data);
             })
             .catch(err => {
               this.logger.error('socialSharing Error: ', err);

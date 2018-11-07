@@ -203,7 +203,6 @@ export class SellCoinbasePage {
               if (res) this.externalLinkProvider.open(url);
               this.navCtrl.pop();
             });
-          this.logger.debug(msg);
           return;
         }
         if (!hasPrimary)
