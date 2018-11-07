@@ -87,18 +87,18 @@ export class PushNotificationsProvider {
         } else {
           if (!this.configProvider.get().inAppNotificationsEnabled) return;
           if (data.body && data.title) {
-            const walletName = this.profileProvider.getWallet(data.walletId)
-              .name;
+            const wallet = this.findWallet(data.walletId);
+
             const infoSheet = this.actionSheetProvider.createInfoSheet(
               'in-app-notification',
               {
                 title: data.title,
-                body: `${walletName}: ${data.body}`
+                body: `${wallet.name}: ${data.body}`
               }
             );
+            await infoSheet.present();
             this.vibration.vibrate(300);
-            infoSheet.present();
-            await Observable.timer(5000).toPromise();
+            await Observable.timer(7000).toPromise();
             infoSheet.dismiss();
           }
         }
@@ -184,6 +184,16 @@ export class PushNotificationsProvider {
   }
 
   private async _openWallet(walletIdHashed) {
+    const wallet = this.findWallet(walletIdHashed);
+
+    if (!wallet) return;
+
+    await Observable.timer(1000).toPromise(); // wait for subscription to OpenWallet event
+
+    this.events.publish('OpenWallet', wallet);
+  }
+
+  private findWallet(walletIdHashed) {
     let walletIdHash;
     const sjcl = this.bwcProvider.getSJCL();
 
@@ -193,10 +203,6 @@ export class PushNotificationsProvider {
       return _.isEqual(walletIdHashed, sjcl.codec.hex.fromBits(walletIdHash));
     });
 
-    if (!wallet) return;
-
-    await Observable.timer(1000).toPromise(); // wait for subscription to OpenWallet event
-
-    this.events.publish('OpenWallet', wallet);
+    return wallet;
   }
 }
