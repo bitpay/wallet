@@ -36,14 +36,19 @@
 
     <div [ngClass]="{'content-animation': slideDown, 'initial-margin': validDataFromClipboard}">
 
-      <ion-card *ngIf="serverMessage">
-        <ion-item>
-          <div>{{serverMessage.title}}</div>
-          <div>{{serverMessage.body}}</div>
+      <ion-card class="server-message" *ngIf="serverMessage">
+        <div class="server-message-icon">
+          <img src="assets/img/icon-warning-circled.svg" />
+        </div>
+        <ion-card-header class="server-message-content">
+          <div class="server-message-title" *ngIf="serverMessage.title">{{serverMessage.title}}</div>
+          <div class="server-message-body" *ngIf="serverMessage.body">{{serverMessage.body}}</div>
+        </ion-card-header>
+        <ion-card-content class="new-release-button" *ngIf="serverMessage.link">
           <div (click)="openServerMessageLink()">
             <span translate>Learn more</span>
           </div>
-        </ion-item>
+        </ion-card-content>
       </ion-card>
 
       <ion-card class="new-release" *ngIf="newRelease">
