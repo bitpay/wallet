@@ -621,6 +621,9 @@ export class HomePage {
       pr(wallet).then(() => {
         this.debounceUpdateTxps();
         this.debounceUpdateNotifications();
+
+        // No serverMessage for any wallet?
+        if (!foundMessage) this.serverMessage = null;
       });
     });
   }

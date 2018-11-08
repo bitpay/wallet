@@ -183,6 +183,55 @@ page-home {
     }
   }
 
+  .server-message {
+    padding-bottom: 0rem;
+
+    &-icon {
+      display: flex;
+      justify-content: center;
+      margin-top: 3rem;
+
+      img {
+        width: 4rem;
+        height: 4rem;
+      }
+    }
+
+    &-content {
+      color: color($colors, dark);
+      margin-bottom: 1rem;
+      white-space: normal;
+    }
+
+    &-title {
+      text-align: center;
+      font-size: 18px;
+      font-weight: bold;
+      color: color($colors, warning);
+      margin-bottom: 1rem;
+    }
+
+    &-body {
+      color: color($colors, grey);
+      margin-bottom: 1rem;
+    }
+
+    &-button {
+      padding: 0rem;
+
+      div {
+        cursor: pointer;
+        font-size: 16px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: color($colors, light);
+        color: color($colors, dark);
+        height: 5rem;
+      }
+    }
+  }
+
   .zero-state {
     .wrapper {
       display: flex;
