@@ -12,7 +12,7 @@ msgstr ""
 "Last-Translator: cmgustavo83\n"
 "Language-Team: Spanish\n"
 "Language: es\n"
-"PO-Revision-Date: 2018-10-22 18:56\n"
+"PO-Revision-Date: 2018-11-08 17:32\n"
 
 msgid "(Trusted)"
 msgstr "(De confianza)"
@@ -22,6 +22,12 @@ msgstr "(Posible doble gasto)"
 
 msgid "* A payment proposal can be deleted if 1) you are the creator, and no other copayer has signed, or 2) 10 minutes have passed since the proposal was created."
 msgstr "* Una propuesta de pago puede ser eliminada si 1) Usted es el creador, y ningún otro copayer la ha firmado, o 2) Han transcurrido 10 minutos desde la creación de la propuesta."
+
+msgid "1. Tap \"Add Payment Method\" and select \"Gift Card\""
+msgstr "1. Toque en \"Agregar un método de pago\" y seleccione \"Tarjeta de regalo\""
+
+msgid "2. Enter Gift Code"
+msgstr "2. Introduzca el código de regalo"
 
 msgid "5-star ratings help us get BitPay Wallet into more hands, and more users means more resources can be committed to the app!"
 msgstr "Una calificación de 5 estrellas nos ayuda a que BitPay sea más utilizado, ¡mientras más usuarios más recursos podemos destinar al desarrollo de la aplicación!"
@@ -80,8 +86,8 @@ msgstr "Agregar como Contacto"
 msgid "Add funds"
 msgstr "Agregar fondos"
 
-msgid "Add funds to get started"
-msgstr "Agregar fondos para empezar"
+msgid "Add gift cards to your {appName} wallet from brands like Amazon, Delta, Hotels.com, and Uber."
+msgstr "Agregue tarjetas de regalo a su billetera {appName} de marcas como Amazon, Delta, Hotels.com y Uber."
 
 msgid "Add this BitPay account ({{email}})?"
 msgstr "¿Agregar esta cuenta BitPay ({{email}})?"
@@ -122,9 +128,6 @@ msgstr "Permitir el acceso a la cámara"
 msgid "Almost done! Let's review."
 msgstr "¡Casi listo! Vamos a revisar."
 
-msgid "Already duplicated"
-msgstr "Ya duplicado"
-
 msgid "Alternative currency"
 msgstr "Moneda alternativa"
 
@@ -157,6 +160,9 @@ msgstr "Aplicar los cambios"
 
 msgid "Approximate Bitcoin network fee to transfer wallet's balance (with normal priority)"
 msgstr "Comisión aproximada de la red Bitcoin para transferir el saldo de esta billetera (con prioridad normal)"
+
+msgid "Archive All {brand} Gift Cards?"
+msgstr "¿Archivar todas las tarjetas de regalo de {brand}?"
 
 msgid "Archive Card"
 msgstr "Archivar Tarjeta"
@@ -272,6 +278,9 @@ msgstr "Política de comisión de la red bitcoin"
 msgid "Bitcoin transactions include a fee collected by miners on the network."
 msgstr "Las transacciones de bitcoins incluyen una comisión recogida por los mineros de la red."
 
+msgid "Brands"
+msgstr "Marcas"
+
 msgid "Broadcast Payment"
 msgstr "Enviar Pago"
 
@@ -280,6 +289,12 @@ msgstr "Enviado"
 
 msgid "Broadcasting transaction..."
 msgstr "Finalizando transacción..."
+
+msgid "Buy Gift Card"
+msgstr "Comprar tarjeta de regalo"
+
+msgid "Buy Gift Cards"
+msgstr "Comprar tarjetas de regalo"
 
 msgid "Buying Bitcoin..."
 msgstr "Comprando Bitcoins..."
@@ -326,9 +341,6 @@ msgstr "Modificar monto"
 msgid "Check the transaction on your wallet details"
 msgstr "Revise la transacción en los detalles de la billetera"
 
-msgid "Checking..."
-msgstr "Verificando..."
-
 msgid "Choose a backup file from your computer"
 msgstr "Selecciona el archivo de respaldo de tu computadora"
 
@@ -373,9 +385,6 @@ msgstr "Confirmar"
 
 msgid "Confirm & Finish"
 msgstr "Confirmar & Finalizar"
-
-msgid "Confirm purchase"
-msgstr "Confirmar compra"
 
 msgid "Confirm to shift {{fromCoin}} to {{toCoin}}"
 msgstr "Confirmar el cambio de {{fromCoin}} a {{toCoin}}"
@@ -454,6 +463,9 @@ msgstr "Dirección {coin} copiada"
 
 msgid "Copied: {claimCode}"
 msgstr "Copiado: {claimCode}"
+
+msgid "Copy Code"
+msgstr "Copiar código"
 
 msgid "Copy this text as it is to a safe place (notepad or email)"
 msgstr "Copiar el texto como está en un lugar seguro (bloc de notas o correo electrónico)"
@@ -608,6 +620,9 @@ msgstr "Eliminando billetera..."
 msgid "Deleting payment proposal..."
 msgstr "Eliminando propuesta de pago..."
 
+msgid "Delta Gift Cards can be used toward airfare on any Delta marketed flight through www.delta.com, at the airport, through reservations, or by phone with Delta Vacations®. Delta Gift Cards do not have any expiration dates or fees."
+msgstr "Las tarjetas de regalo de Delta pueden usarse para pasajes aéreos en cualquier vuelo comercializado por Delta a través de www.delta.com, en el aeropuerto, a través de reservaciones o por teléfono con Delta Vacations®. Las tarjetas de regalo de Delta no tienen fecha de vencimiento ni cargos adicionales."
+
 msgid "Deposit"
 msgstr "Depósito"
 
@@ -653,12 +668,6 @@ msgstr "Descargar"
 msgid "Download logs"
 msgstr "Descargar registros"
 
-msgid "Duplicate"
-msgstr "Duplicar"
-
-msgid "Duplicate ( Bitcoin Cash )"
-msgstr "Duplicar ( Bitcoin Cash )"
-
 msgid "Duplicating wallet..."
 msgstr "Duplicando billetera..."
 
@@ -682,6 +691,9 @@ msgstr "Habilitar el acceso de la cámara en su configuración de dispositivo pa
 
 msgid "Enable email notifications"
 msgstr "Activar notificaciones de correo electrónico"
+
+msgid "Enable in-app notification"
+msgstr "Activar notificaciones dentro de la aplicación"
 
 msgid "Enable push notifications"
 msgstr "Activar notificaciones push"
@@ -727,9 +739,6 @@ msgstr "Ingrese su contraseña de cifrado otra vez para confirmar"
 
 msgid "Enter your name"
 msgstr "Ingresar su nombre"
-
-msgid "Enter your password"
-msgstr "Ingrese su contraseña"
 
 msgid "Entry already exist"
 msgstr "Elemento ya existe"
@@ -905,6 +914,12 @@ msgstr "Tarjeta de Regalo"
 msgid "Gift card canceled"
 msgstr "Gift card cancelada"
 
+msgid "Gift card purchases are temporarily unavailable. Please try again later."
+msgstr "Las compras con tarjetas de regalo no están disponibles temporalmente. Por favor inténtelo más tarde."
+
+msgid "Give friends and family the gift of tapping a button and getting a ride - any time of day, any day of year."
+msgstr "Dé a sus familiares y amigos el regalo de tocar un botón y conseguir un paseo - en cualquier momento del día, cualquier día del año."
+
 msgid "Give us feedback"
 msgstr "Déjanos un comentario"
 
@@ -925,9 +940,6 @@ msgstr "¿Problemas con ShapeShift?"
 
 msgid "Help & support"
 msgstr "Ayuda & Soporte"
-
-msgid "Help and support information is available at the website"
-msgstr "La información de soporte y ayuda están disponibles en el sitio web"
 
 msgid "Help and support information is available at the website."
 msgstr "La ayuda está disponible en el sitio web."
@@ -1006,6 +1018,9 @@ msgstr "Si necesita enviar fondos a direcciones antiguas (como la que usted acab
 
 msgid "If you take a screenshot, your recovery phrase may be viewed by other apps. You can make a safe backup with physical paper and a pen."
 msgstr "Si toma una captura de pantalla, otras aplicaciones podrían ver su frase de recuperación. La forma más segura es resguardarla con lápiz y papel."
+
+msgid "If you were using the old desktop version you will need to import your wallets manually."
+msgstr "Si estaba usando la versión antigua de la aplicación de escritorio, necesita importar sus billeteras manualmente."
 
 msgid "Import Words"
 msgstr "Importar palabras"
@@ -1223,6 +1238,9 @@ msgstr "Nueva propuesta de pago"
 msgid "New wallet"
 msgstr "Nueva billetera"
 
+msgid "New {appName} desktop platform"
+msgstr "Nueva plataforma de escritorio {appName}"
+
 msgid "No"
 msgstr "No"
 
@@ -1268,20 +1286,11 @@ msgstr "No hay billeteras disponibles para usar ShapeShift"
 msgid "No wallets with funds"
 msgstr "Sin billeteras con fondos"
 
-msgid "Non BIP44 wallet"
-msgstr "Billetera no BIP44"
-
-msgid "Non eligible BTC wallet"
-msgstr "Billetera BTC no elegible"
-
 msgid "Normal"
 msgstr "Normal"
 
 msgid "Not authorized"
 msgstr "No autorizado"
-
-msgid "Not defined"
-msgstr "No definido"
 
 msgid "Not enough funds"
 msgstr "Fondos insuficientes"
@@ -1297,6 +1306,9 @@ msgstr "No incluir la clave privada permite verificar el saldo de la billetera, 
 
 msgid "Not right now"
 msgstr "Ahora no"
+
+msgid "Not set"
+msgstr "No configurado"
 
 msgid "Not valid bitcoin address"
 msgstr "Dirección bitcoin inválida"
@@ -1397,8 +1409,8 @@ msgstr "Las contraseñas no coinciden"
 msgid "Paste the backup plain text code"
 msgstr "Pegar el código de respaldo en texto plano"
 
-msgid "Paste this code on {website}. This gift card cannot be recovered if your claim code is lost."
-msgstr "Pegue este código en {website}. Esta tarjeta de regalo no se puede recuperar si pierde el código de promoción."
+msgid "Paste this code on {cardConfig.website}. This gift card cannot be recovered if your claim code is lost."
+msgstr "Pegue este código en {cardConfig.website}. Esta tarjeta de regalo no se puede recuperar si pierde el código de promoción."
 
 msgid "Pay 0% fees to turn bitcoin into dollars."
 msgstr "Paga 0% de comisión para transformar tus bitcoin en dólares."
@@ -1550,6 +1562,9 @@ msgstr "Propuestas"
 msgid "Purchase Limit Reached"
 msgstr "Límite de compra alcanzado"
 
+msgid "Purchased Brands"
+msgstr "Marcas adquiridas"
+
 msgid "Push notifications for {{appName}} are currently disabled. Enable them in the Settings app."
 msgstr "Notificaciones push para {{appName}} están deshabilitadas. Habilitarla en la configuración de la aplicación."
 
@@ -1574,8 +1589,8 @@ msgstr "Lee más en nuestra Wiki"
 msgid "Read more in our support page"
 msgstr "Leer más en nuestra página de soporte"
 
-msgid "Read only wallet"
-msgstr "Billetera solo lectura"
+msgid "Receipt Email"
+msgstr "Correo electrónico de facturación"
 
 msgid "Receive"
 msgstr "Recibir"
@@ -1612,6 +1627,9 @@ msgstr "Recreando billetera..."
 
 msgid "Redeem Now"
 msgstr "Canjear Ahora"
+
+msgid "Redeem by going to the payment section in the Uber app."
+msgstr "Canjee en la sección de pago de la aplicación Uber."
 
 msgid "Reject Payment Proposal"
 msgstr "Rechazar propuesta de pago"
@@ -1814,6 +1832,9 @@ msgstr "Compartir esta invitación con sus copayers"
 msgid "Share {{appName}}"
 msgstr "Compartir {{appName}}"
 
+msgid "Shop Now"
+msgstr "Comprar ahora"
+
 msgid "Show advanced options"
 msgstr "Mostrar opciones avanzadas"
 
@@ -1907,6 +1928,9 @@ msgstr "Toca para recrear"
 msgid "Tap to retry"
 msgstr "Toca para reintentar"
 
+msgid "Temporarily Unavailable"
+msgstr "Temporalmente no disponible"
+
 msgid "Terms of Use"
 msgstr "Términos de Uso"
 
@@ -1918,6 +1942,9 @@ msgstr "Texto"
 
 msgid "Thanks!"
 msgstr "¡Gracias!"
+
+msgid "The Gift of Go.™ With over 300 destinations and limitless adventures to choose from, the Delta Gift Card opens up a world of possibilities."
+msgstr "El regalo de Go.™ con más de 300 destinos y aventuras sin límites para elegir, la tarjeta de regalo de Delta abre un mundo de posibilidades."
 
 msgid "The Safest, Fastest Asset Exchange on Earth"
 msgstr "La Casa de Cambio más segura y rápida de la tierra"
@@ -1969,6 +1996,9 @@ msgstr "El importe de la compra debe ser al menos {minAmount} {currency}. Por fa
 
 msgid "The request could not be understood by the server"
 msgstr "La solicitud no pudo ser comprendida por el servidor"
+
+msgid "The single address feature will force the wallet to only use one address rather than generating new addresses."
+msgstr "La característica de dirección única obligará a la billetera a usar solo una dirección en lugar de generar nuevas direcciones."
 
 msgid "The spend proposal is not pending"
 msgstr "La propuesta de gasto no esta pendiente"
@@ -2115,8 +2145,14 @@ msgstr "Convierta Bitcoin en Dólares, use en cualquier lugar que acepte Visa®.
 msgid "Type the recovery phrase (usually 12 words)"
 msgstr "Escribe la frase de recuperación (normalmente 12 palabras)"
 
+msgid "Uber gift cards also apply to UberEATS orders. Enjoy food from hundreds of restaurants, delivered at Uber speed."
+msgstr "Las tarjetas de regalo de Uber también se aplican a las órdenes de UberEATS. Disfrute de la comida de cientos de restaurantes entregados a la velocidad de Uber."
+
 msgid "Uh oh..."
 msgstr "¡Uy!"
+
+msgid "Unarchive Card"
+msgstr "Desarchivar tarjeta"
 
 msgid "Unconfirmed"
 msgstr "Sin confirmar"
@@ -2195,6 +2231,9 @@ msgstr "Ver Factura"
 
 msgid "View Privacy Policy"
 msgstr "Ver política de privacidad"
+
+msgid "View Redemption Code"
+msgstr "Ver código de canje"
 
 msgid "View Transaction on Insight"
 msgstr "Ver Transacción en Insight"
@@ -2283,9 +2322,6 @@ msgstr "La billetera necesita respaldarse"
 msgid "Wallet not found"
 msgstr "Billetera no encontrada"
 
-msgid "Wallet not registered"
-msgstr "Billetera no registrada"
-
 msgid "Wallet not registered at the wallet service. Recreate it from \"Create Wallet\" using \"Advanced Options\" to set your recovery phrase"
 msgstr "La billetera no esta registrado en Wallet Service. Para volver a crear, utilice \"Crear billetera\", \"Opciones avanzadas\" e ingrese la frase de recuperación"
 
@@ -2334,11 +2370,14 @@ msgstr "¿Como desea llamar a esta billetera?"
 msgid "When this wallet was created, it was called \"{{walletName}}\". You can change the name displayed on this device below."
 msgstr "Cuando fué creada esta billetera, se llamaba \"{{walletName}}\". Abajo puede cambiar el nombre que se mostrará en este dispositivo."
 
-msgid "Where do you want to receive your purchase receipt"
-msgstr "Donde quieras recibir tus recibos de compra"
-
 msgid "Where would you like to receive email notifications about payments?"
 msgstr "¿A donde le gustaría recibir notificaciones por email sobre sus transacciones?"
+
+msgid "Where would you like to receive your Amazon gift card purchase receipts?"
+msgstr "¿Dónde quiere recibir sus recibos de compras de las tarjetas de regalo de Amazon?"
+
+msgid "Why does this require authentication?"
+msgstr "¿Por qué se requiere autenticación?"
 
 msgid "Why?"
 msgstr "¿Por qué?"

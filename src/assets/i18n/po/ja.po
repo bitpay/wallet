@@ -12,7 +12,7 @@ msgstr ""
 "Last-Translator: cmgustavo83\n"
 "Language-Team: Japanese\n"
 "Language: ja\n"
-"PO-Revision-Date: 2018-10-22 17:46\n"
+"PO-Revision-Date: 2018-11-07 19:24\n"
 
 msgid "(Trusted)"
 msgstr "(信頼済み)"
@@ -21,6 +21,12 @@ msgid "(possible double spend)"
 msgstr "(二重払い可能性あり)"
 
 msgid "* A payment proposal can be deleted if 1) you are the creator, and no other copayer has signed, or 2) 10 minutes have passed since the proposal was created."
+msgstr ""
+
+msgid "1. Tap \"Add Payment Method\" and select \"Gift Card\""
+msgstr ""
+
+msgid "2. Enter Gift Code"
 msgstr ""
 
 msgid "5-star ratings help us get BitPay Wallet into more hands, and more users means more resources can be committed to the app!"
@@ -80,7 +86,7 @@ msgstr "連絡先に追加"
 msgid "Add funds"
 msgstr "資金を追加"
 
-msgid "Add funds to get started"
+msgid "Add gift cards to your {appName} wallet from brands like Amazon, Delta, Hotels.com, and Uber."
 msgstr ""
 
 msgid "Add this BitPay account ({{email}})?"
@@ -122,9 +128,6 @@ msgstr ""
 msgid "Almost done! Let's review."
 msgstr "ほぼ完了!確認してみましょう。"
 
-msgid "Already duplicated"
-msgstr ""
-
 msgid "Alternative currency"
 msgstr ""
 
@@ -157,6 +160,9 @@ msgstr ""
 
 msgid "Approximate Bitcoin network fee to transfer wallet's balance (with normal priority)"
 msgstr "ウォレットの残高を送るために推測される必要なビットコインネットワーク手数料(優先度：普通)"
+
+msgid "Archive All {brand} Gift Cards?"
+msgstr ""
 
 msgid "Archive Card"
 msgstr ""
@@ -274,6 +280,9 @@ msgstr ""
 msgid "Bitcoin transactions include a fee collected by miners on the network."
 msgstr "ビットコインの取引はネットワークの安全を守る「採掘者」と呼ばれる者達に送る手数料が含まれます。"
 
+msgid "Brands"
+msgstr ""
+
 msgid "Broadcast Payment"
 msgstr "取引送信"
 
@@ -281,6 +290,12 @@ msgid "Broadcasted"
 msgstr "送信済み"
 
 msgid "Broadcasting transaction..."
+msgstr ""
+
+msgid "Buy Gift Card"
+msgstr ""
+
+msgid "Buy Gift Cards"
 msgstr ""
 
 msgid "Buying Bitcoin..."
@@ -328,9 +343,6 @@ msgstr ""
 msgid "Check the transaction on your wallet details"
 msgstr ""
 
-msgid "Checking..."
-msgstr ""
-
 msgid "Choose a backup file from your computer"
 msgstr ""
 
@@ -374,9 +386,6 @@ msgid "Confirm"
 msgstr "確認"
 
 msgid "Confirm & Finish"
-msgstr ""
-
-msgid "Confirm purchase"
 msgstr ""
 
 msgid "Confirm to shift {{fromCoin}} to {{toCoin}}"
@@ -455,6 +464,9 @@ msgid "Copied {coin} address"
 msgstr ""
 
 msgid "Copied: {claimCode}"
+msgstr ""
+
+msgid "Copy Code"
 msgstr ""
 
 msgid "Copy this text as it is to a safe place (notepad or email)"
@@ -610,6 +622,9 @@ msgstr "ウォレット削除中…"
 msgid "Deleting payment proposal..."
 msgstr ""
 
+msgid "Delta Gift Cards can be used toward airfare on any Delta marketed flight through www.delta.com, at the airport, through reservations, or by phone with Delta Vacations®. Delta Gift Cards do not have any expiration dates or fees."
+msgstr ""
+
 msgid "Deposit"
 msgstr ""
 
@@ -655,12 +670,6 @@ msgstr "ダウンロード"
 msgid "Download logs"
 msgstr ""
 
-msgid "Duplicate"
-msgstr ""
-
-msgid "Duplicate ( Bitcoin Cash )"
-msgstr ""
-
 msgid "Duplicating wallet..."
 msgstr "ウォレットを複製しています..."
 
@@ -684,6 +693,9 @@ msgstr "端末の設定でカメラの使用許可をしないとスキャンが
 
 msgid "Enable email notifications"
 msgstr "メール通知を有効化"
+
+msgid "Enable in-app notification"
+msgstr ""
 
 msgid "Enable push notifications"
 msgstr "プッシュ通知を有効化"
@@ -729,9 +741,6 @@ msgstr ""
 
 msgid "Enter your name"
 msgstr ""
-
-msgid "Enter your password"
-msgstr "パスワードを入力して下さい。"
 
 msgid "Entry already exist"
 msgstr ""
@@ -907,6 +916,12 @@ msgstr "ギフトカード"
 msgid "Gift card canceled"
 msgstr ""
 
+msgid "Gift card purchases are temporarily unavailable. Please try again later."
+msgstr ""
+
+msgid "Give friends and family the gift of tapping a button and getting a ride - any time of day, any day of year."
+msgstr ""
+
 msgid "Give us feedback"
 msgstr ""
 
@@ -926,9 +941,6 @@ msgid "Having problems with a ShapeShift?"
 msgstr ""
 
 msgid "Help & support"
-msgstr ""
-
-msgid "Help and support information is available at the website"
 msgstr ""
 
 msgid "Help and support information is available at the website."
@@ -1007,6 +1019,9 @@ msgid "If you need to send to \"old\" addresses (like the one you just pasted), 
 msgstr ""
 
 msgid "If you take a screenshot, your recovery phrase may be viewed by other apps. You can make a safe backup with physical paper and a pen."
+msgstr ""
+
+msgid "If you were using the old desktop version you will need to import your wallets manually."
 msgstr ""
 
 msgid "Import Words"
@@ -1225,6 +1240,9 @@ msgstr "新しい提案"
 msgid "New wallet"
 msgstr ""
 
+msgid "New {appName} desktop platform"
+msgstr ""
+
 msgid "No"
 msgstr ""
 
@@ -1270,20 +1288,11 @@ msgstr ""
 msgid "No wallets with funds"
 msgstr ""
 
-msgid "Non BIP44 wallet"
-msgstr "非 BIP44 ウォレット"
-
-msgid "Non eligible BTC wallet"
-msgstr ""
-
 msgid "Normal"
 msgstr "通常"
 
 msgid "Not authorized"
 msgstr "権限がありません。"
-
-msgid "Not defined"
-msgstr ""
 
 msgid "Not enough funds"
 msgstr ""
@@ -1298,6 +1307,9 @@ msgid "Not including the private key allows to check the wallet balance, transac
 msgstr ""
 
 msgid "Not right now"
+msgstr ""
+
+msgid "Not set"
 msgstr ""
 
 msgid "Not valid bitcoin address"
@@ -1399,7 +1411,7 @@ msgstr ""
 msgid "Paste the backup plain text code"
 msgstr ""
 
-msgid "Paste this code on {website}. This gift card cannot be recovered if your claim code is lost."
+msgid "Paste this code on {cardConfig.website}. This gift card cannot be recovered if your claim code is lost."
 msgstr ""
 
 msgid "Pay 0% fees to turn bitcoin into dollars."
@@ -1552,6 +1564,9 @@ msgstr "提案"
 msgid "Purchase Limit Reached"
 msgstr ""
 
+msgid "Purchased Brands"
+msgstr ""
+
 msgid "Push notifications for {{appName}} are currently disabled. Enable them in the Settings app."
 msgstr "{{appName}}のプッシュ通知は現在無効です。アプリ設定で有効にします。"
 
@@ -1576,8 +1591,8 @@ msgstr "詳しくはwikiでお読みください"
 msgid "Read more in our support page"
 msgstr ""
 
-msgid "Read only wallet"
-msgstr "閲覧専用ウォレット"
+msgid "Receipt Email"
+msgstr ""
 
 msgid "Receive"
 msgstr "受取"
@@ -1613,6 +1628,9 @@ msgid "Recreating Wallet..."
 msgstr "ウォレットを再作成中…"
 
 msgid "Redeem Now"
+msgstr ""
+
+msgid "Redeem by going to the payment section in the Uber app."
 msgstr ""
 
 msgid "Reject Payment Proposal"
@@ -1818,6 +1836,9 @@ msgstr "ウォレット参加者に\n"
 msgid "Share {{appName}}"
 msgstr ""
 
+msgid "Shop Now"
+msgstr ""
+
 msgid "Show advanced options"
 msgstr "詳細設定を表示"
 
@@ -1911,6 +1932,9 @@ msgstr ""
 msgid "Tap to retry"
 msgstr ""
 
+msgid "Temporarily Unavailable"
+msgstr ""
+
 msgid "Terms of Use"
 msgstr "利用規約"
 
@@ -1922,6 +1946,9 @@ msgstr "テキスト"
 
 msgid "Thanks!"
 msgstr "ありがとうございます。"
+
+msgid "The Gift of Go.™ With over 300 destinations and limitless adventures to choose from, the Delta Gift Card opens up a world of possibilities."
+msgstr ""
 
 msgid "The Safest, Fastest Asset Exchange on Earth"
 msgstr ""
@@ -1973,6 +2000,9 @@ msgstr ""
 
 msgid "The request could not be understood by the server"
 msgstr "サーバーが要求を処理できませんでした。"
+
+msgid "The single address feature will force the wallet to only use one address rather than generating new addresses."
+msgstr ""
 
 msgid "The spend proposal is not pending"
 msgstr "送金の提案が協議中ではありません。"
@@ -2118,7 +2148,13 @@ msgstr ""
 msgid "Type the recovery phrase (usually 12 words)"
 msgstr ""
 
+msgid "Uber gift cards also apply to UberEATS orders. Enjoy food from hundreds of restaurants, delivered at Uber speed."
+msgstr ""
+
 msgid "Uh oh..."
+msgstr ""
+
+msgid "Unarchive Card"
 msgstr ""
 
 msgid "Unconfirmed"
@@ -2197,6 +2233,9 @@ msgid "View Invoice"
 msgstr ""
 
 msgid "View Privacy Policy"
+msgstr ""
+
+msgid "View Redemption Code"
 msgstr ""
 
 msgid "View Transaction on Insight"
@@ -2286,9 +2325,6 @@ msgstr "ウォレットバックアップが必要"
 msgid "Wallet not found"
 msgstr "ウォレットが見つかりません。"
 
-msgid "Wallet not registered"
-msgstr ""
-
 msgid "Wallet not registered at the wallet service. Recreate it from \"Create Wallet\" using \"Advanced Options\" to set your recovery phrase"
 msgstr "このウォレットは Wallet Service にて登録されていません。再び「新規作成」メニューから詳細設定を選び、復元フレーズをご入力下さい。"
 
@@ -2337,11 +2373,14 @@ msgstr "このウォレットの名前は何ですか？"
 msgid "When this wallet was created, it was called \"{{walletName}}\". You can change the name displayed on this device below."
 msgstr ""
 
-msgid "Where do you want to receive your purchase receipt"
-msgstr ""
-
 msgid "Where would you like to receive email notifications about payments?"
 msgstr "送金発生時のメール通知はどのメールアドレスで受け取りますか?"
+
+msgid "Where would you like to receive your Amazon gift card purchase receipts?"
+msgstr ""
+
+msgid "Why does this require authentication?"
+msgstr ""
 
 msgid "Why?"
 msgstr "なぜ？"
