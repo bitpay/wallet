@@ -180,7 +180,7 @@ export class ProfileProvider {
       }
 
       if (this.platformProvider.isElectron) {
-        this.showInAppNotification(n, wallet.id);
+        this.showInAppNotification(n, wallet);
       }
 
       if (n.type == 'NewBlock' && n.data.network == 'testnet') {
@@ -218,8 +218,7 @@ export class ProfileProvider {
     return true;
   }
 
-  private showInAppNotification(n, walletId): void {
-    const wallet = this.getWallet(walletId);
+  private showInAppNotification(n, wallet): void {
     const creatorId = n && n.data && n.data.creatorId;
     const amount = n && n.data && n.data.amount;
     let title: string;
