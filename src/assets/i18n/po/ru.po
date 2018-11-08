@@ -12,7 +12,7 @@ msgstr ""
 "Last-Translator: cmgustavo83\n"
 "Language-Team: Russian\n"
 "Language: ru\n"
-"PO-Revision-Date: 2018-10-22 17:47\n"
+"PO-Revision-Date: 2018-11-07 19:24\n"
 
 msgid "(Trusted)"
 msgstr "(Доверенный)"
@@ -21,6 +21,12 @@ msgid "(possible double spend)"
 msgstr "(возможна двойная трата)"
 
 msgid "* A payment proposal can be deleted if 1) you are the creator, and no other copayer has signed, or 2) 10 minutes have passed since the proposal was created."
+msgstr ""
+
+msgid "1. Tap \"Add Payment Method\" and select \"Gift Card\""
+msgstr ""
+
+msgid "2. Enter Gift Code"
 msgstr ""
 
 msgid "5-star ratings help us get BitPay Wallet into more hands, and more users means more resources can be committed to the app!"
@@ -80,8 +86,8 @@ msgstr "Добавить контакт"
 msgid "Add funds"
 msgstr "Пополнить счёт"
 
-msgid "Add funds to get started"
-msgstr "Добавьте средства, чтобы начать"
+msgid "Add gift cards to your {appName} wallet from brands like Amazon, Delta, Hotels.com, and Uber."
+msgstr ""
 
 msgid "Add this BitPay account ({{email}})?"
 msgstr "Добавить эту учетную запись BitPay ({{email}})?"
@@ -122,9 +128,6 @@ msgstr "Разрешить доступ камеры"
 msgid "Almost done! Let's review."
 msgstr "Почти готово! Давайте проверим."
 
-msgid "Already duplicated"
-msgstr "Уже дублировано"
-
 msgid "Alternative currency"
 msgstr "Альтернативная валюта"
 
@@ -157,6 +160,9 @@ msgstr "Применить изменения"
 
 msgid "Approximate Bitcoin network fee to transfer wallet's balance (with normal priority)"
 msgstr "Приблизительная комиссия на перевод сети Bitcoin для передачи баланса кошелька (с нормальным приоритетом)"
+
+msgid "Archive All {brand} Gift Cards?"
+msgstr ""
 
 msgid "Archive Card"
 msgstr ""
@@ -272,6 +278,9 @@ msgstr "Политика комиссии сети Биткойн"
 msgid "Bitcoin transactions include a fee collected by miners on the network."
 msgstr "Bitcoin transactions include a fee collected by miners on the network."
 
+msgid "Brands"
+msgstr ""
+
 msgid "Broadcast Payment"
 msgstr "Отправить платёж"
 
@@ -280,6 +289,12 @@ msgstr "Отправка"
 
 msgid "Broadcasting transaction..."
 msgstr "Трансакция передается..."
+
+msgid "Buy Gift Card"
+msgstr ""
+
+msgid "Buy Gift Cards"
+msgstr ""
 
 msgid "Buying Bitcoin..."
 msgstr "Покупка биткойн..."
@@ -326,9 +341,6 @@ msgstr ""
 msgid "Check the transaction on your wallet details"
 msgstr "Проверьте транзакцию в подробностях вашего кошелька"
 
-msgid "Checking..."
-msgstr "Проверка..."
-
 msgid "Choose a backup file from your computer"
 msgstr "Выберите файл резервной копии с вашего компьютера"
 
@@ -373,9 +385,6 @@ msgstr "Подтвердить"
 
 msgid "Confirm & Finish"
 msgstr "Подтвердить & Закончить"
-
-msgid "Confirm purchase"
-msgstr ""
 
 msgid "Confirm to shift {{fromCoin}} to {{toCoin}}"
 msgstr "Подтвердить переход от {{fromCoin}} к {{toCoin}}"
@@ -453,6 +462,9 @@ msgid "Copied {coin} address"
 msgstr ""
 
 msgid "Copied: {claimCode}"
+msgstr ""
+
+msgid "Copy Code"
 msgstr ""
 
 msgid "Copy this text as it is to a safe place (notepad or email)"
@@ -608,6 +620,9 @@ msgstr "Удаление кошелька..."
 msgid "Deleting payment proposal..."
 msgstr "Удаление заявки на платеж..."
 
+msgid "Delta Gift Cards can be used toward airfare on any Delta marketed flight through www.delta.com, at the airport, through reservations, or by phone with Delta Vacations®. Delta Gift Cards do not have any expiration dates or fees."
+msgstr ""
+
 msgid "Deposit"
 msgstr "Депозит"
 
@@ -653,12 +668,6 @@ msgstr "Скачать"
 msgid "Download logs"
 msgstr ""
 
-msgid "Duplicate"
-msgstr "Дублировать"
-
-msgid "Duplicate ( Bitcoin Cash )"
-msgstr "Дублировать ( Bitcoin Cash )"
-
 msgid "Duplicating wallet..."
 msgstr "Дублирование кошелька..."
 
@@ -682,6 +691,9 @@ msgstr "Чтобы начать, разрешите доступ к камере
 
 msgid "Enable email notifications"
 msgstr "Включить email-уведомления"
+
+msgid "Enable in-app notification"
+msgstr ""
 
 msgid "Enable push notifications"
 msgstr "Включить push-уведомления"
@@ -727,9 +739,6 @@ msgstr "Введите ваш зашифрованый пароль еще ра�
 
 msgid "Enter your name"
 msgstr "Введите ваше имя"
-
-msgid "Enter your password"
-msgstr "Введите пароль"
 
 msgid "Entry already exist"
 msgstr "Запись уже существует"
@@ -905,6 +914,12 @@ msgstr "Подарочная Карта"
 msgid "Gift card canceled"
 msgstr ""
 
+msgid "Gift card purchases are temporarily unavailable. Please try again later."
+msgstr ""
+
+msgid "Give friends and family the gift of tapping a button and getting a ride - any time of day, any day of year."
+msgstr ""
+
 msgid "Give us feedback"
 msgstr ""
 
@@ -925,9 +940,6 @@ msgstr "Возникли проблемы с ShapeShift?"
 
 msgid "Help & support"
 msgstr "Помощь и поддержка"
-
-msgid "Help and support information is available at the website"
-msgstr ""
 
 msgid "Help and support information is available at the website."
 msgstr "Информация о помощи и поддержке доступна на сайте."
@@ -1005,6 +1017,9 @@ msgid "If you need to send to \"old\" addresses (like the one you just pasted), 
 msgstr ""
 
 msgid "If you take a screenshot, your recovery phrase may be viewed by other apps. You can make a safe backup with physical paper and a pen."
+msgstr ""
+
+msgid "If you were using the old desktop version you will need to import your wallets manually."
 msgstr ""
 
 msgid "Import Words"
@@ -1223,6 +1238,9 @@ msgstr "Предложить платёж"
 msgid "New wallet"
 msgstr "Новый кошелек"
 
+msgid "New {appName} desktop platform"
+msgstr ""
+
 msgid "No"
 msgstr "Нет"
 
@@ -1268,20 +1286,11 @@ msgstr "Нет доступных кошельков для использова
 msgid "No wallets with funds"
 msgstr "Нет кошельков с фондами"
 
-msgid "Non BIP44 wallet"
-msgstr "Не \"BIP44\" кошелек"
-
-msgid "Non eligible BTC wallet"
-msgstr "Неприемлемый \"BTC\" кошелек"
-
 msgid "Normal"
 msgstr "Обычная"
 
 msgid "Not authorized"
 msgstr "Не авторизован"
-
-msgid "Not defined"
-msgstr ""
 
 msgid "Not enough funds"
 msgstr ""
@@ -1296,6 +1305,9 @@ msgid "Not including the private key allows to check the wallet balance, transac
 msgstr ""
 
 msgid "Not right now"
+msgstr ""
+
+msgid "Not set"
 msgstr ""
 
 msgid "Not valid bitcoin address"
@@ -1397,7 +1409,7 @@ msgstr "Пароли не совпадают"
 msgid "Paste the backup plain text code"
 msgstr ""
 
-msgid "Paste this code on {website}. This gift card cannot be recovered if your claim code is lost."
+msgid "Paste this code on {cardConfig.website}. This gift card cannot be recovered if your claim code is lost."
 msgstr ""
 
 msgid "Pay 0% fees to turn bitcoin into dollars."
@@ -1550,6 +1562,9 @@ msgstr "Предложенные платежи"
 msgid "Purchase Limit Reached"
 msgstr ""
 
+msgid "Purchased Brands"
+msgstr ""
+
 msgid "Push notifications for {{appName}} are currently disabled. Enable them in the Settings app."
 msgstr "Push-уведомления для {{appName}} в настоящее время отключены. Включите их в Параметрах."
 
@@ -1574,7 +1589,7 @@ msgstr "Подробнее читайте в нашей Wiki"
 msgid "Read more in our support page"
 msgstr "Подробнее читайте в нашей странице поддержки"
 
-msgid "Read only wallet"
+msgid "Receipt Email"
 msgstr ""
 
 msgid "Receive"
@@ -1611,6 +1626,9 @@ msgid "Recreating Wallet..."
 msgstr "Воссоздаю кошелёк..."
 
 msgid "Redeem Now"
+msgstr ""
+
+msgid "Redeem by going to the payment section in the Uber app."
 msgstr ""
 
 msgid "Reject Payment Proposal"
@@ -1814,6 +1832,9 @@ msgstr "Отправьте приглашение совладельцам ко�
 msgid "Share {{appName}}"
 msgstr "Поделиться {{appName}}"
 
+msgid "Shop Now"
+msgstr ""
+
 msgid "Show advanced options"
 msgstr "Показать дополнительные параметры"
 
@@ -1907,6 +1928,9 @@ msgstr ""
 msgid "Tap to retry"
 msgstr ""
 
+msgid "Temporarily Unavailable"
+msgstr ""
+
 msgid "Terms of Use"
 msgstr "Условия использования"
 
@@ -1918,6 +1942,9 @@ msgstr "Текст"
 
 msgid "Thanks!"
 msgstr "Спасибо!"
+
+msgid "The Gift of Go.™ With over 300 destinations and limitless adventures to choose from, the Delta Gift Card opens up a world of possibilities."
+msgstr ""
 
 msgid "The Safest, Fastest Asset Exchange on Earth"
 msgstr ""
@@ -1969,6 +1996,9 @@ msgstr ""
 
 msgid "The request could not be understood by the server"
 msgstr "Запрос не распознан сервером"
+
+msgid "The single address feature will force the wallet to only use one address rather than generating new addresses."
+msgstr ""
 
 msgid "The spend proposal is not pending"
 msgstr "Предложенный платёж больше не на рассмотрении"
@@ -2114,8 +2144,14 @@ msgstr ""
 msgid "Type the recovery phrase (usually 12 words)"
 msgstr "Введите ключевое словосочетание (обычно двенадцать слов)"
 
+msgid "Uber gift cards also apply to UberEATS orders. Enjoy food from hundreds of restaurants, delivered at Uber speed."
+msgstr ""
+
 msgid "Uh oh..."
 msgstr "Упс..."
+
+msgid "Unarchive Card"
+msgstr ""
 
 msgid "Unconfirmed"
 msgstr "Неподтверждено"
@@ -2194,6 +2230,9 @@ msgstr ""
 
 msgid "View Privacy Policy"
 msgstr "Просмотр политики конфиденциальности"
+
+msgid "View Redemption Code"
+msgstr ""
 
 msgid "View Transaction on Insight"
 msgstr "Просмотреть транзакцию на Insight"
@@ -2282,9 +2321,6 @@ msgstr "Необходимо создать резервную копию"
 msgid "Wallet not found"
 msgstr "Кошелёк не найден"
 
-msgid "Wallet not registered"
-msgstr "Кошелёк не зарегистрирован"
-
 msgid "Wallet not registered at the wallet service. Recreate it from \"Create Wallet\" using \"Advanced Options\" to set your recovery phrase"
 msgstr "Кошелёк не зарегистрирован на сервере Bitcore. Пересоздайте кошелёк воспользовавшись дополнительными параметрами, чтобы указать ключевое словосочетание"
 
@@ -2333,11 +2369,14 @@ msgstr "Как вы называете этот кошелёк?"
 msgid "When this wallet was created, it was called \"{{walletName}}\". You can change the name displayed on this device below."
 msgstr ""
 
-msgid "Where do you want to receive your purchase receipt"
-msgstr ""
-
 msgid "Where would you like to receive email notifications about payments?"
 msgstr "Куда бы вы хотели получать email-уведомления о платежах?"
+
+msgid "Where would you like to receive your Amazon gift card purchase receipts?"
+msgstr ""
+
+msgid "Why does this require authentication?"
+msgstr ""
 
 msgid "Why?"
 msgstr "Почему?"
