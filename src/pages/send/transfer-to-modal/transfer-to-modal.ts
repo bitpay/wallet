@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, ViewController } from 'ionic-angular';
+import { NavParams, ViewController } from 'ionic-angular';
 import * as _ from 'lodash';
 
 // Providers
@@ -9,9 +9,6 @@ import { Logger } from '../../../providers/logger/logger';
 import { PopupProvider } from '../../../providers/popup/popup';
 import { ProfileProvider } from '../../../providers/profile/profile';
 import { Coin, WalletProvider } from '../../../providers/wallet/wallet';
-
-// Pages
-import { AmountPage } from './../amount/amount';
 
 export interface FlatWallet {
   color: string;
@@ -53,7 +50,6 @@ export class TransferToModalPage {
   private currentContactsPage: number = 0;
 
   constructor(
-    private navCtrl: NavController,
     private navParams: NavParams,
     private profileProvider: ProfileProvider,
     private walletProvider: WalletProvider,
@@ -151,15 +147,19 @@ export class TransferToModalPage {
       : true;
   }
 
-  public shouldShowZeroState() {
-    return (
-      this.wallet && this.wallet.status && !this.wallet.status.totalBalanceSat
-    );
-  }
-
   public showMore(): void {
     this.currentContactsPage++;
     this.updateContactsList();
+  }
+
+  public processInput(): void {
+    if (this.search && this.search.trim() != '') {
+      this.searchWallets();
+      this.searchContacts();
+    } else {
+      this.updateContactsList();
+      this.filteredWallets = [];
+    }
   }
 
   public searchWallets(): void {
@@ -182,7 +182,11 @@ export class TransferToModalPage {
     });
   }
 
-  public goToAmount(item): void {
+  public close(item): void {
+    if (!item) {
+      this.viewCtrl.dismiss();
+      return;
+    }
     item
       .getAddress()
       .then((addr: string) => {
@@ -192,23 +196,12 @@ export class TransferToModalPage {
           return;
         }
         this.logger.debug('Got address:' + addr + ' | ' + item.name);
-        this.navCtrl.push(AmountPage, {
-          recipientType: item.recipientType,
-          amount: parseInt(this.navParams.data.amount, 10),
-          toAddress: addr,
-          name: item.name,
-          email: item.email,
-          color: item.color,
-          coin: item.coin,
-          network: item.network
-        });
+        item.toAddress = addr;
+        this.viewCtrl.dismiss(item);
       })
       .catch(err => {
         this.logger.error('Send: could not getAddress', err);
+        this.viewCtrl.dismiss();
       });
-  }
-
-  public close(item): void {
-    this.viewCtrl.dismiss({ item });
   }
 }

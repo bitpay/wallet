@@ -89,14 +89,14 @@ export class SendPage extends WalletTabsChild {
 
   ionViewDidLoad() {
     this.logger.info('Loaded: SendPage');
+  }
 
+  ionViewWillEnter() {
     this.events.subscribe('update:address', data => {
       this.search = data.value;
       this.processInput();
     });
-  }
 
-  ionViewWillEnter() {
     this.walletsBtc = this.profileProvider.getWallets({ coin: 'btc' });
     this.walletsBch = this.profileProvider.getWallets({ coin: 'bch' });
     this.hasBtcWallets = !_.isEmpty(this.walletsBtc);
@@ -106,7 +106,7 @@ export class SendPage extends WalletTabsChild {
     this.updateContactsList();
   }
 
-  ngOnDestroy() {
+  ionViewWillLeave() {
     this.events.unsubscribe('update:address');
   }
 

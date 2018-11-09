@@ -91,7 +91,7 @@
             <span *ngIf="!contactName && tx.toAddress && !tx.hasMultiplesOutputs">{{ tx.toAddress }}</span>
             <span *ngIf="contactName && !tx.hasMultiplesOutputs">{{ contactName }}</span>
             <span *ngIf="tx && tx.hasMultiplesOutputs">
-              <span translate>Multiple recipients</span>
+              <span translate>Multiple recipients: </span>
               <span>{{tx.recipientCount}}</span>
             </span>
           </div>

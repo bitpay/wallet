@@ -61,6 +61,10 @@ export class ConfirmPage extends WalletTabsChild {
   public remainingTimeStr: string;
   public hideSlideButton: boolean;
   public amount;
+  public showMultiplesOutputs: boolean;
+  public fromMultiSend: boolean;
+  public recipients;
+  public coin: string;
 
   // Config Related values
   public config;
@@ -110,7 +114,13 @@ export class ConfirmPage extends WalletTabsChild {
       : 'normal';
     this.isCordova = this.platformProvider.isCordova;
     this.hideSlideButton = false;
-    console.log('this.navParams.data: ', this.navParams.data);
+    this.showMultiplesOutputs = false;
+    this.recipients = this.navParams.data.recipients
+      ? this.navParams.data.recipients
+      : null;
+    this.fromMultiSend = this.navParams.data.fromMultiSend
+      ? this.navParams.data.fromMultiSend
+      : false;
   }
 
   ngOnInit() {
@@ -127,9 +137,10 @@ export class ConfirmPage extends WalletTabsChild {
     let B = this.navParams.data.coin == 'bch' ? this.bitcoreCash : this.bitcore;
     let networkName;
     let amount;
-    if (this.navParams.data.fromMultiSend) {
+    if (this.fromMultiSend) {
       networkName = this.navParams.data.network;
       amount = this.navParams.data.totalAmount;
+      this.coin = this.navParams.data.coin;
     } else {
       amount = this.navParams.data.amount;
       try {
@@ -211,9 +222,7 @@ export class ConfirmPage extends WalletTabsChild {
   }
 
   private getAmountDetails() {
-    console.log('this.tx.amount: ', this.tx.amount);
     this.amount = this.decimalPipe.transform(this.tx.amount / 1e8, '1.2-6');
-    console.log('this.amount: ', this.amount);
   }
 
   private afterWalletSelectorSet() {
@@ -655,7 +664,7 @@ export class ConfirmPage extends WalletTabsChild {
 
       let txp: Partial<TransactionProposal> = {};
 
-      if (this.navParams.data.fromMultiSend) {
+      if (this.fromMultiSend) {
         txp.outputs = [];
         this.navParams.data.recipients.forEach(recipient => {
           txp.outputs.push({

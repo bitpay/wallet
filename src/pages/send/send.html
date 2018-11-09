@@ -50,9 +50,19 @@
         </ion-item>
       </div>
 
-      <button ion-button class="button-standard" (click)="goToMultiSendPage()">
-        {{'Multiple Recipients' | translate}}
-      </button>
+      <div class="card">
+        <ion-item-divider class="title">
+          <span translate>Transfer to Multiple Recipients</span>
+        </ion-item-divider>
+        <ion-list>
+          <button ion-item (click)="goToMultiSendPage()">
+            <ion-icon class="item-img" item-start>
+              <img src="assets/img/address-book-add.svg" />
+            </ion-icon>
+            <div class="item-title">Add recipient</div>
+          </button>
+        </ion-list>
+      </div>
 
       <div class="card" *ngIf="filteredContactsList && filteredContactsList[0]">
         <ion-item-divider>

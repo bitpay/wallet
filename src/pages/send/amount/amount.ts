@@ -81,6 +81,7 @@ export class AmountPage extends WalletTabsChild {
   public email: string;
   public color: string;
   public useSendMax: boolean;
+  public useAsModal: boolean;
   public config: Config;
   public toWalletId: string;
   private _id: string;
@@ -110,6 +111,9 @@ export class AmountPage extends WalletTabsChild {
     super(navCtrl, profileProvider, walletTabsProvider);
     this.zone = new NgZone({ enableLongStackTrace: false });
     this.config = this.configProvider.get();
+    this.useAsModal = this.navParams.data.useAsModal
+      ? this.navParams.data.useAsModal
+      : false;
     this.recipientType = this.navParams.data.recipientType;
     this.toAddress = this.navParams.data.toAddress;
     this.network = this.navParams.data.network;
@@ -559,8 +563,9 @@ export class AmountPage extends WalletTabsChild {
       }
     }
     this.useSendMax = null;
-    this.closeModal(data);
-    // this.navCtrl.push(this.nextView, data);
+    this.useAsModal
+      ? this.closeModal(data)
+      : this.navCtrl.push(this.nextView, data);
   }
 
   private updateUnitUI(): void {

@@ -1,9 +1,25 @@
 page-multi-send {
-  .open-modal-icon img {
-    width: 25px;
-    height: 25px;
+  .warning {
+    color: color($colors, danger);
   }
-
+  .card {
+    ion-list {
+      padding: 1rem 2rem 1rem 2rem;
+    }
+    .close-icon {
+      padding-right: 1rem;
+    }
+    .wallet {
+      display: flex;
+      align-items: center;
+      .name {
+        padding-left: 1rem;
+      }
+      .coin-icon {
+        width: 15px;
+      }
+    }
+  }
   .show-more {
     display: flex;
     text-align: center;
@@ -44,12 +60,37 @@ page-multi-send {
     padding: 10px;
     background-color: white;
     box-shadow: 0px 5px 10px 0px #cccccc;
+    .recipient-buttons {
+      display: flex;
+      justify-content: space-between;
+      padding: 10px 5px 0 5px;
+      button {
+        border-radius: 5px;
+        box-shadow: none;
+      }
+      .button-add {
+        color: color($colors, success);
+        border-color: color($colors, success);
+      }
+      .button-cancel {
+        color: color($colors, danger);
+        border-color: color($colors, danger);
+      }
+    }
   }
   .send-heading {
-    font-size: 15px;
-    padding: 0 0 16px 0;
-    border: none;
-    font-weight: 500;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 15px;
+    span {
+      font-size: 15px;
+      font-weight: 500;
+    }
+    .open-modal-icon img {
+      width: 25px;
+      height: 25px;
+    }
   }
   .search-wrapper {
     margin-top: 15px;
