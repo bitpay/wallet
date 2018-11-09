@@ -1,5 +1,6 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { HTTP } from '@ionic-native/http';
 import * as _ from 'lodash';
 import { Logger } from '../../providers/logger/logger';
 
@@ -8,10 +9,12 @@ import { AppProvider } from '../app/app';
 import { ConfigProvider } from '../config/config';
 import { HomeIntegrationsProvider } from '../home-integrations/home-integrations';
 import { PersistenceProvider } from '../persistence/persistence';
+import { PlatformProvider } from '../platform/platform';
 
 @Injectable()
 export class ShapeshiftProvider {
   private credentials;
+  private isCordova: boolean;
 
   constructor(
     private appProvider: AppProvider,
@@ -19,10 +22,13 @@ export class ShapeshiftProvider {
     private http: HttpClient,
     private logger: Logger,
     private configProvider: ConfigProvider,
-    private persistenceProvider: PersistenceProvider
+    private persistenceProvider: PersistenceProvider,
+    private httpNative: HTTP,
+    private platformProvider: PlatformProvider
   ) {
     this.logger.debug('ShapeshiftProvider Provider initialized');
     this.credentials = {};
+    this.isCordova = this.platformProvider.isCordova;
   }
 
   public setCredentials() {
@@ -67,22 +73,38 @@ export class ShapeshiftProvider {
     };
 
     const url = this.credentials.API_URL + '/shift';
-    const headers = new HttpHeaders({
+
+    const defaultHeaders = {
       'Content-Type': 'application/json',
       Accept: 'application/json',
       Authorization: 'Bearer ' + data.token
-    });
+    };
 
-    this.http.post(url, dataSrc, { headers }).subscribe(
-      data => {
-        this.logger.info('Shapeshift SHIFT: SUCCESS');
-        return cb(null, data);
-      },
-      data => {
-        this.logger.error('Shapeshift SHIFT ERROR: ' + data.error.message);
-        return cb(data.error.message);
-      }
-    );
+    if (!this.isCordova) {
+      const headers = new HttpHeaders(defaultHeaders);
+
+      this.http.post(url, dataSrc, { headers }).subscribe(
+        data => {
+          this.logger.info('Shapeshift SHIFT: SUCCESS');
+          return cb(null, data);
+        },
+        data => {
+          this.logger.error('Shapeshift SHIFT ERROR: ' + data.error.message);
+          return cb(data.error.message);
+        }
+      );
+    } else {
+      this.httpNative.post(url, dataSrc, defaultHeaders).then(
+        data => {
+          this.logger.info('Shapeshift SHIFT: SUCCESS');
+          return cb(null, JSON.parse(data.data));
+        },
+        data => {
+          this.logger.error('Shapeshift SHIFT ERROR: ' + data.error.message);
+          return cb(data.error.message);
+        }
+      );
+    }
   }
 
   public saveShapeshift(data, opts, cb): void {
@@ -167,25 +189,44 @@ export class ShapeshiftProvider {
   }
 
   public getStatus(addr: string, token: string, cb) {
-    const headers = new HttpHeaders({
+    const defaultHeaders = {
       'Content-Type': 'application/json',
       Accept: 'application/json',
       Authorization: 'Bearer ' + token
-    });
-    this.http
-      .get(this.credentials.API_URL + '/txStat/' + addr, { headers })
-      .subscribe(
-        data => {
-          this.logger.info('Shapeshift STATUS: SUCCESS');
-          return cb(null, data);
-        },
-        data => {
-          this.logger.error(
-            'Shapeshift STATUS ERROR: ' + data.error.error_description
-          );
-          return cb(data.error);
-        }
-      );
+    };
+
+    if (!this.isCordova) {
+      const headers = new HttpHeaders(defaultHeaders);
+      this.http
+        .get(this.credentials.API_URL + '/txStat/' + addr, { headers })
+        .subscribe(
+          data => {
+            this.logger.info('Shapeshift STATUS: SUCCESS');
+            return cb(null, data);
+          },
+          data => {
+            this.logger.error(
+              'Shapeshift STATUS ERROR: ' + data.error.error_description
+            );
+            return cb(data.error);
+          }
+        );
+    } else {
+      this.httpNative
+        .get(this.credentials.API_URL + '/txStat/' + addr, {}, defaultHeaders)
+        .then(
+          data => {
+            this.logger.info('Shapeshift STATUS: SUCCESS');
+            return cb(null, JSON.parse(data.data));
+          },
+          data => {
+            this.logger.error(
+              'Shapeshift STATUS ERROR: ' + data.error.error_description
+            );
+            return cb(data.error);
+          }
+        );
+    }
   }
 
   public register(): void {
@@ -233,28 +274,50 @@ export class ShapeshiftProvider {
       client_secret: this.credentials.CLIENT_SECRET,
       redirect_uri: this.credentials.REDIRECT_URI
     };
-    const headers = new HttpHeaders({
+    const defaultHeaders = {
       'Content-Type': 'application/json',
       Accept: 'application/json'
-    });
+    };
 
-    this.http.post(url, data, { headers }).subscribe(
-      data => {
-        this.logger.info('ShapeShift: GET Access Token: SUCCESS');
-        // Show pending task from the UI
-        this._afterTokenReceived(data, cb);
-      },
-      data => {
-        const error =
-          data && data.error && data.error.error_description
-            ? data.error.error_description
-            : data.statusText;
-        this.logger.error(
-          'ShapeShift: GET Access Token: ERROR ' + data.status + '. ' + error
-        );
-        return cb(error);
-      }
-    );
+    if (!this.isCordova) {
+      const headers = new HttpHeaders(defaultHeaders);
+      this.http.post(url, data, { headers }).subscribe(
+        data => {
+          this.logger.info('ShapeShift: GET Access Token: SUCCESS');
+          // Show pending task from the UI
+          this._afterTokenReceived(data, cb);
+        },
+        data => {
+          const error =
+            data && data.error && data.error.error_description
+              ? data.error.error_description
+              : data.statusText;
+          this.logger.error(
+            'ShapeShift: GET Access Token: ERROR ' + data.status + '. ' + error
+          );
+          return cb(error);
+        }
+      );
+    } else {
+      this.httpNative
+        .post(url, data, defaultHeaders)
+        .then(data => {
+          this.logger.info('ShapeShift: GET Access Token: SUCCESS');
+          // Show pending task from the UI
+          this._afterTokenReceived(JSON.parse(data.data), cb);
+        })
+        .catch(data => {
+          this.logger.error(data);
+          const error =
+            data && data.error && data.error.error_description
+              ? data.error.error_description
+              : data.statusText;
+          this.logger.error(
+            'ShapeShift: GET Access Token: ERROR ' + data.status + '. ' + error
+          );
+          return cb(error);
+        });
+    }
   }
 
   private _afterTokenReceived(data, cb) {
@@ -307,22 +370,39 @@ export class ShapeshiftProvider {
       Accept: 'application/json',
       Authorization: 'Bearer ' + token
     };
-
-    this.http.get(url, { headers }).subscribe(
-      data => {
-        this.logger.info('ShapeShift: Get Access Token Details SUCCESS');
-        return cb(null, data);
-      },
-      data => {
-        this.logger.error(
-          'ShapeShift: Get Access Token Details ERROR ' +
-            data.status +
-            '. ' +
-            data.error.error_description
-        );
-        return cb(data.error);
-      }
-    );
+    if (!this.isCordova) {
+      this.http.get(url, { headers }).subscribe(
+        data => {
+          this.logger.info('ShapeShift: Get Access Token Details SUCCESS');
+          return cb(null, data);
+        },
+        data => {
+          this.logger.error(
+            'ShapeShift: Get Access Token Details ERROR ' +
+              data.status +
+              '. ' +
+              data.error.error_description
+          );
+          return cb(data.error);
+        }
+      );
+    } else {
+      this.httpNative.get(url, {}, headers).then(
+        data => {
+          this.logger.info('ShapeShift: Get Access Token Details SUCCESS');
+          return cb(null, JSON.parse(data.data));
+        },
+        data => {
+          this.logger.error(
+            'ShapeShift: Get Access Token Details ERROR ' +
+              data.status +
+              '. ' +
+              data.error.error_description
+          );
+          return cb(data.error);
+        }
+      );
+    }
   }
 
   public getAccount(token, cb) {
@@ -335,46 +415,82 @@ export class ShapeshiftProvider {
       Authorization: 'Bearer ' + token
     };
 
-    this.http.get(url, { headers }).subscribe(
-      data => {
-        this.logger.info('ShapeShift: Get Account SUCCESS');
-        return cb(null, data);
-      },
-      data => {
-        this.logger.error(
-          'ShapeShift: Get Account ERROR ' +
-            data.status +
-            '. ' +
-            data.error.error_description
-        );
-        return cb(data.error);
-      }
-    );
+    if (!this.isCordova) {
+      this.http.get(url, { headers }).subscribe(
+        data => {
+          this.logger.info('ShapeShift: Get Account SUCCESS');
+          return cb(null, data);
+        },
+        data => {
+          this.logger.error(
+            'ShapeShift: Get Account ERROR ' +
+              data.status +
+              '. ' +
+              data.error.error_description
+          );
+          return cb(data.error);
+        }
+      );
+    } else {
+      this.httpNative.get(url, {}, headers).then(
+        data => {
+          this.logger.info('ShapeShift: Get Account SUCCESS');
+          return cb(null, JSON.parse(data.data));
+        },
+        data => {
+          this.logger.error(
+            'ShapeShift: Get Account ERROR ' +
+              data.status +
+              '. ' +
+              data.error.error_description
+          );
+          return cb(data.error);
+        }
+      );
+    }
   }
 
   public revokeAccessToken(token) {
     const url = this.credentials.HOST + '/oauth/token/revoke';
     const data = new HttpParams().set('token', token);
-    const headers = new HttpHeaders({
+    const defaultHeaders = {
       'Content-Type': 'application/x-www-form-urlencoded',
       Authorization:
         'Basic ' +
         btoa(this.credentials.CLIENT_ID + ':' + this.credentials.CLIENT_SECRET)
-    });
+    };
 
-    this.http.post(url, data, { headers }).subscribe(
-      () => {
-        this.logger.info('ShapeShift: Revoke Access Token SUCCESS');
-      },
-      data => {
-        this.logger.warn(
-          'ShapeShift: Revoke Access Token ERROR ' +
-            data.status +
-            '. ' +
-            data.error.error
-        );
-      }
-    );
+    if (!this.isCordova) {
+      const headers = new HttpHeaders(defaultHeaders);
+
+      this.http.post(url, data, { headers }).subscribe(
+        () => {
+          this.logger.info('ShapeShift: Revoke Access Token SUCCESS');
+        },
+        data => {
+          this.logger.warn(
+            'ShapeShift: Revoke Access Token ERROR ' +
+              data.status +
+              '. ' +
+              data.error.error
+          );
+        }
+      );
+    } else {
+      this.httpNative.post(url, data, defaultHeaders).then(
+        () => {
+          this.logger.info('ShapeShift: Revoke Access Token SUCCESS');
+        },
+        data => {
+          this.logger.warn(
+            'ShapeShift: Revoke Access Token ERROR ' +
+              data.status +
+              '. ' +
+              data.error.error
+          );
+        }
+      );
+    }
   }
 
   public logout(token) {

@@ -4,6 +4,7 @@ export { Clipboard } from '@ionic-native/clipboard';
 export { Device } from '@ionic-native/device';
 export { FCM } from '@ionic-native/fcm';
 export { File } from '@ionic-native/file';
+export { HTTP } from '@ionic-native/http';
 export { LaunchReview } from '@ionic-native/launch-review';
 export { QRScanner } from '@ionic-native/qr-scanner';
 export { ScreenOrientation } from '@ionic-native/screen-orientation';

@@ -163,6 +163,7 @@
     "@ionic-native/device": "4.14.0",
     "@ionic-native/fcm": "4.14.0",
     "@ionic-native/file": "4.14.0",
+    "@ionic-native/http": "^4.17.0",
     "@ionic-native/launch-review": "4.14.0",
     "@ionic-native/qr-scanner": "4.14.0",
     "@ionic-native/screen-orientation": "4.14.0",
@@ -189,6 +190,7 @@
     "cordova-ios": "4.5.5",
     "cordova-launch-review": "3.1.1",
     "cordova-plugin-add-swift-support": "1.7.2",
+    "cordova-plugin-advanced-http": "^2.0.1",
     "cordova-plugin-android-fingerprint-auth": "1.4.3",
     "cordova-plugin-compat": "1.2.0",
     "cordova-plugin-customurlscheme": "https://github.com/cmgustavo/Custom-URL-scheme.git#v4.0",
@@ -318,7 +320,8 @@
       "cordova-plugin-spinner-dialog": {},
       "cordova-plugin-vibration": {},
       "im.ltdev.cordova.UserAgent": {},
-      "cordova-launch-review": {}
+      "cordova-launch-review": {},
+      "cordova-plugin-advanced-http": {}
     },
     "platforms": [
       "android",
