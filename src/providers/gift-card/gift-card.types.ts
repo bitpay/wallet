@@ -31,6 +31,7 @@ export interface BaseCardConfig {
   logoBackgroundColor: string;
   name: CardName;
   redeemUrl?: string;
+  hidePin?: boolean;
   website: string;
 }
 
