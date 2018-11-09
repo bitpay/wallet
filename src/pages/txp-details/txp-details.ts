@@ -84,7 +84,6 @@ export class TxpDetailsPage {
     this.showMultiplesOutputs = false;
     let config = this.configProvider.get().wallet;
     this.tx = this.navParams.data.tx;
-    console.log('this.tx: ', this.tx);
     this.wallet = this.tx.wallet
       ? this.tx.wallet
       : this.profileProvider.getWallet(this.tx.walletId);
