@@ -60,7 +60,9 @@ export class WalletAddressesPage {
   ionViewWillEnter() {
     this.loading = true;
     this.walletProvider
-      .getMainAddresses(this.wallet, {})
+      .getMainAddresses(this.wallet, {
+        doNotVerify: true
+      })
       .then(allAddresses => {
         this.walletProvider
           .getBalance(this.wallet, {})
