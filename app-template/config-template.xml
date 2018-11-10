@@ -60,7 +60,7 @@
     <plugin name="cordova-plugin-whitelist" spec="1.3.3" />
     <plugin name="cordova-plugin-x-socialsharing" spec="5.4.1" />
     <plugin name="cordova-plugin-x-toast" spec="2.6.0" />
-    <plugin name="cordova-plugin-ionic-keyboard" spec="2.2.3" />
+    <plugin name="cordova-plugin-ionic-keyboard" spec="2.1.3" />
     <plugin name="cordova-plugin-screen-orientation" spec="3.0.1" />
     <plugin name="im.ltdev.cordova.UserAgent" spec="https://github.com/danielsogl/cordova-plugin-useragent.git" />
 
