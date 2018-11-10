@@ -119,8 +119,10 @@ export class CardDetailsPage {
       CardName.amazonJapan,
       CardName.mercadoLibre
     ];
-    return this.card &&
-      this.card.pin &&
+    const shouldHidePin = this.cardConfig && this.cardConfig.hidePin;
+    const pin = this.card && this.card.pin;
+    return !shouldHidePin &&
+      pin &&
       legacyCardNames.indexOf(this.card.name) === -1
       ? true
       : false;

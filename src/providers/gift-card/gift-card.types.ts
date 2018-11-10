@@ -1,6 +1,7 @@
 export enum CardBrand {
   amazon = 'Amazon',
   delta = 'Delta',
+  googlePlay = 'Google Play',
   hotelsCom = 'Hotels.com',
   mercadoLibre = 'Mercado Livre',
   uber = 'Uber',
@@ -12,6 +13,7 @@ export enum CardName {
   amazon = 'Amazon.com',
   amazonJapan = 'Amazon.co.jp',
   delta = 'Delta Air Lines',
+  googlePlay = 'Google Play',
   hotelsCom = 'Hotels.com',
   mercadoLibre = 'Mercado Livre',
   uber = 'Uber',
@@ -29,6 +31,7 @@ export interface BaseCardConfig {
   logoBackgroundColor: string;
   name: CardName;
   redeemUrl?: string;
+  hidePin?: boolean;
   website: string;
 }
 

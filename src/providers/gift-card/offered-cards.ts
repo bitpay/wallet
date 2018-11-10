@@ -48,6 +48,19 @@ export const offeredGiftCards: BaseCardConfig[] = [
     website: 'delta.com'
   },
   {
+    brand: CardBrand.googlePlay,
+    cardImage: 'assets/img/gift-cards/google-play/google-play-gift-card.png',
+    defaultClaimCodeType: 'code',
+    emailRequired: false,
+    hidePin: true,
+    icon: 'assets/img/gift-cards/google-play/google-play-icon.png',
+    logo: 'assets/img/gift-cards/google-play/google-play-logo.svg',
+    logoBackgroundColor: '#ffffff',
+    name: CardName.googlePlay,
+    redeemUrl: 'https://play.google.com/redeem?code=',
+    website: 'play.google.com'
+  },
+  {
     brand: CardBrand.hotelsCom,
     cardImage: 'assets/img/gift-cards/hotels.com/hotels.com-card.png',
     defaultClaimCodeType: 'code',

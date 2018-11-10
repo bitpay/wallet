@@ -23,7 +23,8 @@
 <ion-footer>
   <ion-toolbar>
     <button ion-button full class="button-footer" (click)="next()">
-      {{'Continue' | translate}}
+      <ng-container *ngIf="cardConfig?.supportedAmounts">{{'Continue' | translate}}</ng-container>
+      <ng-container *ngIf="!cardConfig?.supportedAmounts">{{'Enter Amount' | translate}}</ng-container>
     </button>
   </ion-toolbar>
 </ion-footer>
