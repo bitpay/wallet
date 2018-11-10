@@ -78,7 +78,9 @@
     </plugin>
     <plugin name="cordova-plugin-fcm" spec="https://github.com/cmgustavo/cordova-plugin-fcm.git#v4.1" />
 
-    <plugin name="cordova-plugin-ionic-webview" spec="2.2.3"/>
+    <plugin name="cordova-plugin-ionic-webview" spec="2.2.3">
+      <variable name="ANDROID_SUPPORT_ANNOTATIONS_VERSION" value="27.+" />
+    </plugin>
 
     <!-- Platform Specific Settings -->
     <platform name="ios">
