@@ -42,14 +42,6 @@ describe('SendPage', () => {
   });
 
   describe('Lifecycle Hooks', () => {
-    describe('ionViewDidLoad', () => {
-      it('should subscribe to events', () => {
-        const subscribeSpy = spyOn(instance.events, 'subscribe');
-        instance.ionViewDidLoad();
-        expect(subscribeSpy).toHaveBeenCalledTimes(1);
-      });
-    });
-
     describe('ionViewWillEnter', () => {
       it('should call get functions and subscribe to events', () => {
         const profileProviderSpy = spyOn(
@@ -57,16 +49,19 @@ describe('SendPage', () => {
           'getWallets'
         );
         const getBtcWalletsListSpy = spyOn(instance, 'getBtcWalletsList');
+        const subscribeSpy = spyOn(instance.events, 'subscribe');
         instance.ionViewWillEnter();
+
+        expect(subscribeSpy).toHaveBeenCalledTimes(1);
         expect(profileProviderSpy).toHaveBeenCalledWith({ coin: 'btc' });
         expect(profileProviderSpy).toHaveBeenCalledWith({ coin: 'bch' });
         expect(getBtcWalletsListSpy).toHaveBeenCalled();
       });
     });
-    describe('ngOnDestroy', () => {
+    describe('ionViewWillLeave', () => {
       it('should unsubscribe from events', () => {
         const spy = spyOn(instance.events, 'unsubscribe');
-        instance.ngOnDestroy();
+        instance.ionViewWillLeave();
         expect(spy).toHaveBeenCalledWith('update:address');
       });
     });
