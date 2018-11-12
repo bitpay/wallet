@@ -14,8 +14,8 @@
 </ion-header>
 
 <ion-content no-bounce>
-  <div *ngIf="!shouldShowZeroState()">
-    <div *ngIf="hasBtcWallets || hasBchWallets">
+  <div>
+    <div>
       <div class="send-header-wrapper">
         <div class="send-heading">
           <span translate>Multiple Recipients</span>
@@ -31,8 +31,8 @@
           </ion-icon>
         </ion-item>
         <div class="recipient-buttons" *ngIf="!invalidAddress && search != ''">
-          <button ion-button class="button-add" outline (click)="addRecipient()">Añadir destinatario</button>
-          <button ion-button class="button-cancel" outline (click)="cancelRecipient()">Cancelar</button>
+          <button ion-button class="button-add" outline (click)="addRecipient()">{{ 'Add Recipient' | translate}}</button>
+          <button ion-button class="button-cancel" outline (click)="cancelRecipient()">{{ 'Cancel' | translate}}</button>
         </div>
       </div>
 
@@ -71,7 +71,7 @@
             </div>
 
             <br>
-            <span *ngIf="item.amountToShow">Amount: </span>
+            <span *ngIf="item.amountToShow">{{'Amount:' | translate}} </span>
             <span *ngIf="item.amountToShow">{{item.amountToShow}} {{wallet.coin | uppercase}} ({{item.altAmountStr}})</span>
             <span *ngIf="!item.amountToShow" class="warning">{{'Please, enter the amount' | translate}}</span>
           </ion-list>

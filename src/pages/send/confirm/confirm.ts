@@ -115,12 +115,8 @@ export class ConfirmPage extends WalletTabsChild {
     this.isCordova = this.platformProvider.isCordova;
     this.hideSlideButton = false;
     this.showMultiplesOutputs = false;
-    this.recipients = this.navParams.data.recipients
-      ? this.navParams.data.recipients
-      : null;
-    this.fromMultiSend = this.navParams.data.fromMultiSend
-      ? this.navParams.data.fromMultiSend
-      : false;
+    this.recipients = this.navParams.data.recipients;
+    this.fromMultiSend = this.navParams.data.fromMultiSend;
   }
 
   ngOnInit() {

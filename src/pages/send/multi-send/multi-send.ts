@@ -48,15 +48,9 @@ export interface FlatWallet {
 export class MultiSendPage extends WalletTabsChild {
   public search: string = '';
   public multiRecipients: any = [];
-  public walletsBtc;
-  public walletsBch;
-  public walletBchList: FlatWallet[];
-  public walletBtcList: FlatWallet[];
   public contactsList = [];
   public filteredContactsList = [];
   public filteredWallets = [];
-  public hasBtcWallets: boolean;
-  public hasBchWallets: boolean;
   public hasContacts: boolean;
   public contactsShowMore: boolean;
   public amount: string;
@@ -104,10 +98,6 @@ export class MultiSendPage extends WalletTabsChild {
       this.search = data.value;
       this.processInput();
     });
-    this.walletsBtc = this.profileProvider.getWallets({ coin: 'btc' });
-    this.walletsBch = this.profileProvider.getWallets({ coin: 'bch' });
-    this.hasBtcWallets = !_.isEmpty(this.walletsBtc);
-    this.hasBchWallets = !_.isEmpty(this.walletsBch);
   }
 
   ionViewWillLeave() {
