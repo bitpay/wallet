@@ -2,7 +2,7 @@
   "name": "copay",
   "description": "A Secure Bitcoin Wallet",
   "author": "BitPay",
-  "version": "5.0.8",
+  "version": "5.1.0",
   "keywords": [
     "bitcoin",
     "wallet",
