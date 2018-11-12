@@ -214,7 +214,6 @@
     "cordova-plugin-x-socialsharing": "5.4.1",
     "cordova-plugin-x-toast": "2.6.2",
     "es6-promise-plugin": "4.2.2",
-    "im.ltdev.cordova.UserAgent": "https://github.com/danielsogl/cordova-plugin-useragent.git",
     "ionic-angular": "3.9.2",
     "ionicons": "4.4.6",
     "lodash": "4.17.11",
