@@ -21,6 +21,7 @@ export class SearchTxModalPage {
   public txHistoryShowMore: boolean;
   public completeTxHistory;
   public addressbook;
+  public search: string;
 
   constructor(
     private navParams: NavParams,

@@ -14,7 +14,8 @@
           <span *ngIf="btx.action === 'moved'" translate>Moved</span>
         </div>
         <div class="sending-label" *ngIf="btx.confirmations === 0">
-          <span *ngIf="btx.action == 'sent' || btx.action == 'moved'" translate>Sending</span>
+          <span *ngIf="btx.action == 'sent'" translate>Sending</span>
+          <span *ngIf="btx.action == 'moved'" translate>Moving</span>
           <span *ngIf="btx.action == 'received'" translate>Receiving</span>
         </div>
         <div class="amount-label">
