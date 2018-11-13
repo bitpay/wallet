@@ -65,7 +65,6 @@ page-tx-details {
   .container-from,
   .container-tx-id {
     .wallet,
-    .payment-to,
     .tx-id {
       @include row-flex;
       .icon-wallet {
@@ -77,24 +76,9 @@ page-tx-details {
           background-color: color($colors, grey);
         }
       }
-      .icon-bitcoin {
-        width: 30px;
-        height: 40px;
-      }
       .id {
         font-size: 12.5px;
         color: color($colors, light-grey);
-      }
-      .text-address.ellipsis {
-        flex: 0 0 47px;
-        img {
-          margin: 12px 0 12px 12px;
-          vertical-align: middle;
-        }
-      }
-      &.address-coppied {
-        border-radius: 3px;
-        background-color: rgb(248, 248, 248);
       }
     }
   }
