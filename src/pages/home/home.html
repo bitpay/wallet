@@ -18,7 +18,7 @@
   <div class="wrapper">
     <div class="header-extend" *ngIf="wallets && wallets[0]"></div>
 
-    <div class="card warning-card" *ngIf="isNW">
+    <div class="card warning-card" *ngIf="isNW && appName != 'Copay'">
       <img src="assets/img/icon-warning-circled.svg" alt="warning-card" width="40" />
       <div class="warning-card-title">
         <span>New {{appName}} desktop platform</span>
