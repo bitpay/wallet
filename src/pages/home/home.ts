@@ -81,6 +81,7 @@ export class HomePage {
   public showReorderBch: boolean;
   public showIntegration;
   public hideHomeIntegrations: boolean;
+  public os;
 
   private isNW: boolean;
   private updatingWalletId: object;
@@ -124,6 +125,7 @@ export class HomePage {
     this.cachedBalanceUpdateOn = '';
     this.isNW = this.platformProvider.isNW;
     this.appName = this.appProvider.info.nameCase;
+    if (this.isNW) this.os = this.platformProvider.getOS();
     this.showReorderBtc = false;
     this.showReorderBch = false;
     this.zone = new NgZone({ enableLongStackTrace: false });
@@ -677,8 +679,7 @@ export class HomePage {
 
   public goToDownloadElectronVersion(): void {
     let url: string;
-    let OS = this.platformProvider.getOS();
-    switch (OS.OSName) {
+    switch (this.os.OSName) {
       case 'Windows':
         url =
           this.appName == 'Copay'
@@ -708,16 +709,15 @@ export class HomePage {
   public goToDownload(): void {
     let url: string;
     let okText: string;
-    let OS = this.platformProvider.getOS();
 
-    if (OS.extension !== '') {
+    if (this.os.extension !== '') {
       okText = this.translate.instant('Download');
       url =
         'https://github.com/bitpay/copay/releases/download/' +
         this.latestVersion +
         '/' +
         this.appName +
-        OS.extension;
+        this.os.extension;
     } else {
       okText = this.translate.instant('View Update');
       url = 'https://github.com/bitpay/copay/releases/latest';
