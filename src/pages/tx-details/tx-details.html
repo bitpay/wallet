@@ -113,6 +113,10 @@
       <ion-note item-end>
         <span *ngIf="!btx.confirmations || btx.confirmations == 0" translate>
           Unconfirmed
+          <span *ngIf="btx.feeRate">(
+            <span translate>fee Rate:</span>
+          {{btx.feeRate}})
+          </span>
         </span>
         <span *ngIf="btx.confirmations>0 && !btx.safeConfirmed">
           {{btx.confirmations}}
