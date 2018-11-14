@@ -239,32 +239,29 @@ export class GiftCardProvider {
             return of({ ...card, status: 'FAILURE' });
           })
         ),
-        mergeMap((updatedFields, index) => {
-          const card = cardsNeedingUpdate[index];
-          return this.updatePreviouslyPendingCard(card, updatedFields);
-          // return updatedFields.status !== 'PENDING'
-          //   ? this.updatePreviouslyPendingCard(card, updatedFields)
-          //   : of(card);
-        })
+        mergeMap(card =>
+          fromPromise(
+            this.hasBitpayInvoiceReceivedPayments(card.invoiceId).then(
+              hasPayments => ({
+                ...card,
+                status: hasPayments ? card.status : 'expired'
+              })
+            )
+          )
+        ),
+        mergeMap(updatedCard => this.updatePreviouslyPendingCard(updatedCard))
       )
       .subscribe(card => this.cardUpdatesSubject.next(card));
     return this.cardUpdates$;
   }
 
-  updatePreviouslyPendingCard(
-    card: GiftCard,
-    updatedFields: Partial<GiftCard>
-  ) {
-    const updatedCard = {
-      ...card,
-      ...updatedFields
-    };
+  updatePreviouslyPendingCard(updatedCard: GiftCard) {
     return fromPromise(
       this.saveGiftCard(updatedCard, {
-        remove: updatedFields.status === 'expired'
+        remove: updatedCard.status === 'expired'
       })
     ).map(() => {
-      this.logger.debug('Amazon gift card updated');
+      this.logger.debug('Gift card updated');
       return updatedCard as GiftCard;
     });
   }
@@ -293,7 +290,7 @@ export class GiftCardProvider {
     return cardOrder as { accessKey: string; invoiceId: string };
   }
 
-  public async getBitPayInvoice(id) {
+  public async getBitPayInvoice(id: string) {
     const res: any = await this.http
       .get(`${this.credentials.BITPAY_API_URL}/invoices/${id}`)
       .toPromise()
@@ -303,6 +300,12 @@ export class GiftCardProvider {
       });
     this.logger.info('BitPay Get Invoice: SUCCESS');
     return res.data;
+  }
+
+  async hasBitpayInvoiceReceivedPayments(invoiceId: string) {
+    return this.getBitPayInvoice(invoiceId)
+      .then(invoice => invoice.status !== 'expired' && invoice.status !== 'new')
+      .catch(_ => false);
   }
 
   private checkIfCardNeedsUpdate(card: GiftCard) {
