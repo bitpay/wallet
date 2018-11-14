@@ -54,7 +54,7 @@ function createWindow() {
     // Windows: Handle deeplink url
     if (process.platform == 'win32') {
       // Keep only command line / deep linked arguments
-      deeplinkingUrl = process.argv.slice(1);
+      deeplinkingUrl = process.argv.slice(1)[0];
     }
     if (deeplinkingUrl) {
       setTimeout(() => {
@@ -142,6 +142,28 @@ const getHomeDirPath = platform => {
 const homeDir = getHomeDirPath(process.platform);
 
 app.setPath('userData', path.join(homeDir, `.${appConfig.name}/app`));
+
+// This method makes your application a Single Instance Application
+// https://github.com/electron/electron/blob/v0.36.10/docs/api/app.md#appmakesingleinstancecallback
+var shouldQuit = app.makeSingleInstance(function(argv, workingDirectory) {
+  if (win) {
+    if (process.platform == 'win32') {
+      deeplinkingUrl = argv.slice(1)[0];
+      win.webContents.send('open-url-event', deeplinkingUrl);
+    }
+    // Someone tried to run a second instance, we should focus our window.
+    if (win.isMinimized()) {
+      win.restore();
+    } else {
+      win.focus();
+    }
+  }
+});
+
+if (shouldQuit) {
+  app.quit();
+  return;
+}
 
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
