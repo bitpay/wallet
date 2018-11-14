@@ -9,7 +9,8 @@ let toolbarBg;
 
 @Component({
   template: `
-  <ion-navbar [navbar-bg]="color"></ion-navbar>`
+    <ion-navbar [navbar-bg]="color"></ion-navbar>
+  `
 })
 class TestHostComponent {
   color: string = 'blue';

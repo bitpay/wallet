@@ -5,7 +5,7 @@ import { offeredGiftCards } from '../../../../providers/gift-card/offered-cards'
 @Component({
   selector: 'preload-card-images',
   template: `
-    <img style="display: none" *ngFor="let image of cardImages" [src]="image">
+    <img style="display: none" *ngFor="let image of cardImages" [src]="image" />
   `
 })
 export class PreloadCardImages {

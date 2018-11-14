@@ -23,10 +23,11 @@ const scrollEventMock = {
 };
 @Component({
   template: `
-  <expandable-header>
-    <expandable-header-primary>primary content</expandable-header-primary>
-    <expandable-header-footer>footer content</expandable-header-footer>
-  </expandable-header>`
+    <expandable-header>
+      <expandable-header-primary>primary content</expandable-header-primary>
+      <expandable-header-footer>footer content</expandable-header-footer>
+    </expandable-header>
+  `
 })
 class TestHostComponent {
   @ViewChild(ExpandableHeaderComponent)

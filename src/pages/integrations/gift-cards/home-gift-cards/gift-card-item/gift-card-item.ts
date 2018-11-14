@@ -21,22 +21,29 @@ export type CardItemAction = 'archive' | 'view';
 @Component({
   selector: 'gift-card-item',
   template: `
-  <ion-item-sliding #slidingItem>
-    <button ion-item (click)="performAction('view')"> 
-      <img class="{{cardConfig?.brand.replace('.', '')}}" [src]="cardConfig?.logo">
-      <ion-note item-end [ngClass]="{'dark': cardConfig?.logoBackgroundColor === '#ffffff'}" *ngIf="shouldShowTotalBalance()">
-        {{totalBalance | formatCurrency:currency}}
-      </ion-note>
-    </button>
-    <ion-item-options side="right">
-      <button ion-button (click)="performAction('archive')" color="danger">
-        <div class="archive__icon">
-          <ion-icon ios="md-close" md="md-close"></ion-icon>
-        </div>
-        <div class="archive__text">Archive?</div>
+    <ion-item-sliding #slidingItem>
+      <button ion-item (click)="performAction('view')">
+        <img
+          class="{{cardConfig?.brand.replace('.', '')}}"
+          [src]="cardConfig?.logo"
+        />
+        <ion-note
+          item-end
+          [ngClass]="{ dark: cardConfig?.logoBackgroundColor === '#ffffff' }"
+          *ngIf="shouldShowTotalBalance()"
+        >
+          {{ totalBalance | formatCurrency: currency }}
+        </ion-note>
       </button>
-    </ion-item-options>
-  </ion-item-sliding>
+      <ion-item-options side="right">
+        <button ion-button (click)="performAction('archive')" color="danger">
+          <div class="archive__icon">
+            <ion-icon ios="md-close" md="md-close"></ion-icon>
+          </div>
+          <div class="archive__text">Archive?</div>
+        </button>
+      </ion-item-options>
+    </ion-item-sliding>
   `
 })
 export class GiftCardItem {

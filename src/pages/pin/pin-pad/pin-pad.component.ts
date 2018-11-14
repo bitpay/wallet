@@ -11,22 +11,34 @@ export interface PinButton {
   selector: 'pin-pad',
   template: `
     <ion-row *ngFor="let row of buttonRows">
-      <ion-col *ngFor="let button of row" (click)="onKeystroke(button.value)" [ngClass]="{disabled: isValueDisabled(button.value)}" tappable>
+      <ion-col
+        *ngFor="let button of row"
+        (click)="onKeystroke(button.value)"
+        [ngClass]="{ disabled: isValueDisabled(button.value) }"
+        tappable
+      >
         <div class="buttons-container" [ngSwitch]="button.value">
           <span *ngSwitchCase="'delete'">
-            <img *ngIf="type ==='pin'" src="assets/img/tail-left.svg"> 
-            <img class="amount-delete" *ngIf="type ==='amount'" src="assets/img/icon-delete.svg">
+            <img *ngIf="type === 'pin'" src="assets/img/tail-left.svg" />
+            <img
+              class="amount-delete"
+              *ngIf="type === 'amount'"
+              src="assets/img/icon-delete.svg"
+            />
           </span>
           <span *ngSwitchCase="'.'">
             <span *ngIf="type === 'amount'">.</span>
           </span>
-          <span *ngSwitchCase="'0'" class="key-wrapper" [ngClass]="{'swap-key': type === 'amount' && showSendMax}">
-            <span class="send-max" translate>Send Max</span>
-            <span>0</span>
+          <span
+            *ngSwitchCase="'0'"
+            class="key-wrapper"
+            [ngClass]="{ 'swap-key': type === 'amount' && showSendMax }"
+          >
+            <span class="send-max" translate>Send Max</span> <span>0</span>
           </span>
-          <span *ngSwitchDefault>{{button.value}}</span>
+          <span *ngSwitchDefault>{{ button.value }}</span>
         </div>
-        <div class="letters" *ngIf="type === 'pin'">{{button.letters}}</div>
+        <div class="letters" *ngIf="type === 'pin'">{{ button.letters }}</div>
       </ion-col>
     </ion-row>
   `
