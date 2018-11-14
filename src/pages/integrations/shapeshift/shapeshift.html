@@ -13,31 +13,24 @@
         <p translate>Trade any leading blockchain asset for any other. Protection by Design.</p>
       </div>
 
-      <div *ngIf="disabled" padding-horizontal ion-text color="danger">
-        Shapeshift is temporally disabled for this device. You can try it on our Desktop versions.
+      <button *ngIf="!showOauthForm" ion-button outline class="button-standard" color="light" no-low-fee (click)="openAuthenticateWindow()">
+        {{'Connect to ShapeShift Account' | translate}}
+      </button>
+      <button *ngIf="!showOauthForm" ion-button clear small color="light" (click)="openSignupWindow()">
+        {{'Sign Up for ShapeShift' | translate}} &rarr;
+      </button>
+      <button ion-button clear small color="light" (click)="openExternalLink('https://shapeshift.io')">
+        {{'Visit ShapeShift.io' | translate}} &rarr;
+      </button>
+      <div *ngIf="error">
+        <span ion-text color="danger">{{error}}</span>
       </div>
+      <form *ngIf="showOauthForm" class="form-container" [formGroup]="oauthCodeForm" (ngSubmit)="submitOauthCode(oauthCodeForm.value.code)">
+        <ion-label color="light" stacked>OAuth Code</ion-label>
+        <ion-input color="light" type="text" formControlName="code" [value]="oauthCodeForm.value.code" placeholder="{{'Enter OAuth Code'}}" required></ion-input>
+        <button ion-button outline type="submit" class="button-standard" color="light" [disabled]="!oauthCodeForm.valid">{{'Connect to ShapeShift Account' | translate}}</button>
+      </form>
 
-      <div *ngIf="!disabled">
-        <button *ngIf="!showOauthForm" ion-button outline class="button-standard" color="light" no-low-fee (click)="openAuthenticateWindow()">
-          {{'Connect to ShapeShift Account' | translate}}
-        </button>
-        <button *ngIf="!showOauthForm" ion-button clear small color="light" (click)="openSignupWindow()">
-          {{'Sign Up for ShapeShift' | translate}} &rarr;
-        </button>
-        <button ion-button clear small color="light" (click)="openExternalLink('https://shapeshift.io')">
-          {{'Visit ShapeShift.io' | translate}} &rarr;
-        </button>
-        <div *ngIf="error">
-          <span ion-text color="danger">{{error}}</span>
-        </div>
-        <form *ngIf="showOauthForm" class="form-container" [formGroup]="oauthCodeForm" (ngSubmit)="submitOauthCode(oauthCodeForm.value.code)">
-          <ion-label color="light" stacked>OAuth Code</ion-label>
-          <ion-input color="light" type="text" formControlName="code" [value]="oauthCodeForm.value.code" placeholder="{{'Enter OAuth Code'}}"
-            required></ion-input>
-          <button ion-button outline type="submit" class="button-standard" color="light" [disabled]="!oauthCodeForm.valid">{{'Connect
-            to ShapeShift Account' | translate}}</button>
-        </form>
-      </div>
       <button ion-button clear small color="light" class="bottom-position" (click)="openExternalLink('https://info.shapeshift.io/blog/2018/09/04/introducing-shapeshift-membership/')">
         {{'Why does this require authentication?' | translate}} &rarr;
       </button>
