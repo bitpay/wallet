@@ -250,6 +250,7 @@ export class ShapeshiftPage {
         this.logger.error('Error connecting to ShapeShift: ' + err);
         return;
       }
+      this.navCtrl.pop();
       this.accessToken = accessToken;
       this.init();
     });
