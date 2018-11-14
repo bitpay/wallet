@@ -5,7 +5,10 @@ import { Content } from 'ionic-angular';
   host: { class: 'search-bar' },
   selector: 'search-bar',
   template: `
-    <ion-input [placeholder]="placeholder" (input)="onSearch($event)"></ion-input>
+    <ion-input
+      [placeholder]="placeholder"
+      (input)="onSearch($event)"
+    ></ion-input>
   `
 })
 export class SearchBarComponent implements OnInit {

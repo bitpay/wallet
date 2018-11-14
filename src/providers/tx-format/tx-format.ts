@@ -153,8 +153,8 @@ export class TxFormatProvider {
     tx.feeStr = tx.fee
       ? this.formatAmountStr(coin, tx.fee)
       : tx.fees
-        ? this.formatAmountStr(coin, tx.fees)
-        : 'N/A';
+      ? this.formatAmountStr(coin, tx.fees)
+      : 'N/A';
     if (tx.amountStr) {
       tx.amountValueStr = tx.amountStr.split(' ')[0];
       tx.amountUnitStr = tx.amountStr.split(' ')[1];

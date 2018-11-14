@@ -46,8 +46,8 @@ export class PurchasedCardsPage {
   }
 
   updateCard(card: GiftCard) {
-    this.allGiftCards = this.allGiftCards.map(
-      oldCard => (oldCard.invoiceId === card.invoiceId ? card : oldCard)
+    this.allGiftCards = this.allGiftCards.map(oldCard =>
+      oldCard.invoiceId === card.invoiceId ? card : oldCard
     );
     this.setGiftCards(this.allGiftCards);
   }

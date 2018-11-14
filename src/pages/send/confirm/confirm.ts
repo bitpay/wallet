@@ -733,8 +733,8 @@ export class ConfirmPage extends WalletTabsChild {
         this.isWithinWalletTabs()
           ? this.navCtrl.popToRoot()
           : this.navCtrl.last().name == 'ConfirmCardPurchasePage'
-            ? this.navCtrl.pop()
-            : this.app.getRootNavs()[0].setRoot(TabsPage);
+          ? this.navCtrl.pop()
+          : this.app.getRootNavs()[0].setRoot(TabsPage);
       }
     });
   }

@@ -9,7 +9,9 @@ let scrollContent;
 let fixedContent;
 
 @Component({
-  template: `<ion-content [fixed-scroll-bg-color]="color"></ion-content>`
+  template: `
+    <ion-content [fixed-scroll-bg-color]="color"></ion-content>
+  `
 })
 class TestHostComponent {
   color: string = 'blue';

@@ -11,7 +11,12 @@ import { Animate } from './../../../directives/animate/animate';
 @Component({
   selector: 'pin-dots',
   template: `
-    <div *ngFor="let dot of dotArray; index as i" class="circle" [ngClass]="{filled: isFilled(i+1)}" animate></div>
+    <div
+      *ngFor="let dot of dotArray; index as i"
+      class="circle"
+      [ngClass]="{ filled: isFilled(i + 1) }"
+      animate
+    ></div>
   `
 })
 export class PinDots {
