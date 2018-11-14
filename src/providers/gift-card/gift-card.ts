@@ -481,13 +481,6 @@ function getCardConfigFromApiBrandConfig(
         maxAmount: range.maxAmount
       }
     : { ...baseConfig, supportedAmounts };
-  // return fixed.length
-  //   ? { ...baseConfig, supportedAmounts }
-  //   : {
-  //       ...baseConfig,
-  //       minAmount: range.minAmount < 1 ? 1 : range.minAmount,
-  //       maxAmount: range.maxAmount
-  //     };
 }
 
 function sortByDescendingDate(a: GiftCard, b: GiftCard) {
