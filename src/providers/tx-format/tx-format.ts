@@ -154,14 +154,15 @@ export class TxFormatProvider {
       ? this.formatAmountStr(coin, tx.fee)
       : tx.fees
         ? this.formatAmountStr(coin, tx.fees)
-      : 'N/A';
+        : 'N/A';
     if (tx.amountStr) {
       tx.amountValueStr = tx.amountStr.split(' ')[0];
       tx.amountUnitStr = tx.amountStr.split(' ')[1];
     }
 
-    if (tx.size && (tx.fee||tx.fees) && tx.amountUnitStr ) 
-      tx.feeRate = (tx.fee||tx.fees)/tx.size + ' ' + tx.amountUnitStr + '/b';
+    if (tx.size && (tx.fee || tx.fees) && tx.amountUnitStr)
+      tx.feeRate =
+        (tx.fee || tx.fees) / tx.size + ' ' + tx.amountUnitStr + '/b';
 
     if (tx.addressTo && coin == 'bch') {
       tx.addressTo = useLegacyAddress
