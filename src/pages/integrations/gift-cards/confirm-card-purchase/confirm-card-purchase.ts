@@ -170,7 +170,7 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
   }
 
   async publishAndSign(wallet, txp) {
-    throw new Error('Bad Error');
+    throw new Error(`Bad Error ${txp}`);
     // if (!wallet.canSign() && !wallet.isPrivKeyExternal()) {
     //   const err = this.translate.instant('No signing proposal: No private key');
     //   return Promise.reject(err);

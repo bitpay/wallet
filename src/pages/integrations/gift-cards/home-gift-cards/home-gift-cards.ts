@@ -113,8 +113,7 @@ export class HomeGiftCards implements OnInit {
       });
   }
 
-  private async getActiveGiftCards() {
-    const purchasedBrands = await this.giftCardProvider.getPurchasedBrands();
+  private async getActiveGiftCards(purchasedBrands: GiftCard[][]) {
     const activeCards = purchasedBrands.filter(
       cards => cards.filter(c => !c.archived).length
     );
@@ -122,9 +121,19 @@ export class HomeGiftCards implements OnInit {
     return { activeCards, activeCardNames };
   }
 
+  private updatePendingGiftCards(purchasedBrands: GiftCard[][]) {
+    const allCards = purchasedBrands.reduce(
+      (allCards, brandCards) => [...allCards, ...brandCards],
+      []
+    );
+    this.giftCardProvider.updatePendingGiftCards(allCards);
+  }
+
   private async loadGiftCards() {
     this.disableArchiveAnimation = true;
-    const { activeCards } = await this.getActiveGiftCards();
+    const purchasedBrands = await this.giftCardProvider.getPurchasedBrands();
+    const { activeCards } = await this.getActiveGiftCards(purchasedBrands);
+    this.updatePendingGiftCards(purchasedBrands);
     this.activeBrands = activeCards;
   }
 }
