@@ -428,7 +428,7 @@ export class CopayApp {
         pathData.substring(pathData.indexOf(this.appProvider.info.name + '://'))
       );
     } else {
-      this.logger.debug('URL found', pathData);
+      this.logger.debug('URL found');
       this.handleOpenUrl(pathData);
     }
   }
