@@ -221,7 +221,6 @@ export class ProfileProvider {
   private showInAppNotification(n, wallet): void {
     const creatorId = n && n.data && n.data.creatorId;
     const amount = n && n.data && n.data.amount;
-    const closeButtonText = this.translate.instant('Close');
     let title: string;
     let body: string;
 
@@ -286,8 +285,7 @@ export class ProfileProvider {
     const { ipcRenderer } = (window as any).require('electron');
     ipcRenderer.send('new-notification', {
       title,
-      body,
-      closeButtonText
+      body
     });
   }
 
