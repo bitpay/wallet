@@ -219,6 +219,8 @@ export class ProfileProvider {
   }
 
   private showInAppNotification(n, wallet): void {
+    if (!this.configProvider.get().desktopNotificationsEnabled) return;
+
     const creatorId = n && n.data && n.data.creatorId;
     const amount = n && n.data && n.data.amount;
     let title: string;
