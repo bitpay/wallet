@@ -26,9 +26,11 @@ export class NotificationsPage {
   public appName: string;
   public usePushNotifications: boolean;
   public isIOSApp: boolean;
+  public isElectron: boolean;
 
   public pushNotifications: boolean;
   public inAppNotifications: boolean;
+  public desktopNotifications: boolean;
   public confirmedTxsNotifications: boolean;
 
   public emailNotifications: boolean;
@@ -68,9 +70,11 @@ export class NotificationsPage {
     this.usePushNotifications = this.platformProvider.isCordova;
     this.isIOSApp =
       this.platformProvider.isIOS && this.platformProvider.isCordova;
+    this.isElectron = this.platformProvider.isElectron;
 
     this.pushNotifications = config.pushNotificationsEnabled;
     this.inAppNotifications = config.inAppNotificationsEnabled;
+    this.desktopNotifications = config.desktopNotificationsEnabled;
     this.confirmedTxsNotifications = config.confirmedTxsNotifications
       ? config.confirmedTxsNotifications.enabled
       : false;
@@ -98,6 +102,14 @@ export class NotificationsPage {
   public inAppNotificationChange() {
     const opts = {
       inAppNotificationsEnabled: this.inAppNotifications
+    };
+
+    this.configProvider.set(opts);
+  }
+
+  public desktopNotificationChange() {
+    const opts = {
+      desktopNotificationsEnabled: this.desktopNotifications
     };
 
     this.configProvider.set(opts);

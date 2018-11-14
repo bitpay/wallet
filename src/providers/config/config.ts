@@ -89,6 +89,8 @@ export interface Config {
 
   inAppNotificationsEnabled: boolean;
 
+  desktopNotificationsEnabled: boolean;
+
   confirmedTxsNotifications: {
     enabled: boolean;
   };
@@ -204,6 +206,8 @@ const configDefault: Config = {
   pushNotificationsEnabled: true,
 
   inAppNotificationsEnabled: true,
+
+  desktopNotificationsEnabled: true,
 
   confirmedTxsNotifications: {
     enabled: true
@@ -332,6 +336,10 @@ export class ConfigProvider {
     if (!this.configCache.inAppNotificationsEnabled) {
       this.configCache.inAppNotificationsEnabled =
         configDefault.inAppNotificationsEnabled;
+    }
+    if (!this.configCache.desktopNotificationsEnabled) {
+      this.configCache.desktopNotificationsEnabled =
+        configDefault.desktopNotificationsEnabled;
     }
     if (!this.configCache.emailNotifications) {
       this.configCache.emailNotifications = configDefault.emailNotifications;
