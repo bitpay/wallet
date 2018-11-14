@@ -24,14 +24,10 @@
             </div>
             <div *ngIf="tx.confirmations > 0">
               <span *ngIf="tx.customData && tx.customData.service">
-                <img class="icon-services" src="assets/img/shapeshift/icon-shapeshift.svg" *ngIf="tx.customData.service == 'shapeshift'"
-                  width="40">
-                <img class="icon-services" src="assets/img/gift-cards/amazon/amazon-icon.svg" *ngIf="tx.customData.service == 'amazon'"
-                  width="40">
-                <img class="icon-services" src="assets/img/gift-cards/mercado-libre/mercado-livre-icon.svg" *ngIf="tx.customData.service == 'mercadolibre'"
-                  width="40">
-                <img class="icon-services" src="assets/img/bitpay-card/icon-bitpay.svg" *ngIf="tx.customData.service == 'debitcard'"
-                  width="40">
+                <img class="icon-services" src="assets/img/shapeshift/icon-shapeshift.svg" *ngIf="tx.customData.service == 'shapeshift'" width="40">
+                <img class="icon-services" src="assets/img/gift-cards/amazon/amazon-icon.svg" *ngIf="tx.customData.service == 'amazon'" width="40">
+                <img class="icon-services" src="assets/img/gift-cards/mercado-libre/mercado-livre-icon.svg" *ngIf="tx.customData.service == 'mercadolibre'" width="40">
+                <img class="icon-services" src="assets/img/bitpay-card/icon-bitpay.svg" *ngIf="tx.customData.service == 'debitcard'" width="40">
               </span>
               <span *ngIf="!tx.customData || !tx.customData.service">
                 <img src="assets/img/tx-action/icon-received.svg" *ngIf="tx.action == 'received'" width="40">
@@ -42,7 +38,9 @@
           </ion-icon>
 
           <div class="action" *ngIf="tx.confirmations == 0">
-            <span *ngIf="(tx.action == 'sent' || tx.action == 'moved') && !(addressbook && addressbook[tx.outputs[0].address])">{{'Sending'
+            <span *ngIf="(tx.action == 'sent') && !(addressbook && addressbook[tx.outputs[0].address])">{{'Sending'
+              | translate}}</span>
+            <span *ngIf="(tx.action == 'moved') && !(addressbook && addressbook[tx.outputs[0].address])">{{'Moving'
               | translate}}</span>
             <span *ngIf="(tx.action == 'sent' || tx.action == 'moved') && (addressbook && addressbook[tx.outputs[0].address])">{{addressbook[tx.outputs[0].address].name
               || addressbook[tx.outputs[0].address]}}</span>
