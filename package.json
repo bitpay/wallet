@@ -115,6 +115,9 @@
       "category": "public.app-category.finance",
       "icon": "resources/copay/mac/app.icns",
       "artifactName": "${productName}.${ext}",
+      "extendInfo": {
+        "NSCameraUsageDescription": "Scan a Bitcoin Address directly to your Wallet and send funds to it"
+      },
       "target": [
         "mas"
       ]
