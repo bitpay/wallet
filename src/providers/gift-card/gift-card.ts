@@ -134,7 +134,7 @@ export class GiftCardProvider {
 
   async saveGiftCard(giftCard: GiftCard, opts?: GiftCardSaveParams) {
     await this.saveCard(giftCard, opts);
-    this.cardUpdatesSubject.next(giftCard);
+    giftCard.status !== 'UNREDEEMED' && this.cardUpdatesSubject.next(giftCard);
   }
 
   getNewSaveableGiftCardMap(oldGiftCards, gc, opts?): GiftCardMap {
@@ -239,32 +239,32 @@ export class GiftCardProvider {
             return of({ ...card, status: 'FAILURE' });
           })
         ),
-        mergeMap((updatedFields, index) => {
-          const card = cardsNeedingUpdate[index];
-          return this.updatePreviouslyPendingCard(card, updatedFields);
-          // return updatedFields.status !== 'PENDING'
-          //   ? this.updatePreviouslyPendingCard(card, updatedFields)
-          //   : of(card);
-        })
+        mergeMap(
+          card =>
+            card.status === 'SUCCESS'
+              ? of(card)
+              : fromPromise(
+                  this.hasInvoiceReceivedPayment(card.invoiceId).then(
+                    hasPayment => ({
+                      ...card,
+                      status: hasPayment ? card.status : 'expired'
+                    })
+                  )
+                )
+        ),
+        mergeMap(updatedCard => this.updatePreviouslyPendingCard(updatedCard))
       )
       .subscribe(card => this.cardUpdatesSubject.next(card));
     return this.cardUpdates$;
   }
 
-  updatePreviouslyPendingCard(
-    card: GiftCard,
-    updatedFields: Partial<GiftCard>
-  ) {
-    const updatedCard = {
-      ...card,
-      ...updatedFields
-    };
+  updatePreviouslyPendingCard(updatedCard: GiftCard) {
     return fromPromise(
       this.saveGiftCard(updatedCard, {
-        remove: updatedFields.status === 'expired'
+        remove: updatedCard.status === 'expired'
       })
     ).map(() => {
-      this.logger.debug('Amazon gift card updated');
+      this.logger.debug('Gift card updated');
       return updatedCard as GiftCard;
     });
   }
@@ -293,7 +293,7 @@ export class GiftCardProvider {
     return cardOrder as { accessKey: string; invoiceId: string };
   }
 
-  public async getBitPayInvoice(id) {
+  public async getBitPayInvoice(id: string) {
     const res: any = await this.http
       .get(`${this.credentials.BITPAY_API_URL}/invoices/${id}`)
       .toPromise()
@@ -305,10 +305,17 @@ export class GiftCardProvider {
     return res.data;
   }
 
+  async hasInvoiceReceivedPayment(invoiceId: string) {
+    return this.getBitPayInvoice(invoiceId)
+      .then(invoice => invoice.status !== 'expired' && invoice.status !== 'new')
+      .catch(_ => false);
+  }
+
   private checkIfCardNeedsUpdate(card: GiftCard) {
     // Continues normal flow (update card)
     if (
       card.status === 'PENDING' ||
+      card.status === 'UNREDEEMED' ||
       card.status === 'invalid' ||
       (!card.claimCode && !card.claimLink)
     ) {
@@ -478,13 +485,6 @@ function getCardConfigFromApiBrandConfig(
         maxAmount: range.maxAmount
       }
     : { ...baseConfig, supportedAmounts };
-  // return fixed.length
-  //   ? { ...baseConfig, supportedAmounts }
-  //   : {
-  //       ...baseConfig,
-  //       minAmount: range.minAmount < 1 ? 1 : range.minAmount,
-  //       maxAmount: range.maxAmount
-  //     };
 }
 
 function sortByDescendingDate(a: GiftCard, b: GiftCard) {

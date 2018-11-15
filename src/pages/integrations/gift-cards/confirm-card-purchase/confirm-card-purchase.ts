@@ -326,7 +326,7 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
     });
   }
 
-  private async createGiftCard(initialCard: GiftCard) {
+  private async redeemGiftCard(initialCard: GiftCard) {
     const card = await this.giftCardProvider
       .createGiftCard(initialCard)
       .catch(() => ({ ...initialCard, status: 'FAILURE' }));
@@ -481,13 +481,19 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
       if (this.isCordova) this.slideButton.isConfirmed(false);
       return;
     }
-
+    await this.giftCardProvider.saveGiftCard({
+      ...this.tx.giftData,
+      status: 'UNREDEEMED'
+    });
     return this.publishAndSign(this.wallet, this.tx)
       .then(() => {
         this.onGoingProcessProvider.set('buyingGiftCard');
-        return this.createGiftCard(this.tx.giftData);
+        return this.redeemGiftCard(this.tx.giftData);
       })
-      .catch(err => {
+      .catch(async err => {
+        await this.giftCardProvider.saveCard(this.tx.giftData, {
+          remove: true
+        });
         if (
           err &&
           err.message != 'FINGERPRINT_CANCELLED' &&

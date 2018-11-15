@@ -49,7 +49,7 @@
           </div>
         </div>
 
-        <div *ngIf="!card.claimCode">
+        <div *ngIf="!card.claimCode" class="card-info__status-message">
           <div *ngIf="card.status == 'PENDING' || card.status == 'invalid'" class="card-info__body" translate>
             Awaiting payment to confirm
           </div>
