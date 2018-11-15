@@ -19,19 +19,6 @@ import { WalletTabsProvider } from '../wallet-tabs/wallet-tabs.provider';
 import { WalletTabsChild } from '../wallet-tabs/wallet-tabs-child';
 import { MultiSendPage } from './multi-send/multi-send';
 
-export interface FlatWallet {
-  color: string;
-  name: string;
-  recipientType: 'wallet';
-  coin: Coin;
-  network: 'testnet' | 'mainnet';
-  m: number;
-  n: number;
-  needsBackup: boolean;
-  isComplete: () => boolean;
-  getAddress: () => Promise<string>;
-}
-
 @Component({
   selector: 'page-send',
   templateUrl: 'send.html'

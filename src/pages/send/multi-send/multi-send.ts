@@ -19,7 +19,6 @@ import { IncomingDataProvider } from '../../../providers/incoming-data/incoming-
 import { Logger } from '../../../providers/logger/logger';
 import { ProfileProvider } from '../../../providers/profile/profile';
 import { TxFormatProvider } from '../../../providers/tx-format/tx-format';
-import { Coin } from '../../../providers/wallet/wallet';
 import { WalletTabsProvider } from '../../wallet-tabs/wallet-tabs.provider';
 
 // Pages
@@ -27,19 +26,6 @@ import { WalletTabsChild } from '../../wallet-tabs/wallet-tabs-child';
 import { AmountPage } from '../amount/amount';
 import { ConfirmPage } from '../confirm/confirm';
 import { TransferToModalPage } from '../transfer-to-modal/transfer-to-modal';
-
-export interface FlatWallet {
-  color: string;
-  name: string;
-  recipientType: 'wallet';
-  coin: Coin;
-  network: 'testnet' | 'mainnet';
-  m: number;
-  n: number;
-  needsBackup: boolean;
-  isComplete: () => boolean;
-  getAddress: () => Promise<string>;
-}
 
 @Component({
   selector: 'page-multi-send',
