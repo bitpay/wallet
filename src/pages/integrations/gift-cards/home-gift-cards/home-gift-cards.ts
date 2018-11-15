@@ -95,7 +95,8 @@ export class HomeGiftCards implements OnInit {
 
   private async hideArchivedBrands() {
     this.disableArchiveAnimation = false;
-    const { activeCardNames } = await this.getActiveGiftCards();
+    const purchasedBrands = await this.giftCardProvider.getPurchasedBrands();
+    const { activeCardNames } = await this.getActiveGiftCards(purchasedBrands);
     const filteredBrands = this.activeBrands.filter(
       cards => activeCardNames.indexOf(cards[0].name) > -1
     );

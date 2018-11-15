@@ -134,7 +134,7 @@ export class GiftCardProvider {
 
   async saveGiftCard(giftCard: GiftCard, opts?: GiftCardSaveParams) {
     await this.saveCard(giftCard, opts);
-    this.cardUpdatesSubject.next(giftCard);
+    giftCard.status !== 'UNREDEEMED' && this.cardUpdatesSubject.next(giftCard);
   }
 
   getNewSaveableGiftCardMap(oldGiftCards, gc, opts?): GiftCardMap {
@@ -312,6 +312,7 @@ export class GiftCardProvider {
     // Continues normal flow (update card)
     if (
       card.status === 'PENDING' ||
+      card.status === 'UNREDEEMED' ||
       card.status === 'invalid' ||
       (!card.claimCode && !card.claimLink)
     ) {
