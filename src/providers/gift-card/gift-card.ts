@@ -241,12 +241,10 @@ export class GiftCardProvider {
         ),
         mergeMap(card =>
           fromPromise(
-            this.hasBitpayInvoiceReceivedPayments(card.invoiceId).then(
-              hasPayments => ({
-                ...card,
-                status: hasPayments ? card.status : 'expired'
-              })
-            )
+            this.hasInvoiceReceivedPayment(card.invoiceId).then(hasPayment => ({
+              ...card,
+              status: hasPayment ? card.status : 'expired'
+            }))
           )
         ),
         mergeMap(updatedCard => this.updatePreviouslyPendingCard(updatedCard))
@@ -302,7 +300,7 @@ export class GiftCardProvider {
     return res.data;
   }
 
-  async hasBitpayInvoiceReceivedPayments(invoiceId: string) {
+  async hasInvoiceReceivedPayment(invoiceId: string) {
     return this.getBitPayInvoice(invoiceId)
       .then(invoice => invoice.status !== 'expired' && invoice.status !== 'new')
       .catch(_ => false);

@@ -10,7 +10,6 @@ import { FinishModalPage } from '../../../finish/finish';
 
 // Provider
 import { DecimalPipe } from '@angular/common';
-import { Observable } from 'rxjs';
 import {
   FeeProvider,
   TxConfirmNotificationProvider,
@@ -171,7 +170,6 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
   }
 
   async publishAndSign(wallet, txp) {
-    // throw new Error(`Bad Error ${txp}`);
     if (!wallet.canSign() && !wallet.isPrivKeyExternal()) {
       const err = this.translate.instant('No signing proposal: No private key');
       return Promise.reject(err);
@@ -184,8 +182,6 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
       throw err;
     });
     this.hideSlideButton = false;
-    // throw new Error(`Bad Error ${txp}`);
-    await Observable.timer(30000).toPromise();
     return this.onGoingProcessProvider.clear();
   }
 
