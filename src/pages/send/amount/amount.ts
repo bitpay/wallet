@@ -111,9 +111,7 @@ export class AmountPage extends WalletTabsChild {
     super(navCtrl, profileProvider, walletTabsProvider);
     this.zone = new NgZone({ enableLongStackTrace: false });
     this.config = this.configProvider.get();
-    this.useAsModal = this.navParams.data.useAsModal
-      ? this.navParams.data.useAsModal
-      : false;
+    this.useAsModal = this.navParams.data.useAsModal;
     this.recipientType = this.navParams.data.recipientType;
     this.toAddress = this.navParams.data.toAddress;
     this.network = this.navParams.data.network;
@@ -208,7 +206,7 @@ export class AmountPage extends WalletTabsChild {
     this.availableUnits = [];
 
     const parentWalletCoin = this.navParams.data.wallet
-      ? this.navParams.data.wallet && this.navParams.data.wallet.coin
+      ? this.navParams.data.wallet.coin
       : this.wallet && this.wallet.coin;
 
     if (parentWalletCoin === 'btc' || !parentWalletCoin) {
