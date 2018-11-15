@@ -29,7 +29,7 @@ card-details-page {
     height: auto;
     width: 265px;
 
-    +.actions-wrapper {
+    + .actions-wrapper {
       margin-top: 55px;
     }
   }
@@ -98,10 +98,10 @@ card-details-page {
     margin: 12px 0 0px;
 
     .barcode {
-      >svg {
+      > svg {
         max-width: 100%;
 
-        >g>text {
+        > g > text {
           font-weight: 500 !important;
         }
       }
