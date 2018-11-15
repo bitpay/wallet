@@ -239,13 +239,18 @@ export class GiftCardProvider {
             return of({ ...card, status: 'FAILURE' });
           })
         ),
-        mergeMap(card =>
-          fromPromise(
-            this.hasInvoiceReceivedPayment(card.invoiceId).then(hasPayment => ({
-              ...card,
-              status: hasPayment ? card.status : 'expired'
-            }))
-          )
+        mergeMap(
+          card =>
+            card.status === 'SUCCESS'
+              ? of(card)
+              : fromPromise(
+                  this.hasInvoiceReceivedPayment(card.invoiceId).then(
+                    hasPayment => ({
+                      ...card,
+                      status: hasPayment ? card.status : 'expired'
+                    })
+                  )
+                )
         ),
         mergeMap(updatedCard => this.updatePreviouslyPendingCard(updatedCard))
       )
