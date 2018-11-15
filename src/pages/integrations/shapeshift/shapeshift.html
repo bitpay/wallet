@@ -40,7 +40,6 @@
   <div class="container" *ngIf="accessToken">
     <div class="main-header">
       <img src="assets/img/shapeshift/logo-shapeshift.svg" width="180" (click)="update()">
-      <ion-spinner *ngIf="loading"></ion-spinner>
       <button ion-button icon-right no-low-fee margin-top (click)="goTo('Shift')" *ngIf="!disabled">
         <span>Shift</span>
         <ion-icon name="arrow-forward"></ion-icon>
@@ -51,7 +50,9 @@
     </div>
 
     <ion-list>
-      <ion-item-divider>{{'Transactions' | translate}}</ion-item-divider>
+      <ion-item-divider>{{'Transactions' | translate}}
+        <ion-spinner item-end name="crescent" *ngIf="loading"></ion-spinner>
+      </ion-item-divider>
       <button ion-item *ngFor="let item of (shifts.data | keys : 'date') | orderBy : ['-order']" (click)="openShiftModal(item.value)">
         <ion-label>
           <div class="ellipsis">{{item.value.title || item.value.address}}</div>
