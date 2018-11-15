@@ -20,16 +20,8 @@ page-multi-send {
       }
     }
   }
-  .show-more {
-    display: flex;
-    text-align: center;
-  }
   .title {
     font-weight: 500;
-    img {
-      vertical-align: sub;
-      margin-right: 5px;
-    }
   }
   .no-wallet-message {
     height: 100%;
@@ -39,22 +31,6 @@ page-multi-send {
     justify-content: center;
     text-align: center;
     padding: 30px;
-  }
-  .wallet-warning {
-    ion-label {
-      white-space: inherit;
-    }
-  }
-  .wallet-disabled {
-    background-color: #fbfbfb;
-    ion-icon {
-      img {
-        background-color: #d4d4d4 !important;
-      }
-    }
-    .item-title {
-      color: #d4d4d4;
-    }
   }
   .send-header-wrapper {
     padding: 10px;
@@ -112,21 +88,6 @@ page-multi-send {
     }
     .backspace-icon {
       z-index: 999;
-    }
-    .bitcoin-icon {
-      margin-right: 1rem;
-      margin-top: 1rem;
-      margin-bottom: 1rem;
-      width: 1rem;
-      height: 1rem;
-      // custom icons
-      &[class*='search-btc'] {
-        mask-image: url(../assets/img/icon-bitcoin-symbol.svg);
-        mask-size: 16px;
-        mask-position: 50% 50%;
-        mask-repeat: no-repeat;
-        background: #cccccc;
-      }
     }
   }
   .invalid {

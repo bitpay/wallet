@@ -107,6 +107,7 @@ import { ChooseFeeLevelPage } from '../pages/send/choose-fee-level/choose-fee-le
 import { ConfirmPage } from '../pages/send/confirm/confirm';
 import { MultiSendPage } from '../pages/send/multi-send/multi-send';
 import { TransferToModalPage } from '../pages/send/transfer-to-modal/transfer-to-modal';
+import { TransferToPage } from '../pages/send/transfer-to/transfer-to';
 
 /* Receive */
 import { CustomAmountPage } from '../pages/receive/custom-amount/custom-amount';
@@ -149,6 +150,7 @@ export const PAGES = [
   ConfirmPage,
   MultiSendPage,
   TransferToModalPage,
+  TransferToPage,
   CustomAmountPage,
   DisclaimerPage,
   CollectEmailPage,

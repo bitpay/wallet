@@ -207,7 +207,9 @@ export class AmountPage extends WalletTabsChild {
   private setAvailableUnits(): void {
     this.availableUnits = [];
 
-    const parentWalletCoin = this.wallet && this.wallet.coin;
+    const parentWalletCoin = this.navParams.data.wallet
+      ? this.navParams.data.wallet && this.navParams.data.wallet.coin
+      : this.wallet && this.wallet.coin;
 
     if (parentWalletCoin === 'btc' || !parentWalletCoin) {
       this.availableUnits.push({
@@ -345,7 +347,12 @@ export class AmountPage extends WalletTabsChild {
   }
 
   public isSendMaxButtonShown() {
-    return !this.expression && !this.requestingAmount && this.showSendMax;
+    return (
+      !this.expression &&
+      !this.requestingAmount &&
+      this.showSendMax &&
+      !this.useAsModal
+    );
   }
 
   public pushDigit(digit: string, isHardwareKeyboard?: boolean): void {

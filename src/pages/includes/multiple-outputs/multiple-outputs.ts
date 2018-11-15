@@ -33,7 +33,6 @@ export class MultipleOutputsPage {
   }
 
   private contact(): void {
-    console.log('-----------this._tx: ', this._tx);
     let addr = this._tx.toAddress;
     this.addressBookProvider
       .get(addr)

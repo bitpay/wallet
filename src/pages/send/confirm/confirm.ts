@@ -190,7 +190,7 @@ export class ConfirmPage extends WalletTabsChild {
         this.tx.coin && this.tx.coin == 'bch' ? 'normal ' : this.configFeeLevel;
     }
 
-    if (this.tx.coin && this.tx.coin == 'bch') {
+    if (this.tx.coin && this.tx.coin == 'bch' && !this.fromMultiSend) {
       // Use legacy address
       this.tx.toAddress = this.bitcoreCash
         .Address(this.tx.toAddress)
@@ -663,6 +663,13 @@ export class ConfirmPage extends WalletTabsChild {
       if (this.fromMultiSend) {
         txp.outputs = [];
         this.navParams.data.recipients.forEach(recipient => {
+          if (tx.coin && tx.coin == 'bch') {
+            // Use legacy address
+            recipient.toAddress = this.bitcoreCash
+              .Address(recipient.toAddress)
+              .toString();
+          }
+
           txp.outputs.push({
             toAddress: recipient.toAddress,
             amount: recipient.amount,

@@ -139,8 +139,8 @@
             </h3>
           </div>
           <ion-note item-right text-end col-11>
-            <h2 class="output-info">{{recipient.toAddress || recipient.address}}</h2>
-            <h3 class="output-info">{{recipient.amountToShow}} {{coin | uppercase}}
+            <h2 class="output-info ellipsis">{{recipient.toAddress || recipient.address}}</h2>
+            <h3 class="output-info ellipsis">{{recipient.amountToShow}} {{coin | uppercase}}
               <span *ngIf="recipient.altAmountStr">({{recipient.altAmountStr}})</span>
             </h3>
           </ion-note>
