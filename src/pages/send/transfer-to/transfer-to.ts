@@ -18,7 +18,7 @@ export interface FlatWallet {
   name: string;
   recipientType: 'wallet';
   coin: Coin;
-  network: 'testnet' | 'mainnet';
+  network: 'testnet' | 'livenet';
   m: number;
   n: number;
   needsBackup: boolean;
