@@ -114,7 +114,7 @@ export class HomeGiftCards implements OnInit {
       });
   }
 
-  private async getActiveGiftCards(purchasedBrands: GiftCard[][]) {
+  private getActiveGiftCards(purchasedBrands: GiftCard[][]) {
     const activeCards = purchasedBrands.filter(
       cards => cards.filter(c => !c.archived).length
     );
@@ -133,7 +133,7 @@ export class HomeGiftCards implements OnInit {
   private async loadGiftCards() {
     this.disableArchiveAnimation = true;
     const purchasedBrands = await this.giftCardProvider.getPurchasedBrands();
-    const { activeCards } = await this.getActiveGiftCards(purchasedBrands);
+    const { activeCards } = this.getActiveGiftCards(purchasedBrands);
     this.updatePendingGiftCards(purchasedBrands);
     this.activeBrands = activeCards;
   }
