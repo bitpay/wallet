@@ -134,12 +134,23 @@ export class SendFeedbackPage {
   }
 
   public async sendFeedback(feedback: string, goHome: boolean): Promise<void> {
-    let config = this.configProvider.get();
+    const config = this.configProvider.get();
 
-    let platform = this.device.platform || 'Unknown platform';
-    let version = this.device.version || 'Unknown version';
+    let version;
+    let platform;
 
-    let dataSrc = {
+    if (this.platformProvider.isElectron) {
+      version = this.platformProvider
+        .getDeviceInfo()
+        .match(/(Electron[\/]\d+(\.\d)*)/i)[0]; // getDeviceInfo example: 5.0 (Macintosh; Intel Mac OS X 10_14_1) AppleWebKit/537.36 (KHTML, like Gecko) Copay/5.1.0 Chrome/66.0.3359.181 Electron/3.0.8 Safari/537.36
+      platform =
+        this.platformProvider.getOS() && this.platformProvider.getOS().OSName;
+    } else {
+      version = this.device.version || 'Unknown version';
+      platform = this.device.platform || 'Unknown platform';
+    }
+
+    const dataSrc = {
       email: _.values(config.emailFor)[0] || ' ',
       feedback: goHome ? ' ' : feedback,
       score: this.score || ' ',
@@ -154,12 +165,12 @@ export class SendFeedbackPage {
       .then(async () => {
         if (goHome) return;
         this.onGoingProcessProvider.clear();
-        let params: { finishText: string; finishComment?: string } = {
+        const params: { finishText: string; finishComment?: string } = {
           finishText: 'Thanks',
           finishComment:
             'A member of the team will review your feedback as soon as possible.'
         };
-        let modal = this.modalCtrl.create(FinishModalPage, params, {
+        const modal = this.modalCtrl.create(FinishModalPage, params, {
           showBackdrop: true,
           enableBackdropDismiss: false
         });
@@ -169,8 +180,8 @@ export class SendFeedbackPage {
       .catch(() => {
         if (goHome) return;
         this.onGoingProcessProvider.clear();
-        let title = this.translate.instant('Error');
-        let subtitle = this.translate.instant(
+        const title = this.translate.instant('Error');
+        const subtitle = this.translate.instant(
           'Feedback could not be submitted. Please try again later.'
         );
         this.popupProvider.ionicAlert(title, subtitle);
