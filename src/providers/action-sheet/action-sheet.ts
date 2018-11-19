@@ -29,7 +29,6 @@ export type InfoSheetType =
   | 'miner-fee'
   | 'miner-fee-notice'
   | 'payment-request'
-  | 'persistent-logs'
   | 'receiving-bitcoin'
   | 'sensitive-info'
   | 'electron-info'
@@ -47,7 +46,7 @@ export interface WalletSelectorParams {
 }
 @Injectable()
 export class ActionSheetProvider {
-  constructor(private domProvider: DomProvider) {}
+  constructor(private domProvider: DomProvider) { }
 
   public createOptionsSheet(
     type: OptionsSheetType,
@@ -84,7 +83,7 @@ export class ActionSheetProvider {
   }
 
   private setupSheet<T extends ActionSheetParent>(
-    componentType: { new (...args): T },
+    componentType: { new(...args): T },
     sheetType?: string,
     params?
   ): ComponentRef<T> {

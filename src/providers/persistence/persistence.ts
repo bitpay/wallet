@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { File } from '@ionic-native/file';
-import { Events } from 'ionic-angular';
 import * as _ from 'lodash';
 import { Logger } from '../../providers/logger/logger';
 
@@ -53,7 +52,6 @@ const Keys = {
   HOME_TIP: 'homeTip',
   LAST_ADDRESS: walletId => 'lastAddress-' + walletId,
   LAST_CURRENCY_USED: 'lastCurrencyUsed',
-  LOGS: 'logs',
   ONBOARDING_COMPLETED: 'onboardingCompleted',
   PROFILE: 'profile',
   REMOTE_PREF_STORED: 'remotePrefStored',
@@ -73,158 +71,19 @@ interface Storage {
 @Injectable()
 export class PersistenceProvider {
   public storage: Storage;
-  private persistentLogs;
-  private logsBuffer: Array<{
-    timestamp: string;
-    level: string;
-    msg: string;
-  }>;
-  private logsLoaded: boolean;
-  private persistentLogsEnabled: boolean;
 
   constructor(
     private logger: Logger,
     private platform: PlatformProvider,
-    private file: File,
-    private events: Events
+    private file: File
   ) {
     this.logger.debug('PersistenceProvider initialized');
-    this.persistentLogs = {};
-    this.logsBuffer = [];
-    this.logsLoaded = false;
-    this.persistentLogsEnabled = false;
-    // this._subscribeEvents();
-  }
-
-  private _subscribeEvents(): void {
-    this.events.subscribe('newLog', newLog => {
-      setTimeout(() => {
-        this.saveNewLog(newLog);
-      }, 0);
-    });
-  }
-
-  private _unsubscribeEvents(): void {
-    this.events.unsubscribe('newLog');
-    this.logsBuffer = [];
-    this.persistentLogsEnabled = false;
   }
 
   public load() {
     this.storage = this.platform.isCordova
       ? new FileStorage(this.file, this.logger)
       : new LocalStorage(this.logger);
-  }
-
-  public getPersistentLogs(): void {
-    this.getLogs()
-      .then(logs => {
-        if (logs && _.isString(logs)) {
-          try {
-            logs = JSON.parse(logs);
-          } catch {
-            logs = {};
-          }
-        }
-        logs = logs || {};
-        if (_.isArray(logs)) logs = {}; // No array
-
-        this.persistentLogs = this.deleteOldLogs(logs);
-        this.logsLoaded = true;
-      })
-      .catch(err => {
-        this.logger.error(err);
-      });
-  }
-
-  public checkLogsConfig(): void {
-    this.getConfig()
-      .then(config => {
-        if (
-          _.isEmpty(config) ||
-          _.isUndefined(config.persistentLogsEnabled) ||
-          config.persistentLogsEnabled
-        ) {
-          this.persistentLogsEnabled = true;
-        } else {
-          this._unsubscribeEvents();
-        }
-      })
-      .catch(err => {
-        this.logger.error('Error Loading Config from persistence', err);
-      });
-  }
-
-  private deleteOldLogs(logs) {
-    let now = new Date();
-    let daysAgo = new Date(now.setDate(now.getDate() - 3));
-    // Compare dates and remove logs older than 3 days
-    Object.keys(logs).forEach(key => {
-      let logDate = new Date(key);
-      if (logDate < daysAgo) {
-        delete logs[key];
-      }
-    });
-    // Clean if logs entries are more than 6000
-    let logsAmount = Object.keys(logs).length;
-    if (logsAmount > 6000) {
-      let entriesToDelete: number = logsAmount - 6000;
-      Object.keys(logs).forEach((key, index) => {
-        if (index < entriesToDelete) {
-          delete logs[key];
-          index++;
-        }
-      });
-    }
-    this.logger.debug(
-      'Saved logs: ' +
-        logsAmount +
-        '. Logs after cleaning: ' +
-        Object.keys(logs).length
-    );
-    return logs;
-  }
-
-  public persistentLogsChange(enabled: boolean): void {
-    this.persistentLogs = {};
-    if (enabled) {
-      this.persistentLogsEnabled = true;
-      this._subscribeEvents();
-    } else {
-      this._unsubscribeEvents();
-      this.setLogs(this.persistentLogs).catch(() => {
-        this.logger.warn('Error deleting persistent logs');
-      });
-    }
-  }
-
-  private saveNewLog(newLog): void {
-    if (!this.logsLoaded && !this.persistentLogsEnabled) {
-      this.logsBuffer.push(newLog);
-      return;
-    }
-
-    if (!_.isEmpty(this.logsBuffer)) {
-      this.logsBuffer.forEach(log => {
-        this.saveLog(log);
-      });
-      this.logsBuffer = [];
-    }
-
-    this.saveLog(newLog);
-  }
-
-  private saveLog(newLog): void {
-    if (this.persistentLogs[newLog.timestamp]) {
-      // Logs timestamp collapse
-      return;
-    }
-    this.persistentLogs[newLog.timestamp] = newLog;
-    this.setLogs(JSON.stringify(this.persistentLogs)).catch(() => {
-      this.logger.warn('Error adding new log');
-      // Unsubscribe to prevent errors loop
-      this._unsubscribeEvents();
-    });
   }
 
   storeNewProfile(profile): Promise<void> {
@@ -434,18 +293,6 @@ export class PersistenceProvider {
 
   removeCoinbaseTxs(network: string) {
     return this.storage.remove(Keys.COINBASE_TXS(network));
-  }
-
-  setLogs(logs) {
-    return this.storage.set(Keys.LOGS, logs);
-  }
-
-  getLogs() {
-    return this.storage.get(Keys.LOGS);
-  }
-
-  removeLogs() {
-    return this.storage.remove(Keys.LOGS);
   }
 
   setAddressBook(network: string, addressbook) {

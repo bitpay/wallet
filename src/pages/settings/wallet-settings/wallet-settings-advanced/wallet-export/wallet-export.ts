@@ -89,8 +89,8 @@ export class WalletExportPage extends WalletTabsChild {
 
   private matchingPasswords(passwordKey: string, confirmPasswordKey: string) {
     return (group: FormGroup) => {
-      let password = group.controls[passwordKey];
-      let confirmPassword = group.controls[confirmPasswordKey];
+      const password = group.controls[passwordKey];
+      const confirmPassword = group.controls[confirmPasswordKey];
       if (password.value !== confirmPassword.value) {
         return {
           mismatchedPasswords: true
@@ -183,7 +183,7 @@ export class WalletExportPage extends WalletTabsChild {
       .then((password: string) => {
         this.getAddressBook()
           .then(localAddressBook => {
-            let opts = {
+            const opts = {
               noSign: this.exportWalletForm.value.noSignEnabled,
               addressBook: localAddressBook,
               password
@@ -191,9 +191,9 @@ export class WalletExportPage extends WalletTabsChild {
 
             this.backupProvider
               .walletDownload(
-                this.exportWalletForm.value.password,
-                opts,
-                this.navParams.data.walletId
+              this.exportWalletForm.value.password,
+              opts,
+              this.navParams.data.walletId
               )
               .then(() => {
                 this.close();
@@ -244,13 +244,13 @@ export class WalletExportPage extends WalletTabsChild {
         .then((password: string) => {
           this.getAddressBook()
             .then(localAddressBook => {
-              let opts = {
+              const opts = {
                 noSign: this.exportWalletForm.value.noSignEnabled,
                 addressBook: localAddressBook,
                 password
               };
 
-              var ew = this.backupProvider.walletExport(
+              const ew = this.backupProvider.walletExport(
                 this.exportWalletForm.value.password,
                 opts,
                 this.navParams.data.walletId
@@ -279,7 +279,7 @@ export class WalletExportPage extends WalletTabsChild {
 
   public viewWalletBackup(): void {
     this.getBackup().then(backup => {
-      var ew = backup;
+      const ew = backup;
       if (!ew) return;
       this.backupWalletPlainText = ew;
     });
@@ -287,11 +287,11 @@ export class WalletExportPage extends WalletTabsChild {
 
   public copyWalletBackup(): void {
     this.getBackup().then(backup => {
-      var ew = backup;
+      const ew = backup;
       if (!ew) return;
       this.clipboard.copy(ew);
-      let copyMessage = this.translate.instant('Copied to clipboard');
-      let showSuccess = this.toastCtrl.create({
+      const copyMessage = this.translate.instant('Copied to clipboard');
+      const showSuccess = this.toastCtrl.create({
         message: copyMessage,
         duration: 1000
       });
@@ -300,8 +300,8 @@ export class WalletExportPage extends WalletTabsChild {
   }
 
   public sendWalletBackup(): void {
-    let preparingMessage = this.translate.instant('Preparing backup...');
-    let showSuccess = this.toastCtrl.create({
+    const preparingMessage = this.translate.instant('Preparing backup...');
+    const showSuccess = this.toastCtrl.create({
       message: preparingMessage,
       duration: 1000
     });
@@ -309,23 +309,23 @@ export class WalletExportPage extends WalletTabsChild {
     let name =
       this.wallet.credentials.walletName || this.wallet.credentials.walletId;
 
-    let config = this.configProvider.get();
+    const config = this.configProvider.get();
 
-    let alias =
+    const alias =
       config.aliasFor && config.aliasFor[this.wallet.credentials.walletId];
 
     if (alias) {
       name = alias + ' [' + name + ']';
     }
     this.getBackup().then(backup => {
-      let ew = backup;
+      const ew = backup;
       if (!ew) return;
 
       if (this.exportWalletForm.value.noSignEnabled)
         name = name + '(No Private Key)';
 
-      let subject = this.appProvider.info.nameCase + ' Wallet Backup: ' + name;
-      let body =
+      const subject = this.appProvider.info.nameCase + ' Wallet Backup: ' + name;
+      const body =
         'Here is the encrypted backup of the wallet ' +
         name +
         ': \n\n' +
@@ -339,15 +339,15 @@ export class WalletExportPage extends WalletTabsChild {
           this.logger.info('sharing via email is possible');
           this.socialSharing
             .shareViaEmail(
-              body,
-              subject,
-              null, // TO: must be null or an array
-              null, // CC: must be null or an array
-              null, // BCC: must be null or an array
-              null // FILES: can be null, a string, or an array
+            body,
+            subject,
+            null, // TO: must be null or an array
+            null, // CC: must be null or an array
+            null, // BCC: must be null or an array
+            null // FILES: can be null, a string, or an array
             )
             .then(data => {
-              this.logger.info('Email sent with success: ', data);
+              this.logger.info('Email created successfully: ', data);
             })
             .catch(err => {
               this.logger.error('socialSharing Error: ', err);
@@ -363,8 +363,8 @@ export class WalletExportPage extends WalletTabsChild {
   }
 
   private showErrorInfoSheet(err?: Error | string): void {
-    let title = this.translate.instant('Error');
-    let msg = err ? err : this.translate.instant('Failed to export');
+    const title = this.translate.instant('Error');
+    const msg = err ? err : this.translate.instant('Failed to export');
     this.logger.error(err);
     const errorInfoSheet = this.actionSheetProvider.createInfoSheet(
       'default-error',

@@ -47,7 +47,7 @@ export class AllAddressesPage {
   }
 
   private formatDate(ts: number) {
-    var dateObj = new Date(ts * 1000);
+    const dateObj = new Date(ts * 1000);
     if (!dateObj) {
       this.logger.warn('Error formating a date');
       return 'DateError';
@@ -62,7 +62,7 @@ export class AllAddressesPage {
     this.onGoingProcessProvider.set('sendingByEmail');
     setTimeout(() => {
       this.onGoingProcessProvider.clear();
-      let appName = this.appProvider.info.nameCase;
+      const appName = this.appProvider.info.nameCase;
 
       let body: string =
         appName +
@@ -83,7 +83,7 @@ export class AllAddressesPage {
         })
         .join('\n');
 
-      let subject = appName + ' Addresses';
+      const subject = appName + ' Addresses';
 
       // Check if sharing via email is supported
       this.socialSharing
@@ -92,15 +92,15 @@ export class AllAddressesPage {
           this.logger.info('sharing via email is possible');
           this.socialSharing
             .shareViaEmail(
-              body,
-              subject,
-              null, // TO: must be null or an array
-              null, // CC: must be null or an array
-              null, // BCC: must be null or an array
-              null // FILES: can be null, a string, or an array
+            body,
+            subject,
+            null, // TO: must be null or an array
+            null, // CC: must be null or an array
+            null, // BCC: must be null or an array
+            null // FILES: can be null, a string, or an array
             )
             .then(data => {
-              this.logger.info('Email sent with success: ', data);
+              this.logger.info('Email created successfully: ', data);
             })
             .catch(err => {
               this.logger.error('socialSharing Error: ', err);

@@ -89,7 +89,6 @@ export class Logger {
       msg
     };
     this.logs.push(newLog);
-    // this.events.publish('newLog', newLog);
   }
 
   /**

@@ -65,8 +65,6 @@ export interface Config {
     enabled: boolean;
   };
 
-  persistentLogsEnabled: boolean;
-
   showIntegration: {
     coinbase: boolean;
     glidera: boolean;
@@ -182,8 +180,6 @@ const configDefault: Config = {
     enabled: true
   },
 
-  persistentLogsEnabled: true,
-
   // External services
   showIntegration: {
     coinbase: false,
@@ -263,18 +259,15 @@ export class ConfigProvider {
   private logImportantConfig(config: Config): void {
     const spendUnconfirmed = config.wallet.spendUnconfirmed;
     const useLegacyAddress = config.wallet.useLegacyAddress;
-    const persistentLogsEnabled = config.persistentLogsEnabled;
     const lockMethod = config && config.lock ? config.lock.method : null;
 
     this.logger.debug(
       'Config | spendUnconfirmed: ' +
-        spendUnconfirmed +
-        ' - useLegacyAddress: ' +
-        useLegacyAddress +
-        ' - persistentLogsEnabled: ' +
-        persistentLogsEnabled +
-        ' - lockMethod: ' +
-        lockMethod
+      spendUnconfirmed +
+      ' - useLegacyAddress: ' +
+      useLegacyAddress +
+      ' - lockMethod: ' +
+      lockMethod
     );
   }
 
@@ -324,10 +317,6 @@ export class ConfigProvider {
     }
     if (!this.configCache.recentTransactions) {
       this.configCache.recentTransactions = configDefault.recentTransactions;
-    }
-    if (!this.configCache.persistentLogsEnabled) {
-      this.configCache.persistentLogsEnabled =
-        configDefault.persistentLogsEnabled;
     }
     if (!this.configCache.pushNotificationsEnabled) {
       this.configCache.pushNotificationsEnabled =

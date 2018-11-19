@@ -182,15 +182,6 @@
       <span sheet-button-text translate>GOT IT</span>
     </info-sheet-template>
 
-    <info-sheet-template *ngSwitchCase="'persistent-logs'" type="warning">
-      <span sheet-title-text translate>Persistent logs</span>
-      <span sheet-text translate>
-        If you disable the persistent logs, all the logs registered so far will be deleted. However, you can still see the session logs on this screen.
-      </span>
-      <span sheet-button-text translate>Continue</span>
-      <span sheet-second-button-text translate>Go Back</span>
-    </info-sheet-template>
-
     <info-sheet-template *ngSwitchCase="'electron-info'" type="info">
       <span sheet-title-text>{{'New {appName} desktop platform' | translate: {appName: params.appName} }}</span>
       <span sheet-text translate>
