@@ -12,13 +12,14 @@ import { LaunchReview } from '@ionic-native/launch-review';
 // providers
 import {
   ActionSheetProvider,
-  ExternalLinkProvider,
-  PlatformProvider
-} from '../../../providers';
+  InfoSheetType
+} from '../../../providers/action-sheet/action-sheet';
 import { AppProvider } from '../../../providers/app/app';
 import { ConfigProvider } from '../../../providers/config/config';
+import { ExternalLinkProvider } from '../../../providers/external-link/external-link';
 import { FeedbackProvider } from '../../../providers/feedback/feedback';
 import { OnGoingProcessProvider } from '../../../providers/on-going-process/on-going-process';
+import { PlatformProvider } from '../../../providers/platform/platform';
 import { PopupProvider } from '../../../providers/popup/popup';
 
 // pages
@@ -189,5 +190,17 @@ export class SendFeedbackPage {
     if (goHome) {
       this.navCtrl.popToRoot({ animate: false });
     }
+  }
+
+  public showInfoSheet(key: InfoSheetType, externalLink: string): void {
+    const infoSheet = this.actionSheetProvider.createInfoSheet(key);
+    infoSheet.present();
+    infoSheet.onDidDismiss(async option => {
+      if (!option) {
+        this.openExternalLink(externalLink);
+      } else {
+        this.openExternalLink('https://help.bitpay.com/requestHelp/create');
+      }
+    });
   }
 }

@@ -62,14 +62,14 @@
       <div class="feedback-action-icon arrow arrow-right"></div>
     </ion-row>
   </div>
-  <div *ngIf="score != 1" class="user-feedback-card" (click)="openExternalLink('https://bitpay.canny.io/wallet-feature-request/create')">
+  <div *ngIf="score != 1" class="user-feedback-card" (click)="showInfoSheet('request-feature', 'https://bitpay.canny.io/wallet-feature-request/create')">
     <ion-row>
       <div class="feedback-icon">
         <img src="assets/img/ico-chat.svg" />
       </div>
       <ion-col>
         <div class="user-feedback-title">
-          <span translate>Submit Feature Request</span>
+          <span translate>Request a Feature</span>
         </div>
       </ion-col>
       <div class="feedback-action-icon">
@@ -77,7 +77,7 @@
       </div>
     </ion-row>
   </div>
-  <div *ngIf="score != 3" class="user-feedback-card" (click)="openExternalLink('https://bitpay.canny.io/wallet-bugs/create')">
+  <div *ngIf="score != 3" class="user-feedback-card" (click)="showInfoSheet('report-issue','https://bitpay.canny.io/wallet-bugs/create')">
     <ion-row>
       <div class="feedback-icon">
         <img src="assets/img/ico-bug.svg" />

@@ -195,5 +195,19 @@
       <span sheet-text>{{params.body}}</span>
       <span sheet-button-text translate>OK</span>
     </info-sheet-template>
+
+    <info-sheet-template *ngSwitchCase="'request-feature'" type="info">
+      <span sheet-title-text translate>Request a new feature</span>
+      <span sheet-text translate>If you need immediate help with a problem you are having, then get help by contacting our support team.</span>
+      <span sheet-button-text translate>Get help</span>
+      <span sheet-second-button-text translate>Request feature</span>
+    </info-sheet-template>
+
+    <info-sheet-template *ngSwitchCase="'report-issue'" type="info">
+      <span sheet-title-text translate>Report an issue</span>
+      <span sheet-text translate>Found something broken? Please report it as a bug. If you need immediate help with a problem you are having, then get help by contacting our support team.</span>
+      <span sheet-button-text translate>Get help</span>
+      <span sheet-second-button-text translate>Report issue</span>
+    </info-sheet-template>
   </div>
 </action-sheet>

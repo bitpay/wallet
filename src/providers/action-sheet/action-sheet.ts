@@ -32,7 +32,9 @@ export type InfoSheetType =
   | 'receiving-bitcoin'
   | 'sensitive-info'
   | 'electron-info'
-  | 'in-app-notification';
+  | 'in-app-notification'
+  | 'request-feature'
+  | 'report-issue';
 
 export type OptionsSheetType =
   | 'address-options'
