@@ -103,7 +103,10 @@ export class ReceivePage extends WalletTabsChild {
         this.logger.warn(this.bwcErrorProvider.msg(err, 'Server Error'));
       })) as string;
     this.loading = false;
-    let address = await this.walletProvider.getAddressView(this.wallet, addr);
+    let address = await this.walletProvider.getAddressView(
+      this.wallet.coin,
+      addr
+    );
     if (this.address && this.address != address) {
       this.playAnimation = true;
     }

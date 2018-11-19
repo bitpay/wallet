@@ -668,6 +668,11 @@ export class ConfirmPage extends WalletTabsChild {
             recipient.toAddress = this.bitcoreCash
               .Address(recipient.toAddress)
               .toString();
+
+            recipient.addressToShow = this.walletProvider.getAddressView(
+              tx.coin,
+              recipient.toAddress
+            );
           }
 
           txp.outputs.push({

@@ -43,7 +43,7 @@ export class CustomAmountPage {
     this.wallet = this.profileProvider.getWallet(walletId);
 
     this.walletProvider.getAddress(this.wallet, false).then(addr => {
-      this.address = this.walletProvider.getAddressView(this.wallet, addr);
+      this.address = this.walletProvider.getAddressView(this.wallet.coin, addr);
 
       let parsedAmount = this.txFormatProvider.parseAmount(
         this.wallet.coin,

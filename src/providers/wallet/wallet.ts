@@ -446,8 +446,8 @@ export class WalletProvider {
     return walletSettings.useLegacyAddress;
   }
 
-  public getAddressView(wallet, address: string): string {
-    if (wallet.coin != 'bch' || this.useLegacyAddress()) return address;
+  public getAddressView(coin, address: string): string {
+    if (coin != 'bch' || this.useLegacyAddress()) return address;
     return this.txFormatProvider.toCashAddress(address);
   }
 

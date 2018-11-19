@@ -45,7 +45,7 @@
       </p>
     </div>
     <ion-note item-right text-end col-11>
-      <h2 class="output-info ellipsis">{{output.toAddress || output.address}}</h2>
+      <h2 class="output-info ellipsis">{{output.addressToShow ||output.toAddress || output.address}}</h2>
       <h3 class="output-info ellipsis">{{output.amountStr}}
         <span *ngIf="output.alternativeAmountStr">({{output.alternativeAmountStr}})</span>
       </h3>

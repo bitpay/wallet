@@ -4,6 +4,7 @@ import * as _ from 'lodash';
 // Providers
 import { AddressBookProvider } from '../../../providers/address-book/address-book';
 import { Logger } from '../../../providers/logger/logger';
+import { WalletProvider } from '../../../providers/wallet/wallet';
 
 @Component({
   selector: 'page-multiple-outputs',
@@ -17,7 +18,8 @@ export class MultipleOutputsPage {
 
   constructor(
     private addressBookProvider: AddressBookProvider,
-    private logger: Logger
+    private logger: Logger,
+    private walletProvider: WalletProvider
   ) {
     this.showMultiplesOutputs = false;
   }
@@ -25,6 +27,14 @@ export class MultipleOutputsPage {
   @Input()
   set tx(tx) {
     this._tx = tx;
+
+    this.tx.outputs.forEach(output => {
+      output.addressToShow = this.walletProvider.getAddressView(
+        this._tx.coin,
+        output.toAddress
+      );
+    });
+
     this.contact();
   }
 
