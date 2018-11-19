@@ -30,6 +30,12 @@
       <ion-icon class="custom-icon" name="ios-lock-outline" item-start></ion-icon>
       {{'Privacy Policy' | translate }}
     </button>
+    <button ion-item (click)="openSendFeedbackPage()">
+      <ion-icon class="item-img" item-start>
+        <img src="assets/img/settings-icons/icon-send-feedback.svg" width="22">
+      </ion-icon>
+      <span translate>Send feedback</span>
+    </button>
     <button ion-item (click)="openSessionLog()">
       <ion-icon class="custom-icon" name="ios-copy-outline" item-start></ion-icon>
       {{ 'Session log' | translate }}

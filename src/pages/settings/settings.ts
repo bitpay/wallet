@@ -17,7 +17,6 @@ import { ProfileProvider } from '../../providers/profile/profile';
 import { TouchIdProvider } from '../../providers/touchid/touchid';
 
 // pages
-import { SendFeedbackPage } from '../feedback/send-feedback/send-feedback';
 import { BitPaySettingsPage } from '../integrations/bitpay-card/bitpay-settings/bitpay-settings';
 import { CoinbaseSettingsPage } from '../integrations/coinbase/coinbase-settings/coinbase-settings';
 import { GiftCardsSettingsPage } from '../integrations/gift-cards/gift-cards-settings/gift-cards-settings';
@@ -101,7 +100,7 @@ export class SettingsPage {
 
   ionViewDidEnter() {
     // Show integrations
-    let integrations = this.homeIntegrationsProvider.get();
+    const integrations = this.homeIntegrationsProvider.get();
 
     // Hide BitPay if linked
     setTimeout(() => {
@@ -137,8 +136,8 @@ export class SettingsPage {
   }
 
   public openLockPage(): void {
-    let config = this.configProvider.get();
-    let lockMethod =
+    const config = this.configProvider.get();
+    const lockMethod =
       config && config.lock && config.lock.method
         ? config.lock.method.toLowerCase()
         : null;
@@ -161,10 +160,6 @@ export class SettingsPage {
 
   public openWalletSettingsPage(walletId: string): void {
     this.navCtrl.push(WalletSettingsPage, { walletId });
-  }
-
-  public openSendFeedbackPage(): void {
-    this.navCtrl.push(SendFeedbackPage);
   }
 
   public openSharePage(): void {
@@ -200,17 +195,17 @@ export class SettingsPage {
   }
 
   public openHelpExternalLink(): void {
-    let url =
+    const url =
       this.appName == 'Copay'
         ? 'https://github.com/bitpay/copay/issues'
         : 'https://help.bitpay.com/bitpay-app';
-    let optIn = true;
-    let title = null;
-    let message = this.translate.instant(
+    const optIn = true;
+    const title = null;
+    const message = this.translate.instant(
       'Help and support information is available at the website.'
     );
-    let okText = this.translate.instant('Open');
-    let cancelText = this.translate.instant('Go Back');
+    const okText = this.translate.instant('Open');
+    const cancelText = this.translate.instant('Go Back');
     this.externalLinkProvider.open(
       url,
       optIn,
