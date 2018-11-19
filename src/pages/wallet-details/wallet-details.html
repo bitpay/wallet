@@ -99,7 +99,7 @@
       </a>
     </div>
 
-    <div *ngIf="lowUtxosWarning" class="box-notification warning">
+    <div *ngIf="lowUtxosWarning && wallet.network == 'livenet'" class="box-notification warning">
       <a class="energized" (click)="openAddresses()">
         <ion-icon name="alert"></ion-icon>
         {{'Spending this balance will need significant Bitcoin network fees'|translate}}
@@ -145,7 +145,7 @@
         </div>
       </div>
 
-      <div class="middle-message" *ngIf="txHistory && !txHistory[0] && updateTxHistoryError" translate>
+      <div class="middle-message" *ngIf="history && !history[0] && updateTxHistoryError" translate>
         Could not update transaction history
       </div>
 
