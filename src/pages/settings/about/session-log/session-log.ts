@@ -110,12 +110,12 @@ export class SessionLogPage {
           this.logger.info('sharing via email is possible');
           this.socialSharing
             .shareViaEmail(
-            message,
-            subject,
-            null, // TO: must be null or an array
-            null, // CC: must be null or an array
-            null, // BCC: must be null or an array
-            attachment // FILES: can be null, a string, or an array
+              message,
+              subject,
+              null, // TO: must be null or an array
+              null, // CC: must be null or an array
+              null, // BCC: must be null or an array
+              attachment // FILES: can be null, a string, or an array
             )
             .then(data => {
               this.logger.info('Email created successfully: ', data);
@@ -128,9 +128,9 @@ export class SessionLogPage {
           this.logger.warn('sharing via email is not possible');
           this.socialSharing
             .share(
-            message,
-            subject,
-            attachment // FILES: can be null, a string, or an array
+              message,
+              subject,
+              attachment // FILES: can be null, a string, or an array
             )
             .catch(err => {
               this.logger.error('socialSharing Error: ', err);

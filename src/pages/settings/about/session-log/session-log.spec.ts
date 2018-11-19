@@ -124,14 +124,13 @@ describe('SessionLogPage', () => {
     });
     describe('#prepareSessionLogs', () => {
       it('should return correct log from persistence provider', () => {
-        instance.filteredLogs =
-          {
-            '01/07/2008': {
-              level: 1,
-              msg: 'msg',
-              timestamp: '01/07/2008'
-            }
-          };
+        instance.filteredLogs = {
+          '01/07/2008': {
+            level: 1,
+            msg: 'msg',
+            timestamp: '01/07/2008'
+          }
+        };
 
         const logs = instance.prepareSessionLogs();
         expect(logs).toEqual(

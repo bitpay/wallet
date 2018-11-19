@@ -3,7 +3,7 @@ import { Logger } from '../../providers/logger/logger';
 import { PlatformProvider } from '../platform/platform';
 import { PersistenceProvider } from './persistence';
 
-class FileMock extends File { }
+class FileMock extends File {}
 
 describe('Persistence Provider', () => {
   let persistenceProvider: PersistenceProvider;

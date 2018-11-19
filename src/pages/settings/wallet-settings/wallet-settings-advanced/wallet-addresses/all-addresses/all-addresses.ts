@@ -92,12 +92,12 @@ export class AllAddressesPage {
           this.logger.info('sharing via email is possible');
           this.socialSharing
             .shareViaEmail(
-            body,
-            subject,
-            null, // TO: must be null or an array
-            null, // CC: must be null or an array
-            null, // BCC: must be null or an array
-            null // FILES: can be null, a string, or an array
+              body,
+              subject,
+              null, // TO: must be null or an array
+              null, // CC: must be null or an array
+              null, // BCC: must be null or an array
+              null // FILES: can be null, a string, or an array
             )
             .then(data => {
               this.logger.info('Email created successfully: ', data);

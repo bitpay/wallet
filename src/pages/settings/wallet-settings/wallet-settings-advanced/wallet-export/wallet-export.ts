@@ -191,9 +191,9 @@ export class WalletExportPage extends WalletTabsChild {
 
             this.backupProvider
               .walletDownload(
-              this.exportWalletForm.value.password,
-              opts,
-              this.navParams.data.walletId
+                this.exportWalletForm.value.password,
+                opts,
+                this.navParams.data.walletId
               )
               .then(() => {
                 this.close();
@@ -324,7 +324,8 @@ export class WalletExportPage extends WalletTabsChild {
       if (this.exportWalletForm.value.noSignEnabled)
         name = name + '(No Private Key)';
 
-      const subject = this.appProvider.info.nameCase + ' Wallet Backup: ' + name;
+      const subject =
+        this.appProvider.info.nameCase + ' Wallet Backup: ' + name;
       const body =
         'Here is the encrypted backup of the wallet ' +
         name +
@@ -339,12 +340,12 @@ export class WalletExportPage extends WalletTabsChild {
           this.logger.info('sharing via email is possible');
           this.socialSharing
             .shareViaEmail(
-            body,
-            subject,
-            null, // TO: must be null or an array
-            null, // CC: must be null or an array
-            null, // BCC: must be null or an array
-            null // FILES: can be null, a string, or an array
+              body,
+              subject,
+              null, // TO: must be null or an array
+              null, // CC: must be null or an array
+              null, // BCC: must be null or an array
+              null // FILES: can be null, a string, or an array
             )
             .then(data => {
               this.logger.info('Email created successfully: ', data);

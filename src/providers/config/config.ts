@@ -263,11 +263,11 @@ export class ConfigProvider {
 
     this.logger.debug(
       'Config | spendUnconfirmed: ' +
-      spendUnconfirmed +
-      ' - useLegacyAddress: ' +
-      useLegacyAddress +
-      ' - lockMethod: ' +
-      lockMethod
+        spendUnconfirmed +
+        ' - useLegacyAddress: ' +
+        useLegacyAddress +
+        ' - lockMethod: ' +
+        lockMethod
     );
   }
 
