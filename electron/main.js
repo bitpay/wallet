@@ -1,4 +1,4 @@
-const { app, Menu, BrowserWindow, Notification, ipcMain } = require('electron');
+const { app, Menu, BrowserWindow } = require('electron');
 const path = require('path');
 const url = require('url');
 const os = require('os');
@@ -61,11 +61,11 @@ function createWindow() {
         win.webContents.send('open-url-event', deeplinkingUrl);
       }, 1000);
     }
-    if (Notification.isSupported()) {
+    /* if (Notification.isSupported()) {
       ipcMain.on('new-notification', (event, data) => {
         new Notification(data).show();
       });
-    }
+    } */
   });
 
   win.once('ready-to-show', () => {
@@ -145,7 +145,7 @@ app.setPath('userData', path.join(homeDir, `.${appConfig.name}/app`));
 
 // This method makes your application a Single Instance Application
 // https://github.com/electron/electron/blob/v0.36.10/docs/api/app.md#appmakesingleinstancecallback
-var shouldQuit = app.makeSingleInstance(function(argv, workingDirectory) {
+/* var shouldQuit = app.makeSingleInstance(function(argv, workingDirectory) {
   if (win) {
     if (process.platform == 'win32') {
       deeplinkingUrl = argv.slice(1)[0];
@@ -163,7 +163,7 @@ var shouldQuit = app.makeSingleInstance(function(argv, workingDirectory) {
 if (shouldQuit) {
   app.quit();
   return;
-}
+} */
 
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
