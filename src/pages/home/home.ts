@@ -655,17 +655,22 @@ export class HomePage {
   }
 
   public dismissServerMessage(): void {
-    this.logger.debug('Server message id:' + this.serverMessage.id + ' dismissed');
+    this.logger.debug(
+      'Server message id:' + this.serverMessage.id + ' dismissed'
+    );
     this.persistenceProvider.setServerMessageDismissed(this.serverMessage.id);
     this.serverMessageDismissed = true;
   }
 
   public checkServerMessage(): void {
-    this.persistenceProvider.getServerMessageDismissed().then((value: boolean) => {
-      this.serverMessageDismissed = this.serverMessage.id == value;
-    }).catch(() => {
-      this.serverMessageDismissed = false;
-    });
+    this.persistenceProvider
+      .getServerMessageDismissed()
+      .then((value: boolean) => {
+        this.serverMessageDismissed = this.serverMessage.id == value;
+      })
+      .catch(() => {
+        this.serverMessageDismissed = false;
+      });
   }
 
   public openServerMessageLink(): void {

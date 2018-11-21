@@ -179,9 +179,9 @@ export class PersistenceProvider {
     }
     this.logger.debug(
       'Saved logs: ' +
-      logsAmount +
-      '. Logs after cleaning: ' +
-      Object.keys(logs).length
+        logsAmount +
+        '. Logs after cleaning: ' +
+        Object.keys(logs).length
     );
     return logs;
   }

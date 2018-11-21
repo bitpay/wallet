@@ -147,7 +147,8 @@ page-home {
     }
   }
 
-  .server-message, .new-release {
+  .server-message,
+  .new-release {
     padding-bottom: 0px;
     &-header {
       padding: 0px;
@@ -181,14 +182,14 @@ page-home {
       color: color($colors, grey);
       font-weight: 500;
       font-size: 2rem;
-    &-info {
-      color: color($colors, info);
+      &-info {
+        color: color($colors, info);
+      }
+      &-critical {
+        color: color($colors, warning);
+      }
     }
-    &-critical {
-      color: color($colors, warning);
-    }
-  }
-      
+
     &-body {
       color: color($colors, grey);
       text-align: center;
