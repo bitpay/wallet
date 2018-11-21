@@ -90,7 +90,7 @@
 
       <page-feedback-card #showCard></page-feedback-card>
 
-      <ion-card *ngIf="true">
+      <ion-card *ngIf="homeTip && wallets && wallets[0]">
         <ion-card-header class="wallet-ready">
           <ion-row>
             <button ion-button clear icon-only item-end color="grey" (click)="hideHomeTip()">
