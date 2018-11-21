@@ -30,36 +30,42 @@
           </button>
         </div>
       </ion-item-divider>
-      <page-clipboard-card [remainingTimeStr]="remainingTimeStr" [payProDetailsData]="payProDetailsData"
-        [validDataFromClipboard]="validDataFromClipboard" (click)="processClipboardData(validDataFromClipboard.data)"></page-clipboard-card>
+      <page-clipboard-card [remainingTimeStr]="remainingTimeStr" [payProDetailsData]="payProDetailsData" [validDataFromClipboard]="validDataFromClipboard" (click)="processClipboardData(validDataFromClipboard.data)"></page-clipboard-card>
     </div>
 
     <div [ngClass]="{'content-animation': slideDown, 'initial-margin': validDataFromClipboard}">
 
-      <ion-card class="server-message" *ngIf="serverMessage">
-        <div class="server-message-icon">
-          <img src="assets/img/icon-warning-circled.svg" />
-        </div>
-        <ion-card-header class="server-message-content">
-          <div class="server-message-title" *ngIf="serverMessage.title">{{serverMessage.title}}</div>
-          <div class="server-message-body" *ngIf="serverMessage.body">{{serverMessage.body}}</div>
+      <ion-card class="server-message" *ngIf="serverMessage && !serverMessageDismissed">
+        <ion-card-header class="server-message-header" *ngIf="serverMessage.dismissible">
+          <ion-row>
+            <button ion-button clear icon-only color="grey" (click)="dismissServerMessage()">
+              <ion-icon name="close"></ion-icon>
+            </button>
+          </ion-row>
         </ion-card-header>
-        <ion-card-content class="new-release-button" *ngIf="serverMessage.link">
-          <div (click)="openServerMessageLink()">
-            <span translate>Learn more</span>
+        <ion-card-content class="server-message-content">
+          <div class="server-message-icon" *ngIf="serverMessage.category" [ngClass]="{'no-header': !serverMessage.dismissible }">
+            <img src="assets/img/icon-warning-circled.svg" *ngIf="serverMessage.category == 'critical'" />
+            <img src="assets/img/icon-info-blue.svg" *ngIf="serverMessage.category == 'info'" />
+          </div>
+          <div class="server-message-title" *ngIf="serverMessage.title" [ngClass]="{'title': !serverMessage.category, 'title-info': serverMessage.category == 'info', 'title-critical': serverMessage.category == 'critical' }">{{serverMessage.title}}</div>
+          <div class="server-message-body" *ngIf="serverMessage.body">{{serverMessage.body}}</div>
+          <div class="server-message-button" *ngIf="serverMessage.link" (click)="openServerMessageLink()">
+            <span *ngIf="serverMessage.linkText">{{ serverMessage.linkText }}</span>
+            <span translate *ngIf="!serverMessage.linkText">Learn more</span>
           </div>
         </ion-card-content>
       </ion-card>
 
       <ion-card class="new-release" *ngIf="newRelease">
-        <div class="new-release-icon">
-          <img src="assets/img/icon-update.svg" />
-        </div>
-        <ion-card-header class="new-release-text">
-          {{updateText}}
-        </ion-card-header>
-        <ion-card-content class="new-release-button">
-          <div (click)="goToDownload()">
+        <ion-card-content class="new-release-content">
+          <div class="new-release-icon no-header">
+            <img src="assets/img/icon-update.svg" />
+          </div>
+          <div class="new-release-body">
+            {{updateText}}
+          </div>
+          <div class="new-release-button" (click)="goToDownload()">
             <span translate>Download</span>
           </div>
         </ion-card-content>
@@ -84,7 +90,7 @@
 
       <page-feedback-card #showCard></page-feedback-card>
 
-      <ion-card *ngIf="homeTip && wallets && wallets[0]">
+      <ion-card *ngIf="true">
         <ion-card-header class="wallet-ready">
           <ion-row>
             <button ion-button clear icon-only item-end color="grey" (click)="hideHomeTip()">
@@ -134,8 +140,7 @@
           </div>
         </ion-item-divider>
         <ion-list>
-          <page-wallet-activity *ngFor="let notification of notifications" (click)="openNotificationModal(notification)"
-            [notification]="notification"></page-wallet-activity>
+          <page-wallet-activity *ngFor="let notification of notifications" (click)="openNotificationModal(notification)" [notification]="notification"></page-wallet-activity>
         </ion-list>
       </div>
 
@@ -163,10 +168,8 @@
         <ion-list reorder="{{showReorderBtc}}" (ionItemReorder)="reorderWalletsBtc($event)">
           <button ion-item *ngFor="let wallet of walletsBtc" (click)="goToWalletDetails(wallet)">
             <ion-icon class="item-img" item-start>
-              <img *ngIf="wallet.network == 'testnet'" [ngStyle]="{'background-color': wallet.color}" src="assets/img/icon-wallet-testnet.svg"
-                class="icon-wallet" />
-              <img *ngIf="wallet.network != 'testnet'" [ngStyle]="{'background-color': wallet.color}" src="assets/img/icon-wallet.svg"
-                class="icon-wallet" />
+              <img *ngIf="wallet.network == 'testnet'" [ngStyle]="{'background-color': wallet.color}" src="assets/img/icon-wallet-testnet.svg" class="icon-wallet" />
+              <img *ngIf="wallet.network != 'testnet'" [ngStyle]="{'background-color': wallet.color}" src="assets/img/icon-wallet.svg" class="icon-wallet" />
             </ion-icon>
             <div class="item-title">{{wallet.name}}</div>
             <div class="item-subtitle">
@@ -188,8 +191,7 @@
                 <span *ngIf="wallet.balanceHidden && !wallet.scanning">[
                   <span translate>Balance Hidden</span>]</span>
                 <span class="text-gray" *ngIf="wallet.credentials.m > 1">{{wallet.credentials.m}}-of-{{wallet.credentials.n}}</span>
-                <ion-icon *ngIf="!wallet.balanceHidden && wallet.status && (wallet.status.totalBalanceSat != wallet.status.spendableAmount)"
-                  ios="ios-timer-outline" md="md-timer"></ion-icon>
+                <ion-icon *ngIf="!wallet.balanceHidden && wallet.status && (wallet.status.totalBalanceSat != wallet.status.spendableAmount)" ios="ios-timer-outline" md="md-timer"></ion-icon>
                 <div *ngIf="wallet.error" class="wallet-warning">{{wallet.error}}</div>
               </span>
             </div>
@@ -221,10 +223,8 @@
         <ion-list reorder="{{showReorderBch}}" (ionItemReorder)="reorderWalletsBch($event)">
           <button ion-item *ngFor="let wallet of walletsBch" (click)="goToWalletDetails(wallet)">
             <ion-icon class="item-img" item-start>
-              <img *ngIf="wallet.network == 'testnet'" [ngStyle]="{'background-color': wallet.color}" src="assets/img/icon-wallet-testnet.svg"
-                class="icon-wallet" />
-              <img *ngIf="wallet.network != 'testnet'" [ngStyle]="{'background-color': wallet.color}" src="assets/img/icon-wallet.svg"
-                class="icon-wallet" />
+              <img *ngIf="wallet.network == 'testnet'" [ngStyle]="{'background-color': wallet.color}" src="assets/img/icon-wallet-testnet.svg" class="icon-wallet" />
+              <img *ngIf="wallet.network != 'testnet'" [ngStyle]="{'background-color': wallet.color}" src="assets/img/icon-wallet.svg" class="icon-wallet" />
             </ion-icon>
             <div class="item-title">{{wallet.name}}</div>
             <div class="item-subtitle">
@@ -246,8 +246,7 @@
                 <span *ngIf="wallet.balanceHidden && !wallet.scanning">[
                   <span translate>Balance Hidden</span>]</span>
                 <span *ngIf="wallet.credentials.m > 1">{{wallet.credentials.m}}-of-{{wallet.credentials.n}}</span>
-                <ion-icon *ngIf="!wallet.balanceHidden && wallet.status && (wallet.status.totalBalanceSat != wallet.status.spendableAmount)"
-                  ios="ios-timer-outline" md="md-timer"></ion-icon>
+                <ion-icon *ngIf="!wallet.balanceHidden && wallet.status && (wallet.status.totalBalanceSat != wallet.status.spendableAmount)" ios="ios-timer-outline" md="md-timer"></ion-icon>
                 <div *ngIf="wallet.error" class="wallet-warning">{{wallet.error}}</div>
               </span>
             </div>

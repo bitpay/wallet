@@ -65,6 +65,7 @@ export class HomePage {
   public notifications;
   public notificationsN: number;
   public serverMessage;
+  public serverMessageDismissed: boolean;
   public addressbook;
   public newRelease: boolean;
   public updateText: string;
@@ -592,6 +593,7 @@ export class HomePage {
 
             if (!foundMessage && !_.isEmpty(status.serverMessage)) {
               this.serverMessage = status.serverMessage;
+              this.checkServerMessage();
               foundMessage = true;
             }
 
@@ -650,6 +652,20 @@ export class HomePage {
       .catch(err => {
         this.logger.error('Error getLatestAppVersion', err);
       });
+  }
+
+  public dismissServerMessage(): void {
+    this.logger.debug('Server message id:' + this.serverMessage.id + ' dismissed');
+    this.persistenceProvider.setServerMessageDismissed(this.serverMessage.id);
+    this.serverMessageDismissed = true;
+  }
+
+  public checkServerMessage(): void {
+    this.persistenceProvider.getServerMessageDismissed().then((value: boolean) => {
+      this.serverMessageDismissed = this.serverMessage.id == value;
+    }).catch(() => {
+      this.serverMessageDismissed = false;
+    });
   }
 
   public openServerMessageLink(): void {
