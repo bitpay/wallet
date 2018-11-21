@@ -15,6 +15,7 @@ import { PersistenceProvider } from '../persistence/persistence';
 import { PlatformProvider } from '../platform/platform';
 import { PopupProvider } from '../popup/popup';
 import { ReplaceParametersProvider } from '../replace-parameters/replace-parameters';
+import { TxFormatProvider } from '../tx-format/tx-format';
 import { Coin, WalletOptions } from '../wallet/wallet';
 
 // models
@@ -43,7 +44,8 @@ export class ProfileProvider {
     private events: Events,
     private popupProvider: PopupProvider,
     private onGoingProcessProvider: OnGoingProcessProvider,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private txFormatProvider: TxFormatProvider
   ) {
     this.throttledBwsEvent = _.throttle((n, wallet) => {
       this.newBwsEvent(n, wallet);
@@ -177,9 +179,9 @@ export class ProfileProvider {
         this.logger.debug('BWC Notification:', JSON.stringify(n));
       }
 
-      /* if (this.platformProvider.isElectron) {
+      if (this.platformProvider.isElectron) {
         this.showInAppNotification(n, wallet);
-      } */
+      }
 
       if (n.type == 'NewBlock' && n.data.network == 'testnet') {
         this.throttledBwsEvent(n, wallet);
@@ -216,7 +218,7 @@ export class ProfileProvider {
     return true;
   }
 
-  /* private showInAppNotification(n, wallet): void {
+  private showInAppNotification(n, wallet): void {
     if (!this.configProvider.get().desktopNotificationsEnabled) return;
 
     const creatorId = n && n.data && n.data.creatorId;
@@ -299,7 +301,7 @@ export class ProfileProvider {
       title,
       body
     });
-  } */
+  }
 
   private newBwsEvent(n, wallet): void {
     if (wallet.cachedStatus) wallet.cachedStatus.isValid = false;
