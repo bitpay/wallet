@@ -9,6 +9,7 @@ import { Device } from '@ionic-native/device';
 
 // providers
 import { AppProvider } from '../../../providers/app/app';
+import { PlatformProvider } from '../../../providers/platform/platform';
 
 // pages
 import { EmailNotificationsProvider } from '../../../providers/email-notifications/email-notifications';
@@ -33,10 +34,11 @@ export class CollectEmailPage {
     private appProvider: AppProvider,
     private http: HttpClient,
     private emailProvider: EmailNotificationsProvider,
-    private device: Device
+    private device: Device,
+    private platformProvider: PlatformProvider
   ) {
     this.walletId = this.navParams.data.walletId;
-    let regex: RegExp = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    const regex: RegExp = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     this.emailForm = this.fb.group({
       email: [null, [Validators.required, Validators.pattern(regex)]],
       accept: [false]
@@ -63,7 +65,7 @@ export class CollectEmailPage {
   }
 
   public save(): void {
-    let opts = {
+    const opts = {
       enabled: true,
       email: this.emailForm.value.email
     };
@@ -84,8 +86,19 @@ export class CollectEmailPage {
   private collectEmail(): void {
     if (!this.URL) return;
 
-    let platform = this.device.platform || 'Unknown platform';
-    let version = this.device.version || 'Unknown version';
+    let version;
+    let platform;
+
+    if (this.platformProvider.isElectron) {
+      version = this.platformProvider
+        .getDeviceInfo()
+        .match(/(Electron[\/]\d+(\.\d)*)/i)[0]; // getDeviceInfo example: 5.0 (Macintosh; Intel Mac OS X 10_14_1) AppleWebKit/537.36 (KHTML, like Gecko) Copay/5.1.0 Chrome/66.0.3359.181 Electron/3.0.8 Safari/537.36
+      platform =
+        this.platformProvider.getOS() && this.platformProvider.getOS().OSName;
+    } else {
+      version = this.device.version || 'Unknown version';
+      platform = this.device.platform || 'Unknown platform';
+    }
 
     const headers = new HttpHeaders({
       'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
