@@ -99,7 +99,7 @@
         </ion-list>
       </div>
 
-      <ion-item-divider>
+      <ion-item-divider *ngIf="integrationServices && integrationServices[0]">
         {{'Integrations' | translate}}
       </ion-item-divider>
 

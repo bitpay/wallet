@@ -28,10 +28,10 @@
   "androidVersion": "52000000",
   "_extraCSS": null,
   "_enabledExtensions": {
-    "coinbase": true,
-    "glidera": true,
+    "coinbase": false,
+    "glidera": false,
     "debitcard": false,
-    "shapeshift": true,
+    "shapeshift": false,
     "giftcards": false
   }
 }
