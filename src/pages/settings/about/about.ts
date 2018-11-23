@@ -4,6 +4,7 @@ import { NavController } from 'ionic-angular';
 import { Logger } from '../../../providers/logger/logger';
 
 // pages
+import { SendFeedbackPage } from '../../feedback/send-feedback/send-feedback';
 import { SessionLogPage } from './session-log/session-log';
 
 // providers
@@ -40,19 +41,19 @@ export class AboutPage {
   }
 
   public openExternalLink(): void {
-    let url =
+    const url =
       'https://github.com/bitpay/' +
       this.appProvider.info.gitHubRepoName +
       '/tree/' +
       this.appProvider.info.commitHash +
       '';
-    let optIn = true;
-    let title = this.translate.instant('Open GitHub Project');
-    let message = this.translate.instant(
+    const optIn = true;
+    const title = this.translate.instant('Open GitHub Project');
+    const message = this.translate.instant(
       'You can see the latest developments and contribute to this open source app by visiting our project on GitHub.'
     );
-    let okText = this.translate.instant('Open GitHub');
-    let cancelText = this.translate.instant('Go Back');
+    const okText = this.translate.instant('Open GitHub');
+    const cancelText = this.translate.instant('Go Back');
     this.externalLinkProvider.open(
       url,
       optIn,
@@ -64,12 +65,12 @@ export class AboutPage {
   }
 
   public openTermsOfUse() {
-    let url = 'https://bitpay.com/about/terms#wallet';
-    let optIn = true;
-    let title = null;
-    let message = this.translate.instant('View Wallet Terms of Use');
-    let okText = this.translate.instant('Open');
-    let cancelText = this.translate.instant('Go Back');
+    const url = 'https://bitpay.com/about/terms#wallet';
+    const optIn = true;
+    const title = null;
+    const message = this.translate.instant('View Wallet Terms of Use');
+    const okText = this.translate.instant('Open');
+    const cancelText = this.translate.instant('Go Back');
     this.externalLinkProvider.open(
       url,
       optIn,
@@ -81,12 +82,12 @@ export class AboutPage {
   }
 
   public openPrivacyPolicy() {
-    let url = 'https://bitpay.com/about/privacy';
-    let optIn = true;
-    let title = null;
-    let message = this.translate.instant('View Privacy Policy');
-    let okText = this.translate.instant('Open');
-    let cancelText = this.translate.instant('Go Back');
+    const url = 'https://bitpay.com/about/privacy';
+    const optIn = true;
+    const title = null;
+    const message = this.translate.instant('View Privacy Policy');
+    const okText = this.translate.instant('Open');
+    const cancelText = this.translate.instant('Go Back');
     this.externalLinkProvider.open(
       url,
       optIn,
@@ -99,5 +100,9 @@ export class AboutPage {
 
   public openSessionLog(): void {
     this.navCtrl.push(SessionLogPage);
+  }
+
+  public openSendFeedbackPage(): void {
+    this.navCtrl.push(SendFeedbackPage);
   }
 }
