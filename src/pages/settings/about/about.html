@@ -20,22 +20,24 @@
       <ion-note item-end>
         #{{commitHash}}
       </ion-note>
-    </ion-item>
-    <ion-item-divider></ion-item-divider>
-    <button ion-item (click)="openTermsOfUse()">
-      <ion-icon class="custom-icon" name="ios-list-box-outline" item-start></ion-icon>
-      {{'Terms of Use' | translate }}
-    </button>
-    <button ion-item (click)="openPrivacyPolicy()">
-      <ion-icon class="custom-icon" name="ios-lock-outline" item-start></ion-icon>
-      {{'Privacy Policy' | translate }}
-    </button>
+    </ion-item> 
+    <ion-item-divider class="item-without-title"></ion-item-divider>
     <button ion-item (click)="openSendFeedbackPage()">
       <ion-icon class="item-img" item-start>
         <img src="assets/img/settings-icons/icon-send-feedback.svg" width="22">
       </ion-icon>
       <span translate>Send feedback</span>
     </button>
+    <ion-item-divider class="item-without-title"></ion-item-divider>
+    <button ion-item (click)="openPrivacyPolicy()">
+      <ion-icon class="custom-icon" name="ios-lock-outline" item-start></ion-icon>
+      {{'Privacy Policy' | translate }}
+    </button>
+    <button ion-item (click)="openTermsOfUse()">
+      <ion-icon class="custom-icon" name="ios-list-box-outline" item-start></ion-icon>
+      {{'Terms of Use' | translate }}
+    </button> 
+    <ion-item-divider class="item-without-title"></ion-item-divider> 
     <button ion-item (click)="openSessionLog()">
       <ion-icon class="custom-icon" name="ios-copy-outline" item-start></ion-icon>
       {{ 'Session log' | translate }}
