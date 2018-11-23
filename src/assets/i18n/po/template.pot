@@ -484,9 +484,6 @@ msgstr ""
 msgid "Continue"
 msgstr ""
 
-msgid "Continue to Confirm Page"
-msgstr ""
-
 msgid "Contribute translations"
 msgstr ""
 
