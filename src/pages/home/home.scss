@@ -147,89 +147,71 @@ page-home {
     }
   }
 
+  .server-message,
   .new-release {
-    padding-bottom: 0rem;
-
-    &-icon {
-      display: flex;
-      justify-content: center;
-      margin-top: 3rem;
-
-      img {
-        width: 4rem;
-        height: 4rem;
-      }
-    }
-
-    &-text {
+    padding-bottom: 0px;
+    &-header {
+      padding: 0px;
       text-align: center;
-      color: color($colors, dark);
-      margin-bottom: 1rem;
-    }
-
-    &-button {
-      padding: 0rem;
-
-      div {
-        cursor: pointer;
-        font-size: 16px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        background-color: color($colors, light);
-        color: color($colors, dark);
-        height: 5rem;
+      .row {
+        justify-content: flex-end;
+        button {
+          font-size: 12px;
+        }
       }
     }
-  }
-
-  .server-message {
-    padding-bottom: 0rem;
-
+    &-content {
+      padding: 0rem;
+    }
     &-icon {
       display: flex;
       justify-content: center;
-      margin-top: 3rem;
 
       img {
         width: 4rem;
         height: 4rem;
       }
     }
-
-    &-content {
-      color: color($colors, dark);
-      margin-bottom: 1rem;
-      white-space: normal;
-    }
-
     &-title {
       text-align: center;
-      font-size: 18px;
+      font-size: 1.8rem;
       font-weight: bold;
-      color: color($colors, warning);
-      margin-bottom: 1rem;
+      margin-top: 1rem;
+    }
+    .title {
+      color: color($colors, grey);
+      font-weight: 500;
+      font-size: 2rem;
+      &-info {
+        color: color($colors, info);
+      }
+      &-critical {
+        color: color($colors, warning);
+      }
     }
 
     &-body {
       color: color($colors, grey);
+      text-align: center;
+      white-space: normal;
       margin-bottom: 1rem;
+      font-size: 1.6rem;
+      padding: 1rem 2rem 1rem 2rem;
     }
-
     &-button {
-      padding: 0rem;
-
-      div {
-        cursor: pointer;
-        font-size: 16px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        background-color: color($colors, light);
-        color: color($colors, dark);
-        height: 5rem;
-      }
+      cursor: pointer;
+      font-size: 16px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: color($colors, light);
+      color: color($colors, dark);
+      height: 5rem;
     }
+  }
+
+  .no-header {
+    margin-top: 2.6rem;
   }
 
   .zero-state {
