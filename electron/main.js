@@ -149,6 +149,7 @@ const gotTheLock = app.requestSingleInstanceLock();
 
 if (!gotTheLock) {
   app.quit();
+  return;
 } else {
   app.on('second-instance', (event, argv, workingDirectory) => {
     if (win) {
