@@ -1,5 +1,4 @@
 import { File } from '@ionic-native/file';
-import { Events } from 'ionic-angular';
 import { Logger } from '../../providers/logger/logger';
 import { PlatformProvider } from '../platform/platform';
 import { PersistenceProvider } from './persistence';
@@ -9,12 +8,6 @@ class FileMock extends File {}
 describe('Persistence Provider', () => {
   let persistenceProvider: PersistenceProvider;
   let logs;
-
-  const eventsMock = {
-    subscribe: event => {
-      logs.push(event);
-    }
-  } as Events;
 
   const loggerMock = {
     info: info => {
@@ -35,8 +28,7 @@ describe('Persistence Provider', () => {
     persistenceProvider = new PersistenceProvider(
       loggerMock,
       platformMock,
-      fileMock,
-      eventsMock
+      fileMock
     );
     persistenceProvider.load();
   }
@@ -90,7 +82,7 @@ describe('Persistence Provider', () => {
       expect(persistenceProvider.storage.constructor.name).toBe('LocalStorage');
     });
     it('should correctly perform a profile roundtrip', done => {
-      let p = { name: 'My profile' };
+      const p = { name: 'My profile' };
       persistenceProvider
         .storeNewProfile(p)
         .catch(err => expect(err).toBeNull)
@@ -105,7 +97,7 @@ describe('Persistence Provider', () => {
     });
 
     it('should fail to create a profile when one already exists', () => {
-      let p = { name: 'My profile' };
+      const p = { name: 'My profile' };
       persistenceProvider
         .storeNewProfile(p)
         .then(() => {
@@ -117,7 +109,7 @@ describe('Persistence Provider', () => {
     });
 
     it('should be able to delete a profile', done => {
-      let p = { name: 'My profile' };
+      const p = { name: 'My profile' };
       persistenceProvider
         .storeNewProfile(p)
         .catch(err => expect(err).toBeNull)
@@ -139,7 +131,7 @@ describe('Persistence Provider', () => {
     });
 
     it('should store profile', done => {
-      let p = { name: 'My profile' };
+      const p = { name: 'My profile' };
       persistenceProvider
         .storeProfile(p)
         .catch(err => expect(err).toBeNull)
