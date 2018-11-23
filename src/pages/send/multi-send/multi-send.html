@@ -79,7 +79,7 @@
       </div>
 
       <button ion-button *ngIf="multiRecipients && multiRecipients.length > 0" [disabled]="isDisabledContinue" class="button-standard" (click)="goToConfirm()">
-        {{'Continue to Confirm Page' | translate}}
+        {{'Continue' | translate}}
       </button>
     </div>
     <div *ngIf="multiRecipients.length == 0" class="no-wallet-message">
