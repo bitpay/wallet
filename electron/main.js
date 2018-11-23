@@ -1,4 +1,4 @@
-const { app, Menu, BrowserWindow } = require('electron');
+const { app, Menu, BrowserWindow, Notification, ipcMain } = require('electron');
 const path = require('path');
 const url = require('url');
 const os = require('os');
@@ -51,21 +51,21 @@ function createWindow() {
   });
 
   win.webContents.on('did-finish-load', () => {
-    // Windows: Handle deeplink url
-    if (process.platform == 'win32') {
+    // Windows - Linux: Handle deeplink url
+    if (process.platform == 'win32' || process.platform == 'linux') {
       // Keep only command line / deep linked arguments
-      deeplinkingUrl = process.argv.slice(1)[0];
+      deeplinkingUrl = process.argv ? process.argv[1] : null;
     }
     if (deeplinkingUrl) {
       setTimeout(() => {
         win.webContents.send('open-url-event', deeplinkingUrl);
       }, 1000);
     }
-    /* if (Notification.isSupported()) {
+    if (Notification.isSupported()) {
       ipcMain.on('new-notification', (event, data) => {
         new Notification(data).show();
       });
-    } */
+    }
   });
 
   win.once('ready-to-show', () => {
@@ -144,34 +144,36 @@ const homeDir = getHomeDirPath(process.platform);
 app.setPath('userData', path.join(homeDir, `.${appConfig.name}/app`));
 
 // This method makes your application a Single Instance Application
-// https://github.com/electron/electron/blob/v0.36.10/docs/api/app.md#appmakesingleinstancecallback
-/* var shouldQuit = app.makeSingleInstance(function(argv, workingDirectory) {
-  if (win) {
-    if (process.platform == 'win32') {
-      deeplinkingUrl = argv.slice(1)[0];
-      win.webContents.send('open-url-event', deeplinkingUrl);
-    }
-    // Someone tried to run a second instance, we should focus our window.
-    if (win.isMinimized()) {
-      win.restore();
-    } else {
-      win.focus();
-    }
-  }
-});
+// https://electronjs.org/docs/api/app#apphassingleinstancelock
+const gotTheLock = app.requestSingleInstanceLock();
 
-if (shouldQuit) {
+if (!gotTheLock) {
   app.quit();
   return;
-} */
+} else {
+  app.on('second-instance', (event, argv, workingDirectory) => {
+    if (win) {
+      // Windows - Linux: Handle deeplink url
+      if (process.platform == 'win32' || process.platform == 'linux') {
+        deeplinkingUrl = argv ? argv[1] : null;
+        if (deeplinkingUrl) {
+          win.webContents.send('open-url-event', deeplinkingUrl);
+        }
+      }
+      // Someone tried to run a second instance, we should focus our window.
+      if (win.isMinimized()) win.restore();
+      win.focus();
+    }
+  });
 
-// This method will be called when Electron has finished
-// initialization and is ready to create browser windows.
-// Some APIs can only be used after this event occurs.
-app.on('ready', () => {
-  createWindow();
-  createMenu();
-});
+  // This method will be called when Electron has finished
+  // initialization and is ready to create browser windows.
+  // Some APIs can only be used after this event occurs.
+  app.on('ready', () => {
+    createWindow();
+    createMenu();
+  });
+}
 
 // Quit when all windows are closed.
 app.on('window-all-closed', () => {
