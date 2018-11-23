@@ -12,7 +12,7 @@ msgstr ""
 "Last-Translator: cmgustavo83\n"
 "Language-Team: Italian\n"
 "Language: it\n"
-"PO-Revision-Date: 2018-11-07 19:24\n"
+"PO-Revision-Date: 2018-11-23 16:57\n"
 
 msgid "(Trusted)"
 msgstr "(Fidato)"
@@ -31,6 +31,18 @@ msgstr ""
 
 msgid "5-star ratings help us get BitPay Wallet into more hands, and more users means more resources can be committed to the app!"
 msgstr "Un rating a 5 stelle ci aiuta affinché BitPay Wallet possa giungere in molte più mani, e molti utenti significa molte risorse che possono venire impiegate sull'app!"
+
+msgid "A new copayer just joined your wallet {{walletName}}."
+msgstr ""
+
+msgid "A new payment proposal has been created in your wallet {{walletName}}."
+msgstr ""
+
+msgid "A payment of {{amountStr}} has been received into your wallet {{walletName}}."
+msgstr ""
+
+msgid "A payment proposal in your wallet {{walletName}} has been rejected."
+msgstr ""
 
 msgid "A total of {{amountAboveMaxSizeStr}} {{coin}} were excluded. The maximum size allowed for a transaction was exceeded."
 msgstr "Un totale di {{amountAboveMaxSizeStr}} {{coin}} sono stati esclusi. È stata superata la dimensione massima consentita per una transazione."
@@ -77,8 +89,14 @@ msgstr "Aggiungi Contatto"
 msgid "Add Memo"
 msgstr "Aggiungi Memo"
 
+msgid "Add Recipient"
+msgstr ""
+
 msgid "Add account"
 msgstr "Aggiungere account"
+
+msgid "Add amount"
+msgstr ""
 
 msgid "Add as a contact"
 msgstr "Aggiungi come contatto"
@@ -86,7 +104,7 @@ msgstr "Aggiungi come contatto"
 msgid "Add funds"
 msgstr "Aggiungi fondi"
 
-msgid "Add gift cards to your {appName} wallet from brands like Amazon, Delta, Hotels.com, and Uber."
+msgid "Add gift cards to your {appName} wallet from brands like Amazon, Delta, Google Play, and Uber."
 msgstr ""
 
 msgid "Add this BitPay account ({{email}})?"
@@ -148,6 +166,9 @@ msgstr "Importo inferiore al minimo consentito"
 
 msgid "Amount too big"
 msgstr "Quantità troppo grande"
+
+msgid "Amount:"
+msgstr ""
 
 msgid "An update to this app is available. For your security, please update to the latest version."
 msgstr "Un aggiornamento dell'app è disponibile. Per la tua sicurezza è consigliato aggiornare all'ultima versione."
@@ -337,6 +358,9 @@ msgstr "Certificato da"
 
 msgid "Change Amount"
 msgstr "Cambia importo"
+
+msgid "Change amount"
+msgstr ""
 
 msgid "Check the transaction on your wallet details"
 msgstr "Controlla la transazione su dettagli nel tuo portafoglio"
@@ -689,6 +713,9 @@ msgstr "Raggiunto il limite degli indirizzi vuoti. Non possono essere generati n
 msgid "Enable camera access in your device settings to get started."
 msgstr "Abilita l'accesso alla fotocamera dalle impostazioni del tuo dispositivo per iniziare."
 
+msgid "Enable desktop notifications"
+msgstr ""
+
 msgid "Enable email notifications"
 msgstr "Attiva Notifiche Email"
 
@@ -718,6 +745,9 @@ msgstr "Inserisci una password per crittografare il tuo portafoglio"
 
 msgid "Enter a transaction memo"
 msgstr "Immettere una nota di transazione"
+
+msgid "Enter bitcoin address"
+msgstr ""
 
 msgid "Enter custom fee in sat/byte"
 msgstr "Inserisci commissione personalizzata in sat/byte"
@@ -830,6 +860,9 @@ msgstr "Livello della commissione"
 msgid "Fee level is not defined"
 msgstr "Livello commissione non definito"
 
+msgid "Fee rate"
+msgstr ""
+
 msgid "Feedback"
 msgstr "Valutazione"
 
@@ -853,6 +886,9 @@ msgstr "File/Testo"
 
 msgid "Fingerprint"
 msgstr "Impronta digitale"
+
+msgid "Found something broken? Please report it as a bug. If you need immediate help with a problem you are having, then get help by contacting our support team."
+msgstr ""
 
 msgid "From"
 msgstr "Da"
@@ -892,6 +928,9 @@ msgstr "Generando un nuovo indirizzo..."
 
 msgid "Get Help"
 msgstr "Ottieni aiuto"
+
+msgid "Get help"
+msgstr ""
 
 msgid "Get local cash anywhere you go, from any Visa® compatible ATM. ATM bank fees may apply."
 msgstr "Ottieni contante locale ovunque tu vada, da qualsiasi ATM bancomat compatibile con Visa®. Possibili commissioni bancarie da parte dell'ATM."
@@ -1007,10 +1046,10 @@ msgstr "Se abilitata, i portafogli cercheranno di spendere fondi anche se non co
 msgid "If this device is replaced or this app is deleted, neither you nor BitPay can recover your funds without a backup."
 msgstr "Se questo dispositivo viene sostituito o eliminato questa app, né tu né BitPay può recuperare i fondi senza una copia di backup."
 
-msgid "If you disable the persistent logs, all the logs registered so far will be deleted. However, you can still see the session logs on this screen."
+msgid "If you have funds stored on a website then you should move them into a secure wallet... like this one!"
 msgstr ""
 
-msgid "If you have funds stored on a website then you should move them into a secure wallet... like this one!"
+msgid "If you need immediate help with a problem you are having, then get help by contacting our support team."
 msgstr ""
 
 msgid "If you need to send to \"old\" addresses (like the one you just pasted), and you are SURE those are BCH addresses, you can \"translate\" them using the BCH Translator tool and paste the corresponding address in CashAddr format for that \"old\" address."
@@ -1202,8 +1241,14 @@ msgstr "Spostato"
 msgid "Moved Funds"
 msgstr "Fondi trasferiti"
 
-msgid "Multiple recipients"
-msgstr "Più destinatari"
+msgid "Moving"
+msgstr ""
+
+msgid "Multiple Recipients"
+msgstr ""
+
+msgid "Multiple recipients:"
+msgstr ""
 
 msgid "NOTE: To import a wallet from a 3rd party software, please go to Add Wallet, Create Wallet, and specify the Recovery Phrase there."
 msgstr "Nota: Per importare un portafoglio da un software di terze parti, si prega di andare in Aggiungi portafoglio, Crea portafoglio, e specificare la frase di recupero."
@@ -1234,6 +1279,15 @@ msgstr "Errore di rete"
 
 msgid "New Proposal"
 msgstr "Nuova proposta"
+
+msgid "New copayer"
+msgstr ""
+
+msgid "New payment proposal"
+msgstr ""
+
+msgid "New payment received"
+msgstr ""
 
 msgid "New wallet"
 msgstr "Nuovo portafoglio"
@@ -1460,6 +1514,9 @@ msgstr "Pagamento accettato, ma non ancora inviata alla rete"
 msgid "Payment accepted. It will be broadcasted by Glidera. In case there is a problem, it can be deleted 6 hours after it was created."
 msgstr "Pagamento accettato. Esso sarà trasmesso attraverso la rete Glidera. Nel caso in cui ci fosse un problema, si potrà eliminarlo 6 ore dopo che è stato creato."
 
+msgid "Payment proposal rejected"
+msgstr ""
+
 msgid "Payment request"
 msgstr "Richiesta di pagamento"
 
@@ -1471,9 +1528,6 @@ msgstr "Proposte in attesa"
 
 msgid "Permanently delete this wallet."
 msgstr "Eliminare definitivamente questo portafoglio."
-
-msgid "Persistent logs"
-msgstr ""
 
 msgid "Personal Wallet"
 msgstr "Portafoglio Personale"
@@ -1507,6 +1561,9 @@ msgstr "Si prega di aggiornare Copay per eseguire questa azione"
 
 msgid "Please wait..."
 msgstr "Attendere prego..."
+
+msgid "Please, enter the amount"
+msgstr ""
 
 msgid "Please, select your backup file"
 msgstr "Per favore, selezione il tuo file di backup"
@@ -1652,6 +1709,12 @@ msgstr "Ripeti la password"
 msgid "Report an Issue"
 msgstr "Segnala un problema"
 
+msgid "Report an issue"
+msgstr ""
+
+msgid "Report issue"
+msgstr ""
+
 msgid "Request Encrypt Password"
 msgstr "Richiesta password di crittografia"
 
@@ -1660,6 +1723,15 @@ msgstr "Richiesta delle impronte digitali"
 
 msgid "Request Specific Amount"
 msgstr "Richiedi un importo specifico"
+
+msgid "Request a Feature"
+msgstr ""
+
+msgid "Request a new feature"
+msgstr ""
+
+msgid "Request feature"
+msgstr ""
 
 msgid "Required number of signatures"
 msgstr "Selezionare il numero necessario di firme"
@@ -1702,6 +1774,9 @@ msgstr "Gli screenshot non sono sicuri"
 
 msgid "Search Transactions"
 msgstr "Cerca Transazioni"
+
+msgid "Search Wallets or Contacts"
+msgstr ""
 
 msgid "Search a contact"
 msgstr "Cerca un contatto"
@@ -1892,9 +1967,6 @@ msgstr "Per spendere questa quantità saranno necessarie significative commissio
 msgid "Status"
 msgstr "Stato"
 
-msgid "Submit Feature Request"
-msgstr "Inviare richiesta di funzionalità"
-
 msgid "Suggested by Merchant"
 msgstr "Suggerito dal commerciante"
 
@@ -2009,6 +2081,9 @@ msgstr "La testnet è una blockchain Bitcoin alternativa, da utilizzare per i te
 msgid "The total amount of bitcoin stored in this wallet."
 msgstr "La quantità totale di bitcoin depositati su questo portafoglio."
 
+msgid "The transaction from {{walletName}} that you were waiting for has been confirmed."
+msgstr ""
+
 msgid "The transaction history and every new incoming transaction are cached in the app. This feature clean this up and synchronizes again from the server"
 msgstr "La cronologia delle transazioni e ogni nuova transazione in entrata vengono memorizzate nella cache nell'app. Questa funzionalità la ripulisce e sincronizza nuovamente dal server"
 
@@ -2066,6 +2141,9 @@ msgstr "A"
 msgid "To get started, you'll need to create a bitcoin wallet and get some bitcoin."
 msgstr "Per iniziare, è necessario che tu crei un portafoglio bitcoin e ottenerne qualcuno."
 
+msgid "To get started, you'll need to enter a valid address, contact or wallet."
+msgstr ""
+
 msgid "To {{reason}} you must first add your BitPay account - {{email}}"
 msgstr "Per {{reason}} è necessario innanzitutto aggiungere il tuo account BitPay - {{email}}"
 
@@ -2102,6 +2180,9 @@ msgstr "ID transazione"
 msgid "Transaction already broadcasted"
 msgstr "Transazione già trasmessa"
 
+msgid "Transaction confirmed"
+msgstr ""
+
 msgid "Transaction has not been created"
 msgstr "La transazione non è stata creata"
 
@@ -2120,6 +2201,9 @@ msgstr "Transazioni"
 msgid "Transactions without fee are not supported."
 msgstr "Non sono supportate transazioni senza commissione."
 
+msgid "Transfer to"
+msgstr ""
+
 msgid "Transfer to Bitcoin Cash Wallet"
 msgstr "Trasferimento a portafoglio Bitcoin Cash"
 
@@ -2128,6 +2212,9 @@ msgstr "Trasferimento a portafoglio Bitcoin"
 
 msgid "Transfer to Contact"
 msgstr "Trasferisci a Contatto"
+
+msgid "Transfer to Multiple Recipients"
+msgstr ""
 
 msgid "Translate address"
 msgstr "Tradurre l'indirizzo"
@@ -2290,6 +2377,9 @@ msgstr "Il portafoglio esiste già"
 
 msgid "Wallet already in {{nameCase}}"
 msgstr "Portafoglio già in {{nameCase}}"
+
+msgid "Wallet complete"
+msgstr ""
 
 msgid "Wallet created"
 msgstr "Portafoglio creato"
@@ -2473,6 +2563,9 @@ msgstr "Il tuo portafoglio non viene mai salvato in archiviazione cloud o nel no
 
 msgid "Your wallet key will be encrypted. The encrypt password cannot be recovered. Be sure to write it down."
 msgstr "La chiave del tuo portafoglio sarà crittografata. La password di cifratura non potrà essere recuperata. Assicurati di scriverla in un posto sicuro."
+
+msgid "Your wallet {{walletName}} is complete."
+msgstr ""
 
 msgid "Your {walletType} wallet is backed up!"
 msgstr ""

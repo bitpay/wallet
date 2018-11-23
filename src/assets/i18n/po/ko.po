@@ -12,7 +12,7 @@ msgstr ""
 "Last-Translator: cmgustavo83\n"
 "Language-Team: Korean\n"
 "Language: ko\n"
-"PO-Revision-Date: 2018-11-07 19:24\n"
+"PO-Revision-Date: 2018-11-23 16:57\n"
 
 msgid "(Trusted)"
 msgstr "(신뢰할 수 있음)"
@@ -30,6 +30,18 @@ msgid "2. Enter Gift Code"
 msgstr ""
 
 msgid "5-star ratings help us get BitPay Wallet into more hands, and more users means more resources can be committed to the app!"
+msgstr ""
+
+msgid "A new copayer just joined your wallet {{walletName}}."
+msgstr ""
+
+msgid "A new payment proposal has been created in your wallet {{walletName}}."
+msgstr ""
+
+msgid "A payment of {{amountStr}} has been received into your wallet {{walletName}}."
+msgstr ""
+
+msgid "A payment proposal in your wallet {{walletName}} has been rejected."
 msgstr ""
 
 msgid "A total of {{amountAboveMaxSizeStr}} {{coin}} were excluded. The maximum size allowed for a transaction was exceeded."
@@ -77,7 +89,13 @@ msgstr "연락처 추가"
 msgid "Add Memo"
 msgstr "메모 추가"
 
+msgid "Add Recipient"
+msgstr ""
+
 msgid "Add account"
+msgstr ""
+
+msgid "Add amount"
 msgstr ""
 
 msgid "Add as a contact"
@@ -86,7 +104,7 @@ msgstr "연락처로 추가"
 msgid "Add funds"
 msgstr "자금 추가"
 
-msgid "Add gift cards to your {appName} wallet from brands like Amazon, Delta, Hotels.com, and Uber."
+msgid "Add gift cards to your {appName} wallet from brands like Amazon, Delta, Google Play, and Uber."
 msgstr ""
 
 msgid "Add this BitPay account ({{email}})?"
@@ -148,6 +166,9 @@ msgstr "최소 허용 금액 이하"
 
 msgid "Amount too big"
 msgstr "금액이 너무 큽니다"
+
+msgid "Amount:"
+msgstr ""
 
 msgid "An update to this app is available. For your security, please update to the latest version."
 msgstr "이 앱의 업데이트 버전을 이용하실 수 있습니다. 보안을 위해, 최신 버전을 업데이트해주세요."
@@ -336,6 +357,9 @@ msgid "Certified by"
 msgstr "인증자:"
 
 msgid "Change Amount"
+msgstr ""
+
+msgid "Change amount"
 msgstr ""
 
 msgid "Check the transaction on your wallet details"
@@ -689,6 +713,9 @@ msgstr "빈 주소 제한에 도달했습니다. 새 주소를 생성할 수 없
 msgid "Enable camera access in your device settings to get started."
 msgstr "시작하시려면 기기 설정에서 카메라 액세스를 활성화해주세요."
 
+msgid "Enable desktop notifications"
+msgstr ""
+
 msgid "Enable email notifications"
 msgstr "이메일 알림 활성화"
 
@@ -717,6 +744,9 @@ msgid "Enter a password to encrypt your wallet"
 msgstr ""
 
 msgid "Enter a transaction memo"
+msgstr ""
+
+msgid "Enter bitcoin address"
 msgstr ""
 
 msgid "Enter custom fee in sat/byte"
@@ -830,6 +860,9 @@ msgstr ""
 msgid "Fee level is not defined"
 msgstr "수수료 레벨이 정의되지 않았습니다"
 
+msgid "Fee rate"
+msgstr ""
+
 msgid "Feedback"
 msgstr ""
 
@@ -852,6 +885,9 @@ msgid "File/Text"
 msgstr ""
 
 msgid "Fingerprint"
+msgstr ""
+
+msgid "Found something broken? Please report it as a bug. If you need immediate help with a problem you are having, then get help by contacting our support team."
 msgstr ""
 
 msgid "From"
@@ -891,6 +927,9 @@ msgid "Generating new address..."
 msgstr "새로운 주소 생성 중..."
 
 msgid "Get Help"
+msgstr ""
+
+msgid "Get help"
 msgstr ""
 
 msgid "Get local cash anywhere you go, from any Visa® compatible ATM. ATM bank fees may apply."
@@ -1007,10 +1046,10 @@ msgstr ""
 msgid "If this device is replaced or this app is deleted, neither you nor BitPay can recover your funds without a backup."
 msgstr ""
 
-msgid "If you disable the persistent logs, all the logs registered so far will be deleted. However, you can still see the session logs on this screen."
+msgid "If you have funds stored on a website then you should move them into a secure wallet... like this one!"
 msgstr ""
 
-msgid "If you have funds stored on a website then you should move them into a secure wallet... like this one!"
+msgid "If you need immediate help with a problem you are having, then get help by contacting our support team."
 msgstr ""
 
 msgid "If you need to send to \"old\" addresses (like the one you just pasted), and you are SURE those are BCH addresses, you can \"translate\" them using the BCH Translator tool and paste the corresponding address in CashAddr format for that \"old\" address."
@@ -1202,8 +1241,14 @@ msgstr "이전됨"
 msgid "Moved Funds"
 msgstr "자금 이전됨"
 
-msgid "Multiple recipients"
-msgstr "여러 수신자"
+msgid "Moving"
+msgstr ""
+
+msgid "Multiple Recipients"
+msgstr ""
+
+msgid "Multiple recipients:"
+msgstr ""
 
 msgid "NOTE: To import a wallet from a 3rd party software, please go to Add Wallet, Create Wallet, and specify the Recovery Phrase there."
 msgstr ""
@@ -1234,6 +1279,15 @@ msgstr "네트워크 오류"
 
 msgid "New Proposal"
 msgstr "새로운 제안"
+
+msgid "New copayer"
+msgstr ""
+
+msgid "New payment proposal"
+msgstr ""
+
+msgid "New payment received"
+msgstr ""
 
 msgid "New wallet"
 msgstr ""
@@ -1460,6 +1514,9 @@ msgstr "지불이 허용되었으나, 아직 브로드캐스트되지 않았습�
 msgid "Payment accepted. It will be broadcasted by Glidera. In case there is a problem, it can be deleted 6 hours after it was created."
 msgstr "지불이 허용되었으며, Glidera에 의해 브로드캐스트될 것입니다. 문제가 있을 경우를 대비하여, 생성 후 6시간 후에 삭제될 수 있습니다."
 
+msgid "Payment proposal rejected"
+msgstr ""
+
 msgid "Payment request"
 msgstr "지불 요청"
 
@@ -1471,9 +1528,6 @@ msgstr "제안 보류 중"
 
 msgid "Permanently delete this wallet."
 msgstr "이 지갑에서 영구적으로 삭제."
-
-msgid "Persistent logs"
-msgstr ""
 
 msgid "Personal Wallet"
 msgstr "개인 지갑"
@@ -1506,6 +1560,9 @@ msgid "Please upgrade Copay to perform this action"
 msgstr "이 작업을 수행하시려면 Copay를 업그레이드해주세요"
 
 msgid "Please wait..."
+msgstr ""
+
+msgid "Please, enter the amount"
 msgstr ""
 
 msgid "Please, select your backup file"
@@ -1652,6 +1709,12 @@ msgstr "비밀번호 반복"
 msgid "Report an Issue"
 msgstr ""
 
+msgid "Report an issue"
+msgstr ""
+
+msgid "Report issue"
+msgstr ""
+
 msgid "Request Encrypt Password"
 msgstr ""
 
@@ -1659,6 +1722,15 @@ msgid "Request Fingerprint"
 msgstr "지문 요청"
 
 msgid "Request Specific Amount"
+msgstr ""
+
+msgid "Request a Feature"
+msgstr ""
+
+msgid "Request a new feature"
+msgstr ""
+
+msgid "Request feature"
 msgstr ""
 
 msgid "Required number of signatures"
@@ -1701,6 +1773,9 @@ msgid "Screenshots are not secure"
 msgstr ""
 
 msgid "Search Transactions"
+msgstr ""
+
+msgid "Search Wallets or Contacts"
 msgstr ""
 
 msgid "Search a contact"
@@ -1892,9 +1967,6 @@ msgstr "이 잔액을 사용하려면 유효한 비트코인 네트워크 수수
 msgid "Status"
 msgstr ""
 
-msgid "Submit Feature Request"
-msgstr ""
-
 msgid "Suggested by Merchant"
 msgstr ""
 
@@ -2009,6 +2081,9 @@ msgstr ""
 msgid "The total amount of bitcoin stored in this wallet."
 msgstr "이 지갑에 저장된 비트코인 양 합계."
 
+msgid "The transaction from {{walletName}} that you were waiting for has been confirmed."
+msgstr ""
+
 msgid "The transaction history and every new incoming transaction are cached in the app. This feature clean this up and synchronizes again from the server"
 msgstr ""
 
@@ -2066,6 +2141,9 @@ msgstr "수신:"
 msgid "To get started, you'll need to create a bitcoin wallet and get some bitcoin."
 msgstr "시작하시려면, 비트코인 지갑을 생성하셔야 합니다."
 
+msgid "To get started, you'll need to enter a valid address, contact or wallet."
+msgstr ""
+
 msgid "To {{reason}} you must first add your BitPay account - {{email}}"
 msgstr ""
 
@@ -2102,6 +2180,9 @@ msgstr ""
 msgid "Transaction already broadcasted"
 msgstr "이미 브로드캐스트된 거래입니다"
 
+msgid "Transaction confirmed"
+msgstr ""
+
 msgid "Transaction has not been created"
 msgstr "거래가 생성되지 않았습니다"
 
@@ -2120,6 +2201,9 @@ msgstr ""
 msgid "Transactions without fee are not supported."
 msgstr "무수수료 거래는 지원되지 않습니다."
 
+msgid "Transfer to"
+msgstr ""
+
 msgid "Transfer to Bitcoin Cash Wallet"
 msgstr ""
 
@@ -2127,6 +2211,9 @@ msgid "Transfer to Bitcoin Wallet"
 msgstr ""
 
 msgid "Transfer to Contact"
+msgstr ""
+
+msgid "Transfer to Multiple Recipients"
 msgstr ""
 
 msgid "Translate address"
@@ -2289,6 +2376,9 @@ msgid "Wallet already exists"
 msgstr "이미 존재하는 지갑입니다"
 
 msgid "Wallet already in {{nameCase}}"
+msgstr ""
+
+msgid "Wallet complete"
 msgstr ""
 
 msgid "Wallet created"
@@ -2472,6 +2562,9 @@ msgid "Your wallet is never saved to cloud storage or standard device backups."
 msgstr "귀하의 지갑을 절대로 클라우드 스토리지 또는 표준 장치 백업에 저장하지 마세요."
 
 msgid "Your wallet key will be encrypted. The encrypt password cannot be recovered. Be sure to write it down."
+msgstr ""
+
+msgid "Your wallet {{walletName}} is complete."
 msgstr ""
 
 msgid "Your {walletType} wallet is backed up!"
