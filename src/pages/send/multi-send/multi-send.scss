@@ -1,0 +1,98 @@
+page-multi-send {
+  .warning {
+    color: color($colors, danger);
+  }
+  .card {
+    ion-list {
+      padding: 1rem 2rem 1rem 2rem;
+    }
+    .close-icon {
+      padding-right: 1rem;
+    }
+    .wallet {
+      display: flex;
+      align-items: center;
+      .name {
+        padding-left: 1rem;
+      }
+      .coin-icon {
+        width: 15px;
+      }
+    }
+  }
+  .title {
+    font-weight: 500;
+  }
+  .no-wallet-message {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 30px;
+  }
+  .send-header-wrapper {
+    padding: 10px;
+    background-color: white;
+    box-shadow: 0px 5px 10px 0px #cccccc;
+    .recipient-buttons {
+      display: flex;
+      justify-content: space-between;
+      padding: 10px 5px 0 5px;
+      button {
+        border-radius: 5px;
+        box-shadow: none;
+      }
+      .button-add {
+        color: color($colors, success);
+        border-color: color($colors, success);
+      }
+      .button-cancel {
+        color: color($colors, danger);
+        border-color: color($colors, danger);
+      }
+    }
+  }
+  .send-heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 15px;
+    span {
+      font-size: 15px;
+      font-weight: 500;
+    }
+    .open-modal-icon img {
+      width: 25px;
+      height: 25px;
+    }
+  }
+  .search-wrapper {
+    margin-top: 15px;
+    background-color: #f2f2f2;
+    display: flex;
+    align-items: baseline;
+    border: 1px solid #f2f2f2;
+    border-radius: 4px;
+    .item-inner {
+      align-items: center;
+      margin-left: 0rem !important;
+      border-bottom: 0px !important;
+      box-shadow: none !important;
+    }
+    .scan-icon {
+      margin: 0;
+      padding: 0.6rem 1rem 1rem 1rem;
+      z-index: 999;
+    }
+    .backspace-icon {
+      z-index: 999;
+    }
+  }
+  .invalid {
+    border: 1px solid color($colors, error);
+    color: color($colors, error);
+    background-color: #fff6f7;
+  }
+}

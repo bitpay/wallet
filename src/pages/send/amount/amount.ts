@@ -4,7 +4,12 @@ import {
   HostListener,
   NgZone
 } from '@angular/core';
-import { Events, NavController, NavParams } from 'ionic-angular';
+import {
+  Events,
+  NavController,
+  NavParams,
+  ViewController
+} from 'ionic-angular';
 import * as _ from 'lodash';
 
 // Providers
@@ -76,6 +81,7 @@ export class AmountPage extends WalletTabsChild {
   public email: string;
   public color: string;
   public useSendMax: boolean;
+  public useAsModal: boolean;
   public config: Config;
   public toWalletId: string;
   private _id: string;
@@ -99,11 +105,13 @@ export class AmountPage extends WalletTabsChild {
     private txFormatProvider: TxFormatProvider,
     private changeDetectorRef: ChangeDetectorRef,
     walletTabsProvider: WalletTabsProvider,
-    private events: Events
+    private events: Events,
+    private viewCtrl: ViewController
   ) {
     super(navCtrl, profileProvider, walletTabsProvider);
     this.zone = new NgZone({ enableLongStackTrace: false });
     this.config = this.configProvider.get();
+    this.useAsModal = this.navParams.data.useAsModal;
     this.recipientType = this.navParams.data.recipientType;
     this.toAddress = this.navParams.data.toAddress;
     this.network = this.navParams.data.network;
@@ -197,7 +205,9 @@ export class AmountPage extends WalletTabsChild {
   private setAvailableUnits(): void {
     this.availableUnits = [];
 
-    const parentWalletCoin = this.wallet && this.wallet.coin;
+    const parentWalletCoin = this.navParams.data.wallet
+      ? this.navParams.data.wallet.coin
+      : this.wallet && this.wallet.coin;
 
     if (parentWalletCoin === 'btc' || !parentWalletCoin) {
       this.availableUnits.push({
@@ -335,7 +345,12 @@ export class AmountPage extends WalletTabsChild {
   }
 
   public isSendMaxButtonShown() {
-    return !this.expression && !this.requestingAmount && this.showSendMax;
+    return (
+      !this.expression &&
+      !this.requestingAmount &&
+      this.showSendMax &&
+      !this.useAsModal
+    );
   }
 
   public pushDigit(digit: string, isHardwareKeyboard?: boolean): void {
@@ -553,7 +568,9 @@ export class AmountPage extends WalletTabsChild {
       }
     }
     this.useSendMax = null;
-    this.navCtrl.push(this.nextView, data);
+    this.useAsModal
+      ? this.closeModal(data)
+      : this.navCtrl.push(this.nextView, data);
   }
 
   private updateUnitUI(): void {
@@ -595,5 +612,9 @@ export class AmountPage extends WalletTabsChild {
       this.updateUnitUI();
       this.changeDetectorRef.detectChanges();
     });
+  }
+
+  public closeModal(item): void {
+    this.viewCtrl.dismiss(item);
   }
 }

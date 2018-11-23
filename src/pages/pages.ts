@@ -55,6 +55,7 @@ import { BitPaySettingsPage } from '../pages/integrations/bitpay-card/bitpay-set
 import { CardItemPage } from '../pages/includes/card-item/card-item';
 import { FeedbackCardPage } from '../pages/includes/feedback-card/feedback-card';
 import { GravatarPage } from '../pages/includes/gravatar/gravatar';
+import { MultipleOutputsPage } from '../pages/includes/multiple-outputs/multiple-outputs';
 import { TxpPage } from '../pages/includes/txp/txp';
 import { WalletActivityPage } from '../pages/includes/wallet-activity/wallet-activity';
 
@@ -104,6 +105,9 @@ import { WalletTransactionHistoryPage } from '../pages/settings/wallet-settings/
 import { AmountPage } from '../pages/send/amount/amount';
 import { ChooseFeeLevelPage } from '../pages/send/choose-fee-level/choose-fee-level';
 import { ConfirmPage } from '../pages/send/confirm/confirm';
+import { MultiSendPage } from '../pages/send/multi-send/multi-send';
+import { TransferToModalPage } from '../pages/send/transfer-to-modal/transfer-to-modal';
+import { TransferToPage } from '../pages/send/transfer-to/transfer-to';
 
 /* Receive */
 import { CustomAmountPage } from '../pages/receive/custom-amount/custom-amount';
@@ -144,6 +148,9 @@ export const PAGES = [
   BackupWarningPage,
   BackupGamePage,
   ConfirmPage,
+  MultiSendPage,
+  TransferToModalPage,
+  TransferToPage,
   CustomAmountPage,
   DisclaimerPage,
   CollectEmailPage,
@@ -154,6 +161,7 @@ export const PAGES = [
   HomePage,
   LanguagePage,
   LockPage,
+  MultipleOutputsPage,
   OnboardingPage,
   PaperWalletPage,
   PayProPage,

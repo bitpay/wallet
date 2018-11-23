@@ -77,57 +77,7 @@
       </button>
     </div>
 
-    <ion-item class="container-to" (click)="showMultiplesOutputs = !showMultiplesOutputs" copy-to-clipboard="{{ tx.toAddress && !tx.hasMultiplesOutputs ? tx.toAddress : tx.outputs[0].address }}">
-      <span translate>To</span>
-      <div class="wallet">
-        <div class="address-coppied" [ngClass]="{'address-width':tx && tx.hasMultiplesOutputs}">
-          <div class="text-address ellipsis">
-            <img src="assets/img/icon-bitcoin-small.svg" width="12">
-            <span class="address-divider"></span>
-          </div>
-          <!-- <contact ng-if="!tx.hasMultiplesOutputs" class="ellipsis" address="{{tx.toAddress}}"></contact>  TODO -->
-          <div class="ellipsis">
-            <span *ngIf="!contactName && !tx.toAddress && !tx.hasMultiplesOutputs">{{ tx.outputs[0].address }}</span>
-            <span *ngIf="!contactName && tx.toAddress && !tx.hasMultiplesOutputs">{{ tx.toAddress }}</span>
-            <span *ngIf="contactName && !tx.hasMultiplesOutputs">{{ contactName }}</span>
-            <span *ngIf="tx && tx.hasMultiplesOutputs">
-              <span translate>Multiple recipients</span>
-              <span>{{tx.recipientCount}}</span>
-            </span>
-          </div>
-        </div>
-
-        <div class="last-item" *ngIf="tx && tx.hasMultiplesOutputs" item-end>
-          <button ion-button clear color="grey" icon-only>
-            <ion-icon *ngIf="showMultiplesOutputs" name="ios-arrow-up-outline"></ion-icon>
-            <ion-icon *ngIf="!showMultiplesOutputs" name="ios-arrow-down-outline"></ion-icon>
-          </button>
-        </div>
-      </div>
-    </ion-item>
-
-    <ion-list detail-none *ngIf="tx && tx.hasMultiplesOutputs && showMultiplesOutputs">
-      <ion-item class="proposal-container" *ngFor="let output of tx.outputs" copy-to-clipboard="{{output.toAddress}}">
-        <div item-left>
-          <h2>
-            <span translate>To</span>:
-          </h2>
-          <h3>
-            <span translate>Amount</span>:
-          </h3>
-          <p>
-            <span translate>Note</span>:
-          </p>
-        </div>
-        <ion-note item-right text-end col-11>
-          <h2 class="output-info">{{output.toAddress || output.address}}</h2>
-          <h3 class="output-info">{{output.amountStr}}
-            <span *ngIf="output.alternativeAmountStr">({{output.alternativeAmountStr}})</span>
-          </h3>
-          <p class="output-info output-note">{{output.message}}</p>
-        </ion-note>
-      </ion-item>
-    </ion-list>
+    <page-multiple-outputs [tx]="tx"></page-multiple-outputs>
 
     <ion-item class="container-from">
       <span translate>From</span>

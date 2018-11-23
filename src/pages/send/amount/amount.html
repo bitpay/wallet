@@ -1,5 +1,10 @@
 <ion-header [ngClass]="{'wallet-details-header': wallet}">
   <ion-navbar [navbar-bg]="wallet && wallet.color">
+    <ion-buttons left *ngIf="useAsModal">
+      <button class="modal-close-button" (click)="closeModal()" ion-button>
+        <ion-icon ios="md-close" md="md-close"></ion-icon>
+      </button>
+    </ion-buttons>
     <ion-title>{{wallet && wallet.name || ('Amount' | translate)}}</ion-title>
   </ion-navbar>
   <ion-toolbar *ngIf="wallet && !requestingAmount" [navbar-bg]="wallet.color">
@@ -28,8 +33,7 @@
         <div class="amount-header__label">
           {{'Enter Amount' | translate}}
         </div>
-        <img class="next-button" [ngClass]="{'show': expression && allowSend}" src="assets/img/icon-next.svg" (click)="finish()"
-          tappable>
+        <img class="next-button" [ngClass]="{'show': expression && allowSend}" src="assets/img/icon-next.svg" (click)="finish()" tappable>
       </div>
     </div>
 

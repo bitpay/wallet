@@ -1,0 +1,29 @@
+page-transfer-to {
+  .show-more {
+    display: flex;
+    text-align: center;
+  }
+  .title {
+    font-weight: 500;
+    img {
+      vertical-align: sub;
+      margin-right: 5px;
+    }
+  }
+  .wallet-warning {
+    ion-label {
+      white-space: inherit;
+    }
+  }
+  .wallet-disabled {
+    background-color: #fbfbfb;
+    ion-icon {
+      img {
+        background-color: #d4d4d4 !important;
+      }
+    }
+    .item-title {
+      color: #d4d4d4;
+    }
+  }
+}

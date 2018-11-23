@@ -1,0 +1,89 @@
+<ion-header [ngClass]="{'wallet-details-header': wallet}">
+  <ion-navbar [navbar-bg]="wallet && wallet.color">
+    <ion-title>{{wallet && wallet.name || ('Amount' | translate)}}</ion-title>
+  </ion-navbar>
+  <ion-toolbar *ngIf="wallet" [navbar-bg]="wallet.color">
+    <div *ngIf="!wallet.balanceHidden && !wallet.scanning && wallet.status" class="wallet-details-header__balance">
+      <span>{{wallet.status && wallet.status.totalBalanceStr}}</span>
+      <ion-icon *ngIf="wallet.status.totalBalanceSat != wallet.status.spendableAmount" ios="ios-timer-outline" md="md-timer"></ion-icon>
+    </div>
+    <div *ngIf="wallet.balanceHidden  && !wallet.scanning" class="wallet-details-header__balance-hidden">
+      <span class="title" translate>[Balance Hidden]</span>
+    </div>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content no-bounce>
+  <div>
+    <div>
+      <div class="send-header-wrapper">
+        <div class="send-heading">
+          <span translate>Multiple Recipients</span>
+          <ion-icon item-end class="open-modal-icon" (click)="openTransferToModal()">
+            <img src="assets/img/address-book-add.svg" />
+          </ion-icon>
+        </div>
+        <ion-item class="search-wrapper" [ngClass]="{'invalid': invalidAddress && search != ''}">
+          <ion-input placeholder="{{'Enter bitcoin address' | translate}}" [(ngModel)]="search" (ngModelChange)="processInput()"></ion-input>
+          <ion-icon *ngIf="invalidAddress && search != ''" item-end class="backspace-icon" name="backspace" (click)="search = ''"></ion-icon>
+          <ion-icon item-end class="scan-icon" (click)="openScanner()">
+            <img src="assets/img/scan-ico.svg">
+          </ion-icon>
+        </ion-item>
+        <div class="recipient-buttons" *ngIf="!invalidAddress && search != ''">
+          <button ion-button class="button-add" outline (click)="addRecipient()">{{ 'Add Recipient' | translate}}</button>
+          <button ion-button class="button-cancel" outline (click)="cancelRecipient()">{{ 'Cancel' | translate}}</button>
+        </div>
+      </div>
+
+      <div>
+        <div class="card" *ngFor="let item of multiRecipients; let idx = index">
+          <ion-item-divider>
+            <span class="ellipsis">{{ 'Recipient' | translate}} {{idx +1}}</span>
+            <button ion-button item-right class="button-add" outline (click)="openAmountModal(item, idx)">
+              <span *ngIf="!item.amountToShow">{{ 'Add amount' | translate}}</span>
+              <span *ngIf="item.amountToShow">{{ 'Change amount' | translate}}</span>
+            </button>
+            <ion-icon class="close-icon" name="ios-close-outline" item-right (click)="removeRecipient(idx)"></ion-icon>
+          </ion-item-divider>
+          <ion-list>
+            <div class="wallet" *ngIf="item.recipientType == 'wallet' && item.recipient">
+              <ion-icon item-left>
+                <img *ngIf="item.recipient.network == 'testnet'" [ngStyle]="{'background-color': item.recipient.color}" src="assets/img/icon-wallet-testnet.svg" class="icon-wallet" />
+                <img *ngIf="item.recipient.network != 'testnet'" [ngStyle]="{'background-color': item.recipient.color}" src="assets/img/icon-wallet.svg" class="icon-wallet" />
+              </ion-icon>
+              <span class="name">{{item.recipient.name}}</span>
+            </div>
+
+            <div class="wallet" *ngIf="item.recipientType == 'contact' && item.recipient" (longPress)="toggleAddress()">
+              <ion-icon class="item-gravatar" item-left>
+                <gravatar [name]="item.recipient.name" [height]="35" [width]="35" [email]="item.recipient.email"></gravatar>
+              </ion-icon>
+              <span class="name">{{item.recipient.name}}</span>
+            </div>
+
+            <div class="wallet" *ngIf="item.recipientType == 'address'">
+              <ion-icon item-left class="coin-icon">
+                <img src="assets/img/icon-bitcoin-small.svg" alt="BTC" width="12" />
+              </ion-icon>
+              <span class="address-divider"></span>
+              <span class="ellipsis">{{item.toAddress}}</span>
+            </div>
+
+            <br>
+            <span *ngIf="item.amountToShow">{{'Amount:' | translate}} </span>
+            <span *ngIf="item.amountToShow">{{item.amountToShow}} {{wallet.coin | uppercase}} ({{item.altAmountStr}})</span>
+            <span *ngIf="!item.amountToShow" class="warning">{{'Please, enter the amount' | translate}}</span>
+          </ion-list>
+        </div>
+      </div>
+
+      <button ion-button *ngIf="multiRecipients && multiRecipients.length > 0" [disabled]="isDisabledContinue" class="button-standard" (click)="goToConfirm()">
+        {{'Continue to Confirm Page' | translate}}
+      </button>
+    </div>
+    <div *ngIf="multiRecipients.length == 0" class="no-wallet-message">
+      <span translate>To get started, you'll need to enter a valid address, contact or wallet.</span>
+    </div>
+  </div>
+</ion-content>

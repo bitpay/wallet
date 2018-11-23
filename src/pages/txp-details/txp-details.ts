@@ -11,7 +11,6 @@ import { Logger } from '../../providers/logger/logger';
 
 // providers
 import { ActionSheetProvider } from '../../providers/action-sheet/action-sheet';
-import { AddressBookProvider } from '../../providers/address-book/address-book';
 import { BwcErrorProvider } from '../../providers/bwc-error/bwc-error';
 import { ConfigProvider } from '../../providers/config/config';
 import { FeeProvider } from '../../providers/fee/fee';
@@ -50,7 +49,6 @@ export class TxpDetailsPage {
   public expires: string;
   public currentSpendUnconfirmed: boolean;
   public loading: boolean;
-  public contactName: string;
   public showMultiplesOutputs: boolean;
   public amount: string;
   public isCordova: boolean;
@@ -75,7 +73,6 @@ export class TxpDetailsPage {
     private txFormatProvider: TxFormatProvider,
     private translate: TranslateService,
     private modalCtrl: ModalController,
-    private addressBookProvider: AddressBookProvider,
     private decimalPipe: DecimalPipe,
     private payproProvider: PayproProvider,
     private actionSheetProvider: ActionSheetProvider,
@@ -103,7 +100,6 @@ export class TxpDetailsPage {
     this.isShared = this.wallet.credentials.n > 1;
     this.canSign = this.wallet.canSign() || this.wallet.isPrivKeyExternal();
     this.color = this.wallet.color;
-    this.contact();
     this.hideSlideButton = false;
 
     // To test multiple outputs...
@@ -459,20 +455,5 @@ export class TxpDetailsPage {
     modal.onDidDismiss(() => {
       this.close();
     });
-  }
-
-  private contact(): void {
-    let addr = this.tx.toAddress;
-    this.addressBookProvider
-      .get(addr)
-      .then(ab => {
-        if (ab) {
-          let name = _.isObject(ab) ? ab.name : ab;
-          this.contactName = name;
-        }
-      })
-      .catch(err => {
-        this.logger.warn(err);
-      });
   }
 }

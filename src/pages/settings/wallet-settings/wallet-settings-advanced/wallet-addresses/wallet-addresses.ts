@@ -147,7 +147,10 @@ export class WalletAddressesPage {
   private processList(list): void {
     _.each(list, n => {
       n.path = n.path ? n.path.replace(/^m/g, 'xpub') : null;
-      n.address = this.walletProvider.getAddressView(this.wallet, n.address);
+      n.address = this.walletProvider.getAddressView(
+        this.wallet.coin,
+        n.address
+      );
     });
   }
 

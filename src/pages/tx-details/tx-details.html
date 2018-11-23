@@ -69,21 +69,7 @@
       </div>
     </label-tip>
 
-    <ion-item *ngIf="btx.action === 'sent'" class="container-to">
-      <span translate>To</span>
-      <div class="payment-to address-coppied">
-        <div class="text-address ellipsis">
-          <img *ngIf="!cardId" src="assets/img/icon-bitcoin-small.svg" width="12">
-          <img *ngIf="cardId" src="assets/img/icon-card.svg" width="12" class="icon-bitcoin">
-          <span class="address-divider"></span>
-        </div>
-        <div class="ellipsis" copy-to-clipboard="{{ btx.addressTo ? btx.addressTo : btx.outputs[0].address }}">
-          <span *ngIf="!contactName && !btx.addressTo">{{ btx.outputs[0].address }}</span>
-          <span *ngIf="!contactName && btx.addressTo">{{ btx.addressTo }}</span>
-          <span *ngIf="contactName">{{ contactName }}</span>
-        </div>
-      </div>
-    </ion-item>
+    <page-multiple-outputs *ngIf="btx.action === 'sent'" [tx]="btx"></page-multiple-outputs>
 
     <ion-item class="container-from">
       <span *ngIf="btx.action === 'sent'" translate>From</span>

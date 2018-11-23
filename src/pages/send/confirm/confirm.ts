@@ -61,6 +61,10 @@ export class ConfirmPage extends WalletTabsChild {
   public remainingTimeStr: string;
   public hideSlideButton: boolean;
   public amount;
+  public showMultiplesOutputs: boolean;
+  public fromMultiSend: boolean;
+  public recipients;
+  public coin: string;
 
   // Config Related values
   public config;
@@ -110,6 +114,9 @@ export class ConfirmPage extends WalletTabsChild {
       : 'normal';
     this.isCordova = this.platformProvider.isCordova;
     this.hideSlideButton = false;
+    this.showMultiplesOutputs = false;
+    this.recipients = this.navParams.data.recipients;
+    this.fromMultiSend = this.navParams.data.fromMultiSend;
   }
 
   ngOnInit() {
@@ -125,33 +132,39 @@ export class ConfirmPage extends WalletTabsChild {
     this.isOpenSelector = false;
     let B = this.navParams.data.coin == 'bch' ? this.bitcoreCash : this.bitcore;
     let networkName;
-    try {
-      networkName = new B.Address(this.navParams.data.toAddress).network.name;
-    } catch (e) {
-      var message = this.translate.instant(
-        'Copay only supports Bitcoin Cash using new version numbers addresses'
-      );
-      var backText = this.translate.instant('Go back');
-      var learnText = this.translate.instant('Learn more');
-      this.popupProvider
-        .ionicConfirm(null, message, backText, learnText)
-        .then(back => {
-          if (!back) {
-            var url =
-              'https://support.bitpay.com/hc/en-us/articles/115004671663';
-            this.externalLinkProvider.open(url);
-          }
-          this.navCtrl.pop();
-        });
-      return;
+    let amount;
+    if (this.fromMultiSend) {
+      networkName = this.navParams.data.network;
+      amount = this.navParams.data.totalAmount;
+      this.coin = this.navParams.data.coin;
+    } else {
+      amount = this.navParams.data.amount;
+      try {
+        networkName = new B.Address(this.navParams.data.toAddress).network.name;
+      } catch (e) {
+        var message = this.translate.instant(
+          'Copay only supports Bitcoin Cash using new version numbers addresses'
+        );
+        var backText = this.translate.instant('Go back');
+        var learnText = this.translate.instant('Learn more');
+        this.popupProvider
+          .ionicConfirm(null, message, backText, learnText)
+          .then(back => {
+            if (!back) {
+              var url =
+                'https://support.bitpay.com/hc/en-us/articles/115004671663';
+              this.externalLinkProvider.open(url);
+            }
+            this.navCtrl.pop();
+          });
+        return;
+      }
     }
 
     this.tx = {
       toAddress: this.navParams.data.toAddress,
       sendMax: this.navParams.data.useSendMax ? true : false,
-      amount: this.navParams.data.useSendMax
-        ? 0
-        : parseInt(this.navParams.data.amount, 10),
+      amount: this.navParams.data.useSendMax ? 0 : parseInt(amount, 10),
       description: this.navParams.data.description,
       paypro: this.navParams.data.paypro,
       spendUnconfirmed: this.config.wallet.spendUnconfirmed,
@@ -161,7 +174,9 @@ export class ConfirmPage extends WalletTabsChild {
       name: this.navParams.data.name,
       email: this.navParams.data.email,
       color: this.navParams.data.color,
-      network: networkName,
+      network: this.navParams.data.network
+        ? this.navParams.data.network
+        : networkName,
       coin: this.navParams.data.coin,
       txp: {}
     };
@@ -175,7 +190,7 @@ export class ConfirmPage extends WalletTabsChild {
         this.tx.coin && this.tx.coin == 'bch' ? 'normal ' : this.configFeeLevel;
     }
 
-    if (this.tx.coin && this.tx.coin == 'bch') {
+    if (this.tx.coin && this.tx.coin == 'bch' && !this.fromMultiSend) {
       // Use legacy address
       this.tx.toAddress = this.bitcoreCash
         .Address(this.tx.toAddress)
@@ -645,13 +660,36 @@ export class ConfirmPage extends WalletTabsChild {
 
       let txp: Partial<TransactionProposal> = {};
 
-      txp.outputs = [
-        {
-          toAddress: tx.toAddress,
-          amount: tx.amount,
-          message: tx.description
-        }
-      ];
+      if (this.fromMultiSend) {
+        txp.outputs = [];
+        this.navParams.data.recipients.forEach(recipient => {
+          if (tx.coin && tx.coin == 'bch') {
+            // Use legacy address
+            recipient.toAddress = this.bitcoreCash
+              .Address(recipient.toAddress)
+              .toString();
+
+            recipient.addressToShow = this.walletProvider.getAddressView(
+              tx.coin,
+              recipient.toAddress
+            );
+          }
+
+          txp.outputs.push({
+            toAddress: recipient.toAddress,
+            amount: recipient.amount,
+            message: tx.description
+          });
+        });
+      } else {
+        txp.outputs = [
+          {
+            toAddress: tx.toAddress,
+            amount: tx.amount,
+            message: tx.description
+          }
+        ];
+      }
 
       if (tx.sendMaxInfo) {
         txp.inputs = tx.sendMaxInfo.inputs;
