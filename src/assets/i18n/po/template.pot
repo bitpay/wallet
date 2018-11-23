@@ -27,6 +27,20 @@ msgid ""
 "means more resources can be committed to the app!"
 msgstr ""
 
+msgid "A new copayer just joined your wallet {{walletName}}."
+msgstr ""
+
+msgid "A new payment proposal has been created in your wallet {{walletName}}."
+msgstr ""
+
+msgid ""
+"A payment of {{amountStr}} has been received into your wallet "
+"{{walletName}}."
+msgstr ""
+
+msgid "A payment proposal in your wallet {{walletName}} has been rejected."
+msgstr ""
+
 msgid ""
 "A total of {{amountAboveMaxSizeStr}} {{coin}} were excluded. The maximum "
 "size allowed for a transaction was exceeded."
@@ -83,7 +97,13 @@ msgstr ""
 msgid "Add Memo"
 msgstr ""
 
+msgid "Add Recipient"
+msgstr ""
+
 msgid "Add account"
+msgstr ""
+
+msgid "Add amount"
 msgstr ""
 
 msgid "Add as a contact"
@@ -94,7 +114,7 @@ msgstr ""
 
 msgid ""
 "Add gift cards to your {appName} wallet from brands like Amazon, Delta, "
-"Hotels.com, and Uber."
+"Google Play, and Uber."
 msgstr ""
 
 msgid "Add this BitPay account ({{email}})?"
@@ -161,6 +181,9 @@ msgid "Amount below minimum allowed"
 msgstr ""
 
 msgid "Amount too big"
+msgstr ""
+
+msgid "Amount:"
 msgstr ""
 
 msgid ""
@@ -363,6 +386,9 @@ msgid "Certified by"
 msgstr ""
 
 msgid "Change Amount"
+msgstr ""
+
+msgid "Change amount"
 msgstr ""
 
 msgid "Check the transaction on your wallet details"
@@ -728,6 +754,9 @@ msgstr ""
 msgid "Enable camera access in your device settings to get started."
 msgstr ""
 
+msgid "Enable desktop notifications"
+msgstr ""
+
 msgid "Enable email notifications"
 msgstr ""
 
@@ -758,6 +787,9 @@ msgid "Enter a password to encrypt your wallet"
 msgstr ""
 
 msgid "Enter a transaction memo"
+msgstr ""
+
+msgid "Enter bitcoin address"
 msgstr ""
 
 msgid "Enter custom fee in sat/byte"
@@ -871,6 +903,9 @@ msgstr ""
 msgid "Fee level is not defined"
 msgstr ""
 
+msgid "Fee rate"
+msgstr ""
+
 msgid "Feedback"
 msgstr ""
 
@@ -893,6 +928,12 @@ msgid "File/Text"
 msgstr ""
 
 msgid "Fingerprint"
+msgstr ""
+
+msgid ""
+"Found something broken? Please report it as a bug. If you need immediate "
+"help with a problem you are having, then get help by contacting our support "
+"team."
 msgstr ""
 
 msgid "From"
@@ -934,6 +975,9 @@ msgid "Generating new address..."
 msgstr ""
 
 msgid "Get Help"
+msgstr ""
+
+msgid "Get help"
 msgstr ""
 
 msgid ""
@@ -1070,13 +1114,13 @@ msgid ""
 msgstr ""
 
 msgid ""
-"If you disable the persistent logs, all the logs registered so far will be "
-"deleted. However, you can still see the session logs on this screen."
+"If you have funds stored on a website then you should move them into a "
+"secure wallet... like this one!"
 msgstr ""
 
 msgid ""
-"If you have funds stored on a website then you should move them into a "
-"secure wallet... like this one!"
+"If you need immediate help with a problem you are having, then get help by "
+"contacting our support team."
 msgstr ""
 
 msgid ""
@@ -1282,7 +1326,13 @@ msgstr ""
 msgid "Moved Funds"
 msgstr ""
 
-msgid "Multiple recipients"
+msgid "Moving"
+msgstr ""
+
+msgid "Multiple Recipients"
+msgstr ""
+
+msgid "Multiple recipients:"
 msgstr ""
 
 msgid ""
@@ -1315,6 +1365,15 @@ msgid "Network error"
 msgstr ""
 
 msgid "New Proposal"
+msgstr ""
+
+msgid "New copayer"
+msgstr ""
+
+msgid "New payment proposal"
+msgstr ""
+
+msgid "New payment received"
 msgstr ""
 
 msgid "New wallet"
@@ -1554,6 +1613,9 @@ msgid ""
 "problem, it can be deleted 6 hours after it was created."
 msgstr ""
 
+msgid "Payment proposal rejected"
+msgstr ""
+
 msgid "Payment request"
 msgstr ""
 
@@ -1564,9 +1626,6 @@ msgid "Pending Proposals"
 msgstr ""
 
 msgid "Permanently delete this wallet."
-msgstr ""
-
-msgid "Persistent logs"
 msgstr ""
 
 msgid "Personal Wallet"
@@ -1600,6 +1659,9 @@ msgid "Please upgrade Copay to perform this action"
 msgstr ""
 
 msgid "Please wait..."
+msgstr ""
+
+msgid "Please, enter the amount"
 msgstr ""
 
 msgid "Please, select your backup file"
@@ -1748,6 +1810,12 @@ msgstr ""
 msgid "Report an Issue"
 msgstr ""
 
+msgid "Report an issue"
+msgstr ""
+
+msgid "Report issue"
+msgstr ""
+
 msgid "Request Encrypt Password"
 msgstr ""
 
@@ -1755,6 +1823,15 @@ msgid "Request Fingerprint"
 msgstr ""
 
 msgid "Request Specific Amount"
+msgstr ""
+
+msgid "Request a Feature"
+msgstr ""
+
+msgid "Request a new feature"
+msgstr ""
+
+msgid "Request feature"
 msgstr ""
 
 msgid "Required number of signatures"
@@ -1797,6 +1874,9 @@ msgid "Screenshots are not secure"
 msgstr ""
 
 msgid "Search Transactions"
+msgstr ""
+
+msgid "Search Wallets or Contacts"
 msgstr ""
 
 msgid "Search a contact"
@@ -1990,9 +2070,6 @@ msgstr ""
 msgid "Status"
 msgstr ""
 
-msgid "Submit Feature Request"
-msgstr ""
-
 msgid "Suggested by Merchant"
 msgstr ""
 
@@ -2140,6 +2217,11 @@ msgid "The total amount of bitcoin stored in this wallet."
 msgstr ""
 
 msgid ""
+"The transaction from {{walletName}} that you were waiting for has been "
+"confirmed."
+msgstr ""
+
+msgid ""
 "The transaction history and every new incoming transaction are cached in "
 "the app. This feature clean this up and synchronizes again from the server"
 msgstr ""
@@ -2218,6 +2300,9 @@ msgstr ""
 msgid "To get started, you'll need to create a bitcoin wallet and get some bitcoin."
 msgstr ""
 
+msgid "To get started, you'll need to enter a valid address, contact or wallet."
+msgstr ""
+
 msgid "To {{reason}} you must first add your BitPay account - {{email}}"
 msgstr ""
 
@@ -2254,6 +2339,9 @@ msgstr ""
 msgid "Transaction already broadcasted"
 msgstr ""
 
+msgid "Transaction confirmed"
+msgstr ""
+
 msgid "Transaction has not been created"
 msgstr ""
 
@@ -2272,6 +2360,9 @@ msgstr ""
 msgid "Transactions without fee are not supported."
 msgstr ""
 
+msgid "Transfer to"
+msgstr ""
+
 msgid "Transfer to Bitcoin Cash Wallet"
 msgstr ""
 
@@ -2279,6 +2370,9 @@ msgid "Transfer to Bitcoin Wallet"
 msgstr ""
 
 msgid "Transfer to Contact"
+msgstr ""
+
+msgid "Transfer to Multiple Recipients"
 msgstr ""
 
 msgid "Translate address"
@@ -2445,6 +2539,9 @@ msgid "Wallet already exists"
 msgstr ""
 
 msgid "Wallet already in {{nameCase}}"
+msgstr ""
+
+msgid "Wallet complete"
 msgstr ""
 
 msgid "Wallet created"
@@ -2668,6 +2765,9 @@ msgstr ""
 msgid ""
 "Your wallet key will be encrypted. The encrypt password cannot be "
 "recovered. Be sure to write it down."
+msgstr ""
+
+msgid "Your wallet {{walletName}} is complete."
 msgstr ""
 
 msgid "Your {walletType} wallet is backed up!"
