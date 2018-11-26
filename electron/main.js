@@ -1,4 +1,4 @@
-const { app, Menu, BrowserWindow, Notification, ipcMain } = require('electron');
+const { app, Menu, BrowserWindow } = require('electron');
 const path = require('path');
 const url = require('url');
 const os = require('os');
@@ -61,11 +61,11 @@ function createWindow() {
         win.webContents.send('open-url-event', deeplinkingUrl);
       }, 1000);
     }
-    if (Notification.isSupported()) {
+    /* if (Notification.isSupported()) {
       ipcMain.on('new-notification', (event, data) => {
         new Notification(data).show();
       });
-    }
+    } */
   });
 
   win.once('ready-to-show', () => {
@@ -145,7 +145,7 @@ app.setPath('userData', path.join(homeDir, `.${appConfig.name}/app`));
 
 // This method makes your application a Single Instance Application
 // https://electronjs.org/docs/api/app#apphassingleinstancelock
-const gotTheLock = app.requestSingleInstanceLock();
+/* const gotTheLock = app.requestSingleInstanceLock();
 
 if (!gotTheLock) {
   app.quit();
@@ -164,16 +164,15 @@ if (!gotTheLock) {
       if (win.isMinimized()) win.restore();
       win.focus();
     }
-  });
+  }); */
 
-  // This method will be called when Electron has finished
-  // initialization and is ready to create browser windows.
-  // Some APIs can only be used after this event occurs.
-  app.on('ready', () => {
-    createWindow();
-    createMenu();
-  });
-}
+// This method will be called when Electron has finished
+// initialization and is ready to create browser windows.
+// Some APIs can only be used after this event occurs.
+app.on('ready', () => {
+  createWindow();
+  createMenu();
+});
 
 // Quit when all windows are closed.
 app.on('window-all-closed', () => {
