@@ -55,7 +55,7 @@
     "e2e:docker": "cp .gitignore .dockerignore && docker build . -f test/visual/Dockerfile -t copay-visual-tests && rm .dockerignore && rm -rf test/visual/latest && mkdir test/visual/latest && docker run -it --shm-size=8G --mount type=bind,src=$(pwd)/test/visual/latest,dst=/copay/test/visual/latest,consistency=delegated copay-visual-tests",
     "e2e:capture-latest": "npm run env:e2e && npm run apply:copay && npm run e2e:update-ci && npm run e2e && npm run apply:bitpay && npm run e2e:update-ci && npm run e2e && npm run env:dev",
     "e2e:update": "webdriver-manager update --gecko false",
-    "e2e:update-ci": "npm run \"e2e:update -- --versions.chrome 2.37\"",
+    "e2e:update-ci": "npm run e2e:update -- --versions.chrome 2.37",
     "e2e:serve": "ts-node --project test/e2e/tsconfig.e2e.json test/e2e/mockAPI.ts",
     "env:prod": "rm -f src/environments/index.ts && cp src/environments/prod.ts src/environments/index.ts \n\n# Environment set to: prod\n\n",
     "env:dev": "rm -f src/environments/index.ts && cp src/environments/dev.ts src/environments/index.ts \n\n# Environment set to: dev\n\n",
