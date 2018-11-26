@@ -31,9 +31,9 @@
     "url": "https://github.com/bitpay/copay/issues"
   },
   "scripts": {
-    "postinstall": "sed -i  -e \"s/.*require(...\\/...);//g\" node_modules/asn1.js-rfc5280/index.js && npm run env:dev && npm run prompt",
+    "postinstall": "sed -i  -e \"s/.*require(...\\/...);//g\" node_modules/asn1.js-rfc5280/index.js && npm run e2e:update && npm run env:dev && npm run prompt",
     "prompt": "\n\n\n\n\n\n#\n#  Choose a distribution with:\n#\n#     $ npm run apply:copay\n#              or\n#     $ npm run apply:bitpay\n#\n",
-    "start": "npm run ionic:serve",
+    "start": "npm run ionic:serve && npm run e2e:serve",
     "clean": "rm -rf platforms && rm -rf plugins && rm -f config.xml",
     "prepare:copay": "npm run clean && npm run apply:copay && ionic cordova prepare && npm run fix:fcm",
     "prepare:bitpay": "npm run clean && npm run apply:bitpay && ionic cordova prepare && npm run fix:fcm",
