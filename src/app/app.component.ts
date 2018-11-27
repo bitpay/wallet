@@ -24,6 +24,7 @@ import { EmailNotificationsProvider } from '../providers/email-notifications/ema
 import { GlideraProvider } from '../providers/glidera/glidera';
 import { IncomingDataProvider } from '../providers/incoming-data/incoming-data';
 import { Logger } from '../providers/logger/logger';
+import { PersistenceProvider } from '../providers/persistence/persistence';
 import { PlatformProvider } from '../providers/platform/platform';
 import { PopupProvider } from '../providers/popup/popup';
 import { ProfileProvider } from '../providers/profile/profile';
@@ -100,7 +101,8 @@ export class CopayApp {
     private events: Events,
     private logger: Logger,
     private appProvider: AppProvider,
-    private profile: ProfileProvider,
+    private profileProvider: ProfileProvider,
+    private persistenceProvider: PersistenceProvider,
     private configProvider: ConfigProvider,
     private giftCardProvider: GiftCardProvider,
     private modalCtrl: ModalController,
@@ -211,7 +213,7 @@ export class CopayApp {
     this.scanFromWalletEvent();
     this.events.subscribe('OpenWallet', wallet => this.openWallet(wallet));
     // Check Profile
-    this.profile
+    this.profileProvider
       .loadAndBindProfile()
       .then(profile => {
         this.onProfileLoad(profile);
@@ -231,6 +233,12 @@ export class CopayApp {
 
     if (profile) {
       this.logger.info('Profile exists.');
+      const wallets = this.profileProvider.getWallets();
+      wallets.forEach(wallet => {
+        try {
+          this.persistenceProvider.removeBalanceCacheDeprecated(wallet.id);
+        } catch (e) {}
+      });
 
       this.rootPage = TabsPage;
 
@@ -243,7 +251,7 @@ export class CopayApp {
       }
     } else {
       this.logger.info('No profile exists.');
-      this.profile.createProfile();
+      this.profileProvider.createProfile();
       this.rootPage = OnboardingPage;
     }
   }
