@@ -30,7 +30,7 @@ const Keys = {
   GIFT_CARD_USER_INFO: 'amazonUserInfo', // keeps legacy key for backwards compatibility
   APP_IDENTITY: network => 'appIdentity-' + network,
   BACKUP: walletId => 'backup-' + walletId,
-  BALANCE_CACHE: cardId => 'balanceCache-' + cardId,
+  BALANCE: id => 'balance-' + id, // Cached balance
   BITPAY_ACCOUNTS_V2: network => 'bitpayAccounts-v2-' + network,
   CLEAN_AND_SCAN_ADDRESSES: 'CleanAndScanAddresses',
   COINBASE_REFRESH_TOKEN: network => 'coinbaseRefreshToken-' + network,
@@ -342,16 +342,16 @@ export class PersistenceProvider {
     return this.storage.remove(Keys.TX_HISTORY(walletId));
   }
 
-  setBalanceCache(cardId: string, data) {
-    return this.storage.set(Keys.BALANCE_CACHE(cardId), data);
+  setBalanceCache(id: string, data) {
+    return this.storage.set(Keys.BALANCE(id), data);
   }
 
-  getBalanceCache(cardId: string) {
-    return this.storage.get(Keys.BALANCE_CACHE(cardId));
+  getBalanceCache(id: string) {
+    return this.storage.get(Keys.BALANCE(id));
   }
 
-  removeBalanceCache(cardId: string) {
-    return this.storage.remove(Keys.BALANCE_CACHE(cardId));
+  removeBalanceCache(id: string) {
+    return this.storage.remove(Keys.BALANCE(id));
   }
 
   setAppIdentity(network: string, data) {
