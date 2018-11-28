@@ -12,7 +12,7 @@ msgstr ""
 "Last-Translator: cmgustavo83\n"
 "Language-Team: Russian\n"
 "Language: ru\n"
-"PO-Revision-Date: 2018-11-23 16:57\n"
+"PO-Revision-Date: 2018-11-28 20:32\n"
 
 msgid "(Trusted)"
 msgstr "(Доверенный)"
@@ -96,7 +96,7 @@ msgid "Add account"
 msgstr "Добавить учетную запись"
 
 msgid "Add amount"
-msgstr ""
+msgstr "Указать сумму"
 
 msgid "Add as a contact"
 msgstr "Добавить контакт"
