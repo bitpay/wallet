@@ -65,7 +65,6 @@ export {
   PushNotificationsProvider
 } from '../providers/push-notifications/push-notifications';
 export { RateProvider } from '../providers/rate/rate';
-export { ReleaseProvider } from '../providers/release/release';
 export {
   ReplaceParametersProvider
 } from '../providers/replace-parameters/replace-parameters';

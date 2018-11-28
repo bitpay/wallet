@@ -57,20 +57,6 @@
         </ion-card-content>
       </ion-card>
 
-      <ion-card class="new-release" *ngIf="newRelease">
-        <ion-card-content class="new-release-content">
-          <div class="new-release-icon no-header">
-            <img src="assets/img/icon-update.svg" />
-          </div>
-          <div class="new-release-body">
-            {{updateText}}
-          </div>
-          <div class="new-release-button" (click)="goToDownload()">
-            <span translate>Download</span>
-          </div>
-        </ion-card-content>
-      </ion-card>
-
       <div class="prompt-user-fullscreen-container" *ngIf="!wallets || !wallets[0]">
         <div class="prompt-user">
           <div class="title-icon larger-icon">

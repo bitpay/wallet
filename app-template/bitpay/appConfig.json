@@ -29,7 +29,7 @@
   "_extraCSS": null,
   "_enabledExtensions": {
     "coinbase": true,
-    "glidera": true,
+    "glidera": false,
     "debitcard": true,
     "shapeshift": true,
     "giftcards": true

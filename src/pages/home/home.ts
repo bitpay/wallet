@@ -43,8 +43,6 @@ import { PersistenceProvider } from '../../providers/persistence/persistence';
 import { PlatformProvider } from '../../providers/platform/platform';
 import { PopupProvider } from '../../providers/popup/popup';
 import { ProfileProvider } from '../../providers/profile/profile';
-import { ReleaseProvider } from '../../providers/release/release';
-import { ReplaceParametersProvider } from '../../providers/replace-parameters/replace-parameters';
 import { Coin, WalletProvider } from '../../providers/wallet/wallet';
 import { SettingsPage } from '../settings/settings';
 
@@ -67,7 +65,6 @@ export class HomePage {
   public serverMessage;
   public serverMessageDismissed: boolean;
   public addressbook;
-  public newRelease: boolean;
   public updateText: string;
   public homeIntegrations;
   public bitpayCardItems;
@@ -92,13 +89,11 @@ export class HomePage {
   private countDown;
   private onResumeSubscription: Subscription;
   private onPauseSubscription: Subscription;
-  private latestVersion: string;
 
   constructor(
     private plt: Platform,
     private navCtrl: NavController,
     private profileProvider: ProfileProvider,
-    private releaseProvider: ReleaseProvider,
     private walletProvider: WalletProvider,
     private bwcErrorProvider: BwcErrorProvider,
     private logger: Logger,
@@ -117,7 +112,6 @@ export class HomePage {
     private bitPayCardProvider: BitPayCardProvider,
     private translate: TranslateService,
     private emailProvider: EmailNotificationsProvider,
-    private replaceParametersProvider: ReplaceParametersProvider,
     private clipboardProvider: ClipboardProvider,
     private incomingDataProvider: IncomingDataProvider
   ) {
@@ -203,8 +197,6 @@ export class HomePage {
 
   ionViewDidLoad() {
     this.logger.info('Loaded: HomePage');
-
-    if (this.isElectron) this.checkUpdate();
     this.checkHomeTip();
     this.checkFeedbackInfo();
 
@@ -395,7 +387,7 @@ export class HomePage {
       } else {
         let feedbackInfo = info;
         // Check if current version is greater than saved version
-        let currentVersion = this.releaseProvider.getCurrentAppVersion();
+        let currentVersion = this.appProvider.info.version;
         let savedVersion = feedbackInfo.version;
         let isVersionUpdated = this.feedbackProvider.isVersionUpdated(
           currentVersion,
@@ -497,7 +489,7 @@ export class HomePage {
   private initFeedBackInfo() {
     this.persistenceProvider.setFeedbackInfo({
       time: moment().unix(),
-      version: this.releaseProvider.getCurrentAppVersion(),
+      version: this.appProvider.info.version,
       sent: false
     });
     this.showRateCard = false;
@@ -630,30 +622,6 @@ export class HomePage {
     });
   }
 
-  private checkUpdate(): void {
-    this.releaseProvider
-      .getLatestAppVersion()
-      .toPromise()
-      .then(version => {
-        this.latestVersion = version;
-        this.logger.debug('Current app version:', version);
-        var result = this.releaseProvider.checkForUpdates(version);
-        this.logger.debug('Update available:', result.updateAvailable);
-        if (result.updateAvailable) {
-          this.newRelease = true;
-          this.updateText = this.replaceParametersProvider.replace(
-            this.translate.instant(
-              'There is a new version of {{nameCase}} available'
-            ),
-            { nameCase: this.appProvider.info.nameCase }
-          );
-        }
-      })
-      .catch(err => {
-        this.logger.error('Error getLatestAppVersion', err);
-      });
-  }
-
   public dismissServerMessage(): void {
     this.logger.debug(
       'Server message id:' + this.serverMessage.id + ' dismissed'
@@ -746,40 +714,6 @@ export class HomePage {
     });
   }
 
-  public goToDownload(): void {
-    let url: string;
-    let okText: string;
-    let appName = this.appProvider.info.nameCase;
-    let OS = this.platformProvider.getOS();
-
-    if (OS.extension !== '') {
-      okText = this.translate.instant('Download');
-      url =
-        'https://github.com/bitpay/copay/releases/download/' +
-        this.latestVersion +
-        '/' +
-        appName +
-        OS.extension;
-    } else {
-      okText = this.translate.instant('View Update');
-      url = 'https://github.com/bitpay/copay/releases/latest';
-    }
-
-    let optIn = true;
-    let title = this.translate.instant('Update Available');
-    let message = this.translate.instant(
-      'An update to this app is available. For your security, please update to the latest version.'
-    );
-    let cancelText = this.translate.instant('Go Back');
-    this.externalLinkProvider.open(
-      url,
-      optIn,
-      title,
-      message,
-      okText,
-      cancelText
-    );
-  }
 
   public openTxpModal(tx): void {
     let modal = this.modalCtrl.create(
