@@ -25,7 +25,9 @@
     <div class="feedback-msg">{{comment}}</div>
   </div>
 
-  <div *ngIf="score == 1" class="user-feedback-card" (click)="leaveFeedback()">
+  <!-- 
+    TODO: reactivate feedback / create server to receive feedback
+    <div *ngIf="score == 1" class="user-feedback-card" (click)="leaveFeedback()">
     <ion-row>
       <div class="feedback-icon">
         <img src="assets/img/ico-chat.svg" />
@@ -38,7 +40,7 @@
       <div *ngIf="!leavingFeedback" class="feedback-action-icon arrow arrow-dropdown"></div>
       <div *ngIf="leavingFeedback" class="feedback-action-icon arrow arrow-dropup"></div>
     </ion-row>
-  </div>
+  </div> -->
   <div class="feedback-form-card" *ngIf="leavingFeedback">
     <form class="feedback-form" [formGroup]="feedbackForm">
       <ion-item>
