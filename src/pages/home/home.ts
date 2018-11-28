@@ -65,7 +65,6 @@ export class HomePage {
   public serverMessage;
   public serverMessageDismissed: boolean;
   public addressbook;
-  public updateText: string;
   public homeIntegrations;
   public bitpayCardItems;
   public showBitPayCard: boolean = false;
