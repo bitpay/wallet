@@ -663,6 +663,10 @@ export class HomePage {
   }
 
   public checkServerMessage(): void {
+    if (this.serverMessage.app && this.serverMessage.app != this.appProvider.info.name) {
+      this.serverMessageDismissed = true;
+      return;
+    }
     this.persistenceProvider
       .getServerMessageDismissed()
       .then((value: boolean) => {
