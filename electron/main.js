@@ -145,27 +145,29 @@ app.setPath('userData', path.join(homeDir, `.${appConfig.name}/app`));
 
 // This method makes your application a Single Instance Application
 // https://electronjs.org/docs/api/app#apphassingleinstancelock
-/* const gotTheLock = app.requestSingleInstanceLock();
+if (process.platform !== 'darwin') {
+  const gotTheLock = app.requestSingleInstanceLock();
 
-if (!gotTheLock) {
-  app.quit();
-  return;
-} else {
-  app.on('second-instance', (event, argv, workingDirectory) => {
-    if (win) {
-      // Windows - Linux: Handle deeplink url
-      if (process.platform == 'win32' || process.platform == 'linux') {
-        deeplinkingUrl = argv ? argv[1] : null;
-        if (deeplinkingUrl) {
-          win.webContents.send('open-url-event', deeplinkingUrl);
+  if (!gotTheLock) {
+    app.quit();
+    return;
+  } else {
+    app.on('second-instance', (event, argv, workingDirectory) => {
+      if (win) {
+        // Windows - Linux: Handle deeplink url
+        if (process.platform == 'win32' || process.platform == 'linux') {
+          deeplinkingUrl = argv ? argv[1] : null;
+          if (deeplinkingUrl) {
+            win.webContents.send('open-url-event', deeplinkingUrl);
+          }
         }
+        // Someone tried to run a second instance, we should focus our window.
+        if (win.isMinimized()) win.restore();
+        win.focus();
       }
-      // Someone tried to run a second instance, we should focus our window.
-      if (win.isMinimized()) win.restore();
-      win.focus();
-    }
-  }); */
-
+    });
+  }
+}
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
