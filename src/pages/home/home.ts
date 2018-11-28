@@ -714,7 +714,6 @@ export class HomePage {
     });
   }
 
-
   public openTxpModal(tx): void {
     let modal = this.modalCtrl.create(
       TxpDetailsPage,

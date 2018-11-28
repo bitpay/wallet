@@ -21,7 +21,7 @@ describe('HomePage', () => {
       instance = testEnv.instance;
       testBed = testEnv.testBed;
       instance.showCard = {
-        setShowRateCard: () => { }
+        setShowRateCard: () => {}
       };
       fixture.detectChanges();
     })));
