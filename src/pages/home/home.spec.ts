@@ -66,14 +66,6 @@ describe('HomePage', () => {
     });
 
     describe('ionViewDidLoad', () => {
-      it('should check for update if Electron', () => {
-        instance.isElectron = true;
-        const spy = spyOn(instance, 'checkUpdate');
-        instance.plt.resume = new Subject();
-        instance.plt.pause = new Subject();
-        instance.ionViewDidLoad();
-        expect(spy).toHaveBeenCalled();
-      });
       it('should update wallets on platform resume', () => {
         instance.plt.resume = new Subject();
         instance.plt.pause = new Subject();

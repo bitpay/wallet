@@ -40,7 +40,7 @@
     "clean-all": "git clean -dfx",
     "lint": "ionic-app-scripts lint",
     "ionic:build": "ionic-app-scripts build",
-    "ionic:serve": "ionic-app-scripts serve",
+    "ionic:serve": "ionic-app-scripts serve --nolivereload",
     "watch": "ng test --browsers=Chrome",
     "test": "npm run env:dev && npm run test:lint && npm run test:ci && npm run env:e2e && npm run e2e && npm run env:dev",
     "test:coverage": "ng test --code-coverage",

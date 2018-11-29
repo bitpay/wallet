@@ -11,8 +11,6 @@
         BitPay Inc.
     </author>
     <content src="index.html" />
-    <access origin="*" />
-
     <preference name="AndroidPersistentFileLocation" value="Internal" />
     <preference name="iosPersistentFileLocation" value="Library" />
     <preference name="DisallowOverscroll" value="true"/>
@@ -117,8 +115,6 @@
 
       <splash src="resources/*PACKAGENAME*/ios/splash/Default@2x~universal~anyany.png" />
       <splash src="resources/*PACKAGENAME*/ios/splash/Default@3x~universal~anyany.png" />
-
-      <allow-navigation href="*" />
     </platform>
 
     <platform name="android">

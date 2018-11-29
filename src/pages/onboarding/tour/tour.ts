@@ -9,7 +9,8 @@ import {
 import { Logger } from '../../../providers/logger/logger';
 
 // pages
-import { CollectEmailPage } from '../collect-email/collect-email';
+import { BackupRequestPage } from '../backup-request/backup-request';
+// import { CollectEmailPage } from '../collect-email/collect-email';
 
 // providers
 import { OnGoingProcessProvider } from '../../../providers/on-going-process/on-going-process';
@@ -90,7 +91,8 @@ export class TourPage {
       .then(wallet => {
         this.onGoingProcessProvider.clear();
         this.persistenceProvider.setOnboardingCompleted();
-        this.navCtrl.push(CollectEmailPage, { walletId: wallet.id });
+        // this.navCtrl.push(CollectEmailPage, { walletId: wallet.id });
+        this.navCtrl.push(BackupRequestPage, { walletId: wallet.id });
       })
       .catch(err => {
         setTimeout(() => {
