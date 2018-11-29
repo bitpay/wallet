@@ -127,7 +127,7 @@ export class IncomingDataProvider {
 
   private isValidBitPayCardUri(data: string): boolean {
     data = this.sanitizeUri(data);
-    return !!(data && data.indexOf('bitpay://bitpay.com?secret=') === 0);
+    return !!(data && data.indexOf('bitpay://bitpay') === 0);
   }
 
   private isValidJoinCode(data: string): boolean {
