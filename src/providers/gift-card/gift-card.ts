@@ -133,8 +133,16 @@ export class GiftCardProvider {
   }
 
   async saveGiftCard(giftCard: GiftCard, opts?: GiftCardSaveParams) {
+    const originalCard = (await this.getPurchasedCards(giftCard.name)).find(
+      c => c.invoiceId === giftCard.invoiceId
+    );
+    const cardChanged =
+      !originalCard ||
+      originalCard.status !== giftCard.status ||
+      originalCard.archived !== giftCard.archived;
+    const shouldNotify = cardChanged && giftCard.status !== 'UNREDEEMED';
     await this.saveCard(giftCard, opts);
-    giftCard.status !== 'UNREDEEMED' && this.cardUpdatesSubject.next(giftCard);
+    shouldNotify && this.cardUpdatesSubject.next(giftCard);
   }
 
   getNewSaveableGiftCardMap(oldGiftCards, gc, opts?): GiftCardMap {
@@ -239,21 +247,26 @@ export class GiftCardProvider {
             return of({ ...card, status: 'FAILURE' });
           })
         ),
-        mergeMap(card =>
-          card.status === 'SUCCESS'
-            ? of(card)
-            : fromPromise(
-                this.hasInvoiceReceivedPayment(card.invoiceId).then(
-                  hasPayment => ({
+        mergeMap(
+          card =>
+            card.status === 'UNREDEEMED' || card.status === 'PENDING'
+              ? fromPromise(
+                  this.getBitPayInvoice(card.invoiceId).then(invoice => ({
                     ...card,
-                    status: hasPayment ? card.status : 'expired'
-                  })
+                    status:
+                      (card.status === 'PENDING' ||
+                        (card.status === 'UNREDEEMED' &&
+                          invoice.status !== 'new')) &&
+                      invoice.status !== 'expired'
+                        ? 'PENDING'
+                        : 'expired'
+                  }))
                 )
-              )
+              : of(card)
         ),
         mergeMap(updatedCard => this.updatePreviouslyPendingCard(updatedCard))
       )
-      .subscribe(card => this.cardUpdatesSubject.next(card));
+      .subscribe(_ => this.logger.debug('Gift card updated'));
     return this.cardUpdates$;
   }
 
@@ -262,10 +275,7 @@ export class GiftCardProvider {
       this.saveGiftCard(updatedCard, {
         remove: updatedCard.status === 'expired'
       })
-    ).map(() => {
-      this.logger.debug('Gift card updated');
-      return updatedCard as GiftCard;
-    });
+    );
   }
 
   async createBitpayInvoice(data) {
@@ -302,12 +312,6 @@ export class GiftCardProvider {
       });
     this.logger.info('BitPay Get Invoice: SUCCESS');
     return res.data;
-  }
-
-  async hasInvoiceReceivedPayment(invoiceId: string) {
-    return this.getBitPayInvoice(invoiceId)
-      .then(invoice => invoice.status !== 'expired' && invoice.status !== 'new')
-      .catch(_ => false);
   }
 
   private checkIfCardNeedsUpdate(card: GiftCard) {
