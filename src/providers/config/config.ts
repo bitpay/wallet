@@ -75,14 +75,6 @@ export interface Config {
     giftcards: boolean;
   };
 
-  rates: {
-    url: string;
-  };
-
-  release: {
-    url: string;
-  };
-
   pushNotificationsEnabled: boolean;
 
   inAppNotificationsEnabled: boolean;
@@ -189,14 +181,6 @@ const configDefault: Config = {
     mercadolibre: true,
     shapeshift: true,
     giftcards: true
-  },
-
-  rates: {
-    url: 'https://insight.bitpay.com:443/api/rates'
-  },
-
-  release: {
-    url: 'https://api.github.com/repos/bitpay/copay/releases/latest'
   },
 
   pushNotificationsEnabled: true,
