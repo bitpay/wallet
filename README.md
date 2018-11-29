@@ -212,6 +212,8 @@ Since version 1.5, Copay uses the root `m/48'` for hardware multisignature walle
 
 Copay depends on [Bitcore Wallet Service](https://github.com/bitpay/bitcore-wallet-service) (BWS) for blockchain information, networking and Copayer synchronization. A BWS instance can be setup and operational within minutes or you can use a public instance like `https://bws.bitpay.com`. Switching between BWS instances is very simple and can be done with a click from within Copay. BWS also allows Copay to interoperate with other wallets like [Bitcore Wallet CLI](https://github.com/bitpay/bitcore-wallet).
 
+Please note that Copay v5.3.0 and above use CSP to restrict network access. To use a custom BWS see [CSP announcement](https://github.com/bitpay/copay/blob/master/CSP.md). 
+
 ## Translations
 
 Copay uses standard gettext PO files for translations and [Crowdin](https://crowdin.com/project/copay) as the front-end tool for translators. To join our team of translators, please create an account at [Crowdin](https://crowdin.com) and translate the Copay documentation and application text into your native language.
