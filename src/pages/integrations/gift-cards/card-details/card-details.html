@@ -50,7 +50,7 @@
         </div>
 
         <div *ngIf="!card.claimCode" class="card-info__status-message">
-          <div *ngIf="card.status == 'PENDING' || card.status == 'invalid'" class="card-info__body" translate>
+          <div *ngIf="card.status === 'PENDING' || card.status === 'invalid'" class="card-info__body" translate>
             Awaiting payment to confirm
           </div>
           <div *ngIf="card.status == 'FAILURE' || card.status == 'RESEND'" class="card-info__body" translate>
