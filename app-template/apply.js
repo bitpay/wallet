@@ -36,6 +36,10 @@ Object.keys(templates).forEach(function(k) {
   Object.keys(config).forEach(function(k) {
     if (k.indexOf('_') == 0) return;
 
+    if (config[k] == 'RANDOM_PORT')  {
+      config[k] = Math.floor(Math.random() * 40000 + 49152).toString();
+    }
+
     const r = new RegExp('\\*' + k.toUpperCase() + '\\*', 'g');
     content = content.replace(r, config[k]);
   });
