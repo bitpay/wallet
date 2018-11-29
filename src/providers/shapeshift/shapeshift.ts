@@ -134,7 +134,10 @@ export class ShapeshiftProvider {
         return cb(null, data);
       },
       data => {
-        this.logger.error('Shapeshift PAIR ERROR: ' + data.error.message);
+        const err = data.error.error
+          ? data.error.error.message
+          : data.error.message;
+        this.logger.error('Shapeshift PAIR ERROR: ' + err);
         return cb(data);
       }
     );
@@ -147,7 +150,10 @@ export class ShapeshiftProvider {
         return cb(null, data);
       },
       data => {
-        this.logger.error('Shapeshift LIMIT ERROR: ' + data.error.message);
+        const err = data.error.error
+          ? data.error.error.message
+          : data.error.message;
+        this.logger.error('Shapeshift LIMIT ERROR: ' + err);
         return cb(data);
       }
     );
@@ -160,7 +166,10 @@ export class ShapeshiftProvider {
         return cb(null, data);
       },
       data => {
-        this.logger.error('Shapeshift MARKET INFO ERROR', data.error.message);
+        const err = data.error.error
+          ? data.error.error.message
+          : data.error.message;
+        this.logger.error('Shapeshift MARKET INFO ERROR: ', err);
         return cb(data);
       }
     );
@@ -248,7 +257,7 @@ export class ShapeshiftProvider {
         const error =
           data && data.error && data.error.error_description
             ? data.error.error_description
-            : data.statusText;
+            : data.message;
         this.logger.error(
           'ShapeShift: GET Access Token: ERROR ' + data.status + '. ' + error
         );
