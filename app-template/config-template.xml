@@ -11,6 +11,7 @@
         BitPay Inc.
     </author>
     <content src="index.html" />
+    <allow-navigation href="http://localhost:*WKPORT*/" />
     <preference name="AndroidPersistentFileLocation" value="Internal" />
     <preference name="iosPersistentFileLocation" value="Library" />
     <preference name="DisallowOverscroll" value="true"/>
