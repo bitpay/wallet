@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
+import { File } from '@ionic-native/file';
 import { Logger } from '../../providers/logger/logger';
 
 // providers
@@ -45,15 +46,16 @@ interface App {
 export class AppProvider {
   public info: any = {};
   public servicesInfo;
-  private jsonPathApp: string = 'assets/appConfig.json';
-  private jsonPathServices: string = 'assets/externalServices.json';
+  private jsonPathApp: string = 'appConfig.json';
+  private jsonPathServices: string = 'externalServices.json';
 
   constructor(
     public http: HttpClient,
     private logger: Logger,
     private language: LanguageProvider,
     public config: ConfigProvider,
-    private persistence: PersistenceProvider
+    private persistence: PersistenceProvider,
+    private file: File
   ) {
     this.logger.debug('AppProvider initialized');
   }
@@ -67,6 +69,8 @@ export class AppProvider {
       this.getServicesInfo(),
       this.getAppInfo()
     ]);
+    this.info = JSON.parse(this.info);
+    this.servicesInfo = JSON.parse(this.servicesInfo);
   }
 
   private async loadProviders() {
@@ -76,10 +80,10 @@ export class AppProvider {
   }
 
   private getAppInfo() {
-    return this.http.get(this.jsonPathApp).toPromise();
+    return this.file.readAsText(this.file.applicationDirectory + "www/assets", this.jsonPathApp);
   }
 
   private getServicesInfo() {
-    return this.http.get(this.jsonPathServices).toPromise();
+    return this.file.readAsText(this.file.applicationDirectory + "www/assets", this.jsonPathServices);
   }
 }
