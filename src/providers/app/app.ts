@@ -1,12 +1,14 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
-import { Logger } from '../../providers/logger/logger';
+import { File } from '@ionic-native/file';
 
 // providers
 import { ConfigProvider } from '../../providers/config/config';
 import { LanguageProvider } from '../../providers/language/language';
+import { Logger } from '../../providers/logger/logger';
 import { PersistenceProvider } from '../../providers/persistence/persistence';
+import { PlatformProvider } from '../platform/platform';
 
 /* TODO: implement interface properly
 interface App {
@@ -53,7 +55,9 @@ export class AppProvider {
     private logger: Logger,
     private language: LanguageProvider,
     public config: ConfigProvider,
-    private persistence: PersistenceProvider
+    private persistence: PersistenceProvider,
+    private file: File,
+    private platformProvider: PlatformProvider
   ) {
     this.logger.debug('AppProvider initialized');
   }
@@ -67,6 +71,10 @@ export class AppProvider {
       this.getServicesInfo(),
       this.getAppInfo()
     ]);
+    if (this.platformProvider.isCordova) {
+      this.info = JSON.parse(this.info);
+      this.servicesInfo = JSON.parse(this.servicesInfo);
+    }
   }
 
   private async loadProviders() {
@@ -76,10 +84,24 @@ export class AppProvider {
   }
 
   private getAppInfo() {
-    return this.http.get(this.jsonPathApp).toPromise();
+    if (this.platformProvider.isCordova) {
+      return this.file.readAsText(
+        this.file.applicationDirectory + 'www/',
+        this.jsonPathApp
+      );
+    } else {
+      return this.http.get(this.jsonPathApp).toPromise();
+    }
   }
 
   private getServicesInfo() {
-    return this.http.get(this.jsonPathServices).toPromise();
+    if (this.platformProvider.isCordova) {
+      return this.file.readAsText(
+        this.file.applicationDirectory + 'www/',
+        this.jsonPathServices
+      );
+    } else {
+      return this.http.get(this.jsonPathServices).toPromise();
+    }
   }
 }
