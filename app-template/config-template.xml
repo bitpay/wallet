@@ -116,6 +116,14 @@
     </platform>
 
     <platform name="android">
+    <access origin="https://bws.bitpay.com" />
+    <access origin="https://bitpay.com" />
+    <access origin="https://test.bitpay.com" />
+    <access origin="https://auth.shapeshift.io" />
+    <access origin="https://shapeshift.io" />
+    <access origin="https://api.coinbase.com" />
+    <access origin="https://coinbase.com" />
+
       <preference name="android-manifest/application/@android:allowBackup" value="false" />
 
       <icon src="resources/*PACKAGENAME*/android/icon/drawable-ldpi-icon.png" density="ldpi" />
