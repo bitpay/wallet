@@ -8,6 +8,7 @@ import { Logger } from '../../providers/logger/logger';
 import { ConfigProvider } from '../../providers/config/config';
 import { LanguageProvider } from '../../providers/language/language';
 import { PersistenceProvider } from '../../providers/persistence/persistence';
+import { PlatformProvider } from '../platform/platform';
 
 /* TODO: implement interface properly
 interface App {
@@ -46,8 +47,8 @@ interface App {
 export class AppProvider {
   public info: any = {};
   public servicesInfo;
-  private jsonPathApp: string = 'appConfig.json';
-  private jsonPathServices: string = 'externalServices.json';
+  private jsonPathApp: string = 'assets/appConfig.json';
+  private jsonPathServices: string = 'assets/externalServices.json';
 
   constructor(
     public http: HttpClient,
@@ -55,7 +56,8 @@ export class AppProvider {
     private language: LanguageProvider,
     public config: ConfigProvider,
     private persistence: PersistenceProvider,
-    private file: File
+    private file: File,
+    private platformProvider: PlatformProvider
   ) {
     this.logger.debug('AppProvider initialized');
   }
@@ -69,8 +71,10 @@ export class AppProvider {
       this.getServicesInfo(),
       this.getAppInfo()
     ]);
-    this.info = JSON.parse(this.info);
-    this.servicesInfo = JSON.parse(this.servicesInfo);
+    if (this.platformProvider.isCordova) {
+      this.info = JSON.parse(this.info);
+      this.servicesInfo = JSON.parse(this.servicesInfo);
+    }
   }
 
   private async loadProviders() {
@@ -80,10 +84,24 @@ export class AppProvider {
   }
 
   private getAppInfo() {
-    return this.file.readAsText(this.file.applicationDirectory + "www/assets", this.jsonPathApp);
+    if (this.platformProvider.isCordova) {
+      return this.file.readAsText(
+        this.file.applicationDirectory + 'www/',
+        this.jsonPathApp
+      );
+    } else {
+      return this.http.get(this.jsonPathApp).toPromise();
+    }
   }
 
   private getServicesInfo() {
-    return this.file.readAsText(this.file.applicationDirectory + "www/assets", this.jsonPathServices);
+    if (this.platformProvider.isCordova) {
+      return this.file.readAsText(
+        this.file.applicationDirectory + 'www/',
+        this.jsonPathServices
+      );
+    } else {
+      return this.http.get(this.jsonPathServices).toPromise();
+    }
   }
 }
