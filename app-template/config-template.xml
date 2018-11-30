@@ -11,7 +11,6 @@
         BitPay Inc.
     </author>
     <content src="index.html" />
-    <allow-navigation href="http://localhost:*WKPORT*/" />
     <preference name="AndroidPersistentFileLocation" value="Internal" />
     <preference name="iosPersistentFileLocation" value="Library" />
     <preference name="DisallowOverscroll" value="true"/>
@@ -31,9 +30,6 @@
     <preference name="FadeSplashScreenDuration" value="200" />
     <preference name="SplashMaintainAspectRatio" value="true" />
     <preference name="loadUrlTimeoutValue" value="60000" />
-
-    <preference name="WKPort" value="*WKPORT*" />
-    <preference name="WKInternalConnectionsOnly" value="true" />
 
     <!-- Android Version: Lollipop 5.1 (API Level 22) or higher -->
     <preference name="android-minSdkVersion" value="22" />

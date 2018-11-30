@@ -26,7 +26,6 @@
   "description": "A Secure Bitcoin Wallet",
   "version": "5.3.0",
   "androidVersion": "53000000",
-  "WKPort": "RANDOM_PORT",
   "_extraCSS": null,
   "_enabledExtensions": {
     "coinbase": false,
