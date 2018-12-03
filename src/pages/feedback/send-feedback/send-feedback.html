@@ -1,8 +1,8 @@
 <ion-header>
   <ion-navbar [hideBackButton]="fromCard">
     <ion-title>{{'Feedback'|translate}}</ion-title>
-    <ion-buttons left *ngIf="fromCard">
-      <button ion-button clear (click)="sendFeedback(null, true)">
+    <ion-buttons left *ngIf="fromCard" (click)="goHome()">
+      <button ion-button clear>
         <ion-icon class="close-btn" name="close"></ion-icon>
       </button>
     </ion-buttons>
@@ -40,7 +40,7 @@
       <div *ngIf="!leavingFeedback" class="feedback-action-icon arrow arrow-dropdown"></div>
       <div *ngIf="leavingFeedback" class="feedback-action-icon arrow arrow-dropup"></div>
     </ion-row>
-  </div> -->
+  </div>
   <div class="feedback-form-card" *ngIf="leavingFeedback">
     <form class="feedback-form" [formGroup]="feedbackForm">
       <ion-item>
@@ -50,7 +50,7 @@
     <button ion-button class="button-standard" (click)="sendFeedback(feedbackForm.value.comment)" [disabled]="!feedbackForm.valid">
       {{'Send' | translate}}
     </button>
-  </div>
+  </div> -->
   <div *ngIf="(score == 3 || !score) && isCordova" class="user-feedback-card" (click)="showAppreciationSheet()">
     <ion-row>
       <div class="feedback-icon">

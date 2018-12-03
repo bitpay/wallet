@@ -134,6 +134,10 @@ export class SendFeedbackPage {
     await this.externalLinkProvider.open(url);
   }
 
+  public goHome() {
+    this.navCtrl.popToRoot({ animate: false });
+  }
+
   public async sendFeedback(feedback: string, goHome: boolean): Promise<void> {
     const config = this.configProvider.get();
 
