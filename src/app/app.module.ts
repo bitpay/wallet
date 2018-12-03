@@ -102,7 +102,7 @@ export class MyMissingTranslationHandler implements MissingTranslationHandler {
       animate: env.enableAnimations,
       tabsHideOnSubPages: true,
       tabsPlacement: 'bottom',
-      backButtonIcon: 'ios-arrow-round-back-outline',
+      backButtonIcon: 'arrow-round-back',
       backButtonText: ''
     }),
     BrowserModule,
