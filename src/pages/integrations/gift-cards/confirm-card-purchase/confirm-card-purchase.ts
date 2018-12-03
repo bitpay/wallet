@@ -18,6 +18,7 @@ import {
 import { ActionSheetProvider } from '../../../../providers/action-sheet/action-sheet';
 import { BwcErrorProvider } from '../../../../providers/bwc-error/bwc-error';
 import { BwcProvider } from '../../../../providers/bwc/bwc';
+import { ClipboardProvider } from '../../../../providers/clipboard/clipboard';
 import { ConfigProvider } from '../../../../providers/config/config';
 import { ExternalLinkProvider } from '../../../../providers/external-link/external-link';
 import { GiftCardProvider } from '../../../../providers/gift-card/gift-card';
@@ -86,7 +87,8 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
     translate: TranslateService,
     private payproProvider: PayproProvider,
     platformProvider: PlatformProvider,
-    walletTabsProvider: WalletTabsProvider
+    walletTabsProvider: WalletTabsProvider,
+    clipboardProvider: ClipboardProvider
   ) {
     super(
       actionSheetProvider,
@@ -110,7 +112,8 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
       txConfirmNotificationProvider,
       txFormatProvider,
       walletProvider,
-      walletTabsProvider
+      walletTabsProvider,
+      clipboardProvider
     );
     this.hideSlideButton = false;
     this.configWallet = this.configProvider.get().wallet;

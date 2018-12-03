@@ -15,6 +15,7 @@ import { ChooseFeeLevelPage } from '../choose-fee-level/choose-fee-level';
 import { ActionSheetProvider } from '../../../providers/action-sheet/action-sheet';
 import { BwcErrorProvider } from '../../../providers/bwc-error/bwc-error';
 import { BwcProvider } from '../../../providers/bwc/bwc';
+import { ClipboardProvider } from '../../../providers/clipboard/clipboard';
 import { ConfigProvider } from '../../../providers/config/config';
 import { ExternalLinkProvider } from '../../../providers/external-link/external-link';
 import { FeeProvider } from '../../../providers/fee/fee';
@@ -101,7 +102,8 @@ export class ConfirmPage extends WalletTabsChild {
     protected txConfirmNotificationProvider: TxConfirmNotificationProvider,
     protected txFormatProvider: TxFormatProvider,
     protected walletProvider: WalletProvider,
-    walletTabsProvider: WalletTabsProvider
+    walletTabsProvider: WalletTabsProvider,
+    protected clipboardProvider: ClipboardProvider
   ) {
     super(navCtrl, profileProvider, walletTabsProvider);
     this.bitcore = this.bwcProvider.getBitcore();
@@ -910,6 +912,12 @@ export class ConfirmPage extends WalletTabsChild {
       enableBackdropDismiss: false
     });
     await modal.present();
+
+    this.clipboardProvider.clearClipboardIfValidData([
+      'PayPro',
+      'BitcoinUri',
+      'BitcoinCashUri'
+    ]);
 
     this.isWithinWalletTabs()
       ? this.close()
