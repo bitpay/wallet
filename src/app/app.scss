@@ -61,7 +61,7 @@ ion-label {
 }
 
 // Hide border when refresh
-.has-refresher > .scroll-content {
+.has-refresher>.scroll-content {
   border-top: none !important;
 }
 
@@ -110,6 +110,7 @@ ion-spinner * {
 }
 
 .tabbar {
+
   .tabs-md &,
   .tabs-ios & {
     background: white;
@@ -345,24 +346,24 @@ ion-icon {
 
   // custom icons
   &[class*='tab-activity'] {
-    mask-image: url(../assets/img/tab-icons/ico-activity.svg);
+    -webkit-mask-box-image: url(../assets/img/tab-icons/ico-activity.svg);
   }
 
   &[class*='tab-receive'] {
-    mask-image: url(../assets/img/tab-icons/ico-receive.svg);
+    -webkit-mask-box-image: url(../assets/img/tab-icons/ico-receive.svg);
   }
 
   &[class*='tab-scan'] {
-    mask-image: url(../assets/img/tab-icons/ico-scan.svg);
+    -webkit-mask-box-image: url(../assets/img/tab-icons/ico-scan.svg);
     width: 3rem !important;
   }
 
   &[class*='tab-send'] {
-    mask-image: url(../assets/img/tab-icons/ico-send.svg);
+    -webkit-mask-box-image: url(../assets/img/tab-icons/ico-send.svg);
   }
 
   &[class*='tab-button-back'] {
-    mask-image: url(../assets/img/button-back.svg);
+    -webkit-mask-box-image: url(../assets/img/button-back.svg);
   }
 }
 
@@ -400,6 +401,7 @@ ion-icon {
   &:hover,
   &:focus,
   &:active {
+
     &.button-md,
     &.button-ios {
       background-color: #ededed;
@@ -410,6 +412,7 @@ ion-icon {
 
   &:active,
   &.activated {
+
     &.button-md,
     &.button-ios {
       background-color: #e5e5e5;
@@ -497,7 +500,7 @@ button.modal-close-button {
       padding: 5px;
     }
 
-    .aclass > img {
+    .aclass>img {
       filter: grayscale(100%);
       height: 100%;
       width: 100%;
