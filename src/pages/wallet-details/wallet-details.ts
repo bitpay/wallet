@@ -258,10 +258,10 @@ export class WalletDetailsPage extends WalletTabsChild {
         if (!resp) return;
         this.analyzeUtxosDone = true;
         this.lowUtxosWarning = !!resp.warning;
-        this.logger.info(resp.warning);
+        this.logger.debug('Low UTXOs warning: ', this.lowUtxosWarning);
       })
       .catch(err => {
-        this.logger.error('analyzeUtxos', err);
+        this.logger.warn('Analyze UTXOs: ', err);
       });
   }
 

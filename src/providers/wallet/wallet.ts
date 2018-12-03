@@ -1310,7 +1310,8 @@ export class WalletProvider {
           coin: wallet.coin
         },
         (err, resp) => {
-          if (err || !resp || !resp.length) return reject(err);
+          if (err || !resp || !resp.length)
+            return reject(err ? err : 'No UTXOs');
 
           this.getMinFee(wallet, resp.length).then(fee => {
             let minFee = fee;
