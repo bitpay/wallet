@@ -1287,7 +1287,7 @@ export class CoinbaseProvider {
                     status: 'error',
                     error: err
                   },
-                  function(err) {
+                  err => {
                     if (err) this.logger.error(err);
                     this._updateTxs(coinbasePendingTransactions);
                   }
