@@ -418,11 +418,11 @@ export class ConfirmPage extends WalletTabsChild {
       this.onGoingProcessProvider.set('calculatingFee');
       this.feeProvider
         .getFeeRate(
-          wallet.coin,
-          tx.network,
-          this.usingMerchantFee
-            ? maxAllowedMerchantFee[wallet.coin]
-            : this.tx.feeLevel
+        wallet.coin,
+        tx.network,
+        this.usingMerchantFee
+          ? maxAllowedMerchantFee[wallet.coin]
+          : this.tx.feeLevel
         )
         .then(feeRate => {
           let msg;
@@ -433,9 +433,9 @@ export class ConfirmPage extends WalletTabsChild {
             let maxAllowedFee = feeRate * 2;
             this.logger.info(
               'Using Merchant Fee:' +
-                tx.feeRate +
-                ' vs. referent level:' +
-                maxAllowedFee
+              tx.feeRate +
+              ' vs. referent level:' +
+              maxAllowedFee
             );
             if (tx.network != 'testnet' && tx.feeRate > maxAllowedFee) {
               this.onGoingProcessProvider.set('calculatingFee');
@@ -771,8 +771,8 @@ export class ConfirmPage extends WalletTabsChild {
         this.isWithinWalletTabs()
           ? this.navCtrl.popToRoot()
           : this.navCtrl.last().name == 'ConfirmCardPurchasePage'
-          ? this.navCtrl.pop()
-          : this.app.getRootNavs()[0].setRoot(TabsPage);
+            ? this.navCtrl.pop()
+            : this.app.getRootNavs()[0].setRoot(TabsPage);
       }
     });
   }
@@ -811,7 +811,7 @@ export class ConfirmPage extends WalletTabsChild {
     this.onGoingProcessProvider.set('creatingTx');
     return this.getTxp(_.clone(tx), wallet, false)
       .then(txp => {
-        return this.confirmTx(tx, txp, wallet).then((nok: boolean) => {
+        return this.confirmTx(txp, wallet).then((nok: boolean) => {
           if (nok) {
             if (this.isCordova) this.slideButton.isConfirmed(false);
             this.onGoingProcessProvider.clear();
@@ -826,7 +826,7 @@ export class ConfirmPage extends WalletTabsChild {
       });
   }
 
-  private confirmTx(_, txp, wallet) {
+  private confirmTx(txp, wallet) {
     return new Promise<boolean>(resolve => {
       if (this.walletProvider.isEncrypted(wallet)) return resolve(false);
       this.txFormatProvider.formatToUSD(wallet.coin, txp.amount).then(val => {
