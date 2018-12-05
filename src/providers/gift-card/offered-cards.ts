@@ -43,7 +43,7 @@ export const offeredGiftCards: BaseCardConfig[] = [
     defaultClaimCodeType: 'code',
     emailRequired: false,
     icon:
-      'assets/img/gift-cards/carnival-cruise-line/carnival-cruise-line-icon.svg',
+      'assets/img/gift-cards/carnival-cruise-line/carnival-cruise-line-icon.png',
     logo:
       'assets/img/gift-cards/carnival-cruise-line/carnival-cruise-line-logo.svg',
     logoBackgroundColor: '#ffffff',
@@ -84,7 +84,6 @@ export const offeredGiftCards: BaseCardConfig[] = [
     logoBackgroundColor: '#E17232',
     name: CardName.homeDepot,
     website: 'homedepot.com'
-    // hidePin: true
   },
   {
     brand: CardBrand.hotelsCom,
