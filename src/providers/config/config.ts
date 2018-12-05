@@ -109,7 +109,7 @@ export interface Config {
 @Injectable()
 export class ConfigProvider {
   public configCache: Config;
-  public configDefault: Config;
+  public readonly configDefault: Config;
 
   constructor(
     private logger: Logger,
