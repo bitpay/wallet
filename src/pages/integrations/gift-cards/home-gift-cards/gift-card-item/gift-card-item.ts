@@ -97,9 +97,7 @@ export class GiftCardItem {
   }
 
   getBrandClass() {
-    return (
-      this.cardConfig && this.cardConfig.brand.replace('.', '').replace(' ', '')
-    );
+    return this.cardConfig && this.cardConfig.brand.replace(/\W/g, '');
   }
 
   private async setBrandStyling() {

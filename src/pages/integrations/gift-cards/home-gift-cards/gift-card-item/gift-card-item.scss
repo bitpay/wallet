@@ -46,6 +46,7 @@ gift-card-item {
       height: $gift-card-item-height;
 
       ion-label {
+
         &.label-ios,
         &.label-md {
           display: flex;
@@ -70,6 +71,12 @@ gift-card-item {
 
         &.Amazon {
           transform: translate($img-x-translate, 2px);
+        }
+
+        &.CarnivalCruiseLine {
+          max-height: 30px;
+          margin-top: -8px;
+          margin-left: -2px;
         }
 
         &.Delta {
