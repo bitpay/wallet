@@ -37,6 +37,20 @@ export const offeredGiftCards: BaseCardConfig[] = [
     website: 'amazon.co.jp'
   },
   {
+    brand: CardBrand.carnivalCruiseLine,
+    cardImage:
+      'assets/img/gift-cards/carnival-cruise-line/carnival-cruise-line-card.png',
+    defaultClaimCodeType: 'code',
+    emailRequired: false,
+    icon:
+      'assets/img/gift-cards/carnival-cruise-line/carnival-cruise-line-icon.svg',
+    logo:
+      'assets/img/gift-cards/carnival-cruise-line/carnival-cruise-line-logo.svg',
+    logoBackgroundColor: '#ffffff',
+    name: CardName.carnivalCruiseLine,
+    website: 'carnival.com'
+  },
+  {
     brand: CardBrand.delta,
     cardImage: 'assets/img/gift-cards/delta/delta-gift-card-white.png',
     defaultClaimCodeType: 'link',
