@@ -111,7 +111,7 @@ export const offeredGiftCards: BaseCardConfig[] = [
   {
     brand: CardBrand.royalCaribbean,
     cardImage: 'assets/img/gift-cards/royal-caribbean/royal-caribbean-card.png',
-    defaultClaimCodeType: 'code',
+    defaultClaimCodeType: 'link',
     emailRequired: false,
     icon: 'assets/img/gift-cards/royal-caribbean/royal-caribbean-icon.svg',
     logo: 'assets/img/gift-cards/royal-caribbean/royal-caribbean-logo.svg',
