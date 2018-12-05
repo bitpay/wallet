@@ -188,7 +188,7 @@ export class CopayApp {
       this.screenOrientation.lock(this.screenOrientation.ORIENTATIONS.PORTRAIT);
 
       // Only overlay for iOS
-      if (this.platform.is('ios')) this.statusBar.overlaysWebView(true);
+      if (this.platform.is('ios')) this.statusBar.overlaysWebView(false);
 
       this.statusBar.styleLightContent();
       this.splashScreen.hide();
@@ -326,6 +326,8 @@ export class CopayApp {
     if (this.isWalletModalOpen) {
       this.walletModal.dismiss();
     }
+    const defaultColor =
+      this.appProvider.info.nameCase == 'Copay' ? '#192c3a' : '#2A3F90';
     const page = wallet.isComplete() ? WalletTabsPage : CopayersPage;
     this.isWalletModalOpen = true;
     this.walletModal = this.modalCtrl.create(
@@ -338,7 +340,11 @@ export class CopayApp {
       }
     );
     this.walletModal.present();
+    setTimeout(() => {
+      this.statusBar.backgroundColorByHexString(wallet.color);
+    }, 500);
     this.walletModal.onDidDismiss(() => {
+      this.statusBar.backgroundColorByHexString(defaultColor);
       this.isWalletModalOpen = false;
     });
   }
