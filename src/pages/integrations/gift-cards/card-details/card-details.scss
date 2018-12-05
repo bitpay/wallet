@@ -92,18 +92,27 @@ card-details-page {
         margin-top: 10px;
       }
     }
-  }
 
-  ngx-barcode.card-info__body {
-    margin: 12px 0 0px;
+    ngx-barcode.card-info__body {
+      margin-bottom: 0 !important;
+      margin-top: 8px !important;
 
-    .barcode {
-      > svg {
-        max-width: 100%;
+      & + div.card-info__body {
+        margin-top: 0;
 
-        > g > text {
-          font-weight: 500 !important;
+        &.long {
+          font-size: 14px;
+          margin-bottom: 17px;
+
+          @media (max-width: 350px) {
+            font-size: 12px;
+          }
         }
+      }
+
+      canvas {
+        width: 100%;
+        height: 70px;
       }
     }
   }

@@ -2,8 +2,10 @@ export enum CardBrand {
   amazon = 'Amazon',
   delta = 'Delta',
   googlePlay = 'Google Play',
+  homeDepot = 'Home Depot',
   hotelsCom = 'Hotels.com',
   mercadoLibre = 'Mercado Livre',
+  royalCaribbean = 'Royal Caribbean',
   uber = 'Uber',
   uberEats = 'Uber Eats',
   venue = 'Venue'
@@ -14,8 +16,10 @@ export enum CardName {
   amazonJapan = 'Amazon.co.jp',
   delta = 'Delta Air Lines',
   googlePlay = 'Google Play',
+  homeDepot = 'Home Depot',
   hotelsCom = 'Hotels.com',
   mercadoLibre = 'Mercado Livre',
+  royalCaribbean = 'Royal Caribbean',
   uber = 'Uber',
   uberEats = 'Uber Eats',
   venue = 'Venue USD'

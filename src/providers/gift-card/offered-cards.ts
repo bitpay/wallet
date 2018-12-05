@@ -61,6 +61,18 @@ export const offeredGiftCards: BaseCardConfig[] = [
     website: 'play.google.com'
   },
   {
+    brand: CardBrand.homeDepot,
+    cardImage: 'assets/img/gift-cards/home-depot/home-depot-card.png',
+    defaultClaimCodeType: 'barcode',
+    emailRequired: false,
+    icon: 'assets/img/gift-cards/home-depot/home-depot-icon.svg',
+    logo: 'assets/img/gift-cards/home-depot/home-depot-logo.svg',
+    logoBackgroundColor: '#E17232',
+    name: CardName.homeDepot,
+    website: 'homedepot.com'
+    // hidePin: true
+  },
+  {
     brand: CardBrand.hotelsCom,
     cardImage: 'assets/img/gift-cards/hotels.com/hotels.com-card.png',
     defaultClaimCodeType: 'code',
@@ -81,6 +93,17 @@ export const offeredGiftCards: BaseCardConfig[] = [
     logoBackgroundColor: '#ffffff',
     name: CardName.mercadoLibre,
     website: 'mercadolivre.com.br'
+  },
+  {
+    brand: CardBrand.royalCaribbean,
+    cardImage: 'assets/img/gift-cards/royal-caribbean/royal-caribbean-card.png',
+    defaultClaimCodeType: 'code',
+    emailRequired: false,
+    icon: 'assets/img/gift-cards/royal-caribbean/royal-caribbean-icon.svg',
+    logo: 'assets/img/gift-cards/royal-caribbean/royal-caribbean-logo.svg',
+    logoBackgroundColor: '#0668A4',
+    name: CardName.royalCaribbean,
+    website: 'royalcaribbean.com'
   },
   {
     brand: CardBrand.uber,

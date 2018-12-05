@@ -76,11 +76,22 @@ gift-card-item {
           max-height: 17px;
         }
 
+        &.HomeDepot {
+          max-height: 42px;
+          margin-left: -3px;
+        }
+
         &.Hotelscom {
           margin-left: -4px;
           margin-top: -4px;
           max-height: 32px;
           height: 32px;
+        }
+
+        &.RoyalCaribbean {
+          margin-left: -1px;
+          margin-top: -1px;
+          max-height: 37px;
         }
       }
     }

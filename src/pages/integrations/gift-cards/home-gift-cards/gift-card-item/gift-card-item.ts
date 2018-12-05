@@ -23,10 +23,7 @@ export type CardItemAction = 'archive' | 'view';
   template: `
     <ion-item-sliding #slidingItem>
       <button ion-item (click)="performAction('view')">
-        <img
-          class="{{cardConfig?.brand.replace('.', '')}}"
-          [src]="cardConfig?.logo"
-        />
+        <img class="{{this.getBrandClass()}}" [src]="cardConfig?.logo" />
         <ion-note
           item-end
           [ngClass]="{ dark: cardConfig?.logoBackgroundColor === '#ffffff' }"
@@ -97,6 +94,12 @@ export class GiftCardItem {
 
   shouldShowTotalBalance() {
     return this.cardConfig && this.numCurrencies === 1 && this.totalBalance;
+  }
+
+  getBrandClass() {
+    return (
+      this.cardConfig && this.cardConfig.brand.replace('.', '').replace(' ', '')
+    );
   }
 
   private async setBrandStyling() {
