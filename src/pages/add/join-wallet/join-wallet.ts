@@ -133,6 +133,7 @@ export class JoinWalletPage {
     } else {
       this.joinForm.get('recoveryPhrase').setValidators(null);
     }
+    this.joinForm.controls['recoveryPhrase'].setValue(null);
     this.joinForm.controls['selectedSeed'].setValue(seed);
     this.processInvitation(this.joinForm.value.invitationCode);
   }
