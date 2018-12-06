@@ -188,7 +188,7 @@ export class MultiSendPage extends WalletTabsChild {
           this.wallet.coin,
           +amount
         );
-      } catch {
+      } catch (_err) {
         // If pasted address isn't a valid uri
         toAddress = _.clone(this.search);
         recipientType = 'address';

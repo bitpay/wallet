@@ -811,7 +811,7 @@ export class ConfirmPage extends WalletTabsChild {
     this.onGoingProcessProvider.set('creatingTx');
     return this.getTxp(_.clone(tx), wallet, false)
       .then(txp => {
-        return this.confirmTx(tx, txp, wallet).then((nok: boolean) => {
+        return this.confirmTx(txp, wallet).then((nok: boolean) => {
           if (nok) {
             if (this.isCordova) this.slideButton.isConfirmed(false);
             this.onGoingProcessProvider.clear();
@@ -826,12 +826,12 @@ export class ConfirmPage extends WalletTabsChild {
       });
   }
 
-  private confirmTx(_, txp, wallet) {
-    return new Promise(resolve => {
-      if (this.walletProvider.isEncrypted(wallet)) return resolve();
+  private confirmTx(txp, wallet) {
+    return new Promise<boolean>(resolve => {
+      if (this.walletProvider.isEncrypted(wallet)) return resolve(false);
       this.txFormatProvider.formatToUSD(wallet.coin, txp.amount).then(val => {
         let amountUsd = parseFloat(val);
-        if (amountUsd <= this.CONFIRM_LIMIT_USD) return resolve();
+        if (amountUsd <= this.CONFIRM_LIMIT_USD) return resolve(false);
 
         let amount = (this.tx.amount / 1e8).toFixed(8);
         let unit = txp.coin.toUpperCase();
