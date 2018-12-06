@@ -37,6 +37,20 @@ export const offeredGiftCards: BaseCardConfig[] = [
     website: 'amazon.co.jp'
   },
   {
+    brand: CardBrand.carnivalCruiseLine,
+    cardImage:
+      'assets/img/gift-cards/carnival-cruise-line/carnival-cruise-line-card.png',
+    defaultClaimCodeType: 'code',
+    emailRequired: false,
+    icon:
+      'assets/img/gift-cards/carnival-cruise-line/carnival-cruise-line-icon.png',
+    logo:
+      'assets/img/gift-cards/carnival-cruise-line/carnival-cruise-line-logo.svg',
+    logoBackgroundColor: '#ffffff',
+    name: CardName.carnivalCruiseLine,
+    website: 'carnival.com'
+  },
+  {
     brand: CardBrand.delta,
     cardImage: 'assets/img/gift-cards/delta/delta-gift-card-white.png',
     defaultClaimCodeType: 'link',
@@ -61,6 +75,17 @@ export const offeredGiftCards: BaseCardConfig[] = [
     website: 'play.google.com'
   },
   {
+    brand: CardBrand.homeDepot,
+    cardImage: 'assets/img/gift-cards/home-depot/home-depot-card.png',
+    defaultClaimCodeType: 'barcode',
+    emailRequired: false,
+    icon: 'assets/img/gift-cards/home-depot/home-depot-icon.svg',
+    logo: 'assets/img/gift-cards/home-depot/home-depot-logo.svg',
+    logoBackgroundColor: '#E17232',
+    name: CardName.homeDepot,
+    website: 'homedepot.com'
+  },
+  {
     brand: CardBrand.hotelsCom,
     cardImage: 'assets/img/gift-cards/hotels.com/hotels.com-card.png',
     defaultClaimCodeType: 'code',
@@ -81,6 +106,17 @@ export const offeredGiftCards: BaseCardConfig[] = [
     logoBackgroundColor: '#ffffff',
     name: CardName.mercadoLibre,
     website: 'mercadolivre.com.br'
+  },
+  {
+    brand: CardBrand.royalCaribbean,
+    cardImage: 'assets/img/gift-cards/royal-caribbean/royal-caribbean-card.png',
+    defaultClaimCodeType: 'link',
+    emailRequired: false,
+    icon: 'assets/img/gift-cards/royal-caribbean/royal-caribbean-icon.svg',
+    logo: 'assets/img/gift-cards/royal-caribbean/royal-caribbean-logo.svg',
+    logoBackgroundColor: '#0668A4',
+    name: CardName.royalCaribbean,
+    website: 'royalcaribbean.com'
   },
   {
     brand: CardBrand.uber,

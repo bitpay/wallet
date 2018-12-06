@@ -27,8 +27,16 @@
               <div class="card-info__body" *ngIf="cardConfig?.defaultClaimCodeType !== 'barcode'">
                 {{card.claimCode}}
               </div>
+
+              <ngx-barcode *ngIf="cardConfig?.defaultClaimCodeType === 'barcode'" class="card-info__body" [bc-value]="card.claimCode"
+                bc-display-value="false" bc-element-type="canvas" bc-height="70" [bc-width]="1.8" bc-background="#f7f7f7"
+                bc-font="Roboto" bc-text-margin="8" bc-text-position="bottom" bc-font-size="20"></ngx-barcode>
+              <div class="card-info__body" [ngClass]="{long: card.claimCode.length > 20 }" *ngIf="cardConfig?.defaultClaimCodeType === 'barcode'">
+                {{card.claimCode}}
+              </div>
+              <div class="card-info__date" *ngIf="!hasPin()">Created {{card.date | amTimeAgo}}</div>
             </div>
-            <div class="card-info__date" *ngIf="!hasPin()">Created {{card.date | amTimeAgo}}</div>
+
 
             <div *ngIf="hasPin()">
               <div class="separator"></div>
@@ -39,10 +47,6 @@
                 </div>
               </div>
             </div>
-
-            <ngx-barcode *ngIf="cardConfig?.defaultClaimCodeType === 'barcode'" class="card-info__body" [bc-value]="card.claimCode"
-              bc-display-value="true" bc-height="55" [bc-width]="1.6" bc-background="#f7f7f7" bc-font="Roboto"
-              bc-text-margin="8" bc-text-position="top" bc-font-size="15"></ngx-barcode>
           </div>
           <div *ngIf="card.status == 'Canceled'" class="card-info__body" translate>
             Gift card canceled
