@@ -155,7 +155,7 @@ export class JoinWalletPage {
         this.setDerivationPath(walletData.network);
         this.logger.info('Correct invitation code for ' + walletData.network);
       } catch (ex) {
-        this.logger.warn(ex);
+        this.logger.warn('Error parsing invitation: ' + ex);
       }
     }
   }
