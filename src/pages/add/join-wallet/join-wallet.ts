@@ -10,6 +10,7 @@ import { TabsPage } from '../../tabs/tabs';
 // Providers
 import { ActionSheetProvider } from '../../../providers/action-sheet/action-sheet';
 import { BwcProvider } from '../../../providers/bwc/bwc';
+import { ClipboardProvider } from '../../../providers/clipboard/clipboard';
 import { ConfigProvider } from '../../../providers/config/config';
 import { DerivationPathHelperProvider } from '../../../providers/derivation-path-helper/derivation-path-helper';
 import { Logger } from '../../../providers/logger/logger';
@@ -54,7 +55,8 @@ export class JoinWalletPage {
     private translate: TranslateService,
     private events: Events,
     private pushNotificationsProvider: PushNotificationsProvider,
-    private actionSheetProvider: ActionSheetProvider
+    private actionSheetProvider: ActionSheetProvider,
+    private clipboardProvider: ClipboardProvider
   ) {
     this.okText = this.translate.instant('Ok');
     this.cancelText = this.translate.instant('Cancel');
@@ -213,6 +215,7 @@ export class JoinWalletPage {
     this.profileProvider
       .joinWallet(opts)
       .then(wallet => {
+        this.clipboardProvider.clearClipboardIfValidData(['JoinWallet']);
         this.onGoingProcessProvider.clear();
         this.events.publish('status:updated');
         this.walletProvider.updateRemotePreferences(wallet);
