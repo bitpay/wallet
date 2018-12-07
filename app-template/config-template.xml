@@ -77,6 +77,9 @@
     </plugin>
     <plugin name="cordova-plugin-fcm" spec="https://github.com/cmgustavo/cordova-plugin-fcm.git#v4.1" />
 
+    <!-- Keyboard input focus fix -->
+    <plugin name="cordova-plugin-wkwebview-inputfocusfix" spec="https://github.com/cmgustavo/cordova-plugin-wkwebview-inputfocusfix.git#3a4e7908331ae110d6fc269c6c6f11b5e756e3f7" />
+
     <plugin name="cordova-plugin-wkwebview-engine" spec="1.1.4" />
 
     <!-- Platform Specific Settings -->
