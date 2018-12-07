@@ -13,7 +13,7 @@
 
     <ion-item>
       <ion-label stacked>{{'Wallet invitation' | translate}}</ion-label>
-      <ion-input type="text" formControlName="invitationCode" placeholder="{{'Enter wallet invitation'| translate}}"></ion-input>
+      <ion-input type="text" formControlName="invitationCode" (ionChange)="processInvitation(joinForm.value.invitationCode)" placeholder="{{'Enter wallet invitation'| translate}}"></ion-input>
 
       <ion-icon *ngIf="joinForm.controls.invitationCode.status == 'VALID'" name="ios-checkmark-circle" class="check success" item-right></ion-icon>
 
