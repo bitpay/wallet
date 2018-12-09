@@ -42,6 +42,7 @@ export class WalletExportPage extends WalletTabsChild {
   public exportWalletInfo;
   public supported: boolean;
   public showQrCode: boolean;
+  public walletName: string = '';
 
   constructor(
     public profileProvider: ProfileProvider,
@@ -85,6 +86,7 @@ export class WalletExportPage extends WalletTabsChild {
     this.isCordova = this.platformProvider.isCordova;
     this.isSafari = this.platformProvider.isSafari;
     this.isIOS = this.platformProvider.isIOS;
+    this.walletName = this.wallet.credentials.walletName || this.wallet.credentials.walletId;
   }
 
   private matchingPasswords(passwordKey: string, confirmPasswordKey: string) {
@@ -361,6 +363,11 @@ export class WalletExportPage extends WalletTabsChild {
           });
         });
     });
+  }
+
+  public printQr(): boolean {
+    window.print();
+    return false;
   }
 
   private showErrorInfoSheet(err?: Error | string): void {
