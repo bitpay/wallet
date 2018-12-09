@@ -86,7 +86,8 @@ export class WalletExportPage extends WalletTabsChild {
     this.isCordova = this.platformProvider.isCordova;
     this.isSafari = this.platformProvider.isSafari;
     this.isIOS = this.platformProvider.isIOS;
-    this.walletName = this.wallet.credentials.walletName || this.wallet.credentials.walletId;
+    this.walletName =
+      this.wallet.credentials.walletName || this.wallet.credentials.walletId;
   }
 
   private matchingPasswords(passwordKey: string, confirmPasswordKey: string) {
