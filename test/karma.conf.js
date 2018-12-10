@@ -21,17 +21,16 @@ module.exports = function(config) {
       clearContext: false // leave Jasmine Spec Runner output visible in browser
     },
     files: [],
-    preprocessors: {
-      
-    },
+    preprocessors: {},
     mime: {
       'text/x-typescript': ['ts', 'tsx']
     },
     coverageIstanbulReporter: {
-      dir: require('path').join(__dirname, 'coverage'), reports: ['html', 'lcovonly'],
+      dir: require('path').join(__dirname, 'coverage'),
+      reports: ['html', 'lcovonly'],
       fixWebpackSourcePaths: true
     },
-    
+
     reporters:
       config.angularCli && config.angularCli.codeCoverage
         ? ['spec', 'coverage-istanbul']
