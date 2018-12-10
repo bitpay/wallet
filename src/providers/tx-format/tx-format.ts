@@ -26,7 +26,7 @@ export class TxFormatProvider {
   }
 
   public toCashAddress(address: string, withPrefix?: boolean): string {
-    let cashAddr: string = this.bitcoreCash.Address(address).toCashAddress();
+    let cashAddr: string = this.bitcoreCash.Address(address).toString();
 
     if (withPrefix) {
       return cashAddr;
@@ -36,7 +36,7 @@ export class TxFormatProvider {
   }
 
   public toLegacyAddress(address: string): string {
-    let legacyAddr: string = this.bitcoreCash.Address(address);
+    let legacyAddr: string = this.bitcoreCash.Address(address).toLegacyAddress();
     return legacyAddr;
   }
 
