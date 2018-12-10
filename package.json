@@ -252,7 +252,6 @@
     "@types/node": "7.0.61",
     "ajv": "6.2.0",
     "archiver": "2.1.1",
-    "bhttp": "1.2.4",
     "cached-path-relative": "1.0.2",
     "codecov": "3.1.0",
     "connect": "3.6.5",
