@@ -232,10 +232,12 @@
     "sw-toolbox": "3.6.0",
     "text-encoding": "0.6.4",
     "ts-md5": "1.2.2",
+    "tslib": "1.9.0",
     "web-animations-js": "2.3.1",
     "zone.js": "0.8.26"
   },
   "devDependencies": {
+    "@angular-devkit/build-angular": "0.11.0",
     "@angular/cli": "7.1.1",
     "@biesbjerg/ngx-translate-extract": "2.3.4",
     "@ionic-native-mocks/android-fingerprint-auth": "2.0.12",
