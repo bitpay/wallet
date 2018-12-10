@@ -7,7 +7,7 @@ import { PersistenceProvider } from '../persistence/persistence';
 import { RateProvider } from '../rate/rate';
 import { TxFormatProvider } from './tx-format';
 
-fdescribe('TxFormatProvider', () => {
+describe('TxFormatProvider', () => {
   let configProvider: ConfigProvider;
   let filterProvider: FilterProvider;
   let rateProvider: RateProvider;
