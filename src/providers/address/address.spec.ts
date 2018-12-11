@@ -10,28 +10,32 @@ describe('AddressProvider', () => {
   });
 
   describe('getCoin', () => {
-    let BTCLivenetAddresses = [
+    const BTCLivenetAddresses = [
       '15qT4RJTjs7GSTReEmgXr4LbMjTVQ51LZA',
-      'bitcoin:1CVuVALD6Zo7ms24n3iUXv162kvUzsHr69'
+      'bitcoin:1CVuVALD6Zo7ms24n3iUXv162kvUzsHr69',
+      'bitcoin:1CVuVALD6Zo7ms24n3iUXv162kvUzsHr69?amount=0.00090000'
     ];
 
-    let BTCTestnetAddresses = [
+    const BTCTestnetAddresses = [
       'mscoRRUxbicZdUms3EqDr9jwtCmbbPgfcY',
-      'bitcoin:n3LHh1WTFSpSVKXNFQo4U5eLAqowCadFHY'
+      'bitcoin:n3LHh1WTFSpSVKXNFQo4U5eLAqowCadFHY',
+      'bitcoin:n3LHh1WTFSpSVKXNFQo4U5eLAqowCadFHY?amount=0.00090000'
     ];
 
-    let BCHLivenetAddresses = [
+    const BCHLivenetAddresses = [
       'CHUwf57Maceqk5jhMX6NJkuLEbHEfqqgwx', // BCH Livenet Bitpay Style
       'qq9jk8jskjsmgqnzygwjsghp3knautm2dcnc5e4k7n',
       'bitcoincash:qz8ds306px5n65gffn8u69vvnksfw6huwyjczrvkh3',
-      'BITCOINCASH:qz8ds306px5n65gffn8u69vvnksfw6huwyjczrvkh3'
+      'BITCOINCASH:qz8ds306px5n65gffn8u69vvnksfw6huwyjczrvkh3',
+      'bitcoincash:qz8ds306px5n65gffn8u69vvnksfw6huwyjczrvkh3?amount=0.00090000'
     ];
 
-    let BCHTestnetAddresses = [
+    const BCHTestnetAddresses = [
       // 'mg6PLV5yyUS6Gy55fJ7f994dQ7RpfJNYC9', // TODO: BCH Testnet Bitpay Style
       'qqr99gt5qdk4qyaxxvzeapgjuxkg6x9ueue95fakj7',
       'bitcoincash:qqycye950l689c98l7z5j43n4484ssnp4y3uu4ramr',
-      'BCHTEST:qqycye950l689c98l7z5j43n4484ssnp4y3uu4ramr'
+      'BCHTEST:qqycye950l689c98l7z5j43n4484ssnp4y3uu4ramr',
+      'BCHTEST:qqycye950l689c98l7z5j43n4484ssnp4y3uu4ramr?amount=0.00090000'
     ];
 
     it("should get 'btc' string if address is BTC Livenet", () => {
@@ -57,135 +61,70 @@ describe('AddressProvider', () => {
         expect(addressProvider.getCoin(BCHTestnetAddress)).toEqual('bch');
       });
     });
-  });
 
-  describe('validateAddress', () => {
-    it('should validate if BTC livenet address is correct and return correct values', () => {
-      let BTCLivenetAddress = '15qT4RJTjs7GSTReEmgXr4LbMjTVQ51LZA';
-      let result = addressProvider.validateAddress(BTCLivenetAddress);
-      expect(result).toEqual({
-        address: '15qT4RJTjs7GSTReEmgXr4LbMjTVQ51LZA',
-        isValid: true,
-        network: 'livenet',
-        coin: 'btc',
-        translation: {
-          origCoin: 'btc',
-          origAddress: '15qT4RJTjs7GSTReEmgXr4LbMjTVQ51LZA',
-          resultCoin: 'bch',
-          resultAddress: 'CMJLdTeXcv5oLbL4vX1TRZxcyrfuLP7NP2'
-        }
-      });
-    });
-
-    it('should validate if BTC testnet address is correct and return correct values', () => {
-      let BTCTestnetAddress = 'mscoRRUxbicZdUms3EqDr9jwtCmbbPgfcY';
-      let result = addressProvider.validateAddress(BTCTestnetAddress);
-      expect(result).toEqual({
-        address: 'mscoRRUxbicZdUms3EqDr9jwtCmbbPgfcY',
-        isValid: true,
-        network: 'testnet',
-        coin: 'btc',
-        translation: {
-          origCoin: 'btc',
-          origAddress: 'mscoRRUxbicZdUms3EqDr9jwtCmbbPgfcY',
-          resultCoin: 'bch',
-          resultAddress: 'mscoRRUxbicZdUms3EqDr9jwtCmbbPgfcY'
-        }
-      });
-    });
-
-    it('should validate if BCH livenet address is correct and return correct values', () => {
-      let BCHLivenetAddress = 'qq9jk8jskjsmgqnzygwjsghp3knautm2dcnc5e4k7n';
-      let result = addressProvider.validateAddress(BCHLivenetAddress);
-      expect(result).toEqual({
-        address: 'qq9jk8jskjsmgqnzygwjsghp3knautm2dcnc5e4k7n',
-        isValid: true,
-        network: 'livenet',
-        coin: 'bch',
-        translation: {
-          origCoin: 'bch',
-          origAddress: 'qq9jk8jskjsmgqnzygwjsghp3knautm2dcnc5e4k7n',
-          resultCoin: 'btc',
-          resultAddress: '122462mHhZgJqwqGfmmSjFHJcU4pjCKuV9'
-        }
-      });
-    });
-
-    it('should validate if BCH testnet address is correct and return correct values', () => {
-      let BCHTestnetAddress = 'qqr99gt5qdk4qyaxxvzeapgjuxkg6x9ueue95fakj7';
-      let result = addressProvider.validateAddress(BCHTestnetAddress);
-      expect(result).toEqual({
-        address: 'qqr99gt5qdk4qyaxxvzeapgjuxkg6x9ueue95fakj7',
-        isValid: true,
-        network: 'testnet',
-        coin: 'bch',
-        translation: {
-          origCoin: 'bch',
-          origAddress: 'qqr99gt5qdk4qyaxxvzeapgjuxkg6x9ueue95fakj7',
-          resultCoin: 'btc',
-          resultAddress: 'mg6PLV5yyUS6Gy55fJ7f994dQ7RpfJNYC9'
-        }
-      });
-    });
-
-    it('should return invalid values if we send an invalid address', () => {
-      let address = 'invalidAddress';
-      let result = addressProvider.validateAddress(address);
-      expect(result).toEqual({
-        address: 'invalidAddress',
-        isValid: false,
-        network: 'livenet',
-        coin: null,
-        translation: undefined
-      });
+    it('should return null if we send an invalid address', () => {
+      const address = 'invalidAddress';
+      const result = addressProvider.getCoin(address);
+      expect(result).toBeNull();
     });
   });
 
   describe('getNetwork', () => {
-    it('should return correct network for BTC livenet address', () => {
-      let BTCLivenetAddress = '15qT4RJTjs7GSTReEmgXr4LbMjTVQ51LZA';
-      let result = addressProvider.getNetwork(BTCLivenetAddress);
-      expect(result).toEqual('livenet');
+    const BTCLivenetAddresses = [
+      '15qT4RJTjs7GSTReEmgXr4LbMjTVQ51LZA',
+      'bitcoin:1CVuVALD6Zo7ms24n3iUXv162kvUzsHr69',
+      'bitcoin:1CVuVALD6Zo7ms24n3iUXv162kvUzsHr69?amount=0.00090000'
+    ];
 
-      BTCLivenetAddress = 'bitcoin:1CVuVALD6Zo7ms24n3iUXv162kvUzsHr69';
-      result = addressProvider.getNetwork(BTCLivenetAddress);
-      expect(result).toEqual('livenet');
+    const BTCTestnetAddresses = [
+      'mscoRRUxbicZdUms3EqDr9jwtCmbbPgfcY',
+      'bitcoin:n3LHh1WTFSpSVKXNFQo4U5eLAqowCadFHY',
+      'bitcoin:n3LHh1WTFSpSVKXNFQo4U5eLAqowCadFHY?amount=0.00090000'
+    ];
+
+    const BCHLivenetAddresses = [
+      'CHUwf57Maceqk5jhMX6NJkuLEbHEfqqgwx', // BCH Livenet Bitpay Style
+      'qq9jk8jskjsmgqnzygwjsghp3knautm2dcnc5e4k7n',
+      'bitcoincash:qz8ds306px5n65gffn8u69vvnksfw6huwyjczrvkh3',
+      'BITCOINCASH:qz8ds306px5n65gffn8u69vvnksfw6huwyjczrvkh3',
+      'bitcoincash:qz8ds306px5n65gffn8u69vvnksfw6huwyjczrvkh3?amount=0.00090000'
+    ];
+
+    const BCHTestnetAddresses = [
+      // 'mg6PLV5yyUS6Gy55fJ7f994dQ7RpfJNYC9', // TODO: BCH Testnet Bitpay Style
+      'qqr99gt5qdk4qyaxxvzeapgjuxkg6x9ueue95fakj7',
+      'bitcoincash:qqycye950l689c98l7z5j43n4484ssnp4y3uu4ramr',
+      'BCHTEST:qqycye950l689c98l7z5j43n4484ssnp4y3uu4ramr',
+      'BCHTEST:qqycye950l689c98l7z5j43n4484ssnp4y3uu4ramr?amount=0.00090000'
+    ];
+
+    it("should get 'livenet' string if address is BTC Livenet", () => {
+      BTCLivenetAddresses.forEach(BTCLivenetAddress => {
+        expect(addressProvider.getNetwork(BTCLivenetAddress)).toEqual('livenet');
+      });
     });
 
-    it('should return correct network for BTC testnet address', () => {
-      let BTCTestnetAddress = 'mscoRRUxbicZdUms3EqDr9jwtCmbbPgfcY';
-      let result = addressProvider.getNetwork(BTCTestnetAddress);
-      expect(result).toEqual('testnet');
-
-      BTCTestnetAddress = 'bitcoin:n3LHh1WTFSpSVKXNFQo4U5eLAqowCadFHY';
-      result = addressProvider.getNetwork(BTCTestnetAddress);
-      expect(result).toEqual('testnet');
+    it("should get 'testnet' string if address is BTC Testnet", () => {
+      BTCTestnetAddresses.forEach(BTCTestnetAddress => {
+        expect(addressProvider.getNetwork(BTCTestnetAddress)).toEqual('testnet');
+      });
     });
 
-    it('should return correct network for BCH livenet address', () => {
-      let BCHLivenetAddress = 'qq9jk8jskjsmgqnzygwjsghp3knautm2dcnc5e4k7n';
-      let result = addressProvider.getNetwork(BCHLivenetAddress);
-      expect(result).toEqual('livenet');
-
-      BCHLivenetAddress =
-        'BITCOINCASH:qz8ds306px5n65gffn8u69vvnksfw6huwyjczrvkh3';
-      result = addressProvider.getNetwork(BCHLivenetAddress);
-      expect(result).toEqual('livenet');
+    it("should get 'livenet' string if address is BCH Livenet", () => {
+      BCHLivenetAddresses.forEach(BCHLivenetAddress => {
+        expect(addressProvider.getNetwork(BCHLivenetAddress)).toEqual('livenet');
+      });
     });
 
-    it('should return correct network for BCH testnet address', () => {
-      let BCHTestnetAddress = 'qqr99gt5qdk4qyaxxvzeapgjuxkg6x9ueue95fakj7';
-      let result = addressProvider.getNetwork(BCHTestnetAddress);
-      expect(result).toEqual('testnet');
-
-      BCHTestnetAddress = 'BCHTEST:qqycye950l689c98l7z5j43n4484ssnp4y3uu4ramr';
-      result = addressProvider.getNetwork(BCHTestnetAddress);
-      expect(result).toEqual('testnet');
+    it("should get 'testnet' string if address is BCH Testnet", () => {
+      BCHTestnetAddresses.forEach(BCHTestnetAddress => {
+        expect(addressProvider.getNetwork(BCHTestnetAddress)).toEqual('testnet');
+      });
     });
 
-    it('should return undefined if we send an invalid address', () => {
-      let address = 'invalidAddress';
-      let result = addressProvider.getNetwork(address);
+    it('should return null if we send an invalid address', () => {
+      const address = 'invalidAddress';
+      const result = addressProvider.getNetwork(address);
       expect(result).toBeUndefined();
     });
   });

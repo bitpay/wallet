@@ -89,7 +89,7 @@ export class ReceivePage extends WalletTabsChild {
       color: this.wallet.color,
       coin: this.wallet.coin,
       nextPage: 'CustomAmountPage',
-      network: this.addressProvider.validateAddress(this.address).network
+      network: this.addressProvider.getNetwork(this.address)
     });
   }
 

@@ -128,10 +128,10 @@ export class TransferToPage {
         contactsList.push({
           name: _.isObject(v) ? v.name : v,
           address: k,
-          network: this.addressProvider.validateAddress(k).network,
+          network: this.addressProvider.getNetwork(k),
           email: _.isObject(v) ? v.email : null,
           recipientType: 'contact',
-          coin: this.addressProvider.validateAddress(k).coin,
+          coin: this.addressProvider.getCoin(k),
           getAddress: () => Promise.resolve(k)
         });
       });
@@ -171,7 +171,7 @@ export class TransferToPage {
   }): boolean {
     return this._wallet
       ? this._wallet.coin === recipient.coin &&
-          this._wallet.network === recipient.network
+      this._wallet.network === recipient.network
       : true;
   }
 
@@ -187,7 +187,7 @@ export class TransferToPage {
 
       this.hasContactsOrWallets =
         this.filteredContactsList.length === 0 &&
-        this.filteredWallets.length === 0
+          this.filteredWallets.length === 0
           ? false
           : true;
     } else {
