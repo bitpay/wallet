@@ -3,6 +3,7 @@ import * as _ from 'lodash';
 
 // Providers
 import { AddressBookProvider } from '../../../providers/address-book/address-book';
+import { AddressProvider } from '../../../providers/address/address';
 import { Logger } from '../../../providers/logger/logger';
 import { WalletProvider } from '../../../providers/wallet/wallet';
 
@@ -18,6 +19,7 @@ export class MultipleOutputsPage {
 
   constructor(
     private addressBookProvider: AddressBookProvider,
+    private addressProvider: AddressProvider,
     private logger: Logger,
     private walletProvider: WalletProvider
   ) {
@@ -27,11 +29,13 @@ export class MultipleOutputsPage {
   @Input()
   set tx(tx) {
     this._tx = tx;
-
     this.tx.outputs.forEach(output => {
+      let address = output.toAddress ? output.toAddress : output.address;
       output.addressToShow = this.walletProvider.getAddressView(
-        this._tx.coin,
-        output.toAddress
+        this._tx.coin
+          ? this._tx.coin
+          : this.addressProvider.validateAddress(address).coin,
+        address
       );
     });
 
