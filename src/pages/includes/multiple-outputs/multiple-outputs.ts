@@ -32,9 +32,7 @@ export class MultipleOutputsPage {
     this.tx.outputs.forEach(output => {
       let address = output.toAddress ? output.toAddress : output.address;
       output.addressToShow = this.walletProvider.getAddressView(
-        this._tx.coin
-          ? this._tx.coin
-          : this.addressProvider.validateAddress(address).coin,
+        this._tx.coin ? this._tx.coin : this.addressProvider.getCoin(address),
         address
       );
     });
