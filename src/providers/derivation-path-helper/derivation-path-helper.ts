@@ -10,48 +10,43 @@ export class DerivationPathHelperProvider {
     this.defaultTestnet = "m/44'/1'/0'";
   }
 
-  parse(str: string) {
-    var arr = str.split('/');
-    var ret = {
-      derivationStrategy: '',
-      networkName: '',
-      account: 0
-    };
+  public getDerivationStrategy(path: string): string {
+    const purpose = path.split('/')[1];
+    let derivationStrategy: string;
 
-    if (arr[0] != 'm') return false;
-
-    switch (arr[1]) {
+    switch (purpose) {
       case "44'":
-        ret.derivationStrategy = 'BIP44';
+        derivationStrategy = 'BIP44';
         break;
       case "45'":
-        return {
-          derivationStrategy: 'BIP45',
-          networkName: 'livenet',
-          account: 0
-        };
-      case "48'":
-        ret.derivationStrategy = 'BIP48';
+        derivationStrategy = 'BIP45';
         break;
-      default:
-        return false;
+      case "48'":
+        derivationStrategy = 'BIP48';
+        break;
     }
+    return derivationStrategy;
+  }
 
-    switch (arr[2]) {
+  public getNetworkName(path: string): string {
+    const coinType = path.split('/')[2];
+    let networkName: string;
+
+    switch (coinType) {
       case "0'":
-        ret.networkName = 'livenet';
+        networkName = 'livenet';
         break;
       case "1'":
-        ret.networkName = 'testnet';
+        networkName = 'testnet';
         break;
-      default:
-        return false;
     }
-
-    var match = arr[3].match(/(\d+)'/);
-    if (!match) return false;
-    ret.account = +match[1];
-
-    return ret;
+    return networkName;
   }
+
+  public getAccount(path: string): number {
+    const account = path.split('/')[3];
+    const accountNumber: number = parseInt(account, 10);
+    return accountNumber;
+  }
+
 }

@@ -157,9 +157,9 @@ export class ImportWalletPage {
     if (!code) return;
 
     this.importErr = false;
-    let parsedCode = code.split('|');
+    const parsedCode = code.split('|');
 
-    let info = {
+    const info = {
       type: parsedCode[0],
       data: parsedCode[1],
       network: parsedCode[2],
@@ -178,14 +178,14 @@ export class ImportWalletPage {
       errorInfoSheet.present();
     }
     if (info.type == '1' && info.hasPassphrase) {
-      let title = this.translate.instant('Error');
-      let subtitle = this.translate.instant(
+      const title = this.translate.instant('Error');
+      const subtitle = this.translate.instant(
         'Password required. Make sure to enter your password in advanced options'
       );
       this.popupProvider.ionicAlert(title, subtitle);
     }
 
-    let isTestnet = info.network == 'testnet' ? true : false;
+    const isTestnet = info.network == 'testnet' ? true : false;
     this.importForm.controls['testnetEnabled'].setValue(isTestnet);
     this.importForm.controls['derivationPath'].setValue(info.derivationPath);
     this.importForm.controls['words'].setValue(info.data);
@@ -193,7 +193,7 @@ export class ImportWalletPage {
   }
 
   public setDerivationPath(): void {
-    let path = this.importForm.value.testnetEnabled
+    const path = this.importForm.value.testnetEnabled
       ? this.derivationPathForTestnet
       : this.derivationPathByDefault;
     this.importForm.controls['derivationPath'].setValue(path);
@@ -214,7 +214,7 @@ export class ImportWalletPage {
     }
 
     if (err) {
-      let title = this.translate.instant('Error');
+      const title = this.translate.instant('Error');
       this.popupProvider.ionicAlert(title, err);
       return;
     }
@@ -232,7 +232,7 @@ export class ImportWalletPage {
         })
         .catch(err => {
           this.onGoingProcessProvider.clear();
-          let title = this.translate.instant('Error');
+          const title = this.translate.instant('Error');
           this.popupProvider.ionicAlert(title, err);
           return;
         });
@@ -282,7 +282,7 @@ export class ImportWalletPage {
           if (err instanceof this.errors.NOT_AUTHORIZED) {
             this.importErr = true;
           } else {
-            let title = this.translate.instant('Error');
+            const title = this.translate.instant('Error');
             this.popupProvider.ionicAlert(title, err);
           }
           this.onGoingProcessProvider.clear();
@@ -304,7 +304,7 @@ export class ImportWalletPage {
           if (err instanceof this.errors.NOT_AUTHORIZED) {
             this.importErr = true;
           } else {
-            let title = this.translate.instant('Error');
+            const title = this.translate.instant('Error');
             this.popupProvider.ionicAlert(title, err);
           }
           this.onGoingProcessProvider.clear();
@@ -323,18 +323,18 @@ export class ImportWalletPage {
 
   public importFromFile(): void {
     if (!this.importForm.valid) {
-      let title = this.translate.instant('Error');
-      let subtitle = this.translate.instant('There is an error in the form');
+      const title = this.translate.instant('Error');
+      const subtitle = this.translate.instant('There is an error in the form');
       this.popupProvider.ionicAlert(title, subtitle);
       return;
     }
 
-    let backupFile = this.file;
-    let backupText = this.importForm.value.backupText;
+    const backupFile = this.file;
+    const backupText = this.importForm.value.backupText;
 
     if (!backupFile && !backupText) {
-      let title = this.translate.instant('Error');
-      let subtitle = this.translate.instant('Please, select your backup file');
+      const title = this.translate.instant('Error');
+      const subtitle = this.translate.instant('Please, select your backup file');
       this.popupProvider.ionicAlert(title, subtitle);
       return;
     }
@@ -342,7 +342,7 @@ export class ImportWalletPage {
     if (backupFile) {
       this.reader.readAsBinaryString(backupFile);
     } else {
-      let opts: Partial<WalletOptions> = {};
+      const opts: Partial<WalletOptions> = {};
       opts.bwsurl = this.importForm.value.bwsURL;
       opts.coin = this.importForm.value.coin;
       this.importBlob(backupText, opts);
@@ -351,48 +351,46 @@ export class ImportWalletPage {
 
   public importFromMnemonic(): void {
     if (!this.importForm.valid) {
-      let title = this.translate.instant('Error');
-      let subtitle = this.translate.instant('There is an error in the form');
+      const title = this.translate.instant('Error');
+      const subtitle = this.translate.instant('There is an error in the form');
       this.popupProvider.ionicAlert(title, subtitle);
       return;
     }
 
-    let opts: Partial<WalletOptions> = {};
+    const opts: Partial<WalletOptions> = {};
 
     if (this.importForm.value.bwsURL)
       opts.bwsurl = this.importForm.value.bwsURL;
 
-    let pathData = this.derivationPathHelperProvider.parse(
-      this.importForm.value.derivationPath
-    );
+    const derivationPath = this.importForm.value.derivationPath;
+    opts.networkName = this.derivationPathHelperProvider.getNetworkName(derivationPath);
+    opts.derivationStrategy = this.derivationPathHelperProvider.getDerivationStrategy(derivationPath);
+    opts.account = this.derivationPathHelperProvider.getAccount(derivationPath);
 
-    if (!pathData) {
-      let title = this.translate.instant('Error');
-      let subtitle = this.translate.instant('Invalid derivation path');
+    if (!opts.networkName || !opts.derivationStrategy || !Number.isInteger(opts.account)) {
+      const title = this.translate.instant('Error');
+      const subtitle = this.translate.instant('Invalid derivation path');
       this.popupProvider.ionicAlert(title, subtitle);
       return;
     }
 
-    opts.account = pathData.account;
-    opts.networkName = pathData.networkName;
-    opts.derivationStrategy = pathData.derivationStrategy;
     opts.coin = this.importForm.value.coin;
 
-    let words: string = this.importForm.value.words || null;
+    const words: string = this.importForm.value.words || null;
 
     if (!words) {
-      let title = this.translate.instant('Error');
-      let subtitle = this.translate.instant('Please enter the recovery phrase');
+      const title = this.translate.instant('Error');
+      const subtitle = this.translate.instant('Please enter the recovery phrase');
       this.popupProvider.ionicAlert(title, subtitle);
       return;
     } else if (words.indexOf('xprv') == 0 || words.indexOf('tprv') == 0) {
       return this.importExtendedPrivateKey(words, opts);
     } else {
-      let wordList = words.trim().split(/[\u3000\s]+/);
+      const wordList = words.trim().split(/[\u3000\s]+/);
 
       if (wordList.length % 3 != 0) {
-        let title = this.translate.instant('Error');
-        let subtitle = this.translate.instant(
+        const title = this.translate.instant('Error');
+        const subtitle = this.translate.instant(
           'Wrong number of recovery words:'
         );
         this.popupProvider.ionicAlert(title, subtitle + ' ' + wordList.length);
@@ -423,7 +421,7 @@ export class ImportWalletPage {
     this.reader.onloadend = () => {
       if (this.reader.readyState === 2) {
         // DONE === 2
-        let opts: Partial<WalletOptions> = {};
+        const opts: Partial<WalletOptions> = {};
         opts.bwsurl = this.importForm.value.bwsURL;
         opts.coin = this.importForm.value.coin;
         this.importBlob(this.reader.result, opts);

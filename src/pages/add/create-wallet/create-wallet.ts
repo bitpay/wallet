@@ -192,18 +192,18 @@ export class CreateWalletPage implements OnInit {
         opts.mnemonic = words;
       }
 
-      const pathData = this.derivationPathHelperProvider.parse(
-        this.createForm.value.derivationPath
-      );
-      if (!pathData) {
+      const derivationPath = this.createForm.value.derivationPath;
+      opts.networkName = this.derivationPathHelperProvider.getNetworkName(derivationPath);
+      opts.derivationStrategy = this.derivationPathHelperProvider.getDerivationStrategy(derivationPath);
+      opts.account = this.derivationPathHelperProvider.getAccount(derivationPath);
+
+      if (!opts.networkName || !opts.derivationStrategy || !Number.isInteger(opts.account)) {
         const title = this.translate.instant('Error');
         const subtitle = this.translate.instant('Invalid derivation path');
         this.popupProvider.ionicAlert(title, subtitle);
         return;
       }
 
-      opts.networkName = pathData.networkName;
-      opts.derivationStrategy = pathData.derivationStrategy;
     }
 
     if (setSeed && !opts.mnemonic && !opts.extendedPrivateKey) {

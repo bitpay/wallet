@@ -93,7 +93,7 @@ export class JoinWalletPage {
       }
     ];
     this.events.subscribe('update:invitationCode', data => {
-      let invitationCode = data.value.replace('copay:', '');
+      const invitationCode = data.value.replace('copay:', '');
       this.onQrCodeScannedJoin(invitationCode);
     });
   }
@@ -141,7 +141,7 @@ export class JoinWalletPage {
   }
 
   private setDerivationPath(network: string): void {
-    let path: string =
+    const path: string =
       network == 'testnet'
         ? this.derivationPathForTestnet
         : this.derivationPathByDefault;
@@ -163,16 +163,16 @@ export class JoinWalletPage {
   }
 
   public setOptsAndJoin(): void {
-    let opts: Partial<WalletOptions> = {
+    const opts: Partial<WalletOptions> = {
       secret: this.joinForm.value.invitationCode,
       myName: this.joinForm.value.myName,
       bwsurl: this.joinForm.value.bwsURL,
       coin: this.joinForm.value.coin
     };
 
-    let setSeed = this.joinForm.value.selectedSeed == 'set';
+    const setSeed = this.joinForm.value.selectedSeed == 'set';
     if (setSeed) {
-      let words = this.joinForm.value.recoveryPhrase;
+      const words = this.joinForm.value.recoveryPhrase;
       if (
         words.indexOf(' ') == -1 &&
         words.indexOf('prv') == 1 &&
@@ -183,23 +183,22 @@ export class JoinWalletPage {
         opts.mnemonic = words;
       }
 
-      let pathData = this.derivationPathHelperProvider.parse(
-        this.joinForm.value.derivationPath
-      );
-      if (!pathData) {
-        let title = this.translate.instant('Error');
-        let subtitle = this.translate.instant('Invalid derivation path');
+      const derivationPath = this.joinForm.value.derivationPath;
+      opts.networkName = this.derivationPathHelperProvider.getNetworkName(derivationPath);
+      opts.derivationStrategy = this.derivationPathHelperProvider.getDerivationStrategy(derivationPath);
+      opts.account = this.derivationPathHelperProvider.getAccount(derivationPath);
+
+      if (!opts.networkName || !opts.derivationStrategy || !Number.isInteger(opts.account)) {
+        const title = this.translate.instant('Error');
+        const subtitle = this.translate.instant('Invalid derivation path');
         this.popupProvider.ionicAlert(title, subtitle);
         return;
       }
-
-      opts.networkName = pathData.networkName;
-      opts.derivationStrategy = pathData.derivationStrategy;
     }
 
     if (setSeed && !opts.mnemonic && !opts.extendedPrivateKey) {
-      let title = this.translate.instant('Error');
-      let subtitle = this.translate.instant(
+      const title = this.translate.instant('Error');
+      const subtitle = this.translate.instant(
         'Please enter the wallet recovery phrase'
       );
       this.popupProvider.ionicAlert(title, subtitle);
@@ -229,7 +228,7 @@ export class JoinWalletPage {
       })
       .catch(err => {
         this.onGoingProcessProvider.clear();
-        let title = this.translate.instant('Error');
+        const title = this.translate.instant('Error');
         this.popupProvider.ionicAlert(title, err);
         return;
       });
