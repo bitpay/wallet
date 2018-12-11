@@ -15,6 +15,7 @@ import { ChooseFeeLevelPage } from '../choose-fee-level/choose-fee-level';
 import { ActionSheetProvider } from '../../../providers/action-sheet/action-sheet';
 import { BwcErrorProvider } from '../../../providers/bwc-error/bwc-error';
 import { BwcProvider } from '../../../providers/bwc/bwc';
+import { ClipboardProvider } from '../../../providers/clipboard/clipboard';
 import { ConfigProvider } from '../../../providers/config/config';
 import { ExternalLinkProvider } from '../../../providers/external-link/external-link';
 import { FeeProvider } from '../../../providers/fee/fee';
@@ -101,7 +102,8 @@ export class ConfirmPage extends WalletTabsChild {
     protected txConfirmNotificationProvider: TxConfirmNotificationProvider,
     protected txFormatProvider: TxFormatProvider,
     protected walletProvider: WalletProvider,
-    walletTabsProvider: WalletTabsProvider
+    walletTabsProvider: WalletTabsProvider,
+    protected clipboardProvider: ClipboardProvider
   ) {
     super(navCtrl, profileProvider, walletTabsProvider);
     this.bitcore = this.bwcProvider.getBitcore();
@@ -811,7 +813,7 @@ export class ConfirmPage extends WalletTabsChild {
     this.onGoingProcessProvider.set('creatingTx');
     return this.getTxp(_.clone(tx), wallet, false)
       .then(txp => {
-        return this.confirmTx(tx, txp, wallet).then((nok: boolean) => {
+        return this.confirmTx(txp, wallet).then((nok: boolean) => {
           if (nok) {
             if (this.isCordova) this.slideButton.isConfirmed(false);
             this.onGoingProcessProvider.clear();
@@ -826,12 +828,12 @@ export class ConfirmPage extends WalletTabsChild {
       });
   }
 
-  private confirmTx(_, txp, wallet) {
-    return new Promise(resolve => {
-      if (this.walletProvider.isEncrypted(wallet)) return resolve();
+  private confirmTx(txp, wallet) {
+    return new Promise<boolean>(resolve => {
+      if (this.walletProvider.isEncrypted(wallet)) return resolve(false);
       this.txFormatProvider.formatToUSD(wallet.coin, txp.amount).then(val => {
         let amountUsd = parseFloat(val);
-        if (amountUsd <= this.CONFIRM_LIMIT_USD) return resolve();
+        if (amountUsd <= this.CONFIRM_LIMIT_USD) return resolve(false);
 
         let amount = (this.tx.amount / 1e8).toFixed(8);
         let unit = txp.coin.toUpperCase();
@@ -910,6 +912,12 @@ export class ConfirmPage extends WalletTabsChild {
       enableBackdropDismiss: false
     });
     await modal.present();
+
+    this.clipboardProvider.clearClipboardIfValidData([
+      'PayPro',
+      'BitcoinUri',
+      'BitcoinCashUri'
+    ]);
 
     this.isWithinWalletTabs()
       ? this.close()

@@ -331,41 +331,6 @@ ion-app,
   background: transparent !important;
 }
 
-ion-icon {
-  &[class*='tab-'] {
-    // Instead of using the font-based icons
-    // We're applying SVG masks
-    mask-size: contain;
-    mask-position: 50% 50%;
-    mask-repeat: no-repeat;
-    background: currentColor;
-    width: 2rem !important;
-    height: 2rem !important;
-  }
-
-  // custom icons
-  &[class*='tab-activity'] {
-    mask-image: url(../assets/img/tab-icons/ico-activity.svg);
-  }
-
-  &[class*='tab-receive'] {
-    mask-image: url(../assets/img/tab-icons/ico-receive.svg);
-  }
-
-  &[class*='tab-scan'] {
-    mask-image: url(../assets/img/tab-icons/ico-scan.svg);
-    width: 3rem !important;
-  }
-
-  &[class*='tab-send'] {
-    mask-image: url(../assets/img/tab-icons/ico-send.svg);
-  }
-
-  &[class*='tab-button-back'] {
-    mask-image: url(../assets/img/button-back.svg);
-  }
-}
-
 .button-standard {
   width: 90%;
   max-width: 300px;

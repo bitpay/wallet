@@ -89,6 +89,9 @@ describe('ConfirmPage', () => {
           coin: 'BTC',
           credentials: {
             m: 1
+          },
+          isPrivKeyEncrypted: () => {
+            return false;
           }
         };
         instance.setWallet(wallet);
@@ -96,13 +99,12 @@ describe('ConfirmPage', () => {
     });
     describe('confirmTx', () => {
       it('should display a confirm popup', () => {
-        const tx = {};
         const txp = { coin: 'BTC' };
         const wallet = {};
         spyOn(instance.txFormatProvider, 'formatToUSD').and.returnValue(
           Promise.resolve('100.50')
         );
-        instance.confirmTx(tx, txp, wallet);
+        instance.confirmTx(txp, wallet);
       });
     });
     describe('approve', () => {

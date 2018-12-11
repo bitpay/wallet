@@ -7,6 +7,7 @@ import { ToastController } from 'ionic-angular';
 import { ElectronProvider } from '../../providers/electron/electron';
 import { Logger } from '../../providers/logger/logger';
 import { PlatformProvider } from '../../providers/platform/platform';
+import { IncomingDataProvider } from '../incoming-data/incoming-data';
 
 @Injectable()
 export class ClipboardProvider {
@@ -19,7 +20,8 @@ export class ClipboardProvider {
     public logger: Logger,
     public translate: TranslateService,
     private clipboard: Clipboard,
-    private electronProvider: ElectronProvider
+    private electronProvider: ElectronProvider,
+    private incomingDataProvider: IncomingDataProvider
   ) {
     this.logger.debug('ClipboardProvider initialized');
     this.isCordova = this.platform.isCordova;
@@ -57,5 +59,18 @@ export class ClipboardProvider {
     } else if (this.isElectron) {
       this.electronProvider.clearClipboard();
     }
+  }
+
+  public clearClipboardIfValidData(typeArray: string[]): void {
+    this.getData().then(data => {
+      const validDataFromClipboard = this.incomingDataProvider.parseData(data);
+      if (
+        validDataFromClipboard &&
+        typeArray.indexOf(validDataFromClipboard.type) != -1
+      ) {
+        this.logger.info('Cleaning clipboard data');
+        this.clear(); // clear clipboard data if exist
+      }
+    });
   }
 }

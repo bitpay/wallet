@@ -194,10 +194,10 @@ export class WalletDetailsPage extends WalletTabsChild {
     this.updateTxHistoryError = false;
     this.updatingTxHistoryProgress = 0;
 
-    const progressFn = function(_, newTxs) {
-      if (newTxs > 5) this.thistory = null;
+    const progressFn = ((_, newTxs) => {
+      if (newTxs > 5) this.history = null;
       this.updatingTxHistoryProgress = newTxs;
-    }.bind(this);
+    }).bind(this);
 
     this.walletProvider
       .getTxHistory(this.wallet, {
@@ -258,10 +258,10 @@ export class WalletDetailsPage extends WalletTabsChild {
         if (!resp) return;
         this.analyzeUtxosDone = true;
         this.lowUtxosWarning = !!resp.warning;
-        this.logger.info(resp.warning);
+        this.logger.debug('Low UTXOs warning: ', this.lowUtxosWarning);
       })
       .catch(err => {
-        this.logger.error('analyzeUtxos', err);
+        this.logger.warn('Analyze UTXOs: ', err);
       });
   }
 
