@@ -43,12 +43,13 @@ export class AddressProvider {
     const extractedAddress = this.extractAddress(address);
     let network;
     try {
-      network = this.bwcProvider.getBitcore().Address(extractedAddress).network.name;
+      network = this.bwcProvider.getBitcore().Address(extractedAddress).network
+        .name;
     } catch (e) {
       try {
-        network = this.bwcProvider.getBitcoreCash().Address(extractedAddress).network
-          .name;
-      } catch (e) { }
+        network = this.bwcProvider.getBitcoreCash().Address(extractedAddress)
+          .network.name;
+      } catch (e) {}
     }
     return network;
   }
@@ -60,7 +61,8 @@ export class AddressProvider {
   ): boolean {
     if (this.isValid(address)) {
       const extractedAddress = this.extractAddress(address);
-      return this.getCoin(extractedAddress) == coin && this.getNetwork(extractedAddress) == network
+      return this.getCoin(extractedAddress) == coin &&
+        this.getNetwork(extractedAddress) == network
         ? true
         : false;
     } else {

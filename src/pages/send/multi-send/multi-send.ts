@@ -240,9 +240,7 @@ export class MultiSendPage extends WalletTabsChild {
       return true;
     } else {
       this.invalidAddress = true;
-      const network = this.addressProvider.getNetwork(
-        data
-      );
+      const network = this.addressProvider.getNetwork(data);
 
       if (this.wallet.coin === 'bch' && this.wallet.network === network) {
         const isLegacy = this.checkIfLegacy();

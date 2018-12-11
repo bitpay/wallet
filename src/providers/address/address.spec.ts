@@ -100,25 +100,33 @@ describe('AddressProvider', () => {
 
     it("should get 'livenet' string if address is BTC Livenet", () => {
       BTCLivenetAddresses.forEach(BTCLivenetAddress => {
-        expect(addressProvider.getNetwork(BTCLivenetAddress)).toEqual('livenet');
+        expect(addressProvider.getNetwork(BTCLivenetAddress)).toEqual(
+          'livenet'
+        );
       });
     });
 
     it("should get 'testnet' string if address is BTC Testnet", () => {
       BTCTestnetAddresses.forEach(BTCTestnetAddress => {
-        expect(addressProvider.getNetwork(BTCTestnetAddress)).toEqual('testnet');
+        expect(addressProvider.getNetwork(BTCTestnetAddress)).toEqual(
+          'testnet'
+        );
       });
     });
 
     it("should get 'livenet' string if address is BCH Livenet", () => {
       BCHLivenetAddresses.forEach(BCHLivenetAddress => {
-        expect(addressProvider.getNetwork(BCHLivenetAddress)).toEqual('livenet');
+        expect(addressProvider.getNetwork(BCHLivenetAddress)).toEqual(
+          'livenet'
+        );
       });
     });
 
     it("should get 'testnet' string if address is BCH Testnet", () => {
       BCHTestnetAddresses.forEach(BCHTestnetAddress => {
-        expect(addressProvider.getNetwork(BCHTestnetAddress)).toEqual('testnet');
+        expect(addressProvider.getNetwork(BCHTestnetAddress)).toEqual(
+          'testnet'
+        );
       });
     });
 

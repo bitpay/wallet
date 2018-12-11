@@ -131,9 +131,7 @@ export class SendPage extends WalletTabsChild {
       if (isPayPro) {
         network = data.network;
       } else {
-        network = this.addressProvider.getNetwork(
-          data
-        );
+        network = this.addressProvider.getNetwork(data);
       }
       if (this.wallet.coin === 'bch' && this.wallet.network === network) {
         const isLegacy = this.checkIfLegacy();

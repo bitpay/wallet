@@ -171,7 +171,7 @@ export class TransferToPage {
   }): boolean {
     return this._wallet
       ? this._wallet.coin === recipient.coin &&
-      this._wallet.network === recipient.network
+          this._wallet.network === recipient.network
       : true;
   }
 
@@ -187,7 +187,7 @@ export class TransferToPage {
 
       this.hasContactsOrWallets =
         this.filteredContactsList.length === 0 &&
-          this.filteredWallets.length === 0
+        this.filteredWallets.length === 0
           ? false
           : true;
     } else {
