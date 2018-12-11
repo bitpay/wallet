@@ -151,6 +151,8 @@ export class AddressProvider {
       if (isUriValid) {
         uri = new URICash(address);
         isAddressValidLivenet = AddressCash.isValid(
+
+          // this should work with Copay legacy or CashAddr formats.
           uri.address.toString(),
           'livenet'
         );
