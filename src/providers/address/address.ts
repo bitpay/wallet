@@ -68,7 +68,10 @@ export class AddressProvider {
       origCoin,
       origAddress: address,
       resultCoin,
-      resultAddress: resultCoin == 'bch' ? resultAddress.toLegacyAddress() : resultAddress.toString()
+      resultAddress:
+        resultCoin == 'bch'
+          ? resultAddress.toLegacyAddress()
+          : resultAddress.toString()
     };
   }
 
@@ -151,7 +154,6 @@ export class AddressProvider {
       if (isUriValid) {
         uri = new URICash(address);
         isAddressValidLivenet = AddressCash.isValid(
-
           // this should work with Copay legacy or CashAddr formats.
           uri.address.toString(),
           'livenet'

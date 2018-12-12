@@ -36,7 +36,9 @@ export class TxFormatProvider {
   }
 
   public toLegacyAddress(address: string): string {
-    let legacyAddr: string = this.bitcoreCash.Address(address).toLegacyAddress();
+    let legacyAddr: string = this.bitcoreCash
+      .Address(address)
+      .toLegacyAddress();
     return legacyAddr;
   }
 
