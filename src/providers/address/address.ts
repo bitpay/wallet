@@ -24,14 +24,14 @@ export class AddressProvider {
     };
   }
 
-  public getCoin(address: string): string {
-    let extractedAddress = this.extractAddress(address);
+  public getCoin(str: string): string {
+    const address = this.extractAddress(str);
     try {
-      new this.Bitcore['btc'].lib.Address(extractedAddress);
+      new this.Bitcore['btc'].lib.Address(address);
       return 'btc';
     } catch (e) {
       try {
-        new this.Bitcore['bch'].lib.Address(extractedAddress);
+        new this.Bitcore['bch'].lib.Address(address);
         return 'bch';
       } catch (e) {
         return null;
@@ -39,16 +39,15 @@ export class AddressProvider {
     }
   }
 
-  public getNetwork(address: string): string {
-    const extractedAddress = this.extractAddress(address);
+  public getNetwork(str: string): string {
+    const address = this.extractAddress(str);
     let network;
     try {
-      network = this.bwcProvider.getBitcore().Address(extractedAddress).network
-        .name;
+      network = this.bwcProvider.getBitcore().Address(address).network.name;
     } catch (e) {
       try {
-        network = this.bwcProvider.getBitcoreCash().Address(extractedAddress)
-          .network.name;
+        network = this.bwcProvider.getBitcoreCash().Address(address).network
+          .name;
       } catch (e) {}
     }
     return network;
@@ -57,12 +56,12 @@ export class AddressProvider {
   public checkCoinAndNetworkFromAddr(
     coin: string,
     network: string,
-    address: string
+    str: string
   ): boolean {
-    if (this.isValid(address)) {
-      const extractedAddress = this.extractAddress(address);
-      return this.getCoin(extractedAddress) == coin &&
-        this.getNetwork(extractedAddress) == network
+    if (this.isValid(str)) {
+      const address = this.extractAddress(str);
+      return this.getCoin(address) == coin &&
+        this.getNetwork(address) == network
         ? true
         : false;
     } else {
@@ -80,68 +79,43 @@ export class AddressProvider {
       : false;
   }
 
-  public extractAddress(address: string): string {
-    const extractedAddress = address
+  public extractAddress(str: string): string {
+    const extractedAddress = str
       .replace(/^(bitcoincash:|bchtest:|bitcoin:)/i, '')
       .replace(/\?.*/, '');
-    return extractedAddress || address;
+    return extractedAddress;
   }
 
-  public isValid(address: string): boolean {
+  public isValid(str: string): boolean {
+    // Check if the input is a valid uri or address
     const URI = this.bitcore.URI;
     const Address = this.bitcore.Address;
     const URICash = this.bitcoreCash.URI;
     const AddressCash = this.bitcoreCash.Address;
 
     // Bip21 uri
-    let uri, isAddressValidLivenet, isAddressValidTestnet;
-    if (/^bitcoin:/.test(address)) {
-      const isUriValid = URI.isValid(address);
-      if (isUriValid) {
-        uri = new URI(address);
-        isAddressValidLivenet = Address.isValid(
-          uri.address.toString(),
-          'livenet'
-        );
-        isAddressValidTestnet = Address.isValid(
-          uri.address.toString(),
-          'testnet'
-        );
+    let uri, uriAddress;
+    if (/^bitcoin:/.test(str)) {
+      if (URI.isValid(str)) {
+        uri = new URI(str);
+        uriAddress = uri.address.toString();
+        if (Address.isValid(uriAddress, 'livenet')) return true;
+        if (Address.isValid(uriAddress, 'testnet')) return true;
       }
-      if (isUriValid && (isAddressValidLivenet || isAddressValidTestnet)) {
-        return true;
-      }
-    } else if (/^bitcoincash:/i.test(address) || /^bchtest:/i.test(address)) {
-      const isUriValid = URICash.isValid(address);
-      if (isUriValid) {
-        uri = new URICash(address);
-        isAddressValidLivenet = AddressCash.isValid(
-          uri.address.toString(),
-          'livenet'
-        );
-        isAddressValidTestnet = AddressCash.isValid(
-          uri.address.toString(),
-          'testnet'
-        );
-      }
-      if (isUriValid && (isAddressValidLivenet || isAddressValidTestnet)) {
-        return true;
+    } else if (/^bitcoincash:/i.test(str) || /^bchtest:/i.test(str)) {
+      if (URICash.isValid(str)) {
+        uri = new URICash(str);
+        uriAddress = uri.address.toString();
+        if (AddressCash.isValid(uriAddress, 'livenet')) return true;
+        if (AddressCash.isValid(uriAddress, 'testnet')) return true;
       }
     }
 
     // Regular Address: try Bitcoin and Bitcoin Cash
-    const regularAddressLivenet = Address.isValid(address, 'livenet');
-    const regularAddressTestnet = Address.isValid(address, 'testnet');
-    const regularAddressCashLivenet = AddressCash.isValid(address, 'livenet');
-    const regularAddressCashTestnet = AddressCash.isValid(address, 'testnet');
-    if (
-      regularAddressLivenet ||
-      regularAddressTestnet ||
-      regularAddressCashLivenet ||
-      regularAddressCashTestnet
-    ) {
-      return true;
-    }
+    if (Address.isValid(str, 'livenet')) return true;
+    if (Address.isValid(str, 'testnet')) return true;
+    if (AddressCash.isValid(str, 'livenet')) return true;
+    if (AddressCash.isValid(str, 'testnet')) return true;
 
     return false;
   }
