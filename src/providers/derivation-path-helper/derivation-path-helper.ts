@@ -44,8 +44,8 @@ export class DerivationPathHelperProvider {
   }
 
   public getAccount(path: string): number {
-    const account = path.split('/')[3];
-    const accountNumber: number = parseInt(account, 10);
-    return accountNumber;
+    const match = path.split('/')[3].match(/(\d+)'/);
+    if (!match) return undefined;
+    return +match[1];
   }
 }
