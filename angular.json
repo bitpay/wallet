@@ -12,11 +12,11 @@
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
             "outputPath": "dist",
-            "index": "src/index.html",
-            "main": "src/app/main.ts",
-            "tsConfig": "src/./tsconfig.json",
-            "polyfills": "src/polyfills.ts",
-            "assets": ["src/assets", "src/favicon.ico"],
+            "index": "index.html",
+            "main": "app/main.ts",
+            "tsConfig": "./tsconfig.json",
+            "polyfills": "polyfills.ts",
+            "assets": ["assets", "favicon.ico"],
             "styles": [],
             "scripts": []
           },
@@ -24,8 +24,8 @@
             "prod": {
               "fileReplacements": [
                 {
-                  "replace": "src/environments/environment.ts",
-                  "with": "src/environments/environment.prod.ts"
+                  "replace": "environments/environment.ts",
+                  "with": "environments/prod.ts"
                 }
               ]
             },
@@ -65,26 +65,26 @@
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
-            "main": "src/test.ts",
+            "main": "test.ts",
             "karmaConfig": "test/karma.conf.js",
-            "polyfills": "src/polyfills.ts",
-            "tsConfig": "src/tsconfig.spec.json",
+            "polyfills": "polyfills.ts",
+            "tsConfig": "tsconfig.spec.json",
             "codeCoverageExclude": [
-              "src/polyfills.ts",
-              "src/test.ts",
-              "src/mocks.ts",
+              "polyfills.ts",
+              "test.ts",
+              "mocks.ts",
               "**/*.mock.ts",
               "**/node_modules/**"
             ],
             "scripts": [],
             "styles": [],
-            "assets": ["src/assets", "src/favicon.ico"]
+            "assets": ["assets", "favicon.ico"]
           }
         },
         "lint": {
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
-            "tsConfig": ["src/tsconfig.spec.json"],
+            "tsConfig": ["tsconfig.spec.json"],
             "exclude": ["**/node_modules/**"]
           }
         }
