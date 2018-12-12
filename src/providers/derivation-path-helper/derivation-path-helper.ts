@@ -48,5 +48,4 @@ export class DerivationPathHelperProvider {
     const accountNumber: number = parseInt(account, 10);
     return accountNumber;
   }
-
 }

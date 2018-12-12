@@ -334,7 +334,9 @@ export class ImportWalletPage {
 
     if (!backupFile && !backupText) {
       const title = this.translate.instant('Error');
-      const subtitle = this.translate.instant('Please, select your backup file');
+      const subtitle = this.translate.instant(
+        'Please, select your backup file'
+      );
       this.popupProvider.ionicAlert(title, subtitle);
       return;
     }
@@ -363,11 +365,19 @@ export class ImportWalletPage {
       opts.bwsurl = this.importForm.value.bwsURL;
 
     const derivationPath = this.importForm.value.derivationPath;
-    opts.networkName = this.derivationPathHelperProvider.getNetworkName(derivationPath);
-    opts.derivationStrategy = this.derivationPathHelperProvider.getDerivationStrategy(derivationPath);
+    opts.networkName = this.derivationPathHelperProvider.getNetworkName(
+      derivationPath
+    );
+    opts.derivationStrategy = this.derivationPathHelperProvider.getDerivationStrategy(
+      derivationPath
+    );
     opts.account = this.derivationPathHelperProvider.getAccount(derivationPath);
 
-    if (!opts.networkName || !opts.derivationStrategy || !Number.isInteger(opts.account)) {
+    if (
+      !opts.networkName ||
+      !opts.derivationStrategy ||
+      !Number.isInteger(opts.account)
+    ) {
       const title = this.translate.instant('Error');
       const subtitle = this.translate.instant('Invalid derivation path');
       this.popupProvider.ionicAlert(title, subtitle);
@@ -380,7 +390,9 @@ export class ImportWalletPage {
 
     if (!words) {
       const title = this.translate.instant('Error');
-      const subtitle = this.translate.instant('Please enter the recovery phrase');
+      const subtitle = this.translate.instant(
+        'Please enter the recovery phrase'
+      );
       this.popupProvider.ionicAlert(title, subtitle);
       return;
     } else if (words.indexOf('xprv') == 0 || words.indexOf('tprv') == 0) {

@@ -184,11 +184,21 @@ export class JoinWalletPage {
       }
 
       const derivationPath = this.joinForm.value.derivationPath;
-      opts.networkName = this.derivationPathHelperProvider.getNetworkName(derivationPath);
-      opts.derivationStrategy = this.derivationPathHelperProvider.getDerivationStrategy(derivationPath);
-      opts.account = this.derivationPathHelperProvider.getAccount(derivationPath);
+      opts.networkName = this.derivationPathHelperProvider.getNetworkName(
+        derivationPath
+      );
+      opts.derivationStrategy = this.derivationPathHelperProvider.getDerivationStrategy(
+        derivationPath
+      );
+      opts.account = this.derivationPathHelperProvider.getAccount(
+        derivationPath
+      );
 
-      if (!opts.networkName || !opts.derivationStrategy || !Number.isInteger(opts.account)) {
+      if (
+        !opts.networkName ||
+        !opts.derivationStrategy ||
+        !Number.isInteger(opts.account)
+      ) {
         const title = this.translate.instant('Error');
         const subtitle = this.translate.instant('Invalid derivation path');
         this.popupProvider.ionicAlert(title, subtitle);
