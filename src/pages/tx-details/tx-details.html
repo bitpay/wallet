@@ -4,7 +4,7 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content no-bounce #scrollArea>
+<ion-content no-bounce>
   <ion-list *ngIf="btx">
     <ion-item>
       <div class="header-container">
@@ -101,8 +101,8 @@
         <span *ngIf="!btx.confirmations || btx.confirmations == 0" translate>
           Unconfirmed
           <span *ngIf="btx.feeRate">(
-            <span translate>Fee rate</span>: 
-          {{btx.feeRate}})
+            <span translate>Fee rate</span>:
+            {{btx.feeRate}})
           </span>
         </span>
         <span *ngIf="btx.confirmations>0 && !btx.safeConfirmed">
@@ -114,7 +114,7 @@
       </ion-note>
     </ion-item>
 
-    <editable-item (valChange)="saveMemoInfo($event)" [value]="txMemo" [itemPlaceholder]="'Enter a transaction memo' | translate" [scrollArea]="scrollArea">
+    <editable-item (valChange)="saveMemoInfo($event)" [value]="txMemo" [itemPlaceholder]="'Enter a transaction memo' | translate">
       <span item-label translate>Memo</span>
     </editable-item>
 
