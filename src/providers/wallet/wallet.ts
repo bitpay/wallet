@@ -446,20 +446,28 @@ export class WalletProvider {
     return walletSettings.useLegacyAddress;
   }
 
-  public getAddressView(coin, address: string): string {
+  public getAddressView(
+    coin: string,
+    network: string,
+    address: string
+  ): string {
     if (coin != 'bch' || this.useLegacyAddress()) return address;
-    return this.txFormatProvider.toCashAddress(address);
+    const protoAddr = this.getProtoAddress(
+      coin,
+      network,
+      this.txFormatProvider.toCashAddress(address)
+    );
+    return protoAddr;
   }
 
-  public getProtoAddress(coin: string, network: string, address: string) {
+  public getProtoAddress(
+    coin: string,
+    network: string,
+    address: string
+  ): string {
     const proto: string = this.getProtocolHandler(coin, network);
     const protoAddr: string = proto + ':' + address;
-
-    if (coin != 'bch' || this.useLegacyAddress()) {
-      return protoAddr;
-    } else {
-      return protoAddr.toUpperCase();
-    }
+    return protoAddr;
   }
 
   public getAddress(wallet, forceNew: boolean): Promise<string> {

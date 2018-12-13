@@ -35,17 +35,11 @@ export class MultipleOutputsPage {
         ? this._tx.coin
         : this.addressProvider.getCoin(outputAddr);
 
-      const address = this.walletProvider.getAddressView(coin, outputAddr);
-      const protoAddress = this.walletProvider.getProtoAddress(
+      output.addressToShow = this.walletProvider.getAddressView(
         coin,
         this._tx.network,
-        address
+        outputAddr
       );
-
-      output.addressToShow =
-        coin == 'bch' && !this.walletProvider.useLegacyAddress()
-          ? protoAddress.toLowerCase()
-          : address;
     });
 
     this.contact();

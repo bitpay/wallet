@@ -147,21 +147,11 @@ export class WalletAddressesPage {
   private processList(list): void {
     _.each(list, n => {
       n.path = n.path ? n.path.replace(/^m/g, 'xpub') : null;
-      const address = this.walletProvider.getAddressView(
-        this.wallet.coin,
-        n.address
-      );
-
-      const protoAddress = this.walletProvider.getProtoAddress(
+      n.address = this.walletProvider.getAddressView(
         this.wallet.coin,
         this.wallet.network,
-        address
+        n.address
       );
-
-      n.address =
-        this.wallet.coin == 'bch' && !this.walletProvider.useLegacyAddress()
-          ? protoAddress.toLowerCase()
-          : address;
     });
   }
 

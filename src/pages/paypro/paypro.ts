@@ -19,19 +19,11 @@ export class PayProPage {
   ) {
     this.tx = this.navParams.data.tx;
     const wallet = this.navParams.data.wallet;
-    const address = this.walletProvider.getAddressView(
-      wallet.coin,
-      this.tx.paypro.toAddress
-    );
-    const protoAddress = this.walletProvider.getProtoAddress(
+    this.address = this.walletProvider.getAddressView(
       wallet.coin,
       wallet.network,
-      address
+      this.tx.paypro.toAddress
     );
-    this.address =
-      wallet.coin == 'bch' && !this.walletProvider.useLegacyAddress()
-        ? protoAddress.toLowerCase()
-        : address;
   }
 
   close() {

@@ -43,21 +43,11 @@ export class CustomAmountPage {
     this.wallet = this.profileProvider.getWallet(walletId);
 
     this.walletProvider.getAddress(this.wallet, false).then(addr => {
-      const address = this.walletProvider.getAddressView(
-        this.wallet.coin,
-        addr
-      );
-
-      const protoAddress = this.walletProvider.getProtoAddress(
+      this.address = this.walletProvider.getAddressView(
         this.wallet.coin,
         this.wallet.network,
-        address
+        addr
       );
-
-      this.address =
-        this.wallet.coin == 'bch' && !this.walletProvider.useLegacyAddress()
-          ? protoAddress.toLowerCase()
-          : address;
 
       const parsedAmount = this.txFormatProvider.parseAmount(
         this.wallet.coin,
@@ -91,12 +81,17 @@ export class CustomAmountPage {
         );
       }
 
+      let protoAddr;
+      if (this.wallet.coin != 'bch' || this.walletProvider.useLegacyAddress()) {
+        protoAddr = this.walletProvider.getProtoAddress(
+          this.wallet.coin,
+          this.wallet.network,
+          this.address
+        );
+      }
+
       this.qrAddress =
-        (this.wallet.coin != 'bch' || this.walletProvider.useLegacyAddress()
-          ? protoAddress
-          : protoAddress.toLowerCase()) +
-        '?amount=' +
-        this.amountCoin;
+        (protoAddr ? protoAddr : this.address) + '?amount=' + this.amountCoin;
     });
   }
 

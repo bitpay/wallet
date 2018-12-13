@@ -674,21 +674,11 @@ export class ConfirmPage extends WalletTabsChild {
               .Address(recipient.toAddress)
               .toString();
 
-            const address = this.walletProvider.getAddressView(
-              tx.coin,
-              recipient.toAddress
-            );
-
-            const protoAddress = this.walletProvider.getProtoAddress(
+            recipient.addressToShow = this.walletProvider.getAddressView(
               tx.coin,
               tx.network,
-              address
+              recipient.toAddress
             );
-
-            recipient.addressToShow =
-              tx.coin == 'bch' && !this.walletProvider.useLegacyAddress()
-                ? protoAddress.toLowerCase()
-                : address;
           }
 
           txp.outputs.push({

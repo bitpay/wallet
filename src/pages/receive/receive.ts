@@ -103,8 +103,9 @@ export class ReceivePage extends WalletTabsChild {
         this.logger.warn(this.bwcErrorProvider.msg(err, 'Server Error'));
       })) as string;
     this.loading = false;
-    const address = await this.walletProvider.getAddressView(
+    const address = this.walletProvider.getAddressView(
       this.wallet.coin,
+      this.wallet.network,
       addr
     );
     if (this.address && this.address != address) {
@@ -114,19 +115,10 @@ export class ReceivePage extends WalletTabsChild {
   }
 
   private async updateQrAddress(address, newAddr?: boolean): Promise<void> {
-    const protoAddress = this.walletProvider.getProtoAddress(
-      this.wallet.coin,
-      this.wallet.network,
-      address
-    );
     if (newAddr) {
       await Observable.timer(400).toPromise();
     }
-    this.address =
-      this.wallet.coin == 'bch' && !this.walletProvider.useLegacyAddress()
-        ? protoAddress.toLowerCase()
-        : address;
-    this.qrAddress = protoAddress;
+    this.address = address;
     await Observable.timer(200).toPromise();
     this.playAnimation = false;
   }
