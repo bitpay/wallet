@@ -6,6 +6,7 @@ import { Logger } from '../../../../../providers/logger/logger';
 
 // native
 import { Clipboard } from '@ionic-native/clipboard';
+import { Printer } from '@ionic-native/printer';
 import { SocialSharing } from '@ionic-native/social-sharing';
 
 // providers
@@ -42,6 +43,7 @@ export class WalletExportPage extends WalletTabsChild {
   public exportWalletInfo;
   public supported: boolean;
   public showQrCode: boolean;
+  public isPrintingAvailableOnMobile: boolean = false;
   public walletName: string = '';
 
   constructor(
@@ -55,6 +57,7 @@ export class WalletExportPage extends WalletTabsChild {
     private backupProvider: BackupProvider,
     private platformProvider: PlatformProvider,
     private socialSharing: SocialSharing,
+    private printer: Printer,
     private appProvider: AppProvider,
     private clipboard: Clipboard,
     public toastCtrl: ToastController,
@@ -86,6 +89,9 @@ export class WalletExportPage extends WalletTabsChild {
     this.isCordova = this.platformProvider.isCordova;
     this.isSafari = this.platformProvider.isSafari;
     this.isIOS = this.platformProvider.isIOS;
+    this.printer.isAvailable().then(() => {
+      this.isPrintingAvailableOnMobile = true;
+    });
     this.walletName =
       this.wallet.credentials.walletName || this.wallet.credentials.walletId;
   }
@@ -367,7 +373,12 @@ export class WalletExportPage extends WalletTabsChild {
   }
 
   public printQr(): boolean {
-    window.print();
+    if (this.isCordova) {
+      let printContent = document.getElementById('cordovaPrintWrapper');
+      this.printer.print(printContent);
+    } else {
+      window.print();
+    }
     return false;
   }
 

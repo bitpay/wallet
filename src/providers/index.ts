@@ -1,6 +1,7 @@
 /* Native modules */
 export { AndroidFingerprintAuth } from '@ionic-native/android-fingerprint-auth';
 export { Clipboard } from '@ionic-native/clipboard';
+export { Printer } from '@ionic-native/printer';
 export { Device } from '@ionic-native/device';
 export { FCM } from '@ionic-native/fcm';
 export { File } from '@ionic-native/file';
