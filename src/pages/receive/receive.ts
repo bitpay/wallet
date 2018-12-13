@@ -113,7 +113,7 @@ export class ReceivePage extends WalletTabsChild {
     this.updateQrAddress(address, newAddr);
   }
 
-  private async updateQrAddress(address?, newAddr?: boolean): Promise<void> {
+  private async updateQrAddress(address, newAddr?: boolean): Promise<void> {
     const protoAddress = this.walletProvider.getProtoAddress(
       this.wallet.coin,
       this.wallet.network,
@@ -123,7 +123,7 @@ export class ReceivePage extends WalletTabsChild {
       await Observable.timer(400).toPromise();
     }
     this.address =
-      this.wallet.coin == 'bch' ? protoAddress.toLowerCase() : this.address;
+      this.wallet.coin == 'bch' ? protoAddress.toLowerCase() : address;
     this.qrAddress = protoAddress;
     await Observable.timer(200).toPromise();
     this.playAnimation = false;
