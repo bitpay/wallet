@@ -69,7 +69,7 @@ export class WalletAddressesPage {
           .then(resp => {
             this.withBalance = resp.byAddress;
 
-            var idx = _.keyBy(this.withBalance, 'address');
+            const idx = _.keyBy(this.withBalance, 'address');
             this.noBalance = _.reject(allAddresses, x => {
               return idx[x.address];
             });
@@ -119,8 +119,8 @@ export class WalletAddressesPage {
       .getLowUtxos(this.wallet)
       .then(resp => {
         if (resp && resp.allUtxos && resp.allUtxos.length) {
-          let allSum = _.sumBy(resp.allUtxos || 0, 'satoshis');
-          let per = (resp.minFee / allSum) * 100;
+          const allSum = _.sumBy(resp.allUtxos || 0, 'satoshis');
+          const per = (resp.minFee / allSum) * 100;
 
           this.lowUtxosNb = resp.lowUtxos.length;
           this.allUtxosNb = resp.allUtxos.length;
@@ -147,15 +147,24 @@ export class WalletAddressesPage {
   private processList(list): void {
     _.each(list, n => {
       n.path = n.path ? n.path.replace(/^m/g, 'xpub') : null;
-      n.address = this.walletProvider.getAddressView(
+      const address = this.walletProvider.getAddressView(
         this.wallet.coin,
         n.address
       );
+
+      const protoAddress = this.walletProvider.getProtoAddress(
+        this.wallet.coin,
+        this.wallet.network,
+        address
+      );
+
+      n.address =
+        this.wallet.coin == 'bch' ? protoAddress.toLowerCase() : address;
     });
   }
 
   public viewAllAddresses(): void {
-    let modal = this.modalCtrl.create(AllAddressesPage, {
+    const modal = this.modalCtrl.create(AllAddressesPage, {
       noBalance: this.noBalance,
       withBalance: this.withBalance,
       coin: this.wallet.coin,

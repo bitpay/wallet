@@ -451,11 +451,11 @@ export class WalletProvider {
     return this.txFormatProvider.toCashAddress(address);
   }
 
-  public getProtoAddress(wallet, address: string) {
-    let proto: string = this.getProtocolHandler(wallet.coin, wallet.network);
-    let protoAddr: string = proto + ':' + address;
+  public getProtoAddress(coin: string, network: string, address: string) {
+    const proto: string = this.getProtocolHandler(coin, network);
+    const protoAddr: string = proto + ':' + address;
 
-    if (wallet.coin != 'bch' || this.useLegacyAddress()) {
+    if (coin != 'bch' || this.useLegacyAddress()) {
       return protoAddr;
     } else {
       return protoAddr.toUpperCase();

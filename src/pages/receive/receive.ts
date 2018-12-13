@@ -96,14 +96,14 @@ export class ReceivePage extends WalletTabsChild {
   private async setAddress(newAddr?: boolean): Promise<void> {
     this.loading = newAddr || _.isEmpty(this.address) ? true : false;
 
-    let addr: string = (await this.walletProvider
+    const addr: string = (await this.walletProvider
       .getAddress(this.wallet, newAddr)
       .catch(err => {
         this.loading = false;
         this.logger.warn(this.bwcErrorProvider.msg(err, 'Server Error'));
       })) as string;
     this.loading = false;
-    let address = await this.walletProvider.getAddressView(
+    const address = await this.walletProvider.getAddressView(
       this.wallet.coin,
       addr
     );
@@ -114,15 +114,17 @@ export class ReceivePage extends WalletTabsChild {
   }
 
   private async updateQrAddress(address?, newAddr?: boolean): Promise<void> {
-    let qrAddress = await this.walletProvider.getProtoAddress(
-      this.wallet,
+    const protoAddress = this.walletProvider.getProtoAddress(
+      this.wallet.coin,
+      this.wallet.network,
       address
     );
     if (newAddr) {
       await Observable.timer(400).toPromise();
     }
-    this.address = address;
-    this.qrAddress = qrAddress;
+    this.address =
+      this.wallet.coin == 'bch' ? protoAddress.toLowerCase() : this.address;
+    this.qrAddress = protoAddress;
     await Observable.timer(200).toPromise();
     this.playAnimation = false;
   }
@@ -139,13 +141,13 @@ export class ReceivePage extends WalletTabsChild {
   }
 
   public openWikiBackupNeeded(): void {
-    let url =
+    const url =
       'https://support.bitpay.com/hc/en-us/articles/115002989283-Why-don-t-I-have-an-online-account-for-my-BitPay-wallet-';
-    let optIn = true;
-    let title = null;
-    let message = this.translate.instant('Read more in our Wiki');
-    let okText = this.translate.instant('Open');
-    let cancelText = this.translate.instant('Go Back');
+    const optIn = true;
+    const title = null;
+    const message = this.translate.instant('Read more in our Wiki');
+    const okText = this.translate.instant('Open');
+    const cancelText = this.translate.instant('Go Back');
     this.externalLinkProvider.open(
       url,
       optIn,

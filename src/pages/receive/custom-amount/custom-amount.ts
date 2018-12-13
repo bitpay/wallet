@@ -37,28 +37,40 @@ export class CustomAmountPage {
     private actionSheetProvider: ActionSheetProvider,
     private navCtrl: NavController
   ) {
-    let walletId = this.navParams.data.id;
+    const walletId = this.navParams.data.id;
     this.showShareButton = this.platformProvider.isCordova;
 
     this.wallet = this.profileProvider.getWallet(walletId);
 
     this.walletProvider.getAddress(this.wallet, false).then(addr => {
-      this.address = this.walletProvider.getAddressView(this.wallet.coin, addr);
+      const address = this.walletProvider.getAddressView(
+        this.wallet.coin,
+        addr
+      );
 
-      let parsedAmount = this.txFormatProvider.parseAmount(
+      const protoAddress = this.walletProvider.getProtoAddress(
+        this.wallet.coin,
+        this.wallet.network,
+        address
+      );
+
+      this.address =
+        this.wallet.coin == 'bch' ? protoAddress.toLowerCase() : address;
+
+      const parsedAmount = this.txFormatProvider.parseAmount(
         this.wallet.coin,
         this.navParams.data.amount,
         this.navParams.data.currency
       );
 
       // Amount in USD or BTC
-      let _amount = parsedAmount.amount;
-      let _currency = parsedAmount.currency;
+      const _amount = parsedAmount.amount;
+      const _currency = parsedAmount.currency;
       this.amountUnitStr = parsedAmount.amountUnitStr;
 
       if (_currency != 'BTC' && _currency != 'BCH') {
         // Convert to BTC or BCH
-        let amountUnit = this.txFormatProvider.satToUnit(
+        const amountUnit = this.txFormatProvider.satToUnit(
           parsedAmount.amountSat
         );
         var btcParsedAmount = this.txFormatProvider.parseAmount(
@@ -87,7 +99,11 @@ export class CustomAmountPage {
 
   private updateQrAddress(): void {
     this.qrAddress =
-      this.walletProvider.getProtoAddress(this.wallet, this.address) +
+      this.walletProvider.getProtoAddress(
+        this.wallet.coin,
+        this.wallet.network,
+        this.address
+      ) +
       '?amount=' +
       this.amountCoin;
   }

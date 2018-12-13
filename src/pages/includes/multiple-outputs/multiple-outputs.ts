@@ -30,11 +30,21 @@ export class MultipleOutputsPage {
   set tx(tx) {
     this._tx = tx;
     this.tx.outputs.forEach(output => {
-      let address = output.toAddress ? output.toAddress : output.address;
-      output.addressToShow = this.walletProvider.getAddressView(
-        this._tx.coin ? this._tx.coin : this.addressProvider.getCoin(address),
+      const outputAddr = output.toAddress ? output.toAddress : output.address;
+      const address = this.walletProvider.getAddressView(
+        this._tx.coin
+          ? this._tx.coin
+          : this.addressProvider.getCoin(outputAddr),
+        outputAddr
+      );
+      const protoAddress = this.walletProvider.getProtoAddress(
+        this._tx.coin,
+        this._tx.network,
         address
       );
+
+      output.addressToShow =
+        this._tx.coin == 'bch' ? protoAddress.toLowerCase() : address;
     });
 
     this.contact();
@@ -45,12 +55,12 @@ export class MultipleOutputsPage {
   }
 
   private contact(): void {
-    let addr = this._tx.toAddress;
+    const addr = this._tx.toAddress;
     this.addressBookProvider
       .get(addr)
       .then(ab => {
         if (ab) {
-          let name = _.isObject(ab) ? ab.name : ab;
+          const name = _.isObject(ab) ? ab.name : ab;
           this.contactName = name;
         }
       })
