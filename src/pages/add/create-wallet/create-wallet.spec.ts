@@ -43,14 +43,16 @@ describe('CreateWalletPage', () => {
         singleAddress: false,
         coin: 'btc',
         mnemonic: 'mom mom mom mom mom mom mom mom mom mom mom mom',
-        derivationStrategy: 'BIP44'
+        derivationStrategy: 'BIP44',
+        account: 0
       };
 
       instance.createForm.value.walletName = 'test';
       instance.createForm.value.myName = 'test';
       instance.createForm.value.requiredCopayers = 2;
       instance.createForm.value.totalCopayers = 3;
-      instance.createForm.value.testnetEnabled = 'livenet';
+      instance.createForm.value.testnetEnabled = false;
+      instance.createForm.value.derivationPath = "m/44'/0'/0'";
       instance.createForm.value.bwsURL = 'https://bws.bitpay.com/bws/api';
       instance.createForm.value.singleAddress = false;
       instance.createForm.value.coin = 'btc';
