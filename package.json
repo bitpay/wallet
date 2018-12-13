@@ -243,7 +243,7 @@
     "@ionic-native-mocks/file": "2.0.12",
     "@ionic-native-mocks/qr-scanner": "2.0.12",
     "@ionic-native-mocks/touch-id": "2.0.12",
-    "@ionic/app-scripts": "3.1.11",
+    "@ionic/app-scripts": "3.2.1",
     "@types/chrome": "0.0.64",
     "@types/cordova-plugin-qrscanner": "1.0.31",
     "@types/jasmine": "2.8.6",
@@ -284,7 +284,8 @@
     "ts-node": "5.0.0",
     "tslint": "5.8.0",
     "tslint-config-prettier": "1.7.0",
-    "typescript": "2.6.2"
+    "typescript": "2.6.2",
+    "webpack": "3.12.0"
   },
   "cordova": {
     "plugins": {
