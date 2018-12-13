@@ -8,9 +8,8 @@
         <span class="address-divider"></span>
       </div>
 
-      <div class="ellipsis" *ngIf="!tx.hasMultiplesOutputs" copy-to-clipboard="{{ tx.toAddress ? tx.toAddress : tx.outputs[0].address }}">
-        <span *ngIf="!contactName && !tx.toAddress">{{ tx.outputs[0].address }}</span>
-        <span *ngIf="!contactName && tx.toAddress">{{ tx.toAddress }}</span>
+      <div class="ellipsis" *ngIf="!tx.hasMultiplesOutputs" copy-to-clipboard="{{ tx.outputs[0].addressToShow ? tx.outputs[0].addressToShow : tx.outputs[0].address }}">
+        <span *ngIf="!contactName">{{ tx.outputs[0].addressToShow ? tx.outputs[0].addressToShow : tx.outputs[0].address }}</span>
         <span *ngIf="contactName">{{ contactName }}</span>
       </div>
 
