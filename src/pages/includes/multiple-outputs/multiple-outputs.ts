@@ -31,20 +31,19 @@ export class MultipleOutputsPage {
     this._tx = tx;
     this.tx.outputs.forEach(output => {
       const outputAddr = output.toAddress ? output.toAddress : output.address;
-      const address = this.walletProvider.getAddressView(
-        this._tx.coin
-          ? this._tx.coin
-          : this.addressProvider.getCoin(outputAddr),
-        outputAddr
-      );
+      const coin = this._tx.coin
+        ? this._tx.coin
+        : this.addressProvider.getCoin(outputAddr);
+
+      const address = this.walletProvider.getAddressView(coin, outputAddr);
       const protoAddress = this.walletProvider.getProtoAddress(
-        this._tx.coin,
+        coin,
         this._tx.network,
         address
       );
 
       output.addressToShow =
-        this._tx.coin == 'bch' && !this.walletProvider.useLegacyAddress()
+        coin == 'bch' && !this.walletProvider.useLegacyAddress()
           ? protoAddress.toLowerCase()
           : address;
     });
