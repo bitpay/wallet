@@ -686,7 +686,9 @@ export class ConfirmPage extends WalletTabsChild {
             );
 
             recipient.addressToShow =
-              tx.coin == 'bch' ? protoAddress.toLowerCase() : address;
+              tx.coin == 'bch' && !this.walletProvider.useLegacyAddress()
+                ? protoAddress.toLowerCase()
+                : address;
           }
 
           txp.outputs.push({

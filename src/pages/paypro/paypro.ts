@@ -28,7 +28,10 @@ export class PayProPage {
       wallet.network,
       address
     );
-    this.address = wallet.coin == 'bch' ? protoAddress.toLowerCase() : address;
+    this.address =
+      wallet.coin == 'bch' && !this.walletProvider.useLegacyAddress()
+        ? protoAddress.toLowerCase()
+        : address;
   }
 
   close() {

@@ -159,7 +159,9 @@ export class WalletAddressesPage {
       );
 
       n.address =
-        this.wallet.coin == 'bch' ? protoAddress.toLowerCase() : address;
+        this.wallet.coin == 'bch' && !this.walletProvider.useLegacyAddress()
+          ? protoAddress.toLowerCase()
+          : address;
     });
   }
 

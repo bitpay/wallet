@@ -55,7 +55,9 @@ export class CustomAmountPage {
       );
 
       this.address =
-        this.wallet.coin == 'bch' ? protoAddress.toLowerCase() : address;
+        this.wallet.coin == 'bch' && !this.walletProvider.useLegacyAddress()
+          ? protoAddress.toLowerCase()
+          : address;
 
       const parsedAmount = this.txFormatProvider.parseAmount(
         this.wallet.coin,
@@ -89,7 +91,8 @@ export class CustomAmountPage {
         );
       }
 
-      this.qrAddress = protoAddress.toLowerCase() + '?amount=' + this.amountCoin;
+      this.qrAddress =
+        protoAddress.toLowerCase() + '?amount=' + this.amountCoin;
     });
   }
 

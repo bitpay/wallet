@@ -123,7 +123,9 @@ export class ReceivePage extends WalletTabsChild {
       await Observable.timer(400).toPromise();
     }
     this.address =
-      this.wallet.coin == 'bch' ? protoAddress.toLowerCase() : address;
+      this.wallet.coin == 'bch' && !this.walletProvider.useLegacyAddress()
+        ? protoAddress.toLowerCase()
+        : address;
     this.qrAddress = protoAddress;
     await Observable.timer(200).toPromise();
     this.playAnimation = false;

@@ -44,7 +44,9 @@ export class MultipleOutputsPage {
       );
 
       output.addressToShow =
-        this._tx.coin == 'bch' ? protoAddress.toLowerCase() : address;
+        this._tx.coin == 'bch' && !this.walletProvider.useLegacyAddress()
+          ? protoAddress.toLowerCase()
+          : address;
     });
 
     this.contact();
