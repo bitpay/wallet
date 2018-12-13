@@ -92,7 +92,11 @@ export class CustomAmountPage {
       }
 
       this.qrAddress =
-        protoAddress.toLowerCase() + '?amount=' + this.amountCoin;
+        (this.wallet.coin != 'bch' || this.walletProvider.useLegacyAddress()
+          ? protoAddress
+          : protoAddress.toLowerCase()) +
+        '?amount=' +
+        this.amountCoin;
     });
   }
 
