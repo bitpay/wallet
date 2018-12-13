@@ -32,8 +32,8 @@
     <preference name="SplashMaintainAspectRatio" value="true" />
     <preference name="loadUrlTimeoutValue" value="60000" />
 
-    <!-- Android Version: Lollipop 5.1 (API Level 22) or higher -->
-    <preference name="android-minSdkVersion" value="22" />
+    <!-- Android Version: Marshmallow 6.0 (API Level 23) or higher -->
+    <preference name="android-minSdkVersion" value="23" />
 
     <!-- iOS 10.3 or higher -->
     <preference name="deployment-target" value="10.3" />
