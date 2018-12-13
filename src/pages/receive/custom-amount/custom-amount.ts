@@ -89,23 +89,12 @@ export class CustomAmountPage {
         );
       }
 
-      this.updateQrAddress();
+      this.qrAddress = protoAddress.toLowerCase() + '?amount=' + this.amountCoin;
     });
   }
 
   ionViewDidLoad() {
     this.logger.info('Loaded: CustomAmountPage');
-  }
-
-  private updateQrAddress(): void {
-    this.qrAddress =
-      this.walletProvider.getProtoAddress(
-        this.wallet.coin,
-        this.wallet.network,
-        this.address
-      ) +
-      '?amount=' +
-      this.amountCoin;
   }
 
   public shareAddress(): void {
