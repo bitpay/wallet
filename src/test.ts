@@ -94,12 +94,12 @@ export class NavParamsMock {
   static returnParam = null;
   public get(_): any {
     if (NavParamsMock.returnParam) {
-       return NavParamsMock.returnParam
+      return NavParamsMock.returnParam;
     }
     return 'default';
   }
-  public data: any = {}
-  static setParams(value){
+  public data: any = {};
+  static setParams(value) {
     NavParamsMock.returnParam = value;
   }
 }
