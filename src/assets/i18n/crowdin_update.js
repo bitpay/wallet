@@ -37,51 +37,60 @@ var crowdin_api_key = fs.readFileSync(
 // console.log('api key: ' + crowdin_api_key);
 
 if (crowdin_api_key != '') {
-  var payload = "------WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; name=\"files[template.pot]\"; filename=\"template.pot\"\r\nContent-Type: application/vnd.ms-powerpoint\r\n\r\n" + local_file1_text + "\r\n------WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; name=\"files[appstore/appstore_en.txt]\"; filename=\"appstore_en.txt\"\r\nContent-Type: text/plain\r\n\r\n" + local_file2_text + "\r\n------WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; name=\"files[appstore/updateinfo_en.txt]\"; filename=\"updateinfo_en.txt\"\r\nContent-Type: text/plain\r\n\r\n" + local_file3_text + "\r\n------WebKitFormBoundary7MA4YWxkTrZu0gW--";
+  var payload =
+    '------WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; name="files[template.pot]"; filename="template.pot"\r\nContent-Type: application/vnd.ms-powerpoint\r\n\r\n' +
+    local_file1_text +
+    '\r\n------WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; name="files[appstore/appstore_en.txt]"; filename="appstore_en.txt"\r\nContent-Type: text/plain\r\n\r\n' +
+    local_file2_text +
+    '\r\n------WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; name="files[appstore/updateinfo_en.txt]"; filename="updateinfo_en.txt"\r\nContent-Type: text/plain\r\n\r\n' +
+    local_file3_text +
+    '\r\n------WebKitFormBoundary7MA4YWxkTrZu0gW--';
 
   var options = {
     method: 'POST',
     hostname: 'api.crowdin.com',
-    path: '/api/project/' + crowdin_identifier + '/update-file?key=' + crowdin_api_key,
+    path:
+      '/api/project/' +
+      crowdin_identifier +
+      '/update-file?key=' +
+      crowdin_api_key,
     headers: {
-      'content-type': 'multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW',
+      'content-type':
+        'multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW'
     }
   };
 
   console.log(`OPTIONS: ${JSON.stringify(options)}`);
-  var req = https.request(options, (response) => {
-
+  var req = https.request(options, response => {
     console.log(`STATUS: ${response.statusCode}`);
     console.log(`HEADERS: ${JSON.stringify(response.headers)}`);
 
     response.setEncoding('utf8');
 
-    response.on('data', (chunk) => {
+    response.on('data', chunk => {
       console.log(`BODY: ${chunk}`);
     });
     response.on('end', () => {
       // This call will tell the server to generate a new zip file for you based on most recent translations.
       https
         .get(
-        'https://api.crowdin.com/api/project/' +
-        crowdin_identifier +
-        '/export?key=' +
-        crowdin_api_key,
-        (res) => {
-          console.log('Export Got response: ' + res.statusCode);
-          res.on('data', (chunk) => {
-            console.log(chunk.toString('utf8'));
-          });
-        }
+          'https://api.crowdin.com/api/project/' +
+            crowdin_identifier +
+            '/export?key=' +
+            crowdin_api_key,
+          res => {
+            console.log('Export Got response: ' + res.statusCode);
+            res.on('data', chunk => {
+              console.log(chunk.toString('utf8'));
+            });
+          }
         )
-        .on('error', (e) => {
+        .on('error', e => {
           console.log('Export Got error: ' + e.message);
         });
     });
-
-  }
-  );
-  req.on('error', (e) => {
+  });
+  req.on('error', e => {
     console.error(`problem with request: ${e.message}`);
   });
 
