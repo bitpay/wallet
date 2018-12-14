@@ -262,7 +262,7 @@
     "electron-builder": "20.36.2",
     "fs-extra": "5.0.0",
     "html-loader": "0.5.4",
-    "ionic": "4.5.0",
+    "ionic": "3.20.0",
     "ionic-mocks": "1.2.1",
     "jasmine-core": "2.99.1",
     "jasmine-reporters": "2.3.0",
