@@ -23,7 +23,7 @@
     <preference name="AndroidPersistentFileLocation" value="Internal" />
     <preference name="iosPersistentFileLocation" value="Library" />
     <preference name="DisallowOverscroll" value="true"/>
-    <preference name="HideKeyboardFormAccessoryBar" value="true"/>
+    <preference name="HideKeyboardFormAccessoryBar" value="false"/>
 
     <preference name="BackupWebStorage" value="none"/>
     <preference name="Orientation" value="default" />

@@ -7,7 +7,6 @@ import {
   ViewChild
 } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { Content } from 'ionic-angular';
 import { Observable } from 'rxjs';
 import { debounceTime, distinctUntilChanged, skip } from 'rxjs/operators';
 
@@ -35,8 +34,6 @@ export class EditableItemComponent {
   value: string;
   @Input()
   itemPlaceholder: string;
-  @Input('scrollArea')
-  scrollArea: Content;
 
   listenerForEnsuringBlurOnIos = (e: Event) => {
     e.stopPropagation();
@@ -66,19 +63,6 @@ export class EditableItemComponent {
     this.saving = false;
     this.isFocused = false;
     this.finishedFocus = false;
-  }
-
-  ngOnInit() {
-    if (!this.scrollArea || !this.scrollArea.ionScroll) return;
-    this.scrollArea.ionScroll.subscribe(event => {
-      if (this.finishedFocus) {
-        const scrollSensitivity = 10;
-        if (Math.abs(event.velocityY) > scrollSensitivity) {
-          let activeElement = document.activeElement as HTMLElement;
-          activeElement && activeElement.blur && activeElement.blur();
-        }
-      }
-    });
   }
 
   ngAfterViewInit(): void {
