@@ -79,8 +79,9 @@ export class ShapeshiftProvider {
         return cb(null, data);
       },
       data => {
-        this.logger.error('Shapeshift SHIFT ERROR: ' + data.error.message);
-        return cb(data.error.message);
+        const error = this.parseError(data);
+        this.logger.error('Shapeshift SHIFT ERROR: ' + error);
+        return cb(error);
       }
     );
   }
@@ -134,7 +135,8 @@ export class ShapeshiftProvider {
         return cb(null, data);
       },
       data => {
-        this.logger.error('Shapeshift PAIR ERROR: ' + data.error.message);
+        const error = this.parseError(data);
+        this.logger.error('Shapeshift PAIR ERROR: ' + error);
         return cb(data);
       }
     );
@@ -147,7 +149,8 @@ export class ShapeshiftProvider {
         return cb(null, data);
       },
       data => {
-        this.logger.error('Shapeshift LIMIT ERROR: ' + data.error.message);
+        const error = this.parseError(data);
+        this.logger.error('Shapeshift LIMIT ERROR: ' + error);
         return cb(data);
       }
     );
@@ -160,7 +163,8 @@ export class ShapeshiftProvider {
         return cb(null, data);
       },
       data => {
-        this.logger.error('Shapeshift MARKET INFO ERROR', data.error.message);
+        const error = this.parseError(data);
+        this.logger.error('Shapeshift MARKET INFO ERROR: ', error);
         return cb(data);
       }
     );
@@ -180,9 +184,8 @@ export class ShapeshiftProvider {
           return cb(null, data);
         },
         data => {
-          this.logger.error(
-            'Shapeshift STATUS ERROR: ' + data.error.error_description
-          );
+          const error = this.parseError(data);
+          this.logger.error('Shapeshift STATUS ERROR: ' + error);
           return cb(data.error);
         }
       );
@@ -219,7 +222,7 @@ export class ShapeshiftProvider {
         if (!accessToken) return cb();
         return cb(accessToken);
       })
-      .catch(_ => {
+      .catch(() => {
         return cb();
       });
   }
@@ -245,10 +248,7 @@ export class ShapeshiftProvider {
         this._afterTokenReceived(data, cb);
       },
       data => {
-        const error =
-          data && data.error && data.error.error_description
-            ? data.error.error_description
-            : data.statusText;
+        const error = this.parseError(data);
         this.logger.error(
           'ShapeShift: GET Access Token: ERROR ' + data.status + '. ' + error
         );
@@ -314,11 +314,12 @@ export class ShapeshiftProvider {
         return cb(null, data);
       },
       data => {
+        const error = this.parseError(data);
         this.logger.error(
           'ShapeShift: Get Access Token Details ERROR ' +
             data.status +
             '. ' +
-            data.error.error_description
+            error
         );
         return cb(data.error);
       }
@@ -341,11 +342,9 @@ export class ShapeshiftProvider {
         return cb(null, data);
       },
       data => {
+        const error = this.parseError(data);
         this.logger.error(
-          'ShapeShift: Get Account ERROR ' +
-            data.status +
-            '. ' +
-            data.error.error_description
+          'ShapeShift: Get Account ERROR ' + data.status + '. ' + error
         );
         return cb(data.error);
       }
@@ -367,11 +366,9 @@ export class ShapeshiftProvider {
         this.logger.info('ShapeShift: Revoke Access Token SUCCESS');
       },
       data => {
+        const error = this.parseError(data);
         this.logger.warn(
-          'ShapeShift: Revoke Access Token ERROR ' +
-            data.status +
-            '. ' +
-            data.error.error
+          'ShapeShift: Revoke Access Token ERROR ' + data.status + '. ' + error
         );
       }
     );
@@ -381,5 +378,17 @@ export class ShapeshiftProvider {
     this.revokeAccessToken(token);
     this.persistenceProvider.removeShapeshiftToken(this.credentials.NETWORK);
     this.homeIntegrationsProvider.updateLink('shapeshift', null); // Name, Token
+  }
+
+  private parseError(err: any): string {
+    if (!err) return 'Unknow Error';
+    if (!err.error) return err.message ? err.message : 'Unknow Error';
+
+    const parsedError = err.error.error_description
+      ? err.error.error_description
+      : err.error.error && err.error.error.message
+      ? err.error.error.message
+      : err.error;
+    return parsedError;
   }
 }
