@@ -5,7 +5,7 @@ import {
   TestBed,
   tick
 } from '@angular/core/testing';
-import { Events, NavParams } from 'ionic-angular';
+import { Events } from 'ionic-angular';
 
 import { Coin } from '../../providers/wallet/wallet';
 import { TestUtils } from '../../test';
@@ -32,6 +32,9 @@ describe('SendPage', () => {
     TestUtils.configurePageTestingModule([SendPage]).then(testEnv => {
       fixture = testEnv.fixture;
       instance = testEnv.instance;
+      instance.navParams = {
+        data: {}
+      };
       instance.wallet = wallet;
       testBed = testEnv.testBed;
       fixture.detectChanges();
@@ -70,8 +73,10 @@ describe('SendPage', () => {
       beforeEach(() => {
         instance.wallet.coin = 'btc';
         instance.wallet.network = 'livenet';
-        instance.navParams.data.amount = 11111111;
-        instance.navParams.data.coin = 'btc';
+        instance.navParams.data = {
+          amount: 11111111,
+          coin: 'btc'
+        };
 
         const checkIfContact = Promise.resolve(false);
         spyOn(instance, 'checkIfContact').and.returnValue(checkIfContact);
@@ -605,10 +610,15 @@ describe('SendPage', () => {
         WalletTabsProvider
       );
       const events: Events = testBed.get(Events);
-      const navParams: NavParams = testBed.get(NavParams);
+      instance.navParams = {
+        data: {
+          amount: '1.00000',
+          coin: Coin.BCH
+        }
+      };
       const amount = '1.00000';
       const coin = Coin.BCH;
-      spyOn(navParams, 'get').and.returnValues(amount, coin);
+      spyOn(instance.navParams, 'data').and.returnValues(amount, coin);
       const sendParamsSpy = spyOn(walletTabsProvider, 'setSendParams');
       const publishSpy = spyOn(events, 'publish');
       instance.openScanner();
