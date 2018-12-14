@@ -10,7 +10,6 @@ import { WalletProvider } from '../../providers/wallet/wallet';
 })
 export class PayProPage {
   public tx;
-  public wallet;
   public address: string;
 
   constructor(
@@ -19,9 +18,10 @@ export class PayProPage {
     private walletProvider: WalletProvider
   ) {
     this.tx = this.navParams.data.tx;
-    let wallet = this.navParams.data.wallet;
+    const wallet = this.navParams.data.wallet;
     this.address = this.walletProvider.getAddressView(
       wallet.coin,
+      wallet.network,
       this.tx.paypro.toAddress
     );
   }
