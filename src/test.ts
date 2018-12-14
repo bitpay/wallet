@@ -90,6 +90,20 @@ import { LoggerMock } from './providers/logger/logger.mock';
 
 declare const require: any;
 
+export class NavParamsMock {
+  static returnParam = null;
+  public get(_): any {
+    if (NavParamsMock.returnParam) {
+       return NavParamsMock.returnParam
+    }
+    return 'default';
+  }
+  public data: any = {}
+  static setParams(value){
+    NavParamsMock.returnParam = value;
+  }
+}
+
 // First, initialize the Angular testing environment.
 getTestBed().initTestEnvironment(
   BrowserDynamicTestingModule,
@@ -170,6 +184,10 @@ const ionicProviders = [
   {
     provide: AndroidFingerprintAuth,
     useClass: AndroidFingerprintAuthMock
+  },
+  {
+    provide: NavParams,
+    useClass: NavParamsMock
   }
 ];
 const baseProviders = [
@@ -223,7 +241,6 @@ export class TestUtils {
         SatToFiatPipe,
         SatToUnitPipe,
         GestureController,
-        NavParams,
         PlatformProvider,
         ...providers
       ]
