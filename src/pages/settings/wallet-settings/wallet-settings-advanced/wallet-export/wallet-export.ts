@@ -6,7 +6,7 @@ import { Logger } from '../../../../../providers/logger/logger';
 
 // native
 import { Clipboard } from '@ionic-native/clipboard';
-import { Printer } from '@ionic-native/printer';
+import { Printer, PrintOptions } from '@ionic-native/printer';
 import { SocialSharing } from '@ionic-native/social-sharing';
 
 // providers
@@ -89,9 +89,12 @@ export class WalletExportPage extends WalletTabsChild {
     this.isCordova = this.platformProvider.isCordova;
     this.isSafari = this.platformProvider.isSafari;
     this.isIOS = this.platformProvider.isIOS;
-    this.printer.isAvailable().then(() => {
-      this.isPrintingAvailableOnMobile = true;
-    });
+    this.printer.isAvailable().then(
+      () => {
+        this.isPrintingAvailableOnMobile = true;
+      },
+      () => {}
+    );
     this.walletName =
       this.wallet.credentials.walletName || this.wallet.credentials.walletId;
   }
@@ -374,8 +377,18 @@ export class WalletExportPage extends WalletTabsChild {
 
   public printQr(): boolean {
     if (this.isCordova) {
-      let printContent = document.getElementById('cordovaPrintWrapper');
-      this.printer.print(printContent);
+      const elementToPrint = document.getElementById('cordovaPrintWrapper');
+      const options: PrintOptions = {
+        name: 'Exported wallet from ' + this.appProvider.info.userVisibleName
+      };
+      this.printer.print(elementToPrint, options).then(
+        () => {
+          this.logger.debug('Printing dialog finished');
+        },
+        () => {
+          this.logger.error('Unable to print');
+        }
+      );
     } else {
       window.print();
     }
