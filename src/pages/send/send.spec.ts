@@ -618,7 +618,6 @@ describe('SendPage', () => {
       };
       const amount = '1.00000';
       const coin = Coin.BCH;
-      spyOn(instance.navParams, 'data').and.returnValues(amount, coin);
       const sendParamsSpy = spyOn(walletTabsProvider, 'setSendParams');
       const publishSpy = spyOn(events, 'publish');
       instance.openScanner();
