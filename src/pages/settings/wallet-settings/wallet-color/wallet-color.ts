@@ -3,6 +3,7 @@ import { Events, NavController, NavParams } from 'ionic-angular';
 import { Logger } from '../../../../providers/logger/logger';
 
 // providers
+import { StatusBar } from '@ionic-native/status-bar';
 import { ConfigProvider } from '../../../../providers/config/config';
 import { ProfileProvider } from '../../../../providers/profile/profile';
 
@@ -22,7 +23,8 @@ export class WalletColorPage {
     private navParams: NavParams,
     private configProvider: ConfigProvider,
     private logger: Logger,
-    private events: Events
+    private events: Events,
+    private statusBar: StatusBar
   ) {
     this.retries = 3;
   }
@@ -41,15 +43,16 @@ export class WalletColorPage {
   }
 
   public save(i): void {
-    let color = this.indexToColor(i);
+    const color = this.indexToColor(i);
     if (!color) return;
 
-    let opts = {
+    const opts = {
       colorFor: {}
     };
     opts.colorFor[this.wallet.credentials.walletId] = color;
 
     this.configProvider.set(opts);
+    this.statusBar.backgroundColorByHexString(color);
     this.events.publish('wallet:updated', this.wallet.credentials.walletId);
     this.navCtrl.pop();
   }
@@ -92,9 +95,9 @@ export class WalletColorPage {
     );
     return rgb && rgb.length === 4
       ? '#' +
-          ('0' + parseInt(rgb[1], 10).toString(16)).slice(-2) +
-          ('0' + parseInt(rgb[2], 10).toString(16)).slice(-2) +
-          ('0' + parseInt(rgb[3], 10).toString(16)).slice(-2)
+      ('0' + parseInt(rgb[1], 10).toString(16)).slice(-2) +
+      ('0' + parseInt(rgb[2], 10).toString(16)).slice(-2) +
+      ('0' + parseInt(rgb[3], 10).toString(16)).slice(-2)
       : '';
   }
 }

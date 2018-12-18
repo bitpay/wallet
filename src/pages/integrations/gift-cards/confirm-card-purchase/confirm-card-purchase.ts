@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { StatusBar } from '@ionic-native/status-bar';
 import { TranslateService } from '@ngx-translate/core';
 import { App, ModalController, NavController, NavParams } from 'ionic-angular';
 import * as _ from 'lodash';
@@ -8,7 +9,7 @@ import { Logger } from '../../../../providers/logger/logger';
 // Pages
 import { FinishModalPage } from '../../../finish/finish';
 
-// Provider
+// Providers
 import { DecimalPipe } from '@angular/common';
 import {
   FeeProvider,
@@ -16,6 +17,7 @@ import {
   WalletTabsProvider
 } from '../../../../providers';
 import { ActionSheetProvider } from '../../../../providers/action-sheet/action-sheet';
+import { AppProvider } from '../../../../providers/app/app';
 import { BwcErrorProvider } from '../../../../providers/bwc-error/bwc-error';
 import { BwcProvider } from '../../../../providers/bwc/bwc';
 import { ConfigProvider } from '../../../../providers/config/config';
@@ -86,7 +88,9 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
     translate: TranslateService,
     private payproProvider: PayproProvider,
     platformProvider: PlatformProvider,
-    walletTabsProvider: WalletTabsProvider
+    walletTabsProvider: WalletTabsProvider,
+    statusBar: StatusBar,
+    appProvider: AppProvider
   ) {
     super(
       actionSheetProvider,
@@ -110,7 +114,9 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
       txConfirmNotificationProvider,
       txFormatProvider,
       walletProvider,
-      walletTabsProvider
+      walletTabsProvider,
+      statusBar,
+      appProvider
     );
     this.hideSlideButton = false;
     this.configWallet = this.configProvider.get().wallet;
@@ -223,7 +229,7 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
       err_title = this.translate.instant('Service not available');
       err_msg = this.translate.instant(
         `${
-          this.cardConfig.brand
+        this.cardConfig.brand
         } gift card purchases are not available at this time. Please try again later.`
       );
     } else if (errMessage) {
@@ -398,7 +404,7 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
 
     if (!this.isCryptoCurrencySupported(wallet, invoice)) {
       this.onGoingProcessProvider.clear();
-      let msg = this.translate.instant(
+      const msg = this.translate.instant(
         'Purchases with this cryptocurrency are not enabled'
       );
       this.showErrorInfoSheet(msg, null, true);
@@ -408,7 +414,7 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
     // Sometimes API does not return this element;
     invoice['minerFees'][COIN]['totalFee'] =
       invoice.minerFees[COIN].totalFee || 0;
-    let invoiceFeeSat = invoice.minerFees[COIN].totalFee;
+    const invoiceFeeSat = invoice.minerFees[COIN].totalFee;
 
     this.message = this.replaceParametersProvider.replace(
       this.translate.instant(`{{amountUnitStr}} Gift Card`),
@@ -512,12 +518,12 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
 
   public onWalletSelect(wallet): void {
     this.wallet = wallet;
-    this.initialize(wallet).catch(() => {});
+    this.initialize(wallet).catch(() => { });
   }
 
   public showWallets(): void {
     this.isOpenSelector = true;
-    let id = this.wallet ? this.wallet.credentials.walletId : null;
+    const id = this.wallet ? this.wallet.credentials.walletId : null;
     const params = {
       wallets: this.wallets,
       selectedWalletId: id,
@@ -551,8 +557,8 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
         'Gift card generated and ready to use.'
       );
     }
-    let finishText = '';
-    let modal = this.modalCtrl.create(
+    const finishText = '';
+    const modal = this.modalCtrl.create(
       FinishModalPage,
       { finishText, finishComment, cssClass },
       { showBackdrop: true, enableBackdropDismiss: false }
