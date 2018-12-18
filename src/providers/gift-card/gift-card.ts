@@ -383,9 +383,10 @@ export class GiftCardProvider {
   }
 
   async getCachedApiCardConfig(): Promise<AvailableCardMap> {
-    return this.cachedApiCardConfigPromise
-      ? this.cachedApiCardConfigPromise
-      : this.fetchCachedApiCardConfig();
+    const config = this.cachedApiCardConfigPromise
+      ? await this.cachedApiCardConfigPromise
+      : await this.fetchCachedApiCardConfig();
+    return config || {};
   }
 
   async getAvailableCardMap() {
