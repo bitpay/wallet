@@ -34,6 +34,8 @@ fs.writeFileSync(local_file_name3, local_file3_text);
 var crowdin_api_key = fs.readFileSync(
   path.join(__dirname, 'crowdin_api_key.txt')
 );
+// Convert to string and replace \n
+crowdin_api_key = crowdin_api_key.toString('utf8').replace(/\n/g, '');
 // console.log('api key: ' + crowdin_api_key);
 
 if (crowdin_api_key != '') {
