@@ -40,6 +40,8 @@ export class GiftCardProvider {
   };
 
   availableCardMapPromise: Promise<AvailableCardMap>;
+  cachedApiCardConfigPromise: Promise<AvailableCardMap>;
+
   cardUpdatesSubject: Subject<GiftCard> = new Subject<GiftCard>();
   cardUpdates$: Observable<GiftCard> = this.cardUpdatesSubject.asObservable();
 
@@ -375,11 +377,15 @@ export class GiftCardProvider {
     return this.persistenceProvider.setGiftCardConfigCache(newCache);
   }
 
+  async fetchCachedApiCardConfig(): Promise<AvailableCardMap> {
+    this.cachedApiCardConfigPromise = this.persistenceProvider.getGiftCardConfigCache();
+    return this.cachedApiCardConfigPromise;
+  }
+
   async getCachedApiCardConfig(): Promise<AvailableCardMap> {
-    const cardConfigCache = await this.persistenceProvider.getGiftCardConfigCache();
-    return cardConfigCache && _.isString(cardConfigCache)
-      ? JSON.parse(cardConfigCache)
-      : cardConfigCache || {};
+    return this.cachedApiCardConfigPromise
+      ? this.cachedApiCardConfigPromise
+      : this.fetchCachedApiCardConfig();
   }
 
   async getAvailableCardMap() {
