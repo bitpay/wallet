@@ -1,10 +1,14 @@
 import { Component } from '@angular/core';
+import { StatusBar } from '@ionic-native/status-bar';
 import { AlertController, NavController, NavParams } from 'ionic-angular';
 
 // pages
 import { BackupGamePage } from '../backup-game/backup-game';
 
+// providers
 import { ActionSheetProvider } from '../../../providers/action-sheet/action-sheet';
+import { AppProvider } from '../../../providers/app/app';
+import { ProfileProvider } from '../../../providers/profile/profile';
 
 @Component({
   selector: 'page-backup-warning',
@@ -19,10 +23,33 @@ export class BackupWarningPage {
     public navCtrl: NavController,
     public navParams: NavParams,
     public alertCtrl: AlertController,
-    public actionSheetProvider: ActionSheetProvider
+    public actionSheetProvider: ActionSheetProvider,
+    private appProvider: AppProvider,
+    private statusBar: StatusBar,
+    private profileProvider: ProfileProvider
   ) {
     this.walletId = this.navParams.get('walletId');
     this.fromOnboarding = this.navParams.get('fromOnboarding');
+  }
+
+
+  ionViewWillEnter() {
+    const defaultColor =
+      this.appProvider.info.nameCase == 'Copay' ? '#192c3a' : '#2A3F90';
+    this.statusBarBackgroundColor(defaultColor);
+  }
+
+  ionViewWillLeave() {
+    if (!this.fromOnboarding) {
+      const wallet = this.profileProvider.getWallet(this.walletId);
+      this.statusBarBackgroundColor(wallet.color);
+    }
+  }
+
+  public statusBarBackgroundColor(color: string): void {
+    setTimeout(() => {
+      this.statusBar.backgroundColorByHexString(color);
+    }, 500);
   }
 
   public openWarningModal(): void {

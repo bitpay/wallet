@@ -1,4 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
+import { StatusBar } from '@ionic-native/status-bar';
 import { TranslateService } from '@ngx-translate/core';
 import {
   Events,
@@ -8,15 +9,16 @@ import {
   Slides
 } from 'ionic-angular';
 import * as _ from 'lodash';
-import { Logger } from '../../../providers/logger/logger';
 
 // pages
 import { DisclaimerPage } from '../../onboarding/disclaimer/disclaimer';
 
 // providers
 import { ActionSheetProvider } from '../../../providers/action-sheet/action-sheet';
+import { AppProvider } from '../../../providers/app/app';
 import { BwcErrorProvider } from '../../../providers/bwc-error/bwc-error';
 import { BwcProvider } from '../../../providers/bwc/bwc';
+import { Logger } from '../../../providers/logger/logger';
 import { OnGoingProcessProvider } from '../../../providers/on-going-process/on-going-process';
 import { ProfileProvider } from '../../../providers/profile/profile';
 import { WalletProvider } from '../../../providers/wallet/wallet';
@@ -60,12 +62,30 @@ export class BackupGamePage {
     private bwcErrorProvider: BwcErrorProvider,
     private onGoingProcessProvider: OnGoingProcessProvider,
     private translate: TranslateService,
-    public actionSheetProvider: ActionSheetProvider
+    public actionSheetProvider: ActionSheetProvider,
+    private statusBar: StatusBar,
+    private appProvider: AppProvider
   ) {
     this.walletId = this.navParams.get('walletId');
     this.fromOnboarding = this.navParams.get('fromOnboarding');
     this.wallet = this.profileProvider.getWallet(this.walletId);
     this.credentialsEncrypted = this.wallet.isPrivKeyEncrypted();
+  }
+
+  ionViewWillEnter() {
+    const defaultColor =
+      this.appProvider.info.nameCase == 'Copay' ? '#192c3a' : '#2A3F90';
+    this.statusBarBackgroundColor(defaultColor);
+  }
+
+  ionViewWillLeave() {
+    if(!this.fromOnboarding) this.statusBarBackgroundColor(this.wallet.color);
+  }
+
+  public statusBarBackgroundColor(color: string): void {
+    setTimeout(() => {
+      this.statusBar.backgroundColorByHexString(color);
+    }, 500);
   }
 
   ionViewDidEnter() {

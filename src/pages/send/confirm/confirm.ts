@@ -1,9 +1,9 @@
 import { DecimalPipe } from '@angular/common';
 import { Component, ViewChild } from '@angular/core';
+import { StatusBar } from '@ionic-native/status-bar';
 import { TranslateService } from '@ngx-translate/core';
 import { App, ModalController, NavController, NavParams } from 'ionic-angular';
 import * as _ from 'lodash';
-import { Logger } from '../../../providers/logger/logger';
 
 // Pages
 import { FinishModalPage } from '../../finish/finish';
@@ -13,11 +13,13 @@ import { ChooseFeeLevelPage } from '../choose-fee-level/choose-fee-level';
 
 // Providers
 import { ActionSheetProvider } from '../../../providers/action-sheet/action-sheet';
+import { AppProvider } from '../../../providers/app/app';
 import { BwcErrorProvider } from '../../../providers/bwc-error/bwc-error';
 import { BwcProvider } from '../../../providers/bwc/bwc';
 import { ConfigProvider } from '../../../providers/config/config';
 import { ExternalLinkProvider } from '../../../providers/external-link/external-link';
 import { FeeProvider } from '../../../providers/fee/fee';
+import { Logger } from '../../../providers/logger/logger';
 import { OnGoingProcessProvider } from '../../../providers/on-going-process/on-going-process';
 import { PlatformProvider } from '../../../providers/platform/platform';
 import { PopupProvider } from '../../../providers/popup/popup';
@@ -101,7 +103,9 @@ export class ConfirmPage extends WalletTabsChild {
     protected txConfirmNotificationProvider: TxConfirmNotificationProvider,
     protected txFormatProvider: TxFormatProvider,
     protected walletProvider: WalletProvider,
-    walletTabsProvider: WalletTabsProvider
+    walletTabsProvider: WalletTabsProvider,
+    protected statusBar: StatusBar,
+    protected appProvider: AppProvider
   ) {
     super(navCtrl, profileProvider, walletTabsProvider);
     this.bitcore = this.bwcProvider.getBitcore();
@@ -123,14 +127,28 @@ export class ConfirmPage extends WalletTabsChild {
     // Overrides the ngOnInit logic of WalletTabsChild
   }
 
+  public statusBarBackgroundColor(color: string): void {
+    setTimeout(() => {
+      this.statusBar.backgroundColorByHexString(color);
+    }, 500);
+  }
+
   ionViewWillLeave() {
     this.navCtrl.swipeBackEnabled = true;
+    if (this.isWithinWalletTabs()) {
+      this.statusBar.backgroundColorByHexString(this.wallet.color);
+    }
   }
 
   ionViewWillEnter() {
     this.navCtrl.swipeBackEnabled = false;
+
+    const defaultColor =
+      this.appProvider.info.nameCase == 'Copay' ? '#192c3a' : '#2A3F90';
+    this.statusBarBackgroundColor(defaultColor);
+
     this.isOpenSelector = false;
-    let B = this.navParams.data.coin == 'bch' ? this.bitcoreCash : this.bitcore;
+    const B = this.navParams.data.coin == 'bch' ? this.bitcoreCash : this.bitcore;
     let networkName;
     let amount;
     if (this.fromMultiSend) {
@@ -142,16 +160,16 @@ export class ConfirmPage extends WalletTabsChild {
       try {
         networkName = new B.Address(this.navParams.data.toAddress).network.name;
       } catch (e) {
-        var message = this.translate.instant(
+        const message = this.translate.instant(
           'Copay only supports Bitcoin Cash using new version numbers addresses'
         );
-        var backText = this.translate.instant('Go back');
-        var learnText = this.translate.instant('Learn more');
+        const backText = this.translate.instant('Go back');
+        const learnText = this.translate.instant('Learn more');
         this.popupProvider
           .ionicConfirm(null, message, backText, learnText)
           .then(back => {
             if (!back) {
-              var url =
+              const url =
                 'https://support.bitpay.com/hc/en-us/articles/115004671663';
               this.externalLinkProvider.open(url);
             }
@@ -251,7 +269,7 @@ export class ConfirmPage extends WalletTabsChild {
     return new Promise((resolve, reject) => {
       // no min amount? (sendMax) => look for no empty wallets
       minAmount = minAmount ? minAmount : 1;
-      let filteredWallets = [];
+      const filteredWallets = [];
       let index: number = 0;
       let walletsUpdated: number = 0;
 
@@ -327,7 +345,7 @@ export class ConfirmPage extends WalletTabsChild {
     const feeOpts = this.feeProvider.getFeeOpts();
     this.tx.feeLevelName = feeOpts[this.tx.feeLevel];
     this.updateTx(this.tx, this.wallet, { dryRun: true }).catch(err => {
-      let previousView = this.navCtrl.getPrevious().name;
+      const previousView = this.navCtrl.getPrevious().name;
       switch (err) {
         case 'insufficient_funds':
           // Do not allow user to change or use max amount if previous view is not Amount
@@ -373,13 +391,13 @@ export class ConfirmPage extends WalletTabsChild {
     this.paymentExpired = false;
     this.setExpirationTime(expirationTime);
 
-    let countDown = setInterval(() => {
+    const countDown = setInterval(() => {
       this.setExpirationTime(expirationTime, countDown);
     }, 1000);
   }
 
   private setExpirationTime(expirationTime: number, countDown?): void {
-    let now = Math.floor(Date.now() / 1000);
+    const now = Math.floor(Date.now() / 1000);
 
     if (now > expirationTime) {
       this.paymentExpired = true;
@@ -391,9 +409,9 @@ export class ConfirmPage extends WalletTabsChild {
       return;
     }
 
-    let totalSecs = expirationTime - now;
-    let m = Math.floor(totalSecs / 60);
-    let s = totalSecs % 60;
+    const totalSecs = expirationTime - now;
+    const m = Math.floor(totalSecs / 60);
+    const s = totalSecs % 60;
     this.remainingTimeStr = ('0' + m).slice(-2) + ':' + ('0' + s).slice(-2);
   }
 
@@ -410,7 +428,7 @@ export class ConfirmPage extends WalletTabsChild {
         return resolve();
       }
 
-      let maxAllowedMerchantFee = {
+      const maxAllowedMerchantFee = {
         btc: 'urgent',
         bch: 'normal'
       };
@@ -418,11 +436,11 @@ export class ConfirmPage extends WalletTabsChild {
       this.onGoingProcessProvider.set('calculatingFee');
       this.feeProvider
         .getFeeRate(
-          wallet.coin,
-          tx.network,
-          this.usingMerchantFee
-            ? maxAllowedMerchantFee[wallet.coin]
-            : this.tx.feeLevel
+        wallet.coin,
+        tx.network,
+        this.usingMerchantFee
+          ? maxAllowedMerchantFee[wallet.coin]
+          : this.tx.feeLevel
         )
         .then(feeRate => {
           let msg;
@@ -430,12 +448,12 @@ export class ConfirmPage extends WalletTabsChild {
             msg = this.translate.instant('Custom');
             tx.feeLevelName = msg;
           } else if (this.usingMerchantFee) {
-            let maxAllowedFee = feeRate * 2;
+            const maxAllowedFee = feeRate * 2;
             this.logger.info(
               'Using Merchant Fee:' +
-                tx.feeRate +
-                ' vs. referent level:' +
-                maxAllowedFee
+              tx.feeRate +
+              ' vs. referent level:' +
+              maxAllowedFee
             );
             if (tx.network != 'testnet' && tx.feeRate > maxAllowedFee) {
               this.onGoingProcessProvider.set('calculatingFee');
@@ -521,7 +539,7 @@ export class ConfirmPage extends WalletTabsChild {
             });
         })
         .catch(() => {
-          let msg = this.translate.instant('Error getting SendMax information');
+          const msg = this.translate.instant('Error getting SendMax information');
           return reject(msg);
         });
     });
@@ -600,7 +618,7 @@ export class ConfirmPage extends WalletTabsChild {
   private showSendMaxWarning(wallet, sendMaxInfo): void {
     if (!sendMaxInfo) return;
 
-    let warningMsg = this.verifyExcludedUtxos(wallet, sendMaxInfo);
+    const warningMsg = this.verifyExcludedUtxos(wallet, sendMaxInfo);
 
     const coinName =
       this.wallet.coin === Coin.BTC ? 'Bitcoin (BTC)' : 'Bitcoin Cash (BCH)';
@@ -618,10 +636,10 @@ export class ConfirmPage extends WalletTabsChild {
   }
 
   private verifyExcludedUtxos(_, sendMaxInfo) {
-    let warningMsg = [];
+    const warningMsg = [];
     if (sendMaxInfo.utxosBelowFee > 0) {
-      let amountBelowFeeStr = sendMaxInfo.amountBelowFee / 1e8;
-      let message = this.replaceParametersProvider.replace(
+      const amountBelowFeeStr = sendMaxInfo.amountBelowFee / 1e8;
+      const message = this.replaceParametersProvider.replace(
         this.translate.instant(
           'A total of {{amountBelowFeeStr}} {{coin}} were excluded. These funds come from UTXOs smaller than the network fee provided.'
         ),
@@ -631,8 +649,8 @@ export class ConfirmPage extends WalletTabsChild {
     }
 
     if (sendMaxInfo.utxosAboveMaxSize > 0) {
-      let amountAboveMaxSizeStr = sendMaxInfo.amountAboveMaxSize / 1e8;
-      let message = this.replaceParametersProvider.replace(
+      const amountAboveMaxSizeStr = sendMaxInfo.amountAboveMaxSize / 1e8;
+      const message = this.replaceParametersProvider.replace(
         this.translate.instant(
           'A total of {{amountAboveMaxSizeStr}} {{coin}} were excluded. The maximum size allowed for a transaction was exceeded.'
         ),
@@ -647,18 +665,18 @@ export class ConfirmPage extends WalletTabsChild {
     return new Promise((resolve, reject) => {
       // ToDo: use a credential's (or fc's) function for this
       if (tx.description && !wallet.credentials.sharedEncryptingKey) {
-        let msg = this.translate.instant(
+        const msg = this.translate.instant(
           'Could not add message to imported wallet without shared encrypting key'
         );
         return reject(msg);
       }
 
       if (tx.amount > Number.MAX_SAFE_INTEGER) {
-        let msg = this.translate.instant('Amount too big');
+        const msg = this.translate.instant('Amount too big');
         return reject(msg);
       }
 
-      let txp: Partial<TransactionProposal> = {};
+      const txp: Partial<TransactionProposal> = {};
 
       if (this.fromMultiSend) {
         txp.outputs = [];
@@ -758,7 +776,7 @@ export class ConfirmPage extends WalletTabsChild {
       this.hideSlideButton = false;
       return;
     }
-    let infoSheetTitle = title ? title : this.translate.instant('Error');
+    const infoSheetTitle = title ? title : this.translate.instant('Error');
 
     const errorInfoSheet = this.actionSheetProvider.createInfoSheet(
       'default-error',
@@ -771,8 +789,8 @@ export class ConfirmPage extends WalletTabsChild {
         this.isWithinWalletTabs()
           ? this.navCtrl.popToRoot()
           : this.navCtrl.last().name == 'ConfirmCardPurchasePage'
-          ? this.navCtrl.pop()
-          : this.app.getRootNavs()[0].setRoot(TabsPage);
+            ? this.navCtrl.pop()
+            : this.app.getRootNavs()[0].setRoot(TabsPage);
       }
     });
   }
@@ -786,8 +804,8 @@ export class ConfirmPage extends WalletTabsChild {
   }
 
   public showDescriptionPopup(tx) {
-    let message = this.translate.instant('Add Memo');
-    let opts = {
+    const message = this.translate.instant('Add Memo');
+    const opts = {
       defaultText: tx.description
     };
     this.popupProvider.ionicPrompt(null, message, opts).then((res: string) => {
@@ -830,20 +848,20 @@ export class ConfirmPage extends WalletTabsChild {
     return new Promise(resolve => {
       if (this.walletProvider.isEncrypted(wallet)) return resolve();
       this.txFormatProvider.formatToUSD(wallet.coin, txp.amount).then(val => {
-        let amountUsd = parseFloat(val);
+        const amountUsd = parseFloat(val);
         if (amountUsd <= this.CONFIRM_LIMIT_USD) return resolve();
 
-        let amount = (this.tx.amount / 1e8).toFixed(8);
-        let unit = txp.coin.toUpperCase();
-        let name = wallet.name;
-        let message = this.replaceParametersProvider.replace(
+        const amount = (this.tx.amount / 1e8).toFixed(8);
+        const unit = txp.coin.toUpperCase();
+        const name = wallet.name;
+        const message = this.replaceParametersProvider.replace(
           this.translate.instant(
             'Sending {{amount}} {{unit}} from your {{name}} wallet'
           ),
           { amount, unit, name }
         );
-        let okText = this.translate.instant('Confirm');
-        let cancelText = this.translate.instant('Cancel');
+        const okText = this.translate.instant('Confirm');
+        const cancelText = this.translate.instant('Cancel');
         this.popupProvider
           .ionicConfirm(null, message, okText, cancelText)
           .then((ok: boolean) => {
@@ -899,13 +917,13 @@ export class ConfirmPage extends WalletTabsChild {
       finishText: this.successText
     };
     if (onlyPublish) {
-      let finishText = this.translate.instant('Payment Published');
-      let finishComment = this.translate.instant(
+      const finishText = this.translate.instant('Payment Published');
+      const finishComment = this.translate.instant(
         'You could sign the transaction later in your wallet details'
       );
       params = { finishText, finishComment };
     }
-    let modal = this.modalCtrl.create(FinishModalPage, params, {
+    const modal = this.modalCtrl.create(FinishModalPage, params, {
       showBackdrop: true,
       enableBackdropDismiss: false
     });
@@ -918,7 +936,7 @@ export class ConfirmPage extends WalletTabsChild {
 
   public openPPModal(): void {
     if (!this.wallet) return;
-    let modal = this.modalCtrl.create(
+    const modal = this.modalCtrl.create(
       PayProPage,
       {
         tx: this.tx,
@@ -936,7 +954,7 @@ export class ConfirmPage extends WalletTabsChild {
     if (this.tx.coin == 'bch') return;
     if (this.usingMerchantFee) return; // TODO: should we allow override?
 
-    let txObject = {
+    const txObject = {
       network: this.tx.network,
       feeLevel: this.tx.feeLevel,
       noSave: true,
@@ -985,7 +1003,7 @@ export class ConfirmPage extends WalletTabsChild {
 
   public showWallets(): void {
     this.isOpenSelector = true;
-    let id = this.wallet ? this.wallet.credentials.walletId : null;
+    const id = this.wallet ? this.wallet.credentials.walletId : null;
     const params = {
       wallets: this.wallets,
       selectedWalletId: id,
