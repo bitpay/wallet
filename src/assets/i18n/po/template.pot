@@ -2703,6 +2703,13 @@ msgstr ""
 msgid "Your name"
 msgstr ""
 
+msgid ""
+"Your wallet address is similar to a bank account number. You can add funds "
+"to your wallet by withdrawing funds you may have stored on an exchange to "
+"your wallet address. Or other {coinName} users can send you money by "
+"scanning your QR code."
+msgstr ""
+
 msgid "Your wallet is never saved to cloud storage or standard device backups."
 msgstr ""
 
