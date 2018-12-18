@@ -6,6 +6,6 @@
     "module": "commonjs",
     "types": ["jasmine", "node", "chrome"]
   },
-  "files": ["test.ts"],
+  "files": ["test.ts", "polyfills.ts"],
   "include": ["**/*.spec.ts", "**/*.d.ts"]
 }
