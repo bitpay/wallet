@@ -12,7 +12,7 @@ msgstr ""
 "Last-Translator: cmgustavo83\n"
 "Language-Team: Japanese\n"
 "Language: ja\n"
-"PO-Revision-Date: 2018-11-23 16:57\n"
+"PO-Revision-Date: 2018-12-18 20:49\n"
 
 msgid "(Trusted)"
 msgstr "(信頼済み)"
@@ -30,18 +30,6 @@ msgid "2. Enter Gift Code"
 msgstr ""
 
 msgid "5-star ratings help us get BitPay Wallet into more hands, and more users means more resources can be committed to the app!"
-msgstr ""
-
-msgid "A new copayer just joined your wallet {{walletName}}."
-msgstr ""
-
-msgid "A new payment proposal has been created in your wallet {{walletName}}."
-msgstr ""
-
-msgid "A payment of {{amountStr}} has been received into your wallet {{walletName}}."
-msgstr ""
-
-msgid "A payment proposal in your wallet {{walletName}} has been rejected."
 msgstr ""
 
 msgid "A total of {{amountAboveMaxSizeStr}} {{coin}} were excluded. The maximum size allowed for a transaction was exceeded."
@@ -170,9 +158,6 @@ msgstr "金額が大きすぎます"
 msgid "Amount:"
 msgstr ""
 
-msgid "An update to this app is available. For your security, please update to the latest version."
-msgstr "このアプリのアップデートがあります。セキュリティーを保持するために最新版にアップデートして下さい。"
-
 msgid "Anyone with your recovery phrase can access or spend your bitcoin."
 msgstr ""
 
@@ -248,7 +233,7 @@ msgid "Balance Hidden"
 msgstr ""
 
 msgid "Be sure to store your recovery phrase in a secure place. If this app is deleted, your money cannot be recovered without it."
-msgstr "書き留めた復元フレーズは金庫など、安全な場所にて保管して下さい。このアプリが削除されたら、復元フレーズが必須になってきます。"
+msgstr ""
 
 msgid "Because you are sending the maximum amount contained in this wallet, the {coinName} miner fee ({fee} {coin}) will be deducted from the total. {msg}"
 msgstr ""
@@ -973,6 +958,9 @@ msgstr "戻る"
 msgid "Got it"
 msgstr "分かりました"
 
+msgid "Have you redeemed all of your {brand} Gift Cards? Archived gift cards will still be accessible in settings."
+msgstr ""
+
 msgid "Have you redeemed the entire balance of this gift card?"
 msgstr ""
 
@@ -1162,9 +1150,6 @@ msgstr "詳細情報"
 msgid "Learn more about testnet blockchain"
 msgstr ""
 
-msgid "Leave Feedback"
-msgstr ""
-
 msgid "Let's verify your recovery phrase."
 msgstr ""
 
@@ -1281,15 +1266,6 @@ msgstr "ネットワークにエラーが発生した"
 
 msgid "New Proposal"
 msgstr "新しい提案"
-
-msgid "New copayer"
-msgstr ""
-
-msgid "New payment proposal"
-msgstr ""
-
-msgid "New payment received"
-msgstr ""
 
 msgid "New wallet"
 msgstr ""
@@ -1515,9 +1491,6 @@ msgstr "取引が承認されましたが、まだ送信していません。"
 
 msgid "Payment accepted. It will be broadcasted by Glidera. In case there is a problem, it can be deleted 6 hours after it was created."
 msgstr "取引が承認されました。Glideraより送信されます。問題があった場合、送金命令を出す６時間以内に取り消すことができます。"
-
-msgid "Payment proposal rejected"
-msgstr ""
 
 msgid "Payment request"
 msgstr "支払い請求"
@@ -2085,16 +2058,10 @@ msgstr ""
 msgid "The total amount of bitcoin stored in this wallet."
 msgstr "このウォレットのビットコインの総残高"
 
-msgid "The transaction from {{walletName}} that you were waiting for has been confirmed."
-msgstr ""
-
 msgid "The transaction history and every new incoming transaction are cached in the app. This feature clean this up and synchronizes again from the server"
 msgstr ""
 
 msgid "The wallet you are using does not match the network and/or the currency of the address provided"
-msgstr ""
-
-msgid "There is a new version of {{nameCase}} available"
 msgstr ""
 
 msgid "There is an error in the form"
@@ -2184,9 +2151,6 @@ msgstr ""
 msgid "Transaction already broadcasted"
 msgstr "取引は既に配信されました。"
 
-msgid "Transaction confirmed"
-msgstr ""
-
 msgid "Transaction has not been created"
 msgstr "取引が未作成です"
 
@@ -2271,9 +2235,6 @@ msgstr ""
 msgid "Unverified Account"
 msgstr ""
 
-msgid "Update Available"
-msgstr "利用可能なアップデートあり"
-
 msgid "Updating Gift Card..."
 msgstr ""
 
@@ -2328,9 +2289,6 @@ msgstr ""
 msgid "View Transaction on Insight"
 msgstr "Insightにて取引を表示"
 
-msgid "View Update"
-msgstr "更新情報を表示"
-
 msgid "View Wallet Terms of Use"
 msgstr ""
 
@@ -2380,9 +2338,6 @@ msgid "Wallet already exists"
 msgstr "既存のウォレットです"
 
 msgid "Wallet already in {{nameCase}}"
-msgstr ""
-
-msgid "Wallet complete"
 msgstr ""
 
 msgid "Wallet created"
@@ -2566,9 +2521,6 @@ msgid "Your wallet is never saved to cloud storage or standard device backups."
 msgstr "ウォレットは一度もクラウドへ保存されたりすることはありませんし、携帯電話などに付いている標準バックアップ機能ではバックアップされません！！！！"
 
 msgid "Your wallet key will be encrypted. The encrypt password cannot be recovered. Be sure to write it down."
-msgstr ""
-
-msgid "Your wallet {{walletName}} is complete."
 msgstr ""
 
 msgid "Your {walletType} wallet is backed up!"

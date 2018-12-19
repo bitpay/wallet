@@ -12,7 +12,7 @@ msgstr ""
 "Last-Translator: cmgustavo83\n"
 "Language-Team: Russian\n"
 "Language: ru\n"
-"PO-Revision-Date: 2018-11-28 20:32\n"
+"PO-Revision-Date: 2018-12-18 20:49\n"
 
 msgid "(Trusted)"
 msgstr "(Доверенный)"
@@ -30,18 +30,6 @@ msgid "2. Enter Gift Code"
 msgstr ""
 
 msgid "5-star ratings help us get BitPay Wallet into more hands, and more users means more resources can be committed to the app!"
-msgstr ""
-
-msgid "A new copayer just joined your wallet {{walletName}}."
-msgstr ""
-
-msgid "A new payment proposal has been created in your wallet {{walletName}}."
-msgstr ""
-
-msgid "A payment of {{amountStr}} has been received into your wallet {{walletName}}."
-msgstr ""
-
-msgid "A payment proposal in your wallet {{walletName}} has been rejected."
 msgstr ""
 
 msgid "A total of {{amountAboveMaxSizeStr}} {{coin}} were excluded. The maximum size allowed for a transaction was exceeded."
@@ -170,9 +158,6 @@ msgstr "Слишком большая сумма"
 msgid "Amount:"
 msgstr ""
 
-msgid "An update to this app is available. For your security, please update to the latest version."
-msgstr "Доступно обновление. Для вашей же безопасности, пожалуйста, обновитесь до последней версии."
-
 msgid "Anyone with your recovery phrase can access or spend your bitcoin."
 msgstr ""
 
@@ -246,7 +231,7 @@ msgid "Balance Hidden"
 msgstr "Баланс Скрыт"
 
 msgid "Be sure to store your recovery phrase in a secure place. If this app is deleted, your money cannot be recovered without it."
-msgstr "Сохраните ваше ключевое словосочетание в безопасном месте. Если {{appName}} будет удален, ваши деньги нельзя будет восстановить без ключевого словосочетания."
+msgstr ""
 
 msgid "Because you are sending the maximum amount contained in this wallet, the {coinName} miner fee ({fee} {coin}) will be deducted from the total. {msg}"
 msgstr ""
@@ -971,6 +956,9 @@ msgstr "Вернуться"
 msgid "Got it"
 msgstr "Понял"
 
+msgid "Have you redeemed all of your {brand} Gift Cards? Archived gift cards will still be accessible in settings."
+msgstr ""
+
 msgid "Have you redeemed the entire balance of this gift card?"
 msgstr ""
 
@@ -1160,9 +1148,6 @@ msgstr "Узнайте больше"
 msgid "Learn more about testnet blockchain"
 msgstr "Узнайте больше о тестнет блокчайн"
 
-msgid "Leave Feedback"
-msgstr ""
-
 msgid "Let's verify your recovery phrase."
 msgstr ""
 
@@ -1279,15 +1264,6 @@ msgstr "Ошибка сети"
 
 msgid "New Proposal"
 msgstr "Предложить платёж"
-
-msgid "New copayer"
-msgstr ""
-
-msgid "New payment proposal"
-msgstr ""
-
-msgid "New payment received"
-msgstr ""
 
 msgid "New wallet"
 msgstr "Новый кошелек"
@@ -1513,9 +1489,6 @@ msgstr "Платёж принят, но пока не отправлен"
 
 msgid "Payment accepted. It will be broadcasted by Glidera. In case there is a problem, it can be deleted 6 hours after it was created."
 msgstr "Платёж принят и будет отправлен Glidera. В случае проблем он может быть удалён спустя шесть часов после создания."
-
-msgid "Payment proposal rejected"
-msgstr ""
 
 msgid "Payment request"
 msgstr "Запрос платежа"
@@ -2081,16 +2054,10 @@ msgstr ""
 msgid "The total amount of bitcoin stored in this wallet."
 msgstr "Сумма биткойнов в этом кошельке."
 
-msgid "The transaction from {{walletName}} that you were waiting for has been confirmed."
-msgstr ""
-
 msgid "The transaction history and every new incoming transaction are cached in the app. This feature clean this up and synchronizes again from the server"
 msgstr ""
 
 msgid "The wallet you are using does not match the network and/or the currency of the address provided"
-msgstr ""
-
-msgid "There is a new version of {{nameCase}} available"
 msgstr ""
 
 msgid "There is an error in the form"
@@ -2180,9 +2147,6 @@ msgstr "ID транзакции"
 msgid "Transaction already broadcasted"
 msgstr "Транзакция уже отправлена"
 
-msgid "Transaction confirmed"
-msgstr ""
-
 msgid "Transaction has not been created"
 msgstr ""
 
@@ -2267,9 +2231,6 @@ msgstr "Неиспользованные адреса"
 msgid "Unverified Account"
 msgstr ""
 
-msgid "Update Available"
-msgstr "Доступно обновление"
-
 msgid "Updating Gift Card..."
 msgstr "Подарочная карта бновляется..."
 
@@ -2324,9 +2285,6 @@ msgstr ""
 msgid "View Transaction on Insight"
 msgstr "Просмотреть транзакцию на Insight"
 
-msgid "View Update"
-msgstr "Просмотреть обновление"
-
 msgid "View Wallet Terms of Use"
 msgstr "Просмотр условия использования бумажника"
 
@@ -2377,9 +2335,6 @@ msgstr "Кошелёк уже существует"
 
 msgid "Wallet already in {{nameCase}}"
 msgstr "Кошелёк уже в {{nameCase}}"
-
-msgid "Wallet complete"
-msgstr ""
 
 msgid "Wallet created"
 msgstr "Кошелёк создан"
@@ -2562,9 +2517,6 @@ msgid "Your wallet is never saved to cloud storage or standard device backups."
 msgstr "Ваш кошелёк никогда не сохраняется в облачное хранилище или в резервные копии устройства."
 
 msgid "Your wallet key will be encrypted. The encrypt password cannot be recovered. Be sure to write it down."
-msgstr ""
-
-msgid "Your wallet {{walletName}} is complete."
 msgstr ""
 
 msgid "Your {walletType} wallet is backed up!"
