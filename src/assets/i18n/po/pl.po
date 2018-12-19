@@ -12,7 +12,7 @@ msgstr ""
 "Last-Translator: cmgustavo83\n"
 "Language-Team: Polish\n"
 "Language: pl\n"
-"PO-Revision-Date: 2018-11-23 16:57\n"
+"PO-Revision-Date: 2018-12-18 20:49\n"
 
 msgid "(Trusted)"
 msgstr "(Zaufany)"
@@ -30,18 +30,6 @@ msgid "2. Enter Gift Code"
 msgstr ""
 
 msgid "5-star ratings help us get BitPay Wallet into more hands, and more users means more resources can be committed to the app!"
-msgstr ""
-
-msgid "A new copayer just joined your wallet {{walletName}}."
-msgstr ""
-
-msgid "A new payment proposal has been created in your wallet {{walletName}}."
-msgstr ""
-
-msgid "A payment of {{amountStr}} has been received into your wallet {{walletName}}."
-msgstr ""
-
-msgid "A payment proposal in your wallet {{walletName}} has been rejected."
 msgstr ""
 
 msgid "A total of {{amountAboveMaxSizeStr}} {{coin}} were excluded. The maximum size allowed for a transaction was exceeded."
@@ -170,9 +158,6 @@ msgstr "Zbyt duża kwota"
 msgid "Amount:"
 msgstr ""
 
-msgid "An update to this app is available. For your security, please update to the latest version."
-msgstr "Dostępna jest aktualizacja aplikacji. Ze względów bezpieczeństwa należy zaktualizować do najnowszej wersji."
-
 msgid "Anyone with your recovery phrase can access or spend your bitcoin."
 msgstr ""
 
@@ -246,7 +231,7 @@ msgid "Balance Hidden"
 msgstr "Stan konta ukryty"
 
 msgid "Be sure to store your recovery phrase in a secure place. If this app is deleted, your money cannot be recovered without it."
-msgstr "Pamiętaj aby przechowywać swoją kluczową frazę w bezpiecznym miejscu. Jeśli ta aplikacja zostanie usunięta, nie będziesz mógł bez niej odzyskać swoich pieniędzy."
+msgstr ""
 
 msgid "Because you are sending the maximum amount contained in this wallet, the {coinName} miner fee ({fee} {coin}) will be deducted from the total. {msg}"
 msgstr ""
@@ -971,6 +956,9 @@ msgstr "Powrót"
 msgid "Got it"
 msgstr "Rozumiem"
 
+msgid "Have you redeemed all of your {brand} Gift Cards? Archived gift cards will still be accessible in settings."
+msgstr ""
+
 msgid "Have you redeemed the entire balance of this gift card?"
 msgstr ""
 
@@ -1160,9 +1148,6 @@ msgstr "Dowiedz się więcej"
 msgid "Learn more about testnet blockchain"
 msgstr ""
 
-msgid "Leave Feedback"
-msgstr ""
-
 msgid "Let's verify your recovery phrase."
 msgstr ""
 
@@ -1279,15 +1264,6 @@ msgstr "Błąd sieci"
 
 msgid "New Proposal"
 msgstr "Nowa propozycja"
-
-msgid "New copayer"
-msgstr ""
-
-msgid "New payment proposal"
-msgstr ""
-
-msgid "New payment received"
-msgstr ""
 
 msgid "New wallet"
 msgstr ""
@@ -1513,9 +1489,6 @@ msgstr "Wypłata zaakceptowana, ale jeszcze nie nadana"
 
 msgid "Payment accepted. It will be broadcasted by Glidera. In case there is a problem, it can be deleted 6 hours after it was created."
 msgstr "Wypłata zaakceptowana. Będzie nadana przez Glidera. W przypadku wystąpienia problemu, może być usunięta 6 godzin po utworzeniu."
-
-msgid "Payment proposal rejected"
-msgstr ""
 
 msgid "Payment request"
 msgstr "Wniosek o płatność"
@@ -2081,16 +2054,10 @@ msgstr ""
 msgid "The total amount of bitcoin stored in this wallet."
 msgstr "Łączna ilość bitcoinów przechowywana w tym portfelu."
 
-msgid "The transaction from {{walletName}} that you were waiting for has been confirmed."
-msgstr ""
-
 msgid "The transaction history and every new incoming transaction are cached in the app. This feature clean this up and synchronizes again from the server"
 msgstr ""
 
 msgid "The wallet you are using does not match the network and/or the currency of the address provided"
-msgstr ""
-
-msgid "There is a new version of {{nameCase}} available"
 msgstr ""
 
 msgid "There is an error in the form"
@@ -2180,9 +2147,6 @@ msgstr ""
 msgid "Transaction already broadcasted"
 msgstr "Transakcja została już wysłana"
 
-msgid "Transaction confirmed"
-msgstr ""
-
 msgid "Transaction has not been created"
 msgstr "Transakcja nie została utworzona"
 
@@ -2267,9 +2231,6 @@ msgstr "Nieużywane adresy"
 msgid "Unverified Account"
 msgstr ""
 
-msgid "Update Available"
-msgstr "Dostępna aktualizacja"
-
 msgid "Updating Gift Card..."
 msgstr "Aktualizowanie karty podarunkowej..."
 
@@ -2324,9 +2285,6 @@ msgstr ""
 msgid "View Transaction on Insight"
 msgstr "Zobacz transakcje na Insight"
 
-msgid "View Update"
-msgstr "Zobacz aktualizacje"
-
 msgid "View Wallet Terms of Use"
 msgstr ""
 
@@ -2376,9 +2334,6 @@ msgid "Wallet already exists"
 msgstr "Portfel już istnieje"
 
 msgid "Wallet already in {{nameCase}}"
-msgstr ""
-
-msgid "Wallet complete"
 msgstr ""
 
 msgid "Wallet created"
@@ -2562,9 +2517,6 @@ msgid "Your wallet is never saved to cloud storage or standard device backups."
 msgstr "Twój portfel nigdy nie jest przechowywany w chmurze lub na urządzeniach do tworzenia kopii zapasowych."
 
 msgid "Your wallet key will be encrypted. The encrypt password cannot be recovered. Be sure to write it down."
-msgstr ""
-
-msgid "Your wallet {{walletName}} is complete."
 msgstr ""
 
 msgid "Your {walletType} wallet is backed up!"

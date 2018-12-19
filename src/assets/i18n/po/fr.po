@@ -12,7 +12,7 @@ msgstr ""
 "Last-Translator: cmgustavo83\n"
 "Language-Team: French\n"
 "Language: fr\n"
-"PO-Revision-Date: 2018-11-28 20:32\n"
+"PO-Revision-Date: 2018-12-19 12:52\n"
 
 msgid "(Trusted)"
 msgstr "(Fiable)"
@@ -31,18 +31,6 @@ msgstr "2. Entez le code-cadeau"
 
 msgid "5-star ratings help us get BitPay Wallet into more hands, and more users means more resources can be committed to the app!"
 msgstr "Une note de 5 étoiles permet à BitPay Wallet de gagner en popularité et nous encourage à améliorer l'application !"
-
-msgid "A new copayer just joined your wallet {{walletName}}."
-msgstr "Un nouveau Copayer a rejoint votre portefeuille {{walletName}}."
-
-msgid "A new payment proposal has been created in your wallet {{walletName}}."
-msgstr "Une nouvelle proposition de paiement a été créée dans votre portefeuille {{walletName}}."
-
-msgid "A payment of {{amountStr}} has been received into your wallet {{walletName}}."
-msgstr "Un paiement de {{amountStr}} a été reçu dans votre portefeuille {{walletName}}."
-
-msgid "A payment proposal in your wallet {{walletName}} has been rejected."
-msgstr "Une proposition de paiement a été rejetée dans votre portefeuille {{walletName}}."
 
 msgid "A total of {{amountAboveMaxSizeStr}} {{coin}} were excluded. The maximum size allowed for a transaction was exceeded."
 msgstr "Un total de {{amountAboveMaxSizeStr}} {{coin}} a été exclu. La taille maximale autorisée pour une transaction a été dépassée."
@@ -169,9 +157,6 @@ msgstr "Le montant est trop élevé"
 
 msgid "Amount:"
 msgstr "Montant :"
-
-msgid "An update to this app is available. For your security, please update to the latest version."
-msgstr "Une mise à jour de cette appli est disponible. Pour votre sécurité, veuillez mettre à jour vers la dernière version."
 
 msgid "Anyone with your recovery phrase can access or spend your bitcoin."
 msgstr "Quelqu'un disposant de votre phrase de récupération peut dépenser vos bitcoins."
@@ -888,7 +873,7 @@ msgid "Fingerprint"
 msgstr "Empreinte digitale"
 
 msgid "Found something broken? Please report it as a bug. If you need immediate help with a problem you are having, then get help by contacting our support team."
-msgstr "Vous avez trouvé quelque chose de défectueux ? Veuillez le signaler comme un bug. Si vous avez besoin d’une aide immédiate à un problème que vous rencontrez, vous pouvez prendre contact avec notre équipe d’assistance."
+msgstr "Vous avez trouvé quelque chose de défectueux ? Veuillez le signaler comme étant un bug. Si vous avez besoin d’une aide immédiate à un problème que vous rencontrez, vous pouvez prendre contact avec notre équipe d’assistance."
 
 msgid "From"
 msgstr "De"
@@ -970,6 +955,9 @@ msgstr "Retour"
 
 msgid "Got it"
 msgstr "J'ai compris"
+
+msgid "Have you redeemed all of your {brand} Gift Cards? Archived gift cards will still be accessible in settings."
+msgstr "Avez-vous échangé la totalité de vos cartes-cadeaux {brand} ? Les cartes-cadeaux archivées seront toujours accessibles dans les paramètres."
 
 msgid "Have you redeemed the entire balance of this gift card?"
 msgstr "Avez-vous utilisé la totalité du solde de cette carte-cadeau ?"
@@ -1160,9 +1148,6 @@ msgstr "En savoir plus"
 msgid "Learn more about testnet blockchain"
 msgstr "En savoir plus sur la blockchain testnet"
 
-msgid "Leave Feedback"
-msgstr "Laisser un commentaire"
-
 msgid "Let's verify your recovery phrase."
 msgstr "Vérifions votre phrase de récupération."
 
@@ -1279,15 +1264,6 @@ msgstr "Erreur réseau"
 
 msgid "New Proposal"
 msgstr "Nouvelle proposition"
-
-msgid "New copayer"
-msgstr "Nouveau Copayer"
-
-msgid "New payment proposal"
-msgstr "Nouvelle proposition de paiement"
-
-msgid "New payment received"
-msgstr "Nouveau paiement reçu"
 
 msgid "New wallet"
 msgstr "Nouveau portefeuille"
@@ -1513,9 +1489,6 @@ msgstr "Paiement accepté, mais pas encore diffusé"
 
 msgid "Payment accepted. It will be broadcasted by Glidera. In case there is a problem, it can be deleted 6 hours after it was created."
 msgstr "Paiement accepté. Il sera diffusé par Glidera. Dans le cas où il y a un problème, il peut être supprimé 6 heures après avoir été créé."
-
-msgid "Payment proposal rejected"
-msgstr "Proposition de paiement rejetée"
 
 msgid "Payment request"
 msgstr "Demande de paiement"
@@ -2081,17 +2054,11 @@ msgstr "Le testnet est une blockchain Bitcoin alternative qui est utilisé pour 
 msgid "The total amount of bitcoin stored in this wallet."
 msgstr "Le montant total des bitcoins stockés dans ce portefeuille."
 
-msgid "The transaction from {{walletName}} that you were waiting for has been confirmed."
-msgstr "La transaction de {{walletName}} que vous attendiez a été confirmée."
-
 msgid "The transaction history and every new incoming transaction are cached in the app. This feature clean this up and synchronizes again from the server"
 msgstr "L’historique des transactions et chaque nouvelle transaction entrante sont mis en cache dans l’application. Cette fonctionnalité efface cela et synchronise à nouveau à partir du serveur"
 
 msgid "The wallet you are using does not match the network and/or the currency of the address provided"
 msgstr "Le portefeuille que vous utilisez ne correspond pas au réseau et/ou à la monnaie de l’adresse fournie"
-
-msgid "There is a new version of {{nameCase}} available"
-msgstr "Une nouvelle version de {{nameCase}} est disponible"
 
 msgid "There is an error in the form"
 msgstr "Il y a une erreur dans la forme"
@@ -2180,9 +2147,6 @@ msgstr "ID de transaction"
 msgid "Transaction already broadcasted"
 msgstr "Transaction déjà diffusée"
 
-msgid "Transaction confirmed"
-msgstr "Transaction confirmée"
-
 msgid "Transaction has not been created"
 msgstr "La transaction n'a pas été créée"
 
@@ -2267,9 +2231,6 @@ msgstr "Adresses inutilisées"
 msgid "Unverified Account"
 msgstr "Compte non vérifié"
 
-msgid "Update Available"
-msgstr "Mise à jour disponible"
-
 msgid "Updating Gift Card..."
 msgstr "Mise à jour de la carte-cadeau..."
 
@@ -2324,9 +2285,6 @@ msgstr "Voir le code de rachat"
 msgid "View Transaction on Insight"
 msgstr "Voir la transaction sur Insight"
 
-msgid "View Update"
-msgstr "Voir la mise à jour"
-
 msgid "View Wallet Terms of Use"
 msgstr "Voir les conditions d’utilisation du portefeuille"
 
@@ -2377,9 +2335,6 @@ msgstr "Le portefeuille existe déjà"
 
 msgid "Wallet already in {{nameCase}}"
 msgstr "Le portefeuille existe déjà dans {{nameCase}}"
-
-msgid "Wallet complete"
-msgstr "Portefeuille terminé"
 
 msgid "Wallet created"
 msgstr "Portefeuille créé"
@@ -2563,9 +2518,6 @@ msgstr "Votre portefeuille n’est jamais enregistré en dehors de votre apparei
 
 msgid "Your wallet key will be encrypted. The encrypt password cannot be recovered. Be sure to write it down."
 msgstr "La clé de votre portefeuille sera chiffrée. Le code de chiffrement ne peut pas être récupéré. N'oubliez pas de l'écrire."
-
-msgid "Your wallet {{walletName}} is complete."
-msgstr "Votre portefeuille {{walletName}} est terminé."
 
 msgid "Your {walletType} wallet is backed up!"
 msgstr "Votre portefeuille {walletType} est sauvegardé !"

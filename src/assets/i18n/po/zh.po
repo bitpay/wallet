@@ -12,7 +12,7 @@ msgstr ""
 "Last-Translator: cmgustavo83\n"
 "Language-Team: Chinese Simplified\n"
 "Language: zh\n"
-"PO-Revision-Date: 2018-11-23 16:57\n"
+"PO-Revision-Date: 2018-12-18 20:49\n"
 
 msgid "(Trusted)"
 msgstr "（可信的）"
@@ -30,18 +30,6 @@ msgid "2. Enter Gift Code"
 msgstr ""
 
 msgid "5-star ratings help us get BitPay Wallet into more hands, and more users means more resources can be committed to the app!"
-msgstr "Xếp hạng 5 sao giúp chúng tôi nhận BitPay Wallet thành nhiều hơn và nhiều người dùng hơn đồng nghĩa với việc nhiều tài nguyên hơn có thể được cam kết với ứng dụng!"
-
-msgid "A new copayer just joined your wallet {{walletName}}."
-msgstr ""
-
-msgid "A new payment proposal has been created in your wallet {{walletName}}."
-msgstr ""
-
-msgid "A payment of {{amountStr}} has been received into your wallet {{walletName}}."
-msgstr ""
-
-msgid "A payment proposal in your wallet {{walletName}} has been rejected."
 msgstr ""
 
 msgid "A total of {{amountAboveMaxSizeStr}} {{coin}} were excluded. The maximum size allowed for a transaction was exceeded."
@@ -170,9 +158,6 @@ msgstr "量太大"
 msgid "Amount:"
 msgstr ""
 
-msgid "An update to this app is available. For your security, please update to the latest version."
-msgstr "本程序有一个可用的更新。为了您的安全，请更新到最新版本。"
-
 msgid "Anyone with your recovery phrase can access or spend your bitcoin."
 msgstr ""
 
@@ -246,7 +231,7 @@ msgid "Balance Hidden"
 msgstr "隐藏余额"
 
 msgid "Be sure to store your recovery phrase in a secure place. If this app is deleted, your money cannot be recovered without it."
-msgstr "请务必将您的恢复短语存储在一个安全的地方。如果这个程序被删除，不能没有它恢复你的钱。"
+msgstr ""
 
 msgid "Because you are sending the maximum amount contained in this wallet, the {coinName} miner fee ({fee} {coin}) will be deducted from the total. {msg}"
 msgstr ""
@@ -971,6 +956,9 @@ msgstr "上一页"
 msgid "Got it"
 msgstr "收到！"
 
+msgid "Have you redeemed all of your {brand} Gift Cards? Archived gift cards will still be accessible in settings."
+msgstr ""
+
 msgid "Have you redeemed the entire balance of this gift card?"
 msgstr ""
 
@@ -1160,9 +1148,6 @@ msgstr "了解更多"
 msgid "Learn more about testnet blockchain"
 msgstr "了解更多有关区块链测试网络的信息。"
 
-msgid "Leave Feedback"
-msgstr ""
-
 msgid "Let's verify your recovery phrase."
 msgstr ""
 
@@ -1279,15 +1264,6 @@ msgstr "网络错误"
 
 msgid "New Proposal"
 msgstr "新建议"
-
-msgid "New copayer"
-msgstr ""
-
-msgid "New payment proposal"
-msgstr ""
-
-msgid "New payment received"
-msgstr ""
 
 msgid "New wallet"
 msgstr "新钱包"
@@ -1513,9 +1489,6 @@ msgstr "支付已被接受，但尚未广播"
 
 msgid "Payment accepted. It will be broadcasted by Glidera. In case there is a problem, it can be deleted 6 hours after it was created."
 msgstr "支付以被接受。它将由 Glidera 广播。如果出现问题，它可以在创建后的 6 个小时内删除。"
-
-msgid "Payment proposal rejected"
-msgstr ""
 
 msgid "Payment request"
 msgstr "支付请求"
@@ -2046,7 +2019,7 @@ msgid "The higher the fee, the greater the incentive a miner has to include that
 msgstr "越高的费用、 更大的激励矿工有要在一个块中包含该事务。当前的费用是基于网络负载和选定的策略来确定的。"
 
 msgid "The information you are about to share/export may contain sensitive data such us wallet IDs, addresses, balances, etc. Please be sure you trust the person or entity with whom you are sharing this information."
-msgstr "您将要共享/导出的信息可能包含敏感数据，如钱包ID、地址、余额等。请确保您信任与您共享此信息的人或实体。"
+msgstr ""
 
 msgid "The password of the recovery phrase (if set)"
 msgstr "恢复短语的密码 (如已设置)"
@@ -2081,17 +2054,11 @@ msgstr ""
 msgid "The total amount of bitcoin stored in this wallet."
 msgstr "比特币存储在这个钱包的总量。"
 
-msgid "The transaction from {{walletName}} that you were waiting for has been confirmed."
-msgstr ""
-
 msgid "The transaction history and every new incoming transaction are cached in the app. This feature clean this up and synchronizes again from the server"
 msgstr ""
 
 msgid "The wallet you are using does not match the network and/or the currency of the address provided"
 msgstr ""
-
-msgid "There is a new version of {{nameCase}} available"
-msgstr "发现新版本{{nameCase}}"
 
 msgid "There is an error in the form"
 msgstr "表格中有错误"
@@ -2180,9 +2147,6 @@ msgstr "交易ID"
 msgid "Transaction already broadcasted"
 msgstr "交易已经广播"
 
-msgid "Transaction confirmed"
-msgstr ""
-
 msgid "Transaction has not been created"
 msgstr "交易记录尚未创建。"
 
@@ -2267,9 +2231,6 @@ msgstr "未使用过的地址"
 msgid "Unverified Account"
 msgstr ""
 
-msgid "Update Available"
-msgstr "可用的更新"
-
 msgid "Updating Gift Card..."
 msgstr "正在更新礼品卡..."
 
@@ -2324,9 +2285,6 @@ msgstr ""
 msgid "View Transaction on Insight"
 msgstr "查看交易记录的洞察"
 
-msgid "View Update"
-msgstr "查看更新"
-
 msgid "View Wallet Terms of Use"
 msgstr "查看钱包使用条款"
 
@@ -2377,9 +2335,6 @@ msgstr "钱包已存在"
 
 msgid "Wallet already in {{nameCase}}"
 msgstr "钱包已存在{{nameCase}}"
-
-msgid "Wallet complete"
-msgstr ""
 
 msgid "Wallet created"
 msgstr "创建的钱包"
@@ -2563,9 +2518,6 @@ msgstr "你的钱包是永远不会保存到云存储或标准设备备份。"
 
 msgid "Your wallet key will be encrypted. The encrypt password cannot be recovered. Be sure to write it down."
 msgstr "你的钱包密钥将被加密。加密密码无法恢复加密密码。请务必把它写下来。"
-
-msgid "Your wallet {{walletName}} is complete."
-msgstr ""
 
 msgid "Your {walletType} wallet is backed up!"
 msgstr ""
