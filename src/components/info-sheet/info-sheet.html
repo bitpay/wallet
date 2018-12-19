@@ -102,7 +102,7 @@
     </info-sheet-template>
 
     <info-sheet-template *ngSwitchCase="'copied-gift-card-claim-code'" type="success">
-      <span sheet-title-text>{{'Copied: {claimCode}' | translate: params }}</span>
+      <span sheet-title-text style="word-break: break-all;">{{'Copied: {claimCode}' | translate: params }}</span>
       <span sheet-text>
         <redeem-instructions [cardConfig]="params.cardConfig" [params]="params"></redeem-instructions>
       </span>
@@ -111,8 +111,7 @@
 
     <info-sheet-template *ngSwitchCase="'archive-all-gift-cards'" type="warning">
       <span sheet-title-text>{{'Archive All {brand} Gift Cards?' | translate: params }}</span>
-      <span sheet-text>{{'Have you redeemed all of your {brand} Gift Cards? Archived gift cards will still be
-        accessible in settings.' | translate: params }}</span>
+      <span sheet-text>{{'Have you redeemed all of your {brand} Gift Cards? Archived gift cards will still be accessible in settings.' | translate: params }}</span>
       <span sheet-button-text translate>YES</span>
     </info-sheet-template>
 
@@ -144,7 +143,8 @@
     <info-sheet-template *ngSwitchCase="'above-maximum-gift-card-amount'" type="danger">
       <span sheet-title-text translate>Purchase Limit Reached</span>
       <span sheet-text>
-        {{'The purchase amount is limited to {maxAmount} {currency} per day. Please modify your amount.' | translate:params }}
+        {{'The purchase amount is limited to {maxAmount} {currency} per day. Please modify your amount.' |
+        translate:params }}
       </span>
       <span sheet-button-text translate>GOT IT</span>
     </info-sheet-template>

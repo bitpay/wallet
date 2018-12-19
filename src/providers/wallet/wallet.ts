@@ -446,20 +446,28 @@ export class WalletProvider {
     return walletSettings.useLegacyAddress;
   }
 
-  public getAddressView(coin, address: string): string {
+  public getAddressView(
+    coin: string,
+    network: string,
+    address: string
+  ): string {
     if (coin != 'bch' || this.useLegacyAddress()) return address;
-    return this.txFormatProvider.toCashAddress(address);
+    const protoAddr = this.getProtoAddress(
+      coin,
+      network,
+      this.txFormatProvider.toCashAddress(address)
+    );
+    return protoAddr;
   }
 
-  public getProtoAddress(wallet, address: string) {
-    let proto: string = this.getProtocolHandler(wallet.coin, wallet.network);
-    let protoAddr: string = proto + ':' + address;
-
-    if (wallet.coin != 'bch' || this.useLegacyAddress()) {
-      return protoAddr;
-    } else {
-      return protoAddr.toUpperCase();
-    }
+  public getProtoAddress(
+    coin: string,
+    network: string,
+    address: string
+  ): string {
+    const proto: string = this.getProtocolHandler(coin, network);
+    const protoAddr: string = proto + ':' + address;
+    return protoAddr;
   }
 
   public getAddress(wallet, forceNew: boolean): Promise<string> {
@@ -1310,7 +1318,8 @@ export class WalletProvider {
           coin: wallet.coin
         },
         (err, resp) => {
-          if (err || !resp || !resp.length) return reject(err);
+          if (err || !resp || !resp.length)
+            return reject(err ? err : 'No UTXOs');
 
           this.getMinFee(wallet, resp.length).then(fee => {
             let minFee = fee;

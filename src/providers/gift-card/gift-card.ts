@@ -368,7 +368,10 @@ export class GiftCardProvider {
         const name = cardNames[index];
         return { ...configMap, [name]: apiCardConfigMap };
       }, {});
-    const newCache = { ...previousCache, ...apiCardConfigCache };
+    const newCache = {
+      ...previousCache,
+      ...apiCardConfigCache
+    };
     return this.persistenceProvider.setGiftCardConfigCache(newCache);
   }
 

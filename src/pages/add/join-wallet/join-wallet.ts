@@ -9,6 +9,8 @@ import { TabsPage } from '../../tabs/tabs';
 
 // Providers
 import { ActionSheetProvider } from '../../../providers/action-sheet/action-sheet';
+import { BwcProvider } from '../../../providers/bwc/bwc';
+import { ClipboardProvider } from '../../../providers/clipboard/clipboard';
 import { ConfigProvider } from '../../../providers/config/config';
 import { DerivationPathHelperProvider } from '../../../providers/derivation-path-helper/derivation-path-helper';
 import { Logger } from '../../../providers/logger/logger';
@@ -32,11 +34,14 @@ export class JoinWalletPage {
   public okText: string;
   public cancelText: string;
 
+  private derivationPathByDefault: string;
+  private derivationPathForTestnet: string;
   private joinForm: FormGroup;
   private regex: RegExp;
 
   constructor(
     private app: App,
+    private bwcProvider: BwcProvider,
     private configProvider: ConfigProvider,
     private form: FormBuilder,
     private navCtrl: NavController,
@@ -50,11 +55,14 @@ export class JoinWalletPage {
     private translate: TranslateService,
     private events: Events,
     private pushNotificationsProvider: PushNotificationsProvider,
-    private actionSheetProvider: ActionSheetProvider
+    private actionSheetProvider: ActionSheetProvider,
+    private clipboardProvider: ClipboardProvider
   ) {
     this.okText = this.translate.instant('Ok');
     this.cancelText = this.translate.instant('Cancel');
     this.defaults = this.configProvider.getDefaults();
+    this.derivationPathByDefault = this.derivationPathHelperProvider.default;
+    this.derivationPathForTestnet = this.derivationPathHelperProvider.defaultTestnet;
 
     this.showAdvOpts = false;
 
@@ -68,6 +76,7 @@ export class JoinWalletPage {
       bwsURL: [this.defaults.bws.url],
       selectedSeed: ['new'],
       recoveryPhrase: [null],
+      derivationPath: [this.derivationPathByDefault],
       coin: [null, Validators.required]
     });
 
@@ -84,7 +93,7 @@ export class JoinWalletPage {
       }
     ];
     this.events.subscribe('update:invitationCode', data => {
-      let invitationCode = data.value.replace('copay:', '');
+      const invitationCode = data.value.replace('copay:', '');
       this.onQrCodeScannedJoin(invitationCode);
     });
   }
@@ -126,20 +135,44 @@ export class JoinWalletPage {
     } else {
       this.joinForm.get('recoveryPhrase').setValidators(null);
     }
+    this.joinForm.controls['recoveryPhrase'].setValue(null);
     this.joinForm.controls['selectedSeed'].setValue(seed);
+    this.processInvitation(this.joinForm.value.invitationCode);
+  }
+
+  private setDerivationPath(network: string): void {
+    const path: string =
+      network == 'testnet'
+        ? this.derivationPathForTestnet
+        : this.derivationPathByDefault;
+    this.joinForm.controls['derivationPath'].setValue(path);
+  }
+
+  public processInvitation(invitation: string): void {
+    if (this.regex.test(invitation)) {
+      this.logger.info('Processing invitation code...');
+      let walletData;
+      try {
+        walletData = this.bwcProvider.parseSecret(invitation);
+        this.setDerivationPath(walletData.network);
+        this.logger.info('Correct invitation code for ' + walletData.network);
+      } catch (ex) {
+        this.logger.warn('Error parsing invitation: ' + ex);
+      }
+    }
   }
 
   public setOptsAndJoin(): void {
-    let opts: Partial<WalletOptions> = {
+    const opts: Partial<WalletOptions> = {
       secret: this.joinForm.value.invitationCode,
       myName: this.joinForm.value.myName,
       bwsurl: this.joinForm.value.bwsURL,
       coin: this.joinForm.value.coin
     };
 
-    let setSeed = this.joinForm.value.selectedSeed == 'set';
+    const setSeed = this.joinForm.value.selectedSeed == 'set';
     if (setSeed) {
-      let words = this.joinForm.value.recoveryPhrase;
+      const words = this.joinForm.value.recoveryPhrase;
       if (
         words.indexOf(' ') == -1 &&
         words.indexOf('prv') == 1 &&
@@ -150,23 +183,32 @@ export class JoinWalletPage {
         opts.mnemonic = words;
       }
 
-      let pathData = this.derivationPathHelperProvider.parse(
-        this.joinForm.value.derivationPath
+      const derivationPath = this.joinForm.value.derivationPath;
+      opts.networkName = this.derivationPathHelperProvider.getNetworkName(
+        derivationPath
       );
-      if (!pathData) {
-        let title = this.translate.instant('Error');
-        let subtitle = this.translate.instant('Invalid derivation path');
+      opts.derivationStrategy = this.derivationPathHelperProvider.getDerivationStrategy(
+        derivationPath
+      );
+      opts.account = this.derivationPathHelperProvider.getAccount(
+        derivationPath
+      );
+
+      if (
+        !opts.networkName ||
+        !opts.derivationStrategy ||
+        !Number.isInteger(opts.account)
+      ) {
+        const title = this.translate.instant('Error');
+        const subtitle = this.translate.instant('Invalid derivation path');
         this.popupProvider.ionicAlert(title, subtitle);
         return;
       }
-
-      opts.networkName = pathData.networkName;
-      opts.derivationStrategy = pathData.derivationStrategy;
     }
 
     if (setSeed && !opts.mnemonic && !opts.extendedPrivateKey) {
-      let title = this.translate.instant('Error');
-      let subtitle = this.translate.instant(
+      const title = this.translate.instant('Error');
+      const subtitle = this.translate.instant(
         'Please enter the wallet recovery phrase'
       );
       this.popupProvider.ionicAlert(title, subtitle);
@@ -182,6 +224,7 @@ export class JoinWalletPage {
     this.profileProvider
       .joinWallet(opts)
       .then(wallet => {
+        this.clipboardProvider.clearClipboardIfValidData(['JoinWallet']);
         this.onGoingProcessProvider.clear();
         this.events.publish('status:updated');
         this.walletProvider.updateRemotePreferences(wallet);
@@ -195,7 +238,7 @@ export class JoinWalletPage {
       })
       .catch(err => {
         this.onGoingProcessProvider.clear();
-        let title = this.translate.instant('Error');
+        const title = this.translate.instant('Error');
         this.popupProvider.ionicAlert(title, err);
         return;
       });

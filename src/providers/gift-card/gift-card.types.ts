@@ -1,9 +1,12 @@
 export enum CardBrand {
   amazon = 'Amazon',
+  carnivalCruiseLine = 'Carnival Cruise Line',
   delta = 'Delta',
   googlePlay = 'Google Play',
+  homeDepot = 'Home Depot',
   hotelsCom = 'Hotels.com',
   mercadoLibre = 'Mercado Livre',
+  royalCaribbean = 'Royal Caribbean',
   uber = 'Uber',
   uberEats = 'Uber Eats',
   venue = 'Venue'
@@ -12,10 +15,13 @@ export enum CardBrand {
 export enum CardName {
   amazon = 'Amazon.com',
   amazonJapan = 'Amazon.co.jp',
+  carnivalCruiseLine = 'Carnival Cruise Line',
   delta = 'Delta Air Lines',
   googlePlay = 'Google Play',
+  homeDepot = 'Home Depot',
   hotelsCom = 'Hotels.com',
   mercadoLibre = 'Mercado Livre',
+  royalCaribbean = 'Royal Caribbean',
   uber = 'Uber',
   uberEats = 'Uber Eats',
   venue = 'Venue USD'

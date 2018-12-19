@@ -332,9 +332,8 @@ describe('Provider: Incoming Data Provider', () => {
         true
       );
 
-      expect(loggerSpy).toHaveBeenCalledWith(
-        'Incoming-data: Bitcoin Cash URI with legacy address'
-      );
+      // bch testnet legacy, prefixed address are handled as normal addresses
+      expect(loggerSpy).toHaveBeenCalledWith('Incoming-data: Bitcoin Cash URI');
 
       let parsed = bwcProvider
         .getBitcore()

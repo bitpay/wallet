@@ -3,6 +3,7 @@ import * as _ from 'lodash';
 
 // Providers
 import { AddressBookProvider } from '../../../providers/address-book/address-book';
+import { AddressProvider } from '../../../providers/address/address';
 import { Logger } from '../../../providers/logger/logger';
 import { WalletProvider } from '../../../providers/wallet/wallet';
 
@@ -18,6 +19,7 @@ export class MultipleOutputsPage {
 
   constructor(
     private addressBookProvider: AddressBookProvider,
+    private addressProvider: AddressProvider,
     private logger: Logger,
     private walletProvider: WalletProvider
   ) {
@@ -27,11 +29,16 @@ export class MultipleOutputsPage {
   @Input()
   set tx(tx) {
     this._tx = tx;
-
     this.tx.outputs.forEach(output => {
+      const outputAddr = output.toAddress ? output.toAddress : output.address;
+      const coin = this._tx.coin
+        ? this._tx.coin
+        : this.addressProvider.getCoin(outputAddr);
+
       output.addressToShow = this.walletProvider.getAddressView(
-        this._tx.coin,
-        output.toAddress
+        coin,
+        this._tx.network,
+        outputAddr
       );
     });
 
@@ -43,12 +50,12 @@ export class MultipleOutputsPage {
   }
 
   private contact(): void {
-    let addr = this._tx.toAddress;
+    const addr = this._tx.toAddress;
     this.addressBookProvider
       .get(addr)
       .then(ab => {
         if (ab) {
-          let name = _.isObject(ab) ? ab.name : ab;
+          const name = _.isObject(ab) ? ab.name : ab;
           this.contactName = name;
         }
       })

@@ -23,7 +23,7 @@ describe('Provider: Config Provider', () => {
       let newOpts = JSON.parse('{}');
       persistenceProvider.storeConfig(newOpts).then(() => {
         configProvider.load().then(() => {
-          expect(this.configCache).not.toBeNull();
+          expect(configProvider.configCache).not.toBeNull();
         });
       });
     });
@@ -37,14 +37,14 @@ describe('Provider: Config Provider', () => {
     });
     it('should set config from storage', () => {
       persistenceProvider.getConfig().then(() => {
-        expect(this.configCache).not.toBeNull();
+        expect(configProvider.configCache).not.toBeNull();
       });
     });
     it('should return error if file is corrupted', () => {
       let promise = Promise.reject('Error Loading Config');
       spyOn(persistenceProvider, 'getConfig').and.returnValue(promise);
       configProvider.load().catch(() => {
-        expect(this.configCache).toBeUndefined();
+        expect(configProvider.configCache).toBeUndefined();
       });
     });
   });
@@ -55,7 +55,7 @@ describe('Provider: Config Provider', () => {
       expect(newOpts).toBe('{}');
       JSON.parse(newOpts);
       configProvider.set(newOpts);
-      expect(this.configCache).not.toBeNull();
+      expect(configProvider.configCache).not.toBeNull();
     });
   });
 

@@ -128,10 +128,10 @@ export class TransferToPage {
         contactsList.push({
           name: _.isObject(v) ? v.name : v,
           address: k,
-          network: this.addressProvider.validateAddress(k).network,
+          network: this.addressProvider.getNetwork(k),
           email: _.isObject(v) ? v.email : null,
           recipientType: 'contact',
-          coin: this.addressProvider.validateAddress(k).coin,
+          coin: this.addressProvider.getCoin(k),
           getAddress: () => Promise.resolve(k)
         });
       });
