@@ -347,23 +347,27 @@ ion-icon {
   // custom icons
   &[class*='tab-activity'] {
     -webkit-mask-box-image: url(../assets/img/tab-icons/ico-activity.svg);
+    min-width: 28px !important;
   }
 
   &[class*='tab-receive'] {
     -webkit-mask-box-image: url(../assets/img/tab-icons/ico-receive.svg);
+    min-width: 0 !important;
   }
 
   &[class*='tab-scan'] {
     -webkit-mask-box-image: url(../assets/img/tab-icons/ico-scan.svg);
-    width: 3rem !important;
+    max-width: 26px;
   }
 
   &[class*='tab-send'] {
     -webkit-mask-box-image: url(../assets/img/tab-icons/ico-send.svg);
+    min-width: 0 !important;
   }
 
   &[class*='tab-button-back'] {
     -webkit-mask-box-image: url(../assets/img/button-back.svg);
+    min-width: 24px !important;
   }
 }
 
