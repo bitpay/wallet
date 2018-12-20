@@ -167,6 +167,7 @@
     "@ionic-native/fcm": "4.14.0",
     "@ionic-native/file": "4.14.0",
     "@ionic-native/launch-review": "4.14.0",
+    "@ionic-native/printer": "4.14.0",
     "@ionic-native/qr-scanner": "4.14.0",
     "@ionic-native/screen-orientation": "4.14.0",
     "@ionic-native/social-sharing": "4.14.0",
@@ -202,6 +203,7 @@
     "cordova-plugin-inappbrowser": "2.0.2",
     "cordova-plugin-ionic-keyboard": "2.1.3",
     "cordova-plugin-network-information": "2.0.1",
+    "cordova-plugin-printer": "0.7.3",
     "cordova-plugin-qrscanner": "2.6.0",
     "cordova-plugin-screen-orientation": "3.0.1",
     "cordova-plugin-spinner-dialog": "1.3.1",
@@ -325,7 +327,8 @@
       "im.ltdev.cordova.UserAgent": {},
       "cordova-launch-review": {},
       "cordova-plugin-wkwebview-engine": {},
-      "cordova-plugin-wkwebview-inputfocusfix": {}
+      "cordova-plugin-wkwebview-inputfocusfix": {},
+      "cordova-plugin-printer": {}
     },
     "platforms": [
       "android",
