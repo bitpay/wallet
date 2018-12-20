@@ -16,6 +16,7 @@ $app-direction: ltr;
 // To view all the possible Ionic variables, see:
 // http://ionicframework.com/docs/theming/overriding-ionic-variables/
 // Override - Homogenized ionic component styles
+@import 'icons';
 @import 'lists';
 @import 'overrides';
 @import 'mixins';
@@ -128,6 +129,7 @@ $button-md-text-transform: none;
 // --------------------------------------------------
 @import 'roboto';
 @import 'noto-sans';
+
 @font-face {
   font-family: 'AmazonEmberDisplay';
   src: url(../assets/fonts/AmazonEmberDisplay_Rg.ttf) format('truetype');
@@ -157,14 +159,17 @@ ion-footer {
     padding-top: 0rem !important;
     padding-right: 0rem !important;
     padding-left: 0rem !important;
+
     .toolbar-background {
       background: none;
       border: 0px;
     }
   }
+
   .toolbar-md {
     padding-bottom: 0rem !important;
   }
+
   .toolbar-ios {
     margin-bottom: -4px;
   }
@@ -175,9 +180,11 @@ ion-footer {
   &.toolbar-md {
     //material design only
     position: relative;
+
     .back-button {
       z-index: 999;
     }
+
     .title-md {
       //material design only
       position: absolute;
@@ -186,12 +193,14 @@ ion-footer {
       height: 100%;
       width: 100%;
       text-align: center;
+
       .toolbar-title-md {
         padding: 0px 50px 0px 50px;
         font-weight: 400;
       }
     }
   }
+
   &.toolbar-ios {
     .back-button {
       padding: 15px;
