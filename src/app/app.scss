@@ -65,7 +65,7 @@ ion-label {
 }
 
 // Hide border when refresh
-.has-refresher>.scroll-content {
+.has-refresher > .scroll-content {
   border-top: none !important;
 }
 
@@ -118,7 +118,6 @@ ion-spinner * {
 }
 
 .tabbar {
-
   .tabs-md &,
   .tabs-ios & {
     background: white;
@@ -380,7 +379,6 @@ ion-app,
   &:hover,
   &:focus,
   &:active {
-
     &.button-md,
     &.button-ios {
       background-color: #ededed;
@@ -391,7 +389,6 @@ ion-app,
 
   &:active,
   &.activated {
-
     &.button-md,
     &.button-ios {
       background-color: #e5e5e5;
@@ -479,7 +476,7 @@ button.modal-close-button {
       padding: 5px;
     }
 
-    .aclass>img {
+    .aclass > img {
       filter: grayscale(100%);
       height: 100%;
       width: 100%;
