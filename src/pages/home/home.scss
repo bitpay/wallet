@@ -149,19 +149,24 @@ page-home {
 
   .server-message {
     padding-bottom: 0px;
+
     &-header {
       padding: 0px;
       text-align: center;
+
       .row {
         justify-content: flex-end;
+
         button {
           font-size: 12px;
         }
       }
     }
+
     &-content {
       padding: 0rem;
     }
+
     &-icon {
       display: flex;
       justify-content: center;
@@ -171,6 +176,7 @@ page-home {
         height: 4rem;
       }
     }
+
     &-title {
       text-align: center;
       font-size: 1.8rem;
@@ -179,13 +185,16 @@ page-home {
       padding-left: 1.5rem;
       padding-right: 1.5rem;
     }
+
     .title {
       color: color($colors, grey);
       font-weight: 500;
       font-size: 2rem;
+
       &-info {
         color: color($colors, info);
       }
+
       &-critical {
         color: color($colors, warning);
       }
@@ -199,6 +208,7 @@ page-home {
       font-size: 1.6rem;
       padding: 1rem 2rem 1rem 2rem;
     }
+
     &-button {
       cursor: pointer;
       font-size: 16px;
@@ -228,6 +238,12 @@ page-home {
   }
 
   @include fix-ios-bg-scroll();
+
+  ion-fab {
+    ion-icon.icon {
+      font-size: 0;
+    }
+  }
 
   @media only screen and (device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3) {
     ion-fab[right] {

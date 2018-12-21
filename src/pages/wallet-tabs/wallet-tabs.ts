@@ -17,17 +17,17 @@ import { WalletTabsProvider } from './wallet-tabs.provider';
       <ion-tab
         [root]="receiveRoot"
         tabTitle="{{'Receive'|translate}}"
-        tabIcon="ios-arrow-round-down"
+        tabIcon="tab-receive"
       ></ion-tab>
       <ion-tab
         [root]="activityRoot"
         tabTitle="{{'Activity'|translate}}"
-        tabIcon="ios-menu-outline"
+        tabIcon="tab-activity"
       ></ion-tab>
       <ion-tab
         [root]="sendRoot"
         tabTitle="{{'Send'|translate}}"
-        tabIcon="ios-arrow-round-up"
+        tabIcon="tab-send"
       ></ion-tab>
     </ion-tabs>
   `

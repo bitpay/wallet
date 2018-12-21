@@ -113,10 +113,20 @@ ion-spinner * {
   display: block;
 }
 
+.toolbar.toolbar-md .back-button {
+  margin-top: -7px;
+}
+
 .tabbar {
   .tabs-md &,
   .tabs-ios & {
     background: white;
+  }
+
+  .tabs-ios & {
+    .tab-button-icon {
+      height: 22px;
+    }
   }
 
   justify-content: center;
