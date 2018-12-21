@@ -33,6 +33,7 @@ export class TourPage {
   public localCurrencySymbol: string;
   public localCurrencyPerBtc: string;
   public currentIndex: number;
+  public coins;
 
   private retryCount: number = 0;
 
@@ -49,8 +50,12 @@ export class TourPage {
     private popupProvider: PopupProvider
   ) {
     this.currentIndex = 0;
+    this.coins = {
+      bitcoin: true,
+      bitcoincash: true,
+    };
     this.rateProvider.whenRatesAvailable('btc').then(() => {
-      let btcAmount = 1;
+      const btcAmount = 1;
       this.localCurrencySymbol = '$';
       this.localCurrencyPerBtc = this.txFormatProvider.formatAlternativeStr(
         'btc',
@@ -84,10 +89,14 @@ export class TourPage {
     this.slides.slideNext();
   }
 
+  public slideFinal(): void {
+    this.slides.slideTo(3);
+  }
+
   public createDefaultWallet(): void {
     this.onGoingProcessProvider.set('creatingWallet');
     this.profileProvider
-      .createDefaultWallet()
+      .createDefaultWallet(this.coins)
       .then(wallet => {
         this.onGoingProcessProvider.clear();
         this.persistenceProvider.setOnboardingCompleted();
@@ -101,8 +110,8 @@ export class TourPage {
           );
           if (this.retryCount > 3) {
             this.onGoingProcessProvider.clear();
-            let title = this.translate.instant('Cannot create wallet');
-            let okText = this.translate.instant('Retry');
+            const title = this.translate.instant('Cannot create wallet');
+            const okText = this.translate.instant('Retry');
             this.popupProvider.ionicAlert(title, err, okText).then(() => {
               this.retryCount = 0;
               this.createDefaultWallet();
