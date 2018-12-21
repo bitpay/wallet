@@ -1,0 +1,23 @@
+Beveilig bitcoin op je eigen voorwaarden met een open source, meervoudige ondertekening-portemonnee van BitPay. 
+Copay gebruikers kunnen individueel saldo beheren of veilig financiën delen met andere gebruikers door middel van portemonnees met meervoudige ondertekening, dit voorkomt ongeautoriseerde betalingen doordat meerdere goedkeuringen nodig zijn. Hier zijn een aantal manieren waarop Copay gebruikt kan worden met anderen:
+
+Om te sparen voor vakanties of gezamenlijke aankopen met vrienden 
+Voor het bijhouden van de familieuitgaven en zakgeld
+Voor het beheer van het saldo en de uitgaven van een bedrijf, club of organisatie
+
+We hebben de volgende functies ingebouwd in deze versie van Copay voor een bitcoin portemonnee die niet inlevert op beveiliging of toegankelijkheid:
+
+Het aanmaken en beheren van meerdere portemonnees binnen de app 
+Intuïtieve meervoudige-ondertekening beveiliging voor persoonlijke of gedeelde portemonnees
+Eenvoudige bestedingsvoorstellen voor gedeelde portemonnees en groepsbetalingen
+Hiërarchisch deterministische (HD) adres generatie en portemonnee backups 
+Apparaat gebaseerde beveiliging: alle privé sleutels worden lokaal opgeslagen, niet in de cloud
+Ondersteuning voor Bitcoin testnet portemonnees
+Gesynchroniseerde toegang vanaf alle grote mobiele en desktop platformen
+Ondersteuning voor betalings protocol (BIP70-BIP73): gemakkelijk te herkennen betalingsverzoeken en verifieerbaar veilige bitcoin betalingen
+Ondersteuning voor prijsweergave in 150+ valuta's en eenheid denominatie in BTC of bits
+Email meldingen voor betalingen en overdrachten
+Aanpasbare portemonnee namen en achtergrond kleuren
+10 ondersteunde talen (EN, CZ, FR, DE, IT, ES, JA, PL, RU, NL)
+
+Copay is gratis open source software draaiend op niet-merkgebonden servers, dus het is niet nodig te vertrouwen op enig bedrijf voor blijvende ondersteuning. Iedereen kan de broncode van Copay inzien of er aan bijdragen via GitHub (https://github.com/bitpay/copay). 
