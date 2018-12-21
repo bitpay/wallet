@@ -36,7 +36,7 @@ src/manifest.json
 src/environments/index.ts
 
 # Crowdin API key
-crowdin_api_key.txt
+i18n/crowdin_api_key.txt
 src/assets/i18n/*.mo
 
 test/visual/latest
