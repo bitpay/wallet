@@ -62,7 +62,7 @@
     "env:e2e": "rm -f src/environments/index.ts && cp src/environments/e2e.ts src/environments/index.ts \n\n# Environment set to: e2e\n\n",
     "translation:extract": "ngx-translate-extract --input ./src --output ./i18n/template.pot --clean --sort --format pot",
     "translation:update": "node ./i18n/crowdin_update.js",
-    "translation:download": "node ./i18n/crowdin_download.js --nobuild",
+    "translation:download": "node ./i18n/crowdin_download.js",
     "start:ios": "npm run build:ios && npm run open:ios",
     "start:android": "npm run run:android",
     "start:desktop": "npm run build:desktop && electron .",
