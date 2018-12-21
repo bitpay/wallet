@@ -1,0 +1,2572 @@
+msgid ""
+msgstr ""
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: crowdin.com\n"
+"X-Crowdin-Project: copay\n"
+"X-Crowdin-Language: nl\n"
+"X-Crowdin-File: template.pot\n"
+"Project-Id-Version: copay\n"
+"Last-Translator: cmgustavo83\n"
+"Language-Team: Dutch\n"
+"Language: nl\n"
+"PO-Revision-Date: 2018-12-21 18:55\n"
+
+msgid "(Trusted)"
+msgstr "(Vertrouwd)"
+
+msgid "(possible double spend)"
+msgstr "(mogelijk dubbel besteed)"
+
+msgid "* A payment proposal can be deleted if 1) you are the creator, and no other copayer has signed, or 2) 10 minutes have passed since the proposal was created."
+msgstr ""
+
+msgid "1. Tap \"Add Payment Method\" and select \"Gift Card\""
+msgstr ""
+
+msgid "2. Enter Gift Code"
+msgstr ""
+
+msgid "5-star ratings help us get BitPay Wallet into more hands, and more users means more resources can be committed to the app!"
+msgstr ""
+
+msgid "A total of {{amountAboveMaxSizeStr}} {{coin}} were excluded. The maximum size allowed for a transaction was exceeded."
+msgstr ""
+
+msgid "A total of {{amountBelowFeeStr}} {{coin}} were excluded. These funds come from UTXOs smaller than the network fee provided."
+msgstr ""
+
+msgid "A total of {{amountStr}} ({{fiatAmount | number:'1.2-2'}} {{currencyIsoCode}}) will be exchanged for {{withdrawalStr}} ({{fiatWithdrawal | number:'1.2-2'}} {{currencyIsoCode}})."
+msgstr ""
+
+msgid "A total of {{fee}} {{coin}} were excluded. The maximum size allowed for a transaction was exceeded."
+msgstr ""
+
+msgid "A total of {{fee}} {{coin}} were excluded. These funds come from UTXOs smaller than the network fee provided."
+msgstr ""
+
+msgid "About"
+msgstr "Over"
+
+msgid "About {{appName}}"
+msgstr ""
+
+msgid "Accept"
+msgstr ""
+
+msgid "Accepted"
+msgstr "Geaccepteerd"
+
+msgid "Account"
+msgstr "Account"
+
+msgid "Activity"
+msgstr "Activiteit"
+
+msgid "Add"
+msgstr ""
+
+msgid "Add BitPay Account?"
+msgstr ""
+
+msgid "Add Contact"
+msgstr "Contactpersoon Toevoegen"
+
+msgid "Add Memo"
+msgstr "Notitie Toevoegen"
+
+msgid "Add Recipient"
+msgstr ""
+
+msgid "Add account"
+msgstr ""
+
+msgid "Add amount"
+msgstr ""
+
+msgid "Add as a contact"
+msgstr "Toevoegen als contactpersoon"
+
+msgid "Add funds"
+msgstr "Saldo toevoegen"
+
+msgid "Add gift cards to your {appName} wallet from brands like Amazon, Delta, Google Play, and Uber."
+msgstr ""
+
+msgid "Add this BitPay account ({{email}})?"
+msgstr ""
+
+msgid "Address"
+msgstr "Adres"
+
+msgid "Address Book"
+msgstr "Adresboek"
+
+msgid "Address Type"
+msgstr "Adres Type"
+
+msgid "Address book"
+msgstr ""
+
+msgid "Addressbook is empty"
+msgstr ""
+
+msgid "Addresses with balance"
+msgstr ""
+
+msgid "Advanced"
+msgstr "Geavanceerd"
+
+msgid "All"
+msgstr ""
+
+msgid "All addresses"
+msgstr ""
+
+msgid "All of your bitcoin wallet balance may not be available for immediate spending."
+msgstr "Mogelijk is niet het volledige saldo van uw bitcoin portemonnee direct beschikbaar voor uitgaven."
+
+msgid "Allow camera access"
+msgstr ""
+
+msgid "Almost done! Let's review."
+msgstr "Bijna klaar! Nog eens nakijken."
+
+msgid "Alternative currency"
+msgstr ""
+
+msgid "Amazon.co.jp Gift Cards never expire and can be redeemed towards millions of items at www.amazon.co.jp."
+msgstr ""
+
+msgid "Amazon.com Gift Cards never expire and can be redeemed towards millions of items at www.amazon.com."
+msgstr ""
+
+msgid "Amount"
+msgstr "Bedrag"
+
+msgid "Amount Too Low To Spend"
+msgstr ""
+
+msgid "Amount below minimum allowed"
+msgstr "Bedrag lager dan minimum toegestaan"
+
+msgid "Amount too big"
+msgstr "Bedrag te groot"
+
+msgid "Amount:"
+msgstr ""
+
+msgid "Anyone with your recovery phrase can access or spend your bitcoin."
+msgstr ""
+
+msgid "Apply changes"
+msgstr ""
+
+msgid "Approximate Bitcoin network fee to transfer wallet's balance (with normal priority)"
+msgstr "Geschatte Bitcoin netwerk transactiekosten voor overdracht van volledige saldo van portemonnee (met normale prioriteit)"
+
+msgid "Archive All {brand} Gift Cards?"
+msgstr ""
+
+msgid "Archive Card"
+msgstr ""
+
+msgid "Archive this Card?"
+msgstr ""
+
+msgid "Archived Cards"
+msgstr ""
+
+msgid "Are you being watched?"
+msgstr "Kijkt er iemand mee?"
+
+msgid "Are you sure you want to cancel and delete this wallet?"
+msgstr "Weet u zeker dat u wilt annuleren en deze portemonnee verwijderen?"
+
+msgid "Are you sure you want to delete this contact?"
+msgstr "Weet u zeker dat u deze contactpersoon wilt verwijderen?"
+
+msgid "Are you sure you want to delete this wallet?"
+msgstr "Weet u zeker dat u deze portemonnee wilt verwijderen?"
+
+msgid "Are you sure you want to reject this transaction?"
+msgstr "Weet u zeker dat u deze transactie wilt afwijzen?"
+
+msgid "Are you sure you want to remove this transaction?"
+msgstr "Weet u zeker dat u deze transactie wilt verwijderen?"
+
+msgid "Are you sure you want to skip it?"
+msgstr ""
+
+msgid "Are you sure?"
+msgstr ""
+
+msgid "Available"
+msgstr "Beschikbaar"
+
+msgid "Average confirmation time"
+msgstr "Gemiddelde bevestigingstijd"
+
+msgid "Awaiting payment to confirm"
+msgstr ""
+
+msgid "Back up all your wallets before using this function"
+msgstr ""
+
+msgid "Back up your wallet before using this function"
+msgstr ""
+
+msgid "Backup"
+msgstr "Backup"
+
+msgid "Backup wallet"
+msgstr "Backup van portemonnee maken"
+
+msgid "Bad wallet invitation"
+msgstr "Foutieve portemonnee-uitnodiging"
+
+msgid "Balance Hidden"
+msgstr ""
+
+msgid "Be sure to store your recovery phrase in a secure place. If this app is deleted, your money cannot be recovered without it."
+msgstr ""
+
+msgid "Because you are sending the maximum amount contained in this wallet, the {coinName} miner fee ({fee} {coin}) will be deducted from the total. {msg}"
+msgstr ""
+
+msgid "Before retrieving your wallet address, it's recommended that you first write down your recovery phrase and store it securely so that your wallet can be recovered in the case your device was lost or stolen."
+msgstr ""
+
+msgid "Below Minimum Amount"
+msgstr ""
+
+msgid "BitPay Card URI"
+msgstr ""
+
+msgid "Bitcoin Address"
+msgstr "Bitcoin Adres"
+
+msgid "Bitcoin Cash Address"
+msgstr ""
+
+msgid "Bitcoin Cash URI"
+msgstr ""
+
+msgid "Bitcoin Cash Wallets"
+msgstr "Bitcoin Cash Portemonnees"
+
+msgid "Bitcoin Network Fee Policy"
+msgstr "Transactiekostenbeleid Bitcoin-netwerk"
+
+msgid "Bitcoin URI"
+msgstr ""
+
+msgid "Bitcoin Wallets"
+msgstr "Bitcoin Portemonnees"
+
+msgid "Bitcoin is a currency."
+msgstr "Bitcoin is een valuta."
+
+msgid "Bitcoin is different - it cannot be safely held with a bank or web service."
+msgstr ""
+
+msgid "Bitcoin is secure, digital money."
+msgstr ""
+
+msgid "Bitcoin miner fee:"
+msgstr ""
+
+msgid "Bitcoin network fee policy"
+msgstr ""
+
+msgid "Bitcoin transactions include a fee collected by miners on the network."
+msgstr "Bitcoin transacties bevatten transactiekosten betaald aan de miners in het netwerk."
+
+msgid "Brands"
+msgstr ""
+
+msgid "Broadcast Payment"
+msgstr "Betaling Verzenden"
+
+msgid "Broadcasted"
+msgstr "Verzonden"
+
+msgid "Broadcasting transaction..."
+msgstr ""
+
+msgid "Buy Gift Card"
+msgstr ""
+
+msgid "Buy Gift Cards"
+msgstr ""
+
+msgid "Buying Bitcoin..."
+msgstr "Bitcoin kopen..."
+
+msgid "Buying Gift Card..."
+msgstr ""
+
+msgid "By providing your email address, you give explicit consent to BitPay to use your email address to send you email notifications about payments."
+msgstr ""
+
+msgid "Calculating fee..."
+msgstr ""
+
+msgid "Calculating send max..."
+msgstr ""
+
+msgid "Cancel"
+msgstr "Annuleren"
+
+msgid "Cancel invitation"
+msgstr "Uitnodiging annuleren"
+
+msgid "Canceling Gift Card..."
+msgstr ""
+
+msgid "Cannot create wallet"
+msgstr ""
+
+msgid "Cannot join the same wallet more that once"
+msgstr "Kan niet meerdere keren tegelijk deelnemen aan een portemonnee"
+
+msgid "Card Archived"
+msgstr ""
+
+msgid "Card Settings"
+msgstr ""
+
+msgid "Certified by"
+msgstr "Gecertificeerd door"
+
+msgid "Change Amount"
+msgstr ""
+
+msgid "Change amount"
+msgstr ""
+
+msgid "Check the transaction on your wallet details"
+msgstr ""
+
+msgid "Choose a backup file from your computer"
+msgstr ""
+
+msgid "Clear"
+msgstr "Leegmaken"
+
+msgid "Clear cache"
+msgstr "Cache legen"
+
+msgid "Click to accept"
+msgstr "Klik om te accepteren"
+
+msgid "Click to confirm"
+msgstr "Klik om te bevestigen"
+
+msgid "Click to open Terms"
+msgstr "Klik om de voorwaarden te openen"
+
+msgid "Click to pay"
+msgstr "Klik om te betalen"
+
+msgid "Click to send"
+msgstr "Klik om te verzenden"
+
+msgid "Close"
+msgstr "Sluiten"
+
+msgid "Coin"
+msgstr "Valuta"
+
+msgid "Color"
+msgstr "Kleur"
+
+msgid "Completed"
+msgstr "Voltooid"
+
+msgid "Configuration (m-n)"
+msgstr "Configuratie (m-n)"
+
+msgid "Confirm"
+msgstr "Bevestigen"
+
+msgid "Confirm & Finish"
+msgstr "Bevestigen & afsluiten"
+
+msgid "Confirm to shift {{fromCoin}} to {{toCoin}}"
+msgstr "Bevestigen om het verschuiven van {{fromCoin}} naar {{toCoin}}"
+
+msgid "Confirm your PIN"
+msgstr ""
+
+msgid "Confirm your new encrypt password"
+msgstr ""
+
+msgid "Confirmations"
+msgstr "Bevestigingen"
+
+msgid "Confirming"
+msgstr "Bevestigen"
+
+msgid "Congratulations! It looks like you've recently received money. It's highly advised that you verify your recovery phrase so that your funds can be recovered in case your phone was lost or stolen."
+msgstr ""
+
+msgid "Connect my BitPay Card"
+msgstr ""
+
+msgid "Connect to ShapeShift Account"
+msgstr ""
+
+msgid "Connecting to Coinbase..."
+msgstr "Verbinding maken met Coinbase..."
+
+msgid "Connecting to Glidera..."
+msgstr "Verbinding maken met Glidera..."
+
+msgid "Connecting to ShapeShift..."
+msgstr ""
+
+msgid "Connection reset by peer"
+msgstr "Verbinding is gereset door peer"
+
+msgid "Contact the ShapeShift support team."
+msgstr ""
+
+msgid "Continue"
+msgstr "Ga verder"
+
+msgid "Contribute translations"
+msgstr ""
+
+msgid "Copay Session Logs. Be careful, this could contain sensitive private data"
+msgstr ""
+
+msgid "Copay only supports Bitcoin Cash using new version numbers addresses"
+msgstr "Copay ondersteunt Bitcoin Cash alleen met gebruik van nieuwe versienummer adressen"
+
+msgid "Copayer already in this wallet"
+msgstr "Copayer reeds in deze portemonnee"
+
+msgid "Copayer already voted on this spend proposal"
+msgstr "Copayer heeft al gestemd op dit bestedingsvoorstel"
+
+msgid "Copayer data mismatch"
+msgstr "Copayer gegevens komen niet overeen"
+
+msgid "Copayer joined"
+msgstr "Copayer toegetreden"
+
+msgid "Copied"
+msgstr ""
+
+msgid "Copied to Clipboard"
+msgstr ""
+
+msgid "Copied to clipboard"
+msgstr "Gekopieerd naar klembord"
+
+msgid "Copied {coin} address"
+msgstr ""
+
+msgid "Copied: {claimCode}"
+msgstr ""
+
+msgid "Copy Code"
+msgstr ""
+
+msgid "Copy this text as it is to a safe place (notepad or email)"
+msgstr "Kopieer deze tekst zonder te wijzigen naar een veilige plek (kladblok of email)"
+
+msgid "Copy to clipboard"
+msgstr "Naar klembord kopiëren"
+
+msgid "Could Not Fetch Payment: Check if it is still valid"
+msgstr ""
+
+msgid "Could not access the wallet at the server. Please check:"
+msgstr "Kon geen toegang krijgen tot de portemonnee op de server. Graag dit checken:"
+
+msgid "Could not access wallet"
+msgstr "Kon geen toegang krijgen tot portemonnee"
+
+msgid "Could not add message to imported wallet without shared encrypting key"
+msgstr "Kon geen bericht toegevoegd worden aan geïmporteerde portemonnee zonder gedeelde sleutel"
+
+msgid "Could not build transaction"
+msgstr "Kon transactie niet opzetten"
+
+msgid "Could not create address"
+msgstr "Kon adres niet aanmaken"
+
+msgid "Could not create transaction"
+msgstr "Kon transactie niet aanmaken"
+
+msgid "Could not create using the specified extended private key"
+msgstr "Kon niet aanmaken met de gebruikte verlengde privé sleutel"
+
+msgid "Could not create using the specified extended public key"
+msgstr "Kon niet aanmaken met de opgegeven verlengde publieke sleutel"
+
+msgid "Could not create: Invalid wallet recovery phrase"
+msgstr "Kon niet worden gemaakt: Ongeldige portemonnee herstel zin"
+
+msgid "Could not decrypt file, check your password"
+msgstr "Kon bestand niet ontsleutelen, check uw wachtwoord"
+
+msgid "Could not decrypt wallet"
+msgstr ""
+
+msgid "Could not delete payment proposal"
+msgstr "Kon betalingsvoorstel niet verwijderen"
+
+msgid "Could not encrypt wallet"
+msgstr ""
+
+msgid "Could not get claim code. Please contact BitPay support."
+msgstr ""
+
+msgid "Could not get dynamic fee"
+msgstr "Kon dynamische transactiekosten niet bepalen"
+
+msgid "Could not get dynamic fee for level:"
+msgstr ""
+
+msgid "Could not get fee levels"
+msgstr "Kon niveaus transactiekosten niet opvragen"
+
+msgid "Could not get the Addressbook"
+msgstr ""
+
+msgid "Could not get transactions"
+msgstr "Kon transacties niet opvragen"
+
+msgid "Could not import"
+msgstr "Kon niet importeren"
+
+msgid "Could not import. Check input file."
+msgstr ""
+
+msgid "Could not join wallet"
+msgstr "Kon niet toetreden tot portemonnee"
+
+msgid "Could not reject payment"
+msgstr "Kon betaling niet weigeren"
+
+msgid "Could not save preferences on the server"
+msgstr "Kon voorkeuren niet opslaan op de server"
+
+msgid "Could not send transaction"
+msgstr "Kon transactie niet versturen"
+
+msgid "Could not update transaction history"
+msgstr "Kon transactiehistorie niet bijwerken"
+
+msgid "Could not update wallet"
+msgstr "Kon portemonnee niet bijwerken"
+
+msgid "Create a new wallet"
+msgstr ""
+
+msgid "Create a new wallet to start using this app."
+msgstr ""
+
+msgid "Create bitcoin wallet"
+msgstr "Bitcoin portemonnee aanmaken"
+
+msgid "Create personal wallet"
+msgstr ""
+
+msgid "Create shared wallet"
+msgstr "Nieuwe gedeelde portemonnee aanmaken"
+
+msgid "Create wallet"
+msgstr ""
+
+msgid "Created"
+msgstr ""
+
+msgid "Created by"
+msgstr "Aangemaakt door"
+
+msgid "Creating Gift Card..."
+msgstr ""
+
+msgid "Creating Wallet..."
+msgstr "Portemonnee Aanmaken..."
+
+msgid "Creating transaction..."
+msgstr ""
+
+msgid "Current Cards"
+msgstr ""
+
+msgid "Current fee rate for this policy"
+msgstr "Huidige transactiekosten voor dit beleid"
+
+msgid "Custom"
+msgstr "Aangepast"
+
+msgid "Date"
+msgstr "Datum"
+
+msgid "Delete"
+msgstr "Verwijder"
+
+msgid "Delete Payment Proposal"
+msgstr "Verwijder Bestedingsvoorstel"
+
+msgid "Delete Wallet"
+msgstr "Portemonnee verwijderen"
+
+msgid "Delete it and create a new one"
+msgstr "Verwijderen en een nieuwe maken"
+
+msgid "Deleting Wallet..."
+msgstr "Portemonnee Verwijderen..."
+
+msgid "Deleting payment proposal..."
+msgstr ""
+
+msgid "Delta Gift Cards can be used toward airfare on any Delta marketed flight through www.delta.com, at the airport, through reservations, or by phone with Delta Vacations®. Delta Gift Cards do not have any expiration dates or fees."
+msgstr ""
+
+msgid "Deposit"
+msgstr ""
+
+msgid "Deposit Max"
+msgstr ""
+
+msgid "Deposit Min"
+msgstr ""
+
+msgid "Derivation Strategy"
+msgstr "Derivatiestrategie"
+
+msgid "Derivation path"
+msgstr ""
+
+msgid "Details"
+msgstr "Details"
+
+msgid "Disable notifications"
+msgstr ""
+
+msgid "Disabled"
+msgstr ""
+
+msgid "Do it later"
+msgstr "Doe het later"
+
+msgid "Do not include private key"
+msgstr ""
+
+msgid "Do you want to verify your account now?"
+msgstr ""
+
+msgid "Don't see your language on Crowdin? Contact the Owner on Crowdin! We'd love to support your language."
+msgstr "Ziet u uw taal niet op Crowdin? Neem contact op met de Eigenaar op Crowdin! We willen graag uw taal ondersteunen."
+
+msgid "Done"
+msgstr ""
+
+msgid "Download"
+msgstr "Download"
+
+msgid "Download logs"
+msgstr ""
+
+msgid "Duplicating wallet..."
+msgstr "Portemonnee dupliceren..."
+
+msgid "Each bitcoin wallet can generate billions of addresses from your 12-word recovery phrase. A new address is automatically generated and shown each time you receive a payment."
+msgstr ""
+
+msgid "Economy"
+msgstr "Zuinig"
+
+msgid "Edit"
+msgstr "Bewerken"
+
+msgid "Email"
+msgstr "Email"
+
+msgid "Empty addresses limit reached. New addresses cannot be generated."
+msgstr "Limiet lege adressen bereikt. Nieuwe adressen kunnen niet worden gegenereerd."
+
+msgid "Enable camera access in your device settings to get started."
+msgstr "Schakel camera toegang in vanuit uw apparaat instellingen om aan de slag te gaan."
+
+msgid "Enable desktop notifications"
+msgstr ""
+
+msgid "Enable email notifications"
+msgstr "Email meldingen inschakelen"
+
+msgid "Enable in-app notification"
+msgstr ""
+
+msgid "Enable push notifications"
+msgstr "Push meldingen inschakelen"
+
+msgid "Enable the camera to get started."
+msgstr "Schakel de camera in om aan de slag te gaan."
+
+msgid "Encryption can protect your funds if this device is stolen or compromised by malicious software."
+msgstr ""
+
+msgid "Enter Amount"
+msgstr ""
+
+msgid "Enter Two Factor for your BitPay account"
+msgstr ""
+
+msgid "Enter a new encrypt password"
+msgstr ""
+
+msgid "Enter a password to encrypt your wallet"
+msgstr ""
+
+msgid "Enter a transaction memo"
+msgstr ""
+
+msgid "Enter bitcoin address"
+msgstr ""
+
+msgid "Enter custom fee in sat/byte"
+msgstr ""
+
+msgid "Enter email address"
+msgstr ""
+
+msgid "Enter encrypt password"
+msgstr ""
+
+msgid "Enter wallet invitation"
+msgstr ""
+
+msgid "Enter wallet name"
+msgstr ""
+
+msgid "Enter your encrypt password again to confirm"
+msgstr ""
+
+msgid "Enter your name"
+msgstr ""
+
+msgid "Entry already exist"
+msgstr ""
+
+msgid "Entry does not exist"
+msgstr ""
+
+msgid "Error"
+msgstr "Fout"
+
+msgid "Error adding new entry"
+msgstr ""
+
+msgid "Error connecting to ShapeShift"
+msgstr ""
+
+msgid "Error creating wallet"
+msgstr "Fout tijdens maken portemonnee"
+
+msgid "Error deleting addressbook"
+msgstr ""
+
+msgid "Error deleting entry"
+msgstr ""
+
+msgid "Error getting SendMax information"
+msgstr "Fout tijdens opvragen VerstuurMaximum informatie"
+
+msgid "Error getting fee rate"
+msgstr ""
+
+msgid "Error in Payment Protocol"
+msgstr "Fout in Betalings Protocol"
+
+msgid "Error pairing BitPay Account"
+msgstr "Fout tijdens koppelen BitPay Account"
+
+msgid "Error scanning funds:"
+msgstr "Fout tijdens scannen saldo:"
+
+msgid "Error sweeping wallet:"
+msgstr "Fout tijdens opnemen saldo portemonnee:"
+
+msgid "Error updating Debit Cards"
+msgstr "Fout tijdens bijwerken Debet Kaarten"
+
+msgid "Exceeded daily limit of $500 per user"
+msgstr "Dagelijkse limiet van $500 per gebruiker overschreden"
+
+msgid "Expired"
+msgstr "Verlopen"
+
+msgid "Expires"
+msgstr "Verloopt"
+
+msgid "Export Wallet"
+msgstr "Portemonnee exporteren"
+
+msgid "Export to file"
+msgstr "Exporteren naar bestand"
+
+msgid "Export wallet"
+msgstr "Exporteer portemonnee"
+
+msgid "Exporting via QR not supported for this wallet"
+msgstr "Exporteren via QR niet ondersteund voor deze portemonnee omdat de privé sleutel niet aanwezig is"
+
+msgid "Extended Private Key"
+msgstr "Verlengde Privé Sleutel"
+
+msgid "Extended Public Keys"
+msgstr "Verlengde Publieke Sleutels"
+
+msgid "Extracting Wallet information..."
+msgstr "Portemonnee informatie ophalen..."
+
+msgid "Failed"
+msgstr ""
+
+msgid "Failed to export"
+msgstr "Exporteren mislukt"
+
+msgid "Fee"
+msgstr "Transactiekosten"
+
+msgid "Fee level"
+msgstr ""
+
+msgid "Fee level is not defined"
+msgstr "Niveau transactiekosten is niet ingesteld"
+
+msgid "Fee rate"
+msgstr ""
+
+msgid "Feedback"
+msgstr ""
+
+msgid "Feedback could not be submitted. Please try again later."
+msgstr "Feedback kon niet worden ingediend. Probeer het later nog eens."
+
+msgid "Feedback!"
+msgstr ""
+
+msgid "Fetching BitPay Account..."
+msgstr "Ophalen BitPay Account..."
+
+msgid "Fetching BitPay Cards..."
+msgstr ""
+
+msgid "Fetching payment information..."
+msgstr ""
+
+msgid "File/Text"
+msgstr ""
+
+msgid "Fingerprint"
+msgstr ""
+
+msgid "Found something broken? Please report it as a bug. If you need immediate help with a problem you are having, then get help by contacting our support team."
+msgstr ""
+
+msgid "From"
+msgstr "Van"
+
+msgid "From BitPay account"
+msgstr "Van BitPay account"
+
+msgid "From the destination device, go to Add wallet > Import wallet and scan this QR code"
+msgstr ""
+
+msgid "Funds Will Not Be Accessible"
+msgstr ""
+
+msgid "Funds are locked by pending spend proposals"
+msgstr "Saldo is vergrendeld in afwachting van bestedingsvoorstellen"
+
+msgid "Funds found"
+msgstr ""
+
+msgid "Funds to be added"
+msgstr "Saldo toe te voegen"
+
+msgid "Funds were added to debit card"
+msgstr "Saldo is toegevoegd aan debetkaart"
+
+msgid "Funds will be transferred to"
+msgstr "Saldo zal worden overgemaakt naar"
+
+msgid "GOT IT"
+msgstr ""
+
+msgid "Generating .csv file..."
+msgstr ".csv bestand genereren..."
+
+msgid "Generating new address..."
+msgstr "Nieuw adres genereren..."
+
+msgid "Get Help"
+msgstr ""
+
+msgid "Get help"
+msgstr ""
+
+msgid "Get local cash anywhere you go, from any Visa® compatible ATM. ATM bank fees may apply."
+msgstr ""
+
+msgid "Get news and updates from BitPay"
+msgstr "Ontvang nieuws en updates van BitPay"
+
+msgid "Get started"
+msgstr "Aan de slag"
+
+msgid "Get started by adding your first one."
+msgstr "Ga aan de slag door uw eerste toe te voegen."
+
+msgid "Getting fee levels..."
+msgstr "Hoogte transactiekosten opvragen..."
+
+msgid "Gift Card"
+msgstr "Cadeaubon"
+
+msgid "Gift card canceled"
+msgstr ""
+
+msgid "Gift card purchases are temporarily unavailable. Please try again later."
+msgstr ""
+
+msgid "Give friends and family the gift of tapping a button and getting a ride - any time of day, any day of year."
+msgstr ""
+
+msgid "Give us feedback"
+msgstr ""
+
+msgid "Go Back"
+msgstr "Terug"
+
+msgid "Go back"
+msgstr "Terug"
+
+msgid "Got it"
+msgstr "Ik begrijp het"
+
+msgid "Have you redeemed all of your {brand} Gift Cards? Archived gift cards will still be accessible in settings."
+msgstr ""
+
+msgid "Have you redeemed the entire balance of this gift card?"
+msgstr ""
+
+msgid "Having problems with a ShapeShift?"
+msgstr ""
+
+msgid "Help & support"
+msgstr ""
+
+msgid "Help and support information is available at the website."
+msgstr "Hulp en ondersteuning is beschikbaar op de website."
+
+msgid "Hide"
+msgstr "Verberg"
+
+msgid "Hide Balance"
+msgstr "Verberg Saldo"
+
+msgid "Hide advanced options"
+msgstr "Verberg geavanceerde opties"
+
+msgid "Home"
+msgstr "Start"
+
+msgid "How satisfied are you with {{appName}} wallet?"
+msgstr ""
+
+msgid "I agree to the Terms and certify that I am the beneficial owner of the input assets and the destination address."
+msgstr ""
+
+msgid "I give explicit consent to BitPay to use my email address to send me email notifications about payments (and, if selected, email updates and news about the wallet)."
+msgstr ""
+
+msgid "I have read, understood, and agree to the Terms of Use"
+msgstr ""
+
+msgid "I have written it down"
+msgstr ""
+
+msgid "I understand"
+msgstr "Ik begrijp het"
+
+msgid "I understand that if this app is moved to another device or deleted, my bitcoin can only be recovered with the recovery phrase"
+msgstr ""
+
+msgid "I understand that my funds are held securely on this device, not by a company"
+msgstr ""
+
+msgid "I'm disappointed"
+msgstr ""
+
+msgid "I'm satisfied"
+msgstr ""
+
+msgid "I'm sure"
+msgstr ""
+
+msgid "I'm very happy"
+msgstr ""
+
+msgid "I've used this card"
+msgstr ""
+
+msgid "If enabled, Bitcoin Cash addresses will be shown using Copay style address, and not the new cashaddr format."
+msgstr ""
+
+msgid "If enabled, the Recent Transactions card - a list of transactions occuring across all wallets - will appear in the Home tab."
+msgstr "Indien ingeschakeld, zal de Recente Transacties kaart - een lijst van transacties van alle portemonnees - worden weergegeven in het tabblad Start."
+
+msgid "If enabled, wallets will also try to spend unconfirmed funds."
+msgstr ""
+
+msgid "If this device is replaced or this app is deleted, neither you nor BitPay can recover your funds without a backup."
+msgstr ""
+
+msgid "If you have funds stored on a website then you should move them into a secure wallet... like this one!"
+msgstr ""
+
+msgid "If you need immediate help with a problem you are having, then get help by contacting our support team."
+msgstr ""
+
+msgid "If you need to send to \"old\" addresses (like the one you just pasted), and you are SURE those are BCH addresses, you can \"translate\" them using the BCH Translator tool and paste the corresponding address in CashAddr format for that \"old\" address."
+msgstr ""
+
+msgid "If you take a screenshot, your recovery phrase may be viewed by other apps. You can make a safe backup with physical paper and a pen."
+msgstr ""
+
+msgid "If you were using the old desktop version you will need to import your wallets manually."
+msgstr ""
+
+msgid "Import Words"
+msgstr ""
+
+msgid "Import wallet"
+msgstr "Bestaande portemonnee importeren"
+
+msgid "Importing Wallet..."
+msgstr "Portemonnee importeren..."
+
+msgid "In order to verify your wallet recovery phrase, please type your password."
+msgstr ""
+
+msgid "Incomplete"
+msgstr "Onvolledig"
+
+msgid "Incorrect PIN, try again."
+msgstr "Onjuiste PIN, probeer het opnieuw."
+
+msgid "Incorrect network address"
+msgstr "Onjuist netwerk adres"
+
+msgid "Insufficient funds"
+msgstr "Onvoldoende saldo"
+
+msgid "Insufficient funds for fee"
+msgstr "Onvoldoende saldo voor transactiekosten"
+
+msgid "Integrations"
+msgstr ""
+
+msgid "Invalid"
+msgstr "Ongeldig"
+
+msgid "Invalid Email"
+msgstr ""
+
+msgid "Invalid URL"
+msgstr "Ongeldige URL"
+
+msgid "Invalid address"
+msgstr "Ongeldig adres"
+
+msgid "Invalid data"
+msgstr ""
+
+msgid "Invalid derivation path"
+msgstr "Ongeldig derivatie pad"
+
+msgid "Invitation Code"
+msgstr ""
+
+msgid "Is this correct?"
+msgstr "Klopt dit?"
+
+msgid "Is this email address correct?"
+msgstr "Is dit emailadres juist?"
+
+msgid "It appears that you do not have any money to send."
+msgstr ""
+
+msgid "It's a ghost town in here"
+msgstr ""
+
+msgid "It's a good idea to avoid reusing addresses - this both protects your privacy and keeps your bitcoins secure against hypothetical attacks by quantum computers."
+msgstr ""
+
+msgid "It's important that you write your recovery phrase down correctly. If something happens to your wallet, you'll need it to recover your money. Please review and try again."
+msgstr ""
+
+msgid "Join shared wallet"
+msgstr "Deelnemen aan bestaande gedeelde portemonnee"
+
+msgid "Join wallet"
+msgstr ""
+
+msgid "Joining Wallet..."
+msgstr "Deelnemen aan Portemonnee..."
+
+msgid "Just scan the code to pay."
+msgstr "Scan de code om te betalen."
+
+msgid "Key already associated with an existing wallet"
+msgstr "Sleutel is reeds geassocieerd met een bestaande portemonnee"
+
+msgid "Language"
+msgstr "Taal"
+
+msgid "Last Month"
+msgstr ""
+
+msgid "Learn More"
+msgstr ""
+
+msgid "Learn more"
+msgstr "Meer informatie"
+
+msgid "Learn more about testnet blockchain"
+msgstr ""
+
+msgid "Let's verify your recovery phrase."
+msgstr ""
+
+msgid "Linked"
+msgstr ""
+
+msgid "Loading addresses..."
+msgstr "Adressen laden..."
+
+msgid "Loading transaction info..."
+msgstr "Transactie info laden..."
+
+msgid "Lock"
+msgstr ""
+
+msgid "Locked"
+msgstr "Vergrendeld"
+
+msgid "Locktime in effect. Please wait to create a new spend proposal"
+msgstr "Tijdslot van kracht. Wacht a.u.b. met het maken van een nieuw bestedingsvoorstel"
+
+msgid "Locktime in effect. Please wait to remove this spend proposal"
+msgstr "Tijdslot van kracht. Wacht a.u.b. met het verwijderen van dit bestedingsvoorstel"
+
+msgid "Low Fee"
+msgstr ""
+
+msgid "Low amount inputs"
+msgstr "Kleine ontvangsten"
+
+msgid "Makes sense"
+msgstr "Klinkt logisch"
+
+msgid "Maximum amount allowed is {{max}}"
+msgstr ""
+
+msgid "Me"
+msgstr "Ik"
+
+msgid "Memo"
+msgstr "Notitie"
+
+msgid "Merchant Message"
+msgstr "Bericht Verkoper"
+
+msgid "Merchant fee too high. Payment rejected"
+msgstr ""
+
+msgid "Miner Fee"
+msgstr ""
+
+msgid "Miner Fee Notice"
+msgstr ""
+
+msgid "Miner fee"
+msgstr ""
+
+msgid "Minimum amount required is {{min}}"
+msgstr ""
+
+msgid "Missing parameter"
+msgstr "Ontbrekende parameter"
+
+msgid "Missing private keys to sign"
+msgstr "Privé sleutels om te ondertekenen ontbreken"
+
+msgid "Mmm..."
+msgstr ""
+
+msgid "More"
+msgstr ""
+
+msgid "Moved"
+msgstr "Verplaatst"
+
+msgid "Moved Funds"
+msgstr "Saldo Verplaatst"
+
+msgid "Moving"
+msgstr ""
+
+msgid "Multiple Recipients"
+msgstr ""
+
+msgid "Multiple recipients:"
+msgstr ""
+
+msgid "NOTE: To import a wallet from a 3rd party software, please go to Add Wallet, Create Wallet, and specify the Recovery Phrase there."
+msgstr ""
+
+msgid "Name"
+msgstr "Naam"
+
+msgid "Name (at creation)"
+msgstr ""
+
+msgid "Needs Backup"
+msgstr ""
+
+msgid "Needs backup"
+msgstr ""
+
+msgid "Network"
+msgstr ""
+
+msgid "Network Cost"
+msgstr ""
+
+msgid "Network cost"
+msgstr ""
+
+msgid "Network error"
+msgstr "Netwerk fout"
+
+msgid "New Proposal"
+msgstr "Nieuw Voorstel"
+
+msgid "New wallet"
+msgstr ""
+
+msgid "New {appName} desktop platform"
+msgstr ""
+
+msgid "No"
+msgstr ""
+
+msgid "No Private Key"
+msgstr ""
+
+msgid "No backup, no bitcoin."
+msgstr "Geen backup, geen bitcoin."
+
+msgid "No contacts yet"
+msgstr "Nog geen contactpersonen"
+
+msgid "No entries for this log level"
+msgstr "Geen items voor dit logboek niveau"
+
+msgid "No funds found"
+msgstr ""
+
+msgid "No password"
+msgstr ""
+
+msgid "No pending proposals"
+msgstr "Geen voorstellen in behandeling"
+
+msgid "No private key"
+msgstr ""
+
+msgid "No signing proposal: No private key"
+msgstr "Geen voorstel voor ondertekenen: Geen privé sleutel"
+
+msgid "No wallet found"
+msgstr "Geen portemonnee gevonden"
+
+msgid "No wallets available"
+msgstr "Geen portemonnees beschikbaar"
+
+msgid "No wallets available to receive funds"
+msgstr "Geen portemonnees beschikbaar om saldo te ontvangen"
+
+msgid "No wallets available to use ShapeShift"
+msgstr ""
+
+msgid "No wallets with funds"
+msgstr ""
+
+msgid "Normal"
+msgstr "Normaal"
+
+msgid "Not authorized"
+msgstr "Niet geautoriseerd"
+
+msgid "Not enough funds"
+msgstr ""
+
+msgid "Not enough funds for fee"
+msgstr "Onvoldoende saldo voor transactiekosten"
+
+msgid "Not even BitPay can access it."
+msgstr "Zelfs BitPay heeft geen toegang."
+
+msgid "Not including the private key allows to check the wallet balance, transaction history, and create spend proposals from the export. However, does not allow to approve (sign) proposals, so funds will not be accessible from the export."
+msgstr ""
+
+msgid "Not right now"
+msgstr ""
+
+msgid "Not set"
+msgstr ""
+
+msgid "Not valid bitcoin address"
+msgstr ""
+
+msgid "Note"
+msgstr "Notitie"
+
+msgid "Note: if this BCH wallet was duplicated from a BTC wallet, they share the same recovery phrase."
+msgstr "Let op: als deze BCH portemonnee is gedupliceerd van een BTC portemonnee, dan delen zij de zelfde herstel zin."
+
+msgid "Notifications"
+msgstr "Meldingen"
+
+msgid "Notifications by email"
+msgstr "Meldingen per email"
+
+msgid "Notify me if confirmed"
+msgstr "Geef mij een melding wanneer bevestigd"
+
+msgid "Notify me when transactions are confirmed"
+msgstr "Geef mij een melding wanneer transacties zijn bevestigd"
+
+msgid "Now is a perfect time to assess your surroundings. Nearby windows? Hidden cameras? Shoulder-spies?"
+msgstr "Dit is het juiste moment om uw omgeving te bekijken. Ramen in de buurt? Verborgen camera's? Kijkt er iemand mee over uw schouder?"
+
+msgid "OK"
+msgstr "OK"
+
+msgid "Off"
+msgstr ""
+
+msgid "Ok"
+msgstr "OK"
+
+msgid "On"
+msgstr ""
+
+msgid "On this screen you can see all your wallets, accounts, and assets."
+msgstr "Op dit scherm ziet u al uw portemonnees, accounts en eigendommen."
+
+msgid "Only redeemable on Mercado Livre (Brazil)"
+msgstr ""
+
+msgid "Only redeemable on www.amazon.co.jp (Japan website)"
+msgstr ""
+
+msgid "Only redeemable on www.amazon.com (USA website)"
+msgstr ""
+
+msgid "Open"
+msgstr "Openen"
+
+msgid "Open Crowdin"
+msgstr "Crowdin openen"
+
+msgid "Open GitHub"
+msgstr "GitHub openen"
+
+msgid "Open GitHub Project"
+msgstr "GitHub Project openen"
+
+msgid "Open Insight"
+msgstr "Insight openen"
+
+msgid "Open Translation Community"
+msgstr "Vertalings Gemeenschap openen"
+
+msgid "Open settings"
+msgstr ""
+
+msgid "Open website"
+msgstr "Website openen"
+
+msgid "Order the BitPay Card"
+msgstr ""
+
+msgid "Ouch!"
+msgstr ""
+
+msgid "PIN"
+msgstr ""
+
+msgid "Password"
+msgstr "Wachtwoord"
+
+msgid "Password Not Recoverable"
+msgstr ""
+
+msgid "Password mismatch"
+msgstr ""
+
+msgid "Password required. Make sure to enter your password in advanced options"
+msgstr "Wachtwoord vereist. Vul uw wachtwoord in bij de geavanceerde opties"
+
+msgid "Passwords do not match"
+msgstr ""
+
+msgid "Paste the backup plain text code"
+msgstr ""
+
+msgid "Paste this code on {cardConfig.website}. This gift card cannot be recovered if your claim code is lost."
+msgstr ""
+
+msgid "Pay 0% fees to turn bitcoin into dollars."
+msgstr "Betaal 0% transactiekosten om bitcoin om te zetten naar dollars."
+
+msgid "Pay To"
+msgstr "Betalen Aan"
+
+msgid "Payment Accepted"
+msgstr "Betaling Geaccepteerd"
+
+msgid "Payment Expires:"
+msgstr "Betaling Verloopt:"
+
+msgid "Payment Proposal"
+msgstr "Betalingsvoorstel"
+
+msgid "Payment Proposals"
+msgstr "Betalingsvoorstellen"
+
+msgid "Payment Protocol Invalid"
+msgstr "Betaling Protocol Ongeldig"
+
+msgid "Payment Published"
+msgstr ""
+
+msgid "Payment Received"
+msgstr "Betaling Ontvangen"
+
+msgid "Payment Rejected"
+msgstr "Betaling Afgewezen"
+
+msgid "Payment Request"
+msgstr ""
+
+msgid "Payment Request info"
+msgstr ""
+
+msgid "Payment Sent"
+msgstr "Betaling Verzonden"
+
+msgid "Payment URL"
+msgstr ""
+
+msgid "Payment accepted, but not yet broadcasted"
+msgstr "Betaling geaccepteerd, maar nog niet verzonden"
+
+msgid "Payment accepted. It will be broadcasted by Glidera. In case there is a problem, it can be deleted 6 hours after it was created."
+msgstr "Betaling geaccepteerd. Deze zal worden verzonden door Glidera. In geval van problemen kan de betaling worden verwijderd 6 uur na aanmaken."
+
+msgid "Payment request"
+msgstr "Betalingsverzoek"
+
+msgid "Pending"
+msgstr "In behandeling"
+
+msgid "Pending Proposals"
+msgstr "Voorstellen in behandeling"
+
+msgid "Permanently delete this wallet."
+msgstr "U staat op het punt deze portemonnee definitief te verwijderen uit de app."
+
+msgid "Personal Wallet"
+msgstr "Persoonlijke Portemonnee"
+
+msgid "Plain URL"
+msgstr ""
+
+msgid "Please carefully write down this phrase."
+msgstr "Schrijf zorgvuldig deze zin op, deze bevat geen hoofdletters."
+
+msgid "Please complete your account verification on ShapeShift website."
+msgstr ""
+
+msgid "Please connect a camera to get started."
+msgstr "Sluit een camera aan om aan de slag te gaan."
+
+msgid "Please enter the recovery phrase"
+msgstr "Vul de herstel zin in met enkel kleine letters"
+
+msgid "Please enter the wallet recovery phrase"
+msgstr "Vul de herstel zin van de portemonnee in met enkel kleine letters"
+
+msgid "Please enter your PIN"
+msgstr ""
+
+msgid "Please tap each word in the correct order."
+msgstr "Druk a.u.b. op elk woord in de juiste volgorde."
+
+msgid "Please upgrade Copay to perform this action"
+msgstr "Upgrade Copay om deze actie uit te voeren"
+
+msgid "Please wait..."
+msgstr ""
+
+msgid "Please, enter the amount"
+msgstr ""
+
+msgid "Please, select your backup file"
+msgstr "Selecteer uw backup bestand"
+
+msgid "Pre-Auth Holds"
+msgstr "Pre-Authorisatie Inhoudingen"
+
+msgid "Preferences"
+msgstr "Voorkeuren"
+
+msgid "Preparing addresses..."
+msgstr "Adressen voorbereiden..."
+
+msgid "Preparing backup..."
+msgstr "Backup voorbereiden..."
+
+msgid "Print"
+msgstr ""
+
+msgid "Priority"
+msgstr "Dringend"
+
+msgid "Privacy Policy"
+msgstr ""
+
+msgid "Privacy Policy update"
+msgstr ""
+
+msgid "Private Key"
+msgstr "Privé Sleutel"
+
+msgid "Private key encrypted. Enter password"
+msgstr "Privé sleutel versleuteld. Voer wachtwoord in"
+
+msgid "Private key is encrypted, cannot sign"
+msgstr "Privé sleutel is versleuteld, kan niet ondertekenen"
+
+msgid "Proposal Accepted"
+msgstr "Voorstel Geaccepteerd"
+
+msgid "Proposal Created"
+msgstr "Voorstel Aangemaakt"
+
+msgid "Proposal Deleted"
+msgstr "Voorstel Verwijderd"
+
+msgid "Proposal Rejected"
+msgstr "Voorstel Afgewezen"
+
+msgid "Proposal created"
+msgstr ""
+
+msgid "Proposals"
+msgstr "Voorstellen"
+
+msgid "Purchase Limit Reached"
+msgstr ""
+
+msgid "Purchased Brands"
+msgstr ""
+
+msgid "Push notifications for {{appName}} are currently disabled. Enable them in the Settings app."
+msgstr "Push meldingen voor {{appName}} zijn op dit moment uitgeschakeld. Schakel deze in vanuit de Instellingen app."
+
+msgid "QR Code"
+msgstr ""
+
+msgid "QR code to recover wallet {{walletName}}"
+msgstr ""
+
+msgid "Quick review!"
+msgstr "Kort samenvatten!"
+
+msgid "Random"
+msgstr ""
+
+msgid "Rate"
+msgstr ""
+
+msgid "Rate on the {storeName}"
+msgstr ""
+
+msgid "Read more in our Wiki"
+msgstr "Lees meer in onze Wiki"
+
+msgid "Read more in our support page"
+msgstr ""
+
+msgid "Receipt Email"
+msgstr ""
+
+msgid "Receive"
+msgstr "Ontvangen"
+
+msgid "Received"
+msgstr "Ontvangen"
+
+msgid "Received Funds"
+msgstr "Ontvangen Saldo"
+
+msgid "Receiving"
+msgstr "Ontvangen"
+
+msgid "Receiving {coinName} address"
+msgstr ""
+
+msgid "Recent"
+msgstr "Recent"
+
+msgid "Recent Transaction Card"
+msgstr "Recente Transacties Kaart"
+
+msgid "Recent Transactions"
+msgstr "Recente Transacties"
+
+msgid "Recipient"
+msgstr "Ontvanger"
+
+msgid "Recovery Phrase"
+msgstr ""
+
+msgid "Recreating Wallet..."
+msgstr "Portemonnee herstellen..."
+
+msgid "Redeem Now"
+msgstr ""
+
+msgid "Redeem by going to the payment section in the Uber app."
+msgstr ""
+
+msgid "Reject Payment Proposal"
+msgstr ""
+
+msgid "Rejected"
+msgstr "Afgewezen"
+
+msgid "Rejecting payment proposal..."
+msgstr ""
+
+msgid "Release information"
+msgstr "Release informatie"
+
+msgid "Remove"
+msgstr "Verwijderen"
+
+msgid "Repeat the password"
+msgstr "Herhaal het wachtwoord"
+
+msgid "Report an Issue"
+msgstr ""
+
+msgid "Report an issue"
+msgstr ""
+
+msgid "Report issue"
+msgstr ""
+
+msgid "Request Encrypt Password"
+msgstr ""
+
+msgid "Request Fingerprint"
+msgstr "Vereis Vingerafdruk"
+
+msgid "Request Specific Amount"
+msgstr ""
+
+msgid "Request a Feature"
+msgstr ""
+
+msgid "Request a new feature"
+msgstr ""
+
+msgid "Request feature"
+msgstr ""
+
+msgid "Required number of signatures"
+msgstr ""
+
+msgid "Restore from backup"
+msgstr "Herstellen vanuit backup"
+
+msgid "Retrieving inputs information..."
+msgstr ""
+
+msgid "Retry"
+msgstr ""
+
+msgid "Retry camera"
+msgstr ""
+
+msgid "Save"
+msgstr "Opslaan"
+
+msgid "Scan"
+msgstr "Scannen"
+
+msgid "Scan QR Codes"
+msgstr "Scan QR Codes"
+
+msgid "Scan addresses for funds"
+msgstr "Scan adressen voor saldo"
+
+msgid "Scan again"
+msgstr "Scan nogmaals"
+
+msgid "Scanning Wallet funds..."
+msgstr "Saldo Portemonnee scannen..."
+
+msgid "Scanning funds"
+msgstr ""
+
+msgid "Screenshots are not secure"
+msgstr ""
+
+msgid "Search Transactions"
+msgstr ""
+
+msgid "Search Wallets or Contacts"
+msgstr ""
+
+msgid "Search a contact"
+msgstr ""
+
+msgid "Search or enter bitcoin address"
+msgstr "Zoeken of bitcoin adres invullen"
+
+msgid "Search your currency"
+msgstr "Zoek uw valuta"
+
+msgid "Security"
+msgstr "Beveiliging"
+
+msgid "See transaction"
+msgstr ""
+
+msgid "Select a coin"
+msgstr ""
+
+msgid "Select a wallet"
+msgstr "Selecteer een portemonnee"
+
+msgid "Self-signed Certificate"
+msgstr "Zelf-gesigneerd Certificaat"
+
+msgid "Selling Bitcoin..."
+msgstr "Bitcoin verkopen..."
+
+msgid "Send"
+msgstr "Verzenden"
+
+msgid "Send Max"
+msgstr ""
+
+msgid "Send Money"
+msgstr "Stuur Geld"
+
+msgid "Send addresses by email"
+msgstr "Verstuur adressen per email"
+
+msgid "Send by email"
+msgstr "Verstuur via email"
+
+msgid "Send feedback"
+msgstr ""
+
+msgid "Send from"
+msgstr "Verzenden vanuit"
+
+msgid "Send logs by email"
+msgstr ""
+
+msgid "Send payment to this address"
+msgstr "Verstuur betaling naar dit adres"
+
+msgid "Sending"
+msgstr "Verzenden"
+
+msgid "Sending 2FA code..."
+msgstr "2FA code verzenden..."
+
+msgid "Sending From"
+msgstr ""
+
+msgid "Sending feedback..."
+msgstr "Feedback verzenden..."
+
+msgid "Sending maximum amount"
+msgstr "Maximale hoeveelheid verzenden"
+
+msgid "Sending transaction..."
+msgstr ""
+
+msgid "Sending {{amount}} {{unit}} from your {{name}} wallet"
+msgstr ""
+
+msgid "Sensitive Data"
+msgstr ""
+
+msgid "Sent"
+msgstr "Verzonden"
+
+msgid "Sent Funds"
+msgstr "Verzonden Bedrag"
+
+msgid "Server response could not be verified"
+msgstr "Server reactie kon niet geverifieerd worden"
+
+msgid "Services"
+msgstr "Diensten"
+
+msgid "Session Log"
+msgstr "Sessie Log"
+
+msgid "Session log"
+msgstr "Sessie log"
+
+msgid "Set up a password"
+msgstr "Stel wachtwoord in"
+
+msgid "Settings"
+msgstr ""
+
+msgid "ShapeShift is not available at this moment. Please, try again later."
+msgstr ""
+
+msgid "ShapeShift max limit reached"
+msgstr ""
+
+msgid "ShapeShift requires a minimum value of {{min}}"
+msgstr ""
+
+msgid "Share"
+msgstr ""
+
+msgid "Share Address"
+msgstr ""
+
+msgid "Share the love by inviting your friends."
+msgstr "Deel het plezier door uw vrienden uit te nodigen."
+
+msgid "Share this QR code to receive {amount} in your wallet {name}."
+msgstr ""
+
+msgid "Share this invitation with your copayers"
+msgstr "Deel deze uitnodiging met uw copayers"
+
+msgid "Share {{appName}}"
+msgstr ""
+
+msgid "Shop Now"
+msgstr ""
+
+msgid "Show advanced options"
+msgstr "Geavanceerde opties weergeven"
+
+msgid "Show all"
+msgstr ""
+
+msgid "Show in Home"
+msgstr ""
+
+msgid "Sign Up for ShapeShift"
+msgstr ""
+
+msgid "Signatures rejected by server"
+msgstr "Ondertekeningen geweigerd door server"
+
+msgid "Signing transaction..."
+msgstr ""
+
+msgid "Since only you control your money, you’ll need to save your recovery phrase in case this app is deleted."
+msgstr ""
+
+msgid "Single address"
+msgstr ""
+
+msgid "Skip"
+msgstr "Overslaan"
+
+msgid "Slide to accept"
+msgstr ""
+
+msgid "Slide to confirm"
+msgstr ""
+
+msgid "Slide to pay"
+msgstr ""
+
+msgid "Slide to send"
+msgstr ""
+
+msgid "Specify Recovery Phrase"
+msgstr ""
+
+msgid "Spend proposal is not accepted"
+msgstr "Bestedingsvoorstel is niet geaccepteerd"
+
+msgid "Spend proposal not found"
+msgstr "Bestedingsvoorstel niet gevonden"
+
+msgid "Spendable balance"
+msgstr ""
+
+msgid "Spending this balance will need significant Bitcoin network fees"
+msgstr "Dit bedrag uitgeven vereist aanzienlijke transactiekosten"
+
+msgid "Status"
+msgstr ""
+
+msgid "Suggested by Merchant"
+msgstr ""
+
+msgid "Super Economy"
+msgstr "Super Zuinig"
+
+msgid "Sweep"
+msgstr "Saldo opnemen"
+
+msgid "Sweep Completed"
+msgstr ""
+
+msgid "Sweep paper wallet"
+msgstr "Saldo papieren portemonnee opnemen"
+
+msgid "Sweeping Wallet..."
+msgstr "Saldo Portemonnee opnemen..."
+
+msgid "THIS ACTION CANNOT BE REVERSED"
+msgstr "DEZE ACTIE IS ONOMKEERBAAR"
+
+msgid "Take control of your money, get started with bitcoin."
+msgstr ""
+
+msgid "Tap and hold to show"
+msgstr "Tik en houd vast om te tonen"
+
+msgid "Tap to recreate"
+msgstr ""
+
+msgid "Tap to retry"
+msgstr ""
+
+msgid "Temporarily Unavailable"
+msgstr ""
+
+msgid "Terms of Use"
+msgstr "Gebruikersvoorwaarden"
+
+msgid "Testnet Wallet"
+msgstr ""
+
+msgid "Text"
+msgstr "Tekst"
+
+msgid "Thanks!"
+msgstr "Bedankt!"
+
+msgid "The Gift of Go.™ With over 300 destinations and limitless adventures to choose from, the Delta Gift Card opens up a world of possibilities."
+msgstr ""
+
+msgid "The Safest, Fastest Asset Exchange on Earth"
+msgstr ""
+
+msgid "The Wallet Service URL"
+msgstr ""
+
+msgid "The amount of bitcoin immediately spendable from this wallet."
+msgstr "De hoeveelheid bitcoin die direct te besteden is vanuit deze portemonnee."
+
+msgid "The amount of bitcoin stored in this wallet that is allocated as inputs to your pending transaction proposals. The amount is determined using unspent transaction outputs associated with this wallet and may be more than the actual amounts associated with your pending transaction proposals."
+msgstr "De hoeveelheid bitcoin opgeslagen in deze portemonnee die is toegewezen als invoer voor uw wachtende betalingsvoorstellen. De hoeveelheid is bepaald door te kijken naar ongebruikte transactie uitvoer geassocieerd met deze portemonnee en kan meer zijn dan de daadwerkelijke hoeveelheid geassocieerd met de wachtende betalingsvoorstellen."
+
+msgid "The amount of bitcoin stored in this wallet with less than 1 blockchain confirmation."
+msgstr "De hoeveelheid bitcoin opgeslagen in deze portemonnee met minder dan 1 blockchain bevestiging."
+
+msgid "The derivation path"
+msgstr "Het derivatie pad"
+
+msgid "The destination wallet is not backed up. Please, complete the backup process before continue."
+msgstr ""
+
+msgid "The exchange rate changes with the market."
+msgstr "De wisselkoers wijzigt aan de hand van de markt."
+
+msgid "The higher the fee, the greater the incentive a miner has to include that transaction in a block. Current fees are determined based on network load and the selected policy."
+msgstr "Des te hoger de betaalde transactiekosten, des te meer reden een miner heeft om de transactie in een blok op te nemen. De huidige transactiekosten worden bepaald aan de hand van de drukte op het netwerk en het gekozen beleid."
+
+msgid "The information you are about to share/export may contain sensitive data such us wallet IDs, addresses, balances, etc. Please be sure you trust the person or entity with whom you are sharing this information."
+msgstr ""
+
+msgid "The password of the recovery phrase (if set)"
+msgstr "Het wachtwoord van de herstel zin (indien ingesteld)"
+
+msgid "The payment was created but could not be completed. Please try again from home screen"
+msgstr "De betaling is aangemaakt maar kon niet worden voltooid. Probeer het nogmaals vanuit het start scherm"
+
+msgid "The payment was removed by creator"
+msgstr "De betaling is verwijderd door de aanmaker"
+
+msgid "The private key of this wallet is not available. The export allows to check the wallet balance, transaction history, and create spend proposals from the export. However, does not allow to approve (sign) proposals, so funds will not be accessible from the export."
+msgstr ""
+
+msgid "The purchase amount is limited to {maxAmount} {currency} per day. Please modify your amount."
+msgstr ""
+
+msgid "The purchase amount must be at least {minAmount} {currency}. Please modify your amount."
+msgstr ""
+
+msgid "The request could not be understood by the server"
+msgstr "Het verzoek kon niet worden begrepen door de server"
+
+msgid "The single address feature will force the wallet to only use one address rather than generating new addresses."
+msgstr ""
+
+msgid "The spend proposal is not pending"
+msgstr "Het bestedingsvoorstel is niet meer in behandeling"
+
+msgid "The testnet is an alternative Bitcoin block chain, to be used for testing. Testnet coins are separate and distinct from actual bitcoins, and do not have any value. This allows application developers or bitcoin testers to experiment, without having to use real bitcoins."
+msgstr ""
+
+msgid "The total amount of bitcoin stored in this wallet."
+msgstr "De totale hoeveelheid bitcoin opgeslagen in deze portemonnee."
+
+msgid "The transaction history and every new incoming transaction are cached in the app. This feature clean this up and synchronizes again from the server"
+msgstr ""
+
+msgid "The wallet you are using does not match the network and/or the currency of the address provided"
+msgstr ""
+
+msgid "There is an error in the form"
+msgstr "Het formulier bevat een fout"
+
+msgid "There's obviously something we're doing wrong. How could we improve your experience?"
+msgstr ""
+
+msgid "This app is not available for your device."
+msgstr ""
+
+msgid "This app stores your bitcoin with cutting-edge security."
+msgstr "Deze app bewaart uw bitcoin met de nieuwste beveiliging."
+
+msgid "This bitcoin payment request has expired."
+msgstr "Dit bitcoin betalingsverzoek is verlopen."
+
+msgid "This field is only for users who, in previous versions (it's not supported anymore), set a password to protect their recovery phrase. This field is not for your encrypt password."
+msgstr ""
+
+msgid "This information is available at the website."
+msgstr ""
+
+msgid "This password cannot be recovered. If this password is lost, funds can only be recovered by reimporting your 12-word recovery phrase."
+msgstr ""
+
+msgid "This password is only for this device, and it cannot be recovered. To avoid losing funds, write your password down."
+msgstr ""
+
+msgid "This recovery phrase was created with a password. To recover this wallet both the recovery phrase and password are needed."
+msgstr "Deze herstel zin is aangemaakt met een wachtwoord. Om deze portemonnee te herstellen heeft u de herstel zin en het wachtwoord nodig."
+
+msgid "This transaction amount is too small compared to current Bitcoin network fees. Spending these funds will need a Bitcoin network fee cost comparable to the funds itself."
+msgstr ""
+
+msgid "This transaction could take a long time to confirm or could be dropped due to the low fees set by the sender."
+msgstr ""
+
+msgid "This wallet is not registered at the given Bitcore Wallet Service (BWS). You can recreate it from the local information."
+msgstr "Deze portemonnee is niet geregistreerd bij de opgegeven Bitcore Wallet Service (BWS). U kunt deze opnieuw aanmaken vanuit de lokale informatie."
+
+msgid "Timeline"
+msgstr "Tijdlijn"
+
+msgid "To"
+msgstr "Naar"
+
+msgid "To get started, you'll need to create a bitcoin wallet and get some bitcoin."
+msgstr "Om aan de slag te gaan zult u een bitcoin portemonnee moeten aanmaken en wat bitcoin moeten verkrijgen."
+
+msgid "To get started, you'll need to enter a valid address, contact or wallet."
+msgstr ""
+
+msgid "To {{reason}} you must first add your BitPay account - {{email}}"
+msgstr ""
+
+msgid "Top up in progress..."
+msgstr "Bezig met opladen..."
+
+msgid "Top-up with this cryptocurrency is not enabled"
+msgstr ""
+
+msgid "Total"
+msgstr "Totaal"
+
+msgid "Total Locked Balance"
+msgstr "Totaal Vergrendeld Saldo"
+
+msgid "Total number of copayers"
+msgstr ""
+
+msgid "Total wallet inputs"
+msgstr "Totaal portemonnee ontvangsten"
+
+msgid "Trade any leading blockchain asset for any other. Protection by Design."
+msgstr ""
+
+msgid "Transaction"
+msgstr "Transactie"
+
+msgid "Transaction History"
+msgstr "Transactiehistorie"
+
+msgid "Transaction ID"
+msgstr ""
+
+msgid "Transaction already broadcasted"
+msgstr "Transactie reeds verzonden"
+
+msgid "Transaction has not been created"
+msgstr "Transactie is niet aangemaakt"
+
+msgid "Transaction initiated"
+msgstr "Transactie gestart"
+
+msgid "Transaction not available at this time"
+msgstr "Transactie momenteel niet beschikbaar"
+
+msgid "Transaction not found"
+msgstr "Transactie niet gevonden"
+
+msgid "Transactions"
+msgstr ""
+
+msgid "Transactions without fee are not supported."
+msgstr "Transacties zonder transactiekosten worden niet ondersteund."
+
+msgid "Transfer to"
+msgstr ""
+
+msgid "Transfer to Bitcoin Cash Wallet"
+msgstr ""
+
+msgid "Transfer to Bitcoin Wallet"
+msgstr ""
+
+msgid "Transfer to Contact"
+msgstr ""
+
+msgid "Transfer to Multiple Recipients"
+msgstr ""
+
+msgid "Translate address"
+msgstr ""
+
+msgid "Try again"
+msgstr ""
+
+msgid "Try again in {{expires}}"
+msgstr "Probeer het nogmaals over {{expires}}"
+
+msgid "Turn bitcoin into dollars, swipe anywhere Visa® is accepted."
+msgstr ""
+
+msgid "Type the recovery phrase (usually 12 words)"
+msgstr ""
+
+msgid "Uber gift cards also apply to UberEATS orders. Enjoy food from hundreds of restaurants, delivered at Uber speed."
+msgstr ""
+
+msgid "Uh oh..."
+msgstr ""
+
+msgid "Unarchive Card"
+msgstr ""
+
+msgid "Unconfirmed"
+msgstr "Onbevestigd"
+
+msgid "Unlink account"
+msgstr ""
+
+msgid "Unlink card"
+msgstr ""
+
+msgid "Unlink the account will remove it and all associated cards from this device."
+msgstr ""
+
+msgid "Unlink the card will remove it from this device."
+msgstr ""
+
+msgid "Unlock App"
+msgstr ""
+
+msgid "Unsent transactions"
+msgstr "Niet-verzonden transacties"
+
+msgid "Unused addresses"
+msgstr ""
+
+msgid "Unverified Account"
+msgstr ""
+
+msgid "Updating Gift Card..."
+msgstr ""
+
+msgid "Updating Gift Cards..."
+msgstr ""
+
+msgid "Updating pending proposals... Please stand by"
+msgstr ""
+
+msgid "Updating transaction history. Please stand by."
+msgstr "Transactie historie bijwerken. Een moment geduld."
+
+msgid "Updating... Please stand by"
+msgstr "Bijwerken... Een moment geduld"
+
+msgid "Urgent"
+msgstr "Spoed"
+
+msgid "Use Bitcoin Cash Copay Style Addresses"
+msgstr ""
+
+msgid "Use Unconfirmed Funds"
+msgstr "Onbevestigd Saldo Gebruiken"
+
+msgid "Use default url"
+msgstr ""
+
+msgid "Validating recovery phrase..."
+msgstr "Herstel zin valideren..."
+
+msgid "Verify Account"
+msgstr ""
+
+msgid "Version"
+msgstr "Versie"
+
+msgid "View"
+msgstr "Weergeven"
+
+msgid "View Confirmation Status"
+msgstr ""
+
+msgid "View Invoice"
+msgstr ""
+
+msgid "View Privacy Policy"
+msgstr ""
+
+msgid "View Redemption Code"
+msgstr ""
+
+msgid "View Transaction on Insight"
+msgstr "Bekijk Transactie op Insight"
+
+msgid "View Wallet Terms of Use"
+msgstr ""
+
+msgid "View all addresses"
+msgstr ""
+
+msgid "View on blockchain"
+msgstr "Bekijk op blockchain"
+
+msgid "Visit ShapeShift.io"
+msgstr ""
+
+msgid "WARNING: Key derivation is not working on this device/wallet. Actions cannot be performed on this wallet."
+msgstr "WAARSCHUWING: Sleutel derivatie werkt op dit moment niet op dit apparaat/deze portemonnee. Er kunnen geen acties worden uitgevoerd met deze portemonnee."
+
+msgid "WARNING: UNTRUSTED CERTIFICATE"
+msgstr "WAARSCHUWING: NIET-VERTROUWD CERTIFICAAT"
+
+msgid "Waiting for copayers"
+msgstr "Wachten op copayers"
+
+msgid "Waiting..."
+msgstr "Wachten..."
+
+msgid "Wallet Addresses"
+msgstr "Adressen Portemonnee"
+
+msgid "Wallet Color"
+msgstr "Kleur Portemonnee"
+
+msgid "Wallet Information"
+msgstr "Portemonnee Informatie"
+
+msgid "Wallet Inputs"
+msgstr "Ontvangsten Portemonnee"
+
+msgid "Wallet Name"
+msgstr "Naam Portemonnee"
+
+msgid "Wallet Recovery Phrase is invalid"
+msgstr "Portemonnee Herstel Zin is ongeldig"
+
+msgid "Wallet Service URL"
+msgstr "Portemonnee Service URL"
+
+msgid "Wallet already exists"
+msgstr "Portemonnee bestaat al"
+
+msgid "Wallet already in {{nameCase}}"
+msgstr ""
+
+msgid "Wallet created"
+msgstr "Portemonnee aangemaakt"
+
+msgid "Wallet incomplete and broken"
+msgstr "Portemonnee onvolledig en onwerkzaam"
+
+msgid "Wallet invitation"
+msgstr ""
+
+msgid "Wallet is full"
+msgstr "Portemonnee is vol"
+
+msgid "Wallet is locked"
+msgstr "Portemonnee is vergrendeld"
+
+msgid "Wallet is not complete"
+msgstr "Portemonnee is niet volledig"
+
+msgid "Wallet key"
+msgstr ""
+
+msgid "Wallet name"
+msgstr ""
+
+msgid "Wallet needs backup"
+msgstr "Portemonnee vereist backup"
+
+msgid "Wallet not found"
+msgstr "Portemonnee niet gevonden"
+
+msgid "Wallet not registered at the wallet service. Recreate it from \"Create Wallet\" using \"Advanced Options\" to set your recovery phrase"
+msgstr "Portemonnee niet geregistreerd bij de wallet service. Maak deze opnieuw aan vanuit \"Portemonnee Aanmaken\" en maak gebruik van \"Geavanceerde Opties\" om uw herstel zin in te voeren"
+
+msgid "Wallet recovery phrase"
+msgstr ""
+
+msgid "Wallet recovery phrase not available"
+msgstr "Portemonnee herstel zin niet beschikbaar"
+
+msgid "Wallet service not found"
+msgstr "Wallet service niet gevonden"
+
+msgid "Warning!"
+msgstr "Waarschuwing!"
+
+msgid "Warning: this transaction has unconfirmed inputs"
+msgstr "Waarschuwing: deze transactie heeft onbevestigde ontvangsten"
+
+msgid "Watch Out!"
+msgstr ""
+
+msgid "We appreciate your review"
+msgstr ""
+
+msgid "We are always looking for translation contributions! You can make corrections or help to make this app available in your native language by joining our community on Crowdin."
+msgstr ""
+
+msgid "We will confirm on the next screen."
+msgstr ""
+
+msgid "We're always listening for ways we can improve your experience. Feel free to leave us a review in the app store or request a new feature."
+msgstr ""
+
+msgid "We're always listening for ways we can improve your experience. Feel free to leave us a review in the app store or request a new feature. Also, let us know if you experience any technical issues."
+msgstr ""
+
+msgid "We're always listening for ways we can improve your experience. Is there anything we could do to improve your experience?"
+msgstr ""
+
+msgid "Website"
+msgstr ""
+
+msgid "What do you call this wallet?"
+msgstr "Hoe noemt u deze portemonnee?"
+
+msgid "When this wallet was created, it was called \"{{walletName}}\". You can change the name displayed on this device below."
+msgstr ""
+
+msgid "Where would you like to receive email notifications about payments?"
+msgstr "Waar wilt u email meldingen ontvangen over betalingen?"
+
+msgid "Where would you like to receive your Amazon gift card purchase receipts?"
+msgstr ""
+
+msgid "Why does this require authentication?"
+msgstr ""
+
+msgid "Why?"
+msgstr "Waarom?"
+
+msgid "Withdraw"
+msgstr ""
+
+msgid "Without encryption, a thief or another application on this device may be able to access your funds."
+msgstr ""
+
+msgid "Would you like to protect this wallet with a password?"
+msgstr ""
+
+msgid "Write Down Recovery Phrase"
+msgstr ""
+
+msgid "Write a Review"
+msgstr ""
+
+msgid "Wrong number of recovery words:"
+msgstr "Onjuist aantal herstel woorden:"
+
+msgid "Wrong password"
+msgstr ""
+
+msgid "YES"
+msgstr ""
+
+msgid "Yes"
+msgstr "Ja"
+
+msgid "Yes, skip"
+msgstr ""
+
+msgid "You are trying to send ({amount} {coin}) more than what your wallet contains. Please enter a lower amount or send max."
+msgstr ""
+
+msgid "You can back up your wallet later from your wallet settings."
+msgstr ""
+
+msgid "You can continue to view your archived cards here if you need to access them."
+msgstr ""
+
+msgid "You can make contributions by signing up on our Crowdin community translation website. We’re looking forward to hearing from you!"
+msgstr "U kunt een bijdrage leveren door u aan te melden bij onze Crowdin gemeenschap vertalings website. Wij kijken er naar uit om van u te horen!"
+
+msgid "You can scan bitcoin addresses, payment requests, paper wallets, and more."
+msgstr "U kunt bitcoin adressen scannen, betalingsverzoeken, papieren portemonnees, en meer."
+
+msgid "You can see the latest developments and contribute to this open source app by visiting our project on GitHub."
+msgstr "U kunt de laatste ontwikkelingen volgen en bijdragen aan deze open source app door onze project pagina te bezoeken op GitHub."
+
+msgid "You can spend bitcoin at millions of websites and stores worldwide."
+msgstr "U kunt met bitcoin betalen bij miljoenen websites en winkels over de hele wereld."
+
+msgid "You can still export it from \"Export Wallet\" option."
+msgstr ""
+
+msgid "You can trade it for other currencies like US Dollars, Euros, or Pounds."
+msgstr "U kunt het inwisselen voor valuta's zoals de Amerikaanse Dollar, de Euro, of Ponden."
+
+msgid "You can use your Mercado Livre gift cards on your Mercado Pago account for everyday expenses like utilities and metro rides."
+msgstr ""
+
+msgid "You control your bitcoin."
+msgstr "U heeft de controle over uw bitcoin."
+
+msgid "You could sign the transaction later in your wallet details"
+msgstr ""
+
+msgid "You should not set a fee higher than {{maxFeeRecommended}} satoshis/byte."
+msgstr "Het is af te raden transactiekosten te kiezen hoger dan {{maxFeeRecommended}} satoshi's/byte."
+
+msgid "Your BitPay Card is ready. Add funds to your card to start using it at stores and ATMs worldwide."
+msgstr "Uw BitPay Kaart is gereed. Voeg saldo toe aan uw kaart om deze te kunnen gebruiken in winkels en pinautomaten over de hele wereld."
+
+msgid "Your bitcoin wallet is ready!"
+msgstr "Uw bitcoin portemonnee is gereed!"
+
+msgid "Your extended private keys are all that is needed to access your bitcoin funds. Be sure to protect your private keys and store them only on secure devices. BitPay does not have access to your private keys, so you alone are responsible for your keys. If you share key access with external services, you take responsibility for the risk of theft or breach. Only advanced users should handle extended private keys directly."
+msgstr ""
+
+msgid "Your fee is lower than recommended."
+msgstr "Uw gekozen transactiekosten zijn lager dan aangeraden."
+
+msgid "Your name"
+msgstr "Uw naam"
+
+msgid "Your wallet address is similar to a bank account number. You can add funds to your wallet by withdrawing funds you may have stored on an exchange to your wallet address. Or other {coinName} users can send you money by scanning your QR code."
+msgstr ""
+
+msgid "Your wallet is never saved to cloud storage or standard device backups."
+msgstr "Uw portemonnee wordt nooit opgeslagen in de cloud of in standaard apparaat backups."
+
+msgid "Your wallet key will be encrypted. The encrypt password cannot be recovered. Be sure to write it down."
+msgstr ""
+
+msgid "Your {walletType} wallet is backed up!"
+msgstr ""
+
+msgid "[Balance Hidden]"
+msgstr "[Saldo Verborgen]"
+
+msgid "[Scanning Funds]"
+msgstr "[Saldo Scannen]"
+
+msgid "add your BitPay Visa card(s)"
+msgstr "voeg uw BitPay Visa kaart(en) toe"
+
+msgid "me"
+msgstr "ik"
+
+msgid "of total amount"
+msgstr ""
+
+msgid "preparing..."
+msgstr "voorbereiden..."
+
+msgid "{appName} BCH wallets use the CashAddr format by default"
+msgstr ""
+
+msgid "{coinName} miner fees are high due to record demand for limited space on the {coinName} network. BitPay does not receive and does not control {coinName} miner fees."
+msgstr ""
+
+msgid "{coinName} miner fees unusually high"
+msgstr ""
+
+msgid "{{appName}} depends on Bitcore Wallet Service (BWS) for blockchain information, networking and Copayer synchronization. The default configuration points to https://bws.bitpay.com (BitPay's public BWS instance)."
+msgstr ""
+
+msgid "{{fee}} {{coin}} will be deducted for bitcoin networking fees."
+msgstr ""
+
+msgid "{{updatingTxHistoryProgress}} transactions downloaded"
+msgstr "{{updatingTxHistoryProgress}} transacties gedownload"
+
+msgid "{{wallet.credentials.m}}-of-{{wallet.credentials.n}}"
+msgstr ""
+
+msgid "{{wallet.m}}-of-{{wallet.n}}"
+msgstr "{{wallet.m}}-van-{{wallet.n}}"
+
