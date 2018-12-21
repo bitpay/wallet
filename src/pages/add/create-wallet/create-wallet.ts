@@ -96,7 +96,8 @@ export class CreateWalletPage implements OnInit {
       derivationPath: [this.derivationPathByDefault],
       testnetEnabled: [false],
       singleAddress: [false],
-      coin: [null, Validators.required]
+      bitcoin: true,
+      bitcoincash: true
     });
 
     this.setTotalCopayers(this.tc);
@@ -175,9 +176,10 @@ export class CreateWalletPage implements OnInit {
           : null,
       networkName: this.createForm.value.testnetEnabled ? 'testnet' : 'livenet',
       bwsurl: this.createForm.value.bwsURL,
-      singleAddress: this.createForm.value.singleAddress,
-      coin: this.createForm.value.coin
+      singleAddress: this.createForm.value.singleAddress
     };
+
+    const coins = { bitcoin: this.createForm.value.bitcoin, bitcoincash: this.createForm.value.bitcoincash };
 
     const setSeed = this.createForm.value.selectedSeed == 'set';
     if (setSeed) {
@@ -224,25 +226,25 @@ export class CreateWalletPage implements OnInit {
       return;
     }
 
-    this.create(opts);
+    this.create(opts, coins);
   }
 
-  private create(opts): void {
+  private create(opts, coins): void {
     this.onGoingProcessProvider.set('creatingWallet');
 
     this.profileProvider
-      .createWallet(opts)
-      .then(wallet => {
+      .createSinglePassphraseWallets(opts, coins)
+      .then(walletsArray => {
         this.onGoingProcessProvider.clear();
         this.events.publish('status:updated');
-        this.walletProvider.updateRemotePreferences(wallet);
-        this.pushNotificationsProvider.updateSubscription(wallet);
-
-        if (this.createForm.value.selectedSeed == 'set') {
-          this.profileProvider.setBackupFlag(wallet.credentials.walletId);
-        }
+        walletsArray.forEach(wallet => {
+          this.walletProvider.updateRemotePreferences(wallet);
+          this.pushNotificationsProvider.updateSubscription(wallet);
+          if (this.createForm.value.selectedSeed == 'set') {
+            this.profileProvider.setBackupFlag(wallet.credentials.walletId);
+          }
+        });
         this.navCtrl.popToRoot();
-        this.events.publish('OpenWallet', wallet);
       })
       .catch(err => {
         this.onGoingProcessProvider.clear();

@@ -1110,19 +1110,12 @@ export class ProfileProvider {
 
   // create and store a wallet
   public createWallet(opts): Promise<any> {
-    return new Promise((resolve, reject) => {
-      this.doCreateWallet(opts)
-        .then(walletClient => {
-          this.addAndBindWalletClient(walletClient, {
-            bwsurl: opts.bwsurl
-          }).then(wallet => {
-            return resolve(wallet);
-          });
-        })
-        .catch(err => {
-          return reject(err);
+    return this.doCreateWallet(opts)
+      .then(walletClient => {
+        return this.addAndBindWalletClient(walletClient, {
+          bwsurl: opts.bwsurl
         });
-    });
+      });
   }
 
   // joins and stores a wallet
@@ -1226,32 +1219,27 @@ export class ProfileProvider {
   }
 
   public createDefaultWallet(coins): Promise<any> {
-    return new Promise((resolve, reject) => {
-      const opts: Partial<WalletOptions> = {};
+    const opts: Partial<WalletOptions> = {};
+    opts.m = 1;
+    opts.n = 1;
+    opts.networkName = 'livenet';
+    return this.createSinglePassphraseWallets(opts, coins);
+  }
 
-      const validCoins = this.getFilteredCoinsArray(coins);
+  public createSinglePassphraseWallets(opts, coins): Promise<any> {
 
-      this.seedWallet(opts)
-        .then(walletClient => {
-          opts.extendedPrivateKey = walletClient.credentials.xPrivKey;
-          opts.mnemonic = walletClient.credentials.mnemonic;
-          validCoins.forEach(coin => {
-            opts.m = 1;
-            opts.n = 1;
-            opts.networkName = 'livenet';
-            opts.coin = coin;
-            this.createWallet(_.clone(opts))
-              .then(wallet => {
-                return resolve(wallet);
-              })
-              .catch(err => {
-                return reject(err);
-              });
-          });
-        }).catch(err => {
-          return reject(err);
+    const validCoins = this.getFilteredCoinsArray(coins);
+
+    return this.seedWallet(opts)
+      .then(walletClient => {
+        opts.mnemonic = walletClient.credentials.mnemonic;
+        const promises = [];
+        validCoins.forEach(coin => {
+          opts.coin = coin;
+          promises.push(this.createWallet(_.clone(opts)));
         });
-    });
+        return Promise.all(promises);
+      });
   }
 
   public setDisclaimerAccepted(): Promise<any> {

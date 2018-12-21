@@ -32,12 +32,17 @@
       </ion-item>
     </div>
 
+    <ion-item no-lines>
+      <ion-label stacked>{{'Choose your coins' | translate}}</ion-label>
+    </ion-item>
     <ion-item>
-      <ion-label stacked>{{'Coin' | translate}}</ion-label>
-      <ion-select okText="{{okText}}" cancelText="{{cancelText}}" placeholder="{{'Select a coin' | translate}}" formControlName="coin">
-        <ion-option value="btc">Bitcoin (BTC)</ion-option>
-        <ion-option value="bch">Bitcoin Cash (BCH)</ion-option>
-      </ion-select>
+      <ion-label>Bitcoin</ion-label>
+      <ion-checkbox formControlName="bitcoin"></ion-checkbox>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>Bitcoin Cash</ion-label>
+      <ion-checkbox formControlName="bitcoincash"></ion-checkbox>
     </ion-item>
 
     <ion-item-divider></ion-item-divider>
