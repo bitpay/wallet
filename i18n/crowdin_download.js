@@ -4,7 +4,7 @@
 
 console.log(
   '\nPlease remember to build translations ' +
-  'before to download and commit new changes\n'
+    'before to download and commit new changes\n'
 );
 
 var fs = require('fs');
@@ -110,10 +110,7 @@ https.get(
         var files = fs.readdirSync('/tmp/copay/po');
 
         for (var i in files) {
-          var po_file = fs.readFileSync(
-            '/tmp/copay/po/' + files[i],
-            'utf8'
-          );
+          var po_file = fs.readFileSync('/tmp/copay/po/' + files[i], 'utf8');
           var po_array = po_file.split('\n');
           for (var j in po_array) {
             if (po_array[j].slice(0, 5) == 'msgid') {
@@ -150,7 +147,9 @@ https.get(
             }
             if (j == po_array.length - 1) {
               // All strings are exactly identical to English. Delete po file.
-              fs.unlinkSync(path.join(__dirname, '../src/assets/i18n/' + files[i]));
+              fs.unlinkSync(
+                path.join(__dirname, '../src/assets/i18n/' + files[i])
+              );
             }
           }
         }
