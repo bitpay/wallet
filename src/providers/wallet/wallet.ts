@@ -189,16 +189,15 @@ export class WalletProvider {
 
       let get = (): Promise<any> => {
         return new Promise((resolve, reject) => {
-          wallet.getStatus( { }, (err, ret) => {
-              if (err) {
-                if (err instanceof this.errors.NOT_AUTHORIZED) {
-                  return reject('WALLET_NOT_REGISTERED');
-                }
-                return reject(err);
+          wallet.getStatus({}, (err, ret) => {
+            if (err) {
+              if (err instanceof this.errors.NOT_AUTHORIZED) {
+                return reject('WALLET_NOT_REGISTERED');
               }
-              return resolve(ret);
+              return reject(err);
             }
-          );
+            return resolve(ret);
+          });
         });
       };
 
