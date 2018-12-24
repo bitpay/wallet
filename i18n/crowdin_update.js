@@ -7,7 +7,7 @@ var https = require('https');
 
 var crowdin_identifier = 'copay';
 
-var local_file_name1 = path.join(__dirname, 'po/template.pot');
+var local_file_name1 = path.join(__dirname, 'template.pot');
 
 // Similar to Github, normalize all line breaks to CRLF so that different people
 // using different OSes to update does not constantly swith format back and forth.
@@ -62,7 +62,6 @@ if (crowdin_api_key != '') {
     }
   };
 
-  console.log(`OPTIONS: ${JSON.stringify(options)}`);
   var req = https.request(options, response => {
     console.log(`STATUS: ${response.statusCode}`);
     console.log(`HEADERS: ${JSON.stringify(response.headers)}`);

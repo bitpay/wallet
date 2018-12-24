@@ -3,22 +3,22 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Plural-Forms: nplurals=4; plural=((n%10==1 && n%100!=11) ? 0 : ((n%10 >= 2 && n%10 <=4 && (n%100 < 12 || n%100 > 14)) ? 1 : ((n%10 == 0 || (n%10 >= 5 && n%10 <=9)) || (n%100 >= 11 && n%100 <= 14)) ? 2 : 3));\n"
 "X-Generator: crowdin.com\n"
 "X-Crowdin-Project: copay\n"
-"X-Crowdin-Language: de\n"
+"X-Crowdin-Language: ru\n"
 "X-Crowdin-File: template.pot\n"
 "Project-Id-Version: copay\n"
 "Last-Translator: cmgustavo83\n"
-"Language-Team: German\n"
-"Language: de\n"
-"PO-Revision-Date: 2018-12-18 20:49\n"
+"Language-Team: Russian\n"
+"Language: ru\n"
+"PO-Revision-Date: 2018-12-21 18:55\n"
 
 msgid "(Trusted)"
-msgstr "(Vertraut)"
+msgstr "(Доверенный)"
 
 msgid "(possible double spend)"
-msgstr "(mögliche Doppelausgabe)"
+msgstr "(возможна двойная трата)"
 
 msgid "* A payment proposal can be deleted if 1) you are the creator, and no other copayer has signed, or 2) 10 minutes have passed since the proposal was created."
 msgstr ""
@@ -27,115 +27,115 @@ msgid "1. Tap \"Add Payment Method\" and select \"Gift Card\""
 msgstr ""
 
 msgid "2. Enter Gift Code"
-msgstr "Gutscheincode eingeben"
+msgstr ""
 
 msgid "5-star ratings help us get BitPay Wallet into more hands, and more users means more resources can be committed to the app!"
 msgstr ""
 
 msgid "A total of {{amountAboveMaxSizeStr}} {{coin}} were excluded. The maximum size allowed for a transaction was exceeded."
-msgstr "Un total de {{amountAboveMaxSizeStr}} {{coin}} a été exclu. La taille maximale autorisée pour une transaction a été dépassée.deutsch."
+msgstr "В общей сложности {{amountAboveMaxSizeStr}} {{coin}} было исключено. Превышен максимальный размер транзакции."
 
 msgid "A total of {{amountBelowFeeStr}} {{coin}} were excluded. These funds come from UTXOs smaller than the network fee provided."
-msgstr ""
+msgstr "В общей сложности {{amountBelowFeeStr}} {{coin}} было исключено. Эти средства поступают от UTXOs которые меньше чем плата за сеть."
 
 msgid "A total of {{amountStr}} ({{fiatAmount | number:'1.2-2'}} {{currencyIsoCode}}) will be exchanged for {{withdrawalStr}} ({{fiatWithdrawal | number:'1.2-2'}} {{currencyIsoCode}})."
 msgstr ""
 
 msgid "A total of {{fee}} {{coin}} were excluded. The maximum size allowed for a transaction was exceeded."
-msgstr ""
+msgstr "В общей сложности {{fee}} {{coin}} было исключено. Превышен максимальный размер транзакции."
 
 msgid "A total of {{fee}} {{coin}} were excluded. These funds come from UTXOs smaller than the network fee provided."
-msgstr ""
+msgstr "В общей сложности {{fee}} {{coin}} было исключено. Эти средства поступают от UTXOs которые меньше, чем предусмотренная плата за сеть."
 
 msgid "About"
-msgstr "Über"
+msgstr "О проекте"
 
 msgid "About {{appName}}"
-msgstr "Über {{appName}}"
+msgstr "Про {{appName}}"
 
 msgid "Accept"
-msgstr "Akzeptieren"
+msgstr "Принять"
 
 msgid "Accepted"
-msgstr "Akzeptiert"
+msgstr "Принято"
 
 msgid "Account"
-msgstr "Benutzerkonto"
+msgstr "Учётная запись"
 
 msgid "Activity"
-msgstr "Aktivität"
+msgstr "Активность"
 
 msgid "Add"
-msgstr "Hinzufügen"
+msgstr "Добавить"
 
 msgid "Add BitPay Account?"
-msgstr "BitPay-Konto hinzufügen?"
+msgstr "Добавить учетную запись BitPay?"
 
 msgid "Add Contact"
-msgstr "Kontakt hinzufügen"
+msgstr "Добавить контакт"
 
 msgid "Add Memo"
-msgstr "Notiz hinzufügen"
+msgstr "Добавить памятку"
 
 msgid "Add Recipient"
-msgstr "Empfänger hinzufügen"
+msgstr ""
 
 msgid "Add account"
-msgstr ""
+msgstr "Добавить учетную запись"
 
 msgid "Add amount"
-msgstr ""
+msgstr "Указать сумму"
 
 msgid "Add as a contact"
-msgstr "Zu Kontakten hinzufügen"
+msgstr "Добавить контакт"
 
 msgid "Add funds"
-msgstr "Guthaben aufladen"
+msgstr "Пополнить счёт"
 
 msgid "Add gift cards to your {appName} wallet from brands like Amazon, Delta, Google Play, and Uber."
 msgstr ""
 
 msgid "Add this BitPay account ({{email}})?"
-msgstr ""
+msgstr "Добавить эту учетную запись BitPay ({{email}})?"
 
 msgid "Address"
-msgstr "Adresse"
+msgstr "Адрес"
 
 msgid "Address Book"
-msgstr "Addressbuch"
+msgstr "Aдресная книга"
 
 msgid "Address Type"
-msgstr "Adresstyp"
+msgstr "Тип адреса"
 
 msgid "Address book"
-msgstr "Adressbuch"
+msgstr "Адресная книга"
 
 msgid "Addressbook is empty"
-msgstr "Adressbuch ist leer"
+msgstr "Адресная книга пуста"
 
 msgid "Addresses with balance"
-msgstr "Adressen mit Guthaben"
+msgstr "Адреса с балансом"
 
 msgid "Advanced"
-msgstr "Erweitert"
+msgstr "Дополнительные возможности"
 
 msgid "All"
 msgstr ""
 
 msgid "All addresses"
-msgstr "Alle Adressen"
+msgstr "Все адреса"
 
 msgid "All of your bitcoin wallet balance may not be available for immediate spending."
-msgstr "Möglicherweise kann nicht ihr gesamtes Bitcoin Guthaben sofort ausgegeben werden."
+msgstr "В данный момент весь баланс вашего кошелька может быть недоступен для совершения платежей."
 
 msgid "Allow camera access"
-msgstr "Kamerazugriff erlauben"
+msgstr "Разрешить доступ камеры"
 
 msgid "Almost done! Let's review."
-msgstr "Fast fertig! Fassen wir zusammen."
+msgstr "Почти готово! Давайте проверим."
 
 msgid "Alternative currency"
-msgstr "Alternative Währung"
+msgstr "Альтернативная валюта"
 
 msgid "Amazon.co.jp Gift Cards never expire and can be redeemed towards millions of items at www.amazon.co.jp."
 msgstr ""
@@ -144,28 +144,28 @@ msgid "Amazon.com Gift Cards never expire and can be redeemed towards millions o
 msgstr ""
 
 msgid "Amount"
-msgstr "Betrag"
+msgstr "Сумма"
 
 msgid "Amount Too Low To Spend"
 msgstr ""
 
 msgid "Amount below minimum allowed"
-msgstr "Betrag unter zulässigem Minimum"
+msgstr "Сумма ниже допустимого минимума"
 
 msgid "Amount too big"
-msgstr "Betrag zu hoch"
+msgstr "Слишком большая сумма"
 
 msgid "Amount:"
-msgstr "Betrag:"
+msgstr ""
 
 msgid "Anyone with your recovery phrase can access or spend your bitcoin."
 msgstr ""
 
 msgid "Apply changes"
-msgstr "Änderungen vornehmen"
+msgstr "Применить изменения"
 
 msgid "Approximate Bitcoin network fee to transfer wallet's balance (with normal priority)"
-msgstr "Ungefähre Bitcoin Netzwerkgebühr um das Wallet Guthaben zu übertragen (mit normaler Priorität)"
+msgstr "Приблизительная комиссия на перевод сети Bitcoin для передачи баланса кошелька (с нормальным приоритетом)"
 
 msgid "Archive All {brand} Gift Cards?"
 msgstr ""
@@ -180,37 +180,37 @@ msgid "Archived Cards"
 msgstr ""
 
 msgid "Are you being watched?"
-msgstr "Werden Sie beobachtet?"
+msgstr "За вами сейчас кто-нибудь смотрит?"
 
 msgid "Are you sure you want to cancel and delete this wallet?"
-msgstr "Wollen Sie wirklich abbrechen und dieses Wallet löschen?"
+msgstr "Вы точно хотите отменить и удалить этот кошелёк?"
 
 msgid "Are you sure you want to delete this contact?"
-msgstr "Sind sie sicher, dass sie diesen Kontakt löschen möchten?"
+msgstr "Вы действительно хотите удалить этот контакт?"
 
 msgid "Are you sure you want to delete this wallet?"
-msgstr "Soll das Wallet wirklich gelöscht werden?"
+msgstr "Вы точно хотите удалить этот кошелёк?"
 
 msgid "Are you sure you want to reject this transaction?"
-msgstr "Wollen Sie wirklich diese Transaktion ablehnen?"
+msgstr "Вы точно хотите отклонить этот платёж?"
 
 msgid "Are you sure you want to remove this transaction?"
-msgstr "Wollen Sie wirklich diese Transaktion löschen?"
+msgstr "Вы точно хотите удалить эту транзакцию?"
 
 msgid "Are you sure you want to skip it?"
-msgstr ""
+msgstr "Вы уверены что хотите пропустить?"
 
 msgid "Are you sure?"
-msgstr "Sind Sie sicher?"
+msgstr "Вы уверены?"
 
 msgid "Available"
-msgstr "Verfügbar"
+msgstr "Доступно"
 
 msgid "Average confirmation time"
-msgstr "Durchschnittliche Bestätigungzeit"
+msgstr "Среднее время подтверждения"
 
 msgid "Awaiting payment to confirm"
-msgstr "Warte auf Zahlungsbestätigung"
+msgstr ""
 
 msgid "Back up all your wallets before using this function"
 msgstr ""
@@ -219,16 +219,16 @@ msgid "Back up your wallet before using this function"
 msgstr ""
 
 msgid "Backup"
-msgstr "Sicherung"
+msgstr "Резервное копирование"
 
 msgid "Backup wallet"
-msgstr "Sicherung der Wallet"
+msgstr "Резервное копирование"
 
 msgid "Bad wallet invitation"
-msgstr "Ungültige Einladung"
+msgstr "Недействительное приглашение"
 
 msgid "Balance Hidden"
-msgstr "Das Guthaben ist versteckt"
+msgstr "Баланс Скрыт"
 
 msgid "Be sure to store your recovery phrase in a secure place. If this app is deleted, your money cannot be recovered without it."
 msgstr ""
@@ -246,7 +246,7 @@ msgid "BitPay Card URI"
 msgstr ""
 
 msgid "Bitcoin Address"
-msgstr "Bitcoin-Adresse"
+msgstr "Биткойн-адрес"
 
 msgid "Bitcoin Cash Address"
 msgstr ""
@@ -255,46 +255,46 @@ msgid "Bitcoin Cash URI"
 msgstr ""
 
 msgid "Bitcoin Cash Wallets"
-msgstr "Bitcoin Cash Wallet"
+msgstr "Кошельки Bitcoin Cash"
 
 msgid "Bitcoin Network Fee Policy"
-msgstr "Bitcoin-Netzwerk Gebührenübersicht"
+msgstr "Политика комиссии сети Биткойн"
 
 msgid "Bitcoin URI"
 msgstr ""
 
 msgid "Bitcoin Wallets"
-msgstr "Bitcoin-Wallet"
+msgstr "Bitcoin Кошельки"
 
 msgid "Bitcoin is a currency."
-msgstr "Bitcoin ist eine Währung."
+msgstr "Биткойн - это валюта."
 
 msgid "Bitcoin is different - it cannot be safely held with a bank or web service."
 msgstr ""
 
 msgid "Bitcoin is secure, digital money."
-msgstr "Bitcoin ist sicheres, digitales Geld."
+msgstr "Bitcoin это безопасные, цифровые деньги."
 
 msgid "Bitcoin miner fee:"
-msgstr "Bitcoin Miner Gebühr:"
+msgstr "Tранзакционные сборы:"
 
 msgid "Bitcoin network fee policy"
-msgstr "Bitcoin-Netzwerk Gebührenübersicht"
+msgstr "Политика комиссии сети Биткойн"
 
 msgid "Bitcoin transactions include a fee collected by miners on the network."
-msgstr "Bitcoin Transaktionen enthalten eine Gebühr für die \"Miners\" im Netzwerk."
+msgstr "Bitcoin transactions include a fee collected by miners on the network."
 
 msgid "Brands"
 msgstr ""
 
 msgid "Broadcast Payment"
-msgstr "Zahlung übermitteln"
+msgstr "Отправить платёж"
 
 msgid "Broadcasted"
-msgstr "Gesendet"
+msgstr "Отправка"
 
 msgid "Broadcasting transaction..."
-msgstr "Übermittlung der Transaktion..."
+msgstr "Трансакция передается..."
 
 msgid "Buy Gift Card"
 msgstr ""
@@ -303,160 +303,160 @@ msgid "Buy Gift Cards"
 msgstr ""
 
 msgid "Buying Bitcoin..."
-msgstr "Kaufe Bitcoins..."
+msgstr "Покупка биткойн..."
 
 msgid "Buying Gift Card..."
-msgstr "Geschenkkarte kaufen..."
+msgstr "Покупка Подарочной карты..."
 
 msgid "By providing your email address, you give explicit consent to BitPay to use your email address to send you email notifications about payments."
 msgstr ""
 
 msgid "Calculating fee..."
-msgstr "Berechnung der Gebühr..."
+msgstr "Вычисление комиссии..."
 
 msgid "Calculating send max..."
-msgstr "Maximaler Betrag wird berechnet..."
-
-msgid "Cancel"
-msgstr "Abbruch"
-
-msgid "Cancel invitation"
-msgstr "Einladung abbrechen"
-
-msgid "Canceling Gift Card..."
-msgstr "Kauf der Geschenkkarte wird abgebrochen..."
-
-msgid "Cannot create wallet"
 msgstr ""
 
+msgid "Cancel"
+msgstr "Отмена"
+
+msgid "Cancel invitation"
+msgstr "Отменить приглашение?"
+
+msgid "Canceling Gift Card..."
+msgstr "Аннулирование Подарочной карты..."
+
+msgid "Cannot create wallet"
+msgstr "Не удаётся создать кошелёк"
+
 msgid "Cannot join the same wallet more that once"
-msgstr "An einem Wallet kann nicht mehrfach teilgenommen werden"
+msgstr "Нельзя присоединиться к одному и тому же кошельку более одного раза"
 
 msgid "Card Archived"
 msgstr ""
 
 msgid "Card Settings"
-msgstr "Karteneinstellungen"
+msgstr "Настройки карты"
 
 msgid "Certified by"
-msgstr "Zertifiziert von"
+msgstr "Сертифицирован"
 
 msgid "Change Amount"
-msgstr "Betrag ändern"
+msgstr ""
 
 msgid "Change amount"
-msgstr "Betrag ändern"
+msgstr ""
 
 msgid "Check the transaction on your wallet details"
-msgstr "Überprüfen Sie die Transaktion auf Ihren Brieftaschendetails"
+msgstr "Проверьте транзакцию в подробностях вашего кошелька"
 
 msgid "Choose a backup file from your computer"
-msgstr "Bitte eine Sicherungsdatei vom Computer wählen"
+msgstr "Выберите файл резервной копии с вашего компьютера"
 
 msgid "Clear"
-msgstr "Leeren"
+msgstr "Очистить"
 
 msgid "Clear cache"
-msgstr "Cache leeren"
+msgstr "Очистить кэш"
 
 msgid "Click to accept"
-msgstr "Zum Akzeptieren, klicken"
+msgstr "Подтвердить"
 
 msgid "Click to confirm"
-msgstr "Klicken, um zu bestätigen"
+msgstr "Щелкните для подтверждения"
 
 msgid "Click to open Terms"
-msgstr "Klicken zum Öffnen der Bedingungen"
+msgstr "Щелкните, чтобы открыть Термины"
 
 msgid "Click to pay"
-msgstr "Zum Zahlen, klicken"
+msgstr "Оплатить"
 
 msgid "Click to send"
-msgstr "Zum senden, klicken"
+msgstr "Отправить"
 
 msgid "Close"
-msgstr "Schließen"
+msgstr "Закрыть"
 
 msgid "Coin"
-msgstr "Coin"
+msgstr "Монета"
 
 msgid "Color"
-msgstr "Farbe"
+msgstr "Цвет"
 
 msgid "Completed"
-msgstr "Fertig"
+msgstr "Завершено"
 
 msgid "Configuration (m-n)"
-msgstr "Konfiguration (m-n)"
+msgstr "Конфигурация (m-n)"
 
 msgid "Confirm"
-msgstr "Bestätigen"
+msgstr "Подтвердить"
 
 msgid "Confirm & Finish"
-msgstr ""
+msgstr "Подтвердить & Закончить"
 
 msgid "Confirm to shift {{fromCoin}} to {{toCoin}}"
-msgstr ""
+msgstr "Подтвердить переход от {{fromCoin}} к {{toCoin}}"
 
 msgid "Confirm your PIN"
-msgstr "Bestätigen Sie Ihre PIN"
+msgstr "Подтвердите ваш PIN-код"
 
 msgid "Confirm your new encrypt password"
-msgstr "Verifizieren Sie Ihr neues Passwort"
+msgstr "Подтвердите ваш новый пароль шифрования"
 
 msgid "Confirmations"
-msgstr "Bestätigungen"
+msgstr "Подтверждения"
 
 msgid "Confirming"
-msgstr "Bestätigen"
+msgstr "Ожидает подтверждения"
 
 msgid "Congratulations! It looks like you've recently received money. It's highly advised that you verify your recovery phrase so that your funds can be recovered in case your phone was lost or stolen."
 msgstr ""
 
 msgid "Connect my BitPay Card"
-msgstr "Verbinde meine BitPay-Karte"
+msgstr "Подключить мою карту BitPay"
 
 msgid "Connect to ShapeShift Account"
 msgstr ""
 
 msgid "Connecting to Coinbase..."
-msgstr "Verbinde mit Coinbase..."
+msgstr "Подключение к Coinbase..."
 
 msgid "Connecting to Glidera..."
-msgstr "Verbinde mit Glidera..."
+msgstr "Подключение к Glidera..."
 
 msgid "Connecting to ShapeShift..."
-msgstr "Verbindung zu ShapeShift..."
+msgstr "Подключение к ShapeShift..."
 
 msgid "Connection reset by peer"
-msgstr "Verbindung von Peer zurückgesetzt"
+msgstr "Соединение сброшено другой стороной"
 
 msgid "Contact the ShapeShift support team."
-msgstr "Wenden Sie sich an das ShapeShift Supportteam."
+msgstr "Связаться с командой поддержки ShapeShift."
 
 msgid "Continue"
-msgstr "Weiter"
+msgstr "Продолжить"
 
 msgid "Contribute translations"
-msgstr "Trage zu Übersetzungen bei"
+msgstr "Помочь с переводами"
 
 msgid "Copay Session Logs. Be careful, this could contain sensitive private data"
 msgstr ""
 
 msgid "Copay only supports Bitcoin Cash using new version numbers addresses"
-msgstr "Copay unterstützt nur die neue Version der Bitcoin Cash adressen"
+msgstr "Используя новую версию номеров адресов Copay поддерживает только Bitcoin Cash"
 
 msgid "Copayer already in this wallet"
-msgstr "Copayer nimmt bereits teil"
+msgstr "Совладелец кошелька уже присоединился"
 
 msgid "Copayer already voted on this spend proposal"
-msgstr "Copayer hat schon für diesen Zahlungsvorschlag angestimmt"
+msgstr "Совладелец уже проголосовал по этому платежу"
 
 msgid "Copayer data mismatch"
-msgstr "Copayer Datenkonflikt"
+msgstr "Несоответствие данных совладельца кошелька"
 
 msgid "Copayer joined"
-msgstr "Copayer beigetreten"
+msgstr "Совладелец присоединился"
 
 msgid "Copied"
 msgstr ""
@@ -465,7 +465,7 @@ msgid "Copied to Clipboard"
 msgstr ""
 
 msgid "Copied to clipboard"
-msgstr "In die Zwischenablage kopiert"
+msgstr "Скопировано в буфер обмена"
 
 msgid "Copied {coin} address"
 msgstr ""
@@ -477,49 +477,49 @@ msgid "Copy Code"
 msgstr ""
 
 msgid "Copy this text as it is to a safe place (notepad or email)"
-msgstr "Diesen Text an einem sichern Ort einfügen (Notepad oder E-Mail)"
+msgstr "Скопируйте этот текст как есть (в блокнот или письмо)"
 
 msgid "Copy to clipboard"
-msgstr "In die Zwischenablage kopieren"
+msgstr "Скопировать в буфер обмена"
 
 msgid "Could Not Fetch Payment: Check if it is still valid"
-msgstr "Zahlung konnte nicht ausgeführt werden: Bitte prüfen Sie die Gültigkeit"
+msgstr "Не Удалось Получить Платеж: Проверьте, действителен ли он все еще"
 
 msgid "Could not access the wallet at the server. Please check:"
-msgstr "Kein Zugriff auf Wallet des Servers. Überprüfen Sie bitte:"
+msgstr "Не удалось получить доступ к кошельку на сервере. Проверьте, пожалуйста:"
 
 msgid "Could not access wallet"
-msgstr "Auf Wallet konnte nicht zugegriffen werden"
+msgstr "Не удалось получить доступ к кошельку"
 
 msgid "Could not add message to imported wallet without shared encrypting key"
-msgstr "Nachricht kann nicht an die importierte Wallet hinzugefügt werden ohne einem gemeinsamen Verschlüsselungsschlüssel"
+msgstr "Не удалось добавить сообщение в импортированный кошелёк без общего ключа шифрования"
 
 msgid "Could not build transaction"
-msgstr "Transaktion konnte nicht erstellt werden"
+msgstr "Не удалось создать транзакцию"
 
 msgid "Could not create address"
-msgstr "Adresse konnte nicht erstellt werden"
+msgstr "Не удалось создать адрес"
 
 msgid "Could not create transaction"
-msgstr "Konnte nicht die Transaktion erstellen"
+msgstr "Не удалось создать транзакцию"
 
 msgid "Could not create using the specified extended private key"
-msgstr "Erzeugung mit erweiterten privaten Schlüssel nicht möglich"
+msgstr "Не удалось создать используя указанный расширенный закрытый ключ"
 
 msgid "Could not create using the specified extended public key"
-msgstr "Erzeugung mit dem angegebenen erweiterten öffentlichen Schlüssel nicht möglich"
+msgstr "Не удалось создать используя указанный расширенный открытый ключ"
 
 msgid "Could not create: Invalid wallet recovery phrase"
-msgstr "Wallet-Wiederherstellungsphrase nicht gültig"
+msgstr "Не удалось создать: недействительное ключевое словосочетание"
 
 msgid "Could not decrypt file, check your password"
-msgstr "Datei konnte nicht entschlüsselt werden, bitte das Passwort überprüfen"
+msgstr "Не удалось расшифровать файл, проверьте пароль"
 
 msgid "Could not decrypt wallet"
 msgstr ""
 
 msgid "Could not delete payment proposal"
-msgstr "Zahlungsvorschlag konnte nicht gelöscht werden"
+msgstr "Не удалось удалить предложенный платёж"
 
 msgid "Could not encrypt wallet"
 msgstr ""
@@ -528,322 +528,322 @@ msgid "Could not get claim code. Please contact BitPay support."
 msgstr ""
 
 msgid "Could not get dynamic fee"
-msgstr "Dynamische Gebühr konnten nicht abgerufen werden"
+msgstr "Не удалось получить динамическую комиссию"
 
 msgid "Could not get dynamic fee for level:"
-msgstr "Dynamische Gebühr für den Level konnte nicht abgerufen werden:"
+msgstr "Не удалось получить динамическую комиссию для уровня:"
 
 msgid "Could not get fee levels"
-msgstr "Die Gebühr konnte nicht ermittelt werden"
+msgstr "Не удалось получить уровни комиссии"
 
 msgid "Could not get the Addressbook"
-msgstr "Adressbuch nicht erhalten"
+msgstr "Не удалось получить Адресную книгу"
 
 msgid "Could not get transactions"
-msgstr "Transaktionen konnten nicht gefunden werden"
+msgstr "Не удалось получить транзакции"
 
 msgid "Could not import"
-msgstr "Import nicht möglich"
+msgstr "Не удалось импортировать"
 
 msgid "Could not import. Check input file."
-msgstr "Einfügen nicht möglich. Bitte Datei überprüfen."
+msgstr "Не удалось импортировать. Проверьте импортируемый файл."
 
 msgid "Could not join wallet"
-msgstr "Beteiligung am Wallet nicht möglich"
+msgstr "Не удалось присоединиться к кошельку"
 
 msgid "Could not reject payment"
-msgstr "Zahlung konnte nicht abgelehnt werden"
+msgstr "Не удалось отклонить платёж"
 
 msgid "Could not save preferences on the server"
-msgstr "Die Einstellungen konnten nicht am Server gespeichert werden"
+msgstr "Не удалось сохранить параметры на сервере"
 
 msgid "Could not send transaction"
-msgstr "Konnte die Transaktion nicht versenden"
+msgstr "Не удалось отправить транзакцию"
 
 msgid "Could not update transaction history"
-msgstr "Die Transaktionshistorie konnte nicht aktualisiert werden"
+msgstr "Не удалось обновить журнал транзакций"
 
 msgid "Could not update wallet"
-msgstr "Wallet konnte nicht aktualisiert werden"
+msgstr "Не удалось обновить кошелёк"
 
 msgid "Create a new wallet"
-msgstr "Neues Wallet erstellen"
+msgstr "Создать новый кошелек"
 
 msgid "Create a new wallet to start using this app."
 msgstr ""
 
 msgid "Create bitcoin wallet"
-msgstr "Erstelle Bitcoin-Wallet"
+msgstr "Создать биткойн-кошелёк"
 
 msgid "Create personal wallet"
-msgstr "Erstelle eine persönliche Wallet"
+msgstr "Создать личный кошелек"
 
 msgid "Create shared wallet"
-msgstr "Erstelle gemeinsame Wallet"
+msgstr "Создать общий кошелёк"
 
 msgid "Create wallet"
-msgstr "Wallet erstellen"
+msgstr "Создать кошелек"
 
 msgid "Created"
-msgstr "Erstellt"
+msgstr "Создан"
 
 msgid "Created by"
-msgstr "Erstellt von"
+msgstr "Создан"
 
 msgid "Creating Gift Card..."
-msgstr "Erstellung der Geschenkkarte..."
+msgstr "Создание Подарочной Карты..."
 
 msgid "Creating Wallet..."
-msgstr "Wallet erstellen..."
+msgstr "Создание кошелька..."
 
 msgid "Creating transaction..."
-msgstr "Transaktion erstellen..."
+msgstr "Создание транзакции..."
 
 msgid "Current Cards"
 msgstr ""
 
 msgid "Current fee rate for this policy"
-msgstr "Aktuelle Gebühr für dieses Verfahren"
+msgstr "Текущая комиссия для этой политики"
 
 msgid "Custom"
-msgstr "Angepasst"
+msgstr "Пользовательское"
 
 msgid "Date"
-msgstr "Datum"
+msgstr "Дата"
 
 msgid "Delete"
-msgstr "Löschen"
+msgstr "Удалить"
 
 msgid "Delete Payment Proposal"
-msgstr "Zahlungsvorschlag löschen"
+msgstr "Удалить предложенный платёж"
 
 msgid "Delete Wallet"
-msgstr "Wallet löschen"
+msgstr "Удалить кошелёк"
 
 msgid "Delete it and create a new one"
-msgstr "Löschen und neues Wallet erzeugen"
+msgstr "Удалите и создайте заново"
 
 msgid "Deleting Wallet..."
-msgstr "Wallet wird gelöscht..."
+msgstr "Удаление кошелька..."
 
 msgid "Deleting payment proposal..."
-msgstr "Lösche Zahlungsvorschlag..."
+msgstr "Удаление заявки на платеж..."
 
 msgid "Delta Gift Cards can be used toward airfare on any Delta marketed flight through www.delta.com, at the airport, through reservations, or by phone with Delta Vacations®. Delta Gift Cards do not have any expiration dates or fees."
 msgstr ""
 
 msgid "Deposit"
-msgstr "Einzahlung"
+msgstr "Депозит"
 
 msgid "Deposit Max"
-msgstr "Anzahlungsmaximum"
+msgstr "Максимальный депозит"
 
 msgid "Deposit Min"
-msgstr "Anzahlungsminimum"
+msgstr "Минимальный депозит"
 
 msgid "Derivation Strategy"
-msgstr "Ableitungstrategie"
+msgstr "Стратегия деривации"
 
 msgid "Derivation path"
-msgstr "Ableitungsstruktur"
+msgstr "Путь деривации"
 
 msgid "Details"
-msgstr "Details"
+msgstr "Подробности"
 
 msgid "Disable notifications"
-msgstr ""
+msgstr "Отключить уведомления"
 
 msgid "Disabled"
-msgstr "Deaktiviert"
+msgstr "Отключено"
 
 msgid "Do it later"
-msgstr "Später erledigen"
+msgstr "Отложить"
 
 msgid "Do not include private key"
-msgstr "Privaten Schlüssel nicht zur Sicherung hinzufügen"
+msgstr "Не включать закрытый ключ"
 
 msgid "Do you want to verify your account now?"
 msgstr ""
 
 msgid "Don't see your language on Crowdin? Contact the Owner on Crowdin! We'd love to support your language."
-msgstr "Wird deine Sprache auf Crowdin nicht angezeigt? Kontaktiere den Support von Crowdin, denn wir würden deine Sprache gerne hinzufügen."
+msgstr "Не видите свой язык на Crowdin? Свяжитесь с владельцем по Crowdin! Мы с удовольствием поддержим ваш язык."
 
 msgid "Done"
-msgstr "Erledigt"
+msgstr "Готово"
 
 msgid "Download"
-msgstr "Herunterladen"
+msgstr "Скачать"
 
 msgid "Download logs"
 msgstr ""
 
 msgid "Duplicating wallet..."
-msgstr "Das Wallet wird dubliziert..."
+msgstr "Дублирование кошелька..."
 
 msgid "Each bitcoin wallet can generate billions of addresses from your 12-word recovery phrase. A new address is automatically generated and shown each time you receive a payment."
 msgstr ""
 
 msgid "Economy"
-msgstr "Wirtschaftlich"
+msgstr "Экономичная"
 
 msgid "Edit"
-msgstr "Bearbeiten"
+msgstr "Редактировать"
 
 msgid "Email"
-msgstr "E-Mail"
+msgstr "Email"
 
 msgid "Empty addresses limit reached. New addresses cannot be generated."
-msgstr "Obergrenze für leere Adressen erreicht. Neue Adressen können nicht generiert werden."
+msgstr "Достигнут предел пустых адресов. Новые адреса больше не могут быть сгенерированы."
 
 msgid "Enable camera access in your device settings to get started."
-msgstr "Aktiviere den Kamerazugriff in Ihren Geräteeinstellungen."
+msgstr "Чтобы начать, разрешите доступ к камере в настройках вашего устройства."
 
 msgid "Enable desktop notifications"
-msgstr "Aktiviere Desktop-Benachrichtigungen"
+msgstr ""
 
 msgid "Enable email notifications"
-msgstr "Aktiviere E-Mail Benachrichtigung"
+msgstr "Включить email-уведомления"
 
 msgid "Enable in-app notification"
 msgstr ""
 
 msgid "Enable push notifications"
-msgstr "Pushbenachrichtigungen aktivieren"
+msgstr "Включить push-уведомления"
 
 msgid "Enable the camera to get started."
-msgstr "Aktivieren Sie die Kamera um loszulegen."
+msgstr "Чтобы начать, включите камеру."
 
 msgid "Encryption can protect your funds if this device is stolen or compromised by malicious software."
-msgstr "Eine Verschlüsselung kann Ihre Einlagen sichern, Fall dieses Gerät gestohlen oder schädlicher Software befallen wird."
+msgstr "Шифрование может защитить ваши средства, если это устройство будет украдено или скомпрометировано вредоносным программным обеспечением."
 
 msgid "Enter Amount"
 msgstr ""
 
 msgid "Enter Two Factor for your BitPay account"
-msgstr ""
+msgstr "Введите Двухфакторною аутентификацию вашей учётной записи BitPay"
 
 msgid "Enter a new encrypt password"
-msgstr "Neues verschlüsseltes Passwort eingeben"
+msgstr "Введите новый пароль шифрования"
 
 msgid "Enter a password to encrypt your wallet"
-msgstr "Geben Sie ein Passwort ein um die Geldbörsenschlüssel zu verschlüsseln"
+msgstr "Введите пароль, чтобы зашифровать ваш кошелек"
 
 msgid "Enter a transaction memo"
-msgstr "Transaktionsnotiz eingeben"
-
-msgid "Enter bitcoin address"
-msgstr "Bitcoin-Adresse eingeben"
-
-msgid "Enter custom fee in sat/byte"
-msgstr "Fügen Sie eine maßgeschneiderte Gebühr in sat/Byte ein"
-
-msgid "Enter email address"
-msgstr "E-Mail Adresse eingeben"
-
-msgid "Enter encrypt password"
-msgstr "Verschlüsseltes Passwort eingeben"
-
-msgid "Enter wallet invitation"
 msgstr ""
 
+msgid "Enter bitcoin address"
+msgstr ""
+
+msgid "Enter custom fee in sat/byte"
+msgstr "Введите персонализированную комиссию в sat/byte"
+
+msgid "Enter email address"
+msgstr ""
+
+msgid "Enter encrypt password"
+msgstr "Введите зашифрованный пароль"
+
+msgid "Enter wallet invitation"
+msgstr "Введите приглашение кошелька"
+
 msgid "Enter wallet name"
-msgstr "Geben Sie den Namen der Wallet ein"
+msgstr "Введите название кошелька"
 
 msgid "Enter your encrypt password again to confirm"
-msgstr "Geben Sie Ihr verschlüsseltes Kennwort erneut zur Bestätigung ein"
+msgstr "Введите ваш зашифрованый пароль еще раз для подтверждения"
 
 msgid "Enter your name"
-msgstr "Geben Sie Ihren Namen ein"
+msgstr "Введите ваше имя"
 
 msgid "Entry already exist"
-msgstr "Eintrag existiert bereits"
+msgstr "Запись уже существует"
 
 msgid "Entry does not exist"
-msgstr "Inhalt ist nicht vorhanden"
+msgstr "Запись не существует"
 
 msgid "Error"
-msgstr "Fehler"
+msgstr "Ошибка"
 
 msgid "Error adding new entry"
-msgstr "Während des Hinzufügens eines neuen Eintrags trat ein Fehler auf"
+msgstr "Ошибка при добавлении новой записи"
 
 msgid "Error connecting to ShapeShift"
 msgstr ""
 
 msgid "Error creating wallet"
-msgstr "Fehler beim Erstellen des Wallets"
+msgstr "Ошибка создания кошелька"
 
 msgid "Error deleting addressbook"
-msgstr "Fehler beim Löschen des Adressbuchs"
+msgstr "Ошибка при удалении адресной книги"
 
 msgid "Error deleting entry"
-msgstr "Fehler beim Löschen des Eintrags"
+msgstr "Ошибка при удалении записи"
 
 msgid "Error getting SendMax information"
-msgstr "Fehler beim Abrufen der SendMax Informationen"
+msgstr "Ошибка при получении информации SendMax"
 
 msgid "Error getting fee rate"
 msgstr ""
 
 msgid "Error in Payment Protocol"
-msgstr "Ein Fehler ist im Bezahl Protokoll aufgetreten"
+msgstr "Ошибка в протоколе оплаты"
 
 msgid "Error pairing BitPay Account"
-msgstr "Ein Fehler ist beim Koppeln des Bitpay-Account's aufgetreten"
+msgstr "Ошибка при подключении к учётной записи BitPay"
 
 msgid "Error scanning funds:"
-msgstr "Fehler beim Ermitteln des Guthaben:"
+msgstr "Ошибка сканирования кошелька:"
 
 msgid "Error sweeping wallet:"
-msgstr "Fehler beim Leeren der Wallet:"
+msgstr "Ошибка считывания кошелька:"
 
 msgid "Error updating Debit Cards"
-msgstr "Fehler beim Aktualisieren der Debitkarten"
+msgstr "Ошибка обновления Дебетовых Карт"
 
 msgid "Exceeded daily limit of $500 per user"
-msgstr "Tageslimit von $500 pro Benutzer überschritten"
+msgstr "Превышен дневной лимит в 500$ на пользователя"
 
 msgid "Expired"
-msgstr "Abgelaufen"
+msgstr "Истекла"
 
 msgid "Expires"
-msgstr "Gültig bis"
+msgstr "истёк"
 
 msgid "Export Wallet"
-msgstr "Wallet exportieren"
+msgstr "Экспорт кошелька"
 
 msgid "Export to file"
-msgstr "In eine Datei exportieren"
+msgstr "Экспорт в файл"
 
 msgid "Export wallet"
-msgstr "Wallet exportieren"
+msgstr "Экспорт кошелька"
 
 msgid "Exporting via QR not supported for this wallet"
-msgstr "Für diese Wallet ist Export per QR nicht unterstützt"
+msgstr "Экспорт QR-кодом не поддерживается для этого кошелька"
 
 msgid "Extended Private Key"
-msgstr "Verlängerter privater Schlüssel"
+msgstr "Продлённый частный ключ"
 
 msgid "Extended Public Keys"
-msgstr "Erweiterte öffentliche Schlüssel"
+msgstr "Расширенные открытые ключи"
 
 msgid "Extracting Wallet information..."
-msgstr "Extrahiere die Wallet informationen..."
+msgstr "Извлечение информации о кошельке..."
 
 msgid "Failed"
-msgstr "Fehlgeschlagen"
+msgstr "Неудачно"
 
 msgid "Failed to export"
-msgstr "Fehler beim Exportieren"
+msgstr "Не удалось экспортировать"
 
 msgid "Fee"
-msgstr "Gebühr"
+msgstr "Комиссия"
 
 msgid "Fee level"
-msgstr "Gebürenstufe"
+msgstr "Уровень комиссии"
 
 msgid "Fee level is not defined"
-msgstr "Die Gebürenstufe ist nicht definiert"
+msgstr "Уровень комиссии не определен"
 
 msgid "Fee rate"
 msgstr ""
@@ -852,64 +852,64 @@ msgid "Feedback"
 msgstr ""
 
 msgid "Feedback could not be submitted. Please try again later."
-msgstr "Feedback konnte nicht abgeschickt werden. Bitte versuchen Sie es später erneut."
+msgstr "Отзыв не может быть отправлен. Пожалуйста, попробуйте позже."
 
 msgid "Feedback!"
 msgstr ""
 
 msgid "Fetching BitPay Account..."
-msgstr "BitPay Konto abrufen..."
+msgstr "Подключение учетной записи BitPay..."
 
 msgid "Fetching BitPay Cards..."
 msgstr ""
 
 msgid "Fetching payment information..."
-msgstr "Zahlungsinformationen abrufen..."
+msgstr "Получение информации о платеже..."
 
 msgid "File/Text"
-msgstr "Datei/Text"
+msgstr "Файл/Текст"
 
 msgid "Fingerprint"
-msgstr "Fingerabdruck"
+msgstr "Отпечаток пальца"
 
 msgid "Found something broken? Please report it as a bug. If you need immediate help with a problem you are having, then get help by contacting our support team."
 msgstr ""
 
 msgid "From"
-msgstr "Von"
+msgstr "От"
 
 msgid "From BitPay account"
-msgstr "Von BitPay Konto"
+msgstr "С аккаунта BitPay"
 
 msgid "From the destination device, go to Add wallet > Import wallet and scan this QR code"
-msgstr "Gehen Sie vom Zielgerät auf Wallet Hinzufügen > Wallet Importieren und scannen Sie diesen QR-Code"
+msgstr "На целевом устройстве выберите \"Добавить кошелёк\" > \"Импорт кошелька\" и отсканируйте этот QR-код"
 
 msgid "Funds Will Not Be Accessible"
 msgstr ""
 
 msgid "Funds are locked by pending spend proposals"
-msgstr "Beträge sind durch ausstehende Zahlungsvorschläge gesperrt"
+msgstr "Средства заблокированы предложенным платежом"
 
 msgid "Funds found"
-msgstr "Beträge gefunden"
+msgstr "Средства найдены"
 
 msgid "Funds to be added"
-msgstr "Mittel können hinzugefügt werden"
+msgstr "Будут добавлены средства"
 
 msgid "Funds were added to debit card"
-msgstr "Das Kapital wird ihrer Debitkarte hinzugefügt"
+msgstr "Средства были добавлены на дебетовую карту"
 
 msgid "Funds will be transferred to"
-msgstr "Beträge werden überwiesen an"
+msgstr "Средства будут переведены на"
 
 msgid "GOT IT"
-msgstr "VERSTANDEN"
+msgstr ""
 
 msgid "Generating .csv file..."
-msgstr "CSV-Datei erzeugen..."
+msgstr "Создание .сsv-файла..."
 
 msgid "Generating new address..."
-msgstr "Neue Adresse erzeugen..."
+msgstr "Генерация нового адреса..."
 
 msgid "Get Help"
 msgstr ""
@@ -921,19 +921,19 @@ msgid "Get local cash anywhere you go, from any Visa® compatible ATM. ATM bank 
 msgstr ""
 
 msgid "Get news and updates from BitPay"
-msgstr "Erhalten Sie Neuigkeiten und Aktualisierungen von BitPay"
+msgstr "Получать письма с новостями от BitPay"
 
 msgid "Get started"
-msgstr "Los geht’s"
+msgstr "Начать"
 
 msgid "Get started by adding your first one."
-msgstr "Starten Sie indem Sie ihr erstes hinzufügen."
+msgstr "Начните, добавив первый контакт."
 
 msgid "Getting fee levels..."
-msgstr "Entgelt-Level werden abgerufen..."
+msgstr "Получение информации о комиссиях..."
 
 msgid "Gift Card"
-msgstr "Geschenkkarte"
+msgstr "Подарочная Карта"
 
 msgid "Gift card canceled"
 msgstr ""
@@ -948,13 +948,13 @@ msgid "Give us feedback"
 msgstr ""
 
 msgid "Go Back"
-msgstr "Zurück"
+msgstr "Вернуться"
 
 msgid "Go back"
-msgstr "Zurück"
+msgstr "Вернуться"
 
 msgid "Got it"
-msgstr "Habe verstanden"
+msgstr "Понял"
 
 msgid "Have you redeemed all of your {brand} Gift Cards? Archived gift cards will still be accessible in settings."
 msgstr ""
@@ -963,49 +963,49 @@ msgid "Have you redeemed the entire balance of this gift card?"
 msgstr ""
 
 msgid "Having problems with a ShapeShift?"
-msgstr "Haben Sie Probleme mit einem ShapeShift?"
+msgstr "Возникли проблемы с ShapeShift?"
 
 msgid "Help & support"
-msgstr "Hilfe & Support"
+msgstr "Помощь и поддержка"
 
 msgid "Help and support information is available at the website."
-msgstr "Hilfe und Support-Informationen gibt es auf der Website."
+msgstr "Информация о помощи и поддержке доступна на сайте."
 
 msgid "Hide"
-msgstr "Verstecken"
+msgstr "Спрятать"
 
 msgid "Hide Balance"
-msgstr "Guthaben Verstecken"
+msgstr "Скрыть баланс"
 
 msgid "Hide advanced options"
-msgstr "Erweiterte Optionen ausblenden"
+msgstr "Скрыть дополнительные параметры"
 
 msgid "Home"
-msgstr "Start"
+msgstr "Главная"
 
 msgid "How satisfied are you with {{appName}} wallet?"
 msgstr ""
 
 msgid "I agree to the Terms and certify that I am the beneficial owner of the input assets and the destination address."
-msgstr "Ich akzeptiere die Geschäftsbedingungen und bestätige, dass ich der Nutzungsberechtigte der Eingabemedienobjekte und der Zieladresse bin."
+msgstr "Я согласен с Условиями и подтверждаю, что являюсь бенефициарным владельцем вводимых активов и адреса назначения."
 
 msgid "I give explicit consent to BitPay to use my email address to send me email notifications about payments (and, if selected, email updates and news about the wallet)."
 msgstr ""
 
 msgid "I have read, understood, and agree to the Terms of Use"
-msgstr "Ich habe die Nutzungsbedingungen gelesen und stimme ihnen zu"
+msgstr "Я прочитал, понял, и соглашаюсь с Условиями Использования"
 
 msgid "I have written it down"
-msgstr "Ich habe es aufgeschrieben"
+msgstr "Я записал"
 
 msgid "I understand"
-msgstr "Ich verstehe"
+msgstr "Я понимаю"
 
 msgid "I understand that if this app is moved to another device or deleted, my bitcoin can only be recovered with the recovery phrase"
 msgstr ""
 
 msgid "I understand that my funds are held securely on this device, not by a company"
-msgstr "Ich verstehe, dass mein Geld auf diesem Gerät und nicht von einem Unternehmen gesichert wird"
+msgstr "Я понимаю, что мои средства безопасно хранятся на данном устройстве, а не компанией"
 
 msgid "I'm disappointed"
 msgstr ""
@@ -1014,7 +1014,7 @@ msgid "I'm satisfied"
 msgstr ""
 
 msgid "I'm sure"
-msgstr "Ich bin mir sicher"
+msgstr "Я уверен"
 
 msgid "I'm very happy"
 msgstr ""
@@ -1023,19 +1023,19 @@ msgid "I've used this card"
 msgstr ""
 
 msgid "If enabled, Bitcoin Cash addresses will be shown using Copay style address, and not the new cashaddr format."
-msgstr "Wenn aktiviert, werden Bargeld Bitcoin-Adressen mit Copay Stil Adresse und nicht die neue Cashaddr-Format angezeigt."
+msgstr ""
 
 msgid "If enabled, the Recent Transactions card - a list of transactions occuring across all wallets - will appear in the Home tab."
-msgstr "Wenn aktiviert wird die \"Kürzlich Ausgeführte Transaktionen\" Karte - eine Liste von Transaktionen aller Wallets - in der Registerkarte \"Start\" erscheinen."
+msgstr "Если этот параметр включен, на вкладке Обзор будет отображаться список транзакций из всех кошельков."
 
 msgid "If enabled, wallets will also try to spend unconfirmed funds."
-msgstr "Wenn aktiviert wird versucht, unbestätigte Transaktionen beim Senden zu verwenden."
+msgstr "Если включено, кошельки также попытаються потратить неподтвержденные средства."
 
 msgid "If this device is replaced or this app is deleted, neither you nor BitPay can recover your funds without a backup."
 msgstr ""
 
 msgid "If you have funds stored on a website then you should move them into a secure wallet... like this one!"
-msgstr "Wenn Sie Gelder auf einer Webseite lagern, dann sollten Sie diese in ein sicheres Wallet transferieren... Zum Beispiel in dieses!"
+msgstr ""
 
 msgid "If you need immediate help with a problem you are having, then get help by contacting our support team."
 msgstr ""
@@ -1053,88 +1053,88 @@ msgid "Import Words"
 msgstr ""
 
 msgid "Import wallet"
-msgstr "Wallet importieren"
+msgstr "Импортировать кошелёк"
 
 msgid "Importing Wallet..."
-msgstr "Wallet wird importiert..."
+msgstr "Импортирование кошелька..."
 
 msgid "In order to verify your wallet recovery phrase, please type your password."
 msgstr ""
 
 msgid "Incomplete"
-msgstr "Unvollständig"
+msgstr "Не все совладельцы присоединились"
 
 msgid "Incorrect PIN, try again."
-msgstr "Falscher PIN, bitte erneut versuchen."
+msgstr "Неверный PIN-код, попробуйте снова."
 
 msgid "Incorrect network address"
-msgstr "Falsche Netzwerkadresse"
+msgstr "Неправильный сетевой адресс"
 
 msgid "Insufficient funds"
-msgstr "Nicht ausreichendes Guthaben"
+msgstr "Недостаточно средств"
 
 msgid "Insufficient funds for fee"
-msgstr "Nicht ausreichendes Guthaben für die Gebühr"
+msgstr "Недостаточно средств на комиссию"
 
 msgid "Integrations"
 msgstr ""
 
 msgid "Invalid"
-msgstr "Ungültig"
+msgstr "Недействительно"
 
 msgid "Invalid Email"
 msgstr ""
 
 msgid "Invalid URL"
-msgstr "Ungültiger URL"
+msgstr "Неверный URL"
 
 msgid "Invalid address"
-msgstr "Ungültige Adresse"
+msgstr "Неверный адрес"
 
 msgid "Invalid data"
 msgstr ""
 
 msgid "Invalid derivation path"
-msgstr "Ungültige Ableitungsstruktur"
+msgstr "Недействительный путь деривации"
 
 msgid "Invitation Code"
 msgstr ""
 
 msgid "Is this correct?"
-msgstr "Ist das richtig?"
+msgstr "Правильно?"
 
 msgid "Is this email address correct?"
-msgstr "Ist diese E-Mail Adresse korrekt?"
+msgstr "Это правильный email?"
 
 msgid "It appears that you do not have any money to send."
 msgstr ""
 
 msgid "It's a ghost town in here"
-msgstr "Hier ist eine Geisterstadt"
+msgstr ""
 
 msgid "It's a good idea to avoid reusing addresses - this both protects your privacy and keeps your bitcoins secure against hypothetical attacks by quantum computers."
-msgstr "Es ist eine gute Idee Adressen nicht wiederzuverwenden - dies schützt Ihre Privatsphäre und hält Ihre Bitcoins vor hypothetischen Angriffen durch Quanten-Computern sicher."
+msgstr ""
 
 msgid "It's important that you write your recovery phrase down correctly. If something happens to your wallet, you'll need it to recover your money. Please review and try again."
 msgstr ""
 
 msgid "Join shared wallet"
-msgstr "Gemeinschaftliches Wallet"
+msgstr "Присоединиться к общему кошельку"
 
 msgid "Join wallet"
-msgstr "Brieftasche beitreten"
+msgstr "Присоединяйтесь к бумажнику"
 
 msgid "Joining Wallet..."
-msgstr "Teilnahme am Wallet einrichten..."
+msgstr "Присоединение к кошельку..."
 
 msgid "Just scan the code to pay."
-msgstr "Scannen Sie einfach den Code um zu zahlen."
+msgstr "Для совершения оплаты достаточно отсканировать QR-код."
 
 msgid "Key already associated with an existing wallet"
-msgstr "Schlüssel ist bereits mit einem existierenden Wallet verbunden"
+msgstr "Ключ уже связан с существующим кошельком"
 
 msgid "Language"
-msgstr "Sprache"
+msgstr "Язык"
 
 msgid "Last Month"
 msgstr ""
@@ -1143,88 +1143,88 @@ msgid "Learn More"
 msgstr ""
 
 msgid "Learn more"
-msgstr "Erfahre mehr"
+msgstr "Узнайте больше"
 
 msgid "Learn more about testnet blockchain"
-msgstr ""
+msgstr "Узнайте больше о тестнет блокчайн"
 
 msgid "Let's verify your recovery phrase."
 msgstr ""
 
 msgid "Linked"
-msgstr "Verbunden"
+msgstr "Связанo"
 
 msgid "Loading addresses..."
-msgstr "Lade Adressen..."
+msgstr "Загрузка адресов..."
 
 msgid "Loading transaction info..."
-msgstr "Transaktionen werden geladen..."
+msgstr "Загрузка транзакции..."
 
 msgid "Lock"
-msgstr "Sperren"
+msgstr "Заблокировать"
 
 msgid "Locked"
-msgstr "Gesperrt"
+msgstr "Заблокировано"
 
 msgid "Locktime in effect. Please wait to create a new spend proposal"
-msgstr "Zeitsperre aktiv. Bitte mit neuem Zahlungsvorschlag warten"
+msgstr "Действует блокировка. Пожалуйста, подождите, чтобы предложить новый платёж"
 
 msgid "Locktime in effect. Please wait to remove this spend proposal"
-msgstr "Zeitsperre aktiv. Bitte auf die Entfernung des Zahlungsvorschlags warten"
+msgstr "Действует блокировка. Пожалуйста, подождите, чтобы удалить предложенный платёж"
 
 msgid "Low Fee"
 msgstr ""
 
 msgid "Low amount inputs"
-msgstr "Geringe Wert Eingänge"
+msgstr "Низкое количество входов"
 
 msgid "Makes sense"
-msgstr "Macht Sinn"
+msgstr "Вполне разумно"
 
 msgid "Maximum amount allowed is {{max}}"
-msgstr ""
+msgstr "Максимальное допустимое количество {{max}}"
 
 msgid "Me"
-msgstr "Ich"
+msgstr "Я"
 
 msgid "Memo"
-msgstr "Notiz"
+msgstr "Памятка"
 
 msgid "Merchant Message"
-msgstr "Händlernachricht"
+msgstr "Сообщение от продавца"
 
 msgid "Merchant fee too high. Payment rejected"
-msgstr "Händler-Gebühr zu hoch. Zahlung abgelehnt"
+msgstr "Торговые сборы слишком высокие. Оплата отклоняется"
 
 msgid "Miner Fee"
-msgstr "Miner-Gebühr"
-
-msgid "Miner Fee Notice"
-msgstr "Hinweis zur Miner-Gebühr"
-
-msgid "Miner fee"
-msgstr "Miner-Gebühr"
-
-msgid "Minimum amount required is {{min}}"
 msgstr ""
 
+msgid "Miner Fee Notice"
+msgstr ""
+
+msgid "Miner fee"
+msgstr "Комиссия майнера"
+
+msgid "Minimum amount required is {{min}}"
+msgstr "Минимальная необходимая сумма {{min}}"
+
 msgid "Missing parameter"
-msgstr "Angabe fehlt"
+msgstr "Недостающий параметр"
 
 msgid "Missing private keys to sign"
-msgstr "Zum Signieren fehlen die privaten Schlüssel"
+msgstr "Отсутствуют закрытые ключи для подписи"
 
 msgid "Mmm..."
 msgstr ""
 
 msgid "More"
-msgstr "Mehr"
+msgstr "Больше"
 
 msgid "Moved"
-msgstr "Verschoben"
+msgstr "Перемещено"
 
 msgid "Moved Funds"
-msgstr "Guthaben verschoben"
+msgstr "Перемещённые средства"
 
 msgid "Moving"
 msgstr ""
@@ -1239,97 +1239,97 @@ msgid "NOTE: To import a wallet from a 3rd party software, please go to Add Wall
 msgstr ""
 
 msgid "Name"
-msgstr "Name"
+msgstr "Название"
 
 msgid "Name (at creation)"
-msgstr "Wallet-Name (bei der Erstellung)"
+msgstr "Название (при создании)"
 
 msgid "Needs Backup"
 msgstr ""
 
 msgid "Needs backup"
-msgstr "Backup benötigt"
+msgstr "Необходимо создание резервной копии"
 
 msgid "Network"
-msgstr "Netzwerk"
+msgstr "Сеть"
 
 msgid "Network Cost"
 msgstr ""
 
 msgid "Network cost"
-msgstr "Netzwerkkosten"
+msgstr "Стоимость сети"
 
 msgid "Network error"
-msgstr "Netzwerkfehler"
+msgstr "Ошибка сети"
 
 msgid "New Proposal"
-msgstr "Neuer Vorschlag"
+msgstr "Предложить платёж"
 
 msgid "New wallet"
-msgstr "Neues Wallet"
+msgstr "Новый кошелек"
 
 msgid "New {appName} desktop platform"
 msgstr ""
 
 msgid "No"
-msgstr "Nein"
+msgstr "Нет"
 
 msgid "No Private Key"
 msgstr ""
 
 msgid "No backup, no bitcoin."
-msgstr "Keine Sicherung, keine Bitcoins."
+msgstr "Нет резервной копии - нет биткойнов."
 
 msgid "No contacts yet"
-msgstr "Noch keine Kontakte"
+msgstr "Нет контактов"
 
 msgid "No entries for this log level"
-msgstr "Keine Einträge für dieses Log-level"
+msgstr "Нет записей для этого уровня журнала"
 
 msgid "No funds found"
-msgstr ""
+msgstr "Cредства не обнаружены"
 
 msgid "No password"
-msgstr "Kein Passwort"
+msgstr "Нет пароля"
 
 msgid "No pending proposals"
-msgstr "Keine ausstehenden Vorschläge"
+msgstr "Нет предложенных платежей"
 
 msgid "No private key"
-msgstr "Kein privater Schlüssel"
+msgstr "Нет закрытого ключа"
 
 msgid "No signing proposal: No private key"
-msgstr "Keine Angebots Unterzeichnung: Kein Privater Schlüssel"
+msgstr ""
 
 msgid "No wallet found"
-msgstr "Kein Wallet gefunden"
+msgstr "Кошельки не обнаружены"
 
 msgid "No wallets available"
-msgstr "Keine Wallet's verfügbar"
+msgstr "Нет доступных кошельков"
 
 msgid "No wallets available to receive funds"
-msgstr "Keine Wallet verfügbar um Guthaben zu erhalten"
+msgstr "Некуда перевести средства"
 
 msgid "No wallets available to use ShapeShift"
-msgstr "Keine Wallets zur Verwendung von ShapeShift verfügbar"
+msgstr "Нет доступных кошельков для использования ShapeShift"
 
 msgid "No wallets with funds"
-msgstr "Keine Wallets mit Beträgen"
+msgstr "Нет кошельков с фондами"
 
 msgid "Normal"
-msgstr "Normal"
+msgstr "Обычная"
 
 msgid "Not authorized"
-msgstr "Nicht berechtigt"
+msgstr "Не авторизован"
 
 msgid "Not enough funds"
 msgstr ""
 
 msgid "Not enough funds for fee"
-msgstr "Das Guthaben reicht nicht für die Gebühr"
+msgstr "Недостаточно средств для уплаты комиссии"
 
 msgid "Not even BitPay can access it."
-msgstr "Nicht einmal BitPay kann darauf zugreifen."
+msgstr "BitPay не сможет получить доступ самостоятельно."
 
 msgid "Not including the private key allows to check the wallet balance, transaction history, and create spend proposals from the export. However, does not allow to approve (sign) proposals, so funds will not be accessible from the export."
 msgstr ""
@@ -1341,46 +1341,46 @@ msgid "Not set"
 msgstr ""
 
 msgid "Not valid bitcoin address"
-msgstr "Keine gültige Bitcoin-Adresse"
+msgstr "Недействительный биткойн адрес"
 
 msgid "Note"
-msgstr "Notiz"
+msgstr "Примечание"
 
 msgid "Note: if this BCH wallet was duplicated from a BTC wallet, they share the same recovery phrase."
-msgstr "Tipp: Wenn dieses Bitcoin Cash Wallet von einem Bitcoin Core Wallet kopiert wurde, besitzen diese dieselben Wiederherstellungs Sätze."
+msgstr ""
 
 msgid "Notifications"
-msgstr "Benachrichtigungen"
+msgstr "Уведомления"
 
 msgid "Notifications by email"
-msgstr "Benachrichtigungen per e-Mail"
+msgstr "Уведомления по электронной почте"
 
 msgid "Notify me if confirmed"
-msgstr "Benachrichtige mich, wenn es bestätigt wurde"
+msgstr "Сообщите мне если подтверждено"
 
 msgid "Notify me when transactions are confirmed"
-msgstr "Benachrichtige mich, wenn die Transaktion bestätigt wurde"
+msgstr "Уведомить меня, когда транзакции подтверждены"
 
 msgid "Now is a perfect time to assess your surroundings. Nearby windows? Hidden cameras? Shoulder-spies?"
-msgstr "Jetzt ist die perfekte Zeit um Ihre Umgebung zu überprüfen. In der Nähe eines Fensters? Versteckte Kameras? Schulter-Spione?"
+msgstr "Самое время оценить окружение. Окна поблизости? Скрытые камеры? Плечешпионы?"
 
 msgid "OK"
-msgstr "OK"
+msgstr "ХОРОШО"
 
 msgid "Off"
-msgstr "Aus"
+msgstr "Выключено"
 
 msgid "Ok"
-msgstr "Ok"
+msgstr "Хорошо"
 
 msgid "On"
-msgstr "Ein"
+msgstr "Включено"
 
 msgid "On this screen you can see all your wallets, accounts, and assets."
-msgstr "Auf diesem Bildschirm sehen Sie alle Ihre Wallets, Konten und Guthaben."
+msgstr "На этой вкладке вы можете видеть все ваши кошельки, учетные записи и активы."
 
 msgid "Only redeemable on Mercado Livre (Brazil)"
-msgstr "Nur einlösbar auf Mercado Livre (Brasilien)"
+msgstr "Только для использования в \"Mercado Livre\" (Бразилия)"
 
 msgid "Only redeemable on www.amazon.co.jp (Japan website)"
 msgstr ""
@@ -1389,40 +1389,40 @@ msgid "Only redeemable on www.amazon.com (USA website)"
 msgstr ""
 
 msgid "Open"
-msgstr "Öffnen"
+msgstr "Открыть"
 
 msgid "Open Crowdin"
-msgstr "Öffne Crowdin"
+msgstr "Открыть Crowdin"
 
 msgid "Open GitHub"
-msgstr "Öffne GitHub"
+msgstr "Открытые GitHub"
 
 msgid "Open GitHub Project"
-msgstr "Öffne GitHub Projekt"
+msgstr "Откройте проект GitHub"
 
 msgid "Open Insight"
-msgstr "Öffne Insight"
+msgstr "Открыть Insight"
 
 msgid "Open Translation Community"
-msgstr "Öffne Übersetzungs-Community"
+msgstr "Редактировать перевод"
 
 msgid "Open settings"
-msgstr "Einstellungen öffnen"
+msgstr "Открыть настройки"
 
 msgid "Open website"
-msgstr "Öffne die Webseite"
+msgstr "Открыть сайт"
 
 msgid "Order the BitPay Card"
-msgstr "BitPay-Karte bestellen"
+msgstr "Заказать BitPay карту"
 
 msgid "Ouch!"
-msgstr "Autsch!"
+msgstr "Ой!"
 
 msgid "PIN"
-msgstr "PIN"
+msgstr "PIN-код"
 
 msgid "Password"
-msgstr "Passwort"
+msgstr "Пароль"
 
 msgid "Password Not Recoverable"
 msgstr ""
@@ -1431,46 +1431,46 @@ msgid "Password mismatch"
 msgstr ""
 
 msgid "Password required. Make sure to enter your password in advanced options"
-msgstr "Passwort erforderlich. Geben Sie Ihr Passwort in den erweiterten Optionen ein"
+msgstr "Необходим пароль. Убедитесь, что вы ввели ваш пароль в дополнительных настройках"
 
 msgid "Passwords do not match"
-msgstr "Passwörter stimmen nicht überein"
+msgstr "Пароли не совпадают"
 
 msgid "Paste the backup plain text code"
-msgstr "Den Klartext der Sicherung einfügen"
+msgstr ""
 
 msgid "Paste this code on {cardConfig.website}. This gift card cannot be recovered if your claim code is lost."
 msgstr ""
 
 msgid "Pay 0% fees to turn bitcoin into dollars."
-msgstr "Zahle 0 % Gebühren um Bitcoins in Dollar zu wechseln."
+msgstr "Платите нулевую комиссию за конвертацию биткойн в доллары США."
 
 msgid "Pay To"
-msgstr "Zahle an"
+msgstr "Отправить платёж"
 
 msgid "Payment Accepted"
-msgstr "Zahlung angenommen"
+msgstr "Платёж принят"
 
 msgid "Payment Expires:"
-msgstr "Zahlung läuft ab:"
+msgstr "Платёж истекает:"
 
 msgid "Payment Proposal"
-msgstr "Zahlungsvorschlag"
+msgstr "Предложенный платёж"
 
 msgid "Payment Proposals"
-msgstr "Zahlungsvorschläge"
+msgstr "Предложенные платежи"
 
 msgid "Payment Protocol Invalid"
-msgstr "Ungültiges Zahlungsprotokoll"
+msgstr "Недействительный протокол оплаты"
 
 msgid "Payment Published"
-msgstr "Zahlung veröffentlicht"
+msgstr "Оплата опубликована"
 
 msgid "Payment Received"
-msgstr "Zahlung erhalten"
+msgstr "Платёж получен"
 
 msgid "Payment Rejected"
-msgstr "Zahlung abgelehnt"
+msgstr "Платёж отклонён"
 
 msgid "Payment Request"
 msgstr ""
@@ -1479,115 +1479,118 @@ msgid "Payment Request info"
 msgstr ""
 
 msgid "Payment Sent"
-msgstr "Zahlung gesendet"
+msgstr "Платёж отправлен"
 
 msgid "Payment URL"
 msgstr ""
 
 msgid "Payment accepted, but not yet broadcasted"
-msgstr "Zahlung akzeptiert, aber noch nicht übermittelt"
+msgstr "Платёж принят, но пока не отправлен"
 
 msgid "Payment accepted. It will be broadcasted by Glidera. In case there is a problem, it can be deleted 6 hours after it was created."
-msgstr "Zahlung akzeptiert. Sie wird durch Glidera übermittelt. Falls ein Problem auftritt, kann sie nach einer Wartezeit von 6 Stunden gelöscht werden."
+msgstr "Платёж принят и будет отправлен Glidera. В случае проблем он может быть удалён спустя шесть часов после создания."
 
 msgid "Payment request"
-msgstr "Zahlungsanforderung"
+msgstr "Запрос платежа"
 
 msgid "Pending"
-msgstr "In Arbeit"
+msgstr "В ожидание"
 
 msgid "Pending Proposals"
-msgstr "Anstehende Vorschläge"
+msgstr "Рассматриваемые платежи"
 
 msgid "Permanently delete this wallet."
-msgstr "Wallet dauerhaft löschen."
+msgstr "Навсегда удалить этот кошелёк."
 
 msgid "Personal Wallet"
-msgstr "Persönliches Wallet"
+msgstr "Личный кошелёк"
 
 msgid "Plain URL"
 msgstr ""
 
 msgid "Please carefully write down this phrase."
-msgstr "Notieren Sie bitte sorgfältig diese Phrase."
+msgstr "Внимательно запишите ключевое словосочетание."
 
 msgid "Please complete your account verification on ShapeShift website."
 msgstr ""
 
 msgid "Please connect a camera to get started."
-msgstr "Bitte verbinden Sie eine Kamera um loszulegen."
+msgstr "Чтобы начать, подключите камеру."
 
 msgid "Please enter the recovery phrase"
-msgstr "Bitte geben Sie die Wiederherstellungsphrase ein"
+msgstr "Введите ключевое словосочетание"
 
 msgid "Please enter the wallet recovery phrase"
-msgstr "Bitte geben Sie die Wallet-Wiederherstellungsphrase ein"
+msgstr "Введите ключевое словосочетание кошелька"
 
 msgid "Please enter your PIN"
-msgstr "Bitte geben Sie Ihre PIN ein"
+msgstr "Пожалуйста, введите ПИН-код"
 
 msgid "Please tap each word in the correct order."
-msgstr "Bitte tippen Sie jedes Wort in der richtigen Reihenfolge."
+msgstr "Тапните каждое слово в правильном порядке."
 
 msgid "Please upgrade Copay to perform this action"
-msgstr "Bitte Copay aktualisieren, um diese Aktion auszuführen"
+msgstr "Пожалуйста, обновите Copay для выполнения этого действия"
 
 msgid "Please wait..."
-msgstr "Bitte warten..."
+msgstr "Пожалуйста, подождите..."
 
 msgid "Please, enter the amount"
 msgstr ""
 
 msgid "Please, select your backup file"
-msgstr "Bitte die Sicherungsdatei wählen"
+msgstr "Пожалуйста, выберите ваш файл резервной копии"
 
 msgid "Pre-Auth Holds"
-msgstr "Die Vorauthentivizierung hält an"
+msgstr ""
 
 msgid "Preferences"
-msgstr "Einstellungen"
+msgstr "Параметры"
 
 msgid "Preparing addresses..."
-msgstr "Adressen werden vorbereitet..."
+msgstr "Подготовка адресов..."
 
 msgid "Preparing backup..."
-msgstr "Sicherung wird vorbereitet..."
+msgstr "Подготовка резервной копии..."
+
+msgid "Print"
+msgstr ""
 
 msgid "Priority"
-msgstr "höchste Priorität"
+msgstr "Приоритетная"
 
 msgid "Privacy Policy"
-msgstr ""
+msgstr "Политика конфиденциальности"
 
 msgid "Privacy Policy update"
-msgstr ""
+msgstr "Обновление Политики Конфиденциальности"
 
 msgid "Private Key"
-msgstr "Privater Schlüssel"
+msgstr "Приватный ключ"
 
 msgid "Private key encrypted. Enter password"
-msgstr "Privater Schlüssel verschlüsselt. Passwort eingeben"
+msgstr "Приватный ключ зашифрован. Введите пароль"
 
 msgid "Private key is encrypted, cannot sign"
-msgstr "Der private Schlüssel ist verschlüsselt, signieren ist nicht möglich"
+msgstr "Закрытый ключ зашифрован, не удалось подписать"
 
 msgid "Proposal Accepted"
-msgstr "Vorschlag angenommen"
+msgstr "Платёж принят"
 
 msgid "Proposal Created"
-msgstr "Vorschlag erstellt"
+msgstr "Платёж создан"
 
 msgid "Proposal Deleted"
-msgstr "Vorschlag gelöscht"
+msgstr "Платёж удалён"
 
 msgid "Proposal Rejected"
-msgstr "Vorschlag abgelehnt"
+msgstr "Платёж отклонён"
 
 msgid "Proposal created"
-msgstr "Vorschlag erstellt"
+msgstr "Предложение создано"
 
 msgid "Proposals"
-msgstr "Vorschläge"
+msgstr "Предложенные платежи"
 
 msgid "Purchase Limit Reached"
 msgstr ""
@@ -1596,67 +1599,70 @@ msgid "Purchased Brands"
 msgstr ""
 
 msgid "Push notifications for {{appName}} are currently disabled. Enable them in the Settings app."
-msgstr "Push-Benachrichtigungen für {{appName}} sind derzeit deaktiviert. Aktivieren Sie diese in den Einstellungen."
+msgstr "Push-уведомления для {{appName}} в настоящее время отключены. Включите их в Параметрах."
 
 msgid "QR Code"
-msgstr "QR-Code"
+msgstr "QR-код"
+
+msgid "QR code to recover wallet {{walletName}}"
+msgstr ""
 
 msgid "Quick review!"
-msgstr "Schnelle Überprüfung!"
+msgstr "Быстрый просмотр!"
 
 msgid "Random"
-msgstr "Zufällig"
+msgstr "Случайное"
 
 msgid "Rate"
-msgstr "Bewerten"
+msgstr "Курс"
 
 msgid "Rate on the {storeName}"
 msgstr ""
 
 msgid "Read more in our Wiki"
-msgstr "Lesen sie mehr in unserem Wiki"
+msgstr "Подробнее читайте в нашей Wiki"
 
 msgid "Read more in our support page"
-msgstr "Lesen Sie mehr auf unserer Support-Seite"
+msgstr "Подробнее читайте в нашей странице поддержки"
 
 msgid "Receipt Email"
 msgstr ""
 
 msgid "Receive"
-msgstr "Empfangen"
+msgstr "Получить"
 
 msgid "Received"
-msgstr "Empfangen"
+msgstr "Получено"
 
 msgid "Received Funds"
-msgstr "Erhaltener Betrag"
+msgstr "Полученные средства"
 
 msgid "Receiving"
-msgstr "Eingehend"
+msgstr "Получение"
 
 msgid "Receiving {coinName} address"
 msgstr ""
 
 msgid "Recent"
-msgstr "Kürzlich"
+msgstr "Недавние"
 
 msgid "Recent Transaction Card"
-msgstr "Kürzlich Ausgeführte Transaktionen Karte"
+msgstr "Недавние транзакции"
 
 msgid "Recent Transactions"
-msgstr "Kürzliche Transaktionen"
+msgstr "Недавние транзакции"
 
 msgid "Recipient"
-msgstr "Empfänger"
+msgstr "Получатель"
 
 msgid "Recovery Phrase"
-msgstr "Wiederherstellungsphrase"
+msgstr "Фраза для восстановления кошелька"
 
 msgid "Recreating Wallet..."
-msgstr "Wallet wiederherstellen..."
+msgstr "Воссоздаю кошелёк..."
 
 msgid "Redeem Now"
-msgstr "Jetzt einlösen"
+msgstr ""
 
 msgid "Redeem by going to the payment section in the Uber app."
 msgstr ""
@@ -1665,19 +1671,19 @@ msgid "Reject Payment Proposal"
 msgstr ""
 
 msgid "Rejected"
-msgstr "Abgelehnt"
+msgstr "Отклонён"
 
 msgid "Rejecting payment proposal..."
-msgstr "Ablehnung des Zahlungsvorschlags..."
+msgstr ""
 
 msgid "Release information"
-msgstr "Release-Informationen"
+msgstr "Информация о выпуске"
 
 msgid "Remove"
-msgstr "Entfernen"
+msgstr "Удалить"
 
 msgid "Repeat the password"
-msgstr "Passwort wiederholen"
+msgstr "Повторите пароль"
 
 msgid "Report an Issue"
 msgstr ""
@@ -1689,13 +1695,13 @@ msgid "Report issue"
 msgstr ""
 
 msgid "Request Encrypt Password"
-msgstr "Verschlüsselungspasswort anfordern"
+msgstr "Запросить зашифр. пароль"
 
 msgid "Request Fingerprint"
-msgstr "Fingerabdruck anfordern"
+msgstr "Запрос отпечатка пальца"
 
 msgid "Request Specific Amount"
-msgstr ""
+msgstr "Запросить определенную сумму"
 
 msgid "Request a Feature"
 msgstr ""
@@ -1707,265 +1713,265 @@ msgid "Request feature"
 msgstr ""
 
 msgid "Required number of signatures"
-msgstr "Erforderliche Anzahl von Signaturen"
+msgstr "Требуемое число подписей"
 
 msgid "Restore from backup"
-msgstr "Von Sicherung wiederherstellen"
+msgstr "Восстановить из резервной копии"
 
 msgid "Retrieving inputs information..."
-msgstr "Konto-Informationen werden abgerufen..."
+msgstr "Ошибка при получении информации SendMax"
 
 msgid "Retry"
-msgstr ""
+msgstr "Повторить попытку"
 
 msgid "Retry camera"
-msgstr "Kamera nochmals versuchen"
+msgstr "Retry camera"
 
 msgid "Save"
-msgstr "Speichern"
+msgstr "Сохранить"
 
 msgid "Scan"
-msgstr "Scannen"
+msgstr "Сканировать"
 
 msgid "Scan QR Codes"
-msgstr "QR-Code scannen"
+msgstr "Сканирование QR-кодов"
 
 msgid "Scan addresses for funds"
-msgstr "Adresse auf neue Beträge überprüfen"
+msgstr "Просканировать адреса для обнаружения средств"
 
 msgid "Scan again"
-msgstr "Nochmals scannen"
+msgstr "Oтсканируйте еще раз"
 
 msgid "Scanning Wallet funds..."
-msgstr "Prüfe Wallet auf neue Beträge..."
+msgstr "Сканирование адресов кошелька..."
 
 msgid "Scanning funds"
-msgstr "Prüfe auf neue Beträge"
+msgstr "Проверка средств"
 
 msgid "Screenshots are not secure"
-msgstr "Screenshots sind nicht sicher"
+msgstr "Скриншоты не безопасны"
 
 msgid "Search Transactions"
-msgstr ""
+msgstr "Поиск транзакций"
 
 msgid "Search Wallets or Contacts"
 msgstr ""
 
 msgid "Search a contact"
-msgstr "Kontakte durchsuchen"
+msgstr "Поиск контакта"
 
 msgid "Search or enter bitcoin address"
-msgstr "Bitcoin-Adresse suchen oder eingeben"
+msgstr "Найти или ввести биткойн-адрес"
 
 msgid "Search your currency"
-msgstr "Suchen Sie Ihre Währung"
+msgstr "Найти вашу валюту"
 
 msgid "Security"
-msgstr "Sicherheit"
+msgstr "Безопасность"
 
 msgid "See transaction"
-msgstr "Transaktionen durchsuchen"
+msgstr "Увидеть транзакцию"
 
 msgid "Select a coin"
-msgstr "Wählen Sie eine Währung aus"
+msgstr "Выберите монету"
 
 msgid "Select a wallet"
-msgstr "Wallet wählen"
+msgstr "Выберите кошелёк"
 
 msgid "Self-signed Certificate"
-msgstr "Selbstsigniertes Zertifikat"
+msgstr "Самозаверенные сертификат"
 
 msgid "Selling Bitcoin..."
-msgstr "Verkauf von Bitcoins..."
+msgstr "Продажа биткойн..."
 
 msgid "Send"
-msgstr "Senden"
+msgstr "Отправить"
 
 msgid "Send Max"
-msgstr "Alles senden"
+msgstr ""
 
 msgid "Send Money"
-msgstr "Geld senden"
+msgstr "Отправить деньги"
 
 msgid "Send addresses by email"
-msgstr "Adressen per e-Mail versenden"
+msgstr "Отправить адреса по email"
 
 msgid "Send by email"
-msgstr "Per E-Mail versenden"
+msgstr "Отправить на email"
 
 msgid "Send feedback"
-msgstr "Feedback senden"
+msgstr "Оставить отзыв"
 
 msgid "Send from"
-msgstr "Senden von"
+msgstr "Отправить от"
 
 msgid "Send logs by email"
-msgstr "Logs per E-Mail versenden"
+msgstr ""
 
 msgid "Send payment to this address"
-msgstr "Senden sie die Zahlung an diese Adresse"
+msgstr "Отправить платеж на этот адрес"
 
 msgid "Sending"
-msgstr "Senden"
+msgstr "Отправка"
 
 msgid "Sending 2FA code..."
-msgstr "2FA Code senden..."
+msgstr "Отправка второго фактора..."
 
 msgid "Sending From"
-msgstr "Senden von"
+msgstr ""
 
 msgid "Sending feedback..."
-msgstr "Feedback wird gesendet..."
+msgstr "Отправка отзыва..."
 
 msgid "Sending maximum amount"
-msgstr "Sende maximalen Betrag"
+msgstr "Отправляю максимальную сумму"
 
 msgid "Sending transaction..."
-msgstr "Sende Transaktion..."
+msgstr "Транзакция отправляется..."
 
 msgid "Sending {{amount}} {{unit}} from your {{name}} wallet"
-msgstr ""
+msgstr "Отправляется {{amount}} {{unit}} из вашего {{name}} кошелька"
 
 msgid "Sensitive Data"
-msgstr ""
+msgstr "Конфиденциальные данные"
 
 msgid "Sent"
-msgstr "Gesendet"
+msgstr "Отправлено"
 
 msgid "Sent Funds"
-msgstr "Guthaben senden"
+msgstr "Отправленные средства"
 
 msgid "Server response could not be verified"
-msgstr "Antwort des Servers konnte nicht verifiziert werden"
+msgstr "Ответ сервера не может быть проверен"
 
 msgid "Services"
-msgstr "Services"
+msgstr "Службы"
 
 msgid "Session Log"
-msgstr "Sitzungsprotokoll"
+msgstr "Журнал сеанса"
 
 msgid "Session log"
-msgstr "Sitzungsprotokoll"
+msgstr "Журнал сеанса"
 
 msgid "Set up a password"
-msgstr "Passwort einrichten"
+msgstr "Задайте пароль"
 
 msgid "Settings"
-msgstr "Einstellungen"
+msgstr ""
 
 msgid "ShapeShift is not available at this moment. Please, try again later."
-msgstr "ShapeShift ist zur Zeit nicht erreichbar. Bitte versuchen Sie es später nochmal."
+msgstr "ShapeShift в настоящий момент недоступен. Пожалуйста, повторите попытку позже."
 
 msgid "ShapeShift max limit reached"
-msgstr "Maximales ShapeShift Limit erreicht"
+msgstr "Достигнуто макс. ограничение \"ShapeShift\""
 
 msgid "ShapeShift requires a minimum value of {{min}}"
 msgstr ""
 
 msgid "Share"
-msgstr "Teilen"
+msgstr "Поделиться"
 
 msgid "Share Address"
-msgstr ""
+msgstr "Поделиться Адресом"
 
 msgid "Share the love by inviting your friends."
-msgstr "Teilen Sie die Liebe indem Sie Ihre Freunde einladen."
+msgstr "Поделитесь любовью и пригласите друзей."
 
 msgid "Share this QR code to receive {amount} in your wallet {name}."
 msgstr ""
 
 msgid "Share this invitation with your copayers"
-msgstr "Einladung mit Copayern teilen"
+msgstr "Отправьте приглашение совладельцам кошелька"
 
 msgid "Share {{appName}}"
-msgstr ""
+msgstr "Поделиться {{appName}}"
 
 msgid "Shop Now"
 msgstr ""
 
 msgid "Show advanced options"
-msgstr "Erweiterte Optionen anzeigen"
+msgstr "Показать дополнительные параметры"
 
 msgid "Show all"
-msgstr "Alle zeigen"
+msgstr "Показать все"
 
 msgid "Show in Home"
-msgstr "Auf Homepage anzeigen"
+msgstr "Показать на главной странице"
 
 msgid "Sign Up for ShapeShift"
 msgstr ""
 
 msgid "Signatures rejected by server"
-msgstr "Signaturen wurden vom Server abgelehnt"
+msgstr "Подписи отклонены сервером"
 
 msgid "Signing transaction..."
-msgstr "Transaktion wird signiert..."
+msgstr "Подписывание трансакции..."
 
 msgid "Since only you control your money, you’ll need to save your recovery phrase in case this app is deleted."
 msgstr ""
 
 msgid "Single address"
-msgstr "SingleShare Adresse"
+msgstr "Один адрес"
 
 msgid "Skip"
-msgstr "Überspringen"
+msgstr "Пропустить"
 
 msgid "Slide to accept"
-msgstr "Schieben sie zum akzeptieren"
+msgstr "Подтвердить"
 
 msgid "Slide to confirm"
-msgstr "Zur Bestätigung wischen"
+msgstr ""
 
 msgid "Slide to pay"
-msgstr "Schieben Sie zum bezahlen"
+msgstr ""
 
 msgid "Slide to send"
-msgstr "Schieben Sie zum senden"
+msgstr ""
 
 msgid "Specify Recovery Phrase"
-msgstr "Wiederherstellungsphrase angeben"
+msgstr "Укажите фразу восстановления"
 
 msgid "Spend proposal is not accepted"
-msgstr "Zahlungsvorschlag wurde nicht akzeptiert"
+msgstr "Платёж не принят"
 
 msgid "Spend proposal not found"
-msgstr "Zahlungsvorschlag wurde nicht gefunden"
+msgstr "Платёж не найден"
 
 msgid "Spendable balance"
-msgstr "Betrag zum Ausgeben"
+msgstr "Pасходный баланс"
 
 msgid "Spending this balance will need significant Bitcoin network fees"
-msgstr "Das Ausgeben von dieser Menge wird erhebliche Bitcoin Netzwerk-Gebühren fordern"
+msgstr "Чтобы потратить этот баланс потребуется значительные сборы сети Биткойна"
 
 msgid "Status"
 msgstr ""
 
 msgid "Suggested by Merchant"
-msgstr "Vorgeschlagen durch Händler"
+msgstr "Предложено торговцом"
 
 msgid "Super Economy"
-msgstr "Niedrigste Priorität"
+msgstr "Очень экономичная"
 
 msgid "Sweep"
-msgstr "Leeren"
+msgstr "Считать"
 
 msgid "Sweep Completed"
-msgstr "Sweep abgeschlossen"
+msgstr ""
 
 msgid "Sweep paper wallet"
-msgstr "Paperwallet löschen"
+msgstr "Пополнить с бумажного кошелька"
 
 msgid "Sweeping Wallet..."
-msgstr "Leere Wallet..."
+msgstr "Считывание кошелька..."
 
 msgid "THIS ACTION CANNOT BE REVERSED"
-msgstr "DIESE AKTION KANN NICHT RÜCKGÄNGIG GEMACHT WERDEN"
+msgstr "ЭТО ДЕЙСТВИЕ НЕ МОЖЕТ БЫТЬ ОТМЕНЕНО"
 
 msgid "Take control of your money, get started with bitcoin."
-msgstr "Übernehmen Sie die Kontrolle über Ihr Geld, legen Sie mit Bitcoin los."
+msgstr ""
 
 msgid "Tap and hold to show"
-msgstr "Anzeigen durch tippen und halten"
+msgstr "Коснитесь и удерживайте, чтобы показать"
 
 msgid "Tap to recreate"
 msgstr ""
@@ -1977,58 +1983,58 @@ msgid "Temporarily Unavailable"
 msgstr ""
 
 msgid "Terms of Use"
-msgstr "Nutzungsbedingungen"
+msgstr "Условия использования"
 
 msgid "Testnet Wallet"
 msgstr ""
 
 msgid "Text"
-msgstr "Text"
+msgstr "Текст"
 
 msgid "Thanks!"
-msgstr "Danke!"
+msgstr "Спасибо!"
 
 msgid "The Gift of Go.™ With over 300 destinations and limitless adventures to choose from, the Delta Gift Card opens up a world of possibilities."
 msgstr ""
 
 msgid "The Safest, Fastest Asset Exchange on Earth"
-msgstr "Die sicherste und schnellste Vermögenswert Börse der Erde"
+msgstr ""
 
 msgid "The Wallet Service URL"
-msgstr "Die URL des Wallet-Diensts"
+msgstr "URL услуги кошелька"
 
 msgid "The amount of bitcoin immediately spendable from this wallet."
-msgstr "Den Betrag an Bitcoins sofort aus dieser Wallet zahlen."
+msgstr "Сумма биткойнов доступных для совершения платежей."
 
 msgid "The amount of bitcoin stored in this wallet that is allocated as inputs to your pending transaction proposals. The amount is determined using unspent transaction outputs associated with this wallet and may be more than the actual amounts associated with your pending transaction proposals."
-msgstr "Der Betrag an Bitcoins gespeichert in dieser Wallet ist zugewiesen als Einsatz für die ausstehende Transaktion. Dem Betrag wurde zugewiesen unverbrauchte Transaktions-Ausgänge zu verwenden, welche mit dieser Brieftasche verbunden sind, und entspricht möglicherweise mehr als die tatsächlichen Beträge welche im Zusammenhang mit Ihren ausstehenden Transaktions-Betrag stehen."
+msgstr "Сумма биткойнов, выделенных в качестве входов для ожидающих рассмотрения платежей. Сумма определяется непотраченными выходами, ассоциированными с этим кошельком, и может превышать сумму, ассоциированную с предложенными платежами."
 
 msgid "The amount of bitcoin stored in this wallet with less than 1 blockchain confirmation."
-msgstr "Die Menge an Bitcoins sind in dieser Geldbörse mit weniger als 1 Blockchain Bestätigung gespeichert."
+msgstr "Сумма биткойнов с менее, чем одним подтверждением."
 
 msgid "The derivation path"
-msgstr "Die Ableitungsstruktur"
+msgstr "Путь деривации"
 
 msgid "The destination wallet is not backed up. Please, complete the backup process before continue."
-msgstr "Die Ziel-Brieftasche ist nicht gesichert. Bitte schließen Sie den Wiederherstellungs-Prozess ab bevor Sie fortfahren."
+msgstr ""
 
 msgid "The exchange rate changes with the market."
-msgstr "Der Wechselkurs ändert sich mit dem Markt."
+msgstr "Обменный курс меняется с рынком."
 
 msgid "The higher the fee, the greater the incentive a miner has to include that transaction in a block. Current fees are determined based on network load and the selected policy."
-msgstr "Je höher die Gebühr, desto größer ist der Anreiz das ein \"Miner\" die Transaktion in einem \"Block\" inkludiert. Aktuelle Gebühren werden anhand der Netzauslastung und der ausgewählten Richtlinie bestimmt."
+msgstr "Чем выше комиссия, тем вероятнее майнеры включат эту транзакцию в блок. Текущая комиссия опеделяется на основании нагрузки на сеть и выбранной политики."
 
 msgid "The information you are about to share/export may contain sensitive data such us wallet IDs, addresses, balances, etc. Please be sure you trust the person or entity with whom you are sharing this information."
 msgstr ""
 
 msgid "The password of the recovery phrase (if set)"
-msgstr "Das Passwort der Wiederherstellungsphrase (wenn eingestellt)"
+msgstr "Пароль ключевого словосочетания (если установлен)"
 
 msgid "The payment was created but could not be completed. Please try again from home screen"
-msgstr "Die Zahlung wurde erzeugt, kann aber nicht abgeschlossen werden. Bitte erneut über die Startseite versuchen"
+msgstr "Платёж был создан, но не может быть завершен. Пожалуйста, вернитесь на вкладку Обзор и попробуйте снова"
 
 msgid "The payment was removed by creator"
-msgstr "Die Zahlung wurde vom Ersteller entfernt"
+msgstr "Платёж был удалён его создателем"
 
 msgid "The private key of this wallet is not available. The export allows to check the wallet balance, transaction history, and create spend proposals from the export. However, does not allow to approve (sign) proposals, so funds will not be accessible from the export."
 msgstr ""
@@ -2040,19 +2046,19 @@ msgid "The purchase amount must be at least {minAmount} {currency}. Please modif
 msgstr ""
 
 msgid "The request could not be understood by the server"
-msgstr "Die Anforderung konnte nicht vom Server interpretiert werden"
+msgstr "Запрос не распознан сервером"
 
 msgid "The single address feature will force the wallet to only use one address rather than generating new addresses."
 msgstr ""
 
 msgid "The spend proposal is not pending"
-msgstr "Der Zahlungsvorschlag ist nicht ausstehend"
+msgstr "Предложенный платёж больше не на рассмотрении"
 
 msgid "The testnet is an alternative Bitcoin block chain, to be used for testing. Testnet coins are separate and distinct from actual bitcoins, and do not have any value. This allows application developers or bitcoin testers to experiment, without having to use real bitcoins."
 msgstr ""
 
 msgid "The total amount of bitcoin stored in this wallet."
-msgstr "Der Gesamtbetrag an Bitcoins vorrätig in dieser Wallet."
+msgstr "Сумма биткойнов в этом кошельке."
 
 msgid "The transaction history and every new incoming transaction are cached in the app. This feature clean this up and synchronizes again from the server"
 msgstr ""
@@ -2061,19 +2067,19 @@ msgid "The wallet you are using does not match the network and/or the currency o
 msgstr ""
 
 msgid "There is an error in the form"
-msgstr "Es ist ein Fehler im Formular aufgetreten"
+msgstr "Ошибка в форме"
 
 msgid "There's obviously something we're doing wrong. How could we improve your experience?"
-msgstr "Es gibt offensichtlich etwas das wir falsch machen. Wie können wir Ihr Erlebnis verbessern?"
+msgstr ""
 
 msgid "This app is not available for your device."
 msgstr ""
 
 msgid "This app stores your bitcoin with cutting-edge security."
-msgstr "Diese App speichert Ihre Bitcoins mit modernster Sicherheit."
+msgstr ""
 
 msgid "This bitcoin payment request has expired."
-msgstr "Diese Bitcoin Zahlungsaufforderung ist abgelaufen."
+msgstr "Этот запрос платежа истёк."
 
 msgid "This field is only for users who, in previous versions (it's not supported anymore), set a password to protect their recovery phrase. This field is not for your encrypt password."
 msgstr ""
@@ -2085,10 +2091,10 @@ msgid "This password cannot be recovered. If this password is lost, funds can on
 msgstr ""
 
 msgid "This password is only for this device, and it cannot be recovered. To avoid losing funds, write your password down."
-msgstr "Dieses Passwort ist nur für dieses Gerät und es kann nicht wiederhergestellt werden. Um zu vermeiden, dass Mittel verloren gehen, schreiben Sie Ihr Passwort auf."
+msgstr "Этот пароль предназначен только для этого устройства, и его невозможно восстановить. Чтобы не потерять средства, запишите свой пароль."
 
 msgid "This recovery phrase was created with a password. To recover this wallet both the recovery phrase and password are needed."
-msgstr "Diese Wiederherstellungsphrase entstand mit einem Passwort. Zur Wiederherstellung der Wallet sind die Wiederherstellungsphrase und das Passwort erforderlich."
+msgstr "Это ключевое словосочетание было создано с паролем. Для восстановления кошелька необходимо ключевое словосочетание и его пароль."
 
 msgid "This transaction amount is too small compared to current Bitcoin network fees. Spending these funds will need a Bitcoin network fee cost comparable to the funds itself."
 msgstr ""
@@ -2097,88 +2103,88 @@ msgid "This transaction could take a long time to confirm or could be dropped du
 msgstr ""
 
 msgid "This wallet is not registered at the given Bitcore Wallet Service (BWS). You can recreate it from the local information."
-msgstr "Dieses Wallet ist nicht beim angegebenen Bitcore Wallet Service (BWS) registriert. Bitte aus den lokalen Informationen wiederherstellen"
+msgstr "Это кошелёк не зарегистрирован на данном сервере Bitcore. Вы можете воссоздать его из локальной информации."
 
 msgid "Timeline"
-msgstr "Zeitachse"
+msgstr "Хронология"
 
 msgid "To"
-msgstr "An"
+msgstr "Кому"
 
 msgid "To get started, you'll need to create a bitcoin wallet and get some bitcoin."
-msgstr "Um loszulegen müssen Sie eine Bitcoin-Wallet erstellen und einige Bitcoins erhalten."
+msgstr "Чтобы начать работу, вам нужно создать кошелёк и получить биткойн."
 
 msgid "To get started, you'll need to enter a valid address, contact or wallet."
-msgstr "Zum fortfahren bitte eine gültige Adresse eingeben oder einen Kontakt oder Wallet auswählen."
+msgstr ""
 
 msgid "To {{reason}} you must first add your BitPay account - {{email}}"
 msgstr ""
 
 msgid "Top up in progress..."
-msgstr "Nachfüllen ist im Gange..."
+msgstr "Пополнения счета в прогрессе..."
 
 msgid "Top-up with this cryptocurrency is not enabled"
-msgstr "Aufladen mit dieser kryptowährung ist nicht aktiviert"
+msgstr ""
 
 msgid "Total"
-msgstr "Gesamt"
+msgstr "Баланс кошелька"
 
 msgid "Total Locked Balance"
-msgstr "Ingesamt gesperrter Gesamtsaldo"
+msgstr "Всего заблокировано средств"
 
 msgid "Total number of copayers"
-msgstr "Gesamtanzahl der Copayer"
+msgstr "Количество совладельцев"
 
 msgid "Total wallet inputs"
-msgstr "Gesammte Wallet eingänge"
+msgstr "Cумма вводов кошелька"
 
 msgid "Trade any leading blockchain asset for any other. Protection by Design."
 msgstr ""
 
 msgid "Transaction"
-msgstr "Transaktion"
+msgstr "Транзакция"
 
 msgid "Transaction History"
-msgstr "Transaktionsverlauf"
+msgstr "История транзакций"
 
 msgid "Transaction ID"
-msgstr ""
+msgstr "ID транзакции"
 
 msgid "Transaction already broadcasted"
-msgstr "Transaktion wurde bereits übermittelt"
+msgstr "Транзакция уже отправлена"
 
 msgid "Transaction has not been created"
-msgstr "Die Transaktion wurde nicht erstellt"
+msgstr ""
 
 msgid "Transaction initiated"
-msgstr "Die Transaktion wurde initiiert"
+msgstr "Транзакция начата"
 
 msgid "Transaction not available at this time"
-msgstr "Transaktion ist zu diesem Zeitpunkt nicht verfügbar"
+msgstr "Транзакция недоступна в данный момент"
 
 msgid "Transaction not found"
-msgstr "Transaktion konnte nicht gefunden werden"
+msgstr "Транзакция не обнаружена"
 
 msgid "Transactions"
-msgstr "Transaktionen"
+msgstr "Транзакции"
 
 msgid "Transactions without fee are not supported."
-msgstr "Es werden keine Transaktionen ohne Gebühren unterstützt."
+msgstr "Транзакции без cборов не поддерживаются."
 
 msgid "Transfer to"
 msgstr ""
 
 msgid "Transfer to Bitcoin Cash Wallet"
-msgstr "Übertragung zur Bitcoin Cash Wallet"
+msgstr ""
 
 msgid "Transfer to Bitcoin Wallet"
-msgstr "Übertragung zur Bitcoin Wallet"
+msgstr "Перевести в биткоин кошелек"
 
 msgid "Transfer to Contact"
-msgstr "Transfer zum Kontakt"
+msgstr "Перевести знакомым"
 
 msgid "Transfer to Multiple Recipients"
-msgstr "An mehrere Empfänger senden"
+msgstr ""
 
 msgid "Translate address"
 msgstr ""
@@ -2187,31 +2193,31 @@ msgid "Try again"
 msgstr ""
 
 msgid "Try again in {{expires}}"
-msgstr "Versuchen Sie es erneut in {{expires}}"
+msgstr "Попробуйте снова через {{expires}}"
 
 msgid "Turn bitcoin into dollars, swipe anywhere Visa® is accepted."
 msgstr ""
 
 msgid "Type the recovery phrase (usually 12 words)"
-msgstr "Wiederherstellungsphrase eingeben (in der Regel 12 Wörter)"
+msgstr "Введите ключевое словосочетание (обычно двенадцать слов)"
 
 msgid "Uber gift cards also apply to UberEATS orders. Enjoy food from hundreds of restaurants, delivered at Uber speed."
 msgstr ""
 
 msgid "Uh oh..."
-msgstr "Oh, oh..."
+msgstr "Упс..."
 
 msgid "Unarchive Card"
 msgstr ""
 
 msgid "Unconfirmed"
-msgstr "Unbestätigt"
+msgstr "Неподтверждено"
 
 msgid "Unlink account"
-msgstr ""
+msgstr "Разъединить аккаунт"
 
 msgid "Unlink card"
-msgstr ""
+msgstr "Pазъединить карту"
 
 msgid "Unlink the account will remove it and all associated cards from this device."
 msgstr ""
@@ -2223,178 +2229,178 @@ msgid "Unlock App"
 msgstr ""
 
 msgid "Unsent transactions"
-msgstr "Nicht vesendete Transaktionen"
+msgstr "Неотправленные транзакции"
 
 msgid "Unused addresses"
-msgstr "Unbenutzte Adresse"
+msgstr "Неиспользованные адреса"
 
 msgid "Unverified Account"
 msgstr ""
 
 msgid "Updating Gift Card..."
-msgstr "Aktualisierung der Geschenkkarte..."
+msgstr "Подарочная карта бновляется..."
 
 msgid "Updating Gift Cards..."
-msgstr "Aktualisierung der Geschenkkarten..."
+msgstr "Обновляются подарочные карты..."
 
 msgid "Updating pending proposals... Please stand by"
-msgstr "Aktualisiere anstehende Vorschläge. Bitte warten"
+msgstr ""
 
 msgid "Updating transaction history. Please stand by."
-msgstr "Aktualisieren des Transaktionsverlaufs. Bitte warten."
+msgstr "Обновление истории транзакций. Подождите, пожалуйста."
 
 msgid "Updating... Please stand by"
-msgstr "Aktualisiere... Bitte warten"
+msgstr "Обновление... Подождите, пожалуйста"
 
 msgid "Urgent"
-msgstr "Dringend"
+msgstr "Срочно"
 
 msgid "Use Bitcoin Cash Copay Style Addresses"
-msgstr "Bitcoin-Cash Copay Stil Adressen verwenden"
+msgstr ""
 
 msgid "Use Unconfirmed Funds"
-msgstr "Unbestätigte Mittel einsetzen"
+msgstr "Использовать неподтверждённые средства"
 
 msgid "Use default url"
-msgstr "Standard URL verwenden"
+msgstr "Используйте базовый Url"
 
 msgid "Validating recovery phrase..."
-msgstr "Überprüfe Wiederherstellungsphrase..."
+msgstr "Проверка ключевого словосочетания..."
 
 msgid "Verify Account"
 msgstr ""
 
 msgid "Version"
-msgstr "Version"
+msgstr "Версия"
 
 msgid "View"
-msgstr "Ansicht"
+msgstr "Просмотреть"
 
 msgid "View Confirmation Status"
-msgstr "Bestätigungsstatus ansehen"
+msgstr "Просмотреть состояние подтверждения"
 
 msgid "View Invoice"
 msgstr ""
 
 msgid "View Privacy Policy"
-msgstr ""
+msgstr "Просмотр политики конфиденциальности"
 
 msgid "View Redemption Code"
 msgstr ""
 
 msgid "View Transaction on Insight"
-msgstr "Transaktionen auf Insight anzeigen"
+msgstr "Просмотреть транзакцию на Insight"
 
 msgid "View Wallet Terms of Use"
-msgstr ""
+msgstr "Просмотр условия использования бумажника"
 
 msgid "View all addresses"
-msgstr "Alle Adressen anzeigen"
+msgstr "Просмотреть все адреса"
 
 msgid "View on blockchain"
-msgstr "Auf blockchain anzeigen"
+msgstr "Посмотреть в блокчейне"
 
 msgid "Visit ShapeShift.io"
-msgstr "Besuchen Sie ShapeShift.io"
+msgstr "Посетите ShapeShift.io"
 
 msgid "WARNING: Key derivation is not working on this device/wallet. Actions cannot be performed on this wallet."
-msgstr "Warnung: Ableitung der Schlüssel funktioniert nicht auf diesem Gerät/Wallet. Aktionen können nicht mit dieser Wallet durchgeführt werden."
+msgstr "ВНИМАНИЕ: Деривация ключей не работает на этом устройстве/кошельке. Никакие действия не могут быть произведены с этим кошельком."
 
 msgid "WARNING: UNTRUSTED CERTIFICATE"
-msgstr "WARNUNG: NICHT VERTRAUENSWÜRDIGES ZERTIFIKAT"
+msgstr "ВНИМАНИЕ: НЕНАДЕЖНЫЙ СЕРТИФИКАТ"
 
 msgid "Waiting for copayers"
-msgstr "Warte auf copayer"
+msgstr "Ожидание совладельцев кошелька"
 
 msgid "Waiting..."
-msgstr "Warte..."
+msgstr "Ожидание..."
 
 msgid "Wallet Addresses"
-msgstr "Wallet-Adressen"
+msgstr "Адреса кошелька"
 
 msgid "Wallet Color"
-msgstr "Wallet-Farbe"
+msgstr "Цвет кошелька"
 
 msgid "Wallet Information"
-msgstr "Wallet-Informationen"
+msgstr "Информация о кошельке"
 
 msgid "Wallet Inputs"
-msgstr "Wallet Eingänge"
+msgstr "Вводы кошелька"
 
 msgid "Wallet Name"
-msgstr "Wallet-Name"
+msgstr "Название кошелька"
 
 msgid "Wallet Recovery Phrase is invalid"
-msgstr "Wallet-Wiederherstellungsphrase ist ungültig"
+msgstr "Ключевое словосочетание кошелька недействительно"
 
 msgid "Wallet Service URL"
-msgstr "URL des Wallet-Diensts"
+msgstr "Адрес сервера Bitcore"
 
 msgid "Wallet already exists"
-msgstr "Wallet exstiert bereits"
+msgstr "Кошелёк уже существует"
 
 msgid "Wallet already in {{nameCase}}"
-msgstr ""
+msgstr "Кошелёк уже в {{nameCase}}"
 
 msgid "Wallet created"
-msgstr "Wallet erstellt"
+msgstr "Кошелёк создан"
 
 msgid "Wallet incomplete and broken"
-msgstr "Wallet unvollständig oder defekt"
+msgstr "Не все совладельцы присоединились, кошелёк повреждён"
 
 msgid "Wallet invitation"
-msgstr "Wallet Einladung"
+msgstr "Приглашение кошелька"
 
 msgid "Wallet is full"
-msgstr "Maximale Teilnehmerzahl erreicht"
+msgstr "Все уже присоединены"
 
 msgid "Wallet is locked"
-msgstr "Wallet ist gesperrt"
+msgstr "Кошелёк заблокирован"
 
 msgid "Wallet is not complete"
-msgstr "Wallet ist unvollständig"
+msgstr "Не все совладельцы присоединились"
 
 msgid "Wallet key"
-msgstr "Wallet-Schlüssel"
+msgstr "Ключ кошелька"
 
 msgid "Wallet name"
-msgstr "Name des Wallets"
+msgstr "Название кошелька"
 
 msgid "Wallet needs backup"
-msgstr "Wallet braucht Sicherung"
+msgstr "Необходимо создать резервную копию"
 
 msgid "Wallet not found"
-msgstr "Wallet nicht gefunden"
+msgstr "Кошелёк не найден"
 
 msgid "Wallet not registered at the wallet service. Recreate it from \"Create Wallet\" using \"Advanced Options\" to set your recovery phrase"
-msgstr "Wallet ist nicht beim Wallet-Service registiert. Neu erzeugen mit \"Neues Wallet erzeugen\" und \"Erweiterte Optionen\" um die Wiederherstellungsphrase anzugeben"
+msgstr "Кошелёк не зарегистрирован на сервере Bitcore. Пересоздайте кошелёк воспользовавшись дополнительными параметрами, чтобы указать ключевое словосочетание"
 
 msgid "Wallet recovery phrase"
-msgstr "Wallet-Wiederherstellungsphrase"
+msgstr "Фраза восстановления кошелька"
 
 msgid "Wallet recovery phrase not available"
-msgstr "Die Wiederherstellungswörter für ihr Wallet sind nicht verfügbar"
+msgstr "Фраза восстановления кошелька недоступна"
 
 msgid "Wallet service not found"
-msgstr "Wallet-Dienst nicht gefunden"
+msgstr "Сервер Bitcore не найден"
 
 msgid "Warning!"
-msgstr "Warnung!"
+msgstr "Внимание!"
 
 msgid "Warning: this transaction has unconfirmed inputs"
-msgstr "Warnung: Diese Transaktion hat unbestätigte Eingänge"
+msgstr "Предупреждение: эта транзакция имеет неподтвержденные входы"
 
 msgid "Watch Out!"
-msgstr ""
+msgstr "Осторожно!"
 
 msgid "We appreciate your review"
 msgstr ""
 
 msgid "We are always looking for translation contributions! You can make corrections or help to make this app available in your native language by joining our community on Crowdin."
-msgstr "Wir sind immer auf der Suche nach Übersetzungs-Beiträgen! Durch den Beitritt unserer Community bei Crowdin können Sie Korrekturen vornehmen oder helfen diese App in Ihrer Muttersprache zur Verfügung stellen."
+msgstr ""
 
 msgid "We will confirm on the next screen."
-msgstr "Wir werden es auf der nächsten Seite bestätigen."
+msgstr ""
 
 msgid "We're always listening for ways we can improve your experience. Feel free to leave us a review in the app store or request a new feature."
 msgstr ""
@@ -2406,16 +2412,16 @@ msgid "We're always listening for ways we can improve your experience. Is there 
 msgstr ""
 
 msgid "Website"
-msgstr "Website"
+msgstr "Сайт"
 
 msgid "What do you call this wallet?"
-msgstr "Wie möchten Sie diese Wallet benennen?"
+msgstr "Как вы называете этот кошелёк?"
 
 msgid "When this wallet was created, it was called \"{{walletName}}\". You can change the name displayed on this device below."
 msgstr ""
 
 msgid "Where would you like to receive email notifications about payments?"
-msgstr "Wo möchten Sie E-Mail Benachrichtigungen über Zahlungen erhalten?"
+msgstr "Куда бы вы хотели получать email-уведомления о платежах?"
 
 msgid "Where would you like to receive your Amazon gift card purchase receipts?"
 msgstr ""
@@ -2424,16 +2430,16 @@ msgid "Why does this require authentication?"
 msgstr ""
 
 msgid "Why?"
-msgstr "Warum?"
+msgstr "Почему?"
 
 msgid "Withdraw"
-msgstr "Auszahlung"
+msgstr "Снятие"
 
 msgid "Without encryption, a thief or another application on this device may be able to access your funds."
-msgstr "Ohne Verschlüsselung könnte ein Dieb oder ein anderes Programm auf diesem Gerät auf ihr Guthaben zugreifen können."
+msgstr ""
 
 msgid "Would you like to protect this wallet with a password?"
-msgstr "Möchten Sie diese Geldbörse mit einem Passwort schützen?"
+msgstr ""
 
 msgid "Write Down Recovery Phrase"
 msgstr ""
@@ -2442,19 +2448,19 @@ msgid "Write a Review"
 msgstr ""
 
 msgid "Wrong number of recovery words:"
-msgstr "Falsche Anzahl von Wiederherstellungswörtern:"
+msgstr "Неподходящее количество слов в ключевом словосочетании:"
 
 msgid "Wrong password"
-msgstr "Falsches Passwort"
+msgstr "Неправильный пароль"
 
 msgid "YES"
 msgstr ""
 
 msgid "Yes"
-msgstr "Ja"
+msgstr "Да"
 
 msgid "Yes, skip"
-msgstr ""
+msgstr "Да, пропустить"
 
 msgid "You are trying to send ({amount} {coin}) more than what your wallet contains. Please enter a lower amount or send max."
 msgstr ""
@@ -2466,79 +2472,79 @@ msgid "You can continue to view your archived cards here if you need to access t
 msgstr ""
 
 msgid "You can make contributions by signing up on our Crowdin community translation website. We’re looking forward to hearing from you!"
-msgstr "Sie können Beiträge leisten indem Sie sich auf unserer Crowdin Community Übersetzungs-Website registrieren. Wir freuen uns darauf von Ihnen zu hören!"
+msgstr ""
 
 msgid "You can scan bitcoin addresses, payment requests, paper wallets, and more."
-msgstr "Sie können Bitcoin-Adressen, Zahlungsaufforderungen, Papier-Wallets und mehr scannen."
+msgstr "Вы можете сканировать биткойн-адреса, запросы платежей, бумажные кошельки, и многое другое."
 
 msgid "You can see the latest developments and contribute to this open source app by visiting our project on GitHub."
-msgstr "Sie können auf GitHub die neuesten Entwicklungen ansehen und zu dieser Open-Source App beitragen."
+msgstr ""
 
 msgid "You can spend bitcoin at millions of websites and stores worldwide."
-msgstr "Sie können Bitcoins auf Millionen von Webseiten und Shops weltweit ausgeben."
+msgstr ""
 
 msgid "You can still export it from \"Export Wallet\" option."
 msgstr ""
 
 msgid "You can trade it for other currencies like US Dollars, Euros, or Pounds."
-msgstr "Sie können auch mit andere Währungen wie US-Dollar, Euro oder Pfund handeln."
+msgstr ""
 
 msgid "You can use your Mercado Livre gift cards on your Mercado Pago account for everyday expenses like utilities and metro rides."
 msgstr ""
 
 msgid "You control your bitcoin."
-msgstr "Sie kontrollieren Ihre Bitcoins."
+msgstr "Вы контролируете Ваши bitcoin-ы."
 
 msgid "You could sign the transaction later in your wallet details"
-msgstr "Sie konnte die Transaktion später in Ihren Brieftasche-Details anmelden."
+msgstr ""
 
 msgid "You should not set a fee higher than {{maxFeeRecommended}} satoshis/byte."
-msgstr "Du solltest keine Gebür über {{maxFeeRecommended}} satoshis/byte setzen."
+msgstr ""
 
 msgid "Your BitPay Card is ready. Add funds to your card to start using it at stores and ATMs worldwide."
-msgstr "Ihre Bitcoin Card ist bereit, fügen sie Guthaben hinzu um sie in Läden und Banken weltweit zu nutzen."
+msgstr ""
 
 msgid "Your bitcoin wallet is ready!"
-msgstr "Ihre Bitcoin-Wallet ist fertig!"
+msgstr "Ваш кошелёк готов!"
 
 msgid "Your extended private keys are all that is needed to access your bitcoin funds. Be sure to protect your private keys and store them only on secure devices. BitPay does not have access to your private keys, so you alone are responsible for your keys. If you share key access with external services, you take responsibility for the risk of theft or breach. Only advanced users should handle extended private keys directly."
-msgstr "Ihre erweiterten privaten Schlüssel sind alles um auf ihr Bitcoin Guthaben zu zugreifen. Beschützen Sie Ihren privaten Schlüssel und bewahren Sie Ihn ausschließlich auf einem sicheren Gerät auf. BitPay hat keinen Einfluss auf Ihren Schlüssel, also müssen Sie sich alleine um Ihre Schlüssel kümmern. Wenn Sie den Schlüssel für andere externe Services teilen, tragen Sie die Verantwortung für den eventuellen Diebstahl. Nur erfahrene Nutzer sollten erweiterte private Schlüssel direkt verschicken."
+msgstr ""
 
 msgid "Your fee is lower than recommended."
-msgstr "Ihre Gebür ist niedriger als sie empfohlen wird."
+msgstr ""
 
 msgid "Your name"
-msgstr "Ihr Name"
+msgstr "Ваше имя"
 
 msgid "Your wallet address is similar to a bank account number. You can add funds to your wallet by withdrawing funds you may have stored on an exchange to your wallet address. Or other {coinName} users can send you money by scanning your QR code."
 msgstr ""
 
 msgid "Your wallet is never saved to cloud storage or standard device backups."
-msgstr "Ihre Wallet wird nie auf einem Cloud-Speicher oder einer Standard-Geräte-Backup gespeichert."
+msgstr "Ваш кошелёк никогда не сохраняется в облачное хранилище или в резервные копии устройства."
 
 msgid "Your wallet key will be encrypted. The encrypt password cannot be recovered. Be sure to write it down."
-msgstr "Ihre Wallet wird verschlüsselt. Der Berechtigungscode kann nicht wiederhergestellt werden. Achten Sie darauf ihn aufzuschreiben."
+msgstr ""
 
 msgid "Your {walletType} wallet is backed up!"
 msgstr ""
 
 msgid "[Balance Hidden]"
-msgstr "[Guthaben versteckt]"
+msgstr "[Баланс скрыт]"
 
 msgid "[Scanning Funds]"
-msgstr "[Prüfe Wallet auf neue Beiträge]"
+msgstr ""
 
 msgid "add your BitPay Visa card(s)"
-msgstr "Ihre BitPay Visa Karte(n) hinzufügen"
+msgstr "добавьте вашу BitPay Visa карту(ы)"
 
 msgid "me"
-msgstr "Ich"
+msgstr "мне"
 
 msgid "of total amount"
-msgstr "der Gesamtsumme"
+msgstr ""
 
 msgid "preparing..."
-msgstr "in Arbeit..."
+msgstr "Подготавливается..."
 
 msgid "{appName} BCH wallets use the CashAddr format by default"
 msgstr ""
@@ -2547,20 +2553,20 @@ msgid "{coinName} miner fees are high due to record demand for limited space on 
 msgstr ""
 
 msgid "{coinName} miner fees unusually high"
-msgstr "{coinName} Mining-Gebühr ungewöhnlich hoch"
+msgstr ""
 
 msgid "{{appName}} depends on Bitcore Wallet Service (BWS) for blockchain information, networking and Copayer synchronization. The default configuration points to https://bws.bitpay.com (BitPay's public BWS instance)."
-msgstr "{{appName}} hängt von Bitcore Wallet Service (BWS) ab bezüglich Blockchain Informationen, Vernetzung und Copayer Synchronisation. Die Standard Konfiguration verweist auf https://bws.bitpay.com (BitPays öffentlicher BWS Instanz)."
+msgstr ""
 
 msgid "{{fee}} {{coin}} will be deducted for bitcoin networking fees."
 msgstr ""
 
 msgid "{{updatingTxHistoryProgress}} transactions downloaded"
-msgstr "{{updatingTxHistoryProgress}} Transaktionen werden heruntergeladen"
+msgstr "{{updatingTxHistoryProgress}} транзакций загружено"
 
 msgid "{{wallet.credentials.m}}-of-{{wallet.credentials.n}}"
-msgstr "{{wallet.credentials.m}}- der -{{wallet.credentials.n}}"
+msgstr ""
 
 msgid "{{wallet.m}}-of-{{wallet.n}}"
-msgstr "{{wallet.m}}-von-{{wallet.n}}"
+msgstr "{{wallet.m}}-из-{{wallet.n}}"
 

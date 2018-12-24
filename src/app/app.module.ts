@@ -55,7 +55,7 @@ import { ProvidersModule } from './../providers/providers.module';
 
 /* Read translation files */
 export function translateLoaderFactory(http: HttpClient) {
-  return new TranslatePoHttpLoader(http, 'assets/i18n/po', '.po');
+  return new TranslatePoHttpLoader(http, 'assets/i18n', '.po');
 }
 
 export function translateParserFactory() {

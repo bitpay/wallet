@@ -31,11 +31,13 @@ src/theme/overrides.scss
 src/assets/appConfig.json
 src/assets/externalServices.json
 src/assets/img/app
-src/assets/i18n/crowdin_api_key.txt
-src/assets/i18n/po/*.mo
 src/index.html
 src/manifest.json
 src/environments/index.ts
+
+# Crowdin API key
+i18n/crowdin_api_key.txt
+src/assets/i18n/*.mo
 
 test/visual/latest
 test/visual/diffs

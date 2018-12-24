@@ -12,7 +12,7 @@ msgstr ""
 "Last-Translator: cmgustavo83\n"
 "Language-Team: Korean\n"
 "Language: ko\n"
-"PO-Revision-Date: 2018-12-18 20:49\n"
+"PO-Revision-Date: 2018-12-21 18:55\n"
 
 msgid "(Trusted)"
 msgstr "(신뢰할 수 있음)"
@@ -1553,6 +1553,9 @@ msgstr "주소 준비 중..."
 msgid "Preparing backup..."
 msgstr "백업 준비 중..."
 
+msgid "Print"
+msgstr ""
+
 msgid "Priority"
 msgstr "우선 순위"
 
@@ -1599,6 +1602,9 @@ msgid "Push notifications for {{appName}} are currently disabled. Enable them in
 msgstr "현재 {{appName}}에 대한 알림 받기가 비활성화되었습니다. 앱 설정에서 활성화하세요."
 
 msgid "QR Code"
+msgstr ""
+
+msgid "QR code to recover wallet {{walletName}}"
 msgstr ""
 
 msgid "Quick review!"

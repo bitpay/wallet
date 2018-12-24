@@ -12,7 +12,7 @@ msgstr ""
 "Last-Translator: cmgustavo83\n"
 "Language-Team: French\n"
 "Language: fr\n"
-"PO-Revision-Date: 2018-12-19 12:52\n"
+"PO-Revision-Date: 2018-12-21 18:55\n"
 
 msgid "(Trusted)"
 msgstr "(Fiable)"
@@ -1553,6 +1553,9 @@ msgstr "Préparation des adresses..."
 msgid "Preparing backup..."
 msgstr "Préparation de la sauvegarde..."
 
+msgid "Print"
+msgstr ""
+
 msgid "Priority"
 msgstr "Élevés"
 
@@ -1600,6 +1603,9 @@ msgstr "Les notifications pour {{appName}} sont actuellement désactivées. Acti
 
 msgid "QR Code"
 msgstr "Code QR"
+
+msgid "QR code to recover wallet {{walletName}}"
+msgstr ""
 
 msgid "Quick review!"
 msgstr "Récapitulatif !"

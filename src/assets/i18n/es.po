@@ -12,7 +12,7 @@ msgstr ""
 "Last-Translator: cmgustavo83\n"
 "Language-Team: Spanish\n"
 "Language: es\n"
-"PO-Revision-Date: 2018-12-19 12:52\n"
+"PO-Revision-Date: 2018-12-21 18:55\n"
 
 msgid "(Trusted)"
 msgstr "(De confianza)"
@@ -1553,6 +1553,9 @@ msgstr "Preparando direcciones..."
 msgid "Preparing backup..."
 msgstr "Preparando copia de seguridad..."
 
+msgid "Print"
+msgstr ""
+
 msgid "Priority"
 msgstr "Prioritario"
 
@@ -1600,6 +1603,9 @@ msgstr "Notificaciones push para {{appName}} están deshabilitadas. Habilitarla 
 
 msgid "QR Code"
 msgstr "Código QR"
+
+msgid "QR code to recover wallet {{walletName}}"
+msgstr ""
 
 msgid "Quick review!"
 msgstr "¡Revisión rápida!"

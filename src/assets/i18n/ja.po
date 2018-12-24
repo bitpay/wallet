@@ -3,22 +3,22 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=4; plural=((n%10==1 && n%100!=11) ? 0 : ((n%10 >= 2 && n%10 <=4 && (n%100 < 12 || n%100 > 14)) ? 1 : ((n%10 == 0 || (n%10 >= 5 && n%10 <=9)) || (n%100 >= 11 && n%100 <= 14)) ? 2 : 3));\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
 "X-Generator: crowdin.com\n"
 "X-Crowdin-Project: copay\n"
-"X-Crowdin-Language: ru\n"
+"X-Crowdin-Language: ja\n"
 "X-Crowdin-File: template.pot\n"
 "Project-Id-Version: copay\n"
 "Last-Translator: cmgustavo83\n"
-"Language-Team: Russian\n"
-"Language: ru\n"
-"PO-Revision-Date: 2018-12-18 20:49\n"
+"Language-Team: Japanese\n"
+"Language: ja\n"
+"PO-Revision-Date: 2018-12-21 18:55\n"
 
 msgid "(Trusted)"
-msgstr "(Доверенный)"
+msgstr "(信頼済み)"
 
 msgid "(possible double spend)"
-msgstr "(возможна двойная трата)"
+msgstr "(二重払い可能性あり)"
 
 msgid "* A payment proposal can be deleted if 1) you are the creator, and no other copayer has signed, or 2) 10 minutes have passed since the proposal was created."
 msgstr ""
@@ -33,109 +33,109 @@ msgid "5-star ratings help us get BitPay Wallet into more hands, and more users 
 msgstr ""
 
 msgid "A total of {{amountAboveMaxSizeStr}} {{coin}} were excluded. The maximum size allowed for a transaction was exceeded."
-msgstr "В общей сложности {{amountAboveMaxSizeStr}} {{coin}} было исключено. Превышен максимальный размер транзакции."
+msgstr ""
 
 msgid "A total of {{amountBelowFeeStr}} {{coin}} were excluded. These funds come from UTXOs smaller than the network fee provided."
-msgstr "В общей сложности {{amountBelowFeeStr}} {{coin}} было исключено. Эти средства поступают от UTXOs которые меньше чем плата за сеть."
+msgstr ""
 
 msgid "A total of {{amountStr}} ({{fiatAmount | number:'1.2-2'}} {{currencyIsoCode}}) will be exchanged for {{withdrawalStr}} ({{fiatWithdrawal | number:'1.2-2'}} {{currencyIsoCode}})."
 msgstr ""
 
 msgid "A total of {{fee}} {{coin}} were excluded. The maximum size allowed for a transaction was exceeded."
-msgstr "В общей сложности {{fee}} {{coin}} было исключено. Превышен максимальный размер транзакции."
+msgstr ""
 
 msgid "A total of {{fee}} {{coin}} were excluded. These funds come from UTXOs smaller than the network fee provided."
-msgstr "В общей сложности {{fee}} {{coin}} было исключено. Эти средства поступают от UTXOs которые меньше, чем предусмотренная плата за сеть."
+msgstr ""
 
 msgid "About"
-msgstr "О проекте"
+msgstr "このアプリについて"
 
 msgid "About {{appName}}"
-msgstr "Про {{appName}}"
+msgstr ""
 
 msgid "Accept"
-msgstr "Принять"
+msgstr ""
 
 msgid "Accepted"
-msgstr "Принято"
+msgstr "承諾済"
 
 msgid "Account"
-msgstr "Учётная запись"
+msgstr "ポケット"
 
 msgid "Activity"
-msgstr "Активность"
+msgstr "履歴"
 
 msgid "Add"
-msgstr "Добавить"
+msgstr "Viêt nam"
 
 msgid "Add BitPay Account?"
-msgstr "Добавить учетную запись BitPay?"
+msgstr ""
 
 msgid "Add Contact"
-msgstr "Добавить контакт"
+msgstr "連絡先を追加"
 
 msgid "Add Memo"
-msgstr "Добавить памятку"
+msgstr "メモを追加"
 
 msgid "Add Recipient"
 msgstr ""
 
 msgid "Add account"
-msgstr "Добавить учетную запись"
+msgstr ""
 
 msgid "Add amount"
-msgstr "Указать сумму"
+msgstr ""
 
 msgid "Add as a contact"
-msgstr "Добавить контакт"
+msgstr "連絡先に追加"
 
 msgid "Add funds"
-msgstr "Пополнить счёт"
+msgstr "資金を追加"
 
 msgid "Add gift cards to your {appName} wallet from brands like Amazon, Delta, Google Play, and Uber."
 msgstr ""
 
 msgid "Add this BitPay account ({{email}})?"
-msgstr "Добавить эту учетную запись BitPay ({{email}})?"
+msgstr ""
 
 msgid "Address"
-msgstr "Адрес"
+msgstr "アドレス"
 
 msgid "Address Book"
-msgstr "Aдресная книга"
+msgstr "アドレス帳"
 
 msgid "Address Type"
-msgstr "Тип адреса"
+msgstr "アドレスの種類"
 
 msgid "Address book"
-msgstr "Адресная книга"
+msgstr ""
 
 msgid "Addressbook is empty"
-msgstr "Адресная книга пуста"
+msgstr ""
 
 msgid "Addresses with balance"
-msgstr "Адреса с балансом"
+msgstr ""
 
 msgid "Advanced"
-msgstr "Дополнительные возможности"
+msgstr "上級者向け"
 
 msgid "All"
 msgstr ""
 
 msgid "All addresses"
-msgstr "Все адреса"
+msgstr ""
 
 msgid "All of your bitcoin wallet balance may not be available for immediate spending."
-msgstr "В данный момент весь баланс вашего кошелька может быть недоступен для совершения платежей."
+msgstr "ビットコインのウォレットの残高の内、即座に送れないビットコインが含まれている可能性があります。"
 
 msgid "Allow camera access"
-msgstr "Разрешить доступ камеры"
+msgstr ""
 
 msgid "Almost done! Let's review."
-msgstr "Почти готово! Давайте проверим."
+msgstr "ほぼ完了!確認してみましょう。"
 
 msgid "Alternative currency"
-msgstr "Альтернативная валюта"
+msgstr ""
 
 msgid "Amazon.co.jp Gift Cards never expire and can be redeemed towards millions of items at www.amazon.co.jp."
 msgstr ""
@@ -144,16 +144,16 @@ msgid "Amazon.com Gift Cards never expire and can be redeemed towards millions o
 msgstr ""
 
 msgid "Amount"
-msgstr "Сумма"
+msgstr "金額"
 
 msgid "Amount Too Low To Spend"
 msgstr ""
 
 msgid "Amount below minimum allowed"
-msgstr "Сумма ниже допустимого минимума"
+msgstr "送金可能最少額を下回っています"
 
 msgid "Amount too big"
-msgstr "Слишком большая сумма"
+msgstr "金額が大きすぎます"
 
 msgid "Amount:"
 msgstr ""
@@ -162,10 +162,10 @@ msgid "Anyone with your recovery phrase can access or spend your bitcoin."
 msgstr ""
 
 msgid "Apply changes"
-msgstr "Применить изменения"
+msgstr ""
 
 msgid "Approximate Bitcoin network fee to transfer wallet's balance (with normal priority)"
-msgstr "Приблизительная комиссия на перевод сети Bitcoin для передачи баланса кошелька (с нормальным приоритетом)"
+msgstr "ウォレットの残高を送るために推測される必要なビットコインネットワーク手数料(優先度：普通)"
 
 msgid "Archive All {brand} Gift Cards?"
 msgstr ""
@@ -180,34 +180,36 @@ msgid "Archived Cards"
 msgstr ""
 
 msgid "Are you being watched?"
-msgstr "За вами сейчас кто-нибудь смотрит?"
+msgstr "見られていませんか？"
 
 msgid "Are you sure you want to cancel and delete this wallet?"
-msgstr "Вы точно хотите отменить и удалить этот кошелёк?"
+msgstr "本当にこのウォレットをキャンセルし、削除しても\n"
+"宜しいですか？"
 
 msgid "Are you sure you want to delete this contact?"
-msgstr "Вы действительно хотите удалить этот контакт?"
+msgstr "本当にこの連絡先を削除しますか？"
 
 msgid "Are you sure you want to delete this wallet?"
-msgstr "Вы точно хотите удалить этот кошелёк?"
+msgstr "本当にこのウォレットを削除しても\n"
+"宜しいですか？"
 
 msgid "Are you sure you want to reject this transaction?"
-msgstr "Вы точно хотите отклонить этот платёж?"
+msgstr "この取引を却下してもよろしいですか?"
 
 msgid "Are you sure you want to remove this transaction?"
-msgstr "Вы точно хотите удалить эту транзакцию?"
+msgstr "この取引を破棄してもよろしいですか?"
 
 msgid "Are you sure you want to skip it?"
-msgstr "Вы уверены что хотите пропустить?"
+msgstr ""
 
 msgid "Are you sure?"
-msgstr "Вы уверены?"
+msgstr ""
 
 msgid "Available"
-msgstr "Доступно"
+msgstr "即座送金可能"
 
 msgid "Average confirmation time"
-msgstr "Среднее время подтверждения"
+msgstr "平均承認時間"
 
 msgid "Awaiting payment to confirm"
 msgstr ""
@@ -219,16 +221,16 @@ msgid "Back up your wallet before using this function"
 msgstr ""
 
 msgid "Backup"
-msgstr "Резервное копирование"
+msgstr "バックアップ"
 
 msgid "Backup wallet"
-msgstr "Резервное копирование"
+msgstr "ウォレットをバックアップ"
 
 msgid "Bad wallet invitation"
-msgstr "Недействительное приглашение"
+msgstr "不正なウォレット招待コード"
 
 msgid "Balance Hidden"
-msgstr "Баланс Скрыт"
+msgstr ""
 
 msgid "Be sure to store your recovery phrase in a secure place. If this app is deleted, your money cannot be recovered without it."
 msgstr ""
@@ -246,7 +248,7 @@ msgid "BitPay Card URI"
 msgstr ""
 
 msgid "Bitcoin Address"
-msgstr "Биткойн-адрес"
+msgstr "ビットコインアドレス"
 
 msgid "Bitcoin Cash Address"
 msgstr ""
@@ -255,46 +257,46 @@ msgid "Bitcoin Cash URI"
 msgstr ""
 
 msgid "Bitcoin Cash Wallets"
-msgstr "Кошельки Bitcoin Cash"
+msgstr "ビットコインキャッシュウォレット"
 
 msgid "Bitcoin Network Fee Policy"
-msgstr "Политика комиссии сети Биткойн"
+msgstr "ビットコインネットワークの手数料設定"
 
 msgid "Bitcoin URI"
 msgstr ""
 
 msgid "Bitcoin Wallets"
-msgstr "Bitcoin Кошельки"
+msgstr "ビットコインウォレット"
 
 msgid "Bitcoin is a currency."
-msgstr "Биткойн - это валюта."
+msgstr "ビットコインは通貨の一つ"
 
 msgid "Bitcoin is different - it cannot be safely held with a bank or web service."
 msgstr ""
 
 msgid "Bitcoin is secure, digital money."
-msgstr "Bitcoin это безопасные, цифровые деньги."
+msgstr ""
 
 msgid "Bitcoin miner fee:"
-msgstr "Tранзакционные сборы:"
+msgstr ""
 
 msgid "Bitcoin network fee policy"
-msgstr "Политика комиссии сети Биткойн"
+msgstr ""
 
 msgid "Bitcoin transactions include a fee collected by miners on the network."
-msgstr "Bitcoin transactions include a fee collected by miners on the network."
+msgstr "ビットコインの取引はネットワークの安全を守る「採掘者」と呼ばれる者達に送る手数料が含まれます。"
 
 msgid "Brands"
 msgstr ""
 
 msgid "Broadcast Payment"
-msgstr "Отправить платёж"
+msgstr "取引送信"
 
 msgid "Broadcasted"
-msgstr "Отправка"
+msgstr "送信済み"
 
 msgid "Broadcasting transaction..."
-msgstr "Трансакция передается..."
+msgstr ""
 
 msgid "Buy Gift Card"
 msgstr ""
@@ -303,43 +305,43 @@ msgid "Buy Gift Cards"
 msgstr ""
 
 msgid "Buying Bitcoin..."
-msgstr "Покупка биткойн..."
+msgstr "ビットコインを購入中..."
 
 msgid "Buying Gift Card..."
-msgstr "Покупка Подарочной карты..."
+msgstr ""
 
 msgid "By providing your email address, you give explicit consent to BitPay to use your email address to send you email notifications about payments."
 msgstr ""
 
 msgid "Calculating fee..."
-msgstr "Вычисление комиссии..."
+msgstr ""
 
 msgid "Calculating send max..."
 msgstr ""
 
 msgid "Cancel"
-msgstr "Отмена"
+msgstr "キャンセル"
 
 msgid "Cancel invitation"
-msgstr "Отменить приглашение?"
+msgstr "招待状のキャンセル"
 
 msgid "Canceling Gift Card..."
-msgstr "Аннулирование Подарочной карты..."
+msgstr ""
 
 msgid "Cannot create wallet"
-msgstr "Не удаётся создать кошелёк"
+msgstr ""
 
 msgid "Cannot join the same wallet more that once"
-msgstr "Нельзя присоединиться к одному и тому же кошельку более одного раза"
+msgstr "同じ端末で同じウォレットに複数回参加することができません。"
 
 msgid "Card Archived"
 msgstr ""
 
 msgid "Card Settings"
-msgstr "Настройки карты"
+msgstr ""
 
 msgid "Certified by"
-msgstr "Сертифицирован"
+msgstr "証明元："
 
 msgid "Change Amount"
 msgstr ""
@@ -348,115 +350,115 @@ msgid "Change amount"
 msgstr ""
 
 msgid "Check the transaction on your wallet details"
-msgstr "Проверьте транзакцию в подробностях вашего кошелька"
+msgstr ""
 
 msgid "Choose a backup file from your computer"
-msgstr "Выберите файл резервной копии с вашего компьютера"
+msgstr ""
 
 msgid "Clear"
-msgstr "Очистить"
+msgstr "やり直し"
 
 msgid "Clear cache"
-msgstr "Очистить кэш"
+msgstr "キャッシュを消去"
 
 msgid "Click to accept"
-msgstr "Подтвердить"
+msgstr "クリックして承諾"
 
 msgid "Click to confirm"
-msgstr "Щелкните для подтверждения"
+msgstr ""
 
 msgid "Click to open Terms"
-msgstr "Щелкните, чтобы открыть Термины"
+msgstr ""
 
 msgid "Click to pay"
-msgstr "Оплатить"
+msgstr "クリックして支払う"
 
 msgid "Click to send"
-msgstr "Отправить"
+msgstr "クリックして送る"
 
 msgid "Close"
-msgstr "Закрыть"
+msgstr "閉じる"
 
 msgid "Coin"
-msgstr "Монета"
+msgstr "別通貨切り替え"
 
 msgid "Color"
-msgstr "Цвет"
+msgstr "色"
 
 msgid "Completed"
-msgstr "Завершено"
+msgstr "完了"
 
 msgid "Configuration (m-n)"
-msgstr "Конфигурация (m-n)"
+msgstr ""
 
 msgid "Confirm"
-msgstr "Подтвердить"
+msgstr "確認"
 
 msgid "Confirm & Finish"
-msgstr "Подтвердить & Закончить"
+msgstr ""
 
 msgid "Confirm to shift {{fromCoin}} to {{toCoin}}"
-msgstr "Подтвердить переход от {{fromCoin}} к {{toCoin}}"
+msgstr ""
 
 msgid "Confirm your PIN"
-msgstr "Подтвердите ваш PIN-код"
+msgstr ""
 
 msgid "Confirm your new encrypt password"
-msgstr "Подтвердите ваш новый пароль шифрования"
+msgstr ""
 
 msgid "Confirmations"
-msgstr "Подтверждения"
+msgstr "承認回数"
 
 msgid "Confirming"
-msgstr "Ожидает подтверждения"
+msgstr "承認中"
 
 msgid "Congratulations! It looks like you've recently received money. It's highly advised that you verify your recovery phrase so that your funds can be recovered in case your phone was lost or stolen."
 msgstr ""
 
 msgid "Connect my BitPay Card"
-msgstr "Подключить мою карту BitPay"
+msgstr ""
 
 msgid "Connect to ShapeShift Account"
 msgstr ""
 
 msgid "Connecting to Coinbase..."
-msgstr "Подключение к Coinbase..."
+msgstr "Coinbase に接続中…"
 
 msgid "Connecting to Glidera..."
-msgstr "Подключение к Glidera..."
+msgstr "Glidera に接続中…"
 
 msgid "Connecting to ShapeShift..."
-msgstr "Подключение к ShapeShift..."
+msgstr ""
 
 msgid "Connection reset by peer"
-msgstr "Соединение сброшено другой стороной"
+msgstr "接続がピアによってリセットされました"
 
 msgid "Contact the ShapeShift support team."
-msgstr "Связаться с командой поддержки ShapeShift."
+msgstr ""
 
 msgid "Continue"
-msgstr "Продолжить"
+msgstr "続ける"
 
 msgid "Contribute translations"
-msgstr "Помочь с переводами"
+msgstr ""
 
 msgid "Copay Session Logs. Be careful, this could contain sensitive private data"
 msgstr ""
 
 msgid "Copay only supports Bitcoin Cash using new version numbers addresses"
-msgstr "Используя новую версию номеров адресов Copay поддерживает только Bitcoin Cash"
+msgstr "Copay のビットコインキャッシュはビットコインと完全に異なる別通貨なので、アドレスの頭文字が異なります。"
 
 msgid "Copayer already in this wallet"
-msgstr "Совладелец кошелька уже присоединился"
+msgstr "ウォレット参加者が既に存在しています。"
 
 msgid "Copayer already voted on this spend proposal"
-msgstr "Совладелец уже проголосовал по этому платежу"
+msgstr "ウォレット参加者が既に送金の提案の意思表明をしています。"
 
 msgid "Copayer data mismatch"
-msgstr "Несоответствие данных совладельца кошелька"
+msgstr "ウォレット参加者のデータ不整合"
 
 msgid "Copayer joined"
-msgstr "Совладелец присоединился"
+msgstr "ウォレット参加者が加わりました"
 
 msgid "Copied"
 msgstr ""
@@ -465,7 +467,7 @@ msgid "Copied to Clipboard"
 msgstr ""
 
 msgid "Copied to clipboard"
-msgstr "Скопировано в буфер обмена"
+msgstr "クリップボードにコピーしました"
 
 msgid "Copied {coin} address"
 msgstr ""
@@ -477,49 +479,49 @@ msgid "Copy Code"
 msgstr ""
 
 msgid "Copy this text as it is to a safe place (notepad or email)"
-msgstr "Скопируйте этот текст как есть (в блокнот или письмо)"
+msgstr "このテキストを安全な場所に貼り付けて保管して下さい (メモ帳やメールの下書きなど)"
 
 msgid "Copy to clipboard"
-msgstr "Скопировать в буфер обмена"
+msgstr "クリップボードへコピー"
 
 msgid "Could Not Fetch Payment: Check if it is still valid"
-msgstr "Не Удалось Получить Платеж: Проверьте, действителен ли он все еще"
+msgstr ""
 
 msgid "Could not access the wallet at the server. Please check:"
-msgstr "Не удалось получить доступ к кошельку на сервере. Проверьте, пожалуйста:"
+msgstr "サーバーにてウォレットの確認ができませんでした。こちらをご確認下さい:"
 
 msgid "Could not access wallet"
-msgstr "Не удалось получить доступ к кошельку"
+msgstr "ウォレットにアクセスできませんでした。"
 
 msgid "Could not add message to imported wallet without shared encrypting key"
-msgstr "Не удалось добавить сообщение в импортированный кошелёк без общего ключа шифрования"
+msgstr "共有キー無しでインポートされたウォレットへのメッセージの追加ができません"
 
 msgid "Could not build transaction"
-msgstr "Не удалось создать транзакцию"
+msgstr "取引を作成できませんでした。"
 
 msgid "Could not create address"
-msgstr "Не удалось создать адрес"
+msgstr "アドレスを生成できませんでした。"
 
 msgid "Could not create transaction"
-msgstr "Не удалось создать транзакцию"
+msgstr "取引を作成できませんでした。"
 
 msgid "Could not create using the specified extended private key"
-msgstr "Не удалось создать используя указанный расширенный закрытый ключ"
+msgstr "指定された拡張秘密鍵で作成できませんでした。"
 
 msgid "Could not create using the specified extended public key"
-msgstr "Не удалось создать используя указанный расширенный открытый ключ"
+msgstr "指定された拡張公開鍵で作成できませんでした。"
 
 msgid "Could not create: Invalid wallet recovery phrase"
-msgstr "Не удалось создать: недействительное ключевое словосочетание"
+msgstr "作成できません：ウォレットの復元フレーズが不正です。"
 
 msgid "Could not decrypt file, check your password"
-msgstr "Не удалось расшифровать файл, проверьте пароль"
+msgstr "複合化できませんでした。パスワードが正しいかご確認下さい。"
 
 msgid "Could not decrypt wallet"
 msgstr ""
 
 msgid "Could not delete payment proposal"
-msgstr "Не удалось удалить предложенный платёж"
+msgstr "送金の提案を削除できませんでした"
 
 msgid "Could not encrypt wallet"
 msgstr ""
@@ -528,205 +530,205 @@ msgid "Could not get claim code. Please contact BitPay support."
 msgstr ""
 
 msgid "Could not get dynamic fee"
-msgstr "Не удалось получить динамическую комиссию"
+msgstr "手数料の金額を取得できませんでした。"
 
 msgid "Could not get dynamic fee for level:"
-msgstr "Не удалось получить динамическую комиссию для уровня:"
+msgstr ""
 
 msgid "Could not get fee levels"
-msgstr "Не удалось получить уровни комиссии"
+msgstr "手数料のレベルを取得できませんでした。"
 
 msgid "Could not get the Addressbook"
-msgstr "Не удалось получить Адресную книгу"
+msgstr ""
 
 msgid "Could not get transactions"
-msgstr "Не удалось получить транзакции"
+msgstr "取引を取得できませんでした。"
 
 msgid "Could not import"
-msgstr "Не удалось импортировать"
+msgstr "インポートできませんでした。"
 
 msgid "Could not import. Check input file."
-msgstr "Не удалось импортировать. Проверьте импортируемый файл."
+msgstr ""
 
 msgid "Could not join wallet"
-msgstr "Не удалось присоединиться к кошельку"
+msgstr "ウォレットに参加できませんでした。"
 
 msgid "Could not reject payment"
-msgstr "Не удалось отклонить платёж"
+msgstr "送金を却下できませんでした。"
 
 msgid "Could not save preferences on the server"
-msgstr "Не удалось сохранить параметры на сервере"
+msgstr "設定をサーバーと同期できませんでした。"
 
 msgid "Could not send transaction"
-msgstr "Не удалось отправить транзакцию"
+msgstr "取引が送れませんでした"
 
 msgid "Could not update transaction history"
-msgstr "Не удалось обновить журнал транзакций"
+msgstr "取引履歴を更新できませんでした。"
 
 msgid "Could not update wallet"
-msgstr "Не удалось обновить кошелёк"
+msgstr "ウォレットが更新できませんでした。"
 
 msgid "Create a new wallet"
-msgstr "Создать новый кошелек"
+msgstr ""
 
 msgid "Create a new wallet to start using this app."
 msgstr ""
 
 msgid "Create bitcoin wallet"
-msgstr "Создать биткойн-кошелёк"
+msgstr "ビットコインウォレット作成"
 
 msgid "Create personal wallet"
-msgstr "Создать личный кошелек"
+msgstr ""
 
 msgid "Create shared wallet"
-msgstr "Создать общий кошелёк"
+msgstr "共有ウォレットを作成"
 
 msgid "Create wallet"
-msgstr "Создать кошелек"
+msgstr ""
 
 msgid "Created"
-msgstr "Создан"
+msgstr ""
 
 msgid "Created by"
-msgstr "Создан"
+msgstr "作成者"
 
 msgid "Creating Gift Card..."
-msgstr "Создание Подарочной Карты..."
+msgstr ""
 
 msgid "Creating Wallet..."
-msgstr "Создание кошелька..."
+msgstr "ウォレット作成中…"
 
 msgid "Creating transaction..."
-msgstr "Создание транзакции..."
+msgstr ""
 
 msgid "Current Cards"
 msgstr ""
 
 msgid "Current fee rate for this policy"
-msgstr "Текущая комиссия для этой политики"
+msgstr "この設定の現在の手数料レート"
 
 msgid "Custom"
-msgstr "Пользовательское"
+msgstr "カスタム設定"
 
 msgid "Date"
-msgstr "Дата"
+msgstr "日付"
 
 msgid "Delete"
-msgstr "Удалить"
+msgstr "削除する"
 
 msgid "Delete Payment Proposal"
-msgstr "Удалить предложенный платёж"
+msgstr "送金の提案を削除"
 
 msgid "Delete Wallet"
-msgstr "Удалить кошелёк"
+msgstr "ウォレットを削除"
 
 msgid "Delete it and create a new one"
-msgstr "Удалите и создайте заново"
+msgstr "削除して新規作成"
 
 msgid "Deleting Wallet..."
-msgstr "Удаление кошелька..."
+msgstr "ウォレット削除中…"
 
 msgid "Deleting payment proposal..."
-msgstr "Удаление заявки на платеж..."
+msgstr ""
 
 msgid "Delta Gift Cards can be used toward airfare on any Delta marketed flight through www.delta.com, at the airport, through reservations, or by phone with Delta Vacations®. Delta Gift Cards do not have any expiration dates or fees."
 msgstr ""
 
 msgid "Deposit"
-msgstr "Депозит"
+msgstr ""
 
 msgid "Deposit Max"
-msgstr "Максимальный депозит"
+msgstr ""
 
 msgid "Deposit Min"
-msgstr "Минимальный депозит"
+msgstr ""
 
 msgid "Derivation Strategy"
-msgstr "Стратегия деривации"
+msgstr "派生パス"
 
 msgid "Derivation path"
-msgstr "Путь деривации"
+msgstr ""
 
 msgid "Details"
-msgstr "Подробности"
+msgstr "詳細"
 
 msgid "Disable notifications"
-msgstr "Отключить уведомления"
+msgstr ""
 
 msgid "Disabled"
-msgstr "Отключено"
+msgstr ""
 
 msgid "Do it later"
-msgstr "Отложить"
+msgstr "後で行う"
 
 msgid "Do not include private key"
-msgstr "Не включать закрытый ключ"
+msgstr ""
 
 msgid "Do you want to verify your account now?"
 msgstr ""
 
 msgid "Don't see your language on Crowdin? Contact the Owner on Crowdin! We'd love to support your language."
-msgstr "Не видите свой язык на Crowdin? Свяжитесь с владельцем по Crowdin! Мы с удовольствием поддержим ваш язык."
+msgstr "ご自分の言語はCrowdinで見当たりませんか？Crowdinの管理者に連絡とってみてください。是非とも対応したく思っております。"
 
 msgid "Done"
-msgstr "Готово"
+msgstr ""
 
 msgid "Download"
-msgstr "Скачать"
+msgstr "ダウンロード"
 
 msgid "Download logs"
 msgstr ""
 
 msgid "Duplicating wallet..."
-msgstr "Дублирование кошелька..."
+msgstr "ウォレットを複製しています..."
 
 msgid "Each bitcoin wallet can generate billions of addresses from your 12-word recovery phrase. A new address is automatically generated and shown each time you receive a payment."
 msgstr ""
 
 msgid "Economy"
-msgstr "Экономичная"
+msgstr "節約"
 
 msgid "Edit"
-msgstr "Редактировать"
+msgstr "編集"
 
 msgid "Email"
-msgstr "Email"
+msgstr "電子メール"
 
 msgid "Empty addresses limit reached. New addresses cannot be generated."
-msgstr "Достигнут предел пустых адресов. Новые адреса больше не могут быть сгенерированы."
+msgstr "未使用アドレスを生成しすぎたため、これ以上アドレスを生成することができません。"
 
 msgid "Enable camera access in your device settings to get started."
-msgstr "Чтобы начать, разрешите доступ к камере в настройках вашего устройства."
+msgstr "端末の設定でカメラの使用許可をしないとスキャンができません。"
 
 msgid "Enable desktop notifications"
 msgstr ""
 
 msgid "Enable email notifications"
-msgstr "Включить email-уведомления"
+msgstr "メール通知を有効化"
 
 msgid "Enable in-app notification"
 msgstr ""
 
 msgid "Enable push notifications"
-msgstr "Включить push-уведомления"
+msgstr "プッシュ通知を有効化"
 
 msgid "Enable the camera to get started."
-msgstr "Чтобы начать, включите камеру."
+msgstr "始めるためにカメラを有効にして下さい。"
 
 msgid "Encryption can protect your funds if this device is stolen or compromised by malicious software."
-msgstr "Шифрование может защитить ваши средства, если это устройство будет украдено или скомпрометировано вредоносным программным обеспечением."
+msgstr ""
 
 msgid "Enter Amount"
 msgstr ""
 
 msgid "Enter Two Factor for your BitPay account"
-msgstr "Введите Двухфакторною аутентификацию вашей учётной записи BitPay"
+msgstr ""
 
 msgid "Enter a new encrypt password"
-msgstr "Введите новый пароль шифрования"
+msgstr ""
 
 msgid "Enter a password to encrypt your wallet"
-msgstr "Введите пароль, чтобы зашифровать ваш кошелек"
+msgstr ""
 
 msgid "Enter a transaction memo"
 msgstr ""
@@ -735,115 +737,115 @@ msgid "Enter bitcoin address"
 msgstr ""
 
 msgid "Enter custom fee in sat/byte"
-msgstr "Введите персонализированную комиссию в sat/byte"
+msgstr ""
 
 msgid "Enter email address"
 msgstr ""
 
 msgid "Enter encrypt password"
-msgstr "Введите зашифрованный пароль"
+msgstr ""
 
 msgid "Enter wallet invitation"
-msgstr "Введите приглашение кошелька"
+msgstr ""
 
 msgid "Enter wallet name"
-msgstr "Введите название кошелька"
+msgstr ""
 
 msgid "Enter your encrypt password again to confirm"
-msgstr "Введите ваш зашифрованый пароль еще раз для подтверждения"
+msgstr ""
 
 msgid "Enter your name"
-msgstr "Введите ваше имя"
+msgstr ""
 
 msgid "Entry already exist"
-msgstr "Запись уже существует"
+msgstr ""
 
 msgid "Entry does not exist"
-msgstr "Запись не существует"
+msgstr ""
 
 msgid "Error"
-msgstr "Ошибка"
+msgstr "エラー"
 
 msgid "Error adding new entry"
-msgstr "Ошибка при добавлении новой записи"
+msgstr ""
 
 msgid "Error connecting to ShapeShift"
 msgstr ""
 
 msgid "Error creating wallet"
-msgstr "Ошибка создания кошелька"
+msgstr "ウォレット作成時にエラー"
 
 msgid "Error deleting addressbook"
-msgstr "Ошибка при удалении адресной книги"
+msgstr ""
 
 msgid "Error deleting entry"
-msgstr "Ошибка при удалении записи"
+msgstr ""
 
 msgid "Error getting SendMax information"
-msgstr "Ошибка при получении информации SendMax"
+msgstr "全額送金データ取得時にエラー"
 
 msgid "Error getting fee rate"
 msgstr ""
 
 msgid "Error in Payment Protocol"
-msgstr "Ошибка в протоколе оплаты"
+msgstr "支払い検証のエラー"
 
 msgid "Error pairing BitPay Account"
-msgstr "Ошибка при подключении к учётной записи BitPay"
+msgstr "BitPayアカウントを接続中にエラー"
 
 msgid "Error scanning funds:"
-msgstr "Ошибка сканирования кошелька:"
+msgstr "残高確認に失敗しました"
 
 msgid "Error sweeping wallet:"
-msgstr "Ошибка считывания кошелька:"
+msgstr "ペーパーウォレット出金時にエラー"
 
 msgid "Error updating Debit Cards"
-msgstr "Ошибка обновления Дебетовых Карт"
+msgstr "デビットカードの更新エラー"
 
 msgid "Exceeded daily limit of $500 per user"
-msgstr "Превышен дневной лимит в 500$ на пользователя"
+msgstr "ユーザーの1日当たりの制限 500 米ドルを超えました"
 
 msgid "Expired"
-msgstr "Истекла"
+msgstr "期限切れ"
 
 msgid "Expires"
-msgstr "истёк"
+msgstr "有効期限："
 
 msgid "Export Wallet"
-msgstr "Экспорт кошелька"
+msgstr "ウォレットをエクスポート"
 
 msgid "Export to file"
-msgstr "Экспорт в файл"
+msgstr "ファイルへのエクスポート"
 
 msgid "Export wallet"
-msgstr "Экспорт кошелька"
+msgstr "ウォレットをエクスポート"
 
 msgid "Exporting via QR not supported for this wallet"
-msgstr "Экспорт QR-кодом не поддерживается для этого кошелька"
+msgstr "このウォレットはQRによるエクスポートに対応していません"
 
 msgid "Extended Private Key"
-msgstr "Продлённый частный ключ"
+msgstr "拡張秘密鍵"
 
 msgid "Extended Public Keys"
-msgstr "Расширенные открытые ключи"
+msgstr "拡張公開鍵"
 
 msgid "Extracting Wallet information..."
-msgstr "Извлечение информации о кошельке..."
+msgstr "ウォレット情報を抽出中…"
 
 msgid "Failed"
-msgstr "Неудачно"
+msgstr ""
 
 msgid "Failed to export"
-msgstr "Не удалось экспортировать"
+msgstr "エクスポートに失敗しました。"
 
 msgid "Fee"
-msgstr "Комиссия"
+msgstr "手数料"
 
 msgid "Fee level"
-msgstr "Уровень комиссии"
+msgstr ""
 
 msgid "Fee level is not defined"
-msgstr "Уровень комиссии не определен"
+msgstr "手数料レベルが定義されていません"
 
 msgid "Fee rate"
 msgstr ""
@@ -852,64 +854,64 @@ msgid "Feedback"
 msgstr ""
 
 msgid "Feedback could not be submitted. Please try again later."
-msgstr "Отзыв не может быть отправлен. Пожалуйста, попробуйте позже."
+msgstr "フォームを送信する事ができませんでした。時間をおいて再試行ください。"
 
 msgid "Feedback!"
 msgstr ""
 
 msgid "Fetching BitPay Account..."
-msgstr "Подключение учетной записи BitPay..."
+msgstr "BitPay アカウントを取得..."
 
 msgid "Fetching BitPay Cards..."
 msgstr ""
 
 msgid "Fetching payment information..."
-msgstr "Получение информации о платеже..."
+msgstr ""
 
 msgid "File/Text"
-msgstr "Файл/Текст"
+msgstr ""
 
 msgid "Fingerprint"
-msgstr "Отпечаток пальца"
+msgstr ""
 
 msgid "Found something broken? Please report it as a bug. If you need immediate help with a problem you are having, then get help by contacting our support team."
 msgstr ""
 
 msgid "From"
-msgstr "От"
+msgstr "送信者"
 
 msgid "From BitPay account"
-msgstr "С аккаунта BitPay"
+msgstr " BitPayアカウントから"
 
 msgid "From the destination device, go to Add wallet > Import wallet and scan this QR code"
-msgstr "На целевом устройстве выберите \"Добавить кошелёк\" > \"Импорт кошелька\" и отсканируйте этот QR-код"
+msgstr ""
 
 msgid "Funds Will Not Be Accessible"
 msgstr ""
 
 msgid "Funds are locked by pending spend proposals"
-msgstr "Средства заблокированы предложенным платежом"
+msgstr "協議中の送金の提案により、資金がロックされています。"
 
 msgid "Funds found"
-msgstr "Средства найдены"
+msgstr ""
 
 msgid "Funds to be added"
-msgstr "Будут добавлены средства"
+msgstr "追加する資金"
 
 msgid "Funds were added to debit card"
-msgstr "Средства были добавлены на дебетовую карту"
+msgstr "デビットカードへ入金されました"
 
 msgid "Funds will be transferred to"
-msgstr "Средства будут переведены на"
+msgstr "送金先"
 
 msgid "GOT IT"
 msgstr ""
 
 msgid "Generating .csv file..."
-msgstr "Создание .сsv-файла..."
+msgstr "CSVファイル作成中…"
 
 msgid "Generating new address..."
-msgstr "Генерация нового адреса..."
+msgstr "新規アドレスを生成中..."
 
 msgid "Get Help"
 msgstr ""
@@ -921,19 +923,19 @@ msgid "Get local cash anywhere you go, from any Visa® compatible ATM. ATM bank 
 msgstr ""
 
 msgid "Get news and updates from BitPay"
-msgstr "Получать письма с новостями от BitPay"
+msgstr "BitPay からのニュースや更新情報を受け取ります。"
 
 msgid "Get started"
-msgstr "Начать"
+msgstr "始めよう"
 
 msgid "Get started by adding your first one."
-msgstr "Начните, добавив первый контакт."
+msgstr "初めての連絡先を追加しましょう。"
 
 msgid "Getting fee levels..."
-msgstr "Получение информации о комиссиях..."
+msgstr "手数料レベルを取得しています…"
 
 msgid "Gift Card"
-msgstr "Подарочная Карта"
+msgstr "ギフトカード"
 
 msgid "Gift card canceled"
 msgstr ""
@@ -948,13 +950,13 @@ msgid "Give us feedback"
 msgstr ""
 
 msgid "Go Back"
-msgstr "Вернуться"
+msgstr "戻る"
 
 msgid "Go back"
-msgstr "Вернуться"
+msgstr "戻る"
 
 msgid "Got it"
-msgstr "Понял"
+msgstr "分かりました"
 
 msgid "Have you redeemed all of your {brand} Gift Cards? Archived gift cards will still be accessible in settings."
 msgstr ""
@@ -963,49 +965,49 @@ msgid "Have you redeemed the entire balance of this gift card?"
 msgstr ""
 
 msgid "Having problems with a ShapeShift?"
-msgstr "Возникли проблемы с ShapeShift?"
+msgstr ""
 
 msgid "Help & support"
-msgstr "Помощь и поддержка"
+msgstr ""
 
 msgid "Help and support information is available at the website."
-msgstr "Информация о помощи и поддержке доступна на сайте."
+msgstr "サポートに関する情報はウェブサイトに掲載しております。"
 
 msgid "Hide"
-msgstr "Спрятать"
+msgstr "非表示"
 
 msgid "Hide Balance"
-msgstr "Скрыть баланс"
+msgstr "残高を非表示"
 
 msgid "Hide advanced options"
-msgstr "Скрыть дополнительные параметры"
+msgstr "詳細設定を非表示"
 
 msgid "Home"
-msgstr "Главная"
+msgstr "ホーム"
 
 msgid "How satisfied are you with {{appName}} wallet?"
 msgstr ""
 
 msgid "I agree to the Terms and certify that I am the beneficial owner of the input assets and the destination address."
-msgstr "Я согласен с Условиями и подтверждаю, что являюсь бенефициарным владельцем вводимых активов и адреса назначения."
+msgstr ""
 
 msgid "I give explicit consent to BitPay to use my email address to send me email notifications about payments (and, if selected, email updates and news about the wallet)."
 msgstr ""
 
 msgid "I have read, understood, and agree to the Terms of Use"
-msgstr "Я прочитал, понял, и соглашаюсь с Условиями Использования"
+msgstr ""
 
 msgid "I have written it down"
-msgstr "Я записал"
+msgstr ""
 
 msgid "I understand"
-msgstr "Я понимаю"
+msgstr "承知しました"
 
 msgid "I understand that if this app is moved to another device or deleted, my bitcoin can only be recovered with the recovery phrase"
 msgstr ""
 
 msgid "I understand that my funds are held securely on this device, not by a company"
-msgstr "Я понимаю, что мои средства безопасно хранятся на данном устройстве, а не компанией"
+msgstr ""
 
 msgid "I'm disappointed"
 msgstr ""
@@ -1014,7 +1016,7 @@ msgid "I'm satisfied"
 msgstr ""
 
 msgid "I'm sure"
-msgstr "Я уверен"
+msgstr ""
 
 msgid "I'm very happy"
 msgstr ""
@@ -1026,10 +1028,10 @@ msgid "If enabled, Bitcoin Cash addresses will be shown using Copay style addres
 msgstr ""
 
 msgid "If enabled, the Recent Transactions card - a list of transactions occuring across all wallets - will appear in the Home tab."
-msgstr "Если этот параметр включен, на вкладке Обзор будет отображаться список транзакций из всех кошельков."
+msgstr "有効にした場合、「最近の取引」カードがホームのメニューに表示されます。アプリに含まれる全ウォレットの取引が一覧できるカードです。"
 
 msgid "If enabled, wallets will also try to spend unconfirmed funds."
-msgstr "Если включено, кошельки также попытаються потратить неподтвержденные средства."
+msgstr ""
 
 msgid "If this device is replaced or this app is deleted, neither you nor BitPay can recover your funds without a backup."
 msgstr ""
@@ -1053,58 +1055,58 @@ msgid "Import Words"
 msgstr ""
 
 msgid "Import wallet"
-msgstr "Импортировать кошелёк"
+msgstr "ウォレットをインポート"
 
 msgid "Importing Wallet..."
-msgstr "Импортирование кошелька..."
+msgstr "ウォレットインポート中…"
 
 msgid "In order to verify your wallet recovery phrase, please type your password."
 msgstr ""
 
 msgid "Incomplete"
-msgstr "Не все совладельцы присоединились"
+msgstr "未完成"
 
 msgid "Incorrect PIN, try again."
-msgstr "Неверный PIN-код, попробуйте снова."
+msgstr "PINが間違っています。もう一度やり直して下さい。"
 
 msgid "Incorrect network address"
-msgstr "Неправильный сетевой адресс"
+msgstr "サーバーのアドレスが不正です"
 
 msgid "Insufficient funds"
-msgstr "Недостаточно средств"
+msgstr "残高不足"
 
 msgid "Insufficient funds for fee"
-msgstr "Недостаточно средств на комиссию"
+msgstr "手数料付けるには残高が足りません"
 
 msgid "Integrations"
 msgstr ""
 
 msgid "Invalid"
-msgstr "Недействительно"
+msgstr "無効"
 
 msgid "Invalid Email"
 msgstr ""
 
 msgid "Invalid URL"
-msgstr "Неверный URL"
+msgstr "無効なURL"
 
 msgid "Invalid address"
-msgstr "Неверный адрес"
+msgstr "不正アドレス"
 
 msgid "Invalid data"
 msgstr ""
 
 msgid "Invalid derivation path"
-msgstr "Недействительный путь деривации"
+msgstr "無効な派生パス"
 
 msgid "Invitation Code"
 msgstr ""
 
 msgid "Is this correct?"
-msgstr "Правильно?"
+msgstr "正しいですか？"
 
 msgid "Is this email address correct?"
-msgstr "Это правильный email?"
+msgstr "このメールアドレスで宜しいですか？"
 
 msgid "It appears that you do not have any money to send."
 msgstr ""
@@ -1119,22 +1121,22 @@ msgid "It's important that you write your recovery phrase down correctly. If som
 msgstr ""
 
 msgid "Join shared wallet"
-msgstr "Присоединиться к общему кошельку"
+msgstr "共有ウォレットに参加"
 
 msgid "Join wallet"
-msgstr "Присоединяйтесь к бумажнику"
+msgstr ""
 
 msgid "Joining Wallet..."
-msgstr "Присоединение к кошельку..."
+msgstr "ウォレット参加中…"
 
 msgid "Just scan the code to pay."
-msgstr "Для совершения оплаты достаточно отсканировать QR-код."
+msgstr "コードを読み取って送金できます"
 
 msgid "Key already associated with an existing wallet"
-msgstr "Ключ уже связан с существующим кошельком"
+msgstr "この鍵は既存のウォレットにて登録されています"
 
 msgid "Language"
-msgstr "Язык"
+msgstr "言語設定"
 
 msgid "Last Month"
 msgstr ""
@@ -1143,58 +1145,58 @@ msgid "Learn More"
 msgstr ""
 
 msgid "Learn more"
-msgstr "Узнайте больше"
+msgstr "詳細情報"
 
 msgid "Learn more about testnet blockchain"
-msgstr "Узнайте больше о тестнет блокчайн"
+msgstr ""
 
 msgid "Let's verify your recovery phrase."
 msgstr ""
 
 msgid "Linked"
-msgstr "Связанo"
+msgstr ""
 
 msgid "Loading addresses..."
-msgstr "Загрузка адресов..."
+msgstr "アドレスを読み込んでいます..."
 
 msgid "Loading transaction info..."
-msgstr "Загрузка транзакции..."
+msgstr "取引情報の読み込み中..."
 
 msgid "Lock"
-msgstr "Заблокировать"
+msgstr ""
 
 msgid "Locked"
-msgstr "Заблокировано"
+msgstr "ロック済み"
 
 msgid "Locktime in effect. Please wait to create a new spend proposal"
-msgstr "Действует блокировка. Пожалуйста, подождите, чтобы предложить новый платёж"
+msgstr "Locktime待ち中です。新しい送金の提案が作成できるまであとしばらくお待ち下さい。"
 
 msgid "Locktime in effect. Please wait to remove this spend proposal"
-msgstr "Действует блокировка. Пожалуйста, подождите, чтобы удалить предложенный платёж"
+msgstr "Locktime待ち中です。この送金の提案が削除できるまであとしばらくお待ち下さい。"
 
 msgid "Low Fee"
 msgstr ""
 
 msgid "Low amount inputs"
-msgstr "Низкое количество входов"
+msgstr "少額の入力"
 
 msgid "Makes sense"
-msgstr "Вполне разумно"
+msgstr "わかりました"
 
 msgid "Maximum amount allowed is {{max}}"
-msgstr "Максимальное допустимое количество {{max}}"
+msgstr ""
 
 msgid "Me"
-msgstr "Я"
+msgstr "自分"
 
 msgid "Memo"
-msgstr "Памятка"
+msgstr "メモ"
 
 msgid "Merchant Message"
-msgstr "Сообщение от продавца"
+msgstr "お店からのメッセージ："
 
 msgid "Merchant fee too high. Payment rejected"
-msgstr "Торговые сборы слишком высокие. Оплата отклоняется"
+msgstr ""
 
 msgid "Miner Fee"
 msgstr ""
@@ -1203,28 +1205,28 @@ msgid "Miner Fee Notice"
 msgstr ""
 
 msgid "Miner fee"
-msgstr "Комиссия майнера"
+msgstr ""
 
 msgid "Minimum amount required is {{min}}"
-msgstr "Минимальная необходимая сумма {{min}}"
+msgstr ""
 
 msgid "Missing parameter"
-msgstr "Недостающий параметр"
+msgstr "不足しているパラメータ"
 
 msgid "Missing private keys to sign"
-msgstr "Отсутствуют закрытые ключи для подписи"
+msgstr "署名するための秘密鍵がありません。"
 
 msgid "Mmm..."
 msgstr ""
 
 msgid "More"
-msgstr "Больше"
+msgstr ""
 
 msgid "Moved"
-msgstr "Перемещено"
+msgstr "移動済"
 
 msgid "Moved Funds"
-msgstr "Перемещённые средства"
+msgstr "資金を移動済み"
 
 msgid "Moving"
 msgstr ""
@@ -1239,97 +1241,97 @@ msgid "NOTE: To import a wallet from a 3rd party software, please go to Add Wall
 msgstr ""
 
 msgid "Name"
-msgstr "Название"
+msgstr "名前"
 
 msgid "Name (at creation)"
-msgstr "Название (при создании)"
+msgstr ""
 
 msgid "Needs Backup"
 msgstr ""
 
 msgid "Needs backup"
-msgstr "Необходимо создание резервной копии"
+msgstr ""
 
 msgid "Network"
-msgstr "Сеть"
+msgstr ""
 
 msgid "Network Cost"
 msgstr ""
 
 msgid "Network cost"
-msgstr "Стоимость сети"
+msgstr ""
 
 msgid "Network error"
-msgstr "Ошибка сети"
+msgstr "ネットワークにエラーが発生した"
 
 msgid "New Proposal"
-msgstr "Предложить платёж"
+msgstr "新しい提案"
 
 msgid "New wallet"
-msgstr "Новый кошелек"
+msgstr ""
 
 msgid "New {appName} desktop platform"
 msgstr ""
 
 msgid "No"
-msgstr "Нет"
+msgstr ""
 
 msgid "No Private Key"
 msgstr ""
 
 msgid "No backup, no bitcoin."
-msgstr "Нет резервной копии - нет биткойнов."
+msgstr "バックアップは非常に重要です！"
 
 msgid "No contacts yet"
-msgstr "Нет контактов"
+msgstr "連絡先が無い"
 
 msgid "No entries for this log level"
-msgstr "Нет записей для этого уровня журнала"
+msgstr "このレベルのログのエントリーがありません。"
 
 msgid "No funds found"
-msgstr "Cредства не обнаружены"
-
-msgid "No password"
-msgstr "Нет пароля"
-
-msgid "No pending proposals"
-msgstr "Нет предложенных платежей"
-
-msgid "No private key"
-msgstr "Нет закрытого ключа"
-
-msgid "No signing proposal: No private key"
 msgstr ""
 
+msgid "No password"
+msgstr ""
+
+msgid "No pending proposals"
+msgstr "保留中の提案はありません"
+
+msgid "No private key"
+msgstr ""
+
+msgid "No signing proposal: No private key"
+msgstr "提案に署名できない：秘密鍵がありません"
+
 msgid "No wallet found"
-msgstr "Кошельки не обнаружены"
+msgstr "ウォレットが見つかりません"
 
 msgid "No wallets available"
-msgstr "Нет доступных кошельков"
+msgstr "利用可能なウォレットがありません"
 
 msgid "No wallets available to receive funds"
-msgstr "Некуда перевести средства"
+msgstr "ペーパーウォレットの出金を受け取るためのウォレットが入っていません。"
 
 msgid "No wallets available to use ShapeShift"
-msgstr "Нет доступных кошельков для использования ShapeShift"
+msgstr ""
 
 msgid "No wallets with funds"
-msgstr "Нет кошельков с фондами"
+msgstr ""
 
 msgid "Normal"
-msgstr "Обычная"
+msgstr "通常"
 
 msgid "Not authorized"
-msgstr "Не авторизован"
+msgstr "権限がありません。"
 
 msgid "Not enough funds"
 msgstr ""
 
 msgid "Not enough funds for fee"
-msgstr "Недостаточно средств для уплаты комиссии"
+msgstr "手数料含めたら残高が不足しています。"
 
 msgid "Not even BitPay can access it."
-msgstr "BitPay не сможет получить доступ самостоятельно."
+msgstr "BitPayは管理できない。"
 
 msgid "Not including the private key allows to check the wallet balance, transaction history, and create spend proposals from the export. However, does not allow to approve (sign) proposals, so funds will not be accessible from the export."
 msgstr ""
@@ -1341,46 +1343,46 @@ msgid "Not set"
 msgstr ""
 
 msgid "Not valid bitcoin address"
-msgstr "Недействительный биткойн адрес"
-
-msgid "Note"
-msgstr "Примечание"
-
-msgid "Note: if this BCH wallet was duplicated from a BTC wallet, they share the same recovery phrase."
 msgstr ""
 
+msgid "Note"
+msgstr "メモ"
+
+msgid "Note: if this BCH wallet was duplicated from a BTC wallet, they share the same recovery phrase."
+msgstr "注意: このビットコインキャッシュウォレットがビットコインウォレットからの複製の場合、復元フレーズは一緒です。"
+
 msgid "Notifications"
-msgstr "Уведомления"
+msgstr "通知設定"
 
 msgid "Notifications by email"
-msgstr "Уведомления по электронной почте"
+msgstr "メール通知"
 
 msgid "Notify me if confirmed"
-msgstr "Сообщите мне если подтверждено"
+msgstr "取引承認時に通知"
 
 msgid "Notify me when transactions are confirmed"
-msgstr "Уведомить меня, когда транзакции подтверждены"
+msgstr "取引が承認されたら通知する。"
 
 msgid "Now is a perfect time to assess your surroundings. Nearby windows? Hidden cameras? Shoulder-spies?"
-msgstr "Самое время оценить окружение. Окна поблизости? Скрытые камеры? Плечешпионы?"
+msgstr "今一度周りの環境をよく見てみましょう。隠しカメラ、窓、覗いてくる人などありませんか？"
 
 msgid "OK"
-msgstr "ХОРОШО"
+msgstr "OK"
 
 msgid "Off"
-msgstr "Выключено"
+msgstr ""
 
 msgid "Ok"
-msgstr "Хорошо"
+msgstr "OK"
 
 msgid "On"
-msgstr "Включено"
+msgstr ""
 
 msgid "On this screen you can see all your wallets, accounts, and assets."
-msgstr "На этой вкладке вы можете видеть все ваши кошельки, учетные записи и активы."
+msgstr "この画面では、全てのウォレット、アカウント、資産が閲覧できます。"
 
 msgid "Only redeemable on Mercado Livre (Brazil)"
-msgstr "Только для использования в \"Mercado Livre\" (Бразилия)"
+msgstr ""
 
 msgid "Only redeemable on www.amazon.co.jp (Japan website)"
 msgstr ""
@@ -1389,40 +1391,40 @@ msgid "Only redeemable on www.amazon.com (USA website)"
 msgstr ""
 
 msgid "Open"
-msgstr "Открыть"
+msgstr "開く"
 
 msgid "Open Crowdin"
-msgstr "Открыть Crowdin"
+msgstr "Crowdinを開く"
 
 msgid "Open GitHub"
-msgstr "Открытые GitHub"
+msgstr "GitHubを開く"
 
 msgid "Open GitHub Project"
-msgstr "Откройте проект GitHub"
+msgstr "GitHub のプロジェクトを開く"
 
 msgid "Open Insight"
-msgstr "Открыть Insight"
+msgstr "Insightを開く"
 
 msgid "Open Translation Community"
-msgstr "Редактировать перевод"
+msgstr "翻訳ページを開く"
 
 msgid "Open settings"
-msgstr "Открыть настройки"
+msgstr ""
 
 msgid "Open website"
-msgstr "Открыть сайт"
+msgstr "サイトを開く"
 
 msgid "Order the BitPay Card"
-msgstr "Заказать BitPay карту"
+msgstr ""
 
 msgid "Ouch!"
-msgstr "Ой!"
+msgstr ""
 
 msgid "PIN"
-msgstr "PIN-код"
+msgstr ""
 
 msgid "Password"
-msgstr "Пароль"
+msgstr "パスワード"
 
 msgid "Password Not Recoverable"
 msgstr ""
@@ -1431,10 +1433,10 @@ msgid "Password mismatch"
 msgstr ""
 
 msgid "Password required. Make sure to enter your password in advanced options"
-msgstr "Необходим пароль. Убедитесь, что вы ввели ваш пароль в дополнительных настройках"
+msgstr "パスワードが必要です。上級者向け設定にてパスワードを入力してください。"
 
 msgid "Passwords do not match"
-msgstr "Пароли не совпадают"
+msgstr ""
 
 msgid "Paste the backup plain text code"
 msgstr ""
@@ -1443,34 +1445,34 @@ msgid "Paste this code on {cardConfig.website}. This gift card cannot be recover
 msgstr ""
 
 msgid "Pay 0% fees to turn bitcoin into dollars."
-msgstr "Платите нулевую комиссию за конвертацию биткойн в доллары США."
+msgstr "0% 手数料でビットコインを米ドルに替える"
 
 msgid "Pay To"
-msgstr "Отправить платёж"
+msgstr "支払い先"
 
 msgid "Payment Accepted"
-msgstr "Платёж принят"
+msgstr "支払いが完了しました"
 
 msgid "Payment Expires:"
-msgstr "Платёж истекает:"
+msgstr "支払い請求の有効期限:"
 
 msgid "Payment Proposal"
-msgstr "Предложенный платёж"
+msgstr "送金の提案"
 
 msgid "Payment Proposals"
-msgstr "Предложенные платежи"
+msgstr "送金の提案"
 
 msgid "Payment Protocol Invalid"
-msgstr "Недействительный протокол оплаты"
+msgstr "ペイメントプロトコルが不正です。"
 
 msgid "Payment Published"
-msgstr "Оплата опубликована"
+msgstr ""
 
 msgid "Payment Received"
-msgstr "Платёж получен"
+msgstr "送金が受領されました"
 
 msgid "Payment Rejected"
-msgstr "Платёж отклонён"
+msgstr "送金が却下されました"
 
 msgid "Payment Request"
 msgstr ""
@@ -1479,115 +1481,118 @@ msgid "Payment Request info"
 msgstr ""
 
 msgid "Payment Sent"
-msgstr "Платёж отправлен"
+msgstr "送金が完了しました"
 
 msgid "Payment URL"
 msgstr ""
 
 msgid "Payment accepted, but not yet broadcasted"
-msgstr "Платёж принят, но пока не отправлен"
+msgstr "取引が承認されましたが、まだ送信していません。"
 
 msgid "Payment accepted. It will be broadcasted by Glidera. In case there is a problem, it can be deleted 6 hours after it was created."
-msgstr "Платёж принят и будет отправлен Glidera. В случае проблем он может быть удалён спустя шесть часов после создания."
+msgstr "取引が承認されました。Glideraより送信されます。問題があった場合、送金命令を出す６時間以内に取り消すことができます。"
 
 msgid "Payment request"
-msgstr "Запрос платежа"
+msgstr "支払い請求"
 
 msgid "Pending"
-msgstr "В ожидание"
+msgstr "未決"
 
 msgid "Pending Proposals"
-msgstr "Рассматриваемые платежи"
+msgstr "保留中の提案"
 
 msgid "Permanently delete this wallet."
-msgstr "Навсегда удалить этот кошелёк."
+msgstr "ウォレットを完全に削除する"
 
 msgid "Personal Wallet"
-msgstr "Личный кошелёк"
+msgstr "個人用ウォレット"
 
 msgid "Plain URL"
 msgstr ""
 
 msgid "Please carefully write down this phrase."
-msgstr "Внимательно запишите ключевое словосочетание."
+msgstr "丁寧に復元フレーズを紙に書き留めて下さい"
 
 msgid "Please complete your account verification on ShapeShift website."
 msgstr ""
 
 msgid "Please connect a camera to get started."
-msgstr "Чтобы начать, подключите камеру."
+msgstr "始めるためにカメラを接続して下さい。"
 
 msgid "Please enter the recovery phrase"
-msgstr "Введите ключевое словосочетание"
+msgstr "復元フレーズをご入力下さい"
 
 msgid "Please enter the wallet recovery phrase"
-msgstr "Введите ключевое словосочетание кошелька"
+msgstr "復元フレーズをご入力下さい"
 
 msgid "Please enter your PIN"
-msgstr "Пожалуйста, введите ПИН-код"
+msgstr ""
 
 msgid "Please tap each word in the correct order."
-msgstr "Тапните каждое слово в правильном порядке."
+msgstr "正しい順序で各単語をタップしてください。"
 
 msgid "Please upgrade Copay to perform this action"
-msgstr "Пожалуйста, обновите Copay для выполнения этого действия"
+msgstr "この操作を実行するにはCopayを最新バージョンに更新してください"
 
 msgid "Please wait..."
-msgstr "Пожалуйста, подождите..."
+msgstr ""
 
 msgid "Please, enter the amount"
 msgstr ""
 
 msgid "Please, select your backup file"
-msgstr "Пожалуйста, выберите ваш файл резервной копии"
+msgstr "バックアップファイルを選択"
 
 msgid "Pre-Auth Holds"
-msgstr ""
+msgstr "承認前の保留"
 
 msgid "Preferences"
-msgstr "Параметры"
+msgstr "設定"
 
 msgid "Preparing addresses..."
-msgstr "Подготовка адресов..."
+msgstr "アドレスを処理中…"
 
 msgid "Preparing backup..."
-msgstr "Подготовка резервной копии..."
+msgstr "バックアップを準備中..."
+
+msgid "Print"
+msgstr ""
 
 msgid "Priority"
-msgstr "Приоритетная"
+msgstr "優先"
 
 msgid "Privacy Policy"
-msgstr "Политика конфиденциальности"
+msgstr ""
 
 msgid "Privacy Policy update"
-msgstr "Обновление Политики Конфиденциальности"
+msgstr ""
 
 msgid "Private Key"
-msgstr "Приватный ключ"
+msgstr "秘密鍵"
 
 msgid "Private key encrypted. Enter password"
-msgstr "Приватный ключ зашифрован. Введите пароль"
+msgstr "秘密鍵は暗号化されています。復号化パスワードを入力して下さい。"
 
 msgid "Private key is encrypted, cannot sign"
-msgstr "Закрытый ключ зашифрован, не удалось подписать"
+msgstr "秘密鍵が暗号化されており署名できません。"
 
 msgid "Proposal Accepted"
-msgstr "Платёж принят"
+msgstr "提案が承諾されました"
 
 msgid "Proposal Created"
-msgstr "Платёж создан"
+msgstr "提案が作成されました"
 
 msgid "Proposal Deleted"
-msgstr "Платёж удалён"
+msgstr "提案が削除されました"
 
 msgid "Proposal Rejected"
-msgstr "Платёж отклонён"
+msgstr "提案が却下されました"
 
 msgid "Proposal created"
-msgstr "Предложение создано"
+msgstr ""
 
 msgid "Proposals"
-msgstr "Предложенные платежи"
+msgstr "提案"
 
 msgid "Purchase Limit Reached"
 msgstr ""
@@ -1596,64 +1601,67 @@ msgid "Purchased Brands"
 msgstr ""
 
 msgid "Push notifications for {{appName}} are currently disabled. Enable them in the Settings app."
-msgstr "Push-уведомления для {{appName}} в настоящее время отключены. Включите их в Параметрах."
+msgstr "{{appName}}のプッシュ通知は現在無効です。アプリ設定で有効にします。"
 
 msgid "QR Code"
-msgstr "QR-код"
+msgstr ""
+
+msgid "QR code to recover wallet {{walletName}}"
+msgstr ""
 
 msgid "Quick review!"
-msgstr "Быстрый просмотр!"
+msgstr "おさらい！"
 
 msgid "Random"
-msgstr "Случайное"
+msgstr ""
 
 msgid "Rate"
-msgstr "Курс"
+msgstr ""
 
 msgid "Rate on the {storeName}"
 msgstr ""
 
 msgid "Read more in our Wiki"
-msgstr "Подробнее читайте в нашей Wiki"
+msgstr "詳しくはwikiでお読みください"
 
 msgid "Read more in our support page"
-msgstr "Подробнее читайте в нашей странице поддержки"
+msgstr ""
 
 msgid "Receipt Email"
 msgstr ""
 
 msgid "Receive"
-msgstr "Получить"
+msgstr "受取"
 
 msgid "Received"
-msgstr "Получено"
+msgstr "受取済み"
 
 msgid "Received Funds"
-msgstr "Полученные средства"
+msgstr "受領した資金"
 
 msgid "Receiving"
-msgstr "Получение"
+msgstr "受け取り中"
 
 msgid "Receiving {coinName} address"
 msgstr ""
 
 msgid "Recent"
-msgstr "Недавние"
+msgstr "履歴"
 
 msgid "Recent Transaction Card"
-msgstr "Недавние транзакции"
+msgstr "最近の取引カード"
 
 msgid "Recent Transactions"
-msgstr "Недавние транзакции"
+msgstr "最近の取引"
 
 msgid "Recipient"
-msgstr "Получатель"
+msgstr "受取人"
 
 msgid "Recovery Phrase"
-msgstr "Фраза для восстановления кошелька"
+msgstr ""
 
 msgid "Recreating Wallet..."
-msgstr "Воссоздаю кошелёк..."
+msgstr "ウォレットを再作成中…"
 
 msgid "Redeem Now"
 msgstr ""
@@ -1665,19 +1673,19 @@ msgid "Reject Payment Proposal"
 msgstr ""
 
 msgid "Rejected"
-msgstr "Отклонён"
+msgstr "却下済み"
 
 msgid "Rejecting payment proposal..."
 msgstr ""
 
 msgid "Release information"
-msgstr "Информация о выпуске"
+msgstr "リリース情報"
 
 msgid "Remove"
-msgstr "Удалить"
+msgstr "削除"
 
 msgid "Repeat the password"
-msgstr "Повторите пароль"
+msgstr "パスワードの再入力"
 
 msgid "Report an Issue"
 msgstr ""
@@ -1689,13 +1697,13 @@ msgid "Report issue"
 msgstr ""
 
 msgid "Request Encrypt Password"
-msgstr "Запросить зашифр. пароль"
+msgstr ""
 
 msgid "Request Fingerprint"
-msgstr "Запрос отпечатка пальца"
+msgstr "指紋を要求"
 
 msgid "Request Specific Amount"
-msgstr "Запросить определенную сумму"
+msgstr ""
 
 msgid "Request a Feature"
 msgstr ""
@@ -1707,211 +1715,213 @@ msgid "Request feature"
 msgstr ""
 
 msgid "Required number of signatures"
-msgstr "Требуемое число подписей"
+msgstr ""
 
 msgid "Restore from backup"
-msgstr "Восстановить из резервной копии"
+msgstr "バックアップから復元"
 
 msgid "Retrieving inputs information..."
-msgstr "Ошибка при получении информации SendMax"
+msgstr ""
 
 msgid "Retry"
-msgstr "Повторить попытку"
+msgstr ""
 
 msgid "Retry camera"
-msgstr "Retry camera"
+msgstr ""
 
 msgid "Save"
-msgstr "Сохранить"
+msgstr "保存"
 
 msgid "Scan"
-msgstr "Сканировать"
+msgstr "スキャン"
 
 msgid "Scan QR Codes"
-msgstr "Сканирование QR-кодов"
+msgstr "QRコードを読み取る"
 
 msgid "Scan addresses for funds"
-msgstr "Просканировать адреса для обнаружения средств"
+msgstr "アドレスの残高照会"
 
 msgid "Scan again"
-msgstr "Oтсканируйте еще раз"
+msgstr "もう一度スキャンし直してください。"
 
 msgid "Scanning Wallet funds..."
-msgstr "Сканирование адресов кошелька..."
+msgstr "ウォレット残高照会中…"
 
 msgid "Scanning funds"
-msgstr "Проверка средств"
+msgstr ""
 
 msgid "Screenshots are not secure"
-msgstr "Скриншоты не безопасны"
+msgstr ""
 
 msgid "Search Transactions"
-msgstr "Поиск транзакций"
+msgstr ""
 
 msgid "Search Wallets or Contacts"
 msgstr ""
 
 msgid "Search a contact"
-msgstr "Поиск контакта"
+msgstr ""
 
 msgid "Search or enter bitcoin address"
-msgstr "Найти или ввести биткойн-адрес"
+msgstr "連絡先検索かビットコインアドレスを指定"
 
 msgid "Search your currency"
-msgstr "Найти вашу валюту"
+msgstr "通貨を検索"
 
 msgid "Security"
-msgstr "Безопасность"
+msgstr "セキュリティ"
 
 msgid "See transaction"
-msgstr "Увидеть транзакцию"
+msgstr ""
 
 msgid "Select a coin"
-msgstr "Выберите монету"
+msgstr ""
 
 msgid "Select a wallet"
-msgstr "Выберите кошелёк"
+msgstr "ウォレットを選択"
 
 msgid "Self-signed Certificate"
-msgstr "Самозаверенные сертификат"
+msgstr "自己署名証明書"
 
 msgid "Selling Bitcoin..."
-msgstr "Продажа биткойн..."
+msgstr "ビットコインを売却中..."
 
 msgid "Send"
-msgstr "Отправить"
+msgstr "送信"
 
 msgid "Send Max"
 msgstr ""
 
 msgid "Send Money"
-msgstr "Отправить деньги"
+msgstr "送金する"
 
 msgid "Send addresses by email"
-msgstr "Отправить адреса по email"
+msgstr "ビットコインアドレスをメールにて共有"
 
 msgid "Send by email"
-msgstr "Отправить на email"
+msgstr "メールで送信"
 
 msgid "Send feedback"
-msgstr "Оставить отзыв"
+msgstr ""
 
 msgid "Send from"
-msgstr "Отправить от"
+msgstr "ここから送金"
 
 msgid "Send logs by email"
 msgstr ""
 
 msgid "Send payment to this address"
-msgstr "Отправить платеж на этот адрес"
+msgstr "このアドレスへ送信して下さい"
 
 msgid "Sending"
-msgstr "Отправка"
+msgstr "送信中"
 
 msgid "Sending 2FA code..."
-msgstr "Отправка второго фактора..."
+msgstr "2段階認証コードを送信中…"
 
 msgid "Sending From"
 msgstr ""
 
 msgid "Sending feedback..."
-msgstr "Отправка отзыва..."
+msgstr "フィードバックを送信中..."
 
 msgid "Sending maximum amount"
-msgstr "Отправляю максимальную сумму"
+msgstr "全残高を送金"
 
 msgid "Sending transaction..."
-msgstr "Транзакция отправляется..."
+msgstr ""
 
 msgid "Sending {{amount}} {{unit}} from your {{name}} wallet"
-msgstr "Отправляется {{amount}} {{unit}} из вашего {{name}} кошелька"
+msgstr ""
 
 msgid "Sensitive Data"
-msgstr "Конфиденциальные данные"
+msgstr ""
 
 msgid "Sent"
-msgstr "Отправлено"
+msgstr "送金済み"
 
 msgid "Sent Funds"
-msgstr "Отправленные средства"
+msgstr "資金を送金済み"
 
 msgid "Server response could not be verified"
-msgstr "Ответ сервера не может быть проверен"
+msgstr "サーバーからの返答を検証できませんでした"
 
 msgid "Services"
-msgstr "Службы"
+msgstr "サービス"
 
 msgid "Session Log"
-msgstr "Журнал сеанса"
+msgstr "セッションのログ"
 
 msgid "Session log"
-msgstr "Журнал сеанса"
+msgstr "セッションのログ"
 
 msgid "Set up a password"
-msgstr "Задайте пароль"
+msgstr "パスワードを設定"
 
 msgid "Settings"
 msgstr ""
 
 msgid "ShapeShift is not available at this moment. Please, try again later."
-msgstr "ShapeShift в настоящий момент недоступен. Пожалуйста, повторите попытку позже."
+msgstr ""
 
 msgid "ShapeShift max limit reached"
-msgstr "Достигнуто макс. ограничение \"ShapeShift\""
+msgstr ""
 
 msgid "ShapeShift requires a minimum value of {{min}}"
 msgstr ""
 
 msgid "Share"
-msgstr "Поделиться"
+msgstr ""
 
 msgid "Share Address"
-msgstr "Поделиться Адресом"
+msgstr ""
 
 msgid "Share the love by inviting your friends."
-msgstr "Поделитесь любовью и пригласите друзей."
+msgstr "是非友達と共有して下さい"
 
 msgid "Share this QR code to receive {amount} in your wallet {name}."
 msgstr ""
 
 msgid "Share this invitation with your copayers"
-msgstr "Отправьте приглашение совладельцам кошелька"
+msgstr "ウォレット参加者に\n"
+"この招待コードを\n"
+"送って下さい。"
 
 msgid "Share {{appName}}"
-msgstr "Поделиться {{appName}}"
+msgstr ""
 
 msgid "Shop Now"
 msgstr ""
 
 msgid "Show advanced options"
-msgstr "Показать дополнительные параметры"
+msgstr "詳細設定を表示"
 
 msgid "Show all"
-msgstr "Показать все"
+msgstr ""
 
 msgid "Show in Home"
-msgstr "Показать на главной странице"
+msgstr ""
 
 msgid "Sign Up for ShapeShift"
 msgstr ""
 
 msgid "Signatures rejected by server"
-msgstr "Подписи отклонены сервером"
+msgstr "サーバーより署名が却下されました。"
 
 msgid "Signing transaction..."
-msgstr "Подписывание трансакции..."
+msgstr ""
 
 msgid "Since only you control your money, you’ll need to save your recovery phrase in case this app is deleted."
 msgstr ""
 
 msgid "Single address"
-msgstr "Один адрес"
+msgstr ""
 
 msgid "Skip"
-msgstr "Пропустить"
+msgstr "スキップ"
 
 msgid "Slide to accept"
-msgstr "Подтвердить"
+msgstr ""
 
 msgid "Slide to confirm"
 msgstr ""
@@ -1923,49 +1933,49 @@ msgid "Slide to send"
 msgstr ""
 
 msgid "Specify Recovery Phrase"
-msgstr "Укажите фразу восстановления"
+msgstr ""
 
 msgid "Spend proposal is not accepted"
-msgstr "Платёж не принят"
+msgstr "送金の提案が受諾されませんでした。"
 
 msgid "Spend proposal not found"
-msgstr "Платёж не найден"
+msgstr "送金の提案が見つかりませんでした。"
 
 msgid "Spendable balance"
-msgstr "Pасходный баланс"
+msgstr ""
 
 msgid "Spending this balance will need significant Bitcoin network fees"
-msgstr "Чтобы потратить этот баланс потребуется значительные сборы сети Биткойна"
+msgstr "この入力の組み合わせを送金するために膨大なビットコインネットワーク手数料を必要とします"
 
 msgid "Status"
 msgstr ""
 
 msgid "Suggested by Merchant"
-msgstr "Предложено торговцом"
+msgstr ""
 
 msgid "Super Economy"
-msgstr "Очень экономичная"
+msgstr "超節約"
 
 msgid "Sweep"
-msgstr "Считать"
+msgstr "全残高インポート"
 
 msgid "Sweep Completed"
 msgstr ""
 
 msgid "Sweep paper wallet"
-msgstr "Пополнить с бумажного кошелька"
+msgstr "ペーパーウォレットの全残高インポート"
 
 msgid "Sweeping Wallet..."
-msgstr "Считывание кошелька..."
+msgstr "ビットコイン回収中…"
 
 msgid "THIS ACTION CANNOT BE REVERSED"
-msgstr "ЭТО ДЕЙСТВИЕ НЕ МОЖЕТ БЫТЬ ОТМЕНЕНО"
+msgstr "＊＊＊注意＊＊＊ このアクションを元に戻すことはできません！！！"
 
 msgid "Take control of your money, get started with bitcoin."
 msgstr ""
 
 msgid "Tap and hold to show"
-msgstr "Коснитесь и удерживайте, чтобы показать"
+msgstr "長押しで表示"
 
 msgid "Tap to recreate"
 msgstr ""
@@ -1977,16 +1987,16 @@ msgid "Temporarily Unavailable"
 msgstr ""
 
 msgid "Terms of Use"
-msgstr "Условия использования"
+msgstr "利用規約"
 
 msgid "Testnet Wallet"
 msgstr ""
 
 msgid "Text"
-msgstr "Текст"
+msgstr "テキスト"
 
 msgid "Thanks!"
-msgstr "Спасибо!"
+msgstr "ありがとうございます。"
 
 msgid "The Gift of Go.™ With over 300 destinations and limitless adventures to choose from, the Delta Gift Card opens up a world of possibilities."
 msgstr ""
@@ -1995,40 +2005,40 @@ msgid "The Safest, Fastest Asset Exchange on Earth"
 msgstr ""
 
 msgid "The Wallet Service URL"
-msgstr "URL услуги кошелька"
+msgstr ""
 
 msgid "The amount of bitcoin immediately spendable from this wallet."
-msgstr "Сумма биткойнов доступных для совершения платежей."
+msgstr "このウォレットからすぐに送金できる額"
 
 msgid "The amount of bitcoin stored in this wallet that is allocated as inputs to your pending transaction proposals. The amount is determined using unspent transaction outputs associated with this wallet and may be more than the actual amounts associated with your pending transaction proposals."
-msgstr "Сумма биткойнов, выделенных в качестве входов для ожидающих рассмотрения платежей. Сумма определяется непотраченными выходами, ассоциированными с этим кошельком, и может превышать сумму, ассоциированную с предложенными платежами."
+msgstr "現在協議中の送金の提案によってロックされてしまっている金額です。この金額は未使用出力の割り当てられた合計額になりますので、必ずしも送金提案の送金額だけがロックされるというものではありません。"
 
 msgid "The amount of bitcoin stored in this wallet with less than 1 blockchain confirmation."
-msgstr "Сумма биткойнов с менее, чем одним подтверждением."
+msgstr "このウォレットの1承認未満の残高。"
 
 msgid "The derivation path"
-msgstr "Путь деривации"
+msgstr "派生パス"
 
 msgid "The destination wallet is not backed up. Please, complete the backup process before continue."
 msgstr ""
 
 msgid "The exchange rate changes with the market."
-msgstr "Обменный курс меняется с рынком."
+msgstr "為替レートは市場と共に変動する"
 
 msgid "The higher the fee, the greater the incentive a miner has to include that transaction in a block. Current fees are determined based on network load and the selected policy."
-msgstr "Чем выше комиссия, тем вероятнее майнеры включат эту транзакцию в блок. Текущая комиссия опеделяется на основании нагрузки на сеть и выбранной политики."
+msgstr "円滑な送金をしていただくために、ビットコインの送金には少量の手数料を付けることが義務付けられております。この手数料はビットコインのネットワークを運用する人たちに寄付され、より高い手数料であればより優先的にブロックに含まれ、承認されます。選択された手数料基準やネットワークの混雑状況により、その時点で払われるべき手数料が変動することがあります。"
 
 msgid "The information you are about to share/export may contain sensitive data such us wallet IDs, addresses, balances, etc. Please be sure you trust the person or entity with whom you are sharing this information."
 msgstr ""
 
 msgid "The password of the recovery phrase (if set)"
-msgstr "Пароль ключевого словосочетания (если установлен)"
+msgstr "復元フレーズ用のパスワード(設定してある場合のみ)"
 
 msgid "The payment was created but could not be completed. Please try again from home screen"
-msgstr "Платёж был создан, но не может быть завершен. Пожалуйста, вернитесь на вкладку Обзор и попробуйте снова"
+msgstr "送金の提案は作成されましたが完了できませんでした。ホーム画面からやり直して下さい。"
 
 msgid "The payment was removed by creator"
-msgstr "Платёж был удалён его создателем"
+msgstr "送金の提案が作成者により削除されました"
 
 msgid "The private key of this wallet is not available. The export allows to check the wallet balance, transaction history, and create spend proposals from the export. However, does not allow to approve (sign) proposals, so funds will not be accessible from the export."
 msgstr ""
@@ -2040,19 +2050,19 @@ msgid "The purchase amount must be at least {minAmount} {currency}. Please modif
 msgstr ""
 
 msgid "The request could not be understood by the server"
-msgstr "Запрос не распознан сервером"
+msgstr "サーバーが要求を処理できませんでした。"
 
 msgid "The single address feature will force the wallet to only use one address rather than generating new addresses."
 msgstr ""
 
 msgid "The spend proposal is not pending"
-msgstr "Предложенный платёж больше не на рассмотрении"
+msgstr "送金の提案が協議中ではありません。"
 
 msgid "The testnet is an alternative Bitcoin block chain, to be used for testing. Testnet coins are separate and distinct from actual bitcoins, and do not have any value. This allows application developers or bitcoin testers to experiment, without having to use real bitcoins."
 msgstr ""
 
 msgid "The total amount of bitcoin stored in this wallet."
-msgstr "Сумма биткойнов в этом кошельке."
+msgstr "このウォレットのビットコインの総残高"
 
 msgid "The transaction history and every new incoming transaction are cached in the app. This feature clean this up and synchronizes again from the server"
 msgstr ""
@@ -2061,7 +2071,7 @@ msgid "The wallet you are using does not match the network and/or the currency o
 msgstr ""
 
 msgid "There is an error in the form"
-msgstr "Ошибка в форме"
+msgstr "フォームにエラーがありました"
 
 msgid "There's obviously something we're doing wrong. How could we improve your experience?"
 msgstr ""
@@ -2070,10 +2080,10 @@ msgid "This app is not available for your device."
 msgstr ""
 
 msgid "This app stores your bitcoin with cutting-edge security."
-msgstr ""
+msgstr "このアプリは、最先端のセキュリティであなたのビットコインをお守りします。"
 
 msgid "This bitcoin payment request has expired."
-msgstr "Этот запрос платежа истёк."
+msgstr "ビットコインペイメントの請求期限が切れています。"
 
 msgid "This field is only for users who, in previous versions (it's not supported anymore), set a password to protect their recovery phrase. This field is not for your encrypt password."
 msgstr ""
@@ -2085,10 +2095,10 @@ msgid "This password cannot be recovered. If this password is lost, funds can on
 msgstr ""
 
 msgid "This password is only for this device, and it cannot be recovered. To avoid losing funds, write your password down."
-msgstr "Этот пароль предназначен только для этого устройства, и его невозможно восстановить. Чтобы не потерять средства, запишите свой пароль."
+msgstr ""
 
 msgid "This recovery phrase was created with a password. To recover this wallet both the recovery phrase and password are needed."
-msgstr "Это ключевое словосочетание было создано с паролем. Для восстановления кошелька необходимо ключевое словосочетание и его пароль."
+msgstr "この復元フレーズにパスワードがかかっています。このウォレットを復元するためには、復元フレーズに加え、パスワードも必要です。"
 
 msgid "This transaction amount is too small compared to current Bitcoin network fees. Spending these funds will need a Bitcoin network fee cost comparable to the funds itself."
 msgstr ""
@@ -2097,16 +2107,16 @@ msgid "This transaction could take a long time to confirm or could be dropped du
 msgstr ""
 
 msgid "This wallet is not registered at the given Bitcore Wallet Service (BWS). You can recreate it from the local information."
-msgstr "Это кошелёк не зарегистрирован на данном сервере Bitcore. Вы можете воссоздать его из локальной информации."
+msgstr "現在設定中のBitcore Wallet Service (BWS) サーバーにて、このウォレットの登録がありません。再登録を行うこともできます。"
 
 msgid "Timeline"
-msgstr "Хронология"
+msgstr "履歴"
 
 msgid "To"
-msgstr "Кому"
+msgstr "宛先"
 
 msgid "To get started, you'll need to create a bitcoin wallet and get some bitcoin."
-msgstr "Чтобы начать работу, вам нужно создать кошелёк и получить биткойн."
+msgstr "はじめに、ビットコインウォレットを作成し、ビットコインを入手する必要があります。"
 
 msgid "To get started, you'll need to enter a valid address, contact or wallet."
 msgstr ""
@@ -2115,55 +2125,55 @@ msgid "To {{reason}} you must first add your BitPay account - {{email}}"
 msgstr ""
 
 msgid "Top up in progress..."
-msgstr "Пополнения счета в прогрессе..."
+msgstr "残高補充処理中..."
 
 msgid "Top-up with this cryptocurrency is not enabled"
 msgstr ""
 
 msgid "Total"
-msgstr "Баланс кошелька"
+msgstr "合計"
 
 msgid "Total Locked Balance"
-msgstr "Всего заблокировано средств"
+msgstr "ロック中の残高"
 
 msgid "Total number of copayers"
-msgstr "Количество совладельцев"
+msgstr ""
 
 msgid "Total wallet inputs"
-msgstr "Cумма вводов кошелька"
+msgstr "合計ウォレット入力"
 
 msgid "Trade any leading blockchain asset for any other. Protection by Design."
 msgstr ""
 
 msgid "Transaction"
-msgstr "Транзакция"
+msgstr "取引"
 
 msgid "Transaction History"
-msgstr "История транзакций"
+msgstr "取引履歴"
 
 msgid "Transaction ID"
-msgstr "ID транзакции"
-
-msgid "Transaction already broadcasted"
-msgstr "Транзакция уже отправлена"
-
-msgid "Transaction has not been created"
 msgstr ""
 
+msgid "Transaction already broadcasted"
+msgstr "取引は既に配信されました。"
+
+msgid "Transaction has not been created"
+msgstr "取引が未作成です"
+
 msgid "Transaction initiated"
-msgstr "Транзакция начата"
+msgstr "取引が開始されました"
 
 msgid "Transaction not available at this time"
-msgstr "Транзакция недоступна в данный момент"
+msgstr "現在この取引はご覧いただけません。"
 
 msgid "Transaction not found"
-msgstr "Транзакция не обнаружена"
+msgstr "取引は見つかりません"
 
 msgid "Transactions"
-msgstr "Транзакции"
+msgstr ""
 
 msgid "Transactions without fee are not supported."
-msgstr "Транзакции без cборов не поддерживаются."
+msgstr "手数料なしの取引はサポートされていません。"
 
 msgid "Transfer to"
 msgstr ""
@@ -2172,10 +2182,10 @@ msgid "Transfer to Bitcoin Cash Wallet"
 msgstr ""
 
 msgid "Transfer to Bitcoin Wallet"
-msgstr "Перевести в биткоин кошелек"
+msgstr ""
 
 msgid "Transfer to Contact"
-msgstr "Перевести знакомым"
+msgstr ""
 
 msgid "Transfer to Multiple Recipients"
 msgstr ""
@@ -2187,31 +2197,31 @@ msgid "Try again"
 msgstr ""
 
 msgid "Try again in {{expires}}"
-msgstr "Попробуйте снова через {{expires}}"
+msgstr "{{expires}} 経過後にもう一度試してください。"
 
 msgid "Turn bitcoin into dollars, swipe anywhere Visa® is accepted."
 msgstr ""
 
 msgid "Type the recovery phrase (usually 12 words)"
-msgstr "Введите ключевое словосочетание (обычно двенадцать слов)"
+msgstr ""
 
 msgid "Uber gift cards also apply to UberEATS orders. Enjoy food from hundreds of restaurants, delivered at Uber speed."
 msgstr ""
 
 msgid "Uh oh..."
-msgstr "Упс..."
+msgstr ""
 
 msgid "Unarchive Card"
 msgstr ""
 
 msgid "Unconfirmed"
-msgstr "Неподтверждено"
+msgstr "未承認"
 
 msgid "Unlink account"
-msgstr "Разъединить аккаунт"
+msgstr ""
 
 msgid "Unlink card"
-msgstr "Pазъединить карту"
+msgstr ""
 
 msgid "Unlink the account will remove it and all associated cards from this device."
 msgstr ""
@@ -2223,169 +2233,169 @@ msgid "Unlock App"
 msgstr ""
 
 msgid "Unsent transactions"
-msgstr "Неотправленные транзакции"
+msgstr "未送信取引"
 
 msgid "Unused addresses"
-msgstr "Неиспользованные адреса"
+msgstr ""
 
 msgid "Unverified Account"
 msgstr ""
 
 msgid "Updating Gift Card..."
-msgstr "Подарочная карта бновляется..."
+msgstr ""
 
 msgid "Updating Gift Cards..."
-msgstr "Обновляются подарочные карты..."
+msgstr ""
 
 msgid "Updating pending proposals... Please stand by"
 msgstr ""
 
 msgid "Updating transaction history. Please stand by."
-msgstr "Обновление истории транзакций. Подождите, пожалуйста."
+msgstr "取引履歴を更新します。しばらくお待ちください。"
 
 msgid "Updating... Please stand by"
-msgstr "Обновление... Подождите, пожалуйста"
+msgstr "更新中... お待ち下さい"
 
 msgid "Urgent"
-msgstr "Срочно"
+msgstr "緊急"
 
 msgid "Use Bitcoin Cash Copay Style Addresses"
 msgstr ""
 
 msgid "Use Unconfirmed Funds"
-msgstr "Использовать неподтверждённые средства"
+msgstr "未承認ビットコインを使用"
 
 msgid "Use default url"
-msgstr "Используйте базовый Url"
+msgstr ""
 
 msgid "Validating recovery phrase..."
-msgstr "Проверка ключевого словосочетания..."
+msgstr "復元フレーズを検証中…"
 
 msgid "Verify Account"
 msgstr ""
 
 msgid "Version"
-msgstr "Версия"
+msgstr "バージョン"
 
 msgid "View"
-msgstr "Просмотреть"
+msgstr "表示"
 
 msgid "View Confirmation Status"
-msgstr "Просмотреть состояние подтверждения"
+msgstr ""
 
 msgid "View Invoice"
 msgstr ""
 
 msgid "View Privacy Policy"
-msgstr "Просмотр политики конфиденциальности"
+msgstr ""
 
 msgid "View Redemption Code"
 msgstr ""
 
 msgid "View Transaction on Insight"
-msgstr "Просмотреть транзакцию на Insight"
+msgstr "Insightにて取引を表示"
 
 msgid "View Wallet Terms of Use"
-msgstr "Просмотр условия использования бумажника"
+msgstr ""
 
 msgid "View all addresses"
-msgstr "Просмотреть все адреса"
+msgstr ""
 
 msgid "View on blockchain"
-msgstr "Посмотреть в блокчейне"
+msgstr "ブロックチェーンで詳細を閲覧"
 
 msgid "Visit ShapeShift.io"
-msgstr "Посетите ShapeShift.io"
+msgstr ""
 
 msgid "WARNING: Key derivation is not working on this device/wallet. Actions cannot be performed on this wallet."
-msgstr "ВНИМАНИЕ: Деривация ключей не работает на этом устройстве/кошельке. Никакие действия не могут быть произведены с этим кошельком."
+msgstr "注意：このデバイスでは鍵の派生がちゃんと動いておりません。このウォレットは正常に動作しません。"
 
 msgid "WARNING: UNTRUSTED CERTIFICATE"
-msgstr "ВНИМАНИЕ: НЕНАДЕЖНЫЙ СЕРТИФИКАТ"
+msgstr "警告: 信頼されていない証明書"
 
 msgid "Waiting for copayers"
-msgstr "Ожидание совладельцев кошелька"
+msgstr "ウォレット参加者を待っています"
 
 msgid "Waiting..."
-msgstr "Ожидание..."
+msgstr "少々お待ち下さい…"
 
 msgid "Wallet Addresses"
-msgstr "Адреса кошелька"
+msgstr "ウォレットのアドレス"
 
 msgid "Wallet Color"
-msgstr "Цвет кошелька"
+msgstr "ウォレットの色"
 
 msgid "Wallet Information"
-msgstr "Информация о кошельке"
+msgstr "ウォレット詳細"
 
 msgid "Wallet Inputs"
-msgstr "Вводы кошелька"
+msgstr "ウォレットの入力"
 
 msgid "Wallet Name"
-msgstr "Название кошелька"
+msgstr "ウォレット名"
 
 msgid "Wallet Recovery Phrase is invalid"
-msgstr "Ключевое словосочетание кошелька недействительно"
+msgstr "ウォレットシードが不正です。"
 
 msgid "Wallet Service URL"
-msgstr "Адрес сервера Bitcore"
+msgstr "ウォレットサービスのURL"
 
 msgid "Wallet already exists"
-msgstr "Кошелёк уже существует"
+msgstr "既存のウォレットです"
 
 msgid "Wallet already in {{nameCase}}"
-msgstr "Кошелёк уже в {{nameCase}}"
+msgstr ""
 
 msgid "Wallet created"
-msgstr "Кошелёк создан"
+msgstr "ウォレットが作成されました"
 
 msgid "Wallet incomplete and broken"
-msgstr "Не все совладельцы присоединились, кошелёк повреждён"
+msgstr "ウォレットが未完成で破損しています"
 
 msgid "Wallet invitation"
-msgstr "Приглашение кошелька"
+msgstr ""
 
 msgid "Wallet is full"
-msgstr "Все уже присоединены"
+msgstr "ウォレットがいっぱいです。"
 
 msgid "Wallet is locked"
-msgstr "Кошелёк заблокирован"
+msgstr "ウォレットがロックされています。"
 
 msgid "Wallet is not complete"
-msgstr "Не все совладельцы присоединились"
+msgstr "ウォレットが未完成です。"
 
 msgid "Wallet key"
-msgstr "Ключ кошелька"
+msgstr ""
 
 msgid "Wallet name"
-msgstr "Название кошелька"
+msgstr ""
 
 msgid "Wallet needs backup"
-msgstr "Необходимо создать резервную копию"
+msgstr "ウォレットバックアップが必要"
 
 msgid "Wallet not found"
-msgstr "Кошелёк не найден"
+msgstr "ウォレットが見つかりません。"
 
 msgid "Wallet not registered at the wallet service. Recreate it from \"Create Wallet\" using \"Advanced Options\" to set your recovery phrase"
-msgstr "Кошелёк не зарегистрирован на сервере Bitcore. Пересоздайте кошелёк воспользовавшись дополнительными параметрами, чтобы указать ключевое словосочетание"
+msgstr "このウォレットは Wallet Service にて登録されていません。再び「新規作成」メニューから詳細設定を選び、復元フレーズをご入力下さい。"
 
 msgid "Wallet recovery phrase"
-msgstr "Фраза восстановления кошелька"
+msgstr ""
 
 msgid "Wallet recovery phrase not available"
-msgstr "Фраза восстановления кошелька недоступна"
+msgstr "ウォレットの復元フレーズが削除されているため表示できません"
 
 msgid "Wallet service not found"
-msgstr "Сервер Bitcore не найден"
+msgstr "Wallet serviceが見つかりません。"
 
 msgid "Warning!"
-msgstr "Внимание!"
+msgstr "注意！"
 
 msgid "Warning: this transaction has unconfirmed inputs"
-msgstr "Предупреждение: эта транзакция имеет неподтвержденные входы"
+msgstr "注意: この取引は未承認資金が含まれており、承認されるまで商品等をお渡しするのを待つことをお勧めします。"
 
 msgid "Watch Out!"
-msgstr "Осторожно!"
+msgstr ""
 
 msgid "We appreciate your review"
 msgstr ""
@@ -2406,16 +2416,16 @@ msgid "We're always listening for ways we can improve your experience. Is there 
 msgstr ""
 
 msgid "Website"
-msgstr "Сайт"
+msgstr ""
 
 msgid "What do you call this wallet?"
-msgstr "Как вы называете этот кошелёк?"
+msgstr "このウォレットの名前は何ですか？"
 
 msgid "When this wallet was created, it was called \"{{walletName}}\". You can change the name displayed on this device below."
 msgstr ""
 
 msgid "Where would you like to receive email notifications about payments?"
-msgstr "Куда бы вы хотели получать email-уведомления о платежах?"
+msgstr "送金発生時のメール通知はどのメールアドレスで受け取りますか?"
 
 msgid "Where would you like to receive your Amazon gift card purchase receipts?"
 msgstr ""
@@ -2424,10 +2434,10 @@ msgid "Why does this require authentication?"
 msgstr ""
 
 msgid "Why?"
-msgstr "Почему?"
+msgstr "なぜ？"
 
 msgid "Withdraw"
-msgstr "Снятие"
+msgstr ""
 
 msgid "Without encryption, a thief or another application on this device may be able to access your funds."
 msgstr ""
@@ -2442,19 +2452,19 @@ msgid "Write a Review"
 msgstr ""
 
 msgid "Wrong number of recovery words:"
-msgstr "Неподходящее количество слов в ключевом словосочетании:"
+msgstr "単語の数が間違っています："
 
 msgid "Wrong password"
-msgstr "Неправильный пароль"
+msgstr ""
 
 msgid "YES"
 msgstr ""
 
 msgid "Yes"
-msgstr "Да"
+msgstr "はい"
 
 msgid "Yes, skip"
-msgstr "Да, пропустить"
+msgstr ""
 
 msgid "You are trying to send ({amount} {coin}) more than what your wallet contains. Please enter a lower amount or send max."
 msgstr ""
@@ -2466,55 +2476,55 @@ msgid "You can continue to view your archived cards here if you need to access t
 msgstr ""
 
 msgid "You can make contributions by signing up on our Crowdin community translation website. We’re looking forward to hearing from you!"
-msgstr ""
+msgstr "Crowdinのサイトにて翻訳者登録をして、今すぐに投稿をいただけます。お待ちしております。"
 
 msgid "You can scan bitcoin addresses, payment requests, paper wallets, and more."
-msgstr "Вы можете сканировать биткойн-адреса, запросы платежей, бумажные кошельки, и многое другое."
+msgstr "ビットコインアドレス、支払い請求、ペーパーウォレットなどをスキャンできます。"
 
 msgid "You can see the latest developments and contribute to this open source app by visiting our project on GitHub."
-msgstr ""
+msgstr "GitHubのページにて最近の開発動向を見たり、改善案のソースコードの貢献したりすることができます。"
 
 msgid "You can spend bitcoin at millions of websites and stores worldwide."
-msgstr ""
+msgstr "世界中のECサイトや店舗でビットコインを使って支払いができます。"
 
 msgid "You can still export it from \"Export Wallet\" option."
 msgstr ""
 
 msgid "You can trade it for other currencies like US Dollars, Euros, or Pounds."
-msgstr ""
+msgstr "米ドル、ユーロ、ポンドなど他の通貨との取引ができます。"
 
 msgid "You can use your Mercado Livre gift cards on your Mercado Pago account for everyday expenses like utilities and metro rides."
 msgstr ""
 
 msgid "You control your bitcoin."
-msgstr "Вы контролируете Ваши bitcoin-ы."
+msgstr "ビットコインの自己管理"
 
 msgid "You could sign the transaction later in your wallet details"
 msgstr ""
 
 msgid "You should not set a fee higher than {{maxFeeRecommended}} satoshis/byte."
-msgstr ""
+msgstr "{{maxFeeRecommended}} satoshis/byte より高い手数料を設定しない方が良いです。"
 
 msgid "Your BitPay Card is ready. Add funds to your card to start using it at stores and ATMs worldwide."
-msgstr ""
+msgstr "BitPayカードの準備が整いました。入金して全世界のお店やATMでご利用下さい。"
 
 msgid "Your bitcoin wallet is ready!"
-msgstr "Ваш кошелёк готов!"
+msgstr "ビットコインウォレットが完成しました!"
 
 msgid "Your extended private keys are all that is needed to access your bitcoin funds. Be sure to protect your private keys and store them only on secure devices. BitPay does not have access to your private keys, so you alone are responsible for your keys. If you share key access with external services, you take responsibility for the risk of theft or breach. Only advanced users should handle extended private keys directly."
 msgstr ""
 
 msgid "Your fee is lower than recommended."
-msgstr ""
+msgstr "手数料設定が推奨値より低くなっております。"
 
 msgid "Your name"
-msgstr "Ваше имя"
+msgstr "自分の名前"
 
 msgid "Your wallet address is similar to a bank account number. You can add funds to your wallet by withdrawing funds you may have stored on an exchange to your wallet address. Or other {coinName} users can send you money by scanning your QR code."
 msgstr ""
 
 msgid "Your wallet is never saved to cloud storage or standard device backups."
-msgstr "Ваш кошелёк никогда не сохраняется в облачное хранилище или в резервные копии устройства."
+msgstr "ウォレットは一度もクラウドへ保存されたりすることはありませんし、携帯電話などに付いている標準バックアップ機能ではバックアップされません！！！！"
 
 msgid "Your wallet key will be encrypted. The encrypt password cannot be recovered. Be sure to write it down."
 msgstr ""
@@ -2523,22 +2533,22 @@ msgid "Your {walletType} wallet is backed up!"
 msgstr ""
 
 msgid "[Balance Hidden]"
-msgstr "[Баланс скрыт]"
+msgstr "[残高非表示中]"
 
 msgid "[Scanning Funds]"
-msgstr ""
+msgstr "[確認中]"
 
 msgid "add your BitPay Visa card(s)"
-msgstr "добавьте вашу BitPay Visa карту(ы)"
+msgstr "BitPay VISAカードを追加します"
 
 msgid "me"
-msgstr "мне"
+msgstr "自分"
 
 msgid "of total amount"
 msgstr ""
 
 msgid "preparing..."
-msgstr "Подготавливается..."
+msgstr "準備中..."
 
 msgid "{appName} BCH wallets use the CashAddr format by default"
 msgstr ""
@@ -2556,11 +2566,11 @@ msgid "{{fee}} {{coin}} will be deducted for bitcoin networking fees."
 msgstr ""
 
 msgid "{{updatingTxHistoryProgress}} transactions downloaded"
-msgstr "{{updatingTxHistoryProgress}} транзакций загружено"
+msgstr "{{updatingTxHistoryProgress}} 個の取引ダウンロード済み"
 
 msgid "{{wallet.credentials.m}}-of-{{wallet.credentials.n}}"
 msgstr ""
 
 msgid "{{wallet.m}}-of-{{wallet.n}}"
-msgstr "{{wallet.m}}-из-{{wallet.n}}"
+msgstr "{{wallet.m}}-of-{{wallet.n}}"
 
