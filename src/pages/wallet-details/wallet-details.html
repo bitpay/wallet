@@ -44,7 +44,7 @@
           </div>
         </div>
 
-        <div class="balance-spendable" (click)="openBalanceDetails()" *ngIf="!wallet.balanceHidden && !wallet.scanning && !updateStatusError && wallet.status">
+        <div class="balance-spendable" (click)="openBalanceDetails()" *ngIf="!wallet.balanceHidden && !wallet.scanning && !updateStatusError && showBalanceButton">
           <ion-icon ios="ios-timer-outline" md="md-timer"></ion-icon>
           <strong>
             {{wallet.status.spendableBalanceStr}}
