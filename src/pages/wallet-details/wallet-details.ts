@@ -267,9 +267,6 @@ export class WalletDetailsPage extends WalletTabsChild {
 
   private updateStatus(force?: boolean) {
     this.updatingStatus = true;
-    this.updateStatusError = null;
-    this.walletNotRegistered = false;
-    this.showBalanceButton = false;
 
     this.walletProvider
       .getStatus(this.wallet, { force: !!force })
@@ -281,9 +278,12 @@ export class WalletDetailsPage extends WalletTabsChild {
           this.wallet.status.totalBalanceSat !=
           this.wallet.status.spendableAmount;
         this.analyzeUtxos();
+        this.updateStatusError = null;
+        this.walletNotRegistered = false;
       })
       .catch(err => {
         this.updatingStatus = false;
+        this.showBalanceButton = false;
         if (err === 'WALLET_NOT_REGISTERED') {
           this.walletNotRegistered = true;
         } else {
