@@ -15,9 +15,7 @@ describe('Onboarding: Import Wallet', () => {
   beforeEach(async () => {
     await browser.get('');
     await disableCSSAnimations();
-    // TODO: has two views, each with advanced options - Onboarding: Import Wallet
-    // Failed: No element found using locator: by.partialButtonText("backup")
-    // await element(by.partialButtonText('backup')).click();
+    await element(by.partialButtonText('backup')).click();
     await waitForIonicPage('import-wallet');
   });
   afterEach(clearStorage);
