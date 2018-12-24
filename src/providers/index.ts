@@ -5,7 +5,6 @@ export { Device } from '@ionic-native/device';
 export { FCM } from '@ionic-native/fcm';
 export { File } from '@ionic-native/file';
 export { LaunchReview } from '@ionic-native/launch-review';
-export { Printer } from '@ionic-native/printer';
 export { QRScanner } from '@ionic-native/qr-scanner';
 export { ScreenOrientation } from '@ionic-native/screen-orientation';
 export { SocialSharing } from '@ionic-native/social-sharing';

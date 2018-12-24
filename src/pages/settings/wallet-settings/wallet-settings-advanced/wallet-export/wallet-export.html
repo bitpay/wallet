@@ -1,4 +1,4 @@
-<ion-header class="on-print-hide">
+<ion-header>
   <ion-navbar [navbar-bg]="wallet?.color">
     <ion-title>{{'Export wallet' | translate}}</ion-title>
   </ion-navbar>
@@ -84,21 +84,9 @@
     </ion-list>
     <ion-list *ngSwitchCase="'qr-code'">
       <div class="qrCode" *ngIf="supported && showQrCode">
-        <div id="cordovaPrintWrapper">
-          <div class="on-print-show">
-            <p translate>QR code to recover wallet {{walletName}}</p>
-          </div>
-          <ngx-qrcode qrc-value="{{exportWalletInfo}}" qrc-class="aclass" qrc-errorCorrectionLevel="M"></ngx-qrcode>
-          <ion-item-divider>
-            <span translate>From the destination device, go to Add wallet &gt; Import wallet and scan this QR code</span>
-          </ion-item-divider>
-        </div>
-        <ion-item-divider class="on-print-hide" *ngIf="isPrintingAvailableOnMobile || !isCordova">
-          <form>
-            <button class="button-standard" ion-button type="submit" (click)="printQr()">
-              <span translate>Print</span>
-            </button>
-          </form>
+        <ngx-qrcode qrc-value="{{exportWalletInfo}}" qrc-class="aclass" qrc-errorCorrectionLevel="M"></ngx-qrcode>
+        <ion-item-divider>
+          <span translate>From the destination device, go to Add wallet &gt; Import wallet and scan this QR code</span>
         </ion-item-divider>
       </div>
       <div class="not-supported-message" *ngIf="!supported && showQrCode">
