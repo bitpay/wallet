@@ -694,6 +694,19 @@ export class ProfileProvider {
     });
   }
 
+  public importSinglePassWalletsExtendedPrivateKey(xPrivKey: string, opts, coins): Promise<any> {
+    this.logger.info('Importing Single Passphrase Wallets with xPrivKey');
+
+    const validCoins = this.getFilteredCoinsArray(coins);
+
+    const promises = [];
+    validCoins.forEach(coin => {
+      opts.coin = coin;
+      promises.push(this.importExtendedPrivateKey(xPrivKey, _.clone(opts)));
+    });
+    return Promise.all(promises);
+  }
+
   public normalizeMnemonic(words: string): string {
     if (!words || !words.indexOf) return words;
 
@@ -748,6 +761,19 @@ export class ProfileProvider {
         }
       );
     });
+  }
+
+  public importSinglePassWalletsMnemonic(words: string, opts, coins): Promise<any> {
+    this.logger.info('Importing Single Passphrase Wallets with Mnemonic');
+
+    const validCoins = this.getFilteredCoinsArray(coins);
+
+    const promises = [];
+    validCoins.forEach(coin => {
+      opts.coin = coin;
+      promises.push(this.importMnemonic(words, _.clone(opts)));
+    });
+    return Promise.all(promises);
   }
 
   public importExtendedPublicKey(opts): Promise<any> {
@@ -1223,10 +1249,10 @@ export class ProfileProvider {
     opts.m = 1;
     opts.n = 1;
     opts.networkName = 'livenet';
-    return this.createSinglePassphraseWallets(opts, coins);
+    return this.createSinglePassWallets(opts, coins);
   }
 
-  public createSinglePassphraseWallets(opts, coins): Promise<any> {
+  public createSinglePassWallets(opts, coins): Promise<any> {
 
     const validCoins = this.getFilteredCoinsArray(coins);
 

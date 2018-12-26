@@ -233,7 +233,7 @@ export class CreateWalletPage implements OnInit {
     this.onGoingProcessProvider.set('creatingWallet');
 
     this.profileProvider
-      .createSinglePassphraseWallets(opts, coins)
+      .createSinglePassWallets(opts, coins)
       .then(walletsArray => {
         this.onGoingProcessProvider.clear();
         this.events.publish('status:updated');

@@ -96,7 +96,8 @@ export class ImportWalletPage {
       derivationPath: [this.derivationPathByDefault, Validators.required],
       testnetEnabled: [false],
       bwsURL: [this.defaults.bws.url],
-      coin: [null, Validators.required]
+      bitcoin: true,
+      bitcoincash: true
     });
     this.events.subscribe('update:words', data => {
       this.processWalletInfo(data.value);
@@ -239,78 +240,59 @@ export class ImportWalletPage {
     }, 100);
   }
 
-  private finish(wallet): void {
-    this.walletProvider
-      .updateRemotePreferences(wallet)
-      .then(() => {
-        this.profileProvider.setBackupFlag(wallet.credentials.walletId);
-        this.events.publish('status:updated');
-        this.pushNotificationsProvider.updateSubscription(wallet);
-        if (this.fromOnboarding) {
-          this.profileProvider.setOnboardingCompleted();
-          this.navCtrl.push(DisclaimerPage);
-        } else {
-          this.app
-            .getRootNavs()[0]
-            .setRoot(TabsPage)
-            .then(() => {
-              this.events.publish('OpenWallet', wallet);
-            });
-        }
+  private finish(walletsArray): void {
+    this.events.publish('status:updated');
+    walletsArray.forEach(wallet => {
+      this.walletProvider.updateRemotePreferences(wallet);
+      this.profileProvider.setBackupFlag(wallet.credentials.walletId);
+      this.pushNotificationsProvider.updateSubscription(wallet);
+    });
+    if (this.fromOnboarding) {
+      this.profileProvider.setOnboardingCompleted();
+      this.navCtrl.push(DisclaimerPage);
+    } else {
+      this.navCtrl.popToRoot();
+    }
+  }
+
+  private importExtendedPrivateKey(xPrivKey, opts, coins) {
+    this.onGoingProcessProvider.set('importingWallet');
+    this.profileProvider
+      .importSinglePassWalletsExtendedPrivateKey(xPrivKey, opts, coins)
+      .then(walletsArray => {
+        this.onGoingProcessProvider.clear();
+        this.finish(walletsArray);
       })
       .catch(err => {
-        this.logger.error('Import: could not updateRemotePreferences', err);
-        this.app
-          .getRootNavs()[0]
-          .setRoot(TabsPage)
-          .then(() => {
-            this.events.publish('OpenWallet', wallet);
-          });
+        if (err instanceof this.errors.NOT_AUTHORIZED) {
+          this.importErr = true;
+        } else {
+          const title = this.translate.instant('Error');
+          this.popupProvider.ionicAlert(title, err);
+        }
+        this.onGoingProcessProvider.clear();
+        return;
       });
   }
 
-  private importExtendedPrivateKey(xPrivKey, opts) {
+  private importMnemonic(words: string, opts, coins): void {
     this.onGoingProcessProvider.set('importingWallet');
-    setTimeout(() => {
-      this.profileProvider
-        .importExtendedPrivateKey(xPrivKey, opts)
-        .then(wallet => {
-          this.onGoingProcessProvider.clear();
-          this.finish(wallet);
-        })
-        .catch(err => {
-          if (err instanceof this.errors.NOT_AUTHORIZED) {
-            this.importErr = true;
-          } else {
-            const title = this.translate.instant('Error');
-            this.popupProvider.ionicAlert(title, err);
-          }
-          this.onGoingProcessProvider.clear();
-          return;
-        });
-    }, 100);
-  }
-
-  private importMnemonic(words: string, opts): void {
-    this.onGoingProcessProvider.set('importingWallet');
-    setTimeout(() => {
-      this.profileProvider
-        .importMnemonic(words, opts)
-        .then(wallet => {
-          this.onGoingProcessProvider.clear();
-          this.finish(wallet);
-        })
-        .catch(err => {
-          if (err instanceof this.errors.NOT_AUTHORIZED) {
-            this.importErr = true;
-          } else {
-            const title = this.translate.instant('Error');
-            this.popupProvider.ionicAlert(title, err);
-          }
-          this.onGoingProcessProvider.clear();
-          return;
-        });
-    }, 100);
+    this.profileProvider
+      .importSinglePassWalletsMnemonic(words, opts, coins)
+      .then(walletsArray => {
+        this.onGoingProcessProvider.clear();
+        this.finish(walletsArray);
+      })
+      .catch(err => {
+        if (err instanceof this.errors.NOT_AUTHORIZED) {
+          this.importErr = true;
+        } else {
+          const title = this.translate.instant('Error');
+          this.popupProvider.ionicAlert(title, err);
+        }
+        this.onGoingProcessProvider.clear();
+        return;
+      });
   }
 
   public import(): void {
@@ -384,7 +366,7 @@ export class ImportWalletPage {
       return;
     }
 
-    opts.coin = this.importForm.value.coin;
+    const coins = { bitcoin: this.importForm.value.bitcoin, bitcoincash: this.importForm.value.bitcoincash };
 
     const words: string = this.importForm.value.words || null;
 
@@ -396,7 +378,7 @@ export class ImportWalletPage {
       this.popupProvider.ionicAlert(title, subtitle);
       return;
     } else if (words.indexOf('xprv') == 0 || words.indexOf('tprv') == 0) {
-      return this.importExtendedPrivateKey(words, opts);
+      return this.importExtendedPrivateKey(words, opts, coins);
     } else {
       const wordList = words.trim().split(/[\u3000\s]+/);
 
@@ -411,7 +393,7 @@ export class ImportWalletPage {
     }
 
     opts.passphrase = this.importForm.value.passphrase || null;
-    this.importMnemonic(words, opts);
+    this.importMnemonic(words, opts, coins);
   }
 
   public toggleShowAdvOpts(): void {
