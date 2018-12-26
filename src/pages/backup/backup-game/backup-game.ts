@@ -257,7 +257,16 @@ export class BackupGamePage {
         }
       }
 
-      this.profileProvider.setBackupFlag(this.wallet.credentials.walletId);
+      if (this.fromOnboarding) {
+        const wallets = this.profileProvider.getWallets();
+        wallets.forEach(wallet => {
+          this.profileProvider.setBackupFlag(wallet.credentials.walletId);
+        });
+      }
+      else {
+        this.profileProvider.setBackupFlag(this.wallet.credentials.walletId);
+      }
+
       return resolve();
     });
   }

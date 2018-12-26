@@ -97,11 +97,11 @@ export class TourPage {
     this.onGoingProcessProvider.set('creatingWallet');
     this.profileProvider
       .createDefaultWallet(this.coins)
-      .then(wallet => {
+      .then(walletsArray => {
         this.onGoingProcessProvider.clear();
         this.persistenceProvider.setOnboardingCompleted();
         // this.navCtrl.push(CollectEmailPage, { walletId: wallet.id });
-        this.navCtrl.push(BackupRequestPage, { walletId: wallet.id });
+        this.navCtrl.push(BackupRequestPage, { walletId: walletsArray[0].id });
       })
       .catch(err => {
         setTimeout(() => {
