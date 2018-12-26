@@ -502,12 +502,21 @@ export class ProfileProvider {
     });
   }
 
-  private askToEncryptWallet(wallet): Promise<any> {
+  private checkIfCanSign(walletsArray): boolean {
+    let canSign = true;
+    walletsArray.forEach(wallet => {
+      if (!wallet.canSign()) canSign = false;
+    });
+    return canSign;
+  }
+
+  private askToEncryptWallets(walletsArray): Promise<any> {
     return new Promise(resolve => {
-      if (!wallet.canSign()) return resolve();
+      const canSign = this.checkIfCanSign(walletsArray);
+      if (!canSign) return resolve();
 
       const title = this.translate.instant(
-        'Would you like to protect this wallet with a password?'
+        'Would you like to protect this wallet/wallets with a password?'
       );
       const message = this.translate.instant(
         'Encryption can protect your funds if this device is stolen or compromised by malicious software.'
@@ -520,19 +529,19 @@ export class ProfileProvider {
           if (!res) {
             return this.showWarningNoEncrypt().then(res => {
               if (res) return resolve();
-              return this.encrypt(wallet).then(() => {
+              return this.encrypt(walletsArray).then(() => {
                 return resolve();
               });
             });
           }
-          return this.encrypt(wallet).then(() => {
+          return this.encrypt(walletsArray).then(() => {
             return resolve();
           });
         });
     });
   }
 
-  private encrypt(wallet): Promise<any> {
+  private encrypt(walletsArray): Promise<any> {
     return new Promise(resolve => {
       let title = this.translate.instant(
         'Enter a password to encrypt your wallet'
@@ -544,7 +553,7 @@ export class ProfileProvider {
         if (!password) {
           this.showWarningNoEncrypt().then(res => {
             if (res) return resolve();
-            this.encrypt(wallet).then(() => {
+            this.encrypt(walletsArray).then(() => {
               return resolve();
             });
           });
@@ -554,16 +563,31 @@ export class ProfileProvider {
           );
           this.askPassword(warnMsg, title).then((password2: string) => {
             if (!password2 || password != password2) {
-              this.encrypt(wallet).then(() => {
+              this.encrypt(walletsArray).then(() => {
                 return resolve();
               });
             } else {
-              wallet.encryptPrivateKey(password);
+              walletsArray.forEach(wallet => {
+                wallet.encryptPrivateKey(password);
+              });
               return resolve();
             }
           });
         }
       });
+    });
+  }
+
+  private addAndBindSinglePassWalletClients(walletsArray, opts): Promise<any> {
+    // Encrypt wallet
+    this.onGoingProcessProvider.pause();
+    return this.askToEncryptWallets(walletsArray).then(() => {
+      this.onGoingProcessProvider.resume();
+      const promises = [];
+      walletsArray.forEach(wallet => {
+        promises.push(this.addAndBindWalletClient(_.clone(wallet), opts));
+      });
+      return Promise.all(promises);
     });
   }
 
@@ -574,55 +598,49 @@ export class ProfileProvider {
         return reject(this.translate.instant('Could not access wallet'));
       }
 
-      // Encrypt wallet
-      this.onGoingProcessProvider.pause();
-      this.askToEncryptWallet(wallet).then(() => {
-        this.onGoingProcessProvider.resume();
+      const walletId: string = wallet.credentials.walletId;
 
-        const walletId: string = wallet.credentials.walletId;
+      if (!this.profile.addWallet(JSON.parse(wallet.export()))) {
+        const message = this.replaceParametersProvider.replace(
+          this.translate.instant('Wallet already in {{nameCase}}'),
+          { nameCase: this.appProvider.info.nameCase }
+        );
+        return reject(message);
+      }
 
-        if (!this.profile.addWallet(JSON.parse(wallet.export()))) {
-          const message = this.replaceParametersProvider.replace(
-            this.translate.instant('Wallet already in {{nameCase}}'),
-            { nameCase: this.appProvider.info.nameCase }
-          );
-          return reject(message);
-        }
+      const skipKeyValidation: boolean = this.shouldSkipValidation(walletId);
+      if (!skipKeyValidation) {
+        this.logger.debug('Trying to runValidation: ' + walletId);
+        this.runValidation(wallet);
+      }
 
-        const skipKeyValidation: boolean = this.shouldSkipValidation(walletId);
-        if (!skipKeyValidation) {
-          this.logger.debug('Trying to runValidation: ' + walletId);
-          this.runValidation(wallet);
-        }
+      this.bindWalletClient(wallet);
 
-        this.bindWalletClient(wallet);
+      const saveBwsUrl = (): Promise<any> => {
+        return new Promise(resolve => {
+          const defaults = this.configProvider.getDefaults();
+          const bwsFor = {};
+          bwsFor[walletId] = opts.bwsurl || defaults.bws.url;
 
-        const saveBwsUrl = (): Promise<any> => {
-          return new Promise(resolve => {
-            const defaults = this.configProvider.getDefaults();
-            const bwsFor = {};
-            bwsFor[walletId] = opts.bwsurl || defaults.bws.url;
-
-            // Dont save the default
-            if (bwsFor[walletId] == defaults.bws.url) {
-              return resolve();
-            }
-
-            this.configProvider.set({ bwsFor });
+          // Dont save the default
+          if (bwsFor[walletId] == defaults.bws.url) {
             return resolve();
-          });
-        };
+          }
 
-        saveBwsUrl().then(() => {
-          this.persistenceProvider
-            .storeProfile(this.profile)
-            .then(() => {
-              return resolve(wallet);
-            })
-            .catch(err => {
-              return reject(err);
-            });
+          this.configProvider.set({ bwsFor });
+          return resolve();
         });
+      };
+
+      saveBwsUrl().then(() => {
+        this.persistenceProvider
+          .storeProfile(this.profile)
+          .then(() => {
+            return resolve(wallet);
+          })
+          .catch(err => {
+            return reject(err);
+          });
       });
     });
   }
@@ -679,17 +697,8 @@ export class ProfileProvider {
             .then((msg: string) => {
               return reject(msg);
             });
-        } else {
-          this.addAndBindWalletClient(walletClient, {
-            bwsurl: opts.bwsurl
-          })
-            .then(wallet => {
-              return resolve(wallet);
-            })
-            .catch(err => {
-              return reject(err);
-            });
         }
+        return resolve(walletClient);
       });
     });
   }
@@ -704,7 +713,11 @@ export class ProfileProvider {
       opts.coin = coin;
       promises.push(this.importExtendedPrivateKey(xPrivKey, _.clone(opts)));
     });
-    return Promise.all(promises);
+    return Promise.all(promises).then((walletClients) => {
+      return this.addAndBindSinglePassWalletClients(walletClients, {
+        bwsurl: opts.bwsurl
+      });
+    });
   }
 
   public normalizeMnemonic(words: string): string {
@@ -747,17 +760,8 @@ export class ProfileProvider {
               .then((msg: string) => {
                 return reject(msg);
               });
-          } else {
-            this.addAndBindWalletClient(walletClient, {
-              bwsurl: opts.bwsurl
-            })
-              .then(wallet => {
-                return resolve(wallet);
-              })
-              .catch(err => {
-                return reject(err);
-              });
           }
+          return resolve(walletClient);
         }
       );
     });
@@ -773,7 +777,11 @@ export class ProfileProvider {
       opts.coin = coin;
       promises.push(this.importMnemonic(words, _.clone(opts)));
     });
-    return Promise.all(promises);
+    return Promise.all(promises).then((walletClients) => {
+      return this.addAndBindSinglePassWalletClients(walletClients, {
+        bwsurl: opts.bwsurl
+      });
+    })
   }
 
   public importExtendedPublicKey(opts): Promise<any> {
@@ -802,16 +810,7 @@ export class ProfileProvider {
                 return reject(msg);
               });
           }
-
-          this.addAndBindWalletClient(walletClient, {
-            bwsurl: opts.bwsurl
-          })
-            .then(wallet => {
-              return resolve(wallet);
-            })
-            .catch(err => {
-              return reject(err);
-            });
+          return resolve(walletClient);
         }
       );
     });
@@ -1136,12 +1135,7 @@ export class ProfileProvider {
 
   // create and store a wallet
   public createWallet(opts): Promise<any> {
-    return this.doCreateWallet(opts)
-      .then(walletClient => {
-        return this.addAndBindWalletClient(walletClient, {
-          bwsurl: opts.bwsurl
-        });
-      });
+    return this.doCreateWallet(opts);
   }
 
   // joins and stores a wallet
@@ -1185,13 +1179,8 @@ export class ProfileProvider {
                   .then((msg: string) => {
                     return reject(msg);
                   });
-              } else {
-                this.addAndBindWalletClient(walletClient, {
-                  bwsurl: opts.bwsurl
-                }).then(wallet => {
-                  return resolve(wallet);
-                });
               }
+              return resolve(walletClient);
             }
           );
         })
@@ -1264,7 +1253,11 @@ export class ProfileProvider {
           opts.coin = coin;
           promises.push(this.createWallet(_.clone(opts)));
         });
-        return Promise.all(promises);
+        return Promise.all(promises).then((walletClients) => {
+          return this.addAndBindSinglePassWalletClients(walletClients, {
+            bwsurl: opts.bwsurl
+          });
+        })
       });
   }
 
