@@ -41,10 +41,14 @@ describe('CreateWalletPage', () => {
         networkName: 'livenet',
         bwsurl: 'https://bws.bitpay.com/bws/api',
         singleAddress: false,
-        coin: 'btc',
         mnemonic: 'mom mom mom mom mom mom mom mom mom mom mom mom',
         derivationStrategy: 'BIP44',
         account: 0
+      };
+
+      const coins = {
+        bitcoin: 'btc',
+        bitcoincash: 'bch'
       };
 
       instance.createForm.value.walletName = 'test';
@@ -55,13 +59,14 @@ describe('CreateWalletPage', () => {
       instance.createForm.value.derivationPath = "m/44'/0'/0'";
       instance.createForm.value.bwsURL = 'https://bws.bitpay.com/bws/api';
       instance.createForm.value.singleAddress = false;
-      instance.createForm.value.coin = 'btc';
       instance.createForm.value.selectedSeed = 'set';
       instance.createForm.value.recoveryPhrase =
         'mom mom mom mom mom mom mom mom mom mom mom mom';
+      instance.createForm.value.bitcoincash = 'bch';
+      instance.createForm.value.bitcoin = 'btc';
 
       instance.setOptsAndCreate();
-      expect(spy).toHaveBeenCalledWith(opts);
+      expect(spy).toHaveBeenCalledWith(opts, coins);
     });
   });
 });

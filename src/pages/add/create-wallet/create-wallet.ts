@@ -179,7 +179,10 @@ export class CreateWalletPage implements OnInit {
       singleAddress: this.createForm.value.singleAddress
     };
 
-    const coins = { bitcoin: this.createForm.value.bitcoin, bitcoincash: this.createForm.value.bitcoincash };
+    const coins = {
+      bitcoin: this.createForm.value.bitcoin,
+      bitcoincash: this.createForm.value.bitcoincash
+    };
 
     const setSeed = this.createForm.value.selectedSeed == 'set';
     if (setSeed) {

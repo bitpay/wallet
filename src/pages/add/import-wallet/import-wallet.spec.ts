@@ -75,7 +75,6 @@ describe('ImportWalletPage', () => {
       let info = {
         derivationPath: "m/44'/0'/0'",
         bwsURL: '',
-        coin: 'btc',
         words: 'mom mom mom mom mom mom mom mom mom mom mom mom'
       };
 
@@ -83,7 +82,6 @@ describe('ImportWalletPage', () => {
         info.derivationPath
       );
       instance.importForm.controls['words'].setValue(info.words);
-      instance.importForm.controls['coin'].setValue(info.coin);
       instance.importForm.controls['bwsURL'].setValue(info.bwsURL);
       expect(instance.importFromFile()).toBeUndefined();
     });
@@ -92,7 +90,6 @@ describe('ImportWalletPage', () => {
       let info = {
         derivationPath: "m/44'/0'/0'",
         bwsURL: 'https://bws.bitpay.com/bws/api',
-        coin: 'btc',
         words: 'mom mom mom mom mom mom mom mom mom mom mom mom',
         backupText: 'test'
       };
@@ -101,7 +98,6 @@ describe('ImportWalletPage', () => {
         info.derivationPath
       );
       instance.importForm.controls['words'].setValue(info.words);
-      instance.importForm.controls['coin'].setValue(info.coin);
       instance.importForm.controls['bwsURL'].setValue(info.bwsURL);
       instance.importForm.controls['backupText'].setValue(info.backupText);
       const spy = spyOn(instance, 'importBlob');
@@ -117,7 +113,8 @@ describe('ImportWalletPage', () => {
       let info = {
         derivationPath: "m/44'/0'/0'",
         bwsURL: 'https://bws.bitpay.com/bws/api',
-        coin: 'btc',
+        bitcoin: true,
+        bitcoincash: true,
         words: 'mom1 mom2 mom3 mom4 mom5 mom6 mom7 mom8 mom9 mom10 mom11 mom12',
         backupText: 'test'
       };
@@ -126,7 +123,8 @@ describe('ImportWalletPage', () => {
         info.derivationPath
       );
       instance.importForm.controls['words'].setValue(info.words);
-      instance.importForm.controls['coin'].setValue(info.coin);
+      instance.importForm.controls['bitcoin'].setValue(info.bitcoin);
+      instance.importForm.controls['bitcoincash'].setValue(info.bitcoincash);
       instance.importForm.controls['bwsURL'].setValue(info.bwsURL);
       instance.importForm.controls['backupText'].setValue(info.backupText);
     });

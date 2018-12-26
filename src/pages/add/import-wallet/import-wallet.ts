@@ -1,13 +1,12 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
-import { App, Events, NavController, NavParams } from 'ionic-angular';
+import { Events, NavController, NavParams } from 'ionic-angular';
 import { Logger } from '../../../providers/logger/logger';
 
 // Pages
 import { DisclaimerPage } from '../../onboarding/disclaimer/disclaimer';
 import { ScanPage } from '../../scan/scan';
-import { TabsPage } from '../../tabs/tabs';
 
 // Providers
 import { ActionSheetProvider } from '../../../providers/action-sheet/action-sheet';
@@ -51,7 +50,6 @@ export class ImportWalletPage {
   public cancelText: string;
 
   constructor(
-    private app: App,
     private navCtrl: NavController,
     private navParams: NavParams,
     private form: FormBuilder,
@@ -122,7 +120,6 @@ export class ImportWalletPage {
         this.file = null;
         this.formFile = null;
         this.importForm.get('words').setValidators([Validators.required]);
-        this.importForm.get('coin').setValidators([Validators.required]);
         this.importForm.get('filePassword').clearValidators();
         if (this.isCordova || this.isSafari)
           this.importForm.get('backupText').clearValidators();
@@ -138,7 +135,6 @@ export class ImportWalletPage {
           .get('filePassword')
           .setValidators([Validators.required]);
         this.importForm.get('words').clearValidators();
-        this.importForm.get('coin').clearValidators();
         break;
 
       default:
@@ -151,7 +147,6 @@ export class ImportWalletPage {
     this.importForm.get('file').updateValueAndValidity();
     this.importForm.get('filePassword').updateValueAndValidity();
     this.importForm.get('backupText').updateValueAndValidity();
-    this.importForm.get('coin').updateValueAndValidity();
   }
 
   private processWalletInfo(code: string): void {
@@ -190,7 +185,17 @@ export class ImportWalletPage {
     this.importForm.controls['testnetEnabled'].setValue(isTestnet);
     this.importForm.controls['derivationPath'].setValue(info.derivationPath);
     this.importForm.controls['words'].setValue(info.data);
-    this.importForm.controls['coin'].setValue(info.coin);
+
+    switch (info.coin) {
+      case 'btc':
+        this.importForm.controls['bitcoin'].setValue('btc');
+        this.importForm.controls['bitcoincash'].setValue(null);
+        break;
+      case 'bch':
+        this.importForm.controls['bitcoin'].setValue(null);
+        this.importForm.controls['bitcoincash'].setValue('bch');
+        break;
+    }
   }
 
   public setDerivationPath(): void {
@@ -328,7 +333,6 @@ export class ImportWalletPage {
     } else {
       const opts: Partial<WalletOptions> = {};
       opts.bwsurl = this.importForm.value.bwsURL;
-      opts.coin = this.importForm.value.coin;
       this.importBlob(backupText, opts);
     }
   }
@@ -366,7 +370,10 @@ export class ImportWalletPage {
       return;
     }
 
-    const coins = { bitcoin: this.importForm.value.bitcoin, bitcoincash: this.importForm.value.bitcoincash };
+    const coins = {
+      bitcoin: this.importForm.value.bitcoin,
+      bitcoincash: this.importForm.value.bitcoincash
+    };
 
     const words: string = this.importForm.value.words || null;
 
@@ -417,7 +424,6 @@ export class ImportWalletPage {
         // DONE === 2
         const opts: Partial<WalletOptions> = {};
         opts.bwsurl = this.importForm.value.bwsURL;
-        opts.coin = this.importForm.value.coin;
         this.importBlob(this.reader.result, opts);
       }
     };

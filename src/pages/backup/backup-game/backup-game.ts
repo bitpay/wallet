@@ -262,8 +262,7 @@ export class BackupGamePage {
         wallets.forEach(wallet => {
           this.profileProvider.setBackupFlag(wallet.credentials.walletId);
         });
-      }
-      else {
+      } else {
         this.profileProvider.setBackupFlag(this.wallet.credentials.walletId);
       }
 

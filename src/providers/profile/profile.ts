@@ -204,7 +204,7 @@ export class ProfileProvider {
           return;
         }
         wallet.setNotificationsInterval(this.UPDATE_PERIOD);
-        wallet.openWallet(() => { });
+        wallet.openWallet(() => {});
       }
     );
     this.events.subscribe('wallet:updated', (walletId: string) => {
@@ -396,7 +396,7 @@ export class ProfileProvider {
             this.profile.setChecked(this.platformProvider.ua, walletId);
           } else {
             this.logger.warn('Key Derivation failed for wallet:' + walletId);
-            this.persistenceProvider.clearLastAddress(walletId).then(() => { });
+            this.persistenceProvider.clearLastAddress(walletId).then(() => {});
           }
 
           this.storeProfileIfDirty();
@@ -668,8 +668,8 @@ export class ProfileProvider {
           const mergeAddressBook = _.merge(addressBook, localAddressBook);
           this.persistenceProvider
             .setAddressBook(
-            wallet.credentials.network,
-            JSON.stringify(mergeAddressBook)
+              wallet.credentials.network,
+              JSON.stringify(mergeAddressBook)
             )
             .then(() => {
               return resolve();
@@ -703,7 +703,11 @@ export class ProfileProvider {
     });
   }
 
-  public importSinglePassWalletsExtendedPrivateKey(xPrivKey: string, opts, coins): Promise<any> {
+  public importSinglePassWalletsExtendedPrivateKey(
+    xPrivKey: string,
+    opts,
+    coins
+  ): Promise<any> {
     this.logger.info('Importing Single Passphrase Wallets with xPrivKey');
 
     const validCoins = this.getFilteredCoinsArray(coins);
@@ -713,7 +717,7 @@ export class ProfileProvider {
       opts.coin = coin;
       promises.push(this.importExtendedPrivateKey(xPrivKey, _.clone(opts)));
     });
-    return Promise.all(promises).then((walletClients) => {
+    return Promise.all(promises).then(walletClients => {
       return this.addAndBindSinglePassWalletClients(walletClients, {
         bwsurl: opts.bwsurl
       });
@@ -767,7 +771,11 @@ export class ProfileProvider {
     });
   }
 
-  public importSinglePassWalletsMnemonic(words: string, opts, coins): Promise<any> {
+  public importSinglePassWalletsMnemonic(
+    words: string,
+    opts,
+    coins
+  ): Promise<any> {
     this.logger.info('Importing Single Passphrase Wallets with Mnemonic');
 
     const validCoins = this.getFilteredCoinsArray(coins);
@@ -777,11 +785,11 @@ export class ProfileProvider {
       opts.coin = coin;
       promises.push(this.importMnemonic(words, _.clone(opts)));
     });
-    return Promise.all(promises).then((walletClients) => {
+    return Promise.all(promises).then(walletClients => {
       return this.addAndBindSinglePassWalletClients(walletClients, {
         bwsurl: opts.bwsurl
       });
-    })
+    });
   }
 
   public importExtendedPublicKey(opts): Promise<any> {
@@ -957,9 +965,9 @@ export class ProfileProvider {
 
       this.logger.debug(
         'Binding wallet:' +
-        credentials.walletId +
-        ' Validating?:' +
-        !skipKeyValidation
+          credentials.walletId +
+          ' Validating?:' +
+          !skipKeyValidation
       );
       return resolve(this.bindWalletClient(walletClient));
     });
@@ -1100,7 +1108,9 @@ export class ProfileProvider {
         this.seedWallet(opts)
           .then(walletClient => {
             const coin = opts.coin == 'btc' ? '[BTC]' : '[BCH]';
-            const name = opts.name || `${this.translate.instant('Personal Wallet')} ${coin}`;
+            const name =
+              opts.name ||
+              `${this.translate.instant('Personal Wallet')} ${coin}`;
             const myName = opts.myName || this.translate.instant('me');
 
             walletClient.createWallet(
@@ -1223,7 +1233,7 @@ export class ProfileProvider {
 
   public getFilteredCoinsArray(coins) {
     const coinsArray = [Coin.BTC, Coin.BCH];
-    return coinsArray.filter((coin) => {
+    return coinsArray.filter(coin => {
       if (coins.bitcoin && coin == 'btc') {
         return true;
       }
@@ -1231,7 +1241,7 @@ export class ProfileProvider {
         return true;
       }
       return false;
-    })
+    });
   }
 
   public createDefaultWallet(coins): Promise<any> {
@@ -1243,23 +1253,21 @@ export class ProfileProvider {
   }
 
   public createSinglePassWallets(opts, coins): Promise<any> {
-
     const validCoins = this.getFilteredCoinsArray(coins);
 
-    return this.seedWallet(opts)
-      .then(walletClient => {
-        opts.mnemonic = walletClient.credentials.mnemonic;
-        const promises = [];
-        validCoins.forEach(coin => {
-          opts.coin = coin;
-          promises.push(this.createWallet(_.clone(opts)));
-        });
-        return Promise.all(promises).then((walletClients) => {
-          return this.addAndBindSinglePassWalletClients(walletClients, {
-            bwsurl: opts.bwsurl
-          });
-        })
+    return this.seedWallet(opts).then(walletClient => {
+      opts.mnemonic = walletClient.credentials.mnemonic;
+      const promises = [];
+      validCoins.forEach(coin => {
+        opts.coin = coin;
+        promises.push(this.createWallet(_.clone(opts)));
       });
+      return Promise.all(promises).then(walletClients => {
+        return this.addAndBindSinglePassWalletClients(walletClients, {
+          bwsurl: opts.bwsurl
+        });
+      });
+    });
   }
 
   public setDisclaimerAccepted(): Promise<any> {

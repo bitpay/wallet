@@ -52,7 +52,7 @@ export class TourPage {
     this.currentIndex = 0;
     this.coins = {
       bitcoin: true,
-      bitcoincash: true,
+      bitcoincash: true
     };
     this.rateProvider.whenRatesAvailable('btc').then(() => {
       const btcAmount = 1;
