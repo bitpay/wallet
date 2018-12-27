@@ -213,10 +213,11 @@
 
               <div class="action" *ngIf="tx.confirmations > 0 && tx.action == 'sent'">
                 <span *ngIf="(tx.message && (tx.note && !tx.note.body)) && (!addressbook || !tx.outputs[0] || !addressbook[tx.outputs[0].address]) && (!tx.customData || !tx.customData.toWalletName)" translate>Sent</span>
-                <span *ngIf="(tx.message && (tx.note && !tx.note.body)) && (!addressbook || !tx.outputs[0] || !addressbook[tx.outputs[0].address]) && (tx.customData && tx.customData.toWalletName)">{{tx.customData.toWalletName}}</span>
                 <span *ngIf="!tx.message && (!tx.note || (tx.note && !tx.note.body)) && (!addressbook || !tx.outputs[0] || !addressbook[tx.outputs[0].address]) && (!tx.customData || !tx.customData.toWalletName)">{{'Sent'
                   | translate}}</span>
-                <span *ngIf="!tx.message && (!tx.note || (tx.note && !tx.note.body)) && (!addressbook || !tx.outputs[0] || !addressbook[tx.outputs[0].address]) && (tx.customData && tx.customData.toWalletName)">{{tx.customData.toWalletName}}</span>
+                <span *ngIf="!tx.message && (!tx.note || (tx.note && !tx.note.body)) && (!addressbook || !tx.outputs[0] || !addressbook[tx.outputs[0].address]) && (tx.customData && tx.customData.toWalletName)">
+                  {{ 'Sent to {walletName}' | translate: {walletName: tx.customData.toWalletName} }}
+                </span>
                 <span *ngIf="!tx.note && tx.message">{{tx.message}}</span>
                 <span *ngIf="tx.note && tx.note.body != ''">{{tx.note.body}}</span>
                 <span *ngIf="!tx.message && addressbook && tx.outputs[0] && addressbook[tx.outputs[0].address]">
