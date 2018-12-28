@@ -1,0 +1,53 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>{{'Create New Vault' | translate}}</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content no-bounce>
+  <form [formGroup]="createVaultForm" (ngSubmit)="setOptsAndCreate()">
+    <ion-item>
+      <ion-label stacked>{{'Vault name' | translate}}</ion-label>
+      <ion-input type="text" formControlName="vaultName" placeholder="{{'Enter vault name'| translate}}"></ion-input>
+    </ion-item>
+
+    <ion-item-divider></ion-item-divider>
+
+    <ion-item (click)="showAdvOpts = !showAdvOpts">
+      <ion-label *ngIf="!showAdvOpts">{{'Show advanced options' | translate}}</ion-label>
+      <ion-label *ngIf="showAdvOpts">{{'Hide advanced options' | translate}}</ion-label>
+      <div item-end>
+        <ion-icon color="grey" *ngIf="!showAdvOpts" name="ios-arrow-down-outline"></ion-icon>
+        <ion-icon color="grey" *ngIf="showAdvOpts" name="ios-arrow-up-outline"></ion-icon>
+      </div>
+    </ion-item>
+
+    <div *ngIf="showAdvOpts">
+
+      <ion-item>
+        <ion-label stacked>{{'Vault key' | translate}}</ion-label>
+        <ion-select okText="{{okText}}" cancelText="{{cancelText}}" formControlName="selectedSeed" (ionChange)="seedOptionsChange(createVaultForm.value.selectedSeed)">
+          <ion-option *ngFor="let opt of seedOptions" [value]="opt.id">{{opt.label}}</ion-option>
+        </ion-select>
+      </ion-item>
+
+      <ion-item *ngIf="createVaultForm.value.selectedSeed == 'set'">
+        <ion-label stacked>{{'Vault recovery phrase' | translate}}</ion-label>
+        <ion-input type="text" formControlName="recoveryPhrase"></ion-input>
+      </ion-item>
+
+      <ion-item *ngIf="createVaultForm.value.selectedSeed == 'set'">
+        <ion-label stacked>{{'Derivation path' | translate}}</ion-label>
+        <ion-input type="text" formControlName="derivationPath"></ion-input>
+      </ion-item>
+    </div>
+  </form>
+</ion-content>
+
+<ion-footer>
+  <ion-toolbar>
+    <button ion-button full class="button-footer" (click)="setOptsAndCreate()" [disabled]="!createVaultForm.valid">
+      {{'Create vault' | translate}}
+    </button>
+  </ion-toolbar>
+</ion-footer>

@@ -96,8 +96,8 @@ export class CreateWalletPage implements OnInit {
       derivationPath: [this.derivationPathByDefault],
       testnetEnabled: [false],
       singleAddress: [false],
-      bitcoin: true,
-      bitcoincash: true
+      coin: [null, Validators.required],
+      addToVault: [false]
     });
 
     this.setTotalCopayers(this.tc);
@@ -176,12 +176,8 @@ export class CreateWalletPage implements OnInit {
           : null,
       networkName: this.createForm.value.testnetEnabled ? 'testnet' : 'livenet',
       bwsurl: this.createForm.value.bwsURL,
-      singleAddress: this.createForm.value.singleAddress
-    };
-
-    const coins = {
-      bitcoin: this.createForm.value.bitcoin,
-      bitcoincash: this.createForm.value.bitcoincash
+      singleAddress: this.createForm.value.singleAddress,
+      coin: this.createForm.value.coin
     };
 
     const setSeed = this.createForm.value.selectedSeed == 'set';
@@ -229,25 +225,25 @@ export class CreateWalletPage implements OnInit {
       return;
     }
 
-    this.create(opts, coins);
+    this.create(opts);
   }
 
-  private create(opts, coins): void {
+  private create(opts): void {
     this.onGoingProcessProvider.set('creatingWallet');
-
-    this.profileProvider
-      .createSinglePassWallets(opts, coins)
-      .then(walletsArray => {
+    const promise = this.createForm.value.addToVault
+      ? this.profileProvider.createWalletInVault(opts)
+      : this.profileProvider.createNewSeedWallet(opts);
+    promise
+      .then(wallet => {
         this.onGoingProcessProvider.clear();
         this.events.publish('status:updated');
-        walletsArray.forEach(wallet => {
-          this.walletProvider.updateRemotePreferences(wallet);
-          this.pushNotificationsProvider.updateSubscription(wallet);
-          if (this.createForm.value.selectedSeed == 'set') {
-            this.profileProvider.setBackupFlag(wallet.credentials.walletId);
-          }
-        });
+        this.walletProvider.updateRemotePreferences(wallet);
+        this.pushNotificationsProvider.updateSubscription(wallet);
+        if (this.createForm.value.selectedSeed == 'set') {
+          this.profileProvider.setBackupFlag(wallet.credentials.walletId);
+        }
         this.navCtrl.popToRoot();
+        this.events.publish('OpenWallet', wallet);
       })
       .catch(err => {
         this.onGoingProcessProvider.clear();

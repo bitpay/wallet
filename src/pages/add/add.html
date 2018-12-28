@@ -5,6 +5,12 @@
 </ion-header>
 
 <ion-content no-bounce>
+  <button *ngIf="noVault" class="list-button" ion-item (click)="goToCreateVaultView()">
+    <ion-icon item-start>
+      <img src="assets/img/icon-wallet.svg" class="icon-wallet" />
+    </ion-icon>
+    <span translate>Create new vault</span>
+  </button>
   <button class="list-button" ion-item (click)="goToCreateWallet(false)">
     <ion-icon item-start>
       <img src="assets/img/icon-wallet.svg" class="icon-wallet" />

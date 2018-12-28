@@ -33,10 +33,10 @@ export class JoinWalletPage {
   public seedOptions;
   public okText: string;
   public cancelText: string;
+  public joinForm: FormGroup;
 
   private derivationPathByDefault: string;
   private derivationPathForTestnet: string;
-  private joinForm: FormGroup;
   private regex: RegExp;
 
   constructor(

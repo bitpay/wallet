@@ -1,6 +1,7 @@
 /* Pages */
 import { AddPage } from '../pages/add/add';
 import { CopayersPage } from '../pages/add/copayers/copayers';
+import { CreateVaultPage } from '../pages/add/create-vault/create-vault';
 import { CreateWalletPage } from '../pages/add/create-wallet/create-wallet';
 import { ImportWalletPage } from '../pages/add/import-wallet/import-wallet';
 import { JoinWalletPage } from '../pages/add/join-wallet/join-wallet';
@@ -141,6 +142,7 @@ export const PAGES = [
   CoinbasePage,
   CoinbaseTxDetailsPage,
   CopayersPage,
+  CreateVaultPage,
   FeedbackCardPage,
   SharePage,
   ImportWalletPage,

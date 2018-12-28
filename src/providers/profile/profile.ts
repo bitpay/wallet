@@ -516,7 +516,7 @@ export class ProfileProvider {
       if (!canSign) return resolve();
 
       const title = this.translate.instant(
-        'Would you like to protect this wallet/wallets with a password?'
+        'Would you like to protect this wallet with a password?'
       );
       const message = this.translate.instant(
         'Encryption can protect your funds if this device is stolen or compromised by malicious software.'
@@ -697,29 +697,17 @@ export class ProfileProvider {
             .then((msg: string) => {
               return reject(msg);
             });
+        } else {
+          this.addAndBindWalletClient(walletClient, {
+            bwsurl: opts.bwsurl
+          })
+            .then(wallet => {
+              return resolve(wallet);
+            })
+            .catch(err => {
+              return reject(err);
+            });
         }
-        return resolve(walletClient);
-      });
-    });
-  }
-
-  public importSinglePassWalletsExtendedPrivateKey(
-    xPrivKey: string,
-    opts,
-    coins
-  ): Promise<any> {
-    this.logger.info('Importing Single Passphrase Wallets with xPrivKey');
-
-    const validCoins = this.getFilteredCoinsArray(coins);
-
-    const promises = [];
-    validCoins.forEach(coin => {
-      opts.coin = coin;
-      promises.push(this.importExtendedPrivateKey(xPrivKey, _.clone(opts)));
-    });
-    return Promise.all(promises).then(walletClients => {
-      return this.addAndBindSinglePassWalletClients(walletClients, {
-        bwsurl: opts.bwsurl
       });
     });
   }
@@ -764,32 +752,31 @@ export class ProfileProvider {
               .then((msg: string) => {
                 return reject(msg);
               });
+          } else {
+            this.addAndBindWalletClient(walletClient, {
+              bwsurl: opts.bwsurl
+            })
+              .then(wallet => {
+                return resolve(wallet);
+              })
+              .catch(err => {
+                return reject(err);
+              });
           }
-          return resolve(walletClient);
         }
       );
     });
   }
 
-  public importSinglePassWalletsMnemonic(
-    words: string,
-    opts,
-    coins
-  ): Promise<any> {
-    this.logger.info('Importing Single Passphrase Wallets with Mnemonic');
-
-    const validCoins = this.getFilteredCoinsArray(coins);
-
-    const promises = [];
-    validCoins.forEach(coin => {
-      opts.coin = coin;
-      promises.push(this.importMnemonic(words, _.clone(opts)));
+  private async storeWalletsInVault(walletClients, vaultId) {
+    const vaults = await this.persistenceProvider.getVaults();
+    const vault = _.filter(vaults, v => {
+      return v.id === vaultId;
     });
-    return Promise.all(promises).then(walletClients => {
-      return this.addAndBindSinglePassWalletClients(walletClients, {
-        bwsurl: opts.bwsurl
-      });
+    walletClients.forEach(wallet => {
+      vault[0].walletIds.push(wallet.credentials.walletId);
     });
+    this.persistenceProvider.storeVaults(vaults);
   }
 
   public importExtendedPublicKey(opts): Promise<any> {
@@ -818,7 +805,15 @@ export class ProfileProvider {
                 return reject(msg);
               });
           }
-          return resolve(walletClient);
+          this.addAndBindWalletClient(walletClient, {
+            bwsurl: opts.bwsurl
+          })
+            .then(wallet => {
+              return resolve(wallet);
+            })
+            .catch(err => {
+              return reject(err);
+            });
         }
       );
     });
@@ -999,7 +994,7 @@ export class ProfileProvider {
     });
   }
 
-  private seedWallet(opts): Promise<any> {
+  private seedWallet(opts?): Promise<any> {
     return new Promise((resolve, reject) => {
       opts = opts ? opts : {};
       const walletClient = this.bwcProvider.getClient(null, opts);
@@ -1190,8 +1185,13 @@ export class ProfileProvider {
                   .then((msg: string) => {
                     return reject(msg);
                   });
+              } else {
+                this.addAndBindWalletClient(walletClient, {
+                  bwsurl: opts.bwsurl
+                }).then(wallet => {
+                  return resolve(wallet);
+                });
               }
-              return resolve(walletClient);
             }
           );
         })
@@ -1244,28 +1244,97 @@ export class ProfileProvider {
     });
   }
 
-  public createDefaultWallet(coins): Promise<any> {
-    const opts: Partial<WalletOptions> = {};
-    opts.m = 1;
-    opts.n = 1;
-    opts.networkName = 'livenet';
-    return this.createSinglePassWallets(opts, coins);
+  public createDefaultVault(coins): Promise<any> {
+    const vaultId = 0;
+    const defaultVault = {
+      id: vaultId,
+      name: 'Personal Savings',
+      walletIds: []
+    };
+    return this.createVault(defaultVault).then(vaultClient => {
+      // Default wallet options
+      const opts: Partial<WalletOptions> = {};
+      opts.m = 1;
+      opts.n = 1;
+      opts.networkName = 'livenet';
+      opts.mnemonic = vaultClient.credentials.mnemonic;
+      return this.createDefaultWalletsInVault(coins, vaultId, opts);
+    });
   }
 
-  public createSinglePassWallets(opts, coins): Promise<any> {
-    const validCoins = this.getFilteredCoinsArray(coins);
-
-    return this.seedWallet(opts).then(walletClient => {
-      opts.mnemonic = walletClient.credentials.mnemonic;
-      const promises = [];
-      validCoins.forEach(coin => {
-        opts.coin = coin;
-        promises.push(this.createWallet(_.clone(opts)));
+  public createVault(vault, opts?): Promise<any> {
+    return this.seedWallet(opts).then(vaultClient => {
+      vault.mnemonic = vaultClient.credentials.mnemonic;
+      vault.copayerId = vaultClient.credentials.copayerId;
+      return this.persistenceProvider.getVaults().then(vaults => {
+        vaults = vaults || [];
+        vaults.push(vault);
+        this.persistenceProvider.storeVaults(vaults);
+        return Promise.resolve(vaultClient);
       });
-      return Promise.all(promises).then(walletClients => {
-        return this.addAndBindSinglePassWalletClients(walletClients, {
+    });
+  }
+
+  public async createWalletInVault(opts): Promise<any> {
+    const vaults = await this.persistenceProvider.getVaults();
+    const vault = vaults[0];
+    const vaultWallet = this.getWallet(vault.walletIds[0]);
+    opts.mnemonic = vaultWallet.credentials.mnemonic;
+    return this.createWallet(opts).then(walletClient => {
+      const vaultId = 0; // By default
+      this.storeWalletsInVault([].concat(walletClient), vaultId);
+      // Encrypt wallet
+      this.onGoingProcessProvider.pause();
+      return this.encryptVaultWallet(walletClient).then(() => {
+        this.onGoingProcessProvider.resume();
+        return this.addAndBindWalletClient(walletClient, {
           bwsurl: opts.bwsurl
         });
+      });
+    });
+  }
+
+  public createNewSeedWallet(opts): Promise<any> {
+    return this.createWallet(opts).then(walletClient => {
+      return this.addAndBindWalletClient(walletClient, {
+        bwsurl: opts.bwsurl
+      });
+    });
+  }
+
+  public encryptVaultWallet(wallet): Promise<any> {
+    return Promise.resolve(wallet);
+    /* this.walletProvider
+      .getKeys(this.wallet)
+      .then(k => {
+        this.xPrivKey = k.xPrivKey;
+        this.credentialsEncrypted = false;
+      })
+      .catch(err => {
+        if (
+          err &&
+          err.message != 'FINGERPRINT_CANCELLED' &&
+          err.message != 'PASSWORD_CANCELLED'
+        ) {
+          return Promise.reject(this.bwcErrorProvider.msg(err));
+        }
+        return Promise.reject(undefined);
+      }); */
+  }
+
+  public createDefaultWalletsInVault(coins, vaultId, opts): Promise<any> {
+    const validCoins = this.getFilteredCoinsArray(coins);
+    const promises = [];
+    validCoins.forEach(coin => {
+      opts.coin = coin;
+      promises.push(this.createWallet(_.clone(opts)));
+    });
+    return Promise.all(promises).then(async walletClients => {
+      walletClients = [].concat(walletClients);
+      this.storeWalletsInVault(walletClients, vaultId);
+      // TODO remove mnemonics from wallets credentials
+      return this.addAndBindSinglePassWalletClients(walletClients, {
+        bwsurl: opts.bwsurl
       });
     });
   }

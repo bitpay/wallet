@@ -50,8 +50,8 @@
     </ion-slide>
 
     <ion-slide>
-      <h3 class="title" translate>Add your coins.</h3>
-      <p translate class="top-description">Each of this wallets will share their mnemonics. Later you could recover all wallets automatically from that seed.</p>
+      <h3 class="title" translate>Add coins to your vault.</h3>
+      <!-- TODO <p translate class="top-description">Lorem ipsum dolor sit amet, consectetur adipiscing elit. In et sapien faucibus.</p>-->
       <ion-list class="checkbox-list" no-lines>
         <ion-item>
           <ion-label>Bitcoin</ion-label>
@@ -63,8 +63,8 @@
           <ion-checkbox [(ngModel)]="coins.bitcoincash" checked="true"></ion-checkbox>
         </ion-item>
         <div class="bottom-absolute">
-          <button ion-button clear class="button-standard e2e-create-wallet" (click)="createDefaultWallet()">
-            {{'Create wallets' | translate}}
+          <button ion-button clear class="button-standard e2e-create-wallet" (click)="createDefaultVault()">
+            {{'Create Vault' | translate}}
           </button>
         </div>
       </ion-list>

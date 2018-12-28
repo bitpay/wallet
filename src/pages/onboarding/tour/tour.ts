@@ -93,10 +93,10 @@ export class TourPage {
     this.slides.slideTo(3);
   }
 
-  public createDefaultWallet(): void {
+  public createDefaultVault(): void {
     this.onGoingProcessProvider.set('creatingWallet');
     this.profileProvider
-      .createDefaultWallet(this.coins)
+      .createDefaultVault(this.coins)
       .then(walletsArray => {
         this.onGoingProcessProvider.clear();
         this.persistenceProvider.setOnboardingCompleted();
@@ -114,10 +114,10 @@ export class TourPage {
             const okText = this.translate.instant('Retry');
             this.popupProvider.ionicAlert(title, err, okText).then(() => {
               this.retryCount = 0;
-              this.createDefaultWallet();
+              this.createDefaultVault();
             });
           } else {
-            this.createDefaultWallet();
+            this.createDefaultVault();
           }
         }, 2000);
       });
