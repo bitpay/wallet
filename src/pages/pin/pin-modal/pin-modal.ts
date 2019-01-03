@@ -22,8 +22,8 @@ import { PersistenceProvider } from '../../../providers/persistence/persistence'
 export class PinModalPage {
   private ATTEMPT_LIMIT: number;
   private ATTEMPT_LOCK_OUT_TIME: number;
-  private countDown;
-  private lockReleaseTimeout;
+  private countDown: NodeJS.Timer;
+  private lockReleaseTimeout: NodeJS.Timer;
   private onPauseSubscription: Subscription;
   private onResumeSubscription: Subscription;
 
@@ -62,18 +62,12 @@ export class PinModalPage {
     this.expires = '';
     this.incorrect = false;
 
-    this.unregister = this.platform.registerBackButtonAction(() => {});
+    this.unregister = this.platform.registerBackButtonAction(() => { });
 
     this.action = this.navParams.get('action');
 
     if (this.action === 'checkPin' || this.action === 'lockSetUp') {
-      this.persistenceProvider.getLockStatus().then((isLocked: string) => {
-        if (!isLocked) return;
-        if (this.action === 'checkPin') {
-          this.showLockTimer();
-          this.setLockRelease();
-        }
-      });
+      this.checkIfLocked();
     }
   }
 
@@ -97,14 +91,29 @@ export class PinModalPage {
       this.currentPin = this.firstPinEntered = '';
     });
     this.onResumeSubscription = this.platform.resume.subscribe(() => {
-      this.showLockTimer();
-      this.setLockRelease();
+      this.disableButtons = true;
+      this.checkIfLocked();
     });
   }
 
   ngOnDestroy() {
     this.onPauseSubscription.unsubscribe();
     this.onResumeSubscription.unsubscribe();
+  }
+
+  private checkIfLocked(): void {
+    this.persistenceProvider.getLockStatus().then((isLocked: string) => {
+
+      if (!isLocked) {
+        this.disableButtons = null;
+        return;
+      }
+
+      if (this.action === 'checkPin') {
+        this.showLockTimer();
+        this.setLockRelease();
+      }
+    });
   }
 
   public close(cancelClicked?: boolean): void {
@@ -158,23 +167,25 @@ export class PinModalPage {
       this.persistenceProvider.setLockStatus('locked');
       this.showLockTimer();
       this.setLockRelease();
+    } else {
+      this.disableButtons = null
     }
   }
 
-  private showLockTimer() {
+  private showLockTimer(): void {
     this.disableButtons = true;
-    let bannedUntil =
+    const bannedUntil =
       Math.floor(Date.now() / 1000) + this.ATTEMPT_LOCK_OUT_TIME;
     this.countDown = setInterval(() => {
-      let now = Math.floor(Date.now() / 1000);
-      let totalSecs = bannedUntil - now;
-      let m = Math.floor(totalSecs / 60);
-      let s = totalSecs % 60;
+      const now = Math.floor(Date.now() / 1000);
+      const totalSecs = bannedUntil - now;
+      const m = Math.floor(totalSecs / 60);
+      const s = totalSecs % 60;
       this.expires = ('0' + m).slice(-2) + ':' + ('0' + s).slice(-2);
     }, 1000);
   }
 
-  private setLockRelease() {
+  private setLockRelease(): void {
     this.lockReleaseTimeout = setTimeout(() => {
       clearInterval(this.countDown);
       this.expires = this.disableButtons = null;
@@ -190,18 +201,19 @@ export class PinModalPage {
 
   private isComplete(): boolean {
     if (this.currentPin.length < 4) return false;
-    else return true;
+    this.disableButtons = true;
+    return true;
   }
 
   public save(): void {
-    let lock = { method: 'pin', value: this.currentPin, bannedUntil: null };
+    const lock = { method: 'pin', value: this.currentPin, bannedUntil: null };
     this.configProvider.set({ lock });
     this.close();
   }
 
   private checkIfCorrect(): void {
-    let config = this.configProvider.get();
-    let pinValue = config.lock && config.lock.value;
+    const config = this.configProvider.get();
+    const pinValue = config.lock && config.lock.value;
     if (pinValue == this.currentPin) {
       if (this.action === 'checkPin' || this.action === 'lockSetUp') {
         this.close();
@@ -213,7 +225,7 @@ export class PinModalPage {
     }
   }
 
-  public shakeCode() {
+  public shakeCode(): void {
     this.pinCode.animate('shake');
     this.vibration.vibrate(100);
   }
