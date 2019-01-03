@@ -12,8 +12,10 @@ import { ActionSheetProvider } from '../../../providers/action-sheet/action-shee
 })
 export class BackupWarningPage {
   public currentIndex: number;
+
   private walletId: string;
   private fromOnboarding: boolean;
+  private fromVaultSettings: boolean;
 
   constructor(
     public navCtrl: NavController,
@@ -21,8 +23,9 @@ export class BackupWarningPage {
     public alertCtrl: AlertController,
     public actionSheetProvider: ActionSheetProvider
   ) {
-    this.walletId = this.navParams.get('walletId');
-    this.fromOnboarding = this.navParams.get('fromOnboarding');
+    this.walletId = this.navParams.data.walletId;
+    this.fromOnboarding = this.navParams.data.fromOnboarding;
+    this.fromVaultSettings = this.navParams.data.fromVaultSettings;
   }
 
   public openWarningModal(): void {
@@ -34,7 +37,8 @@ export class BackupWarningPage {
       if (option) {
         this.navCtrl.push(BackupGamePage, {
           walletId: this.walletId,
-          fromOnboarding: this.fromOnboarding
+          fromOnboarding: this.fromOnboarding,
+          fromVaultSettings: this.fromVaultSettings
         });
       }
     });

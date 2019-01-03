@@ -14,10 +14,14 @@ import { Logger } from '../../../providers/logger/logger';
 import { DisclaimerPage } from '../../onboarding/disclaimer/disclaimer';
 
 // providers
-import { ActionSheetProvider } from '../../../providers/action-sheet/action-sheet';
+import {
+  ActionSheetProvider,
+  InfoSheetType
+} from '../../../providers/action-sheet/action-sheet';
 import { BwcErrorProvider } from '../../../providers/bwc-error/bwc-error';
 import { BwcProvider } from '../../../providers/bwc/bwc';
 import { OnGoingProcessProvider } from '../../../providers/on-going-process/on-going-process';
+import { PersistenceProvider } from '../../../providers/persistence/persistence';
 import { ProfileProvider } from '../../../providers/profile/profile';
 import { WalletProvider } from '../../../providers/wallet/wallet';
 
@@ -32,6 +36,7 @@ export class BackupGamePage {
   navBar: Navbar;
 
   private fromOnboarding: boolean;
+  private fromVaultSettings: boolean;
 
   public currentIndex: number;
   public deleted: boolean;
@@ -60,10 +65,12 @@ export class BackupGamePage {
     private bwcErrorProvider: BwcErrorProvider,
     private onGoingProcessProvider: OnGoingProcessProvider,
     private translate: TranslateService,
-    public actionSheetProvider: ActionSheetProvider
+    public actionSheetProvider: ActionSheetProvider,
+    private persistenceProvider: PersistenceProvider
   ) {
     this.walletId = this.navParams.get('walletId');
     this.fromOnboarding = this.navParams.get('fromOnboarding');
+    this.fromVaultSettings = this.navParams.get('fromVaultSettings');
     this.wallet = this.profileProvider.getWallet(this.walletId);
     this.credentialsEncrypted = this.wallet.isPrivKeyEncrypted();
   }
@@ -257,10 +264,17 @@ export class BackupGamePage {
         }
       }
 
-      if (this.fromOnboarding) {
-        const wallets = this.profileProvider.getWallets();
-        wallets.forEach(wallet => {
-          this.profileProvider.setBackupFlag(wallet.credentials.walletId);
+      if (this.fromOnboarding || this.fromVaultSettings) {
+        this.persistenceProvider.getVault().then(vault => {
+          const wallets = this.profileProvider.getWallets();
+          const vaultWallets = _.filter(wallets, (x: any) => {
+            return vault && vault.walletIds.includes(x.credentials.walletId);
+          });
+          [].concat(vaultWallets).forEach(wallet => {
+            this.profileProvider.setBackupFlag(wallet.credentials.walletId);
+          });
+          vault.needsBackup = false;
+          this.persistenceProvider.storeVault(vault);
         });
       } else {
         this.profileProvider.setBackupFlag(this.wallet.credentials.walletId);
@@ -273,14 +287,18 @@ export class BackupGamePage {
   private finalStep(): void {
     this.onGoingProcessProvider.set('validatingWords');
     this.confirm()
-      .then(() => {
+      .then(async () => {
         this.onGoingProcessProvider.clear();
         const walletType =
           this.wallet.coin === 'btc' ? 'bitcoin' : 'bitcoin cash';
-        const infoSheet = this.actionSheetProvider.createInfoSheet(
-          'backup-ready',
-          { walletType }
-        );
+        const vault = await this.persistenceProvider.getVault();
+        const key: InfoSheetType = vault
+          ? 'backup-ready-vault'
+          : 'backup-ready';
+        const infoSheet = this.actionSheetProvider.createInfoSheet(key, {
+          walletType,
+          vaultName: vault.name
+        });
         infoSheet.present();
         infoSheet.onDidDismiss(() => {
           if (this.fromOnboarding) {

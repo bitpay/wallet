@@ -567,7 +567,7 @@ export class ProfileProvider {
                 return resolve();
               });
             } else {
-              walletsArray.forEach(wallet => {
+              [].concat(walletsArray).forEach(wallet => {
                 wallet.encryptPrivateKey(password);
               });
               return resolve();
@@ -768,15 +768,12 @@ export class ProfileProvider {
     });
   }
 
-  private async storeWalletsInVault(walletClients, vaultId) {
-    const vaults = await this.persistenceProvider.getVaults();
-    const vault = _.filter(vaults, v => {
-      return v.id === vaultId;
-    });
+  private async storeWalletsInVault(walletClients) {
+    const vault = await this.persistenceProvider.getVault();
     walletClients.forEach(wallet => {
-      vault[0].walletIds.push(wallet.credentials.walletId);
+      vault.walletIds.push(wallet.credentials.walletId);
     });
-    this.persistenceProvider.storeVaults(vaults);
+    this.persistenceProvider.storeVault(vault);
   }
 
   public importExtendedPublicKey(opts): Promise<any> {
@@ -1244,45 +1241,36 @@ export class ProfileProvider {
     });
   }
 
-  public createDefaultVault(coins): Promise<any> {
-    const vaultId = 0;
+  public createDefaultVault(): Promise<any> {
     const defaultVault = {
-      id: vaultId,
       name: 'Personal Savings',
-      walletIds: []
+      walletIds: [],
+      needsBackup: true
     };
-    return this.createVault(defaultVault).then(vaultClient => {
-      // Default wallet options
-      const opts: Partial<WalletOptions> = {};
-      opts.m = 1;
-      opts.n = 1;
-      opts.networkName = 'livenet';
-      opts.mnemonic = vaultClient.credentials.mnemonic;
-      return this.createDefaultWalletsInVault(coins, vaultId, opts);
-    });
+    return this.createVault(defaultVault);
   }
 
   public createVault(vault, opts?): Promise<any> {
     return this.seedWallet(opts).then(vaultClient => {
-      vault.mnemonic = vaultClient.credentials.mnemonic;
-      vault.copayerId = vaultClient.credentials.copayerId;
-      return this.persistenceProvider.getVaults().then(vaults => {
-        vaults = vaults || [];
-        vaults.push(vault);
-        this.persistenceProvider.storeVaults(vaults);
-        return Promise.resolve(vaultClient);
-      });
+      this.persistenceProvider.storeVault(vault);
+      return Promise.resolve(vaultClient);
     });
   }
 
   public async createWalletInVault(opts): Promise<any> {
-    const vaults = await this.persistenceProvider.getVaults();
-    const vault = vaults[0];
-    const vaultWallet = this.getWallet(vault.walletIds[0]);
-    opts.mnemonic = vaultWallet.credentials.mnemonic;
+    const vault = await this.persistenceProvider.getVault();
+    let vaultClient;
+    let vaultWallet;
+    if (!vault) {
+      vaultClient = await this.createDefaultVault();
+    } else {
+      vaultWallet = this.getWallet(vault.walletIds[0]);
+    }
+    opts.mnemonic = vaultClient
+      ? vaultClient.credentials.mnemonic
+      : vaultWallet.credentials.mnemonic;
     return this.createWallet(opts).then(walletClient => {
-      const vaultId = 0; // By default
-      this.storeWalletsInVault([].concat(walletClient), vaultId);
+      this.storeWalletsInVault([].concat(walletClient));
       // Encrypt wallet
       this.onGoingProcessProvider.pause();
       return this.encryptVaultWallet(walletClient).then(() => {
@@ -1322,19 +1310,25 @@ export class ProfileProvider {
       }); */
   }
 
-  public createDefaultWalletsInVault(coins, vaultId, opts): Promise<any> {
+  public createDefaultWalletsInVault(coins, opts): Promise<any> {
+    // Default wallet options
+    const options: Partial<WalletOptions> = opts || {};
+    options.m = 1;
+    options.n = 1;
+    options.networkName = 'livenet';
+
     const validCoins = this.getFilteredCoinsArray(coins);
     const promises = [];
     validCoins.forEach(coin => {
-      opts.coin = coin;
-      promises.push(this.createWallet(_.clone(opts)));
+      options.coin = coin;
+      promises.push(this.createWallet(_.clone(options)));
     });
     return Promise.all(promises).then(async walletClients => {
       walletClients = [].concat(walletClients);
-      this.storeWalletsInVault(walletClients, vaultId);
+      this.storeWalletsInVault(walletClients);
       // TODO remove mnemonics from wallets credentials
       return this.addAndBindSinglePassWalletClients(walletClients, {
-        bwsurl: opts.bwsurl
+        bwsurl: options.bwsurl
       });
     });
   }

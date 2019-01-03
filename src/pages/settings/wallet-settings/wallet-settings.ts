@@ -7,6 +7,7 @@ import { Logger } from '../../../providers/logger/logger';
 import { ActionSheetProvider } from '../../../providers/action-sheet/action-sheet';
 import { ConfigProvider } from '../../../providers/config/config';
 import { ExternalLinkProvider } from '../../../providers/external-link/external-link';
+import { PersistenceProvider } from '../../../providers/persistence/persistence';
 import { ProfileProvider } from '../../../providers/profile/profile';
 import { TouchIdProvider } from '../../../providers/touchid/touchid';
 import { WalletProvider } from '../../../providers/wallet/wallet';
@@ -37,6 +38,7 @@ export class WalletSettingsPage {
   public touchIdAvailable: boolean;
   public deleted: boolean = false;
   private config;
+  public notVaultWallet: boolean;
 
   constructor(
     private profileProvider: ProfileProvider,
@@ -48,7 +50,8 @@ export class WalletSettingsPage {
     private navParams: NavParams,
     private touchIdProvider: TouchIdProvider,
     private translate: TranslateService,
-    private actionSheetProvider: ActionSheetProvider
+    private actionSheetProvider: ActionSheetProvider,
+    private persistenceProvider: PersistenceProvider
   ) {}
 
   ionViewDidLoad() {
@@ -73,6 +76,11 @@ export class WalletSettingsPage {
     ) {
       this.deleted = true;
     }
+    this.persistenceProvider.getVault().then(vault => {
+      this.notVaultWallet = !vault.walletIds.includes(
+        this.wallet.credentials.walletId
+      );
+    });
   }
 
   public hiddenBalanceChange(): void {
@@ -83,7 +91,7 @@ export class WalletSettingsPage {
 
   public encryptChange(): void {
     if (!this.wallet) return;
-    let val = this.encryptEnabled;
+    const val = this.encryptEnabled;
 
     if (val && !this.walletProvider.isEncrypted(this.wallet)) {
       this.logger.debug('Encrypting private key for', this.wallet.name);
@@ -97,7 +105,7 @@ export class WalletSettingsPage {
         })
         .catch(err => {
           this.encryptEnabled = false;
-          let title = this.translate.instant('Could not encrypt wallet');
+          const title = this.translate.instant('Could not encrypt wallet');
           this.showErrorInfoSheet(err, title);
         });
     } else if (!val && this.walletProvider.isEncrypted(this.wallet)) {
@@ -111,7 +119,7 @@ export class WalletSettingsPage {
         })
         .catch(err => {
           this.encryptEnabled = true;
-          let title = this.translate.instant('Could not decrypt wallet');
+          const title = this.translate.instant('Could not decrypt wallet');
           this.showErrorInfoSheet(err, title);
         });
     }
@@ -130,14 +138,14 @@ export class WalletSettingsPage {
     errorInfoSheet.present();
   }
 
-  public openSupportSpendingPassword(): void {
-    let url =
+  public openSupportEncryptPassword(): void {
+    const url =
       'https://support.bitpay.com/hc/en-us/articles/360000244506-What-Does-a-Spending-Password-Do-';
-    let optIn = true;
-    let title = null;
-    let message = this.translate.instant('Read more in our support page');
-    let okText = this.translate.instant('Open');
-    let cancelText = this.translate.instant('Go Back');
+    const optIn = true;
+    const title = null;
+    const message = this.translate.instant('Read more in our support page');
+    const okText = this.translate.instant('Open');
+    const cancelText = this.translate.instant('Go Back');
     this.externalLinkProvider.open(
       url,
       optIn,
@@ -150,7 +158,7 @@ export class WalletSettingsPage {
 
   public touchIdChange(): void {
     if (this.touchIdPrevValue == this.touchIdEnabled) return;
-    let newStatus = this.touchIdEnabled;
+    const newStatus = this.touchIdEnabled;
     this.walletProvider
       .setTouchId(this.wallet, newStatus)
       .then(() => {

@@ -6,17 +6,21 @@ import { Logger } from '../../providers/logger/logger';
 import * as _ from 'lodash';
 
 // providers
+import { ActionSheetProvider } from '../../providers/action-sheet/action-sheet';
 import { AppProvider } from '../../providers/app/app';
 import { BitPayCardProvider } from '../../providers/bitpay-card/bitpay-card';
 import { ConfigProvider } from '../../providers/config/config';
 import { ExternalLinkProvider } from '../../providers/external-link/external-link';
 import { HomeIntegrationsProvider } from '../../providers/home-integrations/home-integrations';
 import { LanguageProvider } from '../../providers/language/language';
+import { PersistenceProvider } from '../../providers/persistence/persistence';
 import { PlatformProvider } from '../../providers/platform/platform';
 import { ProfileProvider } from '../../providers/profile/profile';
 import { TouchIdProvider } from '../../providers/touchid/touchid';
+import { WalletProvider } from '../../providers/wallet/wallet';
 
 // pages
+import { BackupWarningPage } from '../backup/backup-warning/backup-warning';
 import { BitPaySettingsPage } from '../integrations/bitpay-card/bitpay-settings/bitpay-settings';
 import { CoinbaseSettingsPage } from '../integrations/coinbase/coinbase-settings/coinbase-settings';
 import { GiftCardsSettingsPage } from '../integrations/gift-cards/gift-cards-settings/gift-cards-settings';
@@ -32,6 +36,7 @@ import { LanguagePage } from './language/language';
 import { LockPage } from './lock/lock';
 import { NotificationsPage } from './notifications/notifications';
 import { SharePage } from './share/share';
+import { VaultNamePage } from './vault-settings/vault-name/vault-name';
 import { WalletSettingsPage } from './wallet-settings/wallet-settings';
 
 @Component({
@@ -51,6 +56,10 @@ export class SettingsPage {
   public integrationServices = [];
   public bitpayCardItems = [];
   public showBitPayCard: boolean = false;
+  public vault;
+  public encryptEnabled: boolean;
+
+  private vaultWallets;
 
   constructor(
     private navCtrl: NavController,
@@ -65,7 +74,10 @@ export class SettingsPage {
     private platformProvider: PlatformProvider,
     private translate: TranslateService,
     private modalCtrl: ModalController,
-    private touchid: TouchIdProvider
+    private touchid: TouchIdProvider,
+    private persistenceProvider: PersistenceProvider,
+    private walletProvider: WalletProvider,
+    private actionSheetProvider: ActionSheetProvider
   ) {
     this.appName = this.app.info.nameCase;
     this.walletsBch = [];
@@ -96,6 +108,68 @@ export class SettingsPage {
       this.config && this.config.lock && this.config.lock.method
         ? this.config.lock.method.toLowerCase()
         : null;
+    this.persistenceProvider.getVault().then(vault => {
+      this.vault = vault;
+      const wallets = this.profileProvider.getWallets();
+      this.vaultWallets = _.filter(wallets, (x: any) => {
+        return (
+          this.vault && this.vault.walletIds.includes(x.credentials.walletId)
+        );
+      });
+      this.encryptEnabled = this.walletProvider.isEncrypted(
+        this.vaultWallets[0]
+      );
+    });
+  }
+
+  public encryptChange(): void {
+    const val = this.encryptEnabled;
+
+    if (val && !this.walletProvider.isEncrypted(this.vaultWallets[0])) {
+      this.logger.debug('Encrypting private key for vault: ', this.vault.name);
+      this.walletProvider
+        .encrypt(this.vaultWallets)
+        .then(() => {
+          this.vaultWallets.forEach(wallet => {
+            this.profileProvider.updateCredentials(JSON.parse(wallet.export()));
+          });
+          this.logger.debug('Vault wallets encrypted');
+        })
+        .catch(err => {
+          this.encryptEnabled = false;
+          const title = this.translate.instant('Could not encrypt wallet');
+          this.showErrorInfoSheet(err, title);
+        });
+    } else if (!val && this.walletProvider.isEncrypted(this.vaultWallets[0])) {
+      this.walletProvider
+        .decrypt(this.vaultWallets)
+        .then(() => {
+          this.vaultWallets.forEach(wallet => {
+            this.profileProvider.updateCredentials(JSON.parse(wallet.export()));
+          });
+          this.logger.debug('Vault wallets decrypted');
+        })
+        .catch(err => {
+          this.encryptEnabled = true;
+          const title = this.translate.instant(
+            'Could not decrypt vault wallets'
+          );
+          this.showErrorInfoSheet(err, title);
+        });
+    }
+  }
+
+  private showErrorInfoSheet(
+    err: Error | string,
+    infoSheetTitle: string
+  ): void {
+    if (!err) return;
+    this.logger.warn('Could not encrypt/decrypt vault wallets:', err);
+    const errorInfoSheet = this.actionSheetProvider.createInfoSheet(
+      'default-error',
+      { msg: err, title: infoSheetTitle }
+    );
+    errorInfoSheet.present();
   }
 
   ionViewDidEnter() {
@@ -133,6 +207,18 @@ export class SettingsPage {
 
   public openAboutPage(): void {
     this.navCtrl.push(AboutPage);
+  }
+
+  public openVaultName(): void {
+    this.navCtrl.push(VaultNamePage);
+  }
+
+  public openBackupSettings(): void {
+    const vaultWallet = this.profileProvider.getWallet(this.vault.walletIds[0]);
+    this.navCtrl.push(BackupWarningPage, {
+      walletId: vaultWallet.credentials.walletId,
+      fromVaultSettings: true
+    });
   }
 
   public openLockPage(): void {
@@ -232,5 +318,23 @@ export class SettingsPage {
     this.touchid.check().then(() => {
       this.navCtrl.push(LockPage);
     });
+  }
+
+  public openSupportEncryptPassword(): void {
+    const url =
+      'https://support.bitpay.com/hc/en-us/articles/360000244506-What-Does-a-Spending-Password-Do-';
+    const optIn = true;
+    const title = null;
+    const message = this.translate.instant('Read more in our support page');
+    const okText = this.translate.instant('Open');
+    const cancelText = this.translate.instant('Go Back');
+    this.externalLinkProvider.open(
+      url,
+      optIn,
+      title,
+      message,
+      okText,
+      cancelText
+    );
   }
 }

@@ -17,31 +17,33 @@
         <ion-toggle [(ngModel)]="hiddenBalance" (ionChange)="hiddenBalanceChange()"></ion-toggle>
       </ion-item>
       <ion-item-divider>{{'Security' | translate}}</ion-item-divider>
-      <button ion-item (click)="openBackupSettings()" [ngClass]="{warn: needsBackup}">
-        <span translate>Backup</span>
-        <ion-note *ngIf="needsBackup" class="wallet-warning" item-end>
-          {{'Needs backup' | translate}}
-        </ion-note>
-      </button>
+      <div *ngIf="notVaultWallet">
+        <button ion-item (click)="openBackupSettings()" [ngClass]="{warn: needsBackup}">
+          <span translate>Backup</span>
+          <ion-note *ngIf="needsBackup" class="wallet-warning" item-end>
+            {{'Needs backup' | translate}}
+          </ion-note>
+        </button>
+        <div *ngIf="canSign">
+          <ion-item class="with-label">
+            <ion-label>{{'Request Encrypt Password' | translate}}</ion-label>
+            <ion-toggle [(ngModel)]="encryptEnabled" (ionChange)="encryptChange()" [disabled]="(needsBackup || !wallet.isComplete()) && !encryptEnabled"></ion-toggle>
+          </ion-item>
+          <label-tip type="info">
+            <span label-tip-title translate>Password Not Recoverable</span>
+            <div label-tip-body>
+              <span translate>This password cannot be recovered. If this password is lost, funds can only be recovered by reimporting your 12-word recovery phrase.</span>
+              <br>
+              <a class="label-tip-link" (click)="openSupportEncryptPassword()" translate>Learn More</a>
+            </div>
+          </label-tip>
+        </div>
+      </div>
       <div *ngIf="canSign && touchIdAvailable">
         <ion-item>
           <ion-label [ngClass]="{'disabled': needsBackup}">{{'Request Fingerprint'| translate}}</ion-label>
           <ion-toggle [(ngModel)]="touchIdEnabled" (ionChange)="touchIdChange()"></ion-toggle>
         </ion-item>
-      </div>
-      <div *ngIf="canSign">
-        <ion-item class="with-label">
-          <ion-label>{{'Request Encrypt Password' | translate}}</ion-label>
-          <ion-toggle [(ngModel)]="encryptEnabled" (ionChange)="encryptChange()" [disabled]="(needsBackup || !wallet.isComplete()) && !encryptEnabled"></ion-toggle>
-        </ion-item>
-        <label-tip type="info">
-          <span label-tip-title translate>Password Not Recoverable</span>
-          <div label-tip-body>
-            <span translate>This password cannot be recovered. If this password is lost, funds can only be recovered by reimporting your 12-word recovery phrase.</span>
-            <br>
-            <a class="label-tip-link" (click)="openSupportSpendingPassword()" translate>Learn More</a>
-          </div>
-        </label-tip>
       </div>
       <ion-item-divider>{{'Advanced' | translate}}</ion-item-divider>
       <button ion-item (click)="openWalletInformation()">

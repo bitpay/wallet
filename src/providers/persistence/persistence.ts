@@ -108,19 +108,19 @@ export class PersistenceProvider {
     return this.storage.remove(Keys.PROFILE);
   }
 
-  storeVaults(vault): Promise<void> {
+  storeVault(vault): Promise<void> {
     return this.storage.set(Keys.VAULT, vault);
   }
 
-  getVaults(): Promise<any> {
+  getVault(): Promise<any> {
     return new Promise(resolve => {
-      this.storage.get(Keys.VAULT).then(async vaults => {
-        resolve(vaults);
+      this.storage.get(Keys.VAULT).then(vault => {
+        resolve(vault);
       });
     });
   }
 
-  deleteVaults() {
+  deleteVault() {
     return this.storage.remove(Keys.VAULT);
   }
 

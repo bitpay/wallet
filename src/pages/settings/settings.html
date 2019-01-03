@@ -99,6 +99,40 @@
         </ion-list>
       </div>
 
+      <div *ngIf="vault">
+        <ion-item-divider>
+          {{'Vault' | translate}}
+        </ion-item-divider>
+        <button ion-item (click)="openVaultName()">
+          <ion-label>
+            <span translate>Name</span>
+          </ion-label>
+          <ion-note item-end>
+            {{vault.name}}
+          </ion-note>
+        </button>
+
+        <button ion-item (click)="openBackupSettings()" [ngClass]="{warn: vault.needsBackup}">
+          <span translate>Backup</span>
+          <ion-note *ngIf="vault.needsBackup" class="wallet-warning" item-end>
+            {{'Needs backup' | translate}}
+          </ion-note>
+        </button>
+
+        <ion-item class="with-label">
+          <ion-label>{{'Request Encrypt Password' | translate}}</ion-label>
+          <ion-toggle [(ngModel)]="encryptEnabled" (ionChange)="encryptChange()" [disabled]="vault.needsBackup && !encryptEnabled"></ion-toggle>
+        </ion-item>
+        <label-tip type="info">
+          <span label-tip-title translate>Password Not Recoverable</span>
+          <div label-tip-body>
+            <span translate>This password cannot be recovered. If this password is lost, funds can only be recovered by reimporting your 12-word recovery phrase.</span>
+            <br>
+            <a class="label-tip-link" (click)="openSupportEncryptPassword()" translate>Learn More</a>
+          </div>
+        </label-tip>
+      </div>
+
       <ion-item-divider *ngIf="integrationServices && integrationServices[0]">
         {{'Integrations' | translate}}
       </ion-item-divider>
