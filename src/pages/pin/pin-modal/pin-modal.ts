@@ -62,7 +62,7 @@ export class PinModalPage {
     this.expires = '';
     this.incorrect = false;
 
-    this.unregister = this.platform.registerBackButtonAction(() => { });
+    this.unregister = this.platform.registerBackButtonAction(() => {});
 
     this.action = this.navParams.get('action');
 
@@ -103,7 +103,6 @@ export class PinModalPage {
 
   private checkIfLocked(): void {
     this.persistenceProvider.getLockStatus().then((isLocked: string) => {
-
       if (!isLocked) {
         this.disableButtons = null;
         return;
@@ -168,7 +167,7 @@ export class PinModalPage {
       this.showLockTimer();
       this.setLockRelease();
     } else {
-      this.disableButtons = null
+      this.disableButtons = null;
     }
   }
 
