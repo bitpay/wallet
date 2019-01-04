@@ -455,7 +455,7 @@ export class ProfileProvider {
 
       const addressBook = strParsed.addressBook ? strParsed.addressBook : {};
 
-      this.addAndBindWalletClient(walletClient, {
+      this.addAndBindNewSeedWalletClient(walletClient, {
         bwsurl: opts.bwsurl
       })
         .then(() => {
@@ -579,7 +579,7 @@ export class ProfileProvider {
     });
   }
 
-  private addAndBindSinglePassWalletClients(walletsArray, opts): Promise<any> {
+  private addAndBindWalletClients(walletsArray, opts): Promise<any> {
     // Encrypt wallet
     this.onGoingProcessProvider.pause();
     return this.askToEncryptWallets(walletsArray).then(() => {
@@ -592,58 +592,57 @@ export class ProfileProvider {
     });
   }
 
-  // Adds and bind a new client to the profile
-  private addAndBindWalletClient(wallet, opts): Promise<any> {
-    return new Promise((resolve, reject) => {
-      if (!wallet || !wallet.credentials) {
-        return reject(this.translate.instant('Could not access wallet'));
-      }
-
-      const walletId: string = wallet.credentials.walletId;
-
-      if (!this.profile.addWallet(JSON.parse(wallet.export()))) {
-        const message = this.replaceParametersProvider.replace(
-          this.translate.instant('Wallet already in {{nameCase}}'),
-          { nameCase: this.appProvider.info.nameCase }
-        );
-        return reject(message);
-      }
-
-      const skipKeyValidation: boolean = this.shouldSkipValidation(walletId);
-      if (!skipKeyValidation) {
-        this.logger.debug('Trying to runValidation: ' + walletId);
-        this.runValidation(wallet);
-      }
-
-      this.bindWalletClient(wallet);
-
-      const saveBwsUrl = (): Promise<any> => {
-        return new Promise(resolve => {
-          const defaults = this.configProvider.getDefaults();
-          const bwsFor = {};
-          bwsFor[walletId] = opts.bwsurl || defaults.bws.url;
-
-          // Dont save the default
-          if (bwsFor[walletId] == defaults.bws.url) {
-            return resolve();
-          }
-
-          this.configProvider.set({ bwsFor });
-          return resolve();
-        });
-      };
-
-      saveBwsUrl().then(() => {
-        this.persistenceProvider
-          .storeProfile(this.profile)
-          .then(() => {
-            return resolve(wallet);
-          })
-          .catch(err => {
-            return reject(err);
-          });
-      });
+  private addAndBindNewSeedWalletClient(wallet, opts): Promise<any> {
+    // Encrypt wallet
+    this.onGoingProcessProvider.pause();
+    return this.askToEncryptWallets([].concat(wallet)).then(() => {
+      this.onGoingProcessProvider.resume();
+      return this.addAndBindWalletClient(wallet, opts);
     });
+  }
+
+  // Adds and bind a new client to the profile
+  private async addAndBindWalletClient(wallet, opts): Promise<any> {
+    if (!wallet || !wallet.credentials) {
+      return Promise.reject(this.translate.instant('Could not access wallet'));
+    }
+
+    const walletId: string = wallet.credentials.walletId;
+
+    if (!this.profile.addWallet(JSON.parse(wallet.export()))) {
+      const message = this.replaceParametersProvider.replace(
+        this.translate.instant('Wallet already in {{nameCase}}'),
+        { nameCase: this.appProvider.info.nameCase }
+      );
+      return Promise.reject(message);
+    }
+
+    const skipKeyValidation: boolean = this.shouldSkipValidation(walletId);
+    if (!skipKeyValidation) {
+      this.logger.debug('Trying to runValidation: ' + walletId);
+      this.runValidation(wallet);
+    }
+
+    await this.bindWalletClient(wallet);
+
+    this.saveBwsUrl(walletId, opts);
+
+    return this.persistenceProvider.storeProfile(this.profile).then(() => {
+      return Promise.resolve(wallet);
+    });
+  }
+
+  private saveBwsUrl(walletId, opts): void {
+    const defaults = this.configProvider.getDefaults();
+    const bwsFor = {};
+    bwsFor[walletId] = opts.bwsurl || defaults.bws.url;
+
+    // Dont save the default
+    if (bwsFor[walletId] == defaults.bws.url) {
+      return;
+    }
+
+    this.configProvider.set({ bwsFor });
   }
 
   private shouldSkipValidation(walletId: string): boolean {
@@ -699,7 +698,7 @@ export class ProfileProvider {
               return reject(msg);
             });
         } else {
-          this.addAndBindWalletClient(walletClient, {
+          this.addAndBindNewSeedWalletClient(walletClient, {
             bwsurl: opts.bwsurl
           })
             .then(wallet => {
@@ -754,7 +753,7 @@ export class ProfileProvider {
                 return reject(msg);
               });
           } else {
-            this.addAndBindWalletClient(walletClient, {
+            this.addAndBindNewSeedWalletClient(walletClient, {
               bwsurl: opts.bwsurl
             })
               .then(wallet => {
@@ -803,7 +802,7 @@ export class ProfileProvider {
                 return reject(msg);
               });
           }
-          this.addAndBindWalletClient(walletClient, {
+          this.addAndBindNewSeedWalletClient(walletClient, {
             bwsurl: opts.bwsurl
           })
             .then(wallet => {
@@ -1184,7 +1183,7 @@ export class ProfileProvider {
                     return reject(msg);
                   });
               } else {
-                this.addAndBindWalletClient(walletClient, {
+                this.addAndBindNewSeedWalletClient(walletClient, {
                   bwsurl: opts.bwsurl
                 }).then(wallet => {
                   return resolve(wallet);
@@ -1287,7 +1286,7 @@ export class ProfileProvider {
 
   public createNewSeedWallet(opts): Promise<any> {
     return this.createWallet(opts).then(walletClient => {
-      return this.addAndBindWalletClient(walletClient, {
+      return this.addAndBindNewSeedWalletClient(walletClient, {
         bwsurl: opts.bwsurl
       });
     });
@@ -1310,7 +1309,7 @@ export class ProfileProvider {
       walletClients = [].concat(walletClients);
       this.storeWalletsInVault(walletClients);
       // TODO remove mnemonics from wallets credentials
-      return this.addAndBindSinglePassWalletClients(walletClients, {
+      return this.addAndBindWalletClients(walletClients, {
         bwsurl: options.bwsurl
       });
     });
