@@ -77,9 +77,8 @@ export class WalletSettingsPage {
       this.deleted = true;
     }
     this.persistenceProvider.getVault().then(vault => {
-      this.notVaultWallet = !vault.walletIds.includes(
-        this.wallet.credentials.walletId
-      );
+      this.notVaultWallet =
+        !vault || !vault.walletIds.includes(this.wallet.credentials.walletId);
     });
   }
 
@@ -165,7 +164,8 @@ export class WalletSettingsPage {
         this.touchIdPrevValue = this.touchIdEnabled;
         this.logger.debug('Touch Id status changed: ' + newStatus);
       })
-      .catch(() => {
+      .catch(err => {
+        this.logger.error('Error with fingerprint:' + err);
         this.touchIdEnabled = this.touchIdPrevValue;
       });
   }

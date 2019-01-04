@@ -1594,25 +1594,18 @@ export class WalletProvider {
     }
   }
 
-  public setTouchId(wallet, enabled: boolean): Promise<any> {
-    return new Promise((resolve, reject) => {
-      const opts = {
-        touchIdFor: {}
-      };
+  public setTouchId(walletsArray, enabled: boolean): Promise<any> {
+    const opts = {
+      touchIdFor: {}
+    };
+    let promises;
+    walletsArray.forEach(wallet => {
       opts.touchIdFor[wallet.id] = enabled;
-
-      this.touchidProvider
-        .checkWallet(wallet)
-        .then(() => {
-          this.configProvider.set(opts);
-          return resolve();
-        })
-        .catch(err => {
-          opts.touchIdFor[wallet.id] = !enabled;
-          this.logger.error('Error with fingerprint:' + err);
-          this.configProvider.set(opts);
-          return reject(err);
-        });
+      promises = this.touchidProvider.checkWallet(wallet);
+    });
+    return promises.then(() => {
+      this.configProvider.set(opts);
+      return Promise.resolve();
     });
   }
 
@@ -1627,6 +1620,25 @@ export class WalletProvider {
             return reject(e);
           }
           return resolve(keys);
+        })
+        .catch(err => {
+          return reject(err);
+        });
+    });
+  }
+
+  public getMnemonicAndPassword(wallet): Promise<any> {
+    return new Promise((resolve, reject) => {
+      this.prepare(wallet)
+        .then((password: string) => {
+          let keys;
+          try {
+            keys = wallet.getKeys(password);
+          } catch (e) {
+            return reject(e);
+          }
+          const mnemonic = keys.mnemonic;
+          return resolve({ mnemonic, password });
         })
         .catch(err => {
           return reject(err);

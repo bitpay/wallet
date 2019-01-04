@@ -15,7 +15,7 @@ import { PersistenceProvider } from '../persistence/persistence';
 import { PlatformProvider } from '../platform/platform';
 import { PopupProvider } from '../popup/popup';
 import { ReplaceParametersProvider } from '../replace-parameters/replace-parameters';
-import { Coin, WalletOptions } from '../wallet/wallet';
+import { Coin, WalletOptions, WalletProvider } from '../wallet/wallet';
 
 // models
 import { Profile } from '../../models/profile/profile.model';
@@ -43,7 +43,8 @@ export class ProfileProvider {
     private events: Events,
     private popupProvider: PopupProvider,
     private onGoingProcessProvider: OnGoingProcessProvider,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private walletProvider: WalletProvider
   ) {
     this.throttledBwsEvent = _.throttle((n, wallet) => {
       this.newBwsEvent(n, wallet);
@@ -1243,7 +1244,6 @@ export class ProfileProvider {
 
   public createDefaultVault(): Promise<any> {
     const defaultVault = {
-      name: 'Personal Savings',
       walletIds: [],
       needsBackup: true
     };
@@ -1261,23 +1261,26 @@ export class ProfileProvider {
     const vault = await this.persistenceProvider.getVault();
     let vaultClient;
     let vaultWallet;
+    let mnemonic;
+    let password;
     if (!vault) {
       vaultClient = await this.createDefaultVault();
+      mnemonic = vaultClient.credentials.mnemonic;
     } else {
       vaultWallet = this.getWallet(vault.walletIds[0]);
+      const k = await this.walletProvider.getMnemonicAndPassword(vaultWallet);
+      mnemonic = k.mnemonic;
+      password = k.password;
     }
-    opts.mnemonic = vaultClient
-      ? vaultClient.credentials.mnemonic
-      : vaultWallet.credentials.mnemonic;
+    opts.mnemonic = mnemonic;
     return this.createWallet(opts).then(walletClient => {
       this.storeWalletsInVault([].concat(walletClient));
       // Encrypt wallet
       this.onGoingProcessProvider.pause();
-      return this.encryptVaultWallet(walletClient).then(() => {
-        this.onGoingProcessProvider.resume();
-        return this.addAndBindWalletClient(walletClient, {
-          bwsurl: opts.bwsurl
-        });
+      if (password) walletClient.encryptPrivateKey(password);
+      this.onGoingProcessProvider.resume();
+      return this.addAndBindWalletClient(walletClient, {
+        bwsurl: opts.bwsurl
       });
     });
   }
@@ -1288,26 +1291,6 @@ export class ProfileProvider {
         bwsurl: opts.bwsurl
       });
     });
-  }
-
-  public encryptVaultWallet(wallet): Promise<any> {
-    return Promise.resolve(wallet);
-    /* this.walletProvider
-      .getKeys(this.wallet)
-      .then(k => {
-        this.xPrivKey = k.xPrivKey;
-        this.credentialsEncrypted = false;
-      })
-      .catch(err => {
-        if (
-          err &&
-          err.message != 'FINGERPRINT_CANCELLED' &&
-          err.message != 'PASSWORD_CANCELLED'
-        ) {
-          return Promise.reject(this.bwcErrorProvider.msg(err));
-        }
-        return Promise.reject(undefined);
-      }); */
   }
 
   public createDefaultWalletsInVault(coins, opts): Promise<any> {

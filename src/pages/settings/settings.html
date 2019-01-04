@@ -103,14 +103,6 @@
         <ion-item-divider>
           {{'Vault' | translate}}
         </ion-item-divider>
-        <button ion-item (click)="openVaultName()">
-          <ion-label>
-            <span translate>Name</span>
-          </ion-label>
-          <ion-note item-end>
-            {{vault.name}}
-          </ion-note>
-        </button>
 
         <button ion-item (click)="openBackupSettings()" [ngClass]="{warn: vault.needsBackup}">
           <span translate>Backup</span>
@@ -131,6 +123,13 @@
             <a class="label-tip-link" (click)="openSupportEncryptPassword()" translate>Learn More</a>
           </div>
         </label-tip>
+
+        <div *ngIf="touchIdAvailable">
+          <ion-item>
+            <ion-label [ngClass]="{'disabled': vault.needsBackup}">{{'Request Fingerprint'| translate}}</ion-label>
+            <ion-toggle [(ngModel)]="touchIdEnabled" (ionChange)="touchIdChange()"></ion-toggle>
+          </ion-item>
+        </div>
       </div>
 
       <ion-item-divider *ngIf="integrationServices && integrationServices[0]">

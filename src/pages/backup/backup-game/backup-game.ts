@@ -296,8 +296,7 @@ export class BackupGamePage {
           ? 'backup-ready-vault'
           : 'backup-ready';
         const infoSheet = this.actionSheetProvider.createInfoSheet(key, {
-          walletType,
-          vaultName: vault.name
+          walletType
         });
         infoSheet.present();
         infoSheet.onDidDismiss(() => {

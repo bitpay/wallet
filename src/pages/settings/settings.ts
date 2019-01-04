@@ -36,7 +36,6 @@ import { LanguagePage } from './language/language';
 import { LockPage } from './lock/lock';
 import { NotificationsPage } from './notifications/notifications';
 import { SharePage } from './share/share';
-import { VaultNamePage } from './vault-settings/vault-name/vault-name';
 import { WalletSettingsPage } from './wallet-settings/wallet-settings';
 
 @Component({
@@ -58,6 +57,9 @@ export class SettingsPage {
   public showBitPayCard: boolean = false;
   public vault;
   public encryptEnabled: boolean;
+  public touchIdAvailable: boolean;
+  public touchIdEnabled: boolean;
+  public touchIdPrevValue: boolean;
 
   private vaultWallets;
 
@@ -77,7 +79,8 @@ export class SettingsPage {
     private touchid: TouchIdProvider,
     private persistenceProvider: PersistenceProvider,
     private walletProvider: WalletProvider,
-    private actionSheetProvider: ActionSheetProvider
+    private actionSheetProvider: ActionSheetProvider,
+    private touchIdProvider: TouchIdProvider
   ) {
     this.appName = this.app.info.nameCase;
     this.walletsBch = [];
@@ -120,6 +123,24 @@ export class SettingsPage {
         this.vaultWallets[0]
       );
     });
+    this.touchIdProvider.isAvailable().then((isAvailable: boolean) => {
+      this.touchIdAvailable = isAvailable;
+    });
+  }
+
+  public touchIdChange(): void {
+    if (this.touchIdPrevValue == this.touchIdEnabled) return;
+    const newStatus = this.touchIdEnabled;
+    this.walletProvider
+      .setTouchId(this.vaultWallets, newStatus)
+      .then(() => {
+        this.touchIdPrevValue = this.touchIdEnabled;
+        this.logger.debug('Touch Id status changed: ' + newStatus);
+      })
+      .catch(err => {
+        this.logger.error('Error with fingerprint:' + err);
+        this.touchIdEnabled = this.touchIdPrevValue;
+      });
   }
 
   public encryptChange(): void {
@@ -207,10 +228,6 @@ export class SettingsPage {
 
   public openAboutPage(): void {
     this.navCtrl.push(AboutPage);
-  }
-
-  public openVaultName(): void {
-    this.navCtrl.push(VaultNamePage);
   }
 
   public openBackupSettings(): void {

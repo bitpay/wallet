@@ -86,9 +86,6 @@ import { LockPage } from '../pages/settings/lock/lock';
 import { NotificationsPage } from '../pages/settings/notifications/notifications';
 import { SharePage } from '../pages/settings/share/share';
 
-/* Vault Settings */
-import { VaultNamePage } from '../pages/settings/vault-settings/vault-name/vault-name';
-
 /* Wallet Settings */
 import { WalletColorPage } from '../pages/settings/wallet-settings/wallet-color/wallet-color';
 import { WalletNamePage } from '../pages/settings/wallet-settings/wallet-name/wallet-name';
@@ -195,7 +192,6 @@ export const PAGES = [
   TxpDetailsPage,
   TxDetailsPage,
   TxpPage,
-  VaultNamePage,
   WalletSettingsPage,
   WalletNamePage,
   WalletColorPage,

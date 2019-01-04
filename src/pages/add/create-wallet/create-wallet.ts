@@ -5,6 +5,7 @@ import { Events, NavController, NavParams } from 'ionic-angular';
 import { Logger } from '../../../providers/logger/logger';
 
 // Providers
+import { BwcErrorProvider } from '../../../providers/bwc-error/bwc-error';
 import { ConfigProvider } from '../../../providers/config/config';
 import { DerivationPathHelperProvider } from '../../../providers/derivation-path-helper/derivation-path-helper';
 import { ExternalLinkProvider } from '../../../providers/external-link/external-link';
@@ -69,7 +70,8 @@ export class CreateWalletPage implements OnInit {
     private translate: TranslateService,
     private events: Events,
     private pushNotificationsProvider: PushNotificationsProvider,
-    private externalLinkProvider: ExternalLinkProvider
+    private externalLinkProvider: ExternalLinkProvider,
+    private bwcErrorProvider: BwcErrorProvider
   ) {
     this.okText = this.translate.instant('Ok');
     this.cancelText = this.translate.instant('Cancel');
@@ -97,7 +99,7 @@ export class CreateWalletPage implements OnInit {
       testnetEnabled: [false],
       singleAddress: [false],
       coin: [null, Validators.required],
-      addToVault: [false]
+      addToVault: [true]
     });
 
     this.setTotalCopayers(this.tc);
@@ -247,9 +249,16 @@ export class CreateWalletPage implements OnInit {
       })
       .catch(err => {
         this.onGoingProcessProvider.clear();
-        this.logger.error('Create: could not create wallet', err);
-        const title = this.translate.instant('Error');
-        this.popupProvider.ionicAlert(title, err);
+        if (
+          err &&
+          err.message != 'FINGERPRINT_CANCELLED' &&
+          err.message != 'PASSWORD_CANCELLED'
+        ) {
+          this.logger.error('Create: could not create wallet', err);
+          const title = this.translate.instant('Error');
+          err = this.bwcErrorProvider.msg(err);
+          this.popupProvider.ionicAlert(title, err);
+        }
         return;
       });
   }
