@@ -10,6 +10,7 @@ import { ConfigProvider } from '../../../providers/config/config';
 import { DerivationPathHelperProvider } from '../../../providers/derivation-path-helper/derivation-path-helper';
 import { ExternalLinkProvider } from '../../../providers/external-link/external-link';
 import { OnGoingProcessProvider } from '../../../providers/on-going-process/on-going-process';
+import { PersistenceProvider } from '../../../providers/persistence/persistence';
 import { PopupProvider } from '../../../providers/popup/popup';
 import { ProfileProvider } from '../../../providers/profile/profile';
 import { PushNotificationsProvider } from '../../../providers/push-notifications/push-notifications';
@@ -71,7 +72,8 @@ export class CreateWalletPage implements OnInit {
     private events: Events,
     private pushNotificationsProvider: PushNotificationsProvider,
     private externalLinkProvider: ExternalLinkProvider,
-    private bwcErrorProvider: BwcErrorProvider
+    private bwcErrorProvider: BwcErrorProvider,
+    private persistenceProvider: PersistenceProvider
   ) {
     this.okText = this.translate.instant('Ok');
     this.cancelText = this.translate.instant('Cancel');
@@ -241,9 +243,7 @@ export class CreateWalletPage implements OnInit {
         this.events.publish('status:updated');
         this.walletProvider.updateRemotePreferences(wallet);
         this.pushNotificationsProvider.updateSubscription(wallet);
-        if (this.createForm.value.selectedSeed == 'set') {
-          this.profileProvider.setBackupFlag(wallet.credentials.walletId);
-        }
+        this.setBackupFlagIfNeeded(wallet.credentials.id);
         this.navCtrl.popToRoot();
         this.events.publish('OpenWallet', wallet);
       })
@@ -261,6 +261,15 @@ export class CreateWalletPage implements OnInit {
         }
         return;
       });
+  }
+
+  private async setBackupFlagIfNeeded(walletId: string) {
+    if (this.createForm.value.selectedSeed == 'set') {
+      this.profileProvider.setBackupFlag(walletId);
+    } else if (this.createForm.value.addToVault) {
+      const vault = await this.persistenceProvider.getVault();
+      if (!vault.needsBackup) this.profileProvider.setBackupFlag(walletId);
+    }
   }
 
   public openSupportSingleAddress(): void {
