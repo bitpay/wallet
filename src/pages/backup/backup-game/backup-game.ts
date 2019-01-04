@@ -270,7 +270,7 @@ export class BackupGamePage {
           const vaultWallets = _.filter(wallets, (x: any) => {
             return vault && vault.walletIds.includes(x.credentials.walletId);
           });
-          [].concat(vaultWallets).forEach(wallet => {
+          vaultWallets.forEach(wallet => {
             this.profileProvider.setBackupFlag(wallet.credentials.walletId);
           });
           vault.needsBackup = false;

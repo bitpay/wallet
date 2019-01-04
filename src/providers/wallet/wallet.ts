@@ -1352,7 +1352,7 @@ export class WalletProvider {
               }
               if (password != password2)
                 return reject(this.translate.instant('Password mismatch'));
-              [].concat(walletsArray).forEach(wallet => {
+              walletsArray.forEach(wallet => {
                 wallet.encryptPrivateKey(password);
               });
               return resolve();
@@ -1380,7 +1380,7 @@ export class WalletProvider {
           return reject(this.translate.instant('No password'));
         }
         try {
-          [].concat(walletsArray).forEach(wallet => {
+          walletsArray.forEach(wallet => {
             this.logger.info(
               'Disabling private key encryption for' + wallet.name
             );

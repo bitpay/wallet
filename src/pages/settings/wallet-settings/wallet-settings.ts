@@ -95,7 +95,7 @@ export class WalletSettingsPage {
     if (val && !this.walletProvider.isEncrypted(this.wallet)) {
       this.logger.debug('Encrypting private key for', this.wallet.name);
       this.walletProvider
-        .encrypt(this.wallet)
+        .encrypt([].concat(this.wallet))
         .then(() => {
           this.profileProvider.updateCredentials(
             JSON.parse(this.wallet.export())
@@ -109,7 +109,7 @@ export class WalletSettingsPage {
         });
     } else if (!val && this.walletProvider.isEncrypted(this.wallet)) {
       this.walletProvider
-        .decrypt(this.wallet)
+        .decrypt([].concat(this.wallet))
         .then(() => {
           this.profileProvider.updateCredentials(
             JSON.parse(this.wallet.export())

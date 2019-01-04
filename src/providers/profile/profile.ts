@@ -568,7 +568,7 @@ export class ProfileProvider {
                 return resolve();
               });
             } else {
-              [].concat(walletsArray).forEach(wallet => {
+              walletsArray.forEach(wallet => {
                 wallet.encryptPrivateKey(password);
               });
               return resolve();
@@ -1306,7 +1306,6 @@ export class ProfileProvider {
       promises.push(this.createWallet(_.clone(options)));
     });
     return Promise.all(promises).then(async walletClients => {
-      walletClients = [].concat(walletClients);
       this.storeWalletsInVault(walletClients);
       // TODO remove mnemonics from wallets credentials
       return this.addAndBindWalletClients(walletClients, {
