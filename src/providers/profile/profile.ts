@@ -1258,11 +1258,12 @@ export class ProfileProvider {
 
   public async createWalletInVault(opts): Promise<any> {
     const vault = await this.persistenceProvider.getVault();
+    const needToCreateVault = !vault;
     let vaultClient;
     let vaultWallet;
     let mnemonic;
     let password;
-    if (!vault) {
+    if (needToCreateVault) {
       vaultClient = await this.createDefaultVault();
       mnemonic = vaultClient.credentials.mnemonic;
     } else {
@@ -1272,12 +1273,18 @@ export class ProfileProvider {
       password = k.password;
     }
     opts.mnemonic = mnemonic;
-    return this.createWallet(opts).then(walletClient => {
+    return this.createWallet(opts).then(async walletClient => {
       this.storeWalletsInVault([].concat(walletClient));
       // Encrypt wallet
       this.onGoingProcessProvider.pause();
       if (password) walletClient.encryptPrivateKey(password);
-      this.onGoingProcessProvider.resume();
+      // If already encrypted encrypt new wallet
+      else if (needToCreateVault) {
+        // Only ask to encrypt wallet if is the first wallet in vault
+        this.onGoingProcessProvider.pause();
+        await this.askToEncryptWallets([].concat(walletClient));
+        this.onGoingProcessProvider.resume();
+      }
       return this.addAndBindWalletClient(walletClient, {
         bwsurl: opts.bwsurl
       });
