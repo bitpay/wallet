@@ -1,4 +1,4 @@
-<wide-header-page [headerColor]="wallet && wallet.color" title="{{'Preferences' | translate}}">
+<wide-header-page [headerColor]="wallet && wallet.color" title="{{'Wallet Preferences' | translate}}">
   <div page-content>
     <ion-list class="settings-list">
       <ion-item-divider></ion-item-divider>
@@ -45,22 +45,22 @@
       </div>
       <ion-item-divider>{{'Advanced' | translate}}</ion-item-divider>
       <button ion-item (click)="openWalletInformation()">
-        <span translate>Wallet Information</span>
+        <span translate>Information</span>
       </button>
       <button ion-item (click)="openWalletAddresses()">
-        <span translate>Wallet Addresses</span>
+        <span translate>Addresses</span>
       </button>
       <button ion-item (click)="openExportWallet()">
-        <span translate>Export Wallet</span>
+        <span translate>Export</span>
       </button>
       <button ion-item (click)="openWalletServiceUrl()">
-        <span translate>Wallet Service URL</span>
+        <span translate>Service URL</span>
       </button>
       <button ion-item (click)="openTransactionHistory()">
         <span translate>Transaction History</span>
       </button>
       <button ion-item (click)="openDeleteWallet()">
-        <span translate>Delete Wallet</span>
+        <span translate>Delete</span>
       </button>
       <ion-item-divider></ion-item-divider>
     </ion-list>
