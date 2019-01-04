@@ -1,4 +1,4 @@
-import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MarkdownModule } from 'ngx-markdown';
 
@@ -7,7 +7,6 @@ import { BrowserModule } from '@angular/platform-browser';
 import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 
 /* Modules */
-import { TranslatePoHttpLoader } from '@biesbjerg/ngx-translate-po-http-loader';
 import {
   MissingTranslationHandler,
   MissingTranslationHandlerParams,
@@ -53,10 +52,7 @@ import { COMPONENTS } from './../components/components';
 import { ExternalizeLinks } from '../directives/externalize-links/externalize-links';
 import { ProvidersModule } from './../providers/providers.module';
 
-/* Read translation files */
-export function translateLoaderFactory(http: HttpClient) {
-  return new TranslatePoHttpLoader(http, 'assets/i18n', '.po');
-}
+import { LanguageLoader } from '../providers/language-loader/language-loader';
 
 export function translateParserFactory() {
   return new InterpolatedTranslateParser();
@@ -121,8 +117,7 @@ export class MyMissingTranslationHandler implements MissingTranslationHandler {
       },
       loader: {
         provide: TranslateLoader,
-        useFactory: translateLoaderFactory,
-        deps: [HttpClient]
+        useClass: LanguageLoader
       }
     }),
     ZXingScannerModule.forRoot()
