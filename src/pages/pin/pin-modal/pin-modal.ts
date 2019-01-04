@@ -200,7 +200,7 @@ export class PinModalPage {
 
   private isComplete(): boolean {
     if (this.currentPin.length < 4) return false;
-    this.disableButtons = true;
+    if (this.action != 'pinSetUp') this.disableButtons = true;
     return true;
   }
 
