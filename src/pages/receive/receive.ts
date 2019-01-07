@@ -100,9 +100,10 @@ export class ReceivePage extends WalletTabsChild {
       .getAddress(this.wallet, newAddr)
       .catch(err => {
         this.loading = false;
-        this.logger.warn(this.bwcErrorProvider.msg(err, 'Server Error'));
+        this.logger.warn(this.bwcErrorProvider.msg(err, 'Receive'));
       })) as string;
     this.loading = false;
+    if (!addr) return;
     const address = this.walletProvider.getAddressView(
       this.wallet.coin,
       this.wallet.network,
