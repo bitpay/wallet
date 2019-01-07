@@ -84,10 +84,10 @@ export class WalletProvider {
 
   private errors = this.bwcProvider.getErrors();
 
-  private progressFn = {};
+  static progressFn = {};
 
   private isPopupOpen: boolean;
-  private updateOnProgress = {}
+  static updateOnProgress = {}
 
   constructor(
     private logger: Logger,
@@ -606,7 +606,7 @@ export class WalletProvider {
       let LIMIT = 50;
       let requestLimit = FIRST_LIMIT;
       let walletId = wallet.credentials.walletId;
-      this.progressFn[walletId] = opts.progressFn || (() => {});
+      WalletProvider.progressFn[walletId] = opts.progressFn || (() => {});
       let foundLimitTx = [];
 
       let fixTxsUnit = (txs): void => {
@@ -629,18 +629,17 @@ export class WalletProvider {
         }
       };
 
-      if (this.updateOnProgress[wallet.id]) {
+      if (WalletProvider.updateOnProgress[wallet.id]) {
         this.logger.info('History update already on progress for: '+ wallet.credentials.walletName);
 
-//        if (opts.progressFn) {
-//          $log.debug('Rewriting progressFn');
-//          progressFn[walletId] = opts.progressFn;
-//        }
-//        updateOnProgress[wallet.id].push(cb);
+        if (opts.progressFn) {
+          this.logger.debug('Rewriting progressFn');
+          WalletProvider.progressFn[walletId] = opts.progressFn;
+        }
         return; // no callback call yet.
       }
 
-//      updateOnProgress[walletId] = [cb];
+      WalletProvider.updateOnProgress[wallet.id] = true;
 
       this.logger.debug(
         'Trying to download Tx history for: ' +
@@ -656,7 +655,7 @@ export class WalletProvider {
           let endingTs = confirmedTxs[0] ? confirmedTxs[0].time : null;
 
           // First update
-          this.progressFn[walletId](txsFromLocal, 0);
+          WalletProvider.progressFn[walletId](txsFromLocal, 0);
           wallet.completeHistory = txsFromLocal;
 
           let getNewTxs = (newTxs, skip: number): Promise<any> => {
@@ -671,7 +670,7 @@ export class WalletProvider {
                   newTxs = newTxs.concat(
                     this.processNewTxs(wallet, lodash.compact(res))
                   );
-                  this.progressFn[walletId](
+                  WalletProvider.progressFn[walletId](
                     newTxs.concat(txsFromLocal),
                     newTxs.length
                   );
@@ -825,7 +824,7 @@ export class WalletProvider {
                 });
             })
             .catch(err => {
-              this.updateOnProgress[walletId] = false;
+              WalletProvider.updateOnProgress[walletId] = false;
               return reject(err);
             });
         })
@@ -867,7 +866,7 @@ export class WalletProvider {
         ret.push(tx);
         txHistoryUnique[tx.txid] = true;
       } else {
-        this.logger.debug('Ignoring duplicate TX in history: ' + tx.txid);
+        //this.logger.debug('Ignoring duplicate TX in history: ' + tx.txid);
       }
     });
 
