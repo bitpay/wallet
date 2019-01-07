@@ -87,7 +87,7 @@ export class WalletProvider {
   static progressFn = {};
 
   private isPopupOpen: boolean;
-  static updateOnProgress = {}
+  static updateOnProgress = {};
 
   constructor(
     private logger: Logger,
@@ -630,7 +630,10 @@ export class WalletProvider {
       };
 
       if (WalletProvider.updateOnProgress[wallet.id]) {
-        this.logger.info('History update already on progress for: '+ wallet.credentials.walletName);
+        this.logger.info(
+          'History update already on progress for: ' +
+            wallet.credentials.walletName
+        );
 
         if (opts.progressFn) {
           this.logger.debug('Rewriting progressFn');
