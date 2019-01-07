@@ -87,9 +87,7 @@ export class WalletProvider {
   private progressFn = {};
 
   private isPopupOpen: boolean;
-  /* TODO: update on progress
   private updateOnProgress = {}
-   */
 
   constructor(
     private logger: Logger,
@@ -631,20 +629,18 @@ export class WalletProvider {
         }
       };
 
-      /* TODO: update on progress
-      if (updateOnProgress[wallet.id]) {
-        $log.warn('History update already on progress for: '+ wallet.credentials.walletName);
+      if (this.updateOnProgress[wallet.id]) {
+        this.logger.info('History update already on progress for: '+ wallet.credentials.walletName);
 
-        if (opts.progressFn) {
-          $log.debug('Rewriting progressFn');
-          progressFn[walletId] = opts.progressFn;
-        }
-        updateOnProgress[wallet.id].push(cb);
+//        if (opts.progressFn) {
+//          $log.debug('Rewriting progressFn');
+//          progressFn[walletId] = opts.progressFn;
+//        }
+//        updateOnProgress[wallet.id].push(cb);
         return; // no callback call yet.
       }
 
-      updateOnProgress[walletId] = [cb];
-       */
+//      updateOnProgress[walletId] = [cb];
 
       this.logger.debug(
         'Trying to download Tx history for: ' +
@@ -829,12 +825,7 @@ export class WalletProvider {
                 });
             })
             .catch(err => {
-              /* TODO: update on progress
-          lodash.each(this.updateOnProgress[walletId], function(x) {
-            x.apply(this,err);
-          });
-          this.updateOnProgress[walletId] = false;
-           */
+              this.updateOnProgress[walletId] = false;
               return reject(err);
             });
         })
