@@ -12,7 +12,7 @@ msgstr ""
 "Last-Translator: cmgustavo83\n"
 "Language-Team: Russian\n"
 "Language: ru\n"
-"PO-Revision-Date: 2018-12-21 18:55\n"
+"PO-Revision-Date: 2019-01-07 20:32\n"
 
 msgid "(Trusted)"
 msgstr "(Доверенный)"
@@ -112,6 +112,9 @@ msgstr "Адресная книга"
 
 msgid "Addressbook is empty"
 msgstr "Адресная книга пуста"
+
+msgid "Addresses"
+msgstr ""
 
 msgid "Addresses with balance"
 msgstr "Адреса с балансом"
@@ -809,8 +812,8 @@ msgstr "Истекла"
 msgid "Expires"
 msgstr "истёк"
 
-msgid "Export Wallet"
-msgstr "Экспорт кошелька"
+msgid "Export"
+msgstr ""
 
 msgid "Export to file"
 msgstr "Экспорт в файл"
@@ -1069,6 +1072,9 @@ msgstr "Неверный PIN-код, попробуйте снова."
 
 msgid "Incorrect network address"
 msgstr "Неправильный сетевой адресс"
+
+msgid "Information"
+msgstr ""
 
 msgid "Insufficient funds"
 msgstr "Недостаточно средств"
@@ -1553,9 +1559,6 @@ msgstr "Подготовка адресов..."
 msgid "Preparing backup..."
 msgstr "Подготовка резервной копии..."
 
-msgid "Print"
-msgstr ""
-
 msgid "Priority"
 msgstr "Приоритетная"
 
@@ -1603,9 +1606,6 @@ msgstr "Push-уведомления для {{appName}} в настоящее в�
 
 msgid "QR Code"
 msgstr "QR-код"
-
-msgid "QR code to recover wallet {{walletName}}"
-msgstr ""
 
 msgid "Quick review!"
 msgstr "Быстрый просмотр!"
@@ -1840,6 +1840,9 @@ msgstr "Отправлено"
 
 msgid "Sent Funds"
 msgstr "Отправленные средства"
+
+msgid "Sent to {walletName}"
+msgstr ""
 
 msgid "Server response could not be verified"
 msgstr "Ответ сервера не может быть проверен"
@@ -2330,11 +2333,11 @@ msgstr "Вводы кошелька"
 msgid "Wallet Name"
 msgstr "Название кошелька"
 
+msgid "Wallet Preferences"
+msgstr ""
+
 msgid "Wallet Recovery Phrase is invalid"
 msgstr "Ключевое словосочетание кошелька недействительно"
-
-msgid "Wallet Service URL"
-msgstr "Адрес сервера Bitcore"
 
 msgid "Wallet already exists"
 msgstr "Кошелёк уже существует"

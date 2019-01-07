@@ -12,7 +12,7 @@ msgstr ""
 "Last-Translator: cmgustavo83\n"
 "Language-Team: Polish\n"
 "Language: pl\n"
-"PO-Revision-Date: 2018-12-21 18:55\n"
+"PO-Revision-Date: 2019-01-07 20:32\n"
 
 msgid "(Trusted)"
 msgstr "(Zaufany)"
@@ -27,7 +27,7 @@ msgid "1. Tap \"Add Payment Method\" and select \"Gift Card\""
 msgstr ""
 
 msgid "2. Enter Gift Code"
-msgstr ""
+msgstr "Wprowadź kod"
 
 msgid "5-star ratings help us get BitPay Wallet into more hands, and more users means more resources can be committed to the app!"
 msgstr ""
@@ -54,7 +54,7 @@ msgid "About {{appName}}"
 msgstr ""
 
 msgid "Accept"
-msgstr ""
+msgstr "Akceptuj"
 
 msgid "Accepted"
 msgstr "Zatwierdzono"
@@ -69,7 +69,7 @@ msgid "Add"
 msgstr "Dodaj"
 
 msgid "Add BitPay Account?"
-msgstr ""
+msgstr "Dodać konto BitPay?"
 
 msgid "Add Contact"
 msgstr "Dodaj kontakt"
@@ -78,13 +78,13 @@ msgid "Add Memo"
 msgstr "Dodaj notatkę"
 
 msgid "Add Recipient"
-msgstr ""
+msgstr "Dodaj odbiorcę"
 
 msgid "Add account"
-msgstr ""
+msgstr "Dodaj konto"
 
 msgid "Add amount"
-msgstr ""
+msgstr "Dodaj kwotę"
 
 msgid "Add as a contact"
 msgstr "Dodaj jako kontakt"
@@ -93,10 +93,10 @@ msgid "Add funds"
 msgstr "Dodaj fundusze"
 
 msgid "Add gift cards to your {appName} wallet from brands like Amazon, Delta, Google Play, and Uber."
-msgstr ""
+msgstr "Dodaj kartę podarunkowa do portfela {appName}."
 
 msgid "Add this BitPay account ({{email}})?"
-msgstr ""
+msgstr "Dodać to konto BitPay ({{email}})?"
 
 msgid "Address"
 msgstr "Adres"
@@ -113,6 +113,9 @@ msgstr "Książka adresowa"
 msgid "Addressbook is empty"
 msgstr "Książka adresowa jest pusta"
 
+msgid "Addresses"
+msgstr ""
+
 msgid "Addresses with balance"
 msgstr "Adresy z funduszami"
 
@@ -120,7 +123,7 @@ msgid "Advanced"
 msgstr "Zaawansowane"
 
 msgid "All"
-msgstr ""
+msgstr "Wszystko"
 
 msgid "All addresses"
 msgstr "Wszystkie adresy"
@@ -138,16 +141,16 @@ msgid "Alternative currency"
 msgstr "Alternatywna waluta"
 
 msgid "Amazon.co.jp Gift Cards never expire and can be redeemed towards millions of items at www.amazon.co.jp."
-msgstr ""
+msgstr "Karta podarunkowa od amazona nigdy nie nie kończy."
 
 msgid "Amazon.com Gift Cards never expire and can be redeemed towards millions of items at www.amazon.com."
-msgstr ""
+msgstr "Karta podarunkowa od amazona nigdy nie nie kończy."
 
 msgid "Amount"
 msgstr "Kwota"
 
 msgid "Amount Too Low To Spend"
-msgstr ""
+msgstr "Zbyt niska kwota do wysłania"
 
 msgid "Amount below minimum allowed"
 msgstr "Kwota poniżej minimum dozwolona"
@@ -156,10 +159,10 @@ msgid "Amount too big"
 msgstr "Zbyt duża kwota"
 
 msgid "Amount:"
-msgstr ""
+msgstr "Kwota:"
 
 msgid "Anyone with your recovery phrase can access or spend your bitcoin."
-msgstr ""
+msgstr "Czy jesteś obserwowany? Każdy, kto zdobędzie twoją kluczową frazę może uzyskać dostęp do portfela i wydać twoje bitcoiny."
 
 msgid "Apply changes"
 msgstr "Zastosuj zmiany"
@@ -198,7 +201,7 @@ msgid "Are you sure you want to remove this transaction?"
 msgstr "Czy na pewno chcesz usunąć tę transakcję?"
 
 msgid "Are you sure you want to skip it?"
-msgstr ""
+msgstr "Czy na pewno chcesz pominąć?"
 
 msgid "Are you sure?"
 msgstr "Czy jesteś pewny?"
@@ -210,13 +213,13 @@ msgid "Average confirmation time"
 msgstr "Spodziewany czas potwierdzania"
 
 msgid "Awaiting payment to confirm"
-msgstr ""
+msgstr "Czekam na potwierdzenie wpłaty"
 
 msgid "Back up all your wallets before using this function"
-msgstr ""
+msgstr "Zrób kopię zapasową wszystkich swoich portfeli przed użyciem tej funkcji"
 
 msgid "Back up your wallet before using this function"
-msgstr ""
+msgstr "Zrób kopię zapasową portfela przed użyciem tej funkcji"
 
 msgid "Backup"
 msgstr "Kopia zapasowa"
@@ -231,7 +234,7 @@ msgid "Balance Hidden"
 msgstr "Stan konta ukryty"
 
 msgid "Be sure to store your recovery phrase in a secure place. If this app is deleted, your money cannot be recovered without it."
-msgstr ""
+msgstr "Pamiętaj aby przechowywać swoją kluczową frazę w bezpiecznym miejscu. Jeśli ta aplikacja zostanie usunięta, nie będziesz mógł bez niej odzyskać swoich pieniędzy."
 
 msgid "Because you are sending the maximum amount contained in this wallet, the {coinName} miner fee ({fee} {coin}) will be deducted from the total. {msg}"
 msgstr ""
@@ -297,7 +300,7 @@ msgid "Broadcasting transaction..."
 msgstr "Przekazywanie transakcji..."
 
 msgid "Buy Gift Card"
-msgstr ""
+msgstr "Kup kartę podarunkową"
 
 msgid "Buy Gift Cards"
 msgstr ""
@@ -809,8 +812,8 @@ msgstr "Wygasł"
 msgid "Expires"
 msgstr "Wygasa"
 
-msgid "Export Wallet"
-msgstr "Eksport portfela"
+msgid "Export"
+msgstr ""
 
 msgid "Export to file"
 msgstr "Eksportuj do pliku"
@@ -1069,6 +1072,9 @@ msgstr "Nieprawidłowy kod PIN. Spróbuj ponownie."
 
 msgid "Incorrect network address"
 msgstr "Nieprawidłowy adres"
+
+msgid "Information"
+msgstr ""
 
 msgid "Insufficient funds"
 msgstr "Nie ma wystarczającej ilości środków"
@@ -1553,9 +1559,6 @@ msgstr "Przygotowywanie adresów..."
 msgid "Preparing backup..."
 msgstr "Przygotowywanie kopii zapasowej..."
 
-msgid "Print"
-msgstr ""
-
 msgid "Priority"
 msgstr "Priorytetowa"
 
@@ -1603,9 +1606,6 @@ msgstr "Wyskakujące powiadomienia {{appName}} są obecnie wyłączone. Włącz 
 
 msgid "QR Code"
 msgstr "Kod QR"
-
-msgid "QR code to recover wallet {{walletName}}"
-msgstr ""
 
 msgid "Quick review!"
 msgstr "Szybki przegląd!"
@@ -1840,6 +1840,9 @@ msgstr "Wysłane"
 
 msgid "Sent Funds"
 msgstr "Wysłane środki"
+
+msgid "Sent to {walletName}"
+msgstr ""
 
 msgid "Server response could not be verified"
 msgstr "Odpowiedź serwera nie mogła zostać zweryfikowana"
@@ -2330,11 +2333,11 @@ msgstr ""
 msgid "Wallet Name"
 msgstr "Nazwa portfela"
 
+msgid "Wallet Preferences"
+msgstr ""
+
 msgid "Wallet Recovery Phrase is invalid"
 msgstr "Kluczowa fraza jest nieprawidłowa"
-
-msgid "Wallet Service URL"
-msgstr "Adres usług portfela"
 
 msgid "Wallet already exists"
 msgstr "Portfel już istnieje"

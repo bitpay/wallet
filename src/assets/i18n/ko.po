@@ -12,7 +12,7 @@ msgstr ""
 "Last-Translator: cmgustavo83\n"
 "Language-Team: Korean\n"
 "Language: ko\n"
-"PO-Revision-Date: 2018-12-21 18:55\n"
+"PO-Revision-Date: 2019-01-07 20:32\n"
 
 msgid "(Trusted)"
 msgstr "(신뢰할 수 있음)"
@@ -24,13 +24,13 @@ msgid "* A payment proposal can be deleted if 1) you are the creator, and no oth
 msgstr ""
 
 msgid "1. Tap \"Add Payment Method\" and select \"Gift Card\""
-msgstr ""
+msgstr "1. Tap \"Add Payment Method\" and select \"Gift Card\""
 
 msgid "2. Enter Gift Code"
-msgstr ""
+msgstr "2. Enter Gift Code"
 
 msgid "5-star ratings help us get BitPay Wallet into more hands, and more users means more resources can be committed to the app!"
-msgstr ""
+msgstr "5-star ratings help us get BitPay Wallet into more hands, and more users means more resources can be committed to the app!"
 
 msgid "A total of {{amountAboveMaxSizeStr}} {{coin}} were excluded. The maximum size allowed for a transaction was exceeded."
 msgstr "A total of {{amountAboveMaxSizeStr}} {{coin}} were excluded. The maximum size allowed for a transaction was exceeded."
@@ -51,10 +51,10 @@ msgid "About"
 msgstr "소개"
 
 msgid "About {{appName}}"
-msgstr ""
+msgstr "About {{appName}}"
 
 msgid "Accept"
-msgstr ""
+msgstr "Accept"
 
 msgid "Accepted"
 msgstr "수락함"
@@ -69,7 +69,7 @@ msgid "Add"
 msgstr "추가"
 
 msgid "Add BitPay Account?"
-msgstr ""
+msgstr "Add BitPay Account?"
 
 msgid "Add Contact"
 msgstr "연락처 추가"
@@ -78,13 +78,13 @@ msgid "Add Memo"
 msgstr "메모 추가"
 
 msgid "Add Recipient"
-msgstr ""
+msgstr "Add Recipient"
 
 msgid "Add account"
-msgstr ""
+msgstr "Add account"
 
 msgid "Add amount"
-msgstr ""
+msgstr "Add amount"
 
 msgid "Add as a contact"
 msgstr "연락처로 추가"
@@ -93,10 +93,10 @@ msgid "Add funds"
 msgstr "자금 추가"
 
 msgid "Add gift cards to your {appName} wallet from brands like Amazon, Delta, Google Play, and Uber."
-msgstr ""
+msgstr "Add gift cards to your {appName} wallet from brands like Amazon, Delta, Google Play, and Uber."
 
 msgid "Add this BitPay account ({{email}})?"
-msgstr ""
+msgstr "Add this BitPay account ({{email}})?"
 
 msgid "Address"
 msgstr "주소"
@@ -108,28 +108,31 @@ msgid "Address Type"
 msgstr "주소 타입"
 
 msgid "Address book"
-msgstr ""
+msgstr "Address book"
 
 msgid "Addressbook is empty"
 msgstr "주소록이 비여 있습니다."
 
-msgid "Addresses with balance"
+msgid "Addresses"
 msgstr ""
+
+msgid "Addresses with balance"
+msgstr "Addresses with balance"
 
 msgid "Advanced"
 msgstr "고급"
 
 msgid "All"
-msgstr ""
+msgstr "All"
 
 msgid "All addresses"
-msgstr ""
+msgstr "All addresses"
 
 msgid "All of your bitcoin wallet balance may not be available for immediate spending."
 msgstr "모든 비트코인 지갑 잔액은 즉각적으로 지출할 수 없습니다."
 
 msgid "Allow camera access"
-msgstr ""
+msgstr "Allow camera access"
 
 msgid "Almost done! Let's review."
 msgstr "거의 다 됐습니다! 검토해주세요."
@@ -156,7 +159,7 @@ msgid "Amount too big"
 msgstr "금액이 너무 큽니다"
 
 msgid "Amount:"
-msgstr ""
+msgstr "Amount:"
 
 msgid "Anyone with your recovery phrase can access or spend your bitcoin."
 msgstr "귀하의 복구 문구를 가진 사람은 누구나 귀하의 비트코인에 액세스하고 사용할 수 있습니다."
@@ -809,8 +812,8 @@ msgstr "만료됨"
 msgid "Expires"
 msgstr "만료"
 
-msgid "Export Wallet"
-msgstr "지갑 내보내기"
+msgid "Export"
+msgstr ""
 
 msgid "Export to file"
 msgstr "파일로 내보내기"
@@ -1069,6 +1072,9 @@ msgstr "올바르지 않은 PIN입니다, 다시 시도해주세요."
 
 msgid "Incorrect network address"
 msgstr "올바르지 않은 네트워크 주소"
+
+msgid "Information"
+msgstr ""
 
 msgid "Insufficient funds"
 msgstr "부족한 자금"
@@ -1553,9 +1559,6 @@ msgstr "주소 준비 중..."
 msgid "Preparing backup..."
 msgstr "백업 준비 중..."
 
-msgid "Print"
-msgstr ""
-
 msgid "Priority"
 msgstr "우선 순위"
 
@@ -1602,9 +1605,6 @@ msgid "Push notifications for {{appName}} are currently disabled. Enable them in
 msgstr "현재 {{appName}}에 대한 알림 받기가 비활성화되었습니다. 앱 설정에서 활성화하세요."
 
 msgid "QR Code"
-msgstr ""
-
-msgid "QR code to recover wallet {{walletName}}"
 msgstr ""
 
 msgid "Quick review!"
@@ -1840,6 +1840,9 @@ msgstr "전송됨"
 
 msgid "Sent Funds"
 msgstr "자금 전송됨"
+
+msgid "Sent to {walletName}"
+msgstr ""
 
 msgid "Server response could not be verified"
 msgstr "서버 응답을 확인할 수 없습니다"
@@ -2330,11 +2333,11 @@ msgstr "지갑 입금"
 msgid "Wallet Name"
 msgstr "지갑 이름"
 
+msgid "Wallet Preferences"
+msgstr ""
+
 msgid "Wallet Recovery Phrase is invalid"
 msgstr "유효하지 않은 지갑 복원 목구입니다"
-
-msgid "Wallet Service URL"
-msgstr "지갑 서비스 URL"
 
 msgid "Wallet already exists"
 msgstr "이미 존재하는 지갑입니다"

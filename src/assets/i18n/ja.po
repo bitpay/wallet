@@ -12,7 +12,7 @@ msgstr ""
 "Last-Translator: cmgustavo83\n"
 "Language-Team: Japanese\n"
 "Language: ja\n"
-"PO-Revision-Date: 2018-12-21 18:55\n"
+"PO-Revision-Date: 2019-01-07 20:32\n"
 
 msgid "(Trusted)"
 msgstr "(信頼済み)"
@@ -21,40 +21,40 @@ msgid "(possible double spend)"
 msgstr "(二重払い可能性あり)"
 
 msgid "* A payment proposal can be deleted if 1) you are the creator, and no other copayer has signed, or 2) 10 minutes have passed since the proposal was created."
-msgstr ""
+msgstr "* 送金の提案の取下げは①他のウォレット参加者に署名されていなかった場合、提案者に提案を取り下げることができます。②提案の起案から24時間が経っても解決しなかった場合、全員に取り下げることができます。"
 
 msgid "1. Tap \"Add Payment Method\" and select \"Gift Card\""
-msgstr ""
+msgstr "1「お支払い方法の追加」をタップし、「ギフトカード」を選択"
 
 msgid "2. Enter Gift Code"
-msgstr ""
+msgstr "2. ギフト コードを入力します。"
 
 msgid "5-star ratings help us get BitPay Wallet into more hands, and more users means more resources can be committed to the app!"
-msgstr ""
+msgstr "5星级的评级帮助我们让 bitpay 钱包进入更多的手中, 更多的用户意味着更多的资源可以投入到应用程序!"
 
 msgid "A total of {{amountAboveMaxSizeStr}} {{coin}} were excluded. The maximum size allowed for a transaction was exceeded."
-msgstr ""
+msgstr "总数为{{amountAboveMaxSizeStr}}{{coin}} 的交易已被拒绝。超过了交易允许的最大额度。"
 
 msgid "A total of {{amountBelowFeeStr}} {{coin}} were excluded. These funds come from UTXOs smaller than the network fee provided."
-msgstr ""
+msgstr "总数为{{amountBelowFeeStr}}{{coin}} 已被拒绝。UTXOs资金少于提供的网络手续费。"
 
 msgid "A total of {{amountStr}} ({{fiatAmount | number:'1.2-2'}} {{currencyIsoCode}}) will be exchanged for {{withdrawalStr}} ({{fiatWithdrawal | number:'1.2-2'}} {{currencyIsoCode}})."
-msgstr ""
+msgstr "{{amountStr}} の合計 {{withdrawalStr}} ({{fiatAmount | number:'1.2-2'}} {{currencyIsoCode}}) 交換致します ({{fiatWithdrawal | number:'1.2-2'}} {{currencyIsoCode}})."
 
 msgid "A total of {{fee}} {{coin}} were excluded. The maximum size allowed for a transaction was exceeded."
-msgstr ""
+msgstr "A total of {{fee}} {{coin}} were excluded. The maximum size allowed for a transaction was exceeded."
 
 msgid "A total of {{fee}} {{coin}} were excluded. These funds come from UTXOs smaller than the network fee provided."
-msgstr ""
+msgstr "总数为{{amountBelowFeeStr}}{{coin}} 已被拒绝。UTXOs资金少于提供的网络手续费。"
 
 msgid "About"
 msgstr "このアプリについて"
 
 msgid "About {{appName}}"
-msgstr ""
+msgstr "{{appName}} について"
 
 msgid "Accept"
-msgstr ""
+msgstr "承諾済"
 
 msgid "Accepted"
 msgstr "承諾済"
@@ -69,7 +69,7 @@ msgid "Add"
 msgstr "Viêt nam"
 
 msgid "Add BitPay Account?"
-msgstr ""
+msgstr "BitPay アカウントを追加しますか。"
 
 msgid "Add Contact"
 msgstr "連絡先を追加"
@@ -78,13 +78,13 @@ msgid "Add Memo"
 msgstr "メモを追加"
 
 msgid "Add Recipient"
-msgstr ""
+msgstr "&#x53D7;&#x53D6;&#x4EBA;&#x3092;&#x8FFD;&#x52A0; (&R)"
 
 msgid "Add account"
-msgstr ""
+msgstr "アカウントを追加します。"
 
 msgid "Add amount"
-msgstr ""
+msgstr "Add amount"
 
 msgid "Add as a contact"
 msgstr "連絡先に追加"
@@ -93,10 +93,10 @@ msgid "Add funds"
 msgstr "資金を追加"
 
 msgid "Add gift cards to your {appName} wallet from brands like Amazon, Delta, Google Play, and Uber."
-msgstr ""
+msgstr "将礼品卡添加到您的 \"div class=\"notranslate\">0 </div> 来自亚马逊、德尔塔、谷歌游戏和 uber 等品牌的钱包。"
 
 msgid "Add this BitPay account ({{email}})?"
-msgstr ""
+msgstr "この BitPay アカウント ({{email}}) を追加しますか。"
 
 msgid "Address"
 msgstr "アドレス"
@@ -108,28 +108,31 @@ msgid "Address Type"
 msgstr "アドレスの種類"
 
 msgid "Address book"
-msgstr ""
+msgstr "アドレス帳"
 
 msgid "Addressbook is empty"
+msgstr "地址薄为空"
+
+msgid "Addresses"
 msgstr ""
 
 msgid "Addresses with balance"
-msgstr ""
+msgstr "残高のあるアドレス"
 
 msgid "Advanced"
 msgstr "上級者向け"
 
 msgid "All"
-msgstr ""
+msgstr "Tutto"
 
 msgid "All addresses"
-msgstr ""
+msgstr "全アドレス"
 
 msgid "All of your bitcoin wallet balance may not be available for immediate spending."
 msgstr "ビットコインのウォレットの残高の内、即座に送れないビットコインが含まれている可能性があります。"
 
 msgid "Allow camera access"
-msgstr ""
+msgstr "カメラへのアクセスを許可します。"
 
 msgid "Almost done! Let's review."
 msgstr "ほぼ完了!確認してみましょう。"
@@ -811,8 +814,8 @@ msgstr "期限切れ"
 msgid "Expires"
 msgstr "有効期限："
 
-msgid "Export Wallet"
-msgstr "ウォレットをエクスポート"
+msgid "Export"
+msgstr ""
 
 msgid "Export to file"
 msgstr "ファイルへのエクスポート"
@@ -1071,6 +1074,9 @@ msgstr "PINが間違っています。もう一度やり直して下さい。"
 
 msgid "Incorrect network address"
 msgstr "サーバーのアドレスが不正です"
+
+msgid "Information"
+msgstr ""
 
 msgid "Insufficient funds"
 msgstr "残高不足"
@@ -1555,9 +1561,6 @@ msgstr "アドレスを処理中…"
 msgid "Preparing backup..."
 msgstr "バックアップを準備中..."
 
-msgid "Print"
-msgstr ""
-
 msgid "Priority"
 msgstr "優先"
 
@@ -1604,9 +1607,6 @@ msgid "Push notifications for {{appName}} are currently disabled. Enable them in
 msgstr "{{appName}}のプッシュ通知は現在無効です。アプリ設定で有効にします。"
 
 msgid "QR Code"
-msgstr ""
-
-msgid "QR code to recover wallet {{walletName}}"
 msgstr ""
 
 msgid "Quick review!"
@@ -1842,6 +1842,9 @@ msgstr "送金済み"
 
 msgid "Sent Funds"
 msgstr "資金を送金済み"
+
+msgid "Sent to {walletName}"
+msgstr ""
 
 msgid "Server response could not be verified"
 msgstr "サーバーからの返答を検証できませんでした"
@@ -2334,11 +2337,11 @@ msgstr "ウォレットの入力"
 msgid "Wallet Name"
 msgstr "ウォレット名"
 
+msgid "Wallet Preferences"
+msgstr ""
+
 msgid "Wallet Recovery Phrase is invalid"
 msgstr "ウォレットシードが不正です。"
-
-msgid "Wallet Service URL"
-msgstr "ウォレットサービスのURL"
 
 msgid "Wallet already exists"
 msgstr "既存のウォレットです"
