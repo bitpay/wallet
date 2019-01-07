@@ -502,8 +502,8 @@ export class WalletProvider {
               this.isPopupOpen = true;
               this.popupProvider
                 .ionicAlert(
-                null,
-                this.bwcErrorProvider.msg('MAIN_ADDRESS_GAP_REACHED')
+                  null,
+                  this.bwcErrorProvider.msg('MAIN_ADDRESS_GAP_REACHED')
                 )
                 .then(() => {
                   this.isPopupOpen = false;
@@ -593,7 +593,7 @@ export class WalletProvider {
       const LIMIT = 50;
       let requestLimit = FIRST_LIMIT;
       const walletId = wallet.credentials.walletId;
-      WalletProvider.progressFn[walletId] = opts.progressFn || (() => { });
+      WalletProvider.progressFn[walletId] = opts.progressFn || (() => {});
       let foundLimitTx = [];
 
       const fixTxsUnit = (txs): void => {
@@ -619,7 +619,7 @@ export class WalletProvider {
       if (WalletProvider.updateOnProgress[wallet.id]) {
         this.logger.info(
           'History update already on progress for: ' +
-          wallet.credentials.walletName
+            wallet.credentials.walletName
         );
 
         if (opts.progressFn) {
@@ -633,8 +633,8 @@ export class WalletProvider {
 
       this.logger.debug(
         'Trying to download Tx history for: ' +
-        walletId +
-        '. If it fails retry in 5 secs'
+          walletId +
+          '. If it fails retry in 5 secs'
       );
       this.getSavedTxs(walletId)
         .then(txsFromLocal => {
@@ -667,11 +667,11 @@ export class WalletProvider {
                   skip = skip + requestLimit;
                   this.logger.debug(
                     'Syncing TXs for:' +
-                    walletId +
-                    '. Got:' +
-                    newTxs.length +
-                    ' Skip:' +
-                    skip,
+                      walletId +
+                      '. Got:' +
+                      newTxs.length +
+                      ' Skip:' +
+                      skip,
                     ' EndingTxid:',
                     endingTxid,
                     ' Continue:',
@@ -693,7 +693,7 @@ export class WalletProvider {
                   if (!shouldContinue) {
                     this.logger.debug(
                       'Finished Sync: New / soft confirmed Txs: ' +
-                      newTxs.length
+                        newTxs.length
                     );
                     return resolve(newTxs);
                   }
@@ -1195,9 +1195,9 @@ export class WalletProvider {
         .then(() => {
           this.logger.debug(
             'Remote preferences saved for' +
-            _.map(clients, (x: any) => {
-              return x.credentials.walletId;
-            }).join(',')
+              _.map(clients, (x: any) => {
+                return x.credentials.walletId;
+              }).join(',')
           );
 
           _.each(clients, c => {
@@ -1487,8 +1487,8 @@ export class WalletProvider {
             err && err.message
               ? err.message
               : this.translate.instant(
-                'The payment was created but could not be completed. Please try again from home screen'
-              );
+                  'The payment was created but could not be completed. Please try again from home screen'
+                );
           this.logger.error('Sign error: ' + msg);
           this.events.publish('Local/TxAction', wallet.id);
           return reject(msg);
@@ -1572,16 +1572,16 @@ export class WalletProvider {
 
       return resolve(
         info.type +
-        '|' +
-        info.data +
-        '|' +
-        wallet.credentials.network.toLowerCase() +
-        '|' +
-        derivationPath +
-        '|' +
-        wallet.credentials.mnemonicHasPassphrase +
-        '|' +
-        wallet.coin
+          '|' +
+          info.data +
+          '|' +
+          wallet.credentials.network.toLowerCase() +
+          '|' +
+          derivationPath +
+          '|' +
+          wallet.credentials.mnemonicHasPassphrase +
+          '|' +
+          wallet.coin
       );
     });
   }
