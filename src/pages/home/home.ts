@@ -363,6 +363,7 @@ export class HomePage {
     async () => {
       this.vault = await this.persistenceProvider.getVault();
       this.wallets = this.profileProvider.getWallets();
+      /* TODO create a provider for common vault operations like getVaultWallets() */
       this.vaultWallets = _.filter(this.wallets, (x: any) => {
         return this.vaultHasWallet(x.credentials.walletId);
       });
