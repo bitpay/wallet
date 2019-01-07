@@ -89,10 +89,6 @@ export class TourPage {
     this.slides.slideNext();
   }
 
-  public slideFinal(): void {
-    this.slides.slideTo(3);
-  }
-
   public createDefaultVault(): void {
     this.onGoingProcessProvider.set('creatingWallet');
     this.profileProvider

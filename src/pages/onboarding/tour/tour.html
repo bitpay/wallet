@@ -1,7 +1,7 @@
 <ion-header no-border>
   <ion-navbar>
     <ion-buttons right>
-      <button ion-button class="primary-color" (click)="slideFinal()" *ngIf="currentIndex == 0">
+      <button ion-button class="primary-color" (click)="createDefaultVault()" *ngIf="currentIndex == 0">
         {{'Skip' | translate}}
       </button>
     </ion-buttons>
@@ -43,32 +43,10 @@
       <img src='assets/img/app/onboarding/tour-control.svg' />
       <div class="bottom-absolute">
         <p translate class="bottom-description">Not even BitPay can access it.</p>
-        <button ion-button clear class="button-standard btn-transparent primary-color e2e-create-wallet" (click)="slideNext()">
-          {{'Good to know' | translate}}
+        <button ion-button class="button-standard e2e-create-wallet" (click)="createDefaultVault()">
+          {{'Create Vault' | translate}}
         </button>
       </div>
     </ion-slide>
-
-    <ion-slide>
-      <h3 class="title" translate>Add coins to your vault.</h3>
-      <!-- TODO <p translate class="top-description">Lorem ipsum dolor sit amet, consectetur adipiscing elit. In et sapien faucibus.</p>-->
-      <ion-list class="checkbox-list" no-lines>
-        <ion-item>
-          <ion-label>Bitcoin</ion-label>
-          <ion-checkbox [(ngModel)]="coins.bitcoin" checked="true"></ion-checkbox>
-        </ion-item>
-
-        <ion-item>
-          <ion-label>Bitcoin Cash</ion-label>
-          <ion-checkbox [(ngModel)]="coins.bitcoincash" checked="true"></ion-checkbox>
-        </ion-item>
-        <div class="bottom-absolute">
-          <button ion-button clear class="button-standard e2e-create-wallet" (click)="createDefaultVault()">
-            {{'Create Vault' | translate}}
-          </button>
-        </div>
-      </ion-list>
-    </ion-slide>
-
   </ion-slides>
 </ion-content>
