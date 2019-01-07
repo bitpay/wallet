@@ -122,6 +122,10 @@ export class SettingsPage {
       this.encryptEnabled = this.walletProvider.isEncrypted(
         this.vaultWallets[0]
       );
+      this.touchIdEnabled = this.config.touchIdFor
+        ? this.config.touchIdFor[this.vaultWallets[0].credentials.walletId]
+        : null;
+      this.touchIdPrevValue = this.touchIdEnabled;
     });
     this.touchIdProvider.isAvailable().then((isAvailable: boolean) => {
       this.touchIdAvailable = isAvailable;
@@ -138,7 +142,7 @@ export class SettingsPage {
         this.logger.debug('Touch Id status changed: ' + newStatus);
       })
       .catch(err => {
-        this.logger.error('Error with fingerprint:' + err);
+        this.logger.error('Error with fingerprint:', err);
         this.touchIdEnabled = this.touchIdPrevValue;
       });
   }

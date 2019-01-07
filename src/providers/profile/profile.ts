@@ -1314,7 +1314,6 @@ export class ProfileProvider {
     });
     return Promise.all(promises).then(async walletClients => {
       this.storeWalletsInVault(walletClients);
-      // TODO remove mnemonics from wallets credentials
       return this.addAndBindWalletClients(walletClients, {
         bwsurl: options.bwsurl
       });

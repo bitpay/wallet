@@ -72,9 +72,11 @@ export class BackupGamePage {
     this.walletId = this.navParams.get('walletId');
     this.fromOnboarding = this.navParams.get('fromOnboarding');
     this.wallet = this.profileProvider.getWallet(this.walletId);
-    this.persistenceProvider.getVault().then((vault) => {
+    this.persistenceProvider.getVault().then(vault => {
       this.vault = vault;
-      this.isVaultWallet = this.vault && this.vault.walletIds.includes(this.wallet.credentials.walletId);
+      this.isVaultWallet =
+        this.vault &&
+        this.vault.walletIds.includes(this.wallet.credentials.walletId);
     });
     this.credentialsEncrypted = this.wallet.isPrivKeyEncrypted();
   }
@@ -268,11 +270,12 @@ export class BackupGamePage {
         }
       }
 
-
       if (this.isVaultWallet) {
         const wallets = this.profileProvider.getWallets();
         const vaultWallets = _.filter(wallets, (x: any) => {
-          return this.vault && this.vault.walletIds.includes(x.credentials.walletId);
+          return (
+            this.vault && this.vault.walletIds.includes(x.credentials.walletId)
+          );
         });
         vaultWallets.forEach(wallet => {
           this.profileProvider.setBackupFlag(wallet.credentials.walletId);

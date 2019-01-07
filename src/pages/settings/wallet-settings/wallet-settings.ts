@@ -159,13 +159,13 @@ export class WalletSettingsPage {
     if (this.touchIdPrevValue == this.touchIdEnabled) return;
     const newStatus = this.touchIdEnabled;
     this.walletProvider
-      .setTouchId(this.wallet, newStatus)
+      .setTouchId([].concat(this.wallet), newStatus)
       .then(() => {
         this.touchIdPrevValue = this.touchIdEnabled;
         this.logger.debug('Touch Id status changed: ' + newStatus);
       })
       .catch(err => {
-        this.logger.error('Error with fingerprint:' + err);
+        this.logger.error('Error with fingerprint:', err);
         this.touchIdEnabled = this.touchIdPrevValue;
       });
   }

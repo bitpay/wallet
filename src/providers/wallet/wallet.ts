@@ -1598,12 +1598,11 @@ export class WalletProvider {
     const opts = {
       touchIdFor: {}
     };
-    let promises;
     walletsArray.forEach(wallet => {
       opts.touchIdFor[wallet.id] = enabled;
-      promises = this.touchidProvider.checkWallet(wallet);
     });
-    return promises.then(() => {
+    const promise = this.touchidProvider.checkWallet(walletsArray[0]);
+    return promise.then(() => {
       this.configProvider.set(opts);
       return Promise.resolve();
     });

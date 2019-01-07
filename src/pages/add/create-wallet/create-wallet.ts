@@ -244,6 +244,7 @@ export class CreateWalletPage implements OnInit {
         this.walletProvider.updateRemotePreferences(wallet);
         this.pushNotificationsProvider.updateSubscription(wallet);
         this.setBackupFlagIfNeeded(wallet.credentials.walletId);
+        this.setFingerprintIfNeeded(wallet.credentials.walletId);
         this.navCtrl.popToRoot();
         this.events.publish('OpenWallet', wallet);
       })
@@ -270,6 +271,28 @@ export class CreateWalletPage implements OnInit {
       const vault = await this.persistenceProvider.getVault();
       if (!vault.needsBackup) this.profileProvider.setBackupFlag(walletId);
     }
+  }
+
+  private async setFingerprintIfNeeded(walletId: string) {
+    if (!this.createForm.value.addToVault) return;
+
+    const vault = await this.persistenceProvider.getVault();
+    const wallets = this.profileProvider.getWallets();
+    const vaultWallets = _.filter(wallets, (wallet: any) => {
+      return vault && vault.walletIds.includes(wallet.credentials.walletId);
+    });
+    const config = this.configProvider.get();
+    const touchIdEnabled = config.touchIdFor
+      ? config.touchIdFor[vaultWallets[0].credentials.walletId]
+      : null;
+
+    if (!touchIdEnabled) return;
+
+    const opts = {
+      touchIdFor: {}
+    };
+    opts.touchIdFor[walletId] = true;
+    this.configProvider.set(opts);
   }
 
   public openSupportSingleAddress(): void {
