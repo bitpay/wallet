@@ -869,7 +869,7 @@ export class WalletProvider {
         ret.push(tx);
         txHistoryUnique[tx.txid] = true;
       } else {
-        //this.logger.debug('Ignoring duplicate TX in history: ' + tx.txid);
+        this.logger.debug('Ignoring duplicate TX in history: ' + tx.txid);
       }
     });
 
