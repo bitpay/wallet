@@ -243,7 +243,7 @@ export class CreateWalletPage implements OnInit {
         this.events.publish('status:updated');
         this.walletProvider.updateRemotePreferences(wallet);
         this.pushNotificationsProvider.updateSubscription(wallet);
-        this.setBackupFlagIfNeeded(wallet.credentials.id);
+        this.setBackupFlagIfNeeded(wallet.credentials.walletId);
         this.navCtrl.popToRoot();
         this.events.publish('OpenWallet', wallet);
       })

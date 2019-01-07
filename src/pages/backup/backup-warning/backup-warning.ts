@@ -15,7 +15,6 @@ export class BackupWarningPage {
 
   private walletId: string;
   private fromOnboarding: boolean;
-  private fromVaultSettings: boolean;
 
   constructor(
     public navCtrl: NavController,
@@ -25,7 +24,6 @@ export class BackupWarningPage {
   ) {
     this.walletId = this.navParams.data.walletId;
     this.fromOnboarding = this.navParams.data.fromOnboarding;
-    this.fromVaultSettings = this.navParams.data.fromVaultSettings;
   }
 
   public openWarningModal(): void {
@@ -37,8 +35,7 @@ export class BackupWarningPage {
       if (option) {
         this.navCtrl.push(BackupGamePage, {
           walletId: this.walletId,
-          fromOnboarding: this.fromOnboarding,
-          fromVaultSettings: this.fromVaultSettings
+          fromOnboarding: this.fromOnboarding
         });
       }
     });

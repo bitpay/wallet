@@ -233,8 +233,7 @@ export class SettingsPage {
   public openBackupSettings(): void {
     const vaultWallet = this.profileProvider.getWallet(this.vault.walletIds[0]);
     this.navCtrl.push(BackupWarningPage, {
-      walletId: vaultWallet.credentials.walletId,
-      fromVaultSettings: true
+      walletId: vaultWallet.credentials.walletId
     });
   }
 

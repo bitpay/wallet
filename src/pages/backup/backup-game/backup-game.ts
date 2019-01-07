@@ -36,7 +36,8 @@ export class BackupGamePage {
   navBar: Navbar;
 
   private fromOnboarding: boolean;
-  private fromVaultSettings: boolean;
+  private isVaultWallet: boolean;
+  private vault;
 
   public currentIndex: number;
   public deleted: boolean;
@@ -70,8 +71,11 @@ export class BackupGamePage {
   ) {
     this.walletId = this.navParams.get('walletId');
     this.fromOnboarding = this.navParams.get('fromOnboarding');
-    this.fromVaultSettings = this.navParams.get('fromVaultSettings');
     this.wallet = this.profileProvider.getWallet(this.walletId);
+    this.persistenceProvider.getVault().then((vault) => {
+      this.vault = vault;
+      this.isVaultWallet = this.vault && this.vault.walletIds.includes(this.wallet.credentials.walletId);
+    });
     this.credentialsEncrypted = this.wallet.isPrivKeyEncrypted();
   }
 
@@ -264,18 +268,17 @@ export class BackupGamePage {
         }
       }
 
-      if (this.fromOnboarding || this.fromVaultSettings) {
-        this.persistenceProvider.getVault().then(vault => {
-          const wallets = this.profileProvider.getWallets();
-          const vaultWallets = _.filter(wallets, (x: any) => {
-            return vault && vault.walletIds.includes(x.credentials.walletId);
-          });
-          vaultWallets.forEach(wallet => {
-            this.profileProvider.setBackupFlag(wallet.credentials.walletId);
-          });
-          vault.needsBackup = false;
-          this.persistenceProvider.storeVault(vault);
+
+      if (this.isVaultWallet) {
+        const wallets = this.profileProvider.getWallets();
+        const vaultWallets = _.filter(wallets, (x: any) => {
+          return this.vault && this.vault.walletIds.includes(x.credentials.walletId);
         });
+        vaultWallets.forEach(wallet => {
+          this.profileProvider.setBackupFlag(wallet.credentials.walletId);
+        });
+        this.vault.needsBackup = false;
+        this.persistenceProvider.storeVault(this.vault);
       } else {
         this.profileProvider.setBackupFlag(this.wallet.credentials.walletId);
       }
@@ -291,8 +294,7 @@ export class BackupGamePage {
         this.onGoingProcessProvider.clear();
         const walletType =
           this.wallet.coin === 'btc' ? 'bitcoin' : 'bitcoin cash';
-        const vault = await this.persistenceProvider.getVault();
-        const key: InfoSheetType = vault
+        const key: InfoSheetType = this.isVaultWallet
           ? 'backup-ready-vault'
           : 'backup-ready';
         const infoSheet = this.actionSheetProvider.createInfoSheet(key, {
