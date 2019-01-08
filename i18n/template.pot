@@ -121,6 +121,9 @@ msgstr ""
 msgid "Addressbook is empty"
 msgstr ""
 
+msgid "Addresses"
+msgstr ""
+
 msgid "Addresses with balance"
 msgstr ""
 
@@ -848,7 +851,7 @@ msgstr ""
 msgid "Expires"
 msgstr ""
 
-msgid "Export Wallet"
+msgid "Export"
 msgstr ""
 
 msgid "Export to file"
@@ -1145,6 +1148,9 @@ msgid "Incorrect PIN, try again."
 msgstr ""
 
 msgid "Incorrect network address"
+msgstr ""
+
+msgid "Information"
 msgstr ""
 
 msgid "Insufficient funds"
@@ -1650,9 +1656,6 @@ msgstr ""
 msgid "Preparing backup..."
 msgstr ""
 
-msgid "Print"
-msgstr ""
-
 msgid "Priority"
 msgstr ""
 
@@ -1701,9 +1704,6 @@ msgid ""
 msgstr ""
 
 msgid "QR Code"
-msgstr ""
-
-msgid "QR code to recover wallet {{walletName}}"
 msgstr ""
 
 msgid "Quick review!"
@@ -1938,6 +1938,9 @@ msgid "Sent"
 msgstr ""
 
 msgid "Sent Funds"
+msgstr ""
+
+msgid "Sent to {walletName}"
 msgstr ""
 
 msgid "Server response could not be verified"
@@ -2489,10 +2492,10 @@ msgstr ""
 msgid "Wallet Name"
 msgstr ""
 
-msgid "Wallet Recovery Phrase is invalid"
+msgid "Wallet Preferences"
 msgstr ""
 
-msgid "Wallet Service URL"
+msgid "Wallet Recovery Phrase is invalid"
 msgstr ""
 
 msgid "Wallet already exists"
