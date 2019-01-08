@@ -164,8 +164,8 @@ export class WalletTransactionHistoryPage {
       })
       .catch(err => {
         if (err == 'HISTORY_IN_PROGRESS') {
+          this.logger.debug('History in progress: Trying again in 5 secs...');
           setTimeout(() => {
-            this.logger.debug('History in progress: Trying again in 5 secs...');
             this.csvHistory();
           }, 5000);
           return;
