@@ -239,7 +239,11 @@ export class WalletDetailsPage extends WalletTabsChild {
   }
 
   public loadHistory(loading) {
-    if (this.history.length === this.wallet.completeHistory.length) {
+    if (
+      this.history &&
+      this.wallet.completeHistory &&
+      this.history.length === this.wallet.completeHistory.length
+    ) {
       loading.complete();
       return;
     }
