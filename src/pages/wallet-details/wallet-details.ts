@@ -225,7 +225,7 @@ export class WalletDetailsPage extends WalletTabsChild {
         } else {
           setTimeout(() => {
             this.updateTxHistory(true); // retry in true
-          }, 5000)
+          }, 5000);
         }
       });
   }
