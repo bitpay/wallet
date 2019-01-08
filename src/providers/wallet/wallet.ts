@@ -1017,7 +1017,8 @@ export class WalletProvider {
           return resolve(wallet.completeHistory);
         })
         .catch(err => {
-          WalletProvider.updateOnProgress[wallet.id] = false;
+          if (err != 'HISTORY_IN_PROGRESS')
+            WalletProvider.updateOnProgress[wallet.id] = false;
           return reject(err);
         });
     });
