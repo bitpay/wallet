@@ -627,7 +627,7 @@ export class WalletProvider {
           this.logger.debug('Rewriting progressFn');
           WalletProvider.progressFn[walletId] = opts.progressFn;
         }
-        return; // no callback call yet.
+        return reject('HISTORY_IN_PROGRESS'); // no callback call yet.
       }
 
       WalletProvider.updateOnProgress[wallet.id] = true;
@@ -815,7 +815,6 @@ export class WalletProvider {
                 });
             })
             .catch(err => {
-              WalletProvider.updateOnProgress[walletId] = false;
               return reject(err);
             });
         })
@@ -1009,6 +1008,7 @@ export class WalletProvider {
       this.logger.info('Updating Transaction History');
       this.updateLocalTxHistory(wallet, opts)
         .then(txs => {
+          WalletProvider.updateOnProgress[wallet.id] = false;
           if (opts.limitTx) {
             return resolve(txs);
           }
@@ -1017,6 +1017,7 @@ export class WalletProvider {
           return resolve(wallet.completeHistory);
         })
         .catch(err => {
+          WalletProvider.updateOnProgress[wallet.id] = false;
           return reject(err);
         });
     });
