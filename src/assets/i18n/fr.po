@@ -12,7 +12,7 @@ msgstr ""
 "Last-Translator: cmgustavo83\n"
 "Language-Team: French\n"
 "Language: fr\n"
-"PO-Revision-Date: 2018-12-21 18:55\n"
+"PO-Revision-Date: 2019-01-07 22:12\n"
 
 msgid "(Trusted)"
 msgstr "(Fiable)"
@@ -112,6 +112,9 @@ msgstr "Répertoire"
 
 msgid "Addressbook is empty"
 msgstr "Le répertoire est vide"
+
+msgid "Addresses"
+msgstr "Adresses"
 
 msgid "Addresses with balance"
 msgstr "Adresses avec un solde"
@@ -300,7 +303,7 @@ msgid "Buy Gift Card"
 msgstr "Acheter une carte-cadeau"
 
 msgid "Buy Gift Cards"
-msgstr "Acheter des cartes-cadeaux"
+msgstr "Achetez des cartes-cadeaux"
 
 msgid "Buying Bitcoin..."
 msgstr "Achat de bitcoins..."
@@ -809,8 +812,8 @@ msgstr "Expiré"
 msgid "Expires"
 msgstr "Expire dans"
 
-msgid "Export Wallet"
-msgstr "Exporter le portefeuille"
+msgid "Export"
+msgstr "Exporter"
 
 msgid "Export to file"
 msgstr "Exporter vers un fichier"
@@ -1069,6 +1072,9 @@ msgstr "PIN incorrect, veuillez réessayer."
 
 msgid "Incorrect network address"
 msgstr "Adresse réseau invalide"
+
+msgid "Information"
+msgstr "Information"
 
 msgid "Insufficient funds"
 msgstr "Fonds insuffisants"
@@ -1553,9 +1559,6 @@ msgstr "Préparation des adresses..."
 msgid "Preparing backup..."
 msgstr "Préparation de la sauvegarde..."
 
-msgid "Print"
-msgstr ""
-
 msgid "Priority"
 msgstr "Élevés"
 
@@ -1603,9 +1606,6 @@ msgstr "Les notifications pour {{appName}} sont actuellement désactivées. Acti
 
 msgid "QR Code"
 msgstr "Code QR"
-
-msgid "QR code to recover wallet {{walletName}}"
-msgstr ""
 
 msgid "Quick review!"
 msgstr "Récapitulatif !"
@@ -1840,6 +1840,9 @@ msgstr "Envoyés"
 
 msgid "Sent Funds"
 msgstr "Fonds envoyés"
+
+msgid "Sent to {walletName}"
+msgstr ""
 
 msgid "Server response could not be verified"
 msgstr "La réponse du serveur n'a pas pu être vérifiée"
@@ -2330,11 +2333,11 @@ msgstr "Entrées de portefeuille"
 msgid "Wallet Name"
 msgstr "Nom du portefeuille"
 
+msgid "Wallet Preferences"
+msgstr "Préférences du portefeuille"
+
 msgid "Wallet Recovery Phrase is invalid"
 msgstr "La phrase de récupération du portefeuille est invalide"
-
-msgid "Wallet Service URL"
-msgstr "Wallet Service URL"
 
 msgid "Wallet already exists"
 msgstr "Le portefeuille existe déjà"

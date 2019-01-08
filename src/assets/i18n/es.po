@@ -12,7 +12,7 @@ msgstr ""
 "Last-Translator: cmgustavo83\n"
 "Language-Team: Spanish\n"
 "Language: es\n"
-"PO-Revision-Date: 2018-12-21 18:55\n"
+"PO-Revision-Date: 2019-01-07 22:12\n"
 
 msgid "(Trusted)"
 msgstr "(De confianza)"
@@ -112,6 +112,9 @@ msgstr "Libreta de direcciones"
 
 msgid "Addressbook is empty"
 msgstr "Libreta de direcciones está vacía"
+
+msgid "Addresses"
+msgstr "Direcciones"
 
 msgid "Addresses with balance"
 msgstr "Direcciones con fondos"
@@ -809,8 +812,8 @@ msgstr "Expirada"
 msgid "Expires"
 msgstr "Expira"
 
-msgid "Export Wallet"
-msgstr "Exportar billetera"
+msgid "Export"
+msgstr "Exportar"
 
 msgid "Export to file"
 msgstr "Exportar a archivo"
@@ -1069,6 +1072,9 @@ msgstr "PIN Incorrecto. Inténtelo de nuevo."
 
 msgid "Incorrect network address"
 msgstr "Dirección de red incorrecta"
+
+msgid "Information"
+msgstr "Información"
 
 msgid "Insufficient funds"
 msgstr "Fondos insuficientes"
@@ -1553,9 +1559,6 @@ msgstr "Preparando direcciones..."
 msgid "Preparing backup..."
 msgstr "Preparando copia de seguridad..."
 
-msgid "Print"
-msgstr ""
-
 msgid "Priority"
 msgstr "Prioritario"
 
@@ -1603,9 +1606,6 @@ msgstr "Notificaciones push para {{appName}} están deshabilitadas. Habilitarla 
 
 msgid "QR Code"
 msgstr "Código QR"
-
-msgid "QR code to recover wallet {{walletName}}"
-msgstr ""
 
 msgid "Quick review!"
 msgstr "¡Revisión rápida!"
@@ -1840,6 +1840,9 @@ msgstr "Enviado"
 
 msgid "Sent Funds"
 msgstr "Fondos Enviados"
+
+msgid "Sent to {walletName}"
+msgstr "Enviado a {walletName}"
 
 msgid "Server response could not be verified"
 msgstr "La respuesta del servidor no se ha podido verificar"
@@ -2331,11 +2334,11 @@ msgstr "Entradas de la billetera"
 msgid "Wallet Name"
 msgstr "Nombre de la billetera"
 
+msgid "Wallet Preferences"
+msgstr "Preferencias de la billetera"
+
 msgid "Wallet Recovery Phrase is invalid"
 msgstr "La frase de recuperación no es válida"
-
-msgid "Wallet Service URL"
-msgstr "Wallet Service URL"
 
 msgid "Wallet already exists"
 msgstr "La billetera ya existe"

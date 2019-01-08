@@ -12,7 +12,7 @@ msgstr ""
 "Last-Translator: cmgustavo83\n"
 "Language-Team: German\n"
 "Language: de\n"
-"PO-Revision-Date: 2018-12-21 18:55\n"
+"PO-Revision-Date: 2019-01-07 20:32\n"
 
 msgid "(Trusted)"
 msgstr "(Vertraut)"
@@ -112,6 +112,9 @@ msgstr "Adressbuch"
 
 msgid "Addressbook is empty"
 msgstr "Adressbuch ist leer"
+
+msgid "Addresses"
+msgstr ""
 
 msgid "Addresses with balance"
 msgstr "Adressen mit Guthaben"
@@ -809,8 +812,8 @@ msgstr "Abgelaufen"
 msgid "Expires"
 msgstr "Gültig bis"
 
-msgid "Export Wallet"
-msgstr "Wallet exportieren"
+msgid "Export"
+msgstr ""
 
 msgid "Export to file"
 msgstr "In eine Datei exportieren"
@@ -1069,6 +1072,9 @@ msgstr "Falscher PIN, bitte erneut versuchen."
 
 msgid "Incorrect network address"
 msgstr "Falsche Netzwerkadresse"
+
+msgid "Information"
+msgstr ""
 
 msgid "Insufficient funds"
 msgstr "Nicht ausreichendes Guthaben"
@@ -1553,9 +1559,6 @@ msgstr "Adressen werden vorbereitet..."
 msgid "Preparing backup..."
 msgstr "Sicherung wird vorbereitet..."
 
-msgid "Print"
-msgstr ""
-
 msgid "Priority"
 msgstr "höchste Priorität"
 
@@ -1603,9 +1606,6 @@ msgstr "Push-Benachrichtigungen für {{appName}} sind derzeit deaktiviert. Aktiv
 
 msgid "QR Code"
 msgstr "QR-Code"
-
-msgid "QR code to recover wallet {{walletName}}"
-msgstr ""
 
 msgid "Quick review!"
 msgstr "Schnelle Überprüfung!"
@@ -1840,6 +1840,9 @@ msgstr "Gesendet"
 
 msgid "Sent Funds"
 msgstr "Guthaben senden"
+
+msgid "Sent to {walletName}"
+msgstr ""
 
 msgid "Server response could not be verified"
 msgstr "Antwort des Servers konnte nicht verifiziert werden"
@@ -2330,11 +2333,11 @@ msgstr "Wallet Eingänge"
 msgid "Wallet Name"
 msgstr "Wallet-Name"
 
+msgid "Wallet Preferences"
+msgstr ""
+
 msgid "Wallet Recovery Phrase is invalid"
 msgstr "Wallet-Wiederherstellungsphrase ist ungültig"
-
-msgid "Wallet Service URL"
-msgstr "URL des Wallet-Diensts"
 
 msgid "Wallet already exists"
 msgstr "Wallet exstiert bereits"

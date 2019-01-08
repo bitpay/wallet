@@ -12,7 +12,7 @@ msgstr ""
 "Last-Translator: cmgustavo83\n"
 "Language-Team: Portuguese, Brazilian\n"
 "Language: pt\n"
-"PO-Revision-Date: 2018-12-21 18:55\n"
+"PO-Revision-Date: 2019-01-07 20:32\n"
 
 msgid "(Trusted)"
 msgstr "(Confiável)"
@@ -27,7 +27,7 @@ msgid "1. Tap \"Add Payment Method\" and select \"Gift Card\""
 msgstr ""
 
 msgid "2. Enter Gift Code"
-msgstr ""
+msgstr "2. Enter Gift Code"
 
 msgid "5-star ratings help us get BitPay Wallet into more hands, and more users means more resources can be committed to the app!"
 msgstr ""
@@ -112,6 +112,9 @@ msgstr "Catálogo de Endereços"
 
 msgid "Addressbook is empty"
 msgstr "Catálogo de endereços está vazio"
+
+msgid "Addresses"
+msgstr ""
 
 msgid "Addresses with balance"
 msgstr "Endereços com valores"
@@ -809,8 +812,8 @@ msgstr "Expirado"
 msgid "Expires"
 msgstr "﻿Expira"
 
-msgid "Export Wallet"
-msgstr "Exportar Carteira"
+msgid "Export"
+msgstr ""
 
 msgid "Export to file"
 msgstr "Exportar para arquivo"
@@ -1069,6 +1072,9 @@ msgstr "PIN incorreto, tente novamente."
 
 msgid "Incorrect network address"
 msgstr "Endereço de rede incorreto"
+
+msgid "Information"
+msgstr ""
 
 msgid "Insufficient funds"
 msgstr "Fundos insuficientes"
@@ -1553,9 +1559,6 @@ msgstr "A preparar os endereços..."
 msgid "Preparing backup..."
 msgstr "A preparar o backup..."
 
-msgid "Print"
-msgstr ""
-
 msgid "Priority"
 msgstr "Prioridade"
 
@@ -1603,9 +1606,6 @@ msgstr "Notificações de push para {{appName}} estão desativadas no momento. H
 
 msgid "QR Code"
 msgstr "QR Code"
-
-msgid "QR code to recover wallet {{walletName}}"
-msgstr ""
 
 msgid "Quick review!"
 msgstr "Avaliação rápida!"
@@ -1840,6 +1840,9 @@ msgstr "Enviado"
 
 msgid "Sent Funds"
 msgstr "Enviar Fundos"
+
+msgid "Sent to {walletName}"
+msgstr ""
 
 msgid "Server response could not be verified"
 msgstr "Resposta do servidor não pôde ser verificada"
@@ -2330,11 +2333,11 @@ msgstr "Entradas da carteira"
 msgid "Wallet Name"
 msgstr "Nome da carteira"
 
+msgid "Wallet Preferences"
+msgstr ""
+
 msgid "Wallet Recovery Phrase is invalid"
 msgstr "Frase de recuperação da carteira é inválida"
-
-msgid "Wallet Service URL"
-msgstr "URL do serviço de carteira"
 
 msgid "Wallet already exists"
 msgstr "A carteira já existe"
