@@ -84,8 +84,8 @@ export class WalletDetailsPage extends WalletTabsChild {
   }
 
   ionViewDidLoad() {
-    this.events.subscribe('Wallet/updateAll', () => {
-      this.updateAll();
+    this.events.subscribe('Wallet/updateAll', (opts?) => {
+      this.updateAll(opts);
     });
 
     // Getting info from cache
@@ -111,8 +111,8 @@ export class WalletDetailsPage extends WalletTabsChild {
   ionViewWillEnter() {
     this.onResumeSubscription = this.platform.resume.subscribe(() => {
       this.updateAll();
-      this.events.subscribe('Wallet/updateAll', () => {
-        this.updateAll();
+      this.events.subscribe('Wallet/updateAll', (opts?) => {
+        this.updateAll(opts);
       });
     });
   }
@@ -217,7 +217,9 @@ export class WalletDetailsPage extends WalletTabsChild {
 
         this.wallet.completeHistory = txHistory;
         this.showHistory();
-        this.events.publish('Wallet/updateAll'); // Workaround to refresh the view when the promise result is from a destroyed one
+        if (!retry) {
+          this.events.publish('Wallet/updateAll', { retry: true }); // Workaround to refresh the view when the promise result is from a destroyed one
+        }
       })
       .catch(err => {
         if (err != 'HISTORY_IN_PROGRESS') {
@@ -228,9 +230,10 @@ export class WalletDetailsPage extends WalletTabsChild {
   }
 
   private updateAll = _.debounce(
-    (force?) => {
-      this.updateStatus(force);
-      this.updateTxHistory();
+    (opts?) => {
+      opts = opts || {};
+      this.updateStatus(opts.force);
+      this.updateTxHistory(opts.retry);
     },
     2000,
     {
@@ -314,7 +317,7 @@ export class WalletDetailsPage extends WalletTabsChild {
         this.onGoingProcessProvider.clear();
         setTimeout(() => {
           this.walletProvider.startScan(this.wallet).then(() => {
-            this.updateAll(true);
+            this.updateAll({ force: true });
           });
         });
       })
@@ -441,7 +444,7 @@ export class WalletDetailsPage extends WalletTabsChild {
   }
 
   public doRefresh(refresher) {
-    this.updateAll(true);
+    this.updateAll({ force: true });
     setTimeout(() => {
       refresher.complete();
     }, 2000);
