@@ -12,7 +12,7 @@ msgstr ""
 "Last-Translator: cmgustavo83\n"
 "Language-Team: Spanish\n"
 "Language: es\n"
-"PO-Revision-Date: 2019-01-07 22:12\n"
+"PO-Revision-Date: 2019-01-09 14:56\n"
 
 msgid "(Trusted)"
 msgstr "(De confianza)"
@@ -1306,6 +1306,9 @@ msgstr "Sin clave privada"
 
 msgid "No signing proposal: No private key"
 msgstr "Propuesta sin firmar: No existe la clave privada"
+
+msgid "No transactions"
+msgstr "Sin transacciones"
 
 msgid "No wallet found"
 msgstr "Se se encontró la billetera"

@@ -12,7 +12,7 @@ msgstr ""
 "Last-Translator: cmgustavo83\n"
 "Language-Team: Portuguese, Brazilian\n"
 "Language: pt\n"
-"PO-Revision-Date: 2019-01-07 20:32\n"
+"PO-Revision-Date: 2019-01-09 14:55\n"
 
 msgid "(Trusted)"
 msgstr "(Confiável)"
@@ -1306,6 +1306,9 @@ msgstr "Nenhuma chave privada"
 
 msgid "No signing proposal: No private key"
 msgstr "Nenhuma proposta de assinatura: Nenhuma chave privada"
+
+msgid "No transactions"
+msgstr ""
 
 msgid "No wallet found"
 msgstr "Carteira não encontrada"

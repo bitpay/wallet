@@ -12,7 +12,7 @@ msgstr ""
 "Last-Translator: cmgustavo83\n"
 "Language-Team: Korean\n"
 "Language: ko\n"
-"PO-Revision-Date: 2019-01-07 20:32\n"
+"PO-Revision-Date: 2019-01-09 14:55\n"
 
 msgid "(Trusted)"
 msgstr "(신뢰할 수 있음)"
@@ -1306,6 +1306,9 @@ msgstr ""
 
 msgid "No signing proposal: No private key"
 msgstr "서명 제안이 없습니다: 개인 키가 없습니다"
+
+msgid "No transactions"
+msgstr ""
 
 msgid "No wallet found"
 msgstr "발견된 지갑이 없습니다"

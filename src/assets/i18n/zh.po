@@ -12,7 +12,7 @@ msgstr ""
 "Last-Translator: cmgustavo83\n"
 "Language-Team: Chinese Simplified\n"
 "Language: zh\n"
-"PO-Revision-Date: 2019-01-07 20:32\n"
+"PO-Revision-Date: 2019-01-09 14:55\n"
 
 msgid "(Trusted)"
 msgstr "（可信的）"
@@ -1306,6 +1306,9 @@ msgstr "没有私钥"
 
 msgid "No signing proposal: No private key"
 msgstr "没有签名的建议： 没有私钥"
+
+msgid "No transactions"
+msgstr ""
 
 msgid "No wallet found"
 msgstr "发现没有钱包"

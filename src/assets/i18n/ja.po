@@ -12,7 +12,7 @@ msgstr ""
 "Last-Translator: cmgustavo83\n"
 "Language-Team: Japanese\n"
 "Language: ja\n"
-"PO-Revision-Date: 2019-01-07 20:32\n"
+"PO-Revision-Date: 2019-01-09 14:55\n"
 
 msgid "(Trusted)"
 msgstr "(信頼済み)"
@@ -1308,6 +1308,9 @@ msgstr ""
 
 msgid "No signing proposal: No private key"
 msgstr "提案に署名できない：秘密鍵がありません"
+
+msgid "No transactions"
+msgstr ""
 
 msgid "No wallet found"
 msgstr "ウォレットが見つかりません"
