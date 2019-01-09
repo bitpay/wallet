@@ -630,6 +630,8 @@ export class WalletProvider {
         return reject('HISTORY_IN_PROGRESS'); // no callback call yet.
       }
 
+      this.logger.info('Updating Transaction History');
+
       WalletProvider.updateOnProgress[wallet.id] = true;
 
       this.logger.debug(
@@ -1005,7 +1007,6 @@ export class WalletProvider {
       if (isHistoryCached() && !opts.force)
         return resolve(wallet.completeHistory);
 
-      this.logger.info('Updating Transaction History');
       this.updateLocalTxHistory(wallet, opts)
         .then(txs => {
           WalletProvider.updateOnProgress[wallet.id] = false;

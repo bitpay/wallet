@@ -217,15 +217,12 @@ export class WalletDetailsPage extends WalletTabsChild {
 
         this.wallet.completeHistory = txHistory;
         this.showHistory();
+        this.events.publish('Wallet/updateAll'); // Workaround to refresh the view when the promise result is from a destroyed one
       })
       .catch(err => {
         if (err != 'HISTORY_IN_PROGRESS') {
           this.updatingTxHistory = false;
           this.updateTxHistoryError = true;
-        } else {
-          setTimeout(() => {
-            this.updateTxHistory(true); // retry in true
-          }, 5000);
         }
       });
   }
