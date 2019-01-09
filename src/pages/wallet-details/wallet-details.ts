@@ -111,8 +111,8 @@ export class WalletDetailsPage extends WalletTabsChild {
   ionViewWillEnter() {
     this.onResumeSubscription = this.platform.resume.subscribe(() => {
       this.updateAll();
-      this.events.subscribe('Wallet/updateAll', () => {
-        this.updateAll();
+      this.events.subscribe('Wallet/updateAll', (opts?) => {
+        this.updateAll(opts);
       });
     });
   }
