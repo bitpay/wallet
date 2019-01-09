@@ -116,6 +116,8 @@ npm run test:link         # Check if the code matches style rules
 npm run fix:prettier      # Modify files to match style rules
 ```
 
+Your git commit must be gpg-signed. You'll find further readings on how to sign commits here: https://help.github.com/articles/signing-commits/
+
 **IMPORTANT**: By submitting a patch, you agree to allow the project owner to
 license your work under the same license as that used by the project.
 
