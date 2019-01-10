@@ -1,0 +1,19 @@
+<action-card *ngIf="true">
+  <div action-card-header>
+    <div class="bitpay-card-header">
+      <div class="bitpay-card-image">
+        <img src="assets/img/bitpay-card/bitpay-card.png">
+      </div>
+    </div>
+  </div>
+  <button action-card-close-button ion-button clear icon-only item-end color="grey" class="close-button" (click)="hideBitpayCardHome()">
+    <ion-icon name="close"></ion-icon>
+  </button>
+  <div action-card-title translate>Get a BitPay Card</div>
+  <div action-card-body translate>
+    Load dollars onto your BitPay Card using your bitcoin wallet. Shop anywhere that accepts Visa®
+  </div>
+  <div action-card-button translate (click)="goToBitPayCardIntroPage()" tappable>
+    Get Started
+  </div>
+</action-card>

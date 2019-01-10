@@ -47,6 +47,7 @@ import { ShapeshiftShiftPage } from '../pages/integrations/shapeshift/shapeshift
 
 // Integrations: BitPayCard
 import { BitPayCardPage } from '../pages/integrations/bitpay-card/bitpay-card';
+import { BitPayCardHome } from '../pages/integrations/bitpay-card/bitpay-card-home/bitpay-card-home';
 import { BitPayCardIntroPage } from '../pages/integrations/bitpay-card/bitpay-card-intro/bitpay-card-intro';
 import { BitPayCardTopUpPage } from '../pages/integrations/bitpay-card/bitpay-card-topup/bitpay-card-topup';
 import { BitPaySettingsPage } from '../pages/integrations/bitpay-card/bitpay-settings/bitpay-settings';
@@ -129,6 +130,7 @@ export const PAGES = [
   AllAddressesPage,
   AltCurrencyPage,
   BackupRequestPage,
+  BitPayCardHome,
   BitPayCardIntroPage,
   BitPayCardPage,
   BitPaySettingsPage,

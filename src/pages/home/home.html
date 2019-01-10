@@ -318,6 +318,8 @@
         </ion-list>
       </div>
 
+      <bitpay-card-home *ngIf="true"></bitpay-card-home>
+
       <gift-cards *ngIf="showGiftCards"></gift-cards>
 
       <div class="card" *ngIf="homeIntegrations && homeIntegrations.length > 0 && wallets && wallets[0]">

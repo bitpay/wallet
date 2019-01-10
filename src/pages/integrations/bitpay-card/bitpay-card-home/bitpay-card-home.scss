@@ -1,0 +1,36 @@
+bitpay-card-home {
+  action-card {
+    padding: 0 !important;
+    .bitpay-card-header {
+      background-color: #dbe1fa;
+      position: relative;
+      width: 100%;
+      height: 13.2rem;
+      z-index: -4;
+      .bitpay-card-image {
+        position: absolute;
+        bottom: -82px;
+        z-index: -1;
+        width: 100%;
+        img {
+          width: 100%;
+          max-width: 30rem;
+        }
+      }
+    }
+    .close-button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      font-size: 12px;
+    }
+    .action-card__content {
+      padding-left: 20px;
+      padding-right: 20px;
+      .action-card__title {
+        margin: 0 !important;
+        padding-top: 20px;
+      }
+    }
+  }
+}
