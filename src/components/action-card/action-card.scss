@@ -6,9 +6,6 @@ action-card.card {
   padding-bottom: 0;
 
   .action-card {
-    &__header {
-      position: relative;
-    }
     &__content {
       background: white;
       > * {

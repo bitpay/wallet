@@ -18,14 +18,10 @@ export class BitPayCardHome implements OnInit {
   constructor(
     private appProvider: AppProvider,
     private navCtrl: NavController
-  ) {}
+  ) { }
 
   async ngOnInit() {
     this.appName = this.appProvider.info.userVisibleName;
-  }
-
-  public hideBitpayCardHome() {
-    console.log('---------- hideBitpayCardHome()');
   }
 
   public goToBitPayCardIntroPage() {
