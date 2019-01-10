@@ -14,6 +14,7 @@ export type InfoSheetType =
   | 'backup-failed'
   | 'backup-needed-with-activity'
   | 'backup-ready'
+  | 'backup-ready-vault'
   | 'backup-warning'
   | 'copayers'
   | 'copy-to-clipboard'

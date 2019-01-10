@@ -15,7 +15,7 @@ import { PersistenceProvider } from '../persistence/persistence';
 import { PlatformProvider } from '../platform/platform';
 import { PopupProvider } from '../popup/popup';
 import { ReplaceParametersProvider } from '../replace-parameters/replace-parameters';
-import { Coin, WalletOptions } from '../wallet/wallet';
+import { Coin, WalletOptions, WalletProvider } from '../wallet/wallet';
 
 // models
 import { Profile } from '../../models/profile/profile.model';
@@ -43,7 +43,8 @@ export class ProfileProvider {
     private events: Events,
     private popupProvider: PopupProvider,
     private onGoingProcessProvider: OnGoingProcessProvider,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private walletProvider: WalletProvider
   ) {
     this.throttledBwsEvent = _.throttle((n, wallet) => {
       this.newBwsEvent(n, wallet);
@@ -454,7 +455,7 @@ export class ProfileProvider {
 
       const addressBook = strParsed.addressBook ? strParsed.addressBook : {};
 
-      this.addAndBindWalletClient(walletClient, {
+      this.addAndBindNewSeedWalletClient(walletClient, {
         bwsurl: opts.bwsurl
       })
         .then(() => {
@@ -502,9 +503,18 @@ export class ProfileProvider {
     });
   }
 
-  private askToEncryptWallet(wallet): Promise<any> {
+  private checkIfCanSign(walletsArray): boolean {
+    let canSign = true;
+    walletsArray.forEach(wallet => {
+      if (!wallet.canSign()) canSign = false;
+    });
+    return canSign;
+  }
+
+  private askToEncryptWallets(walletsArray): Promise<any> {
     return new Promise(resolve => {
-      if (!wallet.canSign()) return resolve();
+      const canSign = this.checkIfCanSign(walletsArray);
+      if (!canSign) return resolve();
 
       const title = this.translate.instant(
         'Would you like to protect this wallet with a password?'
@@ -520,19 +530,19 @@ export class ProfileProvider {
           if (!res) {
             return this.showWarningNoEncrypt().then(res => {
               if (res) return resolve();
-              return this.encrypt(wallet).then(() => {
+              return this.encrypt(walletsArray).then(() => {
                 return resolve();
               });
             });
           }
-          return this.encrypt(wallet).then(() => {
+          return this.encrypt(walletsArray).then(() => {
             return resolve();
           });
         });
     });
   }
 
-  private encrypt(wallet): Promise<any> {
+  private encrypt(walletsArray): Promise<any> {
     return new Promise(resolve => {
       let title = this.translate.instant(
         'Enter a password to encrypt your wallet'
@@ -544,7 +554,7 @@ export class ProfileProvider {
         if (!password) {
           this.showWarningNoEncrypt().then(res => {
             if (res) return resolve();
-            this.encrypt(wallet).then(() => {
+            this.encrypt(walletsArray).then(() => {
               return resolve();
             });
           });
@@ -554,11 +564,13 @@ export class ProfileProvider {
           );
           this.askPassword(warnMsg, title).then((password2: string) => {
             if (!password2 || password != password2) {
-              this.encrypt(wallet).then(() => {
+              this.encrypt(walletsArray).then(() => {
                 return resolve();
               });
             } else {
-              wallet.encryptPrivateKey(password);
+              walletsArray.forEach(wallet => {
+                wallet.encryptPrivateKey(password);
+              });
               return resolve();
             }
           });
@@ -567,64 +579,70 @@ export class ProfileProvider {
     });
   }
 
-  // Adds and bind a new client to the profile
-  private addAndBindWalletClient(wallet, opts): Promise<any> {
-    return new Promise((resolve, reject) => {
-      if (!wallet || !wallet.credentials) {
-        return reject(this.translate.instant('Could not access wallet'));
-      }
-
-      // Encrypt wallet
-      this.onGoingProcessProvider.pause();
-      this.askToEncryptWallet(wallet).then(() => {
-        this.onGoingProcessProvider.resume();
-
-        const walletId: string = wallet.credentials.walletId;
-
-        if (!this.profile.addWallet(JSON.parse(wallet.export()))) {
-          const message = this.replaceParametersProvider.replace(
-            this.translate.instant('Wallet already in {{nameCase}}'),
-            { nameCase: this.appProvider.info.nameCase }
-          );
-          return reject(message);
-        }
-
-        const skipKeyValidation: boolean = this.shouldSkipValidation(walletId);
-        if (!skipKeyValidation) {
-          this.logger.debug('Trying to runValidation: ' + walletId);
-          this.runValidation(wallet);
-        }
-
-        this.bindWalletClient(wallet);
-
-        const saveBwsUrl = (): Promise<any> => {
-          return new Promise(resolve => {
-            const defaults = this.configProvider.getDefaults();
-            const bwsFor = {};
-            bwsFor[walletId] = opts.bwsurl || defaults.bws.url;
-
-            // Dont save the default
-            if (bwsFor[walletId] == defaults.bws.url) {
-              return resolve();
-            }
-
-            this.configProvider.set({ bwsFor });
-            return resolve();
-          });
-        };
-
-        saveBwsUrl().then(() => {
-          this.persistenceProvider
-            .storeProfile(this.profile)
-            .then(() => {
-              return resolve(wallet);
-            })
-            .catch(err => {
-              return reject(err);
-            });
-        });
+  private addAndBindWalletClients(walletsArray, opts): Promise<any> {
+    // Encrypt wallet
+    this.onGoingProcessProvider.pause();
+    return this.askToEncryptWallets(walletsArray).then(() => {
+      this.onGoingProcessProvider.resume();
+      const promises = [];
+      walletsArray.forEach(wallet => {
+        promises.push(this.addAndBindWalletClient(_.clone(wallet), opts));
       });
+      return Promise.all(promises);
     });
+  }
+
+  private addAndBindNewSeedWalletClient(wallet, opts): Promise<any> {
+    // Encrypt wallet
+    this.onGoingProcessProvider.pause();
+    return this.askToEncryptWallets([].concat(wallet)).then(() => {
+      this.onGoingProcessProvider.resume();
+      return this.addAndBindWalletClient(wallet, opts);
+    });
+  }
+
+  // Adds and bind a new client to the profile
+  private async addAndBindWalletClient(wallet, opts): Promise<any> {
+    if (!wallet || !wallet.credentials) {
+      return Promise.reject(this.translate.instant('Could not access wallet'));
+    }
+
+    const walletId: string = wallet.credentials.walletId;
+
+    if (!this.profile.addWallet(JSON.parse(wallet.export()))) {
+      const message = this.replaceParametersProvider.replace(
+        this.translate.instant('Wallet already in {{nameCase}}'),
+        { nameCase: this.appProvider.info.nameCase }
+      );
+      return Promise.reject(message);
+    }
+
+    const skipKeyValidation: boolean = this.shouldSkipValidation(walletId);
+    if (!skipKeyValidation) {
+      this.logger.debug('Trying to runValidation: ' + walletId);
+      this.runValidation(wallet);
+    }
+
+    await this.bindWalletClient(wallet);
+
+    this.saveBwsUrl(walletId, opts);
+
+    return this.persistenceProvider.storeProfile(this.profile).then(() => {
+      return Promise.resolve(wallet);
+    });
+  }
+
+  private saveBwsUrl(walletId, opts): void {
+    const defaults = this.configProvider.getDefaults();
+    const bwsFor = {};
+    bwsFor[walletId] = opts.bwsurl || defaults.bws.url;
+
+    // Dont save the default
+    if (bwsFor[walletId] == defaults.bws.url) {
+      return;
+    }
+
+    this.configProvider.set({ bwsFor });
   }
 
   private shouldSkipValidation(walletId: string): boolean {
@@ -680,7 +698,7 @@ export class ProfileProvider {
               return reject(msg);
             });
         } else {
-          this.addAndBindWalletClient(walletClient, {
+          this.addAndBindNewSeedWalletClient(walletClient, {
             bwsurl: opts.bwsurl
           })
             .then(wallet => {
@@ -735,7 +753,7 @@ export class ProfileProvider {
                 return reject(msg);
               });
           } else {
-            this.addAndBindWalletClient(walletClient, {
+            this.addAndBindNewSeedWalletClient(walletClient, {
               bwsurl: opts.bwsurl
             })
               .then(wallet => {
@@ -748,6 +766,14 @@ export class ProfileProvider {
         }
       );
     });
+  }
+
+  private async storeWalletsInVault(walletClients) {
+    const vault = await this.persistenceProvider.getVault();
+    walletClients.forEach(wallet => {
+      vault.walletIds.push(wallet.credentials.walletId);
+    });
+    this.persistenceProvider.storeVault(vault);
   }
 
   public importExtendedPublicKey(opts): Promise<any> {
@@ -776,8 +802,7 @@ export class ProfileProvider {
                 return reject(msg);
               });
           }
-
-          this.addAndBindWalletClient(walletClient, {
+          this.addAndBindNewSeedWalletClient(walletClient, {
             bwsurl: opts.bwsurl
           })
             .then(wallet => {
@@ -966,7 +991,7 @@ export class ProfileProvider {
     });
   }
 
-  private seedWallet(opts): Promise<any> {
+  private seedWallet(opts?): Promise<any> {
     return new Promise((resolve, reject) => {
       opts = opts ? opts : {};
       const walletClient = this.bwcProvider.getClient(null, opts);
@@ -1074,7 +1099,10 @@ export class ProfileProvider {
       setTimeout(() => {
         this.seedWallet(opts)
           .then(walletClient => {
-            const name = opts.name || this.translate.instant('Personal Wallet');
+            const coin = opts.coin == 'btc' ? '[BTC]' : '[BCH]';
+            const name =
+              opts.name ||
+              `${this.translate.instant('Personal Wallet')} ${coin}`;
             const myName = opts.myName || this.translate.instant('me');
 
             walletClient.createWallet(
@@ -1110,19 +1138,7 @@ export class ProfileProvider {
 
   // create and store a wallet
   public createWallet(opts): Promise<any> {
-    return new Promise((resolve, reject) => {
-      this.doCreateWallet(opts)
-        .then(walletClient => {
-          this.addAndBindWalletClient(walletClient, {
-            bwsurl: opts.bwsurl
-          }).then(wallet => {
-            return resolve(wallet);
-          });
-        })
-        .catch(err => {
-          return reject(err);
-        });
-    });
+    return this.doCreateWallet(opts);
   }
 
   // joins and stores a wallet
@@ -1167,7 +1183,7 @@ export class ProfileProvider {
                     return reject(msg);
                   });
               } else {
-                this.addAndBindWalletClient(walletClient, {
+                this.addAndBindNewSeedWalletClient(walletClient, {
                   bwsurl: opts.bwsurl
                 }).then(wallet => {
                   return resolve(wallet);
@@ -1212,20 +1228,95 @@ export class ProfileProvider {
     });
   }
 
-  public createDefaultWallet(): Promise<any> {
-    return new Promise((resolve, reject) => {
-      const opts: Partial<WalletOptions> = {};
-      opts.m = 1;
-      opts.n = 1;
-      opts.networkName = 'livenet';
-      opts.coin = Coin.BTC;
-      this.createWallet(opts)
-        .then(wallet => {
-          return resolve(wallet);
-        })
-        .catch(err => {
-          return reject(err);
-        });
+  public getFilteredCoinsArray(coins) {
+    const coinsArray = [Coin.BTC, Coin.BCH];
+    return coinsArray.filter(coin => {
+      if (coins.bitcoin && coin == 'btc') {
+        return true;
+      }
+      if (coins.bitcoincash && coin == 'bch') {
+        return true;
+      }
+      return false;
+    });
+  }
+
+  public createDefaultVault(): Promise<any> {
+    const defaultVault = {
+      walletIds: [],
+      needsBackup: true
+    };
+    return this.createVault(defaultVault);
+  }
+
+  public createVault(vault, opts?): Promise<any> {
+    return this.seedWallet(opts).then(vaultClient => {
+      this.persistenceProvider.storeVault(vault);
+      return Promise.resolve(vaultClient);
+    });
+  }
+
+  public async createWalletInVault(opts): Promise<any> {
+    const vault = await this.persistenceProvider.getVault();
+    const needToCreateVault = !vault;
+    let vaultClient;
+    let vaultWallet;
+    let mnemonic;
+    let password;
+    if (needToCreateVault) {
+      vaultClient = await this.createDefaultVault();
+      mnemonic = vaultClient.credentials.mnemonic;
+    } else {
+      vaultWallet = this.getWallet(vault.walletIds[0]);
+      const k = await this.walletProvider.getMnemonicAndPassword(vaultWallet);
+      mnemonic = k.mnemonic;
+      password = k.password;
+    }
+    opts.mnemonic = mnemonic;
+    return this.createWallet(opts).then(async walletClient => {
+      this.storeWalletsInVault([].concat(walletClient));
+      // Encrypt wallet
+      this.onGoingProcessProvider.pause();
+      if (password) walletClient.encryptPrivateKey(password);
+      // If already encrypted encrypt new wallet
+      else if (needToCreateVault) {
+        // Only ask to encrypt wallet if is the first wallet in vault
+        this.onGoingProcessProvider.pause();
+        await this.askToEncryptWallets([].concat(walletClient));
+        this.onGoingProcessProvider.resume();
+      }
+      return this.addAndBindWalletClient(walletClient, {
+        bwsurl: opts.bwsurl
+      });
+    });
+  }
+
+  public createNewSeedWallet(opts): Promise<any> {
+    return this.createWallet(opts).then(walletClient => {
+      return this.addAndBindNewSeedWalletClient(walletClient, {
+        bwsurl: opts.bwsurl
+      });
+    });
+  }
+
+  public createDefaultWalletsInVault(coins, opts): Promise<any> {
+    // Default wallet options
+    const options: Partial<WalletOptions> = opts || {};
+    options.m = 1;
+    options.n = 1;
+    options.networkName = 'livenet';
+
+    const validCoins = this.getFilteredCoinsArray(coins);
+    const promises = [];
+    validCoins.forEach(coin => {
+      options.coin = coin;
+      promises.push(this.createWallet(_.clone(options)));
+    });
+    return Promise.all(promises).then(async walletClients => {
+      this.storeWalletsInVault(walletClients);
+      return this.addAndBindWalletClients(walletClients, {
+        bwsurl: options.bwsurl
+      });
     });
   }
 

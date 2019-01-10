@@ -59,7 +59,8 @@ const Keys = {
   TX_HISTORY: walletId => 'txsHistory-' + walletId,
   ORDER_WALLET: walletId => 'order-' + walletId,
   SERVER_MESSAGE_DISMISSED: 'serverMessageDismissed',
-  SHAPESHIFT_TOKEN: network => 'shapeshiftToken-' + network
+  SHAPESHIFT_TOKEN: network => 'shapeshiftToken-' + network,
+  VAULT: 'vault'
 };
 
 interface Storage {
@@ -105,6 +106,22 @@ export class PersistenceProvider {
 
   deleteProfile() {
     return this.storage.remove(Keys.PROFILE);
+  }
+
+  storeVault(vault): Promise<void> {
+    return this.storage.set(Keys.VAULT, vault);
+  }
+
+  getVault(): Promise<any> {
+    return new Promise(resolve => {
+      this.storage.get(Keys.VAULT).then(vault => {
+        resolve(vault);
+      });
+    });
+  }
+
+  deleteVault() {
+    return this.storage.remove(Keys.VAULT);
   }
 
   setFeedbackInfo(feedbackValues: FeedbackValues) {

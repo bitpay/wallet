@@ -185,7 +185,6 @@ export class WalletProvider {
         if (!balance) return;
 
         const configGet = this.configProvider.get();
-
         const config = configGet.wallet;
 
         const cache = wallet.cachedStatus;
@@ -1334,9 +1333,9 @@ export class WalletProvider {
     });
   }
 
-  public encrypt(wallet): Promise<any> {
+  public encrypt(walletsArray): Promise<any> {
     return new Promise((resolve, reject) => {
-      var title = this.translate.instant('Enter a new encrypt password');
+      let title = this.translate.instant('Enter a new encrypt password');
       const warnMsg = this.translate.instant(
         'Your wallet key will be encrypted. The encrypt password cannot be recovered. Be sure to write it down.'
       );
@@ -1356,7 +1355,9 @@ export class WalletProvider {
               }
               if (password != password2)
                 return reject(this.translate.instant('Password mismatch'));
-              wallet.encryptPrivateKey(password);
+              walletsArray.forEach(wallet => {
+                wallet.encryptPrivateKey(password);
+              });
               return resolve();
             })
             .catch(err => {
@@ -1369,9 +1370,8 @@ export class WalletProvider {
     });
   }
 
-  public decrypt(wallet): Promise<any> {
+  public decrypt(walletsArray): Promise<any> {
     return new Promise((resolve, reject) => {
-      this.logger.info('Disabling private key encryption for' + wallet.name);
       this.askPassword(
         null,
         this.translate.instant('Enter encrypt password')
@@ -1383,7 +1383,12 @@ export class WalletProvider {
           return reject(this.translate.instant('No password'));
         }
         try {
-          wallet.decryptPrivateKey(password);
+          walletsArray.forEach(wallet => {
+            this.logger.info(
+              'Disabling private key encryption for' + wallet.name
+            );
+            wallet.decryptPrivateKey(password);
+          });
         } catch (e) {
           return reject(this.translate.instant('Wrong password'));
         }
@@ -1592,25 +1597,17 @@ export class WalletProvider {
     }
   }
 
-  public setTouchId(wallet, enabled: boolean): Promise<any> {
-    return new Promise((resolve, reject) => {
-      const opts = {
-        touchIdFor: {}
-      };
+  public setTouchId(walletsArray, enabled: boolean): Promise<any> {
+    const opts = {
+      touchIdFor: {}
+    };
+    walletsArray.forEach(wallet => {
       opts.touchIdFor[wallet.id] = enabled;
-
-      this.touchidProvider
-        .checkWallet(wallet)
-        .then(() => {
-          this.configProvider.set(opts);
-          return resolve();
-        })
-        .catch(err => {
-          opts.touchIdFor[wallet.id] = !enabled;
-          this.logger.error('Error with fingerprint:' + err);
-          this.configProvider.set(opts);
-          return reject(err);
-        });
+    });
+    const promise = this.touchidProvider.checkWallet(walletsArray[0]);
+    return promise.then(() => {
+      this.configProvider.set(opts);
+      return Promise.resolve();
     });
   }
 
@@ -1625,6 +1622,25 @@ export class WalletProvider {
             return reject(e);
           }
           return resolve(keys);
+        })
+        .catch(err => {
+          return reject(err);
+        });
+    });
+  }
+
+  public getMnemonicAndPassword(wallet): Promise<any> {
+    return new Promise((resolve, reject) => {
+      this.prepare(wallet)
+        .then((password: string) => {
+          let keys;
+          try {
+            keys = wallet.getKeys(password);
+          } catch (e) {
+            return reject(e);
+          }
+          const mnemonic = keys.mnemonic;
+          return resolve({ mnemonic, password });
         })
         .catch(err => {
           return reject(err);

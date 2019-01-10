@@ -12,6 +12,7 @@ import { ActionSheetProvider } from '../../../providers/action-sheet/action-shee
 })
 export class BackupWarningPage {
   public currentIndex: number;
+
   private walletId: string;
   private fromOnboarding: boolean;
 
@@ -21,8 +22,8 @@ export class BackupWarningPage {
     public alertCtrl: AlertController,
     public actionSheetProvider: ActionSheetProvider
   ) {
-    this.walletId = this.navParams.get('walletId');
-    this.fromOnboarding = this.navParams.get('fromOnboarding');
+    this.walletId = this.navParams.data.walletId;
+    this.fromOnboarding = this.navParams.data.fromOnboarding;
   }
 
   public openWarningModal(): void {

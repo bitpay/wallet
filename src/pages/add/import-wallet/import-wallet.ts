@@ -31,11 +31,11 @@ import {
 export class ImportWalletPage {
   private derivationPathByDefault: string;
   private derivationPathForTestnet: string;
-  private importForm: FormGroup;
   private reader: FileReader;
   private defaults;
   private errors;
 
+  public importForm: FormGroup;
   public prettyFileName: string;
   public importErr: boolean;
   public fromOnboarding: boolean;

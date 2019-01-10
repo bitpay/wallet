@@ -86,6 +86,14 @@
       <span sheet-button-text translate>GOT IT</span>
     </info-sheet-template>
 
+    <info-sheet-template *ngSwitchCase="'backup-ready-vault'" type="success">
+      <span sheet-title-text translate>Your vault wallets are backed up!</span>
+      <span sheet-text translate>
+        Be sure to store your recovery phrase in a secure place. If this app is deleted, your money cannot be recovered without it.
+      </span>
+      <span sheet-button-text translate>GOT IT</span>
+    </info-sheet-template>
+
     <info-sheet-template *ngSwitchCase="'sensitive-info'" type="warning">
       <span sheet-title-text translate>Sensitive Data</span>
       <span sheet-text translate>

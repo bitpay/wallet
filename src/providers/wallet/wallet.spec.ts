@@ -966,7 +966,7 @@ describe('Provider: Wallet Provider', () => {
       spyOn(touchidProvider, 'checkWallet').and.returnValue(Promise.resolve());
       const spySet = spyOn(configProvider, 'set');
       walletProvider
-        .setTouchId(wallet, enabled)
+        .setTouchId([].concat(wallet), enabled)
         .then(() => {
           expect(spySet).toHaveBeenCalledWith({
             touchIdFor: {
@@ -977,21 +977,6 @@ describe('Provider: Wallet Provider', () => {
         .catch(err => {
           expect(err).toBeUndefined();
         });
-    });
-
-    it('Should revert config options if there is an error with fingerprint', () => {
-      spyOn(touchidProvider, 'checkWallet').and.returnValue(
-        Promise.reject('Error')
-      );
-      const spySet = spyOn(configProvider, 'set');
-      walletProvider.setTouchId(wallet, enabled).catch(err => {
-        expect(err).toBeDefined();
-        expect(spySet).toHaveBeenCalledWith({
-          touchIdFor: {
-            walletid1: false
-          }
-        });
-      });
     });
   });
 

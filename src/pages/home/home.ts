@@ -53,6 +53,8 @@ import { SettingsPage } from '../settings/settings';
 export class HomePage {
   @ViewChild('showCard')
   showCard;
+  public vault;
+  public vaultWallets;
   public wallets;
   public walletsBtc;
   public walletsBch;
@@ -78,6 +80,7 @@ export class HomePage {
   public homeTip: boolean;
   public showReorderBtc: boolean;
   public showReorderBch: boolean;
+  public showReorderVaultWallets: boolean;
   public showIntegration;
   public hideHomeIntegrations: boolean;
   public showGiftCards: boolean;
@@ -121,6 +124,7 @@ export class HomePage {
     this.isElectron = this.platformProvider.isElectron;
     this.showReorderBtc = false;
     this.showReorderBch = false;
+    this.showReorderVaultWallets = false;
     this.zone = new NgZone({ enableLongStackTrace: false });
     this.events.subscribe('Home/reloadStatus', () => {
       this._willEnter();
@@ -308,12 +312,12 @@ export class HomePage {
   }
 
   private openEmailDisclaimer() {
-    let message = this.translate.instant(
+    const message = this.translate.instant(
       'By providing your email address, you give explicit consent to BitPay to use your email address to send you email notifications about payments.'
     );
-    let title = this.translate.instant('Privacy Policy update');
-    let okText = this.translate.instant('Accept');
-    let cancelText = this.translate.instant('Disable notifications');
+    const title = this.translate.instant('Privacy Policy update');
+    const okText = this.translate.instant('Accept');
+    const cancelText = this.translate.instant('Disable notifications');
     this.popupProvider
       .ionicConfirm(title, message, okText, cancelText)
       .then(ok => {
@@ -351,14 +355,29 @@ export class HomePage {
     }, 10000);
   }
 
+  private vaultHasWallet(walletId): boolean {
+    return this.vault && this.vault.walletIds.includes(walletId);
+  }
+
   private setWallets = _.debounce(
-    () => {
+    async () => {
+      this.vault = await this.persistenceProvider.getVault();
       this.wallets = this.profileProvider.getWallets();
+      /* TODO create a provider for common vault operations like getVaultWallets() */
+      this.vaultWallets = _.filter(this.wallets, (x: any) => {
+        return this.vaultHasWallet(x.credentials.walletId);
+      });
       this.walletsBtc = _.filter(this.wallets, (x: any) => {
-        return x.credentials.coin == 'btc';
+        return (
+          x.credentials.coin == 'btc' &&
+          !this.vaultHasWallet(x.credentials.walletId)
+        );
       });
       this.walletsBch = _.filter(this.wallets, (x: any) => {
-        return x.credentials.coin == 'bch';
+        return (
+          x.credentials.coin == 'bch' &&
+          !this.vaultHasWallet(x.credentials.walletId)
+        );
       });
       this.updateAllWallets();
     },
@@ -384,11 +403,11 @@ export class HomePage {
       if (!info) {
         this.initFeedBackInfo();
       } else {
-        let feedbackInfo = info;
+        const feedbackInfo = info;
         // Check if current version is greater than saved version
-        let currentVersion = this.appProvider.info.version;
-        let savedVersion = feedbackInfo.version;
-        let isVersionUpdated = this.feedbackProvider.isVersionUpdated(
+        const currentVersion = this.appProvider.info.version;
+        const savedVersion = feedbackInfo.version;
+        const isVersionUpdated = this.feedbackProvider.isVersionUpdated(
           currentVersion,
           savedVersion
         );
@@ -396,8 +415,8 @@ export class HomePage {
           this.initFeedBackInfo();
           return;
         }
-        let now = moment().unix();
-        let timeExceeded = now - feedbackInfo.time >= 24 * 7 * 60 * 60;
+        const now = moment().unix();
+        const timeExceeded = now - feedbackInfo.time >= 24 * 7 * 60 * 60;
         this.showRateCard = timeExceeded && !feedbackInfo.sent;
         this.showCard.setShowRateCard(this.showRateCard);
       }
@@ -465,16 +484,16 @@ export class HomePage {
   }
 
   private paymentTimeControl(expirationTime): void {
-    let setExpirationTime = (): void => {
-      let now = Math.floor(Date.now() / 1000);
+    const setExpirationTime = (): void => {
+      const now = Math.floor(Date.now() / 1000);
       if (now > expirationTime) {
         this.remainingTimeStr = this.translate.instant('Expired');
         this.clearCountDownInterval();
         return;
       }
-      let totalSecs = expirationTime - now;
-      let m = Math.floor(totalSecs / 60);
-      let s = totalSecs % 60;
+      const totalSecs = expirationTime - now;
+      const m = Math.floor(totalSecs / 60);
+      const s = totalSecs % 60;
       this.remainingTimeStr = ('0' + m).slice(-2) + ':' + ('0' + s).slice(-2);
     };
 
@@ -497,7 +516,7 @@ export class HomePage {
   private updateWallet(walletId: string): void {
     if (this.updatingWalletId[walletId]) return;
     this.startUpdatingWalletId(walletId);
-    let wallet = this.profileProvider.getWallet(walletId);
+    const wallet = this.profileProvider.getWallet(walletId);
     this.walletProvider
       .getStatus(wallet, {})
       .then(status => {
@@ -574,7 +593,7 @@ export class HomePage {
 
     if (_.isEmpty(this.wallets)) return;
 
-    let pr = wallet => {
+    const pr = wallet => {
       return new Promise(resolve => {
         this.walletProvider
           .getStatus(wallet, {})
@@ -648,7 +667,7 @@ export class HomePage {
   }
 
   public openServerMessageLink(): void {
-    let url = this.serverMessage.link;
+    const url = this.serverMessage.link;
     this.externalLinkProvider.open(url);
   }
 
@@ -657,19 +676,24 @@ export class HomePage {
   }
 
   public goToWalletDetails(wallet): void {
-    if (this.showReorderBtc || this.showReorderBch) return;
+    if (
+      this.showReorderBtc ||
+      this.showReorderBch ||
+      this.showReorderVaultWallets
+    )
+      return;
     this.events.unsubscribe('finishIncomingDataMenuEvent');
     this.events.unsubscribe('bwsEvent');
     this.events.publish('OpenWallet', wallet);
   }
 
   public openNotificationModal(n) {
-    let wallet = this.profileProvider.getWallet(n.walletId);
+    const wallet = this.profileProvider.getWallet(n.walletId);
 
     if (n.txid) {
       this.navCtrl.push(TxDetailsPage, { walletId: n.walletId, txid: n.txid });
     } else {
-      var txp = _.find(this.txps, {
+      const txp = _.find(this.txps, {
         id: n.txpId
       });
       if (txp) {
@@ -679,15 +703,15 @@ export class HomePage {
         this.walletProvider
           .getTxp(wallet, n.txpId)
           .then(txp => {
-            var _txp = txp;
+            const _txp = txp;
             this.onGoingProcessProvider.clear();
             this.openTxpModal(_txp);
           })
           .catch(() => {
             this.onGoingProcessProvider.clear();
             this.logger.warn('No txp found');
-            let title = this.translate.instant('Error');
-            let subtitle = this.translate.instant('Transaction not found');
+            const title = this.translate.instant('Error');
+            const subtitle = this.translate.instant('Transaction not found');
             return this.popupProvider.ionicAlert(title, subtitle);
           });
       }
@@ -702,8 +726,12 @@ export class HomePage {
     this.showReorderBch = !this.showReorderBch;
   }
 
+  public reorderVault(): void {
+    this.showReorderVaultWallets = !this.showReorderVaultWallets;
+  }
+
   public reorderWalletsBtc(indexes): void {
-    let element = this.walletsBtc[indexes.from];
+    const element = this.walletsBtc[indexes.from];
     this.walletsBtc.splice(indexes.from, 1);
     this.walletsBtc.splice(indexes.to, 0, element);
     _.each(this.walletsBtc, (wallet, index: number) => {
@@ -712,7 +740,7 @@ export class HomePage {
   }
 
   public reorderWalletsBch(indexes): void {
-    let element = this.walletsBch[indexes.from];
+    const element = this.walletsBch[indexes.from];
     this.walletsBch.splice(indexes.from, 1);
     this.walletsBch.splice(indexes.to, 0, element);
     _.each(this.walletsBch, (wallet, index: number) => {
@@ -720,8 +748,17 @@ export class HomePage {
     });
   }
 
+  public reorderVaultWallets(indexes): void {
+    const element = this.vaultWallets[indexes.from];
+    this.vaultWallets.splice(indexes.from, 1);
+    this.vaultWallets.splice(indexes.to, 0, element);
+    _.each(this.vaultWallets, (wallet, index: number) => {
+      this.profileProvider.setWalletOrder(wallet.id, index);
+    });
+  }
+
   public openTxpModal(tx): void {
-    let modal = this.modalCtrl.create(
+    const modal = this.modalCtrl.create(
       TxpDetailsPage,
       { tx },
       { showBackdrop: false, enableBackdropDismiss: false }
@@ -751,18 +788,18 @@ export class HomePage {
     this.navCtrl.push(BitPayCardPage, { id: cardId });
   }
 
-  public doRefresh(refresher) {
+  public doRefresh(refresher): void {
     this.setWallets();
     setTimeout(() => {
       refresher.complete();
     }, 2000);
   }
 
-  public scan() {
+  public scan(): void {
     this.navCtrl.parent.select(1);
   }
 
-  public settings() {
+  public settings(): void {
     this.navCtrl.push(SettingsPage);
   }
 }

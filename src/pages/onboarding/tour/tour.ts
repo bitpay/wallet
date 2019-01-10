@@ -33,6 +33,7 @@ export class TourPage {
   public localCurrencySymbol: string;
   public localCurrencyPerBtc: string;
   public currentIndex: number;
+  public coins;
 
   private retryCount: number = 0;
 
@@ -49,8 +50,12 @@ export class TourPage {
     private popupProvider: PopupProvider
   ) {
     this.currentIndex = 0;
+    this.coins = {
+      bitcoin: true,
+      bitcoincash: true
+    };
     this.rateProvider.whenRatesAvailable('btc').then(() => {
-      let btcAmount = 1;
+      const btcAmount = 1;
       this.localCurrencySymbol = '$';
       this.localCurrencyPerBtc = this.txFormatProvider.formatAlternativeStr(
         'btc',
@@ -84,15 +89,23 @@ export class TourPage {
     this.slides.slideNext();
   }
 
-  public createDefaultWallet(): void {
+  public createDefaultVault(): void {
     this.onGoingProcessProvider.set('creatingWallet');
     this.profileProvider
-      .createDefaultWallet()
-      .then(wallet => {
-        this.onGoingProcessProvider.clear();
-        this.persistenceProvider.setOnboardingCompleted();
-        // this.navCtrl.push(CollectEmailPage, { walletId: wallet.id });
-        this.navCtrl.push(BackupRequestPage, { walletId: wallet.id });
+      .createDefaultVault()
+      .then(vaultClient => {
+        const opts: any = {};
+        opts.mnemonic = vaultClient.credentials.mnemonic;
+        this.profileProvider
+          .createDefaultWalletsInVault(this.coins, opts)
+          .then(walletsArray => {
+            this.onGoingProcessProvider.clear();
+            this.persistenceProvider.setOnboardingCompleted();
+            // this.navCtrl.push(CollectEmailPage, { walletId: wallet.id });
+            this.navCtrl.push(BackupRequestPage, {
+              walletId: walletsArray[0].id
+            });
+          });
       })
       .catch(err => {
         setTimeout(() => {
@@ -101,14 +114,14 @@ export class TourPage {
           );
           if (this.retryCount > 3) {
             this.onGoingProcessProvider.clear();
-            let title = this.translate.instant('Cannot create wallet');
-            let okText = this.translate.instant('Retry');
+            const title = this.translate.instant('Cannot create wallet');
+            const okText = this.translate.instant('Retry');
             this.popupProvider.ionicAlert(title, err, okText).then(() => {
               this.retryCount = 0;
-              this.createDefaultWallet();
+              this.createDefaultVault();
             });
           } else {
-            this.createDefaultWallet();
+            this.createDefaultVault();
           }
         }, 2000);
       });
