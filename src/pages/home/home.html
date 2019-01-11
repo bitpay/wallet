@@ -318,9 +318,9 @@
         </ion-list>
       </div>
 
-      <bitpay-card-home *ngIf="showBitPayCard && showBitpayCardGetStarted"></bitpay-card-home>
+      <bitpay-card-home *ngIf="showBitPayCard && showBitpayCardGetStarted && wallets && wallets[0]"></bitpay-card-home>
 
-      <gift-cards *ngIf="showGiftCards"></gift-cards>
+      <gift-cards *ngIf="showGiftCards && wallets && wallets[0]"></gift-cards>
 
       <div class="card" *ngIf="homeIntegrations && homeIntegrations.length > 0 && wallets && wallets[0]">
         <ion-item-divider (click)="hideHomeIntegrations = !hideHomeIntegrations">
