@@ -69,7 +69,7 @@
         <ion-input type="text" formControlName="bwsURL"></ion-input>
       </ion-item>
 
-      <ion-item>
+      <ion-item *ngIf="!createForm.value.addToVault">
         <ion-label stacked>{{'Wallet key' | translate}}</ion-label>
         <ion-select okText="{{okText}}" cancelText="{{cancelText}}" formControlName="selectedSeed" (ionChange)="seedOptionsChange(createForm.value.selectedSeed)">
           <ion-option *ngFor="let opt of seedOptions" [value]="opt.id">{{opt.label}}</ion-option>
