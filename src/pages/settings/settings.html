@@ -136,7 +136,7 @@
         {{'Integrations' | translate}}
       </ion-item-divider>
 
-      <button ion-item *ngFor="let integration of integrationServices" (click)="openSettingIntegration(integration.name)">
+      <button ion-item *ngFor="let integration of integrationServices | orderBy : ['title']" (click)="openSettingIntegration(integration.name)">
         <ion-icon class="item-img" item-start>
           <img src="{{integration.icon}}" class="icon-services" />
         </ion-icon>

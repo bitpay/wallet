@@ -76,6 +76,7 @@ import { AppProvider } from './providers/app/app';
 import { PlatformProvider } from './providers/platform/platform';
 
 import { KeysPipe } from './pipes/keys';
+import { OrderByPipe } from './pipes/order-by';
 import { SatToFiatPipe } from './pipes/satToFiat';
 import { SatToUnitPipe } from './pipes/satToUnit';
 
@@ -226,6 +227,7 @@ export class TestUtils {
       declarations: [
         ...components,
         KeysPipe,
+        OrderByPipe,
         SatToFiatPipe,
         SatToUnitPipe,
         InfoSheetComponent,
@@ -238,6 +240,7 @@ export class TestUtils {
         AppProvider,
         DecimalPipe,
         KeysPipe,
+        OrderByPipe,
         SatToFiatPipe,
         SatToUnitPipe,
         GestureController,

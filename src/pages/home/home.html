@@ -318,7 +318,7 @@
         </ion-list>
       </div>
 
-      <bitpay-card-home *ngIf="true"></bitpay-card-home>
+      <bitpay-card-home *ngIf="showBitPayCard && showBitpayCardGetStarted"></bitpay-card-home>
 
       <gift-cards *ngIf="showGiftCards"></gift-cards>
 
@@ -333,7 +333,7 @@
           </div>
         </ion-item-divider>
         <ion-list *ngIf="!hideHomeIntegrations">
-          <button ion-item *ngFor="let service of homeIntegrations" (click)="goTo(service.page, service.name)">
+          <button ion-item *ngFor="let service of homeIntegrations | orderBy : ['title']" (click)="goTo(service.page, service.name)">
             <ion-icon class="item-img" item-start>
               <img src="{{service.icon}}" class="icon-services" />
             </ion-icon>

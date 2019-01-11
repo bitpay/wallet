@@ -47,7 +47,9 @@ export class HomeIntegrationsProvider {
 
   public shouldShowInHome(serviceName: string) {
     const service = this.services.find(i => i.name === serviceName);
-    return service && service.show;
+    if (service && service.name === 'debitcard')
+      return service && service.show && !service.linked;
+    else return service && service.show;
   }
 
   public get() {
