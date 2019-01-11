@@ -1,5 +1,5 @@
 <ion-list [@.disabled]="disableArchiveAnimation">
-  <gift-card-item *ngFor="let brandCards of activeBrands" [cardName]="brandCards[0].name" [giftCards]="brandCards" (action)="onGiftCardAction($event, brandCards)" [@archiveAnimation]></gift-card-item>
+  <gift-card-item *ngFor="let brandCards of activeBrands" class="sliding-container" [cardName]="brandCards[0].name" [giftCards]="brandCards" (action)="onGiftCardAction($event, brandCards)" [@archiveAnimation]></gift-card-item>
   <div *ngIf="activeBrands?.length" [@archiveAnimation] class="add-gift-card-button" (click)="buyGiftCards()" tappable translate>Buy Gift Card</div>
 </ion-list>
 <action-card *ngIf="!activeBrands?.length">
