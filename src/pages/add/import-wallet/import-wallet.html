@@ -102,7 +102,7 @@
           </div>
         </label-tip>
 
-        <ion-item>
+        <ion-item *ngIf="!importForm.value.importVault">
           <ion-label stacked>{{'Derivation path' | translate}}</ion-label>
           <ion-input type="text" formControlName="derivationPath" [value]="importForm.value.derivationPath"></ion-input>
         </ion-item>
