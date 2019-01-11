@@ -57,13 +57,26 @@
       </ion-item>
     </div>
 
-    <ion-item *ngIf="selectedTab != 'file'">
+
+    <ion-item *ngIf="selectedTab != 'file' && !importForm.value.importVault">
       <ion-label stacked>{{'Coin' | translate}}</ion-label>
       <ion-select okText="{{okText}}" cancelText="{{cancelText}}" placeholder="{{'Select a coin' | translate}}" formControlName="coin">
         <ion-option value="btc">Bitcoin (BTC)</ion-option>
         <ion-option value="bch">Bitcoin Cash (BCH)</ion-option>
       </ion-select>
     </ion-item>
+
+    <ion-item [ngClass]="{'with-label': importForm.value.importVault}">
+      <ion-label>{{'Import Vault' | translate}}</ion-label>
+      <ion-toggle formControlName="importVault" (ionChange)="onChangeImportVault(importForm.value.importVault)" [disabled]="vault"></ion-toggle>
+    </ion-item>
+
+    <label-tip *ngIf="importForm.value.importVault" type="info">
+      <span label-tip-title translate>Vaults</span>
+      <div label-tip-body translate>
+        Importing a vault will import all your vaults wallets. You could only have one vault in your app.
+      </div>
+    </label-tip>
 
     <ion-item-divider></ion-item-divider>
 
@@ -78,12 +91,12 @@
 
     <div *ngIf="showAdvOpts">
       <div *ngIf="selectedTab == 'words'">
-        <ion-item class="with-label">
+        <ion-item *ngIf="!importForm.value.importVault" class="with-label">
           <ion-label stacked>{{'Password' | translate}}</ion-label>
           <ion-input type="password" formControlName="passphrase"></ion-input>
         </ion-item>
 
-        <label-tip type="info" header="no-header">
+        <label-tip type="info" header="no-header" *ngIf="!importForm.value.importVault">
           <div label-tip-body translate>
             This field is only for users who, in previous versions (it's not supported anymore), set a password to protect their recovery phrase. This field is not for your encrypt password.
           </div>
@@ -94,7 +107,7 @@
           <ion-input type="text" formControlName="derivationPath" [value]="importForm.value.derivationPath"></ion-input>
         </ion-item>
 
-        <ion-item [ngClass]="{'with-label': importForm.value.testnetEnabled}">
+        <ion-item [ngClass]="{'with-label': importForm.value.testnetEnabled}" *ngIf="!importForm.value.importVault">
           <ion-label>Testnet</ion-label>
           <ion-toggle formControlName="testnetEnabled" (ionChange)="setDerivationPath()"></ion-toggle>
         </ion-item>

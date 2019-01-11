@@ -33,7 +33,6 @@ export class TourPage {
   public localCurrencySymbol: string;
   public localCurrencyPerBtc: string;
   public currentIndex: number;
-  public coins;
 
   private retryCount: number = 0;
 
@@ -50,10 +49,6 @@ export class TourPage {
     private popupProvider: PopupProvider
   ) {
     this.currentIndex = 0;
-    this.coins = {
-      bitcoin: true,
-      bitcoincash: true
-    };
     this.rateProvider.whenRatesAvailable('btc').then(() => {
       const btcAmount = 1;
       this.localCurrencySymbol = '$';
@@ -97,7 +92,7 @@ export class TourPage {
         const opts: any = {};
         opts.mnemonic = vaultClient.credentials.mnemonic;
         this.profileProvider
-          .createDefaultWalletsInVault(this.coins, opts)
+          .createDefaultWalletsInVault(opts)
           .then((walletsArray: any[]) => {
             this.onGoingProcessProvider.clear();
             this.persistenceProvider.setOnboardingCompleted();

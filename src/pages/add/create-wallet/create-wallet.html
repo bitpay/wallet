@@ -41,7 +41,7 @@
     </ion-item>
 
     <ion-item [ngClass]="{'with-label': createForm.value.addToVault}">
-      <ion-label>Add to Vault</ion-label>
+      <ion-label>{{'Add to Vault' | translate}}</ion-label>
       <ion-toggle formControlName="addToVault" (ionChange)="setDerivationPath()"></ion-toggle>
     </ion-item>
 
