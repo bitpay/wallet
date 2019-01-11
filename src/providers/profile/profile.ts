@@ -820,7 +820,7 @@ export class ProfileProvider {
               return reject(err);
             }
           }
-          return this.bwcErrorProvider
+          this.bwcErrorProvider
             .cb(err, this.translate.instant('Could not import'))
             .then((msg: string) => {
               return reject(msg);
