@@ -327,6 +327,20 @@ page-home {
     }
   }
 
+  .add-card-button {
+    @include center;
+    border-radius: 5px;
+    color: #060606;
+    cursor: pointer;
+    font-size: 18px;
+    font-weight: 500;
+    text-align: center;
+    border: 1px dashed rgba(109, 109, 109, 0.27);
+    width: 92%;
+    margin: 15px auto;
+    height: 73px;
+  }
+
   @include fix-ios-bg-scroll();
 
   ion-fab {

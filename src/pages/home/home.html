@@ -306,6 +306,7 @@
             </button>
           </ion-item-sliding>
         </div>
+        <div class="add-card-button" (click)="goTo('BitPayCardIntroPage')" tappable translate>Add BitPay Card</div>
       </ion-list>
 
       <bitpay-card-home *ngIf="showBitPayCard && showBitpayCardGetStarted && wallets && wallets[0]"></bitpay-card-home>
