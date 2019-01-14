@@ -36,6 +36,7 @@ import { LanguagePage } from './language/language';
 import { LockPage } from './lock/lock';
 import { NotificationsPage } from './notifications/notifications';
 import { SharePage } from './share/share';
+import { VaultDeletePage } from './vault-delete/vault-delete';
 import { WalletSettingsPage } from './wallet-settings/wallet-settings';
 
 @Component({
@@ -298,6 +299,10 @@ export class SettingsPage {
 
   public openGiftCardsSettings() {
     this.navCtrl.push(GiftCardsSettingsPage);
+  }
+
+  public openDeleteVault(): void {
+    this.navCtrl.push(VaultDeletePage);
   }
 
   public openHelpExternalLink(): void {

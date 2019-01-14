@@ -1202,29 +1202,28 @@ export class ProfileProvider {
     return this.wallet[walletId];
   }
 
-  public deleteWalletClient(wallet): Promise<any> {
-    return new Promise((resolve, reject) => {
-      this.logger.info('Deleting Wallet:', wallet.credentials.walletName);
-      const walletId = wallet.credentials.walletId;
+  public async deleteWalletClient(wallet): Promise<any> {
+    this.logger.info('Deleting Wallet:', wallet.credentials.walletName);
+    const walletId = wallet.credentials.walletId;
 
-      wallet.removeAllListeners();
+    wallet.removeAllListeners();
 
-      this.profile.deleteWallet(walletId);
+    this.profile.deleteWallet(walletId);
 
-      delete this.wallet[walletId];
+    delete this.wallet[walletId];
 
-      this.persistenceProvider.removeAllWalletData(walletId).catch(err => {
-        this.logger.warn('Could not remove all wallet data: ', err);
-      });
+    return this.persistenceProvider.removeAllWalletData(walletId).then(() => {
+      return this.persistenceProvider.storeProfile(this.profile);
+    });
+  }
 
-      this.persistenceProvider
-        .storeProfile(this.profile)
-        .then(() => {
-          return resolve();
-        })
-        .catch(err => {
-          return reject(err);
-        });
+  public async deleteVaultWallets(vaultWallets): Promise<any> {
+    const promises = [];
+    vaultWallets.forEach(wallet => {
+      promises.push(this.deleteWalletClient(wallet));
+    });
+    return Promise.all(promises).then(() => {
+      return this.persistenceProvider.deleteVault();
     });
   }
 

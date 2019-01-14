@@ -130,6 +130,9 @@
             <ion-toggle [(ngModel)]="touchIdEnabled" (ionChange)="touchIdChange()"></ion-toggle>
           </ion-item>
         </div>
+        <button ion-item (click)="openDeleteVault()">
+          <span translate>Delete</span>
+        </button>
       </div>
 
       <ion-item-divider *ngIf="integrationServices && integrationServices[0]">
