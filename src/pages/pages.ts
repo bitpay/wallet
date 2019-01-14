@@ -31,13 +31,6 @@ import { CoinbaseSettingsPage } from '../pages/integrations/coinbase/coinbase-se
 import { CoinbaseTxDetailsPage } from '../pages/integrations/coinbase/coinbase-tx-details/coinbase-tx-details';
 import { SellCoinbasePage } from '../pages/integrations/coinbase/sell-coinbase/sell-coinbase';
 
-// Integrations: Glidera
-import { BuyGlideraPage } from '../pages/integrations/glidera/buy-glidera/buy-glidera';
-import { GlideraPage } from '../pages/integrations/glidera/glidera';
-import { GlideraSettingsPage } from '../pages/integrations/glidera/glidera-settings/glidera-settings';
-import { GlideraTxDetailsPage } from '../pages/integrations/glidera/glidera-tx-details/glidera-tx-details';
-import { SellGlideraPage } from '../pages/integrations/glidera/sell-glidera/sell-glidera';
-
 // Integrations: ShapeShift
 import { ShapeshiftPage } from '../pages/integrations/shapeshift/shapeshift';
 import { ShapeshiftConfirmPage } from '../pages/integrations/shapeshift/shapeshift-confirm/shapeshift-confirm';
@@ -134,7 +127,6 @@ export const PAGES = [
   BitPaySettingsPage,
   BitPayCardTopUpPage,
   BuyCoinbasePage,
-  BuyGlideraPage,
   CardCatalogPage,
   ChooseFeeLevelPage,
   CreateWalletPage,
@@ -155,7 +147,6 @@ export const PAGES = [
   DisclaimerPage,
   CollectEmailPage,
   ...GIFT_CARD_PAGES,
-  GlideraPage,
   GravatarPage,
   FingerprintModalPage,
   HomePage,
@@ -165,7 +156,6 @@ export const PAGES = [
   OnboardingPage,
   PaperWalletPage,
   PayProPage,
-  GlideraTxDetailsPage,
   ...PIN_COMPONENTS,
   ProposalsPage,
   ReceivePage,
@@ -173,8 +163,6 @@ export const PAGES = [
   SendPage,
   SettingsPage,
   SellCoinbasePage,
-  SellGlideraPage,
-  GlideraSettingsPage,
   CoinbaseSettingsPage,
   ShapeshiftConfirmPage,
   ShapeshiftDetailsPage,

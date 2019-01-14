@@ -24,7 +24,6 @@ import { BackupWarningPage } from '../backup/backup-warning/backup-warning';
 import { BitPaySettingsPage } from '../integrations/bitpay-card/bitpay-settings/bitpay-settings';
 import { CoinbaseSettingsPage } from '../integrations/coinbase/coinbase-settings/coinbase-settings';
 import { GiftCardsSettingsPage } from '../integrations/gift-cards/gift-cards-settings/gift-cards-settings';
-import { GlideraSettingsPage } from '../integrations/glidera/glidera-settings/glidera-settings';
 import { ShapeshiftSettingsPage } from '../integrations/shapeshift/shapeshift-settings/shapeshift-settings';
 import { PinModalPage } from '../pin/pin-modal/pin-modal';
 import { AboutPage } from './about/about';
@@ -279,9 +278,6 @@ export class SettingsPage {
         break;
       case 'debitcard':
         this.navCtrl.push(BitPaySettingsPage);
-        break;
-      case 'glidera':
-        this.navCtrl.push(GlideraSettingsPage);
         break;
       case 'shapeshift':
         this.navCtrl.push(ShapeshiftSettingsPage);

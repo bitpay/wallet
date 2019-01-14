@@ -33,8 +33,6 @@ import { BitPayCardTopUpPage } from '../../integrations/bitpay-card/bitpay-card-
 import { BuyCoinbasePage } from '../../integrations/coinbase/buy-coinbase/buy-coinbase';
 import { SellCoinbasePage } from '../../integrations/coinbase/sell-coinbase/sell-coinbase';
 import { ConfirmCardPurchasePage } from '../../integrations/gift-cards/confirm-card-purchase/confirm-card-purchase';
-import { BuyGlideraPage } from '../../integrations/glidera/buy-glidera/buy-glidera';
-import { SellGlideraPage } from '../../integrations/glidera/sell-glidera/sell-glidera';
 import { ShapeshiftConfirmPage } from '../../integrations/shapeshift/shapeshift-confirm/shapeshift-confirm';
 import { CustomAmountPage } from '../../receive/custom-amount/custom-amount';
 import { WalletTabsChild } from '../../wallet-tabs/wallet-tabs-child';
@@ -291,12 +289,6 @@ export class AmountPage extends WalletTabsChild {
         break;
       case 'ConfirmCardPurchasePage':
         nextPage = ConfirmCardPurchasePage;
-        break;
-      case 'BuyGlideraPage':
-        nextPage = BuyGlideraPage;
-        break;
-      case 'SellGlideraPage':
-        nextPage = SellGlideraPage;
         break;
       case 'BuyCoinbasePage':
         nextPage = BuyCoinbasePage;
