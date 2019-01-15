@@ -57,15 +57,6 @@
       </ion-item>
     </div>
 
-
-    <ion-item *ngIf="selectedTab != 'file' && !importForm.value.importVault">
-      <ion-label stacked>{{'Coin' | translate}}</ion-label>
-      <ion-select okText="{{okText}}" cancelText="{{cancelText}}" placeholder="{{'Select a coin' | translate}}" formControlName="coin">
-        <ion-option value="btc">Bitcoin (BTC)</ion-option>
-        <ion-option value="bch">Bitcoin Cash (BCH)</ion-option>
-      </ion-select>
-    </ion-item>
-
     <ion-item [ngClass]="{'with-label': importForm.value.importVault}">
       <ion-label>{{'Import Vault' | translate}}</ion-label>
       <ion-toggle formControlName="importVault" (ionChange)="onChangeImportVault(importForm.value.importVault)" [disabled]="vault"></ion-toggle>
@@ -77,6 +68,14 @@
         Importing a vault will import all your vaults wallets. You could only have one vault in your app.
       </div>
     </label-tip>
+
+    <ion-item *ngIf="selectedTab != 'file' && !importForm.value.importVault">
+      <ion-label stacked>{{'Coin' | translate}}</ion-label>
+      <ion-select okText="{{okText}}" cancelText="{{cancelText}}" placeholder="{{'Select a coin' | translate}}" formControlName="coin">
+        <ion-option value="btc">Bitcoin (BTC)</ion-option>
+        <ion-option value="bch">Bitcoin Cash (BCH)</ion-option>
+      </ion-select>
+    </ion-item>
 
     <ion-item-divider></ion-item-divider>
 
