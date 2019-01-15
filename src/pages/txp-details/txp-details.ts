@@ -54,8 +54,6 @@ export class TxpDetailsPage {
   public isCordova: boolean;
   public hideSlideButton: boolean;
 
-  private isGlidera: boolean;
-  private GLIDERA_LOCK_TIME: number;
   private countDown;
 
   constructor(
@@ -90,8 +88,6 @@ export class TxpDetailsPage {
       this.walletProvider.useLegacyAddress()
     );
     if (!this.tx.toAddress) this.tx.toAddress = this.tx.outputs[0].toAddress;
-    this.isGlidera = this.navParams.data.isGlidera;
-    this.GLIDERA_LOCK_TIME = 6 * 60 * 60;
     this.currentSpendUnconfirmed = config.spendUnconfirmed;
     this.loading = false;
     this.isCordova = this.platformProvider.isCordova;
@@ -129,16 +125,6 @@ export class TxpDetailsPage {
     this.applyButtonText();
 
     this.amount = this.decimalPipe.transform(this.tx.amount / 1e8, '1.2-6');
-
-    // ToDo: use tx.customData instead of tx.message
-    if (this.tx.message === 'Glidera transaction' && this.isGlidera) {
-      this.tx.isGlidera = true;
-      if (this.tx.canBeRemoved) {
-        this.tx.canBeRemoved =
-          Date.now() / 1000 - (this.tx.ts || this.tx.createdOn) >
-          this.GLIDERA_LOCK_TIME;
-      }
-    }
   }
 
   ionViewWillEnter() {

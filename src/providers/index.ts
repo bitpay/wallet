@@ -45,7 +45,6 @@ export { FeeProvider } from '../providers/fee/fee';
 export { FeedbackProvider } from '../providers/feedback/feedback';
 export { FilterProvider } from '../providers/filter/filter';
 export { GiftCardProvider } from '../providers/gift-card/gift-card';
-export { GlideraProvider } from '../providers/glidera/glidera';
 export {
   HomeIntegrationsProvider
 } from '../providers/home-integrations/home-integrations';

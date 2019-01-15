@@ -104,13 +104,6 @@ export class IncomingDataProvider {
     );
   }
 
-  private isValidGlideraUri(data: string): boolean {
-    data = this.sanitizeUri(data);
-    return !!(
-      data && data.indexOf(this.appProvider.info.name + '://glidera') === 0
-    );
-  }
-
   private isValidCoinbaseUri(data: string): boolean {
     data = this.sanitizeUri(data);
     return !!(
@@ -365,18 +358,6 @@ export class IncomingDataProvider {
     this.events.publish('IncomingDataRedir', nextView);
   }
 
-  private goToGlidera(data: string): void {
-    this.logger.debug('Incoming-data (redirect): Glidera URL');
-
-    let code = this.getParameterByName('code', data);
-    let stateParams = { code };
-    let nextView = {
-      name: 'GlideraPage',
-      params: stateParams
-    };
-    this.events.publish('IncomingDataRedir', nextView);
-  }
-
   public redir(data: string, redirParams?: RedirParams): boolean {
     // Payment Protocol with non-backwards-compatible request
     if (this.isValidPayProNonBackwardsCompatible(data)) {
@@ -411,11 +392,6 @@ export class IncomingDataProvider {
       // Plain Address (Bitcoin Cash)
     } else if (this.isValidBitcoinCashAddress(data)) {
       this.handlePlainBitcoinCashAddress(data, redirParams);
-      return true;
-
-      // Glidera
-    } else if (this.isValidGlideraUri(data)) {
-      this.goToGlidera(data);
       return true;
 
       // Coinbase
@@ -521,14 +497,6 @@ export class IncomingDataProvider {
         title: this.translate.instant('Bitcoin Cash Address')
       };
 
-      // Glidera
-    } else if (this.isValidGlideraUri(data)) {
-      return {
-        data,
-        type: 'Glidera',
-        title: 'Glidera URI'
-      };
-
       // Coinbase
     } else if (this.isValidCoinbaseUri(data)) {
       return {
@@ -585,7 +553,7 @@ export class IncomingDataProvider {
     let value = match[0].replace(',', '.');
     let newUri = data.replace(regex, value);
 
-    // mobile devices, uris like copay://glidera
+    // mobile devices, uris like copay://xxx
     newUri.replace('://', ':');
 
     return newUri;

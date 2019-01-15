@@ -403,23 +403,6 @@ describe('Provider: Incoming Data Provider', () => {
         });
       });
     });
-    it('Should handle Glidera URI', () => {
-      let data = ['bitpay://glidera', 'copay://glidera'];
-      data.forEach(element => {
-        let stateParams = { code: null };
-        let nextView = {
-          name: 'GlideraPage',
-          params: stateParams
-        };
-        expect(
-          incomingDataProvider.redir(element, { activePage: 'ScanPage' })
-        ).toBe(true);
-        expect(loggerSpy).toHaveBeenCalledWith(
-          'Incoming-data (redirect): Glidera URL'
-        );
-        expect(eventsSpy).toHaveBeenCalledWith('IncomingDataRedir', nextView);
-      });
-    });
     it('Should handle Coinbase URI', () => {
       let data = ['bitpay://coinbase', 'copay://coinbase'];
       data.forEach(element => {

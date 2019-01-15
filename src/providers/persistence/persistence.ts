@@ -44,10 +44,6 @@ const Keys = {
     const legacyGiftCardKey = getLegacyGiftCardKey(cardName, network);
     return legacyGiftCardKey || `giftCards-${cardName}-${network}`;
   },
-  GLIDERA_PERMISSIONS: network => 'glideraPermissions-' + network,
-  GLIDERA_STATUS: network => 'glideraStatus-' + network,
-  GLIDERA_TOKEN: network => 'glideraToken-' + network,
-  GLIDERA_TXS: network => 'glideraTxs-' + network,
   HIDE_BALANCE: walletId => 'hideBalance-' + walletId,
   HOME_TIP: 'homeTip',
   LAST_ADDRESS: walletId => 'lastAddress-' + walletId,
@@ -227,54 +223,6 @@ export class PersistenceProvider {
 
   getRemotePrefsStoredFlag() {
     return this.storage.get(Keys.REMOTE_PREF_STORED);
-  }
-
-  setGlideraToken(network: string, token: string) {
-    return this.storage.set(Keys.GLIDERA_TOKEN(network), token);
-  }
-
-  getGlideraToken(network: string) {
-    return this.storage.get(Keys.GLIDERA_TOKEN(network));
-  }
-
-  removeGlideraToken(network: string) {
-    return this.storage.remove(Keys.GLIDERA_TOKEN(network));
-  }
-
-  setGlideraPermissions(network: string, permissions) {
-    return this.storage.set(Keys.GLIDERA_PERMISSIONS(network), permissions);
-  }
-
-  getGlideraPermissions(network: string) {
-    return this.storage.get(Keys.GLIDERA_PERMISSIONS(network));
-  }
-
-  removeGlideraPermissions(network: string) {
-    return this.storage.remove(Keys.GLIDERA_PERMISSIONS(network));
-  }
-
-  setGlideraStatus(network: string, status) {
-    return this.storage.set(Keys.GLIDERA_STATUS(network), status);
-  }
-
-  getGlideraStatus(network: string) {
-    return this.storage.get(Keys.GLIDERA_STATUS(network));
-  }
-
-  removeGlideraStatus(network: string) {
-    return this.storage.remove(Keys.GLIDERA_STATUS(network));
-  }
-
-  setGlideraTxs(network: string, txs) {
-    return this.storage.set(Keys.GLIDERA_TXS(network), txs);
-  }
-
-  getGlideraTxs(network: string) {
-    return this.storage.get(Keys.GLIDERA_TXS(network));
-  }
-
-  removeGlideraTxs(network: string) {
-    return this.storage.remove(Keys.GLIDERA_TXS(network));
   }
 
   setCoinbaseToken(network: string, token: string) {
