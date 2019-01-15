@@ -11,6 +11,7 @@ import { Events, NavController, NavParams } from 'ionic-angular';
 // providers
 import { AddressBookProvider } from '../../../../providers/address-book/address-book';
 import { AddressProvider } from '../../../../providers/address/address';
+import { AppProvider } from '../../../../providers/app/app';
 import { Logger } from '../../../../providers/logger/logger';
 import { PopupProvider } from '../../../../providers/popup/popup';
 
@@ -26,6 +27,7 @@ export class AddressbookAddPage {
   private addressBookAdd: FormGroup;
 
   public isCordova: boolean;
+  public appName: string;
 
   constructor(
     private navCtrl: NavController,
@@ -33,6 +35,7 @@ export class AddressbookAddPage {
     private events: Events,
     private ab: AddressBookProvider,
     private addressProvider: AddressProvider,
+    private appProvider: AppProvider,
     private formBuilder: FormBuilder,
     private logger: Logger,
     private popupProvider: PopupProvider
@@ -56,6 +59,7 @@ export class AddressbookAddPage {
         this.navParams.data.addressbookEntry
       );
     }
+    this.appName = this.appProvider.info.nameCase;
     this.events.subscribe('update:address', data => {
       this.addressBookAdd.controls['address'].setValue(
         this.parseAddress(data.value)
@@ -89,8 +93,8 @@ export class AddressbookAddPage {
       });
   }
 
-  private parseAddress(address: string): string {
-    return address.replace(/^(bitcoincash:|bchtest:|bitcoin:)/i, '');
+  private parseAddress(str: string): string {
+    return this.addressProvider.extractAddress(str);
   }
 
   public openScanner(): void {

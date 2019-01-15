@@ -17,8 +17,10 @@ import { PopupProvider } from '../../../../providers/popup/popup';
 export class AddressbookViewPage {
   public contact;
   public address: string;
-  public name: string;
+  public coin: string;
   public email: string;
+  public name: string;
+  public network: string;
 
   constructor(
     private addressBookProvider: AddressBookProvider,
@@ -29,6 +31,8 @@ export class AddressbookViewPage {
     private translate: TranslateService
   ) {
     this.address = this.navParams.data.contact.address;
+    this.coin = this.addressProvider.getCoin(this.address);
+    this.network = this.addressProvider.getNetwork(this.address);
     this.name = this.navParams.data.contact.name;
     this.email = this.navParams.data.contact.email;
   }
@@ -40,15 +44,15 @@ export class AddressbookViewPage {
       toAddress: this.address,
       name: this.name,
       email: this.email,
-      coin: this.addressProvider.getCoin(this.address),
+      coin: this.coin,
       recipientType: 'contact',
-      network: this.addressProvider.getNetwork(this.address)
+      network: this.network
     });
   }
 
   public remove(addr: string): void {
-    var title = this.translate.instant('Warning!');
-    var message = this.translate.instant(
+    const title = this.translate.instant('Warning!');
+    const message = this.translate.instant(
       'Are you sure you want to delete this contact?'
     );
     this.popupProvider.ionicConfirm(title, message, null, null).then(res => {

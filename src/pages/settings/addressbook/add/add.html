@@ -29,6 +29,11 @@
 
       <ion-icon class="scanner-icon" name="qr-scanner" item-right (click)="openScanner()"></ion-icon>
     </ion-item>
+    <label-tip type="danger" header="no-header" *ngIf="addressBookAdd.value.address && addressBookAdd.controls.address.status == 'INVALID'">
+      <div label-tip-body>
+        <span>{{'This field only accepts addresses supported by {appName} Wallet' | translate:{appName: appName} }}</span>
+      </div>
+    </label-tip>
   </form>
 
   <button ion-button class="button-standard" (click)="save()" [disabled]="addressBookAdd.invalid">

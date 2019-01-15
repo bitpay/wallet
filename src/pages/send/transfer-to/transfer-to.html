@@ -3,7 +3,7 @@
     <span class="title" translate>Transfer to Contact</span>
   </ion-item-divider>
   <ion-list>
-    <button ion-item *ngFor="let item of filteredContactsList" (click)="close(item)">
+    <button ion-item *ngFor="let item of filteredContactsList | orderBy : ['name']" (click)="close(item)">
       <ion-icon class="item-img" item-start>
         <gravatar [name]="item.name" [width]="35" [height]="35" [email]="item.email"></gravatar>
       </ion-icon>
