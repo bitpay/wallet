@@ -36,7 +36,6 @@ export class ImportWalletPage {
   private defaults;
   private errors;
 
-  public vault;
   public importForm: FormGroup;
   public prettyFileName: string;
   public importErr: boolean;
@@ -107,7 +106,7 @@ export class ImportWalletPage {
     });
 
     this.persistenceProvider.getVault().then(vault => {
-      this.vault = vault;
+      if (vault) this.importForm.controls['importVault'].disable();
     });
   }
 

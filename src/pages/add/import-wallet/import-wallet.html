@@ -59,7 +59,7 @@
 
     <ion-item [ngClass]="{'with-label': importForm.value.importVault}">
       <ion-label>{{'Import Vault' | translate}}</ion-label>
-      <ion-toggle formControlName="importVault" (ionChange)="onChangeImportVault(importForm.value.importVault)" [disabled]="vault"></ion-toggle>
+      <ion-toggle formControlName="importVault" (ionChange)="onChangeImportVault(importForm.value.importVault)"></ion-toggle>
     </ion-item>
 
     <label-tip *ngIf="importForm.value.importVault" type="info">
