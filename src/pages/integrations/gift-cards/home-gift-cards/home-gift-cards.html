@@ -1,11 +1,9 @@
 <ion-list [@.disabled]="disableArchiveAnimation">
-  <gift-card-item *ngFor="let brandCards of activeBrands" [cardName]="brandCards[0].name" [giftCards]="brandCards"
-    (action)="onGiftCardAction($event, brandCards)" [@archiveAnimation]></gift-card-item>
-  <div *ngIf="activeBrands?.length" [@archiveAnimation] class="add-gift-card-button" (click)="buyGiftCards()" tappable
-    translate>Buy Gift Card</div>
+  <gift-card-item *ngFor="let brandCards of activeBrands" class="sliding-container" [cardName]="brandCards[0].name" [giftCards]="brandCards" (action)="onGiftCardAction($event, brandCards)" [@archiveAnimation]></gift-card-item>
+  <div *ngIf="activeBrands?.length" [@archiveAnimation] class="add-card-button" (click)="buyGiftCards()" tappable translate>Buy Gift Card</div>
 </ion-list>
 <action-card *ngIf="!activeBrands?.length">
-  <div action-card-icon><img src="assets/img/icon-credit-card.svg"></div>
+  <div action-card-header><img src="assets/img/icon-credit-card.svg"></div>
   <div action-card-title translate>Buy Gift Cards</div>
   <div action-card-body>
     {{'Add gift cards to your {appName} wallet from brands like Amazon, Delta, Google Play, and Uber.' |

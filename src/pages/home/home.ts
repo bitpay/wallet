@@ -83,6 +83,7 @@ export class HomePage {
   public showIntegration;
   public hideHomeIntegrations: boolean;
   public showGiftCards: boolean;
+  public showBitpayCardGetStarted: boolean;
 
   private isElectron: boolean;
   private updatingWalletId: object;
@@ -172,10 +173,14 @@ export class HomePage {
     // Show integrations
     const integrations = _.filter(this.homeIntegrationsProvider.get(), {
       show: true
-    }).filter(i => i.name !== 'giftcards');
+    }).filter(i => i.name !== 'giftcards' && i.name !== 'debitcard');
 
     this.showGiftCards = this.homeIntegrationsProvider.shouldShowInHome(
       'giftcards'
+    );
+
+    this.showBitpayCardGetStarted = this.homeIntegrationsProvider.shouldShowInHome(
+      'debitcard'
     );
 
     // Hide BitPay if linked

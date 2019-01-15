@@ -293,32 +293,25 @@
         </ion-list>
       </div>
 
-      <div class="card" *ngIf="showBitPayCard && bitpayCardItems && bitpayCardItems[0] && wallets &&wallets[0]">
-        <ion-item-divider>
-          <div class="title" item-start>
-            <span>BitPay Visa
-              <sup>&reg;</sup> Card</span>
-          </div>
-          <div item-end>
-            <button ion-button clear icon-only color="grey" (click)="goTo('BitPayCardIntroPage')">
-              <ion-icon name="add"></ion-icon>
+      <ion-list class="bitpay-card" *ngIf="showBitPayCard && bitpayCardItems && bitpayCardItems[0] && wallets &&wallets[0]">
+        <div *ngFor="let card of bitpayCardItems" class="card-item sliding-container">
+          <ion-item-sliding>
+            <button ion-item (click)="goToCard(card.id)">
+              <img src="assets/img/app/logo-negative.svg" />
+              <ion-note class="ellipsis" item-end>
+                <div class="funds ellipsis">{{card.balance ? (card.currencySymbol + (card.balance | number:'1.2-2')) : 'Add
+                  funds to get started'|translate}}</div>
+                <div class="number ellipsis">Card ({{card.lastFourDigits}})</div>
+              </ion-note>
             </button>
-          </div>
-        </ion-item-divider>
-        <ion-list>
-          <button ion-item *ngFor="let card of bitpayCardItems" (click)="goToCard(card.id)">
-            <ion-icon class="item-img" item-start>
-              <img src="assets/img/icon-card.svg" class="icon-card" />
-            </ion-icon>
-            <div class="item-title">BitPay Visa&reg; Card ({{card.lastFourDigits}})</div>
-            <div class="item-subtitle">{{card.balance ? ((card.balance | number:'1.2-2') + ' ' + card.currency) : 'Add
-              funds to get started'|translate}}
-              {{card.updatedOn ? (' &middot; ' + (card.updatedOn * 1000 | amTimeAgo)) : ''}}</div>
-          </button>
-        </ion-list>
-      </div>
+          </ion-item-sliding>
+        </div>
+        <div class="add-card-button" (click)="goTo('BitPayCardIntroPage')" tappable translate>Add BitPay Card</div>
+      </ion-list>
 
-      <gift-cards *ngIf="showGiftCards"></gift-cards>
+      <bitpay-card-home *ngIf="showBitPayCard && showBitpayCardGetStarted && wallets && wallets[0]"></bitpay-card-home>
+
+      <gift-cards *ngIf="showGiftCards && wallets && wallets[0]"></gift-cards>
 
       <div class="card" *ngIf="homeIntegrations && homeIntegrations.length > 0 && wallets && wallets[0]">
         <ion-item-divider (click)="hideHomeIntegrations = !hideHomeIntegrations">
@@ -331,7 +324,7 @@
           </div>
         </ion-item-divider>
         <ion-list *ngIf="!hideHomeIntegrations">
-          <button ion-item *ngFor="let service of homeIntegrations" (click)="goTo(service.page, service.name)">
+          <button ion-item *ngFor="let service of homeIntegrations | orderBy : ['title']" (click)="goTo(service.page, service.name)">
             <ion-icon class="item-img" item-start>
               <img src="{{service.icon}}" class="icon-services" />
             </ion-icon>

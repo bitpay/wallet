@@ -237,6 +237,110 @@ page-home {
     }
   }
 
+  // Styles for gift cards and Bitpay cards
+  .sliding-container {
+    border-radius: 5px;
+    display: block;
+    height: 73px;
+    margin: 15px auto;
+  }
+
+  ion-item-sliding.item-wrapper {
+    $gift-card-item-side-padding: 4%;
+    $gift-card-item-height: 73px;
+
+    background: none;
+    // height: $gift-card-item-height + 14px;
+    padding-left: $gift-card-item-side-padding;
+    padding-right: $gift-card-item-side-padding;
+
+    ion-item-options {
+      border-bottom: 0;
+      padding-right: $gift-card-item-side-padding;
+      height: $gift-card-item-height;
+
+      button.button {
+        border-radius: 5px;
+        font-weight: 400;
+        padding: 15px;
+
+        .archive {
+          &__icon {
+            font-size: 20px;
+            margin-top: -1px;
+          }
+
+          &__text {
+            font-size: 13px;
+          }
+        }
+      }
+    }
+
+    button.item.item-block {
+      font-size: 16px;
+      border-radius: 5px;
+      box-shadow: 0 7px 11px 0 rgba(0, 0, 0, 0.06);
+
+      .item-inner {
+        border: 0;
+        height: $gift-card-item-height;
+
+        ion-label {
+          &.label-ios,
+          &.label-md {
+            display: flex;
+            height: $gift-card-item-height;
+            align-items: center;
+            margin: 0;
+          }
+        }
+      }
+    }
+  }
+
+  .bitpay-card {
+    .card-item {
+      button {
+        background: linear-gradient(45deg, #202036 -25%, #1a3b8b);
+        .item-inner .input-wrapper {
+          padding-left: 5px;
+          margin-right: 5px;
+          min-width: 7.5rem;
+        }
+        ion-label img {
+          width: 7.5rem;
+        }
+        ion-note {
+          text-align: right;
+          color: white;
+          line-height: 22px;
+          .funds {
+            font-size: 16px;
+          }
+          .number {
+            opacity: 0.5;
+            font-size: 14px;
+          }
+        }
+      }
+    }
+  }
+
+  .add-card-button {
+    @include center;
+    border-radius: 5px;
+    color: #060606;
+    cursor: pointer;
+    font-size: 18px;
+    font-weight: 500;
+    text-align: center;
+    border: 1px dashed rgba(109, 109, 109, 0.27);
+    width: 92%;
+    margin: 15px auto;
+    height: 73px;
+  }
+
   @include fix-ios-bg-scroll();
 
   ion-fab {

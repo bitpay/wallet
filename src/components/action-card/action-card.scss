@@ -5,11 +5,13 @@ action-card.card {
   padding: 20px;
   padding-bottom: 0;
 
-  > * {
-    margin: 15px;
-  }
-
   .action-card {
+    &__content {
+      background: white;
+      > * {
+        margin: 15px;
+      }
+    }
     &__title {
       font-size: 20px;
       font-weight: 500;
