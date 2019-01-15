@@ -503,7 +503,7 @@ export class ProfileProvider {
     });
   }
 
-  private checkIfCanSign(walletsArray): boolean {
+  private checkIfCanSign(walletsArray: any[]): boolean {
     let canSign = true;
     walletsArray.forEach(wallet => {
       if (!wallet.canSign()) canSign = false;
@@ -511,7 +511,7 @@ export class ProfileProvider {
     return canSign;
   }
 
-  private askToEncryptWallets(walletsArray): Promise<any> {
+  private askToEncryptWallets(walletsArray: any[]): Promise<any> {
     return new Promise(resolve => {
       const canSign = this.checkIfCanSign(walletsArray);
       if (!canSign) return resolve();
@@ -542,7 +542,7 @@ export class ProfileProvider {
     });
   }
 
-  private encrypt(walletsArray): Promise<any> {
+  private encrypt(walletsArray: any[]): Promise<any> {
     return new Promise(resolve => {
       let title = this.translate.instant(
         'Enter a password to encrypt your wallet'
@@ -579,7 +579,7 @@ export class ProfileProvider {
     });
   }
 
-  private addAndBindWalletClients(walletsArray, opts): Promise<any> {
+  private addAndBindWalletClients(walletsArray: any[], opts): Promise<any> {
     // Encrypt wallet
     this.onGoingProcessProvider.pause();
     return this.askToEncryptWallets(walletsArray).then(() => {

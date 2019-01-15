@@ -773,7 +773,7 @@ describe('Provider: Wallet Provider', () => {
         walletProvider,
         'askPassword'
       ).and.returnValue(Promise.resolve('password1'));
-      walletProvider.encrypt(wallet);
+      walletProvider.encrypt([].concat(wallet));
       expect(spyAskPassword).toHaveBeenCalled();
     });
 
@@ -781,7 +781,7 @@ describe('Provider: Wallet Provider', () => {
       spyOn<any>(walletProvider, 'askPassword').and.returnValue(
         Promise.resolve('')
       );
-      walletProvider.encrypt(wallet).catch(msg => {
+      walletProvider.encrypt([].concat(wallet)).catch(msg => {
         expect(msg).toBeDefined(); // 'No password'
       });
     });
@@ -795,7 +795,7 @@ describe('Provider: Wallet Provider', () => {
         walletProvider,
         'askPassword'
       ).and.returnValue(Promise.resolve('password1'));
-      walletProvider.decrypt(wallet);
+      walletProvider.decrypt([].concat(wallet));
       expect(spyAskPassword).toHaveBeenCalled();
     });
 
@@ -803,7 +803,7 @@ describe('Provider: Wallet Provider', () => {
       spyOn<any>(walletProvider, 'askPassword').and.returnValue(
         Promise.resolve('')
       );
-      walletProvider.decrypt(wallet).catch(msg => {
+      walletProvider.decrypt([].concat(wallet)).catch(msg => {
         expect(msg).toBeDefined();
       });
     });
