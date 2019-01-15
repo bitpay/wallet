@@ -1,4 +1,4 @@
-const { app, Menu, BrowserWindow } = require('electron');
+const { app, Menu, BrowserWindow, systemPreferences } = require('electron');
 const path = require('path');
 const url = require('url');
 const os = require('os');
@@ -66,6 +66,24 @@ function createWindow() {
         new Notification(data).show();
       });
     } */
+
+    if (process.platform == 'darwin') {
+      const setOSTheme = () => {
+        const theme = systemPreferences.isDarkMode()
+          ? 'dark-theme'
+          : 'light-theme';
+        win.webContents.send('theme-change', theme);
+      };
+
+      systemPreferences.subscribeNotification(
+        'AppleInterfaceThemeChangedNotification',
+        setOSTheme
+      );
+
+      setTimeout(() => {
+        setOSTheme();
+      }, 1000);
+    }
   });
 
   win.once('ready-to-show', () => {

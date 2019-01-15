@@ -1,4 +1,9 @@
-import { Component, Renderer, ViewChild } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  Renderer,
+  ViewChild
+} from '@angular/core';
 import { Device } from '@ionic-native/device';
 import { ScreenOrientation } from '@ionic-native/screen-orientation';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -76,6 +81,8 @@ export class CopayApp {
   private isWalletModalOpen: boolean;
   private walletModal: any;
 
+  public selectedTheme: string;
+
   private pageMap = {
     AddressbookAddPage,
     AmountPage,
@@ -116,7 +123,8 @@ export class CopayApp {
     private walletTabsProvider: WalletTabsProvider,
     private renderer: Renderer,
     private userAgent: UserAgent,
-    private device: Device
+    private device: Device,
+    private changeDetectorRef: ChangeDetectorRef
   ) {
     this.initializeApp();
   }
@@ -138,6 +146,12 @@ export class CopayApp {
   }
 
   private onPlatformReady(readySource): void {
+    if (this.isElectronPlatform()) {
+      this.appProvider.getActiveTheme().subscribe(theme => {
+        this.selectedTheme = theme;
+        this.changeDetectorRef.detectChanges();
+      });
+    }
     this.appProvider
       .load()
       .then(() => {

@@ -22,6 +22,9 @@ $app-direction: ltr;
 @import 'mixins';
 @import 'modals';
 @import 'zero-state';
+// Themes
+@import 'theme.light';
+@import 'theme.dark';
 // Colors
 $colors: (
   primary: $color-primary,

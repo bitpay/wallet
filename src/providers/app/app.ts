@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { BehaviorSubject } from 'rxjs/Rx';
 
 import { File } from '@ionic-native/file';
 
@@ -49,6 +50,7 @@ export class AppProvider {
   public servicesInfo;
   private jsonPathApp: string = 'assets/appConfig.json';
   private jsonPathServices: string = 'assets/externalServices.json';
+  private theme: BehaviorSubject<string>;
 
   constructor(
     public http: HttpClient,
@@ -60,6 +62,11 @@ export class AppProvider {
     private platformProvider: PlatformProvider
   ) {
     this.logger.debug('AppProvider initialized');
+
+    if (this.platformProvider.isElectron) {
+      this.theme = new BehaviorSubject('');
+      this.setEventTheme();
+    }
   }
 
   public async load() {
@@ -103,5 +110,20 @@ export class AppProvider {
     } else {
       return this.http.get(this.jsonPathServices).toPromise();
     }
+  }
+
+  public setActiveTheme(val) {
+    this.theme.next(val);
+  }
+
+  public getActiveTheme() {
+    return this.theme.asObservable();
+  }
+
+  public setEventTheme() {
+    const electron = (window as any).require('electron');
+    electron.ipcRenderer.on('theme-change', (_, theme) => {
+      this.setActiveTheme(theme);
+    });
   }
 }
