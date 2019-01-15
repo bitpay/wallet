@@ -1332,7 +1332,7 @@ export class WalletProvider {
     });
   }
 
-  public encrypt(walletsArray): Promise<any> {
+  public encrypt(walletsArray: any[]): Promise<any> {
     return new Promise((resolve, reject) => {
       let title = this.translate.instant('Enter a new encrypt password');
       const warnMsg = this.translate.instant(
@@ -1369,7 +1369,7 @@ export class WalletProvider {
     });
   }
 
-  public decrypt(walletsArray): Promise<any> {
+  public decrypt(walletsArray: any[]): Promise<any> {
     return new Promise((resolve, reject) => {
       this.askPassword(
         null,
@@ -1596,7 +1596,7 @@ export class WalletProvider {
     }
   }
 
-  public setTouchId(walletsArray, enabled: boolean): Promise<any> {
+  public setTouchId(walletsArray: any[], enabled: boolean): Promise<any> {
     const opts = {
       touchIdFor: {}
     };

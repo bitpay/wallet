@@ -98,7 +98,7 @@ export class TourPage {
         opts.mnemonic = vaultClient.credentials.mnemonic;
         this.profileProvider
           .createDefaultWalletsInVault(this.coins, opts)
-          .then(walletsArray => {
+          .then((walletsArray: any[]) => {
             this.onGoingProcessProvider.clear();
             this.persistenceProvider.setOnboardingCompleted();
             // this.navCtrl.push(CollectEmailPage, { walletId: wallet.id });
