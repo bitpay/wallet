@@ -33,6 +33,12 @@
         </div>
         <div translate class="option-text">View Invoice</div>
       </div>
+      <div *ngIf="params.showShare" class="option" (click)="optionClicked('share-code')">
+        <div class="option-icon">
+          <img src="assets/img/icon-share.svg">
+        </div>
+        <div translate class="option-text">Share Claim Code</div>
+      </div>
     </div>
     <div (click)="dismiss()" class="cancel-btn" translate>Cancel</div>
   </div>

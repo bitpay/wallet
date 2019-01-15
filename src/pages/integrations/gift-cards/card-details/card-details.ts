@@ -6,6 +6,7 @@ import {
   trigger
 } from '@angular/animations';
 import { Component } from '@angular/core';
+import { SocialSharing } from '@ionic-native/social-sharing';
 import { Events, NavController, NavParams } from 'ionic-angular';
 import { take } from 'rxjs/operators';
 import {
@@ -19,7 +20,7 @@ import {
   CardName,
   GiftCard
 } from '../../../../providers/gift-card/gift-card.types';
-
+import { PlatformProvider } from '../../../../providers/platform/platform';
 @Component({
   selector: 'card-details-page',
   templateUrl: 'card-details.html',
@@ -50,7 +51,9 @@ export class CardDetailsPage {
     private giftCardProvider: GiftCardProvider,
     private nav: NavController,
     private navParams: NavParams,
-    private events: Events
+    private events: Events,
+    private socialSharing: SocialSharing,
+    private platformProvider: PlatformProvider
   ) {}
 
   async ngOnInit() {
@@ -160,10 +163,20 @@ export class CardDetailsPage {
     this.externalLinkProvider.open(this.card.invoiceUrl);
   }
 
+  private shareCode() {
+    this.socialSharing.share(this.card.claimLink || this.card.claimCode);
+  }
+
   showMoreOptions() {
+    const showShare =
+      this.platformProvider.isCordova &&
+      (this.card.claimLink || this.card.claimCode);
     const sheet = this.actionSheetProvider.createOptionsSheet(
       'gift-card-options',
-      { card: this.card }
+      {
+        card: this.card,
+        showShare
+      }
     );
     sheet.present();
     sheet.onDidDismiss(data => {
@@ -174,6 +187,8 @@ export class CardDetailsPage {
           return this.unarchive();
         case 'view-invoice':
           return this.showInvoice();
+        case 'share-code':
+          return this.shareCode();
       }
     });
   }
