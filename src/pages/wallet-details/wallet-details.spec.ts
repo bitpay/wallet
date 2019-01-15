@@ -79,7 +79,8 @@ describe('WalletDetailsPage', () => {
         instance.currentPage = 0;
         instance.wallet.completeHistory = new Array(11).map(() => {});
         const spy = spyOn(instance, 'groupHistory');
-        instance.showHistory();
+        const loading = true;
+        instance.showHistory(loading);
         expect(instance.history.length).toBe(10);
         expect(instance.currentPage).toBe(1);
         expect(spy).toHaveBeenCalled();
