@@ -64,7 +64,7 @@ export class AppProvider {
     this.logger.debug('AppProvider initialized');
 
     if (this.platformProvider.isElectron) {
-      this.theme = new BehaviorSubject('');
+      this.theme = new BehaviorSubject('light-theme'); // by default
       this.setEventTheme();
     }
   }
