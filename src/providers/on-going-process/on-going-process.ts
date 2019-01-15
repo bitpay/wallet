@@ -32,6 +32,7 @@ export class OnGoingProcessProvider {
       creatingTx: this.translate.instant('Creating transaction...'),
       creatingWallet: this.translate.instant('Creating Wallet...'),
       deletingWallet: this.translate.instant('Deleting Wallet...'),
+      deletingVault: this.translate.instant('Deleting Vault...'),
       extractingWalletInfo: this.translate.instant(
         'Extracting Wallet information...'
       ),

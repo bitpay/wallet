@@ -61,7 +61,7 @@
       <button ion-item (click)="openTransactionHistory()">
         <span translate>Transaction History</span>
       </button>
-      <button ion-item (click)="openDeleteWallet()">
+      <button *ngIf="notVaultWallet" ion-item (click)="openDeleteWallet()">
         <span translate>Delete</span>
       </button>
       <ion-item-divider></ion-item-divider>

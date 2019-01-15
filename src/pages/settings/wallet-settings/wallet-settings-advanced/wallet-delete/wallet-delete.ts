@@ -42,8 +42,8 @@ export class WalletDeletePage extends WalletTabsChild {
   }
 
   public showDeletePopup(): void {
-    let title = this.translate.instant('Warning!');
-    let message = this.translate.instant(
+    const title = this.translate.instant('Warning!');
+    const message = this.translate.instant(
       'Are you sure you want to delete this wallet?'
     );
     this.popupProvider.ionicConfirm(title, message, null, null).then(res => {
@@ -62,6 +62,8 @@ export class WalletDeletePage extends WalletTabsChild {
         this.close();
       })
       .catch(err => {
+        this.onGoingProcessProvider.clear();
+        this.logger.warn('Could not remove all wallet data: ', err);
         this.popupProvider.ionicAlert(
           this.translate.instant('Error'),
           err.message || err

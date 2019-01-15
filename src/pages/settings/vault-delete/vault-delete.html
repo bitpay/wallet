@@ -1,0 +1,17 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>{{'Delete Vault' | translate}}</ion-title>
+  </ion-navbar>
+</ion-header>
+<ion-content>
+  <h3 class="assertive" translate>Warning!</h3>
+  <p translate>
+    Permanently delete this vault.
+  </p>
+  <p translate>
+    THIS ACTION CANNOT BE REVERSED
+  </p>
+  <button ion-button class="button-standard" color="danger" (click)="showDeletePopup()">
+    {{'Delete' | translate}}
+  </button>
+</ion-content>
