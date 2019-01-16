@@ -391,7 +391,7 @@ export class WalletProvider {
         });
       };
 
-      _getStatus(walletStatusHash(null), 0)
+      _getStatus(walletStatusHash(wallet.cachedStatus), 0)
         .then(status => {
           resolve(status);
         })
@@ -1135,7 +1135,10 @@ export class WalletProvider {
         this.logger.debug('Transaction removed');
 
         this.invalidateCache(wallet);
-        this.events.publish('Local/TxAction', wallet.id);
+        this.events.publish('Local/TxAction', {
+          walletId: wallet.id,
+          untilItChanges: true
+        });
         return resolve(err);
       });
     });
@@ -1421,7 +1424,10 @@ export class WalletProvider {
       this.rejectTx(wallet, txp)
         .then(txpr => {
           this.invalidateCache(wallet);
-          this.events.publish('Local/TxAction', wallet.id);
+          this.events.publish('Local/TxAction', {
+            walletId: wallet.id,
+            untilItChanges: true
+          });
           return resolve(txpr);
         })
         .catch(err => {
@@ -1435,7 +1441,10 @@ export class WalletProvider {
       this.publishTx(wallet, txp)
         .then(() => {
           this.invalidateCache(wallet);
-          this.events.publish('Local/TxAction', wallet.id);
+          this.events.publish('Local/TxAction', {
+            walletId: wallet.id,
+            untilItChanges: true
+          });
           return resolve();
         })
         .catch(err => {
@@ -1473,14 +1482,20 @@ export class WalletProvider {
             this.onGoingProcessProvider.set('broadcastingTx');
             this.broadcastTx(wallet, signedTxp)
               .then(broadcastedTxp => {
-                this.events.publish('Local/TxAction', wallet.id);
+                this.events.publish('Local/TxAction', {
+                  walletId: wallet.id,
+                  untilItChanges: true
+                });
                 return resolve(broadcastedTxp);
               })
               .catch(err => {
                 return reject(this.bwcErrorProvider.msg(err));
               });
           } else {
-            this.events.publish('Local/TxAction', wallet.id);
+            this.events.publish('Local/TxAction', {
+              walletId: wallet.id,
+              untilItChanges: true
+            });
             return resolve(signedTxp);
           }
         })
@@ -1492,7 +1507,10 @@ export class WalletProvider {
                   'The payment was created but could not be completed. Please try again from home screen'
                 );
           this.logger.error('Sign error: ' + msg);
-          this.events.publish('Local/TxAction', wallet.id);
+          this.events.publish('Local/TxAction', {
+            walletId: wallet.id,
+            untilItChanges: true
+          });
           return reject(msg);
         });
     });

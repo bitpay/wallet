@@ -204,7 +204,7 @@ export class WalletDetailsPage extends WalletTabsChild {
     this.walletProvider
       .getTxHistory(this.wallet, {
         progressFn,
-        force: opts.force
+        opts
       })
       .then(txHistory => {
         this.updatingTxHistory = false;
@@ -233,7 +233,7 @@ export class WalletDetailsPage extends WalletTabsChild {
   private updateAll = _.debounce(
     (opts?) => {
       opts = opts || {};
-      this.updateStatus(opts.force);
+      this.updateStatus(opts);
       this.updateTxHistory(opts);
     },
     2000,
@@ -279,11 +279,11 @@ export class WalletDetailsPage extends WalletTabsChild {
       });
   }
 
-  private updateStatus(force?: boolean) {
+  private updateStatus(opts) {
     this.updatingStatus = true;
 
     this.walletProvider
-      .getStatus(this.wallet, { force: !!force })
+      .getStatus(this.wallet, opts)
       .then(status => {
         this.updatingStatus = false;
         this.setPendingTxps(status.pendingTxps);
