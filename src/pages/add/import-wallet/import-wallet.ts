@@ -15,6 +15,7 @@ import { BwcProvider } from '../../../providers/bwc/bwc';
 import { ConfigProvider } from '../../../providers/config/config';
 import { DerivationPathHelperProvider } from '../../../providers/derivation-path-helper/derivation-path-helper';
 import { OnGoingProcessProvider } from '../../../providers/on-going-process/on-going-process';
+import { PersistenceProvider } from '../../../providers/persistence/persistence';
 import { PlatformProvider } from '../../../providers/platform/platform';
 import { PopupProvider } from '../../../providers/popup/popup';
 import { ProfileProvider } from '../../../providers/profile/profile';
@@ -67,7 +68,8 @@ export class ImportWalletPage {
     private translate: TranslateService,
     private events: Events,
     private pushNotificationsProvider: PushNotificationsProvider,
-    private actionSheetProvider: ActionSheetProvider
+    private actionSheetProvider: ActionSheetProvider,
+    private persistenceProvider: PersistenceProvider
   ) {
     this.okText = this.translate.instant('Ok');
     this.cancelText = this.translate.instant('Cancel');
@@ -96,10 +98,15 @@ export class ImportWalletPage {
       derivationPath: [this.derivationPathByDefault, Validators.required],
       testnetEnabled: [false],
       bwsURL: [this.defaults.bws.url],
-      coin: [null, Validators.required]
+      coin: [null, Validators.required],
+      importVault: [false]
     });
     this.events.subscribe('update:words', data => {
       this.processWalletInfo(data.value);
+    });
+
+    this.persistenceProvider.getVault().then(vault => {
+      if (vault) this.importForm.controls['importVault'].disable();
     });
   }
 
@@ -113,7 +120,7 @@ export class ImportWalletPage {
     this.events.unsubscribe('update:words');
   }
 
-  selectTab(tab: string) {
+  public selectTab(tab: string): void {
     this.selectedTab = tab;
 
     switch (tab) {
@@ -150,6 +157,15 @@ export class ImportWalletPage {
     this.importForm.get('file').updateValueAndValidity();
     this.importForm.get('filePassword').updateValueAndValidity();
     this.importForm.get('backupText').updateValueAndValidity();
+    this.importForm.get('coin').updateValueAndValidity();
+  }
+
+  public onChangeImportVault(importVault: boolean): void {
+    if (importVault) {
+      this.importForm.get('coin').clearValidators();
+    } else {
+      this.importForm.get('coin').setValidators([Validators.required]);
+    }
     this.importForm.get('coin').updateValueAndValidity();
   }
 
@@ -228,7 +244,7 @@ export class ImportWalletPage {
         .importWallet(str2, opts)
         .then(wallet => {
           this.onGoingProcessProvider.clear();
-          this.finish(wallet);
+          this.finish([].concat(wallet));
         })
         .catch(err => {
           this.onGoingProcessProvider.clear();
@@ -239,34 +255,29 @@ export class ImportWalletPage {
     }, 100);
   }
 
-  private finish(wallet): void {
-    this.walletProvider
-      .updateRemotePreferences(wallet)
-      .then(() => {
-        this.profileProvider.setBackupFlag(wallet.credentials.walletId);
-        this.events.publish('status:updated');
-        this.pushNotificationsProvider.updateSubscription(wallet);
-        if (this.fromOnboarding) {
-          this.profileProvider.setOnboardingCompleted();
-          this.navCtrl.push(DisclaimerPage);
-        } else {
-          this.app
-            .getRootNavs()[0]
-            .setRoot(TabsPage)
-            .then(() => {
-              this.events.publish('OpenWallet', wallet);
-            });
-        }
-      })
-      .catch(err => {
-        this.logger.error('Import: could not updateRemotePreferences', err);
-        this.app
-          .getRootNavs()[0]
-          .setRoot(TabsPage)
-          .then(() => {
-            this.events.publish('OpenWallet', wallet);
-          });
-      });
+  private async finish(wallets) {
+    wallets.forEach(wallet => {
+      this.walletProvider.updateRemotePreferences(wallet);
+      this.profileProvider.setBackupFlag(wallet.credentials.walletId);
+      this.pushNotificationsProvider.updateSubscription(wallet);
+    });
+
+    this.events.publish('status:updated');
+    if (this.fromOnboarding) {
+      this.profileProvider.setOnboardingCompleted();
+      this.navCtrl.push(DisclaimerPage);
+    } else if (this.importForm.value.importVault) {
+      // using setRoot(TabsPage) as workaround when comming from scanner
+      this.app.getRootNavs()[0].setRoot(TabsPage);
+    } else {
+      // using setRoot(TabsPage) as workaround when comming from scanner
+      this.app
+        .getRootNavs()[0]
+        .setRoot(TabsPage)
+        .then(() => {
+          this.events.publish('OpenWallet', wallets[0]);
+        });
+    }
   }
 
   private importExtendedPrivateKey(xPrivKey, opts) {
@@ -276,7 +287,7 @@ export class ImportWalletPage {
         .importExtendedPrivateKey(xPrivKey, opts)
         .then(wallet => {
           this.onGoingProcessProvider.clear();
-          this.finish(wallet);
+          this.finish([].concat(wallet));
         })
         .catch(err => {
           if (err instanceof this.errors.NOT_AUTHORIZED) {
@@ -295,10 +306,10 @@ export class ImportWalletPage {
     this.onGoingProcessProvider.set('importingWallet');
     setTimeout(() => {
       this.profileProvider
-        .importMnemonic(words, opts)
+        .importSingleSeedMnemonic(words, opts)
         .then(wallet => {
           this.onGoingProcessProvider.clear();
-          this.finish(wallet);
+          this.finish([].concat(wallet));
         })
         .catch(err => {
           if (err instanceof this.errors.NOT_AUTHORIZED) {
@@ -311,6 +322,21 @@ export class ImportWalletPage {
           return;
         });
     }, 100);
+  }
+
+  private importVaultWallets(words: string, opts): void {
+    this.onGoingProcessProvider.set('importingVault');
+    this.profileProvider
+      .importVaultWallets(words, opts)
+      .then(wallets => {
+        this.onGoingProcessProvider.clear();
+        this.finish(wallets);
+      })
+      .catch(err => {
+        this.onGoingProcessProvider.clear();
+        const title = this.translate.instant('Error');
+        this.popupProvider.ionicAlert(title, err);
+      });
   }
 
   public import(): void {
@@ -365,6 +391,7 @@ export class ImportWalletPage {
       opts.bwsurl = this.importForm.value.bwsURL;
 
     const derivationPath = this.importForm.value.derivationPath;
+
     opts.networkName = this.derivationPathHelperProvider.getNetworkName(
       derivationPath
     );
@@ -372,6 +399,10 @@ export class ImportWalletPage {
       derivationPath
     );
     opts.account = this.derivationPathHelperProvider.getAccount(derivationPath);
+
+    opts.coin = this.importForm.value.coin;
+
+    opts.passphrase = this.importForm.value.passphrase || null;
 
     if (
       !opts.networkName ||
@@ -383,8 +414,6 @@ export class ImportWalletPage {
       this.popupProvider.ionicAlert(title, subtitle);
       return;
     }
-
-    opts.coin = this.importForm.value.coin;
 
     const words: string = this.importForm.value.words || null;
 
@@ -410,8 +439,11 @@ export class ImportWalletPage {
       }
     }
 
-    opts.passphrase = this.importForm.value.passphrase || null;
-    this.importMnemonic(words, opts);
+    if (this.importForm.value.importVault) {
+      this.importVaultWallets(words, opts);
+    } else {
+      this.importMnemonic(words, opts);
+    }
   }
 
   public toggleShowAdvOpts(): void {

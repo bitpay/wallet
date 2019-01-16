@@ -8,6 +8,7 @@ import { AppProvider } from '../app/app';
 import { BwcErrorProvider } from '../bwc-error/bwc-error';
 import { BwcProvider } from '../bwc/bwc';
 import { ConfigProvider } from '../config/config';
+import { DerivationPathHelperProvider } from '../derivation-path-helper/derivation-path-helper';
 import { LanguageProvider } from '../language/language';
 import { Logger } from '../logger/logger';
 import { OnGoingProcessProvider } from '../on-going-process/on-going-process';
@@ -29,6 +30,7 @@ export class ProfileProvider {
   private throttledBwsEvent;
   private validationLock: boolean = false;
   private errors = this.bwcProvider.getErrors();
+  private availableCoins: Array<{ coin: Coin; derivationPath: string }>;
 
   constructor(
     private logger: Logger,
@@ -44,11 +46,31 @@ export class ProfileProvider {
     private popupProvider: PopupProvider,
     private onGoingProcessProvider: OnGoingProcessProvider,
     private translate: TranslateService,
-    private walletProvider: WalletProvider
+    private walletProvider: WalletProvider,
+    private derivationPathHelperProvider: DerivationPathHelperProvider
   ) {
     this.throttledBwsEvent = _.throttle((n, wallet) => {
       this.newBwsEvent(n, wallet);
     }, 10000);
+
+    this.availableCoins = [
+      {
+        coin: Coin.BTC,
+        derivationPath: this.derivationPathHelperProvider.default
+      },
+      {
+        coin: Coin.BCH,
+        derivationPath: this.derivationPathHelperProvider.default
+      },
+      {
+        coin: Coin.BTC,
+        derivationPath: this.derivationPathHelperProvider.defaultTestnet
+      },
+      {
+        coin: Coin.BCH,
+        derivationPath: this.derivationPathHelperProvider.defaultTestnet
+      }
+    ];
   }
 
   private updateWalletSettings(wallet): void {
@@ -474,6 +496,43 @@ export class ProfileProvider {
     });
   }
 
+  public importVaultWallets(words, opts): Promise<any> {
+    const options: Partial<WalletOptions> = opts || {};
+    const promises = [];
+
+    this.availableCoins.forEach(availableCoin => {
+      const derivationPath = availableCoin.derivationPath;
+
+      opts.networkName = this.derivationPathHelperProvider.getNetworkName(
+        derivationPath
+      );
+      opts.derivationStrategy = this.derivationPathHelperProvider.getDerivationStrategy(
+        derivationPath
+      );
+      opts.account = this.derivationPathHelperProvider.getAccount(
+        derivationPath
+      );
+
+      opts.coin = availableCoin.coin;
+      promises.push(
+        this.importMnemonic(words, _.clone(opts), true) // ignore "no copayer found" error
+      );
+    });
+    return Promise.all(promises).then(async walletClients => {
+      walletClients = _.compact(walletClients);
+      // create default vault
+      const defaultVault = {
+        walletIds: [],
+        needsBackup: false
+      };
+      await this.persistenceProvider.storeVault(defaultVault);
+      this.storeWalletsInVault(walletClients);
+      return this.addAndBindWalletClients(walletClients, {
+        bwsurl: options.bwsurl
+      });
+    });
+  }
+
   // An alert dialog
   private askPassword(warnMsg: string, title: string): Promise<any> {
     return new Promise(resolve => {
@@ -725,46 +784,51 @@ export class ProfileProvider {
     return wordList.join(isJA ? '\u3000' : ' ');
   }
 
-  public importMnemonic(words: string, opts): Promise<any> {
-    return new Promise((resolve, reject) => {
+  public importSingleSeedMnemonic(words, opts): Promise<any> {
+    return this.importMnemonic(words, opts).then(walletClient => {
+      return this.addAndBindNewSeedWalletClient(walletClient, {
+        bwsurl: opts.bwsurl
+      });
+    });
+  }
+
+  public importMnemonic(
+    words: string,
+    opts,
+    ignoreError?: boolean
+  ): Promise<any> {
+    return new Promise<any>((resolve, reject) => {
       this.logger.info('Importing Wallet Mnemonic');
       const walletClient = this.bwcProvider.getClient(null, opts);
 
       words = this.normalizeMnemonic(words);
-      walletClient.importFromMnemonic(
-        words,
-        {
-          network: opts.networkName,
-          passphrase: opts.passphrase,
-          entropySourcePath: opts.entropySourcePath,
-          derivationStrategy: opts.derivationStrategy || 'BIP44',
-          account: opts.account || 0,
-          coin: opts.coin
-        },
-        err => {
-          if (err) {
-            if (err instanceof this.errors.NOT_AUTHORIZED) {
+      opts = {
+        network: opts.networkName,
+        passphrase: opts.passphrase,
+        entropySourcePath: opts.entropySourcePath,
+        derivationStrategy: opts.derivationStrategy || 'BIP44',
+        account: opts.account || 0,
+        coin: opts.coin
+      };
+
+      walletClient.importFromMnemonic(words, opts, err => {
+        if (err) {
+          if (err instanceof this.errors.NOT_AUTHORIZED) {
+            if (ignoreError) {
+              return resolve();
+            } else {
               return reject(err);
             }
-
-            this.bwcErrorProvider
-              .cb(err, this.translate.instant('Could not import'))
-              .then((msg: string) => {
-                return reject(msg);
-              });
-          } else {
-            this.addAndBindNewSeedWalletClient(walletClient, {
-              bwsurl: opts.bwsurl
-            })
-              .then(wallet => {
-                return resolve(wallet);
-              })
-              .catch(err => {
-                return reject(err);
-              });
           }
+          this.bwcErrorProvider
+            .cb(err, this.translate.instant('Could not import'))
+            .then((msg: string) => {
+              return reject(msg);
+            });
+        } else {
+          return resolve(walletClient);
         }
-      );
+      });
     });
   }
 
@@ -1227,19 +1291,6 @@ export class ProfileProvider {
     });
   }
 
-  public getFilteredCoinsArray(coins) {
-    const coinsArray = [Coin.BTC, Coin.BCH];
-    return coinsArray.filter(coin => {
-      if (coins.bitcoin && coin == 'btc') {
-        return true;
-      }
-      if (coins.bitcoincash && coin == 'bch') {
-        return true;
-      }
-      return false;
-    });
-  }
-
   public createDefaultVault(): Promise<any> {
     const defaultVault = {
       walletIds: [],
@@ -1298,17 +1349,16 @@ export class ProfileProvider {
     });
   }
 
-  public createDefaultWalletsInVault(coins, opts): Promise<any> {
+  public createDefaultWalletsInVault(opts): Promise<any> {
     // Default wallet options
     const options: Partial<WalletOptions> = opts || {};
     options.m = 1;
     options.n = 1;
     options.networkName = 'livenet';
 
-    const validCoins = this.getFilteredCoinsArray(coins);
     const promises = [];
-    validCoins.forEach(coin => {
-      options.coin = coin;
+    this.availableCoins.forEach(availableCoin => {
+      options.coin = availableCoin.coin;
       promises.push(this.createWallet(_.clone(options)));
     });
     return Promise.all(promises).then(async walletClients => {
