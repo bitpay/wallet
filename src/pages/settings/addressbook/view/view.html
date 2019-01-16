@@ -27,6 +27,18 @@
         {{ address }}
       </div>
     </ion-item>
+    <ion-item>
+      {{'Coin' | translate}}
+      <ion-note item-end>
+        {{ coin | uppercase }}
+      </ion-note>
+    </ion-item>
+    <ion-item>
+      {{'Network' | translate}}
+      <ion-note item-end>
+        {{ network }}
+      </ion-note>
+    </ion-item>
     <ion-item-divider></ion-item-divider>
     <button ion-item class="btn-send" (click)="sendTo()">
       {{'Send Money' | translate}}
