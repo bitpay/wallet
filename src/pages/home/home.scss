@@ -225,6 +225,16 @@ page-home {
     margin-top: 2.6rem;
   }
 
+  .section-header {
+    color: rgba(0, 0, 0, 0.3);
+    font-size: 13px;
+    font-weight: 600;
+    margin: 0 auto;
+    margin-bottom: -7px;
+    text-transform: uppercase;
+    width: 92%;
+  }
+
   .zero-state {
     .wrapper {
       display: flex;

@@ -305,7 +305,8 @@
         </ion-list>
       </div>
 
-      <ion-list class="bitpay-card" *ngIf="showBitPayCard && bitpayCardItems && bitpayCardItems[0] && wallets &&wallets[0]">
+      <ion-list class="bitpay-card" *ngIf="showBitPayCard && bitpayCardItems && bitpayCardItems[0] && wallets && wallets[0]">
+        <div class="section-header" translate>Cards</div>
         <div *ngFor="let card of bitpayCardItems" class="card-item sliding-container">
           <ion-item-sliding>
             <button ion-item (click)="goToCard(card.id)">
