@@ -332,11 +332,13 @@ export class WalletProvider {
         cacheBalance(wallet, status.balance);
       };
 
-      const walletStatusHash = (status): string => {
-        return status ? status.balance.totalAmount : wallet.totalBalanceSat;
+      const walletStatus = status => {
+        const totalAmount = status && status.balance.totalAmount;
+        const availableAmount = status && status.balance.availableAmount;
+        return { availableAmount, totalAmount };
       };
 
-      const _getStatus = (initStatusHash, tries: number): Promise<any> => {
+      const _getStatus = (initStatus, tries: number): Promise<any> => {
         return new Promise((resolve, reject) => {
           if (isStatusCached() && !opts.force) {
             this.logger.debug('Wallet status cache hit:' + wallet.id);
@@ -354,13 +356,10 @@ export class WalletProvider {
           );
           get()
             .then(status => {
-              const currentStatusHash = walletStatusHash(status);
-              this.logger.debug(
-                'Status update. hash:' + currentStatusHash + ' Try:' + tries
-              );
+              const currentStatus = walletStatus(status);
               if (
                 opts.untilItChanges &&
-                initStatusHash == currentStatusHash &&
+                _.isEqual(initStatus, currentStatus) &&
                 tries < this.WALLET_STATUS_MAX_TRIES &&
                 walletId == wallet.credentials.walletId
               ) {
@@ -368,7 +367,7 @@ export class WalletProvider {
                   this.logger.debug(
                     'Retrying update... ' + walletId + ' Try:' + tries
                   );
-                  return _getStatus(initStatusHash, ++tries);
+                  return _getStatus(initStatus, ++tries);
                 }, this.WALLET_STATUS_DELAY_BETWEEN_TRIES * tries);
               }
 
@@ -391,7 +390,7 @@ export class WalletProvider {
         });
       };
 
-      _getStatus(walletStatusHash(wallet.cachedStatus), 0)
+      _getStatus(walletStatus(wallet.cachedStatus), 0)
         .then(status => {
           resolve(status);
         })
