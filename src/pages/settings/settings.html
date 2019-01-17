@@ -85,6 +85,9 @@
         <ion-item-divider>
           BitPay Visa
           <sup>&reg;</sup> Card
+          <button clear item-right ion-button class="settings-list__divider-button" (click)="addBitpayCard()">
+            <ion-icon ios="md-add" md="md-add"></ion-icon>
+          </button>
         </ion-item-divider>
         <ion-list>
           <button ion-item *ngFor="let card of bitpayCardItems" (click)="openCardSettings(card.id)">
@@ -118,7 +121,8 @@
         <label-tip type="info">
           <span label-tip-title translate>Password Not Recoverable</span>
           <div label-tip-body>
-            <span translate>This password cannot be recovered. If this password is lost, funds can only be recovered by reimporting your 12-word recovery phrase.</span>
+            <span translate>This password cannot be recovered. If this password is lost, funds can only be recovered by
+              reimporting your 12-word recovery phrase.</span>
             <br>
             <a class="label-tip-link" (click)="openSupportEncryptPassword()" translate>Learn More</a>
           </div>
