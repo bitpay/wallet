@@ -525,7 +525,6 @@ function getCardConfigFromApiBrandConfig(
 ): ApiCardConfig {
   const cards = apiBrandConfig;
   const [firstCard] = cards;
-  // debugger;
   const { currency, description, redeemInstructions, terms } = firstCard;
   const range = cards.find(
     c => !!(c.maxAmount || c.minAmount) && c.currency === currency
