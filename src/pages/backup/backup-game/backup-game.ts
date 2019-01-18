@@ -21,7 +21,6 @@ import {
 import { BwcErrorProvider } from '../../../providers/bwc-error/bwc-error';
 import { BwcProvider } from '../../../providers/bwc/bwc';
 import { OnGoingProcessProvider } from '../../../providers/on-going-process/on-going-process';
-import { PersistenceProvider } from '../../../providers/persistence/persistence';
 import { ProfileProvider } from '../../../providers/profile/profile';
 import { WalletProvider } from '../../../providers/wallet/wallet';
 
@@ -66,18 +65,15 @@ export class BackupGamePage {
     private bwcErrorProvider: BwcErrorProvider,
     private onGoingProcessProvider: OnGoingProcessProvider,
     private translate: TranslateService,
-    public actionSheetProvider: ActionSheetProvider,
-    private persistenceProvider: PersistenceProvider
+    public actionSheetProvider: ActionSheetProvider
   ) {
     this.walletId = this.navParams.get('walletId');
     this.fromOnboarding = this.navParams.get('fromOnboarding');
     this.wallet = this.profileProvider.getWallet(this.walletId);
-    this.persistenceProvider.getVault().then(vault => {
-      this.vault = vault;
-      this.isVaultWallet =
-        this.vault &&
-        this.vault.walletIds.includes(this.wallet.credentials.walletId);
-    });
+    this.vault = this.profileProvider.getVault();
+    this.isVaultWallet =
+      this.vault &&
+      this.vault.walletIds.includes(this.wallet.credentials.walletId);
     this.credentialsEncrypted = this.wallet.isPrivKeyEncrypted();
   }
 
@@ -271,17 +267,12 @@ export class BackupGamePage {
       }
 
       if (this.isVaultWallet) {
-        const wallets = this.profileProvider.getWallets();
-        const vaultWallets = _.filter(wallets, (x: any) => {
-          return (
-            this.vault && this.vault.walletIds.includes(x.credentials.walletId)
-          );
-        });
+        const vaultWallets = this.profileProvider.getVaultWallets();
         vaultWallets.forEach(wallet => {
           this.profileProvider.setBackupFlag(wallet.credentials.walletId);
         });
         this.vault.needsBackup = false;
-        this.persistenceProvider.storeVault(this.vault);
+        this.profileProvider.storeVault(this.vault);
       } else {
         this.profileProvider.setBackupFlag(this.wallet.credentials.walletId);
       }

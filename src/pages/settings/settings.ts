@@ -13,7 +13,6 @@ import { ConfigProvider } from '../../providers/config/config';
 import { ExternalLinkProvider } from '../../providers/external-link/external-link';
 import { HomeIntegrationsProvider } from '../../providers/home-integrations/home-integrations';
 import { LanguageProvider } from '../../providers/language/language';
-import { PersistenceProvider } from '../../providers/persistence/persistence';
 import { PlatformProvider } from '../../providers/platform/platform';
 import { ProfileProvider } from '../../providers/profile/profile';
 import { TouchIdProvider } from '../../providers/touchid/touchid';
@@ -77,7 +76,6 @@ export class SettingsPage {
     private translate: TranslateService,
     private modalCtrl: ModalController,
     private touchid: TouchIdProvider,
-    private persistenceProvider: PersistenceProvider,
     private walletProvider: WalletProvider,
     private actionSheetProvider: ActionSheetProvider,
     private touchIdProvider: TouchIdProvider
@@ -111,22 +109,13 @@ export class SettingsPage {
       this.config && this.config.lock && this.config.lock.method
         ? this.config.lock.method.toLowerCase()
         : null;
-    this.persistenceProvider.getVault().then(vault => {
-      this.vault = vault;
-      const wallets = this.profileProvider.getWallets();
-      this.vaultWallets = _.filter(wallets, (x: any) => {
-        return (
-          this.vault && this.vault.walletIds.includes(x.credentials.walletId)
-        );
-      });
-      this.encryptEnabled = this.walletProvider.isEncrypted(
-        this.vaultWallets[0]
-      );
-      this.touchIdEnabled = this.config.touchIdFor
-        ? this.config.touchIdFor[this.vaultWallets[0].credentials.walletId]
-        : null;
-      this.touchIdPrevValue = this.touchIdEnabled;
-    });
+    this.vault = this.profileProvider.getVault();
+    this.vaultWallets = this.profileProvider.getVaultWallets();
+    this.encryptEnabled = this.walletProvider.isEncrypted(this.vaultWallets[0]);
+    this.touchIdEnabled = this.config.touchIdFor
+      ? this.config.touchIdFor[this.vaultWallets[0].credentials.walletId]
+      : null;
+    this.touchIdPrevValue = this.touchIdEnabled;
     this.touchIdProvider.isAvailable().then((isAvailable: boolean) => {
       this.touchIdAvailable = isAvailable;
     });

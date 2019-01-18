@@ -10,7 +10,6 @@ import { ConfigProvider } from '../../../providers/config/config';
 import { DerivationPathHelperProvider } from '../../../providers/derivation-path-helper/derivation-path-helper';
 import { ExternalLinkProvider } from '../../../providers/external-link/external-link';
 import { OnGoingProcessProvider } from '../../../providers/on-going-process/on-going-process';
-import { PersistenceProvider } from '../../../providers/persistence/persistence';
 import { PopupProvider } from '../../../providers/popup/popup';
 import { ProfileProvider } from '../../../providers/profile/profile';
 import { PushNotificationsProvider } from '../../../providers/push-notifications/push-notifications';
@@ -72,8 +71,7 @@ export class CreateWalletPage implements OnInit {
     private events: Events,
     private pushNotificationsProvider: PushNotificationsProvider,
     private externalLinkProvider: ExternalLinkProvider,
-    private bwcErrorProvider: BwcErrorProvider,
-    private persistenceProvider: PersistenceProvider
+    private bwcErrorProvider: BwcErrorProvider
   ) {
     this.okText = this.translate.instant('Ok');
     this.cancelText = this.translate.instant('Cancel');
@@ -264,23 +262,18 @@ export class CreateWalletPage implements OnInit {
       });
   }
 
-  private async setBackupFlagIfNeeded(walletId: string) {
+  private setBackupFlagIfNeeded(walletId: string) {
     if (this.createForm.value.selectedSeed == 'set') {
       this.profileProvider.setBackupFlag(walletId);
     } else if (this.createForm.value.addToVault) {
-      const vault = await this.persistenceProvider.getVault();
+      const vault = this.profileProvider.getVault();
       if (!vault.needsBackup) this.profileProvider.setBackupFlag(walletId);
     }
   }
 
   private async setFingerprintIfNeeded(walletId: string) {
     if (!this.createForm.value.addToVault) return;
-
-    const vault = await this.persistenceProvider.getVault();
-    const wallets = this.profileProvider.getWallets();
-    const vaultWallets = _.filter(wallets, (wallet: any) => {
-      return vault && vault.walletIds.includes(wallet.credentials.walletId);
-    });
+    const vaultWallets = this.profileProvider.getVaultWallets();
     const config = this.configProvider.get();
     const touchIdEnabled = config.touchIdFor
       ? config.touchIdFor[vaultWallets[0].credentials.walletId]

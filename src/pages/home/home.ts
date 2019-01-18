@@ -359,28 +359,20 @@ export class HomePage {
     }, 10000);
   }
 
-  private vaultHasWallet(walletId): boolean {
-    return this.vault && this.vault.walletIds.includes(walletId);
-  }
-
   private setWallets = _.debounce(
     async () => {
-      this.vault = await this.persistenceProvider.getVault();
       this.wallets = this.profileProvider.getWallets();
-      /* TODO create a provider for common vault operations like getVaultWallets() */
-      this.vaultWallets = _.filter(this.wallets, (x: any) => {
-        return this.vaultHasWallet(x.credentials.walletId);
-      });
+      this.vaultWallets = this.profileProvider.getVaultWallets();
       this.walletsBtc = _.filter(this.wallets, (x: any) => {
         return (
           x.credentials.coin == 'btc' &&
-          !this.vaultHasWallet(x.credentials.walletId)
+          !this.profileProvider.vaultHasWallet(x.credentials.walletId)
         );
       });
       this.walletsBch = _.filter(this.wallets, (x: any) => {
         return (
           x.credentials.coin == 'bch' &&
-          !this.vaultHasWallet(x.credentials.walletId)
+          !this.profileProvider.vaultHasWallet(x.credentials.walletId)
         );
       });
       this.updateAllWallets();
