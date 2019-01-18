@@ -156,6 +156,16 @@ export const offeredGiftCards: BaseCardConfig[] = ([
     website: 'royalcaribbean.com'
   },
   {
+    brand: CardBrand.sonyPlayStation,
+    defaultClaimCodeType: ClaimCodeType.code,
+    emailRequired: false,
+    icon: `${getCardImageDirectory(CardName.sonyPlayStation)}icon.png`,
+    logo: `${getCardImageDirectory(CardName.sonyPlayStation)}logo.png`,
+    logoBackgroundColor: '#1466B2',
+    name: CardName.sonyPlayStation,
+    website: 'playstation.com'
+  },
+  {
     brand: CardBrand.spotify,
     defaultClaimCodeType: ClaimCodeType.code,
     emailRequired: false,
