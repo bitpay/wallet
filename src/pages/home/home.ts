@@ -586,7 +586,11 @@ export class HomePage {
             wallet.status = status;
             wallet.error = null;
 
-            if (wallet.network == 'livenet') this.addToTotalAmount(wallet.status.availableBalanceSat, wallet.coin);
+            if (wallet.network == 'livenet')
+              this.addToTotalAmount(
+                wallet.status.availableBalanceSat,
+                wallet.coin
+              );
 
             if (!foundMessage && !_.isEmpty(status.serverMessage)) {
               this.serverMessage = status.serverMessage;
@@ -628,7 +632,7 @@ export class HomePage {
 
       // No serverMessage for any wallet?
       if (!foundMessage) this.serverMessage = null;
-    })
+    });
   }
 
   public dismissServerMessage(): void {
@@ -808,11 +812,19 @@ export class HomePage {
 
     Promise.all(promises).then(() => {
       const settings = this.configProvider.get().wallet.settings;
-      const totalAmountBtcFiat = this.rateProvider.toFiat(this.totalAmountBtc, settings.alternativeIsoCode, 'btc');
-      const totalAmountBchFiat = this.rateProvider.toFiat(this.totalAmountBtc, settings.alternativeIsoCode, 'bch');
+      const totalAmountBtcFiat = this.rateProvider.toFiat(
+        this.totalAmountBtc,
+        settings.alternativeIsoCode,
+        'btc'
+      );
+      const totalAmountBchFiat = this.rateProvider.toFiat(
+        this.totalAmountBtc,
+        settings.alternativeIsoCode,
+        'bch'
+      );
 
       this.totalBalance = totalAmountBtcFiat + totalAmountBchFiat;
-    })
+    });
   }
 
   private resetTotalBalance(): void {
