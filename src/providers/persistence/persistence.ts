@@ -40,6 +40,9 @@ const Keys = {
   FEEDBACK: 'feedback',
   FOCUSED_WALLET_ID: 'focusedWalletId',
   GIFT_CARD_CONFIG_CACHE: 'giftCardConfigCache',
+  ACTIVE_GIFT_CARDS: (network: Network) => {
+    return `activeGiftCards-${network}`;
+  },
   GIFT_CARDS: (cardName: CardName, network: Network) => {
     const legacyGiftCardKey = getLegacyGiftCardKey(cardName, network);
     return legacyGiftCardKey || `giftCards-${cardName}-${network}`;
@@ -340,6 +343,14 @@ export class PersistenceProvider {
 
   setGiftCardConfigCache(data) {
     return this.storage.set(Keys.GIFT_CARD_CONFIG_CACHE, data);
+  }
+
+  getActiveGiftCards(network: Network) {
+    return this.storage.get(Keys.ACTIVE_GIFT_CARDS(network));
+  }
+
+  setActiveGiftCards(network: Network, data) {
+    return this.storage.set(Keys.ACTIVE_GIFT_CARDS(network), data);
   }
 
   getGiftCardConfigCache() {

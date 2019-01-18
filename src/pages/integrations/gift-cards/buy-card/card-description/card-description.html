@@ -5,25 +5,53 @@
   </div>
   <div *ngSwitchCase="CardName.amazonJapan">
     <div translate>Only redeemable on www.amazon.co.jp (Japan website)</div>
-    <div translate>Amazon.co.jp Gift Cards never expire and can be redeemed towards millions of items at www.amazon.co.jp.</div>
+    <div translate>Amazon.co.jp Gift Cards never expire and can be redeemed towards millions of items at
+      www.amazon.co.jp.</div>
   </div>
   <div *ngSwitchCase="CardName.delta">
     <div translate>
-      The Gift of Go.™ With over 300 destinations and limitless adventures to choose from, the Delta Gift Card opens up a world of possibilities.
+      The Gift of Go.™ With over 300 destinations and limitless adventures to choose from, the Delta Gift Card opens up
+      a world of possibilities.
     </div>
     <div translate>
-      Delta Gift Cards can be used toward airfare on any Delta marketed flight through www.delta.com, at the airport, through reservations, or by phone with Delta Vacations®. Delta Gift Cards do not have any expiration dates or fees.
+      Delta Gift Cards can be used toward airfare on any Delta marketed flight through www.delta.com, at the airport,
+      through reservations, or by phone with Delta Vacations®. Delta Gift Cards do not have any expiration dates or
+      fees.
     </div>
   </div>
   <div *ngSwitchCase="CardName.mercadoLibre">
     <div translate>Only redeemable on Mercado Livre (Brazil)</div>
     <div translate>
-      You can use your Mercado Livre gift cards on your Mercado Pago account for everyday expenses like utilities and metro rides.
+      You can use your Mercado Livre gift cards on your Mercado Pago account for everyday expenses like utilities and
+      metro rides.
     </div>
   </div>
+  <div *ngSwitchCase="CardName.potteryBarn">
+    <div>
+      Pottery Barn® is a home furnishings brand for real people, real lives and real homes. We passionately infuse
+      quality and comfort into everything we create, from furniture to decor to bed and bath essentials, so you can
+      live a more functional, beautiful and comfortable life at home. Our Wedding Registry services make it easy to
+      choose the perfect gift, and our Design Crew can help you with projects big and small, from design to
+      installation.
+    </div>
+    <div>
+      Pottery Barn® gift cards may also be redeemed at Williams Sonoma®, pottery barn kids®, PBteen®, Mark and
+      Graham®, and west elm®.
+    </div>
+  </div>
+  <div *ngSwitchCase="CardName.spotify">
+    <div translate>With Spotify, it’s easy to find the right music for every moment – on your phone, your computer,
+      your tablet and more.
+      There are millions of tracks on Spotify. So, whether you’re working out, partying or relaxing, the right music is
+      always at your fingertips. Choose what you want to listen to, or let Spotify surprise you.
+      You can also browse through the music collections of friends, artists and celebrities, or create a radio station
+      and just sit back.</div>
+  </div>
   <div *ngSwitchCase="CardName.uber">
-    <div translate>Give friends and family the gift of tapping a button and getting a ride - any time of day, any day of year.</div>
-    <div translate>Uber gift cards also apply to UberEATS orders. Enjoy food from hundreds of restaurants, delivered at Uber speed.</div>
+    <div translate>Give friends and family the gift of tapping a button and getting a ride - any time of day, any day
+      of year.</div>
+    <div translate>Uber gift cards also apply to UberEATS orders. Enjoy food from hundreds of restaurants, delivered at
+      Uber speed.</div>
   </div>
   <div *ngSwitchDefault externalize-links>
     <div markdown [data]="prepForMarkdown(cardConfig.description)"></div>

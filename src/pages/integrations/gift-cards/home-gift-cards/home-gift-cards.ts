@@ -132,10 +132,23 @@ export class HomeGiftCards implements OnInit {
 
   private async loadGiftCards() {
     this.disableArchiveAnimation = true;
-    const purchasedBrands = await this.giftCardProvider.getPurchasedBrands();
-    const { activeCards } = this.getActiveGiftCards(purchasedBrands);
-    this.updatePendingGiftCards(purchasedBrands);
-    this.activeBrands = activeCards;
+    const activeCards = await this.giftCardProvider.getActiveCards();
+    const activeBrands = this.groupCardsByBrand(activeCards);
+    this.updatePendingGiftCards(activeBrands);
+    this.activeBrands = activeBrands;
+  }
+
+  private groupCardsByBrand(cards: GiftCard[]): GiftCard[][] {
+    return cards
+      .reduce(
+        (brands, c) => {
+          const brandCards = brands.find(b => b[0].name === c.name);
+          brandCards ? brandCards.push(c) : brands.push([c]);
+          return brands;
+        },
+        [] as GiftCard[][]
+      )
+      .sort((a, b) => (a[0].name > b[0].name ? 1 : -1));
   }
 }
 

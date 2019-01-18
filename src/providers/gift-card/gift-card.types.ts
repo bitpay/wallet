@@ -1,12 +1,21 @@
 export enum CardBrand {
   amazon = 'Amazon',
+  barnesNoble = 'Barnes & Noble',
+  bassProShops = 'Bass Pro Shops',
+  burgerKing = 'Burger King',
   carnivalCruiseLine = 'Carnival Cruise Line',
   delta = 'Delta',
+  dsw = 'DSW',
+  gamestop = 'GameStop',
   googlePlay = 'Google Play',
   homeDepot = 'Home Depot',
   hotelsCom = 'Hotels.com',
   mercadoLibre = 'Mercado Livre',
+  papaJohns = "Papa John's",
+  potteryBarn = 'Pottery Barn',
   royalCaribbean = 'Royal Caribbean',
+  sonyPlayStation = 'PlayStation Store',
+  spotify = 'Spotify',
   uber = 'Uber',
   uberEats = 'Uber Eats',
   venue = 'Venue'
@@ -15,22 +24,37 @@ export enum CardBrand {
 export enum CardName {
   amazon = 'Amazon.com',
   amazonJapan = 'Amazon.co.jp',
+  barnesNoble = 'Barnes & Noble',
+  bassProShops = 'Bass Pro Shops',
+  burgerKing = 'BURGER KING',
   carnivalCruiseLine = 'Carnival Cruise Line',
   delta = 'Delta Air Lines',
+  dsw = 'DSW',
+  gamestop = 'GameStop',
   googlePlay = 'Google Play',
   homeDepot = 'Home Depot',
   hotelsCom = 'Hotels.com',
   mercadoLibre = 'Mercado Livre',
+  papaJohns = "Papa John's",
+  potteryBarn = 'Pottery Barn',
   royalCaribbean = 'Royal Caribbean',
+  sonyPlayStation = 'Sony PlayStation',
+  spotify = 'Spotify',
   uber = 'Uber',
   uberEats = 'Uber Eats',
   venue = 'Venue USD'
 }
 
+export enum ClaimCodeType {
+  barcode = 'barcode',
+  code = 'code',
+  link = 'link'
+}
+
 export interface BaseCardConfig {
   brand: CardBrand;
   cardImage: string;
-  defaultClaimCodeType: 'barcode' | 'link' | 'code';
+  defaultClaimCodeType: ClaimCodeType;
   emailRequired: boolean;
   icon: string;
   logo: string;

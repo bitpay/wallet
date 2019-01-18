@@ -225,6 +225,16 @@ page-home {
     margin-top: 2.6rem;
   }
 
+  .section-header {
+    color: rgba(0, 0, 0, 0.3);
+    font-size: 13px;
+    font-weight: 600;
+    margin: 0 auto;
+    margin-bottom: -7px;
+    text-transform: uppercase;
+    width: 92%;
+  }
+
   .zero-state {
     .wrapper {
       display: flex;
@@ -250,7 +260,7 @@ page-home {
     $gift-card-item-height: 73px;
 
     background: none;
-    // height: $gift-card-item-height + 14px;
+    height: $gift-card-item-height + 14px;
     padding-left: $gift-card-item-side-padding;
     padding-right: $gift-card-item-side-padding;
 
@@ -303,21 +313,26 @@ page-home {
     .card-item {
       button {
         background: linear-gradient(45deg, #202036 -25%, #1a3b8b);
+
         .item-inner .input-wrapper {
           padding-left: 5px;
           margin-right: 5px;
           min-width: 7.5rem;
         }
+
         ion-label img {
           width: 7.5rem;
         }
+
         ion-note {
           text-align: right;
           color: white;
           line-height: 22px;
+
           .funds {
             font-size: 16px;
           }
+
           .number {
             opacity: 0.5;
             font-size: 14px;

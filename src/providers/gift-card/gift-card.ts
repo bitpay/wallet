@@ -120,10 +120,28 @@ export class GiftCardProvider {
     return purchasedCards.filter(brand => brand.length);
   }
 
-  async saveCard(giftCard, opts?: GiftCardSaveParams) {
+  async saveCard(giftCard: GiftCard, opts?: GiftCardSaveParams) {
     const oldGiftCards = await this.getCardMap(giftCard.name);
     const newMap = this.getNewSaveableGiftCardMap(oldGiftCards, giftCard, opts);
-    return this.persistCards(giftCard.name, newMap);
+    const savePromise = this.persistCards(giftCard.name, newMap);
+    await Promise.all([savePromise, this.updateActiveCards([giftCard])]);
+  }
+
+  async updateActiveCards(giftCardsToUpdate: GiftCard[]) {
+    const oldActiveGiftCards: GiftCardMap = await this.persistenceProvider.getActiveGiftCards(
+      this.getNetwork()
+    );
+    const newMap = giftCardsToUpdate.reduce(
+      (updatedMap, c) =>
+        this.getNewSaveableGiftCardMap(updatedMap, c, {
+          remove: c.archived
+        }),
+      oldActiveGiftCards
+    );
+    return this.persistenceProvider.setActiveGiftCards(
+      this.getNetwork(),
+      JSON.stringify(newMap)
+    );
   }
 
   persistCards(cardName: CardName, newMap: GiftCardMap) {
@@ -186,7 +204,10 @@ export class GiftCardProvider {
       card.archived = true;
       return this.getNewSaveableGiftCardMap(newMap, card);
     }, oldGiftCards);
-    await this.persistCards(cardName, newMap);
+    await Promise.all([
+      this.persistCards(cardName, newMap),
+      this.updateActiveCards(activeCards.map(c => ({ ...c, archived: true })))
+    ]);
     activeCards
       .map(c => ({ ...c, archived: true }))
       .forEach(c => this.cardUpdatesSubject.next(c));
@@ -348,13 +369,38 @@ export class GiftCardProvider {
     }));
   }
 
+  async getActiveCards(): Promise<GiftCard[]> {
+    const giftCardMap = await this.persistenceProvider.getActiveGiftCards(
+      this.getNetwork()
+    );
+    return !giftCardMap
+      ? this.migrateAndFetchActiveCards()
+      : Object.keys(giftCardMap)
+          .map(invoiceId => giftCardMap[invoiceId] as GiftCard)
+          .sort(sortByDescendingDate);
+  }
+
+  async migrateAndFetchActiveCards(): Promise<GiftCard[]> {
+    const purchasedBrands = await this.getPurchasedBrands();
+    const activeCardsGroupedByBrand = purchasedBrands.filter(
+      cards => cards.filter(c => !c.archived).length
+    );
+    const activeCards = activeCardsGroupedByBrand
+      .reduce(
+        (allCards, brandCards) => [...allCards, ...brandCards],
+        [] as GiftCard[]
+      )
+      .filter(c => !c.archived);
+    await this.updateActiveCards(activeCards);
+    return activeCards;
+  }
+
   async fetchAvailableCardMap() {
     const url = `${this.credentials.BITPAY_API_URL}/gift-cards/cards`;
-    const availableCardMapPromise = this.http.get(url).toPromise() as Promise<
+    this.availableCardMapPromise = this.http.get(url).toPromise() as Promise<
       AvailableCardMap
     >;
-    const availableCardMap = await availableCardMapPromise;
-    this.availableCardMapPromise = availableCardMapPromise;
+    const availableCardMap = await this.availableCardMapPromise;
     this.cacheApiCardConfig(availableCardMap);
     return this.availableCardMapPromise;
   }
@@ -363,6 +409,10 @@ export class GiftCardProvider {
     const cardNames = Object.keys(availableCardMap);
     const previousCache = await this.persistenceProvider.getGiftCardConfigCache();
     const apiCardConfigCache = cardNames
+      .filter(
+        cardName =>
+          availableCardMap[cardName] && availableCardMap[cardName].length
+      )
       .map(cardName =>
         getCardConfigFromApiBrandConfig(availableCardMap[cardName])
       )
@@ -374,7 +424,9 @@ export class GiftCardProvider {
       ...previousCache,
       ...apiCardConfigCache
     };
-    return this.persistenceProvider.setGiftCardConfigCache(newCache);
+    if (JSON.stringify(previousCache) !== JSON.stringify(newCache)) {
+      await this.persistenceProvider.setGiftCardConfigCache(newCache);
+    }
   }
 
   async fetchCachedApiCardConfig(): Promise<AvailableCardMap> {
@@ -400,6 +452,11 @@ export class GiftCardProvider {
     const availableCardNames = Object.keys(availableCardMap);
     return this.getOfferedCards()
       .filter(cardConfig => availableCardNames.indexOf(cardConfig.name) > -1)
+      .filter(
+        cardConfig =>
+          availableCardMap[cardConfig.name] &&
+          availableCardMap[cardConfig.name].length
+      )
       .map(cardConfig => {
         const apiBrandConfig = availableCardMap[cardConfig.name];
         const apiCardConfig = getCardConfigFromApiBrandConfig(apiBrandConfig);
@@ -412,7 +469,7 @@ export class GiftCardProvider {
   }
 
   getOfferedCards(): BaseCardConfig[] {
-    return offeredGiftCards.sort((a, b) => (a.name > b.name ? 1 : -1));
+    return offeredGiftCards.sort((a, b) => (a.brand > b.brand ? 1 : -1));
   }
 
   getIcon(cardName: CardName): string {
