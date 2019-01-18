@@ -313,7 +313,6 @@ a.royal {
 .card {
   padding-top: 1px;
   width: 92%;
-  padding-bottom: 10px;
   box-shadow: 0 7px 12px rgba(0, 0, 0, 0.06);
   overflow: hidden;
   margin: 20px auto;
@@ -325,10 +324,16 @@ a.royal {
     background-color: #ffffff;
     margin-bottom: 5px;
     min-height: 48px;
+    &:last-child {
+      border-bottom: none;
+    }
   }
 
   .item-block {
     padding: 5px 0 0px 24px;
+    &:last-child .item-inner {
+      border-bottom: 1px solid #f4f4f4;
+    }
   }
 
   .input-wrapper {
@@ -438,9 +443,9 @@ ion-alert .alert-message {
 
 .header-extend {
   background: $toolbar-background;
-  height: 180px;
+  height: 60px;
   position: absolute;
-  top: -100px;
+  top: 120px;
   width: 100%;
   z-index: 0;
   display: flex;

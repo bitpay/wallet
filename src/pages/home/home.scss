@@ -1,6 +1,86 @@
 page-home {
   background: $toolbar-background;
 
+  // Header
+  ion-refresher {
+    height: 120px;
+    &-content {
+      margin-top: -25px;
+    }
+    .refresher-pulling ion-icon {
+      color: white;
+    }
+    .refresher-refreshing {
+      .spinner-crescent circle,
+      .spinner-ios line {
+        stroke: white;
+      }
+    }
+  }
+  .balance-card {
+    background: $toolbar-background;
+    overflow: hidden;
+  }
+  .balance-header {
+    margin-top: 15px;
+    height: 11rem;
+    color: color($colors, light);
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    .balance-header-info {
+      margin-top: -4rem;
+      .balance-amount {
+        .title {
+          margin-bottom: 1.3rem;
+          opacity: 0.5;
+        }
+        .balance {
+          cursor: pointer;
+          font-size: 32px;
+          font-weight: 600;
+        }
+        .balance-hidden {
+          .title {
+            cursor: pointer;
+            font-size: 20px;
+            font-weight: 500;
+          }
+        }
+      }
+    }
+  }
+  .balance-error {
+    .title {
+      cursor: pointer;
+      font-size: 20px;
+      font-weight: 500;
+    }
+  }
+  .balance-spendable {
+    margin-top: 5px;
+    font-size: 13px;
+    cursor: pointer;
+    ion-icon {
+      vertical-align: text-bottom;
+      margin-right: 5px;
+    }
+  }
+  .balance-scanning {
+    .title {
+      font-size: 20px;
+      font-weight: 500;
+    }
+  }
+  .history-wrapper {
+    margin-top: 1.3rem;
+  }
+
+
+  // -------------------
+
   .home-logo {
     height: 24px;
     position: relative;
@@ -41,12 +121,24 @@ page-home {
       align-items: center;
       max-width: 70%;
 
-      > img {
-        margin-right: 7px;
+      
+      .coin-img {
+        width: 3rem;
+        text-align: center;
+        margin-right: 2rem;
+        > img {
+          vertical-align: text-bottom;
+        }
       }
 
       > span {
         line-height: 18px;
+      }
+
+      .coin-title {
+        font-weight: bold;
+        font-size: 1.8rem;
+        color: color($colors, dark);
       }
     }
 

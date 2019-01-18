@@ -42,6 +42,7 @@ import { PersistenceProvider } from '../../providers/persistence/persistence';
 import { PlatformProvider } from '../../providers/platform/platform';
 import { PopupProvider } from '../../providers/popup/popup';
 import { ProfileProvider } from '../../providers/profile/profile';
+import { RateProvider } from '../../providers/rate/rate';
 import { Coin, WalletProvider } from '../../providers/wallet/wallet';
 import { SettingsPage } from '../settings/settings';
 
@@ -74,6 +75,11 @@ export class HomePage {
   public payProDetailsData;
   public remainingTimeStr: string;
   public slideDown: boolean;
+  public showBitcoinWallets: boolean;
+  public showBitcoinCashWallets: boolean;
+  public totalBalance: number;
+  public totalAmountBtc: number;
+  public totalAmountBch: number;
 
   public showRateCard: boolean;
   public homeTip: boolean;
@@ -115,7 +121,8 @@ export class HomePage {
     private translate: TranslateService,
     private emailProvider: EmailNotificationsProvider,
     private clipboardProvider: ClipboardProvider,
-    private incomingDataProvider: IncomingDataProvider
+    private incomingDataProvider: IncomingDataProvider,
+    private rateProvider: RateProvider
   ) {
     this.slideDown = false;
     this.updatingWalletId = {};
@@ -141,6 +148,7 @@ export class HomePage {
   }
 
   private _willEnter() {
+    this.resetTotalBalance();
     // Show recent transactions card
     this.recentTransactionsEnabled = this.configProvider.get().recentTransactions.enabled;
 
@@ -375,6 +383,7 @@ export class HomePage {
           !this.profileProvider.vaultHasWallet(x.credentials.walletId)
         );
       });
+      this.resetTotalBalance();
       this.updateAllWallets();
     },
     5000,
@@ -535,16 +544,6 @@ export class HomePage {
       });
   }
 
-  private debounceUpdateTxps = _.debounce(
-    () => {
-      this.updateTxps();
-    },
-    5000,
-    {
-      leading: true
-    }
-  );
-
   private updateTxps() {
     this.profileProvider
       .getTxps({ limit: 3 })
@@ -558,16 +557,6 @@ export class HomePage {
         this.logger.error(err);
       });
   }
-
-  private debounceUpdateNotifications = _.debounce(
-    () => {
-      this.getNotifications();
-    },
-    5000,
-    {
-      leading: true
-    }
-  );
 
   private getNotifications() {
     if (!this.recentTransactionsEnabled) return;
@@ -597,6 +586,8 @@ export class HomePage {
             wallet.status = status;
             wallet.error = null;
 
+            if (wallet.network == 'livenet') this.addToTotalAmount(wallet.status.availableBalanceSat, wallet.coin);
+
             if (!foundMessage && !_.isEmpty(status.serverMessage)) {
               this.serverMessage = status.serverMessage;
               this.checkServerMessage();
@@ -625,15 +616,19 @@ export class HomePage {
       });
     };
 
+    const promises = [];
     _.each(this.wallets, wallet => {
-      pr(wallet).then(() => {
-        this.debounceUpdateTxps();
-        this.debounceUpdateNotifications();
-
-        // No serverMessage for any wallet?
-        if (!foundMessage) this.serverMessage = null;
-      });
+      promises.push(pr(wallet));
     });
+
+    Promise.all(promises).then(() => {
+      this.updateTxps();
+      this.getNotifications();
+      this.calculateTotalBalance();
+
+      // No serverMessage for any wallet?
+      if (!foundMessage) this.serverMessage = null;
+    })
   }
 
   public dismissServerMessage(): void {
@@ -715,10 +710,12 @@ export class HomePage {
   }
 
   public reorderBtc(): void {
+    this.showBitcoinWallets = false;
     this.showReorderBtc = !this.showReorderBtc;
   }
 
   public reorderBch(): void {
+    this.showBitcoinCashWallets = false;
     this.showReorderBch = !this.showReorderBch;
   }
 
@@ -796,5 +793,31 @@ export class HomePage {
 
   public settings(): void {
     this.navCtrl.push(SettingsPage);
+  }
+
+  private addToTotalAmount(amountSat: number, coin: string): void {
+    if (coin == 'btc') this.totalAmountBtc += amountSat;
+    if (coin == 'bch') this.totalAmountBch += amountSat;
+  }
+
+  private calculateTotalBalance(): void {
+    const promises = [
+      this.rateProvider.updateRatesBtc(),
+      this.rateProvider.updateRatesBch()
+    ];
+
+    Promise.all(promises).then(() => {
+      const settings = this.configProvider.get().wallet.settings;
+      const totalAmountBtcFiat = this.rateProvider.toFiat(this.totalAmountBtc, settings.alternativeIsoCode, 'btc');
+      const totalAmountBchFiat = this.rateProvider.toFiat(this.totalAmountBtc, settings.alternativeIsoCode, 'bch');
+
+      this.totalBalance = totalAmountBtcFiat + totalAmountBchFiat;
+    })
+  }
+
+  private resetTotalBalance(): void {
+    this.totalAmountBch = 0;
+    this.totalAmountBtc = 0;
+    this.totalBalance = 0;
   }
 }
