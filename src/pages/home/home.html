@@ -24,15 +24,15 @@
     <expandable-header class="balance-card" [scrollArea]="scrollArea">
       <expandable-header-primary class="balance-header">
         <div class="balance-header-info">
-          <div (longPress)="toggleBalance()" class="balance-amount">
-            <div (tap)="updateAll(true)" *ngIf="true">
+          <div (longPress)="toggleBalance()" class="balance-amount" *ngIf="!scanningTotalBalance && !updateStatusError">
+            <div *ngIf="showTotalBalance">
               <div class="title">
                 <span>Total value of wallets</span>
               </div>
               <div class="balance">{{ totalBalance | currency : '' : 2}}</div>
             </div>
 
-            <div class="balance-hidden" *ngIf="false">
+            <div class="balance-hidden" *ngIf="!showTotalBalance">
               <span class="title" translate>[Balance Hidden]</span>
               <div translate>
                 Tap and hold to show
@@ -40,20 +40,16 @@
             </div>
           </div>
 
-          <div class="balance-scanning" *ngIf="false">
+          <div class="balance-scanning" *ngIf="scanningTotalBalance && !updateStatusError">
             <span class="title" translate>[Scanning Funds]</span>
             <div translate>
               Please wait...
             </div>
           </div>
 
-          <div class="balance-error" *ngIf="false" (tap)="updateAll(true)">
+          <div class="balance-error" *ngIf="updateStatusError" (tap)="setWallets()">
             <span class="title" translate>Tap to retry</span>
             <div>{{updateStatusError}}.</div>
-          </div>
-          <div class="balance-error" *ngIf="false" (tap)="recreate()">
-            <span class="title" translate>Tap to recreate</span>
-            <div translate>This wallet is not registered at the given Bitcore Wallet Service (BWS). You can recreate it from the local information.</div>
           </div>
         </div>
       </expandable-header-primary>

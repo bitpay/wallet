@@ -78,9 +78,12 @@ export class HomePage {
   public showVaultWallets: boolean;
   public showBitcoinWallets: boolean;
   public showBitcoinCashWallets: boolean;
+  public showTotalBalance: boolean;
+  public scanningTotalBalance: boolean;
   public totalBalance: number;
   public totalAmountBtc: number;
   public totalAmountBch: number;
+  public updateStatusError: string;
 
   public showRateCard: boolean;
   public homeTip: boolean;
@@ -130,6 +133,8 @@ export class HomePage {
     this.addressbook = {};
     this.cachedBalanceUpdateOn = '';
     this.isElectron = this.platformProvider.isElectron;
+    this.scanningTotalBalance = true;
+    this.showTotalBalance = true;
     this.showReorderBtc = false;
     this.showReorderBch = false;
     this.showReorderVaultWallets = false;
@@ -606,6 +611,7 @@ export class HomePage {
             return resolve();
           })
           .catch(err => {
+            this.updateStatusError = this.translate.instant('Error updating status for some of your wallets');
             wallet.error =
               err === 'WALLET_NOT_REGISTERED'
                 ? 'Wallet not registered'
@@ -630,9 +636,12 @@ export class HomePage {
       this.updateTxps();
       this.getNotifications();
       this.calculateTotalBalance();
+      this.updateStatusError = null;
 
       // No serverMessage for any wallet?
       if (!foundMessage) this.serverMessage = null;
+    }).catch(err => {
+      this.logger.error('Error updating status for some of the wallets', err);
     });
   }
 
@@ -826,12 +835,26 @@ export class HomePage {
       );
 
       this.totalBalance = totalAmountBtcFiat + totalAmountBchFiat;
+      this.logger.debug('Total value of all wallets: ' + this.totalBalance);
+
+      this.scanningTotalBalance = false;
+      this.updateStatusError = null;
+    }).catch(err => {
+      this.logger.error('Error calculating total value of wallets: ', err);
+      this.updateStatusError = this.translate.instant('Error calculating total value of wallets');
     });
   }
 
   private resetTotalBalance(): void {
+    this.scanningTotalBalance = true;
     this.totalAmountBch = 0;
     this.totalAmountBtc = 0;
     this.totalBalance = 0;
   }
+
+  public toggleBalance() {
+    this.showTotalBalance = !this.showTotalBalance;
+    this.logger.debug('showTotalBalance toggled to: ' + this.showTotalBalance);
+  }
+
 }
