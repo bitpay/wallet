@@ -75,6 +75,7 @@ export class HomePage {
   public payProDetailsData;
   public remainingTimeStr: string;
   public slideDown: boolean;
+  public showVaultWallets: boolean;
   public showBitcoinWallets: boolean;
   public showBitcoinCashWallets: boolean;
   public totalBalance: number;
@@ -724,6 +725,7 @@ export class HomePage {
   }
 
   public reorderVault(): void {
+    this.showVaultWallets = false;
     this.showReorderVaultWallets = !this.showReorderVaultWallets;
   }
 

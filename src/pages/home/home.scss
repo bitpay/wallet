@@ -80,10 +80,24 @@ page-home {
 
   // -------------------
 
-  .home-logo {
-    height: 24px;
-    position: relative;
-    top: 3px;
+  .home-header {
+    .add-button {
+      margin-left: 1rem;
+      ion-icon {
+        font-size: 3rem;
+      }
+    }
+    .settings-button {
+      margin-right: 1rem;
+      img {
+        opacity: 0.6;
+      }
+    }
+    .home-logo {
+      height: 24px;
+      position: relative;
+      top: 3px;
+    }
   }
 
   .toolbar-title-ios {
@@ -145,6 +159,20 @@ page-home {
 
       button:first-child {
         margin-right: 5px;
+      }
+    }
+  }
+
+  .vault {
+    .coin-img {
+      background: $toolbar-background;
+      border-radius: 20px;
+      height: 3rem;
+      > ion-icon {
+        margin: 0;
+        font-size: 2.2rem;
+        color: color($colors, light);
+        vertical-align: text-bottom;
       }
     }
   }

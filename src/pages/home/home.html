@@ -1,6 +1,6 @@
 <ion-header>
-  <ion-navbar>
-    <ion-buttons left>
+  <ion-navbar class="home-header">
+    <ion-buttons left class="add-button">
       <button ion-button clear icon-only (click)="goToAddView()">
         <ion-icon name="add"></ion-icon>
       </button>
@@ -8,7 +8,7 @@
     <ion-title>
       <img class="home-logo" src="assets/img/app/logo-negative.svg">
     </ion-title>
-    <ion-buttons right>
+    <ion-buttons right class="settings-button">
       <button class="modal-close-button" (click)="settings()" ion-button>
         <img src="assets/img/icon-settings.svg">
       </button>
@@ -173,17 +173,21 @@
       </div>
 
       <!-- TODO Optimize code to list wallets -->
-      <div class="card" *ngIf="vaultWallets && vaultWallets[0]">
-        <ion-item-divider>
+      <div class="card vault">
+        <ion-item-divider (click)="showVaultWallets = !showVaultWallets" *ngIf="vaultWallets && vaultWallets[0]">
           <div class="title wallets-list-title" item-start>
-            <span translate>Vault</span>
+            <div class="coin-img">
+              <ion-icon class="custom-icon" name="ios-lock" item-start></ion-icon>
+            </div>
+            <span class="coin-title" translate>Vault</span>
           </div>
           <div class="title-buttons" item-end *ngIf="!showReorderVaultWallets">
-            <button ion-button clear icon-only color="grey" (click)="goToAddView()">
-              <ion-icon name="add"></ion-icon>
-            </button>
-            <button ion-button clear icon-only color="grey" (click)="reorderVault()" *ngIf="vaultWallets.length > 1">
+            <button ion-button clear icon-only color="grey" (click)="reorderVault()" *ngIf="vaultWallets.length > 1 && showVaultWallets">
               <ion-icon name="reorder"></ion-icon>
+            </button>
+            <button ion-button clear color="grey" icon-only>
+              <ion-icon *ngIf="showVaultWallets" name="arrow-dropdown"></ion-icon>
+              <ion-icon *ngIf="!showVaultWallets" name="arrow-dropup"></ion-icon>
             </button>
           </div>
           <div item-end *ngIf="showReorderVaultWallets">
@@ -192,7 +196,8 @@
             </button>
           </div>
         </ion-item-divider>
-        <ion-list reorder="{{showReorderVaultWallets}}" (ionItemReorder)="reorderVaultWallets($event)">
+
+        <ion-list *ngIf="showVaultWallets" reorder="{{showReorderVaultWallets}}" (ionItemReorder)="reorderVaultWallets($event)">
           <button ion-item *ngFor="let wallet of vaultWallets" (click)="goToWalletDetails(wallet)">
             <ion-icon class="item-img" item-start>
               <img *ngIf="wallet.network == 'testnet'" [ngStyle]="{'background-color': wallet.color}" src="assets/img/icon-wallet-testnet.svg" class="icon-wallet" />
