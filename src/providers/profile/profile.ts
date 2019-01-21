@@ -24,6 +24,7 @@ import { Profile } from '../../models/profile/profile.model';
 @Injectable()
 export class ProfileProvider {
   public wallet: any = {};
+  public vault: any = {};
   public profile: Profile;
 
   private UPDATE_PERIOD = 15;
@@ -525,8 +526,7 @@ export class ProfileProvider {
         walletIds: [],
         needsBackup: false
       };
-      await this.persistenceProvider.storeVault(defaultVault);
-      this.storeWalletsInVault(walletClients);
+      await this.storeWalletsInVault(walletClients, defaultVault);
       return this.addAndBindWalletClients(walletClients, {
         bwsurl: options.bwsurl
       });
@@ -832,12 +832,12 @@ export class ProfileProvider {
     });
   }
 
-  private async storeWalletsInVault(walletClients) {
-    const vault = await this.persistenceProvider.getVault();
+  private async storeWalletsInVault(walletClients, newVault?) {
+    const vault = newVault || this.getVault();
     walletClients.forEach(wallet => {
       vault.walletIds.push(wallet.credentials.walletId);
     });
-    this.persistenceProvider.storeVault(vault);
+    await this.storeVault(vault);
   }
 
   public importExtendedPublicKey(opts): Promise<any> {
@@ -919,7 +919,8 @@ export class ProfileProvider {
       };
 
       bindWallets()
-        .then(() => {
+        .then(async () => {
+          await this.bindVault();
           this.isOnboardingCompleted()
             .then(() => {
               this.isDisclaimerAccepted()
@@ -1300,14 +1301,14 @@ export class ProfileProvider {
   }
 
   public createVault(vault, opts?): Promise<any> {
-    return this.seedWallet(opts).then(vaultClient => {
-      this.persistenceProvider.storeVault(vault);
+    return this.seedWallet(opts).then(async vaultClient => {
+      await this.storeVault(vault);
       return Promise.resolve(vaultClient);
     });
   }
 
   public async createWalletInVault(opts): Promise<any> {
-    const vault = await this.persistenceProvider.getVault();
+    const vault = this.getVault();
     const needToCreateVault = !vault;
     let vaultClient;
     let vaultWallet;
@@ -1324,7 +1325,7 @@ export class ProfileProvider {
     }
     opts.mnemonic = mnemonic;
     return this.createWallet(opts).then(async walletClient => {
-      this.storeWalletsInVault([].concat(walletClient));
+      await this.storeWalletsInVault([].concat(walletClient));
       // Encrypt wallet
       this.onGoingProcessProvider.pause();
       if (password) walletClient.encryptPrivateKey(password);
@@ -1362,7 +1363,7 @@ export class ProfileProvider {
       promises.push(this.createWallet(_.clone(options)));
     });
     return Promise.all(promises).then(async walletClients => {
-      this.storeWalletsInVault(walletClients);
+      await this.storeWalletsInVault(walletClients);
       return this.addAndBindWalletClients(walletClients, {
         bwsurl: options.bwsurl
       });
@@ -1446,7 +1447,6 @@ export class ProfileProvider {
       ret = _.filter(ret, w => {
         return w.isComplete();
       });
-    } else {
     }
 
     // Add cached balance async
@@ -1652,5 +1652,30 @@ export class ProfileProvider {
       txps = _.compact(_.flatten(txps)).slice(0, opts.limit || MAX);
       return resolve({ txps, n });
     });
+  }
+
+  private async bindVault() {
+    this.vault = await this.persistenceProvider.getVault();
+  }
+
+  public async storeVault(vault) {
+    this.vault = vault;
+    await this.persistenceProvider.storeVault(vault);
+  }
+
+  public getVault() {
+    return this.vault;
+  }
+
+  public getVaultWallets() {
+    const wallets = this.getWallets();
+    const vaultWallets = _.filter(wallets, (x: any) => {
+      return this.vaultHasWallet(x.credentials.walletId);
+    });
+    return vaultWallets;
+  }
+
+  public vaultHasWallet(walletId: string): boolean {
+    return this.vault && this.vault.walletIds.includes(walletId);
   }
 }

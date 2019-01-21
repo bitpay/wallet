@@ -4,12 +4,9 @@ import { Events, NavController } from 'ionic-angular';
 import { Logger } from '../../../providers/logger/logger';
 // providers
 import { OnGoingProcessProvider } from '../../../providers/on-going-process/on-going-process';
-import { PersistenceProvider } from '../../../providers/persistence/persistence';
 import { PopupProvider } from '../../../providers/popup/popup';
 import { ProfileProvider } from '../../../providers/profile/profile';
 import { PushNotificationsProvider } from '../../../providers/push-notifications/push-notifications';
-
-import * as _ from 'lodash';
 
 @Component({
   selector: 'page-vault-delete',
@@ -26,8 +23,7 @@ export class VaultDeletePage {
     private pushNotificationsProvider: PushNotificationsProvider,
     private logger: Logger,
     private events: Events,
-    private translate: TranslateService,
-    private persistenceProvider: PersistenceProvider
+    private translate: TranslateService
   ) {}
 
   ionViewDidLoad() {
@@ -44,12 +40,8 @@ export class VaultDeletePage {
     });
   }
 
-  public async deleteVault() {
-    const vault = await this.persistenceProvider.getVault();
-    const wallets = this.profileProvider.getWallets();
-    const vaultWallets = _.filter(wallets, (x: any) => {
-      return vault && vault.walletIds.includes(x.credentials.walletId);
-    });
+  public deleteVault() {
+    const vaultWallets = this.profileProvider.getVaultWallets();
 
     this.onGoingProcessProvider.set('deletingVault');
     this.profileProvider
