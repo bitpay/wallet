@@ -36,6 +36,15 @@ export const offeredGiftCards: BaseCardConfig[] = ([
     website: 'amazon.co.jp'
   },
   {
+    brand: CardBrand.amc,
+    defaultClaimCodeType: ClaimCodeType.barcode,
+    emailRequired: false,
+    logo: `${getCardImageDirectory(CardName.amc)}logo.png`,
+    logoBackgroundColor: '#CF2339',
+    name: CardName.amc,
+    website: 'amctheaters.com'
+  },
+  {
     brand: CardBrand.barnesNoble,
     defaultClaimCodeType: ClaimCodeType.barcode,
     emailRequired: false,
@@ -130,6 +139,14 @@ export const offeredGiftCards: BaseCardConfig[] = ([
     website: 'mercadolivre.com.br'
   },
   {
+    brand: CardBrand.nike,
+    defaultClaimCodeType: ClaimCodeType.barcode,
+    emailRequired: false,
+    logoBackgroundColor: '#F94617',
+    name: CardName.nike,
+    website: 'nike.com'
+  },
+  {
     brand: CardBrand.papaJohns,
     defaultClaimCodeType: ClaimCodeType.barcode,
     emailRequired: false,
@@ -138,6 +155,16 @@ export const offeredGiftCards: BaseCardConfig[] = ([
     logoBackgroundColor: '#AC2A25',
     name: CardName.papaJohns,
     website: 'papajohns.com'
+  },
+  {
+    brand: CardBrand.pfChangs,
+    defaultClaimCodeType: ClaimCodeType.barcode,
+    emailRequired: false,
+    icon: `${getCardImageDirectory(CardName.pfChangs)}icon.png`,
+    logo: `${getCardImageDirectory(CardName.pfChangs)}logo.png`,
+    logoBackgroundColor: '#AA272F',
+    name: CardName.pfChangs,
+    website: 'pfchangs.com'
   },
   {
     brand: CardBrand.potteryBarn,

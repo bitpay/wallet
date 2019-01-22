@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="50px" height="50px" viewBox="0 0 50 50" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 52.6 (67491) - http://www.bohemiancoding.com/sketch -->
+    <title>Brand/Icon/nike</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <polygon id="path-1" points="1.49129865e-16 0 38 0 38 13 1.49129865e-16 13"></polygon>
+    </defs>
+    <g id="Brand/Icon/nike" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <rect fill="#F94617" x="0" y="0" width="50" height="50"></rect>
+        <g id="Nike_logo" transform="translate(7.000000, 19.000000)">
+            <mask id="mask-2" fill="white">
+                <use xlink:href="#path-1"></use>
+            </mask>
+            <g id="Clip-2"></g>
+            <path d="M10.1859802,11.5719394 C7.1894852,12.8079347 2.48652905,14.2258087 0.530119738,11.1579798 C-0.563362444,9.45520079 0.12967857,6.80088383 1.74133634,4.38325225 C2.76713925,2.83504458 4.08508338,1.41749031 5.40473096,0 C4.671921,1.15707883 2.60596692,5.03249032 5.31038619,6.96926876 C6.3651477,7.71162055 8.21476397,7.78893821 10.518349,7.20282051 L38,0.11799096 L10.1859802,11.5719394" id="Fill-1" fill="#FFFFFF" mask="url(#mask-2)"></path>
+        </g>
+    </g>
+</svg>
