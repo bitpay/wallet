@@ -1,7 +1,26 @@
 page-home {
   background: $toolbar-background;
 
-  // Header
+  .home-header {
+    .add-button {
+      margin-left: 1rem;
+      ion-icon {
+        font-size: 3rem;
+      }
+    }
+    .settings-button {
+      margin-right: 1rem;
+      img {
+        opacity: 0.6;
+      }
+    }
+    .home-logo {
+      height: 24px;
+      position: relative;
+      top: 3px;
+    }
+  }
+
   ion-refresher {
     height: 120px;
     &-content {
@@ -17,6 +36,7 @@ page-home {
       }
     }
   }
+
   .balance-card {
     background: $toolbar-background;
     overflow: hidden;
@@ -50,53 +70,34 @@ page-home {
           }
         }
       }
-    }
-  }
-  .balance-error {
-    .title {
-      cursor: pointer;
-      font-size: 20px;
-      font-weight: 500;
-    }
-  }
-  .balance-spendable {
-    margin-top: 5px;
-    font-size: 13px;
-    cursor: pointer;
-    ion-icon {
-      vertical-align: text-bottom;
-      margin-right: 5px;
-    }
-  }
-  .balance-scanning {
-    .title {
-      font-size: 20px;
-      font-weight: 500;
-    }
-  }
-  .history-wrapper {
-    margin-top: 1.3rem;
-  }
-
-  // -------------------
-
-  .home-header {
-    .add-button {
-      margin-left: 1rem;
-      ion-icon {
-        font-size: 3rem;
+      .balance {
+        &-error, &-spendable, &-scanning {
+          margin-left: 1rem;
+          margin-right: 1rem;
+        }
+        &-error {
+          .title {
+            cursor: pointer;
+            font-size: 20px;
+            font-weight: 500;
+          }
+        }
+        &-spendable {
+          margin-top: 5px;
+          font-size: 13px;
+          cursor: pointer;
+          ion-icon {
+            vertical-align: text-bottom;
+            margin-right: 5px;
+          }
+        }
+        &-scanning {
+          .title {
+            font-size: 20px;
+            font-weight: 500;
+          }
+        }
       }
-    }
-    .settings-button {
-      margin-right: 1rem;
-      img {
-        opacity: 0.6;
-      }
-    }
-    .home-logo {
-      height: 24px;
-      position: relative;
-      top: 3px;
     }
   }
 

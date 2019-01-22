@@ -617,7 +617,6 @@ export class HomePage {
             return resolve();
           })
           .catch(err => {
-            this.updateStatusError = this.translate.instant('Error updating status for some of your wallets');
             wallet.error =
               err === 'WALLET_NOT_REGISTERED'
                 ? 'Wallet not registered'
@@ -647,7 +646,8 @@ export class HomePage {
       // No serverMessage for any wallet?
       if (!foundMessage) this.serverMessage = null;
     }).catch(err => {
-      this.logger.error('Error updating status for some of the wallets', err);
+      this.updateStatusError = this.translate.instant('Error updating status for some of the wallets');
+      this.logger.error('Error updating status for some of the wallets: ', err);
     });
   }
 
@@ -846,8 +846,8 @@ export class HomePage {
       this.scanningTotalBalance = false;
       this.updateStatusError = null;
     }).catch(err => {
-      this.logger.error('Error calculating total value of wallets: ', err);
       this.updateStatusError = this.translate.instant('Error calculating total value of wallets');
+      this.logger.error('Error calculating total value of wallets: ', err);
     });
   }
 
