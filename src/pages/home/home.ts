@@ -78,7 +78,7 @@ export class HomePage {
   public showVaultWallets: boolean;
   public showBitcoinWallets: boolean;
   public showBitcoinCashWallets: boolean;
-  public showTotalBalance: boolean;
+  public hideTotalBalance: boolean;
   public scanningTotalBalance: boolean;
   public totalBalance: number;
   public totalAmountBtc: number;
@@ -134,7 +134,6 @@ export class HomePage {
     this.cachedBalanceUpdateOn = '';
     this.isElectron = this.platformProvider.isElectron;
     this.scanningTotalBalance = true;
-    this.showTotalBalance = true;
     this.showReorderBtc = false;
     this.showReorderBch = false;
     this.showReorderVaultWallets = false;
@@ -220,6 +219,7 @@ export class HomePage {
     this.logger.info('Loaded: HomePage');
     this.checkHomeTip();
     this.checkFeedbackInfo();
+    this.checkHideTotalValueOfWallets();
 
     this.checkEmailLawCompliance();
 
@@ -431,6 +431,12 @@ export class HomePage {
         this.showRateCard = timeExceeded && !feedbackInfo.sent;
         this.showCard.setShowRateCard(this.showRateCard);
       }
+    });
+  }
+
+  private checkHideTotalValueOfWallets(): void {
+    this.persistenceProvider.getHideTotalValueOfWallets().then((value: string) => {
+      this.hideTotalBalance = value ? true : false;
     });
   }
 
@@ -852,9 +858,15 @@ export class HomePage {
     this.totalBalance = 0;
   }
 
-  public toggleBalance() {
-    this.showTotalBalance = !this.showTotalBalance;
-    this.logger.debug('showTotalBalance toggled to: ' + this.showTotalBalance);
+  public toggleBalance(): void {
+    if (this.hideTotalBalance) {
+      this.hideTotalBalance = false;
+      this.persistenceProvider.removeHideTotalValueOfWallets();
+    } else {
+      this.hideTotalBalance = true;
+      this.persistenceProvider.setHideTotalValueOfWallets(this.hideTotalBalance);
+    }
+    this.logger.debug('hideTotalBalance toggled to: ' + this.hideTotalBalance);
   }
 
 }

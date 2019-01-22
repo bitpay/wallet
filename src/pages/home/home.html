@@ -25,14 +25,14 @@
       <expandable-header-primary class="balance-header">
         <div class="balance-header-info">
           <div (longPress)="toggleBalance()" class="balance-amount" *ngIf="!scanningTotalBalance && !updateStatusError">
-            <div *ngIf="showTotalBalance">
+            <div *ngIf="!hideTotalBalance">
               <div class="title">
                 <span>Total value of wallets</span>
               </div>
               <div class="balance">{{ totalBalance | currency : '' : 2}}</div>
             </div>
 
-            <div class="balance-hidden" *ngIf="!showTotalBalance">
+            <div class="balance-hidden" *ngIf="hideTotalBalance">
               <span class="title" translate>[Balance Hidden]</span>
               <div translate>
                 Tap and hold to show

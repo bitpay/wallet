@@ -48,6 +48,7 @@ const Keys = {
     return legacyGiftCardKey || `giftCards-${cardName}-${network}`;
   },
   HIDE_BALANCE: walletId => 'hideBalance-' + walletId,
+  HIDE_TOTAL_VALUE: 'hideTotalValueOfWallets',
   HOME_TIP: 'homeTip',
   LAST_ADDRESS: walletId => 'lastAddress-' + walletId,
   LAST_CURRENCY_USED: 'lastCurrencyUsed',
@@ -201,6 +202,18 @@ export class PersistenceProvider {
 
   getHideBalanceFlag(walletId: string) {
     return this.storage.get(Keys.HIDE_BALANCE(walletId));
+  }
+
+  setHideTotalValueOfWallets(value: boolean) {
+    return this.storage.set(Keys.HIDE_TOTAL_VALUE, value);
+  }
+
+  getHideTotalValueOfWallets() {
+    return this.storage.get(Keys.HIDE_TOTAL_VALUE);
+  }
+
+  removeHideTotalValueOfWallets() {
+    return this.storage.remove(Keys.HIDE_TOTAL_VALUE);
   }
 
   setDisclaimerAccepted() {
