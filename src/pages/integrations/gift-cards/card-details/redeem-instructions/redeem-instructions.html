@@ -4,9 +4,27 @@
     <p translate>1. Tap "Add Payment Method" and select "Gift Card"</p>
     <p translate>2. Enter Gift Code</p>
   </span>
+  <div *ngSwitchCase="CardName.nike">
+    <div translate>
+      Display the barcode and PIN to the cashier at the time of purchase, or enter the claim code and PIN online at
+      checkout.
+    </div>
+    <br>
+    <div translate>
+      Nike gift cards can be redeemed for merchandise at Nike.com, Hurley.com, Converse.com, at any Nike-owned and
+      Converse-owned retail location in the US and Puerto Rico or by phone at 1-800-806-6453.
+    </div>
+  </div>
+  <div *ngSwitchCase="CardName.amc">
+    <div translate>
+      Display the barcode and PIN to the cashier at the time of purchase, or enter the claim code and PIN online at
+      AMCTheatres.com at checkout.
+    </div>
+  </div>
   <span *ngSwitchDefault>
     <span *ngIf="cardConfig.redeemInstructions" markdown [data]="cardConfig.redeemInstructions" externalize-links></span>
     <span *ngIf="!cardConfig.redeemInstructions">
-      {{'Paste this code on {cardConfig.website}. This gift card cannot be recovered if your claim code is lost.' | translate:params }}</span>
+      {{'Paste this code on {cardConfig.website}. This gift card cannot be recovered if your claim code is lost.' |
+      translate:params }}</span>
   </span>
 </span>

@@ -79,5 +79,12 @@ export function isCardFeatured(c: CardConfig) {
 }
 
 export function isCardInSearchResults(c: CardConfig, search: string) {
-  return c.name.toLowerCase().indexOf(search.toLowerCase()) > -1;
+  const cardName = c.name.toLowerCase();
+  const query = search.toLowerCase();
+  const matchableText = [cardName, stripPunctuation(cardName)];
+  return matchableText.some(text => text.indexOf(query) > -1);
+}
+
+export function stripPunctuation(text: string) {
+  return text.replace(/[^\w\s]|_/g, '');
 }

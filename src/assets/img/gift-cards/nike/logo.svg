@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="135px" height="73px" viewBox="0 0 135 73" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 52.6 (67491) - http://www.bohemiancoding.com/sketch -->
+    <title>Brand/Card/Small/BassPro</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <polygon id="path-1" points="3.49277841e-16 0 89 0 89 31 3.49277841e-16 31"></polygon>
+    </defs>
+    <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Brand/Card/Small/Nike">
+            <g id="Nike_logo" transform="translate(23.000000, 23.000000)">
+                <mask id="mask-2" fill="white">
+                    <use xlink:href="#path-1"></use>
+                </mask>
+                <g id="Clip-2"></g>
+                <path d="M23.8566378,27.5946248 C16.8385311,30.5419981 5.82371278,33.9230824 1.24159623,26.6074903 C-1.31945415,22.5470173 0.303720862,16.2174922 4.07839301,10.4523708 C6.4809314,6.76049092 9.56769529,3.38016921 12.6584488,0 C10.9421308,2.75918798 6.10344884,12.0005538 12.4374834,16.6190255 C14.9078459,18.389249 19.2398419,18.5736219 24.6350805,17.1759566 L89,0.281363059 L23.8566378,27.5946248" id="Fill-1" fill="#FFFFFF" mask="url(#mask-2)"></path>
+            </g>
+        </g>
+    </g>
+</svg>
