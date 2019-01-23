@@ -201,9 +201,6 @@ msgstr ""
 msgid "Are you sure you want to delete this contact?"
 msgstr ""
 
-msgid "Are you sure you want to delete this vault?"
-msgstr ""
-
 msgid "Are you sure you want to delete this wallet?"
 msgstr ""
 
@@ -2415,9 +2412,6 @@ msgid "Use default url"
 msgstr ""
 
 msgid "Validating recovery phrase..."
-msgstr ""
-
-msgid "Vault"
 msgstr ""
 
 msgid "Verify Account"

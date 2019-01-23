@@ -32,9 +32,7 @@ export class VaultDeletePage {
 
   public showDeletePopup(): void {
     const title = this.translate.instant('Warning!');
-    const message = this.translate.instant(
-      'Are you sure you want to delete this vault?'
-    );
+    const message = 'Are you sure you want to delete this vault?';
     this.popupProvider.ionicConfirm(title, message, null, null).then(res => {
       if (res) this.deleteVault();
     });
