@@ -128,9 +128,9 @@ export class GiftCardProvider {
   }
 
   async updateActiveCards(giftCardsToUpdate: GiftCard[]) {
-    const oldActiveGiftCards: GiftCardMap = await this.persistenceProvider.getActiveGiftCards(
-      this.getNetwork()
-    );
+    const oldActiveGiftCards: GiftCardMap =
+      (await this.persistenceProvider.getActiveGiftCards(this.getNetwork())) ||
+      {};
     const newMap = giftCardsToUpdate.reduce(
       (updatedMap, c) =>
         this.getNewSaveableGiftCardMap(updatedMap, c, {
@@ -373,10 +373,12 @@ export class GiftCardProvider {
     const giftCardMap = await this.persistenceProvider.getActiveGiftCards(
       this.getNetwork()
     );
+    const offeredCardNames = this.getOfferedCards().map(c => c.name);
     return !giftCardMap
       ? this.migrateAndFetchActiveCards()
       : Object.keys(giftCardMap)
           .map(invoiceId => giftCardMap[invoiceId] as GiftCard)
+          .filter(card => offeredCardNames.indexOf(card.name) > -1)
           .sort(sortByDescendingDate);
   }
 
