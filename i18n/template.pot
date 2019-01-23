@@ -16,12 +16,6 @@ msgid ""
 "created."
 msgstr ""
 
-msgid "1. Tap \"Add Payment Method\" and select \"Gift Card\""
-msgstr ""
-
-msgid "2. Enter Gift Code"
-msgstr ""
-
 msgid ""
 "5-star ratings help us get BitPay Wallet into more hands, and more users "
 "means more resources can be committed to the app!"
@@ -104,6 +98,9 @@ msgid ""
 msgstr ""
 
 msgid "Add this BitPay account ({{email}})?"
+msgstr ""
+
+msgid "Add to Vault"
 msgstr ""
 
 msgid "Address"
@@ -205,6 +202,9 @@ msgid "Are you sure you want to cancel and delete this wallet?"
 msgstr ""
 
 msgid "Are you sure you want to delete this contact?"
+msgstr ""
+
+msgid "Are you sure you want to delete this vault?"
 msgstr ""
 
 msgid "Are you sure you want to delete this wallet?"
@@ -310,9 +310,6 @@ msgstr ""
 msgid "Bitcoin transactions include a fee collected by miners on the network."
 msgstr ""
 
-msgid "Brands"
-msgstr ""
-
 msgid "Broadcast Payment"
 msgstr ""
 
@@ -364,6 +361,9 @@ msgid "Card Archived"
 msgstr ""
 
 msgid "Card Settings"
+msgstr ""
+
+msgid "Cards"
 msgstr ""
 
 msgid "Certified by"
@@ -451,9 +451,6 @@ msgid "Connect to ShapeShift Account"
 msgstr ""
 
 msgid "Connecting to Coinbase..."
-msgstr ""
-
-msgid "Connecting to Glidera..."
 msgstr ""
 
 msgid "Connecting to ShapeShift..."
@@ -546,7 +543,13 @@ msgstr ""
 msgid "Could not decrypt file, check your password"
 msgstr ""
 
+msgid "Could not decrypt vault wallets"
+msgstr ""
+
 msgid "Could not decrypt wallet"
+msgstr ""
+
+msgid "Could not delete Vault"
 msgstr ""
 
 msgid "Could not delete payment proposal"
@@ -648,23 +651,22 @@ msgstr ""
 msgid "Delete Payment Proposal"
 msgstr ""
 
+msgid "Delete Vault"
+msgstr ""
+
 msgid "Delete Wallet"
 msgstr ""
 
 msgid "Delete it and create a new one"
 msgstr ""
 
+msgid "Deleting Vault..."
+msgstr ""
+
 msgid "Deleting Wallet..."
 msgstr ""
 
 msgid "Deleting payment proposal..."
-msgstr ""
-
-msgid ""
-"Delta Gift Cards can be used toward airfare on any Delta marketed flight "
-"through www.delta.com, at the airport, through reservations, or by phone "
-"with Delta Vacations®. Delta Gift Cards do not have any expiration dates or "
-"fees."
 msgstr ""
 
 msgid "Deposit"
@@ -878,6 +880,9 @@ msgstr ""
 msgid "Failed to export"
 msgstr ""
 
+msgid "Featured Brands"
+msgstr ""
+
 msgid "Fee"
 msgstr ""
 
@@ -961,6 +966,12 @@ msgstr ""
 msgid "Get Help"
 msgstr ""
 
+msgid "Get Started"
+msgstr ""
+
+msgid "Get a BitPay Card"
+msgstr ""
+
 msgid "Get help"
 msgstr ""
 
@@ -988,11 +999,6 @@ msgid "Gift card canceled"
 msgstr ""
 
 msgid "Gift card purchases are temporarily unavailable. Please try again later."
-msgstr ""
-
-msgid ""
-"Give friends and family the gift of tapping a button and getting a ride - "
-"any time of day, any day of year."
 msgstr ""
 
 msgid "Give us feedback"
@@ -1129,10 +1135,16 @@ msgid ""
 "wallets manually."
 msgstr ""
 
+msgid "Import Vault"
+msgstr ""
+
 msgid "Import Words"
 msgstr ""
 
 msgid "Import wallet"
+msgstr ""
+
+msgid "Importing Vault Wallets..."
 msgstr ""
 
 msgid "Importing Wallet..."
@@ -1243,6 +1255,11 @@ msgstr ""
 msgid "Linked"
 msgstr ""
 
+msgid ""
+"Load dollars onto your BitPay Card using your bitcoin wallet. Shop anywhere "
+"that accepts Visa®"
+msgstr ""
+
 msgid "Loading addresses..."
 msgstr ""
 
@@ -1307,6 +1324,9 @@ msgid "Mmm..."
 msgstr ""
 
 msgid "More"
+msgstr ""
+
+msgid "More Brands"
 msgstr ""
 
 msgid "Moved"
@@ -1591,11 +1611,6 @@ msgstr ""
 msgid "Payment accepted, but not yet broadcasted"
 msgstr ""
 
-msgid ""
-"Payment accepted. It will be broadcasted by Glidera. In case there is a "
-"problem, it can be deleted 6 hours after it was created."
-msgstr ""
-
 msgid "Payment request"
 msgstr ""
 
@@ -1603,6 +1618,9 @@ msgid "Pending"
 msgstr ""
 
 msgid "Pending Proposals"
+msgstr ""
+
+msgid "Permanently delete this vault."
 msgstr ""
 
 msgid "Permanently delete this wallet."
@@ -1764,9 +1782,6 @@ msgid "Recreating Wallet..."
 msgstr ""
 
 msgid "Redeem Now"
-msgstr ""
-
-msgid "Redeem by going to the payment section in the Uber app."
 msgstr ""
 
 msgid "Reject Payment Proposal"
@@ -1979,6 +1994,9 @@ msgstr ""
 msgid "Share Address"
 msgstr ""
 
+msgid "Share Claim Code"
+msgstr ""
+
 msgid "Share the love by inviting your friends."
 msgstr ""
 
@@ -2099,11 +2117,6 @@ msgid "Text"
 msgstr ""
 
 msgid "Thanks!"
-msgstr ""
-
-msgid ""
-"The Gift of Go.™ With over 300 destinations and limitless adventures to "
-"choose from, the Delta Gift Card opens up a world of possibilities."
 msgstr ""
 
 msgid "The Safest, Fastest Asset Exchange on Earth"
@@ -2230,6 +2243,9 @@ msgid ""
 "This field is only for users who, in previous versions (it's not supported "
 "anymore), set a password to protect their recovery phrase. This field is "
 "not for your encrypt password."
+msgstr ""
+
+msgid "This field only accepts addresses supported by {appName} Wallet"
 msgstr ""
 
 msgid "This information is available at the website."
@@ -2362,11 +2378,6 @@ msgstr ""
 msgid "Type the recovery phrase (usually 12 words)"
 msgstr ""
 
-msgid ""
-"Uber gift cards also apply to UberEATS orders. Enjoy food from hundreds of "
-"restaurants, delivered at Uber speed."
-msgstr ""
-
 msgid "Uh oh..."
 msgstr ""
 
@@ -2428,6 +2439,9 @@ msgid "Use default url"
 msgstr ""
 
 msgid "Validating recovery phrase..."
+msgstr ""
+
+msgid "Vault"
 msgstr ""
 
 msgid "Verify Account"
@@ -2643,6 +2657,9 @@ msgstr ""
 msgid "Yes, skip"
 msgstr ""
 
+msgid "You are ready!"
+msgstr ""
+
 msgid ""
 "You are trying to send ({amount} {coin}) more than what your wallet "
 "contains. Please enter a lower amount or send max."
@@ -2697,9 +2714,6 @@ msgid ""
 "stores and ATMs worldwide."
 msgstr ""
 
-msgid "Your bitcoin wallet is ready!"
-msgstr ""
-
 msgid ""
 "Your extended private keys are all that is needed to access your bitcoin "
 "funds. Be sure to protect your private keys and store them only on secure "
@@ -2713,6 +2727,9 @@ msgid "Your fee is lower than recommended."
 msgstr ""
 
 msgid "Your name"
+msgstr ""
+
+msgid "Your vault wallets are backed up!"
 msgstr ""
 
 msgid ""

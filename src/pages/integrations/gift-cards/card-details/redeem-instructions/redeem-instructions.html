@@ -1,22 +1,22 @@
 <span [ngSwitch]="cardConfig.name">
   <span *ngSwitchCase="CardName.uber">
-    <p translate>Redeem by going to the payment section in the Uber app.</p>
-    <p translate>1. Tap "Add Payment Method" and select "Gift Card"</p>
-    <p translate>2. Enter Gift Code</p>
+    <p>Redeem by going to the payment section in the Uber app.</p>
+    <p>1. Tap "Add Payment Method" and select "Gift Card"</p>
+    <p>2. Enter Gift Code</p>
   </span>
   <div *ngSwitchCase="CardName.nike">
-    <div translate>
+    <div>
       Display the barcode and PIN to the cashier at the time of purchase, or enter the claim code and PIN online at
       checkout.
     </div>
     <br>
-    <div translate>
+    <div>
       Nike gift cards can be redeemed for merchandise at Nike.com, Hurley.com, Converse.com, at any Nike-owned and
       Converse-owned retail location in the US and Puerto Rico or by phone at 1-800-806-6453.
     </div>
   </div>
   <div *ngSwitchCase="CardName.amc">
-    <div translate>
+    <div>
       Display the barcode and PIN to the cashier at the time of purchase, or enter the claim code and PIN online at
       AMCTheatres.com at checkout.
     </div>
