@@ -128,9 +128,9 @@ export class GiftCardProvider {
   }
 
   async updateActiveCards(giftCardsToUpdate: GiftCard[]) {
-    const oldActiveGiftCards: GiftCardMap = await this.persistenceProvider.getActiveGiftCards(
-      this.getNetwork()
-    );
+    const oldActiveGiftCards: GiftCardMap =
+      (await this.persistenceProvider.getActiveGiftCards(this.getNetwork())) ||
+      {};
     const newMap = giftCardsToUpdate.reduce(
       (updatedMap, c) =>
         this.getNewSaveableGiftCardMap(updatedMap, c, {
