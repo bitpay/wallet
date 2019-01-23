@@ -373,10 +373,12 @@ export class GiftCardProvider {
     const giftCardMap = await this.persistenceProvider.getActiveGiftCards(
       this.getNetwork()
     );
+    const offeredCardNames = this.getOfferedCards().map(c => c.name);
     return !giftCardMap
       ? this.migrateAndFetchActiveCards()
       : Object.keys(giftCardMap)
           .map(invoiceId => giftCardMap[invoiceId] as GiftCard)
+          .filter(card => offeredCardNames.indexOf(card.name) > -1)
           .sort(sortByDescendingDate);
   }
 
