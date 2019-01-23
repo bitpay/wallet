@@ -100,9 +100,6 @@ msgstr ""
 msgid "Add this BitPay account ({{email}})?"
 msgstr ""
 
-msgid "Add to Vault"
-msgstr ""
-
 msgid "Address"
 msgstr ""
 
@@ -543,13 +540,7 @@ msgstr ""
 msgid "Could not decrypt file, check your password"
 msgstr ""
 
-msgid "Could not decrypt vault wallets"
-msgstr ""
-
 msgid "Could not decrypt wallet"
-msgstr ""
-
-msgid "Could not delete Vault"
 msgstr ""
 
 msgid "Could not delete payment proposal"
@@ -651,16 +642,10 @@ msgstr ""
 msgid "Delete Payment Proposal"
 msgstr ""
 
-msgid "Delete Vault"
-msgstr ""
-
 msgid "Delete Wallet"
 msgstr ""
 
 msgid "Delete it and create a new one"
-msgstr ""
-
-msgid "Deleting Vault..."
 msgstr ""
 
 msgid "Deleting Wallet..."
@@ -1135,16 +1120,10 @@ msgid ""
 "wallets manually."
 msgstr ""
 
-msgid "Import Vault"
-msgstr ""
-
 msgid "Import Words"
 msgstr ""
 
 msgid "Import wallet"
-msgstr ""
-
-msgid "Importing Vault Wallets..."
 msgstr ""
 
 msgid "Importing Wallet..."
@@ -1618,9 +1597,6 @@ msgid "Pending"
 msgstr ""
 
 msgid "Pending Proposals"
-msgstr ""
-
-msgid "Permanently delete this vault."
 msgstr ""
 
 msgid "Permanently delete this wallet."
@@ -2727,9 +2703,6 @@ msgid "Your fee is lower than recommended."
 msgstr ""
 
 msgid "Your name"
-msgstr ""
-
-msgid "Your vault wallets are backed up!"
 msgstr ""
 
 msgid ""

@@ -59,7 +59,7 @@ export class VaultDeletePage {
         this.logger.error('Deleting vault err', err);
         this.popupProvider.ionicAlert(
           this.translate.instant('Error'),
-          this.translate.instant('Could not delete Vault')
+          'Could not delete Vault'
         );
       });
   }

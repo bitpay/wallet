@@ -166,9 +166,7 @@ export class SettingsPage {
         })
         .catch(err => {
           this.encryptEnabled = true;
-          const title = this.translate.instant(
-            'Could not decrypt vault wallets'
-          );
+          const title = 'Could not decrypt vault wallets';
           this.showErrorInfoSheet(err, title);
         });
     }
