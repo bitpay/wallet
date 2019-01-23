@@ -435,9 +435,11 @@ export class HomePage {
   }
 
   private checkHideTotalValueOfWallets(): void {
-    this.persistenceProvider.getHideTotalValueOfWallets().then((value: string) => {
-      this.hideTotalBalance = value ? true : false;
-    });
+    this.persistenceProvider
+      .getHideTotalValueOfWallets()
+      .then((value: string) => {
+        this.hideTotalBalance = value ? true : false;
+      });
   }
 
   public checkClipboard() {
@@ -637,18 +639,25 @@ export class HomePage {
       promises.push(pr(wallet));
     });
 
-    Promise.all(promises).then(() => {
-      this.updateTxps();
-      this.getNotifications();
-      this.calculateTotalBalance();
-      this.updateStatusError = null;
+    Promise.all(promises)
+      .then(() => {
+        this.updateTxps();
+        this.getNotifications();
+        this.calculateTotalBalance();
+        this.updateStatusError = null;
 
-      // No serverMessage for any wallet?
-      if (!foundMessage) this.serverMessage = null;
-    }).catch(err => {
-      this.updateStatusError = this.translate.instant('Error updating status for some of the wallets');
-      this.logger.error('Error updating status for some of the wallets: ', err);
-    });
+        // No serverMessage for any wallet?
+        if (!foundMessage) this.serverMessage = null;
+      })
+      .catch(err => {
+        this.updateStatusError = this.translate.instant(
+          'Error updating status for some of the wallets'
+        );
+        this.logger.error(
+          'Error updating status for some of the wallets: ',
+          err
+        );
+      });
   }
 
   public dismissServerMessage(): void {
@@ -827,28 +836,32 @@ export class HomePage {
       this.rateProvider.updateRatesBch()
     ];
 
-    Promise.all(promises).then(() => {
-      const settings = this.configProvider.get().wallet.settings;
-      const totalAmountBtcFiat = this.rateProvider.toFiat(
-        this.totalAmountBtc,
-        settings.alternativeIsoCode,
-        'btc'
-      );
-      const totalAmountBchFiat = this.rateProvider.toFiat(
-        this.totalAmountBtc,
-        settings.alternativeIsoCode,
-        'bch'
-      );
+    Promise.all(promises)
+      .then(() => {
+        const settings = this.configProvider.get().wallet.settings;
+        const totalAmountBtcFiat = this.rateProvider.toFiat(
+          this.totalAmountBtc,
+          settings.alternativeIsoCode,
+          'btc'
+        );
+        const totalAmountBchFiat = this.rateProvider.toFiat(
+          this.totalAmountBtc,
+          settings.alternativeIsoCode,
+          'bch'
+        );
 
-      this.totalBalance = totalAmountBtcFiat + totalAmountBchFiat;
-      this.logger.debug('Total value of all wallets: ' + this.totalBalance);
+        this.totalBalance = totalAmountBtcFiat + totalAmountBchFiat;
+        this.logger.debug('Total value of all wallets: ' + this.totalBalance);
 
-      this.scanningTotalBalance = false;
-      this.updateStatusError = null;
-    }).catch(err => {
-      this.updateStatusError = this.translate.instant('Error calculating total value of wallets');
-      this.logger.error('Error calculating total value of wallets: ', err);
-    });
+        this.scanningTotalBalance = false;
+        this.updateStatusError = null;
+      })
+      .catch(err => {
+        this.updateStatusError = this.translate.instant(
+          'Error calculating total value of wallets'
+        );
+        this.logger.error('Error calculating total value of wallets: ', err);
+      });
   }
 
   private resetTotalBalance(): void {
@@ -864,9 +877,10 @@ export class HomePage {
       this.persistenceProvider.removeHideTotalValueOfWallets();
     } else {
       this.hideTotalBalance = true;
-      this.persistenceProvider.setHideTotalValueOfWallets(this.hideTotalBalance);
+      this.persistenceProvider.setHideTotalValueOfWallets(
+        this.hideTotalBalance
+      );
     }
     this.logger.debug('hideTotalBalance toggled to: ' + this.hideTotalBalance);
   }
-
 }

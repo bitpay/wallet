@@ -71,7 +71,9 @@ page-home {
         }
       }
       .balance {
-        &-error, &-spendable, &-scanning {
+        &-error,
+        &-spendable,
+        &-scanning {
           margin-left: 1rem;
           margin-right: 1rem;
         }
