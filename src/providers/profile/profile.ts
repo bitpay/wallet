@@ -1292,6 +1292,15 @@ export class ProfileProvider {
     });
   }
 
+  public createDefaultWallet(): Promise<any> {
+    const opts: Partial<WalletOptions> = {};
+    opts.m = 1;
+    opts.n = 1;
+    opts.networkName = 'livenet';
+    opts.coin = Coin.BTC;
+    return this.createNewSeedWallet(opts);
+  }
+
   public createDefaultVault(): Promise<any> {
     const defaultVault = {
       walletIds: [],
@@ -1676,6 +1685,10 @@ export class ProfileProvider {
   }
 
   public vaultHasWallet(walletId: string): boolean {
-    return this.vault && this.vault.walletIds.includes(walletId);
+    return (
+      this.vault &&
+      this.vault.walletIds &&
+      this.vault.walletIds.includes(walletId)
+    );
   }
 }

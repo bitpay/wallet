@@ -1,7 +1,7 @@
 <ion-header no-border>
   <ion-navbar>
     <ion-buttons right>
-      <button ion-button class="primary-color" (click)="createDefaultVault()" *ngIf="currentIndex == 0">
+      <button ion-button class="primary-color" (click)="createDefaultWallet()" *ngIf="currentIndex == 0">
         {{'Skip' | translate}}
       </button>
     </ion-buttons>
@@ -43,8 +43,8 @@
       <img src='assets/img/app/onboarding/tour-control.svg' />
       <div class="bottom-absolute">
         <p translate class="bottom-description">Not even BitPay can access it.</p>
-        <button ion-button class="button-standard e2e-create-wallet" (click)="createDefaultVault()">
-          {{'Create Vault' | translate}}
+        <button ion-button class="button-standard e2e-create-wallet" (click)="createDefaultWallet()">
+          {{'Create bitcoin wallet' | translate}}
         </button>
       </div>
     </ion-slide>

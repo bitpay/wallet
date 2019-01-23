@@ -84,7 +84,37 @@ export class TourPage {
     this.slides.slideNext();
   }
 
-  public createDefaultVault(): void {
+  public createDefaultWallet(): void {
+    this.onGoingProcessProvider.set('creatingWallet');
+    this.profileProvider
+      .createDefaultWallet()
+      .then(wallet => {
+        this.onGoingProcessProvider.clear();
+        this.persistenceProvider.setOnboardingCompleted();
+        // this.navCtrl.push(CollectEmailPage, { walletId: wallet.id });
+        this.navCtrl.push(BackupRequestPage, { walletId: wallet.id });
+      })
+      .catch(err => {
+        setTimeout(() => {
+          this.logger.warn(
+            'Retrying to create default wallet.....:' + ++this.retryCount
+          );
+          if (this.retryCount > 3) {
+            this.onGoingProcessProvider.clear();
+            const title = this.translate.instant('Cannot create wallet');
+            const okText = this.translate.instant('Retry');
+            this.popupProvider.ionicAlert(title, err, okText).then(() => {
+              this.retryCount = 0;
+              this.createDefaultWallet();
+            });
+          } else {
+            this.createDefaultWallet();
+          }
+        }, 2000);
+      });
+  }
+
+  /* public createDefaultVault(): void {
     this.onGoingProcessProvider.set('creatingWallet');
     this.profileProvider
       .createDefaultVault()
@@ -121,4 +151,5 @@ export class TourPage {
         }, 2000);
       });
   }
+} */
 }
