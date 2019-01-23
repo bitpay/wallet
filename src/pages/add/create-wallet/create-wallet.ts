@@ -99,7 +99,7 @@ export class CreateWalletPage implements OnInit {
       testnetEnabled: [false],
       singleAddress: [false],
       coin: [null, Validators.required],
-      addToVault: [true]
+      addToVault: [false]
     });
 
     this.setTotalCopayers(this.tc);

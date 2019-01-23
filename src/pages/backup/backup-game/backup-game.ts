@@ -73,6 +73,7 @@ export class BackupGamePage {
     this.vault = this.profileProvider.getVault();
     this.isVaultWallet =
       this.vault &&
+      this.vault.walletIds &&
       this.vault.walletIds.includes(this.wallet.credentials.walletId);
     this.credentialsEncrypted = this.wallet.isPrivKeyEncrypted();
   }
