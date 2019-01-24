@@ -32,7 +32,7 @@ export class OnGoingProcessProvider {
       creatingTx: this.translate.instant('Creating transaction...'),
       creatingWallet: this.translate.instant('Creating Wallet...'),
       deletingWallet: this.translate.instant('Deleting Wallet...'),
-      deletingVault: this.translate.instant('Deleting Vault...'),
+      deletingVault: 'Deleting Vault...',
       extractingWalletInfo: this.translate.instant(
         'Extracting Wallet information...'
       ),
@@ -40,7 +40,7 @@ export class OnGoingProcessProvider {
       generatingCSV: this.translate.instant('Generating .csv file...'),
       gettingFeeLevels: this.translate.instant('Getting fee levels...'),
       importingWallet: this.translate.instant('Importing Wallet...'),
-      importingVault: this.translate.instant('Importing Vault Wallets...'),
+      importingVault: 'Importing Vault Wallets...',
       joiningWallet: this.translate.instant('Joining Wallet...'),
       recreating: this.translate.instant('Recreating Wallet...'),
       rejectTx: this.translate.instant('Rejecting payment proposal...'),
