@@ -125,6 +125,9 @@ fs.copySync(configDir + '/google-services.json', '../google-services.json');
 copyDir(configDir + '/img', '../src/assets/img/app');
 copyDir(configDir + '/sass', '../src/theme', true);
 
+// Copy AppX Assets for Windows
+copyDir(`../resources/${config.name}/windows/appx`, '../build/appx', true);
+
 console.log(`Applying distribution-specific configuration to package.json...`);
 const package = require('../package.json');
 
