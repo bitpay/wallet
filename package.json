@@ -102,7 +102,10 @@
     "files": [
       "./electron/main.js",
       "./package.json",
-      "./www/**/*"
+      "./www/**/*",
+      "./build",
+      "!node_modules/.cache/",
+      "!**/*.map"
     ],
     "protocols": {
       "name": "URL protocol schemes",

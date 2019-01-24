@@ -23,6 +23,9 @@ electron/afterPack.js
 *-embedded.provisionprofile
 *-entitlements.mas.plist
 
+# Windows AppX Assets
+build
+
 ## Ionic App
 /config.xml
 /ionic.config.json
