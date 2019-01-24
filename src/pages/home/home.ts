@@ -252,7 +252,7 @@ export class HomePage {
     // NewBlock, NewCopayer, NewAddress, NewTxProposal, TxProposalAcceptedBy, TxProposalRejectedBy, txProposalFinallyRejected,
     // txProposalFinallyAccepted, TxProposalRemoved, NewIncomingTx, NewOutgoingTx
     this.events.subscribe('bwsEvent', (walletId: string) => {
-      this.updateWallet(walletId);
+      this.updateWallet({ walletId });
     });
   }
 
@@ -265,8 +265,8 @@ export class HomePage {
 
   private subscribeLocalTxAction() {
     // Reject, Remove, OnlyPublish and SignAndBroadcast -> Update Status per Wallet -> Update recent transactions and txps
-    this.events.subscribe('Local/TxAction', walletId => {
-      this.updateWallet(walletId);
+    this.events.subscribe('Local/TxAction', opts => {
+      this.updateWallet(opts);
     });
   }
 
@@ -509,12 +509,12 @@ export class HomePage {
     this.showRateCard = false;
   }
 
-  private updateWallet(walletId: string): void {
-    if (this.updatingWalletId[walletId]) return;
-    this.startUpdatingWalletId(walletId);
-    const wallet = this.profileProvider.getWallet(walletId);
+  private updateWallet(opts): void {
+    if (this.updatingWalletId[opts.walletId]) return;
+    this.startUpdatingWalletId(opts.walletId);
+    const wallet = this.profileProvider.getWallet(opts.walletId);
     this.walletProvider
-      .getStatus(wallet, {})
+      .getStatus(wallet, opts)
       .then(status => {
         wallet.status = status;
         wallet.error = null;
@@ -527,11 +527,11 @@ export class HomePage {
         this.updateTxps();
         this.getNotifications();
 
-        this.stopUpdatingWalletId(walletId);
+        this.stopUpdatingWalletId(opts.walletId);
       })
       .catch(err => {
         this.logger.error(err);
-        this.stopUpdatingWalletId(walletId);
+        this.stopUpdatingWalletId(opts.walletId);
       });
   }
 
