@@ -141,6 +141,14 @@ page-wallet-details {
       font-size: 14px;
       margin-top: 8px;
     }
+    .proposal-container {
+      .item .item-inner {
+        padding: 0 10px 0 0;
+      }
+      .date {
+        margin-top: 0px;
+      }
+    }
   }
   .middle-message {
     height: 50%;
@@ -225,13 +233,18 @@ page-wallet-details {
     border: 1px solid #d7d7d7;
   }
   .locked-balance.item {
+    background-color: color($background-colors, warning);
+    cursor: pointer;
     .item-inner {
       padding-bottom: 5px;
       padding-top: 5px;
     }
+    .note {
+      text-align: end;
+    }
   }
   .total-locked-amount {
-    color: color($colors, dark);
+    color: color($colors, warning);
   }
   .total-alt-locked-amount,
   .double-spend {

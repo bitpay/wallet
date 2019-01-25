@@ -16,6 +16,14 @@
     <span *ngIf="tx.creatorName">{{ tx.creatorName}}@</span>
     <span>{{tx.wallet.name}}</span>
   </div>
+  <div class="status-info" *ngIf="tx.statusForUs">
+    <span class="balanced" *ngIf="tx.statusForUs == 'accepted'" translate>
+      Accepted
+    </span>
+    <span class="assertive" *ngIf="tx.statusForUs == 'rejected'" translate>
+      Rejected
+    </span>
+  </div>
 
   <ion-note item-right>
     <div class="amount">
