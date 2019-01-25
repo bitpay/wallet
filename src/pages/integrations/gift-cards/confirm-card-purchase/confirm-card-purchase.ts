@@ -1,6 +1,12 @@
 import { Component } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { App, ModalController, NavController, NavParams } from 'ionic-angular';
+import {
+  App,
+  Events,
+  ModalController,
+  NavController,
+  NavParams
+} from 'ionic-angular';
 import * as _ from 'lodash';
 import * as moment from 'moment';
 import { Logger } from '../../../../providers/logger/logger';
@@ -88,7 +94,8 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
     private payproProvider: PayproProvider,
     platformProvider: PlatformProvider,
     walletTabsProvider: WalletTabsProvider,
-    clipboardProvider: ClipboardProvider
+    clipboardProvider: ClipboardProvider,
+    events: Events
   ) {
     super(
       actionSheetProvider,
@@ -113,7 +120,8 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
       txFormatProvider,
       walletProvider,
       walletTabsProvider,
-      clipboardProvider
+      clipboardProvider,
+      events
     );
     this.hideSlideButton = false;
     this.configWallet = this.configProvider.get().wallet;

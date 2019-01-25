@@ -1,7 +1,13 @@
 import { DecimalPipe } from '@angular/common';
 import { Component, ViewChild } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { App, ModalController, NavController, NavParams } from 'ionic-angular';
+import {
+  App,
+  Events,
+  ModalController,
+  NavController,
+  NavParams
+} from 'ionic-angular';
 import * as _ from 'lodash';
 import { Logger } from '../../../providers/logger/logger';
 
@@ -103,7 +109,8 @@ export class ConfirmPage extends WalletTabsChild {
     protected txFormatProvider: TxFormatProvider,
     protected walletProvider: WalletProvider,
     walletTabsProvider: WalletTabsProvider,
-    protected clipboardProvider: ClipboardProvider
+    protected clipboardProvider: ClipboardProvider,
+    protected events: Events
   ) {
     super(navCtrl, profileProvider, walletTabsProvider);
     this.bitcore = this.bwcProvider.getBitcore();
@@ -913,7 +920,8 @@ export class ConfirmPage extends WalletTabsChild {
     }
     const modal = this.modalCtrl.create(FinishModalPage, params, {
       showBackdrop: true,
-      enableBackdropDismiss: false
+      enableBackdropDismiss: false,
+      cssClass: 'finish-modal'
     });
     await modal.present();
 
@@ -923,10 +931,14 @@ export class ConfirmPage extends WalletTabsChild {
       'BitcoinCashUri'
     ]);
 
-    // TODO redirect to the wallet
-    this.isWithinWalletTabs()
-      ? this.close()
-      : this.app.getRootNavs()[0].setRoot(TabsPage);
+    if (this.isWithinWalletTabs()) {
+      this.close().then(() => {
+        this.events.publish('OpenWallet', this.wallet);
+      });
+    } else {
+      this.app.getRootNavs()[0].setRoot(TabsPage);
+      this.events.publish('OpenWallet', this.wallet);
+    }
   }
 
   public openPPModal(): void {
