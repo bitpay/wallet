@@ -9,7 +9,7 @@
       <img class="home-logo" src="assets/img/app/logo-negative.svg">
     </ion-title>
     <ion-buttons right class="settings-button">
-      <button ion-button clear icon-only color="grey" (click)="openProposalsPage()">
+      <button ion-button clear icon-only color="grey" *ngIf="txpsN > 0" (click)="openProposalsPage()">
         <ion-badge color="danger">{{txpsN}}</ion-badge>
       </button>
       <button class="modal-close-button" (click)="settings()" ion-button>
