@@ -923,6 +923,7 @@ export class ConfirmPage extends WalletTabsChild {
       'BitcoinCashUri'
     ]);
 
+    // TODO redirect to the wallet
     this.isWithinWalletTabs()
       ? this.close()
       : this.app.getRootNavs()[0].setRoot(TabsPage);

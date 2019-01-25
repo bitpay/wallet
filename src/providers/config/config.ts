@@ -61,10 +61,6 @@ export interface Config {
     bannedUntil: any;
   };
 
-  recentTransactions: {
-    enabled: boolean;
-  };
-
   showIntegration: {
     coinbase: boolean;
     debitcard: boolean;
@@ -176,10 +172,6 @@ export class ConfigProvider {
         method: null,
         value: null,
         bannedUntil: null
-      },
-
-      recentTransactions: {
-        enabled: true
       },
 
       // External services
@@ -295,9 +287,6 @@ export class ConfigProvider {
       if (this.configCache.showIntegration.giftcards !== false) {
         this.configCache.showIntegration.giftcards = this.configDefault.showIntegration.giftcards;
       }
-    }
-    if (!this.configCache.recentTransactions) {
-      this.configCache.recentTransactions = this.configDefault.recentTransactions;
     }
     if (!this.configCache.pushNotificationsEnabled) {
       this.configCache.pushNotificationsEnabled = this.configDefault.pushNotificationsEnabled;

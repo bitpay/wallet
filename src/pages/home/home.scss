@@ -1,10 +1,24 @@
 page-home {
   background: $toolbar-background;
 
-  .home-logo {
-    height: 24px;
-    position: relative;
-    top: 3px;
+  .home-header {
+    .add-button {
+      margin-left: 1rem;
+      ion-icon {
+        font-size: 3rem;
+      }
+    }
+    .settings-button {
+      margin-right: 1rem;
+      img {
+        opacity: 0.6;
+      }
+    }
+    .home-logo {
+      height: 24px;
+      position: relative;
+      top: 3px;
+    }
   }
 
   .toolbar-title-ios {

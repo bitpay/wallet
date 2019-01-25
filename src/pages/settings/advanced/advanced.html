@@ -24,14 +24,5 @@
         If enabled, Bitcoin Cash addresses will be shown using Copay style address, and not the new cashaddr format.
       </div>
     </label-tip>
-    <ion-item class="with-label">
-      <ion-label>{{'Recent Transaction Card' | translate}}</ion-label>
-      <ion-toggle [(ngModel)]="recentTransactionsEnabled" (ionChange)="recentTransactionsChange()"></ion-toggle>
-    </ion-item>
-    <label-tip class="info" type="info" header="no-header">
-      <div label-tip-body translate>
-        If enabled, the Recent Transactions card - a list of transactions occuring across all wallets - will appear in the Home tab.
-      </div>
-    </label-tip>
   </ion-list>
 </ion-content>

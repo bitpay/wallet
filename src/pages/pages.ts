@@ -61,7 +61,6 @@ import { SendPage } from '../pages/send/send';
 import { SettingsPage } from '../pages/settings/settings';
 
 /* Home */
-import { ActivityPage } from '../pages/home/activity/activity';
 import { ProposalsPage } from '../pages/home/proposals/proposals';
 
 /* Settings */
@@ -113,7 +112,6 @@ import { CardCatalogPage } from './integrations/gift-cards/card-catalog/card-cat
 import { GIFT_CARD_PAGES } from './integrations/gift-cards/gift-cards';
 
 export const PAGES = [
-  ActivityPage,
   AddPage,
   AmountPage,
   AddressbookPage,
