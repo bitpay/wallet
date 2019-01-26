@@ -115,6 +115,14 @@ export const offeredGiftCards: BaseCardConfig[] = ([
     website: 'play.google.com'
   },
   {
+    brand: CardBrand.guitarCenter,
+    defaultClaimCodeType: ClaimCodeType.barcode,
+    emailRequired: false,
+    logoBackgroundColor: '#CD2318',
+    name: CardName.guitarCenter,
+    website: 'guitarcenter.com'
+  },
+  {
     brand: CardBrand.homeDepot,
     defaultClaimCodeType: ClaimCodeType.barcode,
     emailRequired: false,
