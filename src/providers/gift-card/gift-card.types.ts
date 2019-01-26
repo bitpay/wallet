@@ -23,7 +23,7 @@ export enum CardName {
   uber = 'Uber',
   uberEats = 'Uber Eats',
   venue = 'Venue USD',
-  xboxLive = 'Xbox'
+  xbox = 'Xbox'
 }
 
 export enum CardBrand {
@@ -50,7 +50,7 @@ export enum CardBrand {
   uber = 'Uber',
   uberEats = 'Uber Eats',
   venue = 'Venue',
-  xboxLive = 'Xbox Live'
+  xbox = 'Xbox'
 }
 
 export enum ClaimCodeType {
