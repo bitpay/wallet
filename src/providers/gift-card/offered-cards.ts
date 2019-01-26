@@ -215,6 +215,16 @@ export const offeredGiftCards: BaseCardConfig[] = ([
     logoBackgroundColor: '#000000',
     name: CardName.uberEats,
     website: 'uber.com'
+  },
+  {
+    brand: CardBrand.xboxLive,
+    defaultClaimCodeType: ClaimCodeType.code,
+    emailRequired: false,
+    icon: `${getCardImageDirectory(CardName.xboxLive)}icon.png`,
+    // logo: `${getCardImageDirectory(CardName.sonyPlayStation)}logo.png`,
+    logoBackgroundColor: 'linear-gradient(-90deg, #25B325 11%, #107C10 100%);',
+    name: CardName.xboxLive,
+    website: 'xbox.com'
   }
 ] as BaseCardConfig[]).map(c => ({
   ...c,

@@ -1,29 +1,3 @@
-export enum CardBrand {
-  amazon = 'Amazon',
-  amc = 'AMC Theatres',
-  barnesNoble = 'Barnes & Noble',
-  bassProShops = 'Bass Pro Shops',
-  burgerKing = 'Burger King',
-  carnivalCruiseLine = 'Carnival Cruise Line',
-  delta = 'Delta',
-  dsw = 'DSW',
-  gamestop = 'GameStop',
-  googlePlay = 'Google Play',
-  homeDepot = 'Home Depot',
-  hotelsCom = 'Hotels.com',
-  mercadoLibre = 'Mercado Livre',
-  nike = 'Nike',
-  papaJohns = "Papa John's",
-  pfChangs = "P.F. Chang's",
-  potteryBarn = 'Pottery Barn',
-  royalCaribbean = 'Royal Caribbean',
-  sonyPlayStation = 'PlayStation Store',
-  spotify = 'Spotify',
-  uber = 'Uber',
-  uberEats = 'Uber Eats',
-  venue = 'Venue'
-}
-
 export enum CardName {
   amazon = 'Amazon.com',
   amazonJapan = 'Amazon.co.jp',
@@ -48,7 +22,35 @@ export enum CardName {
   spotify = 'Spotify',
   uber = 'Uber',
   uberEats = 'Uber Eats',
-  venue = 'Venue USD'
+  venue = 'Venue USD',
+  xboxLive = 'Xbox'
+}
+
+export enum CardBrand {
+  amazon = 'Amazon',
+  amc = 'AMC Theatres',
+  barnesNoble = 'Barnes & Noble',
+  bassProShops = 'Bass Pro Shops',
+  burgerKing = 'Burger King',
+  carnivalCruiseLine = 'Carnival Cruise Line',
+  delta = 'Delta',
+  dsw = 'DSW',
+  gamestop = 'GameStop',
+  googlePlay = 'Google Play',
+  homeDepot = 'Home Depot',
+  hotelsCom = 'Hotels.com',
+  mercadoLibre = 'Mercado Livre',
+  nike = 'Nike',
+  papaJohns = "Papa John's",
+  pfChangs = "P.F. Chang's",
+  potteryBarn = 'Pottery Barn',
+  royalCaribbean = 'Royal Caribbean',
+  sonyPlayStation = 'PlayStation Store',
+  spotify = 'Spotify',
+  uber = 'Uber',
+  uberEats = 'Uber Eats',
+  venue = 'Venue',
+  xboxLive = 'Xbox Live'
 }
 
 export enum ClaimCodeType {

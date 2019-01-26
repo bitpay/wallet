@@ -102,9 +102,12 @@ export class GiftCardItem {
 
   private async setBrandStyling() {
     this.cardConfig = await this.giftCardProvider.getCardConfig(this.cardName);
+    const isGradient =
+      this.cardConfig.logoBackgroundColor.indexOf('gradient') > -1;
+    const cssProperty = isGradient ? 'background-image' : 'background-color';
     this.renderer.setElementStyle(
       this.item.getNativeElement(),
-      'background-color',
+      cssProperty,
       this.cardConfig.logoBackgroundColor
     );
   }

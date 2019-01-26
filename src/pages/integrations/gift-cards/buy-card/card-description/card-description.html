@@ -5,20 +5,25 @@
   </div>
   <div *ngSwitchCase="CardName.amazonJapan">
     <div translate>Only redeemable on www.amazon.co.jp (Japan website)</div>
-    <div translate>Amazon.co.jp Gift Cards never expire and can be redeemed towards millions of items at www.amazon.co.jp.</div>
+    <div translate>Amazon.co.jp Gift Cards never expire and can be redeemed towards millions of items at
+      www.amazon.co.jp.</div>
   </div>
   <div *ngSwitchCase="CardName.delta">
     <div>
-      The Gift of Go.™ With over 300 destinations and limitless adventures to choose from, the Delta Gift Card opens up a world of possibilities.
+      The Gift of Go.™ With over 300 destinations and limitless adventures to choose from, the Delta Gift Card opens up
+      a world of possibilities.
     </div>
     <div>
-      Delta Gift Cards can be used toward airfare on any Delta marketed flight through www.delta.com, at the airport, through reservations, or by phone with Delta Vacations®. Delta Gift Cards do not have any expiration dates or fees.
+      Delta Gift Cards can be used toward airfare on any Delta marketed flight through www.delta.com, at the airport,
+      through reservations, or by phone with Delta Vacations®. Delta Gift Cards do not have any expiration dates or
+      fees.
     </div>
   </div>
   <div *ngSwitchCase="CardName.mercadoLibre">
     <div translate>Only redeemable on Mercado Livre (Brazil)</div>
     <div translate>
-      You can use your Mercado Livre gift cards on your Mercado Pago account for everyday expenses like utilities and metro rides.
+      You can use your Mercado Livre gift cards on your Mercado Pago account for everyday expenses like utilities and
+      metro rides.
     </div>
   </div>
   <div *ngSwitchCase="CardName.potteryBarn">
@@ -47,6 +52,13 @@
       of year.</div>
     <div>Uber gift cards also apply to UberEATS orders. Enjoy food from hundreds of restaurants, delivered at
       Uber speed.</div>
+  </div>
+
+  <div *ngSwitchCase="CardName.xboxLive">
+    <div>Get an Xbox gift card for games and entertainment on Xbox One, Xbox 360, other select Microsoft online stores,
+      and Windows Phone 8. Buy the latest games, map packs, music, movies, TV shows and more. And on Xbox One, buy and
+      download full blockbuster games the day they hit retail shelves. Great as a gift, allowance, or credit card
+      alternative.</div>
   </div>
   <div *ngSwitchDefault externalize-links>
     <div markdown [data]="prepForMarkdown(cardConfig.description)"></div>
