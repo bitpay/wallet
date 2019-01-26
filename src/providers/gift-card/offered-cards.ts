@@ -220,9 +220,7 @@ export const offeredGiftCards: BaseCardConfig[] = ([
     brand: CardBrand.xboxLive,
     defaultClaimCodeType: ClaimCodeType.code,
     emailRequired: false,
-    icon: `${getCardImageDirectory(CardName.xboxLive)}icon.png`,
-    // logo: `${getCardImageDirectory(CardName.sonyPlayStation)}logo.png`,
-    logoBackgroundColor: 'linear-gradient(-90deg, #25B325 11%, #107C10 100%);',
+    logoBackgroundColor: 'linear-gradient(-90deg, #25B325 11%, #107C10 100%)',
     name: CardName.xboxLive,
     website: 'xbox.com'
   }
