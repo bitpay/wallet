@@ -7,6 +7,7 @@ import { Subscription } from 'rxjs';
 import { AddressBookProvider } from '../../../providers/address-book/address-book';
 import { Logger } from '../../../providers/logger/logger';
 import { OnGoingProcessProvider } from '../../../providers/on-going-process/on-going-process';
+import { PlatformProvider } from '../../../providers/platform/platform';
 import { ProfileProvider } from '../../../providers/profile/profile';
 import { WalletProvider } from '../../../providers/wallet/wallet';
 
@@ -21,6 +22,7 @@ export class ProposalsPage {
   private zone;
   private onResumeSubscription: Subscription;
   private onPauseSubscription: Subscription;
+  private isElectron: boolean;
 
   constructor(
     private plt: Platform,
@@ -28,12 +30,14 @@ export class ProposalsPage {
     private addressBookProvider: AddressBookProvider,
     private logger: Logger,
     private profileProvider: ProfileProvider,
+    private platformProvider: PlatformProvider,
     private translate: TranslateService,
     private events: Events,
     private walletProvider: WalletProvider,
     private navCtrl: NavController
   ) {
     this.zone = new NgZone({ enableLongStackTrace: false });
+    this.isElectron = this.platformProvider.isElectron;
   }
 
   ionViewWillEnter() {
@@ -43,6 +47,10 @@ export class ProposalsPage {
     this.subscribeBwsEvents();
     this.subscribeLocalTxAction();
 
+    // Update Wallet on Focus
+    if (this.isElectron) {
+      this.updateDesktopOnFocus();
+    }
 
     this.onResumeSubscription = this.plt.resume.subscribe(() => {
       this.subscribeBwsEvents();
@@ -71,6 +79,14 @@ export class ProposalsPage {
   private subscribeLocalTxAction(): void {
     this.events.subscribe('Local/TxAction', opts => {
       this.updateWallet(opts);
+    });
+  }
+
+  private updateDesktopOnFocus() {
+    const { remote } = (window as any).require('electron');
+    const win = remote.getCurrentWindow();
+    win.on('focus', () => {
+      this.updatePendingProposals();
     });
   }
 
