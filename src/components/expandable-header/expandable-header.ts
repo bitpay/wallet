@@ -49,8 +49,6 @@ export class ExpandableHeaderComponent {
    */
   headerHeight: number;
 
-  private setTransformTo2dTimeout: NodeJS.Timer;
-
   constructor(public element: ElementRef, public renderer: Renderer) {}
 
   ngOnInit() {
@@ -69,22 +67,12 @@ export class ExpandableHeaderComponent {
   }
 
   applyTransforms(scrollTop: number, newHeaderHeight: number): void {
-    clearTimeout(this.setTransformTo2dTimeout);
-
     const transformations = this.computeTransformations(
       scrollTop,
       newHeaderHeight
     );
     this.transformPrimaryContent(transformations, true);
     this.transformFooterContent(transformations);
-
-    this.setTransformTo2dTimeout = setTimeout(() => {
-      // Using 3d transforms allows us to achieve great performance. However, on iOS devices, switching to a
-      // different app and then returning back to this app causes any 3d transformed elements to dissapear
-      // initially for some reason. Scrolling again causes them to reappear. However, we can ensure the
-      // elements remain visible at all times by switching to 2d transforms once the user stops scrolling.
-      this.transformPrimaryContent(transformations, false);
-    }, 1000);
   }
 
   getNewHeaderHeight(scrollTop: number): number {
