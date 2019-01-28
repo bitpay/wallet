@@ -1,6 +1,7 @@
 import { Component, NgZone } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { Events, NavController } from 'ionic-angular';
+import { Events, NavController, Platform } from 'ionic-angular';
+import { Subscription } from 'rxjs';
 
 // providers
 import { AddressBookProvider } from '../../../providers/address-book/address-book';
@@ -18,8 +19,11 @@ export class ProposalsPage {
   public txps;
 
   private zone;
+  private onResumeSubscription: Subscription;
+  private onPauseSubscription: Subscription;
 
   constructor(
+    private plt: Platform,
     private onGoingProcessProvider: OnGoingProcessProvider,
     private addressBookProvider: AddressBookProvider,
     private logger: Logger,
@@ -36,17 +40,38 @@ export class ProposalsPage {
     this.updateAddressBook();
     this.updatePendingProposals();
 
-    this.events.subscribe('bwsEvent', (walletId: string) => {
-      this.updateWallet({ walletId });
+    this.subscribeBwsEvents();
+    this.subscribeLocalTxAction();
+
+
+    this.onResumeSubscription = this.plt.resume.subscribe(() => {
+      this.subscribeBwsEvents();
+      this.subscribeLocalTxAction();
     });
-    this.events.subscribe('Local/TxAction', opts => {
-      this.updateWallet(opts);
+
+    this.onPauseSubscription = this.plt.pause.subscribe(() => {
+      this.events.unsubscribe('bwsEvent');
+      this.events.unsubscribe('Local/TxAction');
     });
   }
 
   ngOnDestroy() {
     this.events.unsubscribe('bwsEvent');
     this.events.unsubscribe('Local/TxAction');
+    this.onResumeSubscription.unsubscribe();
+    this.onPauseSubscription.unsubscribe();
+  }
+
+  private subscribeBwsEvents(): void {
+    this.events.subscribe('bwsEvent', (walletId: string) => {
+      this.updateWallet({ walletId });
+    });
+  }
+
+  private subscribeLocalTxAction(): void {
+    this.events.subscribe('Local/TxAction', opts => {
+      this.updateWallet(opts);
+    });
   }
 
   private updateAddressBook(): void {
