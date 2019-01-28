@@ -55,7 +55,7 @@ export class ExpandableHeaderComponent {
 
   ngOnInit() {
     this.scrollArea.ionScroll.subscribe(event =>
-      event.domWrite(() => this.applyTransforms(event.scrollTop))
+      event.domWrite(() => this.handleDomWrite(event.scrollTop))
     );
   }
 
@@ -63,10 +63,18 @@ export class ExpandableHeaderComponent {
     this.headerHeight = this.element.nativeElement.offsetHeight;
   }
 
-  applyTransforms(scrollTop: number): void {
+  handleDomWrite(scrollTop: number) {
+    const newHeaderHeight = this.getNewHeaderHeight(scrollTop);
+    newHeaderHeight > 0 && this.applyTransforms(scrollTop, newHeaderHeight);
+  }
+
+  applyTransforms(scrollTop: number, newHeaderHeight: number): void {
     clearTimeout(this.setTransformTo2dTimeout);
 
-    const transformations = this.computeTransformations(scrollTop);
+    const transformations = this.computeTransformations(
+      scrollTop,
+      newHeaderHeight
+    );
     this.transformPrimaryContent(transformations, true);
     this.transformFooterContent(transformations);
 
@@ -84,8 +92,7 @@ export class ExpandableHeaderComponent {
     return newHeaderHeight < 0 ? 0 : newHeaderHeight;
   }
 
-  computeTransformations(scrollTop: number): number[] {
-    const newHeaderHeight = this.getNewHeaderHeight(scrollTop);
+  computeTransformations(scrollTop: number, newHeaderHeight: number): number[] {
     const opacity = this.getScaleValue(newHeaderHeight, this.fadeFactor);
     const scale = this.getScaleValue(newHeaderHeight, 0.5);
     const translateY = scrollTop > 0 ? scrollTop / 1.5 : 0;
