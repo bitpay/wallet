@@ -112,26 +112,6 @@ describe('ExpandableHeaderComponent', () => {
         expect(transformPrimarySpy).toHaveBeenCalledWith([1, 1, 0], true);
         expect(transformFooterSpy).toHaveBeenCalledWith([1, 1, 0]);
       });
-      // it('should reset to 2d transforms after the user stops scrolling', () => {
-      //   jasmine.clock().install();
-      //   instance.applyTransforms(0);
-      //   expect(instance.setTransformTo2dTimeout).toBeTruthy();
-      //   const transformPrimarySpy = spyOn(instance, 'transformPrimaryContent');
-      //   jasmine.clock().tick(1001);
-      //   expect(transformPrimarySpy).toHaveBeenCalledWith([1, 1, 0], false);
-      //   jasmine.clock().uninstall();
-      // });
     });
-    // describe('#transformPrimaryContent', () => {
-    //   it('should use 2d transform if is3d flag is false', () => {
-    //     const rendererSpy = spyOn(instance.renderer, 'setElementStyle');
-    //     instance.transformPrimaryContent([1, 1, 0], false);
-    //     expect(rendererSpy).toHaveBeenCalledWith(
-    //       instance.primaryContent.element.nativeElement,
-    //       'transform',
-    //       `scale(1, 1) translate(0, 0px)`
-    //     );
-    //   });
-    // });
   });
 });
