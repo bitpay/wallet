@@ -73,7 +73,7 @@ export class SessionLogPage {
 
   private prepareSessionLogs() {
     let log: string =
-      'Copay Session Logs.\nBe careful, this could contain sensitive private data\n\n';
+      'Session Logs.\nBe careful, this could contain sensitive private data\n\n';
     log += '\n\n';
 
     Object.keys(this.filteredLogs).forEach(key => {

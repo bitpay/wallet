@@ -112,7 +112,7 @@ export class BwcErrorProvider {
           break;
         case 'UPGRADE_NEEDED':
           body = this.translate.instant(
-            'Please upgrade Copay to perform this action'
+            'Please upgrade the app to perform this action'
           );
           break;
         case 'BAD_SIGNATURES':
