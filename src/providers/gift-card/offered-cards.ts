@@ -71,6 +71,14 @@ export const offeredGiftCards: BaseCardConfig[] = ([
     website: 'bk.com'
   },
   {
+    brand: CardBrand.cabelas,
+    defaultClaimCodeType: ClaimCodeType.barcode,
+    emailRequired: false,
+    logoBackgroundColor: '#384800',
+    name: CardName.cabelas,
+    website: 'cabelas.com'
+  },
+  {
     brand: CardBrand.carnivalCruiseLine,
     defaultClaimCodeType: ClaimCodeType.code,
     emailRequired: false,
