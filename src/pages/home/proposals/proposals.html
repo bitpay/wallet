@@ -4,7 +4,7 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content>
+<ion-content [ngClass]="{'no-margin-bottom': hideSlideButton}">
   <ion-list *ngIf="allTxps && allTxps[0]">
     <div *ngFor="let txpsByWallet of allTxps">
       <div class="wallet-divider" *ngIf="txpsByWallet.walletId && txpsByWallet.txps && txpsByWallet.txps[0] && txpsByWallet.txps[0].wallet">
@@ -14,23 +14,24 @@
             <img *ngIf="txpsByWallet.txps[0].wallet.network == 'testnet'" [ngStyle]="{'background-color': txpsByWallet.txps[0].wallet.color}" src="assets/img/icon-wallet-testnet.svg" class="icon-wallet" />
             <img *ngIf="txpsByWallet.txps[0].wallet.network != 'testnet'" [ngStyle]="{'background-color': txpsByWallet.txps[0].wallet.color}" src="assets/img/icon-wallet.svg" class="icon-wallet" />
           </ion-icon>
-
           <span class="name">{{txpsByWallet.txps[0].wallet.name}}</span>
         </div>
-
-        <button ion-button item-right class="multi-sign" outline (click)="signMultipleProposals(txpsByWallet)">
-          <span>{{ 'Multi sign' | translate}}</span>
-        </button>
+        <div *ngIf="txpsByWallet.multipleSignAvailable" class="multi-sign" outline (click)="signMultipleProposals(txpsByWallet)">
+          <ion-icon name="ios-list-outline"></ion-icon>
+        </div>
       </div>
       <div class="txp-container" *ngFor="let txp of txpsByWallet.txps">
-        <ion-checkbox (ionChange)="txpSelectionChange(txp)" *ngIf="walletIdSelectedToSign && txp.walletId == walletIdSelectedToSign" [checked]="txp.checked" [disabled]="txp.statusForUs == 'accepted' || txp.statusForUs == 'rejected'"></ion-checkbox>
+        <ion-checkbox (ionChange)="txpSelectionChange(txp)" *ngIf="walletIdSelectedToSign && txp.walletId == walletIdSelectedToSign && txp.statusForUs === 'pending'" [checked]="txp.checked" [disabled]="txp.statusForUs == 'accepted' || txp.statusForUs == 'rejected'"></ion-checkbox>
         <page-txp [tx]="txp" [addressbook]="addressbook"></page-txp>
-      </div>
-      <div text-center padding *ngIf="walletIdSelectedToSign && txpsByWallet.txps[0].wallet && walletIdSelectedToSign == txpsByWallet.txps[0].wallet.id && txpsToSign[0]">
-        <button ion-button clear (click)="sign()">
-          {{'Sign' | translate}}
-        </button>
       </div>
     </div>
   </ion-list>
 </ion-content>
+
+
+<ion-footer>
+  <page-slide-to-accept #slideButton *ngIf="isCordova && txpsToSign[0]" [ngClass]="{'slide-confirm-fast slide-confirm-down': hideSlideButton, 'slide-confirm-slow': !hideSlideButton}" [buttonText]="buttonText" (slideDone)="sign()"></page-slide-to-accept>
+  <ion-toolbar *ngIf="!isCordova && txpsToSign[0]">
+    <button ion-button full class="button-footer" (click)="sign()">{{buttonText}}</button>
+  </ion-toolbar>
+</ion-footer>

@@ -1,6 +1,6 @@
 page-proposals {
   .wallet-divider {
-    margin: 1rem;
+    margin: 2rem;
     display: flex;
     justify-content: space-between;
     .wallet-icon {
@@ -12,9 +12,10 @@ page-proposals {
     }
     .multi-sign {
       color: color($colors, primary);
-      border-color: color($colors, primary);
-      font-size: 1.3rem;
-      height: 2.8rem;
+      ion-icon {
+        font-size: 4rem;
+        margin-right: 2rem;
+      }
     }
   }
   .txp-container {
@@ -23,9 +24,18 @@ page-proposals {
     background-color: white;
     ion-checkbox {
       margin-left: 1.2rem;
+      .checkbox-icon {
+        border-color: color($colors, primary);
+      }
     }
     page-txp {
       width: 100%;
+    }
+  }
+  .no-margin-bottom {
+    .fixed-content,
+    .scroll-content {
+      margin-bottom: 0px;
     }
   }
 }

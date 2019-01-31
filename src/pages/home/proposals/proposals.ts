@@ -30,6 +30,9 @@ export class ProposalsPage {
   public allTxps: any[];
   public txpsToSign: any[];
   public walletIdSelectedToSign: string;
+  public isCordova: boolean;
+  public buttonText: string;
+  public hideSlideButton: boolean;
 
   private zone;
   private onResumeSubscription: Subscription;
@@ -54,6 +57,9 @@ export class ProposalsPage {
     this.zone = new NgZone({ enableLongStackTrace: false });
     this.isElectron = this.platformProvider.isElectron;
     this.updatingWalletId = {};
+    this.isCordova = this.platformProvider.isCordova;
+    this.buttonText = this.translate.instant('Sign multiple proposals');
+
     this.txpsToSign = [];
   }
 
@@ -200,12 +206,22 @@ export class ProposalsPage {
       }
     });
     Array.from(map).forEach(txpsPerWallet => {
+      const txpToBeSigned = this.getTxpToBeSigned(txpsPerWallet[1]);
       txpsByWallet.push({
         walletId: txpsPerWallet[0],
-        txps: txpsPerWallet[1]
+        txps: txpsPerWallet[1],
+        multipleSignAvailable: txpToBeSigned > 1
       });
     });
     return txpsByWallet;
+  }
+
+  private getTxpToBeSigned(txpsPerWallet): number {
+    let i = 0;
+    txpsPerWallet.forEach(txp => {
+      if (txp.status === 'pending') i = i + 1;
+    });
+    return i;
   }
 
   public signMultipleProposals(txp): void {
@@ -249,6 +265,8 @@ export class ProposalsPage {
     } else {
       this.txpsToSign.push(txp);
     }
+    if (this.isCordova)
+      this.hideSlideButton = this.txpsToSign[0] ? false : true;
   }
 
   private resetMultiSignValues(): void {
