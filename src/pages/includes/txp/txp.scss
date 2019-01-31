@@ -19,12 +19,12 @@ page-txp {
   .proposal-container {
     .proposal-title {
       display: flex;
-      align-items: baseline;  
+      align-items: baseline;
     }
     .circle-status {
       width: 1rem;
       height: 1rem;
-      background-color: color($colors, light-grey);;
+      background-color: color($colors, light-grey);
       border-radius: 10px;
       margin-right: 0.3rem;
       padding: 5px;
