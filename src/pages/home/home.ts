@@ -1,11 +1,6 @@
 import { Component, NgZone, ViewChild } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import {
-  Events,
-  ModalController,
-  NavController,
-  Platform
-} from 'ionic-angular';
+import { Events, NavController, Platform } from 'ionic-angular';
 import * as _ from 'lodash';
 import * as moment from 'moment';
 import { Observable, Subscription } from 'rxjs';
@@ -19,25 +14,19 @@ import { ShapeshiftPage } from '../integrations/shapeshift/shapeshift';
 import { PaperWalletPage } from '../paper-wallet/paper-wallet';
 import { AmountPage } from '../send/amount/amount';
 import { AddressbookAddPage } from '../settings/addressbook/add/add';
-import { TxDetailsPage } from '../tx-details/tx-details';
-import { TxpDetailsPage } from '../txp-details/txp-details';
-import { ActivityPage } from './activity/activity';
 import { ProposalsPage } from './proposals/proposals';
 
 // Providers
-import { AddressBookProvider } from '../../providers/address-book/address-book';
 import { AppProvider } from '../../providers/app/app';
 import { BitPayCardProvider } from '../../providers/bitpay-card/bitpay-card';
 import { BwcErrorProvider } from '../../providers/bwc-error/bwc-error';
 import { ClipboardProvider } from '../../providers/clipboard/clipboard';
-import { ConfigProvider } from '../../providers/config/config';
 import { EmailNotificationsProvider } from '../../providers/email-notifications/email-notifications';
 import { ExternalLinkProvider } from '../../providers/external-link/external-link';
 import { FeedbackProvider } from '../../providers/feedback/feedback';
 import { HomeIntegrationsProvider } from '../../providers/home-integrations/home-integrations';
 import { IncomingDataProvider } from '../../providers/incoming-data/incoming-data';
 import { Logger } from '../../providers/logger/logger';
-import { OnGoingProcessProvider } from '../../providers/on-going-process/on-going-process';
 import { PersistenceProvider } from '../../providers/persistence/persistence';
 import { PlatformProvider } from '../../providers/platform/platform';
 import { PopupProvider } from '../../providers/popup/popup';
@@ -58,14 +47,9 @@ export class HomePage {
   public walletsBtc;
   public walletsBch;
   public cachedBalanceUpdateOn: string;
-  public recentTransactionsEnabled: boolean;
-  public txps;
   public txpsN: number;
-  public notifications;
-  public notificationsN: number;
   public serverMessage;
   public serverMessageDismissed: boolean;
-  public addressbook;
   public homeIntegrations;
   public bitpayCardItems;
   public showBitPayCard: boolean = false;
@@ -100,12 +84,8 @@ export class HomePage {
     private bwcErrorProvider: BwcErrorProvider,
     private logger: Logger,
     private events: Events,
-    private configProvider: ConfigProvider,
     private externalLinkProvider: ExternalLinkProvider,
-    private onGoingProcessProvider: OnGoingProcessProvider,
     private popupProvider: PopupProvider,
-    private modalCtrl: ModalController,
-    private addressBookProvider: AddressBookProvider,
     private appProvider: AppProvider,
     private platformProvider: PlatformProvider,
     private homeIntegrationsProvider: HomeIntegrationsProvider,
@@ -119,7 +99,6 @@ export class HomePage {
   ) {
     this.slideDown = false;
     this.updatingWalletId = {};
-    this.addressbook = {};
     this.cachedBalanceUpdateOn = '';
     this.isElectron = this.platformProvider.isElectron;
     this.showReorderBtc = false;
@@ -141,23 +120,8 @@ export class HomePage {
   }
 
   private _willEnter() {
-    // Show recent transactions card
-    this.recentTransactionsEnabled = this.configProvider.get().recentTransactions.enabled;
-
     // Update list of wallets, status and TXPs
     this.setWallets();
-
-    this.addressBookProvider
-      .list()
-      .then(ab => {
-        this.addressbook = ab || {};
-      })
-      .catch(err => {
-        this.logger.error(err);
-      });
-
-    // Update Tx Notifications
-    this.getNotifications();
 
     // Update Wallet on Focus
     if (this.isElectron) {
@@ -248,7 +212,7 @@ export class HomePage {
   }
 
   private subscribeBwsEvents() {
-    // BWS Events: Update Status per Wallet -> Update recent transactions and txps
+    // BWS Events: Update Status per Wallet -> Update txps
     // NewBlock, NewCopayer, NewAddress, NewTxProposal, TxProposalAcceptedBy, TxProposalRejectedBy, txProposalFinallyRejected,
     // txProposalFinallyAccepted, TxProposalRemoved, NewIncomingTx, NewOutgoingTx
     this.events.subscribe('bwsEvent', (walletId: string) => {
@@ -257,14 +221,14 @@ export class HomePage {
   }
 
   private subscribeStatusEvents() {
-    // Create, Join, Import and Delete -> Get Wallets -> Update Status for All Wallets -> Update recent transactions and txps
+    // Create, Join, Import and Delete -> Get Wallets -> Update Status for All Wallets -> Update txps
     this.events.subscribe('status:updated', () => {
       this.setWallets();
     });
   }
 
   private subscribeLocalTxAction() {
-    // Reject, Remove, OnlyPublish and SignAndBroadcast -> Update Status per Wallet -> Update recent transactions and txps
+    // Reject, Remove, OnlyPublish and SignAndBroadcast -> Update Status per Wallet -> Update txps
     this.events.subscribe('Local/TxAction', opts => {
       this.updateWallet(opts);
     });
@@ -310,7 +274,6 @@ export class HomePage {
     const win = remote.getCurrentWindow();
     win.on('focus', () => {
       this.checkClipboard();
-      this.getNotifications();
       this.setWallets();
     });
   }
@@ -523,9 +486,8 @@ export class HomePage {
           wallet.status.availableBalanceStr
         );
 
-        // Update recent transactions and txps
+        // Update txps
         this.updateTxps();
-        this.getNotifications();
 
         this.stopUpdatingWalletId(opts.walletId);
       })
@@ -534,49 +496,13 @@ export class HomePage {
         this.stopUpdatingWalletId(opts.walletId);
       });
   }
-
-  private debounceUpdateTxps = _.debounce(
-    () => {
-      this.updateTxps();
-    },
-    5000,
-    {
-      leading: true
-    }
-  );
 
   private updateTxps() {
     this.profileProvider
       .getTxps({ limit: 3 })
       .then(data => {
         this.zone.run(() => {
-          this.txps = data.txps;
           this.txpsN = data.n;
-        });
-      })
-      .catch(err => {
-        this.logger.error(err);
-      });
-  }
-
-  private debounceUpdateNotifications = _.debounce(
-    () => {
-      this.getNotifications();
-    },
-    5000,
-    {
-      leading: true
-    }
-  );
-
-  private getNotifications() {
-    if (!this.recentTransactionsEnabled) return;
-    this.profileProvider
-      .getNotifications({ limit: 3 })
-      .then(data => {
-        this.zone.run(() => {
-          this.notifications = data.notifications;
-          this.notificationsN = data.total;
         });
       })
       .catch(err => {
@@ -590,49 +516,49 @@ export class HomePage {
     if (_.isEmpty(this.wallets)) return;
 
     const pr = wallet => {
-      return new Promise(resolve => {
-        this.walletProvider
-          .getStatus(wallet, {})
-          .then(status => {
-            wallet.status = status;
-            wallet.error = null;
+      return this.walletProvider
+        .getStatus(wallet, {})
+        .then(async status => {
+          wallet.status = status;
+          wallet.error = null;
 
-            if (!foundMessage && !_.isEmpty(status.serverMessage)) {
-              this.serverMessage = status.serverMessage;
-              this.checkServerMessage();
-              foundMessage = true;
-            }
+          if (!foundMessage && !_.isEmpty(status.serverMessage)) {
+            this.serverMessage = status.serverMessage;
+            await this.checkServerMessage();
+            foundMessage = true;
+          }
 
-            this.profileProvider.setLastKnownBalance(
-              wallet.id,
-              wallet.status.availableBalanceStr
-            );
-            return resolve();
-          })
-          .catch(err => {
-            wallet.error =
-              err === 'WALLET_NOT_REGISTERED'
-                ? 'Wallet not registered'
-                : this.bwcErrorProvider.msg(err);
-            this.logger.warn(
-              this.bwcErrorProvider.msg(
-                err,
-                'Error updating status for ' + wallet.name
-              )
-            );
-            return resolve();
-          });
-      });
+          this.profileProvider.setLastKnownBalance(
+            wallet.id,
+            wallet.status.availableBalanceStr
+          );
+          return Promise.resolve();
+        })
+        .catch(err => {
+          wallet.error =
+            err === 'WALLET_NOT_REGISTERED'
+              ? 'Wallet not registered'
+              : this.bwcErrorProvider.msg(err);
+          this.logger.warn(
+            this.bwcErrorProvider.msg(
+              err,
+              'Error updating status for ' + wallet.name
+            )
+          );
+          return Promise.resolve();
+        });
     };
 
-    _.each(this.wallets, wallet => {
-      pr(wallet).then(() => {
-        this.debounceUpdateTxps();
-        this.debounceUpdateNotifications();
+    const promises = [];
 
-        // No serverMessage for any wallet?
-        if (!foundMessage) this.serverMessage = null;
-      });
+    _.each(this.wallets, wallet => {
+      promises.push(pr(wallet));
+    });
+
+    Promise.all(promises).then(() => {
+      this.updateTxps();
+      // No serverMessage for any wallet?
+      if (!foundMessage) this.serverMessage = null;
     });
   }
 
@@ -683,37 +609,6 @@ export class HomePage {
     this.events.publish('OpenWallet', wallet);
   }
 
-  public openNotificationModal(n) {
-    const wallet = this.profileProvider.getWallet(n.walletId);
-
-    if (n.txid) {
-      this.navCtrl.push(TxDetailsPage, { walletId: n.walletId, txid: n.txid });
-    } else {
-      const txp = _.find(this.txps, {
-        id: n.txpId
-      });
-      if (txp) {
-        this.openTxpModal(txp);
-      } else {
-        this.onGoingProcessProvider.set('loadingTxInfo');
-        this.walletProvider
-          .getTxp(wallet, n.txpId)
-          .then(txp => {
-            const _txp = txp;
-            this.onGoingProcessProvider.clear();
-            this.openTxpModal(_txp);
-          })
-          .catch(() => {
-            this.onGoingProcessProvider.clear();
-            this.logger.warn('No txp found');
-            const title = this.translate.instant('Error');
-            const subtitle = this.translate.instant('Transaction not found');
-            return this.popupProvider.ionicAlert(title, subtitle);
-          });
-      }
-    }
-  }
-
   public reorderBtc(): void {
     this.showReorderBtc = !this.showReorderBtc;
   }
@@ -753,21 +648,8 @@ export class HomePage {
     });
   }
 
-  public openTxpModal(tx): void {
-    const modal = this.modalCtrl.create(
-      TxpDetailsPage,
-      { tx },
-      { showBackdrop: false, enableBackdropDismiss: false }
-    );
-    modal.present();
-  }
-
   public openProposalsPage(): void {
     this.navCtrl.push(ProposalsPage);
-  }
-
-  public openActivityPage(): void {
-    this.navCtrl.push(ActivityPage);
   }
 
   public goTo(page: string): void {
