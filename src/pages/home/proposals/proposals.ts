@@ -1,12 +1,10 @@
 import { Component, NgZone } from '@angular/core';
-import { TranslateService } from '@ngx-translate/core';
 import { Events, NavController, Platform } from 'ionic-angular';
 import { Subscription } from 'rxjs';
 
 // providers
 import { AddressBookProvider } from '../../../providers/address-book/address-book';
 import { Logger } from '../../../providers/logger/logger';
-import { OnGoingProcessProvider } from '../../../providers/on-going-process/on-going-process';
 import { PlatformProvider } from '../../../providers/platform/platform';
 import { ProfileProvider } from '../../../providers/profile/profile';
 import { WalletProvider } from '../../../providers/wallet/wallet';
@@ -23,34 +21,31 @@ export class ProposalsPage {
   private onResumeSubscription: Subscription;
   private onPauseSubscription: Subscription;
   private isElectron: boolean;
+  private updatingWalletId: object;
 
   constructor(
     private plt: Platform,
-    private onGoingProcessProvider: OnGoingProcessProvider,
     private addressBookProvider: AddressBookProvider,
     private logger: Logger,
     private profileProvider: ProfileProvider,
     private platformProvider: PlatformProvider,
-    private translate: TranslateService,
     private events: Events,
     private walletProvider: WalletProvider,
     private navCtrl: NavController
   ) {
     this.zone = new NgZone({ enableLongStackTrace: false });
     this.isElectron = this.platformProvider.isElectron;
+    this.updatingWalletId = {};
   }
 
   ionViewWillEnter() {
     this.updateAddressBook();
     this.updatePendingProposals();
+  }
 
+  ionViewDidLoad() {
     this.subscribeBwsEvents();
     this.subscribeLocalTxAction();
-
-    // Update Wallet on Focus
-    if (this.isElectron) {
-      this.updateDesktopOnFocus();
-    }
 
     this.onResumeSubscription = this.plt.resume.subscribe(() => {
       this.subscribeBwsEvents();
@@ -61,6 +56,11 @@ export class ProposalsPage {
       this.events.unsubscribe('bwsEvent');
       this.events.unsubscribe('Local/TxAction');
     });
+
+    // Update Wallet on Focus
+    if (this.isElectron) {
+      this.updateDesktopOnFocus();
+    }
   }
 
   ngOnDestroy() {
@@ -102,10 +102,8 @@ export class ProposalsPage {
   }
 
   private updateWallet(opts): void {
-    const loading = this.translate.instant(
-      'Updating pending proposals... Please stand by'
-    );
-    this.onGoingProcessProvider.set(loading);
+    if (this.updatingWalletId[opts.walletId]) return;
+    this.startUpdatingWalletId(opts.walletId);
     const wallet = this.profileProvider.getWallet(opts.walletId);
     this.walletProvider
       .getStatus(wallet, opts)
@@ -119,18 +117,28 @@ export class ProposalsPage {
 
         // Update txps
         this.updatePendingProposals();
+        this.stopUpdatingWalletId(opts.walletId);
       })
       .catch(err => {
-        this.onGoingProcessProvider.clear();
         this.logger.error(err);
+        this.stopUpdatingWalletId(opts.walletId);
       });
+  }
+
+  private startUpdatingWalletId(walletId: string) {
+    this.updatingWalletId[walletId] = true;
+  }
+
+  private stopUpdatingWalletId(walletId: string) {
+    setTimeout(() => {
+      this.updatingWalletId[walletId] = false;
+    }, 10000);
   }
 
   private updatePendingProposals(): void {
     this.profileProvider
       .getTxps({ limit: 50 })
       .then(txpsData => {
-        this.onGoingProcessProvider.clear();
         this.zone.run(() => {
           this.txps = txpsData.txps;
           if (this.txps && !this.txps[0]) {
@@ -139,7 +147,6 @@ export class ProposalsPage {
         });
       })
       .catch(err => {
-        this.onGoingProcessProvider.clear();
         this.logger.error(err);
       });
   }
