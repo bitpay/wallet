@@ -12,6 +12,7 @@ import { Subscription } from 'rxjs';
 // providers
 import { AddressBookProvider } from '../../../providers/address-book/address-book';
 import { Logger } from '../../../providers/logger/logger';
+import { OnGoingProcessProvider } from '../../../providers/on-going-process/on-going-process';
 import { PlatformProvider } from '../../../providers/platform/platform';
 import { ProfileProvider } from '../../../providers/profile/profile';
 import { ReplaceParametersProvider } from '../../../providers/replace-parameters/replace-parameters';
@@ -40,6 +41,7 @@ export class ProposalsPage {
     private plt: Platform,
     private addressBookProvider: AddressBookProvider,
     private logger: Logger,
+    private onGoingProcessProvider: OnGoingProcessProvider,
     private profileProvider: ProfileProvider,
     private platformProvider: PlatformProvider,
     private translate: TranslateService,
@@ -219,14 +221,21 @@ export class ProposalsPage {
     this.walletProvider
       .publishAndSignMultipleTxps(wallet, this.txpsToSign)
       .then(data => {
-        // this.onGoingProcessProvider.clear();
         this.resetMultiSignValues();
-        this.openFinishModal(data);
+        const txpsAmount = data.length;
+        this.onGoingProcessProvider.clear();
+        const finishText: string = this.replaceParametersProvider.replace(
+          this.translate.instant('{{txpsAmount}} proposals signed'),
+          { txpsAmount }
+        );
+        this.openModal(finishText, null, 'success');
       })
       .catch(err => {
-        // this.onGoingProcessProvider.clear();
         this.resetMultiSignValues();
-        this.openFailedModal(err);
+        const finishText: string = this.translate.instant(
+          'Some of your proposals have failed'
+        );
+        this.openModal(finishText, err, 'warning');
         this.updatePendingProposals();
         // this.showErrorInfoSheet(err, 'Could not send payment');
       });
@@ -247,30 +256,13 @@ export class ProposalsPage {
     this.walletIdSelectedToSign = null;
   }
 
-  private openFinishModal(data: any[]): void {
-    const txpsAmount = data.length;
-    const finishText: string = this.replaceParametersProvider.replace(
-      this.translate.instant('{{txpsAmount}} proposals signed'),
-      { txpsAmount }
-    );
-    let modal = this.modalCtrl.create(
-      FinishModalPage,
-      { finishText },
-      { showBackdrop: true, enableBackdropDismiss: false }
-    );
-    modal.present();
-  }
-
-  private openFailedModal(err: string): void {
-    const finishText: string = this.translate.instant(
-      'Some of your proposals have failed'
-    );
-    let modal = this.modalCtrl.create(
+  private openModal(finishText, finishComment, cssClass): void {
+    const modal = this.modalCtrl.create(
       FinishModalPage,
       {
         finishText,
-        finishComment: err,
-        cssClass: 'danger'
+        finishComment,
+        cssClass
       },
       { showBackdrop: true, enableBackdropDismiss: false }
     );
