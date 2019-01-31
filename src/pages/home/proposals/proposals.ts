@@ -219,11 +219,11 @@ export class ProposalsPage {
       ? this.txpsToSign[0].wallet
       : this.profileProvider.getWallet(this.txpsToSign[0].walletId);
     this.walletProvider
-      .publishAndSignMultipleTxps(wallet, this.txpsToSign)
+      .signMultipleTxps(wallet, this.txpsToSign)
       .then(data => {
         this.resetMultiSignValues();
-        const txpsAmount = data.length;
         this.onGoingProcessProvider.clear();
+        const txpsAmount = data.length;
         const finishText: string = this.replaceParametersProvider.replace(
           this.translate.instant('{{txpsAmount}} proposals signed'),
           { txpsAmount }
