@@ -17,10 +17,24 @@ page-txp {
     }
   }
   .proposal-container {
-    border-left: 2px solid color($colors, primary);
-    .status-info {
-      font-size: 12.5px;
-      margin-top: 0.3rem;
+    .proposal-title {
+      display: flex;
+      align-items: baseline;  
+    }
+    .circle-status {
+      width: 1rem;
+      height: 1rem;
+      background-color: color($colors, light-grey);;
+      border-radius: 10px;
+      margin-right: 0.3rem;
+      padding: 5px;
+    }
+    .assertive {
+      background-color: color($colors, danger);
+    }
+
+    .balanced {
+      background-color: color($colors, success);
     }
   }
   ion-note {

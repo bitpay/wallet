@@ -1,0 +1,31 @@
+page-proposals {
+  .wallet-divider {
+    margin: 1rem;
+    display: flex;
+    justify-content: space-between;
+    .wallet-icon {
+      display: flex;
+      align-items: center;
+      .item-img {
+        margin-right: 1rem;
+      }
+    }
+    .multi-sign {
+      color: color($colors, primary);
+      border-color: color($colors, primary);
+      font-size: 1.3rem;
+      height: 2.8rem;
+    }
+  }
+  .txp-container {
+    display: flex;
+    align-items: center;
+    background-color: white;
+    ion-checkbox {
+      margin-left: 1.2rem;
+    }
+    page-txp {
+      width: 100%;
+    }
+  }
+}

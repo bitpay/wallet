@@ -1,5 +1,7 @@
 import { Component, NgZone } from '@angular/core';
-import { Events, NavController, Platform } from 'ionic-angular';
+import { TranslateService } from '@ngx-translate/core';
+import { Events, ModalController, NavController, Platform } from 'ionic-angular';
+import * as _ from 'lodash';
 import { Subscription } from 'rxjs';
 
 // providers
@@ -7,7 +9,11 @@ import { AddressBookProvider } from '../../../providers/address-book/address-boo
 import { Logger } from '../../../providers/logger/logger';
 import { PlatformProvider } from '../../../providers/platform/platform';
 import { ProfileProvider } from '../../../providers/profile/profile';
+import { ReplaceParametersProvider } from '../../../providers/replace-parameters/replace-parameters';
 import { WalletProvider } from '../../../providers/wallet/wallet';
+
+// pages
+import { FinishModalPage } from '../../finish/finish';
 
 @Component({
   selector: 'page-proposals',
@@ -15,7 +21,9 @@ import { WalletProvider } from '../../../providers/wallet/wallet';
 })
 export class ProposalsPage {
   public addressbook;
-  public txps;
+  public allTxps: any[];
+  public txpsToSign: any[];
+  public walletIdSelectedToSign: string;
 
   private zone;
   private onResumeSubscription: Subscription;
@@ -29,13 +37,17 @@ export class ProposalsPage {
     private logger: Logger,
     private profileProvider: ProfileProvider,
     private platformProvider: PlatformProvider,
+    private translate: TranslateService,
     private events: Events,
+    private replaceParametersProvider: ReplaceParametersProvider,
     private walletProvider: WalletProvider,
+    private modalCtrl: ModalController,
     private navCtrl: NavController
   ) {
     this.zone = new NgZone({ enableLongStackTrace: false });
     this.isElectron = this.platformProvider.isElectron;
     this.updatingWalletId = {};
+    this.txpsToSign = [];
   }
 
   ionViewWillEnter() {
@@ -148,8 +160,15 @@ export class ProposalsPage {
       .getTxps({ limit: 50 })
       .then(txpsData => {
         this.zone.run(() => {
-          this.txps = txpsData.txps;
-          if (this.txps && !this.txps[0]) {
+
+          // Check if txp were checked before
+          txpsData.txps.forEach(txp => {
+            txp.checked = _.indexOf(this.txpsToSign, txp) >= 0 ? true : false;
+          });
+
+          this.allTxps = this.groupByWallets(txpsData.txps);
+
+          if (this.allTxps && !this.allTxps[0]) {
             this.navCtrl.pop();
           }
         });
@@ -158,4 +177,99 @@ export class ProposalsPage {
         this.logger.error(err);
       });
   }
+
+  private groupByWallets(txps): any[] {
+    const walletIdGetter = txp => txp.walletId;
+    const map = new Map();
+    const txpsByWallet: any[] = [];
+
+    txps.forEach((txp) => {
+      const walletId = walletIdGetter(txp);
+      const collection = map.get(walletId);
+
+      if (!collection) {
+        map.set(walletId, [txp]);
+      } else {
+        collection.push(txp);
+      }
+    });
+    Array.from(map).forEach(txpsPerWallet => {
+      txpsByWallet.push(
+        {
+          walletId: txpsPerWallet[0],
+          txps: txpsPerWallet[1]
+        }
+      );
+    });
+    return txpsByWallet;
+  }
+
+  public signMultipleProposals(txp): void {
+    this.txpsToSign = [];
+    this.walletIdSelectedToSign = this.walletIdSelectedToSign == txp.walletId ? null : txp.walletId;
+  }
+
+  public sign(): void {
+    const wallet = this.txpsToSign[0].wallet ? this.txpsToSign[0].wallet : this.profileProvider.getWallet(this.txpsToSign[0].walletId)
+    this.walletProvider
+      .publishAndSignMultipleTxps(wallet, this.txpsToSign)
+      .then((data) => {
+        // this.onGoingProcessProvider.clear();
+        this.resetMultiSignValues();
+        this.openFinishModal(data);
+      })
+      .catch(err => {
+        // this.onGoingProcessProvider.clear();
+        this.resetMultiSignValues();
+        this.openFailedModal(err);
+        this.updatePendingProposals();
+        // this.showErrorInfoSheet(err, 'Could not send payment');
+      });
+  }
+
+  public txpSelectionChange(txp): void {
+    if (_.indexOf(this.txpsToSign, txp) >= 0) {
+      _.remove(this.txpsToSign, txpToSign => {
+        return txpToSign.id == txp.id
+      });
+    } else {
+      this.txpsToSign.push(txp);
+    }
+  }
+
+  private resetMultiSignValues(): void {
+    this.txpsToSign = [];
+    this.walletIdSelectedToSign = null;
+  }
+
+  private openFinishModal(data: any[]): void {
+    const txpsAmount = data.length;
+    const finishText: string = this.replaceParametersProvider.replace(
+      this.translate.instant(
+        '{{txpsAmount}} proposals signed'
+      ),
+      { txpsAmount }
+    );
+    let modal = this.modalCtrl.create(
+      FinishModalPage,
+      { finishText },
+      { showBackdrop: true, enableBackdropDismiss: false }
+    );
+    modal.present();
+  }
+
+  private openFailedModal(err: string): void {
+    const finishText: string = this.translate.instant('Some of your proposals have failed');
+    let modal = this.modalCtrl.create(
+      FinishModalPage,
+      {
+        finishText,
+        finishComment: err,
+        cssClass: 'danger'
+      },
+      { showBackdrop: true, enableBackdropDismiss: false }
+    );
+    modal.present();
+  }
+
 }

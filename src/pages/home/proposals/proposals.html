@@ -5,7 +5,32 @@
 </ion-header>
 
 <ion-content>
-  <ion-list *ngIf="txps && txps[0]">
-    <page-txp *ngFor="let txp of txps" [tx]="txp" [addressbook]="addressbook"></page-txp>
+  <ion-list *ngIf="allTxps && allTxps[0]">
+    <div *ngFor="let txpsByWallet of allTxps">
+      <div class="wallet-divider" *ngIf="txpsByWallet.walletId && txpsByWallet.txps && txpsByWallet.txps[0] && txpsByWallet.txps[0].wallet">
+
+        <div class="wallet-icon">
+          <ion-icon class="item-img" item-start>
+            <img *ngIf="txpsByWallet.txps[0].wallet.network == 'testnet'" [ngStyle]="{'background-color': txpsByWallet.txps[0].wallet.color}" src="assets/img/icon-wallet-testnet.svg" class="icon-wallet" />
+            <img *ngIf="txpsByWallet.txps[0].wallet.network != 'testnet'" [ngStyle]="{'background-color': txpsByWallet.txps[0].wallet.color}" src="assets/img/icon-wallet.svg" class="icon-wallet" />
+          </ion-icon>
+
+          <span class="name">{{txpsByWallet.txps[0].wallet.name}}</span>
+        </div>
+
+        <button ion-button item-right class="multi-sign" outline (click)="signMultipleProposals(txpsByWallet)">
+          <span>{{ 'Multi sign' | translate}}</span>
+        </button>
+      </div>
+      <div class="txp-container" *ngFor="let txp of txpsByWallet.txps">
+        <ion-checkbox (ionChange)="txpSelectionChange(txp)" *ngIf="walletIdSelectedToSign && txp.walletId == walletIdSelectedToSign" [checked]="txp.checked" [disabled]="txp.statusForUs == 'accepted' || txp.statusForUs == 'rejected'"></ion-checkbox>
+        <page-txp [tx]="txp" [addressbook]="addressbook"></page-txp>
+      </div>
+      <div text-center padding *ngIf="walletIdSelectedToSign && txpsByWallet.txps[0].wallet && walletIdSelectedToSign == txpsByWallet.txps[0].wallet.id && txpsToSign[0]">
+        <button ion-button clear (click)="sign()">
+          {{'Sign' | translate}}
+        </button>
+      </div>
+    </div>
   </ion-list>
 </ion-content>

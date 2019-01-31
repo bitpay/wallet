@@ -1,8 +1,12 @@
-<button ion-item class="proposal-container" [ngStyle]="{'border-left-color': tx.wallet.color}" (click)="openTxpModal(tx)">
-  <div *ngIf="!tx.merchant" class="item-title">
-    <span *ngIf="tx.message">{{tx.message}}</span>
-    <span *ngIf="!tx.message && tx.toAddress && addressbook[tx.toAddress]">{{addressbook[tx.toAddress].name || addressbook[tx.toAddress]}}</span>
-    <span *ngIf="!tx.message && tx.toAddress && !addressbook[tx.toAddress]" translate>Sending</span>
+<button ion-item class="proposal-container" (click)="openTxpModal(tx)">
+  <div class="proposal-title">
+    <div class="circle-status" *ngIf="tx.statusForUs" [ngClass]="{'balanced': tx.statusForUs == 'accepted', 'assertive': tx.statusForUs == 'rejected'}"></div>
+    <div *ngIf="!tx.merchant" class="item-title">
+      <span *ngIf="tx.message">{{tx.message}}</span>
+      <span *ngIf="!tx.message && tx.toAddress && addressbook[tx.toAddress]">{{addressbook[tx.toAddress].name || addressbook[tx.toAddress]}}</span>
+      <span *ngIf="!tx.message && tx.toAddress && !addressbook[tx.toAddress]" translate>Sending</span>
+      <span *ngIf="tx.checked" translate>{{tx.checked}}</span>
+    </div>
   </div>
   <span *ngIf="tx.merchant" class="item-subtitle">
     <span *ngIf="tx.merchant.pr.ca">
@@ -15,14 +19,6 @@
   <div class="item-subtitle">
     <span *ngIf="tx.creatorName">{{ tx.creatorName}}@</span>
     <span>{{tx.wallet.name}}</span>
-  </div>
-  <div class="status-info" *ngIf="tx.statusForUs">
-    <span class="balanced" *ngIf="tx.statusForUs == 'accepted'" translate>
-      Accepted
-    </span>
-    <span class="assertive" *ngIf="tx.statusForUs == 'rejected'" translate>
-      Rejected
-    </span>
   </div>
 
   <ion-note item-right>
