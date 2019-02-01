@@ -33,6 +33,7 @@ export class ProposalsPage {
   public isCordova: boolean;
   public buttonText: string;
   public hideSlideButton: boolean;
+  public signErr: string;
 
   private zone;
   private onResumeSubscription: Subscription;
@@ -237,24 +238,41 @@ export class ProposalsPage {
     this.walletProvider
       .signMultipleTxps(wallet, this.txpsToSign)
       .then(data => {
-        this.resetMultiSignValues();
         this.onGoingProcessProvider.clear();
-        const txpsAmount = data.length;
-        const finishText: string = this.replaceParametersProvider.replace(
-          this.translate.instant('{{txpsAmount}} proposals signed'),
-          { txpsAmount }
-        );
-        this.openModal(finishText, null, 'success');
+        this.resetMultiSignValues();
+        const count = this.countSuccessAndFailed(data);
+        if (count.failed > 0) {
+          this.signErr = this.replaceParametersProvider.replace(
+            this.translate.instant(
+              '{{txpsFailed}} of your transactions proposals failed to sign. Please, try again'
+            ),
+            { txpsFailed: count.failed }
+          );
+        }
+        if (count.success > 0) {
+          const finishText: string = this.replaceParametersProvider.replace(
+            this.translate.instant('{{txpsSuccess}} proposals signed'),
+            { txpsSuccess: count.success }
+          );
+          this.openModal(finishText, null, 'success');
+        }
+        this.updateWallet(wallet.id);
       })
       .catch(err => {
-        this.resetMultiSignValues();
-        const finishText: string = this.translate.instant(
-          'Some of your proposals have failed'
-        );
-        this.openModal(finishText, err, 'warning');
-        this.updatePendingProposals();
-        // this.showErrorInfoSheet(err, 'Could not send payment');
+        this.logger.error('Sign multiple tx failed', err);
       });
+  }
+
+  private countSuccessAndFailed(arrayData) {
+    const count = { success: 0, failed: 0 };
+    arrayData.forEach(data => {
+      if (data.id) {
+        count.success = count.success + 1;
+      } else {
+        count.failed = count.failed + 1;
+      }
+    });
+    return count;
   }
 
   public txpSelectionChange(txp): void {

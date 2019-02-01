@@ -1,4 +1,10 @@
 page-proposals {
+  ion-content {
+    .fixed-content,
+    .scroll-content {
+      margin-bottom: 90px;
+    }
+  }
   .wallet-divider {
     margin: 2rem;
     display: flex;
@@ -30,6 +36,12 @@ page-proposals {
     }
     page-txp {
       width: 100%;
+    }
+    .with-checkbox {
+      margin-left: 16px;
+      .proposal-container {
+        padding-left: 0;
+      }
     }
   }
   .no-margin-bottom {

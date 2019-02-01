@@ -1559,9 +1559,13 @@ export class WalletProvider {
     const promises = [];
     return this.prepare(wallet).then(async (password: string) => {
       _.each(txps, txp => {
-        promises.push(this.signAndBroadcast(wallet, txp, password));
+        promises.push(
+          this.signAndBroadcast(wallet, txp, password).catch(error => {
+            this.logger.error(error);
+            return error;
+          })
+        );
       });
-
       return Promise.all(promises);
     });
   }
