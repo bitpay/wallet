@@ -10,7 +10,9 @@ import * as _ from 'lodash';
 import { Subscription } from 'rxjs';
 
 // providers
+import { ActionSheetProvider } from '../../../providers/action-sheet/action-sheet';
 import { AddressBookProvider } from '../../../providers/address-book/address-book';
+import { BwcErrorProvider } from '../../../providers/bwc-error/bwc-error';
 import { Logger } from '../../../providers/logger/logger';
 import { OnGoingProcessProvider } from '../../../providers/on-going-process/on-going-process';
 import { PlatformProvider } from '../../../providers/platform/platform';
@@ -33,7 +35,6 @@ export class ProposalsPage {
   public isCordova: boolean;
   public buttonText: string;
   public hideSlideButton: boolean;
-  public signErr: string;
 
   private zone;
   private onResumeSubscription: Subscription;
@@ -43,7 +44,9 @@ export class ProposalsPage {
 
   constructor(
     private plt: Platform,
+    private actionSheetProvider: ActionSheetProvider,
     private addressBookProvider: AddressBookProvider,
+    private bwcErrorProvider: BwcErrorProvider,
     private logger: Logger,
     private onGoingProcessProvider: OnGoingProcessProvider,
     private profileProvider: ProfileProvider,
@@ -102,7 +105,7 @@ export class ProposalsPage {
 
   private subscribeLocalTxAction(): void {
     this.events.subscribe('Local/TxAction', opts => {
-      this.updateWallet(opts);
+      if (!this.updatingWalletId[opts.walletId]) this.updateWallet(opts);
     });
   }
 
@@ -136,7 +139,6 @@ export class ProposalsPage {
   }
 
   private updateWallet(opts): void {
-    if (this.updatingWalletId[opts.walletId]) return;
     this.startUpdatingWalletId(opts.walletId);
     const wallet = this.profileProvider.getWallet(opts.walletId);
     this.walletProvider
@@ -164,9 +166,7 @@ export class ProposalsPage {
   }
 
   private stopUpdatingWalletId(walletId: string) {
-    setTimeout(() => {
-      this.updatingWalletId[walletId] = false;
-    }, 10000);
+    this.updatingWalletId[walletId] = false;
   }
 
   private updatePendingProposals(): void {
@@ -220,7 +220,7 @@ export class ProposalsPage {
   private getTxpToBeSigned(txpsPerWallet): number {
     let i = 0;
     txpsPerWallet.forEach(txp => {
-      if (txp.status === 'pending') i = i + 1;
+      if (txp.statusForUs === 'pending') i = i + 1;
     });
     return i;
   }
@@ -242,25 +242,48 @@ export class ProposalsPage {
         this.resetMultiSignValues();
         const count = this.countSuccessAndFailed(data);
         if (count.failed > 0) {
-          this.signErr = this.replaceParametersProvider.replace(
+          const signErr = this.replaceParametersProvider.replace(
             this.translate.instant(
-              '{{txpsFailed}} of your transactions proposals failed to sign. Please, try again'
+              'There was problem while trying to sign {{txpsFailed}} of your transactions proposals. Please, try again'
             ),
             { txpsFailed: count.failed }
           );
+          const title = this.translate.instant('Error');
+          this.showErrorInfoSheet(title, signErr);
         }
         if (count.success > 0) {
           const finishText: string = this.replaceParametersProvider.replace(
-            this.translate.instant('{{txpsSuccess}} proposals signed'),
+            count.success > 1 ? this.translate.instant('{{txpsSuccess}} proposals signed') : this.translate.instant('{{txpsSuccess}} proposal signed'),
             { txpsSuccess: count.success }
           );
           this.openModal(finishText, null, 'success');
         }
-        this.updateWallet(wallet.id);
+        if (!this.updatingWalletId[wallet.id]) {
+          this.updateWallet({ walletId: wallet.id });
+        } else {
+          this.updatePendingProposals()
+        }
       })
       .catch(err => {
-        this.logger.error('Sign multiple tx failed', err);
+        this.logger.error('Sign multiple transaction proposals failed: ', err);
+        if (
+          err &&
+          err.message != 'FINGERPRINT_CANCELLED' &&
+          err.message != 'PASSWORD_CANCELLED'
+        ) {
+          const title = this.translate.instant('Error');
+          const msg = this.bwcErrorProvider.msg(err);
+          this.showErrorInfoSheet(title, msg);
+        }
       });
+  }
+
+  private showErrorInfoSheet(title: string, msg: string): void {
+    const errorInfoSheet = this.actionSheetProvider.createInfoSheet(
+      'default-error',
+      { msg, title }
+    );
+    errorInfoSheet.present();
   }
 
   private countSuccessAndFailed(arrayData) {

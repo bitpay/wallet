@@ -6,12 +6,6 @@
 
 <ion-content [ngClass]="{'no-margin-bottom': !txpsToSign[0], 'small-margin': !isCordova && txpsToSign[0]}">
 
-  <ion-card *ngIf="signErr" (click)="signErr = false">
-    <ion-item class="assertive">
-      <div>{{signErr}}</div>
-    </ion-item>
-  </ion-card>
-
   <ion-list *ngIf="allTxps && allTxps[0]">
     <div *ngFor="let txpsByWallet of allTxps">
       <div class="wallet-divider" *ngIf="txpsByWallet.walletId && txpsByWallet.txps && txpsByWallet.txps[0] && txpsByWallet.txps[0].wallet">
@@ -34,7 +28,6 @@
     </div>
   </ion-list>
 </ion-content>
-
 
 <ion-footer>
   <page-slide-to-accept #slideButton *ngIf="isCordova && txpsToSign[0]" [ngClass]="{'slide-confirm-fast slide-confirm-down': hideSlideButton, 'slide-confirm-slow': !hideSlideButton}" [buttonText]="buttonText" (slideDone)="sign()"></page-slide-to-accept>

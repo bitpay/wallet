@@ -5,7 +5,6 @@
       <span *ngIf="tx.message">{{tx.message}}</span>
       <span *ngIf="!tx.message && tx.toAddress && addressbook[tx.toAddress]">{{addressbook[tx.toAddress].name || addressbook[tx.toAddress]}}</span>
       <span *ngIf="!tx.message && tx.toAddress && !addressbook[tx.toAddress]" translate>Sending</span>
-      <span *ngIf="tx.checked" translate>{{tx.checked}}</span>
     </div>
   </div>
   <span *ngIf="tx.merchant" class="item-subtitle">
