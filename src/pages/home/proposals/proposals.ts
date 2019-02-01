@@ -253,7 +253,9 @@ export class ProposalsPage {
         }
         if (count.success > 0) {
           const finishText: string = this.replaceParametersProvider.replace(
-            count.success > 1 ? this.translate.instant('{{txpsSuccess}} proposals signed') : this.translate.instant('{{txpsSuccess}} proposal signed'),
+            count.success > 1
+              ? this.translate.instant('{{txpsSuccess}} proposals signed')
+              : this.translate.instant('{{txpsSuccess}} proposal signed'),
             { txpsSuccess: count.success }
           );
           this.openModal(finishText, null, 'success');
@@ -261,7 +263,7 @@ export class ProposalsPage {
         if (!this.updatingWalletId[wallet.id]) {
           this.updateWallet({ walletId: wallet.id });
         } else {
-          this.updatePendingProposals()
+          this.updatePendingProposals();
         }
       })
       .catch(err => {
