@@ -10,14 +10,25 @@ export class RevealAtScrollPosition {
   @Input('scrollArea')
   scrollArea: Content;
 
+  scrollPositionOfLastStyleUpdate: number = 0;
   animationDistance: number = 28;
 
   constructor(private element: ElementRef, private renderer: Renderer) {}
 
   ngAfterViewInit() {
     this.setInitialStyles();
-    this.scrollArea.ionScroll.subscribe(event =>
-      this.updateStyling(event.scrollTop)
+    this.scrollArea.ionScroll.subscribe(
+      event =>
+        this.shouldUpdateStyling(event.scrollTop) &&
+        this.updateStyling(event.scrollTop)
+    );
+  }
+
+  shouldUpdateStyling(scrollTop: number) {
+    return (
+      scrollTop < this.scrollThreshold ||
+      (scrollTop > this.scrollThreshold &&
+        this.scrollPositionOfLastStyleUpdate < this.scrollThreshold)
     );
   }
 
@@ -31,6 +42,7 @@ export class RevealAtScrollPosition {
     const translateX = this.getTranslation(scrollTop);
     this.setOpacity(opacity);
     this.setTransform(translateX);
+    this.scrollPositionOfLastStyleUpdate = scrollTop;
   }
 
   setOpacity(opacity: number) {

@@ -71,6 +71,14 @@ export const offeredGiftCards: BaseCardConfig[] = ([
     website: 'bk.com'
   },
   {
+    brand: CardBrand.cabelas,
+    defaultClaimCodeType: ClaimCodeType.barcode,
+    emailRequired: false,
+    logoBackgroundColor: '#384800',
+    name: CardName.cabelas,
+    website: 'cabelas.com'
+  },
+  {
     brand: CardBrand.carnivalCruiseLine,
     defaultClaimCodeType: ClaimCodeType.code,
     emailRequired: false,
@@ -113,6 +121,14 @@ export const offeredGiftCards: BaseCardConfig[] = ([
     name: CardName.googlePlay,
     redeemUrl: 'https://play.google.com/redeem?code=',
     website: 'play.google.com'
+  },
+  {
+    brand: CardBrand.guitarCenter,
+    defaultClaimCodeType: ClaimCodeType.barcode,
+    emailRequired: false,
+    logoBackgroundColor: '#CD2318',
+    name: CardName.guitarCenter,
+    website: 'guitarcenter.com'
   },
   {
     brand: CardBrand.homeDepot,
@@ -215,6 +231,14 @@ export const offeredGiftCards: BaseCardConfig[] = ([
     logoBackgroundColor: '#000000',
     name: CardName.uberEats,
     website: 'uber.com'
+  },
+  {
+    brand: CardBrand.xbox,
+    defaultClaimCodeType: ClaimCodeType.code,
+    emailRequired: false,
+    logoBackgroundColor: 'linear-gradient(-90deg, #25B325 11%, #107C10 100%)',
+    name: CardName.xbox,
+    website: 'xbox.com'
   }
 ] as BaseCardConfig[]).map(c => ({
   ...c,

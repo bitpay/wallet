@@ -21,6 +21,12 @@
       AMCTheatres.com at checkout.
     </div>
   </div>
+  <div *ngSwitchCase="CardName.cabelas">
+    <div>
+      Display the barcode and PIN to the cashier at the time of purchase, or enter the claim code and PIN online at
+      cabelas.com at checkout.
+    </div>
+  </div>
   <span *ngSwitchDefault>
     <span *ngIf="cardConfig.redeemInstructions" markdown [data]="cardConfig.redeemInstructions" externalize-links></span>
     <span *ngIf="!cardConfig.redeemInstructions">
