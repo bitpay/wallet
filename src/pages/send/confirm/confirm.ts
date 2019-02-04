@@ -435,11 +435,11 @@ export class ConfirmPage extends WalletTabsChild {
       this.onGoingProcessProvider.set('calculatingFee');
       this.feeProvider
         .getFeeRate(
-        wallet.coin,
-        tx.network,
-        this.usingMerchantFee
-          ? maxAllowedMerchantFee[wallet.coin]
-          : this.tx.feeLevel
+          wallet.coin,
+          tx.network,
+          this.usingMerchantFee
+            ? maxAllowedMerchantFee[wallet.coin]
+            : this.tx.feeLevel
         )
         .then(feeRate => {
           let msg;
@@ -450,9 +450,9 @@ export class ConfirmPage extends WalletTabsChild {
             const maxAllowedFee = feeRate * 2;
             this.logger.info(
               'Using Merchant Fee:' +
-              tx.feeRate +
-              ' vs. referent level:' +
-              maxAllowedFee
+                tx.feeRate +
+                ' vs. referent level:' +
+                maxAllowedFee
             );
             if (tx.network != 'testnet' && tx.feeRate > maxAllowedFee) {
               this.onGoingProcessProvider.set('calculatingFee');
@@ -791,8 +791,8 @@ export class ConfirmPage extends WalletTabsChild {
         this.isWithinWalletTabs()
           ? this.navCtrl.popToRoot()
           : this.navCtrl.last().name == 'ConfirmCardPurchasePage'
-            ? this.navCtrl.pop()
-            : this.app.getRootNavs()[0].setRoot(TabsPage);
+          ? this.navCtrl.pop()
+          : this.app.getRootNavs()[0].setRoot(TabsPage);
       }
     });
   }
