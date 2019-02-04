@@ -94,7 +94,7 @@ export class SessionLogPage {
     const now = new Date().toISOString();
     const subject: string = this.appProvider.info.nameCase + '-logs ' + now;
     const message = this.translate.instant(
-      'Copay Session Logs. Be careful, this could contain sensitive private data'
+      'Session Logs. Be careful, this could contain sensitive private data'
     );
 
     const blob = new Blob([logs], { type: 'text/txt' });
