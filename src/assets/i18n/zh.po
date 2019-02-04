@@ -12,7 +12,7 @@ msgstr ""
 "Last-Translator: cmgustavo83\n"
 "Language-Team: Chinese Simplified\n"
 "Language: zh\n"
-"PO-Revision-Date: 2019-01-09 14:55\n"
+"PO-Revision-Date: 2019-02-04 13:00\n"
 
 msgid "(Trusted)"
 msgstr "（可信的）"
@@ -22,12 +22,6 @@ msgstr "（重复支付）"
 
 msgid "* A payment proposal can be deleted if 1) you are the creator, and no other copayer has signed, or 2) 10 minutes have passed since the proposal was created."
 msgstr "* 以下情况支付提议可被删除 1) 你是创建者但没有任何其他copayer已签名 或 2) 支付提议生成已超过十分钟"
-
-msgid "1. Tap \"Add Payment Method\" and select \"Gift Card\""
-msgstr "1. 点击 \"添加付款方式\", 然后选择 \"礼品卡\""
-
-msgid "2. Enter Gift Code"
-msgstr "2. 输入礼品代码"
 
 msgid "5-star ratings help us get BitPay Wallet into more hands, and more users means more resources can be committed to the app!"
 msgstr "5星级的评级帮助我们让 bitpay 钱包进入更多的手中, 更多的用户意味着更多的资源可以投入到应用程序!"
@@ -287,9 +281,6 @@ msgstr "比特币网络手续费政策"
 msgid "Bitcoin transactions include a fee collected by miners on the network."
 msgstr "比特币交易包括在网络上被矿工所收取的费用。"
 
-msgid "Brands"
-msgstr "Marchi"
-
 msgid "Broadcast Payment"
 msgstr "广播支付"
 
@@ -340,6 +331,9 @@ msgstr "已存档的卡"
 
 msgid "Card Settings"
 msgstr "卡片设置"
+
+msgid "Cards"
+msgstr ""
 
 msgid "Certified by"
 msgstr "通过认证："
@@ -424,9 +418,6 @@ msgstr "连接到形状转换帐户"
 
 msgid "Connecting to Coinbase..."
 msgstr "正在连接 Coinbase..."
-
-msgid "Connecting to Glidera..."
-msgstr "正在连接 Glidera..."
 
 msgid "Connecting to ShapeShift..."
 msgstr "正在连接到ShapeShift..."
@@ -632,9 +623,6 @@ msgstr "正在删除钱包..."
 msgid "Deleting payment proposal..."
 msgstr "正在删除付款提议..."
 
-msgid "Delta Gift Cards can be used toward airfare on any Delta marketed flight through www.delta.com, at the airport, through reservations, or by phone with Delta Vacations®. Delta Gift Cards do not have any expiration dates or fees."
-msgstr "Las tarjetas de regalo de Delta pueden usarse para pasajes aéreos en cualquier vuelo comercializado por Delta a través de www.delta.com, en el aeropuerto, a través de reservaciones o por teléfono con Delta Vacations®. Las tarjetas de regalo de Delta no tienen fecha de vencimiento ni cargos adicionales."
-
 msgid "Deposit"
 msgstr "存款"
 
@@ -839,6 +827,9 @@ msgstr "失败"
 msgid "Failed to export"
 msgstr "导出失败"
 
+msgid "Featured Brands"
+msgstr ""
+
 msgid "Fee"
 msgstr "费用"
 
@@ -917,6 +908,12 @@ msgstr "正在生成新的地址..."
 msgid "Get Help"
 msgstr "Được giúp đỡ"
 
+msgid "Get Started"
+msgstr ""
+
+msgid "Get a BitPay Card"
+msgstr ""
+
 msgid "Get help"
 msgstr "获得帮助"
 
@@ -943,9 +940,6 @@ msgstr "Carta regalo annullata"
 
 msgid "Gift card purchases are temporarily unavailable. Please try again later."
 msgstr "礼品卡购买暂时不可用。请稍后再试。"
-
-msgid "Give friends and family the gift of tapping a button and getting a ride - any time of day, any day of year."
-msgstr "Give friends and family the gift of tapping a button and getting a ride - any time of day, any day of year."
 
 msgid "Give us feedback"
 msgstr "发送反馈"
@@ -1027,9 +1021,6 @@ msgstr ""
 
 msgid "If enabled, Bitcoin Cash addresses will be shown using Copay style address, and not the new cashaddr format."
 msgstr "如果启用，比特币现金地址将使用copay样式地址显示，而不是使用新的cashaddr格式。"
-
-msgid "If enabled, the Recent Transactions card - a list of transactions occuring across all wallets - will appear in the Home tab."
-msgstr "如果启用，最近的交易卡-交易发生跨所有钱包名单-将出现在主页选项卡。"
 
 msgid "If enabled, wallets will also try to spend unconfirmed funds."
 msgstr "如果启用，钱包将尝试支出未经验证的资金。"
@@ -1160,6 +1151,9 @@ msgstr ""
 msgid "Linked"
 msgstr "已关联"
 
+msgid "Load dollars onto your BitPay Card using your bitcoin wallet. Shop anywhere that accepts Visa®"
+msgstr ""
+
 msgid "Loading addresses..."
 msgstr "正在加载地址..."
 
@@ -1225,6 +1219,9 @@ msgstr ""
 
 msgid "More"
 msgstr "更多"
+
+msgid "More Brands"
+msgstr ""
 
 msgid "Moved"
 msgstr "已调动"
@@ -1297,9 +1294,6 @@ msgstr "未找到资金"
 
 msgid "No password"
 msgstr "未设置密码"
-
-msgid "No pending proposals"
-msgstr "没有挂起的建议"
 
 msgid "No private key"
 msgstr "没有私钥"
@@ -1466,9 +1460,6 @@ msgstr "付款到期︰"
 msgid "Payment Proposal"
 msgstr "支付提议"
 
-msgid "Payment Proposals"
-msgstr "支付提议"
-
 msgid "Payment Protocol Invalid"
 msgstr "支付协议无效"
 
@@ -1495,9 +1486,6 @@ msgstr ""
 
 msgid "Payment accepted, but not yet broadcasted"
 msgstr "支付已被接受，但尚未广播"
-
-msgid "Payment accepted. It will be broadcasted by Glidera. In case there is a problem, it can be deleted 6 hours after it was created."
-msgstr "支付以被接受。它将由 Glidera 广播。如果出现问题，它可以在创建后的 6 个小时内删除。"
 
 msgid "Payment request"
 msgstr "支付请求"
@@ -1649,12 +1637,6 @@ msgstr "Receiving {coinName} address"
 msgid "Recent"
 msgstr "最近"
 
-msgid "Recent Transaction Card"
-msgstr "最近交易卡"
-
-msgid "Recent Transactions"
-msgstr "最近的交易"
-
 msgid "Recipient"
 msgstr "收件人"
 
@@ -1666,9 +1648,6 @@ msgstr "正在重新创建的钱包..."
 
 msgid "Redeem Now"
 msgstr "立即兑现"
-
-msgid "Redeem by going to the payment section in the Uber app."
-msgstr "通过转到 uber 应用程序中的付款部分进行兑换。"
 
 msgid "Reject Payment Proposal"
 msgstr "拒绝支付提议"
@@ -1880,6 +1859,9 @@ msgstr "共享"
 msgid "Share Address"
 msgstr "共享地址"
 
+msgid "Share Claim Code"
+msgstr ""
+
 msgid "Share the love by inviting your friends."
 msgstr "邀请您的朋友分享爱。"
 
@@ -2000,9 +1982,6 @@ msgstr "文本"
 msgid "Thanks!"
 msgstr "谢谢你 ！"
 
-msgid "The Gift of Go.™ With over 300 destinations and limitless adventures to choose from, the Delta Gift Card opens up a world of possibilities."
-msgstr "随着超过300个目的地和无限的冒险可供选择, 德尔塔礼品卡开辟了一个充满可能性的世界。"
-
 msgid "The Safest, Fastest Asset Exchange on Earth"
 msgstr "全球最安全最快捷的资产交换"
 
@@ -2090,6 +2069,9 @@ msgstr "这比特币付款请求已过期。"
 msgid "This field is only for users who, in previous versions (it's not supported anymore), set a password to protect their recovery phrase. This field is not for your encrypt password."
 msgstr "*此字段仅适用于先前版本（不再支持）的用户，设置密码以保护其恢复短语。此字段不用于加密密码。"
 
+msgid "This field only accepts addresses supported by {appName} Wallet"
+msgstr ""
+
 msgid "This information is available at the website."
 msgstr "This information is available at the website."
 
@@ -2168,9 +2150,6 @@ msgstr "交易发起"
 msgid "Transaction not available at this time"
 msgstr "交易记录暂时不可用"
 
-msgid "Transaction not found"
-msgstr "找不到交易"
-
 msgid "Transactions"
 msgstr "交易"
 
@@ -2206,9 +2185,6 @@ msgstr "将比特币兑换成美元，在任何接受Visa®的地方都可以刷
 
 msgid "Type the recovery phrase (usually 12 words)"
 msgstr "输入恢复短语（一般为12个字）"
-
-msgid "Uber gift cards also apply to UberEATS orders. Enjoy food from hundreds of restaurants, delivered at Uber speed."
-msgstr ""
 
 msgid "Uh oh..."
 msgstr "啊哦..."
@@ -2249,14 +2225,8 @@ msgstr "正在更新礼品卡..."
 msgid "Updating Gift Cards..."
 msgstr "正在更新礼品卡..."
 
-msgid "Updating pending proposals... Please stand by"
-msgstr "正在更新挂起的提议...请稍后"
-
 msgid "Updating transaction history. Please stand by."
 msgstr "更新交易历史记录。请等待。"
-
-msgid "Updating... Please stand by"
-msgstr "更新中… 请等待"
 
 msgid "Urgent"
 msgstr "非常快"
@@ -2468,6 +2438,9 @@ msgstr "是"
 msgid "Yes, skip"
 msgstr "是的，请跳过"
 
+msgid "You are ready!"
+msgstr ""
+
 msgid "You are trying to send ({amount} {coin}) more than what your wallet contains. Please enter a lower amount or send max."
 msgstr ""
 
@@ -2509,9 +2482,6 @@ msgstr "你不应设置高于 {{maxFeeRecommended}} satoshis/字节 的交易手
 
 msgid "Your BitPay Card is ready. Add funds to your card to start using it at stores and ATMs worldwide."
 msgstr "您的 BitPay 卡是准备好了。添加到您的卡开始使用它在商店和自动取款机全球基金。"
-
-msgid "Your bitcoin wallet is ready!"
-msgstr "你的比特币钱包是准备好了 ！"
 
 msgid "Your extended private keys are all that is needed to access your bitcoin funds. Be sure to protect your private keys and store them only on secure devices. BitPay does not have access to your private keys, so you alone are responsible for your keys. If you share key access with external services, you take responsibility for the risk of theft or breach. Only advanced users should handle extended private keys directly."
 msgstr "访问您的比特币基金只需要的是您的扩展私钥。请确保保护好您的私钥，并将它们存储在安全的设备上。BitPay无法访问您的私钥，因此您自己负责您的密钥。如果您与外部服务共享密钥访问，则您将对被盗或违规的风险承担责任。只有高级用户才能直接处理扩展的私钥。"
