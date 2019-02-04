@@ -133,6 +133,25 @@ export class HomePage {
   private _didEnter() {
     this.checkClipboard();
 
+    this.onResumeSubscription = this.plt.resume.subscribe(() => {
+      this.setWallets();
+      this.checkClipboard();
+      this.subscribeIncomingDataMenuEvent();
+      this.subscribeBwsEvents();
+      this.subscribeStatusEvents();
+      this.subscribeLocalTxAction();
+    });
+
+    this.onPauseSubscription = this.plt.pause.subscribe(() => {
+      this.events.unsubscribe(
+        'finishIncomingDataMenuEvent',
+        this.finishIncomingDataMenuEventHandler
+      );
+      this.events.unsubscribe('bwsEvent', this.bwsEventHandler);
+      this.events.unsubscribe('status:updated', this.statusUpdateEventHandler);
+      this.events.unsubscribe('Local/TxAction', this.localTxActionEventHandler);
+    });
+
     // Show integrations
     const integrations = _.filter(this.homeIntegrationsProvider.get(), {
       show: true
@@ -180,25 +199,6 @@ export class HomePage {
     this.subscribeStatusEvents();
 
     this.subscribeLocalTxAction();
-
-    this.onResumeSubscription = this.plt.resume.subscribe(() => {
-      this.setWallets();
-      this.checkClipboard();
-      this.subscribeIncomingDataMenuEvent();
-      this.subscribeBwsEvents();
-      this.subscribeStatusEvents();
-      this.subscribeLocalTxAction();
-    });
-
-    this.onPauseSubscription = this.plt.pause.subscribe(() => {
-      this.events.unsubscribe(
-        'finishIncomingDataMenuEvent',
-        this.finishIncomingDataMenuEventHandler
-      );
-      this.events.unsubscribe('bwsEvent', this.bwsEventHandler);
-      this.events.unsubscribe('status:updated', this.statusUpdateEventHandler);
-      this.events.unsubscribe('Local/TxAction', this.localTxActionEventHandler);
-    });
   }
 
   ngOnDestroy() {
@@ -631,6 +631,9 @@ export class HomePage {
       this.showReorderVaultWallets
     )
       return;
+
+    this.onResumeSubscription.unsubscribe();
+    this.onPauseSubscription.unsubscribe();
     this.events.publish('OpenWallet', wallet);
   }
 
