@@ -68,6 +68,7 @@ export class HomePage {
   public hideHomeIntegrations: boolean;
   public showGiftCards: boolean;
   public showBitpayCardGetStarted: boolean;
+  public accessDenied: boolean;
 
   private isElectron: boolean;
   private updatingWalletId: object;
@@ -535,10 +536,15 @@ export class HomePage {
           return Promise.resolve();
         })
         .catch(err => {
-          wallet.error =
-            err === 'WALLET_NOT_REGISTERED'
-              ? 'Wallet not registered'
-              : this.bwcErrorProvider.msg(err);
+          if (err && err.message === '403') {
+            this.accessDenied = true;
+            wallet.error = this.translate.instant('Access denied');
+          } else if (err === 'WALLET_NOT_REGISTERED') {
+            wallet.error = this.translate.instant('Wallet not registered');
+          } else {
+            wallet.error = this.bwcErrorProvider.msg(err);
+          }
+
           this.logger.warn(
             this.bwcErrorProvider.msg(
               err,
@@ -590,6 +596,12 @@ export class HomePage {
 
   public openServerMessageLink(): void {
     const url = this.serverMessage.link;
+    this.externalLinkProvider.open(url);
+  }
+
+  public openCountryBannedLink(): void {
+    const url =
+      "https://github.com/bitpay/copay/wiki/Why-can't-I-use-BitPay's-services-in-my-country%3F";
     this.externalLinkProvider.open(url);
   }
 

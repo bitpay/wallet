@@ -298,7 +298,10 @@ export class WalletDetailsPage extends WalletTabsChild {
       .catch(err => {
         this.updatingStatus = false;
         this.showBalanceButton = false;
-        if (err === 'WALLET_NOT_REGISTERED') {
+        if (
+          err.name &&
+          err.name.replace(/^bwc.Error/g, '') === 'WALLET_NOT_FOUND'
+        ) {
           this.walletNotRegistered = true;
         } else {
           this.updateStatusError = this.bwcError.msg(
