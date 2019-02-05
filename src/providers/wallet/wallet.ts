@@ -1506,7 +1506,6 @@ export class WalletProvider {
             walletId: wallet.id,
             untilItChanges: true
           });
-          this.onGoingProcessProvider.clear();
           return reject(msg);
         });
     });

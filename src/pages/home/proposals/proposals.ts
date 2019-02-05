@@ -231,8 +231,8 @@ export class ProposalsPage {
     this.walletProvider
       .signMultipleTxps(wallet, this.txpsToSign)
       .then(data => {
-        this.onGoingProcessProvider.clear();
         this.resetMultiSignValues();
+        this.onGoingProcessProvider.clear();
         const count = this.countSuccessAndFailed(data);
         if (count.failed > 0) {
           const signErr = this.replaceParametersProvider.replace(
@@ -257,6 +257,7 @@ export class ProposalsPage {
       })
       .catch(err => {
         this.logger.error('Sign multiple transaction proposals failed: ', err);
+        this.onGoingProcessProvider.clear();
         if (
           err &&
           err.message != 'FINGERPRINT_CANCELLED' &&
