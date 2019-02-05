@@ -22,6 +22,7 @@ import {
   WalletTabsProvider
 } from '../../../../providers';
 import { ActionSheetProvider } from '../../../../providers/action-sheet/action-sheet';
+import { AppProvider } from '../../../../providers/app/app';
 import { BwcErrorProvider } from '../../../../providers/bwc-error/bwc-error';
 import { BwcProvider } from '../../../../providers/bwc/bwc';
 import { ClipboardProvider } from '../../../../providers/clipboard/clipboard';
@@ -95,7 +96,8 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
     platformProvider: PlatformProvider,
     walletTabsProvider: WalletTabsProvider,
     clipboardProvider: ClipboardProvider,
-    events: Events
+    events: Events,
+    AppProvider: AppProvider
   ) {
     super(
       actionSheetProvider,
@@ -121,7 +123,8 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
       walletProvider,
       walletTabsProvider,
       clipboardProvider,
-      events
+      events,
+      AppProvider
     );
     this.hideSlideButton = false;
     this.configWallet = this.configProvider.get().wallet;

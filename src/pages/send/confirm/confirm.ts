@@ -19,6 +19,7 @@ import { ChooseFeeLevelPage } from '../choose-fee-level/choose-fee-level';
 
 // Providers
 import { ActionSheetProvider } from '../../../providers/action-sheet/action-sheet';
+import { AppProvider } from '../../../providers/app/app';
 import { BwcErrorProvider } from '../../../providers/bwc-error/bwc-error';
 import { BwcProvider } from '../../../providers/bwc/bwc';
 import { ClipboardProvider } from '../../../providers/clipboard/clipboard';
@@ -72,6 +73,7 @@ export class ConfirmPage extends WalletTabsChild {
   public fromMultiSend: boolean;
   public recipients;
   public coin: string;
+  public appName: string;
 
   // Config Related values
   public config;
@@ -110,7 +112,8 @@ export class ConfirmPage extends WalletTabsChild {
     protected walletProvider: WalletProvider,
     walletTabsProvider: WalletTabsProvider,
     protected clipboardProvider: ClipboardProvider,
-    protected events: Events
+    protected events: Events,
+    protected appProvider: AppProvider
   ) {
     super(navCtrl, profileProvider, walletTabsProvider);
     this.bitcore = this.bwcProvider.getBitcore();
@@ -126,6 +129,7 @@ export class ConfirmPage extends WalletTabsChild {
     this.showMultiplesOutputs = false;
     this.recipients = this.navParams.data.recipients;
     this.fromMultiSend = this.navParams.data.fromMultiSend;
+    this.appName = this.appProvider.info.nameCase;
   }
 
   ngOnInit() {
@@ -152,8 +156,11 @@ export class ConfirmPage extends WalletTabsChild {
       try {
         networkName = new B.Address(this.navParams.data.toAddress).network.name;
       } catch (e) {
-        const message = this.translate.instant(
-          'Copay only supports Bitcoin Cash using new version numbers addresses'
+        const message = this.replaceParametersProvider.replace(
+          this.translate.instant(
+            '{{appName}} only supports Bitcoin Cash using new version numbers addresses.'
+          ),
+          { appName: this.appName }
         );
         const backText = this.translate.instant('Go back');
         const learnText = this.translate.instant('Learn more');
