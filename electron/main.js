@@ -1,4 +1,4 @@
-const { app, Menu, BrowserWindow } = require('electron');
+const { app, Menu, BrowserWindow, Notification, ipcMain } = require('electron');
 const path = require('path');
 const url = require('url');
 const os = require('os');
@@ -61,11 +61,11 @@ function createWindow() {
         win.webContents.send('open-url-event', deeplinkingUrl);
       }, 1000);
     }
-    /* if (Notification.isSupported()) {
+    if (Notification.isSupported()) {
       ipcMain.on('new-notification', (event, data) => {
         new Notification(data).show();
       });
-    } */
+    }
   });
 
   win.once('ready-to-show', () => {

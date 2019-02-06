@@ -16,6 +16,7 @@ import { PersistenceProvider } from '../persistence/persistence';
 import { PlatformProvider } from '../platform/platform';
 import { PopupProvider } from '../popup/popup';
 import { ReplaceParametersProvider } from '../replace-parameters/replace-parameters';
+import { TxFormatProvider } from '../tx-format/tx-format';
 import { Coin, WalletOptions, WalletProvider } from '../wallet/wallet';
 
 // models
@@ -48,7 +49,8 @@ export class ProfileProvider {
     private onGoingProcessProvider: OnGoingProcessProvider,
     private translate: TranslateService,
     private walletProvider: WalletProvider,
-    private derivationPathHelperProvider: DerivationPathHelperProvider
+    private derivationPathHelperProvider: DerivationPathHelperProvider,
+    private txFormatProvider: TxFormatProvider
   ) {
     this.throttledBwsEvent = _.throttle((n, wallet) => {
       this.newBwsEvent(n, wallet);
@@ -201,9 +203,9 @@ export class ProfileProvider {
         this.logger.debug('BWC Notification:', JSON.stringify(n));
       }
 
-      /* if (this.platformProvider.isElectron) {
+      if (this.platformProvider.isElectron) {
         this.showInAppNotification(n, wallet);
-      } */
+      }
 
       if (n.type == 'NewBlock' && n.data.network == 'testnet') {
         this.throttledBwsEvent(n, wallet);
@@ -240,90 +242,90 @@ export class ProfileProvider {
     return true;
   }
 
-  /*  private showInAppNotification(n, wallet): void {
-     if (!this.configProvider.get().desktopNotificationsEnabled) return;
- 
-     const creatorId = n && n.data && n.data.creatorId;
-     const amount = n && n.data && n.data.amount;
-     const walletName = this.wallet.name;
-     let title: string;
-     let body: string;
-     let translatedMsg: string;
- 
-     switch (n.type) {
-       case 'NewCopayer':
-         if (wallet.copayerId != creatorId) {
-           title = this.translate.instant('New copayer');
-           translatedMsg = this.translate.instant(
-             'A new copayer just joined your wallet {{walletName}}.'
-           );
-           body = this.replaceParametersProvider.replace(translatedMsg, {
-             walletName
-           });
-         }
-         break;
-       case 'WalletComplete':
-         title = this.translate.instant('Wallet complete');
-         translatedMsg = this.translate.instant(
-           'Your wallet {{walletName}} is complete.'
-         );
-         body = this.replaceParametersProvider.replace(translatedMsg, {
-           walletName
-         });
-         break;
-       case 'NewTxProposal':
-         if (wallet && wallet.m > 1 && wallet.copayerId != creatorId) {
-           title = this.translate.instant('New payment proposal');
-           translatedMsg = this.translate.instant(
-             'A new payment proposal has been created in your wallet {{walletName}}.'
-           );
-           body = this.replaceParametersProvider.replace(translatedMsg, {
-             walletName
-           });
-         }
-         break;
-       case 'NewIncomingTx':
-         title = this.translate.instant('New payment received');
-         const amountStr = this.txFormatProvider.formatAmountStr(
-           wallet.coin,
-           amount
-         );
-         translatedMsg = this.translate.instant(
-           'A payment of {{amountStr}} has been received into your wallet {{walletName}}.'
-         );
-         body = this.replaceParametersProvider.replace(translatedMsg, {
-           amountStr,
-           walletName
-         });
-         break;
-       case 'TxProposalFinallyRejected':
-         title = this.translate.instant('Payment proposal rejected');
-         translatedMsg = this.translate.instant(
-           'A payment proposal in your wallet {{walletName}} has been rejected.'
-         );
-         body = this.replaceParametersProvider.replace(translatedMsg, {
-           walletName
-         });
-         break;
-       case 'TxConfirmation':
-         title = this.translate.instant('Transaction confirmed');
-         translatedMsg = this.translate.instant(
-           'The transaction from {{walletName}} that you were waiting for has been confirmed.'
-         );
-         body = this.replaceParametersProvider.replace(translatedMsg, {
-           walletName
-         });
-         break;
-     }
- 
-     if (!body) return;
- 
-     const { ipcRenderer } = (window as any).require('electron');
-     ipcRenderer.send('new-notification', {
-       title,
-       body
-     });
-   } */
+  private showInAppNotification(n, wallet): void {
+    if (!this.configProvider.get().desktopNotificationsEnabled) return;
+
+    const creatorId = n && n.data && n.data.creatorId;
+    const amount = n && n.data && n.data.amount;
+    const walletName = this.wallet.name;
+    let title: string;
+    let body: string;
+    let translatedMsg: string;
+
+    switch (n.type) {
+      case 'NewCopayer':
+        if (wallet.copayerId != creatorId) {
+          title = this.translate.instant('New copayer');
+          translatedMsg = this.translate.instant(
+            'A new copayer just joined your wallet {{walletName}}.'
+          );
+          body = this.replaceParametersProvider.replace(translatedMsg, {
+            walletName
+          });
+        }
+        break;
+      case 'WalletComplete':
+        title = this.translate.instant('Wallet complete');
+        translatedMsg = this.translate.instant(
+          'Your wallet {{walletName}} is complete.'
+        );
+        body = this.replaceParametersProvider.replace(translatedMsg, {
+          walletName
+        });
+        break;
+      case 'NewTxProposal':
+        if (wallet && wallet.m > 1 && wallet.copayerId != creatorId) {
+          title = this.translate.instant('New payment proposal');
+          translatedMsg = this.translate.instant(
+            'A new payment proposal has been created in your wallet {{walletName}}.'
+          );
+          body = this.replaceParametersProvider.replace(translatedMsg, {
+            walletName
+          });
+        }
+        break;
+      case 'NewIncomingTx':
+        title = this.translate.instant('New payment received');
+        const amountStr = this.txFormatProvider.formatAmountStr(
+          wallet.coin,
+          amount
+        );
+        translatedMsg = this.translate.instant(
+          'A payment of {{amountStr}} has been received into your wallet {{walletName}}.'
+        );
+        body = this.replaceParametersProvider.replace(translatedMsg, {
+          amountStr,
+          walletName
+        });
+        break;
+      case 'TxProposalFinallyRejected':
+        title = this.translate.instant('Payment proposal rejected');
+        translatedMsg = this.translate.instant(
+          'A payment proposal in your wallet {{walletName}} has been rejected.'
+        );
+        body = this.replaceParametersProvider.replace(translatedMsg, {
+          walletName
+        });
+        break;
+      case 'TxConfirmation':
+        title = this.translate.instant('Transaction confirmed');
+        translatedMsg = this.translate.instant(
+          'The transaction from {{walletName}} that you were waiting for has been confirmed.'
+        );
+        body = this.replaceParametersProvider.replace(translatedMsg, {
+          walletName
+        });
+        break;
+    }
+
+    if (!body) return;
+
+    const { ipcRenderer } = (window as any).require('electron');
+    ipcRenderer.send('new-notification', {
+      title,
+      body
+    });
+  }
 
   private newBwsEvent(n, wallet): void {
     if (wallet.cachedStatus) wallet.cachedStatus.isValid = false;
