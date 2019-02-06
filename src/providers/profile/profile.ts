@@ -124,24 +124,21 @@ export class ProfileProvider {
     return true;
   }
 
-  private needsBackup(wallet): Promise<boolean> {
-    return new Promise(resolve => {
-      if (!this.requiresBackup(wallet)) {
-        return resolve(false);
-      }
-
-      this.persistenceProvider
-        .getBackupFlag(wallet.credentials.walletId)
-        .then((val: string) => {
-          if (val) {
-            return resolve(false);
-          }
-          return resolve(true);
-        })
-        .catch(err => {
-          this.logger.error(err);
-        });
-    });
+  private getBackupInfo(wallet): Promise<any> {
+    if (!this.requiresBackup(wallet)) {
+      return Promise.resolve({ needsBackup: false });
+    }
+    return this.persistenceProvider
+      .getBackupFlag(wallet.credentials.walletId)
+      .then(timestamp => {
+        if (timestamp) {
+          return Promise.resolve({ needsBackup: false, timestamp });
+        }
+        return Promise.resolve({ needsBackup: true });
+      })
+      .catch(err => {
+        this.logger.error(err);
+      });
   }
 
   private isBalanceHidden(wallet): Promise<boolean> {
@@ -182,7 +179,9 @@ export class ProfileProvider {
     this.updateWalletSettings(wallet);
     this.wallet[walletId] = wallet;
 
-    wallet.needsBackup = await this.needsBackup(wallet);
+    const backupInfo = await this.getBackupInfo(wallet);
+    wallet.backupTimestamp = backupInfo.timestamp ? backupInfo.timestamp : '';
+    wallet.needsBackup = backupInfo.needsBackup;
     wallet.balanceHidden = await this.isBalanceHidden(wallet);
     wallet.order = await this.getWalletOrder(wallet.id);
 
@@ -237,6 +236,15 @@ export class ProfileProvider {
         this.updateWalletSettings(wallet);
       }
     });
+
+    const isEncrypted = this.walletProvider.isEncrypted(wallet) ? 'yes' : 'no';
+    const backedUp = wallet.needsBackup ? 'no' : 'yes';
+    this.logger.info(
+      `Binding wallet: ${wallet.id} - Backed up: ${backedUp} ${
+        wallet.backupTimestamp
+      } - Encrypted: ${isEncrypted}`
+    );
+
     return true;
   }
 
@@ -1020,12 +1028,6 @@ export class ProfileProvider {
         this.runValidation(walletClient, 500);
       }
 
-      this.logger.debug(
-        'Binding wallet:' +
-          credentials.walletId +
-          ' Validating?:' +
-          !skipKeyValidation
-      );
       return resolve(this.bindWalletClient(walletClient));
     });
   }

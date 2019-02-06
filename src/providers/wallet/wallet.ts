@@ -1025,7 +1025,6 @@ export class WalletProvider {
   public isEncrypted(wallet): boolean {
     if (_.isEmpty(wallet)) return undefined;
     const isEncrypted = wallet.isPrivKeyEncrypted();
-    if (isEncrypted) this.logger.debug('Wallet is encrypted');
     return isEncrypted;
   }
 
