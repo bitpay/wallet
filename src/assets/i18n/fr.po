@@ -12,7 +12,7 @@ msgstr ""
 "Last-Translator: cmgustavo83\n"
 "Language-Team: French\n"
 "Language: fr\n"
-"PO-Revision-Date: 2019-02-04 13:03\n"
+"PO-Revision-Date: 2019-02-06 14:10\n"
 
 msgid "(Trusted)"
 msgstr "(Fiable)"
@@ -1152,7 +1152,7 @@ msgid "Linked"
 msgstr "Lié"
 
 msgid "Load dollars onto your BitPay Card using your bitcoin wallet. Shop anywhere that accepts Visa®"
-msgstr "Charger de dollars sur votre carte de BitPay à l’aide de votre portefeuille de bitcoin. Magasiner n’importe où qui accepte Visa®"
+msgstr "Chargez des dollars sur votre carte BitPay à l’aide de votre portefeuille bitcoin. Achetez partout où les cartes Visa® sont acceptées"
 
 msgid "Loading addresses..."
 msgstr "Chargement des adresses..."
