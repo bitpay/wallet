@@ -105,6 +105,19 @@
         </ion-card-content>
       </ion-card>
 
+      <ion-card class="server-message" *ngIf="accessDenied">
+        <ion-card-content class="server-message-content">
+          <div class="server-message-icon">
+            <img src="assets/img/icon-warning-circled.svg" />
+          </div>
+          <div class="server-message-title title-critical" translate>Access denied</div>
+          <div class="server-message-body" translate>Unfortunately, your country/region has banned the use or acceptance of cryptocurrencies as a valid form of payment and we are therefore unable to service you.</div>
+          <div class="server-message-button" (click)="openCountryBannedLink()">
+            <span translate>Learn more</span>
+          </div>
+        </ion-card-content>
+      </ion-card>
+
       <!-- TODO Optimize code to list wallets -->
       <div class="card" *ngIf="vaultWallets && vaultWallets[0]">
         <ion-item-divider>
