@@ -1,16 +1,16 @@
 msgid ""
 msgstr ""
-"MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
 "Project-Id-Version: \n"
 "POT-Creation-Date: \n"
 "PO-Revision-Date: \n"
-"Language-Team: \n"
-"X-Generator: Poedit 2.2\n"
 "Last-Translator: \n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Language-Team: \n"
 "Language: en\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 2.2\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 msgid "(Trusted)"
 msgstr "(Trusted)"
@@ -26,12 +26,6 @@ msgstr ""
 "* A payment proposal can be deleted if 1) you are the creator, and no other "
 "copayer has signed, or 2) 10 minutes have passed since the proposal was "
 "created."
-
-msgid "1. Tap \"Add Payment Method\" and select \"Gift Card\""
-msgstr "1. Tap \"Add Payment Method\" and select \"Gift Card\""
-
-msgid "2. Enter Gift Code"
-msgstr "2. Enter Gift Code"
 
 msgid ""
 "5-star ratings help us get BitPay Wallet into more hands, and more users "
@@ -146,6 +140,10 @@ msgstr "Address book"
 
 msgid "Addressbook is empty"
 msgstr "Addressbook is empty"
+
+#| msgid "Address"
+msgid "Addresses"
+msgstr "Addresses"
 
 msgid "Addresses with balance"
 msgstr "Addresses with balance"
@@ -350,9 +348,6 @@ msgstr "Bitcoin network fee policy"
 msgid "Bitcoin transactions include a fee collected by miners on the network."
 msgstr "Bitcoin transactions include a fee collected by miners on the network."
 
-msgid "Brands"
-msgstr "Brands"
-
 msgid "Broadcast Payment"
 msgstr "Broadcast Payment"
 
@@ -407,6 +402,9 @@ msgstr "Card Archived"
 
 msgid "Card Settings"
 msgstr "Card Settings"
+
+msgid "Cards"
+msgstr "Cards"
 
 msgid "Certified by"
 msgstr "Certified by"
@@ -497,9 +495,6 @@ msgstr "Connect to ShapeShift Account"
 
 msgid "Connecting to Coinbase..."
 msgstr "Connecting to Coinbase..."
-
-msgid "Connecting to Glidera..."
-msgstr "Connecting to Glidera..."
 
 msgid "Connecting to ShapeShift..."
 msgstr "Connecting to ShapeShift..."
@@ -707,17 +702,6 @@ msgstr "Deleting Wallet..."
 msgid "Deleting payment proposal..."
 msgstr "Deleting payment proposal..."
 
-msgid ""
-"Delta Gift Cards can be used toward airfare on any Delta marketed flight "
-"through www.delta.com, at the airport, through reservations, or by phone "
-"with Delta Vacations®. Delta Gift Cards do not have any expiration dates or "
-"fees."
-msgstr ""
-"Delta Gift Cards can be used toward airfare on any Delta marketed flight "
-"through www.delta.com, at the airport, through reservations, or by phone "
-"with Delta Vacations®. Delta Gift Cards do not have any expiration dates or "
-"fees."
-
 msgid "Deposit"
 msgstr "Deposit"
 
@@ -909,8 +893,9 @@ msgstr "Expired"
 msgid "Expires"
 msgstr "Expires"
 
-msgid "Export Wallet"
-msgstr "Export Wallet"
+#| msgid "Export Wallet"
+msgid "Export"
+msgstr "Export"
 
 msgid "Export to file"
 msgstr "Export to file"
@@ -935,6 +920,10 @@ msgstr "Failed"
 
 msgid "Failed to export"
 msgstr "Failed to export"
+
+#| msgid "Purchased Brands"
+msgid "Featured Brands"
+msgstr "Featured Brands"
 
 msgid "Fee"
 msgstr "Fee"
@@ -1024,6 +1013,14 @@ msgstr "Generating new address..."
 msgid "Get Help"
 msgstr "Get Help"
 
+#| msgid "Get started"
+msgid "Get Started"
+msgstr "Get Started"
+
+#| msgid "Connect my BitPay Card"
+msgid "Get a BitPay Card"
+msgstr "Get a BitPay Card"
+
 msgid "Get help"
 msgstr "Get help"
 
@@ -1056,13 +1053,6 @@ msgid ""
 "Gift card purchases are temporarily unavailable. Please try again later."
 msgstr ""
 "Gift card purchases are temporarily unavailable. Please try again later."
-
-msgid ""
-"Give friends and family the gift of tapping a button and getting a ride - "
-"any time of day, any day of year."
-msgstr ""
-"Give friends and family the gift of tapping a button and getting a ride - "
-"any time of day, any day of year."
 
 msgid "Give us feedback"
 msgstr "Give us feedback"
@@ -1169,13 +1159,6 @@ msgstr ""
 "If enabled, Bitcoin Cash addresses will be shown using Copay style address, "
 "and not the new cashaddr format."
 
-msgid ""
-"If enabled, the Recent Transactions card - a list of transactions occuring "
-"across all wallets - will appear in the Home tab."
-msgstr ""
-"If enabled, the Recent Transactions card - a list of transactions occuring "
-"across all wallets - will appear in the Home tab."
-
 msgid "If enabled, wallets will also try to spend unconfirmed funds."
 msgstr "If enabled, wallets will also try to spend unconfirmed funds."
 
@@ -1247,6 +1230,10 @@ msgstr "Incorrect PIN, try again."
 
 msgid "Incorrect network address"
 msgstr "Incorrect network address"
+
+#| msgid "Wallet Information"
+msgid "Information"
+msgstr "Information"
 
 msgid "Insufficient funds"
 msgstr "Insufficient funds"
@@ -1344,6 +1331,13 @@ msgstr "Let's verify your recovery phrase."
 msgid "Linked"
 msgstr "Linked"
 
+msgid ""
+"Load dollars onto your BitPay Card using your bitcoin wallet. Shop anywhere "
+"that accepts Visa®"
+msgstr ""
+"Load dollars onto your BitPay Card using your bitcoin wallet. Shop anywhere "
+"that accepts Visa®"
+
 msgid "Loading addresses..."
 msgstr "Loading addresses..."
 
@@ -1409,6 +1403,10 @@ msgstr "Mmm..."
 
 msgid "More"
 msgstr "More"
+
+#| msgid "Brands"
+msgid "More Brands"
+msgstr "More Brands"
 
 msgid "Moved"
 msgstr "Moved"
@@ -1486,14 +1484,15 @@ msgstr "No funds found"
 msgid "No password"
 msgstr "No password"
 
-msgid "No pending proposals"
-msgstr "No pending proposals"
-
 msgid "No private key"
 msgstr "No private key"
 
 msgid "No signing proposal: No private key"
 msgstr "No signing proposal: No private key"
+
+#| msgid "Transactions"
+msgid "No transactions"
+msgstr "No transactions"
 
 msgid "No wallet found"
 msgstr "No wallet found"
@@ -1672,9 +1671,6 @@ msgstr "Payment Expires:"
 msgid "Payment Proposal"
 msgstr "Payment Proposal"
 
-msgid "Payment Proposals"
-msgstr "Payment Proposals"
-
 msgid "Payment Protocol Invalid"
 msgstr "Payment Protocol Invalid"
 
@@ -1701,13 +1697,6 @@ msgstr "Payment URL"
 
 msgid "Payment accepted, but not yet broadcasted"
 msgstr "Payment accepted, but not yet broadcasted"
-
-msgid ""
-"Payment accepted. It will be broadcasted by Glidera. In case there is a "
-"problem, it can be deleted 6 hours after it was created."
-msgstr ""
-"Payment accepted. It will be broadcasted by Glidera. In case there is a "
-"problem, it can be deleted 6 hours after it was created."
 
 msgid "Payment request"
 msgstr "Payment request"
@@ -1772,9 +1761,6 @@ msgstr "Preparing addresses..."
 msgid "Preparing backup..."
 msgstr "Preparing backup..."
 
-msgid "Print"
-msgstr "Print"
-
 msgid "Priority"
 msgstr "Priority"
 
@@ -1827,9 +1813,6 @@ msgstr ""
 msgid "QR Code"
 msgstr "QR Code"
 
-msgid "QR code to recover wallet {{walletName}}"
-msgstr "QR code to recover wallet {{walletName}}"
-
 msgid "Quick review!"
 msgstr "Quick review!"
 
@@ -1869,12 +1852,6 @@ msgstr "Receiving {coinName} address"
 msgid "Recent"
 msgstr "Recent"
 
-msgid "Recent Transaction Card"
-msgstr "Recent Transaction Card"
-
-msgid "Recent Transactions"
-msgstr "Recent Transactions"
-
 msgid "Recipient"
 msgstr "Recipient"
 
@@ -1886,9 +1863,6 @@ msgstr "Recreating Wallet..."
 
 msgid "Redeem Now"
 msgstr "Redeem Now"
-
-msgid "Redeem by going to the payment section in the Uber app."
-msgstr "Redeem by going to the payment section in the Uber app."
 
 msgid "Reject Payment Proposal"
 msgstr "Reject Payment Proposal"
@@ -2064,6 +2038,10 @@ msgstr "Sent"
 msgid "Sent Funds"
 msgstr "Sent Funds"
 
+#| msgid "Enter wallet name"
+msgid "Sent to {walletName}"
+msgstr "Sent to {walletName}"
+
 msgid "Server response could not be verified"
 msgstr "Server response could not be verified"
 
@@ -2096,6 +2074,9 @@ msgstr "Share"
 
 msgid "Share Address"
 msgstr "Share Address"
+
+msgid "Share Claim Code"
+msgstr "Share Claim Code"
 
 msgid "Share the love by inviting your friends."
 msgstr "Share the love by inviting your friends."
@@ -2220,13 +2201,6 @@ msgstr "Text"
 
 msgid "Thanks!"
 msgstr "Thanks!"
-
-msgid ""
-"The Gift of Go.™ With over 300 destinations and limitless adventures to "
-"choose from, the Delta Gift Card opens up a world of possibilities."
-msgstr ""
-"The Gift of Go.™ With over 300 destinations and limitless adventures to "
-"choose from, the Delta Gift Card opens up a world of possibilities."
 
 msgid "The Safest, Fastest Asset Exchange on Earth"
 msgstr "The Safest, Fastest Asset Exchange on Earth"
@@ -2393,6 +2367,9 @@ msgstr ""
 "anymore), set a password to protect their recovery phrase. This field is not "
 "for your encrypt password."
 
+msgid "This field only accepts addresses supported by {appName} Wallet"
+msgstr "This field only accepts addresses supported by {appName} Wallet"
+
 msgid "This information is available at the website."
 msgstr "This information is available at the website."
 
@@ -2502,9 +2479,6 @@ msgstr "Transaction initiated"
 msgid "Transaction not available at this time"
 msgstr "Transaction not available at this time"
 
-msgid "Transaction not found"
-msgstr "Transaction not found"
-
 msgid "Transactions"
 msgstr "Transactions"
 
@@ -2540,13 +2514,6 @@ msgstr "Turn bitcoin into dollars, swipe anywhere Visa® is accepted."
 
 msgid "Type the recovery phrase (usually 12 words)"
 msgstr "Type the recovery phrase (usually 12 words)"
-
-msgid ""
-"Uber gift cards also apply to UberEATS orders. Enjoy food from hundreds of "
-"restaurants, delivered at Uber speed."
-msgstr ""
-"Uber gift cards also apply to UberEATS orders. Enjoy food from hundreds of "
-"restaurants, delivered at Uber speed."
 
 msgid "Uh oh..."
 msgstr "Uh oh..."
@@ -2589,14 +2556,8 @@ msgstr "Updating Gift Card..."
 msgid "Updating Gift Cards..."
 msgstr "Updating Gift Cards..."
 
-msgid "Updating pending proposals... Please stand by"
-msgstr "Updating pending proposals... Please stand by"
-
 msgid "Updating transaction history. Please stand by."
 msgstr "Updating transaction history. Please stand by."
-
-msgid "Updating... Please stand by"
-msgstr "Updating... Please stand by"
 
 msgid "Urgent"
 msgstr "Urgent"
@@ -2680,11 +2641,12 @@ msgstr "Wallet Inputs"
 msgid "Wallet Name"
 msgstr "Wallet Name"
 
+#| msgid "Preferences"
+msgid "Wallet Preferences"
+msgstr "Wallet Preferences"
+
 msgid "Wallet Recovery Phrase is invalid"
 msgstr "Wallet Recovery Phrase is invalid"
-
-msgid "Wallet Service URL"
-msgstr "Wallet Service URL"
 
 msgid "Wallet already exists"
 msgstr "Wallet already exists"
@@ -2846,6 +2808,10 @@ msgstr "Yes"
 msgid "Yes, skip"
 msgstr "Yes, skip"
 
+#| msgid "Your bitcoin wallet is ready!"
+msgid "You are ready!"
+msgstr "You are ready!"
+
 msgid ""
 "You are trying to send ({amount} {coin}) more than what your wallet "
 "contains. Please enter a lower amount or send max."
@@ -2915,9 +2881,6 @@ msgid ""
 msgstr ""
 "Your BitPay Card is ready. Add funds to your card to start using it at "
 "stores and ATMs worldwide."
-
-msgid "Your bitcoin wallet is ready!"
-msgstr "Your bitcoin wallet is ready!"
 
 msgid ""
 "Your extended private keys are all that is needed to access your bitcoin "
@@ -3020,3 +2983,91 @@ msgstr "{{wallet.credentials.m}}-of-{{wallet.credentials.n}}"
 
 msgid "{{wallet.m}}-of-{{wallet.n}}"
 msgstr "{{wallet.m}}-of-{{wallet.n}}"
+
+#~ msgid "1. Tap \"Add Payment Method\" and select \"Gift Card\""
+#~ msgstr "1. Tap \"Add Payment Method\" and select \"Gift Card\""
+
+#~ msgid "2. Enter Gift Code"
+#~ msgstr "2. Enter Gift Code"
+
+#~ msgid "Connecting to Glidera..."
+#~ msgstr "Connecting to Glidera..."
+
+#~ msgid ""
+#~ "Delta Gift Cards can be used toward airfare on any Delta marketed flight "
+#~ "through www.delta.com, at the airport, through reservations, or by phone "
+#~ "with Delta Vacations®. Delta Gift Cards do not have any expiration dates "
+#~ "or fees."
+#~ msgstr ""
+#~ "Delta Gift Cards can be used toward airfare on any Delta marketed flight "
+#~ "through www.delta.com, at the airport, through reservations, or by phone "
+#~ "with Delta Vacations®. Delta Gift Cards do not have any expiration dates "
+#~ "or fees."
+
+#~ msgid ""
+#~ "Give friends and family the gift of tapping a button and getting a ride - "
+#~ "any time of day, any day of year."
+#~ msgstr ""
+#~ "Give friends and family the gift of tapping a button and getting a ride - "
+#~ "any time of day, any day of year."
+
+#~ msgid ""
+#~ "If enabled, the Recent Transactions card - a list of transactions "
+#~ "occuring across all wallets - will appear in the Home tab."
+#~ msgstr ""
+#~ "If enabled, the Recent Transactions card - a list of transactions "
+#~ "occuring across all wallets - will appear in the Home tab."
+
+#~ msgid "No pending proposals"
+#~ msgstr "No pending proposals"
+
+#~ msgid "Payment Proposals"
+#~ msgstr "Payment Proposals"
+
+#~ msgid ""
+#~ "Payment accepted. It will be broadcasted by Glidera. In case there is a "
+#~ "problem, it can be deleted 6 hours after it was created."
+#~ msgstr ""
+#~ "Payment accepted. It will be broadcasted by Glidera. In case there is a "
+#~ "problem, it can be deleted 6 hours after it was created."
+
+#~ msgid "Print"
+#~ msgstr "Print"
+
+#~ msgid "QR code to recover wallet {{walletName}}"
+#~ msgstr "QR code to recover wallet {{walletName}}"
+
+#~ msgid "Recent Transaction Card"
+#~ msgstr "Recent Transaction Card"
+
+#~ msgid "Recent Transactions"
+#~ msgstr "Recent Transactions"
+
+#~ msgid "Redeem by going to the payment section in the Uber app."
+#~ msgstr "Redeem by going to the payment section in the Uber app."
+
+#~ msgid ""
+#~ "The Gift of Go.™ With over 300 destinations and limitless adventures to "
+#~ "choose from, the Delta Gift Card opens up a world of possibilities."
+#~ msgstr ""
+#~ "The Gift of Go.™ With over 300 destinations and limitless adventures to "
+#~ "choose from, the Delta Gift Card opens up a world of possibilities."
+
+#~ msgid "Transaction not found"
+#~ msgstr "Transaction not found"
+
+#~ msgid ""
+#~ "Uber gift cards also apply to UberEATS orders. Enjoy food from hundreds "
+#~ "of restaurants, delivered at Uber speed."
+#~ msgstr ""
+#~ "Uber gift cards also apply to UberEATS orders. Enjoy food from hundreds "
+#~ "of restaurants, delivered at Uber speed."
+
+#~ msgid "Updating pending proposals... Please stand by"
+#~ msgstr "Updating pending proposals... Please stand by"
+
+#~ msgid "Updating... Please stand by"
+#~ msgstr "Updating... Please stand by"
+
+#~ msgid "Wallet Service URL"
+#~ msgstr "Wallet Service URL"

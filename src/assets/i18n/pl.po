@@ -12,7 +12,7 @@ msgstr ""
 "Last-Translator: cmgustavo83\n"
 "Language-Team: Polish\n"
 "Language: pl\n"
-"PO-Revision-Date: 2019-01-09 14:55\n"
+"PO-Revision-Date: 2019-02-04 13:00\n"
 
 msgid "(Trusted)"
 msgstr "(Zaufany)"
@@ -21,16 +21,10 @@ msgid "(possible double spend)"
 msgstr "(możliwa podwójna wypłata)"
 
 msgid "* A payment proposal can be deleted if 1) you are the creator, and no other copayer has signed, or 2) 10 minutes have passed since the proposal was created."
-msgstr ""
-
-msgid "1. Tap \"Add Payment Method\" and select \"Gift Card\""
-msgstr ""
-
-msgid "2. Enter Gift Code"
-msgstr "Wprowadź kod"
+msgstr "Propozycja płatności może zostać usunięta gdy 1) jesteś jej twórcą, a żaden copayer jej nie podpisał, lub 2) upłynęło 10 minut od stworzenia propozycji."
 
 msgid "5-star ratings help us get BitPay Wallet into more hands, and more users means more resources can be committed to the app!"
-msgstr ""
+msgstr "5-gwiazdķowe oceny sprawią, że po portfel BitPay sięgać będzie coraz więcej osób, a im więcej użytkowników tym większy potencjał rozwoju aplikacji!"
 
 msgid "A total of {{amountAboveMaxSizeStr}} {{coin}} were excluded. The maximum size allowed for a transaction was exceeded."
 msgstr ""
@@ -287,9 +281,6 @@ msgstr "Polityka prowizji sieci Bitcoin"
 msgid "Bitcoin transactions include a fee collected by miners on the network."
 msgstr "Transakcje Bitcoin obejmują prowizję pobieraną przez górników w sieci."
 
-msgid "Brands"
-msgstr ""
-
 msgid "Broadcast Payment"
 msgstr "Przekaż płatność"
 
@@ -340,6 +331,9 @@ msgstr ""
 
 msgid "Card Settings"
 msgstr "Ustawienia karty"
+
+msgid "Cards"
+msgstr ""
 
 msgid "Certified by"
 msgstr "Certyfikowane przez"
@@ -424,9 +418,6 @@ msgstr ""
 
 msgid "Connecting to Coinbase..."
 msgstr "Łączenie z Coinbase..."
-
-msgid "Connecting to Glidera..."
-msgstr "Łączenie z Gildera..."
 
 msgid "Connecting to ShapeShift..."
 msgstr "Łączenie z ShapeShift..."
@@ -632,9 +623,6 @@ msgstr "Usuwanie portfela..."
 msgid "Deleting payment proposal..."
 msgstr "Usuwanie propozycji płatności..."
 
-msgid "Delta Gift Cards can be used toward airfare on any Delta marketed flight through www.delta.com, at the airport, through reservations, or by phone with Delta Vacations®. Delta Gift Cards do not have any expiration dates or fees."
-msgstr ""
-
 msgid "Deposit"
 msgstr "Depozyt"
 
@@ -839,6 +827,9 @@ msgstr ""
 msgid "Failed to export"
 msgstr "Nie udało się wyeksportować"
 
+msgid "Featured Brands"
+msgstr ""
+
 msgid "Fee"
 msgstr "Prowizja"
 
@@ -917,6 +908,12 @@ msgstr "Generowanie nowego adresu..."
 msgid "Get Help"
 msgstr ""
 
+msgid "Get Started"
+msgstr ""
+
+msgid "Get a BitPay Card"
+msgstr ""
+
 msgid "Get help"
 msgstr ""
 
@@ -942,9 +939,6 @@ msgid "Gift card canceled"
 msgstr ""
 
 msgid "Gift card purchases are temporarily unavailable. Please try again later."
-msgstr ""
-
-msgid "Give friends and family the gift of tapping a button and getting a ride - any time of day, any day of year."
 msgstr ""
 
 msgid "Give us feedback"
@@ -1027,9 +1021,6 @@ msgstr ""
 
 msgid "If enabled, Bitcoin Cash addresses will be shown using Copay style address, and not the new cashaddr format."
 msgstr ""
-
-msgid "If enabled, the Recent Transactions card - a list of transactions occuring across all wallets - will appear in the Home tab."
-msgstr "Jeśli ta opcja jest włączona, na ekranie głównym pojawi się lista wszystkich transakcji z portfela."
 
 msgid "If enabled, wallets will also try to spend unconfirmed funds."
 msgstr ""
@@ -1160,6 +1151,9 @@ msgstr ""
 msgid "Linked"
 msgstr ""
 
+msgid "Load dollars onto your BitPay Card using your bitcoin wallet. Shop anywhere that accepts Visa®"
+msgstr ""
+
 msgid "Loading addresses..."
 msgstr "Ładowanie adresów..."
 
@@ -1224,6 +1218,9 @@ msgid "Mmm..."
 msgstr ""
 
 msgid "More"
+msgstr ""
+
+msgid "More Brands"
 msgstr ""
 
 msgid "Moved"
@@ -1297,9 +1294,6 @@ msgstr ""
 
 msgid "No password"
 msgstr ""
-
-msgid "No pending proposals"
-msgstr "Brak propozycji płatności"
 
 msgid "No private key"
 msgstr ""
@@ -1466,9 +1460,6 @@ msgstr "Płatność wygasa:"
 msgid "Payment Proposal"
 msgstr "Wniosek wypłaty"
 
-msgid "Payment Proposals"
-msgstr "Wniosek wypłaty"
-
 msgid "Payment Protocol Invalid"
 msgstr "Protokół wypłaty nieprawidłowy"
 
@@ -1495,9 +1486,6 @@ msgstr ""
 
 msgid "Payment accepted, but not yet broadcasted"
 msgstr "Wypłata zaakceptowana, ale jeszcze nie nadana"
-
-msgid "Payment accepted. It will be broadcasted by Glidera. In case there is a problem, it can be deleted 6 hours after it was created."
-msgstr "Wypłata zaakceptowana. Będzie nadana przez Glidera. W przypadku wystąpienia problemu, może być usunięta 6 godzin po utworzeniu."
 
 msgid "Payment request"
 msgstr "Wniosek o płatność"
@@ -1649,12 +1637,6 @@ msgstr ""
 msgid "Recent"
 msgstr "Ostatnie"
 
-msgid "Recent Transaction Card"
-msgstr "Ostatnia transakcja kartą"
-
-msgid "Recent Transactions"
-msgstr "Ostatnie transakcje"
-
 msgid "Recipient"
 msgstr "Odbiorca"
 
@@ -1666,9 +1648,6 @@ msgstr "Przywracanie portfela..."
 
 msgid "Redeem Now"
 msgstr "Zrealizuj teraz"
-
-msgid "Redeem by going to the payment section in the Uber app."
-msgstr ""
 
 msgid "Reject Payment Proposal"
 msgstr ""
@@ -1880,6 +1859,9 @@ msgstr "Udostępnij"
 msgid "Share Address"
 msgstr ""
 
+msgid "Share Claim Code"
+msgstr ""
+
 msgid "Share the love by inviting your friends."
 msgstr "Podziel się miłością, zapraszając swoich przyjaciół."
 
@@ -2000,9 +1982,6 @@ msgstr "Tekst"
 msgid "Thanks!"
 msgstr "Dzięki!"
 
-msgid "The Gift of Go.™ With over 300 destinations and limitless adventures to choose from, the Delta Gift Card opens up a world of possibilities."
-msgstr ""
-
 msgid "The Safest, Fastest Asset Exchange on Earth"
 msgstr ""
 
@@ -2090,6 +2069,9 @@ msgstr "Ten wniosek płatności wygasł."
 msgid "This field is only for users who, in previous versions (it's not supported anymore), set a password to protect their recovery phrase. This field is not for your encrypt password."
 msgstr ""
 
+msgid "This field only accepts addresses supported by {appName} Wallet"
+msgstr ""
+
 msgid "This information is available at the website."
 msgstr ""
 
@@ -2168,9 +2150,6 @@ msgstr "Transakcja zainicjowana"
 msgid "Transaction not available at this time"
 msgstr "Transakcja w tej chwili niedostępna"
 
-msgid "Transaction not found"
-msgstr "Nie znaleziono transakcji"
-
 msgid "Transactions"
 msgstr ""
 
@@ -2205,9 +2184,6 @@ msgid "Turn bitcoin into dollars, swipe anywhere Visa® is accepted."
 msgstr ""
 
 msgid "Type the recovery phrase (usually 12 words)"
-msgstr ""
-
-msgid "Uber gift cards also apply to UberEATS orders. Enjoy food from hundreds of restaurants, delivered at Uber speed."
 msgstr ""
 
 msgid "Uh oh..."
@@ -2249,14 +2225,8 @@ msgstr "Aktualizowanie karty podarunkowej..."
 msgid "Updating Gift Cards..."
 msgstr "Aktualizowanie kart podarunkowych..."
 
-msgid "Updating pending proposals... Please stand by"
-msgstr "Aktualnie bieżących propozycji... Proszę czekać"
-
 msgid "Updating transaction history. Please stand by."
 msgstr "Aktualizowanie historii transakcji. Proszę czekać."
-
-msgid "Updating... Please stand by"
-msgstr "Aktualizacja... Proszę czekać"
 
 msgid "Urgent"
 msgstr "Pilna"
@@ -2468,6 +2438,9 @@ msgstr "Tak"
 msgid "Yes, skip"
 msgstr ""
 
+msgid "You are ready!"
+msgstr ""
+
 msgid "You are trying to send ({amount} {coin}) more than what your wallet contains. Please enter a lower amount or send max."
 msgstr ""
 
@@ -2509,9 +2482,6 @@ msgstr "Nie należy ustawiać opłatę wyższą niż {{maxFeeRecommended}} satos
 
 msgid "Your BitPay Card is ready. Add funds to your card to start using it at stores and ATMs worldwide."
 msgstr "Twoja karta BitPay jest gotowa. Zasil kartę, aby zacząć ją używać w sklepach i bankomatach na całym świecie."
-
-msgid "Your bitcoin wallet is ready!"
-msgstr "Twój portfel jest gotowy!"
 
 msgid "Your extended private keys are all that is needed to access your bitcoin funds. Be sure to protect your private keys and store them only on secure devices. BitPay does not have access to your private keys, so you alone are responsible for your keys. If you share key access with external services, you take responsibility for the risk of theft or breach. Only advanced users should handle extended private keys directly."
 msgstr ""

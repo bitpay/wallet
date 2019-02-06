@@ -1077,11 +1077,6 @@ msgid ""
 "and not the new cashaddr format."
 msgstr ""
 
-msgid ""
-"If enabled, the Recent Transactions card - a list of transactions occuring "
-"across all wallets - will appear in the Home tab."
-msgstr ""
-
 msgid "If enabled, wallets will also try to spend unconfirmed funds."
 msgstr ""
 
@@ -1379,9 +1374,6 @@ msgstr ""
 msgid "No password"
 msgstr ""
 
-msgid "No pending proposals"
-msgstr ""
-
 msgid "No private key"
 msgstr ""
 
@@ -1555,9 +1547,6 @@ msgid "Payment Expires:"
 msgstr ""
 
 msgid "Payment Proposal"
-msgstr ""
-
-msgid "Payment Proposals"
 msgstr ""
 
 msgid "Payment Protocol Invalid"
@@ -1737,12 +1726,6 @@ msgid "Receiving {coinName} address"
 msgstr ""
 
 msgid "Recent"
-msgstr ""
-
-msgid "Recent Transaction Card"
-msgstr ""
-
-msgid "Recent Transactions"
 msgstr ""
 
 msgid "Recipient"
@@ -2312,9 +2295,6 @@ msgstr ""
 msgid "Transaction not available at this time"
 msgstr ""
 
-msgid "Transaction not found"
-msgstr ""
-
 msgid "Transactions"
 msgstr ""
 
@@ -2390,13 +2370,7 @@ msgstr ""
 msgid "Updating Gift Cards..."
 msgstr ""
 
-msgid "Updating pending proposals... Please stand by"
-msgstr ""
-
 msgid "Updating transaction history. Please stand by."
-msgstr ""
-
-msgid "Updating... Please stand by"
 msgstr ""
 
 msgid "Urgent"

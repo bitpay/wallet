@@ -12,7 +12,7 @@ msgstr ""
 "Last-Translator: cmgustavo83\n"
 "Language-Team: Japanese\n"
 "Language: ja\n"
-"PO-Revision-Date: 2019-01-09 14:55\n"
+"PO-Revision-Date: 2019-02-04 13:00\n"
 
 msgid "(Trusted)"
 msgstr "(信頼済み)"
@@ -22,12 +22,6 @@ msgstr "(二重払い可能性あり)"
 
 msgid "* A payment proposal can be deleted if 1) you are the creator, and no other copayer has signed, or 2) 10 minutes have passed since the proposal was created."
 msgstr "* 送金の提案の取下げは①他のウォレット参加者に署名されていなかった場合、提案者に提案を取り下げることができます。②提案の起案から24時間が経っても解決しなかった場合、全員に取り下げることができます。"
-
-msgid "1. Tap \"Add Payment Method\" and select \"Gift Card\""
-msgstr "1「お支払い方法の追加」をタップし、「ギフトカード」を選択"
-
-msgid "2. Enter Gift Code"
-msgstr "2. ギフト コードを入力します。"
 
 msgid "5-star ratings help us get BitPay Wallet into more hands, and more users means more resources can be committed to the app!"
 msgstr "5星级的评级帮助我们让 bitpay 钱包进入更多的手中, 更多的用户意味着更多的资源可以投入到应用程序!"
@@ -289,9 +283,6 @@ msgstr ""
 msgid "Bitcoin transactions include a fee collected by miners on the network."
 msgstr "ビットコインの取引はネットワークの安全を守る「採掘者」と呼ばれる者達に送る手数料が含まれます。"
 
-msgid "Brands"
-msgstr ""
-
 msgid "Broadcast Payment"
 msgstr "取引送信"
 
@@ -341,6 +332,9 @@ msgid "Card Archived"
 msgstr ""
 
 msgid "Card Settings"
+msgstr ""
+
+msgid "Cards"
 msgstr ""
 
 msgid "Certified by"
@@ -426,9 +420,6 @@ msgstr ""
 
 msgid "Connecting to Coinbase..."
 msgstr "Coinbase に接続中…"
-
-msgid "Connecting to Glidera..."
-msgstr "Glidera に接続中…"
 
 msgid "Connecting to ShapeShift..."
 msgstr ""
@@ -632,9 +623,6 @@ msgid "Deleting Wallet..."
 msgstr "ウォレット削除中…"
 
 msgid "Deleting payment proposal..."
-msgstr ""
-
-msgid "Delta Gift Cards can be used toward airfare on any Delta marketed flight through www.delta.com, at the airport, through reservations, or by phone with Delta Vacations®. Delta Gift Cards do not have any expiration dates or fees."
 msgstr ""
 
 msgid "Deposit"
@@ -841,6 +829,9 @@ msgstr ""
 msgid "Failed to export"
 msgstr "エクスポートに失敗しました。"
 
+msgid "Featured Brands"
+msgstr ""
+
 msgid "Fee"
 msgstr "手数料"
 
@@ -919,6 +910,12 @@ msgstr "新規アドレスを生成中..."
 msgid "Get Help"
 msgstr ""
 
+msgid "Get Started"
+msgstr ""
+
+msgid "Get a BitPay Card"
+msgstr ""
+
 msgid "Get help"
 msgstr ""
 
@@ -944,9 +941,6 @@ msgid "Gift card canceled"
 msgstr ""
 
 msgid "Gift card purchases are temporarily unavailable. Please try again later."
-msgstr ""
-
-msgid "Give friends and family the gift of tapping a button and getting a ride - any time of day, any day of year."
 msgstr ""
 
 msgid "Give us feedback"
@@ -1029,9 +1023,6 @@ msgstr ""
 
 msgid "If enabled, Bitcoin Cash addresses will be shown using Copay style address, and not the new cashaddr format."
 msgstr ""
-
-msgid "If enabled, the Recent Transactions card - a list of transactions occuring across all wallets - will appear in the Home tab."
-msgstr "有効にした場合、「最近の取引」カードがホームのメニューに表示されます。アプリに含まれる全ウォレットの取引が一覧できるカードです。"
 
 msgid "If enabled, wallets will also try to spend unconfirmed funds."
 msgstr ""
@@ -1162,6 +1153,9 @@ msgstr ""
 msgid "Linked"
 msgstr ""
 
+msgid "Load dollars onto your BitPay Card using your bitcoin wallet. Shop anywhere that accepts Visa®"
+msgstr ""
+
 msgid "Loading addresses..."
 msgstr "アドレスを読み込んでいます..."
 
@@ -1226,6 +1220,9 @@ msgid "Mmm..."
 msgstr ""
 
 msgid "More"
+msgstr ""
+
+msgid "More Brands"
 msgstr ""
 
 msgid "Moved"
@@ -1299,9 +1296,6 @@ msgstr ""
 
 msgid "No password"
 msgstr ""
-
-msgid "No pending proposals"
-msgstr "保留中の提案はありません"
 
 msgid "No private key"
 msgstr ""
@@ -1468,9 +1462,6 @@ msgstr "支払い請求の有効期限:"
 msgid "Payment Proposal"
 msgstr "送金の提案"
 
-msgid "Payment Proposals"
-msgstr "送金の提案"
-
 msgid "Payment Protocol Invalid"
 msgstr "ペイメントプロトコルが不正です。"
 
@@ -1497,9 +1488,6 @@ msgstr ""
 
 msgid "Payment accepted, but not yet broadcasted"
 msgstr "取引が承認されましたが、まだ送信していません。"
-
-msgid "Payment accepted. It will be broadcasted by Glidera. In case there is a problem, it can be deleted 6 hours after it was created."
-msgstr "取引が承認されました。Glideraより送信されます。問題があった場合、送金命令を出す６時間以内に取り消すことができます。"
 
 msgid "Payment request"
 msgstr "支払い請求"
@@ -1651,12 +1639,6 @@ msgstr ""
 msgid "Recent"
 msgstr "履歴"
 
-msgid "Recent Transaction Card"
-msgstr "最近の取引カード"
-
-msgid "Recent Transactions"
-msgstr "最近の取引"
-
 msgid "Recipient"
 msgstr "受取人"
 
@@ -1667,9 +1649,6 @@ msgid "Recreating Wallet..."
 msgstr "ウォレットを再作成中…"
 
 msgid "Redeem Now"
-msgstr ""
-
-msgid "Redeem by going to the payment section in the Uber app."
 msgstr ""
 
 msgid "Reject Payment Proposal"
@@ -1882,6 +1861,9 @@ msgstr ""
 msgid "Share Address"
 msgstr ""
 
+msgid "Share Claim Code"
+msgstr ""
+
 msgid "Share the love by inviting your friends."
 msgstr "是非友達と共有して下さい"
 
@@ -2004,9 +1986,6 @@ msgstr "テキスト"
 msgid "Thanks!"
 msgstr "ありがとうございます。"
 
-msgid "The Gift of Go.™ With over 300 destinations and limitless adventures to choose from, the Delta Gift Card opens up a world of possibilities."
-msgstr ""
-
 msgid "The Safest, Fastest Asset Exchange on Earth"
 msgstr ""
 
@@ -2094,6 +2073,9 @@ msgstr "ビットコインペイメントの請求期限が切れています。
 msgid "This field is only for users who, in previous versions (it's not supported anymore), set a password to protect their recovery phrase. This field is not for your encrypt password."
 msgstr ""
 
+msgid "This field only accepts addresses supported by {appName} Wallet"
+msgstr ""
+
 msgid "This information is available at the website."
 msgstr ""
 
@@ -2172,9 +2154,6 @@ msgstr "取引が開始されました"
 msgid "Transaction not available at this time"
 msgstr "現在この取引はご覧いただけません。"
 
-msgid "Transaction not found"
-msgstr "取引は見つかりません"
-
 msgid "Transactions"
 msgstr ""
 
@@ -2209,9 +2188,6 @@ msgid "Turn bitcoin into dollars, swipe anywhere Visa® is accepted."
 msgstr ""
 
 msgid "Type the recovery phrase (usually 12 words)"
-msgstr ""
-
-msgid "Uber gift cards also apply to UberEATS orders. Enjoy food from hundreds of restaurants, delivered at Uber speed."
 msgstr ""
 
 msgid "Uh oh..."
@@ -2253,14 +2229,8 @@ msgstr ""
 msgid "Updating Gift Cards..."
 msgstr ""
 
-msgid "Updating pending proposals... Please stand by"
-msgstr ""
-
 msgid "Updating transaction history. Please stand by."
 msgstr "取引履歴を更新します。しばらくお待ちください。"
-
-msgid "Updating... Please stand by"
-msgstr "更新中... お待ち下さい"
 
 msgid "Urgent"
 msgstr "緊急"
@@ -2472,6 +2442,9 @@ msgstr "はい"
 msgid "Yes, skip"
 msgstr ""
 
+msgid "You are ready!"
+msgstr ""
+
 msgid "You are trying to send ({amount} {coin}) more than what your wallet contains. Please enter a lower amount or send max."
 msgstr ""
 
@@ -2513,9 +2486,6 @@ msgstr "{{maxFeeRecommended}} satoshis/byte より高い手数料を設定しな
 
 msgid "Your BitPay Card is ready. Add funds to your card to start using it at stores and ATMs worldwide."
 msgstr "BitPayカードの準備が整いました。入金して全世界のお店やATMでご利用下さい。"
-
-msgid "Your bitcoin wallet is ready!"
-msgstr "ビットコインウォレットが完成しました!"
 
 msgid "Your extended private keys are all that is needed to access your bitcoin funds. Be sure to protect your private keys and store them only on secure devices. BitPay does not have access to your private keys, so you alone are responsible for your keys. If you share key access with external services, you take responsibility for the risk of theft or breach. Only advanced users should handle extended private keys directly."
 msgstr ""

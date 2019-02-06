@@ -12,7 +12,7 @@ msgstr ""
 "Last-Translator: cmgustavo83\n"
 "Language-Team: Dutch\n"
 "Language: nl\n"
-"PO-Revision-Date: 2019-01-09 14:55\n"
+"PO-Revision-Date: 2019-02-04 13:00\n"
 
 msgid "(Trusted)"
 msgstr "(Vertrouwd)"
@@ -21,12 +21,6 @@ msgid "(possible double spend)"
 msgstr "(mogelijk dubbel besteed)"
 
 msgid "* A payment proposal can be deleted if 1) you are the creator, and no other copayer has signed, or 2) 10 minutes have passed since the proposal was created."
-msgstr ""
-
-msgid "1. Tap \"Add Payment Method\" and select \"Gift Card\""
-msgstr ""
-
-msgid "2. Enter Gift Code"
 msgstr ""
 
 msgid "5-star ratings help us get BitPay Wallet into more hands, and more users means more resources can be committed to the app!"
@@ -287,9 +281,6 @@ msgstr ""
 msgid "Bitcoin transactions include a fee collected by miners on the network."
 msgstr "Bitcoin transacties bevatten transactiekosten betaald aan de miners in het netwerk."
 
-msgid "Brands"
-msgstr ""
-
 msgid "Broadcast Payment"
 msgstr "Betaling Verzenden"
 
@@ -339,6 +330,9 @@ msgid "Card Archived"
 msgstr ""
 
 msgid "Card Settings"
+msgstr ""
+
+msgid "Cards"
 msgstr ""
 
 msgid "Certified by"
@@ -424,9 +418,6 @@ msgstr ""
 
 msgid "Connecting to Coinbase..."
 msgstr "Verbinding maken met Coinbase..."
-
-msgid "Connecting to Glidera..."
-msgstr "Verbinding maken met Glidera..."
 
 msgid "Connecting to ShapeShift..."
 msgstr ""
@@ -630,9 +621,6 @@ msgid "Deleting Wallet..."
 msgstr "Portemonnee Verwijderen..."
 
 msgid "Deleting payment proposal..."
-msgstr ""
-
-msgid "Delta Gift Cards can be used toward airfare on any Delta marketed flight through www.delta.com, at the airport, through reservations, or by phone with Delta Vacations®. Delta Gift Cards do not have any expiration dates or fees."
 msgstr ""
 
 msgid "Deposit"
@@ -839,6 +827,9 @@ msgstr ""
 msgid "Failed to export"
 msgstr "Exporteren mislukt"
 
+msgid "Featured Brands"
+msgstr ""
+
 msgid "Fee"
 msgstr "Transactiekosten"
 
@@ -917,6 +908,12 @@ msgstr "Nieuw adres genereren..."
 msgid "Get Help"
 msgstr ""
 
+msgid "Get Started"
+msgstr ""
+
+msgid "Get a BitPay Card"
+msgstr ""
+
 msgid "Get help"
 msgstr ""
 
@@ -942,9 +939,6 @@ msgid "Gift card canceled"
 msgstr ""
 
 msgid "Gift card purchases are temporarily unavailable. Please try again later."
-msgstr ""
-
-msgid "Give friends and family the gift of tapping a button and getting a ride - any time of day, any day of year."
 msgstr ""
 
 msgid "Give us feedback"
@@ -1027,9 +1021,6 @@ msgstr ""
 
 msgid "If enabled, Bitcoin Cash addresses will be shown using Copay style address, and not the new cashaddr format."
 msgstr ""
-
-msgid "If enabled, the Recent Transactions card - a list of transactions occuring across all wallets - will appear in the Home tab."
-msgstr "Indien ingeschakeld, zal de Recente Transacties kaart - een lijst van transacties van alle portemonnees - worden weergegeven in het tabblad Start."
 
 msgid "If enabled, wallets will also try to spend unconfirmed funds."
 msgstr ""
@@ -1160,6 +1151,9 @@ msgstr ""
 msgid "Linked"
 msgstr ""
 
+msgid "Load dollars onto your BitPay Card using your bitcoin wallet. Shop anywhere that accepts Visa®"
+msgstr ""
+
 msgid "Loading addresses..."
 msgstr "Adressen laden..."
 
@@ -1224,6 +1218,9 @@ msgid "Mmm..."
 msgstr ""
 
 msgid "More"
+msgstr ""
+
+msgid "More Brands"
 msgstr ""
 
 msgid "Moved"
@@ -1297,9 +1294,6 @@ msgstr ""
 
 msgid "No password"
 msgstr ""
-
-msgid "No pending proposals"
-msgstr "Geen voorstellen in behandeling"
 
 msgid "No private key"
 msgstr ""
@@ -1466,9 +1460,6 @@ msgstr "Betaling Verloopt:"
 msgid "Payment Proposal"
 msgstr "Betalingsvoorstel"
 
-msgid "Payment Proposals"
-msgstr "Betalingsvoorstellen"
-
 msgid "Payment Protocol Invalid"
 msgstr "Betaling Protocol Ongeldig"
 
@@ -1495,9 +1486,6 @@ msgstr ""
 
 msgid "Payment accepted, but not yet broadcasted"
 msgstr "Betaling geaccepteerd, maar nog niet verzonden"
-
-msgid "Payment accepted. It will be broadcasted by Glidera. In case there is a problem, it can be deleted 6 hours after it was created."
-msgstr "Betaling geaccepteerd. Deze zal worden verzonden door Glidera. In geval van problemen kan de betaling worden verwijderd 6 uur na aanmaken."
 
 msgid "Payment request"
 msgstr "Betalingsverzoek"
@@ -1649,12 +1637,6 @@ msgstr ""
 msgid "Recent"
 msgstr "Recent"
 
-msgid "Recent Transaction Card"
-msgstr "Recente Transacties Kaart"
-
-msgid "Recent Transactions"
-msgstr "Recente Transacties"
-
 msgid "Recipient"
 msgstr "Ontvanger"
 
@@ -1665,9 +1647,6 @@ msgid "Recreating Wallet..."
 msgstr "Portemonnee herstellen..."
 
 msgid "Redeem Now"
-msgstr ""
-
-msgid "Redeem by going to the payment section in the Uber app."
 msgstr ""
 
 msgid "Reject Payment Proposal"
@@ -1880,6 +1859,9 @@ msgstr ""
 msgid "Share Address"
 msgstr ""
 
+msgid "Share Claim Code"
+msgstr ""
+
 msgid "Share the love by inviting your friends."
 msgstr "Deel het plezier door uw vrienden uit te nodigen."
 
@@ -2000,9 +1982,6 @@ msgstr "Tekst"
 msgid "Thanks!"
 msgstr "Bedankt!"
 
-msgid "The Gift of Go.™ With over 300 destinations and limitless adventures to choose from, the Delta Gift Card opens up a world of possibilities."
-msgstr ""
-
 msgid "The Safest, Fastest Asset Exchange on Earth"
 msgstr ""
 
@@ -2090,6 +2069,9 @@ msgstr "Dit bitcoin betalingsverzoek is verlopen."
 msgid "This field is only for users who, in previous versions (it's not supported anymore), set a password to protect their recovery phrase. This field is not for your encrypt password."
 msgstr ""
 
+msgid "This field only accepts addresses supported by {appName} Wallet"
+msgstr ""
+
 msgid "This information is available at the website."
 msgstr ""
 
@@ -2168,9 +2150,6 @@ msgstr "Transactie gestart"
 msgid "Transaction not available at this time"
 msgstr "Transactie momenteel niet beschikbaar"
 
-msgid "Transaction not found"
-msgstr "Transactie niet gevonden"
-
 msgid "Transactions"
 msgstr ""
 
@@ -2205,9 +2184,6 @@ msgid "Turn bitcoin into dollars, swipe anywhere Visa® is accepted."
 msgstr ""
 
 msgid "Type the recovery phrase (usually 12 words)"
-msgstr ""
-
-msgid "Uber gift cards also apply to UberEATS orders. Enjoy food from hundreds of restaurants, delivered at Uber speed."
 msgstr ""
 
 msgid "Uh oh..."
@@ -2249,14 +2225,8 @@ msgstr ""
 msgid "Updating Gift Cards..."
 msgstr ""
 
-msgid "Updating pending proposals... Please stand by"
-msgstr ""
-
 msgid "Updating transaction history. Please stand by."
 msgstr "Transactie historie bijwerken. Een moment geduld."
-
-msgid "Updating... Please stand by"
-msgstr "Bijwerken... Een moment geduld"
 
 msgid "Urgent"
 msgstr "Spoed"
@@ -2468,6 +2438,9 @@ msgstr "Ja"
 msgid "Yes, skip"
 msgstr ""
 
+msgid "You are ready!"
+msgstr ""
+
 msgid "You are trying to send ({amount} {coin}) more than what your wallet contains. Please enter a lower amount or send max."
 msgstr ""
 
@@ -2509,9 +2482,6 @@ msgstr "Het is af te raden transactiekosten te kiezen hoger dan {{maxFeeRecommen
 
 msgid "Your BitPay Card is ready. Add funds to your card to start using it at stores and ATMs worldwide."
 msgstr "Uw BitPay Kaart is gereed. Voeg saldo toe aan uw kaart om deze te kunnen gebruiken in winkels en pinautomaten over de hele wereld."
-
-msgid "Your bitcoin wallet is ready!"
-msgstr "Uw bitcoin portemonnee is gereed!"
 
 msgid "Your extended private keys are all that is needed to access your bitcoin funds. Be sure to protect your private keys and store them only on secure devices. BitPay does not have access to your private keys, so you alone are responsible for your keys. If you share key access with external services, you take responsibility for the risk of theft or breach. Only advanced users should handle extended private keys directly."
 msgstr ""
