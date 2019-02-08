@@ -51,7 +51,7 @@ export class TxDetailsPage {
     private txFormatProvider: TxFormatProvider,
     private walletProvider: WalletProvider,
     private translate: TranslateService
-  ) {}
+  ) { }
 
   ionViewDidLoad() {
     this.config = this.configProvider.get();
@@ -82,14 +82,16 @@ export class TxDetailsPage {
   }
 
   ionViewWillEnter() {
-    this.events.subscribe('bwsEvent', (_, type: string, n) => {
-      if (type == 'NewBlock' && n && n.data && n.data.network == 'livenet')
-        this.updateTxDebounced({ hideLoading: true });
-    });
+    this.events.subscribe('bwsEvent', this.bwsEventHandler);
   }
 
   ionViewWillLeave() {
-    this.events.unsubscribe('bwsEvent');
+    this.events.unsubscribe('bwsEvent', this.bwsEventHandler);
+  }
+
+  private bwsEventHandler: any = (_, type: string, n) => {
+    if (type == 'NewBlock' && n && n.data && n.data.network == 'livenet')
+      this.updateTxDebounced({ hideLoading: true });
   }
 
   public readMore(): void {

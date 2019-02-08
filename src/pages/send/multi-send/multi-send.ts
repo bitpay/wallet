@@ -80,14 +80,16 @@ export class MultiSendPage extends WalletTabsChild {
   }
 
   ionViewWillEnter() {
-    this.events.subscribe('update:address', data => {
-      this.search = data.value;
-      this.processInput();
-    });
+    this.events.subscribe('update:address', this.updateAddressHandler);
   }
 
   ionViewWillLeave() {
-    this.events.unsubscribe('update:address');
+    this.events.unsubscribe('update:address', this.updateAddressHandler);
+  }
+
+  private updateAddressHandler: any = data => {
+    this.search = data.value;
+    this.processInput();
   }
 
   public openTransferToModal(): void {

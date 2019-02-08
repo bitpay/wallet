@@ -101,9 +101,7 @@ export class ImportWalletPage {
       coin: [null, Validators.required],
       importVault: [false]
     });
-    this.events.subscribe('update:words', data => {
-      this.processWalletInfo(data.value);
-    });
+    this.events.subscribe('update:words', this.updateWordsHandler);
 
     this.persistenceProvider.getVault().then(vault => {
       if (vault) this.importForm.controls['importVault'].disable();
@@ -117,7 +115,11 @@ export class ImportWalletPage {
   }
 
   ngOnDestroy() {
-    this.events.unsubscribe('update:words');
+    this.events.unsubscribe('update:words', this.updateWordsHandler);
+  }
+
+  private updateWordsHandler: any = data => {
+    this.processWalletInfo(data.value);
   }
 
   public selectTab(tab: string): void {

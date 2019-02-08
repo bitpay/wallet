@@ -76,13 +76,15 @@ export class ShapeshiftPage {
       this.init();
     }
 
-    this.events.subscribe('bwsEvent', (_, type: string) => {
-      if (type == 'NewBlock') this.updateShift(this.shifts);
-    });
+    this.events.subscribe('bwsEvent', this.bwsEventHandler);
   }
 
   ionViewWillLeave() {
-    this.events.unsubscribe('bwsEvent');
+    this.events.unsubscribe('bwsEvent', this.bwsEventHandler);
+  }
+
+  private bwsEventHandler: any = (_, type: string) => {
+    if (type == 'NewBlock') this.updateShift(this.shifts);
   }
 
   private init(): void {
@@ -101,8 +103,8 @@ export class ShapeshiftPage {
             } else {
               this.popupProvider
                 .ionicAlert(
-                  this.translate.instant('Error connecting to ShapeShift'),
-                  err
+                this.translate.instant('Error connecting to ShapeShift'),
+                err
                 )
                 .then(() => {
                   this.shapeshiftProvider.logout(this.accessToken);

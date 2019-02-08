@@ -53,8 +53,8 @@ export class ProposalsPage {
     });
 
     this.onPauseSubscription = this.plt.pause.subscribe(() => {
-      this.events.unsubscribe('bwsEvent');
-      this.events.unsubscribe('Local/TxAction');
+      this.events.unsubscribe('bwsEvent', this.bwsEventHandler);
+      this.events.unsubscribe('Local/TxAction', this.localTxActionHandler);
     });
 
     // Update Wallet on Focus
@@ -63,23 +63,31 @@ export class ProposalsPage {
     }
   }
 
-  ngOnDestroy() {
-    this.events.unsubscribe('bwsEvent');
-    this.events.unsubscribe('Local/TxAction');
+  ionViewWillLeave() {
+    this.events.unsubscribe('bwsEvent', this.bwsEventHandler);
+    this.events.unsubscribe('Local/TxAction', this.localTxActionHandler);
     this.onResumeSubscription.unsubscribe();
     this.onPauseSubscription.unsubscribe();
   }
 
   private subscribeBwsEvents(): void {
-    this.events.subscribe('bwsEvent', (walletId: string) => {
-      this.updateWallet({ walletId });
-    });
+    this.events.subscribe('bwsEvent', this.bwsEventHandler);
   }
 
   private subscribeLocalTxAction(): void {
     this.events.subscribe('Local/TxAction', opts => {
       this.updateWallet(opts);
     });
+  }
+
+  private bwsEventHandler: any = (walletId: string) => {
+    if (this.updatingWalletId[walletId]) return;
+    this.updateWallet({ walletId });
+  }
+
+  private localTxActionHandler: any = opts => {
+    if (this.updatingWalletId[opts.walletId]) return;
+    this.updateWallet(opts);
   }
 
   private updateDesktopOnFocus() {

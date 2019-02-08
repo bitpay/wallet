@@ -88,19 +88,21 @@ export class CopayersPage {
   }
 
   private subscribeEvents(): void {
-    this.events.subscribe('bwsEvent', (walletId, type) => {
-      if (
-        this.wallet &&
-        walletId == this.wallet.id &&
-        type == ('NewCopayer' || 'WalletComplete')
-      ) {
-        this.updateWallet();
-      }
-    });
+    this.events.subscribe('bwsEvent', this.bwsEventHandler);
   }
 
   private unsubscribeEvents(): void {
-    this.events.unsubscribe('bwsEvent');
+    this.events.unsubscribe('bwsEvent', this.bwsEventHandler);
+  }
+
+  private bwsEventHandler: any = (walletId, type) => {
+    if (
+      this.wallet &&
+      walletId == this.wallet.id &&
+      type == ('NewCopayer' || 'WalletComplete')
+    ) {
+      this.updateWallet();
+    }
   }
 
   close() {

@@ -65,10 +65,7 @@ export class WalletTabsPage {
       this.subscribeEvents();
     });
 
-    this.events.subscribe('Local/TxAction', opts => {
-      if (this.walletId == opts.walletId)
-        this.events.publish('Wallet/updateAll', opts);
-    });
+    this.events.subscribe('Local/TxAction', this.localTxActionHandler);
   }
 
   ionViewWillEnter() {
@@ -79,14 +76,7 @@ export class WalletTabsPage {
   }
 
   private subscribeEvents(): void {
-    this.events.subscribe('bwsEvent', (walletId, type) => {
-      // Update current address
-      if (this.walletId == walletId && type == 'NewIncomingTx')
-        this.events.publish('Wallet/setAddress', true);
-      // Update wallet details
-      if (this.walletId == walletId && type != 'NewAddress')
-        this.events.publish('Wallet/updateAll');
-    });
+    this.events.subscribe('bwsEvent', this.bwsEventHandler);
   }
 
   ionViewWillLeave() {
@@ -95,7 +85,7 @@ export class WalletTabsPage {
 
   private unsubscribeEvents(): void {
     this.events.publish('Wallet/disableHardwareKeyboard');
-    this.events.unsubscribe('bwsEvent');
+    this.events.unsubscribe('bwsEvent', this.bwsEventHandler);
     this.events.unsubscribe('Wallet/setAddress');
     this.events.unsubscribe('Wallet/disableHardwareKeyboard');
   }
@@ -117,8 +107,22 @@ export class WalletTabsPage {
     this.walletTabsProvider.clear();
     this.onPauseSubscription.unsubscribe();
     this.onResumeSubscription.unsubscribe();
-    this.events.unsubscribe('Local/TxAction');
+    this.events.unsubscribe('Local/TxAction', this.localTxActionHandler);
     this.events.unsubscribe('Wallet/updateAll');
     this.events.publish('Home/reloadStatus');
+  }
+
+  private bwsEventHandler: any = (walletId, type) => {
+    // Update current address
+    if (this.walletId == walletId && type == 'NewIncomingTx')
+      this.events.publish('Wallet/setAddress', true);
+    // Update wallet details
+    if (this.walletId == walletId && type != 'NewAddress')
+      this.events.publish('Wallet/updateAll');
+  }
+
+  private localTxActionHandler: any = opts => {
+    if (this.walletId == opts.walletId)
+      this.events.publish('Wallet/updateAll', opts);
   }
 }

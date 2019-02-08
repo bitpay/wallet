@@ -54,7 +54,7 @@ export class CardDetailsPage {
     private events: Events,
     private socialSharing: SocialSharing,
     private platformProvider: PlatformProvider
-  ) {}
+  ) { }
 
   async ngOnInit() {
     this.card = this.navParams.get('card');
@@ -63,15 +63,17 @@ export class CardDetailsPage {
   }
 
   ionViewWillEnter() {
-    this.events.subscribe('bwsEvent', (_, type: string) => {
-      if (type == 'NewBlock') {
-        this.updateGiftCard();
-      }
-    });
+    this.events.subscribe('bwsEvent', this.bwsEventHandler);
   }
 
   ionViewWillLeave() {
-    this.events.unsubscribe('bwsEvent');
+    this.events.unsubscribe('bwsEvent', this.bwsEventHandler);
+  }
+
+  private bwsEventHandler: any = (_, type: string) => {
+    if (type == 'NewBlock') {
+      this.updateGiftCard();
+    }
   }
 
   updateGiftCard() {
@@ -137,7 +139,7 @@ export class CardDetailsPage {
 
   showInfoSheet(
     sheetName: InfoSheetType,
-    onDidDismiss: (confirm?: boolean) => void = () => {}
+    onDidDismiss: (confirm?: boolean) => void = () => { }
   ) {
     const sheet = this.actionSheetProvider.createInfoSheet(sheetName);
     sheet.present();
