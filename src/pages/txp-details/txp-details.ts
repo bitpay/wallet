@@ -151,7 +151,7 @@ export class TxpDetailsPage {
         }
       }
     );
-  }
+  };
 
   private displayFeeValues(): void {
     this.tx.feeFiatStr = this.txFormatProvider.formatAlternativeStr(

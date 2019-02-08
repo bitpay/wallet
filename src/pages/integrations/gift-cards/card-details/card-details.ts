@@ -54,7 +54,7 @@ export class CardDetailsPage {
     private events: Events,
     private socialSharing: SocialSharing,
     private platformProvider: PlatformProvider
-  ) { }
+  ) {}
 
   async ngOnInit() {
     this.card = this.navParams.get('card');
@@ -74,7 +74,7 @@ export class CardDetailsPage {
     if (type == 'NewBlock') {
       this.updateGiftCard();
     }
-  }
+  };
 
   updateGiftCard() {
     this.giftCardProvider
@@ -139,7 +139,7 @@ export class CardDetailsPage {
 
   showInfoSheet(
     sheetName: InfoSheetType,
-    onDidDismiss: (confirm?: boolean) => void = () => { }
+    onDidDismiss: (confirm?: boolean) => void = () => {}
   ) {
     const sheet = this.actionSheetProvider.createInfoSheet(sheetName);
     sheet.present();

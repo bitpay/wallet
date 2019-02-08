@@ -78,7 +78,7 @@ export class ReceivePage extends WalletTabsChild {
 
   private walletSetAddressHandler: any = (newAddr?: boolean) => {
     this.setAddress(newAddr);
-  }
+  };
 
   public requestSpecificAmount(): void {
     this.navCtrl.push(AmountPage, {

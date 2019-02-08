@@ -51,7 +51,7 @@ export class TxDetailsPage {
     private txFormatProvider: TxFormatProvider,
     private walletProvider: WalletProvider,
     private translate: TranslateService
-  ) { }
+  ) {}
 
   ionViewDidLoad() {
     this.config = this.configProvider.get();
@@ -92,7 +92,7 @@ export class TxDetailsPage {
   private bwsEventHandler: any = (_, type: string, n) => {
     if (type == 'NewBlock' && n && n.data && n.data.network == 'livenet')
       this.updateTxDebounced({ hideLoading: true });
-  }
+  };
 
   public readMore(): void {
     let url =

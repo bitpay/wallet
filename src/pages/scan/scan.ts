@@ -102,8 +102,14 @@ export class ScanPage {
 
   ionViewWillLeave() {
     this.events.unsubscribe('incomingDataError', this.incomingDataErrorHandler);
-    this.events.unsubscribe('finishIncomingDataMenuEvent', this.finishIncomingDataMenuEventHandler);
-    this.events.unsubscribe('scannerServiceInitialized', this.scannerServiceInitializedHandler);
+    this.events.unsubscribe(
+      'finishIncomingDataMenuEvent',
+      this.finishIncomingDataMenuEventHandler
+    );
+    this.events.unsubscribe(
+      'scannerServiceInitialized',
+      this.scannerServiceInitializedHandler
+    );
     if (!this.isCordova) {
       this.scanner.resetScan();
     } else {
@@ -133,7 +139,10 @@ export class ScanPage {
 
     this.events.subscribe('incomingDataError', this.incomingDataErrorHandler);
 
-    this.events.subscribe('finishIncomingDataMenuEvent', this.finishIncomingDataMenuEventHandler);
+    this.events.subscribe(
+      'finishIncomingDataMenuEvent',
+      this.finishIncomingDataMenuEventHandler
+    );
 
     if (!this.isCordova) {
       if (!this.isCameraSelected) {
@@ -154,7 +163,10 @@ export class ScanPage {
           this.authorize();
         }
       }
-      this.events.subscribe('scannerServiceInitialized', this.scannerServiceInitializedHandler);
+      this.events.subscribe(
+        'scannerServiceInitialized',
+        this.scannerServiceInitializedHandler
+      );
     }
   }
 
@@ -164,7 +176,7 @@ export class ScanPage {
 
   private incomingDataErrorHandler: any = err => {
     this.showErrorInfoSheet(err);
-  }
+  };
 
   private finishIncomingDataMenuEventHandler: any = data => {
     if (!this.isCordova) {
@@ -190,15 +202,14 @@ export class ScanPage {
           this.scanner.startScan(this.selectedDevice);
         }
     }
-  }
+  };
 
   private scannerServiceInitializedHandler: any = () => {
     this.logger.debug(
       'Scanner initialization finished, reinitializing scan view...'
     );
     this._refreshScanView();
-  }
-
+  };
 
   private showErrorInfoSheet(error: Error | string, title?: string): void {
     let infoSheetTitle = title ? title : this.translate.instant('Error');

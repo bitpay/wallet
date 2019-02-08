@@ -169,7 +169,10 @@ export class AmountPage extends WalletTabsChild {
     this.expression = '';
     this.useSendMax = false;
     this.processAmount();
-    this.events.subscribe('Wallet/disableHardwareKeyboard', this.walletDisableHardwareKeyboardHandler);
+    this.events.subscribe(
+      'Wallet/disableHardwareKeyboard',
+      this.walletDisableHardwareKeyboardHandler
+    );
   }
 
   ionViewWillLeave() {
@@ -178,7 +181,7 @@ export class AmountPage extends WalletTabsChild {
 
   private walletDisableHardwareKeyboardHandler: any = () => {
     this._disableHardwareKeyboard();
-  }
+  };
 
   private _disableHardwareKeyboard() {
     this.disableHardwareKeyboard = true;
@@ -468,9 +471,9 @@ export class AmountPage extends WalletTabsChild {
     return parseFloat(
       this.rateProvider
         .toFiat(
-        val * this.unitToSatoshi,
-        this.fiatCode,
-        coin || this.availableUnits[this.unitIndex].id
+          val * this.unitToSatoshi,
+          this.fiatCode,
+          coin || this.availableUnits[this.unitIndex].id
         )
         .toFixed(2)
     );
@@ -573,9 +576,9 @@ export class AmountPage extends WalletTabsChild {
     this.processAmount();
     this.logger.debug(
       'Update unit coin @amount unit:' +
-      this.unit +
-      ' alternativeUnit:' +
-      this.alternativeUnit
+        this.unit +
+        ' alternativeUnit:' +
+        this.alternativeUnit
     );
   }
 

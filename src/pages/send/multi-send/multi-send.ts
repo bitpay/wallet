@@ -90,7 +90,7 @@ export class MultiSendPage extends WalletTabsChild {
   private updateAddressHandler: any = data => {
     this.search = data.value;
     this.processInput();
-  }
+  };
 
   public openTransferToModal(): void {
     let modal = this.modalCtrl.create(

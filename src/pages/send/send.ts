@@ -79,7 +79,7 @@ export class SendPage extends WalletTabsChild {
   private updateAddressHandler: any = data => {
     this.search = data.value;
     this.processInput();
-  }
+  };
 
   public shouldShowZeroState() {
     return (

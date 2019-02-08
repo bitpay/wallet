@@ -103,7 +103,7 @@ export class CopayersPage {
     ) {
       this.updateWallet();
     }
-  }
+  };
 
   close() {
     this.viewCtrl.dismiss();

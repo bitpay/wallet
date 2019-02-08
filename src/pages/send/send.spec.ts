@@ -63,7 +63,10 @@ describe('SendPage', () => {
       it('should unsubscribe from events', () => {
         const spy = spyOn(instance.events, 'unsubscribe');
         instance.ionViewWillLeave();
-        expect(spy).toHaveBeenCalledWith('update:address');
+        expect(spy).toHaveBeenCalledWith(
+          'update:address',
+          instance.updateAddressHandler
+        );
       });
     });
   });

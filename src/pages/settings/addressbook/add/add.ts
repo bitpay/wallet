@@ -75,7 +75,7 @@ export class AddressbookAddPage {
     this.addressBookAdd.controls['address'].setValue(
       this.parseAddress(data.value)
     );
-  }
+  };
 
   private emailOrEmpty(control: AbstractControl): ValidationErrors | null {
     return control.value === '' ? null : Validators.email(control);

@@ -119,10 +119,10 @@ export class WalletTabsPage {
     // Update wallet details
     if (this.walletId == walletId && type != 'NewAddress')
       this.events.publish('Wallet/updateAll');
-  }
+  };
 
   private localTxActionHandler: any = opts => {
     if (this.walletId == opts.walletId)
       this.events.publish('Wallet/updateAll', opts);
-  }
+  };
 }

@@ -92,7 +92,10 @@ export class JoinWalletPage {
         supportsTestnet: false
       }
     ];
-    this.events.subscribe('update:invitationCode', this.updateInvitationCodeHandler);
+    this.events.subscribe(
+      'update:invitationCode',
+      this.updateInvitationCodeHandler
+    );
   }
 
   ionViewDidLoad() {
@@ -108,13 +111,16 @@ export class JoinWalletPage {
   }
 
   ngOnDestroy() {
-    this.events.unsubscribe('update:invitationCode', this.updateInvitationCodeHandler);
+    this.events.unsubscribe(
+      'update:invitationCode',
+      this.updateInvitationCodeHandler
+    );
   }
 
   private updateInvitationCodeHandler: any = data => {
     const invitationCode = data.value.replace('copay:', '');
     this.onQrCodeScannedJoin(invitationCode);
-  }
+  };
 
   public onQrCodeScannedJoin(data: string): void {
     if (this.regex.test(data)) {

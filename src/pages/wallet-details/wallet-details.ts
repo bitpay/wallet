@@ -123,7 +123,7 @@ export class WalletDetailsPage extends WalletTabsChild {
 
   private walletUpdateAllHandler: any = (opts?) => {
     this.updateAll(opts);
-  }
+  };
 
   shouldShowZeroState() {
     return this.showNoTransactionsYetMsg && !this.updateStatusError;

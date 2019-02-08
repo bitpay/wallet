@@ -120,7 +120,7 @@ export class ImportWalletPage {
 
   private updateWordsHandler: any = data => {
     this.processWalletInfo(data.value);
-  }
+  };
 
   public selectTab(tab: string): void {
     this.selectedTab = tab;

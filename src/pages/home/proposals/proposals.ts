@@ -83,12 +83,12 @@ export class ProposalsPage {
   private bwsEventHandler: any = (walletId: string) => {
     if (this.updatingWalletId[walletId]) return;
     this.updateWallet({ walletId });
-  }
+  };
 
   private localTxActionHandler: any = opts => {
     if (this.updatingWalletId[opts.walletId]) return;
     this.updateWallet(opts);
-  }
+  };
 
   private updateDesktopOnFocus() {
     const { remote } = (window as any).require('electron');
