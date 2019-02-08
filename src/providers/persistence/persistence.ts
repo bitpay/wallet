@@ -335,10 +335,10 @@ export class PersistenceProvider {
   }
 
   removeAllWalletData(walletId: string) {
-    return this.clearLastAddress(walletId)
-      .then(() => this.removeTxHistory(walletId))
-      .then(() => this.clearBackupFlag(walletId))
-      .then(() => this.removeWalletOrder(walletId));
+    this.clearLastAddress(walletId);
+    this.removeTxHistory(walletId);
+    this.clearBackupFlag(walletId);
+    this.removeWalletOrder(walletId);
   }
 
   setGiftCardConfigCache(data) {
