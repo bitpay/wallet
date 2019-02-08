@@ -250,7 +250,7 @@ export class ProfileProvider {
 
     const creatorId = n && n.data && n.data.creatorId;
     const amount = n && n.data && n.data.amount;
-    const walletName = this.wallet.name;
+    const walletName = wallet.name;
     let title: string;
     let body: string;
     let translatedMsg: string;
