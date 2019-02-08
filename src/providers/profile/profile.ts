@@ -2,8 +2,10 @@ import { Injectable } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Events } from 'ionic-angular';
 import * as _ from 'lodash';
+import { Observable } from 'rxjs';
 
 // providers
+import { ActionSheetProvider } from '../action-sheet/action-sheet';
 import { AppProvider } from '../app/app';
 import { BwcErrorProvider } from '../bwc-error/bwc-error';
 import { BwcProvider } from '../bwc/bwc';
@@ -50,7 +52,8 @@ export class ProfileProvider {
     private translate: TranslateService,
     private walletProvider: WalletProvider,
     private derivationPathHelperProvider: DerivationPathHelperProvider,
-    private txFormatProvider: TxFormatProvider
+    private txFormatProvider: TxFormatProvider,
+    private actionSheetProvider: ActionSheetProvider
   ) {
     this.throttledBwsEvent = _.throttle((n, wallet) => {
       this.newBwsEvent(n, wallet);
@@ -204,7 +207,7 @@ export class ProfileProvider {
       }
 
       if (this.platformProvider.isElectron) {
-        this.showInAppNotification(n, wallet);
+        this.showDesktopNotifications(n, wallet);
       }
 
       if (n.type == 'NewBlock' && n.data.network == 'testnet') {
@@ -242,7 +245,7 @@ export class ProfileProvider {
     return true;
   }
 
-  private showInAppNotification(n, wallet): void {
+  private showDesktopNotifications(n, wallet): void {
     if (!this.configProvider.get().desktopNotificationsEnabled) return;
 
     const creatorId = n && n.data && n.data.creatorId;
@@ -320,6 +323,24 @@ export class ProfileProvider {
 
     if (!body) return;
 
+    this.showInAppNotification(title, body);
+    this.showOsNotifications(title, body);
+  }
+
+  private async showInAppNotification(title: string, body: string) {
+    const infoSheet = this.actionSheetProvider.createInfoSheet(
+      'in-app-notification',
+      {
+        title,
+        body
+      }
+    );
+    await infoSheet.present();
+    await Observable.timer(7000).toPromise();
+    infoSheet.dismiss();
+  }
+
+  private showOsNotifications(title: string, body: string): void {
     const { ipcRenderer } = (window as any).require('electron');
     ipcRenderer.send('new-notification', {
       title,
