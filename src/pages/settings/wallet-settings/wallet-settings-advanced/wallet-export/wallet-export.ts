@@ -221,6 +221,7 @@ export class WalletExportPage extends WalletTabsChild {
       this.persistenceProvider
         .getAddressBook(this.wallet.credentials.network)
         .then(localAddressBook => {
+          if (!localAddressBook) return resolve();
           try {
             localAddressBook = JSON.parse(localAddressBook);
           } catch (ex) {
