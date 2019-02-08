@@ -1279,9 +1279,9 @@ export class ProfileProvider {
 
     delete this.wallet[walletId];
 
-    return this.persistenceProvider.removeAllWalletData(walletId).then(() => {
-      return this.persistenceProvider.storeProfile(this.profile);
-    });
+    this.persistenceProvider.removeAllWalletData(walletId);
+
+    return this.persistenceProvider.storeProfile(this.profile);
   }
 
   public async deleteVaultWallets(vaultWallets): Promise<any> {
