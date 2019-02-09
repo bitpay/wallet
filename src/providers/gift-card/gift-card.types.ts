@@ -1,107 +1,48 @@
-export enum CardName {
-  amazon = 'Amazon.com',
-  amazonJapan = 'Amazon.co.jp',
-  amc = 'AMC Theatres',
-  barnesNoble = 'Barnes & Noble',
-  bassProShops = 'Bass Pro Shops',
-  burgerKing = 'BURGER KING',
-  cabelas = "Cabela's",
-  carnivalCruiseLine = 'Carnival Cruise Line',
-  delta = 'Delta Air Lines',
-  dsw = 'DSW',
-  gamestop = 'GameStop',
-  googlePlay = 'Google Play',
-  guitarCenter = 'Guitar Center',
-  homeDepot = 'Home Depot',
-  hotelsCom = 'Hotels.com',
-  mercadoLibre = 'Mercado Livre',
-  nike = 'Nike',
-  papaJohns = "Papa John's",
-  pfChangs = "P.F. Chang's",
-  potteryBarn = 'Pottery Barn',
-  royalCaribbean = 'Royal Caribbean',
-  sonyPlayStation = 'Sony PlayStation',
-  spotify = 'Spotify',
-  uber = 'Uber',
-  uberEats = 'Uber Eats',
-  venue = 'Venue USD',
-  xbox = 'Xbox'
-}
-
-export enum CardBrand {
-  amazon = 'Amazon',
-  amc = 'AMC Theatres',
-  barnesNoble = 'Barnes & Noble',
-  bassProShops = 'Bass Pro Shops',
-  burgerKing = 'Burger King',
-  cabelas = "Cabela's",
-  carnivalCruiseLine = 'Carnival Cruise Line',
-  delta = 'Delta',
-  dsw = 'DSW',
-  gamestop = 'GameStop',
-  googlePlay = 'Google Play',
-  guitarCenter = 'Guitar Center',
-  homeDepot = 'Home Depot',
-  hotelsCom = 'Hotels.com',
-  mercadoLibre = 'Mercado Livre',
-  nike = 'Nike',
-  papaJohns = "Papa John's",
-  pfChangs = "P.F. Chang's",
-  potteryBarn = 'Pottery Barn',
-  royalCaribbean = 'Royal Caribbean',
-  sonyPlayStation = 'PlayStation Store',
-  spotify = 'Spotify',
-  uber = 'Uber',
-  uberEats = 'Uber Eats',
-  venue = 'Venue',
-  xbox = 'Xbox'
-}
-
 export enum ClaimCodeType {
   barcode = 'barcode',
   code = 'code',
   link = 'link'
 }
 
-export interface BaseCardConfig {
-  brand: CardBrand;
+export interface CommonCardConfig {
   cardImage: string;
+  currency: string;
   defaultClaimCodeType: ClaimCodeType;
+  description?: string;
+  displayName: string;
   emailRequired: boolean;
+  featured?: boolean;
+  hidden?: boolean;
+  hidePin?: boolean;
   icon: string;
   logo: string;
   logoBackgroundColor: string;
-  name: CardName;
-  redeemUrl?: string;
-  hidePin?: boolean;
-  website: string;
-}
-
-export interface ApiCardConfig {
-  currency: string;
-  description?: string;
   minAmount?: number;
   maxAmount?: number;
   redeemInstructions?: string;
-  supportedAmounts?: number[];
+  redeemUrl?: string;
   terms: string;
+  website: string;
 }
 
-export interface CardConfig extends BaseCardConfig, ApiCardConfig {}
+export interface CardConfig extends CommonCardConfig {
+  name: string;
+  supportedAmounts?: number[];
+}
 
 export interface GiftCard {
   accessKey: string;
   amount: number;
   archived: boolean;
-  brand: CardBrand;
   claimCode: string;
   claimLink?: string;
   currency: string;
   date: number;
+  displayName: string;
   invoiceId: string;
   invoiceTime?: number;
   invoiceUrl: string;
-  name: CardName;
+  name: string;
   pin?: string;
   status: string;
   uuid: string;
@@ -113,19 +54,17 @@ export type GiftCardSaveParams = Partial<{
   remove: boolean;
 }>;
 
-export interface ApiCard {
+export interface ApiCard extends CommonCardConfig {
   amount?: number;
-  currency: string;
-  description: string;
-  minAmount?: number;
-  maxAmount?: number;
-  redeemInstructions?: string;
-  terms: string;
   type: 'fixed' | 'range';
 }
 
-export type ApiBrandConfig = ApiCard[];
+export type ApiCardConfig = ApiCard[];
 
-export type AvailableCardMap = {
-  [T in keyof typeof CardName]?: ApiBrandConfig
-};
+export interface AvailableCardMap {
+  [cardName: string]: ApiCardConfig;
+}
+
+export interface CardConfigMap {
+  [cardName: string]: CardConfig;
+}

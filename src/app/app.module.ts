@@ -1,5 +1,6 @@
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { IonicImageLoader } from 'ionic-image-loader';
 import { MarkdownModule } from 'ngx-markdown';
 
 import { ErrorHandler, NgModule } from '@angular/core';
@@ -101,6 +102,7 @@ export class MyMissingTranslationHandler implements MissingTranslationHandler {
       backButtonIcon: 'arrow-round-back',
       backButtonText: ''
     }),
+    IonicImageLoader.forRoot(),
     BrowserModule,
     BrowserAnimationsModule,
     HttpClientModule,

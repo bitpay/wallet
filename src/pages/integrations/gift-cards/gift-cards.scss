@@ -15,8 +15,10 @@ $gift-card-content-max-width: 315px;
   }
 
   .card-image {
-    border-radius: 14px;
-    box-shadow: 0 4px 47px rgba(0, 0, 0, 0.19);
+    img {
+      border-radius: 14px;
+      box-shadow: 0 4px 47px rgba(0, 0, 0, 0.19);
+    }
   }
 
   .header-extension {

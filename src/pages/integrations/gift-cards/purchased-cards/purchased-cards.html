@@ -1,4 +1,4 @@
-<wide-header-page title="{{cardConfig?.brand}} Gift Cards">
+<wide-header-page title="{{cardConfig?.displayName}} Gift Cards">
   <ion-buttons right>
     <button clear wide-header-bar-button (click)="archive()" ion-button>
       Archive
@@ -11,7 +11,7 @@
           <ion-icon ios="md-add" md="md-add"></ion-icon>
         </button>
       </ion-item-divider>
-      <card-list-item *ngFor="let card of currentGiftCards" [card]="card" (click)="goToCardDetails(card)"></card-list-item>
+      <card-list-item *ngFor="let card of currentGiftCards" [card]="card" (click)="goToCardDetails(card)" type="purchased"></card-list-item>
       <ion-item-divider></ion-item-divider>
     </ion-list>
   </div>

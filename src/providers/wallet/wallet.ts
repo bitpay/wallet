@@ -10,7 +10,6 @@ import { BwcProvider } from '../bwc/bwc';
 import { ConfigProvider } from '../config/config';
 import { FeeProvider } from '../fee/fee';
 import { FilterProvider } from '../filter/filter';
-import { CardName } from '../gift-card/gift-card.types';
 import { LanguageProvider } from '../language/language';
 import { Logger } from '../logger/logger';
 import { OnGoingProcessProvider } from '../on-going-process/on-going-process';
@@ -57,7 +56,7 @@ export interface TransactionProposal {
   message: string;
   customData?: {
     service?: string;
-    giftCardName?: CardName;
+    giftCardName?: string;
     shapeShift?: string;
     toWalletName?: any;
   };

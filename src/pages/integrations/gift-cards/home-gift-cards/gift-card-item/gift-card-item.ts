@@ -12,7 +12,6 @@ import * as _ from 'lodash';
 import { GiftCardProvider } from '../../../../../providers/gift-card/gift-card';
 import {
   CardConfig,
-  CardName,
   GiftCard
 } from '../../../../../providers/gift-card/gift-card.types';
 
@@ -23,7 +22,7 @@ export type CardItemAction = 'archive' | 'view';
   template: `
     <ion-item-sliding #slidingItem>
       <button ion-item (click)="performAction('view')">
-        <img class="logo" [src]="cardConfig?.logo" />
+        <img-loader class="logo" [src]="cardConfig?.logo"></img-loader>
         <ion-note
           item-end
           [ngClass]="{ dark: cardConfig?.logoBackgroundColor === '#ffffff' }"
@@ -45,14 +44,14 @@ export type CardItemAction = 'archive' | 'view';
 })
 export class GiftCardItem {
   @Input()
-  cardName: CardName;
+  cardName: string;
 
   @Input()
   giftCards: GiftCard[] = [];
 
   @Output()
   action: EventEmitter<{
-    cardName: CardName;
+    cardName: string;
     action: CardItemAction;
   }> = new EventEmitter();
 
@@ -94,10 +93,6 @@ export class GiftCardItem {
 
   shouldShowTotalBalance() {
     return this.cardConfig && this.numCurrencies === 1 && this.totalBalance;
-  }
-
-  getBrandClass() {
-    return this.cardConfig && this.cardConfig.brand.replace(/\W/g, '');
   }
 
   private async setBrandStyling() {

@@ -5,10 +5,7 @@ import { BuyCardPage } from '../buy-card/buy-card';
 
 import { ActionSheetProvider } from '../../../../providers';
 import { GiftCardProvider } from '../../../../providers/gift-card/gift-card';
-import {
-  CardConfig,
-  CardName
-} from '../../../../providers/gift-card/gift-card.types';
+import { CardConfig } from '../../../../providers/gift-card/gift-card.types';
 import { WideHeaderPage } from '../../../templates/wide-header-page/wide-header-page';
 
 @Component({
@@ -20,6 +17,8 @@ export class CardCatalogPage implements OnInit {
   public featuredCards: CardConfig[];
   public moreCards: CardConfig[];
   public searchQuery: string = '';
+  public numFeaturedCards: number;
+  public numMoreCards: number;
 
   @ViewChild(WideHeaderPage)
   wideHeaderPage: WideHeaderPage;
@@ -36,6 +35,8 @@ export class CardCatalogPage implements OnInit {
       return [] as CardConfig[];
     });
     this.updateCardList();
+    this.numFeaturedCards = this.featuredCards.length;
+    this.numMoreCards = this.moreCards.length;
   }
 
   onSearch(query: string) {
@@ -47,8 +48,8 @@ export class CardCatalogPage implements OnInit {
     const matchingCards = this.allCards.filter(c =>
       isCardInSearchResults(c, this.searchQuery)
     );
-    this.featuredCards = matchingCards.filter(c => isCardFeatured(c));
-    this.moreCards = matchingCards.filter(c => !isCardFeatured(c));
+    this.featuredCards = matchingCards.filter(c => c.featured);
+    this.moreCards = matchingCards.filter(c => !c.featured);
   }
 
   buyCard(cardConfig: CardConfig) {
@@ -62,20 +63,6 @@ export class CardCatalogPage implements OnInit {
     errorInfoSheet.present();
     errorInfoSheet.onDidDismiss(() => this.navCtrl.pop());
   }
-}
-
-export function isCardFeatured(c: CardConfig) {
-  const featuredCardNames = [
-    CardName.amazon,
-    CardName.amazonJapan,
-    CardName.delta,
-    CardName.googlePlay,
-    CardName.hotelsCom,
-    CardName.mercadoLibre,
-    CardName.uber,
-    CardName.uberEats
-  ];
-  return featuredCardNames.indexOf(c.name) !== -1;
 }
 
 export function isCardInSearchResults(c: CardConfig, search: string) {
