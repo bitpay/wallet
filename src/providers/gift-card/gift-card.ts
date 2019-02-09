@@ -379,7 +379,7 @@ export class GiftCardProvider {
           cachedApiCardConfig[cardName]
         );
         const config = freshConfig || cachedConfig;
-        const displayName = config.displayName || config.name;
+        const displayName = config.displayName || config.brand || config.name;
         return {
           ...config,
           displayName

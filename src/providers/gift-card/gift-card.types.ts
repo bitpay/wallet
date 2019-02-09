@@ -26,6 +26,7 @@ export interface CommonCardConfig {
 }
 
 export interface CardConfig extends CommonCardConfig {
+  brand?: string; // deprecated
   name: string;
   supportedAmounts?: number[];
 }
