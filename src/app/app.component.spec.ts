@@ -8,6 +8,7 @@ import {
 } from '@ngx-translate/core';
 import { IonicModule } from 'ionic-angular';
 
+import { IonicImageLoader } from 'ionic-image-loader';
 import { EmailNotificationsProvider } from '../providers/email-notifications/email-notifications';
 import { Logger } from '../providers/logger/logger';
 import { LoggerMock } from '../providers/logger/logger.mock';
@@ -25,13 +26,14 @@ describe('CopayApp', () => {
       schemas: [NO_ERRORS_SCHEMA],
       imports: [
         IonicModule.forRoot(CopayApp),
+        IonicImageLoader.forRoot(),
         ProvidersModule,
         HttpClientTestingModule,
         TranslateModule.forRoot({
           loader: { provide: TranslateLoader, useClass: TranslateFakeLoader }
         })
       ],
-      providers: [{ provide: Logger, useClass: LoggerMock }]
+      providers: [{ provide: Logger, useClass: LoggerMock }, IonicImageLoader]
     });
   }));
 

@@ -625,6 +625,7 @@ function appendFallbackImages(cardConfig: CardConfig) {
     };
   };
   const needsFallback =
+    cardConfig &&
     cardConfig.cardImage &&
     !cardConfig.cardImage.includes('https://bitpay.com');
   return needsFallback
