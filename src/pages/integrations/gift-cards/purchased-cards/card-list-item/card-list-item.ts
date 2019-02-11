@@ -27,7 +27,7 @@ import {
         </div>
         <div *ngIf="(type === 'catalog' || type === 'settings') && cardConfig">
           <div
-            class="card-list-item__label"
+            class="card-list-item__label ellipsis"
             [ngClass]="{ 'no-margin-bottom': type === 'settings' }"
           >
             {{ cardConfig.displayName }}
