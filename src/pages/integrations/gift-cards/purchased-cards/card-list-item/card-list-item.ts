@@ -40,7 +40,7 @@ import {
             {{ cardConfig.maxAmount | formatCurrency: currency:0 }}
           </ion-note>
           <ion-note
-            class="card-list-item__note"
+            class="card-list-item__note ellipsis"
             *ngIf="cardConfig.supportedAmounts"
           >
             <span
