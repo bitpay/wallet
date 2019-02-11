@@ -49,7 +49,7 @@ import {
                 let last = last
               "
             >
-              {{ amount | formatCurrency: currency:0
+              {{ amount | formatCurrency: currency:'minimal'
               }}<span *ngIf="!last">,</span>
             </span>
           </ion-note>
