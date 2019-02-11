@@ -121,8 +121,13 @@
         <ion-item-divider class="tx-history-header tx-history-header--large">
           <span *ngIf="requiresMultipleSignatures" translate>Proposals</span>
           <span *ngIf="!requiresMultipleSignatures" translate>Unsent transactions</span>
+          <button ion-button clear icon-only class="txps-badge" *ngIf="txps.length > 2" (click)="openProposalsPage()">
+            <ion-badge color="danger">{{txps.length}}</ion-badge>
+          </button>
         </ion-item-divider>
-        <page-txp *ngFor="let txp of txps" [tx]="txp" [addressbook]="addressbook"></page-txp>
+        <div *ngFor="let txp of txps;  let i=index">
+          <page-txp *ngIf="i<=2" [tx]="txp" [addressbook]="addressbook"></page-txp>
+        </div>
         <ion-item *ngIf="wallet.status && wallet.status.lockedBalanceSat" class="locked-balance" (click)="openBalanceDetails()">
           <span translate>Total Locked Balance</span>
           <ion-note item-end>

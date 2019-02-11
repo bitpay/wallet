@@ -14,6 +14,8 @@ import { Subscription } from 'rxjs';
 import { AddressBookProvider } from '../../providers/address-book/address-book';
 import { BwcErrorProvider } from '../../providers/bwc-error/bwc-error';
 import { ExternalLinkProvider } from '../../providers/external-link/external-link';
+import { GiftCardProvider } from '../../providers/gift-card/gift-card';
+import { CardConfigMap } from '../../providers/gift-card/gift-card.types';
 import { ActionSheetProvider } from '../../providers/index';
 import { Logger } from '../../providers/logger/logger';
 import { OnGoingProcessProvider } from '../../providers/on-going-process/on-going-process';
@@ -23,10 +25,9 @@ import { WalletProvider } from '../../providers/wallet/wallet';
 
 // pages
 import { BackupWarningPage } from '../../pages/backup/backup-warning/backup-warning';
+import { ProposalsPage } from '../../pages/home/proposals/proposals';
 import { WalletAddressesPage } from '../../pages/settings/wallet-settings/wallet-settings-advanced/wallet-addresses/wallet-addresses';
 import { TxDetailsPage } from '../../pages/tx-details/tx-details';
-import { GiftCardProvider } from '../../providers/gift-card/gift-card';
-import { CardConfigMap } from '../../providers/gift-card/gift-card.types';
 import { WalletSettingsPage } from '../settings/wallet-settings/wallet-settings';
 import { WalletTabsChild } from '../wallet-tabs/wallet-tabs-child';
 import { WalletTabsProvider } from '../wallet-tabs/wallet-tabs.provider';
@@ -170,26 +171,11 @@ export class WalletDetailsPage extends WalletTabsChild {
   }
 
   private setPendingTxps(txps) {
-    /* Uncomment to test multiple outputs */
-
-    // var txp = {
-    //   message: 'test multi-output',
-    //   fee: 1000,
-    //   createdOn: new Date() / 1000,
-    //   outputs: [],
-    //   wallet: $scope.wallet
-    // };
-    //
-    // function addOutput(n) {
-    //   txp.outputs.push({
-    //     amount: 600,
-    //     toAddress: '2N8bhEwbKtMvR2jqMRcTCQqzHP6zXGToXcK',
-    //     message: 'output #' + (Number(n) + 1)
-    //   });
-    // };
-    // lodash.times(15, addOutput);
-    // txps.push(txp);
     this.txps = !txps ? [] : _.sortBy(txps, 'createdOn').reverse();
+  }
+
+  public openProposalsPage(): void {
+    this.navCtrl.push(ProposalsPage, { walletId: this.wallet.id });
   }
 
   private updateTxHistory(opts) {

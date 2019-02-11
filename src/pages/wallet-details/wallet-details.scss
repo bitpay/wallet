@@ -123,6 +123,14 @@ page-wallet-details {
           padding: 0 !important;
         }
       }
+      ion-label {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .txps-badge {
+        margin-right: 1rem;
+      }
     }
 
     .item-wrapper {

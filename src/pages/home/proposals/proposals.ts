@@ -4,6 +4,7 @@ import {
   Events,
   ModalController,
   NavController,
+  NavParams,
   Platform
 } from 'ionic-angular';
 import * as _ from 'lodash';
@@ -41,6 +42,7 @@ export class ProposalsPage {
   private onPauseSubscription: Subscription;
   private isElectron: boolean;
   private updatingWalletId: object;
+  private walletId: string;
 
   constructor(
     private plt: Platform,
@@ -56,10 +58,12 @@ export class ProposalsPage {
     private replaceParametersProvider: ReplaceParametersProvider,
     private walletProvider: WalletProvider,
     private modalCtrl: ModalController,
-    private navCtrl: NavController
+    private navCtrl: NavController,
+    private navParams: NavParams
   ) {
     this.zone = new NgZone({ enableLongStackTrace: false });
     this.isElectron = this.platformProvider.isElectron;
+    this.walletId = this.navParams.data.walletId;
     this.updatingWalletId = {};
     this.isCordova = this.platformProvider.isCordova;
     this.buttonText = this.translate.instant('Sign multiple proposals');
@@ -173,6 +177,12 @@ export class ProposalsPage {
           });
 
           this.allTxps = this.groupByWallets(txpsData.txps);
+
+          if (this.walletId) {
+            this.allTxps = _.filter(this.allTxps, txps => {
+              return txps.walletId == this.walletId;
+            });
+          }
 
           if (this.allTxps && !this.allTxps[0]) {
             this.navCtrl.pop();
