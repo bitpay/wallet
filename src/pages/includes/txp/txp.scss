@@ -1,5 +1,5 @@
 page-txp {
-  .item-title {
+  .proposal-title {
     margin-bottom: 0.3rem;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -9,30 +9,29 @@ page-txp {
     box-orient: vertical;
     -webkit-box-orient: vertical;
   }
-  .item-subtitle {
-    .icon-container {
-      vertical-align: middle;
-      width: 18px;
-      margin: 0 2px 0 0;
-    }
-  }
   .proposal-container {
-    .proposal-title {
+    .item-subtitle {
+      .icon-container {
+        vertical-align: middle;
+        width: 18px;
+        margin: 0 2px 0 0;
+      }
+    }
+    .proposal-subtitle {
       display: flex;
-      align-items: baseline;
+      align-items: center;
     }
     .circle-status {
-      width: 1rem;
-      height: 1rem;
-      background-color: color($colors, light-grey);
+      width: 0.7rem;
+      height: 0.7rem;
+      background-color: #e4e4ee;
       border-radius: 10px;
       margin-right: 0.3rem;
-      padding: 5px;
+      padding: 4px;
     }
     .assertive {
       background-color: color($colors, danger);
     }
-
     .balanced {
       background-color: color($colors, success);
     }

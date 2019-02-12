@@ -1,23 +1,23 @@
 <button ion-item class="proposal-container" (click)="openTxpModal(tx)">
-  <div class="proposal-title">
-    <div class="circle-status" *ngIf="tx.statusForUs" [ngClass]="{'balanced': tx.statusForUs == 'accepted', 'assertive': tx.statusForUs == 'rejected'}"></div>
-    <div *ngIf="!tx.merchant" class="item-title">
-      <span *ngIf="tx.message">{{tx.message}}</span>
-      <span *ngIf="!tx.message && tx.toAddress && addressbook[tx.toAddress]">{{addressbook[tx.toAddress].name || addressbook[tx.toAddress]}}</span>
-      <span *ngIf="!tx.message && tx.toAddress && !addressbook[tx.toAddress]" translate>Sending</span>
-    </div>
+  <div *ngIf="!tx.merchant" class="proposal-title">
+    <span *ngIf="tx.message">{{tx.message}}</span>
+    <span *ngIf="!tx.message && tx.toAddress && addressbook[tx.toAddress]">{{addressbook[tx.toAddress].name || addressbook[tx.toAddress]}}</span>
+    <span *ngIf="!tx.message && tx.toAddress && !addressbook[tx.toAddress]" translate>Sending</span>
   </div>
-  <span *ngIf="tx.merchant" class="item-subtitle">
-    <span *ngIf="tx.merchant.pr.ca">
-      <ion-icon class="fi-lock"></ion-icon>{{tx.merchant.domain}}
+  <div class="proposal-subtitle">
+    <div class="circle-status" *ngIf="tx.statusForUs" [ngClass]="{'balanced': tx.statusForUs == 'accepted', 'assertive': tx.statusForUs == 'rejected'}"></div>
+    <span *ngIf="tx.merchant" class="item-subtitle">
+      <span *ngIf="tx.merchant.pr.ca">
+        <ion-icon class="fi-lock"></ion-icon>{{tx.merchant.domain}}
+      </span>
+      <span *ngIf="!tx.merchant.pr.ca">
+        <ion-icon class="fion-icon-unlock"></ion-icon>{{tx.merchant.domain}}
+      </span>
     </span>
-    <span *ngIf="!tx.merchant.pr.ca">
-      <ion-icon class="fion-icon-unlock"></ion-icon>{{tx.merchant.domain}}
-    </span>
-  </span>
-  <div class="item-subtitle">
-    <span *ngIf="tx.creatorName">{{ tx.creatorName}}@</span>
-    <span>{{tx.wallet.name}}</span>
+    <div class="item-subtitle">
+      <span *ngIf="tx.creatorName">{{ tx.creatorName}}@</span>
+      <span>{{tx.wallet.name}}</span>
+    </div>
   </div>
 
   <ion-note item-right>
