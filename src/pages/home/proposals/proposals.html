@@ -17,12 +17,22 @@
           </ion-icon>
           <span class="name">{{txpsByWallet.txps[0].wallet.name}}</span>
         </div>
-        <div *ngIf="txpsByWallet.multipleSignAvailable" class="multi-sign" outline (click)="signMultipleProposals(txpsByWallet)">
-          <ion-icon name="ios-list-outline"></ion-icon>
+        <div>
+          <div *ngIf="txpsByWallet.multipleSignAvailable && !walletIdSelectedToSign" class="multi-sign" outline (click)="signMultipleProposals(txpsByWallet)">
+            <ion-icon name="ios-list-outline"></ion-icon>
+          </div>
+          <div class="select-all" *ngIf="walletIdSelectedToSign && txpsByWallet.walletId == walletIdSelectedToSign">
+            <div class="multi-sign" (click)="selectAll(txpsByWallet)">
+              <ion-icon name="ios-done-all"></ion-icon>
+            </div>
+            <div class="multi-sign close" (click)="signMultipleProposals(txpsByWallet)">
+              <ion-icon name="ios-close"></ion-icon>
+            </div>
+          </div>
         </div>
       </div>
       <div class="txp-container" *ngFor="let txp of txpsByWallet.txps">
-        <ion-checkbox (ionChange)="txpSelectionChange(txp)" *ngIf="walletIdSelectedToSign && txp.walletId == walletIdSelectedToSign && txp.statusForUs === 'pending'" [checked]="txp.checked" [disabled]="txp.statusForUs == 'accepted' || txp.statusForUs == 'rejected'"></ion-checkbox>
+        <ion-checkbox mode="ios" (click)="txpSelectionChange(txp)" *ngIf="walletIdSelectedToSign && txp.walletId == walletIdSelectedToSign && txp.statusForUs === 'pending'" [checked]="txp.checked" [disabled]="txp.statusForUs == 'accepted' || txp.statusForUs == 'rejected'"></ion-checkbox>
         <page-txp [ngClass]="{'with-checkbox': walletIdSelectedToSign && txp.walletId == walletIdSelectedToSign && txp.statusForUs === 'pending'}" [tx]="txp" [addressbook]="addressbook" [noOpenModal]="walletIdSelectedToSign && txp.walletId == walletIdSelectedToSign && txp.statusForUs === 'pending'"></page-txp>
       </div>
     </div>

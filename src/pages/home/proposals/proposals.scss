@@ -17,11 +17,18 @@ page-proposals {
       }
     }
     .multi-sign {
+      cursor: pointer;
       color: color($colors, primary);
       ion-icon {
         font-size: 4rem;
         margin-right: 2rem;
       }
+      &.close ion-icon {
+        margin-right: 5px;
+      }
+    }
+    .select-all {
+      display: flex;
     }
   }
   .txp-container {

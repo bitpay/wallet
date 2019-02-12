@@ -231,7 +231,9 @@ export class ProposalsPage {
   public signMultipleProposals(txp): void {
     this.txpsToSign = [];
     this.walletIdSelectedToSign =
-      this.walletIdSelectedToSign == txp.walletId ? null : txp.walletId;
+      this.walletIdSelectedToSign == txp.walletId
+        ? this.resetMultiSignValues()
+        : txp.walletId;
   }
 
   public sign(): void {
@@ -305,7 +307,9 @@ export class ProposalsPage {
       _.remove(this.txpsToSign, txpToSign => {
         return txpToSign.id == txp.id;
       });
+      txp.checked = false;
     } else {
+      txp.checked = true;
       this.txpsToSign.push(txp);
     }
     if (this.isCordova)
@@ -313,6 +317,13 @@ export class ProposalsPage {
   }
 
   private resetMultiSignValues(): void {
+    this.allTxps.forEach(txpsByWallet => {
+      if (txpsByWallet.walletId == this.walletIdSelectedToSign) {
+        txpsByWallet.txps.forEach(txp => {
+          txp.checked = false;
+        });
+      }
+    });
     this.txpsToSign = [];
     this.walletIdSelectedToSign = null;
   }
@@ -328,5 +339,18 @@ export class ProposalsPage {
       { showBackdrop: true, enableBackdropDismiss: false }
     );
     modal.present();
+  }
+
+  public selectAll(txpsByWallet): void {
+    this.zone.run(() => {
+      this.txpsToSign = [];
+
+      txpsByWallet.txps.forEach(txp => {
+        this.txpsToSign.push(txp);
+        txp.checked = true;
+      });
+
+      if (this.isCordova) this.hideSlideButton = false;
+    });
   }
 }
