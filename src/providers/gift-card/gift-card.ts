@@ -486,6 +486,10 @@ export class GiftCardProvider {
     const availableCardMap = await this.getAvailableCardMap();
     const availableCardNames = Object.keys(availableCardMap);
     const config = availableCardNames
+      .filter(
+        cardName =>
+          availableCardMap[cardName] && availableCardMap[cardName].length
+      )
       .map(cardName => {
         const apiBrandConfig = availableCardMap[cardName];
         const apiCardConfig = getCardConfigFromApiBrandConfig(
