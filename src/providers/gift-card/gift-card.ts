@@ -443,18 +443,12 @@ export class GiftCardProvider {
   async cacheApiCardConfig(availableCardMap: AvailableCardMap) {
     const cardNames = Object.keys(availableCardMap);
     const previousCache = await this.persistenceProvider.getGiftCardConfigCache();
-    const apiCardConfigCache = cardNames
-      .filter(
-        cardName =>
-          availableCardMap[cardName] && availableCardMap[cardName].length
-      )
-      .map(cardName =>
-        getCardConfigFromApiBrandConfig(cardName, availableCardMap[cardName])
-      )
-      .reduce((configMap, apiCardConfigMap, index) => {
-        const name = cardNames[index];
-        return { ...configMap, [name]: apiCardConfigMap };
-      }, {});
+    const apiCardConfigCache = getCardConfigFromApiConfigMap(
+      availableCardMap
+    ).reduce((configMap, apiCardConfigMap, index) => {
+      const name = cardNames[index];
+      return { ...configMap, [name]: apiCardConfigMap };
+    }, {});
     const newCache = {
       ...previousCache,
       ...apiCardConfigCache
@@ -484,23 +478,11 @@ export class GiftCardProvider {
 
   async getAvailableCards(): Promise<CardConfig[]> {
     const availableCardMap = await this.getAvailableCardMap();
-    const availableCardNames = Object.keys(availableCardMap);
-    const config = availableCardNames
-      .filter(
-        cardName =>
-          availableCardMap[cardName] && availableCardMap[cardName].length
-      )
-      .map(cardName => {
-        const apiBrandConfig = availableCardMap[cardName];
-        const apiCardConfig = getCardConfigFromApiBrandConfig(
-          cardName,
-          apiBrandConfig
-        );
-        return {
-          ...apiCardConfig,
-          displayName: apiCardConfig.displayName || apiCardConfig.name
-        };
-      })
+    const config = getCardConfigFromApiConfigMap(availableCardMap)
+      .map(apiCardConfig => ({
+        ...apiCardConfig,
+        displayName: apiCardConfig.displayName || apiCardConfig.name
+      }))
       .filter(
         cardConfig =>
           cardConfig.logo &&
@@ -564,6 +546,18 @@ export class GiftCardProvider {
       show: !!this.configProvider.get().showIntegration['giftcards']
     });
   }
+}
+
+function getCardConfigFromApiConfigMap(availableCardMap: AvailableCardMap) {
+  const cardNames = Object.keys(availableCardMap);
+  return cardNames
+    .filter(
+      cardName =>
+        availableCardMap[cardName] && availableCardMap[cardName].length
+    )
+    .map(cardName =>
+      getCardConfigFromApiBrandConfig(cardName, availableCardMap[cardName])
+    );
 }
 
 function getCardConfigFromApiBrandConfig(
