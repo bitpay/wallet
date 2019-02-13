@@ -234,9 +234,7 @@
     "preconditions": "2.2.1",
     "rxjs": "5.5.12",
     "simple-plist": "0.2.1",
-    "sw-toolbox": "3.6.0",
     "text-encoding": "0.6.4",
-    "ts-md5": "1.2.2",
     "web-animations-js": "2.3.1",
     "zone.js": "0.8.26"
   },
