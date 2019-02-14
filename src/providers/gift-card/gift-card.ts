@@ -367,12 +367,11 @@ export class GiftCardProvider {
       this.getCachedApiCardConfig().catch(_ => ({} as CardConfigMap))
     ]);
     const cachedCardNames = Object.keys(cachedApiCardConfig);
-    const cardNames = cachedCardNames.concat(
-      availableCards
-        .map(c => c.name)
-        .filter(name => cachedCardNames.indexOf(name) === -1)
-    );
-    const supportedCards = cardNames
+    const availableCardNames = availableCards.map(c => c.name);
+    const uniqueCardNames = [
+      ...new Set([...availableCardNames, ...cachedCardNames])
+    ];
+    const supportedCards = uniqueCardNames
       .map(cardName => {
         const freshConfig = availableCards.find(c => c.name === cardName);
         const cachedConfig = appendFallbackImages(
