@@ -406,7 +406,10 @@ export class GiftCardProvider {
     );
     const supportedCards = await this.getSupportedCards();
     const offeredCardNames = supportedCards.map(c => c.name);
-    return !giftCardMap
+    const validSchema = Object.keys(giftCardMap).every(
+      key => key !== 'undefined'
+    );
+    return !giftCardMap || !validSchema
       ? this.migrateAndFetchActiveCards()
       : Object.keys(giftCardMap)
           .map(invoiceId => giftCardMap[invoiceId] as GiftCard)
