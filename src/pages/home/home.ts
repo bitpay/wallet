@@ -132,8 +132,6 @@ export class HomePage {
 
   private _didEnter() {
     this.checkClipboard();
-    this.subscribeIncomingDataMenuEvent();
-    this.subscribeBwsEvents();
 
     // Show integrations
     const integrations = _.filter(this.homeIntegrationsProvider.get(), {
@@ -170,9 +168,14 @@ export class HomePage {
   ionViewDidLoad() {
     this.logger.info('Loaded: HomePage');
     this.checkHomeTip();
+
     this.checkFeedbackInfo();
 
     this.checkEmailLawCompliance();
+
+    this.subscribeIncomingDataMenuEvent();
+
+    this.subscribeBwsEvents();
 
     this.subscribeStatusEvents();
 
@@ -188,10 +191,13 @@ export class HomePage {
     });
 
     this.onPauseSubscription = this.plt.pause.subscribe(() => {
-      this.events.unsubscribe('finishIncomingDataMenuEvent');
-      this.events.unsubscribe('bwsEvent');
-      this.events.unsubscribe('status:updated');
-      this.events.unsubscribe('Local/TxAction');
+      this.events.unsubscribe(
+        'finishIncomingDataMenuEvent',
+        this.finishIncomingDataMenuEventHandler
+      );
+      this.events.unsubscribe('bwsEvent', this.bwsEventHandler);
+      this.events.unsubscribe('status:updated', this.statusUpdateEventHandler);
+      this.events.unsubscribe('Local/TxAction', this.localTxActionEventHandler);
     });
   }
 
@@ -201,8 +207,6 @@ export class HomePage {
   }
 
   ionViewWillLeave() {
-    this.events.unsubscribe('finishIncomingDataMenuEvent');
-    this.events.unsubscribe('bwsEvent');
     this.resetValuesForAnimationCard();
   }
 
@@ -216,43 +220,54 @@ export class HomePage {
     // BWS Events: Update Status per Wallet -> Update txps
     // NewBlock, NewCopayer, NewAddress, NewTxProposal, TxProposalAcceptedBy, TxProposalRejectedBy, txProposalFinallyRejected,
     // txProposalFinallyAccepted, TxProposalRemoved, NewIncomingTx, NewOutgoingTx
-    this.events.subscribe('bwsEvent', (walletId: string) => {
-      this.updateWallet({ walletId });
-    });
+    this.events.subscribe('bwsEvent', this.bwsEventHandler);
   }
+
+  private bwsEventHandler: any = (walletId: string) => {
+    this.updateWallet({ walletId });
+  };
 
   private subscribeStatusEvents() {
     // Create, Join, Import and Delete -> Get Wallets -> Update Status for All Wallets -> Update txps
-    this.events.subscribe('status:updated', () => {
-      this.setWallets();
-    });
+    this.events.subscribe('status:updated', this.statusUpdateEventHandler);
   }
+
+  private statusUpdateEventHandler: any = () => {
+    this.setWallets();
+  };
 
   private subscribeLocalTxAction() {
     // Reject, Remove, OnlyPublish and SignAndBroadcast -> Update Status per Wallet -> Update txps
-    this.events.subscribe('Local/TxAction', opts => {
-      this.updateWallet(opts);
-    });
+    this.events.subscribe('Local/TxAction', this.localTxActionEventHandler);
   }
 
+  private localTxActionEventHandler: any = opts => {
+    this.updateWallet(opts);
+  };
+
   private subscribeIncomingDataMenuEvent() {
-    this.events.subscribe('finishIncomingDataMenuEvent', data => {
-      switch (data.redirTo) {
-        case 'AmountPage':
-          this.sendPaymentToAddress(data.value, data.coin);
-          break;
-        case 'AddressBookPage':
-          this.addToAddressBook(data.value);
-          break;
-        case 'OpenExternalLink':
-          this.goToUrl(data.value);
-          break;
-        case 'PaperWalletPage':
-          this.scanPaperWallet(data.value);
-          break;
-      }
-    });
+    this.events.subscribe(
+      'finishIncomingDataMenuEvent',
+      this.finishIncomingDataMenuEventHandler
+    );
   }
+
+  private finishIncomingDataMenuEventHandler: any = data => {
+    switch (data.redirTo) {
+      case 'AmountPage':
+        this.sendPaymentToAddress(data.value, data.coin);
+        break;
+      case 'AddressBookPage':
+        this.addToAddressBook(data.value);
+        break;
+      case 'OpenExternalLink':
+        this.goToUrl(data.value);
+        break;
+      case 'PaperWalletPage':
+        this.scanPaperWallet(data.value);
+        break;
+    }
+  };
 
   private goToUrl(url: string): void {
     this.externalLinkProvider.open(url);
@@ -616,8 +631,6 @@ export class HomePage {
       this.showReorderVaultWallets
     )
       return;
-    this.events.unsubscribe('finishIncomingDataMenuEvent');
-    this.events.unsubscribe('bwsEvent');
     this.events.publish('OpenWallet', wallet);
   }
 

@@ -169,14 +169,19 @@ export class AmountPage extends WalletTabsChild {
     this.expression = '';
     this.useSendMax = false;
     this.processAmount();
-    this.events.subscribe('Wallet/disableHardwareKeyboard', () => {
-      this._disableHardwareKeyboard();
-    });
+    this.events.subscribe(
+      'Wallet/disableHardwareKeyboard',
+      this.walletDisableHardwareKeyboardHandler
+    );
   }
 
   ionViewWillLeave() {
     this._disableHardwareKeyboard();
   }
+
+  private walletDisableHardwareKeyboardHandler: any = () => {
+    this._disableHardwareKeyboard();
+  };
 
   private _disableHardwareKeyboard() {
     this.disableHardwareKeyboard = true;

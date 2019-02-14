@@ -76,14 +76,16 @@ export class ShapeshiftPage {
       this.init();
     }
 
-    this.events.subscribe('bwsEvent', (_, type: string) => {
-      if (type == 'NewBlock') this.updateShift(this.shifts);
-    });
+    this.events.subscribe('bwsEvent', this.bwsEventHandler);
   }
 
   ionViewWillLeave() {
-    this.events.unsubscribe('bwsEvent');
+    this.events.unsubscribe('bwsEvent', this.bwsEventHandler);
   }
+
+  private bwsEventHandler: any = (_, type: string) => {
+    if (type == 'NewBlock') this.updateShift(this.shifts);
+  };
 
   private init(): void {
     this.loading = true;

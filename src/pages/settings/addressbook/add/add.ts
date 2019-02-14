@@ -60,11 +60,7 @@ export class AddressbookAddPage {
       );
     }
     this.appName = this.appProvider.info.nameCase;
-    this.events.subscribe('update:address', data => {
-      this.addressBookAdd.controls['address'].setValue(
-        this.parseAddress(data.value)
-      );
-    });
+    this.events.subscribe('update:address', this.updateAddressHandler);
   }
 
   ionViewDidLoad() {
@@ -72,8 +68,14 @@ export class AddressbookAddPage {
   }
 
   ngOnDestroy() {
-    this.events.unsubscribe('update:address');
+    this.events.unsubscribe('update:address', this.updateAddressHandler);
   }
+
+  private updateAddressHandler: any = data => {
+    this.addressBookAdd.controls['address'].setValue(
+      this.parseAddress(data.value)
+    );
+  };
 
   private emailOrEmpty(control: AbstractControl): ValidationErrors | null {
     return control.value === '' ? null : Validators.email(control);
