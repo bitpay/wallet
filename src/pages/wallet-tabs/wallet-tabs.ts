@@ -65,10 +65,6 @@ export class WalletTabsPage {
       this.subscribeEvents();
     });
 
-    this.events.subscribe('Local/TxAction', this.localTxActionHandler);
-  }
-
-  ionViewWillEnter() {
     if (this.isElectron) {
       this.updateDesktopOnFocus();
     }
@@ -77,17 +73,12 @@ export class WalletTabsPage {
 
   private subscribeEvents(): void {
     this.events.subscribe('bwsEvent', this.bwsEventHandler);
-  }
-
-  ionViewWillLeave() {
-    this.unsubscribeEvents();
+    this.events.subscribe('Local/TxAction', this.localTxActionHandler);
   }
 
   private unsubscribeEvents(): void {
-    this.events.publish('Wallet/disableHardwareKeyboard');
     this.events.unsubscribe('bwsEvent', this.bwsEventHandler);
-    this.events.unsubscribe('Wallet/setAddress');
-    this.events.unsubscribe('Wallet/disableHardwareKeyboard');
+    this.events.unsubscribe('Local/TxAction', this.localTxActionHandler);
   }
 
   private updateDesktopOnFocus() {
@@ -107,9 +98,17 @@ export class WalletTabsPage {
     this.walletTabsProvider.clear();
     this.onPauseSubscription.unsubscribe();
     this.onResumeSubscription.unsubscribe();
-    this.events.unsubscribe('Local/TxAction', this.localTxActionHandler);
-    this.events.unsubscribe('Wallet/updateAll');
+    this.events.publish('Wallet/disableHardwareKeyboard');
     this.events.publish('Home/reloadStatus');
+    this.unsubscribeEvents();
+    this.unsubscribeChildPageEvents();
+  }
+
+  private unsubscribeChildPageEvents() {
+    this.events.unsubscribe('Wallet/updateAll');
+    this.events.unsubscribe('update:address');
+    this.events.unsubscribe('Wallet/setAddress');
+    this.events.unsubscribe('Wallet/disableHardwareKeyboard');
   }
 
   private bwsEventHandler: any = (walletId, type) => {
