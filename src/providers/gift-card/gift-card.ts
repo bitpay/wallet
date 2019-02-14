@@ -342,6 +342,9 @@ export class GiftCardProvider {
   }
 
   private checkIfCardNeedsUpdate(card: GiftCard) {
+    if (!card.invoiceId) {
+      return false;
+    }
     // Continues normal flow (update card)
     if (
       card.status === 'PENDING' ||
