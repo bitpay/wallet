@@ -7,6 +7,7 @@ import { from } from 'rxjs/observable/from';
 import { fromPromise } from 'rxjs/observable/fromPromise';
 import { of } from 'rxjs/observable/of';
 import { mergeMap } from 'rxjs/operators';
+import { promiseSerial } from '../../utils';
 import { ConfigProvider } from '../config/config';
 import { EmailNotificationsProvider } from '../email-notifications/email-notifications';
 import { HomeIntegrationsProvider } from '../home-integrations/home-integrations';
@@ -645,14 +646,4 @@ function getCurrencyFromLegacySavedCard(
     default:
       return 'USD';
   }
-}
-
-function promiseSerial(tasks: Array<() => Promise<any>>) {
-  return tasks.reduce(
-    (promise, currentTask) =>
-      promise.then(result =>
-        currentTask().then(Array.prototype.concat.bind(result))
-      ),
-    Promise.resolve([])
-  );
 }
