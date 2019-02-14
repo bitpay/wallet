@@ -237,11 +237,13 @@ export class ProfileProvider {
       }
     });
 
-    const isEncrypted = this.walletProvider.isEncrypted(wallet) ? 'yes' : 'no';
-    const backedUp = wallet.needsBackup ? 'no' : 'yes';
+    const isEncrypted = this.walletProvider.isEncrypted(wallet) ? true : false;
+    const backedUp = wallet.needsBackup ? false : true;
+    let date;
+    if (wallet.backupTimestamp) date = new Date(Number(wallet.backupTimestamp));
     this.logger.info(
       `Binding wallet: ${wallet.id} - Backed up: ${backedUp} ${
-        wallet.backupTimestamp
+        date ? date : ''
       } - Encrypted: ${isEncrypted}`
     );
 
