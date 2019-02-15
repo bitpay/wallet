@@ -416,6 +416,7 @@ export class GiftCardProvider {
       : Object.keys(giftCardMap)
           .map(invoiceId => giftCardMap[invoiceId] as GiftCard)
           .filter(card => offeredCardNames.indexOf(card.name) > -1)
+          .filter(card => card.invoiceId)
           .sort(sortByDescendingDate);
   }
 
