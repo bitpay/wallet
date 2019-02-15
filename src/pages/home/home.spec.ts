@@ -19,7 +19,7 @@ describe('HomePage', () => {
       instance = testEnv.instance;
       testBed = testEnv.testBed;
       instance.showCard = {
-        setShowRateCard: () => { }
+        setShowRateCard: () => {}
       };
       fixture.detectChanges();
     })));
@@ -79,9 +79,7 @@ describe('HomePage', () => {
           ClipboardProvider
         );
         incomingDataProvider = testBed.get(IncomingDataProvider);
-        spyOn(clipboardProvider, 'getData').and.returnValue(
-          Promise.resolve()
-        );
+        spyOn(clipboardProvider, 'getData').and.returnValue(Promise.resolve());
       });
       it('should ignore BitcoinAddress', async () => {
         spyOn(incomingDataProvider, 'parseData').and.returnValue({
