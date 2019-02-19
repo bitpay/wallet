@@ -164,10 +164,8 @@ export class TxFormatProvider {
 
     if (tx.size && (tx.fee || tx.fees) && tx.amountUnitStr)
       tx.feeRate =
-        ((tx.fee || tx.fees) / tx.size).toFixed(2) +
-        ' ' +
-        tx.amountUnitStr +
-        '/b';
+        ((tx.fee || tx.fees) / tx.size).toFixed(0) +
+        ' sat/bytes';
 
     if (tx.addressTo && coin == 'bch') {
       tx.addressTo = useLegacyAddress
