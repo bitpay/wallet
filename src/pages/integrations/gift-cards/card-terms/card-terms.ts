@@ -1,17 +1,13 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { MarkdownComponent } from 'ngx-markdown';
 import { GiftCardProvider } from '../../../../providers/gift-card/gift-card';
-import {
-  CardConfig,
-  CardName
-} from '../../../../providers/gift-card/gift-card.types';
+import { CardConfig } from '../../../../providers/gift-card/gift-card.types';
 
 @Component({
   selector: 'card-terms',
   templateUrl: 'card-terms.html'
 })
 export class CardTermsComponent implements OnInit {
-  CardName = CardName;
   cardConfig: CardConfig;
   cardTerms: string;
 
@@ -19,7 +15,7 @@ export class CardTermsComponent implements OnInit {
   markdown: MarkdownComponent;
 
   @Input()
-  cardName: CardName;
+  cardName: string;
 
   constructor(private giftCardProvider: GiftCardProvider) {}
 

@@ -26,6 +26,7 @@ import { BackupWarningPage } from '../../pages/backup/backup-warning/backup-warn
 import { WalletAddressesPage } from '../../pages/settings/wallet-settings/wallet-settings-advanced/wallet-addresses/wallet-addresses';
 import { TxDetailsPage } from '../../pages/tx-details/tx-details';
 import { GiftCardProvider } from '../../providers/gift-card/gift-card';
+import { CardConfigMap } from '../../providers/gift-card/gift-card.types';
 import { WalletSettingsPage } from '../settings/wallet-settings/wallet-settings';
 import { WalletTabsChild } from '../wallet-tabs/wallet-tabs-child';
 import { WalletTabsProvider } from '../wallet-tabs/wallet-tabs.provider';
@@ -61,6 +62,8 @@ export class WalletDetailsPage extends WalletTabsChild {
   public txps = [];
   public lowUtxosWarning: boolean;
 
+  public supportedCards: Promise<CardConfigMap>;
+
   constructor(
     navCtrl: NavController,
     private navParams: NavParams,
@@ -95,6 +98,7 @@ export class WalletDetailsPage extends WalletTabsChild {
     }
 
     this.requiresMultipleSignatures = this.wallet.credentials.m > 1;
+    this.supportedCards = this.giftCardProvider.getSupportedCardMap();
 
     this.addressbookProvider
       .list()

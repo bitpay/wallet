@@ -83,6 +83,7 @@ import { SatToUnitPipe } from './pipes/satToUnit';
 import { DomProvider, Logger } from './providers';
 import { ProvidersModule } from './providers/providers.module';
 
+import { ImageLoader, IonicImageLoader } from 'ionic-image-loader';
 import * as appTemplate from './../app-template/bitpay/appConfig.json';
 import { ActionSheetComponent } from './components/action-sheet/action-sheet';
 import { InfoSheetComponent } from './components/info-sheet/info-sheet';
@@ -119,6 +120,7 @@ const baseImports = [
   FormsModule,
   HttpClientTestingModule,
   IonicModule,
+  IonicImageLoader.forRoot(),
   ReactiveFormsModule,
   TranslateModule.forRoot({
     loader: { provide: TranslateLoader, useClass: TranslateFakeLoader }
@@ -134,6 +136,7 @@ const ionicProviders = [
   Keyboard,
   MenuController,
   NavController,
+  ImageLoader,
   {
     provide: Platform,
     useFactory: () => {

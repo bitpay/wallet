@@ -18,7 +18,7 @@
           <div class="amount">{{amount | formatCurrency:currency}}</div>
         </div>
       </div>
-      <img class="card-list-item__icon" [src]="cardConfig?.icon">
+      <img-loader class="card-list-item__icon" [src]="cardConfig?.icon"></img-loader>
     </ion-item>
     <ion-item-group class="info">
       <button ion-item detail-none (click)="showWallets()" class="wallets-list">

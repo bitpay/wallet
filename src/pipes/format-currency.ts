@@ -7,14 +7,20 @@ import { Pipe, PipeTransform } from '@angular/core';
 export class FormatCurrencyPipe implements PipeTransform {
   constructor(private decimalPipe: DecimalPipe) {}
 
-  transform(amount: number, currencyCode: string, customPrecision?: number) {
+  transform(
+    amount: number,
+    currencyCode: string,
+    customPrecision?: number | 'minimal'
+  ) {
     const precision =
-      customPrecision || customPrecision === 0
+      customPrecision === 'minimal'
+        ? getMinimalPrecision(amount, currencyCode)
+        : typeof customPrecision === 'number'
         ? customPrecision
-        : this.getPrecision(currencyCode);
+        : getPrecision(currencyCode);
     const numericValue = this.decimalPipe.transform(
       amount,
-      this.getPrecisionString(precision)
+      getPrecisionString(precision)
     );
     const finalValue =
       currencyCode.toUpperCase() === 'USD'
@@ -23,10 +29,14 @@ export class FormatCurrencyPipe implements PipeTransform {
 
     return finalValue;
   }
-  getPrecision(currencyCode: string) {
-    return currencyCode.toUpperCase() === 'JPY' ? 0 : 2;
-  }
-  getPrecisionString(precision: number) {
-    return `1.${precision}-${precision}`;
-  }
+}
+
+function getPrecision(currencyCode: string) {
+  return currencyCode.toUpperCase() === 'JPY' ? 0 : 2;
+}
+function getMinimalPrecision(amount: number, currencyCode: string) {
+  return Number.isInteger(amount) ? 0 : getPrecision(currencyCode);
+}
+function getPrecisionString(precision: number) {
+  return `1.${precision}-${precision}`;
 }

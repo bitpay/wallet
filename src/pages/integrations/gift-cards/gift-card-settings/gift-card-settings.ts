@@ -8,7 +8,6 @@ import {
   Logger,
   PopupProvider
 } from '../../../../providers';
-import { CardBrand } from '../../../../providers/gift-card/gift-card.types';
 import { PurchasedCardsPage } from '../purchased-cards/purchased-cards';
 
 @Component({
@@ -17,7 +16,6 @@ import { PurchasedCardsPage } from '../purchased-cards/purchased-cards';
 })
 export class GiftCardSettingsPage extends PurchasedCardsPage {
   email: string;
-  CardBrand = CardBrand;
 
   constructor(
     actionSheetProvider: ActionSheetProvider,
@@ -37,7 +35,7 @@ export class GiftCardSettingsPage extends PurchasedCardsPage {
 
   protected async getCards(): Promise<any> {
     await this.giftCardProvider
-      .getAllCardsOfBrand(this.cardConfig.brand)
+      .getAllCardsOfBrand(this.cardConfig.displayName)
       .then(cards => this.setGiftCards(cards))
       .catch(err => this.logger.error(err));
     this.giftCardProvider.updatePendingGiftCards(this.currentGiftCards);

@@ -1,6 +1,6 @@
 <ion-header>
   <ion-navbar>
-    <ion-title>{{cardConfig?.brand}}</ion-title>
+    <ion-title>{{cardConfig?.displayName}}</ion-title>
     <ion-buttons right>
       <button (click)="showMoreOptions()" ion-button icon-only>
         <ion-icon class="horizontal-lg" name="more"></ion-icon>
@@ -17,8 +17,7 @@
     <div class="header-extension"></div>
     <div class="main-content">
       <div class="balance">{{card.amount | formatCurrency:card.currency}}</div>
-      <img class="card-image" [src]="cardConfig?.cardImage">
-
+      <img-loader class="card-image" src="{{cardConfig?.cardImage}}"></img-loader>
       <div class="card-info" [ngClass]="{'has-pin': hasPin()}" *ngIf="!showClaimLinkUI()">
         <div *ngIf="card.claimCode">
           <div *ngIf="card.status !== 'Canceled'">

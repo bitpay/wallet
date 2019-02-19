@@ -10,14 +10,14 @@ import {
   template: `
     <button ion-item class="card-list-item">
       <ion-icon item-start>
-        <img
+        <img-loader
           class="card-list-item__icon"
-          [ngClass]="{ archived: card?.archived && !catalogListing }"
+          [ngClass]="{ archived: card?.archived && type === 'purchased' }"
           [src]="cardConfig?.icon"
-        />
+        ></img-loader>
       </ion-icon>
       <ion-label>
-        <div *ngIf="!catalogListing">
+        <div *ngIf="type === 'purchased'">
           <div class="card-list-item__label">
             {{ card.amount | formatCurrency: card.currency }}
           </div>
@@ -25,17 +25,22 @@ import {
             card.date | amTimeAgo
           }}</ion-note>
         </div>
-        <div *ngIf="catalogListing && cardConfig">
-          <div class="card-list-item__label">{{ cardConfig.brand }}</div>
+        <div *ngIf="(type === 'catalog' || type === 'settings') && cardConfig">
+          <div
+            class="card-list-item__label ellipsis"
+            [ngClass]="{ 'no-margin-bottom': type === 'settings' }"
+          >
+            {{ cardConfig.displayName }}
+          </div>
           <ion-note
             class="card-list-item__note"
-            *ngIf="!cardConfig.supportedAmounts"
+            *ngIf="!cardConfig.supportedAmounts && type === 'catalog'"
           >
             {{ cardConfig.minAmount | formatCurrency: currency:0 }} —
             {{ cardConfig.maxAmount | formatCurrency: currency:0 }}
           </ion-note>
           <ion-note
-            class="card-list-item__note"
+            class="card-list-item__note ellipsis"
             *ngIf="cardConfig.supportedAmounts"
           >
             <span
@@ -44,7 +49,7 @@ import {
                 let last = last
               "
             >
-              {{ amount | formatCurrency: currency:0
+              {{ amount | formatCurrency: currency:'minimal'
               }}<span *ngIf="!last">,</span>
             </span>
           </ion-note>
@@ -60,7 +65,7 @@ export class CardListItemComponent {
   card: GiftCard;
 
   @Input()
-  catalogListing: boolean = false;
+  type: 'catalog' | 'purchased' | 'settings' = 'catalog';
 
   currency: string;
 

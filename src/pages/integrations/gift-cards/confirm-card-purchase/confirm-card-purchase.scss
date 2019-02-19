@@ -29,11 +29,13 @@ confirm-card-purchase-page {
     }
 
     .card-list-item__icon {
-      border: 1px #9ba3ae solid;
-      border-radius: 50%;
-      height: 45px;
-      margin-top: 35px;
-      width: 45px;
+      img {
+        border: 1px #9ba3ae solid;
+        border-radius: 50%;
+        height: 45px;
+        margin-top: 35px;
+        width: 45px;
+      }
     }
   }
 

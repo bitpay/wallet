@@ -31,6 +31,7 @@ import { ShapeshiftProvider } from '../providers/shapeshift/shapeshift';
 import { TouchIdProvider } from '../providers/touchid/touchid';
 
 // pages
+import { ImageLoaderConfig } from 'ionic-image-loader';
 import { CopayersPage } from '../pages/add/copayers/copayers';
 import { ImportWalletPage } from '../pages/add/import-wallet/import-wallet';
 import { JoinWalletPage } from '../pages/add/join-wallet/join-wallet';
@@ -100,6 +101,7 @@ export class CopayApp {
     private profile: ProfileProvider,
     private configProvider: ConfigProvider,
     private giftCardProvider: GiftCardProvider,
+    private imageLoaderConfig: ImageLoaderConfig,
     private modalCtrl: ModalController,
     private coinbaseProvider: CoinbaseProvider,
     private bitPayCardProvider: BitPayCardProvider,
@@ -114,6 +116,9 @@ export class CopayApp {
     private userAgent: UserAgent,
     private device: Device
   ) {
+    this.imageLoaderConfig.setFileNameCachedWithExtension(true);
+    this.imageLoaderConfig.useImageTag(true);
+    this.imageLoaderConfig.enableSpinner(false);
     this.initializeApp();
   }
 

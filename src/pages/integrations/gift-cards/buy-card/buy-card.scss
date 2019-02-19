@@ -4,8 +4,10 @@ buy-card-page {
   @include fix-ios-bg-scroll($gift-card-page-background-color);
 
   .card-image {
-    height: 170px;
-    margin-top: -75px;
+    img {
+      height: 170px;
+      margin-top: -75px;
+    }
   }
 
   .amount-box {

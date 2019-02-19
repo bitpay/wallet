@@ -57,7 +57,7 @@ export class PurchasedCardsPage {
   async archive() {
     const archiveSheet = this.actionSheetProvider.createInfoSheet(
       'archive-all-gift-cards',
-      { brand: this.cardConfig.brand }
+      { brand: this.cardConfig.displayName }
     );
     archiveSheet.present();
     archiveSheet.onDidDismiss(async confirm => {

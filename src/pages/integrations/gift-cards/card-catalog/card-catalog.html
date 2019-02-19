@@ -3,12 +3,14 @@
     <search-bar [scrollArea]="wideHeaderPage?.scrollArea" (search)="onSearch($event.target.value)" placeholder="Search Gift Cards"></search-bar>
     <ion-list class="settings-list">
       <ion-item-group>
-        <ion-item-divider sticky *ngIf="featuredCards?.length">{{'Featured Brands' | translate}}</ion-item-divider>
-        <card-list-item *ngFor="let card of featuredCards" [card]="card" [catalogListing]="true" (click)="buyCard(card)"></card-list-item>
+        <ion-item-divider sticky *ngIf="featuredCards?.length && !numMoreCards">{{'Brands' | translate}}</ion-item-divider>
+        <ion-item-divider sticky *ngIf="featuredCards?.length && numMoreCards">{{'Featured Brands' | translate}}</ion-item-divider>
+        <card-list-item *ngFor="let card of featuredCards" [card]="card" type="catalog" (click)="buyCard(card)"></card-list-item>
       </ion-item-group>
       <ion-item-group>
-        <ion-item-divider sticky *ngIf="moreCards?.length">{{'More Brands' | translate}}</ion-item-divider>
-        <card-list-item *ngFor="let card of moreCards" [card]="card" [catalogListing]="true" (click)="buyCard(card)"></card-list-item>
+        <ion-item-divider sticky *ngIf="moreCards?.length && !numFeaturedCards">{{'Brands' | translate}}</ion-item-divider>
+        <ion-item-divider sticky *ngIf="moreCards?.length && numFeaturedCards">{{'More Brands' | translate}}</ion-item-divider>
+        <card-list-item *ngFor="let card of moreCards" [card]="card" type="catalog" (click)="buyCard(card)"></card-list-item>
       </ion-item-group>
       <ion-item-divider></ion-item-divider>
     </ion-list>

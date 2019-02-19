@@ -7,13 +7,14 @@ import {
 } from '@angular/animations';
 import { Component, OnInit } from '@angular/core';
 import { NavController } from 'ionic-angular';
+import { timer } from 'rxjs/observable/timer';
 import { debounceTime } from 'rxjs/operators';
 import { ActionSheetProvider, AppProvider } from '../../../../providers';
-import { GiftCardProvider } from '../../../../providers/gift-card/gift-card';
 import {
-  CardName,
-  GiftCard
-} from '../../../../providers/gift-card/gift-card.types';
+  GiftCardProvider,
+  sortByDisplayName
+} from '../../../../providers/gift-card/gift-card';
+import { GiftCard } from '../../../../providers/gift-card/gift-card.types';
 import { CardCatalogPage } from '../card-catalog/card-catalog';
 import { CardDetailsPage } from '../card-details/card-details';
 import { PurchasedCardsPage } from '../purchased-cards/purchased-cards';
@@ -57,7 +58,9 @@ export class HomeGiftCards implements OnInit {
 
   async ngOnInit() {
     this.appName = this.appProvider.info.userVisibleName;
-    this.initGiftCards();
+    await this.initGiftCards();
+    await timer(3000).toPromise();
+    this.giftCardProvider.preloadImages();
   }
 
   public buyGiftCards() {
@@ -70,7 +73,7 @@ export class HomeGiftCards implements OnInit {
       : this.showArchiveSheet(event);
   }
 
-  private async viewGiftCards(cardName: CardName, cards: GiftCard[]) {
+  private async viewGiftCards(cardName: string, cards: GiftCard[]) {
     const activeCards = cards.filter(c => !c.archived);
     activeCards.length === 1
       ? this.navCtrl.push(CardDetailsPage, { card: activeCards[0] })
@@ -84,7 +87,7 @@ export class HomeGiftCards implements OnInit {
     const sheetName =
       brandCards.length === 1 ? 'archive-gift-card' : 'archive-all-gift-cards';
     const archiveSheet = this.actionSheetProvider.createInfoSheet(sheetName, {
-      brand: brandCards[0].brand
+      brand: brandCards[0].displayName
     });
     archiveSheet.present();
     archiveSheet.onDidDismiss(async confirm => {
@@ -148,7 +151,7 @@ export class HomeGiftCards implements OnInit {
         },
         [] as GiftCard[][]
       )
-      .sort((a, b) => (a[0].name > b[0].name ? 1 : -1));
+      .sort((a, b) => sortByDisplayName(a[0], b[0]));
   }
 }
 
