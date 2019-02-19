@@ -15,17 +15,9 @@
       <ion-label stacked>{{'Wallet invitation' | translate}}</ion-label>
       <ion-input type="text" formControlName="invitationCode" (ionChange)="processInvitation(joinForm.value.invitationCode)" placeholder="{{'Enter wallet invitation'| translate}}"></ion-input>
 
-      <ion-icon *ngIf="joinForm.controls.invitationCode.status == 'VALID'" name="ios-checkmark-circle" class="check success" item-right></ion-icon>
+      <ion-icon *ngIf="joinForm.controls['invitationCode'].status == 'VALID'" name="ios-checkmark-circle" class="check success" item-right></ion-icon>
 
       <ion-icon class="scanner-icon" name="qr-scanner" item-right (click)="openScanner()"></ion-icon>
-    </ion-item>
-
-    <ion-item>
-      <ion-label stacked>{{'Coin' | translate}}</ion-label>
-      <ion-select okText="{{okText}}" cancelText="{{cancelText}}" placeholder="{{'Select a coin' | translate}}" formControlName="coin">
-        <ion-option value="btc">Bitcoin (BTC)</ion-option>
-        <ion-option value="bch">Bitcoin Cash (BCH)</ion-option>
-      </ion-select>
     </ion-item>
 
     <ion-item-divider></ion-item-divider>

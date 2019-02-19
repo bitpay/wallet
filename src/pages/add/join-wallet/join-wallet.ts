@@ -19,6 +19,7 @@ import { PopupProvider } from '../../../providers/popup/popup';
 import { ProfileProvider } from '../../../providers/profile/profile';
 import { PushNotificationsProvider } from '../../../providers/push-notifications/push-notifications';
 import {
+  Coin,
   WalletOptions,
   WalletProvider
 } from '../../../providers/wallet/wallet';
@@ -38,6 +39,7 @@ export class JoinWalletPage {
   private derivationPathByDefault: string;
   private derivationPathForTestnet: string;
   private regex: RegExp;
+  private coin: Coin;
 
   constructor(
     private app: App,
@@ -76,8 +78,7 @@ export class JoinWalletPage {
       bwsURL: [this.defaults.bws.url],
       selectedSeed: ['new'],
       recoveryPhrase: [null],
-      derivationPath: [this.derivationPathByDefault],
-      coin: [null, Validators.required]
+      derivationPath: [this.derivationPathByDefault]
     });
 
     this.seedOptions = [
@@ -163,6 +164,7 @@ export class JoinWalletPage {
       try {
         walletData = this.bwcProvider.parseSecret(invitation);
         this.setDerivationPath(walletData.network);
+        this.coin = walletData.coin;
         this.logger.info('Correct invitation code for ' + walletData.network);
       } catch (ex) {
         this.logger.warn('Error parsing invitation: ' + ex);
@@ -175,7 +177,7 @@ export class JoinWalletPage {
       secret: this.joinForm.value.invitationCode,
       myName: this.joinForm.value.myName,
       bwsurl: this.joinForm.value.bwsURL,
-      coin: this.joinForm.value.coin
+      coin: this.coin
     };
 
     const setSeed = this.joinForm.value.selectedSeed == 'set';
