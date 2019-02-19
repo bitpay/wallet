@@ -5,7 +5,6 @@
     <span *ngIf="!tx.message && tx.toAddress && !addressbook[tx.toAddress]" translate>Sending</span>
   </div>
   <div class="proposal-subtitle">
-    <div class="circle-status" *ngIf="tx.statusForUs" [ngClass]="{'balanced': tx.statusForUs == 'accepted', 'assertive': tx.statusForUs == 'rejected'}"></div>
     <span *ngIf="tx.merchant" class="item-subtitle">
       <span *ngIf="tx.merchant.pr.ca">
         <ion-icon class="fi-lock"></ion-icon>{{tx.merchant.domain}}
@@ -15,7 +14,10 @@
       </span>
     </span>
     <div class="item-subtitle">
-      <span *ngIf="tx.creatorName">{{ tx.creatorName}}</span>
+      <span *ngIf="tx.creatorName">
+        <span translate>Created by</span>
+        <span>{{tx.creatorName}}</span>
+      </span>
     </div>
   </div>
 

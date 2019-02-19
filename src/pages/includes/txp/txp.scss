@@ -21,20 +21,6 @@ page-txp {
       display: flex;
       align-items: center;
     }
-    .circle-status {
-      width: 0.7rem;
-      height: 0.7rem;
-      background-color: #e4e4ee;
-      border-radius: 10px;
-      margin-right: 0.3rem;
-      padding: 4px;
-    }
-    .assertive {
-      background-color: color($colors, danger);
-    }
-    .balanced {
-      background-color: color($colors, success);
-    }
   }
   ion-note {
     text-align: end;

@@ -61,6 +61,7 @@ export class WalletDetailsPage extends WalletTabsChild {
   public showBalanceButton: boolean = false;
   public addressbook = {};
   public txps = [];
+  public txpsPending: any[];
   public lowUtxosWarning: boolean;
 
   public supportedCards: Promise<CardConfigMap>;
@@ -172,6 +173,17 @@ export class WalletDetailsPage extends WalletTabsChild {
 
   private setPendingTxps(txps) {
     this.txps = !txps ? [] : _.sortBy(txps, 'createdOn').reverse();
+    this.txpsPending = [];
+
+    this.txps.forEach(txp => {
+      const action = _.find(txp.actions, {
+        copayerId: txp.wallet.copayerId
+      });
+
+      if (!action && txp.status == 'pending') {
+        this.txpsPending.push(txp);
+      }
+    });
   }
 
   public openProposalsPage(): void {

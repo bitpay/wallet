@@ -31,6 +31,9 @@ import { FinishModalPage } from '../../finish/finish';
 export class ProposalsPage {
   public addressbook;
   public allTxps: any[];
+  public txpsPending: any[];
+  public txpsAccepted: any[];
+  public txpsRejected: any[];
   public txpsToSign: any[];
   public walletIdSelectedToSign: string;
   public isCordova: boolean;
@@ -68,7 +71,11 @@ export class ProposalsPage {
     this.isCordova = this.platformProvider.isCordova;
     this.buttonText = this.translate.instant('Sign multiple proposals');
 
+    this.allTxps = [];
     this.txpsToSign = [];
+    this.txpsPending = [];
+    this.txpsAccepted = [];
+    this.txpsRejected = [];
   }
 
   ionViewWillEnter() {
@@ -171,18 +178,35 @@ export class ProposalsPage {
       .getTxps({ limit: 50 })
       .then(txpsData => {
         this.zone.run(() => {
+          this.allTxps = [];
+
           // Check if txp were checked before
           txpsData.txps.forEach(txp => {
             txp.checked = _.indexOf(this.txpsToSign, txp) >= 0 ? true : false;
           });
 
-          this.allTxps = this.groupByWallets(txpsData.txps);
-
           if (this.walletId) {
-            this.allTxps = _.filter(this.allTxps, txps => {
+            txpsData.txps = _.filter(txpsData.txps, txps => {
               return txps.walletId == this.walletId;
             });
           }
+
+          this.checkStatus(txpsData.txps);
+          this.allTxps.push({
+            title: this.translate.instant('Payment Proposal'),
+            type: 'pending',
+            data: this.groupByWallets(this.txpsPending)
+          });
+          this.allTxps.push({
+            title: this.translate.instant('Accepted'),
+            type: 'accepted',
+            data: this.groupByWallets(this.txpsAccepted)
+          });
+          this.allTxps.push({
+            title: this.translate.instant('Rejected'),
+            type: 'rejected',
+            data: this.groupByWallets(this.txpsRejected)
+          });
 
           if (this.allTxps && !this.allTxps[0]) {
             this.navCtrl.pop();
@@ -192,6 +216,33 @@ export class ProposalsPage {
       .catch(err => {
         this.logger.error(err);
       });
+  }
+
+  private checkStatus(txps: any[]): void {
+    this.txpsPending = [];
+    this.txpsAccepted = [];
+    this.txpsRejected = [];
+
+    txps.forEach(txp => {
+      const action = _.find(txp.actions, {
+        copayerId: txp.wallet.copayerId
+      });
+
+      if (!action && txp.status == 'pending') {
+        txp.pendingForUs = true;
+      }
+
+      if (action && action.type == 'accept') {
+        txp.statusForUs = 'accepted';
+        this.txpsAccepted.push(txp);
+      } else if (action && action.type == 'reject') {
+        txp.statusForUs = 'rejected';
+        this.txpsRejected.push(txp);
+      } else {
+        txp.statusForUs = 'pending';
+        this.txpsPending.push(txp);
+      }
+    });
   }
 
   private groupByWallets(txps): any[] {
@@ -317,13 +368,16 @@ export class ProposalsPage {
   }
 
   private resetMultiSignValues(): void {
-    this.allTxps.forEach(txpsByWallet => {
-      if (txpsByWallet.walletId == this.walletIdSelectedToSign) {
-        txpsByWallet.txps.forEach(txp => {
-          txp.checked = false;
-        });
-      }
+    this.allTxps.forEach(txpsByStatus => {
+      txpsByStatus.data.forEach(txpsByWallet => {
+        if (txpsByWallet.walletId == this.walletIdSelectedToSign) {
+          txpsByWallet.txps.forEach(txp => {
+            txp.checked = false;
+          });
+        }
+      });
     });
+
     this.txpsToSign = [];
     this.walletIdSelectedToSign = null;
   }
