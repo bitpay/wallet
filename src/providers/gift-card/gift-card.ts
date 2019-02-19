@@ -372,9 +372,9 @@ export class GiftCardProvider {
     ]);
     const cachedCardNames = Object.keys(cachedApiCardConfig);
     const availableCardNames = availableCards.map(c => c.name);
-    const uniqueCardNames = [
-      ...new Set([...availableCardNames, ...cachedCardNames])
-    ];
+    const uniqueCardNames = Array.from(
+      new Set([...availableCardNames, ...cachedCardNames])
+    );
     const supportedCards = uniqueCardNames
       .map(cardName => {
         const freshConfig = availableCards.find(c => c.name === cardName);
