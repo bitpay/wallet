@@ -231,7 +231,6 @@
     "ngx-markdown": "7.0.0",
     "ngx-qrcode2": "0.1.0",
     "papaparse": "4.3.6",
-    "preconditions": "2.2.3",
     "rxjs": "5.5.12",
     "simple-plist": "0.2.1",
     "text-encoding": "0.6.4",
