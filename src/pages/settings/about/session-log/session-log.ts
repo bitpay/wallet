@@ -76,14 +76,17 @@ export class SessionLogPage {
       'Session Logs.\nBe careful, this could contain sensitive private data\n\n';
     log += '\n\n';
 
-    Object.keys(this.filteredLogs).forEach(key => {
+    const weight = 4; // share complete logs
+    const logs = _.sortBy(this.logger.get(weight), 'timestamp');
+
+    Object.keys(logs).forEach(key => {
       log +=
         '[' +
-        this.filteredLogs[key].timestamp +
+        logs[key].timestamp +
         '][' +
-        this.filteredLogs[key].level +
+        logs[key].level +
         ']' +
-        this.filteredLogs[key].msg +
+        logs[key].msg +
         '\n';
     });
     return log;
