@@ -46,9 +46,11 @@
     </info-sheet-template>
 
     <info-sheet-template *ngSwitchCase="'miner-fee'" type="danger">
-      <span sheet-title-text>{{ '{coinName} miner fees unusually high' | translate: {coinName: params.coinName } }}</span>
+      <span sheet-title-text>{{ 'Network Fee Warning' | translate }}</span>
       <span sheet-text>
-        {{ '{coinName} miner fees are high due to record demand for limited space on the {coinName} network. BitPay does not receive and does not control {coinName} miner fees.' | translate: {coinName: params.coinName } }}
+        {{ 'This transaction requires a high network fee because either the sending amount is too small or the network is experiencing congestion.' | translate }}
+        <p>
+        {{ 'BitPay does not receive and does not control miner fees.' | translate }}
       </span>
       <span sheet-button-text translate>GOT IT</span>
     </info-sheet-template>
