@@ -1,420 +1,58 @@
 page-home {
-  background: $toolbar-background;
-
-  .home-header {
-    .add-button {
-      margin-left: 1rem;
-      ion-icon {
-        font-size: 3rem;
-      }
-    }
-    .settings-button {
-      margin-right: 1rem;
-      img {
-        opacity: 0.6;
-      }
-    }
-    .home-logo {
-      height: 24px;
-      position: relative;
-      top: 3px;
-    }
+  .home-logo {
+    height: 24px;
+    position: relative;
+    top: 3px;
   }
-
   .toolbar-title-ios {
     text-align: center;
   }
-
-  .check {
+  .check{
     text-align: center;
-
     .title {
-      font-weight: 500;
+      font-weight: 700;
       font-size: 2rem;
-      color: color($colors, grey);
     }
-
-    .subtitle {
+    .subtitle{
       padding: 10px;
     }
-
     .check-icon {
-      margin-top: -40px;
-    }
-
-    .announcement-logo {
-      width: 200px;
-      margin: 10px auto;
+      cursor: pointer;
     }
   }
-
-  .card,
-  ion-card {
-    .wallets-list-title {
-      display: flex;
-      align-items: center;
-      max-width: 70%;
-
-      > img {
-        margin-right: 7px;
-      }
-
-      > span {
-        line-height: 18px;
-      }
-    }
-
-    .title-buttons {
-      display: flex;
-
-      button:first-child {
-        margin-right: 5px;
-      }
-    }
-  }
-
   .title {
-    font-weight: 500;
-
-    > img {
-      margin-right: 7px;
+    >img {
+      vertical-align: sub;
+      margin-right: 5px;
     }
   }
-
   .error {
     color: color($colors, danger);
   }
-
-  .wallet-ready {
-    padding: 0rem;
-    margin-bottom: 3rem;
-
-    .row {
-      justify-content: flex-end;
-
-      button {
-        font-size: 12px;
-      }
-    }
-  }
-
-  page-wallet-activity,
-  page-txp {
-    @media (max-width: 350px) {
-      .item-title {
-        font-size: 13px;
-      }
-
-      ion-note .date {
-        font-size: 11.5px;
-      }
-    }
-  }
-
-  page-txp:first-child,
-  page-wallet-activity:first-child {
-    & .item-ios {
-      border-top: 0.55px solid #f4f4f4;
-    }
-  }
-
-  page-txp:last-child,
-  page-wallet-activity:last-child {
-    border: 0;
-
-    & .item-inner {
-      border: 0 !important;
-    }
-  }
-
-  .card {
-    z-index: 1;
-    position: relative;
-  }
-
-  .clipboard-card {
-    z-index: 0;
-  }
-
-  .initial-margin {
-    margin-top: -140px;
-  }
-
-  .content-animation {
-    z-index: 5;
-    margin-top: 0px;
-    -webkit-transition: margin-top 0.7s cubic-bezier(1, 0, 0.93, 0.19) 0.2s;
-    -moz-transition: margin-top 0.7s cubic-bezier(1, 0, 0.93, 0.19) 0.2s;
-    -o-transition: margin-top 0.7s cubic-bezier(1, 0, 0.93, 0.19) 0.2s;
-    transition: margin-top 0.7s cubic-bezier(1, 0, 0.93, 0.19) 0.2s;
-    animation-name: bounce-card;
-    animation-duration: 0.7s;
-    animation-delay: 0.8s;
-  }
-
-  ion-refresher {
-    height: 120px;
-    background: $toolbar-background;
-
-    &-content {
-      margin-top: -25px;
-    }
-  }
-
-  .server-message {
-    padding-bottom: 0px;
-
-    &-header {
-      padding: 0px;
-      text-align: center;
-
-      .row {
-        justify-content: flex-end;
-
-        button {
-          font-size: 12px;
-        }
-      }
-    }
-
-    &-content {
-      padding: 2rem 0rem 0rem 0rem;
-    }
-
-    &-icon {
-      display: flex;
-      justify-content: center;
-
-      img {
-        width: 4rem;
-        height: 4rem;
-      }
-    }
-
-    &-title {
-      text-align: center;
-      font-size: 1.8rem;
-      font-weight: bold;
-      margin-top: 1rem;
-      padding-left: 1.5rem;
-      padding-right: 1.5rem;
-    }
-
-    .title {
-      color: color($colors, grey);
-      font-weight: 500;
-      font-size: 2rem;
-
-      &-info {
-        color: color($colors, info);
-      }
-
-      &-critical {
-        color: color($colors, warning);
-      }
-    }
-
-    &-body {
-      color: color($colors, grey);
-      text-align: center;
-      white-space: normal;
-      margin-bottom: 1rem;
-      font-size: 1.6rem;
-      padding: 1rem 2rem 1rem 2rem;
-    }
-
-    &-button {
-      cursor: pointer;
-      font-size: 16px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      background-color: color($colors, light);
-      color: color($colors, dark);
-      height: 5rem;
-    }
-  }
-
-  .no-header {
-    margin-top: 2.6rem;
-  }
-
-  .section-header {
-    color: rgba(0, 0, 0, 0.3);
-    font-size: 13px;
-    font-weight: 600;
-    margin: 0 auto;
-    margin-bottom: -7px;
-    text-transform: uppercase;
-    width: 92%;
-  }
-
-  .zero-state {
-    .wrapper {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-    }
-
-    .prompt-user {
-      margin-bottom: 2rem;
-    }
-  }
-
-  // Styles for gift cards and Bitpay cards
-  .sliding-container {
-    border-radius: 5px;
-    display: block;
-    height: 73px;
-    margin: 15px auto;
-  }
-
-  ion-item-sliding.item-wrapper {
-    $gift-card-item-side-padding: 4%;
-    $gift-card-item-height: 73px;
-
-    background: none;
-    height: $gift-card-item-height + 14px;
-    padding-left: $gift-card-item-side-padding;
-    padding-right: $gift-card-item-side-padding;
-
-    ion-item-options {
-      border-bottom: 0;
-      padding-right: $gift-card-item-side-padding;
-      height: $gift-card-item-height;
-
-      button.button {
-        border-radius: 5px;
-        font-weight: 400;
-        padding: 15px;
-
-        .archive {
-          &__icon {
-            font-size: 20px;
-            margin-top: -1px;
-          }
-
-          &__text {
-            font-size: 13px;
-          }
-        }
-      }
-    }
-
-    button.item.item-block {
-      font-size: 16px;
-      border-radius: 5px;
-      box-shadow: 0 7px 11px 0 rgba(0, 0, 0, 0.06);
-
-      .item-inner {
-        border: 0;
-        height: $gift-card-item-height;
-
-        ion-label {
-          &.label-ios,
-          &.label-md {
-            display: flex;
-            height: $gift-card-item-height;
-            align-items: center;
-            margin: 0;
-          }
-        }
-      }
-    }
-  }
-
-  .bitpay-card {
-    .card-item {
-      button {
-        background: linear-gradient(45deg, #202036 -25%, #1a3b8b);
-
-        .item-inner .input-wrapper {
-          padding-left: 5px;
-          margin-right: 5px;
-          min-width: 7.5rem;
-        }
-
-        ion-label img {
-          width: 7.5rem;
-        }
-
-        ion-note {
-          text-align: right;
-          color: white;
-          line-height: 22px;
-
-          .funds {
-            font-size: 16px;
-          }
-
-          .number {
-            opacity: 0.5;
-            font-size: 14px;
-          }
-        }
-      }
-    }
-  }
-
-  .add-card-button {
-    @include center;
-    border-radius: 5px;
-    color: #060606;
-    cursor: pointer;
-    font-size: 18px;
-    font-weight: 500;
+  .no-wallets {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
     text-align: center;
-    border: 1px dashed rgba(109, 109, 109, 0.27);
-    width: 92%;
-    margin: 15px auto;
-    height: 73px;
   }
 
-  @include fix-ios-bg-scroll();
-
-  ion-fab {
-    ion-icon.icon {
-      font-size: 0;
-    }
+  .item-block:last-child{
+    border:0px;
   }
-
-  @media only screen and (device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3) {
-    ion-fab[right] {
-      right: env(safe-area-inset-bottom);
-    }
-
-    ion-fab[bottom] {
-      bottom: env(safe-area-inset-bottom);
-    }
-  }
-
-  @keyframes bounce-card {
-    0% {
-      transform: translateY(0);
-    }
-
-    10% {
-      transform: translateY(0);
-    }
-
-    30% {
-      transform: translateY(40px);
-    }
-
-    50% {
-      transform: translateY(0);
-    }
-
-    57% {
-      transform: translateY(5px);
-    }
-
-    64% {
-      transform: translateY(0);
-    }
-
-    100% {
-      transform: translateY(0);
-    }
-  }
+  .card{
+    padding-top: 1px;
+    width:92%;
+    padding-bottom: 15px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
+    overflow: hidden;
+    margin: 20px auto;
+    display: block;
+    border-radius: 4px;
+    background-color: #fff;
+}
+.wallet-warning {
+  font-size: 11px;
+  color: color($colors, danger);
 }
