@@ -448,10 +448,8 @@ export class BitPayCardTopUpPage {
     let per = (fee / (amount + fee)) * 100;
 
     if (per > FEE_TOO_HIGH_LIMIT_PER) {
-      const coinName = this.wallet.coin === 'btc' ? 'Bitcoin' : 'Bitcoin Cash';
       const minerFeeInfoSheet = this.actionSheetProvider.createInfoSheet(
-        'miner-fee',
-        { coinName }
+        'miner-fee'
       );
       minerFeeInfoSheet.present();
     }
