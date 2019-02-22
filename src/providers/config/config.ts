@@ -204,8 +204,8 @@ export class ConfigProvider {
       },
 
       blockExplorerUrl: {
-        btc: 'insight.bitpay.com',
-        bch: 'bch-insight.bitpay.com/#'
+        btc: 'insight.bitcore.io/#/BTC/',
+        bch: 'insight.bitcore.io/#/BCH/'
       }
     };
   }
