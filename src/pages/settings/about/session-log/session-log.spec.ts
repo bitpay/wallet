@@ -1,12 +1,10 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
-import { TestUtils } from '../../../../test';
-
 import { ModalMock } from 'ionic-mocks';
-import { ActionSheetProvider } from '../../../../providers/action-sheet/action-sheet';
+import { TestUtils } from '../../../../test';
 import { SessionLogPage } from './session-log';
 
 // Providers
+import { ActionSheetProvider } from '../../../../providers/action-sheet/action-sheet';
 import { PersistenceProvider } from '../../../../providers/persistence/persistence';
 
 describe('SessionLogPage', () => {
@@ -123,14 +121,14 @@ describe('SessionLogPage', () => {
       });
     });
     describe('#prepareSessionLogs', () => {
-      it('should return correct log from persistence provider', () => {
-        instance.filteredLogs = {
+      it('should prepare the correct logs of the session', () => {
+        spyOn(instance.logger, 'get').and.returnValue({
           '01/07/2008': {
             level: 1,
             msg: 'msg',
             timestamp: '01/07/2008'
           }
-        };
+        });
 
         const logs = instance.prepareSessionLogs();
         expect(logs).toEqual(
