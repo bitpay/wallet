@@ -95,6 +95,14 @@ page-wallet-details {
     }
   }
 
+  .box-notification {
+    a {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  }
+
   .history-wrapper {
     margin-top: 1.3rem;
   }
@@ -103,8 +111,6 @@ page-wallet-details {
     .tx-history-header {
       &--large {
         &.item {
-          margin-bottom: 3px;
-
           ion-label {
             font-size: 15px;
           }
@@ -122,6 +128,14 @@ page-wallet-details {
         .item-inner {
           padding: 0 !important;
         }
+      }
+      ion-label {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .txps-badge {
+        margin-right: 1rem;
       }
     }
 

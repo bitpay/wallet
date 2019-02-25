@@ -631,6 +631,7 @@ export class HomePage {
       this.showReorderVaultWallets
     )
       return;
+
     this.events.publish('OpenWallet', wallet);
   }
 

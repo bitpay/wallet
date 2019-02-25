@@ -11,6 +11,7 @@ import { TxpDetailsPage } from '../../txp-details/txp-details';
 export class TxpPage {
   private _tx;
   private _addressbook;
+  private _noOpenModal: boolean;
 
   constructor(
     private timeProvider: TimeProvider,
@@ -35,11 +36,21 @@ export class TxpPage {
     return this._addressbook;
   }
 
+  @Input()
+  set noOpenModal(noOpenModal) {
+    this._noOpenModal = noOpenModal;
+  }
+
+  get noOpenModal() {
+    return this._noOpenModal;
+  }
+
   public createdWithinPastDay(time) {
     return this.timeProvider.withinPastDay(time);
   }
 
   public openTxpModal(txp): void {
+    if (this._noOpenModal) return;
     const modal = this.modalCtrl.create(
       TxpDetailsPage,
       { tx: txp },

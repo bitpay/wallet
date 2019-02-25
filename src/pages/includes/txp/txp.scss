@@ -1,5 +1,5 @@
 page-txp {
-  .item-title {
+  .proposal-title {
     margin-bottom: 0.3rem;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -9,18 +9,17 @@ page-txp {
     box-orient: vertical;
     -webkit-box-orient: vertical;
   }
-  .item-subtitle {
-    .icon-container {
-      vertical-align: middle;
-      width: 18px;
-      margin: 0 2px 0 0;
-    }
-  }
   .proposal-container {
-    border-left: 2px solid color($colors, primary);
-    .status-info {
-      font-size: 12.5px;
-      margin-top: 0.3rem;
+    .item-subtitle {
+      .icon-container {
+        vertical-align: middle;
+        width: 18px;
+        margin: 0 2px 0 0;
+      }
+    }
+    .proposal-subtitle {
+      display: flex;
+      align-items: center;
     }
   }
   ion-note {
