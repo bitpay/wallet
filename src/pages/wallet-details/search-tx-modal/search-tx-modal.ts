@@ -3,6 +3,8 @@ import { NavParams, ViewController } from 'ionic-angular';
 import * as _ from 'lodash';
 
 // Providers
+import { GiftCardProvider } from '../../../providers/gift-card/gift-card';
+import { CardConfigMap } from '../../../providers/gift-card/gift-card.types';
 import { PlatformProvider } from '../../../providers/platform/platform';
 import { TimeProvider } from '../../../providers/time/time';
 
@@ -22,8 +24,10 @@ export class SearchTxModalPage {
   public completeTxHistory;
   public addressbook;
   public search: string;
+  public supportedCards: Promise<CardConfigMap>;
 
   constructor(
+    private giftCardProvider: GiftCardProvider,
     private navParams: NavParams,
     private platformProvider: PlatformProvider,
     private timeProvider: TimeProvider,
@@ -36,6 +40,7 @@ export class SearchTxModalPage {
     this.addressbook = this.navParams.data.addressbook;
     this.completeTxHistory = this.navParams.data.completeHistory;
     this.wallet = this.navParams.data.wallet;
+    this.supportedCards = this.giftCardProvider.getSupportedCardMap();
   }
 
   public close(txid: string): void {
