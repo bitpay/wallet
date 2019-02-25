@@ -79,6 +79,7 @@ export class ProposalsPage {
   }
 
   ionViewWillEnter() {
+    this.navCtrl.swipeBackEnabled = false;
     this.updateAddressBook();
     this.updatePendingProposals();
     this.subscribeBwsEvents();
@@ -99,6 +100,7 @@ export class ProposalsPage {
   }
 
   ionViewWillLeave() {
+    this.navCtrl.swipeBackEnabled = true;
     this.events.unsubscribe('bwsEvent', this.bwsEventHandler);
     this.events.unsubscribe('Local/TxAction', this.localTxActionHandler);
     this.onResumeSubscription.unsubscribe();
