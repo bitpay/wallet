@@ -208,7 +208,12 @@ export class ProposalsPage {
             data: this.groupByWallets(this.txpsRejected)
           });
 
-          if (this.allTxps && !this.allTxps[0]) {
+          if (
+            this.navCtrl.canGoBack() &&
+            !this.txpsPending[0] &&
+            !this.txpsAccepted[0] &&
+            !this.txpsRejected[0]
+          ) {
             this.navCtrl.pop();
           }
         });
