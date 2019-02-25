@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, NgZone } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import {
   Events,
@@ -44,6 +44,7 @@ export class WalletDetailsPage extends WalletTabsChild {
   private showBackupNeededMsg: boolean = true;
   private onResumeSubscription: Subscription;
   private analyzeUtxosDone: boolean;
+  private zone;
 
   public requiresMultipleSignatures: boolean;
   public wallet;
@@ -84,6 +85,7 @@ export class WalletDetailsPage extends WalletTabsChild {
     private platform: Platform
   ) {
     super(navCtrl, profileProvider, walletTabsProvider);
+    this.zone = new NgZone({ enableLongStackTrace: false });
   }
 
   ionViewDidLoad() {
@@ -165,7 +167,9 @@ export class WalletDetailsPage extends WalletTabsChild {
       0,
       (this.currentPage + 1) * HISTORY_SHOW_LIMIT
     );
-    this.groupedHistory = this.groupHistory(this.history);
+    this.zone.run(() => {
+      this.groupedHistory = this.groupHistory(this.history);
+    });
     if (loading) this.currentPage++;
   }
 
@@ -206,10 +210,7 @@ export class WalletDetailsPage extends WalletTabsChild {
     }).bind(this);
 
     this.walletProvider
-      .getTxHistory(this.wallet, {
-        progressFn,
-        opts
-      })
+      .getTxHistory(this.wallet, progressFn, opts)
       .then(txHistory => {
         this.updatingTxHistory = false;
         this.updatingTxHistoryProgress = 0;
