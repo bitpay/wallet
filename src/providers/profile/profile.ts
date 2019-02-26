@@ -333,8 +333,9 @@ export class ProfileProvider {
 
     if (!body) return;
 
-    this.showInAppNotification(title, body);
-    this.showOsNotifications(title, body);
+    const OS = this.platformProvider.getOS();
+    if (OS && OS.OSName === 'MacOS') this.showOsNotifications(title, body);
+    else this.showInAppNotification(title, body);
   }
 
   private async showInAppNotification(title: string, body: string) {
