@@ -680,7 +680,7 @@ export class WalletProvider {
                   // TODO Dirty <HACK>
                   // do not sync all history, just looking for a single TX.
                   if (opts.limitTx) {
-                    foundLimitTx = _.find(newTxs, {
+                    foundLimitTx = _.find(newTxs.concat(txsFromLocal), {
                       txid: opts.limitTx
                     });
                     if (!_.isEmpty(foundLimitTx)) {
@@ -976,7 +976,7 @@ export class WalletProvider {
         return resolve(tx);
       } else {
         const opts = {
-          force: true
+          limitTx: txid
         };
         this.getTxHistory(wallet, null, opts)
           .then(txHistory => {
