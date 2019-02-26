@@ -294,7 +294,6 @@ page-wallet-details {
     height: $icon-width;
     box-shadow: none;
     border: 1px solid #d7d7d7;
-    overflow: hidden;
   }
 
   .locked-balance.item {
@@ -376,4 +375,8 @@ page-wallet-details {
       margin-left: 5px;
     }
   }
+}
+
+.icon-services {
+  overflow: hidden;
 }
