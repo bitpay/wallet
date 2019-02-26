@@ -447,6 +447,14 @@ ion-alert .alert-message {
   justify-content: center;
 }
 
+.section-header {
+  color: rgba(0, 0, 0, 0.3);
+  font-weight: 600;
+  margin: 0 auto;
+  margin-bottom: -7px;
+  width: 92%;
+}
+
 button.modal-close-button {
   font-size: 16px;
   font-weight: 400;

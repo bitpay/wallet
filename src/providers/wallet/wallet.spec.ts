@@ -530,7 +530,8 @@ describe('Provider: Wallet Provider', () => {
       ];
       wallet.completeHistory.isValid = true;
       const opts = null;
-      walletProvider.getTxHistory(wallet, opts).then(txHistory => {
+      const progressFn = null;
+      walletProvider.getTxHistory(wallet, progressFn, opts).then(txHistory => {
         expect(txHistory).toEqual(wallet.completeHistory);
       });
     });
@@ -538,9 +539,10 @@ describe('Provider: Wallet Provider', () => {
     it("Should return the completeHistory if isn't cached", () => {
       const wallet: WalletMock = new WalletMock();
       const opts = null;
+      const progressFn = null;
       const expectedTxHistory = txsFromLocal;
 
-      walletProvider.getTxHistory(wallet, opts).then(txHistory => {
+      walletProvider.getTxHistory(wallet, progressFn, opts).then(txHistory => {
         expect(txHistory.isValid).toBeTruthy();
         delete txHistory.isValid;
         expect(txHistory).toEqual(expectedTxHistory);

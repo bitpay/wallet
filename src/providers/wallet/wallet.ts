@@ -583,14 +583,14 @@ export class WalletProvider {
     });
   }
 
-  private updateLocalTxHistory(wallet, opts): Promise<any> {
+  private updateLocalTxHistory(wallet, progressFn, opts): Promise<any> {
     return new Promise((resolve, reject) => {
       opts = opts ? opts : {};
       const FIRST_LIMIT = 5;
       const LIMIT = 50;
       let requestLimit = FIRST_LIMIT;
       const walletId = wallet.credentials.walletId;
-      WalletProvider.progressFn[walletId] = opts.progressFn || (() => {});
+      WalletProvider.progressFn[walletId] = progressFn || (() => {});
       let foundLimitTx = [];
 
       const fixTxsUnit = (txs): void => {
@@ -619,9 +619,9 @@ export class WalletProvider {
             wallet.credentials.walletName
         );
 
-        if (opts.progressFn) {
+        if (progressFn) {
           this.logger.debug('Rewriting progressFn');
-          WalletProvider.progressFn[walletId] = opts.progressFn;
+          WalletProvider.progressFn[walletId] = progressFn;
         }
         return reject('HISTORY_IN_PROGRESS'); // no callback call yet.
       }
@@ -680,7 +680,7 @@ export class WalletProvider {
                   // TODO Dirty <HACK>
                   // do not sync all history, just looking for a single TX.
                   if (opts.limitTx) {
-                    foundLimitTx = _.find(newTxs, {
+                    foundLimitTx = _.find(newTxs.concat(txsFromLocal), {
                       txid: opts.limitTx
                     });
                     if (!_.isEmpty(foundLimitTx)) {
@@ -976,9 +976,9 @@ export class WalletProvider {
         return resolve(tx);
       } else {
         const opts = {
-          force: true
+          limitTx: txid
         };
-        this.getTxHistory(wallet, opts)
+        this.getTxHistory(wallet, null, opts)
           .then(txHistory => {
             const tx = finish(txHistory);
             return resolve(tx);
@@ -990,7 +990,7 @@ export class WalletProvider {
     });
   }
 
-  public getTxHistory(wallet, opts): Promise<any> {
+  public getTxHistory(wallet, progressFn, opts): Promise<any> {
     return new Promise((resolve, reject) => {
       opts = opts ? opts : {};
 
@@ -1000,10 +1000,11 @@ export class WalletProvider {
         return wallet.completeHistory && wallet.completeHistory.isValid;
       };
 
-      if (isHistoryCached() && !opts.force)
+      if (isHistoryCached() && !opts.force) {
         return resolve(wallet.completeHistory);
+      }
 
-      this.updateLocalTxHistory(wallet, opts)
+      this.updateLocalTxHistory(wallet, progressFn, opts)
         .then(txs => {
           WalletProvider.updateOnProgress[wallet.id] = false;
           if (opts.limitTx) {
@@ -1550,6 +1551,22 @@ export class WalletProvider {
             return reject(err);
           });
       }
+    });
+  }
+
+  public signMultipleTxps(wallet, txps: any[]): Promise<any> {
+    [].concat(txps);
+    const promises = [];
+    return this.prepare(wallet).then(async (password: string) => {
+      _.each(txps, txp => {
+        promises.push(
+          this.signAndBroadcast(wallet, txp, password).catch(error => {
+            this.logger.error(error);
+            return error;
+          })
+        );
+      });
+      return Promise.all(promises);
     });
   }
 
