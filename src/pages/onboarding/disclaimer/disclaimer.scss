@@ -1,45 +1,22 @@
 page-disclaimer {
-  & > ion-content {
-    background-image: $onboarding-background-image !important;
-    background-position: center center;
-    background-size: contain;
-    background-repeat: no-repeat;
+  .back-button {
+    color: color($colors, dark);
   }
-  text-align: center;
-  ion-header {
-    .toolbar-title,
-    ion-icon {
-      color: color($colors, primary);
+  .wide-header {
+    &__title {
+      color: color($colors, dark) !important;
     }
-    .toolbar-background {
-      background-color: transparent;
-    }
-  }
-  .link {
-    font-size: 2vh;
-    cursor: pointer;
   }
   .checkbox-list {
     ion-item {
-      font-size: 14px;
       background: none;
-      color: #fff;
+      font-size: 14px;
     }
   }
-  .top-description {
-    font-size: 1.4rem;
-    padding: 0 4rem 0 4rem;
-    color: $onboarding-comment-color;
-  }
-  .title {
-    color: color($colors, blank);
-  }
-  ion-footer {
-    background-color: color($colors, secondary);
-    box-shadow: 0 1px 10px rgba(0, 0, 0, 0.25);
-  }
-  a.externalLink {
-    cursor: pointer;
-    color: color($colors, light-grey);
+  .link-container {
+    text-align: center;
+    a.externalLink {
+      cursor: pointer;
+    }
   }
 }
