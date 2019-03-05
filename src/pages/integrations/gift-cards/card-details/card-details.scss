@@ -95,6 +95,12 @@ card-details-page {
       }
     }
 
+    img.card-info__body.barcode-image {
+      height: 75px;
+      margin: 5px auto -5px;
+      filter: invert(3%);
+    }
+
     ngx-barcode.card-info__body {
       margin-bottom: 0 !important;
       margin-top: 8px !important;

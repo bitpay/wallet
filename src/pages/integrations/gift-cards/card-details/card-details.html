@@ -30,8 +30,7 @@
                 <ngx-barcode *ngIf="!card.barcodeImage" class="card-info__body" [bc-value]="card.claimCode"
                   bc-display-value="false" bc-element-type="canvas" bc-height="70" [bc-width]="1.8" bc-background="#f7f7f7"
                   bc-font="Roboto" bc-text-margin="8" bc-text-position="bottom" bc-font-size="20"></ngx-barcode>
-                <img *ngIf="card.barcodeImage" class="card-info__body" style="height: 75px; margin: 5px auto -5px; filter: invert(3%);"
-                  [src]="card.barcodeImage">
+                <img *ngIf="card.barcodeImage" class="card-info__body barcode-image" [src]="card.barcodeImage">
               </ng-container>
               <div class="card-info__body" [ngClass]="{long: card.claimCode.length > 20 }" *ngIf="cardConfig?.defaultClaimCodeType === 'barcode'">
                 {{card.claimCode}}
