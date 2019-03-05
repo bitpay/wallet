@@ -35,6 +35,7 @@ export interface GiftCard {
   accessKey: string;
   amount: number;
   archived: boolean;
+  barcodeImage?: string;
   claimCode: string;
   claimLink?: string;
   currency: string;

@@ -26,17 +26,18 @@
               <div class="card-info__body" *ngIf="cardConfig?.defaultClaimCodeType !== 'barcode'">
                 {{card.claimCode}}
               </div>
-
-              <ngx-barcode *ngIf="cardConfig?.defaultClaimCodeType === 'barcode'" class="card-info__body" [bc-value]="card.claimCode"
-                bc-display-value="false" bc-element-type="canvas" bc-height="70" [bc-width]="1.8" bc-background="#f7f7f7"
-                bc-font="Roboto" bc-text-margin="8" bc-text-position="bottom" bc-font-size="20"></ngx-barcode>
+              <ng-container *ngIf="cardConfig?.defaultClaimCodeType === 'barcode'">
+                <ngx-barcode *ngIf="!card.barcodeImage" class="card-info__body" [bc-value]="card.claimCode"
+                  bc-display-value="false" bc-element-type="canvas" bc-height="70" [bc-width]="1.8" bc-background="#f7f7f7"
+                  bc-font="Roboto" bc-text-margin="8" bc-text-position="bottom" bc-font-size="20"></ngx-barcode>
+                <img *ngIf="card.barcodeImage" class="card-info__body" style="height: 75px; margin: 5px auto -5px; filter: invert(3%);"
+                  [src]="card.barcodeImage">
+              </ng-container>
               <div class="card-info__body" [ngClass]="{long: card.claimCode.length > 20 }" *ngIf="cardConfig?.defaultClaimCodeType === 'barcode'">
                 {{card.claimCode}}
               </div>
               <div class="card-info__date" *ngIf="!hasPin()">Created {{card.date | amTimeAgo}}</div>
             </div>
-
-
             <div *ngIf="hasPin()">
               <div class="separator"></div>
               <div (click)="copyCode(card.pin)" [copy-to-clipboard]="card.pin" [hide-toast]="true" tappable>

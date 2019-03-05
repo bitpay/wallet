@@ -38,6 +38,7 @@ import { SatToUnitPipe } from '../pipes/satToUnit';
 /* Directives */
 import { Animate } from '../directives/animate/animate';
 import { CopyToClipboard } from '../directives/copy-to-clipboard/copy-to-clipboard';
+import { ExternalizeLinks } from '../directives/externalize-links/externalize-links';
 import { FixedScrollBgColor } from '../directives/fixed-scroll-bg-color/fixed-scroll-bg-color';
 import { IonContentBackgroundColor } from '../directives/ion-content-background-color/ion-content-background-color';
 import { LongPress } from '../directives/long-press/long-press';
@@ -47,13 +48,11 @@ import { RevealAtScrollPosition } from '../directives/reveal-at-scroll-pos/revea
 import { WideHeaderBarButton } from '../pages/templates/wide-header-page/wide-header-bar-button';
 
 /* Components */
-import { COMPONENTS } from './../components/components';
+import { COMPONENTS } from '../components/components';
 
 /* Providers */
-import { ExternalizeLinks } from '../directives/externalize-links/externalize-links';
-import { ProvidersModule } from './../providers/providers.module';
-
 import { LanguageLoader } from '../providers/language-loader/language-loader';
+import { ProvidersModule } from '../providers/providers.module';
 
 export function translateParserFactory() {
   return new InterpolatedTranslateParser();
