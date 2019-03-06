@@ -599,6 +599,17 @@ export class HomePage {
       this.serverMessageDismissed = true;
       return;
     }
+
+    if (
+      this.serverMessage.cardOnly &&
+      (!this.showBitPayCard ||
+        !this.bitpayCardItems ||
+        !this.bitpayCardItems[0])
+    ) {
+      this.serverMessageDismissed = true;
+      return;
+    }
+
     this.persistenceProvider
       .getServerMessageDismissed()
       .then((value: boolean) => {
