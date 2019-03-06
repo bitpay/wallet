@@ -1,18 +1,13 @@
 import { Component } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import {
-  NavController,
-  NavParams
-} from 'ionic-angular';
+import { NavController, NavParams } from 'ionic-angular';
 import * as _ from 'lodash';
 
 // pages
 import { BackupGamePage } from '../backup-game/backup-game';
 
 // providers
-import {
-  ActionSheetProvider
-} from '../../../providers/action-sheet/action-sheet';
+import { ActionSheetProvider } from '../../../providers/action-sheet/action-sheet';
 import { BwcErrorProvider } from '../../../providers/bwc-error/bwc-error';
 import { Logger } from '../../../providers/logger/logger';
 import { ProfileProvider } from '../../../providers/profile/profile';
@@ -108,7 +103,7 @@ export class BackupKeyPage {
   public goToBackupGame(): void {
     this.navCtrl.push(BackupGamePage, {
       words: this.mnemonicWords,
-      walletId: this.walletId,
+      walletId: this.walletId
     });
   }
 

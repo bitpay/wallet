@@ -57,7 +57,7 @@ export class BackupGamePage {
     private bwcProvider: BwcProvider,
     private onGoingProcessProvider: OnGoingProcessProvider,
     public actionSheetProvider: ActionSheetProvider,
-    private translate: TranslateService,
+    private translate: TranslateService
   ) {
     this.mnemonicWords = this.navParams.data.words;
     this.walletId = this.navParams.data.walletId;
@@ -197,7 +197,9 @@ export class BackupGamePage {
       .then(async () => {
         this.onGoingProcessProvider.clear();
         const finishText = this.translate.instant('Your key is verified');
-        const finishComment = this.translate.instant('Be sure to store your key phrase in a safe and secure place');
+        const finishComment = this.translate.instant(
+          'Be sure to store your key phrase in a safe and secure place'
+        );
         const cssClass = 'primary';
         const params = { finishText, finishComment, cssClass };
         const modal = this.modalCtrl.create(FinishModalPage, params, {

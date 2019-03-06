@@ -15,7 +15,7 @@ page-backup-key {
         color: color($colors, grey);
       }
       .word {
-        background: color($colors, light);        
+        background: color($colors, light);
         margin: auto;
         border-radius: 3px;
         color: #192c3a;
@@ -55,10 +55,11 @@ page-backup-key {
     justify-content: space-between;
     padding: 0px;
     bottom: 2rem;
-    .button-left, .button-right {
+    .button-left,
+    .button-right {
       font-size: 1.8rem;
       text-transform: uppercase;
-    } 
+    }
     .button-left {
       color: color($colors, light-grey);
       margin: 0rem 2.5rem 0rem 1rem;

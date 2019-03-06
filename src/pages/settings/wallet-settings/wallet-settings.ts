@@ -52,7 +52,7 @@ export class WalletSettingsPage {
     private translate: TranslateService,
     private actionSheetProvider: ActionSheetProvider,
     private persistenceProvider: PersistenceProvider
-  ) { }
+  ) {}
 
   ionViewDidLoad() {
     this.logger.info('Loaded:  WalletSettingsPage');

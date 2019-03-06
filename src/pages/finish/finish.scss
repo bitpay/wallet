@@ -27,15 +27,15 @@ page-finish {
         }
       }
       .success-img {
-      mask-image: url(../assets/img/backup/success.svg);
-      height: 20rem;
-      width: 50%;
-      background-color: color($colors, success);
-      mask-repeat: no-repeat;
-      mask-position: 50% 50%;
-      mask-size: 15rem;
-      margin: auto;
-      transform: translate(0, -10%);
+        mask-image: url(../assets/img/backup/success.svg);
+        height: 20rem;
+        width: 50%;
+        background-color: color($colors, success);
+        mask-repeat: no-repeat;
+        mask-position: 50% 50%;
+        mask-size: 15rem;
+        margin: auto;
+        transform: translate(0, -10%);
       }
     }
     .footer {
