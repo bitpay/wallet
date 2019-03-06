@@ -58,7 +58,7 @@ export class IncomingDataProvider {
 
   private isValidPayProNonBackwardsCompatible(data: string): boolean {
     data = this.sanitizeUri(data);
-    return !!/^bitcoin(cash)?:\?r=[\w+]/.exec(data);
+    return !!/^(bitcoin|bitcoincash|bchtest)?:\?r=[\w+]/.exec(data);
   }
 
   private isValidBitcoinUri(data: string): boolean {
