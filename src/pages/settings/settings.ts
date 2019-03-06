@@ -19,7 +19,7 @@ import { TouchIdProvider } from '../../providers/touchid/touchid';
 import { WalletProvider } from '../../providers/wallet/wallet';
 
 // pages
-import { BackupWarningPage } from '../backup/backup-warning/backup-warning';
+import { BackupKeyPage } from '../backup/backup-key/backup-key';
 import { BitPayCardIntroPage } from '../integrations/bitpay-card/bitpay-card-intro/bitpay-card-intro';
 import { BitPaySettingsPage } from '../integrations/bitpay-card/bitpay-settings/bitpay-settings';
 import { CoinbaseSettingsPage } from '../integrations/coinbase/coinbase-settings/coinbase-settings';
@@ -224,7 +224,7 @@ export class SettingsPage {
 
   public openBackupSettings(): void {
     const vaultWallet = this.profileProvider.getWallet(this.vault.walletIds[0]);
-    this.navCtrl.push(BackupWarningPage, {
+    this.navCtrl.push(BackupKeyPage, {
       walletId: vaultWallet.credentials.walletId
     });
   }

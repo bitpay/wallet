@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { AlertController, NavController, NavParams } from 'ionic-angular';
 
 // pages
-import { BackupGamePage } from '../backup-game/backup-game';
+import { BackupKeyPage } from '../backup-key/backup-key';
 
 import { ActionSheetProvider } from '../../../providers/action-sheet/action-sheet';
 
@@ -33,7 +33,7 @@ export class BackupWarningPage {
     infoSheet.present();
     infoSheet.onDidDismiss(option => {
       if (option) {
-        this.navCtrl.push(BackupGamePage, {
+        this.navCtrl.push(BackupKeyPage, {
           walletId: this.walletId,
           fromOnboarding: this.fromOnboarding
         });

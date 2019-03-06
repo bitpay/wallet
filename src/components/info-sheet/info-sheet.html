@@ -50,7 +50,7 @@
       <span sheet-text>
         {{ 'This transaction requires a high network fee because either the sending amount is too small or the network is experiencing congestion.' | translate }}
         <p>
-        {{ 'BitPay does not receive and does not control miner fees.' | translate }}
+          {{ 'BitPay does not receive and does not control miner fees.' | translate }}
       </span>
       <span sheet-button-text translate>GOT IT</span>
     </info-sheet-template>
@@ -79,6 +79,15 @@
       <span sheet-second-button-text translate>Go Back</span>
     </info-sheet-template>
 
+    <info-sheet-template *ngSwitchCase="'backup-later-warning'" type="warning">
+      <span sheet-title-text translate>Do this later?</span>
+      <span sheet-text translate>
+        Receiving funds will be temporary disabled until you can verify your vault key has been stored away securely. You can always complete this later from your wallet settings.
+      </span>
+      <span sheet-button-text translate>Ok</span>
+      <span sheet-second-button-text translate>Continue Backup</span>
+    </info-sheet-template>
+
     <info-sheet-template *ngSwitchCase="'backup-ready'" type="success">
       <span sheet-title-text>{{'Your {walletType} wallet is backed up!' | translate : {walletType: params.walletType}
         }}</span>
@@ -92,6 +101,14 @@
       <span sheet-title-text>Your vault wallets are backed up!</span>
       <span sheet-text>
         Be sure to store your recovery phrase in a secure place. If this app is deleted, your money cannot be recovered without it.
+      </span>
+      <span sheet-button-text translate>GOT IT</span>
+    </info-sheet-template>
+
+    <info-sheet-template *ngSwitchCase="'backup-safeguard-warning'" type="info">
+      <span sheet-title-text>Safeguard your vault key</span>
+      <span sheet-text>
+        Your vault key is composed of 12 randomly selected words. Please carefully write down each word in the order they appear.
       </span>
       <span sheet-button-text translate>GOT IT</span>
     </info-sheet-template>
@@ -176,12 +193,12 @@
       <span sheet-button-text>{{'Rate on the {storeName}' | translate: {storeName: params?.storeName} }}</span>
     </info-sheet-template>
 
-    <info-sheet-template *ngSwitchCase="'backup-failed'" type="warning">
-      <span sheet-title-text translate>Uh oh...</span>
+    <info-sheet-template *ngSwitchCase="'backup-failed'" type="danger">
+      <span sheet-title-text translate>Incorrect backup phrase</span>
       <span sheet-text translate>
         It's important that you write your recovery phrase down correctly. If something happens to your wallet, you'll need it to recover your money. Please review and try again.
       </span>
-      <span sheet-button-text translate>GOT IT</span>
+      <span sheet-button-text translate>START OVER</span>
     </info-sheet-template>
 
     <info-sheet-template *ngSwitchCase="'payment-request'" type="info">
