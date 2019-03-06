@@ -59,6 +59,7 @@ export class BackupGamePage {
     this.mnemonicWords = this.navParams.data.words;
     this.keys = this.navParams.data.keys;
     this.walletId = this.navParams.data.walletId;
+    this.fromOnboarding = this.navParams.data.fromOnboarding;
     this.wallet = this.profileProvider.getWallet(this.walletId);
     this.vault = this.profileProvider.getVault();
     this.isVaultWallet =

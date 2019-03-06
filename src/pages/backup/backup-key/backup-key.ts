@@ -104,7 +104,8 @@ export class BackupKeyPage {
     this.navCtrl.push(BackupGamePage, {
       words: this.mnemonicWords,
       keys: this.keys,
-      walletId: this.walletId
+      walletId: this.walletId,
+      fromOnboarding: this.navParams.data.fromOnboarding
     });
   }
 

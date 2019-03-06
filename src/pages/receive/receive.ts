@@ -8,7 +8,7 @@ import { Logger } from '../../providers/logger/logger';
 import { SocialSharing } from '@ionic-native/social-sharing';
 
 // Pages
-import { BackupWarningPage } from '../backup/backup-warning/backup-warning';
+import { BackupKeyPage } from '../backup/backup-key/backup-key';
 import { AmountPage } from '../send/amount/amount';
 
 // Providers
@@ -130,7 +130,7 @@ export class ReceivePage extends WalletTabsChild {
   }
 
   public goToBackup(): void {
-    this.navCtrl.push(BackupWarningPage, {
+    this.navCtrl.push(BackupKeyPage, {
       walletId: this.wallet.credentials.walletId
     });
   }

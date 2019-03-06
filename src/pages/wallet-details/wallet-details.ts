@@ -24,7 +24,7 @@ import { TimeProvider } from '../../providers/time/time';
 import { WalletProvider } from '../../providers/wallet/wallet';
 
 // pages
-import { BackupWarningPage } from '../../pages/backup/backup-warning/backup-warning';
+import { BackupKeyPage } from '../../pages/backup/backup-key/backup-key';
 import { ProposalsPage } from '../../pages/home/proposals/proposals';
 import { WalletAddressesPage } from '../../pages/settings/wallet-settings/wallet-settings-advanced/wallet-addresses/wallet-addresses';
 import { TxDetailsPage } from '../../pages/tx-details/tx-details';
@@ -353,7 +353,7 @@ export class WalletDetailsPage extends WalletTabsChild {
   }
 
   public openBackup() {
-    this.navCtrl.push(BackupWarningPage, {
+    this.navCtrl.push(BackupKeyPage, {
       walletId: this.wallet.credentials.walletId
     });
   }
