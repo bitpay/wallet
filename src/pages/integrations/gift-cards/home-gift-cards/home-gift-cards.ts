@@ -80,14 +80,17 @@ export class HomeGiftCards implements OnInit {
       : this.navCtrl.push(PurchasedCardsPage, { cardName });
   }
 
-  private showArchiveSheet(event) {
+  private async showArchiveSheet(event) {
     const brandCards = this.activeBrands
       .find(brandCards => brandCards[0].name === event.cardName)
       .filter(card => !card.archived);
     const sheetName =
       brandCards.length === 1 ? 'archive-gift-card' : 'archive-all-gift-cards';
+    const cardConfig = await this.giftCardProvider.getCardConfig(
+      brandCards[0].name
+    );
     const archiveSheet = this.actionSheetProvider.createInfoSheet(sheetName, {
-      brand: brandCards[0].displayName
+      brand: cardConfig.displayName
     });
     archiveSheet.present();
     archiveSheet.onDidDismiss(async confirm => {
