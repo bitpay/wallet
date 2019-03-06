@@ -502,8 +502,11 @@ export class GiftCardProvider {
         displayName: apiCardConfig.displayName || apiCardConfig.name
       }))
       .filter(
-        cardConfig => cardConfig.logo && cardConfig.icon && cardConfig.cardImage
-        // !cardConfig.hidden
+        cardConfig =>
+          cardConfig.logo &&
+          cardConfig.icon &&
+          cardConfig.cardImage &&
+          !cardConfig.hidden
       )
       .sort(sortByDisplayName);
     return config;
