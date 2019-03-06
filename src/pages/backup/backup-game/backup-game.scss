@@ -45,11 +45,15 @@ page-backup-game {
         }
       }
     }
-  }
-
-  .password {
-    background-color: color($colors, light);
-    padding: 2rem;
+    .password {
+      padding: 2rem;
+      &-title {
+        margin-bottom: 2rem;
+      }
+      &-text {
+        margin-top: 2rem;
+      }
+    }
   }
 
   .bottom-absolute {

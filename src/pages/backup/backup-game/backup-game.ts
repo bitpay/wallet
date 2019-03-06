@@ -14,10 +14,7 @@ import { FinishModalPage } from '../../finish/finish';
 import { DisclaimerPage } from '../../onboarding/disclaimer/disclaimer';
 
 // providers
-import {
-  ActionSheetProvider,
-  InfoSheetType
-} from '../../../providers/action-sheet/action-sheet';
+import { ActionSheetProvider } from '../../../providers/action-sheet/action-sheet';
 import { BwcProvider } from '../../../providers/bwc/bwc';
 import { Logger } from '../../../providers/logger/logger';
 import { OnGoingProcessProvider } from '../../../providers/on-going-process/on-going-process';
@@ -60,6 +57,7 @@ export class BackupGamePage {
     private translate: TranslateService
   ) {
     this.mnemonicWords = this.navParams.data.words;
+    this.keys = this.navParams.data.keys;
     this.walletId = this.navParams.data.walletId;
     this.wallet = this.profileProvider.getWallet(this.walletId);
     this.vault = this.profileProvider.getVault();
