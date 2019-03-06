@@ -17,6 +17,7 @@ import { ExternalLinkProvider } from '../../../../providers/external-link/extern
 import { GiftCardProvider } from '../../../../providers/gift-card/gift-card';
 import {
   CardConfig,
+  ClaimCodeType,
   GiftCard
 } from '../../../../providers/gift-card/gift-card.types';
 import { PlatformProvider } from '../../../../providers/platform/platform';
@@ -76,7 +77,11 @@ export class CardDetailsPage {
 
   updateGiftCard() {
     this.giftCardProvider
-      .updatePendingGiftCards([this.card])
+      .updatePendingGiftCards(
+        [this.card],
+        this.cardConfig.defaultClaimCodeType === ClaimCodeType.barcode &&
+          !this.card.barcodeImage
+      )
       .pipe(take(1))
       .subscribe(card => (this.card = card));
   }

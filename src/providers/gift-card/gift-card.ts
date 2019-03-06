@@ -163,7 +163,8 @@ export class GiftCardProvider {
     const cardChanged =
       !originalCard ||
       originalCard.status !== giftCard.status ||
-      originalCard.archived !== giftCard.archived;
+      originalCard.archived !== giftCard.archived ||
+      originalCard.barcodeImage !== giftCard.barcodeImage;
     const shouldNotify = cardChanged && giftCard.status !== 'UNREDEEMED';
     await this.saveCard(giftCard, opts);
     shouldNotify && this.cardUpdatesSubject.next(giftCard);
@@ -246,62 +247,73 @@ export class GiftCardProvider {
           ? of({ ...data, status: 'PENDING' })
           : Observable.throw(err);
       })
-      .map((res: { claimCode?: string; claimLink?: string; pin?: string }) => {
-        const status = res.claimCode || res.claimLink ? 'SUCCESS' : 'PENDING';
-        const fullCard = {
-          ...data,
-          ...res,
-          name,
-          status
-        };
-        this.logger.info(
-          `${cardConfig.name} Gift Card Create/Update: ${fullCard.status}`
-        );
-        return fullCard;
-      })
+      .map(
+        (res: {
+          claimCode?: string;
+          claimLink?: string;
+          pin?: string;
+          barcodeImage?: string;
+        }) => {
+          const status = res.claimCode || res.claimLink ? 'SUCCESS' : 'PENDING';
+          const fullCard = {
+            ...data,
+            ...res,
+            name,
+            status
+          };
+          this.logger.info(
+            `${cardConfig.name} Gift Card Create/Update: ${fullCard.status}`
+          );
+          return fullCard;
+        }
+      )
       .toPromise();
   }
 
-  updatePendingGiftCards(cards: GiftCard[]): Observable<GiftCard> {
-    const cardsNeedingUpdate = cards.filter(card =>
-      this.checkIfCardNeedsUpdate(card)
+  updatePendingGiftCards(
+    cards: GiftCard[],
+    force: boolean = false
+  ): Observable<GiftCard> {
+    const cardsNeedingUpdate = cards.filter(
+      card => this.checkIfCardNeedsUpdate(card) || force
     );
-    from(cardsNeedingUpdate)
-      .pipe(
-        mergeMap(card =>
-          fromPromise(this.createGiftCard(card)).catch(err => {
-            this.logger.error('Error creating gift card:', err);
-            this.logger.error('Gift card: ', JSON.stringify(card, null, 4));
-            return of({ ...card, status: 'FAILURE' });
-          })
-        ),
-        mergeMap(card =>
-          card.status === 'UNREDEEMED' || card.status === 'PENDING'
-            ? fromPromise(
-                this.getBitPayInvoice(card.invoiceId).then(invoice => ({
-                  ...card,
-                  status:
-                    (card.status === 'PENDING' ||
-                      (card.status === 'UNREDEEMED' &&
-                        invoice.status !== 'new')) &&
-                    invoice.status !== 'expired'
-                      ? 'PENDING'
-                      : 'expired'
-                }))
-              )
-            : of(card)
-        ),
-        mergeMap(updatedCard => this.updatePreviouslyPendingCard(updatedCard))
-      )
-      .subscribe(_ => this.logger.debug('Gift card updated'));
-    return this.cardUpdates$;
+    return from(cardsNeedingUpdate).pipe(
+      mergeMap(card =>
+        fromPromise(this.createGiftCard(card)).catch(err => {
+          this.logger.error('Error creating gift card:', err);
+          this.logger.error('Gift card: ', JSON.stringify(card, null, 4));
+          return of({ ...card, status: 'FAILURE' });
+        })
+      ),
+      mergeMap(card =>
+        card.status === 'UNREDEEMED' || card.status === 'PENDING'
+          ? fromPromise(
+              this.getBitPayInvoice(card.invoiceId).then(invoice => ({
+                ...card,
+                status:
+                  (card.status === 'PENDING' ||
+                    (card.status === 'UNREDEEMED' &&
+                      invoice.status !== 'new')) &&
+                  invoice.status !== 'expired'
+                    ? 'PENDING'
+                    : 'expired'
+              }))
+            )
+          : of(card)
+      ),
+      mergeMap(updatedCard => this.updatePreviouslyPendingCard(updatedCard)),
+      mergeMap(updatedCard => {
+        this.logger.debug('Gift card updated');
+        return of(updatedCard);
+      })
+    );
   }
 
   updatePreviouslyPendingCard(updatedCard: GiftCard) {
     return fromPromise(
       this.saveGiftCard(updatedCard, {
         remove: updatedCard.status === 'expired'
-      })
+      }).then(() => updatedCard)
     );
   }
 
