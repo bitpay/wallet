@@ -1,6 +1,10 @@
 wide-header-page {
   @include fix-ios-bg-scroll();
 
+  expandable-header-primary {
+    line-height: 1.2;
+  }
+
   .wide-header {
     ion-title .toolbar-title {
       font-weight: 400;
@@ -19,6 +23,7 @@ wide-header-page {
       .ios & {
         padding-top: 3rem; // Fix iOS 10.3
         padding-top: calc(6px + env(safe-area-inset-top));
+
         ion-title {
           padding-top: 3rem; // Fix iOS 10.3
           padding-top: env(safe-area-inset-top);
