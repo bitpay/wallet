@@ -69,7 +69,7 @@ export class ProposalsPage {
     this.walletId = this.navParams.data.walletId;
     this.updatingWalletId = {};
     this.isCordova = this.platformProvider.isCordova;
-    this.buttonText = this.translate.instant('Sign multiple proposals');
+    this.buttonText = this.translate.instant('Sign selected proposals');
 
     this.allTxps = [];
     this.txpsToSign = [];
