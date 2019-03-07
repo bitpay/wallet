@@ -21,11 +21,7 @@ export class BackupKeyPage {
   public deleted: boolean;
   public mnemonicWords: string[];
   public wordToShow: number;
-  public shuffledMnemonicWords;
-  public customWords;
-  public error: boolean;
   public credentialsEncrypted: boolean;
-  public mnemonicHasPassphrase;
   public wallet;
   public keys;
 
@@ -116,7 +112,6 @@ export class BackupKeyPage {
 
     this.mnemonicWords = words.split(/[\u3000\s]+/);
     this.wordToShow = 0;
-    this.error = false;
   }
 
   public showSafeguardMessage(): void {

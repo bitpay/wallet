@@ -6,7 +6,7 @@
 
 
 <ion-content no-bounce>
-  <div class="key-container" [hidden]="mnemonicHasPassphrase && (customWords.length == mnemonicWords.length)">
+  <div class="key-container" [hidden]="mnemonicHasPassphrase && selectComplete">
     <div class="word-container">
       <ion-slides #gameSlides class="word-slides">
         <ion-slide *ngFor="let mnemonicWord of mnemonicWords; let i = index">
@@ -22,7 +22,7 @@
     </div>
   </div>
 
-  <div class="bottom-absolute" [hidden]="mnemonicHasPassphrase && (customWords.length == mnemonicWords.length)">
+  <div class="bottom-absolute" [hidden]="mnemonicHasPassphrase && selectComplete">
     <div *ngIf="!selectComplete">
       <div class="bottom-title" translate>Tap each word in the correct order.</div>
       <div class="words">
@@ -40,7 +40,7 @@
     </div>
   </div>
 
-  <div [hidden]="!mnemonicHasPassphrase || !(mnemonicHasPassphrase && customWords.length == mnemonicWords.length)">
+  <div [hidden]="!mnemonicHasPassphrase || !(mnemonicHasPassphrase && selectComplete)">
     <div class="key-container">
       <div class="password">
         <div class="password-title" translate>In order to verify your wallet recovery phrase, please type your password.</div>

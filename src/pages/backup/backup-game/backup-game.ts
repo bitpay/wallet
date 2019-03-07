@@ -135,6 +135,7 @@ export class BackupGamePage {
 
     this.shuffledMnemonicWords = this.shuffledWords(this.mnemonicWords);
     this.mnemonicHasPassphrase = this.wallet.mnemonicHasPassphrase();
+    this.useIdeograms = this.keys.mnemonic.indexOf('\u3000') >= 0;
     this.password = '';
     this.customWords = [];
     this.selectComplete = false;

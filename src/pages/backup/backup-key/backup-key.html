@@ -31,13 +31,13 @@
     <button *ngIf="wordToShow == 0" ion-button clear class="button-left" (click)="doThisLater()">
       {{'Do this later' | translate}}
     </button>
-    <button *ngIf="wordToShow > 0" ion-button clear class="button-left" [disabled]="credentialsEncrypted || error" (click)="previousWord()">
+    <button *ngIf="wordToShow > 0" ion-button clear class="button-left" [disabled]="credentialsEncrypted" (click)="previousWord()">
       {{'Previous' | translate}}
     </button>
-    <button *ngIf="wordToShow < mnemonicWords.length - 1" ion-button clear class="button-right" [disabled]="credentialsEncrypted || error" (click)="nextWord()">
+    <button *ngIf="wordToShow < mnemonicWords.length - 1" ion-button clear class="button-right" [disabled]="credentialsEncrypted" (click)="nextWord()">
       {{'Next' | translate}}
     </button>
-    <button *ngIf="wordToShow == mnemonicWords.length - 1" ion-button clear class="button-right" [disabled]="credentialsEncrypted || error" (click)="goToBackupGame()">
+    <button *ngIf="wordToShow == mnemonicWords.length - 1" ion-button clear class="button-right" [disabled]="credentialsEncrypted" (click)="goToBackupGame()">
       {{'Continue' | translate}}
     </button>
   </div>
