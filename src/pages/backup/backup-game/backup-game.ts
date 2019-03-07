@@ -3,6 +3,7 @@ import { TranslateService } from '@ngx-translate/core';
 import {
   Events,
   ModalController,
+  Navbar,
   NavController,
   NavParams,
   Slides
@@ -27,6 +28,8 @@ import { ProfileProvider } from '../../../providers/profile/profile';
 export class BackupGamePage {
   @ViewChild('gameSlides')
   gameSlides: Slides;
+  @ViewChild(Navbar)
+  navBar: Navbar;
 
   private fromOnboarding: boolean;
   private isVaultWallet: boolean;
@@ -53,7 +56,7 @@ export class BackupGamePage {
     private profileProvider: ProfileProvider,
     private bwcProvider: BwcProvider,
     private onGoingProcessProvider: OnGoingProcessProvider,
-    public actionSheetProvider: ActionSheetProvider,
+    private actionSheetProvider: ActionSheetProvider,
     private translate: TranslateService
   ) {
     this.mnemonicWords = this.navParams.data.words;
@@ -71,6 +74,13 @@ export class BackupGamePage {
 
   ionViewDidLoad() {
     if (this.gameSlides) this.gameSlides.lockSwipes(true);
+    this.navBar.backButtonClick = () => {
+      if (this.customWords.length > 0) {
+        this.clear();
+      } else {
+        this.navCtrl.pop();
+      }
+    };
   }
 
   private shuffledWords(words: string[]) {
@@ -196,9 +206,9 @@ export class BackupGamePage {
     this.confirm()
       .then(async () => {
         this.onGoingProcessProvider.clear();
-        const finishText = this.translate.instant('Your key is verified');
+        const finishText = this.translate.instant('Your recovery phrase is verified');
         const finishComment = this.translate.instant(
-          'Be sure to store your key phrase in a safe and secure place'
+          'Be sure to store your recovery phrase in a safe and secure place'
         );
         const cssClass = 'primary';
         const params = { finishText, finishComment, cssClass };

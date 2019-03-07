@@ -4,6 +4,7 @@ import { NavController, NavParams } from 'ionic-angular';
 import * as _ from 'lodash';
 
 // pages
+import { DisclaimerPage } from '../../onboarding/disclaimer/disclaimer';
 import { BackupGamePage } from '../backup-game/backup-game';
 
 // providers
@@ -22,6 +23,7 @@ export class BackupKeyPage {
   public mnemonicWords: string[];
   public wordToShow: number;
   public credentialsEncrypted: boolean;
+  public fromOnboarding: boolean;
   public wallet;
   public keys;
 
@@ -35,9 +37,10 @@ export class BackupKeyPage {
     private walletProvider: WalletProvider,
     private bwcErrorProvider: BwcErrorProvider,
     private translate: TranslateService,
-    public actionSheetProvider: ActionSheetProvider
+    private actionSheetProvider: ActionSheetProvider
   ) {
     this.walletId = this.navParams.data.walletId;
+    this.fromOnboarding = this.navParams.data.fromOnboarding
     this.wallet = this.profileProvider.getWallet(this.walletId);
     this.credentialsEncrypted = this.wallet.isPrivKeyEncrypted();
   }
@@ -101,7 +104,7 @@ export class BackupKeyPage {
       words: this.mnemonicWords,
       keys: this.keys,
       walletId: this.walletId,
-      fromOnboarding: this.navParams.data.fromOnboarding
+      fromOnboarding: this.fromOnboarding
     });
   }
 
@@ -121,14 +124,18 @@ export class BackupKeyPage {
     infoSheet.present();
   }
 
-  public doThisLater(): void {
+  public showDoThisLaterMessage(): void {
     const infoSheet = this.actionSheetProvider.createInfoSheet(
       'backup-later-warning'
     );
     infoSheet.present();
     infoSheet.onDidDismiss(option => {
       if (option) {
-        this.navCtrl.pop();
+        if (this.fromOnboarding) {
+          this.navCtrl.push(DisclaimerPage);
+        } else {
+          this.navCtrl.pop();
+        }
       }
     });
   }

@@ -1,6 +1,6 @@
 <ion-header>
   <ion-navbar>
-    <ion-title>{{'Vault Key' | translate}}</ion-title>
+    <ion-title>{{'Recovery Phrase' | translate}}</ion-title>
   </ion-navbar>
 </ion-header>
 
@@ -27,8 +27,8 @@
       </div>
     </div>
   </div>
-  <div class="bottom-absolute" *ngIf="!deleted && mnemonicWords && mnemonicWords[0]">
-    <button *ngIf="wordToShow == 0" ion-button clear class="button-left" (click)="doThisLater()">
+  <div class="bottom-absolute" [ngClass]="{'right-align': !fromOnboarding && wordToShow == 0}" *ngIf="!deleted && mnemonicWords && mnemonicWords[0]">
+    <button *ngIf="wordToShow == 0 && fromOnboarding" ion-button clear class="button-left" (click)="showDoThisLaterMessage()">
       {{'Do this later' | translate}}
     </button>
     <button *ngIf="wordToShow > 0" ion-button clear class="button-left" [disabled]="credentialsEncrypted" (click)="previousWord()">
