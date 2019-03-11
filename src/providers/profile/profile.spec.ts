@@ -67,6 +67,9 @@ describe('Profile Provider', () => {
     getErrors() {
       return 'error';
     }
+    getBitcore() {
+      return true;
+    }
     getBitcoreCash() {
       return true;
     }
