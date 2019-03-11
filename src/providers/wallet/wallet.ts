@@ -5,6 +5,7 @@ import * as _ from 'lodash';
 import encoding from 'text-encoding';
 
 // Providers
+import { AddressProvider } from '../address/address';
 import { BwcErrorProvider } from '../bwc-error/bwc-error';
 import { BwcProvider } from '../bwc/bwc';
 import { ConfigProvider } from '../config/config';
@@ -102,7 +103,8 @@ export class WalletProvider {
     private touchidProvider: TouchIdProvider,
     private events: Events,
     private feeProvider: FeeProvider,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private addressProvider: AddressProvider
   ) {
     this.logger.debug('WalletProvider initialized');
     this.isPopupOpen = false;
@@ -521,7 +523,13 @@ export class WalletProvider {
               return reject(msg);
             });
           }
-        } else return resolve(addr.address);
+        } else if (!this.addressProvider.isValid(addr.address)) {
+          this.logger.error('Invalid address generated: ', addr.address);
+          const msg = 'INVALID_ADDRESS';
+          return reject(msg);
+        } else {
+          return resolve(addr.address);
+        }
       });
     });
   }

@@ -57,7 +57,7 @@
             <span copy-to-clipboard="{{ address }}" hide-toast="true">{{ address }}</span>
           </div>
 
-          <button class="new-address-btn" detail-none text-center (click)="setAddress(true)">
+          <button *ngIf="!(wallet.status && wallet.status.wallet && wallet.status.wallet.singleAddress)" class="new-address-btn" detail-none text-center (click)="setAddress(true)">
             <span class="new-address" ion-text color="primary" translate>
               <img [hidden]="loading" class="spin-icon" [ngClass]="{'spin-backwards': playAnimation}" src="assets/img/right.svg" width="16" />
               <div *ngIf="loading" [ngClass]="{'spin-fast': loading}" class="spinner"></div>
