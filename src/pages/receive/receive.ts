@@ -93,13 +93,20 @@ export class ReceivePage extends WalletTabsChild {
     });
   }
 
-  private async setAddress(newAddr?: boolean): Promise<void> {
+  public async setAddress(newAddr?: boolean, failed?: boolean): Promise<void> {
     this.loading = newAddr || _.isEmpty(this.address) ? true : false;
 
     const addr: string = (await this.walletProvider
       .getAddress(this.wallet, newAddr)
       .catch(err => {
         this.loading = false;
+        if (err == 'INVALID_ADDRESS') {
+          // Generate a new address if the first one is invalid
+          if (!failed) {
+            this.setAddress(newAddr, true);
+          }
+          return;
+        }
         this.logger.warn(this.bwcErrorProvider.msg(err, 'Receive'));
       })) as string;
     this.loading = false;
