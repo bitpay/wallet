@@ -13,7 +13,7 @@ import { TouchIdProvider } from '../../../providers/touchid/touchid';
 import { WalletProvider } from '../../../providers/wallet/wallet';
 
 // pages
-import { BackupWarningPage } from '../../backup/backup-warning/backup-warning';
+import { BackupKeyPage } from '../../backup/backup-key/backup-key';
 import { WalletColorPage } from './wallet-color/wallet-color';
 import { WalletNamePage } from './wallet-name/wallet-name';
 import { WalletAddressesPage } from './wallet-settings-advanced/wallet-addresses/wallet-addresses';
@@ -183,7 +183,7 @@ export class WalletSettingsPage {
   }
 
   public openBackupSettings(): void {
-    this.navCtrl.push(BackupWarningPage, {
+    this.navCtrl.push(BackupKeyPage, {
       walletId: this.wallet.credentials.walletId
     });
   }

@@ -5,7 +5,7 @@ import { CreateWalletPage } from '../pages/add/create-wallet/create-wallet';
 import { ImportWalletPage } from '../pages/add/import-wallet/import-wallet';
 import { JoinWalletPage } from '../pages/add/join-wallet/join-wallet';
 import { BackupGamePage } from '../pages/backup/backup-game/backup-game';
-import { BackupWarningPage } from '../pages/backup/backup-warning/backup-warning';
+import { BackupKeyPage } from '../pages/backup/backup-key/backup-key';
 import { SendFeedbackPage } from '../pages/feedback/send-feedback/send-feedback';
 import { FinishModalPage } from '../pages/finish/finish';
 import { BackupRequestPage } from '../pages/onboarding/backup-request/backup-request';
@@ -138,8 +138,8 @@ export const PAGES = [
   SharePage,
   ImportWalletPage,
   JoinWalletPage,
-  BackupWarningPage,
   BackupGamePage,
+  BackupKeyPage,
   ConfirmPage,
   MultiSendPage,
   TransferToModalPage,

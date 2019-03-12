@@ -1,0 +1,44 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>{{'Recovery Phrase' | translate}}</ion-title>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content no-bounce>
+  <div *ngIf="deleted">
+    <h1 class="deleted-title" translate>Wallet recovery phrase not available</h1>
+    <ion-item-divider>
+      {{'You can still export it from "Export Wallet" option.' |translate}}
+      <span *ngIf="wallet.coin == 'bch'" translate>
+        Note: if this BCH wallet was duplicated from a BTC wallet, they share the same recovery phrase.
+      </span>
+    </ion-item-divider>
+  </div>
+
+  <div class="key-container" *ngIf="!deleted && mnemonicWords && mnemonicWords[0]">
+    <div class="word-container">
+      <div class="word-title" translate>Write down each word.</div>
+      <div class="word" copy-to-clipboard="{{ wallet.network == 'testnet' ? keys?.mnemonic : null }}">
+        <span>{{mnemonicWords[wordToShow]}}</span>
+      </div>
+      <div class="word-number">
+        {{wordToShow + 1}} / {{mnemonicWords.length}}
+      </div>
+    </div>
+  </div>
+  <div class="bottom-absolute" [ngClass]="{'right-align': !fromOnboarding && wordToShow == 0}" *ngIf="!deleted && mnemonicWords && mnemonicWords[0]">
+    <button *ngIf="wordToShow == 0 && fromOnboarding" ion-button clear class="button-left" (click)="showDoThisLaterMessage()">
+      {{'Do this later' | translate}}
+    </button>
+    <button *ngIf="wordToShow > 0" ion-button clear class="button-left" [disabled]="credentialsEncrypted" (click)="previousWord()">
+      {{'Previous' | translate}}
+    </button>
+    <button *ngIf="wordToShow < mnemonicWords.length - 1" ion-button clear class="button-right" [disabled]="credentialsEncrypted" (click)="nextWord()">
+      {{'Next' | translate}}
+    </button>
+    <button *ngIf="wordToShow == mnemonicWords.length - 1" ion-button clear class="button-right" [disabled]="credentialsEncrypted" (click)="goToBackupGame()">
+      {{'Continue' | translate}}
+    </button>
+  </div>
+</ion-content>

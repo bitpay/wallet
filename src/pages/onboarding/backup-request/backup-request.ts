@@ -7,7 +7,7 @@ import { Logger } from '../../../providers/logger/logger';
 import { PopupProvider } from '../../../providers/popup/popup';
 
 // Pages
-import { BackupWarningPage } from '../../backup/backup-warning/backup-warning';
+import { BackupKeyPage } from '../../backup/backup-key/backup-key';
 import { DisclaimerPage } from '../disclaimer/disclaimer';
 
 @Component({
@@ -33,7 +33,7 @@ export class BackupRequestPage {
   }
 
   public initBackupFlow(): void {
-    this.navCtrl.push(BackupWarningPage, {
+    this.navCtrl.push(BackupKeyPage, {
       walletId: this.walletId,
       fromOnboarding: true
     });
