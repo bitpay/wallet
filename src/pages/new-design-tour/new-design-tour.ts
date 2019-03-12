@@ -5,13 +5,13 @@ import { NavController, Slides } from 'ionic-angular';
 import { BackupKeyPage } from '../backup/backup-key/backup-key';
 
 @Component({
-  selector: 'page-create-vault-tour',
-  templateUrl: 'create-vault-tour.html'
+  selector: 'page-new-design-tour',
+  templateUrl: 'new-design-tour.html'
 })
-export class CreateVaultTourPage {
+export class NewDesignTourPage {
 
-  @ViewChild('createVaultTourSlides')
-  createVaultTourSlides: Slides;
+  @ViewChild('newDesignTourSlides')
+  newDesignTourSlides: Slides;
 
   constructor(
     private navCtrl: NavController,
@@ -19,7 +19,7 @@ export class CreateVaultTourPage {
   }
 
   public nextSlide(): void {
-    this.createVaultTourSlides.slideNext();
+    this.newDesignTourSlides.slideNext();
   }
 
   public goToBackupPage(): void {

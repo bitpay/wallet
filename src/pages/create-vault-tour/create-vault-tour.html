@@ -1,8 +1,42 @@
-<ion-slides pager="true">
-  <ion-slide>
-  </ion-slide>
-  <ion-slide>
-  </ion-slide>
-  <ion-slide>
-  </ion-slide>
-</ion-slides>
+<ion-content no-bounce>
+  <ion-slides #createVaultTourSlides pager="true" class="new-vault-slides">
+    <ion-slide>
+      <div class="img-container">
+        <!-- TODO: Use the correct image -->
+        <img src="assets/img/new-design-tour1.png">
+      </div>
+      <div class="slide-info">
+        <div class="info">
+          <div class="title" translate>Your funds, your bank</div>
+          <div class="text" translate>Vaults allow you to store your crypto funds directly on your computer or device. Similar to cash in physical wallet, only you can access control your money.</div>
+        </div>
+      </div>
+    </ion-slide>
+    <ion-slide>
+      <div class="img-container">
+        <!-- TODO: Use the correct image -->=
+        <img src="assets/img/new-design-tour2.png">
+      </div>
+      <div class="slide-info">
+        <div class="info">
+          <div class="title" translate>The “key” to your bank</div>
+          <div class="text" translate>Becoming your own bank means that you will need to protect your funds from theives. Each vault you create will have it’s own unique key that will need to kept privately and securely.</div>
+        </div>
+      </div>
+    </ion-slide>
+    <ion-slide>
+      <div class="img-container">
+        <!-- TODO: Use the correct image -->
+        <img src="assets/img/new-design-tour1.png">
+      </div>
+      <div class="slide-info">
+        <div class="info">
+          <div class="title" translate>Becoming your own bank requires responsibility.</div>
+          <div class="text" translate>One last thing. Your vault will be managed securely on this device. So if ever your device is lost, stolen, or updated, your vault can only be restored with your vault key.</div>
+        </div>
+      </div>
+    </ion-slide>
+  </ion-slides>
+  <button ion-button clear class="next-slide-button" (click)="nextSlide()" *ngIf="createVaultTourSlides.getActiveIndex() < 2" translate>Next</button>
+  <button ion-button clear class="next-slide-button" (click)="goToBackupPage()" *ngIf="createVaultTourSlides.getActiveIndex() == 2" translate>I understand</button>
+</ion-content>

@@ -1,12 +1,20 @@
-page-create-vault-tour {
-  .new-vault-slides {
+page-new-design-tour {
+  .new-design-slides {
     .slide-zoom {
-      height: 90%;
+      height: 100%;
     }
     ion-slide {
       background-color: #D3DAFC;
+      .page-title {
+        text-align: center;
+        width: 100%;
+        font-size: 20px;
+        font-weight: 500;
+        margin-top: 2rem;
+        margin-bottom: 3rem;
+      }
       .img-container {
-      height: 100%;
+        height: 100%;
       }
       .slide-info {
         position: absolute;

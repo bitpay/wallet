@@ -11,6 +11,7 @@ import { CreateVaultTourPage } from '../pages/create-vault-tour/create-vault-tou
 import { CreateVaultPage } from '../pages/create-vault/create-vault';
 import { SendFeedbackPage } from '../pages/feedback/send-feedback/send-feedback';
 import { FinishModalPage } from '../pages/finish/finish';
+import { NewDesignTourPage } from '../pages/new-design-tour/new-design-tour';
 import { BackupRequestPage } from '../pages/onboarding/backup-request/backup-request';
 import { CollectEmailPage } from '../pages/onboarding/collect-email/collect-email';
 import { DisclaimerPage } from '../pages/onboarding/disclaimer/disclaimer';
@@ -124,6 +125,7 @@ export const PAGES = [
   AdvancedPage,
   AllAddressesPage,
   AltCurrencyPage,
+  NewDesignTourPage,
   BackupRequestPage,
   BitPayCardHome,
   BitPayCardIntroPage,
