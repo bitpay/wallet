@@ -1181,7 +1181,7 @@ export class ProfileProvider {
   }
 
   // Creates a wallet on BWC/BWS
-  private doCreateWallet(opts): Promise<any> {
+  private createWallet(opts): Promise<any> {
     return new Promise((resolve, reject) => {
       const showOpts = _.clone(opts);
       if (showOpts.extendedPrivateKey) showOpts.extendedPrivateKey = '[hidden]';
@@ -1228,10 +1228,6 @@ export class ProfileProvider {
     });
   }
 
-  // create and store a wallet
-  public createWallet(opts): Promise<any> {
-    return this.doCreateWallet(opts);
-  }
 
   // joins and stores a wallet
   public joinWallet(opts): Promise<any> {
@@ -1335,19 +1331,14 @@ export class ProfileProvider {
   }
 
   public async createWalletInVault(opts): Promise<any> {
-    let vaultWallet;
-    let mnemonic;
-    let password;
-    vaultWallet = this.getWallet(this.activeVault.walletIds[0]);
-    const k = await this.walletProvider.getMnemonicAndPassword(vaultWallet);
-    mnemonic = k.mnemonic;
-    password = k.password;
+    const mnemonic = this.activeVault.credentials.mnemonic; // TODO get vault form server
+    // password = k.password;
     opts.mnemonic = mnemonic;
     return this.createWallet(opts).then(async walletClient => {
       await this.storeWalletsInVault([].concat(walletClient));
       // Encrypt wallet
       this.onGoingProcessProvider.pause();
-      if (password) walletClient.encryptPrivateKey(password);
+      // TODO ENCRYPT WALLETS if (password) walletClient.encryptPrivateKey(password);
       return this.addAndBindWalletClient(walletClient, {
         bwsurl: opts.bwsurl
       });

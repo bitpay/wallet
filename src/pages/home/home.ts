@@ -42,10 +42,7 @@ export class HomePage {
   @ViewChild('showCard')
   showCard;
   public vault;
-  public vaultWallets;
   public wallets;
-  public walletsBtc;
-  public walletsBch;
   public cachedBalanceUpdateOn: string;
   public txpsN: number;
   public serverMessage;
@@ -58,11 +55,13 @@ export class HomePage {
   public payProDetailsData;
   public remainingTimeStr: string;
   public slideDown: boolean;
+  public activeVault;
+  public showVaults: boolean;
 
   public showRateCard: boolean;
   public showReorderBtc: boolean;
   public showReorderBch: boolean;
-  public showReorderVaultWallets: boolean;
+  public showReorderWallets: boolean;
   public showIntegration;
   public hideHomeIntegrations: boolean;
   public showGiftCards: boolean;
@@ -103,12 +102,13 @@ export class HomePage {
     this.isElectron = this.platformProvider.isElectron;
     this.showReorderBtc = false;
     this.showReorderBch = false;
-    this.showReorderVaultWallets = false;
+    this.showReorderWallets = false;
     this.zone = new NgZone({ enableLongStackTrace: false });
     this.events.subscribe('Home/reloadStatus', () => {
       this._willEnter();
       this._didEnter();
     });
+    this.activeVault = this.profileProvider.activeVault;
   }
 
   ionViewWillEnter() {
@@ -338,20 +338,7 @@ export class HomePage {
 
   private setWallets = _.debounce(
     async () => {
-      this.wallets = this.profileProvider.getWallets();
-      this.vaultWallets = this.profileProvider.getVaultWallets();
-      this.walletsBtc = _.filter(this.wallets, (x: any) => {
-        return (
-          x.credentials.coin == 'btc' &&
-          !this.profileProvider.vaultHasWallet(x.credentials.walletId)
-        );
-      });
-      this.walletsBch = _.filter(this.wallets, (x: any) => {
-        return (
-          x.credentials.coin == 'bch' &&
-          !this.profileProvider.vaultHasWallet(x.credentials.walletId)
-        );
-      });
+      this.wallets = this.profileProvider.getVaultWallets();
       this.updateAllWallets();
     },
     5000,
@@ -626,48 +613,22 @@ export class HomePage {
     if (
       this.showReorderBtc ||
       this.showReorderBch ||
-      this.showReorderVaultWallets
+      this.showReorderWallets
     )
       return;
 
     this.events.publish('OpenWallet', wallet);
   }
 
-  public reorderBtc(): void {
-    this.showReorderBtc = !this.showReorderBtc;
-  }
-
-  public reorderBch(): void {
-    this.showReorderBch = !this.showReorderBch;
-  }
-
   public reorderVault(): void {
-    this.showReorderVaultWallets = !this.showReorderVaultWallets;
+    this.showReorderWallets = !this.showReorderWallets;
   }
 
-  public reorderWalletsBtc(indexes): void {
-    const element = this.walletsBtc[indexes.from];
-    this.walletsBtc.splice(indexes.from, 1);
-    this.walletsBtc.splice(indexes.to, 0, element);
-    _.each(this.walletsBtc, (wallet, index: number) => {
-      this.profileProvider.setWalletOrder(wallet.id, index);
-    });
-  }
-
-  public reorderWalletsBch(indexes): void {
-    const element = this.walletsBch[indexes.from];
-    this.walletsBch.splice(indexes.from, 1);
-    this.walletsBch.splice(indexes.to, 0, element);
-    _.each(this.walletsBch, (wallet, index: number) => {
-      this.profileProvider.setWalletOrder(wallet.id, index);
-    });
-  }
-
-  public reorderVaultWallets(indexes): void {
-    const element = this.vaultWallets[indexes.from];
-    this.vaultWallets.splice(indexes.from, 1);
-    this.vaultWallets.splice(indexes.to, 0, element);
-    _.each(this.vaultWallets, (wallet, index: number) => {
+  public reorderWallets(indexes): void {
+    const element = this.wallets[indexes.from];
+    this.wallets.splice(indexes.from, 1);
+    this.wallets.splice(indexes.to, 0, element);
+    _.each(this.wallets, (wallet, index: number) => {
       this.profileProvider.setWalletOrder(wallet.id, index);
     });
   }

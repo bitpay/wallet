@@ -57,6 +57,7 @@ import { MultipleOutputsPage } from '../pages/includes/multiple-outputs/multiple
 import { TxpPage } from '../pages/includes/txp/txp';
 import { WalletActivityPage } from '../pages/includes/wallet-activity/wallet-activity';
 import { CreateNewVaultHome } from '../pages/integrations/create-new-vault/create-new-vault';
+import { CreateNewWalletHome } from '../pages/integrations/create-new-wallet/create-new-wallet';
 
 /* Tabs */
 import { HomePage } from '../pages/home/home';
@@ -136,6 +137,7 @@ export const PAGES = [
   CardCatalogPage,
   ChooseFeeLevelPage,
   CreateNewVaultHome,
+  CreateNewWalletHome,
   CreateWalletPage,
   CreateVaultPage,
   CreateVaultTourPage,

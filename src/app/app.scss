@@ -431,17 +431,6 @@ ion-alert .alert-message {
   }
 }
 
-.header-extend {
-  background: $toolbar-background;
-  height: 180px;
-  position: absolute;
-  top: -100px;
-  width: 100%;
-  z-index: 0;
-  display: flex;
-  justify-content: center;
-}
-
 .section-header {
   color: rgba(0, 0, 0, 0.3);
   font-weight: 600;

@@ -7,7 +7,6 @@ import { Logger } from '../../../providers/logger/logger';
 // Providers
 import { BwcErrorProvider } from '../../../providers/bwc-error/bwc-error';
 import { ConfigProvider } from '../../../providers/config/config';
-import { DerivationPathHelperProvider } from '../../../providers/derivation-path-helper/derivation-path-helper';
 import { ExternalLinkProvider } from '../../../providers/external-link/external-link';
 import { OnGoingProcessProvider } from '../../../providers/on-going-process/on-going-process';
 import { PopupProvider } from '../../../providers/popup/popup';
@@ -43,13 +42,10 @@ export class CreateWalletPage implements OnInit {
 
   private defaults;
   private tc: number;
-  private derivationPathByDefault: string;
-  private derivationPathForTestnet: string;
 
   public copayers: number[];
   public signatures: number[];
   public showAdvOpts: boolean;
-  public seedOptions;
   public isShared: boolean;
   public coin: string;
   public okText: string;
@@ -62,7 +58,6 @@ export class CreateWalletPage implements OnInit {
     private fb: FormBuilder,
     private profileProvider: ProfileProvider,
     private configProvider: ConfigProvider,
-    private derivationPathHelperProvider: DerivationPathHelperProvider,
     private popupProvider: PopupProvider,
     private onGoingProcessProvider: OnGoingProcessProvider,
     private logger: Logger,
@@ -79,10 +74,7 @@ export class CreateWalletPage implements OnInit {
     this.coin = this.navParams.get('coin');
     this.defaults = this.configProvider.getDefaults();
     this.tc = this.isShared ? this.defaults.wallet.totalCopayers : 1;
-
     this.copayers = _.range(2, this.defaults.limits.totalCopayers + 1);
-    this.derivationPathByDefault = this.derivationPathHelperProvider.default;
-    this.derivationPathForTestnet = this.derivationPathHelperProvider.defaultTestnet;
     this.showAdvOpts = false;
 
     this.createForm = this.fb.group({
@@ -91,13 +83,10 @@ export class CreateWalletPage implements OnInit {
       totalCopayers: [1],
       requiredCopayers: [1],
       bwsURL: [this.defaults.bws.url],
-      selectedSeed: ['new'],
       recoveryPhrase: [null],
-      derivationPath: [this.derivationPathByDefault],
       testnetEnabled: [false],
       singleAddress: [false],
-      coin: [this.coin, Validators.required],
-      addToVault: [false]
+      coin: [this.coin, Validators.required]
     });
 
     this.setTotalCopayers(this.tc);
@@ -113,7 +102,6 @@ export class CreateWalletPage implements OnInit {
   public setTotalCopayers(n: number): void {
     this.createForm.controls['totalCopayers'].setValue(n);
     this.updateRCSelect(n);
-    this.updateSeedSourceSelect();
   }
 
   private updateRCSelect(n: number): void {
@@ -123,46 +111,6 @@ export class CreateWalletPage implements OnInit {
     this.createForm.controls['requiredCopayers'].setValue(
       Math.min(Math.trunc(n / 2 + 1), maxReq)
     );
-  }
-
-  private updateSeedSourceSelect(): void {
-    this.seedOptions = [
-      {
-        id: 'new',
-        label: this.translate.instant('Random'),
-        supportsTestnet: true
-      },
-      {
-        id: 'set',
-        label: this.translate.instant('Specify Recovery Phrase'),
-        supportsTestnet: false
-      }
-    ];
-    this.createForm.controls['selectedSeed'].setValue(this.seedOptions[0].id); // new or set
-  }
-
-  public seedOptionsChange(seed): void {
-    if (seed === 'set') {
-      this.createForm
-        .get('recoveryPhrase')
-        .setValidators([Validators.required]);
-    } else {
-      this.createForm.get('recoveryPhrase').setValidators(null);
-    }
-    this.createForm.controls['selectedSeed'].setValue(seed); // new or set
-    if (this.createForm.controls['testnet'])
-      this.createForm.controls['testnet'].setValue(false);
-    this.createForm.controls['derivationPath'].setValue(
-      this.derivationPathByDefault
-    );
-    this.createForm.controls['recoveryPhrase'].setValue(null);
-  }
-
-  public setDerivationPath(): void {
-    const path: string = this.createForm.value.testnet
-      ? this.derivationPathForTestnet
-      : this.derivationPathByDefault;
-    this.createForm.controls['derivationPath'].setValue(path);
   }
 
   public setOptsAndCreate(): void {
@@ -179,52 +127,6 @@ export class CreateWalletPage implements OnInit {
       singleAddress: this.createForm.value.singleAddress,
       coin: this.createForm.value.coin
     };
-
-    const setSeed = this.createForm.value.selectedSeed == 'set';
-    if (setSeed) {
-      const words = this.createForm.value.recoveryPhrase || '';
-      if (
-        words.indexOf(' ') == -1 &&
-        words.indexOf('prv') == 1 &&
-        words.length > 108
-      ) {
-        opts.extendedPrivateKey = words;
-      } else {
-        opts.mnemonic = words;
-      }
-
-      const derivationPath = this.createForm.value.derivationPath;
-      opts.networkName = this.derivationPathHelperProvider.getNetworkName(
-        derivationPath
-      );
-      opts.derivationStrategy = this.derivationPathHelperProvider.getDerivationStrategy(
-        derivationPath
-      );
-      opts.account = this.derivationPathHelperProvider.getAccount(
-        derivationPath
-      );
-
-      if (
-        !opts.networkName ||
-        !opts.derivationStrategy ||
-        !Number.isInteger(opts.account)
-      ) {
-        const title = this.translate.instant('Error');
-        const subtitle = this.translate.instant('Invalid derivation path');
-        this.popupProvider.ionicAlert(title, subtitle);
-        return;
-      }
-    }
-
-    if (setSeed && !opts.mnemonic && !opts.extendedPrivateKey) {
-      const title = this.translate.instant('Error');
-      const subtitle = this.translate.instant(
-        'Please enter the wallet recovery phrase'
-      );
-      this.popupProvider.ionicAlert(title, subtitle);
-      return;
-    }
-
     this.create(opts);
   }
 
@@ -237,8 +139,8 @@ export class CreateWalletPage implements OnInit {
         this.events.publish('status:updated');
         this.walletProvider.updateRemotePreferences(wallet);
         this.pushNotificationsProvider.updateSubscription(wallet);
-        this.setBackupFlagIfNeeded(wallet.credentials.walletId);
-        this.setFingerprintIfNeeded(wallet.credentials.walletId);
+        this.setBackupFlag(wallet.credentials.walletId);
+        this.setFingerprint(wallet.credentials.walletId);
         this.navCtrl.popToRoot();
         this.events.publish('OpenWallet', wallet);
       })
@@ -258,17 +160,12 @@ export class CreateWalletPage implements OnInit {
       });
   }
 
-  private setBackupFlagIfNeeded(walletId: string) {
-    if (this.createForm.value.selectedSeed == 'set') {
-      this.profileProvider.setBackupFlag(walletId);
-    } else if (this.createForm.value.addToVault) {
-      const vault = this.profileProvider.activeVault;
-      if (!vault.needsBackup) this.profileProvider.setBackupFlag(walletId);
-    }
+  private setBackupFlag(walletId: string) {
+    const vault = this.profileProvider.activeVault;
+    if (!vault.needsBackup) this.profileProvider.setBackupFlag(walletId);
   }
 
-  private async setFingerprintIfNeeded(walletId: string) {
-    if (!this.createForm.value.addToVault) return;
+  private async setFingerprint(walletId: string) {
     const vaultWallets = this.profileProvider.getVaultWallets();
     const config = this.configProvider.get();
     const touchIdEnabled = config.touchIdFor
