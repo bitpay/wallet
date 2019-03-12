@@ -64,7 +64,7 @@ export class BackupGamePage {
     this.walletId = this.navParams.data.walletId;
     this.fromOnboarding = this.navParams.data.fromOnboarding;
     this.wallet = this.profileProvider.getWallet(this.walletId);
-    this.vault = this.profileProvider.getVault();
+    this.vault = this.profileProvider.activeVault;
     this.isVaultWallet =
       this.vault &&
       this.vault.walletIds &&

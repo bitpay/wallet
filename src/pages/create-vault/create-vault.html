@@ -1,0 +1,24 @@
+<wide-header-page title="{{'Create Vault' | translate}}">
+  <div page-content>
+    <form [formGroup]="createVaultForm">
+      <ion-item>
+        <ion-label floating>{{'Vault name' | translate}}</ion-label>
+        <ion-input type="text" formControlName="vaultName"></ion-input>
+      </ion-item>
+      <div class="color-item">
+        <ion-item (click)="openColorPageModal()">
+          <ion-label>{{'Vault color' | translate}}</ion-label>
+        </ion-item>
+        <div class="vault-icon vault-color-{{colorIndex}}"></div>
+      </div>
+    </form>
+  </div>
+</wide-header-page>
+
+<ion-footer>
+  <ion-toolbar>
+    <button ion-button full class="button-footer" (click)="createVault()" [disabled]="!createVaultForm.valid">
+      {{'Continue' | translate}}
+    </button>
+  </ion-toolbar>
+</ion-footer>

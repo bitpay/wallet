@@ -1,2 +1,10 @@
 page-create-wallet {
+  .back-button {
+    color: color($colors, dark);
+  }
+  .wide-header {
+    &__title {
+      color: color($colors, dark) !important;
+    }
+  }
 }

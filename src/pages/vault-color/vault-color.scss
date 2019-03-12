@@ -1,0 +1,17 @@
+page-vault-color {
+  ion-label {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .settings-color-block {
+    display: flex;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    float: left;
+    margin: 1rem;
+    align-items: center;
+  }
+}

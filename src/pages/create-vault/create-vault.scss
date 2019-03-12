@@ -1,0 +1,14 @@
+page-create-vault {
+  .color-item {
+    position: relative;
+  }
+  .vault-icon {
+    mask-image: url(../assets/img/vault.svg);
+    position: absolute;
+    right: 0;
+    padding-right: 60px;
+    margin-top: -46px;
+    height: 100%;
+    mask-repeat: no-repeat;
+  }
+}

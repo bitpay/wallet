@@ -1,9 +1,26 @@
-<?xml version="1.0" encoding="utf-8"?>
-<svg version="1.1" id="Wallet" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-	 viewBox="0 0 40 40" style="enable-background:new 0 0 40 40;" xml:space="preserve">
-<style type="text/css">
-	.st0{fill:none;stroke:#FFFFFF;}
-</style>
-<path id="Icon" class="st0" d="M6.5,26.9c0,1.6,1.3,2.9,3.1,2.9h20.8c1.7,0,3.1-1.2,3.1-2.9V13.3H6.5V26.9L6.5,26.9z M26.7,13.3
-	v-3.1H6.5v3.1H26.7z M28.5,24.3c0.9,0,1.7-0.7,1.7-1.6c0-0.9-0.7-1.6-1.7-1.6s-1.7,0.7-1.7,1.6C26.7,23.6,27.5,24.3,28.5,24.3z"/>
+
+<svg width="39px" height="39px" viewBox="0 0 39 39" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <defs>
+        <path d="M19.5,39 C30.2695526,39 39,30.2695526 39,19.5 C39,8.73044738 30.2695526,0 19.5,0 C8.73044738,0 0,8.73044738 0,19.5 C0,30.2695526 8.73044738,39 19.5,39 Z" id="path-1"></path>
+    </defs>
+    <g id="Onboarding-(Create-New-Wallet-or-token)" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Add-Wallet----Type" transform="translate(-29.000000, -173.000000)">
+            <rect fill="#FFFFFF" x="0" y="0" width="375" height="812"></rect>
+            <g id="Field" transform="translate(0.000000, 128.000000)">
+                <g id="Large-(50px)/wallet-ETH" transform="translate(29.000000, 45.000000)">
+                    <g id="item-ico-backup">
+                        <mask id="mask-2" fill="white">
+                            <use xlink:href="#path-1"></use>
+                        </mask>
+                        <use id="Mask" fill="#4F6EF7" opacity="0.100000001" xlink:href="#path-1"></use>
+                    </g>
+                    <g id="Icons/wallet-3" transform="translate(10.140000, 10.920000)" fill="#4F6EF7">
+                        <g id="wallet-43">
+                            <path d="M18.2083333,2.83333333 L3.16666667,2.83333333 L2.375,2.83333333 C1.93879167,2.83333333 1.58333333,2.51529167 1.58333333,2.125 C1.58333333,1.73470833 1.93879167,1.41666667 2.375,1.41666667 L14.25,1.41666667 L14.25,2.83333333 L15.8333333,2.83333333 L15.8333333,0.708333333 C15.8333333,0.317333333 15.4786667,0 15.0416667,0 L2.375,0 C1.06320833,0 0,0.951291667 0,2.125 L0,14.1666667 C0,15.731375 1.417875,17 3.16666667,17 L17.5632011,17 C18.2083333,17 19,16.1493024 19,15.5247934 L19,3.54166667 C19,3.15066667 18.6453333,2.83333333 18.2083333,2.83333333 Z M14.25,11.5909091 C13.3752083,11.5909091 12.6666667,10.8993182 12.6666667,10.0454545 C12.6666667,9.19159091 13.3752083,8.5 14.25,8.5 C15.1247917,8.5 15.8333333,9.19159091 15.8333333,10.0454545 C15.8333333,10.8993182 15.1247917,11.5909091 14.25,11.5909091 Z" id="Shape"></path>
+                        </g>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
 </svg>

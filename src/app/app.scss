@@ -86,7 +86,7 @@ ion-spinner * {
 
 // Item font size
 .item-title {
-  //  font-size: 1.4rem;
+  font-size: 1.4rem;
 }
 
 .item-subtitle {
@@ -161,11 +161,6 @@ ion-spinner * {
   background-repeat: no-repeat;
   background-clip: padding-box;
   background-size: 103%;
-}
-
-.icon-wallet {
-  background-color: color($colors, primary);
-  padding: 4px;
 }
 
 .icon-card {
@@ -530,4 +525,62 @@ label-tip.warn.no-arrowhead:before {
 
 .slide-confirm-fast {
   transition: transform 0.3s;
+}
+
+/* generate classes for all colors */
+.vault-color-0 {
+  background: #dd4b39;
+}
+
+.vault-color-1 {
+  background: #f38f12;
+}
+
+.vault-color-2 {
+  background: #faa77f;
+}
+
+.vault-color-3 {
+  background: #d0b136;
+}
+
+.vault-color-4 {
+  background: #9edd72;
+}
+
+.vault-color-5 {
+  background: #1abb9b;
+}
+
+.vault-color-6 {
+  background: #019477;
+}
+
+.vault-color-7 {
+  background: #77dada;
+}
+
+.vault-color-8 {
+  background: #647ce8;
+}
+
+.vault-color-9 {
+  background: #484ed3;
+}
+
+.vault-color-10 {
+  background: #9b59b6;
+}
+
+
+.vault-color-11 {
+  background: #e856ef;
+}
+
+.vault-color-12 {
+  background: #ff599e;
+}
+
+.vault-color-13 {
+  background: #7a8c9e;
 }

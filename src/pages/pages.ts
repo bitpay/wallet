@@ -4,8 +4,11 @@ import { CopayersPage } from '../pages/add/copayers/copayers';
 import { CreateWalletPage } from '../pages/add/create-wallet/create-wallet';
 import { ImportWalletPage } from '../pages/add/import-wallet/import-wallet';
 import { JoinWalletPage } from '../pages/add/join-wallet/join-wallet';
+import { SelectCurrencyPage } from '../pages/add/select-currency/select-currency';
 import { BackupGamePage } from '../pages/backup/backup-game/backup-game';
 import { BackupKeyPage } from '../pages/backup/backup-key/backup-key';
+import { CreateVaultTourPage } from '../pages/create-vault-tour/create-vault-tour';
+import { CreateVaultPage } from '../pages/create-vault/create-vault';
 import { SendFeedbackPage } from '../pages/feedback/send-feedback/send-feedback';
 import { FinishModalPage } from '../pages/finish/finish';
 import { BackupRequestPage } from '../pages/onboarding/backup-request/backup-request';
@@ -18,6 +21,7 @@ import { SlideToAcceptPage } from '../pages/slide-to-accept/slide-to-accept';
 import { TabsPage } from '../pages/tabs/tabs';
 import { TxDetailsPage } from '../pages/tx-details/tx-details';
 import { TxpDetailsPage } from '../pages/txp-details/txp-details';
+import { VaultColorPage } from '../pages/vault-color/vault-color';
 import { SearchTxModalPage } from '../pages/wallet-details/search-tx-modal/search-tx-modal';
 import { WalletBalancePage } from '../pages/wallet-details/wallet-balance/wallet-balance';
 import { WalletDetailsPage } from '../pages/wallet-details/wallet-details';
@@ -81,7 +85,6 @@ import { SharePage } from '../pages/settings/share/share';
 import { VaultDeletePage } from '../pages/settings/vault-delete/vault-delete';
 
 /* Wallet Settings */
-import { WalletColorPage } from '../pages/settings/wallet-settings/wallet-color/wallet-color';
 import { WalletNamePage } from '../pages/settings/wallet-settings/wallet-name/wallet-name';
 import { WalletSettingsPage } from '../pages/settings/wallet-settings/wallet-settings';
 
@@ -132,6 +135,8 @@ export const PAGES = [
   ChooseFeeLevelPage,
   CreateNewVaultHome,
   CreateWalletPage,
+  CreateVaultPage,
+  CreateVaultTourPage,
   CoinbasePage,
   CoinbaseTxDetailsPage,
   CopayersPage,
@@ -165,6 +170,7 @@ export const PAGES = [
   SendPage,
   SettingsPage,
   SellCoinbasePage,
+  SelectCurrencyPage,
   CoinbaseSettingsPage,
   ShapeshiftConfirmPage,
   ShapeshiftDetailsPage,
@@ -184,7 +190,7 @@ export const PAGES = [
   VaultDeletePage,
   WalletSettingsPage,
   WalletNamePage,
-  WalletColorPage,
+  VaultColorPage,
   WalletInformationPage,
   WalletAddressesPage,
   WalletExportPage,

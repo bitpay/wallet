@@ -48,7 +48,6 @@ const Keys = {
     return legacyGiftCardKey || `giftCards-${cardName}-${network}`;
   },
   HIDE_BALANCE: walletId => 'hideBalance-' + walletId,
-  HOME_TIP: 'homeTip',
   LAST_ADDRESS: walletId => 'lastAddress-' + walletId,
   LAST_CURRENCY_USED: 'lastCurrencyUsed',
   ONBOARDING_COMPLETED: 'onboardingCompleted',
@@ -59,7 +58,8 @@ const Keys = {
   ORDER_WALLET: walletId => 'order-' + walletId,
   SERVER_MESSAGE_DISMISSED: 'serverMessageDismissed',
   SHAPESHIFT_TOKEN: network => 'shapeshiftToken-' + network,
-  VAULT: 'vault'
+  VAULTS: 'vaults',
+  ACTIVE_VAULT: 'active-vault'
 };
 
 interface Storage {
@@ -107,20 +107,28 @@ export class PersistenceProvider {
     return this.storage.remove(Keys.PROFILE);
   }
 
-  storeVault(vault): Promise<void> {
-    return this.storage.set(Keys.VAULT, vault);
+  storeVaults(vaults): Promise<void> {
+    return this.storage.set(Keys.VAULTS, vaults);
   }
 
-  getVault(): Promise<any> {
+  getVaults(): Promise<any> {
     return new Promise(resolve => {
-      this.storage.get(Keys.VAULT).then(vault => {
-        resolve(vault);
+      this.storage.get(Keys.VAULTS).then(vaults => {
+        resolve(vaults);
       });
     });
   }
 
-  deleteVault() {
-    return this.storage.remove(Keys.VAULT);
+  setActiveVault(activeVault): Promise<any> {
+    return this.storage.set(Keys.ACTIVE_VAULT, activeVault);
+  }
+
+  getActiveVault(): Promise<any> {
+    return new Promise(resolve => {
+      this.storage.get(Keys.ACTIVE_VAULT).then(vault => {
+        resolve(vault);
+      });
+    });
   }
 
   setFeedbackInfo(feedbackValues: FeedbackValues) {
@@ -185,14 +193,6 @@ export class PersistenceProvider {
 
   clearConfig() {
     return this.storage.remove(Keys.CONFIG);
-  }
-
-  getHomeTipAccepted() {
-    return this.storage.get(Keys.HOME_TIP);
-  }
-
-  setHomeTipAccepted(homeTip) {
-    return this.storage.set(Keys.HOME_TIP, homeTip);
   }
 
   setHideBalanceFlag(walletId: string, val) {

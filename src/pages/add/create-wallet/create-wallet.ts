@@ -51,7 +51,7 @@ export class CreateWalletPage implements OnInit {
   public showAdvOpts: boolean;
   public seedOptions;
   public isShared: boolean;
-  public title: string;
+  public coin: string;
   public okText: string;
   public cancelText: string;
   public createForm: FormGroup;
@@ -76,9 +76,7 @@ export class CreateWalletPage implements OnInit {
     this.okText = this.translate.instant('Ok');
     this.cancelText = this.translate.instant('Cancel');
     this.isShared = this.navParams.get('isShared');
-    this.title = this.isShared
-      ? this.translate.instant('Create shared wallet')
-      : this.translate.instant('Create personal wallet');
+    this.coin = this.navParams.get('coin');
     this.defaults = this.configProvider.getDefaults();
     this.tc = this.isShared ? this.defaults.wallet.totalCopayers : 1;
 
@@ -98,7 +96,7 @@ export class CreateWalletPage implements OnInit {
       derivationPath: [this.derivationPathByDefault],
       testnetEnabled: [false],
       singleAddress: [false],
-      coin: [null, Validators.required],
+      coin: [this.coin, Validators.required],
       addToVault: [false]
     });
 
@@ -232,10 +230,8 @@ export class CreateWalletPage implements OnInit {
 
   private create(opts): void {
     this.onGoingProcessProvider.set('creatingWallet');
-    const promise = this.createForm.value.addToVault
-      ? this.profileProvider.createWalletInVault(opts)
-      : this.profileProvider.createNewSeedWallet(opts);
-    promise
+    this.profileProvider
+      .createWalletInVault(opts)
       .then(wallet => {
         this.onGoingProcessProvider.clear();
         this.events.publish('status:updated');
@@ -266,7 +262,7 @@ export class CreateWalletPage implements OnInit {
     if (this.createForm.value.selectedSeed == 'set') {
       this.profileProvider.setBackupFlag(walletId);
     } else if (this.createForm.value.addToVault) {
-      const vault = this.profileProvider.getVault();
+      const vault = this.profileProvider.activeVault;
       if (!vault.needsBackup) this.profileProvider.setBackupFlag(walletId);
     }
   }

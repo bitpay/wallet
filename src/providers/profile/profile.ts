@@ -27,7 +27,7 @@ import { Profile } from '../../models/profile/profile.model';
 @Injectable()
 export class ProfileProvider {
   public wallet: any = {};
-  public vault: any = {};
+  public activeVault: any = {};
   public profile: Profile;
 
   private UPDATE_PERIOD = 15;
@@ -232,7 +232,7 @@ export class ProfileProvider {
           return;
         }
         wallet.setNotificationsInterval(this.UPDATE_PERIOD);
-        wallet.openWallet(() => {});
+        wallet.openWallet(() => { });
       }
     );
     this.events.subscribe('wallet:updated', (walletId: string) => {
@@ -248,7 +248,7 @@ export class ProfileProvider {
     if (wallet.backupTimestamp) date = new Date(Number(wallet.backupTimestamp));
     this.logger.info(
       `Binding wallet: ${wallet.id} - Backed up: ${backedUp} ${
-        date ? date : ''
+      date ? date : ''
       } - Encrypted: ${isEncrypted}`
     );
 
@@ -453,7 +453,7 @@ export class ProfileProvider {
             this.profile.setChecked(this.platformProvider.ua, walletId);
           } else {
             this.logger.warn('Key Derivation failed for wallet:' + walletId);
-            this.persistenceProvider.clearLastAddress(walletId).then(() => {});
+            this.persistenceProvider.clearLastAddress(walletId).then(() => { });
           }
 
           this.storeProfileIfDirty();
@@ -760,8 +760,8 @@ export class ProfileProvider {
           const mergeAddressBook = _.merge(addressBook, localAddressBook);
           this.persistenceProvider
             .setAddressBook(
-              wallet.credentials.network,
-              JSON.stringify(mergeAddressBook)
+            wallet.credentials.network,
+            JSON.stringify(mergeAddressBook)
             )
             .then(() => {
               return resolve();
@@ -866,7 +866,7 @@ export class ProfileProvider {
   }
 
   private async storeWalletsInVault(walletClients, newVault?) {
-    const vault = newVault || this.getVault();
+    const vault = newVault || this.activeVault;
     walletClients.forEach(wallet => {
       vault.walletIds.push(wallet.credentials.walletId);
     });
@@ -1314,73 +1314,41 @@ export class ProfileProvider {
     vaultWallets.forEach(wallet => {
       promises.push(this.deleteWalletClient(wallet));
     });
-    return Promise.all(promises).then(() => {
-      return this.persistenceProvider.deleteVault();
+    return Promise.all(promises).then(async () => {
+      const vaults = await this.getVaults();
+      delete vaults[this.activeVault.vaultId];
+      return this.persistenceProvider.storeVaults(vaults);
     });
-  }
-
-  public createDefaultWallet(): Promise<any> {
-    const opts: Partial<WalletOptions> = {};
-    opts.m = 1;
-    opts.n = 1;
-    opts.networkName = 'livenet';
-    opts.coin = Coin.BTC;
-    return this.createNewSeedWallet(opts);
-  }
-
-  public createDefaultVault(): Promise<any> {
-    const defaultVault = {
-      walletIds: [],
-      needsBackup: true
-    };
-    return this.createVault(defaultVault);
   }
 
   public createVault(vault, opts?): Promise<any> {
     return this.seedWallet(opts).then(async vaultClient => {
-      await this.storeVault(vault);
-      return Promise.resolve(vaultClient);
+      this.onGoingProcessProvider.pause();
+      return this.askToEncryptWallets([].concat(vaultClient)).then(async () => {
+        this.onGoingProcessProvider.resume();
+        vault = { ...vault, ...vaultClient };
+        await this.storeVault(vault);
+        await this.bindVault();
+        return Promise.resolve(vaultClient);
+      });
     });
   }
 
   public async createWalletInVault(opts): Promise<any> {
-    const vault = this.getVault();
-    const needToCreateVault = !vault;
-    let vaultClient;
     let vaultWallet;
     let mnemonic;
     let password;
-    if (needToCreateVault) {
-      vaultClient = await this.createDefaultVault();
-      mnemonic = vaultClient.credentials.mnemonic;
-    } else {
-      vaultWallet = this.getWallet(vault.walletIds[0]);
-      const k = await this.walletProvider.getMnemonicAndPassword(vaultWallet);
-      mnemonic = k.mnemonic;
-      password = k.password;
-    }
+    vaultWallet = this.getWallet(this.activeVault.walletIds[0]);
+    const k = await this.walletProvider.getMnemonicAndPassword(vaultWallet);
+    mnemonic = k.mnemonic;
+    password = k.password;
     opts.mnemonic = mnemonic;
     return this.createWallet(opts).then(async walletClient => {
       await this.storeWalletsInVault([].concat(walletClient));
       // Encrypt wallet
       this.onGoingProcessProvider.pause();
       if (password) walletClient.encryptPrivateKey(password);
-      // If already encrypted encrypt new wallet
-      else if (needToCreateVault) {
-        // Only ask to encrypt wallet if is the first wallet in vault
-        this.onGoingProcessProvider.pause();
-        await this.askToEncryptWallets([].concat(walletClient));
-        this.onGoingProcessProvider.resume();
-      }
       return this.addAndBindWalletClient(walletClient, {
-        bwsurl: opts.bwsurl
-      });
-    });
-  }
-
-  public createNewSeedWallet(opts): Promise<any> {
-    return this.createWallet(opts).then(walletClient => {
-      return this.addAndBindNewSeedWalletClient(walletClient, {
         bwsurl: opts.bwsurl
       });
     });
@@ -1691,16 +1659,30 @@ export class ProfileProvider {
   }
 
   private async bindVault() {
-    this.vault = await this.persistenceProvider.getVault();
+    this.activeVault = await this.persistenceProvider.getActiveVault();
   }
 
   public async storeVault(vault) {
-    this.vault = vault;
-    await this.persistenceProvider.storeVault(vault);
+    let vaults = await this.getVaults();
+    if (!_.isArray(vaults)) vaults = [];
+    vaults.push(vault);
+    await this.persistenceProvider.storeVaults(vaults);
+    await this.setActiveVault(vault);
+    await this.bindVault();
   }
 
-  public getVault() {
-    return this.vault;
+  public getVaults() {
+    return this.persistenceProvider.getVaults();
+  }
+
+  public getNewVaultId() {
+    return this.getVaults().then(vaults => {
+      return vaults[0] ? vaults.length + 1 : 0;
+    });
+  }
+
+  public setActiveVault(activeVault): Promise<any> {
+    return this.persistenceProvider.setActiveVault(activeVault);
   }
 
   public getVaultWallets() {
@@ -1713,9 +1695,9 @@ export class ProfileProvider {
 
   public vaultHasWallet(walletId: string): boolean {
     return (
-      this.vault &&
-      this.vault.walletIds &&
-      this.vault.walletIds.includes(walletId)
+      this.activeVault &&
+      this.activeVault.walletIds &&
+      this.activeVault.walletIds.includes(walletId)
     );
   }
 }

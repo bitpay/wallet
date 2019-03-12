@@ -1,6 +1,6 @@
 <ion-header>
-  <ion-navbar [navbar-bg]="wallet?.color">
-    <ion-title>{{'Wallet Color' | translate}}</ion-title>
+  <ion-navbar [navbar-bg]="vault?.color">
+    <ion-title>{{'Vault Color' | translate}}</ion-title>
   </ion-navbar>
 </ion-header>
 
@@ -8,7 +8,7 @@
   <ion-list radio-group [(ngModel)]="currentColorIndex" class="settings-list">
     <ion-item *ngFor="let i of colorCount">
       <ion-label>
-        <span class="settings-color-block wallet-color-{{i}}"></span>
+        <span class="settings-color-block vault-color-{{i}}"></span>
       </ion-label>
       <ion-radio (click)="save(i)" [value]="i"></ion-radio>
     </ion-item>

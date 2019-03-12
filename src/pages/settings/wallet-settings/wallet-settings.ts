@@ -7,14 +7,12 @@ import { Logger } from '../../../providers/logger/logger';
 import { ActionSheetProvider } from '../../../providers/action-sheet/action-sheet';
 import { ConfigProvider } from '../../../providers/config/config';
 import { ExternalLinkProvider } from '../../../providers/external-link/external-link';
-import { PersistenceProvider } from '../../../providers/persistence/persistence';
 import { ProfileProvider } from '../../../providers/profile/profile';
 import { TouchIdProvider } from '../../../providers/touchid/touchid';
 import { WalletProvider } from '../../../providers/wallet/wallet';
 
 // pages
 import { BackupKeyPage } from '../../backup/backup-key/backup-key';
-import { WalletColorPage } from './wallet-color/wallet-color';
 import { WalletNamePage } from './wallet-name/wallet-name';
 import { WalletAddressesPage } from './wallet-settings-advanced/wallet-addresses/wallet-addresses';
 import { WalletDeletePage } from './wallet-settings-advanced/wallet-delete/wallet-delete';
@@ -50,9 +48,8 @@ export class WalletSettingsPage {
     private navParams: NavParams,
     private touchIdProvider: TouchIdProvider,
     private translate: TranslateService,
-    private actionSheetProvider: ActionSheetProvider,
-    private persistenceProvider: PersistenceProvider
-  ) {}
+    private actionSheetProvider: ActionSheetProvider
+  ) { }
 
   ionViewDidLoad() {
     this.logger.info('Loaded:  WalletSettingsPage');
@@ -76,10 +73,10 @@ export class WalletSettingsPage {
     ) {
       this.deleted = true;
     }
-    this.persistenceProvider.getVault().then(vault => {
-      this.notVaultWallet =
-        !vault || !vault.walletIds.includes(this.wallet.credentials.walletId);
-    });
+    const activeVault = this.profileProvider.activeVault;
+    this.notVaultWallet =
+      !activeVault ||
+      !activeVault.walletIds.includes(this.wallet.credentials.walletId);
   }
 
   public hiddenBalanceChange(): void {
@@ -172,12 +169,6 @@ export class WalletSettingsPage {
 
   public openWalletName(): void {
     this.navCtrl.push(WalletNamePage, {
-      walletId: this.wallet.credentials.walletId
-    });
-  }
-
-  public openWalletColor(): void {
-    this.navCtrl.push(WalletColorPage, {
       walletId: this.wallet.credentials.walletId
     });
   }

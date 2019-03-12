@@ -110,7 +110,7 @@ export class SettingsPage {
       this.config && this.config.lock && this.config.lock.method
         ? this.config.lock.method.toLowerCase()
         : null;
-    this.vault = this.profileProvider.getVault();
+    this.vault = this.profileProvider.activeVault;
     this.vaultWallets = this.profileProvider.getVaultWallets();
     this.encryptEnabled = this.walletProvider.isEncrypted(this.vaultWallets[0]);
     this.touchIdEnabled = this.config.touchIdFor

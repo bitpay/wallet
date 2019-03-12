@@ -35,8 +35,10 @@ export type InfoSheetType =
   | 'sensitive-info'
   | 'in-app-notification'
   | 'request-feature'
-  | 'report-issue';
-
+  | 'report-issue'
+  | 'create-vault-onboarding-1'
+  | 'create-vault-onboarding-2'
+  | 'create-vault-onboarding-3';
 export type OptionsSheetType =
   | 'address-options'
   | 'gift-card-options'
