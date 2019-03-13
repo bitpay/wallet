@@ -1,7 +1,16 @@
 import { Component } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { Events, NavParams, Platform, ViewController } from 'ionic-angular';
+import {
+  Events,
+  ModalController,
+  NavParams,
+  Platform,
+  ViewController
+} from 'ionic-angular';
 import { Subscription } from 'rxjs';
+
+// Pages
+import { FinishModalPage } from '../../finish/finish';
 
 // Native
 import { SocialSharing } from '@ionic-native/social-sharing';
@@ -50,7 +59,8 @@ export class CopayersPage {
     private translate: TranslateService,
     private pushNotificationsProvider: PushNotificationsProvider,
     private viewCtrl: ViewController,
-    private actionSheetProvider: ActionSheetProvider
+    private actionSheetProvider: ActionSheetProvider,
+    private modalCtrl: ModalController
   ) {
     this.secret = null;
     this.appName = this.appProvider.info.userVisibleName;
@@ -121,6 +131,7 @@ export class CopayersPage {
           this.wallet.openWallet(err => {
             if (err) this.logger.error(err);
 
+            this.showFinishModalPage();
             this.viewCtrl.dismiss().then(() => {
               this.events.publish('OpenWallet', this.wallet);
             });
@@ -132,6 +143,20 @@ export class CopayersPage {
         this.popupProvider.ionicAlert(this.bwcErrorProvider.msg(err, message));
         return;
       });
+  }
+
+  private async showFinishModalPage() {
+    this.onGoingProcessProvider.clear();
+    const finishText = this.translate.instant('Wallet Created');
+    const finishComment = '';
+    const cssClass = 'primary';
+    const params = { finishText, finishComment, cssClass };
+    const modal = this.modalCtrl.create(FinishModalPage, params, {
+      showBackdrop: true,
+      enableBackdropDismiss: false,
+      cssClass: 'finish-modal'
+    });
+    modal.present();
   }
 
   public showDeletePopup(): void {

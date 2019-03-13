@@ -1,8 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
-import { Events, NavController, NavParams } from 'ionic-angular';
+import {
+  Events,
+  ModalController,
+  NavController,
+  NavParams
+} from 'ionic-angular';
 import { Logger } from '../../../providers/logger/logger';
+
+// Pages
+import { FinishModalPage } from '../../finish/finish';
 
 // Providers
 import { BwcErrorProvider } from '../../../providers/bwc-error/bwc-error';
@@ -66,7 +74,8 @@ export class CreateWalletPage implements OnInit {
     private events: Events,
     private pushNotificationsProvider: PushNotificationsProvider,
     private externalLinkProvider: ExternalLinkProvider,
-    private bwcErrorProvider: BwcErrorProvider
+    private bwcErrorProvider: BwcErrorProvider,
+    private modalCtrl: ModalController
   ) {
     this.okText = this.translate.instant('Ok');
     this.cancelText = this.translate.instant('Cancel');
@@ -141,6 +150,7 @@ export class CreateWalletPage implements OnInit {
         this.pushNotificationsProvider.updateSubscription(wallet);
         this.setBackupFlag(wallet.credentials.walletId);
         this.setFingerprint(wallet.credentials.walletId);
+        this.showFinishModalPage();
         this.navCtrl.popToRoot();
         this.events.publish('OpenWallet', wallet);
       })
@@ -158,6 +168,20 @@ export class CreateWalletPage implements OnInit {
         }
         return;
       });
+  }
+
+  private async showFinishModalPage() {
+    this.onGoingProcessProvider.clear();
+    const finishText = this.translate.instant('Wallet Created');
+    const finishComment = '';
+    const cssClass = 'primary';
+    const params = { finishText, finishComment, cssClass };
+    const modal = this.modalCtrl.create(FinishModalPage, params, {
+      showBackdrop: true,
+      enableBackdropDismiss: false,
+      cssClass: 'finish-modal'
+    });
+    modal.present();
   }
 
   private setBackupFlag(walletId: string) {

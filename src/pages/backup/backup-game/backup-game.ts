@@ -204,30 +204,15 @@ export class BackupGamePage {
   public finalStep(): void {
     this.onGoingProcessProvider.set('validatingWords');
     this.confirm()
-      .then(async () => {
+      .then(() => {
         this.onGoingProcessProvider.clear();
-        const finishText = this.translate.instant(
-          'Your recovery phrase is verified'
-        );
-        const finishComment = this.translate.instant(
-          'Be sure to store your recovery phrase in a safe and secure place'
-        );
-        const cssClass = 'primary';
-        const params = { finishText, finishComment, cssClass };
-        const modal = this.modalCtrl.create(FinishModalPage, params, {
-          showBackdrop: true,
-          enableBackdropDismiss: false,
-          cssClass: 'finish-modal'
-        });
-        await modal.present();
-        modal.onDidDismiss(() => {
-          if (this.fromOnboarding) {
-            this.navCtrl.push(DisclaimerPage);
-          } else {
-            this.navCtrl.popToRoot();
-            this.events.publish('Wallet/setAddress', true);
-          }
-        });
+        if (this.fromOnboarding) {
+          this.navCtrl.push(DisclaimerPage);
+        } else {
+          this.navCtrl.popToRoot();
+          this.events.publish('Wallet/setAddress', true);
+        }
+        this.showFinishModalPage();
       })
       .catch(err => {
         this.onGoingProcessProvider.clear();
@@ -241,5 +226,22 @@ export class BackupGamePage {
           this.setFlow();
         });
       });
+  }
+
+  public showFinishModalPage() {
+    const finishText = this.translate.instant(
+      'Your recovery phrase is verified'
+    );
+    const finishComment = this.translate.instant(
+      'Be sure to store your recovery phrase in a safe and secure place'
+    );
+    const cssClass = 'primary';
+    const params = { finishText, finishComment, cssClass };
+    const modal = this.modalCtrl.create(FinishModalPage, params, {
+      showBackdrop: true,
+      enableBackdropDismiss: false,
+      cssClass: 'finish-modal'
+    });
+    modal.present();
   }
 }

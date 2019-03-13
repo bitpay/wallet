@@ -554,11 +554,15 @@ export class ProfileProvider {
     });
     return Promise.all(promises).then(async walletClients => {
       walletClients = _.compact(walletClients);
+
       // create default vault
       const defaultVault = {
+        vaultName: 'name', // TODO
+        vaultColor: '#484ed3', // TODO
         walletIds: [],
         needsBackup: false
       };
+
       await this.storeWalletsInVault(walletClients, defaultVault);
       return this.addAndBindWalletClients(walletClients, {
         bwsurl: options.bwsurl
@@ -1667,8 +1671,13 @@ export class ProfileProvider {
 
   public async storeVault(vault) {
     let vaults = await this.getVaults();
-    if (!_.isArray(vaults)) vaults = [];
-    vaults.push(vault);
+    if (!_.isArray(vaults)) {
+      vaults = [];
+      vaults.push(vault);
+    } else {
+      vaults.push(vault);
+      // TODO update vault do not add a new one. Need ID ??
+    }
     await this.persistenceProvider.storeVaults(vaults);
     await this.setActiveVault(vault);
     await this.bindVault();
