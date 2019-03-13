@@ -49,7 +49,7 @@ export class WalletSettingsPage {
     private touchIdProvider: TouchIdProvider,
     private translate: TranslateService,
     private actionSheetProvider: ActionSheetProvider
-  ) { }
+  ) {}
 
   ionViewDidLoad() {
     this.logger.info('Loaded:  WalletSettingsPage');

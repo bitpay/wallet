@@ -1,0 +1,30 @@
+
+<svg width="39px" height="39px" viewBox="0 0 39 39" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <defs>
+        <path d="M19.5,39 C30.2695526,39 39,30.2695526 39,19.5 C39,8.73044738 30.2695526,0 19.5,0 C8.73044738,0 0,8.73044738 0,19.5 C0,30.2695526 8.73044738,39 19.5,39 Z" id="path-1"></path>
+    </defs>
+    <g id="Onboarding-(Create-New-Wallet-or-token)" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Add-Wallet----Type" transform="translate(-29.000000, -289.000000)">
+            <g id="Group-2" transform="translate(0.000000, 256.000000)">
+                <g id="Group" transform="translate(29.000000, 29.000000)">
+                    <g id="Icons/Wallet/Blank" transform="translate(0.000000, 4.000000)">
+                        <g id="item-ico-backup">
+                            <mask id="mask-2" fill="white">
+                                <use xlink:href="#path-1"></use>
+                            </mask>
+                            <use id="Mask" fill="#4F6EF7" opacity="0.100000001" xlink:href="#path-1"></use>
+                        </g>
+                        <g id="hierarchy-54" transform="translate(9.000000, 7.000000)" stroke="#4F6EF7" stroke-linecap="square" stroke-width="2">
+                            <rect id="Rectangle" x="9" y="18" width="4" height="4"></rect>
+                            <rect id="Rectangle" x="18" y="18" width="4" height="4"></rect>
+                            <rect id="Rectangle" x="0" y="18" width="4" height="4"></rect>
+                            <path d="M11,8 L11,14" id="Path"></path>
+                            <polyline id="Path" points="2 14 2 11 20 11 20 14"></polyline>
+                            <circle id="Oval" cx="11" cy="2" r="2"></circle>
+                        </g>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

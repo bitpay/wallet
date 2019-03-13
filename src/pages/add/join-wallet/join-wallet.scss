@@ -1,4 +1,12 @@
 page-join-wallet {
+  .back-button {
+    color: color($colors, dark);
+  }
+  .wide-header {
+    &__title {
+      color: color($colors, dark) !important;
+    }
+  }
   .scanner-icon {
     z-index: 99;
     font-size: 28px;

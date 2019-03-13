@@ -3,6 +3,7 @@ import { NavController } from 'ionic-angular';
 import { Logger } from '../../providers/logger/logger';
 
 // pages
+import { JoinWalletPage } from './join-wallet/join-wallet';
 import { SelectCurrencyPage } from './select-currency/select-currency';
 
 @Component({
@@ -18,5 +19,9 @@ export class AddPage {
 
   public goToSelectCurrencyPage(isShared: boolean): void {
     this.navCtrl.push(SelectCurrencyPage, { isShared });
+  }
+
+  public goToJoinWallet(): void {
+    this.navCtrl.push(JoinWalletPage);
   }
 }

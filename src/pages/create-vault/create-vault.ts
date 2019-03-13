@@ -50,12 +50,11 @@ export class CreateVaultPage {
       { showBackdrop: true, enableBackdropDismiss: false }
     );
     modal.present();
-    modal.onDidDismiss((vaultColor) => {
+    modal.onDidDismiss(vaultColor => {
       this.createVaultForm.controls['color'].setValue(vaultColor);
       this.colorIndex = this.colorToIndex(vaultColor);
     });
   }
-
 
   private colorToIndex(color: string) {
     const COLOR_COUNT = 14;
@@ -85,9 +84,9 @@ export class CreateVaultPage {
     );
     return rgb && rgb.length === 4
       ? '#' +
-      ('0' + parseInt(rgb[1], 10).toString(16)).slice(-2) +
-      ('0' + parseInt(rgb[2], 10).toString(16)).slice(-2) +
-      ('0' + parseInt(rgb[3], 10).toString(16)).slice(-2)
+          ('0' + parseInt(rgb[1], 10).toString(16)).slice(-2) +
+          ('0' + parseInt(rgb[2], 10).toString(16)).slice(-2) +
+          ('0' + parseInt(rgb[3], 10).toString(16)).slice(-2)
       : '';
   }
 
@@ -110,7 +109,7 @@ export class CreateVaultPage {
 
     this.profileProvider
       .createVault(vault)
-      .then((vaultClient) => {
+      .then(vaultClient => {
         const mnemonics = vaultClient.mnemonics;
         this.onGoingProcessProvider.clear();
         this.goToCreateVaultTour(mnemonics);

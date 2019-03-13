@@ -9,10 +9,10 @@ import { TabsPage } from '../../tabs/tabs';
 
 // Providers
 import { ActionSheetProvider } from '../../../providers/action-sheet/action-sheet';
+import { BwcErrorProvider } from '../../../providers/bwc-error/bwc-error';
 import { BwcProvider } from '../../../providers/bwc/bwc';
 import { ClipboardProvider } from '../../../providers/clipboard/clipboard';
 import { ConfigProvider } from '../../../providers/config/config';
-import { DerivationPathHelperProvider } from '../../../providers/derivation-path-helper/derivation-path-helper';
 import { Logger } from '../../../providers/logger/logger';
 import { OnGoingProcessProvider } from '../../../providers/on-going-process/on-going-process';
 import { PopupProvider } from '../../../providers/popup/popup';
@@ -32,23 +32,19 @@ export class JoinWalletPage {
   private defaults;
   public showAdvOpts: boolean;
   public seedOptions;
-  public okText: string;
-  public cancelText: string;
   public joinForm: FormGroup;
 
-  private derivationPathByDefault: string;
-  private derivationPathForTestnet: string;
   private regex: RegExp;
   private coin: Coin;
+  private network: string;
 
   constructor(
     private app: App,
     private bwcProvider: BwcProvider,
     private configProvider: ConfigProvider,
     private form: FormBuilder,
-    private navCtrl: NavController,
     private navParams: NavParams,
-    private derivationPathHelperProvider: DerivationPathHelperProvider,
+    private navCtrl: NavController,
     private onGoingProcessProvider: OnGoingProcessProvider,
     private popupProvider: PopupProvider,
     private profileProvider: ProfileProvider,
@@ -58,14 +54,10 @@ export class JoinWalletPage {
     private events: Events,
     private pushNotificationsProvider: PushNotificationsProvider,
     private actionSheetProvider: ActionSheetProvider,
-    private clipboardProvider: ClipboardProvider
+    private clipboardProvider: ClipboardProvider,
+    private bwcErrorProvider: BwcErrorProvider
   ) {
-    this.okText = this.translate.instant('Ok');
-    this.cancelText = this.translate.instant('Cancel');
     this.defaults = this.configProvider.getDefaults();
-    this.derivationPathByDefault = this.derivationPathHelperProvider.default;
-    this.derivationPathForTestnet = this.derivationPathHelperProvider.defaultTestnet;
-
     this.showAdvOpts = false;
 
     this.regex = /^[0-9A-HJ-NP-Za-km-z]{70,80}$/; // For invitationCode
@@ -75,24 +67,9 @@ export class JoinWalletPage {
         null,
         [Validators.required, Validators.pattern(this.regex)]
       ], // invitationCode == secret
-      bwsURL: [this.defaults.bws.url],
-      selectedSeed: ['new'],
-      recoveryPhrase: [null],
-      derivationPath: [this.derivationPathByDefault]
+      bwsURL: [this.defaults.bws.url]
     });
 
-    this.seedOptions = [
-      {
-        id: 'new',
-        label: this.translate.instant('Random'),
-        supportsTestnet: true
-      },
-      {
-        id: 'set',
-        label: this.translate.instant('Specify Recovery Phrase'),
-        supportsTestnet: false
-      }
-    ];
     this.events.subscribe(
       'update:invitationCode',
       this.updateInvitationCodeHandler
@@ -138,33 +115,14 @@ export class JoinWalletPage {
     }
   }
 
-  public seedOptionsChange(seed): void {
-    if (seed === 'set') {
-      this.joinForm.get('recoveryPhrase').setValidators([Validators.required]);
-    } else {
-      this.joinForm.get('recoveryPhrase').setValidators(null);
-    }
-    this.joinForm.controls['recoveryPhrase'].setValue(null);
-    this.joinForm.controls['selectedSeed'].setValue(seed);
-    this.processInvitation(this.joinForm.value.invitationCode);
-  }
-
-  private setDerivationPath(network: string): void {
-    const path: string =
-      network == 'testnet'
-        ? this.derivationPathForTestnet
-        : this.derivationPathByDefault;
-    this.joinForm.controls['derivationPath'].setValue(path);
-  }
-
   public processInvitation(invitation: string): void {
     if (this.regex.test(invitation)) {
       this.logger.info('Processing invitation code...');
       let walletData;
       try {
         walletData = this.bwcProvider.parseSecret(invitation);
-        this.setDerivationPath(walletData.network);
         this.coin = walletData.coin;
+        this.network = walletData.network;
         this.logger.info('Correct invitation code for ' + walletData.network);
       } catch (ex) {
         this.logger.warn('Error parsing invitation: ' + ex);
@@ -177,53 +135,9 @@ export class JoinWalletPage {
       secret: this.joinForm.value.invitationCode,
       myName: this.joinForm.value.myName,
       bwsurl: this.joinForm.value.bwsURL,
-      coin: this.coin
+      coin: this.coin,
+      networkName: this.network
     };
-
-    const setSeed = this.joinForm.value.selectedSeed == 'set';
-    if (setSeed) {
-      const words = this.joinForm.value.recoveryPhrase;
-      if (
-        words.indexOf(' ') == -1 &&
-        words.indexOf('prv') == 1 &&
-        words.length > 108
-      ) {
-        opts.extendedPrivateKey = words;
-      } else {
-        opts.mnemonic = words;
-      }
-
-      const derivationPath = this.joinForm.value.derivationPath;
-      opts.networkName = this.derivationPathHelperProvider.getNetworkName(
-        derivationPath
-      );
-      opts.derivationStrategy = this.derivationPathHelperProvider.getDerivationStrategy(
-        derivationPath
-      );
-      opts.account = this.derivationPathHelperProvider.getAccount(
-        derivationPath
-      );
-
-      if (
-        !opts.networkName ||
-        !opts.derivationStrategy ||
-        !Number.isInteger(opts.account)
-      ) {
-        const title = this.translate.instant('Error');
-        const subtitle = this.translate.instant('Invalid derivation path');
-        this.popupProvider.ionicAlert(title, subtitle);
-        return;
-      }
-    }
-
-    if (setSeed && !opts.mnemonic && !opts.extendedPrivateKey) {
-      const title = this.translate.instant('Error');
-      const subtitle = this.translate.instant(
-        'Please enter the wallet recovery phrase'
-      );
-      this.popupProvider.ionicAlert(title, subtitle);
-      return;
-    }
 
     this.join(opts);
   }
@@ -232,13 +146,15 @@ export class JoinWalletPage {
     this.onGoingProcessProvider.set('joiningWallet');
 
     this.profileProvider
-      .joinWallet(opts)
+      .joinWalletInVault(opts)
       .then(wallet => {
-        this.clipboardProvider.clearClipboardIfValidData(['JoinWallet']);
         this.onGoingProcessProvider.clear();
+        this.clipboardProvider.clearClipboardIfValidData(['JoinWallet']);
         this.events.publish('status:updated');
         this.walletProvider.updateRemotePreferences(wallet);
         this.pushNotificationsProvider.updateSubscription(wallet);
+        this.setBackupFlag(wallet.credentials.walletId);
+        this.setFingerprint(wallet.credentials.walletId);
         this.app
           .getRootNavs()[0]
           .setRoot(TabsPage)
@@ -248,10 +164,39 @@ export class JoinWalletPage {
       })
       .catch(err => {
         this.onGoingProcessProvider.clear();
-        const title = this.translate.instant('Error');
-        this.popupProvider.ionicAlert(title, err);
+        if (
+          err &&
+          err.message != 'FINGERPRINT_CANCELLED' &&
+          err.message != 'PASSWORD_CANCELLED'
+        ) {
+          this.logger.error('Join: could not join wallet', err);
+          const title = this.translate.instant('Error');
+          err = this.bwcErrorProvider.msg(err);
+          this.popupProvider.ionicAlert(title, err);
+        }
         return;
       });
+  }
+
+  private setBackupFlag(walletId: string) {
+    const vault = this.profileProvider.activeVault;
+    if (!vault.needsBackup) this.profileProvider.setBackupFlag(walletId);
+  }
+
+  private async setFingerprint(walletId: string) {
+    const vaultWallets = this.profileProvider.getVaultWallets();
+    const config = this.configProvider.get();
+    const touchIdEnabled = config.touchIdFor
+      ? config.touchIdFor[vaultWallets[0].credentials.walletId]
+      : null;
+
+    if (!touchIdEnabled) return;
+
+    const opts = {
+      touchIdFor: {}
+    };
+    opts.touchIdFor[walletId] = true;
+    this.configProvider.set(opts);
   }
 
   public openScanner(): void {

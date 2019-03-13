@@ -1,4 +1,31 @@
 page-copayers {
+  .titles-container {
+    color: white;
+    position: relative;
+    padding-top: 30px;
+    padding-bottom: 20px;
+    padding-left: 20px;
+    .title {
+      padding: 5px;
+      font-size: 25px;
+      font-weight: 500;
+    }
+    .subtitle {
+      padding: 5px;
+      font-size: 17px;
+      font-weight: 200;
+    }
+  }
+  .header-extend {
+    background: $toolbar-background;
+    height: 50%;
+    position: absolute;
+    top: -100px;
+    width: 100%;
+    z-index: 0;
+    display: flex;
+    justify-content: center;
+  }
   .qr-container {
     padding: 30px;
     height: 50%;

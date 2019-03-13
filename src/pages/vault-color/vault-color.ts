@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import { NavParams, ViewController } from 'ionic-angular';
 import { Logger } from '../../providers/logger/logger';
 
-
 @Component({
   selector: 'page-vault-color',
   templateUrl: 'vault-color.html'
@@ -79,9 +78,9 @@ export class VaultColorPage {
     );
     return rgb && rgb.length === 4
       ? '#' +
-      ('0' + parseInt(rgb[1], 10).toString(16)).slice(-2) +
-      ('0' + parseInt(rgb[2], 10).toString(16)).slice(-2) +
-      ('0' + parseInt(rgb[3], 10).toString(16)).slice(-2)
+          ('0' + parseInt(rgb[1], 10).toString(16)).slice(-2) +
+          ('0' + parseInt(rgb[2], 10).toString(16)).slice(-2) +
+          ('0' + parseInt(rgb[3], 10).toString(16)).slice(-2)
       : '';
   }
 }

@@ -451,10 +451,8 @@ button.modal-close-button {
 .qr-container {
   flex-grow: 1;
   @include center;
-  background: linear-gradient(#ececec, white);
 
   .qr-card {
-    border: 1px solid rgb(207, 207, 207);
     border-radius: 7px;
     transform: translateY(0);
     margin: 0;
@@ -561,7 +559,6 @@ label-tip.warn.no-arrowhead:before {
   background: #9b59b6;
 }
 
-
 .vault-color-11 {
   background: #e856ef;
 }
@@ -572,4 +569,42 @@ label-tip.warn.no-arrowhead:before {
 
 .vault-color-13 {
   background: #7a8c9e;
+}
+
+.wallet-details-header {
+  ion-title .toolbar-title {
+    font-weight: 500;
+  }
+
+  &:not(.no-subtitle) {
+    ion-title .toolbar-title {
+      font-weight: 100;
+      font-size: 16px;
+    }
+  }
+
+  ion-toolbar {
+    min-height: 0;
+    margin-top: -6px;
+
+    &.toolbar-md {
+      padding-top: 0;
+    }
+  }
+
+  &__balance,
+  &__balance-hidden,
+  &__subtitle {
+    text-align: center;
+    color: white;
+    padding-bottom: 10px;
+    font-size: 18px;
+    font-weight: 500;
+
+    ion-icon {
+      font-size: 16px;
+      font-weight: 100;
+      margin-left: 5px;
+    }
+  }
 }

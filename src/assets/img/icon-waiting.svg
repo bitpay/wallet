@@ -1,0 +1,18 @@
+
+<svg width="22px" height="22px" viewBox="0 0 22 22" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <g id="Onboarding-(Create-New-Wallet-or-token)" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Wallet---Invitation" transform="translate(-20.000000, -752.000000)">
+            <rect fill="#F6F7FC" x="0" y="0" width="375" height="834"></rect>
+            <g id="List/Group/Transactions" transform="translate(0.000000, 600.000000)">
+                <g id="Group-3" transform="translate(19.000000, 77.000000)">
+                    <g id="Icons/Small-(20px)/Info-(Dark)" transform="translate(0.963954, 74.696161)">
+                        <g id="time-countdown" transform="translate(1.100000, 1.100000)">
+                            <path d="M9.9,8.79296636e-16 C4.43238098,1.75859327e-15 4.39648318e-16,4.43238098 0,9.9 C-4.39648318e-16,15.367619 4.43238098,19.8 9.9,19.8 C15.367619,19.8 19.8,15.367619 19.8,9.9 C19.8,7.27435675 18.7569673,4.75625301 16.9003571,2.89964287 C15.043747,1.04303272 12.5256432,0 9.9,8.79296636e-16 Z" id="Shape" stroke="#464D5F" fill-rule="nonzero"></path>
+                            <polygon id="Path" fill="#464D5F" points="14.3 12.1 8.8 12.1 8.8 5.5 9.9 5.5 9.9 11.0090637 14.3 11.0090637"></polygon>
+                        </g>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

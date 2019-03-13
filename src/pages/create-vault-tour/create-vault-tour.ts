@@ -9,14 +9,10 @@ import { BackupKeyPage } from '../backup/backup-key/backup-key';
   templateUrl: 'create-vault-tour.html'
 })
 export class CreateVaultTourPage {
-
   @ViewChild('createVaultTourSlides')
   createVaultTourSlides: Slides;
 
-  constructor(
-    private navCtrl: NavController,
-  ) {
-  }
+  constructor(private navCtrl: NavController) {}
 
   public nextSlide(): void {
     this.createVaultTourSlides.slideNext();
@@ -25,5 +21,4 @@ export class CreateVaultTourPage {
   public goToBackupPage(): void {
     this.navCtrl.push(BackupKeyPage);
   }
-
 }

@@ -610,11 +610,7 @@ export class HomePage {
   }
 
   public goToWalletDetails(wallet): void {
-    if (
-      this.showReorderBtc ||
-      this.showReorderBch ||
-      this.showReorderWallets
-    )
+    if (this.showReorderBtc || this.showReorderBch || this.showReorderWallets)
       return;
 
     this.events.publish('OpenWallet', wallet);
