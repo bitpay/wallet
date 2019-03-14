@@ -70,7 +70,8 @@ page-receive {
       position: relative;
     }
     .lines-background {
-      background: url(../assets/img/curved-lines-background.png) center center no-repeat #ECECEC;
+      background: url(../assets/img/curved-lines-background.png) center center
+        no-repeat #ececec;
       opacity: 0.1;
       background-size: cover;
       position: absolute;
@@ -85,7 +86,7 @@ page-receive {
       }
     }
   }
-  
+
   .spin-backwards {
     animation: spin-backwards 0.5s ease-out 1;
   }

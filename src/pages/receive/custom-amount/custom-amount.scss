@@ -13,8 +13,9 @@ page-custom-amount {
     height: 100%;
     position: relative;
     .lines-background {
-    background: url(../assets/img/curved-lines-background.png) center center no-repeat #ECECEC;
-    opacity: 0.1;
+      background: url(../assets/img/curved-lines-background.png) center center
+        no-repeat #ececec;
+      opacity: 0.1;
       background-size: cover;
       position: absolute;
       top: 0;
