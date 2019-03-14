@@ -42,23 +42,19 @@
       </div>
     </div>
 
-    <div class="qr-container" *ngIf="wallet && wallet.isComplete() && !wallet.needsBackup">
-      <div class="card qr-card" [ngClass]="{'qr-code-bounce': playAnimation}" *ngIf="wallets[0] && address">
-        <ngx-qrcode (click)="showFullAddr()" *ngIf="address" copy-to-clipboard="{{ address }}" hide-toast="true" qrc-value="{{address}}" qrc-class="aclass" qrc-errorCorrectionLevel="M"></ngx-qrcode>
-      </div>
-    </div>
-
     <div *ngIf="wallets[0]" class="receive-content">
+      <div class="title">
+        {{'Address' | translate}}
+      </div>
       <div *ngIf="wallet && wallet.isComplete() && !wallet.needsBackup" class="address-container">
         <div class="text-address ellipsis">
-          <img src="assets/img/icon-bitcoin-small.svg" alt="BTC" width="12" />
-          <span class="address-divider"></span>
+          <img copy-to-clipboard="{{ address }}" src="assets/img/paste-clipboard.svg" width="18" />
           <div [ngClass]="{'fade-in-out': playAnimation}" (click)="showFullAddr()" class="address-text ellipsis">
             <span copy-to-clipboard="{{ address }}" hide-toast="true">{{ address }}</span>
           </div>
 
           <button *ngIf="!(wallet.status && wallet.status.wallet && wallet.status.wallet.singleAddress)" class="new-address-btn" detail-none text-center (click)="setAddress(true)">
-            <span class="new-address" ion-text color="primary" translate>
+            <span ion-text color="primary" translate>
               <img [hidden]="loading" class="spin-icon" [ngClass]="{'spin-backwards': playAnimation}" src="assets/img/right.svg" width="16" />
               <div *ngIf="loading" [ngClass]="{'spin-fast': loading}" class="spinner"></div>
             </span>
@@ -67,5 +63,11 @@
       </div>
     </div>
 
+    <div class="qr-container" *ngIf="wallet && wallet.isComplete() && !wallet.needsBackup">
+      <div class="lines-background"></div>
+      <div class="card qr-card" [ngClass]="{'qr-code-bounce': playAnimation}" *ngIf="wallets[0] && address">
+        <ngx-qrcode (click)="showFullAddr()" *ngIf="address" copy-to-clipboard="{{ address }}" hide-toast="true" qrc-value="{{address}}" qrc-class="aclass" qrc-errorCorrectionLevel="M"></ngx-qrcode>
+      </div>
+    </div>
   </div>
 </ion-content>
