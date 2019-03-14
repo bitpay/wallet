@@ -40,7 +40,7 @@ export class BackupKeyPage {
     private actionSheetProvider: ActionSheetProvider
   ) {
     this.walletId = this.navParams.data.walletId;
-    this.fromOnboarding = this.navParams.data.fromOnboarding
+    this.fromOnboarding = this.navParams.data.fromOnboarding;
     this.wallet = this.profileProvider.getWallet(this.walletId);
     this.credentialsEncrypted = this.wallet.isPrivKeyEncrypted();
   }

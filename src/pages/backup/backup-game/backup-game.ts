@@ -206,7 +206,9 @@ export class BackupGamePage {
     this.confirm()
       .then(async () => {
         this.onGoingProcessProvider.clear();
-        const finishText = this.translate.instant('Your recovery phrase is verified');
+        const finishText = this.translate.instant(
+          'Your recovery phrase is verified'
+        );
         const finishComment = this.translate.instant(
           'Be sure to store your recovery phrase in a safe and secure place'
         );
