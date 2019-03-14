@@ -1694,6 +1694,7 @@ export class ProfileProvider {
   }
 
   public setActiveVault(activeVault): Promise<any> {
+    this.activeVault = activeVault;
     return this.persistenceProvider.setActiveVault(activeVault);
   }
 

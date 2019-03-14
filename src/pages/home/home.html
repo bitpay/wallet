@@ -6,11 +6,10 @@
       </button>
     </ion-buttons>
     <ion-title>
-      <img *ngIf="!activeVault" class="home-logo" src="assets/img/app/logo.svg">
-      <button ion-button class="vaults-dropdown" *ngIf="activeVault">
+      <img *ngIf="!activeVault" class="home-logo" src="assets/img/app/logo-negative.svg">
+      <button ion-button class="vaults-dropdown" *ngIf="activeVault" (click)="showVaultSelectorView()">
         <span>{{activeVault.vaultName}}</span>
-        <ion-icon *ngIf="showVaults" name="arrow-dropdown" color="light-grey"></ion-icon>
-        <ion-icon *ngIf="!showVaults" name="arrow-dropup" color="light-grey"></ion-icon>
+        <ion-icon name="arrow-dropdown" color="light-grey"></ion-icon>
       </button>
     </ion-title>
     <ion-buttons right>
@@ -22,6 +21,7 @@
       </button>
     </ion-buttons>
   </ion-navbar>
+  <vault-selector #vaultSelector></vault-selector>
 </ion-header>
 
 <ion-content>
