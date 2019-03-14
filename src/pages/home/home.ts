@@ -41,6 +41,8 @@ import { SettingsPage } from '../settings/settings';
 export class HomePage {
   @ViewChild('showCard')
   showCard;
+  @ViewChild('vaultSelector')
+  vaultSelector;
   public vault;
   public wallets;
   public cachedBalanceUpdateOn: string;
@@ -56,7 +58,6 @@ export class HomePage {
   public remainingTimeStr: string;
   public slideDown: boolean;
   public activeVault;
-  public showVaults: boolean;
 
   public showRateCard: boolean;
   public showReorderBtc: boolean;
@@ -108,7 +109,6 @@ export class HomePage {
       this._willEnter();
       this._didEnter();
     });
-    this.activeVault = this.profileProvider.activeVault;
   }
 
   ionViewWillEnter() {
@@ -120,6 +120,7 @@ export class HomePage {
   }
 
   private _willEnter() {
+    this.activeVault = this.profileProvider.activeVault;
     // Update list of wallets, status and TXPs
     this.setWallets();
 
@@ -618,6 +619,11 @@ export class HomePage {
 
   public reorderVault(): void {
     this.showReorderWallets = !this.showReorderWallets;
+  }
+
+  public async showVaultSelectorView() {
+    const vaults = await this.profileProvider.getVaults();
+    this.vaultSelector.present(vaults);
   }
 
   public reorderWallets(indexes): void {

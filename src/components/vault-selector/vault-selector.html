@@ -1,0 +1,27 @@
+<div class="vault-selector-container" [ngClass]="{'close': !slideIn, 'open': slideIn}">
+  <div class="backdrop" [ngClass]="{'backdrop-fade-in': slideIn}" (click)="dismiss()"></div>
+  <div class="vault-selector" [ngClass]="{'opened': slideIn, 'closed': !slideIn }">
+    <div class="title">
+      {{'Vaults' | translate}}
+    </div>
+    <ion-list>
+      <ion-item detail-none class="vault-item" *ngFor="let vault of vaults; let i = index" (click)="setActiveVault(vault)">
+        <ion-icon class="item-img" item-start>
+          <img src="assets/img/vault.svg" />
+        </ion-icon>
+        <div class="vault-name">
+          <span>{{vault.vaultName}}</span>
+        </div>
+        <!-- TODO: <ion-icon *ngIf="i === selectedIndex" class="item-img" item-end>
+          <img src="assets/img/icon-check-selected.svg" />
+        </ion-icon> -->
+      </ion-item>
+      <ion-item detail-none class="vault-item" (click)="goToCreateVaultPage()">
+        <ion-icon item-start name="add" class="plus-icon item-img"></ion-icon>
+        <div class="vault-name create">
+          <span>{{'Create new vault' | translate}}</span>
+        </div>
+      </ion-item>
+    </ion-list>
+  </div>
+</div>
