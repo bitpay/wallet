@@ -24,6 +24,7 @@ $app-direction: ltr;
 @import 'zero-state';
 // Colors
 $colors: (
+  brand-color: $brand-color,
   primary: $color-primary,
   secondary: $color-secondary,
   warning: #fdb455,
@@ -53,14 +54,15 @@ $refresher-icon-color: color($colors, primary);
 $refresher-icon-font-size: 14px;
 $refresher-height: 140px;
 // Toolbar
-$toolbar-text-color: color($colors, light);
+$toolbar-background: #ffffff;
+$toolbar-text-color: color($colors, dark);
 // Main color
 $text-color: color($colors, dark);
 // Border light
 $list-border-color: color($colors, light);
 // Toolbar
-$toolbar-ios-title-text-color: color($colors, light);
-$toolbar-md-title-text-color: color($colors, light);
+$toolbar-ios-title-text-color: color($colors, dark);
+$toolbar-md-title-text-color: color($colors, dark);
 // Onboarding colors
 $onboarding-gradient-top-color: $toolbar-background;
 $onboarding-gradient-bottom-color: $color-secondary-dark;

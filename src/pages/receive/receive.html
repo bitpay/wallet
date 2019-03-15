@@ -1,5 +1,5 @@
 <ion-header class="wallet-details-header">
-  <ion-navbar [navbar-bg]="wallet.color">
+  <ion-navbar [navbar-bg]="brandColorProvider.getBrandColor()">
     <ion-buttons left>
       <button class="modal-close-button" (click)="close()" ion-button>
         <ion-icon ios="md-close" md="md-close"></ion-icon>
@@ -12,7 +12,7 @@
       </button>
     </ion-buttons>
   </ion-navbar>
-  <ion-toolbar [navbar-bg]="wallet.color">
+  <ion-toolbar [navbar-bg]="brandColorProvider.getBrandColor()">
     <div *ngIf="!wallet.balanceHidden && !wallet.scanning && wallet.status" class="wallet-details-header__balance">
       <span>{{wallet.status && wallet.status.totalBalanceStr}}</span>
       <ion-icon *ngIf="wallet.status.totalBalanceSat != wallet.status.spendableAmount" ios="ios-timer-outline" md="md-timer"></ion-icon>
@@ -42,11 +42,11 @@
       </div>
     </div>
 
-    <div *ngIf="wallets[0]" class="receive-content">
+    <div *ngIf="wallet && wallet.isComplete() && !wallet.needsBackup" class="receive-content">
       <div class="title">
         {{'Address' | translate}}
       </div>
-      <div *ngIf="wallet && wallet.isComplete() && !wallet.needsBackup" class="address-container">
+      <div class="address-container">
         <div class="text-address ellipsis">
           <img copy-to-clipboard="{{ address }}" src="assets/img/paste-clipboard.svg" width="18" />
           <div [ngClass]="{'fade-in-out': playAnimation}" (click)="showFullAddr()" class="address-text ellipsis">

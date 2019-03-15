@@ -7,6 +7,7 @@ import { SocialSharing } from '@ionic-native/social-sharing';
 
 // providers
 import { ActionSheetProvider } from '../../../providers/action-sheet/action-sheet';
+import { BrandColorProvider } from '../../../providers/brand-color/brand-color';
 import { PlatformProvider } from '../../../providers/platform/platform';
 import { ProfileProvider } from '../../../providers/profile/profile';
 import { TxFormatProvider } from '../../../providers/tx-format/tx-format';
@@ -35,7 +36,8 @@ export class CustomAmountPage {
     private socialSharing: SocialSharing,
     private txFormatProvider: TxFormatProvider,
     private actionSheetProvider: ActionSheetProvider,
-    private navCtrl: NavController
+    private navCtrl: NavController,
+    public brandColorProvider: BrandColorProvider
   ) {
     const walletId = this.navParams.data.id;
     this.showShareButton = this.platformProvider.isCordova;

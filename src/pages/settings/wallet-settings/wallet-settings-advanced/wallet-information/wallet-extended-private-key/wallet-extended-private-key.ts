@@ -5,6 +5,7 @@ import { Logger } from '../../../../../../providers/logger/logger';
 // providers
 import { TranslateService } from '@ngx-translate/core';
 import { ActionSheetProvider } from '../../../../../../providers/action-sheet/action-sheet';
+import { BrandColorProvider } from '../../../../../../providers/brand-color/brand-color';
 import { BwcErrorProvider } from '../../../../../../providers/bwc-error/bwc-error';
 import { ProfileProvider } from '../../../../../../providers/profile/profile';
 import { WalletProvider } from '../../../../../../providers/wallet/wallet';
@@ -26,7 +27,8 @@ export class WalletExtendedPrivateKeyPage {
     private navCtrl: NavController,
     private actionSheetProvider: ActionSheetProvider,
     private translate: TranslateService,
-    private bwcErrorProvider: BwcErrorProvider
+    private bwcErrorProvider: BwcErrorProvider,
+    public brandColorProvider: BrandColorProvider
   ) {}
 
   ionViewDidLoad() {

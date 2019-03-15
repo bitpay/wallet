@@ -13,13 +13,18 @@ page-session-log {
   .log-level {
     font-weight: bold;
   }
-  .filter-container {
-    padding: 20px;
-    .labels {
-      display: flex;
-      justify-content: space-between;
-      .info-label {
-        margin-right: -10px;
+  .page-footer {
+    .toolbar-background {
+      background-color: $background-color;
+    }
+    .filter-container {
+      padding: 20px;
+      .labels {
+        display: flex;
+        justify-content: space-between;
+        .info-label {
+          margin-right: -10px;
+        }
       }
     }
   }

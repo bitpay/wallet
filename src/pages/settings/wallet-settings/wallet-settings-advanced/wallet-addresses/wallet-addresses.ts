@@ -4,6 +4,7 @@ import { ModalController, NavController, NavParams } from 'ionic-angular';
 import { Logger } from '../../../../../providers/logger/logger';
 
 // providers
+import { BrandColorProvider } from '../../../../../providers/brand-color/brand-color';
 import { BwcErrorProvider } from '../../../../../providers/bwc-error/bwc-error';
 import { PopupProvider } from '../../../../../providers/popup/popup';
 import { ProfileProvider } from '../../../../../providers/profile/profile';
@@ -48,7 +49,8 @@ export class WalletAddressesPage {
     private popupProvider: PopupProvider,
     private modalCtrl: ModalController,
     private txFormatProvider: TxFormatProvider,
-    private translate: TranslateService
+    private translate: TranslateService,
+    public brandColorProvider: BrandColorProvider
   ) {
     this.UNUSED_ADDRESS_LIMIT = 5;
     this.BALANCE_ADDRESS_LIMIT = 5;

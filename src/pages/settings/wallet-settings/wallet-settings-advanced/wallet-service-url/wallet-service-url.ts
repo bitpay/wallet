@@ -9,6 +9,7 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 
 // providers
 import { AppProvider } from '../../../../../providers/app/app';
+import { BrandColorProvider } from '../../../../../providers/brand-color/brand-color';
 import { ConfigProvider } from '../../../../../providers/config/config';
 import { PersistenceProvider } from '../../../../../providers/persistence/persistence';
 import { PlatformProvider } from '../../../../../providers/platform/platform';
@@ -40,7 +41,8 @@ export class WalletServiceUrlPage {
     private splashScreen: SplashScreen,
     private platformProvider: PlatformProvider,
     private replaceParametersProvider: ReplaceParametersProvider,
-    private translate: TranslateService
+    private translate: TranslateService,
+    public brandColorProvider: BrandColorProvider
   ) {
     this.walletServiceForm = this.formBuilder.group({
       bwsurl: [

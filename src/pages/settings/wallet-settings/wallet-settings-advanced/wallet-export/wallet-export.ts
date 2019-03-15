@@ -12,6 +12,7 @@ import { SocialSharing } from '@ionic-native/social-sharing';
 import { ActionSheetProvider } from '../../../../../providers/action-sheet/action-sheet';
 import { AppProvider } from '../../../../../providers/app/app';
 import { BackupProvider } from '../../../../../providers/backup/backup';
+import { BrandColorProvider } from '../../../../../providers/brand-color/brand-color';
 import { BwcErrorProvider } from '../../../../../providers/bwc-error/bwc-error';
 import { ConfigProvider } from '../../../../../providers/config/config';
 import { PersistenceProvider } from '../../../../../providers/persistence/persistence';
@@ -61,7 +62,8 @@ export class WalletExportPage extends WalletTabsChild {
     private actionSheetProvider: ActionSheetProvider,
     public walletTabsProvider: WalletTabsProvider,
     private configProvider: ConfigProvider,
-    private bwcErrorProvider: BwcErrorProvider
+    private bwcErrorProvider: BwcErrorProvider,
+    public brandColorProvider: BrandColorProvider
   ) {
     super(navCtrl, profileProvider, walletTabsProvider);
     this.exportWalletForm = this.formBuilder.group(

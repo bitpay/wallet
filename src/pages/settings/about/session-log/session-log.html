@@ -1,32 +1,28 @@
-<ion-header>
-  <ion-navbar>
-    <ion-title>{{'Session Log' | translate}}</ion-title>
-    <ion-buttons right>
-      <button (click)="showOptionsMenu()" ion-button icon-only>
-        <ion-icon name="more"></ion-icon>
-      </button>
-    </ion-buttons>
-  </ion-navbar>
-</ion-header>
-
-<ion-content>
-  <div *ngIf="filteredLogs && filteredLogs.length == 0" class="no-entries-message">
-    <span translate>No entries for this log level</span>.
-  </div>
-  <ion-list>
-    <ion-item class="log-entry">
-      <div *ngIf="filteredLogs && filteredLogs.length > 0">
-        <div *ngFor="let l of filteredLogs">
-          <span [ngClass]="{'energized': l.level=='warn', 'royal': l.level=='debug', 'info-color': l.level=='info', 'assertive': l.level=='error'}">
-            <span class="log-timestamp">[{{l.timestamp}}]</span>
-            <span class="log-level">[{{l.level}}]</span> {{l.msg}}
-          </span>
+<wide-header-page title="{{'Session Log' | translate}}">
+  <ion-buttons right>
+    <button clear wide-header-bar-button (click)="showOptionsMenu()" ion-button icon-only>
+      <ion-icon name="more"></ion-icon>
+    </button>
+  </ion-buttons>
+  <div page-content>
+    <div *ngIf="filteredLogs && filteredLogs.length == 0" class="no-entries-message">
+      <span translate>No entries for this log level</span>.
+    </div>
+    <ion-list>
+      <ion-item class="log-entry">
+        <div *ngIf="filteredLogs && filteredLogs.length > 0">
+          <div *ngFor="let l of filteredLogs">
+            <span [ngClass]="{'energized': l.level=='warn', 'royal': l.level=='debug', 'info-color': l.level=='info', 'assertive': l.level=='error'}">
+              <span class="log-timestamp">[{{l.timestamp}}]</span>
+              <span class="log-level">[{{l.level}}]</span> {{l.msg}}
+            </span>
+          </div>
         </div>
-      </div>
-    </ion-item>
-  </ion-list>
-</ion-content>
-<ion-footer>
+      </ion-item>
+    </ion-list>
+  </div>
+</wide-header-page>
+<ion-footer class="page-footer">
   <ion-toolbar>
     <div class="filter-container">
       <div class="labels">

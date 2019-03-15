@@ -4,6 +4,7 @@ import { Events, NavController, NavParams } from 'ionic-angular';
 import { Logger } from '../../../../../providers/logger/logger';
 
 // providers
+import { BrandColorProvider } from '../../../../../providers/brand-color/brand-color';
 import { OnGoingProcessProvider } from '../../../../../providers/on-going-process/on-going-process';
 import { PopupProvider } from '../../../../../providers/popup/popup';
 import { ProfileProvider } from '../../../../../providers/profile/profile';
@@ -19,6 +20,7 @@ export class WalletDeletePage extends WalletTabsChild {
   public wallet;
 
   constructor(
+    public brandColorProvider: BrandColorProvider,
     public profileProvider: ProfileProvider,
     public navCtrl: NavController,
     private navParams: NavParams,

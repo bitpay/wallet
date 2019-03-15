@@ -6,6 +6,7 @@ import * as papa from 'papaparse';
 
 // Providers
 import { AppProvider } from '../../../../../providers/app/app';
+import { BrandColorProvider } from '../../../../../providers/brand-color/brand-color';
 import { ConfigProvider } from '../../../../../providers/config/config';
 import { Logger } from '../../../../../providers/logger/logger';
 import { PlatformProvider } from '../../../../../providers/platform/platform';
@@ -42,7 +43,8 @@ export class WalletTransactionHistoryPage {
     private platformProvider: PlatformProvider,
     private appProvider: AppProvider,
     private translate: TranslateService,
-    private walletProvider: WalletProvider
+    private walletProvider: WalletProvider,
+    public brandColorProvider: BrandColorProvider
   ) {
     this.csvReady = false;
     this.csvContent = [];

@@ -1,7 +1,6 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { NavController, NavParams } from 'ionic-angular';
 import { Logger } from '../../../providers/logger/logger';
 
 // native
@@ -13,7 +12,6 @@ import { PlatformProvider } from '../../../providers/platform/platform';
 
 // pages
 import { EmailNotificationsProvider } from '../../../providers/email-notifications/email-notifications';
-import { BackupRequestPage } from '../backup-request/backup-request';
 
 @Component({
   selector: 'page-collect-email',
@@ -22,13 +20,10 @@ import { BackupRequestPage } from '../backup-request/backup-request';
 export class CollectEmailPage {
   public showConfirmForm: boolean;
 
-  private walletId: string;
   private emailForm: FormGroup;
   private URL: string;
 
   constructor(
-    private navCtrl: NavController,
-    private navParams: NavParams,
     private logger: Logger,
     private fb: FormBuilder,
     private appProvider: AppProvider,
@@ -37,7 +32,6 @@ export class CollectEmailPage {
     private device: Device,
     private platformProvider: PlatformProvider
   ) {
-    this.walletId = this.navParams.data.walletId;
     const regex: RegExp = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     this.emailForm = this.fb.group({
       email: [null, [Validators.required, Validators.pattern(regex)]],
@@ -80,7 +74,7 @@ export class CollectEmailPage {
   }
 
   private goToBackupRequestPage(): void {
-    this.navCtrl.push(BackupRequestPage, { walletId: this.walletId });
+    // TODO this.navCtrl.push(BackupRequestPage, { walletId: this.walletId });
   }
 
   private collectEmail(): void {

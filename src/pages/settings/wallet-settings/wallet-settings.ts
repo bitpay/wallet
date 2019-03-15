@@ -5,6 +5,7 @@ import { Logger } from '../../../providers/logger/logger';
 
 // providers
 import { ActionSheetProvider } from '../../../providers/action-sheet/action-sheet';
+import { BrandColorProvider } from '../../../providers/brand-color/brand-color';
 import { ConfigProvider } from '../../../providers/config/config';
 import { ExternalLinkProvider } from '../../../providers/external-link/external-link';
 import { ProfileProvider } from '../../../providers/profile/profile';
@@ -40,6 +41,7 @@ export class WalletSettingsPage {
 
   constructor(
     private profileProvider: ProfileProvider,
+    public brandColorProvider: BrandColorProvider,
     private logger: Logger,
     private walletProvider: WalletProvider,
     private externalLinkProvider: ExternalLinkProvider,

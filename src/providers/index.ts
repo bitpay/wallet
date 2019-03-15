@@ -27,6 +27,7 @@ export {
 } from '../providers/bitpay-account/bitpay-account';
 export { BitPayCardProvider } from '../providers/bitpay-card/bitpay-card';
 export { BitPayProvider } from '../providers/bitpay/bitpay';
+export { BrandColorProvider } from '../providers/brand-color/brand-color';
 export { BwcErrorProvider } from '../providers/bwc-error/bwc-error';
 export { BwcProvider } from '../providers/bwc/bwc';
 export { ClipboardProvider } from '../providers/clipboard/clipboard';

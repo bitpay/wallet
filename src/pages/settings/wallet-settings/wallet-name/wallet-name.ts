@@ -5,6 +5,7 @@ import { Events, NavController, NavParams } from 'ionic-angular';
 import { Logger } from '../../../../providers/logger/logger';
 
 // providers
+import { BrandColorProvider } from '../../../../providers/brand-color/brand-color';
 import { ConfigProvider } from '../../../../providers/config/config';
 import { ProfileProvider } from '../../../../providers/profile/profile';
 import { ReplaceParametersProvider } from '../../../../providers/replace-parameters/replace-parameters';
@@ -30,7 +31,8 @@ export class WalletNamePage {
     private events: Events,
     private logger: Logger,
     private replaceParametersProvider: ReplaceParametersProvider,
-    private translate: TranslateService
+    private translate: TranslateService,
+    public brandColorProvider: BrandColorProvider
   ) {
     this.walletNameForm = this.formBuilder.group({
       walletName: [

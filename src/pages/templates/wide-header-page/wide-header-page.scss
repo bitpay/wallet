@@ -10,8 +10,11 @@ wide-header-page {
       font-weight: 400;
     }
 
+    .back-button {
+      color: color($colors, dark);
+    }
+
     &__title {
-      color: white;
       font-size: 25px;
       font-weight: 500;
       padding-top: 30px;

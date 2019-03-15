@@ -14,6 +14,7 @@ import { AmountPage } from '../send/amount/amount';
 // Providers
 import { ActionSheetProvider } from '../../providers/action-sheet/action-sheet';
 import { AddressProvider } from '../../providers/address/address';
+import { BrandColorProvider } from '../../providers/brand-color/brand-color';
 import { BwcErrorProvider } from '../../providers/bwc-error/bwc-error';
 import { ExternalLinkProvider } from '../../providers/external-link/external-link';
 import { PlatformProvider } from '../../providers/platform/platform';
@@ -32,7 +33,6 @@ export class ReceivePage extends WalletTabsChild {
   public protocolHandler: string;
   public address: string;
   public qrAddress: string;
-  public wallets = [];
   public wallet;
   public showShareButton: boolean;
   public loading: boolean;
@@ -54,7 +54,8 @@ export class ReceivePage extends WalletTabsChild {
     private externalLinkProvider: ExternalLinkProvider,
     private addressProvider: AddressProvider,
     walletTabsProvider: WalletTabsProvider,
-    private platform: Platform
+    private platform: Platform,
+    public brandColorProvider: BrandColorProvider
   ) {
     super(navCtrl, profileProvider, walletTabsProvider);
     this.showShareButton = this.platformProvider.isCordova;

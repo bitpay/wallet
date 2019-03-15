@@ -3,6 +3,7 @@ import { Events, NavController, NavParams } from 'ionic-angular';
 import { Logger } from '../../../../../providers/logger/logger';
 
 // providers
+import { BrandColorProvider } from '../../../../../providers/brand-color/brand-color';
 import { ConfigProvider } from '../../../../../providers/config/config';
 import { ProfileProvider } from '../../../../../providers/profile/profile';
 
@@ -43,7 +44,8 @@ export class WalletInformationPage {
     private navParams: NavParams,
     private navCtrl: NavController,
     private events: Events,
-    private logger: Logger
+    private logger: Logger,
+    public brandColorProvider: BrandColorProvider
   ) {}
 
   ionViewDidLoad() {

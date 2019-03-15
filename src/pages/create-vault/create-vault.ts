@@ -4,6 +4,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { ModalController, NavController } from 'ionic-angular';
 
 // providers
+import { BrandColorProvider } from '../../providers/brand-color/brand-color';
 import { Logger } from '../../providers/logger/logger';
 import { OnGoingProcessProvider } from '../../providers/on-going-process/on-going-process';
 import { PopupProvider } from '../../providers/popup/popup';
@@ -30,7 +31,8 @@ export class CreateVaultPage {
     private onGoingProcessProvider: OnGoingProcessProvider,
     private translate: TranslateService,
     private popupProvider: PopupProvider,
-    private modalCtrl: ModalController
+    private modalCtrl: ModalController,
+    public brandColorProvider: BrandColorProvider
   ) {
     this.createVaultForm = this.fb.group({
       vaultName: [null, Validators.required],

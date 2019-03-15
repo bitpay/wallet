@@ -7,6 +7,7 @@ import { SocialSharing } from '@ionic-native/social-sharing';
 
 // providers
 import { AppProvider } from '../../../../../../providers/app/app';
+import { BrandColorProvider } from '../../../../../../providers/brand-color/brand-color';
 import { OnGoingProcessProvider } from '../../../../../../providers/on-going-process/on-going-process';
 import { PlatformProvider } from '../../../../../../providers/platform/platform';
 
@@ -19,9 +20,8 @@ export class AllAddressesPage {
   public withBalance;
   public coin: string;
   public isCordova: boolean;
-  public walletColor: string;
+  public allAddresses;
 
-  private allAddresses;
   private walletName: string;
 
   constructor(
@@ -31,10 +31,10 @@ export class AllAddressesPage {
     private socialSharing: SocialSharing,
     private appProvider: AppProvider,
     private logger: Logger,
-    private platformProvider: PlatformProvider
+    private platformProvider: PlatformProvider,
+    public brandColorProvider: BrandColorProvider
   ) {
     this.walletName = this.navParams.data.walletName;
-    this.walletColor = this.navParams.data.walletColor;
     this.noBalance = this.navParams.data.noBalance;
     this.withBalance = this.navParams.data.withBalance;
     this.coin = this.navParams.data.coin;
