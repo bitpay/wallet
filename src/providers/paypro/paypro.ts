@@ -52,7 +52,7 @@ export class PayproProvider {
           } else if (err)
             return reject(
               this.translate.instant(
-                'Could Not Fetch Payment: Check if it is still valid'
+                'Check if the invoice is still valid'
               )
             );
           else if (!paypro.verified) {

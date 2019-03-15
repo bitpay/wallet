@@ -231,7 +231,7 @@ export class TxpDetailsPage {
           this.paymentExpired = true;
           this.showErrorInfoSheet(
             err,
-            this.translate.instant('Error in Payment Protocol')
+            this.translate.instant('Error fetching this invoice')
           );
         });
     }
