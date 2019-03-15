@@ -30,10 +30,6 @@ export class BwcErrorProvider {
         case 'INVALID_BACKUP':
           body = this.translate.instant('Wallet Recovery Phrase is invalid');
           break;
- 
-        case 'INVALID_BACKUP':
-          body = this.translate.instant('Wallet Recovery Phrase is invalid');
-          break;
         case 'WALLET_DOES_NOT_EXIST':
           body = this.translate.instant(
             'Wallet not registered at the wallet service. Recreate it from "Create Wallet" using "Advanced Options" to set your recovery phrase'
