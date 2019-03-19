@@ -72,8 +72,6 @@ export interface Config {
 
   pushNotificationsEnabled: boolean;
 
-  inAppNotificationsEnabled: boolean;
-
   desktopNotificationsEnabled: boolean;
 
   confirmedTxsNotifications: {
@@ -186,8 +184,6 @@ export class ConfigProvider {
 
       pushNotificationsEnabled: true,
 
-      inAppNotificationsEnabled: true,
-
       desktopNotificationsEnabled: true,
 
       confirmedTxsNotifications: {
@@ -290,9 +286,6 @@ export class ConfigProvider {
     }
     if (!this.configCache.pushNotificationsEnabled) {
       this.configCache.pushNotificationsEnabled = this.configDefault.pushNotificationsEnabled;
-    }
-    if (!this.configCache.inAppNotificationsEnabled) {
-      this.configCache.inAppNotificationsEnabled = this.configDefault.inAppNotificationsEnabled;
     }
     if (!this.configCache.desktopNotificationsEnabled) {
       this.configCache.desktopNotificationsEnabled = this.configDefault.desktopNotificationsEnabled;

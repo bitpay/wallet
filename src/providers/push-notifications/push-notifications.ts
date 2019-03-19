@@ -1,7 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { FCM } from '@ionic-native/fcm';
-import { Vibration } from '@ionic-native/vibration';
 import { Events } from 'ionic-angular';
 import { Observable } from 'rxjs';
 import { Logger } from '../../providers/logger/logger';
@@ -14,7 +13,6 @@ import { PlatformProvider } from '../platform/platform';
 import { ProfileProvider } from '../profile/profile';
 
 import * as _ from 'lodash';
-import { ActionSheetProvider } from '../action-sheet/action-sheet';
 
 @Injectable()
 export class PushNotificationsProvider {
@@ -32,9 +30,7 @@ export class PushNotificationsProvider {
     public appProvider: AppProvider,
     private bwcProvider: BwcProvider,
     private FCMPlugin: FCM,
-    private events: Events,
-    private vibration: Vibration,
-    private actionSheetProvider: ActionSheetProvider
+    private events: Events
   ) {
     this.logger.debug('PushNotificationsProvider initialized');
     this.isIOS = this.platformProvider.isIOS;
@@ -84,23 +80,6 @@ export class PushNotificationsProvider {
           const walletIdHashed = data.walletId;
           if (!walletIdHashed) return;
           this._openWallet(walletIdHashed);
-        } else {
-          if (!this.configProvider.get().inAppNotificationsEnabled) return;
-          if (data.body && data.title) {
-            const wallet = this.findWallet(data.walletId);
-
-            const infoSheet = this.actionSheetProvider.createInfoSheet(
-              'in-app-notification',
-              {
-                title: data.title,
-                body: `${wallet.name}: ${data.body}`
-              }
-            );
-            await infoSheet.present();
-            this.vibration.vibrate(300);
-            await Observable.timer(7000).toPromise();
-            infoSheet.dismiss();
-          }
         }
       });
     }

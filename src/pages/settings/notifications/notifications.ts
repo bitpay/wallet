@@ -29,7 +29,6 @@ export class NotificationsPage {
   public isElectron: boolean;
 
   public pushNotifications: boolean;
-  public inAppNotifications: boolean;
   public desktopNotifications: boolean;
   public confirmedTxsNotifications: boolean;
 
@@ -73,7 +72,6 @@ export class NotificationsPage {
     this.isElectron = this.platformProvider.isElectron;
 
     this.pushNotifications = config.pushNotificationsEnabled;
-    this.inAppNotifications = config.inAppNotificationsEnabled;
     this.desktopNotifications = config.desktopNotificationsEnabled;
     this.confirmedTxsNotifications = config.confirmedTxsNotifications
       ? config.confirmedTxsNotifications.enabled
@@ -97,14 +95,6 @@ export class NotificationsPage {
 
     if (opts.pushNotificationsEnabled) this.pushProvider.init();
     else this.pushProvider.disable();
-  }
-
-  public inAppNotificationChange() {
-    const opts = {
-      inAppNotificationsEnabled: this.inAppNotifications
-    };
-
-    this.configProvider.set(opts);
   }
 
   public desktopNotificationChange() {
