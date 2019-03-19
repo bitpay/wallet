@@ -637,6 +637,7 @@ export class IncomingDataProvider {
         this.handlePayPro(details, coin);
       })
       .catch(err => {
+        this.events.publish('incomingDataError', err);
         this.logger.error(err);
       });
   }
