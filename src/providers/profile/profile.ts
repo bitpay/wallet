@@ -27,7 +27,7 @@ import { Profile } from '../../models/profile/profile.model';
 @Injectable()
 export class ProfileProvider {
   public wallet: any = {};
-  public vault: any = {};
+  public vault;
   public profile: Profile;
 
   private UPDATE_PERIOD = 15;
