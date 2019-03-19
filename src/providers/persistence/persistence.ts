@@ -39,7 +39,10 @@ const Keys = {
   CONFIG: 'config',
   FEEDBACK: 'feedback',
   FOCUSED_WALLET_ID: 'focusedWalletId',
-  GIFT_CARD_CONFIG_CACHE: 'giftCardConfigCache',
+  GIFT_CARD_CONFIG_CACHE: (network: Network) => {
+    const suffix = network === Network.livenet ? '' : `-${network}`;
+    return `giftCardConfigCache${suffix}`;
+  },
   ACTIVE_GIFT_CARDS: (network: Network) => {
     return `activeGiftCards-${network}`;
   },
@@ -341,10 +344,6 @@ export class PersistenceProvider {
     this.removeWalletOrder(walletId);
   }
 
-  setGiftCardConfigCache(data) {
-    return this.storage.set(Keys.GIFT_CARD_CONFIG_CACHE, data);
-  }
-
   getActiveGiftCards(network: Network) {
     return this.storage.get(Keys.ACTIVE_GIFT_CARDS(network));
   }
@@ -353,12 +352,16 @@ export class PersistenceProvider {
     return this.storage.set(Keys.ACTIVE_GIFT_CARDS(network), data);
   }
 
-  getGiftCardConfigCache() {
-    return this.storage.get(Keys.GIFT_CARD_CONFIG_CACHE);
+  getGiftCardConfigCache(network: Network) {
+    return this.storage.get(Keys.GIFT_CARD_CONFIG_CACHE(network));
   }
 
-  removeGiftCardConfigCache() {
-    return this.storage.remove(Keys.GIFT_CARD_CONFIG_CACHE);
+  removeGiftCardConfigCache(network: Network) {
+    return this.storage.remove(Keys.GIFT_CARD_CONFIG_CACHE(network));
+  }
+
+  setGiftCardConfigCache(network: Network, data) {
+    return this.storage.set(Keys.GIFT_CARD_CONFIG_CACHE(network), data);
   }
 
   setGiftCardUserInfo(data) {
