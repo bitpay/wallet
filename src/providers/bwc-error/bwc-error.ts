@@ -20,13 +20,17 @@ export class BwcErrorProvider {
     if (name) {
       switch (name) {
         case 'UNCONFIRMED_INPUTS_NOT_ACCEPTED':
-          body = this.translate.instant('This invoice does not accept unconfirmed inputs.');
+          body = this.translate.instant(
+            'This invoice does not accept unconfirmed inputs.'
+          );
           break;
- 
+
         case 'INVOICE_EXPIRED':
-          body = this.translate.instant('This invoice is not longer accepting payments');
+          body = this.translate.instant(
+            'This invoice is not longer accepting payments'
+          );
           break;
- 
+
         case 'INVALID_BACKUP':
           body = this.translate.instant('Wallet Recovery Phrase is invalid');
           break;
