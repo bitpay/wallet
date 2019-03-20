@@ -48,8 +48,7 @@ export class HomePage {
   public walletsBch;
   public cachedBalanceUpdateOn: string;
   public txpsN: number;
-  public serverMessage;
-  public serverMessageDismissed: boolean;
+  public serverMessages: any[];
   public homeIntegrations;
   public bitpayCardItems;
   public showBitPayCard: boolean = false;
@@ -538,9 +537,15 @@ export class HomePage {
           wallet.status = status;
           wallet.error = null;
 
-          if (!foundMessage && !_.isEmpty(status.serverMessage)) {
-            this.serverMessage = status.serverMessage;
-            await this.checkServerMessage();
+          if (!foundMessage && !_.isEmpty(status.serverMessages)) {
+            this.serverMessages = _.orderBy(
+              status.serverMessages,
+              ['priority'],
+              ['asc']
+            );
+            this.serverMessages.forEach(serverMessage => {
+              this.checkServerMessage(serverMessage);
+            });
             foundMessage = true;
           }
 
@@ -578,50 +583,45 @@ export class HomePage {
 
     Promise.all(promises).then(() => {
       this.updateTxps();
-      // No serverMessage for any wallet?
-      if (!foundMessage) this.serverMessage = null;
     });
   }
 
-  public dismissServerMessage(): void {
-    this.logger.debug(
-      'Server message id:' + this.serverMessage.id + ' dismissed'
-    );
-    this.persistenceProvider.setServerMessageDismissed(this.serverMessage.id);
-    this.serverMessageDismissed = true;
+  private removeServerMessage(id): void {
+    this.serverMessages = _.filter(this.serverMessages, s => s.id !== id);
   }
 
-  public checkServerMessage(): void {
-    if (
-      this.serverMessage.app &&
-      this.serverMessage.app != this.appProvider.info.name
-    ) {
-      this.serverMessageDismissed = true;
+  public dismissServerMessage(serverMessage): void {
+    this.logger.debug(`Server message id: ${serverMessage.id} dismissed`);
+    this.persistenceProvider.setServerMessageDismissed(serverMessage.id);
+    this.removeServerMessage(serverMessage.id);
+  }
+
+  public checkServerMessage(serverMessage): void {
+    if (serverMessage.app && serverMessage.app != this.appProvider.info.name) {
+      this.removeServerMessage(serverMessage.id);
       return;
     }
 
     if (
-      this.serverMessage.cardOnly &&
+      serverMessage.id === 'bcard-atm' &&
       (!this.showBitPayCard ||
         !this.bitpayCardItems ||
         !this.bitpayCardItems[0])
     ) {
-      this.serverMessageDismissed = true;
+      this.removeServerMessage(serverMessage.id);
       return;
     }
 
     this.persistenceProvider
-      .getServerMessageDismissed()
-      .then((value: boolean) => {
-        this.serverMessageDismissed = this.serverMessage.id == value;
-      })
-      .catch(() => {
-        this.serverMessageDismissed = false;
+      .getServerMessageDismissed(serverMessage.id)
+      .then((value: string) => {
+        if (value === 'dismissed') {
+          this.removeServerMessage(serverMessage.id);
+        }
       });
   }
 
-  public openServerMessageLink(): void {
-    const url = this.serverMessage.link;
+  public openServerMessageLink(url): void {
     this.externalLinkProvider.open(url);
   }
 

@@ -57,7 +57,7 @@ const Keys = {
   TX_CONFIRM_NOTIF: txid => 'txConfirmNotif-' + txid,
   TX_HISTORY: walletId => 'txsHistory-' + walletId,
   ORDER_WALLET: walletId => 'order-' + walletId,
-  SERVER_MESSAGE_DISMISSED: 'serverMessageDismissed',
+  SERVER_MESSAGE_DISMISSED: messageId => 'serverMessageDismissed-' + messageId,
   SHAPESHIFT_TOKEN: network => 'shapeshiftToken-' + network,
   VAULT: 'vault'
 };
@@ -478,16 +478,16 @@ export class PersistenceProvider {
     return this.storage.get(Keys.GIFT_CARDS(cardName, network));
   }
 
-  setServerMessageDismissed(val) {
-    return this.storage.set(Keys.SERVER_MESSAGE_DISMISSED, val);
+  setServerMessageDismissed(id) {
+    return this.storage.set(Keys.SERVER_MESSAGE_DISMISSED(id), 'dismissed');
   }
 
-  getServerMessageDismissed() {
-    return this.storage.get(Keys.SERVER_MESSAGE_DISMISSED);
+  getServerMessageDismissed(id) {
+    return this.storage.get(Keys.SERVER_MESSAGE_DISMISSED(id));
   }
 
-  removeServerMessageDismissed() {
-    return this.storage.remove(Keys.SERVER_MESSAGE_DISMISSED);
+  removeServerMessageDismissed(id) {
+    return this.storage.remove(Keys.SERVER_MESSAGE_DISMISSED(id));
   }
 
   setShapeshift(network: string, gcs) {
