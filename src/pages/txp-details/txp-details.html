@@ -114,40 +114,12 @@
 
     <div *ngIf="tx && tx.paypro">
       <ion-item-divider>{{'Payment request' | translate}}</ion-item-divider>
-      <ion-item>
-        <span>{{'Pay To'|translate}}</span>
-        <ion-note item-end>
-          {{tx.paypro.domain}}
-        </ion-note>
-      </ion-item>
-      <ion-item>
-        <span translate>Certified by</span>
-        <div class="item-memo" text-wrap>
-          <ion-note *ngIf="tx.paypro.caTrusted" icon-start item-end>
-            <ion-icon *ngIf="tx.paypro.verified" color="success" name="lock"></ion-icon>
-            <ion-icon *ngIf="!tx.paypro.verified" color="warning" name="unlock"></ion-icon>
-            {{tx.paypro.caName}} {{'(Trusted)' | translate}}
-          </ion-note>
-          <ion-note *ngIf="!tx.paypro.caTrusted" icon-start item-end>
-            <span *ngIf="tx.paypro.selfSigned">
-              <ion-icon color="danger" name="unlock"></ion-icon>
-              <span translate>Self-signed Certificate</span>
-            </span>
-            <span *ngIf="!tx.paypro.selfSigned">
-              <ion-icon color="warning" name="lock"></ion-icon>
-              {{tx.paypro.caName}}
-              <br>
-              <span translate>WARNING: UNTRUSTED CERTIFICATE</span>
-            </span>
-          </ion-note>
-        </div>
-      </ion-item>
       <ion-item *ngIf="paymentExpired">
         <ion-label>
           {{'Expired'|translate}}
         </ion-label>
         <ion-note color="danger" item-end>
-          <time>{{tx.paypro.expires * 1000 | amTimeAgo }}</time>
+          <time>{{tx.paypro.expires | amTimeAgo }}</time>
         </ion-note>
       </ion-item>
       <ion-item *ngIf="!paymentExpired">

@@ -14,7 +14,6 @@ import { DisclaimerPage } from '../pages/onboarding/disclaimer/disclaimer';
 import { OnboardingPage } from '../pages/onboarding/onboarding';
 import { TourPage } from '../pages/onboarding/tour/tour';
 import { PaperWalletPage } from '../pages/paper-wallet/paper-wallet';
-import { PayProPage } from '../pages/paypro/paypro';
 import { SlideToAcceptPage } from '../pages/slide-to-accept/slide-to-accept';
 import { TabsPage } from '../pages/tabs/tabs';
 import { TxDetailsPage } from '../pages/tx-details/tx-details';
@@ -156,7 +155,6 @@ export const PAGES = [
   MultipleOutputsPage,
   OnboardingPage,
   PaperWalletPage,
-  PayProPage,
   ...PIN_COMPONENTS,
   ProposalsPage,
   ReceivePage,

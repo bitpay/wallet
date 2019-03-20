@@ -633,8 +633,8 @@ export class IncomingDataProvider {
   private goToPayPro(url: string, coin: Coin): void {
     this.payproProvider
       .getPayProDetails(url, coin)
-      .then(details => {
-        this.handlePayPro(details, coin);
+    .then(details => {
+        this.handlePayPro(details, url, coin);
       })
       .catch(err => {
         this.events.publish('incomingDataError', err);
@@ -642,7 +642,7 @@ export class IncomingDataProvider {
       });
   }
 
-  private handlePayPro(payProDetails, coin?: Coin): void {
+  private handlePayPro(payProDetails, url, coin?: Coin): void {
     if (!payProDetails) {
       this.logger.error('No wallets available');
       const error = this.translate.instant('No wallets available');
@@ -656,6 +656,7 @@ export class IncomingDataProvider {
       description: payProDetails.memo,
       paypro: payProDetails,
       coin,
+      payProUrl: url,
       requiredFeeRate: payProDetails.requiredFeeRate
         ? Math.ceil(payProDetails.requiredFeeRate * 1024)
         : undefined

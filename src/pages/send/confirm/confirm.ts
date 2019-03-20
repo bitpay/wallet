@@ -13,7 +13,6 @@ import { Logger } from '../../../providers/logger/logger';
 
 // Pages
 import { FinishModalPage } from '../../finish/finish';
-import { PayProPage } from '../../paypro/paypro';
 import { TabsPage } from '../../tabs/tabs';
 import { ChooseFeeLevelPage } from '../choose-fee-level/choose-fee-level';
 
@@ -184,6 +183,7 @@ export class ConfirmPage extends WalletTabsChild {
       amount: this.navParams.data.useSendMax ? 0 : parseInt(amount, 10),
       description: this.navParams.data.description,
       paypro: this.navParams.data.paypro,
+      payProUrl: this.navParams.data.payProUrl,
       spendUnconfirmed: this.config.wallet.spendUnconfirmed,
 
       // Vanity tx info (not in the real tx)
@@ -386,7 +386,8 @@ export class ConfirmPage extends WalletTabsChild {
     }
   }
 
-  private paymentTimeControl(expirationTime: number): void {
+  private paymentTimeControl(expires: string): void {
+    const expirationTime = Math.floor(new Date(expires).getTime() / 1000);
     this.paymentExpired = false;
     this.setExpirationTime(expirationTime);
 
@@ -721,7 +722,7 @@ export class ConfirmPage extends WalletTabsChild {
       txp.message = tx.description;
 
       if (tx.paypro) {
-        txp.payProUrl = tx.paypro.url;
+        txp.payProUrl = tx.payProUrl;
       }
       txp.excludeUnconfirmedUtxos = !tx.spendUnconfirmed;
       txp.dryRun = dryRun;
@@ -944,22 +945,6 @@ export class ConfirmPage extends WalletTabsChild {
       this.app.getRootNavs()[0].setRoot(TabsPage);
       this.events.publish('OpenWallet', this.wallet);
     }
-  }
-
-  public openPPModal(): void {
-    if (!this.wallet) return;
-    const modal = this.modalCtrl.create(
-      PayProPage,
-      {
-        tx: this.tx,
-        wallet: this.wallet
-      },
-      {
-        showBackdrop: true,
-        enableBackdropDismiss: true
-      }
-    );
-    modal.present();
   }
 
   public chooseFeeLevel(): void {
