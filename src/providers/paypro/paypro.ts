@@ -51,9 +51,7 @@ export class PayproProvider {
             return reject(err);
           } else if (err)
             return reject(
-              this.translate.instant(
-                'Check if the invoice is still valid'
-              )
+              this.translate.instant('Check if the invoice is still valid')
             );
           else if (!paypro.verified) {
             this.logger.warn('Failed to verify payment protocol signatures');
