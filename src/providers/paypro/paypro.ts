@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { Logger } from '../../providers/logger/logger';
 
 import * as _ from 'lodash';
-import encoding from 'text-encoding';
 
 // providers
 import { OnGoingProcessProvider } from '../on-going-process/on-going-process';
@@ -24,32 +23,27 @@ export class PayproProvider {
     disableLoader?: boolean
   ): Promise<any> {
     return new Promise((resolve, reject) => {
-      const getWallet = (network?: string) => {
-        return this.profileProvider.getWallets({
-          onlyComplete: true,
-          coin,
-          network: network || 'livenet'
-        })[0];
-      };
-
-      let wallet = getWallet();
-      if (!wallet) return resolve();
-
-      this.logger.debug('Fetch PayPro Request...', uri);
-
-      if (!disableLoader) {
-        this.onGoingProcessProvider.set('fetchingPayPro');
-      }
-
-      const getPayPro = () => {
+      const getPayPro = (network: string = 'livenet') => { 
         return new Promise((resolve, reject) => {
+          let wallet = this.profileProvider.getWallets({
+            onlyComplete: true,
+            coin,
+            network
+          })[0];
+
+          if (!wallet) return resolve();
+
+          this.logger.debug(`Fetch PayPro Request (${network})...`, uri);
+          if (!disableLoader) {
+            this.onGoingProcessProvider.set('fetchingPayPro');
+          }
+
           wallet.fetchPayPro(
             {
               payProUrl: uri
             },
             (err, paypro) => {
               if (!disableLoader) this.onGoingProcessProvider.clear();
-
               if (err) reject(err);
               else if (paypro && !paypro.verified)
                 reject('Payment Protocol Invalid');
@@ -60,23 +54,18 @@ export class PayproProvider {
       };
 
       getPayPro()
-        .then((paypro: any) => {
+        .then(paypro => {
           resolve(paypro);
         })
         .catch(err => {
-          if (_.isArrayBuffer(err)) {
-            const enc = new encoding.TextDecoder();
-            err = enc.decode(err);
-            return reject(err);
-          } else if (
+          if (
             err &&
             err.message &&
             err.message.match(
               /The key on the response is not trusted for transactions/
             )
           ) {
-            wallet = getWallet('testnet');
-            getPayPro()
+            getPayPro('testnet')
               .then(paypro => {
                 resolve(paypro);
               })
