@@ -71,7 +71,6 @@ export class CopayApp {
     | typeof TabsPage
     | typeof OnboardingPage;
   private onResumeSubscription: Subscription;
-  private isLockModalOpen: boolean;
   private isWalletModalOpen: boolean;
   private walletModal: any;
 
@@ -250,7 +249,7 @@ export class CopayApp {
   }
 
   private openLockModal(): void {
-    if (this.isLockModalOpen) return;
+    if (this.appProvider.isLockModalOpen) return;
     const config = this.configProvider.get();
     const lockMethod =
       config && config.lock && config.lock.method
@@ -262,28 +261,36 @@ export class CopayApp {
   }
 
   private openPINModal(action): void {
-    this.isLockModalOpen = true;
+    this.appProvider.isLockModalOpen = true;
     const modal = this.modalCtrl.create(
       PinModalPage,
       { action },
-      { cssClass: 'fullscreen-modal' }
+      {
+        enableBackdropDismiss: false,
+        cssClass: 'fullscreen-modal'
+      }
     );
     modal.present({ animate: false });
     modal.onDidDismiss(() => {
-      this.isLockModalOpen = false;
+      this.appProvider.isLockModalOpen = false;
+      this.events.publish('Home/reloadStatus');
     });
   }
 
   private openFingerprintModal(): void {
-    this.isLockModalOpen = true;
+    this.appProvider.isLockModalOpen = true;
     const modal = this.modalCtrl.create(
       FingerprintModalPage,
       {},
-      { cssClass: 'fullscreen-modal' }
+      {
+        enableBackdropDismiss: false,
+        cssClass: 'fullscreen-modal'
+      }
     );
     modal.present({ animate: false });
     modal.onDidDismiss(() => {
-      this.isLockModalOpen = false;
+      this.appProvider.isLockModalOpen = false;
+      this.events.publish('Home/reloadStatus');
     });
   }
 
