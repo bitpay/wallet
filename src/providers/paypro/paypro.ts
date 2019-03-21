@@ -21,7 +21,7 @@ export class PayproProvider {
     disableLoader?: boolean
   ): Promise<any> {
     return new Promise((resolve, reject) => {
-      const getPayPro = (network: string = 'livenet') => { 
+      const getPayPro = (network: string = 'livenet') => {
         return new Promise((resolve, reject) => {
           let wallet = this.profileProvider.getWallets({
             onlyComplete: true,

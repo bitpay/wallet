@@ -723,7 +723,7 @@ export class ConfirmPage extends WalletTabsChild {
 
       if (tx.paypro) {
         txp.payProUrl = tx.payProUrl;
-        tx.paypro.host = (new URL(tx.payProUrl)).host;
+        tx.paypro.host = new URL(tx.payProUrl).host;
       }
       txp.excludeUnconfirmedUtxos = !tx.spendUnconfirmed;
       txp.dryRun = dryRun;
