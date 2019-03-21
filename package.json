@@ -185,6 +185,7 @@
     "@zxing/library": "0.8.2",
     "@zxing/ngx-scanner": "1.2.1",
     "angular2-moment": "1.7.1",
+    "base64-js": "1.3.0",
     "bitauth": "git+https://github.com/bitpay/bitauth.git#copay",
     "bitcore-wallet-client": "8.1.0",
     "buffer-compare": "1.1.1",
