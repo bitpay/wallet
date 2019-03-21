@@ -8,7 +8,7 @@
 <ion-content no-bounce>
   <div class="key-container" [hidden]="mnemonicHasPassphrase && selectComplete">
     <div class="word-container">
-      <ion-slides #gameSlides class="word-slides">
+      <ion-slides #gameSlides class="word-slides" slidesPerView="2" spaceBetween="20" centeredSlides="true">
         <ion-slide *ngFor="let mnemonicWord of mnemonicWords; let i = index">
           <div class="word">
             <span *ngIf="customWords && customWords[i]">{{customWords[i].word}}</span>
