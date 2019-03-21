@@ -24,7 +24,6 @@ export class PayproProvider {
     disableLoader?: boolean
   ): Promise<any> {
     return new Promise((resolve, reject) => {
-
       const getWallet = (network?: string) => {
         return this.profileProvider.getWallets({
           onlyComplete: true,
@@ -50,33 +49,44 @@ export class PayproProvider {
             },
             (err, paypro) => {
               if (!disableLoader) this.onGoingProcessProvider.clear();
-              
+
               if (err) reject(err);
-              else if (paypro && !paypro.verified) reject('Payment Protocol Invalid');
+              else if (paypro && !paypro.verified)
+                reject('Payment Protocol Invalid');
               else resolve(paypro);
             }
           );
-        })
+        });
       };
 
-      getPayPro().then((paypro: any) => {
-        resolve(paypro);
-      }).catch((err) => {
-        if (_.isArrayBuffer(err)) {
-          const enc = new encoding.TextDecoder();
-          err = enc.decode(err);
-          return reject(err);
-        } else if (err && err.message && err.message.match(/The key on the response is not trusted for transactions/)) {
-          wallet = getWallet('testnet');
-          getPayPro().then((paypro) => {
-            resolve(paypro);
-          }).catch((err) => {
-            reject(err.message || err);
-          });
-        } else {
-          return reject(err.message || err);
-        }
-      });
+      getPayPro()
+        .then((paypro: any) => {
+          resolve(paypro);
+        })
+        .catch(err => {
+          if (_.isArrayBuffer(err)) {
+            const enc = new encoding.TextDecoder();
+            err = enc.decode(err);
+            return reject(err);
+          } else if (
+            err &&
+            err.message &&
+            err.message.match(
+              /The key on the response is not trusted for transactions/
+            )
+          ) {
+            wallet = getWallet('testnet');
+            getPayPro()
+              .then(paypro => {
+                resolve(paypro);
+              })
+              .catch(err => {
+                reject(err.message || err);
+              });
+          } else {
+            return reject(err.message || err);
+          }
+        });
     });
   }
 }

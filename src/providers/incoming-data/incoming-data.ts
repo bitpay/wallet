@@ -633,7 +633,7 @@ export class IncomingDataProvider {
   private goToPayPro(url: string, coin: Coin): void {
     this.payproProvider
       .getPayProDetails(url, coin)
-    .then(details => {
+      .then(details => {
         this.handlePayPro(details, url, coin);
       })
       .catch(err => {

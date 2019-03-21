@@ -5,7 +5,6 @@ import { Component, Input } from '@angular/core';
   templateUrl: 'gravatar.html'
 })
 export class GravatarPage {
-
   @Input()
   email: string;
   @Input()
