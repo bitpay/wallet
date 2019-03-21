@@ -1,4 +1,5 @@
-wide-header-page {
+wide-header-page,
+card-catalog-page {
   @include fix-ios-bg-scroll();
 
   expandable-header-primary {

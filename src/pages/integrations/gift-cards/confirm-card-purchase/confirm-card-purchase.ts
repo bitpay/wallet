@@ -312,7 +312,7 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
         service: 'giftcards'
       },
       payProUrl,
-      excludeUnconfirmedUtxos: true // TODO: Once JSON payment protocol goes live, change this value back to: "this.configWallet.spendUnconfirmed ? false : true"
+      excludeUnconfirmedUtxos: this.configWallet.spendUnconfirmed ? false : true
     };
 
     if (details.requiredFeeRate) {
