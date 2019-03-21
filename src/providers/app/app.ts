@@ -47,6 +47,7 @@ interface App {
 export class AppProvider {
   public info: any = {};
   public servicesInfo;
+  public isLockModalOpen: boolean;
   private jsonPathApp: string = 'assets/appConfig.json';
   private jsonPathServices: string = 'assets/externalServices.json';
 

@@ -337,29 +337,36 @@ export class HomePage {
     }, 10000);
   }
 
-  private setWallets = _.debounce(
+  private debounceSetWallets = _.debounce(
     async () => {
-      this.wallets = this.profileProvider.getWallets();
-      this.vaultWallets = this.profileProvider.getVaultWallets();
-      this.walletsBtc = _.filter(this.wallets, (x: any) => {
-        return (
-          x.credentials.coin == 'btc' &&
-          !this.profileProvider.vaultHasWallet(x.credentials.walletId)
-        );
-      });
-      this.walletsBch = _.filter(this.wallets, (x: any) => {
-        return (
-          x.credentials.coin == 'bch' &&
-          !this.profileProvider.vaultHasWallet(x.credentials.walletId)
-        );
-      });
-      this.updateAllWallets();
+      this.setWallets();
     },
     5000,
     {
       leading: true
     }
   );
+
+  private setWallets(): void {
+    this.wallets = this.profileProvider.getWallets();
+    this.vaultWallets = this.profileProvider.getVaultWallets();
+    this.walletsBtc = _.filter(this.wallets, (x: any) => {
+      return (
+        x.credentials.coin == 'btc' &&
+        !this.profileProvider.vaultHasWallet(x.credentials.walletId)
+      );
+    });
+    this.walletsBch = _.filter(this.wallets, (x: any) => {
+      return (
+        x.credentials.coin == 'bch' &&
+        !this.profileProvider.vaultHasWallet(x.credentials.walletId)
+      );
+    });
+    // Avoid heavy tasks that can slow down the unlocking experience
+    if (!this.appProvider.isLockModalOpen) {
+      this.updateAllWallets();
+    }
+  }
 
   public checkHomeTip(): void {
     this.persistenceProvider.getHomeTipAccepted().then((value: string) => {
@@ -703,7 +710,7 @@ export class HomePage {
   }
 
   public doRefresh(refresher): void {
-    this.setWallets();
+    this.debounceSetWallets();
     setTimeout(() => {
       refresher.complete();
     }, 2000);
