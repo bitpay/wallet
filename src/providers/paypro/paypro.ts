@@ -1,8 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Logger } from '../../providers/logger/logger';
 
-import * as _ from 'lodash';
-
 // providers
 import { OnGoingProcessProvider } from '../on-going-process/on-going-process';
 import { ProfileProvider } from '../profile/profile';

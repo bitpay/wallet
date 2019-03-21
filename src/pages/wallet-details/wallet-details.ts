@@ -187,6 +187,11 @@ export class WalletDetailsPage extends WalletTabsChild {
       if (!action && txp.status == 'pending') {
         this.txpsPending.push(txp);
       }
+
+      // For unsent transactions
+      if (action && txp.status == 'accepted') {
+        this.txpsPending.push(txp);
+      }
     });
   }
 
