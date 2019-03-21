@@ -191,10 +191,8 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
     if (this.walletProvider.isEncrypted(wallet)) {
       this.hideSlideButton = true;
     }
-    await this.walletProvider.publishAndSign(wallet, txp).catch(err => {
-      this.onGoingProcessProvider.clear();
-      throw err;
-    });
+
+    await this.walletProvider.publishAndSign(wallet, txp);
     this.hideSlideButton = false;
     return this.onGoingProcessProvider.clear();
   }
@@ -314,7 +312,7 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
         service: 'giftcards'
       },
       payProUrl,
-      excludeUnconfirmedUtxos: this.configWallet.spendUnconfirmed ? false : true
+      excludeUnconfirmedUtxos: true // TODO: Once JSON payment protocol goes live, change this value back to: "this.configWallet.spendUnconfirmed ? false : true"
     };
 
     if (details.requiredFeeRate) {
@@ -341,6 +339,7 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
   }
 
   private async redeemGiftCard(initialCard: GiftCard) {
+    this.onGoingProcessProvider.set('buyingGiftCard');
     const card = await this.giftCardProvider
       .createGiftCard(initialCard)
       .catch(() => ({ ...initialCard, status: 'FAILURE' }));
@@ -482,46 +481,31 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
       );
       return;
     }
-    const title = this.translate.instant('Confirm');
-    const okText = this.translate.instant('OK');
-    const cancelText = this.translate.instant('Cancel');
-    const confirm = await this.popupProvider.ionicConfirm(
-      title,
-      this.message,
-      okText,
-      cancelText
-    );
-    if (!confirm) {
-      if (this.isCordova) this.slideButton.isConfirmed(false);
-      return;
-    }
     await this.giftCardProvider.saveGiftCard({
       ...this.tx.giftData,
       status: 'UNREDEEMED'
     });
     return this.publishAndSign(this.wallet, this.tx)
-      .then(() => {
-        this.onGoingProcessProvider.set('buyingGiftCard');
-        return this.redeemGiftCard(this.tx.giftData);
-      })
-      .catch(async err => {
-        await this.giftCardProvider.saveCard(this.tx.giftData, {
-          remove: true
-        });
-        if (
-          err &&
-          err.message != 'FINGERPRINT_CANCELLED' &&
-          err.message != 'PASSWORD_CANCELLED'
-        ) {
-          if (err.message != 'NO_PASSWORD' && err.message != 'WRONG_PASSWORD') {
-            this.resetValues();
-          }
-          this.showErrorInfoSheet(
-            this.bwcErrorProvider.msg(err),
-            this.translate.instant('Could not send transaction')
-          );
-        }
-      });
+      .then(() => this.redeemGiftCard(this.tx.giftData))
+      .catch(async err => this.handlePurchaseError(err));
+  }
+
+  public async handlePurchaseError(err) {
+    await this.giftCardProvider.saveCard(this.tx.giftData, {
+      remove: true
+    });
+    const errorMessage = err && err.message;
+    const canceledErrors = ['FINGERPRINT_CANCELLED', 'PASSWORD_CANCELLED'];
+    if (canceledErrors.indexOf(errorMessage) !== -1) {
+      return;
+    }
+    if (['NO_PASSWORD', 'WRONG_PASSWORD'].indexOf(errorMessage) === -1) {
+      this.resetValues();
+    }
+    this.showErrorInfoSheet(
+      this.bwcErrorProvider.msg(err),
+      this.translate.instant('Could not send transaction')
+    );
   }
 
   public onWalletSelect(wallet): void {

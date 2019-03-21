@@ -128,23 +128,33 @@ export class GiftCardProvider {
     const oldGiftCards = await this.getCardMap(giftCard.name);
     const newMap = this.getNewSaveableGiftCardMap(oldGiftCards, giftCard, opts);
     const savePromise = this.persistCards(giftCard.name, newMap);
-    await Promise.all([savePromise, this.updateActiveCards([giftCard])]);
+    await Promise.all([savePromise, this.updateActiveCards([giftCard], opts)]);
   }
 
-  async updateActiveCards(giftCardsToUpdate: GiftCard[]) {
+  async updateActiveCards(
+    giftCardsToUpdate: GiftCard[],
+    opts: GiftCardSaveParams = {}
+  ) {
     const oldActiveGiftCards: GiftCardMap =
       (await this.persistenceProvider.getActiveGiftCards(this.getNetwork())) ||
       {};
     const newMap = giftCardsToUpdate.reduce(
       (updatedMap, c) =>
         this.getNewSaveableGiftCardMap(updatedMap, c, {
-          remove: c.archived
+          remove: c.archived || opts.remove
         }),
       oldActiveGiftCards
     );
     return this.persistenceProvider.setActiveGiftCards(
       this.getNetwork(),
       JSON.stringify(newMap)
+    );
+  }
+
+  clearActiveGiftCards() {
+    return this.persistenceProvider.setActiveGiftCards(
+      this.getNetwork(),
+      JSON.stringify({})
     );
   }
 
@@ -291,10 +301,9 @@ export class GiftCardProvider {
               this.getBitPayInvoice(card.invoiceId).then(invoice => ({
                 ...card,
                 status:
-                  (card.status === 'PENDING' ||
-                    (card.status === 'UNREDEEMED' &&
-                      invoice.status !== 'new')) &&
-                  invoice.status !== 'expired'
+                  invoice.status !== 'expired' &&
+                  invoice.status !== 'invalid' &&
+                  invoice.status !== 'new'
                     ? 'PENDING'
                     : 'expired'
               }))
@@ -433,7 +442,7 @@ export class GiftCardProvider {
   }
 
   async migrateAndFetchActiveCards(): Promise<GiftCard[]> {
-    await this.persistenceProvider.setActiveGiftCards(Network.livenet, {});
+    await this.clearActiveGiftCards();
     const purchasedBrands = await this.getPurchasedBrands();
     const activeCardsGroupedByBrand = purchasedBrands.filter(
       cards => cards.filter(c => !c.archived).length
@@ -460,7 +469,9 @@ export class GiftCardProvider {
 
   async cacheApiCardConfig(availableCardMap: AvailableCardMap) {
     const cardNames = Object.keys(availableCardMap);
-    const previousCache = await this.persistenceProvider.getGiftCardConfigCache();
+    const previousCache = await this.persistenceProvider.getGiftCardConfigCache(
+      this.getNetwork()
+    );
     const apiCardConfigCache = getCardConfigFromApiConfigMap(
       availableCardMap
     ).reduce((configMap, apiCardConfigMap, index) => {
@@ -472,12 +483,17 @@ export class GiftCardProvider {
       ...apiCardConfigCache
     };
     if (JSON.stringify(previousCache) !== JSON.stringify(newCache)) {
-      await this.persistenceProvider.setGiftCardConfigCache(newCache);
+      await this.persistenceProvider.setGiftCardConfigCache(
+        this.getNetwork(),
+        newCache
+      );
     }
   }
 
   async fetchCachedApiCardConfig(): Promise<CardConfigMap> {
-    this.cachedApiCardConfigPromise = this.persistenceProvider.getGiftCardConfigCache();
+    this.cachedApiCardConfigPromise = this.persistenceProvider.getGiftCardConfigCache(
+      this.getNetwork()
+    );
     return this.cachedApiCardConfigPromise;
   }
 
