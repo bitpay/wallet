@@ -30,10 +30,11 @@
     </ion-item>
   </ion-card>
 
-  <form [formGroup]="importForm" (ngSubmit)="import()">
+  <form [formGroup]="importForm">
     <ion-item *ngIf="selectedTab == 'words'">
       <ion-label stacked>{{'Type the recovery phrase (usually 12 words)' | translate}}</ion-label>
-      <ion-textarea formControlName="words" [value]="importForm.value.words" autocapitalize="none"></ion-textarea>
+      <ion-textarea formControlName="words" [value]="importForm.value.words" autocapitalize="none">
+      </ion-textarea>
       <ion-icon class="scanner-icon" name="qr-scanner" item-right (click)="openScanner()"></ion-icon>
     </ion-item>
 
@@ -47,12 +48,12 @@
       </ion-item>
 
       <ion-item *ngIf="isSafari || isCordova">
-        <ion-label stacked>{{'Paste the backup plain text code' | translate}}</ion-label>
+        <ion-label floating>{{'Paste the backup plain text code' | translate}}</ion-label>
         <ion-textarea formControlName="backupText" rows="5" [value]="importForm.value.backupText"></ion-textarea>
       </ion-item>
 
       <ion-item>
-        <ion-label stacked>{{'Password' | translate}}</ion-label>
+        <ion-label floating>{{'Password' | translate}}</ion-label>
         <ion-input type="password" formControlName="filePassword"></ion-input>
       </ion-item>
     </div>
@@ -70,8 +71,8 @@
     </label-tip>
  -->
     <ion-item *ngIf="selectedTab != 'file' && !importForm.value.importVault">
-      <ion-label stacked>{{'Coin' | translate}}</ion-label>
-      <ion-select okText="{{okText}}" cancelText="{{cancelText}}" placeholder="{{'Select a coin' | translate}}" formControlName="coin">
+      <ion-label floating>{{'Coin' | translate}}</ion-label>
+      <ion-select okText="{{okText}}" cancelText="{{cancelText}}" formControlName="coin">
         <ion-option value="btc">Bitcoin (BTC)</ion-option>
         <ion-option value="bch">Bitcoin Cash (BCH)</ion-option>
       </ion-select>
@@ -79,19 +80,16 @@
 
     <ion-item-divider></ion-item-divider>
 
-    <ion-item (click)="toggleShowAdvOpts()">
-      <ion-label *ngIf="!showAdvOpts">{{'Show advanced options' | translate}}</ion-label>
-      <ion-label *ngIf="showAdvOpts">{{'Hide advanced options' | translate}}</ion-label>
-      <div item-end>
-        <ion-icon color="grey" *ngIf="!showAdvOpts" name="ios-arrow-down-outline"></ion-icon>
-        <ion-icon color="grey" *ngIf="showAdvOpts" name="ios-arrow-up-outline"></ion-icon>
-      </div>
-    </ion-item>
+
+    <button ion-button class="button-standard button-secondary" (click)="showAdvOpts = !showAdvOpts">
+      <span *ngIf="!showAdvOpts">{{'Show advanced options' | translate}}</span>
+      <span *ngIf="showAdvOpts">{{'Hide advanced options' | translate}}</span>
+    </button>
 
     <div *ngIf="showAdvOpts">
       <div *ngIf="selectedTab == 'words'">
         <ion-item *ngIf="!importForm.value.importVault" class="with-label">
-          <ion-label stacked>{{'Password' | translate}}</ion-label>
+          <ion-label floating>{{'Password' | translate}}</ion-label>
           <ion-input type="password" formControlName="passphrase"></ion-input>
         </ion-item>
 
@@ -102,7 +100,7 @@
         </label-tip>
 
         <ion-item *ngIf="!importForm.value.importVault">
-          <ion-label stacked>{{'Derivation path' | translate}}</ion-label>
+          <ion-label floating>{{'Derivation path' | translate}}</ion-label>
           <ion-input type="text" formControlName="derivationPath" [value]="importForm.value.derivationPath"></ion-input>
         </ion-item>
 
@@ -121,7 +119,7 @@
       </div>
 
       <ion-item>
-        <ion-label stacked>Wallet Service URL</ion-label>
+        <ion-label floating>Wallet Service URL</ion-label>
         <ion-input type="text" formControlName="bwsURL"></ion-input>
       </ion-item>
 

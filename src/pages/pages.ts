@@ -4,6 +4,7 @@ import { CopayersPage } from '../pages/add/copayers/copayers';
 import { CreateWalletPage } from '../pages/add/create-wallet/create-wallet';
 import { ImportWalletPage } from '../pages/add/import-wallet/import-wallet';
 import { JoinWalletPage } from '../pages/add/join-wallet/join-wallet';
+import { SelectCurrencyPage } from '../pages/add/select-currency/select-currency';
 import { BackupGamePage } from '../pages/backup/backup-game/backup-game';
 import { BackupKeyPage } from '../pages/backup/backup-key/backup-key';
 import { SendFeedbackPage } from '../pages/feedback/send-feedback/send-feedback';
@@ -164,6 +165,7 @@ export const PAGES = [
   SendPage,
   SettingsPage,
   SellCoinbasePage,
+  SelectCurrencyPage,
   CoinbaseSettingsPage,
   ShapeshiftConfirmPage,
   ShapeshiftDetailsPage,
