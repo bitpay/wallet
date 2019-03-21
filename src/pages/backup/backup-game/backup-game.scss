@@ -1,4 +1,7 @@
 page-backup-game {
+  ion-content.content {
+    background: white;
+  }
   .key-container {
     height: 95%;
     text-align: center;
@@ -11,13 +14,17 @@ page-backup-game {
       text-align: center;
       .word-slides {
         .word {
-          background: color($colors, light);
+          background-color: #f6f7fc;
           margin: auto;
           border-radius: 3px;
           color: color($colors, secondary);
           text-align: center;
-          max-width: 260px;
-          min-height: 11rem;
+          min-width: 190px;
+          min-height: 171px;
+          @media (max-width: 400px) {
+            min-width: 160px;
+            min-height: 130px;
+          }
           display: flex;
           justify-content: center;
           align-items: center;
@@ -36,12 +43,12 @@ page-backup-game {
             border-bottom: 1px color($colors, primary) dashed;
             width: 80%;
             position: absolute;
-            bottom: 1.5rem;
+            bottom: 3.5rem;
           }
         }
         .word-number {
           margin-top: 1rem;
-          font-weight: 500;
+          font-weight: bold;
         }
       }
     }
@@ -69,6 +76,9 @@ page-backup-game {
       margin: 0 auto;
       padding: 0.8rem;
       .button {
+        box-shadow: none;
+        background-color: #f6f6f6;
+        color: color($colors, dark);
         height: 3rem;
         font-size: 14px;
         margin: 5px;
