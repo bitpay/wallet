@@ -51,10 +51,11 @@ export class CreateWalletPage implements OnInit {
   public showAdvOpts: boolean;
   public seedOptions;
   public isShared: boolean;
-  public title: string;
+  public coin: string;
   public okText: string;
   public cancelText: string;
   public createForm: FormGroup;
+  public createLabel: string;
 
   constructor(
     private navCtrl: NavController,
@@ -76,12 +77,9 @@ export class CreateWalletPage implements OnInit {
     this.okText = this.translate.instant('Ok');
     this.cancelText = this.translate.instant('Cancel');
     this.isShared = this.navParams.get('isShared');
-    this.title = this.isShared
-      ? this.translate.instant('Create shared wallet')
-      : this.translate.instant('Create personal wallet');
+    this.coin = this.navParams.get('coin');
     this.defaults = this.configProvider.getDefaults();
     this.tc = this.isShared ? this.defaults.wallet.totalCopayers : 1;
-
     this.copayers = _.range(2, this.defaults.limits.totalCopayers + 1);
     this.derivationPathByDefault = this.derivationPathHelperProvider.default;
     this.derivationPathForTestnet = this.derivationPathHelperProvider.defaultTestnet;
@@ -98,9 +96,13 @@ export class CreateWalletPage implements OnInit {
       derivationPath: [this.derivationPathByDefault],
       testnetEnabled: [false],
       singleAddress: [false],
-      coin: [null, Validators.required],
-      addToVault: [false]
+      coin: [null, Validators.required]
     });
+    this.createForm.controls['coin'].setValue(this.coin);
+    this.createLabel =
+      this.coin === 'btc'
+        ? this.translate.instant('Create Bitcoin Wallet')
+        : this.translate.instant('Create Bitcoin Cash Wallet');
 
     this.setTotalCopayers(this.tc);
     this.updateRCSelect(this.tc);

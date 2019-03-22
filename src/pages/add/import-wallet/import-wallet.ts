@@ -50,6 +50,7 @@ export class ImportWalletPage {
   public code;
   public okText: string;
   public cancelText: string;
+  public coin: string;
 
   constructor(
     private app: App,
@@ -76,6 +77,7 @@ export class ImportWalletPage {
     this.reader = new FileReader();
     this.defaults = this.configProvider.getDefaults();
     this.errors = bwcProvider.getErrors();
+    this.coin = this.navParams.get('coin');
 
     this.isCordova = this.platformProvider.isCordova;
     this.isSafari = this.platformProvider.isSafari;
@@ -101,6 +103,7 @@ export class ImportWalletPage {
       coin: [null, Validators.required],
       importVault: [false]
     });
+    this.importForm.controls['coin'].setValue(this.coin);
     this.events.subscribe('update:words', this.updateWordsHandler);
 
     this.persistenceProvider.getVault().then(vault => {
@@ -446,10 +449,6 @@ export class ImportWalletPage {
     } else {
       this.importMnemonic(words, opts);
     }
-  }
-
-  public toggleShowAdvOpts(): void {
-    this.showAdvOpts = !this.showAdvOpts;
   }
 
   public fileChangeEvent($event) {

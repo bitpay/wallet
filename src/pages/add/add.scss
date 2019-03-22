@@ -1,11 +1,16 @@
 page-add {
+  background-color: #ffffff;
   .list-button {
     margin-top: 1rem;
     padding-top: 10px;
     padding-bottom: 10px;
+    background-color: none;
     .item-inner {
       border: none !important;
     }
+  }
+  .item-title {
+    font-weight: bold;
   }
   .join-icon {
     img {
