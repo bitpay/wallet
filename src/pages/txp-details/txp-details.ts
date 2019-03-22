@@ -237,7 +237,8 @@ export class TxpDetailsPage {
     }
   }
 
-  private paymentTimeControl(expirationTime): void {
+  private paymentTimeControl(expires): void {
+    const expirationTime = Math.floor(new Date(expires).getTime() / 1000);
     let setExpirationTime = (): void => {
       let now = Math.floor(Date.now() / 1000);
       if (now > expirationTime) {

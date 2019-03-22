@@ -65,7 +65,7 @@
       <span translate>To</span>
 
       <div class="payment-proposal-to address-coppied" *ngIf="!tx.recipientType">
-        <div class="text-address ellipsis">
+        <div [hidden]="tx.paypro" class="text-address ellipsis">
           <img src="assets/img/icon-bitcoin-small.svg" alt="BTC" width="12" />
           <span class="address-divider"></span>
         </div>
@@ -75,14 +75,12 @@
           <span *ngIf="tx.name">{{tx.name}}</span>
         </div>
 
-        <div class="paypro" *ngIf="tx.paypro" (click)="openPPModal(tx.paypro)">
+        <div class="paypro" *ngIf="tx.paypro">
 
-          <ion-icon *ngIf="tx.paypro.verified && tx.paypro.caTrusted" name="lock" color="success"></ion-icon>
-          <ion-icon *ngIf="!tx.paypro.verified && tx.paypro.caTrusted" name="unlock" color="warning"></ion-icon>
-          <ion-icon *ngIf="!tx.paypro.caTrusted" name="unlock" color="danger"></ion-icon>
+          <ion-icon *ngIf="tx.paypro.verified" name="lock" color="success"></ion-icon>
+          <ion-icon *ngIf="!tx.paypro.verified" name="unlock" color="danger"></ion-icon>
 
-          <span [hidden]="tx.name">{{tx.paypro.domain || tx.paypro.toAddress}}</span>
-          <span [hidden]="!tx.name">{{tx.name}}</span>
+          <span>{{tx.paypro.host || tx.paypro.toAddress}}</span>
         </div>
       </div>
 
