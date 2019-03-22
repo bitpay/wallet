@@ -37,11 +37,16 @@ export class GiftCardProvider {
     BITPAY_API_URL: 'https://bitpay.com'
   };
 
-  availableCardMapPromise: Promise<AvailableCardMap>;
+  availableCardsPromise: Promise<CardConfig[]>;
+  availableCardMapPromise: Promise<{ [name: string]: CardConfig }>;
+
   cachedApiCardConfigPromise: Promise<CardConfigMap>;
 
   cardUpdatesSubject: Subject<GiftCard> = new Subject<GiftCard>();
   cardUpdates$: Observable<GiftCard> = this.cardUpdatesSubject.asObservable();
+
+  public fallbackIcon =
+    'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAAyCAQAAAA38nkBAAAADklEQVR42mP8/4Vx8CEAn9BhqacD+5kAAAAASUVORK5CYII=';
 
   constructor(
     private configProvider: ConfigProvider,
@@ -69,8 +74,25 @@ export class GiftCardProvider {
   }
 
   async getCardConfig(cardName: string) {
-    const supportedCards = await this.getSupportedCards();
-    return supportedCards.find(c => c.name === cardName);
+    const cardConfigMap = await this.getCardConfigMap();
+    return cardConfigMap[cardName];
+  }
+
+  getCardConfigMap() {
+    return this.availableCardMapPromise
+      ? this.availableCardMapPromise
+      : this.fetchCardConfigMap();
+  }
+
+  async fetchCardConfigMap() {
+    this.availableCardMapPromise = this.getAvailableCards().then(
+      availableCards =>
+        availableCards.reduce(
+          (map, cardConfig) => ({ ...map, [cardConfig.name]: cardConfig }),
+          {}
+        )
+    );
+    return this.availableCardMapPromise;
   }
 
   async getCardMap(cardName: string) {
@@ -459,12 +481,11 @@ export class GiftCardProvider {
 
   async fetchAvailableCardMap() {
     const url = `${this.credentials.BITPAY_API_URL}/gift-cards/cards`;
-    this.availableCardMapPromise = this.http.get(url).toPromise() as Promise<
-      AvailableCardMap
-    >;
-    const availableCardMap = await this.availableCardMapPromise;
+    const availableCardMap = (await this.http
+      .get(url)
+      .toPromise()) as AvailableCardMap;
     this.cacheApiCardConfig(availableCardMap);
-    return this.availableCardMapPromise;
+    return availableCardMap;
   }
 
   async cacheApiCardConfig(availableCardMap: AvailableCardMap) {
@@ -504,28 +525,30 @@ export class GiftCardProvider {
     return config || {};
   }
 
-  async getAvailableCardMap() {
-    return this.availableCardMapPromise
-      ? this.availableCardMapPromise
-      : this.fetchAvailableCardMap();
+  async getAvailableCards(): Promise<CardConfig[]> {
+    return this.availableCardsPromise
+      ? this.availableCardsPromise
+      : this.fetchAvailableCards();
   }
 
-  async getAvailableCards(): Promise<CardConfig[]> {
-    const availableCardMap = await this.getAvailableCardMap();
-    const config = getCardConfigFromApiConfigMap(availableCardMap)
-      .map(apiCardConfig => ({
-        ...apiCardConfig,
-        displayName: apiCardConfig.displayName || apiCardConfig.name
-      }))
-      .filter(
-        cardConfig =>
-          cardConfig.logo &&
-          cardConfig.icon &&
-          cardConfig.cardImage &&
-          !cardConfig.hidden
-      )
-      .sort(sortByDisplayName);
-    return config;
+  async fetchAvailableCards(): Promise<CardConfig[]> {
+    this.availableCardsPromise = this.fetchAvailableCardMap().then(
+      availableCardMap =>
+        getCardConfigFromApiConfigMap(availableCardMap)
+          .map(apiCardConfig => ({
+            ...apiCardConfig,
+            displayName: apiCardConfig.displayName || apiCardConfig.name
+          }))
+          .filter(
+            cardConfig =>
+              cardConfig.logo &&
+              cardConfig.icon &&
+              cardConfig.cardImage &&
+              !cardConfig.hidden
+          )
+          .sort(sortByDisplayName)
+    );
+    return this.availableCardsPromise;
   }
 
   getApiPath() {

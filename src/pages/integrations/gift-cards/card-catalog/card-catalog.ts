@@ -1,9 +1,9 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { NavController } from 'ionic-angular';
 
 import { BuyCardPage } from '../buy-card/buy-card';
 
-import { ActionSheetProvider } from '../../../../providers';
+import { ActionSheetProvider, PlatformProvider } from '../../../../providers';
 import { GiftCardProvider } from '../../../../providers/gift-card/gift-card';
 import { CardConfig } from '../../../../providers/gift-card/gift-card.types';
 import { WideHeaderPage } from '../../../templates/wide-header-page/wide-header-page';
@@ -12,31 +12,44 @@ import { WideHeaderPage } from '../../../templates/wide-header-page/wide-header-
   selector: 'card-catalog-page',
   templateUrl: 'card-catalog.html'
 })
-export class CardCatalogPage implements OnInit {
+export class CardCatalogPage extends WideHeaderPage {
   public allCards: CardConfig[];
-  public featuredCards: CardConfig[];
-  public moreCards: CardConfig[];
   public searchQuery: string = '';
-  public numFeaturedCards: number;
-  public numMoreCards: number;
+  public visibleCards: CardConfig[];
+  public cardConfigMap: { [name: string]: CardConfig };
 
   @ViewChild(WideHeaderPage)
   wideHeaderPage: WideHeaderPage;
 
   constructor(
     private actionSheetProvider: ActionSheetProvider,
-    private giftCardProvider: GiftCardProvider,
+    public giftCardProvider: GiftCardProvider,
+    platormProvider: PlatformProvider,
     private navCtrl: NavController
-  ) {}
+  ) {
+    super(platormProvider);
+  }
 
-  async ngOnInit() {
-    this.allCards = await this.giftCardProvider.getAvailableCards().catch(_ => {
-      this.showError();
-      return [] as CardConfig[];
-    });
-    this.updateCardList();
-    this.numFeaturedCards = this.featuredCards.length;
-    this.numMoreCards = this.moreCards.length;
+  ngOnInit() {
+    this.title = 'Gift Cards';
+  }
+
+  ionViewWillEnter() {
+    this.giftCardProvider
+      .getAvailableCards()
+      .then(allCards => {
+        this.cardConfigMap = allCards.reduce(
+          (map, cardConfig) => ({ ...map, [cardConfig.name]: cardConfig }),
+          {}
+        );
+        this.allCards = allCards;
+        this.visibleCards = this.allCards;
+        this.updateCardList();
+      })
+      .catch(_ => {
+        this.showError();
+        return [] as CardConfig[];
+      });
   }
 
   onSearch(query: string) {
@@ -44,12 +57,25 @@ export class CardCatalogPage implements OnInit {
     this.updateCardList();
   }
 
+  getHeader(record, recordIndex, records) {
+    if (record.featured && recordIndex === 0) {
+      return 'Featured Brands';
+    }
+    const prevRecord = records[recordIndex - 1];
+    if (!record.featured && prevRecord && prevRecord.featured) {
+      return 'More Brands';
+    }
+    return null;
+  }
+
+  trackBy(record) {
+    return record.name;
+  }
+
   updateCardList() {
-    const matchingCards = this.allCards.filter(c =>
+    this.visibleCards = this.allCards.filter(c =>
       isCardInSearchResults(c, this.searchQuery)
     );
-    this.featuredCards = matchingCards.filter(c => c.featured);
-    this.moreCards = matchingCards.filter(c => !c.featured);
   }
 
   buyCard(cardConfig: CardConfig) {

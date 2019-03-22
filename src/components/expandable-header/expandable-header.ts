@@ -44,6 +44,9 @@ export class ExpandableHeaderComponent {
   @Input()
   fadeFactor: number = 2.5;
 
+  @Input()
+  disableFade: boolean = false;
+
   /**
    * The height of the entire component based on its' content.
    */
@@ -52,6 +55,9 @@ export class ExpandableHeaderComponent {
   constructor(public element: ElementRef, public renderer: Renderer) {}
 
   ngOnInit() {
+    if (this.disableFade) {
+      return;
+    }
     this.scrollArea.ionScroll.subscribe(event =>
       event.domWrite(() => this.handleDomWrite(event.scrollTop))
     );
