@@ -448,20 +448,15 @@ export class ConfirmPage extends WalletTabsChild {
             msg = this.translate.instant('Custom');
             tx.feeLevelName = msg;
           } else if (this.usingMerchantFee) {
-            const maxAllowedFee = feeRate * 2;
+            const maxAllowedFee = feeRate * 5;
             this.logger.info(
-              'Using Merchant Fee:' +
-                tx.feeRate +
-                ' vs. referent level:' +
-                maxAllowedFee
+              `Using Merchant Fee: ${
+                tx.feeRate
+              } vs. referent level (5 * feeRate) ${maxAllowedFee}`
             );
             if (tx.network != 'testnet' && tx.feeRate > maxAllowedFee) {
               this.onGoingProcessProvider.set('calculatingFee');
-              return reject(
-                this.translate.instant(
-                  'Merchant fee too high. Payment rejected'
-                )
-              );
+              this.showHighFeeSheet();
             }
 
             msg = this.translate.instant('Suggested by Merchant');
