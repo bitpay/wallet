@@ -12,10 +12,7 @@ msgstr ""
 "Last-Translator: cmgustavo83\n"
 "Language-Team: Japanese\n"
 "Language: ja\n"
-"PO-Revision-Date: 2019-02-04 13:00\n"
-
-msgid "(Trusted)"
-msgstr "(信頼済み)"
+"PO-Revision-Date: 2019-03-25 12:47\n"
 
 msgid "(possible double spend)"
 msgstr "(二重払い可能性あり)"
@@ -25,6 +22,18 @@ msgstr "* 送金の提案の取下げは①他のウォレット参加者に署�
 
 msgid "5-star ratings help us get BitPay Wallet into more hands, and more users means more resources can be committed to the app!"
 msgstr "5星级的评级帮助我们让 bitpay 钱包进入更多的手中, 更多的用户意味着更多的资源可以投入到应用程序!"
+
+msgid "A new copayer just joined your wallet {{walletName}}."
+msgstr ""
+
+msgid "A new payment proposal has been created in your wallet {{walletName}}."
+msgstr ""
+
+msgid "A payment of {{amountStr}} has been received into your wallet {{walletName}}."
+msgstr ""
+
+msgid "A payment proposal in your wallet {{walletName}} has been rejected."
+msgstr ""
 
 msgid "A total of {{amountAboveMaxSizeStr}} {{coin}} were excluded. The maximum size allowed for a transaction was exceeded."
 msgstr "总数为{{amountAboveMaxSizeStr}}{{coin}} 的交易已被拒绝。超过了交易允许的最大额度。"
@@ -52,6 +61,9 @@ msgstr "承諾済"
 
 msgid "Accepted"
 msgstr "承諾済"
+
+msgid "Access denied"
+msgstr ""
 
 msgid "Account"
 msgstr "ポケット"
@@ -155,9 +167,6 @@ msgstr "金額が大きすぎます"
 msgid "Amount:"
 msgstr ""
 
-msgid "Anyone with your recovery phrase can access or spend your bitcoin."
-msgstr ""
-
 msgid "Apply changes"
 msgstr ""
 
@@ -175,9 +184,6 @@ msgstr ""
 
 msgid "Archived Cards"
 msgstr ""
-
-msgid "Are you being watched?"
-msgstr "見られていませんか？"
 
 msgid "Are you sure you want to cancel and delete this wallet?"
 msgstr "本当にこのウォレットをキャンセルし、削除しても\n"
@@ -229,6 +235,12 @@ msgstr "不正なウォレット招待コード"
 msgid "Balance Hidden"
 msgstr ""
 
+msgid "Basic Wallet"
+msgstr ""
+
+msgid "Be sure to store your recovery phrase in a safe and secure place"
+msgstr ""
+
 msgid "Be sure to store your recovery phrase in a secure place. If this app is deleted, your money cannot be recovered without it."
 msgstr ""
 
@@ -242,6 +254,9 @@ msgid "Below Minimum Amount"
 msgstr ""
 
 msgid "BitPay Card URI"
+msgstr ""
+
+msgid "BitPay does not receive and does not control miner fees."
 msgstr ""
 
 msgid "Bitcoin Address"
@@ -337,9 +352,6 @@ msgstr ""
 msgid "Cards"
 msgstr ""
 
-msgid "Certified by"
-msgstr "証明元："
-
 msgid "Change Amount"
 msgstr ""
 
@@ -433,14 +445,11 @@ msgstr ""
 msgid "Continue"
 msgstr "続ける"
 
+msgid "Continue Backup"
+msgstr ""
+
 msgid "Contribute translations"
 msgstr ""
-
-msgid "Copay Session Logs. Be careful, this could contain sensitive private data"
-msgstr ""
-
-msgid "Copay only supports Bitcoin Cash using new version numbers addresses"
-msgstr "Copay のビットコインキャッシュはビットコインと完全に異なる別通貨なので、アドレスの頭文字が異なります。"
 
 msgid "Copayer already in this wallet"
 msgstr "ウォレット参加者が既に存在しています。"
@@ -477,9 +486,6 @@ msgstr "このテキストを安全な場所に貼り付けて保管して下さ
 
 msgid "Copy to clipboard"
 msgstr "クリップボードへコピー"
-
-msgid "Could Not Fetch Payment: Check if it is still valid"
-msgstr ""
 
 msgid "Could not access the wallet at the server. Please check:"
 msgstr "サーバーにてウォレットの確認ができませんでした。こちらをご確認下さい:"
@@ -562,22 +568,16 @@ msgstr "取引履歴を更新できませんでした。"
 msgid "Could not update wallet"
 msgstr "ウォレットが更新できませんでした。"
 
+msgid "Create BCH Wallet"
+msgstr ""
+
+msgid "Create BTC Wallet"
+msgstr ""
+
 msgid "Create a new wallet"
 msgstr ""
 
 msgid "Create a new wallet to start using this app."
-msgstr ""
-
-msgid "Create bitcoin wallet"
-msgstr "ビットコインウォレット作成"
-
-msgid "Create personal wallet"
-msgstr ""
-
-msgid "Create shared wallet"
-msgstr "共有ウォレットを作成"
-
-msgid "Create wallet"
 msgstr ""
 
 msgid "Created"
@@ -655,6 +655,12 @@ msgstr "後で行う"
 msgid "Do not include private key"
 msgstr ""
 
+msgid "Do this later"
+msgstr ""
+
+msgid "Do this later?"
+msgstr ""
+
 msgid "Do you want to verify your account now?"
 msgstr ""
 
@@ -697,9 +703,6 @@ msgstr ""
 msgid "Enable email notifications"
 msgstr "メール通知を有効化"
 
-msgid "Enable in-app notification"
-msgstr ""
-
 msgid "Enable push notifications"
 msgstr "プッシュ通知を有効化"
 
@@ -736,16 +739,7 @@ msgstr ""
 msgid "Enter encrypt password"
 msgstr ""
 
-msgid "Enter wallet invitation"
-msgstr ""
-
-msgid "Enter wallet name"
-msgstr ""
-
 msgid "Enter your encrypt password again to confirm"
-msgstr ""
-
-msgid "Enter your name"
 msgstr ""
 
 msgid "Entry already exist"
@@ -770,6 +764,9 @@ msgid "Error deleting addressbook"
 msgstr ""
 
 msgid "Error deleting entry"
+msgstr ""
+
+msgid "Error fetching this invoice"
 msgstr ""
 
 msgid "Error getting SendMax information"
@@ -828,9 +825,6 @@ msgstr ""
 
 msgid "Failed to export"
 msgstr "エクスポートに失敗しました。"
-
-msgid "Featured Brands"
-msgstr ""
 
 msgid "Fee"
 msgstr "手数料"
@@ -994,9 +988,6 @@ msgstr ""
 msgid "I have read, understood, and agree to the Terms of Use"
 msgstr ""
 
-msgid "I have written it down"
-msgstr ""
-
 msgid "I understand"
 msgstr "承知しました"
 
@@ -1039,10 +1030,10 @@ msgstr ""
 msgid "If you need to send to \"old\" addresses (like the one you just pasted), and you are SURE those are BCH addresses, you can \"translate\" them using the BCH Translator tool and paste the corresponding address in CashAddr format for that \"old\" address."
 msgstr ""
 
-msgid "If you take a screenshot, your recovery phrase may be viewed by other apps. You can make a safe backup with physical paper and a pen."
+msgid "If you were using the old desktop version you will need to import your wallets manually."
 msgstr ""
 
-msgid "If you were using the old desktop version you will need to import your wallets manually."
+msgid "Import Wallet"
 msgstr ""
 
 msgid "Import Words"
@@ -1062,6 +1053,9 @@ msgstr "未完成"
 
 msgid "Incorrect PIN, try again."
 msgstr "PINが間違っています。もう一度やり直して下さい。"
+
+msgid "Incorrect backup phrase"
+msgstr ""
 
 msgid "Incorrect network address"
 msgstr "サーバーのアドレスが不正です"
@@ -1117,8 +1111,8 @@ msgstr ""
 msgid "It's important that you write your recovery phrase down correctly. If something happens to your wallet, you'll need it to recover your money. Please review and try again."
 msgstr ""
 
-msgid "Join shared wallet"
-msgstr "共有ウォレットに参加"
+msgid "Join Shared Wallet"
+msgstr ""
 
 msgid "Join wallet"
 msgstr ""
@@ -1145,9 +1139,6 @@ msgid "Learn more"
 msgstr "詳細情報"
 
 msgid "Learn more about testnet blockchain"
-msgstr ""
-
-msgid "Let's verify your recovery phrase."
 msgstr ""
 
 msgid "Linked"
@@ -1195,9 +1186,6 @@ msgstr "メモ"
 msgid "Merchant Message"
 msgstr "お店からのメッセージ："
 
-msgid "Merchant fee too high. Payment rejected"
-msgstr ""
-
 msgid "Miner Fee"
 msgstr ""
 
@@ -1220,9 +1208,6 @@ msgid "Mmm..."
 msgstr ""
 
 msgid "More"
-msgstr ""
-
-msgid "More Brands"
 msgstr ""
 
 msgid "Moved"
@@ -1261,6 +1246,9 @@ msgstr ""
 msgid "Network Cost"
 msgstr ""
 
+msgid "Network Fee Warning"
+msgstr ""
+
 msgid "Network cost"
 msgstr ""
 
@@ -1270,10 +1258,19 @@ msgstr "ネットワークにエラーが発生した"
 msgid "New Proposal"
 msgstr "新しい提案"
 
-msgid "New wallet"
+msgid "New copayer"
+msgstr ""
+
+msgid "New payment proposal"
+msgstr ""
+
+msgid "New payment received"
 msgstr ""
 
 msgid "New {appName} desktop platform"
+msgstr ""
+
+msgid "Next"
 msgstr ""
 
 msgid "No"
@@ -1366,9 +1363,6 @@ msgstr "取引承認時に通知"
 msgid "Notify me when transactions are confirmed"
 msgstr "取引が承認されたら通知する。"
 
-msgid "Now is a perfect time to assess your surroundings. Nearby windows? Hidden cameras? Shoulder-spies?"
-msgstr "今一度周りの環境をよく見てみましょう。隠しカメラ、窓、覗いてくる人などありませんか？"
-
 msgid "OK"
 msgstr "OK"
 
@@ -1450,9 +1444,6 @@ msgstr ""
 msgid "Pay 0% fees to turn bitcoin into dollars."
 msgstr "0% 手数料でビットコインを米ドルに替える"
 
-msgid "Pay To"
-msgstr "支払い先"
-
 msgid "Payment Accepted"
 msgstr "支払いが完了しました"
 
@@ -1461,9 +1452,6 @@ msgstr "支払い請求の有効期限:"
 
 msgid "Payment Proposal"
 msgstr "送金の提案"
-
-msgid "Payment Protocol Invalid"
-msgstr "ペイメントプロトコルが不正です。"
 
 msgid "Payment Published"
 msgstr ""
@@ -1489,6 +1477,9 @@ msgstr ""
 msgid "Payment accepted, but not yet broadcasted"
 msgstr "取引が承認されましたが、まだ送信していません。"
 
+msgid "Payment proposal rejected"
+msgstr ""
+
 msgid "Payment request"
 msgstr "支払い請求"
 
@@ -1507,9 +1498,6 @@ msgstr "個人用ウォレット"
 msgid "Plain URL"
 msgstr ""
 
-msgid "Please carefully write down this phrase."
-msgstr "丁寧に復元フレーズを紙に書き留めて下さい"
-
 msgid "Please complete your account verification on ShapeShift website."
 msgstr ""
 
@@ -1525,11 +1513,8 @@ msgstr "復元フレーズをご入力下さい"
 msgid "Please enter your PIN"
 msgstr ""
 
-msgid "Please tap each word in the correct order."
-msgstr "正しい順序で各単語をタップしてください。"
-
-msgid "Please upgrade Copay to perform this action"
-msgstr "この操作を実行するにはCopayを最新バージョンに更新してください"
+msgid "Please upgrade the app to perform this action"
+msgstr ""
 
 msgid "Please wait..."
 msgstr ""
@@ -1551,6 +1536,9 @@ msgstr "アドレスを処理中…"
 
 msgid "Preparing backup..."
 msgstr "バックアップを準備中..."
+
+msgid "Previous"
+msgstr ""
 
 msgid "Priority"
 msgstr "優先"
@@ -1585,9 +1573,6 @@ msgstr "提案が却下されました"
 msgid "Proposal created"
 msgstr ""
 
-msgid "Proposals"
-msgstr "提案"
-
 msgid "Purchase Limit Reached"
 msgstr ""
 
@@ -1598,6 +1583,9 @@ msgid "Push notifications for {{appName}} are currently disabled. Enable them in
 msgstr "{{appName}}のプッシュ通知は現在無効です。アプリ設定で有効にします。"
 
 msgid "QR Code"
+msgstr ""
+
+msgid "Quick and easy setup"
 msgstr ""
 
 msgid "Quick review!"
@@ -1633,6 +1621,9 @@ msgstr "受領した資金"
 msgid "Receiving"
 msgstr "受け取り中"
 
+msgid "Receiving funds will be temporary disabled until you can verify your recovery phrase has been stored away securely. You can always complete this later from your wallet settings."
+msgstr ""
+
 msgid "Receiving {coinName} address"
 msgstr ""
 
@@ -1641,6 +1632,9 @@ msgstr "履歴"
 
 msgid "Recipient"
 msgstr "受取人"
+
+msgid "Recover your wallet using your passphrase"
+msgstr ""
 
 msgid "Recovery Phrase"
 msgstr ""
@@ -1699,6 +1693,12 @@ msgstr ""
 msgid "Required number of signatures"
 msgstr ""
 
+msgid "Requires invitation to join"
+msgstr ""
+
+msgid "Requires multiple devices (most secure)"
+msgstr ""
+
 msgid "Restore from backup"
 msgstr "バックアップから復元"
 
@@ -1709,6 +1709,12 @@ msgid "Retry"
 msgstr ""
 
 msgid "Retry camera"
+msgstr ""
+
+msgid "START OVER"
+msgstr ""
+
+msgid "Safeguard your recovery phrase"
 msgstr ""
 
 msgid "Save"
@@ -1732,9 +1738,6 @@ msgstr "ウォレット残高照会中…"
 msgid "Scanning funds"
 msgstr ""
 
-msgid "Screenshots are not secure"
-msgstr ""
-
 msgid "Search Transactions"
 msgstr ""
 
@@ -1756,14 +1759,11 @@ msgstr "セキュリティ"
 msgid "See transaction"
 msgstr ""
 
-msgid "Select a coin"
-msgstr ""
-
 msgid "Select a wallet"
 msgstr "ウォレットを選択"
 
-msgid "Self-signed Certificate"
-msgstr "自己署名証明書"
+msgid "Select currency"
+msgstr ""
 
 msgid "Selling Bitcoin..."
 msgstr "ビットコインを売却中..."
@@ -1837,6 +1837,9 @@ msgstr "サービス"
 msgid "Session Log"
 msgstr "セッションのログ"
 
+msgid "Session Logs. Be careful, this could contain sensitive private data"
+msgstr ""
+
 msgid "Session log"
 msgstr "セッションのログ"
 
@@ -1878,6 +1881,9 @@ msgstr "ウォレット参加者に\n"
 msgid "Share {{appName}}"
 msgstr ""
 
+msgid "Shared Wallet"
+msgstr ""
+
 msgid "Shop Now"
 msgstr ""
 
@@ -1891,6 +1897,9 @@ msgid "Show in Home"
 msgstr ""
 
 msgid "Sign Up for ShapeShift"
+msgstr ""
+
+msgid "Sign selected proposals"
 msgstr ""
 
 msgid "Signatures rejected by server"
@@ -1964,6 +1973,9 @@ msgstr ""
 
 msgid "Tap and hold to show"
 msgstr "長押しで表示"
+
+msgid "Tap each word in the correct order."
+msgstr ""
 
 msgid "Tap to recreate"
 msgstr ""
@@ -2049,6 +2061,9 @@ msgstr ""
 msgid "The total amount of bitcoin stored in this wallet."
 msgstr "このウォレットのビットコインの総残高"
 
+msgid "The transaction from {{walletName}} that you were waiting for has been confirmed."
+msgstr ""
+
 msgid "The transaction history and every new incoming transaction are cached in the app. This feature clean this up and synchronizes again from the server"
 msgstr ""
 
@@ -2057,6 +2072,9 @@ msgstr ""
 
 msgid "There is an error in the form"
 msgstr "フォームにエラーがありました"
+
+msgid "There was problem while trying to sign {{txpsFailed}} of your transactions proposals. Please, try again"
+msgstr ""
 
 msgid "There's obviously something we're doing wrong. How could we improve your experience?"
 msgstr ""
@@ -2079,6 +2097,12 @@ msgstr ""
 msgid "This information is available at the website."
 msgstr ""
 
+msgid "This invoice does not accept unconfirmed inputs."
+msgstr ""
+
+msgid "This invoice is not longer accepting payments"
+msgstr ""
+
 msgid "This password cannot be recovered. If this password is lost, funds can only be recovered by reimporting your 12-word recovery phrase."
 msgstr ""
 
@@ -2092,6 +2116,9 @@ msgid "This transaction amount is too small compared to current Bitcoin network 
 msgstr ""
 
 msgid "This transaction could take a long time to confirm or could be dropped due to the low fees set by the sender."
+msgstr ""
+
+msgid "This transaction requires a high network fee because either the sending amount is too small or the network is experiencing congestion."
 msgstr ""
 
 msgid "This wallet is not registered at the given Bitcore Wallet Service (BWS). You can recreate it from the local information."
@@ -2145,6 +2172,9 @@ msgstr ""
 msgid "Transaction already broadcasted"
 msgstr "取引は既に配信されました。"
 
+msgid "Transaction confirmed"
+msgstr ""
+
 msgid "Transaction has not been created"
 msgstr "取引が未作成です"
 
@@ -2190,14 +2220,14 @@ msgstr ""
 msgid "Type the recovery phrase (usually 12 words)"
 msgstr ""
 
-msgid "Uh oh..."
-msgstr ""
-
 msgid "Unarchive Card"
 msgstr ""
 
 msgid "Unconfirmed"
 msgstr "未承認"
+
+msgid "Unfortunately, your country/region has banned the use or acceptance of cryptocurrencies as a valid form of payment and we are therefore unable to service you."
+msgstr ""
 
 msgid "Unlink account"
 msgstr ""
@@ -2250,6 +2280,9 @@ msgstr "復元フレーズを検証中…"
 msgid "Verify Account"
 msgstr ""
 
+msgid "Verify Your Phrase"
+msgstr ""
+
 msgid "Version"
 msgstr "バージョン"
 
@@ -2286,9 +2319,6 @@ msgstr ""
 msgid "WARNING: Key derivation is not working on this device/wallet. Actions cannot be performed on this wallet."
 msgstr "注意：このデバイスでは鍵の派生がちゃんと動いておりません。このウォレットは正常に動作しません。"
 
-msgid "WARNING: UNTRUSTED CERTIFICATE"
-msgstr "警告: 信頼されていない証明書"
-
 msgid "Waiting for copayers"
 msgstr "ウォレット参加者を待っています"
 
@@ -2300,6 +2330,9 @@ msgstr "ウォレットのアドレス"
 
 msgid "Wallet Color"
 msgstr "ウォレットの色"
+
+msgid "Wallet Configuration"
+msgstr ""
 
 msgid "Wallet Information"
 msgstr "ウォレット詳細"
@@ -2320,6 +2353,9 @@ msgid "Wallet already exists"
 msgstr "既存のウォレットです"
 
 msgid "Wallet already in {{nameCase}}"
+msgstr ""
+
+msgid "Wallet complete"
 msgstr ""
 
 msgid "Wallet created"
@@ -2352,6 +2388,9 @@ msgstr "ウォレットバックアップが必要"
 msgid "Wallet not found"
 msgstr "ウォレットが見つかりません。"
 
+msgid "Wallet not registered"
+msgstr ""
+
 msgid "Wallet not registered at the wallet service. Recreate it from \"Create Wallet\" using \"Advanced Options\" to set your recovery phrase"
 msgstr "このウォレットは Wallet Service にて登録されていません。再び「新規作成」メニューから詳細設定を選び、復元フレーズをご入力下さい。"
 
@@ -2377,9 +2416,6 @@ msgid "We appreciate your review"
 msgstr ""
 
 msgid "We are always looking for translation contributions! You can make corrections or help to make this app available in your native language by joining our community on Crowdin."
-msgstr ""
-
-msgid "We will confirm on the next screen."
 msgstr ""
 
 msgid "We're always listening for ways we can improve your experience. Feel free to leave us a review in the app store or request a new feature."
@@ -2425,6 +2461,9 @@ msgid "Write Down Recovery Phrase"
 msgstr ""
 
 msgid "Write a Review"
+msgstr ""
+
+msgid "Write down each word."
 msgstr ""
 
 msgid "Wrong number of recovery words:"
@@ -2496,13 +2535,25 @@ msgstr "手数料設定が推奨値より低くなっております。"
 msgid "Your name"
 msgstr "自分の名前"
 
+msgid "Your recovery phrase is composed of 12 randomly selected words. Please carefully write down each word in the order they appear."
+msgstr ""
+
+msgid "Your recovery phrase is verified"
+msgstr ""
+
 msgid "Your wallet address is similar to a bank account number. You can add funds to your wallet by withdrawing funds you may have stored on an exchange to your wallet address. Or other {coinName} users can send you money by scanning your QR code."
+msgstr ""
+
+msgid "Your wallet is backed up!"
 msgstr ""
 
 msgid "Your wallet is never saved to cloud storage or standard device backups."
 msgstr "ウォレットは一度もクラウドへ保存されたりすることはありませんし、携帯電話などに付いている標準バックアップ機能ではバックアップされません！！！！"
 
 msgid "Your wallet key will be encrypted. The encrypt password cannot be recovered. Be sure to write it down."
+msgstr ""
+
+msgid "Your wallet {{walletName}} is complete."
 msgstr ""
 
 msgid "Your {walletType} wallet is backed up!"
@@ -2529,16 +2580,19 @@ msgstr "準備中..."
 msgid "{appName} BCH wallets use the CashAddr format by default"
 msgstr ""
 
-msgid "{coinName} miner fees are high due to record demand for limited space on the {coinName} network. BitPay does not receive and does not control {coinName} miner fees."
-msgstr ""
-
-msgid "{coinName} miner fees unusually high"
-msgstr ""
-
 msgid "{{appName}} depends on Bitcore Wallet Service (BWS) for blockchain information, networking and Copayer synchronization. The default configuration points to https://bws.bitpay.com (BitPay's public BWS instance)."
 msgstr ""
 
+msgid "{{appName}} only supports Bitcoin Cash using new version numbers addresses."
+msgstr ""
+
 msgid "{{fee}} {{coin}} will be deducted for bitcoin networking fees."
+msgstr ""
+
+msgid "{{txpsSuccess}} proposal signed"
+msgstr ""
+
+msgid "{{txpsSuccess}} proposals signed"
 msgstr ""
 
 msgid "{{updatingTxHistoryProgress}} transactions downloaded"

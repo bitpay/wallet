@@ -12,9 +12,6 @@ msgstr ""
 "X-Generator: Poedit 2.2\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-msgid "(Trusted)"
-msgstr "(Trusted)"
-
 msgid "(possible double spend)"
 msgstr "(possible double spend)"
 
@@ -33,6 +30,21 @@ msgid ""
 msgstr ""
 "5-star ratings help us get BitPay Wallet into more hands, and more users "
 "means more resources can be committed to the app!"
+
+#| msgid "QR code to recover wallet {{walletName}}"
+msgid "A new copayer just joined your wallet {{walletName}}."
+msgstr "A new copayer just joined your wallet {{walletName}}."
+
+msgid "A new payment proposal has been created in your wallet {{walletName}}."
+msgstr "A new payment proposal has been created in your wallet {{walletName}}."
+
+msgid ""
+"A payment of {{amountStr}} has been received into your wallet {{walletName}}."
+msgstr ""
+"A payment of {{amountStr}} has been received into your wallet {{walletName}}."
+
+msgid "A payment proposal in your wallet {{walletName}} has been rejected."
+msgstr "A payment proposal in your wallet {{walletName}} has been rejected."
 
 msgid ""
 "A total of {{amountAboveMaxSizeStr}} {{coin}} were excluded. The maximum "
@@ -82,6 +94,9 @@ msgstr "Accept"
 
 msgid "Accepted"
 msgstr "Accepted"
+
+msgid "Access denied"
+msgstr "Access denied"
 
 msgid "Account"
 msgstr "Account"
@@ -141,7 +156,6 @@ msgstr "Address book"
 msgid "Addressbook is empty"
 msgstr "Addressbook is empty"
 
-#| msgid "Address"
 msgid "Addresses"
 msgstr "Addresses"
 
@@ -202,9 +216,6 @@ msgstr "Amount too big"
 msgid "Amount:"
 msgstr "Amount:"
 
-msgid "Anyone with your recovery phrase can access or spend your bitcoin."
-msgstr "Anyone with your recovery phrase can access or spend your bitcoin."
-
 msgid "Apply changes"
 msgstr "Apply changes"
 
@@ -226,9 +237,6 @@ msgstr "Archive this Card?"
 
 msgid "Archived Cards"
 msgstr "Archived Cards"
-
-msgid "Are you being watched?"
-msgstr "Are you being watched?"
 
 msgid "Are you sure you want to cancel and delete this wallet?"
 msgstr "Are you sure you want to cancel and delete this wallet?"
@@ -278,6 +286,16 @@ msgstr "Bad wallet invitation"
 msgid "Balance Hidden"
 msgstr "Balance Hidden"
 
+#| msgid "Bitcoin Wallets"
+msgid "Basic Wallet"
+msgstr "Basic Wallet"
+
+#| msgid ""
+#| "Be sure to store your recovery phrase in a secure place. If this app is "
+#| "deleted, your money cannot be recovered without it."
+msgid "Be sure to store your recovery phrase in a safe and secure place"
+msgstr "Be sure to store your recovery phrase in a safe and secure place"
+
 msgid ""
 "Be sure to store your recovery phrase in a secure place. If this app is "
 "deleted, your money cannot be recovered without it."
@@ -306,6 +324,9 @@ msgstr "Below Minimum Amount"
 
 msgid "BitPay Card URI"
 msgstr "BitPay Card URI"
+
+msgid "BitPay does not receive and does not control miner fees."
+msgstr "BitPay does not receive and does not control miner fees."
 
 msgid "Bitcoin Address"
 msgstr "Bitcoin Address"
@@ -406,9 +427,6 @@ msgstr "Card Settings"
 msgid "Cards"
 msgstr "Cards"
 
-msgid "Certified by"
-msgstr "Certified by"
-
 msgid "Change Amount"
 msgstr "Change Amount"
 
@@ -508,16 +526,12 @@ msgstr "Contact the ShapeShift support team."
 msgid "Continue"
 msgstr "Continue"
 
+#| msgid "Continue"
+msgid "Continue Backup"
+msgstr "Continue Backup"
+
 msgid "Contribute translations"
 msgstr "Contribute translations"
-
-msgid ""
-"Copay Session Logs. Be careful, this could contain sensitive private data"
-msgstr ""
-"Copay Session Logs. Be careful, this could contain sensitive private data"
-
-msgid "Copay only supports Bitcoin Cash using new version numbers addresses"
-msgstr "Copay only supports Bitcoin Cash using new version numbers addresses"
 
 msgid "Copayer already in this wallet"
 msgstr "Copayer already in this wallet"
@@ -554,9 +568,6 @@ msgstr "Copy this text as it is to a safe place (notepad or email)"
 
 msgid "Copy to clipboard"
 msgstr "Copy to clipboard"
-
-msgid "Could Not Fetch Payment: Check if it is still valid"
-msgstr "Could Not Fetch Payment: Check if it is still valid"
 
 msgid "Could not access the wallet at the server. Please check:"
 msgstr "Could not access the wallet at the server. Please check:"
@@ -639,23 +650,19 @@ msgstr "Could not update transaction history"
 msgid "Could not update wallet"
 msgstr "Could not update wallet"
 
+#| msgid "Create wallet"
+msgid "Create BCH Wallet"
+msgstr "Create BCH Wallet"
+
+#| msgid "Create wallet"
+msgid "Create BTC Wallet"
+msgstr "Create BTC Wallet"
+
 msgid "Create a new wallet"
 msgstr "Create a new wallet"
 
 msgid "Create a new wallet to start using this app."
 msgstr "Create a new wallet to start using this app."
-
-msgid "Create bitcoin wallet"
-msgstr "Create bitcoin wallet"
-
-msgid "Create personal wallet"
-msgstr "Create personal wallet"
-
-msgid "Create shared wallet"
-msgstr "Create shared wallet"
-
-msgid "Create wallet"
-msgstr "Create wallet"
 
 msgid "Created"
 msgstr "Created"
@@ -732,6 +739,14 @@ msgstr "Do it later"
 msgid "Do not include private key"
 msgstr "Do not include private key"
 
+#| msgid "Do it later"
+msgid "Do this later"
+msgstr "Do this later"
+
+#| msgid "Do it later"
+msgid "Do this later?"
+msgstr "Do this later?"
+
 msgid "Do you want to verify your account now?"
 msgstr "Do you want to verify your account now?"
 
@@ -784,9 +799,6 @@ msgstr "Enable desktop notifications"
 msgid "Enable email notifications"
 msgstr "Enable email notifications"
 
-msgid "Enable in-app notification"
-msgstr "Enable in-app notification"
-
 msgid "Enable push notifications"
 msgstr "Enable push notifications"
 
@@ -827,17 +839,8 @@ msgstr "Enter email address"
 msgid "Enter encrypt password"
 msgstr "Enter encrypt password"
 
-msgid "Enter wallet invitation"
-msgstr "Enter wallet invitation"
-
-msgid "Enter wallet name"
-msgstr "Enter wallet name"
-
 msgid "Enter your encrypt password again to confirm"
 msgstr "Enter your encrypt password again to confirm"
-
-msgid "Enter your name"
-msgstr "Enter your name"
 
 msgid "Entry already exist"
 msgstr "Entry already exist"
@@ -862,6 +865,9 @@ msgstr "Error deleting addressbook"
 
 msgid "Error deleting entry"
 msgstr "Error deleting entry"
+
+msgid "Error fetching this invoice"
+msgstr "Error fetching this invoice"
 
 msgid "Error getting SendMax information"
 msgstr "Error getting SendMax information"
@@ -893,7 +899,6 @@ msgstr "Expired"
 msgid "Expires"
 msgstr "Expires"
 
-#| msgid "Export Wallet"
 msgid "Export"
 msgstr "Export"
 
@@ -920,10 +925,6 @@ msgstr "Failed"
 
 msgid "Failed to export"
 msgstr "Failed to export"
-
-#| msgid "Purchased Brands"
-msgid "Featured Brands"
-msgstr "Featured Brands"
 
 msgid "Fee"
 msgstr "Fee"
@@ -1013,11 +1014,9 @@ msgstr "Generating new address..."
 msgid "Get Help"
 msgstr "Get Help"
 
-#| msgid "Get started"
 msgid "Get Started"
 msgstr "Get Started"
 
-#| msgid "Connect my BitPay Card"
 msgid "Get a BitPay Card"
 msgstr "Get a BitPay Card"
 
@@ -1119,9 +1118,6 @@ msgstr ""
 msgid "I have read, understood, and agree to the Terms of Use"
 msgstr "I have read, understood, and agree to the Terms of Use"
 
-msgid "I have written it down"
-msgstr "I have written it down"
-
 msgid "I understand"
 msgstr "I understand"
 
@@ -1195,18 +1191,15 @@ msgstr ""
 "for that \"old\" address."
 
 msgid ""
-"If you take a screenshot, your recovery phrase may be viewed by other apps. "
-"You can make a safe backup with physical paper and a pen."
+"If you were using the old desktop version you will need to import your "
+"wallets manually."
 msgstr ""
-"If you take a screenshot, your recovery phrase may be viewed by other apps. "
-"You can make a safe backup with physical paper and a pen."
+"If you were using the old desktop version you will need to import your "
+"wallets manually."
 
-msgid ""
-"If you were using the old desktop version you will need to import your "
-"wallets manually."
-msgstr ""
-"If you were using the old desktop version you will need to import your "
-"wallets manually."
+#| msgid "Import wallet"
+msgid "Import Wallet"
+msgstr "Import Wallet"
 
 msgid "Import Words"
 msgstr "Import Words"
@@ -1228,10 +1221,12 @@ msgstr "Incomplete"
 msgid "Incorrect PIN, try again."
 msgstr "Incorrect PIN, try again."
 
+msgid "Incorrect backup phrase"
+msgstr "Incorrect backup phrase"
+
 msgid "Incorrect network address"
 msgstr "Incorrect network address"
 
-#| msgid "Wallet Information"
 msgid "Information"
 msgstr "Information"
 
@@ -1295,8 +1290,9 @@ msgstr ""
 "something happens to your wallet, you'll need it to recover your money. "
 "Please review and try again."
 
-msgid "Join shared wallet"
-msgstr "Join shared wallet"
+#| msgid "Join shared wallet"
+msgid "Join Shared Wallet"
+msgstr "Join Shared Wallet"
 
 msgid "Join wallet"
 msgstr "Join wallet"
@@ -1324,9 +1320,6 @@ msgstr "Learn more"
 
 msgid "Learn more about testnet blockchain"
 msgstr "Learn more about testnet blockchain"
-
-msgid "Let's verify your recovery phrase."
-msgstr "Let's verify your recovery phrase."
 
 msgid "Linked"
 msgstr "Linked"
@@ -1377,9 +1370,6 @@ msgstr "Memo"
 msgid "Merchant Message"
 msgstr "Merchant Message"
 
-msgid "Merchant fee too high. Payment rejected"
-msgstr "Merchant fee too high. Payment rejected"
-
 msgid "Miner Fee"
 msgstr "Miner Fee"
 
@@ -1403,10 +1393,6 @@ msgstr "Mmm..."
 
 msgid "More"
 msgstr "More"
-
-#| msgid "Brands"
-msgid "More Brands"
-msgstr "More Brands"
 
 msgid "Moved"
 msgstr "Moved"
@@ -1448,6 +1434,10 @@ msgstr "Network"
 msgid "Network Cost"
 msgstr "Network Cost"
 
+#| msgid "Network error"
+msgid "Network Fee Warning"
+msgstr "Network Fee Warning"
+
 msgid "Network cost"
 msgstr "Network cost"
 
@@ -1457,11 +1447,23 @@ msgstr "Network error"
 msgid "New Proposal"
 msgstr "New Proposal"
 
-msgid "New wallet"
-msgstr "New wallet"
+#| msgid "New Proposal"
+msgid "New copayer"
+msgstr "New copayer"
+
+#| msgid "Payment Proposal"
+msgid "New payment proposal"
+msgstr "New payment proposal"
+
+#| msgid "Payment Received"
+msgid "New payment received"
+msgstr "New payment received"
 
 msgid "New {appName} desktop platform"
 msgstr "New {appName} desktop platform"
+
+msgid "Next"
+msgstr "Next"
 
 msgid "No"
 msgstr "No"
@@ -1490,7 +1492,6 @@ msgstr "No private key"
 msgid "No signing proposal: No private key"
 msgstr "No signing proposal: No private key"
 
-#| msgid "Transactions"
 msgid "No transactions"
 msgstr "No transactions"
 
@@ -1565,13 +1566,6 @@ msgstr "Notify me if confirmed"
 
 msgid "Notify me when transactions are confirmed"
 msgstr "Notify me when transactions are confirmed"
-
-msgid ""
-"Now is a perfect time to assess your surroundings. Nearby windows? Hidden "
-"cameras? Shoulder-spies?"
-msgstr ""
-"Now is a perfect time to assess your surroundings. Nearby windows? Hidden "
-"cameras? Shoulder-spies?"
 
 msgid "OK"
 msgstr "OK"
@@ -1659,9 +1653,6 @@ msgstr ""
 msgid "Pay 0% fees to turn bitcoin into dollars."
 msgstr "Pay 0% fees to turn bitcoin into dollars."
 
-msgid "Pay To"
-msgstr "Pay To"
-
 msgid "Payment Accepted"
 msgstr "Payment Accepted"
 
@@ -1670,9 +1661,6 @@ msgstr "Payment Expires:"
 
 msgid "Payment Proposal"
 msgstr "Payment Proposal"
-
-msgid "Payment Protocol Invalid"
-msgstr "Payment Protocol Invalid"
 
 msgid "Payment Published"
 msgstr "Payment Published"
@@ -1698,6 +1686,10 @@ msgstr "Payment URL"
 msgid "Payment accepted, but not yet broadcasted"
 msgstr "Payment accepted, but not yet broadcasted"
 
+#| msgid "Proposal Rejected"
+msgid "Payment proposal rejected"
+msgstr "Payment proposal rejected"
+
 msgid "Payment request"
 msgstr "Payment request"
 
@@ -1716,9 +1708,6 @@ msgstr "Personal Wallet"
 msgid "Plain URL"
 msgstr "Plain URL"
 
-msgid "Please carefully write down this phrase."
-msgstr "Please carefully write down this phrase."
-
 msgid "Please complete your account verification on ShapeShift website."
 msgstr "Please complete your account verification on ShapeShift website."
 
@@ -1734,11 +1723,9 @@ msgstr "Please enter the wallet recovery phrase"
 msgid "Please enter your PIN"
 msgstr "Please enter your PIN"
 
-msgid "Please tap each word in the correct order."
-msgstr "Please tap each word in the correct order."
-
-msgid "Please upgrade Copay to perform this action"
-msgstr "Please upgrade Copay to perform this action"
+#| msgid "Please upgrade Copay to perform this action"
+msgid "Please upgrade the app to perform this action"
+msgstr "Please upgrade the app to perform this action"
 
 msgid "Please wait..."
 msgstr "Please wait..."
@@ -1760,6 +1747,9 @@ msgstr "Preparing addresses..."
 
 msgid "Preparing backup..."
 msgstr "Preparing backup..."
+
+msgid "Previous"
+msgstr "Previous"
 
 msgid "Priority"
 msgstr "Priority"
@@ -1794,9 +1784,6 @@ msgstr "Proposal Rejected"
 msgid "Proposal created"
 msgstr "Proposal created"
 
-msgid "Proposals"
-msgstr "Proposals"
-
 msgid "Purchase Limit Reached"
 msgstr "Purchase Limit Reached"
 
@@ -1812,6 +1799,9 @@ msgstr ""
 
 msgid "QR Code"
 msgstr "QR Code"
+
+msgid "Quick and easy setup"
+msgstr "Quick and easy setup"
 
 msgid "Quick review!"
 msgstr "Quick review!"
@@ -1846,6 +1836,15 @@ msgstr "Received Funds"
 msgid "Receiving"
 msgstr "Receiving"
 
+msgid ""
+"Receiving funds will be temporary disabled until you can verify your "
+"recovery phrase has been stored away securely. You can always complete this "
+"later from your wallet settings."
+msgstr ""
+"Receiving funds will be temporary disabled until you can verify your "
+"recovery phrase has been stored away securely. You can always complete this "
+"later from your wallet settings."
+
 msgid "Receiving {coinName} address"
 msgstr "Receiving {coinName} address"
 
@@ -1854,6 +1853,9 @@ msgstr "Recent"
 
 msgid "Recipient"
 msgstr "Recipient"
+
+msgid "Recover your wallet using your passphrase"
+msgstr "Recover your wallet using your passphrase"
 
 msgid "Recovery Phrase"
 msgstr "Recovery Phrase"
@@ -1912,6 +1914,12 @@ msgstr "Request feature"
 msgid "Required number of signatures"
 msgstr "Required number of signatures"
 
+msgid "Requires invitation to join"
+msgstr "Requires invitation to join"
+
+msgid "Requires multiple devices (most secure)"
+msgstr "Requires multiple devices (most secure)"
+
 msgid "Restore from backup"
 msgstr "Restore from backup"
 
@@ -1923,6 +1931,13 @@ msgstr "Retry"
 
 msgid "Retry camera"
 msgstr "Retry camera"
+
+msgid "START OVER"
+msgstr "START OVER"
+
+#| msgid "Let's verify your recovery phrase."
+msgid "Safeguard your recovery phrase"
+msgstr "Safeguard your recovery phrase"
 
 msgid "Save"
 msgstr "Save"
@@ -1945,9 +1960,6 @@ msgstr "Scanning Wallet funds..."
 msgid "Scanning funds"
 msgstr "Scanning funds"
 
-msgid "Screenshots are not secure"
-msgstr "Screenshots are not secure"
-
 msgid "Search Transactions"
 msgstr "Search Transactions"
 
@@ -1969,14 +1981,12 @@ msgstr "Security"
 msgid "See transaction"
 msgstr "See transaction"
 
-msgid "Select a coin"
-msgstr "Select a coin"
-
 msgid "Select a wallet"
 msgstr "Select a wallet"
 
-msgid "Self-signed Certificate"
-msgstr "Self-signed Certificate"
+#| msgid "Alternative currency"
+msgid "Select currency"
+msgstr "Select currency"
 
 msgid "Selling Bitcoin..."
 msgstr "Selling Bitcoin..."
@@ -2038,7 +2048,6 @@ msgstr "Sent"
 msgid "Sent Funds"
 msgstr "Sent Funds"
 
-#| msgid "Enter wallet name"
 msgid "Sent to {walletName}"
 msgstr "Sent to {walletName}"
 
@@ -2050,6 +2059,11 @@ msgstr "Services"
 
 msgid "Session Log"
 msgstr "Session Log"
+
+#| msgid ""
+#| "Copay Session Logs. Be careful, this could contain sensitive private data"
+msgid "Session Logs. Be careful, this could contain sensitive private data"
+msgstr "Session Logs. Be careful, this could contain sensitive private data"
 
 msgid "Session log"
 msgstr "Session log"
@@ -2090,6 +2104,10 @@ msgstr "Share this invitation with your copayers"
 msgid "Share {{appName}}"
 msgstr "Share {{appName}}"
 
+#| msgid "Join shared wallet"
+msgid "Shared Wallet"
+msgstr "Shared Wallet"
+
 msgid "Shop Now"
 msgstr "Shop Now"
 
@@ -2104,6 +2122,10 @@ msgstr "Show in Home"
 
 msgid "Sign Up for ShapeShift"
 msgstr "Sign Up for ShapeShift"
+
+#| msgid "No pending proposals"
+msgid "Sign selected proposals"
+msgstr "Sign selected proposals"
 
 msgid "Signatures rejected by server"
 msgstr "Signatures rejected by server"
@@ -2180,6 +2202,10 @@ msgstr "Take control of your money, get started with bitcoin."
 
 msgid "Tap and hold to show"
 msgstr "Tap and hold to show"
+
+#| msgid "Please tap each word in the correct order."
+msgid "Tap each word in the correct order."
+msgstr "Tap each word in the correct order."
 
 msgid "Tap to recreate"
 msgstr "Tap to recreate"
@@ -2326,6 +2352,13 @@ msgid "The total amount of bitcoin stored in this wallet."
 msgstr "The total amount of bitcoin stored in this wallet."
 
 msgid ""
+"The transaction from {{walletName}} that you were waiting for has been "
+"confirmed."
+msgstr ""
+"The transaction from {{walletName}} that you were waiting for has been "
+"confirmed."
+
+msgid ""
 "The transaction history and every new incoming transaction are cached in the "
 "app. This feature clean this up and synchronizes again from the server"
 msgstr ""
@@ -2341,6 +2374,13 @@ msgstr ""
 
 msgid "There is an error in the form"
 msgstr "There is an error in the form"
+
+msgid ""
+"There was problem while trying to sign {{txpsFailed}} of your transactions "
+"proposals. Please, try again"
+msgstr ""
+"There was problem while trying to sign {{txpsFailed}} of your transactions "
+"proposals. Please, try again"
 
 msgid ""
 "There's obviously something we're doing wrong. How could we improve your "
@@ -2373,6 +2413,13 @@ msgstr "This field only accepts addresses supported by {appName} Wallet"
 msgid "This information is available at the website."
 msgstr "This information is available at the website."
 
+#| msgid "Warning: this transaction has unconfirmed inputs"
+msgid "This invoice does not accept unconfirmed inputs."
+msgstr "This invoice does not accept unconfirmed inputs."
+
+msgid "This invoice is not longer accepting payments"
+msgstr "This invoice is not longer accepting payments"
+
 msgid ""
 "This password cannot be recovered. If this password is lost, funds can only "
 "be recovered by reimporting your 12-word recovery phrase."
@@ -2409,6 +2456,13 @@ msgid ""
 msgstr ""
 "This transaction could take a long time to confirm or could be dropped due "
 "to the low fees set by the sender."
+
+msgid ""
+"This transaction requires a high network fee because either the sending "
+"amount is too small or the network is experiencing congestion."
+msgstr ""
+"This transaction requires a high network fee because either the sending "
+"amount is too small or the network is experiencing congestion."
 
 msgid ""
 "This wallet is not registered at the given Bitcore Wallet Service (BWS). You "
@@ -2470,6 +2524,10 @@ msgstr "Transaction ID"
 msgid "Transaction already broadcasted"
 msgstr "Transaction already broadcasted"
 
+#| msgid "Transaction initiated"
+msgid "Transaction confirmed"
+msgstr "Transaction confirmed"
+
 msgid "Transaction has not been created"
 msgstr "Transaction has not been created"
 
@@ -2515,14 +2573,20 @@ msgstr "Turn bitcoin into dollars, swipe anywhere Visa® is accepted."
 msgid "Type the recovery phrase (usually 12 words)"
 msgstr "Type the recovery phrase (usually 12 words)"
 
-msgid "Uh oh..."
-msgstr "Uh oh..."
-
 msgid "Unarchive Card"
 msgstr "Unarchive Card"
 
 msgid "Unconfirmed"
 msgstr "Unconfirmed"
+
+msgid ""
+"Unfortunately, your country/region has banned the use or acceptance of "
+"cryptocurrencies as a valid form of payment and we are therefore unable to "
+"service you."
+msgstr ""
+"Unfortunately, your country/region has banned the use or acceptance of "
+"cryptocurrencies as a valid form of payment and we are therefore unable to "
+"service you."
 
 msgid "Unlink account"
 msgstr "Unlink account"
@@ -2577,6 +2641,10 @@ msgstr "Validating recovery phrase..."
 msgid "Verify Account"
 msgstr "Verify Account"
 
+#| msgid "Specify Recovery Phrase"
+msgid "Verify Your Phrase"
+msgstr "Verify Your Phrase"
+
 msgid "Version"
 msgstr "Version"
 
@@ -2617,9 +2685,6 @@ msgstr ""
 "WARNING: Key derivation is not working on this device/wallet. Actions cannot "
 "be performed on this wallet."
 
-msgid "WARNING: UNTRUSTED CERTIFICATE"
-msgstr "WARNING: UNTRUSTED CERTIFICATE"
-
 msgid "Waiting for copayers"
 msgstr "Waiting for copayers"
 
@@ -2632,6 +2697,10 @@ msgstr "Wallet Addresses"
 msgid "Wallet Color"
 msgstr "Wallet Color"
 
+#| msgid "Wallet Information"
+msgid "Wallet Configuration"
+msgstr "Wallet Configuration"
+
 msgid "Wallet Information"
 msgstr "Wallet Information"
 
@@ -2641,7 +2710,6 @@ msgstr "Wallet Inputs"
 msgid "Wallet Name"
 msgstr "Wallet Name"
 
-#| msgid "Preferences"
 msgid "Wallet Preferences"
 msgstr "Wallet Preferences"
 
@@ -2653,6 +2721,10 @@ msgstr "Wallet already exists"
 
 msgid "Wallet already in {{nameCase}}"
 msgstr "Wallet already in {{nameCase}}"
+
+#| msgid "Wallet is not complete"
+msgid "Wallet complete"
+msgstr "Wallet complete"
 
 msgid "Wallet created"
 msgstr "Wallet created"
@@ -2683,6 +2755,10 @@ msgstr "Wallet needs backup"
 
 msgid "Wallet not found"
 msgstr "Wallet not found"
+
+#| msgid "Wallet created"
+msgid "Wallet not registered"
+msgstr "Wallet not registered"
 
 msgid ""
 "Wallet not registered at the wallet service. Recreate it from \"Create Wallet"
@@ -2720,9 +2796,6 @@ msgstr ""
 "We are always looking for translation contributions! You can make "
 "corrections or help to make this app available in your native language by "
 "joining our community on Crowdin."
-
-msgid "We will confirm on the next screen."
-msgstr "We will confirm on the next screen."
 
 msgid ""
 "We're always listening for ways we can improve your experience. Feel free to "
@@ -2793,6 +2866,9 @@ msgstr "Write Down Recovery Phrase"
 msgid "Write a Review"
 msgstr "Write a Review"
 
+msgid "Write down each word."
+msgstr "Write down each word."
+
 msgid "Wrong number of recovery words:"
 msgstr "Wrong number of recovery words:"
 
@@ -2808,7 +2884,6 @@ msgstr "Yes"
 msgid "Yes, skip"
 msgstr "Yes, skip"
 
-#| msgid "Your bitcoin wallet is ready!"
 msgid "You are ready!"
 msgstr "You are ready!"
 
@@ -2904,6 +2979,17 @@ msgid "Your name"
 msgstr "Your name"
 
 msgid ""
+"Your recovery phrase is composed of 12 randomly selected words. Please "
+"carefully write down each word in the order they appear."
+msgstr ""
+"Your recovery phrase is composed of 12 randomly selected words. Please "
+"carefully write down each word in the order they appear."
+
+#| msgid "Wallet Recovery Phrase is invalid"
+msgid "Your recovery phrase is verified"
+msgstr "Your recovery phrase is verified"
+
+msgid ""
 "Your wallet address is similar to a bank account number. You can add funds "
 "to your wallet by withdrawing funds you may have stored on an exchange to "
 "your wallet address. Or other {coinName} users can send you money by "
@@ -2913,6 +2999,10 @@ msgstr ""
 "to your wallet by withdrawing funds you may have stored on an exchange to "
 "your wallet address. Or other {coinName} users can send you money by "
 "scanning your QR code."
+
+#| msgid "Your {walletType} wallet is backed up!"
+msgid "Your wallet is backed up!"
+msgstr "Your wallet is backed up!"
 
 msgid "Your wallet is never saved to cloud storage or standard device backups."
 msgstr ""
@@ -2924,6 +3014,10 @@ msgid ""
 msgstr ""
 "Your wallet key will be encrypted. The encrypt password cannot be recovered. "
 "Be sure to write it down."
+
+#| msgid "Your {walletType} wallet is backed up!"
+msgid "Your wallet {{walletName}} is complete."
+msgstr "Your wallet {{walletName}} is complete."
 
 msgid "Your {walletType} wallet is backed up!"
 msgstr "Your {walletType} wallet is backed up!"
@@ -2950,30 +3044,30 @@ msgid "{appName} BCH wallets use the CashAddr format by default"
 msgstr "{appName} BCH wallets use the CashAddr format by default"
 
 msgid ""
-"{coinName} miner fees are high due to record demand for limited space on the "
-"{coinName} network. BitPay does not receive and does not control {coinName} "
-"miner fees."
+"{{appName}} depends on Bitcore Wallet Service (BWS) for blockchain "
+"information, networking and Copayer synchronization. The default "
+"configuration points to https://bws.bitpay.com (BitPay's public BWS "
+"instance)."
 msgstr ""
-"{coinName} miner fees are high due to record demand for limited space on the "
-"{coinName} network. BitPay does not receive and does not control {coinName} "
-"miner fees."
+"{{appName}} depends on Bitcore Wallet Service (BWS) for blockchain "
+"information, networking and Copayer synchronization. The default "
+"configuration points to https://bws.bitpay.com (BitPay's public BWS "
+"instance)."
 
-msgid "{coinName} miner fees unusually high"
-msgstr "{coinName} miner fees unusually high"
-
+#| msgid "Copay only supports Bitcoin Cash using new version numbers addresses"
 msgid ""
-"{{appName}} depends on Bitcore Wallet Service (BWS) for blockchain "
-"information, networking and Copayer synchronization. The default "
-"configuration points to https://bws.bitpay.com (BitPay's public BWS "
-"instance)."
+"{{appName}} only supports Bitcoin Cash using new version numbers addresses."
 msgstr ""
-"{{appName}} depends on Bitcore Wallet Service (BWS) for blockchain "
-"information, networking and Copayer synchronization. The default "
-"configuration points to https://bws.bitpay.com (BitPay's public BWS "
-"instance)."
+"{{appName}} only supports Bitcoin Cash using new version numbers addresses."
 
 msgid "{{fee}} {{coin}} will be deducted for bitcoin networking fees."
 msgstr "{{fee}} {{coin}} will be deducted for bitcoin networking fees."
+
+msgid "{{txpsSuccess}} proposal signed"
+msgstr "{{txpsSuccess}} proposal signed"
+
+msgid "{{txpsSuccess}} proposals signed"
+msgstr "{{txpsSuccess}} proposals signed"
 
 msgid "{{updatingTxHistoryProgress}} transactions downloaded"
 msgstr "{{updatingTxHistoryProgress}} transactions downloaded"
@@ -2983,6 +3077,115 @@ msgstr "{{wallet.credentials.m}}-of-{{wallet.credentials.n}}"
 
 msgid "{{wallet.m}}-of-{{wallet.n}}"
 msgstr "{{wallet.m}}-of-{{wallet.n}}"
+
+#~ msgid "(Trusted)"
+#~ msgstr "(Trusted)"
+
+#~ msgid "Anyone with your recovery phrase can access or spend your bitcoin."
+#~ msgstr "Anyone with your recovery phrase can access or spend your bitcoin."
+
+#~ msgid "Are you being watched?"
+#~ msgstr "Are you being watched?"
+
+#~ msgid "Certified by"
+#~ msgstr "Certified by"
+
+#~ msgid "Could Not Fetch Payment: Check if it is still valid"
+#~ msgstr "Could Not Fetch Payment: Check if it is still valid"
+
+#~ msgid "Create bitcoin wallet"
+#~ msgstr "Create bitcoin wallet"
+
+#~ msgid "Create personal wallet"
+#~ msgstr "Create personal wallet"
+
+#~ msgid "Create shared wallet"
+#~ msgstr "Create shared wallet"
+
+#~ msgid "Enable in-app notification"
+#~ msgstr "Enable in-app notification"
+
+#~ msgid "Enter wallet invitation"
+#~ msgstr "Enter wallet invitation"
+
+#~ msgid "Enter wallet name"
+#~ msgstr "Enter wallet name"
+
+#~ msgid "Enter your name"
+#~ msgstr "Enter your name"
+
+#~| msgid "Purchased Brands"
+#~ msgid "Featured Brands"
+#~ msgstr "Featured Brands"
+
+#~ msgid "I have written it down"
+#~ msgstr "I have written it down"
+
+#~ msgid ""
+#~ "If you take a screenshot, your recovery phrase may be viewed by other "
+#~ "apps. You can make a safe backup with physical paper and a pen."
+#~ msgstr ""
+#~ "If you take a screenshot, your recovery phrase may be viewed by other "
+#~ "apps. You can make a safe backup with physical paper and a pen."
+
+#~ msgid "Merchant fee too high. Payment rejected"
+#~ msgstr "Merchant fee too high. Payment rejected"
+
+#~| msgid "Brands"
+#~ msgid "More Brands"
+#~ msgstr "More Brands"
+
+#~ msgid "New wallet"
+#~ msgstr "New wallet"
+
+#~ msgid ""
+#~ "Now is a perfect time to assess your surroundings. Nearby windows? Hidden "
+#~ "cameras? Shoulder-spies?"
+#~ msgstr ""
+#~ "Now is a perfect time to assess your surroundings. Nearby windows? Hidden "
+#~ "cameras? Shoulder-spies?"
+
+#~ msgid "Pay To"
+#~ msgstr "Pay To"
+
+#~ msgid "Payment Protocol Invalid"
+#~ msgstr "Payment Protocol Invalid"
+
+#~ msgid "Please carefully write down this phrase."
+#~ msgstr "Please carefully write down this phrase."
+
+#~ msgid "Proposals"
+#~ msgstr "Proposals"
+
+#~ msgid "Screenshots are not secure"
+#~ msgstr "Screenshots are not secure"
+
+#~ msgid "Select a coin"
+#~ msgstr "Select a coin"
+
+#~ msgid "Self-signed Certificate"
+#~ msgstr "Self-signed Certificate"
+
+#~ msgid "Uh oh..."
+#~ msgstr "Uh oh..."
+
+#~ msgid "WARNING: UNTRUSTED CERTIFICATE"
+#~ msgstr "WARNING: UNTRUSTED CERTIFICATE"
+
+#~ msgid "We will confirm on the next screen."
+#~ msgstr "We will confirm on the next screen."
+
+#~ msgid ""
+#~ "{coinName} miner fees are high due to record demand for limited space on "
+#~ "the {coinName} network. BitPay does not receive and does not control "
+#~ "{coinName} miner fees."
+#~ msgstr ""
+#~ "{coinName} miner fees are high due to record demand for limited space on "
+#~ "the {coinName} network. BitPay does not receive and does not control "
+#~ "{coinName} miner fees."
+
+#~ msgid "{coinName} miner fees unusually high"
+#~ msgstr "{coinName} miner fees unusually high"
 
 #~ msgid "1. Tap \"Add Payment Method\" and select \"Gift Card\""
 #~ msgstr "1. Tap \"Add Payment Method\" and select \"Gift Card\""
@@ -3018,9 +3221,6 @@ msgstr "{{wallet.m}}-of-{{wallet.n}}"
 #~ "If enabled, the Recent Transactions card - a list of transactions "
 #~ "occuring across all wallets - will appear in the Home tab."
 
-#~ msgid "No pending proposals"
-#~ msgstr "No pending proposals"
-
 #~ msgid "Payment Proposals"
 #~ msgstr "Payment Proposals"
 
@@ -3033,9 +3233,6 @@ msgstr "{{wallet.m}}-of-{{wallet.n}}"
 
 #~ msgid "Print"
 #~ msgstr "Print"
-
-#~ msgid "QR code to recover wallet {{walletName}}"
-#~ msgstr "QR code to recover wallet {{walletName}}"
 
 #~ msgid "Recent Transaction Card"
 #~ msgstr "Recent Transaction Card"
