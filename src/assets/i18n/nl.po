@@ -12,10 +12,7 @@ msgstr ""
 "Last-Translator: cmgustavo83\n"
 "Language-Team: Dutch\n"
 "Language: nl\n"
-"PO-Revision-Date: 2019-02-04 13:00\n"
-
-msgid "(Trusted)"
-msgstr "(Vertrouwd)"
+"PO-Revision-Date: 2019-03-25 12:47\n"
 
 msgid "(possible double spend)"
 msgstr "(mogelijk dubbel besteed)"
@@ -24,6 +21,18 @@ msgid "* A payment proposal can be deleted if 1) you are the creator, and no oth
 msgstr ""
 
 msgid "5-star ratings help us get BitPay Wallet into more hands, and more users means more resources can be committed to the app!"
+msgstr ""
+
+msgid "A new copayer just joined your wallet {{walletName}}."
+msgstr ""
+
+msgid "A new payment proposal has been created in your wallet {{walletName}}."
+msgstr ""
+
+msgid "A payment of {{amountStr}} has been received into your wallet {{walletName}}."
+msgstr ""
+
+msgid "A payment proposal in your wallet {{walletName}} has been rejected."
 msgstr ""
 
 msgid "A total of {{amountAboveMaxSizeStr}} {{coin}} were excluded. The maximum size allowed for a transaction was exceeded."
@@ -52,6 +61,9 @@ msgstr ""
 
 msgid "Accepted"
 msgstr "Geaccepteerd"
+
+msgid "Access denied"
+msgstr ""
 
 msgid "Account"
 msgstr "Account"
@@ -155,9 +167,6 @@ msgstr "Bedrag te groot"
 msgid "Amount:"
 msgstr ""
 
-msgid "Anyone with your recovery phrase can access or spend your bitcoin."
-msgstr ""
-
 msgid "Apply changes"
 msgstr ""
 
@@ -175,9 +184,6 @@ msgstr ""
 
 msgid "Archived Cards"
 msgstr ""
-
-msgid "Are you being watched?"
-msgstr "Kijkt er iemand mee?"
 
 msgid "Are you sure you want to cancel and delete this wallet?"
 msgstr "Weet u zeker dat u wilt annuleren en deze portemonnee verwijderen?"
@@ -227,6 +233,12 @@ msgstr "Foutieve portemonnee-uitnodiging"
 msgid "Balance Hidden"
 msgstr ""
 
+msgid "Basic Wallet"
+msgstr ""
+
+msgid "Be sure to store your recovery phrase in a safe and secure place"
+msgstr ""
+
 msgid "Be sure to store your recovery phrase in a secure place. If this app is deleted, your money cannot be recovered without it."
 msgstr ""
 
@@ -240,6 +252,9 @@ msgid "Below Minimum Amount"
 msgstr ""
 
 msgid "BitPay Card URI"
+msgstr ""
+
+msgid "BitPay does not receive and does not control miner fees."
 msgstr ""
 
 msgid "Bitcoin Address"
@@ -335,9 +350,6 @@ msgstr ""
 msgid "Cards"
 msgstr ""
 
-msgid "Certified by"
-msgstr "Gecertificeerd door"
-
 msgid "Change Amount"
 msgstr ""
 
@@ -431,14 +443,11 @@ msgstr ""
 msgid "Continue"
 msgstr "Ga verder"
 
+msgid "Continue Backup"
+msgstr ""
+
 msgid "Contribute translations"
 msgstr ""
-
-msgid "Copay Session Logs. Be careful, this could contain sensitive private data"
-msgstr ""
-
-msgid "Copay only supports Bitcoin Cash using new version numbers addresses"
-msgstr "Copay ondersteunt Bitcoin Cash alleen met gebruik van nieuwe versienummer adressen"
 
 msgid "Copayer already in this wallet"
 msgstr "Copayer reeds in deze portemonnee"
@@ -475,9 +484,6 @@ msgstr "Kopieer deze tekst zonder te wijzigen naar een veilige plek (kladblok of
 
 msgid "Copy to clipboard"
 msgstr "Naar klembord kopiëren"
-
-msgid "Could Not Fetch Payment: Check if it is still valid"
-msgstr ""
 
 msgid "Could not access the wallet at the server. Please check:"
 msgstr "Kon geen toegang krijgen tot de portemonnee op de server. Graag dit checken:"
@@ -560,22 +566,16 @@ msgstr "Kon transactiehistorie niet bijwerken"
 msgid "Could not update wallet"
 msgstr "Kon portemonnee niet bijwerken"
 
+msgid "Create BCH Wallet"
+msgstr ""
+
+msgid "Create BTC Wallet"
+msgstr ""
+
 msgid "Create a new wallet"
 msgstr ""
 
 msgid "Create a new wallet to start using this app."
-msgstr ""
-
-msgid "Create bitcoin wallet"
-msgstr "Bitcoin portemonnee aanmaken"
-
-msgid "Create personal wallet"
-msgstr ""
-
-msgid "Create shared wallet"
-msgstr "Nieuwe gedeelde portemonnee aanmaken"
-
-msgid "Create wallet"
 msgstr ""
 
 msgid "Created"
@@ -653,6 +653,12 @@ msgstr "Doe het later"
 msgid "Do not include private key"
 msgstr ""
 
+msgid "Do this later"
+msgstr ""
+
+msgid "Do this later?"
+msgstr ""
+
 msgid "Do you want to verify your account now?"
 msgstr ""
 
@@ -695,9 +701,6 @@ msgstr ""
 msgid "Enable email notifications"
 msgstr "Email meldingen inschakelen"
 
-msgid "Enable in-app notification"
-msgstr ""
-
 msgid "Enable push notifications"
 msgstr "Push meldingen inschakelen"
 
@@ -734,16 +737,7 @@ msgstr ""
 msgid "Enter encrypt password"
 msgstr ""
 
-msgid "Enter wallet invitation"
-msgstr ""
-
-msgid "Enter wallet name"
-msgstr ""
-
 msgid "Enter your encrypt password again to confirm"
-msgstr ""
-
-msgid "Enter your name"
 msgstr ""
 
 msgid "Entry already exist"
@@ -768,6 +762,9 @@ msgid "Error deleting addressbook"
 msgstr ""
 
 msgid "Error deleting entry"
+msgstr ""
+
+msgid "Error fetching this invoice"
 msgstr ""
 
 msgid "Error getting SendMax information"
@@ -826,9 +823,6 @@ msgstr ""
 
 msgid "Failed to export"
 msgstr "Exporteren mislukt"
-
-msgid "Featured Brands"
-msgstr ""
 
 msgid "Fee"
 msgstr "Transactiekosten"
@@ -992,9 +986,6 @@ msgstr ""
 msgid "I have read, understood, and agree to the Terms of Use"
 msgstr ""
 
-msgid "I have written it down"
-msgstr ""
-
 msgid "I understand"
 msgstr "Ik begrijp het"
 
@@ -1037,10 +1028,10 @@ msgstr ""
 msgid "If you need to send to \"old\" addresses (like the one you just pasted), and you are SURE those are BCH addresses, you can \"translate\" them using the BCH Translator tool and paste the corresponding address in CashAddr format for that \"old\" address."
 msgstr ""
 
-msgid "If you take a screenshot, your recovery phrase may be viewed by other apps. You can make a safe backup with physical paper and a pen."
+msgid "If you were using the old desktop version you will need to import your wallets manually."
 msgstr ""
 
-msgid "If you were using the old desktop version you will need to import your wallets manually."
+msgid "Import Wallet"
 msgstr ""
 
 msgid "Import Words"
@@ -1060,6 +1051,9 @@ msgstr "Onvolledig"
 
 msgid "Incorrect PIN, try again."
 msgstr "Onjuiste PIN, probeer het opnieuw."
+
+msgid "Incorrect backup phrase"
+msgstr ""
 
 msgid "Incorrect network address"
 msgstr "Onjuist netwerk adres"
@@ -1115,8 +1109,8 @@ msgstr ""
 msgid "It's important that you write your recovery phrase down correctly. If something happens to your wallet, you'll need it to recover your money. Please review and try again."
 msgstr ""
 
-msgid "Join shared wallet"
-msgstr "Deelnemen aan bestaande gedeelde portemonnee"
+msgid "Join Shared Wallet"
+msgstr ""
 
 msgid "Join wallet"
 msgstr ""
@@ -1143,9 +1137,6 @@ msgid "Learn more"
 msgstr "Meer informatie"
 
 msgid "Learn more about testnet blockchain"
-msgstr ""
-
-msgid "Let's verify your recovery phrase."
 msgstr ""
 
 msgid "Linked"
@@ -1193,9 +1184,6 @@ msgstr "Notitie"
 msgid "Merchant Message"
 msgstr "Bericht Verkoper"
 
-msgid "Merchant fee too high. Payment rejected"
-msgstr ""
-
 msgid "Miner Fee"
 msgstr ""
 
@@ -1218,9 +1206,6 @@ msgid "Mmm..."
 msgstr ""
 
 msgid "More"
-msgstr ""
-
-msgid "More Brands"
 msgstr ""
 
 msgid "Moved"
@@ -1259,6 +1244,9 @@ msgstr ""
 msgid "Network Cost"
 msgstr ""
 
+msgid "Network Fee Warning"
+msgstr ""
+
 msgid "Network cost"
 msgstr ""
 
@@ -1268,10 +1256,19 @@ msgstr "Netwerk fout"
 msgid "New Proposal"
 msgstr "Nieuw Voorstel"
 
-msgid "New wallet"
+msgid "New copayer"
+msgstr ""
+
+msgid "New payment proposal"
+msgstr ""
+
+msgid "New payment received"
 msgstr ""
 
 msgid "New {appName} desktop platform"
+msgstr ""
+
+msgid "Next"
 msgstr ""
 
 msgid "No"
@@ -1364,9 +1361,6 @@ msgstr "Geef mij een melding wanneer bevestigd"
 msgid "Notify me when transactions are confirmed"
 msgstr "Geef mij een melding wanneer transacties zijn bevestigd"
 
-msgid "Now is a perfect time to assess your surroundings. Nearby windows? Hidden cameras? Shoulder-spies?"
-msgstr "Dit is het juiste moment om uw omgeving te bekijken. Ramen in de buurt? Verborgen camera's? Kijkt er iemand mee over uw schouder?"
-
 msgid "OK"
 msgstr "OK"
 
@@ -1448,9 +1442,6 @@ msgstr ""
 msgid "Pay 0% fees to turn bitcoin into dollars."
 msgstr "Betaal 0% transactiekosten om bitcoin om te zetten naar dollars."
 
-msgid "Pay To"
-msgstr "Betalen Aan"
-
 msgid "Payment Accepted"
 msgstr "Betaling Geaccepteerd"
 
@@ -1459,9 +1450,6 @@ msgstr "Betaling Verloopt:"
 
 msgid "Payment Proposal"
 msgstr "Betalingsvoorstel"
-
-msgid "Payment Protocol Invalid"
-msgstr "Betaling Protocol Ongeldig"
 
 msgid "Payment Published"
 msgstr ""
@@ -1487,6 +1475,9 @@ msgstr ""
 msgid "Payment accepted, but not yet broadcasted"
 msgstr "Betaling geaccepteerd, maar nog niet verzonden"
 
+msgid "Payment proposal rejected"
+msgstr ""
+
 msgid "Payment request"
 msgstr "Betalingsverzoek"
 
@@ -1505,9 +1496,6 @@ msgstr "Persoonlijke Portemonnee"
 msgid "Plain URL"
 msgstr ""
 
-msgid "Please carefully write down this phrase."
-msgstr "Schrijf zorgvuldig deze zin op, deze bevat geen hoofdletters."
-
 msgid "Please complete your account verification on ShapeShift website."
 msgstr ""
 
@@ -1523,11 +1511,8 @@ msgstr "Vul de herstel zin van de portemonnee in met enkel kleine letters"
 msgid "Please enter your PIN"
 msgstr ""
 
-msgid "Please tap each word in the correct order."
-msgstr "Druk a.u.b. op elk woord in de juiste volgorde."
-
-msgid "Please upgrade Copay to perform this action"
-msgstr "Upgrade Copay om deze actie uit te voeren"
+msgid "Please upgrade the app to perform this action"
+msgstr ""
 
 msgid "Please wait..."
 msgstr ""
@@ -1549,6 +1534,9 @@ msgstr "Adressen voorbereiden..."
 
 msgid "Preparing backup..."
 msgstr "Backup voorbereiden..."
+
+msgid "Previous"
+msgstr ""
 
 msgid "Priority"
 msgstr "Dringend"
@@ -1583,9 +1571,6 @@ msgstr "Voorstel Afgewezen"
 msgid "Proposal created"
 msgstr ""
 
-msgid "Proposals"
-msgstr "Voorstellen"
-
 msgid "Purchase Limit Reached"
 msgstr ""
 
@@ -1596,6 +1581,9 @@ msgid "Push notifications for {{appName}} are currently disabled. Enable them in
 msgstr "Push meldingen voor {{appName}} zijn op dit moment uitgeschakeld. Schakel deze in vanuit de Instellingen app."
 
 msgid "QR Code"
+msgstr ""
+
+msgid "Quick and easy setup"
 msgstr ""
 
 msgid "Quick review!"
@@ -1631,6 +1619,9 @@ msgstr "Ontvangen Saldo"
 msgid "Receiving"
 msgstr "Ontvangen"
 
+msgid "Receiving funds will be temporary disabled until you can verify your recovery phrase has been stored away securely. You can always complete this later from your wallet settings."
+msgstr ""
+
 msgid "Receiving {coinName} address"
 msgstr ""
 
@@ -1639,6 +1630,9 @@ msgstr "Recent"
 
 msgid "Recipient"
 msgstr "Ontvanger"
+
+msgid "Recover your wallet using your passphrase"
+msgstr ""
 
 msgid "Recovery Phrase"
 msgstr ""
@@ -1697,6 +1691,12 @@ msgstr ""
 msgid "Required number of signatures"
 msgstr ""
 
+msgid "Requires invitation to join"
+msgstr ""
+
+msgid "Requires multiple devices (most secure)"
+msgstr ""
+
 msgid "Restore from backup"
 msgstr "Herstellen vanuit backup"
 
@@ -1707,6 +1707,12 @@ msgid "Retry"
 msgstr ""
 
 msgid "Retry camera"
+msgstr ""
+
+msgid "START OVER"
+msgstr ""
+
+msgid "Safeguard your recovery phrase"
 msgstr ""
 
 msgid "Save"
@@ -1730,9 +1736,6 @@ msgstr "Saldo Portemonnee scannen..."
 msgid "Scanning funds"
 msgstr ""
 
-msgid "Screenshots are not secure"
-msgstr ""
-
 msgid "Search Transactions"
 msgstr ""
 
@@ -1754,14 +1757,11 @@ msgstr "Beveiliging"
 msgid "See transaction"
 msgstr ""
 
-msgid "Select a coin"
-msgstr ""
-
 msgid "Select a wallet"
 msgstr "Selecteer een portemonnee"
 
-msgid "Self-signed Certificate"
-msgstr "Zelf-gesigneerd Certificaat"
+msgid "Select currency"
+msgstr ""
 
 msgid "Selling Bitcoin..."
 msgstr "Bitcoin verkopen..."
@@ -1835,6 +1835,9 @@ msgstr "Diensten"
 msgid "Session Log"
 msgstr "Sessie Log"
 
+msgid "Session Logs. Be careful, this could contain sensitive private data"
+msgstr ""
+
 msgid "Session log"
 msgstr "Sessie log"
 
@@ -1874,6 +1877,9 @@ msgstr "Deel deze uitnodiging met uw copayers"
 msgid "Share {{appName}}"
 msgstr ""
 
+msgid "Shared Wallet"
+msgstr ""
+
 msgid "Shop Now"
 msgstr ""
 
@@ -1887,6 +1893,9 @@ msgid "Show in Home"
 msgstr ""
 
 msgid "Sign Up for ShapeShift"
+msgstr ""
+
+msgid "Sign selected proposals"
 msgstr ""
 
 msgid "Signatures rejected by server"
@@ -1960,6 +1969,9 @@ msgstr ""
 
 msgid "Tap and hold to show"
 msgstr "Tik en houd vast om te tonen"
+
+msgid "Tap each word in the correct order."
+msgstr ""
 
 msgid "Tap to recreate"
 msgstr ""
@@ -2045,6 +2057,9 @@ msgstr ""
 msgid "The total amount of bitcoin stored in this wallet."
 msgstr "De totale hoeveelheid bitcoin opgeslagen in deze portemonnee."
 
+msgid "The transaction from {{walletName}} that you were waiting for has been confirmed."
+msgstr ""
+
 msgid "The transaction history and every new incoming transaction are cached in the app. This feature clean this up and synchronizes again from the server"
 msgstr ""
 
@@ -2053,6 +2068,9 @@ msgstr ""
 
 msgid "There is an error in the form"
 msgstr "Het formulier bevat een fout"
+
+msgid "There was problem while trying to sign {{txpsFailed}} of your transactions proposals. Please, try again"
+msgstr ""
 
 msgid "There's obviously something we're doing wrong. How could we improve your experience?"
 msgstr ""
@@ -2075,6 +2093,12 @@ msgstr ""
 msgid "This information is available at the website."
 msgstr ""
 
+msgid "This invoice does not accept unconfirmed inputs."
+msgstr ""
+
+msgid "This invoice is not longer accepting payments"
+msgstr ""
+
 msgid "This password cannot be recovered. If this password is lost, funds can only be recovered by reimporting your 12-word recovery phrase."
 msgstr ""
 
@@ -2088,6 +2112,9 @@ msgid "This transaction amount is too small compared to current Bitcoin network 
 msgstr ""
 
 msgid "This transaction could take a long time to confirm or could be dropped due to the low fees set by the sender."
+msgstr ""
+
+msgid "This transaction requires a high network fee because either the sending amount is too small or the network is experiencing congestion."
 msgstr ""
 
 msgid "This wallet is not registered at the given Bitcore Wallet Service (BWS). You can recreate it from the local information."
@@ -2141,6 +2168,9 @@ msgstr ""
 msgid "Transaction already broadcasted"
 msgstr "Transactie reeds verzonden"
 
+msgid "Transaction confirmed"
+msgstr ""
+
 msgid "Transaction has not been created"
 msgstr "Transactie is niet aangemaakt"
 
@@ -2186,14 +2216,14 @@ msgstr ""
 msgid "Type the recovery phrase (usually 12 words)"
 msgstr ""
 
-msgid "Uh oh..."
-msgstr ""
-
 msgid "Unarchive Card"
 msgstr ""
 
 msgid "Unconfirmed"
 msgstr "Onbevestigd"
+
+msgid "Unfortunately, your country/region has banned the use or acceptance of cryptocurrencies as a valid form of payment and we are therefore unable to service you."
+msgstr ""
 
 msgid "Unlink account"
 msgstr ""
@@ -2246,6 +2276,9 @@ msgstr "Herstel zin valideren..."
 msgid "Verify Account"
 msgstr ""
 
+msgid "Verify Your Phrase"
+msgstr ""
+
 msgid "Version"
 msgstr "Versie"
 
@@ -2282,9 +2315,6 @@ msgstr ""
 msgid "WARNING: Key derivation is not working on this device/wallet. Actions cannot be performed on this wallet."
 msgstr "WAARSCHUWING: Sleutel derivatie werkt op dit moment niet op dit apparaat/deze portemonnee. Er kunnen geen acties worden uitgevoerd met deze portemonnee."
 
-msgid "WARNING: UNTRUSTED CERTIFICATE"
-msgstr "WAARSCHUWING: NIET-VERTROUWD CERTIFICAAT"
-
 msgid "Waiting for copayers"
 msgstr "Wachten op copayers"
 
@@ -2296,6 +2326,9 @@ msgstr "Adressen Portemonnee"
 
 msgid "Wallet Color"
 msgstr "Kleur Portemonnee"
+
+msgid "Wallet Configuration"
+msgstr ""
 
 msgid "Wallet Information"
 msgstr "Portemonnee Informatie"
@@ -2316,6 +2349,9 @@ msgid "Wallet already exists"
 msgstr "Portemonnee bestaat al"
 
 msgid "Wallet already in {{nameCase}}"
+msgstr ""
+
+msgid "Wallet complete"
 msgstr ""
 
 msgid "Wallet created"
@@ -2348,6 +2384,9 @@ msgstr "Portemonnee vereist backup"
 msgid "Wallet not found"
 msgstr "Portemonnee niet gevonden"
 
+msgid "Wallet not registered"
+msgstr ""
+
 msgid "Wallet not registered at the wallet service. Recreate it from \"Create Wallet\" using \"Advanced Options\" to set your recovery phrase"
 msgstr "Portemonnee niet geregistreerd bij de wallet service. Maak deze opnieuw aan vanuit \"Portemonnee Aanmaken\" en maak gebruik van \"Geavanceerde Opties\" om uw herstel zin in te voeren"
 
@@ -2373,9 +2412,6 @@ msgid "We appreciate your review"
 msgstr ""
 
 msgid "We are always looking for translation contributions! You can make corrections or help to make this app available in your native language by joining our community on Crowdin."
-msgstr ""
-
-msgid "We will confirm on the next screen."
 msgstr ""
 
 msgid "We're always listening for ways we can improve your experience. Feel free to leave us a review in the app store or request a new feature."
@@ -2421,6 +2457,9 @@ msgid "Write Down Recovery Phrase"
 msgstr ""
 
 msgid "Write a Review"
+msgstr ""
+
+msgid "Write down each word."
 msgstr ""
 
 msgid "Wrong number of recovery words:"
@@ -2492,13 +2531,25 @@ msgstr "Uw gekozen transactiekosten zijn lager dan aangeraden."
 msgid "Your name"
 msgstr "Uw naam"
 
+msgid "Your recovery phrase is composed of 12 randomly selected words. Please carefully write down each word in the order they appear."
+msgstr ""
+
+msgid "Your recovery phrase is verified"
+msgstr ""
+
 msgid "Your wallet address is similar to a bank account number. You can add funds to your wallet by withdrawing funds you may have stored on an exchange to your wallet address. Or other {coinName} users can send you money by scanning your QR code."
+msgstr ""
+
+msgid "Your wallet is backed up!"
 msgstr ""
 
 msgid "Your wallet is never saved to cloud storage or standard device backups."
 msgstr "Uw portemonnee wordt nooit opgeslagen in de cloud of in standaard apparaat backups."
 
 msgid "Your wallet key will be encrypted. The encrypt password cannot be recovered. Be sure to write it down."
+msgstr ""
+
+msgid "Your wallet {{walletName}} is complete."
 msgstr ""
 
 msgid "Your {walletType} wallet is backed up!"
@@ -2525,16 +2576,19 @@ msgstr "voorbereiden..."
 msgid "{appName} BCH wallets use the CashAddr format by default"
 msgstr ""
 
-msgid "{coinName} miner fees are high due to record demand for limited space on the {coinName} network. BitPay does not receive and does not control {coinName} miner fees."
-msgstr ""
-
-msgid "{coinName} miner fees unusually high"
-msgstr ""
-
 msgid "{{appName}} depends on Bitcore Wallet Service (BWS) for blockchain information, networking and Copayer synchronization. The default configuration points to https://bws.bitpay.com (BitPay's public BWS instance)."
 msgstr ""
 
+msgid "{{appName}} only supports Bitcoin Cash using new version numbers addresses."
+msgstr ""
+
 msgid "{{fee}} {{coin}} will be deducted for bitcoin networking fees."
+msgstr ""
+
+msgid "{{txpsSuccess}} proposal signed"
+msgstr ""
+
+msgid "{{txpsSuccess}} proposals signed"
 msgstr ""
 
 msgid "{{updatingTxHistoryProgress}} transactions downloaded"
