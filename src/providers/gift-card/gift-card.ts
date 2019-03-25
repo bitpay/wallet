@@ -109,7 +109,7 @@ export class GiftCardProvider {
     const invoiceIds = Object.keys(giftCardMap);
     const purchasedCards = invoiceIds
       .map(invoiceId => giftCardMap[invoiceId] as GiftCard)
-      .filter(c => c.invoiceId)
+      .filter(c => c.invoiceId && cardConfig)
       .map(c => ({
         ...c,
         name: cardName,
@@ -431,6 +431,7 @@ export class GiftCardProvider {
           displayName
         } as CardConfig;
       })
+      .filter(filterDisplayableConfig)
       .sort(sortByDisplayName);
     return supportedCards;
   }
@@ -539,13 +540,7 @@ export class GiftCardProvider {
             ...apiCardConfig,
             displayName: apiCardConfig.displayName || apiCardConfig.name
           }))
-          .filter(
-            cardConfig =>
-              cardConfig.logo &&
-              cardConfig.icon &&
-              cardConfig.cardImage &&
-              !cardConfig.hidden
-          )
+          .filter(filterDisplayableConfig)
           .sort(sortByDisplayName)
     );
     return this.availableCardsPromise;
@@ -650,6 +645,15 @@ function getCardConfigFromApiBrandConfig(
     : { ...baseConfig, supportedAmounts };
 }
 
+export function filterDisplayableConfig(cardConfig: CardConfig) {
+  return (
+    cardConfig.logo &&
+    cardConfig.icon &&
+    cardConfig.cardImage &&
+    !cardConfig.hidden
+  );
+}
+
 export function sortByDescendingDate(a: GiftCard, b: GiftCard) {
   return a.date < b.date ? 1 : -1;
 }
@@ -658,7 +662,7 @@ export function sortByDisplayName(
   a: CardConfig | GiftCard,
   b: CardConfig | GiftCard
 ) {
-  return a.displayName > b.displayName ? 1 : -1;
+  return a.displayName.toLowerCase() > b.displayName.toLowerCase() ? 1 : -1;
 }
 
 function appendFallbackImages(cardConfig: CardConfig) {
