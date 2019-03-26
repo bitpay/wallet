@@ -7,9 +7,12 @@ page-add {
     .item-inner {
       border: none !important;
     }
-  }
-  .item-title {
-    font-weight: bold;
+    .item-subtitle {
+      white-space: normal;
+    }
+    .item-title {
+      font-weight: bold;
+    }
   }
   .join-icon {
     img {

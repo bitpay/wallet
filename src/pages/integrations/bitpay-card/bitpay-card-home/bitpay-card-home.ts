@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { NavController } from 'ionic-angular';
+import { Events, NavController } from 'ionic-angular';
 
 // Providers
 import { AppProvider } from '../../../../providers';
+import { ConfigProvider } from '../../../../providers/config/config';
+import { HomeIntegrationsProvider } from '../../../../providers/home-integrations/home-integrations';
 
 // Pages
 import { BitPayCardIntroPage } from '../../../integrations/bitpay-card/bitpay-card-intro/bitpay-card-intro';
@@ -17,7 +19,10 @@ export class BitPayCardHome implements OnInit {
 
   constructor(
     private appProvider: AppProvider,
-    private navCtrl: NavController
+    private navCtrl: NavController,
+    private homeIntegrationsProvider: HomeIntegrationsProvider,
+    private configProvider: ConfigProvider,
+    private events: Events
   ) {}
 
   async ngOnInit() {
@@ -26,5 +31,16 @@ export class BitPayCardHome implements OnInit {
 
   public goToBitPayCardIntroPage() {
     this.navCtrl.push(BitPayCardIntroPage);
+  }
+
+  public hideHomeCard() {
+    const serviceName = 'debitcard';
+    const showAtHome = false;
+    const opts = {
+      showIntegration: { [serviceName]: showAtHome }
+    };
+    this.homeIntegrationsProvider.updateConfig(serviceName, showAtHome);
+    this.configProvider.set(opts);
+    this.events.publish('Home/reloadStatus');
   }
 }

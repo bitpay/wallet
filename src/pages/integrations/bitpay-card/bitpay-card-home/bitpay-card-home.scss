@@ -1,6 +1,10 @@
 bitpay-card-home {
   action-card {
     padding: 0 !important;
+    .close-button {
+      position: absolute;
+      right: 0;
+    }
     .bitpay-card-header {
       background-color: #dbe1fa;
       position: relative;
