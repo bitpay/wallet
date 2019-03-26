@@ -13,7 +13,6 @@ import { BackupRequestPage } from '../pages/onboarding/backup-request/backup-req
 import { CollectEmailPage } from '../pages/onboarding/collect-email/collect-email';
 import { DisclaimerPage } from '../pages/onboarding/disclaimer/disclaimer';
 import { OnboardingPage } from '../pages/onboarding/onboarding';
-import { TourPage } from '../pages/onboarding/tour/tour';
 import { PaperWalletPage } from '../pages/paper-wallet/paper-wallet';
 import { SlideToAcceptPage } from '../pages/slide-to-accept/slide-to-accept';
 import { TabsPage } from '../pages/tabs/tabs';
@@ -176,7 +175,6 @@ export const PAGES = [
   SessionLogPage,
   SendFeedbackPage,
   FinishModalPage,
-  TourPage,
   TabsPage,
   TxpDetailsPage,
   TxDetailsPage,
