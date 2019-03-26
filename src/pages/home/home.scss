@@ -25,29 +25,6 @@ page-home {
     text-align: center;
   }
 
-  .check {
-    text-align: center;
-
-    .title {
-      font-weight: 500;
-      font-size: 2rem;
-      color: color($colors, grey);
-    }
-
-    .subtitle {
-      padding: 10px;
-    }
-
-    .check-icon {
-      margin-top: -40px;
-    }
-
-    .announcement-logo {
-      width: 200px;
-      margin: 10px auto;
-    }
-  }
-
   .card,
   ion-card {
     .wallets-list-title {
@@ -83,19 +60,6 @@ page-home {
 
   .error {
     color: color($colors, danger);
-  }
-
-  .wallet-ready {
-    padding: 0rem;
-    margin-bottom: 3rem;
-
-    .row {
-      justify-content: flex-end;
-
-      button {
-        font-size: 12px;
-      }
-    }
   }
 
   page-wallet-activity,
@@ -242,18 +206,6 @@ page-home {
   .section-header {
     text-transform: uppercase;
     font-size: 13px;
-  }
-
-  .zero-state {
-    .wrapper {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-    }
-
-    .prompt-user {
-      margin-bottom: 2rem;
-    }
   }
 
   // Styles for gift cards and Bitpay cards

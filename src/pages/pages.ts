@@ -46,6 +46,7 @@ import { BitPaySettingsPage } from '../pages/integrations/bitpay-card/bitpay-set
 
 /*Includes */
 import { CardItemPage } from '../pages/includes/card-item/card-item';
+import { CreateNewWalletPage } from '../pages/includes/create-new-wallet/create-new-wallet';
 import { FeedbackCardPage } from '../pages/includes/feedback-card/feedback-card';
 import { GravatarPage } from '../pages/includes/gravatar/gravatar';
 import { MultipleOutputsPage } from '../pages/includes/multiple-outputs/multiple-outputs';
@@ -130,6 +131,7 @@ export const PAGES = [
   CardCatalogPage,
   ChooseFeeLevelPage,
   CreateWalletPage,
+  CreateNewWalletPage,
   CoinbasePage,
   CoinbaseTxDetailsPage,
   CopayersPage,
