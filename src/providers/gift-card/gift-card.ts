@@ -85,7 +85,7 @@ export class GiftCardProvider {
   }
 
   async fetchCardConfigMap() {
-    this.availableCardMapPromise = this.getAvailableCards().then(
+    this.availableCardMapPromise = this.getSupportedCards().then(
       availableCards =>
         availableCards.reduce(
           (map, cardConfig) => ({ ...map, [cardConfig.name]: cardConfig }),
@@ -101,23 +101,24 @@ export class GiftCardProvider {
     return map || {};
   }
 
+  async getActiveCards(): Promise<GiftCard[]> {
+    const [configMap, giftCardMap] = await Promise.all([
+      this.getCardConfigMap(),
+      this.persistenceProvider.getActiveGiftCards(this.getNetwork())
+    ]);
+    const validSchema =
+      giftCardMap && Object.keys(giftCardMap).every(key => key !== 'undefined');
+    return !giftCardMap || !validSchema
+      ? this.migrateAndFetchActiveCards()
+      : getCardsFromInvoiceMap(giftCardMap, configMap);
+  }
+
   async getPurchasedCards(cardName: string): Promise<GiftCard[]> {
-    const [cardConfig, giftCardMap] = await Promise.all([
-      this.getCardConfig(cardName),
+    const [configMap, giftCardMap] = await Promise.all([
+      this.getCardConfigMap(),
       this.getCardMap(cardName)
     ]);
-    const invoiceIds = Object.keys(giftCardMap);
-    const purchasedCards = invoiceIds
-      .map(invoiceId => giftCardMap[invoiceId] as GiftCard)
-      .filter(c => c.invoiceId)
-      .map(c => ({
-        ...c,
-        name: cardName,
-        displayName: cardConfig.displayName,
-        currency: c.currency || getCurrencyFromLegacySavedCard(cardName)
-      }))
-      .sort(sortByDescendingDate);
-    return purchasedCards;
+    return getCardsFromInvoiceMap(giftCardMap, configMap);
   }
 
   async getAllCardsOfBrand(cardBrand: string): Promise<GiftCard[]> {
@@ -431,6 +432,7 @@ export class GiftCardProvider {
           displayName
         } as CardConfig;
       })
+      .filter(filterDisplayableConfig)
       .sort(sortByDisplayName);
     return supportedCards;
   }
@@ -444,23 +446,6 @@ export class GiftCardProvider {
       }),
       {}
     );
-  }
-
-  async getActiveCards(): Promise<GiftCard[]> {
-    const giftCardMap = await this.persistenceProvider.getActiveGiftCards(
-      this.getNetwork()
-    );
-    const supportedCards = await this.getSupportedCards();
-    const offeredCardNames = supportedCards.map(c => c.name);
-    const validSchema =
-      giftCardMap && Object.keys(giftCardMap).every(key => key !== 'undefined');
-    return !giftCardMap || !validSchema
-      ? this.migrateAndFetchActiveCards()
-      : Object.keys(giftCardMap)
-          .map(invoiceId => giftCardMap[invoiceId] as GiftCard)
-          .filter(card => offeredCardNames.indexOf(card.name) > -1)
-          .filter(card => card.invoiceId)
-          .sort(sortByDescendingDate);
   }
 
   async migrateAndFetchActiveCards(): Promise<GiftCard[]> {
@@ -539,13 +524,7 @@ export class GiftCardProvider {
             ...apiCardConfig,
             displayName: apiCardConfig.displayName || apiCardConfig.name
           }))
-          .filter(
-            cardConfig =>
-              cardConfig.logo &&
-              cardConfig.icon &&
-              cardConfig.cardImage &&
-              !cardConfig.hidden
-          )
+          .filter(filterDisplayableConfig)
           .sort(sortByDisplayName)
     );
     return this.availableCardsPromise;
@@ -650,6 +629,15 @@ function getCardConfigFromApiBrandConfig(
     : { ...baseConfig, supportedAmounts };
 }
 
+export function filterDisplayableConfig(cardConfig: CardConfig) {
+  return (
+    cardConfig.logo &&
+    cardConfig.icon &&
+    cardConfig.cardImage &&
+    !cardConfig.hidden
+  );
+}
+
 export function sortByDescendingDate(a: GiftCard, b: GiftCard) {
   return a.date < b.date ? 1 : -1;
 }
@@ -658,7 +646,29 @@ export function sortByDisplayName(
   a: CardConfig | GiftCard,
   b: CardConfig | GiftCard
 ) {
-  return a.displayName > b.displayName ? 1 : -1;
+  return a.displayName.toLowerCase() > b.displayName.toLowerCase() ? 1 : -1;
+}
+
+export function setNullableCardFields(card: GiftCard, cardConfig: CardConfig) {
+  return {
+    ...card,
+    name: cardConfig.name,
+    displayName: cardConfig.displayName,
+    currency: card.currency || getCurrencyFromLegacySavedCard(cardConfig.name)
+  };
+}
+
+export function getCardsFromInvoiceMap(
+  invoiceMap: {
+    [invoiceId: string]: GiftCard;
+  },
+  configMap: CardConfigMap
+): GiftCard[] {
+  return Object.keys(invoiceMap)
+    .map(invoiceId => invoiceMap[invoiceId] as GiftCard)
+    .filter(card => card.invoiceId && configMap[card.name])
+    .map(card => setNullableCardFields(card, configMap[card.name]))
+    .sort(sortByDescendingDate);
 }
 
 function appendFallbackImages(cardConfig: CardConfig) {
