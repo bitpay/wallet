@@ -85,7 +85,7 @@ export class GiftCardProvider {
   }
 
   async fetchCardConfigMap() {
-    this.availableCardMapPromise = this.getAvailableCards().then(
+    this.availableCardMapPromise = this.getSupportedCards().then(
       availableCards =>
         availableCards.reduce(
           (map, cardConfig) => ({ ...map, [cardConfig.name]: cardConfig }),
