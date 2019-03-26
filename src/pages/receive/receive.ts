@@ -32,7 +32,6 @@ export class ReceivePage extends WalletTabsChild {
   public protocolHandler: string;
   public address: string;
   public qrAddress: string;
-  public wallets = [];
   public wallet;
   public showShareButton: boolean;
   public loading: boolean;
