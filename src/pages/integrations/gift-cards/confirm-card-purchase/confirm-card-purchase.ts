@@ -491,6 +491,7 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
   }
 
   public async handlePurchaseError(err) {
+    this.onGoingProcessProvider.clear();
     await this.giftCardProvider.saveCard(this.tx.giftData, {
       remove: true
     });
