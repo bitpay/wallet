@@ -42,11 +42,11 @@
       </div>
     </div>
 
-    <div *ngIf="wallets[0]" class="receive-content">
+    <div *ngIf="wallet && wallet.isComplete() && !wallet.needsBackup" class="receive-content">
       <div class="title">
         {{'Address' | translate}}
       </div>
-      <div *ngIf="wallet && wallet.isComplete() && !wallet.needsBackup" class="address-container">
+      <div class="address-container">
         <div class="text-address ellipsis">
           <img copy-to-clipboard="{{ address }}" src="assets/img/paste-clipboard.svg" width="18" />
           <div [ngClass]="{'fade-in-out': playAnimation}" (click)="showFullAddr()" class="address-text ellipsis">
@@ -65,7 +65,7 @@
 
     <div class="qr-container" *ngIf="wallet && wallet.isComplete() && !wallet.needsBackup">
       <div class="lines-background"></div>
-      <div class="card qr-card" [ngClass]="{'qr-code-bounce': playAnimation}" *ngIf="wallets[0] && address">
+      <div class="card qr-card" [ngClass]="{'qr-code-bounce': playAnimation}" *ngIf="address">
         <ngx-qrcode (click)="showFullAddr()" *ngIf="address" copy-to-clipboard="{{ address }}" hide-toast="true" qrc-value="{{address}}" qrc-class="aclass" qrc-errorCorrectionLevel="M"></ngx-qrcode>
       </div>
     </div>
