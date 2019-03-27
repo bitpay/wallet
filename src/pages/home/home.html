@@ -1,7 +1,7 @@
 <ion-header>
   <ion-navbar class="home-header">
     <ion-buttons left class="add-button">
-      <button ion-button clear icon-only (click)="goToAddView()">
+      <button ion-button clear icon-only (click)="goToAddView()" *ngIf="wallets && wallets[0]">
         <ion-icon name="add"></ion-icon>
       </button>
     </ion-buttons>
@@ -19,12 +19,12 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content class="fullscreen-tab" [ngClass]="{'zero-state': !wallets || !wallets[0]}">
+<ion-content class="fullscreen-tab">
   <ion-refresher (ionRefresh)="doRefresh($event)" *ngIf="!showReorderBtc && !showReorderBch && !showReorderVaultWallets" pullMin="90" pullMax="180">
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
   <div class="wrapper">
-    <div class="header-extend" *ngIf="wallets && wallets[0]"></div>
+    <div class="header-extend"></div>
 
     <div class="card clipboard-card" *ngIf="validDataFromClipboard">
       <ion-item-divider>
@@ -65,45 +65,9 @@
         </ion-card-content>
       </ion-card>
 
-      <div class="prompt-user-fullscreen-container" *ngIf="!wallets || !wallets[0]">
-        <div class="prompt-user">
-          <div class="title-icon larger-icon">
-            <img src="assets/img/ghost-straight-face.svg" />
-          </div>
-          <div class="title-info">
-            <span translate>No wallets available</span>
-          </div>
-          <div class="subtitle-info">
-            <span translate>Create a new wallet to start using this app.</span>
-          </div>
-          <button ion-button class="button-standard" (click)="goToAddView()">
-            {{'Create a new wallet' | translate}}
-          </button>
-        </div>
-      </div>
-
       <page-feedback-card #showCard></page-feedback-card>
 
-      <ion-card *ngIf="homeTip && wallets && wallets[0]">
-        <ion-card-header class="wallet-ready">
-          <ion-row>
-            <button ion-button clear icon-only item-end color="grey" (click)="hideHomeTip()">
-              <ion-icon name="close"></ion-icon>
-            </button>
-          </ion-row>
-        </ion-card-header>
-        <ion-card-content class="check">
-          <ion-icon class="big-icon-svg check-icon">
-            <img src="assets/img/check-white.svg" class="bg green" />
-          </ion-icon>
-          <div class="title" translate>
-            You are ready!
-          </div>
-          <div class="subtitle" translate>
-            On this screen you can see all your wallets, accounts, and assets.
-          </div>
-        </ion-card-content>
-      </ion-card>
+      <create-new-wallet *ngIf="!wallets || !wallets[0]"></create-new-wallet>
 
       <ion-card class="server-message" *ngIf="accessDenied">
         <ion-card-content class="server-message-content">

@@ -33,7 +33,6 @@ export type InfoSheetType =
   | 'payment-request'
   | 'receiving-bitcoin'
   | 'sensitive-info'
-  | 'electron-info'
   | 'in-app-notification'
   | 'request-feature'
   | 'report-issue';

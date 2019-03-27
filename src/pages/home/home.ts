@@ -59,7 +59,6 @@ export class HomePage {
   public slideDown: boolean;
 
   public showRateCard: boolean;
-  public homeTip: boolean;
   public showReorderBtc: boolean;
   public showReorderBch: boolean;
   public showReorderVaultWallets: boolean;
@@ -166,7 +165,6 @@ export class HomePage {
 
   ionViewDidLoad() {
     this.logger.info('Loaded: HomePage');
-    this.checkHomeTip();
 
     this.checkFeedbackInfo();
 
@@ -366,17 +364,6 @@ export class HomePage {
     if (!this.appProvider.isLockModalOpen) {
       this.updateAllWallets();
     }
-  }
-
-  public checkHomeTip(): void {
-    this.persistenceProvider.getHomeTipAccepted().then((value: string) => {
-      this.homeTip = value == 'accepted' ? false : true;
-    });
-  }
-
-  public hideHomeTip(): void {
-    this.persistenceProvider.setHomeTipAccepted('accepted');
-    this.homeTip = false;
   }
 
   private checkFeedbackInfo() {

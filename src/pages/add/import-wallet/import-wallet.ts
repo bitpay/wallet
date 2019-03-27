@@ -5,7 +5,6 @@ import { App, Events, NavController, NavParams } from 'ionic-angular';
 import { Logger } from '../../../providers/logger/logger';
 
 // Pages
-import { DisclaimerPage } from '../../onboarding/disclaimer/disclaimer';
 import { ScanPage } from '../../scan/scan';
 import { TabsPage } from '../../tabs/tabs';
 
@@ -39,7 +38,6 @@ export class ImportWalletPage {
   public importForm: FormGroup;
   public prettyFileName: string;
   public importErr: boolean;
-  public fromOnboarding: boolean;
   public formFile;
   public showAdvOpts: boolean;
   public selectedTab: string;
@@ -83,7 +81,6 @@ export class ImportWalletPage {
     this.isSafari = this.platformProvider.isSafari;
     this.isIOS = this.platformProvider.isIOS;
     this.importErr = false;
-    this.fromOnboarding = this.navParams.data.fromOnboarding;
     this.code = this.navParams.data.code;
     this.selectedTab = 'words';
     this.derivationPathByDefault = this.derivationPathHelperProvider.default;
@@ -268,10 +265,7 @@ export class ImportWalletPage {
     });
 
     this.events.publish('status:updated');
-    if (this.fromOnboarding) {
-      this.profileProvider.setOnboardingCompleted();
-      this.navCtrl.push(DisclaimerPage);
-    } else if (this.importForm.value.importVault) {
+    if (this.importForm.value.importVault) {
       // using setRoot(TabsPage) as workaround when comming from scanner
       this.app.getRootNavs()[0].setRoot(TabsPage);
     } else {

@@ -51,7 +51,6 @@ const Keys = {
     return legacyGiftCardKey || `giftCards-${cardName}-${network}`;
   },
   HIDE_BALANCE: walletId => 'hideBalance-' + walletId,
-  HOME_TIP: 'homeTip',
   LAST_ADDRESS: walletId => 'lastAddress-' + walletId,
   LAST_CURRENCY_USED: 'lastCurrencyUsed',
   ONBOARDING_COMPLETED: 'onboardingCompleted',
@@ -188,14 +187,6 @@ export class PersistenceProvider {
 
   clearConfig() {
     return this.storage.remove(Keys.CONFIG);
-  }
-
-  getHomeTipAccepted() {
-    return this.storage.get(Keys.HOME_TIP);
-  }
-
-  setHomeTipAccepted(homeTip) {
-    return this.storage.set(Keys.HOME_TIP, homeTip);
   }
 
   setHideBalanceFlag(walletId: string, val) {

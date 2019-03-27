@@ -200,14 +200,6 @@
       <span sheet-button-text translate>GOT IT</span>
     </info-sheet-template>
 
-    <info-sheet-template *ngSwitchCase="'electron-info'" type="info">
-      <span sheet-title-text>{{'New {appName} desktop platform' | translate: {appName: params.appName} }}</span>
-      <span sheet-text translate>
-        If you were using the old desktop version you will need to import your wallets manually.
-      </span>
-      <span sheet-button-text translate>GOT IT</span>
-    </info-sheet-template>
-
     <info-sheet-template *ngSwitchCase="'in-app-notification'" type="success">
       <span sheet-title-text>{{params.title}}</span>
       <span sheet-text>{{params.body}}</span>

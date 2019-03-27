@@ -9,11 +9,9 @@ import { BackupGamePage } from '../pages/backup/backup-game/backup-game';
 import { BackupKeyPage } from '../pages/backup/backup-key/backup-key';
 import { SendFeedbackPage } from '../pages/feedback/send-feedback/send-feedback';
 import { FinishModalPage } from '../pages/finish/finish';
-import { BackupRequestPage } from '../pages/onboarding/backup-request/backup-request';
 import { CollectEmailPage } from '../pages/onboarding/collect-email/collect-email';
 import { DisclaimerPage } from '../pages/onboarding/disclaimer/disclaimer';
 import { OnboardingPage } from '../pages/onboarding/onboarding';
-import { TourPage } from '../pages/onboarding/tour/tour';
 import { PaperWalletPage } from '../pages/paper-wallet/paper-wallet';
 import { SlideToAcceptPage } from '../pages/slide-to-accept/slide-to-accept';
 import { TabsPage } from '../pages/tabs/tabs';
@@ -47,6 +45,7 @@ import { BitPaySettingsPage } from '../pages/integrations/bitpay-card/bitpay-set
 
 /*Includes */
 import { CardItemPage } from '../pages/includes/card-item/card-item';
+import { CreateNewWalletPage } from '../pages/includes/create-new-wallet/create-new-wallet';
 import { FeedbackCardPage } from '../pages/includes/feedback-card/feedback-card';
 import { GravatarPage } from '../pages/includes/gravatar/gravatar';
 import { MultipleOutputsPage } from '../pages/includes/multiple-outputs/multiple-outputs';
@@ -121,7 +120,6 @@ export const PAGES = [
   AdvancedPage,
   AllAddressesPage,
   AltCurrencyPage,
-  BackupRequestPage,
   BitPayCardHome,
   BitPayCardIntroPage,
   BitPayCardPage,
@@ -131,6 +129,7 @@ export const PAGES = [
   CardCatalogPage,
   ChooseFeeLevelPage,
   CreateWalletPage,
+  CreateNewWalletPage,
   CoinbasePage,
   CoinbaseTxDetailsPage,
   CopayersPage,
@@ -176,7 +175,6 @@ export const PAGES = [
   SessionLogPage,
   SendFeedbackPage,
   FinishModalPage,
-  TourPage,
   TabsPage,
   TxpDetailsPage,
   TxDetailsPage,
