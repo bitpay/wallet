@@ -4,7 +4,6 @@ import { NavController, NavParams } from 'ionic-angular';
 import * as _ from 'lodash';
 
 // pages
-import { DisclaimerPage } from '../../onboarding/disclaimer/disclaimer';
 import { BackupGamePage } from '../backup-game/backup-game';
 
 // providers
@@ -23,7 +22,6 @@ export class BackupKeyPage {
   public mnemonicWords: string[];
   public wordToShow: number;
   public credentialsEncrypted: boolean;
-  public fromOnboarding: boolean;
   public wallet;
   public keys;
 
@@ -40,7 +38,6 @@ export class BackupKeyPage {
     private actionSheetProvider: ActionSheetProvider
   ) {
     this.walletId = this.navParams.data.walletId;
-    this.fromOnboarding = this.navParams.data.fromOnboarding;
     this.wallet = this.profileProvider.getWallet(this.walletId);
     this.credentialsEncrypted = this.wallet.isPrivKeyEncrypted();
   }
@@ -103,8 +100,7 @@ export class BackupKeyPage {
     this.navCtrl.push(BackupGamePage, {
       words: this.mnemonicWords,
       keys: this.keys,
-      walletId: this.walletId,
-      fromOnboarding: this.fromOnboarding
+      walletId: this.walletId
     });
   }
 
@@ -131,11 +127,7 @@ export class BackupKeyPage {
     infoSheet.present();
     infoSheet.onDidDismiss(option => {
       if (option) {
-        if (this.fromOnboarding) {
-          this.navCtrl.push(DisclaimerPage);
-        } else {
-          this.navCtrl.pop();
-        }
+        this.navCtrl.pop();
       }
     });
   }

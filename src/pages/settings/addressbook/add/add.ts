@@ -24,7 +24,7 @@ import { ScanPage } from '../../../scan/scan';
   templateUrl: 'add.html'
 })
 export class AddressbookAddPage {
-  private addressBookAdd: FormGroup;
+  public addressBookAdd: FormGroup;
 
   public isCordova: boolean;
   public appName: string;

@@ -12,7 +12,6 @@ import * as _ from 'lodash';
 
 // pages
 import { FinishModalPage } from '../../finish/finish';
-import { DisclaimerPage } from '../../onboarding/disclaimer/disclaimer';
 
 // providers
 import { ActionSheetProvider } from '../../../providers/action-sheet/action-sheet';
@@ -31,7 +30,6 @@ export class BackupGamePage {
   @ViewChild(Navbar)
   navBar: Navbar;
 
-  private fromOnboarding: boolean;
   private isVaultWallet: boolean;
   private vault;
 
@@ -62,7 +60,6 @@ export class BackupGamePage {
     this.mnemonicWords = this.navParams.data.words;
     this.keys = this.navParams.data.keys;
     this.walletId = this.navParams.data.walletId;
-    this.fromOnboarding = this.navParams.data.fromOnboarding;
     this.wallet = this.profileProvider.getWallet(this.walletId);
     this.vault = this.profileProvider.getVault();
     this.isVaultWallet =
@@ -221,12 +218,8 @@ export class BackupGamePage {
         });
         await modal.present();
         modal.onDidDismiss(() => {
-          if (this.fromOnboarding) {
-            this.navCtrl.push(DisclaimerPage);
-          } else {
-            this.navCtrl.popToRoot();
-            this.events.publish('Wallet/setAddress', true);
-          }
+          this.navCtrl.popToRoot();
+          this.events.publish('Wallet/setAddress', true);
         });
       })
       .catch(err => {

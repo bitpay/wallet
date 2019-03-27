@@ -9,7 +9,6 @@ import { BackupGamePage } from '../pages/backup/backup-game/backup-game';
 import { BackupKeyPage } from '../pages/backup/backup-key/backup-key';
 import { SendFeedbackPage } from '../pages/feedback/send-feedback/send-feedback';
 import { FinishModalPage } from '../pages/finish/finish';
-import { BackupRequestPage } from '../pages/onboarding/backup-request/backup-request';
 import { CollectEmailPage } from '../pages/onboarding/collect-email/collect-email';
 import { DisclaimerPage } from '../pages/onboarding/disclaimer/disclaimer';
 import { OnboardingPage } from '../pages/onboarding/onboarding';
@@ -121,7 +120,6 @@ export const PAGES = [
   AdvancedPage,
   AllAddressesPage,
   AltCurrencyPage,
-  BackupRequestPage,
   BitPayCardHome,
   BitPayCardIntroPage,
   BitPayCardPage,
