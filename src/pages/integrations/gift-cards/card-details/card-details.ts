@@ -221,6 +221,8 @@ export class CardDetailsPage {
           return this.showInvoice();
         case 'share-code':
           return this.shareCode();
+        case 'print-card':
+          return setTimeout(() => this.print(), 200);
       }
     });
   }
