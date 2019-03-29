@@ -203,10 +203,12 @@ export class CardDetailsPage {
     const showShare =
       this.platformProvider.isCordova &&
       (this.card.claimLink || this.card.claimCode);
+    const hidePrint = !this.card.claimLink && this.platformProvider.isAndroid;
     const sheet = this.actionSheetProvider.createOptionsSheet(
       'gift-card-options',
       {
         card: this.card,
+        hidePrint,
         showShare
       }
     );
