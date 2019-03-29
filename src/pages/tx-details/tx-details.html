@@ -81,46 +81,56 @@
       </div>
     </ion-item>
 
-    <ion-item *ngIf="btx.action != 'received' && isShared">
-      <ion-label>{{'Created by' | translate}}</ion-label>
-      <ion-note item-end>
-        {{btx.creatorName}}
-      </ion-note>
+    <ion-item class="container-tx-info" *ngIf="btx.action != 'received' && isShared">
+      <span>{{'Created by' | translate}}</span>
+      <div class="tx-info">
+        <span class="ellipsis comment">
+          {{btx.creatorName}}
+        </span>
+      </div>
     </ion-item>
 
-    <ion-item *ngIf="btx.ts || btx.createdOn || btx.time">
-      <ion-label>{{'Date' | translate}}</ion-label>
-      <ion-note item-end>
-        <time>{{ (btx.ts || btx.createdOn || btx.time) * 1000 | amDateFormat:'MM/DD/YYYY hh:mm a'}}</time>
-      </ion-note>
+    <ion-item class="container-tx-info" *ngIf="btx.ts || btx.createdOn || btx.time">
+      <span>{{'Date' | translate}}</span>
+      <div class="tx-info">
+        <span class="ellipsis comment">
+          <time>{{ (btx.ts || btx.createdOn || btx.time) * 1000 | amDateFormat:'MM/DD/YYYY hh:mm a'}}</time>
+        </span>
+      </div>
     </ion-item>
 
-    <ion-item>
-      <ion-label>{{'Confirmations' | translate}}</ion-label>
-      <ion-note item-end>
-        <span *ngIf="!btx.confirmations || btx.confirmations == 0" translate>
+    <ion-item class="container-tx-info">
+      <span>{{'Confirmations' | translate}}</span>
+      <div class="tx-info">
+        <span class="ellipsis comment" *ngIf="!btx.confirmations || btx.confirmations == 0" translate>
           Unconfirmed
           <span *ngIf="btx.feeRate">(
             <span translate>Fee rate</span>:
             {{btx.feeRate}})
           </span>
         </span>
-        <span *ngIf="btx.confirmations>0 && !btx.safeConfirmed">
+        <span class="ellipsis comment" *ngIf="btx.confirmations>0 && !btx.safeConfirmed">
           {{btx.confirmations}}
         </span>
-        <span *ngIf="btx.safeConfirmed">
+        <span class="ellipsis comment" *ngIf="btx.safeConfirmed">
           {{btx.safeConfirmed}}
         </span>
-      </ion-note>
+      </div>
     </ion-item>
+
+    <div *ngIf="!btx.confirmations || btx.confirmations == 0" class="unconfirmed-message">
+      <a class="positive" (click)="openExternalLink('https://support.bitpay.com/hc/en-us/articles/360025484512-Missing-transactions-Why-is-my-transaction-unconfirmed-')">
+        {{'Why is my transaction unconfirmed?' | translate}}
+      </a>
+    </div>
 
     <editable-item (valChange)="saveMemoInfo($event)" [value]="txMemo" [itemPlaceholder]="'Enter a transaction memo' | translate">
       <span item-label translate>Memo</span>
     </editable-item>
 
-    <ion-item class="container-tx-id">
+    <ion-item class="container-tx-info">
       <span translate>Transaction ID</span>
-      <div class="tx-id">
+      <div class="tx-info">
         <div class="ellipsis id" copy-to-clipboard="{{ btx.txid }}">
           <span>{{ btx.txid }}</span>
         </div>

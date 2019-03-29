@@ -218,9 +218,15 @@ ion-spinner * {
   padding: 10px;
   text-align: center;
 
+  a {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
   .icon {
-    vertical-align: middle;
-    margin: 0 5px;
+    margin: 0 6px;
+    font-size: 20px;
   }
 
   &.success {
