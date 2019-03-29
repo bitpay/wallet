@@ -31,7 +31,7 @@
 </ion-item>
 
 <ion-list detail-none *ngIf="tx.hasMultiplesOutputs && showMultiplesOutputs">
-  <ion-item class="proposal-container" *ngFor="let output of tx.outputs" copy-to-clipboard="{{output.toAddress ? output.toAddress : output.address}}">
+  <ion-item *ngFor="let output of tx.outputs" copy-to-clipboard="{{output.toAddress ? output.toAddress : output.address}}">
     <div item-left>
       <h2>
         <span translate>To</span>:
@@ -44,7 +44,7 @@
       </p>
     </div>
     <ion-note item-right text-end col-11>
-      <span class="output-note ellipsis">{{output.addressToShow ||output.toAddress || output.address}}</span>
+      <span class="output-note ellipsis">{{output.addressToShow || output.toAddress || output.address}}</span>
       <span class="output-note ellipsis">{{output.amountStr}}
         <span *ngIf="output.alternativeAmountStr">({{output.alternativeAmountStr}})</span>
       </span>
