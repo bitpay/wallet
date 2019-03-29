@@ -39,6 +39,8 @@
     <preference name="SplashMaintainAspectRatio" value="true" />
     <preference name="loadUrlTimeoutValue" value="60000" />
 
+    <preference name="UseSwiftLanguageVersion" value="5" />
+
     <!-- Android Version: Marshmallow 6.0 (API Level 23) or higher -->
     <preference name="android-minSdkVersion" value="23" />
 
@@ -55,7 +57,7 @@
     <plugin name="cordova-plugin-android-fingerprint-auth" spec="1.4.3" />
     <plugin name="cordova-plugin-device" spec="2.0.1" />
     <plugin name="cordova-plugin-globalization" spec="1.0.9" />
-    <plugin name="cordova-plugin-qrscanner" spec="2.6.0" />
+    <plugin name="cordova-plugin-qrscanner" spec="3.0.1" />
     <plugin name="cordova-plugin-add-swift-support" spec="1.7.2" />
     <plugin name="cordova-plugin-splashscreen" spec="5.0.2" />
     <plugin name="cordova-plugin-statusbar" spec="2.4.2" />
