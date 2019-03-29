@@ -23,7 +23,6 @@ import {
   AvailableCardMap,
   CardConfig,
   CardConfigMap,
-  ClaimCodeType,
   GiftCard,
   GiftCardSaveParams
 } from './gift-card.types';
