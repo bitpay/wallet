@@ -5,7 +5,7 @@ import {
   transition,
   trigger
 } from '@angular/animations';
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { SocialSharing } from '@ionic-native/social-sharing';
 import { Events, NavController, NavParams } from 'ionic-angular';
 import { take } from 'rxjs/operators';
@@ -21,6 +21,7 @@ import {
   GiftCard
 } from '../../../../providers/gift-card/gift-card.types';
 import { PlatformProvider } from '../../../../providers/platform/platform';
+import { PrintableCardComponent } from './printable-card/printable-card';
 @Component({
   selector: 'card-details-page',
   templateUrl: 'card-details.html',
@@ -43,6 +44,9 @@ import { PlatformProvider } from '../../../../providers/platform/platform';
 export class CardDetailsPage {
   public card: GiftCard;
   public cardConfig: CardConfig;
+  ClaimCodeType = ClaimCodeType;
+
+  @ViewChild(PrintableCardComponent) printableCard: PrintableCardComponent;
 
   constructor(
     private actionSheetProvider: ActionSheetProvider,
@@ -112,6 +116,14 @@ export class CardDetailsPage {
     );
   }
 
+  showBarcode() {
+    return (
+      this.cardConfig &&
+      (this.cardConfig.defaultClaimCodeType === ClaimCodeType.barcode ||
+        this.cardConfig.defaultClaimCodeType === ClaimCodeType.print)
+    );
+  }
+
   async archive() {
     await this.giftCardProvider.archiveCard(this.card);
     this.nav.pop();
@@ -155,7 +167,24 @@ export class CardDetailsPage {
     const redeemUrl = `${this.cardConfig.redeemUrl}${this.card.claimCode}`;
     this.cardConfig.redeemUrl
       ? this.externalLinkProvider.open(redeemUrl)
+      : this.claimManually();
+  }
+
+  claimManually() {
+    this.cardConfig.defaultClaimCodeType === ClaimCodeType.print
+      ? this.print()
       : this.copyCode(this.card.claimCode);
+  }
+
+  print() {
+    this.platformProvider.isCordova ? this.printCordova() : window.print();
+  }
+
+  printCordova() {
+    const image = this.printableCard.getPrintableImage();
+    this.platformProvider.isAndroid
+      ? this.openExternalLink(this.card.claimLink)
+      : this.socialSharing.share(null, 'gift-card', image);
   }
 
   viewRedemptionCode() {

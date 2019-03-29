@@ -31,8 +31,20 @@ card-details-page {
       width: 265px;
     }
 
-    + .actions-wrapper {
+    +.actions-wrapper {
       margin-top: 55px;
+    }
+  }
+
+  @media print {
+    .actions-wrapper {
+      display: none;
+    }
+
+    .card-info {
+      img.card-info__body.barcode-image {
+        filter: invert(0) !important;
+      }
     }
   }
 
@@ -105,7 +117,7 @@ card-details-page {
       margin-bottom: 0 !important;
       margin-top: 8px !important;
 
-      & + div.card-info__body {
+      &+div.card-info__body {
         margin-top: 0;
 
         &.long {

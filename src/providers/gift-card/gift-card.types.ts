@@ -1,7 +1,8 @@
 export enum ClaimCodeType {
   barcode = 'barcode',
   code = 'code',
-  link = 'link'
+  link = 'link',
+  print = 'print'
 }
 
 export interface CommonCardConfig {

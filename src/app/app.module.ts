@@ -129,7 +129,8 @@ export class MyMissingTranslationHandler implements MissingTranslationHandler {
     {
       provide: ErrorHandler,
       useClass: IonicErrorHandler
-    }
+    },
+    FormatCurrencyPipe
   ]
 })
 export class AppModule {}
