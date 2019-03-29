@@ -47,19 +47,19 @@
       </div>
     </label-tip>
 
-    <ion-item class="with-label" *ngIf="btx && btx.feeStr && btx.action != 'received'">
-      <div class="fee-title">
-        {{'Fee' | translate}}
+    <ion-item class="container-tx-info" [ngClass]="{'with-label': btx.action == 'received' && btx.lowFees}" *ngIf="btx && btx.feeStr && btx.action != 'received'">
+      <span>{{'Fee' | translate}}</span>
+      <div class="tx-info">
+        <span class="ellipsis comment">
+          <div>{{btx.feeStr}}</div>
+          <div>
+            {{btx.feeFiatStr}} &middot;
+            <span *ngIf="btx.feeRateStr">{{btx.feeRateStr}}
+              <span translate> of total amount</span>
+            </span>
+          </div>
+        </span>
       </div>
-      <ion-note>
-        <span class="fee-amount">{{btx.feeStr}}</span>
-        <div class="fee-details">
-          {{btx.feeFiatStr}} &middot;
-          <span *ngIf="btx.feeRateStr">{{btx.feeRateStr}}
-            <span translate> of total amount</span>
-          </span>
-        </div>
-      </ion-note>
     </ion-item>
 
     <label-tip *ngIf="btx.action == 'received' && btx.lowFees" type="danger">

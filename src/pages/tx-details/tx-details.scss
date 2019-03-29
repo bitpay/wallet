@@ -42,20 +42,6 @@ page-tx-details {
       }
     }
   }
-  .item-fee {
-    .fee-title {
-      margin-bottom: 5px;
-      color: color($colors, grey);
-    }
-    .fee-amount {
-      font-weight: 400;
-    }
-    .fee-details {
-      font-size: 12.5px;
-      margin-bottom: 5px;
-      color: color($colors, light-grey);
-    }
-  }
   @mixin row-flex {
     display: flex;
     align-items: center;
