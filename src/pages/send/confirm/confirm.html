@@ -107,7 +107,7 @@
       </div>
 
       <div class="wallet" (click)="showMultiplesOutputs = !showMultiplesOutputs">
-        <div class="address-coppied" *ngIf="fromMultiSend" [ngClass]="{'address-width': fromMultiSend}">
+        <div class="address-coppied" *ngIf="fromMultiSend">
           <div class="text-address ellipsis">
             <img src="assets/img/icon-bitcoin-small.svg" width="12">
             <span class="address-divider"></span>

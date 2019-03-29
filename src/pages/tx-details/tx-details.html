@@ -48,7 +48,7 @@
     </label-tip>
 
     <ion-item class="container-tx-info" [ngClass]="{'with-label': btx.action == 'received' && btx.lowFees}" *ngIf="btx && btx.feeStr && btx.action != 'received'">
-      <span>{{'Fee' | translate}}</span>
+      <span>{{'Bitcoin miner fee:' | translate}}</span>
       <div class="tx-info">
         <span class="ellipsis comment">
           <div>{{btx.feeStr}}</div>
