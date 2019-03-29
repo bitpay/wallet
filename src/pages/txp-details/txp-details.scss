@@ -1,12 +1,13 @@
 page-txp-details {
+  $item-border-color: #efefef;
+  $item-lateral-padding: 20px;
+  $item-label-color: #6c6c6e;
   .margin-bottom {
     .fixed-content,
     .scroll-content {
       margin-bottom: 90px;
     }
   }
-  $item-border-color: #efefef;
-  $item-lateral-padding: 20px;
   .header-container {
     padding: 20px 0px 20px 0px;
     .sending-label {
@@ -23,9 +24,7 @@ page-txp-details {
       display: flex;
       font-size: 3.5rem;
       justify-content: space-between;
-      .unit {
-        font-weight: 400;
-      }
+      font-size: 3.5rem;
       img.sending-img {
         width: auto;
         height: 40px;
@@ -39,17 +38,16 @@ page-txp-details {
         display: flex;
       }
     }
-  }
-  .alternative {
-    margin-top: 0.5rem;
-    color: color($colors, light-grey);
+    .alternative {
+      margin-top: 0.5rem;
+      color: color($colors, light-grey);
+    }
   }
 
   .proposal-deletion {
     background-color: color($colors, blank);
     text-align: center;
     .proposal-deletion-help {
-      text-align: left;
       color: color($colors, grey);
       font-size: 12.5px;
     }
@@ -67,13 +65,11 @@ page-txp-details {
   }
 
   .container-to,
-  .container-from {
+  .container-from,
+  .container-txp-info {
     .wallet,
-    .payment-proposal-to {
-      justify-content: space-between;
-      .address-width {
-        width: 92%;
-      }
+    .payment-proposal-to,
+    .txp-info {
       @include row-flex;
       .icon-wallet {
         margin-right: 0.8rem;
@@ -92,25 +88,10 @@ page-txp-details {
         border: 1px solid color($colors, grey);
         border-radius: $icon-border-radius;
       }
+      .comment {
+        color: color($colors, light-grey);
+      }
     }
-  }
-
-  .item-fee {
-    .fee-title {
-      margin-bottom: 5px;
-      color: color($colors, grey);
-    }
-    .fee-amount {
-      font-weight: 400;
-    }
-    .fee-details {
-      font-size: 12.5px;
-      color: color($colors, light-grey);
-    }
-  }
-
-  .item-memo {
-    margin-top: 10px;
   }
 
   .timeline-item {
@@ -187,15 +168,14 @@ page-txp-details {
 
       > .action {
         font-size: 16px;
+        @media (max-width: 330px) {
+          font-size: 14px;
+        }
       }
-
       > .name {
         color: #aaa;
         font-size: 14px;
       }
     }
-  }
-  .proposal-container {
-    border-left: 2px solid #ff9900;
   }
 }

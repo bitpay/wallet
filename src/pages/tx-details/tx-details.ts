@@ -303,4 +303,22 @@ export class TxDetailsPage {
         this.logger.warn(err);
       });
   }
+
+  public openExternalLink(url: string): void {
+    const optIn = true;
+    const title = null;
+    const message = this.translate.instant(
+      'Help and support information is available at the website.'
+    );
+    const okText = this.translate.instant('Open');
+    const cancelText = this.translate.instant('Go Back');
+    this.externalLinkProvider.open(
+      url,
+      optIn,
+      title,
+      message,
+      okText,
+      cancelText
+    );
+  }
 }

@@ -1,8 +1,8 @@
 <ion-item class="container-to" (click)="showMultiplesOutputs = !showMultiplesOutputs">
   <span translate>To</span>
   <div class="wallet">
-    <div class="address-coppied" [ngClass]="{'address-width':tx.hasMultiplesOutputs}">
-      <div class="text-address ellipsis">
+    <div class="address-coppied">
+      <div class="text-address">
         <img *ngIf="tx.hasMultiplesOutputs || (!tx.hasMultiplesOutputs && tx.customData?.service != 'debitcard')" src="assets/img/icon-bitcoin-small.svg" width="12">
         <img *ngIf="!tx.hasMultiplesOutputs && tx.customData?.service == 'debitcard'" src="assets/img/icon-card.svg" class="debit-card">
         <span class="address-divider"></span>
@@ -13,7 +13,7 @@
         <span *ngIf="contactName">{{ contactName }}</span>
       </div>
 
-      <div class="ellipsis" *ngIf="tx.hasMultiplesOutputs">
+      <div *ngIf="tx.hasMultiplesOutputs">
         <span>
           <span translate>Multiple recipients: </span>
           <span>{{tx.recipientCount}}</span>
@@ -31,7 +31,7 @@
 </ion-item>
 
 <ion-list detail-none *ngIf="tx.hasMultiplesOutputs && showMultiplesOutputs">
-  <ion-item class="proposal-container" *ngFor="let output of tx.outputs" copy-to-clipboard="{{output.toAddress ? output.toAddress : output.address}}">
+  <ion-item *ngFor="let output of tx.outputs" copy-to-clipboard="{{output.toAddress ? output.toAddress : output.address}}">
     <div item-left>
       <h2>
         <span translate>To</span>:
@@ -44,10 +44,10 @@
       </p>
     </div>
     <ion-note item-right text-end col-11>
-      <h2 class="output-info ellipsis">{{output.addressToShow ||output.toAddress || output.address}}</h2>
-      <h3 class="output-info ellipsis">{{output.amountStr}}
+      <span class="output-note ellipsis">{{output.addressToShow || output.toAddress || output.address}}</span>
+      <span class="output-note ellipsis">{{output.amountStr}}
         <span *ngIf="output.alternativeAmountStr">({{output.alternativeAmountStr}})</span>
-      </h3>
+      </span>
       <p class="output-note" *ngIf="output.message">
         <span class="ellipsis">{{output.message}}</span>
       </p>
