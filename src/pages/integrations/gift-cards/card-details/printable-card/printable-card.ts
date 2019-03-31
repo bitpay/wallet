@@ -39,6 +39,7 @@ export class PrintableCardComponent {
   }
 
   public getPrintableImage() {
+    this.drawCardImage();
     return this.ctx.canvas.toDataURL();
   }
 
