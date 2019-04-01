@@ -1,12 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
 import { StatusBar } from '@ionic-native/status-bar';
 import { Vibration } from '@ionic-native/vibration';
-import {
-  NavController,
-  NavParams,
-  Platform,
-  ViewController
-} from 'ionic-angular';
+import { NavParams, Platform, ViewController } from 'ionic-angular';
 
 import { Subscription } from 'rxjs';
 
@@ -44,7 +39,6 @@ export class PinModalPage {
     private configProvider: ConfigProvider,
     private logger: Logger,
     private platform: Platform,
-    private navCtrl: NavController,
     private navParams: NavParams,
     private persistenceProvider: PersistenceProvider,
     private statusBar: StatusBar,
@@ -120,8 +114,7 @@ export class PinModalPage {
       clearInterval(this.countDown);
     }
     this.unregister();
-    if (this.action === 'lockSetUp') this.viewCtrl.dismiss(cancelClicked);
-    else this.navCtrl.pop({ animate: true });
+    this.viewCtrl.dismiss(cancelClicked);
   }
 
   public newEntry(value: string): void {
