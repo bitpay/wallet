@@ -213,6 +213,12 @@ export class SendPage extends WalletTabsChild {
       ) {
         const isValid = this.checkCoinAndNetwork(this.search);
         if (isValid) this.redir();
+      } else if (
+        parsedData &&
+        parsedData.type == 'BitPayCard'
+      ) {
+        this.close();
+        this.incomingDataProvider.redir(this.search);
       } else {
         this.invalidAddress = true;
       }
