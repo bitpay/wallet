@@ -311,6 +311,8 @@ export class WalletDetailsPage extends WalletTabsChild {
           err.name.replace(/^bwc.Error/g, '') === 'WALLET_NOT_FOUND'
         ) {
           this.walletNotRegistered = true;
+        } if (err === 'WALLET_NOT_REGISTERED') {
+          this.walletNotRegistered = true;
         } else {
           this.updateStatusError = this.bwcError.msg(
             err,
