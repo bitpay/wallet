@@ -99,10 +99,17 @@ export class CreateWalletPage implements OnInit {
       coin: [null, Validators.required]
     });
     this.createForm.controls['coin'].setValue(this.coin);
-    this.createLabel =
-      this.coin === 'btc'
-        ? this.translate.instant('Create BTC Wallet')
-        : this.translate.instant('Create BCH Wallet');
+    switch (this.coin) {
+      case 'btc':
+      this.createLabel = this.translate.instant('Create BTC Wallet')
+      break;
+      case 'bch':
+      this.createLabel = this.translate.instant('Create BCH Wallet');
+      break;
+      case 'eth':
+      this.createLabel = this.translate.instant('Create ETH Wallet');
+      break;
+    }
 
     this.setTotalCopayers(this.tc);
     this.updateRCSelect(this.tc);
