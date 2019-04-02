@@ -451,7 +451,8 @@ export class HomePage {
     if (this.countDown) clearInterval(this.countDown);
   }
 
-  private paymentTimeControl(expirationTime): void {
+  private paymentTimeControl(expires): void {
+    const expirationTime = Math.floor(new Date(expires).getTime() / 1000);
     const setExpirationTime = (): void => {
       const now = Math.floor(Date.now() / 1000);
       if (now > expirationTime) {
