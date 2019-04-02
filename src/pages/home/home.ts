@@ -46,6 +46,7 @@ export class HomePage {
   public wallets;
   public walletsBtc;
   public walletsBch;
+  public walletsEth;
   public cachedBalanceUpdateOn: string;
   public txpsN: number;
   public serverMessages: any[];
@@ -61,6 +62,7 @@ export class HomePage {
   public showRateCard: boolean;
   public showReorderBtc: boolean;
   public showReorderBch: boolean;
+  public showReorderEth: boolean;
   public showReorderVaultWallets: boolean;
   public showIntegration;
   public hideHomeIntegrations: boolean;
@@ -102,6 +104,7 @@ export class HomePage {
     this.isElectron = this.platformProvider.isElectron;
     this.showReorderBtc = false;
     this.showReorderBch = false;
+    this.showReorderEth = false;
     this.showReorderVaultWallets = false;
     this.zone = new NgZone({ enableLongStackTrace: false });
     this.events.subscribe('Home/reloadStatus', () => {
@@ -357,6 +360,12 @@ export class HomePage {
     this.walletsBch = _.filter(this.wallets, (x: any) => {
       return (
         x.credentials.coin == 'bch' &&
+        !this.profileProvider.vaultHasWallet(x.credentials.walletId)
+      );
+    });
+    this.walletsEth = _.filter(this.wallets, (x: any) => {
+      return (
+        x.credentials.coin == 'eth' &&
         !this.profileProvider.vaultHasWallet(x.credentials.walletId)
       );
     });
@@ -634,6 +643,7 @@ export class HomePage {
     if (
       this.showReorderBtc ||
       this.showReorderBch ||
+      this.showReorderEth ||
       this.showReorderVaultWallets
     )
       return;
@@ -647,6 +657,10 @@ export class HomePage {
 
   public reorderBch(): void {
     this.showReorderBch = !this.showReorderBch;
+  }
+
+  public reorderEth(): void {
+    this.showReorderEth = !this.showReorderEth;
   }
 
   public reorderVault(): void {
@@ -667,6 +681,15 @@ export class HomePage {
     this.walletsBch.splice(indexes.from, 1);
     this.walletsBch.splice(indexes.to, 0, element);
     _.each(this.walletsBch, (wallet, index: number) => {
+      this.profileProvider.setWalletOrder(wallet.id, index);
+    });
+  }
+
+  public reorderWalletsEth(indexes): void {
+    const element = this.walletsEth[indexes.from];
+    this.walletsEth.splice(indexes.from, 1);
+    this.walletsEth.splice(indexes.to, 0, element);
+    _.each(this.walletsEth, (wallet, index: number) => {
       this.profileProvider.setWalletOrder(wallet.id, index);
     });
   }
