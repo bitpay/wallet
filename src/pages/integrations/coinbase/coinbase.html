@@ -8,7 +8,7 @@
   <div *ngIf="!accessToken" class="center-header">
     <img margin src="assets/img/coinbase/coinbase-logo.png" width="200">
     <div margin-bottom padding>
-      <div *ngIf="!showOauthForm">Coinbase's exchange service is available in 33 countries, and can take 3-5 days to buy or sell bitcoin.</div>
+      <div *ngIf="!showOauthForm">Coinbase's exchange service is available in US, and can take 3-5 days to buy or sell bitcoin.</div>
       <div *ngIf="showOauthForm">If you have trouble, contact Coinbase support for direct assistance.</div>
     </div>
     <button  *ngIf="!showOauthForm" ion-button outline class="button-standard" (click)="openAuthenticateWindow()">Connect Coinbase Account</button>
