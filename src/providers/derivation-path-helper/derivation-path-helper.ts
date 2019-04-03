@@ -4,9 +4,11 @@ import { Injectable } from '@angular/core';
 export class DerivationPathHelperProvider {
   public default: string;
   public defaultTestnet: string;
+  public ethDefault: string;
 
   public constructor() {
     this.default = "m/44'/0'/0'";
+    this.ethDefault = "m/44/60'/0'";
     this.defaultTestnet = "m/44'/1'/0'";
   }
 

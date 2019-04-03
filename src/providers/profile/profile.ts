@@ -70,7 +70,7 @@ export class ProfileProvider {
       },
       {
         coin: Coin.ETH,
-        derivationPath: this.derivationPathHelperProvider.default
+        derivationPath: this.derivationPathHelperProvider.ethDefault
       },
       {
         coin: Coin.BTC,
