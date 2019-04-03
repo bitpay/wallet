@@ -22,7 +22,8 @@ import { TxFormatProvider } from '../tx-format/tx-format';
 
 export enum Coin {
   BTC = 'btc',
-  BCH = 'bch'
+  BCH = 'bch',
+  ETH = 'eth'
 }
 
 export interface WalletOptions {

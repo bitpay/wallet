@@ -69,11 +69,19 @@ export class ProfileProvider {
         derivationPath: this.derivationPathHelperProvider.default
       },
       {
+        coin: Coin.ETH,
+        derivationPath: this.derivationPathHelperProvider.default
+      },
+      {
         coin: Coin.BTC,
         derivationPath: this.derivationPathHelperProvider.defaultTestnet
       },
       {
         coin: Coin.BCH,
+        derivationPath: this.derivationPathHelperProvider.defaultTestnet
+      },
+      {
+        coin: Coin.ETH,
         derivationPath: this.derivationPathHelperProvider.defaultTestnet
       }
     ];
