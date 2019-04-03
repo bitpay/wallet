@@ -36,6 +36,18 @@ card-details-page {
     }
   }
 
+  @media print {
+    .actions-wrapper {
+      display: none;
+    }
+
+    .card-info {
+      img.card-info__body.barcode-image {
+        filter: invert(0) !important;
+      }
+    }
+  }
+
   .card-info {
     background-color: #f7f7f7;
     border: 1px solid #e7e7e7;
