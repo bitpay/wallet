@@ -264,7 +264,6 @@ export class ImportWalletPage {
       this.pushNotificationsProvider.updateSubscription(wallet);
     });
 
-    this.events.publish('status:updated');
     if (this.importForm.value.importVault) {
       // using setRoot(TabsPage) as workaround when comming from scanner
       this.app.getRootNavs()[0].setRoot(TabsPage);

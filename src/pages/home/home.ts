@@ -193,7 +193,7 @@ export class HomePage {
         this.finishIncomingDataMenuEventHandler
       );
       this.events.unsubscribe('bwsEvent', this.bwsEventHandler);
-      this.events.unsubscribe('status:updated', this.statusUpdateEventHandler);
+      this.events.unsubscribe('Local/WalletListChange', this.statusUpdateEventHandler);
       this.events.unsubscribe('Local/TxAction', this.localTxActionEventHandler);
     });
   }
@@ -226,7 +226,7 @@ export class HomePage {
 
   private subscribeStatusEvents() {
     // Create, Join, Import and Delete -> Get Wallets -> Update Status for All Wallets -> Update txps
-    this.events.subscribe('status:updated', this.statusUpdateEventHandler);
+    this.events.subscribe('Local/WalletListChange', this.statusUpdateEventHandler);
   }
 
   private statusUpdateEventHandler: any = () => {
