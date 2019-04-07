@@ -240,7 +240,6 @@ export class CreateWalletPage implements OnInit {
     promise
       .then(wallet => {
         this.onGoingProcessProvider.clear();
-        this.events.publish('status:updated');
         this.walletProvider.updateRemotePreferences(wallet);
         this.pushNotificationsProvider.updateSubscription(wallet);
         this.setBackupFlagIfNeeded(wallet.credentials.walletId);

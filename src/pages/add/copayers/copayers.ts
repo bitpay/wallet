@@ -149,7 +149,6 @@ export class CopayersPage {
     this.profileProvider
       .deleteWalletClient(this.wallet)
       .then(() => {
-        this.events.publish('status:updated');
         this.onGoingProcessProvider.clear();
         this.pushNotificationsProvider.unsubscribe(this.wallet);
         this.viewCtrl.dismiss();

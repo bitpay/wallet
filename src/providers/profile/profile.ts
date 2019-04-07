@@ -219,7 +219,7 @@ export class ProfileProvider {
     wallet.on('walletCompleted', () => {
       this.logger.debug('Wallet completed');
       this.updateCredentials(JSON.parse(wallet.export()));
-      this.events.publish('status:updated');
+      this.events.publish('Local/WalletListChange');
     });
 
     wallet.initialize(
@@ -516,6 +516,7 @@ export class ProfileProvider {
         bwsurl: opts.bwsurl
       })
         .then(() => {
+          this.events.publish('Local/WalletListChange');
           this.setMetaData(walletClient, addressBook)
             .then(() => {
               return resolve(walletClient);
@@ -678,10 +679,20 @@ export class ProfileProvider {
     return this.askToEncryptWallets(walletsArray).then(() => {
       this.onGoingProcessProvider.resume();
       const promises = [];
+
+      // Will publish once all wallets are binded.
+      opts.skipEvent = true;
+
       walletsArray.forEach(wallet => {
         promises.push(this.addAndBindWalletClient(_.clone(wallet), opts));
       });
-      return Promise.all(promises);
+      Promise.all(promises).then(() => {
+        this.events.publish('Local/WalletListChange');
+        return Promise.resolve();
+      })
+        .catch( () => {
+        return Promise.reject('failed to bind wallets');
+      });;
     });
   }
 
@@ -720,7 +731,12 @@ export class ProfileProvider {
 
     this.saveBwsUrl(walletId, opts);
 
+
     return this.persistenceProvider.storeProfile(this.profile).then(() => {
+
+      if (!opts.skipEvent)
+        this.events.publish('Local/WalletListChange');
+
       return Promise.resolve(wallet);
     });
   }
@@ -1279,6 +1295,7 @@ export class ProfileProvider {
                 this.addAndBindNewSeedWalletClient(walletClient, {
                   bwsurl: opts.bwsurl
                 }).then(wallet => {
+                  this.events.publish('Local/WalletListChange');
                   return resolve(wallet);
                 });
               }
@@ -1300,12 +1317,11 @@ export class ProfileProvider {
     const walletId = wallet.credentials.walletId;
 
     wallet.removeAllListeners();
-
     this.profile.deleteWallet(walletId);
 
     delete this.wallet[walletId];
-
     this.persistenceProvider.removeAllWalletData(walletId);
+    this.events.publish('Local/WalletListChange');
 
     return this.persistenceProvider.storeProfile(this.profile);
   }
@@ -1316,6 +1332,7 @@ export class ProfileProvider {
       promises.push(this.deleteWalletClient(wallet));
     });
     return Promise.all(promises).then(() => {
+      this.events.publish('Local/WalletListChange');
       return this.persistenceProvider.deleteVault();
     });
   }

@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { Events, NavController, NavParams } from 'ionic-angular';
+import { NavController, NavParams } from 'ionic-angular';
 import { Logger } from '../../../../../providers/logger/logger';
 
 // providers
@@ -26,7 +26,6 @@ export class WalletDeletePage extends WalletTabsChild {
     private onGoingProcessProvider: OnGoingProcessProvider,
     private pushNotificationsProvider: PushNotificationsProvider,
     private logger: Logger,
-    private events: Events,
     private translate: TranslateService,
     public walletTabsProvider: WalletTabsProvider
   ) {
@@ -56,7 +55,6 @@ export class WalletDeletePage extends WalletTabsChild {
     this.profileProvider
       .deleteWalletClient(this.wallet)
       .then(() => {
-        this.events.publish('status:updated');
         this.onGoingProcessProvider.clear();
         this.pushNotificationsProvider.unsubscribe(this.wallet);
         this.close();

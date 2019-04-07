@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { Events, NavController } from 'ionic-angular';
+import { NavController } from 'ionic-angular';
 import { Logger } from '../../../providers/logger/logger';
 // providers
 import { OnGoingProcessProvider } from '../../../providers/on-going-process/on-going-process';
@@ -22,7 +22,6 @@ export class VaultDeletePage {
     private onGoingProcessProvider: OnGoingProcessProvider,
     private pushNotificationsProvider: PushNotificationsProvider,
     private logger: Logger,
-    private events: Events,
     private translate: TranslateService
   ) {}
 
@@ -45,7 +44,6 @@ export class VaultDeletePage {
     this.profileProvider
       .deleteVaultWallets(vaultWallets)
       .then(() => {
-        this.events.publish('status:updated');
         vaultWallets.forEach(wallet => {
           this.pushNotificationsProvider.unsubscribe(wallet);
         });
