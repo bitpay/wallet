@@ -109,6 +109,7 @@ export class CopayersPage {
     this.viewCtrl.dismiss();
   }
 
+  // TODO REMOVE!!!
   private updateWallet(): void {
     this.logger.info('Updating wallet:' + this.wallet.name);
     this.walletProvider

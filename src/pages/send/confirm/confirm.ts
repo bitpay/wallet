@@ -281,7 +281,9 @@ export class ConfirmPage extends WalletTabsChild {
       if (!this.wallets || !this.wallets.length) {
         return reject(this.translate.instant('No wallets available'));
       }
+      this.logger.debug('UPDATE IN ALL IN CONFIRM ');
 
+      // TODO REMOVE
       _.each(this.wallets, wallet => {
         this.walletProvider
           .getStatus(wallet, {})

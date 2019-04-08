@@ -34,10 +34,19 @@ import { ProfileProvider } from '../../providers/profile/profile';
 import { Coin, WalletProvider } from '../../providers/wallet/wallet';
 import { SettingsPage } from '../settings/settings';
 
+interface UpdateWalletOptsI {
+    walletId: string,
+    force?: boolean,
+};
+
+
+
+
 @Component({
   selector: 'page-home',
   templateUrl: 'home.html'
 })
+
 export class HomePage {
   @ViewChild('showCard')
   showCard;
@@ -69,7 +78,6 @@ export class HomePage {
   public accessDenied: boolean;
 
   private isElectron: boolean;
-  private updatingWalletId: object;
   private zone;
   private countDown;
   private onResumeSubscription: Subscription;
@@ -97,7 +105,6 @@ export class HomePage {
     private incomingDataProvider: IncomingDataProvider
   ) {
     this.slideDown = false;
-    this.updatingWalletId = {};
     this.cachedBalanceUpdateOn = '';
     this.isElectron = this.platformProvider.isElectron;
     this.showReorderBtc = false;
@@ -110,17 +117,19 @@ export class HomePage {
     });
   }
 
+
   ionViewWillEnter() {
     this._willEnter();
   }
 
   ionViewDidEnter() {
+console.log('[home.ts.130:ionViewDidEnter:]'); // TODO
     this._didEnter();
   }
 
   private _willEnter() {
     // Update list of wallets, status and TXPs
-    this.setWallets();
+    this.setWallets(false);
 
     // Update Wallet on Focus
     if (this.isElectron) {
@@ -165,37 +174,45 @@ export class HomePage {
 
   ionViewDidLoad() {
     this.logger.info('Loaded: HomePage');
-
     this.checkFeedbackInfo();
 
     this.checkEmailLawCompliance();
 
-    this.subscribeIncomingDataMenuEvent();
+    const subscribeEvents = () => {
+      // Scanner
+      this.events.subscribe( 'finishIncomingDataMenuEvent', this.finishIncomingDataMenuEventHandler);
 
-    this.subscribeBwsEvents();
+      // BWS Events: Update Status per Wallet -> Update txps
+      // NewBlock, NewCopayer, NewAddress, NewTxProposal, TxProposalAcceptedBy, TxProposalRejectedBy, txProposalFinallyRejected,
+      // txProposalFinallyAccepted, TxProposalRemoved, NewIncomingTx, NewOutgoingTx
+      this.events.subscribe('bwsEvent', this.bwsEventHandler.bind(this));
 
-    this.subscribeStatusEvents();
+      // Create, Join, Import and Delete -> Get Wallets -> Update Status for All Wallets -> Update txps
+      this.events.subscribe('Local/WalletListChange', this.setWallets.bind(this, false));
 
-    this.subscribeLocalTxAction();
+      // Reject, Remove, OnlyPublish and SignAndBroadcast -> Update Status per Wallet -> Update txps
+      this.events.subscribe('Local/TxAction', this.updateWallet.bind(this));
 
+
+      // Wallet is focused on some inner view, therefore, we refresh it.
+      this.events.subscribe('Local/WalletFocus', this.updateWallet.bind(this));
+    }
+
+    subscribeEvents();
     this.onResumeSubscription = this.plt.resume.subscribe(() => {
       this.setWallets();
       this.checkClipboard();
-      this.subscribeIncomingDataMenuEvent();
-      this.subscribeBwsEvents();
-      this.subscribeStatusEvents();
-      this.subscribeLocalTxAction();
+      subscribeEvents();
     });
 
     this.onPauseSubscription = this.plt.pause.subscribe(() => {
-      this.events.unsubscribe(
-        'finishIncomingDataMenuEvent',
-        this.finishIncomingDataMenuEventHandler
-      );
-      this.events.unsubscribe('bwsEvent', this.bwsEventHandler);
-      this.events.unsubscribe('Local/WalletListChange', this.statusUpdateEventHandler);
-      this.events.unsubscribe('Local/TxAction', this.localTxActionEventHandler);
+      this.events.unsubscribe( 'finishIncomingDataMenuEvent', this.finishIncomingDataMenuEventHandler.bind(this));
+      this.events.unsubscribe('bwsEvent', this.bwsEventHandler.bind(this));
+      this.events.unsubscribe('Local/WalletListChange', this.setWallets.bind(this, false));
+      this.events.unsubscribe('Local/TxAction', this.updateWallet.bind(this));
+      this.events.unsubscribe('Local/WalletFocus', this.updateWallet.bind(this));
     });
+    this.setWallets(true);
   }
 
   ngOnDestroy() {
@@ -212,42 +229,14 @@ export class HomePage {
     this.validDataFromClipboard = null;
     this.slideDown = false;
   }
-
-  private subscribeBwsEvents() {
-    // BWS Events: Update Status per Wallet -> Update txps
-    // NewBlock, NewCopayer, NewAddress, NewTxProposal, TxProposalAcceptedBy, TxProposalRejectedBy, txProposalFinallyRejected,
-    // txProposalFinallyAccepted, TxProposalRemoved, NewIncomingTx, NewOutgoingTx
-    this.events.subscribe('bwsEvent', this.bwsEventHandler);
-  }
-
   private bwsEventHandler: any = (walletId: string) => {
     this.updateWallet({ walletId });
   };
 
-  private subscribeStatusEvents() {
-    // Create, Join, Import and Delete -> Get Wallets -> Update Status for All Wallets -> Update txps
-    this.events.subscribe('Local/WalletListChange', this.statusUpdateEventHandler);
-  }
 
-  private statusUpdateEventHandler: any = () => {
-    this.setWallets();
-  };
 
-  private subscribeLocalTxAction() {
-    // Reject, Remove, OnlyPublish and SignAndBroadcast -> Update Status per Wallet -> Update txps
-    this.events.subscribe('Local/TxAction', this.localTxActionEventHandler);
-  }
 
-  private localTxActionEventHandler: any = opts => {
-    this.updateWallet(opts);
-  };
 
-  private subscribeIncomingDataMenuEvent() {
-    this.events.subscribe(
-      'finishIncomingDataMenuEvent',
-      this.finishIncomingDataMenuEventHandler
-    );
-  }
 
   private finishIncomingDataMenuEventHandler: any = data => {
     switch (data.redirTo) {
@@ -325,19 +314,10 @@ export class HomePage {
     }, 2000);
   }
 
-  private startUpdatingWalletId(walletId: string) {
-    this.updatingWalletId[walletId] = true;
-  }
-
-  private stopUpdatingWalletId(walletId: string) {
-    setTimeout(() => {
-      this.updatingWalletId[walletId] = false;
-    }, 10000);
-  }
 
   private debounceSetWallets = _.debounce(
     async () => {
-      this.setWallets();
+      this.setWallets(true);
     },
     5000,
     {
@@ -345,7 +325,7 @@ export class HomePage {
     }
   );
 
-  private setWallets(): void {
+  private setWallets(shouldUpdate:boolean = true): void {
     this.wallets = this.profileProvider.getWallets();
     this.vaultWallets = this.profileProvider.getVaultWallets();
     this.walletsBtc = _.filter(this.wallets, (x: any) => {
@@ -361,7 +341,7 @@ export class HomePage {
       );
     });
     // Avoid heavy tasks that can slow down the unlocking experience
-    if (!this.appProvider.isLockModalOpen) {
+    if (!this.appProvider.isLockModalOpen && shouldUpdate) {
       this.updateAllWallets();
     }
   }
@@ -482,9 +462,13 @@ export class HomePage {
     this.showRateCard = false;
   }
 
-  private updateWallet(opts): void {
-    if (this.updatingWalletId[opts.walletId]) return;
-    this.startUpdatingWalletId(opts.walletId);
+  /* This is the only .getStatus call in Copay */
+  private updateWallet(opts: UpdateWalletOptsI): void {
+    if (!opts.walletId) {
+      this.logger.error('Error no walletId in update Wallet');
+      return;
+    }
+    this.logger.debug('updateWallet for: ' + opts.walletId);
     const wallet = this.profileProvider.getWallet(opts.walletId);
     this.walletProvider
       .getStatus(wallet, opts)
@@ -498,12 +482,17 @@ export class HomePage {
 
         // Update txps
         this.updateTxps();
-
-        this.stopUpdatingWalletId(opts.walletId);
+        this.events.publish('Local/WalletUpdate', {walletId: opts.walletId});
       })
       .catch(err => {
-        this.logger.error(err);
-        this.stopUpdatingWalletId(opts.walletId);
+        if (err == 'INPROGRESS') {
+          //
+        } else {
+          wallet.error = err;
+          wallet.status = null;
+          this.logger.error(err);
+        }
+
       });
   }
 
@@ -525,6 +514,7 @@ export class HomePage {
 
     if (_.isEmpty(this.wallets)) return;
 
+    this.logger.debug('Updating ALL wallets');
     const pr = wallet => {
       return this.walletProvider
         .getStatus(wallet, {})

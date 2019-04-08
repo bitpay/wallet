@@ -179,7 +179,7 @@ export class ProfileProvider {
     wallet.m = wallet.credentials.m;
     wallet.n = wallet.credentials.n;
     wallet.coin = wallet.credentials.coin;
-    wallet.status = {};
+    wallet.cachedStatus = {};
 
     this.updateWalletSettings(wallet);
     this.wallet[walletId] = wallet;
@@ -359,6 +359,7 @@ export class ProfileProvider {
     });
   }
 
+  // TODO this is repeated in wallet.invalidateCache
   private newBwsEvent(n, wallet): void {
     if (wallet.cachedStatus) wallet.cachedStatus.isValid = false;
 

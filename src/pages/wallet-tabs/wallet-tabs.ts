@@ -73,19 +73,17 @@ export class WalletTabsPage {
 
   private subscribeEvents(): void {
     this.events.subscribe('bwsEvent', this.bwsEventHandler);
-    this.events.subscribe('Local/TxAction', this.localTxActionHandler);
   }
 
   private unsubscribeEvents(): void {
     this.events.unsubscribe('bwsEvent', this.bwsEventHandler);
-    this.events.unsubscribe('Local/TxAction', this.localTxActionHandler);
   }
 
   private updateDesktopOnFocus() {
     const { remote } = (window as any).require('electron');
     const win = remote.getCurrentWindow();
     win.on('focus', () => {
-      this.events.publish('Wallet/updateAll');
+      this.events.publish('Local/WalletFocus', {walletId: this.walletId});
       this.events.publish('Wallet/setAddress', false);
     });
   }
@@ -105,7 +103,6 @@ export class WalletTabsPage {
   }
 
   private unsubscribeChildPageEvents() {
-    this.events.unsubscribe('Wallet/updateAll');
     this.events.unsubscribe('update:address');
     this.events.unsubscribe('Wallet/setAddress');
     this.events.unsubscribe('Wallet/disableHardwareKeyboard');
@@ -115,13 +112,6 @@ export class WalletTabsPage {
     // Update current address
     if (this.walletId == walletId && type == 'NewIncomingTx')
       this.events.publish('Wallet/setAddress', true);
-    // Update wallet details
-    if (this.walletId == walletId && type != 'NewAddress')
-      this.events.publish('Wallet/updateAll');
   };
 
-  private localTxActionHandler: any = opts => {
-    if (this.walletId == opts.walletId)
-      this.events.publish('Wallet/updateAll', opts);
-  };
 }
