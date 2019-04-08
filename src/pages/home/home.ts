@@ -123,7 +123,6 @@ export class HomePage {
   }
 
   ionViewDidEnter() {
-console.log('[home.ts.130:ionViewDidEnter:]'); // TODO
     this._didEnter();
   }
 
