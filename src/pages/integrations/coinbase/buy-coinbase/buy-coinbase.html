@@ -4,11 +4,11 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content>
+<ion-content [ngClass]="{'no-margin-bottom': hideSlideButton}" no-bounce>
   <ion-list *ngIf="buyRequestInfo">
     <ion-item>
-      <div class="sending-label">
-        <img class="sending-img" src="assets/img/icon-tx-sent-outline.svg">
+      <div class="buying-label">
+        <img class="buying-img" src="assets/img/buy-bitcoin.svg">
         <span>Buying</span>
       </div>
       <div class="amount-label">
@@ -51,6 +51,12 @@
           {{buyRequestInfo.subtotal.amount}} {{buyRequestInfo.subtotal.currency}}
         </ion-note>
       </ion-item>
+      <ion-item *ngIf="buyRequestInfo.fee">
+        <span>Fee</span>
+        <ion-note item-end>
+          {{buyRequestInfo.fee.amount}} {{buyRequestInfo.fee.currency}}
+        </ion-note>
+      </ion-item>
       <ion-item *ngFor="let fee of buyRequestInfo.fees">
         <span class="capitalized">{{fee.type}} fee</span>
         <ion-note item-end>
@@ -63,6 +69,7 @@
           {{buyRequestInfo.total.amount}} {{buyRequestInfo.total.currency}}
         </ion-note>
       </ion-item>
+      <ion-item-divider></ion-item-divider>
     </ion-item-group>
   </ion-list>
 </ion-content>
