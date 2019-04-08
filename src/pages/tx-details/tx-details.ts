@@ -232,14 +232,14 @@ export class TxDetailsPage {
       });
   }
 
-  public async saveMemoInfo(memo: string): Promise<void> {
-    this.logger.info('Saving memo');
+  public async saveMemoInfo(): Promise<void> {
+    this.logger.info('Saving memo: ', this.txMemo);
     this.btx.note = {
-      body: memo
+      body: this.txMemo
     };
     let args = {
       txid: this.btx.txid,
-      body: memo
+      body: this.txMemo
     };
 
     await this.walletProvider

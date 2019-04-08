@@ -176,9 +176,13 @@
       </div>
     </button>
 
-    <editable-item (focus)="hideSlideButton = $event" (valChange)="tx.description = $event" [value]="tx.description" [itemPlaceholder]="'Enter a transaction memo' | translate">
-      <span item-label translate>Memo</span>
-    </editable-item>
+    <ion-item-divider></ion-item-divider>
+    <ion-item>
+      <ion-label stacked>{{'Memo' | translate}}</ion-label>
+      <ion-textarea placeholder="{{'Enter a transaction memo' | translate}}"
+        [(ngModel)]="tx.description" name="tx.description" autocomplete="off" autocorrect="off"></ion-textarea>
+    </ion-item>
+    <ion-item-divider></ion-item-divider>
 
   </ion-list>
 
