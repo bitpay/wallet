@@ -130,7 +130,6 @@ export class WalletProvider {
   }
 
   public getStatus(wallet, opts): Promise<any> {
-console.log('###################### [wallet.ts.369:opts:]',opts); // TODO
     return new Promise((resolve, reject) => {
       opts = opts || {};
       const walletId = wallet.id;
@@ -180,7 +179,6 @@ console.log('###################### [wallet.ts.369:opts:]',opts); // TODO
       const get = (): Promise<any> => {
         return new Promise((resolve, reject) => {
           wallet.getStatus({}, (err, ret) => {
-console.log('[wallet.ts.182:ret:]',ret); // TODO
             if (err) {
               if (err instanceof this.errors.NOT_AUTHORIZED) {
                 return reject('WALLET_NOT_REGISTERED');
@@ -233,7 +231,6 @@ console.log('[wallet.ts.182:ret:]',ret); // TODO
           cache.totalBalanceSat
         );
 
-console.log('[wallet.ts.235] new', cache.totalBalanceStr); // TODO
         cache.lockedBalanceStr = this.txFormatProvider.formatAmountStr(
           wallet.coin,
           cache.lockedBalanceSat
@@ -350,7 +347,6 @@ console.log('[wallet.ts.235] new', cache.totalBalanceStr); // TODO
       const hasChange = (s1,s2): boolean => {
         let diff = false;
         _.each(s1, (v,k) => {
-console.log('[wallet.ts.348]', k, v, s2[k]); // TODO
           // we ignore 0.
           if (s2[k] && s2[k] != v) 
             diff = true;
@@ -378,20 +374,16 @@ console.log('[wallet.ts.348]', k, v, s2[k]); // TODO
 
           get()
             .then(status => {
-console.log('[wallet.ts.378:status:]',status); // TODO
-console.log('[wallet.ts.374:untilItChanges:]',opts.untilItChanges); // TODO
               if (
                 opts.untilItChanges &&
                 !hasChange(opts.untilItChanges, status.balance) &&
                 tries < this.WALLET_STATUS_MAX_TRIES
               ) {
-
-console.log('[wallet.ts.375] RETRY!'); // TODO
+                this.logger.debug(
+                  'Retrying update... ' + walletId + ' Try:' + tries + ' untilChange:' + opts.untilItChanges
+                );
                 return setTimeout(() => {
-                  this.logger.debug(
-                    'Retrying update... ' + walletId + ' Try:' + tries
-                  );
-                  return _getStatus(++tries);
+                 return _getStatus(++tries);
                 }, this.WALLET_STATUS_DELAY_BETWEEN_TRIES * tries);
               } else {
                 if ( tries > 0 ) {
@@ -440,9 +432,6 @@ console.log('[wallet.ts.375] RETRY!'); // TODO
         );
         return reject('INPROGRESS');
       }
-
-
-console.log('ASI STABA[wallet.ts.423:WalletProvider:]',WalletProvider.statusUpdateOnProgress); // TODO
 
       WalletProvider.statusUpdateOnProgress[wallet.id] = true;
       _getStatus()
