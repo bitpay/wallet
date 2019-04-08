@@ -289,7 +289,7 @@ export class ConfirmPage extends WalletTabsChild {
           .getStatus(wallet, {})
           .then(status => {
             walletsUpdated++;
-            wallet.status = status;
+            wallet.cachedStatus = status;
 
             if (!status.availableBalanceSat) {
               this.logger.debug('No balance available in: ' + wallet.name);

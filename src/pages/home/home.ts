@@ -473,11 +473,11 @@ console.log('[home.ts.130:ionViewDidEnter:]'); // TODO
     this.walletProvider
       .getStatus(wallet, opts)
       .then(status => {
-        wallet.status = status;
+        wallet.cachedStatus = status;
         wallet.error = null;
         this.profileProvider.setLastKnownBalance(
           wallet.id,
-          wallet.status.availableBalanceStr
+          wallet.cachedStatus.availableBalanceStr
         );
 
         // Update txps
@@ -489,7 +489,7 @@ console.log('[home.ts.130:ionViewDidEnter:]'); // TODO
           //
         } else {
           wallet.error = err;
-          wallet.status = null;
+          wallet.cachedStatus = null;
           this.logger.error(err);
         }
 
@@ -519,7 +519,7 @@ console.log('[home.ts.130:ionViewDidEnter:]'); // TODO
       return this.walletProvider
         .getStatus(wallet, {})
         .then(async status => {
-          wallet.status = status;
+          wallet.cachedStatus = status;
           wallet.error = null;
 
           if (!foundMessage && !_.isEmpty(status.serverMessages)) {
@@ -536,7 +536,7 @@ console.log('[home.ts.130:ionViewDidEnter:]'); // TODO
 
           this.profileProvider.setLastKnownBalance(
             wallet.id,
-            wallet.status.availableBalanceStr
+            wallet.cachedStatus.availableBalanceStr
           );
           return Promise.resolve();
         })

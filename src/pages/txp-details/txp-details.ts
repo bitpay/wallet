@@ -91,7 +91,7 @@ export class TxpDetailsPage {
     this.currentSpendUnconfirmed = config.spendUnconfirmed;
     this.loading = false;
     this.isCordova = this.platformProvider.isCordova;
-    this.copayers = this.wallet.status.wallet.copayers;
+    this.copayers = this.wallet.cachedStatus.wallet.copayers;
     this.copayerId = this.wallet.credentials.copayerId;
     this.isShared = this.wallet.credentials.n > 1;
     this.canSign = this.wallet.canSign() || this.wallet.isPrivKeyExternal();

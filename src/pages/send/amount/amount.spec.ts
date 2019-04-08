@@ -38,7 +38,7 @@ describe('AmountPage', () => {
       instance.ionViewDidLoad();
       instance.sendMax();
       expect(instance.expression).toBe(
-        instance.wallet.status.availableBalanceSat / 1e8
+        instance.wallet.cachedStatus.availableBalanceSat / 1e8
       );
     });
 

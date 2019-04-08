@@ -326,7 +326,7 @@ export class AmountPage extends WalletTabsChild {
       return this.finish();
     }
     const maxAmount = this.txFormatProvider.satToUnit(
-      this.wallet.status.availableBalanceSat
+      this.wallet.cachedStatus.availableBalanceSat
     );
     this.zone.run(() => {
       this.expression = this.availableUnits[this.unitIndex].isFiat

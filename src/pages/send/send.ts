@@ -83,7 +83,7 @@ export class SendPage extends WalletTabsChild {
 
   public shouldShowZeroState() {
     return (
-      this.wallet && this.wallet.status && !this.wallet.status.totalBalanceSat
+      this.wallet && this.wallet.cachedStatus && !this.wallet.cachedStatus.totalBalanceSat
     );
   }
 

@@ -115,9 +115,9 @@ export class CopayersPage {
     this.walletProvider
       .getStatus(this.wallet, {})
       .then(status => {
-        this.wallet.status = status;
-        this.copayers = this.wallet.status.wallet.copayers;
-        this.secret = this.wallet.status.wallet.secret;
+        this.wallet.cachedStatus = status;
+        this.copayers = this.wallet.cachedStatus.wallet.copayers;
+        this.secret = this.wallet.cachedStatus.wallet.secret;
         if (status.wallet.status == 'complete') {
           this.wallet.openWallet(err => {
             if (err) this.logger.error(err);
