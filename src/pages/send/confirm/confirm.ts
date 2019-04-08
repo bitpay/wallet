@@ -228,6 +228,16 @@ export class ConfirmPage extends WalletTabsChild {
       .catch(err => {
         this.showErrorInfoSheet(err, null, true);
       });
+
+    if (this.isCordova) {
+      window.addEventListener('keyboardWillShow', () => {
+        this.hideSlideButton = true;
+      });
+
+      window.addEventListener('keyboardWillHide', () => {
+        this.hideSlideButton = false;
+      });
+    }
   }
 
   ionViewDidLoad() {
@@ -798,18 +808,6 @@ export class ConfirmPage extends WalletTabsChild {
 
   public onWalletSelect(wallet): void {
     this.setWallet(wallet);
-  }
-
-  public showDescriptionPopup(tx) {
-    const message = this.translate.instant('Add Memo');
-    const opts = {
-      defaultText: tx.description
-    };
-    this.popupProvider.ionicPrompt(null, message, opts).then((res: string) => {
-      if (res) {
-        tx.description = res;
-      }
-    });
   }
 
   public approve(tx, wallet): Promise<void> {
