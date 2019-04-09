@@ -1,12 +1,11 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
-import { App, Events, NavController, NavParams } from 'ionic-angular';
+import { Events, NavController, NavParams } from 'ionic-angular';
 import { Logger } from '../../../providers/logger/logger';
 
 // Pages
 import { ScanPage } from '../../scan/scan';
-import { TabsPage } from '../../tabs/tabs';
 
 // Providers
 import { ActionSheetProvider } from '../../../providers/action-sheet/action-sheet';
@@ -52,7 +51,6 @@ export class ImportWalletPage {
   public createLabel: string;
 
   constructor(
-    private app: App,
     private navCtrl: NavController,
     private navParams: NavParams,
     private form: FormBuilder,
@@ -268,19 +266,7 @@ export class ImportWalletPage {
       this.profileProvider.setBackupFlag(wallet.credentials.walletId);
       this.pushNotificationsProvider.updateSubscription(wallet);
     });
-
-    if (this.importForm.value.importVault) {
-      // using setRoot(TabsPage) as workaround when comming from scanner
-      this.app.getRootNavs()[0].setRoot(TabsPage);
-    } else {
-      // using setRoot(TabsPage) as workaround when comming from scanner
-      this.app
-        .getRootNavs()[0]
-        .setRoot(TabsPage)
-        .then(() => {
-          this.events.publish('OpenWallet', wallets[0]);
-        });
-    }
+    this.navCtrl.popToRoot();
   }
 
   private importExtendedPrivateKey(xPrivKey, opts) {
@@ -467,7 +453,8 @@ export class ImportWalletPage {
         const opts: Partial<WalletOptions> = {};
         opts.bwsurl = this.importForm.value.bwsURL;
         opts.coin = this.importForm.value.coin;
-        this.importBlob(this.reader.result, opts);
+        const reader: string = this.reader.result.toString();
+        this.importBlob(reader, opts);
       }
     };
   }
