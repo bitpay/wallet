@@ -49,7 +49,7 @@ export class ImportWalletPage {
   public okText: string;
   public cancelText: string;
   public coin: string;
-  public hideConfirm: boolean;
+  public createLabel: string;
 
   constructor(
     private app: App,
@@ -103,6 +103,10 @@ export class ImportWalletPage {
     });
     this.importForm.controls['coin'].setValue(this.coin);
     this.events.subscribe('Local/BackupScan', this.updateWordsHandler);
+    this.createLabel =
+      this.coin === 'btc'
+        ? this.translate.instant('BTC Wallet')
+        : this.translate.instant('BCH Wallet');
 
     this.persistenceProvider.getVault().then(vault => {
       if (vault) this.importForm.controls['importVault'].disable();
@@ -112,15 +116,6 @@ export class ImportWalletPage {
   ionViewWillEnter() {
     if (this.code) {
       this.processWalletInfo(this.code);
-    }
-    if (this.isCordova) {
-      window.addEventListener('keyboardWillShow', () => {
-        this.hideConfirm = true;
-      });
-
-      window.addEventListener('keyboardWillHide', () => {
-        this.hideConfirm = false;
-      });
     }
   }
 

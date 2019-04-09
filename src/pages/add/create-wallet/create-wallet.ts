@@ -10,7 +10,6 @@ import { ConfigProvider } from '../../../providers/config/config';
 import { DerivationPathHelperProvider } from '../../../providers/derivation-path-helper/derivation-path-helper';
 import { ExternalLinkProvider } from '../../../providers/external-link/external-link';
 import { OnGoingProcessProvider } from '../../../providers/on-going-process/on-going-process';
-import { PlatformProvider } from '../../../providers/platform/platform';
 import { PopupProvider } from '../../../providers/popup/popup';
 import { ProfileProvider } from '../../../providers/profile/profile';
 import { PushNotificationsProvider } from '../../../providers/push-notifications/push-notifications';
@@ -57,7 +56,6 @@ export class CreateWalletPage implements OnInit {
   public cancelText: string;
   public createForm: FormGroup;
   public createLabel: string;
-  public hideConfirm: boolean;
 
   constructor(
     private navCtrl: NavController,
@@ -74,8 +72,7 @@ export class CreateWalletPage implements OnInit {
     private events: Events,
     private pushNotificationsProvider: PushNotificationsProvider,
     private externalLinkProvider: ExternalLinkProvider,
-    private bwcErrorProvider: BwcErrorProvider,
-    private platformProvider: PlatformProvider
+    private bwcErrorProvider: BwcErrorProvider
   ) {
     this.okText = this.translate.instant('Ok');
     this.cancelText = this.translate.instant('Cancel');
@@ -104,8 +101,8 @@ export class CreateWalletPage implements OnInit {
     this.createForm.controls['coin'].setValue(this.coin);
     this.createLabel =
       this.coin === 'btc'
-        ? this.translate.instant('Create BTC Wallet')
-        : this.translate.instant('Create BCH Wallet');
+        ? this.translate.instant('BTC Wallet')
+        : this.translate.instant('BCH Wallet');
 
     this.setTotalCopayers(this.tc);
     this.updateRCSelect(this.tc);
@@ -114,18 +111,6 @@ export class CreateWalletPage implements OnInit {
   ngOnInit() {
     if (this.isShared) {
       this.createForm.get('myName').setValidators([Validators.required]);
-    }
-  }
-
-  ionViewWillEnter() {
-    if (this.platformProvider.isCordova) {
-      window.addEventListener('keyboardWillShow', () => {
-        this.hideConfirm = true;
-      });
-
-      window.addEventListener('keyboardWillHide', () => {
-        this.hideConfirm = false;
-      });
     }
   }
 

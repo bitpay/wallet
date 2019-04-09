@@ -1,6 +1,11 @@
 <ion-header>
   <ion-navbar>
-    <ion-title>{{'Join Shared Wallet' | translate}}</ion-title>
+    <ion-title>{{'Shared Wallet' | translate}}</ion-title>
+    <ion-buttons end>
+      <button ion-button (click)="setOptsAndJoin()" [disabled]="!joinForm.valid">
+        <span translate>Join</span>
+      </button>
+    </ion-buttons>
   </ion-navbar>
 </ion-header>
 
@@ -25,7 +30,7 @@
         <span *ngIf="showAdvOpts">{{'Hide advanced options' | translate}}</span>
       </button>
 
-      <div *ngIf="showAdvOpts">
+      <div *ngIf="showAdvOpts" padding-bottom>
         <ion-item>
           <ion-label floating>Wallet Service URL</ion-label>
           <ion-input type="text" formControlName="bwsURL"></ion-input>
@@ -50,10 +55,3 @@
       </div>
     </form>
 </ion-content>
-<ion-footer *ngIf="!hideConfirm">
-  <ion-toolbar>
-    <button ion-button full class="button-footer" (click)="setOptsAndJoin()" [disabled]="!joinForm.valid">
-      {{'Join wallet' | translate}}
-    </button>
-  </ion-toolbar>
-</ion-footer>
