@@ -115,8 +115,9 @@ export class HomeGiftCards implements OnInit {
     this.loadGiftCards();
     this.giftCardProvider.cardUpdates$
       .pipe(debounceTime(300))
-      .subscribe(card =>
-        card.archived ? this.hideArchivedBrands() : this.loadGiftCards()
+      .subscribe(
+        card =>
+          card.archived ? this.hideArchivedBrands() : this.loadGiftCards()
       );
   }
 

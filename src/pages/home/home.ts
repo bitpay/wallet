@@ -35,16 +35,15 @@ import { Coin, WalletProvider } from '../../providers/wallet/wallet';
 import { SettingsPage } from '../settings/settings';
 
 interface UpdateWalletOptsI {
-    walletId: string,
-    force?: boolean,
-    alsoUpdateHistory?: boolean,
-};
+  walletId: string;
+  force?: boolean;
+  alsoUpdateHistory?: boolean;
+}
 
 @Component({
   selector: 'page-home',
   templateUrl: 'home.html'
 })
-
 export class HomePage {
   @ViewChild('showCard')
   showCard;
@@ -115,7 +114,6 @@ export class HomePage {
     });
   }
 
-
   ionViewWillEnter() {
     this._willEnter();
   }
@@ -169,7 +167,7 @@ export class HomePage {
     });
   }
 
-  private walletFocusHandler = (opts) => {
+  private walletFocusHandler = opts => {
     this.logger.debug('Local/WalletFocus handler @home', opts);
     opts = opts || {};
     opts.alsoUpdateHistory = true;
@@ -184,7 +182,10 @@ export class HomePage {
 
     const subscribeEvents = () => {
       // Scanner
-      this.events.subscribe( 'finishIncomingDataMenuEvent', this.finishIncomingDataMenuEventHandler);
+      this.events.subscribe(
+        'finishIncomingDataMenuEvent',
+        this.finishIncomingDataMenuEventHandler
+      );
 
       // BWS Events: Update Status per Wallet -> Update txps
       // NewBlock, NewCopayer, NewAddress, NewTxProposal, TxProposalAcceptedBy, TxProposalRejectedBy, txProposalFinallyRejected,
@@ -197,10 +198,9 @@ export class HomePage {
       // Reject, Remove, OnlyPublish and SignAndBroadcast -> Update Status per Wallet -> Update txps
       this.events.subscribe('Local/TxAction', this.walletFocusHandler);
 
-
       // Wallet is focused on some inner view, therefore, we refresh its status and txs
       this.events.subscribe('Local/WalletFocus', this.walletFocusHandler);
-    }
+    };
 
     subscribeEvents();
     this.onResumeSubscription = this.plt.resume.subscribe(() => {
@@ -210,7 +210,10 @@ export class HomePage {
     });
 
     this.onPauseSubscription = this.plt.pause.subscribe(() => {
-      this.events.unsubscribe( 'finishIncomingDataMenuEvent', this.finishIncomingDataMenuEventHandler);
+      this.events.unsubscribe(
+        'finishIncomingDataMenuEvent',
+        this.finishIncomingDataMenuEventHandler
+      );
       this.events.unsubscribe('bwsEvent', this.bwsEventHandler);
       this.events.unsubscribe('Local/WalletListChange', this.setWallets);
       this.events.unsubscribe('Local/TxAction', this.walletFocusHandler);
@@ -234,15 +237,12 @@ export class HomePage {
     this.slideDown = false;
   }
 
-  private debounceFetchWalletStatus = _.debounce(
-    async (walletId) => {
-      this.fetchWalletStatus({ walletId });
-    },
-    3000
-  );
+  private debounceFetchWalletStatus = _.debounce(async walletId => {
+    this.fetchWalletStatus({ walletId });
+  }, 3000);
 
   // BWS events can come many at time (publish,sign, broadcast...)
-  private bwsEventHandler = (walletId) => {
+  private bwsEventHandler = walletId => {
     const wallet = this.profileProvider.getWallet(walletId);
     this.walletProvider.invalidateCache(wallet);
     this.debounceFetchWalletStatus(walletId);
@@ -324,7 +324,6 @@ export class HomePage {
     }, 2000);
   }
 
-
   private debounceSetWallets = _.debounce(
     async () => {
       this.setWallets(true);
@@ -335,7 +334,7 @@ export class HomePage {
     }
   );
 
-  private setWallets = (shouldUpdate:boolean = false) => {
+  private setWallets = (shouldUpdate: boolean = false) => {
     this.wallets = this.profileProvider.getWallets();
     this.vaultWallets = this.profileProvider.getVaultWallets();
     this.walletsBtc = _.filter(this.wallets, (x: any) => {
@@ -354,7 +353,7 @@ export class HomePage {
     if (!this.appProvider.isLockModalOpen && shouldUpdate) {
       this.fetchAllWalletsStatus();
     }
-  }
+  };
 
   private checkFeedbackInfo() {
     this.persistenceProvider.getFeedbackInfo().then(info => {
@@ -473,7 +472,6 @@ export class HomePage {
   }
 
   private fetchTxHistory(opts: UpdateWalletOptsI) {
-
     if (!opts.walletId) {
       this.logger.error('Error no walletId in update History');
       return;
@@ -481,43 +479,53 @@ export class HomePage {
     const wallet = this.profileProvider.getWallet(opts.walletId);
 
     const progressFn = ((_, newTxs) => {
-      let args =  {
-        walletId: opts.walletId, 
-        complete: false, 
-        progress:newTxs,
+      let args = {
+        walletId: opts.walletId,
+        complete: false,
+        progress: newTxs
       };
       this.events.publish('Local/WalletHistoryUpdate', args);
     }).bind(this);
 
-
     // Fire a startup event, to allow UI to show the spinner
-    this.events.publish('Local/WalletHistoryUpdate', {walletId: opts.walletId, complete: false});
+    this.events.publish('Local/WalletHistoryUpdate', {
+      walletId: opts.walletId,
+      complete: false
+    });
     this.walletProvider
       .fetchTxHistory(wallet, progressFn, opts)
       .then(txHistory => {
         wallet.completeHistory = txHistory;
-        this.events.publish('Local/WalletHistoryUpdate', {walletId: opts.walletId, complete: true});
+        this.events.publish('Local/WalletHistoryUpdate', {
+          walletId: opts.walletId,
+          complete: true
+        });
       })
       .catch(err => {
         if (err != 'HISTORY_IN_PROGRESS') {
           this.logger.warn('WalletHistoryUpdate ERROR', err);
-          this.events.publish('Local/WalletHistoryUpdate', {walletId: opts.walletId, complete: false, error: err});
+          this.events.publish('Local/WalletHistoryUpdate', {
+            walletId: opts.walletId,
+            complete: false,
+            error: err
+          });
         }
       });
   }
-
-
 
   // Names:
   // .fetch => from BWS
   // .update => to UI
   /* This is the only .getStatus call in Copay */
-  private fetchWalletStatus = (opts: UpdateWalletOptsI):void =>  {
+  private fetchWalletStatus = (opts: UpdateWalletOptsI): void => {
     if (!opts.walletId) {
       this.logger.error('Error no walletId in update Wallet');
       return;
     }
-    this.events.publish('Local/WalletUpdate', {walletId: opts.walletId, incomplete: true});
+    this.events.publish('Local/WalletUpdate', {
+      walletId: opts.walletId,
+      incomplete: true
+    });
 
     this.logger.debug('fetchStatus for: ' + opts.walletId);
     const wallet = this.profileProvider.getWallet(opts.walletId);
@@ -536,11 +544,11 @@ export class HomePage {
         // Update txps
         this.updateTxps();
         this.logger.debug('Firing Local/WalletUpdate @home', opts);
-        this.events.publish('Local/WalletUpdate', {walletId: opts.walletId});
+        this.events.publish('Local/WalletUpdate', { walletId: opts.walletId });
 
         if (opts.alsoUpdateHistory) {
-          this.fetchTxHistory({ walletId: opts.walletId});
-        } 
+          this.fetchTxHistory({ walletId: opts.walletId });
+        }
       })
       .catch(err => {
         if (err == 'INPROGRESS') {
@@ -551,7 +559,7 @@ export class HomePage {
           this.logger.error(err);
         }
       });
-  }
+  };
 
   private updateTxps() {
     this.profileProvider

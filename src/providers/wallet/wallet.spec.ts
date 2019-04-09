@@ -531,9 +531,11 @@ describe('Provider: Wallet Provider', () => {
       wallet.completeHistoryIsValid = true;
       const opts = null;
       const progressFn = null;
-      walletProvider.fetchTxHistory(wallet, progressFn, opts).then(txHistory => {
-        expect(txHistory).toEqual(wallet.completeHistory);
-      });
+      walletProvider
+        .fetchTxHistory(wallet, progressFn, opts)
+        .then(txHistory => {
+          expect(txHistory).toEqual(wallet.completeHistory);
+        });
     });
 
     it("Should return the completeHistory if isn't cached", () => {
@@ -542,11 +544,13 @@ describe('Provider: Wallet Provider', () => {
       const progressFn = null;
       const expectedTxHistory = txsFromLocal;
 
-      walletProvider.fetchTxHistory(wallet, progressFn, opts).then(txHistory => {
-        expect(txHistory.isValid).toBeTruthy();
-        delete txHistory.isValid;
-        expect(txHistory).toEqual(expectedTxHistory);
-      });
+      walletProvider
+        .fetchTxHistory(wallet, progressFn, opts)
+        .then(txHistory => {
+          expect(txHistory.isValid).toBeTruthy();
+          delete txHistory.isValid;
+          expect(txHistory).toEqual(expectedTxHistory);
+        });
     });
   });
 

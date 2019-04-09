@@ -116,22 +116,24 @@ export class WalletDetailsPage extends WalletTabsChild {
   subscribeEvents() {
     this.events.subscribe('Local/WalletUpdate', this.updateStatus);
     this.events.subscribe('Local/WalletHistoryUpdate', this.updateHistory);
-  };
+  }
 
   // Event handling
   ionViewWillLoad() {
-      this.subscribeEvents();
-  };
+    this.subscribeEvents();
+  }
 
   ionViewWillEnter() {
-    this.onResumeSubscription= this.platform.resume.subscribe(() => {
+    this.onResumeSubscription = this.platform.resume.subscribe(() => {
       this.subscribeEvents();
     });
   }
 
   // Start by firing a walletFocus event.
   ionViewDidEnter() {
-    this.events.publish('Local/WalletFocus', {walletId: this.wallet.credentials.walletId} );
+    this.events.publish('Local/WalletFocus', {
+      walletId: this.wallet.credentials.walletId
+    });
   }
 
   ionViewWillUnload() {
@@ -211,11 +213,12 @@ export class WalletDetailsPage extends WalletTabsChild {
       opts = opts || {};
       this.events.publish('Local/WalletFocus', {
         walletId: this.wallet.credentials.walletId,
-        force: true,
-      } );
+        force: true
+      });
     },
-    MIN_UPDATE_TIME, {
-      leading: true,
+    MIN_UPDATE_TIME,
+    {
+      leading: true
     }
   );
 
@@ -257,7 +260,7 @@ export class WalletDetailsPage extends WalletTabsChild {
   }
 
   // no network //
-  private updateHistory = (opts) => {
+  private updateHistory = opts => {
     this.logger.debug('Local/WalletHistoryUpdate handler @walletDetails', opts);
     if (opts.walletId != this.wallet.id) return;
 
@@ -266,7 +269,7 @@ export class WalletDetailsPage extends WalletTabsChild {
       this.updatingTxHistory = false;
       this.updateTxHistoryError = false;
 
-      const hasTx = !! this.wallet.completeHistory[0];
+      const hasTx = !!this.wallet.completeHistory[0];
 
       this.showNoTransactionsYetMsg = !hasTx;
 
@@ -274,9 +277,7 @@ export class WalletDetailsPage extends WalletTabsChild {
         this.openBackupModal();
 
       this.showHistory();
-
     } else {
-
       if (opts.error) {
         this.updateTxHistoryError = true;
       } else {
@@ -288,13 +289,12 @@ export class WalletDetailsPage extends WalletTabsChild {
         if (opts.progress > 5) {
           this.history = null;
         }
-
       }
     }
   };
 
   // no network //
-  private updateStatus = (opts) => {
+  private updateStatus = opts => {
     this.logger.debug('Local/WalletUpdate handler @walletDetails', opts);
     if (opts.walletId != this.wallet.id) return;
     if (opts.incomplete) {
@@ -305,15 +305,16 @@ export class WalletDetailsPage extends WalletTabsChild {
     this.updatingStatus = false;
 
     if (!this.wallet.error) {
-
-      this.logger.debug(' Updating wallet with amount ', this.wallet.cachedStatus.balance.totalAmount);
+      this.logger.debug(
+        ' Updating wallet with amount ',
+        this.wallet.cachedStatus.balance.totalAmount
+      );
       let status = this.wallet.cachedStatus;
       this.setPendingTxps(status.pendingTxps);
       this.showBalanceButton = status.totalBalanceSat != status.spendableAmount;
       this.analyzeUtxos();
       this.updateStatusError = null;
       this.walletNotRegistered = false;
-
     } else {
       this.showBalanceButton = false;
 
@@ -323,7 +324,8 @@ export class WalletDetailsPage extends WalletTabsChild {
         err.name.replace(/^bwc.Error/g, '') === 'WALLET_NOT_FOUND'
       ) {
         this.walletNotRegistered = true;
-      } if (err === 'WALLET_NOT_REGISTERED') {
+      }
+      if (err === 'WALLET_NOT_REGISTERED') {
         this.walletNotRegistered = true;
       } else {
         this.updateStatusError = this.bwcError.msg(
@@ -332,7 +334,7 @@ export class WalletDetailsPage extends WalletTabsChild {
         );
       }
     }
-  }
+  };
 
   public recreate() {
     this.onGoingProcessProvider.set('recreating');

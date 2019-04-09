@@ -16,8 +16,8 @@ export class FormatCurrencyPipe implements PipeTransform {
       customPrecision === 'minimal'
         ? getMinimalPrecision(amount, currencyCode)
         : typeof customPrecision === 'number'
-        ? customPrecision
-        : getPrecision(currencyCode);
+          ? customPrecision
+          : getPrecision(currencyCode);
     const numericValue = this.decimalPipe.transform(
       amount,
       getPrecisionString(precision)

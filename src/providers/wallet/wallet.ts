@@ -21,11 +21,11 @@ import { TouchIdProvider } from '../touchid/touchid';
 import { TxFormatProvider } from '../tx-format/tx-format';
 
 export interface HistoryOptionsI {
-  limitTx?: string,
-  lowAmount?: number,
-  force?: boolean,
-  retry?: boolean, // TODO: not used
-};
+  limitTx?: string;
+  lowAmount?: number;
+  force?: boolean;
+  retry?: boolean; // TODO: not used
+}
 
 export enum Coin {
   BTC = 'btc',
@@ -324,12 +324,10 @@ export class WalletProvider {
         cacheBalance(wallet, status.balance);
       };
 
-
-      const hasMeet = (s1,s2): boolean => {
+      const hasMeet = (s1, s2): boolean => {
         let diff = false;
-        _.each(s1, (v,k) => {
-          if (s2[k] == v) 
-            diff = true;
+        _.each(s1, (v, k) => {
+          if (s2[k] == v) diff = true;
         });
 
         return diff;
@@ -361,19 +359,33 @@ export class WalletProvider {
             }
 
             if (opts.until) {
-              if ( !hasMeet(opts.until, status.balance) && tries < this.WALLET_STATUS_MAX_TRIES) {
+              if (
+                !hasMeet(opts.until, status.balance) &&
+                tries < this.WALLET_STATUS_MAX_TRIES
+              ) {
                 this.logger.debug(
-                  'Retrying update... ' + walletId + ' Try:' + tries + ' until:', opts.until
+                  'Retrying update... ' +
+                    walletId +
+                    ' Try:' +
+                    tries +
+                    ' until:',
+                  opts.until
                 );
                 return setTimeout(() => {
                   return resolve(doFetchStatus(++tries));
                 }, this.WALLET_STATUS_DELAY_BETWEEN_TRIES * tries);
               } else {
-                this.logger.debug( '# Got Wallet Status for: ' + wallet.credentials.walletName + 
-                  ' after meeting:', opts.until);
+                this.logger.debug(
+                  '# Got Wallet Status for: ' +
+                    wallet.credentials.walletName +
+                    ' after meeting:',
+                  opts.until
+                );
               }
             } else {
-              this.logger.debug( '# Got Wallet Status for: ' + wallet.credentials.walletName);
+              this.logger.debug(
+                '# Got Wallet Status for: ' + wallet.credentials.walletName
+              );
             }
             processPendingTxps(status);
             cacheStatus(status);
@@ -382,22 +394,18 @@ export class WalletProvider {
               status.wallet && status.wallet.scanStatus == 'running';
 
             return resolve(status);
-          })
+          });
         });
       };
 
       /* ========== Start =========== */
 
-
-      if (opts.until &&
-          hasMeet(opts.until, wallet.cachedStatus.balance)) {
+      if (opts.until && hasMeet(opts.until, wallet.cachedStatus.balance)) {
         this.logger.info(
-          'Status change already meet: ' +
-            wallet.credentials.walletName
+          'Status change already meet: ' + wallet.credentials.walletName
         );
         return resolve(wallet.cachedStatus);
       }
-
 
       if (WalletProvider.statusUpdateOnProgress[wallet.id] && !opts.until) {
         this.logger.info(
@@ -610,7 +618,11 @@ export class WalletProvider {
     });
   }
 
-  private updateLocalTxHistory(wallet, progressFn, opts:HistoryOptionsI={}): Promise<any> {
+  private updateLocalTxHistory(
+    wallet,
+    progressFn,
+    opts: HistoryOptionsI = {}
+  ): Promise<any> {
     return new Promise((resolve, reject) => {
       opts = opts || {};
       const FIRST_LIMIT = 5;
@@ -1017,7 +1029,11 @@ export class WalletProvider {
     });
   }
 
-  public fetchTxHistory(wallet, progressFn, opts:HistoryOptionsI={}): Promise<any> {
+  public fetchTxHistory(
+    wallet,
+    progressFn,
+    opts: HistoryOptionsI = {}
+  ): Promise<any> {
     return new Promise((resolve, reject) => {
       opts = opts || {};
 
@@ -1141,7 +1157,7 @@ export class WalletProvider {
   public rejectTx(wallet, txp): Promise<any> {
     return new Promise((resolve, reject) => {
       if (_.isEmpty(txp) || _.isEmpty(wallet))
-       return reject('MISSING_PARAMETER');
+        return reject('MISSING_PARAMETER');
 
       wallet.rejectTxProposal(txp, null, (err, rejectedTxp) => {
         if (err) return reject(err);
@@ -1157,13 +1173,14 @@ export class WalletProvider {
         return reject('MISSING_PARAMETER');
 
       wallet.removeTxProposal(txp, err => {
-        let expected = wallet.cachedStatus.balance.totalAmount - txp.amount - txp.fee;
+        let expected =
+          wallet.cachedStatus.balance.totalAmount - txp.amount - txp.fee;
         this.logger.debug('Transaction removed');
 
         this.invalidateCache(wallet);
         this.events.publish('Local/TxAction', {
           walletId: wallet.id,
-          until: { totalAmount: expected }, 
+          until: { totalAmount: expected }
         });
         return resolve(err);
       });
@@ -1463,13 +1480,14 @@ export class WalletProvider {
 
   public onlyPublish(wallet, txp): Promise<any> {
     return new Promise((resolve, reject) => {
-      let expected = wallet.cachedStatus.balance.totalAmount - txp.amount - txp.fee;
+      let expected =
+        wallet.cachedStatus.balance.totalAmount - txp.amount - txp.fee;
       this.publishTx(wallet, txp)
         .then(() => {
           this.invalidateCache(wallet);
           this.events.publish('Local/TxAction', {
             walletId: wallet.id,
-            until: { totalAmount: expected }, 
+            until: { totalAmount: expected }
           });
           return resolve();
         })
@@ -1502,7 +1520,10 @@ export class WalletProvider {
     return new Promise((resolve, reject) => {
       this.onGoingProcessProvider.set('signingTx');
 
-      let expected = wallet.cachedStatus.balance.totalAmount - publishedTxp.amount - publishedTxp.fee;
+      let expected =
+        wallet.cachedStatus.balance.totalAmount -
+        publishedTxp.amount -
+        publishedTxp.fee;
       this.signTx(wallet, publishedTxp, password)
         .then(signedTxp => {
           this.invalidateCache(wallet);
@@ -1512,7 +1533,7 @@ export class WalletProvider {
               .then(broadcastedTxp => {
                 this.events.publish('Local/TxAction', {
                   walletId: wallet.id,
-                  until: {totalAmount: expected},
+                  until: { totalAmount: expected }
                 });
                 return resolve(broadcastedTxp);
               })
@@ -1536,7 +1557,7 @@ export class WalletProvider {
           this.logger.error('Sign error: ' + msg);
           this.events.publish('Local/TxAction', {
             walletId: wallet.id,
-            until: {totalAmount: expected},
+            until: { totalAmount: expected }
           });
           return reject(msg);
         });

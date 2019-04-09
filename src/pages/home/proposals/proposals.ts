@@ -89,23 +89,19 @@ export class ProposalsPage {
     }
   }
 
-
   subscribeEvents() {
     this.events.subscribe('Local/WalletUpdate', this.updatePendingProposals);
-  };
-
+  }
 
   // Event handling
   ionViewWillLoad() {
-      this.subscribeEvents();
-  };
+    this.subscribeEvents();
+  }
 
   ionViewWillUnload() {
     this.events.unsubscribe('Local/WalletUpdate', this.updatePendingProposals);
     this.onResumeSubscription.unsubscribe();
   }
-
-
 
   ionViewWillLeave() {
     this.navCtrl.swipeBackEnabled = true;
@@ -130,7 +126,7 @@ export class ProposalsPage {
       });
   }
 
-  private updatePendingProposals =  ():void => {
+  private updatePendingProposals = (): void => {
     this.profileProvider
       .getTxps({ limit: 50 })
       .then(txpsData => {
@@ -178,7 +174,7 @@ export class ProposalsPage {
       .catch(err => {
         this.logger.error(err);
       });
-  }
+  };
 
   private checkStatus(txps: any[]): void {
     this.txpsPending = [];

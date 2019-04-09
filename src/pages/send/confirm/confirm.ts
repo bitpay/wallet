@@ -278,11 +278,9 @@ export class ConfirmPage extends WalletTabsChild {
       if (!this.wallets || !this.wallets.length) {
         return reject(this.translate.instant('No wallets available'));
       }
-      this.logger.debug('UPDATE IN ALL IN CONFIRM ');
-
       const filteredWallets = _.filter(this.wallets, w => {
-        return w.cachedStatus.availableBalanceSat > minAmount
-      })
+        return w.cachedStatus.availableBalanceSat > minAmount;
+      });
 
       if (_.isEmpty(filteredWallets)) {
         return reject(this.translate.instant('Insufficient funds'));
@@ -540,7 +538,10 @@ export class ConfirmPage extends WalletTabsChild {
           tx.txp[wallet.id] = txp;
           this.tx = tx;
           this.logger.debug(
-            'Confirm. TX Fully Updated for wallet:' + wallet.id + ' Txp:' + txp.id
+            'Confirm. TX Fully Updated for wallet:' +
+              wallet.id +
+              ' Txp:' +
+              txp.id
           );
           return resolve();
         })
@@ -753,8 +754,8 @@ export class ConfirmPage extends WalletTabsChild {
         this.isWithinWalletTabs()
           ? this.navCtrl.popToRoot()
           : this.navCtrl.last().name == 'ConfirmCardPurchasePage'
-          ? this.navCtrl.pop()
-          : this.app.getRootNavs()[0].setRoot(TabsPage);
+            ? this.navCtrl.pop()
+            : this.app.getRootNavs()[0].setRoot(TabsPage);
       }
     });
   }

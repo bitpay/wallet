@@ -202,13 +202,12 @@ export class ProfileProvider {
         !this.platformProvider.isElectron &&
         !this.platformProvider.isCordova
       ) {
-
-        let show = { type: n.type, txp:null };
+        let show = { type: n.type, txp: null };
         try {
           if (n.data.txProposalId) {
             show.txp = n.data.txProposalId;
           }
-        } catch(e) { };
+        } catch (e) {}
 
         this.logger.debug('BWC Notification:', JSON.stringify(show));
       }
@@ -687,13 +686,14 @@ export class ProfileProvider {
       walletsArray.forEach(wallet => {
         promises.push(this.addAndBindWalletClient(_.clone(wallet), opts));
       });
-      Promise.all(promises).then(() => {
-        this.events.publish('Local/WalletListChange');
-        return Promise.resolve();
-      })
-        .catch( () => {
-        return Promise.reject('failed to bind wallets');
-      });;
+      Promise.all(promises)
+        .then(() => {
+          this.events.publish('Local/WalletListChange');
+          return Promise.resolve();
+        })
+        .catch(() => {
+          return Promise.reject('failed to bind wallets');
+        });
     });
   }
 
@@ -732,11 +732,8 @@ export class ProfileProvider {
 
     this.saveBwsUrl(walletId, opts);
 
-
     return this.persistenceProvider.storeProfile(this.profile).then(() => {
-
-      if (!opts.skipEvent)
-        this.events.publish('Local/WalletListChange');
+      if (!opts.skipEvent) this.events.publish('Local/WalletListChange');
 
       return Promise.resolve(wallet);
     });

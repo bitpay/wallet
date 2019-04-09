@@ -83,7 +83,9 @@ export class SendPage extends WalletTabsChild {
 
   public shouldShowZeroState() {
     return (
-      this.wallet && this.wallet.cachedStatus && !this.wallet.cachedStatus.totalBalanceSat
+      this.wallet &&
+      this.wallet.cachedStatus &&
+      !this.wallet.cachedStatus.totalBalanceSat
     );
   }
 
@@ -213,10 +215,7 @@ export class SendPage extends WalletTabsChild {
       ) {
         const isValid = this.checkCoinAndNetwork(this.search);
         if (isValid) this.redir();
-      } else if (
-        parsedData &&
-        parsedData.type == 'BitPayCard'
-      ) {
+      } else if (parsedData && parsedData.type == 'BitPayCard') {
         this.close();
         this.incomingDataProvider.redir(this.search);
       } else {

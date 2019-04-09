@@ -83,7 +83,7 @@ export class WalletTabsPage {
     const { remote } = (window as any).require('electron');
     const win = remote.getCurrentWindow();
     win.on('focus', () => {
-      this.events.publish('Local/WalletFocus', {walletId: this.walletId});
+      this.events.publish('Local/WalletFocus', { walletId: this.walletId });
       this.events.publish('Wallet/setAddress', false);
     });
   }
@@ -113,5 +113,4 @@ export class WalletTabsPage {
     if (this.walletId == walletId && type == 'NewIncomingTx')
       this.events.publish('Wallet/setAddress', true);
   };
-
 }

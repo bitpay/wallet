@@ -60,7 +60,9 @@ export class CopayersPage {
     this.logger.info('Loaded: CopayersPage');
 
     this.onResumeSubscription = this.plt.resume.subscribe(() => {
-      this.events.publish('Local/WalletFocus', {walletId: this.wallet.credentials.walletId} );
+      this.events.publish('Local/WalletFocus', {
+        walletId: this.wallet.credentials.walletId
+      });
       this.subscribeEvents();
     });
 
@@ -70,7 +72,9 @@ export class CopayersPage {
   }
 
   ionViewWillEnter() {
-    this.events.publish('Local/WalletFocus', {walletId: this.wallet.credentials.walletId} );
+    this.events.publish('Local/WalletFocus', {
+      walletId: this.wallet.credentials.walletId
+    });
     this.subscribeEvents();
   }
 
@@ -100,9 +104,12 @@ export class CopayersPage {
     if (this.wallet && opts.walletId == this.wallet.id) {
       this.copayers = this.wallet.cachedStatus.wallet.copayers;
       this.secret = this.wallet.cachedStatus.wallet.secret;
-      if (this.wallet.cachedStatus.wallet.status == 'complete' && !CopayersPage.processed[opts.walletId]) {
+      if (
+        this.wallet.cachedStatus.wallet.status == 'complete' &&
+        !CopayersPage.processed[opts.walletId]
+      ) {
         CopayersPage.processed[opts.walletId] = true;
-        // TODO? 
+        // TODO?
         this.wallet.openWallet(err => {
           if (err) this.logger.error(err);
           this.viewCtrl.dismiss().then(() => {

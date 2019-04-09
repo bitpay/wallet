@@ -318,20 +318,21 @@ export class GiftCardProvider {
           return of({ ...card, status: 'FAILURE' });
         })
       ),
-      mergeMap(card =>
-        card.status === 'UNREDEEMED' || card.status === 'PENDING'
-          ? fromPromise(
-              this.getBitPayInvoice(card.invoiceId).then(invoice => ({
-                ...card,
-                status:
-                  invoice.status !== 'expired' &&
-                  invoice.status !== 'invalid' &&
-                  invoice.status !== 'new'
-                    ? 'PENDING'
-                    : 'expired'
-              }))
-            )
-          : of(card)
+      mergeMap(
+        card =>
+          card.status === 'UNREDEEMED' || card.status === 'PENDING'
+            ? fromPromise(
+                this.getBitPayInvoice(card.invoiceId).then(invoice => ({
+                  ...card,
+                  status:
+                    invoice.status !== 'expired' &&
+                    invoice.status !== 'invalid' &&
+                    invoice.status !== 'new'
+                      ? 'PENDING'
+                      : 'expired'
+                }))
+              )
+            : of(card)
       ),
       mergeMap(updatedCard => this.updatePreviouslyPendingCard(updatedCard)),
       mergeMap(updatedCard => {
