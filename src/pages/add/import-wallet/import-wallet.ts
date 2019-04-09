@@ -49,6 +49,7 @@ export class ImportWalletPage {
   public okText: string;
   public cancelText: string;
   public coin: string;
+  public hideConfirm: boolean;
 
   constructor(
     private app: App,
@@ -111,6 +112,15 @@ export class ImportWalletPage {
   ionViewWillEnter() {
     if (this.code) {
       this.processWalletInfo(this.code);
+    }
+    if (this.isCordova) {
+      window.addEventListener('keyboardWillShow', () => {
+        this.hideConfirm = true;
+      });
+
+      window.addEventListener('keyboardWillHide', () => {
+        this.hideConfirm = false;
+      });
     }
   }
 

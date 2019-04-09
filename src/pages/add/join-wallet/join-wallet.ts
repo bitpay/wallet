@@ -15,6 +15,7 @@ import { ConfigProvider } from '../../../providers/config/config';
 import { DerivationPathHelperProvider } from '../../../providers/derivation-path-helper/derivation-path-helper';
 import { Logger } from '../../../providers/logger/logger';
 import { OnGoingProcessProvider } from '../../../providers/on-going-process/on-going-process';
+import { PlatformProvider } from '../../../providers/platform/platform';
 import { PopupProvider } from '../../../providers/popup/popup';
 import { ProfileProvider } from '../../../providers/profile/profile';
 import { PushNotificationsProvider } from '../../../providers/push-notifications/push-notifications';
@@ -35,6 +36,7 @@ export class JoinWalletPage {
   public okText: string;
   public cancelText: string;
   public joinForm: FormGroup;
+  public hideConfirm: boolean;
 
   private derivationPathByDefault: string;
   private derivationPathForTestnet: string;
@@ -58,7 +60,8 @@ export class JoinWalletPage {
     private events: Events,
     private pushNotificationsProvider: PushNotificationsProvider,
     private actionSheetProvider: ActionSheetProvider,
-    private clipboardProvider: ClipboardProvider
+    private clipboardProvider: ClipboardProvider,
+    private platformProvider: PlatformProvider
   ) {
     this.okText = this.translate.instant('Ok');
     this.cancelText = this.translate.instant('Cancel');
@@ -108,6 +111,15 @@ export class JoinWalletPage {
       let data: string = this.navParams.data.url;
       data = data.replace('copay:', '');
       this.onQrCodeScannedJoin(data);
+    }
+    if (this.platformProvider.isCordova) {
+      window.addEventListener('keyboardWillShow', () => {
+        this.hideConfirm = true;
+      });
+
+      window.addEventListener('keyboardWillHide', () => {
+        this.hideConfirm = false;
+      });
     }
   }
 

@@ -127,7 +127,7 @@
   </form>
 </ion-content>
 
-<ion-footer>
+<ion-footer *ngIf="!hideConfirm">
   <ion-toolbar>
     <button ion-button full class="button-footer" (click)="import()" [disabled]="!importForm.valid">
       {{'Import wallet' | translate}}
