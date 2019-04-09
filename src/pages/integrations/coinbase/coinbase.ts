@@ -85,8 +85,8 @@ export class CoinbasePage {
             err = err.errors
               ? err.errors[0].message
               : err.error_description
-                ? err.error_description
-                : err.error || err || 'Unknown error';
+              ? err.error_description
+              : err.error || err || 'Unknown error';
             this.popupProvider
               .ionicAlert('Error connecting to Coinbase', err)
               .then(() => {

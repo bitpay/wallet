@@ -387,8 +387,8 @@ export class ShapeshiftProvider {
     const parsedError = err.error.error_description
       ? err.error.error_description
       : err.error.error && err.error.error.message
-        ? err.error.error.message
-        : err.error;
+      ? err.error.error.message
+      : err.error;
     return parsedError;
   }
 }
