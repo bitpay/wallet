@@ -16,6 +16,7 @@ import { ActionSheetProvider } from '../../providers/action-sheet/action-sheet';
 import { AddressProvider } from '../../providers/address/address';
 import { BwcErrorProvider } from '../../providers/bwc-error/bwc-error';
 import { ExternalLinkProvider } from '../../providers/external-link/external-link';
+import { OnGoingProcessProvider } from '../../providers/on-going-process/on-going-process';
 import { PlatformProvider } from '../../providers/platform/platform';
 import { ProfileProvider } from '../../providers/profile/profile';
 import { WalletProvider } from '../../providers/wallet/wallet';
@@ -36,8 +37,10 @@ export class ReceivePage extends WalletTabsChild {
   public showShareButton: boolean;
   public loading: boolean;
   public playAnimation: boolean;
+  public newAddressError: boolean;
 
   private onResumeSubscription: Subscription;
+  private retryCount: number = 0;
 
   constructor(
     private actionSheetProvider: ActionSheetProvider,
@@ -53,7 +56,8 @@ export class ReceivePage extends WalletTabsChild {
     private externalLinkProvider: ExternalLinkProvider,
     private addressProvider: AddressProvider,
     walletTabsProvider: WalletTabsProvider,
-    private platform: Platform
+    private platform: Platform,
+    private onGoingProcessProvider: OnGoingProcessProvider
   ) {
     super(navCtrl, profileProvider, walletTabsProvider);
     this.showShareButton = this.platformProvider.isCordova;
@@ -94,32 +98,65 @@ export class ReceivePage extends WalletTabsChild {
   }
 
   public async setAddress(newAddr?: boolean, failed?: boolean): Promise<void> {
-    this.loading = newAddr || _.isEmpty(this.address) ? true : false;
+    if (
+      !this.wallet ||
+      !this.wallet.isComplete() ||
+      (this.wallet.needsBackup && this.wallet.network == 'livenet')
+    )
+      return;
 
-    const addr: string = (await this.walletProvider
+    this.loading = newAddr || _.isEmpty(this.address) ? true : false;
+    if (this.loading) this.onGoingProcessProvider.set('generatingNewAddress');
+
+    this.walletProvider
       .getAddress(this.wallet, newAddr)
-      .catch(err => {
+      .then(addr => {
+        this.newAddressError = false;
         this.loading = false;
-        if (err == 'INVALID_ADDRESS') {
-          // Generate a new address if the first one is invalid
+        setTimeout(() => {
+          this.onGoingProcessProvider.clear();
+        }, 300);
+        if (!addr) return;
+        const address = this.walletProvider.getAddressView(
+          this.wallet.coin,
+          this.wallet.network,
+          addr
+        );
+        if (this.address && this.address != address) {
+          this.playAnimation = true;
+        }
+        this.updateQrAddress(address, newAddr);
+      })
+      .catch(err => {
+        this.logger.warn('Retrying to create new adress:' + ++this.retryCount);
+        if (this.retryCount > 3) {
+          this.retryCount = 0;
+          this.loading = false;
+          this.onGoingProcessProvider.clear();
+          this.showErrorInfoSheet(err);
+        } else if (err == 'INVALID_ADDRESS') {
+          // Generate new address if the first one is invalid ( fix for concatenated addresses )
           if (!failed) {
             this.setAddress(newAddr, true);
+            this.logger.warn(this.bwcErrorProvider.msg(err, 'Receive'));
+            return;
           }
-          return;
+          this.setAddress(false); // failed to generate new address -> get last saved address
+        } else {
+          this.setAddress(false); // failed to generate new address -> get last saved address
         }
         this.logger.warn(this.bwcErrorProvider.msg(err, 'Receive'));
-      })) as string;
-    this.loading = false;
-    if (!addr) return;
-    const address = this.walletProvider.getAddressView(
-      this.wallet.coin,
-      this.wallet.network,
-      addr
+      });
+  }
+
+  public showErrorInfoSheet(error: Error | string): void {
+    this.newAddressError = true;
+    const infoSheetTitle = this.translate.instant('Error');
+    const errorInfoSheet = this.actionSheetProvider.createInfoSheet(
+      'default-error',
+      { msg: this.bwcErrorProvider.msg(error), title: infoSheetTitle }
     );
-    if (this.address && this.address != address) {
-      this.playAnimation = true;
-    }
-    this.updateQrAddress(address, newAddr);
+    errorInfoSheet.present();
   }
 
   private async updateQrAddress(address, newAddr?: boolean): Promise<void> {
