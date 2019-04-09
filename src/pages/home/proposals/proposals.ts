@@ -42,7 +42,6 @@ export class ProposalsPage {
 
   private zone;
   private onResumeSubscription: Subscription;
-  private onPauseSubscription: Subscription;
   private isElectron: boolean;
   private walletId: string;
 
@@ -81,6 +80,7 @@ export class ProposalsPage {
     this.updateAddressBook();
     this.updatePendingProposals();
     this.onResumeSubscription = this.plt.resume.subscribe(() => {
+      this.subscribeEvents();
     });
 
     // Update Wallet on Focus
@@ -89,10 +89,26 @@ export class ProposalsPage {
     }
   }
 
+
+  subscribeEvents() {
+    this.events.subscribe('Local/WalletUpdate', this.updatePendingProposals);
+  };
+
+
+  // Event handling
+  ionViewWillLoad() {
+      this.subscribeEvents();
+  };
+
+  ionViewWillUnload() {
+    this.events.unsubscribe('Local/WalletUpdate', this.updatePendingProposals);
+    this.onResumeSubscription.unsubscribe();
+  }
+
+
+
   ionViewWillLeave() {
     this.navCtrl.swipeBackEnabled = true;
-    this.onResumeSubscription.unsubscribe();
-    this.onPauseSubscription.unsubscribe();
   }
 
   private updateDesktopOnFocus() {
@@ -114,7 +130,7 @@ export class ProposalsPage {
       });
   }
 
-  private updatePendingProposals(): void {
+  private updatePendingProposals =  ():void => {
     this.profileProvider
       .getTxps({ limit: 50 })
       .then(txpsData => {

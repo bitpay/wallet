@@ -202,13 +202,22 @@ export class ProfileProvider {
         !this.platformProvider.isElectron &&
         !this.platformProvider.isCordova
       ) {
-        this.logger.debug('BWC Notification:', JSON.stringify(n));
+
+        let show = { type: n.type, txp:null };
+        try {
+          if (n.data.txProposalId) {
+            show.txp = n.data.txProposalId;
+          }
+        } catch(e) { };
+
+        this.logger.debug('BWC Notification:', JSON.stringify(show));
       }
 
       if (this.platformProvider.isElectron) {
         this.showDesktopNotifications(n, wallet);
       }
 
+      // TODO many NewBlocks notifications...if many blocks
       if (n.type == 'NewBlock' && n.data.network == 'testnet') {
         this.throttledBwsEvent(n, wallet);
       } else {
@@ -359,16 +368,7 @@ export class ProfileProvider {
     });
   }
 
-  // TODO this is repeated in wallet.invalidateCache
   private newBwsEvent(n, wallet): void {
-    if (wallet.cachedStatus) wallet.cachedStatus.isValid = false;
-
-    if (wallet.completeHistory) wallet.completeHistory.isValid = false;
-
-    if (wallet.cachedActivity) wallet.cachedActivity.isValid = false;
-
-    if (wallet.cachedTxps) wallet.cachedTxps.isValid = false;
-
     this.events.publish('bwsEvent', wallet.id, n.type, n);
   }
 

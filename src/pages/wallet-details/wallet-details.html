@@ -158,10 +158,10 @@
         Could not update transaction history
       </div>
 
-      <div class="middle-message" *ngIf="updatingTxHistory && updatingTxHistoryProgress>5">
+      <div class="middle-message" *ngIf="updatingTxHistory">
         <span translate>Updating transaction history. Please stand by.</span>
         <br>
-        <span translate>{{updatingTxHistoryProgress}} transactions downloaded</span>
+        <span translate *ngIf="updatingTxHistoryProgress>4">{{updatingTxHistoryProgress}} transactions downloaded</span>
       </div>
 
       <ion-list *ngIf="history && history[0]" class="tx-history">

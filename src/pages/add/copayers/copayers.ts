@@ -9,14 +9,12 @@ import { SocialSharing } from '@ionic-native/social-sharing';
 // Providers
 import { ActionSheetProvider } from '../../../providers/action-sheet/action-sheet';
 import { AppProvider } from '../../../providers/app/app';
-import { BwcErrorProvider } from '../../../providers/bwc-error/bwc-error';
 import { Logger } from '../../../providers/logger/logger';
 import { OnGoingProcessProvider } from '../../../providers/on-going-process/on-going-process';
 import { PlatformProvider } from '../../../providers/platform/platform';
 import { PopupProvider } from '../../../providers/popup/popup';
 import { ProfileProvider } from '../../../providers/profile/profile';
 import { PushNotificationsProvider } from '../../../providers/push-notifications/push-notifications';
-import { WalletProvider } from '../../../providers/wallet/wallet';
 
 @Component({
   selector: 'page-copayers',
@@ -38,7 +36,6 @@ export class CopayersPage {
   constructor(
     private plt: Platform,
     private appProvider: AppProvider,
-    private bwcErrorProvider: BwcErrorProvider,
     private events: Events,
     private logger: Logger,
     private navParams: NavParams,
@@ -47,7 +44,6 @@ export class CopayersPage {
     private profileProvider: ProfileProvider,
     private socialSharing: SocialSharing,
     private onGoingProcessProvider: OnGoingProcessProvider,
-    private walletProvider: WalletProvider,
     private translate: TranslateService,
     private pushNotificationsProvider: PushNotificationsProvider,
     private viewCtrl: ViewController,

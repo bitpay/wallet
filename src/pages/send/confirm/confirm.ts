@@ -268,9 +268,6 @@ export class ConfirmPage extends WalletTabsChild {
     return new Promise((resolve, reject) => {
       // no min amount? (sendMax) => look for no empty wallets
       minAmount = minAmount ? minAmount : 1;
-      const filteredWallets = [];
-      let index: number = 0;
-      let walletsUpdated: number = 0;
 
       this.wallets = this.profileProvider.getWallets({
         onlyComplete: true,
@@ -283,47 +280,16 @@ export class ConfirmPage extends WalletTabsChild {
       }
       this.logger.debug('UPDATE IN ALL IN CONFIRM ');
 
-      // TODO REMOVE
-      _.each(this.wallets, wallet => {
-        this.walletProvider
-          .getStatus(wallet, {})
-          .then(status => {
-            walletsUpdated++;
-            wallet.cachedStatus = status;
+      const filteredWallets = _.filter(this.wallets, w => {
+        return w.cachedStatus.availableBalanceSat > minAmount
+      })
 
-            if (!status.availableBalanceSat) {
-              this.logger.debug('No balance available in: ' + wallet.name);
-            }
+      if (_.isEmpty(filteredWallets)) {
+        return reject(this.translate.instant('Insufficient funds'));
+      }
 
-            if (status.availableBalanceSat > minAmount) {
-              filteredWallets.push(wallet);
-            }
-
-            if (++index == this.wallets.length) {
-              if (!walletsUpdated) return reject('Could not update any wallet');
-
-              if (_.isEmpty(filteredWallets)) {
-                return reject(this.translate.instant('Insufficient funds'));
-              }
-              this.wallets = _.clone(filteredWallets);
-              return resolve();
-            }
-          })
-          .catch(err => {
-            this.logger.error(err);
-            if (++index == this.wallets.length) {
-              if (!walletsUpdated) return reject('Could not update any wallet');
-
-              if (_.isEmpty(filteredWallets)) {
-                return reject(
-                  this.translate.instant('Insufficient funds for fee')
-                );
-              }
-              this.wallets = _.clone(filteredWallets);
-              return resolve();
-            }
-          });
-      });
+      this.wallets = _.clone(filteredWallets);
+      return resolve();
     });
   }
 
@@ -574,8 +540,7 @@ export class ConfirmPage extends WalletTabsChild {
           tx.txp[wallet.id] = txp;
           this.tx = tx;
           this.logger.debug(
-            'Confirm. TX Fully Updated for wallet:' + wallet.id,
-            JSON.stringify(tx)
+            'Confirm. TX Fully Updated for wallet:' + wallet.id + ' Txp:' + txp.id
           );
           return resolve();
         })
