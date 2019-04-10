@@ -228,7 +228,7 @@ export class ProfileProvider {
       this.logger.debug('Wallet completed');
       this.updateCredentials(JSON.parse(wallet.export()));
       this.events.publish('Local/WalletListChange');
-      this.events.publish('Local/WalletUpdate', {walletId: wallet.id});
+      this.events.publish('Local/WalletUpdate', { walletId: wallet.id });
     });
 
     wallet.initialize(
