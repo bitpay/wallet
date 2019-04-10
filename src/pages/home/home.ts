@@ -579,7 +579,7 @@ export class HomePage {
 
     if (_.isEmpty(this.wallets)) return;
 
-    this.logger.debug('Updating ALL wallets');
+    this.logger.debug('fetchAllWalletsStatus');
     const pr = wallet => {
       return this.walletProvider
         .fetchStatus(wallet, {})

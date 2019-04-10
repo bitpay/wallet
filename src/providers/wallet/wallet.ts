@@ -232,30 +232,6 @@ export class WalletProvider {
         cache.alternativeName = config.settings.alternativeName;
         cache.alternativeIsoCode = config.settings.alternativeIsoCode;
 
-        // Check address
-        this.isAddressUsed(wallet, balance.byAddress)
-          .then(used => {
-            const isSingleAddress =
-              wallet &&
-              wallet.cachedStatus &&
-              wallet.cachedStatus.wallet &&
-              wallet.cachedStatus.wallet.singleAddress;
-            if (used && !isSingleAddress) {
-              this.logger.debug('Address used. Creating new');
-              // Force new address
-              this.getAddress(wallet, true)
-                .then(addr => {
-                  this.logger.debug('New address: ', addr);
-                })
-                .catch(err => {
-                  return reject(err);
-                });
-            }
-          })
-          .catch(err => {
-            return reject(err);
-          });
-
         this.rateProvider
           .whenRatesAvailable(wallet.coin)
           .then(() => {
@@ -324,6 +300,24 @@ export class WalletProvider {
         cacheBalance(wallet, status.balance);
       };
 
+      const checkAndUpdateAdddress = (): void => {
+        // Check address
+        this.isAddressUsed(wallet, wallet.cachedStatus.balance.byAddress).then(
+          used => {
+            const isSingleAddress =
+              wallet.cachedStatus.wallet &&
+              wallet.cachedStatus.wallet.singleAddress;
+            if (used && !isSingleAddress) {
+              this.logger.debug('Current Wallet address used. Creating new');
+              // Force new address
+              this.getAddress(wallet, true).catch(err => {
+                this.logger.warn('Failed to create address: ', err);
+              });
+            }
+          }
+        );
+      };
+
       const hasMeet = (s1, s2): boolean => {
         let diff = false;
         _.each(s1, (v, k) => {
@@ -337,19 +331,18 @@ export class WalletProvider {
         return new Promise((resolve, reject) => {
           if (isStatusCached() && !opts.force && !opts.until) {
             this.logger.debug('Status cache hit for ' + wallet.id);
+
+            // This will update exchange rates
             cacheStatus(wallet.cachedStatus);
+
+            //
+            checkAndUpdateAdddress();
+
             processPendingTxps(wallet.cachedStatus);
             return resolve(wallet.cachedStatus);
           }
 
           tries = tries || 0;
-
-          this.logger.debug(
-            'Updating Status for ',
-            wallet.credentials.walletName,
-            tries
-          );
-
           wallet.getStatus({}, (err, status) => {
             if (err) {
               if (err instanceof this.errors.NOT_AUTHORIZED) {
@@ -377,14 +370,14 @@ export class WalletProvider {
               } else {
                 this.logger.debug(
                   '# Got Wallet Status for: ' +
-                    wallet.credentials.walletName +
+                    wallet.id +
                     ' after meeting:',
                   opts.until
                 );
               }
             } else {
               this.logger.debug(
-                '# Got Wallet Status for: ' + wallet.credentials.walletName
+                '# Got Wallet Status for: ' + wallet.id
               );
             }
             processPendingTxps(status);
@@ -664,8 +657,9 @@ export class WalletProvider {
         return reject('HISTORY_IN_PROGRESS'); // no callback call yet.
       }
 
-      this.logger.debug('Updating Transaction History for ' +
-            wallet.credentials.walletName);
+      this.logger.debug(
+        'Updating Transaction History for ' + wallet.credentials.walletName
+      );
 
       WalletProvider.historyUpdateOnProgress[wallet.id] = true;
       this.getSavedTxs(walletId)
@@ -822,10 +816,6 @@ export class WalletProvider {
                   _.each(txs, tx => {
                     tx.recent = true;
                   });
-                  this.logger.debug(
-                    'Tx History synced. Total Txs: ' + newHistory.length
-                  );
-
                   // Final update
                   if (walletId == wallet.credentials.walletId) {
                     wallet.completeHistory = newHistory;
@@ -834,7 +824,13 @@ export class WalletProvider {
                   return this.persistenceProvider
                     .setTxHistory(walletId, historyToSave)
                     .then(() => {
-                      this.logger.debug('Tx History saved.');
+                      this.logger.debug(
+                        'History sync & saved for ' +
+                          wallet.id +
+                          ' Txs: ' +
+                          newHistory.length
+                      );
+
                       return resolve();
                     })
                     .catch(err => {
@@ -1052,8 +1048,14 @@ export class WalletProvider {
           return resolve(wallet.completeHistory);
         })
         .catch(err => {
-          if (err != 'HISTORY_IN_PROGRESS')
+          if (err != 'HISTORY_IN_PROGRESS') {
             WalletProvider.historyUpdateOnProgress[wallet.id] = false;
+            this.logger.warn(
+              '!! Could not update history for ',
+              wallet.id,
+              err
+            );
+          }
           return reject(err);
         });
     });

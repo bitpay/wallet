@@ -64,6 +64,7 @@ export class ReceivePage extends WalletTabsChild {
       this.setAddress();
       this.events.subscribe('bwsEvent', this.bwsEventHandler);
     });
+    this.setAddress();
   }
 
   ionViewWillLeave() {
@@ -93,6 +94,7 @@ export class ReceivePage extends WalletTabsChild {
   }
 
   public async setAddress(newAddr?: boolean, failed?: boolean): Promise<void> {
+console.log('[receive.ts.95:setAddress:]'); // TODO
     this.loading = newAddr || _.isEmpty(this.address) ? true : false;
 
     const addr: string = (await this.walletProvider
@@ -109,6 +111,7 @@ export class ReceivePage extends WalletTabsChild {
         this.logger.warn(this.bwcErrorProvider.msg(err, 'Receive'));
       })) as string;
     this.loading = false;
+console.log('[receive.ts.112:addr:]',addr); // TODO
     if (!addr) return;
     const address = this.walletProvider.getAddressView(
       this.wallet.coin,
