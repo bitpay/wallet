@@ -336,7 +336,7 @@ export class WalletProvider {
       const doFetchStatus = (tries: number = 0): Promise<any> => {
         return new Promise((resolve, reject) => {
           if (isStatusCached() && !opts.force && !opts.until) {
-            this.logger.debug('Wallet status cache hit:' + wallet.id);
+            this.logger.debug('Status cache hit for ' + wallet.id);
             cacheStatus(wallet.cachedStatus);
             processPendingTxps(wallet.cachedStatus);
             return resolve(wallet.cachedStatus);
@@ -345,7 +345,7 @@ export class WalletProvider {
           tries = tries || 0;
 
           this.logger.debug(
-            'Updating Status:',
+            'Updating Status for ',
             wallet.credentials.walletName,
             tries
           );
@@ -401,7 +401,7 @@ export class WalletProvider {
       /* ========== Start =========== */
 
       if (opts.until && hasMeet(opts.until, wallet.cachedStatus.balance)) {
-        this.logger.info(
+        this.logger.debug(
           'Status change already meet: ' + wallet.credentials.walletName
         );
         return resolve(wallet.cachedStatus);
@@ -409,7 +409,7 @@ export class WalletProvider {
 
       if (WalletProvider.statusUpdateOnProgress[wallet.id] && !opts.until) {
         this.logger.info(
-          '!!! Status update already on progress for: ' +
+          '!! Status update already on progress for: ' +
             wallet.credentials.walletName
         );
         return reject('INPROGRESS');
@@ -653,27 +653,21 @@ export class WalletProvider {
       };
 
       if (WalletProvider.historyUpdateOnProgress[wallet.id]) {
-        this.logger.info(
-          'History update already on progress for: ' +
+        this.logger.debug(
+          '!! History update already on progress for: ' +
             wallet.credentials.walletName
         );
 
         if (progressFn) {
-          this.logger.debug('Rewriting progressFn');
           WalletProvider.progressFn[walletId] = progressFn;
         }
         return reject('HISTORY_IN_PROGRESS'); // no callback call yet.
       }
 
-      this.logger.info('Updating Transaction History');
+      this.logger.debug('Updating Transaction History for ' +
+            wallet.credentials.walletName);
 
       WalletProvider.historyUpdateOnProgress[wallet.id] = true;
-
-      this.logger.debug(
-        'Trying to download Tx history for: ' +
-          walletId +
-          '. If it fails retry in 5 secs'
-      );
       this.getSavedTxs(walletId)
         .then(txsFromLocal => {
           fixTxsUnit(txsFromLocal);
@@ -773,7 +767,7 @@ export class WalletProvider {
                 return new Promise((resolve, reject) => {
                   if (!endingTs) return resolve();
 
-                  this.logger.debug('Syncing notes from: ' + endingTs);
+                  // this.logger.debug('Syncing notes from: ' + endingTs);
                   wallet.getTxNotes(
                     {
                       minTs: endingTs
@@ -784,12 +778,12 @@ export class WalletProvider {
                         return reject(err);
                       }
                       _.each(notes, note => {
-                        this.logger.debug('Note for ' + note.txid);
+                        // this.logger.debug('Note for ' + note.txid);
                         _.each(newHistory, (tx: any) => {
                           if (tx.txid == note.txid) {
-                            this.logger.debug(
-                              '...updating note for ' + note.txid
-                            );
+                            // this.logger.debug(
+                            //  '...updating note for ' + note.txid
+                            // );
                             tx.note = note;
                           }
                         });
@@ -1146,7 +1140,7 @@ export class WalletProvider {
           }
         }
 
-        this.logger.info('Transaction broadcasted');
+        this.logger.info('Transaction broadcasted: ', broadcastedTxp.txid);
         if (memo) this.logger.info('Memo: ', memo);
 
         return resolve(broadcastedTxp);
