@@ -74,9 +74,7 @@ export class SellCoinbasePage {
     this.amount = this.navParams.data.amount; // USD
     this.currency = this.navParams.data.currency; // USD
     this.priceSensitivity = this.coinbaseProvider.priceSensitivity;
-    this.selectedPriceSensitivity = {
-      data: this.coinbaseProvider.selectedPriceSensitivity
-    };
+    this.selectedPriceSensitivity = this.coinbaseProvider.selectedPriceSensitivity;
     this.network = this.coinbaseProvider.getNetwork();
     this.isCordova = this.platformProvider.isCordova;
     this.hideSlideButton = false;
