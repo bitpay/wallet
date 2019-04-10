@@ -1,11 +1,10 @@
 import { Component, ViewChild } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { App, ModalController, NavController, NavParams } from 'ionic-angular';
+import { ModalController, NavController, NavParams } from 'ionic-angular';
 import * as _ from 'lodash';
 
 // pages
 import { FinishModalPage } from '../finish/finish';
-import { TabsPage } from '../tabs/tabs';
 
 // providers
 import { ActionSheetProvider } from '../../providers/action-sheet/action-sheet';
@@ -50,7 +49,6 @@ export class PaperWalletPage {
   public isCordova: boolean;
 
   constructor(
-    private app: App,
     private actionSheetProvider: ActionSheetProvider,
     private navCtrl: NavController,
     private navParams: NavParams,
@@ -328,7 +326,7 @@ export class PaperWalletPage {
     );
     modal.present();
     modal.onDidDismiss(() => {
-      this.app.getRootNavs()[0].setRoot(TabsPage);
+      this.navCtrl.popToRoot();
     });
   }
 }

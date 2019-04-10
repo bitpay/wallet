@@ -244,8 +244,11 @@ export class CreateWalletPage implements OnInit {
         this.pushNotificationsProvider.updateSubscription(wallet);
         this.setBackupFlagIfNeeded(wallet.credentials.walletId);
         this.setFingerprintIfNeeded(wallet.credentials.walletId);
-        this.navCtrl.popToRoot();
-        this.events.publish('OpenWallet', wallet);
+        this.navCtrl.popToRoot().then(() => {
+          setTimeout(() => {
+            this.events.publish('OpenWallet', wallet);
+          }, 1000);
+        });
       })
       .catch(err => {
         this.onGoingProcessProvider.clear();

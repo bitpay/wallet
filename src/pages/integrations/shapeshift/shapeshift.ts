@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import {
-  App,
   Events,
   ModalController,
   NavController,
@@ -11,7 +10,6 @@ import * as _ from 'lodash';
 import { Logger } from '../../../providers/logger/logger';
 
 // Pages
-import { TabsPage } from '../../tabs/tabs';
 import { ShapeshiftDetailsPage } from './shapeshift-details/shapeshift-details';
 import { ShapeshiftShiftPage } from './shapeshift-shift/shapeshift-shift';
 
@@ -38,7 +36,6 @@ export class ShapeshiftPage {
   public error: string;
 
   constructor(
-    private app: App,
     private events: Events,
     private externalLinkProvider: ExternalLinkProvider,
     private logger: Logger,
@@ -108,7 +105,7 @@ export class ShapeshiftPage {
                 )
                 .then(() => {
                   this.shapeshiftProvider.logout(this.accessToken);
-                  this.app.getRootNavs()[0].setRoot(TabsPage);
+                  this.navCtrl.popToRoot();
                 });
             }
           }
@@ -221,7 +218,7 @@ export class ShapeshiftPage {
     this.externalLinkProvider
       .open(url, optIn, title, message, okText, cancelText)
       .then(() => {
-        this.app.getRootNavs()[0].setRoot(TabsPage);
+        this.navCtrl.popToRoot();
       });
   }
 

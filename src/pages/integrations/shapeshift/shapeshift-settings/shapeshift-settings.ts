@@ -1,10 +1,7 @@
 import { Component } from '@angular/core';
-import { App } from 'ionic-angular';
+import { NavController } from 'ionic-angular';
 
 import * as _ from 'lodash';
-
-// Pages
-import { TabsPage } from '../../../tabs/tabs';
 
 // Providers
 import { ConfigProvider } from '../../../../providers/config/config';
@@ -29,7 +26,7 @@ export class ShapeshiftSettingsPage {
   public loading: boolean;
 
   constructor(
-    private app: App,
+    private navCtrl: NavController,
     private popupProvider: PopupProvider,
     private logger: Logger,
     private shapeshiftProvider: ShapeshiftProvider,
@@ -87,7 +84,7 @@ export class ShapeshiftSettingsPage {
         if (res) {
           this.shapeshiftProvider.getStoredToken(accessToken => {
             this.shapeshiftProvider.logout(accessToken);
-            this.app.getRootNavs()[0].setRoot(TabsPage);
+            this.navCtrl.popToRoot();
           });
         }
       });

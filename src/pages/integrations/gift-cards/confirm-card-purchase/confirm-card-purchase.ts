@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import {
-  App,
   Events,
   ModalController,
   NavController,
@@ -72,7 +71,6 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
 
   constructor(
     actionSheetProvider: ActionSheetProvider,
-    app: App,
     bwcErrorProvider: BwcErrorProvider,
     bwcProvider: BwcProvider,
     configProvider: ConfigProvider,
@@ -101,7 +99,6 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
   ) {
     super(
       actionSheetProvider,
-      app,
       bwcErrorProvider,
       bwcProvider,
       configProvider,
