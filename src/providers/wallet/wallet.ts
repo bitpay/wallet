@@ -369,16 +369,12 @@ export class WalletProvider {
                 }, this.WALLET_STATUS_DELAY_BETWEEN_TRIES * tries);
               } else {
                 this.logger.debug(
-                  '# Got Wallet Status for: ' +
-                    wallet.id +
-                    ' after meeting:',
+                  '# Got Wallet Status for: ' + wallet.id + ' after meeting:',
                   opts.until
                 );
               }
             } else {
-              this.logger.debug(
-                '# Got Wallet Status for: ' + wallet.id
-              );
+              this.logger.debug('# Got Wallet Status for: ' + wallet.id);
             }
             processPendingTxps(status);
             cacheStatus(status);
