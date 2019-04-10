@@ -1,7 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import {
-  Events,
   ModalController,
   Navbar,
   NavController,
@@ -46,7 +45,6 @@ export class BackupGamePage {
   private walletId: string;
 
   constructor(
-    private events: Events,
     private modalCtrl: ModalController,
     private navCtrl: NavController,
     private navParams: NavParams,
@@ -219,7 +217,6 @@ export class BackupGamePage {
         await modal.present();
         modal.onDidDismiss(() => {
           this.navCtrl.popToRoot();
-          this.events.publish('Wallet/setAddress', true);
         });
       })
       .catch(err => {

@@ -127,11 +127,11 @@ export class TxpDetailsPage {
     this.amount = this.decimalPipe.transform(this.tx.amount / 1e8, '1.2-6');
   }
 
-  ionViewWillEnter() {
+  ionViewWillLoad() {
     this.events.subscribe('bwsEvent', this.bwsEventHandler);
   }
 
-  ionViewWillLeave() {
+  ionViewWillUnload() {
     this.events.unsubscribe('bwsEvent', this.bwsEventHandler);
   }
 
