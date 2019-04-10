@@ -2,7 +2,6 @@ import { DecimalPipe } from '@angular/common';
 import { Component, ViewChild } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import {
-  App,
   Events,
   ModalController,
   NavController,
@@ -13,7 +12,6 @@ import { Logger } from '../../../providers/logger/logger';
 
 // Pages
 import { FinishModalPage } from '../../finish/finish';
-import { TabsPage } from '../../tabs/tabs';
 import { ChooseFeeLevelPage } from '../choose-fee-level/choose-fee-level';
 
 // Providers
@@ -89,7 +87,6 @@ export class ConfirmPage extends WalletTabsChild {
 
   constructor(
     protected actionSheetProvider: ActionSheetProvider,
-    protected app: App,
     protected bwcErrorProvider: BwcErrorProvider,
     protected bwcProvider: BwcProvider,
     protected configProvider: ConfigProvider,
@@ -728,7 +725,7 @@ export class ConfirmPage extends WalletTabsChild {
       if (option || typeof option === 'undefined') {
         this.isWithinWalletTabs()
           ? this.navCtrl.pop()
-          : this.app.getRootNavs()[0].setRoot(TabsPage);
+          : this.navCtrl.popToRoot();
       } else {
         this.tx.sendMax = true;
         this.setWallet(this.wallet);
@@ -765,7 +762,7 @@ export class ConfirmPage extends WalletTabsChild {
           ? this.navCtrl.popToRoot()
           : this.navCtrl.last().name == 'ConfirmCardPurchasePage'
           ? this.navCtrl.pop()
-          : this.app.getRootNavs()[0].setRoot(TabsPage);
+          : this.navCtrl.popToRoot();
       }
     });
   }
@@ -904,8 +901,11 @@ export class ConfirmPage extends WalletTabsChild {
         this.events.publish('OpenWallet', this.wallet);
       });
     } else {
-      this.app.getRootNavs()[0].setRoot(TabsPage);
-      this.events.publish('OpenWallet', this.wallet);
+      this.navCtrl.popToRoot().then(() => {
+        setTimeout(() => {
+          this.events.publish('OpenWallet', this.wallet);
+        }, 1000);
+      });
     }
   }
 

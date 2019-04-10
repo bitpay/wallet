@@ -1,5 +1,14 @@
-<wide-header-page title="{{'Wallet Configuration' | translate}}">
-  <div page-content>
+<ion-header>
+  <ion-navbar>
+    <ion-title>{{ createLabel }}</ion-title>
+    <ion-buttons end>
+      <button ion-button (click)="setOptsAndCreate()" [disabled]="!createForm.valid">
+        <span translate>Create</span>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+<ion-content no-bounce>
     <form [formGroup]="createForm">
       <ion-item>
         <ion-label floating>{{'Wallet name' | translate}}</ion-label>
@@ -45,7 +54,7 @@
         <span *ngIf="showAdvOpts">{{'Hide advanced options' | translate}}</span>
       </button>
 
-      <div *ngIf="showAdvOpts">
+      <div *ngIf="showAdvOpts" padding-bottom>
         <ion-item>
           <ion-label stacked>Wallet Service URL</ion-label>
           <ion-input type="text" formControlName="bwsURL"></ion-input>
@@ -93,12 +102,4 @@
         </label-tip>
       </div>
     </form>
-  </div>
-  <div footer-content>
-    <ion-toolbar>
-      <button ion-button full class="button-footer" (click)="setOptsAndCreate()" [disabled]="!createForm.valid">
-        {{createLabel}}
-      </button>
-    </ion-toolbar>
-  </div>
-</wide-header-page>
+</ion-content>

@@ -1,6 +1,11 @@
 <ion-header>
   <ion-navbar>
-    <ion-title>{{'Import wallet' | translate}}</ion-title>
+    <ion-title>{{ createLabel }}</ion-title>
+    <ion-buttons end>
+      <button ion-button (click)="import()" [disabled]="!importForm.valid">
+        <span translate>Import</span>
+      </button>
+    </ion-buttons>
   </ion-navbar>
 </ion-header>
 
@@ -49,7 +54,7 @@
 
       <ion-item *ngIf="isSafari || isCordova">
         <ion-label floating>{{'Paste the backup plain text code' | translate}}</ion-label>
-        <ion-textarea formControlName="backupText" rows="5" [value]="importForm.value.backupText"></ion-textarea>
+        <ion-textarea formControlName="backupText" rows="7" [value]="importForm.value.backupText"></ion-textarea>
       </ion-item>
 
       <ion-item>
@@ -70,7 +75,7 @@
       </div>
     </label-tip>
  -->
-    <ion-item *ngIf="selectedTab != 'file' && !importForm.value.importVault">
+    <ion-item *ngIf="selectedTab != 'file' && !importForm.value.importVault" [hidden]="true">
       <ion-label floating>{{'Coin' | translate}}</ion-label>
       <ion-select okText="{{okText}}" cancelText="{{cancelText}}" formControlName="coin">
         <ion-option value="btc">Bitcoin (BTC)</ion-option>
@@ -86,7 +91,7 @@
       <span *ngIf="showAdvOpts">{{'Hide advanced options' | translate}}</span>
     </button>
 
-    <div *ngIf="showAdvOpts">
+    <div *ngIf="showAdvOpts" padding-bottom>
       <div *ngIf="selectedTab == 'words'">
         <ion-item *ngIf="!importForm.value.importVault" class="with-label">
           <ion-label floating>{{'Password' | translate}}</ion-label>
@@ -126,11 +131,3 @@
     </div>
   </form>
 </ion-content>
-
-<ion-footer>
-  <ion-toolbar>
-    <button ion-button full class="button-footer" (click)="import()" [disabled]="!importForm.valid">
-      {{'Import wallet' | translate}}
-    </button>
-  </ion-toolbar>
-</ion-footer>
