@@ -492,6 +492,7 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
     await this.giftCardProvider.saveCard(this.tx.giftData, {
       remove: true
     });
+    await this.walletProvider.removeTx(this.wallet, this.tx);
     const errorMessage = err && err.message;
     const canceledErrors = ['FINGERPRINT_CANCELLED', 'PASSWORD_CANCELLED'];
     if (canceledErrors.indexOf(errorMessage) !== -1) {

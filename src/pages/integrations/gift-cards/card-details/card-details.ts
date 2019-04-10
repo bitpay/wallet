@@ -120,8 +120,7 @@ export class CardDetailsPage {
   showBarcode() {
     return (
       this.cardConfig &&
-      (this.cardConfig.defaultClaimCodeType === ClaimCodeType.barcode ||
-        this.cardConfig.defaultClaimCodeType === ClaimCodeType.print)
+      this.cardConfig.defaultClaimCodeType === ClaimCodeType.barcode
     );
   }
 
@@ -172,7 +171,7 @@ export class CardDetailsPage {
   }
 
   claimManually() {
-    this.cardConfig.defaultClaimCodeType === ClaimCodeType.print
+    this.cardConfig.printRequired
       ? this.print()
       : this.copyCode(this.card.claimCode);
   }

@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
+import { ActionSheetProvider } from '../../../../providers';
 import { CardConfig } from '../../../../providers/gift-card/gift-card.types';
 import { AmountPage } from '../../../send/amount/amount';
 import { ConfirmCardPurchasePage } from '../confirm-card-purchase/confirm-card-purchase';
@@ -11,11 +12,27 @@ import { ConfirmCardPurchasePage } from '../confirm-card-purchase/confirm-card-p
 export class BuyCardPage {
   amount: number;
   cardConfig: CardConfig;
+  printAlertShown = false;
 
-  constructor(private nav: NavController, private navParams: NavParams) {}
+  constructor(
+    private actionSheetProvider: ActionSheetProvider,
+    private nav: NavController,
+    private navParams: NavParams
+  ) {}
 
   async ngOnInit() {
     this.cardConfig = this.navParams.get('cardConfig');
+  }
+
+  ionViewWillEnter() {
+    if (this.cardConfig.printRequired && !this.printAlertShown) {
+      this.printAlertShown = true;
+      this.actionSheetProvider
+        .createInfoSheet('print-required', {
+          displayName: this.cardConfig.displayName
+        })
+        .present();
+    }
   }
 
   cancel() {

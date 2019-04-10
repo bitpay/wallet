@@ -1,8 +1,7 @@
 export enum ClaimCodeType {
   barcode = 'barcode',
   code = 'code',
-  link = 'link',
-  print = 'print'
+  link = 'link'
 }
 
 export interface CommonCardConfig {
@@ -20,6 +19,7 @@ export interface CommonCardConfig {
   logoBackgroundColor: string;
   minAmount?: number;
   maxAmount?: number;
+  printRequired?: boolean;
   redeemInstructions?: string;
   redeemUrl?: string;
   terms: string;

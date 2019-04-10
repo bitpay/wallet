@@ -67,10 +67,9 @@ export class GiftCardProvider {
   }
 
   setCredentials() {
-    this.credentials.BITPAY_API_URL =
-      this.credentials.NETWORK === Network.testnet
-        ? 'https://test.bitpay.com'
-        : 'https://bitpay.com';
+    if (this.getNetwork() === Network.testnet) {
+      this.credentials.BITPAY_API_URL = 'https://test.bitpay.com';
+    }
   }
 
   async getCardConfig(cardName: string) {
@@ -324,9 +323,11 @@ export class GiftCardProvider {
               this.getBitPayInvoice(card.invoiceId).then(invoice => ({
                 ...card,
                 status:
+                  (card.status === 'PENDING' ||
+                    (card.status === 'UNREDEEMED' &&
+                      invoice.status !== 'new')) &&
                   invoice.status !== 'expired' &&
-                  invoice.status !== 'invalid' &&
-                  invoice.status !== 'new'
+                  invoice.status !== 'invalid'
                     ? 'PENDING'
                     : 'expired'
               }))
