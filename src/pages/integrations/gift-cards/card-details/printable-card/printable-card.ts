@@ -27,9 +27,12 @@ export class PrintableCardComponent {
 
   ctx: CanvasRenderingContext2D;
 
-  @ViewChild('canvas') canvas: ElementRef;
-  @ViewChild('barcode') barcode: ElementRef;
-  @ViewChild('cardImage') cardImage: ElementRef;
+  @ViewChild('canvas')
+  canvas: ElementRef;
+  @ViewChild('barcode')
+  barcode: ElementRef;
+  @ViewChild('cardImage')
+  cardImage: ElementRef;
 
   constructor(private formatCurrencyPipe: FormatCurrencyPipe) {}
 

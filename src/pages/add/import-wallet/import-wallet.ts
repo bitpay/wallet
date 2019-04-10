@@ -101,7 +101,7 @@ export class ImportWalletPage {
       importVault: [false]
     });
     this.importForm.controls['coin'].setValue(this.coin);
-    this.events.subscribe('update:words', this.updateWordsHandler);
+    this.events.subscribe('Local/BackupScan', this.updateWordsHandler);
 
     this.persistenceProvider.getVault().then(vault => {
       if (vault) this.importForm.controls['importVault'].disable();
@@ -115,7 +115,7 @@ export class ImportWalletPage {
   }
 
   ngOnDestroy() {
-    this.events.unsubscribe('update:words', this.updateWordsHandler);
+    this.events.unsubscribe('Local/BackupScan', this.updateWordsHandler);
   }
 
   private updateWordsHandler: any = data => {

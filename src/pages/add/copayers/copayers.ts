@@ -9,14 +9,12 @@ import { SocialSharing } from '@ionic-native/social-sharing';
 // Providers
 import { ActionSheetProvider } from '../../../providers/action-sheet/action-sheet';
 import { AppProvider } from '../../../providers/app/app';
-import { BwcErrorProvider } from '../../../providers/bwc-error/bwc-error';
 import { Logger } from '../../../providers/logger/logger';
 import { OnGoingProcessProvider } from '../../../providers/on-going-process/on-going-process';
 import { PlatformProvider } from '../../../providers/platform/platform';
 import { PopupProvider } from '../../../providers/popup/popup';
 import { ProfileProvider } from '../../../providers/profile/profile';
 import { PushNotificationsProvider } from '../../../providers/push-notifications/push-notifications';
-import { WalletProvider } from '../../../providers/wallet/wallet';
 
 @Component({
   selector: 'page-copayers',
@@ -33,11 +31,11 @@ export class CopayersPage {
 
   private onResumeSubscription: Subscription;
   private onPauseSubscription: Subscription;
+  static processed = {};
 
   constructor(
     private plt: Platform,
     private appProvider: AppProvider,
-    private bwcErrorProvider: BwcErrorProvider,
     private events: Events,
     private logger: Logger,
     private navParams: NavParams,
@@ -46,7 +44,6 @@ export class CopayersPage {
     private profileProvider: ProfileProvider,
     private socialSharing: SocialSharing,
     private onGoingProcessProvider: OnGoingProcessProvider,
-    private walletProvider: WalletProvider,
     private translate: TranslateService,
     private pushNotificationsProvider: PushNotificationsProvider,
     private viewCtrl: ViewController,
@@ -63,7 +60,9 @@ export class CopayersPage {
     this.logger.info('Loaded: CopayersPage');
 
     this.onResumeSubscription = this.plt.resume.subscribe(() => {
-      this.updateWallet();
+      this.events.publish('Local/WalletFocus', {
+        walletId: this.wallet.credentials.walletId
+      });
       this.subscribeEvents();
     });
 
@@ -73,7 +72,9 @@ export class CopayersPage {
   }
 
   ionViewWillEnter() {
-    this.updateWallet();
+    this.events.publish('Local/WalletFocus', {
+      walletId: this.wallet.credentials.walletId
+    });
     this.subscribeEvents();
   }
 
@@ -82,56 +83,42 @@ export class CopayersPage {
   }
 
   ngOnDestroy() {
-    this.events.publish('Home/reloadStatus');
+    this.events.publish('Local/WalletListChange');
     this.onResumeSubscription.unsubscribe();
     this.onPauseSubscription.unsubscribe();
   }
 
   private subscribeEvents(): void {
-    this.events.subscribe('bwsEvent', this.bwsEventHandler);
+    this.events.subscribe('Local/WalletUpdate', this.walletUpdate.bind(this));
   }
 
   private unsubscribeEvents(): void {
-    this.events.unsubscribe('bwsEvent', this.bwsEventHandler);
+    this.events.unsubscribe('Local/WalletUpdate', this.walletUpdate.bind(this));
   }
-
-  private bwsEventHandler: any = (walletId, type) => {
-    if (
-      this.wallet &&
-      walletId == this.wallet.id &&
-      type == ('NewCopayer' || 'WalletComplete')
-    ) {
-      this.updateWallet();
-    }
-  };
 
   close() {
     this.viewCtrl.dismiss();
   }
 
-  private updateWallet(): void {
-    this.logger.info('Updating wallet:' + this.wallet.name);
-    this.walletProvider
-      .getStatus(this.wallet, {})
-      .then(status => {
-        this.wallet.status = status;
-        this.copayers = this.wallet.status.wallet.copayers;
-        this.secret = this.wallet.status.wallet.secret;
-        if (status.wallet.status == 'complete') {
-          this.wallet.openWallet(err => {
-            if (err) this.logger.error(err);
-
-            this.viewCtrl.dismiss().then(() => {
-              this.events.publish('OpenWallet', this.wallet);
-            });
+  private walletUpdate(opts): void {
+    if (this.wallet && opts.walletId == this.wallet.id) {
+      this.copayers = this.wallet.cachedStatus.wallet.copayers;
+      this.secret = this.wallet.cachedStatus.wallet.secret;
+      if (
+        this.wallet.cachedStatus.wallet.status == 'complete' &&
+        !CopayersPage.processed[opts.walletId]
+      ) {
+        CopayersPage.processed[opts.walletId] = true;
+        // TODO?
+        this.wallet.openWallet(err => {
+          if (err) this.logger.error(err);
+          this.viewCtrl.dismiss().then(() => {
+            this.events.publish('Local/WalletListChange');
+            this.events.publish('OpenWallet', this.wallet);
           });
-        }
-      })
-      .catch(err => {
-        let message = this.translate.instant('Could not update wallet');
-        this.popupProvider.ionicAlert(this.bwcErrorProvider.msg(err, message));
-        return;
-      });
+        });
+      }
+    }
   }
 
   public showDeletePopup(): void {

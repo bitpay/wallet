@@ -91,7 +91,7 @@ export class TxpDetailsPage {
     this.currentSpendUnconfirmed = config.spendUnconfirmed;
     this.loading = false;
     this.isCordova = this.platformProvider.isCordova;
-    this.copayers = this.wallet.status.wallet.copayers;
+    this.copayers = this.wallet.cachedStatus.wallet.copayers;
     this.copayerId = this.wallet.credentials.copayerId;
     this.isShared = this.wallet.credentials.n > 1;
     this.canSign = this.wallet.canSign() || this.wallet.isPrivKeyExternal();
@@ -127,11 +127,11 @@ export class TxpDetailsPage {
     this.amount = this.decimalPipe.transform(this.tx.amount / 1e8, '1.2-6');
   }
 
-  ionViewWillEnter() {
+  ionViewWillLoad() {
     this.events.subscribe('bwsEvent', this.bwsEventHandler);
   }
 
-  ionViewWillLeave() {
+  ionViewWillUnload() {
     this.events.unsubscribe('bwsEvent', this.bwsEventHandler);
   }
 

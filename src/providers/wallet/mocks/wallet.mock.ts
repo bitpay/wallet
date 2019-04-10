@@ -140,6 +140,7 @@ export class WalletMock {
   scanning?: boolean;
   status: StatusMock;
   totalBalanceSat: string;
+  completeHistoryIsValid: boolean;
 
   constructor() {
     this.cachedStatus = statusMock;

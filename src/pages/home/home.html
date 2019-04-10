@@ -118,7 +118,7 @@
               </span>
               <span *ngIf="wallet.isComplete() && !wallet.needsBackup">
                 <span *ngIf="!wallet.balanceHidden && !wallet.scanning">
-                  {{wallet.status && wallet.status.totalBalanceStr ? (wallet.status.totalBalanceStr) : (
+                  {{wallet.cachedStatus && wallet.cachedStatus.totalBalanceStr ? (wallet.cachedStatus.totalBalanceStr) : (
                   wallet.cachedBalance ? wallet.cachedBalance
                   + (wallet.cachedBalanceUpdatedOn ? ' &middot; ' + ( wallet.cachedBalanceUpdatedOn * 1000 | amTimeAgo)
                   :
@@ -128,7 +128,7 @@
                 <span *ngIf="wallet.balanceHidden && !wallet.scanning">[
                   <span translate>Balance Hidden</span>]</span>
                 <span class="text-gray" *ngIf="wallet.credentials.m > 1">{{wallet.credentials.m}}-of-{{wallet.credentials.n}}</span>
-                <ion-icon *ngIf="!wallet.balanceHidden && wallet.status && (wallet.status.totalBalanceSat != wallet.status.spendableAmount)" ios="ios-timer-outline" md="md-timer"></ion-icon>
+                <ion-icon *ngIf="!wallet.balanceHidden && wallet.cachedStatus && (wallet.cachedStatus.totalBalanceSat != wallet.cachedStatus.spendableAmount)" ios="ios-timer-outline" md="md-timer"></ion-icon>
                 <div *ngIf="wallet.error" class="wallet-warning">{{wallet.error}}</div>
               </span>
             </div>
@@ -170,7 +170,7 @@
               </span>
               <span *ngIf="wallet.isComplete() && !wallet.needsBackup">
                 <span *ngIf="!wallet.balanceHidden && !wallet.scanning">
-                  {{wallet.status && wallet.status.totalBalanceStr ? (wallet.status.totalBalanceStr) : (
+                  {{wallet.cachedStatus && wallet.cachedStatus.totalBalanceStr ? (wallet.cachedStatus.totalBalanceStr) : (
                   wallet.cachedBalance ? wallet.cachedBalance
                   + (wallet.cachedBalanceUpdatedOn ? ' &middot; ' + ( wallet.cachedBalanceUpdatedOn * 1000 | amTimeAgo)
                   :
@@ -180,7 +180,7 @@
                 <span *ngIf="wallet.balanceHidden && !wallet.scanning">[
                   <span translate>Balance Hidden</span>]</span>
                 <span class="text-gray" *ngIf="wallet.credentials.m > 1">{{wallet.credentials.m}}-of-{{wallet.credentials.n}}</span>
-                <ion-icon *ngIf="!wallet.balanceHidden && wallet.status && (wallet.status.totalBalanceSat != wallet.status.spendableAmount)" ios="ios-timer-outline" md="md-timer"></ion-icon>
+                <ion-icon *ngIf="!wallet.balanceHidden && wallet.cachedStatus && (wallet.cachedStatus.totalBalanceSat != wallet.cachedStatus.spendableAmount)" ios="ios-timer-outline" md="md-timer"></ion-icon>
                 <div *ngIf="wallet.error" class="wallet-warning">{{wallet.error}}</div>
               </span>
             </div>
@@ -222,7 +222,7 @@
               </span>
               <span *ngIf="wallet.isComplete() && !wallet.needsBackup">
                 <span *ngIf="!wallet.balanceHidden && !wallet.scanning">
-                  {{wallet.status && wallet.status.totalBalanceStr ? (wallet.status.totalBalanceStr) : (
+                  {{wallet.cachedStatus && wallet.cachedStatus.totalBalanceStr ? (wallet.cachedStatus.totalBalanceStr) : (
                   wallet.cachedBalance ? wallet.cachedBalance
                   + (wallet.cachedBalanceUpdatedOn ? ' &middot; ' + ( wallet.cachedBalanceUpdatedOn * 1000 | amTimeAgo)
                   :
@@ -232,7 +232,7 @@
                 <span *ngIf="wallet.balanceHidden && !wallet.scanning">[
                   <span translate>Balance Hidden</span>]</span>
                 <span *ngIf="wallet.credentials.m > 1">{{wallet.credentials.m}}-of-{{wallet.credentials.n}}</span>
-                <ion-icon *ngIf="!wallet.balanceHidden && wallet.status && (wallet.status.totalBalanceSat != wallet.status.spendableAmount)" ios="ios-timer-outline" md="md-timer"></ion-icon>
+                <ion-icon *ngIf="!wallet.balanceHidden && wallet.cachedStatus && (wallet.cachedStatus.totalBalanceSat != wallet.cachedStatus.spendableAmount)" ios="ios-timer-outline" md="md-timer"></ion-icon>
                 <div *ngIf="wallet.error" class="wallet-warning">{{wallet.error}}</div>
               </span>
             </div>

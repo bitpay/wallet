@@ -22,10 +22,10 @@
     <expandable-header class="balance-card" [scrollArea]="scrollArea" [ngStyle]="{'background': wallet.color}">
       <expandable-header-primary class="balance-header">
         <div (longPress)="toggleBalance()">
-          <div (tap)="updateAll(true)" *ngIf="!updateStatusError && !wallet.balanceHidden && !wallet.scanning && wallet.status">
-            <div class="balance-str">{{wallet.status.totalBalanceStr}}</div>
+          <div (tap)="updateAll(true)" *ngIf="!updateStatusError && !wallet.balanceHidden && !wallet.scanning && wallet.cachedStatus">
+            <div class="balance-str">{{wallet.cachedStatus.totalBalanceStr}}</div>
             <div class="balance-alt-str">
-              {{wallet.status.totalBalanceAlternative}} {{wallet.status.alternativeIsoCode}}
+              {{wallet.cachedStatus.totalBalanceAlternative}} {{wallet.cachedStatus.alternativeIsoCode}}
             </div>
           </div>
 
@@ -47,11 +47,11 @@
         <div class="balance-spendable" (click)="openBalanceDetails()" *ngIf="!wallet.balanceHidden && !wallet.scanning && !updateStatusError && showBalanceButton">
           <ion-icon ios="ios-timer-outline" md="md-timer"></ion-icon>
           <strong>
-            {{wallet.status.spendableBalanceStr}}
+            {{wallet.cachedStatus.spendableBalanceStr}}
           </strong>
           &nbsp;
           <span>
-            ({{wallet.status.spendableBalanceAlternative}} {{wallet.status.alternativeIsoCode}})
+            ({{wallet.cachedStatus.spendableBalanceAlternative}} {{wallet.cachedStatus.alternativeIsoCode}})
           </span>
           &rarr;
         </div>
@@ -74,7 +74,7 @@
           <img class="testnet-text" *ngIf="wallet.network == 'testnet'" src="assets/img/icon-text-testnet.svg">
           <img class="read-only" *ngIf="!wallet.canSign()" src="assets/img/icon-read-only.svg">
           <img class="read-only-text" *ngIf="!wallet.canSign()" src="assets/img/icon-text-read-only.svg">
-          <img class="auditable-text" *ngIf="wallet.status && wallet.status.wallet && wallet.status.wallet.singleAddress" src="assets/img/icon-text-auditable.svg">
+          <img class="auditable-text" *ngIf="wallet.cachedStatus && wallet.cachedStatus.wallet && wallet.cachedStatus.wallet.singleAddress" src="assets/img/icon-text-auditable.svg">
           <img class="custom-bws" *ngIf="wallet.usingCustomBWS" src="assets/img/icon-bws-white.svg">
           <img class="encrypted" *ngIf="wallet.isPrivKeyEncrypted()" src="assets/img/icon-lock-white.svg">
 
@@ -127,12 +127,12 @@
         <div *ngFor="let txp of txpsPending;  let i=index">
           <page-txp *ngIf="i<=2" [tx]="txp" [addressbook]="addressbook"></page-txp>
         </div>
-        <ion-item *ngIf="wallet.status && wallet.status.lockedBalanceSat" class="locked-balance" (click)="openBalanceDetails()">
+        <ion-item *ngIf="wallet.cachedStatus && wallet.cachedStatus.lockedBalanceSat" class="locked-balance" (click)="openBalanceDetails()">
           <span translate>Total Locked Balance</span>
           <ion-note item-end>
-            <span class="total-locked-amount">{{wallet.status.lockedBalanceStr}}</span>
-            <div class="total-alt-locked-amount">{{wallet.status.lockedBalanceAlternative}}
-              {{wallet.status.alternativeIsoCode}}</div>
+            <span class="total-locked-amount">{{wallet.cachedStatus.lockedBalanceStr}}</span>
+            <div class="total-alt-locked-amount">{{wallet.cachedStatus.lockedBalanceAlternative}}
+              {{wallet.cachedStatus.alternativeIsoCode}}</div>
           </ion-note>
         </ion-item>
       </ion-list>
@@ -158,10 +158,10 @@
         Could not update transaction history
       </div>
 
-      <div class="middle-message" *ngIf="updatingTxHistory && updatingTxHistoryProgress>5">
+      <div class="middle-message" *ngIf="updatingTxHistory">
         <span translate>Updating transaction history. Please stand by.</span>
         <br>
-        <span translate>{{updatingTxHistoryProgress}} transactions downloaded</span>
+        <span translate *ngIf="updatingTxHistoryProgress>4">{{updatingTxHistoryProgress}} transactions downloaded</span>
       </div>
 
       <ion-list *ngIf="history && history[0]" class="tx-history">

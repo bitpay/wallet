@@ -81,17 +81,29 @@ export class TxDetailsPage {
     this.updateTx();
   }
 
-  ionViewWillEnter() {
+  ionViewWillLoad() {
     this.events.subscribe('bwsEvent', this.bwsEventHandler);
   }
 
-  ionViewWillLeave() {
+  ionViewWillUnload() {
     this.events.unsubscribe('bwsEvent', this.bwsEventHandler);
   }
 
   private bwsEventHandler: any = (_, type: string, n) => {
-    if (type == 'NewBlock' && n && n.data && n.data.network == 'livenet')
+    let match = false;
+    if (
+      type == 'NewBlock' &&
+      n &&
+      n.data &&
+      this.wallet &&
+      n.data &&
+      n.data.network == this.wallet.network &&
+      n.data.coin == this.wallet.coin
+    ) {
+      match = true;
       this.updateTxDebounced({ hideLoading: true });
+    }
+    this.logger.debug('bwsEvent handler @tx-details. Matched: ' + match);
   };
 
   public readMore(): void {

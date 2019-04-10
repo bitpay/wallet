@@ -62,8 +62,9 @@ export class ReceivePage extends WalletTabsChild {
   ionViewWillEnter() {
     this.onResumeSubscription = this.platform.resume.subscribe(() => {
       this.setAddress();
-      this.events.subscribe('Wallet/setAddress', this.walletSetAddressHandler);
+      this.events.subscribe('bwsEvent', this.bwsEventHandler);
     });
+    this.setAddress();
   }
 
   ionViewWillLeave() {
@@ -71,12 +72,12 @@ export class ReceivePage extends WalletTabsChild {
   }
 
   ionViewDidLoad() {
-    this.setAddress();
-    this.events.subscribe('Wallet/setAddress', this.walletSetAddressHandler);
+    this.events.subscribe('bwsEvent', this.bwsEventHandler);
   }
 
-  private walletSetAddressHandler: any = (newAddr?: boolean) => {
-    this.setAddress(newAddr);
+  private bwsEventHandler: any = (walletId, type) => {
+    if (this.wallet.credentials.walletId == walletId && type == 'NewIncomingTx')
+      this.setAddress(true);
   };
 
   public requestSpecificAmount(): void {

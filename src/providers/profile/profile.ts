@@ -179,7 +179,7 @@ export class ProfileProvider {
     wallet.m = wallet.credentials.m;
     wallet.n = wallet.credentials.n;
     wallet.coin = wallet.credentials.coin;
-    wallet.status = {};
+    wallet.cachedStatus = {};
 
     this.updateWalletSettings(wallet);
     this.wallet[walletId] = wallet;
@@ -202,13 +202,21 @@ export class ProfileProvider {
         !this.platformProvider.isElectron &&
         !this.platformProvider.isCordova
       ) {
-        this.logger.debug('BWC Notification:', JSON.stringify(n));
+        let show = { type: n.type, txp: null };
+        try {
+          if (n.data.txProposalId) {
+            show.txp = n.data.txProposalId;
+          }
+        } catch (e) {}
+
+        this.logger.debug('BWC Notification:', JSON.stringify(show));
       }
 
       if (this.platformProvider.isElectron) {
         this.showDesktopNotifications(n, wallet);
       }
 
+      // TODO many NewBlocks notifications...if many blocks
       if (n.type == 'NewBlock' && n.data.network == 'testnet') {
         this.throttledBwsEvent(n, wallet);
       } else {
@@ -220,6 +228,7 @@ export class ProfileProvider {
       this.logger.debug('Wallet completed');
       this.updateCredentials(JSON.parse(wallet.export()));
       this.events.publish('Local/WalletListChange');
+      this.events.publish('Local/WalletUpdate', {walletId: wallet.id});
     });
 
     wallet.initialize(
@@ -360,14 +369,6 @@ export class ProfileProvider {
   }
 
   private newBwsEvent(n, wallet): void {
-    if (wallet.cachedStatus) wallet.cachedStatus.isValid = false;
-
-    if (wallet.completeHistory) wallet.completeHistory.isValid = false;
-
-    if (wallet.cachedActivity) wallet.cachedActivity.isValid = false;
-
-    if (wallet.cachedTxps) wallet.cachedTxps.isValid = false;
-
     this.events.publish('bwsEvent', wallet.id, n.type, n);
   }
 
@@ -686,13 +687,14 @@ export class ProfileProvider {
       walletsArray.forEach(wallet => {
         promises.push(this.addAndBindWalletClient(_.clone(wallet), opts));
       });
-      Promise.all(promises).then(() => {
-        this.events.publish('Local/WalletListChange');
-        return Promise.resolve();
-      })
-        .catch( () => {
-        return Promise.reject('failed to bind wallets');
-      });;
+      Promise.all(promises)
+        .then(() => {
+          this.events.publish('Local/WalletListChange');
+          return Promise.resolve();
+        })
+        .catch(() => {
+          return Promise.reject('failed to bind wallets');
+        });
     });
   }
 
@@ -731,11 +733,8 @@ export class ProfileProvider {
 
     this.saveBwsUrl(walletId, opts);
 
-
     return this.persistenceProvider.storeProfile(this.profile).then(() => {
-
-      if (!opts.skipEvent)
-        this.events.publish('Local/WalletListChange');
+      if (!opts.skipEvent) this.events.publish('Local/WalletListChange');
 
       return Promise.resolve(wallet);
     });

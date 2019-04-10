@@ -46,7 +46,8 @@ export class CardDetailsPage {
   public cardConfig: CardConfig;
   ClaimCodeType = ClaimCodeType;
 
-  @ViewChild(PrintableCardComponent) printableCard: PrintableCardComponent;
+  @ViewChild(PrintableCardComponent)
+  printableCard: PrintableCardComponent;
 
   constructor(
     private actionSheetProvider: ActionSheetProvider,

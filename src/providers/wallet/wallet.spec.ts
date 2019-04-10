@@ -85,7 +85,7 @@ describe('Provider: Wallet Provider', () => {
     spyOn(bwcErrorProvider, 'msg').and.returnValue('Error');
   });
 
-  describe('Function: getStatus', () => {
+  describe('Function: fetchStatus', () => {
     beforeEach(() => {
       const newOpts = {
         wallet: {
@@ -108,7 +108,7 @@ describe('Provider: Wallet Provider', () => {
       const wallet: WalletMock = new WalletMock();
       const opts = {};
       const expectedStatus = wallet.cachedStatus;
-      walletProvider.getStatus(wallet, opts).then(status => {
+      walletProvider.fetchStatus(wallet, opts).then(status => {
         expect(status).toEqual(expectedStatus);
       });
     });
@@ -120,7 +120,7 @@ describe('Provider: Wallet Provider', () => {
 
       wallet.cachedStatus.pendingTxps = [pendingTxp];
       const expectedStatus = wallet.cachedStatus;
-      walletProvider.getStatus(wallet, opts).then(status => {
+      walletProvider.fetchStatus(wallet, opts).then(status => {
         expect(status).toEqual(expectedStatus);
       });
     });
@@ -132,7 +132,7 @@ describe('Provider: Wallet Provider', () => {
 
       pendingTxp.status = 'pending';
       wallet.cachedStatus.pendingTxps = [pendingTxp];
-      walletProvider.getStatus(wallet, opts).then(status => {
+      walletProvider.fetchStatus(wallet, opts).then(status => {
         expect(status.pendingTxps[0].pendingForUs).toBeTruthy();
       });
     });
@@ -160,7 +160,7 @@ describe('Provider: Wallet Provider', () => {
       wallet.copayerId = 'copayerId1';
       wallet.cachedStatus.pendingTxps = [pendingTxp1, pendingTxp2];
 
-      walletProvider.getStatus(wallet, opts).then(status => {
+      walletProvider.fetchStatus(wallet, opts).then(status => {
         expect(status.pendingTxps[0].statusForUs).toEqual('accepted');
         expect(status.pendingTxps[1].statusForUs).toEqual('rejected');
       });
@@ -202,7 +202,7 @@ describe('Provider: Wallet Provider', () => {
       };
       Object.assign(expectedStatus, statusMock, additionalExpectedStatusInfo);
 
-      walletProvider.getStatus(wallet, opts).then(status => {
+      walletProvider.fetchStatus(wallet, opts).then(status => {
         delete status['statusUpdatedOn'];
         delete expectedStatus['statusUpdatedOn'];
         expect(status).toEqual(expectedStatus);
@@ -253,7 +253,7 @@ describe('Provider: Wallet Provider', () => {
       };
       Object.assign(expectedStatus, statusMock, additionalExpectedStatusInfo);
 
-      walletProvider.getStatus(wallet, opts).then(status => {
+      walletProvider.fetchStatus(wallet, opts).then(status => {
         delete status['statusUpdatedOn'];
         expect(status).toEqual(expectedStatus);
       });
@@ -472,7 +472,7 @@ describe('Provider: Wallet Provider', () => {
           txid: 'txid2'
         }
       ];
-      wallet.completeHistory.isValid = true;
+      wallet.completeHistoryIsValid = true;
       walletProvider.getTx(wallet, 'txid1').then(tx => {
         expect(tx).toEqual({
           amount: 10000,
@@ -488,7 +488,7 @@ describe('Provider: Wallet Provider', () => {
     it("Should get the tx info if wallet hasn't a completeHistory", () => {
       const wallet: WalletMock = new WalletMock();
 
-      spyOn(walletProvider, 'getTxHistory').and.returnValue(
+      spyOn(walletProvider, 'fetchTxHistory').and.returnValue(
         Promise.resolve([
           {
             amount: 10000,
@@ -528,12 +528,14 @@ describe('Provider: Wallet Provider', () => {
           txid: 'txid2'
         }
       ];
-      wallet.completeHistory.isValid = true;
+      wallet.completeHistoryIsValid = true;
       const opts = null;
       const progressFn = null;
-      walletProvider.getTxHistory(wallet, progressFn, opts).then(txHistory => {
-        expect(txHistory).toEqual(wallet.completeHistory);
-      });
+      walletProvider
+        .fetchTxHistory(wallet, progressFn, opts)
+        .then(txHistory => {
+          expect(txHistory).toEqual(wallet.completeHistory);
+        });
     });
 
     it("Should return the completeHistory if isn't cached", () => {
@@ -542,11 +544,13 @@ describe('Provider: Wallet Provider', () => {
       const progressFn = null;
       const expectedTxHistory = txsFromLocal;
 
-      walletProvider.getTxHistory(wallet, progressFn, opts).then(txHistory => {
-        expect(txHistory.isValid).toBeTruthy();
-        delete txHistory.isValid;
-        expect(txHistory).toEqual(expectedTxHistory);
-      });
+      walletProvider
+        .fetchTxHistory(wallet, progressFn, opts)
+        .then(txHistory => {
+          expect(txHistory.isValid).toBeTruthy();
+          delete txHistory.isValid;
+          expect(txHistory).toEqual(expectedTxHistory);
+        });
     });
   });
 

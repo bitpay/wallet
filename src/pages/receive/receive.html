@@ -13,9 +13,9 @@
     </ion-buttons>
   </ion-navbar>
   <ion-toolbar [navbar-bg]="wallet.color">
-    <div *ngIf="!wallet.balanceHidden && !wallet.scanning && wallet.status" class="wallet-details-header__balance">
-      <span>{{wallet.status && wallet.status.totalBalanceStr}}</span>
-      <ion-icon *ngIf="wallet.status.totalBalanceSat != wallet.status.spendableAmount" ios="ios-timer-outline" md="md-timer"></ion-icon>
+    <div *ngIf="!wallet.balanceHidden && !wallet.scanning && wallet.cachedStatus" class="wallet-details-header__balance">
+      <span>{{wallet.cachedStatus && wallet.cachedStatus.totalBalanceStr}}</span>
+      <ion-icon *ngIf="wallet.cachedStatus.totalBalanceSat != wallet.cachedStatus.spendableAmount" ios="ios-timer-outline" md="md-timer"></ion-icon>
     </div>
     <div *ngIf="wallet.balanceHidden  && !wallet.scanning" class="wallet-details-header__balance-hidden">
       <span class="title" translate>[Balance Hidden]</span>
@@ -53,7 +53,7 @@
             <span copy-to-clipboard="{{ address }}" hide-toast="true">{{ address }}</span>
           </div>
 
-          <button *ngIf="!(wallet.status && wallet.status.wallet && wallet.status.wallet.singleAddress)" class="new-address-btn" detail-none text-center (click)="setAddress(true)">
+          <button *ngIf="!(wallet.cachedStatus && wallet.cachedStatus.wallet && wallet.cachedStatus.wallet.singleAddress)" class="new-address-btn" detail-none text-center (click)="setAddress(true)">
             <span ion-text color="primary" translate>
               <img [hidden]="loading" class="spin-icon" [ngClass]="{'spin-backwards': playAnimation}" src="assets/img/right.svg" width="16" />
               <div *ngIf="loading" [ngClass]="{'spin-fast': loading}" class="spinner"></div>
