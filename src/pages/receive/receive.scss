@@ -35,6 +35,7 @@ page-receive {
       display: flex;
       justify-content: center;
       .text-address {
+        width: 90%;
         background: color($colors, light);
         color: color($colors, light-grey);
         padding: 1.5rem 1rem;
@@ -49,6 +50,12 @@ page-receive {
           display: inline-block;
           opacity: 1;
           transition: opacity 500ms ease;
+          .address-placeholder {
+            font-size: 14px;
+            @media (max-height: 530px) {
+              font-size: 11.5px;
+            }
+          }
         }
         .new-address-btn {
           width: 25px;

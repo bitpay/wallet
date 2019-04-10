@@ -42,13 +42,16 @@
       </div>
     </div>
 
-    <div *ngIf="wallet && wallet.isComplete() && !wallet.needsBackup && ((!loading && !newAddressError) || address)" class="receive-content">
+    <div *ngIf="wallet && wallet.isComplete() && !wallet.needsBackup && (!newAddressError || address)" class="receive-content">
       <div class="title">
         {{'Address' | translate}}
       </div>
       <div class="address-container">
         <div class="text-address ellipsis">
           <img *ngIf="address" copy-to-clipboard="{{ address }}" src="assets/img/paste-clipboard.svg" width="18" />
+          <div *ngIf="!address" [ngClass]="{'fade-in-out': playAnimation}" class="address-text">
+            <span class="address-placeholder" translate>Generating new address...</span>
+          </div>
           <div *ngIf="address" [ngClass]="{'fade-in-out': playAnimation}" (click)="showFullAddr()" class="address-text ellipsis">
             <span copy-to-clipboard="{{ address }}" hide-toast="true">{{ address }}</span>
           </div>
@@ -77,6 +80,9 @@
             {{'Generate New Address' | translate}}
           </button>
         </div>
+      </div>
+      <div class="card qr-card qr-placeholder" *ngIf="!address && !newAddressError">
+        <div>...</div>
       </div>
       <div class="card qr-card" [ngClass]="{'qr-code-bounce': playAnimation}" *ngIf="address">
         <ngx-qrcode (click)="showFullAddr()" *ngIf="address" copy-to-clipboard="{{ address }}" hide-toast="true" qrc-value="{{address}}" qrc-class="aclass" qrc-errorCorrectionLevel="M"></ngx-qrcode>

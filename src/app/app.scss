@@ -475,6 +475,12 @@ button.modal-close-button {
   @include center;
   background: linear-gradient(#ececec, white);
 
+  .qr-placeholder {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
   .qr-card {
     border: 1px solid rgb(207, 207, 207);
     border-radius: 7px;
@@ -483,6 +489,7 @@ button.modal-close-button {
     padding-bottom: 0;
     width: 70%;
     max-width: 293px;
+    max-height: 293px;
     box-shadow: none;
 
     .aclass {
@@ -496,6 +503,12 @@ button.modal-close-button {
       width: 100%;
       opacity: 0.715;
     }
+  }
+
+  .qr-placeholder:after {
+    content: '';
+    display: block;
+    padding-bottom: 100%;
   }
 }
 

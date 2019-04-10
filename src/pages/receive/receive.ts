@@ -16,7 +16,6 @@ import { ActionSheetProvider } from '../../providers/action-sheet/action-sheet';
 import { AddressProvider } from '../../providers/address/address';
 import { BwcErrorProvider } from '../../providers/bwc-error/bwc-error';
 import { ExternalLinkProvider } from '../../providers/external-link/external-link';
-import { OnGoingProcessProvider } from '../../providers/on-going-process/on-going-process';
 import { PlatformProvider } from '../../providers/platform/platform';
 import { ProfileProvider } from '../../providers/profile/profile';
 import { WalletProvider } from '../../providers/wallet/wallet';
@@ -56,8 +55,7 @@ export class ReceivePage extends WalletTabsChild {
     private externalLinkProvider: ExternalLinkProvider,
     private addressProvider: AddressProvider,
     walletTabsProvider: WalletTabsProvider,
-    private platform: Platform,
-    private onGoingProcessProvider: OnGoingProcessProvider
+    private platform: Platform
   ) {
     super(navCtrl, profileProvider, walletTabsProvider);
     this.showShareButton = this.platformProvider.isCordova;
@@ -106,16 +104,12 @@ export class ReceivePage extends WalletTabsChild {
       return;
 
     this.loading = newAddr || _.isEmpty(this.address) ? true : false;
-    if (this.loading) this.onGoingProcessProvider.set('generatingNewAddress');
 
     this.walletProvider
       .getAddress(this.wallet, newAddr)
       .then(addr => {
         this.newAddressError = false;
         this.loading = false;
-        setTimeout(() => {
-          this.onGoingProcessProvider.clear();
-        }, 300);
         if (!addr) return;
         const address = this.walletProvider.getAddressView(
           this.wallet.coin,
@@ -132,7 +126,6 @@ export class ReceivePage extends WalletTabsChild {
         if (this.retryCount > 3) {
           this.retryCount = 0;
           this.loading = false;
-          this.onGoingProcessProvider.clear();
           this.showErrorInfoSheet(err);
         } else if (err == 'INVALID_ADDRESS') {
           // Generate new address if the first one is invalid ( fix for concatenated addresses )
