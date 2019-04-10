@@ -64,7 +64,7 @@ export class SendPage extends WalletTabsChild {
   }
 
   ionViewWillEnter() {
-    this.events.subscribe('update:address', this.updateAddressHandler);
+    this.events.subscribe('Local/AddressScan', this.updateAddressHandler);
 
     this.walletsBtc = this.profileProvider.getWallets({ coin: 'btc' });
     this.walletsBch = this.profileProvider.getWallets({ coin: 'bch' });
@@ -73,7 +73,7 @@ export class SendPage extends WalletTabsChild {
   }
 
   ionViewWillLeave() {
-    this.events.unsubscribe('update:address', this.updateAddressHandler);
+    this.events.unsubscribe('Local/AddressScan', this.updateAddressHandler);
   }
 
   private updateAddressHandler: any = data => {

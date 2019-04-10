@@ -94,7 +94,7 @@ export class JoinWalletPage {
       }
     ];
     this.events.subscribe(
-      'update:invitationCode',
+      'Local/InvitationScan',
       this.updateInvitationCodeHandler
     );
   }
@@ -113,7 +113,7 @@ export class JoinWalletPage {
 
   ngOnDestroy() {
     this.events.unsubscribe(
-      'update:invitationCode',
+      'Local/InvitationScan',
       this.updateInvitationCodeHandler
     );
   }

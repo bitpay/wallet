@@ -78,7 +78,7 @@ export class WalletTabsPage {
   }
 
   private unsubscribeChildPageEvents() {
-    this.events.unsubscribe('update:address');
+    this.events.unsubscribe('Local/AddressScan');
     this.events.unsubscribe('Wallet/disableHardwareKeyboard');
   }
 }
