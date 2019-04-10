@@ -1165,14 +1165,11 @@ export class WalletProvider {
         return reject('MISSING_PARAMETER');
 
       wallet.removeTxProposal(txp, err => {
-        let expected =
-          wallet.cachedStatus.balance.totalAmount - txp.amount - txp.fee;
         this.logger.debug('Transaction removed');
 
         this.invalidateCache(wallet);
         this.events.publish('Local/TxAction', {
-          walletId: wallet.id,
-          until: { totalAmount: expected }
+          walletId: wallet.id
         });
         return resolve(err);
       });
@@ -1472,14 +1469,11 @@ export class WalletProvider {
 
   public onlyPublish(wallet, txp): Promise<any> {
     return new Promise((resolve, reject) => {
-      let expected =
-        wallet.cachedStatus.balance.totalAmount - txp.amount - txp.fee;
       this.publishTx(wallet, txp)
         .then(() => {
           this.invalidateCache(wallet);
           this.events.publish('Local/TxAction', {
-            walletId: wallet.id,
-            until: { totalAmount: expected }
+            walletId: wallet.id
           });
           return resolve();
         })
