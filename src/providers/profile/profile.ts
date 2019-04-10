@@ -1484,15 +1484,15 @@ export class ProfileProvider {
 
     if (opts.hasFunds) {
       ret = _.filter(ret, w => {
-        if (!w.status) return undefined;
-        return w.status.availableBalanceSat > 0;
+        if (!w.cachedStatus) return undefined;
+        return w.cachedStatus.availableBalanceSat > 0;
       });
     }
 
     if (opts.minAmount) {
       ret = _.filter(ret, w => {
-        if (!w.status) return undefined;
-        return w.status.availableBalanceSat > opts.minAmount;
+        if (!w.cachedStatus) return undefined;
+        return w.cachedStatus.availableBalanceSat > opts.minAmount;
       });
     }
 
