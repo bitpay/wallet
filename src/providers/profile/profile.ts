@@ -79,7 +79,7 @@ export class ProfileProvider {
     ];
   }
 
-  private updateWalletSettings(wallet): void {
+  private updateWalletFromConfig(wallet): void {
     const config = this.configProvider.get();
     const defaults = this.configProvider.getDefaults();
     const defaultColor =
@@ -181,7 +181,7 @@ export class ProfileProvider {
     wallet.coin = wallet.credentials.coin;
     wallet.cachedStatus = {};
 
-    this.updateWalletSettings(wallet);
+    this.updateWalletFromConfig(wallet);
     this.wallet[walletId] = wallet;
 
     const backupInfo = await this.getBackupInfo(wallet);
@@ -244,10 +244,12 @@ export class ProfileProvider {
         wallet.openWallet(() => {});
       }
     );
-    this.events.subscribe('wallet:updated', (walletId: string) => {
-      if (walletId && walletId == wallet.id) {
-        this.logger.debug('Updating settings for wallet:' + wallet.id);
-        this.updateWalletSettings(wallet);
+    this.events.subscribe('Local/ConfigUpdate', opts => {
+      this.logger.debug('Local/ConfigUpdate handler @profile', opts);
+
+      if (opts.walletId && opts.walletId == wallet.id) {
+        this.logger.debug('Updating wallet from config ' + wallet.id);
+        this.updateWalletFromConfig(wallet);
       }
     });
 
@@ -399,8 +401,8 @@ export class ProfileProvider {
         .then((data: any) => {
           if (data) {
             const parseData = data;
-            wallet.cachedBalance = parseData.balance;
-            wallet.cachedBalanceUpdatedOn =
+            wallet.lastKnownBalance = parseData.balance;
+            wallet.lastKnownBalanceUpdatedOn =
               parseData.updatedOn < now - showRange
                 ? parseData.updatedOn
                 : null;

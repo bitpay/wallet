@@ -49,7 +49,7 @@ export class HomePage {
   public wallets;
   public walletsBtc;
   public walletsBch;
-  public cachedBalanceUpdateOn: string;
+  public lastKnownBalanceUpdateOn: string;
   public txpsN: number;
   public serverMessages: any[];
   public homeIntegrations;
@@ -99,7 +99,7 @@ export class HomePage {
     private incomingDataProvider: IncomingDataProvider
   ) {
     this.slideDown = false;
-    this.cachedBalanceUpdateOn = '';
+    this.lastKnownBalanceUpdateOn = '';
     this.isElectron = this.platformProvider.isElectron;
     this.showReorderBtc = false;
     this.showReorderBch = false;
