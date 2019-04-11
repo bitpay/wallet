@@ -293,7 +293,6 @@ export class WalletDetailsPage extends WalletTabsChild {
     }
   };
 
-
   // no network //
   private updateStatus = opts => {
     this.logger.debug('Local/WalletUpdate handler @walletDetails', opts);
