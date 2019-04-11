@@ -407,6 +407,7 @@ export class HomePage {
                 throw this.translate.instant('No wallets available');
               }
               this.payProDetailsData = payProDetails;
+              this.payProDetailsData.host = new URL(payProDetails.payProUrl).host;
               this.payProDetailsData.coin = coin;
               this.clearCountDownInterval();
               this.paymentTimeControl(this.payProDetailsData.expires);
