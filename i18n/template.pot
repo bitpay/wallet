@@ -1582,6 +1582,9 @@ msgstr ""
 msgid "Print Card"
 msgstr ""
 
+msgid "Printed Gift Card Required"
+msgstr ""
+
 msgid "Priority"
 msgstr ""
 
@@ -2697,6 +2700,9 @@ msgid "preparing..."
 msgstr ""
 
 msgid "{appName} BCH wallets use the CashAddr format by default"
+msgstr ""
+
+msgid "{displayName} requires you to present a printed gift card at redemption."
 msgstr ""
 
 msgid ""
