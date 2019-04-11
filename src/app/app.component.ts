@@ -35,6 +35,7 @@ import { ImageLoaderConfig } from 'ionic-image-loader';
 import { CopayersPage } from '../pages/add/copayers/copayers';
 import { ImportWalletPage } from '../pages/add/import-wallet/import-wallet';
 import { JoinWalletPage } from '../pages/add/join-wallet/join-wallet';
+import { SelectCurrencyPage } from '../pages/add/select-currency/select-currency';
 import { FingerprintModalPage } from '../pages/fingerprint/fingerprint';
 import { BitPayCardIntroPage } from '../pages/integrations/bitpay-card/bitpay-card-intro/bitpay-card-intro';
 import { CoinbasePage } from '../pages/integrations/coinbase/coinbase';
@@ -85,7 +86,8 @@ export class CopayApp {
     JoinWalletPage,
     PaperWalletPage,
     ShapeshiftPage,
-    WalletDetailsPage
+    WalletDetailsPage,
+    SelectCurrencyPage
   };
 
   constructor(

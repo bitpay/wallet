@@ -61,6 +61,10 @@ export class IncomingDataProvider {
     return !!/^(bitcoin|bitcoincash|bchtest)?:\?r=[\w+]/.exec(data);
   }
 
+  private isValidBitPayInvoice(data: string): boolean {
+    return !!/https:\/\/(www.)?(test.)?bitpay.com\/invoice\?id=\w+/.exec(data);
+  }
+
   private isValidBitcoinUri(data: string): boolean {
     data = this.sanitizeUri(data);
     return !!this.bwcProvider.getBitcore().URI.isValid(data);
@@ -165,6 +169,11 @@ export class IncomingDataProvider {
     data = decodeURIComponent(data.replace(/bitcoin(cash)?:\?r=/, ''));
 
     this.goToPayPro(data, coin);
+  }
+
+  private handleBitPayInvoice(data: string): void {
+    this.logger.debug('Handling bitpay invoice');
+    this.goToSelectCurrencyPage(data);
   }
 
   private handleBitcoinUri(data: string, redirParams?: RedirParams): void {
@@ -275,6 +284,21 @@ export class IncomingDataProvider {
     }
   }
 
+  private goToSelectCurrencyPage(data): void {
+    this.logger.debug('Incoming-data (redirect): Select Invoice Currency');
+
+    let stateParams = {
+      invoiceData: data,
+      isShared: false,
+      nextPage: 'confirm'
+    };
+    let nextView = {
+      name: 'SelectCurrencyPage',
+      params: stateParams
+    };
+    this.events.publish('IncomingDataRedir', nextView);
+  }
+
   private goToImportByPrivateKey(data: string): void {
     this.logger.debug('Incoming-data (redirect): QR code export feature');
 
@@ -359,8 +383,13 @@ export class IncomingDataProvider {
   }
 
   public redir(data: string, redirParams?: RedirParams): boolean {
-    // Payment Protocol with non-backwards-compatible request
-    if (this.isValidPayProNonBackwardsCompatible(data)) {
+    //  Handling of a bitpay invoice url
+    if (this.isValidBitPayInvoice(data)) {
+      this.handleBitPayInvoice(data);
+      return true;
+
+      // Payment Protocol with non-backwards-compatible request
+    } else if (this.isValidPayProNonBackwardsCompatible(data)) {
       this.handlePayProNonBackwardsCompatible(data);
       return true;
 
@@ -442,7 +471,13 @@ export class IncomingDataProvider {
 
   public parseData(data: string): any {
     if (!data) return;
-    if (this.isValidPayProNonBackwardsCompatible(data)) {
+    if (this.isValidBitPayInvoice(data)) {
+      return {
+        data,
+        type: 'InvoiceUri',
+        title: this.translate.instant('Invoice URL')
+      };
+    } else if (this.isValidPayProNonBackwardsCompatible(data)) {
       return {
         data,
         type: 'PayPro',
