@@ -24,7 +24,7 @@
               Incomplete
             </span>
             <span *ngIf="fromWallet.isComplete()">
-              <span *ngIf="!fromWallet.balanceHidden && !fromWallet.scanning"> {{fromWallet.status.totalBalanceStr ? fromWallet.status.totalBalanceStr : ( fromWallet.cachedBalance ? fromWallet.cachedBalance
+              <span *ngIf="!fromWallet.balanceHidden && !fromWallet.scanning"> {{fromWallet.cachedStatus.totalBalanceStr ? fromWallet.cachedStatus.totalBalanceStr : ( fromWallet.cachedBalance ? fromWallet.cachedBalance
                 + (fromWallet.cachedBalanceUpdatedOn ? ' &middot; ' + ( fromWallet.cachedBalanceUpdatedOn * 1000 | amTimeAgo)
                 : '') : '' ) }} </span>
               <span *ngIf="fromWallet.scanning">
@@ -35,7 +35,7 @@
               <span *ngIf="fromWallet.n > 1">
                 {{fromWallet.m}}-of-{{fromWallet.n}}
               </span>
-              <ion-icon *ngIf="!fromWallet.balanceHidden && (fromWallet.status.totalBalanceSat != fromWallet.status.spendableAmount)" name="ios-timer-outline"></ion-icon>
+              <ion-icon *ngIf="!fromWallet.balanceHidden && (fromWallet.cachedStatus.totalBalanceSat != fromWallet.cachedStatus.spendableAmount)" name="ios-timer-outline"></ion-icon>
               <span class="wallet-warning" *ngIf="fromWallet.error">{{fromWallet.error}}</span>
             </span>
             &nbsp;
@@ -64,7 +64,7 @@
               Needs Backup
             </span>
             <span *ngIf="toWallet.isComplete() && !toWallet.needsBackup">
-              <span *ngIf="!toWallet.balanceHidden && !toWallet.scanning"> {{toWallet.status.totalBalanceStr ? toWallet.status.totalBalanceStr : ( toWallet.cachedBalance ? toWallet.cachedBalance
+              <span *ngIf="!toWallet.balanceHidden && !toWallet.scanning"> {{toWallet.cachedStatus.totalBalanceStr ? toWallet.cachedStatus.totalBalanceStr : ( toWallet.cachedBalance ? toWallet.cachedBalance
                 + (toWallet.cachedBalanceUpdatedOn ? ' &middot; ' + ( toWallet.cachedBalanceUpdatedOn * 1000 | amTimeAgo)
                 : '') : '' ) }} </span>
               <span *ngIf="toWallet.scanning">
@@ -75,7 +75,7 @@
               <span class="tab-home__wallet__multisig-number" *ngIf="toWallet.n > 1">
                 {{toWallet.m}}-of-{{toWallet.n}}
               </span>
-              <ion-icon *ngIf="!toWallet.balanceHidden && (toWallet.status.totalBalanceSat != toWallet.status.spendableAmount)" name="ios-timer-outline"></ion-icon>
+              <ion-icon *ngIf="!toWallet.balanceHidden && (toWallet.cachedStatus.totalBalanceSat != toWallet.cachedStatus.spendableAmount)" name="ios-timer-outline"></ion-icon>
               <span class="wallet-warning" *ngIf="toWallet.error">{{toWallet.error}}</span>
             </span>
             &nbsp;
