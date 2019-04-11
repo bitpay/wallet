@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import axios from 'axios';
 import { NavController, NavParams } from 'ionic-angular';
 import { Logger } from '../../../providers/logger/logger';
 
@@ -47,7 +48,43 @@ export class SelectCurrencyPage {
     this.navCtrl.push(ImportWalletPage, { coin });
   }
 
-  public goToConfirm(coin): void {
+  private async setBuyerSelectedTransactionCurrency(
+    testStr: string,
+    invoiceId: string,
+    coin: string
+  ) {
+    try {
+      axios.post(
+        `https://${testStr}bitpay.com/invoiceData/setBuyerSelectedTransactionCurrency`,
+        {
+          buyerSelectedTransactionCurrency: coin.toUpperCase(),
+          invoiceId
+        }
+      );
+    } catch (err) {
+      this.logger.error('Cannot Set Buyer Selected Transaction Currency');
+    }
+  }
+
+  private async setBuyerProvidedEmail(
+    testStr: string,
+    invoiceId: string,
+    emailAddress: string
+  ) {
+    try {
+      axios.post(
+        `https://${testStr}bitpay.com/invoiceData/setBuyerProvidedEmail`,
+        {
+          buyerProvidedEmail: emailAddress,
+          invoiceId
+        }
+      );
+    } catch (err) {
+      this.logger.error('Cannot Set Buyer Provided Email');
+    }
+  }
+
+  public async goToConfirm(coin) {
     const testStr: string =
       this.invoiceData.indexOf('test.bitpay.com') > -1 ? 'test.' : '';
     let invoiceId: string = this.invoiceData.replace(
@@ -55,6 +92,13 @@ export class SelectCurrencyPage {
       ''
     );
     invoiceId = invoiceId.split('&')[0];
+    const emailAddress = 'justinkook@gmail.com';
+    await this.setBuyerSelectedTransactionCurrency(testStr, invoiceId, coin);
+    // Redirects to email page here
+    // this.navCtrl.push(ContactEmailFormPage, { testStr, invoiceId, coin });
+
+    await this.setBuyerProvidedEmail(testStr, invoiceId, emailAddress);
+
     // Need to add BCH testnet bchtest: payProUrl
     const payProBitcoinUrl: string = `bitcoin:?r=https://${testStr}bitpay.com/i/${invoiceId}`;
     const payProBitcoinCashUrl: string = `bitcoincash:?r=https://${testStr}bitpay.com/i/${invoiceId}`;
