@@ -48,7 +48,11 @@ export class PayproProvider {
             if (err) reject(err);
             else if (paypro && !paypro.verified)
               reject('Payment Protocol Invalid');
-            else resolve(paypro);
+            else {
+              // URI is needed to identify host
+              paypro.payProUrl = uri;
+              resolve(paypro);
+            }
           }
         );
       });

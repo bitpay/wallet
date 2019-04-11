@@ -2,8 +2,11 @@
   <div *ngIf="payProDetailsData && !payProDetailsData.error" class="item-title">
     <span translate>Payment request</span>
   </div>
-  <div *ngIf="payProDetailsData && !payProDetailsData.error" class="item-subtitle">
-    <span translate>From</span>: {{payProDetailsData?.domain}}
+  <div *ngIf="payProDetailsData && payProDetailsData.host && !payProDetailsData.error" class="item-subtitle">
+    <span translate>From</span>: 
+    <ion-icon *ngIf="payProDetailsData?.verified" name="lock" color="success"></ion-icon>
+    <ion-icon *ngIf="!payProDetailsData?.verified" name="unlock" color="danger"></ion-icon>
+    {{payProDetailsData?.host}}
   </div>
   <ion-note *ngIf="payProDetailsData && !payProDetailsData.error" item-right>
     <div class="amount">
