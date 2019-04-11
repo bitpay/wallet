@@ -49,7 +49,6 @@ export class HomePage {
   public wallets;
   public walletsBtc;
   public walletsBch;
-  public lastKnownBalanceUpdateOn: string;
   public txpsN: number;
   public serverMessages: any[];
   public homeIntegrations;
@@ -99,7 +98,6 @@ export class HomePage {
     private incomingDataProvider: IncomingDataProvider
   ) {
     this.slideDown = false;
-    this.lastKnownBalanceUpdateOn = '';
     this.isElectron = this.platformProvider.isElectron;
     this.showReorderBtc = false;
     this.showReorderBch = false;
@@ -491,7 +489,7 @@ export class HomePage {
       .then(status => {
         wallet.cachedStatus = status;
         wallet.error = null;
-        this.profileProvider.setLastKnownBalance(
+        this.persistenceProvider.setLastKnownBalance(
           wallet.id,
           wallet.cachedStatus.availableBalanceStr
         );
@@ -554,7 +552,7 @@ export class HomePage {
             foundMessage = true;
           }
 
-          this.profileProvider.setLastKnownBalance(
+          this.persistenceProvider.setLastKnownBalance(
             wallet.id,
             wallet.cachedStatus.availableBalanceStr
           );

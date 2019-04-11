@@ -311,7 +311,7 @@ export class BitPayCardProvider {
                   history = data.data || {};
                   history['txs'] = this._processTransactions(invoices, history);
 
-                  this.setLastKnownBalance(cardId, history.currentCardBalance);
+                  this.persistenceProvider.setLastKnownBalance(cardId, history.currentCardBalance);
 
                   return cb(data.error, history);
                 },
@@ -394,33 +394,6 @@ export class BitPayCardProvider {
       });
   }
 
-  public getLastKnownBalance(cardId, cb) {
-    this.persistenceProvider.getBalanceCache(cardId).then(val => {
-      return cb(val);
-    });
-  }
-
-  public addLastKnownBalance(card, cb) {
-    var now = Math.floor(Date.now() / 1000);
-    var showRange = 600; // 10min;
-
-    this.getLastKnownBalance(card.eid, data => {
-      if (data) {
-        card.balance = Number(data.balance);
-        card.updatedOn =
-          data.updatedOn < now - showRange ? data.updatedOn : null;
-      }
-      return cb();
-    });
-  }
-
-  public setLastKnownBalance(cardId, balance) {
-    this.persistenceProvider.setBalanceCache(cardId, {
-      balance,
-      updatedOn: Math.floor(Date.now() / 1000)
-    });
-  }
-
   public remove(cardId, cb) {
     this.persistenceProvider
       .removeBitpayDebitCard(
@@ -428,7 +401,7 @@ export class BitPayCardProvider {
         cardId
       )
       .then(() => {
-        this.persistenceProvider.removeBalanceCache(cardId);
+        this.persistenceProvider.removeLastKnownBalance(cardId);
         return cb();
       })
       .catch(err => {
@@ -480,13 +453,21 @@ export class BitPayCardProvider {
       // Async, no problem
       _.each(cards, x => {
         this.setCurrencySymbol(x);
-        this.addLastKnownBalance(x, () => {});
+        this.persistenceProvider.getLastKnownBalance(x.eid)
+          .then( ({balance, updatedOn}) => {
+            x.balance = balance;
+            x.updateOn = updatedOn;
+          });
 
         // async refresh
         if (!opts.noRefresh) {
           this.getHistory(x.id, {}, err => {
             if (err) return;
-            this.addLastKnownBalance(x, () => {});
+            this.persistenceProvider.getLastKnownBalance(x.eid)
+              .then( ({balance, updatedOn}) => {
+                x.balance = balance;
+                x.updateOn = updatedOn;
+              });
           });
         }
       });

@@ -379,49 +379,6 @@ export class ProfileProvider {
     this.persistenceProvider.storeProfile(this.profile);
   }
 
-  public getLastKnownBalance(wid: string) {
-    return new Promise((resolve, reject) => {
-      this.persistenceProvider
-        .getBalanceCache(wid)
-        .then((data: string) => {
-          return resolve(data);
-        })
-        .catch(err => {
-          return reject(err);
-        });
-    });
-  }
-
-  private addLastKnownBalance(wallet): Promise<any> {
-    return new Promise(resolve => {
-      const now = Math.floor(Date.now() / 1000);
-      const showRange = 600; // 10min;
-
-      this.getLastKnownBalance(wallet.id)
-        .then((data: any) => {
-          if (data) {
-            const parseData = data;
-            wallet.lastKnownBalance = parseData.balance;
-            wallet.lastKnownBalanceUpdatedOn =
-              parseData.updatedOn < now - showRange
-                ? parseData.updatedOn
-                : null;
-          }
-          return resolve();
-        })
-        .catch(err => {
-          this.logger.warn('Could not get last known balance: ', err);
-        });
-    });
-  }
-
-  public setLastKnownBalance(wid: string, balance: number): void {
-    this.persistenceProvider.setBalanceCache(wid, {
-      balance,
-      updatedOn: Math.floor(Date.now() / 1000)
-    });
-  }
-
   private runValidation(wallet, delay?: number, retryDelay?: number) {
     delay = delay ? delay : 500;
     retryDelay = retryDelay ? retryDelay : 50;

@@ -77,7 +77,7 @@ describe('Profile Provider', () => {
 
   class PersistenceProviderMock {
     constructor() {}
-    getBalanceCache() {
+    getLastKnownBalance() {
       return Promise.resolve('0.00 BTC');
     }
     setWalletOrder() {
