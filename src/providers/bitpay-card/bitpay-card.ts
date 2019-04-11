@@ -265,7 +265,7 @@ export class BitPayCardProvider {
   }
 
   // opts: range
-  public getHistory(cardId, opts, cb) {
+  public updateHistory(cardId, opts, cb) {
     var invoices, history;
     opts = opts || {};
 
@@ -454,21 +454,14 @@ export class BitPayCardProvider {
       _.each(cards, x => {
         this.setCurrencySymbol(x);
         this.persistenceProvider.getLastKnownBalance(x.eid)
-          .then( ({balance, updatedOn}) => {
-            x.balance = balance;
+          .then( ({balance=null, updatedOn=null}) => {
+            x.balance = Number(balance);
             x.updateOn = updatedOn;
           });
 
         // async refresh
         if (!opts.noRefresh) {
-          this.getHistory(x.id, {}, err => {
-            if (err) return;
-            this.persistenceProvider.getLastKnownBalance(x.eid)
-              .then( ({balance, updatedOn}) => {
-                x.balance = balance;
-                x.updateOn = updatedOn;
-              });
-          });
+          this.updateHistory(x.id, {}, () => {});
         }
       });
 

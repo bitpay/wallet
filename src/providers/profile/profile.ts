@@ -1463,7 +1463,14 @@ export class ProfileProvider {
 
     // Add cached balance async
     _.each(ret, x => {
-      this.addLastKnownBalance(x);
+      this.persistenceProvider.getLastKnownBalance(x.id)
+        .then( (datum) => {
+          this.logger.debug("Last known balance for ",x.id,datum);
+          datum = datum || {};
+          let {balance=null, updatedOn=null} = datum; 
+          x.lastKnownBalance = balance;
+          x.lastKnownBalanceUpdatedOn = updatedOn;
+        });
     });
 
     return _.sortBy(ret, 'order');
