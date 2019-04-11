@@ -615,7 +615,7 @@ export class WalletProvider {
     return new Promise((resolve, reject) => {
       opts = opts || {};
       const FIRST_LIMIT = 5;
-      const LIMIT = 50;
+      const LIMIT = 100;
       let requestLimit = FIRST_LIMIT;
       const walletId = wallet.credentials.walletId;
       WalletProvider.progressFn[walletId] = progressFn || (() => {});
@@ -644,7 +644,7 @@ export class WalletProvider {
       if (WalletProvider.historyUpdateOnProgress[wallet.id]) {
         this.logger.debug(
           '!! History update already on progress for: ' +
-            wallet.credentials.walletName
+            wallet.id
         );
 
         if (progressFn) {
@@ -670,7 +670,13 @@ export class WalletProvider {
           WalletProvider.progressFn[walletId](txsFromLocal, 0);
           wallet.completeHistory = txsFromLocal;
 
-          const getNewTxs = (newTxs, skip: number): Promise<any> => {
+          // send update
+          this.events.publish('Local/WalletHistoryUpdate', {
+            walletId: wallet.id,
+            complete: false
+          });
+
+          const getNewTxs = (newTxs, skip: number, tries: number = 0): Promise<any> => {
             return new Promise((resolve, reject) => {
               this.fetchTxsFromServer(wallet, skip, endingTxid, requestLimit)
                 .then(result => {
@@ -730,15 +736,14 @@ export class WalletProvider {
                     err instanceof this.errors.CONNECTION_ERROR ||
                     (err.message && err.message.match(/5../))
                   ) {
+
+console.log('[wallet.ts.734:tries:]',tries); // TODO
+                    if (tries>1) 
+                      return reject(err);
+
                     return setTimeout(() => {
-                      return getNewTxs(newTxs, skip)
-                        .then(txs => {
-                          resolve(txs);
-                        })
-                        .catch(err => {
-                          return reject(err);
-                        });
-                    }, 5000);
+                      return resolve(getNewTxs(newTxs, skip, ++tries))
+                    }, 2000 + 3000 * tries);
                   } else {
                     return reject(err);
                   }
@@ -1052,6 +1057,7 @@ export class WalletProvider {
               err
             );
           }
+console.log('[wallet.ts.1055:err:]',err); // TODO
           return reject(err);
         });
     });

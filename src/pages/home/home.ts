@@ -455,6 +455,7 @@ export class HomePage {
         });
       })
       .catch(err => {
+console.log('[home.ts.502:err:]',err); // TODO
         if (err != 'HISTORY_IN_PROGRESS') {
           this.logger.warn('WalletHistoryUpdate ERROR', err);
           this.events.publish('Local/WalletHistoryUpdate', {
@@ -488,7 +489,8 @@ export class HomePage {
       .fetchStatus(wallet, opts)
       .then(status => {
         wallet.cachedStatus = status;
-        wallet.error = null;
+        wallet.error = wallet.errorObj = null;
+
         this.persistenceProvider.setLastKnownBalance(
           wallet.id,
           wallet.cachedStatus.availableBalanceStr
@@ -504,12 +506,16 @@ export class HomePage {
         }
       })
       .catch(err => {
-        if (err == 'INPROGRESS') {
-          //
-        } else {
-          wallet.error = err;
-          wallet.cachedStatus = null;
-          this.logger.error(err);
+        this.processWalletError(wallet, err);
+
+        this.events.publish('Local/WalletUpdate', {
+          walletId: opts.walletId,
+          incomplete: false,
+          error: wallet.error,
+        });
+
+        if (opts.alsoUpdateHistory) {
+          this.fetchTxHistory({ walletId: opts.walletId });
         }
       });
   };
@@ -538,7 +544,7 @@ export class HomePage {
         .fetchStatus(wallet, {})
         .then(async status => {
           wallet.cachedStatus = status;
-          wallet.error = null;
+          wallet.error = wallet.errorObj = null;
 
           if (!foundMessage && !_.isEmpty(status.serverMessages)) {
             this.serverMessages = _.orderBy(
@@ -559,21 +565,7 @@ export class HomePage {
           return Promise.resolve();
         })
         .catch(err => {
-          if (err && err.message === '403') {
-            this.accessDenied = true;
-            wallet.error = this.translate.instant('Access denied');
-          } else if (err === 'WALLET_NOT_REGISTERED') {
-            wallet.error = this.translate.instant('Wallet not registered');
-          } else {
-            wallet.error = this.bwcErrorProvider.msg(err);
-          }
-
-          this.logger.warn(
-            this.bwcErrorProvider.msg(
-              err,
-              'Error updating status for ' + wallet.name
-            )
-          );
+          this.processWalletError(wallet, err);
           return Promise.resolve();
         });
     };
@@ -587,6 +579,31 @@ export class HomePage {
     Promise.all(promises).then(() => {
       this.updateTxps();
     });
+  }
+
+  private processWalletError(wallet, err):void {
+    wallet.error = wallet.errorObj = null;
+
+    if (!err || err == 'INPROGRESS') 
+      return;
+
+    wallet.cachedStatus = null;
+    wallet.errorObj = err;
+
+    if (err.message === '403') {
+      this.accessDenied = true;
+      wallet.error = this.translate.instant('Access denied');
+    } else if (err === 'WALLET_NOT_REGISTERED') {
+      wallet.error = this.translate.instant('Wallet not registered');
+    } else {
+      wallet.error = this.bwcErrorProvider.msg(err);
+    }
+    this.logger.warn(
+      this.bwcErrorProvider.msg(
+        wallet.error,
+        'Error updating status for ' + wallet.id
+      )
+    );
   }
 
   private removeServerMessage(id): void {
