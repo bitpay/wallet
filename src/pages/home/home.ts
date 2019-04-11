@@ -11,9 +11,6 @@ import { BitPayCardPage } from '../integrations/bitpay-card/bitpay-card';
 import { BitPayCardIntroPage } from '../integrations/bitpay-card/bitpay-card-intro/bitpay-card-intro';
 import { CoinbasePage } from '../integrations/coinbase/coinbase';
 import { ShapeshiftPage } from '../integrations/shapeshift/shapeshift';
-import { PaperWalletPage } from '../paper-wallet/paper-wallet';
-import { AmountPage } from '../send/amount/amount';
-import { AddressbookAddPage } from '../settings/addressbook/add/add';
 import { ProposalsPage } from './proposals/proposals';
 
 // Providers
@@ -181,12 +178,6 @@ export class HomePage {
     this.checkEmailLawCompliance();
 
     const subscribeEvents = () => {
-      // Scanner
-      this.events.subscribe(
-        'finishIncomingDataMenuEvent',
-        this.finishIncomingDataMenuEventHandler
-      );
-
       // BWS Events: Update Status per Wallet -> Update txps
       // NewBlock, NewCopayer, NewAddress, NewTxProposal, TxProposalAcceptedBy, TxProposalRejectedBy, txProposalFinallyRejected,
       // txProposalFinallyAccepted, TxProposalRemoved, NewIncomingTx, NewOutgoingTx
@@ -210,10 +201,6 @@ export class HomePage {
     });
 
     this.onPauseSubscription = this.plt.pause.subscribe(() => {
-      this.events.unsubscribe(
-        'finishIncomingDataMenuEvent',
-        this.finishIncomingDataMenuEventHandler
-      );
       this.events.unsubscribe('bwsEvent', this.bwsEventHandler);
       this.events.unsubscribe('Local/WalletListChange', this.setWallets);
       this.events.unsubscribe('Local/TxAction', this.walletFocusHandler);
@@ -247,39 +234,6 @@ export class HomePage {
     this.walletProvider.invalidateCache(wallet);
     this.debounceFetchWalletStatus(walletId);
   };
-
-  private finishIncomingDataMenuEventHandler: any = data => {
-    switch (data.redirTo) {
-      case 'AmountPage':
-        this.sendPaymentToAddress(data.value, data.coin);
-        break;
-      case 'AddressBookPage':
-        this.addToAddressBook(data.value);
-        break;
-      case 'OpenExternalLink':
-        this.goToUrl(data.value);
-        break;
-      case 'PaperWalletPage':
-        this.scanPaperWallet(data.value);
-        break;
-    }
-  };
-
-  private goToUrl(url: string): void {
-    this.externalLinkProvider.open(url);
-  }
-
-  private sendPaymentToAddress(bitcoinAddress: string, coin: string): void {
-    this.navCtrl.push(AmountPage, { toAddress: bitcoinAddress, coin });
-  }
-
-  private addToAddressBook(bitcoinAddress: string): void {
-    this.navCtrl.push(AddressbookAddPage, { addressbookEntry: bitcoinAddress });
-  }
-
-  private scanPaperWallet(privateKey: string) {
-    this.navCtrl.push(PaperWalletPage, { privateKey });
-  }
 
   private updateDesktopOnFocus() {
     const { remote } = (window as any).require('electron');
