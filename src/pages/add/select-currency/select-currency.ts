@@ -5,7 +5,7 @@ import { Logger } from '../../../providers/logger/logger';
 
 // pages
 
-import { IncomingDataProvider } from '../../../providers/incoming-data/incoming-data';
+import { ContactEmailPage } from '../contact-email/contact-email';
 import { CreateWalletPage } from '../create-wallet/create-wallet';
 import { ImportWalletPage } from '../import-wallet/import-wallet';
 
@@ -22,8 +22,7 @@ export class SelectCurrencyPage {
   constructor(
     private navCtrl: NavController,
     private logger: Logger,
-    private navParam: NavParams,
-    private incomingDataProvider: IncomingDataProvider
+    private navParam: NavParams
   ) {
     this.isShared = this.navParam.data.isShared;
     this.nextPage = this.navParam.data.nextPage;
@@ -37,7 +36,7 @@ export class SelectCurrencyPage {
   public goToNextPage(coin): void {
     if (this.nextPage == 'create') this.goToCreateWallet(coin);
     if (this.nextPage == 'import') this.goToImportWallet(coin);
-    if (this.nextPage == 'confirm') this.goToConfirm(coin);
+    if (this.nextPage == 'confirm') this.goToContactEmail(coin);
   }
 
   public goToCreateWallet(coin): void {
@@ -66,25 +65,7 @@ export class SelectCurrencyPage {
     }
   }
 
-  private async setBuyerProvidedEmail(
-    testStr: string,
-    invoiceId: string,
-    emailAddress: string
-  ) {
-    try {
-      axios.post(
-        `https://${testStr}bitpay.com/invoiceData/setBuyerProvidedEmail`,
-        {
-          buyerProvidedEmail: emailAddress,
-          invoiceId
-        }
-      );
-    } catch (err) {
-      this.logger.error('Cannot Set Buyer Provided Email');
-    }
-  }
-
-  public async goToConfirm(coin) {
+  public async goToContactEmail(coin) {
     const testStr: string =
       this.invoiceData.indexOf('test.bitpay.com') > -1 ? 'test.' : '';
     let invoiceId: string = this.invoiceData.replace(
@@ -92,18 +73,7 @@ export class SelectCurrencyPage {
       ''
     );
     invoiceId = invoiceId.split('&')[0];
-    const emailAddress = 'justinkook@gmail.com';
     await this.setBuyerSelectedTransactionCurrency(testStr, invoiceId, coin);
-    // Redirects to email page here
-    // this.navCtrl.push(ContactEmailFormPage, { testStr, invoiceId, coin });
-
-    await this.setBuyerProvidedEmail(testStr, invoiceId, emailAddress);
-
-    // Need to add BCH testnet bchtest: payProUrl
-    const payProBitcoinUrl: string = `bitcoin:?r=https://${testStr}bitpay.com/i/${invoiceId}`;
-    const payProBitcoinCashUrl: string = `bitcoincash:?r=https://${testStr}bitpay.com/i/${invoiceId}`;
-
-    const payProUrl = coin === 'btc' ? payProBitcoinUrl : payProBitcoinCashUrl;
-    this.incomingDataProvider.redir(payProUrl);
+    this.navCtrl.push(ContactEmailPage, { testStr, invoiceId, coin });
   }
 }

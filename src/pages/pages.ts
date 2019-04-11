@@ -21,6 +21,7 @@ import { SearchTxModalPage } from '../pages/wallet-details/search-tx-modal/searc
 import { WalletBalancePage } from '../pages/wallet-details/wallet-balance/wallet-balance';
 import { WalletDetailsPage } from '../pages/wallet-details/wallet-details';
 import { WalletTabsPage } from '../pages/wallet-tabs/wallet-tabs';
+import { ContactEmailPage } from './add/contact-email/contact-email';
 
 // Integrations: Coinbase
 import { BuyCoinbasePage } from '../pages/integrations/coinbase/buy-coinbase/buy-coinbase';
@@ -132,6 +133,7 @@ export const PAGES = [
   CreateNewWalletPage,
   CoinbasePage,
   CoinbaseTxDetailsPage,
+  ContactEmailPage,
   CopayersPage,
   FeedbackCardPage,
   SharePage,

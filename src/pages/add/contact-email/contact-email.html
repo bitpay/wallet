@@ -1,0 +1,239 @@
+<wide-header-page title="{{'Enter Invoice Email' | translate}}">
+  <div page-content>
+    <form
+      *ngIf="!iframe; else: iframeTemplate"
+      id="emailAddressForm"
+      name="emailAddressForm"
+      #emailAddressForm="ngForm"
+      class="manual__step-one refund-address-form contact-email-form"
+      [ngClass]="{ 'ng-submitted': emailAddressFormSubmitted }"
+      (ngSubmit)="setBuyerProvidedEmail()"
+      novalidate
+    >
+      <div class="contact-email-form__instructions">
+        <div
+          class="manual__step-one__header contact-email-form__instructions__header"
+        >
+          <span *ngIf="!setBuyerProvidedEmailServerError" i18n
+            >Contact &amp; Refund Email</span
+          >
+          <span *ngIf="setBuyerProvidedEmailServerError" i18n
+            >There was a problem.</span
+          >
+        </div>
+        <div
+          class="manual__step-one__instructions"
+          *ngIf="!buyerProvidedEmailAlreadySet()"
+        >
+          <span class="initial-label">
+            <p *ngIf="!setBuyerProvidedEmailServerError" i18n>
+              By giving my email address, I give explicit consent to BitPay to
+              use it to contact me about payment issues.
+            </p>
+            <span *ngIf="!setBuyerProvidedEmailServerError" i18n>
+              <a href="https://bitpay.com/about/privacy" target="_blank"
+                >View Privacy Policy</a
+              ></span
+            >
+            <bp-truncate *ngIf="!setBuyerProvidedEmailServerError">
+              <bp-truncate-more>
+                <a [href]="invoiceDataService.fullInvoiceUrl" target="_blank"
+                  ><span i18n>More</span> &rarr;</a
+                >
+              </bp-truncate-more>
+            </bp-truncate>
+            <bp-truncate *ngIf="setBuyerProvidedEmailServerError">
+              <bp-truncate-text [maxChars]="maxChars" i18n
+                >We're having trouble saving your email address right now.
+                Please try again later. If this problem persists, please contact
+                <a href="mailto:support@bitpay.com">support@bitpay.com</a>.
+              </bp-truncate-text>
+              <bp-truncate-more>
+                <a [href]="invoiceDataService.fullInvoiceUrl" target="_blank"
+                  ><span i18n>More</span> &rarr;</a
+                >
+              </bp-truncate-more>
+            </bp-truncate>
+          </span>
+          <span class="submission-error-label" i18n
+            >Please enter a valid email address.</span
+          >
+        </div>
+        <div
+          class="manual__step-one__instructions"
+          *ngIf="buyerProvidedEmailAlreadySet()"
+        >
+          <span class="initial-label">
+            <bp-truncate>
+              <bp-truncate-text [maxChars]="maxChars" i18n
+                >If there is an issue with this payment, or a refund needs to be
+                made, we will contact you at this address.</bp-truncate-text
+              >
+              <bp-truncate-more>
+                <a [href]="invoiceDataService.fullInvoiceUrl" target="_blank"
+                  ><span i18n>More</span> &rarr;</a
+                >
+              </bp-truncate-more>
+            </bp-truncate>
+          </span>
+        </div>
+      </div>
+      <div
+        class="contact-email-form__form"
+        [ngClass]="{ confirm: buyerProvidedEmailAlreadySet() }"
+      >
+        <div class="input-wrapper">
+          <input
+            id="emailAddressFormInput"
+            class="bp-input email-input"
+            bp-focus
+            [bpFocus]="focusEmailInput"
+            [(ngModel)]="buyerProvidedEmail"
+            type="email"
+            name="receiptEmail"
+            placeholder="Your email"
+            i18n-placeholder
+            required
+            [pattern]="emailRegex"
+            [disabled]="buyerProvidedEmailAlreadySet()"
+          />
+          <bp-loading-button [loading]="savingBuyerProvidedEmail">
+            <span i18n *ngIf="!buyerProvidedEmailAlreadySet()">Continue</span>
+            <span i18n *ngIf="buyerProvidedEmailAlreadySet()"
+              >Confirm email address</span
+            >
+          </bp-loading-button>
+        </div>
+        <div
+          id="wrong-email-button"
+          class="refund-address-form__link"
+          (click)="wrongEmail()"
+          *ngIf="buyerProvidedEmailAlreadySet()"
+        >
+          <span i18n>Wrong email?</span>
+        </div>
+      </div>
+    </form>
+    <ng-template #iframeTemplate>
+      <form
+        id="emailAddressForm"
+        name="emailAddressForm"
+        #emailAddressForm="ngForm"
+        class="manual__step-one refund-address-form contact-email-form"
+        [ngClass]="{ 'ng-submitted': emailAddressFormSubmitted }"
+        (ngSubmit)="setBuyerProvidedEmail()"
+        novalidate
+      >
+        <div class="contact-email-form__instructions">
+          <div
+            class="manual__step-one__header contact-email-form__instructions__header"
+          >
+            <span *ngIf="!setBuyerProvidedEmailServerError"
+              >Contact &amp; Refund Email</span
+            >
+            <span *ngIf="setBuyerProvidedEmailServerError"
+              >There was a problem.</span
+            >
+          </div>
+
+          <div
+            class="manual__step-one__instructions"
+            *ngIf="!buyerProvidedEmailAlreadySet()"
+          >
+            <span class="initial-label">
+              <p *ngIf="!setBuyerProvidedEmailServerError">
+                By giving my email address, I give explicit consent to BitPay to
+                use it to contact me about payment issues.
+              </p>
+              <span *ngIf="!setBuyerProvidedEmailServerError">
+                <a href="https://bitpay.com/about/privacy" target="_blank"
+                  >View Privacy Policy</a
+                ></span
+              >
+              <bp-truncate *ngIf="!setBuyerProvidedEmailServerError">
+                <bp-truncate-more>
+                  <a [href]="invoiceDataService.fullInvoiceUrl" target="_blank"
+                    ><span>More</span> &rarr;</a
+                  >
+                </bp-truncate-more>
+              </bp-truncate>
+
+              <bp-truncate *ngIf="setBuyerProvidedEmailServerError">
+                <bp-truncate-text [maxChars]="maxChars"
+                  >We're having trouble saving your email address right now.
+                  Please try again later. If this problem persists, please
+                  contact
+                  <a href="mailto:support@bitpay.com">support@bitpay.com</a>.
+                </bp-truncate-text>
+                <bp-truncate-more>
+                  <a [href]="invoiceDataService.fullInvoiceUrl" target="_blank"
+                    ><span>More</span> &rarr;</a
+                  >
+                </bp-truncate-more>
+              </bp-truncate>
+            </span>
+            <span class="submission-error-label"
+              >Please enter a valid email address.</span
+            >
+          </div>
+
+          <div
+            class="manual__step-one__instructions"
+            *ngIf="buyerProvidedEmailAlreadySet()"
+          >
+            <span class="initial-label">
+              <bp-truncate>
+                <bp-truncate-text [maxChars]="maxChars"
+                  >If there is an issue with this payment, or a refund needs to
+                  be made, we will contact you at this
+                  address.</bp-truncate-text
+                >
+                <bp-truncate-more>
+                  <a [href]="invoiceDataService.fullInvoiceUrl" target="_blank"
+                    ><span>More</span> &rarr;</a
+                  >
+                </bp-truncate-more>
+              </bp-truncate>
+            </span>
+          </div>
+        </div>
+
+        <div
+          class="contact-email-form__form"
+          [ngClass]="{ confirm: buyerProvidedEmailAlreadySet() }"
+        >
+          <div class="input-wrapper">
+            <input
+              id="emailAddressFormInput"
+              class="bp-input email-input"
+              bp-focus
+              [bpFocus]="focusEmailInput"
+              [(ngModel)]="buyerProvidedEmail"
+              type="email"
+              name="receiptEmail"
+              placeholder="Your email"
+              required
+              [pattern]="emailRegex"
+              [disabled]="buyerProvidedEmailAlreadySet()"
+            />
+            <bp-loading-button [loading]="savingBuyerProvidedEmail">
+              <span *ngIf="!buyerProvidedEmailAlreadySet()">Continue</span>
+              <span *ngIf="buyerProvidedEmailAlreadySet()"
+                >Confirm email address</span
+              >
+            </bp-loading-button>
+          </div>
+
+          <div
+            id="wrong-email-button"
+            class="refund-address-form__link"
+            (click)="wrongEmail()"
+            *ngIf="buyerProvidedEmailAlreadySet()"
+          >
+            <span>Wrong email?</span>
+          </div>
+        </div>
+      </form>
+    </ng-template>
+  </div>
+</wide-header-page>
