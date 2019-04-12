@@ -76,14 +76,8 @@ export class ShapeshiftShiftPage {
     this.fromWallets = this.profileProvider.getWallets({
       onlyComplete: true,
       network: this.network,
-      coin: 'btc',
       hasFunds: true,
-    }).concat(this.profileProvider.getWallets({
-      onlyComplete: true,
-      network: this.network,
-      coin: 'bch',
-      hasFunds: true,
-    }));
+    })
 
     if (_.isEmpty(this.fromWallets)) {
       this.showErrorAndBack(
