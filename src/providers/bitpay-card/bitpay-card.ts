@@ -311,7 +311,10 @@ export class BitPayCardProvider {
                   history = data.data || {};
                   history['txs'] = this._processTransactions(invoices, history);
 
-                  this.persistenceProvider.setLastKnownBalance(cardId, history.currentCardBalance);
+                  this.persistenceProvider.setLastKnownBalance(
+                    cardId,
+                    history.currentCardBalance
+                  );
 
                   return cb(data.error, history);
                 },
@@ -453,8 +456,9 @@ export class BitPayCardProvider {
       // Async, no problem
       _.each(cards, x => {
         this.setCurrencySymbol(x);
-        this.persistenceProvider.getLastKnownBalance(x.eid)
-          .then( ({balance=null, updatedOn=null}) => {
+        this.persistenceProvider
+          .getLastKnownBalance(x.eid)
+          .then(({ balance = null, updatedOn = null }) => {
             x.balance = Number(balance);
             x.updateOn = updatedOn;
           });

@@ -172,8 +172,7 @@ export class WalletDetailsPage extends WalletTabsChild {
   }
 
   private showHistory(loading?: boolean) {
-    if (!this.wallet.completeHistory) 
-      return;
+    if (!this.wallet.completeHistory) return;
 
     this.history = this.wallet.completeHistory.slice(
       0,
@@ -294,9 +293,9 @@ export class WalletDetailsPage extends WalletTabsChild {
         this.showHistory();
 
         // Hide prev history if long downlad is happending...
-      //  if (opts.progress > 5) {
+        //  if (opts.progress > 5) {
         //  this.history = null;
-       //  }
+        //  }
       }
     }
   };
@@ -328,10 +327,7 @@ export class WalletDetailsPage extends WalletTabsChild {
       this.showBalanceButton = false;
 
       let err = this.wallet.errorObj;
-      if (
-        err.name &&
-        err.name.match(/WALLET_NOT_FOUND/)
-      ) {
+      if (err.name && err.name.match(/WALLET_NOT_FOUND/)) {
         this.walletNotRegistered = true;
       }
       if (err === 'WALLET_NOT_REGISTERED') {

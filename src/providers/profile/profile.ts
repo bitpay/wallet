@@ -77,7 +77,6 @@ export class ProfileProvider {
         derivationPath: this.derivationPathHelperProvider.defaultTestnet
       }
     ];
-
   }
 
   private updateWalletFromConfig(wallet): void {
@@ -1464,15 +1463,14 @@ export class ProfileProvider {
 
     // Add cached balance async
     _.each(ret, x => {
-      this.persistenceProvider.getLastKnownBalance(x.id)
-        .then( (datum) => {
-          // this.logger.debug("Last known balance for ",x.id,datum);
-          datum = datum || {};
-          let limit = Math.floor(Date.now() / 1000) - 2 * 60;
-          let {balance=null, updatedOn=null} = datum; 
-          x.lastKnownBalance = balance;
-          x.lastKnownBalanceUpdatedOn = updatedOn < limit ? updatedOn : null;
-        });
+      this.persistenceProvider.getLastKnownBalance(x.id).then(datum => {
+        // this.logger.debug("Last known balance for ",x.id,datum);
+        datum = datum || {};
+        let limit = Math.floor(Date.now() / 1000) - 2 * 60;
+        let { balance = null, updatedOn = null } = datum;
+        x.lastKnownBalance = balance;
+        x.lastKnownBalanceUpdatedOn = updatedOn < limit ? updatedOn : null;
+      });
     });
 
     return _.sortBy(ret, 'order');

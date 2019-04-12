@@ -359,7 +359,9 @@ export class HomePage {
                 throw this.translate.instant('No wallets available');
               }
               this.payProDetailsData = payProDetails;
-              this.payProDetailsData.host = new URL(payProDetails.payProUrl).host;
+              this.payProDetailsData.host = new URL(
+                payProDetails.payProUrl
+              ).host;
               this.payProDetailsData.coin = coin;
               this.clearCountDownInterval();
               this.paymentTimeControl(this.payProDetailsData.expires);
@@ -510,7 +512,7 @@ export class HomePage {
         this.events.publish('Local/WalletUpdate', {
           walletId: opts.walletId,
           incomplete: false,
-          error: wallet.error,
+          error: wallet.error
         });
 
         if (opts.alsoUpdateHistory) {
@@ -580,11 +582,10 @@ export class HomePage {
     });
   }
 
-  private processWalletError(wallet, err):void {
+  private processWalletError(wallet, err): void {
     wallet.error = wallet.errorObj = null;
 
-    if (!err || err == 'INPROGRESS') 
-      return;
+    if (!err || err == 'INPROGRESS') return;
 
     wallet.cachedStatus = null;
     wallet.errorObj = err;

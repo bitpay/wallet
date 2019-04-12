@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
 import { Logger } from '../../providers/logger/logger';
 import { PlatformProvider } from '../platform/platform';
 
-declare var cordova: any;    
+declare var cordova: any;
 
 @Injectable()
 export class HttpRequestsProvider {
@@ -25,17 +25,23 @@ export class HttpRequestsProvider {
     if (this.isIOS) {
       return new Observable(observer => {
         cordova.plugin.http.setDataSerializer('json');
-        cordova.plugin.http.post(url, data, headers, (res) => {
-          try {
-            res.data = JSON.parse(res.data);
-          } catch(e) {
-            // TODO
+        cordova.plugin.http.post(
+          url,
+          data,
+          headers,
+          res => {
+            try {
+              res.data = JSON.parse(res.data);
+            } catch (e) {
+              // TODO
+            }
+            observer.next(res.data);
+            observer.complete();
+          },
+          err => {
+            observer.error(err.error);
           }
-          observer.next(res.data);
-          observer.complete();
-        }, (err) => {
-          observer.error(err.error);
-        });
+        );
       });
     } else return this.http.post(url, data, { headers });
   }
@@ -44,17 +50,23 @@ export class HttpRequestsProvider {
     if (this.isIOS) {
       return new Observable(observer => {
         cordova.plugin.http.setDataSerializer('json');
-        cordova.plugin.http.get(url, params, headers, (res) => {
-          try {
-            res.data = JSON.parse(res.data);
-          } catch(e) {
-            // TODO
+        cordova.plugin.http.get(
+          url,
+          params,
+          headers,
+          res => {
+            try {
+              res.data = JSON.parse(res.data);
+            } catch (e) {
+              // TODO
+            }
+            observer.next(res.data);
+            observer.complete();
+          },
+          err => {
+            observer.error(err.error);
           }
-          observer.next(res.data);
-          observer.complete();
-        }, (err) => {
-          observer.error(err.error);
-        });
+        );
       });
     } else return this.http.get(url, { headers });
   }
