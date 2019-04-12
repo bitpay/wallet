@@ -34,7 +34,7 @@ describe('Provider: Wallet Provider', () => {
     storeLastAddress(_, address) {
       return Promise.resolve(address);
     }
-    getTxHistory(_walletId: string) {
+    fetchTxHistory(_walletId: string) {
       return Promise.resolve(txsFromLocal);
     }
     storeConfig(config) {
@@ -513,7 +513,7 @@ describe('Provider: Wallet Provider', () => {
     });
   });
 
-  describe('Function: getTxHistory', () => {
+  describe('Function: fetchTxHistory', () => {
     it('Should return the completeHistory if exists and isValid', () => {
       const wallet: WalletMock = new WalletMock();
       wallet.completeHistory = [

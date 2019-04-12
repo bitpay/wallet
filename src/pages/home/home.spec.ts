@@ -43,15 +43,25 @@ describe('HomePage', () => {
           instance.plt.resume = new Subject();
           instance.plt.pause = new Subject();
         });
-        it('should subscribe to incoming data menu event', () => {
-          const spy = spyOn(instance, 'subscribeIncomingDataMenuEvent');
+        it('should subscribe to events', () => {
+          const subscribeSpy = spyOn(instance.events, 'subscribe');
           instance.ionViewDidLoad();
-          expect(spy).toHaveBeenCalled();
-        });
-        it('should subscribe to bws events', () => {
-          const spy = spyOn(instance, 'subscribeBwsEvents');
-          instance.ionViewDidLoad();
-          expect(spy).toHaveBeenCalled();
+          expect(subscribeSpy).toHaveBeenCalledWith(
+            'bwsEvent',
+            instance.bwsEventHandler
+          );
+          expect(subscribeSpy).toHaveBeenCalledWith(
+            'Local/WalletListChange',
+            instance.setWallets
+          );
+          expect(subscribeSpy).toHaveBeenCalledWith(
+            'Local/TxAction',
+            instance.walletFocusHandler
+          );
+          expect(subscribeSpy).toHaveBeenCalledWith(
+            'Local/WalletFocus',
+            instance.walletFocusHandler
+          );
         });
         it('should update wallets on platform resume', () => {
           instance.ionViewDidLoad();

@@ -16,7 +16,7 @@ describe('Profile Provider', () => {
         n: 1,
         m: 1
       },
-      status: {
+      cachedStatus: {
         availableBalanceSat: 1000000000 // 10 BTC
       },
       isComplete: () => {
@@ -34,7 +34,7 @@ describe('Profile Provider', () => {
         n: 1,
         m: 1
       },
-      status: {
+      cachedStatus: {
         availableBalanceSat: 500000000 // 5 BCH
       },
       isComplete: () => {
@@ -52,7 +52,7 @@ describe('Profile Provider', () => {
         n: 2,
         m: 2
       },
-      status: {
+      cachedStatus: {
         availableBalanceSat: 150000000 // 1.50 BTC
       },
       isComplete: () => {
