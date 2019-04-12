@@ -62,7 +62,7 @@ export class IncomingDataProvider {
   }
 
   private isValidBitPayInvoice(data: string): boolean {
-    return !!/https:\/\/(www.)?(test.)?bitpay.com\/invoice\?id=\w+/.exec(data);
+    return !!/https:\/\/(www.)?(test.)?bitpay.com\/invoice\/\w+/.exec(data);
   }
 
   private isValidBitcoinUri(data: string): boolean {
@@ -83,6 +83,9 @@ export class IncomingDataProvider {
   }
 
   private isValidPlainUrl(data: string): boolean {
+    if (this.isValidBitPayInvoice(data)) {
+      return false;
+    }
     data = this.sanitizeUri(data);
     return !!/^https?:\/\//.test(data);
   }

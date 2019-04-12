@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import axios from 'axios';
 import { NavController, NavParams } from 'ionic-angular';
 import { Logger } from '../../../providers/logger/logger';
-
 // pages
 
 import { ContactEmailPage } from '../contact-email/contact-email';
@@ -53,7 +52,7 @@ export class SelectCurrencyPage {
     coin: string
   ) {
     try {
-      axios.post(
+      await axios.post(
         `https://${testStr}bitpay.com/invoiceData/setBuyerSelectedTransactionCurrency`,
         {
           buyerSelectedTransactionCurrency: coin.toUpperCase(),
@@ -61,7 +60,8 @@ export class SelectCurrencyPage {
         }
       );
     } catch (err) {
-      this.logger.error('Cannot Set Buyer Selected Transaction Currency');
+      this.logger.error(err, 'Cannot Set Buyer Selected Transaction Currency');
+      this.navCtrl.push(ContactEmailPage, { testStr, invoiceId, coin });
     }
   }
 
@@ -69,10 +69,9 @@ export class SelectCurrencyPage {
     const testStr: string =
       this.invoiceData.indexOf('test.bitpay.com') > -1 ? 'test.' : '';
     let invoiceId: string = this.invoiceData.replace(
-      /https:\/\/(www.)?(test.)?bitpay.com\/invoice\?id=/,
+      /https:\/\/(www.)?(test.)?bitpay.com\/invoice\//,
       ''
     );
-    invoiceId = invoiceId.split('&')[0];
     await this.setBuyerSelectedTransactionCurrency(testStr, invoiceId, coin);
     this.navCtrl.push(ContactEmailPage, { testStr, invoiceId, coin });
   }

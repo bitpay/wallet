@@ -36,7 +36,8 @@ export class SendPage extends WalletTabsChild {
     'BitcoinAddress',
     'BitcoinCashAddress',
     'BitcoinUri',
-    'BitcoinCashUri'
+    'BitcoinCashUri',
+    'InvoiceUri'
   ];
 
   constructor(
@@ -195,7 +196,9 @@ export class SendPage extends WalletTabsChild {
     const hasContacts = await this.checkIfContact();
     if (!hasContacts) {
       const parsedData = this.incomingDataProvider.parseData(this.search);
-      if (parsedData && parsedData.type == 'PayPro') {
+      if (parsedData && parsedData.type == 'InvoiceUri') {
+        this.incomingDataProvider.redir(this.search);
+      } else if (parsedData && parsedData.type == 'PayPro') {
         const coin: string =
           this.search.indexOf('bitcoincash') === 0 ? Coin.BCH : Coin.BTC;
         this.incomingDataProvider
