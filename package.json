@@ -236,8 +236,7 @@
     "simple-plist": "0.2.1",
     "text-encoding": "0.6.4",
     "web-animations-js": "2.3.1",
-    "zone.js": "0.8.26",
-    "im.ltdev.cordova.UserAgent": "https://github.com/danielsogl/cordova-plugin-useragent.git"
+    "zone.js": "0.8.26"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "0.13.1",
@@ -329,8 +328,7 @@
       "cordova-plugin-vibration": {},
       "im.ltdev.cordova.UserAgent": {},
       "cordova-launch-review": {},
-      "cordova-plugin-wkwebview-engine": {},
-      "cordova-plugin-add-swift-support": {}
+      "cordova-plugin-wkwebview-engine": {}
     },
     "platforms": [
       "android",
