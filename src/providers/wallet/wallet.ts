@@ -643,8 +643,7 @@ export class WalletProvider {
 
       if (WalletProvider.historyUpdateOnProgress[wallet.id]) {
         this.logger.debug(
-          '!! History update already on progress for: ' +
-            wallet.id
+          '!! History update already on progress for: ' + wallet.id
         );
 
         if (progressFn) {
@@ -676,7 +675,11 @@ export class WalletProvider {
             complete: false
           });
 
-          const getNewTxs = (newTxs, skip: number, tries: number = 0): Promise<any> => {
+          const getNewTxs = (
+            newTxs,
+            skip: number,
+            tries: number = 0
+          ): Promise<any> => {
             return new Promise((resolve, reject) => {
               this.fetchTxsFromServer(wallet, skip, endingTxid, requestLimit)
                 .then(result => {
@@ -736,12 +739,10 @@ export class WalletProvider {
                     err instanceof this.errors.CONNECTION_ERROR ||
                     (err.message && err.message.match(/5../))
                   ) {
-
-                    if (tries>1) 
-                      return reject(err);
+                    if (tries > 1) return reject(err);
 
                     return setTimeout(() => {
-                      return resolve(getNewTxs(newTxs, skip, ++tries))
+                      return resolve(getNewTxs(newTxs, skip, ++tries));
                     }, 2000 + 3000 * tries);
                   } else {
                     return reject(err);

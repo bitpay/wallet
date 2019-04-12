@@ -72,12 +72,11 @@ export class ShapeshiftShiftPage {
       return;
     }
 
-
     this.fromWallets = this.profileProvider.getWallets({
       onlyComplete: true,
       network: this.network,
-      hasFunds: true,
-    })
+      hasFunds: true
+    });
 
     if (_.isEmpty(this.fromWallets)) {
       this.showErrorAndBack(

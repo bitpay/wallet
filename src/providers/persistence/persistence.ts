@@ -304,7 +304,7 @@ export class PersistenceProvider {
     let updatedOn = Math.floor(Date.now() / 1000);
     return this.storage.set(Keys.BALANCE_CACHE(id), {
       updatedOn,
-      balance,
+      balance
     });
   }
 

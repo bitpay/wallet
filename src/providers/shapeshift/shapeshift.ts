@@ -158,17 +158,19 @@ export class ShapeshiftProvider {
   }
 
   public getMarketInfo(pair: string, cb) {
-    this.httpNative.get(this.credentials.API_URL + '/marketinfo/' + pair).subscribe(
-      data => {
-        this.logger.info('Shapeshift MARKET INFO: SUCCESS');
-        return cb(null, data);
-      },
-      data => {
-        const error = this.parseError(data);
-        this.logger.error('Shapeshift MARKET INFO ERROR: ', error);
-        return cb(data);
-      }
-    );
+    this.httpNative
+      .get(this.credentials.API_URL + '/marketinfo/' + pair)
+      .subscribe(
+        data => {
+          this.logger.info('Shapeshift MARKET INFO: SUCCESS');
+          return cb(null, data);
+        },
+        data => {
+          const error = this.parseError(data);
+          this.logger.error('Shapeshift MARKET INFO ERROR: ', error);
+          return cb(data);
+        }
+      );
   }
 
   public getStatus(addr: string, token: string, cb) {
