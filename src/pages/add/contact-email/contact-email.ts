@@ -61,10 +61,6 @@ export class ContactEmailPage {
     });
   }
 
-  public saveEmail() {
-    this.setBuyerProvidedEmail();
-  }
-
   public openPrivacyPolicy() {
     const url = 'https://bitpay.com/about/privacy';
     const optIn = true;
@@ -82,7 +78,17 @@ export class ContactEmailPage {
     );
   }
 
-  async setBuyerProvidedEmail() {
+  public async saveEmail() {
+    // Need to add BCH testnet bchtest: payProUrl
+    const payProBitcoinUrl: string = `bitcoin:?r=https://${
+      this.testStr
+    }bitpay.com/i/${this.invoiceId}`;
+    const payProBitcoinCashUrl: string = `bitcoincash:?r=https://${
+      this.testStr
+    }bitpay.com/i/${this.invoiceId}`;
+    const payProUrl =
+      this.coin === 'btc' ? payProBitcoinUrl : payProBitcoinCashUrl;
+
     try {
       await axios.post(
         `https://${this.testStr}bitpay.com/invoiceData/setBuyerProvidedEmail`,
@@ -91,20 +97,10 @@ export class ContactEmailPage {
           invoiceId: this.invoiceId
         }
       );
+      this.incomingDataProvider.redir(payProUrl);
     } catch (err) {
       this.logger.error(err, 'Cannot Set Buyer Provided Email');
+      this.incomingDataProvider.redir(payProUrl);
     }
-
-    // Need to add BCH testnet bchtest: payProUrl
-    const payProBitcoinUrl: string = `bitcoin:?r=https://${
-      this.testStr
-    }bitpay.com/i/${this.invoiceId}`;
-    const payProBitcoinCashUrl: string = `bitcoincash:?r=https://${
-      this.testStr
-    }bitpay.com/i/${this.invoiceId}`;
-
-    const payProUrl =
-      this.coin === 'btc' ? payProBitcoinUrl : payProBitcoinCashUrl;
-    this.incomingDataProvider.redir(payProUrl);
   }
 }
