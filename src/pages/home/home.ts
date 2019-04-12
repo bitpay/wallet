@@ -455,7 +455,6 @@ export class HomePage {
         });
       })
       .catch(err => {
-console.log('[home.ts.502:err:]',err); // TODO
         if (err != 'HISTORY_IN_PROGRESS') {
           this.logger.warn('WalletHistoryUpdate ERROR', err);
           this.events.publish('Local/WalletHistoryUpdate', {

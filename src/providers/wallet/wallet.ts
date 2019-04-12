@@ -737,7 +737,6 @@ export class WalletProvider {
                     (err.message && err.message.match(/5../))
                   ) {
 
-console.log('[wallet.ts.734:tries:]',tries); // TODO
                     if (tries>1) 
                       return reject(err);
 
@@ -1057,7 +1056,6 @@ console.log('[wallet.ts.734:tries:]',tries); // TODO
               err
             );
           }
-console.log('[wallet.ts.1055:err:]',err); // TODO
           return reject(err);
         });
     });
