@@ -196,6 +196,7 @@
     "cordova-ios": "4.5.5",
     "cordova-launch-review": "3.1.1",
     "cordova-plugin-add-swift-support": "1.7.2",
+    "cordova-plugin-advanced-http": "2.0.8",
     "cordova-plugin-android-fingerprint-auth": "1.4.3",
     "cordova-plugin-compat": "1.2.0",
     "cordova-plugin-customurlscheme": "https://github.com/cmgustavo/Custom-URL-scheme.git#v4.0",
@@ -327,7 +328,8 @@
       "cordova-plugin-vibration": {},
       "im.ltdev.cordova.UserAgent": {},
       "cordova-launch-review": {},
-      "cordova-plugin-wkwebview-engine": {}
+      "cordova-plugin-wkwebview-engine": {},
+      "cordova-plugin-advanced-http": {}
     },
     "platforms": [
       "android",
