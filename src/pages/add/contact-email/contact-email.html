@@ -14,7 +14,11 @@
         <ion-input formControlName="email" type="email"></ion-input>
       </ion-item>
       <div text-center>
-        <button ion-button class="button-standard" (click)="saveEmail()">
+        <button
+          ion-button
+          class="button-standard"
+          (click)="setBuyerProvidedEmail()"
+        >
           {{ 'Set Email Address' | translate }}
         </button>
       </div>

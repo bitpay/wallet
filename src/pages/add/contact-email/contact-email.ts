@@ -78,7 +78,7 @@ export class ContactEmailPage {
     );
   }
 
-  public async saveEmail() {
+  async setBuyerProvidedEmail() {
     // Need to add BCH testnet bchtest: payProUrl
     const payProBitcoinUrl: string = `bitcoin:?r=https://${
       this.testStr
