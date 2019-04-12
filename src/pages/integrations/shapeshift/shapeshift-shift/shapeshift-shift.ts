@@ -72,12 +72,12 @@ export class ShapeshiftShiftPage {
       return;
     }
 
-    this.fromWallets = _.filter(this.walletsBtc.concat(this.walletsBch), w => {
-      // Available cached funds
-      if (!w.cachedBalance) return null;
-      let hasCachedFunds = w.cachedBalance.match(/0\.00 /gi) ? false : true;
-      return hasCachedFunds;
-    });
+
+    this.fromWallets = this.profileProvider.getWallets({
+      onlyComplete: true,
+      network: this.network,
+      hasFunds: true,
+    })
 
     if (_.isEmpty(this.fromWallets)) {
       this.showErrorAndBack(

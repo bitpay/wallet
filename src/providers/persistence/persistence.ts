@@ -105,10 +105,6 @@ export class PersistenceProvider {
     });
   }
 
-  deleteProfile() {
-    return this.storage.remove(Keys.PROFILE);
-  }
-
   storeVault(vault): Promise<void> {
     return this.storage.set(Keys.VAULT, vault);
   }
@@ -304,16 +300,20 @@ export class PersistenceProvider {
     return this.storage.remove(Keys.TX_HISTORY(walletId));
   }
 
-  setBalanceCache(cardId: string, data) {
-    return this.storage.set(Keys.BALANCE_CACHE(cardId), data);
+  setLastKnownBalance(id: string, balance: string) {
+    let updatedOn = Math.floor(Date.now() / 1000);
+    return this.storage.set(Keys.BALANCE_CACHE(id), {
+      updatedOn,
+      balance,
+    });
   }
 
-  getBalanceCache(cardId: string) {
-    return this.storage.get(Keys.BALANCE_CACHE(cardId));
+  getLastKnownBalance(id: string) {
+    return this.storage.get(Keys.BALANCE_CACHE(id));
   }
 
-  removeBalanceCache(cardId: string) {
-    return this.storage.remove(Keys.BALANCE_CACHE(cardId));
+  removeLastKnownBalance(id: string) {
+    return this.storage.remove(Keys.BALANCE_CACHE(id));
   }
 
   setAppIdentity(network: string, data) {

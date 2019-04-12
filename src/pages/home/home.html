@@ -119,8 +119,8 @@
               <span *ngIf="wallet.isComplete() && !wallet.needsBackup">
                 <span *ngIf="!wallet.balanceHidden && !wallet.scanning">
                   {{wallet.cachedStatus && wallet.cachedStatus.totalBalanceStr ? (wallet.cachedStatus.totalBalanceStr) : (
-                  wallet.cachedBalance ? wallet.cachedBalance
-                  + (wallet.cachedBalanceUpdatedOn ? ' &middot; ' + ( wallet.cachedBalanceUpdatedOn * 1000 | amTimeAgo)
+                  wallet.lastKnownBalance ? wallet.lastKnownBalance
+                  + (wallet.lastKnownBalanceUpdatedOn ? ' &middot; ' + ( wallet.lastKnownBalanceUpdatedOn * 1000 | amTimeAgo)
                   :
                   '') : '')}}
                 </span>
@@ -171,8 +171,8 @@
               <span *ngIf="wallet.isComplete() && !wallet.needsBackup">
                 <span *ngIf="!wallet.balanceHidden && !wallet.scanning">
                   {{wallet.cachedStatus && wallet.cachedStatus.totalBalanceStr ? (wallet.cachedStatus.totalBalanceStr) : (
-                  wallet.cachedBalance ? wallet.cachedBalance
-                  + (wallet.cachedBalanceUpdatedOn ? ' &middot; ' + ( wallet.cachedBalanceUpdatedOn * 1000 | amTimeAgo)
+                  wallet.lastKnownBalance ? wallet.lastKnownBalance
+                  + (wallet.lastKnownBalanceUpdatedOn ? ' &middot; ' + ( wallet.lastKnownBalanceUpdatedOn * 1000 | amTimeAgo)
                   :
                   '') : '')}}
                 </span>
@@ -223,8 +223,8 @@
               <span *ngIf="wallet.isComplete() && !wallet.needsBackup">
                 <span *ngIf="!wallet.balanceHidden && !wallet.scanning">
                   {{wallet.cachedStatus && wallet.cachedStatus.totalBalanceStr ? (wallet.cachedStatus.totalBalanceStr) : (
-                  wallet.cachedBalance ? wallet.cachedBalance
-                  + (wallet.cachedBalanceUpdatedOn ? ' &middot; ' + ( wallet.cachedBalanceUpdatedOn * 1000 | amTimeAgo)
+                  wallet.lastKnownBalance ? wallet.lastKnownBalance
+                  + (wallet.lastKnownBalanceUpdatedOn ? ' &middot; ' + ( wallet.lastKnownBalanceUpdatedOn * 1000 | amTimeAgo)
                   :
                   '') : '')}}
                 </span>

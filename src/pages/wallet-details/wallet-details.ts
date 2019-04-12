@@ -12,7 +12,6 @@ import { Subscription } from 'rxjs';
 
 // providers
 import { AddressBookProvider } from '../../providers/address-book/address-book';
-import { BwcErrorProvider } from '../../providers/bwc-error/bwc-error';
 import { ExternalLinkProvider } from '../../providers/external-link/external-link';
 import { GiftCardProvider } from '../../providers/gift-card/gift-card';
 import { CardConfigMap } from '../../providers/gift-card/gift-card.types';
@@ -36,7 +35,7 @@ import { WalletBalancePage } from './wallet-balance/wallet-balance';
 
 const HISTORY_SHOW_LIMIT = 10;
 const MIN_UPDATE_TIME = 2000;
-const TIMEOUT_FOR_REFRESHER = 2000;
+const TIMEOUT_FOR_REFRESHER = 1000;
 
 @Component({
   selector: 'page-wallet-details',
@@ -75,7 +74,6 @@ export class WalletDetailsPage extends WalletTabsChild {
     profileProvider: ProfileProvider,
     private walletProvider: WalletProvider,
     private addressbookProvider: AddressBookProvider,
-    private bwcError: BwcErrorProvider,
     private events: Events,
     public giftCardProvider: GiftCardProvider,
     private logger: Logger,
@@ -174,6 +172,9 @@ export class WalletDetailsPage extends WalletTabsChild {
   }
 
   private showHistory(loading?: boolean) {
+    if (!this.wallet.completeHistory) 
+      return;
+
     this.history = this.wallet.completeHistory.slice(
       0,
       (this.currentPage + 1) * HISTORY_SHOW_LIMIT
@@ -279,16 +280,23 @@ export class WalletDetailsPage extends WalletTabsChild {
       this.showHistory();
     } else {
       if (opts.error) {
+        this.updatingTxHistory = false;
         this.updateTxHistoryError = true;
+
+        // show what we have.
+        this.showHistory();
       } else {
         this.updatingTxHistory = true;
         this.updatingTxHistoryProgress = opts.progress;
         this.updateTxHistoryError = false;
 
+        // show what we have
+        this.showHistory();
+
         // Hide prev history if long downlad is happending...
-        if (opts.progress > 5) {
-          this.history = null;
-        }
+      //  if (opts.progress > 5) {
+        //  this.history = null;
+       //  }
       }
     }
   };
@@ -297,6 +305,7 @@ export class WalletDetailsPage extends WalletTabsChild {
   private updateStatus = opts => {
     this.logger.debug('Local/WalletUpdate handler @walletDetails', opts);
     if (opts.walletId != this.wallet.id) return;
+
     if (opts.incomplete) {
       this.updatingStatus = true;
       return;
@@ -318,20 +327,17 @@ export class WalletDetailsPage extends WalletTabsChild {
     } else {
       this.showBalanceButton = false;
 
-      let err = this.wallet.error;
+      let err = this.wallet.errorObj;
       if (
         err.name &&
-        err.name.replace(/^bwc.Error/g, '') === 'WALLET_NOT_FOUND'
+        err.name.match(/WALLET_NOT_FOUND/)
       ) {
         this.walletNotRegistered = true;
       }
       if (err === 'WALLET_NOT_REGISTERED') {
         this.walletNotRegistered = true;
       } else {
-        this.updateStatusError = this.bwcError.msg(
-          err,
-          this.translate.instant('Could not update wallet')
-        );
+        this.updateStatusError = this.wallet.errorObj;
       }
     }
   };

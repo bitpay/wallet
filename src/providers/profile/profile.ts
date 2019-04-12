@@ -77,9 +77,10 @@ export class ProfileProvider {
         derivationPath: this.derivationPathHelperProvider.defaultTestnet
       }
     ];
+
   }
 
-  private updateWalletSettings(wallet): void {
+  private updateWalletFromConfig(wallet): void {
     const config = this.configProvider.get();
     const defaults = this.configProvider.getDefaults();
     const defaultColor =
@@ -181,7 +182,7 @@ export class ProfileProvider {
     wallet.coin = wallet.credentials.coin;
     wallet.cachedStatus = {};
 
-    this.updateWalletSettings(wallet);
+    this.updateWalletFromConfig(wallet);
     this.wallet[walletId] = wallet;
 
     const backupInfo = await this.getBackupInfo(wallet);
@@ -244,10 +245,12 @@ export class ProfileProvider {
         wallet.openWallet(() => {});
       }
     );
-    this.events.subscribe('wallet:updated', (walletId: string) => {
-      if (walletId && walletId == wallet.id) {
-        this.logger.debug('Updating settings for wallet:' + wallet.id);
-        this.updateWalletSettings(wallet);
+    this.events.subscribe('Local/ConfigUpdate', opts => {
+      this.logger.debug('Local/ConfigUpdate handler @profile', opts);
+
+      if (opts.walletId && opts.walletId == wallet.id) {
+        this.logger.debug('Updating wallet from config ' + wallet.id);
+        this.updateWalletFromConfig(wallet);
       }
     });
 
@@ -375,49 +378,6 @@ export class ProfileProvider {
   public updateCredentials(credentials): void {
     this.profile.updateWallet(credentials);
     this.persistenceProvider.storeProfile(this.profile);
-  }
-
-  public getLastKnownBalance(wid: string) {
-    return new Promise((resolve, reject) => {
-      this.persistenceProvider
-        .getBalanceCache(wid)
-        .then((data: string) => {
-          return resolve(data);
-        })
-        .catch(err => {
-          return reject(err);
-        });
-    });
-  }
-
-  private addLastKnownBalance(wallet): Promise<any> {
-    return new Promise(resolve => {
-      const now = Math.floor(Date.now() / 1000);
-      const showRange = 600; // 10min;
-
-      this.getLastKnownBalance(wallet.id)
-        .then((data: any) => {
-          if (data) {
-            const parseData = data;
-            wallet.cachedBalance = parseData.balance;
-            wallet.cachedBalanceUpdatedOn =
-              parseData.updatedOn < now - showRange
-                ? parseData.updatedOn
-                : null;
-          }
-          return resolve();
-        })
-        .catch(err => {
-          this.logger.warn('Could not get last known balance: ', err);
-        });
-    });
-  }
-
-  public setLastKnownBalance(wid: string, balance: number): void {
-    this.persistenceProvider.setBalanceCache(wid, {
-      balance,
-      updatedOn: Math.floor(Date.now() / 1000)
-    });
   }
 
   private runValidation(wallet, delay?: number, retryDelay?: number) {
@@ -1504,7 +1464,15 @@ export class ProfileProvider {
 
     // Add cached balance async
     _.each(ret, x => {
-      this.addLastKnownBalance(x);
+      this.persistenceProvider.getLastKnownBalance(x.id)
+        .then( (datum) => {
+          // this.logger.debug("Last known balance for ",x.id,datum);
+          datum = datum || {};
+          let limit = Math.floor(Date.now() / 1000) - 2 * 60;
+          let {balance=null, updatedOn=null} = datum; 
+          x.lastKnownBalance = balance;
+          x.lastKnownBalanceUpdatedOn = updatedOn < limit ? updatedOn : null;
+        });
     });
 
     return _.sortBy(ret, 'order');

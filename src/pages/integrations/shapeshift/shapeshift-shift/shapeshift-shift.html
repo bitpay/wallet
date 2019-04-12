@@ -24,8 +24,8 @@
               Incomplete
             </span>
             <span *ngIf="fromWallet.isComplete()">
-              <span *ngIf="!fromWallet.balanceHidden && !fromWallet.scanning"> {{fromWallet.cachedStatus.totalBalanceStr ? fromWallet.cachedStatus.totalBalanceStr : ( fromWallet.cachedBalance ? fromWallet.cachedBalance
-                + (fromWallet.cachedBalanceUpdatedOn ? ' &middot; ' + ( fromWallet.cachedBalanceUpdatedOn * 1000 | amTimeAgo)
+              <span *ngIf="!fromWallet.balanceHidden && !fromWallet.scanning"> {{fromWallet.cachedStatus.totalBalanceStr ? fromWallet.cachedStatus.totalBalanceStr : ( fromWallet.lastKnownBalance ? fromWallet.lastKnownBalance
+                + (fromWallet.lastKnownBalanceUpdatedOn ? ' &middot; ' + ( fromWallet.lastKnownBalanceUpdatedOn * 1000 | amTimeAgo)
                 : '') : '' ) }} </span>
               <span *ngIf="fromWallet.scanning">
                 <span translate>Scanning funds</span>...
@@ -64,8 +64,8 @@
               Needs Backup
             </span>
             <span *ngIf="toWallet.isComplete() && !toWallet.needsBackup">
-              <span *ngIf="!toWallet.balanceHidden && !toWallet.scanning"> {{toWallet.cachedStatus.totalBalanceStr ? toWallet.cachedStatus.totalBalanceStr : ( toWallet.cachedBalance ? toWallet.cachedBalance
-                + (toWallet.cachedBalanceUpdatedOn ? ' &middot; ' + ( toWallet.cachedBalanceUpdatedOn * 1000 | amTimeAgo)
+              <span *ngIf="!toWallet.balanceHidden && !toWallet.scanning"> {{toWallet.cachedStatus.totalBalanceStr ? toWallet.cachedStatus.totalBalanceStr : ( toWallet.lastKnownBalance ? toWallet.lastKnownBalance
+                + (toWallet.lastKnownBalanceUpdatedOn ? ' &middot; ' + ( toWallet.lastKnownBalanceUpdatedOn * 1000 | amTimeAgo)
                 : '') : '' ) }} </span>
               <span *ngIf="toWallet.scanning">
                 <span translate>Scanning funds</span>...
