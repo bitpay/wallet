@@ -1,4 +1,4 @@
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import * as _ from 'lodash';
 import { Logger } from '../../providers/logger/logger';
@@ -7,6 +7,7 @@ import { Logger } from '../../providers/logger/logger';
 import { AppProvider } from '../app/app';
 import { ConfigProvider } from '../config/config';
 import { HomeIntegrationsProvider } from '../home-integrations/home-integrations';
+import { HttpRequestsProvider } from '../http-requests/http-requests';
 import { PersistenceProvider } from '../persistence/persistence';
 
 @Injectable()
@@ -16,7 +17,7 @@ export class ShapeshiftProvider {
   constructor(
     private appProvider: AppProvider,
     private homeIntegrationsProvider: HomeIntegrationsProvider,
-    private http: HttpClient,
+    private httpNative: HttpRequestsProvider,
     private logger: Logger,
     private configProvider: ConfigProvider,
     private persistenceProvider: PersistenceProvider
@@ -67,13 +68,13 @@ export class ShapeshiftProvider {
     };
 
     const url = this.credentials.API_URL + '/shift';
-    const headers = new HttpHeaders({
+    const headers = {
       'Content-Type': 'application/json',
       Accept: 'application/json',
       Authorization: 'Bearer ' + data.token
-    });
+    };
 
-    this.http.post(url, dataSrc, { headers }).subscribe(
+    this.httpNative.post(url, dataSrc, headers).subscribe(
       data => {
         this.logger.info('Shapeshift SHIFT: SUCCESS');
         return cb(null, data);
@@ -129,7 +130,7 @@ export class ShapeshiftProvider {
   }
 
   public getRate(pair: string, cb) {
-    this.http.get(this.credentials.API_URL + '/rate/' + pair).subscribe(
+    this.httpNative.get(this.credentials.API_URL + '/rate/' + pair).subscribe(
       data => {
         this.logger.info('Shapeshift PAIR: SUCCESS');
         return cb(null, data);
@@ -143,7 +144,7 @@ export class ShapeshiftProvider {
   }
 
   public getLimit(pair: string, cb) {
-    this.http.get(this.credentials.API_URL + '/limit/' + pair).subscribe(
+    this.httpNative.get(this.credentials.API_URL + '/limit/' + pair).subscribe(
       data => {
         this.logger.info('Shapeshift LIMIT: SUCCESS');
         return cb(null, data);
@@ -157,7 +158,7 @@ export class ShapeshiftProvider {
   }
 
   public getMarketInfo(pair: string, cb) {
-    this.http.get(this.credentials.API_URL + '/marketinfo/' + pair).subscribe(
+    this.httpNative.get(this.credentials.API_URL + '/marketinfo/' + pair).subscribe(
       data => {
         this.logger.info('Shapeshift MARKET INFO: SUCCESS');
         return cb(null, data);
@@ -171,13 +172,13 @@ export class ShapeshiftProvider {
   }
 
   public getStatus(addr: string, token: string, cb) {
-    const headers = new HttpHeaders({
+    const headers = {
       'Content-Type': 'application/json',
       Accept: 'application/json',
       Authorization: 'Bearer ' + token
-    });
-    this.http
-      .get(this.credentials.API_URL + '/txStat/' + addr, { headers })
+    };
+    this.httpNative
+      .get(this.credentials.API_URL + '/txStat/' + addr, null, headers)
       .subscribe(
         data => {
           this.logger.info('Shapeshift STATUS: SUCCESS');
@@ -236,12 +237,12 @@ export class ShapeshiftProvider {
       client_secret: this.credentials.CLIENT_SECRET,
       redirect_uri: this.credentials.REDIRECT_URI
     };
-    const headers = new HttpHeaders({
+    const headers = {
       'Content-Type': 'application/json',
       Accept: 'application/json'
-    });
+    };
 
-    this.http.post(url, data, { headers }).subscribe(
+    this.httpNative.post(url, data, headers).subscribe(
       data => {
         this.logger.info('ShapeShift: GET Access Token: SUCCESS');
         // Show pending task from the UI
@@ -308,7 +309,7 @@ export class ShapeshiftProvider {
       Authorization: 'Bearer ' + token
     };
 
-    this.http.get(url, { headers }).subscribe(
+    this.httpNative.get(url, null, headers).subscribe(
       data => {
         this.logger.info('ShapeShift: Get Access Token Details SUCCESS');
         return cb(null, data);
@@ -336,7 +337,7 @@ export class ShapeshiftProvider {
       Authorization: 'Bearer ' + token
     };
 
-    this.http.get(url, { headers }).subscribe(
+    this.httpNative.get(url, null, headers).subscribe(
       data => {
         this.logger.info('ShapeShift: Get Account SUCCESS');
         return cb(null, data);
@@ -354,14 +355,14 @@ export class ShapeshiftProvider {
   public revokeAccessToken(token) {
     const url = this.credentials.HOST + '/oauth/token/revoke';
     const data = new HttpParams().set('token', token);
-    const headers = new HttpHeaders({
+    const headers = {
       'Content-Type': 'application/x-www-form-urlencoded',
       Authorization:
         'Basic ' +
         btoa(this.credentials.CLIENT_ID + ':' + this.credentials.CLIENT_SECRET)
-    });
+    };
 
-    this.http.post(url, data, { headers }).subscribe(
+    this.httpNative.post(url, data, headers).subscribe(
       () => {
         this.logger.info('ShapeShift: Revoke Access Token SUCCESS');
       },

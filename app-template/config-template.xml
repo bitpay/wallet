@@ -56,6 +56,7 @@
     <engine name="ios" spec="4.5.5" />
 
     <!-- Plugins -->
+    <plugin name="cordova-plugin-advanced-http" spec="2.0.8" />
     <plugin name="cordova-launch-review" spec="3.1.1" />
     <plugin name="cordova-clipboard" spec="1.1.1" />
     <plugin name="cordova-plugin-android-fingerprint-auth" spec="1.4.3" />
