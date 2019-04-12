@@ -105,10 +105,6 @@ export class PersistenceProvider {
     });
   }
 
-  deleteProfile() {
-    return this.storage.remove(Keys.PROFILE);
-  }
-
   storeVault(vault): Promise<void> {
     return this.storage.set(Keys.VAULT, vault);
   }
