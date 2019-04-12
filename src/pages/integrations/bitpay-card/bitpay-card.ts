@@ -112,7 +112,7 @@ export class BitPayCardPage {
     if (!_.isEmpty(history.transactionList)) return cb();
 
     let dateRange = this.setDateRange('all');
-    this.bitPayCardProvider.getHistory(
+    this.bitPayCardProvider.updateHistory(
       this.cardId,
       dateRange,
       (err, history) => {
@@ -127,7 +127,7 @@ export class BitPayCardPage {
     let dateRange = this.setDateRange(this.dateRange.value);
 
     this.loadingHistory = true;
-    this.bitPayCardProvider.getHistory(
+    this.bitPayCardProvider.updateHistory(
       this.cardId,
       dateRange,
       (err, history) => {

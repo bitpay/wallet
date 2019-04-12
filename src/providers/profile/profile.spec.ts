@@ -8,8 +8,8 @@ describe('Profile Provider', () => {
   const walletFixture = {
     api1: {
       id: 'eabee25b-d6ab-4b11-8b76-88570d826914',
-      cachedBalance: '10.00 BTC',
-      cachedBalanceUpdatedOn: null,
+      lastKnownBalance: '10.00 BTC',
+      lastKnownBalanceUpdatedOn: null,
       credentials: {
         coin: 'btc',
         network: 'livenet',
@@ -26,8 +26,8 @@ describe('Profile Provider', () => {
     },
     api2: {
       id: 'zxccv25b-d6ab-4b11-8b76-88570d822222',
-      cachedBalance: '5.00 BCH',
-      cachedBalanceUpdatedOn: null,
+      lastKnownBalance: '5.00 BCH',
+      lastKnownBalanceUpdatedOn: null,
       credentials: {
         coin: 'bch',
         network: 'livenet',
@@ -44,8 +44,8 @@ describe('Profile Provider', () => {
     },
     api3: {
       id: 'qwert25b-d6ab-4b11-8b76-88570d833333',
-      cachedBalance: '1.50 BTC',
-      cachedBalanceUpdatedOn: null,
+      lastKnownBalance: '1.50 BTC',
+      lastKnownBalanceUpdatedOn: null,
       credentials: {
         coin: 'btc',
         network: 'testnet',
@@ -77,7 +77,7 @@ describe('Profile Provider', () => {
 
   class PersistenceProviderMock {
     constructor() {}
-    getBalanceCache() {
+    getLastKnownBalance() {
       return Promise.resolve('0.00 BTC');
     }
     setWalletOrder() {

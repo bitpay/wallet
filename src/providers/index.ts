@@ -48,6 +48,7 @@ export { GiftCardProvider } from '../providers/gift-card/gift-card';
 export {
   HomeIntegrationsProvider
 } from '../providers/home-integrations/home-integrations';
+export { HttpRequestsProvider } from '../providers/http-requests/http-requests';
 export { IncomingDataProvider } from '../providers/incoming-data/incoming-data';
 export { LanguageLoader } from '../providers/language-loader/language-loader';
 export { LanguageProvider } from '../providers/language/language';
