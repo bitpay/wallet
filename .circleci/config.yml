@@ -4,7 +4,7 @@ version: 2
 jobs:
   copay:
     docker:
-      - image: circleci/node@10.15.3
+      - image: circleci/node:lts
     working_directory: ~/copay
     steps:
       - checkout
@@ -28,7 +28,7 @@ jobs:
 
   bitpay:
     docker:
-      - image: circleci/node@10.15.3
+      - image: circleci/node:lts
     working_directory: ~/copay
     steps:
       - checkout
