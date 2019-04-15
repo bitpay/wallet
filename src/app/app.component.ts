@@ -32,6 +32,7 @@ import { TouchIdProvider } from '../providers/touchid/touchid';
 
 // pages
 import { ImageLoaderConfig } from 'ionic-image-loader';
+import { ContactEmailPage } from '../pages/add/contact-email/contact-email';
 import { CopayersPage } from '../pages/add/copayers/copayers';
 import { ImportWalletPage } from '../pages/add/import-wallet/import-wallet';
 import { JoinWalletPage } from '../pages/add/join-wallet/join-wallet';
@@ -87,7 +88,8 @@ export class CopayApp {
     PaperWalletPage,
     ShapeshiftPage,
     WalletDetailsPage,
-    SelectCurrencyPage
+    SelectCurrencyPage,
+    ContactEmailPage
   };
 
   constructor(
