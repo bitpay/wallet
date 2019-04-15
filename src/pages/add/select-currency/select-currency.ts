@@ -20,7 +20,7 @@ export class SelectCurrencyPage {
   private isShared: boolean;
   private nextPage: string;
   private invoiceData: string;
-  public isInvoice: boolean = false;
+  public isInvoice: boolean;
 
   constructor(
     private navCtrl: NavController,
