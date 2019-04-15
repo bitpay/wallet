@@ -26,7 +26,7 @@ export class ContactEmailPage {
   constructor(
     private logger: Logger,
     private navParam: NavParams,
-    private formBuilder: FormBuilder,
+    public formBuilder: FormBuilder,
     private httpNative: HttpRequestsProvider,
     private incomingDataProvider: IncomingDataProvider,
     private configProvider: ConfigProvider,

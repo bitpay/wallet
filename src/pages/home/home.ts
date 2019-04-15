@@ -349,7 +349,12 @@ export class HomePage {
           this.validDataFromClipboard = null;
           return;
         }
-        if (this.validDataFromClipboard.type === 'PayPro') {
+        if (this.validDataFromClipboard.type === 'InvoiceUri') {
+          this.incomingDataProvider.showMenu({
+            data,
+            type: 'url'
+          });
+        } else if (this.validDataFromClipboard.type === 'PayPro') {
           const coin: string =
             data.indexOf('bitcoincash') === 0 ? Coin.BCH : Coin.BTC;
           this.incomingDataProvider
