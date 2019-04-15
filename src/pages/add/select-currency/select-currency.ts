@@ -20,11 +20,11 @@ export class SelectCurrencyPage {
   private isShared: boolean;
   private nextPage: string;
   private invoiceData: string;
+  public isInvoice: boolean = false;
 
   constructor(
     private navCtrl: NavController,
     private incomingDataProvider: IncomingDataProvider,
-    public isInvoice: boolean,
     private httpNative: HttpRequestsProvider,
     private logger: Logger,
     private navParam: NavParams
