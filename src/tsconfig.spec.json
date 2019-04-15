@@ -1,5 +1,5 @@
 {
-  "extends": "../test/tsconfig.ng-cli.json",
+  "extends": "./tsconfig.ng-cli.json",
   "compilerOptions": {
     "outDir": "../out-tsc/spec",
     "baseUrl": "./",

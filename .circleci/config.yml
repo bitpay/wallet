@@ -4,7 +4,7 @@ version: 2
 jobs:
   copay:
     docker:
-      - image: circleci/node@sha256:a6f4dfaae4e22f99d3910902362db706f32e0dbca7ce5ef757823d93fef1740e
+      - image: circleci/node@10.15.3
     working_directory: ~/copay
     steps:
       - checkout
@@ -21,20 +21,14 @@ jobs:
           key: v1-dependencies-{{ checksum "package.json" }}
       - run: npm run apply:copay
       # Select correct Chromedriver version (this must run after npm install)
-      - run: npm run e2e:update-ci
       - run: npm run test:lint
       - run: npm run test:ci
-      - run: npm run e2e
-      - run: npx reg-cli test/visual/latest/copay test/visual/expected/copay test/visual/diffs --report test/visual/report.html --json test/visual/report.json --enableAntialias  --pixelThreshold 20
-      - run: npx codecov
-      - store_artifacts:
-          path: ./test
       - store_test_results:
           path: ./test
 
   bitpay:
     docker:
-      - image: circleci/node@sha256:a6f4dfaae4e22f99d3910902362db706f32e0dbca7ce5ef757823d93fef1740e
+      - image: circleci/node@10.15.3
     working_directory: ~/copay
     steps:
       - checkout
@@ -48,14 +42,8 @@ jobs:
             - node_modules
           key: v1-dependencies-{{ checksum "package.json" }}
       - run: npm run apply:bitpay
-      - run: npm run e2e:update-ci
       - run: npm run test:lint
       - run: npm run test:ci
-      - run: npm run e2e
-      - run: npx reg-cli test/visual/latest/bitpay test/visual/expected/bitpay test/visual/diffs --report test/visual/report.html --json test/visual/report.json --enableAntialias  --pixelThreshold 20
-      - run: npx codecov
-      - store_artifacts:
-          path: ./test
       - store_test_results:
           path: ./test
           
