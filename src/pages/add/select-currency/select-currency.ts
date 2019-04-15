@@ -21,6 +21,8 @@ export class SelectCurrencyPage {
   private nextPage: string;
   private invoiceData: string;
   public isInvoice: boolean;
+  private testStr: string;
+  private invoiceId: string;
 
   constructor(
     private navCtrl: NavController,
@@ -32,6 +34,8 @@ export class SelectCurrencyPage {
     this.isShared = this.navParam.data.isShared;
     this.nextPage = this.navParam.data.nextPage;
     this.invoiceData = this.navParam.data.invoiceData;
+    this.testStr = this.navParam.data.testStr;
+    this.invoiceId = this.navParam.data.invoiceId;
     this.isInvoice =
       this.navParam.data.invoiceData && this.nextPage == 'confirm'
         ? true
@@ -45,7 +49,8 @@ export class SelectCurrencyPage {
   public goToNextPage(coin): void {
     if (this.nextPage == 'create') this.goToCreateWallet(coin);
     if (this.nextPage == 'import') this.goToImportWallet(coin);
-    if (this.nextPage == 'confirm') this.goToContactEmail(coin);
+    if (this.nextPage == 'confirm')
+      this.setBuyerSelectedTransactionCurrency(coin);
   }
 
   public goToCreateWallet(coin): void {
@@ -57,8 +62,8 @@ export class SelectCurrencyPage {
   }
 
   private parseError(err: any): string {
-    if (!err) return 'Unknow Error';
-    if (!err.error) return err.message ? err.message : 'Unknow Error';
+    if (!err) return 'Unknown Error';
+    if (!err.error) return err.message ? err.message : 'Unknown Error';
 
     const parsedError = err.error.error_description
       ? err.error.error_description
@@ -75,15 +80,13 @@ export class SelectCurrencyPage {
     });
   }
 
-  private async setBuyerSelectedTransactionCurrency(
-    testStr: string,
-    invoiceId: string,
-    coin: string
-  ) {
-    const url = `https://${testStr}bitpay.com/invoiceData/setBuyerSelectedTransactionCurrency`;
+  private async setBuyerSelectedTransactionCurrency(coin: string) {
+    const url = `https://${
+      this.testStr
+    }bitpay.com/invoiceData/setBuyerSelectedTransactionCurrency`;
     const dataSrc = {
       buyerSelectedTransactionCurrency: coin.toUpperCase(),
-      invoiceId
+      invoiceId: this.invoiceId
     };
     const headers = {
       'Content-Type': 'application/json',
@@ -93,7 +96,11 @@ export class SelectCurrencyPage {
     this.httpNative.post(url, dataSrc, headers).subscribe(
       () => {
         this.logger.info(`Set Buyer Provided Currency to ${coin} SUCCESS`);
-        this.navCtrl.push(ContactEmailPage, { testStr, invoiceId, coin });
+        this.navCtrl.push(ContactEmailPage, {
+          testStr: this.testStr,
+          invoiceId: this.invoiceId,
+          coin
+        });
       },
       data => {
         const error = this.parseError(data);
@@ -105,15 +112,5 @@ export class SelectCurrencyPage {
         );
       }
     );
-  }
-
-  public async goToContactEmail(coin) {
-    const testStr: string =
-      this.invoiceData.indexOf('test.bitpay.com') > -1 ? 'test.' : '';
-    let invoiceId: string = this.invoiceData.replace(
-      /https:\/\/(www.)?(test.)?bitpay.com\/invoice\//,
-      ''
-    );
-    await this.setBuyerSelectedTransactionCurrency(testStr, invoiceId, coin);
   }
 }

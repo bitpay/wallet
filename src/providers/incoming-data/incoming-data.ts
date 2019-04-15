@@ -7,6 +7,7 @@ import { Logger } from '../../providers/logger/logger';
 import { ActionSheetProvider } from '../action-sheet/action-sheet';
 import { AppProvider } from '../app/app';
 import { BwcProvider } from '../bwc/bwc';
+import { HttpRequestsProvider } from '../http-requests/http-requests';
 import { PayproProvider } from '../paypro/paypro';
 import { Coin } from '../wallet/wallet';
 
@@ -17,12 +18,22 @@ export interface RedirParams {
   fromHomeCard?: boolean;
 }
 
+export interface InvoiceData {
+  invoice: {
+    buyerProvidedInfo: {
+      selectedTransactionCurrency: string;
+      emailAddress: string;
+    };
+  };
+}
+
 @Injectable()
 export class IncomingDataProvider {
   constructor(
     private actionSheetProvider: ActionSheetProvider,
     private events: Events,
     private bwcProvider: BwcProvider,
+    private httpNative: HttpRequestsProvider,
     private payproProvider: PayproProvider,
     private logger: Logger,
     private appProvider: AppProvider,
@@ -174,9 +185,51 @@ export class IncomingDataProvider {
     this.goToPayPro(data, coin);
   }
 
-  private handleBitPayInvoice(data: string): void {
+  private handleInvoiceDataResponse(
+    response: InvoiceData,
+    data: string,
+    testStr: string,
+    invoiceId: string
+  ) {
+    const payProBitcoinUrl: string = `bitcoin:?r=https://${testStr}bitpay.com/i/${invoiceId}`;
+    const payProBitcoinCashUrl: string = `bitcoincash:?r=https://${testStr}bitpay.com/i/${invoiceId}`;
+    const {
+      selectedTransactionCurrency,
+      emailAddress
+    } = response.invoice.buyerProvidedInfo;
+
+    if (!selectedTransactionCurrency && !emailAddress) {
+      this.goToSelectCurrencyPage(data, testStr, invoiceId);
+    } else if (selectedTransactionCurrency && !emailAddress) {
+      this.goToContactEmailPage(
+        testStr,
+        invoiceId,
+        selectedTransactionCurrency
+      );
+    } else if (selectedTransactionCurrency && emailAddress) {
+      const payProUrl =
+        selectedTransactionCurrency === 'btc'
+          ? payProBitcoinUrl
+          : payProBitcoinCashUrl;
+      this.redir(payProUrl);
+    }
+  }
+
+  private async handleBitPayInvoice(data: string) {
     this.logger.debug('Handling bitpay invoice');
-    this.goToSelectCurrencyPage(data);
+    const testStr: string = data.indexOf('test.bitpay.com') > -1 ? 'test.' : '';
+    let invoiceId: string = data.replace(
+      /https:\/\/(www.)?(test.)?bitpay.com\/invoice\//,
+      ''
+    );
+    const invoiceDataUrl = `https://${testStr}bitpay.com/invoiceData/${invoiceId}`;
+    this.httpNative
+      .get(invoiceDataUrl)
+      .subscribe(
+        response =>
+          this.handleInvoiceDataResponse(response, data, testStr, invoiceId),
+        error => this.logger.warn('Invoice not found or archived:' + error)
+      );
   }
 
   private handleBitcoinUri(data: string, redirParams?: RedirParams): void {
@@ -287,16 +340,41 @@ export class IncomingDataProvider {
     }
   }
 
-  private goToSelectCurrencyPage(data): void {
+  private goToSelectCurrencyPage(
+    data: string,
+    testStr: string,
+    invoiceId: string
+  ): void {
     this.logger.debug('Incoming-data (redirect): Select Invoice Currency');
 
     let stateParams = {
       invoiceData: data,
+      invoiceId,
+      testStr,
       isShared: false,
       nextPage: 'confirm'
     };
     let nextView = {
       name: 'SelectCurrencyPage',
+      params: stateParams
+    };
+    this.events.publish('IncomingDataRedir', nextView);
+  }
+
+  private goToContactEmailPage(
+    testStr: string,
+    invoiceId: string,
+    coin: string
+  ): void {
+    this.logger.debug('Incoming-data (redirect): Set Contact Email');
+
+    let stateParams = {
+      testStr,
+      invoiceId,
+      coin
+    };
+    let nextView = {
+      name: 'ContactEmailPage',
       params: stateParams
     };
     this.events.publish('IncomingDataRedir', nextView);
