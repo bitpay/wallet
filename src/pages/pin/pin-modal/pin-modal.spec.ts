@@ -47,14 +47,14 @@ describe('PinModalPage', () => {
 
   describe('Methods', () => {
     describe('close', () => {
-      it('should unregister the back button, and pop the page off the navigation stack', () => {
+      it('should unregister the back button, and dismiss the modal', () => {
         const unregisterSpy = spyOn(instance, 'unregister');
         instance.close();
         instance.platform.resume = new Subject();
         instance.platform.pause = new Subject();
         instance.ionViewDidLoad();
         expect(unregisterSpy).toHaveBeenCalled();
-        expect(instance.navCtrl.pop).toHaveBeenCalled();
+        expect(instance.viewCtrl.dismiss).toHaveBeenCalled();
       });
       it('should clear the countdown timer if it exists', () => {
         instance.countDown = setInterval(() => {}, 3000);

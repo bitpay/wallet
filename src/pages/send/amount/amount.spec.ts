@@ -12,7 +12,7 @@ describe('AmountPage', () => {
 
   const wallet = {
     coin: 'bch',
-    status: {
+    cachedStatus: {
       totalBalanceStr: '1.000000',
       totalBalanceSat: 100000000,
       availableBalanceStr: '1.000000',
