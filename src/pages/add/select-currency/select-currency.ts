@@ -9,6 +9,7 @@ import { ImportWalletPage } from '../import-wallet/import-wallet';
 
 // providers
 import { HttpRequestsProvider } from '../../../providers/http-requests/http-requests';
+import { IncomingDataProvider } from '../../../providers/incoming-data/incoming-data';
 
 @Component({
   selector: 'page-select-currency',
@@ -22,6 +23,8 @@ export class SelectCurrencyPage {
 
   constructor(
     private navCtrl: NavController,
+    private incomingDataProvider: IncomingDataProvider,
+    public isInvoice: boolean,
     private httpNative: HttpRequestsProvider,
     private logger: Logger,
     private navParam: NavParams
@@ -29,6 +32,10 @@ export class SelectCurrencyPage {
     this.isShared = this.navParam.data.isShared;
     this.nextPage = this.navParam.data.nextPage;
     this.invoiceData = this.navParam.data.invoiceData;
+    this.isInvoice =
+      this.navParam.data.invoiceData && this.nextPage == 'confirm'
+        ? true
+        : false;
   }
 
   ionViewDidLoad() {
@@ -59,6 +66,13 @@ export class SelectCurrencyPage {
       ? err.error.error.message
       : err.error;
     return parsedError;
+  }
+
+  public openInBrowser() {
+    this.incomingDataProvider.showMenu({
+      data: this.invoiceData,
+      type: 'url'
+    });
   }
 
   private async setBuyerSelectedTransactionCurrency(

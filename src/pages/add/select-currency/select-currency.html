@@ -12,5 +12,16 @@
       </ion-icon>
       <div class="item-title">Bitcoin Cash (BCH)</div>
     </button>
+    <button
+      *ngIf="isInvoice"
+      class="list-button"
+      ion-item
+      (click)="openInBrowser()"
+    >
+      <ion-icon item-start>
+        <img src="assets/img/bitcoincash-logo-blank.svg" />
+      </ion-icon>
+      <div class="item-title">Open Invoice in Browser</div>
+    </button>
   </div>
 </wide-header-page>

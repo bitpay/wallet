@@ -10,8 +10,6 @@ import { ConfigProvider } from '../../../providers/config/config';
 import { EmailNotificationsProvider } from '../../../providers/email-notifications/email-notifications';
 import { ExternalLinkProvider } from '../../../providers/external-link/external-link';
 import { HttpRequestsProvider } from '../../../providers/http-requests/http-requests';
-
-// pages
 import { IncomingDataProvider } from '../../../providers/incoming-data/incoming-data';
 
 @Component({
