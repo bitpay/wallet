@@ -2,7 +2,7 @@
   "name": "copay",
   "description": "A Secure Bitcoin Wallet",
   "author": "BitPay",
-  "version": "5.8.0",
+  "version": "5.7.1",
   "keywords": [
     "bitcoin",
     "wallet",
@@ -185,10 +185,9 @@
     "@zxing/library": "0.8.2",
     "@zxing/ngx-scanner": "1.2.1",
     "angular2-moment": "1.7.1",
-    "axios": "^0.18.0",
     "base64-js": "1.3.0",
     "bitauth": "git+https://github.com/bitpay/bitauth.git#copay",
-    "bitcore-wallet-client": "8.2.0",
+    "bitcore-wallet-client": "8.1.1",
     "buffer-compare": "1.1.1",
     "cordova": "8.1.2",
     "cordova-android": "7.1.2",
@@ -197,7 +196,6 @@
     "cordova-ios": "4.5.5",
     "cordova-launch-review": "3.1.1",
     "cordova-plugin-add-swift-support": "1.7.2",
-    "cordova-plugin-advanced-http": "2.0.8",
     "cordova-plugin-android-fingerprint-auth": "1.4.3",
     "cordova-plugin-compat": "1.2.0",
     "cordova-plugin-customurlscheme": "https://github.com/cmgustavo/Custom-URL-scheme.git#v4.0",
@@ -329,8 +327,7 @@
       "cordova-plugin-vibration": {},
       "im.ltdev.cordova.UserAgent": {},
       "cordova-launch-review": {},
-      "cordova-plugin-wkwebview-engine": {},
-      "cordova-plugin-advanced-http": {}
+      "cordova-plugin-wkwebview-engine": {}
     },
     "platforms": [
       "android",

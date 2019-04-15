@@ -1,12 +1,14 @@
 import { Component } from '@angular/core';
-import axios from 'axios';
 import { NavController, NavParams } from 'ionic-angular';
 import { Logger } from '../../../providers/logger/logger';
-// pages
 
+// pages
 import { ContactEmailPage } from '../contact-email/contact-email';
 import { CreateWalletPage } from '../create-wallet/create-wallet';
 import { ImportWalletPage } from '../import-wallet/import-wallet';
+
+// providers
+import { HttpRequestsProvider } from '../../../providers/http-requests/http-requests';
 
 @Component({
   selector: 'page-select-currency',
@@ -20,6 +22,7 @@ export class SelectCurrencyPage {
 
   constructor(
     private navCtrl: NavController,
+    private httpNative: HttpRequestsProvider,
     private logger: Logger,
     private navParam: NavParams
   ) {
@@ -46,23 +49,48 @@ export class SelectCurrencyPage {
     this.navCtrl.push(ImportWalletPage, { coin });
   }
 
+  private parseError(err: any): string {
+    if (!err) return 'Unknow Error';
+    if (!err.error) return err.message ? err.message : 'Unknow Error';
+
+    const parsedError = err.error.error_description
+      ? err.error.error_description
+      : err.error.error && err.error.error.message
+      ? err.error.error.message
+      : err.error;
+    return parsedError;
+  }
+
   private async setBuyerSelectedTransactionCurrency(
     testStr: string,
     invoiceId: string,
     coin: string
   ) {
-    try {
-      await axios.post(
-        `https://${testStr}bitpay.com/invoiceData/setBuyerSelectedTransactionCurrency`,
-        {
-          buyerSelectedTransactionCurrency: coin.toUpperCase(),
-          invoiceId
-        }
-      );
-    } catch (err) {
-      this.logger.error(err, 'Cannot Set Buyer Selected Transaction Currency');
-      this.navCtrl.push(ContactEmailPage, { testStr, invoiceId, coin });
-    }
+    const url = `https://${testStr}bitpay.com/invoiceData/setBuyerSelectedTransactionCurrency`;
+    const dataSrc = {
+      buyerSelectedTransactionCurrency: coin.toUpperCase(),
+      invoiceId
+    };
+    const headers = {
+      'Content-Type': 'application/json',
+      Accept: 'application/json'
+    };
+
+    this.httpNative.post(url, dataSrc, headers).subscribe(
+      () => {
+        this.logger.info(`Set Buyer Provided Currency to ${coin} SUCCESS`);
+        this.navCtrl.push(ContactEmailPage, { testStr, invoiceId, coin });
+      },
+      data => {
+        const error = this.parseError(data);
+        this.logger.warn(
+          'Cannot Set Buyer Selected Transaction Currency ERROR ' +
+            data.status +
+            '. ' +
+            error
+        );
+      }
+    );
   }
 
   public async goToContactEmail(coin) {
@@ -73,6 +101,5 @@ export class SelectCurrencyPage {
       ''
     );
     await this.setBuyerSelectedTransactionCurrency(testStr, invoiceId, coin);
-    this.navCtrl.push(ContactEmailPage, { testStr, invoiceId, coin });
   }
 }

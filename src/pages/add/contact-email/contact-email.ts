@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import axios from 'axios';
 import { NavParams } from 'ionic-angular';
 import { Logger } from '../../../providers/logger/logger';
 
@@ -10,6 +9,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { ConfigProvider } from '../../../providers/config/config';
 import { EmailNotificationsProvider } from '../../../providers/email-notifications/email-notifications';
 import { ExternalLinkProvider } from '../../../providers/external-link/external-link';
+import { HttpRequestsProvider } from '../../../providers/http-requests/http-requests';
 
 // pages
 import { IncomingDataProvider } from '../../../providers/incoming-data/incoming-data';
@@ -27,6 +27,7 @@ export class ContactEmailPage {
     private logger: Logger,
     private navParam: NavParams,
     private formBuilder: FormBuilder,
+    private httpNative: HttpRequestsProvider,
     private incomingDataProvider: IncomingDataProvider,
     private configProvider: ConfigProvider,
     private emailProvider: EmailNotificationsProvider,
@@ -78,7 +79,33 @@ export class ContactEmailPage {
     );
   }
 
-  async setBuyerProvidedEmail() {
+  private parseError(err: any): string {
+    if (!err) return 'Unknow Error';
+    if (!err.error) return err.message ? err.message : 'Unknow Error';
+
+    const parsedError = err.error.error_description
+      ? err.error.error_description
+      : err.error.error && err.error.error.message
+      ? err.error.error.message
+      : err.error;
+    return parsedError;
+  }
+
+  public async setBuyerProvidedEmail() {
+    const url = `https://${
+      this.testStr
+    }bitpay.com/invoiceData/setBuyerProvidedEmail`;
+
+    const dataSrc = {
+      buyerProvidedEmail: this.emailForm.value.email,
+      invoiceId: this.invoiceId
+    };
+
+    const headers = {
+      'Content-Type': 'application/json',
+      Accept: 'application/json'
+    };
+
     // Need to add BCH testnet bchtest: payProUrl
     const payProBitcoinUrl: string = `bitcoin:?r=https://${
       this.testStr
@@ -89,18 +116,17 @@ export class ContactEmailPage {
     const payProUrl =
       this.coin === 'btc' ? payProBitcoinUrl : payProBitcoinCashUrl;
 
-    try {
-      await axios.post(
-        `https://${this.testStr}bitpay.com/invoiceData/setBuyerProvidedEmail`,
-        {
-          buyerProvidedEmail: this.emailForm.value.email,
-          invoiceId: this.invoiceId
-        }
-      );
-      this.incomingDataProvider.redir(payProUrl);
-    } catch (err) {
-      this.logger.error(err, 'Cannot Set Buyer Provided Email');
-      this.incomingDataProvider.redir(payProUrl);
-    }
+    this.httpNative.post(url, dataSrc, headers).subscribe(
+      () => {
+        this.logger.info('Set Buyer Provided Email SUCCESS');
+        this.incomingDataProvider.redir(payProUrl);
+      },
+      data => {
+        const error = this.parseError(data);
+        this.logger.warn(
+          'Cannot Set Buyer Provided Email ERROR ' + data.status + '. ' + error
+        );
+      }
+    );
   }
 }
