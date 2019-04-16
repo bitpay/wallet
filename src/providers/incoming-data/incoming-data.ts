@@ -20,6 +20,7 @@ export interface RedirParams {
 
 export interface InvoiceData {
   invoice: {
+    paymentTotals: { BTC: number; BCH: number };
     buyerProvidedInfo: {
       selectedTransactionCurrency: string;
       emailAddress: string;
@@ -197,11 +198,18 @@ export class IncomingDataProvider {
       selectedTransactionCurrency,
       emailAddress
     } = response.invoice.buyerProvidedInfo;
+    const { paymentTotals } = response.invoice;
 
     if (!selectedTransactionCurrency && !emailAddress) {
-      this.goToSelectCurrencyPage(data, testStr, invoiceId);
+      this.goToSelectCurrencyPage(data, testStr, invoiceId, paymentTotals);
     } else if (!selectedTransactionCurrency && emailAddress) {
-      this.goToSelectCurrencyPage(data, testStr, invoiceId, true);
+      this.goToSelectCurrencyPage(
+        data,
+        testStr,
+        invoiceId,
+        paymentTotals,
+        true
+      );
     } else if (selectedTransactionCurrency && !emailAddress) {
       this.goToContactEmailPage(
         testStr,
@@ -346,16 +354,17 @@ export class IncomingDataProvider {
     data: string,
     testStr: string,
     invoiceId: string,
+    paymentTotals: InvoiceData['invoice']['paymentTotals'],
     hasEmail?: boolean
   ): void {
     this.logger.debug('Incoming-data (redirect): Select Invoice Currency');
-
     let stateParams = {
       invoiceData: data,
       invoiceId,
       testStr,
       isShared: false,
       nextPage: 'confirm',
+      paymentTotals,
       hasEmail: hasEmail ? true : false
     };
     let nextView = {
