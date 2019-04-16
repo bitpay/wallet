@@ -23,6 +23,7 @@ export class SelectCurrencyPage {
   public isInvoice: boolean;
   private testStr: string;
   private invoiceId: string;
+  private hasEmail?: boolean;
 
   constructor(
     private navCtrl: NavController,
@@ -36,6 +37,7 @@ export class SelectCurrencyPage {
     this.invoiceData = this.navParam.data.invoiceData;
     this.testStr = this.navParam.data.testStr;
     this.invoiceId = this.navParam.data.invoiceId;
+    this.hasEmail = this.navParam.data.hasEmail;
     this.isInvoice =
       this.navParam.data.invoiceData && this.nextPage == 'confirm'
         ? true
@@ -93,14 +95,25 @@ export class SelectCurrencyPage {
       Accept: 'application/json'
     };
 
+    const payProBitcoinUrl: string = `bitcoin:?r=https://${
+      this.testStr
+    }bitpay.com/i/${this.invoiceId}`;
+    const payProBitcoinCashUrl: string = `bitcoincash:?r=https://${
+      this.testStr
+    }bitpay.com/i/${this.invoiceId}`;
+
+    const payProUrl = coin === 'btc' ? payProBitcoinUrl : payProBitcoinCashUrl;
+
     this.httpNative.post(url, dataSrc, headers).subscribe(
       () => {
         this.logger.info(`Set Buyer Provided Currency to ${coin} SUCCESS`);
-        this.navCtrl.push(ContactEmailPage, {
-          testStr: this.testStr,
-          invoiceId: this.invoiceId,
-          coin
-        });
+        this.hasEmail
+          ? this.incomingDataProvider.redir(payProUrl)
+          : this.navCtrl.push(ContactEmailPage, {
+              testStr: this.testStr,
+              invoiceId: this.invoiceId,
+              coin
+            });
       },
       data => {
         const error = this.parseError(data);

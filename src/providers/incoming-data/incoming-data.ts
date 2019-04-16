@@ -200,6 +200,8 @@ export class IncomingDataProvider {
 
     if (!selectedTransactionCurrency && !emailAddress) {
       this.goToSelectCurrencyPage(data, testStr, invoiceId);
+    } else if (!selectedTransactionCurrency && emailAddress) {
+      this.goToSelectCurrencyPage(data, testStr, invoiceId, true);
     } else if (selectedTransactionCurrency && !emailAddress) {
       this.goToContactEmailPage(
         testStr,
@@ -343,7 +345,8 @@ export class IncomingDataProvider {
   private goToSelectCurrencyPage(
     data: string,
     testStr: string,
-    invoiceId: string
+    invoiceId: string,
+    hasEmail?: boolean
   ): void {
     this.logger.debug('Incoming-data (redirect): Select Invoice Currency');
 
@@ -352,7 +355,8 @@ export class IncomingDataProvider {
       invoiceId,
       testStr,
       isShared: false,
-      nextPage: 'confirm'
+      nextPage: 'confirm',
+      hasEmail: hasEmail ? true : false
     };
     let nextView = {
       name: 'SelectCurrencyPage',
