@@ -44,10 +44,8 @@ jobs:
             - node_modules
           key: v1-dependencies-{{ checksum "package.json" }}
       - run: npm run apply:bitpay
-      - run: npm run e2e:update-ci
       - run: npm run test:lint
       - run: npm run test:ci
-      - run: npm run e2e
       - run: npx codecov
       - store_artifacts:
           path: ./test
