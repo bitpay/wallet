@@ -411,18 +411,18 @@ export class GiftCardProvider {
   }
 
   public async setBuyerProvidedCurrency(
-    buyerProvidedCurrency: string,
+    buyerSelectedTransactionCurrency: string,
     invoiceId: string
   ) {
     const req = {
-      buyerProvidedCurrency,
+      buyerSelectedTransactionCurrency,
       invoiceId
     };
     const res: any = await this.http
       .post(
         `${
           this.credentials.BITPAY_API_URL
-        }/invoiceData/setBuyerProvidedCurrency`,
+        }/invoiceData/setBuyerSelectedTransactionCurrency`,
         req
       )
       .toPromise()

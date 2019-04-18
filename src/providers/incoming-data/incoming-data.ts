@@ -4,10 +4,10 @@ import { Events } from 'ionic-angular';
 import { Logger } from '../../providers/logger/logger';
 
 // providers
-import { GiftCardProvider } from '../../providers/gift-card/gift-card';
 import { ActionSheetProvider } from '../action-sheet/action-sheet';
 import { AppProvider } from '../app/app';
 import { BwcProvider } from '../bwc/bwc';
+import { GiftCardProvider } from '../gift-card/gift-card';
 import { PayproProvider } from '../paypro/paypro';
 import { Coin } from '../wallet/wallet';
 
@@ -28,7 +28,7 @@ export class IncomingDataProvider {
     private logger: Logger,
     private appProvider: AppProvider,
     private translate: TranslateService,
-    private invoiceHttp: GiftCardProvider
+    private giftCardProvider: GiftCardProvider
   ) {
     this.logger.debug('IncomingDataProvider initialized');
   }
@@ -182,7 +182,13 @@ export class IncomingDataProvider {
       /https:\/\/(www.)?(test.)?bitpay.com\/invoice\//,
       ''
     );
+    const invoiceData = await this.giftCardProvider
+      .getBitPayInvoice(invoiceId)
+      .catch(err => {
+        throw this.logger.error(err.message);
+      });
     const stateParams = {
+      invoiceData,
       invoiceId
     };
     let nextView = {

@@ -7,11 +7,7 @@ import {
   NavParams
 } from 'ionic-angular';
 import * as _ from 'lodash';
-import * as moment from 'moment';
 import { Logger } from '../../../../providers/logger/logger';
-
-// Pages
-import { FinishModalPage } from '../../../finish/finish';
 
 // Provider
 import { DecimalPipe } from '@angular/common';
@@ -28,7 +24,6 @@ import { ClipboardProvider } from '../../../../providers/clipboard/clipboard';
 import { ConfigProvider } from '../../../../providers/config/config';
 import { ExternalLinkProvider } from '../../../../providers/external-link/external-link';
 import { GiftCardProvider } from '../../../../providers/gift-card/gift-card';
-import { CardConfig } from '../../../../providers/gift-card/gift-card.types';
 import { OnGoingProcessProvider } from '../../../../providers/on-going-process/on-going-process';
 import { PayproProvider } from '../../../../providers/paypro/paypro';
 import { PlatformProvider } from '../../../../providers/platform/platform';
@@ -41,17 +36,22 @@ import {
   WalletProvider
 } from '../../../../providers/wallet/wallet';
 import { ConfirmPage } from '../../../send/confirm/confirm';
-import { CardDetailsPage } from '../card-details/card-details';
 
 @Component({
   selector: 'confirm-invoice-page',
   templateUrl: 'confirm-invoice.html'
 })
 export class ConfirmInvoicePage extends ConfirmPage {
+  public currency: string;
   private message: string;
-  private invoiceId: string;
+  public invoiceId: string;
+  public invoiceData: any;
+  public email: string;
   private configWallet;
   public currencyIsoCode: string;
+  public parsedAmount: any;
+  public invoiceFeeSat: any;
+  public onlyIntegers: boolean;
 
   public totalAmountStr: string;
   public invoiceFee: number;
@@ -59,10 +59,6 @@ export class ConfirmInvoicePage extends ConfirmPage {
   public totalAmount: number;
   public amountUnitStr: string;
   public network: string;
-  public onlyIntegers: boolean;
-  public amount: number;
-
-  public cardConfig: CardConfig;
   public hideSlideButton: boolean;
 
   constructor(
@@ -123,8 +119,12 @@ export class ConfirmInvoicePage extends ConfirmPage {
     this.configWallet = this.configProvider.get().wallet;
   }
 
-  ngOnInit() {
+  async ngOnInit() {
+    this.invoiceData = this.navParams.data.invoiceData;
     this.invoiceId = this.navParams.data.invoiceId;
+    this.amount = this.invoiceData.price || 1;
+    this.currency = this.invoiceData.currency || 'USD';
+    this.onlyIntegers = false;
   }
 
   ionViewDidLoad() {
@@ -141,15 +141,14 @@ export class ConfirmInvoicePage extends ConfirmPage {
       network: this.network,
       hasFunds: true
     });
-    // if (_.isEmpty(this.wallets)) {
-    //   this.showErrorInfoSheet(
-    //     this.translate.instant('No wallets available'),
-    //     null,
-    //     true
-    //   );
-    //   return;
-    // }
-    this.showWallets(); // Show wallet selector
+    if (_.isEmpty(this.wallets)) {
+      this.showErrorInfoSheet(
+        this.translate.instant('No wallets available'),
+        null,
+        true
+      );
+      return;
+    }
   }
 
   public cancel() {
@@ -169,20 +168,6 @@ export class ConfirmInvoicePage extends ConfirmPage {
   private resetValues() {
     this.totalAmountStr = this.invoiceFee = this.networkFee = this.totalAmount = this.wallet = null;
     this.tx = this.message = this.invoiceId = null;
-  }
-
-  async publishAndSign(wallet, txp) {
-    if (!wallet.canSign() && !wallet.isPrivKeyExternal()) {
-      const err = this.translate.instant('No signing proposal: No private key');
-      return Promise.reject(err);
-    }
-    if (this.walletProvider.isEncrypted(wallet)) {
-      this.hideSlideButton = true;
-    }
-
-    await this.walletProvider.publishAndSign(wallet, txp);
-    this.hideSlideButton = false;
-    return this.onGoingProcessProvider.clear();
   }
 
   private satToFiat(coin: string, sat: number) {
@@ -226,7 +211,8 @@ export class ConfirmInvoicePage extends ConfirmPage {
         message: this.translate.instant('Invalid URL')
       };
     }
-
+    global.console.log(payProUrl);
+    global.console.log(wallet.coin);
     const details = await this.payproProvider
       .getPayProDetails(payProUrl, wallet.coin)
       .catch(err => {
@@ -235,7 +221,7 @@ export class ConfirmInvoicePage extends ConfirmPage {
           message: err
         };
       });
-
+    global.console.log(details);
     const txp: Partial<TransactionProposal> = {
       amount: details.amount,
       toAddress: details.toAddress,
@@ -275,11 +261,11 @@ export class ConfirmInvoicePage extends ConfirmPage {
   }
 
   private async promptEmail(emailAddress?: string) {
+    const email = await this.giftCardProvider.getUserEmail();
     if (emailAddress) {
-      this.giftCardProvider.storeEmail(emailAddress);
+      if (!email) this.giftCardProvider.storeEmail(emailAddress);
       return Promise.resolve(emailAddress);
     }
-    const email = await this.giftCardProvider.getUserEmail();
     if (email) return Promise.resolve(email);
     const title = this.translate.instant('Enter email address');
     const message = this.translate.instant(
@@ -305,31 +291,26 @@ export class ConfirmInvoicePage extends ConfirmPage {
   }
 
   private async initialize(wallet) {
-    const data = await this.giftCardProvider
-      .getBitPayInvoice(this.invoiceId)
-      .catch(err => {
-        this.onGoingProcessProvider.clear();
-        throw this.showErrorInfoSheet(err.message, err.title, true);
-      });
-
-    this.amount = data.price;
     const COIN = wallet.coin.toUpperCase();
-    const parsedAmount = this.txFormatProvider.parseAmount(
+    this.parsedAmount = this.txFormatProvider.parseAmount(
       wallet.coin,
-      this.amount,
-      data.currency
+      this.invoiceData.price,
+      this.invoiceData.currency
     );
-    this.currencyIsoCode = parsedAmount.currency;
-    this.amountUnitStr = parsedAmount.amountUnitStr;
+    this.currencyIsoCode = this.parsedAmount.currency;
+    this.amountUnitStr = this.parsedAmount.amountUnitStr;
 
-    const { emailAddress } = data.buyerProvidedInfo;
-    const email = await this.promptEmail(emailAddress);
-    await this.giftCardProvider.setBuyerProvidedEmail(email, this.invoiceId);
-    this.hideSlideButton = false;
-    this.onGoingProcessProvider.set('loadingTxInfo');
-    const invoice = data.invoice;
-
-    if (!this.isCryptoCurrencySupported(wallet, invoice)) {
+    await this.giftCardProvider.setBuyerProvidedCurrency(
+      this.wallet.coin.toUpperCase(),
+      this.invoiceId
+    );
+    const { emailAddress } = this.invoiceData.buyerProvidedInfo;
+    this.email = await this.promptEmail(emailAddress);
+    await this.giftCardProvider.setBuyerProvidedEmail(
+      this.email,
+      this.invoiceId
+    );
+    if (!this.isCryptoCurrencySupported(wallet, this.invoiceData)) {
       this.onGoingProcessProvider.clear();
       let msg = this.translate.instant(
         'Purchases with this cryptocurrency are not enabled'
@@ -337,45 +318,47 @@ export class ConfirmInvoicePage extends ConfirmPage {
       this.showErrorInfoSheet(msg, null, true);
       return;
     }
+    this.onGoingProcessProvider.set('loadingTxInfo');
 
     // Sometimes API does not return this element;
-    invoice['minerFees'][COIN]['totalFee'] =
-      invoice.minerFees[COIN].totalFee || 0;
-    let invoiceFeeSat = invoice.minerFees[COIN].totalFee;
+    this.invoiceData['minerFees'][COIN]['totalFee'] =
+      this.invoiceData.minerFees[COIN].totalFee || 0;
+    this.invoiceFeeSat = this.invoiceData.minerFees[COIN].totalFee;
 
     this.message = this.replaceParametersProvider.replace(
       this.translate.instant(`{{amountUnitStr}} Invoice`),
       { amountUnitStr: this.amountUnitStr }
     );
 
-    const ctxp = await this.createTx(wallet, invoice, this.message).catch(
-      err => {
-        this.onGoingProcessProvider.clear();
-        this.resetValues();
-        throw this.showErrorInfoSheet(err.message, err.title);
-      }
-    );
+    const ctxp = await this.createTx(
+      this.wallet,
+      this.invoiceData,
+      this.message
+    ).catch(err => {
+      this.onGoingProcessProvider.clear();
+      this.resetValues();
+      throw this.showErrorInfoSheet(err.message, err.title);
+    });
 
     this.onGoingProcessProvider.clear();
 
     // Save in memory
     this.tx = ctxp;
-    this.invoiceId = invoice.id;
     this.totalAmountStr = this.txFormatProvider.formatAmountStr(
-      wallet.coin,
+      this.wallet.coin,
       ctxp.amount
     );
 
     // Warn: fee too high
     this.checkFeeHigh(
-      Number(parsedAmount.amountSat),
-      Number(invoiceFeeSat) + Number(ctxp.fee)
+      Number(this.parsedAmount.amountSat),
+      Number(this.invoiceFeeSat) + Number(ctxp.fee)
     );
 
     this.setTotalAmount(
-      wallet,
-      parsedAmount.amountSat,
-      invoiceFeeSat,
+      this.wallet,
+      this.parsedAmount.amountSat,
+      this.invoiceFeeSat,
       ctxp.fee
     );
   }
@@ -387,13 +370,12 @@ export class ConfirmInvoicePage extends ConfirmPage {
       );
       return;
     }
-    await this.giftCardProvider.setBuyerProvidedCurrency(
-      this.wallet.coin.toUpperCase(),
-      this.invoiceId
+    global.console.log(
+      `\n${JSON.stringify(this.tx)} \n${this.wallet} IT WORKED!`
     );
-    return this.publishAndSign(this.wallet, this.tx).catch(async err =>
-      this.handlePurchaseError(err)
-    );
+    // return this.approve(this.tx, this.wallet).catch(async err =>
+    //   this.handlePurchaseError(err)
+    // );
   }
 
   public async handlePurchaseError(err) {
