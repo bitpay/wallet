@@ -182,14 +182,16 @@ export class IncomingDataProvider {
       /https:\/\/(www.)?(test.)?bitpay.com\/invoice\//,
       ''
     );
-    const invoiceData = await this.giftCardProvider
-      .getBitPayInvoice(invoiceId)
+    const invoiceResponse = await this.giftCardProvider
+      .getBitPayInvoiceData(invoiceId)
       .catch(err => {
         throw this.logger.error(err.message);
       });
+    const { invoice, org } = invoiceResponse;
     const stateParams = {
-      invoiceData,
-      invoiceId
+      invoiceData: invoice,
+      invoiceId,
+      invoiceName: org.name
     };
     let nextView = {
       name: 'ConfirmInvoicePage',

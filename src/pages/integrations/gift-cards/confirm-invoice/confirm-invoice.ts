@@ -24,6 +24,7 @@ import { ClipboardProvider } from '../../../../providers/clipboard/clipboard';
 import { ConfigProvider } from '../../../../providers/config/config';
 import { ExternalLinkProvider } from '../../../../providers/external-link/external-link';
 import { GiftCardProvider } from '../../../../providers/gift-card/gift-card';
+import { IncomingDataProvider } from '../../../../providers/incoming-data/incoming-data';
 import { OnGoingProcessProvider } from '../../../../providers/on-going-process/on-going-process';
 import { PayproProvider } from '../../../../providers/paypro/paypro';
 import { PlatformProvider } from '../../../../providers/platform/platform';
@@ -46,6 +47,8 @@ export class ConfirmInvoicePage extends ConfirmPage {
   private message: string;
   public invoiceId: string;
   public invoiceData: any;
+  public invoiceName: string;
+  public invoiceUrl: string;
   public email: string;
   private configWallet;
   public currencyIsoCode: string;
@@ -75,6 +78,7 @@ export class ConfirmInvoicePage extends ConfirmPage {
     modalCtrl: ModalController,
     navCtrl: NavController,
     navParams: NavParams,
+    private incomingDataProvider: IncomingDataProvider,
     onGoingProcessProvider: OnGoingProcessProvider,
     popupProvider: PopupProvider,
     profileProvider: ProfileProvider,
@@ -116,6 +120,7 @@ export class ConfirmInvoicePage extends ConfirmPage {
       AppProvider
     );
     this.hideSlideButton = false;
+    this.invoiceName = this.navParams.data.invoiceName;
     this.configWallet = this.configProvider.get().wallet;
   }
 
@@ -125,6 +130,8 @@ export class ConfirmInvoicePage extends ConfirmPage {
     this.amount = this.invoiceData.price || 1;
     this.currency = this.invoiceData.currency || 'USD';
     this.onlyIntegers = false;
+    const { emailAddress } = this.invoiceData.buyerProvidedInfo;
+    this.email = await this.getEmail(emailAddress);
   }
 
   ionViewDidLoad() {
@@ -141,18 +148,41 @@ export class ConfirmInvoicePage extends ConfirmPage {
       network: this.network,
       hasFunds: true
     });
+    this.invoiceUrl = `https://bitpay.com/invoice/${this.invoiceId}`;
+    if (this.network === 'testnet') {
+      this.invoiceUrl = `https://test.bitpay.com/invoice/${this.invoiceId}`;
+    }
+    this.wallet = this.wallets[0];
     if (_.isEmpty(this.wallets)) {
-      this.showErrorInfoSheet(
-        this.translate.instant('No wallets available'),
-        null,
-        true
-      );
+      this.openInBrowser();
       return;
     }
+    this.paymentTimeControl(this.invoiceData.expirationTime);
+    this.onWalletSelect(this.wallets[0]);
   }
 
-  public cancel() {
-    this.navCtrl.popToRoot();
+  public openInBrowser() {
+    this.incomingDataProvider.showMenu({
+      data: this.invoiceUrl,
+      type: 'url'
+    });
+  }
+
+  public browser() {
+    const url = this.invoiceUrl;
+    const optIn = true;
+    const title = null;
+    const message = this.translate.instant('Browser');
+    const okText = this.translate.instant('Open in Browser');
+    const cancelText = this.translate.instant('Go Back');
+    this.externalLinkProvider.open(
+      url,
+      optIn,
+      title,
+      message,
+      okText,
+      cancelText
+    );
   }
 
   private checkFeeHigh(amount: number, fee: number) {
@@ -211,8 +241,6 @@ export class ConfirmInvoicePage extends ConfirmPage {
         message: this.translate.instant('Invalid URL')
       };
     }
-    global.console.log(payProUrl);
-    global.console.log(wallet.coin);
     const details = await this.payproProvider
       .getPayProDetails(payProUrl, wallet.coin)
       .catch(err => {
@@ -221,7 +249,6 @@ export class ConfirmInvoicePage extends ConfirmPage {
           message: err
         };
       });
-    global.console.log(details);
     const txp: Partial<TransactionProposal> = {
       amount: details.amount,
       toAddress: details.toAddress,
@@ -260,24 +287,14 @@ export class ConfirmInvoicePage extends ConfirmPage {
     });
   }
 
-  private async promptEmail(emailAddress?: string) {
+  private async getEmail(emailAddress?: string) {
     const email = await this.giftCardProvider.getUserEmail();
     if (emailAddress) {
       if (!email) this.giftCardProvider.storeEmail(emailAddress);
       return Promise.resolve(emailAddress);
     }
     if (email) return Promise.resolve(email);
-    const title = this.translate.instant('Enter email address');
-    const message = this.translate.instant(
-      'Where do you want to receive your purchase receipt?'
-    );
-    const opts = { type: 'email', defaultText: '' };
-    const newEmail = await this.popupProvider.ionicPrompt(title, message, opts);
-    if (!this.giftCardProvider.emailIsValid(newEmail)) {
-      this.throwEmailRequiredError();
-    }
-    this.giftCardProvider.storeEmail(newEmail);
-    return newEmail;
+    return '';
   }
 
   private throwEmailRequiredError() {
@@ -300,16 +317,6 @@ export class ConfirmInvoicePage extends ConfirmPage {
     this.currencyIsoCode = this.parsedAmount.currency;
     this.amountUnitStr = this.parsedAmount.amountUnitStr;
 
-    await this.giftCardProvider.setBuyerProvidedCurrency(
-      this.wallet.coin.toUpperCase(),
-      this.invoiceId
-    );
-    const { emailAddress } = this.invoiceData.buyerProvidedInfo;
-    this.email = await this.promptEmail(emailAddress);
-    await this.giftCardProvider.setBuyerProvidedEmail(
-      this.email,
-      this.invoiceId
-    );
     if (!this.isCryptoCurrencySupported(wallet, this.invoiceData)) {
       this.onGoingProcessProvider.clear();
       let msg = this.translate.instant(
@@ -330,6 +337,45 @@ export class ConfirmInvoicePage extends ConfirmPage {
       { amountUnitStr: this.amountUnitStr }
     );
 
+    const fee = await this.feeProvider.getCurrentFeeRate(
+      this.wallet.coin,
+      this.network
+    );
+    this.onGoingProcessProvider.clear();
+    this.totalAmountStr = this.txFormatProvider.formatAmountStr(
+      this.wallet.coin,
+      this.invoiceData.paymentTotals[COIN]
+    );
+    this.checkFeeHigh(
+      Number(this.parsedAmount.amountSat),
+      Number(this.invoiceFeeSat) + Number(fee)
+    );
+    this.setTotalAmount(
+      this.wallet,
+      this.parsedAmount.amountSat,
+      this.invoiceFeeSat,
+      fee
+    );
+  }
+
+  public isValidEmail() {
+    return !!this.giftCardProvider.emailIsValid(this.email);
+  }
+
+  public async buyConfirm() {
+    if (!this.isValidEmail()) {
+      this.throwEmailRequiredError();
+    }
+    this.giftCardProvider.storeEmail(this.email);
+
+    await this.giftCardProvider.setBuyerProvidedCurrency(
+      this.wallet.coin.toUpperCase(),
+      this.invoiceId
+    );
+    await this.giftCardProvider.setBuyerProvidedEmail(
+      this.email,
+      this.invoiceId
+    );
     const ctxp = await this.createTx(
       this.wallet,
       this.invoiceData,
@@ -339,43 +385,25 @@ export class ConfirmInvoicePage extends ConfirmPage {
       this.resetValues();
       throw this.showErrorInfoSheet(err.message, err.title);
     });
-
-    this.onGoingProcessProvider.clear();
-
-    // Save in memory
     this.tx = ctxp;
-    this.totalAmountStr = this.txFormatProvider.formatAmountStr(
-      this.wallet.coin,
-      ctxp.amount
-    );
 
-    // Warn: fee too high
-    this.checkFeeHigh(
-      Number(this.parsedAmount.amountSat),
-      Number(this.invoiceFeeSat) + Number(ctxp.fee)
-    );
-
-    this.setTotalAmount(
-      this.wallet,
-      this.parsedAmount.amountSat,
-      this.invoiceFeeSat,
-      ctxp.fee
-    );
-  }
-
-  public async buyConfirm() {
     if (!this.tx) {
       this.showErrorInfoSheet(
         this.translate.instant('Transaction has not been created')
       );
       return;
     }
-    global.console.log(
-      `\n${JSON.stringify(this.tx)} \n${this.wallet} IT WORKED!`
+
+    if (this.paymentExpired) {
+      this.showErrorInfoSheet(
+        this.translate.instant('This invoice payment request has expired.')
+      );
+      return undefined;
+    }
+
+    return this.publishAndSign(this.tx, this.wallet).catch(async err =>
+      this.handlePurchaseError(err)
     );
-    // return this.approve(this.tx, this.wallet).catch(async err =>
-    //   this.handlePurchaseError(err)
-    // );
   }
 
   public async handlePurchaseError(err) {
@@ -392,6 +420,23 @@ export class ConfirmInvoicePage extends ConfirmPage {
     this.showErrorInfoSheet(
       this.bwcErrorProvider.msg(err),
       this.translate.instant('Could not send transaction')
+    );
+  }
+
+  public openPrivacyPolicy() {
+    const url = 'https://bitpay.com/about/privacy';
+    const optIn = true;
+    const title = null;
+    const message = this.translate.instant('View Privacy Policy');
+    const okText = this.translate.instant('Open');
+    const cancelText = this.translate.instant('Go Back');
+    this.externalLinkProvider.open(
+      url,
+      optIn,
+      title,
+      message,
+      okText,
+      cancelText
     );
   }
 

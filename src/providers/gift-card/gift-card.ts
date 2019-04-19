@@ -386,6 +386,18 @@ export class GiftCardProvider {
     return res.data;
   }
 
+  public async getBitPayInvoiceData(id: string) {
+    const res: any = await this.http
+      .get(`${this.credentials.BITPAY_API_URL}/invoiceData/${id}`)
+      .toPromise()
+      .catch(err => {
+        this.logger.error('BitPay Get Invoice: ERROR ' + err.error.message);
+        throw err.error.message;
+      });
+    this.logger.info('BitPay Get Invoice: SUCCESS');
+    return res;
+  }
+
   public async setBuyerProvidedEmail(
     buyerProvidedEmail: string,
     invoiceId: string

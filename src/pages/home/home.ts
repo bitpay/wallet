@@ -14,6 +14,7 @@ import { ShapeshiftPage } from '../integrations/shapeshift/shapeshift';
 import { ProposalsPage } from './proposals/proposals';
 
 // Providers
+import { GiftCardProvider } from '../..//providers/gift-card/gift-card';
 import { AppProvider } from '../../providers/app/app';
 import { BitPayCardProvider } from '../../providers/bitpay-card/bitpay-card';
 import { BwcErrorProvider } from '../../providers/bwc-error/bwc-error';
@@ -95,7 +96,8 @@ export class HomePage {
     private translate: TranslateService,
     private emailProvider: EmailNotificationsProvider,
     private clipboardProvider: ClipboardProvider,
-    private incomingDataProvider: IncomingDataProvider
+    private incomingDataProvider: IncomingDataProvider,
+    private giftCardProvider: GiftCardProvider
   ) {
     this.slideDown = false;
     this.isElectron = this.platformProvider.isElectron;
@@ -349,7 +351,24 @@ export class HomePage {
           this.validDataFromClipboard = null;
           return;
         }
-        if (this.validDataFromClipboard.type === 'PayPro') {
+        if (this.validDataFromClipboard.type === 'InvoiceUri') {
+          const invoiceId: string = data.replace(
+            /https:\/\/(www.)?(test.)?bitpay.com\/invoice\//,
+            ''
+          );
+          const {
+            expirationTime
+          } = await this.giftCardProvider
+            .getBitPayInvoice(invoiceId)
+            .catch(err => {
+              throw this.logger.error(err.message);
+            });
+          this.clearCountDownInterval();
+          const expire = Math.floor(new Date(expirationTime).getTime() / 1000);
+          const now = Math.floor(Date.now() / 1000);
+
+          global.console.log(`${expire} vs \n${now}`);
+        } else if (this.validDataFromClipboard.type === 'PayPro') {
           const coin: string =
             data.indexOf('bitcoincash') === 0 ? Coin.BCH : Coin.BTC;
           this.incomingDataProvider

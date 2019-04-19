@@ -359,7 +359,7 @@ export class ConfirmPage extends WalletTabsChild {
     }
   }
 
-  private paymentTimeControl(expires: string): void {
+  public paymentTimeControl(expires: string): void {
     const expirationTime = Math.floor(new Date(expires).getTime() / 1000);
     this.paymentExpired = false;
     this.setExpirationTime(expirationTime);

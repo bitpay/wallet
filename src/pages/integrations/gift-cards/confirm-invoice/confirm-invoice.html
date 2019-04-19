@@ -2,7 +2,7 @@
   <ion-navbar>
     <ion-title>{{ 'Confirm' | translate }}</ion-title>
     <ion-buttons right>
-      <button (click)="cancel()" ion-button>{{ 'Cancel' | translate }}</button>
+      <a (click)="browser()" ion-button>{{ 'Browser' | translate }}</a>
     </ion-buttons>
   </ion-navbar>
 </ion-header>
@@ -11,9 +11,10 @@
   <ion-list class="settings-list">
     <ion-item class="confirm-header">
       <div class="confirm-header__amount">
-        <div class="gift-card-title">Paying invoice amount</div>
+        <div class="gift-card-title">Paying to {{ invoiceName }}</div>
         <div class="amount-label">
-          <div class="amount">{{ amount | formatCurrency: currency }}</div>
+          <div class="amount">{{ totalAmountStr }}</div>
+          <div>{{ amount | formatCurrency: currency }}</div>
         </div>
       </div>
     </ion-item>
@@ -35,7 +36,7 @@
               class="icon-wallet"
             />
           </ion-icon>
-          <div>{{ wallet ? wallet.name : '...' }}</div>
+          <div>{{ wallet ? wallet.name : 'Select a wallet' }}</div>
           <div class="last-item" item-end>
             <button ion-button clear color="grey" icon-only>
               <ion-icon
@@ -50,6 +51,20 @@
           </div>
         </div>
       </button>
+
+      <ion-item>
+        <span translate>Payment Expires:</span>
+        <ion-note *ngIf="!paymentExpired" item-end>{{
+          remainingTimeStr
+        }}</ion-note>
+        <ion-note
+          *ngIf="paymentExpired"
+          [ngStyle]="{ color: 'red' }"
+          item-end
+          >{{ 'Expired' | translate }}</ion-note
+        >
+      </ion-item>
+
       <div *ngIf="totalAmountStr">
         <ion-item-divider> {{ 'Details' | translate }} </ion-item-divider>
         <ion-item>
@@ -96,8 +111,28 @@
           </ion-note>
         </ion-item>
       </div>
-      <ion-item> </ion-item>
     </ion-item-group>
+
+    <div>
+      <ion-item-divider> {{ 'Refund Email' | translate }} </ion-item-divider>
+      <ion-item>
+        <ion-textarea
+          placeholder="{{'Enter a refund email' | translate}}"
+          [(ngModel)]="email"
+          name="email"
+          autocomplete="off"
+          autocorrect="off"
+        ></ion-textarea>
+      </ion-item>
+    </div>
+
+    <label-tip type="info" header="no-header">
+      <div label-tip-body translate>
+        If there is an issue with this payment, or a refund needs to be made, we
+        will contact you at this address.<br />
+        <a (click)="openPrivacyPolicy()" translate>View Privacy Policy</a>
+      </div>
+    </label-tip>
   </ion-list>
 </ion-content>
 
