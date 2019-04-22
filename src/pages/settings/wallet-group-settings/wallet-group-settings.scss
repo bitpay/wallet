@@ -1,0 +1,20 @@
+page-wallet-group-settings {
+  .assertive {
+    color: color($colors, danger);
+    ion-label {
+      white-space: inherit;
+    }
+  }
+  .item-text {
+    font-size: 12.5px;
+  }
+  .settings-color-block {
+    display: inline-block;
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    float: left;
+    margin: 1rem;
+    background-color: color($colors, primary);
+  }
+}

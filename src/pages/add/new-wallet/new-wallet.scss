@@ -1,0 +1,37 @@
+page-new-wallet {
+  .list-button {
+    margin-top: 1rem;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    background-color: none;
+    .item-inner {
+      border: none !important;
+    }
+  }
+  .item-title {
+    font-weight: bold;
+  }
+  .join-icon {
+    img {
+      padding: 6px;
+    }
+  }
+  .import-icon {
+    img {
+      padding: 0px;
+    }
+  }
+  @mixin row-flex {
+    display: flex;
+    align-items: center;
+    margin-top: 1rem;
+  }
+  .container-to {
+    .wallet-group {
+      @include row-flex;
+    }
+  }
+  .last-item {
+    margin-left: auto !important;
+  }
+}

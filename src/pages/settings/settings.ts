@@ -32,6 +32,7 @@ import { LanguagePage } from './language/language';
 import { LockPage } from './lock/lock';
 import { NotificationsPage } from './notifications/notifications';
 import { SharePage } from './share/share';
+import { WalletGroupSettingsPage } from './wallet-group-settings/wallet-group-settings';
 import { WalletSettingsPage } from './wallet-settings/wallet-settings';
 
 @Component({
@@ -51,10 +52,8 @@ export class SettingsPage {
   public integrationServices = [];
   public bitpayCardItems = [];
   public showBitPayCard: boolean = false;
-  public encryptEnabled: boolean;
-  public touchIdAvailable: boolean;
-  public touchIdEnabled: boolean;
-  public touchIdPrevValue: boolean;
+  public walletGroup;
+  public walletGroups;
 
   constructor(
     private navCtrl: NavController,
@@ -91,15 +90,15 @@ export class SettingsPage {
     this.walletsBch = this.profileProvider.getWallets({
       coin: 'bch'
     });
+    this.profileProvider.getAllWalletsGroups().then(walletGroups => {
+      this.walletGroups = _.compact(walletGroups);
+    });
     this.config = this.configProvider.get();
     this.selectedAlternative = {
       name: this.config.wallet.settings.alternativeName,
       isoCode: this.config.wallet.settings.alternativeIsoCode
     };
-    this.lockMethod =
-      this.config && this.config.lock && this.config.lock.method
-        ? this.config.lock.method.toLowerCase()
-        : null;
+
   }
 
   ionViewDidEnter() {
@@ -137,6 +136,10 @@ export class SettingsPage {
 
   public openAboutPage(): void {
     this.navCtrl.push(AboutPage);
+  }
+
+  public openWalletGroupSettings(walletGroupId): void {
+    this.navCtrl.push(WalletGroupSettingsPage, { walletGroupId });
   }
 
   public openLockPage(): void {
@@ -237,23 +240,5 @@ export class SettingsPage {
     this.touchid.check().then(() => {
       this.navCtrl.push(LockPage);
     });
-  }
-
-  public openSupportEncryptPassword(): void {
-    const url =
-      'https://support.bitpay.com/hc/en-us/articles/360000244506-What-Does-a-Spending-Password-Do-';
-    const optIn = true;
-    const title = null;
-    const message = this.translate.instant('Read more in our support page');
-    const okText = this.translate.instant('Open');
-    const cancelText = this.translate.instant('Go Back');
-    this.externalLinkProvider.open(
-      url,
-      optIn,
-      title,
-      message,
-      okText,
-      cancelText
-    );
   }
 }

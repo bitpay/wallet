@@ -5,7 +5,8 @@
 </ion-header>
 <ion-content>
   <ion-list class="settings-list">
-    <ion-item (click)="saveBlack()">
+    <ion-item-divider></ion-item-divider>
+    <ion-item>
       <div translate float-left>Name (at creation)</div>
       <ion-note item-end>
         {{walletName}}
@@ -76,14 +77,8 @@
           {{pk}}
         </div>
       </div>
-      <span *ngIf="$index == 0">({{basePath}})</span>
+      <span *ngIf="i == 0">({{basePath}})</span>
     </ion-item>
-    <div *ngIf="!needsBackup && canSign">
-      <ion-item-divider class="item-without-title"></ion-item-divider>
-      <button ion-item (click)="openWalletExtendedPrivateKey()">
-        <span translate>Extended Private Key</span>
-      </button>
-    </div>
     <ion-item-divider *ngIf="balanceByAddress">Balance By Address</ion-item-divider>
     <ion-item class="item" *ngFor="let a of balanceByAddress" copy-to-clipboard="{{a.address}}">
       <span>{{a.address}}</span>

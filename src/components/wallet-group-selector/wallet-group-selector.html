@@ -1,0 +1,31 @@
+<action-sheet>
+  <ion-row align-items-center>
+    <ion-col col-4 text-left>
+      <button ion-button clear icon-only color="grey" (click)="dismiss()">
+        <ion-icon name="arrow-round-back"></ion-icon>
+      </button>
+    </ion-col>
+    <ion-col col-4 text-center class="destination-title">Choose a wallet</ion-col>
+  </ion-row>
+  <div>
+    <ion-item-divider>
+      <div class="title">
+        <span translate>Wallets</span>
+      </div>
+    </ion-item-divider>
+    <ion-list>
+      <button ion-item detail-none *ngFor="let walletGroup of walletGroups" class="wallet-button" (click)="optionClicked(walletGroup)">
+        <ion-icon class="item-img" item-end>
+          <img class="check" src="assets/img/icon-check-selected.svg" *ngIf="selectedWalletGroupId === walletGroup.id">
+        </ion-icon>
+        <div class="item-title">{{walletGroup.name}}</div>
+        <div class="item-subtitle">
+          <span class="wallet-warning" *ngIf="walletGroup.needsBackup" translate>
+            Needs Backup
+          </span>
+        </div>
+      </button>
+    </ion-list>
+  </div>
+  <ion-item-divider></ion-item-divider>
+</action-sheet>

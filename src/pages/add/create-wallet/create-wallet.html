@@ -12,7 +12,7 @@
   <form [formGroup]="createForm">
     <ion-item>
       <ion-label floating>{{'Wallet name' | translate}}</ion-label>
-      <ion-input type="text" formControlName="walletName"></ion-input>
+      <ion-input type="text" formControlName="walletName" [readonly]="readOnly()"></ion-input>
     </ion-item>
 
     <div *ngIf="isShared">
@@ -42,12 +42,12 @@
     </button>
 
     <div *ngIf="showAdvOpts" padding-bottom>
-      <ion-item>
+      <ion-item *ngIf="!walletGroupId">
         <ion-label stacked>Wallet Service URL</ion-label>
         <ion-input type="text" formControlName="bwsURL"></ion-input>
       </ion-item>
 
-      <ion-item>
+      <ion-item *ngIf="!walletGroupId">
         <ion-label stacked>{{'Wallet key' | translate}}</ion-label>
         <ion-select okText="{{okText}}" cancelText="{{cancelText}}" formControlName="selectedSeed" (ionChange)="seedOptionsChange(createForm.value.selectedSeed)">
           <ion-option *ngFor="let opt of seedOptions" [value]="opt.id">{{opt.label}}</ion-option>

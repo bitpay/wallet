@@ -87,13 +87,20 @@
 
       <div class="wallet" *ngIf="tx.recipientType == 'wallet'">
         <ion-icon item-start>
-          <img *ngIf="tx.network == 'testnet'" [ngStyle]="{'background-color': tx.color}" src="assets/img/icon-wallet-testnet.svg" class="icon-wallet" />
-          <img *ngIf="tx.network != 'testnet'" [ngStyle]="{'background-color': tx.color}" src="assets/img/icon-wallet.svg" class="icon-wallet" />
+          <img *ngIf="wallet.coin == 'btc' && tx.network == 'livenet'" src="assets/img/bitcoin-logo-blank.svg" class="icon-coin" />
+          <img *ngIf="wallet.coin == 'bch' && tx.network == 'livenet'" src="assets/img/bitcoincash-logo-blank.svg" class="icon-coin" />
+          <img *ngIf="wallet.coin == 'btc' && tx.network == 'testnet'" src="assets/img/bitcoin-testnet-transparent.svg" class="icon-coin" />
+          <img *ngIf="wallet.coin == 'bch' && tx.network == 'testnet'" src="assets/img/bitcoincash-testnet-transparent.svg" class="icon-coin" />
         </ion-icon>
-        <div class="ellipsis" copy-to-clipboard="{{ tx.origToAddress }}">
-          <!--TODO: <contact ng-if="tx.origToAddress && !tx.name" address="{{tx.origToAddress}}"></contact>-->
-          <span *ngIf="!tx.name">{{tx.origToAddress}}</span>
-          <span *ngIf="tx.name">{{tx.name}}</span>
+        <div>
+          <div class="ellipsis" copy-to-clipboard="{{ tx.origToAddress }}">
+            <!--TODO: <contact ng-if="tx.origToAddress && !tx.name" address="{{tx.origToAddress}}"></contact>-->
+            <span *ngIf="!tx.name">{{tx.origToAddress}}</span>
+            <span *ngIf="tx.name">{{tx.name}}</span>
+          </div>
+          <div class="item-subtitle">
+            <span>#{{wallet.account}} <span class="network-type" *ngIf="wallet.network == 'testnet'">- [<span text-uppercase>{{wallet.network}}</span>]</span></span>
+          </div>
         </div>
       </div>
 
@@ -152,15 +159,20 @@
       <span translate>From</span>
       <div class="wallet" *ngIf="wallet">
         <ion-icon item-start>
-          <img *ngIf="wallet.network == 'testnet'" [ngStyle]="{'background-color': wallet.color}" src="assets/img/icon-wallet-testnet.svg" class="icon-wallet" />
-          <img *ngIf="wallet.network != 'testnet'" [ngStyle]="{'background-color': wallet.color}" src="assets/img/icon-wallet.svg" class="icon-wallet" />
+          <img *ngIf="wallet.coin == 'btc'" src="assets/img/bitcoin-logo-blank.svg" class="icon-coin" />
+          <img *ngIf="wallet.coin == 'bch'" src="assets/img/bitcoincash-logo-blank.svg" class="icon-coin" />
         </ion-icon>
-        <div>{{wallet.name}}</div>
-        <div class="last-item" item-end *ngIf="!isWithinWalletTabs()">
-          <button ion-button clear color="grey" icon-only>
-            <ion-icon *ngIf="!isOpenSelector" name="ios-arrow-down-outline"></ion-icon>
-            <ion-icon *ngIf="isOpenSelector" name="ios-arrow-up-outline"></ion-icon>
-          </button>
+        <div>
+          <div class="item-title">{{wallet.name}}</div>
+          <div class="item-subtitle">
+            <span>#{{wallet.account}} <span class="network-type" *ngIf="wallet.network == 'testnet'">- [<span text-uppercase>{{wallet.network}}</span>]</span></span>
+          </div>
+          <div class="last-item" item-end *ngIf="!isWithinWalletTabs()">
+            <button ion-button clear color="grey" icon-only>
+              <ion-icon *ngIf="!isOpenSelector" name="ios-arrow-down-outline"></ion-icon>
+              <ion-icon *ngIf="isOpenSelector" name="ios-arrow-up-outline"></ion-icon>
+            </button>
+          </div>
         </div>
       </div>
       <div class="wallet" *ngIf="!wallet">

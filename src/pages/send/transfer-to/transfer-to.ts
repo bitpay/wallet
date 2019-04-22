@@ -18,6 +18,7 @@ export interface FlatWallet {
   name: string;
   recipientType: 'wallet';
   coin: Coin;
+  account: string;
   network: 'testnet' | 'livenet';
   m: number;
   n: number;
@@ -155,6 +156,7 @@ export class TransferToPage {
       name: wallet.name,
       recipientType: 'wallet',
       coin: wallet.coin,
+      account: wallet.account,
       network: wallet.network,
       m: wallet.credentials.m,
       n: wallet.credentials.n,

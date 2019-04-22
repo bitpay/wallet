@@ -47,7 +47,7 @@ export class AmountPage extends WalletTabsChild {
   private reNr: RegExp;
   private reOp: RegExp;
   private nextView;
-  private fixedUnit: boolean;
+  public fixedUnit: boolean;
   public fiatCode: string;
   private altUnitIndex: number;
   private unitIndex: number;

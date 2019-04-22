@@ -1,0 +1,58 @@
+<wide-header-page title="{{'Wallet Preferences' | translate}}">
+  <div page-content>
+    <ion-list class="settings-list">
+      <ion-item-divider></ion-item-divider>
+      <button ion-item (click)="openWalletName()">
+        <div translate float-left>Name</div>
+        <div text-end text-wrap ion-text color="light-grey">
+          {{walletGroup && walletGroup.name}}
+        </div>
+      </button>
+      <button ion-item (click)="openBackupSettings()" [ngClass]="{warn: walletGroup?.needsBackup}">
+        <span translate>Backup</span>
+        <ion-note *ngIf="walletGroup?.needsBackup" class="wallet-warning" item-end>
+          {{'Needs backup' | translate}}
+        </ion-note>
+      </button>
+
+      <ion-item class="with-label">
+        <ion-label>{{'Request Encrypt Password' | translate}}</ion-label>
+        <ion-toggle [(ngModel)]="encryptEnabled" (ionChange)="encryptChange()" [disabled]="walletGroup?.needsBackup && !encryptEnabled"></ion-toggle>
+      </ion-item>
+      <label-tip type="info">
+        <span label-tip-title translate>Password Not Recoverable</span>
+        <div label-tip-body>
+          <span translate>This password cannot be recovered. If this password is lost, funds can only be recovered by reimporting your 12-word recovery phrase.</span>
+          <br>
+          <a class="label-tip-link" (click)="openSupportEncryptPassword()" translate>Learn More</a>
+        </div>
+      </label-tip>
+
+      <div *ngIf="touchIdAvailable">
+        <ion-item>
+          <ion-label [ngClass]="{'disabled': walletGroup?.needsBackup}">{{'Request Fingerprint'| translate}}</ion-label>
+          <ion-toggle [(ngModel)]="touchIdEnabled" (ionChange)="touchIdChange()"></ion-toggle>
+        </ion-item>
+      </div>
+
+      <button ion-item (click)="openExportWallet()">
+        <span translate>Export</span>
+      </button>
+
+      <button ion-item (click)="openWalletServiceUrl()">
+        <span>Wallet Service URL</span>
+      </button>
+
+      <div *ngIf="!needsBackup && canSign">
+        <ion-item-divider></ion-item-divider>
+        <button ion-item (click)="openWalletExtendedPrivateKey()">
+          <span translate>Extended Private Key</span>
+        </button>
+      </div>
+
+      <button ion-item (click)="openDeleteWalletGroup()">
+        <span translate>Delete</span>
+      </button>
+    </ion-list>
+  </div>
+</wide-header-page>

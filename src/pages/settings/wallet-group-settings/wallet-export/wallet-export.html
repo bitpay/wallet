@@ -1,8 +1,8 @@
 <ion-header>
-  <ion-navbar [navbar-bg]="wallet?.color">
+  <ion-navbar>
     <ion-title>{{'Export wallet' | translate}}</ion-title>
   </ion-navbar>
-  <ion-toolbar [navbar-bg]="wallet?.color">
+  <ion-toolbar>
     <ion-segment [(ngModel)]="segments" color="blank">
       <ion-segment-button value="file/text">
         {{'File/Text' | translate}}
@@ -26,7 +26,7 @@
             <ion-label stacked>{{'Repeat the password' | translate}}</ion-label>
             <ion-input type="password" formControlName="confirmPassword" required></ion-input>
           </ion-item>
-          <ion-item *ngIf="exportWalletForm.controls.confirmPassword.touched && exportWalletForm.hasError('mismatchedPasswords') && exportWalletForm.controls.password.valid">
+          <ion-item *ngIf="exportWalletForm.controls['confirmPassword'].touched && exportWalletForm.hasError('mismatchedPasswords') && exportWalletForm.controls['password'].valid">
             <span ion-text color="warning" translate>Passwords do not match</span>
           </ion-item>
           <label-tip class="no-arrowhead" *ngIf="!canSign" type="warn">

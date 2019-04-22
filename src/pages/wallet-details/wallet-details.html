@@ -5,7 +5,7 @@
         <ion-icon ios="md-close" md="md-close"></ion-icon>
       </button>
     </ion-buttons>
-    <ion-title>{{wallet.name}}</ion-title>
+    <ion-title>Account #{{wallet.account}}</ion-title>
     <ion-buttons right>
       <button ion-button clear (click)="goToPreferences()">
         <img src="assets/img/preferences.svg">
@@ -23,8 +23,7 @@
       <expandable-header-primary class="balance-header">
         <div (longPress)="toggleBalance()">
           <div (tap)="updateAll(true)" *ngIf="!wallet.balanceHidden && !wallet.scanning && (wallet.cachedStatus || wallet.lastKnownBalance)">
-            <div class="balance-str">
-              {{ wallet.cachedStatus ? wallet.cachedStatus.totalBalanceStr  : wallet.lastKnownBalance }} </div>
+            <div class="balance-str">{{ wallet.cachedStatus ? wallet.cachedStatus.totalBalanceStr : wallet.lastKnownBalance }}</div>
             <div class="balance-alt-str" *ngIf="wallet.cachedStatus && wallet.cachedStatus.totalBalanceAlternative">
               {{wallet.cachedStatus.totalBalanceAlternative}} {{wallet.cachedStatus.alternativeIsoCode}}
             </div>
