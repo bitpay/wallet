@@ -95,7 +95,7 @@ export class HomePage {
     private translate: TranslateService,
     private emailProvider: EmailNotificationsProvider,
     private clipboardProvider: ClipboardProvider,
-    private incomingDataProvider: IncomingDataProvider,
+    private incomingDataProvider: IncomingDataProvider
   ) {
     this.slideDown = false;
     this.isElectron = this.platformProvider.isElectron;
