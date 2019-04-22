@@ -141,14 +141,12 @@ export class ConfirmInvoicePage extends ConfirmCardPurchasePage {
     }
     this.wallet = this.wallets[0];
     if (_.isEmpty(this.wallets)) {
-      const dataMenu = this.actionSheetProvider.createIncomingDataMenu({
-        data: this.invoiceUrl
-      });
-      dataMenu.present();
-      dataMenu.onDidDismiss(data => {
-        global.console.log(data);
-        this.back();
-      });
+      this.showErrorInfoSheet(
+        this.translate.instant('No wallets available'),
+        'Go Back',
+        false
+      );
+      this.back();
       return;
     }
     this.paymentTimeControl(this.invoiceData.expirationTime);
