@@ -14,7 +14,6 @@ import { ShapeshiftPage } from '../integrations/shapeshift/shapeshift';
 import { ProposalsPage } from './proposals/proposals';
 
 // Providers
-import { GiftCardProvider } from '../..//providers/gift-card/gift-card';
 import { AppProvider } from '../../providers/app/app';
 import { BitPayCardProvider } from '../../providers/bitpay-card/bitpay-card';
 import { BwcErrorProvider } from '../../providers/bwc-error/bwc-error';
@@ -97,7 +96,6 @@ export class HomePage {
     private emailProvider: EmailNotificationsProvider,
     private clipboardProvider: ClipboardProvider,
     private incomingDataProvider: IncomingDataProvider,
-    private giftCardProvider: GiftCardProvider
   ) {
     this.slideDown = false;
     this.isElectron = this.platformProvider.isElectron;
