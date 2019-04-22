@@ -232,14 +232,14 @@ export class ConfirmInvoicePage extends ConfirmCardPurchasePage {
     );
   }
 
-  // public isValidEmail() {
-  //   return !!this.invoiceProvider.emailIsValid(this.email) || this.email === '';
-  // }
+  public isValidEmail() {
+    return !!this.invoiceProvider.emailIsValid(this.email);
+  }
 
   public async buyConfirm() {
-    // if (!this.isValidEmail()) {
-    //   this.throwEmailRequiredError();
-    // }
+    if (!this.isValidEmail()) {
+      this.throwEmailRequiredError();
+    }
     const {
       selectedTransactionCurrency,
       emailAddress
