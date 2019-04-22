@@ -50,6 +50,7 @@ export {
 } from '../providers/home-integrations/home-integrations';
 export { HttpRequestsProvider } from '../providers/http-requests/http-requests';
 export { IncomingDataProvider } from '../providers/incoming-data/incoming-data';
+export { InvoiceProvider } from '../providers/invoice/invoice';
 export { LanguageLoader } from '../providers/language-loader/language-loader';
 export { LanguageProvider } from '../providers/language/language';
 export { Logger } from '../providers/logger/logger';

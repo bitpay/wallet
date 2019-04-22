@@ -53,9 +53,9 @@ import { PurchasedCardsPage } from '../purchased-cards/purchased-cards';
 })
 export class ConfirmCardPurchasePage extends ConfirmPage {
   public currency: string;
-  private message: string;
-  private invoiceId: string;
-  private configWallet;
+  public message: string;
+  public invoiceId: string;
+  public configWallet;
   public currencyIsoCode: string;
 
   public totalAmountStr: string;
@@ -90,7 +90,7 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
     txFormatProvider: TxFormatProvider,
     walletProvider: WalletProvider,
     translate: TranslateService,
-    private payproProvider: PayproProvider,
+    public payproProvider: PayproProvider,
     platformProvider: PlatformProvider,
     walletTabsProvider: WalletTabsProvider,
     clipboardProvider: ClipboardProvider,
@@ -165,7 +165,7 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
     this.navCtrl.popToRoot();
   }
 
-  private checkFeeHigh(amount: number, fee: number) {
+  public checkFeeHigh(amount: number, fee: number) {
     if (this.isHighFee(amount, fee)) {
       this.showHighFeeSheet();
     }
@@ -175,7 +175,7 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
     this.externalLinkProvider.open(url);
   }
 
-  private resetValues() {
+  public resetValues() {
     this.totalAmountStr = this.invoiceFee = this.networkFee = this.totalAmount = this.wallet = null;
     this.tx = this.message = this.invoiceId = null;
   }
@@ -194,11 +194,11 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
     return this.onGoingProcessProvider.clear();
   }
 
-  private satToFiat(coin: string, sat: number) {
+  public satToFiat(coin: string, sat: number) {
     return this.txFormatProvider.toFiat(coin, sat, this.currencyIsoCode);
   }
 
-  private async setTotalAmount(
+  public async setTotalAmount(
     wallet,
     amountSat: number,
     invoiceFeeSat: number,
@@ -215,7 +215,7 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
     this.totalAmount = this.amount + this.invoiceFee + this.networkFee;
   }
 
-  private isCryptoCurrencySupported(wallet, invoice) {
+  public isCryptoCurrencySupported(wallet, invoice) {
     const COIN = wallet.coin.toUpperCase();
     return (
       (invoice['supportedTransactionCurrencies'][COIN] &&
@@ -272,7 +272,7 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
     return { invoice, accessKey };
   }
 
-  private async createTx(wallet, invoice, message: string) {
+  public async createTx(wallet, invoice, message: string) {
     const COIN = wallet.coin.toUpperCase();
     const payProUrl =
       invoice && invoice.paymentCodes ? invoice.paymentCodes[COIN].BIP73 : null;
@@ -366,7 +366,7 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
     return newEmail;
   }
 
-  private throwEmailRequiredError() {
+  public throwEmailRequiredError() {
     const title = this.translate.instant('Error');
     const msg = this.translate.instant(
       'An email address is required for this purchase.'
@@ -376,7 +376,7 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
     throw new Error('email required');
   }
 
-  private async initialize(wallet) {
+  public async initialize(wallet) {
     const COIN = wallet.coin.toUpperCase();
     const parsedAmount = this.txFormatProvider.parseAmount(
       wallet.coin,

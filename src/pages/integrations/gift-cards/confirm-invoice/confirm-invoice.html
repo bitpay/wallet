@@ -1,8 +1,15 @@
 <ion-header>
   <ion-navbar>
     <ion-title>{{ 'Confirm' | translate }}</ion-title>
+    <ion-buttons left>
+      <button class="modal-close-button" (click)="back()" ion-button>
+        <ion-icon ios="md-close" md="md-close"></ion-icon>
+      </button>
+    </ion-buttons>
     <ion-buttons right>
-      <a (click)="cancel()" ion-button translate>Back</a>
+      <button (click)="openInBrowser()" ion-button>
+        {{ 'Copy' | translate }}
+      </button>
     </ion-buttons>
   </ion-navbar>
 </ion-header>

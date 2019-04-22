@@ -33,8 +33,8 @@ export class GiftCardProvider {
     NETWORK: Network;
     BITPAY_API_URL: string;
   } = {
-    NETWORK: Network.livenet,
-    BITPAY_API_URL: 'https://bitpay.com'
+    NETWORK: Network.testnet,
+    BITPAY_API_URL: 'https://test.bitpay.com'
   };
 
   availableCardsPromise: Promise<CardConfig[]>;
@@ -49,14 +49,14 @@ export class GiftCardProvider {
     'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAAyCAQAAAA38nkBAAAADklEQVR42mP8/4Vx8CEAn9BhqacD+5kAAAAASUVORK5CYII=';
 
   constructor(
-    private configProvider: ConfigProvider,
-    private emailNotificationsProvider: EmailNotificationsProvider,
-    private http: HttpClient,
-    private imageLoader: ImageLoader,
-    private logger: Logger,
-    private homeIntegrationsProvider: HomeIntegrationsProvider,
-    private persistenceProvider: PersistenceProvider,
-    private timeProvider: TimeProvider
+    public configProvider: ConfigProvider,
+    public emailNotificationsProvider: EmailNotificationsProvider,
+    public http: HttpClient,
+    public imageLoader: ImageLoader,
+    public logger: Logger,
+    public homeIntegrationsProvider: HomeIntegrationsProvider,
+    public persistenceProvider: PersistenceProvider,
+    public timeProvider: TimeProvider
   ) {
     this.logger.debug('GiftCardProvider initialized');
     this.setCredentials();

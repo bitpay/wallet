@@ -1,79 +1,39 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { ImageLoader } from 'ionic-image-loader';
 import * as _ from 'lodash';
+import { ConfigProvider } from '../config/config';
 import { EmailNotificationsProvider } from '../email-notifications/email-notifications';
+import { GiftCardProvider } from '../gift-card/gift-card';
+import { HomeIntegrationsProvider } from '../home-integrations/home-integrations';
 import { Logger } from '../logger/logger';
-import { Network, PersistenceProvider } from '../persistence/persistence';
+import { PersistenceProvider } from '../persistence/persistence';
+import { TimeProvider } from '../time/time';
 
 @Injectable()
-export class InvoiceProvider {
-  credentials: {
-    NETWORK: Network;
-    BITPAY_API_URL: string;
-  } = {
-    NETWORK: Network.testnet,
-    BITPAY_API_URL: 'https://test.bitpay.com'
-  };
-
+export class InvoiceProvider extends GiftCardProvider {
   constructor(
-    private emailNotificationsProvider: EmailNotificationsProvider,
-    private http: HttpClient,
-    private logger: Logger,
-    private persistenceProvider: PersistenceProvider
+    public configProvider: ConfigProvider,
+    public imageLoader: ImageLoader,
+    public emailNotificationsProvider: EmailNotificationsProvider,
+    public http: HttpClient,
+    public logger: Logger,
+    public homeIntegrationsProvider: HomeIntegrationsProvider,
+    public persistenceProvider: PersistenceProvider,
+    public timeProvider: TimeProvider
   ) {
+    super(
+      configProvider,
+      emailNotificationsProvider,
+      http,
+      imageLoader,
+      logger,
+      homeIntegrationsProvider,
+      persistenceProvider,
+      timeProvider
+    );
     this.logger.debug('InvoiceProvider initialized');
     this.setCredentials();
-  }
-
-  getNetwork() {
-    return this.credentials.NETWORK;
-  }
-
-  setCredentials() {
-    if (this.getNetwork() === Network.testnet) {
-      this.credentials.BITPAY_API_URL = 'https://test.bitpay.com';
-    }
-  }
-
-  public emailIsValid(email: string): boolean {
-    const validEmail = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(
-      email
-    );
-    return validEmail;
-  }
-
-  public storeEmail(email: string): void {
-    this.setUserInfo({ email });
-  }
-
-  private setUserInfo(data: any): void {
-    this.persistenceProvider.setGiftCardUserInfo(JSON.stringify(data));
-  }
-
-  public getUserEmail(): Promise<string> {
-    return this.persistenceProvider
-      .getGiftCardUserInfo()
-      .then(data => {
-        if (_.isString(data)) {
-          data = JSON.parse(data);
-        }
-        return data && data.email
-          ? data.email
-          : this.emailNotificationsProvider.getEmailIfEnabled();
-      })
-      .catch(_ => {});
-  }
-
-  public async getBitPayInvoice(id: string) {
-    const res: any = await this.http
-      .get(`${this.credentials.BITPAY_API_URL}/invoices/${id}`)
-      .toPromise()
-      .catch(err => {
-        this.logger.error('BitPay Get Invoice: ERROR ' + err.error.message);
-        throw err.error.message;
-      });
-    this.logger.info('BitPay Get Invoice: SUCCESS');
-    return res.data;
   }
 
   public async getBitPayInvoiceData(id: string) {
