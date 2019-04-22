@@ -19,7 +19,7 @@
     </div>
   </ion-item-divider>
 
-  <button ion-button class="button-standard" (click)="scan()">
+  <button ion-button class="button-standard" [ngStyle]="{'background-color': wallet.color}" (click)="scan()">
     <span translate>Scan addresses for funds</span>
   </button>
 

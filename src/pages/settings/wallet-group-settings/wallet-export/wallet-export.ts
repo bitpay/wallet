@@ -2,24 +2,24 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
 import { NavController, NavParams, ToastController } from 'ionic-angular';
-import { Logger } from '../../../../../providers/logger/logger';
 
 // native
 import { Clipboard } from '@ionic-native/clipboard';
 import { SocialSharing } from '@ionic-native/social-sharing';
 
 // providers
-import { ActionSheetProvider } from '../../../../../providers/action-sheet/action-sheet';
-import { AppProvider } from '../../../../../providers/app/app';
-import { BackupProvider } from '../../../../../providers/backup/backup';
-import { BwcErrorProvider } from '../../../../../providers/bwc-error/bwc-error';
-import { ConfigProvider } from '../../../../../providers/config/config';
-import { PersistenceProvider } from '../../../../../providers/persistence/persistence';
-import { PlatformProvider } from '../../../../../providers/platform/platform';
-import { ProfileProvider } from '../../../../../providers/profile/profile';
-import { WalletProvider } from '../../../../../providers/wallet/wallet';
-import { WalletTabsChild } from '../../../../wallet-tabs/wallet-tabs-child';
-import { WalletTabsProvider } from '../../../../wallet-tabs/wallet-tabs.provider';
+import { ActionSheetProvider } from '../../../../providers/action-sheet/action-sheet';
+import { AppProvider } from '../../../../providers/app/app';
+import { BackupProvider } from '../../../../providers/backup/backup';
+import { BwcErrorProvider } from '../../../../providers/bwc-error/bwc-error';
+import { ConfigProvider } from '../../../../providers/config/config';
+import { Logger } from '../../../../providers/logger/logger';
+import { PersistenceProvider } from '../../../../providers/persistence/persistence';
+import { PlatformProvider } from '../../../../providers/platform/platform';
+import { ProfileProvider } from '../../../../providers/profile/profile';
+import { WalletProvider } from '../../../../providers/wallet/wallet';
+import { WalletTabsChild } from '../../../wallet-tabs/wallet-tabs-child';
+import { WalletTabsProvider } from '../../../wallet-tabs/wallet-tabs.provider';
 
 @Component({
   selector: 'page-wallet-export',

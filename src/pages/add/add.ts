@@ -1,27 +1,42 @@
 import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
-import { Logger } from '../../providers/logger/logger';
 
 // pages
-import { JoinWalletPage } from './join-wallet/join-wallet';
+import { ImportWalletPage } from './import-wallet/import-wallet';
+import { NewWalletPage } from './new-wallet/new-wallet';
 import { SelectCurrencyPage } from './select-currency/select-currency';
 
+// providers
+import { Logger } from '../../providers/logger/logger';
+import { ProfileProvider } from '../../providers/profile/profile';
 @Component({
   selector: 'page-add',
   templateUrl: 'add.html'
 })
 export class AddPage {
-  constructor(private navCtrl: NavController, private logger: Logger) {}
+  public hasWallets: boolean;
+
+  constructor(
+    private navCtrl: NavController,
+    private logger: Logger,
+    private profileProvider: ProfileProvider
+  ) {
+    this.hasWallets = this.profileProvider.getWallets().length > 0;
+  }
 
   ionViewDidLoad() {
     this.logger.info('Loaded: AddPage');
   }
 
-  public goToSelectCurrencyPage(isShared: boolean, nextPage: string): void {
-    this.navCtrl.push(SelectCurrencyPage, { isShared, nextPage });
+  public goToNewWalletPage(addToAccount: boolean): void {
+    this.navCtrl.push(NewWalletPage, { addToAccount });
   }
 
-  public goToJoinWallet(): void {
-    this.navCtrl.push(JoinWalletPage);
+  public goToSelectCurrencyPage(nextPage: string): void {
+    this.navCtrl.push(SelectCurrencyPage, { nextPage });
+  }
+
+  public goToImportWallet(): void {
+    this.navCtrl.push(ImportWalletPage);
   }
 }

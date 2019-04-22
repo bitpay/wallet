@@ -5,7 +5,7 @@
         {{'Close' | translate}}
       </button>
     </ion-buttons>
-    <ion-title>{{ wallet.name }}</ion-title>
+    <ion-title>Account #{{wallet.account}}</ion-title>
     <ion-buttons right>
       <button *ngIf="showShareButton" ion-button icon-only (click)="shareAddress()">
         <ion-icon ios="ios-share-outline" md="md-share"></ion-icon>

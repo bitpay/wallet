@@ -154,6 +154,7 @@ ion-spinner * {
 }
 
 .icon-wallet,
+.icon-coin,
 .icon-card {
   width: 35px;
   height: 35px;
@@ -167,7 +168,6 @@ ion-spinner * {
   background-color: color($colors, primary);
   padding: 4px;
 }
-
 .icon-card {
   background-color: #2a3f90;
 }

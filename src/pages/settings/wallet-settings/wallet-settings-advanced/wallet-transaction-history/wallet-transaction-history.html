@@ -5,7 +5,7 @@
 </ion-header>
 <ion-content>
   <ion-list>
-    <button ion-button class="button-standard" *ngIf="!isCordova" (click)="downloadCSV()" [disabled]="!csvReady">
+    <button ion-button class="button-standard" [ngStyle]="{'background-color': wallet?.color}" *ngIf="!isCordova" (click)="downloadCSV()" [disabled]="!csvReady">
       <span *ngIf="csvReady" translate>Export to file</span>
       <span *ngIf="!csvReady && !err">
         {{'preparing...' | translate}}

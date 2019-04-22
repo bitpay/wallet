@@ -2,18 +2,18 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
 import { Events, NavController, NavParams } from 'ionic-angular';
-import { Logger } from '../../../../../providers/logger/logger';
 
 // native
 import { SplashScreen } from '@ionic-native/splash-screen';
 
 // providers
-import { AppProvider } from '../../../../../providers/app/app';
-import { ConfigProvider } from '../../../../../providers/config/config';
-import { PersistenceProvider } from '../../../../../providers/persistence/persistence';
-import { PlatformProvider } from '../../../../../providers/platform/platform';
-import { ProfileProvider } from '../../../../../providers/profile/profile';
-import { ReplaceParametersProvider } from '../../../../../providers/replace-parameters/replace-parameters';
+import { AppProvider } from '../../../../providers/app/app';
+import { ConfigProvider } from '../../../../providers/config/config';
+import { Logger } from '../../../../providers/logger/logger';
+import { PersistenceProvider } from '../../../../providers/persistence/persistence';
+import { PlatformProvider } from '../../../../providers/platform/platform';
+import { ProfileProvider } from '../../../../providers/profile/profile';
+import { ReplaceParametersProvider } from '../../../../providers/replace-parameters/replace-parameters';
 
 @Component({
   selector: 'page-wallet-service-url',
@@ -21,11 +21,12 @@ import { ReplaceParametersProvider } from '../../../../../providers/replace-para
 })
 export class WalletServiceUrlPage {
   public success: boolean = false;
-  public wallet;
+  public walletGroupId;
   public comment: string;
   public walletServiceForm: FormGroup;
   private config;
   private defaults;
+  private wallets;
 
   constructor(
     private profileProvider: ProfileProvider,
@@ -54,8 +55,11 @@ export class WalletServiceUrlPage {
     this.logger.info('Loaded:  WalletServiceUrlPage');
   }
 
-  ionViewWillEnter() {
-    this.wallet = this.profileProvider.getWallet(this.navParams.data.walletId);
+  async ionViewWillEnter() {
+    this.walletGroupId = this.navParams.data.walletGroupId;
+    this.wallets = await this.profileProvider.getGroupWallets(
+      this.walletGroupId
+    );
     this.defaults = this.configProvider.getDefaults();
     this.config = this.configProvider.get();
     let appName = this.app.info.nameCase;
@@ -67,7 +71,7 @@ export class WalletServiceUrlPage {
     );
     this.walletServiceForm.value.bwsurl =
       (this.config.bwsFor &&
-        this.config.bwsFor[this.wallet.credentials.walletId]) ||
+        this.config.bwsFor[this.wallets[0].credentials.walletId]) ||
       this.defaults.bws.url;
   }
 
@@ -75,7 +79,16 @@ export class WalletServiceUrlPage {
     this.walletServiceForm.value.bwsurl = this.defaults.bws.url;
   }
 
-  public save(): void {
+  public save() {
+    this.wallets.forEach(wallet => {
+      this._save(wallet);
+    });
+    this.navCtrl.popToRoot().then(() => {
+      this.reload();
+    });
+  }
+
+  public _save(wallet): void {
     let bws;
     switch (this.walletServiceForm.value.bwsurl) {
       case 'prod':
@@ -100,18 +113,15 @@ export class WalletServiceUrlPage {
       bwsFor: {}
     };
     opts.bwsFor[
-      this.wallet.credentials.walletId
+      wallet.credentials.walletId
     ] = this.walletServiceForm.value.bwsurl;
 
     this.configProvider.set(opts);
     this.persistenceProvider.setCleanAndScanAddresses(
-      this.wallet.credentials.walletId
+      wallet.credentials.walletId
     );
     this.events.publish('Local/ConfigUpdate', {
-      walletId: this.wallet.credentials.walletId
-    });
-    this.navCtrl.popToRoot().then(() => {
-      this.reload();
+      walletId: wallet.credentials.walletId
     });
   }
 

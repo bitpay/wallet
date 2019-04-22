@@ -29,6 +29,8 @@ export class BackupGamePage {
   @ViewChild(Navbar)
   navBar: Navbar;
 
+  private walletGroup;
+
   public mnemonicWords: string[];
   public shuffledMnemonicWords;
   public password: string;
@@ -56,6 +58,7 @@ export class BackupGamePage {
     this.keys = this.navParams.data.keys;
     this.walletId = this.navParams.data.walletId;
     this.wallet = this.profileProvider.getWallet(this.walletId);
+    this.walletGroup = this.profileProvider.getWalletGroup(this.walletId);
     this.setFlow();
   }
 
@@ -139,7 +142,7 @@ export class BackupGamePage {
   }
 
   private confirm(): Promise<any> {
-    return new Promise((resolve, reject) => {
+    return new Promise(async (resolve, reject) => {
       const customWordList = _.map(this.customWords, 'word');
 
       if (!_.isEqual(this.mnemonicWords, customWordList)) {
@@ -172,7 +175,16 @@ export class BackupGamePage {
           return reject('Private key mismatch');
         }
       }
-      this.profileProvider.setBackupFlag(this.wallet.credentials.walletId);
+
+      const groupWallets = await this.profileProvider.getGroupWallets(
+        this.walletId
+      );
+      groupWallets.forEach(wallet => {
+        this.profileProvider.setBackupFlag(wallet.credentials.walletId);
+      });
+      this.walletGroup.needsBackup = false;
+      this.profileProvider.storeWalletGroup(this.walletGroup);
+
       return resolve();
     });
   }

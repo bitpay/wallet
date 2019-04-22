@@ -102,6 +102,18 @@
         </ion-list>
       </div>
 
+
+      <ion-item-divider *ngIf="walletGroups">
+        Wallets
+      </ion-item-divider>
+
+      <button ion-item *ngFor="let walletGroup of walletGroups" (click)="openWalletGroupSettings(walletGroup.id)">
+        <ion-icon item-start>
+          <img src="assets/img/icon-wallet.svg" class="icon-wallet" />
+        </ion-icon>
+        <span>{{walletGroup.name}}</span>
+      </button>
+
       <ion-item-divider *ngIf="integrationServices && integrationServices[0]">
         {{'Integrations' | translate}}
       </ion-item-divider>
