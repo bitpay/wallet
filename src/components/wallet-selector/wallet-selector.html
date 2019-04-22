@@ -14,7 +14,6 @@
   <div *ngIf="walletsBtc && walletsBtc[0]">
     <ion-item-divider>
       <div class="title">
-        <img src="assets/img/icon-bitcoin.svg" alt="Bitcoin Wallets" width="16" />
         <span translate>Bitcoin Wallets</span>
       </div>
     </ion-item-divider>
@@ -22,15 +21,13 @@
     <ion-list>
       <button ion-item detail-none *ngFor="let wallet of walletsBtc" class="wallet-button" (click)="optionClicked(wallet)">
         <ion-icon class="item-img" item-start>
-          <img *ngIf="wallet.network == 'testnet'" [ngStyle]="{'background-color': wallet.color}" src="assets/img/icon-wallet-testnet.svg"
-            class="icon-wallet" />
-          <img *ngIf="wallet.network != 'testnet'" [ngStyle]="{'background-color': wallet.color}" src="assets/img/icon-wallet.svg"
-            class="icon-wallet" />
+          <img *ngIf="wallet.coin == 'btc' && wallet.network == 'livenet'" src="assets/img/bitcoin-logo-blank.svg" class="icon-coin" />
+          <img *ngIf="wallet.coin == 'btc' && wallet.network == 'testnet'" src="assets/img/bitcoin-testnet-transparent.svg" class="icon-coin" />
         </ion-icon>
         <ion-icon class="item-img" item-end>
           <img class="check" src="assets/img/icon-check-selected.svg" *ngIf="selectedWalletId === wallet.id">
         </ion-icon>
-        <div class="item-title">{{wallet.name}}</div>
+        <div class="item-title">{{wallet.name}} - Account #{{ wallet.account }}</div>
         <div class="item-subtitle">
           <span class="wallet-warning" *ngIf="!wallet.isComplete()" translate>
             Incomplete
@@ -60,7 +57,6 @@
   <div *ngIf="walletsBch && walletsBch[0]">
     <ion-item-divider>
       <div class="title">
-        <img src="assets/img/bitcoin-cash-logo.svg" alt="Bitcoin Cash Wallets" width="22" />
         <span translate>Bitcoin Cash Wallets</span>
       </div>
     </ion-item-divider>
@@ -68,15 +64,13 @@
     <ion-list>
       <button ion-item detail-none *ngFor="let wallet of walletsBch" class="wallet-button" (click)="optionClicked(wallet)">
         <ion-icon class="item-img" item-start>
-          <img *ngIf="wallet.network == 'testnet'" [ngStyle]="{'background-color': wallet.color}" src="assets/img/icon-wallet-testnet.svg"
-            class="icon-wallet" />
-          <img *ngIf="wallet.network != 'testnet'" [ngStyle]="{'background-color': wallet.color}" src="assets/img/icon-wallet.svg"
-            class="icon-wallet" />
+          <img *ngIf="wallet.coin == 'bch' && wallet.network == 'livenet'" src="assets/img/bitcoincash-logo-blank.svg" class="icon-coin" />
+          <img *ngIf="wallet.coin == 'bch' && wallet.network == 'testnet'" src="assets/img/bitcoincash-testnet-transparent.svg" class="icon-coin" />
         </ion-icon>
         <ion-icon class="item-img" item-end>
           <img class="check" src="assets/img/icon-check-selected.svg" *ngIf="selectedWalletId === wallet.id">
         </ion-icon>
-        <div class="item-title">{{wallet.name}}</div>
+        <div class="item-title">{{wallet.name}} - Account #{{ wallet.account }}</div>
         <div class="item-subtitle">
           <span *ngIf="!wallet.isComplete()" translate>
             Incomplete

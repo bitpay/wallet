@@ -9,15 +9,15 @@
     <div *ngIf="fromWallets.length > 0">
       <ion-item>
         <span translate>From</span>
-        <img item-end *ngIf="fromWallet.coin == 'btc'" src="assets/img/icon-bitcoin.svg" width="18">
-        <img item-end *ngIf="fromWallet.coin == 'bch'" src="assets/img/bitcoin-cash-logo.svg" width="22">
       </ion-item>
       <button ion-item class="wallet-selector" (click)="showWallets('from')">
-        <img *ngIf="fromWallet.network != 'testnet'" src="assets/img/icon-wallet.svg" [ngStyle]="{'background-color': fromWallet.color}"
-          class="icon-wallet" />
+        <img *ngIf="fromWallet.coin == 'btc' && fromWallet.network == 'livenet'" src="assets/img/bitcoin-logo-blank.svg" class="icon-coin" />
+        <img *ngIf="fromWallet.coin == 'bch' && fromWallet.network == 'livenet'" src="assets/img/bitcoincash-logo-blank.svg" class="icon-coin" />
+        <img *ngIf="fromWallet.coin == 'btc' && fromWallet.network == 'testnet'" src="assets/img/bitcoin-testnet-transparent.svg" class="icon-coin" />
+        <img *ngIf="fromWallet.coin == 'bch' && fromWallet.network == 'testnet'" src="assets/img/bitcoincash-testnet-transparent.svg" class="icon-coin" />
         <div class="wallet-balance">
           <span>
-            {{fromWallet.name || fromWallet.id}}
+            {{fromWallet.name || fromWallet.id}} - Account #{{ fromWallet.account }}
           </span>
           <p>
             <span *ngIf="!fromWallet.isComplete()" class="wallet-warning" translate>
@@ -46,15 +46,15 @@
     <div *ngIf="toWallets.length > 0">
       <ion-item>
         <span translate>To</span>
-        <img item-end *ngIf="toWallet.coin == 'btc'" src="assets/img/icon-bitcoin.svg" width="18">
-        <img item-end *ngIf="toWallet.coin == 'bch'" src="assets/img/bitcoin-cash-logo.svg" width="22">
       </ion-item>
       <button ion-item class="wallet-selector" (click)="showWallets('to')">
-        <img *ngIf="toWallet.network != 'testnet'" src="assets/img/icon-wallet.svg" class="icon-wallet" [ngStyle]="{'background-color': toWallet.color}"
-        />
+        <img *ngIf="toWallet.coin == 'btc' && toWallet.network == 'livenet'" src="assets/img/bitcoin-logo-blank.svg" class="icon-coin" />
+        <img *ngIf="toWallet.coin == 'bch' && toWallet.network == 'livenet'" src="assets/img/bitcoincash-logo-blank.svg" class="icon-coin" />
+        <img *ngIf="toWallet.coin == 'btc' && toWallet.network == 'testnet'" src="assets/img/bitcoin-testnet-transparent.svg" class="icon-coin" />
+        <img *ngIf="toWallet.coin == 'bch' && toWallet.network == 'testnet'" src="assets/img/bitcoincash-testnet-transparent.svg" class="icon-coin" />
         <div class="wallet-balance">
           <span>
-            {{toWallet.name || toWallet.id}}
+            {{toWallet.name || toWallet.id}} - Account #{{ toWallet.account }}
           </span>
           <p>
             <span *ngIf="!toWallet.isComplete()" class="wallet-warning" translate>
