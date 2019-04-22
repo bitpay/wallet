@@ -2,7 +2,9 @@
   <ion-navbar>
     <ion-title>{{ 'Confirm' | translate }}</ion-title>
     <ion-buttons right>
-      <button (click)="back()" ion-button>{{ 'Back' | translate }}</button>
+      <button (click)="openInBrowser()" ion-button>
+        {{ 'Copy' | translate }}
+      </button>
     </ion-buttons>
   </ion-navbar>
 </ion-header>

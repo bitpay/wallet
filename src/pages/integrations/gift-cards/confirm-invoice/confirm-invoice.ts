@@ -34,6 +34,8 @@ import { ProfileProvider } from '../../../../providers/profile/profile';
 import { ReplaceParametersProvider } from '../../../../providers/replace-parameters/replace-parameters';
 import { TxFormatProvider } from '../../../../providers/tx-format/tx-format';
 import { WalletProvider } from '../../../../providers/wallet/wallet';
+
+// Pages
 import { ConfirmCardPurchasePage } from '../confirm-card-purchase/confirm-card-purchase';
 
 @Component({
@@ -141,12 +143,7 @@ export class ConfirmInvoicePage extends ConfirmCardPurchasePage {
     }
     this.wallet = this.wallets[0];
     if (_.isEmpty(this.wallets)) {
-      this.showErrorInfoSheet(
-        this.translate.instant('No wallets available'),
-        'Go Back',
-        false
-      );
-      this.back();
+      this.openInBrowser();
       return;
     }
     this.paymentTimeControl(this.invoiceData.expirationTime);
@@ -156,7 +153,7 @@ export class ConfirmInvoicePage extends ConfirmCardPurchasePage {
   public openInBrowser() {
     this.incomingDataProvider.showMenu({
       data: this.invoiceUrl,
-      type: 'url'
+      type: 'InvoiceUrl'
     });
   }
 
