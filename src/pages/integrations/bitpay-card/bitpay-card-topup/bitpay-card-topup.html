@@ -32,7 +32,7 @@
             <img *ngIf="wallet.coin == 'btc' && wallet.network == 'testnet'" src="assets/img/bitcoin-testnet-transparent.svg" class="icon-coin" />
             <img *ngIf="wallet.coin == 'bch' && wallet.network == 'testnet'" src="assets/img/bitcoincash-testnet-transparent.svg" class="icon-coin" />
           </ion-icon>
-          <div>{{wallet ? wallet.name + ' - Account #' + wallet.account  : '...'}}</div>
+          <div>{{wallet ? wallet.name + ' - Account #' + wallet.account : '...'}}</div>
           <div class="last-item" item-end>
             <button ion-button clear color="grey" icon-only>
               <ion-icon *ngIf="!isOpenSelector" name="ios-arrow-down-outline"></ion-icon>

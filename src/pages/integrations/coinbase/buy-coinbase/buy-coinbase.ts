@@ -33,7 +33,7 @@ export class BuyCoinbasePage {
 
   public paymentMethods;
   public selectedPaymentMethodId;
-  public buyPrice: string;
+  public buyPrice;
   public buyRequestInfo;
   public amountUnitStr: string;
   public wallet;
