@@ -1,7 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ImageLoader } from 'ionic-image-loader';
-import * as _ from 'lodash';
 import { ConfigProvider } from '../config/config';
 import { EmailNotificationsProvider } from '../email-notifications/email-notifications';
 import { GiftCardProvider } from '../gift-card/gift-card';
