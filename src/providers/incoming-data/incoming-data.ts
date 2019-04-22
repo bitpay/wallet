@@ -7,7 +7,7 @@ import { Logger } from '../../providers/logger/logger';
 import { ActionSheetProvider } from '../action-sheet/action-sheet';
 import { AppProvider } from '../app/app';
 import { BwcProvider } from '../bwc/bwc';
-import { GiftCardProvider } from '../gift-card/gift-card';
+import { InvoiceProvider } from '../invoice/invoice';
 import { PayproProvider } from '../paypro/paypro';
 import { Coin } from '../wallet/wallet';
 
@@ -28,7 +28,7 @@ export class IncomingDataProvider {
     private logger: Logger,
     private appProvider: AppProvider,
     private translate: TranslateService,
-    private giftCardProvider: GiftCardProvider
+    private invoiceProvider: InvoiceProvider
   ) {
     this.logger.debug('IncomingDataProvider initialized');
   }
@@ -182,7 +182,7 @@ export class IncomingDataProvider {
       /https:\/\/(www.)?(test.)?bitpay.com\/invoice\//,
       ''
     );
-    const invoiceResponse = await this.giftCardProvider
+    const invoiceResponse = await this.invoiceProvider
       .getBitPayInvoiceData(invoiceId)
       .catch(err => {
         throw this.logger.error(err.message);
