@@ -141,6 +141,15 @@ export class ConfirmInvoicePage extends ConfirmCardPurchasePage {
     if (this.network === 'testnet') {
       this.invoiceUrl = `https://test.bitpay.com/invoice/${this.invoiceId}`;
     }
+    const { selectedTransactionCurrency } = this.invoiceData.buyerProvidedInfo;
+    if (selectedTransactionCurrency) {
+      this.wallets = _.filter(this.wallets, (x: any) => {
+        return (
+          x.credentials.coin == selectedTransactionCurrency.toLowerCase() &&
+          !this.profileProvider.vaultHasWallet(x.credentials.walletId)
+        );
+      });
+    }
     this.wallet = this.wallets[0];
     if (_.isEmpty(this.wallets)) {
       this.openInBrowser();
@@ -223,20 +232,32 @@ export class ConfirmInvoicePage extends ConfirmCardPurchasePage {
     );
   }
 
-  public async buyConfirm() {
-    if (!this.invoiceProvider.emailIsValid(this.email)) {
-      this.throwEmailRequiredError();
-    }
-    this.invoiceProvider.storeEmail(this.email);
+  // public isValidEmail() {
+  //   return !!this.invoiceProvider.emailIsValid(this.email) || this.email === '';
+  // }
 
-    await this.invoiceProvider.setBuyerProvidedCurrency(
-      this.wallet.coin.toUpperCase(),
-      this.invoiceId
-    );
-    await this.invoiceProvider.setBuyerProvidedEmail(
-      this.email,
-      this.invoiceId
-    );
+  public async buyConfirm() {
+    // if (!this.isValidEmail()) {
+    //   this.throwEmailRequiredError();
+    // }
+    const {
+      selectedTransactionCurrency,
+      emailAddress
+    } = this.invoiceData.buyerProvidedInfo;
+
+    if (!selectedTransactionCurrency)
+      await this.invoiceProvider.setBuyerProvidedCurrency(
+        this.wallet.coin.toUpperCase(),
+        this.invoiceId
+      );
+
+    if (this.email && !emailAddress) {
+      this.invoiceProvider.storeEmail(this.email);
+      await this.invoiceProvider.setBuyerProvidedEmail(
+        this.email,
+        this.invoiceId
+      );
+    }
     const ctxp = await this.createTx(
       this.wallet,
       this.invoiceData,
