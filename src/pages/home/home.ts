@@ -351,24 +351,7 @@ export class HomePage {
           this.validDataFromClipboard = null;
           return;
         }
-        if (this.validDataFromClipboard.type === 'InvoiceUri') {
-          const invoiceId: string = data.replace(
-            /https:\/\/(www.)?(test.)?bitpay.com\/invoice\//,
-            ''
-          );
-          const {
-            expirationTime
-          } = await this.giftCardProvider
-            .getBitPayInvoice(invoiceId)
-            .catch(err => {
-              throw this.logger.error(err.message);
-            });
-          this.clearCountDownInterval();
-          const expire = Math.floor(new Date(expirationTime).getTime() / 1000);
-          const now = Math.floor(Date.now() / 1000);
-
-          global.console.log(`${expire} vs \n${now}`);
-        } else if (this.validDataFromClipboard.type === 'PayPro') {
+        if (this.validDataFromClipboard.type === 'PayPro') {
           const coin: string =
             data.indexOf('bitcoincash') === 0 ? Coin.BCH : Coin.BTC;
           this.incomingDataProvider

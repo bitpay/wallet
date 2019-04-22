@@ -168,7 +168,7 @@ export class ConfirmInvoicePage extends ConfirmPage {
     });
   }
 
-  public browser() {
+  public cancel() {
     const url = this.invoiceUrl;
     const optIn = true;
     const title = null;
