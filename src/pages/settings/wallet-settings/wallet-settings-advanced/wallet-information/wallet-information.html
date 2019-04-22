@@ -50,7 +50,7 @@
         {{derivationStrategy}}
       </ion-note>
     </ion-item>
-    <ion-item *ngIf="!canSign">
+    <ion-item *ngIf="!wallet?.canSign()">
       <span></span>
       <ion-note item-end>
         <span translate>No private key</span>

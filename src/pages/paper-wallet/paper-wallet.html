@@ -19,7 +19,10 @@
     <ion-item-divider>{{'Funds will be transferred to' | translate}}</ion-item-divider>
     <button ion-item *ngIf="wallet" detail-none (click)="showWallets()">
       <ion-icon item-start>
-        <img src="assets/img/icon-wallet.svg" class="icon-wallet" />
+        <img *ngIf="wallet.coin == 'btc' && wallet.network == 'livenet'" src="assets/img/bitcoin-logo-blank.svg" class="icon-coin" />
+        <img *ngIf="wallet.coin == 'bch' && wallet.network == 'livenet'" src="assets/img/bitcoincash-logo-blank.svg" class="icon-coin" />
+        <img *ngIf="wallet.coin == 'btc' && wallet.network == 'testnet'" src="assets/img/bitcoin-testnet-transparent.svg" class="icon-coin" />
+        <img *ngIf="wallet.coin == 'bch' && wallet.network == 'testnet'" src="assets/img/bitcoincash-testnet-transparent.svg" class="icon-coin" />
       </ion-icon>
       <h2>{{wallet.name}}
         <span *ngIf="wallet.credentials.m > 1">{{wallet.credentials.m}}-{{wallet.credentials.n}}</span>
@@ -37,9 +40,9 @@
   </div>
 </ion-content>
 <ion-footer>
-  <page-slide-to-accept #slideButton *ngIf="isCordova" [disabled]="sending || balances.length == 0 || noMatchingWallet" buttonText="{{'Sweep' | translate}}" (slideDone)="sweepWallet()"></page-slide-to-accept>
+  <page-slide-to-accept #slideButton *ngIf="isCordova" [disabled]="balances.length == 0 || noMatchingWallet" buttonText="{{'Sweep' | translate}}" (slideDone)="sweepWallet()"></page-slide-to-accept>
   <ion-toolbar *ngIf="!isCordova">
-    <button ion-button block class="button-footer" (click)="sweepWallet()" [disabled]="sending || balances.length == 0 || noMatchingWallet">
+    <button ion-button block class="button-footer" (click)="sweepWallet()" [disabled]="balances.length == 0 || noMatchingWallet">
       {{'Sweep' | translate}}
     </button>
   </ion-toolbar>

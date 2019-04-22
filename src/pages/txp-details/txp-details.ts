@@ -41,7 +41,6 @@ export class TxpDetailsPage {
   public copayerId: string;
   public isShared: boolean;
   public canSign: boolean;
-  public color: string;
   public buttonText: string;
   public successText: string;
   public actionList;
@@ -91,7 +90,6 @@ export class TxpDetailsPage {
     this.copayerId = this.wallet.credentials.copayerId;
     this.isShared = this.wallet.credentials.n > 1;
     this.canSign = this.wallet.canSign() || this.wallet.isPrivKeyExternal();
-    this.color = this.wallet.color;
     this.hideSlideButton = false;
 
     // To test multiple outputs...

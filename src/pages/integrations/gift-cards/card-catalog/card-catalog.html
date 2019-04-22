@@ -29,8 +29,7 @@
 
       <button ion-item class="card-list-item" *virtualItem="let card" (click)="buyCard(card)">
         <ion-icon item-start>
-          <img-loader class="card-list-item__icon" [src]="cardConfigMap[card.name]?.icon" [fallbackAsPlaceholder]="true"
-            [fallbackUrl]="giftCardProvider.fallbackIcon"></img-loader>
+          <img-loader class="card-list-item__icon" [src]="cardConfigMap[card.name]?.icon" [fallbackAsPlaceholder]="true" [fallbackUrl]="giftCardProvider.fallbackIcon"></img-loader>
         </ion-icon>
         <ion-label>
 

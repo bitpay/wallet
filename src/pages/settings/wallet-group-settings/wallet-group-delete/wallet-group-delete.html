@@ -4,14 +4,14 @@
   </ion-navbar>
 </ion-header>
 <ion-content>
-  <h3 class="assertive" translate>Warning!</h3>
-  <p translate>
-    Permanently delete this wallet
-  </p>
-  <p translate>
-    THIS ACTION CANNOT BE REVERSED
-  </p>
-  <button ion-button class="button-standard" color="danger" (click)="showDeletePopup()">
-    {{'Delete' | translate}}
+  <button ion-item class="with-label" (click)="showDeletePopup()">
+    <ion-label>{{'Delete' | translate}}</ion-label>
   </button>
+  <label-tip type="warn">
+    <span label-tip-title translate>THIS ACTION CANNOT BE REVERSED</span>
+    <div label-tip-body translate>
+      Permanently delete this wallet.
+    </div>
+  </label-tip>
+
 </ion-content>

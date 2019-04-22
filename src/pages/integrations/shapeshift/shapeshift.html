@@ -40,13 +40,10 @@
   <div class="container" *ngIf="accessToken">
     <div class="main-header">
       <img src="assets/img/shapeshift/logo-shapeshift.svg" width="180" (click)="update()">
-      <button ion-button icon-right no-low-fee margin-top (click)="goTo('Shift')" *ngIf="!disabled">
+      <button ion-button icon-right no-low-fee margin-top (click)="goTo('Shift')">
         <span>Shift</span>
         <ion-icon name="arrow-forward"></ion-icon>
       </button>
-      <div *ngIf="disabled" padding-horizontal ion-text color="danger">
-        Shapeshift is temporally disabled for this device. You can try it on our Desktop versions.
-      </div>
     </div>
 
     <ion-list>

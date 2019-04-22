@@ -18,6 +18,9 @@
         <ion-icon class="item-img" item-end>
           <img class="check" src="assets/img/icon-check-selected.svg" *ngIf="selectedWalletGroupId === walletGroup.id">
         </ion-icon>
+        <ion-icon item-start>
+          <img src="assets/img/icon-wallet.svg" class="icon-wallet" />
+        </ion-icon>
         <div class="item-title">{{walletGroup.name}}</div>
         <div class="item-subtitle">
           <span class="wallet-warning" *ngIf="walletGroup.needsBackup" translate>

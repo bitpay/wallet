@@ -72,7 +72,6 @@ export class AmountPage extends WalletTabsChild {
   public network: string;
   public name: string;
   public email: string;
-  public color: string;
   public useSendMax: boolean;
   public useAsModal: boolean;
   public config: Config;
@@ -110,7 +109,6 @@ export class AmountPage extends WalletTabsChild {
     this.network = this.navParams.data.network;
     this.name = this.navParams.data.name;
     this.email = this.navParams.data.email;
-    this.color = this.navParams.data.color;
     this.fixedUnit = this.navParams.data.fixedUnit;
     this.description = this.navParams.data.description;
     this.onlyIntegers = this.navParams.data.onlyIntegers
@@ -546,7 +544,6 @@ export class AmountPage extends WalletTabsChild {
         toAddress: this.toAddress,
         name: this.name,
         email: this.email,
-        color: this.color,
         coin,
         useSendMax: this.useSendMax,
         description: this.description

@@ -428,8 +428,7 @@ export class WalletDetailsPage extends WalletTabsChild {
 
   public openBalanceDetails(): void {
     this.navCtrl.push(WalletBalancePage, {
-      status: this.wallet.cachedStatus,
-      color: this.wallet.color
+      status: this.wallet.cachedStatus
     });
   }
 

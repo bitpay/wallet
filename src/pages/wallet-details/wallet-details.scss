@@ -22,8 +22,6 @@ page-wallet-details {
 
   ion-header,
   .toolbar-background {
-    background-color: rgba(0, 0, 0, 0) !important;
-
     &:after {
       height: 0 !important;
     }
@@ -34,8 +32,23 @@ page-wallet-details {
   }
 
   .balance-card {
-    background: color($colors, primary);
+    background: $toolbar-background;
     overflow: hidden;
+  }
+
+  .refresher {
+    background: $toolbar-background;
+  }
+
+  .fixed-content {
+    background-image: linear-gradient(
+      to bottom,
+      $toolbar-background,
+      $toolbar-background 50%,
+      #f8f8f9 50%,
+      #f8f8f9 50%,
+      #f8f8f9 50%
+    );
   }
 
   .balance-header {
@@ -254,7 +267,7 @@ page-wallet-details {
       margin-top: 5px;
     }
 
-    .wallet-type {
+    .wallet-info {
       display: block;
       float: left;
       margin: 0 5px;

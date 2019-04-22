@@ -50,8 +50,8 @@ export class SlideToAcceptPage implements AfterViewInit {
   private containerWidth: number;
   private origin;
   private done: boolean = false;
-  private isDisabled: boolean = false;
 
+  public isDisabled: boolean = false;
   public isConfirm: boolean = false;
   public animation: boolean;
 

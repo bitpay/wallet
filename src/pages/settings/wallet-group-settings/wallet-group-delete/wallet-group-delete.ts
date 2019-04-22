@@ -35,7 +35,9 @@ export class WalletGroupDeletePage {
 
   public showDeletePopup(): void {
     const title = this.translate.instant('Warning!');
-    const message = 'Are you sure you want to delete this wallet?';
+    const message = this.translate.instant(
+      'Are you sure you want to delete this wallet?'
+    );
     this.popupProvider.ionicConfirm(title, message, null, null).then(res => {
       if (res) this.deleteWalletGroup();
     });
