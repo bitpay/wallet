@@ -14,7 +14,6 @@
   <div *ngIf="walletsBtc && walletsBtc[0]">
     <ion-item-divider>
       <div class="title">
-        <img src="assets/img/icon-bitcoin.svg" alt="Bitcoin Wallets" width="16" />
         <span translate>Bitcoin Wallets</span>
       </div>
     </ion-item-divider>
@@ -28,7 +27,7 @@
         <ion-icon class="item-img" item-end>
           <img class="check" src="assets/img/icon-check-selected.svg" *ngIf="selectedWalletId === wallet.id">
         </ion-icon>
-        <div class="item-title">{{wallet.name}}</div>
+        <div class="item-title">{{wallet.name}} - Account #{{ wallet.account }}</div>
         <div class="item-subtitle">
           <span class="wallet-warning" *ngIf="!wallet.isComplete()" translate>
             Incomplete
@@ -57,7 +56,6 @@
   <div *ngIf="walletsBch && walletsBch[0]">
     <ion-item-divider>
       <div class="title">
-        <img src="assets/img/bitcoin-cash-logo.svg" alt="Bitcoin Cash Wallets" width="22" />
         <span translate>Bitcoin Cash Wallets</span>
       </div>
     </ion-item-divider>
@@ -71,7 +69,7 @@
         <ion-icon class="item-img" item-end>
           <img class="check" src="assets/img/icon-check-selected.svg" *ngIf="selectedWalletId === wallet.id">
         </ion-icon>
-        <div class="item-title">{{wallet.name}}</div>
+        <div class="item-title">{{wallet.name}} - Account #{{ wallet.account }}</div>
         <div class="item-subtitle">
           <span *ngIf="!wallet.isComplete()" translate>
             Incomplete

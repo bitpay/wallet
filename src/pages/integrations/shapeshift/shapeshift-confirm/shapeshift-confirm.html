@@ -28,28 +28,26 @@
     <div class="info">
       <ion-item>
         <span translate>From</span>
-        <img item-end *ngIf="fromWallet.coin == 'btc'" src="assets/img/icon-bitcoin.svg" width="18">
-        <img item-end *ngIf="fromWallet.coin == 'bch'" src="assets/img/bitcoin-cash-logo.svg" width="22">
       </ion-item>
       <ion-item class="wallet-selector">
-        <img src="assets/img/icon-wallet.svg" class="icon-wallet" [ngStyle]="{'background-color': fromWallet.color}" />
+        <img *ngIf="fromWallet.coin == 'btc'" src="assets/img/bitcoin-logo-blank.svg" class="icon-coin">
+        <img *ngIf="fromWallet.coin == 'bch'" src="assets/img/bitcoincash-logo-blank.svg" class="icon-coin">
         <div class="wallet-balance">
           <span>
-            {{fromWallet ? fromWallet.name : '...'}}
+            {{fromWallet ? fromWallet.name + ' - Account #' + fromWallet.account : '...'}}
           </span>
         </div>
       </ion-item>
 
       <ion-item>
         <span translate>To</span>
-        <img item-end *ngIf="toWallet.coin == 'btc'" src="assets/img/icon-bitcoin.svg" width="18">
-        <img item-end *ngIf="toWallet.coin == 'bch'" src="assets/img/bitcoin-cash-logo.svg" width="22">
       </ion-item>
       <ion-item class="wallet-selector">
-        <img src="assets/img/icon-wallet.svg" class="icon-wallet" [ngStyle]="{'background-color': toWallet.color}" />
+        <img *ngIf="toWallet.coin == 'btc'" src="assets/img/bitcoin-logo-blank.svg" class="icon-coin">
+        <img *ngIf="toWallet.coin == 'bch'" src="assets/img/bitcoincash-logo-blank.svg" class="icon-coin">
         <div class="wallet-balance">
           <span>
-            {{toWallet ? toWallet.name : '...'}}
+            {{toWallet ? toWallet.name + ' - Account #' + toWallet.account : '...'}}
           </span>
         </div>
       </ion-item>
