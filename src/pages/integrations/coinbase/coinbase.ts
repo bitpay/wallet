@@ -26,9 +26,9 @@ export class CoinbasePage {
   public accessToken: string;
   public accountId: string;
   public loading: boolean;
-  public buyPrice: string;
-  public sellPrice: string;
-  public pendingTransactions: object = { data: {} };
+  public buyPrice;
+  public sellPrice;
+  public pendingTransactions = { data: {} };
   public code: string;
   public showOauthForm: boolean;
   public oauthCodeForm: FormGroup;
