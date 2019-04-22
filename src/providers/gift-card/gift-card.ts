@@ -33,8 +33,8 @@ export class GiftCardProvider {
     NETWORK: Network;
     BITPAY_API_URL: string;
   } = {
-    NETWORK: Network.testnet,
-    BITPAY_API_URL: 'https://test.bitpay.com'
+    NETWORK: Network.livenet,
+    BITPAY_API_URL: 'https://bitpay.com'
   };
 
   availableCardsPromise: Promise<CardConfig[]>;
@@ -384,68 +384,6 @@ export class GiftCardProvider {
       });
     this.logger.info('BitPay Get Invoice: SUCCESS');
     return res.data;
-  }
-
-  public async getBitPayInvoiceData(id: string) {
-    const res: any = await this.http
-      .get(`${this.credentials.BITPAY_API_URL}/invoiceData/${id}`)
-      .toPromise()
-      .catch(err => {
-        this.logger.error('BitPay Get Invoice: ERROR ' + err.error.message);
-        throw err.error.message;
-      });
-    this.logger.info('BitPay Get Invoice: SUCCESS');
-    return res;
-  }
-
-  public async setBuyerProvidedEmail(
-    buyerProvidedEmail: string,
-    invoiceId: string
-  ) {
-    const req = {
-      buyerProvidedEmail,
-      invoiceId
-    };
-    const res: any = await this.http
-      .post(
-        `${this.credentials.BITPAY_API_URL}/invoiceData/setBuyerProvidedEmail`,
-        req
-      )
-      .toPromise()
-      .catch(err => {
-        this.logger.error(
-          'BitPay Invoice Set Email: ERROR ' + err.error.message
-        );
-        throw err.error.message;
-      });
-    this.logger.info('BitPay Invoice Set Email: SUCCESS');
-    return res;
-  }
-
-  public async setBuyerProvidedCurrency(
-    buyerSelectedTransactionCurrency: string,
-    invoiceId: string
-  ) {
-    const req = {
-      buyerSelectedTransactionCurrency,
-      invoiceId
-    };
-    const res: any = await this.http
-      .post(
-        `${
-          this.credentials.BITPAY_API_URL
-        }/invoiceData/setBuyerSelectedTransactionCurrency`,
-        req
-      )
-      .toPromise()
-      .catch(err => {
-        this.logger.error(
-          'BitPay Invoice Set Currency: ERROR ' + err.error.message
-        );
-        throw err.error.message;
-      });
-    this.logger.info('BitPay Invoice Set Currency: SUCCESS');
-    return res;
   }
 
   private checkIfCardNeedsUpdate(card: GiftCard) {
