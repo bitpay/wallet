@@ -141,7 +141,14 @@ export class ConfirmInvoicePage extends ConfirmCardPurchasePage {
     }
     this.wallet = this.wallets[0];
     if (_.isEmpty(this.wallets)) {
-      this.openInBrowser();
+      const dataMenu = this.actionSheetProvider.createIncomingDataMenu({
+        data: this.invoiceUrl
+      });
+      dataMenu.present();
+      dataMenu.onDidDismiss(data => {
+        global.console.log(data);
+        this.back();
+      });
       return;
     }
     this.paymentTimeControl(this.invoiceData.expirationTime);
