@@ -23,8 +23,8 @@ import { BwcProvider } from '../../../../providers/bwc/bwc';
 import { ClipboardProvider } from '../../../../providers/clipboard/clipboard';
 import { ConfigProvider } from '../../../../providers/config/config';
 import { ExternalLinkProvider } from '../../../../providers/external-link/external-link';
-import { GiftCardProvider } from '../../../../providers/gift-card/gift-card';
 import { IncomingDataProvider } from '../../../../providers/incoming-data/incoming-data';
+import { InvoiceProvider } from '../../../../providers/invoice/invoice';
 import { OnGoingProcessProvider } from '../../../../providers/on-going-process/on-going-process';
 import { PayproProvider } from '../../../../providers/paypro/paypro';
 import { PlatformProvider } from '../../../../providers/platform/platform';
@@ -71,7 +71,7 @@ export class ConfirmInvoicePage extends ConfirmPage {
     configProvider: ConfigProvider,
     decimalPipe: DecimalPipe,
     feeProvider: FeeProvider,
-    private giftCardProvider: GiftCardProvider,
+    private invoiceProvider: InvoiceProvider,
     replaceParametersProvider: ReplaceParametersProvider,
     externalLinkProvider: ExternalLinkProvider,
     logger: Logger,
@@ -142,7 +142,7 @@ export class ConfirmInvoicePage extends ConfirmPage {
     this.isOpenSelector = false;
     this.navCtrl.swipeBackEnabled = false;
 
-    this.network = this.giftCardProvider.getNetwork();
+    this.network = this.invoiceProvider.getNetwork();
     this.wallets = this.profileProvider.getWallets({
       onlyComplete: true,
       network: this.network,
@@ -172,9 +172,9 @@ export class ConfirmInvoicePage extends ConfirmPage {
     const url = this.invoiceUrl;
     const optIn = true;
     const title = null;
-    const message = this.translate.instant('Browser');
-    const okText = this.translate.instant('Open in Browser');
-    const cancelText = this.translate.instant('Go Back');
+    const message = this.translate.instant('Open in Browser');
+    const okText = this.translate.instant('Open');
+    const cancelText = this.translate.instant('Close');
     this.externalLinkProvider.open(
       url,
       optIn,
@@ -288,9 +288,9 @@ export class ConfirmInvoicePage extends ConfirmPage {
   }
 
   private async getEmail(emailAddress?: string) {
-    const email = await this.giftCardProvider.getUserEmail();
+    const email = await this.invoiceProvider.getUserEmail();
     if (emailAddress) {
-      if (!email) this.giftCardProvider.storeEmail(emailAddress);
+      if (!email) this.invoiceProvider.storeEmail(emailAddress);
       return Promise.resolve(emailAddress);
     }
     if (email) return Promise.resolve(email);
@@ -359,20 +359,20 @@ export class ConfirmInvoicePage extends ConfirmPage {
   }
 
   public isValidEmail() {
-    return !!this.giftCardProvider.emailIsValid(this.email);
+    return !!this.invoiceProvider.emailIsValid(this.email);
   }
 
   public async buyConfirm() {
     if (!this.isValidEmail()) {
       this.throwEmailRequiredError();
     }
-    this.giftCardProvider.storeEmail(this.email);
+    this.invoiceProvider.storeEmail(this.email);
 
-    await this.giftCardProvider.setBuyerProvidedCurrency(
+    await this.invoiceProvider.setBuyerProvidedCurrency(
       this.wallet.coin.toUpperCase(),
       this.invoiceId
     );
-    await this.giftCardProvider.setBuyerProvidedEmail(
+    await this.invoiceProvider.setBuyerProvidedEmail(
       this.email,
       this.invoiceId
     );

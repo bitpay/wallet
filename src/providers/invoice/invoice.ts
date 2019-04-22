@@ -1,8 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import * as _ from 'lodash';
+import { EmailNotificationsProvider } from '../email-notifications/email-notifications';
 import { Logger } from '../logger/logger';
-import { Network } from '../persistence/persistence';
+import { Network, PersistenceProvider } from '../persistence/persistence';
 
 @Injectable()
 export class InvoiceProvider {
@@ -14,7 +15,12 @@ export class InvoiceProvider {
     BITPAY_API_URL: 'https://test.bitpay.com'
   };
 
-  constructor(private http: HttpClient, private logger: Logger) {
+  constructor(
+    private emailNotificationsProvider: EmailNotificationsProvider,
+    private http: HttpClient,
+    private logger: Logger,
+    private persistenceProvider: PersistenceProvider
+  ) {
     this.logger.debug('InvoiceProvider initialized');
     this.setCredentials();
   }
@@ -27,6 +33,35 @@ export class InvoiceProvider {
     if (this.getNetwork() === Network.testnet) {
       this.credentials.BITPAY_API_URL = 'https://test.bitpay.com';
     }
+  }
+
+  public emailIsValid(email: string): boolean {
+    const validEmail = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(
+      email
+    );
+    return validEmail;
+  }
+
+  public storeEmail(email: string): void {
+    this.setUserInfo({ email });
+  }
+
+  private setUserInfo(data: any): void {
+    this.persistenceProvider.setGiftCardUserInfo(JSON.stringify(data));
+  }
+
+  public getUserEmail(): Promise<string> {
+    return this.persistenceProvider
+      .getGiftCardUserInfo()
+      .then(data => {
+        if (_.isString(data)) {
+          data = JSON.parse(data);
+        }
+        return data && data.email
+          ? data.email
+          : this.emailNotificationsProvider.getEmailIfEnabled();
+      })
+      .catch(_ => {});
   }
 
   public async getBitPayInvoice(id: string) {
