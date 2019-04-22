@@ -350,7 +350,6 @@ export class MultiSendPage extends WalletTabsChild {
       fromMultiSend: true,
       totalAmount,
       recipientType: 'multi',
-      color: this.wallet.color,
       coin: this.wallet.coin,
       network: this.wallet.network,
       useSendMax: false,

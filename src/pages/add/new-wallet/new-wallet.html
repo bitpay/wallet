@@ -1,8 +1,10 @@
 <wide-header-page title="{{title}}">
   <div page-content>
     <button class="container-to" ion-item detail-none (click)="showWalletsGroups()" *ngIf="addToAccount">
-      <span translate>Add to</span>
       <div class="wallet-group" *ngIf="selectedWalletGroup">
+        <ion-icon item-start>
+          <img src="assets/img/icon-wallet.svg" class="icon-wallet" />
+        </ion-icon>
         <div>{{selectedWalletGroup.name}}</div>
         <div class="last-item" item-end>
           <button ion-button clear color="grey" icon-only>

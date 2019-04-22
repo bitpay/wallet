@@ -38,7 +38,7 @@ export class WalletSettingsPage {
     private navCtrl: NavController,
     private navParams: NavParams,
     private touchIdProvider: TouchIdProvider
-  ) { }
+  ) {}
 
   ionViewDidLoad() {
     this.logger.info('Loaded:  WalletSettingsPage');

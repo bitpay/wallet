@@ -1,11 +1,11 @@
 <ion-header class="wallet-details-header">
-  <ion-navbar [hideBackButton]="true" [navbar-bg]="wallet.color">
+  <ion-navbar [hideBackButton]="true">
     <ion-buttons left>
       <button (click)="close()" ion-button>
         {{'Close' | translate}}
       </button>
     </ion-buttons>
-    <ion-title>Account #{{wallet.account}}</ion-title>
+    <ion-title>{{wallet.name}} - Account #{{wallet.account}}</ion-title>
     <ion-buttons right>
       <button *ngIf="showShareButton" ion-button icon-only (click)="shareAddress()">
         <ion-icon ios="ios-share-outline" md="md-share"></ion-icon>

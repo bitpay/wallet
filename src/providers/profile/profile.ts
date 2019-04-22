@@ -82,7 +82,6 @@ export class ProfileProvider {
   private updateWalletFromConfig(wallet): void {
     const config = this.configProvider.get();
     const defaults = this.configProvider.getDefaults();
-    const defaultColor = defaults.defaultColor[wallet.coin];
     // this.config.whenAvailable( (config) => { TODO
     wallet.usingCustomBWS =
       config.bwsFor &&
@@ -91,7 +90,6 @@ export class ProfileProvider {
     wallet.name =
       (config.aliasFor && config.aliasFor[wallet.id]) ||
       wallet.credentials.walletName;
-    wallet.color = defaultColor;
     wallet.email = config.emailFor && config.emailFor[wallet.id];
     // });
   }

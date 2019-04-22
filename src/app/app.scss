@@ -102,6 +102,11 @@ ion-spinner * {
   }
 }
 
+.item-title {
+  display: flex;
+  justify-content: space-between;
+}
+
 // Fixes IOS 10.3.1 icons
 .item-img {
   display: flex;

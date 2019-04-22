@@ -17,7 +17,6 @@
 
 <div class="card" *ngIf="walletBtcList && walletBtcList[0]">
   <ion-item-divider class="title">
-    <img src="assets/img/icon-bitcoin.svg" alt="Bitcoin Wallets" width="16" />
     <span translate>Transfer to Bitcoin Account</span>
   </ion-item-divider>
 
@@ -31,7 +30,10 @@
       </ion-icon>
       <div class="item-title">{{wallet.name}}</div>
       <div class="item-subtitle">
-        <span>#{{wallet.account}} <span class="network-type" *ngIf="wallet.network == 'testnet'">- [<span text-uppercase>{{wallet.network}}</span>]</span></span>
+        <span>Account #{{wallet.account}}</span>
+        <span *ngIf="wallet.m > 1 && wallet.isComplete && !wallet.needsBackup">
+          {{wallet.m}}-{{wallet.n}}
+        </span>
       </div>
       <ion-note class="wallet-warning" *ngIf="!wallet.isComplete" item-end>
         {{'Incomplete' | translate}}
@@ -39,16 +41,12 @@
       <ion-note class="wallet-warning" *ngIf="wallet.isComplete && wallet.needsBackup" item-end>
         {{'Needs Backup' | translate}}
       </ion-note>
-      <ion-note *ngIf="wallet.m > 1 && wallet.isComplete && !wallet.needsBackup" item-end>
-        {{wallet.m}}-{{wallet.n}}
-      </ion-note>
     </button>
   </ion-list>
 </div>
 
 <div class="card" *ngIf="walletBchList && walletBchList[0]">
   <ion-item-divider class="title">
-    <img src="assets/img/bitcoin-cash-logo.svg" alt="Bitcoin Cash Wallets" width="22" />
     <span translate>Transfer to Bitcoin Cash Account</span>
   </ion-item-divider>
 
@@ -60,16 +58,16 @@
       </ion-icon>
       <div class="item-title">{{wallet.name}}</div>
       <div class="item-subtitle">
-        <span>#{{wallet.account}} <span class="network-type" *ngIf="wallet.network == 'testnet'">- [<span text-uppercase>{{wallet.network}}</span>]</span></span>
+        <span>Account #{{wallet.account}}</span>
+        <span *ngIf="wallet.m > 1 && wallet.isComplete && !wallet.needsBackup">
+          {{wallet.m}}-{{wallet.n}}
+        </span>
       </div>
       <ion-note class="wallet-warning" *ngIf="!wallet.isComplete" item-end>
         {{'Incomplete' | translate}}
       </ion-note>
       <ion-note class="wallet-warning" *ngIf="wallet.isComplete && wallet.needsBackup" item-end>
         {{'Needs Backup' | translate}}
-      </ion-note>
-      <ion-note *ngIf="wallet.m > 1 && wallet.isComplete && !wallet.needsBackup" item-end>
-        {{wallet.m}}-{{wallet.n}}
       </ion-note>
     </button>
   </ion-list>

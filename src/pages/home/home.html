@@ -121,30 +121,40 @@
                 <span *ngIf="wallet.coin == 'bch'">
                   Bitcoin Cash
                 </span>
+                <span *ngIf="wallet.error" class="wallet-warning">{{wallet.error}}</span>
               </div>
               <div>
                 <span *ngIf="!wallet.balanceHidden && !wallet.scanning">
-                  {{wallet.cachedStatus && wallet.cachedStatus.totalBalanceStr ? (wallet.cachedStatus.totalBalanceStr) : (
-                        wallet.lastKnownBalance ? wallet.lastKnownBalance
-                        + (wallet.lastKnownBalanceUpdatedOn ? ' &middot; ' + ( wallet.lastKnownBalanceUpdatedOn * 1000 | amTimeAgo)
-                        :
-                        '') : '')}}
+                  <span *ngIf="wallet.cachedStatus && wallet.cachedStatus.totalBalanceStr">
+                    {{wallet.cachedStatus.totalBalanceStr}}
+                  </span>
+                  <span *ngIf="(!wallet.cachedStatus || !wallet.cachedStatus.totalBalanceStr) && wallet.lastKnownBalance">
+                    <div *ngIf="wallet.lastKnownBalanceUpdatedOn">
+                      <div>{{wallet.lastKnownBalance }}</div>
+                    </div>
+                  </span>
                 </span>
                 <span *ngIf="wallet.scanning" translate>Scanning funds</span>
                 <span *ngIf="wallet.balanceHidden && !wallet.scanning">[
                   <span translate>Balance Hidden</span>]</span>
-                <span class="text-gray" *ngIf="wallet.credentials.m > 1">{{wallet.credentials.m}}-of-{{wallet.credentials.n}}</span>
                 <ion-icon *ngIf="!wallet.balanceHidden && wallet.cachedStatus && (wallet.cachedStatus.totalBalanceSat != wallet.cachedStatus.spendableAmount)" ios="ios-timer-outline" md="md-timer"></ion-icon>
-                <div *ngIf="wallet.error" class="wallet-warning">{{wallet.error}}</div>
               </div>
             </div>
             <div class="item-subtitle">
               <div>
-                <span>#{{wallet.account}} <span class="network-type" *ngIf="wallet.network == 'testnet'">- [<span text-uppercase>{{wallet.network}}</span>]</span></span>
+                <span>Account #{{wallet.account}}</span>
+                <span *ngIf="wallet.credentials.m > 1">[{{wallet.credentials.m}}-of-{{wallet.credentials.n}}]</span>
               </div>
               <div *ngIf="!wallet.balanceHidden && !wallet.scanning">
-                {{wallet.cachedStatus.totalBalanceAlternative}} {{wallet.cachedStatus.alternativeIsoCode}}
+                {{wallet.cachedStatus && wallet.cachedStatus.totalBalanceAlternative && wallet.cachedStatus.alternativeIsoCode ? wallet.cachedStatus.totalBalanceAlternative + wallet.cachedStatus.alternativeIsoCode : ''}}
               </div>
+              <span *ngIf="(!wallet.cachedStatus || !wallet.cachedStatus.totalBalanceStr) && wallet.lastKnownBalance">
+                <div *ngIf="wallet.lastKnownBalanceUpdatedOn">
+                  <div>
+                    {{(wallet.lastKnownBalanceUpdatedOn * 1000 | amTimeAgo)}}
+                  </div>
+                </div>
+              </span>
             </div>
           </button>
         </ion-list>

@@ -28,13 +28,12 @@ export class WalletInformationPage {
   public basePath: string;
   public pubKeys;
   public externalSource: string;
-  public canSign: boolean;
 
   constructor(
     private profileProvider: ProfileProvider,
     private navParams: NavParams,
     private logger: Logger
-  ) { }
+  ) {}
 
   ionViewDidLoad() {
     this.logger.info('Loaded:  WalletInformationPage');

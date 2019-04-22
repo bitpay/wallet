@@ -1,5 +1,5 @@
 <ion-header [ngClass]="{'wallet-details-header': wallet}">
-  <ion-navbar [navbar-bg]="wallet && wallet.color">
+  <ion-navbar>
     <ion-buttons *ngIf="wallet" left>
       <button class="modal-close-button" (click)="closeCam()" ion-button>
         <ion-icon ios="md-close" md="md-close"></ion-icon>
@@ -8,7 +8,7 @@
     <ion-title *ngIf="wallet && wallet.account">Account #{{wallet.account}}</ion-title>
     <ion-title *ngIf="!wallet || !wallet.account">{{'Send'|translate}}</ion-title>
   </ion-navbar>
-  <ion-toolbar *ngIf="wallet" [navbar-bg]="wallet.color">
+  <ion-toolbar *ngIf="wallet">
     <div *ngIf="!wallet.balanceHidden && !wallet.scanning && wallet.cachedStatus" class="wallet-details-header__balance">
       <span>{{wallet.cachedStatus && wallet.cachedStatus.spendableBalanceStr}}</span>
       <ion-icon *ngIf="wallet.cachedStatus.totalBalanceSat != wallet.cachedStatus.spendableAmount" ios="ios-timer-outline" md="md-timer"></ion-icon>

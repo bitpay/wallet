@@ -1,25 +1,30 @@
 <ion-header no-border class="wallet-details-header">
-  <ion-navbar [navbar-bg]="wallet.color">
+  <ion-navbar>
     <ion-buttons left>
       <button class="modal-close-button" (click)="close()" ion-button>
         <ion-icon ios="md-close" md="md-close"></ion-icon>
       </button>
     </ion-buttons>
-    <ion-title>Account #{{wallet.account}}</ion-title>
+    <ion-title>{{wallet.name}}</ion-title>
     <ion-buttons right>
       <button ion-button clear (click)="goToPreferences()">
         <img src="assets/img/preferences.svg">
       </button>
     </ion-buttons>
   </ion-navbar>
+  <ion-toolbar *ngIf="wallet">
+    <div class="wallet-details-header__subtitle">
+      <span translate>Account #{{wallet.account}}</span>
+    </div>
+  </ion-toolbar>
 </ion-header>
 
-<ion-content no-bounce #scrollArea [fixed-scroll-bg-color]="wallet.color" [ngClass]="{'zero-state': shouldShowZeroState()}">
-  <ion-refresher (ionRefresh)="doRefresh($event)" [ngStyle]="{'background': wallet.color}" pullMin="90" pullMax="180">
+<ion-content no-bounce #scrollArea [ngClass]="{'zero-state': shouldShowZeroState()}">
+  <ion-refresher class="refresher" (ionRefresh)="doRefresh($event)" pullMin="90" pullMax="180">
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
   <div class="wrapper">
-    <expandable-header class="balance-card" [scrollArea]="scrollArea" [ngStyle]="{'background': wallet.color}">
+    <expandable-header class="balance-card" [scrollArea]="scrollArea">
       <expandable-header-primary class="balance-header">
         <div (longPress)="toggleBalance()">
           <div (tap)="updateAll(true)" *ngIf="!wallet.balanceHidden && !wallet.scanning && (wallet.cachedStatus || wallet.lastKnownBalance)">
@@ -83,8 +88,7 @@
           <img class="auditable-text" *ngIf="wallet.cachedStatus && wallet.cachedStatus.wallet && wallet.cachedStatus.wallet.singleAddress" src="assets/img/icon-text-auditable.svg">
           <img class="custom-bws" *ngIf="wallet.usingCustomBWS" src="assets/img/icon-bws-white.svg">
           <img class="encrypted" *ngIf="wallet.isPrivKeyEncrypted()" src="assets/img/icon-lock-white.svg">
-
-          <span class="wallet-type" *ngIf="wallet.credentials.n > 1">
+          <span class="wallet-info" *ngIf="wallet.credentials.n > 1">
             <span translate>{{wallet.m}}-of-{{wallet.n}}</span>
           </span>
         </div>
