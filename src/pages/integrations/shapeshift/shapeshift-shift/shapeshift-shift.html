@@ -89,8 +89,8 @@
     <ion-item>
       {{'Rate' | translate}}
       <ion-note item-end>
-        <span *ngIf="!limit">...</span>
-        <span *ngIf="limit">
+        <span *ngIf="!limit?.rate">...</span>
+        <span *ngIf="limit?.rate">
           {{limit.rate}} {{toWallet.coin | uppercase}} per {{fromWallet.coin | uppercase}}
         </span>
       </ion-note>
@@ -99,8 +99,8 @@
     <ion-item>
       {{'Deposit Min' | translate}}
       <ion-note item-end>
-        <span *ngIf="!limit">...</span>
-        <span *ngIf="limit">
+        <span *ngIf="!limit?.minimum">...</span>
+        <span *ngIf="limit?.minimum">
           {{limit.minimum}} {{fromWallet.coin | uppercase}}
         </span>
       </ion-note>
@@ -109,8 +109,8 @@
     <ion-item>
       {{'Deposit Max' | translate}}
       <ion-note item-end>
-        <span *ngIf="!limit">...</span>
-        <span *ngIf="limit">
+        <span *ngIf="!limit?.limit">...</span>
+        <span *ngIf="limit?.limit">
           {{limit.limit}} {{fromWallet.coin | uppercase}}
         </span>
       </ion-note>
@@ -119,8 +119,8 @@
     <ion-item>
       {{'Miner fee' | translate}}
       <ion-note item-end>
-        <span *ngIf="!limit">...</span>
-        <span *ngIf="limit">
+        <span *ngIf="!limit?.minerFee">...</span>
+        <span *ngIf="limit?.minerFee">
           {{limit.minerFee}} {{toWallet.coin | uppercase}}
         </span>
       </ion-note>
@@ -143,8 +143,7 @@
 
 <ion-footer>
   <ion-toolbar *ngIf="fromWallets.length > 0 && toWallets.length > 0">
-    <button ion-button full class="button-footer" no-low-fee type="button" [disabled]="!fromWallet || !toWallet || !termsAccepted"
-      (click)="setAmount()">
+    <button ion-button full class="button-footer" no-low-fee type="button" [disabled]="!fromWallet || !toWallet || !termsAccepted" (click)="setAmount()">
       {{'Continue' | translate}}
     </button>
   </ion-toolbar>
