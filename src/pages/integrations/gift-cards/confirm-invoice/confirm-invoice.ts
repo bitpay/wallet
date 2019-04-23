@@ -52,6 +52,7 @@ export class ConfirmInvoicePage extends ConfirmCardPurchasePage {
   public email: string;
   public parsedAmount: any;
   public invoiceFeeSat: any;
+  public coinAmount: number;
   constructor(
     actionSheetProvider: ActionSheetProvider,
     bwcErrorProvider: BwcErrorProvider,
@@ -157,6 +158,15 @@ export class ConfirmInvoicePage extends ConfirmCardPurchasePage {
       this.openInBrowser();
       return;
     }
+    if (this.isCordova) {
+      window.addEventListener('keyboardWillShow', () => {
+        this.hideSlideButton = true;
+      });
+
+      window.addEventListener('keyboardWillHide', () => {
+        this.hideSlideButton = false;
+      });
+    }
     this.paymentTimeControl(this.invoiceData.expirationTime);
     this.onWalletSelect(this.wallets[0]);
   }
@@ -166,11 +176,6 @@ export class ConfirmInvoicePage extends ConfirmCardPurchasePage {
       data: this.invoiceUrl,
       type: 'InvoiceUrl'
     });
-  }
-
-  public back() {
-    const url = this.invoiceUrl;
-    this.externalLinkProvider.open(url);
   }
 
   private async getEmail(emailAddress?: string) {
@@ -222,6 +227,9 @@ export class ConfirmInvoicePage extends ConfirmCardPurchasePage {
       this.wallet.coin,
       this.invoiceData.paymentTotals[COIN]
     );
+    this.coinAmount = this.txFormatProvider.formatAmount(
+      this.invoiceData.paymentTotals[COIN]
+    );
     this.checkFeeHigh(
       Number(this.parsedAmount.amountSat),
       Number(this.invoiceFeeSat) + Number(fee)
@@ -236,16 +244,6 @@ export class ConfirmInvoicePage extends ConfirmCardPurchasePage {
 
   public isValidEmail() {
     return !!this.invoiceProvider.emailIsValid(this.email);
-  }
-
-  public throwEmailRequiredError() {
-    const title = this.translate.instant('Error');
-    const msg = this.translate.instant(
-      'An email address is required for this purchase.'
-    );
-    this.onGoingProcessProvider.clear();
-    this.showErrorInfoSheet(msg, title, false);
-    throw new Error('email required');
   }
 
   public async createTx(wallet, invoice, message: string) {
@@ -308,26 +306,32 @@ export class ConfirmInvoicePage extends ConfirmCardPurchasePage {
   }
 
   public async buyConfirm() {
-    if (!this.isValidEmail()) {
-      this.throwEmailRequiredError();
-    }
+    this.hideSlideButton = true;
     const {
       selectedTransactionCurrency,
       emailAddress
     } = this.invoiceData.buyerProvidedInfo;
 
-    if (!selectedTransactionCurrency)
-      await this.invoiceProvider.setBuyerProvidedCurrency(
-        this.wallet.coin.toUpperCase(),
-        this.invoiceId
-      );
+    if (!selectedTransactionCurrency) {
+      await this.invoiceProvider
+        .setBuyerProvidedCurrency(
+          this.wallet.coin.toUpperCase(),
+          this.invoiceId
+        )
+        .catch(err => {
+          this.onGoingProcessProvider.clear();
+          throw this.showErrorInfoSheet(err.message, err.title, false);
+        });
+    }
 
-    if (this.email && !emailAddress) {
+    if (!emailAddress) {
+      await this.invoiceProvider
+        .setBuyerProvidedEmail(this.email, this.invoiceId)
+        .catch(err => {
+          this.onGoingProcessProvider.clear();
+          throw this.showErrorInfoSheet(err.message, err.title, false);
+        });
       this.invoiceProvider.storeEmail(this.email);
-      await this.invoiceProvider.setBuyerProvidedEmail(
-        this.email,
-        this.invoiceId
-      );
     }
     const ctxp = await this.createTx(
       this.wallet,
@@ -338,9 +342,8 @@ export class ConfirmInvoicePage extends ConfirmCardPurchasePage {
       this.resetValues();
       throw this.showErrorInfoSheet(err.message, err.title);
     });
-    this.tx = ctxp;
 
-    if (!this.tx) {
+    if (!ctxp) {
       this.showErrorInfoSheet(
         this.translate.instant('Transaction has not been created')
       );
@@ -354,7 +357,7 @@ export class ConfirmInvoicePage extends ConfirmCardPurchasePage {
       return undefined;
     }
 
-    return this.publishAndSign(this.tx, this.wallet).catch(async err =>
+    return this.publishInvoiceAndSign(ctxp, this.wallet).catch(async err =>
       this.handlePurchaseError(err)
     );
   }

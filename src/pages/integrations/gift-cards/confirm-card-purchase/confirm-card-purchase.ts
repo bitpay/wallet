@@ -180,6 +180,10 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
     this.tx = this.message = this.invoiceId = null;
   }
 
+  async publishInvoiceAndSign(tx, wallet) {
+    return super.publishAndSign(tx, wallet);
+  }
+
   async publishAndSign(wallet, txp) {
     if (!wallet.canSign() && !wallet.isPrivKeyExternal()) {
       const err = this.translate.instant('No signing proposal: No private key');
