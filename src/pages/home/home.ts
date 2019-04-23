@@ -23,6 +23,7 @@ import { ExternalLinkProvider } from '../../providers/external-link/external-lin
 import { FeedbackProvider } from '../../providers/feedback/feedback';
 import { HomeIntegrationsProvider } from '../../providers/home-integrations/home-integrations';
 import { IncomingDataProvider } from '../../providers/incoming-data/incoming-data';
+import { InvoiceProvider } from '../../providers/invoice/invoice';
 import { Logger } from '../../providers/logger/logger';
 import { PersistenceProvider } from '../../providers/persistence/persistence';
 import { PlatformProvider } from '../../providers/platform/platform';
@@ -95,7 +96,8 @@ export class HomePage {
     private translate: TranslateService,
     private emailProvider: EmailNotificationsProvider,
     private clipboardProvider: ClipboardProvider,
-    private incomingDataProvider: IncomingDataProvider
+    private incomingDataProvider: IncomingDataProvider,
+    private invoiceProvider: InvoiceProvider
   ) {
     this.slideDown = false;
     this.isElectron = this.platformProvider.isElectron;
@@ -349,7 +351,31 @@ export class HomePage {
           this.validDataFromClipboard = null;
           return;
         }
-        if (this.validDataFromClipboard.type === 'PayPro') {
+        if (this.validDataFromClipboard.type === 'InvoiceUri') {
+          const invoiceId: string = data.replace(
+            /https:\/\/(www.)?(test.)?bitpay.com\/invoice\//,
+            ''
+          );
+          try {
+          const invoiceData = await this.invoiceProvider.getBitPayInvoiceData(
+            invoiceId
+          );
+          const { invoice, org } = invoiceData;
+          const { selectedTransactionCurrency } = invoice.buyerProvidedInfo;
+          const { expirationTime, paymentTotals } = invoice;
+          this.payProDetailsData = invoice;
+          this.payProDetailsData.verified = true;
+          this.payProDetailsData.host = org.name;
+          this.payProDetailsData.coin = selectedTransactionCurrency ? selectedTransactionCurrency.toLowerCase() : 'btc';
+          this.payProDetailsData.amount = paymentTotals[this.payProDetailsData.coin.toUpperCase()];
+          this.clearCountDownInterval();
+          this.paymentTimeControl(expirationTime);
+          } catch(err) {
+            this.payProDetailsData = {};
+            this.payProDetailsData.error = err;
+            this.logger.warn('Error in Fetching Invoice', err);
+          };
+        } else if (this.validDataFromClipboard.type === 'PayPro') {
           const coin: string =
             data.indexOf('bitcoincash') === 0 ? Coin.BCH : Coin.BTC;
           this.incomingDataProvider

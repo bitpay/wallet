@@ -4,6 +4,7 @@ import { Events } from 'ionic-angular';
 import { Logger } from '../../providers/logger/logger';
 
 // providers
+import { Network } from '../../providers/persistence/persistence';
 import { ActionSheetProvider } from '../action-sheet/action-sheet';
 import { AppProvider } from '../app/app';
 import { BwcProvider } from '../bwc/bwc';
@@ -178,10 +179,16 @@ export class IncomingDataProvider {
 
   private async handleBitPayInvoice(data: string) {
     this.logger.debug('Handling bitpay invoice');
+    const testStr: boolean =
+      data.indexOf('test.bitpay.com') > -1 ? true : false;
     const invoiceId: string = data.replace(
       /https:\/\/(www.)?(test.)?bitpay.com\/invoice\//,
       ''
     );
+    this.invoiceProvider.credentials.NETWORK = testStr
+    ? Network.testnet
+    : Network.livenet;
+  this.invoiceProvider.setCredentials();
     const invoiceResponse = await this.invoiceProvider
       .getBitPayInvoiceData(invoiceId)
       .catch(err => {

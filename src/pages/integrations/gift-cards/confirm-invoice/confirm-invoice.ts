@@ -133,17 +133,14 @@ export class ConfirmInvoicePage extends ConfirmCardPurchasePage {
   ionViewWillEnter() {
     this.isOpenSelector = false;
     this.navCtrl.swipeBackEnabled = false;
-
+    const { BITPAY_API_URL } = this.invoiceProvider.credentials;
     this.network = this.invoiceProvider.getNetwork();
     this.wallets = this.profileProvider.getWallets({
       onlyComplete: true,
       network: this.network,
       hasFunds: true
     });
-    this.invoiceUrl = `https://bitpay.com/invoice/${this.invoiceId}`;
-    if (this.network === 'testnet') {
-      this.invoiceUrl = `https://test.bitpay.com/invoice/${this.invoiceId}`;
-    }
+    this.invoiceUrl = `${BITPAY_API_URL}/invoice/${this.invoiceId}`;
     const { selectedTransactionCurrency } = this.invoiceData.buyerProvidedInfo;
     if (selectedTransactionCurrency) {
       this.wallets = _.filter(this.wallets, (x: any) => {
