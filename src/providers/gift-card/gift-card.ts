@@ -33,8 +33,8 @@ export class GiftCardProvider {
     NETWORK: Network;
     BITPAY_API_URL: string;
   } = {
-    NETWORK: Network.testnet,
-    BITPAY_API_URL: 'https://test.bitpay.com'
+    NETWORK: Network.livenet,
+    BITPAY_API_URL: 'https://bitpay.com'
   };
 
   availableCardsPromise: Promise<CardConfig[]>;

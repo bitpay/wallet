@@ -58,7 +58,7 @@ export class PayproProvider {
       });
     };
 
-    return getPayPro('testnet')
+    return getPayPro()
       .catch(err => {
         if (err == 'NO_LIVENET_WALLETS' || this.checkIfNetworkError(err)) {
           return getPayPro('testnet');
