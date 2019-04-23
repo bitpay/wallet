@@ -142,7 +142,7 @@
   <page-slide-to-accept
     #slideButton
     *ngIf="isCordova"
-    [disabled]="!(wallet && totalAmountStr)"
+    [disabled]="!(wallet && totalAmountStr && !paymentExpired)"
     buttonText="{{'Slide to confirm' | translate}}"
     (slideDone)="buyConfirm()"
     [ngClass]="{
@@ -156,7 +156,7 @@
       full
       class="button-footer"
       (click)="buyConfirm()"
-      [disabled]="!(wallet && totalAmountStr)"
+      [disabled]="!(wallet && totalAmountStr && !paymentExpired)"
     >
       {{ 'Confirm
       purchase' | translate }}

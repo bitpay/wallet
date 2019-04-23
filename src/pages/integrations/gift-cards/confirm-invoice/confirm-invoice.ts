@@ -33,7 +33,10 @@ import { PopupProvider } from '../../../../providers/popup/popup';
 import { ProfileProvider } from '../../../../providers/profile/profile';
 import { ReplaceParametersProvider } from '../../../../providers/replace-parameters/replace-parameters';
 import { TxFormatProvider } from '../../../../providers/tx-format/tx-format';
-import { WalletProvider } from '../../../../providers/wallet/wallet';
+import {
+  TransactionProposal,
+  WalletProvider
+} from '../../../../providers/wallet/wallet';
 
 // Pages
 import { ConfirmCardPurchasePage } from '../confirm-card-purchase/confirm-card-purchase';
@@ -46,7 +49,6 @@ export class ConfirmInvoicePage extends ConfirmCardPurchasePage {
   public invoiceData: any;
   public invoiceName: string;
   public invoiceUrl: string;
-
   public email: string;
   public parsedAmount: any;
   public invoiceFeeSat: any;
@@ -207,7 +209,7 @@ export class ConfirmInvoicePage extends ConfirmCardPurchasePage {
     this.invoiceFeeSat = this.invoiceData.minerFees[COIN].totalFee;
 
     this.message = this.replaceParametersProvider.replace(
-      this.translate.instant(`{{amountUnitStr}} Invoice`),
+      this.translate.instant(`{{amountUnitStr}} ${this.invoiceName}`),
       { amountUnitStr: this.amountUnitStr }
     );
 
@@ -234,6 +236,75 @@ export class ConfirmInvoicePage extends ConfirmCardPurchasePage {
 
   public isValidEmail() {
     return !!this.invoiceProvider.emailIsValid(this.email);
+  }
+
+  public throwEmailRequiredError() {
+    const title = this.translate.instant('Error');
+    const msg = this.translate.instant(
+      'An email address is required for this purchase.'
+    );
+    this.onGoingProcessProvider.clear();
+    this.showErrorInfoSheet(msg, title, false);
+    throw new Error('email required');
+  }
+
+  public async createTx(wallet, invoice, message: string) {
+    const COIN = wallet.coin.toUpperCase();
+    const payProUrl =
+      invoice && invoice.paymentCodes ? invoice.paymentCodes[COIN].BIP73 : null;
+
+    if (!payProUrl) {
+      throw {
+        title: this.translate.instant('Error in Payment Protocol'),
+        message: this.translate.instant('Invalid URL')
+      };
+    }
+
+    const details = await this.payproProvider
+      .getPayProDetails(payProUrl, wallet.coin)
+      .catch(err => {
+        throw {
+          title: this.translate.instant('Error in Payment Protocol'),
+          message: err
+        };
+      });
+
+    const txp: Partial<TransactionProposal> = {
+      amount: details.amount,
+      toAddress: details.toAddress,
+      outputs: [
+        {
+          toAddress: details.toAddress,
+          amount: details.amount,
+          message
+        }
+      ],
+      message,
+      payProUrl,
+      excludeUnconfirmedUtxos: this.configWallet.spendUnconfirmed ? false : true
+    };
+
+    if (details.requiredFeeRate) {
+      txp.feePerKb = Math.ceil(details.requiredFeeRate * 1024);
+      this.logger.debug('Using merchant fee rate:' + txp.feePerKb);
+    } else {
+      txp.feeLevel = this.configWallet.settings.feeLevel || 'normal';
+    }
+
+    txp['origToAddress'] = txp.toAddress;
+
+    if (wallet.coin && wallet.coin == 'bch') {
+      // Use legacy address
+      txp.toAddress = this.bitcoreCash.Address(txp.toAddress).toString();
+      txp.outputs[0].toAddress = txp.toAddress;
+    }
+
+    return this.walletProvider.createTx(wallet, txp).catch(err => {
+      throw {
+        title: this.translate.instant('Could not create transaction'),
+        message: this.bwcErrorProvider.msg(err)
+      };
+    });
   }
 
   public async buyConfirm() {
