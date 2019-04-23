@@ -186,9 +186,9 @@ export class IncomingDataProvider {
       ''
     );
     this.invoiceProvider.credentials.NETWORK = testStr
-    ? Network.testnet
-    : Network.livenet;
-  this.invoiceProvider.setCredentials();
+      ? Network.testnet
+      : Network.livenet;
+    this.invoiceProvider.setCredentials();
     const invoiceResponse = await this.invoiceProvider
       .getBitPayInvoiceData(invoiceId)
       .catch(err => {
