@@ -20,7 +20,7 @@
 </ion-header>
 
 <ion-content class="fullscreen-tab">
-  <ion-refresher (ionRefresh)="doRefresh($event)" *ngIf="!showReorderBtc && !showReorderBch && !showReorderGroupWallets" pullMin="90" pullMax="180">
+  <ion-refresher (ionRefresh)="doRefresh($event)" *ngIf="!showReorderGroupWallets" pullMin="90" pullMax="180">
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
 
@@ -91,19 +91,19 @@
               Needs Backup
             </div>
           </div>
-          <div class="title-buttons" item-end *ngIf="!showReorderGroupWallets">
-            <button ion-button clear icon-only color="grey" (click)="reorderGroup()" *ngIf="walletGroup.wallets.length > 1">
+          <div class="title-buttons" item-end *ngIf="!walletGroup.showReorderGroupWallets">
+            <button ion-button clear icon-only color="grey" (click)="walletGroup.showReorderGroupWallets = !walletGroup.showReorderGroupWallets; showReorderGroupWallets = !showReorderGroupWallets" *ngIf="walletGroup.wallets.length > 1">
               <ion-icon name="reorder"></ion-icon>
             </button>
           </div>
-          <div item-end *ngIf="showReorderGroupWallets">
-            <button ion-button clear color="secondary" (click)="reorderGroup()">
+          <div item-end *ngIf="walletGroup.showReorderGroupWallets">
+            <button ion-button clear color="secondary" (click)="walletGroup.showReorderGroupWallets = !walletGroup.showReorderGroupWallets; showReorderGroupWallets = !showReorderGroupWallets">
               {{'Done' | translate}}
             </button>
           </div>
         </ion-item-divider>
-        <ion-list reorder="{{showReorderGroupWallets}}" (ionItemReorder)="reorderGroupWallets($event, walletGroup.wallets)">
-          <button ion-item *ngFor="let wallet of walletGroup.wallets" (click)="goToWalletDetails(wallet)">
+        <ion-list [reorder]="walletGroup.showReorderGroupWallets" (ionItemReorder)="reorderGroupWallets($event, walletGroup.wallets)">
+          <button ion-item *ngFor="let wallet of walletGroup.wallets" (click)="goToWalletDetails(wallet, walletGroup.showReorderGroupWallets)">
             <ion-icon class="item-img" item-start>
               <img *ngIf="wallet.coin == 'btc' && wallet.network == 'livenet'" src="assets/img/bitcoin-logo-blank.svg" class="icon-coin" />
               <img *ngIf="wallet.coin == 'bch' && wallet.network == 'livenet'" src="assets/img/bitcoincash-logo-blank.svg" class="icon-coin" />

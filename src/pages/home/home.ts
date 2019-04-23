@@ -63,8 +63,6 @@ export class HomePage {
   public slideDown: boolean;
 
   public showRateCard: boolean;
-  public showReorderBtc: boolean;
-  public showReorderBch: boolean;
 
   public showReorderGroupWallets: boolean;
   public showIntegration;
@@ -105,10 +103,6 @@ export class HomePage {
   ) {
     this.slideDown = false;
     this.isElectron = this.platformProvider.isElectron;
-    this.showReorderBtc = false;
-    this.showReorderBch = false;
-    this.isCopay = this.appProvider.info.name === 'copay';
-
     this.showReorderGroupWallets = false;
     this.zone = new NgZone({ enableLongStackTrace: false });
     this.events.subscribe('Home/reloadStatus', () => {
@@ -739,13 +733,11 @@ export class HomePage {
     this.navCtrl.push(AddPage);
   }
 
-  public goToWalletDetails(wallet): void {
-    if (this.showReorderGroupWallets) return;
-    this.events.publish('OpenWallet', wallet);
-  }
 
-  public reorderGroup(): void {
-    this.showReorderGroupWallets = !this.showReorderGroupWallets;
+  public goToWalletDetails(wallet, showReorderGroupWallets): void {
+    if (showReorderGroupWallets) return;
+
+    this.events.publish('OpenWallet', wallet);
   }
 
   public reorderGroupWallets(indexes, wallets): void {
