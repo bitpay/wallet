@@ -109,11 +109,7 @@ export class PersistenceProvider {
   }
 
   getWalletGroup(id: string): Promise<any> {
-    return new Promise(resolve => {
-      this.storage.get(Keys.WALLET_GROUP(id)).then(walletGroup => {
-        resolve(walletGroup);
-      });
-    });
+    return this.storage.get(Keys.WALLET_GROUP(id));
   }
 
   deleteWalletGroup(id: string) {

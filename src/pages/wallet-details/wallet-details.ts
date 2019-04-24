@@ -377,9 +377,12 @@ export class WalletDetailsPage extends WalletTabsChild {
     });
   }
 
-  public openBackup() {
+  public async openBackup() {
+    const walletGroupId = await this.profileProvider.getWalletGroupId(
+      this.wallet.credentials.walletId
+    );
     this.navCtrl.push(BackupKeyPage, {
-      walletId: this.wallet.credentials.walletId
+      walletGroupId
     });
   }
 

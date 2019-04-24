@@ -141,7 +141,7 @@ export class WalletGroupSettingsPage {
 
   public openBackupSettings(): void {
     this.navCtrl.push(BackupKeyPage, {
-      walletId: this.navParams.data.walletGroupId
+      walletGroupId: this.navParams.data.walletGroupId
     });
   }
 
@@ -159,13 +159,13 @@ export class WalletGroupSettingsPage {
 
   public openWalletExtendedPrivateKey(): void {
     this.navCtrl.push(WalletExtendedPrivateKeyPage, {
-      walletId: this.navParams.data.walletGroupId
+      walletGroupId: this.navParams.data.walletGroupId
     });
   }
 
   public openExportWallet(): void {
     this.navCtrl.push(WalletExportPage, {
-      walletId: this.navParams.data.walletGroupId
+      walletGroupId: this.navParams.data.walletGroupId
     });
   }
 

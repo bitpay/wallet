@@ -824,11 +824,7 @@ export class ProfileProvider {
   }
 
 
-  private async storeInWalletGroup(
-    walletClients,
-    walletGroupId,
-    needsBackup = true
-  ) {
+  private storeInWalletGroup(walletClients, walletGroupId, needsBackup = true) {
     // create default wallet group
     const defaultWalletGroup = {
       id: walletClients[0].credentials.walletId,
@@ -837,14 +833,13 @@ export class ProfileProvider {
       needsBackup
     };
 
-    let walletGroup = await this.getWalletGroup(walletGroupId);
-    if (!walletGroup) walletGroup = defaultWalletGroup;
-
-    walletClients.forEach(wallet => {
-      walletGroup.walletIds.push(wallet.credentials.walletId);
+    return this.getWalletGroup(walletGroupId).then(walletGroup => {
+      if (!walletGroup) walletGroup = defaultWalletGroup;
+      walletClients.forEach(wallet => {
+        walletGroup.walletIds.push(wallet.credentials.walletId);
+      });
+      return this.storeWalletGroup(walletGroup);
     });
-
-    return this.storeWalletGroup(walletGroup);
   }
 
   public importExtendedPublicKey(opts): Promise<any> {
@@ -1475,5 +1470,15 @@ export class ProfileProvider {
   public setWalletGroupFlag() {
     this.profile.walletGroupMigrationFlag = true;
     this.persistenceProvider.storeProfile(this.profile);
+  }
+
+  public getWalletGroupId(walletId: string) {
+    return this.getAllWalletsGroups().then(walletGroups => {
+      walletGroups = _.compact(walletGroups);
+      walletGroups = walletGroups.filter(walletGroup => {
+        return this.walletIncludedInGroup(walletId, walletGroup.walletIds);
+      });
+      return Promise.resolve(walletGroups[0].id);
+    });
   }
 }

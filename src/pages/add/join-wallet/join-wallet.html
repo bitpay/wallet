@@ -25,18 +25,18 @@
       <ion-icon class="scanner-icon" name="qr-scanner" item-right (click)="openScanner()"></ion-icon>
     </ion-item>
 
-    <button ion-button class="button-standard button-secondary" (click)="showAdvOpts = !showAdvOpts">
+    <button ion-button *ngIf="!walletGroupId" class="button-standard button-secondary" (click)="showAdvOpts = !showAdvOpts">
       <span *ngIf="!showAdvOpts">{{'Show advanced options' | translate}}</span>
       <span *ngIf="showAdvOpts">{{'Hide advanced options' | translate}}</span>
     </button>
 
     <div *ngIf="showAdvOpts" padding-bottom>
-      <ion-item *ngIf="!walletGroupId">
+      <ion-item>
         <ion-label floating>Wallet Service URL</ion-label>
         <ion-input type="text" formControlName="bwsURL"></ion-input>
       </ion-item>
 
-      <ion-item *ngIf="!walletGroupId">
+      <ion-item>
         <ion-label stacked>{{'Wallet key' | translate}}</ion-label>
         <ion-select okText="{{okText}}" cancelText="{{cancelText}}" formControlName="selectedSeed" (ionChange)="seedOptionsChange(joinForm.value.selectedSeed)">
           <ion-option *ngFor="let opt of seedOptions" [value]="opt.id">{{opt.label}}</ion-option>

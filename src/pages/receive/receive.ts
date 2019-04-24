@@ -174,9 +174,12 @@ export class ReceivePage extends WalletTabsChild {
     this.socialSharing.share(this.address);
   }
 
-  public goToBackup(): void {
+  public async goToBackup() {
+    const walletGroupId = await this.profileProvider.getWalletGroupId(
+      this.wallet.credentials.walletId
+    );
     this.navCtrl.push(BackupKeyPage, {
-      walletId: this.wallet.credentials.walletId
+      walletGroupId
     });
   }
 
