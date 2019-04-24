@@ -106,7 +106,7 @@ export class TxFormatProvider {
     return val();
   }
 
-  public processTx(coin: string, tx, useLegacyAddress: boolean) {
+  public processTx(coin: string, tx) {
     if (!tx || tx.action == 'invalid') return tx;
 
     // New transaction output format. Fill tx.amount and tx.toAmount for
@@ -133,9 +133,7 @@ export class TxFormatProvider {
 
       // toDo: translate all tx.outputs[x].toAddress ?
       if (tx.toAddress && coin == 'bch') {
-        tx.toAddress = useLegacyAddress
-          ? this.toLegacyAddress(tx.toAddress)
-          : this.toCashAddress(tx.toAddress);
+        tx.toAddress = this.toCashAddress(tx.toAddress);
       }
     }
 
@@ -155,8 +153,8 @@ export class TxFormatProvider {
     tx.feeStr = tx.fee
       ? this.formatAmountStr(coin, tx.fee)
       : tx.fees
-      ? this.formatAmountStr(coin, tx.fees)
-      : 'N/A';
+        ? this.formatAmountStr(coin, tx.fees)
+        : 'N/A';
     if (tx.amountStr) {
       tx.amountValueStr = tx.amountStr.split(' ')[0];
       tx.amountUnitStr = tx.amountStr.split(' ')[1];
@@ -166,9 +164,7 @@ export class TxFormatProvider {
       tx.feeRate = `${((tx.fee || tx.fees) / tx.size).toFixed(0)} sat/bytes`;
 
     if (tx.addressTo && coin == 'bch') {
-      tx.addressTo = useLegacyAddress
-        ? this.toLegacyAddress(tx.addressTo)
-        : this.toCashAddress(tx.addressTo);
+      tx.addressTo = this.toCashAddress(tx.addressTo);
     }
 
     return tx;

@@ -84,8 +84,7 @@ export class TxpDetailsPage {
       : this.profileProvider.getWallet(this.tx.walletId);
     this.tx = this.txFormatProvider.processTx(
       this.wallet.coin,
-      this.tx,
-      this.walletProvider.useLegacyAddress()
+      this.tx
     );
     if (!this.tx.toAddress) this.tx.toAddress = this.tx.outputs[0].toAddress;
     this.currentSpendUnconfirmed = config.spendUnconfirmed;
@@ -391,8 +390,7 @@ export class TxpDetailsPage {
 
         this.tx = this.txFormatProvider.processTx(
           this.wallet.coin,
-          tx,
-          this.walletProvider.useLegacyAddress()
+          tx
         );
 
         if (!action && tx.status == 'pending') this.tx.pendingForUs = true;

@@ -27,7 +27,7 @@ describe('Provider: Wallet Provider', () => {
   let walletProvider: WalletProvider;
 
   class PersistenceProviderMock {
-    constructor() {}
+    constructor() { }
     getLastAddress() {
       return Promise.resolve('storedAddress');
     }
@@ -261,15 +261,6 @@ describe('Provider: Wallet Provider', () => {
   });
 
   describe('Function: getAddressView', () => {
-    beforeEach(() => {
-      const newOpts = {
-        wallet: {
-          useLegacyAddress: false
-        }
-      };
-      configProvider.set(newOpts);
-    });
-
     it('should get the correct address with protocol format for BCH testnet', () => {
       spyOn(txFormatProvider, 'toCashAddress').and.returnValue(
         'qqfs4tjymy5cs0j4lz78y2lvensl0l42wu80z5jass'
@@ -307,22 +298,6 @@ describe('Provider: Wallet Provider', () => {
         '3DTdZeycDBaimjuuknVGrG8fxdLbjsAjXN'
       );
       expect(address).toEqual('3DTdZeycDBaimjuuknVGrG8fxdLbjsAjXN');
-    });
-
-    it('should return the same address if it is BCH but use useLegacyAddress', () => {
-      const newOpts = {
-        wallet: {
-          useLegacyAddress: true
-        }
-      };
-      configProvider.set(newOpts);
-
-      const address = walletProvider.getAddressView(
-        'bch',
-        'livenet',
-        'CHp9UweEZXoFZ9sVDmT9ESS6zGysNeAn4j'
-      );
-      expect(address).toEqual('CHp9UweEZXoFZ9sVDmT9ESS6zGysNeAn4j');
     });
   });
 
@@ -376,7 +351,7 @@ describe('Provider: Wallet Provider', () => {
     });
     it('should return main address if gap reached', () => {
       const wallet: WalletMock = new WalletMock();
-      wallet.createAddress = ({}, cb) => {
+      wallet.createAddress = ({ }, cb) => {
         return cb(new Error('MAIN_ADDRESS_GAP_REACHED'));
       };
       const force = true;

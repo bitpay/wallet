@@ -177,7 +177,7 @@
     "angular2-moment": "1.7.1",
     "base64-js": "1.3.0",
     "bitauth": "git+https://github.com/bitpay/bitauth.git#copay",
-    "bitcore-wallet-client": "8.2.0",
+    "bitcore-wallet-client": "8.3.0",
     "buffer-compare": "1.1.1",
     "cordova": "8.1.2",
     "cordova-android": "7.1.2",

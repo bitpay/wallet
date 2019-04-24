@@ -51,7 +51,7 @@ export class TxDetailsPage {
     private txFormatProvider: TxFormatProvider,
     private walletProvider: WalletProvider,
     private translate: TranslateService
-  ) {}
+  ) { }
 
   ionViewDidLoad() {
     this.config = this.configProvider.get();
@@ -191,8 +191,7 @@ export class TxDetailsPage {
 
         this.btx = this.txFormatProvider.processTx(
           this.wallet.coin,
-          tx,
-          this.walletProvider.useLegacyAddress()
+          tx
         );
         this.btx.feeFiatStr = this.txFormatProvider.formatAlternativeStr(
           this.wallet.coin,
