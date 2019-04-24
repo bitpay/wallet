@@ -34,7 +34,9 @@ export class WalletExtendedPrivateKeyPage {
   }
 
   ionViewWillEnter() {
-    this.wallet = this.profileProvider.getWallet(this.navParams.data.walletId);
+    this.wallet = this.profileProvider.getWallet(
+      this.navParams.data.walletGroupId
+    );
     this.credentialsEncrypted = this.wallet.isPrivKeyEncrypted();
   }
 

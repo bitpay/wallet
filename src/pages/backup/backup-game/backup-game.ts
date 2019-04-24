@@ -29,8 +29,6 @@ export class BackupGamePage {
   @ViewChild(Navbar)
   navBar: Navbar;
 
-  private walletGroup;
-
   public mnemonicWords: string[];
   public shuffledMnemonicWords;
   public password: string;
@@ -41,7 +39,7 @@ export class BackupGamePage {
   public wallet;
   public keys;
 
-  private walletId: string;
+  private walletGroupId: string;
 
   constructor(
     private modalCtrl: ModalController,
@@ -56,9 +54,8 @@ export class BackupGamePage {
   ) {
     this.mnemonicWords = this.navParams.data.words;
     this.keys = this.navParams.data.keys;
-    this.walletId = this.navParams.data.walletId;
-    this.wallet = this.profileProvider.getWallet(this.walletId);
-    this.walletGroup = this.profileProvider.getWalletGroup(this.walletId);
+    this.walletGroupId = this.navParams.data.walletGroupId;
+    this.wallet = this.profileProvider.getWallet(this.walletGroupId);
     this.setFlow();
   }
 
@@ -177,13 +174,17 @@ export class BackupGamePage {
       }
 
       const groupWallets = await this.profileProvider.getGroupWallets(
-        this.walletId
+        this.walletGroupId
       );
       groupWallets.forEach(wallet => {
         this.profileProvider.setBackupFlag(wallet.credentials.walletId);
       });
-      this.walletGroup.needsBackup = false;
-      this.profileProvider.storeWalletGroup(this.walletGroup);
+
+      const walletGroup = await this.profileProvider.getWalletGroup(
+        this.walletGroupId
+      );
+      walletGroup.needsBackup = false;
+      this.profileProvider.storeWalletGroup(walletGroup);
 
       return resolve();
     });

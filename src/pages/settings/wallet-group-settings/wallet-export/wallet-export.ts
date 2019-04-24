@@ -18,14 +18,13 @@ import { PersistenceProvider } from '../../../../providers/persistence/persisten
 import { PlatformProvider } from '../../../../providers/platform/platform';
 import { ProfileProvider } from '../../../../providers/profile/profile';
 import { WalletProvider } from '../../../../providers/wallet/wallet';
-import { WalletTabsChild } from '../../../wallet-tabs/wallet-tabs-child';
 import { WalletTabsProvider } from '../../../wallet-tabs/wallet-tabs.provider';
 
 @Component({
   selector: 'page-wallet-export',
   templateUrl: 'wallet-export.html'
 })
-export class WalletExportPage extends WalletTabsChild {
+export class WalletExportPage {
   public wallet;
   public segments: string = 'file/text';
   public password: string = '';
@@ -63,7 +62,6 @@ export class WalletExportPage extends WalletTabsChild {
     private configProvider: ConfigProvider,
     private bwcErrorProvider: BwcErrorProvider
   ) {
-    super(navCtrl, profileProvider, walletTabsProvider);
     this.exportWalletForm = this.formBuilder.group(
       {
         password: ['', Validators.required],
@@ -79,7 +77,9 @@ export class WalletExportPage extends WalletTabsChild {
   }
 
   ionViewWillEnter() {
-    this.wallet = this.profileProvider.getWallet(this.navParams.data.walletId);
+    this.wallet = this.profileProvider.getWallet(
+      this.navParams.data.walletGroupId
+    );
     this.isEncrypted = this.wallet.isPrivKeyEncrypted();
     this.canSign = this.wallet.canSign();
     this.isCordova = this.platformProvider.isCordova;
@@ -192,7 +192,7 @@ export class WalletExportPage extends WalletTabsChild {
                 this.navParams.data.walletId
               )
               .then(() => {
-                this.close();
+                this.navCtrl.pop();
               })
               .catch(() => {
                 this.showErrorInfoSheet();
