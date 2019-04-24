@@ -280,7 +280,7 @@ export class ConfirmPage extends WalletTabsChild {
         onlyComplete: true,
         hasFunds: true,
         network,
-        coin,
+        coin
       });
 
       if (!this.wallets || !this.wallets.length) {
@@ -291,7 +291,7 @@ export class ConfirmPage extends WalletTabsChild {
         // no balance yet?
         if (_.isEmpty(w.cachedStatus)) return true;
 
-        return w.cachedStatus.availableBalanceSat  > minAmount;
+        return w.cachedStatus.availableBalanceSat > minAmount;
       });
 
       if (_.isEmpty(filteredWallets)) {

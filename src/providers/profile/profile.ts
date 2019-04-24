@@ -1422,7 +1422,7 @@ export class ProfileProvider {
         x.lastKnownBalanceUpdatedOn = updatedOn < limit ? updatedOn : null;
       });
     });
-  };
+  }
 
   public getWallets(opts?) {
     if (opts && !_.isObject(opts)) throw new Error('bad argument');
@@ -1455,16 +1455,14 @@ export class ProfileProvider {
       });
     }
 
-
     if (opts.onlyComplete) {
       ret = _.filter(ret, w => {
         return w.isComplete();
       });
     }
- 
+
     if (opts.minAmount) {
       ret = _.filter(ret, w => {
-
         // IF no cached Status => return true!
         if (_.isEmpty(w.cachedStatus)) return true;
 
@@ -1474,7 +1472,6 @@ export class ProfileProvider {
 
     if (opts.hasFunds) {
       ret = _.filter(ret, w => {
-
         // IF no cached Status => return true!
         if (_.isEmpty(w.cachedStatus)) return true;
 

@@ -172,7 +172,6 @@ export class HomePage {
   ionViewDidLoad() {
     this.logger.info('Loaded: HomePage');
 
-
     this.checkFeedbackInfo();
 
     this.checkEmailLawCompliance();
@@ -289,7 +288,6 @@ export class HomePage {
   );
 
   private setWallets = (shouldUpdate: boolean = false) => {
-
     // TEST
     /* 
     setTimeout(() => {
