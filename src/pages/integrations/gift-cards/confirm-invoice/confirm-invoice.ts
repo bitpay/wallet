@@ -366,10 +366,6 @@ export class ConfirmInvoicePage extends ConfirmCardPurchasePage {
     );
   }
 
-  public openExternalLink(url: string) {
-    this.externalLinkProvider.open(url);
-  }
-
   public openPrivacyPolicy() {
     const url = 'https://bitpay.com/about/privacy';
     const optIn = true;
