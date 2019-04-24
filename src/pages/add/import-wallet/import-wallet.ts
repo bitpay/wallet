@@ -239,10 +239,10 @@ export class ImportWalletPage {
     this.onGoingProcessProvider.set('importingWallet');
     setTimeout(() => {
       this.profileProvider
-        .importExtendedPrivateKey(xPrivKey, opts)
-        .then(wallet => {
+        .importWalletGroupExtendedPrivateKey(xPrivKey, opts)
+        .then(wallets => {
           this.onGoingProcessProvider.clear();
-          this.finish(wallet);
+          this.finish(wallets);
         })
         .catch(err => {
           if (err instanceof this.errors.NOT_AUTHORIZED) {
