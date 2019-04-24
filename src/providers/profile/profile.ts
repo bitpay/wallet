@@ -10,7 +10,6 @@ import { AppProvider } from '../app/app';
 import { BwcErrorProvider } from '../bwc-error/bwc-error';
 import { BwcProvider } from '../bwc/bwc';
 import { ConfigProvider } from '../config/config';
-import { DerivationPathHelperProvider } from '../derivation-path-helper/derivation-path-helper';
 import { LanguageProvider } from '../language/language';
 import { Logger } from '../logger/logger';
 import { OnGoingProcessProvider } from '../on-going-process/on-going-process';
@@ -19,7 +18,7 @@ import { PlatformProvider } from '../platform/platform';
 import { PopupProvider } from '../popup/popup';
 import { ReplaceParametersProvider } from '../replace-parameters/replace-parameters';
 import { TxFormatProvider } from '../tx-format/tx-format';
-import { Coin, WalletOptions, WalletProvider } from '../wallet/wallet';
+import { WalletProvider } from '../wallet/wallet';
 
 // models
 import { Profile } from '../../models/profile/profile.model';
@@ -34,7 +33,6 @@ export class ProfileProvider {
   private throttledBwsEvent;
   private validationLock: boolean = false;
   private errors = this.bwcProvider.getErrors();
-  private availableCoins: Array<{ coin: Coin; derivationPath: string }>;
 
   constructor(
     private logger: Logger,
@@ -51,32 +49,12 @@ export class ProfileProvider {
     private onGoingProcessProvider: OnGoingProcessProvider,
     private translate: TranslateService,
     private walletProvider: WalletProvider,
-    private derivationPathHelperProvider: DerivationPathHelperProvider,
     private txFormatProvider: TxFormatProvider,
     private actionSheetProvider: ActionSheetProvider
   ) {
     this.throttledBwsEvent = _.throttle((n, wallet) => {
       this.newBwsEvent(n, wallet);
     }, 10000);
-
-    this.availableCoins = [
-      {
-        coin: Coin.BTC,
-        derivationPath: this.derivationPathHelperProvider.defaultBTC
-      },
-      {
-        coin: Coin.BCH,
-        derivationPath: this.derivationPathHelperProvider.defaultBCH
-      },
-      {
-        coin: Coin.BTC,
-        derivationPath: this.derivationPathHelperProvider.defaultTestnet
-      },
-      {
-        coin: Coin.BCH,
-        derivationPath: this.derivationPathHelperProvider.defaultTestnet
-      }
-    ]
   }
 
   private updateWalletFromConfig(wallet): void {
@@ -437,7 +415,19 @@ export class ProfileProvider {
     }
   }
 
-  public async importWallet(str: string, opts): Promise<any> {
+  public importWalletGroupFile(str: string, opts): Promise<any> {
+    return this.importWalletFile(str, _.clone(opts)).then(
+      async walletClients => {
+        walletClients = [].concat(walletClients); // TODO remove concat - BWC should return and array always
+        await this.storeInWalletGroup(walletClients, null, false);
+        return this.addAndBindWalletClients(walletClients, {
+          bwsurl: opts.bwsurl
+        });
+      }
+    );
+  }
+
+  public async importWalletFile(str: string, opts): Promise<any> {
     this.logger.info('Importing Wallet:', opts);
     const walletClient = this.bwcProvider.getClient(null, opts);
 
@@ -471,54 +461,25 @@ export class ProfileProvider {
         'Backup format not recognized. If you are using a Copay Beta backup and version is older than 0.10, please see: https://github.com/bitpay/copay/issues/4730#issuecomment-244522614'
       );
     }
-
     const addressBook = strParsed.addressBook ? strParsed.addressBook : {};
 
-    await this.storeInWalletGroup([].concat(walletClient), null, false);
-    return this.addAndBindWalletClient(walletClient, {
-      bwsurl: opts.bwsurl
-    }).then(() => {
-      this.events.publish('Local/WalletListChange');
-      this.setMetaData(walletClient, addressBook)
-        .then(() => {
-          return Promise.resolve(walletClient);
-        })
-        .catch(err => {
-          this.logger.warn('Could not set meta data: ', err);
-          return Promise.reject(err);
-        });
+    this.setMetaData(walletClient, addressBook).catch(err => {
+      this.logger.warn('Could not set meta data: ', err);
     });
+
+    return Promise.resolve(walletClient);
   }
 
-  public importWalletGroup(words, opts): Promise<any> {
-    const options: Partial<WalletOptions> = opts || {};
-    const promises = [];
-
-    this.availableCoins.forEach(availableCoin => {
-      const derivationPath = availableCoin.derivationPath;
-
-      opts.networkName = this.derivationPathHelperProvider.getNetworkName(
-        derivationPath
-      );
-      opts.derivationStrategy = this.derivationPathHelperProvider.getDerivationStrategy(
-        derivationPath
-      );
-      opts.account = this.derivationPathHelperProvider.getAccount(
-        derivationPath
-      );
-
-      opts.coin = availableCoin.coin;
-      promises.push(
-        this.importMnemonic(words, _.clone(opts), true) // ignore "no copayer found" error
-      );
-    });
-    return Promise.all(promises).then(async walletClients => {
-      walletClients = _.compact(walletClients);
-      await this.storeInWalletGroup(walletClients, null, false);
-      return this.addAndBindWalletClients(walletClients, {
-        bwsurl: options.bwsurl
-      });
-    });
+  public importWalletGroupMnemonic(words, opts): Promise<any> {
+    return this.importMnemonic(words, _.clone(opts)).then(
+      async walletClients => {
+        walletClients = [].concat(walletClients); // TODO remove concat - BWC should return and array always
+        await this.storeInWalletGroup(walletClients, null, false);
+        return this.addAndBindWalletClients(walletClients, {
+          bwsurl: opts.bwsurl
+        });
+      }
+    );
   }
 
   // An alert dialog
@@ -745,54 +706,33 @@ export class ProfileProvider {
     xPrivKey: string,
     opts
   ): Promise<any> {
-    const options: Partial<WalletOptions> = opts || {};
-    const promises = [];
-
-    this.availableCoins.forEach(availableCoin => {
-      const derivationPath = availableCoin.derivationPath;
-
-      opts.networkName = this.derivationPathHelperProvider.getNetworkName(
-        derivationPath
-      );
-      opts.derivationStrategy = this.derivationPathHelperProvider.getDerivationStrategy(
-        derivationPath
-      );
-      opts.account = this.derivationPathHelperProvider.getAccount(
-        derivationPath
-      );
-
-      opts.coin = availableCoin.coin;
-      promises.push(
-        this.importExtendedPrivateKey(xPrivKey, _.clone(opts), true) // ignore "no copayer found" error
-      );
-    });
-    return Promise.all(promises).then(async walletClients => {
-      walletClients = _.compact(walletClients);
-      await this.storeInWalletGroup(walletClients, null, false);
-      return this.addAndBindWalletClients(walletClients, {
-        bwsurl: options.bwsurl
-      });
-    });
+    return this.importExtendedPrivateKey(xPrivKey, _.clone(opts)).then(
+      async walletClients => {
+        walletClients = [].concat(walletClients); // TODO remove concat - BWC should return and array always
+        await this.storeInWalletGroup(walletClients, null, false);
+        return this.addAndBindWalletClients(walletClients, {
+          bwsurl: opts.bwsurl
+        });
+      }
+    );
   }
 
-  private importExtendedPrivateKey(
-    xPrivKey: string,
-    opts,
-    ignoreError?: boolean
-  ): Promise<any> {
+  private importExtendedPrivateKey(xPrivKey: string, opts): Promise<any> {
     return new Promise((resolve, reject) => {
       this.logger.info('Importing Wallet xPrivKey');
       const walletClient = this.bwcProvider.getClient(null, opts);
+
+      // TODO remove this
+      opts.networkName = 'testnet';
+      opts.account = 0;
+      opts.coin = 'btc';
+      opts.derivationStrategy = 'BIP44';
 
       walletClient.importFromExtendedPrivateKey(xPrivKey, opts, async err => {
         if (err) {
 
           if (err instanceof this.errors.NOT_AUTHORIZED) {
-            if (ignoreError) {
-              return resolve();
-            } else {
-              return reject(err);
-            }
+            return reject(err);
           }
           const msg = this.bwcErrorProvider.msg(
             err,
@@ -819,33 +759,26 @@ export class ProfileProvider {
     return wordList.join(isJA ? '\u3000' : ' ');
   }
 
-  public importMnemonic(
-    words: string,
-    opts,
-    ignoreError?: boolean
-  ): Promise<any> {
+  public importMnemonic(words: string, opts): Promise<any> {
     return new Promise<any>((resolve, reject) => {
       this.logger.info('Importing Wallet Mnemonic');
       const walletClient = this.bwcProvider.getClient(null, opts);
 
       words = this.normalizeMnemonic(words);
       opts = {
-        network: opts.networkName,
-        passphrase: opts.passphrase,
-        entropySourcePath: opts.entropySourcePath,
-        derivationStrategy: opts.derivationStrategy || 'BIP44',
-        account: opts.account || 0,
-        coin: opts.coin
+        passphrase: opts.passphrase
       };
+
+      // TODO remove this
+      opts.networkName = 'testnet';
+      opts.account = 0;
+      opts.coin = 'btc';
+      opts.derivationStrategy = 'BIP44';
 
       walletClient.importFromMnemonic(words, opts, err => {
         if (err) {
           if (err instanceof this.errors.NOT_AUTHORIZED) {
-            if (ignoreError) {
-              return resolve();
-            } else {
-              return reject(err);
-            }
+            return reject(err);
           }
           const msg = this.bwcErrorProvider.msg(
             err,
