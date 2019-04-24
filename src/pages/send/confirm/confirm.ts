@@ -208,7 +208,7 @@ export class ConfirmPage extends WalletTabsChild {
       // Use legacy address
       this.tx.toAddress = this.bitcoreCash
         .Address(this.tx.toAddress)
-        .toString();
+        .toString(true);
     }
 
     this.getAmountDetails();
@@ -655,7 +655,7 @@ export class ConfirmPage extends WalletTabsChild {
             // Use legacy address
             recipient.toAddress = this.bitcoreCash
               .Address(recipient.toAddress)
-              .toString();
+              .toString(true);
 
             recipient.addressToShow = this.walletProvider.getAddressView(
               tx.coin,

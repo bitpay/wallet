@@ -49,6 +49,9 @@ describe('Provider: Wallet Provider', () => {
     clearLastAddress(_walletId: string) {
       return Promise.resolve();
     }
+    getTxHistory(_walletId: string) {
+      return Promise.resolve(txsFromLocal);
+    }
   }
 
   beforeEach(() => {
@@ -337,7 +340,7 @@ describe('Provider: Wallet Provider', () => {
 
       const force = true;
       walletProvider.getAddress(wallet, force).then(address => {
-        expect(address).toEqual('address2');
+        expect(address).toEqual('1CVuVALD6Zo7ms24n3iUXv162kvUzsHr69');
       });
     });
 
@@ -522,8 +525,7 @@ describe('Provider: Wallet Provider', () => {
       walletProvider
         .fetchTxHistory(wallet, progressFn, opts)
         .then(txHistory => {
-          expect(txHistory.isValid).toBeTruthy();
-          delete txHistory.isValid;
+          expect(wallet.completeHistoryIsValid).toBeTruthy();
           expect(txHistory).toEqual(expectedTxHistory);
         });
     });
