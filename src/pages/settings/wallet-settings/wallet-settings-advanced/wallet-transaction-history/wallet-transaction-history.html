@@ -5,7 +5,7 @@
 </ion-header>
 <ion-content>
   <ion-list class="settings-list">
-    <button ion-item (click)="downloadCSV()" [disabled]="!csvReady">
+    <button ion-item (click)="downloadCSV()" *ngIf="!isCordova" [disabled]="!csvReady">
       <ion-label *ngIf="csvReady">{{'Export to file' | translate}}</ion-label>
       <ion-label *ngIf="!csvReady && !err">
         {{'preparing...' | translate}}
