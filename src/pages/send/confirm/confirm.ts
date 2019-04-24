@@ -278,15 +278,20 @@ export class ConfirmPage extends WalletTabsChild {
 
       this.wallets = this.profileProvider.getWallets({
         onlyComplete: true,
+        hasFunds: true,
         network,
-        coin
+        coin,
       });
 
       if (!this.wallets || !this.wallets.length) {
         return reject(this.translate.instant('No wallets available'));
       }
+
       const filteredWallets = _.filter(this.wallets, w => {
-        return w.cachedStatus.availableBalanceSat > minAmount;
+        // no balance yet?
+        if (_.isEmpty(w.cachedStatus)) return true;
+
+        return w.cachedStatus.availableBalanceSat  > minAmount;
       });
 
       if (_.isEmpty(filteredWallets)) {
