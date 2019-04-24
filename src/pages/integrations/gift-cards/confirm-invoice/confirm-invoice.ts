@@ -52,7 +52,11 @@ export class ConfirmInvoicePage extends ConfirmCardPurchasePage {
   public email: string;
   public parsedAmount: any;
   public invoiceFeeSat: any;
+  public networkFeeSat: any;
+  public subTotalAmountStr: string;
   public coinAmount: number;
+  public merchantProvidedEmail?: string;
+  public buyerProvidedEmail?: string;
   constructor(
     actionSheetProvider: ActionSheetProvider,
     bwcErrorProvider: BwcErrorProvider,
@@ -121,9 +125,15 @@ export class ConfirmInvoicePage extends ConfirmCardPurchasePage {
     this.invoiceId = this.navParams.data.invoiceId;
     this.amount = this.invoiceData.price || 1;
     this.currency = this.invoiceData.currency || 'USD';
-    this.onlyIntegers = false;
-    const { emailAddress } = this.invoiceData.buyerProvidedInfo;
-    this.email = await this.getEmail(emailAddress);
+    this.onlyIntegers = this.invoiceData.currency === 'JPY';
+    this.merchantProvidedEmail = this.navParams.data.email;
+    let { emailAddress } = this.invoiceData.buyerProvidedInfo;
+    this.buyerProvidedEmail = emailAddress;
+    this.email = this.merchantProvidedEmail
+      ? this.merchantProvidedEmail
+      : this.buyerProvidedEmail
+      ? this.buyerProvidedEmail
+      : await this.getEmail();
   }
 
   ionViewDidLoad() {
@@ -175,14 +185,13 @@ export class ConfirmInvoicePage extends ConfirmCardPurchasePage {
     });
   }
 
-  private async getEmail(emailAddress?: string) {
+  private async getEmail() {
     const email = await this.invoiceProvider.getUserEmail();
-    if (emailAddress) {
-      if (!email) this.invoiceProvider.storeEmail(emailAddress);
-      return Promise.resolve(emailAddress);
+    if (email) {
+      return Promise.resolve(email);
+    } else {
+      return Promise.resolve('');
     }
-    if (email) return Promise.resolve(email);
-    return '';
   }
 
   public async initialize(wallet) {
@@ -214,12 +223,13 @@ export class ConfirmInvoicePage extends ConfirmCardPurchasePage {
       this.translate.instant(`{{amountUnitStr}} ${this.invoiceName}`),
       { amountUnitStr: this.amountUnitStr }
     );
-
-    const fee = await this.feeProvider.getCurrentFeeRate(
-      this.wallet.coin,
-      this.network
-    );
     this.onGoingProcessProvider.clear();
+
+    this.networkFeeSat = this.invoiceData.minerFees[COIN].satoshisPerByte;
+    this.subTotalAmountStr = this.txFormatProvider.formatAmountStr(
+      this.wallet.coin,
+      this.invoiceData.paymentSubtotals[COIN]
+    );
     this.totalAmountStr = this.txFormatProvider.formatAmountStr(
       this.wallet.coin,
       this.invoiceData.paymentTotals[COIN]
@@ -229,13 +239,13 @@ export class ConfirmInvoicePage extends ConfirmCardPurchasePage {
     );
     this.checkFeeHigh(
       Number(this.parsedAmount.amountSat),
-      Number(this.invoiceFeeSat) + Number(fee)
+      Number(this.invoiceFeeSat) + Number(this.networkFeeSat)
     );
     this.setTotalAmount(
       this.wallet,
       this.parsedAmount.amountSat,
       this.invoiceFeeSat,
-      fee
+      this.networkFeeSat
     );
   }
 
@@ -304,10 +314,7 @@ export class ConfirmInvoicePage extends ConfirmCardPurchasePage {
 
   public async buyConfirm() {
     this.hideSlideButton = true;
-    const {
-      selectedTransactionCurrency,
-      emailAddress
-    } = this.invoiceData.buyerProvidedInfo;
+    const { selectedTransactionCurrency } = this.invoiceData.buyerProvidedInfo;
 
     if (!selectedTransactionCurrency) {
       await this.invoiceProvider
@@ -321,15 +328,15 @@ export class ConfirmInvoicePage extends ConfirmCardPurchasePage {
         });
     }
 
-    if (!emailAddress) {
+    if (!(this.buyerProvidedEmail && this.merchantProvidedEmail)) {
       await this.invoiceProvider
         .setBuyerProvidedEmail(this.email, this.invoiceId)
         .catch(err => {
           this.onGoingProcessProvider.clear();
           throw this.showErrorInfoSheet(err.message, err.title, false);
         });
-      this.invoiceProvider.storeEmail(this.email);
     }
+    this.invoiceProvider.storeEmail(this.email);
     const ctxp = await this.createTx(
       this.wallet,
       this.invoiceData,

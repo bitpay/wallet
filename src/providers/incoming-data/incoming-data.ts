@@ -194,11 +194,12 @@ export class IncomingDataProvider {
       .catch(err => {
         throw this.logger.error(err.message);
       });
-    const { invoice, org } = invoiceResponse;
+    const { invoice, org, buyer } = invoiceResponse;
     const stateParams = {
       invoiceData: invoice,
       invoiceId,
-      invoiceName: org.name
+      invoiceName: org.name,
+      email: buyer ? buyer.email : null
     };
     let nextView = {
       name: 'ConfirmInvoicePage',

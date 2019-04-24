@@ -896,7 +896,8 @@ export class ConfirmPage extends WalletTabsChild {
     this.clipboardProvider.clearClipboardIfValidData([
       'PayPro',
       'BitcoinUri',
-      'BitcoinCashUri'
+      'BitcoinCashUri',
+      'InvoiceUri'
     ]);
 
     if (this.isWithinWalletTabs()) {

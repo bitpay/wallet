@@ -89,6 +89,9 @@
             [(ngModel)]="email"
             name="email"
             type="email"
+            [disabled]="
+              !!(this.buyerProvidedEmail || this.merchantProvidedEmail)
+            "
           ></ion-input>
         </ion-item>
       </div>
@@ -111,7 +114,7 @@
           <ion-note item-end>
             <span *ngIf="onlyIntegers">{{ amount | number: '1.0-0' }}</span>
             <span *ngIf="!onlyIntegers">{{ amount | number: '1.2-2' }}</span>
-            {{ currencyIsoCode }}
+            {{ currencyIsoCode }} <span>({{ subTotalAmountStr }} )</span>
           </ion-note>
         </ion-item>
         <ion-item>
@@ -122,6 +125,7 @@
               invoiceFee | number: '1.2-2'
             }}</span>
             {{ currencyIsoCode }}
+            <span>({{ invoiceFeeSat | satToUnit: wallet.coin }} )</span>
           </ion-note>
         </ion-item>
         <ion-item>
@@ -132,6 +136,7 @@
               networkFee | number: '1.2-2'
             }}</span>
             {{ currencyIsoCode }}
+            <span>({{ networkFeeSat | satToUnit: wallet.coin }} )</span>
           </ion-note>
         </ion-item>
         <ion-item>
