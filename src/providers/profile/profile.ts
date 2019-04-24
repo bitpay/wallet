@@ -741,30 +741,66 @@ export class ProfileProvider {
     });
   }
 
-  public importExtendedPrivateKey(xPrivKey: string, opts): Promise<any> {
+  public importWalletGroupExtendedPrivateKey(
+    xPrivKey: string,
+    opts
+  ): Promise<any> {
+    const options: Partial<WalletOptions> = opts || {};
+    const promises = [];
+
+    this.availableCoins.forEach(availableCoin => {
+      const derivationPath = availableCoin.derivationPath;
+
+      opts.networkName = this.derivationPathHelperProvider.getNetworkName(
+        derivationPath
+      );
+      opts.derivationStrategy = this.derivationPathHelperProvider.getDerivationStrategy(
+        derivationPath
+      );
+      opts.account = this.derivationPathHelperProvider.getAccount(
+        derivationPath
+      );
+
+      opts.coin = availableCoin.coin;
+      promises.push(
+        this.importExtendedPrivateKey(xPrivKey, _.clone(opts), true) // ignore "no copayer found" error
+      );
+    });
+    return Promise.all(promises).then(async walletClients => {
+      walletClients = _.compact(walletClients);
+      await this.storeInWalletGroup(walletClients, null, false);
+      return this.addAndBindWalletClients(walletClients, {
+        bwsurl: options.bwsurl
+      });
+    });
+  }
+
+  private importExtendedPrivateKey(
+    xPrivKey: string,
+    opts,
+    ignoreError?: boolean
+  ): Promise<any> {
     return new Promise((resolve, reject) => {
       this.logger.info('Importing Wallet xPrivKey');
       const walletClient = this.bwcProvider.getClient(null, opts);
 
       walletClient.importFromExtendedPrivateKey(xPrivKey, opts, async err => {
         if (err) {
-          if (err instanceof this.errors.NOT_AUTHORIZED) return reject(err);
+
+          if (err instanceof this.errors.NOT_AUTHORIZED) {
+            if (ignoreError) {
+              return resolve();
+            } else {
+              return reject(err);
+            }
+          }
           const msg = this.bwcErrorProvider.msg(
             err,
             this.translate.instant('Could not import')
           );
           return reject(msg);
         } else {
-          await this.storeInWalletGroup([].concat(walletClient), null, false);
-          this.addAndBindWalletClient(walletClient, {
-            bwsurl: opts.bwsurl
-          })
-            .then(wallet => {
-              return resolve(wallet);
-            })
-            .catch(err => {
-              return reject(err);
-            });
+          return resolve(walletClient);
         }
       });
     });

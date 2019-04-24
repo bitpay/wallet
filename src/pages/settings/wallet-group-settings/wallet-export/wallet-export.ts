@@ -193,7 +193,7 @@ export class WalletExportPage {
               .walletDownload(
                 this.exportWalletForm.value.password,
                 opts,
-                this.navParams.data.walletId
+                this.navParams.data.walletGroupId
               )
               .then(() => {
                 this.navCtrl.pop();
@@ -254,7 +254,7 @@ export class WalletExportPage {
               const ew = this.backupProvider.walletExport(
                 this.exportWalletForm.value.password,
                 opts,
-                this.navParams.data.walletId
+                this.navParams.data.walletGroupId
               );
               if (!ew) {
                 this.showErrorInfoSheet();
@@ -308,12 +308,13 @@ export class WalletExportPage {
     });
     showSuccess.present();
     let name =
-      this.wallet.credentials.walletName || this.wallet.credentials.walletId;
+      this.wallet.credentials.walletName ||
+      this.wallet.credentials.walletGroupId;
 
     const config = this.configProvider.get();
 
     const alias =
-      config.aliasFor && config.aliasFor[this.wallet.credentials.walletId];
+      config.aliasFor && config.aliasFor[this.wallet.credentials.walletGroupId];
 
     if (alias) {
       name = alias + ' [' + name + ']';
