@@ -82,10 +82,7 @@ export class TxpDetailsPage {
     this.wallet = this.tx.wallet
       ? this.tx.wallet
       : this.profileProvider.getWallet(this.tx.walletId);
-    this.tx = this.txFormatProvider.processTx(
-      this.wallet.coin,
-      this.tx
-    );
+    this.tx = this.txFormatProvider.processTx(this.wallet.coin, this.tx);
     if (!this.tx.toAddress) this.tx.toAddress = this.tx.outputs[0].toAddress;
     this.currentSpendUnconfirmed = config.spendUnconfirmed;
     this.loading = false;
@@ -388,10 +385,7 @@ export class TxpDetailsPage {
           copayerId: this.wallet.credentials.copayerId
         });
 
-        this.tx = this.txFormatProvider.processTx(
-          this.wallet.coin,
-          tx
-        );
+        this.tx = this.txFormatProvider.processTx(this.wallet.coin, tx);
 
         if (!action && tx.status == 'pending') this.tx.pendingForUs = true;
 

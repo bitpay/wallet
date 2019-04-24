@@ -11,7 +11,7 @@ import { ConfigProvider } from '../../../providers/config/config';
 export class AdvancedPage {
   public spendUnconfirmed: boolean;
 
-  constructor(private configProvider: ConfigProvider, private logger: Logger) { }
+  constructor(private configProvider: ConfigProvider, private logger: Logger) {}
 
   ionViewDidLoad() {
     this.logger.info('Loaded: AdvancedPage');

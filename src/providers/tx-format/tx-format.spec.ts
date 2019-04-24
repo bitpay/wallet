@@ -14,7 +14,7 @@ describe('TxFormatProvider', () => {
   let txFormatProvider: TxFormatProvider;
 
   class PersistenceProviderMock {
-    constructor() { }
+    constructor() {}
     storeConfig() {
       return Promise.resolve('');
     }

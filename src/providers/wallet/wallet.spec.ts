@@ -27,7 +27,7 @@ describe('Provider: Wallet Provider', () => {
   let walletProvider: WalletProvider;
 
   class PersistenceProviderMock {
-    constructor() { }
+    constructor() {}
     getLastAddress() {
       return Promise.resolve('storedAddress');
     }
@@ -351,7 +351,7 @@ describe('Provider: Wallet Provider', () => {
     });
     it('should return main address if gap reached', () => {
       const wallet: WalletMock = new WalletMock();
-      wallet.createAddress = ({ }, cb) => {
+      wallet.createAddress = ({}, cb) => {
         return cb(new Error('MAIN_ADDRESS_GAP_REACHED'));
       };
       const force = true;
