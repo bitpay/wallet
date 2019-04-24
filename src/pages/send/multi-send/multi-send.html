@@ -55,14 +55,21 @@
                 <img *ngIf="item.recipient.coin == 'btc' && item.recipient.network == 'testnet'" src="assets/img/bitcoin-testnet-transparent.svg" class="icon-coin" />
                 <img *ngIf="item.recipient.coin == 'bch' && item.recipient.network == 'testnet'" src="assets/img/bitcoincash-testnet-transparent.svg" class="icon-coin" />
               </ion-icon>
-              <span class="name">{{item.recipient.name}}</span> - Account #{{item.recipient.account}}
+              <div class="name">
+                <div class="item-title">
+                  {{item.recipient.name}}
+                </div>
+                <div class="item-subtitle">
+                  Account #{{item.recipient.account}}
+                </div>
+              </div>
             </div>
 
             <div class="wallet" *ngIf="item.recipientType == 'contact' && item.recipient">
               <ion-icon class="item-gravatar" item-left>
                 <gravatar [name]="item.recipient.name" [height]="35" [width]="35" [email]="item.recipient.email"></gravatar>
               </ion-icon>
-              <span class="name">{{item.recipient.name}}</span> - Account #{{item.recipient.account}}
+              <span class="name">{{item.recipient.name}}</span>
             </div>
 
             <div class="wallet" *ngIf="item.recipientType == 'address'">
