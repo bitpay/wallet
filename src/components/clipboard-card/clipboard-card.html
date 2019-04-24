@@ -9,10 +9,13 @@
     {{payProDetailsData?.host}}
   </div>
   <ion-note *ngIf="payProDetailsData && !payProDetailsData.error" item-right>
-    <div class="amount">
+    <div *ngIf="!payProDetailsData?.isFiat" class="amount">
       {{payProDetailsData?.amount | satToUnit: payProDetailsData?.coin}}
     </div>
-    <span class="date">{{ remainingTimeStr }}</span>
+    <div *ngIf="payProDetailsData?.isFiat" class="amount">
+        {{payProDetailsData?.amount | formatCurrency: payProDetailsData?.coin}} {{payProDetailsData?.coin}}
+      </div>
+    <span [ngStyle]="remainingTimeStr === 'Expired' ? { color: 'red' } : {}" class="date">{{ remainingTimeStr }}</span>
   </ion-note>
   <div *ngIf="payProDetailsData && payProDetailsData.error" class="item-title">
     {{payProDetailsData?.error}}

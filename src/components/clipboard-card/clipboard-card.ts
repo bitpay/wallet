@@ -1,5 +1,4 @@
 import { Component, Input } from '@angular/core';
-
 @Component({
   selector: 'page-clipboard-card',
   templateUrl: 'clipboard-card.html'

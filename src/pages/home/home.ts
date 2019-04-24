@@ -362,15 +362,17 @@ export class HomePage {
             );
             const { invoice, org } = invoiceData;
             const { selectedTransactionCurrency } = invoice.buyerProvidedInfo;
-            const { expirationTime, paymentTotals } = invoice;
+            const { price, currency, expirationTime, paymentTotals } = invoice;
             this.payProDetailsData = invoice;
             this.payProDetailsData.verified = true;
+            this.payProDetailsData.isFiat = selectedTransactionCurrency || Coin[currency.toUpperCase()] ? false : true;
             this.payProDetailsData.host = org.name;
             this.payProDetailsData.coin = selectedTransactionCurrency
-              ? selectedTransactionCurrency.toLowerCase()
-              : 'btc';
-            this.payProDetailsData.amount =
-              paymentTotals[this.payProDetailsData.coin.toUpperCase()];
+              ? Coin[selectedTransactionCurrency]
+              : currency;
+            this.payProDetailsData.amount = selectedTransactionCurrency
+              ? paymentTotals[selectedTransactionCurrency]
+              : price;
             this.clearCountDownInterval();
             this.paymentTimeControl(expirationTime);
           } catch (err) {
