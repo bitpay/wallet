@@ -365,7 +365,10 @@ export class HomePage {
             const { price, currency, expirationTime, paymentTotals } = invoice;
             this.payProDetailsData = invoice;
             this.payProDetailsData.verified = true;
-            this.payProDetailsData.isFiat = selectedTransactionCurrency || Coin[currency.toUpperCase()] ? false : true;
+            this.payProDetailsData.isFiat =
+              selectedTransactionCurrency || Coin[currency.toUpperCase()]
+                ? false
+                : true;
             this.payProDetailsData.host = org.name;
             this.payProDetailsData.coin = selectedTransactionCurrency
               ? Coin[selectedTransactionCurrency]
