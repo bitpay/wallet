@@ -171,6 +171,7 @@ export class HomePage {
 
   ionViewDidLoad() {
     this.logger.info('Loaded: HomePage');
+
     this.checkFeedbackInfo();
 
     this.checkEmailLawCompliance();
@@ -287,6 +288,15 @@ export class HomePage {
   );
 
   private setWallets = (shouldUpdate: boolean = false) => {
+    // TEST
+    /* 
+    setTimeout(() => {
+      this.logger.info('##### Load BITCOIN URI TEST');
+      this.incomingDataProvider.redir('bitcoin:3KeJU7VxSKC451pPNSWjF6zK3gm2x7re7q?amount=0.0001');
+    },100);
+    */
+
+    this.profileProvider.setLastKnownBalance();
     this.wallets = this.profileProvider.getWallets();
     this.vaultWallets = this.profileProvider.getVaultWallets();
     this.walletsBtc = _.filter(this.wallets, (x: any) => {
