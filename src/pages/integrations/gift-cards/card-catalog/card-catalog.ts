@@ -18,6 +18,8 @@ export class CardCatalogPage extends WideHeaderPage {
   public visibleCards: CardConfig[];
   public cardConfigMap: { [name: string]: CardConfig };
 
+  public getHeaderFn = this.getHeader.bind(this);
+
   @ViewChild(WideHeaderPage)
   wideHeaderPage: WideHeaderPage;
 
@@ -66,7 +68,10 @@ export class CardCatalogPage extends WideHeaderPage {
       return 'Featured Brands';
     }
     const prevRecord = records[recordIndex - 1];
-    if (!record.featured && prevRecord && prevRecord.featured) {
+    if (
+      (!record.featured && prevRecord && prevRecord.featured) ||
+      (!record.featured && !prevRecord && this.searchQuery)
+    ) {
       return 'More Brands';
     }
     return null;

@@ -21,7 +21,7 @@
     <search-bar [scrollArea]="wideHeaderPage?.scrollArea" (search)="onSearch($event.target.value)"
       placeholder="Search Gift Cards"></search-bar>
     <ion-list class="settings-list" [virtualScroll]="visibleCards" [approxItemHeight]="'83px'"
-      [virtualTrackBy]="trackBy" [headerFn]="getHeader">
+      [virtualTrackBy]="trackBy" [headerFn]="getHeaderFn">
 
       <ion-item-divider *virtualHeader="let header">
         {{ header }}
