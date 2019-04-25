@@ -105,6 +105,13 @@ describe('HomePage', () => {
         await instance.checkClipboard();
         expect(instance.validDataFromClipboard).toBeNull();
       });
+      it('should render clipboard html on InvoiceUri', async () => {
+        spyOn(incomingDataProvider, 'parseData').and.returnValue({
+          type: 'InvoiceUri'
+        });
+        await instance.checkClipboard();
+        expect(instance.validDataFromClipboard.type).toEqual('InvoiceUri');
+      });
     });
   });
 });
