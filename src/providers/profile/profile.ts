@@ -1410,6 +1410,20 @@ export class ProfileProvider {
     });
   }
 
+  public setLastKnownBalance() {
+    // Add cached balance async
+    _.each(_.values(this.wallet as any), x => {
+      this.persistenceProvider.getLastKnownBalance(x.id).then(datum => {
+        // this.logger.debug("Last known balance for ",x.id,datum);
+        datum = datum || {};
+        let limit = Math.floor(Date.now() / 1000) - 2 * 60;
+        let { balance = null, updatedOn = null } = datum;
+        x.lastKnownBalance = balance;
+        x.lastKnownBalanceUpdatedOn = updatedOn < limit ? updatedOn : null;
+      });
+    });
+  }
+
   public getWallets(opts?) {
     if (opts && !_.isObject(opts)) throw new Error('bad argument');
 
@@ -1441,38 +1455,29 @@ export class ProfileProvider {
       });
     }
 
-    if (opts.hasFunds) {
-      ret = _.filter(ret, w => {
-        if (!w.cachedStatus) return undefined;
-        return w.cachedStatus.availableBalanceSat > 0;
-      });
-    }
-
-    if (opts.minAmount) {
-      ret = _.filter(ret, w => {
-        if (!w.cachedStatus) return undefined;
-        return w.cachedStatus.availableBalanceSat > opts.minAmount;
-      });
-    }
-
     if (opts.onlyComplete) {
       ret = _.filter(ret, w => {
         return w.isComplete();
       });
     }
 
-    // Add cached balance async
-    _.each(ret, x => {
-      this.persistenceProvider.getLastKnownBalance(x.id).then(datum => {
-        // this.logger.debug("Last known balance for ",x.id,datum);
-        datum = datum || {};
-        let limit = Math.floor(Date.now() / 1000) - 2 * 60;
-        let { balance = null, updatedOn = null } = datum;
-        x.lastKnownBalance = balance;
-        x.lastKnownBalanceUpdatedOn = updatedOn < limit ? updatedOn : null;
-      });
-    });
+    if (opts.minAmount) {
+      ret = _.filter(ret, w => {
+        // IF no cached Status => return true!
+        if (_.isEmpty(w.cachedStatus)) return true;
 
+        return w.cachedStatus.availableBalanceSat > opts.minAmount;
+      });
+    }
+
+    if (opts.hasFunds) {
+      ret = _.filter(ret, w => {
+        // IF no cached Status => return true!
+        if (_.isEmpty(w.cachedStatus)) return true;
+
+        return w.cachedStatus.availableBalanceSat > 0;
+      });
+    }
     return _.sortBy(ret, 'order');
   }
 
