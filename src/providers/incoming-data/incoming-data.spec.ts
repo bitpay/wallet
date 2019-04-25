@@ -161,7 +161,7 @@ describe('Provider: Incoming Data Provider', () => {
         );
       });
     });
-    it('Should handle Pay with BitPay button Invoices', () => {
+    it('Should parse valid BitPay Invoice Url', () => {
       let data = ['https://test.bitpay.com/invoice/5GREtmntcTvB9aejVDhVdm'];
       data.forEach(element => {
         expect(incomingDataProvider.redir(element)).toBe(true);
@@ -191,7 +191,7 @@ describe('Provider: Incoming Data Provider', () => {
         });
       });
     });
-    it('Should parse valid BitPay Invoice Url', () => {
+    it('Should handle Pay with BitPay button Invoices', () => {
       let data = ['https://test.bitpay.com/invoice/5GREtmntcTvB9aejVDhVdm'];
 
       data.forEach(element => {
