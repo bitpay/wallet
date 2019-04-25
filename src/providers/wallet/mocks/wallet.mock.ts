@@ -166,9 +166,8 @@ export class WalletMock {
     return cb(null, this.status);
   }
 
-  setNotificationsInterval(_x) {
-  }
- 
+  setNotificationsInterval(_x) {}
+
   getTxNote(_opts, cb) {
     return cb(null, 'Note');
   }
