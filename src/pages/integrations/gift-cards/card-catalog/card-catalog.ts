@@ -38,10 +38,14 @@ export class CardCatalogPage extends WideHeaderPage {
     this.giftCardProvider
       .getAvailableCards()
       .then(allCards => {
-        this.cardConfigMap = allCards.reduce(
-          (map, cardConfig) => ({ ...map, [cardConfig.name]: cardConfig }),
-          {}
-        );
+        this.cardConfigMap = allCards
+          .sort((a, b) => {
+            return a.featured && !b.featured ? -1 : 1;
+          })
+          .reduce(
+            (map, cardConfig) => ({ ...map, [cardConfig.name]: cardConfig }),
+            {}
+          );
         this.allCards = allCards;
         this.visibleCards = this.allCards;
         this.updateCardList();

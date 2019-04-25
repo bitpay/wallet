@@ -18,8 +18,14 @@
       </ion-toolbar>
     </expandable-header>
 
-    <search-bar [scrollArea]="wideHeaderPage?.scrollArea" (search)="onSearch($event.target.value)" placeholder="Search Gift Cards"></search-bar>
-    <ion-list class="settings-list" [virtualScroll]="visibleCards" [approxItemHeight]="'83px'" [virtualTrackBy]="trackBy">
+    <search-bar [scrollArea]="wideHeaderPage?.scrollArea" (search)="onSearch($event.target.value)"
+      placeholder="Search Gift Cards"></search-bar>
+    <ion-list class="settings-list" [virtualScroll]="visibleCards" [approxItemHeight]="'83px'"
+      [virtualTrackBy]="trackBy" [headerFn]="getHeader">
+
+      <ion-item-divider *virtualHeader="let header">
+        {{ header }}
+      </ion-item-divider>
 
       <button ion-item class="card-list-item" *virtualItem="let card" (click)="buyCard(card)">
         <ion-icon item-start>
