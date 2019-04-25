@@ -26,13 +26,7 @@ export class TxFormatProvider {
   }
 
   public toCashAddress(address: string, withPrefix?: boolean): string {
-    let cashAddr: string = this.bitcoreCash.Address(address).toString();
-
-    if (withPrefix) {
-      return cashAddr;
-    }
-
-    return cashAddr.split(':')[1]; // rm prefix
+    return this.bitcoreCash.Address(address).toString(!withPrefix);
   }
 
   public toLegacyAddress(address: string): string {

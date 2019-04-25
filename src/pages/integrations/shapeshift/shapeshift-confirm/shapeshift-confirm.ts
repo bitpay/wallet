@@ -476,7 +476,7 @@ export class ShapeshiftConfirmPage {
   private getNewAddressFormat(addr: string, coin: string): string {
     if (coin == 'btc') return addr;
     let a = this.bitcore.Address(addr).toObject();
-    return this.bitcoreCash.Address.fromObject(a).toString();
+    return this.bitcoreCash.Address.fromObject(a).toString(true);
   }
 
   private getCoinPair(): string {

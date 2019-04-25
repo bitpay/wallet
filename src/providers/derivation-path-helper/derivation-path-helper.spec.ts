@@ -9,17 +9,20 @@ describe('Derivation Path Helper Provider', () => {
 
   /* default paths */
   it('should get successfully the default derivation paths for livenet and testnet networks', () => {
-    const livenet = service.default;
+    const livenetBTC = service.defaultBTC;
+    const livenetBCH = service.defaultBCH;
     const testnet = service.defaultTestnet;
 
-    expect(livenet).toBeDefined();
-    expect(livenet).toEqual("m/44'/0'/0'");
+    expect(livenetBTC).toBeDefined();
+    expect(livenetBTC).toEqual("m/44'/0'/0'");
+    expect(livenetBCH).toBeDefined();
+    expect(livenetBCH).toEqual("m/44'/145'/0'");
     expect(testnet).toBeDefined();
     expect(testnet).toEqual("m/44'/1'/0'");
   });
 
   /* BIP44 */
-  it('should parse successfully the livenet path for BIP44 derivation strategy', () => {
+  it('should parse successfully the BTC livenet path for BIP44 derivation strategy', () => {
     const path = "m/44'/0'/0'";
     expect(service.getDerivationStrategy(path)).toEqual('BIP44');
     expect(service.getNetworkName(path)).toEqual('livenet');
@@ -34,7 +37,7 @@ describe('Derivation Path Helper Provider', () => {
   });
 
   /* BIP45 */
-  it('should parse successfully the livenet path for BIP45 derivation strategy', () => {
+  it('should parse successfully the BTC livenet path for BIP45 derivation strategy', () => {
     const path = "m/45'/0'/0'";
     expect(service.getDerivationStrategy(path)).toEqual('BIP45');
     expect(service.getNetworkName(path)).toEqual('livenet');
@@ -42,7 +45,7 @@ describe('Derivation Path Helper Provider', () => {
   });
 
   /* BIP48 */
-  it('should parse successfully the livenet path for BIP48 derivation strategy', () => {
+  it('should parse successfully the BTC livenet path for BIP48 derivation strategy', () => {
     const path = "m/48'/0'/0'";
     expect(service.getDerivationStrategy(path)).toEqual('BIP48');
     expect(service.getNetworkName(path)).toEqual('livenet');

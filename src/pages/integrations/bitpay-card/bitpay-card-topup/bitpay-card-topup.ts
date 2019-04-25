@@ -317,7 +317,6 @@ export class BitPayCardTopUpPage {
           txp['origToAddress'] = txp.toAddress;
 
           if (wallet.coin && wallet.coin == 'bch') {
-            // Use legacy address
             txp.toAddress = this.bitcoreCash
               .Address(txp.toAddress)
               .toString(true);

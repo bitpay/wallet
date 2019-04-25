@@ -82,7 +82,10 @@ export class ImportWalletPage {
     this.importErr = false;
     this.code = this.navParams.data.code;
     this.selectedTab = 'words';
-    this.derivationPathByDefault = this.derivationPathHelperProvider.default;
+    this.derivationPathByDefault =
+      this.coin == 'bch'
+        ? this.derivationPathHelperProvider.defaultBCH
+        : this.derivationPathHelperProvider.defaultBTC;
     this.derivationPathForTestnet = this.derivationPathHelperProvider.defaultTestnet;
     this.showAdvOpts = false;
     this.formFile = null;
@@ -400,6 +403,20 @@ export class ImportWalletPage {
     ) {
       const title = this.translate.instant('Error');
       const subtitle = this.translate.instant('Invalid derivation path');
+      this.popupProvider.ionicAlert(title, subtitle);
+      return;
+    }
+
+    if (
+      !this.derivationPathHelperProvider.isValidDerivationPathCoin(
+        this.importForm.value.derivationPath,
+        this.coin
+      )
+    ) {
+      const title = this.translate.instant('Error');
+      const subtitle = this.translate.instant(
+        'Invalid derivation path for selected coin'
+      );
       this.popupProvider.ionicAlert(title, subtitle);
       return;
     }

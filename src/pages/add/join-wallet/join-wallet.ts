@@ -61,9 +61,6 @@ export class JoinWalletPage {
     this.okText = this.translate.instant('Ok');
     this.cancelText = this.translate.instant('Cancel');
     this.defaults = this.configProvider.getDefaults();
-    this.derivationPathByDefault = this.derivationPathHelperProvider.default;
-    this.derivationPathForTestnet = this.derivationPathHelperProvider.defaultTestnet;
-
     this.showAdvOpts = false;
 
     this.regex = /^[0-9A-HJ-NP-Za-km-z]{70,80}$/; // For invitationCode
@@ -76,7 +73,7 @@ export class JoinWalletPage {
       bwsURL: [this.defaults.bws.url],
       selectedSeed: ['new'],
       recoveryPhrase: [null],
-      derivationPath: [this.derivationPathByDefault]
+      derivationPath: [null]
     });
 
     this.seedOptions = [
@@ -161,8 +158,15 @@ export class JoinWalletPage {
       let walletData;
       try {
         walletData = this.bwcProvider.parseSecret(invitation);
-        this.setDerivationPath(walletData.network);
         this.coin = walletData.coin;
+        this.derivationPathForTestnet = this.derivationPathHelperProvider.defaultTestnet;
+        this.derivationPathByDefault =
+          this.coin == 'bch'
+            ? this.derivationPathHelperProvider.defaultBCH
+            : this.derivationPathHelperProvider.defaultBTC;
+
+        this.setDerivationPath(walletData.network);
+
         this.logger.info('Correct invitation code for ' + walletData.network);
       } catch (ex) {
         this.logger.warn('Error parsing invitation: ' + ex);
@@ -209,6 +213,20 @@ export class JoinWalletPage {
       ) {
         const title = this.translate.instant('Error');
         const subtitle = this.translate.instant('Invalid derivation path');
+        this.popupProvider.ionicAlert(title, subtitle);
+        return;
+      }
+
+      if (
+        !this.derivationPathHelperProvider.isValidDerivationPathCoin(
+          this.joinForm.value.derivationPath,
+          this.coin
+        )
+      ) {
+        const title = this.translate.instant('Error');
+        const subtitle = this.translate.instant(
+          'Invalid derivation path for selected coin'
+        );
         this.popupProvider.ionicAlert(title, subtitle);
         return;
       }

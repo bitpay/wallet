@@ -49,6 +49,7 @@ export interface WalletOptions {
   passphrase: any;
   walletPrivKey: any;
   compliantDerivation: any;
+  use0forBCH?: boolean;
 }
 
 export interface TransactionProposal {
@@ -454,8 +455,15 @@ export class WalletProvider {
     return new Promise((resolve, reject) => {
       this.persistenceProvider
         .getLastAddress(wallet.id)
-        .then(addr => {
-          if (!forceNew && addr) return resolve(addr);
+        .then((addr: string) => {
+          if (addr) {
+            // prevent to show legacy address
+            const isBchLegacy =
+              wallet.coin == 'bch' &&
+              ['C', 'H', 'm', 'n'].indexOf(addr.charAt(0)) > -1;
+
+            if (!forceNew && !isBchLegacy) return resolve(addr);
+          }
 
           if (!wallet.isComplete())
             return reject(this.bwcErrorProvider.msg('WALLET_NOT_COMPLETE'));

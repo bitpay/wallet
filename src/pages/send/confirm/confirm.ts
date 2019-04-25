@@ -205,7 +205,6 @@ export class ConfirmPage extends WalletTabsChild {
     }
 
     if (this.tx.coin && this.tx.coin == 'bch' && !this.fromMultiSend) {
-      // Use legacy address
       this.tx.toAddress = this.bitcoreCash
         .Address(this.tx.toAddress)
         .toString(true);
@@ -652,7 +651,6 @@ export class ConfirmPage extends WalletTabsChild {
         txp.outputs = [];
         this.navParams.data.recipients.forEach(recipient => {
           if (tx.coin && tx.coin == 'bch') {
-            // Use legacy address
             recipient.toAddress = this.bitcoreCash
               .Address(recipient.toAddress)
               .toString(true);
