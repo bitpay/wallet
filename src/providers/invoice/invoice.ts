@@ -62,10 +62,8 @@ export class InvoiceProvider extends GiftCardProvider {
       )
       .toPromise()
       .catch(err => {
-        this.logger.error(
-          'BitPay Invoice Set Email: ERROR ' + err.error.message
-        );
-        throw err.error.message;
+        this.logger.error('BitPay Invoice Set Email: ERROR ' + err.error);
+        throw err.error;
       });
     this.logger.info('BitPay Invoice Set Email: SUCCESS');
     return res;
@@ -88,10 +86,8 @@ export class InvoiceProvider extends GiftCardProvider {
       )
       .toPromise()
       .catch(err => {
-        this.logger.error(
-          'BitPay Invoice Set Currency: ERROR ' + err.error.message
-        );
-        throw err.error.message;
+        this.logger.error('BitPay Invoice Set Currency: ERROR ' + err.error);
+        throw err.error;
       });
     this.logger.info('BitPay Invoice Set Currency: SUCCESS');
     return res;

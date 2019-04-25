@@ -315,8 +315,16 @@ export class ConfirmInvoicePage extends ConfirmCardPurchasePage {
     });
   }
 
+  public throwBuyerInfoError(err) {
+    const title = this.translate.instant('Error');
+    global.console.log(err.error);
+    const msg = this.translate.instant(err.error);
+    this.onGoingProcessProvider.clear();
+    this.showErrorInfoSheet(msg, title, false);
+    throw new Error(`${err.error}`);
+  }
+
   public async buyConfirm() {
-    this.hideSlideButton = true;
     const { selectedTransactionCurrency } = this.invoiceData.buyerProvidedInfo;
 
     if (!selectedTransactionCurrency) {
@@ -326,8 +334,7 @@ export class ConfirmInvoicePage extends ConfirmCardPurchasePage {
           this.invoiceId
         )
         .catch(err => {
-          this.onGoingProcessProvider.clear();
-          throw this.showErrorInfoSheet(err.message, err.title, false);
+          this.throwBuyerInfoError(err);
         });
     }
 
@@ -335,10 +342,10 @@ export class ConfirmInvoicePage extends ConfirmCardPurchasePage {
       await this.invoiceProvider
         .setBuyerProvidedEmail(this.email, this.invoiceId)
         .catch(err => {
-          this.onGoingProcessProvider.clear();
-          throw this.showErrorInfoSheet(err.message, err.title, false);
+          this.throwBuyerInfoError(err);
         });
     }
+
     this.invoiceProvider.storeEmail(this.email);
     const ctxp = await this.createTx(
       this.wallet,
@@ -363,7 +370,7 @@ export class ConfirmInvoicePage extends ConfirmCardPurchasePage {
       );
       return undefined;
     }
-
+    this.hideSlideButton = true;
     return this.publishInvoiceAndSign(ctxp, this.wallet).catch(async err =>
       this.handlePurchaseError(err)
     );
