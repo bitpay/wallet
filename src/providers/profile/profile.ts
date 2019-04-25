@@ -255,12 +255,12 @@ export class ProfileProvider {
   public setFastRefresh(wallet): void {
     this.logger.debug(`Wallet ${wallet.id} set to fast refresh`);
     wallet.setNotificationsInterval(this.UPDATE_PERIOD_FAST);
-  };
+  }
 
   public setSlowRefresh(wallet): void {
     this.logger.debug(`Wallet ${wallet.id} back to slow refresh`);
     wallet.setNotificationsInterval(this.UPDATE_PERIOD);
-  };
+  }
 
   private showDesktopNotifications(n, wallet): void {
     if (!this.configProvider.get().desktopNotificationsEnabled) return;

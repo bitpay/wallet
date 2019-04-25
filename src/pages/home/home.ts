@@ -163,7 +163,7 @@ export class HomePage {
   }
 
   private walletFocusHandler = opts => {
-    this.logger.debug('Local/WalletFocus handler @home', opts);
+    this.logger.debug('RECV Local/WalletFocus @home', opts);
     opts = opts || {};
     opts.alsoUpdateHistory = true;
     this.fetchWalletStatus(opts);
@@ -240,7 +240,7 @@ export class HomePage {
       return;
     }
 
-    this.logger.info(`BWS Event: ${type}: `, JSON.stringify(n));
+    this.logger.info(`BWS Event: ${type}: `, n);
 
     let alsoUpdateHistory = false;
     switch (type) {

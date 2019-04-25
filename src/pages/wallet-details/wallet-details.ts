@@ -123,18 +123,21 @@ export class WalletDetailsPage extends WalletTabsChild {
 
   ionViewWillEnter() {
     this.onResumeSubscription = this.platform.resume.subscribe(() => {
+      this.profileProvider.setFastRefresh(this.wallet);
       this.subscribeEvents();
     });
   }
 
   // Start by firing a walletFocus event.
   ionViewDidEnter() {
+    this.profileProvider.setFastRefresh(this.wallet);
     this.events.publish('Local/WalletFocus', {
       walletId: this.wallet.credentials.walletId
     });
   }
 
   ionViewWillUnload() {
+    this.profileProvider.setSlowRefresh(this.wallet);
     this.events.unsubscribe('Local/WalletUpdate', this.updateStatus);
     this.events.unsubscribe('Local/WalletHistoryUpdate', this.updateHistory);
     this.onResumeSubscription.unsubscribe();
