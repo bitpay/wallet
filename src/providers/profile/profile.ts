@@ -197,21 +197,6 @@ export class ProfileProvider {
     });
 
     wallet.on('notification', n => {
-      // TODO: Only development purpose
-      if (
-        !this.platformProvider.isElectron &&
-        !this.platformProvider.isCordova
-      ) {
-        let show = { type: n.type, txp: null };
-        try {
-          if (n.data.txProposalId) {
-            show.txp = n.data.txProposalId;
-          }
-        } catch (e) {}
-
-        this.logger.debug('BWC Notification:', JSON.stringify(show));
-      }
-
       if (this.platformProvider.isElectron) {
         this.showDesktopNotifications(n, wallet);
       }
@@ -1520,10 +1505,8 @@ export class ProfileProvider {
 
           wallet.getNotifications(
             {
-              timeSpan: TIME_STAMP,
-              // the same copayer could be using the wallet on other
-              // device, that is why we 'include own'
-              includeOwn: true
+            timeSpan: TIME_STAMP,
+             includeOwn: true,
             },
             (err, n) => {
               if (err) {
