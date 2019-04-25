@@ -220,7 +220,7 @@ export class ConfirmInvoicePage extends ConfirmCardPurchasePage {
 
     this.message = this.replaceParametersProvider.replace(
       this.translate.instant(
-        `Payment Request for BitPay invoice ${
+        `Payment request for BitPay invoice ${
           this.invoiceId
         } for {{amountUnitStr}} to merchant ${this.invoiceName}`
       ),
