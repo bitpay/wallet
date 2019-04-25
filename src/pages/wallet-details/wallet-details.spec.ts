@@ -17,7 +17,8 @@ describe('WalletDetailsPage', () => {
       status: {},
       canSign: () => true,
       isComplete: () => true,
-      isPrivKeyEncrypted: () => true
+      isPrivKeyEncrypted: () => true,
+      setNotificationsInterval: () => true
     };
     spyOn(ProfileProvider.prototype, 'getWallet').and.returnValue(mockWallet);
     return TestUtils.configurePageTestingModule([WalletDetailsPage]).then(

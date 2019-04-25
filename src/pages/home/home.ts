@@ -163,7 +163,7 @@ export class HomePage {
   }
 
   private walletFocusHandler = opts => {
-    this.logger.debug('Local/WalletFocus handler @home', opts);
+    this.logger.debug('RECV Local/WalletFocus @home', opts);
     opts = opts || {};
     opts.alsoUpdateHistory = true;
     this.fetchWalletStatus(opts);
@@ -223,15 +223,37 @@ export class HomePage {
     this.slideDown = false;
   }
 
-  private debounceFetchWalletStatus = _.debounce(async walletId => {
-    this.fetchWalletStatus({ walletId });
-  }, 3000);
+  private debounceFetchWalletStatus = _.debounce(
+    async (walletId, alsoUpdateHistory) => {
+      this.fetchWalletStatus({ walletId, alsoUpdateHistory });
+    },
+    3000
+  );
 
   // BWS events can come many at time (publish,sign, broadcast...)
-  private bwsEventHandler = walletId => {
+  private bwsEventHandler = (walletId, type, n) => {
+    // NewBlock, NewCopayer, NewAddress, NewTxProposal, TxProposalAcceptedBy, TxProposalRejectedBy, txProposalFinallyRejected,
+    // txProposalFinallyAccepted, TxProposalRemoved, NewIncomingTx, NewOutgoingTx
+
     const wallet = this.profileProvider.getWallet(walletId);
+    if (wallet.copayerId == n.creatorId) {
+      return;
+    }
+
+    this.logger.info(`BWS Event: ${type}: `, n);
+
+    let alsoUpdateHistory = false;
+    switch (type) {
+      case 'NewAddress':
+        this.walletProvider.expireAddress(walletId);
+        return;
+      case 'NewIncomingTx':
+      case 'NewOutgoingTx':
+      case 'NewBlock':
+        alsoUpdateHistory = true;
+    }
     this.walletProvider.invalidateCache(wallet);
-    this.debounceFetchWalletStatus(walletId);
+    this.debounceFetchWalletStatus(walletId, alsoUpdateHistory);
   };
 
   private updateDesktopOnFocus() {
@@ -446,7 +468,7 @@ export class HomePage {
     const progressFn = ((_, newTxs) => {
       let args = {
         walletId: opts.walletId,
-        complete: false,
+        finished: false,
         progress: newTxs
       };
       this.events.publish('Local/WalletHistoryUpdate', args);
@@ -455,7 +477,7 @@ export class HomePage {
     // Fire a startup event, to allow UI to show the spinner
     this.events.publish('Local/WalletHistoryUpdate', {
       walletId: opts.walletId,
-      complete: false
+      finished: false
     });
     this.walletProvider
       .fetchTxHistory(wallet, progressFn, opts)
@@ -463,7 +485,7 @@ export class HomePage {
         wallet.completeHistory = txHistory;
         this.events.publish('Local/WalletHistoryUpdate', {
           walletId: opts.walletId,
-          complete: true
+          finished: true
         });
       })
       .catch(err => {
@@ -471,7 +493,7 @@ export class HomePage {
           this.logger.warn('WalletHistoryUpdate ERROR', err);
           this.events.publish('Local/WalletHistoryUpdate', {
             walletId: opts.walletId,
-            complete: false,
+            finished: false,
             error: err
           });
         }
@@ -489,10 +511,15 @@ export class HomePage {
     }
     this.events.publish('Local/WalletUpdate', {
       walletId: opts.walletId,
-      incomplete: true
+      finished: false
     });
 
-    this.logger.debug('fetchStatus for: ' + opts.walletId);
+    this.logger.debug(
+      'fetching status for: ' +
+        opts.walletId +
+        ' alsohistory:' +
+        opts.alsoUpdateHistory
+    );
     const wallet = this.profileProvider.getWallet(opts.walletId);
     if (!wallet) return;
 
@@ -509,8 +536,10 @@ export class HomePage {
 
         // Update txps
         this.updateTxps();
-        this.logger.debug('Firing Local/WalletUpdate @home', opts);
-        this.events.publish('Local/WalletUpdate', { walletId: opts.walletId });
+        this.events.publish('Local/WalletUpdate', {
+          walletId: opts.walletId,
+          finished: true
+        });
 
         if (opts.alsoUpdateHistory) {
           this.fetchTxHistory({ walletId: opts.walletId });
@@ -521,7 +550,7 @@ export class HomePage {
 
         this.events.publish('Local/WalletUpdate', {
           walletId: opts.walletId,
-          incomplete: false,
+          finished: false,
           error: wallet.error
         });
 
