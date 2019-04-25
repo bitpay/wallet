@@ -30,7 +30,8 @@ export class ProfileProvider {
   public vault;
   public profile: Profile;
 
-  private UPDATE_PERIOD = 15;
+  public UPDATE_PERIOD = 15;
+  public UPDATE_PERIOD_FAST = 5;
   private throttledBwsEvent;
   private validationLock: boolean = false;
   private errors = this.bwcProvider.getErrors();
@@ -250,6 +251,16 @@ export class ProfileProvider {
 
     return true;
   }
+
+  public setFastRefresh(wallet): void {
+    this.logger.debug(`Wallet ${wallet.id} set to fast refresh`);
+    wallet.setNotificationsInterval(this.UPDATE_PERIOD_FAST);
+  };
+
+  public setSlowRefresh(wallet): void {
+    this.logger.debug(`Wallet ${wallet.id} back to slow refresh`);
+    wallet.setNotificationsInterval(this.UPDATE_PERIOD);
+  };
 
   private showDesktopNotifications(n, wallet): void {
     if (!this.configProvider.get().desktopNotificationsEnabled) return;
