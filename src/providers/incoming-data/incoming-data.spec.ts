@@ -162,7 +162,7 @@ describe('Provider: Incoming Data Provider', () => {
       });
     });
     it('Should parse valid BitPay Invoice Url', () => {
-      let data = ['https://test.bitpay.com/invoice/5GREtmntcTvB9aejVDhVdm'];
+      let data = ['https://bitpay.com/invoice/5GREtmntcTvB9aejVDhVdm'];
       data.forEach(element => {
         expect(incomingDataProvider.redir(element)).toBe(true);
         expect(loggerSpy).toHaveBeenCalledWith(
