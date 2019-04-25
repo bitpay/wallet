@@ -191,7 +191,7 @@ describe('Provider: Incoming Data Provider', () => {
         });
       });
     });
-    it('Should handle BitPay Invoice', () => {
+    it('Should parse valid BitPay Invoice Url', () => {
       let data = ['https://test.bitpay.com/invoice/5GREtmntcTvB9aejVDhVdm'];
 
       data.forEach(element => {
