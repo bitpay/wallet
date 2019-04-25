@@ -178,7 +178,7 @@ export class IncomingDataProvider {
   }
 
   private async handleBitPayInvoice(data: string) {
-    this.logger.debug('Handling bitpay invoice');
+    this.logger.debug('Incoming-data: Handling bitpay invoice');
     const testStr: boolean =
       data.indexOf('test.bitpay.com') > -1 ? true : false;
     const invoiceId: string = data.replace(
