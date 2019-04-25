@@ -161,6 +161,15 @@ describe('Provider: Incoming Data Provider', () => {
         );
       });
     });
+    it('Should handle Pay with BitPay button Invoices', () => {
+      let data = ['https://test.bitpay.com/invoice/5GREtmntcTvB9aejVDhVdm'];
+      data.forEach(element => {
+        expect(incomingDataProvider.redir(element)).toBe(true);
+        expect(loggerSpy).toHaveBeenCalledWith(
+          'Incoming-data: Handling bitpay invoice'
+        );
+      });
+    });
     it('Should handle Bitcoin cash Copay/BitPay format and CashAddr format plain Address', () => {
       let data = [
         'qr00upv8qjgkym8zng3f663n9qte9ljuqqcs8eep5w',
@@ -180,6 +189,34 @@ describe('Provider: Incoming Data Provider', () => {
             coin: 'bch'
           }
         });
+      });
+    });
+    it('Should handle BitPay Invoice', () => {
+      let data = ['https://test.bitpay.com/invoice/5GREtmntcTvB9aejVDhVdm'];
+
+      data.forEach(element => {
+        const partialInvoiceResponse = {
+          url: 'https://test.bitpay.com/invoice?id=5GREtmntcTvB9aejVDhVdm',
+          price: 1,
+          currency: 'USD',
+          expirationTime: 1556220095608,
+          id: '5GREtmntcTvB9aejVDhVdm'
+        };
+        const stateParams = {
+          invoiceData: partialInvoiceResponse,
+          invoiceId: '5GREtmntcTvB9aejVDhVdm',
+          invoiceName: 'merchant name',
+          email: 'merchantProvdedBuyerEmail@buyer.com'
+        };
+        let nextView = {
+          name: 'ConfirmInvoicePage',
+          params: stateParams
+        };
+        expect(incomingDataProvider.redir(element)).toBe(true);
+        expect(loggerSpy).toHaveBeenCalledWith(
+          'Incoming-data: Handling bitpay invoice'
+        );
+        expect(eventsSpy).toHaveBeenCalledWith('IncomingDataRedir', nextView);
       });
     });
     it('Should handle Bitcoin cash Copay/BitPay format and CashAddr format URI', () => {
