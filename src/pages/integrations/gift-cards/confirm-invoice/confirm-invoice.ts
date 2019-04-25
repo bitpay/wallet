@@ -160,7 +160,6 @@ export class ConfirmInvoicePage extends ConfirmCardPurchasePage {
         );
       });
     }
-    this.wallet = this.wallets[0];
     if (_.isEmpty(this.wallets)) {
       this.openInBrowser();
       return;
@@ -220,7 +219,11 @@ export class ConfirmInvoicePage extends ConfirmCardPurchasePage {
     this.invoiceFeeSat = this.invoiceData.minerFees[COIN].totalFee;
 
     this.message = this.replaceParametersProvider.replace(
-      this.translate.instant(`{{amountUnitStr}} ${this.invoiceName}`),
+      this.translate.instant(
+        `Payment Request for BitPay invoice ${
+          this.invoiceId
+        } for {{amountUnitStr}} to merchant ${this.invoiceName}`
+      ),
       { amountUnitStr: this.amountUnitStr }
     );
     this.onGoingProcessProvider.clear();
