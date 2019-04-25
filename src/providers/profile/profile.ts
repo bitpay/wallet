@@ -1505,8 +1505,8 @@ export class ProfileProvider {
 
           wallet.getNotifications(
             {
-            timeSpan: TIME_STAMP,
-             includeOwn: true,
+              timeSpan: TIME_STAMP,
+              includeOwn: true
             },
             (err, n) => {
               if (err) {

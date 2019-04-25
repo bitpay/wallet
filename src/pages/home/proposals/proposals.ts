@@ -126,7 +126,7 @@ export class ProposalsPage {
       });
   }
 
-  private updatePendingProposals = (opts = { finished: true}): void => {
+  private updatePendingProposals = (opts = { finished: true }): void => {
     if (!opts.finished) return;
 
     this.profileProvider

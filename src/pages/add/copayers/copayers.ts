@@ -101,7 +101,7 @@ export class CopayersPage {
   }
 
   private walletUpdate(opts): void {
-    if (! opts.finished) return;
+    if (!opts.finished) return;
 
     if (this.wallet && opts.walletId == this.wallet.id) {
       this.copayers = this.wallet.cachedStatus.wallet.copayers;

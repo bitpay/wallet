@@ -223,15 +223,18 @@ export class HomePage {
     this.slideDown = false;
   }
 
-  private debounceFetchWalletStatus = _.debounce(async (walletId, alsoUpdateHistory) => {
-    this.fetchWalletStatus({ walletId, alsoUpdateHistory });
-  }, 3000);
+  private debounceFetchWalletStatus = _.debounce(
+    async (walletId, alsoUpdateHistory) => {
+      this.fetchWalletStatus({ walletId, alsoUpdateHistory });
+    },
+    3000
+  );
 
   // BWS events can come many at time (publish,sign, broadcast...)
   private bwsEventHandler = (walletId, type, n) => {
-      // NewBlock, NewCopayer, NewAddress, NewTxProposal, TxProposalAcceptedBy, TxProposalRejectedBy, txProposalFinallyRejected,
-      // txProposalFinallyAccepted, TxProposalRemoved, NewIncomingTx, NewOutgoingTx
-    
+    // NewBlock, NewCopayer, NewAddress, NewTxProposal, TxProposalAcceptedBy, TxProposalRejectedBy, txProposalFinallyRejected,
+    // txProposalFinallyAccepted, TxProposalRemoved, NewIncomingTx, NewOutgoingTx
+
     const wallet = this.profileProvider.getWallet(walletId);
     if (wallet.copayerId == n.creatorId) {
       return;
@@ -241,7 +244,7 @@ export class HomePage {
 
     let alsoUpdateHistory = false;
     switch (type) {
-      case 'NewAddress':  
+      case 'NewAddress':
         this.walletProvider.expireAddress(walletId);
         return;
       case 'NewIncomingTx':
@@ -508,11 +511,15 @@ export class HomePage {
     }
     this.events.publish('Local/WalletUpdate', {
       walletId: opts.walletId,
-      finished: false 
+      finished: false
     });
 
-    this.logger.debug('fetching status for: ' + opts.walletId 
-      + ' alsohistory:' + opts.alsoUpdateHistory);
+    this.logger.debug(
+      'fetching status for: ' +
+        opts.walletId +
+        ' alsohistory:' +
+        opts.alsoUpdateHistory
+    );
     const wallet = this.profileProvider.getWallet(opts.walletId);
     if (!wallet) return;
 
@@ -529,7 +536,10 @@ export class HomePage {
 
         // Update txps
         this.updateTxps();
-        this.events.publish('Local/WalletUpdate', { walletId: opts.walletId, finished: true });
+        this.events.publish('Local/WalletUpdate', {
+          walletId: opts.walletId,
+          finished: true
+        });
 
         if (opts.alsoUpdateHistory) {
           this.fetchTxHistory({ walletId: opts.walletId });
