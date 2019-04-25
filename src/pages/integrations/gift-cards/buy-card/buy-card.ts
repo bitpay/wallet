@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, NgZone } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 import { ActionSheetProvider } from '../../../../providers';
 import { CardConfig } from '../../../../providers/gift-card/gift-card.types';
@@ -17,7 +17,8 @@ export class BuyCardPage {
   constructor(
     private actionSheetProvider: ActionSheetProvider,
     private nav: NavController,
-    private navParams: NavParams
+    private navParams: NavParams,
+    private zone: NgZone
   ) {}
 
   async ngOnInit() {
@@ -50,7 +51,7 @@ export class BuyCardPage {
   }
 
   onAmountChange(amount: number) {
-    this.amount = amount;
+    this.zone.run(() => (this.amount = amount));
   }
 
   onAmountClick() {
