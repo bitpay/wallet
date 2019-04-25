@@ -1288,11 +1288,11 @@ export class WalletProvider {
     this.persistenceProvider.removeTxHistory(wallet.id);
   }
 
-  public expireAddress(wallet): Promise<any> {
+  public expireAddress(walletId: string): Promise<any> {
     return new Promise((resolve, reject) => {
-      this.logger.info('Cleaning Address ' + wallet.id);
+      this.logger.info('Cleaning Address ' + walletId);
       this.persistenceProvider
-        .clearLastAddress(wallet.id)
+        .clearLastAddress(walletId)
         .then(() => {
           return resolve();
         })

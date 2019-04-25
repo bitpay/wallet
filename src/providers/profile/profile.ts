@@ -1521,6 +1521,8 @@ export class ProfileProvider {
           wallet.getNotifications(
             {
               timeSpan: TIME_STAMP,
+              // the same copayer could be using the wallet on other
+              // device, that is why we 'include own'
               includeOwn: true
             },
             (err, n) => {

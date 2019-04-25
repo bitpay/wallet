@@ -712,7 +712,7 @@ describe('Provider: Wallet Provider', () => {
     it('Should work and call clearLastAddress', () => {
       const wallet: WalletMock = new WalletMock();
 
-      walletProvider.expireAddress(wallet).catch(err => {
+      walletProvider.expireAddress(wallet.id).catch(err => {
         expect(err).toBeDefined();
       });
     });

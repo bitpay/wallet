@@ -223,15 +223,29 @@ export class HomePage {
     this.slideDown = false;
   }
 
-  private debounceFetchWalletStatus = _.debounce(async walletId => {
-    this.fetchWalletStatus({ walletId });
+  private debounceFetchWalletStatus = _.debounce(async (walletId, alsoUpdateHistory) => {
+    this.fetchWalletStatus({ walletId, alsoUpdateHistory });
   }, 3000);
 
   // BWS events can come many at time (publish,sign, broadcast...)
-  private bwsEventHandler = walletId => {
+  private bwsEventHandler = (walletId, type) => {
+      // NewBlock, NewCopayer, NewAddress, NewTxProposal, TxProposalAcceptedBy, TxProposalRejectedBy, txProposalFinallyRejected,
+      // txProposalFinallyAccepted, TxProposalRemoved, NewIncomingTx, NewOutgoingTx
+    
+
+    let alsoUpdateHistory = false;
+    switch (type) {
+      case 'NewAddress':  
+        this.walletProvider.expireAddress(walletId);
+        return;
+      case 'NewIncomingTx':
+      case 'NewOutgoingTx':
+      case 'NewBlock':
+        alsoUpdateHistory = true;
+    }
     const wallet = this.profileProvider.getWallet(walletId);
     this.walletProvider.invalidateCache(wallet);
-    this.debounceFetchWalletStatus(walletId);
+    this.debounceFetchWalletStatus(walletId, alsoUpdateHistory);
   };
 
   private updateDesktopOnFocus() {
@@ -492,7 +506,8 @@ export class HomePage {
       incomplete: true
     });
 
-    this.logger.debug('fetchStatus for: ' + opts.walletId);
+    this.logger.debug('fetching status for: ' + opts.walletId 
+      + ' alsohistory:' + opts.alsoUpdateHistory);
     const wallet = this.profileProvider.getWallet(opts.walletId);
     if (!wallet) return;
 
