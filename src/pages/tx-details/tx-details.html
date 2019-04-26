@@ -71,16 +71,6 @@
 
     <page-multiple-outputs *ngIf="btx.action === 'sent'" [tx]="btx"></page-multiple-outputs>
 
-    <ion-item class="container-from">
-      <span *ngIf="btx.action === 'sent'" translate>From</span>
-      <span *ngIf="btx.action !== 'sent'" translate>To</span>
-      <div class="wallet" *ngIf="wallet">
-        <img *ngIf="wallet.network == 'testnet'" [ngStyle]="{'background-color': wallet.color}" src="assets/img/icon-wallet-testnet.svg" class="icon-wallet" />
-        <img *ngIf="wallet.network != 'testnet'" [ngStyle]="{'background-color': wallet.color}" src="assets/img/icon-wallet.svg" class="icon-wallet" />
-        <div>{{wallet.name}}</div>
-      </div>
-    </ion-item>
-
     <ion-item class="container-tx-info" *ngIf="btx.action != 'received' && isShared">
       <span>{{'Created by' | translate}}</span>
       <div class="tx-info">
