@@ -17,6 +17,7 @@ export class CardCatalogPage extends WideHeaderPage {
   public searchQuery: string = '';
   public visibleCards: CardConfig[];
   public cardConfigMap: { [name: string]: CardConfig };
+  catalogDisplayStyle: 'block' | 'none' = 'block';
 
   public getHeaderFn = this.getHeader.bind(this);
 
@@ -60,6 +61,7 @@ export class CardCatalogPage extends WideHeaderPage {
 
   onSearch(query: string) {
     this.searchQuery = query;
+    this.catalogDisplayStyle = this.searchQuery ? 'none' : 'block';
     this.updateCardList();
   }
 
