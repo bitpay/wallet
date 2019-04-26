@@ -3,6 +3,7 @@ import { NavController } from 'ionic-angular';
 
 import { BuyCardPage } from '../buy-card/buy-card';
 
+import { TranslateService } from '@ngx-translate/core';
 import { ActionSheetProvider, PlatformProvider } from '../../../../providers';
 import { GiftCardProvider } from '../../../../providers/gift-card/gift-card';
 import { CardConfig } from '../../../../providers/gift-card/gift-card.types';
@@ -28,7 +29,8 @@ export class CardCatalogPage extends WideHeaderPage {
     private actionSheetProvider: ActionSheetProvider,
     public giftCardProvider: GiftCardProvider,
     platormProvider: PlatformProvider,
-    private navCtrl: NavController
+    private navCtrl: NavController,
+    private translate: TranslateService
   ) {
     super(platormProvider);
   }
@@ -65,14 +67,14 @@ export class CardCatalogPage extends WideHeaderPage {
 
   getHeader(record, recordIndex, records) {
     if (record.featured && recordIndex === 0) {
-      return 'Featured Brands';
+      return this.translate.instant('Featured Brands');
     }
     const prevRecord = records[recordIndex - 1];
     if (
       (!record.featured && prevRecord && prevRecord.featured) ||
       (!record.featured && !prevRecord && this.searchQuery)
     ) {
-      return 'More Brands';
+      return this.translate.instant('More Brands');
     }
     return null;
   }
