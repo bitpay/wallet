@@ -385,6 +385,8 @@ export class HomePage {
               : currency;
             this.payProDetailsData.amount = selectedTransactionCurrency
               ? paymentTotals[selectedTransactionCurrency]
+              : Coin[currency]
+              ? price / 1e-8
               : price;
             this.clearCountDownInterval();
             this.paymentTimeControl(expirationTime);

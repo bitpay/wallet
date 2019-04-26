@@ -15,8 +15,8 @@
       <div class="header-container">
         <div class="gift-card-title">{{ invoiceName }}</div>
         <div class="amount-label">
-          <div *ngIf="wallet" class="amount">
-            <div>
+          <div class="amount">
+            <div *ngIf="wallet">
               {{ coinAmount }}
               <span class="amount-coin">{{ wallet.coin | uppercase }}</span>
             </div>
