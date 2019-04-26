@@ -38,14 +38,14 @@ export class GiftCardProvider extends InvoiceProvider {
     'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAAyCAQAAAA38nkBAAAADklEQVR42mP8/4Vx8CEAn9BhqacD+5kAAAAASUVORK5CYII=';
 
   constructor(
-    public configProvider: ConfigProvider,
+    private configProvider: ConfigProvider,
+    private imageLoader: ImageLoader,
+    private homeIntegrationsProvider: HomeIntegrationsProvider,
+    private timeProvider: TimeProvider,
     public emailNotificationsProvider: EmailNotificationsProvider,
     public http: HttpClient,
-    public imageLoader: ImageLoader,
     public logger: Logger,
-    public homeIntegrationsProvider: HomeIntegrationsProvider,
-    public persistenceProvider: PersistenceProvider,
-    public timeProvider: TimeProvider
+    public persistenceProvider: PersistenceProvider
   ) {
     super(emailNotificationsProvider, http, logger, persistenceProvider);
     this.logger.debug('GiftCardProvider initialized');
