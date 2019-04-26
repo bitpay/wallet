@@ -17,8 +17,12 @@
         <div class="amount-label">
           <div *ngIf="wallet" class="amount">
             <div>
-              {{ coinAmount || amount }}
-              <span class="amount-coin">{{ wallet.coin | uppercase || currency}}</span>
+              {{ coinAmount }}
+              <span class="amount-coin">{{ wallet.coin | uppercase }}</span>
+            </div>
+            <div *ngIf="!wallet">
+              {{ amount }}
+              <span class="amount-coin">{{ currency }}</span>
             </div>
             <img class="sending-img" src="assets/img/icon-tx-sent-outline.svg" />
           </div>
