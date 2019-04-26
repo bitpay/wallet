@@ -133,9 +133,10 @@ export class ConfirmInvoicePage extends ConfirmCardPurchasePage {
     this.email = this.merchantProvidedEmail
       ? this.merchantProvidedEmail
       : this.buyerProvidedEmail
-      ? this.buyerProvidedEmail
-      : await this.getEmail();
+        ? this.buyerProvidedEmail
+        : await this.getEmail();
     this.detailsCurrency = this.currency;
+    this.paymentTimeControl(this.invoiceData.expirationTime);
   }
 
   ionViewDidLoad() {
@@ -145,6 +146,15 @@ export class ConfirmInvoicePage extends ConfirmCardPurchasePage {
   ionViewWillEnter() {
     this.isOpenSelector = false;
     this.navCtrl.swipeBackEnabled = false;
+    if (this.isCordova) {
+      window.addEventListener('keyboardWillShow', () => {
+        this.hideSlideButton = true;
+      });
+
+      window.addEventListener('keyboardWillHide', () => {
+        this.hideSlideButton = false;
+      });
+    }
     const { BITPAY_API_URL } = this.invoiceProvider.credentials;
     this.network = this.invoiceProvider.getNetwork();
     this.wallets = this.profileProvider.getWallets({
@@ -166,16 +176,6 @@ export class ConfirmInvoicePage extends ConfirmCardPurchasePage {
       this.openInBrowser();
       return;
     }
-    if (this.isCordova) {
-      window.addEventListener('keyboardWillShow', () => {
-        this.hideSlideButton = true;
-      });
-
-      window.addEventListener('keyboardWillHide', () => {
-        this.hideSlideButton = false;
-      });
-    }
-    this.paymentTimeControl(this.invoiceData.expirationTime);
     this.onWalletSelect(this.wallets[0]);
   }
 
@@ -223,7 +223,7 @@ export class ConfirmInvoicePage extends ConfirmCardPurchasePage {
     this.message = this.replaceParametersProvider.replace(
       this.translate.instant(
         `Payment request for BitPay invoice ${
-          this.invoiceId
+        this.invoiceId
         } for {{amountUnitStr}} to merchant ${this.invoiceName}`
       ),
       { amountUnitStr: this.amountUnitStr }
