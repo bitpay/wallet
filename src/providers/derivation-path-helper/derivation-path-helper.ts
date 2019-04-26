@@ -12,8 +12,16 @@ export class DerivationPathHelperProvider {
     this.defaultTestnet = "m/44'/1'/0'";
   }
 
+  public parsePath(path: string) {
+    return {
+      purpose: path.split('/')[1],
+      coinCode: path.split('/')[2],
+      account: path.split('/')[3]
+    };
+  }
+
   public getDerivationStrategy(path: string): string {
-    const purpose = path.split('/')[1];
+    const purpose = this.parsePath(path).purpose;
     let derivationStrategy: string;
 
     switch (purpose) {
@@ -31,10 +39,10 @@ export class DerivationPathHelperProvider {
   }
 
   public getNetworkName(path: string): string {
-    const coinType = path.split('/')[2];
+    const coinCode = this.parsePath(path).coinCode;
     let networkName: string;
 
-    switch (coinType) {
+    switch (coinCode) {
       case "0'": // for BTC
         networkName = 'livenet';
         break;
@@ -49,21 +57,22 @@ export class DerivationPathHelperProvider {
   }
 
   public getAccount(path: string): number {
-    const match = path.split('/')[3].match(/(\d+)'/);
+    const account = this.parsePath(path).account || '';
+    const match = account.match(/(\d+)'/);
     if (!match) return undefined;
     return +match[1];
   }
 
   public isValidDerivationPathCoin(path: string, coin: string): boolean {
     let isValid: boolean;
-    const coinType = path.split('/')[2];
+    const coinCode = this.parsePath(path).coinCode;
 
     switch (coin) {
       case 'btc':
-        isValid = ["0'", "1'"].indexOf(coinType) > -1;
+        isValid = ["0'", "1'"].indexOf(coinCode) > -1;
         break;
       case 'bch':
-        isValid = ["145'", "0'", "1'"].indexOf(coinType) > -1;
+        isValid = ["145'", "0'", "1'"].indexOf(coinCode) > -1;
         break;
     }
 

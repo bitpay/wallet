@@ -458,9 +458,7 @@ export class WalletProvider {
         .then((addr: string) => {
           if (addr) {
             // prevent to show legacy address
-            const isBchLegacy =
-              wallet.coin == 'bch' &&
-              ['C', 'H', 'm', 'n'].indexOf(addr.charAt(0)) > -1;
+            const isBchLegacy = wallet.coin == 'bch' && addr.match(/^[CHmn]/);
 
             if (!forceNew && !isBchLegacy) return resolve(addr);
           }
