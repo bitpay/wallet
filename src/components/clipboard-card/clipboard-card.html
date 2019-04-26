@@ -1,9 +1,10 @@
-<button ion-item detail-none class="clipboard-paypro-container" *ngIf="validDataFromClipboard.type === 'PayPro' || validDataFromClipboard.type === 'InvoiceUri'">
+<button ion-item detail-none class="clipboard-paypro-container"
+  *ngIf="validDataFromClipboard.type === 'PayPro' || validDataFromClipboard.type === 'InvoiceUri'">
   <div *ngIf="payProDetailsData && !payProDetailsData.error" class="item-title">
     <span translate>Payment request</span>
   </div>
   <div *ngIf="payProDetailsData && payProDetailsData.host && !payProDetailsData.error" class="item-subtitle">
-    <span translate>From</span>: 
+    <span translate>From</span>:
     <ion-icon *ngIf="payProDetailsData?.verified" name="lock" color="success"></ion-icon>
     <ion-icon *ngIf="!payProDetailsData?.verified" name="unlock" color="danger"></ion-icon>
     {{payProDetailsData?.host}}
@@ -13,8 +14,8 @@
       {{payProDetailsData?.amount | satToUnit: payProDetailsData?.coin}}
     </div>
     <div *ngIf="payProDetailsData?.isFiat" class="amount">
-        {{payProDetailsData?.amount | formatCurrency: payProDetailsData?.coin}} {{payProDetailsData?.coin}}
-      </div>
+      {{payProDetailsData?.amount | formatCurrency: payProDetailsData?.coin}}
+    </div>
     <span [ngStyle]="remainingTimeStr === 'Expired' ? { color: 'red' } : {}" class="date">{{ remainingTimeStr }}</span>
   </ion-note>
   <div *ngIf="payProDetailsData && payProDetailsData.error" class="item-title">
@@ -23,8 +24,10 @@
   <div *ngIf="!payProDetailsData" class='loader gradient'></div>
   <div *ngIf="!payProDetailsData" class='loader loader-subtitle gradient'></div>
 </button>
-<button ion-item detail-none class="clipboard" *ngIf="validDataFromClipboard.type !== 'PayPro' || validDataFromClipboard.type !== 'InvoiceUri'">
-  <img *ngIf="validDataFromClipboard.type === 'BitcoinUri' || validDataFromClipboard.type === 'BitcoinCashUri' || validDataFromClipboard.type === 'BitcoinAddress' || validDataFromClipboard.type === 'BitcoinCashAddress'"
+<button ion-item detail-none class="clipboard"
+  *ngIf="validDataFromClipboard.type !== 'PayPro' || validDataFromClipboard.type !== 'InvoiceUri'">
+  <img
+    *ngIf="validDataFromClipboard.type === 'BitcoinUri' || validDataFromClipboard.type === 'BitcoinCashUri' || validDataFromClipboard.type === 'BitcoinAddress' || validDataFromClipboard.type === 'BitcoinCashAddress'"
     src="assets/img/icon-bitcoin-small.svg" />
   <div class="ellipsis">{{validDataFromClipboard.data}}</div>
 </button>
