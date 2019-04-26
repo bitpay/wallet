@@ -81,7 +81,10 @@ export class CreateWalletPage implements OnInit {
     this.defaults = this.configProvider.getDefaults();
     this.tc = this.isShared ? this.defaults.wallet.totalCopayers : 1;
     this.copayers = _.range(2, this.defaults.limits.totalCopayers + 1);
-    this.derivationPathByDefault = this.derivationPathHelperProvider.default;
+    this.derivationPathByDefault =
+      this.coin == 'bch'
+        ? this.derivationPathHelperProvider.defaultBCH
+        : this.derivationPathHelperProvider.defaultBTC;
     this.derivationPathForTestnet = this.derivationPathHelperProvider.defaultTestnet;
     this.showAdvOpts = false;
 
@@ -227,6 +230,30 @@ export class CreateWalletPage implements OnInit {
       );
       this.popupProvider.ionicAlert(title, subtitle);
       return;
+    }
+
+    if (
+      !this.derivationPathHelperProvider.isValidDerivationPathCoin(
+        this.createForm.value.derivationPath,
+        this.coin
+      )
+    ) {
+      const title = this.translate.instant('Error');
+      const subtitle = this.translate.instant(
+        'Invalid derivation path for selected coin'
+      );
+      this.popupProvider.ionicAlert(title, subtitle);
+      return;
+    }
+
+    if (
+      this.coin == 'bch' &&
+      this.derivationPathHelperProvider.parsePath(
+        this.createForm.value.derivationPath
+      ).coinCode == "0'"
+    ) {
+      opts.use0forBCH = true;
+      this.logger.debug('Using 0 for BCH creation');
     }
 
     this.create(opts);

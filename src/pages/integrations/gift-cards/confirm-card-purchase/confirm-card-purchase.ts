@@ -322,8 +322,7 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
     txp['origToAddress'] = txp.toAddress;
 
     if (wallet.coin && wallet.coin == 'bch') {
-      // Use legacy address
-      txp.toAddress = this.bitcoreCash.Address(txp.toAddress).toString();
+      txp.toAddress = this.bitcoreCash.Address(txp.toAddress).toString(true);
       txp.outputs[0].toAddress = txp.toAddress;
     }
 

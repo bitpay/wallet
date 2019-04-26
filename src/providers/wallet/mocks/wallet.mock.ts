@@ -337,7 +337,7 @@ export class WalletMock {
   }
   createAddress(_opts, cb) {
     const addr = {
-      address: 'address2'
+      address: '1CVuVALD6Zo7ms24n3iUXv162kvUzsHr69' // Use a valid address to get a resolved promise
     };
     return cb(null, addr);
   }

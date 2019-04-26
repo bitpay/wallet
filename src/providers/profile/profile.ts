@@ -63,11 +63,11 @@ export class ProfileProvider {
     this.availableCoins = [
       {
         coin: Coin.BTC,
-        derivationPath: this.derivationPathHelperProvider.default
+        derivationPath: this.derivationPathHelperProvider.defaultBTC
       },
       {
         coin: Coin.BCH,
-        derivationPath: this.derivationPathHelperProvider.default
+        derivationPath: this.derivationPathHelperProvider.defaultBCH
       },
       {
         coin: Coin.BTC,

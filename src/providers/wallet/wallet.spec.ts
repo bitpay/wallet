@@ -49,6 +49,9 @@ describe('Provider: Wallet Provider', () => {
     clearLastAddress(_walletId: string) {
       return Promise.resolve();
     }
+    getTxHistory(_walletId: string) {
+      return Promise.resolve(txsFromLocal);
+    }
   }
 
   beforeEach(() => {
@@ -261,15 +264,6 @@ describe('Provider: Wallet Provider', () => {
   });
 
   describe('Function: getAddressView', () => {
-    beforeEach(() => {
-      const newOpts = {
-        wallet: {
-          useLegacyAddress: false
-        }
-      };
-      configProvider.set(newOpts);
-    });
-
     it('should get the correct address with protocol format for BCH testnet', () => {
       spyOn(txFormatProvider, 'toCashAddress').and.returnValue(
         'qqfs4tjymy5cs0j4lz78y2lvensl0l42wu80z5jass'
@@ -307,22 +301,6 @@ describe('Provider: Wallet Provider', () => {
         '3DTdZeycDBaimjuuknVGrG8fxdLbjsAjXN'
       );
       expect(address).toEqual('3DTdZeycDBaimjuuknVGrG8fxdLbjsAjXN');
-    });
-
-    it('should return the same address if it is BCH but use useLegacyAddress', () => {
-      const newOpts = {
-        wallet: {
-          useLegacyAddress: true
-        }
-      };
-      configProvider.set(newOpts);
-
-      const address = walletProvider.getAddressView(
-        'bch',
-        'livenet',
-        'CHp9UweEZXoFZ9sVDmT9ESS6zGysNeAn4j'
-      );
-      expect(address).toEqual('CHp9UweEZXoFZ9sVDmT9ESS6zGysNeAn4j');
     });
   });
 
@@ -362,7 +340,7 @@ describe('Provider: Wallet Provider', () => {
 
       const force = true;
       walletProvider.getAddress(wallet, force).then(address => {
-        expect(address).toEqual('address2');
+        expect(address).toEqual('1CVuVALD6Zo7ms24n3iUXv162kvUzsHr69');
       });
     });
 
@@ -547,8 +525,7 @@ describe('Provider: Wallet Provider', () => {
       walletProvider
         .fetchTxHistory(wallet, progressFn, opts)
         .then(txHistory => {
-          expect(txHistory.isValid).toBeTruthy();
-          delete txHistory.isValid;
+          expect(wallet.completeHistoryIsValid).toBeTruthy();
           expect(txHistory).toEqual(expectedTxHistory);
         });
     });
