@@ -42,9 +42,7 @@ export class CardCatalogPage extends WideHeaderPage {
       .getAvailableCards()
       .then(allCards => {
         this.cardConfigMap = allCards
-          .sort((a, b) => {
-            return a.featured && !b.featured ? -1 : 1;
-          })
+          .sort((a, b) => (a.featured && !b.featured ? -1 : 1))
           .reduce(
             (map, cardConfig) => ({ ...map, [cardConfig.name]: cardConfig }),
             {}
