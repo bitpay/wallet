@@ -57,12 +57,49 @@
 
     </ion-list>
 
-    <ion-list class="settings-list" [hidden]="!searchQuery">
+    <ion-list class="settings-list" [virtualScroll]="visibleCards" [approxItemHeight]="'83px'"
+      [virtualTrackBy]="trackBy" [hidden]="!searchQuery">
+
+      <ion-item-divider *virtualHeader="let header">
+        {{ header }}
+      </ion-item-divider>
+
+      <button ion-item class="card-list-item" *virtualItem="let card" (click)="buyCard(card)">
+        <ion-icon item-start>
+          <img-loader class="card-list-item__icon" [src]="cardConfigMap[card.name]?.icon" [fallbackAsPlaceholder]="true"
+            [fallbackUrl]="giftCardProvider.fallbackIcon"></img-loader>
+        </ion-icon>
+        <ion-label>
+
+          <div *ngIf="cardConfigMap">
+            <div class="card-list-item__label ellipsis">
+              {{ cardConfigMap[card.name].displayName }}
+            </div>
+            <ion-note class="card-list-item__note" *ngIf="!cardConfigMap[card.name].supportedAmounts">
+              {{ cardConfigMap[card.name].minAmount | formatCurrency: cardConfigMap[card.name].currency:0 }} —
+              {{ cardConfigMap[card.name].maxAmount | formatCurrency: cardConfigMap[card.name].currency:0 }}
+            </ion-note>
+            <ion-note class="card-list-item__note ellipsis" *ngIf="cardConfigMap[card.name].supportedAmounts">
+              <span *ngFor="
+                    let amount of cardConfigMap[card.name].supportedAmounts;
+                    let last = last
+                  ">
+                {{ amount | formatCurrency: cardConfigMap[card.name].currency:'minimal'
+                }}<span *ngIf="!last">,</span>
+              </span>
+            </ion-note>
+          </div>
+        </ion-label>
+      </button>
+
+    </ion-list>
+
+    <!-- <ion-list class="settings-list" [hidden]="!searchQuery">
       <ion-item-group>
         <card-list-item *ngFor="let card of visibleCards" [card]="card" type="catalog" (click)="buyCard(card)">
         </card-list-item>
       </ion-item-group>
       <ion-item-divider></ion-item-divider>
-    </ion-list>
+    </ion-list> -->
   </div>
 </ion-content>
