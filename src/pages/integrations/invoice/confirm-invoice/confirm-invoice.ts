@@ -57,6 +57,7 @@ export class ConfirmInvoicePage extends ConfirmCardPurchasePage {
   public coinAmount: number;
   public merchantProvidedEmail?: string;
   public buyerProvidedEmail?: string;
+  public detailsCurrency: string;
   constructor(
     actionSheetProvider: ActionSheetProvider,
     bwcErrorProvider: BwcErrorProvider,
@@ -115,6 +116,7 @@ export class ConfirmInvoicePage extends ConfirmCardPurchasePage {
       events,
       AppProvider
     );
+    this.hideSlideButton = false;
     this.invoiceName = this.navParams.data.invoiceName;
     this.configWallet = this.configProvider.get().wallet;
   }
@@ -133,7 +135,7 @@ export class ConfirmInvoicePage extends ConfirmCardPurchasePage {
       : this.buyerProvidedEmail
       ? this.buyerProvidedEmail
       : await this.getEmail();
-    this.hideSlideButton = this.isValidEmail() ? false : true;
+    this.detailsCurrency = this.currency;
   }
 
   ionViewDidLoad() {
@@ -250,6 +252,13 @@ export class ConfirmInvoicePage extends ConfirmCardPurchasePage {
       this.invoiceFeeSat,
       this.networkFeeSat
     );
+    this.changeUnit();
+  }
+
+  public changeUnit() {
+    const COIN = this.wallet.coin.toUpperCase();
+    this.detailsCurrency =
+      this.detailsCurrency === this.currency ? COIN : this.currency;
   }
 
   public isValidEmail() {

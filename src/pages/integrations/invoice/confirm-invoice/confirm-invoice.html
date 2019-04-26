@@ -12,12 +12,7 @@
 </ion-header>
 
 <ion-content>
-  <ion-list
-    [ngClass]="{
-      'settings-list showSlideButton': isValidEmail(),
-      'settings-list hiddenSlideButton': !isValidEmail()
-    }"
-  >
+  <ion-list class="settings-list">
     <ion-item>
       <div class="header-container">
         <div class="gift-card-title">{{ invoiceName }}</div>
@@ -113,50 +108,81 @@
       </label-tip>
 
       <div *ngIf="totalAmountStr">
-        <ion-item-divider> {{ 'Details' | translate }} </ion-item-divider>
+        <ion-item-divider style="margin-top: 5px">
+          <div class="details-header">
+            <div>{{ 'Details' | translate }}</div>
+            <div class="last-item" item-end>
+              <div class="switcher" (click)="changeUnit()" tappable item-end>
+                <img class="switcher__icon" src="assets/img/icon-swap.svg" />
+                <div class="switcher__label">{{ detailsCurrency }}</div>
+              </div>
+            </div>
+          </div></ion-item-divider
+        >
         <ion-item>
           <span>{{ 'Invoice' | translate }}</span>
           <ion-note item-end>
-            <span *ngIf="onlyIntegers">{{ amount | number: '1.0-0' }}</span>
-            <span *ngIf="!onlyIntegers">{{ amount | number: '1.2-2' }}</span>
-            {{ currencyIsoCode }} <span>({{ subTotalAmountStr }} )</span>
+            <div *ngIf="detailsCurrency === currency">
+              <span *ngIf="onlyIntegers">{{ amount | number: '1.0-0' }}</span>
+              <span *ngIf="!onlyIntegers">{{ amount | number: '1.2-2' }}</span>
+              {{ currencyIsoCode }}
+            </div>
+            <span *ngIf="detailsCurrency === wallet.coin.toUpperCase()">{{
+              subTotalAmountStr
+            }}</span>
           </ion-note>
         </ion-item>
         <ion-item>
           <span>{{ 'Network cost' | translate }}</span>
           <ion-note item-end>
-            <span *ngIf="onlyIntegers">{{ invoiceFee | number: '1.0-0' }}</span>
-            <span *ngIf="!onlyIntegers">{{
-              invoiceFee | number: '1.2-2'
+            <div *ngIf="detailsCurrency === currency">
+              <span *ngIf="onlyIntegers">{{
+                invoiceFee | number: '1.0-0'
+              }}</span>
+              <span *ngIf="!onlyIntegers">{{
+                invoiceFee | number: '1.2-2'
+              }}</span>
+              {{ currencyIsoCode }}
+            </div>
+            <span *ngIf="detailsCurrency === wallet.coin.toUpperCase()">{{
+              invoiceFeeSat | satToUnit: wallet.coin
             }}</span>
-            {{ currencyIsoCode }}
-            <span>({{ invoiceFeeSat | satToUnit: wallet.coin }} )</span>
           </ion-note>
         </ion-item>
         <ion-item>
           <span>{{ 'Miner fee' | translate }}</span>
           <ion-note item-end>
-            <span *ngIf="onlyIntegers">{{ networkFee | number: '1.0-0' }}</span>
-            <span *ngIf="!onlyIntegers">{{
-              networkFee | number: '1.2-2'
+            <div *ngIf="detailsCurrency === currency">
+              <span *ngIf="onlyIntegers">{{
+                networkFee | number: '1.0-0'
+              }}</span>
+              <span *ngIf="!onlyIntegers">{{
+                networkFee | number: '1.2-2'
+              }}</span>
+              {{ currencyIsoCode }}
+            </div>
+            <span *ngIf="detailsCurrency === wallet.coin.toUpperCase()">{{
+              networkFeeSat | satToUnit: wallet.coin
             }}</span>
-            {{ currencyIsoCode }}
-            <span>({{ networkFeeSat | satToUnit: wallet.coin }} )</span>
           </ion-note>
         </ion-item>
         <ion-item>
           <span>{{ 'Total' | translate }}</span>
           <ion-note item-end>
-            <span *ngIf="totalAmount">
-              <span *ngIf="onlyIntegers">{{
-                totalAmount | number: '1.0-0'
-              }}</span>
-              <span *ngIf="!onlyIntegers">{{
-                totalAmount | number: '1.2-2'
-              }}</span>
-              {{ currencyIsoCode }}
-            </span>
-            <span *ngIf="totalAmountStr">({{ totalAmountStr }})</span>
+            <div *ngIf="detailsCurrency === currency">
+              <span *ngIf="totalAmount">
+                <span *ngIf="onlyIntegers">{{
+                  totalAmount | number: '1.0-0'
+                }}</span>
+                <span *ngIf="!onlyIntegers">{{
+                  totalAmount | number: '1.2-2'
+                }}</span>
+                {{ currencyIsoCode }}
+              </span>
+            </div>
+            <span *ngIf="detailsCurrency === wallet.coin.toUpperCase()">{{
+              totalAmountStr
+            }}</span>
           </ion-note>
         </ion-item>
       </div>
@@ -164,12 +190,12 @@
   </ion-list>
 </ion-content>
 
-<ion-footer *ngIf="isValidEmail()">
+<ion-footer>
   <page-slide-to-accept
     #slideButton
     *ngIf="isCordova"
     [disabled]="
-      !(wallet && totalAmountStr && !paymentExpired && isValidEmail())
+      !(wallet && totalAmountStr && isValidEmail() && !paymentExpired)
     "
     buttonText="{{'Slide to confirm' | translate}}"
     (slideDone)="buyConfirm()"
@@ -185,7 +211,7 @@
       class="button-footer"
       (click)="buyConfirm()"
       [disabled]="
-        !(wallet && totalAmountStr && !paymentExpired && isValidEmail())
+        !(wallet && totalAmountStr && isValidEmail() && !paymentExpired)
       "
     >
       {{ 'Confirm

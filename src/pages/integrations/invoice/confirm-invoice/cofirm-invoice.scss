@@ -1,15 +1,43 @@
 confirm-invoice-page {
+  $short-screen: 500px;
   ion-content {
     .fixed-content,
-    .showSlideButton {
+    .scroll-content {
       margin-bottom: 90px;
-    }
-    .hiddenSlideButton {
-      margin-bottom: 0px;
     }
   }
   .header-container {
     padding: 10px 0px 10px 0px;
+  }
+  .details-header {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    .switcher {
+      flex: 1;
+      margin: 0;
+      display: inline-flex;
+      align-items: center;
+      background: rgba(0, 0, 0, 0.06);
+      padding: 0.75rem 1rem;
+      border-radius: 3px;
+      cursor: pointer;
+      width: 81px;
+      @media (max-height: $short-screen + 70px) {
+        width: 75px;
+      }
+      &__icon {
+        margin-right: 10px;
+      }
+      &__label {
+        color: #060606;
+        font-size: 18px;
+        margin-top: 1px;
+        @media (max-height: $short-screen + 70px) {
+          font-size: 15px;
+        }
+      }
+    }
   }
   .amount-label {
     padding-top: 1rem;
@@ -107,14 +135,6 @@ confirm-invoice-page {
         background-color: color($colors, primary);
         margin-right: 1rem;
       }
-    }
-  }
-
-  .amazon-info {
-    * {
-      white-space: normal;
-      font-size: 12px;
-      line-height: 16px;
     }
   }
 
