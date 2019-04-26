@@ -39,7 +39,7 @@ import {
 } from '../../../../providers/wallet/wallet';
 
 // Pages
-import { ConfirmCardPurchasePage } from '../confirm-card-purchase/confirm-card-purchase';
+import { ConfirmCardPurchasePage } from '../../gift-cards/confirm-card-purchase/confirm-card-purchase';
 
 @Component({
   selector: 'confirm-invoice-page',
