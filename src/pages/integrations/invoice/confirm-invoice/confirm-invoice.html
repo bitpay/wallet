@@ -172,7 +172,7 @@
         <ion-item>
           <span>{{ 'Total' | translate }}</span>
           <ion-note item-end>
-            <div *ngIf="detailsCurrency === currency">
+            <div *ngIf="detailsCurrency === wallet.coin.toUpperCase()">
               <span *ngIf="totalAmount">
                 <span *ngIf="onlyIntegers">{{
                   totalAmount | number: '1.0-0'
@@ -183,7 +183,7 @@
                 {{ currencyIsoCode }}
               </span>
             </div>
-            <span *ngIf="detailsCurrency === wallet.coin.toUpperCase()">{{
+            <span *ngIf="detailsCurrency === currency">{{
               totalAmountStr
             }}</span>
           </ion-note>
