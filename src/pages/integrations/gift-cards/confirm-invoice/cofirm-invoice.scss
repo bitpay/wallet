@@ -1,8 +1,10 @@
 confirm-invoice-page {
   ion-content {
-    .fixed-content,
-    .scroll-content {
+    .showSlideButton {
       margin-bottom: 90px;
+    }
+    .hiddenSlideButton {
+      margin-bottom: 0px;
     }
   }
   .header-container {

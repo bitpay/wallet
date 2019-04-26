@@ -192,7 +192,7 @@ export class IncomingDataProvider {
     const invoiceResponse = await this.invoiceProvider
       .getBitPayInvoiceData(invoiceId)
       .catch(err => {
-        throw this.logger.error(err.message);
+        throw this.logger.error(err);
       });
     const { invoice, org, buyer } = invoiceResponse;
     const stateParams = {

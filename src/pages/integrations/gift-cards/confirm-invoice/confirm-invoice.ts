@@ -115,7 +115,6 @@ export class ConfirmInvoicePage extends ConfirmCardPurchasePage {
       events,
       AppProvider
     );
-    this.hideSlideButton = false;
     this.invoiceName = this.navParams.data.invoiceName;
     this.configWallet = this.configProvider.get().wallet;
   }
@@ -134,6 +133,7 @@ export class ConfirmInvoicePage extends ConfirmCardPurchasePage {
       : this.buyerProvidedEmail
       ? this.buyerProvidedEmail
       : await this.getEmail();
+    this.hideSlideButton = this.isValidEmail() ? false : true;
   }
 
   ionViewDidLoad() {
@@ -317,7 +317,6 @@ export class ConfirmInvoicePage extends ConfirmCardPurchasePage {
 
   public throwBuyerInfoError(err) {
     const title = this.translate.instant('Error');
-    global.console.log(err.error);
     const msg = this.translate.instant(err.error);
     this.onGoingProcessProvider.clear();
     this.showErrorInfoSheet(msg, title, false);
