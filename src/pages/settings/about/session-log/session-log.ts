@@ -106,51 +106,67 @@ export class SessionLogPage {
     reader.onload = event => {
       const attachment = (event as any).target.result; // <-- data url
 
-      // Check if sharing via email is supported
-      this.socialSharing
-        .canShareViaEmail()
-        .then(() => {
-          this.logger.info('sharing via email is possible');
-          this.socialSharing
-            .shareViaEmail(
-              message,
-              subject,
-              null, // TO: must be null or an array
-              null, // CC: must be null or an array
-              null, // BCC: must be null or an array
-              attachment // FILES: can be null, a string, or an array
-            )
-            .then(data => {
-              this.logger.info('Email created successfully: ', data);
-            })
-            .catch(err => {
-              this.logger.error('socialSharing Error: ', err);
-            });
-        })
-        .catch(() => {
-          this.logger.warn('sharing via email is not possible');
-          this.socialSharing
-            .share(
-              message,
-              subject,
-              attachment // FILES: can be null, a string, or an array
-            )
-            .catch(err => {
-              this.logger.error('socialSharing Error: ', err);
-            });
-        });
+      if (this.platformProvider.isAndroid) {
+        this.shareAndroid(message, subject, attachment);
+      } else {
+        this.shareIOS(message, subject, attachment);
+      }
     };
 
     reader.readAsDataURL(blob);
   }
 
+  private shareAndroid(message, subject, attachment): void {
+    // share via email with attachment is not working correctly in some android versions
+    // so instead of shareViaEmail() -> share()
+    this.socialSharing.share(message, subject, attachment).catch(err => {
+      this.logger.error('socialSharing Error: ', err);
+    });
+  }
+
+  private shareIOS(message, subject, attachment): void {
+    // Check if sharing via email is supported
+    this.socialSharing
+      .canShareViaEmail()
+      .then(() => {
+        this.logger.info('sharing via email is possible');
+        this.socialSharing
+          .shareViaEmail(
+            message,
+            subject,
+            null, // TO: must be null or an array
+            null, // CC: must be null or an array
+            null, // BCC: must be null or an array
+            attachment // FILES: can be null, a string, or an array
+          )
+          .then(data => {
+            this.logger.info('Email created successfully: ', data);
+          })
+          .catch(err => {
+            this.logger.error('socialSharing Error: ', err);
+          });
+      })
+      .catch(() => {
+        this.logger.warn('sharing via email is not possible');
+        this.socialSharing
+          .share(
+            message,
+            subject,
+            attachment // FILES: can be null, a string, or an array
+          )
+          .catch(err => {
+            this.logger.error('socialSharing Error: ', err);
+          });
+      });
+  }
+
   public showOptionsMenu(): void {
     const downloadText = this.translate.instant('Download logs');
-    const emailText = this.translate.instant('Send logs by email');
+    const shareText = this.translate.instant('Share logs');
     const button = [];
 
     button.push({
-      text: this.isCordova ? emailText : downloadText,
+      text: this.isCordova ? shareText : downloadText,
       handler: () => {
         this.showWarningModal();
       }

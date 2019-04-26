@@ -137,13 +137,11 @@ describe('SessionLogPage', () => {
       });
     });
     describe('#sendLogs', () => {
-      it('should send logs', () => {
+      it('should share logs', () => {
         const promise = Promise.resolve(
           'Session Logs.\nBe careful, this could contain sensitive private data\n\n\n\n[01/07/2008][1]msg\n'
         );
-
         spyOn(instance, 'prepareSessionLogs').and.returnValue(promise);
-        spyOn(instance.socialSharing, 'shareViaEmail');
 
         instance.sendLogs();
 
