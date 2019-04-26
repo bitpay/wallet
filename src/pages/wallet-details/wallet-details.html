@@ -183,7 +183,7 @@
 
             <button ion-item (click)="goToTxDetails(tx)">
               <ion-icon class="item-img" item-start>
-                <div *ngIf="tx.confirmations == 0">
+                <div *ngIf="tx.confirmations <= 0">
                   <img src="assets/img/tx-action/icon-confirming.svg" width="40">
                 </div>
                 <div *ngIf="tx.confirmations > 0">
@@ -209,7 +209,7 @@
                 </div>
               </ion-icon>
 
-              <div class="action" *ngIf="tx.confirmations == 0">
+              <div class="action" *ngIf="tx.confirmations <= 0">
                 <span *ngIf="(tx.action == 'sent') && !(addressbook && tx.outputs[0] && addressbook[tx.outputs[0].address])">{{'Sending'
                   | translate}}</span>
                 <span *ngIf="(tx.action == 'moved') && !(addressbook && tx.outputs[0] && addressbook[tx.outputs[0].address])">{{'Moving'
