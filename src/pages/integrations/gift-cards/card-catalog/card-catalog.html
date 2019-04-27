@@ -57,12 +57,8 @@
 
     </ion-list>
 
-    <ion-list class="settings-list" [virtualScroll]="visibleCards" [approxItemHeight]="'83px'"
-      [virtualTrackBy]="trackBy" [hidden]="!searchQuery">
-
-      <ion-item-divider *virtualHeader="let header">
-        {{ header }}
-      </ion-item-divider>
+    <ion-list class="settings-list" [virtualScroll]="searchQuery ? visibleCards : []" [approxItemHeight]="'83px'"
+      [virtualTrackBy]="trackBy">
 
       <button ion-item class="card-list-item" *virtualItem="let card" (click)="buyCard(card)">
         <ion-icon item-start>
