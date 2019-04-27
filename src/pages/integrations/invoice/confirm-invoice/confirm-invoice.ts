@@ -34,6 +34,7 @@ import { ProfileProvider } from '../../../../providers/profile/profile';
 import { ReplaceParametersProvider } from '../../../../providers/replace-parameters/replace-parameters';
 import { TxFormatProvider } from '../../../../providers/tx-format/tx-format';
 import {
+  Coin,
   TransactionProposal,
   WalletProvider
 } from '../../../../providers/wallet/wallet';
@@ -53,6 +54,7 @@ export class ConfirmInvoicePage extends ConfirmCardPurchasePage {
   public parsedAmount: any;
   public invoiceFeeSat: any;
   public networkFeeSat: any;
+  public subTotalAmount: number;
   public subTotalAmountStr: string;
   public coinAmount: number;
   public merchantProvidedEmail?: string;
@@ -133,8 +135,8 @@ export class ConfirmInvoicePage extends ConfirmCardPurchasePage {
     this.email = this.merchantProvidedEmail
       ? this.merchantProvidedEmail
       : this.buyerProvidedEmail
-        ? this.buyerProvidedEmail
-        : await this.getEmail();
+      ? this.buyerProvidedEmail
+      : await this.getEmail();
     this.detailsCurrency = this.currency;
     this.paymentTimeControl(this.invoiceData.expirationTime);
   }
@@ -223,7 +225,7 @@ export class ConfirmInvoicePage extends ConfirmCardPurchasePage {
     this.message = this.replaceParametersProvider.replace(
       this.translate.instant(
         `Payment request for BitPay invoice ${
-        this.invoiceId
+          this.invoiceId
         } for {{amountUnitStr}} to merchant ${this.invoiceName}`
       ),
       { amountUnitStr: this.amountUnitStr }
@@ -231,6 +233,7 @@ export class ConfirmInvoicePage extends ConfirmCardPurchasePage {
     this.onGoingProcessProvider.clear();
 
     this.networkFeeSat = this.invoiceData.minerFees[COIN].satoshisPerByte;
+    this.subTotalAmount = this.invoiceData.paymentSubtotals[COIN];
     this.subTotalAmountStr = this.txFormatProvider.formatAmountStr(
       this.wallet.coin,
       this.invoiceData.paymentSubtotals[COIN]
@@ -255,10 +258,18 @@ export class ConfirmInvoicePage extends ConfirmCardPurchasePage {
     this.changeUnit();
   }
 
+  public checkIfCoin() {
+    return !!Coin[this.currency];
+  }
+
   public changeUnit() {
     const COIN = this.wallet.coin.toUpperCase();
     this.detailsCurrency =
-      this.detailsCurrency === this.currency ? COIN : this.currency;
+      this.detailsCurrency === this.currency
+        ? !this.checkIfCoin()
+          ? COIN
+          : 'USD'
+        : this.currency;
   }
 
   public isValidEmail() {

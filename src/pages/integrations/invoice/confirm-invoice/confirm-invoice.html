@@ -30,8 +30,11 @@
               src="assets/img/icon-tx-sent-outline.svg"
             />
           </div>
-          <div *ngIf="totalAmount" class="alternative">
-            {{ totalAmount | formatCurrency: currency }} {{ currencyIsoCode }}
+          <div *ngIf="totalAmount && !checkIfCoin()" class="alternative">
+            {{ totalAmount | formatCurrency: currency }}
+          </div>
+          <div *ngIf="totalAmount && checkIfCoin()" class="alternative">
+            {{ coinAmount / 1e-8 | satToFiat: wallet.coin }}
           </div>
         </div>
       </div>
@@ -125,11 +128,19 @@
         <ion-item>
           <span>{{ 'Invoice' | translate }}</span>
           <ion-note item-end>
-            <div *ngIf="detailsCurrency === wallet.coin.toUpperCase()">
+            <div
+              *ngIf="
+                detailsCurrency === wallet.coin.toUpperCase() &&
+                detailsCurrency !== currency
+              "
+            >
               <span *ngIf="onlyIntegers">{{ amount | number: '1.0-0' }}</span>
               <span *ngIf="!onlyIntegers">{{ amount | number: '1.2-2' }}</span>
-              {{ currencyIsoCode }}
+              {{ currency }}
             </div>
+            <span *ngIf="checkIfCoin() && detailsCurrency !== currency">{{
+              subTotalAmount | satToFiat: wallet.coin
+            }}</span>
             <span *ngIf="detailsCurrency === currency">{{
               subTotalAmountStr
             }}</span>
@@ -138,15 +149,23 @@
         <ion-item>
           <span>{{ 'Network cost' | translate }}</span>
           <ion-note item-end>
-            <div *ngIf="detailsCurrency === wallet.coin.toUpperCase()">
+            <div
+              *ngIf="
+                detailsCurrency === wallet.coin.toUpperCase() &&
+                detailsCurrency !== currency
+              "
+            >
               <span *ngIf="onlyIntegers">{{
                 invoiceFee | number: '1.0-0'
               }}</span>
               <span *ngIf="!onlyIntegers">{{
                 invoiceFee | number: '1.2-2'
               }}</span>
-              {{ currencyIsoCode }}
+              {{ currency }}
             </div>
+            <span *ngIf="checkIfCoin() && detailsCurrency !== currency">{{
+              invoiceFeeSat | satToFiat: wallet.coin
+            }}</span>
             <span *ngIf="detailsCurrency === currency">{{
               invoiceFeeSat | satToUnit: wallet.coin
             }}</span>
@@ -155,24 +174,37 @@
         <ion-item>
           <span>{{ 'Miner fee' | translate }}</span>
           <ion-note item-end>
-            <div *ngIf="detailsCurrency === wallet.coin.toUpperCase()">
+            <div
+              *ngIf="
+                detailsCurrency === wallet.coin.toUpperCase() &&
+                detailsCurrency !== currency
+              "
+            >
               <span *ngIf="onlyIntegers">{{
                 networkFee | number: '1.0-0'
               }}</span>
               <span *ngIf="!onlyIntegers">{{
                 networkFee | number: '1.2-2'
               }}</span>
-              {{ currencyIsoCode }}
+              {{ currency }}
             </div>
+            <span *ngIf="checkIfCoin() && detailsCurrency !== currency">{{
+              networkFeeSat | satToFiat: wallet.coin
+            }}</span>
             <span *ngIf="detailsCurrency === currency">{{
-              networkFeeSat | satToUnit: wallet.coin
+              networkFeeSat | satToFiat: wallet.coin
             }}</span>
           </ion-note>
         </ion-item>
         <ion-item>
           <span>{{ 'Total' | translate }}</span>
           <ion-note item-end>
-            <div *ngIf="detailsCurrency === wallet.coin.toUpperCase()">
+            <div
+              *ngIf="
+                detailsCurrency === wallet.coin.toUpperCase() &&
+                detailsCurrency !== currency
+              "
+            >
               <span *ngIf="totalAmount">
                 <span *ngIf="onlyIntegers">{{
                   totalAmount | number: '1.0-0'
@@ -180,9 +212,12 @@
                 <span *ngIf="!onlyIntegers">{{
                   totalAmount | number: '1.2-2'
                 }}</span>
-                {{ currencyIsoCode }}
+                {{ currency }}
               </span>
             </div>
+            <span *ngIf="checkIfCoin() && detailsCurrency !== currency">{{
+              coinAmount / 1e-8 | satToFiat: wallet.coin
+            }}</span>
             <span *ngIf="detailsCurrency === currency">{{
               totalAmountStr
             }}</span>
