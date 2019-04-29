@@ -647,12 +647,7 @@ export function sortByDisplayName(
   a: CardConfig | GiftCard,
   b: CardConfig | GiftCard
 ) {
-  const startsNumeric = value => /^[0-9]$/.test(value.charAt(0));
-  const aName = a.displayName.toLowerCase();
-  const bName = b.displayName.toLowerCase();
-  const aSortValue = `${startsNumeric(aName) ? 'z' : ''}${aName}`;
-  const bSortValue = `${startsNumeric(bName) ? 'z' : ''}${bName}`;
-  return aSortValue > bSortValue ? 1 : -1;
+  return a.displayName.toLowerCase() > b.displayName.toLowerCase() ? 1 : -1;
 }
 
 export function setNullableCardFields(card: GiftCard, cardConfig: CardConfig) {

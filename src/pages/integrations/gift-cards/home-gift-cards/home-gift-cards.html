@@ -4,14 +4,14 @@
   <div *ngIf="activeBrands?.length" [@archiveAnimation] class="add-card-button" (click)="buyGiftCards()" tappable
     translate>Buy Gift Card</div>
 </ion-list>
-<action-card *ngIf="!activeBrands?.length" (click)="buyGiftCards()" tappable>
+<action-card *ngIf="!activeBrands?.length">
   <div action-card-header><img src="assets/img/icon-credit-card.svg"></div>
   <div action-card-title translate>Buy Gift Cards</div>
   <div action-card-body>
     {{'Add gift cards to your {appName} wallet from brands like Amazon, Delta, Google Play, and Uber.' |
     translate:{appName: appName} }}
   </div>
-  <div action-card-button translate>
+  <div action-card-button translate (click)="buyGiftCards()" tappable>
     Shop Now
   </div>
 </action-card>
