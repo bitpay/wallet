@@ -9,7 +9,12 @@ import {
   selector: 'printable-card',
   template: `
     <canvas #canvas width="595" height="842"></canvas>
-    <img #barcode [src]="card.barcodeImage" (load)="drawBarcode()" />
+    <img
+      #barcode
+      *ngIf="card.barcodeImage"
+      [src]="card.barcodeImage"
+      (load)="drawBarcode()"
+    />
     <img
       #cardImage
       crossorigin="Anonymous"
