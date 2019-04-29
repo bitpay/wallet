@@ -16,7 +16,7 @@ import { WideHeaderPage } from '../../../templates/wide-header-page/wide-header-
 export class CardCatalogPage extends WideHeaderPage {
   public allCards: CardConfig[];
   public searchQuery: string = '';
-  public visibleCards: CardConfig[];
+  public visibleCards: CardConfig[] = [];
   public cardConfigMap: { [name: string]: CardConfig };
 
   public getHeaderFn = this.getHeader.bind(this);
@@ -49,7 +49,6 @@ export class CardCatalogPage extends WideHeaderPage {
             {}
           );
         this.allCards = allCards;
-        this.visibleCards = this.allCards;
         this.updateCardList();
       })
       .catch(_ => {
@@ -100,11 +99,11 @@ export class CardCatalogPage extends WideHeaderPage {
   }
 }
 
-export function isCardInSearchResults(c: CardConfig, search: string) {
+export function isCardInSearchResults(c: CardConfig, search: string = '') {
   const cardName = c.name.toLowerCase();
   const query = search.toLowerCase();
   const matchableText = [cardName, stripPunctuation(cardName)];
-  return matchableText.some(text => text.indexOf(query) > -1);
+  return search && matchableText.some(text => text.indexOf(query) > -1);
 }
 
 export function stripPunctuation(text: string) {
