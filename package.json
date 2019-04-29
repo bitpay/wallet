@@ -2,7 +2,7 @@
   "name": "copay",
   "description": "A Secure Bitcoin Wallet",
   "author": "BitPay",
-  "version": "5.8.1",
+  "version": "5.8.2",
   "keywords": [
     "bitcoin",
     "wallet",
@@ -189,7 +189,7 @@
     "cordova-plugin-advanced-http": "2.0.8",
     "cordova-plugin-android-fingerprint-auth": "1.4.3",
     "cordova-plugin-compat": "1.2.0",
-    "cordova-plugin-customurlscheme": "https://github.com/cmgustavo/Custom-URL-scheme.git#v4.0",
+    "cordova-plugin-customurlscheme-ng": "5.0.0",
     "cordova-plugin-device": "2.0.1",
     "cordova-plugin-dialogs": "2.0.1",
     "cordova-plugin-fcm": "https://github.com/cmgustavo/cordova-plugin-fcm.git#v4.1",
