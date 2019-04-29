@@ -81,6 +81,19 @@ export class ProfileProvider {
     if (this.wallet[walletId]) this.wallet[walletId]['order'] = index;
   }
 
+  public setWalletGroupOrder(
+    walletGroupId: string,
+    index: number
+  ): Promise<any> {
+    return this.getWalletGroup(walletGroupId).then(walletGroup => {
+      walletGroup.order = index;
+      this.logger.debug(
+        'Wallet Group new order stored for ' + walletGroupId + ': ' + index
+      );
+      return this.storeWalletGroup(walletGroup);
+    });
+  }
+
   public async getWalletOrder(walletId: string) {
     const order = await this.persistenceProvider.getWalletOrder(walletId);
     return order;
@@ -199,7 +212,7 @@ export class ProfileProvider {
           return;
         }
         wallet.setNotificationsInterval(this.UPDATE_PERIOD);
-        wallet.openWallet(() => { });
+        wallet.openWallet(() => {});
       }
     );
     this.events.subscribe('Local/ConfigUpdate', opts => {
@@ -217,7 +230,7 @@ export class ProfileProvider {
     if (wallet.backupTimestamp) date = new Date(Number(wallet.backupTimestamp));
     this.logger.info(
       `Binding wallet: ${wallet.id} - Backed up: ${backedUp} ${
-      date ? date : ''
+        date ? date : ''
       } - Encrypted: ${isEncrypted}`
     );
 
@@ -389,7 +402,7 @@ export class ProfileProvider {
             this.profile.setChecked(this.platformProvider.ua, walletId);
           } else {
             this.logger.warn('Key Derivation failed for wallet:' + walletId);
-            this.persistenceProvider.clearLastAddress(walletId).then(() => { });
+            this.persistenceProvider.clearLastAddress(walletId).then(() => {});
           }
 
           this.storeProfileIfDirty();
@@ -799,7 +812,8 @@ export class ProfileProvider {
       id: walletClients[0].credentials.walletId,
       name: walletClients[0].credentials.walletName,
       walletIds: [],
-      needsBackup
+      needsBackup,
+      order: 0
     };
 
     return this.getWalletGroup(walletGroupId).then(walletGroup => {
@@ -1425,7 +1439,8 @@ export class ProfileProvider {
       id: walletClient.credentials.walletId,
       name: walletClient.credentials.walletName,
       walletIds: [walletClient.credentials.walletId],
-      needsBackup: walletClient.needsBackup
+      needsBackup: walletClient.needsBackup,
+      order: 0
     };
 
     this.storeWalletGroup(defaultWalletGroup);

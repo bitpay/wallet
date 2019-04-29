@@ -43,8 +43,6 @@ export class SettingsPage {
   public appName: string;
   public currentLanguageName: string;
   public languages;
-  public walletsBtc;
-  public walletsBch;
   public config;
   public selectedAlternative;
   public isCordova: boolean;
@@ -54,6 +52,7 @@ export class SettingsPage {
   public showBitPayCard: boolean = false;
   public walletGroup;
   public walletGroups;
+  public showReorderWallets: boolean;
 
   constructor(
     private navCtrl: NavController,
@@ -71,9 +70,8 @@ export class SettingsPage {
     private touchid: TouchIdProvider
   ) {
     this.appName = this.app.info.nameCase;
-    this.walletsBch = [];
-    this.walletsBtc = [];
     this.isCordova = this.platformProvider.isCordova;
+    this.showReorderWallets = false;
   }
 
   ionViewDidLoad() {
@@ -84,12 +82,6 @@ export class SettingsPage {
     this.currentLanguageName = this.language.getName(
       this.language.getCurrent()
     );
-    this.walletsBtc = this.profileProvider.getWallets({
-      coin: 'btc'
-    });
-    this.walletsBch = this.profileProvider.getWallets({
-      coin: 'bch'
-    });
     this.profileProvider.getAllWalletsGroups().then(walletGroups => {
       this.walletGroups = _.compact(walletGroups);
     });
@@ -239,6 +231,23 @@ export class SettingsPage {
   private checkFingerprint(): void {
     this.touchid.check().then(() => {
       this.navCtrl.push(LockPage);
+    });
+  }
+
+  public reorderGroupWallets(indexes): void {
+    const element = this.walletGroups[indexes.from];
+    this.walletGroups.splice(indexes.from, 1);
+    this.walletGroups.splice(indexes.to, 0, element);
+    const promises = [];
+    _.each(this.walletGroups, (walletGroup, index: number) => {
+      promises.push(
+        this.profileProvider.setWalletGroupOrder(walletGroup.id, index)
+      );
+    });
+    Promise.all(promises).then(() => {
+      this.profileProvider.getAllWalletsGroups().then(walletGroups => {
+        this.walletGroups = _.compact(walletGroups);
+      });
     });
   }
 }

@@ -80,7 +80,7 @@
 
     <create-new-wallet *ngIf="!wallets || !wallets[0]"></create-new-wallet>
 
-      <div class="card" *ngFor="let walletGroup of walletGroups">
+      <div class="card" *ngFor="let walletGroup of walletGroups  | orderBy : ['order']">
         <ion-item-divider>
           <div class="title wallets-list-title" item-start>
             <div translate>{{walletGroup.name}}</div>

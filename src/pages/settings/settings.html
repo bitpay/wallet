@@ -103,17 +103,21 @@
         </ion-list>
       </div>
 
-
-      <ion-item-divider *ngIf="walletGroups">
-        Wallets
-      </ion-item-divider>
-
-      <button ion-item *ngFor="let walletGroup of walletGroups" (click)="openWalletGroupSettings(walletGroup.id)">
-        <ion-icon item-start>
-          <img src="assets/img/icon-wallet.svg" class="icon-wallet" />
-        </ion-icon>
-        <span>{{walletGroup.name}}</span>
-      </button>
+      <div *ngIf="walletGroups">
+        <div>
+          {{'Wallets' | translate}}
+        </div>
+        <div class="title-buttons" item-end *ngIf="!showReorderWallets">
+          <button ion-button clear icon-only color="grey" (click)="showReorderWallets = !showReorderWallets" *ngIf="walletGroups.length > 1">
+            <ion-icon name="reorder"></ion-icon>
+          </button>
+        </div>
+        <div item-end *ngIf="showReorderWallets">
+          <button ion-button clear color="secondary" (click)="showReorderWallets = !showReorderWallets">
+            {{'Done' | translate}}
+          </button>
+        </div>
+      </div>
 
       <ion-item-divider *ngIf="integrationServices && integrationServices[0]">
         {{'Integrations' | translate}}
