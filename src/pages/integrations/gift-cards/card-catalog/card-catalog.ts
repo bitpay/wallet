@@ -3,7 +3,6 @@ import { NavController } from 'ionic-angular';
 
 import { BuyCardPage } from '../buy-card/buy-card';
 
-import { TranslateService } from '@ngx-translate/core';
 import { ActionSheetProvider, PlatformProvider } from '../../../../providers';
 import { GiftCardProvider } from '../../../../providers/gift-card/gift-card';
 import { CardConfig } from '../../../../providers/gift-card/gift-card.types';
@@ -19,8 +18,6 @@ export class CardCatalogPage extends WideHeaderPage {
   public visibleCards: CardConfig[];
   public cardConfigMap: { [name: string]: CardConfig };
 
-  public getHeaderFn = this.getHeader.bind(this);
-
   @ViewChild(WideHeaderPage)
   wideHeaderPage: WideHeaderPage;
 
@@ -28,8 +25,7 @@ export class CardCatalogPage extends WideHeaderPage {
     private actionSheetProvider: ActionSheetProvider,
     public giftCardProvider: GiftCardProvider,
     platormProvider: PlatformProvider,
-    private navCtrl: NavController,
-    private translate: TranslateService
+    private navCtrl: NavController
   ) {
     super(platormProvider);
   }
@@ -42,12 +38,10 @@ export class CardCatalogPage extends WideHeaderPage {
     this.giftCardProvider
       .getAvailableCards()
       .then(allCards => {
-        this.cardConfigMap = allCards
-          .sort((a, b) => (a.featured && !b.featured ? -1 : 1))
-          .reduce(
-            (map, cardConfig) => ({ ...map, [cardConfig.name]: cardConfig }),
-            {}
-          );
+        this.cardConfigMap = allCards.reduce(
+          (map, cardConfig) => ({ ...map, [cardConfig.name]: cardConfig }),
+          {}
+        );
         this.allCards = allCards;
         this.visibleCards = this.allCards;
         this.updateCardList();
@@ -65,14 +59,11 @@ export class CardCatalogPage extends WideHeaderPage {
 
   getHeader(record, recordIndex, records) {
     if (record.featured && recordIndex === 0) {
-      return this.translate.instant('Featured Brands');
+      return 'Featured Brands';
     }
     const prevRecord = records[recordIndex - 1];
-    if (
-      (!record.featured && prevRecord && prevRecord.featured) ||
-      (!record.featured && !prevRecord && this.searchQuery)
-    ) {
-      return this.translate.instant('More Brands');
+    if (!record.featured && prevRecord && prevRecord.featured) {
+      return 'More Brands';
     }
     return null;
   }
