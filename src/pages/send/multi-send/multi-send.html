@@ -37,14 +37,14 @@
       </div>
 
       <div>
-        <div class="card" *ngFor="let item of multiRecipients | orderBy : '-'; let idx = index">
+        <div class="card" *ngFor="let item of multiRecipients; let idx = index">
           <ion-item-divider>
-            <span class="ellipsis">{{ 'Recipient' | translate}} {{multiRecipients.length - idx}}</span>
-            <button ion-button item-right class="button-add" outline (click)="openAmountModal(item, multiRecipients.length - idx - 1)">
+            <span class="ellipsis">{{ 'Recipient' | translate}} {{idx +1}}</span>
+            <button ion-button item-right class="button-add" outline (click)="openAmountModal(item, idx)">
               <span *ngIf="!item.amountToShow">{{ 'Add amount' | translate}}</span>
               <span *ngIf="item.amountToShow">{{ 'Change amount' | translate}}</span>
             </button>
-            <ion-icon class="close-icon" name="ios-close-outline" item-right (click)="removeRecipient(multiRecipients.length - idx - 1)"></ion-icon>
+            <ion-icon class="close-icon" name="ios-close-outline" item-right (click)="removeRecipient(idx)"></ion-icon>
           </ion-item-divider>
           <ion-list>
             <div class="wallet" *ngIf="item.recipientType == 'wallet' && item.recipient">
