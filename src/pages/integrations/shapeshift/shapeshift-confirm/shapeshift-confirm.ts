@@ -48,6 +48,7 @@ export class ShapeshiftConfirmPage {
   private sendMaxInfo;
   private accessToken: string;
 
+  public withdrawalAmountSat: number;
   public currency: string;
   public currencyIsoCode: string;
   public isCordova: boolean;
@@ -111,15 +112,46 @@ export class ShapeshiftConfirmPage {
       return;
     }
 
-    this.shapeshiftProvider.getLimit(this.getCoinPair(), (_, lim) => {
-      let min = Number(lim.min);
-      let max = Number(lim.limit);
+    this.shapeshiftProvider.getMarketInfo(this.getCoinPair(), (error, lim) => {
+      if (error) return this.showErrorAndBack(null, error);
+
+      /*
+       * Coin Pair
+       *
+       * BTC -> BCH
+       *   min (BTC)
+       *   max (BTC)
+       *   rate (BCH) per 1 BTC
+       *   fee (BCH)
+       *
+       * BCH -> BTC
+       *   min (BCH)
+       *   max (BCH)
+       *   rate (BTC) per 1 BCH
+       *   fee (BTC)
+       */
+
+      const min = Number(lim.minimum);
+      const max = Number(lim.limit);
+      const rate = Number(lim.rate);
+      const fee = Number(lim.minerFee);
+
+      const shiftWithdrawalFeeSat = Number((fee * 100000000).toFixed());
+      const shiftWithdrawalRateSat = Number((rate * 100000000).toFixed());
+
+      this.rateUnit = rate;
 
       if (this.useSendMax) {
         this.onGoingProcessProvider.set('calculatingSendMax');
         this.setMaxInfo(max, min)
-          .then(() => {
+          .then(amount => {
             this.onGoingProcessProvider.clear();
+            this.amount = amount;
+            const withdrawalSendMaxSat = Number(
+              (amount * rate * 100000000).toFixed()
+            );
+            this.withdrawalAmountSat =
+              withdrawalSendMaxSat - shiftWithdrawalFeeSat;
             this.createShift();
           })
           .catch(err => {
@@ -128,9 +160,18 @@ export class ShapeshiftConfirmPage {
             this.showErrorAndBack(null, err);
           });
       } else {
-        let amountNumber = Number(this.amount);
+        const amountNumber = Number(this.amount);
+        const shiftWithdrawalAmountSat = Number(
+          (this.amount * rate * 100000000).toFixed()
+        );
         if (this.isMinimum(amountNumber, min)) return;
         if (this.isMaximum(amountNumber, max)) return;
+        if (
+          !this.hasEnoughFunds(shiftWithdrawalAmountSat, shiftWithdrawalFeeSat)
+        )
+          return;
+        this.withdrawalAmountSat =
+          shiftWithdrawalAmountSat - shiftWithdrawalFeeSat;
         this.createShift();
       }
     });
@@ -172,6 +213,18 @@ export class ShapeshiftConfirmPage {
     return false;
   }
 
+  private hasEnoughFunds(amount: number, shiftFee: number) {
+    if (amount <= shiftFee) {
+      let message = this.replaceParametersProvider.replace(
+        this.translate.instant('Not enough funds for fee {{shiftFee}}'),
+        { shiftFee }
+      );
+      this.showErrorAndBack(null, message);
+      return false;
+    }
+    return true;
+  }
+
   private setMaxInfo(max: number, min: number): Promise<any> {
     return new Promise((resolve, reject) => {
       this.getSendMaxInfo()
@@ -185,7 +238,6 @@ export class ShapeshiftConfirmPage {
             }
 
             this.sendMaxInfo = sendMaxInfo;
-            this.amount = sendMaxInfo.amount;
 
             let maxSat = parseInt(
               (max * this.configWallet.settings.unitToSatoshi).toFixed(0),
@@ -195,18 +247,18 @@ export class ShapeshiftConfirmPage {
               (min * this.configWallet.settings.unitToSatoshi).toFixed(0),
               10
             );
-            if (this.amount > maxSat) {
+
+            if (sendMaxInfo.amount > maxSat) {
               this.popupProvider
                 .ionicAlert(
-                  this.translate.instant('ShapeShift max limit reached'),
-                  'Maximum amount allowed is ' + max
+                this.translate.instant('ShapeShift max limit reached'),
+                'Maximum amount allowed is ' + max
                 )
                 .then(() => {
-                  this.amount = max;
                   this.useSendMax = false;
-                  return resolve();
+                  return resolve(max);
                 });
-            } else if (this.amount < minSat) {
+            } else if (sendMaxInfo.amount < minSat) {
               let err = this.replaceParametersProvider.replace(
                 this.translate.instant(
                   'ShapeShift requires a minimum value of {{min}}'
@@ -216,7 +268,9 @@ export class ShapeshiftConfirmPage {
               return reject(err);
             } else {
               this.showSendMaxWarning().then(() => {
-                return resolve();
+                return resolve(
+                  Number((sendMaxInfo.amount / 100000000).toFixed(8))
+                );
               });
             }
           }
@@ -233,9 +287,9 @@ export class ShapeshiftConfirmPage {
     return new Promise((resolve, reject) => {
       this.feeProvider
         .getFeeRate(
-          this.fromWallet.coin,
-          this.network,
-          this.configWallet.settings.feeLevel || 'normal'
+        this.fromWallet.coin,
+        this.network,
+        this.configWallet.settings.feeLevel || 'normal'
         )
         .then(feeRate => {
           this.onGoingProcessProvider.set('retrievingInputs');
@@ -367,13 +421,6 @@ export class ShapeshiftConfirmPage {
 
   private createTx(wallet, toAddress: string): Promise<any> {
     return new Promise((resolve, reject) => {
-      let amount = this.useSendMax
-        ? this.amount
-        : parseInt(
-            (this.amount * this.configWallet.settings.unitToSatoshi).toFixed(0),
-            10
-          );
-
       this.message =
         this.fromWallet.coin.toUpperCase() +
         ' to ' +
@@ -382,13 +429,13 @@ export class ShapeshiftConfirmPage {
 
       outputs.push({
         toAddress,
-        amount,
+        amount: this.amount,
         message: this.message
       });
 
       let txp: Partial<TransactionProposal> = {
         toAddress,
-        amount,
+        amount: this.amount,
         outputs,
         message: this.message,
         excludeUnconfirmedUtxos: this.configWallet.spendUnconfirmed
@@ -527,53 +574,43 @@ export class ShapeshiftConfirmPage {
                   this.fromWallet.coin
                 );
 
+                // To Sat
+                this.amount = Number((this.amount * 100000000).toFixed(0));
+
                 this.createTx(this.fromWallet, toAddress)
                   .then(ctxp => {
+                    this.onGoingProcessProvider.clear();
                     // Save in memory
                     this.createdTx = ctxp;
                     this.shapeInfo = shapeData;
 
-                    this.shapeshiftProvider.getRate(
-                      this.getCoinPair(),
-                      (_, r) => {
-                        this.onGoingProcessProvider.clear();
-                        this.rateUnit = r.rate;
-                        let amountUnit = this.txFormatProvider.satToUnit(
-                          ctxp.amount
-                        );
-                        let withdrawalSat = Number(
-                          (this.rateUnit * amountUnit * 100000000).toFixed()
-                        );
+                    // Fee rate
+                    let per = (ctxp.fee / (ctxp.amount + ctxp.fee)) * 100;
+                    this.feeRatePerStr = per.toFixed(2) + '%';
 
-                        // Fee rate
-                        let per = (ctxp.fee / (ctxp.amount + ctxp.fee)) * 100;
-                        this.feeRatePerStr = per.toFixed(2) + '%';
+                    // Amount + Unit
+                    this.amountStr = this.txFormatProvider.formatAmountStr(
+                      this.fromWallet.coin,
+                      ctxp.amount
+                    );
+                    this.withdrawalStr = this.txFormatProvider.formatAmountStr(
+                      this.toWallet.coin,
+                      this.withdrawalAmountSat
+                    );
+                    this.feeStr = this.txFormatProvider.formatAmountStr(
+                      this.fromWallet.coin,
+                      ctxp.fee
+                    );
+                    this.totalAmountStr = this.txFormatProvider.formatAmountStr(
+                      this.fromWallet.coin,
+                      ctxp.amount + ctxp.fee
+                    );
 
-                        // Amount + Unit
-                        this.amountStr = this.txFormatProvider.formatAmountStr(
-                          this.fromWallet.coin,
-                          ctxp.amount
-                        );
-                        this.withdrawalStr = this.txFormatProvider.formatAmountStr(
-                          this.toWallet.coin,
-                          withdrawalSat
-                        );
-                        this.feeStr = this.txFormatProvider.formatAmountStr(
-                          this.fromWallet.coin,
-                          ctxp.fee
-                        );
-                        this.totalAmountStr = this.txFormatProvider.formatAmountStr(
-                          this.fromWallet.coin,
-                          ctxp.amount + ctxp.fee
-                        );
-
-                        // Convert to fiat
-                        this.setFiatTotalAmount(
-                          ctxp.amount,
-                          ctxp.fee,
-                          withdrawalSat
-                        );
-                      }
+                    // Convert to fiat
+                    this.setFiatTotalAmount(
+                      ctxp.amount,
+                      ctxp.fee,
+                      this.withdrawalAmountSat
                     );
                   })
                   .catch(err => {

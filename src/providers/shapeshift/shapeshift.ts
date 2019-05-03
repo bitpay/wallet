@@ -45,7 +45,7 @@ export class ShapeshiftProvider {
       this.credentials.NETWORK === 'testnet'
         ? ''
         : // CORS: cors.shapeshift.io
-          'https://shapeshift.io';
+        'https://shapeshift.io';
 
     this.credentials.REDIRECT_URI = shapeshift.production.redirect_uri;
     this.credentials.HOST = shapeshift.production.host;
@@ -82,6 +82,35 @@ export class ShapeshiftProvider {
       data => {
         const error = this.parseError(data);
         this.logger.error('Shapeshift SHIFT ERROR: ' + error);
+        return cb(error);
+      }
+    );
+  }
+
+  public sendamount(data, cb) {
+    const dataSrc = {
+      withdrawal: data.withdrawal,
+      pair: data.pair,
+      returnAddress: data.returnAddress,
+      apiKey: this.credentials.API_KEY,
+      depositAmount: data.depositAmount
+    };
+
+    const url = this.credentials.API_URL + '/sendamount';
+    const headers = {
+      'Content-Type': 'application/json',
+      Accept: 'application/json',
+      Authorization: 'Bearer ' + data.token
+    };
+
+    this.httpNative.post(url, dataSrc, headers).subscribe(
+      data => {
+        this.logger.info('Shapeshift SENDAMOUNT: SUCCESS');
+        return cb(data.error, data.success);
+      },
+      data => {
+        const error = this.parseError(data);
+        this.logger.error('Shapeshift SENDAMOUNT ERROR: ' + error);
         return cb(error);
       }
     );
@@ -161,15 +190,15 @@ export class ShapeshiftProvider {
     this.httpNative
       .get(this.credentials.API_URL + '/marketinfo/' + pair)
       .subscribe(
-        data => {
-          this.logger.info('Shapeshift MARKET INFO: SUCCESS');
-          return cb(null, data);
-        },
-        data => {
-          const error = this.parseError(data);
-          this.logger.error('Shapeshift MARKET INFO ERROR: ', error);
-          return cb(data);
-        }
+      data => {
+        this.logger.info('Shapeshift MARKET INFO: SUCCESS');
+        return cb(null, data);
+      },
+      data => {
+        const error = this.parseError(data);
+        this.logger.error('Shapeshift MARKET INFO ERROR: ', error);
+        return cb(data);
+      }
       );
   }
 
@@ -182,15 +211,15 @@ export class ShapeshiftProvider {
     this.httpNative
       .get(this.credentials.API_URL + '/txStat/' + addr, null, headers)
       .subscribe(
-        data => {
-          this.logger.info('Shapeshift STATUS: SUCCESS');
-          return cb(null, data);
-        },
-        data => {
-          const error = this.parseError(data);
-          this.logger.error('Shapeshift STATUS ERROR: ' + error);
-          return cb(data.error);
-        }
+      data => {
+        this.logger.info('Shapeshift STATUS: SUCCESS');
+        return cb(null, data);
+      },
+      data => {
+        const error = this.parseError(data);
+        this.logger.error('Shapeshift STATUS ERROR: ' + error);
+        return cb(data.error);
+      }
       );
   }
 
@@ -320,9 +349,9 @@ export class ShapeshiftProvider {
         const error = this.parseError(data);
         this.logger.error(
           'ShapeShift: Get Access Token Details ERROR ' +
-            data.status +
-            '. ' +
-            error
+          data.status +
+          '. ' +
+          error
         );
         return cb(data.error);
       }
@@ -390,8 +419,8 @@ export class ShapeshiftProvider {
     const parsedError = err.error.error_description
       ? err.error.error_description
       : err.error.error && err.error.error.message
-      ? err.error.error.message
-      : err.error;
+        ? err.error.error.message
+        : err.error;
     return parsedError;
   }
 }

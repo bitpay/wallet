@@ -65,8 +65,6 @@ export class AmountPage extends WalletTabsChild {
   public expression;
   public amount;
 
-  public shiftMax: number;
-  public shiftMin: number;
   public showSendMax: boolean;
   public allowSend: boolean;
   public recipientType: string;
@@ -147,8 +145,6 @@ export class AmountPage extends WalletTabsChild {
 
     // Use only with ShapeShift
     this.toWalletId = this.navParams.data.toWalletId;
-    this.shiftMax = this.navParams.data.shiftMax;
-    this.shiftMin = this.navParams.data.shiftMin;
 
     this.cardName = this.navParams.get('cardName');
   }
@@ -468,9 +464,9 @@ export class AmountPage extends WalletTabsChild {
     return parseFloat(
       this.rateProvider
         .toFiat(
-          val * this.unitToSatoshi,
-          this.fiatCode,
-          coin || this.availableUnits[this.unitIndex].id
+        val * this.unitToSatoshi,
+        this.fiatCode,
+        coin || this.availableUnits[this.unitIndex].id
         )
         .toFixed(2)
     );
@@ -573,9 +569,9 @@ export class AmountPage extends WalletTabsChild {
     this.processAmount();
     this.logger.debug(
       'Update unit coin @amount unit:' +
-        this.unit +
-        ' alternativeUnit:' +
-        this.alternativeUnit
+      this.unit +
+      ' alternativeUnit:' +
+      this.alternativeUnit
     );
   }
 
