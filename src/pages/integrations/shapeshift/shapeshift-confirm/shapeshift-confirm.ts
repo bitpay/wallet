@@ -251,8 +251,8 @@ export class ShapeshiftConfirmPage {
             if (sendMaxInfo.amount > maxSat) {
               this.popupProvider
                 .ionicAlert(
-                this.translate.instant('ShapeShift max limit reached'),
-                'Maximum amount allowed is ' + max
+                  this.translate.instant('ShapeShift max limit reached'),
+                  'Maximum amount allowed is ' + max
                 )
                 .then(() => {
                   this.useSendMax = false;
@@ -287,9 +287,9 @@ export class ShapeshiftConfirmPage {
     return new Promise((resolve, reject) => {
       this.feeProvider
         .getFeeRate(
-        this.fromWallet.coin,
-        this.network,
-        this.configWallet.settings.feeLevel || 'normal'
+          this.fromWallet.coin,
+          this.network,
+          this.configWallet.settings.feeLevel || 'normal'
         )
         .then(feeRate => {
           this.onGoingProcessProvider.set('retrievingInputs');

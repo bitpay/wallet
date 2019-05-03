@@ -464,9 +464,9 @@ export class AmountPage extends WalletTabsChild {
     return parseFloat(
       this.rateProvider
         .toFiat(
-        val * this.unitToSatoshi,
-        this.fiatCode,
-        coin || this.availableUnits[this.unitIndex].id
+          val * this.unitToSatoshi,
+          this.fiatCode,
+          coin || this.availableUnits[this.unitIndex].id
         )
         .toFixed(2)
     );
@@ -569,9 +569,9 @@ export class AmountPage extends WalletTabsChild {
     this.processAmount();
     this.logger.debug(
       'Update unit coin @amount unit:' +
-      this.unit +
-      ' alternativeUnit:' +
-      this.alternativeUnit
+        this.unit +
+        ' alternativeUnit:' +
+        this.alternativeUnit
     );
   }
 
