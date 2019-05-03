@@ -137,7 +137,6 @@ export class ShapeshiftConfirmPage {
       const fee = Number(lim.minerFee);
 
       const shiftWithdrawalFeeSat = Number((fee * 100000000).toFixed());
-      const shiftWithdrawalRateSat = Number((rate * 100000000).toFixed());
 
       this.rateUnit = rate;
 
