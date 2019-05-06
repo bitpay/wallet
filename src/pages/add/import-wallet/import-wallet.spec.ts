@@ -23,10 +23,19 @@ describe('ImportWalletPage', () => {
 
   describe('Function: setForm', () => {
     it('should set form correctly if there is processed info', () => {
-      instance.processedInfo = { type: "1", data: "mom mom mom mom mom mom mom mom mom mom mom mom", network: "livenet", derivationPath: "m/44'/0'/0'", hasPassphrase: false, coin: "btc" };
+      instance.processedInfo = {
+        type: '1',
+        data: 'mom mom mom mom mom mom mom mom mom mom mom mom',
+        network: 'livenet',
+        derivationPath: "m/44'/0'/0'",
+        hasPassphrase: false,
+        coin: 'btc'
+      };
       instance.setForm();
       expect(instance.importForm.value.derivationPath).toBe("m/44'/0'/0'");
-      expect(instance.importForm.value.words).toBe("mom mom mom mom mom mom mom mom mom mom mom mom");
+      expect(instance.importForm.value.words).toBe(
+        'mom mom mom mom mom mom mom mom mom mom mom mom'
+      );
       expect(instance.coin).toBe('btc');
     });
   });
@@ -36,7 +45,14 @@ describe('ImportWalletPage', () => {
       const code =
         "1|mom mom mom mom mom mom mom mom mom mom mom mom|livenet|m/44'/0'/0'|false|btc";
       const processedInfo = instance.processWalletInfo(code);
-      expect(processedInfo).toEqual({ type: "1", data: "mom mom mom mom mom mom mom mom mom mom mom mom", network: "livenet", derivationPath: "m/44'/0'/0'", hasPassphrase: false, coin: "btc" });
+      expect(processedInfo).toEqual({
+        type: '1',
+        data: 'mom mom mom mom mom mom mom mom mom mom mom mom',
+        network: 'livenet',
+        derivationPath: "m/44'/0'/0'",
+        hasPassphrase: false,
+        coin: 'btc'
+      });
     });
   });
 

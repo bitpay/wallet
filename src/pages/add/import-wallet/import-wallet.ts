@@ -83,7 +83,9 @@ export class ImportWalletPage {
 
     this.code = this.navParams.data.code;
     this.processedInfo = this.processWalletInfo(this.code);
-    this.coin = this.processedInfo ? this.processedInfo.coin : this.navParams.data.coin;
+    this.coin = this.processedInfo
+      ? this.processedInfo.coin
+      : this.navParams.data.coin;
 
     this.derivationPathByDefault =
       this.coin == 'bch'
@@ -124,7 +126,9 @@ export class ImportWalletPage {
     if (this.processedInfo) {
       const isTestnet = this.processedInfo.network == 'testnet' ? true : false;
       this.importForm.controls['testnetEnabled'].setValue(isTestnet);
-      this.importForm.controls['derivationPath'].setValue(this.processedInfo.derivationPath);
+      this.importForm.controls['derivationPath'].setValue(
+        this.processedInfo.derivationPath
+      );
       this.importForm.controls['words'].setValue(this.processedInfo.data);
       this.importForm.controls['coin'].setValue(this.processedInfo.coin);
       this.coin = this.processedInfo.coin;
