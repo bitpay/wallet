@@ -56,6 +56,7 @@ export class ProfileProvider {
     private txFormatProvider: TxFormatProvider,
     private actionSheetProvider: ActionSheetProvider
   ) {
+    this.profile = new Profile();
     this.throttledBwsEvent = _.throttle((n, wallet) => {
       this.newBwsEvent(n, wallet);
     }, 10000);
@@ -227,7 +228,7 @@ export class ProfileProvider {
           return;
         }
         wallet.setNotificationsInterval(this.UPDATE_PERIOD);
-        wallet.openWallet(() => {});
+        wallet.openWallet(() => { });
       }
     );
     this.events.subscribe('Local/ConfigUpdate', opts => {
@@ -245,7 +246,7 @@ export class ProfileProvider {
     if (wallet.backupTimestamp) date = new Date(Number(wallet.backupTimestamp));
     this.logger.info(
       `Binding wallet: ${wallet.id} - Backed up: ${backedUp} ${
-        date ? date : ''
+      date ? date : ''
       } - Encrypted: ${isEncrypted}`
     );
 
@@ -372,7 +373,7 @@ export class ProfileProvider {
 
   public updateCredentials(credentials): void {
     this.profile.updateWallet(credentials);
-    this.persistenceProvider.storeProfile(this.profile);
+    this.persistenceProvider.storeProfile(this.profile.getObj());
   }
 
   private runValidation(wallet, delay?: number, retryDelay?: number) {
@@ -410,7 +411,7 @@ export class ProfileProvider {
             this.profile.setChecked(this.platformProvider.ua, walletId);
           } else {
             this.logger.warn('Key Derivation failed for wallet:' + walletId);
-            this.persistenceProvider.clearLastAddress(walletId).then(() => {});
+            this.persistenceProvider.clearLastAddress(walletId).then(() => { });
           }
 
           this.storeProfileIfDirty();
@@ -421,7 +422,7 @@ export class ProfileProvider {
 
   public storeProfileIfDirty(): void {
     if (this.profile.dirty) {
-      this.persistenceProvider.storeProfile(this.profile).then(() => {
+      this.persistenceProvider.storeProfile(this.profile.getObj()).then(() => {
         this.logger.debug('Saved modified Profile');
         return;
       });
@@ -688,7 +689,7 @@ export class ProfileProvider {
 
     this.saveBwsUrl(walletId, opts);
 
-    return this.persistenceProvider.storeProfile(this.profile).then(() => {
+    return this.persistenceProvider.storeProfile(this.profile.getObj()).then(() => {
       if (!opts.skipEvent) this.events.publish('Local/WalletListChange');
 
       return Promise.resolve(wallet);
@@ -731,8 +732,8 @@ export class ProfileProvider {
           const mergeAddressBook = _.merge(addressBook, localAddressBook);
           this.persistenceProvider
             .setAddressBook(
-              wallet.credentials.network,
-              JSON.stringify(mergeAddressBook)
+            wallet.credentials.network,
+            JSON.stringify(mergeAddressBook)
             )
             .then(() => {
               return resolve();
@@ -886,9 +887,8 @@ export class ProfileProvider {
 
   public createProfile(): void {
     this.logger.info('Creating profile');
-    this.profile = new Profile();
-    this.profile = this.profile.create();
-    this.persistenceProvider.storeNewProfile(this.profile);
+    this.profile.create();
+    this.persistenceProvider.storeNewProfile(this.profile.getObj());
   }
 
   public bindProfile(profile): Promise<any> {
@@ -1036,13 +1036,14 @@ export class ProfileProvider {
           if (!profile) {
             return resolve();
           }
-          this.profile = new Profile();
-          this.profile = this.profile.fromObj(profile);
+
+          this.profile.fromObj(profile);
           // Deprecated: storageService.tryToMigrate
-          this.logger.info('Profile read');
-          this.bindProfile(this.profile)
+          this.logger.info('Profile loaded';
+
+          this.bindProfile(this.profile.getObj())
             .then(() => {
-              return resolve(this.profile);
+              return resolve(this.profile.getObj());
             })
             .catch(err => {
               return reject(err);
@@ -1277,7 +1278,7 @@ export class ProfileProvider {
     this.persistenceProvider.removeAllWalletData(walletId);
     this.events.publish('Local/WalletListChange');
 
-    return this.persistenceProvider.storeProfile(this.profile);
+    return this.persistenceProvider.storeProfile(this.profile.getObj());
   }
 
   public async deleteVaultWallets(vaultWallets): Promise<any> {
@@ -1382,7 +1383,7 @@ export class ProfileProvider {
     return new Promise((resolve, reject) => {
       this.profile.disclaimerAccepted = true;
       this.persistenceProvider
-        .storeProfile(this.profile)
+        .storeProfile(this.profile.getObj())
         .then(() => {
           return resolve();
         })
@@ -1396,7 +1397,7 @@ export class ProfileProvider {
     return new Promise((resolve, reject) => {
       this.profile.onboardingCompleted = true;
       this.persistenceProvider
-        .storeProfile(this.profile)
+        .storeProfile(this.profile.getObj())
         .then(() => {
           return resolve();
         })

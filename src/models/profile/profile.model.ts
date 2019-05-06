@@ -1,7 +1,7 @@
 export class Profile {
   public version: string;
   public createdOn: number;
-  public credentials;
+  public credentials: any[];
   public disclaimerAccepted: boolean;
   public onboardingCompleted: boolean;
   public checked;
@@ -12,39 +12,44 @@ export class Profile {
     this.version = '1.0.0';
   }
 
-  public create(opts?): Profile {
+  public getObj() {
+    return {
+      version: this.version,
+      createdOn: this.createdOn,
+      credentials: this.credentials,
+      disclaimerAccepted: this.disclaimerAccepted,
+      onboardingCompleted: this.onboardingCompleted,
+      checked: this.checked,
+      checkedUA: this.checkedUA,
+      dirty: this.dirty
+    }
+  }
+
+  public create(opts?) {
     opts = opts ? opts : {};
-    let x = new Profile();
-    x.createdOn = Date.now();
-    x.credentials = opts.credentials || [];
-    x.disclaimerAccepted = false;
-    x.onboardingCompleted = false;
-    x.checked = {};
-    return x;
+    this.createdOn = Date.now();
+    this.credentials = opts.credentials || [];
+    this.disclaimerAccepted = false;
+    this.onboardingCompleted = false;
+    this.checked = {};
   }
 
-  public fromObj(obj): Profile {
-    let x = new Profile();
+  public fromObj(obj) {
+    obj = obj ? obj : {};
+    this.createdOn = obj.createdOn;
+    this.credentials = obj.credentials || [];
+    this.disclaimerAccepted = obj.disclaimerAccepted || false;
+    this.onboardingCompleted = obj.onboardingCompleted || false;
+    this.checked = obj.checked || {};
+    this.checkedUA = obj.checkedUA;
 
-    x.createdOn = obj.createdOn;
-    x.credentials = obj.credentials;
-    x.disclaimerAccepted = obj.disclaimerAccepted;
-    x.onboardingCompleted = obj.onboardingCompleted;
-    x.checked = obj.checked || {};
-    x.checkedUA = obj.checkedUA || {};
-
-    if (x.credentials[0] && typeof x.credentials[0] != 'object')
-      throw new Error('credentials should be an object');
-    return x;
-  }
-
-  public fromString(str: string): Profile {
-    return this.fromObj(JSON.parse(str));
+    if (this.credentials[0] && typeof this.credentials[0] != 'object')
+      throw new Error('credentials should be an array of objects');
   }
 
   public toObj(): string {
     delete this.dirty;
-    return JSON.stringify(this);
+    return JSON.stringify(this.getObj());
   }
 
   public hasWallet(walletId: string): boolean {
