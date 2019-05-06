@@ -123,18 +123,21 @@ export class WalletDetailsPage extends WalletTabsChild {
 
   ionViewWillEnter() {
     this.onResumeSubscription = this.platform.resume.subscribe(() => {
+      this.profileProvider.setFastRefresh(this.wallet);
       this.subscribeEvents();
     });
   }
 
   // Start by firing a walletFocus event.
   ionViewDidEnter() {
+    this.profileProvider.setFastRefresh(this.wallet);
     this.events.publish('Local/WalletFocus', {
       walletId: this.wallet.credentials.walletId
     });
   }
 
   ionViewWillUnload() {
+    this.profileProvider.setSlowRefresh(this.wallet);
     this.events.unsubscribe('Local/WalletUpdate', this.updateStatus);
     this.events.unsubscribe('Local/WalletHistoryUpdate', this.updateHistory);
     this.onResumeSubscription.unsubscribe();
@@ -261,10 +264,10 @@ export class WalletDetailsPage extends WalletTabsChild {
 
   // no network //
   private updateHistory = opts => {
-    this.logger.debug('Local/WalletHistoryUpdate handler @walletDetails', opts);
+    this.logger.debug('RECV Local/WalletHistoryUpdate @walletDetails', opts);
     if (opts.walletId != this.wallet.id) return;
 
-    if (opts.complete) {
+    if (opts.finished) {
       this.updatingTxHistoryProgress = 0;
       this.updatingTxHistory = false;
       this.updateTxHistoryError = false;
@@ -302,10 +305,10 @@ export class WalletDetailsPage extends WalletTabsChild {
 
   // no network //
   private updateStatus = opts => {
-    this.logger.debug('Local/WalletUpdate handler @walletDetails', opts);
     if (opts.walletId != this.wallet.id) return;
+    this.logger.debug('RECV Local/WalletUpdate @walletDetails', opts);
 
-    if (opts.incomplete) {
+    if (!opts.finished) {
       this.updatingStatus = true;
       return;
     }

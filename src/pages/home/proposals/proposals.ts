@@ -126,7 +126,9 @@ export class ProposalsPage {
       });
   }
 
-  private updatePendingProposals = (): void => {
+  private updatePendingProposals = (opts = { finished: true }): void => {
+    if (!opts.finished) return;
+
     this.profileProvider
       .getTxps({ limit: 50 })
       .then(txpsData => {

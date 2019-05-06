@@ -165,6 +165,9 @@ export class WalletMock {
   getStatus(_opts, cb) {
     return cb(null, this.status);
   }
+
+  setNotificationsInterval(_x) {}
+
   getTxNote(_opts, cb) {
     return cb(null, 'Note');
   }
@@ -334,7 +337,7 @@ export class WalletMock {
   }
   createAddress(_opts, cb) {
     const addr = {
-      address: 'address2'
+      address: '1CVuVALD6Zo7ms24n3iUXv162kvUzsHr69' // Use a valid address to get a resolved promise
     };
     return cb(null, addr);
   }

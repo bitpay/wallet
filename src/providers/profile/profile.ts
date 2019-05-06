@@ -30,7 +30,8 @@ export class ProfileProvider {
   public vault;
   public profile: Profile;
 
-  private UPDATE_PERIOD = 15;
+  public UPDATE_PERIOD = 15;
+  public UPDATE_PERIOD_FAST = 5;
   private throttledBwsEvent;
   private validationLock: boolean = false;
   private errors = this.bwcProvider.getErrors();
@@ -62,11 +63,11 @@ export class ProfileProvider {
     this.availableCoins = [
       {
         coin: Coin.BTC,
-        derivationPath: this.derivationPathHelperProvider.default
+        derivationPath: this.derivationPathHelperProvider.defaultBTC
       },
       {
         coin: Coin.BCH,
-        derivationPath: this.derivationPathHelperProvider.default
+        derivationPath: this.derivationPathHelperProvider.defaultBCH
       },
       {
         coin: Coin.BTC,
@@ -197,21 +198,6 @@ export class ProfileProvider {
     });
 
     wallet.on('notification', n => {
-      // TODO: Only development purpose
-      if (
-        !this.platformProvider.isElectron &&
-        !this.platformProvider.isCordova
-      ) {
-        let show = { type: n.type, txp: null };
-        try {
-          if (n.data.txProposalId) {
-            show.txp = n.data.txProposalId;
-          }
-        } catch (e) {}
-
-        this.logger.debug('BWC Notification:', JSON.stringify(show));
-      }
-
       if (this.platformProvider.isElectron) {
         this.showDesktopNotifications(n, wallet);
       }
@@ -264,6 +250,16 @@ export class ProfileProvider {
     );
 
     return true;
+  }
+
+  public setFastRefresh(wallet): void {
+    this.logger.debug(`Wallet ${wallet.id} set to fast refresh`);
+    wallet.setNotificationsInterval(this.UPDATE_PERIOD_FAST);
+  }
+
+  public setSlowRefresh(wallet): void {
+    this.logger.debug(`Wallet ${wallet.id} back to slow refresh`);
+    wallet.setNotificationsInterval(this.UPDATE_PERIOD);
   }
 
   private showDesktopNotifications(n, wallet): void {
@@ -1487,173 +1483,6 @@ export class ProfileProvider {
       walletId,
       this.wallet[walletId].balanceHidden
     );
-  }
-
-  public getNotifications(opts): Promise<any> {
-    return new Promise((resolve, reject) => {
-      opts = opts ? opts : {};
-
-      const TIME_STAMP = 60 * 60 * 6;
-      const MAX = 30;
-
-      const typeFilter = {
-        NewOutgoingTx: 1,
-        NewIncomingTx: 1
-      };
-
-      const w = this.getWallets();
-      if (_.isEmpty(w)) return reject('Could not find any wallet');
-
-      const l = w.length;
-      let j = 0;
-      let notifications = [];
-
-      const isActivityCached = (wallet): boolean => {
-        return wallet.cachedActivity && wallet.cachedActivity.isValid;
-      };
-
-      const updateNotifications = (wallet): Promise<any> => {
-        return new Promise((resolve, reject) => {
-          if (isActivityCached(wallet) && !opts.force) {
-            return resolve();
-          }
-
-          wallet.getNotifications(
-            {
-              timeSpan: TIME_STAMP,
-              includeOwn: true
-            },
-            (err, n) => {
-              if (err) {
-                return reject(err);
-              }
-              wallet.cachedActivity = {
-                n: n.slice(-MAX),
-                isValid: true
-              };
-
-              return resolve();
-            }
-          );
-        });
-      };
-
-      const process = notifications => {
-        if (!notifications) return [];
-
-        let shown = _.sortBy(notifications, 'createdOn').reverse();
-
-        shown = shown.splice(0, opts.limit || MAX);
-
-        _.each(shown, x => {
-          x.txpId = x.data ? x.data.txProposalId : null;
-          x.txid = x.data ? x.data.txid : null;
-          x.types = [x.type];
-
-          x.action = () => {
-            // TODO?
-            // $state.go('tabs.wallet', {
-            //   walletId: x.walletId,
-            //   txpId: x.txpId,
-            //   txid: x.txid,
-            // });
-          };
-        });
-
-        // let finale = shown; GROUPING DISABLED!
-
-        const finale = [];
-        let prev;
-
-        // Item grouping... DISABLED.
-
-        // REMOVE (if we want 1-to-1 notification) ????
-        _.each(shown, x => {
-          if (
-            prev &&
-            prev.walletId === x.walletId &&
-            prev.txpId &&
-            prev.txpId === x.txpId &&
-            prev.creatorId &&
-            prev.creatorId === x.creatorId
-          ) {
-            prev.types.push(x.type);
-            prev.data = _.assign(prev.data, x.data);
-            prev.txid = prev.txid || x.txid;
-            prev.creatorName = prev.creatorName || x.creatorName;
-          } else {
-            finale.push(x);
-            prev = x;
-          }
-        });
-
-        const u = this.bwcProvider.getUtils();
-        _.each(finale, x => {
-          if (
-            x.data &&
-            x.data.message &&
-            x.wallet &&
-            x.wallet.credentials.sharedEncryptingKey
-          ) {
-            // TODO TODO TODO => BWC
-            x.message = u.decryptMessage(
-              x.data.message,
-              x.wallet.credentials.sharedEncryptingKey
-            );
-          }
-        });
-
-        return finale;
-      };
-
-      const pr = (wallet, cb) => {
-        updateNotifications(wallet)
-          .then(() => {
-            const n = _.filter(wallet.cachedActivity.n, x => {
-              return typeFilter[x.type];
-            });
-
-            const idToName = {};
-            if (wallet.cachedStatus) {
-              _.each(wallet.cachedStatus.wallet.copayers, c => {
-                idToName[c.id] = c.name;
-              });
-            }
-
-            _.each(n, x => {
-              x.wallet = wallet;
-              if (x.creatorId && wallet.cachedStatus) {
-                x.creatorName = idToName[x.creatorId];
-              }
-            });
-
-            notifications.push(n);
-            return cb();
-          })
-          .catch(err => {
-            return cb(err);
-          });
-      };
-
-      _.each(w, wallet => {
-        pr(wallet, err => {
-          if (err)
-            this.logger.warn(
-              this.bwcErrorProvider.msg(
-                err,
-                'Error updating notifications for ' + wallet.name
-              )
-            );
-          if (++j == l) {
-            notifications = _.sortBy(notifications, 'createdOn').reverse();
-            notifications = _.compact(_.flatten(notifications)).slice(0, MAX);
-            const total = notifications.length;
-            const processArray = process(notifications);
-            return resolve({ notifications: processArray, total });
-          }
-        });
-      });
-    });
   }
 
   public getTxps(opts): Promise<any> {

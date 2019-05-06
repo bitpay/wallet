@@ -49,6 +49,7 @@ export interface WalletOptions {
   passphrase: any;
   walletPrivKey: any;
   compliantDerivation: any;
+  use0forBCH?: boolean;
 }
 
 export interface TransactionProposal {
@@ -134,11 +135,7 @@ export class WalletProvider {
         const now = Math.floor(Date.now() / 1000);
 
         _.each(txps, tx => {
-          tx = this.txFormatProvider.processTx(
-            wallet.coin,
-            tx,
-            this.useLegacyAddress()
-          );
+          tx = this.txFormatProvider.processTx(wallet.coin, tx);
 
           // no future transactions...
           if (tx.createdOn > now) tx.createdOn = now;
@@ -434,24 +431,13 @@ export class WalletProvider {
     });
   }
 
-  public useLegacyAddress(): boolean {
-    const config = this.configProvider.get();
-    const walletSettings = config.wallet;
-
-    return walletSettings.useLegacyAddress;
-  }
-
   public getAddressView(
     coin: string,
     network: string,
     address: string
   ): string {
-    if (coin != 'bch' || this.useLegacyAddress()) return address;
-    const protoAddr = this.getProtoAddress(
-      coin,
-      network,
-      this.txFormatProvider.toCashAddress(address)
-    );
+    if (coin != 'bch') return address;
+    const protoAddr = this.getProtoAddress(coin, network, address);
     return protoAddr;
   }
 
@@ -469,8 +455,13 @@ export class WalletProvider {
     return new Promise((resolve, reject) => {
       this.persistenceProvider
         .getLastAddress(wallet.id)
-        .then(addr => {
-          if (!forceNew && addr) return resolve(addr);
+        .then((addr: string) => {
+          if (addr) {
+            // prevent to show legacy address
+            const isBchLegacy = wallet.coin == 'bch' && addr.match(/^[CHmn]/);
+
+            if (!forceNew && !isBchLegacy) return resolve(addr);
+          }
 
           if (!wallet.isComplete())
             return reject(this.bwcErrorProvider.msg('WALLET_NOT_COMPLETE'));
@@ -859,11 +850,7 @@ export class WalletProvider {
     wallet.hasUnsafeConfirmed = false;
 
     _.each(txs, tx => {
-      tx = this.txFormatProvider.processTx(
-        wallet.coin,
-        tx,
-        this.useLegacyAddress()
-      );
+      tx = this.txFormatProvider.processTx(wallet.coin, tx);
 
       // no future transactions...
       if (tx.time > now) tx.time = now;
@@ -1288,11 +1275,11 @@ export class WalletProvider {
     this.persistenceProvider.removeTxHistory(wallet.id);
   }
 
-  public expireAddress(wallet): Promise<any> {
+  public expireAddress(walletId: string): Promise<any> {
     return new Promise((resolve, reject) => {
-      this.logger.info('Cleaning Address ' + wallet.id);
+      this.logger.info('Cleaning Address ' + walletId);
       this.persistenceProvider
-        .clearLastAddress(wallet.id)
+        .clearLastAddress(walletId)
         .then(() => {
           return resolve();
         })

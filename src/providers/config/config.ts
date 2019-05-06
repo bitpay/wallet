@@ -11,7 +11,6 @@ export interface Config {
   };
 
   wallet: {
-    useLegacyAddress: boolean;
     requiredCopayers: number;
     totalCopayers: number;
     spendUnconfirmed: boolean;
@@ -118,7 +117,6 @@ export class ConfigProvider {
 
       // wallet default config
       wallet: {
-        useLegacyAddress: false,
         requiredCopayers: 2,
         totalCopayers: 3,
         spendUnconfirmed: false,
@@ -229,14 +227,11 @@ export class ConfigProvider {
 
   private logImportantConfig(config: Config): void {
     const spendUnconfirmed = config.wallet.spendUnconfirmed;
-    const useLegacyAddress = config.wallet.useLegacyAddress;
     const lockMethod = config && config.lock ? config.lock.method : null;
 
     this.logger.debug(
       'Config | spendUnconfirmed: ' +
         spendUnconfirmed +
-        ' - useLegacyAddress: ' +
-        useLegacyAddress +
         ' - lockMethod: ' +
         lockMethod
     );

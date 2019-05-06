@@ -10,7 +10,6 @@ import { ConfigProvider } from '../../../providers/config/config';
 })
 export class AdvancedPage {
   public spendUnconfirmed: boolean;
-  public useLegacyAddress: boolean;
 
   constructor(private configProvider: ConfigProvider, private logger: Logger) {}
 
@@ -22,22 +21,12 @@ export class AdvancedPage {
     let config = this.configProvider.get();
 
     this.spendUnconfirmed = config.wallet.spendUnconfirmed;
-    this.useLegacyAddress = config.wallet.useLegacyAddress;
   }
 
   public spendUnconfirmedChange(): void {
     let opts = {
       wallet: {
         spendUnconfirmed: this.spendUnconfirmed
-      }
-    };
-    this.configProvider.set(opts);
-  }
-
-  public useLegacyAddressChange(): void {
-    let opts = {
-      wallet: {
-        useLegacyAddress: this.useLegacyAddress
       }
     };
     this.configProvider.set(opts);

@@ -189,11 +189,7 @@ export class TxDetailsPage {
       .then(tx => {
         if (!opts.hideLoading) this.onGoingProcess.clear();
 
-        this.btx = this.txFormatProvider.processTx(
-          this.wallet.coin,
-          tx,
-          this.walletProvider.useLegacyAddress()
-        );
+        this.btx = this.txFormatProvider.processTx(this.wallet.coin, tx);
         this.btx.feeFiatStr = this.txFormatProvider.formatAlternativeStr(
           this.wallet.coin,
           tx.fees

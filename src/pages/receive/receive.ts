@@ -77,9 +77,18 @@ export class ReceivePage extends WalletTabsChild {
     this.events.subscribe('bwsEvent', this.bwsEventHandler);
   }
 
-  private bwsEventHandler: any = (walletId, type) => {
-    if (this.wallet.credentials.walletId == walletId && type == 'NewIncomingTx')
-      this.setAddress(true);
+  private bwsEventHandler: any = (walletId, type, n) => {
+    if (
+      this.wallet.credentials.walletId == walletId &&
+      type == 'NewIncomingTx' &&
+      n.data
+    ) {
+      let addr =
+        this.address.indexOf(':') > -1
+          ? this.address.split(':')[1]
+          : this.address;
+      if (n.data.address == addr) this.setAddress(true);
+    }
   };
 
   public requestSpecificAmount(): void {

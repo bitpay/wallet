@@ -51,7 +51,6 @@ import { FeedbackCardPage } from '../pages/includes/feedback-card/feedback-card'
 import { GravatarPage } from '../pages/includes/gravatar/gravatar';
 import { MultipleOutputsPage } from '../pages/includes/multiple-outputs/multiple-outputs';
 import { TxpPage } from '../pages/includes/txp/txp';
-import { WalletActivityPage } from '../pages/includes/wallet-activity/wallet-activity';
 
 /* Tabs */
 import { HomePage } from '../pages/home/home';
@@ -196,7 +195,6 @@ export const PAGES = [
   WalletTabsChild,
   WalletTabsPage,
   WalletBalancePage,
-  WalletActivityPage,
   WideHeaderPage,
   CardItemPage,
   SlideToAcceptPage

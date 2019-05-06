@@ -129,6 +129,11 @@ describe('ImportWalletPage', () => {
       instance.importForm.controls['coin'].setValue(info.coin);
       instance.importForm.controls['bwsURL'].setValue(info.bwsURL);
       instance.importForm.controls['backupText'].setValue(info.backupText);
+
+      spyOn(
+        instance.derivationPathHelperProvider,
+        'isValidDerivationPathCoin'
+      ).and.returnValue(true);
     });
 
     it('should return if importForm is not valid', () => {
