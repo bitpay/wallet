@@ -228,7 +228,7 @@ export class ProfileProvider {
           return;
         }
         wallet.setNotificationsInterval(this.UPDATE_PERIOD);
-        wallet.openWallet(() => { });
+        wallet.openWallet(() => {});
       }
     );
     this.events.subscribe('Local/ConfigUpdate', opts => {
@@ -246,7 +246,7 @@ export class ProfileProvider {
     if (wallet.backupTimestamp) date = new Date(Number(wallet.backupTimestamp));
     this.logger.info(
       `Binding wallet: ${wallet.id} - Backed up: ${backedUp} ${
-      date ? date : ''
+        date ? date : ''
       } - Encrypted: ${isEncrypted}`
     );
 
@@ -411,7 +411,7 @@ export class ProfileProvider {
             this.profile.setChecked(this.platformProvider.ua, walletId);
           } else {
             this.logger.warn('Key Derivation failed for wallet:' + walletId);
-            this.persistenceProvider.clearLastAddress(walletId).then(() => { });
+            this.persistenceProvider.clearLastAddress(walletId).then(() => {});
           }
 
           this.storeProfileIfDirty();
@@ -689,11 +689,13 @@ export class ProfileProvider {
 
     this.saveBwsUrl(walletId, opts);
 
-    return this.persistenceProvider.storeProfile(this.profile.getObj()).then(() => {
-      if (!opts.skipEvent) this.events.publish('Local/WalletListChange');
+    return this.persistenceProvider
+      .storeProfile(this.profile.getObj())
+      .then(() => {
+        if (!opts.skipEvent) this.events.publish('Local/WalletListChange');
 
-      return Promise.resolve(wallet);
-    });
+        return Promise.resolve(wallet);
+      });
   }
 
   private saveBwsUrl(walletId, opts): void {
@@ -732,8 +734,8 @@ export class ProfileProvider {
           const mergeAddressBook = _.merge(addressBook, localAddressBook);
           this.persistenceProvider
             .setAddressBook(
-            wallet.credentials.network,
-            JSON.stringify(mergeAddressBook)
+              wallet.credentials.network,
+              JSON.stringify(mergeAddressBook)
             )
             .then(() => {
               return resolve();

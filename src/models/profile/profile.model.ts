@@ -22,7 +22,7 @@ export class Profile {
       checked: this.checked,
       checkedUA: this.checkedUA,
       dirty: this.dirty
-    }
+    };
   }
 
   public create(opts?) {
