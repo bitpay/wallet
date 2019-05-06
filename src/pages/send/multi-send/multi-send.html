@@ -40,13 +40,9 @@
         <div class="card" *ngFor="let item of multiRecipients; let idx = index">
           <ion-item-divider>
             <span class="ellipsis">{{ 'Recipient' | translate}} {{idx +1}}</span>
-            <button ion-button item-right class="button-add" outline (click)="openAmountModal(item, idx)">
-              <span *ngIf="!item.amountToShow">{{ 'Add amount' | translate}}</span>
-              <span *ngIf="item.amountToShow">{{ 'Change amount' | translate}}</span>
-            </button>
-            <ion-icon class="close-icon" name="ios-close-outline" item-right (click)="removeRecipient(idx)"></ion-icon>
+            <ion-icon class="close-icon pointer" name="ios-close-outline" item-right (click)="removeRecipient(idx)"></ion-icon>
           </ion-item-divider>
-          <ion-list>
+          <ion-list class="pointer" (click)="openAmountModal(item, idx)">
             <div class="wallet" *ngIf="item.recipientType == 'wallet' && item.recipient">
               <ion-icon item-left>
                 <img *ngIf="item.recipient.network == 'testnet'" [ngStyle]="{'background-color': item.recipient.color}" src="assets/img/icon-wallet-testnet.svg" class="icon-wallet" />

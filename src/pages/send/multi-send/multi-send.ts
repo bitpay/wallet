@@ -33,7 +33,7 @@ import { TransferToModalPage } from '../transfer-to-modal/transfer-to-modal';
 })
 export class MultiSendPage extends WalletTabsChild {
   public search: string = '';
-  public multiRecipients: any = [];
+  public multiRecipients: any[] = [];
   public contactsList = [];
   public filteredContactsList = [];
   public filteredWallets = [];
@@ -109,6 +109,7 @@ export class MultiSendPage extends WalletTabsChild {
   }
 
   public openAmountModal(item, index): void {
+    console.log('-------------openAmountModal item, index: ', item, index);
     let modal = this.modalCtrl.create(
       AmountPage,
       {
@@ -205,8 +206,11 @@ export class MultiSendPage extends WalletTabsChild {
       recipientType,
       recipient
     });
+    console.log('-------------this.multiRecipients: ', this.multiRecipients);
     this.search = '';
     this.invalidAddress = false;
+    const lastPosition = this.multiRecipients.length - 1;
+    this.openAmountModal(this.multiRecipients[lastPosition], lastPosition);
   }
 
   public cancelRecipient(): void {
