@@ -33,6 +33,7 @@ export class ImportWalletPage {
   private reader: FileReader;
   private defaults;
   private errors;
+  private processedInfo;
 
   public importForm: FormGroup;
   public prettyFileName: string;
@@ -74,14 +75,16 @@ export class ImportWalletPage {
     this.reader = new FileReader();
     this.defaults = this.configProvider.getDefaults();
     this.errors = bwcProvider.getErrors();
-    this.coin = this.navParams.get('coin');
-
     this.isCordova = this.platformProvider.isCordova;
     this.isSafari = this.platformProvider.isSafari;
     this.isIOS = this.platformProvider.isIOS;
     this.importErr = false;
-    this.code = this.navParams.data.code;
     this.selectedTab = 'words';
+
+    this.code = this.navParams.data.code;
+    this.processedInfo = this.processWalletInfo(this.code);
+    this.coin = this.processedInfo ? this.processedInfo.coin : this.navParams.data.coin;
+
     this.derivationPathByDefault =
       this.coin == 'bch'
         ? this.derivationPathHelperProvider.defaultBCH
@@ -103,29 +106,38 @@ export class ImportWalletPage {
       importVault: [false]
     });
     this.importForm.controls['coin'].setValue(this.coin);
+
     this.events.subscribe('Local/BackupScan', this.updateWordsHandler);
-    this.createLabel =
-      this.coin === 'btc'
-        ? this.translate.instant('BTC Wallet')
-        : this.translate.instant('BCH Wallet');
 
     this.persistenceProvider.getVault().then(vault => {
       if (vault) this.importForm.controls['importVault'].disable();
     });
-  }
 
-  ionViewWillEnter() {
-    if (this.code) {
-      this.processWalletInfo(this.code);
-    }
+    this.setForm();
   }
 
   ngOnDestroy() {
     this.events.unsubscribe('Local/BackupScan', this.updateWordsHandler);
   }
 
+  private setForm(): void {
+    if (this.processedInfo) {
+      const isTestnet = this.processedInfo.network == 'testnet' ? true : false;
+      this.importForm.controls['testnetEnabled'].setValue(isTestnet);
+      this.importForm.controls['derivationPath'].setValue(this.processedInfo.derivationPath);
+      this.importForm.controls['words'].setValue(this.processedInfo.data);
+      this.importForm.controls['coin'].setValue(this.processedInfo.coin);
+      this.coin = this.processedInfo.coin;
+    }
+    this.createLabel =
+      this.coin === 'btc'
+        ? this.translate.instant('BTC Wallet')
+        : this.translate.instant('BCH Wallet');
+  }
+
   private updateWordsHandler: any = data => {
-    this.processWalletInfo(data.value);
+    this.processedInfo = this.processWalletInfo(data.value);
+    this.setForm();
   };
 
   public selectTab(tab: string): void {
@@ -177,8 +189,8 @@ export class ImportWalletPage {
     this.importForm.get('coin').updateValueAndValidity();
   }
 
-  private processWalletInfo(code: string): void {
-    if (!code) return;
+  private processWalletInfo(code: string) {
+    if (!code) return undefined;
 
     this.importErr = false;
     const parsedCode = code.split('|');
@@ -200,6 +212,7 @@ export class ImportWalletPage {
         }
       );
       errorInfoSheet.present();
+      return undefined;
     }
     if (info.type == '1' && info.hasPassphrase) {
       const title = this.translate.instant('Error');
@@ -207,13 +220,10 @@ export class ImportWalletPage {
         'Password required. Make sure to enter your password in advanced options'
       );
       this.popupProvider.ionicAlert(title, subtitle);
+      return undefined;
     }
 
-    const isTestnet = info.network == 'testnet' ? true : false;
-    this.importForm.controls['testnetEnabled'].setValue(isTestnet);
-    this.importForm.controls['derivationPath'].setValue(info.derivationPath);
-    this.importForm.controls['words'].setValue(info.data);
-    this.importForm.controls['coin'].setValue(info.coin);
+    return info;
   }
 
   public setDerivationPath(): void {
