@@ -324,8 +324,16 @@ export class ConfirmPage extends WalletTabsChild {
       const previousView = this.navCtrl.getPrevious().name;
       switch (err) {
         case 'insufficient_funds':
-          // Do not allow user to change or use max amount if previous view is not Amount
-          if (previousView === 'AmountPage') {
+          if (this.showUseUnconfirmedMsg()) {
+            this.showErrorInfoSheet(
+              this.translate.instant(
+                'Your funds are not yet confirmed to send this transaction. Please wait them to be confirmed or enable the "Use unconfirmed funds" setting in advanced settings'
+              ),
+              this.translate.instant('Insufficient funds'),
+              true
+            );
+          } else if (previousView === 'AmountPage') {
+            // Do not allow user to change or use max amount if previous view is not Amount
             this.showInsufficientFundsInfoSheet();
           } else {
             this.showErrorInfoSheet(
@@ -340,6 +348,15 @@ export class ConfirmPage extends WalletTabsChild {
           break;
       }
     });
+  }
+
+  private showUseUnconfirmedMsg(): boolean {
+    return (
+      this.wallet.cachedStatus &&
+      this.wallet.cachedStatus.balance.totalAmount >=
+        this.tx.amount + this.tx.feeRate &&
+      !this.tx.spendUnconfirmed
+    );
   }
 
   private setButtonText(isMultisig: boolean, isPayPro: boolean): void {
@@ -436,7 +453,7 @@ export class ConfirmPage extends WalletTabsChild {
               this.showHighFeeSheet();
             }
 
-            msg = this.translate.instant('Suggested by Merchant');
+            msg = this.translate.instant('This payment requires a fee of');
             tx.feeLevelName = msg;
           } else {
             const feeOpts = this.feeProvider.getFeeOpts();
