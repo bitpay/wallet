@@ -355,7 +355,7 @@ export class ConfirmPage extends WalletTabsChild {
     return (
       this.wallet.cachedStatus &&
       this.wallet.cachedStatus.balance.totalAmount >=
-      this.tx.amount + this.tx.feeRate &&
+        this.tx.amount + this.tx.feeRate &&
       !this.tx.spendUnconfirmed
     );
   }
@@ -431,11 +431,11 @@ export class ConfirmPage extends WalletTabsChild {
       this.onGoingProcessProvider.set('calculatingFee');
       this.feeProvider
         .getFeeRate(
-        wallet.coin,
-        tx.network,
-        this.usingMerchantFee
-          ? maxAllowedMerchantFee[wallet.coin]
-          : this.tx.feeLevel
+          wallet.coin,
+          tx.network,
+          this.usingMerchantFee
+            ? maxAllowedMerchantFee[wallet.coin]
+            : this.tx.feeLevel
         )
         .then(feeRate => {
           let msg;
@@ -446,7 +446,7 @@ export class ConfirmPage extends WalletTabsChild {
             const maxAllowedFee = feeRate * 5;
             this.logger.info(
               `Using Merchant Fee: ${
-              tx.feeRate
+                tx.feeRate
               } vs. referent level (5 * feeRate) ${maxAllowedFee}`
             );
             if (tx.network != 'testnet' && tx.feeRate > maxAllowedFee) {
@@ -570,9 +570,9 @@ export class ConfirmPage extends WalletTabsChild {
           this.tx = tx;
           this.logger.debug(
             'Confirm. TX Fully Updated for wallet:' +
-            wallet.id +
-            ' Txp:' +
-            txp.id
+              wallet.id +
+              ' Txp:' +
+              txp.id
           );
           return resolve();
         })
@@ -784,8 +784,8 @@ export class ConfirmPage extends WalletTabsChild {
         this.isWithinWalletTabs()
           ? this.navCtrl.popToRoot()
           : this.navCtrl.last().name == 'ConfirmCardPurchasePage'
-            ? this.navCtrl.pop()
-            : this.navCtrl.popToRoot();
+          ? this.navCtrl.pop()
+          : this.navCtrl.popToRoot();
       }
     });
   }
