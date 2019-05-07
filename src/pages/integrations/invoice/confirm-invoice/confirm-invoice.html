@@ -192,7 +192,7 @@
               networkFeeSat | satToFiat: wallet.coin
             }}</span>
             <span *ngIf="detailsCurrency === currency">{{
-              networkFeeSat | satToFiat: wallet.coin
+              networkFeeSat | satToUnit: wallet.coin
             }}</span>
           </ion-note>
         </ion-item>
