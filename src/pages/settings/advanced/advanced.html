@@ -11,8 +11,9 @@
       <ion-toggle [(ngModel)]="spendUnconfirmed" (ionChange)="spendUnconfirmedChange()"></ion-toggle>
     </ion-item>
     <label-tip class="info" type="info" header="no-header">
-      <div label-tip-body translate>
-        If enabled, wallets will also try to spend unconfirmed funds.
+      <div label-tip-body>
+        <div translate>If enabled, wallets will also try to spend unconfirmed funds.</div>
+        <div *ngIf="!isCopay" translate>However, unconfirmed funds are not allowed for spending with merchants, BitPay Card loads, or BitPay in-app gift card purchases.</div>
       </div>
     </label-tip>
   </ion-list>

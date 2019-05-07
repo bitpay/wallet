@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
-import { Logger } from '../../../providers/logger/logger';
 
 // providers
+import { AppProvider } from '../../../providers/app/app';
 import { ConfigProvider } from '../../../providers/config/config';
+import { Logger } from '../../../providers/logger/logger';
 
 @Component({
   selector: 'page-advanced',
@@ -10,8 +11,15 @@ import { ConfigProvider } from '../../../providers/config/config';
 })
 export class AdvancedPage {
   public spendUnconfirmed: boolean;
+  public isCopay: boolean;
 
-  constructor(private configProvider: ConfigProvider, private logger: Logger) {}
+  constructor(
+    private configProvider: ConfigProvider,
+    private logger: Logger,
+    private appProvider: AppProvider
+  ) {
+    this.isCopay = this.appProvider.info.name === 'copay';
+  }
 
   ionViewDidLoad() {
     this.logger.info('Loaded: AdvancedPage');

@@ -71,6 +71,7 @@ export class ConfirmPage extends WalletTabsChild {
   public recipients;
   public coin: string;
   public appName: string;
+  public merchantFeeLabel: string;
 
   // Config Related values
   public config;
@@ -327,7 +328,7 @@ export class ConfirmPage extends WalletTabsChild {
           if (this.showUseUnconfirmedMsg()) {
             this.showErrorInfoSheet(
               this.translate.instant(
-                'Your funds are not yet confirmed to send this transaction. Please wait them to be confirmed or enable the "Use unconfirmed funds" setting in advanced settings'
+                'You do not have enough confirmed funds to make this payment. Wait for your pending transactions to confirm or enable "Use unconfirmed funds" in Advanced Settings.'
               ),
               this.translate.instant('Insufficient funds'),
               true
@@ -354,7 +355,7 @@ export class ConfirmPage extends WalletTabsChild {
     return (
       this.wallet.cachedStatus &&
       this.wallet.cachedStatus.balance.totalAmount >=
-        this.tx.amount + this.tx.feeRate &&
+      this.tx.amount + this.tx.feeRate &&
       !this.tx.spendUnconfirmed
     );
   }
@@ -430,11 +431,11 @@ export class ConfirmPage extends WalletTabsChild {
       this.onGoingProcessProvider.set('calculatingFee');
       this.feeProvider
         .getFeeRate(
-          wallet.coin,
-          tx.network,
-          this.usingMerchantFee
-            ? maxAllowedMerchantFee[wallet.coin]
-            : this.tx.feeLevel
+        wallet.coin,
+        tx.network,
+        this.usingMerchantFee
+          ? maxAllowedMerchantFee[wallet.coin]
+          : this.tx.feeLevel
         )
         .then(feeRate => {
           let msg;
@@ -445,7 +446,7 @@ export class ConfirmPage extends WalletTabsChild {
             const maxAllowedFee = feeRate * 5;
             this.logger.info(
               `Using Merchant Fee: ${
-                tx.feeRate
+              tx.feeRate
               } vs. referent level (5 * feeRate) ${maxAllowedFee}`
             );
             if (tx.network != 'testnet' && tx.feeRate > maxAllowedFee) {
@@ -453,8 +454,10 @@ export class ConfirmPage extends WalletTabsChild {
               this.showHighFeeSheet();
             }
 
-            msg = this.translate.instant('This payment requires a fee of');
-            tx.feeLevelName = msg;
+            msg = this.translate.instant(
+              'This payment requires a miner fee of:'
+            );
+            this.merchantFeeLabel = msg;
           } else {
             const feeOpts = this.feeProvider.getFeeOpts();
             tx.feeLevelName = feeOpts[tx.feeLevel];
@@ -567,9 +570,9 @@ export class ConfirmPage extends WalletTabsChild {
           this.tx = tx;
           this.logger.debug(
             'Confirm. TX Fully Updated for wallet:' +
-              wallet.id +
-              ' Txp:' +
-              txp.id
+            wallet.id +
+            ' Txp:' +
+            txp.id
           );
           return resolve();
         })
@@ -781,8 +784,8 @@ export class ConfirmPage extends WalletTabsChild {
         this.isWithinWalletTabs()
           ? this.navCtrl.popToRoot()
           : this.navCtrl.last().name == 'ConfirmCardPurchasePage'
-          ? this.navCtrl.pop()
-          : this.navCtrl.popToRoot();
+            ? this.navCtrl.pop()
+            : this.navCtrl.popToRoot();
       }
     });
   }
