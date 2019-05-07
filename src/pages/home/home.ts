@@ -104,7 +104,7 @@ export class HomePage {
     this.showReorderVaultWallets = false;
     this.zone = new NgZone({ enableLongStackTrace: false });
     this.events.subscribe('Home/reloadStatus', () => {
-      this._willEnter();
+      this._willEnter(true);
       this._didEnter();
     });
   }
@@ -117,9 +117,9 @@ export class HomePage {
     this._didEnter();
   }
 
-  private _willEnter() {
+  private _willEnter(shouldUpdate: boolean = false) {
     // Update list of wallets, status and TXPs
-    this.setWallets();
+    this.setWallets(shouldUpdate);
 
     // Update Wallet on Focus
     if (this.isElectron) {
