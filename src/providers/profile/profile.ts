@@ -372,7 +372,14 @@ export class ProfileProvider {
 
   public updateCredentials(credentials): void {
     this.profile.updateWallet(credentials);
-    this.persistenceProvider.storeProfile(this.profile);
+    this.persistenceProvider.storeProfile(this.profile).then(
+      () => {
+        this.logger.debug('Updated modified Profile(updateCredentials)');
+      },
+      e => {
+        this.logger.error('Could not save Profile(updateCredentials)', e);
+      }
+    );
   }
 
   private runValidation(wallet, delay?: number, retryDelay?: number) {
@@ -421,10 +428,16 @@ export class ProfileProvider {
 
   public storeProfileIfDirty(): void {
     if (this.profile.dirty) {
-      this.persistenceProvider.storeProfile(this.profile).then(() => {
-        this.logger.debug('Saved modified Profile');
-        return;
-      });
+      this.persistenceProvider.storeProfile(this.profile).then(
+        () => {
+          this.logger.debug('Saved modified Profile');
+          return;
+        },
+        e => {
+          this.logger.error('Could not save Profile(Dirty)', e);
+          return;
+        }
+      );
     } else {
       return;
     }
@@ -688,11 +701,17 @@ export class ProfileProvider {
 
     this.saveBwsUrl(walletId, opts);
 
-    return this.persistenceProvider.storeProfile(this.profile).then(() => {
-      if (!opts.skipEvent) this.events.publish('Local/WalletListChange');
+    return this.persistenceProvider.storeProfile(this.profile).then(
+      () => {
+        if (!opts.skipEvent) this.events.publish('Local/WalletListChange');
 
-      return Promise.resolve(wallet);
-    });
+        return Promise.resolve(wallet);
+      },
+      e => {
+        this.logger.error('Could not save Profile(addAndBindWalletClient)', e);
+        return Promise.reject(e);
+      }
+    );
   }
 
   private saveBwsUrl(walletId, opts): void {
@@ -1381,28 +1400,28 @@ export class ProfileProvider {
   public setDisclaimerAccepted(): Promise<any> {
     return new Promise((resolve, reject) => {
       this.profile.disclaimerAccepted = true;
-      this.persistenceProvider
-        .storeProfile(this.profile)
-        .then(() => {
+      this.persistenceProvider.storeProfile(this.profile).then(
+        () => {
           return resolve();
-        })
-        .catch(err => {
+        },
+        err => {
           return reject(err);
-        });
+        }
+      );
     });
   }
 
   public setOnboardingCompleted(): Promise<any> {
     return new Promise((resolve, reject) => {
       this.profile.onboardingCompleted = true;
-      this.persistenceProvider
-        .storeProfile(this.profile)
-        .then(() => {
+      this.persistenceProvider.storeProfile(this.profile).then(
+        () => {
           return resolve();
-        })
-        .catch(err => {
+        },
+        err => {
           return reject(err);
-        });
+        }
+      );
     });
   }
 
