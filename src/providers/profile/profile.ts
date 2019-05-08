@@ -1051,7 +1051,9 @@ export class ProfileProvider {
       this.persistenceProvider
         .getProfile()
         .then(profile => {
-          if (!profile) {
+          if (profile && typeof profile != 'object') {
+            return reject('Profile is not an object: ' + profile);
+          } else if (!profile) {
             return resolve();
           }
 
