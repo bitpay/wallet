@@ -1,6 +1,6 @@
 {
-  "name": "bitpay",
-  "description": "Secure Bitcoin Wallet",
+  "name": "copay",
+  "description": "A Secure Bitcoin Wallet",
   "author": "BitPay",
   "version": "5.8.3",
   "keywords": [
@@ -12,7 +12,7 @@
     "bitcore"
   ],
   "main": "electron/main.js",
-  "title": "BitPay",
+  "title": "Copay",
   "user-agent": "%name %ver (%osinfo)",
   "webkit": {
     "page-cache": false,
@@ -21,7 +21,7 @@
   },
   "dom_storage_quota": 200,
   "id": "jid1-x7bV5evAaI1P9Q",
-  "homepage": "https://bitpay.com",
+  "homepage": "https://copay.io",
   "license": "MIT",
   "repository": {
     "url": "git://github.com/bitpay/copay.git",
@@ -86,8 +86,8 @@
     "verify:bitpay-desktop": "gpg --verify dist/BitPay-linux.zip.sig dist/BitPay-linux.zip; gpg --verify dist/BitPay.exe.sig dist/BitPay.exe; gpg --verify dist/BitPay.dmg.sig dist/BitPay.dmg"
   },
   "build": {
-    "appId": "com.bitpay.wallet.desktop",
-    "productName": "BitPay",
+    "appId": "com.bitpay.copay.desktop2",
+    "productName": "Copay",
     "afterPack": "./electron/afterPack.js",
     "files": [
       "./electron/main.js",
@@ -103,12 +103,12 @@
         "bitcoin",
         "bitcoincash",
         "bchtest",
-        "bitpay"
+        "copay"
       ]
     },
     "mac": {
       "category": "public.app-category.finance",
-      "icon": "resources/bitpay/mac/app.icns",
+      "icon": "resources/copay/mac/app.icns",
       "artifactName": "${productName}.${ext}",
       "extendInfo": {
         "NSCameraUsageDescription": "Scan a Bitcoin Address directly to your Wallet and send funds to it"
@@ -119,22 +119,22 @@
     },
     "mas": {
       "identity": "BitPay, Inc. (884JRH5R93)",
-      "entitlements": "./bitpay-entitlements.mas.plist",
-      "provisioningProfile": "./bitpay-embedded.provisionprofile"
+      "entitlements": "./copay-entitlements.mas.plist",
+      "provisioningProfile": "./copay-embedded.provisionprofile"
     },
     "win": {
       "target": [
         "appx"
       ],
-      "icon": "resources/bitpay/windows/icon.ico",
+      "icon": "resources/copay/windows/icon.ico",
       "artifactName": "${productName}.${ext}"
     },
     "appx": {
-      "identityName": "18C7659D.BitPayforWindows",
+      "identityName": "18C7659D.CopayforWindows",
       "publisher": "CN=F89609D1-EB3E-45FD-A58A-C2E3895FCE7B",
       "publisherDisplayName": "BitPay Inc.",
-      "applicationId": "BitPayforWindows",
-      "displayName": "BitPay for Windows"
+      "applicationId": "CopayforWindows",
+      "displayName": "Copay for Windows"
     },
     "linux": {
       "target": [
@@ -224,8 +224,7 @@
     "rxjs": "5.5.12",
     "text-encoding": "0.6.4",
     "web-animations-js": "2.3.1",
-    "zone.js": "0.8.26",
-    "im.ltdev.cordova.UserAgent": "https://github.com/danielsogl/cordova-plugin-useragent.git"
+    "zone.js": "0.8.26"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "0.13.1",
@@ -289,7 +288,7 @@
       "cordova-custom-config": {},
       "cordova-plugin-customurlscheme": {
         "URL_SCHEME": "bitcoin",
-        "SECOND_URL_SCHEME": "bitpay",
+        "SECOND_URL_SCHEME": "copay",
         "THIRD_URL_SCHEME": "bitcoincash",
         "ANDROID_SCHEME": " ",
         "ANDROID_HOST": " ",
@@ -304,13 +303,7 @@
       "im.ltdev.cordova.UserAgent": {},
       "cordova-launch-review": {},
       "cordova-plugin-wkwebview-engine": {},
-      "cordova-plugin-advanced-http": {},
-      "cordova-plugin-add-swift-support": {},
-      "cordova-plugin-customurlscheme-ng": {
-        "URL_SCHEME": "bitcoin",
-        "SECOND_URL_SCHEME": "bitpay",
-        "THIRD_URL_SCHEME": "bitcoincash"
-      }
+      "cordova-plugin-advanced-http": {}
     },
     "platforms": [
       "android",
