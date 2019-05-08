@@ -24,7 +24,6 @@ import { BwcProvider } from '../../../../providers/bwc/bwc';
 import { ClipboardProvider } from '../../../../providers/clipboard/clipboard';
 import { ConfigProvider } from '../../../../providers/config/config';
 import { ExternalLinkProvider } from '../../../../providers/external-link/external-link';
-import { IncomingDataProvider } from '../../../../providers/incoming-data/incoming-data';
 import { InvoiceProvider } from '../../../../providers/invoice/invoice';
 import { OnGoingProcessProvider } from '../../../../providers/on-going-process/on-going-process';
 import { PayproProvider } from '../../../../providers/paypro/paypro';
@@ -75,7 +74,6 @@ export class ConfirmInvoicePage extends ConfirmCardPurchasePage {
     modalCtrl: ModalController,
     navCtrl: NavController,
     navParams: NavParams,
-    private incomingDataProvider: IncomingDataProvider,
     onGoingProcessProvider: OnGoingProcessProvider,
     popupProvider: PopupProvider,
     profileProvider: ProfileProvider,
@@ -135,8 +133,8 @@ export class ConfirmInvoicePage extends ConfirmCardPurchasePage {
     this.email = this.merchantProvidedEmail
       ? this.merchantProvidedEmail
       : this.buyerProvidedEmail
-      ? this.buyerProvidedEmail
-      : await this.getEmail();
+        ? this.buyerProvidedEmail
+        : await this.getEmail();
     this.detailsCurrency = this.currency;
     this.paymentTimeControl(this.invoiceData.expirationTime);
   }
@@ -175,17 +173,25 @@ export class ConfirmInvoicePage extends ConfirmCardPurchasePage {
       });
     }
     if (_.isEmpty(this.wallets)) {
-      this.openInBrowser();
+      const msg = 'No wallets available. Open this invoice url in a browser to pay in another wallet.'
+      this.openInBrowser(msg);
       return;
     }
     this.onWalletSelect(this.wallets[0]);
   }
 
-  public openInBrowser() {
-    this.incomingDataProvider.showMenu({
-      data: this.invoiceUrl,
-      type: 'InvoiceUrl'
-    });
+  public openInBrowser(msg) {
+    const { BITPAY_API_URL } = this.invoiceProvider.credentials
+    const invoiceUrl = `${BITPAY_API_URL}/invoice?id=${this.invoiceId}&v=3`;
+    const invoiceText = {
+      redeemInstructions: msg
+    }
+    this.actionSheetProvider
+      .createInfoSheet('copied-invoice-url', {
+        cardConfig: invoiceText,
+        invoiceUrl
+      })
+      .present();
   }
 
   private async getEmail() {
@@ -225,7 +231,7 @@ export class ConfirmInvoicePage extends ConfirmCardPurchasePage {
     this.message = this.replaceParametersProvider.replace(
       this.translate.instant(
         `Payment request for BitPay invoice ${
-          this.invoiceId
+        this.invoiceId
         } for {{amountUnitStr}} to merchant ${this.invoiceName}`
       ),
       { amountUnitStr: this.amountUnitStr }
@@ -270,6 +276,15 @@ export class ConfirmInvoicePage extends ConfirmCardPurchasePage {
           ? COIN
           : 'USD'
         : this.currency;
+  }
+
+  public back() {
+    this.clipboardProvider.copy(this.invoiceUrl);
+    this.isWithinWalletTabs()
+      ? this.navCtrl.popToRoot()
+      : this.navCtrl.last().name == 'ConfirmCardPurchasePage'
+        ? this.navCtrl.pop()
+        : this.navCtrl.popToRoot();
   }
 
   public isValidEmail() {

@@ -22,29 +22,6 @@
     </button>
   </ion-list>
 
-  <ion-list *ngIf="type === 'InvoiceUrl'">
-    <ion-item-divider>{{ 'Invoice' | translate }}</ion-item-divider>
-    <ion-item>
-      {{ data }}
-      <ion-icon item-start>
-        <img *ngIf="!https" src="assets/img/icon-lock-x.svg" />
-        <img *ngIf="https" src="assets/img/icon-lock-green.svg" />
-      </ion-icon>
-    </ion-item>
-    <button ion-item (click)="close('OpenInvoiceLink', data)">
-      <ion-icon item-start>
-        <img src="assets/img/icon-link-external.svg" />
-      </ion-icon>
-      <span translate>Open in Browser</span>
-    </button>
-    <button ion-item copy-to-clipboard="{{ data }}">
-      <ion-icon item-start>
-        <img src="assets/img/icon-paperclip.svg" />
-      </ion-icon>
-      <span translate>Copy to clipboard</span>
-    </button>
-  </ion-list>
-
   <ion-list *ngIf="type === 'bitcoinAddress'">
     <ion-item-divider>{{ 'Bitcoin Address' | translate }}</ion-item-divider>
     <ion-item>
@@ -99,13 +76,7 @@
     </button>
   </ion-list>
 
-  <button
-    ion-button
-    clear
-    color="danger"
-    class="button-standard"
-    (click)="close(null, null)"
-  >
+  <button ion-button clear color="danger" class="button-standard" (click)="close(null, null)">
     {{ 'Close' | translate }}
   </button>
 </action-sheet>

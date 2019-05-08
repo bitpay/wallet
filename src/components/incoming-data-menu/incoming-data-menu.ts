@@ -29,15 +29,13 @@ export class IncomingDataMenuComponent extends ActionSheetParent {
     this.type = this.params.data.type;
     this.coin = this.params.data.coin;
     this.fromHomeCard = this.params.data.fromHomeCard;
-    if (this.type === 'url' || this.type === 'InvoiceUrl') {
+    if (this.type === 'url') {
       this.https = this.data.indexOf('https://') === 0 ? true : false;
     }
   }
 
   public close(redirTo: string, value: string) {
-    if (redirTo === 'OpenInvoiceLink') {
-      this.externalLinkProvider.open(value);
-    } else if (redirTo == 'OpenExternalLink') {
+    if (redirTo == 'OpenExternalLink') {
       if (this.isCordova) this.dismiss();
       this.dismissFunction;
       this.dismissFunction({ redirTo, value, coin: this.coin });
