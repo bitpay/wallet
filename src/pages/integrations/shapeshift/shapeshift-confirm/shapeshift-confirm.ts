@@ -35,8 +35,9 @@ export class ShapeshiftConfirmPage {
   @ViewChild('slideButton')
   slideButton;
 
-  private amount: number;
-  private rateUnit: number;
+  private depositAmount: number;
+  private rate: number;
+
   private fromWalletId: string;
   private toWalletId: string;
   private createdTx;
@@ -48,8 +49,7 @@ export class ShapeshiftConfirmPage {
   private sendMaxInfo;
   private accessToken: string;
 
-  public withdrawalAmountSat: number;
-  public currency: string;
+  public withdrawalFee: number;
   public currencyIsoCode: string;
   public isCordova: boolean;
   public toWallet;
@@ -67,6 +67,8 @@ export class ShapeshiftConfirmPage {
   public txSent;
   public network: string;
   public hideSlideButton: boolean;
+  public remainingTimeStr: string;
+  public paymentExpired: boolean;
 
   constructor(
     private bwcProvider: BwcProvider,
@@ -96,8 +98,6 @@ export class ShapeshiftConfirmPage {
 
     this.useSendMax = this.navParams.data.useSendMax ? true : false;
 
-    this.amount = this.navParams.data.amount;
-    this.currency = this.navParams.data.currency;
     this.fromWalletId = this.navParams.data.id;
     this.toWalletId = this.navParams.data.toWalletId;
 
@@ -115,6 +115,8 @@ export class ShapeshiftConfirmPage {
     this.shapeshiftProvider.getMarketInfo(this.getCoinPair(), (error, lim) => {
       if (error) return this.showErrorAndBack(null, error);
 
+      this.rate = Number(lim.rate);
+
       /*
        * Coin Pair
        *
@@ -131,26 +133,18 @@ export class ShapeshiftConfirmPage {
        *   fee (BTC)
        */
 
-      const min = Number(lim.minimum);
-      const max = Number(lim.limit);
-      const rate = Number(lim.rate);
-      const fee = Number(lim.minerFee);
-
-      const shiftWithdrawalFeeSat = Number((fee * 100000000).toFixed());
-
-      this.rateUnit = rate;
+      const depositMin = Number(lim.minimum);
+      const depositMax = Number(lim.maxLimit);
+      this.withdrawalFee = Number(lim.minerFee);
 
       if (this.useSendMax) {
         this.onGoingProcessProvider.set('calculatingSendMax');
-        this.setMaxInfo(max, min)
-          .then(amount => {
+        this.setMaxInfo(depositMax, depositMin)
+          .then(amountSat => {
             this.onGoingProcessProvider.clear();
-            this.amount = amount;
-            const withdrawalSendMaxSat = Number(
-              (amount * rate * 100000000).toFixed()
+            this.depositAmount = Number(
+              (amountSat / this.configWallet.settings.unitToSatoshi).toFixed(8)
             );
-            this.withdrawalAmountSat =
-              withdrawalSendMaxSat - shiftWithdrawalFeeSat;
             this.createShift();
           })
           .catch(err => {
@@ -159,18 +153,18 @@ export class ShapeshiftConfirmPage {
             this.showErrorAndBack(null, err);
           });
       } else {
-        const amountNumber = Number(this.amount);
-        const shiftWithdrawalAmountSat = Number(
-          (this.amount * rate * 100000000).toFixed()
+        this.depositAmount = Number(this.navParams.data.amount);
+
+        if (!this.isValid(this.depositAmount, depositMin, depositMax)) return;
+
+        // Calculate fee for withdraw (convert depositAmount to same unit as withdrawalFee)
+        const withdrawalAmount = Number(
+          (this.depositAmount * this.rate).toFixed(8)
         );
-        if (this.isMinimum(amountNumber, min)) return;
-        if (this.isMaximum(amountNumber, max)) return;
         if (
-          !this.hasEnoughFunds(shiftWithdrawalAmountSat, shiftWithdrawalFeeSat)
+          !this.hasEnoughFundsForWithdraw(withdrawalAmount, this.withdrawalFee)
         )
           return;
-        this.withdrawalAmountSat =
-          shiftWithdrawalAmountSat - shiftWithdrawalFeeSat;
         this.createShift();
       }
     });
@@ -188,35 +182,30 @@ export class ShapeshiftConfirmPage {
     this.navCtrl.swipeBackEnabled = false;
   }
 
-  private isMaximum(amount: number, max: number): boolean {
+  private isValid(amount: number, min: number, max: number): boolean {
     if (amount > max) {
       let message = this.replaceParametersProvider.replace(
         this.translate.instant('Maximum amount allowed is {{max}}'),
         { max }
       );
       this.showErrorAndBack(null, message);
-      return true;
-    }
-    return false;
-  }
-
-  private isMinimum(amount: number, min: number): boolean {
-    if (amount < min) {
+      return false;
+    } else if (amount < min) {
       let message = this.replaceParametersProvider.replace(
         this.translate.instant('Minimum amount required is {{min}}'),
         { min }
       );
       this.showErrorAndBack(null, message);
-      return true;
+      return false;
     }
-    return false;
+    return true;
   }
 
-  private hasEnoughFunds(amount: number, shiftFee: number) {
-    if (amount <= shiftFee) {
+  private hasEnoughFundsForWithdraw(amount: number, fee: number) {
+    if (amount <= fee) {
       let message = this.replaceParametersProvider.replace(
         this.translate.instant('Not enough funds for fee {{shiftFee}}'),
-        { shiftFee }
+        { fee }
       );
       this.showErrorAndBack(null, message);
       return false;
@@ -255,7 +244,7 @@ export class ShapeshiftConfirmPage {
                 )
                 .then(() => {
                   this.useSendMax = false;
-                  return resolve(max);
+                  return resolve(maxSat);
                 });
             } else if (sendMaxInfo.amount < minSat) {
               let err = this.replaceParametersProvider.replace(
@@ -267,9 +256,7 @@ export class ShapeshiftConfirmPage {
               return reject(err);
             } else {
               this.showSendMaxWarning().then(() => {
-                return resolve(
-                  Number((sendMaxInfo.amount / 100000000).toFixed(8))
-                );
+                return resolve(sendMaxInfo.amount);
               });
             }
           }
@@ -393,7 +380,7 @@ export class ShapeshiftConfirmPage {
         date: now,
         amount: this.amountStr,
         rate:
-          this.rateUnit +
+          this.rate +
           ' ' +
           this.toWallet.coin.toUpperCase() +
           ' per ' +
@@ -418,7 +405,11 @@ export class ShapeshiftConfirmPage {
     });
   }
 
-  private createTx(wallet, toAddress: string): Promise<any> {
+  private createTx(
+    wallet,
+    toAddress: string,
+    depositSat: number
+  ): Promise<any> {
     return new Promise((resolve, reject) => {
       this.message =
         this.fromWallet.coin.toUpperCase() +
@@ -428,13 +419,13 @@ export class ShapeshiftConfirmPage {
 
       outputs.push({
         toAddress,
-        amount: this.amount,
+        amount: depositSat,
         message: this.message
       });
 
       let txp: Partial<TransactionProposal> = {
         toAddress,
-        amount: this.amount,
+        amount: depositSat,
         outputs,
         message: this.message,
         excludeUnconfirmedUtxos: this.configWallet.spendUnconfirmed
@@ -559,14 +550,17 @@ export class ShapeshiftConfirmPage {
                 withdrawal: withdrawalAddress,
                 pair: this.getCoinPair(),
                 returnAddress,
-                token: this.accessToken
+                token: this.accessToken,
+                depositAmount: this.depositAmount
               };
-              this.shapeshiftProvider.shift(data, (err, shapeData) => {
+              this.shapeshiftProvider.sendamount(data, (err, shapeData) => {
                 if (err || shapeData.error) {
                   this.onGoingProcessProvider.clear();
                   this.showErrorAndBack(null, err || shapeData.error);
                   return;
                 }
+
+                this.paymentTimeControl(shapeData.expiration);
 
                 let toAddress = this.getNewAddressFormat(
                   shapeData.deposit,
@@ -574,9 +568,20 @@ export class ShapeshiftConfirmPage {
                 );
 
                 // To Sat
-                this.amount = Number((this.amount * 100000000).toFixed(0));
+                const depositSat = Number(
+                  (
+                    this.depositAmount *
+                    this.configWallet.settings.unitToSatoshi
+                  ).toFixed(0)
+                );
+                const withdrawalAmountSat = Number(
+                  (
+                    shapeData.withdrawalAmount *
+                    this.configWallet.settings.unitToSatoshi
+                  ).toFixed(0)
+                );
 
-                this.createTx(this.fromWallet, toAddress)
+                this.createTx(this.fromWallet, toAddress, depositSat)
                   .then(ctxp => {
                     this.onGoingProcessProvider.clear();
                     // Save in memory
@@ -594,7 +599,7 @@ export class ShapeshiftConfirmPage {
                     );
                     this.withdrawalStr = this.txFormatProvider.formatAmountStr(
                       this.toWallet.coin,
-                      this.withdrawalAmountSat
+                      withdrawalAmountSat
                     );
                     this.feeStr = this.txFormatProvider.formatAmountStr(
                       this.fromWallet.coin,
@@ -609,7 +614,7 @@ export class ShapeshiftConfirmPage {
                     this.setFiatTotalAmount(
                       ctxp.amount,
                       ctxp.fee,
-                      this.withdrawalAmountSat
+                      withdrawalAmountSat
                     );
                   })
                   .catch(err => {
@@ -690,5 +695,34 @@ export class ShapeshiftConfirmPage {
 
   public cancel(): void {
     this.navCtrl.popToRoot({ animate: false });
+  }
+
+  private paymentTimeControl(expires: string): void {
+    const expirationTime = Math.floor(new Date(expires).getTime() / 1000);
+    this.paymentExpired = false;
+    this.setExpirationTime(expirationTime);
+
+    const countDown = setInterval(() => {
+      this.setExpirationTime(expirationTime, countDown);
+    }, 1000);
+  }
+
+  private setExpirationTime(expirationTime: number, countDown?): void {
+    const now = Math.floor(Date.now() / 1000);
+
+    if (now > expirationTime) {
+      this.paymentExpired = true;
+      this.remainingTimeStr = this.translate.instant('Expired');
+      if (countDown) {
+        /* later */
+        clearInterval(countDown);
+      }
+      return;
+    }
+
+    const totalSecs = expirationTime - now;
+    const m = Math.floor(totalSecs / 60);
+    const s = totalSecs % 60;
+    this.remainingTimeStr = ('0' + m).slice(-2) + ':' + ('0' + s).slice(-2);
   }
 }
