@@ -16,6 +16,7 @@ import { FinishModalPage } from '../../../finish/finish';
 // Provider
 import { DecimalPipe } from '@angular/common';
 import {
+  EmailNotificationsProvider,
   FeeProvider,
   TxConfirmNotificationProvider,
   WalletTabsProvider
@@ -78,6 +79,7 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
     feeProvider: FeeProvider,
     private giftCardProvider: GiftCardProvider,
     replaceParametersProvider: ReplaceParametersProvider,
+    private emailNotificationsProvider: EmailNotificationsProvider,
     externalLinkProvider: ExternalLinkProvider,
     logger: Logger,
     modalCtrl: ModalController,
@@ -348,7 +350,8 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
 
   private async promptEmail() {
     if (!this.cardConfig.emailRequired) {
-      return Promise.resolve();
+      const notificationEmail = this.emailNotificationsProvider.getEmailIfEnabled();
+      return Promise.resolve(notificationEmail);
     }
     const email = await this.giftCardProvider.getUserEmail();
     if (email) return Promise.resolve(email);
