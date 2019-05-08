@@ -650,8 +650,8 @@ export function sortByDisplayName(
   const startsNumeric = value => /^[0-9]$/.test(value.charAt(0));
   const aName = a.displayName.toLowerCase();
   const bName = b.displayName.toLowerCase();
-  const aSortValue = `${startsNumeric(aName) ? 'z' : ''}${aName}`;
-  const bSortValue = `${startsNumeric(bName) ? 'z' : ''}${bName}`;
+  const aSortValue = `${startsNumeric(aName) ? 'zzz' : ''}${aName}`;
+  const bSortValue = `${startsNumeric(bName) ? 'zzz' : ''}${bName}`;
   return aSortValue > bSortValue ? 1 : -1;
 }
 
