@@ -1402,28 +1402,28 @@ export class ProfileProvider {
   public setDisclaimerAccepted(): Promise<any> {
     return new Promise((resolve, reject) => {
       this.profile.disclaimerAccepted = true;
-      this.persistenceProvider.storeProfile(this.profile).then(
-        () => {
+      this.persistenceProvider
+        .storeProfile(this.profile)
+        .then(() => {
           return resolve();
-        },
-        err => {
+        })
+        .catch(err => {
           return reject(err);
-        }
-      );
+        });
     });
   }
 
   public setOnboardingCompleted(): Promise<any> {
     return new Promise((resolve, reject) => {
       this.profile.onboardingCompleted = true;
-      this.persistenceProvider.storeProfile(this.profile).then(
-        () => {
+      this.persistenceProvider
+        .storeProfile(this.profile)
+        .then(() => {
           return resolve();
-        },
-        err => {
+        })
+        .catch(err => {
           return reject(err);
-        }
-      );
+        });
     });
   }
 
