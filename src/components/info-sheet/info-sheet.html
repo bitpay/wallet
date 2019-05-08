@@ -58,7 +58,7 @@
     <info-sheet-template *ngSwitchCase="'insufficient-funds'" type="danger">
       <span sheet-title-text translate>Not enough funds</span>
       <span sheet-text>
-        {{ 'You are trying to send {amount} {coin} which is more than what your wallet contains. Please enter a lower amount or send max.' | translate: {amount: params.amount, coin: params.coin | uppercase} }}
+        {{ 'You are trying to send more funds than you have available. Make sure you do not have funds locked by pending transaction proposals. You can also try with a lower amount or send max.' | translate }}
       </span>
       <span sheet-button-text translate>Change Amount</span>
       <span sheet-second-button-text translate>Send Max</span>

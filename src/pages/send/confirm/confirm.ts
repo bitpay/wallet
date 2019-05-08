@@ -338,8 +338,10 @@ export class ConfirmPage extends WalletTabsChild {
             this.showInsufficientFundsInfoSheet();
           } else {
             this.showErrorInfoSheet(
+              this.translate.instant(
+                'You are trying to send more funds than you have available. Make sure you do not have funds locked by pending transaction proposals.'
+              ),
               this.translate.instant('Insufficient funds'),
-              null,
               true
             );
           }
@@ -740,8 +742,7 @@ export class ConfirmPage extends WalletTabsChild {
 
   private showInsufficientFundsInfoSheet(): void {
     const insufficientFundsInfoSheet = this.actionSheetProvider.createInfoSheet(
-      'insufficient-funds',
-      { amount: this.amount, coin: this.tx.coin }
+      'insufficient-funds'
     );
     insufficientFundsInfoSheet.present();
     insufficientFundsInfoSheet.onDidDismiss(option => {
