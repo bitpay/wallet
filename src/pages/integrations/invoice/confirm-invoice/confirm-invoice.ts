@@ -372,7 +372,7 @@ export class ConfirmInvoicePage extends ConfirmCardPurchasePage {
         });
     }
 
-    if (!(this.buyerProvidedEmail && this.merchantProvidedEmail)) {
+    if (!this.buyerProvidedEmail && !this.merchantProvidedEmail) {
       await this.invoiceProvider
         .setBuyerProvidedEmail(this.email, this.invoiceId)
         .catch(err => {
