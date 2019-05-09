@@ -1,6 +1,11 @@
 <ion-header [ngClass]="{'wallet-details-header': wallet}">
   <ion-navbar [navbar-bg]="wallet && wallet.color">
     <ion-title>{{wallet && wallet.name || ('Amount' | translate)}}</ion-title>
+    <ion-buttons end>
+      <button ion-button (click)="goToConfirm()" *ngIf="multiRecipients && multiRecipients.length > 0" [disabled]="isDisabledContinue">
+        <span translate>{{'Continue' | translate}}</span>
+      </button>
+    </ion-buttons>
   </ion-navbar>
   <ion-toolbar *ngIf="wallet" [navbar-bg]="wallet.color">
     <div *ngIf="!wallet.balanceHidden && !wallet.scanning && wallet.cachedStatus" class="wallet-details-header__balance">
@@ -31,8 +36,8 @@
           </ion-icon>
         </ion-item>
         <div class="recipient-buttons" *ngIf="!invalidAddress && search != ''">
-          <button ion-button class="button-add" outline (click)="addRecipient()">{{ 'Add Recipient' | translate}}</button>
-          <button ion-button class="button-cancel" outline (click)="cancelRecipient()">{{ 'Cancel' | translate}}</button>
+          <button ion-button class="button-add" outline (click)="newRecipient()">{{ 'Add Recipient' | translate}}</button>
+          <button ion-button class="button-cancel" outline (click)="cleanSearch()">{{ 'Cancel' | translate}}</button>
         </div>
       </div>
 
@@ -73,10 +78,6 @@
           </ion-list>
         </div>
       </div>
-
-      <button ion-button *ngIf="multiRecipients && multiRecipients.length > 0" [disabled]="isDisabledContinue" class="button-standard" (click)="goToConfirm()">
-        {{'Continue' | translate}}
-      </button>
     </div>
     <div *ngIf="multiRecipients.length == 0" class="no-wallet-message">
       <span translate>To get started, you'll need to enter a valid address, contact or wallet.</span>
