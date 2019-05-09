@@ -38,11 +38,6 @@ export class Profile {
     return x;
   }
 
-  public toObj(): string {
-    delete this.dirty;
-    return JSON.stringify(this);
-  }
-
   public hasWallet(walletId: string): boolean {
     for (let i in this.credentials) {
       let c = this.credentials[i];
