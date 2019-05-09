@@ -16,6 +16,13 @@ info-sheet {
         display: flex;
         justify-content: start;
 
+        .truncate {
+          width: 100%;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+
         .title-icon {
           padding-right: 15px;
           display: flex;

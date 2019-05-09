@@ -134,8 +134,7 @@
     </info-sheet-template>
 
     <info-sheet-template *ngSwitchCase="'copied-invoice-url'" type="success">
-      <span sheet-title-text
-        style="word-break: break-all; font-size: 12px; font-weight: 300;">{{'Copied: {invoiceUrl}' | translate: params }}</span>
+      <span sheet-title-text class="truncate">{{'Copied: {invoiceUrl}' | translate: params }}</span>
       <span sheet-text>
         <redeem-instructions [cardConfig]="params.cardConfig" [params]="params"></redeem-instructions>
       </span>
