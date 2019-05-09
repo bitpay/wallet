@@ -1,7 +1,7 @@
 export class Profile {
   public version: string;
   public createdOn: number;
-  public credentials;
+  public credentials: any;
   public disclaimerAccepted: boolean;
   public onboardingCompleted: boolean;
   public checked;
@@ -12,7 +12,7 @@ export class Profile {
     this.version = '1.0.0';
   }
 
-  public create(opts?): Profile {
+  static create(opts?): Profile {
     opts = opts ? opts : {};
     let x = new Profile();
     x.createdOn = Date.now();
@@ -23,28 +23,19 @@ export class Profile {
     return x;
   }
 
-  public fromObj(obj): Profile {
+  static fromObj(obj): Profile {
+    obj = obj ? obj : {};
     let x = new Profile();
-
     x.createdOn = obj.createdOn;
-    x.credentials = obj.credentials;
-    x.disclaimerAccepted = obj.disclaimerAccepted;
-    x.onboardingCompleted = obj.onboardingCompleted;
+    x.credentials = obj.credentials || [];
+    x.disclaimerAccepted = obj.disclaimerAccepted || false;
+    x.onboardingCompleted = obj.onboardingCompleted || false;
     x.checked = obj.checked || {};
-    x.checkedUA = obj.checkedUA || {};
+    x.checkedUA = obj.checkedUA;
 
     if (x.credentials[0] && typeof x.credentials[0] != 'object')
-      throw new Error('credentials should be an object');
+      throw new Error('credentials should be an array of objects');
     return x;
-  }
-
-  public fromString(str: string): Profile {
-    return this.fromObj(JSON.parse(str));
-  }
-
-  public toObj(): string {
-    delete this.dirty;
-    return JSON.stringify(this);
   }
 
   public hasWallet(walletId: string): boolean {

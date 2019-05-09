@@ -886,8 +886,7 @@ export class ProfileProvider {
 
   public createProfile(): void {
     this.logger.info('Creating profile');
-    this.profile = new Profile();
-    this.profile = this.profile.create();
+    this.profile = Profile.create();
     this.persistenceProvider.storeNewProfile(this.profile);
   }
 
@@ -1036,10 +1035,11 @@ export class ProfileProvider {
           if (!profile) {
             return resolve();
           }
-          this.profile = new Profile();
-          this.profile = this.profile.fromObj(profile);
+
+          this.profile = Profile.fromObj(profile);
           // Deprecated: storageService.tryToMigrate
-          this.logger.info('Profile read');
+          this.logger.info('Profile loaded');
+
           this.bindProfile(this.profile)
             .then(() => {
               return resolve(this.profile);
