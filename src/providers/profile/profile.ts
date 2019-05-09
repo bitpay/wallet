@@ -688,13 +688,11 @@ export class ProfileProvider {
 
     this.saveBwsUrl(walletId, opts);
 
-    return this.persistenceProvider
-      .storeProfile(this.profile)
-      .then(() => {
-        if (!opts.skipEvent) this.events.publish('Local/WalletListChange');
+    return this.persistenceProvider.storeProfile(this.profile).then(() => {
+      if (!opts.skipEvent) this.events.publish('Local/WalletListChange');
 
-        return Promise.resolve(wallet);
-      });
+      return Promise.resolve(wallet);
+    });
   }
 
   private saveBwsUrl(walletId, opts): void {
