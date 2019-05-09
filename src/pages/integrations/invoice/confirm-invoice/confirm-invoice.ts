@@ -186,14 +186,13 @@ export class ConfirmInvoicePage extends ConfirmCardPurchasePage {
 
   ionViewWillLeave() {
     if (!this.invoicePaid) {
-      const msg = 'Open this invoice url in a browser to pay in another wallet.'
-      this.openInBrowser(msg);
+      this.openInBrowser();
     } else {
       this.externalLinkProvider.open(this.browserUrl);
     }
   }
 
-  public openInBrowser(msg) {
+  public openInBrowser(msg = 'Open this invoice url in a browser to pay in another wallet.') {
     this.clipboardProvider.copy(this.invoiceUrl);
     const invoiceText = {
       redeemInstructions: msg
