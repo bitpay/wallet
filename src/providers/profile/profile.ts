@@ -1052,7 +1052,9 @@ export class ProfileProvider {
         .getProfile()
         .then(profile => {
           if (profile && typeof profile != 'object') {
-            return reject('Profile is not an object: ' + profile);
+            return reject(
+              new Error('profile is not an object: ' + JSON.stringify(profile))
+            );
           } else if (!profile) {
             return resolve();
           }

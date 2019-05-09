@@ -218,10 +218,19 @@ export class CopayApp {
       })
       .catch((err: Error) => {
         this.logger.warn('LoadAndBindProfile', err.message);
-        this.rootPage =
-          err.message == 'ONBOARDINGNONCOMPLETED: Onboarding non completed'
-            ? OnboardingPage
-            : DisclaimerPage;
+        switch (err.message) {
+          case 'NONAGREEDDISCLAIMER: Non agreed disclaimer':
+            this.rootPage = DisclaimerPage;
+            break;
+          case 'ONBOARDINGNONCOMPLETED: Onboarding non completed':
+            this.rootPage = OnboardingPage;
+            break;
+          default:
+            this.popupProvider.ionicAlert(
+              'Could not initialize the app',
+              err.message
+            );
+        }
       });
   }
 
