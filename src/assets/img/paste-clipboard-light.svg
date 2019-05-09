@@ -1,6 +1,1 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" viewBox="0 0 21 21">
-  <g fill="none" fill-rule="evenodd" stroke="#fff" stroke-linecap="square" transform="translate(1 1)">
-    <path stroke-dasharray="2 2" d="M13.9090909,5 L19,5 L19,19 L5,19 L5,13.9090909"/>
-    <path stroke-dasharray="1" d="M0,0 L14,0 L14,14 L0,14 L0,0 Z"/>
-  </g>
-</svg>
+<svg height="22" viewBox="0 0 19 22" width="19" xmlns="http://www.w3.org/2000/svg"><path d="M19,5 L7,5 C5.9,5 5,5.9 5,7 L5,21 L7,21 L7,7 L19,7 L19,5 Z M22,9 L11,9 C9.9,9 9,9.9 9,11 L9,25 C9,26.1 9.9,27 11,27 L22,27 C23.1,27 24,26.1 24,25 L24,11 C24,9.9 23.1,9 22,9 Z M22,25 L11,25 L11,11 L22,11 L22,25 Z" fill="#fff" stroke="none" transform="translate(-5 -5)"></path></svg>

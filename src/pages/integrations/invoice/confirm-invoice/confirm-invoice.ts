@@ -59,6 +59,8 @@ export class ConfirmInvoicePage extends ConfirmCardPurchasePage {
   public merchantProvidedEmail?: string;
   public buyerProvidedEmail?: string;
   public detailsCurrency: string;
+  private browserUrl: string;
+  private invoicePaid: boolean;
   constructor(
     actionSheetProvider: ActionSheetProvider,
     bwcErrorProvider: BwcErrorProvider,
@@ -117,6 +119,7 @@ export class ConfirmInvoicePage extends ConfirmCardPurchasePage {
       AppProvider
     );
     this.hideSlideButton = false;
+    this.invoicePaid = false;
     this.invoiceName = this.navParams.data.invoiceName;
     this.configWallet = this.configProvider.get().wallet;
   }
@@ -156,6 +159,7 @@ export class ConfirmInvoicePage extends ConfirmCardPurchasePage {
       });
     }
     const { BITPAY_API_URL } = this.invoiceProvider.credentials;
+    this.browserUrl = `${BITPAY_API_URL}/invoice?id=${this.invoiceId}`;
     this.network = this.invoiceProvider.getNetwork();
     this.wallets = this.profileProvider.getWallets({
       onlyComplete: true,
@@ -180,16 +184,24 @@ export class ConfirmInvoicePage extends ConfirmCardPurchasePage {
     this.onWalletSelect(this.wallets[0]);
   }
 
+  ionViewWillLeave() {
+    if (!this.invoicePaid) {
+      const msg = 'Open this invoice url in a browser to pay in another wallet.'
+      this.openInBrowser(msg);
+    } else {
+      this.externalLinkProvider.open(this.browserUrl);
+    }
+  }
+
   public openInBrowser(msg) {
-    const { BITPAY_API_URL } = this.invoiceProvider.credentials
-    const invoiceUrl = `${BITPAY_API_URL}/invoice?id=${this.invoiceId}&v=3`;
+    this.clipboardProvider.copy(this.invoiceUrl);
     const invoiceText = {
       redeemInstructions: msg
     }
     this.actionSheetProvider
       .createInfoSheet('copied-invoice-url', {
         cardConfig: invoiceText,
-        invoiceUrl
+        invoiceUrl: this.browserUrl
       })
       .present();
   }
@@ -276,15 +288,6 @@ export class ConfirmInvoicePage extends ConfirmCardPurchasePage {
           ? COIN
           : 'USD'
         : this.currency;
-  }
-
-  public back() {
-    this.clipboardProvider.copy(this.invoiceUrl);
-    this.isWithinWalletTabs()
-      ? this.navCtrl.popToRoot()
-      : this.navCtrl.last().name == 'ConfirmCardPurchasePage'
-        ? this.navCtrl.pop()
-        : this.navCtrl.popToRoot();
   }
 
   public isValidEmail() {
@@ -405,6 +408,7 @@ export class ConfirmInvoicePage extends ConfirmCardPurchasePage {
       return undefined;
     }
     this.hideSlideButton = true;
+    this.invoicePaid = true;
     return this.publishInvoiceAndSign(ctxp, this.wallet).catch(async err =>
       this.handlePurchaseError(err)
     );

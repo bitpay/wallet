@@ -1,15 +1,10 @@
-<ion-header class="wallet-details-header">
-  <ion-navbar [hideBackButton]="true">
-    <ion-buttons left>
-      <button class="modal-close-button" (click)="back()" ion-button>
-        <ion-icon name="arrow-round-back"></ion-icon>
-      </button>
-    </ion-buttons>
+<ion-header>
+  <ion-navbar>
     <ion-title>{{ 'Confirm' | translate }}</ion-title>
     <ion-buttons right>
-      <button (click)="openInBrowser('Open this invoice url in a browser to pay in another wallet.')"
-        [copy-to-clipboard]="invoiceUrl" [hide-toast]="true" tappable ion-button>
-        <img class="copy-icon" src="assets/img/paste-clipboard-light.svg" width="18" />
+      <button (click)="openInBrowser('Open this invoice url in a browser to pay in another wallet.')" tappable
+        ion-button>
+        <img src="assets/img/paste-clipboard-light.svg" width="19" />
       </button>
     </ion-buttons>
   </ion-navbar>
