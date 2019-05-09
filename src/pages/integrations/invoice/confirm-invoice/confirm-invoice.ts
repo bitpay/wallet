@@ -161,11 +161,15 @@ export class ConfirmInvoicePage extends ConfirmCardPurchasePage {
     const { BITPAY_API_URL } = this.invoiceProvider.credentials;
     this.browserUrl = `${BITPAY_API_URL}/invoice?id=${this.invoiceId}`;
     this.network = this.invoiceProvider.getNetwork();
-    this.wallets = this.profileProvider.getWallets({
+    const walletsBtc = this.profileProvider.getWallets({
       onlyComplete: true,
-      network: this.network,
-      hasFunds: true
+      network: this.network, coin: 'btc', minAmount: this.invoiceData.paymentTotals['BTC']
     });
+    const walletsBch = this.profileProvider.getWallets({
+      onlyComplete: true,
+      network: this.network, coin: 'bch', minAmount: this.invoiceData.paymentTotals['BCH']
+    });
+    this.wallets = [...walletsBtc, ...walletsBch];
     this.invoiceUrl = `${BITPAY_API_URL}/invoice/${this.invoiceId}`;
     const { selectedTransactionCurrency } = this.invoiceData.buyerProvidedInfo;
     if (selectedTransactionCurrency) {
@@ -177,8 +181,7 @@ export class ConfirmInvoicePage extends ConfirmCardPurchasePage {
       });
     }
     if (_.isEmpty(this.wallets)) {
-      const msg = 'No wallets available. Open this invoice url in a browser to pay in another wallet.'
-      this.openInBrowser(msg);
+      this.openInBrowser('error');
       return;
     }
     this.onWalletSelect(this.wallets[0]);
@@ -186,20 +189,26 @@ export class ConfirmInvoicePage extends ConfirmCardPurchasePage {
 
   ionViewWillLeave() {
     if (!this.invoicePaid) {
-      this.openInBrowser();
+      this.clipboardProvider.copy(this.invoiceUrl);
     } else {
       this.externalLinkProvider.open(this.browserUrl);
     }
   }
 
-  public openInBrowser(msg = 'Open this invoice url in a browser to pay in another wallet.') {
+  public async close() {
+    this.navCtrl.popToRoot();
+  }
+
+  public openInBrowser(invoiceType) {
     this.clipboardProvider.copy(this.invoiceUrl);
+    const msg = 'Open this invoice url in a browser to pay in another wallet.'
     const invoiceText = {
       redeemInstructions: msg
     }
     this.actionSheetProvider
       .createInfoSheet('copied-invoice-url', {
         cardConfig: invoiceText,
+        error: invoiceType === 'error' ? 'No Wallets Available' : null,
         invoiceUrl: this.browserUrl
       })
       .present();

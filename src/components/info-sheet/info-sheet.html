@@ -133,15 +133,16 @@
       <span sheet-button-text translate>GOT IT</span>
     </info-sheet-template>
 
-    <info-sheet-template *ngSwitchCase="'copied-invoice-url'" type="success">
-      <span sheet-title-text class="truncate">{{'Copied: {invoiceUrl}' | translate: params }}</span>
+    <info-sheet-template *ngSwitchCase="'copied-invoice-url'" type="{{ params.error ? 'danger' : 'success' }}">
+      <span *ngIf="!params.error" sheet-title-text
+        class="truncate">{{'Copied: {invoiceUrl}' | translate: params }}</span>
+      <span *ngIf="params.error" sheet-title-text class="truncate">{{'Error: {error}' | translate: params }}</span>
       <span sheet-text>
         <redeem-instructions [cardConfig]="params.cardConfig" [params]="params"></redeem-instructions>
       </span>
       <span sheet-button-text translate>GOT IT</span>
       <span sheet-button-text class="sheet-btn-invoice" translate (click)="openInBrowser(params.invoiceUrl)"
-        style="float: right;" item-end>OPEN IN
-        BROWSER <img width="14" src="assets/img/icon-arrow-right-green.svg">
+        style="float: right;" item-end>OPEN IN BROWSER
       </span>
     </info-sheet-template>
 
