@@ -1,7 +1,7 @@
 export class Profile {
   public version: string;
   public createdOn: number;
-  public credentials: any[];
+  public credentials: any;
   public disclaimerAccepted: boolean;
   public onboardingCompleted: boolean;
   public checked;
@@ -12,44 +12,35 @@ export class Profile {
     this.version = '1.0.0';
   }
 
-  public getObj() {
-    return {
-      version: this.version,
-      createdOn: this.createdOn,
-      credentials: this.credentials,
-      disclaimerAccepted: this.disclaimerAccepted,
-      onboardingCompleted: this.onboardingCompleted,
-      checked: this.checked,
-      checkedUA: this.checkedUA,
-      dirty: this.dirty
-    };
-  }
-
-  public create(opts?) {
+  static create(opts?): Profile {
     opts = opts ? opts : {};
-    this.createdOn = Date.now();
-    this.credentials = opts.credentials || [];
-    this.disclaimerAccepted = false;
-    this.onboardingCompleted = false;
-    this.checked = {};
+    let x = new Profile();
+    x.createdOn = Date.now();
+    x.credentials = opts.credentials || [];
+    x.disclaimerAccepted = false;
+    x.onboardingCompleted = false;
+    x.checked = {};
+    return x;
   }
 
-  public fromObj(obj) {
+  static fromObj(obj): Profile {
     obj = obj ? obj : {};
-    this.createdOn = obj.createdOn;
-    this.credentials = obj.credentials || [];
-    this.disclaimerAccepted = obj.disclaimerAccepted || false;
-    this.onboardingCompleted = obj.onboardingCompleted || false;
-    this.checked = obj.checked || {};
-    this.checkedUA = obj.checkedUA;
+    let x = new Profile();
+    x.createdOn = obj.createdOn;
+    x.credentials = obj.credentials || [];
+    x.disclaimerAccepted = obj.disclaimerAccepted || false;
+    x.onboardingCompleted = obj.onboardingCompleted || false;
+    x.checked = obj.checked || {};
+    x.checkedUA = obj.checkedUA;
 
-    if (this.credentials[0] && typeof this.credentials[0] != 'object')
+    if (x.credentials[0] && typeof x.credentials[0] != 'object')
       throw new Error('credentials should be an array of objects');
+    return x;
   }
 
   public toObj(): string {
     delete this.dirty;
-    return JSON.stringify(this.getObj());
+    return JSON.stringify(this);
   }
 
   public hasWallet(walletId: string): boolean {
