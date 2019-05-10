@@ -24,6 +24,7 @@ page-custom-amount {
       left: 0;
     }
     .qr-card {
+      max-height: 425px;
       @media (max-height: 530px) {
         width: 60%;
       }
