@@ -12,11 +12,10 @@ export class Profile {
     this.version = '1.0.0';
   }
 
-  static create(opts?): Profile {
-    opts = opts ? opts : {};
+  static create(): Profile {
     let x = new Profile();
     x.createdOn = Date.now();
-    x.credentials = opts.credentials || [];
+    x.credentials = [];
     x.disclaimerAccepted = false;
     x.onboardingCompleted = false;
     x.checked = {};
@@ -24,7 +23,9 @@ export class Profile {
   }
 
   static fromObj(obj): Profile {
-    obj = obj ? obj : {};
+    if(!obj || typeof obj != 'object')  {
+      throw new Error('Wrong params at Profile.fromObj: ' + obj);
+    }
     let x = new Profile();
     x.createdOn = obj.createdOn;
     x.credentials = obj.credentials || [];
