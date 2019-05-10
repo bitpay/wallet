@@ -119,7 +119,7 @@ export class ShapeshiftShiftPage {
 
     if (_.isEmpty(this.toWallets)) {
       let msg = this.translate.instant(
-        'Destination wallet needs to be backuped'
+        'Destination wallet needs to be backed up'
       );
       this.showErrorAndBack(null, msg);
       return;
