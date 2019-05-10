@@ -116,6 +116,15 @@ export class ShapeshiftShiftPage {
       this.fromWallet.coin == 'btc' ? this.walletsBch : this.walletsBtc;
 
     this.toWallets = this.toWallets.filter(w => !w.needsBackup);
+
+    if (_.isEmpty(this.toWallets)) {
+      let msg = this.translate.instant(
+        'Destination wallet needs to be backuped'
+      );
+      this.showErrorAndBack(null, msg);
+      return;
+    }
+
     this.onToWalletSelect(this.toWallets[0]);
 
     let msg = this.translate.instant(
