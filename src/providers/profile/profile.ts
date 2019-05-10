@@ -950,9 +950,7 @@ export class ProfileProvider {
                   return resolve();
                 })
                 .catch(() => {
-                  return reject(
-                    new Error('NONAGREEDDISCLAIMER')
-                  );
+                  return reject(new Error('NONAGREEDDISCLAIMER'));
                 });
             })
             .catch(() => {
@@ -967,11 +965,7 @@ export class ProfileProvider {
                     });
                 })
                 .catch(() => {
-                  return reject(
-                    new Error(
-                      'ONBOARDINGNONCOMPLETED'
-                    )
-                  );
+                  return reject(new Error('ONBOARDINGNONCOMPLETED'));
                 });
             });
         })

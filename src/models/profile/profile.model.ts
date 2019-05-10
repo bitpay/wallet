@@ -23,7 +23,7 @@ export class Profile {
   }
 
   static fromObj(obj): Profile {
-    if(!obj || typeof obj != 'object')  {
+    if (!obj || typeof obj != 'object') {
       throw new Error('Wrong params at Profile.fromObj: ' + obj);
     }
     let x = new Profile();
