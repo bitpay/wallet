@@ -65,8 +65,6 @@ export class AmountPage extends WalletTabsChild {
   public expression;
   public amount;
 
-  public shiftMax: number;
-  public shiftMin: number;
   public showSendMax: boolean;
   public allowSend: boolean;
   public recipientType: string;
@@ -147,8 +145,6 @@ export class AmountPage extends WalletTabsChild {
 
     // Use only with ShapeShift
     this.toWalletId = this.navParams.data.toWalletId;
-    this.shiftMax = this.navParams.data.shiftMax;
-    this.shiftMin = this.navParams.data.shiftMin;
 
     this.cardName = this.navParams.get('cardName');
   }

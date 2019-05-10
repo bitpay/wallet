@@ -87,6 +87,35 @@ export class ShapeshiftProvider {
     );
   }
 
+  public sendamount(data, cb) {
+    const dataSrc = {
+      withdrawal: data.withdrawal,
+      pair: data.pair,
+      returnAddress: data.returnAddress,
+      apiKey: this.credentials.API_KEY,
+      depositAmount: data.depositAmount
+    };
+
+    const url = this.credentials.API_URL + '/sendamount';
+    const headers = {
+      'Content-Type': 'application/json',
+      Accept: 'application/json',
+      Authorization: 'Bearer ' + data.token
+    };
+
+    this.httpNative.post(url, dataSrc, headers).subscribe(
+      data => {
+        this.logger.info('Shapeshift SENDAMOUNT: SUCCESS');
+        return cb(data.error, data.success);
+      },
+      data => {
+        const error = this.parseError(data);
+        this.logger.error('Shapeshift SENDAMOUNT ERROR: ' + error);
+        return cb(error);
+      }
+    );
+  }
+
   public saveShapeshift(data, opts, cb): void {
     const network = this.getNetwork();
     this.persistenceProvider
