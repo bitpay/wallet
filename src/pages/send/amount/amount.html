@@ -1,5 +1,5 @@
 <ion-header [ngClass]="{'wallet-details-header': wallet}">
-  <ion-navbar [navbar-bg]="wallet && wallet.color">
+  <ion-navbar [navbar-bg]="wallet && wallet.color" [hideBackButton]="useAsModal">
     <ion-buttons left *ngIf="useAsModal">
       <button class="modal-close-button" (click)="closeModal()" ion-button>
         <ion-icon ios="md-close" md="md-close"></ion-icon>

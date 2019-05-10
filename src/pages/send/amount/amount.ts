@@ -609,6 +609,18 @@ export class AmountPage extends WalletTabsChild {
   }
 
   public closeModal(item): void {
-    this.viewCtrl.dismiss(item);
+    if (this.viewCtrl.name === 'AmountPage') {
+      if (!item) {
+        this.viewCtrl.dismiss();
+        return;
+      }
+
+      this.events.publish('addRecipient', item);
+      this.navCtrl.remove(this.viewCtrl.index - 1).then(() => {
+        this.viewCtrl.dismiss();
+      });
+    } else {
+      this.viewCtrl.dismiss(item);
+    }
   }
 }
