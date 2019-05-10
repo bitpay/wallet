@@ -217,11 +217,21 @@ export class CopayApp {
         this.onProfileLoad(profile);
       })
       .catch((err: Error) => {
-        this.logger.warn('LoadAndBindProfile', err.message);
-        this.rootPage =
-          err.message == 'ONBOARDINGNONCOMPLETED: Onboarding non completed'
-            ? OnboardingPage
-            : DisclaimerPage;
+        switch (err.message) {
+          case 'NONAGREEDDISCLAIMER':
+            this.logger.warn('Non agreed disclaimer');
+            this.rootPage = DisclaimerPage;
+            break;
+          case 'ONBOARDINGNONCOMPLETED':
+            this.logger.warn('Onboarding non completed');
+            this.rootPage = OnboardingPage;
+            break;
+          default:
+            this.popupProvider.ionicAlert(
+              'Could not initialize the app',
+              err.message
+            );
+        }
       });
   }
 
