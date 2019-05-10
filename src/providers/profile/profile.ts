@@ -951,7 +951,7 @@ export class ProfileProvider {
                 })
                 .catch(() => {
                   return reject(
-                    new Error('NONAGREEDDISCLAIMER: Non agreed disclaimer')
+                    new Error('NONAGREEDDISCLAIMER')
                   );
                 });
             })
@@ -969,7 +969,7 @@ export class ProfileProvider {
                 .catch(() => {
                   return reject(
                     new Error(
-                      'ONBOARDINGNONCOMPLETED: Onboarding non completed'
+                      'ONBOARDINGNONCOMPLETED'
                     )
                   );
                 });

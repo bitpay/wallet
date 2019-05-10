@@ -217,12 +217,13 @@ export class CopayApp {
         this.onProfileLoad(profile);
       })
       .catch((err: Error) => {
-        this.logger.warn('LoadAndBindProfile', err.message);
         switch (err.message) {
-          case 'NONAGREEDDISCLAIMER: Non agreed disclaimer':
+          case 'NONAGREEDDISCLAIMER':
+            this.logger.warn('Non agreed disclaimer');
             this.rootPage = DisclaimerPage;
             break;
-          case 'ONBOARDINGNONCOMPLETED: Onboarding non completed':
+          case 'ONBOARDINGNONCOMPLETED':
+            this.logger.warn('Onboarding non completed');
             this.rootPage = OnboardingPage;
             break;
           default:
