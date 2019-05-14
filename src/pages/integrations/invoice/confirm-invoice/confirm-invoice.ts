@@ -12,6 +12,7 @@ import { Logger } from '../../../../providers/logger/logger';
 // Provider
 import { DecimalPipe } from '@angular/common';
 import {
+  EmailNotificationsProvider,
   FeeProvider,
   GiftCardProvider,
   TxConfirmNotificationProvider,
@@ -50,15 +51,13 @@ export class ConfirmInvoicePage extends ConfirmCardPurchasePage {
   public invoiceName: string;
   public invoiceUrl: string;
   public email: string;
-  public parsedAmount: any;
-  public invoiceFeeSat: any;
-  public networkFeeSat: any;
-  public subTotalAmount: number;
-  public subTotalAmountStr: string;
+  public invoiceFeeSat: number;
   public coinAmount: number;
   public coinAmountSat: number;
   public merchantProvidedEmail?: string;
   public buyerProvidedEmail?: string;
+  private networkFeeSat: number;
+  private parsedAmount: any;
   private browserUrl: string;
   private invoicePaid: boolean;
   constructor(
@@ -71,6 +70,7 @@ export class ConfirmInvoicePage extends ConfirmCardPurchasePage {
     giftCardProvider: GiftCardProvider,
     private invoiceProvider: InvoiceProvider,
     replaceParametersProvider: ReplaceParametersProvider,
+    public emailNotificationsProvider: EmailNotificationsProvider,
     externalLinkProvider: ExternalLinkProvider,
     logger: Logger,
     modalCtrl: ModalController,
@@ -99,6 +99,7 @@ export class ConfirmInvoicePage extends ConfirmCardPurchasePage {
       feeProvider,
       giftCardProvider,
       replaceParametersProvider,
+      emailNotificationsProvider,
       externalLinkProvider,
       logger,
       modalCtrl,
@@ -223,7 +224,7 @@ export class ConfirmInvoicePage extends ConfirmCardPurchasePage {
     }
   }
 
-  public async initialize(wallet) {
+  protected async initialize(wallet) {
     const COIN = wallet.coin.toUpperCase();
     this.parsedAmount = this.txFormatProvider.parseAmount(
       wallet.coin,
