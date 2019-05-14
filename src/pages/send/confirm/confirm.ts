@@ -71,6 +71,7 @@ export class ConfirmPage extends WalletTabsChild {
   public recipients;
   public coin: string;
   public appName: string;
+  public merchantFeeLabel: string;
 
   // Config Related values
   public config;
@@ -324,13 +325,23 @@ export class ConfirmPage extends WalletTabsChild {
       const previousView = this.navCtrl.getPrevious().name;
       switch (err) {
         case 'insufficient_funds':
-          // Do not allow user to change or use max amount if previous view is not Amount
-          if (previousView === 'AmountPage') {
+          if (this.showUseUnconfirmedMsg()) {
+            this.showErrorInfoSheet(
+              this.translate.instant(
+                'You do not have enough confirmed funds to make this payment. Wait for your pending transactions to confirm or enable "Use unconfirmed funds" in Advanced Settings.'
+              ),
+              this.translate.instant('Insufficient funds'),
+              true
+            );
+          } else if (previousView === 'AmountPage') {
+            // Do not allow user to change or use max amount if previous view is not Amount
             this.showInsufficientFundsInfoSheet();
           } else {
             this.showErrorInfoSheet(
+              this.translate.instant(
+                'You are trying to send more funds than you have available. Make sure you do not have funds locked by pending transaction proposals.'
+              ),
               this.translate.instant('Insufficient funds'),
-              null,
               true
             );
           }
@@ -340,6 +351,15 @@ export class ConfirmPage extends WalletTabsChild {
           break;
       }
     });
+  }
+
+  private showUseUnconfirmedMsg(): boolean {
+    return (
+      this.wallet.cachedStatus &&
+      this.wallet.cachedStatus.balance.totalAmount >=
+        this.tx.amount + this.tx.feeRate &&
+      !this.tx.spendUnconfirmed
+    );
   }
 
   private setButtonText(isMultisig: boolean, isPayPro: boolean): void {
@@ -436,8 +456,10 @@ export class ConfirmPage extends WalletTabsChild {
               this.showHighFeeSheet();
             }
 
-            msg = this.translate.instant('Suggested by Merchant');
-            tx.feeLevelName = msg;
+            msg = this.translate.instant(
+              'This payment requires a miner fee of:'
+            );
+            this.merchantFeeLabel = msg;
           } else {
             const feeOpts = this.feeProvider.getFeeOpts();
             tx.feeLevelName = feeOpts[tx.feeLevel];
@@ -720,8 +742,7 @@ export class ConfirmPage extends WalletTabsChild {
 
   private showInsufficientFundsInfoSheet(): void {
     const insufficientFundsInfoSheet = this.actionSheetProvider.createInfoSheet(
-      'insufficient-funds',
-      { amount: this.amount, coin: this.tx.coin }
+      'insufficient-funds'
     );
     insufficientFundsInfoSheet.present();
     insufficientFundsInfoSheet.onDidDismiss(option => {

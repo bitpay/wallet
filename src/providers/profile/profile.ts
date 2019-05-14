@@ -372,7 +372,14 @@ export class ProfileProvider {
 
   public updateCredentials(credentials): void {
     this.profile.updateWallet(credentials);
-    this.persistenceProvider.storeProfile(this.profile);
+    this.persistenceProvider.storeProfile(this.profile).then(
+      () => {
+        this.logger.debug('Updated modified Profile(updateCredentials)');
+      },
+      e => {
+        this.logger.error('Could not save Profile(updateCredentials)', e);
+      }
+    );
   }
 
   private runValidation(wallet, delay?: number, retryDelay?: number) {
@@ -421,10 +428,16 @@ export class ProfileProvider {
 
   public storeProfileIfDirty(): void {
     if (this.profile.dirty) {
-      this.persistenceProvider.storeProfile(this.profile).then(() => {
-        this.logger.debug('Saved modified Profile');
-        return;
-      });
+      this.persistenceProvider.storeProfile(this.profile).then(
+        () => {
+          this.logger.debug('Saved modified Profile');
+          return;
+        },
+        e => {
+          this.logger.error('Could not save Profile(Dirty)', e);
+          return;
+        }
+      );
     } else {
       return;
     }
@@ -688,11 +701,17 @@ export class ProfileProvider {
 
     this.saveBwsUrl(walletId, opts);
 
-    return this.persistenceProvider.storeProfile(this.profile).then(() => {
-      if (!opts.skipEvent) this.events.publish('Local/WalletListChange');
+    return this.persistenceProvider.storeProfile(this.profile).then(
+      () => {
+        if (!opts.skipEvent) this.events.publish('Local/WalletListChange');
 
-      return Promise.resolve(wallet);
-    });
+        return Promise.resolve(wallet);
+      },
+      e => {
+        this.logger.error('Could not save Profile(addAndBindWalletClient)', e);
+        return Promise.reject(e);
+      }
+    );
   }
 
   private saveBwsUrl(walletId, opts): void {
@@ -886,8 +905,7 @@ export class ProfileProvider {
 
   public createProfile(): void {
     this.logger.info('Creating profile');
-    this.profile = new Profile();
-    this.profile = this.profile.create();
+    this.profile = Profile.create();
     this.persistenceProvider.storeNewProfile(this.profile);
   }
 
@@ -932,9 +950,7 @@ export class ProfileProvider {
                   return resolve();
                 })
                 .catch(() => {
-                  return reject(
-                    new Error('NONAGREEDDISCLAIMER: Non agreed disclaimer')
-                  );
+                  return reject(new Error('NONAGREEDDISCLAIMER'));
                 });
             })
             .catch(() => {
@@ -949,11 +965,7 @@ export class ProfileProvider {
                     });
                 })
                 .catch(() => {
-                  return reject(
-                    new Error(
-                      'ONBOARDINGNONCOMPLETED: Onboarding non completed'
-                    )
-                  );
+                  return reject(new Error('ONBOARDINGNONCOMPLETED'));
                 });
             });
         })
@@ -1036,10 +1048,11 @@ export class ProfileProvider {
           if (!profile) {
             return resolve();
           }
-          this.profile = new Profile();
-          this.profile = this.profile.fromObj(profile);
+
+          this.profile = Profile.fromObj(profile);
           // Deprecated: storageService.tryToMigrate
-          this.logger.info('Profile read');
+          this.logger.info('Profile loaded');
+
           this.bindProfile(this.profile)
             .then(() => {
               return resolve(this.profile);

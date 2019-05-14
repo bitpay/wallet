@@ -59,7 +59,7 @@
     <info-sheet-template *ngSwitchCase="'insufficient-funds'" type="danger">
       <span sheet-title-text translate>Not enough funds</span>
       <span sheet-text>
-        {{ 'You are trying to send ({amount} {coin}) more than what your wallet contains. Please enter a lower amount or send max.' | translate: {amount: params.amount, coin: params.coin | uppercase} }}
+        {{ 'You are trying to send more funds than you have available. Make sure you do not have funds locked by pending transaction proposals. You can also try with a lower amount or send max.' | translate }}
       </span>
       <span sheet-button-text translate>Change Amount</span>
       <span sheet-second-button-text translate>Send Max</span>
@@ -148,8 +148,7 @@
 
     <info-sheet-template *ngSwitchCase="'archive-all-gift-cards'" type="warning">
       <span sheet-title-text>{{'Archive All {brand} Gift Cards?' | translate: params }}</span>
-      <span
-        sheet-text>{{'Have you redeemed all of your {brand} Gift Cards? Archived gift cards will still be accessible in settings.' | translate: params }}</span>
+      <span sheet-text>{{'Have you redeemed all of your {brand} Gift Cards? Archived gift cards will still be accessible in settings.' | translate: params }}</span>
       <span sheet-button-text translate>YES</span>
     </info-sheet-template>
 
@@ -188,8 +187,7 @@
     </info-sheet-template>
 
     <info-sheet-template *ngSwitchCase="'legacy-address-info'" type="info">
-      <span
-        sheet-title-text>{{'{appName} BCH wallets use the CashAddr format by default' | translate: {appName:params.appName} }}</span>
+      <span sheet-title-text>{{'{appName} BCH wallets use the CashAddr format by default' | translate: {appName:params.appName} }}</span>
       <span sheet-text translate>
         If you need to send to "old" addresses (like the one you just pasted), and you are SURE those are BCH addresses,
         you can "translate" them using the BCH Translator tool and paste the corresponding address in CashAddr format
