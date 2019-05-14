@@ -138,8 +138,8 @@ export class ConfirmInvoicePage extends ConfirmCardPurchasePage {
     this.email = this.merchantProvidedEmail
       ? this.merchantProvidedEmail
       : this.buyerProvidedEmail
-        ? this.buyerProvidedEmail
-        : await this.getEmail();
+      ? this.buyerProvidedEmail
+      : await this.getEmail();
     this.paymentTimeControl(this.invoiceData.expirationTime);
   }
 
@@ -164,11 +164,15 @@ export class ConfirmInvoicePage extends ConfirmCardPurchasePage {
     this.network = this.invoiceProvider.getNetwork();
     const walletsBtc = this.profileProvider.getWallets({
       onlyComplete: true,
-      network: this.network, coin: 'btc', minAmount: this.invoiceData.paymentTotals['BTC']
+      network: this.network,
+      coin: 'btc',
+      minAmount: this.invoiceData.paymentTotals['BTC']
     });
     const walletsBch = this.profileProvider.getWallets({
       onlyComplete: true,
-      network: this.network, coin: 'bch', minAmount: this.invoiceData.paymentTotals['BCH']
+      network: this.network,
+      coin: 'bch',
+      minAmount: this.invoiceData.paymentTotals['BCH']
     });
     this.wallets = [...walletsBtc, ...walletsBch];
     this.invoiceUrl = `${BITPAY_API_URL}/invoice/${this.invoiceId}`;
@@ -202,10 +206,10 @@ export class ConfirmInvoicePage extends ConfirmCardPurchasePage {
 
   public openInBrowser(invoiceType) {
     this.clipboardProvider.copy(this.invoiceUrl);
-    const msg = 'Open this invoice url in a browser to pay in another wallet.'
+    const msg = 'Open this invoice url in a browser to pay in another wallet.';
     const invoiceText = {
       redeemInstructions: msg
-    }
+    };
     this.actionSheetProvider
       .createInfoSheet('copied-invoice-url', {
         cardConfig: invoiceText,
@@ -252,7 +256,7 @@ export class ConfirmInvoicePage extends ConfirmCardPurchasePage {
     this.message = this.replaceParametersProvider.replace(
       this.translate.instant(
         `Payment request for BitPay invoice ${
-        this.invoiceId
+          this.invoiceId
         } for {{amountUnitStr}} to merchant ${this.invoiceName}`
       ),
       { amountUnitStr: this.amountUnitStr }
@@ -265,9 +269,7 @@ export class ConfirmInvoicePage extends ConfirmCardPurchasePage {
       this.wallet.coin,
       this.coinAmountSat
     );
-    this.coinAmount = this.txFormatProvider.formatAmount(
-      this.coinAmountSat
-    );
+    this.coinAmount = this.txFormatProvider.formatAmount(this.coinAmountSat);
     this.checkFeeHigh(
       Number(this.parsedAmount.amountSat),
       Number(this.invoiceFeeSat) + Number(this.networkFeeSat)
