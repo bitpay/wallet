@@ -33,6 +33,7 @@ import { ProfileProvider } from '../../../../providers/profile/profile';
 import { ReplaceParametersProvider } from '../../../../providers/replace-parameters/replace-parameters';
 import { TxFormatProvider } from '../../../../providers/tx-format/tx-format';
 import {
+  Coin,
   TransactionProposal,
   WalletProvider
 } from '../../../../providers/wallet/wallet';
@@ -192,6 +193,10 @@ export class ConfirmInvoicePage extends ConfirmCardPurchasePage {
     } else {
       this.externalLinkProvider.open(this.browserUrl);
     }
+  }
+
+  public checkIfCoin() {
+    return !!Coin[this.currency];
   }
 
   public openInBrowser(invoiceType) {
