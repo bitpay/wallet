@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { ExternalLinkProvider } from '../../providers/external-link/external-link';
 import { PlatformProvider } from '../../providers/platform/platform';
 import { ActionSheetParent } from '../action-sheet/action-sheet-parent';
 
@@ -15,10 +14,7 @@ export class IncomingDataMenuComponent extends ActionSheetParent {
   public fromHomeCard: boolean;
   public isCordova: boolean;
 
-  constructor(
-    private platformProvider: PlatformProvider,
-    public externalLinkProvider: ExternalLinkProvider
-  ) {
+  constructor(private platformProvider: PlatformProvider) {
     super();
     this.isCordova = this.platformProvider.isCordova;
   }
