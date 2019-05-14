@@ -1,10 +1,5 @@
 <ion-header>
-  <ion-navbar hideBackButton="true">
-    <ion-buttons left>
-      <button class="modal-close-button" (click)="close()" ion-button>
-        <ion-icon ios="md-close" md="md-close"></ion-icon>
-      </button>
-    </ion-buttons>
+  <ion-navbar>
     <ion-title>{{ 'Confirm' | translate }}</ion-title>
     <ion-buttons right>
       <button (click)="openInBrowser()" tappable ion-button>
@@ -14,8 +9,8 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content>
-  <ion-list class="settings-list">
+<ion-content [ngClass]="{'no-margin-bottom': !isValidEmail()}">
+  <ion-list>
     <ion-item>
       <div class="header-container">
         <div class="gift-card-title">{{ invoiceName }}</div>
@@ -30,167 +25,78 @@
             </div>
             <img class="sending-img" src="assets/img/icon-tx-sent-outline.svg" />
           </div>
-          <div *ngIf="totalAmount && !checkIfCoin()" class="alternative">
-            {{ totalAmount | formatCurrency: currency }}
-          </div>
-          <div *ngIf="totalAmount && checkIfCoin()" class="alternative">
-            {{ coinAmount / 1e-8 | satToFiat: wallet.coin }}
+          <div *ngIf="wallet" class="alternative">
+            {{ coinAmountSat | satToFiat: wallet.coin }}
           </div>
         </div>
       </div>
     </ion-item>
 
-    <ion-item-group class="info">
-      <ion-item>
-        <span translate>Payment Expires:</span>
-        <ion-note *ngIf="!paymentExpired" item-end>{{
+    <ion-item class="item-fee" [attr.detail-none]="usingMerchantFee ? '' : null" [ngClass]="btn-opacity">
+      <div class="fee-title">
+        <span translate>Network fee:</span>
+        <br>
+        <strong>Suggested by Merchant</strong>
+      </div>
+      <div class="fee-loading" *ngIf="!wallet">
+        <div>...</div>
+        <div>...</div>
+      </div>
+      <div *ngIf="wallet">
+        <span class="fee-amount">{{ invoiceFeeSat | satToUnit: wallet.coin }}</span>
+        <div class="fee-details">
+          {{ invoiceFeeSat | satToFiat: wallet.coin }}
+        </div>
+      </div>
+    </ion-item>
+
+    <ion-item>
+      <span translate>Payment Expires:</span>
+      <ion-note *ngIf="!paymentExpired" item-end>{{
           remainingTimeStr
         }}</ion-note>
-        <ion-note *ngIf="paymentExpired" [ngStyle]="{ color: 'red' }" item-end>{{ 'Expired' | translate }}</ion-note>
-      </ion-item>
+      <ion-note *ngIf="paymentExpired" [ngStyle]="{ color: 'red' }" item-end>{{ 'Expired' | translate }}</ion-note>
+    </ion-item>
 
-      <button ion-item detail-none (click)="showWallets()" class="wallets-list">
-        <div>{{ 'Sending From' | translate }}</div>
-        <div class="wallet">
-          <ion-icon item-start>
-            <img *ngIf="network == 'testnet'" [ngStyle]="{ 'background-color': wallet && wallet.color }"
-              src="assets/img/icon-wallet-testnet.svg" class="icon-wallet" />
-            <img *ngIf="network != 'testnet'" [ngStyle]="{ 'background-color': wallet && wallet.color }"
-              src="assets/img/icon-wallet.svg" class="icon-wallet" />
-          </ion-icon>
-          <div>{{ wallet ? wallet.name : 'Select a wallet' }}</div>
-          <div class="last-item" item-end>
-            <button ion-button clear color="grey" icon-only>
-              <ion-icon *ngIf="!isOpenSelector" name="ios-arrow-down-outline"></ion-icon>
-              <ion-icon *ngIf="isOpenSelector" name="ios-arrow-up-outline"></ion-icon>
-            </button>
-          </div>
+    <button ion-item detail-none (click)="showWallets()" class="wallets-list">
+      <div>{{ 'Sending From' | translate }}</div>
+      <div class="wallet">
+        <ion-icon item-start>
+          <img *ngIf="network == 'testnet'" [ngStyle]="{ 'background-color': wallet && wallet.color }"
+            src="assets/img/icon-wallet-testnet.svg" class="icon-wallet" />
+          <img *ngIf="network != 'testnet'" [ngStyle]="{ 'background-color': wallet && wallet.color }"
+            src="assets/img/icon-wallet.svg" class="icon-wallet" />
+        </ion-icon>
+        <div>{{ wallet ? wallet.name : 'Select a wallet' }}</div>
+        <div class="last-item" item-end>
+          <button ion-button clear color="grey" icon-only>
+            <ion-icon *ngIf="!isOpenSelector" name="ios-arrow-down-outline"></ion-icon>
+            <ion-icon *ngIf="isOpenSelector" name="ios-arrow-up-outline"></ion-icon>
+          </button>
         </div>
-      </button>
+      </div>
+    </button>
 
-      <div>
-        <ion-item-divider> {{ 'Refund Email' | translate }} </ion-item-divider>
-        <ion-item>
-          <ion-input placeholder="{{'Enter an email address' | translate}}" [(ngModel)]="email" name="email"
-            type="email" [disabled]="
+    <div>
+      <ion-item-divider> {{ 'Refund Email' | translate }} </ion-item-divider>
+      <ion-item>
+        <ion-input placeholder="{{'Enter an email address' | translate}}" [(ngModel)]="email" name="email" type="email"
+          [disabled]="
               !!(this.buyerProvidedEmail || this.merchantProvidedEmail)
             "></ion-input>
-        </ion-item>
-      </div>
+      </ion-item>
+    </div>
 
-      <label-tip *ngIf="!isValidEmail()" type="danger">
-        <span label-tip-title translate><strong>A refund email is required.</strong></span>
-        <div label-tip-body translate>
-          If there is an issue with this payment, or a refund needs to be made,
-          we will contact you at this address.<br />
-          <a (click)="openPrivacyPolicy()" translate>View Privacy Policy</a>
-        </div>
-      </label-tip>
-
-      <div *ngIf="totalAmountStr">
-        <ion-item-divider style="margin-top: 5px">
-          <div class="details-header">
-            <div>{{ 'Details' | translate }}</div>
-            <div class="last-item" item-end>
-              <div class="switcher" (click)="changeUnit()" tappable item-end>
-                <img class="switcher__icon" src="assets/img/icon-swap.svg" />
-                <div class="switcher__label">{{ detailsCurrency }}</div>
-              </div>
-            </div>
-          </div>
-        </ion-item-divider>
-        <ion-item *ngIf="wallet">
-          <span>{{ 'Invoice' | translate }}</span>
-          <ion-note item-end>
-            <div *ngIf="
-                detailsCurrency === wallet.coin.toUpperCase() &&
-                detailsCurrency !== currency
-              ">
-              <span *ngIf="onlyIntegers">{{ amount | number: '1.0-0' }}</span>
-              <span *ngIf="!onlyIntegers">{{ amount | number: '1.2-2' }}</span>
-              {{ currency }}
-            </div>
-            <span *ngIf="checkIfCoin() && detailsCurrency !== currency">{{
-              subTotalAmount | satToFiat: wallet.coin
-            }}</span>
-            <span *ngIf="detailsCurrency === currency">{{
-              subTotalAmountStr
-            }}</span>
-          </ion-note>
-        </ion-item>
-        <ion-item>
-          <span>{{ 'Network cost' | translate }}</span>
-          <ion-note item-end>
-            <div *ngIf="
-                detailsCurrency === wallet.coin.toUpperCase() &&
-                detailsCurrency !== currency
-              ">
-              <span *ngIf="onlyIntegers">{{
-                invoiceFee | number: '1.0-0'
-              }}</span>
-              <span *ngIf="!onlyIntegers">{{
-                invoiceFee | number: '1.2-2'
-              }}</span>
-              {{ currency }}
-            </div>
-            <span *ngIf="checkIfCoin() && detailsCurrency !== currency">{{
-              invoiceFeeSat | satToFiat: wallet.coin
-            }}</span>
-            <span *ngIf="detailsCurrency === currency">{{
-              invoiceFeeSat | satToUnit: wallet.coin
-            }}</span>
-          </ion-note>
-        </ion-item>
-        <ion-item>
-          <span>{{ 'Miner fee' | translate }}</span>
-          <ion-note item-end>
-            <div *ngIf="
-                detailsCurrency === wallet.coin.toUpperCase() &&
-                detailsCurrency !== currency
-              ">
-              <span *ngIf="onlyIntegers">{{
-                networkFee | number: '1.0-0'
-              }}</span>
-              <span *ngIf="!onlyIntegers">{{
-                networkFee | number: '1.2-2'
-              }}</span>
-              {{ currency }}
-            </div>
-            <span *ngIf="checkIfCoin() && detailsCurrency !== currency">{{
-              networkFeeSat | satToFiat: wallet.coin
-            }}</span>
-            <span *ngIf="detailsCurrency === currency">{{
-              networkFeeSat | satToUnit: wallet.coin
-            }}</span>
-          </ion-note>
-        </ion-item>
-        <ion-item>
-          <span>{{ 'Total' | translate }}</span>
-          <ion-note item-end>
-            <div *ngIf="
-                detailsCurrency === wallet.coin.toUpperCase() &&
-                detailsCurrency !== currency
-              ">
-              <span *ngIf="totalAmount">
-                <span *ngIf="onlyIntegers">{{
-                  totalAmount | number: '1.0-0'
-                }}</span>
-                <span *ngIf="!onlyIntegers">{{
-                  totalAmount | number: '1.2-2'
-                }}</span>
-                {{ currency }}
-              </span>
-            </div>
-            <span *ngIf="checkIfCoin() && detailsCurrency !== currency">{{
-              coinAmount / 1e-8 | satToFiat: wallet.coin
-            }}</span>
-            <span *ngIf="detailsCurrency === currency">{{
-              totalAmountStr
-            }}</span>
-          </ion-note>
-        </ion-item>
+    <label-tip *ngIf="!isValidEmail()" type="danger">
+      <span label-tip-title translate><strong>A refund email is required.</strong></span>
+      <div label-tip-body translate>
+        If there is an issue with this payment, or a refund needs to be made,
+        we will contact you at this address.<br />
+        <a (click)="openPrivacyPolicy()" translate>View Privacy Policy</a>
       </div>
-    </ion-item-group>
+    </label-tip>
+
+    <ion-item-divider></ion-item-divider>
   </ion-list>
 </ion-content>
 
@@ -198,8 +104,8 @@
   <page-slide-to-accept #slideButton *ngIf="isCordova" [disabled]="
       !(wallet && totalAmountStr && isValidEmail() && !paymentExpired)
     " buttonText="{{'Slide to confirm' | translate}}" (slideDone)="buyConfirm()" [ngClass]="{
-      'slide-confirm-fast slide-confirm-down': hideSlideButton,
-      'slide-confirm-slow': !hideSlideButton
+      'slide-confirm-fast slide-confirm-down': hideSlideButton || !isValidEmail(),
+      'slide-confirm-slow': !hideSlideButton && isValidEmail()
     }"></page-slide-to-accept>
   <ion-toolbar *ngIf="!isCordova">
     <button ion-button full class="button-footer" (click)="buyConfirm()" [disabled]="

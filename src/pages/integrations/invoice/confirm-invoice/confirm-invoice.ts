@@ -33,7 +33,6 @@ import { ProfileProvider } from '../../../../providers/profile/profile';
 import { ReplaceParametersProvider } from '../../../../providers/replace-parameters/replace-parameters';
 import { TxFormatProvider } from '../../../../providers/tx-format/tx-format';
 import {
-  Coin,
   TransactionProposal,
   WalletProvider
 } from '../../../../providers/wallet/wallet';
@@ -56,9 +55,9 @@ export class ConfirmInvoicePage extends ConfirmCardPurchasePage {
   public subTotalAmount: number;
   public subTotalAmountStr: string;
   public coinAmount: number;
+  public coinAmountSat: number;
   public merchantProvidedEmail?: string;
   public buyerProvidedEmail?: string;
-  public detailsCurrency: string;
   private browserUrl: string;
   private invoicePaid: boolean;
   constructor(
@@ -120,6 +119,7 @@ export class ConfirmInvoicePage extends ConfirmCardPurchasePage {
     );
     this.hideSlideButton = false;
     this.invoicePaid = false;
+    this.usingMerchantFee = true;
     this.invoiceName = this.navParams.data.invoiceName;
     this.configWallet = this.configProvider.get().wallet;
   }
@@ -138,7 +138,6 @@ export class ConfirmInvoicePage extends ConfirmCardPurchasePage {
       : this.buyerProvidedEmail
         ? this.buyerProvidedEmail
         : await this.getEmail();
-    this.detailsCurrency = this.currency;
     this.paymentTimeControl(this.invoiceData.expirationTime);
   }
 
@@ -193,10 +192,6 @@ export class ConfirmInvoicePage extends ConfirmCardPurchasePage {
     } else {
       this.externalLinkProvider.open(this.browserUrl);
     }
-  }
-
-  public async close() {
-    this.navCtrl.popToRoot();
   }
 
   public openInBrowser(invoiceType) {
@@ -259,17 +254,13 @@ export class ConfirmInvoicePage extends ConfirmCardPurchasePage {
     this.onGoingProcessProvider.clear();
 
     this.networkFeeSat = this.invoiceData.minerFees[COIN].satoshisPerByte;
-    this.subTotalAmount = this.invoiceData.paymentSubtotals[COIN];
-    this.subTotalAmountStr = this.txFormatProvider.formatAmountStr(
-      this.wallet.coin,
-      this.invoiceData.paymentSubtotals[COIN]
-    );
+    this.coinAmountSat = this.invoiceData.paymentTotals[COIN];
     this.totalAmountStr = this.txFormatProvider.formatAmountStr(
       this.wallet.coin,
-      this.invoiceData.paymentTotals[COIN]
+      this.coinAmountSat
     );
     this.coinAmount = this.txFormatProvider.formatAmount(
-      this.invoiceData.paymentTotals[COIN]
+      this.coinAmountSat
     );
     this.checkFeeHigh(
       Number(this.parsedAmount.amountSat),
@@ -281,21 +272,6 @@ export class ConfirmInvoicePage extends ConfirmCardPurchasePage {
       this.invoiceFeeSat,
       this.networkFeeSat
     );
-    this.changeUnit();
-  }
-
-  public checkIfCoin() {
-    return !!Coin[this.currency];
-  }
-
-  public changeUnit() {
-    const COIN = this.wallet.coin.toUpperCase();
-    this.detailsCurrency =
-      this.detailsCurrency === this.currency
-        ? !this.checkIfCoin()
-          ? COIN
-          : 'USD'
-        : this.currency;
   }
 
   public isValidEmail() {

@@ -6,38 +6,14 @@ confirm-invoice-page {
       margin-bottom: 90px;
     }
   }
+  .no-margin-bottom {
+    .fixed-content,
+    .scroll-content {
+      margin-bottom: 0px;
+    }
+  }
   .header-container {
     padding: 10px 0px 10px 0px;
-  }
-  .details-header {
-    display: flex;
-    width: 100%;
-    align-items: center;
-    .switcher {
-      flex: 1;
-      margin: 0;
-      display: inline-flex;
-      align-items: center;
-      background: rgba(0, 0, 0, 0.06);
-      padding: 0.75rem 1rem;
-      border-radius: 3px;
-      cursor: pointer;
-      width: 81px;
-      @media (max-height: $short-screen + 70px) {
-        width: 75px;
-      }
-      &__icon {
-        margin-right: 10px;
-      }
-      &__label {
-        color: #060606;
-        font-size: 18px;
-        margin-top: 1px;
-        @media (max-height: $short-screen + 70px) {
-          font-size: 15px;
-        }
-      }
-    }
   }
   .amount-label {
     padding-top: 1rem;
@@ -62,6 +38,31 @@ confirm-invoice-page {
     .alternative {
       margin-top: 0.5rem;
       color: color($colors, light-grey);
+    }
+  }
+  .item-fee {
+    line-height: 20px;
+    .fee-title {
+      margin-bottom: 5px;
+      color: color($colors, grey);
+    }
+    .fee-loading {
+      font-weight: 300;
+      color: color($colors, light-grey);
+    }
+    .fee-amount {
+      font-weight: 400;
+    }
+    .fee-details {
+      margin-top: 3px;
+      font-size: 12.5px;
+      color: color($colors, light-grey);
+    }
+    ion-note {
+      font-weight: 100;
+    }
+    &.btn-opacity {
+      opacity: 1;
     }
   }
   .wallets-list {
@@ -140,12 +141,5 @@ confirm-invoice-page {
 
   .last-item {
     margin-left: auto !important;
-  }
-
-  .terms {
-    > p {
-      margin-left: 10px;
-      margin-right: 10px;
-    }
   }
 }
