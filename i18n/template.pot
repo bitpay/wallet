@@ -45,7 +45,8 @@ msgstr ""
 msgid ""
 "A total of {{amountStr}} ({{fiatAmount | number:'1.2-2'}} "
 "{{currencyIsoCode}}) will be exchanged for {{withdrawalStr}} "
-"({{fiatWithdrawal | number:'1.2-2'}} {{currencyIsoCode}})."
+"({{fiatWithdrawal | number:'1.2-2'}} {{currencyIsoCode}}). ShapeShift fee: "
+"{{withdrawalFee}} {{toWallet.coin | uppercase}}"
 msgstr ""
 
 msgid ""
@@ -92,9 +93,6 @@ msgid "Add Recipient"
 msgstr ""
 
 msgid "Add account"
-msgstr ""
-
-msgid "Add amount"
 msgstr ""
 
 msgid "Add as a contact"
@@ -365,9 +363,6 @@ msgstr ""
 msgid "Change Amount"
 msgstr ""
 
-msgid "Change amount"
-msgstr ""
-
 msgid "Check the transaction on your wallet details"
 msgstr ""
 
@@ -471,9 +466,6 @@ msgid "Copayer already voted on this spend proposal"
 msgstr ""
 
 msgid "Copayer data mismatch"
-msgstr ""
-
-msgid "Copayer joined"
 msgstr ""
 
 msgid "Copied"
@@ -645,6 +637,9 @@ msgid "Derivation Strategy"
 msgstr ""
 
 msgid "Derivation path"
+msgstr ""
+
+msgid "Destination wallet needs to be backed up"
 msgstr ""
 
 msgid "Details"
@@ -834,6 +829,9 @@ msgstr ""
 msgid "Failed to export"
 msgstr ""
 
+msgid "Featured Brands"
+msgstr ""
+
 msgid "Fee"
 msgstr ""
 
@@ -997,6 +995,11 @@ msgid "How satisfied are you with {{appName}} wallet?"
 msgstr ""
 
 msgid ""
+"However, unconfirmed funds are not allowed for spending with merchants, "
+"BitPay Card loads, or BitPay in-app gift card purchases."
+msgstr ""
+
+msgid ""
 "I agree to the Terms and certify that I am the beneficial owner of the "
 "input assets and the destination address."
 msgstr ""
@@ -1036,11 +1039,6 @@ msgid "I'm very happy"
 msgstr ""
 
 msgid "I've used this card"
-msgstr ""
-
-msgid ""
-"If enabled, Bitcoin Cash addresses will be shown using Copay style address, "
-"and not the new cashaddr format."
 msgstr ""
 
 msgid "If enabled, wallets will also try to spend unconfirmed funds."
@@ -1118,6 +1116,9 @@ msgid "Invalid data"
 msgstr ""
 
 msgid "Invalid derivation path"
+msgstr ""
+
+msgid "Invalid derivation path for selected coin"
 msgstr ""
 
 msgid "Invitation Code"
@@ -1242,6 +1243,9 @@ msgstr ""
 msgid "More"
 msgstr ""
 
+msgid "More Brands"
+msgstr ""
+
 msgid "Moved"
 msgstr ""
 
@@ -1287,9 +1291,6 @@ msgid "Network cost"
 msgstr ""
 
 msgid "Network error"
-msgstr ""
-
-msgid "New Proposal"
 msgstr ""
 
 msgid "New copayer"
@@ -1356,6 +1357,9 @@ msgid "Not enough funds"
 msgstr ""
 
 msgid "Not enough funds for fee"
+msgstr ""
+
+msgid "Not enough funds for fee {{shiftFee}}"
 msgstr ""
 
 msgid ""
@@ -1489,9 +1493,6 @@ msgstr ""
 msgid "Payment Published"
 msgstr ""
 
-msgid "Payment Received"
-msgstr ""
-
 msgid "Payment Rejected"
 msgstr ""
 
@@ -1603,16 +1604,7 @@ msgstr ""
 msgid "Private key is encrypted, cannot sign"
 msgstr ""
 
-msgid "Proposal Accepted"
-msgstr ""
-
 msgid "Proposal Created"
-msgstr ""
-
-msgid "Proposal Deleted"
-msgstr ""
-
-msgid "Proposal Rejected"
 msgstr ""
 
 msgid "Proposal created"
@@ -1830,9 +1822,6 @@ msgstr ""
 msgid "Send from"
 msgstr ""
 
-msgid "Send logs by email"
-msgstr ""
-
 msgid "Send payment to this address"
 msgstr ""
 
@@ -1906,6 +1895,9 @@ msgid "Share Address"
 msgstr ""
 
 msgid "Share Claim Code"
+msgstr ""
+
+msgid "Share logs"
 msgstr ""
 
 msgid "Share the love by inviting your friends."
@@ -1986,9 +1978,6 @@ msgstr ""
 msgid "Status"
 msgstr ""
 
-msgid "Suggested by Merchant"
-msgstr ""
-
 msgid "Super Economy"
 msgstr ""
 
@@ -2014,9 +2003,6 @@ msgid "Tap each word in the correct order."
 msgstr ""
 
 msgid "Tap to recreate"
-msgstr ""
-
-msgid "Tap to retry"
 msgstr ""
 
 msgid "Temporarily Unavailable"
@@ -2194,6 +2180,9 @@ msgid ""
 "losing funds, write your password down."
 msgstr ""
 
+msgid "This payment requires a miner fee of:"
+msgstr ""
+
 msgid ""
 "This recovery phrase was created with a password. To recover this wallet "
 "both the recovery phrase and password are needed."
@@ -2364,9 +2353,6 @@ msgstr ""
 msgid "Urgent"
 msgstr ""
 
-msgid "Use Bitcoin Cash Copay Style Addresses"
-msgstr ""
-
 msgid "Use Unconfirmed Funds"
 msgstr ""
 
@@ -2457,9 +2443,6 @@ msgid "Wallet already in {{nameCase}}"
 msgstr ""
 
 msgid "Wallet complete"
-msgstr ""
-
-msgid "Wallet created"
 msgstr ""
 
 msgid "Wallet incomplete and broken"
@@ -2596,8 +2579,14 @@ msgid "Yes"
 msgstr ""
 
 msgid ""
-"You are trying to send ({amount} {coin}) more than what your wallet "
-"contains. Please enter a lower amount or send max."
+"You are trying to send more funds than you have available. Make sure you do "
+"not have funds locked by pending transaction proposals."
+msgstr ""
+
+msgid ""
+"You are trying to send more funds than you have available. Make sure you do "
+"not have funds locked by pending transaction proposals. You can also try "
+"with a lower amount or send max."
 msgstr ""
 
 msgid ""
@@ -2629,12 +2618,18 @@ msgstr ""
 msgid "You could sign the transaction later in your wallet details"
 msgstr ""
 
+msgid ""
+"You do not have enough confirmed funds to make this payment. Wait for your "
+"pending transactions to confirm or enable \"Use unconfirmed funds\" in "
+"Advanced Settings."
+msgstr ""
+
 msgid "You should not set a fee higher than {{maxFeeRecommended}} satoshis/byte."
 msgstr ""
 
 msgid ""
 "Your BitPay Card is ready. Add funds to your card to start using it at "
-"stores and ATMs worldwide."
+"stores."
 msgstr ""
 
 msgid ""

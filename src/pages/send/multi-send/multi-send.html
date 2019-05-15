@@ -3,7 +3,7 @@
     <ion-title>{{wallet && wallet.name || ('Amount' | translate)}}</ion-title>
     <ion-buttons end>
       <button ion-button (click)="goToConfirm()" *ngIf="multiRecipients && multiRecipients.length > 0" [disabled]="isDisabledContinue">
-        <span translate>{{'Continue' | translate}}</span>
+        <span translate>Continue</span>
       </button>
     </ion-buttons>
   </ion-navbar>

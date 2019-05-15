@@ -58,7 +58,7 @@
     <ion-item-divider></ion-item-divider>
 
     <ion-item *ngIf="fiatTotalAmount">
-      <span translate>Expires:</span>
+      <span translate>Expires</span>: 
       <ion-note *ngIf="!paymentExpired" item-end>{{remainingTimeStr}}</ion-note>
       <ion-note *ngIf="paymentExpired" [ngStyle]="{'color': 'red'}" item-end>{{'Expired' | translate}}</ion-note>
     </ion-item>
