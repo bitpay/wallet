@@ -881,6 +881,12 @@ export class ConfirmPage extends WalletTabsChild {
         if (this.isCordova) this.slideButton.isConfirmed(false);
         this.onGoingProcessProvider.clear();
         this.showErrorInfoSheet(err);
+        if (txp.payProUrl) {
+          this.logger.warn('Paypro error: removing payment proposal');
+          this.walletProvider.removeTx(wallet, txp).catch(() => {
+            this.logger.warn('Could not delete payment proposal');
+          });
+        }
       });
   }
 

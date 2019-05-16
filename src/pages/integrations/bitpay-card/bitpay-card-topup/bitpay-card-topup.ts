@@ -213,6 +213,10 @@ export class BitPayCardTopUpPage {
         })
         .catch(err => {
           this.onGoingProcessProvider.clear();
+          this.logger.warn('Paypro error: removing payment proposal');
+          this.walletProvider.removeTx(wallet, txp).catch(() => {
+            this.logger.warn('Could not delete payment proposal');
+          });
           return reject(err);
         });
     });
