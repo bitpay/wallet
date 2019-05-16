@@ -526,9 +526,8 @@ export class WalletProvider {
               }
             );
           } else {
-            this.bwcErrorProvider.cb(err, prefix).then(msg => {
-              return reject(msg);
-            });
+            const msg = this.bwcErrorProvider.msg(err, prefix);
+            return reject(msg);
           }
         } else if (!this.addressProvider.isValid(addr.address)) {
           this.logger.error('Invalid address generated: ', addr.address);
