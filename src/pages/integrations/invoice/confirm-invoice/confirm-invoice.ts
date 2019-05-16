@@ -63,9 +63,9 @@ export class ConfirmInvoicePage extends ConfirmPage {
   public invoiceFee: number;
   public networkFee: number;
   public totalAmount: number;
+  public network: string;
 
   private message: string;
-  private network: string;
   private configWallet: any;
   private networkFeeSat: number;
   private parsedAmount: any;
@@ -196,6 +196,11 @@ export class ConfirmInvoicePage extends ConfirmPage {
       return;
     }
     this.onWalletSelect(this.wallets[0]);
+  }
+
+  public onWalletSelect(wallet): void {
+    this.wallet = wallet;
+    this.initialize(wallet).catch(() => {});
   }
 
   ionViewWillLeave() {

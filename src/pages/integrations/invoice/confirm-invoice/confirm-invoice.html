@@ -58,7 +58,7 @@
       </div>
       <div *ngIf="wallet">
         <span class="fee-amount">
-          <strong>{{ invoiceFeeSat | satToUnit: wallet.coin }}</strong>
+          {{ invoiceFeeSat | satToUnit: wallet.coin }}
         </span>
         <div *ngIf="!checkIfCoin()" class="fee-details">
           <span *ngIf="onlyIntegers"> {{ invoiceFee | number: '1.0-0' }} </span>
