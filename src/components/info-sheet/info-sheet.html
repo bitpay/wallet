@@ -134,8 +134,8 @@
     </info-sheet-template>
 
     <info-sheet-template *ngSwitchCase="'copied-invoice-url'" type="{{ params.error ? 'danger' : 'success' }}">
-      <span *ngIf="!params.error" sheet-title-text class="truncate" translate>Copied</span>: {{invoiceUrl}}
-      <span *ngIf="params.error" sheet-title-text class="truncate" translate>Error</span>: {{error}}
+      <span *ngIf="!params.error" sheet-title-text class="truncate" translate>Copied: {{params.invoiceUrl}}</span>
+      <span *ngIf="params.error" sheet-title-text class="truncate" translate>Error: {{params.error}}</span>
       <span sheet-text>
         <redeem-instructions [cardConfig]="params.cardConfig" [params]="params"></redeem-instructions>
       </span>
