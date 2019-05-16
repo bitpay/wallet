@@ -54,9 +54,9 @@ import { PurchasedCardsPage } from '../purchased-cards/purchased-cards';
 })
 export class ConfirmCardPurchasePage extends ConfirmPage {
   public currency: string;
-  public message: string;
-  public invoiceId: string;
-  public configWallet;
+  private message: string;
+  private invoiceId: string;
+  private configWallet;
   public currencyIsoCode: string;
 
   public totalAmountStr: string;
@@ -79,7 +79,7 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
     feeProvider: FeeProvider,
     private giftCardProvider: GiftCardProvider,
     replaceParametersProvider: ReplaceParametersProvider,
-    public emailNotificationsProvider: EmailNotificationsProvider,
+    private emailNotificationsProvider: EmailNotificationsProvider,
     externalLinkProvider: ExternalLinkProvider,
     logger: Logger,
     modalCtrl: ModalController,
@@ -92,7 +92,7 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
     txFormatProvider: TxFormatProvider,
     walletProvider: WalletProvider,
     translate: TranslateService,
-    public payproProvider: PayproProvider,
+    private payproProvider: PayproProvider,
     platformProvider: PlatformProvider,
     walletTabsProvider: WalletTabsProvider,
     clipboardProvider: ClipboardProvider,
@@ -167,7 +167,7 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
     this.navCtrl.popToRoot();
   }
 
-  protected checkFeeHigh(amount: number, fee: number) {
+  private checkFeeHigh(amount: number, fee: number) {
     if (this.isHighFee(amount, fee)) {
       this.showHighFeeSheet();
     }
@@ -177,13 +177,9 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
     this.externalLinkProvider.open(url);
   }
 
-  protected resetValues() {
+  private resetValues() {
     this.totalAmountStr = this.invoiceFee = this.networkFee = this.totalAmount = this.wallet = null;
     this.tx = this.message = this.invoiceId = null;
-  }
-
-  protected async publishInvoiceAndSign(tx, wallet) {
-    return super.publishAndSign(tx, wallet);
   }
 
   async publishAndSign(wallet, txp) {
@@ -204,7 +200,7 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
     return this.txFormatProvider.toFiat(coin, sat, this.currencyIsoCode);
   }
 
-  protected async setTotalAmount(
+  private async setTotalAmount(
     wallet,
     amountSat: number,
     invoiceFeeSat: number,
@@ -221,7 +217,7 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
     this.totalAmount = this.amount + this.invoiceFee + this.networkFee;
   }
 
-  protected isCryptoCurrencySupported(wallet, invoice) {
+  private isCryptoCurrencySupported(wallet, invoice) {
     const COIN = wallet.coin.toUpperCase();
     return (
       (invoice['supportedTransactionCurrencies'][COIN] &&
@@ -238,7 +234,7 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
       err_title = this.translate.instant('Service not available');
       err_msg = this.translate.instant(
         `${
-          this.cardConfig.displayName
+        this.cardConfig.displayName
         } gift card purchases are not available at this time. Please try again later.`
       );
     } else if (errMessage) {
@@ -278,7 +274,7 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
     return { invoice, accessKey };
   }
 
-  protected async createTx(wallet, invoice, message: string) {
+  private async createTx(wallet, invoice, message: string) {
     const COIN = wallet.coin.toUpperCase();
     const payProUrl =
       invoice && invoice.paymentCodes ? invoice.paymentCodes[COIN].BIP73 : null;
@@ -382,7 +378,7 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
     throw new Error('email required');
   }
 
-  protected async initialize(wallet) {
+  private async initialize(wallet) {
     const COIN = wallet.coin.toUpperCase();
     const parsedAmount = this.txFormatProvider.parseAmount(
       wallet.coin,
@@ -515,7 +511,7 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
 
   public onWalletSelect(wallet): void {
     this.wallet = wallet;
-    this.initialize(wallet).catch(() => {});
+    this.initialize(wallet).catch(() => { });
   }
 
   public showWallets(): void {

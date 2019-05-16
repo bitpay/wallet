@@ -12,9 +12,7 @@ import { Logger } from '../../../../providers/logger/logger';
 // Provider
 import { DecimalPipe } from '@angular/common';
 import {
-  EmailNotificationsProvider,
   FeeProvider,
-  GiftCardProvider,
   TxConfirmNotificationProvider,
   WalletTabsProvider
 } from '../../../../providers';
@@ -40,22 +38,35 @@ import {
 } from '../../../../providers/wallet/wallet';
 
 // Pages
-import { ConfirmCardPurchasePage } from '../../gift-cards/confirm-card-purchase/confirm-card-purchase';
+import { ConfirmPage } from '../../../send/confirm/confirm';
 
 @Component({
   selector: 'confirm-invoice-page',
   templateUrl: 'confirm-invoice.html'
 })
-export class ConfirmInvoicePage extends ConfirmCardPurchasePage {
+export class ConfirmInvoicePage extends ConfirmPage {
   public invoiceData: any;
   public invoiceName: string;
+  public invoiceId: string;
   public invoiceUrl: string;
   public email: string;
+  public onlyIntegers: boolean;
+  public currency: string;
   public invoiceFeeSat: number;
   public coinAmount: number;
   public coinAmountSat: number;
   public merchantProvidedEmail?: string;
   public buyerProvidedEmail?: string;
+  public currencyIsoCode: string;
+  public amountUnitStr: string;
+  public totalAmountStr: string;
+  public invoiceFee: number;
+  public networkFee: number;
+  public totalAmount: number;
+
+  private message: string;
+  private network: string;
+  private configWallet: any;
   private networkFeeSat: number;
   private parsedAmount: any;
   private browserUrl: string;
@@ -67,10 +78,8 @@ export class ConfirmInvoicePage extends ConfirmCardPurchasePage {
     configProvider: ConfigProvider,
     decimalPipe: DecimalPipe,
     feeProvider: FeeProvider,
-    giftCardProvider: GiftCardProvider,
     private invoiceProvider: InvoiceProvider,
     replaceParametersProvider: ReplaceParametersProvider,
-    public emailNotificationsProvider: EmailNotificationsProvider,
     externalLinkProvider: ExternalLinkProvider,
     logger: Logger,
     modalCtrl: ModalController,
@@ -86,9 +95,9 @@ export class ConfirmInvoicePage extends ConfirmCardPurchasePage {
     public payproProvider: PayproProvider,
     platformProvider: PlatformProvider,
     walletTabsProvider: WalletTabsProvider,
-    clipboardProvider: ClipboardProvider,
+    public clipboardProvider: ClipboardProvider,
     events: Events,
-    AppProvider: AppProvider
+    appProvider: AppProvider
   ) {
     super(
       actionSheetProvider,
@@ -96,28 +105,25 @@ export class ConfirmInvoicePage extends ConfirmCardPurchasePage {
       bwcProvider,
       configProvider,
       decimalPipe,
-      feeProvider,
-      giftCardProvider,
-      replaceParametersProvider,
-      emailNotificationsProvider,
       externalLinkProvider,
+      feeProvider,
       logger,
       modalCtrl,
       navCtrl,
       navParams,
       onGoingProcessProvider,
-      popupProvider,
+      platformProvider,
       profileProvider,
+      popupProvider,
+      replaceParametersProvider,
+      translate,
       txConfirmNotificationProvider,
       txFormatProvider,
       walletProvider,
-      translate,
-      payproProvider,
-      platformProvider,
       walletTabsProvider,
       clipboardProvider,
       events,
-      AppProvider
+      appProvider
     );
     this.hideSlideButton = false;
     this.invoicePaid = false;
@@ -138,8 +144,8 @@ export class ConfirmInvoicePage extends ConfirmCardPurchasePage {
     this.email = this.merchantProvidedEmail
       ? this.merchantProvidedEmail
       : this.buyerProvidedEmail
-      ? this.buyerProvidedEmail
-      : await this.getEmail();
+        ? this.buyerProvidedEmail
+        : await this.getEmail();
     this.paymentTimeControl(this.invoiceData.expirationTime);
   }
 
@@ -256,7 +262,7 @@ export class ConfirmInvoicePage extends ConfirmCardPurchasePage {
     this.message = this.replaceParametersProvider.replace(
       this.translate.instant(
         `Payment request for BitPay invoice ${
-          this.invoiceId
+        this.invoiceId
         } for {{amountUnitStr}} to merchant ${this.invoiceName}`
       ),
       { amountUnitStr: this.amountUnitStr }
@@ -279,6 +285,42 @@ export class ConfirmInvoicePage extends ConfirmCardPurchasePage {
       this.parsedAmount.amountSat,
       this.invoiceFeeSat,
       this.networkFeeSat
+    );
+  }
+
+  private checkFeeHigh(amount: number, fee: number) {
+    if (this.isHighFee(amount, fee)) {
+      this.showHighFeeSheet();
+    }
+  }
+
+  private satToFiat(coin: string, sat: number) {
+    return this.txFormatProvider.toFiat(coin, sat, this.currencyIsoCode);
+  }
+
+  private async setTotalAmount(
+    wallet,
+    amountSat: number,
+    invoiceFeeSat: number,
+    networkFeeSat: number
+  ) {
+    const amount = await this.satToFiat(wallet.coin, amountSat);
+    this.amount = Number(amount);
+
+    const invoiceFee = await this.satToFiat(wallet.coin, invoiceFeeSat);
+    this.invoiceFee = Number(invoiceFee);
+
+    const networkFee = await this.satToFiat(wallet.coin, networkFeeSat);
+    this.networkFee = Number(networkFee);
+    this.totalAmount = this.amount + this.invoiceFee + this.networkFee;
+  }
+
+  private isCryptoCurrencySupported(wallet, invoice) {
+    const COIN = wallet.coin.toUpperCase();
+    return (
+      (invoice['supportedTransactionCurrencies'][COIN] &&
+        invoice['supportedTransactionCurrencies'][COIN].enabled) ||
+      false
     );
   }
 
@@ -401,9 +443,30 @@ export class ConfirmInvoicePage extends ConfirmCardPurchasePage {
     }
     this.hideSlideButton = true;
     this.invoicePaid = true;
-    return this.publishInvoiceAndSign(ctxp, this.wallet).catch(async err =>
+    return this.publishAndSign(ctxp, this.wallet).catch(async err =>
       this.handlePurchaseError(err)
     );
+  }
+
+  public async handlePurchaseError(err) {
+    this.onGoingProcessProvider.clear();
+    const errorMessage = err && err.message;
+    const canceledErrors = ['FINGERPRINT_CANCELLED', 'PASSWORD_CANCELLED'];
+    if (canceledErrors.indexOf(errorMessage) !== -1) {
+      return;
+    }
+    if (['NO_PASSWORD', 'WRONG_PASSWORD'].indexOf(errorMessage) === -1) {
+      this.resetValues();
+    }
+    this.showErrorInfoSheet(
+      this.bwcErrorProvider.msg(err),
+      this.translate.instant('Could not send transaction')
+    );
+  }
+
+  private resetValues() {
+    this.totalAmountStr = this.invoiceFee = this.networkFee = this.totalAmount = this.wallet = null;
+    this.tx = this.message = this.invoiceId = null;
   }
 
   public openPrivacyPolicy() {
