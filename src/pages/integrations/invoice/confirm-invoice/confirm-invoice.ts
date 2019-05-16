@@ -144,8 +144,8 @@ export class ConfirmInvoicePage extends ConfirmPage {
     this.email = this.merchantProvidedEmail
       ? this.merchantProvidedEmail
       : this.buyerProvidedEmail
-        ? this.buyerProvidedEmail
-        : await this.getEmail();
+      ? this.buyerProvidedEmail
+      : await this.getEmail();
     this.paymentTimeControl(this.invoiceData.expirationTime);
   }
 
@@ -262,7 +262,7 @@ export class ConfirmInvoicePage extends ConfirmPage {
     this.message = this.replaceParametersProvider.replace(
       this.translate.instant(
         `Payment request for BitPay invoice ${
-        this.invoiceId
+          this.invoiceId
         } for {{amountUnitStr}} to merchant ${this.invoiceName}`
       ),
       { amountUnitStr: this.amountUnitStr }
