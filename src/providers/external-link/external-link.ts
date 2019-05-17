@@ -48,12 +48,6 @@ export class ExternalLinkProvider {
 
   private openBrowser(res: boolean, url: string) {
     let old = (window as any).handleOpenURL;
-
-    (window as any).handleOpenURL = url => {
-      // Ignore external URLs
-      this.logger.debug('Skip: ' + url);
-    };
-
     if (res)
       this.platformProvider.isElectron
         ? this.electronProvider.openExternalLink(url)

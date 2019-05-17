@@ -20,6 +20,7 @@ export type InfoSheetType =
   | 'copayers'
   | 'copy-to-clipboard'
   | 'copied-gift-card-claim-code'
+  | 'copied-invoice-url'
   | 'custom-amount'
   | 'default-error'
   | 'gift-card-archived'

@@ -4,9 +4,11 @@ import { Events } from 'ionic-angular';
 import { Logger } from '../../providers/logger/logger';
 
 // providers
+import { Network } from '../../providers/persistence/persistence';
 import { ActionSheetProvider } from '../action-sheet/action-sheet';
 import { AppProvider } from '../app/app';
 import { BwcProvider } from '../bwc/bwc';
+import { InvoiceProvider } from '../invoice/invoice';
 import { PayproProvider } from '../paypro/paypro';
 import { Coin } from '../wallet/wallet';
 
@@ -26,7 +28,8 @@ export class IncomingDataProvider {
     private payproProvider: PayproProvider,
     private logger: Logger,
     private appProvider: AppProvider,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private invoiceProvider: InvoiceProvider
   ) {
     this.logger.debug('IncomingDataProvider initialized');
   }
@@ -61,6 +64,10 @@ export class IncomingDataProvider {
     return !!/^(bitcoin|bitcoincash|bchtest)?:\?r=[\w+]/.exec(data);
   }
 
+  private isValidBitPayInvoice(data: string): boolean {
+    return !!/https:\/\/(www.)?(test.)?bitpay.com\/invoice\/\w+/.exec(data);
+  }
+
   private isValidBitcoinUri(data: string): boolean {
     data = this.sanitizeUri(data);
     return !!this.bwcProvider.getBitcore().URI.isValid(data);
@@ -79,6 +86,9 @@ export class IncomingDataProvider {
   }
 
   private isValidPlainUrl(data: string): boolean {
+    if (this.isValidBitPayInvoice(data)) {
+      return false;
+    }
     data = this.sanitizeUri(data);
     return !!/^https?:\/\//.test(data);
   }
@@ -165,6 +175,37 @@ export class IncomingDataProvider {
     data = decodeURIComponent(data.replace(/bitcoin(cash)?:\?r=/, ''));
 
     this.goToPayPro(data, coin);
+  }
+
+  private async handleBitPayInvoice(data: string) {
+    this.logger.debug('Incoming-data: Handling bitpay invoice');
+    const testStr: boolean =
+      data.indexOf('test.bitpay.com') > -1 ? true : false;
+    const invoiceId: string = data.replace(
+      /https:\/\/(www.)?(test.)?bitpay.com\/invoice\//,
+      ''
+    );
+    this.invoiceProvider.credentials.NETWORK = testStr
+      ? Network.testnet
+      : Network.livenet;
+    this.invoiceProvider.setCredentials();
+    const invoiceResponse = await this.invoiceProvider
+      .getBitPayInvoiceData(invoiceId)
+      .catch(err => {
+        throw this.logger.error(err);
+      });
+    const { invoice, org, buyer } = invoiceResponse;
+    const stateParams = {
+      invoiceData: invoice,
+      invoiceId,
+      invoiceName: org.name,
+      email: buyer ? buyer.email : null
+    };
+    let nextView = {
+      name: 'ConfirmInvoicePage',
+      params: stateParams
+    };
+    this.events.publish('IncomingDataRedir', nextView);
   }
 
   private handleBitcoinUri(data: string, redirParams?: RedirParams): void {
@@ -359,8 +400,13 @@ export class IncomingDataProvider {
   }
 
   public redir(data: string, redirParams?: RedirParams): boolean {
-    // Payment Protocol with non-backwards-compatible request
-    if (this.isValidPayProNonBackwardsCompatible(data)) {
+    //  Handling of a bitpay invoice url
+    if (this.isValidBitPayInvoice(data)) {
+      this.handleBitPayInvoice(data);
+      return true;
+
+      // Payment Protocol with non-backwards-compatible request
+    } else if (this.isValidPayProNonBackwardsCompatible(data)) {
       this.handlePayProNonBackwardsCompatible(data);
       return true;
 
@@ -442,7 +488,13 @@ export class IncomingDataProvider {
 
   public parseData(data: string): any {
     if (!data) return;
-    if (this.isValidPayProNonBackwardsCompatible(data)) {
+    if (this.isValidBitPayInvoice(data)) {
+      return {
+        data,
+        type: 'InvoiceUri',
+        title: this.translate.instant('Invoice URL')
+      };
+    } else if (this.isValidPayProNonBackwardsCompatible(data)) {
       return {
         data,
         type: 'PayPro',

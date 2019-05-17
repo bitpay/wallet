@@ -23,6 +23,7 @@ import { ExternalLinkProvider } from '../../providers/external-link/external-lin
 import { FeedbackProvider } from '../../providers/feedback/feedback';
 import { HomeIntegrationsProvider } from '../../providers/home-integrations/home-integrations';
 import { IncomingDataProvider } from '../../providers/incoming-data/incoming-data';
+import { InvoiceProvider } from '../../providers/invoice/invoice';
 import { Logger } from '../../providers/logger/logger';
 import { PersistenceProvider } from '../../providers/persistence/persistence';
 import { PlatformProvider } from '../../providers/platform/platform';
@@ -95,7 +96,8 @@ export class HomePage {
     private translate: TranslateService,
     private emailProvider: EmailNotificationsProvider,
     private clipboardProvider: ClipboardProvider,
-    private incomingDataProvider: IncomingDataProvider
+    private incomingDataProvider: IncomingDataProvider,
+    private invoiceProvider: InvoiceProvider
   ) {
     this.slideDown = false;
     this.isElectron = this.platformProvider.isElectron;
@@ -403,6 +405,40 @@ export class HomePage {
               this.payProDetailsData.error = err;
               this.logger.warn('Error in Payment Protocol', err);
             });
+        } else if (this.validDataFromClipboard.type === 'InvoiceUri') {
+          const invoiceId: string = data.replace(
+            /https:\/\/(www.)?(test.)?bitpay.com\/invoice\//,
+            ''
+          );
+          try {
+            const invoiceData = await this.invoiceProvider.getBitPayInvoiceData(
+              invoiceId
+            );
+            const { invoice, org } = invoiceData;
+            const { selectedTransactionCurrency } = invoice.buyerProvidedInfo;
+            const { price, currency, expirationTime, paymentTotals } = invoice;
+            this.payProDetailsData = invoice;
+            this.payProDetailsData.verified = true;
+            this.payProDetailsData.isFiat =
+              selectedTransactionCurrency || Coin[currency.toUpperCase()]
+                ? false
+                : true;
+            this.payProDetailsData.host = org.name;
+            this.payProDetailsData.coin = selectedTransactionCurrency
+              ? Coin[selectedTransactionCurrency]
+              : currency;
+            this.payProDetailsData.amount = selectedTransactionCurrency
+              ? paymentTotals[selectedTransactionCurrency]
+              : Coin[currency]
+              ? price / 1e-8
+              : price;
+            this.clearCountDownInterval();
+            this.paymentTimeControl(expirationTime);
+          } catch (err) {
+            this.payProDetailsData = {};
+            this.payProDetailsData.error = err;
+            this.logger.warn('Error in Fetching Invoice', err);
+          }
         }
         await Observable.timer(50).toPromise();
         this.slideDown = true;

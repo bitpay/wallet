@@ -161,6 +161,15 @@ describe('Provider: Incoming Data Provider', () => {
         );
       });
     });
+    it('Should parse valid BitPay Invoice Url', () => {
+      let data = ['https://bitpay.com/invoice/5GREtmntcTvB9aejVDhVdm'];
+      data.forEach(element => {
+        expect(incomingDataProvider.redir(element)).toBe(true);
+        expect(loggerSpy).toHaveBeenCalledWith(
+          'Incoming-data: Handling bitpay invoice'
+        );
+      });
+    });
     it('Should handle Bitcoin cash Copay/BitPay format and CashAddr format plain Address', () => {
       let data = [
         'qr00upv8qjgkym8zng3f663n9qte9ljuqqcs8eep5w',
