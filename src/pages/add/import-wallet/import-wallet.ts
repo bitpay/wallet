@@ -250,7 +250,7 @@ export class ImportWalletPage {
         .importWallet(str2, opts)
         .then(wallet => {
           this.onGoingProcessProvider.clear();
-          this.finish([].concat(wallet));
+          this.finish(wallet);
         })
         .catch(err => {
           this.onGoingProcessProvider.clear();
@@ -261,12 +261,10 @@ export class ImportWalletPage {
     }, 100);
   }
 
-  private async finish(wallets) {
-    wallets.forEach(wallet => {
-      this.walletProvider.updateRemotePreferences(wallet);
-      this.profileProvider.setBackupFlag(wallet.credentials.walletId);
-      this.pushNotificationsProvider.updateSubscription(wallet);
-    });
+  private async finish(wallet) {
+    this.walletProvider.updateRemotePreferences(wallet);
+    this.profileProvider.setBackupFlag(wallet.credentials.walletId);
+    this.pushNotificationsProvider.updateSubscription(wallet);
     this.navCtrl.popToRoot();
   }
 
@@ -277,7 +275,7 @@ export class ImportWalletPage {
         .importExtendedPrivateKey(xPrivKey, opts)
         .then(wallet => {
           this.onGoingProcessProvider.clear();
-          this.finish([].concat(wallet));
+          this.finish(wallet);
         })
         .catch(err => {
           if (err instanceof this.errors.NOT_AUTHORIZED) {
@@ -299,7 +297,7 @@ export class ImportWalletPage {
         .importSingleSeedMnemonic(words, opts)
         .then(wallet => {
           this.onGoingProcessProvider.clear();
-          this.finish([].concat(wallet));
+          this.finish(wallet);
         })
         .catch(err => {
           if (err instanceof this.errors.NOT_AUTHORIZED) {

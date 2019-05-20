@@ -267,6 +267,9 @@ export class CreateWalletPage implements OnInit {
         this.onGoingProcessProvider.clear();
         this.walletProvider.updateRemotePreferences(wallet);
         this.pushNotificationsProvider.updateSubscription(wallet);
+        if (this.createForm.value.selectedSeed == 'set') {
+          this.profileProvider.setBackupFlag(wallet.credentials.walletId);
+        }
         this.navCtrl.popToRoot().then(() => {
           setTimeout(() => {
             this.events.publish('OpenWallet', wallet);
