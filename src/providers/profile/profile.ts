@@ -10,7 +10,6 @@ import { AppProvider } from '../app/app';
 import { BwcErrorProvider } from '../bwc-error/bwc-error';
 import { BwcProvider } from '../bwc/bwc';
 import { ConfigProvider } from '../config/config';
-import { DerivationPathHelperProvider } from '../derivation-path-helper/derivation-path-helper';
 import { LanguageProvider } from '../language/language';
 import { Logger } from '../logger/logger';
 import { OnGoingProcessProvider } from '../on-going-process/on-going-process';
@@ -34,7 +33,6 @@ export class ProfileProvider {
   private throttledBwsEvent;
   private validationLock: boolean = false;
   private errors = this.bwcProvider.getErrors();
-  private availableCoins: Array<{ coin: Coin; derivationPath: string }>;
 
   constructor(
     private logger: Logger,
@@ -51,32 +49,12 @@ export class ProfileProvider {
     private onGoingProcessProvider: OnGoingProcessProvider,
     private translate: TranslateService,
     private walletProvider: WalletProvider,
-    private derivationPathHelperProvider: DerivationPathHelperProvider,
     private txFormatProvider: TxFormatProvider,
     private actionSheetProvider: ActionSheetProvider
   ) {
     this.throttledBwsEvent = _.throttle((n, wallet) => {
       this.newBwsEvent(n, wallet);
     }, 10000);
-
-    this.availableCoins = [
-      {
-        coin: Coin.BTC,
-        derivationPath: this.derivationPathHelperProvider.defaultBTC
-      },
-      {
-        coin: Coin.BCH,
-        derivationPath: this.derivationPathHelperProvider.defaultBCH
-      },
-      {
-        coin: Coin.BTC,
-        derivationPath: this.derivationPathHelperProvider.defaultTestnet
-      },
-      {
-        coin: Coin.BCH,
-        derivationPath: this.derivationPathHelperProvider.defaultTestnet
-      }
-    ];
   }
 
   private updateWalletFromConfig(wallet): void {
@@ -602,30 +580,6 @@ export class ProfileProvider {
           });
         }
       });
-    });
-  }
-
-  private addAndBindWalletClients(walletsArray: any[], opts): Promise<any> {
-    // Encrypt wallet
-    this.onGoingProcessProvider.pause();
-    return this.askToEncryptWallets(walletsArray).then(() => {
-      this.onGoingProcessProvider.resume();
-      const promises = [];
-
-      // Will publish once all wallets are binded.
-      opts.skipEvent = true;
-
-      walletsArray.forEach(wallet => {
-        promises.push(this.addAndBindWalletClient(_.clone(wallet), opts));
-      });
-      Promise.all(promises)
-        .then(() => {
-          this.events.publish('Local/WalletListChange');
-          return Promise.resolve();
-        })
-        .catch(() => {
-          return Promise.reject('failed to bind wallets');
-        });
     });
   }
 

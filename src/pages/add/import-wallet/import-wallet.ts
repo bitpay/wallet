@@ -13,7 +13,6 @@ import { BwcProvider } from '../../../providers/bwc/bwc';
 import { ConfigProvider } from '../../../providers/config/config';
 import { DerivationPathHelperProvider } from '../../../providers/derivation-path-helper/derivation-path-helper';
 import { OnGoingProcessProvider } from '../../../providers/on-going-process/on-going-process';
-import { PersistenceProvider } from '../../../providers/persistence/persistence';
 import { PlatformProvider } from '../../../providers/platform/platform';
 import { PopupProvider } from '../../../providers/popup/popup';
 import { ProfileProvider } from '../../../providers/profile/profile';
@@ -67,8 +66,7 @@ export class ImportWalletPage {
     private translate: TranslateService,
     private events: Events,
     private pushNotificationsProvider: PushNotificationsProvider,
-    private actionSheetProvider: ActionSheetProvider,
-    private persistenceProvider: PersistenceProvider
+    private actionSheetProvider: ActionSheetProvider
   ) {
     this.okText = this.translate.instant('Ok');
     this.cancelText = this.translate.instant('Cancel');

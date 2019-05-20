@@ -6,7 +6,6 @@ import { Logger } from '../../providers/logger/logger';
 import * as _ from 'lodash';
 
 // providers
-import { ActionSheetProvider } from '../../providers/action-sheet/action-sheet';
 import { AppProvider } from '../../providers/app/app';
 import { BitPayCardProvider } from '../../providers/bitpay-card/bitpay-card';
 import { ConfigProvider } from '../../providers/config/config';
@@ -16,10 +15,8 @@ import { LanguageProvider } from '../../providers/language/language';
 import { PlatformProvider } from '../../providers/platform/platform';
 import { ProfileProvider } from '../../providers/profile/profile';
 import { TouchIdProvider } from '../../providers/touchid/touchid';
-import { WalletProvider } from '../../providers/wallet/wallet';
 
 // pages
-import { BackupKeyPage } from '../backup/backup-key/backup-key';
 import { BitPayCardIntroPage } from '../integrations/bitpay-card/bitpay-card-intro/bitpay-card-intro';
 import { BitPaySettingsPage } from '../integrations/bitpay-card/bitpay-settings/bitpay-settings';
 import { CoinbaseSettingsPage } from '../integrations/coinbase/coinbase-settings/coinbase-settings';
@@ -72,10 +69,7 @@ export class SettingsPage {
     private platformProvider: PlatformProvider,
     private translate: TranslateService,
     private modalCtrl: ModalController,
-    private touchid: TouchIdProvider,
-    private walletProvider: WalletProvider,
-    private actionSheetProvider: ActionSheetProvider,
-    private touchIdProvider: TouchIdProvider
+    private touchid: TouchIdProvider
   ) {
     this.appName = this.app.info.nameCase;
     this.walletsBch = [];
