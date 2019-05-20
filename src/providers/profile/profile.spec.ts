@@ -141,6 +141,33 @@ fdescribe('Profile Provider', () => {
     },
     validateKeyDerivation: (_opts, _cb) => {
       return true;
+    },
+    seedFromRandomWithMnemonic: _opts => {
+      return true;
+    },
+    seedFromMnemonic: (_mnemonic: string, _opts) => {
+      return true;
+    },
+    seedFromExtendedPrivateKey: (_extendedPrivateKey: string, _opts) => {
+      return true;
+    },
+    seedFromExtendedPublicKey: (
+      _extendedPublicKey: string,
+      _externalSource: string,
+      _entropySource: string,
+      _opts
+    ) => {
+      return true;
+    },
+    createWallet: (
+      _name: string,
+      _myName: string,
+      _m: number,
+      _n: number,
+      _opts,
+      _cb
+    ) => {
+      return _cb(null);
     }
   };
 
@@ -197,6 +224,19 @@ fdescribe('Profile Provider', () => {
     }
     getVault() {
       return Promise.resolve({});
+    }
+    getCopayDisclaimerFlag() {
+      return Promise.resolve(true);
+    }
+    getCopayOnboardingFlag() {
+      return Promise.resolve(true);
+    }
+    getProfile() {
+      const profile = {
+        createdOn: Date.now(),
+        checkedUA: true
+      };
+      return Promise.resolve(profile);
     }
   }
 
@@ -679,6 +719,193 @@ fdescribe('Profile Provider', () => {
         .bindProfile(profile)
         .then(() => {
           expect().nothing();
+        })
+        .catch(err => {
+          expect(err).not.toBeDefined();
+        });
+    });
+  });
+
+  describe('isDisclaimerAccepted', () => {
+    it('should return promise resolve if disclaimerAccepted is true', () => {
+      profileProvider.profile.disclaimerAccepted = true;
+
+      profileProvider
+        .isDisclaimerAccepted()
+        .then(() => {
+          expect().nothing();
+        })
+        .catch(err => {
+          expect(err).not.toBeDefined();
+        });
+    });
+
+    it('should set disclaimerAccepted with true', () => {
+      profileProvider.profile.disclaimerAccepted = false;
+
+      profileProvider
+        .isDisclaimerAccepted()
+        .then(() => {
+          expect(profileProvider.profile.disclaimerAccepted).toBeTruthy();
+        })
+        .catch(err => {
+          expect(err).not.toBeDefined();
+        });
+    });
+  });
+
+  describe('isOnboardingCompleted', () => {
+    it('should return promise resolve if onboardingCompleted is true', () => {
+      profileProvider.profile.onboardingCompleted = true;
+
+      profileProvider
+        .isOnboardingCompleted()
+        .then(() => {
+          expect().nothing();
+        })
+        .catch(err => {
+          expect(err).not.toBeDefined();
+        });
+    });
+
+    it('should set onboardingCompleted with true', () => {
+      profileProvider.profile.onboardingCompleted = false;
+
+      profileProvider
+        .isOnboardingCompleted()
+        .then(() => {
+          expect(profileProvider.profile.onboardingCompleted).toBeTruthy();
+        })
+        .catch(err => {
+          expect(err).not.toBeDefined();
+        });
+    });
+  });
+
+  describe('loadAndBindProfile', () => {
+    it('should get, bind and return profile', () => {
+      const bindProfileSpy = spyOn(
+        profileProvider,
+        'bindProfile'
+      ).and.returnValue(Promise.resolve());
+
+      profileProvider
+        .loadAndBindProfile()
+        .then(profile => {
+          expect(profile).toBeDefined();
+          expect(bindProfileSpy).toHaveBeenCalledWith(profile);
+        })
+        .catch(err => {
+          expect(err).not.toBeDefined();
+        });
+    });
+
+    it('should return error if bindProfile fails', () => {
+      spyOn(profileProvider, 'bindProfile').and.returnValue(
+        Promise.reject('Error')
+      );
+
+      profileProvider
+        .loadAndBindProfile()
+        .then(profile => {
+          expect(profile).not.toBeDefined();
+        })
+        .catch(err => {
+          expect(err).toBeDefined();
+        });
+    });
+  });
+
+  describe('createWallet', () => {
+    it('should create wallet using seedFromMnemonic', () => {
+      const opts = {
+        name: 'walletName',
+        m: 1,
+        n: 1,
+        myName: null,
+        networkName: 'livenet',
+        bwsurl: 'https://bws.bitpay.com/bws/api',
+        singleAddress: false,
+        coin: 'btc',
+        mnemonic: 'mom mom mom mom mom mom mom mom mom mom mom mom'
+      };
+
+      profileProvider
+        .createWallet(opts)
+        .then(walletClient => {
+          expect(walletClient).toBeDefined();
+          expect(walletClient.credentials.walletId).toEqual('id1');
+        })
+        .catch(err => {
+          expect(err).not.toBeDefined();
+        });
+    });
+
+    it('should create wallet using seedFromExtendedPrivateKey', () => {
+      const opts = {
+        name: 'walletName',
+        m: 1,
+        n: 1,
+        myName: null,
+        networkName: 'livenet',
+        bwsurl: 'https://bws.bitpay.com/bws/api',
+        singleAddress: false,
+        coin: 'btc',
+        extendedPrivateKey: 'extendedPrivateKey1'
+      };
+
+      profileProvider
+        .createWallet(opts)
+        .then(walletClient => {
+          expect(walletClient).toBeDefined();
+          expect(walletClient.credentials.walletId).toEqual('id1');
+        })
+        .catch(err => {
+          expect(err).not.toBeDefined();
+        });
+    });
+
+    it('should create wallet using seedFromExtendedPublicKey', () => {
+      const opts = {
+        name: 'walletName',
+        m: 1,
+        n: 1,
+        myName: null,
+        networkName: 'livenet',
+        bwsurl: 'https://bws.bitpay.com/bws/api',
+        singleAddress: false,
+        coin: 'btc',
+        extendedPublicKey: 'extendedPublicKey1'
+      };
+
+      profileProvider
+        .createWallet(opts)
+        .then(walletClient => {
+          expect(walletClient).toBeDefined();
+          expect(walletClient.credentials.walletId).toEqual('id1');
+        })
+        .catch(err => {
+          expect(err).not.toBeDefined();
+        });
+    });
+
+    it('should create wallet using FromRandomWithMnemonic', () => {
+      const opts = {
+        name: 'walletName',
+        m: 1,
+        n: 1,
+        myName: null,
+        networkName: 'livenet',
+        bwsurl: 'https://bws.bitpay.com/bws/api',
+        singleAddress: false,
+        coin: 'btc'
+      };
+
+      profileProvider
+        .createWallet(opts)
+        .then(walletClient => {
+          expect(walletClient).toBeDefined();
+          expect(walletClient.credentials.walletId).toEqual('id1');
         })
         .catch(err => {
           expect(err).not.toBeDefined();
