@@ -13,7 +13,6 @@ import { BwcProvider } from '../../../providers/bwc/bwc';
 import { ConfigProvider } from '../../../providers/config/config';
 import { DerivationPathHelperProvider } from '../../../providers/derivation-path-helper/derivation-path-helper';
 import { OnGoingProcessProvider } from '../../../providers/on-going-process/on-going-process';
-import { PersistenceProvider } from '../../../providers/persistence/persistence';
 import { PlatformProvider } from '../../../providers/platform/platform';
 import { PopupProvider } from '../../../providers/popup/popup';
 import { ProfileProvider } from '../../../providers/profile/profile';
@@ -67,8 +66,7 @@ export class ImportWalletPage {
     private translate: TranslateService,
     private events: Events,
     private pushNotificationsProvider: PushNotificationsProvider,
-    private actionSheetProvider: ActionSheetProvider,
-    private persistenceProvider: PersistenceProvider
+    private actionSheetProvider: ActionSheetProvider
   ) {
     this.okText = this.translate.instant('Ok');
     this.cancelText = this.translate.instant('Cancel');
@@ -104,16 +102,11 @@ export class ImportWalletPage {
       derivationPath: [this.derivationPathByDefault, Validators.required],
       testnetEnabled: [false],
       bwsURL: [this.defaults.bws.url],
-      coin: [null, Validators.required],
-      importVault: [false]
+      coin: [null, Validators.required]
     });
     this.importForm.controls['coin'].setValue(this.coin);
 
     this.events.subscribe('Local/BackupScan', this.updateWordsHandler);
-
-    this.persistenceProvider.getVault().then(vault => {
-      if (vault) this.importForm.controls['importVault'].disable();
-    });
 
     this.setForm();
   }
@@ -181,15 +174,6 @@ export class ImportWalletPage {
     this.importForm.get('file').updateValueAndValidity();
     this.importForm.get('filePassword').updateValueAndValidity();
     this.importForm.get('backupText').updateValueAndValidity();
-    this.importForm.get('coin').updateValueAndValidity();
-  }
-
-  public onChangeImportVault(importVault: boolean): void {
-    if (importVault) {
-      this.importForm.get('coin').clearValidators();
-    } else {
-      this.importForm.get('coin').setValidators([Validators.required]);
-    }
     this.importForm.get('coin').updateValueAndValidity();
   }
 
@@ -266,7 +250,7 @@ export class ImportWalletPage {
         .importWallet(str2, opts)
         .then(wallet => {
           this.onGoingProcessProvider.clear();
-          this.finish([].concat(wallet));
+          this.finish(wallet);
         })
         .catch(err => {
           this.onGoingProcessProvider.clear();
@@ -277,12 +261,10 @@ export class ImportWalletPage {
     }, 100);
   }
 
-  private async finish(wallets) {
-    wallets.forEach(wallet => {
-      this.walletProvider.updateRemotePreferences(wallet);
-      this.profileProvider.setBackupFlag(wallet.credentials.walletId);
-      this.pushNotificationsProvider.updateSubscription(wallet);
-    });
+  private async finish(wallet) {
+    this.walletProvider.updateRemotePreferences(wallet);
+    this.profileProvider.setBackupFlag(wallet.credentials.walletId);
+    this.pushNotificationsProvider.updateSubscription(wallet);
     this.navCtrl.popToRoot();
   }
 
@@ -293,7 +275,7 @@ export class ImportWalletPage {
         .importExtendedPrivateKey(xPrivKey, opts)
         .then(wallet => {
           this.onGoingProcessProvider.clear();
-          this.finish([].concat(wallet));
+          this.finish(wallet);
         })
         .catch(err => {
           if (err instanceof this.errors.NOT_AUTHORIZED) {
@@ -315,7 +297,7 @@ export class ImportWalletPage {
         .importSingleSeedMnemonic(words, opts)
         .then(wallet => {
           this.onGoingProcessProvider.clear();
-          this.finish([].concat(wallet));
+          this.finish(wallet);
         })
         .catch(err => {
           if (err instanceof this.errors.NOT_AUTHORIZED) {
@@ -328,21 +310,6 @@ export class ImportWalletPage {
           return;
         });
     }, 100);
-  }
-
-  private importVaultWallets(words: string, opts): void {
-    this.onGoingProcessProvider.set('importingVault');
-    this.profileProvider
-      .importVaultWallets(words, opts)
-      .then(wallets => {
-        this.onGoingProcessProvider.clear();
-        this.finish(wallets);
-      })
-      .catch(err => {
-        this.onGoingProcessProvider.clear();
-        const title = this.translate.instant('Error');
-        this.popupProvider.ionicAlert(title, err);
-      });
   }
 
   public import(): void {
@@ -459,11 +426,7 @@ export class ImportWalletPage {
       }
     }
 
-    if (this.importForm.value.importVault) {
-      this.importVaultWallets(words, opts);
-    } else {
-      this.importMnemonic(words, opts);
-    }
+    this.importMnemonic(words, opts);
   }
 
   public fileChangeEvent($event) {

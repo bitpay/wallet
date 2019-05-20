@@ -29,9 +29,6 @@ export class BackupGamePage {
   @ViewChild(Navbar)
   navBar: Navbar;
 
-  private isVaultWallet: boolean;
-  private vault;
-
   public mnemonicWords: string[];
   public shuffledMnemonicWords;
   public password: string;
@@ -59,11 +56,6 @@ export class BackupGamePage {
     this.keys = this.navParams.data.keys;
     this.walletId = this.navParams.data.walletId;
     this.wallet = this.profileProvider.getWallet(this.walletId);
-    this.vault = this.profileProvider.getVault();
-    this.isVaultWallet =
-      this.vault &&
-      this.vault.walletIds &&
-      this.vault.walletIds.includes(this.wallet.credentials.walletId);
     this.setFlow();
   }
 
@@ -180,18 +172,7 @@ export class BackupGamePage {
           return reject('Private key mismatch');
         }
       }
-
-      if (this.isVaultWallet) {
-        const vaultWallets = this.profileProvider.getVaultWallets();
-        vaultWallets.forEach(wallet => {
-          this.profileProvider.setBackupFlag(wallet.credentials.walletId);
-        });
-        this.vault.needsBackup = false;
-        this.profileProvider.storeVault(this.vault);
-      } else {
-        this.profileProvider.setBackupFlag(this.wallet.credentials.walletId);
-      }
-
+      this.profileProvider.setBackupFlag(this.wallet.credentials.walletId);
       return resolve();
     });
   }

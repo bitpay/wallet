@@ -261,16 +261,15 @@ export class CreateWalletPage implements OnInit {
 
   private create(opts): void {
     this.onGoingProcessProvider.set('creatingWallet');
-    const promise = this.createForm.value.addToVault
-      ? this.profileProvider.createWalletInVault(opts)
-      : this.profileProvider.createNewSeedWallet(opts);
-    promise
+    this.profileProvider
+      .createNewSeedWallet(opts)
       .then(wallet => {
         this.onGoingProcessProvider.clear();
         this.walletProvider.updateRemotePreferences(wallet);
         this.pushNotificationsProvider.updateSubscription(wallet);
-        this.setBackupFlagIfNeeded(wallet.credentials.walletId);
-        this.setFingerprintIfNeeded(wallet.credentials.walletId);
+        if (this.createForm.value.selectedSeed == 'set') {
+          this.profileProvider.setBackupFlag(wallet.credentials.walletId);
+        }
         this.navCtrl.popToRoot().then(() => {
           setTimeout(() => {
             this.events.publish('OpenWallet', wallet);
@@ -291,32 +290,6 @@ export class CreateWalletPage implements OnInit {
         }
         return;
       });
-  }
-
-  private setBackupFlagIfNeeded(walletId: string) {
-    if (this.createForm.value.selectedSeed == 'set') {
-      this.profileProvider.setBackupFlag(walletId);
-    } else if (this.createForm.value.addToVault) {
-      const vault = this.profileProvider.getVault();
-      if (!vault.needsBackup) this.profileProvider.setBackupFlag(walletId);
-    }
-  }
-
-  private async setFingerprintIfNeeded(walletId: string) {
-    if (!this.createForm.value.addToVault) return;
-    const vaultWallets = this.profileProvider.getVaultWallets();
-    const config = this.configProvider.get();
-    const touchIdEnabled = config.touchIdFor
-      ? config.touchIdFor[vaultWallets[0].credentials.walletId]
-      : null;
-
-    if (!touchIdEnabled) return;
-
-    const opts = {
-      touchIdFor: {}
-    };
-    opts.touchIdFor[walletId] = true;
-    this.configProvider.set(opts);
   }
 
   public openSupportSingleAddress(): void {
