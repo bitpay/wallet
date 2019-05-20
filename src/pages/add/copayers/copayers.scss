@@ -1,6 +1,12 @@
 page-copayers {
   .qr-container {
     padding: 30px;
-    height: 50%;
+    height: 45%;
+  }
+
+  ion-spinner {
+    width: 26px;
+    height: 16px;
+    vertical-align: middle;
   }
 }
