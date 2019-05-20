@@ -185,10 +185,7 @@ export class ConfirmInvoicePage extends ConfirmPage {
     const { selectedTransactionCurrency } = this.invoiceData.buyerProvidedInfo;
     if (selectedTransactionCurrency) {
       this.wallets = _.filter(this.wallets, (x: any) => {
-        return (
-          x.credentials.coin == selectedTransactionCurrency.toLowerCase() &&
-          !this.profileProvider.vaultHasWallet(x.credentials.walletId)
-        );
+        return x.credentials.coin == selectedTransactionCurrency.toLowerCase();
       });
     }
     if (_.isEmpty(this.wallets)) {

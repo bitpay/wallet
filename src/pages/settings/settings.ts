@@ -35,7 +35,6 @@ import { LanguagePage } from './language/language';
 import { LockPage } from './lock/lock';
 import { NotificationsPage } from './notifications/notifications';
 import { SharePage } from './share/share';
-import { VaultDeletePage } from './vault-delete/vault-delete';
 import { WalletSettingsPage } from './wallet-settings/wallet-settings';
 
 @Component({
@@ -55,13 +54,10 @@ export class SettingsPage {
   public integrationServices = [];
   public bitpayCardItems = [];
   public showBitPayCard: boolean = false;
-  public vault;
   public encryptEnabled: boolean;
   public touchIdAvailable: boolean;
   public touchIdEnabled: boolean;
   public touchIdPrevValue: boolean;
-
-  private vaultWallets;
 
   constructor(
     private navCtrl: NavController,
@@ -110,79 +106,6 @@ export class SettingsPage {
       this.config && this.config.lock && this.config.lock.method
         ? this.config.lock.method.toLowerCase()
         : null;
-    this.vault = this.profileProvider.getVault();
-    this.vaultWallets = this.profileProvider.getVaultWallets();
-    this.encryptEnabled = this.walletProvider.isEncrypted(this.vaultWallets[0]);
-    this.touchIdEnabled = this.config.touchIdFor
-      ? this.config.touchIdFor[this.vaultWallets[0].credentials.walletId]
-      : null;
-    this.touchIdPrevValue = this.touchIdEnabled;
-    this.touchIdProvider.isAvailable().then((isAvailable: boolean) => {
-      this.touchIdAvailable = isAvailable;
-    });
-  }
-
-  public touchIdChange(): void {
-    if (this.touchIdPrevValue == this.touchIdEnabled) return;
-    const newStatus = this.touchIdEnabled;
-    this.walletProvider
-      .setTouchId(this.vaultWallets, newStatus)
-      .then(() => {
-        this.touchIdPrevValue = this.touchIdEnabled;
-        this.logger.debug('Touch Id status changed: ' + newStatus);
-      })
-      .catch(err => {
-        this.logger.error('Error with fingerprint:', err);
-        this.touchIdEnabled = this.touchIdPrevValue;
-      });
-  }
-
-  public encryptChange(): void {
-    const val = this.encryptEnabled;
-
-    if (val && !this.walletProvider.isEncrypted(this.vaultWallets[0])) {
-      this.logger.debug('Encrypting private key for vault: ', this.vault.name);
-      this.walletProvider
-        .encrypt(this.vaultWallets)
-        .then(() => {
-          this.vaultWallets.forEach(wallet => {
-            this.profileProvider.updateCredentials(JSON.parse(wallet.export()));
-          });
-          this.logger.debug('Vault wallets encrypted');
-        })
-        .catch(err => {
-          this.encryptEnabled = false;
-          const title = this.translate.instant('Could not encrypt wallet');
-          this.showErrorInfoSheet(err, title);
-        });
-    } else if (!val && this.walletProvider.isEncrypted(this.vaultWallets[0])) {
-      this.walletProvider
-        .decrypt(this.vaultWallets)
-        .then(() => {
-          this.vaultWallets.forEach(wallet => {
-            this.profileProvider.updateCredentials(JSON.parse(wallet.export()));
-          });
-          this.logger.debug('Vault wallets decrypted');
-        })
-        .catch(err => {
-          this.encryptEnabled = true;
-          const title = 'Could not decrypt vault wallets';
-          this.showErrorInfoSheet(err, title);
-        });
-    }
-  }
-
-  private showErrorInfoSheet(
-    err: Error | string,
-    infoSheetTitle: string
-  ): void {
-    if (!err) return;
-    this.logger.warn('Could not encrypt/decrypt vault wallets:', err);
-    const errorInfoSheet = this.actionSheetProvider.createInfoSheet(
-      'default-error',
-      { msg: err, title: infoSheetTitle }
-    );
-    errorInfoSheet.present();
   }
 
   ionViewDidEnter() {
@@ -220,13 +143,6 @@ export class SettingsPage {
 
   public openAboutPage(): void {
     this.navCtrl.push(AboutPage);
-  }
-
-  public openBackupSettings(): void {
-    const vaultWallet = this.profileProvider.getWallet(this.vault.walletIds[0]);
-    this.navCtrl.push(BackupKeyPage, {
-      walletId: vaultWallet.credentials.walletId
-    });
   }
 
   public openLockPage(): void {
@@ -283,10 +199,6 @@ export class SettingsPage {
 
   public openGiftCardsSettings() {
     this.navCtrl.push(GiftCardsSettingsPage);
-  }
-
-  public openDeleteVault(): void {
-    this.navCtrl.push(VaultDeletePage);
   }
 
   public openHelpExternalLink(): void {

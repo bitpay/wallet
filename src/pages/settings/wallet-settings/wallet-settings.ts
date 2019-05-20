@@ -7,7 +7,6 @@ import { Logger } from '../../../providers/logger/logger';
 import { ActionSheetProvider } from '../../../providers/action-sheet/action-sheet';
 import { ConfigProvider } from '../../../providers/config/config';
 import { ExternalLinkProvider } from '../../../providers/external-link/external-link';
-import { PersistenceProvider } from '../../../providers/persistence/persistence';
 import { ProfileProvider } from '../../../providers/profile/profile';
 import { TouchIdProvider } from '../../../providers/touchid/touchid';
 import { WalletProvider } from '../../../providers/wallet/wallet';
@@ -38,7 +37,6 @@ export class WalletSettingsPage {
   public touchIdAvailable: boolean;
   public deleted: boolean = false;
   private config;
-  public notVaultWallet: boolean;
 
   constructor(
     private profileProvider: ProfileProvider,
@@ -50,8 +48,7 @@ export class WalletSettingsPage {
     private navParams: NavParams,
     private touchIdProvider: TouchIdProvider,
     private translate: TranslateService,
-    private actionSheetProvider: ActionSheetProvider,
-    private persistenceProvider: PersistenceProvider
+    private actionSheetProvider: ActionSheetProvider
   ) {}
 
   ionViewDidLoad() {
@@ -76,10 +73,6 @@ export class WalletSettingsPage {
     ) {
       this.deleted = true;
     }
-    this.persistenceProvider.getVault().then(vault => {
-      this.notVaultWallet =
-        !vault || !vault.walletIds.includes(this.wallet.credentials.walletId);
-    });
   }
 
   public hiddenBalanceChange(): void {

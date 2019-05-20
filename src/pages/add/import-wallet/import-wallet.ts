@@ -104,16 +104,11 @@ export class ImportWalletPage {
       derivationPath: [this.derivationPathByDefault, Validators.required],
       testnetEnabled: [false],
       bwsURL: [this.defaults.bws.url],
-      coin: [null, Validators.required],
-      importVault: [false]
+      coin: [null, Validators.required]
     });
     this.importForm.controls['coin'].setValue(this.coin);
 
     this.events.subscribe('Local/BackupScan', this.updateWordsHandler);
-
-    this.persistenceProvider.getVault().then(vault => {
-      if (vault) this.importForm.controls['importVault'].disable();
-    });
 
     this.setForm();
   }
@@ -181,15 +176,6 @@ export class ImportWalletPage {
     this.importForm.get('file').updateValueAndValidity();
     this.importForm.get('filePassword').updateValueAndValidity();
     this.importForm.get('backupText').updateValueAndValidity();
-    this.importForm.get('coin').updateValueAndValidity();
-  }
-
-  public onChangeImportVault(importVault: boolean): void {
-    if (importVault) {
-      this.importForm.get('coin').clearValidators();
-    } else {
-      this.importForm.get('coin').setValidators([Validators.required]);
-    }
     this.importForm.get('coin').updateValueAndValidity();
   }
 
@@ -330,21 +316,6 @@ export class ImportWalletPage {
     }, 100);
   }
 
-  private importVaultWallets(words: string, opts): void {
-    this.onGoingProcessProvider.set('importingVault');
-    this.profileProvider
-      .importVaultWallets(words, opts)
-      .then(wallets => {
-        this.onGoingProcessProvider.clear();
-        this.finish(wallets);
-      })
-      .catch(err => {
-        this.onGoingProcessProvider.clear();
-        const title = this.translate.instant('Error');
-        this.popupProvider.ionicAlert(title, err);
-      });
-  }
-
   public import(): void {
     if (this.selectedTab === 'file') {
       this.importFromFile();
@@ -459,11 +430,7 @@ export class ImportWalletPage {
       }
     }
 
-    if (this.importForm.value.importVault) {
-      this.importVaultWallets(words, opts);
-    } else {
-      this.importMnemonic(words, opts);
-    }
+    this.importMnemonic(words, opts);
   }
 
   public fileChangeEvent($event) {

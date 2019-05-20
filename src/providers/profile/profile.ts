@@ -27,7 +27,6 @@ import { Profile } from '../../models/profile/profile.model';
 @Injectable()
 export class ProfileProvider {
   public wallet: any = {};
-  public vault;
   public profile: Profile;
 
   public UPDATE_PERIOD = 15;
@@ -501,42 +500,6 @@ export class ProfileProvider {
     });
   }
 
-  public importVaultWallets(words, opts): Promise<any> {
-    const options: Partial<WalletOptions> = opts || {};
-    const promises = [];
-
-    this.availableCoins.forEach(availableCoin => {
-      const derivationPath = availableCoin.derivationPath;
-
-      opts.networkName = this.derivationPathHelperProvider.getNetworkName(
-        derivationPath
-      );
-      opts.derivationStrategy = this.derivationPathHelperProvider.getDerivationStrategy(
-        derivationPath
-      );
-      opts.account = this.derivationPathHelperProvider.getAccount(
-        derivationPath
-      );
-
-      opts.coin = availableCoin.coin;
-      promises.push(
-        this.importMnemonic(words, _.clone(opts), true) // ignore "no copayer found" error
-      );
-    });
-    return Promise.all(promises).then(async walletClients => {
-      walletClients = _.compact(walletClients);
-      // create default vault
-      const defaultVault = {
-        walletIds: [],
-        needsBackup: false
-      };
-      await this.storeWalletsInVault(walletClients, defaultVault);
-      return this.addAndBindWalletClients(walletClients, {
-        bwsurl: options.bwsurl
-      });
-    });
-  }
-
   // An alert dialog
   private askPassword(warnMsg: string, title: string): Promise<any> {
     return new Promise(resolve => {
@@ -855,14 +818,6 @@ export class ProfileProvider {
     });
   }
 
-  private async storeWalletsInVault(walletClients, newVault?) {
-    const vault = newVault || this.getVault();
-    walletClients.forEach(wallet => {
-      vault.walletIds.push(wallet.credentials.walletId);
-    });
-    await this.storeVault(vault);
-  }
-
   public importExtendedPublicKey(opts): Promise<any> {
     return new Promise((resolve, reject) => {
       this.logger.info('Importing Wallet XPubKey');
@@ -942,7 +897,6 @@ export class ProfileProvider {
 
       bindWallets()
         .then(async () => {
-          await this.bindVault();
           this.isOnboardingCompleted()
             .then(() => {
               this.isDisclaimerAccepted()
@@ -1293,17 +1247,6 @@ export class ProfileProvider {
     return this.persistenceProvider.storeProfile(this.profile);
   }
 
-  public async deleteVaultWallets(vaultWallets): Promise<any> {
-    const promises = [];
-    vaultWallets.forEach(wallet => {
-      promises.push(this.deleteWalletClient(wallet));
-    });
-    return Promise.all(promises).then(() => {
-      this.events.publish('Local/WalletListChange');
-      return this.persistenceProvider.deleteVault();
-    });
-  }
-
   public createDefaultWallet(): Promise<any> {
     const opts: Partial<WalletOptions> = {};
     opts.m = 1;
@@ -1313,80 +1256,10 @@ export class ProfileProvider {
     return this.createNewSeedWallet(opts);
   }
 
-  public createDefaultVault(): Promise<any> {
-    const defaultVault = {
-      walletIds: [],
-      needsBackup: true
-    };
-    return this.createVault(defaultVault);
-  }
-
-  public createVault(vault, opts?): Promise<any> {
-    return this.seedWallet(opts).then(async vaultClient => {
-      await this.storeVault(vault);
-      return Promise.resolve(vaultClient);
-    });
-  }
-
-  public async createWalletInVault(opts): Promise<any> {
-    const vault = this.getVault();
-    const needToCreateVault = !vault;
-    let vaultClient;
-    let vaultWallet;
-    let mnemonic;
-    let password;
-    if (needToCreateVault) {
-      vaultClient = await this.createDefaultVault();
-      mnemonic = vaultClient.credentials.mnemonic;
-    } else {
-      vaultWallet = this.getWallet(vault.walletIds[0]);
-      const k = await this.walletProvider.getMnemonicAndPassword(vaultWallet);
-      mnemonic = k.mnemonic;
-      password = k.password;
-    }
-    opts.mnemonic = mnemonic;
-    return this.createWallet(opts).then(async walletClient => {
-      await this.storeWalletsInVault([].concat(walletClient));
-      // Encrypt wallet
-      this.onGoingProcessProvider.pause();
-      if (password) walletClient.encryptPrivateKey(password);
-      // If already encrypted encrypt new wallet
-      else if (needToCreateVault) {
-        // Only ask to encrypt wallet if is the first wallet in vault
-        this.onGoingProcessProvider.pause();
-        await this.askToEncryptWallets([].concat(walletClient));
-        this.onGoingProcessProvider.resume();
-      }
-      return this.addAndBindWalletClient(walletClient, {
-        bwsurl: opts.bwsurl
-      });
-    });
-  }
-
   public createNewSeedWallet(opts): Promise<any> {
     return this.createWallet(opts).then(walletClient => {
       return this.addAndBindNewSeedWalletClient(walletClient, {
         bwsurl: opts.bwsurl
-      });
-    });
-  }
-
-  public createDefaultWalletsInVault(opts): Promise<any> {
-    // Default wallet options
-    const options: Partial<WalletOptions> = opts || {};
-    options.m = 1;
-    options.n = 1;
-    options.networkName = 'livenet';
-
-    const promises = [];
-    this.availableCoins.forEach(availableCoin => {
-      options.coin = availableCoin.coin;
-      promises.push(this.createWallet(_.clone(options)));
-    });
-    return Promise.all(promises).then(async walletClients => {
-      await this.storeWalletsInVault(walletClients);
-      return this.addAndBindWalletClients(walletClients, {
-        bwsurl: options.bwsurl
       });
     });
   }
@@ -1518,34 +1391,5 @@ export class ProfileProvider {
       txps = _.compact(_.flatten(txps)).slice(0, opts.limit || MAX);
       return resolve({ txps, n });
     });
-  }
-
-  private async bindVault() {
-    this.vault = await this.persistenceProvider.getVault();
-  }
-
-  public async storeVault(vault) {
-    this.vault = vault;
-    await this.persistenceProvider.storeVault(vault);
-  }
-
-  public getVault() {
-    return this.vault;
-  }
-
-  public getVaultWallets() {
-    const wallets = this.getWallets();
-    const vaultWallets = _.filter(wallets, (x: any) => {
-      return this.vaultHasWallet(x.credentials.walletId);
-    });
-    return vaultWallets;
-  }
-
-  public vaultHasWallet(walletId: string): boolean {
-    return (
-      this.vault &&
-      this.vault.walletIds &&
-      this.vault.walletIds.includes(walletId)
-    );
   }
 }
