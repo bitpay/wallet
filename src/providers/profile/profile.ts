@@ -691,11 +691,11 @@ export class ProfileProvider {
       walletClient.importFromExtendedPrivateKey(xPrivKey, opts, err => {
         if (err) {
           if (err instanceof this.errors.NOT_AUTHORIZED) return reject(err);
-          this.bwcErrorProvider
-            .cb(err, this.translate.instant('Could not import'))
-            .then((msg: string) => {
-              return reject(msg);
-            });
+          const msg = this.bwcErrorProvider.msg(
+            err,
+            this.translate.instant('Could not import')
+          );
+          return reject(msg);
         } else {
           this.addAndBindNewSeedWalletClient(walletClient, {
             bwsurl: opts.bwsurl
@@ -760,11 +760,11 @@ export class ProfileProvider {
               return reject(err);
             }
           }
-          this.bwcErrorProvider
-            .cb(err, this.translate.instant('Could not import'))
-            .then((msg: string) => {
-              return reject(msg);
-            });
+          const msg = this.bwcErrorProvider.msg(
+            err,
+            this.translate.instant('Could not import')
+          );
+          return reject(msg);
         } else {
           return resolve(walletClient);
         }
@@ -792,11 +792,11 @@ export class ProfileProvider {
             if (err instanceof this.errors.NOT_AUTHORIZED)
               err.name = 'WALLET_DOES_NOT_EXIST';
 
-            this.bwcErrorProvider
-              .cb(err, this.translate.instant('Could not import'))
-              .then((msg: string) => {
-                return reject(msg);
-              });
+            const msg = this.bwcErrorProvider.msg(
+              err,
+              this.translate.instant('Could not import')
+            );
+            return reject(msg);
           }
           this.addAndBindNewSeedWalletClient(walletClient, {
             bwsurl: opts.bwsurl
@@ -1102,11 +1102,11 @@ export class ProfileProvider {
               },
               err => {
                 if (err) {
-                  this.bwcErrorProvider
-                    .cb(err, this.translate.instant('Error creating wallet'))
-                    .then((msg: string) => {
-                      return reject(msg);
-                    });
+                  const msg = this.bwcErrorProvider.msg(
+                    err,
+                    this.translate.instant('Error creating wallet')
+                  );
+                  return reject(msg);
                 } else {
                   return resolve(walletClient);
                 }
@@ -1161,11 +1161,11 @@ export class ProfileProvider {
             },
             err => {
               if (err) {
-                this.bwcErrorProvider
-                  .cb(err, this.translate.instant('Could not join wallet'))
-                  .then((msg: string) => {
-                    return reject(msg);
-                  });
+                const msg = this.bwcErrorProvider.msg(
+                  err,
+                  this.translate.instant('Could not join wallet')
+                );
+                return reject(msg);
               } else {
                 this.addAndBindNewSeedWalletClient(walletClient, {
                   bwsurl: opts.bwsurl
