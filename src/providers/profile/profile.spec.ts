@@ -1,6 +1,7 @@
+import { Events } from 'ionic-angular';
 import * as _ from 'lodash';
 import { Observable } from 'rxjs';
-import { Events } from 'ionic-angular';
+
 import { BwcProvider, PersistenceProvider } from '..';
 import { TestUtils } from '../../test';
 
@@ -8,13 +9,13 @@ import { TestUtils } from '../../test';
 import { Profile } from '../../models/profile/profile.model';
 
 // Providers
-import { ProfileProvider } from './profile';
-import { ActionSheetProvider } from '../../providers/action-sheet/action-sheet';
-import { ConfigProvider } from '../../providers/config/config';
-import { PopupProvider } from '../../providers/popup/popup';
-import { ReplaceParametersProvider } from '../../providers/replace-parameters/replace-parameters';
+import { ActionSheetProvider } from '../action-sheet/action-sheet';
+import { ConfigProvider } from '../config/config';
 import { PlatformProvider } from '../platform/platform';
-import { TxFormatProvider } from '../../providers/tx-format/tx-format';
+import { PopupProvider } from '../popup/popup';
+import { ProfileProvider } from '../profile/profile';
+import { ReplaceParametersProvider } from '../replace-parameters/replace-parameters';
+import { TxFormatProvider } from '../tx-format/tx-format';
 
 describe('Profile Provider', () => {
   let testBed;
