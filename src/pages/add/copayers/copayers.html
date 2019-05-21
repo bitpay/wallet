@@ -44,9 +44,6 @@
       <ion-spinner></ion-spinner> 
       {{(copayers.length / wallet.n) * 100 | number:'1.2-2'}}% completed
     </ion-item-divider>
-    <ion-item-divider *ngIf="wallet.isComplete()" text-center margin-top translate>
-      Completed. Wait...
-    </ion-item-divider>
   </ion-list>
 
   <div *ngIf="wallet.notAuthorized" padding>
