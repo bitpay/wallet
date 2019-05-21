@@ -1,25 +1,38 @@
 import * as _ from 'lodash';
+import { Observable } from 'rxjs';
 import { Events } from 'ionic-angular';
-// import { fakeAsync, tick } from '@angular/core/testing';
 import { BwcProvider, PersistenceProvider } from '..';
-// import { Logger } from '../logger/logger';
 import { TestUtils } from '../../test';
-import { ProfileProvider } from './profile';
-import { PopupProvider } from '../../providers/popup/popup';
-import { ConfigProvider } from '../../providers/config/config';
+
+// Models
 import { Profile } from '../../models/profile/profile.model';
 
-fdescribe('Profile Provider', () => {
-  // let loggerProvider: Logger;
-  let profileProvider: ProfileProvider;
-  let configProvider: ConfigProvider;
-  let popupProvider: PopupProvider;
+// Providers
+import { ProfileProvider } from './profile';
+import { ActionSheetProvider } from '../../providers/action-sheet/action-sheet';
+import { ConfigProvider } from '../../providers/config/config';
+import { PopupProvider } from '../../providers/popup/popup';
+import { ReplaceParametersProvider } from '../../providers/replace-parameters/replace-parameters';
+import { PlatformProvider } from '../platform/platform';
+import { TxFormatProvider } from '../../providers/tx-format/tx-format';
+
+describe('Profile Provider', () => {
+  let testBed;
   let events: Events;
   let eventsPublishSpy;
+  let onEventNotificationType: string;
+  let profileProvider: ProfileProvider;
+  let actionSheetProvider: ActionSheetProvider;
+  let configProvider: ConfigProvider;
+  let popupProvider: PopupProvider;
+  let replaceParametersProvider: ReplaceParametersProvider;
+  let platformProvider: PlatformProvider;
+  let txFormatProvider: TxFormatProvider;
 
   const walletMock = {
     id1: {
       id: 'id1',
+      copayerId: 'copayerId1',
       lastKnownBalance: '10.00 BTC',
       lastKnownBalanceUpdatedOn: null,
       credentials: {
@@ -51,6 +64,7 @@ fdescribe('Profile Provider', () => {
     },
     id2: {
       id: 'id2',
+      copayerId: 'copayerId2',
       lastKnownBalance: '5.00 BCH',
       lastKnownBalanceUpdatedOn: null,
       credentials: {
@@ -77,6 +91,7 @@ fdescribe('Profile Provider', () => {
     },
     id3: {
       id: 'id3',
+      copayerId: 'copayerId3',
       lastKnownBalance: '1.50 BTC',
       lastKnownBalanceUpdatedOn: null,
       credentials: {
@@ -107,6 +122,7 @@ fdescribe('Profile Provider', () => {
   };
 
   const walletClientMock = {
+    copayerId: 'copayerId1',
     credentials: {
       coin: 'btc',
       network: 'livenet',
@@ -142,7 +158,7 @@ fdescribe('Profile Provider', () => {
       return _cb(null, walletToImport);
     },
     initialize: (_opts, _cb) => {
-      return true;
+      return _cb(null);
     },
     isPrivKeyEncrypted: () => {
       return true;
@@ -154,10 +170,33 @@ fdescribe('Profile Provider', () => {
       return true;
     },
     on: (_event: string, _cb) => {
-      return _cb;
+      let n;
+      switch (_event) {
+        case 'report':
+          n = 1;
+          break;
+        case 'notification':
+          n = {
+            data: {
+              creatorId: 'creatorId1',
+              amount: 100,
+              network: 'livenet'
+            },
+            type: onEventNotificationType
+          };
+          break;
+        case 'walletCompleted':
+          n = undefined; // undefined
+          break;
+        default:
+          n = null;
+          break;
+      }
+
+      return _cb(n);
     },
     validateKeyDerivation: (_opts, _cb) => {
-      return true;
+      return _cb(null, true);
     },
     seedFromRandomWithMnemonic: _opts => {
       return true;
@@ -188,6 +227,12 @@ fdescribe('Profile Provider', () => {
     },
     joinWallet: (_secret: string, _myName: string, _opts, _cb) => {
       return _cb(null);
+    },
+    setNotificationsInterval: _updatePeriod => {
+      return true;
+    },
+    openWallet: _function => {
+      return;
     }
   };
 
@@ -206,7 +251,7 @@ fdescribe('Profile Provider', () => {
       return true;
     }
     getClient(_walletData, _opts) {
-      return walletClientMock;
+      return _.clone(walletClientMock);
     }
     parseSecret(_secret) {
       let walletData;
@@ -302,19 +347,26 @@ fdescribe('Profile Provider', () => {
   }
 
   beforeEach(() => {
-    const testBed = TestUtils.configureProviderTestingModule([
+    testBed = TestUtils.configureProviderTestingModule([
       { provide: BwcProvider, useClass: BwcProviderMock },
       { provide: PersistenceProvider, useClass: PersistenceProviderMock }
     ]);
-    configProvider = testBed.get(ConfigProvider);
     profileProvider = testBed.get(ProfileProvider);
+    actionSheetProvider = testBed.get(ActionSheetProvider);
+    configProvider = testBed.get(ConfigProvider);
     popupProvider = testBed.get(PopupProvider);
-    // loggerProvider = testBed.get(Logger);
+    replaceParametersProvider = testBed.get(ReplaceParametersProvider);
+    platformProvider = testBed.get(PlatformProvider);
+    txFormatProvider = testBed.get(TxFormatProvider);
+
     profileProvider.wallet = _.clone(walletMock);
     profileProvider.profile = Profile.create();
 
     events = testBed.get(Events);
     eventsPublishSpy = spyOn(events, 'publish');
+    spyOn(events, 'subscribe').and.returnValue({
+      walletId: 'id1'
+    });
   });
 
   describe('setWalletOrder', () => {
@@ -1102,7 +1154,7 @@ fdescribe('Profile Provider', () => {
       const createWalletSpy = spyOn(
         profileProvider,
         'createWallet'
-      ).and.returnValue(Promise.resolve(walletClientMock));
+      ).and.returnValue(Promise.resolve(_.clone(walletClientMock)));
 
       await profileProvider
         .createNewSeedWallet(opts)
@@ -1218,6 +1270,179 @@ fdescribe('Profile Provider', () => {
         .catch(err => {
           expect(err).not.toBeDefined();
         });
+    });
+  });
+
+  describe('Desktop notifications', () => {
+    let str: string;
+    let opts;
+
+    beforeEach(() => {
+      (window as any).require = () => {
+        return {
+          ipcRenderer: {
+            send: (_type: string, _opts) => {
+              return true;
+            }
+          }
+        };
+      };
+
+      spyOn(popupProvider, 'ionicConfirm').and.returnValue(
+        Promise.resolve(true)
+      );
+      spyOn(popupProvider, 'ionicPrompt').and.returnValue(
+        Promise.resolve(true)
+      );
+
+      spyOn(configProvider, 'get').and.returnValue({
+        bwsFor: 'id1',
+        desktopNotificationsEnabled: true
+      });
+
+      spyOn(actionSheetProvider, 'createInfoSheet').and.returnValue({
+        present: () => {
+          return true;
+        },
+        dismiss: () => {
+          return true;
+        }
+      });
+
+      spyOn(Observable, 'timer').and.returnValue({
+        toPromise: () => {
+          return true;
+        }
+      });
+
+      platformProvider.isElectron = true; // To specifies that is desktop
+      str =
+        '{"xPrivKey": "xPrivKey1", "xPrivKeyEncrypted": "xPrivKeyEncrypted1", "mnemonicEncrypted": "mnemonicEncrypted1", "n": 1}';
+      opts = {};
+    });
+
+    it('should call showDesktopNotifications and go through NewCopayer path for MacOS', async () => {
+      spyOn(platformProvider, 'getOS').and.returnValue({
+        OSName: 'MacOS'
+      });
+
+      onEventNotificationType = 'NewCopayer';
+      const replaceSpy = spyOn(
+        replaceParametersProvider,
+        'replace'
+      ).and.returnValue('body1');
+
+      // Using importWallet just to test showDesktopNotifications private function
+      await profileProvider.importWallet(str, opts).catch(err => {
+        expect(err).not.toBeDefined();
+      });
+
+      expect(replaceSpy).toHaveBeenCalledTimes(1);
+    });
+
+    it('should call showDesktopNotifications and go through NewCopayer path for other OS', async () => {
+      spyOn(platformProvider, 'getOS').and.returnValue({
+        OSName: 'Linux'
+      });
+
+      onEventNotificationType = 'NewCopayer';
+      const replaceSpy = spyOn(
+        replaceParametersProvider,
+        'replace'
+      ).and.returnValue('body1');
+
+      // Using importWallet just to test showDesktopNotifications private function
+      await profileProvider.importWallet(str, opts).catch(err => {
+        expect(err).not.toBeDefined();
+      });
+
+      expect(replaceSpy).toHaveBeenCalledTimes(1);
+    });
+
+    it('should call showDesktopNotifications and go through WalletComplete path', async () => {
+      onEventNotificationType = 'WalletComplete';
+      const replaceSpy = spyOn(
+        replaceParametersProvider,
+        'replace'
+      ).and.returnValue('body1');
+
+      // Using importWallet just to test showDesktopNotifications private function
+      await profileProvider.importWallet(str, opts).catch(err => {
+        expect(err).not.toBeDefined();
+      });
+
+      expect(replaceSpy).toHaveBeenCalledTimes(1);
+    });
+
+    it('should call showDesktopNotifications and go through NewTxProposal path', async () => {
+      let newWalletClient = _.clone(walletClientMock);
+      newWalletClient.copayerId = 'copayerId1';
+      newWalletClient.credentials.m = 2;
+      newWalletClient.credentials.n = 2;
+
+      spyOn(BwcProviderMock.prototype, 'getClient').and.returnValue(
+        newWalletClient
+      );
+
+      onEventNotificationType = 'NewTxProposal';
+      const replaceSpy = spyOn(
+        replaceParametersProvider,
+        'replace'
+      ).and.returnValue('body1');
+
+      // Using importWallet just to test showDesktopNotifications private function
+      await profileProvider.importWallet(str, opts).catch(err => {
+        expect(err).not.toBeDefined();
+      });
+
+      expect(replaceSpy).toHaveBeenCalledTimes(1);
+    });
+
+    it('should call showDesktopNotifications and go through NewIncomingTx path', async () => {
+      onEventNotificationType = 'NewIncomingTx';
+      const replaceSpy = spyOn(
+        replaceParametersProvider,
+        'replace'
+      ).and.returnValue('body1');
+
+      spyOn(txFormatProvider, 'formatAmountStr').and.returnValue('5.00 BTC');
+
+      // Using importWallet just to test showDesktopNotifications private function
+      await profileProvider.importWallet(str, opts).catch(err => {
+        expect(err).not.toBeDefined();
+      });
+
+      expect(replaceSpy).toHaveBeenCalledTimes(1);
+    });
+
+    it('should call showDesktopNotifications and go through TxProposalFinallyRejected path', async () => {
+      onEventNotificationType = 'TxProposalFinallyRejected';
+      const replaceSpy = spyOn(
+        replaceParametersProvider,
+        'replace'
+      ).and.returnValue('body1');
+
+      // Using importWallet just to test showDesktopNotifications private function
+      await profileProvider.importWallet(str, opts).catch(err => {
+        expect(err).not.toBeDefined();
+      });
+
+      expect(replaceSpy).toHaveBeenCalledTimes(1);
+    });
+
+    it('should call showDesktopNotifications and go through TxConfirmation path', async () => {
+      onEventNotificationType = 'TxConfirmation';
+      const replaceSpy = spyOn(
+        replaceParametersProvider,
+        'replace'
+      ).and.returnValue('body1');
+
+      // Using importWallet just to test showDesktopNotifications private function
+      await profileProvider.importWallet(str, opts).catch(err => {
+        expect(err).not.toBeDefined();
+      });
+
+      expect(replaceSpy).toHaveBeenCalledTimes(1);
     });
   });
 });
