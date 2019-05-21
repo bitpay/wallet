@@ -1,5 +1,5 @@
-import { TestUtils } from '../../test';
 import * as bitauthService from 'bitauth';
+import { TestUtils } from '../../test';
 
 // Providers
 import { AppIdentityProvider, PersistenceProvider } from '..';
