@@ -34,6 +34,16 @@ fdescribe('Profile Provider', () => {
       },
       needsBackup: false,
       order: '',
+      pendingTxps: [
+        {
+          id: 'txpId1',
+          createdOn: 1558382068661
+        },
+        {
+          id: 'txpId2',
+          createdOn: 1558386120369
+        }
+      ],
       isComplete: () => {
         return true;
       },
@@ -55,6 +65,12 @@ fdescribe('Profile Provider', () => {
       },
       needsBackup: true,
       order: 2,
+      pendingTxps: [
+        {
+          id: 'txpId3',
+          createdOn: 1558386151162
+        }
+      ],
       isComplete: () => {
         return true;
       }
@@ -75,6 +91,7 @@ fdescribe('Profile Provider', () => {
       },
       needsBackup: true,
       order: 3,
+      pendingTxps: [],
       isComplete: () => {
         return true;
       }
@@ -103,7 +120,7 @@ fdescribe('Profile Provider', () => {
     encryptPrivateKey: () => {
       return true;
     },
-    export: (_str: string, _opts) => {
+    export: (_opts?) => {
       return '{"walletId": "id1", "xPrivKey": "xPrivKey1", "xPrivKeyEncrypted": "xPrivKeyEncrypted1", "mnemonicEncrypted": "mnemonicEncrypted1", "n": 1}';
     },
     import: (_str: string, _opts) => {
@@ -168,6 +185,9 @@ fdescribe('Profile Provider', () => {
       _cb
     ) => {
       return _cb(null);
+    },
+    joinWallet: (_secret: string, _myName: string, _opts, _cb) => {
+      return _cb(null);
     }
   };
 
@@ -188,13 +208,29 @@ fdescribe('Profile Provider', () => {
     getClient(_walletData, _opts) {
       return walletClientMock;
     }
+    parseSecret(_secret) {
+      let walletData;
+      switch (_secret) {
+        case 'secret1':
+          walletData = {
+            walletId: 'id1',
+            network: 'livenet'
+          };
+          break;
+
+        case 'secret5':
+          walletData = {
+            walletId: 'id5',
+            network: 'livenet'
+          };
+          break;
+      }
+      return walletData;
+    }
   }
 
   class PersistenceProviderMock {
     constructor() {}
-    getLastKnownBalance() {
-      return Promise.resolve('0.00 BTC');
-    }
     setBackupFlag(_walletId) {
       return Promise.resolve();
     }
@@ -219,12 +255,6 @@ fdescribe('Profile Provider', () => {
     storeNewProfile(_profile) {
       return Promise.resolve();
     }
-    storeVault(_vault) {
-      return Promise.resolve();
-    }
-    getVault() {
-      return Promise.resolve({});
-    }
     getCopayDisclaimerFlag() {
       return Promise.resolve(true);
     }
@@ -238,14 +268,38 @@ fdescribe('Profile Provider', () => {
       };
       return Promise.resolve(profile);
     }
-  }
+    removeAllWalletData(_walletId: string) {
+      return;
+    }
+    getLastKnownBalance(_id: string) {
+      let lastKnownBalance;
+      switch (_id) {
+        case 'id1':
+          lastKnownBalance = {
+            balance: '10.00 BTC',
+            updatedOn: 1558382053803
+          };
+          break;
 
-  // class ProfileModelMock {
-  //   constructor() { }
-  //   updateWallet(_credentials) {
-  //     return Promise.resolve();
-  //   }
-  // }
+        case 'id2':
+          lastKnownBalance = {
+            balance: '5.00 BCH',
+            updatedOn: 1558382068661
+          };
+          break;
+        default:
+          lastKnownBalance = {
+            balance: '0.00 BTC',
+            updatedOn: Date.now()
+          };
+          break;
+      }
+      return Promise.resolve(lastKnownBalance);
+    }
+    setHideBalanceFlag(_walletId: string, _balanceHidden: boolean) {
+      return;
+    }
+  }
 
   beforeEach(() => {
     const testBed = TestUtils.configureProviderTestingModule([
@@ -256,7 +310,7 @@ fdescribe('Profile Provider', () => {
     profileProvider = testBed.get(ProfileProvider);
     popupProvider = testBed.get(PopupProvider);
     // loggerProvider = testBed.get(Logger);
-    profileProvider.wallet = walletMock;
+    profileProvider.wallet = _.clone(walletMock);
     profileProvider.profile = Profile.create();
 
     events = testBed.get(Events);
@@ -440,31 +494,6 @@ fdescribe('Profile Provider', () => {
         .catch(err => {
           expect(err).not.toBeDefined();
         });
-    });
-  });
-
-  describe('importVaultWallets', () => {
-    it('should publish Local/WalletListChange event if importVaultWallets is executed correctly', async () => {
-      const words: string = 'mom mom mom mom mom mom mom mom mom mom mom mom';
-      const opts = {};
-
-      spyOn(popupProvider, 'ionicConfirm').and.returnValue(
-        Promise.resolve(true)
-      );
-      spyOn(popupProvider, 'ionicPrompt').and.returnValue(
-        Promise.resolve(true)
-      );
-      spyOn(configProvider, 'get').and.returnValue({ bwsFor: 'id1' });
-      spyOn(profileProvider, 'importMnemonic').and.returnValue(
-        Promise.resolve(walletClientMock)
-      );
-      spyOn(profileProvider.profile, 'hasWallet').and.returnValue(false);
-
-      await profileProvider.importVaultWallets(words, opts).catch(err => {
-        expect(err).not.toBeDefined();
-      });
-
-      expect(eventsPublishSpy).toHaveBeenCalledWith('Local/WalletListChange');
     });
   });
 
@@ -913,7 +942,216 @@ fdescribe('Profile Provider', () => {
     });
   });
 
-  xdescribe('getWallets()', () => {
+  describe('joinWallet', () => {
+    beforeEach(() => {
+      spyOn(popupProvider, 'ionicConfirm').and.returnValue(
+        Promise.resolve(true)
+      );
+      spyOn(popupProvider, 'ionicPrompt').and.returnValue(
+        Promise.resolve(true)
+      );
+      spyOn(configProvider, 'get').and.returnValue({ bwsFor: 'id1' });
+      spyOn(profileProvider.profile, 'hasWallet').and.returnValue(false);
+    });
+
+    it('should join wallet and publish "Local/WalletListChange" event', async () => {
+      const opts = {
+        secret: 'secret5',
+        coin: 'btc',
+        myName: 'Gabriel M'
+      };
+
+      await profileProvider
+        .joinWallet(opts)
+        .then(wallet => {
+          expect(wallet).toBeDefined();
+        })
+        .catch(err => {
+          expect(err).not.toBeDefined();
+        });
+      expect(eventsPublishSpy).toHaveBeenCalledWith('Local/WalletListChange');
+    });
+
+    it('should fails to join wallet if you already joined that wallet', async () => {
+      const opts = {
+        secret: 'secret1',
+        coin: 'btc',
+        myName: 'Gabriel M'
+      };
+
+      profileProvider.profile.credentials = [
+        {
+          walletId: 'id1'
+        }
+      ];
+
+      await profileProvider
+        .joinWallet(opts)
+        .then(wallet => {
+          expect(wallet).not.toBeDefined();
+        })
+        .catch(err => {
+          expect(err).toBeDefined();
+        });
+    });
+  });
+
+  describe('getWallet', () => {
+    beforeEach(() => {
+      profileProvider.wallet = {
+        id1: {
+          id: 'id1'
+        },
+        id2: {
+          id: 'id2'
+        }
+      };
+    });
+    it('should get the correct wallet', () => {
+      const walletId = 'id1';
+      const wallet = profileProvider.getWallet(walletId);
+      expect(wallet).toEqual(profileProvider.wallet.id1);
+    });
+
+    it('should get undefined if provided walletId does not match with any wallet', () => {
+      const walletId = 'id3';
+      const wallet = profileProvider.getWallet(walletId);
+      expect(wallet).toBeUndefined();
+    });
+  });
+
+  describe('deleteWalletClient', () => {
+    beforeEach(() => {
+      profileProvider.wallet = {
+        id1: {
+          id: 'id1'
+        },
+        id2: {
+          id: 'id2'
+        }
+      };
+    });
+    it('should delete wallet client', async () => {
+      const wallet = {
+        credentials: {
+          walletId: 'id1'
+        },
+        removeAllListeners: () => {}
+      };
+      spyOn(profileProvider.profile, 'deleteWallet').and.returnValue(false);
+
+      await profileProvider
+        .deleteWalletClient(wallet)
+        .then(() => {
+          expect(profileProvider.wallet).toEqual({
+            id2: {
+              id: 'id2'
+            }
+          });
+        })
+        .catch(err => {
+          expect(err).not.toBeDefined();
+        });
+
+      expect(eventsPublishSpy).toHaveBeenCalledWith('Local/WalletListChange');
+    });
+  });
+
+  describe('createDefaultWallet', () => {
+    it('should create a default wallet calling createNewSeedWallet with default opts', async () => {
+      const createNewSeedWalletSpy = spyOn(
+        profileProvider,
+        'createNewSeedWallet'
+      ).and.returnValue(Promise.resolve());
+
+      await profileProvider.createDefaultWallet().catch(err => {
+        expect(err).not.toBeDefined();
+      });
+
+      expect(createNewSeedWalletSpy).toHaveBeenCalledWith({
+        m: 1,
+        n: 1,
+        networkName: 'livenet',
+        coin: 'btc'
+      });
+    });
+  });
+
+  describe('createNewSeedWallet', () => {
+    beforeEach(() => {
+      spyOn(popupProvider, 'ionicConfirm').and.returnValue(
+        Promise.resolve(true)
+      );
+      spyOn(popupProvider, 'ionicPrompt').and.returnValue(
+        Promise.resolve(true)
+      );
+      spyOn(configProvider, 'get').and.returnValue({ bwsFor: 'id1' });
+      spyOn(profileProvider.profile, 'hasWallet').and.returnValue(false);
+    });
+    it('should create a new seed wallet with the provided opts', async () => {
+      const opts = {
+        name: 'walletName',
+        m: 1,
+        n: 1,
+        myName: null,
+        networkName: 'livenet',
+        bwsurl: 'https://bws.bitpay.com/bws/api',
+        singleAddress: false,
+        coin: 'btc'
+      };
+      const createWalletSpy = spyOn(
+        profileProvider,
+        'createWallet'
+      ).and.returnValue(Promise.resolve(walletClientMock));
+
+      await profileProvider
+        .createNewSeedWallet(opts)
+        .then(wallet => {
+          expect(wallet).toBeDefined();
+        })
+        .catch(err => {
+          expect(err).not.toBeDefined();
+        });
+
+      expect(createWalletSpy).toHaveBeenCalledWith(opts);
+      expect(eventsPublishSpy).toHaveBeenCalledWith('Local/WalletListChange');
+    });
+  });
+
+  describe('setDisclaimerAccepted', () => {
+    it('should set disclaimerAccepted with true', () => {
+      profileProvider
+        .setDisclaimerAccepted()
+        .then(() => {
+          expect(profileProvider.profile.disclaimerAccepted).toBeTruthy();
+        })
+        .catch(err => {
+          expect(err).not.toBeDefined();
+        });
+    });
+  });
+
+  describe('setOnboardingCompleted', () => {
+    it('should set onboardingCompleted with true', () => {
+      profileProvider
+        .setOnboardingCompleted()
+        .then(() => {
+          expect(profileProvider.profile.onboardingCompleted).toBeTruthy();
+        })
+        .catch(err => {
+          expect(err).not.toBeDefined();
+        });
+    });
+  });
+
+  describe('setLastKnownBalance', () => {
+    it('should set the last known balance', () => {
+      profileProvider.setLastKnownBalance();
+      expect(profileProvider.wallet.id1.lastKnownBalance).toBeDefined();
+    });
+  });
+
+  describe('getWallets', () => {
     it('should get successfully all wallets when no opts', () => {
       const wallets = profileProvider.getWallets();
       expect(wallets).toEqual(_.values(profileProvider.wallet));
@@ -941,6 +1179,45 @@ fdescribe('Profile Provider', () => {
       };
       const wallets = profileProvider.getWallets(opts);
       expect(wallets).toEqual([]);
+    });
+  });
+
+  describe('toggleHideBalanceFlag', () => {
+    it('should toggle the balanceHidden flag', () => {
+      const walletId = 'id1';
+      profileProvider.wallet.id1.balanceHidden = false;
+      profileProvider.toggleHideBalanceFlag(walletId);
+      expect(profileProvider.wallet.id1.balanceHidden).toBeTruthy();
+      profileProvider.toggleHideBalanceFlag(walletId);
+      expect(profileProvider.wallet.id1.balanceHidden).toBeFalsy();
+    });
+  });
+
+  describe('getTxps', () => {
+    it('should get all txps', () => {
+      const opts = {};
+      profileProvider
+        .getTxps(opts)
+        .then(txpsData => {
+          expect(txpsData.txps).toEqual([
+            {
+              id: 'txpId3',
+              createdOn: 1558386151162
+            },
+            {
+              id: 'txpId2',
+              createdOn: 1558386120369
+            },
+            {
+              id: 'txpId1',
+              createdOn: 1558382068661
+            }
+          ]);
+          expect(txpsData.n).toEqual(3);
+        })
+        .catch(err => {
+          expect(err).not.toBeDefined();
+        });
     });
   });
 });
