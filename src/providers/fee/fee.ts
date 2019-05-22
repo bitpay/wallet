@@ -53,55 +53,32 @@ export class FeeProvider {
     return new Promise((resolve, reject) => {
       if (feeLevel == 'custom') return resolve();
       network = network || 'livenet';
-      this.getFeeLevels(coin)
-        .then(response => {
-          let feeLevelRate;
+      return this.getFeeLevels(coin).then(response => {
+        let feeLevelRate;
+        feeLevelRate = _.find(response.levels[network], o => {
+          return o.level == feeLevel;
+        });
+        if (!feeLevelRate || !feeLevelRate.feePerKb) {
+          let msg =
+            this.translate.instant('Could not get dynamic fee for level:') +
+            ' ' +
+            feeLevel;
+          return reject(msg);
+        }
 
-          if (response.fromCache) {
-            feeLevelRate = _.find(response.levels[network], o => {
-              return o.level == feeLevel;
-            });
-          } else {
-            feeLevelRate = _.find(response.levels[network], o => {
-              return o.level == feeLevel;
-            });
-          }
-          if (!feeLevelRate || !feeLevelRate.feePerKb) {
-            let msg =
-              this.translate.instant('Could not get dynamic fee for level:') +
+        let feeRate = feeLevelRate.feePerKb;
+        if (!response.fromCache)
+          this.logger.debug(
+            'Dynamic fee: ' +
+              feeLevel +
+              '/' +
+              network +
               ' ' +
-              feeLevel;
-            return reject(msg);
-          }
-
-          let feeRate = feeLevelRate.feePerKb;
-          if (!response.fromCache)
-            this.logger.debug(
-              'Dynamic fee: ' +
-                feeLevel +
-                '/' +
-                network +
-                ' ' +
-                (feeLevelRate.feePerKb / 1000).toFixed() +
-                ' SAT/B'
-            );
-          return resolve(feeRate);
-        })
-        .catch(err => {
-          return reject(err);
-        });
-    });
-  }
-
-  public getCurrentFeeRate(coin: string, network: string): Promise<any> {
-    return new Promise((resolve, reject) => {
-      this.getFeeRate(coin, network, this.getCurrentFeeLevel())
-        .then((data: number) => {
-          return resolve(data);
-        })
-        .catch(err => {
-          return reject(err);
-        });
+              (feeLevelRate.feePerKb / 1000).toFixed() +
+              ' SAT/B'
+          );
+        return resolve(feeRate);
+      });
     });
   }
 

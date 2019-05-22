@@ -345,7 +345,11 @@ export class BitPayCardTopUpPage {
   private getSendMaxInfo(wallet): Promise<any> {
     return new Promise((resolve, reject) => {
       this.feeProvider
-        .getCurrentFeeRate(wallet.coin, wallet.credentials.network)
+        .getFeeRate(
+          wallet.coin,
+          wallet.credentials.network,
+          this.feeProvider.getCurrentFeeLevel()
+        )
         .then(feePerKb => {
           this.walletProvider
             .getSendMaxInfo(wallet, {
