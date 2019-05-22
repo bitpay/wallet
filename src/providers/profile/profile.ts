@@ -1187,7 +1187,7 @@ export class ProfileProvider {
     return this.wallet[walletId];
   }
 
-  public async deleteWalletClient(wallet): Promise<any> {
+  public deleteWalletClient(wallet): Promise<any> {
     this.logger.info('Deleting Wallet:', wallet.credentials.walletName);
     const walletId = wallet.credentials.walletId;
 
@@ -1248,7 +1248,7 @@ export class ProfileProvider {
 
   public setLastKnownBalance() {
     // Add cached balance async
-    _.each(_.values(this.wallet as any), x => {
+    _.each(_.values(this.wallet), x => {
       this.persistenceProvider.getLastKnownBalance(x.id).then(datum => {
         // this.logger.debug("Last known balance for ",x.id,datum);
         datum = datum || {};
@@ -1265,7 +1265,7 @@ export class ProfileProvider {
 
     opts = opts || {};
 
-    let ret = _.values(this.wallet as any);
+    let ret = _.values(this.wallet);
 
     if (opts.coin) {
       ret = _.filter(ret, x => {
