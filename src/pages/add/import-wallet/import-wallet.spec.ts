@@ -27,16 +27,12 @@ describe('ImportWalletPage', () => {
         type: '1',
         data: 'mom mom mom mom mom mom mom mom mom mom mom mom',
         network: 'livenet',
-        derivationPath: "m/44'/0'/0'",
-        hasPassphrase: false,
-        coin: 'btc'
+        hasPassphrase: false
       };
       instance.setForm();
-      expect(instance.importForm.value.derivationPath).toBe("m/44'/0'/0'");
       expect(instance.importForm.value.words).toBe(
         'mom mom mom mom mom mom mom mom mom mom mom mom'
       );
-      expect(instance.coin).toBe('btc');
     });
   });
 
@@ -49,9 +45,7 @@ describe('ImportWalletPage', () => {
         type: '1',
         data: 'mom mom mom mom mom mom mom mom mom mom mom mom',
         network: 'livenet',
-        derivationPath: "m/44'/0'/0'",
-        hasPassphrase: false,
-        coin: 'btc'
+        hasPassphrase: false
       });
     });
   });
@@ -78,15 +72,6 @@ describe('ImportWalletPage', () => {
     });
   });
 
-  describe('Function: setDerivationPath', () => {
-    it('should set path value to importForm', () => {
-      const derivationPath = "m/44'/0'/0'";
-      instance.testnetEnabled = false;
-      instance.setDerivationPath();
-      expect(instance.importForm.value.derivationPath).toEqual(derivationPath);
-    });
-  });
-
   describe('Function: importFromFile', () => {
     it('should return if importForm is not valid', () => {
       testBed.createComponent(ImportWalletPage);
@@ -96,35 +81,22 @@ describe('ImportWalletPage', () => {
     it('should return if has not backupFile and backupText', () => {
       testBed.createComponent(ImportWalletPage);
       let info = {
-        derivationPath: "m/44'/0'/0'",
         bwsURL: '',
-        coin: 'btc',
         words: 'mom mom mom mom mom mom mom mom mom mom mom mom'
       };
-
-      instance.importForm.controls['derivationPath'].setValue(
-        info.derivationPath
-      );
       instance.importForm.controls['words'].setValue(info.words);
-      instance.importForm.controls['coin'].setValue(info.coin);
       instance.importForm.controls['bwsURL'].setValue(info.bwsURL);
       expect(instance.importFromFile()).toBeUndefined();
     });
     it('should call importBlob function if has backupText', () => {
       testBed.createComponent(ImportWalletPage);
       let info = {
-        derivationPath: "m/44'/0'/0'",
         bwsURL: 'https://bws.bitpay.com/bws/api',
-        coin: 'btc',
         words: 'mom mom mom mom mom mom mom mom mom mom mom mom',
         backupText: 'test'
       };
 
-      instance.importForm.controls['derivationPath'].setValue(
-        info.derivationPath
-      );
       instance.importForm.controls['words'].setValue(info.words);
-      instance.importForm.controls['coin'].setValue(info.coin);
       instance.importForm.controls['bwsURL'].setValue(info.bwsURL);
       instance.importForm.controls['backupText'].setValue(info.backupText);
       const spy = spyOn(instance, 'importBlob');
@@ -138,25 +110,13 @@ describe('ImportWalletPage', () => {
       testBed.createComponent(ImportWalletPage);
 
       let info = {
-        derivationPath: "m/44'/0'/0'",
         bwsURL: 'https://bws.bitpay.com/bws/api',
-        coin: 'btc',
         words: 'mom1 mom2 mom3 mom4 mom5 mom6 mom7 mom8 mom9 mom10 mom11 mom12',
         backupText: 'test'
       };
-
-      instance.importForm.controls['derivationPath'].setValue(
-        info.derivationPath
-      );
       instance.importForm.controls['words'].setValue(info.words);
-      instance.importForm.controls['coin'].setValue(info.coin);
       instance.importForm.controls['bwsURL'].setValue(info.bwsURL);
       instance.importForm.controls['backupText'].setValue(info.backupText);
-
-      spyOn(
-        instance.derivationPathHelperProvider,
-        'isValidDerivationPathCoin'
-      ).and.returnValue(true);
     });
 
     it('should return if importForm is not valid', () => {

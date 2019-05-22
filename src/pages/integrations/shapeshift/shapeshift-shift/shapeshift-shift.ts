@@ -135,8 +135,7 @@ export class ShapeshiftShiftPage {
       if (error) return this.showErrorAndBack(null, msg);
       this.limit = limit;
 
-      if (this.limit['rate'] == 0)
-        return this.showErrorAndBack(null, msg);
+      if (this.limit['rate'] == 0) return this.showErrorAndBack(null, msg);
     });
   }
 

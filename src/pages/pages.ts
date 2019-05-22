@@ -79,7 +79,6 @@ import { LockPage } from '../pages/settings/lock/lock';
 import { NotificationsPage } from '../pages/settings/notifications/notifications';
 import { SharePage } from '../pages/settings/share/share';
 
-
 /* Wallet Group Settings */
 import { WalletExportPage } from '../pages/settings/wallet-group-settings/wallet-export/wallet-export';
 import { WalletExtendedPrivateKeyPage } from '../pages/settings/wallet-group-settings/wallet-extended-private-key/wallet-extended-private-key';
