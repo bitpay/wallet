@@ -40,9 +40,9 @@
         <ion-icon name="checkmark" item-end color="success"></ion-icon>
       </ion-item>
     </div>
-    <ion-item-divider *ngIf="!wallet.isComplete() && copayers" text-center margin-top>
+    <ion-item-divider *ngIf="!wallet.isComplete() && copayers && (wallet.n - copayers.length) > 0" text-center margin-top>
       <ion-spinner></ion-spinner> 
-      {{(copayers.length / wallet.n) * 100 | number:'1.2-2'}}% completed
+      Waiting for {{wallet.n - copayers.length}} Copayer to join
     </ion-item-divider>
   </ion-list>
 
