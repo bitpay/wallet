@@ -85,7 +85,6 @@ export interface Config {
   emailFor?: any;
   bwsFor?: any;
   aliasFor?: any;
-  colorFor?: any;
   touchIdFor?: any;
 
   log: {

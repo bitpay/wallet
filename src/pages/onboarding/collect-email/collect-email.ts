@@ -19,8 +19,8 @@ import { EmailNotificationsProvider } from '../../../providers/email-notificatio
 })
 export class CollectEmailPage {
   public showConfirmForm: boolean;
+  public emailForm: FormGroup;
 
-  private emailForm: FormGroup;
   private URL: string;
 
   constructor(

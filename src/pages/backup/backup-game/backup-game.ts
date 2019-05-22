@@ -39,7 +39,7 @@ export class BackupGamePage {
   public wallet;
   public keys;
 
-  private walletId: string;
+  private walletGroupId: string;
 
   constructor(
     private modalCtrl: ModalController,
@@ -54,8 +54,8 @@ export class BackupGamePage {
   ) {
     this.mnemonicWords = this.navParams.data.words;
     this.keys = this.navParams.data.keys;
-    this.walletId = this.navParams.data.walletId;
-    this.wallet = this.profileProvider.getWallet(this.walletId);
+    this.walletGroupId = this.navParams.data.walletGroupId;
+    this.wallet = this.profileProvider.getWallet(this.walletGroupId);
     this.setFlow();
   }
 
@@ -139,7 +139,7 @@ export class BackupGamePage {
   }
 
   private confirm(): Promise<any> {
-    return new Promise((resolve, reject) => {
+    return new Promise(async (resolve, reject) => {
       const customWordList = _.map(this.customWords, 'word');
 
       if (!_.isEqual(this.mnemonicWords, customWordList)) {
@@ -172,7 +172,20 @@ export class BackupGamePage {
           return reject('Private key mismatch');
         }
       }
-      this.profileProvider.setBackupFlag(this.wallet.credentials.walletId);
+
+      const groupWallets = await this.profileProvider.getGroupWallets(
+        this.walletGroupId
+      );
+      groupWallets.forEach(wallet => {
+        this.profileProvider.setBackupFlag(wallet.credentials.walletId);
+      });
+
+      const walletGroup = await this.profileProvider.getWalletGroup(
+        this.walletGroupId
+      );
+      walletGroup.needsBackup = false;
+      this.profileProvider.storeWalletGroup(walletGroup);
+
       return resolve();
     });
   }

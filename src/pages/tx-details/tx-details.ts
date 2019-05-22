@@ -30,7 +30,6 @@ export class TxDetailsPage {
   public isShared: boolean;
   public title: string;
   public txNotification;
-  public color: string;
   public copayerId: string;
   public txsUnsubscribedForNotifications: boolean;
   public contactName: string;
@@ -59,7 +58,6 @@ export class TxDetailsPage {
     this.txId = this.navParams.data.txid;
     this.title = this.translate.instant('Transaction');
     this.wallet = this.profileProvider.getWallet(this.navParams.data.walletId);
-    this.color = this.wallet.color;
     this.copayerId = this.wallet.credentials.copayerId;
     this.isShared = this.wallet.credentials.n > 1;
     this.txsUnsubscribedForNotifications = this.config.confirmedTxsNotifications

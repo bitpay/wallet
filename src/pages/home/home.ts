@@ -45,6 +45,8 @@ interface UpdateWalletOptsI {
 export class HomePage {
   @ViewChild('showCard')
   showCard;
+
+  public walletGroups;
   public wallets;
   public walletsBtc;
   public walletsBch;
@@ -60,8 +62,8 @@ export class HomePage {
   public slideDown: boolean;
 
   public showRateCard: boolean;
-  public showReorderBtc: boolean;
-  public showReorderBch: boolean;
+
+  public showReorderGroupWallets: boolean;
   public showIntegration;
   public hideHomeIntegrations: boolean;
   public showGiftCards: boolean;
@@ -98,8 +100,7 @@ export class HomePage {
   ) {
     this.slideDown = false;
     this.isElectron = this.platformProvider.isElectron;
-    this.showReorderBtc = false;
-    this.showReorderBch = false;
+    this.showReorderGroupWallets = false;
     this.zone = new NgZone({ enableLongStackTrace: false });
     this.events.subscribe('Home/reloadStatus', () => {
       this._willEnter(true);
@@ -307,7 +308,7 @@ export class HomePage {
     }
   );
 
-  private setWallets = (shouldUpdate: boolean = false) => {
+  private setWallets = async (shouldUpdate: boolean = false) => {
     // TEST
     /* 
     setTimeout(() => {
@@ -317,13 +318,9 @@ export class HomePage {
     */
 
     this.profileProvider.setLastKnownBalance();
+
     this.wallets = this.profileProvider.getWallets();
-    this.walletsBtc = _.filter(this.wallets, (x: any) => {
-      return x.credentials.coin == 'btc';
-    });
-    this.walletsBch = _.filter(this.wallets, (x: any) => {
-      return x.credentials.coin == 'bch';
-    });
+    this.walletGroups = await this.profileProvider.getWalletGroups();
     // Avoid heavy tasks that can slow down the unlocking experience
     if (!this.appProvider.isLockModalOpen && shouldUpdate) {
       this.fetchAllWalletsStatus();
@@ -719,34 +716,17 @@ export class HomePage {
     this.navCtrl.push(AddPage);
   }
 
-  public goToWalletDetails(wallet): void {
-    if (this.showReorderBtc || this.showReorderBch) return;
+  public goToWalletDetails(wallet, showReorderGroupWallets): void {
+    if (showReorderGroupWallets) return;
 
     this.events.publish('OpenWallet', wallet);
   }
 
-  public reorderBtc(): void {
-    this.showReorderBtc = !this.showReorderBtc;
-  }
-
-  public reorderBch(): void {
-    this.showReorderBch = !this.showReorderBch;
-  }
-
-  public reorderWalletsBtc(indexes): void {
-    const element = this.walletsBtc[indexes.from];
-    this.walletsBtc.splice(indexes.from, 1);
-    this.walletsBtc.splice(indexes.to, 0, element);
-    _.each(this.walletsBtc, (wallet, index: number) => {
-      this.profileProvider.setWalletOrder(wallet.id, index);
-    });
-  }
-
-  public reorderWalletsBch(indexes): void {
-    const element = this.walletsBch[indexes.from];
-    this.walletsBch.splice(indexes.from, 1);
-    this.walletsBch.splice(indexes.to, 0, element);
-    _.each(this.walletsBch, (wallet, index: number) => {
+  public reorderGroupWallets(indexes, wallets): void {
+    const element = wallets[indexes.from];
+    wallets.splice(indexes.from, 1);
+    wallets.splice(indexes.to, 0, element);
+    _.each(wallets, (wallet, index: number) => {
       this.profileProvider.setWalletOrder(wallet.id, index);
     });
   }

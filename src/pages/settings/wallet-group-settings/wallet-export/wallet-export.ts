@@ -2,30 +2,29 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
 import { NavController, NavParams, ToastController } from 'ionic-angular';
-import { Logger } from '../../../../../providers/logger/logger';
 
 // native
 import { Clipboard } from '@ionic-native/clipboard';
 import { SocialSharing } from '@ionic-native/social-sharing';
 
 // providers
-import { ActionSheetProvider } from '../../../../../providers/action-sheet/action-sheet';
-import { AppProvider } from '../../../../../providers/app/app';
-import { BackupProvider } from '../../../../../providers/backup/backup';
-import { BwcErrorProvider } from '../../../../../providers/bwc-error/bwc-error';
-import { ConfigProvider } from '../../../../../providers/config/config';
-import { PersistenceProvider } from '../../../../../providers/persistence/persistence';
-import { PlatformProvider } from '../../../../../providers/platform/platform';
-import { ProfileProvider } from '../../../../../providers/profile/profile';
-import { WalletProvider } from '../../../../../providers/wallet/wallet';
-import { WalletTabsChild } from '../../../../wallet-tabs/wallet-tabs-child';
-import { WalletTabsProvider } from '../../../../wallet-tabs/wallet-tabs.provider';
+import { ActionSheetProvider } from '../../../../providers/action-sheet/action-sheet';
+import { AppProvider } from '../../../../providers/app/app';
+import { BackupProvider } from '../../../../providers/backup/backup';
+import { BwcErrorProvider } from '../../../../providers/bwc-error/bwc-error';
+import { ConfigProvider } from '../../../../providers/config/config';
+import { Logger } from '../../../../providers/logger/logger';
+import { PersistenceProvider } from '../../../../providers/persistence/persistence';
+import { PlatformProvider } from '../../../../providers/platform/platform';
+import { ProfileProvider } from '../../../../providers/profile/profile';
+import { WalletProvider } from '../../../../providers/wallet/wallet';
+import { WalletTabsProvider } from '../../../wallet-tabs/wallet-tabs.provider';
 
 @Component({
   selector: 'page-wallet-export',
   templateUrl: 'wallet-export.html'
 })
-export class WalletExportPage extends WalletTabsChild {
+export class WalletExportPage {
   public wallet;
   public segments: string = 'file/text';
   public password: string = '';
@@ -63,7 +62,6 @@ export class WalletExportPage extends WalletTabsChild {
     private configProvider: ConfigProvider,
     private bwcErrorProvider: BwcErrorProvider
   ) {
-    super(navCtrl, profileProvider, walletTabsProvider);
     this.exportWalletForm = this.formBuilder.group(
       {
         password: ['', Validators.required],
@@ -79,7 +77,9 @@ export class WalletExportPage extends WalletTabsChild {
   }
 
   ionViewWillEnter() {
-    this.wallet = this.profileProvider.getWallet(this.navParams.data.walletId);
+    this.wallet = this.profileProvider.getWallet(
+      this.navParams.data.walletGroupId
+    );
     this.isEncrypted = this.wallet.isPrivKeyEncrypted();
     this.canSign = this.wallet.canSign();
     this.isCordova = this.platformProvider.isCordova;
@@ -193,10 +193,10 @@ export class WalletExportPage extends WalletTabsChild {
               .walletDownload(
                 this.exportWalletForm.value.password,
                 opts,
-                this.navParams.data.walletId
+                this.navParams.data.walletGroupId
               )
               .then(() => {
-                this.close();
+                this.navCtrl.pop();
               })
               .catch(() => {
                 this.showErrorInfoSheet();
@@ -254,7 +254,7 @@ export class WalletExportPage extends WalletTabsChild {
               const ew = this.backupProvider.walletExport(
                 this.exportWalletForm.value.password,
                 opts,
-                this.navParams.data.walletId
+                this.navParams.data.walletGroupId
               );
               if (!ew) {
                 this.showErrorInfoSheet();
@@ -308,12 +308,13 @@ export class WalletExportPage extends WalletTabsChild {
     });
     showSuccess.present();
     let name =
-      this.wallet.credentials.walletName || this.wallet.credentials.walletId;
+      this.wallet.credentials.walletName ||
+      this.wallet.credentials.walletGroupId;
 
     const config = this.configProvider.get();
 
     const alias =
-      config.aliasFor && config.aliasFor[this.wallet.credentials.walletId];
+      config.aliasFor && config.aliasFor[this.wallet.credentials.walletGroupId];
 
     if (alias) {
       name = alias + ' [' + name + ']';

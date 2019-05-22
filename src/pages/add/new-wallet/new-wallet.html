@@ -1,0 +1,39 @@
+<wide-header-page title="{{title}}">
+  <div page-content>
+    <button class="container-to" ion-item detail-none (click)="showWalletsGroups()" *ngIf="addToAccount">
+      <div class="wallet-group" *ngIf="selectedWalletGroup">
+        <ion-icon item-start>
+          <img src="assets/img/icon-wallet.svg" class="icon-wallet" />
+        </ion-icon>
+        <div>{{selectedWalletGroup.name}}</div>
+        <div class="last-item" item-end>
+          <button ion-button clear color="grey" icon-only>
+            <ion-icon *ngIf="!isOpenSelector" name="ios-arrow-down-outline"></ion-icon>
+            <ion-icon *ngIf="isOpenSelector" name="ios-arrow-up-outline"></ion-icon>
+          </button>
+        </div>
+      </div>
+    </button>
+    <button class="list-button" ion-item (click)="goToSelectCurrencyPage(false, 'create')">
+      <ion-icon item-start>
+        <img src="assets/img/icon-wallet.svg" class="icon-wallet" />
+      </ion-icon>
+      <div class="item-title" translate>Basic Wallet</div>
+      <span class="item-subtitle" translate>Quick and easy setup</span>
+    </button>
+    <button class="list-button" ion-item (click)="goToSelectCurrencyPage(true, 'create')">
+      <ion-icon item-start>
+        <img src="assets/img/icon-wallet.svg" class="icon-wallet" />
+      </ion-icon>
+      <div class="item-title" translate>Shared Wallet</div>
+      <span class="item-subtitle" translate>Requires multiple devices (most secure)</span>
+    </button>
+    <button class="list-button" ion-item (click)="goToJoinWallet()">
+      <ion-icon class="join-icon" item-start>
+        <img src="assets/img/item-ico-addwallet.svg" class="icon-wallet" />
+      </ion-icon>
+      <div class="item-title" translate>Join Shared Wallet</div>
+      <span class="item-subtitle" translate>Requires invitation to join</span>
+    </button>
+  </div>
+</wide-header-page>

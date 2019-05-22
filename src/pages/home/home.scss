@@ -28,9 +28,8 @@ page-home {
   .card,
   ion-card {
     .wallets-list-title {
-      display: flex;
-      align-items: center;
       max-width: 70%;
+      display: block;
 
       > img {
         margin-right: 7px;
@@ -41,11 +40,29 @@ page-home {
       }
     }
 
+    .wallet-warning {
+      font-size: 11.5px;
+    }
+
     .title-buttons {
       display: flex;
 
       button:first-child {
         margin-right: 5px;
+      }
+    }
+
+    .item-subtitle {
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .account {
+      display: flex;
+      align-items: baseline;
+      .account-number {
+        font-size: 20px;
+        margin-left: -10px;
       }
     }
   }
@@ -60,35 +77,6 @@ page-home {
 
   .error {
     color: color($colors, danger);
-  }
-
-  page-wallet-activity,
-  page-txp {
-    @media (max-width: 350px) {
-      .item-title {
-        font-size: 13px;
-      }
-
-      ion-note .date {
-        font-size: 11.5px;
-      }
-    }
-  }
-
-  page-txp:first-child,
-  page-wallet-activity:first-child {
-    & .item-ios {
-      border-top: 0.55px solid #f4f4f4;
-    }
-  }
-
-  page-txp:last-child,
-  page-wallet-activity:last-child {
-    border: 0;
-
-    & .item-inner {
-      border: 0 !important;
-    }
   }
 
   .card {

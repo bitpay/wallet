@@ -1,5 +1,5 @@
 <ion-header class="wallet-details-header">
-  <ion-navbar [navbar-bg]="wallet.color">
+  <ion-navbar>
     <ion-buttons left>
       <button class="modal-close-button" (click)="close()" ion-button>
         <ion-icon ios="md-close" md="md-close"></ion-icon>
@@ -19,8 +19,7 @@
 <ion-content no-bounce>
   <div class="qr-container" *ngIf="!wallet.notAuthorized && secret">
     <div class="card qr-card">
-      <ngx-qrcode (click)="showFullInfo()" class="qr-code" hide-toast="true" copy-to-clipboard="{{ secret }}" qrc-value="{{secret}}"
-        qrc-class="aclass" qrc-errorCorrectionLevel="L"></ngx-qrcode>
+      <ngx-qrcode (click)="showFullInfo()" class="qr-code" hide-toast="true" copy-to-clipboard="{{ secret }}" qrc-value="{{secret}}" qrc-class="aclass" qrc-errorCorrectionLevel="L"></ngx-qrcode>
     </div>
   </div>
   <button *ngIf="isCordova && !wallet.notAuthorized" ion-button clear (click)="shareAddress()">
@@ -41,7 +40,7 @@
       </ion-item>
     </div>
     <ion-item-divider *ngIf="!wallet.isComplete() && copayers && (wallet.n - copayers.length) > 0" text-center margin-top>
-      <ion-spinner></ion-spinner> 
+      <ion-spinner></ion-spinner>
       Waiting for {{wallet.n - copayers.length}} Copayer to join
     </ion-item-divider>
   </ion-list>

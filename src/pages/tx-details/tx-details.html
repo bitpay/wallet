@@ -116,9 +116,7 @@
 
     <ion-item>
       <ion-label stacked>{{'Memo' | translate}}</ion-label>
-      <ion-textarea placeholder="{{'Enter a transaction memo' | translate}}"
-        (blur)="saveMemoInfo()"
-        [(ngModel)]="txMemo" name="tx.description" autocomplete="off" autocorrect="off"></ion-textarea>
+      <ion-textarea placeholder="{{'Enter a transaction memo' | translate}}" (blur)="saveMemoInfo()" [(ngModel)]="txMemo" name="tx.description" autocomplete="off" autocorrect="off"></ion-textarea>
     </ion-item>
 
     <ion-item class="container-tx-info">

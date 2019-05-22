@@ -3,7 +3,7 @@ export class Profile {
   public createdOn: number;
   public credentials: any;
   public disclaimerAccepted: boolean;
-  public onboardingCompleted: boolean;
+  public walletGroupMigrationFlag: boolean;
   public checked;
   public checkedUA?;
   public dirty: boolean;
@@ -17,7 +17,7 @@ export class Profile {
     x.createdOn = Date.now();
     x.credentials = [];
     x.disclaimerAccepted = false;
-    x.onboardingCompleted = false;
+    x.walletGroupMigrationFlag = true;
     x.checked = {};
     return x;
   }
@@ -30,7 +30,8 @@ export class Profile {
     x.createdOn = obj.createdOn;
     x.credentials = obj.credentials || [];
     x.disclaimerAccepted = obj.disclaimerAccepted || false;
-    x.onboardingCompleted = obj.onboardingCompleted || false;
+    x.walletGroupMigrationFlag = obj.walletGroupMigrationFlag || false;
+
     x.checked = obj.checked || {};
     x.checkedUA = obj.checkedUA;
 

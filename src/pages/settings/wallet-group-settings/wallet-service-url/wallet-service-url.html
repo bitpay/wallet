@@ -17,7 +17,7 @@
           Use default url
         </a>
       </ion-item-divider>
-      <button ion-button class="button-standard" (click)="save()" [disabled]="!walletServiceForm.valid">
+      <button ion-button class="button-standard" (click)="save()" [ngStyle]="{'background-color': wallet?.color}" [disabled]="!walletServiceForm.valid">
         {{'Save' | translate}}
       </button>
     </form>

@@ -1,13 +1,13 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
-import { Logger } from '../../../../../../providers/logger/logger';
+import { Logger } from '../../../../providers/logger/logger';
 
 // providers
 import { TranslateService } from '@ngx-translate/core';
-import { ActionSheetProvider } from '../../../../../../providers/action-sheet/action-sheet';
-import { BwcErrorProvider } from '../../../../../../providers/bwc-error/bwc-error';
-import { ProfileProvider } from '../../../../../../providers/profile/profile';
-import { WalletProvider } from '../../../../../../providers/wallet/wallet';
+import { ActionSheetProvider } from '../../../../providers/action-sheet/action-sheet';
+import { BwcErrorProvider } from '../../../../providers/bwc-error/bwc-error';
+import { ProfileProvider } from '../../../../providers/profile/profile';
+import { WalletProvider } from '../../../../providers/wallet/wallet';
 
 @Component({
   selector: 'page-wallet-extended-private-key',
@@ -34,7 +34,9 @@ export class WalletExtendedPrivateKeyPage {
   }
 
   ionViewWillEnter() {
-    this.wallet = this.profileProvider.getWallet(this.navParams.data.walletId);
+    this.wallet = this.profileProvider.getWallet(
+      this.navParams.data.walletGroupId
+    );
     this.credentialsEncrypted = this.wallet.isPrivKeyEncrypted();
   }
 

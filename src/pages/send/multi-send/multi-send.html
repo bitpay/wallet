@@ -1,13 +1,13 @@
 <ion-header [ngClass]="{'wallet-details-header': wallet}">
-  <ion-navbar [navbar-bg]="wallet && wallet.color">
-    <ion-title>{{wallet && wallet.name || ('Amount' | translate)}}</ion-title>
+  <ion-navbar>
+    <ion-title>{{'Multisend' | translate}}</ion-title>
     <ion-buttons end>
       <button ion-button (click)="goToConfirm()" *ngIf="multiRecipients && multiRecipients.length > 0" [disabled]="isDisabledContinue">
         <span translate>Continue</span>
       </button>
     </ion-buttons>
   </ion-navbar>
-  <ion-toolbar *ngIf="wallet" [navbar-bg]="wallet.color">
+  <ion-toolbar *ngIf="wallet">
     <div *ngIf="!wallet.balanceHidden && !wallet.scanning && wallet.cachedStatus" class="wallet-details-header__balance">
       <span>{{wallet.cachedStatus && wallet.cachedStatus.totalBalanceStr}}</span>
       <ion-icon *ngIf="wallet.cachedStatus.totalBalanceSat != wallet.cachedStatus.spendableAmount" ios="ios-timer-outline" md="md-timer"></ion-icon>
@@ -49,14 +49,23 @@
           </ion-item-divider>
           <ion-list class="pointer" (click)="openAmountModal(item, idx)">
             <div class="wallet" *ngIf="item.recipientType == 'wallet' && item.recipient">
-              <ion-icon item-left>
-                <img *ngIf="item.recipient.network == 'testnet'" [ngStyle]="{'background-color': item.recipient.color}" src="assets/img/icon-wallet-testnet.svg" class="icon-wallet" />
-                <img *ngIf="item.recipient.network != 'testnet'" [ngStyle]="{'background-color': item.recipient.color}" src="assets/img/icon-wallet.svg" class="icon-wallet" />
+              <ion-icon item-start>
+                <img *ngIf="item.recipient.coin == 'btc' && item.recipient.network == 'livenet'" src="assets/img/bitcoin-logo-blank.svg" class="icon-coin" />
+                <img *ngIf="item.recipient.coin == 'bch' && item.recipient.network == 'livenet'" src="assets/img/bitcoincash-logo-blank.svg" class="icon-coin" />
+                <img *ngIf="item.recipient.coin == 'btc' && item.recipient.network == 'testnet'" src="assets/img/bitcoin-testnet-transparent.svg" class="icon-coin" />
+                <img *ngIf="item.recipient.coin == 'bch' && item.recipient.network == 'testnet'" src="assets/img/bitcoincash-testnet-transparent.svg" class="icon-coin" />
               </ion-icon>
-              <span class="name">{{item.recipient.name}}</span>
+              <div class="name">
+                <div class="item-title">
+                  {{item.recipient.name}}
+                </div>
+                <div class="item-subtitle">
+                  Account #{{item.recipient.account}}
+                </div>
+              </div>
             </div>
 
-            <div class="wallet" *ngIf="item.recipientType == 'contact' && item.recipient" (longPress)="toggleAddress()">
+            <div class="wallet" *ngIf="item.recipientType == 'contact' && item.recipient">
               <ion-icon class="item-gravatar" item-left>
                 <gravatar [name]="item.recipient.name" [height]="35" [width]="35" [email]="item.recipient.email"></gravatar>
               </ion-icon>

@@ -37,7 +37,7 @@ export class SellCoinbasePage {
   public paymentMethods;
   public selectedPaymentMethodId;
   public selectedPriceSensitivity;
-  public sellPrice: string;
+  public sellPrice;
   public amountUnitStr: string;
   public accountId: string;
   public wallet;

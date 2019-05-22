@@ -25,7 +25,7 @@ export class BackupKeyPage {
   public wallet;
   public keys;
 
-  private walletId: string;
+  private walletGroupId: string;
 
   constructor(
     private navCtrl: NavController,
@@ -37,8 +37,8 @@ export class BackupKeyPage {
     private translate: TranslateService,
     private actionSheetProvider: ActionSheetProvider
   ) {
-    this.walletId = this.navParams.data.walletId;
-    this.wallet = this.profileProvider.getWallet(this.walletId);
+    this.walletGroupId = this.navParams.data.walletGroupId;
+    this.wallet = this.profileProvider.getWallet(this.walletGroupId);
     this.credentialsEncrypted = this.wallet.isPrivKeyEncrypted();
   }
 
@@ -100,7 +100,7 @@ export class BackupKeyPage {
     this.navCtrl.push(BackupGamePage, {
       words: this.mnemonicWords,
       keys: this.keys,
-      walletId: this.walletId
+      walletGroupId: this.walletGroupId
     });
   }
 

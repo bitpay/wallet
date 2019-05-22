@@ -377,9 +377,12 @@ export class WalletDetailsPage extends WalletTabsChild {
     });
   }
 
-  public openBackup() {
+  public async openBackup() {
+    const walletGroupId = await this.profileProvider.getWalletGroupId(
+      this.wallet.credentials.walletId
+    );
     this.navCtrl.push(BackupKeyPage, {
-      walletId: this.wallet.credentials.walletId
+      walletGroupId
     });
   }
 
@@ -428,8 +431,7 @@ export class WalletDetailsPage extends WalletTabsChild {
 
   public openBalanceDetails(): void {
     this.navCtrl.push(WalletBalancePage, {
-      status: this.wallet.cachedStatus,
-      color: this.wallet.color
+      status: this.wallet.cachedStatus
     });
   }
 

@@ -1,5 +1,5 @@
 <ion-header>
-  <ion-navbar [navbar-bg]="wallet.color">
+  <ion-navbar>
     <ion-title>{{'Wallet Addresses' | translate}}</ion-title>
   </ion-navbar>
 </ion-header>
@@ -19,14 +19,12 @@
     </div>
   </ion-item-divider>
 
-  <button ion-button class="button-standard" (click)="scan()">
+  <button ion-item (click)="scan()">
     <span translate>Scan addresses for funds</span>
   </button>
 
-  <ion-item-divider></ion-item-divider>
-
   <button ion-item *ngIf="viewAll" (click)="viewAllAddresses()">
-    <span ion-text color="dark" translate>View all addresses</span>
+    <span translate>View all addresses</span>
   </button>
 
   <div class="loading" *ngIf="loading">

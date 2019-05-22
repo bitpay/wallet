@@ -7,10 +7,18 @@
           <div class="wallet-divider" *ngIf="txpsByWallet.walletId && txpsByWallet.txps && txpsByWallet.txps[0] && txpsByWallet.txps[0].wallet">
             <div class="wallet-icon">
               <ion-icon class="item-img" item-start>
-                <img *ngIf="txpsByWallet.txps[0].wallet.network == 'testnet'" [ngStyle]="{'background-color': txpsByWallet.txps[0].wallet.color}" src="assets/img/icon-wallet-testnet.svg" class="icon-wallet" />
-                <img *ngIf="txpsByWallet.txps[0].wallet.network != 'testnet'" [ngStyle]="{'background-color': txpsByWallet.txps[0].wallet.color}" src="assets/img/icon-wallet.svg" class="icon-wallet" />
+                <img *ngIf="txpsByWallet.txps[0].wallet.coin == 'btc' && txpsByWallet.txps[0].wallet.network == 'livenet'" src="assets/img/bitcoin-logo-blank.svg" class="icon-coin" />
+                <img *ngIf="txpsByWallet.txps[0].wallet.coin == 'bch' && txpsByWallet.txps[0].wallet.network == 'livenet'" src="assets/img/bitcoincash-logo-blank.svg" class="icon-coin" />
+                <img *ngIf="txpsByWallet.txps[0].wallet.coin == 'btc' && txpsByWallet.txps[0].wallet.network == 'testnet'" src="assets/img/bitcoin-testnet-transparent.svg" class="icon-coin" />
+                <img *ngIf="txpsByWallet.txps[0].wallet.coin == 'bch' && txpsByWallet.txps[0].wallet.network == 'testnet'" src="assets/img/bitcoincash-testnet-transparent.svg" class="icon-coin" />
               </ion-icon>
-              <span class="name">{{txpsByWallet.txps[0].wallet.name}}</span>
+              <div>
+                <div class="name">{{txpsByWallet.txps[0].wallet.name}}</div>
+                <div class="item-subtitle">
+                  <span>#{{txpsByWallet.txps[0].wallet.account}}</span>
+                  <span *ngIf="txpsByWallet.txps[0].wallet.credentials.m > 1">[{{txpsByWallet.txps[0].wallet.credentials.m}}-of-{{txpsByWallet.txps[0].wallet.credentials.n}}]</span>
+                </div>
+              </div>
             </div>
             <div *ngIf="txpsByStatus.type == 'pending'">
               <div *ngIf="txpsByWallet.multipleSignAvailable && !walletIdSelectedToSign" class="multi-sign" outline (click)="signMultipleProposals(txpsByWallet)">

@@ -25,14 +25,14 @@
     <ion-item-group class="info">
       <button ion-item detail-none (click)="showWallets()" class="wallets-list">
         <div translate>From</div>
-        <div class="wallet">
+        <div class="wallet" *ngIf="wallet">
           <ion-icon item-start>
-            <img *ngIf="network == 'testnet'" [ngStyle]="{'background-color': wallet && wallet.color}" src="assets/img/icon-wallet-testnet.svg"
-              class="icon-wallet" />
-            <img *ngIf="network != 'testnet'" [ngStyle]="{'background-color': wallet && wallet.color}" src="assets/img/icon-wallet.svg"
-              class="icon-wallet" />
+            <img *ngIf="wallet.coin == 'btc' && wallet.network == 'livenet'" src="assets/img/bitcoin-logo-blank.svg" class="icon-coin" />
+            <img *ngIf="wallet.coin == 'bch' && wallet.network == 'livenet'" src="assets/img/bitcoincash-logo-blank.svg" class="icon-coin" />
+            <img *ngIf="wallet.coin == 'btc' && wallet.network == 'testnet'" src="assets/img/bitcoin-testnet-transparent.svg" class="icon-coin" />
+            <img *ngIf="wallet.coin == 'bch' && wallet.network == 'testnet'" src="assets/img/bitcoincash-testnet-transparent.svg" class="icon-coin" />
           </ion-icon>
-          <div>{{wallet ? wallet.name : '...'}}</div>
+          <div>{{wallet ? wallet.name + ' - Account #' + wallet.account : '...'}}</div>
           <div class="last-item" item-end>
             <button ion-button clear color="grey" icon-only>
               <ion-icon *ngIf="!isOpenSelector" name="ios-arrow-down-outline"></ion-icon>

@@ -53,14 +53,14 @@ const Keys = {
   HIDE_BALANCE: walletId => 'hideBalance-' + walletId,
   LAST_ADDRESS: walletId => 'lastAddress-' + walletId,
   LAST_CURRENCY_USED: 'lastCurrencyUsed',
-  ONBOARDING_COMPLETED: 'onboardingCompleted',
   PROFILE: 'profile',
   REMOTE_PREF_STORED: 'remotePrefStored',
   TX_CONFIRM_NOTIF: txid => 'txConfirmNotif-' + txid,
   TX_HISTORY: walletId => 'txsHistory-' + walletId,
   ORDER_WALLET: walletId => 'order-' + walletId,
   SERVER_MESSAGE_DISMISSED: messageId => 'serverMessageDismissed-' + messageId,
-  SHAPESHIFT_TOKEN: network => 'shapeshiftToken-' + network
+  SHAPESHIFT_TOKEN: network => 'shapeshiftToken-' + network,
+  WALLET_GROUP: id => 'walletGroup-' + id
 };
 
 interface Storage {
@@ -102,6 +102,18 @@ export class PersistenceProvider {
         resolve(profile);
       });
     });
+  }
+
+  storeWalletGroup(walletGroup): Promise<void> {
+    return this.storage.set(Keys.WALLET_GROUP(walletGroup.id), walletGroup);
+  }
+
+  getWalletGroup(id: string): Promise<any> {
+    return this.storage.get(Keys.WALLET_GROUP(id));
+  }
+
+  deleteWalletGroup(id: string) {
+    return this.storage.remove(Keys.WALLET_GROUP(id));
   }
 
   setFeedbackInfo(feedbackValues: FeedbackValues) {
@@ -180,17 +192,9 @@ export class PersistenceProvider {
     return this.storage.set(Keys.AGREE_DISCLAIMER, true);
   }
 
-  setOnboardingCompleted() {
-    return this.storage.set(Keys.ONBOARDING_COMPLETED, true);
-  }
-
   // for compatibility
   getCopayDisclaimerFlag() {
     return this.storage.get(Keys.AGREE_DISCLAIMER);
-  }
-
-  getCopayOnboardingFlag() {
-    return this.storage.get(Keys.ONBOARDING_COMPLETED);
   }
 
   setRemotePrefsStoredFlag() {

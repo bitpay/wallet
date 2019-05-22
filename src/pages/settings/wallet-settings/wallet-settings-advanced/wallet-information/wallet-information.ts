@@ -1,13 +1,9 @@
 import { Component } from '@angular/core';
-import { Events, NavController, NavParams } from 'ionic-angular';
+import { NavParams } from 'ionic-angular';
 import { Logger } from '../../../../../providers/logger/logger';
 
 // providers
-import { ConfigProvider } from '../../../../../providers/config/config';
 import { ProfileProvider } from '../../../../../providers/profile/profile';
-
-// pages
-import { WalletExtendedPrivateKeyPage } from './wallet-extended-private-key/wallet-extended-private-key';
 
 import * as _ from 'lodash';
 
@@ -32,17 +28,10 @@ export class WalletInformationPage {
   public basePath: string;
   public pubKeys;
   public externalSource: string;
-  public canSign: boolean;
-  public needsBackup: boolean;
-  private colorCounter = 1;
-  private BLACK_WALLET_COLOR = '#202020';
 
   constructor(
     private profileProvider: ProfileProvider,
-    private configProvider: ConfigProvider,
     private navParams: NavParams,
-    private navCtrl: NavController,
-    private events: Events,
     private logger: Logger
   ) {}
 
@@ -62,7 +51,7 @@ export class WalletInformationPage {
     }
     this.copayerId = this.wallet.credentials.copayerId;
     this.balanceByAddress = this.wallet.balanceByAddress;
-    this.account = this.wallet.credentials.account;
+    this.account = this.wallet.account;
     this.network = this.wallet.credentials.network;
     this.addressType = this.wallet.credentials.addressType || 'P2SH';
     this.derivationStrategy =
@@ -70,33 +59,5 @@ export class WalletInformationPage {
     this.basePath = this.wallet.credentials.getBaseAddressDerivationPath();
     this.pubKeys = _.map(this.wallet.credentials.publicKeyRing, 'xPubKey');
     this.externalSource = null;
-    this.canSign = this.wallet.canSign();
-    this.needsBackup = this.wallet.needsBackup;
-  }
-
-  public saveBlack(): void {
-    if (this.colorCounter != 5) {
-      this.colorCounter++;
-      return;
-    }
-    this.save(this.BLACK_WALLET_COLOR);
-  }
-
-  private save(color): void {
-    let opts = {
-      colorFor: {}
-    };
-    opts.colorFor[this.wallet.credentials.walletId] = color;
-    this.configProvider.set(opts);
-    this.events.publish('Local/ConfigUpdate', {
-      walletId: this.wallet.credentials.walletId
-    });
-    this.navCtrl.popToRoot();
-  }
-
-  public openWalletExtendedPrivateKey(): void {
-    this.navCtrl.push(WalletExtendedPrivateKeyPage, {
-      walletId: this.wallet.credentials.walletId
-    });
   }
 }

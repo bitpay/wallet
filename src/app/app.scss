@@ -102,6 +102,11 @@ ion-spinner * {
   }
 }
 
+.item-title {
+  display: flex;
+  justify-content: space-between;
+}
+
 // Fixes IOS 10.3.1 icons
 .item-img {
   display: flex;
@@ -154,6 +159,7 @@ ion-spinner * {
 }
 
 .icon-wallet,
+.icon-coin,
 .icon-card {
   width: 35px;
   height: 35px;
@@ -167,7 +173,6 @@ ion-spinner * {
   background-color: color($colors, primary);
   padding: 4px;
 }
-
 .icon-card {
   background-color: #2a3f90;
 }

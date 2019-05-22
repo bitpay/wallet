@@ -4,24 +4,23 @@
   </ion-navbar>
 </ion-header>
 <ion-content>
-  <ion-list>
-    <button ion-button class="button-standard" *ngIf="!isCordova" (click)="downloadCSV()" [disabled]="!csvReady">
-      <span *ngIf="csvReady" translate>Export to file</span>
-      <span *ngIf="!csvReady && !err">
+  <ion-list class="settings-list">
+    <button ion-item (click)="downloadCSV()" *ngIf="!isCordova" [disabled]="!csvReady">
+      <ion-label *ngIf="csvReady">{{'Export to file' | translate}}</ion-label>
+      <ion-label *ngIf="!csvReady && !err">
         {{'preparing...' | translate}}
-      </span>
-      <span *ngIf="!csvReady && err">
+      </ion-label>
+      <ion-label *ngIf="!csvReady && err">
         {{err}}
-      </span>
+      </ion-label>
     </button>
-
-    <ion-item-divider>
-      <span translate>
+    <button ion-item class="with-label" (click)="clearTransactionHistory()">
+      <ion-label>{{'Clear cache' | translate}}</ion-label>
+    </button>
+    <label-tip class="info" type="info" header="no-header">
+      <div label-tip-body translate>
         The transaction history and every new incoming transaction are cached in the app. This feature clean this up and synchronizes again from the server
-      </span>
-    </ion-item-divider>
-    <button ion-button class="button-standard" color="danger" (click)="clearTransactionHistory()">
-      <span translate>Clear cache</span>
-    </button>
+      </div>
+    </label-tip>
   </ion-list>
 </ion-content>

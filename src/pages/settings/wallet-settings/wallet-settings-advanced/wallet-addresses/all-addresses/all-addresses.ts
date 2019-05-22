@@ -19,9 +19,8 @@ export class AllAddressesPage {
   public withBalance;
   public coin: string;
   public isCordova: boolean;
-  public walletColor: string;
+  public allAddresses;
 
-  private allAddresses;
   private walletName: string;
 
   constructor(
@@ -34,7 +33,6 @@ export class AllAddressesPage {
     private platformProvider: PlatformProvider
   ) {
     this.walletName = this.navParams.data.walletName;
-    this.walletColor = this.navParams.data.walletColor;
     this.noBalance = this.navParams.data.noBalance;
     this.withBalance = this.navParams.data.withBalance;
     this.coin = this.navParams.data.coin;

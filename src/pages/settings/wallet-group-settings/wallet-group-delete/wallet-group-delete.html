@@ -1,0 +1,17 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>Delete Wallet</ion-title>
+  </ion-navbar>
+</ion-header>
+<ion-content>
+  <button ion-item class="with-label" (click)="showDeletePopup()">
+    <ion-label>{{'Delete' | translate}}</ion-label>
+  </button>
+  <label-tip type="warn">
+    <span label-tip-title translate>THIS ACTION CANNOT BE REVERSED</span>
+    <div label-tip-body translate>
+      Permanently delete this wallet.
+    </div>
+  </label-tip>
+
+</ion-content>

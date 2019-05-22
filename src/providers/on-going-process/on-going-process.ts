@@ -32,13 +32,14 @@ export class OnGoingProcessProvider {
       creatingTx: this.translate.instant('Creating transaction...'),
       creatingWallet: this.translate.instant('Creating Wallet...'),
       deletingWallet: this.translate.instant('Deleting Wallet...'),
+      deletingWalletGroup: 'Deleting Wallets...',
       extractingWalletInfo: this.translate.instant(
         'Extracting Wallet information...'
       ),
       fetchingPayPro: this.translate.instant('Fetching payment information...'),
       generatingCSV: this.translate.instant('Generating .csv file...'),
       gettingFeeLevels: this.translate.instant('Getting fee levels...'),
-      importingWallet: this.translate.instant('Importing Wallet...'),
+      importingWallet: this.translate.instant('Importing Wallets...'),
       joiningWallet: this.translate.instant('Joining Wallet...'),
       recreating: this.translate.instant('Recreating Wallet...'),
       rejectTx: this.translate.instant('Rejecting payment proposal...'),

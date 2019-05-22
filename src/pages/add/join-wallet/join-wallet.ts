@@ -39,6 +39,7 @@ export class JoinWalletPage {
   private derivationPathForTestnet: string;
   private regex: RegExp;
   private coin: Coin;
+  private walletGroupId: string;
 
   constructor(
     private bwcProvider: BwcProvider,
@@ -61,6 +62,8 @@ export class JoinWalletPage {
     this.okText = this.translate.instant('Ok');
     this.cancelText = this.translate.instant('Cancel');
     this.defaults = this.configProvider.getDefaults();
+
+    this.walletGroupId = this.navParams.data.walletGroupId;
     this.showAdvOpts = false;
 
     this.regex = /^[0-9A-HJ-NP-Za-km-z]{70,80}$/; // For invitationCode
@@ -248,7 +251,7 @@ export class JoinWalletPage {
     this.onGoingProcessProvider.set('joiningWallet');
 
     this.profileProvider
-      .joinWallet(opts)
+      .joinWallet(this.walletGroupId, opts)
       .then(wallet => {
         this.clipboardProvider.clearClipboardIfValidData(['JoinWallet']);
         this.onGoingProcessProvider.clear();

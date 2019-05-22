@@ -97,7 +97,6 @@ export class ReceivePage extends WalletTabsChild {
       id: this.wallet.credentials.walletId,
       recipientType: 'wallet',
       name: this.wallet.name,
-      color: this.wallet.color,
       coin: this.wallet.coin,
       nextPage: 'CustomAmountPage',
       network: this.addressProvider.getNetwork(this.address)
@@ -175,9 +174,12 @@ export class ReceivePage extends WalletTabsChild {
     this.socialSharing.share(this.address);
   }
 
-  public goToBackup(): void {
+  public async goToBackup() {
+    const walletGroupId = await this.profileProvider.getWalletGroupId(
+      this.wallet.credentials.walletId
+    );
     this.navCtrl.push(BackupKeyPage, {
-      walletId: this.wallet.credentials.walletId
+      walletGroupId
     });
   }
 

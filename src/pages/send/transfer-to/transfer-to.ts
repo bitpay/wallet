@@ -14,10 +14,10 @@ import { Coin, WalletProvider } from '../../../providers/wallet/wallet';
 import { AmountPage } from '../amount/amount';
 
 export interface FlatWallet {
-  color: string;
   name: string;
   recipientType: 'wallet';
   coin: Coin;
+  account: string;
   network: 'testnet' | 'livenet';
   m: number;
   n: number;
@@ -151,10 +151,10 @@ export class TransferToPage {
 
   private flattenWallet(wallet): FlatWallet {
     return {
-      color: wallet.color,
       name: wallet.name,
       recipientType: 'wallet',
       coin: wallet.coin,
+      account: wallet.account,
       network: wallet.network,
       m: wallet.credentials.m,
       n: wallet.credentials.n,
@@ -231,7 +231,6 @@ export class TransferToPage {
           toAddress: addr,
           name: item.name,
           email: item.email,
-          color: item.color,
           coin: item.coin,
           network: item.network,
           useAsModal: this._useAsModal

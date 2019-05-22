@@ -3,6 +3,7 @@ import { ActionSheetParent } from '../../components/action-sheet/action-sheet-pa
 import { IncomingDataMenuComponent } from '../../components/incoming-data-menu/incoming-data-menu';
 import { InfoSheetComponent } from '../../components/info-sheet/info-sheet';
 import { OptionsSheetComponent } from '../../components/options-sheet/options-sheet';
+import { WalletGroupSelectorComponent } from '../../components/wallet-group-selector/wallet-group-selector';
 import { WalletSelectorComponent } from '../../components/wallet-selector/wallet-selector';
 import { DomProvider } from '../../providers/dom/dom';
 
@@ -14,6 +15,7 @@ export type InfoSheetType =
   | 'backup-failed'
   | 'backup-needed-with-activity'
   | 'backup-ready'
+  | 'backup-ready-wallet-group'
   | 'backup-later-warning'
   | 'backup-safeguard-warning'
   | 'copayers'
@@ -48,6 +50,10 @@ export interface WalletSelectorParams {
   selectedWalletId: string;
   title: string;
 }
+export interface WalletGroupSelectorParams {
+  walletGroups: any[];
+  selectedWalletGroupId: string;
+}
 @Injectable()
 export class ActionSheetProvider {
   constructor(private domProvider: DomProvider) {}
@@ -81,6 +87,16 @@ export class ActionSheetProvider {
   ): WalletSelectorComponent {
     return this.setupSheet<WalletSelectorComponent>(
       WalletSelectorComponent,
+      null,
+      params
+    ).instance;
+  }
+
+  public createWalletGroupSelector(
+    params: WalletGroupSelectorParams
+  ): WalletGroupSelectorComponent {
+    return this.setupSheet<WalletGroupSelectorComponent>(
+      WalletGroupSelectorComponent,
       null,
       params
     ).instance;

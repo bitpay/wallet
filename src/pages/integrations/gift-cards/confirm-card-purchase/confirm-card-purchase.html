@@ -24,13 +24,19 @@
       <button ion-item detail-none (click)="showWallets()" class="wallets-list">
         <div>{{'Sending From' | translate}}</div>
         <div class="wallet">
-          <ion-icon item-start>
-            <img *ngIf="network == 'testnet'" [ngStyle]="{'background-color': wallet && wallet.color}" src="assets/img/icon-wallet-testnet.svg"
-              class="icon-wallet" />
-            <img *ngIf="network != 'testnet'" [ngStyle]="{'background-color': wallet && wallet.color}" src="assets/img/icon-wallet.svg"
-              class="icon-wallet" />
+          <ion-icon *ngIf="wallet" item-start>
+            <img *ngIf="wallet.coin == 'btc' && wallet.network == 'livenet'" src="assets/img/bitcoin-logo-blank.svg" class="icon-coin" />
+            <img *ngIf="wallet.coin == 'bch' && wallet.network == 'livenet'" src="assets/img/bitcoincash-logo-blank.svg" class="icon-coin" />
+            <img *ngIf="wallet.coin == 'btc' && wallet.network == 'testnet'" src="assets/img/bitcoin-testnet-transparent.svg" class="icon-coin" />
+            <img *ngIf="wallet.coin == 'bch' && wallet.network == 'testnet'" src="assets/img/bitcoincash-testnet-transparent.svg" class="icon-coin" />
           </ion-icon>
-          <div>{{wallet ? wallet.name : '...'}}</div>
+          <div *ngIf="wallet">
+            <div>{{wallet.name}}</div>
+            <div class="item-subtitle">
+              <span>Account #{{wallet.account}}</span>
+              <span *ngIf="wallet.credentials.m > 1">[{{wallet.credentials.m}}-of-{{wallet.credentials.n}}]</span>
+            </div>
+          </div>
           <div class="last-item" item-end>
             <button ion-button clear color="grey" icon-only>
               <ion-icon *ngIf="!isOpenSelector" name="ios-arrow-down-outline"></ion-icon>
@@ -87,8 +93,7 @@
 </ion-content>
 
 <ion-footer>
-  <page-slide-to-accept #slideButton *ngIf="isCordova" [disabled]="!(wallet && totalAmountStr)" buttonText="{{'Slide to confirm' | translate}}"
-    (slideDone)="buyConfirm()" [ngClass]="{'slide-confirm-fast slide-confirm-down': hideSlideButton, 'slide-confirm-slow': !hideSlideButton}"></page-slide-to-accept>
+  <page-slide-to-accept #slideButton *ngIf="isCordova" [disabled]="!(wallet && totalAmountStr)" buttonText="{{'Slide to confirm' | translate}}" (slideDone)="buyConfirm()" [ngClass]="{'slide-confirm-fast slide-confirm-down': hideSlideButton, 'slide-confirm-slow': !hideSlideButton}"></page-slide-to-accept>
   <ion-toolbar *ngIf="!isCordova">
     <button ion-button full class="button-footer" (click)="buyConfirm()" [disabled]="!(wallet && totalAmountStr)">{{'Confirm
       purchase' | translate}}</button>
