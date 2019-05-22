@@ -46,14 +46,12 @@ describe('PayProProvider', () => {
         return cb(null, paypro);
       };
       profileProvider.wallet = walletFixture;
-      payproProvider
-        .getPayProDetails('https://bitpay.com/i/BAikNA9QFMFiEs8HtNnQVt', 'btc')
-        .then(paypro => {
-          expect(paypro).toEqual({
-            verified: true,
-            payProUrl: 'https://bitpay.com/i/BAikNA9QFMFiEs8HtNnQVt'
-          });
+      payproProvider.getPayProDetails('uri', 'btc').then(paypro => {
+        expect(paypro).toEqual({
+          verified: true,
+          payProUrl: 'uri'
         });
+      });
     });
     it('should return error if is not verified', () => {
       walletFixture.id.fetchPayPro = (_payProUrl, cb) => {
@@ -63,33 +61,27 @@ describe('PayProProvider', () => {
         return cb(null, paypro);
       };
       profileProvider.wallet = walletFixture;
-      payproProvider
-        .getPayProDetails('https://bitpay.com/i/BAikNA9QFMFiEs8HtNnQVt', 'btc')
-        .catch(err => {
-          expect(err).toBeDefined();
-        });
+      payproProvider.getPayProDetails('uri', 'btc').catch(err => {
+        expect(err).toBeDefined();
+      });
     });
     it('should return error if exist', () => {
       walletFixture.id.fetchPayPro = (_payProUrl, cb) => {
         return cb(new Error());
       };
       profileProvider.wallet = walletFixture;
-      payproProvider
-        .getPayProDetails('https://bitpay.com/i/BAikNA9QFMFiEs8HtNnQVt', 'btc')
-        .catch(err => {
-          expect(err).toBeDefined();
-        });
+      payproProvider.getPayProDetails('uri', 'btc').catch(err => {
+        expect(err).toBeDefined();
+      });
     });
     it('should return error if invoice is expired', () => {
       walletFixture.id.fetchPayPro = (_payProUrl, cb) => {
         return cb(new Error('The invoice is no longer receiving payments'));
       };
       profileProvider.wallet = walletFixture;
-      payproProvider
-        .getPayProDetails('https://bitpay.com/i/BAikNA9QFMFiEs8HtNnQVt', 'btc')
-        .catch(err => {
-          expect(err).toBeDefined();
-        });
+      payproProvider.getPayProDetails('uri', 'btc').catch(err => {
+        expect(err).toBeDefined();
+      });
     });
     it('should return error if network does not match', () => {
       walletFixture2.id.fetchPayPro = (_payProUrl, cb) => {
@@ -98,18 +90,14 @@ describe('PayProProvider', () => {
         );
       };
       profileProvider.wallet = walletFixture2;
-      payproProvider
-        .getPayProDetails('https://bitpay.com/i/BAikNA9QFMFiEs8HtNnQVt', 'btc')
-        .catch(err => {
-          expect(err).toBeDefined();
-        });
+      payproProvider.getPayProDetails('uri', 'btc').catch(err => {
+        expect(err).toBeDefined();
+      });
     });
     it('should resolve without error if no wallet available', () => {
-      payproProvider
-        .getPayProDetails('https://bitpay.com/i/BAikNA9QFMFiEs8HtNnQVt', 'btc')
-        .then(result => {
-          expect(result).toBe(undefined);
-        });
+      payproProvider.getPayProDetails('uri', 'btc').then(result => {
+        expect(result).toBe(undefined);
+      });
     });
   });
 });
