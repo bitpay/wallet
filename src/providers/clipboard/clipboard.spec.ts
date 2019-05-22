@@ -1,6 +1,7 @@
 import { fakeAsync, tick } from '@angular/core/testing';
-import { TestUtils } from '../../test';
 import { Clipboard } from '@ionic-native/clipboard';
+
+import { TestUtils } from '../../test';
 
 // Providers
 import {
@@ -11,7 +12,7 @@ import {
   PlatformProvider
 } from '..';
 
-fdescribe('ClipboardProvider', () => {
+describe('ClipboardProvider', () => {
   let clipboardProvider: ClipboardProvider;
   let clipboard: Clipboard;
   let electronProvider: ElectronProvider;
