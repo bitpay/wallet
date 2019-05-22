@@ -433,8 +433,8 @@ export class HomePage {
             this.payProDetailsData.amount = selectedTransactionCurrency
               ? paymentTotals[selectedTransactionCurrency]
               : Coin[currency]
-                ? price / 1e-8
-                : price;
+              ? price / 1e-8
+              : price;
             this.clearCountDownInterval();
             this.paymentTimeControl(expirationTime);
           } catch (err) {
@@ -732,7 +732,6 @@ export class HomePage {
   public goToAddView(): void {
     this.navCtrl.push(AddPage);
   }
-
 
   public goToWalletDetails(wallet, showReorderGroupWallets): void {
     if (showReorderGroupWallets) return;

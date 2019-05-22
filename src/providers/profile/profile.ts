@@ -699,8 +699,8 @@ export class ProfileProvider {
           const mergeAddressBook = _.merge(addressBook, localAddressBook);
           this.persistenceProvider
             .setAddressBook(
-            wallet.credentials.network,
-            JSON.stringify(mergeAddressBook)
+              wallet.credentials.network,
+              JSON.stringify(mergeAddressBook)
             )
             .then(() => {
               return resolve();
@@ -743,7 +743,6 @@ export class ProfileProvider {
 
       walletClient.importFromExtendedPrivateKey(xPrivKey, opts, async err => {
         if (err) {
-
           if (err instanceof this.errors.NOT_AUTHORIZED) {
             return reject(err);
           }
@@ -804,7 +803,6 @@ export class ProfileProvider {
       });
     });
   }
-
 
   private storeInWalletGroup(walletClients, walletGroupId, needsBackup = true) {
     // create default wallet group
@@ -1199,8 +1197,10 @@ export class ProfileProvider {
             },
             err => {
               if (err) {
-                const msg = this.bwcErrorProvider
-                  .msg(err, this.translate.instant('Could not join wallet'));
+                const msg = this.bwcErrorProvider.msg(
+                  err,
+                  this.translate.instant('Could not join wallet')
+                );
                 return reject(msg);
               }
               return resolve(walletClient);
@@ -1230,7 +1230,6 @@ export class ProfileProvider {
 
     return this.persistenceProvider.storeProfile(this.profile);
   }
-
 
   public async deleteGroupWallets(wallets, walletGroupId): Promise<any> {
     const promises = [];

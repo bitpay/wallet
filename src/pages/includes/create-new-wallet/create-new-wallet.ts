@@ -9,7 +9,7 @@ import { AddPage } from '../../add/add';
   templateUrl: 'create-new-wallet.html'
 })
 export class CreateNewWalletPage {
-  constructor(private navCtrl: NavController) { }
+  constructor(private navCtrl: NavController) {}
 
   public goToAddPage() {
     this.navCtrl.push(AddPage);

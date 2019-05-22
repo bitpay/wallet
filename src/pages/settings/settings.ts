@@ -90,7 +90,6 @@ export class SettingsPage {
       name: this.config.wallet.settings.alternativeName,
       isoCode: this.config.wallet.settings.alternativeIsoCode
     };
-
   }
 
   ionViewDidEnter() {

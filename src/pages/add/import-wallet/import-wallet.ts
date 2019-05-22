@@ -228,7 +228,6 @@ export class ImportWalletPage {
     }, 100);
   }
 
-
   private finish(wallets) {
     wallets.forEach(wallet => {
       this.walletProvider.updateRemotePreferences(wallet);
