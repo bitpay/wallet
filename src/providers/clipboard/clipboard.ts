@@ -1,7 +1,5 @@
 import { Injectable } from '@angular/core';
 import { Clipboard } from '@ionic-native/clipboard';
-import { TranslateService } from '@ngx-translate/core';
-import { ToastController } from 'ionic-angular';
 
 // providers
 import { ElectronProvider } from '../../providers/electron/electron';
@@ -15,21 +13,25 @@ export class ClipboardProvider {
   private isElectron: boolean;
 
   constructor(
-    public toastCtrl: ToastController,
-    public platform: PlatformProvider,
+    public platformProvider: PlatformProvider,
     public logger: Logger,
-    public translate: TranslateService,
     private clipboard: Clipboard,
     private electronProvider: ElectronProvider,
     private incomingDataProvider: IncomingDataProvider
   ) {
     this.logger.debug('ClipboardProvider initialized');
-    this.isCordova = this.platform.isCordova;
-    this.isElectron = this.platform.isElectron;
+    this.isCordova = this.platformProvider.isCordova;
+    this.isElectron = this.platformProvider.isElectron;
   }
 
-  public async getData(): Promise<any> {
-    return this.paste();
+  public getData(): Promise<any> {
+    if (this.isCordova) {
+      return this.clipboard.paste();
+    } else if (this.isElectron) {
+      return this.electronProvider.readFromClipboard();
+    } else {
+      return Promise.reject('Not supported');
+    }
   }
 
   public copy(value: string) {
@@ -39,17 +41,6 @@ export class ClipboardProvider {
       this.electronProvider.writeToClipboard(value);
     } else {
       throw new Error('Copied to Clipboard using a Web Browser.');
-    }
-  }
-
-  private async paste(): Promise<any> {
-    if (this.isCordova) {
-      return this.clipboard.paste();
-    } else if (this.isElectron) {
-      return this.electronProvider.readFromClipboard();
-    } else {
-      this.logger.warn('Paste from clipboard not supported');
-      return;
     }
   }
 
