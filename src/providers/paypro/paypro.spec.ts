@@ -5,6 +5,20 @@ import { PayproProvider } from './paypro';
 describe('PayProProvider', () => {
   let payproProvider: PayproProvider;
   let profileProvider: ProfileProvider;
+
+  const defaultPayPro = {
+    verified: true,
+    network: 'livenet',
+    coin: 'btc',
+    requiredFeeRate: 134.972,
+    amount: 278800,
+    toAddress: '1Jzx8hv7Mz8DZH2QoLiWyFBCsCqK1yjwwz',
+    memo:
+      'Payment request for BitPay invoice DEkTtRXp6ni7n7WwUan4y for merchant Electronic Frontier Foundation',
+    paymentId: 'DEkTtRXp6ni7n7WwUan4y',
+    expires: '2019-05-22T14:19:02.609Z'
+  };
+
   const walletFixture = {
     id: {
       credentials: {
@@ -40,25 +54,29 @@ describe('PayProProvider', () => {
   describe('getPayProDetails', () => {
     it('should return paypro details', () => {
       walletFixture.id.fetchPayPro = (_payProUrl, cb) => {
-        const paypro = {
-          verified: true
-        };
-        return cb(null, paypro);
+        return cb(null, defaultPayPro);
       };
       profileProvider.wallet = walletFixture;
       payproProvider.getPayProDetails('uri', 'btc').then(paypro => {
         expect(paypro).toEqual({
           verified: true,
-          payProUrl: 'uri'
+          network: 'livenet',
+          payProUrl: 'uri',
+          coin: 'btc',
+          requiredFeeRate: 134.972,
+          amount: 278800,
+          toAddress: '1Jzx8hv7Mz8DZH2QoLiWyFBCsCqK1yjwwz',
+          memo:
+            'Payment request for BitPay invoice DEkTtRXp6ni7n7WwUan4y for merchant Electronic Frontier Foundation',
+          paymentId: 'DEkTtRXp6ni7n7WwUan4y',
+          expires: '2019-05-22T14:19:02.609Z'
         });
       });
     });
     it('should return error if is not verified', () => {
       walletFixture.id.fetchPayPro = (_payProUrl, cb) => {
-        const paypro = {
-          verified: false
-        };
-        return cb(null, paypro);
+        defaultPayPro.verified = false;
+        return cb(null, defaultPayPro);
       };
       profileProvider.wallet = walletFixture;
       payproProvider.getPayProDetails('uri', 'btc').catch(err => {
