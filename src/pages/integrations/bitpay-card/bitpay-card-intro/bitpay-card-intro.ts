@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { StatusBar } from '@ionic-native/status-bar';
 import { TranslateService } from '@ngx-translate/core';
 import { ActionSheetController, NavController, NavParams } from 'ionic-angular';
 
@@ -28,10 +29,12 @@ export class BitPayCardIntroPage {
     private popupProvider: PopupProvider,
     private bitPayCardProvider: BitPayCardProvider,
     private navCtrl: NavController,
-    private externalLinkProvider: ExternalLinkProvider
+    private externalLinkProvider: ExternalLinkProvider,
+    private statusBar: StatusBar
   ) {}
 
   ionViewWillEnter() {
+    this.statusBar.styleLightContent();
     if (this.navParams.data.secret) {
       let pairData = {
         secret: this.navParams.data.secret,
@@ -90,6 +93,10 @@ export class BitPayCardIntroPage {
       }
       this.accounts = accounts;
     });
+  }
+
+  ionViewWillLeave() {
+    this.statusBar.styleDefault();
   }
 
   public bitPayCardInfo() {

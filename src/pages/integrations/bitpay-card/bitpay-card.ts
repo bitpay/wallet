@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { StatusBar } from '@ionic-native/status-bar';
 import { TranslateService } from '@ngx-translate/core';
 import { NavController, NavParams } from 'ionic-angular';
 import { Logger } from '../../../providers/logger/logger';
@@ -45,7 +46,8 @@ export class BitPayCardPage {
     private timeProvider: TimeProvider,
     private externalLinkProvider: ExternalLinkProvider,
     private navParams: NavParams,
-    private navCtrl: NavController
+    private navCtrl: NavController,
+    private statusBar: StatusBar
   ) {
     this.okText = this.translate.instant('Ok');
     this.cancelText = this.translate.instant('Cancel');
@@ -72,6 +74,14 @@ export class BitPayCardPage {
         this.update();
       }
     );
+  }
+
+  ionViewWillEnter() {
+    this.statusBar.styleLightContent();
+  }
+
+  ionViewWillLeave() {
+    this.statusBar.styleDefault();
   }
 
   private setDateRange(preset: string) {

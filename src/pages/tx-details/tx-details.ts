@@ -14,6 +14,7 @@ import { ProfileProvider } from '../../providers/profile/profile';
 import { TxConfirmNotificationProvider } from '../../providers/tx-confirm-notification/tx-confirm-notification';
 import { TxFormatProvider } from '../../providers/tx-format/tx-format';
 import { WalletProvider } from '../../providers/wallet/wallet';
+import { WalletTabsProvider } from '../wallet-tabs/wallet-tabs.provider';
 
 @Component({
   selector: 'page-tx-details',
@@ -27,6 +28,7 @@ export class TxDetailsPage {
   public wallet;
   public btx;
   public actionList;
+  public insideWallet: boolean;
   public isShared: boolean;
   public title: string;
   public txNotification;
@@ -50,6 +52,7 @@ export class TxDetailsPage {
     private txConfirmNotificationProvider: TxConfirmNotificationProvider,
     private txFormatProvider: TxFormatProvider,
     private walletProvider: WalletProvider,
+    private walletTabsProvider: WalletTabsProvider,
     private translate: TranslateService
   ) {}
 
@@ -59,6 +62,7 @@ export class TxDetailsPage {
     this.txId = this.navParams.data.txid;
     this.title = this.translate.instant('Transaction');
     this.wallet = this.profileProvider.getWallet(this.navParams.data.walletId);
+    this.insideWallet = !!this.walletTabsProvider.getTabNav();
     this.color = this.wallet.color;
     this.copayerId = this.wallet.credentials.copayerId;
     this.isShared = this.wallet.credentials.n > 1;

@@ -15,13 +15,15 @@
 
   ion-item-divider {
     margin-top: 25px;
-    padding-bottom: 6px;
+    font-weight: 500;
+    font-size: 18px !important;
+    padding-left: 20px;
+    background: white;
 
     ion-label.label {
-      color: #4a4a4a;
-      font-size: 15px;
-      // margin-bottom: 7px;
-      // margin-top: 25px;
+      color: #353535;
+      font-size: 18px;
+      font-weight: 500;
       margin-bottom: 0;
       margin-top: 0;
     }
@@ -42,10 +44,17 @@
   }
 
   .item {
-    border-bottom: 0.55px solid #f4f4f4;
+    border: 0;
 
     &.item-ios,
     &.item-md {
+      border: 0;
+
+      &.item-block,
+      &:last-child {
+        border: 0;
+      }
+
       .item-inner {
         border: none;
         padding-top: 4px;
@@ -54,6 +63,21 @@
 
       &.item-ios {
         font-size: 16px;
+      }
+
+      &:not(.item-divider):not(.no-border) {
+        &:after {
+          display: block;
+          content: '';
+          height: 1px;
+          background: transparent;
+          position: absolute;
+          bottom: 0;
+          $side-padding: 15px;
+          left: $side-padding;
+          width: calc(100% - #{2 * $side-padding});
+          border-bottom: 0.55px solid #ebedf8f7;
+        }
       }
     }
   }

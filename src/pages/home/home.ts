@@ -1,4 +1,5 @@
 import { Component, NgZone, ViewChild } from '@angular/core';
+import { StatusBar } from '@ionic-native/status-bar';
 import { TranslateService } from '@ngx-translate/core';
 import { Events, NavController, Platform } from 'ionic-angular';
 import * as _ from 'lodash';
@@ -94,6 +95,7 @@ export class HomePage {
     private emailProvider: EmailNotificationsProvider,
     private clipboardProvider: ClipboardProvider,
     private incomingDataProvider: IncomingDataProvider,
+    private statusBar: StatusBar,
     private invoiceProvider: InvoiceProvider
   ) {
     this.slideDown = false;
@@ -116,6 +118,8 @@ export class HomePage {
   }
 
   private _willEnter(shouldUpdate: boolean = false) {
+    this.statusBar.styleDefault();
+
     // Update list of wallets, status and TXPs
     this.setWallets(shouldUpdate);
 
@@ -317,7 +321,12 @@ export class HomePage {
     */
 
     this.profileProvider.setLastKnownBalance();
-    this.wallets = this.profileProvider.getWallets();
+    this.wallets = this.profileProvider.getWallets().sort((a, b) => {
+      const aSortValue = a.network === 'livenet' ? 0 : 1;
+      const bSortValue = b.network === 'livenet' ? 0 : 1;
+      return aSortValue - bSortValue;
+    });
+
     this.walletsBtc = _.filter(this.wallets, (x: any) => {
       return x.credentials.coin == 'btc';
     });
@@ -353,6 +362,16 @@ export class HomePage {
         this.showCard.setShowRateCard(this.showRateCard);
       }
     });
+  }
+
+  public onWalletAction(event) {
+    const tabMap = {
+      receive: 0,
+      view: 1,
+      send: 2
+    };
+    const selectedTabIndex = tabMap[event.action];
+    this.goToWalletDetails(event.wallet, { selectedTabIndex });
   }
 
   public checkClipboard() {
@@ -719,10 +738,9 @@ export class HomePage {
     this.navCtrl.push(AddPage);
   }
 
-  public goToWalletDetails(wallet): void {
+  public goToWalletDetails(wallet, params): void {
     if (this.showReorderBtc || this.showReorderBch) return;
-
-    this.events.publish('OpenWallet', wallet);
+    this.events.publish('OpenWallet', wallet, params);
   }
 
   public reorderBtc(): void {

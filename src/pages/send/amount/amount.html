@@ -8,9 +8,11 @@
     <ion-title>{{wallet && wallet.name || ('Amount' | translate)}}</ion-title>
   </ion-navbar>
   <ion-toolbar *ngIf="wallet && !requestingAmount" [navbar-bg]="wallet.color">
-    <div *ngIf="!wallet.balanceHidden && !wallet.scanning && wallet.cachedStatus" class="wallet-details-header__balance">
+    <div *ngIf="!wallet.balanceHidden && !wallet.scanning && wallet.cachedStatus"
+      class="wallet-details-header__balance">
       <span>{{wallet.cachedStatus && wallet.cachedStatus.spendableBalanceStr}}</span>
-      <ion-icon *ngIf="wallet.cachedStatus.totalBalanceSat != wallet.cachedStatus.spendableAmount" ios="ios-timer-outline" md="md-timer"></ion-icon>
+      <ion-icon *ngIf="wallet.cachedStatus.totalBalanceSat != wallet.cachedStatus.spendableAmount"
+        ios="ios-timer-outline" md="md-timer"></ion-icon>
     </div>
     <div *ngIf="wallet.balanceHidden  && !wallet.scanning" class="wallet-details-header__balance-hidden">
       <span class="title" translate>[Balance Hidden]</span>
@@ -30,10 +32,8 @@
             <div class="switcher__label">{{unit}}</div>
           </div>
         </div>
-        <div class="amount-header__label">
-          {{'Enter Amount' | translate}}
-        </div>
-        <img class="next-button" [ngClass]="{'show': expression && allowSend}" src="assets/img/icon-next.svg" (click)="finish()" tappable>
+        <img class="next-button" [ngClass]="{'show': expression && allowSend}" src="assets/img/icon-next.svg"
+          (click)="finish()" tappable>
       </div>
     </div>
 
@@ -52,7 +52,8 @@
       </div>
     </div>
 
-    <pin-pad (keystroke)="pushDigit($event)" type="amount" [showSendMax]="isSendMaxButtonShown()" [integersOnly]="onlyIntegers"></pin-pad>
+    <pin-pad (keystroke)="pushDigit($event)" type="amount" [showSendMax]="isSendMaxButtonShown()"
+      [integersOnly]="onlyIntegers"></pin-pad>
 
   </div>
 

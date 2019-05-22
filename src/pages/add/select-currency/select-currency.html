@@ -1,16 +1,18 @@
 <wide-header-page title="{{'Select currency' | translate}}">
   <div page-content>
-    <button class="list-button" ion-item (click)="goToNextPage('btc')">
-      <ion-icon item-start>
-        <img src="assets/img/bitcoin-logo-blank.svg" />
-      </ion-icon>
-      <div class="item-title">Bitcoin (BTC)</div>
-    </button>
-    <button class="list-button" ion-item (click)="goToNextPage('bch')">
-      <ion-icon item-start>
-        <img src="assets/img/bitcoincash-logo-blank.svg" />
-      </ion-icon>
-      <div class="item-title">Bitcoin Cash (BCH)</div>
-    </button>
+    <ion-list class="settings-list">
+      <button class="list-button" ion-item (click)="goToNextPage('btc')">
+        <ion-icon item-start>
+          <img src="assets/img/currencies/btc.svg" />
+        </ion-icon>
+        <div class="item-title">Bitcoin (BTC)</div>
+      </button>
+      <button class="list-button" ion-item (click)="goToNextPage('bch')">
+        <ion-icon item-start>
+          <img src="assets/img/currencies/bch.svg" />
+        </ion-icon>
+        <div class="item-title">Bitcoin Cash (BCH)</div>
+      </button>
+    </ion-list>
   </div>
 </wide-header-page>
