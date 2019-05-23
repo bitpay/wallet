@@ -432,8 +432,8 @@ export class HomePage {
         await Observable.timer(50).toPromise();
         this.slideDown = true;
       })
-      .catch(() => {
-        this.logger.warn('Paste from clipboard err');
+      .catch(err => {
+        this.logger.warn('Paste from clipboard err: ', err);
       });
   }
 
