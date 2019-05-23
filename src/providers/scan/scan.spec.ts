@@ -1,11 +1,11 @@
 import { fakeAsync, tick } from '@angular/core/testing';
 import { QRScanner } from '@ionic-native/qr-scanner';
 import { Events } from 'ionic-angular';
+import { Observable } from 'rxjs/Observable';
 import { TestUtils } from '../../test';
 
 // Providers
 import { Logger, PlatformProvider, ScanProvider } from '..';
-import { Observable } from 'rxjs/Observable';
 
 describe('ScanProvider', () => {
   let scanProvider: ScanProvider;
