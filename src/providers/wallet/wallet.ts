@@ -1049,6 +1049,8 @@ export class WalletProvider {
   }
 
   public isEncrypted(wallet): boolean {
+    return false;
+    // TODO
     if (_.isEmpty(wallet)) return undefined;
     const isEncrypted = wallet.isPrivKeyEncrypted();
     return isEncrypted;

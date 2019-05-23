@@ -89,7 +89,10 @@ export class TxpDetailsPage {
     this.copayers = this.wallet.cachedStatus.wallet.copayers;
     this.copayerId = this.wallet.credentials.copayerId;
     this.isShared = this.wallet.credentials.n > 1;
-    this.canSign = this.wallet.canSign() || this.wallet.isPrivKeyExternal();
+
+console.log('[txp-details.ts.92] TODO'); // TODO
+    this.canSign = true; // TODO this.wallet.canSign() || this.wallet.isPrivKeyExternal();
+    this.color = this.wallet.color;
     this.hideSlideButton = false;
 
     // To test multiple outputs...
