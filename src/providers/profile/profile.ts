@@ -99,7 +99,9 @@ export class ProfileProvider {
   }
 
   private requiresBackup(wallet): boolean {
-    if (wallet.isPrivKeyExternal()) return false;
+    // TODO
+    return true;
+
     if (!wallet.credentials.mnemonic && !wallet.credentials.mnemonicEncrypted)
       return false;
     if (wallet.credentials.network == 'testnet') return false;
@@ -508,6 +510,8 @@ export class ProfileProvider {
   }
 
   private checkIfCanSign(walletsArray: any[]): boolean {
+    return true;
+    // TODO
     let canSign = true;
     walletsArray.forEach(wallet => {
       if (!wallet.canSign()) canSign = false;
@@ -831,6 +835,32 @@ export class ProfileProvider {
           }
 
           _.each(profile.credentials, credentials => {
+
+            // Try to migrate?
+            try { 
+
+              if (!credentials.version|| credentials.version < 2) {
+                this.logger.info(
+                  'About to migrate : ' + credentials.walletId
+                );
+
+                let migrated = this.bwcProvider.fromOld(credentials);
+console.log('[profile.ts.843:migrated:]',migrated); // TODO
+
+                //
+                credentials = migrated.credentials;
+
+                KeyService.add(key, credentials.walletId);
+
+                // TODO uncomment
+                // profile.dirty = true;
+              }
+
+            } catch (ex) {
+              return reject(ex);
+            };
+            
+
             this.bindWallet(credentials)
               .then((bound: number) => {
                 i++;
@@ -839,6 +869,8 @@ export class ProfileProvider {
                   this.logger.info(
                     'Bound ' + totalBound + ' out of ' + l + ' wallets'
                   );
+                  this.storeProfileIfDirty();
+                  KeyService.storeIfDirty();
                   return resolve();
                 }
               })
@@ -957,6 +989,7 @@ export class ProfileProvider {
             return resolve();
           }
 
+console.log('[profile.ts.960:profile:]',profile); // TODO
           this.profile = Profile.fromObj(profile);
           // Deprecated: storageService.tryToMigrate
           this.logger.info('Profile loaded');
@@ -966,10 +999,12 @@ export class ProfileProvider {
               return resolve(this.profile);
             })
             .catch(err => {
+console.log('[profile.ts.968:err:]',err); // TODO
               return reject(err);
             });
         })
         .catch(err => {
+console.log('[profile.ts.972:err:]',err); // TODO
           return reject(err);
         });
     });
