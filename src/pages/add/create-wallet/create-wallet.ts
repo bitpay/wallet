@@ -252,7 +252,7 @@ export class CreateWalletPage implements OnInit {
         this.createForm.value.derivationPath
       ).coinCode == "0'"
     ) {
-      opts.use0forBCH = true;
+      opts.useLegacyCoinType = true;
       this.logger.debug('Using 0 for BCH creation');
     }
 

@@ -989,7 +989,8 @@ export class ProfileProvider {
             passphrase: opts.passphrase,
             account: opts.account || 0,
             derivationStrategy: opts.derivationStrategy || 'BIP44',
-            coin: opts.coin
+            coin: opts.coin,
+            useLegacyCoinType: opts.useLegacyCoinType
           });
         } catch (ex) {
           this.logger.info('Invalid wallet recovery phrase: ', ex);

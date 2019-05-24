@@ -49,7 +49,7 @@ export interface WalletOptions {
   passphrase: any;
   walletPrivKey: any;
   compliantDerivation: any;
-  use0forBCH?: boolean;
+  useLegacyCoinType?: boolean;
 }
 
 export interface TransactionProposal {
