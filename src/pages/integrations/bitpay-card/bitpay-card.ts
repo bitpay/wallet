@@ -11,6 +11,7 @@ import { AmountPage } from '../../send/amount/amount';
 import { BitPayCardProvider } from '../../../providers/bitpay-card/bitpay-card';
 import { BitPayProvider } from '../../../providers/bitpay/bitpay';
 import { ExternalLinkProvider } from '../../../providers/external-link/external-link';
+import { PlatformProvider } from '../../../providers/platform/platform';
 import { PopupProvider } from '../../../providers/popup/popup';
 import { TimeProvider } from '../../../providers/time/time';
 
@@ -47,7 +48,8 @@ export class BitPayCardPage {
     private externalLinkProvider: ExternalLinkProvider,
     private navParams: NavParams,
     private navCtrl: NavController,
-    private statusBar: StatusBar
+    private statusBar: StatusBar,
+    private platformProvider: PlatformProvider
   ) {
     this.okText = this.translate.instant('Ok');
     this.cancelText = this.translate.instant('Cancel');
@@ -77,11 +79,15 @@ export class BitPayCardPage {
   }
 
   ionViewWillEnter() {
-    this.statusBar.styleLightContent();
+    if (this.platformProvider.isIOS) {
+      this.statusBar.styleLightContent();
+    }
   }
 
   ionViewWillLeave() {
-    this.statusBar.styleDefault();
+    if (this.platformProvider.isIOS) {
+      this.statusBar.styleDefault();
+    }
   }
 
   private setDateRange(preset: string) {

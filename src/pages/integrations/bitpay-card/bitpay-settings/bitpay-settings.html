@@ -6,7 +6,6 @@
 <ion-content>
 
   <ion-list class="settings-list">
-    <ion-item-divider></ion-item-divider>
     <div *ngIf="!bitpayCard">
       <ion-item>
         <ion-label>{{'Show in Home' | translate}}</ion-label>
@@ -29,21 +28,23 @@
         </ion-note>
       </ion-item>
 
-      <ion-item-divider></ion-item-divider>
+      <ion-item class="with-label no-border" (click)="unlinkCard(bitpayCard)">
+        <ion-label>{{'Unlink card' | translate}}</ion-label>
+      </ion-item>
+      <label-tip type="warn" header="no-header">
+        <div label-tip-body>
+          <div translate>Unlink the card will remove it from this device.</div>
+        </div>
+      </label-tip>
 
-      <a ion-item text-center detail-none (click)="unlinkCard(bitpayCard)">
-        <span ion-text color="primary" translate>Unlink card</span>
-      </a>
-      <ion-item-divider margin-bottom>
-        <span translate>Unlink the card will remove it from this device.</span>
-      </ion-item-divider>
-      <a ion-item detail-none text-center (click)="unlinkAccount(bitpayCard)">
-        <span ion-text color="danger" translate>Unlink account</span>
-      </a>
-      <ion-item-divider margin-bottom>
-        <span translate>Unlink the account will remove it and all associated cards from this device.</span>
-      </ion-item-divider>
-
+      <ion-item class="with-label no-border" (click)="unlinkAccount(bitpayCard)">
+        <ion-label>{{'Unlink account' | translate}}</ion-label>
+      </ion-item>
+      <label-tip type="warn" header="no-header">
+        <div label-tip-body>
+          <div translate>Unlink the account will remove it and all associated cards from this device.</div>
+        </div>
+      </label-tip>
     </div>
   </ion-list>
 </ion-content>

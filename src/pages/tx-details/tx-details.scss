@@ -78,12 +78,6 @@ page-tx-details {
   .timeline-item {
     background-color: color($colors, blank);
     border: 0;
-    &:nth-child(2) {
-      border-top: 1px solid $item-border-color;
-    }
-    &:last-child {
-      border-bottom: 1px solid $item-border-color;
-    }
     padding: 17px $item-lateral-padding;
     > * {
       padding-right: 0;

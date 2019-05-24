@@ -25,12 +25,9 @@
               <span class="amount-coin">{{btx.amountUnitStr}}</span>
             </div>
             <span *ngIf="btx.confirmations > 0">
-              <img class="sending-img" src="assets/img/tx-action/icon-sent.svg" width="40"
-                *ngIf="btx.action === 'sent'">
-              <img class="sending-img" src="assets/img/tx-action/icon-received.svg" width="40"
-                *ngIf="btx.action === 'received'">
-              <img class="sending-img" src="assets/img/tx-action/icon-moved.svg" width="40"
-                *ngIf="btx.action === 'moved'">
+              <img class="sending-img" src="assets/img/tx-action/icon-sent.svg" width="40" *ngIf="btx.action === 'sent'">
+              <img class="sending-img" src="assets/img/tx-action/icon-received.svg" width="40" *ngIf="btx.action === 'received'">
+              <img class="sending-img" src="assets/img/tx-action/icon-moved.svg" width="40" *ngIf="btx.action === 'moved'">
             </span>
             <span *ngIf="btx.confirmations === 0">
               <img class="sending-img" src="assets/img/tx-action/icon-confirming.svg">
@@ -44,15 +41,13 @@
     <label-tip class="low-fees" type="warn" *ngIf="btx.action == 'received' && btx.lowAmount">
       <span label-tip-title translate>Amount Too Low To Spend</span>
       <div label-tip-body translate>
-        This transaction amount is too small compared to current Bitcoin network fees. Spending these funds will need a
-        Bitcoin network fee cost comparable to the funds itself.
+        This transaction amount is too small compared to current Bitcoin network fees. Spending these funds will need a Bitcoin network fee cost comparable to the funds itself.
         <br>
         <a class="label-tip-link" (click)="readMore()" translate>Learn More</a>
       </div>
     </label-tip>
 
-    <ion-item class="container-tx-info" [ngClass]="{'with-label': btx.action == 'received' && btx.lowFees}"
-      *ngIf="btx && btx.feeStr && btx.action != 'received'">
+    <ion-item class="container-tx-info" [ngClass]="{'with-label': btx.action == 'received' && btx.lowFees}" *ngIf="btx && btx.feeStr && btx.action != 'received'">
       <span>{{'Bitcoin miner fee:' | translate}}</span>
       <div class="tx-info">
         <span class="ellipsis comment">
@@ -114,16 +109,14 @@
     </ion-item>
 
     <div *ngIf="!btx.confirmations || btx.confirmations == 0" class="unconfirmed-message">
-      <a class="positive"
-        (click)="openExternalLink('https://support.bitpay.com/hc/en-us/articles/360025484512-Missing-transactions-Why-is-my-transaction-unconfirmed-')">
+      <a class="positive" (click)="openExternalLink('https://support.bitpay.com/hc/en-us/articles/360025484512-Missing-transactions-Why-is-my-transaction-unconfirmed-')">
         {{'Why is my transaction unconfirmed?' | translate}}
       </a>
     </div>
 
     <ion-item>
       <ion-label stacked>{{'Memo' | translate}}</ion-label>
-      <ion-textarea placeholder="{{'Enter a transaction memo' | translate}}" (blur)="saveMemoInfo()"
-        [(ngModel)]="txMemo" name="tx.description" autocomplete="off" autocorrect="off"></ion-textarea>
+      <ion-textarea placeholder="{{'Enter a transaction memo' | translate}}" (blur)="saveMemoInfo()" [(ngModel)]="txMemo" name="tx.description" autocomplete="off" autocorrect="off"></ion-textarea>
     </ion-item>
 
     <ion-item class="container-tx-info">
@@ -137,15 +130,12 @@
 
     <ion-item *ngIf="txsUnsubscribedForNotifications">
       <ion-label>{{'Notify me if confirmed' | translate}}</ion-label>
-      <ion-toggle checked="false" *ngIf="!btx.confirmations || btx.confirmations == 0"
-        [(ngModel)]="txNotification.value" (ionChange)="txConfirmNotificationChange()"></ion-toggle>
+      <ion-toggle checked="false" *ngIf="!btx.confirmations || btx.confirmations == 0" [(ngModel)]="txNotification.value" (ionChange)="txConfirmNotificationChange()"></ion-toggle>
     </ion-item>
 
     <div *ngIf="actionList && actionList[0]">
-      <ion-item-divider>{{'Timeline' | translate}}</ion-item-divider>
-      <div class="timeline-item"
-        [ngClass]="{'action-created' : a.type == 'created' || a.type == 'accept', 'action-rejected' : a.type == 'reject'}"
-        *ngFor="let a of actionList; let i = index">
+      <div>{{'Timeline' | translate}}</div>
+      <div class="timeline-item" [ngClass]="{'action-created' : a.type == 'created' || a.type == 'accept', 'action-rejected' : a.type == 'reject'}" *ngFor="let a of actionList; let i = index">
         <div class="timeline-content">
           <div class="timeline-content-icon">
             <div class="rejected" *ngIf="a.type === 'reject'">!</div>

@@ -67,11 +67,15 @@ export class WalletTabsPage {
   }
 
   ionViewWillEnter() {
-    setTimeout(() => this.statusBar.styleLightContent(), 300);
+    if (this.platformProvider.isIOS) {
+      setTimeout(() => this.statusBar.styleLightContent(), 300);
+    }
   }
 
   ionViewWillLeave() {
-    this.statusBar.styleDefault();
+    if (this.platformProvider.isIOS) {
+      this.statusBar.styleDefault();
+    }
   }
 
   private updateDesktopOnFocus() {
