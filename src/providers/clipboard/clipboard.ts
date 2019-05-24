@@ -24,7 +24,7 @@ export class ClipboardProvider {
     this.isElectron = this.platformProvider.isElectron;
   }
 
-  public getData(): Promise<any> {
+  public async getData(): Promise<any> {
     if (this.isCordova) {
       return this.clipboard.paste();
     } else if (this.isElectron) {
