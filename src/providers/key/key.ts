@@ -21,11 +21,15 @@ export class KeyProvider {
   // should add a key, after checking the key is not 
   // alteadyt present
   // key is a Key object from BWS
+  //
+  // Use Key.match(a,b) for comparison
+  //
   public addKey(key): Promise<any> {
      //reject('Key already added');
   };
 
-  // Should get a ked, from its id.
+  // Use Key.match(a,b) for comparison
+  // Should get a key, from its id.
   public getKey(keyId): <any> {
   };
 
