@@ -40,6 +40,7 @@ import {
   LanguageProvider,
   LaunchReview,
   Logger,
+  KeyProvider,
   OnGoingProcessProvider,
   PayproProvider,
   PersistenceProvider,
@@ -103,6 +104,7 @@ import {
     LanguageProvider,
     LaunchReview,
     Logger,
+    KeyProvider,
     ElectronProvider,
     OnGoingProcessProvider,
     PayproProvider,
@@ -136,4 +138,4 @@ import {
     WalletTabsProvider
   ]
 })
-export class ProvidersModule {}
+export class ProvidersModule { }
