@@ -888,7 +888,6 @@ export class ProfileProvider {
         // Try to migrate to Credentials 2.0
         _.each(profile.credentials, credentials => {
           try { 
-
             if (!credentials.version|| credentials.version < 2) {
               this.logger.info(
                 'About to migrate : ' + credentials.walletId
@@ -896,15 +895,11 @@ export class ProfileProvider {
 
               let migrated = this.bwcProvider.fromOld(credentials);
 console.log('[profile.ts.843:migrated:]',migrated); // TODO
-
-              //
-              credentials = migrated.credentials;
-              KeyService.add(key, credentials.walletId);
-
-              // TODO uncomment
-              // profile.dirty = true;
-            }
-
+                //this.keyProvider.addKey(migrated.key);
+                credentials = migrated.credentials;
+                // TODO uncomment
+                // profile.dirty = true;
+              }
           } catch (ex) {
             return reject(ex);
           };
