@@ -140,26 +140,17 @@
 
     <gift-cards *ngIf="showGiftCards && wallets && wallets[0]"></gift-cards>
 
-    <div class="card" *ngIf="
+    <div *ngIf="
         homeIntegrations && homeIntegrations.length > 0 && wallets && wallets[0]
       ">
-      <ion-item-divider (click)="hideHomeIntegrations = !hideHomeIntegrations">
-        <div class="title" item-start translate>Services</div>
-        <div item-end>
-          <button ion-button clear color="grey" icon-only>
-            <ion-icon *ngIf="hideHomeIntegrations" name="arrow-dropdown"></ion-icon>
-            <ion-icon *ngIf="!hideHomeIntegrations" name="arrow-dropup"></ion-icon>
+      <div class="section-header" translate>Services</div>
+      <div *ngFor="let service of (homeIntegrations | orderBy: ['title'])" class="card-item sliding-container">
+        <ion-item-sliding>
+          <button ion-item (click)="goTo(service.page, service.name)" [ngStyle]="{'background': service.background}">
+            <img src="{{service.logo}}" width="145" alt="{{ service.title || service.name }}" />
           </button>
-        </div>
-      </ion-item-divider>
-      <ion-list *ngIf="!hideHomeIntegrations">
-        <button ion-item *ngFor="let service of (homeIntegrations | orderBy: ['title'])" (click)="goTo(service.page, service.name)">
-          <ion-icon class="item-img" item-start>
-            <img src="{{service.icon}}" class="icon-services" />
-          </ion-icon>
-          <span class="item-title">{{ service.title || service.name }}</span>
-        </button>
-      </ion-list>
+        </ion-item-sliding>
+      </div>
     </div>
   </div>
 
