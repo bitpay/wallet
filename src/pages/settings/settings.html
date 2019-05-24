@@ -1,22 +1,22 @@
 <wide-header-page title="{{'Settings' | translate}}">
   <div page-content>
-    <ion-list class="settings-list top-padding">
+    <ion-list class="settings-list">
       <button ion-item (click)="openAddressBookPage()">
-        <ion-icon class="item-img" item-start>
+        <ion-icon class="item-img settings-icon" item-start>
           <img src="assets/img/settings-icons/icon-address-book.svg" width="22">
         </ion-icon>
         <span translate>Address book</span>
       </button>
 
       <button ion-item (click)="openHelpExternalLink()">
-        <ion-icon class="item-img" item-start>
+        <ion-icon class="item-img settings-icon" item-start>
           <img src="assets/img/settings-icons/icon-help-support.svg" width="22">
         </ion-icon>
         <span translate>Help &amp; support</span>
       </button>
 
       <button ion-item *ngIf="isCordova" (click)="openSharePage()">
-        <ion-icon class="item-img" item-start>
+        <ion-icon class="item-img settings-icon" item-start>
           <img src="assets/img/settings-icons/icon-heart.svg" width="22">
         </ion-icon>
         <span translate>Share</span> {{ appName }}
@@ -25,14 +25,14 @@
       <ion-item-divider>{{'Preferences' | translate}}</ion-item-divider>
 
       <button ion-item (click)="openNotificationsPage()">
-        <ion-icon class="item-img" item-start>
+        <ion-icon class="item-img settings-icon" item-start>
           <img src="assets/img/settings-icons/icon-notifications.svg" width="22">
         </ion-icon>
         <span translate>Notifications</span>
       </button>
 
       <button ion-item (click)="openLanguagePage()">
-        <ion-icon class="item-img" item-start>
+        <ion-icon class="item-img settings-icon" item-start>
           <img src="assets/img/settings-icons/icon-language.svg" width="22">
         </ion-icon>
         <ion-label>
@@ -44,8 +44,8 @@
       </button>
 
       <button ion-item (click)="openAltCurrencyPage()">
-        <ion-icon class="item-img" item-start>
-          <img src="assets/img/settings-icons/icon-alternative-currency.svg" width="22">
+        <ion-icon class="item-img settings-icon" item-start>
+          <img src="assets/img/settings-icons/icon-currency.svg" width="22">
         </ion-icon>
         <ion-label>
           {{'Alternative currency' | translate}}
@@ -56,7 +56,7 @@
       </button>
 
       <button ion-item (click)="openFeePolicyPage()">
-        <ion-icon class="item-img" item-start>
+        <ion-icon class="item-img settings-icon" item-start>
           <img src="assets/img/settings-icons/icon-network.svg" width="22">
         </ion-icon>
         <ion-label>
@@ -65,8 +65,9 @@
       </button>
 
       <button ion-item *ngIf="isCordova" (click)="openLockPage()">
-        <ion-icon class="custom-icon item-img" *ngIf="lockMethod != 'disabled'" name="ios-lock-outline" item-start></ion-icon>
-        <ion-icon class="custom-icon item-img" *ngIf="lockMethod == 'disabled'" name="ios-unlock-outline" item-start></ion-icon>
+        <ion-icon class="item-img settings-icon" item-start>
+          <img src="assets/img/settings-icons/icon-lock.svg" width="22">
+        </ion-icon>
         <ion-label>
           {{'Lock' | translate}}
         </ion-label>
@@ -106,12 +107,13 @@
         {{'Integrations' | translate}}
       </ion-item-divider>
 
-      <button ion-item *ngFor="let integration of integrationServices | orderBy : ['title']" (click)="openSettingIntegration(integration.name)">
+      <button ion-item *ngFor="let integration of integrationServices | orderBy : ['title']"
+        (click)="openSettingIntegration(integration.name)">
         <ion-icon class="item-img" item-start>
           <img src="{{integration.icon}}" class="icon-services" />
         </ion-icon>
         <span>{{integration.title}}</span>
-        <ion-note item-end>
+        <ion-note item-end *ngIf="integration.linked">
           <span *ngIf="integration.linked" translate>Linked</span>
           <span *ngIf="!integration.linked">
             {{integration.show ? ('On'|translate) : ('Off'|translate)}}
@@ -122,15 +124,15 @@
       <ion-item-divider>{{'More' | translate}}</ion-item-divider>
 
       <button ion-item (click)="openAdvancedPage()">
-        <ion-icon class="item-img" item-start>
+        <ion-icon class="item-img settings-icon" item-start>
           <img src="assets/img/settings-icons/icon-advanced.svg" width="22">
         </ion-icon>
         <span translate>Advanced</span>
       </button>
 
       <button ion-item (click)="openAboutPage()">
-        <ion-icon class="item-img" item-start>
-          <img src="assets/img/settings-icons/icon-about.svg" width="22">
+        <ion-icon class="item-img settings-icon" item-start>
+          <img src="assets/img/settings-icons/icon-info.svg" width="22">
         </ion-icon>
         <span translate>About</span> {{appName}}
       </button>

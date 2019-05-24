@@ -1,14 +1,20 @@
 page-select-currency {
   .list-button {
-    margin-top: 1rem;
     padding-top: 10px;
     padding-bottom: 10px;
-    background-color: none;
-    .item-inner {
-      border: none !important;
+
+    ion-icon.item-icon {
+      margin-left: 3px;
+
+      img {
+        height: 40px;
+      }
     }
+
     .item-title {
-      font-weight: bold;
+      color: black;
+      font-size: 18px;
+      font-weight: 500;
     }
   }
 }

@@ -10,15 +10,51 @@ page-settings {
     box-orient: vertical;
     -webkit-box-orient: vertical;
   }
+
   .icon-wallet,
   .icon-services {
     width: 25px;
     height: 25px;
   }
+
   .icon-card {
     width: 25px;
     height: 25px;
   }
+
+  .settings-icon.item-img {
+    opacity: 0.5;
+  }
+
+  .settings-list {
+    .item {
+      border: 0;
+    }
+
+    button.item {
+      padding: 12px 0 12px 22px;
+      border-bottom: 0;
+
+      .item-inner {
+        margin-left: 8px;
+
+        ion-note.note {
+          background: #f4f5fb;
+          color: #565d6d;
+          font-weight: 300;
+          padding: 6px 10px;
+          border-radius: 4px;
+        }
+      }
+
+      &:last-child {
+        &:after {
+          width: 100%;
+        }
+      }
+    }
+  }
+
   .icon-services {
     box-shadow: 0px 2px 6px 0px rgba(0, 0, 0, 0.2);
     padding: 0rem;

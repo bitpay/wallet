@@ -1,43 +1,47 @@
 page-scan {
   color: #fff;
   background: transparent none;
+
   & > ion-content.content {
     background: transparent none;
   }
-  .navbar-transparent,
-  .toolbar-background {
-    background: $toolbar-scanner;
-  }
+
   .page-scan-has-problems {
     z-index: 9999;
     height: 100%;
     background-color: $toolbar-background;
+
     .header-container {
       display: flex;
       justify-content: center;
       align-items: center;
       min-height: 223px;
       height: 60%;
+
       .header {
         width: 100%;
         text-align: center;
+
         .image-container {
           background: #fff;
           padding: 1rem;
           width: 5rem;
           margin: auto;
           border-radius: 0.5rem;
+
           img {
             width: 2.5rem;
             height: 2.5rem;
             margin-bottom: -0.5rem;
           }
         }
+
         .title {
           color: #fff;
           font-size: 1.2em;
         }
       }
+
       .subtitle {
         margin: auto;
         text-align: center;
@@ -47,25 +51,30 @@ page-scan {
         color: #fff;
       }
     }
+
     .body {
       width: 100%;
       text-align: center;
       position: absolute;
       bottom: 30px;
       background-color: $toolbar-background;
+
       div {
         color: #fff;
       }
     }
   }
+
   .page-scan-loading-camera {
     height: 100%;
     width: 100%;
   }
+
   .page-scan-camera-ready {
     // view background is transparent to show video preview
     background: none transparent;
     height: 100%;
+
     .guides {
       display: flex;
       position: absolute;
@@ -75,6 +84,7 @@ page-scan {
       justify-content: center;
       top: 0;
       left: 0;
+
       .qr-scan-guides {
         width: 60%;
         max-width: 400px;
@@ -82,6 +92,7 @@ page-scan {
         max-height: 50%;
       }
     }
+
     .scanner-controls {
       width: 100%;
       text-align: center;
@@ -89,6 +100,7 @@ page-scan {
       position: absolute;
       left: 0;
       right: 0;
+
       .icon-flash,
       .icon-camera-toggle {
         border-radius: 50%;
@@ -102,6 +114,7 @@ page-scan {
         margin: 2em 1em;
         margin-bottom: calc(1em + env(safe-area-inset-bottom));
         cursor: pointer;
+
         // hover for desktop only
         /*body:not(.platform-cordova) &:hover {
           background-color: rgba(31, 40, 78, 0.79);
@@ -111,9 +124,11 @@ page-scan {
           background-color: rgba(100, 124, 232, 0.79);
         }
       }
+
       .icon-flash {
         background-image: url('../assets/img/icon-flash.svg');
       }
+
       .icon-camera-toggle {
         background-image: url('../assets/img/icon-camera-toggle.svg');
       }
@@ -122,8 +137,10 @@ page-scan {
 
   .browser-scanner {
     z-index: 1000;
+
     zxing-scanner {
       height: 100% !important;
+
       video {
         height: 100% !important;
         width: inherit !important;
@@ -135,22 +152,27 @@ page-scan {
       }
     }
   }
+
   .hide-div {
     display: none;
   }
+
   .cameras-list {
     .camera {
       display: flex;
       align-items: center;
       margin-top: 1rem;
+
       ion-icon {
         margin-right: 1rem;
       }
     }
   }
+
   .last-item {
     margin-left: auto !important;
   }
+
   .icon-wallet {
     background: transparent;
   }

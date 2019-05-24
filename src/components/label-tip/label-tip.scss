@@ -4,6 +4,12 @@ label-tip {
   padding: 20px;
   position: relative;
 
+  width: calc(100% - 50px);
+  left: 25px;
+  border-radius: 15px;
+
+  margin-bottom: 20px;
+
   &:before {
     $arrow-height: 18px;
     $arrow-width: $arrow-height * 0.8;
@@ -45,6 +51,7 @@ label-tip {
   .label-header {
     color: black;
     $icon-height: 20px;
+
     &__icon {
       margin-right: $icon-height/1.5;
       height: $icon-height;
@@ -69,9 +76,11 @@ label-tip {
   .blue a.label-tip-link {
     color: color($colors, info);
   }
+
   .yellow a.label-tip-link {
     color: color($colors, warning);
   }
+
   .red a.label-tip-link {
     color: color($colors, danger);
   }

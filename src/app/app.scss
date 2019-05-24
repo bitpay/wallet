@@ -71,8 +71,12 @@ ion-label {
 
 .scroll-content {
   .wrapper {
-    background-color: $background-color;
+    background-color: white;
     min-height: 100%;
+
+    &--feather {
+      background-color: $feather-dark;
+    }
   }
 }
 
@@ -84,17 +88,14 @@ ion-spinner * {
   border-width: 0 !important;
 }
 
-// Item font size
-.item-title {
-  //  font-size: 1.4rem;
-}
-
 .item-subtitle {
+  margin-top: 5px;
+  display: block;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   font-weight: 300;
-  font-size: 12.5px;
+  font-size: 13px;
 
   ion-icon {
     vertical-align: text-bottom;
