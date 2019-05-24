@@ -68,6 +68,7 @@ export class HomePage {
   public showGiftCards: boolean;
   public showBitpayCardGetStarted: boolean;
   public accessDenied: boolean;
+  public isCopay: boolean;
 
   private isElectron: boolean;
   private zone;
@@ -102,6 +103,7 @@ export class HomePage {
     this.isElectron = this.platformProvider.isElectron;
     this.showReorderBtc = false;
     this.showReorderBch = false;
+    this.isCopay = this.appProvider.info.name === 'copay';
     this.zone = new NgZone({ enableLongStackTrace: false });
     this.events.subscribe('Home/reloadStatus', () => {
       this._willEnter(true);
@@ -118,7 +120,9 @@ export class HomePage {
   }
 
   private _willEnter(shouldUpdate: boolean = false) {
-    this.statusBar.styleDefault();
+    if (this.platformProvider.isIOS) {
+      this.statusBar.styleDefault();
+    }
 
     // Update list of wallets, status and TXPs
     this.setWallets(shouldUpdate);

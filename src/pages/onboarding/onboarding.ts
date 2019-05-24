@@ -10,7 +10,6 @@ import { DisclaimerPage } from '../../pages/onboarding/disclaimer/disclaimer';
   templateUrl: 'onboarding.html'
 })
 export class OnboardingPage {
-  public isCopay: boolean;
   public appName: string;
   public isElectron: boolean;
 

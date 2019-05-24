@@ -1,8 +1,7 @@
 <ion-header>
   <ion-navbar class="home-header">
     <ion-buttons left class="add-button">
-      <button ion-button clear (click)="goToAddView()" *ngIf="wallets && wallets[0]"
-        [ngClass]="{copay: appProvider.info.name === 'copay'}">
+      <button ion-button clear (click)="goToAddView()" *ngIf="wallets && wallets[0]" [ngClass]="{copay: appProvider.info.name === 'copay'}">
         <img src="assets/img/plus.svg" />
       </button>
     </ion-buttons>
@@ -37,8 +36,7 @@
         </button>
       </div>
     </ion-item-divider>
-    <page-clipboard-card [remainingTimeStr]="remainingTimeStr" [payProDetailsData]="payProDetailsData"
-      [validDataFromClipboard]="validDataFromClipboard" (click)="processClipboardData(validDataFromClipboard.data)">
+    <page-clipboard-card [remainingTimeStr]="remainingTimeStr" [payProDetailsData]="payProDetailsData" [validDataFromClipboard]="validDataFromClipboard" (click)="processClipboardData(validDataFromClipboard.data)">
     </page-clipboard-card>
   </div>
 
@@ -55,8 +53,7 @@
         </ion-row>
       </ion-card-header>
       <ion-card-content class="server-message-content">
-        <div class="server-message-icon" *ngIf="serverMessages[0].category"
-          [ngClass]="{ 'no-header': !serverMessages[0].dismissible }">
+        <div class="server-message-icon" *ngIf="serverMessages[0].category" [ngClass]="{ 'no-header': !serverMessages[0].dismissible }">
           <img src="assets/img/icon-warning-circled.svg" *ngIf="serverMessages[0].category == 'critical'" />
           <img src="assets/img/icon-info-blue.svg" *ngIf="serverMessages[0].category == 'info'" />
         </div>
@@ -70,8 +67,7 @@
         <div class="server-message-body" *ngIf="serverMessages[0].body">
           {{ serverMessages[0].body }}
         </div>
-        <div class="server-message-button" *ngIf="serverMessages[0].link"
-          (click)="openServerMessageLink(serverMessages[0].link)">
+        <div class="server-message-button" *ngIf="serverMessages[0].link" (click)="openServerMessageLink(serverMessages[0].link)">
           <span *ngIf="serverMessages[0].linkText">{{
             serverMessages[0].linkText
           }}</span>
@@ -93,9 +89,7 @@
           Access denied
         </div>
         <div class="server-message-body" translate>
-          Unfortunately, your country/region has banned the use or acceptance of
-          cryptocurrencies as a valid form of payment and we are therefore
-          unable to service you.
+          Unfortunately, your country/region has banned the use or acceptance of cryptocurrencies as a valid form of payment and we are therefore unable to service you.
         </div>
         <div class="server-message-button" (click)="openCountryBannedLink()">
           <span translate>Learn more</span>
@@ -104,10 +98,9 @@
     </ion-card>
 
     <ion-list style="margin-top: 20px;" *ngIf="wallets && wallets.length">
-      <div class="section-header" translate>Wallets</div>
+      <div class="section-header" *ngIf="!isCopay" translate>Wallets</div>
       <div class="wallets-list">
-        <wallet-item *ngFor="let wallet of wallets" class="sliding-container" [wallet]="wallet"
-          (action)="onWalletAction($event)"></wallet-item>
+        <wallet-item *ngFor="let wallet of wallets" class="sliding-container" [wallet]="wallet" (action)="onWalletAction($event)"></wallet-item>
       </div>
     </ion-list>
 
@@ -160,8 +153,7 @@
         </div>
       </ion-item-divider>
       <ion-list *ngIf="!hideHomeIntegrations">
-        <button ion-item *ngFor="let service of (homeIntegrations | orderBy: ['title'])"
-          (click)="goTo(service.page, service.name)">
+        <button ion-item *ngFor="let service of (homeIntegrations | orderBy: ['title'])" (click)="goTo(service.page, service.name)">
           <ion-icon class="item-img" item-start>
             <img src="{{service.icon}}" class="icon-services" />
           </ion-icon>

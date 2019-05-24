@@ -9,6 +9,7 @@ import { Animate } from '../../../directives/animate/animate';
 import { ConfigProvider } from '../../../providers/config/config';
 import { Logger } from '../../../providers/logger/logger';
 import { PersistenceProvider } from '../../../providers/persistence/persistence';
+import { PlatformProvider } from '../../../providers/platform/platform';
 
 @Component({
   selector: 'page-pin',
@@ -43,7 +44,8 @@ export class PinModalPage {
     private persistenceProvider: PersistenceProvider,
     private statusBar: StatusBar,
     private vibration: Vibration,
-    private viewCtrl: ViewController
+    private viewCtrl: ViewController,
+    private platformProvider: PlatformProvider
   ) {
     this.ATTEMPT_LIMIT = 3;
     this.ATTEMPT_LOCK_OUT_TIME = 2 * 60;
@@ -66,13 +68,13 @@ export class PinModalPage {
   }
 
   ionViewWillEnter() {
-    if (this.platform.is('ios')) {
+    if (this.platformProvider.isIOS) {
       this.statusBar.styleDefault();
     }
   }
 
   ionViewWillLeave() {
-    if (this.platform.is('ios')) {
+    if (this.platformProvider.isIOS) {
       this.statusBar.styleLightContent();
     }
   }

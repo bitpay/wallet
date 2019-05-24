@@ -27,17 +27,22 @@ export type WalletItemAction = 'send' | 'receive';
             {{ wallet.credentials.m }}/{{ wallet.credentials.n }}
           </ion-note>
         </ion-label>
-        <ion-note item-end *ngIf="!hasZeroBalance()">
+        <ion-note item-end *ngIf="!hasZeroBalance() && !wallet.balanceHidden">
           <div class="primary-text">{{ getBalance() }}</div>
           <div class="secondary-text" *ngIf="wallet.cachedStatus">
             {{ wallet?.cachedStatus.totalBalanceAlternative }}
             {{ wallet?.cachedStatus.alternativeIsoCode }}
           </div>
         </ion-note>
-        <ion-note item-end *ngIf="hasZeroBalance()">
+        <ion-note item-end *ngIf="hasZeroBalance() && !wallet.balanceHidden">
           <div class="primary-text">0</div>
           <div class="secondary-text" *ngIf="wallet.cachedStatus">
             0 {{ wallet?.cachedStatus.alternativeIsoCode }}
+          </div>
+        </ion-note>
+        <ion-note item-end>
+          <div *ngIf="wallet.balanceHidden">
+            [<span translate>Hidden</span>]
           </div>
         </ion-note>
       </button>

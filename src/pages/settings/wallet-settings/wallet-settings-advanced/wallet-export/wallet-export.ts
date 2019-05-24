@@ -100,10 +100,6 @@ export class WalletExportPage extends WalletTabsChild {
     };
   }
 
-  public showAdvChange(): void {
-    this.showAdv = !this.showAdv;
-  }
-
   public getPassword(): Promise<any> {
     return new Promise((resolve, reject) => {
       if (this.password) return resolve(this.password);

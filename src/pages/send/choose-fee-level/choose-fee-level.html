@@ -14,14 +14,12 @@
     Testnet
   </div>
   <ion-list [hidden]="!feeLevel">
-    <ion-item-divider></ion-item-divider>
     <ion-item class="fee-level">
       <ion-label>{{'Fee level' | translate}}</ion-label>
       <ion-select okText="{{okText}}" cancelText="{{cancelText}}" [(ngModel)]="selectedFee" (ionChange)="changeSelectedFee(selectedFee)">
         <ion-option *ngFor="let fee of feeOpts" [value]="fee">{{ feeProvider.getFeeOpts()[fee] | translate }}</ion-option>
       </ion-select>
     </ion-item>
-    <ion-item-divider></ion-item-divider>
   </ion-list>
   <div [hidden]="!feeLevel">
     <ion-list class="fee-info" *ngIf="!customFeePerKB">
