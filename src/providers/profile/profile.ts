@@ -10,6 +10,7 @@ import { AppProvider } from '../app/app';
 import { BwcErrorProvider } from '../bwc-error/bwc-error';
 import { BwcProvider } from '../bwc/bwc';
 import { ConfigProvider } from '../config/config';
+import { KeyProvider } from '../key/key';
 import { LanguageProvider } from '../language/language';
 import { Logger } from '../logger/logger';
 import { OnGoingProcessProvider } from '../on-going-process/on-going-process';
@@ -44,6 +45,7 @@ export class ProfileProvider {
     private platformProvider: PlatformProvider,
     private appProvider: AppProvider,
     private languageProvider: LanguageProvider,
+    private keyProvider: KeyProvider, 
     private events: Events,
     private popupProvider: PopupProvider,
     private onGoingProcessProvider: OnGoingProcessProvider,
@@ -105,14 +107,11 @@ export class ProfileProvider {
     this.wallet[walletId].needsBackup = false;
   }
 
-  private requiresBackup(wallet): boolean {
-    // TODO
-    return true;
-
-    if (!wallet.credentials.mnemonic && !wallet.credentials.mnemonicEncrypted)
-      return false;
+  private async requiresBackup(wallet) {
+    let k = await this.keyProvider.getKeys(wallet.id);
+    if (!k) return false;
+    if (!k.mnemonic && !k.mnemonicEncrypted) return false;
     if (wallet.credentials.network == 'testnet') return false;
-
     return true;
   }
 
@@ -528,13 +527,14 @@ export class ProfileProvider {
 
   private checkIfCanSign(walletsArray: any[]): boolean {
     return true;
-    // TODO
-    let canSign = true;
+
+console.log('[profile.ts.531] TODO: check if wallet have keys'); // TODO
+/*    let canSign = true;
     walletsArray.forEach(wallet => {
       if (!wallet.canSign()) canSign = false;
     });
     return canSign;
-  }
+*/  }
 
   private askToEncryptWallets(walletsArray: any[]): Promise<any> {
     return new Promise(resolve => {

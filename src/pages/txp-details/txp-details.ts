@@ -92,7 +92,7 @@ export class TxpDetailsPage {
 
 console.log('[txp-details.ts.92] TODO'); // TODO
     this.canSign = true; // TODO this.wallet.canSign() || this.wallet.isPrivKeyExternal();
-    this.color = this.wallet.color;
+//    this.color = this.wallet.color;
     this.hideSlideButton = false;
 
     // To test multiple outputs...
