@@ -92,6 +92,9 @@ msgstr ""
 msgid "Add Recipient"
 msgstr ""
 
+msgid "Add Wallet"
+msgstr ""
+
 msgid "Add account"
 msgstr ""
 
@@ -340,9 +343,6 @@ msgid "Calculating send max..."
 msgstr ""
 
 msgid "Cancel"
-msgstr ""
-
-msgid "Cancel invitation"
 msgstr ""
 
 msgid "Canceling Gift Card..."
@@ -665,9 +665,6 @@ msgid ""
 "to support your language."
 msgstr ""
 
-msgid "Done"
-msgstr ""
-
 msgid "Download"
 msgstr ""
 
@@ -730,6 +727,9 @@ msgstr ""
 msgid "Enter a transaction memo"
 msgstr ""
 
+msgid "Enter an email address"
+msgstr ""
+
 msgid "Enter bitcoin address"
 msgstr ""
 
@@ -761,9 +761,6 @@ msgid "Error connecting to ShapeShift"
 msgstr ""
 
 msgid "Error creating wallet"
-msgstr ""
-
-msgid "Error deleting addressbook"
 msgstr ""
 
 msgid "Error deleting entry"
@@ -979,6 +976,9 @@ msgstr ""
 msgid "Help and support information is available at the website."
 msgstr ""
 
+msgid "Hidden"
+msgstr ""
+
 msgid "Hide"
 msgstr ""
 
@@ -1042,6 +1042,11 @@ msgid "I've used this card"
 msgstr ""
 
 msgid "If enabled, wallets will also try to spend unconfirmed funds."
+msgstr ""
+
+msgid ""
+"If there is an issue with this payment, or a refund needs to be made, we "
+"will contact you at this address."
 msgstr ""
 
 msgid ""
@@ -1122,6 +1127,9 @@ msgid "Invalid derivation path for selected coin"
 msgstr ""
 
 msgid "Invitation Code"
+msgstr ""
+
+msgid "Invoice URL"
 msgstr ""
 
 msgid "Is this correct?"
@@ -1404,6 +1412,9 @@ msgstr ""
 msgid "OK"
 msgstr ""
 
+msgid "OPEN IN BROWSER"
+msgstr ""
+
 msgid "Off"
 msgstr ""
 
@@ -1682,6 +1693,9 @@ msgid "Recreating Wallet..."
 msgstr ""
 
 msgid "Redeem Now"
+msgstr ""
+
+msgid "Refund Email"
 msgstr ""
 
 msgid "Reject Payment Proposal"
@@ -2209,6 +2223,9 @@ msgid ""
 "You can recreate it from the local information."
 msgstr ""
 
+msgid "This wallet is waiting for authorized users/devices to join."
+msgstr ""
+
 msgid "Timeline"
 msgstr ""
 
@@ -2409,16 +2426,13 @@ msgid ""
 "cannot be performed on this wallet."
 msgstr ""
 
-msgid "Waiting for copayers"
-msgstr ""
-
-msgid "Waiting..."
-msgstr ""
-
 msgid "Wallet Addresses"
 msgstr ""
 
 msgid "Wallet Color"
+msgstr ""
+
+msgid "Wallet Incomplete"
 msgstr ""
 
 msgid "Wallet Information"
@@ -2487,6 +2501,9 @@ msgid "Wallet recovery phrase not available"
 msgstr ""
 
 msgid "Wallet service not found"
+msgstr ""
+
+msgid "Wallets"
 msgstr ""
 
 msgid "Warning!"
@@ -2660,9 +2677,6 @@ msgid ""
 "to your wallet by withdrawing funds you may have stored on an exchange to "
 "your wallet address. Or other {coinName} users can send you money by "
 "scanning your QR code."
-msgstr ""
-
-msgid "Your wallet is backed up!"
 msgstr ""
 
 msgid ""
