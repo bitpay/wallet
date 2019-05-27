@@ -885,6 +885,7 @@ export class ProfileProvider {
           return resolve();
         }
 
+        let newKeys = [];
         // Try to migrate to Credentials 2.0
         _.each(profile.credentials, credentials => {
           try { 
@@ -895,8 +896,13 @@ export class ProfileProvider {
 
               let migrated = this.bwcProvider.fromOld(credentials);
 console.log('[profile.ts.843:migrated:]',migrated); // TODO
-                //this.keyProvider.addKey(migrated.key);
                 credentials = migrated.credentials;
+                if (migrated.key) {
+                  this.logger.info(`Wallet ${credentials.walletId} key's extracted`);
+                  newKeys.push(migrated.key);
+                } else {
+                  this.logger.info(`READ-ONLY Wallet ${credentials.walletId} migrated`);
+                }
                 // TODO uncomment
                 // profile.dirty = true;
               }
@@ -905,6 +911,11 @@ console.log('[profile.ts.843:migrated:]',migrated); // TODO
           };
         });
 
+        // TODO store keys
+        if (newKeys.length) {
+          this.logger.info(`Storing ${newKeys.length} migrated Keys`);
+          //await this.keyProvider.addKeys(newKeys);
+        };
           
         _.each(profile.credentials, credentials => {
           this.bindWallet(credentials)
@@ -994,7 +1005,6 @@ console.log('[profile.ts.843:migrated:]',migrated); // TODO
             return resolve();
           }
 
-console.log('[profile.ts.960:profile:]',profile); // TODO
           this.profile = Profile.fromObj(profile);
           // Deprecated: storageService.tryToMigrate
           this.logger.info('Profile loaded');
