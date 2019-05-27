@@ -105,7 +105,7 @@ export class PersistenceProvider {
     });
   }
 
-  setKeys(keys: any) {
+  setKeys(keys: any[]) {
     return this.storage.set(Keys.KEYS, keys);
   }
 
