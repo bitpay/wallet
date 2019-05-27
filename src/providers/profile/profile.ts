@@ -108,7 +108,7 @@ export class ProfileProvider {
   }
 
   private async requiresBackup(wallet) {
-    let k = await this.keyProvider.getKeys(wallet.id);
+    let k = await this.keyProvider.getKey(wallet.id);
     if (!k) return false;
     if (!k.mnemonic && !k.mnemonicEncrypted) return false;
     if (wallet.credentials.network == 'testnet') return false;
@@ -116,6 +116,10 @@ export class ProfileProvider {
   }
 
   private getBackupInfo(wallet): Promise<any> {
+
+console.log('[profile.ts.119] TODO : needs back should check wallets Key"id if it is backup'); // TODO
+    return Promise.resolve({ needsBackup: true });
+/*
     if (!this.requiresBackup(wallet)) {
       return Promise.resolve({ needsBackup: false });
     }
@@ -130,6 +134,7 @@ export class ProfileProvider {
       .catch(err => {
         this.logger.error(err);
       });
+      */
   }
 
   private isBalanceHidden(wallet): Promise<boolean> {
@@ -176,6 +181,11 @@ export class ProfileProvider {
     wallet.needsBackup = backupInfo.needsBackup;
     wallet.balanceHidden = await this.isBalanceHidden(wallet);
     wallet.order = await this.getWalletOrder(wallet.id);
+
+console.log('[profile.ts.179] TODO SET canSign IF key are present'); // TODO
+    wallet.canSign = true;
+console.log('[profile.ts.179] TODO SET isPrivKeyEncrypted IF key is encrypted'); // TODO
+    wallet.isPrivKeyEncrypted = true;
 
     wallet.removeAllListeners();
 
@@ -885,44 +895,49 @@ console.log('[profile.ts.531] TODO: check if wallet have keys'); // TODO
           return resolve();
         }
 
-        let newKeys = [];
+        let newKeys = [], newCrededentials = [];
+
         // Try to migrate to Credentials 2.0
         _.each(profile.credentials, credentials => {
-          try { 
-            if (!credentials.version|| credentials.version < 2) {
-              this.logger.info(
-                'About to migrate : ' + credentials.walletId
-              );
+          if (!credentials.version|| credentials.version < 2) {
+            this.logger.info(
+              'About to migrate : ' + credentials.walletId
+            );
 
-              let migrated = this.bwcProvider.fromOld(credentials);
+            let migrated = this.bwcProvider.fromOld(credentials);
 console.log('[profile.ts.843:migrated:]',migrated); // TODO
-                credentials = migrated.credentials;
-                if (migrated.key) {
-                  this.logger.info(`Wallet ${credentials.walletId} key's extracted`);
-                  newKeys.push(migrated.key);
-                } else {
-                  this.logger.info(`READ-ONLY Wallet ${credentials.walletId} migrated`);
-                }
-                // TODO uncomment
-                // profile.dirty = true;
-              }
-          } catch (ex) {
-            return reject(ex);
-          };
-        });
+              credentials = migrated.credentials;
 
-        // TODO store keys
-        if (newKeys.length) {
-          this.logger.info(`Storing ${newKeys.length} migrated Keys`);
-          //await this.keyProvider.addKeys(newKeys);
-        };
-          
-        _.each(profile.credentials, credentials => {
+              newCrededentials.push(migrated.credentials);
+              if (migrated.key) {
+                this.logger.info(`Wallet ${credentials.walletId} key's extracted`);
+                newKeys.push(migrated.key);
+              } else {
+                this.logger.info(`READ-ONLY Wallet ${credentials.walletId} migrated`);
+              }
+           }
+         
           this.bindWallet(credentials)
             .then((bound: number) => {
               i++;
               totalBound += bound;
               if (i == l) {
+                // TODO store keys
+                if (newKeys.length > 0) {
+                  this.logger.info(`Storing ${newKeys.length} migrated Keys`);
+                  //await this.keyProvider.addKeys(newKeys);
+                  //
+                  // ONLY AFTER SUCCESFULL KEY STORAGE... mark profile as dirty!
+                  // TODO uncomment
+                  // profile.credentials  = newCrededentials; 
+                  // profile.dirty = true;
+                } else if (newCrededentials.length > 0) {
+                  // Only RO wallets.
+                  
+                  // profile.credentials  = newCrededentials; 
+                  // profile.dirty = true;
+                }
+
                 this.logger.info(
                   'Bound ' + totalBound + ' out of ' + l + ' wallets'
                 );
@@ -1030,18 +1045,28 @@ console.log('[profile.ts.972:err:]',err); // TODO
       opts = opts ? opts : {};
       const walletClient = this.bwcProvider.getClient(null, opts);
       const network = opts.networkName || 'livenet';
+      const Key = this.bwcProvider.getKey();
 
+console.log('[profile.ts.119] TODO : SAVE KEYS!!'); // TODO
       if (opts.mnemonic) {
         try {
           opts.mnemonic = this.normalizeMnemonic(opts.mnemonic);
-          walletClient.seedFromMnemonic(opts.mnemonic, {
-            network,
+          let key = Key.fromMnemonic(opts.mnemonic, {
+            coin: opts.coin, 
             passphrase: opts.passphrase,
-            account: opts.account || 0,
-            derivationStrategy: opts.derivationStrategy || 'BIP44',
-            coin: opts.coin,
-            useLegacyCoinType: opts.useLegacyCoinType
+            network, 
+            account: opts.account || 0, 
+            n: opts.n || 1,
           });
+          walletClient.import(
+            key.createCredentials(null, {
+              coin: opts.coin, 
+              network, 
+              account:0, 
+              n: opts.n || 1,
+            })
+          );
+ 
         } catch (ex) {
           this.logger.info('Invalid wallet recovery phrase: ', ex);
           return reject(
@@ -1052,12 +1077,21 @@ console.log('[profile.ts.972:err:]',err); // TODO
         }
       } else if (opts.extendedPrivateKey) {
         try {
-          walletClient.seedFromExtendedPrivateKey(opts.extendedPrivateKey, {
-            network,
-            account: opts.account || 0,
-            derivationStrategy: opts.derivationStrategy || 'BIP44',
-            coin: opts.coin
+          let key = Key.fromExtendedPrivateKey(opts.extendedPrivateKey, {
+            coin: opts.coin, 
+            network, 
+            account: opts.account || 0, 
+            n: opts.n || 1,
           });
+          walletClient.import(
+            key.createCredentials(null, {
+              coin: opts.coin, 
+              network, 
+              account:0, 
+              n: opts.n || 1,
+            })
+          );
+ 
         } catch (ex) {
           this.logger.warn(
             'Could not get seed from Extended Private Key: ',
@@ -1069,51 +1103,34 @@ console.log('[profile.ts.972:err:]',err); // TODO
             )
           );
         }
-      } else if (opts.extendedPublicKey) {
-        try {
-          walletClient.seedFromExtendedPublicKey(
-            opts.extendedPublicKey,
-            opts.externalSource,
-            opts.entropySource,
-            {
-              account: opts.account || 0,
-              derivationStrategy: opts.derivationStrategy || 'BIP44',
-              coin: opts.coin
-            }
-          );
-          walletClient.credentials.hwInfo = opts.hwInfo;
-        } catch (ex) {
-          this.logger.warn(
-            'Creating wallet from Extended Public Key Arg:',
-            ex,
-            opts
-          );
-          return reject(
-            this.translate.instant(
-              'Could not create using the specified extended public key'
-            )
-          );
-        }
       } else {
         const lang = this.languageProvider.getCurrent();
         try {
-          walletClient.seedFromRandomWithMnemonic({
-            network,
-            passphrase: opts.passphrase,
-            language: lang,
-            account: 0,
-            coin: opts.coin
+          let key = Key.create({
+            lang,
           });
+          walletClient.import(
+            key.createCredentials(null, {
+              coin: opts.coin, 
+              network, 
+              account: opts.account || 0, 
+              n: opts.n || 1,
+            })
+          );
         } catch (e) {
+console.log('[profile.ts.1109]',e); // TODO
           this.logger.info('Error creating recovery phrase: ' + e.message);
           if (e.message.indexOf('language') > 0) {
             this.logger.info('Using default language for recovery phrase');
-            walletClient.seedFromRandomWithMnemonic({
-              network,
-              passphrase: opts.passphrase,
-              account: 0,
-              coin: opts.coin
-            });
+            let key = Key.create({});
+            walletClient.import(
+              key.createCredentials(null, {
+                coin: opts.coin, 
+                network, 
+                account: opts.account || 0, 
+                n: opts.n || 1,
+              })
+            );
           } else {
             return reject(e);
           }

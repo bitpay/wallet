@@ -32,6 +32,10 @@ export class BwcProvider {
     return BWC.Utils;
   }
 
+  public getKey() {
+    return BWC.Key;
+  }
+
   public fromOld(x) {
     return BWC.fromOld(x);
   }
