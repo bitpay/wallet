@@ -1,33 +1,25 @@
 import { Injectable } from '@angular/core';
 import { Logger } from '../../providers/logger/logger';
 
-// providers
-// import { BwcProvider } from '../../providers/bwc/bwc';
-// import { ConfigProvider } from '../../providers/config/config';
+// Providers
 import { PersistenceProvider } from '../persistence/persistence';
-
-// import * as _ from 'lodash';
 
 @Injectable()
 export class KeyProvider {
   constructor(
     private logger: Logger,
-    private persistenceProvider: PersistenceProvider,
-    // private bwcProvider: BwcProvider
+    private persistenceProvider: PersistenceProvider
   ) {
     this.logger.debug('KeyProvider initialized');
   }
 
   // should add a key, after checking the key is not 
-  // alteadyt present
+  // already present
   // key is a Key object from BWS
   //
   // Use Key.match(a,b) for comparison
   //
   public addKey(key): Promise<any> {
-    key.match = (a, b) => {
-      return (a.id == b.id);
-    }
     return this.persistenceProvider.getKeys().then((keys: any[]) => {
       keys = keys ? keys : [];
       let keyExists: boolean = false;
@@ -43,6 +35,29 @@ export class KeyProvider {
         this.persistenceProvider.setKeys(keys);
         return Promise.resolve();
       }
+    });
+  }
+
+  // should add multiple keys, after checking each key is not 
+  // already present
+  // key is a Key object from BWS
+  //
+  // Use Key.match(a,b) for comparison
+  //
+  public addKeys(keysToAdd: any[]): Promise<any> {
+    return this.persistenceProvider.getKeys().then((keys: any[]) => {
+      keys = keys ? keys : [];
+      keys.forEach(k => {
+        keysToAdd.forEach((keyToAdd) => {
+          if (keyToAdd.match(keyToAdd, k)) {
+            this.logger.warn('Key already added');
+          } else {
+            keys.push(keyToAdd);
+          }
+        });
+      });
+      this.persistenceProvider.setKeys(keys);
+      return Promise.resolve();
     });
   }
 
