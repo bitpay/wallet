@@ -24,7 +24,7 @@ export class KeyProvider {
     });
   }
 
-  private storeKeysIfDirty(): Promise<any> {
+  public storeKeysIfDirty(): Promise<any> {
     if (this.isDirty) {
       return this.persistenceProvider.setKeys(this.keys).then(() => {
         this.isDirty = false;
