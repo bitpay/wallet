@@ -14,7 +14,6 @@ import { ProfileProvider } from '../../providers/profile/profile';
 import { TxConfirmNotificationProvider } from '../../providers/tx-confirm-notification/tx-confirm-notification';
 import { TxFormatProvider } from '../../providers/tx-format/tx-format';
 import { WalletProvider } from '../../providers/wallet/wallet';
-import { WalletTabsProvider } from '../wallet-tabs/wallet-tabs.provider';
 
 @Component({
   selector: 'page-tx-details',
@@ -51,7 +50,6 @@ export class TxDetailsPage {
     private txConfirmNotificationProvider: TxConfirmNotificationProvider,
     private txFormatProvider: TxFormatProvider,
     private walletProvider: WalletProvider,
-    private walletTabsProvider: WalletTabsProvider,
     private translate: TranslateService
   ) {}
 

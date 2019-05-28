@@ -117,7 +117,9 @@ export class ProfileProvider {
 
   private getBackupInfo(wallet): Promise<any> {
 
-console.log('[profile.ts.119] TODO : needs back should check wallets Key"id if it is backup'); // TODO
+console.log('[profile.ts.119] TODO : needs back should check wallets Key"id if it is backup', wallet); // TODO
+    const a = this.requiresBackup(wallet);
+console.log('[profile.ts:121]',a); /* TODO */
     return Promise.resolve({ needsBackup: true });
 /*
     if (!this.requiresBackup(wallet)) {
@@ -531,9 +533,9 @@ console.log('[profile.ts.179] TODO SET isPrivKeyEncrypted IF key is encrypted');
   }
 
   private checkIfCanSign(walletsArray: any[]): boolean {
-    return true;
 
-console.log('[profile.ts.531] TODO: check if wallet have keys'); // TODO
+console.log('[profile.ts.531] TODO: check if wallet have keys', walletsArray); // TODO
+    return true;
 /*    let canSign = true;
     walletsArray.forEach(wallet => {
       if (!wallet.canSign()) canSign = false;
