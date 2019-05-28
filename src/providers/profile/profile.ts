@@ -368,14 +368,7 @@ console.log('[profile.ts.179] TODO SET isPrivKeyEncrypted IF key is encrypted');
 
   public updateCredentials(credentials): void {
     this.profile.updateWallet(credentials);
-    this.persistenceProvider.storeProfile(this.profile).then(
-      () => {
-        this.logger.debug('Updated modified Profile(updateCredentials)');
-      },
-      e => {
-        this.logger.error('Could not save Profile(updateCredentials)', e);
-      }
-    );
+    this.storeProfileIfDirty();
   }
 
   private runValidation(wallet, delay?: number, retryDelay?: number) {
@@ -422,21 +415,23 @@ console.log('[profile.ts.179] TODO SET isPrivKeyEncrypted IF key is encrypted');
     }, delay);
   }
 
-  public storeProfileIfDirty(): void {
-    if (this.profile.dirty) {
-      this.persistenceProvider.storeProfile(this.profile).then(
-        () => {
-          this.logger.debug('Saved modified Profile');
-          return;
-        },
-        e => {
-          this.logger.error('Could not save Profile(Dirty)', e);
-          return;
-        }
-      );
-    } else {
-      return;
-    }
+  public storeProfileIfDirty():Promise<any> {
+    return new Promise( (resolve, reject) => {
+      if (this.profile.dirty) {
+        this.persistenceProvider.storeProfile(this.profile).then(
+          () => {
+            this.logger.debug('Saved modified Profile');
+            return resolve();
+          },
+          e => {
+            this.logger.error('Could not save Profile(Dirty)', e);
+            return reject(e);
+          }
+        );
+      } else {
+        return resolve();
+      }
+    });
   }
 
   public importWalletGroupFile(str: string, opts): Promise<any> {
@@ -664,14 +659,14 @@ console.log('[profile.ts.531] TODO: check if wallet have keys'); // TODO
 
     this.saveBwsUrl(walletId, opts);
 
-    return this.persistenceProvider.storeProfile(this.profile).then(
+          
+    return this.storeProfileIfDirty().then(
       () => {
         if (!opts.skipEvent) this.events.publish('Local/WalletListChange');
 
         return Promise.resolve(wallet);
       },
       e => {
-        this.logger.error('Could not save Profile(addAndBindWalletClient)', e);
         return Promise.reject(e);
       }
     );
@@ -1283,7 +1278,7 @@ console.log('[profile.ts.1109]',e); // TODO
     this.persistenceProvider.removeAllWalletData(walletId);
     this.events.publish('Local/WalletListChange');
 
-    return this.persistenceProvider.storeProfile(this.profile);
+    return this.storeProfileIfDirty();
   }
 
   public async deleteGroupWallets(wallets, walletGroupId): Promise<any> {
@@ -1324,8 +1319,8 @@ console.log('[profile.ts.1109]',e); // TODO
   }
 
   public setDisclaimerAccepted(): Promise<any> {
-    this.profile.disclaimerAccepted = true;
-    return this.persistenceProvider.storeProfile(this.profile);
+    this.profile.acceptDisclaimer(); 
+    return this.storeProfileIfDirty();
   }
 
   public setLastKnownBalance() {
@@ -1507,8 +1502,8 @@ console.log('[profile.ts.1109]',e); // TODO
   }
 
   public setWalletGroupFlag() {
-    this.profile.walletGroupMigrationFlag = true;
-    this.persistenceProvider.storeProfile(this.profile);
+    this.profile.setWalletGroupFlag();
+    this.storeProfileIfDirty();
   }
 
   public getWalletGroupId(walletId: string) {

@@ -104,4 +104,14 @@ export class Profile {
     this.dirty = true;
     return true;
   }
+
+  public acceptDisclaimer(): void {
+    this.disclaimerAccepted = true;
+    this.dirty = true;
+  }
+
+  public setWalletGroupFlag(): void {
+    this.walletGroupMigrationFlag = true;
+    this.dirty = true;
+  }
 }
