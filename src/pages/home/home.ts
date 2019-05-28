@@ -47,8 +47,6 @@ export class HomePage {
   @ViewChild('showCard')
   showCard;
   public wallets;
-  public walletsBtc;
-  public walletsBch;
   public txpsN: number;
   public serverMessages: any[];
   public homeIntegrations;
@@ -61,8 +59,7 @@ export class HomePage {
   public slideDown: boolean;
 
   public showRateCard: boolean;
-  public showReorderBtc: boolean;
-  public showReorderBch: boolean;
+  public showReorder: boolean;
   public showIntegration;
   public hideHomeIntegrations: boolean;
   public showGiftCards: boolean;
@@ -101,8 +98,7 @@ export class HomePage {
   ) {
     this.slideDown = false;
     this.isElectron = this.platformProvider.isElectron;
-    this.showReorderBtc = false;
-    this.showReorderBch = false;
+    this.showReorder = false;
     this.isCopay = this.appProvider.info.name === 'copay';
     this.zone = new NgZone({ enableLongStackTrace: false });
     this.events.subscribe('Home/reloadStatus', () => {
@@ -325,18 +321,8 @@ export class HomePage {
     */
 
     this.profileProvider.setLastKnownBalance();
-    this.wallets = this.profileProvider.getWallets().sort((a, b) => {
-      const aSortValue = a.network === 'livenet' ? 0 : 1;
-      const bSortValue = b.network === 'livenet' ? 0 : 1;
-      return aSortValue - bSortValue;
-    });
+    this.wallets = this.profileProvider.getWallets();
 
-    this.walletsBtc = _.filter(this.wallets, (x: any) => {
-      return x.credentials.coin == 'btc';
-    });
-    this.walletsBch = _.filter(this.wallets, (x: any) => {
-      return x.credentials.coin == 'bch';
-    });
     // Avoid heavy tasks that can slow down the unlocking experience
     if (!this.appProvider.isLockModalOpen && shouldUpdate) {
       this.fetchAllWalletsStatus();
@@ -368,14 +354,15 @@ export class HomePage {
     });
   }
 
-  public onWalletAction(event) {
+  public onWalletAction(wallet, action, slidingItem) {
     const tabMap = {
       receive: 0,
       view: 1,
       send: 2
     };
-    const selectedTabIndex = tabMap[event.action];
-    this.goToWalletDetails(event.wallet, { selectedTabIndex });
+    const selectedTabIndex = tabMap[action];
+    this.goToWalletDetails(wallet, { selectedTabIndex });
+    slidingItem.close();
   }
 
   public checkClipboard() {
@@ -743,32 +730,19 @@ export class HomePage {
   }
 
   public goToWalletDetails(wallet, params): void {
-    if (this.showReorderBtc || this.showReorderBch) return;
+    if (this.showReorder) return;
     this.events.publish('OpenWallet', wallet, params);
   }
 
-  public reorderBtc(): void {
-    this.showReorderBtc = !this.showReorderBtc;
+  public reorder(): void {
+    this.showReorder = !this.showReorder;
   }
 
-  public reorderBch(): void {
-    this.showReorderBch = !this.showReorderBch;
-  }
-
-  public reorderWalletsBtc(indexes): void {
-    const element = this.walletsBtc[indexes.from];
-    this.walletsBtc.splice(indexes.from, 1);
-    this.walletsBtc.splice(indexes.to, 0, element);
-    _.each(this.walletsBtc, (wallet, index: number) => {
-      this.profileProvider.setWalletOrder(wallet.id, index);
-    });
-  }
-
-  public reorderWalletsBch(indexes): void {
-    const element = this.walletsBch[indexes.from];
-    this.walletsBch.splice(indexes.from, 1);
-    this.walletsBch.splice(indexes.to, 0, element);
-    _.each(this.walletsBch, (wallet, index: number) => {
+  public reorderWallets(indexes): void {
+    const element = this.wallets[indexes.from];
+    this.wallets.splice(indexes.from, 1);
+    this.wallets.splice(indexes.to, 0, element);
+    _.each(this.wallets, (wallet, index: number) => {
       this.profileProvider.setWalletOrder(wallet.id, index);
     });
   }
@@ -803,5 +777,28 @@ export class HomePage {
 
   public settings(): void {
     this.navCtrl.push(SettingsPage);
+  }
+
+  getBalance(wallet, currency) {
+    const lastKnownBalance = this.getLastKownBalance(wallet, currency);
+    const totalBalanceStr =
+      wallet.cachedStatus &&
+      wallet.cachedStatus.totalBalanceStr &&
+      wallet.cachedStatus.totalBalanceStr.replace(` ${currency}`, '');
+    return totalBalanceStr || lastKnownBalance;
+  }
+
+  getLastKownBalance(wallet, currency) {
+    return (
+      wallet.lastKnownBalance &&
+      wallet.lastKnownBalance.replace(` ${currency}`, '')
+    );
+  }
+
+  hasZeroBalance(wallet, currecy) {
+    return (
+      (wallet.cachedStatus && wallet.cachedStatus.totalBalanceSat === 0) ||
+      this.getLastKownBalance(wallet, currecy) === '0.00'
+    );
   }
 }

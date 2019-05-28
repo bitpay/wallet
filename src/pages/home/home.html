@@ -20,7 +20,7 @@
 </ion-header>
 
 <ion-content class="fullscreen-tab">
-  <ion-refresher (ionRefresh)="doRefresh($event)" *ngIf="!showReorderBtc && !showReorderBch" pullMin="90" pullMax="180">
+  <ion-refresher (ionRefresh)="doRefresh($event)" *ngIf="!showReorder" pullMin="90" pullMax="180">
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
 
@@ -98,10 +98,66 @@
     </ion-card>
 
     <ion-list style="margin-top: 20px;" *ngIf="wallets && wallets.length">
-      <div class="section-header" *ngIf="!isCopay" translate>Wallets</div>
-      <div class="wallets-list">
-        <wallet-item *ngFor="let wallet of wallets" class="sliding-container" [wallet]="wallet" (action)="onWalletAction($event)"></wallet-item>
+      <div class="section-header">
+        <span translate>
+          Wallets
+        </span>
+        <span *ngIf="!showReorder">
+          <button ion-button clear icon-only color="grey" (click)="reorder()" *ngIf="wallets.length > 1">
+            <img src="assets/img/sort.svg">
+          </button>
+        </span>
+        <span *ngIf="showReorder">
+          <button ion-button clear color="primary" (click)="reorder()">
+            {{'Done' | translate}}
+          </button>
+        </span>
       </div>
+      <ion-list class="sliding-container" reorder="{{showReorder}}" (ionItemReorder)="reorderWallets($event)">
+        <ion-item-sliding *ngFor="let wallet of wallets" #slidingItem>
+          <button ion-item (click)="onWalletAction(wallet, 'view', slidingItem)">
+            <ion-avatar item-start>
+              <img [ngClass]="{ testnet: wallet.network === 'testnet' }" src="assets/img/currencies/{{wallet.coin}}.svg" />
+            </ion-avatar>
+            <ion-label item-start>
+              <div class="primary-text wallet-name ellipsis">{{ wallet.name }}</div>
+              <ion-note item-start class="secondary-text">
+                {{ wallet.credentials.m }}/{{ wallet.credentials.n }}
+              </ion-note>
+            </ion-label>
+            <ion-note item-end *ngIf="!hasZeroBalance(wallet, wallet.coin.toUpperCase()) && !wallet.balanceHidden">
+              <div class="primary-text">{{ getBalance(wallet, wallet.coin.toUpperCase()) }}</div>
+              <div class="secondary-text" *ngIf="wallet.cachedStatus">
+                {{ wallet?.cachedStatus.totalBalanceAlternative }}
+                {{ wallet?.cachedStatus.alternativeIsoCode }}
+              </div>
+            </ion-note>
+            <ion-note item-end *ngIf="hasZeroBalance(wallet, wallet.coin.toUpperCase()) && !wallet.balanceHidden">
+              <div class="primary-text">0</div>
+              <div class="secondary-text" *ngIf="wallet.cachedStatus">
+                0 {{ wallet?.cachedStatus.alternativeIsoCode }}
+              </div>
+            </ion-note>
+            <ion-note item-end>
+              <div *ngIf="wallet.balanceHidden">
+                [<span translate>Hidden</span>]
+              </div>
+            </ion-note>
+          </button>
+          <ion-item-options side="left">
+            <button class="action action--send" ion-button (click)="onWalletAction(wallet, 'send', slidingItem)">
+              <div class="action__icon"><img src="assets/img/send.svg" /></div>
+              <div class="action__text">Send</div>
+            </button>
+          </ion-item-options>
+          <ion-item-options side="right">
+            <button class="action action--receive" ion-button (click)="onWalletAction(wallet, 'receive', slidingItem)">
+              <div class="action__icon"><img src="assets/img/receive.svg" /></div>
+              <div class="action__text">Receive</div>
+            </button>
+          </ion-item-options>
+        </ion-item-sliding>
+      </ion-list>
     </ion-list>
 
     <ion-list class="bitpay-card" *ngIf="
