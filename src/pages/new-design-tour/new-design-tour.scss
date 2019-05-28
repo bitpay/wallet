@@ -1,0 +1,59 @@
+page-new-design-tour {
+  .new-design-slides {
+    .slide-zoom {
+      height: 100%;
+    }
+    ion-slide {
+      background: linear-gradient(to bottom, #ffffff, #ebedf8);
+      .page-title {
+        text-align: center;
+        width: 100%;
+        font-size: 20px;
+        font-weight: 500;
+        margin-top: 2rem;
+        margin-bottom: 3rem;
+      }
+      .img-container {
+        height: 100%;
+      }
+      .slide-info {
+        position: absolute;
+        bottom: 0rem;
+        background: white;
+        min-height: 230px;
+        display: flex;
+        align-items: center;
+        .info {
+          padding: 2rem;
+          .title {
+            align-items: center;
+            color: #060606;
+            font-size: 19px;
+            font-weight: 500;
+            text-align: center;
+          }
+          .text {
+            font-size: 16px;
+            color: rgb(46, 46, 46);
+            font-weight: 300;
+            padding-top: 15px;
+            padding-bottom: 30px;
+          }
+        }
+      }
+    }
+    .swiper-pagination {
+      text-align: left;
+      margin-left: 4rem;
+      margin-bottom: 1rem;
+    }
+  }
+  .next-slide-button {
+    z-index: 1;
+    position: absolute;
+    bottom: 0.5rem;
+    right: 3rem;
+    color: color($colors, primary);
+    cursor: pointer;
+  }
+}

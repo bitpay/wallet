@@ -81,6 +81,7 @@ export class DisclaimerPage {
 
   confirm() {
     this.persistenceProvider.setEmailLawCompliance('accepted');
+    this.persistenceProvider.setNewDesignSlidesFlag('completed');
     this.persistenceProvider.setDisclaimerAccepted();
     this.navCtrl.setRoot(TabsPage);
     this.navCtrl.popToRoot({ animate: false });

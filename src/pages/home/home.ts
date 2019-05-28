@@ -1,7 +1,12 @@
 import { Component, NgZone, ViewChild } from '@angular/core';
 import { StatusBar } from '@ionic-native/status-bar';
 import { TranslateService } from '@ngx-translate/core';
-import { Events, NavController, Platform } from 'ionic-angular';
+import {
+  Events,
+  ModalController,
+  NavController,
+  Platform
+} from 'ionic-angular';
 import * as _ from 'lodash';
 import * as moment from 'moment';
 import { Observable, Subscription } from 'rxjs';
@@ -12,6 +17,7 @@ import { BitPayCardPage } from '../integrations/bitpay-card/bitpay-card';
 import { BitPayCardIntroPage } from '../integrations/bitpay-card/bitpay-card-intro/bitpay-card-intro';
 import { CoinbasePage } from '../integrations/coinbase/coinbase';
 import { ShapeshiftPage } from '../integrations/shapeshift/shapeshift';
+import { NewDesignTourPage } from '../new-design-tour/new-design-tour';
 import { ProposalsPage } from './proposals/proposals';
 
 // Providers
@@ -94,7 +100,8 @@ export class HomePage {
     private clipboardProvider: ClipboardProvider,
     private incomingDataProvider: IncomingDataProvider,
     private statusBar: StatusBar,
-    private invoiceProvider: InvoiceProvider
+    private invoiceProvider: InvoiceProvider,
+    private modalCtrl: ModalController
   ) {
     this.slideDown = false;
     this.isElectron = this.platformProvider.isElectron;
@@ -175,6 +182,8 @@ export class HomePage {
     this.logger.info('Loaded: HomePage');
 
     this.checkFeedbackInfo();
+
+    this.showNewDesignSlides();
 
     this.checkEmailLawCompliance();
 
@@ -264,6 +273,21 @@ export class HomePage {
     win.on('focus', () => {
       this.checkClipboard();
       this.setWallets();
+    });
+  }
+
+  private showNewDesignSlides() {
+    this.persistenceProvider.getNewDesignSlidesFlag().then(value => {
+      if (!value) {
+        const modal = this.modalCtrl.create(NewDesignTourPage, {
+          showBackdrop: false,
+          enableBackdropDismiss: false
+        });
+        modal.present();
+        modal.onDidDismiss(() => {
+          this.persistenceProvider.setNewDesignSlidesFlag('completed');
+        });
+      }
     });
   }
 
