@@ -63,31 +63,6 @@ page-home {
     margin-top: 12px;
   }
 
-  .card,
-  ion-card {
-    .wallets-list-title {
-      display: flex;
-      align-items: center;
-      max-width: 70%;
-
-      > img {
-        margin-right: 7px;
-      }
-
-      > span {
-        line-height: 18px;
-      }
-    }
-
-    .title-buttons {
-      display: flex;
-
-      button:first-child {
-        margin-right: 5px;
-      }
-    }
-  }
-
   .title {
     font-weight: 500;
 
@@ -241,9 +216,13 @@ page-home {
   }
 
   .section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     color: black;
     font-size: 16px;
     font-weight: 500;
+    min-height: 50px;
     margin-bottom: -2px;
     margin-top: 20px;
   }
@@ -258,16 +237,16 @@ page-home {
 
   ion-item-sliding.item-wrapper {
     $gift-card-item-side-padding: 4%;
-    $gift-card-item-height: 73px;
+    $gift-card-item-margin-bottom: 1rem;
 
     background: none;
-    height: $gift-card-item-height + 14px;
+    margin-bottom: $gift-card-item-margin-bottom + 0.5rem;
     padding-left: $gift-card-item-side-padding;
     padding-right: $gift-card-item-side-padding;
 
     ion-item-options {
       border-bottom: 0;
-      height: $gift-card-item-height;
+      margin-bottom: $gift-card-item-margin-bottom;
 
       &[side*='right'] {
         padding-right: $gift-card-item-side-padding;
@@ -303,13 +282,13 @@ page-home {
 
       .item-inner {
         border: 0;
-        height: $gift-card-item-height;
+        margin-bottom: $gift-card-item-margin-bottom;
 
         ion-label {
           &.label-ios,
           &.label-md {
             display: flex;
-            height: $gift-card-item-height;
+            margin-bottom: $gift-card-item-margin-bottom;
             align-items: center;
             margin: 0;
           }
@@ -440,6 +419,92 @@ page-home {
 
     100% {
       transform: translateY(0);
+    }
+  }
+
+  .sliding-container {
+    height: auto;
+    margin: -4px auto;
+
+    button.item {
+      &.activated {
+        background-color: $feather;
+      }
+    }
+
+    .primary-text {
+      color: black;
+      font-size: 16px;
+
+      &:not(:last-child) {
+        margin-bottom: 4px;
+      }
+    }
+
+    .wallet-name {
+      margin-bottom: 2px;
+    }
+
+    .secondary-text {
+      color: #aaaeb6;
+      font-size: 14px;
+      margin-bottom: -8px;
+    }
+
+    .testnet {
+      filter: grayscale(100%);
+    }
+
+    .item-inner {
+      text-align: right;
+      margin: 8px 0px 8px 0;
+    }
+
+    .action {
+      &.button.button-default {
+        padding: 0;
+      }
+
+      &--receive {
+        background-color: #edf7f9;
+
+        &.activated,
+        &:hover:not(.disable-hover) {
+          background-color: #e8f4f7;
+        }
+      }
+
+      &--send {
+        background-color: #eff1fe;
+
+        &.activated,
+        &:hover:not(.disable-hover) {
+          background-color: #e9ebf9;
+        }
+      }
+
+      &__icon {
+        img {
+          height: 35px;
+        }
+      }
+
+      &__text {
+        color: #434d59;
+        font-size: 14px;
+        font-weight: 500;
+        margin-top: 3px;
+      }
+    }
+
+    ion-item-sliding.item-wrapper button.item.item-block {
+      box-shadow: 0 5px 18px 0 rgba(0, 0, 0, 0.03);
+    }
+
+    label-tip {
+      margin-top: 12px;
+      width: calc(92% - 10px);
+      left: calc(4% + 5px);
     }
   }
 }
