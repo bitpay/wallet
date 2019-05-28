@@ -526,6 +526,18 @@ export class PersistenceProvider {
   removeEmailLawCompliance() {
     return this.storage.remove('emailLawCompliance');
   }
+
+  setNewDesignSlidesFlag(value: string) {
+    return this.storage.set('newDesignSlides', value);
+  }
+
+  getNewDesignSlidesFlag() {
+    return this.storage.get('newDesignSlides');
+  }
+
+  removeNewDesignSlidesFlag() {
+    return this.storage.remove('newDesignSlides');
+  }
 }
 
 function getLegacyGiftCardKey(cardName: string, network: Network) {
