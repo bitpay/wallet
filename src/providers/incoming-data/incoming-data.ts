@@ -406,7 +406,7 @@ export class IncomingDataProvider {
     //   return true;
 
     //   // Payment Protocol with non-backwards-compatible request
-    // } else 
+    // } else
     if (this.isValidPayProNonBackwardsCompatible(data)) {
       this.handlePayProNonBackwardsCompatible(data);
       return true;
@@ -495,7 +495,7 @@ export class IncomingDataProvider {
     //     type: 'InvoiceUri',
     //     title: this.translate.instant('Invoice URL')
     //   };
-    // } else 
+    // } else
     if (this.isValidPayProNonBackwardsCompatible(data)) {
       return {
         data,
