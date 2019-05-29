@@ -248,7 +248,7 @@ page-home {
 
     ion-item-options {
       border-bottom: 0;
-      height: $gift-card-item-height;
+      height: $gift-card-item-height + 15px;
 
       &[side*='right'] {
         padding-right: $gift-card-item-side-padding;
@@ -280,7 +280,7 @@ page-home {
     button.item.item-block {
       font-size: 16px;
       border-radius: 5px;
-      box-shadow: 0 7px 11px 0 rgba(0, 0, 0, 0.06);
+      box-shadow: 0 5px 18px 0 rgba(0, 0, 0, 0.03);
 
       .item-inner {
         border: 0;
