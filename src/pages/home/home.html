@@ -113,9 +113,9 @@
           </button>
         </span>
       </div>
-      <ion-list class="sliding-container" reorder="{{showReorder}}" (ionItemReorder)="reorderWallets($event)">
+      <ion-list class="sliding-container wallets" reorder="{{showReorder}}" (ionItemReorder)="reorderWallets($event)">
         <ion-item-sliding *ngFor="let wallet of wallets" #slidingItem>
-          <button ion-item (click)="onWalletAction(wallet, 'view', slidingItem)">
+          <button ion-item detail-none (click)="onWalletAction(wallet, 'view', slidingItem)">
             <ion-avatar item-start>
               <img [ngClass]="{ testnet: wallet.network === 'testnet' }" src="assets/img/currencies/{{wallet.coin}}.svg" />
             </ion-avatar>

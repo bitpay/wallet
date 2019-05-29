@@ -222,7 +222,6 @@ page-home {
     color: black;
     font-size: 16px;
     font-weight: 500;
-    min-height: 50px;
     margin-bottom: -2px;
     margin-top: 20px;
   }
@@ -235,18 +234,21 @@ page-home {
     margin: 15px auto;
   }
 
+  .wallets ion-item-sliding.item-wrapper {
+    margin-bottom: 1rem;
+  }
+
   ion-item-sliding.item-wrapper {
     $gift-card-item-side-padding: 4%;
-    $gift-card-item-margin-bottom: 1rem;
+    $gift-card-item-height: 59px;
 
     background: none;
-    margin-bottom: $gift-card-item-margin-bottom + 0.5rem;
     padding-left: $gift-card-item-side-padding;
     padding-right: $gift-card-item-side-padding;
 
     ion-item-options {
       border-bottom: 0;
-      margin-bottom: $gift-card-item-margin-bottom;
+      height: $gift-card-item-height + 15px;
 
       &[side*='right'] {
         padding-right: $gift-card-item-side-padding;
@@ -278,17 +280,17 @@ page-home {
     button.item.item-block {
       font-size: 16px;
       border-radius: 5px;
-      box-shadow: 0 7px 11px 0 rgba(0, 0, 0, 0.06);
+      box-shadow: 0 5px 18px 0 rgba(0, 0, 0, 0.03);
 
       .item-inner {
         border: 0;
-        margin-bottom: $gift-card-item-margin-bottom;
+        height: $gift-card-item-height;
 
         ion-label {
           &.label-ios,
           &.label-md {
             display: flex;
-            margin-bottom: $gift-card-item-margin-bottom;
+            height: $gift-card-item-height;
             align-items: center;
             margin: 0;
           }
@@ -424,7 +426,6 @@ page-home {
 
   .sliding-container {
     height: auto;
-    margin: -4px auto;
 
     button.item {
       &.activated {
@@ -495,10 +496,6 @@ page-home {
         font-weight: 500;
         margin-top: 3px;
       }
-    }
-
-    ion-item-sliding.item-wrapper button.item.item-block {
-      box-shadow: 0 5px 18px 0 rgba(0, 0, 0, 0.03);
     }
 
     label-tip {
