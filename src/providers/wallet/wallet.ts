@@ -1050,11 +1050,13 @@ export class WalletProvider {
 
   public isEncrypted(wallet): boolean {
     return false;
+
+console.log('[wallet.ts.1053] TODO isEncrypted'); // TODO
     // TODO
-    if (_.isEmpty(wallet)) return undefined;
+/*    if (_.isEmpty(wallet)) return undefined;
     const isEncrypted = wallet.isPrivKeyEncrypted();
     return isEncrypted;
-  }
+*/  }
 
   public createTx(
     wallet,
