@@ -71,7 +71,6 @@ export class HomePage {
   public showGiftCards: boolean;
   public showBitpayCardGetStarted: boolean;
   public accessDenied: boolean;
-  public isCopay: boolean;
 
   private isElectron: boolean;
   private zone;
@@ -106,7 +105,6 @@ export class HomePage {
     this.slideDown = false;
     this.isElectron = this.platformProvider.isElectron;
     this.showReorder = false;
-    this.isCopay = this.appProvider.info.name === 'copay';
     this.zone = new NgZone({ enableLongStackTrace: false });
     this.events.subscribe('Home/reloadStatus', () => {
       this._willEnter(true);
