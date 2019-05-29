@@ -230,12 +230,11 @@ page-home {
   .sliding-container {
     border-radius: 5px;
     display: block;
-    height: 73px;
-    margin: 15px auto;
+    margin: 0.7rem auto;
   }
 
   .wallets ion-item-sliding.item-wrapper {
-    margin-bottom: 1rem;
+    margin-bottom: 0.7rem;
   }
 
   ion-item-sliding.item-wrapper {
@@ -245,10 +244,12 @@ page-home {
     background: none;
     padding-left: $gift-card-item-side-padding;
     padding-right: $gift-card-item-side-padding;
+    height: $gift-card-item-height + 20px;
 
     ion-item-options {
       border-bottom: 0;
-      height: $gift-card-item-height + 15px;
+      margin-top: 1px;
+      height: $gift-card-item-height + 14px;
 
       &[side*='right'] {
         padding-right: $gift-card-item-side-padding;
@@ -285,6 +286,7 @@ page-home {
       .item-inner {
         border: 0;
         height: $gift-card-item-height;
+        align-items: start;
 
         ion-label {
           &.label-ios,

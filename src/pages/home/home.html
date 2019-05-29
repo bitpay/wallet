@@ -125,23 +125,21 @@
                 {{ wallet.credentials.m }}/{{ wallet.credentials.n }}
               </ion-note>
             </ion-label>
-            <ion-note item-end *ngIf="!hasZeroBalance(wallet, wallet.coin.toUpperCase()) && !wallet.balanceHidden">
+            <ion-note no-padding no-margin item-end *ngIf="!hasZeroBalance(wallet, wallet.coin.toUpperCase()) && !wallet.balanceHidden">
               <div class="primary-text">{{ getBalance(wallet, wallet.coin.toUpperCase()) }}</div>
               <div class="secondary-text" *ngIf="wallet.cachedStatus">
                 {{ wallet?.cachedStatus.totalBalanceAlternative }}
                 {{ wallet?.cachedStatus.alternativeIsoCode }}
               </div>
             </ion-note>
-            <ion-note item-end *ngIf="hasZeroBalance(wallet, wallet.coin.toUpperCase()) && !wallet.balanceHidden">
+            <ion-note no-padding no-margin item-end *ngIf="hasZeroBalance(wallet, wallet.coin.toUpperCase()) && !wallet.balanceHidden">
               <div class="primary-text">0</div>
               <div class="secondary-text" *ngIf="wallet.cachedStatus">
                 0 {{ wallet?.cachedStatus.alternativeIsoCode }}
               </div>
             </ion-note>
-            <ion-note item-end>
-              <div *ngIf="wallet.balanceHidden">
-                [<span translate>Hidden</span>]
-              </div>
+            <ion-note no-padding no-margin item-end *ngIf="wallet.balanceHidden">
+              [<span translate>Hidden</span>]
             </ion-note>
           </button>
           <ion-item-options side="left">
