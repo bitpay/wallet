@@ -63,15 +63,13 @@ export class KeyProvider {
   // Use Key.match(a,b) for comparison
   //
   public addKeys(keysToAdd: any[]): Promise<any> {
-    this.keys.forEach(k => {
-      keysToAdd.forEach(keyToAdd => {
-        if (keyToAdd.match(keyToAdd, k)) {
-          this.logger.warn('Key already added');
-        } else {
-          this.keys.push(keyToAdd);
-          this.isDirty = true;
-        }
-      });
+    keysToAdd.forEach(keyToAdd => {
+      if (!this.keys.find((k) => keyToAdd.match(keyToAdd, k))) {
+        this.keys.push(keyToAdd);
+        this.isDirty = true;
+      } else {
+        this.logger.warn('Key already added');
+      }
     });
     return this.storeKeysIfDirty();
   }
@@ -80,12 +78,9 @@ export class KeyProvider {
   // Should get a key, from its id.
   public getKey(keyId: string): Promise<any> {
     this.logger.debug('Getting key: ' + keyId);
-    let selectedKey;
-    this.keys.forEach(key => {
-      if (key.id == keyId) {
-        selectedKey = key;
-      }
-    });
+
+    let selectedKey = this.keys.find((k) => k.id == keyId);
+
     if (selectedKey) {
       return Promise.resolve(selectedKey);
     } else {
@@ -97,11 +92,8 @@ export class KeyProvider {
   public removeKey(keyId: string): Promise<any> {
     this.logger.debug('Removing key: ' + keyId);
     let selectedKey: number;
-    this.keys.forEach((key, index) => {
-      if (key.id == keyId) {
-        selectedKey = index;
-      }
-    });
+
+    selectedKey = this.keys.findIndex(k => k.id == keyId);
 
     if (selectedKey >= 0) {
       this.keys.splice(selectedKey, 1);
