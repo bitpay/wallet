@@ -401,12 +401,13 @@ export class IncomingDataProvider {
 
   public redir(data: string, redirParams?: RedirParams): boolean {
     //  Handling of a bitpay invoice url
-    if (this.isValidBitPayInvoice(data)) {
-      this.handleBitPayInvoice(data);
-      return true;
+    // if (this.isValidBitPayInvoice(data)) {
+    //   this.handleBitPayInvoice(data);
+    //   return true;
 
-      // Payment Protocol with non-backwards-compatible request
-    } else if (this.isValidPayProNonBackwardsCompatible(data)) {
+    //   // Payment Protocol with non-backwards-compatible request
+    // } else 
+    if (this.isValidPayProNonBackwardsCompatible(data)) {
       this.handlePayProNonBackwardsCompatible(data);
       return true;
 
@@ -488,13 +489,14 @@ export class IncomingDataProvider {
 
   public parseData(data: string): any {
     if (!data) return;
-    if (this.isValidBitPayInvoice(data)) {
-      return {
-        data,
-        type: 'InvoiceUri',
-        title: this.translate.instant('Invoice URL')
-      };
-    } else if (this.isValidPayProNonBackwardsCompatible(data)) {
+    // if (this.isValidBitPayInvoice(data)) {
+    //   return {
+    //     data,
+    //     type: 'InvoiceUri',
+    //     title: this.translate.instant('Invoice URL')
+    //   };
+    // } else 
+    if (this.isValidPayProNonBackwardsCompatible(data)) {
       return {
         data,
         type: 'PayPro',

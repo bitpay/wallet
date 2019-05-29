@@ -405,41 +405,42 @@ export class HomePage {
               this.payProDetailsData.error = err;
               this.logger.warn('Error in Payment Protocol', err);
             });
-        } else if (this.validDataFromClipboard.type === 'InvoiceUri') {
-          const invoiceId: string = data.replace(
-            /https:\/\/(www.)?(test.)?bitpay.com\/invoice\//,
-            ''
-          );
-          try {
-            const invoiceData = await this.invoiceProvider.getBitPayInvoiceData(
-              invoiceId
-            );
-            const { invoice, org } = invoiceData;
-            const { selectedTransactionCurrency } = invoice.buyerProvidedInfo;
-            const { price, currency, expirationTime, paymentTotals } = invoice;
-            this.payProDetailsData = invoice;
-            this.payProDetailsData.verified = true;
-            this.payProDetailsData.isFiat =
-              selectedTransactionCurrency || Coin[currency.toUpperCase()]
-                ? false
-                : true;
-            this.payProDetailsData.host = org.name;
-            this.payProDetailsData.coin = selectedTransactionCurrency
-              ? Coin[selectedTransactionCurrency]
-              : currency;
-            this.payProDetailsData.amount = selectedTransactionCurrency
-              ? paymentTotals[selectedTransactionCurrency]
-              : Coin[currency]
-              ? price / 1e-8
-              : price;
-            this.clearCountDownInterval();
-            this.paymentTimeControl(expirationTime);
-          } catch (err) {
-            this.payProDetailsData = {};
-            this.payProDetailsData.error = err;
-            this.logger.warn('Error in Fetching Invoice', err);
-          }
         }
+        // else if (this.validDataFromClipboard.type === 'InvoiceUri') {
+        //   const invoiceId: string = data.replace(
+        //     /https:\/\/(www.)?(test.)?bitpay.com\/invoice\//,
+        //     ''
+        //   );
+        //   try {
+        //     const invoiceData = await this.invoiceProvider.getBitPayInvoiceData(
+        //       invoiceId
+        //     );
+        //     const { invoice, org } = invoiceData;
+        //     const { selectedTransactionCurrency } = invoice.buyerProvidedInfo;
+        //     const { price, currency, expirationTime, paymentTotals } = invoice;
+        //     this.payProDetailsData = invoice;
+        //     this.payProDetailsData.verified = true;
+        //     this.payProDetailsData.isFiat =
+        //       selectedTransactionCurrency || Coin[currency.toUpperCase()]
+        //         ? false
+        //         : true;
+        //     this.payProDetailsData.host = org.name;
+        //     this.payProDetailsData.coin = selectedTransactionCurrency
+        //       ? Coin[selectedTransactionCurrency]
+        //       : currency;
+        //     this.payProDetailsData.amount = selectedTransactionCurrency
+        //       ? paymentTotals[selectedTransactionCurrency]
+        //       : Coin[currency]
+        //       ? price / 1e-8
+        //       : price;
+        //     this.clearCountDownInterval();
+        //     this.paymentTimeControl(expirationTime);
+        //   } catch (err) {
+        //     this.payProDetailsData = {};
+        //     this.payProDetailsData.error = err;
+        //     this.logger.warn('Error in Fetching Invoice', err);
+        //   }
+        // }
         await Observable.timer(50).toPromise();
         this.slideDown = true;
       })
@@ -552,9 +553,9 @@ export class HomePage {
 
     this.logger.debug(
       'fetching status for: ' +
-        opts.walletId +
-        ' alsohistory:' +
-        opts.alsoUpdateHistory
+      opts.walletId +
+      ' alsohistory:' +
+      opts.alsoUpdateHistory
     );
     const wallet = this.profileProvider.getWallet(opts.walletId);
     if (!wallet) return;
