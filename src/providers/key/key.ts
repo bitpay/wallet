@@ -21,6 +21,7 @@ export class KeyProvider {
     return this.persistenceProvider.getKeys().then(keys => {
       keys = keys ? keys : [];
       this.keys = keys;
+      return Promise.resolve();
     });
   }
 

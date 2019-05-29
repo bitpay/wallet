@@ -216,32 +216,38 @@ export class CopayApp {
     this.events.subscribe('OpenWallet', (wallet, params) =>
       this.openWallet(wallet, params)
     );
-    this.keyProvider.load().catch(err => {
+    this.keyProvider.load().then(() => {
+      // Check Profile
+      this.profile
+        .loadAndBindProfile()
+        .then(profile => {
+          this.onProfileLoad(profile);
+        })
+        .catch((err: Error) => {
+          switch (err.message) {
+            case 'NONAGREEDDISCLAIMER':
+              this.logger.warn('Non agreed disclaimer');
+              this.rootPage = DisclaimerPage;
+              break;
+            case 'ONBOARDINGNONCOMPLETED':
+              this.logger.warn('Onboarding non completed');
+              this.rootPage = OnboardingPage;
+              break;
+            default:
+              this.popupProvider.ionicAlert(
+                'Could not initialize the app',
+                err.message
+              );
+          }
+        });
+    }).catch(err => {
+      this.popupProvider.ionicAlert(
+        'Error loading keys',
+        err.message || ''
+      );
       this.logger.error('Error loading keys: ', err);
     });
-    // Check Profile
-    this.profile
-      .loadAndBindProfile()
-      .then(profile => {
-        this.onProfileLoad(profile);
-      })
-      .catch((err: Error) => {
-        switch (err.message) {
-          case 'NONAGREEDDISCLAIMER':
-            this.logger.warn('Non agreed disclaimer');
-            this.rootPage = DisclaimerPage;
-            break;
-          case 'ONBOARDINGNONCOMPLETED':
-            this.logger.warn('Onboarding non completed');
-            this.rootPage = OnboardingPage;
-            break;
-          default:
-            this.popupProvider.ionicAlert(
-              'Could not initialize the app',
-              err.message
-            );
-        }
-      });
+
   }
 
   private onProfileLoad(profile) {
