@@ -102,15 +102,11 @@
         <span translate>
           Wallets
         </span>
-        <span *ngIf="!showReorder">
-          <button ion-button clear icon-only color="grey" (click)="reorder()" *ngIf="wallets.length > 1">
-            <img src="assets/img/sort.svg">
-          </button>
+        <span *ngIf="!showReorder && wallets.length > 1" (click)="reorder()">
+          <img src="assets/img/sort.svg">
         </span>
-        <span *ngIf="showReorder">
-          <button ion-button clear color="primary" (click)="reorder()">
-            {{'Done' | translate}}
-          </button>
+        <span *ngIf="showReorder" (click)="reorder()">
+          {{'Done' | translate}}
         </span>
       </div>
       <ion-list class="sliding-container wallets" reorder="{{showReorder}}" (ionItemReorder)="reorderWallets($event)">
@@ -125,20 +121,20 @@
                 {{ wallet.credentials.m }}/{{ wallet.credentials.n }}
               </ion-note>
             </ion-label>
-            <ion-note item-end *ngIf="!hasZeroBalance(wallet, wallet.coin.toUpperCase()) && !wallet.balanceHidden">
-              <div class="primary-text">{{ getBalance(wallet, wallet.coin.toUpperCase()) }}</div>
-              <div class="secondary-text" *ngIf="wallet.cachedStatus">
-                {{ wallet?.cachedStatus.totalBalanceAlternative }}
-                {{ wallet?.cachedStatus.alternativeIsoCode }}
-              </div>
-            </ion-note>
-            <ion-note item-end *ngIf="hasZeroBalance(wallet, wallet.coin.toUpperCase()) && !wallet.balanceHidden">
-              <div class="primary-text">0</div>
-              <div class="secondary-text" *ngIf="wallet.cachedStatus">
-                0 {{ wallet?.cachedStatus.alternativeIsoCode }}
-              </div>
-            </ion-note>
             <ion-note item-end>
+              <div *ngIf="!hasZeroBalance(wallet, wallet.coin.toUpperCase()) && !wallet.balanceHidden">
+                <div class="primary-text">{{ getBalance(wallet, wallet.coin.toUpperCase()) }}</div>
+                <div class="secondary-text" *ngIf="wallet.cachedStatus">
+                  {{ wallet?.cachedStatus.totalBalanceAlternative }}
+                  {{ wallet?.cachedStatus.alternativeIsoCode }}
+                </div>
+              </div>
+              <div *ngIf="hasZeroBalance(wallet, wallet.coin.toUpperCase()) && !wallet.balanceHidden">
+                <div class="primary-text">0</div>
+                <div class="secondary-text" *ngIf="wallet.cachedStatus">
+                  0 {{ wallet?.cachedStatus.alternativeIsoCode }}
+                </div>
+              </div>
               <div *ngIf="wallet.balanceHidden">
                 [<span translate>Hidden</span>]
               </div>
