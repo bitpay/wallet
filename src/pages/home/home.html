@@ -44,7 +44,7 @@
       'content-animation': slideDown,
       'initial-margin': validDataFromClipboard
     }">
-    <ion-card class="server-message" *ngIf="serverMessages && serverMessages[0]">
+    <ion-card class="server-message" *ngIf="showServerMessage && serverMessages && serverMessages[0]">
       <ion-card-header class="server-message-header" *ngIf="serverMessages[0].dismissible">
         <ion-row>
           <button ion-button clear icon-only color="grey" (click)="dismissServerMessage(serverMessages[0])">

@@ -63,6 +63,7 @@ export class HomePage {
   public payProDetailsData;
   public remainingTimeStr: string;
   public slideDown: boolean;
+  public showServerMessage: boolean;
 
   public showRateCard: boolean;
   public showReorder: boolean;
@@ -179,11 +180,12 @@ export class HomePage {
   ionViewDidLoad() {
     this.logger.info('Loaded: HomePage');
 
-    this.checkFeedbackInfo();
-
-    this.showNewDesignSlides();
-
-    this.checkEmailLawCompliance();
+    // Required delay to improve performance loading
+    setTimeout(() => {
+      this.checkFeedbackInfo();
+      this.showNewDesignSlides();
+      this.checkEmailLawCompliance();
+    }, 2000);
 
     const subscribeEvents = () => {
       // BWS Events: Update Status per Wallet -> Update txps
@@ -707,6 +709,7 @@ export class HomePage {
   }
 
   public dismissServerMessage(serverMessage): void {
+    this.showServerMessage = false;
     this.logger.debug(`Server message id: ${serverMessage.id} dismissed`);
     this.persistenceProvider.setServerMessageDismissed(serverMessage.id);
     this.removeServerMessage(serverMessage.id);
@@ -733,7 +736,9 @@ export class HomePage {
       .then((value: string) => {
         if (value === 'dismissed') {
           this.removeServerMessage(serverMessage.id);
+          return;
         }
+        this.showServerMessage = true;
       });
   }
 
