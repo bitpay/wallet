@@ -1,5 +1,7 @@
+import { BwcProvider } from '../bwc/bwc';
 import { Injectable } from '@angular/core';
 import { Logger } from '../../providers/logger/logger';
+import { PopupProvider } from '../popup/popup';
 
 // Providers
 import { PersistenceProvider } from '../persistence/persistence';
@@ -8,9 +10,12 @@ import { PersistenceProvider } from '../persistence/persistence';
 export class KeyProvider {
   private keys: any[];
   private isDirty: boolean;
+  private Key = this.bwcProvider.getKey();
 
   constructor(
     private logger: Logger,
+    private bwcProvider: BwcProvider,
+    private popupProvider: PopupProvider,
     private persistenceProvider: PersistenceProvider
   ) {
     this.logger.debug('KeyProvider initialized');
@@ -20,7 +25,7 @@ export class KeyProvider {
   public load(): Promise<any> {
     return this.persistenceProvider.getKeys().then(keys => {
       keys = keys ? keys : [];
-      this.keys = keys;
+      this.keys = keys.forEach(k => this.Key.fromObj(k));
       return Promise.resolve();
     });
   }
@@ -51,7 +56,7 @@ export class KeyProvider {
     if (keyExists) {
       return Promise.reject('Key already added');
     } else {
-      this.keys.push(key);
+      this.keys.push(this.Key.fromObj(key));
       this.isDirty = true;
       return this.storeKeysIfDirty();
     }
@@ -66,7 +71,7 @@ export class KeyProvider {
   public addKeys(keysToAdd: any[]): Promise<any> {
     keysToAdd.forEach(keyToAdd => {
       if (!this.keys.find((k) => keyToAdd.match(keyToAdd, k))) {
-        this.keys.push(keyToAdd);
+        this.keys.push(this.Key.fromObj(keyToAdd));
         this.isDirty = true;
       } else {
         this.logger.warn('Key already added');
@@ -109,4 +114,117 @@ export class KeyProvider {
       return Promise.reject(err);
     }
   }
+
+  // An alert dialog
+  private askPassword(warnMsg: string, title: string): Promise<any> {
+    return new Promise(resolve => {
+      const opts = {
+        type: 'password',
+        useDanger: true
+      };
+      this.popupProvider.ionicPrompt(title, warnMsg, opts).then(res => {
+        return resolve(res);
+      });
+    });
+  }
+
+  public encrypt(): Promise<any> {
+    return new Promise((resolve, reject) => {
+      let title = this.translate.instant('Enter a new encrypt password');
+      const warnMsg = this.translate.instant(
+        'Your wallet key will be encrypted. The encrypt password cannot be recovered. Be sure to write it down.'
+      );
+      this.askPassword(warnMsg, title)
+        .then((password: string) => {
+          if (_.isNull(password)) {
+            return reject();
+          }
+          if (password == '') {
+            return reject(this.translate.instant('No password'));
+          }
+          title = this.translate.instant('Confirm your new encrypt password');
+          this.askPassword(warnMsg, title)
+            .then((password2: string) => {
+              if (_.isNull(password2)) {
+                return reject();
+              }
+              if (password != password2)
+                return reject(this.translate.instant('Password mismatch'));
+
+              this.encryptPrivateKey(password);
+              return resolve();
+            })
+            .catch(err => {
+              return reject(err);
+            });
+        })
+        .catch(err => {
+          return reject(err);
+        });
+    });
+  }
+
+  public decrypt(walletsArray: any[]): Promise<any> {
+    return new Promise((resolve, reject) => {
+      this.askPassword(
+        null,
+        this.translate.instant('Enter encrypt password')
+      ).then((password: string) => {
+        if (_.isNull(password)) {
+          return reject();
+        }
+        if (password == '') {
+          return reject(this.translate.instant('No password'));
+        }
+        try {
+          walletsArray.forEach(wallet => {
+            this.logger.info(
+              'Disabling private key encryption for' + wallet.name
+            );
+            wallet.decryptPrivateKey(password);
+          });
+        } catch (e) {
+          return reject(this.translate.instant('Wrong password'));
+        }
+        return resolve();
+      });
+    });
+  }
+
+  public handleEncryptedWallet(wallet): Promise<any> {
+    return new Promise((resolve, reject) => {
+      if (!this.isEncrypted(wallet)) return resolve();
+      this.askPassword(
+        null,
+        this.translate.instant('Enter encrypt password')
+      ).then((password: string) => {
+        if (_.isNull(password)) {
+          return reject(new Error('PASSWORD_CANCELLED'));
+        }
+        if (password == '') {
+          return reject(new Error('NO_PASSWORD'));
+        }
+        if (!wallet.checkPassword(password))
+          return reject(new Error('WRONG_PASSWORD'));
+        return resolve(password);
+      });
+    });
+  }
+
+  public reject(wallet, txp): Promise<any> {
+    return new Promise((resolve, reject) => {
+      this.rejectTx(wallet, txp)
+        .then(txpr => {
+          this.invalidateCache(wallet);
+          this.events.publish('Local/TxAction', {
+            walletId: wallet.id
+          });
+          return resolve(txpr);
+        })
+        .catch(err => {
+          return reject(err);
+        });
+    });
+  }
+
 }

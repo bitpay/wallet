@@ -30,6 +30,7 @@ import { ProfileProvider } from '../../../providers/profile/profile';
 import { ReplaceParametersProvider } from '../../../providers/replace-parameters/replace-parameters';
 import { TxConfirmNotificationProvider } from '../../../providers/tx-confirm-notification/tx-confirm-notification';
 import { TxFormatProvider } from '../../../providers/tx-format/tx-format';
+import { KeyProvider } from '../../../providers/key/key';
 import {
   Coin,
   TransactionProposal,
@@ -107,6 +108,7 @@ export class ConfirmPage extends WalletTabsChild {
     protected txConfirmNotificationProvider: TxConfirmNotificationProvider,
     protected txFormatProvider: TxFormatProvider,
     protected walletProvider: WalletProvider,
+    protected keyProvider: KeyProvider,
     walletTabsProvider: WalletTabsProvider,
     protected clipboardProvider: ClipboardProvider,
     protected events: Events,
@@ -833,7 +835,9 @@ export class ConfirmPage extends WalletTabsChild {
 
   private confirmTx(txp, wallet) {
     return new Promise<boolean>(resolve => {
-      if (this.walletProvider.isEncrypted(wallet)) return resolve(false);
+      let key = this.keyProvider.getKey(wallet.keyId);
+      if (!key || key.isPrivKeyEncrypted(wallet)) return resolve(false);
+
       this.txFormatProvider.formatToUSD(wallet.coin, txp.amount).then(val => {
         const amountUsd = parseFloat(val);
         if (amountUsd <= this.CONFIRM_LIMIT_USD) return resolve(false);
