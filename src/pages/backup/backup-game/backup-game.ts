@@ -71,7 +71,7 @@ export class BackupGamePage {
   }
 
   private shuffledWords(words: string[]) {
-    const sort = _.sortBy(words);
+    const sort = _.shuffle(words);
 
     return _.map(sort, w => {
       return {
