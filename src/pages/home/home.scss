@@ -235,6 +235,9 @@ page-home {
 
   .wallets ion-item-sliding.item-wrapper {
     margin-bottom: 0.7rem;
+    button.item.item-block .item-inner {
+      align-items: start;
+    }
   }
 
   ion-item-sliding.item-wrapper {
@@ -286,7 +289,6 @@ page-home {
       .item-inner {
         border: 0;
         height: $gift-card-item-height;
-        align-items: start;
 
         ion-label {
           &.label-ios,
