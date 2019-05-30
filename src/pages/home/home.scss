@@ -1,6 +1,5 @@
 page-home {
   ion-content {
-
     &.content-ios,
     &.content-md {
       background: $feather;
@@ -65,7 +64,7 @@ page-home {
   .title {
     font-weight: 500;
 
-    >img {
+    > img {
       margin-right: 7px;
     }
   }
@@ -298,7 +297,6 @@ page-home {
         height: $gift-card-item-height;
 
         ion-label {
-
           &.label-ios,
           &.label-md {
             display: flex;
@@ -481,19 +479,19 @@ page-home {
       font-size: 14px;
       margin-top: 4px;
 
-      @media(max-width: 330px) {
+      @media (max-width: 330px) {
         font-size: 13px;
       }
     }
 
     &.reorder-enabled .wallet-amount {
       .secondary-text {
-        @media(max-width: 400px) {
+        @media (max-width: 400px) {
           font-size: 11px;
         }
       }
 
-      @media(max-width: 330px) {
+      @media (max-width: 330px) {
         display: none;
       }
     }
@@ -544,7 +542,6 @@ page-home {
       }
     }
 
-
     &.wallets {
       margin-top: 16px;
 
@@ -571,9 +568,5 @@ page-home {
       width: calc(92% - 10px);
       left: calc(4% + 5px);
     }
-
-
   }
-
-
 }
