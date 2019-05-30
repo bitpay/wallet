@@ -52,6 +52,8 @@ interface UpdateWalletOptsI {
 export class HomePage {
   @ViewChild('showCard')
   showCard;
+  @ViewChild('priceChart')
+  priceChart;
   public wallets;
   public txpsN: number;
   public serverMessages: any[];
@@ -67,7 +69,7 @@ export class HomePage {
 
   public showRateCard: boolean;
   public showReorder: boolean;
-  public showIntegration;
+  public showPriceChart: boolean;
   public hideHomeIntegrations: boolean;
   public showGiftCards: boolean;
   public showBitpayCardGetStarted: boolean;
@@ -141,7 +143,12 @@ export class HomePage {
     // Show integrations
     const integrations = _.filter(this.homeIntegrationsProvider.get(), {
       show: true
-    }).filter(i => i.name !== 'giftcards' && i.name !== 'debitcard');
+    }).filter(
+      i =>
+        i.name !== 'giftcards' &&
+        i.name !== 'debitcard' &&
+        i.name !== 'pricechart'
+      );
 
     this.showGiftCards = this.homeIntegrationsProvider.shouldShowInHome(
       'giftcards'
@@ -149,6 +156,10 @@ export class HomePage {
 
     this.showBitpayCardGetStarted = this.homeIntegrationsProvider.shouldShowInHome(
       'debitcard'
+    );
+
+    this.showPriceChart = this.homeIntegrationsProvider.shouldShowInHome(
+      'pricechart'
     );
 
     // Hide BitPay if linked
@@ -453,8 +464,8 @@ export class HomePage {
             this.payProDetailsData.amount = selectedTransactionCurrency
               ? paymentTotals[selectedTransactionCurrency]
               : Coin[currency]
-              ? price / 1e-8
-              : price;
+                ? price / 1e-8
+                : price;
             this.clearCountDownInterval();
             this.paymentTimeControl(expirationTime);
           } catch (err) {
@@ -575,9 +586,9 @@ export class HomePage {
 
     this.logger.debug(
       'fetching status for: ' +
-        opts.walletId +
-        ' alsohistory:' +
-        opts.alsoUpdateHistory
+      opts.walletId +
+      ' alsohistory:' +
+      opts.alsoUpdateHistory
     );
     const wallet = this.profileProvider.getWallet(opts.walletId);
     if (!wallet) return;
@@ -794,6 +805,7 @@ export class HomePage {
   public doRefresh(refresher): void {
     this.debounceSetWallets();
     setTimeout(() => {
+      this.updateChart();
       refresher.complete();
     }, 2000);
   }
@@ -827,5 +839,9 @@ export class HomePage {
       (wallet.cachedStatus && wallet.cachedStatus.totalBalanceSat === 0) ||
       this.getLastKownBalance(wallet, currecy) === '0.00'
     );
+  }
+
+  public updateChart() {
+    if (this.showPriceChart) this.priceChart.updateCurrentPrice();
   }
 }

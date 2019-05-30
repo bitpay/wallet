@@ -64,6 +64,15 @@
         </ion-label>
       </button>
 
+      <button ion-item (click)="openPriceChartPage()">
+        <ion-icon class="item-img settings-icon" item-start>
+          <img src="assets/img/settings-icons/icon-network.svg" width="22">
+        </ion-icon>
+        <ion-label>
+          {{'Price chart' | translate}}
+        </ion-label>
+      </button>
+
       <button ion-item *ngIf="isCordova" (click)="openLockPage()">
         <ion-icon class="item-img settings-icon" item-start>
           <img src="assets/img/settings-icons/icon-lock.svg" width="22">

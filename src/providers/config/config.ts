@@ -67,6 +67,7 @@ export interface Config {
     mercadolibre: boolean;
     shapeshift: boolean;
     giftcards: boolean;
+    pricechart: boolean;
   };
 
   pushNotificationsEnabled: boolean;
@@ -177,7 +178,8 @@ export class ConfigProvider {
         amazon: true,
         mercadolibre: true,
         shapeshift: true,
-        giftcards: true
+        giftcards: true,
+        pricechart: true
       },
 
       pushNotificationsEnabled: true,
@@ -277,6 +279,9 @@ export class ConfigProvider {
     } else {
       if (this.configCache.showIntegration.giftcards !== false) {
         this.configCache.showIntegration.giftcards = this.configDefault.showIntegration.giftcards;
+      }
+      if (this.configCache.showIntegration.pricechart !== false) {
+        this.configCache.showIntegration.pricechart = this.configDefault.showIntegration.pricechart;
       }
     }
     if (!this.configCache.pushNotificationsEnabled) {

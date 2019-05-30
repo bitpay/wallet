@@ -25,6 +25,7 @@ import { IncomingDataProvider } from '../providers/incoming-data/incoming-data';
 import { Logger } from '../providers/logger/logger';
 import { PlatformProvider } from '../providers/platform/platform';
 import { PopupProvider } from '../providers/popup/popup';
+import { PriceProvider } from '../providers/price/price';
 import { ProfileProvider } from '../providers/profile/profile';
 import { PushNotificationsProvider } from '../providers/push-notifications/push-notifications';
 import { ShapeshiftProvider } from '../providers/shapeshift/shapeshift';
@@ -115,7 +116,8 @@ export class CopayApp {
     private walletTabsProvider: WalletTabsProvider,
     private renderer: Renderer,
     private userAgent: UserAgent,
-    private device: Device
+    private device: Device,
+    private priceProvider: PriceProvider
   ) {
     this.imageLoaderConfig.setFileNameCachedWithExtension(true);
     this.imageLoaderConfig.useImageTag(true);
@@ -328,6 +330,10 @@ export class CopayApp {
     // BitPay Card
     if (this.appProvider.info._enabledExtensions.debitcard)
       this.bitPayCardProvider.register();
+
+    // Price Chart
+    if (this.appProvider.info._enabledExtensions.pricechart)
+      this.priceProvider.register();
   }
 
   private incomingDataRedirEvent(): void {
