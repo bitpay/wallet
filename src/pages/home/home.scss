@@ -1,5 +1,6 @@
 page-home {
   ion-content {
+
     &.content-ios,
     &.content-md {
       background: $feather;
@@ -66,7 +67,7 @@ page-home {
   .title {
     font-weight: 500;
 
-    > img {
+    >img {
       margin-right: 7px;
     }
   }
@@ -289,6 +290,7 @@ page-home {
         height: $gift-card-item-height;
 
         ion-label {
+
           &.label-ios,
           &.label-md {
             display: flex;
@@ -451,7 +453,7 @@ page-home {
     .secondary-text {
       color: #aaaeb6;
       font-size: 14px;
-      margin-bottom: -8px;
+      // margin-bottom: -8px;
     }
 
     .testnet {
@@ -505,5 +507,16 @@ page-home {
       width: calc(92% - 10px);
       left: calc(4% + 5px);
     }
+
+    &.wallets {
+      button.item.item-block {
+        div.item-inner {
+          display: flex;
+          align-items: center;
+        }
+      }
+    }
   }
+
+
 }
