@@ -237,6 +237,16 @@ page-home {
     }
   }
 
+  .wallets ion-item-sliding.reorder-active {
+    box-shadow: none;
+
+    button.item.item-block {
+      box-shadow: 0 5px 18px 0 rgba(0, 0, 0, 0.06);
+      transform: scale3d(1.05, 1.05, 1.05);
+      transition: box-shadow 300ms ease, transform 300ms ease;
+    }
+  }
+
   ion-item-sliding.item-wrapper {
     $gift-card-item-side-padding: 4%;
     $gift-card-item-height: 59px;
@@ -345,6 +355,7 @@ page-home {
     text-align: center;
     width: 92%;
     margin: 15px auto;
+    margin-top: 0;
     height: 73px;
   }
 
@@ -426,6 +437,23 @@ page-home {
     }
   }
 
+  .reorder-done {
+    color: color($colors, primary);
+  }
+
+  .reorder-button {
+    display: flex;
+  }
+
+  .wallets-container {
+    margin-top: 20px;
+    margin-bottom: -15px;
+
+    .section-header {
+      margin-bottom: 18px;
+    }
+  }
+
   .sliding-container {
     height: auto;
 
@@ -438,20 +466,36 @@ page-home {
     .primary-text {
       color: black;
       font-size: 16px;
-
-      &:not(:last-child) {
-        margin-bottom: 4px;
-      }
     }
 
     .wallet-name {
       margin-bottom: 2px;
     }
 
+    .wallet-name-and-credentials {
+      margin-right: 3px;
+    }
+
     .secondary-text {
       color: #aaaeb6;
       font-size: 14px;
-      // margin-bottom: -8px;
+      margin-top: 4px;
+
+      @media(max-width: 330px) {
+        font-size: 13px;
+      }
+    }
+
+    &.reorder-enabled .wallet-amount {
+      .secondary-text {
+        @media(max-width: 400px) {
+          font-size: 11px;
+        }
+      }
+
+      @media(max-width: 330px) {
+        display: none;
+      }
     }
 
     .testnet {
@@ -460,7 +504,7 @@ page-home {
 
     .item-inner {
       text-align: right;
-      margin: 8px 0px 8px 0;
+      margin: 8px 2px 8px 0;
     }
 
     .action {
@@ -500,20 +544,35 @@ page-home {
       }
     }
 
-    label-tip {
-      margin-top: 12px;
-      width: calc(92% - 10px);
-      left: calc(4% + 5px);
-    }
 
     &.wallets {
+      margin-top: 16px;
+
       button.item.item-block {
         div.item-inner {
           display: flex;
           align-items: center;
         }
       }
+
+      ion-item-sliding.item-wrapper {
+        height: 93px;
+        margin: -8px 0;
+      }
     }
+
+    ion-reorder {
+      flex-basis: 60px;
+      margin-left: 2px;
+    }
+
+    label-tip {
+      margin-top: 12px;
+      width: calc(92% - 10px);
+      left: calc(4% + 5px);
+    }
+
+
   }
 
 
