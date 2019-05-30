@@ -88,9 +88,9 @@
       <variable name="URL_SCHEME" value="bitcoin" />
       <variable name="SECOND_URL_SCHEME" value="*APPURI*" />
       <variable name="THIRD_URL_SCHEME" value="bitcoincash" />
-      <variable name="ANDROID_SCHEME" value="https" />
-      <variable name="ANDROID_HOST" value="*bitpay.com" />
-      <variable name="ANDROID_PATHPREFIX" value="/invoice/" />
+      <variable name="ANDROID_SCHEME" value="" />
+      <variable name="ANDROID_HOST" value="" />
+      <variable name="ANDROID_PATHPREFIX" value="" />
     </plugin>
     <plugin name="cordova-plugin-fcm-ng" spec="3.0.2" />
 
