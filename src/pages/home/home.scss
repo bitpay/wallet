@@ -222,7 +222,7 @@ page-home {
     color: black;
     font-size: 16px;
     font-weight: 500;
-    margin-bottom: -2px;
+    margin-bottom: 10px;
     margin-top: 20px;
   }
 
@@ -230,11 +230,9 @@ page-home {
   .sliding-container {
     border-radius: 5px;
     display: block;
-    margin: 0.7rem auto;
   }
 
   .wallets ion-item-sliding.item-wrapper {
-    margin-bottom: 0.7rem;
     button.item.item-block .item-inner {
       align-items: start;
     }
@@ -247,7 +245,7 @@ page-home {
     background: none;
     padding-left: $gift-card-item-side-padding;
     padding-right: $gift-card-item-side-padding;
-    height: $gift-card-item-height + 20px;
+    padding-bottom: 1rem;
 
     ion-item-options {
       border-bottom: 0;

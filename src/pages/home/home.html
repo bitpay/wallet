@@ -102,15 +102,11 @@
         <span translate>
           Wallets
         </span>
-        <span *ngIf="!showReorder">
-          <button ion-button clear icon-only color="grey" (click)="reorder()" *ngIf="wallets.length > 1">
-            <img src="assets/img/sort.svg">
-          </button>
+        <span *ngIf="!showReorder && wallets.length > 1" (click)="reorder()">
+          <img src="assets/img/sort.svg">
         </span>
-        <span *ngIf="showReorder">
-          <button ion-button clear color="primary" (click)="reorder()">
-            {{'Done' | translate}}
-          </button>
+        <span *ngIf="showReorder" (click)="reorder()">
+          {{'Done' | translate}}
         </span>
       </div>
       <ion-list class="sliding-container wallets" reorder="{{showReorder}}" (ionItemReorder)="reorderWallets($event)">
