@@ -291,9 +291,9 @@
         "URL_SCHEME": "bitcoin",
         "SECOND_URL_SCHEME": "copay",
         "THIRD_URL_SCHEME": "bitcoincash",
-        "ANDROID_SCHEME": "https",
-        "ANDROID_HOST": "*bitpay.com",
-        "ANDROID_PATHPREFIX": "/invoice/"
+        "ANDROID_SCHEME": "",
+        "ANDROID_HOST": "",
+        "ANDROID_PATHPREFIX": ""
       },
       "cordova-plugin-fcm-ng": {},
       "cordova-plugin-globalization": {},
