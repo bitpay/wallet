@@ -167,9 +167,9 @@ export class RateProvider {
     coin: string,
     ts: string
   ): Promise<any> {
-    const url =
-      this.fiatRateAPIUrl + '/' + currency + '?coin=' + coin + '&ts=' + ts;
     return new Promise(resolve => {
+      const url =
+        this.fiatRateAPIUrl + '/' + currency + '?coin=' + coin + '&ts=' + ts;
       this.http.get(url).subscribe(data => {
         resolve(data);
       });

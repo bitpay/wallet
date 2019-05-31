@@ -348,16 +348,16 @@ export class TxDetailsPage {
         this.wallet.coin,
         (this.btx.time * 1000).toString()
       )
-      .then(a => {
-        if (a && a.rate) {
+      .then(fiat => {
+        if (fiat && fiat.rate) {
           this.btx.fiatRateStr =
             this.filter.formatFiatAmount(
-              parseFloat((a.rate * this.btx.amountValueStr).toFixed(2))
+              parseFloat((fiat.rate * this.btx.amountValueStr).toFixed(2))
             ) +
             ' ' +
             settings.alternativeIsoCode +
             ' @ ' +
-            this.filter.formatFiatAmount(a.rate) +
+            this.filter.formatFiatAmount(fiat.rate) +
             ' USD per ' +
             this.wallet.coin.toUpperCase();
         } else {
