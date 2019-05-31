@@ -31,7 +31,6 @@ import { FeePolicyPage } from './fee-policy/fee-policy';
 import { LanguagePage } from './language/language';
 import { LockPage } from './lock/lock';
 import { NotificationsPage } from './notifications/notifications';
-import { PriceChartSettingsPage } from './price-chart-settings/price-chart-settings';
 import { SharePage } from './share/share';
 import { WalletSettingsPage } from './wallet-settings/wallet-settings';
 
@@ -105,7 +104,7 @@ export class SettingsPage {
 
   ionViewDidEnter() {
     // Show integrations
-    const integrations = this.homeIntegrationsProvider.get();
+    const integrations = _.filter(this.homeIntegrationsProvider.get(), i => i.name !== 'pricechart');
 
     // Hide BitPay if linked
     setTimeout(() => {
@@ -216,10 +215,6 @@ export class SettingsPage {
       okText,
       cancelText
     );
-  }
-
-  public openPriceChartPage() {
-    this.navCtrl.push(PriceChartSettingsPage);
   }
 
   public addBitpayCard() {

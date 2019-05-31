@@ -77,7 +77,6 @@ import { FeePolicyPage } from '../pages/settings/fee-policy/fee-policy';
 import { LanguagePage } from '../pages/settings/language/language';
 import { LockPage } from '../pages/settings/lock/lock';
 import { NotificationsPage } from '../pages/settings/notifications/notifications';
-import { PriceChartSettingsPage } from '../pages/settings/price-chart-settings/price-chart-settings';
 import { SharePage } from '../pages/settings/share/share';
 
 /* Wallet Settings */
@@ -158,7 +157,6 @@ export const PAGES = [
   OnboardingPage,
   PaperWalletPage,
   ...PIN_COMPONENTS,
-  PriceChartSettingsPage,
   ProposalsPage,
   ReceivePage,
   ScanPage,
