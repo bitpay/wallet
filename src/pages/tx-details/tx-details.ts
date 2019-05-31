@@ -8,9 +8,11 @@ import { Logger } from '../../providers/logger/logger';
 import { AddressBookProvider } from '../../providers/address-book/address-book';
 import { ConfigProvider } from '../../providers/config/config';
 import { ExternalLinkProvider } from '../../providers/external-link/external-link';
+import { FilterProvider } from '../../providers/filter/filter';
 import { OnGoingProcessProvider } from '../../providers/on-going-process/on-going-process';
 import { PopupProvider } from '../../providers/popup/popup';
 import { ProfileProvider } from '../../providers/profile/profile';
+import { RateProvider } from '../../providers/rate/rate';
 import { TxConfirmNotificationProvider } from '../../providers/tx-confirm-notification/tx-confirm-notification';
 import { TxFormatProvider } from '../../providers/tx-format/tx-format';
 import { WalletProvider } from '../../providers/wallet/wallet';
@@ -53,7 +55,9 @@ export class TxDetailsPage {
     private txFormatProvider: TxFormatProvider,
     private walletProvider: WalletProvider,
     private walletTabsProvider: WalletTabsProvider,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private filter: FilterProvider,
+    private rateProvider: RateProvider
   ) {}
 
   ionViewDidLoad() {
@@ -223,6 +227,8 @@ export class TxDetailsPage {
         this.initActionList();
         this.contact();
 
+        this.updateFiatRate();
+
         this.walletProvider
           .getLowAmount(this.wallet)
           .then((amount: number) => {
@@ -332,5 +338,31 @@ export class TxDetailsPage {
       okText,
       cancelText
     );
+  }
+
+  private updateFiatRate() {
+    const settings = this.configProvider.get().wallet.settings;
+    this.rateProvider
+      .getHistoricFiatRate(
+        settings.alternativeIsoCode,
+        this.wallet.coin,
+        (this.btx.time * 1000).toString()
+      )
+      .then(fiat => {
+        if (fiat && fiat.rate) {
+          this.btx.fiatRateStr =
+            this.filter.formatFiatAmount(
+              parseFloat((fiat.rate * this.btx.amountValueStr).toFixed(2))
+            ) +
+            ' ' +
+            settings.alternativeIsoCode +
+            ' @ ' +
+            this.filter.formatFiatAmount(fiat.rate) +
+            ' USD per ' +
+            this.wallet.coin.toUpperCase();
+        } else {
+          this.btx.fiatRateStr = this.btx.alternativeAmountStr;
+        }
+      });
   }
 }
