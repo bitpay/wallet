@@ -33,7 +33,10 @@
               <img class="sending-img" src="assets/img/tx-action/icon-confirming.svg">
             </span>
           </div>
-          <div class="alternative">{{btx.alternativeAmountStr}}</div>
+          <div class="alternative">
+            <span *ngIf="!btx.fiatRateStr">...</span>
+            <span *ngIf="btx.fiatRateStr">{{btx.fiatRateStr}}</span>
+          </div>
         </div>
       </div>
     </ion-item>
