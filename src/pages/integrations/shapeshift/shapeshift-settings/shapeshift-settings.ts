@@ -24,6 +24,7 @@ export class ShapeshiftSettingsPage {
   public shapeshiftUser;
   public unverifiedAccount: boolean;
   public loading: boolean;
+  public headerColor: string;
 
   constructor(
     private navCtrl: NavController,
@@ -38,6 +39,7 @@ export class ShapeshiftSettingsPage {
       name: this.serviceName
     });
     this.showInHome = !!this.service[0].show;
+    this.headerColor = '#0d172c';
   }
 
   ionViewDidLoad() {
