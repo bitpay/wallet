@@ -1,24 +1,16 @@
 page-coinbase {
-  .center-header {
-    text-align: center;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+  .wide-header__title.toolbar {
+    padding-bottom: 10px;
   }
-  .main-header {
-    position: relative;
-    padding: 20px 0;
-    text-align: center;
-    background: #0667d0;
-    ion-spinner {
-      position: absolute;
-      bottom: 5px;
-      right: 5px;
-      * {
-        stroke: color($colors, light);
-      }
+  .wide-header__title {
+    padding-left: 0;
+  }
+  ion-spinner {
+    position: absolute;
+    bottom: 16px;
+    right: 25px;
+    * {
+      stroke: #0667d0 !important;
     }
   }
 }
