@@ -1,4 +1,11 @@
 page-shapeshift-settings {
+  .wide-header__title.toolbar {
+    padding-bottom: 10px;
+  }
+  .wide-header__title {
+    color: white;
+    padding-left: 0;
+  }
   ion-label,
   .item-title {
     white-space: normal;
