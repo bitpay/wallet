@@ -34,6 +34,7 @@ export class ShapeshiftPage {
   public code: string;
   public loading: boolean;
   public error: string;
+  public headerColor: string;
 
   constructor(
     private events: Events,
@@ -58,6 +59,7 @@ export class ShapeshiftPage {
     this.showOauthForm = false;
     this.network = this.shapeshiftProvider.getNetwork();
     this.shifts = { data: {} };
+    this.headerColor = '#0d172c';
   }
 
   ionViewDidLoad() {
