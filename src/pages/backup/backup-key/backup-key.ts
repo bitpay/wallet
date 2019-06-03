@@ -39,7 +39,7 @@ export class BackupKeyPage {
   ) {
     this.walletId = this.navParams.data.walletId;
     this.wallet = this.profileProvider.getWallet(this.walletId);
-    this.credentialsEncrypted = this.wallet.isPrivKeyEncrypted();
+    this.credentialsEncrypted = this.wallet.isPrivKeyEncrypted;
   }
 
   ionViewDidEnter() {

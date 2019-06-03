@@ -23,6 +23,7 @@ import { ClipboardProvider } from '../../../providers/clipboard/clipboard';
 import { ConfigProvider } from '../../../providers/config/config';
 import { ExternalLinkProvider } from '../../../providers/external-link/external-link';
 import { FeeProvider } from '../../../providers/fee/fee';
+import { KeyProvider } from '../../../providers/key/key';
 import { OnGoingProcessProvider } from '../../../providers/on-going-process/on-going-process';
 import { PlatformProvider } from '../../../providers/platform/platform';
 import { PopupProvider } from '../../../providers/popup/popup';
@@ -110,7 +111,8 @@ export class ConfirmPage extends WalletTabsChild {
     walletTabsProvider: WalletTabsProvider,
     protected clipboardProvider: ClipboardProvider,
     protected events: Events,
-    protected appProvider: AppProvider
+    protected appProvider: AppProvider,
+    protected keyProvider: KeyProvider
   ) {
     super(navCtrl, profileProvider, walletTabsProvider);
     this.bitcore = this.bwcProvider.getBitcore();
@@ -833,7 +835,7 @@ export class ConfirmPage extends WalletTabsChild {
 
   private confirmTx(txp, wallet) {
     return new Promise<boolean>(resolve => {
-      if (this.walletProvider.isEncrypted(wallet)) return resolve(false);
+      if (wallet.isPrivKeyEncrypted) return resolve(false);
       this.txFormatProvider.formatToUSD(wallet.coin, txp.amount).then(val => {
         const amountUsd = parseFloat(val);
         if (amountUsd <= this.CONFIRM_LIMIT_USD) return resolve(false);
@@ -859,7 +861,7 @@ export class ConfirmPage extends WalletTabsChild {
   }
 
   protected publishAndSign(txp, wallet) {
-    if (!wallet.canSign() && !wallet.isPrivKeyExternal()) {
+    if (!wallet.canSign) {
       return this.onlyPublish(txp, wallet);
     }
 

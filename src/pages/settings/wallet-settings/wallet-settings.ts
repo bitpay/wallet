@@ -7,6 +7,7 @@ import { Logger } from '../../../providers/logger/logger';
 import { ActionSheetProvider } from '../../../providers/action-sheet/action-sheet';
 import { ConfigProvider } from '../../../providers/config/config';
 import { ExternalLinkProvider } from '../../../providers/external-link/external-link';
+import { KeyProvider } from '../../../providers/key/key';
 import { ProfileProvider } from '../../../providers/profile/profile';
 import { TouchIdProvider } from '../../../providers/touchid/touchid';
 import { WalletProvider } from '../../../providers/wallet/wallet';
@@ -48,16 +49,17 @@ export class WalletSettingsPage {
     private navParams: NavParams,
     private touchIdProvider: TouchIdProvider,
     private translate: TranslateService,
-    private actionSheetProvider: ActionSheetProvider
+    private actionSheetProvider: ActionSheetProvider,
+    private keyProvider: KeyProvider
   ) {}
 
   ionViewDidLoad() {
     this.logger.info('Loaded:  WalletSettingsPage');
     this.wallet = this.profileProvider.getWallet(this.navParams.data.walletId);
-    this.canSign = this.wallet.canSign();
+    this.canSign = this.wallet.canSign;
     this.needsBackup = this.wallet.needsBackup;
     this.hiddenBalance = this.wallet.balanceHidden;
-    this.encryptEnabled = this.walletProvider.isEncrypted(this.wallet);
+    this.encryptEnabled = this.wallet.isPrivKeyEncrypted;
     this.touchIdProvider.isAvailable().then((isAvailable: boolean) => {
       this.touchIdAvailable = isAvailable;
     });
@@ -85,10 +87,10 @@ export class WalletSettingsPage {
     if (!this.wallet) return;
     const val = this.encryptEnabled;
 
-    if (val && !this.walletProvider.isEncrypted(this.wallet)) {
+    if (val && !this.wallet.isPrivKeyEncrypted) {
       this.logger.debug('Encrypting private key for', this.wallet.name);
-      this.walletProvider
-        .encrypt([].concat(this.wallet))
+      this.keyProvider
+        .encrypt(this.wallet.credentials.keyId)
         .then(() => {
           this.profileProvider.updateCredentials(
             JSON.parse(this.wallet.export())
@@ -100,9 +102,9 @@ export class WalletSettingsPage {
           const title = this.translate.instant('Could not encrypt wallet');
           this.showErrorInfoSheet(err, title);
         });
-    } else if (!val && this.walletProvider.isEncrypted(this.wallet)) {
-      this.walletProvider
-        .decrypt([].concat(this.wallet))
+    } else if (!val && this.wallet.isPrivKeyEncrypted) {
+      this.keyProvider
+        .decrypt(this.wallet.credentials.keyId)
         .then(() => {
           this.profileProvider.updateCredentials(
             JSON.parse(this.wallet.export())

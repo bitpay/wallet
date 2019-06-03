@@ -11,6 +11,7 @@ import { BwcProvider } from '../bwc/bwc';
 import { ConfigProvider } from '../config/config';
 import { FeeProvider } from '../fee/fee';
 import { FilterProvider } from '../filter/filter';
+import { KeyProvider } from '../key/key';
 import { LanguageProvider } from '../language/language';
 import { Logger } from '../logger/logger';
 import { OnGoingProcessProvider } from '../on-going-process/on-going-process';
@@ -113,7 +114,8 @@ export class WalletProvider {
     private events: Events,
     private feeProvider: FeeProvider,
     private translate: TranslateService,
-    private addressProvider: AddressProvider
+    private addressProvider: AddressProvider,
+    private keyProvider: KeyProvider
   ) {
     this.logger.debug('WalletProvider initialized');
     this.isPopupOpen = false;
@@ -1048,12 +1050,6 @@ export class WalletProvider {
     });
   }
 
-  public isEncrypted(wallet): boolean {
-    if (_.isEmpty(wallet)) return undefined;
-    const isEncrypted = wallet.isPrivKeyEncrypted();
-    return isEncrypted;
-  }
-
   public createTx(
     wallet,
     txp: Partial<TransactionProposal>
@@ -1345,103 +1341,6 @@ export class WalletProvider {
     });
   }
 
-  // An alert dialog
-  private askPassword(warnMsg: string, title: string): Promise<any> {
-    return new Promise(resolve => {
-      const opts = {
-        type: 'password',
-        useDanger: true
-      };
-      this.popupProvider.ionicPrompt(title, warnMsg, opts).then(res => {
-        return resolve(res);
-      });
-    });
-  }
-
-  public encrypt(walletsArray: any[]): Promise<any> {
-    return new Promise((resolve, reject) => {
-      let title = this.translate.instant('Enter a new encrypt password');
-      const warnMsg = this.translate.instant(
-        'Your wallet key will be encrypted. The encrypt password cannot be recovered. Be sure to write it down.'
-      );
-      this.askPassword(warnMsg, title)
-        .then((password: string) => {
-          if (_.isNull(password)) {
-            return reject();
-          }
-          if (password == '') {
-            return reject(this.translate.instant('No password'));
-          }
-          title = this.translate.instant('Confirm your new encrypt password');
-          this.askPassword(warnMsg, title)
-            .then((password2: string) => {
-              if (_.isNull(password2)) {
-                return reject();
-              }
-              if (password != password2)
-                return reject(this.translate.instant('Password mismatch'));
-              walletsArray.forEach(wallet => {
-                wallet.encryptPrivateKey(password);
-              });
-              return resolve();
-            })
-            .catch(err => {
-              return reject(err);
-            });
-        })
-        .catch(err => {
-          return reject(err);
-        });
-    });
-  }
-
-  public decrypt(walletsArray: any[]): Promise<any> {
-    return new Promise((resolve, reject) => {
-      this.askPassword(
-        null,
-        this.translate.instant('Enter encrypt password')
-      ).then((password: string) => {
-        if (_.isNull(password)) {
-          return reject();
-        }
-        if (password == '') {
-          return reject(this.translate.instant('No password'));
-        }
-        try {
-          walletsArray.forEach(wallet => {
-            this.logger.info(
-              'Disabling private key encryption for' + wallet.name
-            );
-            wallet.decryptPrivateKey(password);
-          });
-        } catch (e) {
-          return reject(this.translate.instant('Wrong password'));
-        }
-        return resolve();
-      });
-    });
-  }
-
-  public handleEncryptedWallet(wallet): Promise<any> {
-    return new Promise((resolve, reject) => {
-      if (!this.isEncrypted(wallet)) return resolve();
-      this.askPassword(
-        null,
-        this.translate.instant('Enter encrypt password')
-      ).then((password: string) => {
-        if (_.isNull(password)) {
-          return reject(new Error('PASSWORD_CANCELLED'));
-        }
-        if (password == '') {
-          return reject(new Error('NO_PASSWORD'));
-        }
-        if (!wallet.checkPassword(password))
-          return reject(new Error('WRONG_PASSWORD'));
-        return resolve(password);
-      });
-    });
-  }
-
   public reject(wallet, txp): Promise<any> {
     return new Promise((resolve, reject) => {
       this.rejectTx(wallet, txp)
@@ -1479,7 +1378,8 @@ export class WalletProvider {
       this.touchidProvider
         .checkWallet(wallet)
         .then(() => {
-          this.handleEncryptedWallet(wallet)
+          this.keyProvider
+            .handleEncryptedWallet(wallet.credentials.keyId)
             .then((password: string) => {
               return resolve(password);
             })
@@ -1610,7 +1510,7 @@ export class WalletProvider {
       let info: any = {};
 
       // not supported yet
-      if (wallet.credentials.derivationStrategy != 'BIP44' || !wallet.canSign())
+      if (wallet.credentials.derivationStrategy != 'BIP44' || !wallet.canSign)
         return reject(
           this.translate.instant(
             'Exporting via QR not supported for this wallet'

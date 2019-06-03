@@ -80,8 +80,8 @@ export class WalletExportPage extends WalletTabsChild {
 
   ionViewWillEnter() {
     this.wallet = this.profileProvider.getWallet(this.navParams.data.walletId);
-    this.isEncrypted = this.wallet.isPrivKeyEncrypted();
-    this.canSign = this.wallet.canSign();
+    this.isEncrypted = this.wallet.isPrivKeyEncrypted;
+    this.canSign = this.wallet.canSign;
     this.isCordova = this.platformProvider.isCordova;
     this.isSafari = this.platformProvider.isSafari;
     this.isIOS = this.platformProvider.isIOS;

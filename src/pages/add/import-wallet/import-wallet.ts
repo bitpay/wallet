@@ -247,7 +247,7 @@ export class ImportWalletPage {
 
     setTimeout(() => {
       this.profileProvider
-        .importWallet(str2, opts)
+        .importFile(str2, opts)
         .then(wallet => {
           this.onGoingProcessProvider.clear();
           this.finish(wallet);
@@ -294,7 +294,7 @@ export class ImportWalletPage {
     this.onGoingProcessProvider.set('importingWallet');
     setTimeout(() => {
       this.profileProvider
-        .importSingleSeedMnemonic(words, opts)
+        .importMnemonic(words, opts)
         .then(wallet => {
           this.onGoingProcessProvider.clear();
           this.finish(wallet);

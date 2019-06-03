@@ -79,11 +79,11 @@
         <div class="left-buttons">
           <img class="testnet" *ngIf="wallet.network == 'testnet'" src="assets/img/icon-wallet-testnet.svg">
           <img class="testnet-text" *ngIf="wallet.network == 'testnet'" src="assets/img/icon-text-testnet.svg">
-          <img class="read-only" *ngIf="!wallet.canSign()" src="assets/img/icon-read-only.svg">
-          <img class="read-only-text" *ngIf="!wallet.canSign()" src="assets/img/icon-text-read-only.svg">
+          <img class="read-only" *ngIf="!wallet.canSign" src="assets/img/icon-read-only.svg">
+          <img class="read-only-text" *ngIf="!wallet.canSign" src="assets/img/icon-text-read-only.svg">
           <img class="auditable-text" *ngIf="wallet.cachedStatus && wallet.cachedStatus.wallet && wallet.cachedStatus.wallet.singleAddress" src="assets/img/icon-text-auditable.svg">
           <img class="custom-bws" *ngIf="wallet.usingCustomBWS" src="assets/img/icon-bws-white.svg">
-          <img class="encrypted" *ngIf="wallet.isPrivKeyEncrypted()" src="assets/img/icon-lock-white.svg">
+          <img class="encrypted" *ngIf="wallet.isPrivKeyEncrypted" src="assets/img/icon-lock-white.svg">
 
           <span class="wallet-type" *ngIf="wallet.credentials.n > 1">
             <span translate>{{wallet.m}}-of-{{wallet.n}}</span>

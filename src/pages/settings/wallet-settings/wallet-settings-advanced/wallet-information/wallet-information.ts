@@ -70,7 +70,7 @@ export class WalletInformationPage {
     this.basePath = this.wallet.credentials.getBaseAddressDerivationPath();
     this.pubKeys = _.map(this.wallet.credentials.publicKeyRing, 'xPubKey');
     this.externalSource = null;
-    this.canSign = this.wallet.canSign();
+    this.canSign = this.wallet.canSign;
     this.needsBackup = this.wallet.needsBackup;
   }
 

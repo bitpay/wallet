@@ -314,7 +314,7 @@ export class ShapeshiftConfirmPage {
 
   private publishAndSign(wallet, txp): Promise<any> {
     return new Promise((resolve, reject) => {
-      if (!wallet.canSign() && !wallet.isPrivKeyExternal()) {
+      if (!wallet.canSign) {
         let err = this.translate.instant('No signing proposal: No private key');
         return reject(err);
       }

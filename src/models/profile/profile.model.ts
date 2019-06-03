@@ -103,4 +103,9 @@ export class Profile {
     this.dirty = true;
     return true;
   }
+
+  public acceptDisclaimer(): void {
+    this.disclaimerAccepted = true;
+    this.dirty = true;
+  }
 }

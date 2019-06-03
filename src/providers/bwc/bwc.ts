@@ -32,6 +32,14 @@ export class BwcProvider {
     return BWC.Utils;
   }
 
+  public getKey() {
+    return BWC.Key;
+  }
+
+  public fromOld(x) {
+    return BWC.fromOld(x);
+  }
+
   public getClient(walletData?, opts?) {
     opts = opts || {};
 
@@ -42,6 +50,8 @@ export class BwcProvider {
       timeout: 100000,
       transports: ['polling']
     });
+
+    console.log('[bwc.ts.46] TO IMPORT ', walletData, opts); // TODO
     if (walletData) bwc.import(walletData, opts);
     return bwc;
   }
