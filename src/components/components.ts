@@ -4,7 +4,8 @@ import { AmountPickerComponent } from './amount-picker/amount-picker';
 import { ClipboardCardPage } from './clipboard-card/clipboard-card';
 import { EXPANDABLE_HEADER_COMPONENTS } from './expandable-header/expandable-header';
 import { LabelTip } from './label-tip/label-tip';
-import { PriceChart } from './price-chart/price-chart';
+import { PriceCard } from './price-card/price-card';
+import { PriceChart } from './price-card/price-chart/price-chart';
 import { SearchBarComponent } from './search-bar/search-bar';
 
 export const COMPONENTS = [
@@ -15,5 +16,6 @@ export const COMPONENTS = [
   LabelTip,
   ClipboardCardPage,
   SearchBarComponent,
+  PriceCard,
   PriceChart
 ];

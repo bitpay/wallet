@@ -52,8 +52,8 @@ interface UpdateWalletOptsI {
 export class HomePage {
   @ViewChild('showCard')
   showCard;
-  @ViewChild('priceChart')
-  priceChart;
+  @ViewChild('priceCard')
+  priceCard;
   public wallets;
   public txpsN: number;
   public serverMessages: any[];
@@ -179,6 +179,8 @@ export class HomePage {
         this.bitpayCardItems = cards;
       });
     });
+
+    this.updateChart();
   }
 
   private walletFocusHandler = opts => {
@@ -842,6 +844,6 @@ export class HomePage {
   }
 
   public updateChart() {
-    if (this.showPriceChart) this.priceChart.updateCurrentPrice();
+    if (this.showPriceChart && this.priceCard) this.priceCard.updateCharts();
   }
 }

@@ -19,7 +19,7 @@ export interface ApiPrice {
 export class PriceProvider {
   private bwsURL: string;
   private lastDates = 6;
-  private historicalDates = [];
+  private historicalDates: any[];
 
   constructor(
     private httpClient: HttpClient,
@@ -32,14 +32,15 @@ export class PriceProvider {
     this.bwsURL = defaults.bws.url;
   }
 
-  public getHistoricalBitcoinPrice(coin): Observable<ApiPrice[]> {
+  public getHistoricalBitcoinPrice(isoCode, coin?): Observable<ApiPrice[]> {
     let observableBatch = [];
+    this.historicalDates = [];
     this.setDates();
 
     _.forEach(this.historicalDates, date => {
       observableBatch.push(
         this.httpClient.get<ApiPrice>(
-          `${this.bwsURL}/v1/fiatrates/${coin}?ts=${date}`
+          `${this.bwsURL}/v1/fiatrates/${isoCode}?coin=${coin}&ts=${date}`
         )
       );
     });
@@ -47,10 +48,9 @@ export class PriceProvider {
     return Observable.forkJoin(observableBatch);
   }
 
-  public getCurrentBitcoinPrice(coin): Observable<ApiPrice> {
-    const now = moment().unix() * 1000;
+  public getCurrentBitcoinPrice(isoCode, coin?): Observable<ApiPrice> {
     return this.httpClient.get<ApiPrice>(
-      `${this.bwsURL}/v1/fiatrates/${coin}?ts=${now}`
+      `${this.bwsURL}/v1/fiatrates/${isoCode}?coin=${coin}`
     );
   }
 
@@ -60,12 +60,12 @@ export class PriceProvider {
         this.historicalDates.push(moment().unix() * 1000);
       } else {
         const today = moment().set({
-          hour: 12,
+          hour: 15,
           minute: 0,
           second: 0,
           millisecond: 0
         });
-        this.historicalDates.push(today.subtract(i, 'days').unix() * 1000);
+        this.historicalDates.push(today.subtract(i, 'day').unix() * 1000);
       }
     }
   }
