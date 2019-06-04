@@ -1,5 +1,6 @@
 page-home {
   ion-content {
+
     &.content-ios,
     &.content-md {
       background: $feather;
@@ -64,7 +65,7 @@ page-home {
   .title {
     font-weight: 500;
 
-    > img {
+    >img {
       margin-right: 7px;
     }
   }
@@ -297,6 +298,7 @@ page-home {
         height: $gift-card-item-height;
 
         ion-label {
+
           &.label-ios,
           &.label-md {
             display: flex;
@@ -560,7 +562,7 @@ page-home {
 
     ion-reorder {
       flex-basis: 60px;
-      margin-left: 2px;
+      margin-left: 7px;
     }
 
     label-tip {
