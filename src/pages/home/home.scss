@@ -563,6 +563,10 @@ page-home {
     ion-reorder {
       flex-basis: 60px;
       margin-left: 7px;
+
+      ion-icon {
+        margin-bottom: 2px;
+      }
     }
 
     label-tip {
