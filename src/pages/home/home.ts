@@ -135,6 +135,8 @@ export class HomePage {
     if (this.isElectron) {
       this.updateDesktopOnFocus();
     }
+
+    this.checkPriceChart();
   }
 
   private _didEnter() {
@@ -143,12 +145,7 @@ export class HomePage {
     // Show integrations
     const integrations = _.filter(this.homeIntegrationsProvider.get(), {
       show: true
-    }).filter(
-      i =>
-        i.name !== 'giftcards' &&
-        i.name !== 'debitcard' &&
-        i.name !== 'pricechart'
-      );
+    }).filter(i => i.name !== 'giftcards' && i.name !== 'debitcard');
 
     this.showGiftCards = this.homeIntegrationsProvider.shouldShowInHome(
       'giftcards'
@@ -156,10 +153,6 @@ export class HomePage {
 
     this.showBitpayCardGetStarted = this.homeIntegrationsProvider.shouldShowInHome(
       'debitcard'
-    );
-
-    this.showPriceChart = this.homeIntegrationsProvider.shouldShowInHome(
-      'pricechart'
     );
 
     // Hide BitPay if linked
@@ -179,8 +172,6 @@ export class HomePage {
         this.bitpayCardItems = cards;
       });
     });
-
-    this.updateChart();
   }
 
   private walletFocusHandler = opts => {
@@ -389,6 +380,26 @@ export class HomePage {
         this.showCard.setShowRateCard(this.showRateCard);
       }
     });
+  }
+
+  private checkPriceChart() {
+    this.persistenceProvider.getPriceChartFlag().then(res => {
+      if (!res) {
+        this.initPriceChart();
+      } else {
+        this.showPriceChart = res === 'enabled' ? true : false;
+        this.updateCharts();
+      }
+    });
+  }
+
+  private initPriceChart() {
+    this.persistenceProvider.setPriceChartFlag('disabled');
+    this.showPriceChart = false;
+  }
+
+  private updateCharts() {
+    if (this.showPriceChart && this.priceCard) this.priceCard.updateCharts();
   }
 
   public onWalletAction(wallet, action, slidingItem) {
@@ -807,7 +818,7 @@ export class HomePage {
   public doRefresh(refresher): void {
     this.debounceSetWallets();
     setTimeout(() => {
-      this.updateChart();
+      this.updateCharts();
       refresher.complete();
     }, 2000);
   }
@@ -841,9 +852,5 @@ export class HomePage {
       (wallet.cachedStatus && wallet.cachedStatus.totalBalanceSat === 0) ||
       this.getLastKownBalance(wallet, currecy) === '0.00'
     );
-  }
-
-  public updateChart() {
-    if (this.showPriceChart && this.priceCard) this.priceCard.updateCharts();
   }
 }

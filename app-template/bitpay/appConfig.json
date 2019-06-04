@@ -32,7 +32,6 @@
     "glidera": false,
     "debitcard": true,
     "shapeshift": true,
-    "giftcards": true,
-    "pricechart": true
+    "giftcards": true
   }
 }

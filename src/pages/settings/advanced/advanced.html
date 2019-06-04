@@ -7,17 +7,6 @@
 <ion-content>
   <ion-list class="settings-list">
     <ion-item class="with-label no-border">
-      <ion-label>{{'Show Price Chart' | translate}}</ion-label>
-      <ion-toggle [(ngModel)]="showAtHome" (ionChange)="integrationChange()"></ion-toggle>
-    </ion-item>
-    <label-tip class="info" type="info" header="no-header">
-      <div label-tip-body>
-        <div translate>If enabled, the price of the cryptocurrencies will be displayed on the home screen.</div>
-      </div>
-    </label-tip>
-  </ion-list>
-  <ion-list class="settings-list">
-    <ion-item class="with-label no-border">
       <ion-label>{{'Use Unconfirmed Funds' | translate}}</ion-label>
       <ion-toggle [(ngModel)]="spendUnconfirmed" (ionChange)="spendUnconfirmedChange()"></ion-toggle>
     </ion-item>

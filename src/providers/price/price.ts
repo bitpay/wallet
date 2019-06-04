@@ -3,11 +3,7 @@ import { Injectable } from '@angular/core';
 import * as _ from 'lodash';
 import * as moment from 'moment';
 import { Observable } from 'rxjs/Observable';
-import {
-  ConfigProvider,
-  HomeIntegrationsProvider,
-  Logger
-} from '../../providers';
+import { ConfigProvider, Logger } from '../../providers';
 
 export interface ApiPrice {
   ts: number;
@@ -24,8 +20,7 @@ export class PriceProvider {
   constructor(
     private httpClient: HttpClient,
     private logger: Logger,
-    private configProvider: ConfigProvider,
-    private homeIntegrationsProvider: HomeIntegrationsProvider
+    private configProvider: ConfigProvider
   ) {
     this.logger.debug('PriceProvider initialized');
     const defaults = this.configProvider.getDefaults();
@@ -68,13 +63,5 @@ export class PriceProvider {
         this.historicalDates.push(today.subtract(i, 'day').unix() * 1000);
       }
     }
-  }
-
-  public register(): void {
-    this.homeIntegrationsProvider.register({
-      name: 'pricechart',
-      title: 'Price Chart',
-      show: !!this.configProvider.get().showIntegration['pricechart']
-    });
   }
 }

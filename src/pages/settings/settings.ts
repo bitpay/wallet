@@ -104,10 +104,7 @@ export class SettingsPage {
 
   ionViewDidEnter() {
     // Show integrations
-    const integrations = _.filter(
-      this.homeIntegrationsProvider.get(),
-      i => i.name !== 'pricechart'
-    );
+    const integrations = this.homeIntegrationsProvider.get();
 
     // Hide BitPay if linked
     setTimeout(() => {

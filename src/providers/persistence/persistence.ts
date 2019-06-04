@@ -60,7 +60,8 @@ const Keys = {
   TX_HISTORY: walletId => 'txsHistory-' + walletId,
   ORDER_WALLET: walletId => 'order-' + walletId,
   SERVER_MESSAGE_DISMISSED: messageId => 'serverMessageDismissed-' + messageId,
-  SHAPESHIFT_TOKEN: network => 'shapeshiftToken-' + network
+  SHAPESHIFT_TOKEN: network => 'shapeshiftToken-' + network,
+  PRICE_CHART: 'priceChart'
 };
 
 interface Storage {
@@ -537,6 +538,14 @@ export class PersistenceProvider {
 
   removeNewDesignSlidesFlag() {
     return this.storage.remove('newDesignSlides');
+  }
+
+  setPriceChartFlag(value: string) {
+    return this.storage.set('priceChart', value);
+  }
+
+  getPriceChartFlag() {
+    return this.storage.get('priceChart');
   }
 }
 

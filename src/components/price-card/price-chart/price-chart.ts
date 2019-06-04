@@ -18,8 +18,11 @@ export class PriceChart {
   }
 
   drawCanvas(coin) {
-    let rates = _.map(coin.historicalRates, (rate, i) => {
-      return { x: rate, y: `${i}` };
+    let rates = [];
+    let labels = [];
+    _.map(coin.historicalRates, (rate, i) => {
+      rates.push(rate);
+      labels.push(`${i}`);
     });
     const context: CanvasRenderingContext2D = (this.lineCanvas
       .nativeElement as HTMLCanvasElement).getContext('2d');
@@ -60,12 +63,14 @@ export class PriceChart {
         padding: {
           bottom: 10,
           top: 10,
-          left: 2,
-          right: 2
+          left: 5,
+          right: 5
         }
       }
     };
+
     const data = {
+      labels,
       datasets: [
         {
           fill: true,
