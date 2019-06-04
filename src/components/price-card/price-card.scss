@@ -52,14 +52,4 @@ price-card {
       }
     }
   }
-  .swiper-container-horizontal > .swiper-pagination-bullets {
-    bottom: -5px !important;
-  }
-  button.swiper-pagination-bullet {
-    width: 5px;
-    height: 2px;
-  }
-  button.swiper-pagination-bullet-active {
-    background: color($colors, primary);
-  }
 }

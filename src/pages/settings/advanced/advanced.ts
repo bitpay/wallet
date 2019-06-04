@@ -11,8 +11,6 @@ export class AdvancedPage {
   public spendUnconfirmed: boolean;
   public isCopay: boolean;
 
-  public bitpayCard;
-
   constructor(
     private configProvider: ConfigProvider,
     private logger: Logger,
