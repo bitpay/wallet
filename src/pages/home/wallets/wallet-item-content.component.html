@@ -5,9 +5,6 @@
   <div class="wallet-item-content__credentials">{{ wallet.credentials.m }}/{{ wallet.credentials.n }}</div>
 </div>
 <div class="wallet-item-content__right">
-  <!-- <div class="wallet-item-content__amount">0.123456</div>
-  <div class="wallet-item-content__fiat">100.34 USD</div> -->
-
   <div *ngIf="!hasZeroBalance(wallet, wallet.coin.toUpperCase()) && !wallet.balanceHidden">
     <div class="wallet-item-content__amount">{{ getBalance(wallet, wallet.coin.toUpperCase()) }}</div>
     <div class="wallet-item-content__fiat" *ngIf="wallet.cachedStatus">

@@ -169,7 +169,8 @@
         <div *ngFor="let wallet of wallets">
           <ion-item-sliding #slidingItem>
             <button ion-item detail-none (click)="onWalletAction(wallet, 'view', slidingItem)">
-              <ion-avatar item-start>
+              <wallet-item-content [wallet]="wallet"></wallet-item-content>
+              <!-- <ion-avatar item-start>
                 <img [ngClass]="{ testnet: wallet.network === 'testnet' }"
                   src="assets/img/currencies/{{wallet.coin}}.svg" />
               </ion-avatar>
@@ -196,7 +197,7 @@
                 <div *ngIf="wallet.balanceHidden">
                   [<span translate>Hidden</span>]
                 </div>
-              </ion-note>
+              </ion-note> -->
             </button>
             <ion-item-options side="left">
               <button class="action action--send" ion-button (click)="onWalletAction(wallet, 'send', slidingItem)">
