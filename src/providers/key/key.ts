@@ -27,9 +27,9 @@ export class KeyProvider {
 
   public load(): Promise<any> {
     return this.persistenceProvider.getKeys().then(keys => {
+      this.keys = [];
       keys = keys ? keys : [];
-      keys.forEach(k => this.Key.fromObj(k));
-      this.keys = keys;
+      keys.forEach(k => this.keys.push(this.Key.fromObj(k)));
       return Promise.resolve();
     });
   }
@@ -201,8 +201,9 @@ export class KeyProvider {
 
   public async handleEncryptedWallet(keyId: string): Promise<any> {
     const key = await this.getKey(keyId);
+    const isPrivKeyEncrypted = await this.isPrivKeyEncrypted(keyId);
 
-    if (!this.isPrivKeyEncrypted(key)) return Promise.resolve();
+    if (!isPrivKeyEncrypted) return Promise.resolve();
     return this.askPassword(
       null,
       this.translate.instant('Enter encrypt password')
@@ -223,6 +224,12 @@ export class KeyProvider {
     const key = await this.getKey(keyId);
 
     return key.isPrivKeyEncrypted();
+  }
+
+  public async isDeletedSeed(keyId: string): Promise<boolean> {
+    const key = await this.getKey(keyId);
+
+    return Promise.resolve(!key.mnemonic && !key.mnemonicEncrypted);
   }
 
   public async encryptPrivateKey(key, password: string) {

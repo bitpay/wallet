@@ -9,6 +9,7 @@ import { BackupGamePage } from '../backup-game/backup-game';
 // providers
 import { ActionSheetProvider } from '../../../providers/action-sheet/action-sheet';
 import { BwcErrorProvider } from '../../../providers/bwc-error/bwc-error';
+import { KeyProvider } from '../../../providers/key/key';
 import { Logger } from '../../../providers/logger/logger';
 import { ProfileProvider } from '../../../providers/profile/profile';
 import { WalletProvider } from '../../../providers/wallet/wallet';
@@ -35,15 +36,17 @@ export class BackupKeyPage {
     private walletProvider: WalletProvider,
     private bwcErrorProvider: BwcErrorProvider,
     private translate: TranslateService,
-    private actionSheetProvider: ActionSheetProvider
+    private actionSheetProvider: ActionSheetProvider,
+    private keyProvider: KeyProvider
   ) {
     this.walletId = this.navParams.data.walletId;
     this.wallet = this.profileProvider.getWallet(this.walletId);
     this.credentialsEncrypted = this.wallet.isPrivKeyEncrypted;
   }
 
-  ionViewDidEnter() {
-    this.deleted = this.isDeletedSeed();
+  async ionViewDidEnter() {
+    this.deleted = await this.isDeletedSeed();
+
     if (this.deleted) {
       this.logger.warn('no mnemonics');
       return;
@@ -86,14 +89,8 @@ export class BackupKeyPage {
     errorInfoSheet.present();
   }
 
-  private isDeletedSeed(): boolean {
-    if (
-      !this.wallet.credentials.mnemonic &&
-      !this.wallet.credentials.mnemonicEncrypted
-    )
-      return true;
-
-    return false;
+  private async isDeletedSeed(): Promise<boolean> {
+    return this.keyProvider.isDeletedSeed(this.wallet.credentials.keyId);
   }
 
   public goToBackupGame(): void {
