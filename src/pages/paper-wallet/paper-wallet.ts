@@ -26,7 +26,8 @@ export class PaperWalletPage {
   @ViewChild('slideButton')
   slideButton;
 
-  public wallet;
+  public selectedWallet;
+  public wallet = {};
   public walletName: string;
   public M: number;
   public N: number;
@@ -84,6 +85,15 @@ export class PaperWalletPage {
     this.coins = _.uniq(
       _.map(this.wallets, (wallet: Partial<WalletOptions>) => wallet.coin)
     );
+
+    this.wallet = {
+      btc: _.filter(this.wallets, w => {
+        return w.coin == 'btc';
+      })[0],
+      bch: _.filter(this.wallets, w => {
+        return w.coin == 'bch';
+      })[0]
+    };
   }
 
   ionViewWillLeave() {
@@ -100,8 +110,9 @@ export class PaperWalletPage {
       return;
     }
 
-    this.wallet = this.wallets[0];
-    if (!this.wallet) return;
+    this.selectedWallet = this.wallets[0];
+
+    if (_.isEmpty(this.selectedWallet)) return;
     if (!this.isPkEncrypted) this.scanFunds();
     else {
       let message = this.translate.instant(
@@ -129,7 +140,12 @@ export class PaperWalletPage {
     if (!privateKeyIsEncrypted) {
       return cb(null, scannedKey);
     }
-    this.wallet.decryptBIP38PrivateKey(scannedKey, passphrase, null, cb);
+    this.selectedWallet.decryptBIP38PrivateKey(
+      scannedKey,
+      passphrase,
+      null,
+      cb
+    );
   }
 
   private getBalance(
@@ -137,7 +153,7 @@ export class PaperWalletPage {
     coin: string,
     cb: (err, balance: number) => any
   ): void {
-    this.wallet.getBalanceFromPrivateKey(privateKey, coin, cb);
+    this.wallet[coin].getBalanceFromPrivateKey(privateKey, coin, cb);
   }
 
   private checkPrivateKey(privateKey: string): boolean {
@@ -191,7 +207,7 @@ export class PaperWalletPage {
 
         this.wallets = _.filter(_.clone(this.wallets), w => available[w.coin]);
 
-        if (this.wallets[0]) this.wallet = this.wallets[0];
+        if (this.wallets[0]) this.selectedWallet = this.wallets[0];
 
         if (this.balances.length == 0) {
           this.popupProvider
@@ -218,18 +234,18 @@ export class PaperWalletPage {
   private _sweepWallet(): Promise<any> {
     return new Promise((resolve, reject) => {
       let balanceToSweep = _.filter(this.balances, b => {
-        return b.coin === this.wallet.coin;
+        return b.coin === this.selectedWallet.coin;
       })[0];
 
       this.walletProvider
-        .getAddress(this.wallet, true)
+        .getAddress(this.selectedWallet, true)
         .then((destinationAddress: string) => {
           let opts: {
             coin?: any;
             fee?: any;
           } = {};
           opts.coin = balanceToSweep.coin;
-          this.wallet.buildTxFromPrivateKey(
+          this.selectedWallet.buildTxFromPrivateKey(
             balanceToSweep.privateKey,
             destinationAddress,
             opts,
@@ -244,13 +260,13 @@ export class PaperWalletPage {
                 )
                 .then((feePerKb: number) => {
                   opts.fee = Math.round((feePerKb * rawTxLength) / 2000);
-                  this.wallet.buildTxFromPrivateKey(
+                  this.selectedWallet.buildTxFromPrivateKey(
                     balanceToSweep.privateKey,
                     destinationAddress,
                     opts,
                     (err, tx) => {
                       if (err) return reject(err);
-                      this.wallet.broadcastRawTx(
+                      this.selectedWallet.broadcastRawTx(
                         {
                           rawTx: tx.serialize(),
                           network: 'livenet',
@@ -297,12 +313,14 @@ export class PaperWalletPage {
   }
 
   private onWalletSelect(wallet): void {
-    this.wallet = wallet;
+    this.selectedWallet = wallet;
   }
 
   public showWallets(): void {
     this.isOpenSelector = true;
-    let id = this.wallet ? this.wallet.credentials.walletId : null;
+    let id = this.selectedWallet
+      ? this.selectedWallet.credentials.walletId
+      : null;
     const params = {
       wallets: this.wallets,
       selectedWalletId: id,
