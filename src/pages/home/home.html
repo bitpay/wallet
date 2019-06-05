@@ -163,8 +163,7 @@
     </div>
 
     <div class="section-header" *ngIf="
-      (showBitPayCard || showGiftCards) &&
-      wallets && wallets[0]
+      (showBitPayCard && ((bitpayCardItems && bitpayCardItems[0]) || showBitpayCardGetStarted) || showGiftCards) && wallets && wallets[0]
     " translate>Cards</div>
 
     <ion-list class="bitpay-card" *ngIf="
