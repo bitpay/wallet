@@ -10,6 +10,7 @@ wallet-item-content {
     &__amount {
       color: black;
       font-size: 16px;
+      white-space: nowrap;
     }
 
     &__credentials {
@@ -22,6 +23,7 @@ wallet-item-content {
       color: #aaaeb6;
       font-size: 14px;
       margin-top: 4px;
+      white-space: nowrap;
     }
 
     &__icon {
