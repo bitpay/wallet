@@ -1048,6 +1048,12 @@ export class ProfileProvider {
         return reject(this.translate.instant('Bad wallet invitation'));
       }
       opts.networkName = walletData.network;
+
+      /* TODO: opts.n is just used to determinate if the wallet is multisig (m/48'/xx) or single sig (m/44') 
+        we should change the name to 'isMultisig'
+      */
+      opts.n = 2;
+
       this.logger.debug('Joining Wallet:', opts);
       this.seedWallet(opts)
         .then(data => {

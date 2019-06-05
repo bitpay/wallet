@@ -49,19 +49,13 @@ export class KeyProvider {
     }
   }
 
-  public addKey(key): Promise<any> {
-    let keyExists: boolean = false;
+  public addKey(keyToAdd): Promise<any> {
+    const keyIndex = this.keys.findIndex(k => this.Key.match(keyToAdd, k));
 
-    this.keys.forEach(k => {
-      if (this.Key.match(key, k)) {
-        keyExists = true;
-      }
-    });
-    if (keyExists) {
-      const selectedKey = this.keys.findIndex(k => k.id == key.id);
-      this.keys.splice(selectedKey, 1, this.Key.fromObj(key));
+    if (keyIndex >= 0) {
+      this.keys.splice(keyIndex, 1, this.Key.fromObj(keyToAdd));
     } else {
-      this.keys.push(this.Key.fromObj(key));
+      this.keys.push(this.Key.fromObj(keyToAdd));
     }
     this.isDirty = true;
     return this.storeKeysIfDirty();
