@@ -40,7 +40,6 @@ export class PaperWalletPage {
   public isPkEncrypted: boolean;
   public passphrase: string;
   public balances = [];
-  public noMatchingWallet: boolean;
   public balanceHidden: boolean;
   public error: boolean;
   public isOpenSelector: boolean;
@@ -105,14 +104,17 @@ export class PaperWalletPage {
   }
 
   ionViewDidEnter() {
-    if (!this.wallets || !this.wallets.length) {
-      this.noMatchingWallet = true;
+    if (_.isEmpty(this.wallets)) {
+      this.popupProvider
+        .ionicAlert(
+          'Error',
+          this.translate.instant('No wallets available to receive funds')
+        )
+        .then(() => {
+          this.navCtrl.pop();
+        });
       return;
     }
-
-    this.selectedWallet = this.wallets[0];
-
-    if (_.isEmpty(this.selectedWallet)) return;
     if (!this.isPkEncrypted) this.scanFunds();
     else {
       let message = this.translate.instant(
@@ -135,17 +137,13 @@ export class PaperWalletPage {
     scannedKey: string,
     privateKeyIsEncrypted: boolean,
     passphrase: string,
+    coin: string,
     cb: (err, scannedKey) => any
   ) {
     if (!privateKeyIsEncrypted) {
       return cb(null, scannedKey);
     }
-    this.selectedWallet.decryptBIP38PrivateKey(
-      scannedKey,
-      passphrase,
-      null,
-      cb
-    );
+    this.wallet[coin].decryptBIP38PrivateKey(scannedKey, passphrase, null, cb);
   }
 
   private getBalance(
@@ -171,6 +169,7 @@ export class PaperWalletPage {
         this.scannedKey,
         this.isPkEncrypted,
         this.passphrase,
+        coin,
         (err, privateKey: string) => {
           if (err) return reject(err);
           if (!this.checkPrivateKey(privateKey))
@@ -207,7 +206,7 @@ export class PaperWalletPage {
 
         this.wallets = _.filter(_.clone(this.wallets), w => available[w.coin]);
 
-        if (this.wallets[0]) this.selectedWallet = this.wallets[0];
+        this.selectedWallet = this.wallets[0];
 
         if (this.balances.length == 0) {
           this.popupProvider
