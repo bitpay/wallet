@@ -384,18 +384,9 @@ export class HomePage {
 
   private checkPriceChart() {
     this.persistenceProvider.getPriceChartFlag().then(res => {
-      if (!res) {
-        this.initPriceChart();
-      } else {
-        this.showPriceChart = res === 'enabled' ? true : false;
-        this.updateCharts();
-      }
+      this.showPriceChart = res === 'enabled' ? true : false;
+      this.updateCharts();
     });
-  }
-
-  private initPriceChart() {
-    this.persistenceProvider.setPriceChartFlag('disabled');
-    this.showPriceChart = false;
   }
 
   private updateCharts() {

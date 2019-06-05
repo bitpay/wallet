@@ -547,6 +547,10 @@ export class PersistenceProvider {
   getPriceChartFlag() {
     return this.storage.get('priceChart');
   }
+
+  removePriceChartFlag() {
+    return this.storage.remove('priceChart');
+  }
 }
 
 function getLegacyGiftCardKey(cardName: string, network: Network) {

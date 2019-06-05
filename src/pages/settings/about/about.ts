@@ -117,8 +117,9 @@ export class AboutPage {
     if (this.versionItemTapped >= 5) {
       this.versionItemTapped = 0;
       this.persistenceProvider.getPriceChartFlag().then(res => {
-        const showPriceChart = res === 'disabled' ? 'enabled' : 'disabled';
-        this.persistenceProvider.setPriceChartFlag(showPriceChart);
+        res === 'enabled'
+          ? this.persistenceProvider.removePriceChartFlag()
+          : this.persistenceProvider.setPriceChartFlag('enabled');
       });
     }
   }
