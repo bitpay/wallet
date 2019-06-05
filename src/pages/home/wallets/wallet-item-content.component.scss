@@ -7,6 +7,10 @@ wallet-item-content {
   .wallet-item-content {
     color: black;
 
+    .testnet {
+      filter: grayscale(100%);
+    }
+
     &__amount {
       color: black;
       font-size: 16px;

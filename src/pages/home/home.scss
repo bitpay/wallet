@@ -463,45 +463,6 @@ page-home {
       }
     }
 
-    .primary-text {
-      color: black;
-      font-size: 16px;
-    }
-
-    .wallet-name {
-      margin-bottom: 2px;
-    }
-
-    .wallet-name-and-credentials {
-      margin-right: 3px;
-    }
-
-    .secondary-text {
-      color: #aaaeb6;
-      font-size: 14px;
-      margin-top: 4px;
-
-      @media (max-width: 330px) {
-        font-size: 13px;
-      }
-    }
-
-    &.reorder-enabled .wallet-amount {
-      .secondary-text {
-        @media (max-width: 400px) {
-          font-size: 11px;
-        }
-      }
-
-      @media (max-width: 330px) {
-        display: none;
-      }
-    }
-
-    .testnet {
-      filter: grayscale(100%);
-    }
-
     .item-inner {
       text-align: right;
       margin: 8px 2px 8px 0;
