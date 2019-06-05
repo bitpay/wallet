@@ -9,6 +9,7 @@ import { SocialSharing } from '@ionic-native/social-sharing';
 // Providers
 import { ActionSheetProvider } from '../../../providers/action-sheet/action-sheet';
 import { AppProvider } from '../../../providers/app/app';
+import { KeyProvider } from '../../../providers/key/key';
 import { Logger } from '../../../providers/logger/logger';
 import { OnGoingProcessProvider } from '../../../providers/on-going-process/on-going-process';
 import { PlatformProvider } from '../../../providers/platform/platform';
@@ -47,7 +48,8 @@ export class CopayersPage {
     private translate: TranslateService,
     private pushNotificationsProvider: PushNotificationsProvider,
     private viewCtrl: ViewController,
-    private actionSheetProvider: ActionSheetProvider
+    private actionSheetProvider: ActionSheetProvider,
+    private keyProvider: KeyProvider
   ) {
     this.secret = null;
     this.appName = this.appProvider.info.userVisibleName;
@@ -138,6 +140,7 @@ export class CopayersPage {
     this.profileProvider
       .deleteWalletClient(this.wallet)
       .then(() => {
+        this.keyProvider.removeKey(this.wallet.credentials.keyId);
         this.onGoingProcessProvider.clear();
         this.pushNotificationsProvider.unsubscribe(this.wallet);
         this.viewCtrl.dismiss();

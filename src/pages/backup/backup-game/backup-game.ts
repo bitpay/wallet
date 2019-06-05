@@ -15,6 +15,7 @@ import { FinishModalPage } from '../../finish/finish';
 // providers
 import { ActionSheetProvider } from '../../../providers/action-sheet/action-sheet';
 import { BwcProvider } from '../../../providers/bwc/bwc';
+import { KeyProvider } from '../../../providers/key/key';
 import { Logger } from '../../../providers/logger/logger';
 import { OnGoingProcessProvider } from '../../../providers/on-going-process/on-going-process';
 import { ProfileProvider } from '../../../providers/profile/profile';
@@ -50,7 +51,8 @@ export class BackupGamePage {
     private bwcProvider: BwcProvider,
     private onGoingProcessProvider: OnGoingProcessProvider,
     private actionSheetProvider: ActionSheetProvider,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private keyProvider: KeyProvider
   ) {
     this.mnemonicWords = this.navParams.data.words;
     this.keys = this.navParams.data.keys;
@@ -127,11 +129,13 @@ export class BackupGamePage {
     }, 300);
   }
 
-  private setFlow(): void {
+  private setFlow() {
     if (!this.mnemonicWords) return;
 
     this.shuffledMnemonicWords = this.shuffledWords(this.mnemonicWords);
-    this.mnemonicHasPassphrase = this.wallet.mnemonicHasPassphrase();
+    this.mnemonicHasPassphrase = this.keyProvider.mnemonicHasPassphrase(
+      this.wallet.credentials.keyId
+    );
     this.useIdeograms = this.keys.mnemonic.indexOf('\u3000') >= 0;
     this.password = '';
     this.customWords = [];

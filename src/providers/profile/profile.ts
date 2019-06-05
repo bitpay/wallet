@@ -97,8 +97,8 @@ export class ProfileProvider {
     this.wallet[walletId].needsBackup = false;
   }
 
-  private async requiresBackup(wallet) {
-    let k = await this.keyProvider.getKey(wallet.credentials.keyId);
+  private requiresBackup(wallet) {
+    let k = this.keyProvider.getKey(wallet.credentials.keyId);
     if (!k) return false;
     if (!k.mnemonic && !k.mnemonicEncrypted) return false;
     if (wallet.credentials.network == 'testnet') return false;
@@ -176,9 +176,7 @@ export class ProfileProvider {
     if (migratedKey) {
       wallet.isPrivKeyEncrypted = migratedKey.isPrivKeyEncrypted();
     } else {
-      wallet.isPrivKeyEncrypted = await this.keyProvider.isPrivKeyEncrypted(
-        keyId
-      );
+      wallet.isPrivKeyEncrypted = this.keyProvider.isPrivKeyEncrypted(keyId);
     }
 
     wallet.removeAllListeners();
@@ -202,7 +200,7 @@ export class ProfileProvider {
 
     wallet.on('walletCompleted', () => {
       this.logger.debug('Wallet completed');
-      this.updateCredentials(JSON.parse(wallet.export()));
+      this.updateCredentials(JSON.parse(wallet.toString()));
       this.events.publish('Local/WalletListChange');
       this.events.publish('Local/WalletUpdate', { walletId: wallet.id });
     });
@@ -482,7 +480,7 @@ export class ProfileProvider {
 
     const walletId: string = wallet.credentials.walletId;
 
-    if (!this.profile.addWallet(JSON.parse(wallet.export()))) {
+    if (!this.profile.addWallet(JSON.parse(wallet.toString()))) {
       const message = this.replaceParametersProvider.replace(
         this.translate.instant('Wallet already in {{nameCase}}'),
         { nameCase: this.appProvider.info.nameCase }
@@ -562,7 +560,8 @@ export class ProfileProvider {
 
   public importExtendedPrivateKey(xPriv: string, opts): Promise<any> {
     this.logger.info('Importing Wallet xPrivKey');
-    return this.keyProvider.serverAssistedImport({ xPriv }, opts).then(data => {
+    opts.xPriv = xPriv;
+    return this.serverAssistedImport(opts).then(data => {
       return this.addAndBindWalletClients(data, {
         bwsurl: opts.bwsurl
       });
@@ -572,7 +571,8 @@ export class ProfileProvider {
   public importMnemonic(words, opts): Promise<any> {
     this.logger.info('Importing Wallets Mnemonic');
     words = this.normalizeMnemonic(words);
-    return this.keyProvider.serverAssistedImport({ words }, opts).then(data => {
+    opts.words = words;
+    return this.serverAssistedImport(opts).then(data => {
       return this.addAndBindWalletClients(data, {
         bwsurl: opts.bwsurl
       });
@@ -616,7 +616,7 @@ export class ProfileProvider {
           );
         }
 
-        client.import(
+        client.fromString(
           credentials,
           {
             // TODO: check how client.import works
@@ -651,6 +651,24 @@ export class ProfileProvider {
           this.translate.instant('Could not import. Check input file.')
         );
       }
+    });
+  }
+
+  // opts.words opts.xPrivKey
+  private serverAssistedImport(opts): Promise<any> {
+    return new Promise((resolve, reject) => {
+      this.bwcProvider.Client.serverAssistedImport(
+        opts,
+        {
+          baseUrl: opts.bwsurl // clientOpts
+        },
+        (err, key, walletClients) => {
+          if (err) {
+            return reject(err);
+          }
+          return resolve({ key, walletClients });
+        }
+      );
     });
   }
 
@@ -878,7 +896,7 @@ export class ProfileProvider {
             account: opts.account || 0,
             n: opts.n || 1
           });
-          walletClient.import(
+          walletClient.fromString(
             key.createCredentials(null, {
               coin: opts.coin,
               network,
@@ -902,7 +920,7 @@ export class ProfileProvider {
             account: opts.account || 0,
             n: opts.n || 1
           });
-          walletClient.import(
+          walletClient.fromString(
             key.createCredentials(null, {
               coin: opts.coin,
               network,
@@ -927,7 +945,7 @@ export class ProfileProvider {
           key = Key.create({
             lang
           });
-          walletClient.import(
+          walletClient.fromString(
             key.createCredentials(null, {
               coin: opts.coin,
               network,
@@ -941,7 +959,7 @@ export class ProfileProvider {
           if (e.message.indexOf('language') > 0) {
             this.logger.info('Using default language for recovery phrase');
             key = Key.create({});
-            walletClient.import(
+            walletClient.fromString(
               key.createCredentials(null, {
                 coin: opts.coin,
                 network,

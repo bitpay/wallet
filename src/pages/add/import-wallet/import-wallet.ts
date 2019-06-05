@@ -248,9 +248,9 @@ export class ImportWalletPage {
     setTimeout(() => {
       this.profileProvider
         .importFile(str2, opts)
-        .then(wallet => {
+        .then((wallet: any[]) => {
           this.onGoingProcessProvider.clear();
-          this.finish(wallet);
+          this.finish([].concat(wallet));
         })
         .catch(err => {
           this.onGoingProcessProvider.clear();
@@ -261,10 +261,12 @@ export class ImportWalletPage {
     }, 100);
   }
 
-  private async finish(wallet) {
-    this.walletProvider.updateRemotePreferences(wallet);
-    this.profileProvider.setBackupFlag(wallet.credentials.walletId);
-    this.pushNotificationsProvider.updateSubscription(wallet);
+  private async finish(wallets: any[]) {
+    wallets.forEach(wallet => {
+      this.walletProvider.updateRemotePreferences(wallet);
+      this.profileProvider.setBackupFlag(wallet.credentials.walletId);
+      this.pushNotificationsProvider.updateSubscription(wallet);
+    });
     this.navCtrl.popToRoot();
   }
 
@@ -273,9 +275,9 @@ export class ImportWalletPage {
     setTimeout(() => {
       this.profileProvider
         .importExtendedPrivateKey(xPrivKey, opts)
-        .then(wallet => {
+        .then((wallets: any[]) => {
           this.onGoingProcessProvider.clear();
-          this.finish(wallet);
+          this.finish(wallets);
         })
         .catch(err => {
           if (err instanceof this.errors.NOT_AUTHORIZED) {
@@ -295,9 +297,9 @@ export class ImportWalletPage {
     setTimeout(() => {
       this.profileProvider
         .importMnemonic(words, opts)
-        .then(wallet => {
+        .then((wallets: any[]) => {
           this.onGoingProcessProvider.clear();
-          this.finish(wallet);
+          this.finish(wallets);
         })
         .catch(err => {
           if (err instanceof this.errors.NOT_AUTHORIZED) {

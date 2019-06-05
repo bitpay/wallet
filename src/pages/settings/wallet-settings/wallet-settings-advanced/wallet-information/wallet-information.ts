@@ -4,6 +4,7 @@ import { Logger } from '../../../../../providers/logger/logger';
 
 // providers
 import { ConfigProvider } from '../../../../../providers/config/config';
+import { KeyProvider } from '../../../../../providers/key/key';
 import { ProfileProvider } from '../../../../../providers/profile/profile';
 
 // pages
@@ -43,7 +44,8 @@ export class WalletInformationPage {
     private navParams: NavParams,
     private navCtrl: NavController,
     private events: Events,
-    private logger: Logger
+    private logger: Logger,
+    private keyProvider: KeyProvider
   ) {}
 
   ionViewDidLoad() {
@@ -67,7 +69,15 @@ export class WalletInformationPage {
     this.addressType = this.wallet.credentials.addressType || 'P2SH';
     this.derivationStrategy =
       this.wallet.credentials.derivationStrategy || 'BIP45';
-    this.basePath = this.wallet.credentials.getBaseAddressDerivationPath();
+    this.basePath = this.keyProvider.getBaseAddressDerivationPath(
+      this.wallet.credentials.keyId,
+      {
+        account: this.account,
+        coin: this.coin,
+        n: this.N,
+        network: this.network
+      }
+    );
     this.pubKeys = _.map(this.wallet.credentials.publicKeyRing, 'xPubKey');
     this.externalSource = null;
     this.canSign = this.wallet.canSign;

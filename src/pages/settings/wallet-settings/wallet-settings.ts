@@ -93,7 +93,7 @@ export class WalletSettingsPage {
         .encrypt(this.wallet.credentials.keyId)
         .then(() => {
           this.profileProvider.updateCredentials(
-            JSON.parse(this.wallet.export())
+            JSON.parse(this.wallet.toString())
           );
           this.logger.debug('Wallet encrypted');
         })
@@ -107,7 +107,7 @@ export class WalletSettingsPage {
         .decrypt(this.wallet.credentials.keyId)
         .then(() => {
           this.profileProvider.updateCredentials(
-            JSON.parse(this.wallet.export())
+            JSON.parse(this.wallet.toString())
           );
           this.logger.debug('Wallet decrypted');
         })

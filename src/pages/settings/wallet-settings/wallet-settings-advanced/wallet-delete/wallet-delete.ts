@@ -4,6 +4,7 @@ import { NavController, NavParams } from 'ionic-angular';
 import { Logger } from '../../../../../providers/logger/logger';
 
 // providers
+import { KeyProvider } from '../../../../../providers/key/key';
 import { OnGoingProcessProvider } from '../../../../../providers/on-going-process/on-going-process';
 import { PopupProvider } from '../../../../../providers/popup/popup';
 import { ProfileProvider } from '../../../../../providers/profile/profile';
@@ -27,6 +28,7 @@ export class WalletDeletePage extends WalletTabsChild {
     private pushNotificationsProvider: PushNotificationsProvider,
     private logger: Logger,
     private translate: TranslateService,
+    private keyProvider: KeyProvider,
     public walletTabsProvider: WalletTabsProvider
   ) {
     super(navCtrl, profileProvider, walletTabsProvider);
@@ -55,6 +57,7 @@ export class WalletDeletePage extends WalletTabsChild {
     this.profileProvider
       .deleteWalletClient(this.wallet)
       .then(() => {
+        this.keyProvider.removeKey(this.wallet.credentials.keyId);
         this.onGoingProcessProvider.clear();
         this.pushNotificationsProvider.unsubscribe(this.wallet);
         this.close();

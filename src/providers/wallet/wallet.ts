@@ -1091,8 +1091,17 @@ export class WalletProvider {
     return new Promise((resolve, reject) => {
       if (!wallet || !txp) return reject('MISSING_PARAMETER');
 
+      const rootPath = wallet.getRootPath();
+
+      const signatures = this.keyProvider.sign(
+        wallet.credentials.keyid,
+        rootPath,
+        txp,
+        password
+      );
+
       try {
-        wallet.signTxProposal(txp, password, (err, signedTxp) => {
+        wallet.pushSignatures(txp, signatures, (err, signedTxp) => {
           if (err) {
             this.logger.error('Transaction signed err: ', err);
             return reject(err);
@@ -1100,7 +1109,7 @@ export class WalletProvider {
           return resolve(signedTxp);
         });
       } catch (e) {
-        this.logger.error('Error at signTxProposal:', e);
+        this.logger.error('Error at pushSignatures:', e);
         return reject(e);
       }
     });
@@ -1315,27 +1324,35 @@ export class WalletProvider {
           if (err || !resp || !resp.length)
             return reject(err ? err : 'No UTXOs');
 
-          this.getMinFee(wallet, resp.length).then(fee => {
-            const minFee = fee;
-            const balance = _.sumBy(resp, 'satoshis');
+          this.getMinFee(wallet, resp.length)
+            .then(fee => {
+              const minFee = fee;
+              const balance = _.sumBy(resp, 'satoshis');
 
-            // for 2 outputs
-            this.getLowAmount(wallet).then(fee => {
-              const lowAmount = fee;
-              const lowUtxos = _.filter(resp, x => {
-                return x.satoshis < lowAmount;
-              });
+              // for 2 outputs
+              this.getLowAmount(wallet)
+                .then(fee => {
+                  const lowAmount = fee;
+                  const lowUtxos = _.filter(resp, x => {
+                    return x.satoshis < lowAmount;
+                  });
 
-              const totalLow = _.sumBy(lowUtxos, 'satoshis');
-              return resolve({
-                allUtxos: resp || [],
-                lowUtxos: lowUtxos || [],
-                totalLow,
-                warning: minFee / balance > this.TOTAL_LOW_WARNING_RATIO,
-                minFee
-              });
+                  const totalLow = _.sumBy(lowUtxos, 'satoshis');
+                  return resolve({
+                    allUtxos: resp || [],
+                    lowUtxos: lowUtxos || [],
+                    totalLow,
+                    warning: minFee / balance > this.TOTAL_LOW_WARNING_RATIO,
+                    minFee
+                  });
+                })
+                .catch(err => {
+                  return reject(err);
+                });
+            })
+            .catch(err => {
+              return reject(err);
             });
-          });
         }
       );
     });
@@ -1501,7 +1518,15 @@ export class WalletProvider {
 
   public getEncodedWalletInfo(wallet, password?: string): Promise<any> {
     return new Promise((resolve, reject) => {
-      const derivationPath = wallet.credentials.getBaseAddressDerivationPath();
+      const derivationPath = this.keyProvider.getBaseAddressDerivationPath(
+        wallet.credentials.keyId,
+        {
+          account: wallet.account,
+          coin: wallet.coin,
+          n: wallet.n,
+          network: wallet.network
+        }
+      );
       const encodingType = {
         mnemonic: 1,
         xpriv: 2,
@@ -1518,6 +1543,13 @@ export class WalletProvider {
         );
 
       const keys = this.getKeysWithPassword(wallet, password);
+
+      if (!keys)
+        return reject(
+          this.translate.instant(
+            'Exporting via QR not supported for this wallet'
+          )
+        );
 
       if (keys.mnemonic) {
         info = {
@@ -1549,7 +1581,7 @@ export class WalletProvider {
 
   public getKeysWithPassword(wallet, password: string) {
     try {
-      return wallet.getKeys(password);
+      return this.keyProvider.get(wallet.credentials.keyId, password);
     } catch (e) {
       this.logger.error(e);
     }
@@ -1575,7 +1607,7 @@ export class WalletProvider {
         .then((password: string) => {
           let keys;
           try {
-            keys = wallet.getKeys(password);
+            keys = this.getKeysWithPassword(wallet, password);
           } catch (e) {
             return reject(e);
           }
@@ -1593,7 +1625,7 @@ export class WalletProvider {
         .then((password: string) => {
           let keys;
           try {
-            keys = wallet.getKeys(password);
+            keys = this.getKeysWithPassword(wallet, password);
           } catch (e) {
             return reject(e);
           }

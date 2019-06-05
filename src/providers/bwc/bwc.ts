@@ -52,7 +52,7 @@ export class BwcProvider {
     });
 
     console.log('[bwc.ts.46] TO IMPORT ', walletData, opts); // TODO
-    if (walletData) bwc.import(walletData, opts);
+    if (walletData) bwc.fromString(walletData);
     return bwc;
   }
 }

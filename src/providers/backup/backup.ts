@@ -55,7 +55,7 @@ export class BackupProvider {
     let wallet = this.profileProvider.getWallet(walletId);
     try {
       opts = opts ? opts : {};
-      let b = wallet.export(opts);
+      let b = wallet.toString(opts);
       if (opts.addressBook) b = this.addMetadata(b, opts);
 
       let e = this.bwcProvider.getSJCL().encrypt(password, b, {

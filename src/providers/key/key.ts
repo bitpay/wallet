@@ -79,16 +79,16 @@ export class KeyProvider {
     return this.storeKeysIfDirty();
   }
 
-  public getKey(keyId: string): Promise<any> {
+  public getKey(keyId: string) {
     this.logger.debug('Getting key: ' + keyId);
 
     let selectedKey = this.keys.find(k => k.id == keyId);
 
     if (selectedKey) {
-      return Promise.resolve(selectedKey);
+      return selectedKey;
     } else {
       this.logger.debug('No matches for key id: ' + keyId);
-      return Promise.resolve(null);
+      return null;
     }
   }
 
@@ -121,8 +121,8 @@ export class KeyProvider {
     return this.popupProvider.ionicPrompt(title, warnMsg, opts);
   }
 
-  public async encrypt(keyId): Promise<any> {
-    const key = await this.getKey(keyId);
+  public encrypt(keyId): Promise<any> {
+    const key = this.getKey(keyId);
     let title = this.translate.instant('Enter a new encrypt password');
     const warnMsg = this.translate.instant(
       'Your wallet key will be encrypted. The encrypt password cannot be recovered. Be sure to write it down.'
@@ -181,8 +181,8 @@ export class KeyProvider {
     return this.popupProvider.ionicConfirm(title, msg, okText, cancelText);
   }
 
-  public async decrypt(keyId: string): Promise<any> {
-    const key = await this.getKey(keyId);
+  public decrypt(keyId: string): Promise<any> {
+    const key = this.getKey(keyId);
     return this.askPassword(
       null,
       this.translate.instant('Enter encrypt password')
@@ -199,9 +199,9 @@ export class KeyProvider {
     });
   }
 
-  public async handleEncryptedWallet(keyId: string): Promise<any> {
-    const key = await this.getKey(keyId);
-    const isPrivKeyEncrypted = await this.isPrivKeyEncrypted(keyId);
+  public handleEncryptedWallet(keyId: string): Promise<any> {
+    const key = this.getKey(keyId);
+    const isPrivKeyEncrypted = this.isPrivKeyEncrypted(keyId);
 
     if (!isPrivKeyEncrypted) return Promise.resolve();
     return this.askPassword(
@@ -220,39 +220,47 @@ export class KeyProvider {
     });
   }
 
-  public async isPrivKeyEncrypted(keyId: string): Promise<boolean> {
-    const key = await this.getKey(keyId);
-
+  public isPrivKeyEncrypted(keyId: string) {
+    const key = this.getKey(keyId);
     return key.isPrivKeyEncrypted();
   }
 
-  public async isDeletedSeed(keyId: string): Promise<boolean> {
-    const key = await this.getKey(keyId);
-
-    return Promise.resolve(!key.mnemonic && !key.mnemonicEncrypted);
+  public isDeletedSeed(keyId: string): boolean {
+    const key = this.getKey(keyId);
+    return !key.mnemonic && !key.mnemonicEncrypted;
   }
 
-  public async encryptPrivateKey(key, password: string) {
+  public mnemonicHasPassphrase(keyId: string): boolean {
+    const key = this.getKey(keyId);
+    return key.mnemonicHasPassphrase;
+  }
+
+  public get(keyId: string, password: string) {
+    const key = this.getKey(keyId);
+    return key.get(password);
+  }
+
+  public getBaseAddressDerivationPath(keyId, opts): string {
+    const key = this.getKey(keyId);
+    return key.getBaseAddressDerivationPath(opts);
+  }
+
+  public encryptPrivateKey(key, password: string) {
     key.encrypt(password);
   }
 
-  public async decryptPrivateKey(key, password: string) {
+  public decryptPrivateKey(key, password: string) {
     key.decrypt(password);
   }
 
-  // opts.words opts.xPrivKey
-  public serverAssistedImport(opts, clientOpts?): Promise<any> {
-    return new Promise((resolve, reject) => {
-      this.Key.serverAssistedImport(
-        opts,
-        clientOpts,
-        (err, key, walletClients) => {
-          if (err) {
-            return reject(err);
-          }
-          return resolve({ key, walletClients });
-        }
-      );
-    });
+  public sign(
+    keyId: string,
+    rootPath: string,
+    txp,
+    password: string
+  ): Promise<any> {
+    const key = this.getKey(keyId);
+
+    return key.sign(rootPath, txp, password);
   }
 }

@@ -44,8 +44,8 @@ export class BackupKeyPage {
     this.credentialsEncrypted = this.wallet.isPrivKeyEncrypted;
   }
 
-  async ionViewDidEnter() {
-    this.deleted = await this.isDeletedSeed();
+  ionViewDidEnter() {
+    this.deleted = this.isDeletedSeed();
 
     if (this.deleted) {
       this.logger.warn('no mnemonics');
@@ -89,7 +89,7 @@ export class BackupKeyPage {
     errorInfoSheet.present();
   }
 
-  private async isDeletedSeed(): Promise<boolean> {
+  private isDeletedSeed(): boolean {
     return this.keyProvider.isDeletedSeed(this.wallet.credentials.keyId);
   }
 
