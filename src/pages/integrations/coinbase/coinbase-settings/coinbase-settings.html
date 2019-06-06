@@ -20,12 +20,13 @@
     </expandable-header>
 
     <ion-list>
-      <ion-item-divider></ion-item-divider>
       <ion-item>
         <ion-label>{{'Show in Home' | translate}}</ion-label>
         <ion-toggle [(ngModel)]="showInHome" (ionChange)="showInHomeSwitch()"></ion-toggle>
       </ion-item>
     </ion-list>
+    
+    <ion-spinner *ngIf="loading"></ion-spinner>
 
     <ion-list *ngIf="coinbaseAccount && coinbaseAccount.balance">
       <ion-item-divider>Account</ion-item-divider>
@@ -65,12 +66,11 @@
       </ion-item>
     </ion-list>
 
-    <ion-list *ngIf="coinbaseAccount">
-      <ion-item-divider></ion-item-divider>
-      <button ion-item (click)="revokeToken()">
-        <span class="assertive">Log out</span>
+    <div padding-bottom padding-top>
+      <button *ngIf="coinbaseAccount" ion-button class="button-standard" color="danger" (click)="revokeToken()">
+        {{'Log out' | translate}}
       </button>
-    </ion-list>
+    </div>
 
   </div>
 </ion-content>

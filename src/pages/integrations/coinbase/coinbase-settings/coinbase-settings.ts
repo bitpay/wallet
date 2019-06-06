@@ -20,6 +20,7 @@ export class CoinbaseSettingsPage {
   public service;
   public coinbaseAccount;
   public coinbaseUser;
+  public loading: boolean;
 
   constructor(
     private navCtrl: NavController,
@@ -36,8 +37,10 @@ export class CoinbaseSettingsPage {
   }
 
   ionViewDidLoad() {
+    this.loading = true;
     this.coinbaseProvider.init((err, data) => {
       if (err || _.isEmpty(data)) {
+        this.loading = false;
         if (err) {
           this.logger.error(err);
           let errorId = err.errors ? err.errors[0].id : null;
@@ -59,6 +62,7 @@ export class CoinbaseSettingsPage {
         accessToken,
         accountId,
         (err, account) => {
+          this.loading = false;
           if (err) this.logger.error(err);
           this.coinbaseAccount = account.data[0];
         }
