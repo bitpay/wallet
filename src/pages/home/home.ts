@@ -51,7 +51,9 @@ interface UpdateWalletOptsI {
 })
 export class HomePage {
   @ViewChild('showCard')
+  @ViewChild('showSurveyFeedbackCard')
   showCard;
+  showSurveyFeedbackCard;
   public wallets;
   public txpsN: number;
   public serverMessages: any[];
@@ -65,6 +67,7 @@ export class HomePage {
   public slideDown: boolean;
   public showServerMessage: boolean;
 
+  public showSurveyCard: boolean;
   public showRateCard: boolean;
   public showReorder: boolean;
   public showIntegration;
@@ -373,7 +376,9 @@ export class HomePage {
         const now = moment().unix();
         const timeExceeded = now - feedbackInfo.time >= 24 * 7 * 60 * 60;
         this.showRateCard = timeExceeded && !feedbackInfo.sent;
+        this.showSurveyCard = timeExceeded && !feedbackInfo.sent;
         this.showCard.setShowRateCard(this.showRateCard);
+        this.showSurveyFeedbackCard.setShowSurveyCard(this.showSurveyCard);
       }
     });
   }
@@ -453,8 +458,8 @@ export class HomePage {
             this.payProDetailsData.amount = selectedTransactionCurrency
               ? paymentTotals[selectedTransactionCurrency]
               : Coin[currency]
-              ? price / 1e-8
-              : price;
+                ? price / 1e-8
+                : price;
             this.clearCountDownInterval();
             this.paymentTimeControl(expirationTime);
           } catch (err) {
@@ -515,6 +520,7 @@ export class HomePage {
       sent: false
     });
     this.showRateCard = false;
+    this.showSurveyCard = false;
   }
 
   private fetchTxHistory(opts: UpdateWalletOptsI) {
@@ -575,9 +581,9 @@ export class HomePage {
 
     this.logger.debug(
       'fetching status for: ' +
-        opts.walletId +
-        ' alsohistory:' +
-        opts.alsoUpdateHistory
+      opts.walletId +
+      ' alsohistory:' +
+      opts.alsoUpdateHistory
     );
     const wallet = this.profileProvider.getWallet(opts.walletId);
     if (!wallet) return;
