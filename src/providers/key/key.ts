@@ -42,6 +42,7 @@ export class KeyProvider {
       });
       return this.persistenceProvider.setKeys(keysToAdd).then(() => {
         this.isDirty = false;
+        Promise.resolve();
       });
     } else {
       this.logger.debug('The keys have not been saved. Not dirty');
@@ -136,7 +137,7 @@ export class KeyProvider {
     });
   }
 
-  public encryptFirst(key): Promise<any> {
+  public encryptNewKey(key): Promise<any> {
     let title = this.translate.instant(
       'Enter a password to encrypt your wallet'
     );
@@ -147,7 +148,7 @@ export class KeyProvider {
       if (!password) {
         return this.showWarningNoEncrypt().then(res => {
           if (res) return Promise.resolve();
-          return this.encryptFirst(key);
+          return this.encryptNewKey(key);
         });
       } else {
         title = this.translate.instant(
@@ -155,7 +156,7 @@ export class KeyProvider {
         );
         return this.askPassword(warnMsg, title).then((password2: string) => {
           if (!password2 || password != password2) {
-            return this.encryptFirst(key);
+            return this.encryptNewKey(key);
           } else {
             this.encryptPrivateKey(key, password);
             return Promise.resolve();

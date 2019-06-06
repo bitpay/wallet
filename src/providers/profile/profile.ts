@@ -439,10 +439,10 @@ export class ProfileProvider {
         if (!res) {
           return this.keyProvider.showWarningNoEncrypt().then(res => {
             if (res) return Promise.resolve();
-            return this.keyProvider.encryptFirst(key);
+            return this.keyProvider.encryptNewKey(key);
           });
         }
-        return this.keyProvider.encryptFirst(key);
+        return this.keyProvider.encryptNewKey(key);
       });
   }
 
@@ -749,6 +749,7 @@ export class ProfileProvider {
                       this.logger.info(
                         'Bound ' + totalBound + ' out of ' + l + ' wallets'
                       );
+                      this.storeProfileIfDirty();
                       return resolve();
                     })
                     .catch(err => {
@@ -760,6 +761,7 @@ export class ProfileProvider {
 
                     profile.credentials = newCrededentials;
                     profile.dirty = true;
+                    this.storeProfileIfDirty();
                   }
                   this.logger.info(
                     'Bound ' + totalBound + ' out of ' + l + ' wallets'
