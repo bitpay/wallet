@@ -34,20 +34,20 @@ export class KeyProvider {
     });
   }
 
-  public storeKeysIfDirty(): Promise<any> {
-    if (this.isDirty) {
-      const keysToAdd = [];
-      this.keys.forEach(k => {
-        keysToAdd.push(k.toObj(k));
-      });
-      return this.persistenceProvider.setKeys(keysToAdd).then(() => {
-        this.isDirty = false;
-        Promise.resolve();
-      });
-    } else {
+  private storeKeysIfDirty(): Promise<any> {
+    if (!this.isDirty) {
       this.logger.debug('The keys have not been saved. Not dirty');
       return Promise.resolve();
     }
+
+    const keysToAdd = [];
+    this.keys.forEach(k => {
+      keysToAdd.push(k.toObj(k));
+    });
+    return this.persistenceProvider.setKeys(keysToAdd).then(() => {
+      this.isDirty = false;
+      return Promise.resolve();
+    });
   }
 
   public addKey(keyToAdd): Promise<any> {
@@ -128,10 +128,14 @@ export class KeyProvider {
       }
       title = this.translate.instant('Confirm your new encrypt password');
       return this.askPassword(warnMsg, title).then((password2: string) => {
-        if (password != password2 || _.isNull(password2))
+        if (password != password2 || _.isNull(password2)) {
           return Promise.reject(this.translate.instant('Password mismatch'));
-
-        this.encryptPrivateKey(key, password);
+        }
+        try {
+          this.encryptPrivateKey(key, password);
+        } catch (error) {
+          return Promise.reject(error);
+        }
         return Promise.resolve();
       });
     });
@@ -158,7 +162,11 @@ export class KeyProvider {
           if (!password2 || password != password2) {
             return this.encryptNewKey(key);
           } else {
-            this.encryptPrivateKey(key, password);
+            try {
+              this.encryptPrivateKey(key, password);
+            } catch (error) {
+              return Promise.reject(error);
+            }
             return Promise.resolve();
           }
         });
@@ -205,13 +213,13 @@ export class KeyProvider {
     ).then((password: string) => {
       if (_.isNull(password)) {
         return Promise.reject(new Error('PASSWORD_CANCELLED'));
-      }
-      if (password == '') {
+      } else if (password == '') {
         return Promise.reject(new Error('NO_PASSWORD'));
-      }
-      if (!key.checkPassword(password))
+      } else if (!key.checkPassword(password)) {
         return Promise.reject(new Error('WRONG_PASSWORD'));
-      return Promise.resolve(password);
+      } else {
+        return Promise.resolve(password);
+      }
     });
   }
 
