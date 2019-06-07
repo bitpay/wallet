@@ -124,10 +124,7 @@ export class WalletMock {
     keyId: string;
     walletName: string;
     network?: string;
-    derivationStrategy?: string;
-    mnemonicHasPassphrase?: boolean;
     publicKeyRing?: any[];
-    walletPrivKey?: string;
   };
   coin: string;
   id: string;
@@ -212,9 +209,6 @@ export class WalletMock {
       }
     ];
     return cb(null, txsFromLocal);
-  }
-  isPrivKeyEncrypted() {
-    return true;
   }
   createTxProposal(_txp, cb) {
     const txp: TransactionProposal = {
@@ -303,14 +297,6 @@ export class WalletMock {
     ];
     return cb(null, utxos);
   }
-  encryptPrivateKey(_pass) {}
-  decryptPrivateKey(_pass) {}
-  checkPassword(_pass) {
-    return true;
-  }
-  canSign() {
-    return true;
-  }
   getKeys(_pass) {
     const keysWithMnemonics = {
       mnemonic: 'mom mom mom mom mom mom mom mom mom mom mom mom',
@@ -326,17 +312,6 @@ export class WalletMock {
   }
   getSendMaxInfo(_opts, cb) {
     return cb(null, sendMaxInfoMock);
-  }
-  _doJoinWallet(
-    _walletId,
-    _walletPrivKey,
-    _xPubKey,
-    _requestPubKey,
-    _copayerName,
-    _opts,
-    cb
-  ) {
-    return cb(null);
   }
   createAddress(_opts, cb) {
     const addr = {

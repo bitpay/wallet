@@ -29,7 +29,6 @@ export class WalletInformationPage {
   public coin: string;
   public network: string;
   public addressType: string;
-  public derivationStrategy: string;
   public basePath: string;
   public pubKeys;
   public externalSource: string;
@@ -67,8 +66,6 @@ export class WalletInformationPage {
     this.account = this.wallet.credentials.account;
     this.network = this.wallet.credentials.network;
     this.addressType = this.wallet.credentials.addressType || 'P2SH';
-    this.derivationStrategy =
-      this.wallet.credentials.derivationStrategy || 'BIP45';
     this.basePath = this.keyProvider.getBaseAddressDerivationPath(
       this.wallet.credentials.keyId,
       {

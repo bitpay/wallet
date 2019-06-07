@@ -66,7 +66,8 @@ describe('Provider: Wallet Provider', () => {
         {
           id: 'keyId2',
           xPrivKey: 'xPrivKey2',
-          version: 1
+          version: 1,
+          mnemonicHasPassphrase: false
         }
       ]);
     }
@@ -1007,12 +1008,10 @@ describe('Provider: Wallet Provider', () => {
     const wallet: WalletMock = new WalletMock();
     let pass;
     wallet.credentials.network = 'livenet';
-    wallet.credentials.mnemonicHasPassphrase = false;
 
     it('Should get the encoded wallet info for a BIP44 wallet', async () => {
       await keyProvider.load();
       pass = 'password1';
-      wallet.credentials.derivationStrategy = 'BIP44';
       spyOn<any>(keyProvider, 'getBaseAddressDerivationPath').and.returnValue(
         "m/44'/0'/0'"
       );
@@ -1032,7 +1031,6 @@ describe('Provider: Wallet Provider', () => {
     it('Should get the encoded wallet info for a BIP44 wallet without mnemonics', async () => {
       await keyProvider.load();
       pass = 'password2';
-      wallet.credentials.derivationStrategy = 'BIP44';
       spyOn<any>(keyProvider, 'getBaseAddressDerivationPath').and.returnValue(
         "m/44'/0'/0'"
       );
@@ -1052,7 +1050,6 @@ describe('Provider: Wallet Provider', () => {
 
     it('Should be reject for a BIP45 wallet', () => {
       pass = 'password1';
-      wallet.credentials.derivationStrategy = 'BIP45';
       spyOn<any>(keyProvider, 'getBaseAddressDerivationPath').and.returnValue(
         "m/44'/0'/0'"
       );
@@ -1158,43 +1155,6 @@ describe('Provider: Wallet Provider', () => {
       const coin = 'btc';
       const protocol = walletProvider.getProtocolHandler(coin);
       expect(protocol).toEqual('bitcoin');
-    });
-  });
-
-  describe('Function: copyCopayers', () => {
-    const wallet: WalletMock = new WalletMock();
-    wallet.credentials.publicKeyRing = [
-      {
-        copayerName: 'copayer1',
-        xPubKey: 'xPubKey1',
-        requestPubKey: 'requestPubKey1'
-      },
-      {
-        copayerName: 'copayer2',
-        xPubKey: 'xPubKey2',
-        requestPubKey: 'requestPubKey2'
-      }
-    ];
-    wallet.credentials.walletPrivKey = 'walletPrivKey1';
-    const newWallet: WalletMock = new WalletMock();
-
-    it('Should work without errors', () => {
-      (walletProvider as any).bwcProvider.getBitcore = () => {
-        const bitcore = {
-          PrivateKey: {
-            fromString: (walletPrivKey: string) => walletPrivKey
-          }
-        };
-        return bitcore;
-      };
-      walletProvider
-        .copyCopayers(wallet, newWallet)
-        .then(() => {
-          expect().nothing();
-        })
-        .catch(err => {
-          expect(err).toBeUndefined();
-        });
     });
   });
 });

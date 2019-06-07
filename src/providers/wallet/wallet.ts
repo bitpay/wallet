@@ -1534,17 +1534,9 @@ export class WalletProvider {
       };
       let info: any = {};
 
-      // not supported yet
-      if (wallet.credentials.derivationStrategy != 'BIP44' || !wallet.canSign)
-        return reject(
-          this.translate.instant(
-            'Exporting via QR not supported for this wallet'
-          )
-        );
-
       const keys = this.getKeysWithPassword(wallet, password);
 
-      if (!keys)
+      if (!keys || (!keys.mnemonic && !keys.xPrivKey))
         return reject(
           this.translate.instant(
             'Exporting via QR not supported for this wallet'
@@ -1563,6 +1555,10 @@ export class WalletProvider {
         };
       }
 
+      const mnemonicHasPassphrase = this.keyProvider.mnemonicHasPassphrase(
+        wallet.credentials.keyId
+      );
+
       return resolve(
         info.type +
           '|' +
@@ -1572,7 +1568,7 @@ export class WalletProvider {
           '|' +
           derivationPath +
           '|' +
-          wallet.credentials.mnemonicHasPassphrase +
+          mnemonicHasPassphrase +
           '|' +
           wallet.coin
       );
@@ -1654,36 +1650,5 @@ export class WalletProvider {
     } else {
       return 'bitcoin';
     }
-  }
-
-  public copyCopayers(wallet, newWallet): Promise<any> {
-    return new Promise((resolve, reject) => {
-      const walletPrivKey = this.bwcProvider
-        .getBitcore()
-        .PrivateKey.fromString(wallet.credentials.walletPrivKey);
-      let copayer = 1;
-      let i = 0;
-
-      _.each(wallet.credentials.publicKeyRing, item => {
-        const name = item.copayerName || 'copayer ' + copayer++;
-        newWallet._doJoinWallet(
-          newWallet.credentials.walletId,
-          walletPrivKey,
-          item.xPubKey,
-          item.requestPubKey,
-          name,
-          {
-            coin: newWallet.credentials.coin
-          },
-          err => {
-            // Ignore error is copayer already in wallet
-            if (err && !(err instanceof this.errors.COPAYER_IN_WALLET))
-              return reject(err);
-            if (++i == wallet.credentials.publicKeyRing.length)
-              return resolve();
-          }
-        );
-      });
-    });
   }
 }
