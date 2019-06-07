@@ -51,7 +51,6 @@ export class BwcProvider {
       transports: ['polling']
     });
 
-    console.log('[bwc.ts.46] TO IMPORT ', walletData, opts); // TODO
     if (walletData) bwc.fromString(walletData);
     return bwc;
   }

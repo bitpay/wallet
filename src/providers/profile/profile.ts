@@ -604,7 +604,6 @@ export class ProfileProvider {
         }
 
         let migrated = this.bwcProvider.fromOld(oldCredentials);
-        console.log('[profile.ts.843:migrated:]', migrated); // TODO
         credentials = migrated.credentials;
         key = migrated.key;
 
@@ -711,7 +710,6 @@ export class ProfileProvider {
             this.logger.info('About to migrate : ' + credentials.walletId);
 
             migrated = this.bwcProvider.fromOld(credentials);
-            console.log('[profile.ts.843:migrated:]', migrated); // TODO
             credentials = migrated.credentials;
 
             newCrededentials.push(migrated.credentials);
@@ -867,12 +865,10 @@ export class ProfileProvider {
               return resolve(this.profile);
             })
             .catch(err => {
-              console.log('[profile.ts.968:err:]', err); // TODO
               return reject(err);
             });
         })
         .catch(err => {
-          console.log('[profile.ts.972:err:]', err); // TODO
           return reject(err);
         });
     });
@@ -885,7 +881,6 @@ export class ProfileProvider {
       const network = opts.networkName || 'livenet';
       const Key = this.bwcProvider.getKey();
       let key;
-      console.log('[profile.ts.119] TODO : SAVE KEYS!!'); // TODO
       if (opts.mnemonic) {
         try {
           opts.mnemonic = this.normalizeMnemonic(opts.mnemonic);
@@ -954,7 +949,6 @@ export class ProfileProvider {
             })
           );
         } catch (e) {
-          console.log('[profile.ts.1109]', e); // TODO
           this.logger.info('Error creating recovery phrase: ' + e.message);
           if (e.message.indexOf('language') > 0) {
             this.logger.info('Using default language for recovery phrase');
