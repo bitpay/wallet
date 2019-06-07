@@ -121,6 +121,7 @@ export class JoinWalletPage {
   public onQrCodeScannedJoin(data: string): void {
     if (this.regex.test(data)) {
       this.joinForm.controls['invitationCode'].setValue(data);
+      this.processInvitation(data);
     } else {
       const errorInfoSheet = this.actionSheetProvider.createInfoSheet(
         'default-error',
