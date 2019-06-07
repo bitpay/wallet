@@ -378,8 +378,7 @@ export class HomePage {
         this.showRateCard = timeExceeded && !feedbackInfo.sent;
         this.showSurveyCard = timeExceeded && !feedbackInfo.sent;
         this.showCard.setShowRateCard(this.showRateCard);
-        // this.showSurveyFeedbackCard.setShowSurveyCard(this.showSurveyCard);
-        this.showSurveyFeedbackCard.setShowSurveyCard(true);
+        this.showSurveyFeedbackCard.setShowSurveyCard(this.showSurveyCard);
       }
     });
   }
