@@ -173,11 +173,9 @@ export class ProfileProvider {
 
     wallet.canSign = keyId ? true : false; // TODO check this
 
-    if (migratedKey) {
-      wallet.isPrivKeyEncrypted = migratedKey.isPrivKeyEncrypted();
-    } else {
-      wallet.isPrivKeyEncrypted = this.keyProvider.isPrivKeyEncrypted(keyId);
-    }
+    wallet.isPrivKeyEncrypted = migratedKey
+      ? migratedKey.isPrivKeyEncrypted()
+      : this.keyProvider.isPrivKeyEncrypted(keyId);
 
     wallet.removeAllListeners();
 

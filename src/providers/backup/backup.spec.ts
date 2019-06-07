@@ -1,12 +1,12 @@
 import { TestUtils } from '../../test';
 import { AppProvider } from '../app/app';
+import { BwcProvider } from '../bwc/bwc';
 import { ConfigProvider } from '../config/config';
 import { DownloadProvider } from '../download/download';
 import { PersistenceProvider } from '../persistence/persistence';
 import { ProfileProvider } from '../profile/profile';
 import { WalletMock } from '../wallet/mocks/wallet.mock';
 import { BackupProvider } from './backup';
-import { BwcProvider } from '../bwc/bwc';
 
 describe('BackupProvider', () => {
   let backupProvider: BackupProvider;

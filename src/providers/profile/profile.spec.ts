@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 
 import { BwcProvider, KeyProvider, PersistenceProvider } from '..';
 import { TestUtils } from '../../test';
+
 // Models
 import { Profile } from '../../models/profile/profile.model';
 

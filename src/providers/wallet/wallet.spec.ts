@@ -18,7 +18,7 @@ import {
   WalletMock
 } from './mocks/wallet.mock';
 
-fdescribe('Provider: Wallet Provider', () => {
+describe('Provider: Wallet Provider', () => {
   let bwcErrorProvider: BwcErrorProvider;
   let configProvider: ConfigProvider;
   let feeProvider: FeeProvider;
