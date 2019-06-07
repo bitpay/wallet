@@ -2,7 +2,11 @@ import { Component } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 
 // Providers
-import { ExternalLinkProvider, Logger, PersistenceProvider } from '../../../providers';
+import {
+  ExternalLinkProvider,
+  Logger,
+  PersistenceProvider
+} from '../../../providers';
 import { AppProvider } from '../../../providers/app/app';
 import { ReplaceParametersProvider } from '../../../providers/replace-parameters/replace-parameters';
 
@@ -50,6 +54,8 @@ export class SurveyFeedbackPage {
 
   public async openSurveyInBrowser(): Promise<void> {
     this.hideCard();
-    await this.externalLinkProvider.open('https://bitpayux.typeform.com/to/z81Jp7');
+    await this.externalLinkProvider.open(
+      'https://bitpayux.typeform.com/to/z81Jp7'
+    );
   }
 }
