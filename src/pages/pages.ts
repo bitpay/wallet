@@ -22,7 +22,6 @@ import { SearchTxModalPage } from '../pages/wallet-details/search-tx-modal/searc
 import { WalletBalancePage } from '../pages/wallet-details/wallet-balance/wallet-balance';
 import { WalletDetailsPage } from '../pages/wallet-details/wallet-details';
 import { WalletTabsPage } from '../pages/wallet-tabs/wallet-tabs';
-import { SurveyFeedbackPage } from './includes/survey-feedback/survey-feedback';
 import { ConfirmInvoicePage } from './integrations/invoice/confirm-invoice/confirm-invoice';
 
 // Integrations: Coinbase
@@ -53,6 +52,7 @@ import { FeedbackCardPage } from '../pages/includes/feedback-card/feedback-card'
 import { GravatarPage } from '../pages/includes/gravatar/gravatar';
 import { MultipleOutputsPage } from '../pages/includes/multiple-outputs/multiple-outputs';
 import { TxpPage } from '../pages/includes/txp/txp';
+import { SurveyFeedbackPage } from './includes/survey-feedback/survey-feedback';
 
 /* Tabs */
 import { HomePage } from '../pages/home/home';

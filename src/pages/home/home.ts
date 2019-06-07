@@ -51,8 +51,8 @@ interface UpdateWalletOptsI {
 })
 export class HomePage {
   @ViewChild('showCard')
-  @ViewChild('showSurveyFeedbackCard')
   showCard;
+  @ViewChild('showSurveyFeedbackCard')
   showSurveyFeedbackCard;
   public wallets;
   public txpsN: number;
@@ -378,7 +378,8 @@ export class HomePage {
         this.showRateCard = timeExceeded && !feedbackInfo.sent;
         this.showSurveyCard = timeExceeded && !feedbackInfo.sent;
         this.showCard.setShowRateCard(this.showRateCard);
-        this.showSurveyFeedbackCard.setShowSurveyCard(this.showSurveyCard);
+        // this.showSurveyFeedbackCard.setShowSurveyCard(this.showSurveyCard);
+        this.showSurveyFeedbackCard.setShowSurveyCard(true);
       }
     });
   }
