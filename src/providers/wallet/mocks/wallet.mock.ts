@@ -131,6 +131,7 @@ export class WalletMock {
   };
   coin: string;
   id: string;
+  keyId: string;
   m: number;
   n: number;
   needsBackup?: boolean;
@@ -152,6 +153,7 @@ export class WalletMock {
     };
     this.coin = 'btc';
     this.id = 'walletid1';
+    this.keyId = 'keyId1';
     this.needsBackup = false;
     this.network = 'livenet';
     this.pendingTxps = [];
