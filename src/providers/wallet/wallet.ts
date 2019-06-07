@@ -1094,7 +1094,7 @@ export class WalletProvider {
       const rootPath = wallet.getRootPath();
 
       const signatures = this.keyProvider.sign(
-        wallet.credentials.keyid,
+        wallet.credentials.keyId,
         rootPath,
         txp,
         password

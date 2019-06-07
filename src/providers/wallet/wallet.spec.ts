@@ -57,8 +57,15 @@ describe('Provider: Wallet Provider', () => {
     getKeys() {
       return Promise.resolve([
         {
-          id: 'id1',
+          id: 'keyId1',
           xPrivKey: 'xPrivKey1',
+          version: 1,
+          mnemonic: 'mom mom mom mom mom mom mom mom mom mom mom mom',
+          mnemonicHasPassphrase: false
+        },
+        {
+          id: 'keyId2',
+          xPrivKey: 'xPrivKey2',
           version: 1
         }
       ]);
@@ -667,16 +674,18 @@ describe('Provider: Wallet Provider', () => {
     });
   });
 
-  describe('Function: signTx', async () => {
-    await keyProvider.load();
-
-    it('Should return the signed txid', () => {
+  describe('Function: signTx', () => {
+    it('Should return the signed txid', async () => {
+      await keyProvider.load();
       const wallet: WalletMock = new WalletMock();
       const txp = {
         txid: 'txid1',
         amount: 10000
       };
       const pass = 'password';
+      spyOn<any>(keyProvider, 'sign').and.returnValue(
+        Promise.resolve('signatures')
+      );
 
       walletProvider
         .signTx(wallet, txp, pass)
@@ -926,12 +935,11 @@ describe('Provider: Wallet Provider', () => {
     });
   });
 
-  describe('Function: prepare', async () => {
-    const wallet: WalletMock = new WalletMock();
-    await keyProvider.load();
-
-    it('Should call touchidProvider and then handleEncryptedWallet', () => {
-      spyOn<any>(keyProvider, 'askPassword').and.returnValue(
+  describe('Function: prepare', () => {
+    it('Should call touchidProvider and then handleEncryptedWallet', async () => {
+      const wallet: WalletMock = new WalletMock();
+      await keyProvider.load();
+      spyOn(keyProvider, 'handleEncryptedWallet').and.returnValue(
         Promise.resolve('password1')
       );
       spyOn(touchidProvider, 'checkWallet').and.returnValue(Promise.resolve());
@@ -946,18 +954,20 @@ describe('Provider: Wallet Provider', () => {
     });
   });
 
-  describe('Function: publishAndSign', async () => {
+  describe('Function: publishAndSign', () => {
     const wallet: WalletMock = new WalletMock();
     let txp;
-    await keyProvider.load();
-
-    it('Should prepare, sign and broadcast the txp if the status is pending', () => {
+    it('Should prepare, sign and broadcast the txp if the status is pending', async () => {
+      await keyProvider.load();
       txp = {
         txid: 'txid1',
         status: 'pending'
       };
-      spyOn<any>(keyProvider, 'askPassword').and.returnValue(
+      spyOn(keyProvider, 'handleEncryptedWallet').and.returnValue(
         Promise.resolve('password1')
+      );
+      spyOn<any>(keyProvider, 'sign').and.returnValue(
+        Promise.resolve('signatures')
       );
       walletProvider
         .publishAndSign(wallet, txp)
@@ -969,13 +979,18 @@ describe('Provider: Wallet Provider', () => {
         });
     });
 
-    it('Should prepare, publish, sign and broadcast the txp if the status is accepted', () => {
+    it('Should prepare, publish, sign and broadcast the txp if the status is accepted', async () => {
+      await keyProvider.load();
+
       txp = {
         txid: 'txid1',
         status: 'accepted'
       };
-      spyOn<any>(keyProvider, 'askPassword').and.returnValue(
+      spyOn(keyProvider, 'handleEncryptedWallet').and.returnValue(
         Promise.resolve('password1')
+      );
+      spyOn<any>(keyProvider, 'sign').and.returnValue(
+        Promise.resolve('signatures')
       );
       walletProvider
         .publishAndSign(wallet, txp)
@@ -988,17 +1003,19 @@ describe('Provider: Wallet Provider', () => {
     });
   });
 
-  describe('Function: getEncodedWalletInfo', async () => {
+  describe('Function: getEncodedWalletInfo', () => {
     const wallet: WalletMock = new WalletMock();
     let pass;
     wallet.credentials.network = 'livenet';
     wallet.credentials.mnemonicHasPassphrase = false;
-    await keyProvider.load();
 
-    it('Should get the encoded wallet info for a BIP44 wallet', () => {
+    it('Should get the encoded wallet info for a BIP44 wallet', async () => {
+      await keyProvider.load();
       pass = 'password1';
       wallet.credentials.derivationStrategy = 'BIP44';
-      wallet.credentials.getBaseAddressDerivationPath = () => "m/44'/0'/0'";
+      spyOn<any>(keyProvider, 'getBaseAddressDerivationPath').and.returnValue(
+        "m/44'/0'/0'"
+      );
 
       walletProvider
         .getEncodedWalletInfo(wallet, pass)
@@ -1012,16 +1029,20 @@ describe('Provider: Wallet Provider', () => {
         });
     });
 
-    it('Should get the encoded wallet info for a BIP44 wallet without mnemonics', () => {
+    it('Should get the encoded wallet info for a BIP44 wallet without mnemonics', async () => {
+      await keyProvider.load();
       pass = 'password2';
       wallet.credentials.derivationStrategy = 'BIP44';
-      wallet.credentials.getBaseAddressDerivationPath = () => "m/44'/0'/0'";
+      spyOn<any>(keyProvider, 'getBaseAddressDerivationPath').and.returnValue(
+        "m/44'/0'/0'"
+      );
+      wallet.credentials.keyId = 'keyId2';
 
       walletProvider
         .getEncodedWalletInfo(wallet, pass)
         .then(walletInfo => {
           expect(walletInfo).toEqual(
-            "2|xPrivKey1|livenet|m/44'/0'/0'|false|btc"
+            "2|xPrivKey2|livenet|m/44'/0'/0'|false|btc"
           );
         })
         .catch(err => {
@@ -1032,7 +1053,9 @@ describe('Provider: Wallet Provider', () => {
     it('Should be reject for a BIP45 wallet', () => {
       pass = 'password1';
       wallet.credentials.derivationStrategy = 'BIP45';
-      wallet.credentials.getBaseAddressDerivationPath = () => "m/45'/0'/0'";
+      spyOn<any>(keyProvider, 'getBaseAddressDerivationPath').and.returnValue(
+        "m/44'/0'/0'"
+      );
 
       walletProvider.getEncodedWalletInfo(wallet, pass).catch(err => {
         expect(err).toBeDefined();
@@ -1040,13 +1063,12 @@ describe('Provider: Wallet Provider', () => {
     });
   });
 
-  describe('Function: getKeysWithPassword', async () => {
+  describe('Function: getKeysWithPassword', () => {
     const wallet: WalletMock = new WalletMock();
     let pass;
 
-    await keyProvider.load();
-
-    it('Should get the keys of a wallet', () => {
+    it('Should get the keys of a wallet', async () => {
+      await keyProvider.load();
       pass = 'password1';
 
       const keys = walletProvider.getKeysWithPassword(wallet, pass);
@@ -1079,12 +1101,11 @@ describe('Provider: Wallet Provider', () => {
     });
   });
 
-  describe('Function: getKeys', async () => {
+  describe('Function: getKeys', () => {
     const wallet: WalletMock = new WalletMock();
 
-    await keyProvider.load();
-
-    it('Should get the keys of a wallet', () => {
+    it('Should get the keys of a wallet', async () => {
+      await keyProvider.load();
       spyOn<any>(keyProvider, 'askPassword').and.returnValue(
         Promise.resolve('password1')
       );

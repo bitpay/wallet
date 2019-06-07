@@ -121,17 +121,16 @@ export class WalletMock {
     addressType: string;
     scanStatus: string;
     walletId: string;
+    keyId: string;
     walletName: string;
     network?: string;
     derivationStrategy?: string;
     mnemonicHasPassphrase?: boolean;
     publicKeyRing?: any[];
     walletPrivKey?: string;
-    getBaseAddressDerivationPath?: () => {};
   };
   coin: string;
   id: string;
-  keyId: string;
   m: number;
   n: number;
   needsBackup?: boolean;
@@ -149,11 +148,11 @@ export class WalletMock {
       addressType: 'P2PKH',
       scanStatus: null,
       walletId: 'walletid1',
-      walletName: 'Test wallet'
+      walletName: 'Test wallet',
+      keyId: 'keyId1'
     };
     this.coin = 'btc';
     this.id = 'walletid1';
-    this.keyId = 'keyId1';
     this.needsBackup = false;
     this.network = 'livenet';
     this.pendingTxps = [];
@@ -167,7 +166,9 @@ export class WalletMock {
   getStatus(_opts, cb) {
     return cb(null, this.status);
   }
-
+  getRootPath() {
+    return 'path';
+  }
   setNotificationsInterval(_x) {}
 
   getTxNote(_opts, cb) {
@@ -241,7 +242,7 @@ export class WalletMock {
     const txpPublished = _opts.txp;
     return cb(null, txpPublished);
   }
-  signTxProposal(_txp, _pass, cb) {
+  pushSignatures(_txp, _signatures, cb) {
     const signedTxp = _txp;
     return cb(null, signedTxp);
   }
