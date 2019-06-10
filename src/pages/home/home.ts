@@ -52,6 +52,8 @@ interface UpdateWalletOptsI {
 export class HomePage {
   @ViewChild('showCard')
   showCard;
+  @ViewChild('priceCard')
+  priceCard;
   public wallets;
   public txpsN: number;
   public serverMessages: any[];
@@ -67,7 +69,7 @@ export class HomePage {
 
   public showRateCard: boolean;
   public showReorder: boolean;
-  public showIntegration;
+  public showPriceChart: boolean;
   public hideHomeIntegrations: boolean;
   public showGiftCards: boolean;
   public showBitpayCardGetStarted: boolean;
@@ -133,6 +135,8 @@ export class HomePage {
     if (this.isElectron) {
       this.updateDesktopOnFocus();
     }
+
+    this.checkPriceChart();
   }
 
   private _didEnter() {
@@ -376,6 +380,17 @@ export class HomePage {
         this.showCard.setShowRateCard(this.showRateCard);
       }
     });
+  }
+
+  private checkPriceChart() {
+    this.persistenceProvider.getPriceChartFlag().then(res => {
+      this.showPriceChart = res === 'enabled' ? true : false;
+      this.updateCharts();
+    });
+  }
+
+  private updateCharts() {
+    if (this.showPriceChart && this.priceCard) this.priceCard.updateCharts();
   }
 
   public onWalletAction(wallet, action, slidingItem) {
@@ -794,6 +809,7 @@ export class HomePage {
   public doRefresh(refresher): void {
     this.debounceSetWallets();
     setTimeout(() => {
+      this.updateCharts();
       refresher.complete();
     }, 2000);
   }

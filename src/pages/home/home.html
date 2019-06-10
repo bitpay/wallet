@@ -82,6 +82,11 @@
 
     <page-feedback-card #showCard></page-feedback-card>
 
+    <div *ngIf="showPriceChart && wallets && wallets[0]">
+      <div class="section-header" translate>Price Chart</div>
+      <price-card #priceCard></price-card>
+    </div>
+
     <create-new-wallet *ngIf="!wallets || !wallets[0]"></create-new-wallet>
 
     <ion-card class="server-message" *ngIf="accessDenied">
