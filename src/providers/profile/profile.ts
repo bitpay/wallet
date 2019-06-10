@@ -581,8 +581,12 @@ export class ProfileProvider {
 
   public importFile(str: string, opts): Promise<any> {
     return this._importFile(str, opts).then(data => {
-      return this.addAndBindWalletClients(data, {
-        bwsurl: opts.bwsurl
+      this.onGoingProcessProvider.pause();
+      return this.askToEncryptKey(data.key).then(() => {
+        this.onGoingProcessProvider.resume();
+        return this.addAndBindWalletClient(data.walletClient, data.key, {
+          bwsurl: opts.bwsurl
+        });
       });
     });
   }
@@ -593,63 +597,56 @@ export class ProfileProvider {
       const client = this.bwcProvider.getClient(null, opts);
       let credentials;
       let key;
+      let addressBook;
 
-      try {
-        const oldCredentials = JSON.parse(str);
+      const data = JSON.parse(str);
 
-        if (oldCredentials.xPrivKey && oldCredentials.xPrivKeyEncrypted) {
-          this.logger.warn(
-            'Found both encrypted and decrypted key. Deleting the encrypted version'
-          );
-          delete oldCredentials.xPrivKeyEncrypted;
-          delete oldCredentials.mnemonicEncrypted;
-        }
-
-        let migrated = this.bwcProvider.fromOld(oldCredentials);
-        credentials = migrated.credentials;
-        key = migrated.key;
-
-        if (!credentials.n) {
-          return reject(
-            'Backup format not recognized. If you are using a Copay Beta backup and version is older than 0.10, please see: https://github.com/bitpay/copay/issues/4730#issuecomment-244522614'
-          );
-        }
-
-        client.fromString(
-          credentials,
-          {
-            // TODO: check how client.import works
-            compressed: opts.compressed,
-            password: opts.password
-          },
-          () => {
-            if (key) {
-              this.logger.info(
-                `Wallet ${credentials.walletId} key's extracted`
-              );
-              this.keyProvider.addKey(key);
-            } else {
-              this.logger.info(
-                `READ-ONLY Wallet ${credentials.walletId} migrated`
-              );
-            }
-
-            const addressBook = credentials.addressBook
-              ? credentials.addressBook
-              : {};
-
-            this.setMetaData(client, addressBook).catch(err => {
-              this.logger.warn('Could not set meta data: ', err);
-            });
-
-            return resolve({ key, clients: [].concat(client) });
+      if (data.credentials && data.key) {
+        credentials = data.credentials;
+        key = data.key;
+        addressBook = data.addressBook ? data.addressBook : {};
+      } else {
+        try {
+          // needs to migrate?
+          if (data.xPrivKey && data.xPrivKeyEncrypted) {
+            this.logger.warn(
+              'Found both encrypted and decrypted key. Deleting the encrypted version'
+            );
+            delete data.xPrivKeyEncrypted;
+            delete data.mnemonicEncrypted;
           }
-        );
-      } catch (err) {
+          let migrated = this.bwcProvider.fromOld(data);
+          credentials = migrated.credentials;
+          key = migrated.key;
+          addressBook = credentials.addressBook ? credentials.addressBook : {};
+        } catch (error) {
+          this.logger.error(error);
+          return reject(
+            this.translate.instant('Could not import. Check input file.')
+          );
+        }
+      }
+
+      if (!credentials.n) {
         return reject(
-          this.translate.instant('Could not import. Check input file.')
+          'Backup format not recognized. If you are using a Copay Beta backup and version is older than 0.10, please see: https://github.com/bitpay/copay/issues/4730#issuecomment-244522614'
         );
       }
+
+      client.fromString(credentials);
+
+      if (key) {
+        this.logger.info(`Wallet ${credentials.walletId} key's extracted`);
+        this.keyProvider.addKey(key);
+      } else {
+        this.logger.info(`READ-ONLY Wallet ${credentials.walletId} migrated`);
+      }
+
+      this.setMetaData(client, addressBook).catch(err => {
+        this.logger.warn('Could not set meta data: ', err);
+      });
+
+      return resolve({ key, walletClient: client });
     });
   }
 
