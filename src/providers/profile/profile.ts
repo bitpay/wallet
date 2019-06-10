@@ -175,7 +175,9 @@ export class ProfileProvider {
 
     wallet.isPrivKeyEncrypted = migratedKey
       ? migratedKey.isPrivKeyEncrypted()
-      : this.keyProvider.isPrivKeyEncrypted(keyId);
+      : keyId
+      ? this.keyProvider.isPrivKeyEncrypted(keyId)
+      : false;
 
     wallet.removeAllListeners();
 
@@ -726,7 +728,7 @@ export class ProfileProvider {
           }
 
           this.bindWallet(credentials, migrated ? migrated.key : null)
-            .then(async (bound: number) => {
+            .then((bound: number) => {
               i++;
               totalBound += bound;
               if (i == l) {
