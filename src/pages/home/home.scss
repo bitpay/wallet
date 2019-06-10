@@ -441,6 +441,17 @@ page-home {
 
   .reorder-button {
     display: flex;
+    position: relative;
+
+    &:after {
+      // For easier tappability
+      content: '';
+      position: absolute;
+      height: 30px;
+      width: 40px;
+      top: -10px;
+      left: -10px;
+    }
   }
 
   .wallets-container {
@@ -459,45 +470,6 @@ page-home {
       &.activated {
         background-color: $feather;
       }
-    }
-
-    .primary-text {
-      color: black;
-      font-size: 16px;
-    }
-
-    .wallet-name {
-      margin-bottom: 2px;
-    }
-
-    .wallet-name-and-credentials {
-      margin-right: 3px;
-    }
-
-    .secondary-text {
-      color: #aaaeb6;
-      font-size: 14px;
-      margin-top: 4px;
-
-      @media (max-width: 330px) {
-        font-size: 13px;
-      }
-    }
-
-    &.reorder-enabled .wallet-amount {
-      .secondary-text {
-        @media (max-width: 400px) {
-          font-size: 11px;
-        }
-      }
-
-      @media (max-width: 330px) {
-        display: none;
-      }
-    }
-
-    .testnet {
-      filter: grayscale(100%);
     }
 
     .item-inner {
@@ -560,7 +532,11 @@ page-home {
 
     ion-reorder {
       flex-basis: 60px;
-      margin-left: 2px;
+      margin-left: 3px;
+
+      ion-icon {
+        margin-bottom: 2px;
+      }
     }
 
     label-tip {
