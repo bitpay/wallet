@@ -48,6 +48,21 @@ export class BackupKeyPage {
     this.deleted = this.isDeletedSeed();
 
     if (this.deleted) {
+      const title = this.translate.instant(
+        'Wallet recovery phrase not available'
+      );
+      let err = this.translate.instant(
+        'You can still export it from "Export Wallet" option.'
+      );
+      if (this.wallet.coin == 'bch')
+        err =
+          err +
+          ' ' +
+          this.translate.instant(
+            'Note: if this BCH wallet was duplicated from a BTC wallet, they share the same recovery phrase.'
+          );
+      this.showErrorInfoSheet(err, title);
+      this.navCtrl.pop();
       this.logger.warn('no mnemonics');
       return;
     }

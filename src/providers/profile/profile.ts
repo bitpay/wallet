@@ -732,15 +732,11 @@ export class ProfileProvider {
               i++;
               totalBound += bound;
               if (i == l) {
-                // TODO store keys
                 if (newKeys.length > 0) {
                   this.logger.info(`Storing ${newKeys.length} migrated Keys`);
                   this.keyProvider
                     .addKeys(newKeys)
                     .then(() => {
-                      //
-                      // ONLY AFTER SUCCESFULL KEY STORAGE... mark profile as dirty!
-                      // TODO uncomment
                       profile.credentials = newCrededentials;
                       profile.dirty = true;
 
