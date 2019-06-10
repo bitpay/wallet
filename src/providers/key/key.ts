@@ -224,6 +224,7 @@ export class KeyProvider {
   }
 
   public isPrivKeyEncrypted(keyId: string) {
+    if (!keyId) return false;
     const key = this.getKey(keyId);
     return key.isPrivKeyEncrypted();
   }
@@ -235,6 +236,7 @@ export class KeyProvider {
   }
 
   public mnemonicHasPassphrase(keyId: string): boolean {
+    if (!keyId) return false;
     const key = this.getKey(keyId);
     return key.mnemonicHasPassphrase;
   }
@@ -257,12 +259,12 @@ export class KeyProvider {
     key.decrypt(password);
   }
 
-  public sign(
-    keyId: string,
-    rootPath: string,
-    txp,
-    password: string
-  ): Promise<any> {
+  public sign(keyId: string, rootPath: string, txp, password: string) {
+    if (!keyId) {
+      this.logger.warn("Can't sign. No key provided");
+      return;
+    }
+
     const key = this.getKey(keyId);
 
     return key.sign(rootPath, txp, password);
