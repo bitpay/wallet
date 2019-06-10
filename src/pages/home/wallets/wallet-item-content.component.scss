@@ -4,12 +4,12 @@ wallet-item-content {
   padding-right: 7px;
   width: 100%;
 
+  .testnet {
+    filter: grayscale(100%);
+  }
+
   .wallet-item-content {
     color: black;
-
-    .testnet {
-      filter: grayscale(100%);
-    }
 
     &__amount {
       color: black;
