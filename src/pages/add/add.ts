@@ -3,6 +3,7 @@ import { NavController } from 'ionic-angular';
 import { Logger } from '../../providers/logger/logger';
 
 // pages
+import { ImportWalletPage } from './import-wallet/import-wallet';
 import { JoinWalletPage } from './join-wallet/join-wallet';
 import { SelectCurrencyPage } from './select-currency/select-currency';
 
@@ -17,11 +18,15 @@ export class AddPage {
     this.logger.info('Loaded: AddPage');
   }
 
-  public goToSelectCurrencyPage(isShared: boolean, nextPage: string): void {
-    this.navCtrl.push(SelectCurrencyPage, { isShared, nextPage });
+  public goToSelectCurrencyPage(isShared: boolean): void {
+    this.navCtrl.push(SelectCurrencyPage, { isShared });
   }
 
   public goToJoinWallet(): void {
     this.navCtrl.push(JoinWalletPage);
+  }
+
+  public goToImportWallet(): void {
+    this.navCtrl.push(ImportWalletPage);
   }
 }

@@ -1,6 +1,6 @@
 <ion-header>
   <ion-navbar>
-    <ion-title>{{ createLabel }}</ion-title>
+    <ion-title>{{ 'Import Wallet' | translate }}</ion-title>
     <ion-buttons end>
       <button ion-button (click)="import()" [disabled]="!importForm.valid">
         <span translate>Import</span>
@@ -63,14 +63,6 @@
       </ion-item>
     </div>
 
-    <ion-item *ngIf="selectedTab != 'file'" [hidden]="true">
-      <ion-label floating>{{'Coin' | translate}}</ion-label>
-      <ion-select okText="{{okText}}" cancelText="{{cancelText}}" formControlName="coin">
-        <ion-option value="btc">Bitcoin (BTC)</ion-option>
-        <ion-option value="bch">Bitcoin Cash (BCH)</ion-option>
-      </ion-select>
-    </ion-item>
-
     <button ion-button class="button-standard button-secondary" (click)="showAdvOpts = !showAdvOpts">
       <span *ngIf="!showAdvOpts">{{'Show advanced options' | translate}}</span>
       <span *ngIf="showAdvOpts">{{'Hide advanced options' | translate}}</span>
@@ -88,24 +80,6 @@
             This field is only for users who, in previous versions (it's not supported anymore), set a password to protect their recovery phrase. This field is not for your encrypt password.
           </div>
         </label-tip>
-
-        <ion-item>
-          <ion-label floating>{{'Derivation path' | translate}}</ion-label>
-          <ion-input type="text" formControlName="derivationPath" [value]="importForm.value.derivationPath"></ion-input>
-        </ion-item>
-
-        <ion-item [ngClass]="{'with-label': importForm.value.testnetEnabled}">
-          <ion-label>Testnet</ion-label>
-          <ion-toggle formControlName="testnetEnabled" (ionChange)="setDerivationPath()"></ion-toggle>
-        </ion-item>
-
-        <label-tip *ngIf="importForm.value.testnetEnabled" type="warn">
-          <span label-tip-title translate>Testnet Wallet</span>
-          <div label-tip-body translate>
-            The testnet is an alternative Bitcoin block chain, to be used for testing. Testnet coins are separate and distinct from actual bitcoins, and do not have any value. This allows application developers or bitcoin testers to experiment, without having to use real bitcoins.
-          </div>
-        </label-tip>
-
       </div>
 
       <ion-item>
