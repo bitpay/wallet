@@ -109,15 +109,6 @@ confirm-card-purchase {
     .wallet,
     .payment-proposal-to {
       @include row-flex;
-      .icon-wallet {
-        margin-right: 0.8rem;
-        width: 25px;
-        height: 25px;
-        box-shadow: none;
-        &.disabled {
-          background-color: color($colors, grey);
-        }
-      }
       .icon-bitcoin {
         margin-right: 0.8rem;
         width: 25px;

@@ -49,14 +49,11 @@
           </ion-item-divider>
           <ion-list class="pointer" (click)="openAmountModal(item, idx)">
             <div class="wallet" *ngIf="item.recipientType == 'wallet' && item.recipient">
-              <ion-icon item-left>
-                <img *ngIf="item.recipient.network == 'testnet'" [ngStyle]="{'background-color': item.recipient.color}" src="assets/img/icon-wallet-testnet.svg" class="icon-wallet" />
-                <img *ngIf="item.recipient.network != 'testnet'" [ngStyle]="{'background-color': item.recipient.color}" src="assets/img/icon-wallet.svg" class="icon-wallet" />
-              </ion-icon>
+              <img [ngClass]="{ testnet: item.recipient.network === 'testnet' }" src="assets/img/currencies/{{item.recipient.coin}}.svg" class="icon-wallet" />
               <span class="name">{{item.recipient.name}}</span>
             </div>
 
-            <div class="wallet" *ngIf="item.recipientType == 'contact' && item.recipient" (longPress)="toggleAddress()">
+            <div class="wallet" *ngIf="item.recipientType == 'contact' && item.recipient">
               <ion-icon class="item-gravatar" item-left>
                 <gravatar [name]="item.recipient.name" [height]="35" [width]="35" [email]="item.recipient.email"></gravatar>
               </ion-icon>

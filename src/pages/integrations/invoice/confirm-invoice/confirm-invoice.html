@@ -79,9 +79,8 @@
     <button ion-item detail-none (click)="showWallets()" class="wallets-list">
       <div>{{ 'Sending From' | translate }}</div>
       <div class="wallet">
-        <ion-icon item-start>
-          <img *ngIf="network == 'testnet'" [ngStyle]="{ 'background-color': wallet && wallet.color }" src="assets/img/icon-wallet-testnet.svg" class="icon-wallet" />
-          <img *ngIf="network != 'testnet'" [ngStyle]="{ 'background-color': wallet && wallet.color }" src="assets/img/icon-wallet.svg" class="icon-wallet" />
+        <ion-icon *ngIf="wallet && wallet.coin" item-start>
+          <img [ngClass]="{ testnet: network === 'testnet' }" src="assets/img/currencies/{{wallet.coin}}.svg" class="icon-wallet" />
         </ion-icon>
         <div>{{ wallet ? wallet.name : 'Select a wallet' }}</div>
         <div class="last-item" item-end>

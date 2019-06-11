@@ -137,7 +137,9 @@
     </ion-item>
 
     <div *ngIf="actionList && actionList[0]">
-      <div>{{'Timeline' | translate}}</div>
+      <ion-item detail-none>
+        <div>{{'Timeline' | translate}}</div>
+      </ion-item>
       <div class="timeline-item" [ngClass]="{'action-created' : a.type == 'created' || a.type == 'accept', 'action-rejected' : a.type == 'reject'}" *ngFor="let a of actionList; let i = index">
         <div class="timeline-content">
           <div class="timeline-content-icon">
