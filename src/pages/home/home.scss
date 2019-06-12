@@ -118,13 +118,13 @@ page-home {
   .content-animation {
     z-index: 5;
     margin-top: 0px;
-    -webkit-transition: margin-top 0.7s cubic-bezier(1, 0, 0.93, 0.19) 0.2s;
-    -moz-transition: margin-top 0.7s cubic-bezier(1, 0, 0.93, 0.19) 0.2s;
-    -o-transition: margin-top 0.7s cubic-bezier(1, 0, 0.93, 0.19) 0.2s;
-    transition: margin-top 0.7s cubic-bezier(1, 0, 0.93, 0.19) 0.2s;
+    -webkit-transition: margin-top 0.4s cubic-bezier(1, 0, 0.93, 0.19) 0.1s;
+    -moz-transition: margin-top 0.4s cubic-bezier(1, 0, 0.93, 0.19) 0.1s;
+    -o-transition: margin-top 0.4s cubic-bezier(1, 0, 0.93, 0.19) 0.1s;
+    transition: margin-top 0.4s cubic-bezier(1, 0, 0.93, 0.19) 0.1s;
     animation-name: bounce-card;
-    animation-duration: 0.7s;
-    animation-delay: 0.8s;
+    animation-duration: 0.4s;
+    animation-delay: 0.5s;
   }
 
   ion-refresher {
