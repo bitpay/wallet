@@ -5,11 +5,8 @@
         <div class="section-header" *ngIf="txpsByStatus.data && txpsByStatus.data[0]">{{txpsByStatus.title}}</div>
         <div class="card" *ngFor="let txpsByWallet of txpsByStatus.data">
           <div class="wallet-divider" *ngIf="txpsByWallet.walletId && txpsByWallet.txps && txpsByWallet.txps[0] && txpsByWallet.txps[0].wallet">
-            <div class="wallet-icon">
-              <ion-icon class="item-img" item-start>
-                <img *ngIf="txpsByWallet.txps[0].wallet.network == 'testnet'" [ngStyle]="{'background-color': txpsByWallet.txps[0].wallet.color}" src="assets/img/icon-wallet-testnet.svg" class="icon-wallet" />
-                <img *ngIf="txpsByWallet.txps[0].wallet.network != 'testnet'" [ngStyle]="{'background-color': txpsByWallet.txps[0].wallet.color}" src="assets/img/icon-wallet.svg" class="icon-wallet" />
-              </ion-icon>
+            <div class="wallet-title">
+              <img [ngClass]="{ testnet: txpsByWallet.txps[0].wallet.network === 'testnet' }" src="assets/img/currencies/{{txpsByWallet.txps[0].wallet.coin}}.svg" class="icon-wallet" />
               <span class="name">{{txpsByWallet.txps[0].wallet.name}}</span>
             </div>
             <div *ngIf="txpsByStatus.type == 'pending'">

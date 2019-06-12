@@ -154,7 +154,6 @@ ion-spinner * {
   display: none;
 }
 
-.icon-wallet,
 .icon-card {
   width: 35px;
   height: 35px;
@@ -165,8 +164,24 @@ ion-spinner * {
 }
 
 .icon-wallet {
-  background-color: color($colors, primary);
-  padding: 4px;
+  $icon-dim: 36px;
+  height: $icon-dim;
+  width: $icon-dim;
+  margin-right: 16px;
+  &.disabled {
+    background-color: color($colors, grey);
+  }
+}
+
+.button-item {
+  ion-label {
+    display: flex;
+    align-items: center;
+  }
+}
+
+.testnet {
+  filter: grayscale(100%);
 }
 
 .icon-card {

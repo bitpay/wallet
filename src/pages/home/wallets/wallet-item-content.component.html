@@ -1,5 +1,4 @@
-<img class="wallet-item-content__icon" [ngClass]="{ testnet: wallet.network === 'testnet' }"
-  src="assets/img/currencies/{{wallet.coin}}.svg" />
+<img class="icon-wallet" [ngClass]="{ testnet: wallet.network === 'testnet' }" src="assets/img/currencies/{{wallet.coin}}.svg" />
 <div class="wallet-item-content__left ellipsis">
   <div class="wallet-item-content__name ellipsis">{{ wallet.name }}</div>
   <div class="wallet-item-content__credentials">{{ wallet.credentials.m }}/{{ wallet.credentials.n }}</div>

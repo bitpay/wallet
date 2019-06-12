@@ -53,15 +53,6 @@ page-tx-details {
     .wallet,
     .tx-info {
       @include row-flex;
-      .icon-wallet {
-        width: 25px;
-        height: 25px;
-        margin-right: 1.8rem;
-        box-shadow: none;
-        &.disabled {
-          background-color: color($colors, grey);
-        }
-      }
       .comment {
         color: color($colors, light-grey);
       }

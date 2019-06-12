@@ -4,10 +4,6 @@ wallet-item-content {
   padding-right: 7px;
   width: 100%;
 
-  .testnet {
-    filter: grayscale(100%);
-  }
-
   .wallet-item-content {
     color: black;
 
@@ -30,13 +26,6 @@ wallet-item-content {
       white-space: nowrap;
     }
 
-    &__icon {
-      $icon-dim: 36px;
-      height: $icon-dim;
-      width: $icon-dim;
-      margin-right: 16px;
-    }
-
     &__left {
       margin-right: 10px;
       text-align: left;
@@ -48,6 +37,7 @@ wallet-item-content {
     }
 
     &__right {
+      text-align: right;
       flex-grow: 1;
     }
   }
