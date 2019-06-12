@@ -1,6 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
+import Chart from 'chart.js';
 import * as _ from 'lodash';
-import { Chart } from '../../../../node_modules/chart.js';
 import { ConfigProvider } from '../../../providers';
 
 @Component({
