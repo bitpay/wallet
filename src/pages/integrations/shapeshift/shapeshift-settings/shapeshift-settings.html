@@ -33,7 +33,7 @@
         </div>
       </label-tip>
     </ion-list>
-    <ion-spinner name="crescent" *ngIf="loading"></ion-spinner>
+    <ion-spinner *ngIf="loading"></ion-spinner>
 
     <ion-list *ngIf="shapeshiftUser">
       <ion-item-divider>User Information</ion-item-divider>
@@ -57,11 +57,10 @@
       </ion-item>
     </ion-list>
 
-    <ion-list *ngIf="shapeshiftUser || unverifiedAccount">
-      <ion-item-divider></ion-item-divider>
-      <button ion-item (click)="revokeToken()">
-        <span class="assertive">Log out</span>
+    <div padding-bottom padding-top>
+      <button *ngIf="shapeshiftUser || unverifiedAccount" ion-button class="button-standard" color="danger" (click)="revokeToken()">
+        {{'Log out' | translate}}
       </button>
-    </ion-list>
+    </div>
   </div>
 </ion-content>

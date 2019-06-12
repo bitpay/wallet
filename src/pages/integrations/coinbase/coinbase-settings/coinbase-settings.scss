@@ -5,4 +5,13 @@ page-coinbase-settings {
   .wide-header__title {
     padding-left: 0;
   }
+  ion-spinner {
+    position: fixed;
+    top: 40%;
+    left: 50%;
+    margin-left: -1em;
+    * {
+      stroke: #0667d0 !important;
+    }
+  }
 }

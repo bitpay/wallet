@@ -223,16 +223,29 @@ export class ShapeshiftProvider {
       );
   }
 
+  private isActive(cb) {
+    if (_.isEmpty(this.credentials.CLIENT_ID)) return cb(false);
+
+    this.persistenceProvider
+      .getShapeshiftToken(this.credentials.NETWORK)
+      .then(accessToken => {
+        return cb(!!accessToken);
+      });
+  }
+
   public register(): void {
-    this.homeIntegrationsProvider.register({
-      name: 'shapeshift',
-      title: 'ShapeShift',
-      icon: 'assets/img/shapeshift/icon-shapeshift.svg',
-      logo: 'assets/img/shapeshift/logo-white-shapeshift.svg',
-      background:
-        'linear-gradient(to bottom,rgba(13,23,44,1) 0,rgba(16,29,58,1) 100%)',
-      page: 'ShapeshiftPage',
-      show: !!this.configProvider.get().showIntegration['shapeshift']
+    this.isActive(isActive => {
+      this.homeIntegrationsProvider.register({
+        name: 'shapeshift',
+        title: 'ShapeShift',
+        icon: 'assets/img/shapeshift/icon-shapeshift.svg',
+        logo: 'assets/img/shapeshift/logo-white-shapeshift.svg',
+        background:
+          'linear-gradient(to bottom,rgba(13,23,44,1) 0,rgba(16,29,58,1) 100%)',
+        page: 'ShapeshiftPage',
+        show: !!this.configProvider.get().showIntegration['shapeshift'],
+        linked: isActive
+      });
     });
   }
 
