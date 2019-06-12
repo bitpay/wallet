@@ -158,6 +158,7 @@ export class PinModalPage {
       this.currentAttempts == this.ATTEMPT_LIMIT &&
       this.action !== 'lockSetUp'
     ) {
+      this.countDown = this.lockReleaseTimeout = null;
       this.currentAttempts = 0;
       this.persistenceProvider.setLockStatus('locked');
       this.showLockTimer();
