@@ -633,7 +633,7 @@ export class ProfileProvider {
         );
       }
 
-      client.fromString(credentials);
+      client.fromString(JSON.stringify(credentials));
 
       if (key) {
         this.logger.info(`Wallet ${credentials.walletId} key's extracted`);
