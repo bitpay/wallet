@@ -23,12 +23,16 @@ export class BackupProvider {
     this.logger.debug('BackupProvider initialized');
   }
 
-  public walletDownload(password, opts, walletId: string): Promise<any> {
+  public walletDownload(
+    walletId: string,
+    opts,
+    password?: string
+  ): Promise<any> {
     return new Promise((resolve, reject) => {
       let config = this.configProvider.get();
 
       let wallet = this.profileProvider.getWallet(walletId);
-      let ew = this.walletExport(password, opts, walletId);
+      let ew = this.walletExport(walletId, opts, password);
       if (!ew) return reject('Could not create backup');
 
       let walletName =
@@ -50,10 +54,11 @@ export class BackupProvider {
     });
   }
 
-  public walletExport(password: string, opts, walletId: string) {
-    if (!password) {
+  public walletExport(walletId: string, opts, password?: string) {
+    if (opts.encrypt && !password) {
       return null;
     }
+
     let wallet = this.profileProvider.getWallet(walletId);
     try {
       opts = opts ? opts : {};
@@ -64,10 +69,14 @@ export class BackupProvider {
         b.key = this.keyProvider.getKey(wallet.credentials.keyId);
       if (opts.addressBook) b.addressBook = opts.addressBook;
       b = JSON.stringify(b);
-      let e = this.bwcProvider.getSJCL().encrypt(password, b, {
-        iter: 10000
-      });
-      return e;
+
+      if (opts.encrypt) {
+        return this.bwcProvider.getSJCL().encrypt(password, b, {
+          iter: 10000
+        });
+      }
+
+      return b;
     } catch (err) {
       this.logger.error('Error exporting wallet: ', err);
       return null;

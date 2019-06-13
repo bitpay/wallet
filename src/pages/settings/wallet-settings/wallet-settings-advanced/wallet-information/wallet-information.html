@@ -46,7 +46,7 @@
     <ion-item>
       <span translate>Derivation Path</span>
       <ion-note item-end>
-        {{basePath}}
+        {{rootPath}}
       </ion-note>
     </ion-item>
     <ion-item *ngIf="!canSign">
@@ -76,7 +76,7 @@
           {{pk}}
         </div>
       </div>
-      <span *ngIf="i == 0">({{basePath}})</span>
+      <span *ngIf="i == 0">({{rootPath}})</span>
     </ion-item>
     <div *ngIf="!needsBackup && canSign">
       <ion-item-divider class="item-without-title"></ion-item-divider>

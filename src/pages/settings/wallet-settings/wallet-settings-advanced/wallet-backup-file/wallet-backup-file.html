@@ -1,0 +1,69 @@
+<ion-header>
+  <ion-navbar [navbar-bg]="wallet?.color">
+    <ion-title>{{'Export wallet' | translate}}</ion-title>
+  </ion-navbar>
+</ion-header>
+<ion-content>
+  <div>
+    <ion-list>
+      <div *ngIf="!backupWalletPlainText">
+        <form [formGroup]="exportWalletForm">
+          <ion-item>
+            <ion-label stacked>{{'Set up a password' | translate}}</ion-label>
+            <ion-input type="password" formControlName="password" required></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label stacked>{{'Repeat the password' | translate}}</ion-label>
+            <ion-input type="password" formControlName="confirmPassword" required></ion-input>
+          </ion-item>
+          <ion-item *ngIf="exportWalletForm.controls.confirmPassword.touched && exportWalletForm.hasError('mismatchedPasswords') && exportWalletForm.controls.password.valid">
+            <span ion-text color="warning" translate>Passwords do not match</span>
+          </ion-item>
+          <label-tip class="no-arrowhead" *ngIf="!canSign" type="warn">
+            <span label-tip-title translate>No Private Key</span>
+            <div label-tip-body translate>
+              The private key of this wallet is not available. The export allows to check the wallet balance, transaction history, and create spend proposals from the export. However, does not allow to approve (sign) proposals, so funds will not be accessible from the export.
+            </div>
+          </label-tip>
+          <div *ngIf="canSign">
+            <button ion-button class="button-standard button-secondary" (click)="showAdv = !showAdv">
+              <span *ngIf="!showAdv">{{'Show advanced options' | translate}}</span>
+              <span *ngIf="showAdv">{{'Hide advanced options' | translate}}</span>
+            </button>
+          </div>
+          <ion-item [ngClass]="{'with-label': exportWalletForm.value.noSignEnabled }" *ngIf="showAdv">
+            <ion-label stacked>{{'Do not include private key' | translate}}</ion-label>
+            <ion-checkbox formControlName="noSignEnabled" (ionChange)="noSignEnabledChange()"></ion-checkbox>
+          </ion-item>
+
+          <label-tip *ngIf="exportWalletForm.value.noSignEnabled" type="warn">
+            <span label-tip-title translate>Funds Will Not Be Accessible</span>
+            <div label-tip-body translate>
+              Not including the private key allows to check the wallet balance, transaction history, and create spend proposals from the export. However, does not allow to approve (sign) proposals, so funds will not be accessible from the export.
+            </div>
+          </label-tip>
+
+          <button *ngIf="!isSafari && !isCordova" class="button-standard" ion-button type="submit" (click)="downloadWalletBackup()" [disabled]="(!exportWalletForm.value.password || exportWalletForm.value.password != exportWalletForm.value.confirmPassword) || !exportWalletForm.valid ">
+            <span translate>Download</span>
+          </button>
+          <button *ngIf="isSafari && !isCordova" class="button-standard" ion-button type="submit" (click)="viewWalletBackup()" [disabled]="(!exportWalletForm.value.password || exportWalletForm.value.password != exportWalletForm.value.confirmPassword) || !exportWalletForm.valid ">
+            <span translate>View</span>
+          </button>
+          <div *ngIf="isCordova">
+            <button class="button-standard" ion-button type="submit" (click)="copyWalletBackup()" [disabled]="(!exportWalletForm.value.password || exportWalletForm.value.password != exportWalletForm.value.confirmPassword) || !exportWalletForm.valid ">
+              <span translate>Copy to clipboard</span>
+            </button>
+            <button class="button-standard" ion-button type="submit" (click)="sendWalletBackup()" [disabled]="(!exportWalletForm.value.password || exportWalletForm.value.password != exportWalletForm.value.confirmPassword) || !exportWalletForm.valid ">
+              <span translate>Send by email</span>
+            </button>
+          </div>
+        </form>
+      </div>
+      <div *ngIf="backupWalletPlainText">
+        <span translate>Backup wallet</span>
+        <p translate>Copy this text as it is to a safe place (notepad or email)</p>
+        <ion-textarea rows="12">{{backupWalletPlainText}}</ion-textarea>
+      </div>
+    </ion-list>
+  </div>
+</ion-content>

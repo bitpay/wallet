@@ -1518,6 +1518,10 @@ export class WalletProvider {
 
   public getEncodedWalletInfo(wallet, password?: string): Promise<any> {
     return new Promise((resolve, reject) => {
+      if (!wallet.credentials.keyId) {
+        return resolve();
+      }
+
       const derivationPath = this.keyProvider.getBaseAddressDerivationPath(
         wallet.credentials.keyId,
         {

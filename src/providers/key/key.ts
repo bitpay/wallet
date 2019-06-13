@@ -51,6 +51,7 @@ export class KeyProvider {
   }
 
   public addKey(keyToAdd): Promise<any> {
+    if (!keyToAdd) return Promise.resolve();
     const keyIndex = this.keys.findIndex(k => this.Key.match(keyToAdd, k));
 
     if (keyIndex >= 0) {
@@ -203,6 +204,9 @@ export class KeyProvider {
   }
 
   public handleEncryptedWallet(keyId: string): Promise<any> {
+    if (!keyId) {
+      return Promise.resolve();
+    }
     const key = this.getKey(keyId);
     const isPrivKeyEncrypted = this.isPrivKeyEncrypted(keyId);
 

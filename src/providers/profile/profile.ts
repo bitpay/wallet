@@ -601,30 +601,24 @@ export class ProfileProvider {
 
       const data = JSON.parse(str);
 
-      if (data.credentials && data.key) {
-        credentials = data.credentials;
-        key = data.key;
-        addressBook = data.addressBook ? data.addressBook : {};
-      } else {
-        try {
-          // needs to migrate?
-          if (data.xPrivKey && data.xPrivKeyEncrypted) {
-            this.logger.warn(
-              'Found both encrypted and decrypted key. Deleting the encrypted version'
-            );
-            delete data.xPrivKeyEncrypted;
-            delete data.mnemonicEncrypted;
-          }
-          let migrated = this.bwcProvider.fromOld(data);
-          credentials = migrated.credentials;
-          key = migrated.key;
-          addressBook = credentials.addressBook ? credentials.addressBook : {};
-        } catch (error) {
-          this.logger.error(error);
-          return reject(
-            this.translate.instant('Could not import. Check input file.')
+      try {
+        // needs to migrate?
+        if (data.xPrivKey && data.xPrivKeyEncrypted) {
+          this.logger.warn(
+            'Found both encrypted and decrypted key. Deleting the encrypted version'
           );
+          delete data.xPrivKeyEncrypted;
+          delete data.mnemonicEncrypted;
         }
+        let migrated = this.bwcProvider.fromOld(data);
+        credentials = migrated.credentials;
+        key = migrated.key;
+        addressBook = credentials.addressBook ? credentials.addressBook : {};
+      } catch (error) {
+        this.logger.error(error);
+        return reject(
+          this.translate.instant('Could not import. Check input file.')
+        );
       }
 
       if (!credentials.n) {
@@ -637,7 +631,6 @@ export class ProfileProvider {
 
       if (key) {
         this.logger.info(`Wallet ${credentials.walletId} key's extracted`);
-        this.keyProvider.addKey(key);
       } else {
         this.logger.info(`READ-ONLY Wallet ${credentials.walletId} migrated`);
       }

@@ -6,6 +6,7 @@ import { Logger } from '../../../providers/logger/logger';
 // providers
 import { ActionSheetProvider } from '../../../providers/action-sheet/action-sheet';
 import { ConfigProvider } from '../../../providers/config/config';
+import { DerivationPathHelperProvider } from '../../../providers/derivation-path-helper/derivation-path-helper';
 import { ExternalLinkProvider } from '../../../providers/external-link/external-link';
 import { KeyProvider } from '../../../providers/key/key';
 import { ProfileProvider } from '../../../providers/profile/profile';
@@ -17,6 +18,7 @@ import { BackupKeyPage } from '../../backup/backup-key/backup-key';
 import { WalletColorPage } from './wallet-color/wallet-color';
 import { WalletNamePage } from './wallet-name/wallet-name';
 import { WalletAddressesPage } from './wallet-settings-advanced/wallet-addresses/wallet-addresses';
+import { WalletBackupFilePage } from './wallet-settings-advanced/wallet-backup-file/wallet-backup-file';
 import { WalletDeletePage } from './wallet-settings-advanced/wallet-delete/wallet-delete';
 import { WalletExportPage } from './wallet-settings-advanced/wallet-export/wallet-export';
 import { WalletInformationPage } from './wallet-settings-advanced/wallet-information/wallet-information';
@@ -50,7 +52,8 @@ export class WalletSettingsPage {
     private touchIdProvider: TouchIdProvider,
     private translate: TranslateService,
     private actionSheetProvider: ActionSheetProvider,
-    private keyProvider: KeyProvider
+    private keyProvider: KeyProvider,
+    private derivationPathHelperProvider: DerivationPathHelperProvider
   ) {}
 
   ionViewDidLoad() {
@@ -178,9 +181,18 @@ export class WalletSettingsPage {
   }
 
   public openBackupSettings(): void {
-    this.navCtrl.push(BackupKeyPage, {
-      walletId: this.wallet.credentials.walletId
-    });
+    const derivationStrategy = this.derivationPathHelperProvider.getDerivationStrategy(
+      this.wallet.credentials.rootPath
+    );
+    if (derivationStrategy == 'BIP45') {
+      this.navCtrl.push(WalletBackupFilePage, {
+        walletId: this.wallet.credentials.walletId
+      });
+    } else {
+      this.navCtrl.push(BackupKeyPage, {
+        walletId: this.wallet.credentials.walletId
+      });
+    }
   }
 
   public openWalletInformation(): void {

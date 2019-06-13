@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
 import { NavController, NavParams, ToastController } from 'ionic-angular';
 import { Logger } from '../../../../../providers/logger/logger';
@@ -12,20 +12,27 @@ import { SocialSharing } from '@ionic-native/social-sharing';
 import { ActionSheetProvider } from '../../../../../providers/action-sheet/action-sheet';
 import { AppProvider } from '../../../../../providers/app/app';
 import { BackupProvider } from '../../../../../providers/backup/backup';
+import { BwcErrorProvider } from '../../../../../providers/bwc-error/bwc-error';
 import { ConfigProvider } from '../../../../../providers/config/config';
 import { PersistenceProvider } from '../../../../../providers/persistence/persistence';
 import { PlatformProvider } from '../../../../../providers/platform/platform';
 import { ProfileProvider } from '../../../../../providers/profile/profile';
+import { WalletProvider } from '../../../../../providers/wallet/wallet';
 
 @Component({
-  selector: 'page-wallet-export',
-  templateUrl: 'wallet-export.html'
+  selector: 'page-wallet-backup-file',
+  templateUrl: 'wallet-backup-file.html'
 })
-export class WalletExportPage {
+export class WalletBackupFilePage {
   public wallet;
+  public segments: string = 'file/text';
+  public password: string = '';
   public result: string = '';
   public exportWalletForm: FormGroup;
+  public showAdv: boolean = false;
   public isEncrypted: boolean;
+  public showAdvanced: boolean = false;
+  public canSign: boolean;
   public backupWalletPlainText;
   public isCordova: boolean;
   public isSafari: boolean;
@@ -35,8 +42,10 @@ export class WalletExportPage {
 
   constructor(
     private profileProvider: ProfileProvider,
-    public navCtrl: NavController,
+    private navCtrl: NavController,
+    private walletProvider: WalletProvider,
     private navParams: NavParams,
+    private formBuilder: FormBuilder,
     private logger: Logger,
     private persistenceProvider: PersistenceProvider,
     private backupProvider: BackupProvider,
@@ -47,8 +56,18 @@ export class WalletExportPage {
     private toastCtrl: ToastController,
     private translate: TranslateService,
     private actionSheetProvider: ActionSheetProvider,
-    private configProvider: ConfigProvider
-  ) {}
+    private configProvider: ConfigProvider,
+    private bwcErrorProvider: BwcErrorProvider
+  ) {
+    this.exportWalletForm = this.formBuilder.group(
+      {
+        password: ['', Validators.required],
+        confirmPassword: ['', Validators.required],
+        noSignEnabled: [false]
+      },
+      { validator: this.matchingPasswords('password', 'confirmPassword') }
+    );
+  }
 
   ionViewDidLoad() {
     this.logger.info('Loaded: WalletExportPage');
@@ -57,31 +76,93 @@ export class WalletExportPage {
   ionViewWillEnter() {
     this.wallet = this.profileProvider.getWallet(this.navParams.data.walletId);
     this.isEncrypted = this.wallet.isPrivKeyEncrypted;
+    this.canSign = this.wallet.canSign;
     this.isCordova = this.platformProvider.isCordova;
     this.isSafari = this.platformProvider.isSafari;
     this.isIOS = this.platformProvider.isIOS;
   }
 
-  public downloadWalletBackup(): void {
-    this.getAddressBook()
-      .then(localAddressBook => {
-        const opts = {
-          noSign: true,
-          addressBook: localAddressBook,
-          encrypt: false
+  private matchingPasswords(passwordKey: string, confirmPasswordKey: string) {
+    return (group: FormGroup) => {
+      const password = group.controls[passwordKey];
+      const confirmPassword = group.controls[confirmPasswordKey];
+      if (password.value !== confirmPassword.value) {
+        return {
+          mismatchedPasswords: true
         };
+      }
+      return undefined;
+    };
+  }
 
-        this.backupProvider
-          .walletDownload(this.navParams.data.walletId, opts)
-          .then(() => {
-            this.navCtrl.pop();
+  public getPassword(): Promise<any> {
+    return new Promise((resolve, reject) => {
+      if (this.password) return resolve(this.password);
+
+      this.walletProvider
+        .prepare(this.wallet)
+        .then(password => {
+          this.password = password;
+          return resolve(password);
+        })
+        .catch(err => {
+          return reject(err);
+        });
+    });
+  }
+
+  public noSignEnabledChange(): void {
+    if (!this.supported) return;
+
+    this.walletProvider
+      .getEncodedWalletInfo(this.wallet)
+      .then((code: string) => {
+        this.supported = true;
+        this.exportWalletInfo = code;
+      })
+      .catch(err => {
+        this.logger.error(err);
+        this.supported = false;
+        this.exportWalletInfo = null;
+      });
+  }
+
+  public downloadWalletBackup(): void {
+    this.getPassword()
+      .then((password: string) => {
+        this.getAddressBook()
+          .then(localAddressBook => {
+            const opts = {
+              noSign: this.exportWalletForm.value.noSignEnabled,
+              addressBook: localAddressBook,
+              password,
+              encrypt: true
+            };
+
+            this.backupProvider
+              .walletDownload(
+                this.navParams.data.walletId,
+                opts,
+                this.exportWalletForm.value.password
+              )
+              .then(() => {
+                this.navCtrl.pop();
+              })
+              .catch(() => {
+                this.showErrorInfoSheet();
+              });
           })
           .catch(() => {
             this.showErrorInfoSheet();
           });
       })
-      .catch(() => {
-        this.showErrorInfoSheet();
+      .catch(err => {
+        if (
+          err &&
+          err.message != 'FINGERPRINT_CANCELLED' &&
+          err.message != 'PASSWORD_CANCELLED'
+        )
+          this.showErrorInfoSheet(this.bwcErrorProvider.msg(err));
       });
   }
 
@@ -110,25 +191,39 @@ export class WalletExportPage {
 
   private getBackup(): Promise<any> {
     return new Promise(resolve => {
-      this.getAddressBook()
-        .then(localAddressBook => {
-          const opts = {
-            noSign: true,
-            addressBook: localAddressBook,
-            encrypt: false
-          };
+      this.getPassword()
+        .then((password: string) => {
+          this.getAddressBook()
+            .then(localAddressBook => {
+              const opts = {
+                noSign: this.exportWalletForm.value.noSignEnabled,
+                addressBook: localAddressBook,
+                password,
+                encrypt: true
+              };
 
-          const ew = this.backupProvider.walletExport(
-            this.navParams.data.walletId,
-            opts
-          );
-          if (!ew) {
-            this.showErrorInfoSheet();
-          }
-          return resolve(ew);
+              const ew = this.backupProvider.walletExport(
+                this.navParams.data.walletId,
+                opts,
+                this.exportWalletForm.value.password
+              );
+              if (!ew) {
+                this.showErrorInfoSheet();
+              }
+              return resolve(ew);
+            })
+            .catch(() => {
+              this.showErrorInfoSheet();
+              return resolve();
+            });
         })
-        .catch(() => {
-          this.showErrorInfoSheet();
+        .catch(err => {
+          if (
+            err &&
+            err.message != 'FINGERPRINT_CANCELLED' &&
+            err.message != 'PASSWORD_CANCELLED'
+          )
+            this.showErrorInfoSheet(this.bwcErrorProvider.msg(err));
           return resolve();
         });
     });
