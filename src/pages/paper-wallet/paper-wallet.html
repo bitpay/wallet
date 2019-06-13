@@ -7,15 +7,15 @@
 <ion-content>
   <h4 class="title" *ngIf="balances && balances.length > 0">
     <span translate>Funds found</span>:
-    <span *ngFor="let b of balances">
+    <div *ngFor="let b of balances">
       {{b.balance | satToUnit: b.coin}}
-    </span>
+    </div>
   </h4>
   <div *ngIf="selectedWallet">
     <ion-item-divider>{{'Funds will be transferred to' | translate}}</ion-item-divider>
     <button ion-item detail-none (click)="showWallets()">
       <ion-icon item-start>
-        <img src="assets/img/icon-wallet.svg" class="icon-wallet" />
+        <img class="icon-wallet" [ngClass]="{ testnet: selectedWallet.network === 'testnet' }" src="assets/img/currencies/{{selectedWallet.coin}}.svg" />
       </ion-icon>
       <h2>{{selectedWallet.name}}
         <span *ngIf="selectedWallet.credentials.m > 1">{{selectedWallet.credentials.m}}-{{selectedWallet.credentials.n}}</span>
@@ -33,9 +33,9 @@
   </div>
 </ion-content>
 <ion-footer>
-  <page-slide-to-accept #slideButton *ngIf="isCordova" [disabled]="sending || balances.length == 0" buttonText="{{'Sweep' | translate}}" (slideDone)="sweepWallet()"></page-slide-to-accept>
+  <page-slide-to-accept #slideButton *ngIf="isCordova" [disabled]="balances.length == 0" buttonText="{{'Sweep' | translate}}" (slideDone)="sweepWallet()"></page-slide-to-accept>
   <ion-toolbar *ngIf="!isCordova">
-    <button ion-button block class="button-footer" (click)="sweepWallet()" [disabled]="sending || balances.length == 0">
+    <button ion-button block class="button-footer" (click)="sweepWallet()" [disabled]="balances.length == 0">
       {{'Sweep' | translate}}
     </button>
   </ion-toolbar>
