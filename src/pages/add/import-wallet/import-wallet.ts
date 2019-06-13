@@ -35,7 +35,6 @@ export class ImportWalletPage {
   public prettyFileName: string;
   public importErr: boolean;
   public formFile;
-  public showAdvOpts: boolean;
   public selectedTab: string;
   public isCordova: boolean;
   public isSafari: boolean;
@@ -44,7 +43,7 @@ export class ImportWalletPage {
   public code;
   public okText: string;
   public cancelText: string;
-  public coin: string;
+  public showAdvOpts: boolean;
 
   constructor(
     private navCtrl: NavController,
@@ -73,11 +72,11 @@ export class ImportWalletPage {
     this.isIOS = this.platformProvider.isIOS;
     this.importErr = false;
     this.selectedTab = 'words';
+    this.showAdvOpts = false;
 
     this.code = this.navParams.data.code;
     this.processedInfo = this.processWalletInfo(this.code);
 
-    this.showAdvOpts = false;
     this.formFile = null;
 
     this.importForm = this.form.group({
@@ -98,14 +97,7 @@ export class ImportWalletPage {
 
   private setForm(): void {
     if (this.processedInfo) {
-      const isTestnet = this.processedInfo.network == 'testnet' ? true : false;
-      this.importForm.controls['testnetEnabled'].setValue(isTestnet);
-      this.importForm.controls['derivationPath'].setValue(
-        this.processedInfo.derivationPath
-      );
       this.importForm.controls['words'].setValue(this.processedInfo.data);
-      this.importForm.controls['coin'].setValue(this.processedInfo.coin);
-      this.coin = this.processedInfo.coin;
     }
   }
 
@@ -211,20 +203,18 @@ export class ImportWalletPage {
     opts.compressed = null;
     opts.password = null;
 
-    setTimeout(() => {
-      this.profileProvider
-        .importFile(str2, opts)
-        .then((wallet: any[]) => {
-          this.onGoingProcessProvider.clear();
-          this.finish([].concat(wallet));
-        })
-        .catch(err => {
-          this.onGoingProcessProvider.clear();
-          const title = this.translate.instant('Error');
-          this.popupProvider.ionicAlert(title, err);
-          return;
-        });
-    }, 100);
+    this.profileProvider
+      .importFile(str2, opts)
+      .then((wallet: any[]) => {
+        this.onGoingProcessProvider.clear();
+        this.finish([].concat(wallet));
+      })
+      .catch(err => {
+        this.onGoingProcessProvider.clear();
+        const title = this.translate.instant('Error');
+        this.popupProvider.ionicAlert(title, err);
+        return;
+      });
   }
 
   private async finish(wallets: any[]) {
@@ -238,46 +228,42 @@ export class ImportWalletPage {
 
   private importExtendedPrivateKey(xPrivKey, opts) {
     this.onGoingProcessProvider.set('importingWallet');
-    setTimeout(() => {
-      this.profileProvider
-        .importExtendedPrivateKey(xPrivKey, opts)
-        .then((wallets: any[]) => {
-          this.onGoingProcessProvider.clear();
-          this.finish(wallets);
-        })
-        .catch(err => {
-          if (err instanceof this.errors.NOT_AUTHORIZED) {
-            this.importErr = true;
-          } else {
-            const title = this.translate.instant('Error');
-            this.popupProvider.ionicAlert(title, err);
-          }
-          this.onGoingProcessProvider.clear();
-          return;
-        });
-    }, 100);
+    this.profileProvider
+      .importExtendedPrivateKey(xPrivKey, opts)
+      .then((wallets: any[]) => {
+        this.onGoingProcessProvider.clear();
+        this.finish(wallets);
+      })
+      .catch(err => {
+        if (err instanceof this.errors.NOT_AUTHORIZED) {
+          this.importErr = true;
+        } else {
+          const title = this.translate.instant('Error');
+          this.popupProvider.ionicAlert(title, err);
+        }
+        this.onGoingProcessProvider.clear();
+        return;
+      });
   }
 
   private importMnemonic(words: string, opts): void {
     this.onGoingProcessProvider.set('importingWallet');
-    setTimeout(() => {
-      this.profileProvider
-        .importMnemonic(words, opts)
-        .then((wallets: any[]) => {
-          this.onGoingProcessProvider.clear();
-          this.finish(wallets);
-        })
-        .catch(err => {
-          if (err instanceof this.errors.NOT_AUTHORIZED) {
-            this.importErr = true;
-          } else {
-            const title = this.translate.instant('Error');
-            this.popupProvider.ionicAlert(title, err);
-          }
-          this.onGoingProcessProvider.clear();
-          return;
-        });
-    }, 100);
+    this.profileProvider
+      .importMnemonic(words, opts)
+      .then((wallets: any[]) => {
+        this.onGoingProcessProvider.clear();
+        this.finish(wallets);
+      })
+      .catch(err => {
+        if (err instanceof this.errors.NOT_AUTHORIZED) {
+          this.importErr = true;
+        } else {
+          const title = this.translate.instant('Error');
+          this.popupProvider.ionicAlert(title, err);
+        }
+        this.onGoingProcessProvider.clear();
+        return;
+      });
   }
 
   public import(): void {
