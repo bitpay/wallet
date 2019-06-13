@@ -112,6 +112,7 @@ export class HomePage {
     this.events.subscribe('Home/reloadStatus', () => {
       this._willEnter(true);
       this._didEnter();
+      this.showNewDesignSlides();
     });
   }
 
@@ -281,16 +282,15 @@ export class HomePage {
   }
 
   private showNewDesignSlides() {
+    if (this.appProvider.isLockModalOpen) return; // Opening a modal together with the lock modal makes the pin pad unresponsive
     this.persistenceProvider.getNewDesignSlidesFlag().then(value => {
       if (!value) {
+        this.persistenceProvider.setNewDesignSlidesFlag('completed');
         const modal = this.modalCtrl.create(NewDesignTourPage, {
           showBackdrop: false,
           enableBackdropDismiss: false
         });
         modal.present();
-        modal.onDidDismiss(() => {
-          this.persistenceProvider.setNewDesignSlidesFlag('completed');
-        });
       }
     });
   }
