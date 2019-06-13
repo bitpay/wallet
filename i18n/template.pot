@@ -246,9 +246,6 @@ msgstr ""
 msgid "Bad wallet invitation"
 msgstr ""
 
-msgid "Balance Hidden"
-msgstr ""
-
 msgid "Basic Wallet"
 msgstr ""
 
@@ -663,6 +660,9 @@ msgstr ""
 msgid ""
 "Don't see your language on Crowdin? Contact the Owner on Crowdin! We'd love "
 "to support your language."
+msgstr ""
+
+msgid "Done"
 msgstr ""
 
 msgid "Download"
@@ -1096,6 +1096,12 @@ msgstr ""
 msgid "Information"
 msgstr ""
 
+msgid ""
+"Inspired by physical wallets, the home view is now clean and more spacious "
+"such that all the important details are accessible and summarized in a "
+"glance."
+msgstr ""
+
 msgid "Insufficient funds"
 msgstr ""
 
@@ -1209,6 +1215,9 @@ msgstr ""
 msgid "Locktime in effect. Please wait to remove this spend proposal"
 msgstr ""
 
+msgid "Log out"
+msgstr ""
+
 msgid "Low Fee"
 msgstr ""
 
@@ -1302,6 +1311,9 @@ msgid "Network error"
 msgstr ""
 
 msgid "New copayer"
+msgstr ""
+
+msgid "New look and feel"
 msgstr ""
 
 msgid "New payment proposal"
@@ -1588,6 +1600,9 @@ msgstr ""
 msgid "Previous"
 msgstr ""
 
+msgid "Price Chart"
+msgstr ""
+
 msgid "Print"
 msgstr ""
 
@@ -1780,9 +1795,6 @@ msgid "Scan again"
 msgstr ""
 
 msgid "Scanning Wallet funds..."
-msgstr ""
-
-msgid "Scanning funds"
 msgstr ""
 
 msgid "Search Transactions"
@@ -2005,6 +2017,9 @@ msgid "Sweep paper wallet"
 msgstr ""
 
 msgid "Sweeping Wallet..."
+msgstr ""
+
+msgid "Swipe to Send/Receive"
 msgstr ""
 
 msgid "THIS ACTION CANNOT BE REVERSED"
@@ -2540,6 +2555,9 @@ msgstr ""
 msgid "Website"
 msgstr ""
 
+msgid "What changed?"
+msgstr ""
+
 msgid "What do you call this wallet?"
 msgstr ""
 
@@ -2614,6 +2632,11 @@ msgstr ""
 msgid ""
 "You can make contributions by signing up on our Crowdin community "
 "translation website. We’re looking forward to hearing from you!"
+msgstr ""
+
+msgid ""
+"You can now send or receive a payment directly from the home view by "
+"sliding your wallet to the left or right."
 msgstr ""
 
 msgid "You can scan bitcoin addresses, payment requests, paper wallets, and more."
@@ -2734,9 +2757,6 @@ msgid "{{txpsSuccess}} proposals signed"
 msgstr ""
 
 msgid "{{updatingTxHistoryProgress}} transactions downloaded"
-msgstr ""
-
-msgid "{{wallet.credentials.m}}-of-{{wallet.credentials.n}}"
 msgstr ""
 
 msgid "{{wallet.m}}-of-{{wallet.n}}"
