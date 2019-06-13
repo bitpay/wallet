@@ -12,7 +12,7 @@ msgstr ""
 "Last-Translator: Gustavo Maximiliano Cortez (cmgustavo83)\n"
 "Language-Team: Spanish\n"
 "Language: es\n"
-"PO-Revision-Date: 2019-05-27 13:54\n"
+"PO-Revision-Date: 2019-06-13 15:17\n"
 
 msgid "(possible double spend)"
 msgstr "(Posible doble gasto)"
@@ -226,9 +226,6 @@ msgstr "Respaldar"
 
 msgid "Bad wallet invitation"
 msgstr "Invitación incorrecta a la billetera"
-
-msgid "Balance Hidden"
-msgstr "Balance Oculto"
 
 msgid "Basic Wallet"
 msgstr "Billetera Básica"
@@ -632,6 +629,9 @@ msgstr "¿Desea verificar su cuenta ahora?"
 msgid "Don't see your language on Crowdin? Contact the Owner on Crowdin! We'd love to support your language."
 msgstr "¿No ves tu idioma en Crowdin? ¡Contacta con el encargado del proyecto! Nos encantaría soportar tu idioma."
 
+msgid "Done"
+msgstr "Listo"
+
 msgid "Download"
 msgstr "Descargar"
 
@@ -1028,6 +1028,9 @@ msgstr "Dirección de red incorrecta"
 msgid "Information"
 msgstr "Información"
 
+msgid "Inspired by physical wallets, the home view is now clean and more spacious such that all the important details are accessible and summarized in a glance."
+msgstr "Inspirada por billeteras físicas, la vista Home es ahora limpia y más espaciosa, de tal manera que todos los detalles importantes son accesibles y resumidos en un vistazo."
+
 msgid "Insufficient funds"
 msgstr "Fondos insuficientes"
 
@@ -1133,6 +1136,9 @@ msgstr "Bloqueo temporal. Por favor espera para crear una nueva propuesta de gas
 msgid "Locktime in effect. Please wait to remove this spend proposal"
 msgstr "Bloqueo temporal. Por favor espera para eliminar esta propuesta de gasto"
 
+msgid "Log out"
+msgstr "Cerrar Sesión"
+
 msgid "Low Fee"
 msgstr "Comisión baja"
 
@@ -1225,6 +1231,9 @@ msgstr "Error de red"
 
 msgid "New copayer"
 msgstr "Nuevo copayer"
+
+msgid "New look and feel"
+msgstr "Nuevo aspecto"
 
 msgid "New payment proposal"
 msgstr "Nueva propuesta de pago"
@@ -1502,6 +1511,9 @@ msgstr "Preparando copia de seguridad..."
 msgid "Previous"
 msgstr "Anterior"
 
+msgid "Price Chart"
+msgstr "Gráfico de Precios"
+
 msgid "Print"
 msgstr "Imprimir"
 
@@ -1690,9 +1702,6 @@ msgstr "Escanear de nuevo"
 
 msgid "Scanning Wallet funds..."
 msgstr "Buscando fondos en la billetera..."
-
-msgid "Scanning funds"
-msgstr "Buscando fondos"
 
 msgid "Search Transactions"
 msgstr "Buscar Transacciones"
@@ -1915,6 +1924,9 @@ msgstr "Importar billetera en papel"
 
 msgid "Sweeping Wallet..."
 msgstr "Leyendo la Billetera..."
+
+msgid "Swipe to Send/Receive"
+msgstr "Desliza para enviar/recibir"
 
 msgid "THIS ACTION CANNOT BE REVERSED"
 msgstr "ESTA ACCIÓN NO SE PUEDE REVERTIR"
@@ -2373,6 +2385,9 @@ msgstr "Siempre estamos abiertos a escuchar propuestas para mejorar su experienc
 msgid "Website"
 msgstr "Sitio Web"
 
+msgid "What changed?"
+msgstr "¿Qué cambió?"
+
 msgid "What do you call this wallet?"
 msgstr "¿Como desea llamar a esta billetera?"
 
@@ -2435,6 +2450,9 @@ msgstr "Usted puede seguir viendo sus tarjetas archivadas aquí si lo necesita."
 
 msgid "You can make contributions by signing up on our Crowdin community translation website. We’re looking forward to hearing from you!"
 msgstr "Se pueden hacer contribuciones al registrarse en nuestro proyecto de traducciones en Crowdin. ¡Esperamos tener noticias suyas!"
+
+msgid "You can now send or receive a payment directly from the home view by sliding your wallet to the left or right."
+msgstr "Ahora puede enviar o recibir un pago directamente desde la vista Home deslizando su billetera a la izquierda o a la derecha."
 
 msgid "You can scan bitcoin addresses, payment requests, paper wallets, and more."
 msgstr "Puedes escanear direcciones bitcoin, solicitudes de pago, billeteras de papel y más."
@@ -2528,9 +2546,6 @@ msgstr "{{txpsSuccess}} propuestas firmadas"
 
 msgid "{{updatingTxHistoryProgress}} transactions downloaded"
 msgstr "{{updatingTxHistoryProgress}} transacciones descargadas"
-
-msgid "{{wallet.credentials.m}}-of-{{wallet.credentials.n}}"
-msgstr "{{wallet.credentials.m}}-de-{{wallet.credentials.n}}"
 
 msgid "{{wallet.m}}-of-{{wallet.n}}"
 msgstr "{{wallet.m}}-de-{{wallet.n}}"

@@ -12,7 +12,7 @@ msgstr ""
 "Last-Translator: Gustavo Maximiliano Cortez (cmgustavo83)\n"
 "Language-Team: German\n"
 "Language: de\n"
-"PO-Revision-Date: 2019-05-27 13:13\n"
+"PO-Revision-Date: 2019-06-13 15:09\n"
 
 msgid "(possible double spend)"
 msgstr "(mögliche Doppelausgabe)"
@@ -226,9 +226,6 @@ msgstr "Sicherung der Wallet"
 
 msgid "Bad wallet invitation"
 msgstr "Ungültige Einladung"
-
-msgid "Balance Hidden"
-msgstr "Das Guthaben ist versteckt"
 
 msgid "Basic Wallet"
 msgstr ""
@@ -632,6 +629,9 @@ msgstr ""
 msgid "Don't see your language on Crowdin? Contact the Owner on Crowdin! We'd love to support your language."
 msgstr "Wird deine Sprache auf Crowdin nicht angezeigt? Kontaktiere den Support von Crowdin, denn wir würden deine Sprache gerne hinzufügen."
 
+msgid "Done"
+msgstr ""
+
 msgid "Download"
 msgstr "Herunterladen"
 
@@ -1028,6 +1028,9 @@ msgstr "Falsche Netzwerkadresse"
 msgid "Information"
 msgstr ""
 
+msgid "Inspired by physical wallets, the home view is now clean and more spacious such that all the important details are accessible and summarized in a glance."
+msgstr ""
+
 msgid "Insufficient funds"
 msgstr "Nicht ausreichendes Guthaben"
 
@@ -1133,6 +1136,9 @@ msgstr "Zeitsperre aktiv. Bitte mit neuem Zahlungsvorschlag warten"
 msgid "Locktime in effect. Please wait to remove this spend proposal"
 msgstr "Zeitsperre aktiv. Bitte auf die Entfernung des Zahlungsvorschlags warten"
 
+msgid "Log out"
+msgstr ""
+
 msgid "Low Fee"
 msgstr ""
 
@@ -1224,6 +1230,9 @@ msgid "Network error"
 msgstr "Netzwerkfehler"
 
 msgid "New copayer"
+msgstr ""
+
+msgid "New look and feel"
 msgstr ""
 
 msgid "New payment proposal"
@@ -1502,6 +1511,9 @@ msgstr "Sicherung wird vorbereitet..."
 msgid "Previous"
 msgstr ""
 
+msgid "Price Chart"
+msgstr ""
+
 msgid "Print"
 msgstr ""
 
@@ -1690,9 +1702,6 @@ msgstr "Nochmals scannen"
 
 msgid "Scanning Wallet funds..."
 msgstr "Prüfe Wallet auf neue Beträge..."
-
-msgid "Scanning funds"
-msgstr "Prüfe auf neue Beträge"
 
 msgid "Search Transactions"
 msgstr ""
@@ -1915,6 +1924,9 @@ msgstr "Paperwallet löschen"
 
 msgid "Sweeping Wallet..."
 msgstr "Leere Wallet..."
+
+msgid "Swipe to Send/Receive"
+msgstr ""
 
 msgid "THIS ACTION CANNOT BE REVERSED"
 msgstr "DIESE AKTION KANN NICHT RÜCKGÄNGIG GEMACHT WERDEN"
@@ -2372,6 +2384,9 @@ msgstr ""
 msgid "Website"
 msgstr "Website"
 
+msgid "What changed?"
+msgstr ""
+
 msgid "What do you call this wallet?"
 msgstr "Wie möchten Sie diese Wallet benennen?"
 
@@ -2434,6 +2449,9 @@ msgstr ""
 
 msgid "You can make contributions by signing up on our Crowdin community translation website. We’re looking forward to hearing from you!"
 msgstr "Sie können Beiträge leisten indem Sie sich auf unserer Crowdin Community Übersetzungs-Website registrieren. Wir freuen uns darauf von Ihnen zu hören!"
+
+msgid "You can now send or receive a payment directly from the home view by sliding your wallet to the left or right."
+msgstr ""
 
 msgid "You can scan bitcoin addresses, payment requests, paper wallets, and more."
 msgstr "Sie können Bitcoin-Adressen, Zahlungsaufforderungen, Papier-Wallets und mehr scannen."
@@ -2527,9 +2545,6 @@ msgstr ""
 
 msgid "{{updatingTxHistoryProgress}} transactions downloaded"
 msgstr "{{updatingTxHistoryProgress}} Transaktionen werden heruntergeladen"
-
-msgid "{{wallet.credentials.m}}-of-{{wallet.credentials.n}}"
-msgstr "{{wallet.credentials.m}}- der -{{wallet.credentials.n}}"
 
 msgid "{{wallet.m}}-of-{{wallet.n}}"
 msgstr "{{wallet.m}}-von-{{wallet.n}}"
