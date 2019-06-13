@@ -662,7 +662,11 @@ export class ProfileProvider {
           if (err) {
             return reject(err);
           }
-          return resolve({ key, walletClients });
+          if (walletClients.length === 0) {
+            return reject('WALLET_DOES_NOT_EXIST');
+          } else {
+            return resolve({ key, walletClients });
+          }
         }
       );
     });

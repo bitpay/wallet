@@ -28,12 +28,10 @@ import {
 export class ImportWalletPage {
   private reader: FileReader;
   private defaults;
-  private errors;
   private processedInfo;
 
   public importForm: FormGroup;
   public prettyFileName: string;
-  public importErr: boolean;
   public formFile;
   public selectedTab: string;
   public isCordova: boolean;
@@ -66,11 +64,9 @@ export class ImportWalletPage {
     this.cancelText = this.translate.instant('Cancel');
     this.reader = new FileReader();
     this.defaults = this.configProvider.getDefaults();
-    this.errors = bwcProvider.getErrors();
     this.isCordova = this.platformProvider.isCordova;
     this.isSafari = this.platformProvider.isSafari;
     this.isIOS = this.platformProvider.isIOS;
-    this.importErr = false;
     this.selectedTab = 'words';
     this.showAdvOpts = false;
 
@@ -146,7 +142,6 @@ export class ImportWalletPage {
   private processWalletInfo(code: string) {
     if (!code) return undefined;
 
-    this.importErr = false;
     const parsedCode = code.split('|');
 
     const info = {
@@ -235,11 +230,17 @@ export class ImportWalletPage {
         this.finish(wallets);
       })
       .catch(err => {
-        if (err instanceof this.errors.NOT_AUTHORIZED) {
-          this.importErr = true;
+        if (err == 'WALLET_DOES_NOT_EXIST') {
+          const title = this.translate.instant(
+            'Could not access the wallet at the server'
+          );
+          const msg = this.translate.instant(
+            'NOTE: To import a wallet from a 3rd party software, please go to Add Wallet, Create Wallet, and specify the Recovery Phrase there.'
+          );
+          this.showErrorInfoSheet(title, msg);
         } else {
           const title = this.translate.instant('Error');
-          this.popupProvider.ionicAlert(title, err);
+          this.showErrorInfoSheet(title, err);
         }
         this.onGoingProcessProvider.clear();
         return;
@@ -255,11 +256,17 @@ export class ImportWalletPage {
         this.finish(wallets);
       })
       .catch(err => {
-        if (err instanceof this.errors.NOT_AUTHORIZED) {
-          this.importErr = true;
+        if (err == 'WALLET_DOES_NOT_EXIST') {
+          const title = this.translate.instant(
+            'Could not access the wallet at the server'
+          );
+          const msg = this.translate.instant(
+            'NOTE: To import a wallet from a 3rd party software, please go to Add Wallet, Create Wallet, and specify the Recovery Phrase there.'
+          );
+          this.showErrorInfoSheet(title, msg);
         } else {
           const title = this.translate.instant('Error');
-          this.popupProvider.ionicAlert(title, err);
+          this.showErrorInfoSheet(title, err);
         }
         this.onGoingProcessProvider.clear();
         return;
@@ -370,5 +377,13 @@ export class ImportWalletPage {
 
   public openScanner(): void {
     this.navCtrl.push(ScanPage, { fromImport: true });
+  }
+
+  private showErrorInfoSheet(title: Error | string, msg: string): void {
+    const errorInfoSheet = this.actionSheetProvider.createInfoSheet(
+      'default-error',
+      { msg, title }
+    );
+    errorInfoSheet.present();
   }
 }
