@@ -17,7 +17,6 @@ import { ActionSheetProvider } from '../../../providers/action-sheet/action-shee
 import { BwcProvider } from '../../../providers/bwc/bwc';
 import { KeyProvider } from '../../../providers/key/key';
 import { Logger } from '../../../providers/logger/logger';
-import { OnGoingProcessProvider } from '../../../providers/on-going-process/on-going-process';
 import { ProfileProvider } from '../../../providers/profile/profile';
 
 @Component({
@@ -49,7 +48,6 @@ export class BackupGamePage {
     private logger: Logger,
     private profileProvider: ProfileProvider,
     private bwcProvider: BwcProvider,
-    private onGoingProcessProvider: OnGoingProcessProvider,
     private actionSheetProvider: ActionSheetProvider,
     private translate: TranslateService,
     private keyProvider: KeyProvider
@@ -142,79 +140,70 @@ export class BackupGamePage {
     this.selectComplete = false;
   }
 
-  private confirm(): Promise<any> {
-    return new Promise((resolve, reject) => {
-      const customWordList = _.map(this.customWords, 'word');
+  public finalStep(): void {
+    const customWordList = _.map(this.customWords, 'word');
 
-      if (!_.isEqual(this.mnemonicWords, customWordList)) {
-        return reject('Mnemonic string mismatch');
+    if (!_.isEqual(this.mnemonicWords, customWordList)) {
+      this.showErrorInfoSheet('Mnemonic string mismatch');
+      return;
+    }
+
+    if (this.mnemonicHasPassphrase) {
+      const keyClient = this.bwcProvider.getKey();
+      const separator = this.useIdeograms ? '\u3000' : ' ';
+      const customSentence = customWordList.join(separator);
+      const password = this.password || '';
+      let key;
+
+      try {
+        key = keyClient.fromMnemonic(customSentence, {
+          coin: this.wallet.coin,
+          network: this.wallet.credentials.network,
+          passphrase: password,
+          account: this.wallet.credentials.account,
+          n: this.wallet.credentials.n
+        });
+      } catch (err) {
+        this.showErrorInfoSheet(err);
+        return;
       }
 
-      if (this.mnemonicHasPassphrase) {
-        const walletClient = this.bwcProvider.getClient();
-        const separator = this.useIdeograms ? '\u3000' : ' ';
-        const customSentence = customWordList.join(separator);
-        const password = this.password || '';
-
-        try {
-          walletClient.seedFromMnemonic(customSentence, {
-            network: this.wallet.credentials.network,
-            passphrase: password,
-            account: this.wallet.credentials.account
-          });
-        } catch (err) {
-          walletClient.credentials.xPrivKey = _.repeat('x', 64);
-          return reject(err);
-        }
-
-        if (
-          walletClient.credentials.xPrivKey.substr(
-            walletClient.credentials.xPrivKey
-          ) != this.keys.xPrivKey
-        ) {
-          delete walletClient.credentials;
-          return reject('Private key mismatch');
-        }
+      if (key.xPrivKey != this.keys.xPrivKey) {
+        this.showErrorInfoSheet('Private key mismatch');
+        return;
       }
-      this.profileProvider.setBackupFlag(this.wallet.credentials.walletId);
-      return resolve();
+    }
+    this.profileProvider.setBackupFlag(this.wallet.credentials.walletId);
+    this.showSuccessModal();
+  }
+
+  private showSuccessModal() {
+    const finishText = this.translate.instant(
+      'Your recovery phrase is verified'
+    );
+    const finishComment = this.translate.instant(
+      'Be sure to store your recovery phrase in a safe and secure place'
+    );
+    const cssClass = 'primary';
+    const params = { finishText, finishComment, cssClass };
+    const modal = this.modalCtrl.create(FinishModalPage, params, {
+      showBackdrop: true,
+      enableBackdropDismiss: false,
+      cssClass: 'finish-modal'
+    });
+    modal.present();
+    modal.onDidDismiss(() => {
+      this.navCtrl.popToRoot();
     });
   }
 
-  public finalStep(): void {
-    this.onGoingProcessProvider.set('validatingWords');
-    this.confirm()
-      .then(async () => {
-        this.onGoingProcessProvider.clear();
-        const finishText = this.translate.instant(
-          'Your recovery phrase is verified'
-        );
-        const finishComment = this.translate.instant(
-          'Be sure to store your recovery phrase in a safe and secure place'
-        );
-        const cssClass = 'primary';
-        const params = { finishText, finishComment, cssClass };
-        const modal = this.modalCtrl.create(FinishModalPage, params, {
-          showBackdrop: true,
-          enableBackdropDismiss: false,
-          cssClass: 'finish-modal'
-        });
-        await modal.present();
-        modal.onDidDismiss(() => {
-          this.navCtrl.popToRoot();
-        });
-      })
-      .catch(err => {
-        this.onGoingProcessProvider.clear();
-        this.logger.warn('Failed to verify backup: ', err);
-        const infoSheet = this.actionSheetProvider.createInfoSheet(
-          'backup-failed'
-        );
-        infoSheet.present();
-        infoSheet.onDidDismiss(() => {
-          this.clear();
-          this.setFlow();
-        });
-      });
+  private showErrorInfoSheet(err) {
+    this.logger.warn('Failed to verify backup: ', err);
+    const infoSheet = this.actionSheetProvider.createInfoSheet('backup-failed');
+    infoSheet.present();
+    infoSheet.onDidDismiss(() => {
+      this.clear();
+      this.setFlow();
+    });
   }
 }
