@@ -55,7 +55,7 @@ export class BackupProvider {
   }
 
   public walletExport(walletId: string, opts, password?: string) {
-    if (opts.encrypt && !password) {
+    if (!password) {
       return null;
     }
 
@@ -70,13 +70,9 @@ export class BackupProvider {
       if (opts.addressBook) b.addressBook = opts.addressBook;
       b = JSON.stringify(b);
 
-      if (opts.encrypt) {
-        return this.bwcProvider.getSJCL().encrypt(password, b, {
-          iter: 10000
-        });
-      }
-
-      return b;
+      return this.bwcProvider.getSJCL().encrypt(password, b, {
+        iter: 10000
+      });
     } catch (err) {
       this.logger.error('Error exporting wallet: ', err);
       return null;

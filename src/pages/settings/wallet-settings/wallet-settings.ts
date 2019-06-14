@@ -18,7 +18,6 @@ import { BackupKeyPage } from '../../backup/backup-key/backup-key';
 import { WalletColorPage } from './wallet-color/wallet-color';
 import { WalletNamePage } from './wallet-name/wallet-name';
 import { WalletAddressesPage } from './wallet-settings-advanced/wallet-addresses/wallet-addresses';
-import { WalletBackupFilePage } from './wallet-settings-advanced/wallet-backup-file/wallet-backup-file';
 import { WalletDeletePage } from './wallet-settings-advanced/wallet-delete/wallet-delete';
 import { WalletExportPage } from './wallet-settings-advanced/wallet-export/wallet-export';
 import { WalletInformationPage } from './wallet-settings-advanced/wallet-information/wallet-information';
@@ -38,7 +37,8 @@ export class WalletSettingsPage {
   public touchIdEnabled: boolean;
   public touchIdPrevValue: boolean;
   public touchIdAvailable: boolean;
-  public deleted: boolean = false;
+  public derivationStrategy: string;
+  public deleted: boolean;
   private config;
 
   constructor(
@@ -54,11 +54,16 @@ export class WalletSettingsPage {
     private actionSheetProvider: ActionSheetProvider,
     private keyProvider: KeyProvider,
     private derivationPathHelperProvider: DerivationPathHelperProvider
-  ) {}
+  ) {
+    this.deleted = false;
+  }
 
   ionViewDidLoad() {
     this.logger.info('Loaded:  WalletSettingsPage');
     this.wallet = this.profileProvider.getWallet(this.navParams.data.walletId);
+    this.derivationStrategy = this.derivationPathHelperProvider.getDerivationStrategy(
+      this.wallet.credentials.rootPath
+    );
     this.canSign = this.wallet.canSign;
     this.needsBackup = this.wallet.needsBackup;
     this.hiddenBalance = this.wallet.balanceHidden;
@@ -181,12 +186,10 @@ export class WalletSettingsPage {
   }
 
   public openBackupSettings(): void {
-    const derivationStrategy = this.derivationPathHelperProvider.getDerivationStrategy(
-      this.wallet.credentials.rootPath
-    );
-    if (derivationStrategy == 'BIP45') {
-      this.navCtrl.push(WalletBackupFilePage, {
-        walletId: this.wallet.credentials.walletId
+    if (this.derivationStrategy == 'BIP45') {
+      this.navCtrl.push(WalletExportPage, {
+        walletId: this.wallet.credentials.walletId,
+        showNoPrivKeyOpt: true
       });
     } else {
       this.navCtrl.push(BackupKeyPage, {
@@ -207,7 +210,8 @@ export class WalletSettingsPage {
   }
   public openExportWallet(): void {
     this.navCtrl.push(WalletExportPage, {
-      walletId: this.wallet.credentials.walletId
+      walletId: this.wallet.credentials.walletId,
+      showNoPrivKeyOpt: false
     });
   }
   public openWalletServiceUrl(): void {
