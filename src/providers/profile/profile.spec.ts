@@ -17,7 +17,7 @@ import { ProfileProvider } from '../profile/profile';
 import { ReplaceParametersProvider } from '../replace-parameters/replace-parameters';
 import { TxFormatProvider } from '../tx-format/tx-format';
 
-fdescribe('Profile Provider', () => {
+describe('Profile Provider', () => {
   let testBed;
   let events: Events;
   let eventsPublishSpy;
