@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
+import * as _ from 'lodash';
 
 // Providers
-import { Logger } from '../../providers/logger/logger';
 import { BwcProvider } from '../bwc/bwc';
+import { Logger } from '../logger/logger';
 import { PersistenceProvider } from '../persistence/persistence';
 import { PopupProvider } from '../popup/popup';
 
-import * as _ from 'lodash';
 @Injectable()
 export class KeyProvider {
   private isDirty: boolean;
@@ -90,9 +90,8 @@ export class KeyProvider {
 
   public removeKey(keyId: string): Promise<any> {
     this.logger.debug('Removing key: ' + keyId);
-    let selectedKey: number;
 
-    selectedKey = this.keys.findIndex(k => k.id == keyId);
+    const selectedKey = this.keys.findIndex(k => k.id == keyId);
 
     if (selectedKey >= 0) {
       this.keys.splice(selectedKey, 1);
@@ -230,7 +229,8 @@ export class KeyProvider {
   public isPrivKeyEncrypted(keyId: string) {
     if (!keyId) return false;
     const key = this.getKey(keyId);
-    return key.isPrivKeyEncrypted();
+
+    return key ? key.isPrivKeyEncrypted() : undefined;
   }
 
   public isDeletedSeed(keyId: string): boolean {

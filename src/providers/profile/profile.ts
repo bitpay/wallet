@@ -1253,4 +1253,12 @@ export class ProfileProvider {
       return resolve({ txps, n });
     });
   }
+
+  public isKeyInUse(keyId: string): boolean {
+    const keyIdIndex = this.profile.credentials.findIndex(
+      c => c.keyId == keyId
+    );
+
+    return keyIdIndex >= 0;
+  }
 }

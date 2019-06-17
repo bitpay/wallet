@@ -140,7 +140,17 @@ export class CopayersPage {
     this.profileProvider
       .deleteWalletClient(this.wallet)
       .then(() => {
-        this.keyProvider.removeKey(this.wallet.credentials.keyId);
+        const keyId: string = this.wallet.credentials.keyId;
+        if (keyId) {
+          const keyInUse = this.profileProvider.isKeyInUse(keyId);
+
+          if (!keyInUse) {
+            this.keyProvider.removeKey(keyId);
+          } else {
+            this.logger.warn('Key was not removed. Still in use');
+          }
+        }
+
         this.onGoingProcessProvider.clear();
         this.pushNotificationsProvider.unsubscribe(this.wallet);
         this.viewCtrl.dismiss();
