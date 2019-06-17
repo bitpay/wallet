@@ -17,7 +17,7 @@ import { ProfileProvider } from '../profile/profile';
 import { ReplaceParametersProvider } from '../replace-parameters/replace-parameters';
 import { TxFormatProvider } from '../tx-format/tx-format';
 
-describe('Profile Provider', () => {
+fdescribe('Profile Provider', () => {
   let testBed;
   let events: Events;
   let eventsPublishSpy;
@@ -354,6 +354,9 @@ describe('Profile Provider', () => {
     }
     getHideBalanceFlag(_walletId) {
       return Promise.resolve(true);
+    }
+    storeProfileLegacy(_profileOld) {
+      return Promise.resolve();
     }
     storeProfile(_profile) {
       return Promise.resolve();
