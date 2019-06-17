@@ -469,11 +469,44 @@ export class ProfileProvider {
       return Promise.all(promises)
         .then(walletClients => {
           this.events.publish('Local/WalletListChange');
-          return Promise.resolve(walletClients);
+          return this.checkIfAlreadyExist(walletClients).then(() => {
+            return Promise.resolve(_.compact(walletClients));
+          });
         })
         .catch(() => {
           return Promise.reject('failed to bind wallets');
         });
+    });
+  }
+
+  private checkIfAlreadyExist(walletClients: any[]): Promise<any> {
+    return new Promise(resolve => {
+      const countInArray = _.filter(walletClients, item => item == undefined)
+        .length;
+      if (countInArray > 0) {
+        const msg1 = this.replaceParametersProvider.replace(
+          this.translate.instant('Wallet already in {{nameCase}}'),
+          { nameCase: this.appProvider.info.nameCase }
+        );
+        const msg2 = this.replaceParametersProvider.replace(
+          this.translate.instant(
+            `${countInArray} of your wallets already exist in {{nameCase}}`
+          ),
+          { nameCase: this.appProvider.info.nameCase }
+        );
+        const msg = countInArray == 1 ? msg1 : msg2;
+        const title = this.translate.instant('Error');
+        const infoSheet = this.actionSheetProvider.createInfoSheet(
+          'default-error',
+          { msg, title }
+        );
+        infoSheet.present();
+        infoSheet.onDidDismiss(() => {
+          return resolve();
+        });
+      } else {
+        return resolve();
+      }
     });
   }
 
@@ -486,11 +519,7 @@ export class ProfileProvider {
     const walletId: string = wallet.credentials.walletId;
 
     if (!this.profile.addWallet(JSON.parse(wallet.toString()))) {
-      const message = this.replaceParametersProvider.replace(
-        this.translate.instant('Wallet already in {{nameCase}}'),
-        { nameCase: this.appProvider.info.nameCase }
-      );
-      return Promise.reject(message);
+      return Promise.resolve();
     }
 
     await this.keyProvider.addKey(key);
