@@ -56,6 +56,7 @@ const Keys = {
   LAST_CURRENCY_USED: 'lastCurrencyUsed',
   ONBOARDING_COMPLETED: 'onboardingCompleted',
   PROFILE: 'profile',
+  PROFILE_OLD: 'profileOld',
   REMOTE_PREF_STORED: 'remotePrefStored',
   TX_CONFIRM_NOTIF: txid => 'txConfirmNotif-' + txid,
   TX_HISTORY: walletId => 'txsHistory-' + walletId,
@@ -88,6 +89,10 @@ export class PersistenceProvider {
     this.storage = this.platform.isCordova
       ? new FileStorage(this.file, this.logger)
       : new LocalStorage(this.logger);
+  }
+
+  storeProfileLegacy(profileOld): Promise<void> {
+    return this.storage.set(Keys.PROFILE_OLD, profileOld);
   }
 
   storeNewProfile(profile): Promise<void> {

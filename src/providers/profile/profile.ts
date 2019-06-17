@@ -405,6 +405,19 @@ export class ProfileProvider {
     }, delay);
   }
 
+  public storeProfileLegacy(oldProfile): Promise<any> {
+    return this.persistenceProvider
+      .storeProfileLegacy(oldProfile)
+      .then(() => {
+        this.logger.debug('Saved legacy Profile');
+        return Promise.resolve();
+      })
+      .catch(err => {
+        this.logger.error('Could not save legacy Profile', err);
+        return Promise.reject(err);
+      });
+  }
+
   public storeProfileIfDirty(): Promise<any> {
     if (!this.profile.dirty) {
       return Promise.resolve();
@@ -720,9 +733,11 @@ export class ProfileProvider {
         );
       });
 
-      return Promise.all(promises).then(() => {
+      return Promise.all(promises).then(async () => {
         if (newKeys.length > 0) {
           this.logger.info(`Storing ${newKeys.length} migrated Keys`);
+          await this.storeProfileLegacy(profile);
+
           return this.keyProvider.addKeys(newKeys).then(() => {
             profile.credentials = newCrededentials;
             profile.dirty = true;
@@ -733,6 +748,7 @@ export class ProfileProvider {
         } else {
           if (newCrededentials.length > 0) {
             // Only RO wallets.
+            await this.storeProfileLegacy(profile);
 
             profile.credentials = newCrededentials;
             profile.dirty = true;
