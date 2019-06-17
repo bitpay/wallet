@@ -139,15 +139,10 @@ export class ProfileProvider {
     });
   }
 
-  private async bindWalletClient(
-    wallet,
-    migratedKey?,
-    opts?
-  ): Promise<boolean> {
-    opts = opts ? opts : {};
+  private async bindWalletClient(wallet): Promise<boolean> {
     const walletId = wallet.credentials.walletId;
     const keyId = wallet.credentials.keyId;
-    if (this.wallet[walletId] && this.wallet[walletId].started && !opts.force) {
+    if (this.wallet[walletId] && this.wallet[walletId].started) {
       this.logger.info('This wallet has been initialized. Skip. ' + walletId);
       return Promise.resolve(false);
     }
@@ -171,11 +166,9 @@ export class ProfileProvider {
     wallet.balanceHidden = await this.isBalanceHidden(wallet);
     wallet.order = await this.getWalletOrder(wallet.id);
 
-    wallet.canSign = keyId ? true : false; // TODO check this
+    wallet.canSign = keyId ? true : false;
 
-    wallet.isPrivKeyEncrypted = migratedKey
-      ? migratedKey.isPrivKeyEncrypted()
-      : keyId
+    wallet.isPrivKeyEncrypted = keyId
       ? this.keyProvider.isPrivKeyEncrypted(keyId)
       : false;
 
@@ -704,60 +697,17 @@ export class ProfileProvider {
         return Promise.resolve();
       }
 
-      let newKeys = [],
-        newCrededentials = [],
-        promises = [];
+      const promises = [];
 
-      // Try to migrate to Credentials 2.0
-      _.each(profile.credentials, credentials => {
-        let migrated;
+      return this.migrateToNewCredentials(profile).then(() => {
+        _.each(profile.credentials, credentials => {
+          promises.push(this.bindWallet(credentials));
+        });
 
-        if (!credentials.version || credentials.version < 2) {
-          this.logger.info('About to migrate : ' + credentials.walletId);
-
-          migrated = this.bwcProvider.fromOld(credentials);
-          credentials = migrated.credentials;
-
-          newCrededentials.push(migrated.credentials);
-          if (migrated.key) {
-            this.logger.info(`Wallet ${credentials.walletId} key's extracted`);
-            newKeys.push(migrated.key);
-          } else {
-            this.logger.info(
-              `READ-ONLY Wallet ${credentials.walletId} migrated`
-            );
-          }
-        }
-        promises.push(
-          this.bindWallet(credentials, migrated ? migrated.key : null)
-        );
-      });
-
-      return Promise.all(promises).then(async () => {
-        if (newKeys.length > 0) {
-          this.logger.info(`Storing ${newKeys.length} migrated Keys`);
-          await this.storeProfileLegacy(profile);
-
-          return this.keyProvider.addKeys(newKeys).then(() => {
-            profile.credentials = newCrededentials;
-            profile.dirty = true;
-
-            this.logger.info(`Bound ${profileLength} wallets`);
-            return this.storeProfileIfDirty();
-          });
-        } else {
-          if (newCrededentials.length > 0) {
-            // Only RO wallets.
-            await this.storeProfileLegacy(profile);
-
-            profile.credentials = newCrededentials;
-            profile.dirty = true;
-            this.logger.info(`Bound ${profileLength} wallets`);
-            return this.storeProfileIfDirty();
-          }
+        return Promise.all(promises).then(() => {
           this.logger.info(`Bound ${profileLength} wallets`);
           return Promise.resolve();
-        }
+        });
       });
     };
 
@@ -768,6 +718,51 @@ export class ProfileProvider {
         );
       });
     });
+  }
+
+  private async migrateToNewCredentials(profile): Promise<any> {
+    let newKeys = [],
+      newCrededentials = [];
+    // Try to migrate to Credentials 2.0
+    _.each(profile.credentials, credentials => {
+      let migrated;
+
+      if (!credentials.version || credentials.version < 2) {
+        this.logger.info('About to migrate : ' + credentials.walletId);
+
+        migrated = this.bwcProvider.fromOld(credentials);
+        newCrededentials.push(migrated.credentials);
+
+        if (migrated.key) {
+          this.logger.info(`Wallet ${credentials.walletId} key's extracted`);
+          newKeys.push(migrated.key);
+        } else {
+          this.logger.info(`READ-ONLY Wallet ${credentials.walletId} migrated`);
+        }
+      }
+    });
+
+    if (newKeys.length > 0) {
+      this.logger.info(`Storing ${newKeys.length} migrated Keys`);
+      await this.storeProfileLegacy(profile);
+
+      return this.keyProvider.addKeys(newKeys).then(() => {
+        profile.credentials = newCrededentials;
+        profile.dirty = true;
+
+        return this.storeProfileIfDirty();
+      });
+    } else {
+      if (newCrededentials.length > 0) {
+        // Only RO wallets.
+        await this.storeProfileLegacy(profile);
+
+        profile.credentials = newCrededentials;
+        profile.dirty = true;
+        return this.storeProfileIfDirty();
+      }
+      return Promise.resolve();
+    }
   }
 
   public isDisclaimerAccepted(): Promise<any> {
@@ -805,7 +800,7 @@ export class ProfileProvider {
     });
   }
 
-  private bindWallet(credentials, migratedKey?): Promise<any> {
+  private bindWallet(credentials): Promise<any> {
     if (!credentials.walletId || !credentials.m) {
       return Promise.reject(
         new Error('bindWallet should receive credentials JSON')
@@ -832,7 +827,7 @@ export class ProfileProvider {
       this.runValidation(walletClient, 500);
     }
 
-    return this.bindWalletClient(walletClient, migratedKey);
+    return this.bindWalletClient(walletClient);
   }
 
   public loadAndBindProfile(): Promise<any> {
