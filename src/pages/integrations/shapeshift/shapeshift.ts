@@ -1,10 +1,12 @@
 import { Component } from '@angular/core';
+import { StatusBar } from '@ionic-native/status-bar';
 import { TranslateService } from '@ngx-translate/core';
 import {
   Events,
   ModalController,
   NavController,
-  NavParams
+  NavParams,
+  Platform
 } from 'ionic-angular';
 import * as _ from 'lodash';
 import { Logger } from '../../../providers/logger/logger';
@@ -48,7 +50,9 @@ export class ShapeshiftPage {
     private formBuilder: FormBuilder,
     private onGoingProcessProvider: OnGoingProcessProvider,
     protected translate: TranslateService,
-    private popupProvider: PopupProvider
+    private popupProvider: PopupProvider,
+    private platform: Platform,
+    private statusBar: StatusBar
   ) {
     this.oauthCodeForm = this.formBuilder.group({
       code: [
@@ -67,6 +71,9 @@ export class ShapeshiftPage {
   }
 
   ionViewWillEnter() {
+    if (this.platform.is('cordova')) {
+      this.statusBar.styleBlackOpaque();
+    }
     if (this.navParams.data.code) {
       this.shapeshiftProvider.getStoredToken((at: string) => {
         at ? this.init() : this.submitOauthCode(this.navParams.data.code);
@@ -79,6 +86,9 @@ export class ShapeshiftPage {
   }
 
   ionViewWillLeave() {
+    if (this.platform.is('cordova')) {
+      this.statusBar.styleDefault();
+    }
     this.events.unsubscribe('bwsEvent', this.bwsEventHandler);
   }
 
