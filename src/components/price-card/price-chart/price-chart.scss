@@ -1,12 +1,8 @@
 price-chart {
-  max-width: 350px;
-  @media (max-width: 700px) {
-    max-width: 250px;
-  }
+  justify-self: end;
+  align-self: center;
+  max-width: 200px;
   @media (max-width: 500px) {
     max-width: 170px;
-  }
-  @media (max-width: 400px) {
-    max-width: 120px;
   }
 }
