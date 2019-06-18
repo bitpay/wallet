@@ -2,19 +2,25 @@ price-card {
   .card .item-block {
     padding: 0;
   }
+  .card {
+    margin-top: 0;
+  }
   .price {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: -10px;
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    grid-template-rows: 80px;
     @media (max-width: 500px) {
-      margin-top: 0px;
+      grid-template-columns: 160px 1fr;
     }
     .amount-content {
-      text-align: left;
+      display: grid;
+      grid-template-rows: 50px 30px;
+      justify-items: start;
       .expression-container {
+        grid-row-start: 1;
+        justify-content: start;
+        align-content: start;
         .expression {
-          position: relative;
           font-size: 32px;
           font-weight: 500;
           @media (max-width: 500px) {
@@ -26,31 +32,31 @@ price-card {
           .unit {
             font-size: 12px;
             color: #4a4a4a;
-            position: absolute;
-            top: 3px;
-            right: -26px;
-            @media (max-width: 700px) {
-              top: 3px;
-            }
+            position: relative;
+            top: -13px;
             @media (max-width: 500px) {
-              top: 2px;
               font-size: 10px;
+              top: -11px;
+            }
+            @media (max-width: 400px) {
+              top: -9px;
             }
           }
         }
       }
       .average-container {
+        grid-row-start: 2;
+        justify-self: start;
+        align-self: start;
         ion-icon {
           vertical-align: text-top;
         }
         .average {
           font-size: 16px;
           color: #4a4a4a;
-          .average-time {
-            color: #aaaeb6;
-            font-size: 14px;
-            vertical-align: text-bottom;
-          }
+        }
+        .average-time {
+          opacity: 0.4;
         }
       }
     }
