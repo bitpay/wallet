@@ -4,6 +4,7 @@ page-transfer-to {
     text-align: center;
   }
   .wallet-warning {
+    color: color($colors, danger);
     ion-label {
       white-space: inherit;
     }
