@@ -120,6 +120,7 @@ export class AboutPage {
         res === 'enabled'
           ? this.persistenceProvider.removePriceChartFlag()
           : this.persistenceProvider.setPriceChartFlag('enabled');
+        this.navCtrl.popToRoot();
       });
     }
   }

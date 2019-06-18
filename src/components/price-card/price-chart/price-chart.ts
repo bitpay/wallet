@@ -63,8 +63,8 @@ export class PriceChart {
         padding: {
           bottom: 10,
           top: 10,
-          left: 5,
-          right: 5
+          left: 0,
+          right: 2
         }
       }
     };
