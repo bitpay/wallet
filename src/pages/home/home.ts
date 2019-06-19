@@ -624,7 +624,7 @@ export class HomePage {
 
         this.events.publish('Local/WalletUpdate', {
           walletId: opts.walletId,
-          finished: false,
+          finished: true,
           error: wallet.error
         });
 

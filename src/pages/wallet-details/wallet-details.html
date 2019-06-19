@@ -22,7 +22,7 @@
     <expandable-header class="balance-card" [scrollArea]="scrollArea" [ngStyle]="{'background': wallet.color}">
       <expandable-header-primary class="balance-header">
         <div (longPress)="toggleBalance()">
-          <div (tap)="updateAll(true)" *ngIf="!wallet.balanceHidden && !wallet.scanning && (wallet.cachedStatus || wallet.lastKnownBalance)">
+          <div (tap)="updateAll(true)" *ngIf="!wallet.balanceHidden && !wallet.scanning && !walletNotRegistered && (wallet.cachedStatus || wallet.lastKnownBalance)">
             <div class="balance-str">
               {{ wallet.cachedStatus ? wallet.cachedStatus.totalBalanceStr  : wallet.lastKnownBalance }} </div>
             <div class="balance-alt-str" *ngIf="wallet.cachedStatus && wallet.cachedStatus.totalBalanceAlternative">
