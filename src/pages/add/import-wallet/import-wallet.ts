@@ -1,11 +1,12 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
-import { Events, NavController, NavParams } from 'ionic-angular';
+import { App, Events, NavController, NavParams } from 'ionic-angular';
 import { Logger } from '../../../providers/logger/logger';
 
 // Pages
 import { ScanPage } from '../../scan/scan';
+import { TabsPage } from '../../tabs/tabs';
 
 // Providers
 import { ActionSheetProvider } from '../../../providers/action-sheet/action-sheet';
@@ -51,6 +52,7 @@ export class ImportWalletPage {
   public createLabel: string;
 
   constructor(
+    private app: App,
     private navCtrl: NavController,
     private navParams: NavParams,
     private form: FormBuilder,
@@ -265,7 +267,13 @@ export class ImportWalletPage {
     this.walletProvider.updateRemotePreferences(wallet);
     this.profileProvider.setBackupFlag(wallet.credentials.walletId);
     this.pushNotificationsProvider.updateSubscription(wallet);
-    this.navCtrl.popToRoot();
+    // using setRoot(TabsPage) as workaround when coming from scanner
+    this.app
+      .getRootNavs()[0]
+      .setRoot(TabsPage)
+      .then(() => {
+        this.events.publish('Home/reloadStatus');
+      });
   }
 
   private importExtendedPrivateKey(xPrivKey, opts) {
