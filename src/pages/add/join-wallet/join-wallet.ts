@@ -286,6 +286,7 @@ export class JoinWalletPage {
           .then(() => {
             this.keyProvider.setActiveWGKey(wallet.credentials.keyId);
             this.events.publish('Local/WalletListChange');
+
             setTimeout(() => {
               this.events.publish('OpenWallet', wallet);
             }, 1000);

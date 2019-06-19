@@ -232,7 +232,13 @@ export class ImportWalletPage {
       this.keyProvider.setActiveWGKey(wallets[0].credentials.keyId);
     }
     this.events.publish('Local/WalletListChange');
-    this.app.getRootNavs()[0].setRoot(TabsPage);
+   // using setRoot(TabsPage) as workaround when coming from scanner
+    this.app
+      .getRootNavs()[0]
+      .setRoot(TabsPage)
+      .then(() => {
+        this.events.publish('Home/reloadStatus');
+      });
   }
 
   private importExtendedPrivateKey(xPrivKey, opts) {
