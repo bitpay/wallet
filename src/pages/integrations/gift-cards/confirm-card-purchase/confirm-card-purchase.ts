@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import {
+  App,
   Events,
   ModalController,
   NavController,
@@ -72,6 +73,7 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
   public hideSlideButton: boolean;
 
   constructor(
+    app: App,
     actionSheetProvider: ActionSheetProvider,
     bwcErrorProvider: BwcErrorProvider,
     bwcProvider: BwcProvider,
@@ -102,6 +104,7 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
     AppProvider: AppProvider
   ) {
     super(
+      app,
       actionSheetProvider,
       bwcErrorProvider,
       bwcProvider,
