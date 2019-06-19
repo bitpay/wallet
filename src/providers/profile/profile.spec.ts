@@ -299,7 +299,7 @@ describe('Profile Provider', () => {
         }
       };
     }
-    fromOld(_oldCredentials) {
+    upgradeCredentialsV1(_data) {
       const migrated = {
         credentials: {
           walletId: 'id1',
@@ -308,6 +308,27 @@ describe('Profile Provider', () => {
           n: 1
         },
         key: {
+          mnemonic: 'mom mom mom mom mom mom mom mom mom mom mom mom',
+          xPrivKey: 'xPrivKey1',
+          isPrivKeyEncrypted: () => {
+            return false;
+          },
+          toObj: () => {
+            return false;
+          }
+        }
+      };
+      return migrated;
+    }
+    upgradeMultipleCredentialsV1(_oldCredentials) {
+      const migrated = {
+        credentials: {
+          walletId: 'id1',
+          keyId: 'keyId1',
+          m: 1,
+          n: 1
+        },
+        keys: {
           mnemonic: 'mom mom mom mom mom mom mom mom mom mom mom mom',
           xPrivKey: 'xPrivKey1',
           isPrivKeyEncrypted: () => {

@@ -644,7 +644,7 @@ export class ProfileProvider {
           delete data.xPrivKeyEncrypted;
           delete data.mnemonicEncrypted;
         }
-        let migrated = this.bwcProvider.fromOld(data);
+        let migrated = this.bwcProvider.upgradeCredentialsV1(data);
         credentials = migrated.credentials;
         key = migrated.key;
         addressBook = credentials.addressBook ? credentials.addressBook : {};
@@ -728,7 +728,7 @@ export class ProfileProvider {
 
       const promises = [];
 
-      return this.migrateToNewCredentials(profile).then(() => {
+      return this.upgradeMultipleCredentials(profile).then(() => {
         _.each(profile.credentials, credentials => {
           promises.push(this.bindWallet(credentials));
         });
@@ -749,27 +749,13 @@ export class ProfileProvider {
     });
   }
 
-  private async migrateToNewCredentials(profile): Promise<any> {
-    let newKeys = [],
-      newCrededentials = [];
-    // Try to migrate to Credentials 2.0
-    _.each(profile.credentials, credentials => {
-      let migrated;
+  private async upgradeMultipleCredentials(profile): Promise<any> {
+    const migrated = this.bwcProvider.upgradeMultipleCredentialsV1(
+      profile.credentials
+    );
 
-      if (!credentials.version || credentials.version < 2) {
-        this.logger.info('About to migrate : ' + credentials.walletId);
-
-        migrated = this.bwcProvider.fromOld(credentials);
-        newCrededentials.push(migrated.credentials);
-
-        if (migrated.key) {
-          this.logger.info(`Wallet ${credentials.walletId} key's extracted`);
-          newKeys.push(migrated.key);
-        } else {
-          this.logger.info(`READ-ONLY Wallet ${credentials.walletId} migrated`);
-        }
-      }
-    });
+    const newKeys = migrated.keys;
+    const newCrededentials = migrated.credentials;
 
     if (newKeys.length > 0) {
       this.logger.info(`Storing ${newKeys.length} migrated Keys`);

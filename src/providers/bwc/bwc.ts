@@ -36,8 +36,12 @@ export class BwcProvider {
     return BWC.Key;
   }
 
-  public fromOld(x) {
-    return BWC.fromOld(x);
+  public upgradeCredentialsV1(x) {
+    return BWC.upgradeCredentialsV1(x);
+  }
+
+  public upgradeMultipleCredentialsV1(x) {
+    return BWC.upgradeMultipleCredentialsV1(x);
   }
 
   public getClient(walletData?, opts?) {
