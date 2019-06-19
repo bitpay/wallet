@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import {
+  App,
   Events,
   ModalController,
   NavController,
@@ -72,6 +73,7 @@ export class ConfirmInvoicePage extends ConfirmPage {
   private browserUrl: string;
   private invoicePaid: boolean;
   constructor(
+    app: App,
     actionSheetProvider: ActionSheetProvider,
     bwcErrorProvider: BwcErrorProvider,
     bwcProvider: BwcProvider,
@@ -100,6 +102,7 @@ export class ConfirmInvoicePage extends ConfirmPage {
     appProvider: AppProvider
   ) {
     super(
+      app,
       actionSheetProvider,
       bwcErrorProvider,
       bwcProvider,
