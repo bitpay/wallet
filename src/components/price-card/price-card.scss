@@ -7,15 +7,26 @@ price-card {
   }
   .price {
     display: grid;
-    grid-template-columns: 200px 1fr;
+    grid-template-columns: 1fr 200px;
     grid-template-rows: 80px;
     @media (max-width: 500px) {
-      grid-template-columns: 160px 1fr;
+      grid-template-columns: 1fr 170px;
+      grid-template-rows: 70px;
+    }
+    @media (max-width: 400px) {
+      grid-template-columns: 1fr 120px;
+      grid-template-rows: 60px;
     }
     .amount-content {
       display: grid;
       grid-template-rows: 50px 30px;
       justify-items: start;
+      @media (max-width: 500px) {
+        grid-template-rows: 40px 30px;
+      }
+      @media (max-width: 400px) {
+        grid-template-rows: 30px 30px;
+      }
       .expression-container {
         grid-row-start: 1;
         justify-content: start;
@@ -24,10 +35,10 @@ price-card {
           font-size: 32px;
           font-weight: 500;
           @media (max-width: 500px) {
-            font-size: 26px;
+            font-size: 24px;
           }
           @media (max-width: 400px) {
-            font-size: 23px;
+            font-size: 18px;
           }
           .unit {
             font-size: 12px;
@@ -36,10 +47,11 @@ price-card {
             top: -13px;
             @media (max-width: 500px) {
               font-size: 10px;
-              top: -11px;
+              top: -10px;
             }
             @media (max-width: 400px) {
-              top: -9px;
+              font-size: 8px;
+              top: -7px;
             }
           }
         }
@@ -54,6 +66,12 @@ price-card {
         .average {
           font-size: 16px;
           color: #4a4a4a;
+          @media (max-width: 500px) {
+            font-size: 12px;
+          }
+          @media (max-width: 400px) {
+            font-size: 9px;
+          }
         }
         .average-time {
           opacity: 0.4;
