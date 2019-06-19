@@ -11,7 +11,6 @@ import { ScanPage } from '../../scan/scan';
 import { ActionSheetProvider } from '../../../providers/action-sheet/action-sheet';
 import { BwcProvider } from '../../../providers/bwc/bwc';
 import { ConfigProvider } from '../../../providers/config/config';
-import { DerivationPathHelperProvider } from '../../../providers/derivation-path-helper/derivation-path-helper';
 import { OnGoingProcessProvider } from '../../../providers/on-going-process/on-going-process';
 import { PlatformProvider } from '../../../providers/platform/platform';
 import { PopupProvider } from '../../../providers/popup/popup';
@@ -27,18 +26,13 @@ import {
   templateUrl: 'import-wallet.html'
 })
 export class ImportWalletPage {
-  private derivationPathByDefault: string;
-  private derivationPathForTestnet: string;
   private reader: FileReader;
   private defaults;
-  private errors;
   private processedInfo;
 
   public importForm: FormGroup;
   public prettyFileName: string;
-  public importErr: boolean;
   public formFile;
-  public showAdvOpts: boolean;
   public selectedTab: string;
   public isCordova: boolean;
   public isSafari: boolean;
@@ -47,15 +41,13 @@ export class ImportWalletPage {
   public code;
   public okText: string;
   public cancelText: string;
-  public coin: string;
-  public createLabel: string;
+  public showAdvOpts: boolean;
 
   constructor(
     private navCtrl: NavController,
     private navParams: NavParams,
     private form: FormBuilder,
     private bwcProvider: BwcProvider,
-    private derivationPathHelperProvider: DerivationPathHelperProvider,
     private walletProvider: WalletProvider,
     private configProvider: ConfigProvider,
     private popupProvider: PopupProvider,
@@ -72,25 +64,15 @@ export class ImportWalletPage {
     this.cancelText = this.translate.instant('Cancel');
     this.reader = new FileReader();
     this.defaults = this.configProvider.getDefaults();
-    this.errors = bwcProvider.getErrors();
     this.isCordova = this.platformProvider.isCordova;
     this.isSafari = this.platformProvider.isSafari;
     this.isIOS = this.platformProvider.isIOS;
-    this.importErr = false;
     this.selectedTab = 'words';
+    this.showAdvOpts = false;
 
     this.code = this.navParams.data.code;
     this.processedInfo = this.processWalletInfo(this.code);
-    this.coin = this.processedInfo
-      ? this.processedInfo.coin
-      : this.navParams.data.coin;
 
-    this.derivationPathByDefault =
-      this.coin == 'bch'
-        ? this.derivationPathHelperProvider.defaultBCH
-        : this.derivationPathHelperProvider.defaultBTC;
-    this.derivationPathForTestnet = this.derivationPathHelperProvider.defaultTestnet;
-    this.showAdvOpts = false;
     this.formFile = null;
 
     this.importForm = this.form.group({
@@ -99,15 +81,9 @@ export class ImportWalletPage {
       passphrase: [null],
       file: [null],
       filePassword: [null],
-      derivationPath: [this.derivationPathByDefault, Validators.required],
-      testnetEnabled: [false],
-      bwsURL: [this.defaults.bws.url],
-      coin: [null, Validators.required]
+      bwsURL: [this.defaults.bws.url]
     });
-    this.importForm.controls['coin'].setValue(this.coin);
-
     this.events.subscribe('Local/BackupScan', this.updateWordsHandler);
-
     this.setForm();
   }
 
@@ -117,19 +93,8 @@ export class ImportWalletPage {
 
   private setForm(): void {
     if (this.processedInfo) {
-      const isTestnet = this.processedInfo.network == 'testnet' ? true : false;
-      this.importForm.controls['testnetEnabled'].setValue(isTestnet);
-      this.importForm.controls['derivationPath'].setValue(
-        this.processedInfo.derivationPath
-      );
       this.importForm.controls['words'].setValue(this.processedInfo.data);
-      this.importForm.controls['coin'].setValue(this.processedInfo.coin);
-      this.coin = this.processedInfo.coin;
     }
-    this.createLabel =
-      this.coin === 'btc'
-        ? this.translate.instant('BTC Wallet')
-        : this.translate.instant('BCH Wallet');
   }
 
   private updateWordsHandler: any = data => {
@@ -145,7 +110,6 @@ export class ImportWalletPage {
         this.file = null;
         this.formFile = null;
         this.importForm.get('words').setValidators([Validators.required]);
-        this.importForm.get('coin').setValidators([Validators.required]);
         this.importForm.get('filePassword').clearValidators();
         if (this.isCordova || this.isSafari)
           this.importForm.get('backupText').clearValidators();
@@ -161,7 +125,6 @@ export class ImportWalletPage {
           .get('filePassword')
           .setValidators([Validators.required]);
         this.importForm.get('words').clearValidators();
-        this.importForm.get('coin').clearValidators();
         break;
 
       default:
@@ -174,22 +137,20 @@ export class ImportWalletPage {
     this.importForm.get('file').updateValueAndValidity();
     this.importForm.get('filePassword').updateValueAndValidity();
     this.importForm.get('backupText').updateValueAndValidity();
-    this.importForm.get('coin').updateValueAndValidity();
   }
 
   private processWalletInfo(code: string) {
     if (!code) return undefined;
 
-    this.importErr = false;
     const parsedCode = code.split('|');
 
     const info = {
       type: parsedCode[0],
       data: parsedCode[1],
       network: parsedCode[2],
-      derivationPath: parsedCode[3],
+      derivationPath: parsedCode[3], // deprecated
       hasPassphrase: parsedCode[4] == 'true' ? true : false,
-      coin: parsedCode[5]
+      coin: parsedCode[5] // deprecated
     };
     if (!info.data) {
       const errorInfoSheet = this.actionSheetProvider.createInfoSheet(
@@ -210,15 +171,7 @@ export class ImportWalletPage {
       this.popupProvider.ionicAlert(title, subtitle);
       return undefined;
     }
-
     return info;
-  }
-
-  public setDerivationPath(): void {
-    const path = this.importForm.value.testnetEnabled
-      ? this.derivationPathForTestnet
-      : this.derivationPathByDefault;
-    this.importForm.controls['derivationPath'].setValue(path);
   }
 
   private importBlob(str: string, opts): void {
@@ -245,71 +198,79 @@ export class ImportWalletPage {
     opts.compressed = null;
     opts.password = null;
 
-    setTimeout(() => {
-      this.profileProvider
-        .importWallet(str2, opts)
-        .then(wallet => {
-          this.onGoingProcessProvider.clear();
-          this.finish(wallet);
-        })
-        .catch(err => {
-          this.onGoingProcessProvider.clear();
-          const title = this.translate.instant('Error');
-          this.popupProvider.ionicAlert(title, err);
-          return;
-        });
-    }, 100);
+    this.profileProvider
+      .importFile(str2, opts)
+      .then((wallet: any[]) => {
+        this.onGoingProcessProvider.clear();
+        this.finish([].concat(wallet));
+      })
+      .catch(err => {
+        this.onGoingProcessProvider.clear();
+        const title = this.translate.instant('Error');
+        this.popupProvider.ionicAlert(title, err);
+        return;
+      });
   }
 
-  private async finish(wallet) {
-    this.walletProvider.updateRemotePreferences(wallet);
-    this.profileProvider.setBackupFlag(wallet.credentials.walletId);
-    this.pushNotificationsProvider.updateSubscription(wallet);
+  private async finish(wallets: any[]) {
+    wallets.forEach(wallet => {
+      this.walletProvider.updateRemotePreferences(wallet);
+      this.profileProvider.setBackupFlag(wallet.credentials.walletId);
+      this.pushNotificationsProvider.updateSubscription(wallet);
+    });
     this.navCtrl.popToRoot();
   }
 
   private importExtendedPrivateKey(xPrivKey, opts) {
     this.onGoingProcessProvider.set('importingWallet');
-    setTimeout(() => {
-      this.profileProvider
-        .importExtendedPrivateKey(xPrivKey, opts)
-        .then(wallet => {
-          this.onGoingProcessProvider.clear();
-          this.finish(wallet);
-        })
-        .catch(err => {
-          if (err instanceof this.errors.NOT_AUTHORIZED) {
-            this.importErr = true;
-          } else {
-            const title = this.translate.instant('Error');
-            this.popupProvider.ionicAlert(title, err);
-          }
-          this.onGoingProcessProvider.clear();
-          return;
-        });
-    }, 100);
+    this.profileProvider
+      .importExtendedPrivateKey(xPrivKey, opts)
+      .then((wallets: any[]) => {
+        this.onGoingProcessProvider.clear();
+        this.finish(wallets);
+      })
+      .catch(err => {
+        if (err == 'WALLET_DOES_NOT_EXIST') {
+          const title = this.translate.instant(
+            'Could not access the wallet at the server'
+          );
+          const msg = this.translate.instant(
+            'NOTE: To import a wallet from a 3rd party software, please go to Add Wallet, Create Wallet, and specify the Recovery Phrase there.'
+          );
+          this.showErrorInfoSheet(title, msg);
+        } else {
+          const title = this.translate.instant('Error');
+          this.showErrorInfoSheet(title, err);
+        }
+        this.onGoingProcessProvider.clear();
+        return;
+      });
   }
 
   private importMnemonic(words: string, opts): void {
     this.onGoingProcessProvider.set('importingWallet');
-    setTimeout(() => {
-      this.profileProvider
-        .importSingleSeedMnemonic(words, opts)
-        .then(wallet => {
-          this.onGoingProcessProvider.clear();
-          this.finish(wallet);
-        })
-        .catch(err => {
-          if (err instanceof this.errors.NOT_AUTHORIZED) {
-            this.importErr = true;
-          } else {
-            const title = this.translate.instant('Error');
-            this.popupProvider.ionicAlert(title, err);
-          }
-          this.onGoingProcessProvider.clear();
-          return;
-        });
-    }, 100);
+    this.profileProvider
+      .importMnemonic(words, opts)
+      .then((wallets: any[]) => {
+        this.onGoingProcessProvider.clear();
+        this.finish(wallets);
+      })
+      .catch(err => {
+        if (err == 'WALLET_DOES_NOT_EXIST') {
+          const title = this.translate.instant(
+            'Could not access the wallet at the server'
+          );
+          const msg = this.translate.instant(
+            'NOTE: To import a wallet from a 3rd party software, please go to Add Wallet, Create Wallet, and specify the Recovery Phrase there.'
+          );
+          this.showErrorInfoSheet(title, msg);
+        } else {
+          const title = this.translate.instant('Error');
+          this.showErrorInfoSheet(title, err);
+        }
+        this.onGoingProcessProvider.clear();
+        return;
+      });
   }
 
   public import(): void {
@@ -345,7 +306,6 @@ export class ImportWalletPage {
     } else {
       const opts: Partial<WalletOptions> = {};
       opts.bwsurl = this.importForm.value.bwsURL;
-      opts.coin = this.importForm.value.coin;
       this.importBlob(backupText, opts);
     }
   }
@@ -363,44 +323,7 @@ export class ImportWalletPage {
     if (this.importForm.value.bwsURL)
       opts.bwsurl = this.importForm.value.bwsURL;
 
-    const derivationPath = this.importForm.value.derivationPath;
-
-    opts.networkName = this.derivationPathHelperProvider.getNetworkName(
-      derivationPath
-    );
-    opts.derivationStrategy = this.derivationPathHelperProvider.getDerivationStrategy(
-      derivationPath
-    );
-    opts.account = this.derivationPathHelperProvider.getAccount(derivationPath);
-
-    opts.coin = this.importForm.value.coin;
-
     opts.passphrase = this.importForm.value.passphrase || null;
-
-    if (
-      !opts.networkName ||
-      !opts.derivationStrategy ||
-      !Number.isInteger(opts.account)
-    ) {
-      const title = this.translate.instant('Error');
-      const subtitle = this.translate.instant('Invalid derivation path');
-      this.popupProvider.ionicAlert(title, subtitle);
-      return;
-    }
-
-    if (
-      !this.derivationPathHelperProvider.isValidDerivationPathCoin(
-        this.importForm.value.derivationPath,
-        this.coin
-      )
-    ) {
-      const title = this.translate.instant('Error');
-      const subtitle = this.translate.instant(
-        'Invalid derivation path for selected coin'
-      );
-      this.popupProvider.ionicAlert(title, subtitle);
-      return;
-    }
 
     const words: string = this.importForm.value.words || null;
 
@@ -446,7 +369,6 @@ export class ImportWalletPage {
         // DONE === 2
         const opts: Partial<WalletOptions> = {};
         opts.bwsurl = this.importForm.value.bwsURL;
-        opts.coin = this.importForm.value.coin;
         const reader: string = this.reader.result.toString();
         this.importBlob(reader, opts);
       }
@@ -455,5 +377,13 @@ export class ImportWalletPage {
 
   public openScanner(): void {
     this.navCtrl.push(ScanPage, { fromImport: true });
+  }
+
+  private showErrorInfoSheet(title: Error | string, msg: string): void {
+    const errorInfoSheet = this.actionSheetProvider.createInfoSheet(
+      'default-error',
+      { msg, title }
+    );
+    errorInfoSheet.present();
   }
 }

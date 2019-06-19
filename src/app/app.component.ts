@@ -22,6 +22,7 @@ import { CoinbaseProvider } from '../providers/coinbase/coinbase';
 import { ConfigProvider } from '../providers/config/config';
 import { EmailNotificationsProvider } from '../providers/email-notifications/email-notifications';
 import { IncomingDataProvider } from '../providers/incoming-data/incoming-data';
+import { KeyProvider } from '../providers/key/key';
 import { Logger } from '../providers/logger/logger';
 import { PlatformProvider } from '../providers/platform/platform';
 import { PopupProvider } from '../providers/popup/popup';
@@ -115,7 +116,8 @@ export class CopayApp {
     private walletTabsProvider: WalletTabsProvider,
     private renderer: Renderer,
     private userAgent: UserAgent,
-    private device: Device
+    private device: Device,
+    private keyProvider: KeyProvider
   ) {
     this.imageLoaderConfig.setFileNameCachedWithExtension(true);
     this.imageLoaderConfig.useImageTag(true);
@@ -214,28 +216,36 @@ export class CopayApp {
     this.events.subscribe('OpenWallet', (wallet, params) =>
       this.openWallet(wallet, params)
     );
-    // Check Profile
-    this.profile
-      .loadAndBindProfile()
-      .then(profile => {
-        this.onProfileLoad(profile);
+    this.keyProvider
+      .load()
+      .then(() => {
+        // Check Profile
+        this.profile
+          .loadAndBindProfile()
+          .then(profile => {
+            this.onProfileLoad(profile);
+          })
+          .catch((err: Error) => {
+            switch (err.message) {
+              case 'NONAGREEDDISCLAIMER':
+                this.logger.warn('Non agreed disclaimer');
+                this.rootPage = DisclaimerPage;
+                break;
+              case 'ONBOARDINGNONCOMPLETED':
+                this.logger.warn('Onboarding non completed');
+                this.rootPage = OnboardingPage;
+                break;
+              default:
+                this.popupProvider.ionicAlert(
+                  'Could not initialize the app',
+                  err.message
+                );
+            }
+          });
       })
-      .catch((err: Error) => {
-        switch (err.message) {
-          case 'NONAGREEDDISCLAIMER':
-            this.logger.warn('Non agreed disclaimer');
-            this.rootPage = DisclaimerPage;
-            break;
-          case 'ONBOARDINGNONCOMPLETED':
-            this.logger.warn('Onboarding non completed');
-            this.rootPage = OnboardingPage;
-            break;
-          default:
-            this.popupProvider.ionicAlert(
-              'Could not initialize the app',
-              err.message
-            );
-        }
+      .catch(err => {
+        this.popupProvider.ionicAlert('Error loading keys', err.message || '');
+        this.logger.error('Error loading keys: ', err);
       });
   }
 

@@ -51,10 +51,12 @@ const Keys = {
     return legacyGiftCardKey || `giftCards-${cardName}-${network}`;
   },
   HIDE_BALANCE: walletId => 'hideBalance-' + walletId,
+  KEYS: 'keys',
   LAST_ADDRESS: walletId => 'lastAddress-' + walletId,
   LAST_CURRENCY_USED: 'lastCurrencyUsed',
   ONBOARDING_COMPLETED: 'onboardingCompleted',
   PROFILE: 'profile',
+  PROFILE_OLD: 'profileOld',
   REMOTE_PREF_STORED: 'remotePrefStored',
   TX_CONFIRM_NOTIF: txid => 'txConfirmNotif-' + txid,
   TX_HISTORY: walletId => 'txsHistory-' + walletId,
@@ -89,6 +91,10 @@ export class PersistenceProvider {
       : new LocalStorage(this.logger);
   }
 
+  storeProfileLegacy(profileOld): Promise<void> {
+    return this.storage.set(Keys.PROFILE_OLD, profileOld);
+  }
+
   storeNewProfile(profile): Promise<void> {
     return this.storage.create(Keys.PROFILE, profile);
   }
@@ -103,6 +109,14 @@ export class PersistenceProvider {
         resolve(profile);
       });
     });
+  }
+
+  setKeys(keys: any[]) {
+    return this.storage.set(Keys.KEYS, keys);
+  }
+
+  getKeys() {
+    return this.storage.get(Keys.KEYS);
   }
 
   setFeedbackInfo(feedbackValues: FeedbackValues) {
@@ -541,6 +555,7 @@ export class PersistenceProvider {
   }
 
   setPriceChartFlag(value: string) {
+    this.logger.debug('Price chart: ', value);
     return this.storage.set('priceChart', value);
   }
 

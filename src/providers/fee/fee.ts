@@ -53,32 +53,36 @@ export class FeeProvider {
     return new Promise((resolve, reject) => {
       if (feeLevel == 'custom') return resolve();
       network = network || 'livenet';
-      return this.getFeeLevels(coin).then(response => {
-        let feeLevelRate;
-        feeLevelRate = _.find(response.levels[network], o => {
-          return o.level == feeLevel;
-        });
-        if (!feeLevelRate || !feeLevelRate.feePerKb) {
-          let msg =
-            this.translate.instant('Could not get dynamic fee for level:') +
-            ' ' +
-            feeLevel;
-          return reject(msg);
-        }
-
-        let feeRate = feeLevelRate.feePerKb;
-        if (!response.fromCache)
-          this.logger.debug(
-            'Dynamic fee: ' +
-              feeLevel +
-              '/' +
-              network +
+      this.getFeeLevels(coin)
+        .then(response => {
+          let feeLevelRate;
+          feeLevelRate = _.find(response.levels[network], o => {
+            return o.level == feeLevel;
+          });
+          if (!feeLevelRate || !feeLevelRate.feePerKb) {
+            let msg =
+              this.translate.instant('Could not get dynamic fee for level:') +
               ' ' +
-              (feeLevelRate.feePerKb / 1000).toFixed() +
-              ' SAT/B'
-          );
-        return resolve(feeRate);
-      });
+              feeLevel;
+            return reject(msg);
+          }
+
+          let feeRate = feeLevelRate.feePerKb;
+          if (!response.fromCache)
+            this.logger.debug(
+              'Dynamic fee: ' +
+                feeLevel +
+                '/' +
+                network +
+                ' ' +
+                (feeLevelRate.feePerKb / 1000).toFixed() +
+                ' SAT/B'
+            );
+          return resolve(feeRate);
+        })
+        .catch(err => {
+          return reject(err);
+        });
     });
   }
 

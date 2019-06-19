@@ -33,6 +33,7 @@ import {
   CardConfig,
   GiftCard
 } from '../../../../providers/gift-card/gift-card.types';
+import { KeyProvider } from '../../../../providers/key/key';
 import { OnGoingProcessProvider } from '../../../../providers/on-going-process/on-going-process';
 import { PayproProvider } from '../../../../providers/paypro/paypro';
 import { PlatformProvider } from '../../../../providers/platform/platform';
@@ -78,6 +79,7 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
     decimalPipe: DecimalPipe,
     feeProvider: FeeProvider,
     private giftCardProvider: GiftCardProvider,
+    keyProvider: KeyProvider,
     replaceParametersProvider: ReplaceParametersProvider,
     private emailNotificationsProvider: EmailNotificationsProvider,
     externalLinkProvider: ExternalLinkProvider,
@@ -123,7 +125,8 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
       walletTabsProvider,
       clipboardProvider,
       events,
-      AppProvider
+      AppProvider,
+      keyProvider
     );
     this.hideSlideButton = false;
     this.configWallet = this.configProvider.get().wallet;
@@ -183,11 +186,11 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
   }
 
   async publishAndSign(wallet, txp) {
-    if (!wallet.canSign() && !wallet.isPrivKeyExternal()) {
+    if (!wallet.canSign) {
       const err = this.translate.instant('No signing proposal: No private key');
       return Promise.reject(err);
     }
-    if (this.walletProvider.isEncrypted(wallet)) {
+    if (wallet.isPrivKeyEncrypted) {
       this.hideSlideButton = true;
     }
 

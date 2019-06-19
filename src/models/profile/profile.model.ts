@@ -9,7 +9,7 @@ export class Profile {
   public dirty: boolean;
 
   constructor() {
-    this.version = '1.0.0';
+    this.version = '2.0.0';
   }
 
   static create(): Profile {
@@ -102,5 +102,10 @@ export class Profile {
 
     this.dirty = true;
     return true;
+  }
+
+  public acceptDisclaimer(): void {
+    this.disclaimerAccepted = true;
+    this.dirty = true;
   }
 }

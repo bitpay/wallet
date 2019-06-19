@@ -18,7 +18,8 @@
       </ion-item>
       <ion-item-divider>{{'Security' | translate}}</ion-item-divider>
       <button ion-item (click)="openBackupSettings()" [ngClass]="{warn: needsBackup}">
-        <span translate>Backup</span>
+        <span translate *ngIf="derivationStrategy != 'BIP45'">Backup</span>
+        <span translate *ngIf="derivationStrategy == 'BIP45'">Backup File</span>
         <ion-note *ngIf="needsBackup" class="wallet-warning" item-end>
           {{'Needs backup' | translate}}
         </ion-note>
@@ -50,8 +51,8 @@
       <button ion-item (click)="openWalletAddresses()">
         <span translate>Addresses</span>
       </button>
-      <button ion-item (click)="openExportWallet()">
-        <span translate>Export</span>
+      <button ion-item *ngIf="derivationStrategy != 'BIP45'" (click)="openExportWallet()">
+        <span translate>Export Wallet Metadata</span>
       </button>
       <button ion-item (click)="openWalletServiceUrl()">
         <span>Wallet Service URL</span>

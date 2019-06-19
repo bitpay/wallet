@@ -44,9 +44,9 @@
       </ion-note>
     </ion-item>
     <ion-item>
-      <span translate>Derivation Strategy</span>
+      <span translate>Derivation Path</span>
       <ion-note item-end>
-        {{derivationStrategy}}
+        {{rootPath}}
       </ion-note>
     </ion-item>
     <ion-item *ngIf="!canSign">
@@ -56,7 +56,7 @@
       </ion-note>
     </ion-item>
     <ion-item>
-      <span translate>Account</span>({{derivationStrategy}})
+      <span translate>Account</span>
       <ion-note item-end>
         #{{account}}
       </ion-note>
@@ -76,7 +76,7 @@
           {{pk}}
         </div>
       </div>
-      <span *ngIf="$index == 0">({{basePath}})</span>
+      <span *ngIf="i == 0">({{rootPath}})</span>
     </ion-item>
     <div *ngIf="!needsBackup && canSign">
       <ion-item-divider class="item-without-title"></ion-item-divider>
