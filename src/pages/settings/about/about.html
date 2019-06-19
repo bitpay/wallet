@@ -7,14 +7,14 @@
 <ion-content>
   <ion-list class="settings-list">
     <ion-item-divider>{{'Release information'| translate}}</ion-item-divider>
-    <ion-item (tap)="itemTapped()">
+    <ion-item class="pointer" (tap)="itemTapped()">
       <ion-icon class="custom-icon" name="ios-download-outline" item-start></ion-icon>
       {{'Version' | translate}}
       <ion-note item-end>
         v{{version}}
       </ion-note>
     </ion-item>
-    <ion-item class="commit-hash" (click)="openExternalLink()">
+    <ion-item class="pointer" (click)="openExternalLink()">
       <ion-icon class="custom-icon" name="logo-github" item-start></ion-icon>
       Commit hash
       <ion-note item-end>

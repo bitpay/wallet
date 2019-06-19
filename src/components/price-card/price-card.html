@@ -1,7 +1,7 @@
-<ion-card>
-  <ion-card-content>
-    <ion-slides speed="500">
-      <ion-slide *ngFor="let coin of coins; let i = index">
+<ion-slides speed="500">
+  <ion-slide *ngFor="let coin of coins">
+    <ion-card>
+      <ion-card-content>
         <ion-item>
           <ion-avatar item-start>
             <img src="assets/img/currencies/{{coin.unitCode}}.svg">
@@ -17,14 +17,14 @@
               </span>
             </div>
             <div class="average-container">
-              <ion-icon md="md-arrow-dropup" color="success" *ngIf="coin.averagePrice > 0"></ion-icon>
-              <ion-icon md="md-arrow-dropdown" color="danger" *ngIf="coin.averagePrice < 0"></ion-icon>
+              <ion-icon name="md-arrow-dropup" color="success" *ngIf="coin.averagePrice > 0"></ion-icon>
+              <ion-icon name="md-arrow-dropdown" color="danger" *ngIf="coin.averagePrice < 0"></ion-icon>
               <span class="average">{{ coin.averagePrice | number:'1.2-2' }} % <span class="average-time">| 7d</span></span>
             </div>
           </div>
           <price-chart #canvas></price-chart>
         </div>
-      </ion-slide>
-    </ion-slides>
-  </ion-card-content>
-</ion-card>
+      </ion-card-content>
+    </ion-card>
+  </ion-slide>
+</ion-slides>

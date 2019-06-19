@@ -147,6 +147,12 @@
               <span translate>This wallet is waiting for authorized users/devices to join.</span>
             </div>
           </label-tip>
+          <label-tip type="warn" *ngIf="wallet.isComplete() && wallet.needsBackup">
+            <span label-tip-title translate>Wallet Needs Backup</span>
+            <div label-tip-body>
+              <span translate>Before retrieving your wallet address, it's recommended that you first write down your recovery phrase and store it securely so that your wallet can be recovered in the case your device was lost or stolen.</span>
+            </div>
+          </label-tip>
         </div>
       </ion-list>
     </div>
