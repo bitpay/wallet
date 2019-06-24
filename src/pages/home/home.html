@@ -7,7 +7,11 @@
       </button>
     </ion-buttons>
     <ion-title>
-      <img class="home-logo" src="assets/img/app/logo.svg" />
+      <img *ngIf="!selectedWalletGroup" class="home-logo" src="assets/img/app/logo.svg" />
+      <button ion-button class="wallet-group-dropdown" [ngClass]="{'fix-margin': txpsN > 0 }" *ngIf="selectedWalletGroup" (click)="showWalletGroupSelectorView()">
+        <span class="ellipsis">{{selectedWalletGroup}}</span>
+        <ion-icon name="arrow-dropdown" color="light-grey"></ion-icon>
+      </button>
     </ion-title>
     <ion-buttons right class="settings-button">
       <button ion-button clear icon-only color="grey" *ngIf="txpsN > 0" (click)="openProposalsPage()">
@@ -18,6 +22,7 @@
       </button>
     </ion-buttons>
   </ion-navbar>
+  <wallet-group-selector #walletGroupSelector></wallet-group-selector>
 </ion-header>
 
 <ion-content class="fullscreen-tab" #scrollArea>
@@ -107,12 +112,6 @@
       </ion-card-content>
     </ion-card>
 
-    <button ion-item *ngFor="let walletsGroup of walletsGroups | keys" (click)="changeWalletsGroup(walletsGroup.key)">
-      {{walletsGroup.value.name}}
-    </button>
-    <button ion-item>
-      ADD NEW WALLET
-    </button>
     <div class="wallets-container" *ngIf="wallets && wallets.length">
       <div class="section-header">
         <span translate>

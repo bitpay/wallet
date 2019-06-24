@@ -40,6 +40,33 @@ page-home {
       }
     }
 
+    .wallet-group-dropdown {
+      border-radius: 20px;
+      background-color: color($colors, light);
+      color: color($colors, dark);
+      box-shadow: none;
+      font-size: 17px;
+      max-width: 90%;
+      &:hover,
+      &:focus,
+      &:active {
+        &.button-md,
+        &.button-ios {
+          background-color: #ededed;
+          color: black;
+          box-shadow: none;
+        }
+      }
+      ion-icon {
+        padding-left: 10px;
+      }
+    }
+
+    .fix-margin {
+      max-width: 70%;
+      margin-right: 4rem;
+    }
+
     .home-logo {
       height: 24px;
       position: relative;
@@ -354,7 +381,7 @@ page-home {
 
   .scan-button {
     position: absolute;
-    z-index: 999;
+    z-index: 9;
     bottom: 20px;
     left: 50%;
     transform: translateX(-50%);

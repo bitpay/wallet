@@ -1,0 +1,93 @@
+wallet-group-selector {
+  .wallet-group-selector-container {
+    display: flex;
+    justify-content: center;
+    position: fixed;
+    pointer-events: none;
+    height: 100%;
+    width: 100%;
+    z-index: 99999;
+    top: 0;
+    left: 0;
+    $transition-duration: 250ms;
+    &.open {
+      pointer-events: all;
+    }
+    &.close {
+      pointer-events: none;
+    }
+    .backdrop {
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      left: 0;
+      top: 0;
+      background-color: rgb(0, 0, 0);
+      opacity: 0;
+      transition: opacity $transition-duration ease;
+    }
+    .backdrop-fade-in {
+      opacity: 0.4;
+    }
+    .wallet-group-selector {
+      background: color($colors, secondary);
+      overflow: auto;
+      border-radius: 0 0 10px 10px;
+      padding: 2rem;
+      position: absolute;
+      left: 0;
+      max-height: 90vh;
+      width: calc(100% + 1px);
+      overflow-y: auto;
+      box-shadow: 0px 2px 13px 3px rgba(0, 0, 0, 0.3);
+      transform: translateY(calc(-100% - 8px));
+      .title {
+        color: white;
+        font-size: 25px;
+        line-height: 1.2;
+        font-weight: 500;
+        margin: 30px 0px 15px 10px;
+      }
+      ion-list .wallet-group-item {
+        cursor: pointer;
+        background: none;
+        .item-inner {
+          border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+          .input-wrapper ion-label {
+            margin: 20px 8px 20px 0;
+          }
+        }
+        &:last-child {
+          .item-inner {
+            border-bottom: none;
+          }
+        }
+        .item-img {
+          width: 35px;
+        }
+        .wallet-group-name {
+          color: white;
+          &.create {
+            opacity: 0.4;
+          }
+        }
+        .plus-icon {
+          color: white;
+          font-size: 3rem;
+          display: flex;
+          justify-content: center;
+        }
+      }
+    }
+    .opened {
+      transition: transform $transition-duration cubic-bezier(0, 0, 0.2, 1);
+      /* visible */
+      transform: translateY(0%);
+    }
+    .closed {
+      /* completely offscreen */
+      transition: transform $transition-duration cubic-bezier(0.4, 0, 1, 1);
+      transform: translateY(calc(-100% - 8px));
+    }
+  }
+}

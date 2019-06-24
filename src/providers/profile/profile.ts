@@ -1096,6 +1096,10 @@ export class ProfileProvider {
     return this.wallet[walletId];
   }
 
+  public getWalletGroup(keyId: string) {
+    return this.walletsGroups[keyId].name;
+  }
+
   public deleteWalletClient(wallet): Promise<any> {
     this.logger.info('Deleting Wallet:', wallet.credentials.walletName);
     const walletId = wallet.credentials.walletId;
@@ -1273,9 +1277,5 @@ export class ProfileProvider {
 
   public storeWalletGroup(walletGroup) {
     return this.persistenceProvider.storeWalletGroup(walletGroup);
-  }
-
-  public getWalletGroup() {
-    return this.persistenceProvider.getWalletGroup();
   }
 }

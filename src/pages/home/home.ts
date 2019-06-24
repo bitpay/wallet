@@ -55,6 +55,8 @@ export class HomePage {
   showCard;
   @ViewChild('priceCard')
   priceCard;
+  @ViewChild('walletGroupSelector')
+  walletGroupSelector;
   public walletsGroups;
   public wallets;
   public txpsN: number;
@@ -68,6 +70,7 @@ export class HomePage {
   public remainingTimeStr: string;
   public slideDown: boolean;
   public showServerMessage: boolean;
+  public selectedWalletGroup: string;
 
   public showRateCard: boolean;
   public showReorder: boolean;
@@ -342,6 +345,10 @@ export class HomePage {
     }
   );
 
+  public showWalletGroupSelectorView() {
+    this.walletGroupSelector.present(this.walletsGroups);
+  }
+
   private setWallets = (shouldUpdate: boolean = false) => {
     // TEST
     /* 
@@ -354,8 +361,15 @@ export class HomePage {
     this.profileProvider.setLastKnownBalance();
     console.log('this.keyProvider.activeWGKey', this.keyProvider.activeWGKey);
     let opts: any = {};
-    if (this.keyProvider.activeWGKey === 'read-only') opts.readOnly = true;
-    else opts.keyId = this.keyProvider.activeWGKey;
+    if (this.keyProvider.activeWGKey === 'read-only') {
+      opts.readOnly = true;
+      this.selectedWalletGroup = this.translate.instant('Read Only Wallets');
+    } else {
+      opts.keyId = this.keyProvider.activeWGKey;
+      this.selectedWalletGroup = this.profileProvider.getWalletGroup(
+        this.keyProvider.activeWGKey
+      );
+    }
 
     this.wallets = this.profileProvider.getWallets(opts);
     this.walletsGroups = this.profileProvider.walletsGroups;
@@ -365,11 +379,6 @@ export class HomePage {
       this.fetchAllWalletsStatus();
     }
   };
-
-  public changeWalletsGroup(keyId: string) {
-    this.keyProvider.setActiveWGKey(keyId);
-    this.setWallets(true);
-  }
 
   private checkFeedbackInfo() {
     this.persistenceProvider.getFeedbackInfo().then(info => {
