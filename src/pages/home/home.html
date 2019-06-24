@@ -107,6 +107,12 @@
       </ion-card-content>
     </ion-card>
 
+    <button ion-item *ngFor="let walletsGroup of walletsGroups | keys" (click)="changeWalletsGroup(walletsGroup.key)">
+      {{walletsGroup.value.name}}
+    </button>
+    <button ion-item>
+      ADD NEW WALLET
+    </button>
     <div class="wallets-container" *ngIf="wallets && wallets.length">
       <div class="section-header">
         <span translate>

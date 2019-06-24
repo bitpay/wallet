@@ -23,8 +23,17 @@ import { TxFormatProvider } from '../tx-format/tx-format';
 // models
 import { Profile } from '../../models/profile/profile.model';
 
+interface WalletGroups {
+  WalletGroup?: WalletGroup;
+}
+interface WalletGroup {
+  name: string;
+  needsBackup: boolean;
+  order: number;
+}
 @Injectable()
 export class ProfileProvider {
+  public walletsGroups: WalletGroups = {}; // TODO walletGroups Class
   public wallet: any = {};
   public profile: Profile;
 
@@ -91,10 +100,23 @@ export class ProfileProvider {
     return order;
   }
 
-  public setBackupFlag(walletId: string): void {
-    this.persistenceProvider.setBackupFlag(walletId);
+  public async getWalletGroupOrder(keyId: string) {
+    const order =
+      (await this.persistenceProvider.getWalletGroupOrder(keyId)) || 0;
+    return order;
+  }
+
+  public setBackupGroupFlag(walletId: string): void {
+    this.persistenceProvider.setBackupGroupFlag(walletId);
     this.logger.debug('Backup flag stored');
     this.wallet[walletId].needsBackup = false;
+  }
+
+  public setBackupFlag(keyId: string): void {
+    // TODO migrate backup flag
+    this.persistenceProvider.setBackupFlag(keyId);
+    this.logger.debug('Backup flag stored');
+    this.walletsGroups[keyId].needsBackup = false;
   }
 
   private requiresBackup(wallet) {
@@ -156,21 +178,19 @@ export class ProfileProvider {
     wallet.n = wallet.credentials.n;
     wallet.coin = wallet.credentials.coin;
     wallet.cachedStatus = {};
-
-    this.updateWalletFromConfig(wallet);
-    this.wallet[walletId] = wallet;
-
     const backupInfo = await this.getBackupInfo(wallet);
     wallet.backupTimestamp = backupInfo.timestamp ? backupInfo.timestamp : '';
     wallet.needsBackup = backupInfo.needsBackup;
     wallet.balanceHidden = await this.isBalanceHidden(wallet);
     wallet.order = await this.getWalletOrder(wallet.id);
-
     wallet.canSign = keyId ? true : false;
-
     wallet.isPrivKeyEncrypted = keyId
       ? this.keyProvider.isPrivKeyEncrypted(keyId)
       : false;
+    this.updateWalletFromConfig(wallet);
+
+    this.wallet[walletId] = wallet;
+    console.log(this.wallet[walletId]);
 
     wallet.removeAllListeners();
 
@@ -220,6 +240,23 @@ export class ProfileProvider {
       }
     });
 
+    console.log('###################');
+    // INIT WALLET GROUP VIEWMODEL
+    if (keyId) {
+      this.walletsGroups[keyId] = {};
+      this.walletsGroups[keyId].needsBackup = backupInfo.needsBackup; // TODO
+      this.walletsGroups[keyId].order = await this.getWalletGroupOrder(keyId);
+      this.walletsGroups[keyId].name = wallet.name; // TODO
+    } else {
+      this.walletsGroups['read-only'] = {};
+      this.walletsGroups['read-only'].needsBackup = false;
+      this.walletsGroups['read-only'].order = await this.getWalletGroupOrder(
+        'read-only'
+      );
+      this.walletsGroups['read-only'].name = 'Read Only Wallets'; // TODO
+    }
+
+    console.log('this.walletsGroups', this.walletsGroups);
     const backedUp = wallet.needsBackup ? false : true;
     let date;
     if (wallet.backupTimestamp) date = new Date(Number(wallet.backupTimestamp));
@@ -228,7 +265,6 @@ export class ProfileProvider {
         date ? date : ''
       } - Encrypted: ${wallet.isPrivKeyEncrypted}`
     );
-
     return Promise.resolve(true);
   }
 
@@ -764,7 +800,7 @@ export class ProfileProvider {
       return this.keyProvider.addKeys(newKeys).then(() => {
         profile.credentials = newCrededentials;
         profile.dirty = true;
-
+        this.keyProvider.loadActiveWGKey();
         return this.storeProfileIfDirty();
       });
     } else {
@@ -790,23 +826,6 @@ export class ProfileProvider {
       this.persistenceProvider.getCopayDisclaimerFlag().then(val => {
         if (val) {
           this.profile.disclaimerAccepted = true;
-          return resolve();
-        } else {
-          return reject();
-        }
-      });
-    });
-  }
-
-  public isOnboardingCompleted(): Promise<any> {
-    return new Promise((resolve, reject) => {
-      const onboardingCompleted =
-        this.profile && this.profile.onboardingCompleted;
-      if (onboardingCompleted) return resolve();
-
-      this.persistenceProvider.getCopayOnboardingFlag().then(val => {
-        if (val) {
-          this.profile.onboardingCompleted = true;
           return resolve();
         } else {
           return reject();
@@ -1082,10 +1101,11 @@ export class ProfileProvider {
     const walletId = wallet.credentials.walletId;
 
     wallet.removeAllListeners();
-    this.profile.deleteWallet(walletId);
+    this.profile.deleteWallet(walletId); // TODO ref delete to hide
 
-    delete this.wallet[walletId];
-    this.persistenceProvider.removeAllWalletData(walletId);
+    /* delete this.wallet[walletId]; */ this.persistenceProvider.removeAllWalletData(
+      walletId
+    );
     this.events.publish('Local/WalletListChange');
 
     return this.storeProfileIfDirty();
@@ -1125,20 +1145,6 @@ export class ProfileProvider {
     return this.storeProfileIfDirty();
   }
 
-  public setOnboardingCompleted(): Promise<any> {
-    return new Promise((resolve, reject) => {
-      this.profile.onboardingCompleted = true;
-      this.persistenceProvider
-        .storeProfile(this.profile)
-        .then(() => {
-          return resolve();
-        })
-        .catch(err => {
-          return reject(err);
-        });
-    });
-  }
-
   public setLastKnownBalance() {
     // Add cached balance async
     _.each(_.values(this.wallet), x => {
@@ -1159,6 +1165,23 @@ export class ProfileProvider {
     opts = opts || {};
 
     let ret = _.values(this.wallet);
+
+    console.log('opts.keyId', opts.keyId);
+    if (opts.keyId) {
+      ret = _.filter(ret, x => {
+        console.log(x.credentials);
+        return x.credentials.keyId == opts.keyId;
+      });
+    }
+
+    console.log('opts.readOnly', opts.readOnly);
+
+    if (opts.readOnly) {
+      ret = _.filter(ret, x => {
+        console.log(x.credentials);
+        return !x.credentials.keyId;
+      });
+    }
 
     if (opts.coin) {
       ret = _.filter(ret, x => {
@@ -1246,5 +1269,13 @@ export class ProfileProvider {
     );
 
     return keyIdIndex >= 0;
+  }
+
+  public storeWalletGroup(walletGroup) {
+    return this.persistenceProvider.storeWalletGroup(walletGroup);
+  }
+
+  public getWalletGroup() {
+    return this.persistenceProvider.getWalletGroup();
   }
 }

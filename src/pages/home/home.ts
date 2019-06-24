@@ -31,6 +31,7 @@ import { FeedbackProvider } from '../../providers/feedback/feedback';
 import { HomeIntegrationsProvider } from '../../providers/home-integrations/home-integrations';
 import { IncomingDataProvider } from '../../providers/incoming-data/incoming-data';
 import { InvoiceProvider } from '../../providers/invoice/invoice';
+import { KeyProvider } from '../../providers/key/key';
 import { Logger } from '../../providers/logger/logger';
 import { PersistenceProvider } from '../../providers/persistence/persistence';
 import { PlatformProvider } from '../../providers/platform/platform';
@@ -54,6 +55,7 @@ export class HomePage {
   showCard;
   @ViewChild('priceCard')
   priceCard;
+  public walletsGroups;
   public wallets;
   public txpsN: number;
   public serverMessages: any[];
@@ -103,7 +105,8 @@ export class HomePage {
     private incomingDataProvider: IncomingDataProvider,
     private statusBar: StatusBar,
     private invoiceProvider: InvoiceProvider,
-    private modalCtrl: ModalController
+    private modalCtrl: ModalController,
+    private keyProvider: KeyProvider
   ) {
     this.slideDown = false;
     this.isElectron = this.platformProvider.isElectron;
@@ -349,13 +352,24 @@ export class HomePage {
     */
 
     this.profileProvider.setLastKnownBalance();
-    this.wallets = this.profileProvider.getWallets();
+    console.log('this.keyProvider.activeWGKey', this.keyProvider.activeWGKey);
+    let opts: any = {};
+    if (this.keyProvider.activeWGKey === 'read-only') opts.readOnly = true;
+    else opts.keyId = this.keyProvider.activeWGKey;
 
+    this.wallets = this.profileProvider.getWallets(opts);
+    this.walletsGroups = this.profileProvider.walletsGroups;
+    console.log(this.wallets);
     // Avoid heavy tasks that can slow down the unlocking experience
     if (!this.appProvider.isLockModalOpen && shouldUpdate) {
       this.fetchAllWalletsStatus();
     }
   };
+
+  public changeWalletsGroup(keyId: string) {
+    this.keyProvider.setActiveWGKey(keyId);
+    this.setWallets(true);
+  }
 
   private checkFeedbackInfo() {
     this.persistenceProvider.getFeedbackInfo().then(info => {
