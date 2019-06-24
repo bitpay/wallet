@@ -13,6 +13,7 @@ import { BwcProvider } from '../../../providers/bwc/bwc';
 import { ClipboardProvider } from '../../../providers/clipboard/clipboard';
 import { ConfigProvider } from '../../../providers/config/config';
 import { DerivationPathHelperProvider } from '../../../providers/derivation-path-helper/derivation-path-helper';
+import { KeyProvider } from '../../../providers/key/key';
 import { Logger } from '../../../providers/logger/logger';
 import { OnGoingProcessProvider } from '../../../providers/on-going-process/on-going-process';
 import { PopupProvider } from '../../../providers/popup/popup';
@@ -35,6 +36,7 @@ export class JoinWalletPage {
   public okText: string;
   public cancelText: string;
   public joinForm: FormGroup;
+  public addingNewAccount: boolean;
 
   private derivationPathByDefault: string;
   private derivationPathForTestnet: string;
@@ -58,12 +60,14 @@ export class JoinWalletPage {
     private events: Events,
     private pushNotificationsProvider: PushNotificationsProvider,
     private actionSheetProvider: ActionSheetProvider,
-    private clipboardProvider: ClipboardProvider
+    private clipboardProvider: ClipboardProvider,
+    private keyProvider: KeyProvider
   ) {
     this.okText = this.translate.instant('Ok');
     this.cancelText = this.translate.instant('Cancel');
     this.defaults = this.configProvider.getDefaults();
     this.showAdvOpts = false;
+    this.addingNewAccount = this.navParams.get('addingNewAccount');
 
     this.regex = /^[0-9A-HJ-NP-Za-km-z]{70,80}$/; // For invitationCode
     this.joinForm = this.form.group({
@@ -179,6 +183,7 @@ export class JoinWalletPage {
 
   public setOptsAndJoin(): void {
     const opts: Partial<WalletOptions> = {
+      keyId: this.keyProvider.activeWGKey,
       secret: this.joinForm.value.invitationCode,
       myName: this.joinForm.value.myName,
       bwsurl: this.joinForm.value.bwsURL,

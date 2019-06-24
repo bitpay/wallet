@@ -373,7 +373,8 @@ export class HomePage {
 
     this.wallets = this.profileProvider.getWallets(opts);
     this.walletsGroups = this.profileProvider.walletsGroups;
-    console.log(this.wallets);
+    console.log('this.wallets', this.wallets);
+
     // Avoid heavy tasks that can slow down the unlocking experience
     if (!this.appProvider.isLockModalOpen && shouldUpdate) {
       this.fetchAllWalletsStatus();
@@ -791,7 +792,7 @@ export class HomePage {
   }
 
   public goToAddView(): void {
-    this.navCtrl.push(AddPage);
+    this.navCtrl.push(AddPage, { addingNewAccount: true });
   }
 
   public goToWalletDetails(wallet, params): void {

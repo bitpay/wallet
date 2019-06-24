@@ -34,6 +34,7 @@ export enum Coin {
 }
 
 export interface WalletOptions {
+  keyId: any;
   name: any;
   m: any;
   n: any;

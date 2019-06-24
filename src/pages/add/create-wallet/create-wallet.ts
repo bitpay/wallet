@@ -9,6 +9,7 @@ import { BwcErrorProvider } from '../../../providers/bwc-error/bwc-error';
 import { ConfigProvider } from '../../../providers/config/config';
 import { DerivationPathHelperProvider } from '../../../providers/derivation-path-helper/derivation-path-helper';
 import { ExternalLinkProvider } from '../../../providers/external-link/external-link';
+import { KeyProvider } from '../../../providers/key/key';
 import { OnGoingProcessProvider } from '../../../providers/on-going-process/on-going-process';
 import { PopupProvider } from '../../../providers/popup/popup';
 import { ProfileProvider } from '../../../providers/profile/profile';
@@ -56,6 +57,7 @@ export class CreateWalletPage implements OnInit {
   public cancelText: string;
   public createForm: FormGroup;
   public createLabel: string;
+  public addingNewAccount: boolean;
 
   constructor(
     private navCtrl: NavController,
@@ -72,12 +74,14 @@ export class CreateWalletPage implements OnInit {
     private events: Events,
     private pushNotificationsProvider: PushNotificationsProvider,
     private externalLinkProvider: ExternalLinkProvider,
-    private bwcErrorProvider: BwcErrorProvider
+    private bwcErrorProvider: BwcErrorProvider,
+    private keyProvider: KeyProvider
   ) {
     this.okText = this.translate.instant('Ok');
     this.cancelText = this.translate.instant('Cancel');
     this.isShared = this.navParams.get('isShared');
     this.coin = this.navParams.get('coin');
+    this.addingNewAccount = this.navParams.get('addingNewAccount');
     this.defaults = this.configProvider.getDefaults();
     this.tc = this.isShared ? this.defaults.wallet.totalCopayers : 1;
     this.copayers = _.range(2, this.defaults.limits.totalCopayers + 1);
@@ -109,6 +113,7 @@ export class CreateWalletPage implements OnInit {
 
     this.setTotalCopayers(this.tc);
     this.updateRCSelect(this.tc);
+    this.updateSeedSourceSelect();
   }
 
   ngOnInit() {
@@ -119,12 +124,9 @@ export class CreateWalletPage implements OnInit {
 
   public setTotalCopayers(n: number): void {
     this.createForm.controls['totalCopayers'].setValue(n);
-    this.updateRCSelect(n);
-    this.updateSeedSourceSelect();
   }
 
   private updateRCSelect(n: number): void {
-    this.createForm.controls['totalCopayers'].setValue(n);
     const maxReq = this.COPAYER_PAIR_LIMITS[n];
     this.signatures = _.range(1, maxReq + 1);
     this.createForm.controls['requiredCopayers'].setValue(
@@ -174,6 +176,7 @@ export class CreateWalletPage implements OnInit {
 
   public setOptsAndCreate(): void {
     const opts: Partial<WalletOptions> = {
+      keyId: this.keyProvider.activeWGKey,
       name: this.createForm.value.walletName,
       m: this.createForm.value.requiredCopayers,
       n: this.createForm.value.totalCopayers,
@@ -267,7 +270,10 @@ export class CreateWalletPage implements OnInit {
         this.onGoingProcessProvider.clear();
         this.walletProvider.updateRemotePreferences(wallet);
         this.pushNotificationsProvider.updateSubscription(wallet);
-        if (this.createForm.value.selectedSeed == 'set') {
+        if (
+          this.createForm.value.selectedSeed == 'set' ||
+          this.addingNewAccount
+        ) {
           this.profileProvider.setBackupFlag(wallet.credentials.walletId);
         }
         this.navCtrl.popToRoot().then(() => {

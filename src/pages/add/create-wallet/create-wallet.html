@@ -47,14 +47,14 @@
         <ion-input type="text" formControlName="bwsURL"></ion-input>
       </ion-item>
 
-      <ion-item>
+      <ion-item *ngIf="!addingNewAccount">
         <ion-label stacked>{{'Wallet key' | translate}}</ion-label>
         <ion-select okText="{{okText}}" cancelText="{{cancelText}}" formControlName="selectedSeed" (ionChange)="seedOptionsChange(createForm.value.selectedSeed)">
           <ion-option *ngFor="let opt of seedOptions" [value]="opt.id">{{opt.label}}</ion-option>
         </ion-select>
       </ion-item>
 
-      <ion-item *ngIf="createForm.value.selectedSeed == 'set'">
+      <ion-item *ngIf="createForm.value.selectedSeed == 'set' && !addingNewAccount">
         <ion-label stacked>{{'Wallet recovery phrase' | translate}}</ion-label>
         <ion-input type="text" formControlName="recoveryPhrase"></ion-input>
       </ion-item>
@@ -71,7 +71,7 @@
         </div>
       </label-tip>
 
-      <ion-item *ngIf="createForm.value.selectedSeed == 'set'">
+      <ion-item *ngIf="createForm.value.selectedSeed == 'set' && !addingNewAccount">
         <ion-label stacked>{{'Derivation path' | translate}}</ion-label>
         <ion-input type="text" formControlName="derivationPath"></ion-input>
       </ion-item>

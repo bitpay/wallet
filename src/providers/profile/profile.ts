@@ -106,13 +106,13 @@ export class ProfileProvider {
     return order;
   }
 
-  public setBackupGroupFlag(walletId: string): void {
+  public setBackupFlag(walletId: string): void {
     this.persistenceProvider.setBackupGroupFlag(walletId);
     this.logger.debug('Backup flag stored');
     this.wallet[walletId].needsBackup = false;
   }
 
-  public setBackupFlag(keyId: string): void {
+  public setBackupGroupFlag(keyId: string): void {
     // TODO migrate backup flag
     this.persistenceProvider.setBackupFlag(keyId);
     this.logger.debug('Backup flag stored');
@@ -240,7 +240,7 @@ export class ProfileProvider {
       }
     });
 
-    console.log('###################');
+    console.log('################### INIT WALLET GROUP VIEWMODEL');
     // INIT WALLET GROUP VIEWMODEL
     if (keyId) {
       this.walletsGroups[keyId] = {};
@@ -465,6 +465,7 @@ export class ProfileProvider {
 
   private askToEncryptKey(key): Promise<any> {
     if (!key) return Promise.resolve();
+    if (key.isPrivKeyEncrypted()) return Promise.resolve();
 
     const title = this.translate.instant(
       'Would you like to protect this wallet with a password?'
@@ -778,9 +779,7 @@ export class ProfileProvider {
 
     return bindWallets().then(() => {
       return this.isDisclaimerAccepted().catch(() => {
-        return Promise.reject(
-          new Error('NONAGREEDDISCLAIMER: Non agreed disclaimer')
-        );
+        return Promise.reject(new Error('NONAGREEDDISCLAIMER'));
       });
     });
   }
@@ -902,14 +901,12 @@ export class ProfileProvider {
         try {
           opts.mnemonic = this.normalizeMnemonic(opts.mnemonic);
           key = Key.fromMnemonic(opts.mnemonic, {
-            coin: opts.coin,
-            passphrase: opts.passphrase,
-            network,
-            account: opts.account || 0,
-            n: opts.n || 1
+            useLegacyCoinType: opts.useLegacyCoinType,
+            useLegacyPurpose: opts.useLegacyPurpose,
+            passphrase: opts.passphrase
           });
           walletClient.fromString(
-            key.createCredentials(null, {
+            key.createCredentials(opts.password, {
               coin: opts.coin,
               network,
               account: 0,
@@ -927,10 +924,8 @@ export class ProfileProvider {
       } else if (opts.extendedPrivateKey) {
         try {
           key = Key.fromExtendedPrivateKey(opts.extendedPrivateKey, {
-            coin: opts.coin,
-            network,
-            account: opts.account || 0,
-            n: opts.n || 1
+            useLegacyCoinType: opts.useLegacyCoinType,
+            useLegacyPurpose: opts.useLegacyPurpose
           });
           walletClient.fromString(
             key.createCredentials(null, {
@@ -954,11 +949,15 @@ export class ProfileProvider {
       } else {
         const lang = this.languageProvider.getCurrent();
         try {
-          key = Key.create({
-            lang
-          });
+          if (!opts.keyId) {
+            key = Key.create({
+              lang
+            });
+          } else {
+            key = this.keyProvider.getKey(opts.keyId);
+          }
           walletClient.fromString(
-            key.createCredentials(null, {
+            key.createCredentials(opts.password, {
               coin: opts.coin,
               network,
               account: opts.account || 0,
@@ -971,7 +970,7 @@ export class ProfileProvider {
             this.logger.info('Using default language for recovery phrase');
             key = Key.create({});
             walletClient.fromString(
-              key.createCredentials(null, {
+              key.createCredentials(opts.password, {
                 coin: opts.coin,
                 network,
                 account: opts.account || 0,
@@ -1097,6 +1096,7 @@ export class ProfileProvider {
   }
 
   public getWalletGroup(keyId: string) {
+    if (!keyId) return;
     return this.walletsGroups[keyId].name;
   }
 
@@ -1116,29 +1116,32 @@ export class ProfileProvider {
   }
 
   public createWallet(opts): Promise<any> {
-    return this._createWallet(opts).then(data => {
-      // Encrypt wallet
-      this.onGoingProcessProvider.pause();
-      return this.askToEncryptKey(data.key).then(() => {
-        this.onGoingProcessProvider.resume();
-        return this.addAndBindWalletClient(data.walletClient, data.key, {
-          bwsurl: opts.bwsurl
+    return this.keyProvider.handleEncryptedWallet(opts.keyId).then(password => {
+      opts.password = password;
+      return this._createWallet(opts).then(data => {
+        // Encrypt wallet
+        this.onGoingProcessProvider.pause();
+        return this.askToEncryptKey(data.key).then(() => {
+          this.onGoingProcessProvider.resume();
+          return this.addAndBindWalletClient(data.walletClient, data.key, {
+            bwsurl: opts.bwsurl
+          });
         });
       });
     });
   }
 
   public joinWallet(opts): Promise<any> {
-    return this._joinWallet(opts).then(data => {
-      // Encrypt wallet
-      this.onGoingProcessProvider.pause();
-      return this.askToEncryptKey(data.key).then(() => {
-        this.onGoingProcessProvider.resume();
-        return this.addAndBindWalletClient(data.walletClient, data.key, {
-          bwsurl: opts.bwsurl
-        }).then(wallet => {
-          this.events.publish('Local/WalletListChange');
-          return Promise.resolve(wallet);
+    return this.keyProvider.handleEncryptedWallet(opts.keyId).then(password => {
+      opts.password = password;
+      return this._joinWallet(opts).then(data => {
+        // Encrypt wallet
+        this.onGoingProcessProvider.pause();
+        return this.askToEncryptKey(data.key).then(() => {
+          this.onGoingProcessProvider.resume();
+          return this.addAndBindWalletClient(data.walletClient, data.key, {
+            bwsurl: opts.bwsurl
+          });
         });
       });
     });

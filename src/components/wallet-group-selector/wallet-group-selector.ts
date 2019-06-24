@@ -22,11 +22,9 @@ export class WalletGroupSelectorComponent {
 
   constructor(
     private events: Events,
-    // private navCtrl: NavController,
     private platform: Platform,
     private keyProvider: KeyProvider
-  ) // private profileProvider: ProfileProvider
-  {
+  ) {
     this.slideIn = false;
   }
 
