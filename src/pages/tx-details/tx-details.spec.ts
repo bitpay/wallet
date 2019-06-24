@@ -22,8 +22,7 @@ describe('TxDetailsPage', () => {
     describe('#saveMemoInfo', () => {
       it('should set btx note body to the new txMemo', async () => {
         instance.btx = { note: {} };
-        instance.txMemo = 'new memo';
-        await instance.saveMemoInfo();
+        await instance.saveMemoInfo('new memo');
         expect(instance.btx.note.body).toEqual('new memo');
       });
     });

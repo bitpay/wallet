@@ -60,7 +60,7 @@ export class AddressbookAddPage {
       );
     }
     this.appName = this.appProvider.info.nameCase;
-    this.events.subscribe('Local/AddressScan', this.updateAddressHandler);
+    this.events.subscribe('update:address', this.updateAddressHandler);
   }
 
   ionViewDidLoad() {
@@ -68,7 +68,7 @@ export class AddressbookAddPage {
   }
 
   ngOnDestroy() {
-    this.events.unsubscribe('Local/AddressScan', this.updateAddressHandler);
+    this.events.unsubscribe('update:address', this.updateAddressHandler);
   }
 
   private updateAddressHandler: any = data => {

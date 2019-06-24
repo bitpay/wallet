@@ -32,7 +32,6 @@ import { TransferToModalPage } from '../transfer-to-modal/transfer-to-modal';
   templateUrl: 'multi-send.html'
 })
 export class MultiSendPage extends WalletTabsChild {
-  public parsedData: any;
   public search: string = '';
   public multiRecipients: any = [];
   public contactsList = [];
@@ -81,16 +80,11 @@ export class MultiSendPage extends WalletTabsChild {
   }
 
   ionViewWillEnter() {
-    this.events.subscribe('Local/AddressScan', this.updateAddressHandler);
-    this.events.subscribe('addRecipient', newRecipient => {
-      this.addRecipient(newRecipient);
-      this.checkGoToConfirmButton();
-    });
+    this.events.subscribe('update:address', this.updateAddressHandler);
   }
 
   ionViewWillLeave() {
-    this.events.unsubscribe('Local/AddressScan', this.updateAddressHandler);
-    this.events.unsubscribe('addRecipient');
+    this.events.unsubscribe('update:address', this.updateAddressHandler);
   }
 
   private updateAddressHandler: any = data => {
@@ -104,13 +98,14 @@ export class MultiSendPage extends WalletTabsChild {
       {
         wallet: this.wallet
       },
-      {
-        showBackdrop: false,
-        enableBackdropDismiss: true,
-        cssClass: 'wallet-details-modal'
-      }
+      { showBackdrop: false, enableBackdropDismiss: true }
     );
     modal.present();
+    modal.onDidDismiss(data => {
+      if (!data) return;
+      this.addRecipient(data);
+      this.checkGoToConfirmButton();
+    });
   }
 
   public openAmountModal(item, index): void {
@@ -120,15 +115,10 @@ export class MultiSendPage extends WalletTabsChild {
         wallet: this.wallet,
         useAsModal: true
       },
-      {
-        showBackdrop: false,
-        enableBackdropDismiss: true,
-        cssClass: 'wallet-details-modal'
-      }
+      { showBackdrop: false, enableBackdropDismiss: true }
     );
     modal.present();
     modal.onDidDismiss(data => {
-      this.cleanSearch();
       if (!data) return;
 
       let altAmountStr = this.txFormatProvider.formatAlternativeStr(
@@ -144,45 +134,33 @@ export class MultiSendPage extends WalletTabsChild {
         data.amount / 1e8,
         '1.2-6'
       );
+
       this.multiRecipients[index] = item;
       this.checkGoToConfirmButton();
     });
   }
 
-  public addRecipient(recipient): void {
-    let amountToShow = +recipient.amount
-      ? this.decimalPipe.transform(+recipient.amount / 1e8, '1.2-6')
-      : null;
-
-    let altAmountStr = this.txFormatProvider.formatAlternativeStr(
-      this.wallet.coin,
-      ++recipient.amount
-    );
-
-    this.multiRecipients.push({
-      amount: +recipient.amount ? +recipient.amount : null,
-      amountToShow,
-      altAmountStr: altAmountStr ? altAmountStr : null,
-      toAddress: recipient.toAddress,
-      recipientType: recipient.recipientType,
-      recipient
+  private checkGoToConfirmButton(): void {
+    let b = false;
+    this.multiRecipients.forEach(recipient => {
+      if (!recipient.amountToShow) {
+        b = true;
+      }
     });
-
-    this.checkGoToConfirmButton();
-    this.cleanSearch();
+    this.isDisabledContinue = b;
   }
 
-  public newRecipient(): void {
-    if (
-      this.parsedData &&
-      (this.parsedData.type === 'BitcoinUri' ||
-        this.parsedData.type === 'BitcoinCashUri')
-    ) {
-      let parsed;
-      let toAddress;
-      let amount;
-      let recipient;
-      let recipientType;
+  public addRecipient(recipient?): void {
+    let parsed;
+    let toAddress;
+    let amount;
+    let recipientType;
+    let amountToShow;
+    let altAmountStr;
+    if (recipient) {
+      toAddress = recipient.toAddress;
+      recipientType = recipient.recipientType; // Type: wallet, contact, address
+    } else {
       try {
         parsed =
           this.wallet.coin == 'btc'
@@ -202,43 +180,37 @@ export class MultiSendPage extends WalletTabsChild {
         }
 
         amount = parsed.amount ? parsed.amount : null;
+        amountToShow = amount
+          ? this.decimalPipe.transform(amount / 1e8, '1.2-6')
+          : null;
         recipientType = 'address';
         recipient = null;
+
+        altAmountStr = this.txFormatProvider.formatAlternativeStr(
+          this.wallet.coin,
+          +amount
+        );
       } catch (_err) {
         // If pasted address isn't a valid uri
         toAddress = _.clone(this.search);
         recipientType = 'address';
       }
-
-      this.addRecipient({
-        amount,
-        toAddress,
-        recipientType,
-        recipient
-      });
-    } else {
-      const newRecipient = {
-        toAddress: _.clone(this.search),
-        recipientType: 'address'
-      };
-      const index = this.multiRecipients.length;
-      this.openAmountModal(newRecipient, index);
     }
-  }
 
-  private checkGoToConfirmButton(): void {
-    let b = false;
-    this.multiRecipients.forEach(recipient => {
-      if (!recipient.amountToShow) {
-        b = true;
-      }
+    this.multiRecipients.push({
+      amount: amount ? amount : null,
+      amountToShow: amountToShow ? amountToShow : null,
+      altAmountStr: altAmountStr ? altAmountStr : null,
+      toAddress,
+      recipientType,
+      recipient
     });
-    this.isDisabledContinue = b;
+    this.search = '';
+    this.invalidAddress = false;
   }
 
-  public cleanSearch(): void {
+  public cancelRecipient(): void {
     this.search = '';
-    this.parsedData = {};
   }
 
   public removeRecipient(index): void {
@@ -317,12 +289,12 @@ export class MultiSendPage extends WalletTabsChild {
 
   public processInput(): void {
     if (this.search && this.search.trim() != '') {
-      this.parsedData = this.incomingDataProvider.parseData(this.search);
-      if (this.parsedData && this.parsedData.type == 'PayPro') {
+      const parsedData = this.incomingDataProvider.parseData(this.search);
+      if (parsedData && parsedData.type == 'PayPro') {
         this.invalidAddress = true;
       } else if (
-        this.parsedData &&
-        _.indexOf(this.validDataTypeMap, this.parsedData.type) != -1
+        parsedData &&
+        _.indexOf(this.validDataTypeMap, parsedData.type) != -1
       ) {
         const isValid = this.checkCoinAndNetwork(this.search);
         if (isValid) this.invalidAddress = false;

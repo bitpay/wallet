@@ -1,92 +1,104 @@
-<ion-header>
-  <ion-navbar>
-    <ion-title>{{ createLabel }}</ion-title>
-    <ion-buttons end>
-      <button ion-button (click)="setOptsAndCreate()" [disabled]="!createForm.valid">
-        <span translate>Create</span>
-      </button>
-    </ion-buttons>
-  </ion-navbar>
-</ion-header>
-<ion-content no-bounce>
-  <form [formGroup]="createForm">
-    <ion-item>
-      <ion-label floating>{{'Wallet name' | translate}}</ion-label>
-      <ion-input type="text" formControlName="walletName"></ion-input>
+<wide-header-page title="{{'Wallet Configuration' | translate}}">
+  <div page-content>
+    <form [formGroup]="createForm">
+      <ion-item>
+        <ion-label floating>{{'Wallet name' | translate}}</ion-label>
+        <ion-input type="text" formControlName="walletName"></ion-input>
+      </ion-item>
+
+      <div *ngIf="isShared">
+        <ion-item>
+          <ion-label floating>{{'Your name' | translate}}</ion-label>
+          <ion-input type="text" formControlName="myName"></ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-label floating>{{'Total number of copayers' | translate}}</ion-label>
+          <ion-select okText="{{okText}}" cancelText="{{cancelText}}" formControlName="totalCopayers" (ionChange)="setTotalCopayers(createForm.value.totalCopayers)">
+            <ion-option *ngFor="let copayer of copayers" [value]="copayer">{{copayer}}</ion-option>
+          </ion-select>
+        </ion-item>
+
+        <ion-item>
+          <ion-label floating>{{'Required number of signatures' | translate}}</ion-label>
+          <ion-select okText="{{okText}}" cancelText="{{cancelText}}" formControlName="requiredCopayers">
+            <ion-option *ngFor="let signature of signatures" [value]="signature">{{signature}}</ion-option>
+          </ion-select>
+        </ion-item>
+      </div>
+
+      <!--     <ion-item [ngClass]="{'with-label': createForm.value.addToVault}">
+      <ion-label>Add to Vault</ion-label>
+      <ion-toggle formControlName="addToVault" (ionChange)="setDerivationPath()"></ion-toggle>
     </ion-item>
 
-    <div *ngIf="isShared">
-      <ion-item>
-        <ion-label floating>{{'Your name' | translate}}</ion-label>
-        <ion-input type="text" formControlName="myName"></ion-input>
-      </ion-item>
+    <label-tip *ngIf="createForm.value.addToVault" type="info">
+      <span label-tip-title>Vaults</span>
+      <div label-tip-body>
+        Wallets in a vault share their backup phrase. In the future you will be able to recover all of them by using a single phrase. You could only have one vault in the app.
+      </div>
+    </label-tip>
+ -->
 
-      <ion-item>
-        <ion-label floating>{{'Total number of copayers' | translate}}</ion-label>
-        <ion-select okText="{{okText}}" cancelText="{{cancelText}}" formControlName="totalCopayers" (ionChange)="setTotalCopayers(createForm.value.totalCopayers)">
-          <ion-option *ngFor="let copayer of copayers" [value]="copayer">{{copayer}}</ion-option>
-        </ion-select>
-      </ion-item>
+      <button ion-button class="button-standard button-secondary" (click)="showAdvOpts = !showAdvOpts">
+        <span *ngIf="!showAdvOpts">{{'Show advanced options' | translate}}</span>
+        <span *ngIf="showAdvOpts">{{'Hide advanced options' | translate}}</span>
+      </button>
 
-      <ion-item>
-        <ion-label floating>{{'Required number of signatures' | translate}}</ion-label>
-        <ion-select okText="{{okText}}" cancelText="{{cancelText}}" formControlName="requiredCopayers">
-          <ion-option *ngFor="let signature of signatures" [value]="signature">{{signature}}</ion-option>
-        </ion-select>
-      </ion-item>
-    </div>
+      <div *ngIf="showAdvOpts">
+        <ion-item>
+          <ion-label stacked>Wallet Service URL</ion-label>
+          <ion-input type="text" formControlName="bwsURL"></ion-input>
+        </ion-item>
 
-    <button ion-button class="button-standard button-secondary" (click)="showAdvOpts = !showAdvOpts">
-      <span *ngIf="!showAdvOpts">{{'Show advanced options' | translate}}</span>
-      <span *ngIf="showAdvOpts">{{'Hide advanced options' | translate}}</span>
-    </button>
+        <ion-item *ngIf="!createForm.value.addToVault">
+          <ion-label stacked>{{'Wallet key' | translate}}</ion-label>
+          <ion-select okText="{{okText}}" cancelText="{{cancelText}}" formControlName="selectedSeed" (ionChange)="seedOptionsChange(createForm.value.selectedSeed)">
+            <ion-option *ngFor="let opt of seedOptions" [value]="opt.id">{{opt.label}}</ion-option>
+          </ion-select>
+        </ion-item>
 
-    <div *ngIf="showAdvOpts" padding-bottom>
-      <ion-item>
-        <ion-label stacked>Wallet Service URL</ion-label>
-        <ion-input type="text" formControlName="bwsURL"></ion-input>
-      </ion-item>
+        <ion-item *ngIf="createForm.value.selectedSeed == 'set'">
+          <ion-label stacked>{{'Wallet recovery phrase' | translate}}</ion-label>
+          <ion-input type="text" formControlName="recoveryPhrase"></ion-input>
+        </ion-item>
 
-      <ion-item>
-        <ion-label stacked>{{'Wallet key' | translate}}</ion-label>
-        <ion-select okText="{{okText}}" cancelText="{{cancelText}}" formControlName="selectedSeed" (ionChange)="seedOptionsChange(createForm.value.selectedSeed)">
-          <ion-option *ngFor="let opt of seedOptions" [value]="opt.id">{{opt.label}}</ion-option>
-        </ion-select>
-      </ion-item>
+        <ion-item [ngClass]="{'with-label': createForm.value.testnetEnabled}" *ngIf="createForm.value.selectedSeed == 'new'">
+          <ion-label>Testnet</ion-label>
+          <ion-toggle formControlName="testnetEnabled" (ionChange)="setDerivationPath()"></ion-toggle>
+        </ion-item>
 
-      <ion-item *ngIf="createForm.value.selectedSeed == 'set'">
-        <ion-label stacked>{{'Wallet recovery phrase' | translate}}</ion-label>
-        <ion-input type="text" formControlName="recoveryPhrase"></ion-input>
-      </ion-item>
+        <label-tip *ngIf="createForm.value.testnetEnabled && createForm.value.selectedSeed == 'new'" type="warn">
+          <span label-tip-title translate>Testnet Wallet</span>
+          <div label-tip-body translate>
+            The testnet is an alternative Bitcoin block chain, to be used for testing. Testnet coins are separate and distinct from actual bitcoins, and do not have any value. This allows application developers or bitcoin testers to experiment, without having to use real bitcoins.
+          </div>
+        </label-tip>
 
-      <ion-item [ngClass]="{'with-label': createForm.value.testnetEnabled}" *ngIf="createForm.value.selectedSeed == 'new'">
-        <ion-label>Testnet</ion-label>
-        <ion-toggle formControlName="testnetEnabled" (ionChange)="setDerivationPath()"></ion-toggle>
-      </ion-item>
+        <ion-item *ngIf="createForm.value.selectedSeed == 'set'">
+          <ion-label stacked>{{'Derivation path' | translate}}</ion-label>
+          <ion-input type="text" formControlName="derivationPath"></ion-input>
+        </ion-item>
 
-      <label-tip *ngIf="createForm.value.testnetEnabled && createForm.value.selectedSeed == 'new'" type="warn">
-        <span label-tip-title translate>Testnet Wallet</span>
-        <div label-tip-body translate>
-          The testnet is an alternative Bitcoin block chain, to be used for testing. Testnet coins are separate and distinct from actual bitcoins, and do not have any value. This allows application developers or bitcoin testers to experiment, without having to use real bitcoins.
-        </div>
-      </label-tip>
-
-      <ion-item *ngIf="createForm.value.selectedSeed == 'set'">
-        <ion-label stacked>{{'Derivation path' | translate}}</ion-label>
-        <ion-input type="text" formControlName="derivationPath"></ion-input>
-      </ion-item>
-
-      <ion-item [ngClass]="{'with-label': createForm.value.singleAddress}">
-        <ion-label>{{'Single address' | translate}}</ion-label>
-        <ion-toggle formControlName="singleAddress"></ion-toggle>
-      </ion-item>
-      <label-tip *ngIf="createForm.value.singleAddress" type="info" header="no-header">
-        <div label-tip-body>
-          <span translate>The single address feature will force the wallet to only use one address rather than generating new addresses.</span>
-          <br>
-          <a class="label-tip-link" (click)="openSupportSingleAddress()" translate>Learn More</a>
-        </div>
-      </label-tip>
-    </div>
-  </form>
-</ion-content>
+        <ion-item [ngClass]="{'with-label': createForm.value.singleAddress}">
+          <ion-label>{{'Single address' | translate}}</ion-label>
+          <ion-toggle formControlName="singleAddress"></ion-toggle>
+        </ion-item>
+        <label-tip *ngIf="createForm.value.singleAddress" type="info" header="no-header">
+          <div label-tip-body>
+            <span translate>The single address feature will force the wallet to only use one address rather than generating new addresses.</span>
+            <br>
+            <a class="label-tip-link" (click)="openSupportSingleAddress()" translate>Learn More</a>
+          </div>
+        </label-tip>
+      </div>
+    </form>
+  </div>
+  <div footer-content>
+    <ion-toolbar>
+      <button ion-button full class="button-footer" (click)="setOptsAndCreate()" [disabled]="!createForm.valid">
+        {{createLabel}}
+      </button>
+    </ion-toolbar>
+  </div>
+</wide-header-page>

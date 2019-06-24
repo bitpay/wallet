@@ -1,3 +1,6 @@
+// tslint:disable-next-line
+const CWC = require('crypto-wallet-core').default;
+
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
@@ -81,10 +84,7 @@ export class CreateWalletPage implements OnInit {
     this.defaults = this.configProvider.getDefaults();
     this.tc = this.isShared ? this.defaults.wallet.totalCopayers : 1;
     this.copayers = _.range(2, this.defaults.limits.totalCopayers + 1);
-    this.derivationPathByDefault =
-      this.coin == 'bch'
-        ? this.derivationPathHelperProvider.defaultBCH
-        : this.derivationPathHelperProvider.defaultBTC;
+    this.derivationPathByDefault = CWC.deriver.pathFor(this.coin, 'livenet');
     this.derivationPathForTestnet = this.derivationPathHelperProvider.defaultTestnet;
     this.showAdvOpts = false;
 
@@ -102,10 +102,17 @@ export class CreateWalletPage implements OnInit {
       coin: [null, Validators.required]
     });
     this.createForm.controls['coin'].setValue(this.coin);
-    this.createLabel =
-      this.coin === 'btc'
-        ? this.translate.instant('BTC Wallet')
-        : this.translate.instant('BCH Wallet');
+    switch (this.coin) {
+      case 'btc':
+        this.createLabel = this.translate.instant('Create BTC Wallet');
+        break;
+      case 'bch':
+        this.createLabel = this.translate.instant('Create BCH Wallet');
+        break;
+      case 'eth':
+        this.createLabel = this.translate.instant('Create ETH Wallet');
+        break;
+    }
 
     this.setTotalCopayers(this.tc);
     this.updateRCSelect(this.tc);
@@ -232,49 +239,24 @@ export class CreateWalletPage implements OnInit {
       return;
     }
 
-    if (
-      !this.derivationPathHelperProvider.isValidDerivationPathCoin(
-        this.createForm.value.derivationPath,
-        this.coin
-      )
-    ) {
-      const title = this.translate.instant('Error');
-      const subtitle = this.translate.instant(
-        'Invalid derivation path for selected coin'
-      );
-      this.popupProvider.ionicAlert(title, subtitle);
-      return;
-    }
-
-    if (
-      this.coin == 'bch' &&
-      this.derivationPathHelperProvider.parsePath(
-        this.createForm.value.derivationPath
-      ).coinCode == "0'"
-    ) {
-      opts.useLegacyCoinType = true;
-      this.logger.debug('Using 0 for BCH creation');
-    }
-
     this.create(opts);
   }
 
   private create(opts): void {
     this.onGoingProcessProvider.set('creatingWallet');
-    this.profileProvider
-      .createWallet(opts)
+    const promise = this.createForm.value.addToVault
+      ? this.profileProvider.createWalletInVault(opts)
+      : this.profileProvider.createNewSeedWallet(opts);
+    promise
       .then(wallet => {
         this.onGoingProcessProvider.clear();
+        this.events.publish('status:updated');
         this.walletProvider.updateRemotePreferences(wallet);
         this.pushNotificationsProvider.updateSubscription(wallet);
-        if (this.createForm.value.selectedSeed == 'set') {
-          this.profileProvider.setBackupFlag(wallet.credentials.walletId);
-        }
-        this.navCtrl.popToRoot().then(() => {
-          setTimeout(() => {
-            this.events.publish('OpenWallet', wallet);
-          }, 1000);
-        });
+        this.setBackupFlagIfNeeded(wallet.credentials.walletId);
+        this.setFingerprintIfNeeded(wallet.credentials.walletId);
+        this.navCtrl.popToRoot();
+        this.events.publish('OpenWallet', wallet);
       })
       .catch(err => {
         this.onGoingProcessProvider.clear();
@@ -290,6 +272,32 @@ export class CreateWalletPage implements OnInit {
         }
         return;
       });
+  }
+
+  private setBackupFlagIfNeeded(walletId: string) {
+    if (this.createForm.value.selectedSeed == 'set') {
+      this.profileProvider.setBackupFlag(walletId);
+    } else if (this.createForm.value.addToVault) {
+      const vault = this.profileProvider.getVault();
+      if (!vault.needsBackup) this.profileProvider.setBackupFlag(walletId);
+    }
+  }
+
+  private async setFingerprintIfNeeded(walletId: string) {
+    if (!this.createForm.value.addToVault) return;
+    const vaultWallets = this.profileProvider.getVaultWallets();
+    const config = this.configProvider.get();
+    const touchIdEnabled = config.touchIdFor
+      ? config.touchIdFor[vaultWallets[0].credentials.walletId]
+      : null;
+
+    if (!touchIdEnabled) return;
+
+    const opts = {
+      touchIdFor: {}
+    };
+    opts.touchIdFor[walletId] = true;
+    this.configProvider.set(opts);
   }
 
   public openSupportSingleAddress(): void {

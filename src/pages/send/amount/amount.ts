@@ -65,6 +65,8 @@ export class AmountPage extends WalletTabsChild {
   public expression;
   public amount;
 
+  public shiftMax: number;
+  public shiftMin: number;
   public showSendMax: boolean;
   public allowSend: boolean;
   public recipientType: string;
@@ -145,6 +147,8 @@ export class AmountPage extends WalletTabsChild {
 
     // Use only with ShapeShift
     this.toWalletId = this.navParams.data.toWalletId;
+    this.shiftMax = this.navParams.data.shiftMax;
+    this.shiftMin = this.navParams.data.shiftMin;
 
     this.cardName = this.navParams.get('cardName');
   }
@@ -218,6 +222,14 @@ export class AmountPage extends WalletTabsChild {
         name: 'Bitcoin Cash',
         id: 'bch',
         shortName: 'BCH'
+      });
+    }
+
+    if (parentWalletCoin === 'eth' || !parentWalletCoin) {
+      this.availableUnits.push({
+        name: 'Ethereum',
+        id: 'eth',
+        shortName: 'ETH'
       });
     }
 
@@ -322,7 +334,7 @@ export class AmountPage extends WalletTabsChild {
       return this.finish();
     }
     const maxAmount = this.txFormatProvider.satToUnit(
-      this.wallet.cachedStatus.availableBalanceSat
+      this.wallet.status.availableBalanceSat
     );
     this.zone.run(() => {
       this.expression = this.availableUnits[this.unitIndex].isFiat
@@ -605,18 +617,6 @@ export class AmountPage extends WalletTabsChild {
   }
 
   public closeModal(item): void {
-    if (this.viewCtrl.name === 'AmountPage') {
-      if (!item) {
-        this.viewCtrl.dismiss();
-        return;
-      }
-
-      this.events.publish('addRecipient', item);
-      this.navCtrl.remove(this.viewCtrl.index - 1).then(() => {
-        this.viewCtrl.dismiss();
-      });
-    } else {
-      this.viewCtrl.dismiss(item);
-    }
+    this.viewCtrl.dismiss(item);
   }
 }

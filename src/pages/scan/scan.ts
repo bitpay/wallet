@@ -327,16 +327,16 @@ export class ScanPage {
 
   private handleSuccessfulScan(contents: string): void {
     if (this.fromAddressbook) {
-      this.events.publish('Local/AddressScan', { value: contents });
+      this.events.publish('update:address', { value: contents });
       this.navCtrl.pop();
     } else if (this.fromImport) {
-      this.events.publish('Local/BackupScan', { value: contents });
+      this.events.publish('update:words', { value: contents });
       this.navCtrl.pop();
     } else if (this.fromJoin) {
-      this.events.publish('Local/InvitationScan', { value: contents });
+      this.events.publish('update:invitationCode', { value: contents });
       this.navCtrl.pop();
     } else if (this.fromSend) {
-      this.events.publish('Local/AddressScan', { value: contents });
+      this.events.publish('update:address', { value: contents });
       this.close();
     } else {
       const redirParms = { activePage: 'ScanPage' };

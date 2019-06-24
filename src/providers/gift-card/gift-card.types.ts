@@ -19,7 +19,6 @@ export interface CommonCardConfig {
   logoBackgroundColor: string;
   minAmount?: number;
   maxAmount?: number;
-  printRequired?: boolean;
   redeemInstructions?: string;
   redeemUrl?: string;
   terms: string;

@@ -58,7 +58,7 @@ ion-label {
 }
 
 .button-footer {
-  margin: 0;
+  margin: 0px;
   height: 70px;
   width: 100%;
   font-size: 18px;
@@ -71,12 +71,8 @@ ion-label {
 
 .scroll-content {
   .wrapper {
-    background-color: white;
+    background-color: $background-color;
     min-height: 100%;
-
-    &--feather {
-      background-color: $feather-dark;
-    }
   }
 }
 
@@ -88,14 +84,17 @@ ion-spinner * {
   border-width: 0 !important;
 }
 
+// Item font size
+.item-title {
+  //  font-size: 1.4rem;
+}
+
 .item-subtitle {
-  margin-top: 5px;
-  display: block;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   font-weight: 300;
-  font-size: 13px;
+  font-size: 12.5px;
 
   ion-icon {
     vertical-align: text-bottom;
@@ -154,6 +153,7 @@ ion-spinner * {
   display: none;
 }
 
+.icon-wallet,
 .icon-card {
   width: 35px;
   height: 35px;
@@ -164,24 +164,8 @@ ion-spinner * {
 }
 
 .icon-wallet {
-  $icon-dim: 36px;
-  height: $icon-dim;
-  width: $icon-dim;
-  margin-right: 16px;
-  &.disabled {
-    background-color: color($colors, grey);
-  }
-}
-
-.button-item {
-  ion-label {
-    display: flex;
-    align-items: center;
-  }
-}
-
-.testnet {
-  filter: grayscale(100%);
+  background-color: color($colors, primary);
+  padding: 4px;
 }
 
 .icon-card {
@@ -326,6 +310,10 @@ a.royal {
 
 .pointer {
   cursor: pointer;
+}
+
+.wallet-warning {
+  color: color($colors, danger);
 }
 
 .card {
@@ -487,12 +475,6 @@ button.modal-close-button {
   @include center;
   background: linear-gradient(#ececec, white);
 
-  .qr-placeholder {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-
   .qr-card {
     border: 1px solid rgb(207, 207, 207);
     border-radius: 7px;
@@ -501,7 +483,6 @@ button.modal-close-button {
     padding-bottom: 0;
     width: 70%;
     max-width: 293px;
-    max-height: 293px;
     box-shadow: none;
 
     .aclass {
@@ -515,12 +496,6 @@ button.modal-close-button {
       width: 100%;
       opacity: 0.715;
     }
-  }
-
-  .qr-placeholder:after {
-    content: '';
-    display: block;
-    padding-bottom: 100%;
   }
 }
 

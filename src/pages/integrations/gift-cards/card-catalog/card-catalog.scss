@@ -1,8 +1,4 @@
 card-catalog-page {
-  .wide-header__title.toolbar {
-    padding-bottom: 10px;
-  }
-
   .settings-list {
     position: relative;
     z-index: 0;
@@ -10,8 +6,7 @@ card-catalog-page {
 
     ion-item-divider.item {
       border-bottom: 0;
-      padding-bottom: 10px;
-      border-bottom: 0.55px solid #f4f4f4;
+      padding-bottom: 0;
     }
   }
 }

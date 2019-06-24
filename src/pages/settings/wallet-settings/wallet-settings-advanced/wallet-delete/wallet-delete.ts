@@ -1,10 +1,9 @@
 import { Component } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { Events, NavController, NavParams } from 'ionic-angular';
 import { Logger } from '../../../../../providers/logger/logger';
 
 // providers
-import { KeyProvider } from '../../../../../providers/key/key';
 import { OnGoingProcessProvider } from '../../../../../providers/on-going-process/on-going-process';
 import { PopupProvider } from '../../../../../providers/popup/popup';
 import { ProfileProvider } from '../../../../../providers/profile/profile';
@@ -27,8 +26,8 @@ export class WalletDeletePage extends WalletTabsChild {
     private onGoingProcessProvider: OnGoingProcessProvider,
     private pushNotificationsProvider: PushNotificationsProvider,
     private logger: Logger,
+    private events: Events,
     private translate: TranslateService,
-    private keyProvider: KeyProvider,
     public walletTabsProvider: WalletTabsProvider
   ) {
     super(navCtrl, profileProvider, walletTabsProvider);
@@ -57,17 +56,7 @@ export class WalletDeletePage extends WalletTabsChild {
     this.profileProvider
       .deleteWalletClient(this.wallet)
       .then(() => {
-        const keyId: string = this.wallet.credentials.keyId;
-        if (keyId) {
-          const keyInUse = this.profileProvider.isKeyInUse(keyId);
-
-          if (!keyInUse) {
-            this.keyProvider.removeKey(keyId);
-          } else {
-            this.logger.warn('Key was not removed. Still in use');
-          }
-        }
-
+        this.events.publish('status:updated');
         this.onGoingProcessProvider.clear();
         this.pushNotificationsProvider.unsubscribe(this.wallet);
         this.close();

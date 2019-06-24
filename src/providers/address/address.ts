@@ -1,3 +1,6 @@
+// tslint:disable-next-line:no-var-requires
+const CWC = require('crypto-wallet-core').default;
+
 import { Injectable } from '@angular/core';
 
 // Providers
@@ -34,7 +37,15 @@ export class AddressProvider {
         new this.Bitcore['bch'].lib.Address(address);
         return 'bch';
       } catch (e) {
-        return null;
+        try {
+          if (CWC.validation.validateAddress('eth', 'livenet', address)) {
+          return 'eth';
+          } else {
+            return null
+          }
+        } catch (e) {
+          return null;
+        }
       }
     }
   }
@@ -55,13 +66,12 @@ export class AddressProvider {
 
   public checkCoinAndNetworkFromAddr(
     coin: string,
-    network: string,
+    _network: string,
     str: string
   ): boolean {
     if (this.isValid(str)) {
       const address = this.extractAddress(str);
-      return this.getCoin(address) == coin &&
-        this.getNetwork(address) == network
+      return this.getCoin(address) == coin
         ? true
         : false;
     } else {
@@ -85,37 +95,13 @@ export class AddressProvider {
       .replace(/\?.*/, '');
     return extractedAddress;
   }
-
+  // Need to pass in coin and network later. fix tests
   public isValid(str: string): boolean {
-    // Check if the input is a valid uri or address
-    const URI = this.bitcore.URI;
-    const Address = this.bitcore.Address;
-    const URICash = this.bitcoreCash.URI;
-    const AddressCash = this.bitcoreCash.Address;
-
-    // Bip21 uri
-    let uri, uriAddress;
-    if (/^bitcoin:/.test(str)) {
-      if (URI.isValid(str)) {
-        uri = new URI(str);
-        uriAddress = uri.address.toString();
-        if (Address.isValid(uriAddress, 'livenet')) return true;
-        if (Address.isValid(uriAddress, 'testnet')) return true;
-      }
-    } else if (/^bitcoincash:/i.test(str) || /^bchtest:/i.test(str)) {
-      if (URICash.isValid(str)) {
-        uri = new URICash(str);
-        uriAddress = uri.address.toString();
-        if (AddressCash.isValid(uriAddress, 'livenet')) return true;
-        if (AddressCash.isValid(uriAddress, 'testnet')) return true;
-      }
-    }
-
-    // Regular Address: try Bitcoin and Bitcoin Cash
-    if (Address.isValid(str, 'livenet')) return true;
-    if (Address.isValid(str, 'testnet')) return true;
-    if (AddressCash.isValid(str, 'livenet')) return true;
-    if (AddressCash.isValid(str, 'testnet')) return true;
+    if (CWC.validation.validateAddress('btc', 'livenet', str)) return true;
+    if (CWC.validation.validateAddress('btc', 'testnet', str)) return true;
+    if (CWC.validation.validateAddress('bch', 'livenet', str)) return true;
+    if (CWC.validation.validateAddress('bch', 'testnet', str)) return true;
+    if (CWC.validation.validateAddress('eth', 'livenet', str)) return true;
 
     return false;
   }

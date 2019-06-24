@@ -1,10 +1,11 @@
 import { Component, ViewChild } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { ModalController, NavController, NavParams } from 'ionic-angular';
+import { App, ModalController, NavController, NavParams } from 'ionic-angular';
 import * as _ from 'lodash';
 
 // pages
 import { FinishModalPage } from '../finish/finish';
+import { TabsPage } from '../tabs/tabs';
 
 // providers
 import { ActionSheetProvider } from '../../providers/action-sheet/action-sheet';
@@ -26,8 +27,7 @@ export class PaperWalletPage {
   @ViewChild('slideButton')
   slideButton;
 
-  public selectedWallet;
-  public wallet = {};
+  public wallet;
   public walletName: string;
   public M: number;
   public N: number;
@@ -40,6 +40,7 @@ export class PaperWalletPage {
   public isPkEncrypted: boolean;
   public passphrase: string;
   public balances = [];
+  public noMatchingWallet: boolean;
   public balanceHidden: boolean;
   public error: boolean;
   public isOpenSelector: boolean;
@@ -49,6 +50,7 @@ export class PaperWalletPage {
   public isCordova: boolean;
 
   constructor(
+    private app: App,
     private actionSheetProvider: ActionSheetProvider,
     private navCtrl: NavController,
     private navParams: NavParams,
@@ -84,15 +86,6 @@ export class PaperWalletPage {
     this.coins = _.uniq(
       _.map(this.wallets, (wallet: Partial<WalletOptions>) => wallet.coin)
     );
-
-    this.wallet = {
-      btc: _.filter(this.wallets, w => {
-        return w.coin == 'btc';
-      })[0],
-      bch: _.filter(this.wallets, w => {
-        return w.coin == 'bch';
-      })[0]
-    };
   }
 
   ionViewWillLeave() {
@@ -104,17 +97,13 @@ export class PaperWalletPage {
   }
 
   ionViewDidEnter() {
-    if (_.isEmpty(this.wallets)) {
-      this.popupProvider
-        .ionicAlert(
-          'Error',
-          this.translate.instant('No wallets available to receive funds')
-        )
-        .then(() => {
-          this.navCtrl.pop();
-        });
+    if (!this.wallets || !this.wallets.length) {
+      this.noMatchingWallet = true;
       return;
     }
+
+    this.wallet = this.wallets[0];
+    if (!this.wallet) return;
     if (!this.isPkEncrypted) this.scanFunds();
     else {
       let message = this.translate.instant(
@@ -137,13 +126,12 @@ export class PaperWalletPage {
     scannedKey: string,
     privateKeyIsEncrypted: boolean,
     passphrase: string,
-    coin: string,
     cb: (err, scannedKey) => any
   ) {
     if (!privateKeyIsEncrypted) {
       return cb(null, scannedKey);
     }
-    this.wallet[coin].decryptBIP38PrivateKey(scannedKey, passphrase, null, cb);
+    this.wallet.decryptBIP38PrivateKey(scannedKey, passphrase, null, cb);
   }
 
   private getBalance(
@@ -151,7 +139,7 @@ export class PaperWalletPage {
     coin: string,
     cb: (err, balance: number) => any
   ): void {
-    this.wallet[coin].getBalanceFromPrivateKey(privateKey, coin, cb);
+    this.wallet.getBalanceFromPrivateKey(privateKey, coin, cb);
   }
 
   private checkPrivateKey(privateKey: string): boolean {
@@ -169,7 +157,6 @@ export class PaperWalletPage {
         this.scannedKey,
         this.isPkEncrypted,
         this.passphrase,
-        coin,
         (err, privateKey: string) => {
           if (err) return reject(err);
           if (!this.checkPrivateKey(privateKey))
@@ -206,7 +193,7 @@ export class PaperWalletPage {
 
         this.wallets = _.filter(_.clone(this.wallets), w => available[w.coin]);
 
-        this.selectedWallet = this.wallets[0];
+        if (this.wallets[0]) this.wallet = this.wallets[0];
 
         if (this.balances.length == 0) {
           this.popupProvider
@@ -233,18 +220,18 @@ export class PaperWalletPage {
   private _sweepWallet(): Promise<any> {
     return new Promise((resolve, reject) => {
       let balanceToSweep = _.filter(this.balances, b => {
-        return b.coin === this.selectedWallet.coin;
+        return b.coin === this.wallet.coin;
       })[0];
 
       this.walletProvider
-        .getAddress(this.selectedWallet, true)
+        .getAddress(this.wallet, true)
         .then((destinationAddress: string) => {
           let opts: {
             coin?: any;
             fee?: any;
           } = {};
           opts.coin = balanceToSweep.coin;
-          this.selectedWallet.buildTxFromPrivateKey(
+          this.wallet.buildTxFromPrivateKey(
             balanceToSweep.privateKey,
             destinationAddress,
             opts,
@@ -252,20 +239,16 @@ export class PaperWalletPage {
               if (err) return reject(err);
               let rawTxLength = testTx.serialize().length;
               this.feeProvider
-                .getFeeRate(
-                  balanceToSweep.coin,
-                  'livenet',
-                  this.feeProvider.getCurrentFeeLevel()
-                )
+                .getCurrentFeeRate(balanceToSweep.coin, 'livenet')
                 .then((feePerKb: number) => {
                   opts.fee = Math.round((feePerKb * rawTxLength) / 2000);
-                  this.selectedWallet.buildTxFromPrivateKey(
+                  this.wallet.buildTxFromPrivateKey(
                     balanceToSweep.privateKey,
                     destinationAddress,
                     opts,
                     (err, tx) => {
                       if (err) return reject(err);
-                      this.selectedWallet.broadcastRawTx(
+                      this.wallet.broadcastRawTx(
                         {
                           rawTx: tx.serialize(),
                           network: 'livenet',
@@ -312,14 +295,12 @@ export class PaperWalletPage {
   }
 
   private onWalletSelect(wallet): void {
-    this.selectedWallet = wallet;
+    this.wallet = wallet;
   }
 
   public showWallets(): void {
     this.isOpenSelector = true;
-    let id = this.selectedWallet
-      ? this.selectedWallet.credentials.walletId
-      : null;
+    let id = this.wallet ? this.wallet.credentials.walletId : null;
     const params = {
       wallets: this.wallets,
       selectedWalletId: id,
@@ -347,7 +328,7 @@ export class PaperWalletPage {
     );
     modal.present();
     modal.onDidDismiss(() => {
-      this.navCtrl.popToRoot();
+      this.app.getRootNavs()[0].setRoot(TabsPage);
     });
   }
 }

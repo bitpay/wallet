@@ -64,7 +64,7 @@ describe('SendPage', () => {
         const spy = spyOn(instance.events, 'unsubscribe');
         instance.ionViewWillLeave();
         expect(spy).toHaveBeenCalledWith(
-          'Local/AddressScan',
+          'update:address',
           instance.updateAddressHandler
         );
       });

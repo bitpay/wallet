@@ -5,17 +5,18 @@
 </ion-header>
 <ion-content>
   <ion-list>
+    <ion-item-divider></ion-item-divider>
     <form [formGroup]="walletServiceForm">
       <ion-item>
         <ion-label stacked>Wallet Service URL</ion-label>
         <ion-input type="text" formControlName="bwsurl" [value]="walletServiceForm.value.bwsurl" required></ion-input>
       </ion-item>
-      <div class="explanation">
+      <ion-item-divider>
         <span>{{comment}}</span>
         <a (click)="resetDefaultUrl()" translate>
           Use default url
         </a>
-      </div>
+      </ion-item-divider>
       <button ion-button class="button-standard" (click)="save()" [disabled]="!walletServiceForm.valid">
         {{'Save' | translate}}
       </button>

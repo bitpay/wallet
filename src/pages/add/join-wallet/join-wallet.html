@@ -1,15 +1,5 @@
-<ion-header>
-  <ion-navbar>
-    <ion-title>{{'Shared Wallet' | translate}}</ion-title>
-    <ion-buttons end>
-      <button ion-button (click)="setOptsAndJoin()" [disabled]="!joinForm.valid">
-        <span translate>Join</span>
-      </button>
-    </ion-buttons>
-  </ion-navbar>
-</ion-header>
-
-<ion-content no-bounce>
+<wide-header-page title="{{'Join Shared Wallet' | translate}}">
+  <div page-content>
     <form [formGroup]="joinForm">
       <ion-item>
         <ion-label floating>{{'Your name' | translate}}</ion-label>
@@ -30,7 +20,7 @@
         <span *ngIf="showAdvOpts">{{'Hide advanced options' | translate}}</span>
       </button>
 
-      <div *ngIf="showAdvOpts" padding-bottom>
+      <div *ngIf="showAdvOpts">
         <ion-item>
           <ion-label floating>Wallet Service URL</ion-label>
           <ion-input type="text" formControlName="bwsURL"></ion-input>
@@ -54,4 +44,12 @@
         </ion-item>
       </div>
     </form>
-</ion-content>
+  </div>
+  <div footer-content>
+    <ion-toolbar>
+      <button ion-button full class="button-footer" (click)="setOptsAndJoin()" [disabled]="!joinForm.valid">
+        {{'Join wallet' | translate}}
+      </button>
+    </ion-toolbar>
+  </div>
+</wide-header-page>

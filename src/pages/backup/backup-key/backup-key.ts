@@ -9,7 +9,6 @@ import { BackupGamePage } from '../backup-game/backup-game';
 // providers
 import { ActionSheetProvider } from '../../../providers/action-sheet/action-sheet';
 import { BwcErrorProvider } from '../../../providers/bwc-error/bwc-error';
-import { KeyProvider } from '../../../providers/key/key';
 import { Logger } from '../../../providers/logger/logger';
 import { ProfileProvider } from '../../../providers/profile/profile';
 import { WalletProvider } from '../../../providers/wallet/wallet';
@@ -36,33 +35,16 @@ export class BackupKeyPage {
     private walletProvider: WalletProvider,
     private bwcErrorProvider: BwcErrorProvider,
     private translate: TranslateService,
-    private actionSheetProvider: ActionSheetProvider,
-    private keyProvider: KeyProvider
+    private actionSheetProvider: ActionSheetProvider
   ) {
     this.walletId = this.navParams.data.walletId;
     this.wallet = this.profileProvider.getWallet(this.walletId);
-    this.credentialsEncrypted = this.wallet.isPrivKeyEncrypted;
+    this.credentialsEncrypted = this.wallet.isPrivKeyEncrypted();
   }
 
   ionViewDidEnter() {
     this.deleted = this.isDeletedSeed();
-
     if (this.deleted) {
-      const title = this.translate.instant(
-        'Wallet recovery phrase not available'
-      );
-      let err = this.translate.instant(
-        'You can still export it from "Export Wallet" option.'
-      );
-      if (this.wallet.coin == 'bch')
-        err =
-          err +
-          ' ' +
-          this.translate.instant(
-            'Note: if this BCH wallet was duplicated from a BTC wallet, they share the same recovery phrase.'
-          );
-      this.showErrorInfoSheet(err, title);
-      this.navCtrl.pop();
       this.logger.warn('no mnemonics');
       return;
     }
@@ -105,7 +87,13 @@ export class BackupKeyPage {
   }
 
   private isDeletedSeed(): boolean {
-    return this.keyProvider.isDeletedSeed(this.wallet.credentials.keyId);
+    if (
+      !this.wallet.credentials.mnemonic &&
+      !this.wallet.credentials.mnemonicEncrypted
+    )
+      return true;
+
+    return false;
   }
 
   public goToBackupGame(): void {

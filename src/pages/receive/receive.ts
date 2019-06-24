@@ -36,10 +36,8 @@ export class ReceivePage extends WalletTabsChild {
   public showShareButton: boolean;
   public loading: boolean;
   public playAnimation: boolean;
-  public newAddressError: boolean;
 
   private onResumeSubscription: Subscription;
-  private retryCount: number = 0;
 
   constructor(
     private actionSheetProvider: ActionSheetProvider,
@@ -64,9 +62,8 @@ export class ReceivePage extends WalletTabsChild {
   ionViewWillEnter() {
     this.onResumeSubscription = this.platform.resume.subscribe(() => {
       this.setAddress();
-      this.events.subscribe('bwsEvent', this.bwsEventHandler);
+      this.events.subscribe('Wallet/setAddress', this.walletSetAddressHandler);
     });
-    this.setAddress();
   }
 
   ionViewWillLeave() {
@@ -74,21 +71,12 @@ export class ReceivePage extends WalletTabsChild {
   }
 
   ionViewDidLoad() {
-    this.events.subscribe('bwsEvent', this.bwsEventHandler);
+    this.setAddress();
+    this.events.subscribe('Wallet/setAddress', this.walletSetAddressHandler);
   }
 
-  private bwsEventHandler: any = (walletId, type, n) => {
-    if (
-      this.wallet.credentials.walletId == walletId &&
-      type == 'NewIncomingTx' &&
-      n.data
-    ) {
-      let addr =
-        this.address.indexOf(':') > -1
-          ? this.address.split(':')[1]
-          : this.address;
-      if (n.data.address == addr) this.setAddress(true);
-    }
+  private walletSetAddressHandler: any = (newAddr?: boolean) => {
+    this.setAddress(newAddr);
   };
 
   public requestSpecificAmount(): void {
@@ -105,60 +93,32 @@ export class ReceivePage extends WalletTabsChild {
   }
 
   public async setAddress(newAddr?: boolean, failed?: boolean): Promise<void> {
-    if (
-      !this.wallet ||
-      !this.wallet.isComplete() ||
-      (this.wallet.needsBackup && this.wallet.network == 'livenet')
-    )
-      return;
-
     this.loading = newAddr || _.isEmpty(this.address) ? true : false;
 
-    this.walletProvider
+    const addr: string = (await this.walletProvider
       .getAddress(this.wallet, newAddr)
-      .then(addr => {
-        this.newAddressError = false;
-        this.loading = false;
-        if (!addr) return;
-        const address = this.walletProvider.getAddressView(
-          this.wallet.coin,
-          this.wallet.network,
-          addr
-        );
-        if (this.address && this.address != address) {
-          this.playAnimation = true;
-        }
-        this.updateQrAddress(address, newAddr);
-      })
       .catch(err => {
-        this.logger.warn('Retrying to create new adress:' + ++this.retryCount);
-        if (this.retryCount > 3) {
-          this.retryCount = 0;
-          this.loading = false;
-          this.showErrorInfoSheet(err);
-        } else if (err == 'INVALID_ADDRESS') {
-          // Generate new address if the first one is invalid ( fix for concatenated addresses )
+        this.loading = false;
+        if (err == 'INVALID_ADDRESS') {
+          // Generate a new address if the first one is invalid
           if (!failed) {
             this.setAddress(newAddr, true);
-            this.logger.warn(this.bwcErrorProvider.msg(err, 'Receive'));
-            return;
           }
-          this.setAddress(false); // failed to generate new address -> get last saved address
-        } else {
-          this.setAddress(false); // failed to generate new address -> get last saved address
+          return;
         }
         this.logger.warn(this.bwcErrorProvider.msg(err, 'Receive'));
-      });
-  }
-
-  public showErrorInfoSheet(error: Error | string): void {
-    this.newAddressError = true;
-    const infoSheetTitle = this.translate.instant('Error');
-    const errorInfoSheet = this.actionSheetProvider.createInfoSheet(
-      'default-error',
-      { msg: this.bwcErrorProvider.msg(error), title: infoSheetTitle }
+      })) as string;
+    this.loading = false;
+    if (!addr) return;
+    const address = this.walletProvider.getAddressView(
+      this.wallet.coin,
+      this.wallet.network,
+      addr
     );
-    errorInfoSheet.present();
+    if (this.address && this.address != address) {
+      this.playAnimation = true;
+    }
+    this.updateQrAddress(address, newAddr);
   }
 
   private async updateQrAddress(address, newAddr?: boolean): Promise<void> {

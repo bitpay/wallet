@@ -111,7 +111,6 @@ page-wallet-details {
 
       &.item {
         min-height: 26px;
-        background: $feather-dark;
 
         ion-label {
           margin: 0;
@@ -122,13 +121,11 @@ page-wallet-details {
           padding: 0 !important;
         }
       }
-
       ion-label {
         display: flex;
         justify-content: space-between;
         align-items: center;
       }
-
       .txps-badge {
         margin-right: 1rem;
       }
@@ -374,35 +371,4 @@ page-wallet-details {
 
 .icon-services {
   overflow: hidden;
-}
-
-page-wallet-details,
-page-wallet-settings,
-page-receive,
-page-send,
-page-multi-send,
-page-bitpay-card-intro,
-page-bitpay-card,
-page-wallet-addresses,
-page-all-addresses,
-page-wallet-color,
-page-wallet-delete,
-page-wallet-export,
-page-wallet-information,
-page-wallet-extended-private-key,
-page-wallet-name,
-page-wallet-transaction-history,
-page-transfer-to-modal,
-page-wallet-balance,
-page-wallet-service-url,
-.wallet-details-header {
-  @include toolbar-button-color(white);
-
-  ion-title .toolbar-title {
-    color: white;
-  }
-
-  button.modal-close-button.bar-button {
-    color: white;
-  }
 }

@@ -26,7 +26,13 @@ export class TxFormatProvider {
   }
 
   public toCashAddress(address: string, withPrefix?: boolean): string {
-    return this.bitcoreCash.Address(address).toString(!withPrefix);
+    let cashAddr: string = this.bitcoreCash.Address(address).toString();
+
+    if (withPrefix) {
+      return cashAddr;
+    }
+
+    return cashAddr.split(':')[1]; // rm prefix
   }
 
   public toLegacyAddress(address: string): string {
@@ -100,7 +106,7 @@ export class TxFormatProvider {
     return val();
   }
 
-  public processTx(coin: string, tx) {
+  public processTx(coin: string, tx, useLegacyAddress: boolean) {
     if (!tx || tx.action == 'invalid') return tx;
 
     // New transaction output format. Fill tx.amount and tx.toAmount for
@@ -127,7 +133,9 @@ export class TxFormatProvider {
 
       // toDo: translate all tx.outputs[x].toAddress ?
       if (tx.toAddress && coin == 'bch') {
-        tx.toAddress = this.toCashAddress(tx.toAddress);
+        tx.toAddress = useLegacyAddress
+          ? this.toLegacyAddress(tx.toAddress)
+          : this.toCashAddress(tx.toAddress);
       }
     }
 
@@ -158,7 +166,9 @@ export class TxFormatProvider {
       tx.feeRate = `${((tx.fee || tx.fees) / tx.size).toFixed(0)} sat/bytes`;
 
     if (tx.addressTo && coin == 'bch') {
-      tx.addressTo = this.toCashAddress(tx.addressTo);
+      tx.addressTo = useLegacyAddress
+        ? this.toLegacyAddress(tx.addressTo)
+        : this.toCashAddress(tx.addressTo);
     }
 
     return tx;

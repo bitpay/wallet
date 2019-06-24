@@ -28,7 +28,8 @@ export class WalletInformationPage {
   public coin: string;
   public network: string;
   public addressType: string;
-  public rootPath: string;
+  public derivationStrategy: string;
+  public basePath: string;
   public pubKeys;
   public externalSource: string;
   public canSign: boolean;
@@ -64,10 +65,12 @@ export class WalletInformationPage {
     this.account = this.wallet.credentials.account;
     this.network = this.wallet.credentials.network;
     this.addressType = this.wallet.credentials.addressType || 'P2SH';
-    this.rootPath = this.wallet.credentials.rootPath;
+    this.derivationStrategy =
+      this.wallet.credentials.derivationStrategy || 'BIP45';
+    this.basePath = this.wallet.credentials.getBaseAddressDerivationPath();
     this.pubKeys = _.map(this.wallet.credentials.publicKeyRing, 'xPubKey');
     this.externalSource = null;
-    this.canSign = this.wallet.canSign;
+    this.canSign = this.wallet.canSign();
     this.needsBackup = this.wallet.needsBackup;
   }
 
@@ -85,9 +88,7 @@ export class WalletInformationPage {
     };
     opts.colorFor[this.wallet.credentials.walletId] = color;
     this.configProvider.set(opts);
-    this.events.publish('Local/ConfigUpdate', {
-      walletId: this.wallet.credentials.walletId
-    });
+    this.events.publish('wallet:updated', this.wallet.credentials.walletId);
     this.navCtrl.popToRoot();
   }
 

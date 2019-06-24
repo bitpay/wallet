@@ -9,7 +9,6 @@ import { Animate } from '../../../directives/animate/animate';
 import { ConfigProvider } from '../../../providers/config/config';
 import { Logger } from '../../../providers/logger/logger';
 import { PersistenceProvider } from '../../../providers/persistence/persistence';
-import { PlatformProvider } from '../../../providers/platform/platform';
 
 @Component({
   selector: 'page-pin',
@@ -44,8 +43,7 @@ export class PinModalPage {
     private persistenceProvider: PersistenceProvider,
     private statusBar: StatusBar,
     private vibration: Vibration,
-    private viewCtrl: ViewController,
-    private platformProvider: PlatformProvider
+    private viewCtrl: ViewController
   ) {
     this.ATTEMPT_LIMIT = 3;
     this.ATTEMPT_LOCK_OUT_TIME = 2 * 60;
@@ -68,28 +66,27 @@ export class PinModalPage {
   }
 
   ionViewWillEnter() {
-    if (this.platformProvider.isIOS) {
+    if (this.platform.is('ios')) {
       this.statusBar.styleDefault();
     }
   }
 
   ionViewWillLeave() {
-    if (this.platformProvider.isIOS) {
+    if (this.platform.is('ios')) {
       this.statusBar.styleLightContent();
     }
   }
 
   ionViewDidLoad() {
     this.onPauseSubscription = this.platform.pause.subscribe(() => {
-      this.lockReleaseTimeout.unref();
-      this.countDown.unref();
+      clearInterval(this.countDown);
+      clearTimeout(this.lockReleaseTimeout);
+      this.expires = this.disableButtons = null;
       this.currentPin = this.firstPinEntered = '';
     });
     this.onResumeSubscription = this.platform.resume.subscribe(() => {
       this.disableButtons = true;
-      setTimeout(() => {
-        this.checkIfLocked();
-      }, 1000);
+      this.checkIfLocked();
     });
   }
 
@@ -158,7 +155,6 @@ export class PinModalPage {
       this.currentAttempts == this.ATTEMPT_LIMIT &&
       this.action !== 'lockSetUp'
     ) {
-      this.countDown = this.lockReleaseTimeout = null;
       this.currentAttempts = 0;
       this.persistenceProvider.setLockStatus('locked');
       this.showLockTimer();
@@ -170,10 +166,6 @@ export class PinModalPage {
 
   private showLockTimer(): void {
     this.disableButtons = true;
-    if (this.countDown) {
-      this.countDown.ref();
-      return;
-    }
     const bannedUntil =
       Math.floor(Date.now() / 1000) + this.ATTEMPT_LOCK_OUT_TIME;
     this.countDown = setInterval(() => {
@@ -186,10 +178,6 @@ export class PinModalPage {
   }
 
   private setLockRelease(): void {
-    if (this.lockReleaseTimeout) {
-      this.lockReleaseTimeout.ref();
-      return;
-    }
     this.lockReleaseTimeout = setTimeout(() => {
       clearInterval(this.countDown);
       this.expires = this.disableButtons = null;

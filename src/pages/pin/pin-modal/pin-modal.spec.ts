@@ -22,7 +22,7 @@ describe('PinModalPage', () => {
   describe('Lifecycle Hooks', () => {
     describe('ionViewWillEnter', () => {
       it('should set default status bar styling on iOS', () => {
-        instance.platformProvider.isIOS = true;
+        instance.platform.is.and.returnValue(true);
         const spy = spyOn(instance.statusBar, 'styleDefault');
         instance.platform.resume = new Subject();
         instance.platform.pause = new Subject();
@@ -34,7 +34,7 @@ describe('PinModalPage', () => {
 
     describe('ionViewWillLeave', () => {
       it('should style the status bar for light content on iOS', () => {
-        instance.platformProvider.isIOS = true;
+        instance.platform.is.and.returnValue(true);
         const spy = spyOn(instance.statusBar, 'styleLightContent');
         instance.platform.resume = new Subject();
         instance.platform.pause = new Subject();
@@ -47,14 +47,14 @@ describe('PinModalPage', () => {
 
   describe('Methods', () => {
     describe('close', () => {
-      it('should unregister the back button, and dismiss the modal', () => {
+      it('should unregister the back button, and pop the page off the navigation stack', () => {
         const unregisterSpy = spyOn(instance, 'unregister');
         instance.close();
         instance.platform.resume = new Subject();
         instance.platform.pause = new Subject();
         instance.ionViewDidLoad();
         expect(unregisterSpy).toHaveBeenCalled();
-        expect(instance.viewCtrl.dismiss).toHaveBeenCalled();
+        expect(instance.navCtrl.pop).toHaveBeenCalled();
       });
       it('should clear the countdown timer if it exists', () => {
         instance.countDown = setInterval(() => {}, 3000);

@@ -7,16 +7,12 @@ card-catalog-page {
   }
 
   .wide-header {
-    .toolbar-background {
-      background: white;
-    }
-
     ion-title .toolbar-title {
       font-weight: 400;
     }
 
     &__title {
-      color: black;
+      color: white;
       font-size: 25px;
       font-weight: 500;
       padding-top: 30px;
@@ -44,22 +40,4 @@ card-catalog-page {
       }
     }
   }
-}
-
-card-catalog-page,
-page-add,
-page-settings,
-purchased-cards-page {
-  @include fix-ios-bg-scroll($top-color: white);
-  @include toolbar-button-color();
-
-  ion-title .toolbar-title {
-    color: black;
-  }
-}
-
-@include toolbar-button-color();
-
-ion-title .toolbar-title {
-  color: black;
 }

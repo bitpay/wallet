@@ -26,11 +26,13 @@
     </ion-item>
 
     <div class="info">
-      <div class="title">
+      <ion-item>
         <span translate>From</span>
-      </div>
+        <img item-end *ngIf="fromWallet.coin == 'btc'" src="assets/img/icon-bitcoin.svg" width="18">
+        <img item-end *ngIf="fromWallet.coin == 'bch'" src="assets/img/bitcoin-cash-logo.svg" width="22">
+      </ion-item>
       <ion-item class="wallet-selector">
-        <img *ngIf="fromWallet && fromWallet.coin" src="assets/img/currencies/{{fromWallet.coin}}.svg" class="icon-wallet">
+        <img src="assets/img/icon-wallet.svg" class="icon-wallet" [ngStyle]="{'background-color': fromWallet.color}" />
         <div class="wallet-balance">
           <span>
             {{fromWallet ? fromWallet.name : '...'}}
@@ -38,11 +40,13 @@
         </div>
       </ion-item>
 
-      <div class="title">
+      <ion-item>
         <span translate>To</span>
-      </div>
+        <img item-end *ngIf="toWallet.coin == 'btc'" src="assets/img/icon-bitcoin.svg" width="18">
+        <img item-end *ngIf="toWallet.coin == 'bch'" src="assets/img/bitcoin-cash-logo.svg" width="22">
+      </ion-item>
       <ion-item class="wallet-selector">
-        <img *ngIf="toWallet && toWallet.coin" src="assets/img/currencies/{{toWallet.coin}}.svg" class="icon-wallet">
+        <img src="assets/img/icon-wallet.svg" class="icon-wallet" [ngStyle]="{'background-color': toWallet.color}" />
         <div class="wallet-balance">
           <span>
             {{toWallet ? toWallet.name : '...'}}
@@ -51,13 +55,7 @@
       </ion-item>
     </div>
 
-    <div padding></div>
-
-    <ion-item *ngIf="fiatTotalAmount">
-      <span translate>Expires</span>:
-      <ion-note *ngIf="!paymentExpired" item-end>{{remainingTimeStr}}</ion-note>
-      <ion-note *ngIf="paymentExpired" [ngStyle]="{'color': 'red'}" item-end>{{'Expired' | translate}}</ion-note>
-    </ion-item>
+    <ion-item-divider></ion-item-divider>
 
     <ion-item *ngIf="feeRatePerStr">
       {{'Fee'|translate}}
@@ -80,7 +78,7 @@
 
     <ion-item-divider class="item-description" *ngIf="withdrawalStr" no-lines>
       <span translate>
-        A total of {{amountStr}} ({{fiatAmount | number:'1.2-2'}} {{currencyIsoCode}}) will be exchanged for {{withdrawalStr}} ({{fiatWithdrawal | number:'1.2-2'}} {{currencyIsoCode}}). ShapeShift fee: {{withdrawalFee}} {{toWallet.coin | uppercase}}
+        A total of {{amountStr}} ({{fiatAmount | number:'1.2-2'}} {{currencyIsoCode}}) will be exchanged for {{withdrawalStr}} ({{fiatWithdrawal | number:'1.2-2'}} {{currencyIsoCode}}).
       </span>
     </ion-item-divider>
   </ion-list>
@@ -88,9 +86,10 @@
 </ion-content>
 
 <ion-footer>
-  <page-slide-to-accept #slideButton *ngIf="isCordova" [disabled]="!fromWallet || !totalAmountStr || !toWallet" buttonText="{{'Slide to confirm' | translate}}" (slideDone)="confirmTx()" [ngClass]="{'slide-confirm-fast slide-confirm-down': hideSlideButton, 'slide-confirm-slow': !hideSlideButton}"></page-slide-to-accept>
+  <page-slide-to-accept #slideButton *ngIf="isCordova" [disabled]="!fromWallet || !totalAmountStr || !toWallet" buttonText="{{'Slide to confirm' | translate}}"
+    (slideDone)="confirmTx()" [ngClass]="{'slide-confirm-fast slide-confirm-down': hideSlideButton, 'slide-confirm-slow': !hideSlideButton}"></page-slide-to-accept>
   <ion-toolbar *ngIf="!isCordova">
-    <button ion-button full class="button-footer" (click)="confirmTx()" [disabled]="!fromWallet || !totalAmountStr || !toWallet || paymentExpired">
+    <button ion-button full class="button-footer" (click)="confirmTx()" [disabled]="!fromWallet || !totalAmountStr || !toWallet">
       {{'Click to confirm' | translate}}
     </button>
   </ion-toolbar>

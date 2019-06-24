@@ -1,7 +1,7 @@
 export class Profile {
   public version: string;
   public createdOn: number;
-  public credentials: any;
+  public credentials;
   public disclaimerAccepted: boolean;
   public onboardingCompleted: boolean;
   public checked;
@@ -9,34 +9,42 @@ export class Profile {
   public dirty: boolean;
 
   constructor() {
-    this.version = '2.0.0';
+    this.version = '1.0.0';
   }
 
-  static create(): Profile {
+  public create(opts?): Profile {
+    opts = opts ? opts : {};
     let x = new Profile();
     x.createdOn = Date.now();
-    x.credentials = [];
+    x.credentials = opts.credentials || [];
     x.disclaimerAccepted = false;
     x.onboardingCompleted = false;
     x.checked = {};
     return x;
   }
 
-  static fromObj(obj): Profile {
-    if (!obj || typeof obj != 'object') {
-      throw new Error('Wrong params at Profile.fromObj: ' + obj);
-    }
+  public fromObj(obj): Profile {
     let x = new Profile();
+
     x.createdOn = obj.createdOn;
-    x.credentials = obj.credentials || [];
-    x.disclaimerAccepted = obj.disclaimerAccepted || false;
-    x.onboardingCompleted = obj.onboardingCompleted || false;
+    x.credentials = obj.credentials;
+    x.disclaimerAccepted = obj.disclaimerAccepted;
+    x.onboardingCompleted = obj.onboardingCompleted;
     x.checked = obj.checked || {};
-    x.checkedUA = obj.checkedUA;
+    x.checkedUA = obj.checkedUA || {};
 
     if (x.credentials[0] && typeof x.credentials[0] != 'object')
-      throw new Error('credentials should be an array of objects');
+      throw new Error('credentials should be an object');
     return x;
+  }
+
+  public fromString(str: string): Profile {
+    return this.fromObj(JSON.parse(str));
+  }
+
+  public toObj(): string {
+    delete this.dirty;
+    return JSON.stringify(this);
   }
 
   public hasWallet(walletId: string): boolean {
@@ -102,10 +110,5 @@ export class Profile {
 
     this.dirty = true;
     return true;
-  }
-
-  public acceptDisclaimer(): void {
-    this.disclaimerAccepted = true;
-    this.dirty = true;
   }
 }

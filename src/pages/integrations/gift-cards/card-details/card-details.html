@@ -23,17 +23,16 @@
           <div *ngIf="card.status !== 'Canceled'">
             <div (click)="copyCode(card.claimCode)" [copy-to-clipboard]="card.claimCode" [hide-toast]="true" tappable>
               <div class="card-info__title">Claim Code</div>
-              <div class="card-info__body" *ngIf="!showBarcode()">
+              <div class="card-info__body" *ngIf="cardConfig?.defaultClaimCodeType !== 'barcode'">
                 {{card.claimCode}}
               </div>
-              <ng-container *ngIf="showBarcode()">
+              <ng-container *ngIf="cardConfig?.defaultClaimCodeType === 'barcode'">
                 <ngx-barcode *ngIf="!card.barcodeImage" class="card-info__body" [bc-value]="card.claimCode"
-                  bc-display-value="false" bc-element-type="canvas" bc-height="70" [bc-width]="1.8"
-                  bc-background="#f7f7f7" bc-font="Roboto" bc-text-margin="8" bc-text-position="bottom"
-                  bc-font-size="20"></ngx-barcode>
+                  bc-display-value="false" bc-element-type="canvas" bc-height="70" [bc-width]="1.8" bc-background="#f7f7f7"
+                  bc-font="Roboto" bc-text-margin="8" bc-text-position="bottom" bc-font-size="20"></ngx-barcode>
                 <img *ngIf="card.barcodeImage" class="card-info__body barcode-image" [src]="card.barcodeImage">
               </ng-container>
-              <div class="card-info__body" [ngClass]="{long: card.claimCode.length > 20 }" *ngIf="showBarcode()">
+              <div class="card-info__body" [ngClass]="{long: card.claimCode.length > 20 }" *ngIf="cardConfig?.defaultClaimCodeType === 'barcode'">
                 {{card.claimCode}}
               </div>
               <div class="card-info__date" *ngIf="!hasPin()">Created {{card.date | amTimeAgo}}</div>
@@ -54,8 +53,8 @@
         </div>
 
         <div *ngIf="!card.claimCode" class="card-info__status-message">
-          <div *ngIf="card.status === 'PENDING' || card.status === 'invalid' || card.status === 'expired'"
-            class="card-info__body" translate>
+          <div *ngIf="card.status === 'PENDING' || card.status === 'invalid' || card.status === 'expired'" class="card-info__body"
+            translate>
             Awaiting payment to confirm
           </div>
           <div *ngIf="card.status == 'FAILURE' || card.status == 'RESEND'" class="card-info__body" translate>
@@ -71,14 +70,12 @@
       <div class="actions-wrapper" [@preventInitialChildAnimations]>
         <div class="actions" *ngIf="card.status !== 'PENDING' && !card.archived && (card.claimCode || card.claimLink)"
           [@enterAnimation]>
-          <button ion-button *ngIf="!showClaimLinkUI() && cardConfig?.redeemUrl" class="button-standard"
-            (click)="redeem()">
+          <button ion-button *ngIf="!showClaimLinkUI() && cardConfig?.redeemUrl" class="button-standard" (click)="redeem()">
             {{'Redeem Now' | translate}}
           </button>
-          <button ion-button *ngIf="!showClaimLinkUI() && !cardConfig?.redeemUrl && cardConfig" class="button-standard"
-            (click)="redeem()" [copy-to-clipboard]="card.claimCode" [hide-toast]="true">
-            <ng-container *ngIf="!cardConfig.printRequired">{{'Copy Code' | translate}}</ng-container>
-            <ng-container *ngIf="cardConfig.printRequired">{{'Print' | translate}}</ng-container>
+          <button ion-button *ngIf="!showClaimLinkUI() && !cardConfig?.redeemUrl" class="button-standard" (click)="redeem()"
+            [copy-to-clipboard]="card.claimCode" [hide-toast]="true">
+            {{'Copy Code' | translate}}
           </button>
           <button ion-button *ngIf="showClaimLinkUI()" class="button-standard" (click)="viewRedemptionCode()">
             {{'View Redemption Code' | translate}}
@@ -93,5 +90,3 @@
 
   </div>
 </ion-content>
-
-<printable-card *ngIf="cardConfig" [card]="card" [cardConfig]="cardConfig"></printable-card>

@@ -48,10 +48,7 @@ export { GiftCardProvider } from '../providers/gift-card/gift-card';
 export {
   HomeIntegrationsProvider
 } from '../providers/home-integrations/home-integrations';
-export { HttpRequestsProvider } from '../providers/http-requests/http-requests';
 export { IncomingDataProvider } from '../providers/incoming-data/incoming-data';
-export { InvoiceProvider } from '../providers/invoice/invoice';
-export { KeyProvider } from '../providers/key/key';
 export { LanguageLoader } from '../providers/language-loader/language-loader';
 export { LanguageProvider } from '../providers/language/language';
 export { Logger } from '../providers/logger/logger';
@@ -63,7 +60,6 @@ export { PayproProvider } from '../providers/paypro/paypro';
 export { PersistenceProvider } from '../providers/persistence/persistence';
 export { PlatformProvider } from '../providers/platform/platform';
 export { PopupProvider } from '../providers/popup/popup';
-export { PriceProvider } from '../providers/price/price';
 export { ProfileProvider } from '../providers/profile/profile';
 export {
   PushNotificationsProvider

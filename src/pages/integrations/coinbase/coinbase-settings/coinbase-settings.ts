@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController } from 'ionic-angular';
+import { App, NavController } from 'ionic-angular';
 
 import * as _ from 'lodash';
 
@@ -9,6 +9,7 @@ import { ConfigProvider } from '../../../../providers/config/config';
 import { HomeIntegrationsProvider } from '../../../../providers/home-integrations/home-integrations';
 import { Logger } from '../../../../providers/logger/logger';
 import { PopupProvider } from '../../../../providers/popup/popup';
+import { TabsPage } from '../../../tabs/tabs';
 
 @Component({
   selector: 'page-coinbase-settings',
@@ -20,9 +21,9 @@ export class CoinbaseSettingsPage {
   public service;
   public coinbaseAccount;
   public coinbaseUser;
-  public loading: boolean;
 
   constructor(
+    private app: App,
     private navCtrl: NavController,
     private popupProvider: PopupProvider,
     private logger: Logger,
@@ -37,10 +38,8 @@ export class CoinbaseSettingsPage {
   }
 
   ionViewDidLoad() {
-    this.loading = true;
     this.coinbaseProvider.init((err, data) => {
       if (err || _.isEmpty(data)) {
-        this.loading = false;
         if (err) {
           this.logger.error(err);
           let errorId = err.errors ? err.errors[0].id : null;
@@ -62,7 +61,6 @@ export class CoinbaseSettingsPage {
         accessToken,
         accountId,
         (err, account) => {
-          this.loading = false;
           if (err) this.logger.error(err);
           this.coinbaseAccount = account.data[0];
         }
@@ -96,7 +94,7 @@ export class CoinbaseSettingsPage {
           this.coinbaseProvider.logout();
           this.showInHome = false;
           this.showInHomeSwitch();
-          this.navCtrl.popToRoot();
+          this.app.getRootNavs()[0].setRoot(TabsPage);
         }
       });
   }

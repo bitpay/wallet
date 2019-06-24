@@ -8,15 +8,12 @@ import { Logger } from '../../providers/logger/logger';
 import { AddressBookProvider } from '../../providers/address-book/address-book';
 import { ConfigProvider } from '../../providers/config/config';
 import { ExternalLinkProvider } from '../../providers/external-link/external-link';
-import { FilterProvider } from '../../providers/filter/filter';
 import { OnGoingProcessProvider } from '../../providers/on-going-process/on-going-process';
 import { PopupProvider } from '../../providers/popup/popup';
 import { ProfileProvider } from '../../providers/profile/profile';
-import { RateProvider } from '../../providers/rate/rate';
 import { TxConfirmNotificationProvider } from '../../providers/tx-confirm-notification/tx-confirm-notification';
 import { TxFormatProvider } from '../../providers/tx-format/tx-format';
 import { WalletProvider } from '../../providers/wallet/wallet';
-import { WalletTabsProvider } from '../wallet-tabs/wallet-tabs.provider';
 
 @Component({
   selector: 'page-tx-details',
@@ -30,7 +27,6 @@ export class TxDetailsPage {
   public wallet;
   public btx;
   public actionList;
-  public insideWallet: boolean;
   public isShared: boolean;
   public title: string;
   public txNotification;
@@ -54,10 +50,7 @@ export class TxDetailsPage {
     private txConfirmNotificationProvider: TxConfirmNotificationProvider,
     private txFormatProvider: TxFormatProvider,
     private walletProvider: WalletProvider,
-    private walletTabsProvider: WalletTabsProvider,
-    private translate: TranslateService,
-    private filter: FilterProvider,
-    private rateProvider: RateProvider
+    private translate: TranslateService
   ) {}
 
   ionViewDidLoad() {
@@ -66,7 +59,6 @@ export class TxDetailsPage {
     this.txId = this.navParams.data.txid;
     this.title = this.translate.instant('Transaction');
     this.wallet = this.profileProvider.getWallet(this.navParams.data.walletId);
-    this.insideWallet = !!this.walletTabsProvider.getTabNav();
     this.color = this.wallet.color;
     this.copayerId = this.wallet.credentials.copayerId;
     this.isShared = this.wallet.credentials.n > 1;
@@ -89,29 +81,17 @@ export class TxDetailsPage {
     this.updateTx();
   }
 
-  ionViewWillLoad() {
+  ionViewWillEnter() {
     this.events.subscribe('bwsEvent', this.bwsEventHandler);
   }
 
-  ionViewWillUnload() {
+  ionViewWillLeave() {
     this.events.unsubscribe('bwsEvent', this.bwsEventHandler);
   }
 
   private bwsEventHandler: any = (_, type: string, n) => {
-    let match = false;
-    if (
-      type == 'NewBlock' &&
-      n &&
-      n.data &&
-      this.wallet &&
-      n.data &&
-      n.data.network == this.wallet.network &&
-      n.data.coin == this.wallet.coin
-    ) {
-      match = true;
+    if (type == 'NewBlock' && n && n.data && n.data.network == 'livenet')
       this.updateTxDebounced({ hideLoading: true });
-    }
-    this.logger.debug('bwsEvent handler @tx-details. Matched: ' + match);
   };
 
   public readMore(): void {
@@ -197,7 +177,11 @@ export class TxDetailsPage {
       .then(tx => {
         if (!opts.hideLoading) this.onGoingProcess.clear();
 
-        this.btx = this.txFormatProvider.processTx(this.wallet.coin, tx);
+        this.btx = this.txFormatProvider.processTx(
+          this.wallet.coin,
+          tx,
+          this.walletProvider.useLegacyAddress()
+        );
         this.btx.feeFiatStr = this.txFormatProvider.formatAlternativeStr(
           this.wallet.coin,
           tx.fees
@@ -227,8 +211,6 @@ export class TxDetailsPage {
         this.initActionList();
         this.contact();
 
-        this.updateFiatRate();
-
         this.walletProvider
           .getLowAmount(this.wallet)
           .then((amount: number) => {
@@ -250,14 +232,14 @@ export class TxDetailsPage {
       });
   }
 
-  public async saveMemoInfo(): Promise<void> {
-    this.logger.info('Saving memo: ', this.txMemo);
+  public async saveMemoInfo(memo: string): Promise<void> {
+    this.logger.info('Saving memo');
     this.btx.note = {
-      body: this.txMemo
+      body: memo
     };
     let args = {
       txid: this.btx.txid,
-      body: this.txMemo
+      body: memo
     };
 
     await this.walletProvider
@@ -338,31 +320,5 @@ export class TxDetailsPage {
       okText,
       cancelText
     );
-  }
-
-  private updateFiatRate() {
-    const settings = this.configProvider.get().wallet.settings;
-    this.rateProvider
-      .getHistoricFiatRate(
-        settings.alternativeIsoCode,
-        this.wallet.coin,
-        (this.btx.time * 1000).toString()
-      )
-      .then(fiat => {
-        if (fiat && fiat.rate) {
-          this.btx.fiatRateStr =
-            this.filter.formatFiatAmount(
-              parseFloat((fiat.rate * this.btx.amountValueStr).toFixed(2))
-            ) +
-            ' ' +
-            settings.alternativeIsoCode +
-            ' @ ' +
-            this.filter.formatFiatAmount(fiat.rate) +
-            ' USD per ' +
-            this.wallet.coin.toUpperCase();
-        } else {
-          this.btx.fiatRateStr = this.btx.alternativeAmountStr;
-        }
-      });
   }
 }

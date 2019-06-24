@@ -1,51 +1,75 @@
-<ion-header [ngClass]="{'wallet-details-header': wallet}">
+<ion-header [ngClass]="{ 'wallet-details-header': wallet }">
   <ion-navbar [navbar-bg]="wallet && wallet.color">
     <ion-buttons *ngIf="wallet" left>
       <button class="modal-close-button" (click)="closeCam()" ion-button>
         <ion-icon ios="md-close" md="md-close"></ion-icon>
       </button>
     </ion-buttons>
-    <ion-title>{{wallet && wallet.name || ('Amount' | translate)}}</ion-title>
+    <ion-title>{{
+      (wallet && wallet.name) || ('Amount' | translate)
+    }}</ion-title>
   </ion-navbar>
   <ion-toolbar *ngIf="wallet" [navbar-bg]="wallet.color">
-    <div *ngIf="!wallet.balanceHidden && !wallet.scanning && wallet.cachedStatus" class="wallet-details-header__balance">
-      <span>{{wallet.cachedStatus && wallet.cachedStatus.spendableBalanceStr}}</span>
-      <ion-icon *ngIf="wallet.cachedStatus.totalBalanceSat != wallet.cachedStatus.spendableAmount" ios="ios-timer-outline" md="md-timer"></ion-icon>
+    <div
+      *ngIf="!wallet.balanceHidden && !wallet.scanning && wallet.status"
+      class="wallet-details-header__balance"
+    >
+      <span>{{ wallet.status && wallet.status.totalBalanceStr }}</span>
+      <ion-icon
+        *ngIf="wallet.status.totalBalanceSat != wallet.status.spendableAmount"
+        ios="ios-timer-outline"
+        md="md-timer"
+      ></ion-icon>
     </div>
-    <div *ngIf="wallet.balanceHidden  && !wallet.scanning" class="wallet-details-header__balance-hidden">
+    <div
+      *ngIf="wallet.balanceHidden && !wallet.scanning"
+      class="wallet-details-header__balance-hidden"
+    >
       <span class="title" translate>[Balance Hidden]</span>
     </div>
   </ion-toolbar>
 </ion-header>
 
 <ion-content no-bounce>
-
   <div class="prompt-user-fullscreen-container" *ngIf="shouldShowZeroState()">
     <div class="prompt-user">
       <div class="title-icon larger-icon">
         <img src="assets/img/ghost-straight-face.svg" />
       </div>
-      <div class="title-info">
-        <span translate>Mmm...</span>
-      </div>
+      <div class="title-info"><span translate>Mmm...</span></div>
       <div class="subtitle-info">
-        <span translate>It appears that you do not have any money to send.</span>
+        <span translate
+          >It appears that you do not have any money to send.</span
+        >
       </div>
       <button ion-button class="button-standard" (click)="goToReceive()">
-        {{'Add funds' | translate}}
+        {{ 'Add funds' | translate }}
       </button>
     </div>
   </div>
 
   <div *ngIf="!shouldShowZeroState()">
-    <div *ngIf="hasBtcWallets || hasBchWallets">
+    <div *ngIf="hasBtcWallets || hasBchWallets || hasEthWallets">
       <div class="send-header-wrapper">
         <span class="send-heading" translate>Recipient</span>
-        <ion-item class="search-wrapper" [ngClass]="{'invalid': invalidAddress && search != ''}">
-          <ion-input placeholder="{{'Search or enter bitcoin address' | translate}}" [(ngModel)]="search" (ngModelChange)="processInput()"></ion-input>
-          <ion-icon *ngIf="invalidAddress && search != ''" item-end class="backspace-icon" name="backspace" (click)="cleanSearch()"></ion-icon>
+        <ion-item
+          class="search-wrapper"
+          [ngClass]="{ invalid: invalidAddress && search != '' }"
+        >
+          <ion-input
+            placeholder="{{'Search or enter address' | translate}}"
+            [(ngModel)]="search"
+            (ngModelChange)="processInput()"
+          ></ion-input>
+          <ion-icon
+            *ngIf="invalidAddress && search != ''"
+            item-end
+            class="backspace-icon"
+            name="backspace"
+            (click)="cleanSearch()"
+          ></ion-icon>
           <ion-icon item-end class="scan-icon" (click)="openScanner()">
-            <img src="assets/img/scan-ico.svg">
+            <img src="assets/img/scan-ico.svg" />
           </ion-icon>
         </ion-item>
       </div>
@@ -64,11 +88,18 @@
         </ion-list>
       </div>
 
-      <page-transfer-to [wallet]="wallet" [searchInput]="search" [useAsModal]="false" #transferTo></page-transfer-to>
-
+      <page-transfer-to
+        [wallet]="wallet"
+        [searchInput]="search"
+        [useAsModal]="false"
+        #transferTo
+      ></page-transfer-to>
     </div>
     <div *ngIf="!hasBtcWallets && !hasBchWallets" class="no-wallet-message">
-      <span translate>To get started, you'll need to create a bitcoin wallet and get some bitcoin.</span>
+      <span translate
+        >To get started, you'll need to create a bitcoin wallet and get some
+        bitcoin.</span
+      >
     </div>
   </div>
 </ion-content>

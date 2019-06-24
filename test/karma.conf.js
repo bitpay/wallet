@@ -3,9 +3,7 @@
 
 module.exports = function(config) {
   config.set({
-    webpack: {
-      node: { fs: 'empty', net: 'empty', tls: 'empty', dns: 'empty' }
-    },
+    webpack: { node: { fs: 'empty' } },
     basePath: '..',
     browserDisconnectTolerance: 2,
     browserNoActivityTimeout: 60 * 1000,
@@ -14,6 +12,7 @@ module.exports = function(config) {
       require('karma-jasmine'),
       require('karma-chrome-launcher'),
       require('karma-jasmine-html-reporter'),
+      require('karma-junit-reporter'),
       require('karma-spec-reporter'),
       require('karma-coverage-istanbul-reporter'),
       require('@angular-devkit/build-angular/plugins/karma')
@@ -52,6 +51,11 @@ module.exports = function(config) {
         flags: ['--no-sandbox']
       }
     },
-    singleRun: false
+    singleRun: false,
+    junitReporter: {
+      outputDir: process.env.JUNIT_REPORT_PATH || './test/',
+      outputFile: process.env.JUNIT_REPORT_NAME || 'junitresults.xml',
+      useBrowserName: false
+    }
   });
 };

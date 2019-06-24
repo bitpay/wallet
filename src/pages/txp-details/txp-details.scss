@@ -71,6 +71,15 @@ page-txp-details {
     .payment-proposal-to,
     .txp-info {
       @include row-flex;
+      .icon-wallet {
+        margin-right: 0.8rem;
+        width: 25px;
+        height: 25px;
+        box-shadow: none;
+        &.disabled {
+          background-color: color($colors, grey);
+        }
+      }
       .icon-bitcoin {
         margin-right: 0.8rem;
         width: 25px;
@@ -88,80 +97,84 @@ page-txp-details {
   .timeline-item {
     background-color: color($colors, blank);
     border: 0;
-    &:not(:nth-child(2)) {
-      .timeline-content-icon {
-        .line::before {
-          content: '';
-          background: #e8e8e8;
-          height: 42px;
-          width: 1px;
-          position: absolute;
-          left: 50%;
-          -webkit-transform: translateX(-50%) translateY(-100%);
-          transform: translateX(-50%) translateY(-100%);
-          top: 0;
-        }
-      }
+    &:nth-child(2) {
+      border-top: 1px solid $item-border-color;
+    }
+    &:last-child {
+      border-bottom: 1px solid $item-border-color;
     }
     padding: 17px $item-lateral-padding;
 
     > * {
       padding-right: 0;
     }
-    .timeline-content {
+  }
+
+  .timeline-content {
+    display: flex;
+    align-items: center;
+
+    &-icon {
       display: flex;
       align-items: center;
-
-      &-icon {
-        display: flex;
-        align-items: center;
-        min-width: 40px;
-        padding-right: 1rem;
-        padding-left: 1rem;
-        margin-right: 0.5rem;
-        position: relative;
-        img,
-        .rejected {
-          z-index: 12;
-        }
-
-        > div {
-          border: 3px solid color($colors, primary);
-          border-radius: $icon-border-radius;
-          display: flex;
-          height: 26px;
-          width: 26px;
-          font-size: 13px;
-          align-items: center;
-          justify-content: center;
-          font-weight: 600;
-          vertical-align: middle;
-          color: color($colors, primary);
-          z-index: 10;
-
-          &.rejected {
-            background: #e15061;
-            border-color: #e15061;
-            color: #ffffff;
-            font-family: 'Roboto-Bold';
-            font-size: 19px;
-          }
-        }
+      min-width: 40px;
+      padding-right: 1rem;
+      padding-left: 1rem;
+      margin-right: 0.5rem;
+      position: relative;
+      img,
+      .rejected {
+        z-index: 12;
       }
 
-      &-label {
-        flex-grow: 1;
+      .line::before {
+        content: '';
+        background: #e8e8e8;
+        height: 52px;
+        width: 1px;
+        position: absolute;
+        left: 50%;
+        -webkit-transform: translateX(-50%) translateY(-100%);
+        transform: translateX(-50%) translateY(-100%);
+        top: 0;
+      }
 
-        > .action {
-          font-size: 16px;
-          @media (max-width: 330px) {
-            font-size: 14px;
-          }
+      > div {
+        border: 3px solid color($colors, primary);
+        border-radius: $icon-border-radius;
+        display: flex;
+        height: 26px;
+        width: 26px;
+        font-size: 13px;
+        align-items: center;
+        justify-content: center;
+        font-weight: 600;
+        vertical-align: middle;
+        color: color($colors, primary);
+        z-index: 10;
+
+        &.rejected {
+          background: #e15061;
+          border-color: #e15061;
+          color: #ffffff;
+          font-family: 'Roboto-Bold';
+          font-size: 19px;
         }
-        > .name {
-          color: #aaa;
+      }
+    }
+
+    &-label {
+      flex-grow: 1;
+
+      > .action {
+        font-size: 16px;
+        @media (max-width: 330px) {
           font-size: 14px;
         }
+      }
+      > .name {
+        color: #aaa;
+        font-size: 14px;
       }
     }
   }

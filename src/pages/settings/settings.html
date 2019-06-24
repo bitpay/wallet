@@ -1,22 +1,22 @@
 <wide-header-page title="{{'Settings' | translate}}">
   <div page-content>
-    <ion-list class="settings-list">
+    <ion-list class="settings-list top-padding">
       <button ion-item (click)="openAddressBookPage()">
-        <ion-icon class="item-img settings-icon" item-start>
+        <ion-icon class="item-img" item-start>
           <img src="assets/img/settings-icons/icon-address-book.svg" width="22">
         </ion-icon>
         <span translate>Address book</span>
       </button>
 
       <button ion-item (click)="openHelpExternalLink()">
-        <ion-icon class="item-img settings-icon" item-start>
+        <ion-icon class="item-img" item-start>
           <img src="assets/img/settings-icons/icon-help-support.svg" width="22">
         </ion-icon>
         <span translate>Help &amp; support</span>
       </button>
 
       <button ion-item *ngIf="isCordova" (click)="openSharePage()">
-        <ion-icon class="item-img settings-icon" item-start>
+        <ion-icon class="item-img" item-start>
           <img src="assets/img/settings-icons/icon-heart.svg" width="22">
         </ion-icon>
         <span translate>Share</span> {{ appName }}
@@ -25,14 +25,14 @@
       <ion-item-divider>{{'Preferences' | translate}}</ion-item-divider>
 
       <button ion-item (click)="openNotificationsPage()">
-        <ion-icon class="item-img settings-icon" item-start>
+        <ion-icon class="item-img" item-start>
           <img src="assets/img/settings-icons/icon-notifications.svg" width="22">
         </ion-icon>
         <span translate>Notifications</span>
       </button>
 
       <button ion-item (click)="openLanguagePage()">
-        <ion-icon class="item-img settings-icon" item-start>
+        <ion-icon class="item-img" item-start>
           <img src="assets/img/settings-icons/icon-language.svg" width="22">
         </ion-icon>
         <ion-label>
@@ -44,8 +44,8 @@
       </button>
 
       <button ion-item (click)="openAltCurrencyPage()">
-        <ion-icon class="item-img settings-icon" item-start>
-          <img src="assets/img/settings-icons/icon-currency.svg" width="22">
+        <ion-icon class="item-img" item-start>
+          <img src="assets/img/settings-icons/icon-alternative-currency.svg" width="22">
         </ion-icon>
         <ion-label>
           {{'Alternative currency' | translate}}
@@ -56,7 +56,7 @@
       </button>
 
       <button ion-item (click)="openFeePolicyPage()">
-        <ion-icon class="item-img settings-icon" item-start>
+        <ion-icon class="item-img" item-start>
           <img src="assets/img/settings-icons/icon-network.svg" width="22">
         </ion-icon>
         <ion-label>
@@ -65,9 +65,8 @@
       </button>
 
       <button ion-item *ngIf="isCordova" (click)="openLockPage()">
-        <ion-icon class="item-img settings-icon" item-start>
-          <img src="assets/img/settings-icons/icon-lock.svg" width="22">
-        </ion-icon>
+        <ion-icon class="custom-icon item-img" *ngIf="lockMethod != 'disabled'" name="ios-lock-outline" item-start></ion-icon>
+        <ion-icon class="custom-icon item-img" *ngIf="lockMethod == 'disabled'" name="ios-unlock-outline" item-start></ion-icon>
         <ion-label>
           {{'Lock' | translate}}
         </ion-label>
@@ -103,6 +102,42 @@
         </ion-list>
       </div>
 
+      <div *ngIf="vault">
+        <ion-item-divider>
+          Vault
+        </ion-item-divider>
+
+        <button ion-item (click)="openBackupSettings()" [ngClass]="{warn: vault.needsBackup}">
+          <span translate>Backup</span>
+          <ion-note *ngIf="vault.needsBackup" class="wallet-warning" item-end>
+            {{'Needs backup' | translate}}
+          </ion-note>
+        </button>
+
+        <ion-item class="with-label">
+          <ion-label>{{'Request Encrypt Password' | translate}}</ion-label>
+          <ion-toggle [(ngModel)]="encryptEnabled" (ionChange)="encryptChange()" [disabled]="vault.needsBackup && !encryptEnabled"></ion-toggle>
+        </ion-item>
+        <label-tip type="info">
+          <span label-tip-title translate>Password Not Recoverable</span>
+          <div label-tip-body>
+            <span translate>This password cannot be recovered. If this password is lost, funds can only be recovered by reimporting your 12-word recovery phrase.</span>
+            <br>
+            <a class="label-tip-link" (click)="openSupportEncryptPassword()" translate>Learn More</a>
+          </div>
+        </label-tip>
+
+        <div *ngIf="touchIdAvailable">
+          <ion-item>
+            <ion-label [ngClass]="{'disabled': vault.needsBackup}">{{'Request Fingerprint'| translate}}</ion-label>
+            <ion-toggle [(ngModel)]="touchIdEnabled" (ionChange)="touchIdChange()"></ion-toggle>
+          </ion-item>
+        </div>
+        <button ion-item (click)="openDeleteVault()">
+          <span translate>Delete</span>
+        </button>
+      </div>
+
       <ion-item-divider *ngIf="integrationServices && integrationServices[0]">
         {{'Integrations' | translate}}
       </ion-item-divider>
@@ -112,7 +147,7 @@
           <img src="{{integration.icon}}" class="icon-services" />
         </ion-icon>
         <span>{{integration.title}}</span>
-        <ion-note item-end *ngIf="integration.linked">
+        <ion-note item-end>
           <span *ngIf="integration.linked" translate>Linked</span>
           <span *ngIf="!integration.linked">
             {{integration.show ? ('On'|translate) : ('Off'|translate)}}
@@ -123,15 +158,15 @@
       <ion-item-divider>{{'More' | translate}}</ion-item-divider>
 
       <button ion-item (click)="openAdvancedPage()">
-        <ion-icon class="item-img settings-icon" item-start>
+        <ion-icon class="item-img" item-start>
           <img src="assets/img/settings-icons/icon-advanced.svg" width="22">
         </ion-icon>
         <span translate>Advanced</span>
       </button>
 
       <button ion-item (click)="openAboutPage()">
-        <ion-icon class="item-img settings-icon" item-start>
-          <img src="assets/img/settings-icons/icon-info.svg" width="22">
+        <ion-icon class="item-img" item-start>
+          <img src="assets/img/settings-icons/icon-about.svg" width="22">
         </ion-icon>
         <span translate>About</span> {{appName}}
       </button>

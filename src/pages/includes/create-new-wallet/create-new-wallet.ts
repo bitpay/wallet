@@ -11,7 +11,7 @@ import { AddPage } from '../../add/add';
 export class CreateNewWalletPage {
   constructor(private navCtrl: NavController) {}
 
-  public goToAddPage() {
+  public goToCreateVaultPage() {
     this.navCtrl.push(AddPage);
   }
 }

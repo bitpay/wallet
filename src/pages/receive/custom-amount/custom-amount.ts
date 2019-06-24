@@ -82,7 +82,7 @@ export class CustomAmountPage {
       }
 
       let protoAddr;
-      if (this.wallet.coin != 'bch') {
+      if (this.wallet.coin != 'bch' || this.walletProvider.useLegacyAddress()) {
         protoAddr = this.walletProvider.getProtoAddress(
           this.wallet.coin,
           this.wallet.network,

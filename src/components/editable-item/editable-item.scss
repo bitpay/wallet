@@ -1,0 +1,86 @@
+editable-item {
+  div {
+    &.item-text.item.item-block.item-md,
+    &.item-text.item.item-block.ng-valid.item-input-has-value:not(.item-input-has-focus),
+    &.item-text.item.item-block.ng-valid.item-input.input-has-value:not(.input-has-focus) {
+      border-bottom: none;
+      box-shadow: none;
+      .item-inner {
+        border-top: none;
+        border-bottom-color: rgb(244, 244, 244);
+        box-shadow: none;
+        -webkit-box-shadow: none;
+      }
+    }
+  }
+  .item-textarea {
+    color: rgb(155, 155, 170);
+    textarea {
+      padding-bottom: 10px;
+      margin: 0px;
+      width: 100%;
+    }
+  }
+  .item-text.input-has-focus {
+    .item-textarea {
+      color: rgb(67, 67, 67);
+    }
+  }
+  .input-md {
+    textarea::placeholder {
+      padding-left: 0px;
+    }
+  }
+  .input-ios.ios-margin-fix textarea {
+    //ios input bug fix
+    margin-left: -3px;
+  }
+  .item-text {
+    min-height: 28px;
+    margin-top: -10px;
+  }
+  .spinner {
+    float: right;
+    padding-bottom: 0px;
+    border: 2px solid white;
+    border-top: 2px solid color($colors, success);
+    border-left: 2px solid color($colors, success);
+    border-radius: 50%;
+    width: 18px;
+    height: 18px;
+    opacity: 0;
+    transition: opacity 500ms ease;
+    margin: 2px;
+  }
+  .spin-fade {
+    animation: spin-fade 2s linear;
+    animation-iteration-count: infinite;
+    opacity: 1;
+  }
+  @keyframes spin-fade {
+    0% {
+      opacity: 0;
+      transform: rotate(0deg);
+    }
+    15% {
+      opacity: 1;
+    }
+    25% {
+      transform: rotate(360deg);
+    }
+    50% {
+      transform: rotate(720deg);
+    }
+    75% {
+      opacity: 1;
+      transform: rotate(1080deg);
+    }
+    100% {
+      opacity: 0;
+      transform: rotate(1440deg);
+    }
+  }
+  .no-border.item-block .item-inner {
+    border-bottom-color: transparent;
+  }
+}

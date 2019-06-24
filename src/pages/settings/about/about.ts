@@ -1,19 +1,17 @@
 import { Component } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { NavController } from 'ionic-angular';
+import { Logger } from '../../../providers/logger/logger';
 
 // pages
 import { SendFeedbackPage } from '../../feedback/send-feedback/send-feedback';
 import { SessionLogPage } from './session-log/session-log';
 
 // providers
-import {
-  AppProvider,
-  ExternalLinkProvider,
-  Logger,
-  PersistenceProvider,
-  ReplaceParametersProvider
-} from '../../../providers';
+import { AppProvider } from '../../../providers/app/app';
+import { ExternalLinkProvider } from '../../../providers/external-link/external-link';
+import { ReplaceParametersProvider } from '../../../providers/replace-parameters/replace-parameters';
+
 @Component({
   selector: 'page-about',
   templateUrl: 'about.html'
@@ -22,7 +20,6 @@ export class AboutPage {
   public version: string;
   public commitHash: string;
   public title: string;
-  public versionItemTapped: number;
 
   constructor(
     private navCtrl: NavController,
@@ -30,11 +27,8 @@ export class AboutPage {
     private logger: Logger,
     private externalLinkProvider: ExternalLinkProvider,
     private replaceParametersProvider: ReplaceParametersProvider,
-    private translate: TranslateService,
-    private persistenceProvider: PersistenceProvider
-  ) {
-    this.versionItemTapped = 0;
-  }
+    private translate: TranslateService
+  ) {}
 
   ionViewDidLoad() {
     this.logger.info('Loaded: AboutPage');
@@ -110,18 +104,5 @@ export class AboutPage {
 
   public openSendFeedbackPage(): void {
     this.navCtrl.push(SendFeedbackPage);
-  }
-
-  public itemTapped() {
-    this.versionItemTapped++;
-    if (this.versionItemTapped >= 5) {
-      this.versionItemTapped = 0;
-      this.persistenceProvider.getPriceChartFlag().then(res => {
-        res === 'enabled'
-          ? this.persistenceProvider.removePriceChartFlag()
-          : this.persistenceProvider.setPriceChartFlag('enabled');
-        this.navCtrl.popToRoot();
-      });
-    }
   }
 }

@@ -5,11 +5,12 @@
 </ion-header>
 <ion-content>
   <ion-list class="settings-list">
+    <ion-item-divider></ion-item-divider>
     <ion-item (click)="saveBlack()">
       <div translate float-left>Name (at creation)</div>
-      <ion-note item-end>
+      <div text-end text-wrap ion-text color="light-grey">
         {{walletName}}
-      </ion-note>
+      </div>
     </ion-item>
     <ion-item>
       <span translate>Coin</span>
@@ -20,9 +21,9 @@
     <ion-item copy-to-clipboard="{{walletId}}">
       <span>Wallet Id</span>
       <div padding-top>
-        <div text-wrap>
+        <ion-note text-wrap>
           {{walletId}}
-        </div>
+        </ion-note>
       </div>
     </ion-item>
     <ion-item>
@@ -44,9 +45,9 @@
       </ion-note>
     </ion-item>
     <ion-item>
-      <span translate>Derivation Path</span>
+      <span translate>Derivation Strategy</span>
       <ion-note item-end>
-        {{rootPath}}
+        {{derivationStrategy}}
       </ion-note>
     </ion-item>
     <ion-item *ngIf="!canSign">
@@ -56,7 +57,7 @@
       </ion-note>
     </ion-item>
     <ion-item>
-      <span translate>Account</span>
+      <span translate>Account</span>({{derivationStrategy}})
       <ion-note item-end>
         #{{account}}
       </ion-note>
@@ -72,14 +73,14 @@
     <ion-item *ngFor="let pk of pubKeys; let i=index" copy-to-clipboard="{{pk}}">
       <span>Copayer {{i}}</span>
       <div padding-top>
-        <div text-wrap>
+        <ion-note text-wrap>
           {{pk}}
-        </div>
+        </ion-note>
       </div>
-      <span *ngIf="i == 0">({{rootPath}})</span>
+      <span *ngIf="$index == 0">({{basePath}})</span>
     </ion-item>
     <div *ngIf="!needsBackup && canSign">
-      <ion-item-divider class="item-without-title"></ion-item-divider>
+      <ion-item-divider></ion-item-divider>
       <button ion-item (click)="openWalletExtendedPrivateKey()">
         <span translate>Extended Private Key</span>
       </button>

@@ -1,10 +1,11 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
-import { Events, NavController, NavParams } from 'ionic-angular';
+import { App, Events, NavController, NavParams } from 'ionic-angular';
 
 // Pages
 import { ScanPage } from '../../scan/scan';
+import { TabsPage } from '../../tabs/tabs';
 
 // Providers
 import { ActionSheetProvider } from '../../../providers/action-sheet/action-sheet';
@@ -41,6 +42,7 @@ export class JoinWalletPage {
   private coin: Coin;
 
   constructor(
+    private app: App,
     private bwcProvider: BwcProvider,
     private configProvider: ConfigProvider,
     private form: FormBuilder,
@@ -61,6 +63,9 @@ export class JoinWalletPage {
     this.okText = this.translate.instant('Ok');
     this.cancelText = this.translate.instant('Cancel');
     this.defaults = this.configProvider.getDefaults();
+    this.derivationPathByDefault = this.derivationPathHelperProvider.default;
+    this.derivationPathForTestnet = this.derivationPathHelperProvider.defaultTestnet;
+
     this.showAdvOpts = false;
 
     this.regex = /^[0-9A-HJ-NP-Za-km-z]{70,80}$/; // For invitationCode
@@ -73,7 +78,7 @@ export class JoinWalletPage {
       bwsURL: [this.defaults.bws.url],
       selectedSeed: ['new'],
       recoveryPhrase: [null],
-      derivationPath: [null]
+      derivationPath: [this.derivationPathByDefault]
     });
 
     this.seedOptions = [
@@ -89,7 +94,7 @@ export class JoinWalletPage {
       }
     ];
     this.events.subscribe(
-      'Local/InvitationScan',
+      'update:invitationCode',
       this.updateInvitationCodeHandler
     );
   }
@@ -108,7 +113,7 @@ export class JoinWalletPage {
 
   ngOnDestroy() {
     this.events.unsubscribe(
-      'Local/InvitationScan',
+      'update:invitationCode',
       this.updateInvitationCodeHandler
     );
   }
@@ -121,7 +126,6 @@ export class JoinWalletPage {
   public onQrCodeScannedJoin(data: string): void {
     if (this.regex.test(data)) {
       this.joinForm.controls['invitationCode'].setValue(data);
-      this.processInvitation(data);
     } else {
       const errorInfoSheet = this.actionSheetProvider.createInfoSheet(
         'default-error',
@@ -159,15 +163,8 @@ export class JoinWalletPage {
       let walletData;
       try {
         walletData = this.bwcProvider.parseSecret(invitation);
-        this.coin = walletData.coin;
-        this.derivationPathForTestnet = this.derivationPathHelperProvider.defaultTestnet;
-        this.derivationPathByDefault =
-          this.coin == 'bch'
-            ? this.derivationPathHelperProvider.defaultBCH
-            : this.derivationPathHelperProvider.defaultBTC;
-
         this.setDerivationPath(walletData.network);
-
+        this.coin = walletData.coin;
         this.logger.info('Correct invitation code for ' + walletData.network);
       } catch (ex) {
         this.logger.warn('Error parsing invitation: ' + ex);
@@ -217,20 +214,6 @@ export class JoinWalletPage {
         this.popupProvider.ionicAlert(title, subtitle);
         return;
       }
-
-      if (
-        !this.derivationPathHelperProvider.isValidDerivationPathCoin(
-          this.joinForm.value.derivationPath,
-          this.coin
-        )
-      ) {
-        const title = this.translate.instant('Error');
-        const subtitle = this.translate.instant(
-          'Invalid derivation path for selected coin'
-        );
-        this.popupProvider.ionicAlert(title, subtitle);
-        return;
-      }
     }
 
     if (setSeed && !opts.mnemonic && !opts.extendedPrivateKey) {
@@ -253,13 +236,15 @@ export class JoinWalletPage {
       .then(wallet => {
         this.clipboardProvider.clearClipboardIfValidData(['JoinWallet']);
         this.onGoingProcessProvider.clear();
+        this.events.publish('status:updated');
         this.walletProvider.updateRemotePreferences(wallet);
         this.pushNotificationsProvider.updateSubscription(wallet);
-        this.navCtrl.popToRoot().then(() => {
-          setTimeout(() => {
+        this.app
+          .getRootNavs()[0]
+          .setRoot(TabsPage)
+          .then(() => {
             this.events.publish('OpenWallet', wallet);
-          }, 1000);
-        });
+          });
       })
       .catch(err => {
         this.onGoingProcessProvider.clear();

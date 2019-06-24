@@ -1,18 +1,22 @@
 <wide-header-page title="{{'Select currency' | translate}}">
   <div page-content>
-    <ion-list class="settings-list">
-      <button class="list-button" ion-item (click)="goToCreateWallet('btc')">
-        <ion-icon item-start>
-          <img src="assets/img/currencies/btc.svg" />
-        </ion-icon>
-        <div class="item-title">Bitcoin (BTC)</div>
-      </button>
-      <button class="list-button" ion-item (click)="goToCreateWallet('bch')">
-        <ion-icon item-start>
-          <img src="assets/img/currencies/bch.svg" />
-        </ion-icon>
-        <div class="item-title">Bitcoin Cash (BCH)</div>
-      </button>
-    </ion-list>
+    <button class="list-button" ion-item (click)="goToNextPage('btc')">
+      <ion-icon item-start>
+        <img src="assets/img/bitcoin-logo-blank.svg" />
+      </ion-icon>
+      <div class="item-title">Bitcoin (BTC)</div>
+    </button>
+    <button class="list-button" ion-item (click)="goToNextPage('bch')">
+      <ion-icon item-start>
+        <img src="assets/img/bitcoincash-logo-blank.svg" />
+      </ion-icon>
+      <div class="item-title">Bitcoin Cash (BCH)</div>
+    </button>
+    <button class="list-button" ion-item (click)="goToNextPage('eth')">
+      <ion-icon item-start>
+        <img src="assets/img/ethereum_logo_small.png" />
+      </ion-icon>
+      <div class="item-title">Ethereum (ETH)</div>
+    </button>
   </div>
 </wide-header-page>

@@ -151,4 +151,24 @@ export class AddressBookProvider {
         });
     });
   }
+
+  public removeAll(): Promise<any> {
+    return new Promise((resolve, reject) => {
+      this.persistenceProvider
+        .removeAddressbook('livenet')
+        .then(() => {
+          this.persistenceProvider.removeAddressbook('testnet').then(() => {
+            return resolve();
+          });
+        })
+        .catch(() => {
+          let msg = this.translate.instant('Error deleting addressbook');
+          return reject(msg);
+        })
+        .catch(() => {
+          let msg = this.translate.instant('Error deleting addressbook');
+          return reject(msg);
+        });
+    });
+  }
 }

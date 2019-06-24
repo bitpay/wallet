@@ -1,8 +1,10 @@
 import { Component } from '@angular/core';
-import { StatusBar } from '@ionic-native/status-bar';
-import { NavController, Platform } from 'ionic-angular';
+import { App } from 'ionic-angular';
 
 import * as _ from 'lodash';
+
+// Pages
+import { TabsPage } from '../../../tabs/tabs';
 
 // Providers
 import { ConfigProvider } from '../../../../providers/config/config';
@@ -25,13 +27,10 @@ export class ShapeshiftSettingsPage {
   public shapeshiftUser;
   public unverifiedAccount: boolean;
   public loading: boolean;
-  public headerColor: string;
 
   constructor(
-    private navCtrl: NavController,
+    private app: App,
     private popupProvider: PopupProvider,
-    private platform: Platform,
-    private statusBar: StatusBar,
     private logger: Logger,
     private shapeshiftProvider: ShapeshiftProvider,
     private configProvider: ConfigProvider,
@@ -42,19 +41,6 @@ export class ShapeshiftSettingsPage {
       name: this.serviceName
     });
     this.showInHome = !!this.service[0].show;
-    this.headerColor = '#0d172c';
-  }
-
-  ionViewWillEnter() {
-    if (this.platform.is('cordova')) {
-      this.statusBar.styleBlackOpaque();
-    }
-  }
-
-  ionViewWillLeave() {
-    if (this.platform.is('cordova')) {
-      this.statusBar.styleDefault();
-    }
   }
 
   ionViewDidLoad() {
@@ -101,7 +87,7 @@ export class ShapeshiftSettingsPage {
         if (res) {
           this.shapeshiftProvider.getStoredToken(accessToken => {
             this.shapeshiftProvider.logout(accessToken);
-            this.navCtrl.popToRoot();
+            this.app.getRootNavs()[0].setRoot(TabsPage);
           });
         }
       });

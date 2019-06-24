@@ -9,7 +9,6 @@ import { BackupGamePage } from '../pages/backup/backup-game/backup-game';
 import { BackupKeyPage } from '../pages/backup/backup-key/backup-key';
 import { SendFeedbackPage } from '../pages/feedback/send-feedback/send-feedback';
 import { FinishModalPage } from '../pages/finish/finish';
-import { NewDesignTourPage } from '../pages/new-design-tour/new-design-tour';
 import { CollectEmailPage } from '../pages/onboarding/collect-email/collect-email';
 import { DisclaimerPage } from '../pages/onboarding/disclaimer/disclaimer';
 import { OnboardingPage } from '../pages/onboarding/onboarding';
@@ -22,7 +21,6 @@ import { SearchTxModalPage } from '../pages/wallet-details/search-tx-modal/searc
 import { WalletBalancePage } from '../pages/wallet-details/wallet-balance/wallet-balance';
 import { WalletDetailsPage } from '../pages/wallet-details/wallet-details';
 import { WalletTabsPage } from '../pages/wallet-tabs/wallet-tabs';
-import { ConfirmInvoicePage } from './integrations/invoice/confirm-invoice/confirm-invoice';
 
 // Integrations: Coinbase
 import { BuyCoinbasePage } from '../pages/integrations/coinbase/buy-coinbase/buy-coinbase';
@@ -52,6 +50,7 @@ import { FeedbackCardPage } from '../pages/includes/feedback-card/feedback-card'
 import { GravatarPage } from '../pages/includes/gravatar/gravatar';
 import { MultipleOutputsPage } from '../pages/includes/multiple-outputs/multiple-outputs';
 import { TxpPage } from '../pages/includes/txp/txp';
+import { WalletActivityPage } from '../pages/includes/wallet-activity/wallet-activity';
 
 /* Tabs */
 import { HomePage } from '../pages/home/home';
@@ -78,6 +77,7 @@ import { LanguagePage } from '../pages/settings/language/language';
 import { LockPage } from '../pages/settings/lock/lock';
 import { NotificationsPage } from '../pages/settings/notifications/notifications';
 import { SharePage } from '../pages/settings/share/share';
+import { VaultDeletePage } from '../pages/settings/vault-delete/vault-delete';
 
 /* Wallet Settings */
 import { WalletColorPage } from '../pages/settings/wallet-settings/wallet-color/wallet-color';
@@ -132,7 +132,6 @@ export const PAGES = [
   CreateNewWalletPage,
   CoinbasePage,
   CoinbaseTxDetailsPage,
-  ConfirmInvoicePage,
   CopayersPage,
   FeedbackCardPage,
   SharePage,
@@ -176,11 +175,11 @@ export const PAGES = [
   SessionLogPage,
   SendFeedbackPage,
   FinishModalPage,
-  NewDesignTourPage,
   TabsPage,
   TxpDetailsPage,
   TxDetailsPage,
   TxpPage,
+  VaultDeletePage,
   WalletSettingsPage,
   WalletNamePage,
   WalletColorPage,
@@ -195,6 +194,7 @@ export const PAGES = [
   WalletTabsChild,
   WalletTabsPage,
   WalletBalancePage,
+  WalletActivityPage,
   WideHeaderPage,
   CardItemPage,
   SlideToAcceptPage

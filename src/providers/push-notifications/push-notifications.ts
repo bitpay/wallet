@@ -63,6 +63,13 @@ export class PushNotificationsProvider {
 
   public handlePushNotifications(): void {
     if (this.usePushNotifications) {
+      this.FCMPlugin.onTokenRefresh().subscribe(token => {
+        if (!this._token) return;
+        this.logger.debug('Refresh and update token for push notifications...');
+        this._token = token;
+        this.enable();
+      });
+
       this.FCMPlugin.onNotification().subscribe(async data => {
         if (!this._token) return;
         this.logger.debug(

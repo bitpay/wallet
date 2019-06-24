@@ -1,17 +1,17 @@
 import { Component } from '@angular/core';
-import { StatusBar } from '@ionic-native/status-bar';
 import { TranslateService } from '@ngx-translate/core';
 import {
+  App,
   Events,
   ModalController,
   NavController,
-  NavParams,
-  Platform
+  NavParams
 } from 'ionic-angular';
 import * as _ from 'lodash';
 import { Logger } from '../../../providers/logger/logger';
 
 // Pages
+import { TabsPage } from '../../tabs/tabs';
 import { ShapeshiftDetailsPage } from './shapeshift-details/shapeshift-details';
 import { ShapeshiftShiftPage } from './shapeshift-shift/shapeshift-shift';
 
@@ -36,9 +36,9 @@ export class ShapeshiftPage {
   public code: string;
   public loading: boolean;
   public error: string;
-  public headerColor: string;
 
   constructor(
+    private app: App,
     private events: Events,
     private externalLinkProvider: ExternalLinkProvider,
     private logger: Logger,
@@ -50,9 +50,7 @@ export class ShapeshiftPage {
     private formBuilder: FormBuilder,
     private onGoingProcessProvider: OnGoingProcessProvider,
     protected translate: TranslateService,
-    private popupProvider: PopupProvider,
-    private platform: Platform,
-    private statusBar: StatusBar
+    private popupProvider: PopupProvider
   ) {
     this.oauthCodeForm = this.formBuilder.group({
       code: [
@@ -63,7 +61,6 @@ export class ShapeshiftPage {
     this.showOauthForm = false;
     this.network = this.shapeshiftProvider.getNetwork();
     this.shifts = { data: {} };
-    this.headerColor = '#0d172c';
   }
 
   ionViewDidLoad() {
@@ -71,9 +68,6 @@ export class ShapeshiftPage {
   }
 
   ionViewWillEnter() {
-    if (this.platform.is('cordova')) {
-      this.statusBar.styleBlackOpaque();
-    }
     if (this.navParams.data.code) {
       this.shapeshiftProvider.getStoredToken((at: string) => {
         at ? this.init() : this.submitOauthCode(this.navParams.data.code);
@@ -86,9 +80,6 @@ export class ShapeshiftPage {
   }
 
   ionViewWillLeave() {
-    if (this.platform.is('cordova')) {
-      this.statusBar.styleDefault();
-    }
     this.events.unsubscribe('bwsEvent', this.bwsEventHandler);
   }
 
@@ -117,7 +108,7 @@ export class ShapeshiftPage {
                 )
                 .then(() => {
                   this.shapeshiftProvider.logout(this.accessToken);
-                  this.navCtrl.popToRoot();
+                  this.app.getRootNavs()[0].setRoot(TabsPage);
                 });
             }
           }
@@ -230,7 +221,7 @@ export class ShapeshiftPage {
     this.externalLinkProvider
       .open(url, optIn, title, message, okText, cancelText)
       .then(() => {
-        this.navCtrl.popToRoot();
+        this.app.getRootNavs()[0].setRoot(TabsPage);
       });
   }
 

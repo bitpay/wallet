@@ -9,10 +9,10 @@ msgstr ""
 "X-Crowdin-Language: zh-CN\n"
 "X-Crowdin-File: template.pot\n"
 "Project-Id-Version: copay\n"
-"Last-Translator: Gustavo Maximiliano Cortez (cmgustavo83)\n"
+"Last-Translator: cmgustavo83\n"
 "Language-Team: Chinese Simplified\n"
 "Language: zh\n"
-"PO-Revision-Date: 2019-06-13 15:09\n"
+"PO-Revision-Date: 2019-03-25 12:48\n"
 
 msgid "(possible double spend)"
 msgstr "（重复支付）"
@@ -41,8 +41,8 @@ msgstr "总数为{{amountAboveMaxSizeStr}}{{coin}} 的交易已被拒绝。超�
 msgid "A total of {{amountBelowFeeStr}} {{coin}} were excluded. These funds come from UTXOs smaller than the network fee provided."
 msgstr "总数为{{amountBelowFeeStr}}{{coin}} 已被拒绝。UTXOs资金少于提供的网络手续费。"
 
-msgid "A total of {{amountStr}} ({{fiatAmount | number:'1.2-2'}} {{currencyIsoCode}}) will be exchanged for {{withdrawalStr}} ({{fiatWithdrawal | number:'1.2-2'}} {{currencyIsoCode}}). ShapeShift fee: {{withdrawalFee}} {{toWallet.coin | uppercase}}"
-msgstr ""
+msgid "A total of {{amountStr}} ({{fiatAmount | number:'1.2-2'}} {{currencyIsoCode}}) will be exchanged for {{withdrawalStr}} ({{fiatWithdrawal | number:'1.2-2'}} {{currencyIsoCode}})."
+msgstr "Tổng cộng {{amountStr}} ({ {fiatAmount | number: '1.2-2'} } {{currencyIsoCode}} ) sẽ được đổi thành { {drawStr }} ({ {fiatWithdrawal | number: '1.2-2'} } {{currencyIsoCode}} )."
 
 msgid "A total of {{fee}} {{coin}} were excluded. The maximum size allowed for a transaction was exceeded."
 msgstr "总数为 {{fee}} {{coin}} 的交易已被拒绝。超过了交易允许的最大额度。"
@@ -80,14 +80,17 @@ msgstr "添加 BitPay 帐户？"
 msgid "Add Contact"
 msgstr "添加联系人"
 
+msgid "Add Memo"
+msgstr "添加备注"
+
 msgid "Add Recipient"
 msgstr "添加收款人"
 
-msgid "Add Wallet"
-msgstr ""
-
 msgid "Add account"
 msgstr "添加帐户"
+
+msgid "Add amount"
+msgstr "添加金额"
 
 msgid "Add as a contact"
 msgstr "添加到联系人"
@@ -96,7 +99,7 @@ msgid "Add funds"
 msgstr "添加资金"
 
 msgid "Add gift cards to your {appName} wallet from brands like Amazon, Delta, Google Play, and Uber."
-msgstr "将礼品卡添加到您的 {appName} 来自亚马逊、德尔塔、谷歌游戏和 uber 等品牌的钱包。"
+msgstr "将礼品卡添加到您的 \"div class=\"notranslate\">0 </div> 来自亚马逊、德尔塔、谷歌游戏和 uber 等品牌的钱包。"
 
 msgid "Add this BitPay account ({{email}})?"
 msgstr "添加该BitPay账户({{email}})?"
@@ -137,6 +140,9 @@ msgstr "所有您的比特币的钱包余额可能无法用于直接支出。"
 msgid "Allow camera access"
 msgstr "允许访问相机"
 
+msgid "Almost done! Let's review."
+msgstr "差不多完成了 ！让我们回顾一下。"
+
 msgid "Alternative currency"
 msgstr "可选货币"
 
@@ -168,7 +174,7 @@ msgid "Approximate Bitcoin network fee to transfer wallet's balance (with normal
 msgstr "转移钱包余额大约需要的比特币网络费用（正常优先级）"
 
 msgid "Archive All {brand} Gift Cards?"
-msgstr "存档所有的 {brand} 礼品卡？"
+msgstr "存档所有的 div class=\"notranslate\">0 </div> 礼品卡？"
 
 msgid "Archive Card"
 msgstr "档案卡"
@@ -194,6 +200,9 @@ msgstr "确定拒绝这笔交易？"
 msgid "Are you sure you want to remove this transaction?"
 msgstr "确定要删除这项交易吗？"
 
+msgid "Are you sure you want to skip it?"
+msgstr "确定跳过？"
+
 msgid "Are you sure?"
 msgstr "是否确认？"
 
@@ -205,12 +214,6 @@ msgstr "平均确认时间"
 
 msgid "Awaiting payment to confirm"
 msgstr "等待付款确认"
-
-msgid "BCH Wallet"
-msgstr ""
-
-msgid "BTC Wallet"
-msgstr ""
 
 msgid "Back up all your wallets before using this function"
 msgstr "在使用此功能之前, 请备份所有钱包"
@@ -226,6 +229,9 @@ msgstr "备份钱包"
 
 msgid "Bad wallet invitation"
 msgstr "坏钱包邀请"
+
+msgid "Balance Hidden"
+msgstr "隐藏余额"
 
 msgid "Basic Wallet"
 msgstr ""
@@ -272,6 +278,15 @@ msgstr "Bitcoin URI"
 msgid "Bitcoin Wallets"
 msgstr "比特币钱包"
 
+msgid "Bitcoin is a currency."
+msgstr "比特币是一种货币。"
+
+msgid "Bitcoin is different - it cannot be safely held with a bank or web service."
+msgstr "比特币是特殊的—它无法被银行或者网络服务安全持有。"
+
+msgid "Bitcoin is secure, digital money."
+msgstr "比特币是安全的数字货币。"
+
 msgid "Bitcoin miner fee:"
 msgstr "比特币矿工费："
 
@@ -314,8 +329,14 @@ msgstr "Calculating send max..."
 msgid "Cancel"
 msgstr "取消"
 
+msgid "Cancel invitation"
+msgstr "取消邀请"
+
 msgid "Canceling Gift Card..."
 msgstr "正在取消礼品卡..."
+
+msgid "Cannot create wallet"
+msgstr "不能创建钱包"
 
 msgid "Cannot join the same wallet more that once"
 msgstr "无法重复加入同一个钱包"
@@ -331,6 +352,9 @@ msgstr ""
 
 msgid "Change Amount"
 msgstr "Thay đổi nhiều"
+
+msgid "Change amount"
+msgstr "更改金额"
 
 msgid "Check the transaction on your wallet details"
 msgstr "在您的钱包详情中核对您的交易"
@@ -433,6 +457,9 @@ msgstr "Copayer 已经表决此花费提议"
 
 msgid "Copayer data mismatch"
 msgstr "Copayer 的数据不匹配"
+
+msgid "Copayer joined"
+msgstr "Copayer 加入"
 
 msgid "Copied"
 msgstr "Đã sao chép"
@@ -539,11 +566,17 @@ msgstr "无法更新交易历史记录"
 msgid "Could not update wallet"
 msgstr "无法更新钱包"
 
-msgid "Create"
+msgid "Create BCH Wallet"
 msgstr ""
 
-msgid "Create a Wallet"
+msgid "Create BTC Wallet"
 msgstr ""
+
+msgid "Create a new wallet"
+msgstr "创建一个新的钱包"
+
+msgid "Create a new wallet to start using this app."
+msgstr "创建一个新钱包开始使用此应用程序。"
 
 msgid "Created"
 msgstr "已创建"
@@ -605,9 +638,6 @@ msgstr "衍生策略"
 msgid "Derivation path"
 msgstr "衍生路径"
 
-msgid "Destination wallet needs to be backed up"
-msgstr ""
-
 msgid "Details"
 msgstr "详情"
 
@@ -617,8 +647,14 @@ msgstr "禁用通知"
 msgid "Disabled"
 msgstr "已禁用"
 
+msgid "Do it later"
+msgstr "以后再做"
+
 msgid "Do not include private key"
 msgstr "不包括私钥"
+
+msgid "Do this later"
+msgstr ""
 
 msgid "Do this later?"
 msgstr ""
@@ -630,7 +666,7 @@ msgid "Don't see your language on Crowdin? Contact the Owner on Crowdin! We'd lo
 msgstr "在 Crowdin 找不到你的语言？请联系 Crowdin 的所有者！我们很乐意支持你的语言。"
 
 msgid "Done"
-msgstr ""
+msgstr "完成"
 
 msgid "Download"
 msgstr "下载"
@@ -689,9 +725,6 @@ msgstr "请输入密码加密你的钱包。"
 msgid "Enter a transaction memo"
 msgstr "输入交易备忘录"
 
-msgid "Enter an email address"
-msgstr ""
-
 msgid "Enter bitcoin address"
 msgstr "您的比特币地址"
 
@@ -724,6 +757,9 @@ msgstr "连接到形状移位时出错"
 
 msgid "Error creating wallet"
 msgstr "创建钱包时出现错误"
+
+msgid "Error deleting addressbook"
+msgstr "删除通讯簿时出错"
 
 msgid "Error deleting entry"
 msgstr "删除条目时出错"
@@ -787,9 +823,6 @@ msgstr "失败"
 
 msgid "Failed to export"
 msgstr "导出失败"
-
-msgid "Featured Brands"
-msgstr ""
 
 msgid "Fee"
 msgstr "费用"
@@ -860,9 +893,6 @@ msgstr "资金将会转移到"
 msgid "GOT IT"
 msgstr "HIỂU RỒI"
 
-msgid "Generate New Address"
-msgstr ""
-
 msgid "Generating .csv file..."
 msgstr "正在生成 .csv 文件..."
 
@@ -914,8 +944,11 @@ msgstr "返回	#"
 msgid "Go back"
 msgstr "上一页"
 
+msgid "Got it"
+msgstr "收到！"
+
 msgid "Have you redeemed all of your {brand} Gift Cards? Archived gift cards will still be accessible in settings."
-msgstr "您是否已兑换所有的 {brand} 礼品卡？存档的礼品卡仍可在设置中访问。"
+msgstr "您是否已兑换所有的 div class=\"notranslate\">0 </div> 礼品卡？存档的礼品卡仍可在设置中访问。"
 
 msgid "Have you redeemed the entire balance of this gift card?"
 msgstr ""
@@ -928,9 +961,6 @@ msgstr "帮助和支持"
 
 msgid "Help and support information is available at the website."
 msgstr "已在网站上提供帮助和支持"
-
-msgid "Hidden"
-msgstr ""
 
 msgid "Hide"
 msgstr "隱藏"
@@ -946,9 +976,6 @@ msgstr "主屏幕"
 
 msgid "How satisfied are you with {{appName}} wallet?"
 msgstr "Làm thế nào bạn hài lòng với {{AppName}}  ví ?"
-
-msgid "However, unconfirmed funds are not allowed for spending with merchants, BitPay Card loads, or BitPay in-app gift card purchases."
-msgstr ""
 
 msgid "I agree to the Terms and certify that I am the beneficial owner of the input assets and the destination address."
 msgstr "本人同意条款，并证明本人是输入资产及目的地地址的实益拥有人。"
@@ -983,11 +1010,14 @@ msgstr ""
 msgid "I've used this card"
 msgstr ""
 
+msgid "If enabled, Bitcoin Cash addresses will be shown using Copay style address, and not the new cashaddr format."
+msgstr "如果启用，比特币现金地址将使用copay样式地址显示，而不是使用新的cashaddr格式。"
+
 msgid "If enabled, wallets will also try to spend unconfirmed funds."
 msgstr "如果启用，钱包将尝试支出未经验证的资金。"
 
-msgid "If there is an issue with this payment, or a refund needs to be made, we will contact you at this address."
-msgstr ""
+msgid "If this device is replaced or this app is deleted, neither you nor BitPay can recover your funds without a backup."
+msgstr "如果更换此设备或删除此app，您和BitPay都无法在没有备份的情况下收回您的资金。"
 
 msgid "If you have funds stored on a website then you should move them into a secure wallet... like this one!"
 msgstr ""
@@ -998,7 +1028,7 @@ msgstr ""
 msgid "If you need to send to \"old\" addresses (like the one you just pasted), and you are SURE those are BCH addresses, you can \"translate\" them using the BCH Translator tool and paste the corresponding address in CashAddr format for that \"old\" address."
 msgstr ""
 
-msgid "Import"
+msgid "If you were using the old desktop version you will need to import your wallets manually."
 msgstr ""
 
 msgid "Import Wallet"
@@ -1006,6 +1036,9 @@ msgstr ""
 
 msgid "Import Words"
 msgstr ""
+
+msgid "Import wallet"
+msgstr "导入钱包"
 
 msgid "Importing Wallet..."
 msgstr "正在导入钱包..."
@@ -1026,9 +1059,6 @@ msgid "Incorrect network address"
 msgstr "网络地址不正确"
 
 msgid "Information"
-msgstr ""
-
-msgid "Inspired by physical wallets, the home view is now clean and more spacious such that all the important details are accessible and summarized in a glance."
 msgstr ""
 
 msgid "Insufficient funds"
@@ -1058,13 +1088,7 @@ msgstr ""
 msgid "Invalid derivation path"
 msgstr "衍生路径无效"
 
-msgid "Invalid derivation path for selected coin"
-msgstr ""
-
 msgid "Invitation Code"
-msgstr ""
-
-msgid "Invoice URL"
 msgstr ""
 
 msgid "Is this correct?"
@@ -1085,14 +1109,17 @@ msgstr "避免重复使用地址是个好主意-这既保护了您的隐私，�
 msgid "It's important that you write your recovery phrase down correctly. If something happens to your wallet, you'll need it to recover your money. Please review and try again."
 msgstr ""
 
-msgid "Join"
-msgstr ""
-
 msgid "Join Shared Wallet"
 msgstr ""
 
+msgid "Join wallet"
+msgstr "加入钱包"
+
 msgid "Joining Wallet..."
 msgstr "正在加入钱包..."
+
+msgid "Just scan the code to pay."
+msgstr "只是扫描代码来支付。"
 
 msgid "Key already associated with an existing wallet"
 msgstr "钥已经关联现有的钱包"
@@ -1136,14 +1163,14 @@ msgstr "Locktime 在进行中。请稍等以创建新的花费提议"
 msgid "Locktime in effect. Please wait to remove this spend proposal"
 msgstr "Locktime 在进行中。请稍等以删除花费提议"
 
-msgid "Log out"
-msgstr ""
-
 msgid "Low Fee"
 msgstr ""
 
 msgid "Low amount inputs"
 msgstr "低额投入"
+
+msgid "Makes sense"
+msgstr "有道理"
 
 msgid "Maximum amount allowed is {{max}}"
 msgstr "可用最大金额是{{max}}"
@@ -1180,9 +1207,6 @@ msgstr ""
 
 msgid "More"
 msgstr "更多"
-
-msgid "More Brands"
-msgstr ""
 
 msgid "Moved"
 msgstr "已调动"
@@ -1229,16 +1253,19 @@ msgstr "网络费用"
 msgid "Network error"
 msgstr "网络错误"
 
-msgid "New copayer"
-msgstr ""
+msgid "New Proposal"
+msgstr "新建议"
 
-msgid "New look and feel"
+msgid "New copayer"
 msgstr ""
 
 msgid "New payment proposal"
 msgstr ""
 
 msgid "New payment received"
+msgstr ""
+
+msgid "New {appName} desktop platform"
 msgstr ""
 
 msgid "Next"
@@ -1249,6 +1276,9 @@ msgstr "无"
 
 msgid "No Private Key"
 msgstr ""
+
+msgid "No backup, no bitcoin."
+msgstr "没有备份，没有比特币。"
 
 msgid "No contacts yet"
 msgstr "然而没有联系人"
@@ -1298,8 +1328,8 @@ msgstr ""
 msgid "Not enough funds for fee"
 msgstr "费用的资金不足"
 
-msgid "Not enough funds for fee {{shiftFee}}"
-msgstr ""
+msgid "Not even BitPay can access it."
+msgstr "甚至没有 BitPay 可以访问它。"
 
 msgid "Not including the private key allows to check the wallet balance, transaction history, and create spend proposals from the export. However, does not allow to approve (sign) proposals, so funds will not be accessible from the export."
 msgstr ""
@@ -1331,14 +1361,8 @@ msgstr "确认完毕时通知我。"
 msgid "Notify me when transactions are confirmed"
 msgstr "交易确认完毕时通知我"
 
-msgid "Now it's time for you to create wallets to store your funds into."
-msgstr ""
-
 msgid "OK"
 msgstr "好的"
-
-msgid "OPEN IN BROWSER"
-msgstr ""
 
 msgid "Off"
 msgstr "关闭"
@@ -1348,6 +1372,9 @@ msgstr "还行"
 
 msgid "On"
 msgstr "开启"
+
+msgid "On this screen you can see all your wallets, accounts, and assets."
+msgstr "在此屏幕上您可以看到您的钱包、 帐户和资产。"
 
 msgid "Only redeemable on Mercado Livre (Brazil)"
 msgstr "只能在Mercado Livre（巴西）上赎回"
@@ -1427,6 +1454,9 @@ msgstr "支付提议"
 msgid "Payment Published"
 msgstr "支付已发布"
 
+msgid "Payment Received"
+msgstr "收到付款"
+
 msgid "Payment Rejected"
 msgstr "支付被拒绝"
 
@@ -1481,9 +1511,6 @@ msgstr "请输入钱包恢复短语"
 msgid "Please enter your PIN"
 msgstr "请输入你的PIN码"
 
-msgid "Please review"
-msgstr ""
-
 msgid "Please upgrade the app to perform this action"
 msgstr ""
 
@@ -1511,18 +1538,6 @@ msgstr "正在准备备份..."
 msgid "Previous"
 msgstr ""
 
-msgid "Price Chart"
-msgstr ""
-
-msgid "Print"
-msgstr ""
-
-msgid "Print Card"
-msgstr ""
-
-msgid "Printed Gift Card Required"
-msgstr ""
-
 msgid "Priority"
 msgstr "优先"
 
@@ -1541,8 +1556,17 @@ msgstr "私钥加密。输入密码"
 msgid "Private key is encrypted, cannot sign"
 msgstr "私钥已加密，无法签名"
 
+msgid "Proposal Accepted"
+msgstr "提案被接受"
+
 msgid "Proposal Created"
 msgstr "建议创建"
+
+msgid "Proposal Deleted"
+msgstr "建议删除"
+
+msgid "Proposal Rejected"
+msgstr "被拒绝的建议"
 
 msgid "Proposal created"
 msgstr "提议已创建"
@@ -1561,6 +1585,9 @@ msgstr "二维码"
 
 msgid "Quick and easy setup"
 msgstr ""
+
+msgid "Quick review!"
+msgstr "快速审查 ！"
 
 msgid "Random"
 msgstr "随机"
@@ -1616,9 +1643,6 @@ msgstr "正在重新创建的钱包..."
 msgid "Redeem Now"
 msgstr "立即兑现"
 
-msgid "Refund Email"
-msgstr ""
-
 msgid "Reject Payment Proposal"
 msgstr "拒绝支付提议"
 
@@ -1673,8 +1697,14 @@ msgstr ""
 msgid "Requires multiple devices (most secure)"
 msgstr ""
 
+msgid "Restore from backup"
+msgstr "从备份中还原"
+
 msgid "Retrieving inputs information..."
 msgstr "正在获取输入信息..."
+
+msgid "Retry"
+msgstr "重试"
 
 msgid "Retry camera"
 msgstr "重试相机"
@@ -1702,6 +1732,9 @@ msgstr "重新扫描"
 
 msgid "Scanning Wallet funds..."
 msgstr "正在扫描钱包资金..."
+
+msgid "Scanning funds"
+msgstr "正在扫描资金..."
 
 msgid "Search Transactions"
 msgstr "搜索交易"
@@ -1753,6 +1786,9 @@ msgstr "发送反馈意见"
 
 msgid "Send from"
 msgstr "从发送"
+
+msgid "Send logs by email"
+msgstr "通过电子邮件发送日志"
 
 msgid "Send payment to this address"
 msgstr "付款到此地址"
@@ -1818,7 +1854,7 @@ msgid "ShapeShift max limit reached"
 msgstr "达到ShapeShift最大限额"
 
 msgid "ShapeShift requires a minimum value of {{min}}"
-msgstr "ShapeShift转换需要至少{{min}}"
+msgstr "形状转换需要 \"div class=\"notranslate\">0 的最小值 </div>"
 
 msgid "Share"
 msgstr "共享"
@@ -1827,9 +1863,6 @@ msgid "Share Address"
 msgstr "共享地址"
 
 msgid "Share Claim Code"
-msgstr ""
-
-msgid "Share logs"
 msgstr ""
 
 msgid "Share the love by inviting your friends."
@@ -1871,6 +1904,9 @@ msgstr "签名被服务器拒绝"
 msgid "Signing transaction..."
 msgstr "交易签名中。。。"
 
+msgid "Since only you control your money, you’ll need to save your recovery phrase in case this app is deleted."
+msgstr "因为只有你控制你的钱, 你需要保存你的恢复短语的情况下, 这个应用程序被删除。"
+
 msgid "Single address"
 msgstr "单个地址"
 
@@ -1888,9 +1924,6 @@ msgstr "滑动支付"
 
 msgid "Slide to send"
 msgstr "滑动发送"
-
-msgid "Something goes wrong..."
-msgstr ""
 
 msgid "Specify Recovery Phrase"
 msgstr "指定恢复短语"
@@ -1910,6 +1943,9 @@ msgstr "这笔交易将需要非常高的比特币网络手续费"
 msgid "Status"
 msgstr "状态"
 
+msgid "Suggested by Merchant"
+msgstr "商户建议"
+
 msgid "Super Economy"
 msgstr "超级经济"
 
@@ -1925,11 +1961,11 @@ msgstr "Sweep 纸钱包"
 msgid "Sweeping Wallet..."
 msgstr "正在导出钱包"
 
-msgid "Swipe to Send/Receive"
-msgstr ""
-
 msgid "THIS ACTION CANNOT BE REVERSED"
 msgstr "此操作无法撤消"
+
+msgid "Take control of your money, get started with bitcoin."
+msgstr "控制好你的钱，开始使用比特币。"
 
 msgid "Tap and hold to show"
 msgstr "点击并按住以显示"
@@ -1939,6 +1975,9 @@ msgstr ""
 
 msgid "Tap to recreate"
 msgstr "點擊此以重新創建"
+
+msgid "Tap to retry"
+msgstr "点击以重试"
 
 msgid "Temporarily Unavailable"
 msgstr "暂时不可用"
@@ -1976,17 +2015,14 @@ msgstr "衍生路径"
 msgid "The destination wallet is not backed up. Please, complete the backup process before continue."
 msgstr "目标钱包没有备份。请在继续之前完成备份。"
 
+msgid "The exchange rate changes with the market."
+msgstr "与市场汇率的变化。"
+
 msgid "The higher the fee, the greater the incentive a miner has to include that transaction in a block. Current fees are determined based on network load and the selected policy."
 msgstr "越高的费用、 更大的激励矿工有要在一个块中包含该事务。当前的费用是基于网络负载和选定的策略来确定的。"
 
 msgid "The information you are about to share/export may contain sensitive data such us wallet IDs, addresses, balances, etc. Please be sure you trust the person or entity with whom you are sharing this information."
 msgstr "您将要共享/导出的信息可能包含敏感数据，如钱包ID、地址、余额等。请确保您信任与您共享此信息的人或实体。"
-
-msgid "The invoice is no longer receiving payments."
-msgstr ""
-
-msgid "The key on the response is not trusted for transactions on the 'test' network"
-msgstr ""
 
 msgid "The password of the recovery phrase (if set)"
 msgstr "恢复短语的密码 (如已设置)"
@@ -2042,6 +2078,9 @@ msgstr "显然我们做错了什么。我们怎样才能提高您的用户体验
 msgid "This app is not available for your device."
 msgstr "此app不适用于您的设备。"
 
+msgid "This app stores your bitcoin with cutting-edge security."
+msgstr "此应用程序商店你比特币与尖端的安全。"
+
 msgid "This bitcoin payment request has expired."
 msgstr "这比特币付款请求已过期。"
 
@@ -2066,9 +2105,6 @@ msgstr ""
 msgid "This password is only for this device, and it cannot be recovered. To avoid losing funds, write your password down."
 msgstr "此密码仅适用于此设备并且无法恢复。为了避免丢失资金，请写下你的密码"
 
-msgid "This payment requires a miner fee of:"
-msgstr ""
-
 msgid "This recovery phrase was created with a password. To recover this wallet both the recovery phrase and password are needed."
 msgstr "此恢复短语是用密码创建。为了恢复此钱包，需要恢复短语和密码。"
 
@@ -2083,9 +2119,6 @@ msgstr ""
 
 msgid "This wallet is not registered at the given Bitcore Wallet Service (BWS). You can recreate it from the local information."
 msgstr "此钱包不在给定的 Bitcore Wallet Service (BWS) 注册。你可以从本地信息重新创建它。"
-
-msgid "This wallet is waiting for authorized users/devices to join."
-msgstr ""
 
 msgid "Timeline"
 msgstr "时间轴"
@@ -2228,6 +2261,9 @@ msgstr "更新交易历史记录。请等待。"
 msgid "Urgent"
 msgstr "非常快"
 
+msgid "Use Bitcoin Cash Copay Style Addresses"
+msgstr "使用比特币现金Copay格式地址"
+
 msgid "Use Unconfirmed Funds"
 msgstr "使用未经确认的资金"
 
@@ -2270,9 +2306,6 @@ msgstr "查看钱包使用条款"
 msgid "View all addresses"
 msgstr "查看所有地址"
 
-msgid "View complete Terms of Use"
-msgstr ""
-
 msgid "View on blockchain"
 msgstr "在 blockchain 上查看"
 
@@ -2282,13 +2315,19 @@ msgstr "访问ShapeShift.io"
 msgid "WARNING: Key derivation is not working on this device/wallet. Actions cannot be performed on this wallet."
 msgstr "警告︰此设备/钱包无法运行钥匙衍生。无法在此钱包上执行操作。"
 
+msgid "Waiting for copayers"
+msgstr "正在等待 copayers"
+
+msgid "Waiting..."
+msgstr "等待中..."
+
 msgid "Wallet Addresses"
 msgstr "钱包地址"
 
 msgid "Wallet Color"
 msgstr "钱包颜色"
 
-msgid "Wallet Incomplete"
+msgid "Wallet Configuration"
 msgstr ""
 
 msgid "Wallet Information"
@@ -2314,6 +2353,9 @@ msgstr "钱包已存在{{nameCase}}"
 
 msgid "Wallet complete"
 msgstr ""
+
+msgid "Wallet created"
+msgstr "创建的钱包"
 
 msgid "Wallet incomplete and broken"
 msgstr "钱包不完整和损坏"
@@ -2357,14 +2399,14 @@ msgstr "錢包恢復短語不存在"
 msgid "Wallet service not found"
 msgstr "找不到 Wallet Service"
 
-msgid "Wallets"
-msgstr ""
-
 msgid "Warning!"
 msgstr "警告！​​​​​"
 
 msgid "Warning: this transaction has unconfirmed inputs"
 msgstr "警告︰此交易有未经确认的输入"
+
+msgid "Watch Out!"
+msgstr "小心 ！"
 
 msgid "We appreciate your review"
 msgstr ""
@@ -2384,9 +2426,6 @@ msgstr ""
 msgid "Website"
 msgstr "网站"
 
-msgid "What changed?"
-msgstr ""
-
 msgid "What do you call this wallet?"
 msgstr "你叫这个钱包是什么？"
 
@@ -2400,9 +2439,6 @@ msgid "Where would you like to receive your Amazon gift card purchase receipts?"
 msgstr ""
 
 msgid "Why does this require authentication?"
-msgstr ""
-
-msgid "Why is my transaction unconfirmed?"
 msgstr ""
 
 msgid "Why?"
@@ -2438,10 +2474,16 @@ msgstr ""
 msgid "Yes"
 msgstr "是"
 
-msgid "You are trying to send more funds than you have available. Make sure you do not have funds locked by pending transaction proposals."
+msgid "Yes, skip"
+msgstr "是的，请跳过"
+
+msgid "You are ready!"
 msgstr ""
 
-msgid "You are trying to send more funds than you have available. Make sure you do not have funds locked by pending transaction proposals. You can also try with a lower amount or send max."
+msgid "You are trying to send ({amount} {coin}) more than what your wallet contains. Please enter a lower amount or send max."
+msgstr ""
+
+msgid "You can back up your wallet later from your wallet settings."
 msgstr ""
 
 msgid "You can continue to view your archived cards here if you need to access them."
@@ -2450,32 +2492,35 @@ msgstr ""
 msgid "You can make contributions by signing up on our Crowdin community translation website. We’re looking forward to hearing from you!"
 msgstr "您可以通过签约我们 Crowdin 社区翻译网站作出贡献。我们期待你的听力 ！"
 
-msgid "You can now send or receive a payment directly from the home view by sliding your wallet to the left or right."
-msgstr ""
-
 msgid "You can scan bitcoin addresses, payment requests, paper wallets, and more."
 msgstr "您可以扫描比特币地址、 付款申请、 纸钱包和更多。"
 
 msgid "You can see the latest developments and contribute to this open source app by visiting our project on GitHub."
 msgstr "你可以看到最新的事态发展和贡献这个开放源码应用程序通过在 GitHub 上访问我们的项目。"
 
+msgid "You can spend bitcoin at millions of websites and stores worldwide."
+msgstr "你可以花比特币在数以百万计的网站和世界各地的商店。"
+
 msgid "You can still export it from \"Export Wallet\" option."
 msgstr ""
+
+msgid "You can trade it for other currencies like US Dollars, Euros, or Pounds."
+msgstr "你可以换其他货币，如美元、 欧元或英镑。"
 
 msgid "You can use your Mercado Livre gift cards on your Mercado Pago account for everyday expenses like utilities and metro rides."
 msgstr ""
 
+msgid "You control your bitcoin."
+msgstr "您可以控制您的比特币。"
+
 msgid "You could sign the transaction later in your wallet details"
 msgstr "稍后你可以在你的钱包详细信息中签下这笔交易。"
-
-msgid "You do not have enough confirmed funds to make this payment. Wait for your pending transactions to confirm or enable \"Use unconfirmed funds\" in Advanced Settings."
-msgstr ""
 
 msgid "You should not set a fee higher than {{maxFeeRecommended}} satoshis/byte."
 msgstr "你不应设置高于 {{maxFeeRecommended}} satoshis/字节 的交易手续费。"
 
-msgid "Your BitPay Card is ready. Add funds to your card to start using it at stores."
-msgstr ""
+msgid "Your BitPay Card is ready. Add funds to your card to start using it at stores and ATMs worldwide."
+msgstr "您的 BitPay 卡是准备好了。添加到您的卡开始使用它在商店和自动取款机全球基金。"
 
 msgid "Your extended private keys are all that is needed to access your bitcoin funds. Be sure to protect your private keys and store them only on secure devices. BitPay does not have access to your private keys, so you alone are responsible for your keys. If you share key access with external services, you take responsibility for the risk of theft or breach. Only advanced users should handle extended private keys directly."
 msgstr "访问您的比特币基金只需要的是您的扩展私钥。请确保保护好您的私钥，并将它们存储在安全的设备上。BitPay无法访问您的私钥，因此您自己负责您的密钥。如果您与外部服务共享密钥访问，则您将对被盗或违规的风险承担责任。只有高级用户才能直接处理扩展的私钥。"
@@ -2494,6 +2539,12 @@ msgstr ""
 
 msgid "Your wallet address is similar to a bank account number. You can add funds to your wallet by withdrawing funds you may have stored on an exchange to your wallet address. Or other {coinName} users can send you money by scanning your QR code."
 msgstr ""
+
+msgid "Your wallet is backed up!"
+msgstr ""
+
+msgid "Your wallet is never saved to cloud storage or standard device backups."
+msgstr "你的钱包是永远不会保存到云存储或标准设备备份。"
 
 msgid "Your wallet key will be encrypted. The encrypt password cannot be recovered. Be sure to write it down."
 msgstr "你的钱包密钥将被加密。加密密码无法恢复加密密码。请务必把它写下来。"
@@ -2525,9 +2576,6 @@ msgstr "准备中..."
 msgid "{appName} BCH wallets use the CashAddr format by default"
 msgstr ""
 
-msgid "{displayName} requires you to present a printed gift card at redemption."
-msgstr ""
-
 msgid "{{appName}} depends on Bitcore Wallet Service (BWS) for blockchain information, networking and Copayer synchronization. The default configuration points to https://bws.bitpay.com (BitPay's public BWS instance)."
 msgstr "{{appName}}依赖Bitcore Wallet Service(BWS)进行区块链信息、网络和复制层同步。默认配置指向https：/bws.bitpay.com(BitPay's public BWS instance)。"
 
@@ -2545,6 +2593,9 @@ msgstr ""
 
 msgid "{{updatingTxHistoryProgress}} transactions downloaded"
 msgstr "下载的 {{updatingTxHistoryProgress}} 交易"
+
+msgid "{{wallet.credentials.m}}-of-{{wallet.credentials.n}}"
+msgstr "{{wallet.credentials.m}}的{{wallet.credentials.n}}"
 
 msgid "{{wallet.m}}-of-{{wallet.n}}"
 msgstr "{{wallet.m}}{{wallet.n}}"

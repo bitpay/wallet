@@ -6,9 +6,8 @@ import { Logger } from '../../../providers/logger/logger';
 // providers
 import { ActionSheetProvider } from '../../../providers/action-sheet/action-sheet';
 import { ConfigProvider } from '../../../providers/config/config';
-import { DerivationPathHelperProvider } from '../../../providers/derivation-path-helper/derivation-path-helper';
 import { ExternalLinkProvider } from '../../../providers/external-link/external-link';
-import { KeyProvider } from '../../../providers/key/key';
+import { PersistenceProvider } from '../../../providers/persistence/persistence';
 import { ProfileProvider } from '../../../providers/profile/profile';
 import { TouchIdProvider } from '../../../providers/touchid/touchid';
 import { WalletProvider } from '../../../providers/wallet/wallet';
@@ -37,9 +36,9 @@ export class WalletSettingsPage {
   public touchIdEnabled: boolean;
   public touchIdPrevValue: boolean;
   public touchIdAvailable: boolean;
-  public derivationStrategy: string;
-  public deleted: boolean;
+  public deleted: boolean = false;
   private config;
+  public notVaultWallet: boolean;
 
   constructor(
     private profileProvider: ProfileProvider,
@@ -52,22 +51,16 @@ export class WalletSettingsPage {
     private touchIdProvider: TouchIdProvider,
     private translate: TranslateService,
     private actionSheetProvider: ActionSheetProvider,
-    private keyProvider: KeyProvider,
-    private derivationPathHelperProvider: DerivationPathHelperProvider
-  ) {
-    this.deleted = false;
-  }
+    private persistenceProvider: PersistenceProvider
+  ) {}
 
   ionViewDidLoad() {
     this.logger.info('Loaded:  WalletSettingsPage');
     this.wallet = this.profileProvider.getWallet(this.navParams.data.walletId);
-    this.derivationStrategy = this.derivationPathHelperProvider.getDerivationStrategy(
-      this.wallet.credentials.rootPath
-    );
-    this.canSign = this.wallet.canSign;
+    this.canSign = this.wallet.canSign();
     this.needsBackup = this.wallet.needsBackup;
     this.hiddenBalance = this.wallet.balanceHidden;
-    this.encryptEnabled = this.wallet.isPrivKeyEncrypted;
+    this.encryptEnabled = this.walletProvider.isEncrypted(this.wallet);
     this.touchIdProvider.isAvailable().then((isAvailable: boolean) => {
       this.touchIdAvailable = isAvailable;
     });
@@ -83,6 +76,10 @@ export class WalletSettingsPage {
     ) {
       this.deleted = true;
     }
+    this.persistenceProvider.getVault().then(vault => {
+      this.notVaultWallet =
+        !vault || !vault.walletIds.includes(this.wallet.credentials.walletId);
+    });
   }
 
   public hiddenBalanceChange(): void {
@@ -95,13 +92,13 @@ export class WalletSettingsPage {
     if (!this.wallet) return;
     const val = this.encryptEnabled;
 
-    if (val && !this.wallet.isPrivKeyEncrypted) {
+    if (val && !this.walletProvider.isEncrypted(this.wallet)) {
       this.logger.debug('Encrypting private key for', this.wallet.name);
-      this.keyProvider
-        .encrypt(this.wallet.credentials.keyId)
+      this.walletProvider
+        .encrypt([].concat(this.wallet))
         .then(() => {
           this.profileProvider.updateCredentials(
-            JSON.parse(this.wallet.toString())
+            JSON.parse(this.wallet.export())
           );
           this.logger.debug('Wallet encrypted');
         })
@@ -110,12 +107,12 @@ export class WalletSettingsPage {
           const title = this.translate.instant('Could not encrypt wallet');
           this.showErrorInfoSheet(err, title);
         });
-    } else if (!val && this.wallet.isPrivKeyEncrypted) {
-      this.keyProvider
-        .decrypt(this.wallet.credentials.keyId)
+    } else if (!val && this.walletProvider.isEncrypted(this.wallet)) {
+      this.walletProvider
+        .decrypt([].concat(this.wallet))
         .then(() => {
           this.profileProvider.updateCredentials(
-            JSON.parse(this.wallet.toString())
+            JSON.parse(this.wallet.export())
           );
           this.logger.debug('Wallet decrypted');
         })
@@ -186,16 +183,9 @@ export class WalletSettingsPage {
   }
 
   public openBackupSettings(): void {
-    if (this.derivationStrategy == 'BIP45') {
-      this.navCtrl.push(WalletExportPage, {
-        walletId: this.wallet.credentials.walletId,
-        showNoPrivKeyOpt: true
-      });
-    } else {
-      this.navCtrl.push(BackupKeyPage, {
-        walletId: this.wallet.credentials.walletId
-      });
-    }
+    this.navCtrl.push(BackupKeyPage, {
+      walletId: this.wallet.credentials.walletId
+    });
   }
 
   public openWalletInformation(): void {
@@ -210,8 +200,7 @@ export class WalletSettingsPage {
   }
   public openExportWallet(): void {
     this.navCtrl.push(WalletExportPage, {
-      walletId: this.wallet.credentials.walletId,
-      showNoPrivKeyOpt: false
+      walletId: this.wallet.credentials.walletId
     });
   }
   public openWalletServiceUrl(): void {

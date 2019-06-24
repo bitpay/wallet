@@ -19,9 +19,16 @@ page-proposals {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        .wallet-title {
+        .wallet-icon {
           display: flex;
           align-items: center;
+          .item-img {
+            margin-right: 1rem;
+            .icon-wallet {
+              height: 25px;
+              width: 25px;
+            }
+          }
           .name {
             font-weight: 400;
           }

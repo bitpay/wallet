@@ -1,6 +1,5 @@
-import { Component, NgZone } from '@angular/core';
+import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
-import { ActionSheetProvider } from '../../../../providers';
 import { CardConfig } from '../../../../providers/gift-card/gift-card.types';
 import { AmountPage } from '../../../send/amount/amount';
 import { ConfirmCardPurchasePage } from '../confirm-card-purchase/confirm-card-purchase';
@@ -12,28 +11,11 @@ import { ConfirmCardPurchasePage } from '../confirm-card-purchase/confirm-card-p
 export class BuyCardPage {
   amount: number;
   cardConfig: CardConfig;
-  printAlertShown = false;
 
-  constructor(
-    private actionSheetProvider: ActionSheetProvider,
-    private nav: NavController,
-    private navParams: NavParams,
-    private zone: NgZone
-  ) {}
+  constructor(private nav: NavController, private navParams: NavParams) {}
 
   async ngOnInit() {
     this.cardConfig = this.navParams.get('cardConfig');
-  }
-
-  ionViewWillEnter() {
-    if (this.cardConfig.printRequired && !this.printAlertShown) {
-      this.printAlertShown = true;
-      this.actionSheetProvider
-        .createInfoSheet('print-required', {
-          displayName: this.cardConfig.displayName
-        })
-        .present();
-    }
   }
 
   cancel() {
@@ -51,7 +33,7 @@ export class BuyCardPage {
   }
 
   onAmountChange(amount: number) {
-    this.zone.run(() => (this.amount = amount));
+    this.amount = amount;
   }
 
   onAmountClick() {

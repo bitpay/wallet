@@ -47,12 +47,6 @@ describe('CreateWalletPage', () => {
         account: 0
       };
 
-      spyOn(
-        instance.derivationPathHelperProvider,
-        'isValidDerivationPathCoin'
-      ).and.returnValue(true);
-
-      instance.coin = 'btc';
       instance.createForm.value.walletName = 'test';
       instance.createForm.value.myName = 'test';
       instance.createForm.value.requiredCopayers = 2;

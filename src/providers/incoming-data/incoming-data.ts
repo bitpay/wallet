@@ -1,14 +1,15 @@
+// tslint:disable-next-line:no-var-requires
+const CWC = require('crypto-wallet-core').default;
+
 import { Injectable } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Events } from 'ionic-angular';
 import { Logger } from '../../providers/logger/logger';
 
 // providers
-import { Network } from '../../providers/persistence/persistence';
 import { ActionSheetProvider } from '../action-sheet/action-sheet';
 import { AppProvider } from '../app/app';
 import { BwcProvider } from '../bwc/bwc';
-import { InvoiceProvider } from '../invoice/invoice';
 import { PayproProvider } from '../paypro/paypro';
 import { Coin } from '../wallet/wallet';
 
@@ -28,8 +29,7 @@ export class IncomingDataProvider {
     private payproProvider: PayproProvider,
     private logger: Logger,
     private appProvider: AppProvider,
-    private translate: TranslateService,
-    private invoiceProvider: InvoiceProvider
+    private translate: TranslateService
   ) {
     this.logger.debug('IncomingDataProvider initialized');
   }
@@ -64,10 +64,6 @@ export class IncomingDataProvider {
     return !!/^(bitcoin|bitcoincash|bchtest)?:\?r=[\w+]/.exec(data);
   }
 
-  private isValidBitPayInvoice(data: string): boolean {
-    return !!/https:\/\/(www.)?(test.)?bitpay.com\/invoice\/\w+/.exec(data);
-  }
-
   private isValidBitcoinUri(data: string): boolean {
     data = this.sanitizeUri(data);
     return !!this.bwcProvider.getBitcore().URI.isValid(data);
@@ -86,9 +82,6 @@ export class IncomingDataProvider {
   }
 
   private isValidPlainUrl(data: string): boolean {
-    if (this.isValidBitPayInvoice(data)) {
-      return false;
-    }
     data = this.sanitizeUri(data);
     return !!/^https?:\/\//.test(data);
   }
@@ -111,6 +104,12 @@ export class IncomingDataProvider {
     return !!(
       this.bwcProvider.getBitcoreCash().Address.isValid(data, 'livenet') ||
       this.bwcProvider.getBitcoreCash().Address.isValid(data, 'testnet')
+    );
+  }
+
+  private isValidEthereumAddress(data: string): boolean {
+    return !!(
+      CWC.validation.validateAddress('ETH', 'livenet', data)
     );
   }
 
@@ -175,37 +174,6 @@ export class IncomingDataProvider {
     data = decodeURIComponent(data.replace(/bitcoin(cash)?:\?r=/, ''));
 
     this.goToPayPro(data, coin);
-  }
-
-  private async handleBitPayInvoice(data: string) {
-    this.logger.debug('Incoming-data: Handling bitpay invoice');
-    const testStr: boolean =
-      data.indexOf('test.bitpay.com') > -1 ? true : false;
-    const invoiceId: string = data.replace(
-      /https:\/\/(www.)?(test.)?bitpay.com\/invoice\//,
-      ''
-    );
-    this.invoiceProvider.credentials.NETWORK = testStr
-      ? Network.testnet
-      : Network.livenet;
-    this.invoiceProvider.setCredentials();
-    const invoiceResponse = await this.invoiceProvider
-      .getBitPayInvoiceData(invoiceId)
-      .catch(err => {
-        throw this.logger.error(err);
-      });
-    const { invoice, org, buyer } = invoiceResponse;
-    const stateParams = {
-      invoiceData: invoice,
-      invoiceId,
-      invoiceName: org.name,
-      email: buyer ? buyer.email : null
-    };
-    let nextView = {
-      name: 'ConfirmInvoicePage',
-      params: stateParams
-    };
-    this.events.publish('IncomingDataRedir', nextView);
   }
 
   private handleBitcoinUri(data: string, redirParams?: RedirParams): void {
@@ -316,6 +284,25 @@ export class IncomingDataProvider {
     }
   }
 
+  private handlePlainEthereumAddress(
+    data: string,
+    redirParams?: RedirParams
+  ): void {
+    this.logger.debug('Incoming-data: Ethereum plain address');
+    const coin = Coin.ETH;
+    if (redirParams && redirParams.activePage === 'ScanPage') {
+      this.showMenu({
+        data,
+        type: 'ethereumAddress',
+        coin
+      });
+    } else if (redirParams && redirParams.amount) {
+      this.goSend(data, redirParams.amount, '', coin);
+    } else {
+      this.goToAmountPage(data, coin);
+    }
+  }
+
   private goToImportByPrivateKey(data: string): void {
     this.logger.debug('Incoming-data (redirect): QR code export feature');
 
@@ -400,13 +387,8 @@ export class IncomingDataProvider {
   }
 
   public redir(data: string, redirParams?: RedirParams): boolean {
-    //  Handling of a bitpay invoice url
-    if (this.isValidBitPayInvoice(data)) {
-      this.handleBitPayInvoice(data);
-      return true;
-
-      // Payment Protocol with non-backwards-compatible request
-    } else if (this.isValidPayProNonBackwardsCompatible(data)) {
+    // Payment Protocol with non-backwards-compatible request
+    if (this.isValidPayProNonBackwardsCompatible(data)) {
       this.handlePayProNonBackwardsCompatible(data);
       return true;
 
@@ -438,6 +420,11 @@ export class IncomingDataProvider {
       // Plain Address (Bitcoin Cash)
     } else if (this.isValidBitcoinCashAddress(data)) {
       this.handlePlainBitcoinCashAddress(data, redirParams);
+      return true;
+
+      // Plain Address (Ethereum)
+    } else if (this.isValidEthereumAddress(data)) {
+      this.handlePlainEthereumAddress(data, redirParams);
       return true;
 
       // Coinbase
@@ -488,13 +475,7 @@ export class IncomingDataProvider {
 
   public parseData(data: string): any {
     if (!data) return;
-    if (this.isValidBitPayInvoice(data)) {
-      return {
-        data,
-        type: 'InvoiceUri',
-        title: this.translate.instant('Invoice URL')
-      };
-    } else if (this.isValidPayProNonBackwardsCompatible(data)) {
+    if (this.isValidPayProNonBackwardsCompatible(data)) {
       return {
         data,
         type: 'PayPro',
@@ -547,6 +528,14 @@ export class IncomingDataProvider {
         data,
         type: 'BitcoinCashAddress',
         title: this.translate.instant('Bitcoin Cash Address')
+      };
+
+       // Plain Address (Ethereum)
+    } else if (this.isValidEthereumAddress(data)) {
+      return {
+        data,
+        type: 'EthereumAddress',
+        title: this.translate.instant('Ethereum Address')
       };
 
       // Coinbase

@@ -1,28 +1,24 @@
 page-add {
   .list-button {
+    margin-top: 1rem;
     padding-top: 10px;
     padding-bottom: 10px;
-
-    .item-title {
-      color: black;
-      font-size: 18px;
-      font-weight: 500;
+    background-color: none;
+    .item-inner {
+      border: none !important;
     }
-
-    .item-subtitle {
-      color: black;
-      font-size: 16px;
-      white-space: normal;
+  }
+  .item-title {
+    font-weight: bold;
+  }
+  .join-icon {
+    img {
+      padding: 6px;
     }
-
-    ion-icon.item-icon {
-      margin-left: 3px;
-
-      img {
-        $icon-dimension: 40px;
-        height: $icon-dimension;
-        width: $icon-dimension;
-      }
+  }
+  .import-icon {
+    img {
+      padding: 0px;
     }
   }
 }

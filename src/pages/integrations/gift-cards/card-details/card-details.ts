@@ -5,7 +5,7 @@ import {
   transition,
   trigger
 } from '@angular/animations';
-import { Component, ViewChild } from '@angular/core';
+import { Component } from '@angular/core';
 import { SocialSharing } from '@ionic-native/social-sharing';
 import { Events, NavController, NavParams } from 'ionic-angular';
 import { take } from 'rxjs/operators';
@@ -21,7 +21,6 @@ import {
   GiftCard
 } from '../../../../providers/gift-card/gift-card.types';
 import { PlatformProvider } from '../../../../providers/platform/platform';
-import { PrintableCardComponent } from './printable-card/printable-card';
 @Component({
   selector: 'card-details-page',
   templateUrl: 'card-details.html',
@@ -44,10 +43,6 @@ import { PrintableCardComponent } from './printable-card/printable-card';
 export class CardDetailsPage {
   public card: GiftCard;
   public cardConfig: CardConfig;
-  ClaimCodeType = ClaimCodeType;
-
-  @ViewChild(PrintableCardComponent)
-  printableCard: PrintableCardComponent;
 
   constructor(
     private actionSheetProvider: ActionSheetProvider,
@@ -117,13 +112,6 @@ export class CardDetailsPage {
     );
   }
 
-  showBarcode() {
-    return (
-      this.cardConfig &&
-      this.cardConfig.defaultClaimCodeType === ClaimCodeType.barcode
-    );
-  }
-
   async archive() {
     await this.giftCardProvider.archiveCard(this.card);
     this.nav.pop();
@@ -167,24 +155,7 @@ export class CardDetailsPage {
     const redeemUrl = `${this.cardConfig.redeemUrl}${this.card.claimCode}`;
     this.cardConfig.redeemUrl
       ? this.externalLinkProvider.open(redeemUrl)
-      : this.claimManually();
-  }
-
-  claimManually() {
-    this.cardConfig.printRequired
-      ? this.print()
       : this.copyCode(this.card.claimCode);
-  }
-
-  print() {
-    this.platformProvider.isCordova ? this.printCordova() : window.print();
-  }
-
-  printCordova() {
-    const image = this.printableCard.getPrintableImage();
-    this.platformProvider.isAndroid
-      ? this.openExternalLink(this.card.claimLink)
-      : this.socialSharing.share(null, 'gift-card', image);
   }
 
   viewRedemptionCode() {
@@ -203,12 +174,10 @@ export class CardDetailsPage {
     const showShare =
       this.platformProvider.isCordova &&
       (this.card.claimLink || this.card.claimCode);
-    const hidePrint = !this.card.claimLink && this.platformProvider.isAndroid;
     const sheet = this.actionSheetProvider.createOptionsSheet(
       'gift-card-options',
       {
         card: this.card,
-        hidePrint,
         showShare
       }
     );
@@ -223,8 +192,6 @@ export class CardDetailsPage {
           return this.showInvoice();
         case 'share-code':
           return this.shareCode();
-        case 'print-card':
-          return setTimeout(() => this.print(), 200);
       }
     });
   }

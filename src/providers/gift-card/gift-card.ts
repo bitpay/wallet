@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ImageLoader } from 'ionic-image-loader';
 import * as _ from 'lodash';
@@ -11,9 +11,12 @@ import { promiseSerial } from '../../utils';
 import { ConfigProvider } from '../config/config';
 import { EmailNotificationsProvider } from '../email-notifications/email-notifications';
 import { HomeIntegrationsProvider } from '../home-integrations/home-integrations';
-import { InvoiceProvider } from '../invoice/invoice';
 import { Logger } from '../logger/logger';
-import { GiftCardMap, PersistenceProvider } from '../persistence/persistence';
+import {
+  GiftCardMap,
+  Network,
+  PersistenceProvider
+} from '../persistence/persistence';
 import { TimeProvider } from '../time/time';
 import {
   ApiCardConfig,
@@ -25,7 +28,15 @@ import {
 } from './gift-card.types';
 
 @Injectable()
-export class GiftCardProvider extends InvoiceProvider {
+export class GiftCardProvider {
+  credentials: {
+    NETWORK: Network;
+    BITPAY_API_URL: string;
+  } = {
+    NETWORK: Network.livenet,
+    BITPAY_API_URL: 'https://bitpay.com'
+  };
+
   availableCardsPromise: Promise<CardConfig[]>;
   availableCardMapPromise: Promise<{ [name: string]: CardConfig }>;
 
@@ -39,17 +50,27 @@ export class GiftCardProvider extends InvoiceProvider {
 
   constructor(
     private configProvider: ConfigProvider,
+    private emailNotificationsProvider: EmailNotificationsProvider,
+    private http: HttpClient,
     private imageLoader: ImageLoader,
+    private logger: Logger,
     private homeIntegrationsProvider: HomeIntegrationsProvider,
-    private timeProvider: TimeProvider,
-    public emailNotificationsProvider: EmailNotificationsProvider,
-    public http: HttpClient,
-    public logger: Logger,
-    public persistenceProvider: PersistenceProvider
+    private persistenceProvider: PersistenceProvider,
+    private timeProvider: TimeProvider
   ) {
-    super(emailNotificationsProvider, http, logger, persistenceProvider);
     this.logger.debug('GiftCardProvider initialized');
     this.setCredentials();
+  }
+
+  getNetwork() {
+    return this.credentials.NETWORK;
+  }
+
+  setCredentials() {
+    this.credentials.BITPAY_API_URL =
+      this.credentials.NETWORK === Network.testnet
+        ? 'https://test.bitpay.com'
+        : 'https://bitpay.com';
   }
 
   async getCardConfig(cardName: string) {
@@ -303,11 +324,9 @@ export class GiftCardProvider extends InvoiceProvider {
               this.getBitPayInvoice(card.invoiceId).then(invoice => ({
                 ...card,
                 status:
-                  (card.status === 'PENDING' ||
-                    (card.status === 'UNREDEEMED' &&
-                      invoice.status !== 'new')) &&
                   invoice.status !== 'expired' &&
-                  invoice.status !== 'invalid'
+                  invoice.status !== 'invalid' &&
+                  invoice.status !== 'new'
                     ? 'PENDING'
                     : 'expired'
               }))
@@ -328,6 +347,42 @@ export class GiftCardProvider extends InvoiceProvider {
         remove: updatedCard.status === 'expired'
       }).then(() => updatedCard)
     );
+  }
+
+  async createBitpayInvoice(data) {
+    const dataSrc = {
+      brand: data.cardName,
+      currency: data.currency,
+      amount: data.amount,
+      clientId: data.uuid,
+      email: data.email,
+      transactionCurrency: data.buyerSelectedTransactionCurrency
+    };
+    const url = `${this.getApiPath()}/pay`;
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json'
+    });
+    const cardOrder = await this.http
+      .post(url, dataSrc, { headers })
+      .toPromise()
+      .catch(err => {
+        this.logger.error('BitPay Create Invoice: ERROR', JSON.stringify(data));
+        throw err;
+      });
+    this.logger.info('BitPay Create Invoice: SUCCESS');
+    return cardOrder as { accessKey: string; invoiceId: string };
+  }
+
+  public async getBitPayInvoice(id: string) {
+    const res: any = await this.http
+      .get(`${this.credentials.BITPAY_API_URL}/invoices/${id}`)
+      .toPromise()
+      .catch(err => {
+        this.logger.error('BitPay Get Invoice: ERROR ' + err.error.message);
+        throw err.error.message;
+      });
+    this.logger.info('BitPay Get Invoice: SUCCESS');
+    return res.data;
   }
 
   private checkIfCardNeedsUpdate(card: GiftCard) {
@@ -475,6 +530,35 @@ export class GiftCardProvider extends InvoiceProvider {
     return this.availableCardsPromise;
   }
 
+  getApiPath() {
+    return `${this.credentials.BITPAY_API_URL}/gift-cards`;
+  }
+
+  public emailIsValid(email: string): boolean {
+    const validEmail = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(
+      email
+    );
+    return validEmail;
+  }
+
+  public storeEmail(email: string): void {
+    this.setUserInfo({ email });
+  }
+
+  public getUserEmail(): Promise<string> {
+    return this.persistenceProvider
+      .getGiftCardUserInfo()
+      .then(data => {
+        if (_.isString(data)) {
+          data = JSON.parse(data);
+        }
+        return data && data.email
+          ? data.email
+          : this.emailNotificationsProvider.getEmailIfEnabled();
+      })
+      .catch(_ => {});
+  }
+
   public async preloadImages(): Promise<void> {
     const supportedCards = await this.getSupportedCards();
     const imagesPerCard = supportedCards
@@ -484,6 +568,10 @@ export class GiftCardProvider extends InvoiceProvider {
       Promise.all(images.map(i => this.imageLoader.preload(i)))
     );
     await promiseSerial(fetchBatches);
+  }
+
+  private setUserInfo(data: any): void {
+    this.persistenceProvider.setGiftCardUserInfo(JSON.stringify(data));
   }
 
   public register() {
@@ -558,12 +646,7 @@ export function sortByDisplayName(
   a: CardConfig | GiftCard,
   b: CardConfig | GiftCard
 ) {
-  const startsNumeric = value => /^[0-9]$/.test(value.charAt(0));
-  const aName = a.displayName.toLowerCase();
-  const bName = b.displayName.toLowerCase();
-  const aSortValue = `${startsNumeric(aName) ? 'zzz' : ''}${aName}`;
-  const bSortValue = `${startsNumeric(bName) ? 'zzz' : ''}${bName}`;
-  return aSortValue > bSortValue ? 1 : -1;
+  return a.displayName.toLowerCase() > b.displayName.toLowerCase() ? 1 : -1;
 }
 
 export function setNullableCardFields(card: GiftCard, cardConfig: CardConfig) {

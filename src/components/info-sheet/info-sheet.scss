@@ -16,13 +16,6 @@ info-sheet {
         display: flex;
         justify-content: start;
 
-        .truncate {
-          width: 100%;
-          white-space: nowrap;
-          overflow: hidden;
-          text-overflow: ellipsis;
-        }
-
         .title-icon {
           padding-right: 15px;
           display: flex;
@@ -54,7 +47,7 @@ info-sheet {
           color: #69caa7;
           flex-grow: 1;
           padding-top: $button-padding;
-          margin-right: 10px;
+          margin-right: 30px;
         }
 
         .sheet-btn.blue {

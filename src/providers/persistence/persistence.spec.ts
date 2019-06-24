@@ -108,6 +108,28 @@ describe('Persistence Provider', () => {
         });
     });
 
+    it('should be able to delete a profile', done => {
+      const p = { name: 'My profile' };
+      persistenceProvider
+        .storeNewProfile(p)
+        .catch(err => expect(err).toBeNull)
+        .then(() => {
+          return persistenceProvider.getProfile();
+        })
+        .then(profile => {
+          expect(typeof profile).toEqual('object');
+          expect(profile.name).toEqual('My profile');
+          return persistenceProvider.deleteProfile();
+        })
+        .then(() => {
+          return persistenceProvider.getProfile();
+        })
+        .then(profile => {
+          expect(profile).toBeNull();
+        })
+        .then(done);
+    });
+
     it('should store profile', done => {
       const p = { name: 'My profile' };
       persistenceProvider

@@ -82,15 +82,19 @@ export class TxpDetailsPage {
     this.wallet = this.tx.wallet
       ? this.tx.wallet
       : this.profileProvider.getWallet(this.tx.walletId);
-    this.tx = this.txFormatProvider.processTx(this.wallet.coin, this.tx);
+    this.tx = this.txFormatProvider.processTx(
+      this.wallet.coin,
+      this.tx,
+      this.walletProvider.useLegacyAddress()
+    );
     if (!this.tx.toAddress) this.tx.toAddress = this.tx.outputs[0].toAddress;
     this.currentSpendUnconfirmed = config.spendUnconfirmed;
     this.loading = false;
     this.isCordova = this.platformProvider.isCordova;
-    this.copayers = this.wallet.cachedStatus.wallet.copayers;
+    this.copayers = this.wallet.status.wallet.copayers;
     this.copayerId = this.wallet.credentials.copayerId;
     this.isShared = this.wallet.credentials.n > 1;
-    this.canSign = this.wallet.canSign;
+    this.canSign = this.wallet.canSign() || this.wallet.isPrivKeyExternal();
     this.color = this.wallet.color;
     this.hideSlideButton = false;
 
@@ -123,11 +127,11 @@ export class TxpDetailsPage {
     this.amount = this.decimalPipe.transform(this.tx.amount / 1e8, '1.2-6');
   }
 
-  ionViewWillLoad() {
+  ionViewWillEnter() {
     this.events.subscribe('bwsEvent', this.bwsEventHandler);
   }
 
-  ionViewWillUnload() {
+  ionViewWillLeave() {
     this.events.unsubscribe('bwsEvent', this.bwsEventHandler);
   }
 
@@ -385,7 +389,11 @@ export class TxpDetailsPage {
           copayerId: this.wallet.credentials.copayerId
         });
 
-        this.tx = this.txFormatProvider.processTx(this.wallet.coin, tx);
+        this.tx = this.txFormatProvider.processTx(
+          this.wallet.coin,
+          tx,
+          this.walletProvider.useLegacyAddress()
+        );
 
         if (!action && tx.status == 'pending') this.tx.pendingForUs = true;
 

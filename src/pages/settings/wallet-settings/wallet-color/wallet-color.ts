@@ -50,9 +50,7 @@ export class WalletColorPage {
     opts.colorFor[this.wallet.credentials.walletId] = color;
 
     this.configProvider.set(opts);
-    this.events.publish('Local/ConfigUpdate', {
-      walletId: this.wallet.credentials.walletId
-    });
+    this.events.publish('wallet:updated', this.wallet.credentials.walletId);
     this.navCtrl.pop();
   }
 

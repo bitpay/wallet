@@ -51,19 +51,17 @@ const Keys = {
     return legacyGiftCardKey || `giftCards-${cardName}-${network}`;
   },
   HIDE_BALANCE: walletId => 'hideBalance-' + walletId,
-  KEYS: 'keys',
   LAST_ADDRESS: walletId => 'lastAddress-' + walletId,
   LAST_CURRENCY_USED: 'lastCurrencyUsed',
   ONBOARDING_COMPLETED: 'onboardingCompleted',
   PROFILE: 'profile',
-  PROFILE_OLD: 'profileOld',
   REMOTE_PREF_STORED: 'remotePrefStored',
   TX_CONFIRM_NOTIF: txid => 'txConfirmNotif-' + txid,
   TX_HISTORY: walletId => 'txsHistory-' + walletId,
   ORDER_WALLET: walletId => 'order-' + walletId,
   SERVER_MESSAGE_DISMISSED: messageId => 'serverMessageDismissed-' + messageId,
   SHAPESHIFT_TOKEN: network => 'shapeshiftToken-' + network,
-  PRICE_CHART: 'priceChart'
+  VAULT: 'vault'
 };
 
 interface Storage {
@@ -91,10 +89,6 @@ export class PersistenceProvider {
       : new LocalStorage(this.logger);
   }
 
-  storeProfileLegacy(profileOld): Promise<void> {
-    return this.storage.set(Keys.PROFILE_OLD, profileOld);
-  }
-
   storeNewProfile(profile): Promise<void> {
     return this.storage.create(Keys.PROFILE, profile);
   }
@@ -111,12 +105,24 @@ export class PersistenceProvider {
     });
   }
 
-  setKeys(keys: any[]) {
-    return this.storage.set(Keys.KEYS, keys);
+  deleteProfile() {
+    return this.storage.remove(Keys.PROFILE);
   }
 
-  getKeys() {
-    return this.storage.get(Keys.KEYS);
+  storeVault(vault): Promise<void> {
+    return this.storage.set(Keys.VAULT, vault);
+  }
+
+  getVault(): Promise<any> {
+    return new Promise(resolve => {
+      this.storage.get(Keys.VAULT).then(vault => {
+        resolve(vault);
+      });
+    });
+  }
+
+  deleteVault() {
+    return this.storage.remove(Keys.VAULT);
   }
 
   setFeedbackInfo(feedbackValues: FeedbackValues) {
@@ -298,20 +304,16 @@ export class PersistenceProvider {
     return this.storage.remove(Keys.TX_HISTORY(walletId));
   }
 
-  setLastKnownBalance(id: string, balance: string) {
-    let updatedOn = Math.floor(Date.now() / 1000);
-    return this.storage.set(Keys.BALANCE_CACHE(id), {
-      updatedOn,
-      balance
-    });
+  setBalanceCache(cardId: string, data) {
+    return this.storage.set(Keys.BALANCE_CACHE(cardId), data);
   }
 
-  getLastKnownBalance(id: string) {
-    return this.storage.get(Keys.BALANCE_CACHE(id));
+  getBalanceCache(cardId: string) {
+    return this.storage.get(Keys.BALANCE_CACHE(cardId));
   }
 
-  removeLastKnownBalance(id: string) {
-    return this.storage.remove(Keys.BALANCE_CACHE(id));
+  removeBalanceCache(cardId: string) {
+    return this.storage.remove(Keys.BALANCE_CACHE(cardId));
   }
 
   setAppIdentity(network: string, data) {
@@ -540,31 +542,6 @@ export class PersistenceProvider {
 
   removeEmailLawCompliance() {
     return this.storage.remove('emailLawCompliance');
-  }
-
-  setNewDesignSlidesFlag(value: string) {
-    return this.storage.set('newDesignSlides', value);
-  }
-
-  getNewDesignSlidesFlag() {
-    return this.storage.get('newDesignSlides');
-  }
-
-  removeNewDesignSlidesFlag() {
-    return this.storage.remove('newDesignSlides');
-  }
-
-  setPriceChartFlag(value: string) {
-    this.logger.debug('Price chart: ', value);
-    return this.storage.set('priceChart', value);
-  }
-
-  getPriceChartFlag() {
-    return this.storage.get('priceChart');
-  }
-
-  removePriceChartFlag() {
-    return this.storage.remove('priceChart');
   }
 }
 

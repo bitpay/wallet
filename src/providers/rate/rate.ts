@@ -18,8 +18,6 @@ export class RateProvider {
   private rateServiceUrl = env.ratesAPI.btc;
   private bchRateServiceUrl = env.ratesAPI.bch;
 
-  private fiatRateAPIUrl = 'https://bws.bitpay.com/bws/api/v1/fiatrates';
-
   constructor(private http: HttpClient, private logger: Logger) {
     this.logger.debug('RateProvider initialized');
     this.rates = {};
@@ -159,20 +157,6 @@ export class RateProvider {
           });
         }
       }
-    });
-  }
-
-  public getHistoricFiatRate(
-    currency: string,
-    coin: string,
-    ts: string
-  ): Promise<any> {
-    return new Promise(resolve => {
-      const url =
-        this.fiatRateAPIUrl + '/' + currency + '?coin=' + coin + '&ts=' + ts;
-      this.http.get(url).subscribe(data => {
-        resolve(data);
-      });
     });
   }
 }

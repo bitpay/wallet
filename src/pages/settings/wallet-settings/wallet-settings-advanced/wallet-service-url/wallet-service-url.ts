@@ -107,9 +107,7 @@ export class WalletServiceUrlPage {
     this.persistenceProvider.setCleanAndScanAddresses(
       this.wallet.credentials.walletId
     );
-    this.events.publish('Local/ConfigUpdate', {
-      walletId: this.wallet.credentials.walletId
-    });
+    this.events.publish('wallet:updated', this.wallet.credentials.walletId);
     this.navCtrl.popToRoot().then(() => {
       this.reload();
     });

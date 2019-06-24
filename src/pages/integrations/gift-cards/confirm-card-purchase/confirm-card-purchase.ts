@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import {
+  App,
   Events,
   ModalController,
   NavController,
@@ -16,7 +17,6 @@ import { FinishModalPage } from '../../../finish/finish';
 // Provider
 import { DecimalPipe } from '@angular/common';
 import {
-  EmailNotificationsProvider,
   FeeProvider,
   TxConfirmNotificationProvider,
   WalletTabsProvider
@@ -33,7 +33,6 @@ import {
   CardConfig,
   GiftCard
 } from '../../../../providers/gift-card/gift-card.types';
-import { KeyProvider } from '../../../../providers/key/key';
 import { OnGoingProcessProvider } from '../../../../providers/on-going-process/on-going-process';
 import { PayproProvider } from '../../../../providers/paypro/paypro';
 import { PlatformProvider } from '../../../../providers/platform/platform';
@@ -73,15 +72,14 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
 
   constructor(
     actionSheetProvider: ActionSheetProvider,
+    app: App,
     bwcErrorProvider: BwcErrorProvider,
     bwcProvider: BwcProvider,
     configProvider: ConfigProvider,
     decimalPipe: DecimalPipe,
     feeProvider: FeeProvider,
     private giftCardProvider: GiftCardProvider,
-    keyProvider: KeyProvider,
     replaceParametersProvider: ReplaceParametersProvider,
-    private emailNotificationsProvider: EmailNotificationsProvider,
     externalLinkProvider: ExternalLinkProvider,
     logger: Logger,
     modalCtrl: ModalController,
@@ -103,6 +101,7 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
   ) {
     super(
       actionSheetProvider,
+      app,
       bwcErrorProvider,
       bwcProvider,
       configProvider,
@@ -125,8 +124,7 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
       walletTabsProvider,
       clipboardProvider,
       events,
-      AppProvider,
-      keyProvider
+      AppProvider
     );
     this.hideSlideButton = false;
     this.configWallet = this.configProvider.get().wallet;
@@ -186,11 +184,11 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
   }
 
   async publishAndSign(wallet, txp) {
-    if (!wallet.canSign) {
+    if (!wallet.canSign() && !wallet.isPrivKeyExternal()) {
       const err = this.translate.instant('No signing proposal: No private key');
       return Promise.reject(err);
     }
-    if (wallet.isPrivKeyEncrypted) {
+    if (this.walletProvider.isEncrypted(wallet)) {
       this.hideSlideButton = true;
     }
 
@@ -327,7 +325,8 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
     txp['origToAddress'] = txp.toAddress;
 
     if (wallet.coin && wallet.coin == 'bch') {
-      txp.toAddress = this.bitcoreCash.Address(txp.toAddress).toString(true);
+      // Use legacy address
+      txp.toAddress = this.bitcoreCash.Address(txp.toAddress).toString();
       txp.outputs[0].toAddress = txp.toAddress;
     }
 
@@ -353,8 +352,7 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
 
   private async promptEmail() {
     if (!this.cardConfig.emailRequired) {
-      const notificationEmail = this.emailNotificationsProvider.getEmailIfEnabled();
-      return Promise.resolve(notificationEmail);
+      return Promise.resolve();
     }
     const email = await this.giftCardProvider.getUserEmail();
     if (email) return Promise.resolve(email);
@@ -497,7 +495,6 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
     await this.giftCardProvider.saveCard(this.tx.giftData, {
       remove: true
     });
-    await this.walletProvider.removeTx(this.wallet, this.tx);
     const errorMessage = err && err.message;
     const canceledErrors = ['FINGERPRINT_CANCELLED', 'PASSWORD_CANCELLED'];
     if (canceledErrors.indexOf(errorMessage) !== -1) {

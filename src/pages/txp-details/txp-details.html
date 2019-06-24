@@ -1,4 +1,4 @@
-<ion-header>
+<ion-header class="wallet-details-header">
   <ion-navbar>
     <ion-title>
       {{'Payment Proposal' | translate}}
@@ -80,7 +80,8 @@
     <ion-item class="container-from">
       <span translate>From</span>
       <div class="wallet" *ngIf="wallet">
-        <img [ngClass]="{ testnet: wallet.network === 'testnet' }" src="assets/img/currencies/{{wallet.coin}}.svg" class="icon-wallet" />
+        <img *ngIf="wallet.network == 'testnet'" [ngStyle]="{'background-color': wallet.color}" src="assets/img/icon-wallet-testnet.svg" class="icon-wallet" />
+        <img *ngIf="wallet.network != 'testnet'" [ngStyle]="{'background-color': wallet.color}" src="assets/img/icon-wallet.svg" class="icon-wallet" />
         <div>{{wallet.name}}</div>
       </div>
     </ion-item>
@@ -137,24 +138,23 @@
     </div>
 
     <div *ngIf="actionList && actionList[0]">
-      <ion-item>
-        <span>{{'Timeline' | translate}}</span>
-        <div class="timeline-item" [ngClass]="{'action-created' : a.type == 'created' || a.type == 'accept', 'action-rejected' : a.type == 'reject'}" *ngFor="let a of actionList; let i = index">
-          <div class="timeline-content">
-            <div class="timeline-content-icon">
-              <div class="rejected" *ngIf="a.type === 'reject'">!</div>
-              <div class="line" *ngIf="a.type !== 'reject'">{{actionList.length - i}}</div>
-            </div>
-            <div class="timeline-content-label">
-              <div class="action">{{a.description}}</div>
-              <div class="name">{{a.by}}</div>
-            </div>
-            <ion-note class="ellipsis">
-              <time>{{ a.time * 1000 | amTimeAgo}}</time>
-            </ion-note>
+      <ion-item-divider>{{'Timeline' | translate}}</ion-item-divider>
+      <div class="timeline-item" [ngClass]="{'action-created' : a.type == 'created' || a.type == 'accept', 'action-rejected' : a.type == 'reject'}" *ngFor="let a of actionList; let i = index">
+        <div class="timeline-content">
+          <div class="timeline-content-icon">
+            <div class="rejected" *ngIf="a.type === 'reject'">!</div>
+            <div class="line" *ngIf="a.type !== 'reject'">{{actionList.length - i}}</div>
           </div>
+          <div class="timeline-content-label">
+            <div class="action">{{a.description}}</div>
+            <div class="name">{{a.by}}</div>
+          </div>
+          <ion-note class="ellipsis">
+            <time>{{ a.time * 1000 | amTimeAgo}}</time>
+          </ion-note>
         </div>
-      </ion-item>
+      </div>
+      <ion-item-divider></ion-item-divider>
     </div>
 
     <div padding class="proposal-deletion" *ngIf="((tx && !tx.removed) && (tx && tx.canBeRemoved)) || (tx && tx.status == 'accepted' && !tx.broadcastedOn)">
@@ -170,8 +170,7 @@
 </ion-content>
 
 <ion-footer>
-  <page-slide-to-accept #slideButton *ngIf="(tx && !tx.removed) && (tx && tx.pendingForUs && canSign && !paymentExpired) && isCordova" [buttonText]="buttonText" (slideDone)="onConfirm()" [ngClass]="{'slide-confirm-fast slide-confirm-down': hideSlideButton, 'slide-confirm-slow': !hideSlideButton}">
-  </page-slide-to-accept>
+  <page-slide-to-accept #slideButton *ngIf="(tx && !tx.removed) && (tx && tx.pendingForUs && canSign && !paymentExpired) && isCordova" [buttonText]="buttonText" (slideDone)="onConfirm()" [ngClass]="{'slide-confirm-fast slide-confirm-down': hideSlideButton, 'slide-confirm-slow': !hideSlideButton}"></page-slide-to-accept>
   <ion-toolbar *ngIf="(tx && !tx.removed) && (tx && tx.pendingForUs && canSign && !paymentExpired) && !isCordova">
     <button ion-button full class="button-footer" (click)="onConfirm()">{{buttonText}}</button>
   </ion-toolbar>
