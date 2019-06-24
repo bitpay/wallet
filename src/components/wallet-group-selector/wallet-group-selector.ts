@@ -1,12 +1,11 @@
 import { Component } from '@angular/core';
-import { Events, Platform } from 'ionic-angular';
+import { Events, NavController, Platform } from 'ionic-angular';
 import { Observable } from 'rxjs';
 
 // Pages
-// import { CreateWalletGroupPage } from '../../pages/create-wallet-group/create-wallet-group';
+import { AddPage } from '../../pages/add/add';
 
 // Providers
-// import { ProfileProvider } from '../../providers/profile/profile';
 import { KeyProvider } from '../../providers/key/key';
 
 @Component({
@@ -23,7 +22,8 @@ export class WalletGroupSelectorComponent {
   constructor(
     private events: Events,
     private platform: Platform,
-    private keyProvider: KeyProvider
+    private keyProvider: KeyProvider,
+    private navCtrl: NavController
   ) {
     this.slideIn = false;
   }
@@ -63,9 +63,9 @@ export class WalletGroupSelectorComponent {
     this.events.publish('Home/reloadStatus');
   }
 
-  public goToCreateWalletGroupPage(): void {
-    // this.navCtrl.push(CreateWalletGroupPage).then(() => {
-    //   this.dismiss();
-    // });
+  public goToAddPage(): void {
+    this.navCtrl.push(AddPage).then(() => {
+      this.dismiss();
+    });
   }
 }

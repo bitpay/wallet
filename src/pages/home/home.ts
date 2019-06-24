@@ -359,21 +359,19 @@ export class HomePage {
     */
 
     this.profileProvider.setLastKnownBalance();
-    console.log('this.keyProvider.activeWGKey', this.keyProvider.activeWGKey);
     let opts: any = {};
     if (this.keyProvider.activeWGKey === 'read-only') {
       opts.readOnly = true;
       this.selectedWalletGroup = this.translate.instant('Read Only Wallets');
-    } else {
+    } else if (this.keyProvider.activeWGKey) {
       opts.keyId = this.keyProvider.activeWGKey;
       this.selectedWalletGroup = this.profileProvider.getWalletGroup(
         this.keyProvider.activeWGKey
-      );
+      ).name;
     }
 
     this.wallets = this.profileProvider.getWallets(opts);
     this.walletsGroups = this.profileProvider.walletsGroups;
-    console.log('this.wallets', this.wallets);
 
     // Avoid heavy tasks that can slow down the unlocking experience
     if (!this.appProvider.isLockModalOpen && shouldUpdate) {

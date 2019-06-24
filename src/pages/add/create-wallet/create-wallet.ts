@@ -175,8 +175,12 @@ export class CreateWalletPage implements OnInit {
   }
 
   public setOptsAndCreate(): void {
+    let keyId;
+    if (this.addingNewAccount) {
+      keyId = this.keyProvider.activeWGKey;
+    }
     const opts: Partial<WalletOptions> = {
-      keyId: this.keyProvider.activeWGKey,
+      keyId,
       name: this.createForm.value.walletName,
       m: this.createForm.value.requiredCopayers,
       n: this.createForm.value.totalCopayers,

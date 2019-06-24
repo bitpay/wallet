@@ -1097,7 +1097,7 @@ export class ProfileProvider {
 
   public getWalletGroup(keyId: string) {
     if (!keyId) return;
-    return this.walletsGroups[keyId].name;
+    return this.walletsGroups[keyId];
   }
 
   public deleteWalletClient(wallet): Promise<any> {

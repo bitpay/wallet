@@ -182,8 +182,12 @@ export class JoinWalletPage {
   }
 
   public setOptsAndJoin(): void {
+    let keyId;
+    if (this.addingNewAccount) {
+      keyId = this.keyProvider.activeWGKey;
+    }
     const opts: Partial<WalletOptions> = {
-      keyId: this.keyProvider.activeWGKey,
+      keyId,
       secret: this.joinForm.value.invitationCode,
       myName: this.joinForm.value.myName,
       bwsurl: this.joinForm.value.bwsURL,
