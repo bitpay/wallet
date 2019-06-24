@@ -1,0 +1,8 @@
+ext.postBuildExtras = 
+{
+  android {
+    defaultConfig { multiDexEnabled true }
+    lintOptions { disable 'MissingTranslation', 'ExtraTranslation' }
+    compileSdkVersion 28
+  }
+}
