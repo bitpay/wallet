@@ -11,6 +11,11 @@
 
 <ion-content no-bounce>
   <form [formGroup]="joinForm">
+    <ion-item *ngIf="!addingNewAccount">
+      <ion-label floating>{{'Wallet name' | translate}}</ion-label>
+      <ion-input type="text" formControlName="walletName"></ion-input>
+    </ion-item>
+
     <ion-item>
       <ion-label floating>{{'Your name' | translate}}</ion-label>
       <ion-input type="text" formControlName="myName"></ion-input>

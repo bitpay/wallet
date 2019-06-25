@@ -65,7 +65,8 @@ const Keys = {
   ORDER_WALLET: walletId => 'order-' + walletId,
   ORDER_WALLET_GROUP: keyId => 'groupOrder-' + keyId,
   SERVER_MESSAGE_DISMISSED: messageId => 'serverMessageDismissed-' + messageId,
-  WALLET_GROUP: 'walletGroup'
+  SHAPESHIFT_TOKEN: network => 'shapeshiftToken-' + network,
+  WALLET_GROUP_NAME: keyId => 'walletGroupName-' + keyId
 };
 
 interface Storage {
@@ -119,14 +120,6 @@ export class PersistenceProvider {
 
   getKeys() {
     return this.storage.get(Keys.KEYS);
-  }
-
-  storeWalletGroup(walletGroup): Promise<void> {
-    return this.storage.set(Keys.WALLET_GROUP, walletGroup);
-  }
-
-  getWalletGroup(): Promise<any> {
-    return this.storage.get(Keys.WALLET_GROUP);
   }
 
   setFeedbackInfo(feedbackValues: FeedbackValues) {
@@ -554,6 +547,18 @@ export class PersistenceProvider {
 
   removeWalletGroupOrder(keyId: string) {
     return this.storage.remove(Keys.ORDER_WALLET_GROUP(keyId));
+  }
+
+  setWalletGroupName(keyId: string, name: string) {
+    return this.storage.set(Keys.WALLET_GROUP_NAME(keyId), name);
+  }
+
+  getWalletGroupName(keyId: string) {
+    return this.storage.get(Keys.WALLET_GROUP_NAME(keyId));
+  }
+
+  removeWalletGroupName(keyId: string) {
+    return this.storage.remove(Keys.WALLET_GROUP_NAME(keyId));
   }
 
   setActiveWGKey(keyId: string) {

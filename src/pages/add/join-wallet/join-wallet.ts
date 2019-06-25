@@ -71,6 +71,7 @@ export class JoinWalletPage {
 
     this.regex = /^[0-9A-HJ-NP-Za-km-z]{70,80}$/; // For invitationCode
     this.joinForm = this.form.group({
+      walletName: [null],
       myName: [null, Validators.required],
       invitationCode: [
         null,
@@ -81,6 +82,10 @@ export class JoinWalletPage {
       recoveryPhrase: [null],
       derivationPath: [null]
     });
+
+    if (!this.addingNewAccount) {
+      this.joinForm.get('walletName').setValidators([Validators.required]);
+    }
 
     this.seedOptions = [
       {
@@ -266,6 +271,12 @@ export class JoinWalletPage {
         this.onGoingProcessProvider.clear();
         this.walletProvider.updateRemotePreferences(wallet);
         this.pushNotificationsProvider.updateSubscription(wallet);
+        if (!this.addingNewAccount) {
+          this.profileProvider.setWalletGroupName(
+            wallet.credentials.keyId,
+            this.joinForm.value.walletName
+          );
+        }
         // using setRoot(TabsPage) as workaround when coming from scanner
         this.app
           .getRootNavs()[0]

@@ -93,7 +93,8 @@ export class CreateWalletPage implements OnInit {
     this.showAdvOpts = false;
 
     this.createForm = this.fb.group({
-      walletName: [null, Validators.required],
+      walletName: [null],
+      accountName: [null, Validators.required],
       myName: [null],
       totalCopayers: [1],
       requiredCopayers: [1],
@@ -106,6 +107,9 @@ export class CreateWalletPage implements OnInit {
       coin: [null, Validators.required]
     });
     this.createForm.controls['coin'].setValue(this.coin);
+    if (!this.addingNewAccount) {
+      this.createForm.get('walletName').setValidators([Validators.required]);
+    }
     this.createLabel =
       this.coin === 'btc'
         ? this.translate.instant('BTC Wallet')
@@ -181,7 +185,7 @@ export class CreateWalletPage implements OnInit {
     }
     const opts: Partial<WalletOptions> = {
       keyId,
-      name: this.createForm.value.walletName,
+      name: this.createForm.value.accountName,
       m: this.createForm.value.requiredCopayers,
       n: this.createForm.value.totalCopayers,
       myName:
@@ -279,6 +283,12 @@ export class CreateWalletPage implements OnInit {
           this.addingNewAccount
         ) {
           this.profileProvider.setBackupFlag(wallet.credentials.walletId);
+        }
+        if (!this.addingNewAccount) {
+          this.profileProvider.setWalletGroupName(
+            wallet.credentials.keyId,
+            this.createForm.value.walletName
+          );
         }
         this.navCtrl.popToRoot().then(() => {
           setTimeout(() => {

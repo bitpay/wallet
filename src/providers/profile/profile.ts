@@ -95,15 +95,25 @@ export class ProfileProvider {
     if (this.wallet[walletId]) this.wallet[walletId]['order'] = index;
   }
 
-  public async getWalletOrder(walletId: string) {
+  private async getWalletOrder(walletId: string) {
     const order = await this.persistenceProvider.getWalletOrder(walletId);
     return order;
   }
 
-  public async getWalletGroupOrder(keyId: string) {
+  private async getWalletGroupOrder(keyId: string) {
     const order =
       (await this.persistenceProvider.getWalletGroupOrder(keyId)) || 0;
     return order;
+  }
+
+  public setWalletGroupName(keyId: string, name: string): void {
+    this.persistenceProvider.setWalletGroupName(keyId, name);
+    if (this.walletsGroups[keyId]) this.walletsGroups[keyId]['name'] = name;
+  }
+
+  private async getWalletGroupName(keyId: string) {
+    const name = await this.persistenceProvider.getWalletGroupName(keyId);
+    return name;
   }
 
   public setBackupFlag(walletId: string): void {
@@ -117,6 +127,13 @@ export class ProfileProvider {
     this.persistenceProvider.setBackupFlag(keyId);
     this.logger.debug('Backup flag stored');
     this.walletsGroups[keyId].needsBackup = false;
+  }
+
+  private requiresGroupBackup(keyId: string) {
+    let k = this.keyProvider.getKey(keyId);
+    if (!k) return false;
+    if (!k.mnemonic && !k.mnemonicEncrypted) return false;
+    return true;
   }
 
   private requiresBackup(wallet) {
@@ -133,6 +150,23 @@ export class ProfileProvider {
     }
     return this.persistenceProvider
       .getBackupFlag(wallet.credentials.walletId)
+      .then(timestamp => {
+        if (timestamp) {
+          return Promise.resolve({ needsBackup: false, timestamp });
+        }
+        return Promise.resolve({ needsBackup: true });
+      })
+      .catch(err => {
+        this.logger.error(err);
+      });
+  }
+
+  private getBackupGroupInfo(keyId): Promise<any> {
+    if (!this.requiresGroupBackup(keyId)) {
+      return Promise.resolve({ needsBackup: false });
+    }
+    return this.persistenceProvider
+      .getBackupGroupFlag(keyId)
       .then(timestamp => {
         if (timestamp) {
           return Promise.resolve({ needsBackup: false, timestamp });
@@ -244,16 +278,18 @@ export class ProfileProvider {
     // INIT WALLET GROUP VIEWMODEL
     if (keyId) {
       this.walletsGroups[keyId] = {};
-      this.walletsGroups[keyId].needsBackup = backupInfo.needsBackup; // TODO
+      const groupBackupInfo = await this.getBackupGroupInfo(keyId);
+      this.walletsGroups[keyId].needsBackup = groupBackupInfo.needsBackup;
       this.walletsGroups[keyId].order = await this.getWalletGroupOrder(keyId);
-      this.walletsGroups[keyId].name = wallet.name; // TODO
+      this.walletsGroups[keyId].name =
+        (await this.getWalletGroupName(keyId)) || wallet.name;
     } else {
       this.walletsGroups['read-only'] = {};
       this.walletsGroups['read-only'].needsBackup = false;
       this.walletsGroups['read-only'].order = await this.getWalletGroupOrder(
         'read-only'
       );
-      this.walletsGroups['read-only'].name = 'Read Only Wallets'; // TODO
+      this.walletsGroups['read-only'].name = 'Read Only Wallets';
     }
 
     console.log('this.walletsGroups', this.walletsGroups);

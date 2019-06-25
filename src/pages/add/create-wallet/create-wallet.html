@@ -10,9 +10,14 @@
 </ion-header>
 <ion-content no-bounce>
   <form [formGroup]="createForm">
-    <ion-item>
+    <ion-item *ngIf="!addingNewAccount">
       <ion-label floating>{{'Wallet name' | translate}}</ion-label>
-      <ion-input type="text" formControlName="walletName"></ion-input>
+      <ion-input type=" text" formControlName="walletName"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label floating>{{'Account name' | translate}}</ion-label>
+      <ion-input type="text" formControlName="accountName"></ion-input>
     </ion-item>
 
     <div *ngIf="isShared">
