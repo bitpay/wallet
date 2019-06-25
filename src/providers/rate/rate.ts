@@ -28,6 +28,7 @@ export class RateProvider {
     this.rates = {};
     this.alternatives = [];
     this.ratesBCH = {};
+    this.ratesETH = {};
     this.SAT_TO_BTC = 1 / 1e8;
     this.SAT_TO_ETH = 1 / 1e18;
     this.BTC_TO_SAT = 1e8;

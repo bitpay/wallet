@@ -43,11 +43,13 @@ export class TxFormatProvider {
   }
 
   // TODO: Check return of formatAmount(...), sometimes returns a number and sometimes a string
-  public formatAmount(satoshis: number, fullPrecision?: boolean) {
+  public formatAmount(coin: string, satoshis: number, fullPrecision?: boolean) {
     let settings = this.configProvider.get().wallet.settings;
 
     if (settings.unitCode == 'sat') return satoshis;
-
+    if (coin) {
+      settings.unitCode = coin
+    }
     // TODO : now only works for english, specify opts to change thousand separator and decimal separator
     var opts = {
       fullPrecision: !!fullPrecision
@@ -59,7 +61,7 @@ export class TxFormatProvider {
 
   public formatAmountStr(coin: string, satoshis: number): string {
     if (isNaN(satoshis)) return undefined;
-    return this.formatAmount(satoshis) + ' ' + coin.toUpperCase();
+    return this.formatAmount(coin, satoshis) + ' ' + coin.toUpperCase();
   }
 
   public toFiat(coin: string, satoshis: number, code: string): Promise<string> {
@@ -100,7 +102,8 @@ export class TxFormatProvider {
 
     if (
       (!this.rate.isBtcAvailable() && coin == 'btc') ||
-      (!this.rate.isBchAvailable() && coin == 'bch')
+      (!this.rate.isBchAvailable() && coin == 'bch') ||
+      (!this.rate.isBchAvailable() && coin == 'eth')
     )
       return null;
     return val();
@@ -155,8 +158,8 @@ export class TxFormatProvider {
     tx.feeStr = tx.fee
       ? this.formatAmountStr(coin, tx.fee)
       : tx.fees
-      ? this.formatAmountStr(coin, tx.fees)
-      : 'N/A';
+        ? this.formatAmountStr(coin, tx.fees)
+        : 'N/A';
     if (tx.amountStr) {
       tx.amountValueStr = tx.amountStr.split(' ')[0];
       tx.amountUnitStr = tx.amountStr.split(' ')[1];

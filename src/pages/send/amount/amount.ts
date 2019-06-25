@@ -425,6 +425,7 @@ export class AmountPage extends WalletTabsChild {
         let a = this.fromFiat(result);
         if (a) {
           this.alternativeAmount = this.txFormatProvider.formatAmount(
+            this.wallet.coin,
             a * this.unitToSatoshi,
             true
           );
@@ -456,6 +457,7 @@ export class AmountPage extends WalletTabsChild {
       return this.filterProvider.formatFiatAmount(val);
     else
       return this.txFormatProvider.formatAmount(
+        this.wallet.coin,
         val.toFixed(this.unitDecimals) * this.unitToSatoshi,
         true
       );
@@ -581,9 +583,9 @@ export class AmountPage extends WalletTabsChild {
     this.processAmount();
     this.logger.debug(
       'Update unit coin @amount unit:' +
-        this.unit +
-        ' alternativeUnit:' +
-        this.alternativeUnit
+      this.unit +
+      ' alternativeUnit:' +
+      this.alternativeUnit
     );
   }
 
