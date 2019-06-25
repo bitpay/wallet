@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ImageLoader } from 'ionic-image-loader';
 import * as _ from 'lodash';
@@ -80,6 +80,35 @@ export class GiftCardProvider extends InvoiceProvider {
     return map || {};
   }
 
+  public async createBitpayInvoice(data) {
+    const dataSrc = {
+      brand: data.cardName,
+      currency: data.currency,
+      amount: data.amount,
+      clientId: data.uuid,
+      discounts: data.discounts,
+      email: data.email,
+      transactionCurrency: data.buyerSelectedTransactionCurrency
+    };
+    const url = `${this.getApiPath()}/pay`;
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json'
+    });
+    const cardOrder = await this.http
+      .post(url, dataSrc, { headers })
+      .toPromise()
+      .catch(err => {
+        this.logger.error('BitPay Create Invoice: ERROR', JSON.stringify(data));
+        throw err;
+      });
+    this.logger.info('BitPay Create Invoice: SUCCESS');
+    return cardOrder as {
+      accessKey: string;
+      invoiceId: string;
+      totalDiscount: number;
+    };
+  }
+
   async getActiveCards(): Promise<GiftCard[]> {
     const [configMap, giftCardMap] = await Promise.all([
       this.getCardConfigMap(),
@@ -98,6 +127,10 @@ export class GiftCardProvider extends InvoiceProvider {
       this.getCardMap(cardName)
     ]);
     return getCardsFromInvoiceMap(giftCardMap, configMap);
+  }
+
+  async hideDiscountItem() {
+    return this.persistenceProvider.setHideGiftCardDiscountItem(true);
   }
 
   async getAllCardsOfBrand(cardBrand: string): Promise<GiftCard[]> {
@@ -586,6 +619,15 @@ export function getCardsFromInvoiceMap(
     .filter(card => card.invoiceId && configMap[card.name])
     .map(card => setNullableCardFields(card, configMap[card.name]))
     .sort(sortByDescendingDate);
+}
+
+export function hasVisibleDiscount(cardConfig: CardConfig) {
+  return !!getVisibleDiscount(cardConfig);
+}
+
+export function getVisibleDiscount(cardConfig: CardConfig) {
+  const discounts = cardConfig.discounts;
+  return discounts && discounts.find(d => d.type === 'percentage' && !d.hidden);
 }
 
 function appendFallbackImages(cardConfig: CardConfig) {

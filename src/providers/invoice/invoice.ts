@@ -1,4 +1,4 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import * as _ from 'lodash';
 import { EmailNotificationsProvider } from '../email-notifications/email-notifications';
@@ -37,30 +37,6 @@ export class InvoiceProvider {
 
   getApiPath() {
     return `${this.credentials.BITPAY_API_URL}/gift-cards`;
-  }
-
-  public async createBitpayInvoice(data) {
-    const dataSrc = {
-      brand: data.cardName,
-      currency: data.currency,
-      amount: data.amount,
-      clientId: data.uuid,
-      email: data.email,
-      transactionCurrency: data.buyerSelectedTransactionCurrency
-    };
-    const url = `${this.getApiPath()}/pay`;
-    const headers = new HttpHeaders({
-      'Content-Type': 'application/json'
-    });
-    const cardOrder = await this.http
-      .post(url, dataSrc, { headers })
-      .toPromise()
-      .catch(err => {
-        this.logger.error('BitPay Create Invoice: ERROR', JSON.stringify(data));
-        throw err;
-      });
-    this.logger.info('BitPay Create Invoice: SUCCESS');
-    return cardOrder as { accessKey: string; invoiceId: string };
   }
 
   public async getBitPayInvoice(id: string) {
