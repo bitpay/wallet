@@ -16,9 +16,9 @@ export class FeeProvider {
     coin: string;
     data?: any;
   } = {
-    updateTs: 0,
-    coin: ''
-  };
+      updateTs: 0,
+      coin: ''
+    };
 
   constructor(
     private configProvider: ConfigProvider,
@@ -42,7 +42,7 @@ export class FeeProvider {
   }
 
   public getCurrentFeeLevel(): string {
-    return this.configProvider.get().wallet.settings.feeLevel || 'normal';
+    return this.configProvider.get().wallet.settings[this.cache.coin].feeLevel || 'normal';
   }
 
   public getFeeRate(
@@ -78,12 +78,12 @@ export class FeeProvider {
           if (!response.fromCache)
             this.logger.debug(
               'Dynamic fee: ' +
-                feeLevel +
-                '/' +
-                network +
-                ' ' +
-                (feeLevelRate.feePerKb / 1000).toFixed() +
-                ' SAT/B'
+              feeLevel +
+              '/' +
+              network +
+              ' ' +
+              (feeLevelRate.feePerKb / 1000).toFixed() +
+              ' SAT/B'
             );
           return resolve(feeRate);
         })

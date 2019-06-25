@@ -4,6 +4,17 @@ import { PersistenceProvider } from '../persistence/persistence';
 
 import * as _ from 'lodash';
 
+export interface WalletSettings {
+  unitName: string;
+  unitToSatoshi: number;
+  unitDecimals: number;
+  unitCode: string;
+  alternativeName: string;
+  alternativeIsoCode: string;
+  defaultLanguage: string;
+  feeLevel: string;
+}
+
 export interface Config {
   limits: {
     totalCopayers: number;
@@ -18,14 +29,9 @@ export interface Config {
     reconnectDelay: number;
     idleDurationMin: number;
     settings: {
-      unitName: string;
-      unitToSatoshi: number;
-      unitDecimals: number;
-      unitCode: string;
-      alternativeName: string;
-      alternativeIsoCode: string;
-      defaultLanguage: string;
-      feeLevel: string;
+      eth: WalletSettings;
+      btc: WalletSettings;
+      bch: WalletSettings;
     };
   };
 
@@ -125,14 +131,36 @@ export class ConfigProvider {
         reconnectDelay: 5000,
         idleDurationMin: 4,
         settings: {
-          unitName: 'BTC',
-          unitToSatoshi: 100000000,
-          unitDecimals: 8,
-          unitCode: 'btc',
-          alternativeName: 'US Dollar',
-          alternativeIsoCode: 'USD',
-          defaultLanguage: '',
-          feeLevel: 'normal'
+          eth: {
+            unitName: 'ETH',
+            unitToSatoshi: 1e18,
+            unitDecimals: 18,
+            unitCode: 'eth',
+            alternativeName: 'US Dollar',
+            alternativeIsoCode: 'USD',
+            defaultLanguage: '',
+            feeLevel: 'normal'
+          },
+          btc: {
+            unitName: 'BTC',
+            unitToSatoshi: 100000000,
+            unitDecimals: 8,
+            unitCode: 'btc',
+            alternativeName: 'US Dollar',
+            alternativeIsoCode: 'USD',
+            defaultLanguage: '',
+            feeLevel: 'normal'
+          },
+          bch: {
+            unitName: 'BTC',
+            unitToSatoshi: 100000000,
+            unitDecimals: 8,
+            unitCode: 'btc',
+            alternativeName: 'US Dollar',
+            alternativeIsoCode: 'USD',
+            defaultLanguage: '',
+            feeLevel: 'normal'
+          }
         }
       },
 
@@ -234,11 +262,11 @@ export class ConfigProvider {
 
     this.logger.debug(
       'Config | spendUnconfirmed: ' +
-        spendUnconfirmed +
-        ' - useLegacyAddress: ' +
-        useLegacyAddress +
-        ' - lockMethod: ' +
-        lockMethod
+      spendUnconfirmed +
+      ' - useLegacyAddress: ' +
+      useLegacyAddress +
+      ' - lockMethod: ' +
+      lockMethod
     );
   }
 
@@ -274,8 +302,8 @@ export class ConfigProvider {
     if (!this.configCache.wallet) {
       this.configCache.wallet = this.configDefault.wallet;
     }
-    if (!this.configCache.wallet.settings.unitCode) {
-      this.configCache.wallet.settings.unitCode = this.configDefault.wallet.settings.unitCode;
+    if (!this.configCache.wallet.settings['btc'].unitCode) {
+      this.configCache.wallet.settings['btc'].unitCode = this.configDefault.wallet.settings['btc'].unitCode;
     }
     if (!this.configCache.showIntegration) {
       this.configCache.showIntegration = this.configDefault.showIntegration;
@@ -300,12 +328,12 @@ export class ConfigProvider {
       this.configCache.confirmedTxsNotifications = this.configDefault.confirmedTxsNotifications;
     }
 
-    if (this.configCache.wallet.settings.unitCode == 'bit') {
+    if (this.configCache.wallet.settings['btc'].unitCode == 'bit') {
       // Convert to BTC. Bits will be disabled
-      this.configCache.wallet.settings.unitName = this.configDefault.wallet.settings.unitName;
-      this.configCache.wallet.settings.unitToSatoshi = this.configDefault.wallet.settings.unitToSatoshi;
-      this.configCache.wallet.settings.unitDecimals = this.configDefault.wallet.settings.unitDecimals;
-      this.configCache.wallet.settings.unitCode = this.configDefault.wallet.settings.unitCode;
+      this.configCache.wallet.settings['btc'].unitName = this.configDefault.wallet.settings['btc'].unitName;
+      this.configCache.wallet.settings['btc'].unitToSatoshi = this.configDefault.wallet.settings['btc'].unitToSatoshi;
+      this.configCache.wallet.settings['btc'].unitDecimals = this.configDefault.wallet.settings['btc'].unitDecimals;
+      this.configCache.wallet.settings['btc'].unitCode = this.configDefault.wallet.settings['btc'].unitCode;
     }
   }
 }

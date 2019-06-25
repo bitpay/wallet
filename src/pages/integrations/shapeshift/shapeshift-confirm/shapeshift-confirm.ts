@@ -235,7 +235,7 @@ export class ShapeshiftConfirmPage {
         .getFeeRate(
           this.fromWallet.coin,
           this.network,
-          this.configWallet.settings.feeLevel || 'normal'
+          this.configWallet.settings[this.fromWallet.coin].feeLevel || 'normal'
         )
         .then(feeRate => {
           this.onGoingProcessProvider.set('retrievingInputs');
@@ -370,9 +370,9 @@ export class ShapeshiftConfirmPage {
       let amount = this.useSendMax
         ? this.amount
         : parseInt(
-            (this.amount * this.configWallet.settings.unitToSatoshi).toFixed(0),
-            10
-          );
+          (this.amount * this.configWallet.settings.unitToSatoshi).toFixed(0),
+          10
+        );
 
       this.message =
         this.fromWallet.coin.toUpperCase() +
@@ -539,6 +539,7 @@ export class ShapeshiftConfirmPage {
                         this.onGoingProcessProvider.clear();
                         this.rateUnit = r.rate;
                         let amountUnit = this.txFormatProvider.satToUnit(
+                          this.fromWallet.coin,
                           ctxp.amount
                         );
                         let withdrawalSat = Number(

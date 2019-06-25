@@ -138,9 +138,9 @@ export class AmountPage extends WalletTabsChild {
       this.navParams.get('nextPage') === 'CustomAmountPage';
     this.nextView = this.getNextView();
 
-    this.unitToSatoshi = this.config.wallet.settings.unitToSatoshi;
+    this.unitToSatoshi = this.config.wallet.settings[this.wallet.coin].unitToSatoshi;
     this.satToUnit = 1 / this.unitToSatoshi;
-    this.unitDecimals = this.config.wallet.settings.unitDecimals;
+    this.unitDecimals = this.config.wallet.settings[this.wallet.coin].unitDecimals;
 
     // BitPay Card ID or Wallet ID
     this._id = this.navParams.data.id;
@@ -264,8 +264,8 @@ export class AmountPage extends WalletTabsChild {
       this.altUnitIndex = this.unitIndex;
       this.unitIndex = this.availableUnits.length;
     } else {
-      this.fiatCode = this.config.wallet.settings.alternativeIsoCode || 'USD';
-      fiatName = this.config.wallet.settings.alternativeName || this.fiatCode;
+      this.fiatCode = this.config.wallet.settings[parentWalletCoin].alternativeIsoCode || 'USD';
+      fiatName = this.config.wallet.settings[parentWalletCoin].alternativeName || this.fiatCode;
       this.altUnitIndex = this.availableUnits.length;
     }
 
@@ -334,6 +334,7 @@ export class AmountPage extends WalletTabsChild {
       return this.finish();
     }
     const maxAmount = this.txFormatProvider.satToUnit(
+      this.wallet.coin,
       this.wallet.status.availableBalanceSat
     );
     this.zone.run(() => {

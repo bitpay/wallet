@@ -44,12 +44,10 @@ export class TxFormatProvider {
 
   // TODO: Check return of formatAmount(...), sometimes returns a number and sometimes a string
   public formatAmount(coin: string, satoshis: number, fullPrecision?: boolean) {
-    let settings = this.configProvider.get().wallet.settings;
+    let settings = this.configProvider.get().wallet.settings[coin];
 
     if (settings.unitCode == 'sat') return satoshis;
-    if (coin) {
-      settings.unitCode = coin
-    }
+
     // TODO : now only works for english, specify opts to change thousand separator and decimal separator
     var opts = {
       fullPrecision: !!fullPrecision
@@ -88,7 +86,7 @@ export class TxFormatProvider {
 
   public formatAlternativeStr(coin: string, satoshis: number): string {
     if (isNaN(satoshis)) return undefined;
-    let settings = this.configProvider.get().wallet.settings;
+    let settings = this.configProvider.get().wallet.settings[coin];
 
     let val = (() => {
       var v1 = parseFloat(
@@ -183,7 +181,7 @@ export class TxFormatProvider {
     currency: string,
     onlyIntegers?: boolean
   ) {
-    let settings = this.configProvider.get().wallet.settings;
+    let settings = this.configProvider.get().wallet.settings[coin];
     let satToBtc = 1 / 100000000;
     let unitToSatoshi = settings.unitToSatoshi;
     let amountUnitStr;
@@ -191,7 +189,7 @@ export class TxFormatProvider {
     let alternativeIsoCode = settings.alternativeIsoCode;
 
     // If fiat currency
-    if (currency != 'BCH' && currency != 'BTC' && currency != 'sat') {
+    if (currency != 'BCH' && currency != 'BTC' && currency != 'ETH' && currency != 'sat') {
       let formattedAmount = onlyIntegers
         ? this.filter.formatFiatAmount(amount.toFixed(0))
         : this.filter.formatFiatAmount(amount);
@@ -220,8 +218,8 @@ export class TxFormatProvider {
     };
   }
 
-  public satToUnit(amount): number {
-    let settings = this.configProvider.get().wallet.settings;
+  public satToUnit(coin: string, amount: number): number {
+    let settings = this.configProvider.get().wallet.settings[coin];
     let unitToSatoshi = settings.unitToSatoshi;
     let satToUnit = 1 / unitToSatoshi;
     let unitDecimals = settings.unitDecimals;

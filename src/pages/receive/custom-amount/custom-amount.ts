@@ -60,9 +60,10 @@ export class CustomAmountPage {
       const _currency = parsedAmount.currency;
       this.amountUnitStr = parsedAmount.amountUnitStr;
 
-      if (_currency != 'BTC' && _currency != 'BCH') {
+      if (_currency != 'BTC' && _currency != 'BCH' && _currency != 'ETH') {
         // Convert to BTC or BCH
         const amountUnit = this.txFormatProvider.satToUnit(
+          this.wallet.coin,
           parsedAmount.amountSat
         );
         var btcParsedAmount = this.txFormatProvider.parseAmount(

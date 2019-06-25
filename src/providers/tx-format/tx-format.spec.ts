@@ -14,7 +14,7 @@ describe('TxFormatProvider', () => {
   let txFormatProvider: TxFormatProvider;
 
   class PersistenceProviderMock {
-    constructor() {}
+    constructor() { }
     storeConfig() {
       return Promise.resolve('');
     }
@@ -50,24 +50,28 @@ describe('TxFormatProvider', () => {
     it('should get the formatted amount for provided amount', () => {
       let newOpts = {
         wallet: {
-          settings: { unitCode: 'bit' }
+          settings: {
+            btc: { unitCode: 'bit' }
+          }
         }
       };
       configProvider.set(newOpts);
 
-      let formattedAmount = txFormatProvider.formatAmount(12312312, true);
+      let formattedAmount = txFormatProvider.formatAmount('btc', 12312312, true);
       expect(formattedAmount).toEqual('123,123.12');
     });
 
     it('should get the same amount of satoshis that was provided', () => {
       let newOpts = {
         wallet: {
-          settings: { unitCode: 'sat' }
+          settings: {
+            btc: { unitCode: 'sat' }
+          }
         }
       };
       configProvider.set(newOpts);
 
-      let formattedAmount: number = txFormatProvider.formatAmount(12312312);
+      let formattedAmount: number = txFormatProvider.formatAmount('btc', 12312312);
       expect(formattedAmount).toEqual(12312312);
     });
   });
@@ -82,7 +86,9 @@ describe('TxFormatProvider', () => {
     it('should return a string with formatted amount', () => {
       let newOpts = {
         wallet: {
-          settings: { unitCode: 'btc' }
+          settings: {
+            btc: { unitCode: 'btc' }
+          }
         }
       };
       configProvider.set(newOpts);
@@ -140,8 +146,10 @@ describe('TxFormatProvider', () => {
       let newOpts = {
         wallet: {
           settings: {
-            unitCode: 'btc',
-            alternativeIsoCode: 'ARS'
+            btc: {
+              unitCode: 'btc',
+              alternativeIsoCode: 'ARS'
+            }
           }
         }
       };
@@ -192,8 +200,10 @@ describe('TxFormatProvider', () => {
       let newOpts = {
         wallet: {
           settings: {
-            unitCode: 'btc',
-            alternativeIsoCode: 'USD'
+            btc: {
+              unitCode: 'btc',
+              alternativeIsoCode: 'USD'
+            }
           }
         }
       };
@@ -283,9 +293,11 @@ describe('TxFormatProvider', () => {
       let newOpts = {
         wallet: {
           settings: {
-            unitCode: 'btc',
-            alternativeIsoCode: 'USD',
-            unitToSatoshi: 100000000
+            btc: {
+              unitCode: 'btc',
+              alternativeIsoCode: 'USD',
+              unitToSatoshi: 100000000
+            }
           }
         }
       };
@@ -321,9 +333,11 @@ describe('TxFormatProvider', () => {
       let newOpts = {
         wallet: {
           settings: {
-            unitCode: 'btc',
-            alternativeIsoCode: 'JPY',
-            unitToSatoshi: 100000000
+            btc: {
+              unitCode: 'btc',
+              alternativeIsoCode: 'JPY',
+              unitToSatoshi: 100000000
+            }
           }
         }
       };
@@ -367,10 +381,12 @@ describe('TxFormatProvider', () => {
       let newOpts = {
         wallet: {
           settings: {
-            alternativeIsoCode: 'USD',
-            unitCode: 'btc',
-            unitDecimals: 8,
-            unitToSatoshi: 100000000
+            btc: {
+              alternativeIsoCode: 'USD',
+              unitCode: 'btc',
+              unitDecimals: 8,
+              unitToSatoshi: 100000000
+            }
           }
         }
       };
@@ -378,7 +394,7 @@ describe('TxFormatProvider', () => {
     });
 
     it('should return amount in unit format', () => {
-      let result = txFormatProvider.satToUnit(12312312);
+      let result = txFormatProvider.satToUnit('btc', 12312312);
       expect(result).toEqual(0.12312312);
     });
   });
