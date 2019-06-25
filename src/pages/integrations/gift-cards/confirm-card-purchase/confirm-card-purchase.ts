@@ -29,7 +29,10 @@ import { BwcProvider } from '../../../../providers/bwc/bwc';
 import { ClipboardProvider } from '../../../../providers/clipboard/clipboard';
 import { ConfigProvider } from '../../../../providers/config/config';
 import { ExternalLinkProvider } from '../../../../providers/external-link/external-link';
-import { GiftCardProvider } from '../../../../providers/gift-card/gift-card';
+import {
+  getVisibleDiscount,
+  GiftCardProvider
+} from '../../../../providers/gift-card/gift-card';
 import {
   CardConfig,
   GiftCard
@@ -64,6 +67,7 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
   public invoiceFee: number;
   public networkFee: number;
   public totalAmount: number;
+  public totalDiscount: number;
   public amountUnitStr: string;
   public network: string;
   public onlyIntegers: boolean;
@@ -217,7 +221,8 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
 
     const networkFee = await this.satToFiat(wallet.coin, networkFeeSat);
     this.networkFee = Number(networkFee);
-    this.totalAmount = this.amount + this.invoiceFee + this.networkFee;
+    this.totalAmount =
+      this.amount - this.totalDiscount + this.invoiceFee + this.networkFee;
   }
 
   private isCryptoCurrencySupported(wallet, invoice) {
@@ -262,6 +267,7 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
       });
 
     const accessKey = cardOrder && cardOrder.accessKey;
+    const totalDiscount = cardOrder && cardOrder.totalDiscount;
     if (!accessKey) {
       throw {
         message: this.translate.instant('No access key defined')
@@ -274,7 +280,7 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
           message: this.translate.instant('Could not get the invoice')
         };
       });
-    return { invoice, accessKey };
+    return { invoice, accessKey, totalDiscount };
   }
 
   private async createTx(wallet, invoice, message: string) {
@@ -394,9 +400,11 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
 
     const email = await this.promptEmail();
     this.hideSlideButton = false;
+    const discount = getVisibleDiscount(this.cardConfig);
     const dataSrc = {
       amount: parsedAmount.amount,
       currency: parsedAmount.currency,
+      discounts: discount && discount.code ? [discount.code] : [],
       uuid: wallet.id,
       email,
       buyerSelectedTransactionCurrency: COIN,
@@ -410,6 +418,7 @@ export class ConfirmCardPurchasePage extends ConfirmPage {
     });
     const invoice = data.invoice;
     const accessKey = data.accessKey;
+    this.totalDiscount = data.totalDiscount || 0;
 
     if (!this.isCryptoCurrencySupported(wallet, invoice)) {
       this.onGoingProcessProvider.clear();

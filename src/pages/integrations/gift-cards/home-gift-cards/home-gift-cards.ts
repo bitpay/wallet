@@ -5,16 +5,25 @@ import {
   transition,
   trigger
 } from '@angular/animations';
-import { Component, OnInit } from '@angular/core';
-import { NavController } from 'ionic-angular';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { ItemSliding, NavController } from 'ionic-angular';
 import { timer } from 'rxjs/observable/timer';
 import { debounceTime } from 'rxjs/operators';
-import { ActionSheetProvider, AppProvider } from '../../../../providers';
+import {
+  ActionSheetProvider,
+  AppProvider,
+  PersistenceProvider
+} from '../../../../providers';
 import {
   GiftCardProvider,
+  hasVisibleDiscount,
   sortByDisplayName
 } from '../../../../providers/gift-card/gift-card';
-import { GiftCard } from '../../../../providers/gift-card/gift-card.types';
+import {
+  CardConfig,
+  GiftCard
+} from '../../../../providers/gift-card/gift-card.types';
+import { BuyCardPage } from '../buy-card/buy-card';
 import { CardCatalogPage } from '../card-catalog/card-catalog';
 import { CardDetailsPage } from '../card-details/card-details';
 import { PurchasedCardsPage } from '../purchased-cards/purchased-cards';
@@ -47,24 +56,42 @@ import { GiftCardItem } from './gift-card-item/gift-card-item';
 export class HomeGiftCards implements OnInit {
   public activeBrands: GiftCard[][];
   public appName: string;
+  public discountedCard: CardConfig;
+  public hideDiscount: boolean = false;
   public disableArchiveAnimation: boolean = true; // Removes flicker on iOS when returning to home tab
+
+  @ViewChild(ItemSliding)
+  slidingItem: ItemSliding;
 
   constructor(
     private actionSheetProvider: ActionSheetProvider,
     private appProvider: AppProvider,
     private giftCardProvider: GiftCardProvider,
-    private navCtrl: NavController
+    private navCtrl: NavController,
+    private persistenceProvider: PersistenceProvider
   ) {}
 
   async ngOnInit() {
     this.appName = this.appProvider.info.userVisibleName;
     await this.initGiftCards();
+    this.discountedCard = await this.getDiscountedCard();
+    this.hideDiscount = await this.persistenceProvider.getHideGiftCardDiscountItem();
     await timer(3000).toPromise();
     this.giftCardProvider.preloadImages();
   }
 
+  async getDiscountedCard(): Promise<CardConfig> {
+    const availableCards = await this.giftCardProvider.getAvailableCards();
+    return availableCards.find(cardConfig => hasVisibleDiscount(cardConfig));
+  }
+
   public buyGiftCards() {
     this.navCtrl.push(CardCatalogPage);
+  }
+
+  public async buyCard(cardName: string) {
+    const cardConfig = await this.giftCardProvider.getCardConfig(cardName);
+    this.navCtrl.push(BuyCardPage, { cardConfig });
   }
 
   public onGiftCardAction(event, purchasedCards: GiftCard[]) {
@@ -96,6 +123,20 @@ export class HomeGiftCards implements OnInit {
     archiveSheet.onDidDismiss(async confirm => {
       if (!confirm) return;
       await this.giftCardProvider.archiveAllCards(event.cardName);
+    });
+  }
+
+  public async showHideDiscountItemSheet() {
+    this.slidingItem.close();
+    const hideDiscountSheet = this.actionSheetProvider.createInfoSheet(
+      'hide-gift-card-discount-item'
+    );
+    hideDiscountSheet.present();
+    hideDiscountSheet.onDidDismiss(async confirm => {
+      if (!confirm) return;
+      this.disableArchiveAnimation = false;
+      this.hideDiscount = true;
+      await this.giftCardProvider.hideDiscountItem();
     });
   }
 
