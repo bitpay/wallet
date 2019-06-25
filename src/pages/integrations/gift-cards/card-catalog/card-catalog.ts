@@ -107,6 +107,10 @@ export class CardCatalogPage extends WideHeaderPage {
     return hasVisibleDiscount(cardConfig);
   }
 
+  hasPercentageDiscount(cardConfig: CardConfig) {
+    return hasVisibleDiscount(cardConfig);
+  }
+
   private showError() {
     const errorInfoSheet = this.actionSheetProvider.createInfoSheet(
       'gift-cards-unavailable'
