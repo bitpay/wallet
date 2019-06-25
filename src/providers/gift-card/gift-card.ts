@@ -14,6 +14,7 @@ import { HomeIntegrationsProvider } from '../home-integrations/home-integrations
 import { InvoiceProvider } from '../invoice/invoice';
 import { Logger } from '../logger/logger';
 import { GiftCardMap, PersistenceProvider } from '../persistence/persistence';
+import { PlatformProvider } from '../platform/platform';
 import { TimeProvider } from '../time/time';
 import {
   ApiCardConfig,
@@ -45,7 +46,8 @@ export class GiftCardProvider extends InvoiceProvider {
     public emailNotificationsProvider: EmailNotificationsProvider,
     public http: HttpClient,
     public logger: Logger,
-    public persistenceProvider: PersistenceProvider
+    public persistenceProvider: PersistenceProvider,
+    private platformProvider: PlatformProvider
   ) {
     super(emailNotificationsProvider, http, logger, persistenceProvider);
     this.logger.debug('GiftCardProvider initialized');
@@ -457,7 +459,8 @@ export class GiftCardProvider extends InvoiceProvider {
       this.getNetwork()
     );
     const apiCardConfigCache = getCardConfigFromApiConfigMap(
-      availableCardMap
+      availableCardMap,
+      this.platformProvider.isCordova
     ).reduce((configMap, apiCardConfigMap, index) => {
       const name = cardNames[index];
       return { ...configMap, [name]: apiCardConfigMap };
@@ -497,7 +500,10 @@ export class GiftCardProvider extends InvoiceProvider {
   async fetchAvailableCards(): Promise<CardConfig[]> {
     this.availableCardsPromise = this.fetchAvailableCardMap().then(
       availableCardMap =>
-        getCardConfigFromApiConfigMap(availableCardMap)
+        getCardConfigFromApiConfigMap(
+          availableCardMap,
+          this.platformProvider.isCordova
+        )
           .map(apiCardConfig => ({
             ...apiCardConfig,
             displayName: apiCardConfig.displayName || apiCardConfig.name
@@ -529,7 +535,10 @@ export class GiftCardProvider extends InvoiceProvider {
   }
 }
 
-function getCardConfigFromApiConfigMap(availableCardMap: AvailableCardMap) {
+function getCardConfigFromApiConfigMap(
+  availableCardMap: AvailableCardMap,
+  isCordova: boolean
+) {
   const cardNames = Object.keys(availableCardMap);
   return cardNames
     .filter(
@@ -538,7 +547,15 @@ function getCardConfigFromApiConfigMap(availableCardMap: AvailableCardMap) {
     )
     .map(cardName =>
       getCardConfigFromApiBrandConfig(cardName, availableCardMap[cardName])
-    );
+    )
+    .map(cardConfig => removeDiscountsIfNotMobile(cardConfig, isCordova));
+}
+
+function removeDiscountsIfNotMobile(cardConfig: CardConfig, isCordova) {
+  return {
+    ...cardConfig,
+    discounts: isCordova ? cardConfig.discounts : undefined
+  };
 }
 
 function getCardConfigFromApiBrandConfig(
