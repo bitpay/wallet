@@ -50,6 +50,7 @@ const Keys = {
     const legacyGiftCardKey = getLegacyGiftCardKey(cardName, network);
     return legacyGiftCardKey || `giftCards-${cardName}-${network}`;
   },
+  HIDE_GIFT_CARD_DISCOUNT_ITEM: 'hideGiftCardDiscountItem',
   HIDE_BALANCE: walletId => 'hideBalance-' + walletId,
   LAST_ADDRESS: walletId => 'lastAddress-' + walletId,
   LAST_CURRENCY_USED: 'lastCurrencyUsed',
@@ -349,6 +350,18 @@ export class PersistenceProvider {
 
   removeGiftCardUserInfo() {
     return this.storage.remove(Keys.GIFT_CARD_USER_INFO);
+  }
+
+  setHideGiftCardDiscountItem(data: boolean) {
+    return this.storage.set(Keys.HIDE_GIFT_CARD_DISCOUNT_ITEM, data);
+  }
+
+  getHideGiftCardDiscountItem() {
+    return this.storage.get(Keys.HIDE_GIFT_CARD_DISCOUNT_ITEM);
+  }
+
+  removeHideGiftCardDiscountItem() {
+    return this.storage.remove(Keys.HIDE_GIFT_CARD_DISCOUNT_ITEM);
   }
 
   setTxConfirmNotification(txid: string, val) {
