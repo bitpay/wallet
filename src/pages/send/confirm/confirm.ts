@@ -275,7 +275,7 @@ export class ConfirmPage extends WalletTabsChild {
     ) {
       return Promise.resolve();
     }
-    return new Promise((resolve, reject) => {
+    return new Promise(resolve => {
       // no min amount? (sendMax) => look for no empty wallets
       minAmount = minAmount ? minAmount : 1;
 
@@ -286,22 +286,6 @@ export class ConfirmPage extends WalletTabsChild {
         coin
       });
 
-      if (!this.wallets || !this.wallets.length) {
-        return reject(this.translate.instant('No wallets available'));
-      }
-
-      const filteredWallets = _.filter(this.wallets, w => {
-        // no balance yet?
-        if (_.isEmpty(w.cachedStatus)) return true;
-
-        return w.cachedStatus.availableBalanceSat > minAmount;
-      });
-
-      if (_.isEmpty(filteredWallets)) {
-        return reject(this.translate.instant('Insufficient funds'));
-      }
-
-      this.wallets = _.clone(filteredWallets);
       return resolve();
     });
   }
@@ -333,7 +317,7 @@ export class ConfirmPage extends WalletTabsChild {
               this.translate.instant(
                 'You do not have enough confirmed funds to make this payment. Wait for your pending transactions to confirm or enable "Use unconfirmed funds" in Advanced Settings.'
               ),
-              this.translate.instant('Insufficient funds'),
+              this.translate.instant('No enough confirmed funds'),
               true
             );
           } else if (previousView === 'AmountPage') {
