@@ -43,8 +43,7 @@ export class FeeProvider {
 
   public getCurrentFeeLevel(): string {
     return (
-      this.configProvider.get().wallet.settings[this.cache.coin].feeLevel ||
-      'normal'
+      this.configProvider.get().wallet.settings.default.feeLevel || 'normal'
     );
   }
 
