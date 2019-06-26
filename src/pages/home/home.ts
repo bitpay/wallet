@@ -362,15 +362,12 @@ export class HomePage {
     let opts: any = {};
     if (this.keyProvider.activeWGKey === 'read-only') {
       opts.readOnly = true;
-      this.selectedWalletGroup.name = this.translate.instant(
-        'Read Only Wallets'
-      );
     } else if (this.keyProvider.activeWGKey) {
       opts.keyId = this.keyProvider.activeWGKey;
-      this.selectedWalletGroup = this.profileProvider.getWalletGroup(
-        this.keyProvider.activeWGKey
-      );
     }
+    this.selectedWalletGroup = this.profileProvider.getWalletGroup(
+      this.keyProvider.activeWGKey
+    );
 
     this.wallets = this.profileProvider.getWallets(opts);
 

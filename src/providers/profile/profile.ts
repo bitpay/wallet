@@ -117,14 +117,14 @@ export class ProfileProvider {
   }
 
   public setBackupFlag(walletId: string): void {
-    this.persistenceProvider.setBackupGroupFlag(walletId);
+    this.persistenceProvider.setBackupFlag(walletId);
     this.logger.debug('Backup flag stored');
     this.wallet[walletId].needsBackup = false;
   }
 
   public setBackupGroupFlag(keyId: string): void {
     // TODO migrate backup flag
-    this.persistenceProvider.setBackupFlag(keyId);
+    this.persistenceProvider.setBackupGroupFlag(keyId);
     this.logger.debug('Backup flag stored');
     this.walletsGroups[keyId].needsBackup = false;
   }
@@ -297,7 +297,7 @@ export class ProfileProvider {
       );
       this.walletsGroups['read-only'].name = 'Read Only Wallets';
       this.walletsGroups['read-only'].isPrivKeyEncrypted = false;
-      this.walletsGroups[keyId].canSign = false;
+      this.walletsGroups['read-only'].canSign = false;
     }
 
     console.log('this.walletsGroups', this.walletsGroups);
@@ -1225,19 +1225,14 @@ export class ProfileProvider {
 
     let ret = _.values(this.wallet);
 
-    console.log('opts.keyId', opts.keyId);
     if (opts.keyId) {
       ret = _.filter(ret, x => {
-        console.log(x.credentials);
         return x.credentials.keyId == opts.keyId;
       });
     }
 
-    console.log('opts.readOnly', opts.readOnly);
-
     if (opts.readOnly) {
       ret = _.filter(ret, x => {
-        console.log(x.credentials);
         return !x.credentials.keyId;
       });
     }

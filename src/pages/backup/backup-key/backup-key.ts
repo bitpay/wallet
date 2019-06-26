@@ -111,7 +111,7 @@ export class BackupKeyPage {
   public goToBackupGame(): void {
     this.navCtrl.push(BackupGamePage, {
       words: this.mnemonicWords,
-      keys: this.keys,
+      keys: this.keys
       /*  walletId: this.walletId TODO */
     });
   }

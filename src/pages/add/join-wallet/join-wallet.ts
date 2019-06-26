@@ -283,6 +283,8 @@ export class JoinWalletPage {
           .setRoot(TabsPage)
           .then(() => {
             setTimeout(() => {
+              this.keyProvider.setActiveWGKey(wallet.credentials.keyId);
+              this.events.publish('Home/reloadStatus');
               this.events.publish('OpenWallet', wallet);
             }, 1000);
           });

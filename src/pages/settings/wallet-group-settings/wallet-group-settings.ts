@@ -44,7 +44,7 @@ export class WalletGroupSettingsPage {
     private externalLinkProvider: ExternalLinkProvider,
     private translate: TranslateService,
     private keyProvider: KeyProvider
-  ) { }
+  ) {}
 
   async ionViewDidLoad() {
     this.logger.info('Loaded:  WalletGroupSettingsPage');
