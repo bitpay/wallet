@@ -196,10 +196,8 @@ export class ConfirmPage extends WalletTabsChild {
     };
     this.tx.origToAddress = this.tx.toAddress;
 
-    this.configFeeLevel = this.config.wallet.settings[
-      this.tx.coin.toLowerCase()
-    ].feeLevel
-      ? this.config.wallet.settings[this.tx.coin.toLowerCase()].feeLevel
+    this.configFeeLevel = this.config.wallet.settings[this.tx.coin].feeLevel
+      ? this.config.wallet.settings[this.tx.coin].feeLevel
       : 'normal';
 
     if (this.navParams.data.requiredFeeRate) {
@@ -215,8 +213,7 @@ export class ConfirmPage extends WalletTabsChild {
         .Address(this.tx.toAddress)
         .toString(true);
     }
-
-    this.getAmountDetails(this.tx.coin.toLowerCase());
+    this.getAmountDetails(this.tx.coin);
 
     const feeOpts = this.feeProvider.getFeeOpts();
     this.tx.feeLevelName = feeOpts[this.tx.feeLevel];

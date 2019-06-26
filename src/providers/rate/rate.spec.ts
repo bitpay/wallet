@@ -215,9 +215,9 @@ describe('RateProvider', () => {
     // after we have rates
     service.updateRates('eth').then(() => {
       expect(service.isCoinAvailable('eth')).toBe(true);
-      expect(service.toFiat(1 * 1e8, 'USD', 'eth')).toEqual(1503.3);
-      expect(service.toFiat(0.5 * 1e8, 'USD', 'eth')).toEqual(751.65);
-      expect(service.toFiat(0.25 * 1e8, 'USD', 'eth')).toEqual(375.825);
+      expect(service.toFiat(1 * 1e8, 'USD', 'eth')).toEqual(1.5033e-7);
+      expect(service.toFiat(0.5 * 1e8, 'USD', 'eth')).toEqual(7.5165e-8);
+      expect(service.toFiat(0.25 * 1e8, 'USD', 'eth')).toEqual(3.75825e-8);
     });
 
     httpMock.match(ethUrl)[1].flush(ethResponse);
@@ -233,9 +233,9 @@ describe('RateProvider', () => {
     // after we have rates
     service.updateRates('eth').then(() => {
       expect(service.isCoinAvailable('eth')).toBe(true);
-      expect(service.fromFiat(1503.3, 'USD', 'eth')).toEqual(1 * 1e8);
-      expect(service.fromFiat(751.65, 'USD', 'eth')).toEqual(0.5 * 1e8);
-      expect(service.fromFiat(375.825, 'USD', 'eth')).toEqual(0.25 * 1e8);
+      expect(service.fromFiat(1.5033e-7, 'USD', 'eth')).toEqual(1 * 1e8);
+      expect(service.fromFiat(7.5165e-8, 'USD', 'eth')).toEqual(0.5 * 1e8);
+      expect(service.fromFiat(3.75825e-8, 'USD', 'eth')).toEqual(0.25 * 1e8);
     });
 
     httpMock.match(ethUrl)[1].flush(ethResponse);
