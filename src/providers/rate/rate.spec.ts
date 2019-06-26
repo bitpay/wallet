@@ -44,7 +44,7 @@ describe('RateProvider', () => {
     service.updateRates('btc').then(() => {
       expect(service.isCoinAvailable('btc')).toBe(true);
     });
-    httpMock.match(ethUrl)[0].flush(ethResponse);
+    expect(httpMock.match(ethUrl)).toHaveBeenCalled();
     httpMock.match(btcUrl)[1].flush(btcResponse);
     httpMock.match(bchUrl)[0].flush(bchResponse);
     httpMock.verify();
