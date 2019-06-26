@@ -235,7 +235,8 @@ export class ConfirmPage extends WalletTabsChild {
   }
 
   private getAmountDetails() {
-    this.amount = this.decimalPipe.transform(this.tx.amount / 1e8, '1.2-6');
+    const { unitToSatoshi } = this.configProvider.get().wallet.settings[this.navParams.data.coin.toLowerCase()];
+    this.amount = this.decimalPipe.transform(this.tx.amount / unitToSatoshi, '1.2-6');
   }
 
   private afterWalletSelectorSet() {
@@ -452,7 +453,7 @@ export class ConfirmPage extends WalletTabsChild {
             const maxAllowedFee = feeRate * 5;
             this.logger.info(
               `Using Merchant Fee: ${
-                tx.feeRate
+              tx.feeRate
               } vs. referent level (5 * feeRate) ${maxAllowedFee}`
             );
             if (tx.network != 'testnet' && tx.feeRate > maxAllowedFee) {
@@ -667,7 +668,7 @@ export class ConfirmPage extends WalletTabsChild {
         return reject(msg);
       }
 
-      if (tx.amount > Number.MAX_SAFE_INTEGER) {
+      if (tx.amount > Number.MAX_SAFE_INTEGER && this.wallet.coin !== 'eth') {
         const msg = this.translate.instant('Amount too big');
         return reject(msg);
       }
@@ -729,7 +730,6 @@ export class ConfirmPage extends WalletTabsChild {
           toWalletName: tx.name ? tx.name : null
         };
       }
-
       this.walletProvider
         .createTx(wallet, txp)
         .then(ctxp => {
@@ -787,8 +787,8 @@ export class ConfirmPage extends WalletTabsChild {
         this.isWithinWalletTabs()
           ? this.navCtrl.popToRoot()
           : this.navCtrl.last().name == 'ConfirmCardPurchasePage'
-          ? this.navCtrl.pop()
-          : this.app.getRootNavs()[0].setRoot(TabsPage);
+            ? this.navCtrl.pop()
+            : this.app.getRootNavs()[0].setRoot(TabsPage);
       }
     });
   }
@@ -873,7 +873,6 @@ export class ConfirmPage extends WalletTabsChild {
     if (!wallet.canSign() && !wallet.isPrivKeyExternal()) {
       return this.onlyPublish(txp, wallet);
     }
-
     return this.walletProvider
       .publishAndSign(wallet, txp)
       .then(txp => {

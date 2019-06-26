@@ -18,15 +18,16 @@ export class SatToFiatPipe implements PipeTransform {
     this.walletSettings = this.configProvider.get().wallet.settings;
   }
   transform(amount: number, coin: string) {
+    const normalizedCoin = coin.toLowerCase();
     let amount_ = this.rateProvider.toFiat(
       amount,
-      this.walletSettings.alternativeIsoCode,
-      coin.toLowerCase()
+      this.walletSettings[normalizedCoin].alternativeIsoCode,
+      normalizedCoin
     );
     return (
       this.decimalPipe.transform(amount_ || 0, '1.2-2') +
       ' ' +
-      this.walletSettings.alternativeIsoCode
+      this.walletSettings[normalizedCoin].alternativeIsoCode
     );
   }
 }
