@@ -58,7 +58,9 @@ describe('LanguageProvider', () => {
       const lang = 'pt';
       const momentSpy = spyOn(moment, 'locale');
       const configProviderSetSpy = spyOn(configProvider, 'set');
-      const opt = { wallet: { settings: { defaultLanguage: lang } } };
+      const opt = {
+        wallet: { settings: { default: { defaultLanguage: lang } } }
+      };
 
       languageProvider.set(lang);
 
