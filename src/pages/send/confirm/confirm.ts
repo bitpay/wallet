@@ -143,10 +143,6 @@ export class ConfirmPage extends WalletTabsChild {
       this.navParams.data.coin == 'bch' ? this.bitcoreCash : this.bitcore;
     let networkName;
     let amount;
-    this.configFeeLevel = this.config.wallet.settings[this.navParams.data.coin]
-      .feeLevel
-      ? this.config.wallet.settings[this.navParams.data.coin].feeLevel
-      : 'normal';
     if (this.fromMultiSend) {
       networkName = this.navParams.data.network;
       amount = this.navParams.data.totalAmount;
@@ -199,6 +195,10 @@ export class ConfirmPage extends WalletTabsChild {
       txp: {}
     };
     this.tx.origToAddress = this.tx.toAddress;
+
+    this.configFeeLevel = this.config.wallet.settings[this.tx.coin].feeLevel
+      ? this.config.wallet.settings[this.tx.coin].feeLevel
+      : 'normal';
 
     if (this.navParams.data.requiredFeeRate) {
       this.usingMerchantFee = true;
