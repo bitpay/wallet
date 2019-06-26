@@ -120,6 +120,9 @@ export class ConfirmPage extends WalletTabsChild {
     this.CONFIRM_LIMIT_USD = 20;
     this.FEE_TOO_HIGH_LIMIT_PER = 15;
     this.config = this.configProvider.get();
+    this.configFeeLevel = this.config.wallet.settings.default.feeLevel
+      ? this.config.wallet.settings.default.feeLevel
+      : 'normal';
     this.isCordova = this.platformProvider.isCordova;
     this.hideSlideButton = false;
     this.showMultiplesOutputs = false;
@@ -195,10 +198,6 @@ export class ConfirmPage extends WalletTabsChild {
       txp: {}
     };
     this.tx.origToAddress = this.tx.toAddress;
-
-    this.configFeeLevel = this.config.wallet.settings[this.tx.coin].feeLevel
-      ? this.config.wallet.settings[this.tx.coin].feeLevel
-      : 'normal';
 
     if (this.navParams.data.requiredFeeRate) {
       this.usingMerchantFee = true;
