@@ -33,6 +33,7 @@ export class WalletInformationPage {
   public externalSource: string;
   public canSign: boolean;
   public needsBackup: boolean;
+  public unitToSatoshi: number;
   private colorCounter = 1;
   private BLACK_WALLET_COLOR = '#202020';
 
@@ -53,6 +54,9 @@ export class WalletInformationPage {
     this.wallet = this.profileProvider.getWallet(this.navParams.data.walletId);
     this.walletName = this.wallet.name;
     this.coin = this.wallet.coin;
+    this.unitToSatoshi = this.configProvider.get().wallet.settings[
+      this.coin
+    ].unitToSatoshi;
     this.walletId = this.wallet.credentials.walletId;
     this.N = this.wallet.credentials.n;
     this.M = this.wallet.credentials.m;
