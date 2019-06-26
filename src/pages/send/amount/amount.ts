@@ -135,10 +135,6 @@ export class AmountPage extends WalletTabsChild {
       this.navParams.get('nextPage') === 'CustomAmountPage';
     this.nextView = this.getNextView();
 
-    this.unitToSatoshi = this.config.wallet.settings[this.unit].unitToSatoshi;
-    this.satToUnit = 1 / this.unitToSatoshi;
-    this.unitDecimals = this.config.wallet.settings[this.unit].unitDecimals;
-
     // BitPay Card ID or Wallet ID
     this._id = this.navParams.data.id;
 
@@ -203,6 +199,14 @@ export class AmountPage extends WalletTabsChild {
     const parentWalletCoin = this.navParams.data.wallet
       ? this.navParams.data.wallet.coin
       : this.wallet && this.wallet.coin;
+
+    this.unitToSatoshi = this.config.wallet.settings[
+      parentWalletCoin
+    ].unitToSatoshi;
+    this.satToUnit = 1 / this.unitToSatoshi;
+    this.unitDecimals = this.config.wallet.settings[
+      parentWalletCoin
+    ].unitDecimals;
 
     if (parentWalletCoin === 'btc' || !parentWalletCoin) {
       this.availableUnits.push({
