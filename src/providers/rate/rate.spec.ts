@@ -16,13 +16,13 @@ describe('RateProvider', () => {
     { code: 'BTC', name: 'Bitcoin', rate: 0.130377 },
     { code: 'USD', name: 'US Dollar', rate: 1503.3 },
     { code: 'BCH', name: 'Bitcoin Cash', rate: 1 },
-    { code: 'ETH', name: 'Ethereum', rate: 5.65734 }
+    { code: 'ETH', name: 'Ethereum', rate: 0.899 }
   ];
   const ethResponse = [
     { code: 'BTC', name: 'Bitcoin', rate: 0.130377 },
     { code: 'USD', name: 'US Dollar', rate: 1503.3 },
-    { code: 'BCH', name: 'Bitcoin Cash', rate: 7.65734 },
-    { code: 'ETH', name: 'Ethereum', rate: 5.65734 }
+    { code: 'BCH', name: 'Bitcoin Cash', rate: 0.899 },
+    { code: 'ETH', name: 'Ethereum', rate: 1 }
   ];
   const fiatResponse = {
     ts: 1559315523000,
@@ -57,8 +57,8 @@ describe('RateProvider', () => {
       expect(service.isCoinAvailable('btc')).toBe(true);
       expect(service.getRate('BTC', 'btc')).toEqual(1);
       expect(service.getRate('USD', 'btc')).toEqual(11535.74);
-      expect(service.getRate('BCH', 'bch')).toEqual(1);
-      expect(service.getRate('ETH', 'eth')).toEqual(5.65734);
+      expect(service.getRate('BCH', 'btc')).toEqual(7.65734);
+      expect(service.getRate('ETH', 'btc')).toEqual(5.65734);
     });
 
     httpMock.match(ethUrl)[0].flush(ethResponse);
@@ -73,12 +73,27 @@ describe('RateProvider', () => {
       expect(service.getRate('BTC', 'bch')).toEqual(0.130377);
       expect(service.getRate('USD', 'bch')).toEqual(1503.3);
       expect(service.getRate('BCH', 'bch')).toEqual(1);
-      expect(service.getRate('ETH', 'eth')).toEqual(5.65734);
+      expect(service.getRate('ETH', 'bch')).toEqual(0.899);
     });
 
     httpMock.match(ethUrl)[0].flush(ethResponse);
     httpMock.match(btcUrl)[0].flush(btcResponse);
     httpMock.match(bchUrl)[1].flush(bchResponse);
+    httpMock.verify();
+  });
+
+  it('should get ETH rates', () => {
+    service.updateRates('bch').then(() => {
+      expect(service.isCoinAvailable('eth')).toBe(true);
+      expect(service.getRate('BTC', 'eth')).toEqual(0.130377);
+      expect(service.getRate('USD', 'eth')).toEqual(1503.3);
+      expect(service.getRate('BCH', 'eth')).toEqual(0.899);
+      expect(service.getRate('ETH', 'eth')).toEqual(1);
+    });
+
+    httpMock.match(ethUrl)[1].flush(ethResponse);
+    httpMock.match(btcUrl)[0].flush(btcResponse);
+    httpMock.match(bchUrl)[0].flush(bchResponse);
     httpMock.verify();
   });
 
@@ -104,6 +119,19 @@ describe('RateProvider', () => {
     };
 
     service.updateRates('btc').catch(err => {
+      expect(err).not.toBeNull();
+    });
+  });
+
+  it('should catch an error on when call to update eth rates fails', () => {
+    service.getCoin = (): Promise<any> => {
+      let prom = new Promise((_, reject) => {
+        reject('test rejection');
+      });
+      return prom;
+    };
+
+    service.updateRates('eth').catch(err => {
       expect(err).not.toBeNull();
     });
   });
@@ -180,6 +208,42 @@ describe('RateProvider', () => {
     httpMock.verify();
   });
 
+  it('should covert ETH satoshis to fiat', () => {
+    // before we have rates
+    expect(service.toFiat(0.25 * 1e8, 'USD', 'eth')).toBeNull();
+
+    // after we have rates
+    service.updateRates('eth').then(() => {
+      expect(service.isCoinAvailable('eth')).toBe(true);
+      expect(service.toFiat(1 * 1e8, 'USD', 'eth')).toEqual(1503.3);
+      expect(service.toFiat(0.5 * 1e8, 'USD', 'eth')).toEqual(751.65);
+      expect(service.toFiat(0.25 * 1e8, 'USD', 'eth')).toEqual(375.825);
+    });
+
+    httpMock.match(ethUrl)[1].flush(ethResponse);
+    httpMock.match(btcUrl)[0].flush(btcResponse);
+    httpMock.match(bchUrl)[0].flush(bchResponse);
+    httpMock.verify();
+  });
+
+  it('should covert fiat to ETH satoshis', () => {
+    // before we have rates
+    expect(service.fromFiat(0.25 * 1e8, 'USD', 'eth')).toBeNull();
+
+    // after we have rates
+    service.updateRates('eth').then(() => {
+      expect(service.isCoinAvailable('eth')).toBe(true);
+      expect(service.fromFiat(1503.3, 'USD', 'eth')).toEqual(1 * 1e8);
+      expect(service.fromFiat(751.65, 'USD', 'eth')).toEqual(0.5 * 1e8);
+      expect(service.fromFiat(375.825, 'USD', 'eth')).toEqual(0.25 * 1e8);
+    });
+
+    httpMock.match(ethUrl)[1].flush(ethResponse);
+    httpMock.match(btcUrl)[0].flush(btcResponse);
+    httpMock.match(bchUrl)[0].flush(bchResponse);
+    httpMock.verify();
+  });
+
   it('should list alternatives', () => {
     // before we have rates
     expect(service.listAlternatives(false)).toEqual([]);
@@ -211,7 +275,6 @@ describe('RateProvider', () => {
   it('should resolve when rates are available', () => {
     // before we have rates
     expect(service.isCoinAvailable('btc')).toBe(false);
-    expect(service.isCoinAvailable('eth')).toBe(false);
 
     service.whenRatesAvailable('btc').then(() => {
       // after we have rates
