@@ -120,11 +120,7 @@ export class ConfirmPage extends WalletTabsChild {
     this.bitcoreCash = this.bwcProvider.getBitcoreCash();
     this.CONFIRM_LIMIT_USD = 20;
     this.FEE_TOO_HIGH_LIMIT_PER = 15;
-    this.coin = this.navParams.data.coin.toLowerCase();
     this.config = this.configProvider.get();
-    this.configFeeLevel = this.config.wallet.settings[this.coin].feeLevel
-      ? this.config.wallet.settings[this.coin].feeLevel
-      : 'normal';
     this.isCordova = this.platformProvider.isCordova;
     this.hideSlideButton = false;
     this.showMultiplesOutputs = false;
@@ -148,8 +144,13 @@ export class ConfirmPage extends WalletTabsChild {
       this.navParams.data.coin == 'bch' ? this.bitcoreCash : this.bitcore;
     let networkName;
     let amount;
+    this.configFeeLevel = this.config.wallet.settings[this.navParams.data.coin]
+      .feeLevel
+      ? this.config.wallet.settings[this.navParams.data.coin].feeLevel
+      : 'normal';
     this.unitToSatoshi =
-      this.configProvider.get().wallet.settings[this.coin].unitToSatoshi || 1e8;
+      this.configProvider.get().wallet.settings[this.navParams.data.coin]
+        .unitToSatoshi || 1e8;
     if (this.fromMultiSend) {
       networkName = this.navParams.data.network;
       amount = this.navParams.data.totalAmount;
