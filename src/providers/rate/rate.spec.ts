@@ -91,9 +91,9 @@ describe('RateProvider', () => {
       expect(service.getRate('ETH', 'eth')).toEqual(1);
     });
 
-    httpMock.match(ethUrl)[1].flush(ethResponse);
     httpMock.match(btcUrl)[0].flush(btcResponse);
     httpMock.match(bchUrl)[0].flush(bchResponse);
+    httpMock.match(ethUrl)[0].flush(ethResponse);
     httpMock.verify();
   });
 
