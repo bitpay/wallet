@@ -12,9 +12,9 @@
         <div class="wallet-group-name">
           <span>{{walletsGroup.name}}</span>
         </div>
-        <!-- TODO: <ion-icon *ngIf="i === selectedIndex" class="item-img" item-end>
-            <img src="assets/img/icon-check-selected.svg" />
-          </ion-icon> -->
+        <ion-icon *ngIf="walletsGroup.key == selectedWalletGroup.key" class="item-img" item-end>
+          <img src="assets/img/icon-check-selected.svg" />
+        </ion-icon>
       </ion-item>
       <ion-item detail-none class="wallet-group-item" (click)="goToAddPage()">
         <ion-icon item-start name="add" class="plus-icon item-img"></ion-icon>

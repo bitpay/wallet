@@ -9,7 +9,7 @@
     <ion-title>
       <img *ngIf="!selectedWalletGroup" class="home-logo" src="assets/img/app/logo.svg" />
       <button ion-button class="wallet-group-dropdown" [ngClass]="{'fix-margin': txpsN > 0 }" *ngIf="selectedWalletGroup" (click)="showWalletGroupSelectorView()">
-        <span class="ellipsis">{{selectedWalletGroup}}</span>
+        <span class="ellipsis">{{selectedWalletGroup.name}}</span>
         <ion-icon name="arrow-dropdown" color="light-grey"></ion-icon>
       </button>
     </ion-title>

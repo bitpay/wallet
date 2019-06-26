@@ -69,7 +69,7 @@ export class HomePage {
   public remainingTimeStr: string;
   public slideDown: boolean;
   public showServerMessage: boolean;
-  public selectedWalletGroup: string;
+  public selectedWalletGroup;
 
   public showRateCard: boolean;
   public showReorder: boolean;
@@ -113,6 +113,7 @@ export class HomePage {
     this.slideDown = false;
     this.isElectron = this.platformProvider.isElectron;
     this.showReorder = false;
+    this.selectedWalletGroup = {};
     this.zone = new NgZone({ enableLongStackTrace: false });
     this.events.subscribe('Home/reloadStatus', () => {
       this._willEnter(true);
@@ -361,12 +362,14 @@ export class HomePage {
     let opts: any = {};
     if (this.keyProvider.activeWGKey === 'read-only') {
       opts.readOnly = true;
-      this.selectedWalletGroup = this.translate.instant('Read Only Wallets');
+      this.selectedWalletGroup.name = this.translate.instant(
+        'Read Only Wallets'
+      );
     } else if (this.keyProvider.activeWGKey) {
       opts.keyId = this.keyProvider.activeWGKey;
       this.selectedWalletGroup = this.profileProvider.getWalletGroup(
         this.keyProvider.activeWGKey
-      ).name;
+      );
     }
 
     this.wallets = this.profileProvider.getWallets(opts);

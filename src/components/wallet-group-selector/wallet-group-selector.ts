@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Events, NavController, Platform } from 'ionic-angular';
-import { Observable } from 'rxjs';
 import * as _ from 'lodash';
+import { Observable } from 'rxjs';
 
 // Pages
 import { AddPage } from '../../pages/add/add';
@@ -20,6 +20,7 @@ export class WalletGroupSelectorComponent {
   public slideIn: boolean;
   public walletsGroups: any[];
   public selectedIndex: number;
+  public selectedWalletGroup;
 
   constructor(
     private events: Events,
@@ -32,7 +33,10 @@ export class WalletGroupSelectorComponent {
   }
 
   public async present(): Promise<void> {
-    // TODO: Set selected WalletGroup index to show the green check
+    this.selectedWalletGroup = this.profileProvider.getWalletGroup(
+      this.keyProvider.activeWGKey
+    );
+
     this.walletsGroups = _.values(
       _.mapValues(this.profileProvider.walletsGroups, (value: any, key) => {
         value.key = key;
