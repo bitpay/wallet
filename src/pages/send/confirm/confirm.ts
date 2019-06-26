@@ -214,7 +214,7 @@ export class ConfirmPage extends WalletTabsChild {
         .toString(true);
     }
 
-    this.getAmountDetails();
+    this.getAmountDetails(this.tx.coin);
 
     const feeOpts = this.feeProvider.getFeeOpts();
     this.tx.feeLevelName = feeOpts[this.tx.feeLevel];
@@ -244,10 +244,8 @@ export class ConfirmPage extends WalletTabsChild {
     this.logger.info('Loaded: ConfirmPage');
   }
 
-  private getAmountDetails() {
-    const { unitToSatoshi } = this.configProvider.get().wallet.settings[
-      this.wallet.coin
-    ];
+  private getAmountDetails(coin: string) {
+    const { unitToSatoshi } = this.configProvider.get().wallet.settings[coin];
     this.amount = this.decimalPipe.transform(
       this.tx.amount / unitToSatoshi,
       '1.2-6'
@@ -525,7 +523,7 @@ export class ConfirmPage extends WalletTabsChild {
             }
             tx.sendMaxInfo = sendMaxInfo;
             tx.amount = tx.sendMaxInfo.amount;
-            this.getAmountDetails();
+            this.getAmountDetails(wallet.coin);
           }
           this.showSendMaxWarning(wallet, sendMaxInfo);
           // txp already generated for this wallet?
