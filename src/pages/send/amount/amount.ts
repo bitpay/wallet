@@ -136,11 +136,11 @@ export class AmountPage extends WalletTabsChild {
     this.nextView = this.getNextView();
 
     this.unitToSatoshi = this.config.wallet.settings[
-      this.navParams.data.coin
+      this.wallet.coin
     ].unitToSatoshi;
     this.satToUnit = 1 / this.unitToSatoshi;
     this.unitDecimals = this.config.wallet.settings[
-      this.navParams.data.coin
+      this.wallet.coin
     ].unitDecimals;
 
     // BitPay Card ID or Wallet ID
