@@ -16,6 +16,12 @@ describe('RateProvider', () => {
     { code: 'USD', name: 'US Dollar', rate: 1503.3 },
     { code: 'BCH', name: 'Bitcoin Cash', rate: 1 }
   ];
+  const ethResponse = [
+    { code: 'BTC', name: 'Bitcoin', rate: 0.130377 },
+    { code: 'USD', name: 'US Dollar', rate: 1503.3 },
+    { code: 'BCH', name: 'Bitcoin Cash', rate: 0.1 },
+    { code: 'ETH', name: 'Bitcoin Cash', rate: 1 }
+  ];
   const fiatResponse = {
     ts: 1559315523000,
     rate: 8427.66,
@@ -23,6 +29,8 @@ describe('RateProvider', () => {
   };
   let btcUrl: string = 'https://bitpay.com/api/rates';
   let bchUrl: string = 'https://bitpay.com/api/rates/bch';
+  let ethUrl: string = 'https://bitpay.com/api/rates/eth';
+
   let fiatRateUrl: string =
     'https://bws.bitpay.com/bws/api/v1/fiatrates/USD?coin=btc&ts=1559315523000';
 
@@ -37,6 +45,7 @@ describe('RateProvider', () => {
       expect(service.isCoinAvailable('btc')).toBe(true);
     });
 
+    httpMock.match(ethUrl)[2].flush(ethResponse);
     httpMock.match(btcUrl)[1].flush(btcResponse);
     httpMock.match(bchUrl)[0].flush(bchResponse);
     httpMock.verify();
@@ -50,6 +59,7 @@ describe('RateProvider', () => {
       expect(service.getRate('BCH')).toEqual(7.65734);
     });
 
+    httpMock.match(ethUrl)[2].flush(ethResponse);
     httpMock.match(btcUrl)[1].flush(btcResponse);
     httpMock.match(bchUrl)[0].flush(bchResponse);
     httpMock.verify();
@@ -190,6 +200,7 @@ describe('RateProvider', () => {
   it('should resolve when rates are available', () => {
     // before we have rates
     expect(service.isCoinAvailable('btc')).toBe(false);
+    expect(service.isCoinAvailable('eth')).toBe(false);
 
     service.whenRatesAvailable('btc').then(() => {
       // after we have rates
