@@ -57,7 +57,7 @@ describe('RateProvider', () => {
       expect(service.isCoinAvailable('btc')).toBe(true);
       expect(service.getRate('BTC', 'btc')).toEqual(1);
       expect(service.getRate('USD', 'btc')).toEqual(11535.74);
-      expect(service.getRate('BCH', 'bch')).toEqual(7.65734);
+      expect(service.getRate('BCH', 'bch')).toEqual(1);
       expect(service.getRate('ETH', 'eth')).toEqual(5.65734);
     });
 
