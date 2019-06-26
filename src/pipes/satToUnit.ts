@@ -7,7 +7,10 @@ import { ConfigProvider } from '../providers/config/config';
   pure: false
 })
 export class SatToUnitPipe implements PipeTransform {
-  constructor(private decimalPipe: DecimalPipe, private configProvider: ConfigProvider) { }
+  constructor(
+    private decimalPipe: DecimalPipe,
+    private configProvider: ConfigProvider
+  ) {}
   transform(amount: number, coin: string) {
     const { unitToSatoshi } = this.configProvider.get().wallet.settings[coin];
     return (

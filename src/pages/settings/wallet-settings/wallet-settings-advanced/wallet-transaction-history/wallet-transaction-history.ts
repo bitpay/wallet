@@ -57,8 +57,12 @@ export class WalletTransactionHistoryPage {
     this.isCordova = this.platformProvider.isCordova;
     this.appName = this.appProvider.info.nameCase;
     this.config = this.configProvider.get();
-    this.unitToSatoshi = this.config.wallet.settings[this.wallet.coin].unitToSatoshi;
-    this.unitDecimals = this.config.wallet.settings[this.wallet.coin].unitDecimals;
+    this.unitToSatoshi = this.config.wallet.settings[
+      this.wallet.coin
+    ].unitToSatoshi;
+    this.unitDecimals = this.config.wallet.settings[
+      this.wallet.coin
+    ].unitDecimals;
     this.satToUnit = 1 / this.unitToSatoshi;
     this.csvHistory();
   }

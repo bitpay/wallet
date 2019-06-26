@@ -14,7 +14,7 @@ describe('TxFormatProvider', () => {
   let txFormatProvider: TxFormatProvider;
 
   class PersistenceProviderMock {
-    constructor() { }
+    constructor() {}
     storeConfig() {
       return Promise.resolve('');
     }
@@ -55,7 +55,11 @@ describe('TxFormatProvider', () => {
       };
       configProvider.set(newOpts);
 
-      let formattedAmount = txFormatProvider.formatAmount('default', 12312312, true);
+      let formattedAmount = txFormatProvider.formatAmount(
+        'default',
+        12312312,
+        true
+      );
       expect(formattedAmount).toEqual('123,123.12');
     });
 
@@ -67,7 +71,10 @@ describe('TxFormatProvider', () => {
       };
       configProvider.set(newOpts);
 
-      let formattedAmount: number = txFormatProvider.formatAmount('default', 12312312);
+      let formattedAmount: number = txFormatProvider.formatAmount(
+        'default',
+        12312312
+      );
       expect(formattedAmount).toEqual(12312312);
     });
   });

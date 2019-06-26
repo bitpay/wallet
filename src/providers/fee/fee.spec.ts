@@ -10,7 +10,7 @@ describe('Provider: Fee Provider', () => {
   let configProvider: ConfigProvider;
 
   class BwcProviderMock {
-    constructor() { }
+    constructor() {}
     getClient() {
       const walletClient = {
         getFeeLevels: (coin, network, cb) => {

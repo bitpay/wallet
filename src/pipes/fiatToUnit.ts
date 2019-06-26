@@ -27,7 +27,10 @@ export class FiatToUnitPipe implements PipeTransform {
       coin.toLowerCase()
     );
     return (
-      this.decimalPipe.transform(amount_ / this.walletSettings[coin].unitToSatoshi || 0, '1.2-8') +
+      this.decimalPipe.transform(
+        amount_ / this.walletSettings[coin].unitToSatoshi || 0,
+        '1.2-8'
+      ) +
       ' ' +
       coin.toUpperCase()
     );

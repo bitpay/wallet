@@ -11,10 +11,10 @@ export interface SatCoins {
 }
 
 export interface RatesObj {
-  btc: {},
-  bch: {},
-  eth: {},
-};
+  btc: {};
+  bch: {};
+  eth: {};
+}
 
 export interface RatesAvailable {
   btc: boolean;
@@ -26,14 +26,14 @@ export interface RatesAvailable {
 export class RateProvider {
   private rates: RatesObj;
   private alternatives;
-  private ratesAvailable: RatesAvailable
+  private ratesAvailable: RatesAvailable;
   private SAT_TO: SatCoins;
   private TO_SAT: SatCoins;
 
   private rateServiceUrl = {
     btc: env.ratesAPI.btc,
     bch: env.ratesAPI.bch,
-    eth: env.ratesAPI.eth,
+    eth: env.ratesAPI.eth
   };
   private fiatRateAPIUrl = 'https://bws.bitpay.com/bws/api/v1/fiatrates';
 
@@ -108,18 +108,14 @@ export class RateProvider {
   }
 
   public toFiat(satoshis: number, code: string, chain: string): number {
-    if (
-      !this.isCoinAvailable(chain)
-    ) {
+    if (!this.isCoinAvailable(chain)) {
       return null;
     }
     return satoshis * this.SAT_TO[chain] * this.getRate(code, chain);
   }
 
   public fromFiat(amount: number, code: string, chain: string): number {
-    if (
-      !this.isCoinAvailable(chain)
-    ) {
+    if (!this.isCoinAvailable(chain)) {
       return null;
     }
     return (amount / this.getRate(code, chain)) * this.TO_SAT[chain];
@@ -142,10 +138,7 @@ export class RateProvider {
 
   public whenRatesAvailable(chain: string): Promise<any> {
     return new Promise(resolve => {
-      if (
-        (this.ratesAvailable[chain])
-      )
-        resolve();
+      if (this.ratesAvailable[chain]) resolve();
       else {
         if (chain) {
           this.updateRates(chain).then(() => {

@@ -92,10 +92,7 @@ export class TxFormatProvider {
       return v1 + ' ' + settings.alternativeIsoCode;
     }).bind(this);
 
-    if (
-      !this.rate.isCoinAvailable(coin)
-    )
-      return null;
+    if (!this.rate.isCoinAvailable(coin)) return null;
     return val();
   }
 
@@ -146,8 +143,8 @@ export class TxFormatProvider {
     tx.feeStr = tx.fee
       ? this.formatAmountStr(coin, tx.fee)
       : tx.fees
-        ? this.formatAmountStr(coin, tx.fees)
-        : 'N/A';
+      ? this.formatAmountStr(coin, tx.fees)
+      : 'N/A';
     if (tx.amountStr) {
       tx.amountValueStr = tx.amountStr.split(' ')[0];
       tx.amountUnitStr = tx.amountStr.split(' ')[1];
@@ -169,14 +166,22 @@ export class TxFormatProvider {
     currency: string,
     onlyIntegers?: boolean
   ) {
-    const { unitToSatoshi, alternativeIsoCode } = this.configProvider.get().wallet.settings[coin];
+    const {
+      unitToSatoshi,
+      alternativeIsoCode
+    } = this.configProvider.get().wallet.settings[coin];
     const satToUnit = 1 / unitToSatoshi;
     let amountUnitStr;
     let amountSat;
 
     // If fiat currency
     // TODO pull from Constants array of available currencies
-    if (currency != 'BCH' && currency != 'BTC' && currency != 'ETH' && currency != 'sat') {
+    if (
+      currency != 'BCH' &&
+      currency != 'BTC' &&
+      currency != 'ETH' &&
+      currency != 'sat'
+    ) {
       let formattedAmount = onlyIntegers
         ? this.filter.formatFiatAmount(amount.toFixed(0))
         : this.filter.formatFiatAmount(amount);
@@ -206,7 +211,10 @@ export class TxFormatProvider {
   }
 
   public satToUnit(coin: string, amount: number): number {
-    const { unitToSatoshi, unitDecimals } = this.configProvider.get().wallet.settings[coin];
+    const {
+      unitToSatoshi,
+      unitDecimals
+    } = this.configProvider.get().wallet.settings[coin];
     const satToUnit = 1 / unitToSatoshi;
     return parseFloat((amount * satToUnit).toFixed(unitDecimals));
   }

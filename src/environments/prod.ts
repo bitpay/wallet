@@ -9,7 +9,7 @@ const env: EnvironmentSchema = {
   ratesAPI: {
     btc: 'https://bitpay.com/api/rates',
     bch: 'https://bitpay.com/api/rates/bch',
-    eth: 'https://bitpay.com/api/rates/eth',
+    eth: 'https://bitpay.com/api/rates/eth'
   },
   activateScanner: true
 };

@@ -214,8 +214,8 @@ export class SellCoinbasePage {
     (count: number, txp) => {
       this.logger.warn(
         'Check if transaction has been received by Coinbase. Try ' +
-        count +
-        '/5'
+          count +
+          '/5'
       );
       // TX amount in BTC
       let satToBtc = 1 / 100000000;

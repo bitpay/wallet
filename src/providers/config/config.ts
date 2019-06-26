@@ -169,7 +169,7 @@ export class ConfigProvider {
             alternativeIsoCode: 'USD',
             defaultLanguage: '',
             feeLevel: 'normal'
-          },
+          }
         }
       },
 
@@ -270,9 +270,9 @@ export class ConfigProvider {
 
     this.logger.debug(
       'Config | spendUnconfirmed: ' +
-      spendUnconfirmed +
-      ' - lockMethod: ' +
-      lockMethod
+        spendUnconfirmed +
+        ' - lockMethod: ' +
+        lockMethod
     );
   }
 

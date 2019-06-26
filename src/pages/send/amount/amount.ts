@@ -135,9 +135,13 @@ export class AmountPage extends WalletTabsChild {
       this.navParams.get('nextPage') === 'CustomAmountPage';
     this.nextView = this.getNextView();
 
-    this.unitToSatoshi = this.config.wallet.settings[this.navParams.data.coin].unitToSatoshi;
+    this.unitToSatoshi = this.config.wallet.settings[
+      this.navParams.data.coin
+    ].unitToSatoshi;
     this.satToUnit = 1 / this.unitToSatoshi;
-    this.unitDecimals = this.config.wallet.settings[this.navParams.data.coin].unitDecimals;
+    this.unitDecimals = this.config.wallet.settings[
+      this.navParams.data.coin
+    ].unitDecimals;
 
     // BitPay Card ID or Wallet ID
     this._id = this.navParams.data.id;
@@ -251,8 +255,12 @@ export class AmountPage extends WalletTabsChild {
       this.altUnitIndex = this.unitIndex;
       this.unitIndex = this.availableUnits.length;
     } else {
-      this.fiatCode = this.config.wallet.settings[parentWalletCoin].alternativeIsoCode || 'USD';
-      fiatName = this.config.wallet.settings[parentWalletCoin].alternativeName || this.fiatCode;
+      this.fiatCode =
+        this.config.wallet.settings[parentWalletCoin].alternativeIsoCode ||
+        'USD';
+      fiatName =
+        this.config.wallet.settings[parentWalletCoin].alternativeName ||
+        this.fiatCode;
       this.altUnitIndex = this.availableUnits.length;
     }
 
@@ -571,9 +579,9 @@ export class AmountPage extends WalletTabsChild {
     this.processAmount();
     this.logger.debug(
       'Update unit coin @amount unit:' +
-      this.unit +
-      ' alternativeUnit:' +
-      this.alternativeUnit
+        this.unit +
+        ' alternativeUnit:' +
+        this.alternativeUnit
     );
   }
 
