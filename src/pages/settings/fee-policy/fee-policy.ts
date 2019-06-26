@@ -75,7 +75,9 @@ export class FeePolicyPage {
     let opts = {
       wallet: {
         settings: {
-          feeLevel: this.currentFeeLevel
+          default: {
+            feeLevel: this.currentFeeLevel
+          }
         }
       }
     };
