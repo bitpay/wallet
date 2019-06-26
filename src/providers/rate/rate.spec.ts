@@ -191,12 +191,14 @@ describe('RateProvider', () => {
       expect(service.listAlternatives(false)).toEqual([
         { name: 'Bitcoin', isoCode: 'BTC' },
         { name: 'US Dollar', isoCode: 'USD' },
-        { name: 'Bitcoin Cash', isoCode: 'BCH' }
+        { name: 'Bitcoin Cash', isoCode: 'BCH' },
+        { name: 'Ethereum', isoCode: 'ETH' }
       ]);
       expect(service.listAlternatives(true)).toEqual([
         { name: 'Bitcoin', isoCode: 'BTC' },
         { name: 'Bitcoin Cash', isoCode: 'BCH' },
-        { name: 'US Dollar', isoCode: 'USD' }
+        { name: 'US Dollar', isoCode: 'USD' },
+        { name: 'Ethereum', isoCode: 'ETH' }
       ]);
     });
 
