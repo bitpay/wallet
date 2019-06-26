@@ -217,8 +217,8 @@ export class ProfileProvider {
     wallet.needsBackup = backupInfo.needsBackup;
     wallet.balanceHidden = await this.isBalanceHidden(wallet);
     wallet.order = await this.getWalletOrder(wallet.id);
-    wallet.canSign = keyId ? true : false;
-    wallet.isPrivKeyEncrypted = keyId
+    wallet.canSign = !(await this.keyProvider.isDeletedSeed(keyId));
+    wallet.isPrivKeyEncrypted = wallet.canSign
       ? this.keyProvider.isPrivKeyEncrypted(keyId)
       : false;
     this.updateWalletFromConfig(wallet);
@@ -283,6 +283,12 @@ export class ProfileProvider {
       this.walletsGroups[keyId].order = await this.getWalletGroupOrder(keyId);
       this.walletsGroups[keyId].name =
         (await this.getWalletGroupName(keyId)) || wallet.name;
+      this.walletsGroups[
+        keyId
+      ].isPrivKeyEncrypted = await this.keyProvider.isPrivKeyEncrypted(keyId);
+      this.walletsGroups[
+        keyId
+      ].canSign = !(await this.keyProvider.isDeletedSeed(keyId));
     } else {
       this.walletsGroups['read-only'] = {};
       this.walletsGroups['read-only'].needsBackup = false;
@@ -290,6 +296,8 @@ export class ProfileProvider {
         'read-only'
       );
       this.walletsGroups['read-only'].name = 'Read Only Wallets';
+      this.walletsGroups['read-only'].isPrivKeyEncrypted = false;
+      this.walletsGroups[keyId].canSign = false;
     }
 
     console.log('this.walletsGroups', this.walletsGroups);
@@ -1149,6 +1157,14 @@ export class ProfileProvider {
     this.events.publish('Local/WalletListChange');
 
     return this.storeProfileIfDirty();
+  }
+
+  public deleteWalletGroup(wallets): Promise<any> {
+    let promises = [];
+    wallets.forEach(wallet => {
+      promises.push(this.deleteWalletClient(wallet));
+    });
+    return Promise.all(promises);
   }
 
   public createWallet(opts): Promise<any> {

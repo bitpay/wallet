@@ -79,6 +79,12 @@ import { LockPage } from '../pages/settings/lock/lock';
 import { NotificationsPage } from '../pages/settings/notifications/notifications';
 import { SharePage } from '../pages/settings/share/share';
 
+/* Wallet Group Settings */
+import { WalletGroupDeletePage } from '../pages/settings/wallet-group-settings/wallet-group-delete/wallet-group-delete';
+import { WalletGroupExtendedPrivateKeyPage } from '../pages/settings/wallet-group-settings/wallet-group-extended-private-key/wallet-group-extended-private-key';
+import { WalletGroupNamePage } from '../pages/settings/wallet-group-settings/wallet-group-name/wallet-group-name';
+import { WalletGroupSettingsPage } from '../pages/settings/wallet-group-settings/wallet-group-settings';
+
 /* Wallet Settings */
 import { WalletColorPage } from '../pages/settings/wallet-settings/wallet-color/wallet-color';
 import { WalletNamePage } from '../pages/settings/wallet-settings/wallet-name/wallet-name';
@@ -90,7 +96,6 @@ import { WalletAddressesPage } from '../pages/settings/wallet-settings/wallet-se
 import { WalletDeletePage } from '../pages/settings/wallet-settings/wallet-settings-advanced/wallet-delete/wallet-delete';
 import { WalletDuplicatePage } from '../pages/settings/wallet-settings/wallet-settings-advanced/wallet-duplicate/wallet-duplicate';
 import { WalletExportPage } from '../pages/settings/wallet-settings/wallet-settings-advanced/wallet-export/wallet-export';
-import { WalletExtendedPrivateKeyPage } from '../pages/settings/wallet-settings/wallet-settings-advanced/wallet-information/wallet-extended-private-key/wallet-extended-private-key';
 import { WalletInformationPage } from '../pages/settings/wallet-settings/wallet-settings-advanced/wallet-information/wallet-information';
 import { WalletServiceUrlPage } from '../pages/settings/wallet-settings/wallet-settings-advanced/wallet-service-url/wallet-service-url';
 import { WalletTransactionHistoryPage } from '../pages/settings/wallet-settings/wallet-settings-advanced/wallet-transaction-history/wallet-transaction-history';
@@ -192,7 +197,10 @@ export const PAGES = [
   WalletTransactionHistoryPage,
   WalletDuplicatePage,
   WalletDeletePage,
-  WalletExtendedPrivateKeyPage,
+  WalletGroupExtendedPrivateKeyPage,
+  WalletGroupDeletePage,
+  WalletGroupSettingsPage,
+  WalletGroupNamePage,
   WalletDetailsPage,
   WalletTabsChild,
   WalletTabsPage,
