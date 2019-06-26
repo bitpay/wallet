@@ -316,9 +316,11 @@ describe('TxFormatProvider', () => {
       let newOpts = {
         wallet: {
           settings: {
-            unitCode: 'btc',
-            alternativeIsoCode: 'JPY',
-            unitToSatoshi: 100000000
+            btc: {
+              unitCode: 'btc',
+              alternativeIsoCode: 'JPY',
+              unitToSatoshi: 100000000
+            }
           }
         }
       };
