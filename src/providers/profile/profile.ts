@@ -1289,7 +1289,13 @@ export class ProfileProvider {
       const MAX = 100;
       opts = opts ? opts : {};
 
-      const w = this.getWallets();
+      if (this.keyProvider.activeWGKey === 'read-only') {
+        opts.readOnly = true;
+      } else {
+        opts.keyId = this.keyProvider.activeWGKey;
+      }
+
+      const w = this.getWallets(opts);
       if (_.isEmpty(w)) {
         return reject('No wallets available');
       }

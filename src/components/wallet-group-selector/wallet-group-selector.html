@@ -5,12 +5,12 @@
       {{'Wallets' | translate}}
     </div>
     <ion-list>
-      <ion-item detail-none class="wallet-group-item" *ngFor="let walletsGroup of walletsGroups | keys; let i = index" (click)="setActiveWalletGroup(walletsGroup)">
+      <ion-item detail-none class="wallet-group-item" *ngFor="let walletsGroup of walletsGroups; let i = index" (click)="setActiveWalletGroup(walletsGroup)">
         <ion-icon class="item-img" item-start>
           <img src="assets/img/icon-wallet.svg" />
         </ion-icon>
         <div class="wallet-group-name">
-          <span>{{walletsGroup.value.name}}</span>
+          <span>{{walletsGroup.name}}</span>
         </div>
         <!-- TODO: <ion-icon *ngIf="i === selectedIndex" class="item-img" item-end>
             <img src="assets/img/icon-check-selected.svg" />

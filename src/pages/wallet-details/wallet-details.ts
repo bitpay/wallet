@@ -316,10 +316,12 @@ export class WalletDetailsPage extends WalletTabsChild {
     this.updatingStatus = false;
 
     if (!this.wallet.error) {
-      this.logger.debug(
-        ' Updating wallet with amount ',
-        this.wallet.cachedStatus.balance.totalAmount
-      );
+      if (this.wallet.cachedStatus && this.wallet.cachedStatus.balance) {
+        this.logger.debug(
+          ' Updating wallet with amount ',
+          this.wallet.cachedStatus.balance.totalAmount
+        );
+      }
       let status = this.wallet.cachedStatus;
       this.setPendingTxps(status.pendingTxps);
       this.showBalanceButton = status.totalBalanceSat != status.spendableAmount;

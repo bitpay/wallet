@@ -86,7 +86,7 @@ wallet-group-selector {
     }
     .closed {
       /* completely offscreen */
-      transition: transform $transition-duration cubic-bezier(0.4, 0, 1, 1);
+      transition: transform $transition-duration cubic-bezier(0.4, 0, 0.3, 1);
       transform: translateY(calc(-100% - 8px));
     }
   }

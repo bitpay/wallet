@@ -57,7 +57,6 @@ export class HomePage {
   priceCard;
   @ViewChild('walletGroupSelector')
   walletGroupSelector;
-  public walletsGroups;
   public wallets;
   public txpsN: number;
   public serverMessages: any[];
@@ -346,7 +345,7 @@ export class HomePage {
   );
 
   public showWalletGroupSelectorView() {
-    this.walletGroupSelector.present(this.walletsGroups);
+    this.walletGroupSelector.present();
   }
 
   private setWallets = (shouldUpdate: boolean = false) => {
@@ -371,7 +370,6 @@ export class HomePage {
     }
 
     this.wallets = this.profileProvider.getWallets(opts);
-    this.walletsGroups = this.profileProvider.walletsGroups;
 
     // Avoid heavy tasks that can slow down the unlocking experience
     if (!this.appProvider.isLockModalOpen && shouldUpdate) {
