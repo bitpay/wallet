@@ -25,7 +25,6 @@ import { TxFormatProvider } from '../../../providers/tx-format/tx-format';
 import { ActionSheetProvider, GiftCardProvider } from '../../../providers';
 import { CardConfig } from '../../../providers/gift-card/gift-card.types';
 import { ProfileProvider } from '../../../providers/profile/profile';
-import { Coin } from '../../../providers/wallet/wallet';
 import { BitPayCardTopUpPage } from '../../integrations/bitpay-card/bitpay-card-topup/bitpay-card-topup';
 import { BuyCoinbasePage } from '../../integrations/coinbase/buy-coinbase/buy-coinbase';
 import { SellCoinbasePage } from '../../integrations/coinbase/sell-coinbase/sell-coinbase';
@@ -411,7 +410,7 @@ export class AmountPage extends WalletTabsChild {
         : '';
 
       if (this.availableUnits[this.unitIndex].isFiat) {
-        let a = this.fromFiat(result);
+        let a = this.fromFiat(result, this.wallet.coin);
         if (a) {
           this.alternativeAmount = this.txFormatProvider.formatAmount(
             this.wallet.coin,
@@ -425,9 +424,9 @@ export class AmountPage extends WalletTabsChild {
         }
       } else {
         this.alternativeAmount = this.filterProvider.formatFiatAmount(
-          this.toFiat(result)
+          this.toFiat(result, this.wallet.coin)
         );
-        this.checkAmountForBitpaycard(this.toFiat(result));
+        this.checkAmountForBitpaycard(this.toFiat(result, this.wallet.coin));
       }
     }
   }
@@ -452,7 +451,7 @@ export class AmountPage extends WalletTabsChild {
       );
   }
 
-  private fromFiat(val, coin?: string): number {
+  private fromFiat(val: number, coin: string = 'btc'): number {
     coin = coin || this.availableUnits[this.altUnitIndex].id;
     return parseFloat(
       (
@@ -461,8 +460,8 @@ export class AmountPage extends WalletTabsChild {
     );
   }
 
-  private toFiat(val: number, coin?: Coin): number {
-    if (!this.rateProvider.getRate(this.fiatCode)) return undefined;
+  private toFiat(val: number, coin: string = 'btc'): number {
+    if (!this.rateProvider.getRate(this.fiatCode, coin)) return undefined;
 
     return parseFloat(
       this.rateProvider
@@ -541,7 +540,7 @@ export class AmountPage extends WalletTabsChild {
     } else {
       let amount = _amount;
       amount = unit.isFiat
-        ? (this.fromFiat(amount) * this.unitToSatoshi).toFixed(0)
+        ? (this.fromFiat(amount, coin) * this.unitToSatoshi).toFixed(0)
         : (amount * this.unitToSatoshi).toFixed(0);
       data = {
         recipientType: this.recipientType,

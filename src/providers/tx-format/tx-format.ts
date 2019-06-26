@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { Logger } from '../../providers/logger/logger';
-import { Coin } from '../../providers/wallet/wallet';
 import { BwcProvider } from '../bwc/bwc';
 import { ConfigProvider } from '../config/config';
 import { FilterProvider } from '../filter/filter';
@@ -176,7 +175,8 @@ export class TxFormatProvider {
     let amountSat;
 
     // If fiat currency
-    if (!Coin[currency.toUpperCase()] && currency != 'sat') {
+    // TODO pull from Constants array of available currencies
+    if (currency != 'BCH' && currency != 'BTC' && currency != 'ETH' && currency != 'sat') {
       let formattedAmount = onlyIntegers
         ? this.filter.formatFiatAmount(amount.toFixed(0))
         : this.filter.formatFiatAmount(amount);

@@ -3,7 +3,6 @@ import { Injectable } from '@angular/core';
 import * as _ from 'lodash';
 import env from '../../environments';
 import { Logger } from '../../providers/logger/logger';
-import { Coin } from '../../providers/wallet/wallet';
 
 export interface SatCoins {
   btc: number;
@@ -40,9 +39,11 @@ export class RateProvider {
 
   constructor(private http: HttpClient, private logger: Logger) {
     this.logger.debug('RateProvider initialized');
-  }
-
-  ngOnInit(): void {
+    this.rates = {
+      btc: {},
+      bch: {},
+      eth: {}
+    };
     this.alternatives = [];
     this.SAT_TO = {
       btc: 1 / 1e8,
@@ -54,11 +55,14 @@ export class RateProvider {
       bch: 1e8,
       eth: 1e18
     };
-    for (const coin in Coin) {
-      this.rates[coin] = {};
-      this.ratesAvailable[coin] = false;
-      this.updateRates(coin);
-    }
+    this.ratesAvailable = {
+      btc: false,
+      bch: false,
+      eth: false
+    };
+    this.updateRates('btc');
+    this.updateRates('bch');
+    this.updateRates('eth');
   }
 
   public updateRates(chain: string): Promise<any> {
