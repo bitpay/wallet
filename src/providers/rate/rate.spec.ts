@@ -9,18 +9,20 @@ describe('RateProvider', () => {
   const btcResponse = [
     { code: 'BTC', name: 'Bitcoin', rate: 1 },
     { code: 'USD', name: 'US Dollar', rate: 11535.74 },
-    { code: 'BCH', name: 'Bitcoin Cash', rate: 7.65734 }
+    { code: 'BCH', name: 'Bitcoin Cash', rate: 7.65734 },
+    { code: 'ETH', name: 'Ethereum', rate: 5.65734 }
   ];
   const bchResponse = [
     { code: 'BTC', name: 'Bitcoin', rate: 0.130377 },
     { code: 'USD', name: 'US Dollar', rate: 1503.3 },
-    { code: 'BCH', name: 'Bitcoin Cash', rate: 1 }
+    { code: 'BCH', name: 'Bitcoin Cash', rate: 1 },
+    { code: 'ETH', name: 'Ethereum', rate: 5.65734 }
   ];
   const ethResponse = [
     { code: 'BTC', name: 'Bitcoin', rate: 0.130377 },
     { code: 'USD', name: 'US Dollar', rate: 1503.3 },
-    { code: 'BCH', name: 'Bitcoin Cash', rate: 0.1 },
-    { code: 'ETH', name: 'Bitcoin Cash', rate: 1 }
+    { code: 'BCH', name: 'Bitcoin Cash', rate: 7.65734 },
+    { code: 'ETH', name: 'Ethereum', rate: 5.65734 }
   ];
   const fiatResponse = {
     ts: 1559315523000,
@@ -53,9 +55,10 @@ describe('RateProvider', () => {
   it('should get BTC rates', () => {
     service.updateRates('btc').then(() => {
       expect(service.isCoinAvailable('btc')).toBe(true);
-      expect(service.getRate('BTC')).toEqual(1);
-      expect(service.getRate('USD')).toEqual(11535.74);
-      expect(service.getRate('BCH')).toEqual(7.65734);
+      expect(service.getRate('BTC', 'btc')).toEqual(1);
+      expect(service.getRate('USD', 'btc')).toEqual(11535.74);
+      expect(service.getRate('BCH', 'bch')).toEqual(7.65734);
+      expect(service.getRate('ETH', 'eth')).toEqual(5.65734);
     });
 
     httpMock.match(ethUrl)[0].flush(ethResponse);
@@ -70,6 +73,7 @@ describe('RateProvider', () => {
       expect(service.getRate('BTC', 'bch')).toEqual(0.130377);
       expect(service.getRate('USD', 'bch')).toEqual(1503.3);
       expect(service.getRate('BCH', 'bch')).toEqual(1);
+      expect(service.getRate('ETH', 'eth')).toEqual(5.65734);
     });
 
     httpMock.match(ethUrl)[0].flush(ethResponse);
