@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Logger } from '../../providers/logger/logger';
+import { Coin } from '../../providers/wallet/wallet';
 import { BwcProvider } from '../bwc/bwc';
 import { ConfigProvider } from '../config/config';
 import { FilterProvider } from '../filter/filter';
@@ -37,8 +38,8 @@ export class TxFormatProvider {
   }
 
   // TODO: Check return of formatAmount(...), sometimes returns a number and sometimes a string
-  public formatAmount(satoshis: number, fullPrecision?: boolean) {
-    let settings = this.configProvider.get().wallet.settings;
+  public formatAmount(coin: string, satoshis: number, fullPrecision?: boolean) {
+    const settings = this.configProvider.get().wallet.settings[coin];
 
     if (settings.unitCode == 'sat') return satoshis;
 
@@ -53,7 +54,7 @@ export class TxFormatProvider {
 
   public formatAmountStr(coin: string, satoshis: number): string {
     if (isNaN(satoshis)) return undefined;
-    return this.formatAmount(satoshis) + ' ' + coin.toUpperCase();
+    return this.formatAmount(coin, satoshis) + ' ' + coin.toUpperCase();
   }
 
   public toFiat(coin: string, satoshis: number, code: string): Promise<string> {
@@ -80,7 +81,7 @@ export class TxFormatProvider {
 
   public formatAlternativeStr(coin: string, satoshis: number): string {
     if (isNaN(satoshis)) return undefined;
-    let settings = this.configProvider.get().wallet.settings;
+    let settings = this.configProvider.get().wallet.settings[coin];
 
     let val = (() => {
       var v1 = parseFloat(
@@ -93,8 +94,7 @@ export class TxFormatProvider {
     }).bind(this);
 
     if (
-      (!this.rate.isBtcAvailable() && coin == 'btc') ||
-      (!this.rate.isBchAvailable() && coin == 'bch')
+      !this.rate.isCoinAvailable(coin)
     )
       return null;
     return val();
@@ -147,8 +147,8 @@ export class TxFormatProvider {
     tx.feeStr = tx.fee
       ? this.formatAmountStr(coin, tx.fee)
       : tx.fees
-      ? this.formatAmountStr(coin, tx.fees)
-      : 'N/A';
+        ? this.formatAmountStr(coin, tx.fees)
+        : 'N/A';
     if (tx.amountStr) {
       tx.amountValueStr = tx.amountStr.split(' ')[0];
       tx.amountUnitStr = tx.amountStr.split(' ')[1];
@@ -170,15 +170,13 @@ export class TxFormatProvider {
     currency: string,
     onlyIntegers?: boolean
   ) {
-    let settings = this.configProvider.get().wallet.settings;
-    let satToBtc = 1 / 100000000;
-    let unitToSatoshi = settings.unitToSatoshi;
+    const { unitToSatoshi, alternativeIsoCode } = this.configProvider.get().wallet.settings[coin];
+    const satToUnit = 1 / unitToSatoshi;
     let amountUnitStr;
     let amountSat;
-    let alternativeIsoCode = settings.alternativeIsoCode;
 
     // If fiat currency
-    if (currency != 'BCH' && currency != 'BTC' && currency != 'sat') {
+    if (!Coin[currency] && currency != 'sat') {
       let formattedAmount = onlyIntegers
         ? this.filter.formatFiatAmount(amount.toFixed(0))
         : this.filter.formatFiatAmount(amount);
@@ -188,13 +186,13 @@ export class TxFormatProvider {
       amountSat = Number(amount);
       amountUnitStr = this.formatAmountStr(coin, amountSat);
       // convert sat to BTC or BCH
-      amount = (amountSat * satToBtc).toFixed(8);
+      amount = (amountSat * satToUnit).toFixed(8);
       currency = coin.toUpperCase();
     } else {
       amountSat = parseInt((amount * unitToSatoshi).toFixed(0), 10);
       amountUnitStr = this.formatAmountStr(coin, amountSat);
       // convert unit to BTC or BCH
-      amount = (amountSat * satToBtc).toFixed(8);
+      amount = (amountSat * satToUnit).toFixed(8);
       currency = coin.toUpperCase();
     }
 
@@ -207,11 +205,9 @@ export class TxFormatProvider {
     };
   }
 
-  public satToUnit(amount): number {
-    let settings = this.configProvider.get().wallet.settings;
-    let unitToSatoshi = settings.unitToSatoshi;
-    let satToUnit = 1 / unitToSatoshi;
-    let unitDecimals = settings.unitDecimals;
+  public satToUnit(coin: string, amount: number): number {
+    const { unitToSatoshi, unitDecimals } = this.configProvider.get().wallet.settings[coin];
+    const satToUnit = 1 / unitToSatoshi;
     return parseFloat((amount * satToUnit).toFixed(unitDecimals));
   }
 }

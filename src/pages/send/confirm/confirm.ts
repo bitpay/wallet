@@ -74,6 +74,7 @@ export class ConfirmPage extends WalletTabsChild {
   public appName: string;
   public merchantFeeLabel: string;
 
+  private unitToSatoshi: number;
   // Config Related values
   public config;
   public configFeeLevel: string;
@@ -119,9 +120,10 @@ export class ConfirmPage extends WalletTabsChild {
     this.bitcoreCash = this.bwcProvider.getBitcoreCash();
     this.CONFIRM_LIMIT_USD = 20;
     this.FEE_TOO_HIGH_LIMIT_PER = 15;
+    this.coin = this.navParams.data.coin.toLowerCase();
     this.config = this.configProvider.get();
-    this.configFeeLevel = this.config.wallet.settings.feeLevel
-      ? this.config.wallet.settings.feeLevel
+    this.configFeeLevel = this.config.wallet.settings[this.coin].feeLevel
+      ? this.config.wallet.settings[this.coin].feeLevel
       : 'normal';
     this.isCordova = this.platformProvider.isCordova;
     this.hideSlideButton = false;
@@ -146,6 +148,7 @@ export class ConfirmPage extends WalletTabsChild {
       this.navParams.data.coin == 'bch' ? this.bitcoreCash : this.bitcore;
     let networkName;
     let amount;
+    this.unitToSatoshi = this.configProvider.get().wallet.settings[this.coin].unitToSatoshi || 1e8;
     if (this.fromMultiSend) {
       networkName = this.navParams.data.network;
       amount = this.navParams.data.totalAmount;
@@ -244,7 +247,7 @@ export class ConfirmPage extends WalletTabsChild {
   }
 
   private getAmountDetails() {
-    this.amount = this.decimalPipe.transform(this.tx.amount / 1e8, '1.2-6');
+    this.amount = this.decimalPipe.transform(this.tx.amount / this.unitToSatoshi, '1.2-6');
   }
 
   private afterWalletSelectorSet() {
@@ -359,7 +362,7 @@ export class ConfirmPage extends WalletTabsChild {
     return (
       this.wallet.cachedStatus &&
       this.wallet.cachedStatus.balance.totalAmount >=
-        this.tx.amount + this.tx.feeRate &&
+      this.tx.amount + this.tx.feeRate &&
       !this.tx.spendUnconfirmed
     );
   }
@@ -450,7 +453,7 @@ export class ConfirmPage extends WalletTabsChild {
             const maxAllowedFee = feeRate * 5;
             this.logger.info(
               `Using Merchant Fee: ${
-                tx.feeRate
+              tx.feeRate
               } vs. referent level (5 * feeRate) ${maxAllowedFee}`
             );
             if (tx.network != 'testnet' && tx.feeRate > maxAllowedFee) {
@@ -574,9 +577,9 @@ export class ConfirmPage extends WalletTabsChild {
           this.tx = tx;
           this.logger.debug(
             'Confirm. TX Fully Updated for wallet:' +
-              wallet.id +
-              ' Txp:' +
-              txp.id
+            wallet.id +
+            ' Txp:' +
+            txp.id
           );
           return resolve();
         })
@@ -787,8 +790,8 @@ export class ConfirmPage extends WalletTabsChild {
         this.isWithinWalletTabs()
           ? this.navCtrl.popToRoot()
           : this.navCtrl.last().name == 'ConfirmCardPurchasePage'
-          ? this.navCtrl.pop()
-          : this.navCtrl.popToRoot();
+            ? this.navCtrl.pop()
+            : this.navCtrl.popToRoot();
       }
     });
   }

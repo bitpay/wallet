@@ -10,7 +10,7 @@ describe('Provider: Fee Provider', () => {
   let configProvider: ConfigProvider;
 
   class BwcProviderMock {
-    constructor() {}
+    constructor() { }
     getClient() {
       const walletClient = {
         getFeeLevels: (coin, network, cb) => {
@@ -70,7 +70,7 @@ describe('Provider: Fee Provider', () => {
   describe('getCurrentFeeLevel', () => {
     it('should return normal fee level is not set', () => {
       configProvider.load().then(() => {
-        delete configProvider.get().wallet.settings.feeLevel;
+        delete configProvider.get().wallet.settings.default.feeLevel;
         const currentFeeLevel = feeProvider.getCurrentFeeLevel();
         expect(currentFeeLevel).toEqual('normal');
       });
@@ -81,7 +81,9 @@ describe('Provider: Fee Provider', () => {
         const newOpts = {
           wallet: {
             settings: {
-              feeLevel: 'urgent'
+              default: {
+                feeLevel: 'urgent'
+              }
             }
           }
         };

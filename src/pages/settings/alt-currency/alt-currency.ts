@@ -69,7 +69,7 @@ export class AltCurrencyPage {
       });
 
     let config = this.configProvider.get();
-    this.currentCurrency = config.wallet.settings.alternativeIsoCode;
+    this.currentCurrency = config.wallet.settings.default.alternativeIsoCode;
 
     this.persistenceProvider
       .getLastCurrencyUsed()
@@ -106,8 +106,10 @@ export class AltCurrencyPage {
     var opts = {
       wallet: {
         settings: {
-          alternativeName: newAltCurrency.name,
-          alternativeIsoCode: newAltCurrency.isoCode
+          default: {
+            alternativeName: newAltCurrency.name,
+            alternativeIsoCode: newAltCurrency.isoCode
+          }
         }
       }
     };
@@ -129,7 +131,7 @@ export class AltCurrencyPage {
     this.lastUsedAltCurrencyList = this.lastUsedAltCurrencyList.slice(0, 3);
     this.persistenceProvider
       .setLastCurrencyUsed(JSON.stringify(this.lastUsedAltCurrencyList))
-      .then(() => {});
+      .then(() => { });
   }
 
   public findCurrency(searchedAltCurrency: string): void {

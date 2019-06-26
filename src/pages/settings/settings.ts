@@ -93,8 +93,8 @@ export class SettingsPage {
     });
     this.config = this.configProvider.get();
     this.selectedAlternative = {
-      name: this.config.wallet.settings.alternativeName,
-      isoCode: this.config.wallet.settings.alternativeIsoCode
+      name: this.config.wallet.settings.default.alternativeName,
+      isoCode: this.config.wallet.settings.default.alternativeIsoCode
     };
     this.lockMethod =
       this.config && this.config.lock && this.config.lock.method
