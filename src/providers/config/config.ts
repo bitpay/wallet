@@ -115,6 +115,12 @@ export class ConfigProvider {
     private persistence: PersistenceProvider
   ) {
     this.logger.debug('ConfigProvider initialized');
+    const alternativeSettings = {
+      alternativeName: 'US Dollar',
+      alternativeIsoCode: 'USD',
+      defaultLanguage: '',
+      feeLevel: 'normal'
+    };
     this.configDefault = {
       // wallet limits
       limits: {
@@ -135,40 +141,28 @@ export class ConfigProvider {
             unitToSatoshi: 100000000,
             unitDecimals: 8,
             unitCode: 'btc',
-            alternativeName: 'US Dollar',
-            alternativeIsoCode: 'USD',
-            defaultLanguage: '',
-            feeLevel: 'normal'
+            ...alternativeSettings
           },
           btc: {
             unitName: 'BTC',
             unitToSatoshi: 100000000,
             unitDecimals: 8,
             unitCode: 'btc',
-            alternativeName: 'US Dollar',
-            alternativeIsoCode: 'USD',
-            defaultLanguage: '',
-            feeLevel: 'normal'
+            ...alternativeSettings
           },
           bch: {
             unitName: 'BCH',
             unitToSatoshi: 100000000,
             unitDecimals: 8,
             unitCode: 'bch',
-            alternativeName: 'US Dollar',
-            alternativeIsoCode: 'USD',
-            defaultLanguage: '',
-            feeLevel: 'normal'
+            ...alternativeSettings
           },
           eth: {
             unitName: 'ETH',
             unitToSatoshi: 1e18,
             unitDecimals: 18,
             unitCode: 'eth',
-            alternativeName: 'US Dollar',
-            alternativeIsoCode: 'USD',
-            defaultLanguage: '',
-            feeLevel: 'normal'
+            ...alternativeSettings
           }
         }
       },
