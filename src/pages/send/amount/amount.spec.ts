@@ -35,7 +35,6 @@ describe('AmountPage', () => {
   describe('sendMax', () => {
     it('should set the send display value expression to the available balance', () => {
       instance.wallet = wallet;
-      instance.wallet.coin = 'bch';
       instance.ionViewDidLoad();
       instance.sendMax();
       expect(instance.expression).toBe(
@@ -45,7 +44,6 @@ describe('AmountPage', () => {
 
     it('should fetch the bch rate if in bch wallet', () => {
       instance.wallet = wallet;
-      instance.wallet.coin = 'bch';
       instance.ionViewDidLoad();
       instance.fiatCode = 'USD';
       instance.unitIndex = 1;
