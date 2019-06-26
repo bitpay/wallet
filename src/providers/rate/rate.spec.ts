@@ -44,7 +44,7 @@ describe('RateProvider', () => {
     service.updateRates('btc').then(() => {
       expect(service.isCoinAvailable('btc')).toBe(true);
     });
-    expect(httpMock.match(ethUrl)).toHaveBeenCalled();
+    httpMock.match(ethUrl)[0].flush(ethResponse);
     httpMock.match(btcUrl)[1].flush(btcResponse);
     httpMock.match(bchUrl)[0].flush(bchResponse);
     httpMock.verify();
@@ -58,7 +58,7 @@ describe('RateProvider', () => {
       expect(service.getRate('BCH')).toEqual(7.65734);
     });
 
-    httpMock.match(ethUrl)[1].flush(ethResponse);
+    httpMock.match(ethUrl)[0].flush(ethResponse);
     httpMock.match(btcUrl)[1].flush(btcResponse);
     httpMock.match(bchUrl)[0].flush(bchResponse);
     httpMock.verify();
@@ -72,6 +72,7 @@ describe('RateProvider', () => {
       expect(service.getRate('BCH', 'bch')).toEqual(1);
     });
 
+    httpMock.match(ethUrl)[0].flush(ethResponse);
     httpMock.match(btcUrl)[0].flush(btcResponse);
     httpMock.match(bchUrl)[1].flush(bchResponse);
     httpMock.verify();
@@ -115,6 +116,7 @@ describe('RateProvider', () => {
       expect(service.toFiat(0.25 * 1e8, 'USD', 'bch')).toEqual(375.825);
     });
 
+    httpMock.match(ethUrl)[0].flush(ethResponse);
     httpMock.match(btcUrl)[0].flush(btcResponse);
     httpMock.match(bchUrl)[1].flush(bchResponse);
     httpMock.verify();
@@ -132,6 +134,7 @@ describe('RateProvider', () => {
       expect(service.fromFiat(375.825, 'USD', 'bch')).toEqual(0.25 * 1e8);
     });
 
+    httpMock.match(ethUrl)[0].flush(ethResponse);
     httpMock.match(btcUrl)[0].flush(btcResponse);
     httpMock.match(bchUrl)[1].flush(bchResponse);
     httpMock.verify();
@@ -149,6 +152,7 @@ describe('RateProvider', () => {
       expect(service.toFiat(0.25 * 1e8, 'USD', 'btc')).toEqual(2883.935);
     });
 
+    httpMock.match(ethUrl)[0].flush(ethResponse);
     httpMock.match(btcUrl)[1].flush(btcResponse);
     httpMock.match(bchUrl)[0].flush(bchResponse);
     httpMock.verify();
@@ -166,6 +170,7 @@ describe('RateProvider', () => {
       expect(service.fromFiat(2883.935, 'USD', 'btc')).toEqual(0.25 * 1e8);
     });
 
+    httpMock.match(ethUrl)[0].flush(ethResponse);
     httpMock.match(btcUrl)[1].flush(btcResponse);
     httpMock.match(bchUrl)[0].flush(bchResponse);
     httpMock.verify();
@@ -191,6 +196,7 @@ describe('RateProvider', () => {
       ]);
     });
 
+    httpMock.match(ethUrl)[0].flush(ethResponse);
     httpMock.match(btcUrl)[1].flush(btcResponse);
     httpMock.match(bchUrl)[0].flush(bchResponse);
     httpMock.verify();
@@ -209,6 +215,7 @@ describe('RateProvider', () => {
       service.whenRatesAvailable('btc');
     });
 
+    httpMock.match(ethUrl)[0].flush(ethResponse);
     httpMock.match(btcUrl)[1].flush(btcResponse);
     httpMock.match(bchUrl)[0].flush(bchResponse);
     httpMock.verify();
