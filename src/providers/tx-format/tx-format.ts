@@ -38,17 +38,18 @@ export class TxFormatProvider {
 
   // TODO: Check return of formatAmount(...), sometimes returns a number and sometimes a string
   public formatAmount(coin: string, satoshis: number, fullPrecision?: boolean) {
-    const settings = this.configProvider.get().wallet.settings[coin];
+    let { unitCode } = this.configProvider.get().wallet.settings[coin];
 
-    if (settings.unitCode == 'sat') return satoshis;
+    if (unitCode == 'sat') return satoshis;
+    if (unitCode == 'bch') {
+      unitCode = 'btc';
+    }
 
     // TODO : now only works for english, specify opts to change thousand separator and decimal separator
     var opts = {
       fullPrecision: !!fullPrecision
     };
-    return this.bwcProvider
-      .getUtils()
-      .formatAmount(satoshis, settings.unitCode, opts);
+    return this.bwcProvider.getUtils().formatAmount(satoshis, unitCode, opts);
   }
 
   public formatAmountStr(coin: string, satoshis: number): string {
