@@ -60,20 +60,20 @@ export class CustomAmountPage {
       const _currency = parsedAmount.currency;
       this.amountUnitStr = parsedAmount.amountUnitStr;
 
-      if (!Coin[_currency]) {
+      if (!Coin[_currency.toUpperCase()]) {
         // Convert to BTC or BCH
         const amountUnit = this.txFormatProvider.satToUnit(
           this.wallet.coin,
           parsedAmount.amountSat
         );
-        var btcParsedAmount = this.txFormatProvider.parseAmount(
+        var coinParsedAmount = this.txFormatProvider.parseAmount(
           this.wallet.coin,
           amountUnit,
           this.wallet.coin.toUpperCase()
         );
 
-        this.amountCoin = btcParsedAmount.amount;
-        this.altAmountStr = btcParsedAmount.amountUnitStr;
+        this.amountCoin = coinParsedAmount.amount;
+        this.altAmountStr = coinParsedAmount.amountUnitStr;
       } else {
         this.amountCoin = _amount; // BTC or BCH
         this.altAmountStr = this.txFormatProvider.formatAlternativeStr(

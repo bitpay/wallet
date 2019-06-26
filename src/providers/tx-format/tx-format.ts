@@ -176,7 +176,7 @@ export class TxFormatProvider {
     let amountSat;
 
     // If fiat currency
-    if (!Coin[currency] && currency != 'sat') {
+    if (!Coin[currency.toUpperCase()] && currency != 'sat') {
       let formattedAmount = onlyIntegers
         ? this.filter.formatFiatAmount(amount.toFixed(0))
         : this.filter.formatFiatAmount(amount);
@@ -185,13 +185,13 @@ export class TxFormatProvider {
     } else if (currency == 'sat') {
       amountSat = Number(amount);
       amountUnitStr = this.formatAmountStr(coin, amountSat);
-      // convert sat to BTC or BCH
+      // convert sat to Coin
       amount = (amountSat * satToUnit).toFixed(8);
       currency = coin.toUpperCase();
     } else {
       amountSat = parseInt((amount * unitToSatoshi).toFixed(0), 10);
       amountUnitStr = this.formatAmountStr(coin, amountSat);
-      // convert unit to BTC or BCH
+      // convert unit to Coin
       amount = (amountSat * satToUnit).toFixed(8);
       currency = coin.toUpperCase();
     }
