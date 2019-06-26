@@ -214,8 +214,8 @@ export class SellCoinbasePage {
     (count: number, txp) => {
       this.logger.warn(
         'Check if transaction has been received by Coinbase. Try ' +
-          count +
-          '/5'
+        count +
+        '/5'
       );
       // TX amount in BTC
       let satToBtc = 1 / 100000000;
@@ -351,7 +351,7 @@ export class SellCoinbasePage {
   public sellConfirm(): void {
     let config = this.configProvider.get();
     let configWallet = config.wallet;
-    let walletSettings = configWallet.settings;
+    let walletSettings = configWallet.settings[this.coin];
 
     let message = 'Selling bitcoin for ' + this.amount + ' ' + this.currency;
     let okText = 'Confirm';
